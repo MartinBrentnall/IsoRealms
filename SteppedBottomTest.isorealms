@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<Map>
+  <Plugin implementation="DefaultFourColourSupport" instance="TODO_InstanceName" type="FourColourSupport">
+    <Configuration>
+      <Floor alpha="0" blue="1" green="0.5" red="0.5"/>
+      <Extra alpha="0" blue="1" green="1" red="1"/>
+      <Wall alpha="0" blue="0" green="0" red="0"/>
+      <Background alpha="0" blue="0.5" green="0" red="0"/>
+    </Configuration>
+  </Plugin>
+  <Plugin implementation="BlockSubtractor" instance="TODO_InstanceName" type="RollableSurfaceCalculator">
+    <Configuration/>
+  </Plugin>
+  <Plugin implementation="SpindizzyJewelModel" instance="TODO_InstanceName" type="SimpleModel">
+    <Configuration/>
+  </Plugin>
+  <Plugin implementation="Commodore64SpindizzyTextureSet" instance="TODO_InstanceName" type="SpindizzyTextureSet">
+    <UsePlugin implementation="FourColourSupport" instance="TODO_InstanceName" socketid=""/>
+    <Configuration/>
+  </Plugin>
+  <ElementSet instance="Blocks" type="SpindizzyBlocks">
+    <UsePlugin implementation="SpindizzyTextureSet" instance="TODO_InstanceName"/>
+    <UsePlugin implementation="RollableSurfaceCalculator" instance="TODO_InstanceName"/>
+  </ElementSet>
+  <ElementSet instance="Jewels" type="SpindizzyJewels">
+    <UsePlugin implementation="SimpleModel" instance="TODO_InstanceName"/>
+  </ElementSet>
+  <Zone>
+    <Location x="-7" y="0" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="0" z="0"/>
+        <Size x="1" y="5" z="0"/>
+        <Slope NorthSouth="1" Stepped="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="6" z="0"/>
+        <Size x="5" y="1" z="0"/>
+        <Slope NorthSouth="0" Stepped="1" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="2" z="0"/>
+        <Size x="1" y="5" z="0"/>
+        <Slope NorthSouth="-1" Stepped="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="0"/>
+        <Size x="5" y="1" z="0"/>
+        <Slope NorthSouth="0" Stepped="1" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="2" z="2"/>
+        <Size x="1" y="1" z="0"/>
+        <Slope NorthSouth="1" Stepped="1" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="4" z="2"/>
+        <Size x="1" y="1" z="0"/>
+        <Slope NorthSouth="-1" Stepped="1" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="2" z="2"/>
+        <Size x="1" y="1" z="0"/>
+        <Slope NorthSouth="1" Stepped="1" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="4" z="2"/>
+        <Size x="1" y="1" z="0"/>
+        <Slope NorthSouth="-1" Stepped="1" WestEast="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+</Map>
