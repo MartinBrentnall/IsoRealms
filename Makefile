@@ -31,10 +31,10 @@ objs:	$(OBJS)
 	cd FontEngine; make
 	cd Global; make
 	cd Plugins; make
-	g++ *.o -o IsoRealms `sdl-config --cflags --libs` -L./IsoRealms -lIsoRealms -lSDL_mixer -lGL -lGLU -lxerces-c -lfreetype
 
 install:
 	cd Global; make install
+	g++ *.o -o IsoRealms `sdl-config --cflags --libs` -L./IsoRealms -lIsoRealms -lSDL_mixer -lGL -lGLU -lxerces-c -lfreetype
 	ln -s "$(PWD)" /usr/share/IsoRealms
 
 all:
