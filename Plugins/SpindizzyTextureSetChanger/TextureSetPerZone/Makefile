@@ -35,4 +35,4 @@ all:
 	make objs
 
 clean:
-	$(RM) *.o dummy.so
+	$(RM) *.o module.so
