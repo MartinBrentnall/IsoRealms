@@ -1,0 +1,60 @@
+/*
+ * Copyright 2009 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#ifndef ROLLABLE_SPLIT_SURFACE_H
+#define ROLLABLE_SPLIT_SURFACE_H
+
+#include <GL/gl.h>
+
+#include "../../Global/BlockLocation.h"
+#include "../../Global/IsoRealmsConstants.h"
+
+#include "../../Plugins/RollableSurfaceCalculator/IRollableSurface.h"
+#include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
+#include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
+
+class RollableSplitSurface:public IRollableSurface {
+  private:
+  BlockLocation cLocation;
+  // TODO: Change to refer to the texture set that may change!
+  ISpindizzyTextureSet** cTextureSet;
+  ISpindizzyTextureSet::TextureType cTextureType;
+  int cCornerHeights[2][2];
+  bool cSplitDirection;
+
+  public:
+
+  /**
+   * Construct a new RollableSplitSurface.
+   * 
+   * @param bool  Split direction.
+   * @param BlockLocation&  
+   */
+  RollableSplitSurface(bool, BlockLocation&, ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType, int, int, int, int);
+
+  /*******************************\
+   * Implements IRollableSurface *
+  \*******************************/
+  int getSurfaceCellHeight(int, int);
+  int getSurfaceCellElevation(int, int);
+  void render();
+  BlockArea* getCoverage();
+  bool alligned(int, int);
+};
+
+#endif
