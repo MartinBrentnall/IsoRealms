@@ -1,0 +1,63 @@
+/*
+ * Copyright 2009 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#ifndef I_FOUR_COLOUR_SUPPORT_H
+#define I_FOUR_COLOUR_SUPPORT_H
+
+#include "../../Global/Colour.h"
+#include "../../Global/IPlugin.h"
+
+class IFourColourSupportListener;
+
+#include "IFourColourSupportListener.h"
+
+class IFourColourSupport:public virtual IPlugin {
+  public:
+  
+  enum PaletteEntry {
+    FLOOR,
+    WALL,
+    BACKGROUND,
+    EXTRA
+  };
+
+  virtual ~IFourColourSupport() {}
+
+  /**
+   * Retrieve the specified colour.
+   * 
+   * @returns The specified colour.
+   */
+  virtual Colour* getColour(PaletteEntry) = 0;
+
+  /**
+   * Add a listener to be notified of changes to this palette.
+   * 
+   * @param IFourColourSupportListener* The listener to remove.
+   */
+  virtual void addChangeListener(IFourColourSupportListener*) = 0;
+
+  /**
+   * Remove a listener to be notified of changes to this palette.
+   * 
+   * @param IFourColourSupportListener* The listener to remove.
+   */
+  virtual void removeChangeListener(IFourColourSupportListener*) = 0;
+};
+
+#endif
