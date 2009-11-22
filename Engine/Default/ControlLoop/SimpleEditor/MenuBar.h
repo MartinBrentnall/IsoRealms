@@ -1,0 +1,88 @@
+/*
+ * Copyright 2009 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#ifndef MENU_BAR_H
+#define MENU_BAR_H
+
+#include <GL/gl.h>
+#include <SDL/SDL.h>
+#include <cctype>
+#include <map>
+#include <vector>
+
+#include "../../../../Global/Configuration.h"
+#include "../../../../Global/DOMNodeWrapper.h"
+#include "../../../../Global/ICommand.h"
+#include "../../../../Global/IComponentContainer.h"
+#include "../../../../Global/IFont.h"
+#include "../../../../Global/IHUDComponent.h"
+#include "../../../../Global/KeyStates.h"
+#include "../../../../Global/ScreenConfiguration.h"
+
+#include "MenuItem.h"
+#include "MenuPopup.h"
+#include "PopupMenuCommand.h"
+
+class MenuBar:public IHUDComponent,
+              public IMenuContainer {
+  private:
+  IComponentContainer* cComponentContainer;
+  std::map<std::string, MenuPopup*> cMenuPopups;
+  std::vector<MenuItem*> cMenuItems;
+  MenuPopup* cMenuPopupShowing;
+  IFont* cFont;
+  float cWidth;
+  unsigned int cSelectedItem;
+
+  /**
+   * Parse a menu from the specified node.
+   * 
+   * @param DOMNodeWrapper*  The node to parse.
+   */
+  ICommand* parseMenu(DOMNodeWrapper*);
+
+  bool mouseButtonDown(SDL_Event&);
+  bool mouseMotion(SDL_Event&);
+  bool keyDown(SDLKey&);
+
+  public:
+  MenuBar(IComponentContainer*, DOMNodeWrapper*, IFont*);
+
+  void addCommand(ICommandInfo*);
+  void removeCommand(ICommandInfo*);
+
+  float getX();
+  float getY();
+  float getHeight();
+  float getWidth();
+
+  /*****************************\
+   * Implements IMenuContainer *
+  \*****************************/
+  void closeMenu(IMenu*);
+
+  /****************************\
+   * Implements IHUDComponent *
+  \****************************/
+  void update(int);
+  void render();
+  bool input(SDL_Event&);
+  bool contains(float, float);
+};
+
+#endif
