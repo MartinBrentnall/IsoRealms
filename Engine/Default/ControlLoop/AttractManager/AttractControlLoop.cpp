@@ -1,0 +1,151 @@
+/*
+ * Copyright 2009 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include "AttractControlLoop.h" 
+
+AttractControlLoop::AttractControlLoop(DOMNodeWrapper* node) {
+  cFrontEndActive = false;
+  int mCurrentLayer = 0;
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "FrontEnd") {
+      string mFrontEndName = mNode->getAttribute("name");
+      string mFrontEndLocation = System::getConfigurationResource("Engine/Default/ControlLoop/AttractManager/FrontEnd/" + mFrontEndName + "/FrontEnd");
+      void* mFrontEndSO = dlopen(mFrontEndLocation.c_str(), RTLD_LAZY);
+      if (!mFrontEndSO) {
+        throw InitException("Cannot load library: " + string(dlerror()));
+      }
+      createFrontEnd* createFrontEndFunction = cast_voidptr_to_funcptr<createFrontEnd*>(dlsym(mFrontEndSO, "create"));
+      const char* mDlsymError = dlerror();
+      if (mDlsymError) {
+        throw InitException("Cannot load symbol: " + string(mDlsymError));
+      }
+      cFrontEnd = createFrontEndFunction(mNode);
+    } else if (mValueAsString == "AttractScene") {
+      // TODO: Use relative path
+      try {
+        string mAttractName = mNode->getAttribute("name");
+        string mAttractLocation = System::getConfigurationResource("Engine/Default/ControlLoop/AttractManager/Attract/" + mAttractName + "/Attract");
+        void* mAttractSO = dlopen(mAttractLocation.c_str(), RTLD_LAZY);
+        if (!mAttractSO) {
+          throw InitException("Cannot load library: " + string(dlerror()));
+        }
+        createAttract* createAttractFunction = cast_voidptr_to_funcptr<createAttract*>(dlsym(mAttractSO, "create"));
+        const char* mDlsymError = dlerror();
+        if (mDlsymError) {
+          throw InitException("Cannot load symbol: " + string(mDlsymError));
+        }
+        cAttractServices[mAttractName] = createAttractFunction();
+      } catch (InitException e) {
+        cout << e.getMessage() << endl;
+        cout << "Warning: could not load attract plug-in \"" << mNode->getStringValue() << "\":" << endl << e.getMessage() << endl;
+      }
+    } else if (mValueAsString == "Layer") {
+      cLayers[mNode->getStringValue()] = mCurrentLayer++;
+    } else if (mValueAsString == "Init") {
+      // TODO: May be overwriting (if there are two INIT tags), how should we handle this?
+      cInitCommands = parseEventCommands(mNode);
+    } else if (mValueAsString == "AttractSceneEnd") {
+      cSceneEndCommands[cAttractServices[mNode->getAttribute("name")]] = parseEventCommands(mNode);
+    } else if (mValueAsString == "FrontEndStart") {
+      cFrontEndStartCommands = parseEventCommands(mNode);
+    }
+  }
+
+  for (unsigned int i = 0; i < cInitCommands.size(); i++) {
+    cInitCommands[i]->execute();
+  }
+}
+
+vector<ICommand*> AttractControlLoop::parseEventCommands(DOMNodeWrapper* node) {
+  vector<ICommand*> mSceneCommands;
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "Start") {
+      IAttract* mAttractScene = cAttractServices[mNode->getStringValue()];
+      string mLayerName = mNode->getAttribute("layer");
+      mSceneCommands.push_back(new StartAttractSceneCommand(cAttractSceneManager, mAttractScene, cLayers[mLayerName]));
+    } else if (mValueAsString == "End") {
+      IAttract* mAttractScene = cAttractServices[mNode->getStringValue()];
+      mSceneCommands.push_back(new TerminateAttractSceneCommand(cAttractSceneManager, mAttractScene));
+    }
+  }
+  return mSceneCommands;
+}
+
+bool AttractControlLoop::checkActiveInput(int type) {
+  switch (type) {
+    case SDL_KEYDOWN         : // Fallthrough
+    case SDL_MOUSEBUTTONDOWN : return true; break;
+  }
+  return false;
+}
+
+void AttractControlLoop::input(SDL_Event& event) {
+  if (!cFrontEndActive && checkActiveInput(event.type)) {
+    cFrontEndActive = true;
+    cFrontEnd->setActive(true);
+    for (unsigned int i = 0; i < cFrontEndStartCommands.size(); i++) {
+      cFrontEndStartCommands[i]->execute();
+    }
+    
+    for (map<string, IAttract*>::iterator i = cAttractServices.begin(); i != cAttractServices.end(); i++) {
+      i->second->frontEndActive(true);
+    }          
+  } else {
+    cFrontEnd->input(event);
+  }
+}
+
+void AttractControlLoop::execute(int milliseconds) {
+  cAttractSceneManager.update(milliseconds);
+  cAttractSceneManager.render();
+  if (cFrontEndActive) {
+    cFrontEnd->update(milliseconds);
+    cFrontEnd->render();
+    if (cFrontEnd->hasIdled()) {
+      cFrontEnd->setActive(false);
+      for (unsigned int i = 0; i < cFrontEndEndCommands.size(); i++) {
+        cFrontEndEndCommands[i]->execute();
+      }
+        
+      for (map<string, IAttract*>::iterator i = cAttractServices.begin(); i != cAttractServices.end(); i++) {
+        i->second->frontEndActive(false);
+      }          
+      cFrontEndActive = false;
+    }
+  }
+  vector<IAttract*> mCompletedScenes = cAttractSceneManager.getCompletedScenes();
+  for (unsigned int i = 0; i < mCompletedScenes.size(); i++) {
+    vector<ICommand*> mCommandsToExecute = cSceneEndCommands[mCompletedScenes[i]];
+    for (unsigned int j = 0; j < mCommandsToExecute.size(); j++) {
+      mCommandsToExecute[j]->execute();
+    }        
+  }
+}
+
+extern "C" IControlLoop* create(DOMNodeWrapper* node) {
+  return new AttractControlLoop(node);
+}
+
+extern "C" void destroy(IControlLoop* controlLoop) {
+  delete controlLoop;
+}
