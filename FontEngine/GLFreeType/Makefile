@@ -34,4 +34,4 @@ all:
 	make objs
 
 clean:
-	$(RM) *.o Engine.so
+	$(RM) *.o FontEngine.so
