@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<IsoRealmsSettings>
+  <Screen>
+    <Fullscreen>false</Fullscreen>
+    <Size>
+      <Width>800</Width>
+      <Height>600</Height>
+    </Size>
+    <Depth>24</Depth>
+  </Screen>
+</IsoRealmsSettings>
+

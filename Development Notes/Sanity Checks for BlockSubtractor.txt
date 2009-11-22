@@ -1,0 +1,10 @@
+Sanity checks for hidden surface removal algorithms
+---------------------------------------------------
+
+In order to carry out sanity checks, the following procedure should be followed:
+
+1.  Choose ONE of the desired sanity check.  Choices are: floor, wall, ceiling.
+2.  Disable rendering of those surfaces NOT chosen.
+3.  Load the sanity check map for the chosen surface.
+4.  The map contains several pairs of surfaces.  Observe that the pairs are
+    identical.  If the pairs are not identical, a problem is present.

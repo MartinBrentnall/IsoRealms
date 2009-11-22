@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<IsoRealmsConfiguration>
+  <FontEngine name="GLFreeType">
+    <Font name="Menu">
+      <File>MenuFont.ttf</File>
+      <Detail>64</Detail>
+    </Font>
+    <Font name="Editor">
+      <File>EditorFont.ttf</File>
+      <Detail>64</Detail>
+    </Font>
+  </FontEngine>
+
+  <Engine name="Default">
+    <GlobalAction type="PopControlLoopCommand" name="PopControlLoop"/>
+    <GlobalAction type="TerminateEngineCommand" name="TerminateEngineCommand"/>
+    
+    <!-- Editor configuration -->
+    <ControlLoop name="SimpleEditor" init="false">
+      <Font name="Editor"/>
+      
+      <EditorCommand type="TerminateEditorCommand" name="TerminateEditor"/>
+      <EditorCommand type="ElementSetInstancesCommand" name="ElementSetInstances"/>
+      <EditorCommand type="ChooseElementsCommand" name="ChooseElements"/>
+      <EditorCommand type="OpenCommand" name="Open"/>
+      <EditorCommand type="SaveAsCommand" name="SaveAs"/>
+      <EditorCommand type="SaveCommand" name="Save"/>
+      
+      <MenuBar>
+        <Menu name="^File">
+          <MenuItem name="^New..."/>
+          <MenuItem name="^Open...">
+            <ExecuteEditorCommand type="Open"/>
+          </MenuItem>
+          <MenuItem name="^Save">
+            <ExecuteEditorCommand type="Save"/>
+          </MenuItem>
+          <MenuItem name="Save ^As...">
+            <ExecuteEditorCommand type="SaveAs"/>
+          </MenuItem>          
+          <MenuItem name="^Quit">
+            <ExecuteEditorCommand type="TerminateEditor"/>
+          </MenuItem>
+        </Menu>
+        <Menu name="^Edit">
+          <MenuItem name="^Undo"/>
+          <MenuItem name="^Redo"/>
+          <MenuItem name="Cu^t"/>
+          <MenuItem name="^Copy"/>
+          <MenuItem name="^Paste"/>
+          <MenuItem name="^Delete"/>
+        </Menu>
+        <Menu name="^View">
+          <MenuItem name="^Reset Camera"/>
+          <MenuItem name="Change ^Projection Mode"/>
+        </Menu>
+        <Menu name="E^lements">
+          <MenuItem name="^Element Set Instances...">
+            <ExecuteEditorCommand type="ElementSetInstances"/>
+          </MenuItem>
+          <MenuItem name="Element ^Palette...">
+            <ExecuteEditorCommand type="ChooseElements"/>
+          </MenuItem>
+        </Menu>
+      </MenuBar>
+      
+      <OnExit>
+        <ExecuteCommand type="PopControlLoop"/>
+      </OnExit>
+    </ControlLoop>
+    
+    <GlobalAction type="PushControlLoopCommand" name="CreateNewMap">
+      <ControlLoop>SimpleEditor</ControlLoop>
+    </GlobalAction>
+    
+    <!-- Front-end configuration -->
+    <ControlLoop name="AttractManager" init="true">
+      <AttractScene name="Intro"/>
+      <AttractScene name="Title"/>
+      <AttractScene name="HiScore"/>
+      <AttractScene name="Help"/>
+      <AttractScene name="Demo"/>
+      <AttractScene name="FadeOut"/>
+    
+      <FrontEnd name="Menu">
+        <MenuItem name="Start!"/>
+        <Menu name="Editor">
+          <MenuItem name="Create a new map">
+            <ExecuteCommand type="CreateNewMap"/>
+          </MenuItem>
+          <MenuItemList name="Edit an existing map" fromdir="Maps/" filter="*.map">
+            <LoadMapForEditing/>
+          </MenuItemList>
+        </Menu>
+        <Menu name="Settings">
+          <Menu name="Game">
+          </Menu>
+          <Menu name="Visual">
+            <MenuItem name="Resolution"/>
+            <MenuItem name="Shadows"/>
+            <MenuItem name="Colour Depth"/>
+          </Menu>
+          <Menu name="Aural">
+            <MenuItem name="Music Volume"/>
+            <MenuItem name="Sound Volume"/>
+          </Menu>
+          <Menu name="Control">
+          </Menu>
+        </Menu>
+        <MenuItem name="High Scores"/>
+        <MenuItem name="Help"/>
+        <MenuItem name="Quit">
+          <ExecuteCommand type="TerminateEngineCommand"/>
+        </MenuItem>
+        
+        <ExitCommand>
+          <ExecuteCommand type="TerminateEngineCommand"/>
+        </ExitCommand>
+      </FrontEnd>
+  
+      <Layer>Background</Layer>
+      <Layer>Foreground</Layer>
+    
+      <Init>
+        <Start layer="Background">Intro</Start>
+      </Init>
+      <AttractSceneEnd name="Intro">
+        <Start layer="Foreground">Title</Start>
+        <Start layer="Background">Demo</Start>
+      </AttractSceneEnd>
+      <AttractSceneEnd name="Title">
+        <Start layer="Foreground">HiScore</Start>
+      </AttractSceneEnd>
+      <AttractSceneEnd name="HiScore">
+        <Start layer="Foreground">FadeOut</Start>
+      </AttractSceneEnd>
+      <AttractSceneEnd name="FadeOut">
+        <End>Demo</End>
+        <Start layer="Background">Intro</Start>
+      </AttractSceneEnd>
+    
+      <FrontEndStart>
+        <End>HiScore</End>
+        <End>FadeOut</End>
+        <End>Intro</End>
+        <End>Help</End>
+        <Start layer="Foreground">Title</Start>
+        <Start layer="Background">Demo</Start>
+      </FrontEndStart>
+    </ControlLoop>
+  </Engine>
+</IsoRealmsConfiguration>

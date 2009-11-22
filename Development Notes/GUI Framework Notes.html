@@ -1,0 +1,1966 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html dir="ltr" xmlns="http://www.w3.org/1999/xhtml" lang="en"><head>
+
+
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="generator" content="vBulletin 3.8.2">
+
+<meta name="keywords" content=" Suggestions for UI component framework design, nexus,realms,games,films,movies,music,development,media,project,projects,tool,tools">
+<meta name="description" content=" Suggestions for UI component framework design Game Development">
+
+
+<!-- CSS Stylesheet -->
+<style type="text/css" id="vbulletin_css">
+/**
+* vBulletin 3.8.2 CSS
+* Style: 'Nexus Realms'; Style ID: 2
+*/
+body
+{
+	background: #1e1e1e;
+	color: #cccccc;
+	font-family: verdana, arial, helvetica, sans-serif;
+	margin: 0px;
+	padding: 0px;
+}
+a:link, body_alink
+{
+	color: #cccccc;
+}
+a:visited, body_avisited
+{
+	color: #cccccc;
+}
+a:hover, a:active, body_ahover
+{
+	color: #0066ff;
+}
+.page
+{
+	background: #1e1e1e;
+	color: #cccccc;
+}
+td, th, p, li
+{
+	font: 10pt verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
+}
+.tborder
+{
+	background: #1e1e1e;
+	color: #000000;
+	border: 1px solid #1e1e1e;
+}
+.tcat
+{
+	background: #1e1e1e url(http://forums.nexusrealms.co.uk/styles/nxr_default/topMenu/menuBG2.gif) repeat-x top left;
+	color: #FFFFFF;
+	font: bold 10pt verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
+}
+.tcat a:link, .tcat_alink
+{
+	color: #FFFFFF;
+	text-decoration: none;
+}
+.tcat a:visited, .tcat_avisited
+{
+	color: #ffffff;
+	text-decoration: none;
+}
+.tcat a:hover, .tcat a:active, .tcat_ahover
+{
+	color: #FFFF66;
+	text-decoration: underline;
+}
+.thead
+{
+	background: #1e1e1e url(http://forums.nexusrealms.co.uk/styles/nxr_default/topMenu/catBG.png) repeat-x top left;
+	color: #FFFFFF;
+	font: bold 11px tahoma, verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
+}
+.thead a:link, .thead_alink
+{
+	color: #FFFFFF;
+}
+.thead a:visited, .thead_avisited
+{
+	color: #FFFFFF;
+}
+.thead a:hover, .thead a:active, .thead_ahover
+{
+	color: #FFFF00;
+}
+.tfoot
+{
+	background: #1e1e1e url(http://forums.nexusrealms.co.uk/styles/nxr_default/topMenu/catBG.png) repeat-x top left;
+	color: #cccccc;
+}
+.tfoot a:link, .tfoot_alink
+{
+	color: #E0E0F6;
+}
+.tfoot a:visited, .tfoot_avisited
+{
+	color: #E0E0F6;
+}
+.tfoot a:hover, .tfoot a:active, .tfoot_ahover
+{
+	color: #FFFF66;
+}
+.alt1, .alt1Active
+{
+	background: #252525;
+	color: #cccccc;
+}
+.alt1 a:link, .alt1_alink, .alt1Active a:link, .alt1Active_alink
+{
+	color: #FFFFFF;
+}
+.alt1 a:visited, .alt1_avisited, .alt1Active a:visited, .alt1Active_avisited
+{
+	color: #FFFFFF;
+}
+.alt1 a:hover, .alt1 a:active, .alt1_ahover, .alt1Active a:hover, .alt1Active a:active, .alt1Active_ahover
+{
+	color: #0066FF;
+}
+.alt2, .alt2Active
+{
+	background: #101010;
+	color: #cccccc;
+}
+.alt2 a:link, .alt2_alink, .alt2Active a:link, .alt2Active_alink
+{
+	color: #FFFFFF;
+}
+.alt2 a:visited, .alt2_avisited, .alt2Active a:visited, .alt2Active_avisited
+{
+	color: #FFFFFF;
+}
+.alt2 a:hover, .alt2 a:active, .alt2_ahover, .alt2Active a:hover, .alt2Active a:active, .alt2Active_ahover
+{
+	color: #0066FF;
+}
+.inlinemod
+{
+	background: #FFFFCC;
+	color: #000000;
+}
+.wysiwyg
+{
+	background: #252525;
+	color: #cccccc;
+	font: 10pt verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
+	margin: 5px 10px 10px 10px;
+	padding: 0px;
+}
+.wysiwyg a:link, .wysiwyg_alink
+{
+	color: #22229C;
+}
+.wysiwyg a:visited, .wysiwyg_avisited
+{
+	color: #22229C;
+}
+.wysiwyg a:hover, .wysiwyg a:active, .wysiwyg_ahover
+{
+	color: #FF4400;
+}
+textarea, .bginput
+{
+	font: 10pt verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
+}
+.bginput option, .bginput optgroup
+{
+	font-size: 10pt;
+	font-family: verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
+}
+.button
+{
+	font: 11px verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
+}
+select
+{
+	font: 11px verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
+}
+option, optgroup
+{
+	font-size: 11px;
+	font-family: verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
+}
+.smallfont
+{
+	font: 11px verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
+}
+.time
+{
+	color: #0066ff;
+}
+.navbar
+{
+	font: 11px verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
+}
+.highlight
+{
+	color: #FF0000;
+	font-weight: bold;
+}
+.fjsel
+{
+	background: #3E5C92;
+	color: #E0E0F6;
+}
+.fjdpth0
+{
+	background: #F7F7F7;
+	color: #000000;
+}
+.panel
+{
+	background: #1e1e1e;
+	color: #cccccc;
+	padding: 10px;
+	border: 2px outset;
+}
+.panelsurround
+{
+	background: #000000;
+	color: #cccccc;
+}
+legend
+{
+	color: #0066ff;
+	font: 11px tahoma, verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
+}
+.vbmenu_control
+{
+	background: #1e1e1e url(http://forums.nexusrealms.co.uk/styles/nxr_default/topMenu/menuBG2.gif) repeat-x top left;
+	color: #cccccc;
+	font: bold 11px tahoma, verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
+	padding: 3px 6px 3px 6px;
+	white-space: nowrap;
+}
+.vbmenu_control a:link, .vbmenu_control_alink
+{
+	color: #FFFFFF;
+	text-decoration: none;
+}
+.vbmenu_control a:visited, .vbmenu_control_avisited
+{
+	color: #FFFFFF;
+	text-decoration: none;
+}
+.vbmenu_control a:hover, .vbmenu_control a:active, .vbmenu_control_ahover
+{
+	color: #FFFFFF;
+	text-decoration: underline;
+}
+.vbmenu_popup
+{
+	background: #1e1e1e;
+	color: #cccccc;
+	border: 0px solid #1e1e1e;
+}
+.vbmenu_option
+{
+	background: #252525;
+	color: #cccccc;
+	font: 11px verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
+	white-space: nowrap;
+	cursor: pointer;
+}
+.vbmenu_option a:link, .vbmenu_option_alink
+{
+	color: #cccccc;
+	text-decoration: none;
+}
+.vbmenu_option a:visited, .vbmenu_option_avisited
+{
+	color: #cccccc;
+	text-decoration: none;
+}
+.vbmenu_option a:hover, .vbmenu_option a:active, .vbmenu_option_ahover
+{
+	color: #0066ff;
+	text-decoration: none;
+}
+.vbmenu_hilite
+{
+	background: #000000;
+	color: #cccccc;
+	font: 11px verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
+	white-space: nowrap;
+	cursor: pointer;
+}
+.vbmenu_hilite a:link, .vbmenu_hilite_alink
+{
+	color: #cccccc;
+	text-decoration: none;
+}
+.vbmenu_hilite a:visited, .vbmenu_hilite_avisited
+{
+	color: #cccccc;
+	text-decoration: none;
+}
+.vbmenu_hilite a:hover, .vbmenu_hilite a:active, .vbmenu_hilite_ahover
+{
+	color: #0066ff;
+	text-decoration: none;
+}
+/* ***** styling for 'big' usernames on postbit etc. ***** */
+.bigusername { font-size: 14pt; }
+
+/* ***** small padding on 'thead' elements ***** */
+td.thead, th.thead, div.thead { padding: 4px; }
+
+/* ***** basic styles for multi-page nav elements */
+.pagenav a { text-decoration: none; }
+.pagenav td { padding: 2px 4px 2px 4px; }
+
+/* ***** de-emphasized text */
+.shade, a.shade:link, a.shade:visited { color: #777777; text-decoration: none; }
+a.shade:active, a.shade:hover { color: #FF4400; text-decoration: underline; }
+.tcat .shade, .thead .shade, .tfoot .shade { color: #DDDDDD; }
+
+/* ***** define margin and font-size for elements inside panels ***** */
+.fieldset { margin-bottom: 6px; }
+.fieldset, .fieldset td, .fieldset p, .fieldset li { font-size: 11px; }
+/* Top Menu Start */
+ul#topMenu {
+	width: 100%;
+	height: 43px;
+	background: #1e1e1e url("http://forums.nexusrealms.co.uk/styles/nxr_default/topMenu/menuBG.gif") top left repeat-x;
+	font-weight: bold;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+ul#topMenu li {
+	display: block;
+	float: left;
+	margin: 0 0 0 5px;
+}
+ul#topMenu li a {
+	height: 35px;
+	color: #ccc;
+	text-decoration: none;
+	display: block;
+	float: left;
+	line-height: 200%;
+	padding-top: 8px;
+	padding-right: 15px;
+	padding-bottom: 0;
+	padding-left: 15px;
+}
+ul#topMenu li a:hover {
+	color: #06f;
+}
+ul#topMenu li a.menuCur{
+	color: #FFF;
+	padding-top: 5px;
+	padding-right: 15px;
+	padding-bottom: 0;
+	padding-left: 15px;
+	background-color: #fff;
+	background-image: url(http://forums.nexusrealms.co.uk/styles/nxr_default/topMenu/menuCurrentBG.gif);
+	background-repeat: repeat-x;
+	background-position: left top;
+	height: 38px;
+}
+/* Top Menu End */
+
+/* Start Category Menus */
+ul.topMenu2 {
+	list-style-type: none;
+	width: auto;
+	position: relative;
+	display: block;
+	height: 33px;
+	background: url(http://forums.nexusrealms.co.uk/styles/nxr_default/topMenu/catBG.png) repeat-x top left;
+	border: 0px solid #000;
+	margin: 0;
+	padding: 0;
+}
+
+ul.topMenu2 li {
+	display: block;
+	float: left;
+	margin: 0;
+	padding: 0;
+}
+
+ul.topMenu2 li a {
+	float: left;
+	color: #fff;
+	text-decoration: none;
+	height: 24px;
+	padding: 9px 15px 0;
+}
+
+ul.topMenu2 li a:hover, .catMenu {
+	color: #06f;
+	background: url(http://forums.nexusrealms.co.uk/styles/nxr_default/topMenu/catBG.png) repeat-x top left;
+}
+
+ul.topMenu2 .catMenu a {
+	color: #06f;
+	font-weight: 700;
+}
+
+ul.topMenu2.blue {
+	background-color: #06f;
+}
+
+ul.topMenu2.blue li a:hover, .cat.blue li.catMenu {
+	background-color: #9cf;
+}	
+/* End Category Menus */
+
+/* Start Postbit Data */
+.postDataStyle {
+	width: 100%;
+	border: 1px;
+	border-color: #000;
+	border-style: solid;
+	text-align: center;
+	background-color: #1e1e1e;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	margin-bottom: 4px;
+}
+</style>
+<link rel="stylesheet" type="text/css" href="GUI%20Framework%20Notes_files/vbulletin_important.css">
+
+
+<!-- / CSS Stylesheet -->
+
+<script type="text/javascript" src="GUI%20Framework%20Notes_files/yahoo-dom-event.js"></script>
+<script type="text/javascript" src="GUI%20Framework%20Notes_files/connection-min.js"></script>
+<script type="text/javascript">
+<!--
+var SESSIONURL = "";
+var SECURITYTOKEN = "1258900705-b3c6722da1f5552cbb55b05a69b478db4e036b7a";
+var IMGDIR_MISC = "http://forums.nexusrealms.co.uk/styles/nxr_default/images/misc";
+var vb_disable_ajax = parseInt("0", 10);
+// -->
+</script>
+<script type="text/javascript" src="GUI%20Framework%20Notes_files/vbulletin_global.js"></script>
+<script type="text/javascript" src="GUI%20Framework%20Notes_files/vbulletin_menu.js"></script>
+
+<script type="text/javascript" src="GUI%20Framework%20Notes_files/ame.js"></script><!-- Editor CSS automatically added by functions_editor.php at line 680 -->
+<!-- Editor Styles -->
+<style type="text/css" id="vbulletin_editor_css_dynamic">
+<!--
+@import url("clientscript/vbulletin_editor.css?v=382");
+
+.vBulletin_editor {
+	background: #E1E1E2;
+	padding: 6px;
+}
+.imagebutton {
+	background: #E1E1E2;
+	color: #000000;
+	padding: 1px;
+	border: none;
+}
+.ocolor, .ofont, .osize, .osmilie, .osyscoloar, .smilietitle {
+	background: #FFFFFF;
+	color: #000000;
+	border: 1px solid #FFFFFF;
+}
+.popup_pickbutton {
+	border: 1px solid #FFFFFF;
+}
+.popup_feedback {
+	background: #FFFFFF;
+	color: #000000;
+	border-right: 1px solid #FFFFFF;
+}
+.popupwindow {
+	background: #FFFFFF;
+}
+#fontOut, #sizeOut, .popup_feedback div {
+	background: #FFFFFF;
+	color: #000000;
+}
+.alt_pickbutton {
+	border-left: 1px solid #E1E1E2;
+}
+.popup_feedback input, .popup_feedback div
+{
+	border: 0px solid;
+	padding: 0px 2px 0px 2px;
+	cursor: default;
+	font: 11px tahoma;
+	overflow: hidden;
+}
+-->
+</style>
+<!-- / Editor Styles -->
+	<title> Suggestions for UI component framework design - Nexus Realms</title>
+	<script type="text/javascript" src="GUI%20Framework%20Notes_files/vbulletin_post_loader.js"></script>
+	<style type="text/css" id="vbulletin_showthread_css">
+	<!--
+	
+	#tag_edit_list { list-style:none; margin:0px; padding:0px; }
+	#tag_edit_list li { float:left; display:block; width:200px; }
+	#tag_edit_list li.mine { font-weight:bold; }
+	
+	#links div { white-space: nowrap; }
+	#links img { vertical-align: middle; }
+	-->
+	</style>
+</head><body onload="">
+<!-- website top menu -->
+<!-- nxr_topMenu -->
+<!-- /website top menu -->
+<!-- logo
+<a name="top"></a>
+<table border="0" width="100%" cellpadding="0" cellspacing="0" align="center">
+<tr>
+	<td align="left"><a href="index.php"><img src="http://forums.nexusrealms.co.uk/styles/nxr_default/images/misc/vbulletin3_logo_white.gif" border="0" alt="Nexus Realms" /></a></td>
+	<td align="right" id="header_right_cell">
+		&nbsp;
+	</td>
+</tr>
+</table>
+ /logo -->
+
+<!-- content table -->
+<!-- open content container -->
+
+<div align="center">
+	<div class="page" style="width: 100%; text-align: left;">
+		<div style="padding: 0px;" align="left">
+
+
+
+
+
+
+<ul id="topMenu">
+    <li><a href="http://www.nexusrealms.co.uk/">Home</a></li>
+    <li><a href="http://media.nexusrealms.co.uk/">Media Projects</a></li>
+    <li><a href="http://forums.nexusrealms.co.uk/project.php">Projects Tools</a></li>
+    <li><a href="http://forums.nexusrealms.co.uk/">Forums</a></li>
+    <li><a href="http://forums.nexusrealms.co.uk/arcade.php?">Arcade</a></li>
+    <li><a href="http://forums.nexusrealms.co.uk/faq.php">FAQs</a></li>
+</ul>
+
+    <ul class="topMenu2 blue">
+        <li><a href="http://forums.nexusrealms.co.uk/usercp.php"><font size="1">Control Panel</font></a></li>
+        <li><a href="http://forums.nexusrealms.co.uk/search.php?do=finduser&amp;u=16"><font size="1">My Posts</font></a></li>
+        <li><a href="http://forums.nexusrealms.co.uk/search.php?do=getnew"><font size="1">New Posts</font></a></li>
+        <li><a href="http://forums.nexusrealms.co.uk/memberlist.php"><font size="1">Members List</font></a></li>
+        <li><a href="http://forums.nexusrealms.co.uk/login.php?do=logout&amp;logouthash=1258900705-b3c6722da1f5552cbb55b05a69b478db4e036b7a" onclick="return log_out('Are you sure you want to log out?')"><font size="1">Log Out</font></a></li>
+        
+        
+    </ul>
+
+
+<!-- breadcrumb, login, pm info -->
+<table class="tborder" border="0" cellpadding="6" cellspacing="1" width="100%" align="center">
+<tbody><tr>
+	<td class="alt1" width="100%">
+		
+			<table border="0" cellpadding="0" cellspacing="0">
+			<tbody><tr valign="bottom">
+				<td><a href="#" onclick="history.back(1); return false;"><img title="Go Back" src="GUI%20Framework%20Notes_files/navbits_start.gif" alt="Go Back" border="0"></a></td>
+				<td>&nbsp;</td>
+				<td width="100%"><span class="navbar"><a href="http://forums.nexusrealms.co.uk/index.php" accesskey="1">Nexus Realms</a></span> 
+	<span class="navbar">&gt; <a href="http://forums.nexusrealms.co.uk/forumdisplay.php?f=9">Portfolios and Development</a></span>
+
+
+	<span class="navbar">&gt; <a href="http://forums.nexusrealms.co.uk/forumdisplay.php?f=10">Game Development</a></span>
+
+</td>
+			</tr>
+			<tr>
+				<td class="navbar" style="font-size: 10pt; padding-top: 1px;" colspan="3"><a href="http://forums.nexusrealms.co.uk/showthread.php?t=114"><img title="Reload this Page" class="inlineimg" src="GUI%20Framework%20Notes_files/navbits_finallink_ltr.gif" alt="Reload this Page" border="0"></a> <strong>
+	 Suggestions for UI component framework design
+
+</strong></td>
+			</tr>
+			</tbody></table>
+		
+	</td>
+
+	<td class="alt2" nowrap="nowrap">
+	<div class="smallfont">
+		<strong>Welcome, <a href="http://forums.nexusrealms.co.uk/member.php?u=16">Martin</a>.</strong><br>
+		You last visited: 22/11/2009 at <span class="time">15:20.01</span>
+
+		
+			<div><a href="http://forums.nexusrealms.co.uk/private.php">Private Messages</a>: Unread 0, Total 0.</div>
+		
+
+		
+	</div>
+	</td>
+
+</tr>
+</tbody></table>
+<!-- / breadcrumb, login, pm info -->
+
+<!-- nav buttons bar -->
+<div class="tborder" style="padding: 1px; border-top-width: 0px;">
+	<table border="0" cellpadding="0" cellspacing="0" width="100%" align="center">
+	<tbody><tr align="center">
+		
+			<td class="vbmenu_control"><a href="http://forums.nexusrealms.co.uk/usercp.php">User CP</a></td>
+		
+		
+		<td class="vbmenu_control"><a href="http://forums.nexusrealms.co.uk/project.php">Projects</a></td>
+		<td class="vbmenu_control"><a rel="help" href="http://forums.nexusrealms.co.uk/faq.php" accesskey="5">FAQ</a></td>
+		
+			<td class="vbmenu_control"><a style="cursor: pointer;" id="community" href="http://forums.nexusrealms.co.uk/showthread.php?t=114&amp;nojs=1#community" rel="nofollow" accesskey="6">Community <img alt="" title="" src="GUI%20Framework%20Notes_files/menu_open.gif" border="0"></a> <script type="text/javascript"> vbmenu_register("community"); </script></td>
+		
+		<td class="vbmenu_control"><a href="http://forums.nexusrealms.co.uk/calendar.php">Calendar</a></td>
+		
+			
+				
+				<td class="vbmenu_control"><a href="http://forums.nexusrealms.co.uk/search.php?do=getnew" accesskey="2">New Posts</a></td>
+				
+				<td class="vbmenu_control"><a style="cursor: pointer;" id="navbar_search" href="http://forums.nexusrealms.co.uk/search.php" accesskey="4" rel="nofollow">Search <img alt="" title="" src="GUI%20Framework%20Notes_files/menu_open.gif" border="0"></a> <script type="text/javascript"> vbmenu_register("navbar_search"); </script></td>
+			
+			
+				<td class="vbmenu_control"><a style="cursor: pointer;" id="usercptools" href="http://forums.nexusrealms.co.uk/showthread.php?t=114&amp;nojs=1#usercptools" accesskey="3">Quick Links <img alt="" title="" src="GUI%20Framework%20Notes_files/menu_open.gif" border="0"></a> <script type="text/javascript"> vbmenu_register("usercptools"); </script></td>
+			
+		
+		
+		
+			<td class="vbmenu_control"><a href="http://forums.nexusrealms.co.uk/login.php?do=logout&amp;logouthash=1258900705-b3c6722da1f5552cbb55b05a69b478db4e036b7a" onclick="return log_out('Are you sure you want to log out?')">Log Out</a></td>
+		
+		</tr>
+	</tbody></table>
+</div>
+<!-- / nav buttons bar -->
+
+<br>
+
+
+
+
+
+
+<!-- NAVBAR POPUP MENUS -->
+
+	
+	<!-- community link menu -->
+	<div class="vbmenu_popup" id="community_menu" style="display: none; margin-top: 3px;" align="left">
+		<table border="0" cellpadding="4" cellspacing="1">
+		<tbody><tr><td class="thead">Community Links</td></tr>
+		
+		
+					<tr><td class="vbmenu_option"><a href="http://forums.nexusrealms.co.uk/group.php">Social Groups</a></td></tr>
+		
+		
+					<tr><td class="vbmenu_option"><a href="http://forums.nexusrealms.co.uk/album.php">Pictures &amp; Albums </a></td></tr>
+		
+		
+			<tr><td class="vbmenu_option"><a href="http://forums.nexusrealms.co.uk/profile.php?do=buddylist">Contacts &amp; Friends</a></td></tr>
+		
+		
+			<tr><td class="vbmenu_option"><a href="http://forums.nexusrealms.co.uk/memberlist.php">Members List</a></td></tr>
+		
+		
+		</tbody></table>
+	</div>
+	<!-- / community link menu -->
+	
+	
+	
+	<!-- header quick search form -->
+	<div class="vbmenu_popup" id="navbar_search_menu" style="display: none; margin-top: 3px;" align="left">
+		<table border="0" cellpadding="4" cellspacing="1">
+		<tbody><tr>
+			<td class="thead">Search Forums</td>
+		</tr>
+		<tr>
+			<td class="vbmenu_option" title="nohilite">
+				<form action="search.php?do=process" method="post">
+
+					<input name="do" value="process" type="hidden">
+					<input name="quicksearch" value="1" type="hidden">
+					<input name="childforums" value="1" type="hidden">
+					<input name="exactname" value="1" type="hidden">
+					<input name="s" value="" type="hidden">
+					<input name="securitytoken" value="1258900705-b3c6722da1f5552cbb55b05a69b478db4e036b7a" type="hidden">
+					<div><input class="bginput" name="query" size="25" tabindex="1001" type="text"><input class="button" value="Go" tabindex="1004" type="submit"></div>
+					<div style="margin-top: 6px;">
+						<label for="rb_nb_sp0"><input name="showposts" value="0" id="rb_nb_sp0" tabindex="1002" checked="checked" type="radio">Show Threads</label>
+						&nbsp;
+						<label for="rb_nb_sp1"><input name="showposts" value="1" id="rb_nb_sp1" tabindex="1003" type="radio">Show Posts</label>
+					</div>
+				</form>
+			</td>
+		</tr>
+		
+		<tr>
+			<td class="vbmenu_option"><a href="http://forums.nexusrealms.co.uk/tags.php" rel="nofollow">Tag Search</a></td>
+		</tr>
+		
+		<tr>
+			<td class="vbmenu_option"><a href="http://forums.nexusrealms.co.uk/search.php" accesskey="4" rel="nofollow">Advanced Search</a></td>
+		</tr>
+		<tr>
+	<td class="thead">Search Projects</td>
+</tr>
+<tr>
+	<td class="vbmenu_option" title="nohilite">
+		<form action="projectsearch.php?do=dosearch" method="post">
+			<input name="s" value="" type="hidden">
+			<input name="securitytoken" value="1258900705-b3c6722da1f5552cbb55b05a69b478db4e036b7a" type="hidden">
+			<input name="do" value="dosearch" type="hidden">
+			<input name="gotoissueinteger" value="1" type="hidden">
+			<div><input class="bginput" name="text" size="25" tabindex="2001" type="text"><input class="button" value="Go" tabindex="2002" type="submit"></div>				
+		</form>	
+	</td>
+</tr>
+<tr>
+	<td class="vbmenu_option"><a href="http://forums.nexusrealms.co.uk/projectsearch.php?do=search">Advanced Search</a></td>
+</tr>
+		</tbody></table>
+	</div>
+	<!-- / header quick search form -->
+	
+	
+	
+	<!-- user cp tools menu -->
+	<div class="vbmenu_popup" id="usercptools_menu" style="display: none; margin-top: 3px;" align="left">
+		<table border="0" cellpadding="4" cellspacing="1">
+
+		<tbody><tr><td class="thead">Quick Links</td></tr>
+		<tr><td class="vbmenu_option"><a href="http://forums.nexusrealms.co.uk/search.php?do=getdaily">Today's Posts</a></td></tr>
+		<tr><td class="vbmenu_option"><a href="http://forums.nexusrealms.co.uk/forumdisplay.php?do=markread">Mark Forums Read</a></td></tr>
+		<tr><td class="vbmenu_option"><a href="#" onclick="window.open('misc.php?do=buddylist&amp;focus=1','buddylist','statusbar=no,menubar=no,toolbar=no,scrollbars=yes,resizable=yes,width=250,height=300'); return false;">Open Contacts Popup</a></td></tr>
+		<tr><td class="vbmenu_option"><a href="http://forums.nexusrealms.co.uk/xperience.php">vBExperience</a></td></tr>
+		
+
+		<tr><td class="thead"><a href="http://forums.nexusrealms.co.uk/usercp.php">User Control Panel</a></td></tr>
+		<tr><td class="vbmenu_option"><a href="http://forums.nexusrealms.co.uk/profile.php?do=editsignature">Edit Signature</a></td></tr>
+		<!--<tr><td class="vbmenu_option"><a href="profile.php?do=editavatar">Edit Avatar</a></td></tr>-->
+		<tr><td class="vbmenu_option"><a href="http://forums.nexusrealms.co.uk/profile.php?do=editprofile">Edit Your Details</a></td></tr>
+		<tr><td class="vbmenu_option"><a href="http://forums.nexusrealms.co.uk/profile.php?do=editoptions">Edit Options</a></td></tr>
+		
+
+		<tr><td class="thead">Miscellaneous</td></tr>
+		<tr><td class="vbmenu_option"><a href="http://forums.nexusrealms.co.uk/private.php" rel="nofollow">Private Messages</a></td></tr>
+		<tr><td class="vbmenu_option"><a href="http://forums.nexusrealms.co.uk/subscription.php" rel="nofollow">Subscribed Threads</a></td></tr>
+		<tr><td class="vbmenu_option"><a href="http://forums.nexusrealms.co.uk/member.php?u=16">Your Profile</a></td></tr>
+		<tr><td class="vbmenu_option"><a href="http://forums.nexusrealms.co.uk/online.php">Who's Online</a></td></tr>
+		
+
+		</tbody></table>
+	</div>
+	<!-- / user cp tools menu -->
+
+	
+<!-- / NAVBAR POPUP MENUS -->
+
+<!-- PAGENAV POPUP -->
+	<div class="vbmenu_popup" id="pagenav_menu" style="display: none;">
+		<table border="0" cellpadding="4" cellspacing="1">
+		<tbody><tr>
+			<td class="thead" nowrap="nowrap">Go to Page...</td>
+		</tr>
+		<tr>
+			<td class="vbmenu_option" title="nohilite">
+			<form action="index.php" method="get" onsubmit="return this.gotopage()" id="pagenav_form">
+				<input class="bginput" id="pagenav_itxt" style="font-size: 11px;" size="4" type="text">
+				<input class="button" id="pagenav_ibtn" value="Go" type="button">
+			</form>
+			</td>
+		</tr>
+		</tbody></table>
+	</div>
+<!-- / PAGENAV POPUP -->
+
+
+
+
+
+
+
+
+
+
+<a name="poststop" id="poststop"></a>
+
+<!-- controls above postbits -->
+<table style="margin-bottom: 3px;" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tbody><tr valign="bottom">
+	
+		<td class="smallfont"><a href="http://forums.nexusrealms.co.uk/newreply.php?do=newreply&amp;noquote=1&amp;p=950" rel="nofollow"><img title="Reply" src="GUI%20Framework%20Notes_files/reply.gif" alt="Reply" border="0"></a></td>
+	
+	
+</tr>
+</tbody></table>
+<!-- / controls above postbits -->
+
+<!-- toolbar -->
+<table class="tborder" style="border-bottom-width: 0px;" border="0" cellpadding="6" cellspacing="1" width="100%" align="center">
+<tbody><tr>
+	<td class="tcat" width="100%">
+		<div class="smallfont">
+		
+		&nbsp;
+		</div>
+	</td>
+	<td style="cursor: pointer;" class="vbmenu_control" id="threadtools" nowrap="nowrap">
+		<a href="http://forums.nexusrealms.co.uk/showthread.php?t=114&amp;nojs=1#goto_threadtools">Thread Tools</a>
+		<script type="text/javascript"> vbmenu_register("threadtools"); </script> <img alt="" title="" src="GUI%20Framework%20Notes_files/menu_open.gif" border="0">
+	</td>
+	
+		<td style="cursor: pointer;" class="vbmenu_control" id="threadsearch" nowrap="nowrap">
+			<a href="http://forums.nexusrealms.co.uk/showthread.php?t=114&amp;nojs=1#goto_threadsearch">Search this Thread</a>
+			<script type="text/javascript"> vbmenu_register("threadsearch"); </script> <img alt="" title="" src="GUI%20Framework%20Notes_files/menu_open.gif" border="0">
+		</td>
+	
+	
+		<td style="cursor: pointer;" class="vbmenu_control" id="threadrating" nowrap="nowrap">
+			<a href="http://forums.nexusrealms.co.uk/showthread.php?t=114&amp;nojs=1#goto_threadrating"><span id="threadrating_current">Rate Thread</span></a>
+			<script type="text/javascript"> vbmenu_register("threadrating"); </script> <img alt="" title="" src="GUI%20Framework%20Notes_files/menu_open.gif" border="0">
+		</td>
+	
+	
+	<td style="cursor: pointer;" class="vbmenu_control" id="displaymodes" nowrap="nowrap">
+		<a href="http://forums.nexusrealms.co.uk/showthread.php?t=114&amp;nojs=1#goto_displaymodes">Display Modes</a>
+		<script type="text/javascript"> vbmenu_register("displaymodes"); </script> <img alt="" title="" src="GUI%20Framework%20Notes_files/menu_open.gif" border="0">
+	</td>
+	
+
+	
+
+</tr>
+</tbody></table>
+<!-- / toolbar -->
+
+
+
+<!-- end content table -->
+
+		</div>
+	</div>
+</div>
+
+<!-- / close content container -->
+<!-- / end content table -->
+
+
+
+
+<script type="text/javascript" src="GUI%20Framework%20Notes_files/vbulletin_ajax_reputation.js"></script>
+
+
+<div id="posts"><!-- post #950 -->
+
+	<!-- open content container -->
+
+<div align="center">
+	<div class="page" style="width: 100%; text-align: left;">
+		<div style="padding: 0px;" align="left">
+
+	<div id="edit950" style="padding: 0px 0px 6px;">
+	
+
+
+
+<table id="post950" class="tborder" border="0" cellpadding="6" cellspacing="0" width="100%" align="center">
+<tbody><tr>
+	
+		<td class="thead" style="border-style: solid none solid solid; border-color: rgb(30, 30, 30) -moz-use-text-color rgb(30, 30, 30) rgb(30, 30, 30); border-width: 1px 0px 1px 1px; font-weight: normal;">
+			<!-- status icon and date -->
+			<a name="post950"><img title="Old" class="inlineimg" src="GUI%20Framework%20Notes_files/post_old.gif" alt="Old" border="0"></a>
+			02/10/2009, 10:50.03
+			
+			<!-- / status icon and date -->
+		</td>
+		<td class="thead" style="border-style: solid solid solid none; border-color: rgb(30, 30, 30) rgb(30, 30, 30) rgb(30, 30, 30) -moz-use-text-color; border-width: 1px 1px 1px 0px; font-weight: normal;" align="right">
+			&nbsp;
+			#<a href="http://forums.nexusrealms.co.uk/showpost.php?p=950&amp;postcount=1" target="new" rel="nofollow" id="postcount950" name="1"><strong>1</strong></a>
+			
+		</td>
+	
+</tr>
+
+<tr valign="top">
+	<td class="alt2" style="border-style: none solid; border-color: -moz-use-text-color rgb(30, 30, 30); border-width: 0px 1px;" width="175">
+
+			<div id="postmenu_950 " class="postDataStyle">
+				
+				<a class="bigusername" href="http://forums.nexusrealms.co.uk/member.php?u=16">Martin</a>
+				<script type="text/javascript"> vbmenu_register("postmenu_950", true); </script>
+				
+			</div>
+
+			<div class="smallfont postDataStyle">Senior Member</div>
+			
+			 <div class="postDataStyle" align="left">
+
+	
+	
+	
+		<table cellpadding="0" cellspacing="0" width="100%">
+		<tbody><tr style="background-image: url(http://forums.nexusrealms.co.uk/styles/nxr_default/images/misc/level/red_faded.png);">
+				<td height="11" width="5" align="left"><img title="Points: 486, Level: 9" alt="Points: 486, Level: 9" src="GUI%20Framework%20Notes_files/red_left.png" height="11"></td>
+				<td height="11" width="100%" align="left"><img title="Points: 486, Level: 9" alt="Points: 486, Level: 9" src="GUI%20Framework%20Notes_files/red.png" height="11" width="9%"></td>
+				<td height="11" width="1" align="left"><img title="Points: 486, Level: 9" alt="Points: 486, Level: 9" src="GUI%20Framework%20Notes_files/red_right.png" height="11"></td>
+		</tr>
+		</tbody></table>
+	
+
+		
+
+	
+	
+	
+	
+		<table cellpadding="0" cellspacing="0" width="100%">
+		<tbody><tr style="background-image: url(http://forums.nexusrealms.co.uk/styles/nxr_default/images/misc/level/green_faded.png);"> 
+			<td height="11" width="5" align="left"><img title="Activity: 100%" alt="Activity: 100%" src="GUI%20Framework%20Notes_files/green_left.png" height="11"></td><td>
+			</td><td height="11" width="100%" align="left"><img title="Activity: 100%" alt="Activity: 100%" src="GUI%20Framework%20Notes_files/green.png" height="11" width="100%"></td><td>
+			</td><td height="11" width="1" align="left"><img title="Activity: 100%" alt="Activity: 100%" src="GUI%20Framework%20Notes_files/green_right.png"></td>
+		</tr>
+		</tbody></table>
+	
+</div>
+
+			
+
+			<div class="smallfont">
+				<div class="postDataStyle"></div>
+				<div class="postDataStyle">Join Date: December 2008</div>
+				
+				<div class="postDataStyle">Age: 27</div>
+				<div class="postDataStyle">Posts: 387</div>
+				
+				
+				<div class="postDataStyle">Rep Power: <span id="reppower_950_16">1</span></div><div class="postDataStyle"><span id="repdisplay_950_16"><img title="Martin is on a distinguished road" class="inlineimg" src="GUI%20Framework%20Notes_files/reputation_pos.gif" alt="Martin is on a distinguished road" border="0"></span></div>
+				
+				<div class="postDataStyle">    </div>
+			</div>
+
+	</td>
+	
+	<td class="alt1" id="td_post_950" style="border-right: 1px solid rgb(30, 30, 30);">
+	
+		
+		
+			<!-- icon and title -->
+			<div class="smallfont">
+				<img title="Default" class="inlineimg" src="GUI%20Framework%20Notes_files/icon1.gif" alt="Default" border="0">
+				<strong>Suggestions for UI component framework design</strong>
+			</div>
+			<hr style="color: rgb(30, 30, 30); background-color: rgb(30, 30, 30);" size="1">
+			<!-- / icon and title -->
+		
+
+		<!-- message -->
+		<div id="post_message_950">
+			
+			I want to discuss the design of a framework for graphical UI components.<br>
+<br>
+Although this doesn't typically apply directly to most game
+development, it can be relevant for someone who wants to implement a
+game that has editing facilities or a lot of user interface components
+(e.g. strategy games), so I will open it up to suggestions here.<br>
+<br>
+The first thing to note is that I'm not really talking about usability
+or functional design; that's a very different area on which one could
+write an entire book.<br>
+<br>
+I would like to discuss technical design and best practices for
+designing mechanisms for handling UI components (e.g. layouts,
+focusing, input mechanisms), etc. I'll make no secret of the fact that
+I intend to use this information in the IsoRealms engine. <img src="GUI%20Framework%20Notes_files/smile.gif" alt="" title="Smile" class="inlineimg" border="0"><br>
+<br>
+<br>
+<b>Motivation for a UI framework</b><br>
+<br>
+There are already lots of GUI frameworks out there; MFC, AWT, Swing, GTK, QT, Motif, Wxwidgets, etc, so why reinvent the wheel?<br>
+<br>
+The problem with generic UI frameworks is that they run independently
+of the application "canvas" or "viewport". If you're making a game,
+you're probably going to want it to run fullscreen, and so you're going
+to want your UI components to be embedded within the frame and context
+of your application, rather than as separate components outside of it.<br>
+<br>
+In addition, most generic frameworks mimic the look &amp; feel of
+either the OS or something similar and end up looking out of place when
+used in a game. This is important because a typical OS GUI can easily
+break the atmosphere of your game, whereas a custom framework will
+provide you with a much higher level of both aesthetic and functional
+integration.<br>
+<br>
+<br>
+<b>Layout and a brief look at Java Swing</b><br>
+<br>
+I've been using Swing for several years now, and may have acquired a
+large influence from it in my own designs. Despite that, Swing has some
+aspects that I would like to change. One such aspect is the layout
+mechanism.<br>
+<br>
+In Swing, a panel accepts an <i>Object</i> as a layout.  My problem with this is that there isn't really anything useful you can do with an <i>Object</i> besides casting it to something that <i>is</i> useful, and I would like to avoid casting to as much extent as possible in my code, as I consider this bad practice.<br>
+<br>
+<br>
+<b>A proposed layout solution</b><br>
+<br>
+In my design, I have several interfaces and classes, which I will describe below:<br>
+<ul><li>Component</li>
+<li>RectangularComponent</li>
+<li>ComponentContainer</li>
+</ul><br>
+A <b>Component</b> is a simple interface for displaying and
+interacting with a UI component on screen. The component is drawn
+within (-1 to +1) on each axis, and events are passed as required to
+the component. Every aspect of the UI is a component, including the top
+level dialogues themselves.<br>
+<br>
+Whereas a Component can be of any shape or size, a <b>RectangularComponent</b>
+is an abstract base class representing a component to occupy (but not
+necessarily fill) a specific rectangular area. The majority of typical
+components, such as buttons, text fields, lists, dialogue windows, etc.
+will extend this class. This class is analogous to Java's Component
+class, which must <i>always</i> have defined rectangular bounds.<br>
+<br>
+The RectangularComponent leads to my proposed layout mechanism, for which a new interface is defined: <i>ComponentBoundsCalculator</i>.
+Implementations of this interface are responsible for calculating the
+bounds of a component (e.g. getLeft(), getRight(), getTop(),
+getBottom()). Each RectangularComponent will hold an instance of
+ComponentBoundsCalculator to calculate its bounds.<br>
+<br>
+I may be overlooking something, but as far as I can tell, this simple
+mechanism should be able to handle any possible layout. For example, if
+you want a button to be placed to the right of another button and have
+the same height, you would implement ComponentBoundsCalculator as
+follows for the button:<br>
+<br>
+<div style="margin: 5px 20px 20px;">
+	<div class="smallfont" style="margin-bottom: 2px;">Code:</div>
+	<pre class="alt2" dir="ltr" style="border: 1px inset ; margin: 0px; padding: 6px; overflow: auto; width: 640px; height: 386px; text-align: left;">class ButtonPosition:public ComponentBoundsCalculator {
+  private:
+  float spacing = 0.02f;
+  Button* thisButton;
+  Button* relatedButton;
+
+  public:
+  float getLeft() {
+    return relatedButton-&gt;getRight() + spacing;
+  }
+
+  float getRight() {
+    return getLeft() + thisButton-&gt;getWidth();
+  }
+
+  float getTop() {
+    return relatedButton-&gt;getTop();
+  }
+
+  float getBottom() {
+    return relatedButton-&gt;getBottom();
+  }
+};</pre>
+</div>This implementation would then be passed to button (thisButton) that you want placing to the right of the related button.<br>
+<br>
+<br>
+<b>Problems with this approach</b><br>
+<br>
+There are three problems with this approach: Overhead, impracticality and possible recursion.  I will address each below.<br>
+<br>
+<b>Overhead:</b> The overhead issue is due to the fact that functions
+are called each time we wish to retrieve the bounds of a component.
+This flies in the face of Java Swing, which simply returns a value. The
+problem is that there is no telling how long it will take to calculate
+the bounds of any particular component. If many components are
+"chained" together in terms of their relationship, it may become slow
+to calculate the bounds of the last members in the chain.<br>
+<br>
+I believe this issue needs to be addressed with some sort of caching
+and change notification mechanism, but I won't concern myself too much
+with performance at the moment.<br>
+<br>
+<b>Practicality:</b> If examples such as that above where applied to
+every component in an application, the sheer number of
+ComponentBoundsCalculator implementations would quickly become
+unweildly.<br>
+<br>
+To solve this problem, it would be necessary to find ways of
+implementing ComponentBoundsCalculator in generic, reusable fashions,
+and reuse the same implementation class many times for different
+components. If done correctly, it should only be necessary to implement
+ComponentBoundsCalculator in special exceptional cases that the generic
+implementations do not cover. I consider this an essential requirement
+for the framework design.<br>
+<br>
+<b>Possible recursion:</b> This problem arises when a layout is
+arranged in which component relation is recursive. Such layout would
+cause an infinite loop. A simple example would be specifying that two
+buttons should be laid out next to each other, i.e:<br>
+<ul><li>ButtonA should be placed to the left of ButtonB</li>
+<li>ButtonB should be placed to the right of ButtonA</li>
+</ul><br>
+I don't really see any possibility for solving this in a generic design
+sense; I think it must be up to the client code to ensure that such
+recursions do not occur (any case of recursion I can think of wouldn't
+make much sense to attempt anyway, but I have a feeling it could easily
+be attempted by mistake). I am open to suggestions however. The caching
+proposed above may solve this issue to some extent.<br>
+<br>
+<br>
+<b>Component input and focusing</b><br>
+<br>
+I will confess right now that I have no idea how focusing works
+internally within Java Swing or any other API. What I propose is simply
+my own approach, from scratch.<br>
+<br>
+The <i>ComponentContainer</i> represents a component that
+hierarchically contains other components. The top level window of the
+application itself must be a ComponentContainer.<br>
+<br>
+In order to direct input events to the correct component, such events will be handled as follows:<br>
+<ul><li>Input event is recieved by the ComponentContainer</li>
+<li>Input event is sent in top-to-bottom order to the child components.
+At this point, components do not process the event; they only test
+whether the event causes the component to gain focus, and return a <i>true</i> value if so.</li>
+<li>If no component grabs the focus, the input event is tested by the
+ComponentContainer to see if it should change the focused component
+itself (this is to allow the equivalent of alt-tab'ing in Windows).</li>
+<li>If a component grabs the focus, the focused component is changed in the ComponentContainer, otherwise it remains the same.</li>
+<li>The input event is passed to the focused component for processing.</li>
+</ul><br>
+To me, this sounds very simple. Too simple. I'm sure I must be missing
+many things about proper focus management in regard to UI design. I've
+seen inside Swing and AWT and there is a lot of stuff in there! Any
+other suggestions and considerations would be very welcome.<br>
+<br>
+<br>
+<b>Updating and animation</b><br>
+<br>
+This is typically a very important aspect of good UI design. In my case
+however, the nature of my application will mean that it will be running
+in a continuous loop, repainting everything regardless at every frame
+anyway, so I haven't taken any time to think about it. I imagine this
+will be the case for many (most?) games.<br>
+<br>
+If anyone wishes to comment or suggest anything about this, please feel free to do so.<br>
+<br>
+<br>
+<b>Other consideration</b><br>
+<br>
+This section is to cover those things I've forgot about. <img src="GUI%20Framework%20Notes_files/smile.gif" alt="" title="Smile" class="inlineimg" border="0">
+If anyone has anything else to say about the design of component UI
+frameworks, please feel free to do so! The more thoughts we can get,
+the more we can all benefit from the considerations that others may not
+have thought of!<br>
+<br>
+Anyway, I'm glad to get all that out of my head and that's all I have to say on the matter! <img src="GUI%20Framework%20Notes_files/smile.gif" alt="" title="Smile" class="inlineimg" border="0"><br>
+<br>
+Discuss!
+		</div>
+		<!-- / message -->
+
+		
+
+		
+		
+
+		
+		<!-- sig -->
+			<div>
+				__________________<br>
+				Lead Developer of <a href="http://forums.nexusrealms.co.uk/showthread.php?t=25" target="_blank">Iso-Realms</a> - A free OpenGL engine for isometric tile-based remakes and original games.
+			</div>
+		<!-- / sig -->
+		
+
+		
+
+		
+
+	</td>
+</tr>
+<tr>
+	<td class="alt2" style="border-style: none solid solid; border-color: -moz-use-text-color rgb(30, 30, 30) rgb(30, 30, 30); border-width: 0px 1px 1px;">
+		
+<img title="Martin is online now" class="inlineimg" src="GUI%20Framework%20Notes_files/user_online.gif" alt="Martin is online now" border="0">
+
+		
+			<span id="reputationmenu_950"><a href="http://forums.nexusrealms.co.uk/reputation.php?p=950" rel="nofollow" id="reputation_950"><img title="Add to Martin's Reputation" class="inlineimg" src="GUI%20Framework%20Notes_files/reputation.gif" alt="Add to Martin's Reputation" border="0"></a></span>
+			<script type="text/javascript"> vbrep_register("950")</script>
+		
+		
+		<a href="http://forums.nexusrealms.co.uk/report.php?p=950" rel="nofollow"><img title="Report Post" class="inlineimg" src="GUI%20Framework%20Notes_files/report.gif" alt="Report Post" border="0"></a>
+		
+		&nbsp;
+	</td>
+	
+	<td class="alt1" style="border-style: none solid solid none; border-color: -moz-use-text-color rgb(30, 30, 30) rgb(30, 30, 30) -moz-use-text-color; border-width: 0px 1px 1px 0px;" align="right">
+	
+		<!-- controls -->
+		
+			<img style="display: none;" id="progress_950" src="GUI%20Framework%20Notes_files/progress.gif" alt="">
+			<a href="http://forums.nexusrealms.co.uk/editpost.php?do=editpost&amp;p=950" name="vB::QuickEdit::950"><img title="Edit/Delete Message" src="GUI%20Framework%20Notes_files/edit.gif" alt="Edit/Delete Message" border="0"></a>
+		
+		
+		
+			<a href="http://forums.nexusrealms.co.uk/newreply.php?do=newreply&amp;p=950" rel="nofollow"><img title="Reply With Quote" src="GUI%20Framework%20Notes_files/quote.gif" alt="Reply With Quote" border="0"></a>
+		
+		
+			<a href="http://forums.nexusrealms.co.uk/newreply.php?do=newreply&amp;p=950" rel="nofollow" onclick="return false"><img title="Multi-Quote This Message" src="GUI%20Framework%20Notes_files/multiquote_off.gif" alt="Multi-Quote This Message" id="mq_950" border="0"></a>
+		
+		
+			<a href="http://forums.nexusrealms.co.uk/newreply.php?do=newreply&amp;p=950" rel="nofollow" id="qr_950" onclick="return false"><img title="Quick reply to this message" src="GUI%20Framework%20Notes_files/quickreply.gif" alt="Quick reply to this message" border="0"></a>
+		
+		
+		
+		
+		
+			
+		
+		
+		<!-- / controls -->
+	</td>
+</tr>
+</tbody></table>
+
+
+<!-- post 950 popup menu -->
+<div class="vbmenu_popup" id="postmenu_950_menu" style="display: none;">
+	<table border="0" cellpadding="4" cellspacing="1">
+	<tbody><tr>
+		<td class="thead">Martin</td>
+	</tr>
+	
+		<tr><td class="vbmenu_option"><a href="http://forums.nexusrealms.co.uk/member.php?u=16">View Public Profile</a></td></tr>
+	
+	
+		<tr><td class="vbmenu_option"><a href="http://forums.nexusrealms.co.uk/private.php?do=newpm&amp;u=16" rel="nofollow">Send a private message to Martin</a></td></tr>
+	
+	
+	
+	
+		<tr><td class="vbmenu_option"><a href="http://forums.nexusrealms.co.uk/search.php?do=finduser&amp;u=16" rel="nofollow">Find More Posts by Martin</a></td></tr>
+	
+	
+	<tr><td class="vbmenu_option"><a href="http://forums.nexusrealms.co.uk/profile.php?do=addlist&amp;userlist=buddy&amp;u=16">Add Martin to Your Contacts</a></td></tr>
+	
+	 	
+	<tr><td class="vbmenu_option">vBExperience<br> <div align="left">
+		<table cellpadding="0" cellspacing="0" width="100%">
+		<tbody><tr>
+			<td colspan="3"><div class="smallfont">Points: 486, Level: 9</div></td>
+		</tr>
+		</tbody></table>
+
+	<table cellpadding="0" cellspacing="0" width="100%">
+	<tbody><tr style="background-image: url(http://forums.nexusrealms.co.uk/styles/nxr_default/images/misc/level/red_faded.png);">
+			<td height="11" width="5"><img title="Points: 486, Level: 9" alt="Points: 486, Level: 9" src="GUI%20Framework%20Notes_files/red_left.png" height="11"></td>
+			<td style="background-image: url(http://forums.nexusrealms.co.uk/styles/nxr_default/images/misc/level/red_faded.png);" height="11"><img title="Points: 486, Level: 9" alt="Points: 486, Level: 9" src="GUI%20Framework%20Notes_files/red.png" height="11" width="9%"></td>
+			<td height="11" width="1"><img title="Points: 486, Level: 9" alt="Points: 486, Level: 9" src="GUI%20Framework%20Notes_files/red_right.png" height="11"></td>
+	</tr>
+	</tbody></table>
+	
+		<table cellpadding="0" cellspacing="0" width="100%">		
+		<tbody><tr>
+			<td colspan="3"><div class="smallfont">Level up: 72%, 14 Points needed</div></td>
+		</tr>
+		</tbody></table>
+	
+	<table cellpadding="0" cellspacing="0" width="100%">
+	<tbody><tr style="background-image: url(http://forums.nexusrealms.co.uk/styles/nxr_default/images/misc/level/grey_faded.png);"> 
+		<td height="11" width="5"><img title="Level up: 72%" alt="Level up: 72%" src="GUI%20Framework%20Notes_files/grey_left.png" height="11"></td>
+		<td style="background-image: url(http://forums.nexusrealms.co.uk/styles/nxr_default/images/misc/level/grey_faded.png);" height="11"><img title="Level up: 72%" alt="Level up: 72%" src="GUI%20Framework%20Notes_files/grey.png" height="11" width="72%"></td>
+		<td height="11" width="1"><img title="Level up: 72%" alt="Level up: 72%" src="GUI%20Framework%20Notes_files/grey_right.png" height="11"></td>
+	</tr>
+	</tbody></table>
+	
+		<table cellpadding="0" cellspacing="0" width="100%">
+			<tbody><tr>
+				<td colspan="3"><div class="smallfont">Activity: 100%</div></td>
+			</tr>
+		</tbody></table>
+
+	<table cellpadding="0" cellspacing="0" width="100%">
+	<tbody><tr> 
+		<td height="11" width="5"><img title="Activity: 100%" alt="Activity: 100%" src="GUI%20Framework%20Notes_files/green_left.png" height="11"></td><td>
+		</td><td style="background-image: url(http://forums.nexusrealms.co.uk/styles/nxr_default/images/misc/level/green_faded.png);" height="11"><img title="Activity: 100%" alt="Activity: 100%" src="GUI%20Framework%20Notes_files/green.png" height="11" width="100%"></td><td>
+		</td><td height="11" width="1"><img title="Activity: 100%" alt="Activity: 100%" src="GUI%20Framework%20Notes_files/green_right.png"></td>
+	</tr>
+	</tbody></table>
+	
+</div>
+<a href="http://forums.nexusrealms.co.uk/xperience.php?u=16">Ranking</a>
+<a href="http://forums.nexusrealms.co.uk/xperience.php?go=shop">Shop</a>
+</td></tr>
+	
+	</tbody></table>
+</div>
+<!-- / post 950 popup menu -->
+
+
+	</div>
+	
+		</div>
+	</div>
+</div>
+
+<!-- / close content container -->
+
+<!-- / post #950 --><div id="lastpost"></div></div>
+
+<!-- start content table -->
+<!-- open content container -->
+
+<div align="center">
+	<div class="page" style="width: 100%; text-align: left;">
+		<div style="padding: 0px;" align="left">
+
+<!-- / start content table -->
+
+<!-- controls below postbits -->
+<table style="margin-top: -3px;" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tbody><tr valign="top">
+	
+		<td class="smallfont"><a href="http://forums.nexusrealms.co.uk/newreply.php?do=newreply&amp;noquote=1&amp;p=950" rel="nofollow"><img title="Reply" src="GUI%20Framework%20Notes_files/reply.gif" alt="Reply" border="0"></a></td>
+	
+	
+</tr>
+</tbody></table>
+<!-- / controls below postbits -->
+
+
+
+
+
+
+<!-- thread tags -->
+	<br>
+	<table class="tborder" border="0" cellpadding="6" cellspacing="1" width="100%" align="center">
+	<tbody><tr>
+		<td class="thead">
+			<div style="float: right;" class="normal">
+				<a href="http://forums.nexusrealms.co.uk/threadtag.php?t=114" id="tag_edit_link">Edit Tags</a>
+			</div>
+			<a name="taglist"></a>
+			<a href="http://forums.nexusrealms.co.uk/tags.php">Tags</a>
+		</td>
+	</tr>
+	<tr>
+		<td class="alt1 smallfont" id="tag_list_cell"><i>None</i> <img src="GUI%20Framework%20Notes_files/11x11progress.gif" id="tag_form_progress" class="inlineimg" style="display: none;" alt=""></td>
+	</tr>
+	</tbody></table>
+
+	<script type="text/javascript" src="GUI%20Framework%20Notes_files/vbulletin_ajax_taglist.js"></script>
+		<script type="text/javascript" src="GUI%20Framework%20Notes_files/vbulletin_ajax_tagsugg.js"></script>
+<!-- / thread tags -->
+
+
+ 
+ <br>
+<table class="tborder" border="0" cellpadding="6" cellspacing="1" width="100%">
+<tbody>
+	<tr>
+		<td class="thead">
+			<a style="float: right;" href="#top" onclick="return toggle_collapse('latex');"><img id="collapseimg_latex" src="GUI%20Framework%20Notes_files/collapse_thead.gif" alt="" border="0"></a> Latex Maths &amp; Physics Editor ...
+		</td>
+	</tr>
+	<tr>
+		<td class="alt1" id="collapseobj_latex" style="display: none;" align="center"> 
+			<iframe name="I1" src="GUI%20Framework%20Notes_files/equationeditor.html" border="0" frameborder="0" height="305" width="620"></iframe>
+		</td>
+	</tr>
+</tbody>
+</table>
+
+
+<!-- lightbox scripts -->
+	<script type="text/javascript" src="GUI%20Framework%20Notes_files/vbulletin_lightbox.js"></script>
+	<script type="text/javascript">
+	<!--
+	vBulletin.register_control("vB_Lightbox_Container", "posts", 1);
+	//-->
+	</script>
+<!-- / lightbox scripts -->
+
+
+
+<!-- multiquote scripts -->
+	<script type="text/javascript" src="GUI%20Framework%20Notes_files/vbulletin_multi_quote.js"></script>
+	<script type="text/javascript">
+	<!--
+	var mqlimit = 0;
+	//-->
+	</script>
+<!-- / multiquote scripts -->
+
+
+
+<!-- ajax errors table -->
+	<table class="tborder" style="display: none; position: absolute;" id="ajax_post_errors" border="0" cellpadding="6" cellspacing="1">
+	<tbody><tr>
+		<td class="thead">
+			<span style="float: right;"><input class="button" value=" X " onclick="vB_QuickEditor.hide_errors()" id="ajax_post_errors_closebtn" type="button"></span>
+			vBulletin Message
+		</td>
+	</tr>
+	<tr>
+		<td class="alt2" colspan="2" id="ajax_post_errors_message">&nbsp;</td>
+	</tr>
+	<tr>
+		<td class="tfoot" colspan="2" align="center"><a href="#" onclick="vB_QuickEditor.abort(); return false;">Cancel Changes</a></td>
+	</tr>
+	</tbody></table>
+<!-- / ajax errors table -->
+
+<!-- scripts for quick reply and quick edit -->
+	<!-- Editor Scripts -->
+<script type="text/javascript" src="GUI%20Framework%20Notes_files/vbulletin_textedit.js"></script>
+<script type="text/javascript">
+<!--
+var fontoptions = new Array("Arial", "Arial Black", "Arial Narrow", "Book Antiqua", "Century Gothic", "Comic Sans MS", "Courier New", "Fixedsys", "Franklin Gothic Medium", "Garamond", "Georgia", "Impact", "Lucida Console", "Lucida Sans Unicode", "Microsoft Sans Serif", "Palatino Linotype", "System", "Tahoma", "Times New Roman", "Trebuchet MS", "Verdana");
+var sizeoptions = new Array(1, 2, 3, 4, 5, 6, 7);
+var smilieoptions = {  };
+
+var istyles = { "pi_button_down" : [ "#98B5E2", "#000000", "0px", "1px solid #316AC5" ], "pi_button_hover" : [ "#C1D2EE", "#000000", "0px", "1px solid #316AC5" ], "pi_button_normal" : [ "#E1E1E2", "#000000", "1px", "none" ], "pi_button_selected" : [ "#F1F6F8", "#000000", "0px", "1px solid #316AC5" ], "pi_menu_down" : [ "#98B5E2", "#316AC5", "0px", "1px solid #316AC5" ], "pi_menu_hover" : [ "#C1D2EE", "#316AC5", "0px", "1px solid #316AC5" ], "pi_menu_normal" : [ "#FFFFFF", "#000000", "0px", "1px solid #FFFFFF" ], "pi_popup_down" : [ "#98B5E2", "#000000", "0px", "1px solid #316AC5" ] };
+var ltr = 'left';
+
+var smiliewindow_x = 240;
+var smiliewindow_y = 280;
+
+var ignorequotechars = 1;
+var allowbasicbbcode = true;
+
+// vB Phrases
+vbphrase["wysiwyg_please_wait"]          = "Please wait for the WYSIWYG editor to finish loading...";
+vbphrase["wysiwyg_initialized"]          = "WYSIWYG Editor initialized for %1$s in %2$s seconds.";
+vbphrase["wysiwyg_command_invalid"]      = "This command is invalid or not implemented.";
+vbphrase["moz_must_select_text"]         = "Mozilla requires that you must select some text for this function to work";
+vbphrase["moz_edit_config_file"]         = "You need to edit your Mozilla config file to allow this action.";
+vbphrase["enter_tag_option"]             = "Please enter the option for your %1$s tag:";
+vbphrase["must_select_text_to_use"]      = "You must select some text to use this function.";
+vbphrase["browser_is_safari_no_wysiwyg"] = "The Safari browser does not support WYSIWYG mode.";
+vbphrase["enter_option_x_tag"]           = "Enter the option for the [%1$s] tag:";
+vbphrase["enter_text_to_be_formatted"]   = "Enter the text to be formatted";
+vbphrase["enter_link_text"]              = "Enter the text to be displayed for the link (optional):";
+vbphrase["enter_list_type"]              = "What type of list do you want? Enter '1' for a numbered list, enter 'a' for an alphabetical list, or leave blank for a list with bullet points:";
+vbphrase["enter_list_item"]              = "Enter a list item.\r\nLeave the box empty or press 'Cancel' to complete the list:";
+vbphrase["must_enter_subject"]           = "You must enter a title / subject!";
+vbphrase["message_too_short"]            = "The message you have entered is too short. Please lengthen your message to at least %1$s characters.";
+vbphrase["enter_link_url"]               = "Please enter the URL of your link:";
+vbphrase["enter_image_url"]              = "Please enter the URL of your image:";
+vbphrase["enter_email_link"]             = "Please enter the email address for the link:";
+vbphrase["complete_image_verification"]  = "You did not complete the Image Verification";
+vbphrase["iespell_not_installed"]        = "ieSpell is a spell-checking tool for Internet Explorer.\r\n\r\nIf you would like to download ieSpell, click OK; otherwise click Cancel.\r\n\r\nieSpell can be downloaded from http://www.iespell.com";
+vbphrase["click_quick_reply_icon"]       = "Please click one of the Quick Reply icons in the posts above to activate Quick Reply.";
+vbphrase["insert_all"]                   = "Insert All";
+
+//-->
+</script>
+<!-- / Editor Scripts -->
+	
+		<script type="text/javascript" src="GUI%20Framework%20Notes_files/vbulletin_quick_edit.js"></script>
+		<script type="text/javascript">
+		<!--
+		vB_AJAX_QuickEdit_Init('posts');
+		//-->
+		</script>
+	
+<!-- / scripts for quick reply and quick edit -->
+
+
+
+
+<!-- quick reply -->
+	<br>
+	<script type="text/javascript" src="GUI%20Framework%20Notes_files/vbulletin_quick_reply.js"></script>
+	<form action="newreply.php?do=postreply&amp;t=114" method="post" name="vbform" onsubmit="return qr_prepare_submit(this, 10);" id="qrform">
+	<table class="tborder" border="0" cellpadding="6" cellspacing="1" width="100%" align="center">
+	<thead>
+		<tr>
+			<td class="tcat" colspan="2">
+				<a style="float: right;" href="#top" onclick="return toggle_collapse('quickreply');"><img id="collapseimg_quickreply" src="GUI%20Framework%20Notes_files/collapse_tcat.gif" alt="" border="0"></a>
+				Quick Reply
+			</td>
+		</tr>
+	</thead>
+	<tbody id="qr_error_tbody" style="display: none;">
+	<tr>
+		<td class="thead">The following errors occurred with your submission</td>
+	</tr>
+	<tr>
+		<td class="alt1" id="qr_error_td"></td>
+	</tr>
+	<tr>
+		<td class="tfoot" align="center"><span class="smallfont"><a href="#" onclick="return qr_hide_errors()">Okay</a></span></td>
+	</tr>
+	</tbody>
+	<tbody id="collapseobj_quickreply" style="">
+	<tr>
+		<td class="panelsurround" align="center">
+			<div class="panel">
+				<div style="max-width: 640px; width: auto ! important;" align="left">
+					<div class="smallfont">Message:</div>
+					<div id="vB_Editor_QR" class="vBulletin_editor">
+		<script type="text/javascript">
+		<!--
+			var threaded_mode = 0;
+			var require_click = 0;
+			var is_last_page = 1; // leave for people with cached JS files
+			var allow_ajax_qr = 1;
+			var ajax_last_post = 1254477003;
+		// -->
+		</script>
+		
+<div id="vB_Editor_QR_controls" class="controlbar">
+	<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tbody><tr>
+		<td><div class="imagebutton" id="vB_Editor_QR_cmd_removeformat"><img title="Remove Text Formatting" src="GUI%20Framework%20Notes_files/removeformat.gif" alt="Remove Text Formatting" height="20" width="21"></div></td>
+	
+		<td><img src="GUI%20Framework%20Notes_files/separator.gif" alt="" height="20" width="6"></td>
+		<td><div class="imagebutton" id="vB_Editor_QR_cmd_bold"><img title="Bold" src="GUI%20Framework%20Notes_files/bold.gif" alt="Bold" height="20" width="21"></div></td>
+		<td><div class="imagebutton" id="vB_Editor_QR_cmd_italic"><img title="Italic" src="GUI%20Framework%20Notes_files/italic.gif" alt="Italic" height="20" width="21"></div></td>
+		<td><div class="imagebutton" id="vB_Editor_QR_cmd_underline"><img title="Underline" src="GUI%20Framework%20Notes_files/underline.gif" alt="Underline" height="20" width="21"></div></td>
+	
+	
+		<td><img src="GUI%20Framework%20Notes_files/separator.gif" alt="" height="20" width="6"></td>
+		<td><div style="border: medium none ; padding: 1px; background: rgb(225, 225, 226) none repeat scroll 0% 0%; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous; color: rgb(0, 0, 0);" class="imagebutton" id="vB_Editor_QR_popup_forecolor" title="Colors">
+			<table border="0" cellpadding="0" cellspacing="0">
+			<tbody><tr>
+				<td id="vB_Editor_QR_color_out"><img src="GUI%20Framework%20Notes_files/color.gif" alt="" height="16" width="21"><br><img src="GUI%20Framework%20Notes_files/clear.gif" id="vB_Editor_QR_color_bar" alt="" style="background-color: black;" height="4" width="21"></td>
+				<td style="border-left: medium none; padding-left: 1px;" class="alt_pickbutton"><img src="GUI%20Framework%20Notes_files/menupop.gif" alt="" height="16" width="11"></td>
+			</tr>
+			</tbody></table>
+		</div></td>
+	
+	
+		<td><img src="GUI%20Framework%20Notes_files/separator.gif" alt="" height="20" width="6"></td>
+	
+	
+		<td><div class="imagebutton" id="vB_Editor_QR_cmd_createlink"><img title="Insert Link" src="GUI%20Framework%20Notes_files/createlink.gif" alt="Insert Link" height="20" width="21"></div></td>
+	
+	
+		<td><div class="imagebutton" id="vB_Editor_QR_cmd_insertimage"><img title="Insert Image" src="GUI%20Framework%20Notes_files/insertimage.gif" alt="Insert Image" height="20" width="21"></div></td>
+	
+	
+		<td><img src="GUI%20Framework%20Notes_files/separator.gif" alt="" height="20" width="6"></td>
+		<td><div class="imagebutton" id="vB_Editor_QR_cmd_wrap0_quote"><img title="Wrap [QUOTE] tags around selected text" src="GUI%20Framework%20Notes_files/quote_002.gif" alt="Wrap [QUOTE] tags around selected text" height="20" width="21"></div></td>
+	
+	
+		<td width="100%">&nbsp;</td>
+	
+	
+		<td>
+			<div class="imagebutton" id="vB_Editor_QR_cmd_resize_0_99"><img title="Decrease Size" src="GUI%20Framework%20Notes_files/resize_0.gif" alt="Decrease Size" height="9" width="21"></div>
+			<div class="imagebutton" id="vB_Editor_QR_cmd_resize_1_99"><img title="Increase Size" src="GUI%20Framework%20Notes_files/resize_1.gif" alt="Increase Size" height="9" width="21"></div>
+		</td>
+	
+		<td><div style="border: medium none ; padding: 1px; background: rgb(225, 225, 226) none repeat scroll 0% 0%; -moz-background-clip: border; -moz-background-origin: padding; -moz-background-inline-policy: continuous; color: rgb(0, 0, 0);" class="imagebutton" id="vB_Editor_QR_cmd_switchmode"><img title="Switch Editor Mode" src="GUI%20Framework%20Notes_files/switchmode.gif" alt="Switch Editor Mode" height="20" width="21"></div></td>
+	
+	</tr>
+	</tbody></table>
+</div>
+
+<div class="controlbar" style="padding-right: 8px;">
+	<fieldset style="border: 0px none ; margin: 0px; padding: 0px;">
+	
+	<textarea name="message" id="vB_Editor_QR_textarea" rows="10" cols="60" style="width: 100%; height: 100px;" tabindex="1" dir="ltr"></textarea>
+	
+	</fieldset>
+	<!--width:540px-->
+</div>
+
+<input name="wysiwyg" id="vB_Editor_QR_mode" value="0" type="hidden">
+<input name="styleid" value="0" type="hidden">
+
+<script type="text/javascript">
+<!--
+vB_Editor['vB_Editor_QR'] = new vB_Text_Editor('vB_Editor_QR', 0, '10', '1');
+var QR_EditorID = 'vB_Editor_QR';
+//-->
+</script>
+	</div>
+
+					<fieldset class="fieldset" style="margin: 3px 0px 0px;">
+						<legend>Options</legend>
+						<div style="padding: 3px;">
+							
+								<div style="float: right;"><label for="cb_signature"><input name="signature" value="1" id="cb_signature" tabindex="5" checked="checked" type="checkbox">Show your signature</label></div>
+							
+							<label for="qr_quickreply"><input disabled="disabled" name="quickreply" value="1" id="qr_quickreply" accesskey="w" tabindex="4" type="checkbox">Quote message in reply?</label>
+						</div>
+					</fieldset>
+				</div>
+			</div>
+
+			<div style="margin-top: 6px;">
+				<input name="fromquickreply" value="1" type="hidden">
+				<input name="s" value="" type="hidden">
+				<input name="securitytoken" value="1258900705-b3c6722da1f5552cbb55b05a69b478db4e036b7a" type="hidden">
+				<input name="do" value="postreply" type="hidden">
+				<input name="t" value="114" id="qr_threadid" type="hidden">
+				<input name="p" value="who cares" id="qr_postid" type="hidden">
+				<input name="specifiedpost" value="0" id="qr_specifiedpost" type="hidden">
+				<input name="parseurl" value="1" type="hidden">
+				<input name="loggedinuser" value="16" type="hidden">
+				<input class="button" value="Post Quick Reply" accesskey="s" title="(Alt + S)" name="sbutton" tabindex="2" id="qr_submit" onclick="clickedelm = this.value" type="submit">
+				<input class="button" value="Go Advanced" accesskey="x" title="(Alt + X)" name="preview" tabindex="3" id="qr_preview" onclick="clickedelm = this.value" type="submit">
+			</div>
+
+			<div id="qr_posting_msg" style="display: none; margin-top: 6px;" align="center">
+				<img title="Posting Quick Reply - Please Wait" style="vertical-align: middle;" src="GUI%20Framework%20Notes_files/progress.gif" alt="Posting Quick Reply - Please Wait">&nbsp;<strong>Posting Quick Reply - Please Wait</strong>
+			</div>
+		</td>
+	</tr>
+	</tbody>
+	</table>
+	</form>
+
+	
+		<!-- Mozilla work around for focusing on QR in WYSIWYG mode -->
+		<div id="qr_scroll"></div>
+	
+
+	<script type="text/javascript">
+	<!--
+		// initialize quick reply
+		qr_init();
+	//-->
+	</script>
+<!-- / quick reply -->
+
+
+
+<!-- next / previous links -->
+	<br>
+	<div class="smallfont" align="center">
+		<strong>«</strong>
+			<a href="http://forums.nexusrealms.co.uk/showthread.php?t=114&amp;goto=nextoldest" rel="nofollow">Previous Thread</a>
+			|
+			<a href="http://forums.nexusrealms.co.uk/showthread.php?t=114&amp;goto=nextnewest" rel="nofollow">Next Thread</a>
+		<strong>»</strong>
+	</div>
+<!-- / next / previous links -->
+
+
+
+
+
+
+
+<!-- popup menu contents -->
+<br>
+
+<!-- thread tools menu -->
+<div class="vbmenu_popup" id="threadtools_menu" style="display: none;">
+<form action="postings.php?t=114&amp;pollid=" method="post" name="threadadminform">
+	<table border="0" cellpadding="4" cellspacing="1">
+	<tbody><tr>
+		<td class="thead">Thread Tools<a name="goto_threadtools"></a></td>
+	</tr>
+	<tr>
+		<td class="vbmenu_option"><img title="Show Printable Version" class="inlineimg" src="GUI%20Framework%20Notes_files/printer.gif" alt="Show Printable Version"> <a href="http://forums.nexusrealms.co.uk/printthread.php?t=114" accesskey="3" rel="nofollow">Show Printable Version</a></td>
+	</tr>
+	
+	<tr>
+		<td class="vbmenu_option"><img title="Email this Page" class="inlineimg" src="GUI%20Framework%20Notes_files/sendtofriend.gif" alt="Email this Page"> <a href="http://forums.nexusrealms.co.uk/sendmessage.php?do=sendtofriend&amp;t=114" rel="nofollow">Email this Page</a></td>
+	</tr>
+	
+	
+	<tr>
+		<td class="vbmenu_option"><img title="Subscription" class="inlineimg" src="GUI%20Framework%20Notes_files/subscribe.gif" alt="Subscription">
+		
+			<a href="http://forums.nexusrealms.co.uk/subscription.php?do=addsubscription&amp;t=114" rel="nofollow">Subscribe to this Thread</a>
+		
+		</td>
+	</tr>
+	
+	
+	<tr>
+		<td class="vbmenu_option"><img title="Add a Poll" class="inlineimg" src="GUI%20Framework%20Notes_files/addpoll.gif" alt="Add a Poll"> <a href="http://forums.nexusrealms.co.uk/poll.php?do=newpoll&amp;t=114">Add a Poll to this Thread</a></td>
+	</tr>
+	
+	
+	</tbody></table>
+</form>
+</div>
+<!-- / thread tools menu -->
+
+<!-- **************************************************** -->
+
+<!-- thread display mode menu -->
+<div class="vbmenu_popup" id="displaymodes_menu" style="display: none;">
+	<table border="0" cellpadding="4" cellspacing="1">
+	<tbody><tr>
+		<td class="thead">Display Modes<a name="goto_displaymodes"></a></td>
+	</tr>
+	<tr>
+	
+		<td class="vbmenu_option" title="nohilite"><img title="Linear Mode" class="inlineimg" src="GUI%20Framework%20Notes_files/mode_linear.gif" alt="Linear Mode"> <strong>Linear Mode</strong></td>
+	
+	</tr>
+	<tr>
+	
+		<td class="vbmenu_option"><img title="Hybrid Mode" class="inlineimg" src="GUI%20Framework%20Notes_files/mode_hybrid.gif" alt="Hybrid Mode"> <a href="http://forums.nexusrealms.co.uk/showthread.php?mode=hybrid&amp;t=114">Switch to Hybrid Mode</a></td>
+	
+	</tr>
+	<tr>
+	
+		<td class="vbmenu_option"><img title="Threaded Mode" class="inlineimg" src="GUI%20Framework%20Notes_files/mode_threaded.gif" alt="Threaded Mode"> <a href="http://forums.nexusrealms.co.uk/showthread.php?p=950&amp;mode=threaded#post950">Switch to Threaded Mode</a></td>
+	
+	</tr>
+	</tbody></table>
+</div>
+<!-- / thread display mode menu -->
+
+<!-- **************************************************** -->
+
+
+<!-- thread search menu -->
+<div class="vbmenu_popup" id="threadsearch_menu" style="display: none;">
+<form action="search.php?do=process&amp;searchthreadid=114" method="post">
+	<table border="0" cellpadding="4" cellspacing="1">
+	<tbody><tr>
+		<td class="thead">Search this Thread<a name="goto_threadsearch"></a></td>
+	</tr>
+	<tr>
+		<td class="vbmenu_option" title="nohilite">
+			<input name="s" value="" type="hidden">
+			<input name="securitytoken" value="1258900705-b3c6722da1f5552cbb55b05a69b478db4e036b7a" type="hidden">
+			<input name="do" value="process" type="hidden">
+			<input name="searchthreadid" value="114" type="hidden">
+			<input class="bginput" name="query" size="25" type="text"><input class="button" value="Go" type="submit"><br>
+		</td>
+	</tr>
+	<tr>
+		<td class="vbmenu_option"><a href="http://forums.nexusrealms.co.uk/search.php?searchthreadid=114">Advanced Search</a></td>
+	</tr>
+	</tbody></table>
+</form>
+</div>
+<!-- / thread search menu -->
+
+
+<!-- **************************************************** -->
+
+
+	<!-- thread rating menu -->
+	<div class="vbmenu_popup" id="threadrating_menu" style="display: none;">
+	<form action="threadrate.php?t=114" method="post" id="showthread_threadrate_form">
+		<table border="0" cellpadding="4" cellspacing="1">
+		<tbody><tr>
+			<td class="thead">Rate This Thread<a name="goto_threadrating"></a></td>
+		</tr>
+		
+		<tr>
+			<td class="vbmenu_option" title="nohilite" id="threadrating_options">
+
+			<div><img title="Excellent" class="inlineimg" src="GUI%20Framework%20Notes_files/rating_5.gif" alt="Excellent"><label for="vote5"><input name="vote" id="vote5" value="5" type="radio">Excellent</label></div>
+			<div><img title="Good" class="inlineimg" src="GUI%20Framework%20Notes_files/rating_4.gif" alt="Good"><label for="vote4"><input name="vote" id="vote4" value="4" type="radio">Good</label></div>
+			<div><img title="Average" class="inlineimg" src="GUI%20Framework%20Notes_files/rating_3.gif" alt="Average"><label for="vote3"><input name="vote" id="vote3" value="3" type="radio">Average</label></div>
+			<div><img title="Bad" class="inlineimg" src="GUI%20Framework%20Notes_files/rating_2.gif" alt="Bad"><label for="vote2"><input name="vote" id="vote2" value="2" type="radio">Bad</label></div>
+			<div><img title="Terrible" class="inlineimg" src="GUI%20Framework%20Notes_files/rating_1.gif" alt="Terrible"><label for="vote1"><input name="vote" id="vote1" value="1" type="radio">Terrible</label></div>
+			</td>
+		</tr>
+		<tr id="threadrating_submit">
+			<td class="vbmenu_option" title="nohilite" align="center">
+				<input name="s" value="" type="hidden">
+				<input name="securitytoken" value="1258900705-b3c6722da1f5552cbb55b05a69b478db4e036b7a" type="hidden">
+				<input name="t" value="114" type="hidden">
+				<input name="pp" value="10" type="hidden">
+				<input name="page" value="1" type="hidden">
+				<input value="Vote Now" class="button" type="button">
+			</td>
+		</tr>
+		
+		</tbody></table>
+	</form>
+	</div>
+	<!-- / thread rating menu -->
+
+	<script type="text/javascript" src="GUI%20Framework%20Notes_files/vbulletin_ajax_threadrate.js"></script>
+	<script type="text/javascript">
+	<!--
+	vB_AJAX_ThreadRate_Init('showthread_threadrate_form');
+	var threadid = 114;
+	//-->
+	</script>
+
+
+<!-- / popup menu contents -->
+
+
+<!-- forum rules and admin links -->
+<table border="0" cellpadding="0" cellspacing="0" width="100%" align="center">
+<tbody><tr valign="bottom">
+	<td valign="top" width="100%">
+		<table class="tborder" border="0" cellpadding="6" cellspacing="1" width="210">
+<thead>
+<tr>
+	<td class="thead">
+		<a style="float: right;" href="#top" onclick="return toggle_collapse('forumrules')"><img id="collapseimg_forumrules" src="GUI%20Framework%20Notes_files/collapse_thead.gif" alt="" border="0"></a>
+		Posting Rules
+	</td>
+</tr>
+</thead>
+<tbody id="collapseobj_forumrules" style="">
+<tr>
+	<td class="alt1" nowrap="nowrap"><div class="smallfont">
+		
+		<div>You <strong>may</strong> post new threads</div>
+		<div>You <strong>may</strong> post replies</div>
+		<div>You <strong>may</strong> post attachments</div>
+		<div>You <strong>may</strong> edit your posts</div>
+		<hr>
+		
+		<div><a href="http://forums.nexusrealms.co.uk/misc.php?do=bbcode" target="_blank">BB code</a> is <strong>On</strong></div>
+		<div><a href="http://forums.nexusrealms.co.uk/misc.php?do=showsmilies" target="_blank">Smilies</a> are <strong>On</strong></div>
+		<div><a href="http://forums.nexusrealms.co.uk/misc.php?do=bbcode#imgcode" target="_blank">[IMG]</a> code is <strong>On</strong></div>
+		<div>HTML code is <strong>Off</strong></div>
+		<hr>
+		<div><a href="http://forums.nexusrealms.co.uk/misc.php?do=showrules" target="_blank">Forum Rules</a></div>
+	</div></td>
+</tr>
+</tbody>
+</table>
+	</td>
+	<td class="smallfont" align="right">
+		<table border="0" cellpadding="0" cellspacing="0">
+		
+		<tbody><tr>
+			<td>
+			<div class="smallfont" style="text-align: left; white-space: nowrap;">
+	<form action="forumdisplay.php" method="get">
+	<input name="s" value="" type="hidden">
+	<input name="daysprune" value="" type="hidden">
+	<strong>Forum Jump</strong><br>
+	<select name="f" onchange="this.form.submit();">
+		<optgroup label="Site Areas">
+			<option value="cp">User Control Panel</option>
+			<option value="pm">Private Messages</option>
+			<option value="subs">Subscriptions</option>
+			<option value="wol">Who's Online</option>
+			<option value="search">Search Forums</option>
+			<option value="home">Forums Home</option>
+		</optgroup>
+		
+		<optgroup label="Forums">
+		<option value="16" class="fjdpth0"> Private Forums</option>
+<option value="23" class="fjdpth0"> Projects</option>
+<option value="1" class="fjdpth0"> General</option>
+<option value="2" class="fjdpth1">&nbsp; &nbsp;  Random Banter</option>
+<option value="13" class="fjdpth1">&nbsp; &nbsp;  Gaming</option>
+<option value="14" class="fjdpth1">&nbsp; &nbsp;  Films/TV</option>
+<option value="9" class="fjdpth0"> Portfolios and Development</option>
+<option value="10" class="fjsel" selected="selected">&nbsp; &nbsp;  Game Development</option>
+<option value="11" class="fjdpth1">&nbsp; &nbsp;  Film Development</option>
+<option value="12" class="fjdpth1">&nbsp; &nbsp;  Web Development</option>
+<option value="15" class="fjdpth1">&nbsp; &nbsp;  Portfolios</option>
+<option value="21" class="fjdpth0"> Tutorials</option>
+<option value="25" class="fjdpth1">&nbsp; &nbsp;  2D Art</option>
+<option value="22" class="fjdpth1">&nbsp; &nbsp;  3D Art</option>
+<option value="26" class="fjdpth1">&nbsp; &nbsp;  Games Design</option>
+<option value="24" class="fjdpth1">&nbsp; &nbsp;  Web Development</option>
+<option value="18" class="fjdpth0"> Reviews</option>
+<option value="20" class="fjdpth1">&nbsp; &nbsp;  Games</option>
+<option value="6" class="fjdpth0"> Announcements</option>
+<option value="7" class="fjdpth1">&nbsp; &nbsp;  Nexus Realms News</option>
+<option value="8" class="fjdpth1">&nbsp; &nbsp;  Industry News</option>
+<option value="3" class="fjdpth0"> User Report and Infractions</option>
+<option value="4" class="fjdpth1">&nbsp; &nbsp;  Infractions</option>
+<option value="5" class="fjdpth1">&nbsp; &nbsp;  Reports</option>
+
+		</optgroup>
+		
+	</select><input class="button" value="Go" type="submit">
+	</form>
+</div>
+			</td>
+		</tr>
+		</tbody></table>
+	</td>
+</tr>
+</tbody></table>
+<!-- /forum rules and admin links -->
+
+<br>
+
+
+
+<script type="text/javascript">ame_toggle_view({other : 'true',post : 'true',blog : 'true',group : 'true',vm : 'true',sig : 'true'});</script>
+
+<br>
+<div class="smallfont" align="center">All times are GMT +1. The time now is <span class="time">15:38.25</span>.</div>
+<br>
+
+
+		</div>
+	</div>
+</div>
+
+<!-- / close content container -->
+<!-- /content area table -->
+
+<form action="index.php" method="get" style="clear: left;">
+
+<table class="page" border="0" cellpadding="6" cellspacing="0" width="100%" align="center">
+<tbody><tr>
+	
+	
+	<td class="tfoot" width="100%" align="right">
+		<div class="smallfont">
+			<strong>
+				<a href="http://forums.nexusrealms.co.uk/sendmessage.php" rel="nofollow" accesskey="9">Contact Us</a> -
+				<a href="http://www.nexusrealms.co.uk/">Nexus Realms</a> -
+				
+				
+				<a href="http://forums.nexusrealms.co.uk/archive/index.php">Archive</a> -
+				
+				
+				
+				<a href="#top" onclick="self.scrollTo(0, 0); return false;">Top</a>
+			</strong>
+		</div>
+	</td>
+</tr>
+</tbody></table>
+
+<br>
+
+<div align="center">
+	<div class="smallfont" align="center">
+	<!-- Do not remove this copyright notice -->
+	Powered by vBulletin® Version 3.8.2<br>Copyright ©2000 - 2009, Jelsoft Enterprises Ltd.
+	<!-- Do not remove this copyright notice -->
+	</div>
+
+	<div class="smallfont" align="center">
+	<!-- Do not remove cronimage or your scheduled tasks will cease to function -->
+	<img src="GUI%20Framework%20Notes_files/cron.gif" alt="" border="0" height="1" width="1">
+	<!-- Do not remove cronimage or your scheduled tasks will cease to function -->
+
+	1997-2009 © Aaron Varshney. All rights reserved.
+	</div>
+</div>
+
+</form>
+
+
+
+
+<script type="text/javascript">
+<!--
+	// Main vBulletin Javascript Initialization
+	vBulletin_init();
+//-->
+</script>
+
+<!-- temp -->
+<div style="display: none;">
+	<!-- thread rate -->
+	
+		<!-- thread ratings form here -->
+	
+	<!-- / thread rate -->
+</div>
+
+</body></html>
