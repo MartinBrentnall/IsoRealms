@@ -21,7 +21,7 @@
 GLFreeTypeFontEngine::GLFreeTypeFontEngine(DOMNodeWrapper* node) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
-    string mValueAsString = mNode->getNodeName();
+    std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Font") {
       cRegisteredFonts[mNode->getAttribute("name")] = parseFont(mNode);
     }
@@ -29,15 +29,15 @@ GLFreeTypeFontEngine::GLFreeTypeFontEngine(DOMNodeWrapper* node) {
 }
 
 Font* GLFreeTypeFontEngine::parseFont(DOMNodeWrapper* node) {
-  string mFontLocation;
-  string mFontName;
+  std::string mFontLocation;
+  std::string mFontName;
   int mDetail = 64;
   // TODO: Prevent duplicate details / unspecified details
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
-    string mValueAsString = mNode->getNodeName();
+    std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "File") {
-      string mFontFileName = mNode->getStringValue();
+      std::string mFontFileName = mNode->getStringValue();
       mFontLocation = System::getResource(mFontFileName);
     } else if (mValueAsString == "Detail") {
       mDetail = mNode->getIntegerValue();
@@ -46,7 +46,7 @@ Font* GLFreeTypeFontEngine::parseFont(DOMNodeWrapper* node) {
   return new Font(mFontLocation.c_str(), mDetail);
 }
 
-IFont* GLFreeTypeFontEngine::getFont(string name) {
+IFont* GLFreeTypeFontEngine::getFont(std::string name) {
   // TODO: Throw exception if it don't exist
   return cRegisteredFonts[name];
 }

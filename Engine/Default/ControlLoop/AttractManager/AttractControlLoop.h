@@ -37,19 +37,17 @@
 #include "../../../../Global/InitException.h"
 #include "../../../../Global/System.h"
 
-using namespace std;
-
 class AttractControlLoop:public IControlLoop {
   private:
-  map<IAttract*, vector<ICommand*> > cSceneEndCommands;
-  vector<ICommand*> cFrontEndStartCommands; // TODO: Implement
-  vector<ICommand*> cFrontEndEndCommands; // TODO: Implement
-  map<string, IAttract*> cAttractServices;
+  std::map<IAttract*, std::vector<ICommand*> > cSceneEndCommands;
+  std::vector<ICommand*> cFrontEndStartCommands; // TODO: Implement
+  std::vector<ICommand*> cFrontEndEndCommands; // TODO: Implement
+  std::map<std::string, IAttract*> cAttractServices;
   AttractSceneManager cAttractSceneManager;
-  vector<ICommand*> cInitCommands;
+  std::vector<ICommand*> cInitCommands;
   IFrontEnd* cFrontEnd;
   bool cFrontEndActive;
-  map<string, int> cLayers;
+  std::map<std::string, int> cLayers;
 
   /**
    * Parse the commands to be performed on an event.
@@ -57,7 +55,7 @@ class AttractControlLoop:public IControlLoop {
    * @param DOMNodeWrapper*
    * @returns  The events.
    */
-  vector<ICommand*> parseEventCommands(DOMNodeWrapper*);
+  std::vector<ICommand*> parseEventCommands(DOMNodeWrapper*);
 
   public:
   AttractControlLoop(DOMNodeWrapper*);

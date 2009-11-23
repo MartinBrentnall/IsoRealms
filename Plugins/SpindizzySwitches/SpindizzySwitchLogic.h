@@ -23,8 +23,6 @@
 
 #include <iostream>
 
-using namespace std;
-
 /**
  * Implements switch logic from 8-bit Spindizzy game.  The logic consists of
  * seven primary switches, four secondary switches and a single reset switch.

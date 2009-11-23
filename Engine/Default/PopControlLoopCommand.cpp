@@ -18,7 +18,7 @@
  */
 #include "PopControlLoopCommand.h"
 
-PopControlLoopCommand::PopControlLoopCommand(stack<IControlLoop*>* controlLoopStackPointer) {
+PopControlLoopCommand::PopControlLoopCommand(std::stack<IControlLoop*>* controlLoopStackPointer) {
   cControlLoopStackPointer = controlLoopStackPointer;
 }
 

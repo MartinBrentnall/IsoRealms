@@ -25,8 +25,6 @@
 
 #include "../../IAttract.h"
 
-using namespace std;
-
 /**
  * This attract scene displays some helpful information for a limited time.
  */

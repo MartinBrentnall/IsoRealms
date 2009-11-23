@@ -18,7 +18,7 @@
  */
 #include "PushControlLoopCommand.h"
 
-PushControlLoopCommand::PushControlLoopCommand(stack<IControlLoop*>* controlLoopStackPointer, IControlLoop& controlLoopToPush) {
+PushControlLoopCommand::PushControlLoopCommand(std::stack<IControlLoop*>* controlLoopStackPointer, IControlLoop& controlLoopToPush) {
   cControlLoopStackPointer = controlLoopStackPointer;
   cControlLoopToPush = &controlLoopToPush;
 }

@@ -25,13 +25,11 @@
 
 #include "IAttract.h"
 
-using namespace std;
-
 class AttractSceneManager {
   private:
   int cFirstActiveLayer;
   int cLastActiveLayer;
-  map<int, IAttract*> cActiveAttractServicesByLayer;
+  std::map<int, IAttract*> cActiveAttractServicesByLayer;
 
   public:
 
@@ -70,7 +68,7 @@ class AttractSceneManager {
    * 
    * @returns  Completed scenes.
    */
-  vector<IAttract*> getCompletedScenes();
+  std::vector<IAttract*> getCompletedScenes();
 };
 
 #endif

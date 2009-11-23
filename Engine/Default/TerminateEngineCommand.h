@@ -23,8 +23,6 @@
 
 #include "../../Global/ICommand.h"
 
-using namespace std;
-
 class TerminateEngineCommand:public ICommand {
   private:
   bool* cTerminationFlag;

@@ -28,7 +28,7 @@ ChoosePluginImplementationCommand::ChoosePluginImplementationCommand(IComponentC
 
 void ChoosePluginImplementationCommand::execute() {
   // TODO: This path should NOT be hard coded!
-  std::vector<std::string>* mAvailableImplementations = System::getFileList("/home/martin/Personal/Work/Games/Spindizzy Dimensions/Plugins/" + cPluginType + "/", "*");
+  std::vector<std::string>* mAvailableImplementations = System::getFileList("/usr/share/IsoRealms/Plugins/" + cPluginType + "/", "*");
   IItemSelectedCommand* mListener = new SelectionListener(this);
   IHUDComponent* cChooseImplementationComponent = new ListSelectionBox(cComponentContainer, mListener, *mAvailableImplementations, *cInvokerX + 0.05f, *cInvokerY - 0.05f);
   cComponentContainer->addComponent(cChooseImplementationComponent);

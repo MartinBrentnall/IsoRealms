@@ -18,7 +18,7 @@
  */
 #include "GenerateEngineCommand.h"
 
-GenerateEngineCommand::GenerateEngineCommand(queue<ICommand*>* engineCommandQueue, ICommand* engineCommand) {
+GenerateEngineCommand::GenerateEngineCommand(std::queue<ICommand*>* engineCommandQueue, ICommand* engineCommand) {
   cEngineCommandQueue = engineCommandQueue;
   cEngineCommand = engineCommand;
 }

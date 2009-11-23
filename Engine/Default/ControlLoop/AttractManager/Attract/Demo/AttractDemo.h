@@ -26,8 +26,6 @@
 
 #include "../../IAttract.h"
 
-using namespace std;
-
 /**
  * This attract scene displays the title logo for a limited time.
  */

@@ -24,38 +24,38 @@ AttractControlLoop::AttractControlLoop(DOMNodeWrapper* node) {
   int mCurrentLayer = 0;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
-    string mValueAsString = mNode->getNodeName();
+    std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "FrontEnd") {
-      string mFrontEndName = mNode->getAttribute("name");
-      string mFrontEndLocation = System::getConfigurationResource("Engine/Default/ControlLoop/AttractManager/FrontEnd/" + mFrontEndName + "/FrontEnd");
+      std::string mFrontEndName = mNode->getAttribute("name");
+      std::string mFrontEndLocation = System::getConfigurationResource("Engine/Default/ControlLoop/AttractManager/FrontEnd/" + mFrontEndName + "/FrontEnd");
       void* mFrontEndSO = dlopen(mFrontEndLocation.c_str(), RTLD_LAZY);
       if (!mFrontEndSO) {
-        throw InitException("Cannot load library: " + string(dlerror()));
+        throw InitException("Cannot load library: " + std::string(dlerror()));
       }
       createFrontEnd* createFrontEndFunction = cast_voidptr_to_funcptr<createFrontEnd*>(dlsym(mFrontEndSO, "create"));
       const char* mDlsymError = dlerror();
       if (mDlsymError) {
-        throw InitException("Cannot load symbol: " + string(mDlsymError));
+        throw InitException("Cannot load symbol: " + std::string(mDlsymError));
       }
       cFrontEnd = createFrontEndFunction(mNode);
     } else if (mValueAsString == "AttractScene") {
       // TODO: Use relative path
       try {
-        string mAttractName = mNode->getAttribute("name");
-        string mAttractLocation = System::getConfigurationResource("Engine/Default/ControlLoop/AttractManager/Attract/" + mAttractName + "/Attract");
+        std::string mAttractName = mNode->getAttribute("name");
+        std::string mAttractLocation = System::getConfigurationResource("Engine/Default/ControlLoop/AttractManager/Attract/" + mAttractName + "/Attract");
         void* mAttractSO = dlopen(mAttractLocation.c_str(), RTLD_LAZY);
         if (!mAttractSO) {
-          throw InitException("Cannot load library: " + string(dlerror()));
+          throw InitException("Cannot load library: " + std::string(dlerror()));
         }
         createAttract* createAttractFunction = cast_voidptr_to_funcptr<createAttract*>(dlsym(mAttractSO, "create"));
         const char* mDlsymError = dlerror();
         if (mDlsymError) {
-          throw InitException("Cannot load symbol: " + string(mDlsymError));
+          throw InitException("Cannot load symbol: " + std::string(mDlsymError));
         }
         cAttractServices[mAttractName] = createAttractFunction();
       } catch (InitException e) {
-        cout << e.getMessage() << endl;
-        cout << "Warning: could not load attract plug-in \"" << mNode->getStringValue() << "\":" << endl << e.getMessage() << endl;
+        std::cout << e.getMessage() << std::endl;
+        std::cout << "Warning: could not load attract plug-in \"" << mNode->getStringValue() << "\":" << std::endl << e.getMessage() << std::endl;
       }
     } else if (mValueAsString == "Layer") {
       cLayers[mNode->getStringValue()] = mCurrentLayer++;
@@ -74,14 +74,14 @@ AttractControlLoop::AttractControlLoop(DOMNodeWrapper* node) {
   }
 }
 
-vector<ICommand*> AttractControlLoop::parseEventCommands(DOMNodeWrapper* node) {
-  vector<ICommand*> mSceneCommands;
+std::vector<ICommand*> AttractControlLoop::parseEventCommands(DOMNodeWrapper* node) {
+  std::vector<ICommand*> mSceneCommands;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
-    string mValueAsString = mNode->getNodeName();
+    std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Start") {
       IAttract* mAttractScene = cAttractServices[mNode->getStringValue()];
-      string mLayerName = mNode->getAttribute("layer");
+      std::string mLayerName = mNode->getAttribute("layer");
       mSceneCommands.push_back(new StartAttractSceneCommand(cAttractSceneManager, mAttractScene, cLayers[mLayerName]));
     } else if (mValueAsString == "End") {
       IAttract* mAttractScene = cAttractServices[mNode->getStringValue()];
@@ -107,7 +107,7 @@ void AttractControlLoop::input(SDL_Event& event) {
       cFrontEndStartCommands[i]->execute();
     }
     
-    for (map<string, IAttract*>::iterator i = cAttractServices.begin(); i != cAttractServices.end(); i++) {
+    for (std::map<std::string, IAttract*>::iterator i = cAttractServices.begin(); i != cAttractServices.end(); i++) {
       i->second->frontEndActive(true);
     }          
   } else {
@@ -127,15 +127,15 @@ void AttractControlLoop::execute(int milliseconds) {
         cFrontEndEndCommands[i]->execute();
       }
         
-      for (map<string, IAttract*>::iterator i = cAttractServices.begin(); i != cAttractServices.end(); i++) {
+      for (std::map<std::string, IAttract*>::iterator i = cAttractServices.begin(); i != cAttractServices.end(); i++) {
         i->second->frontEndActive(false);
       }          
       cFrontEndActive = false;
     }
   }
-  vector<IAttract*> mCompletedScenes = cAttractSceneManager.getCompletedScenes();
+  std::vector<IAttract*> mCompletedScenes = cAttractSceneManager.getCompletedScenes();
   for (unsigned int i = 0; i < mCompletedScenes.size(); i++) {
-    vector<ICommand*> mCommandsToExecute = cSceneEndCommands[mCompletedScenes[i]];
+    std::vector<ICommand*> mCommandsToExecute = cSceneEndCommands[mCompletedScenes[i]];
     for (unsigned int j = 0; j < mCommandsToExecute.size(); j++) {
       mCommandsToExecute[j]->execute();
     }        

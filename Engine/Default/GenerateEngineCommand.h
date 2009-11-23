@@ -23,8 +23,6 @@
 
 #include "../../Global/ICommand.h"
 
-using namespace std;
-
 /**
  * When executed, this command will register a command to be executed on the
  * next cycle of engine.  This avoids the possibility of changing a pointer
@@ -33,10 +31,10 @@ using namespace std;
 class GenerateEngineCommand:public ICommand {
   private:
   ICommand* cEngineCommand;
-  queue<ICommand*>* cEngineCommandQueue;
+  std::queue<ICommand*>* cEngineCommandQueue;
 
   public:
-  GenerateEngineCommand(queue<ICommand*>*, ICommand*);
+  GenerateEngineCommand(std::queue<ICommand*>*, ICommand*);
     
   /*************************************************************************\
    * Implemented methods of ICommand.h                                     *

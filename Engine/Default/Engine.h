@@ -35,13 +35,12 @@
 
 #include "../../Global/CommandManager.h"
 #include "../../Global/DOMNodeWrapper.h"
+#include "../../Global/Hacks.h"
 #include "../../Global/InitException.h"
 #include "../../Global/ICommand.h"
 #include "../../Global/IEngine.h"
 #include "../../Global/KeyStates.h"
 #include "../../Global/System.h"
-
-using namespace std;
 
 /**
  * TODO: Documentation below is wrong!
@@ -67,9 +66,9 @@ using namespace std;
  */
 class Engine:public IEngine {
   private:
-  stack<IControlLoop*> cControlLoop;
-  map<string, IControlLoop*> cControlLoops;
-  queue<ICommand*> cPendingCommands;  
+  std::stack<IControlLoop*> cControlLoop;
+  std::map<std::string, IControlLoop*> cControlLoops;
+  std::queue<ICommand*> cPendingCommands;  
 
   SDL_Event cEvent;
   bool cTerminate;
@@ -78,7 +77,7 @@ class Engine:public IEngine {
    * Register the specified command so that it is properly queued for execution
    * when called by third parties.
    */
-  void registerEngineCommand(string, ICommand*);
+  void registerEngineCommand(std::string, ICommand*);
 
   /**
    * Parse a declared control loop from the specified node.

@@ -46,7 +46,7 @@ void AttractSceneManager::start(IAttract* attractScene, int layer) {
     }
   }
 
-  cout << "Starting scene in layer: " << layer << endl;
+  std::cout << "Starting scene in layer: " << layer << std::endl;
   attractScene->init();
   cActiveAttractServicesByLayer[layer] = attractScene;
   if (layer < cFirstActiveLayer) {
@@ -66,8 +66,8 @@ void AttractSceneManager::terminate(IAttract* attractScene) {
   }
 }
 
-vector<IAttract*> AttractSceneManager::getCompletedScenes() {
-  vector<IAttract*> mCompletedScenes;
+std::vector<IAttract*> AttractSceneManager::getCompletedScenes() {
+  std::vector<IAttract*> mCompletedScenes;
   for (int i = cFirstActiveLayer; i <= cLastActiveLayer; i++) {
     if (cActiveAttractServicesByLayer[i] != NULL) {
       if (cActiveAttractServicesByLayer[i]->hasFinished()) {

@@ -22,26 +22,26 @@ Engine::Engine(DOMNodeWrapper* node) {
   cTerminate = false;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
-    string mValueAsString = mNode->getNodeName();
+    std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "ControlLoop") {
-      string mControlLoopName = mNode->getAttribute("name");
-      string mControlLoopLocation = System::getConfigurationResource("Engine/Default/ControlLoop/" + mControlLoopName + "/ControlLoop");
+      std::string mControlLoopName = mNode->getAttribute("name");
+      std::string mControlLoopLocation = System::getConfigurationResource("Engine/Default/ControlLoop/" + mControlLoopName + "/ControlLoop");
       void* mControlLoopSO = dlopen(mControlLoopLocation.c_str(), RTLD_LAZY);
       if (!mControlLoopSO) {
-        throw InitException("Cannot load library: " + string(dlerror()));
+        throw InitException("Cannot load library: " + std::string(dlerror()));
       }
-      createControlLoop* createControlLoopFunction = (createControlLoop*) dlsym(mControlLoopSO, "create");
+      createControlLoop* createControlLoopFunction = cast_voidptr_to_funcptr<createControlLoop*>(dlsym(mControlLoopSO, "create"));
       const char* mDlsymError = dlerror();
       if (mDlsymError) {
-        throw InitException("Cannot load symbol: " + string(mDlsymError));
+        throw InitException("Cannot load symbol: " + std::string(mDlsymError));
       }
       cControlLoops[mControlLoopName] = createControlLoopFunction(mNode);
-      string mControlLoopInit = mNode->getAttribute("init");
+      std::string mControlLoopInit = mNode->getAttribute("init");
       if (mControlLoopInit == "true") {
         cControlLoop.push(cControlLoops[mControlLoopName]);
       }
     } else if (mValueAsString == "GlobalAction") {
-      string mCommandType = mNode->getAttribute("type");
+      std::string mCommandType = mNode->getAttribute("type");
       ICommand* mCommand;
       if (mCommandType == "TerminateEngineCommand") {
         mCommand = new TerminateEngineCommand(cTerminate);
@@ -54,13 +54,13 @@ Engine::Engine(DOMNodeWrapper* node) {
         }
         mCommand = new PushControlLoopCommand(&cControlLoop, *mControlLoop);
       }
-      string mCommandName = mNode->getAttribute("name");
+      std::string mCommandName = mNode->getAttribute("name");
       registerEngineCommand(mCommandName, mCommand);
     }
   }
 }
 
-void Engine::registerEngineCommand(string name, ICommand* command) {
+void Engine::registerEngineCommand(std::string name, ICommand* command) {
   GenerateEngineCommand* mGenerateEngineCommand = new GenerateEngineCommand(&cPendingCommands, command);
   CommandManager::addCommand(name, mGenerateEngineCommand);
 }
@@ -68,9 +68,9 @@ void Engine::registerEngineCommand(string name, ICommand* command) {
 IControlLoop* Engine::parseControlLoop(DOMNodeWrapper* node) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
-    string mValueAsString = mNode->getNodeName();
+    std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "ControlLoop") {
-      string mControlLoopName = mNode->getStringValue();
+      std::string mControlLoopName = mNode->getStringValue();
       return cControlLoops[mControlLoopName];
     }
   }
@@ -85,7 +85,6 @@ void Engine::run() {
     throw InitException("No initial control loop was specified by the engine configuration");
   }
   int mOldTicks = SDL_GetTicks();
-  int mStartTicks = mOldTicks;
   do {
     while (!cPendingCommands.empty()) {
       cPendingCommands.front()->execute();
@@ -106,7 +105,7 @@ void Engine::run() {
  
     mOldTicks = mNewTicks;
   } while (!cTerminate);
-  cout << "Engine terminated" << endl;
+  std::cout << "Engine terminated" << std::endl;
 }
 
 extern "C" IEngine* create(DOMNodeWrapper* node) {

@@ -30,8 +30,6 @@
 #include "../../../../../../Global/IFont.h"
 #include "../../../../../../Global/IFontEngine.h"
 
-using namespace std;
-
 /**
  * This attract scene displays the title logo for a limited time.
  */

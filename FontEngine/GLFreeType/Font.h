@@ -42,9 +42,6 @@
 #include "../../Global/IFont.h" 
 #include "../../Global/ScreenConfiguration.h" 
 
-// Wrap everything in a namespace, that we can use common
-// function names like "print" without worrying about
-// overlapping with anyone else's code.
 class Font:public IFont {
   private:
   double cScale;

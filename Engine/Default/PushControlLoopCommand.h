@@ -26,15 +26,13 @@
 
 #include "IControlLoop.h"
 
-using namespace std;
-
 class PushControlLoopCommand:public ICommand {
   private:
   IControlLoop* cControlLoopToPush;
-  stack<IControlLoop*>* cControlLoopStackPointer;
+  std::stack<IControlLoop*>* cControlLoopStackPointer;
   
   public:
-  PushControlLoopCommand(stack<IControlLoop*>*, IControlLoop&);
+  PushControlLoopCommand(std::stack<IControlLoop*>*, IControlLoop&);
 
   /*************************************************************************\
    * Implemented methods of ICommand.h                                     *

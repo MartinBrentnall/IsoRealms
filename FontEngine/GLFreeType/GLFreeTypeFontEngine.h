@@ -30,11 +30,9 @@
 #include "../../Global/DOMNodeWrapper.h"
 #include "../../Global/System.h"
 
-using namespace std;
-
 class GLFreeTypeFontEngine:public IFontEngine {
   private:
-  map<string, Font*> cRegisteredFonts;
+  std::map<std::string, Font*> cRegisteredFonts;
 
   /**
    * Parse a single font from the specified node.
@@ -48,7 +46,7 @@ class GLFreeTypeFontEngine:public IFontEngine {
   /**************************************************************************\
    * Implemented methods of IFontEngine.h                                   *
   \**************************************************************************/
-  IFont* getFont(string);
+  IFont* getFont(std::string);
 };
 
 #endif
