@@ -23,7 +23,6 @@
 #include <vector>
 #include <xercesc/util/PlatformUtils.hpp>
 #include <SDL/SDL.h>
-#include <SDL/SDL_mixer.h>
 
 #include "Global/Configuration.h"
 #include "Global/InitException.h"

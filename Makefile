@@ -34,7 +34,7 @@ objs:	$(OBJS)
 
 install:
 	cd Global; make install
-	g++ *.o -o IsoRealms `sdl-config --cflags --libs` -L./IsoRealms -lIsoRealms -lSDL_mixer -lGL -lGLU -lxerces-c -lfreetype
+	g++ *.o -o IsoRealms `sdl-config --cflags --libs` -L./IsoRealms -lIsoRealms -lGL -lGLU -lxerces-c -lfreetype
 	ln -s "$(PWD)" /usr/share/IsoRealms
 
 all:
