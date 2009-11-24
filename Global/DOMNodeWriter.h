@@ -19,6 +19,7 @@
 #ifndef DOM_NODE_WRITER_H
 #define DOM_NODE_WRITER_H
 
+#include <cstdio>
 #include <iostream>
 #include <string>
 #include <xercesc/dom/DOM.hpp>
