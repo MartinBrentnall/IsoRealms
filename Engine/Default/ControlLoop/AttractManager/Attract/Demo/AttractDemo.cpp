@@ -20,6 +20,7 @@
 
 AttractDemo::AttractDemo() {
   init();
+  cRotation = 0.0f;
 }
 
 void AttractDemo::init() {

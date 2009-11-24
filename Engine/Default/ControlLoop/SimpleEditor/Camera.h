@@ -21,7 +21,7 @@
 
 #include <GL/gl.h>
 #include <SDL/SDL.h>
-#include <math.h>
+#include <cmath>
 #include <string>
 #include <map>
 
