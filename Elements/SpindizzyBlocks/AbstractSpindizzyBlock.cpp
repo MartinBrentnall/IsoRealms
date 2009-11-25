@@ -355,7 +355,10 @@ void AbstractSpindizzyBlock::save(DOMNodeWriter* node, BlockLocation& zoneLocati
   cStartLocation.saveRelative(mLocationNode, zoneLocation);
   // TODO: Only save size if it's bigger than 1.
   DOMNodeWriter* mSizeNode = node->addBranch("Size");
-  cEndLocation.saveRelative(mSizeNode, cStartLocation);
+  BlockLocation mEndLocation = cEndLocation;
+  mEndLocation.x++;
+  mEndLocation.y++;
+  mEndLocation.saveRelative(mSizeNode, cStartLocation);
   if (!isFlat()) {
     if (isSplit()) {
       DOMNodeWriter* mSplitNode = node->addBranch("Split");
