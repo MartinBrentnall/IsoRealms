@@ -19,7 +19,7 @@
 #ifndef SPINDIZZY_JEWEL_FACTORY_H
 #define SPINDIZZY_JEWEL_FACTORY_H
 
-#include <math.h>
+#include <cmath>
 
 #include "../../Plugins/SimpleModel/ISimpleModelFactory.h"
 

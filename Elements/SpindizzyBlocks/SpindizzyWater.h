@@ -28,8 +28,8 @@
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
 
 #include "ISurfaceCalculator.h"
-// TODO: Use a different class for water?
 #include "RollableSurface.h"
+#include "WallSurface.h"
 
 class SpindizzyWater:public IElement,
                      public IRollableSurfaceProvider {
@@ -41,9 +41,8 @@ class SpindizzyWater:public IElement,
 
   ISpindizzyTextureSet** cSpindizzyTextureSet;
   BlockLocation cStartLocation;
+  BlockLocation cEndLocation;
   InitStage cInitStage;
-  int cEast;
-  int cNorth;
   
   /**
    * TODO: Document
@@ -51,7 +50,7 @@ class SpindizzyWater:public IElement,
   std::vector<IRollableSurface*> getWaterSurfaces();
 
   public:
-  SpindizzyWater(IElementFactory*, BlockLocation*, int, int, ISpindizzyTextureSet**);
+  SpindizzyWater(IElementFactory*, BlockLocation*, BlockLocation*, ISpindizzyTextureSet**);
 
   /*************************************************************************\
    * Implemented methods of IElement.h                                     *

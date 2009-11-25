@@ -28,8 +28,7 @@ void SpindizzyWaterFactory::configureElement() {
 
 IElement* SpindizzyWaterFactory::getElement(DOMNodeWrapper* node, BlockLocation* zoneLocation) {
   BlockLocation mStartLocation;
-  int mEast;
-  int mNorth;
+  BlockLocation mEndLocation;
   // TODO: Should throw something if these are not specified!
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
@@ -37,11 +36,11 @@ IElement* SpindizzyWaterFactory::getElement(DOMNodeWrapper* node, BlockLocation*
     if (mValueAsString == "Location") {
       mStartLocation.setRelative(mNode, *zoneLocation);
     } else if (mValueAsString == "Size") {
-      mEast = mNode->getIntegerAttribute("x");
-      mNorth = mNode->getIntegerAttribute("y");
+      mEndLocation.setRelative(mNode, mStartLocation);
     }
   }
-  SpindizzyWater* mLoadedWater = new SpindizzyWater(this, &mStartLocation, mEast + mStartLocation.x, mNorth + mStartLocation.y, cSpindizzyTextureSet);
+  mEndLocation.z++;
+  SpindizzyWater* mLoadedWater = new SpindizzyWater(this, &mStartLocation, &mEndLocation, cSpindizzyTextureSet);
   cContent.push_back(mLoadedWater);
   return mLoadedWater;
 }
@@ -64,7 +63,7 @@ bool SpindizzyWaterFactory::keyDown(SDLKey& key) {
       if (cStartWaterLocation == NULL) {
         cStartWaterLocation = new BlockLocation(*cEditingLocation);
       } else {
-        SpindizzyWater* mNewBlock = new SpindizzyWater(this, cStartWaterLocation, cEditingLocation->x, cEditingLocation->y, cSpindizzyTextureSet);
+        SpindizzyWater* mNewBlock = new SpindizzyWater(this, cStartWaterLocation, cEditingLocation, cSpindizzyTextureSet);
         cContent.push_back(mNewBlock);
         cGateway->pushElement(mNewBlock);
         delete cStartWaterLocation;
@@ -117,7 +116,7 @@ void SpindizzyWaterFactory::renderIcon() {
   glColor3f(1.0f, 1.0f, 1.0f);
   if (cSampleWater == NULL) {
     BlockLocation mIdentityBlockLocation(0, 0, 0);
-    cSampleWater = new SpindizzyWater(this, &mIdentityBlockLocation, 0, 0, cSpindizzyTextureSet);
+    cSampleWater = new SpindizzyWater(this, &mIdentityBlockLocation, &mIdentityBlockLocation, cSpindizzyTextureSet);
   }
   cSampleWater->renderStatic();
 }

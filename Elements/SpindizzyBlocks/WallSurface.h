@@ -90,6 +90,20 @@ class WallSurface:public IWallSurface {
   public:
 
   /**
+   * Construct a non-renderable wall (don't try!  You'll get a segfault).
+   * TODO: Merge this and the other constructor
+   * 
+   * @param int  X block start location of the wall.
+   * @param int  Y block start location of the wall.
+   * @param int  Z (height) block start location of the wall.
+   * @param int  Length of the wall.
+   * @param int  Height of the wall.
+   * @param int  Step slope of the wall.
+   * @param FaceDirection  facing direction of the wall.
+   */
+  WallSurface(int, int, int, int, int, int, FaceDirection);
+
+  /**
    * Construct the wall.
    * 
    * @param int  X block start location of the wall.
@@ -100,6 +114,7 @@ class WallSurface:public IWallSurface {
    * @param int  Step slope of the wall.
    * @param FaceDirection  facing direction of the wall.
    * @param ISpindizzyTexture*  Appearance of the wall.
+   * @param ISpindizzyTextureSet::TextureType  Appearance of the wall.
    */
   WallSurface(int, int, int, int, int, int, FaceDirection, ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType);
 

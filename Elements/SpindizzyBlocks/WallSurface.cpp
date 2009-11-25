@@ -18,6 +18,20 @@
  */
 #include "WallSurface.h"
 
+WallSurface::WallSurface(int x, int y, int z, int length, int height, int topSlope, FaceDirection facing) {
+  cX = x;
+  cY = y;
+  cZ = z;
+  cLength = length;
+  if (topSlope < 0) {
+    cHeight = height - cLength * topSlope;
+  } else {
+    cHeight = height;
+  }
+  cFacing = facing;
+  cTopSlope = topSlope;
+}
+
 WallSurface::WallSurface(int x, int y, int z, int length, int height, int topSlope, FaceDirection facing, ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet::TextureType textureType) {
   cX = x;
   cY = y;
@@ -63,11 +77,11 @@ void WallSurface::render() {
   float mBlockRadius = IsoRealmsConstants::BLOCK_RADIUS;
   double mFromX = cX + (cFacing == EAST ? mBlockRadius : -mBlockRadius);
   double mFromY = cY + (cFacing == NORTH ? mBlockRadius : -mBlockRadius); 
-  double mFromZ = (cZ - 1) * IsoRealmsConstants::BLOCK_HEIGHT;
+  double mFromZ = cZ * IsoRealmsConstants::BLOCK_HEIGHT;
   double mToX = (cFacing == WEST || cFacing == EAST) ? (mFromX) : cX - mBlockRadius + cLength;
   double mToY = (cFacing == SOUTH || cFacing == NORTH) ? (mFromY) : cY - mBlockRadius + cLength;
-  double mHighStartSlopeZ = (cZ + cHeight - 1) * IsoRealmsConstants::BLOCK_HEIGHT;
-  double mHighEndSlopeZ =  ((cZ + cHeight - 1) + cTopSlope * cLength) * IsoRealmsConstants::BLOCK_HEIGHT;
+  double mHighStartSlopeZ = (cZ + cHeight) * IsoRealmsConstants::BLOCK_HEIGHT;
+  double mHighEndSlopeZ =  ((cZ + cHeight) + cTopSlope * cLength) * IsoRealmsConstants::BLOCK_HEIGHT;
   double mHighStartSlopeTexture = cZ + cHeight;
   double mHighEndSlopeTexture = (cZ + cHeight) + cTopSlope * cLength;
 

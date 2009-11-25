@@ -46,11 +46,7 @@ IElement* SpindizzyBlockFactory::getElement(DOMNodeWrapper* node, BlockLocation*
     }
   }
   bool mAddition = mStartLocation.z <= mEndLocation.z;
-  if (!mAddition) {
-    int mTemp = mStartLocation.z;
-    mStartLocation.z = mEndLocation.z + 1;
-    mEndLocation.z = mTemp - 1;
-  }
+  (mAddition ? mStartLocation.z : mEndLocation.z)++;
   AbstractSpindizzyBlock* mLoadedBlock = createBlock(&mStartLocation, &mEndLocation, cSpindizzyTextureSet, cBlockProperties, mAddition);
   cContent.push_back(mLoadedBlock);
   return mLoadedBlock;

@@ -18,13 +18,14 @@
  */
 #include "SpindizzyWater.h"
 
-SpindizzyWater::SpindizzyWater(IElementFactory* elementFactory, BlockLocation* startLocation, int east, int north, ISpindizzyTextureSet** textureSet) : IElement(elementFactory) {
+SpindizzyWater::SpindizzyWater(IElementFactory* elementFactory, BlockLocation* startLocation, BlockLocation* endLocation, ISpindizzyTextureSet** textureSet) : IElement(elementFactory) {
   cSpindizzyTextureSet = textureSet;
-  cStartLocation = BlockLocation(east  > startLocation->x ? east  : startLocation->x,
-                                 north > startLocation->y ? north : startLocation->y,
-                                         startLocation->z);;
-  cEast  = east  > startLocation->x ? startLocation->x : east;
-  cNorth = north > startLocation->y ? startLocation->y : north;
+  cStartLocation = BlockLocation(endLocation->x > startLocation->x ? startLocation->x : endLocation->x,
+                                 endLocation->y > startLocation->y ? startLocation->y : endLocation->y,
+                                 endLocation->z <= startLocation->z ? startLocation->z : endLocation->z);
+  cEndLocation = BlockLocation(endLocation->x > startLocation->x ? endLocation->x : startLocation->x,
+                               endLocation->y > startLocation->y ? endLocation->y : startLocation->y,
+                              (endLocation->z <= startLocation->z ? endLocation->z : startLocation->z) - 1);
 }
 
 void SpindizzyWater::setDirty() {
@@ -41,7 +42,7 @@ std::vector<IRollableSurface*> SpindizzyWater::getWaterSurfaces() {
 
 std::vector<IRollableSurface*> SpindizzyWater::getRollableSurfaces(IRollableSurface::FaceDirection facing) {
   std::vector<IRollableSurface*> mSurfaces;
-  IRollableSurface* mWaterSurface = createSubSurface(facing, cNorth, cEast, cStartLocation.y, cStartLocation.x);
+  IRollableSurface* mWaterSurface = createSubSurface(facing, cEndLocation.y, cEndLocation.x, cStartLocation.y, cStartLocation.x);
   mSurfaces.push_back(mWaterSurface);
   return mSurfaces;
 }
@@ -73,18 +74,25 @@ IRollableSurface* SpindizzyWater::createSubSurface(IRollableSurface::FaceDirecti
   return new RollableSurface(cSpindizzyTextureSet, ISpindizzyTextureSet::WATER, north, east, south, west, cStartLocation.z, 0, 0, facing/*, TODO:CONDITIONAL  mSurfaceCondition*/);
 }
 
-IWallSurface* SpindizzyWater::createSubSurface(int, int, IWallSurface::FaceDirection, int, int, int, int, int) {
-  return NULL; // Water doesn't have walls.
+IWallSurface* SpindizzyWater::createSubSurface(int x, int y, IWallSurface::FaceDirection facing, int length, int startHeight, int endHeight, int topSlope, int bottomSlope) {
+  return new WallSurface(x, y, startHeight, length, endHeight, 0, facing);
 }
 
-std::vector<IWallSurface*> SpindizzyWater::getWallSurfaces(int, IWallSurface::FaceDirection) {
-  std::vector<IWallSurface*> mEmptyVector;  
-  return mEmptyVector;
+std::vector<IWallSurface*> SpindizzyWater::getWallSurfaces(int location, IWallSurface::FaceDirection facing) {
+  std::vector<IWallSurface*> mWallSurfaces;
+  bool mFacesPole = facing == IWallSurface::NORTH || facing == IWallSurface::SOUTH;
+  int mX = mFacesPole ? cStartLocation.x : location;
+  int mY = mFacesPole ? location : cStartLocation.y;
+  int mLength = (mFacesPole ? cEndLocation.x - cStartLocation.x : cEndLocation.y - cStartLocation.y) + 1;
+  int mBaseHeight = cStartLocation.z;
+  int mHeight = cEndLocation.z - cStartLocation.z;
+  IWallSurface* mWallSurface = new WallSurface(mX, mY, mBaseHeight, mLength, mHeight, 0, facing);
+  mWallSurfaces.push_back(mWallSurface);
+  return mWallSurfaces;
 }
 
 BlockArea* SpindizzyWater::getCoverage() {
-  BlockLocation mEndLocation(cEast, cNorth, cStartLocation.z);
-  return new BlockArea(cStartLocation, mEndLocation);
+  return new BlockArea(cStartLocation, cEndLocation);
 }
 
 void SpindizzyWater::removed() {
@@ -133,8 +141,7 @@ void SpindizzyWater::save(DOMNodeWriter* node, BlockLocation& location) {
   cStartLocation.saveRelative(mLocationNode, location);
   // TODO: Only save size if it's bigger than 1.
   DOMNodeWriter* mSizeNode = node->addBranch("Size");
-  mSizeNode->addAttribute("x", cEast - cStartLocation.x);
-  mSizeNode->addAttribute("y", cNorth - cStartLocation.y);
+  cEndLocation.saveRelative(mSizeNode, cStartLocation);
 }
 
 //  glBindTexture(GL_TEXTURE_2D, 0);

@@ -20,17 +20,13 @@
 
 AbstractSpindizzyBlock::AbstractSpindizzyBlock(IElementFactory* elementFactory, BlockLocation* startLocation, BlockLocation* endLocation, ISpindizzyTextureSet** spindizzyTextureSet, SpindizzyBlockProperties* blockProperties, bool addition) : IElement(elementFactory) {
   cSpindizzyTextureSet = spindizzyTextureSet;
-  cStartLocation = BlockLocation(endLocation->x > startLocation->x ? startLocation->x : endLocation->x,
-                                 endLocation->y > startLocation->y ? startLocation->y : endLocation->y,
-                                 endLocation->z > startLocation->z ? startLocation->z : endLocation->z);
-  cEndLocation = BlockLocation(endLocation->x > startLocation->x ? endLocation->x : startLocation->x,
-                               endLocation->y > startLocation->y ? endLocation->y : startLocation->y,
-                               endLocation->z > startLocation->z ? endLocation->z : startLocation->z);
-  if (!addition) {
-    int mTemp = cEndLocation.z;
-    cEndLocation.z = cStartLocation.z - 1;
-    cStartLocation.z = mTemp + 1;
-  }
+  cStartLocation = BlockLocation(endLocation->x > startLocation->x              ? startLocation->x : endLocation->x,
+                                 endLocation->y > startLocation->y              ? startLocation->y : endLocation->y,
+                                (endLocation->z > startLocation->z) == addition ? startLocation->z : endLocation->z);
+  cEndLocation = BlockLocation(endLocation->x > startLocation->x              ? endLocation->x : startLocation->x,
+                               endLocation->y > startLocation->y              ? endLocation->y : startLocation->y,
+                              (endLocation->z > startLocation->z) == addition ? endLocation->z : startLocation->z);
+  (addition ? cStartLocation.z : cEndLocation.z)--;
   cNorthWestHeight = blockProperties->getNorthWestHeight();
   cNorthEastHeight = blockProperties->getNorthEastHeight();
   cSouthWestHeight = blockProperties->getSouthWestHeight();
@@ -126,7 +122,7 @@ IRollableSurface* AbstractSpindizzyBlock::createSubSurface(IRollableSurface::Fac
       // TODO: Make sure the subsurface does not violate the stepping
       int mHeight = getBottomHeight(east, north);
       // TODO: Get condition for surface.
-      return new RollableSurface(cSpindizzyTextureSet, mTextureType, north, east, south, west, mHeight - 1, 0, 0, faceDirection/*, TODO:CONDITIONAL  mSurfaceCondition*/);
+      return new RollableSurface(cSpindizzyTextureSet, mTextureType, north, east, south, west, mHeight, 0, 0, faceDirection/*, TODO:CONDITIONAL  mSurfaceCondition*/);
     }
   }
   std::cout << "ERROR: Face direction does not exist" << std::endl;
@@ -203,7 +199,7 @@ std::vector<IWallSurface*> AbstractSpindizzyBlock::getWallSurfaces(int location,
       int mX = mFacesPole ? i : location;
       int mY = mFacesPole ? location : i;
       int mBaseHeight = getBottomHeight(mX, mY);
-      int mHeight = (cEndLocation.z - cStartLocation.z) + 1;
+      int mHeight = cEndLocation.z - cStartLocation.z;
       IWallSurface* mWallSurface = new WallSurface(mX, mY, mBaseHeight, 1, mHeight, mSlope, facing, cSpindizzyTextureSet, mTexture);
       mWallSurfaces.push_back(mWallSurface);
     }
@@ -214,8 +210,9 @@ std::vector<IWallSurface*> AbstractSpindizzyBlock::getWallSurfaces(int location,
     int mLowestX = mFacesPole ? (mSlope > 0 ? cStartLocation.x : cEndLocation.x) : mX;
     int mLowestY = mFacesPole ? mY : (mSlope > 0 ? cStartLocation.y : cEndLocation.y);
     int mBaseHeight = getBottomHeight(mX, mY);
-    int mHeight = cSteppedBottom ? (cEndLocation.z - cStartLocation.z) + 1 + getMinimumWallElevation(facing)
-                                 : (getRollableSurfaceHeight(mLowestX, mLowestY) + 1 + getMinimumWallElevation(facing)) - cStartLocation.z;
+    int mHeight = cSteppedBottom ? (cEndLocation.z - cStartLocation.z) + getMinimumWallElevation(facing)
+                                 : (getRollableSurfaceHeight(mLowestX, mLowestY) + getMinimumWallElevation(facing)) - cStartLocation.z;
+    std::cout << "Making wall from " << mBaseHeight << " to " << mHeight << std::endl;
     IWallSurface* mWallSurface = new WallSurface(mX, mY, mBaseHeight, mLength, mHeight, mSlope, facing, cSpindizzyTextureSet, mTexture);
     mWallSurfaces.push_back(mWallSurface);
   }
