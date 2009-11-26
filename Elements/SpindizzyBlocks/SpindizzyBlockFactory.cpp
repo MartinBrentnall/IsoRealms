@@ -118,51 +118,52 @@ bool SpindizzyBlockFactory::input(SDL_Event& event) {
 
 void SpindizzyBlockFactory::renderEditingPreview() {
   if (cStartBlockLocation != NULL) {
-    float x  = (cEditingLocation->x > cStartBlockLocation->x ? cEditingLocation->x    : cStartBlockLocation->x) + IsoRealmsConstants::BLOCK_RADIUS;
-    float xs = (cEditingLocation->x > cStartBlockLocation->x ? cStartBlockLocation->x : cEditingLocation->x)    - IsoRealmsConstants::BLOCK_RADIUS;
-    float y  = (cEditingLocation->y > cStartBlockLocation->y ? cEditingLocation->y    : cStartBlockLocation->y) + IsoRealmsConstants::BLOCK_RADIUS;
-    float ys = (cEditingLocation->y > cStartBlockLocation->y ? cStartBlockLocation->y : cEditingLocation->y)    - IsoRealmsConstants::BLOCK_RADIUS;
-    float z  = (cEditingLocation->z > cStartBlockLocation->z ? cEditingLocation->z    : cStartBlockLocation->z) * IsoRealmsConstants::BLOCK_HEIGHT;
-    float zs = (cEditingLocation->z > cStartBlockLocation->z ? cStartBlockLocation->z : cEditingLocation->z)    * IsoRealmsConstants::BLOCK_HEIGHT - IsoRealmsConstants::BLOCK_HEIGHT;
-    float zn = zs;
-    float ze = zs;
-    float zw = zs;
+    float mEast  = (cEditingLocation->x > cStartBlockLocation->x ? cEditingLocation->x    : cStartBlockLocation->x) + IsoRealmsConstants::BLOCK_RADIUS;
+    float mWest  = (cEditingLocation->x > cStartBlockLocation->x ? cStartBlockLocation->x : cEditingLocation->x)    - IsoRealmsConstants::BLOCK_RADIUS;
+    float mNorth = (cEditingLocation->y > cStartBlockLocation->y ? cEditingLocation->y    : cStartBlockLocation->y) + IsoRealmsConstants::BLOCK_RADIUS;
+    float mSouth = (cEditingLocation->y > cStartBlockLocation->y ? cStartBlockLocation->y : cEditingLocation->y)    - IsoRealmsConstants::BLOCK_RADIUS;
+    float mBottom = (cEditingLocation->z > cStartBlockLocation->z ? cStartBlockLocation->z : cEditingLocation->z)    * IsoRealmsConstants::BLOCK_HEIGHT - IsoRealmsConstants::BLOCK_HEIGHT;
+    float mTopSouthWest = (cEditingLocation->z > cStartBlockLocation->z ? cEditingLocation->z    : cStartBlockLocation->z) * IsoRealmsConstants::BLOCK_HEIGHT;
+    float mTopSouthEast = mTopSouthWest;
+    float mTopNorthEast = mTopSouthWest;
+    float mTopNorthWest = mTopSouthWest;
   
     int mXSlope = cBlockProperties->getXSlope();
     if (mXSlope > 0) {
-      ze += mXSlope * (cEditingLocation->x) * IsoRealmsConstants::BLOCK_HEIGHT;
-      zn += mXSlope * (cEditingLocation->x) * IsoRealmsConstants::BLOCK_HEIGHT;
+      mTopSouthEast -= mXSlope * ((cStartBlockLocation->x - cEditingLocation->x) - 1) * IsoRealmsConstants::BLOCK_HEIGHT;
+      mTopNorthEast -= mXSlope * ((cStartBlockLocation->x - cEditingLocation->x) - 1) * IsoRealmsConstants::BLOCK_HEIGHT;
     } else if (mXSlope < 0) {
-      zw -= mXSlope * (cEditingLocation->x) * IsoRealmsConstants::BLOCK_HEIGHT;
-      zs -= mXSlope * (cEditingLocation->x) * IsoRealmsConstants::BLOCK_HEIGHT;
+      mTopNorthWest += mXSlope * ((cEditingLocation->x - cStartBlockLocation->x) - 1) * IsoRealmsConstants::BLOCK_HEIGHT;
+      mTopSouthWest += mXSlope * ((cEditingLocation->x - cStartBlockLocation->x) - 1) * IsoRealmsConstants::BLOCK_HEIGHT;
     }
   
     int mYSlope = cBlockProperties->getYSlope();
     if (mYSlope > 0) {
-      zw += mYSlope * (cEditingLocation->y) * IsoRealmsConstants::BLOCK_HEIGHT;
-      zn += mYSlope * (cEditingLocation->y) * IsoRealmsConstants::BLOCK_HEIGHT;
+      mTopNorthWest -= mYSlope * ((cStartBlockLocation->y - cEditingLocation->y) - 1) * IsoRealmsConstants::BLOCK_HEIGHT;
+      mTopNorthEast -= mYSlope * ((cStartBlockLocation->y - cEditingLocation->y) - 1) * IsoRealmsConstants::BLOCK_HEIGHT;
     } else if (mYSlope < 0) {
-      ze -= mYSlope * (cEditingLocation->y) * IsoRealmsConstants::BLOCK_HEIGHT;
-      zs -= mYSlope * (cEditingLocation->y) * IsoRealmsConstants::BLOCK_HEIGHT;
+      mTopSouthEast += mYSlope * ((cEditingLocation->y - cStartBlockLocation->y) - 1) * IsoRealmsConstants::BLOCK_HEIGHT;
+      mTopSouthWest += mYSlope * ((cEditingLocation->y - cStartBlockLocation->y) - 1) * IsoRealmsConstants::BLOCK_HEIGHT;
     }
   
     glBindTexture(GL_TEXTURE_2D, 0);
     glColor3f(1.0, 0.5f, 0.5f);
+    glBegin(GL_LINE_LOOP);
+    glVertex3f(mWest, mSouth, mTopSouthWest);
+    glVertex3f(mEast, mSouth, mTopSouthEast);
+    glVertex3f(mEast, mSouth, mBottom);
+    glVertex3f(mWest, mSouth, mBottom);
+    glVertex3f(mWest, mNorth, mBottom);
+    glVertex3f(mEast, mNorth, mBottom);
+    glVertex3f(mEast, mNorth, mTopNorthEast);
+    glVertex3f(mWest, mNorth, mTopNorthWest);
+    glEnd();
+
     glBegin(GL_LINES);
-    glVertex3f(xs, ys, zs); glVertex3f(x,  ys, ze);
-    glVertex3f(x,  ys, ze); glVertex3f(x,  y,  zn);
-    glVertex3f(x,  y,  zn); glVertex3f(xs, y,  zw);
-    glVertex3f(xs, y,  zw); glVertex3f(xs, ys, zs);
-  
-    glVertex3f(xs, ys, z);   glVertex3f(x,  ys, z);
-    glVertex3f(x,  ys, z);   glVertex3f(x,  y,  z);
-    glVertex3f(x,  y,  z);   glVertex3f(xs, y,  z);
-    glVertex3f(xs, y,  z);   glVertex3f(xs, ys, z);
-  
-    glVertex3f(x,  ys, ze); glVertex3f(x,  ys, z);
-    glVertex3f(x,  y,  zn); glVertex3f(x,  y,  z);
-    glVertex3f(xs, y,  zw); glVertex3f(xs, y,  z);
-    glVertex3f(xs, ys, zs); glVertex3f(xs, ys, z);
+    glVertex3f(mWest, mSouth, mTopSouthWest);  glVertex3f(mWest, mSouth, mBottom);
+    glVertex3f(mWest, mNorth, mTopSouthWest);  glVertex3f(mWest, mNorth, mBottom);
+    glVertex3f(mEast, mSouth, mBottom);        glVertex3f(mEast, mNorth, mBottom);
+    glVertex3f(mEast, mSouth, mTopSouthEast);  glVertex3f(mEast, mNorth, mTopNorthEast);
     glEnd();
   }
 }
