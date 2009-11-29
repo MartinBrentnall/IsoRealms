@@ -40,6 +40,10 @@ IPlugin* SpindizzyJewelModelFactory::getPlugin(PlugSocket* socket) {
   return NULL;
 }
 
+void SpindizzyJewelModelFactory::notifyZoneAction(Zone* zone) {
+  // Nothing to do.
+}
+
 void SpindizzyJewelModelFactory::initPlugin(Zone* zone) {
   // Nothing to do.
 }

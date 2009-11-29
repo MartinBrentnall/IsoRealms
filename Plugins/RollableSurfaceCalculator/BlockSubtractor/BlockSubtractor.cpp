@@ -18,6 +18,10 @@
  */
 #include "BlockSubtractor.h"
 
+void BlockSubtractor::notifyZoneAction(Zone* zone) {
+  cCache.setZone(zone);
+}
+
 void BlockSubtractor::initPlugin(Zone* zone) {
   cCache.setZone(zone);
 }

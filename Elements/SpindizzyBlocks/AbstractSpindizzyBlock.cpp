@@ -212,7 +212,6 @@ std::vector<IWallSurface*> AbstractSpindizzyBlock::getWallSurfaces(int location,
     int mBaseHeight = getBottomHeight(mX, mY);
     int mHeight = cSteppedBottom ? (cEndLocation.z - cStartLocation.z) + getMinimumWallElevation(facing)
                                  : (getRollableSurfaceHeight(mLowestX, mLowestY) + getMinimumWallElevation(facing)) - cStartLocation.z;
-    std::cout << "Making wall from " << mBaseHeight << " to " << mHeight << std::endl;
     IWallSurface* mWallSurface = new WallSurface(mX, mY, mBaseHeight, mLength, mHeight, mSlope, facing, cSpindizzyTextureSet, mTexture);
     mWallSurfaces.push_back(mWallSurface);
   }

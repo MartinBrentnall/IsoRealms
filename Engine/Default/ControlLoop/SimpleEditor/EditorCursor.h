@@ -72,6 +72,7 @@ class EditorCursor:public BlockLocation, public IsoRealmsConstants {
   void setDirty(IElement*);
 
   Zone* getZone();
+  Map* getMap();
 
   ~EditorCursor();
 };

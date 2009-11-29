@@ -77,6 +77,7 @@ class DefaultFourColourSupport:public IFourColourSupport {
   /**********************\
    * Implements IPlugin *
   \**********************/
+  void notifyZoneAction(Zone*);
   void initPlugin(Zone*);
   std::vector<ICommandInfo*> getCommandInfo();
   void setEditingInfo(IComponentContainer*);

@@ -75,6 +75,10 @@ int Map::getZoneIndex(Zone* zone) {
   return -1;
 }
 
+void Map::notifyZoneAction(Zone* zone) {
+  cPluginRegistry.notifyZoneAction(zone);
+}
+
 void Map::initMap() {
   std::vector<Zone*> mCleanZones;
   for (unsigned int i = 0; i < cDirtyZones.size(); i++) {

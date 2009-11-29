@@ -98,6 +98,15 @@ class Map:public IZoneChangeListener {
 
   PluginRegistry* getPluginRegistry();
 
+  /**
+   * This function is called when an editing action is about to be performed on
+   * a zone.
+   * 
+   * @param Zone*  The zone on which an editing action is about to be
+   *           performed.
+   */
+  void notifyZoneAction(Zone*);
+
   /**********************************\
    * Implements IZoneChangeListener *
   \**********************************/

@@ -120,8 +120,8 @@ void Camera::move(float amount) {
   cCurrentViewPoint->cLocation.z += amount;
   if (cCurrentViewPoint->cLocation.z > -5.0f) {
     cCurrentViewPoint->cLocation.z = -5.0f;
-  } else if (cCurrentViewPoint->cLocation.z < -50.0f) {
-    cCurrentViewPoint->cLocation.z = -50.0f;
+  } else if (cCurrentViewPoint->cLocation.z < -500.0f) {
+    cCurrentViewPoint->cLocation.z = -500.0f;
   }
 }
 

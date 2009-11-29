@@ -36,6 +36,10 @@ IPlugin* DummyPlugin::getPlugin(PlugSocket*) {
   return NULL;
 }
 
+void DummyPlugin::notifyZoneAction(Zone*) {
+  // Nothing to do.
+}
+
 void DummyPlugin::initPlugin(Zone*) {
   // Nothing to do.
 }

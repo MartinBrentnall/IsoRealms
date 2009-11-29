@@ -130,20 +130,24 @@ void SpindizzyBlockFactory::renderEditingPreview() {
   
     int mXSlope = cBlockProperties->getXSlope();
     if (mXSlope > 0) {
-      mTopSouthEast -= mXSlope * ((cStartBlockLocation->x - cEditingLocation->x) - 1) * IsoRealmsConstants::BLOCK_HEIGHT;
-      mTopNorthEast -= mXSlope * ((cStartBlockLocation->x - cEditingLocation->x) - 1) * IsoRealmsConstants::BLOCK_HEIGHT;
+      int mHeightOffset = mXSlope * ((mWest - mEast)) * IsoRealmsConstants::BLOCK_HEIGHT;
+      mTopSouthEast -= mHeightOffset;
+      mTopNorthEast -= mHeightOffset;
     } else if (mXSlope < 0) {
-      mTopNorthWest += mXSlope * ((cEditingLocation->x - cStartBlockLocation->x) - 1) * IsoRealmsConstants::BLOCK_HEIGHT;
-      mTopSouthWest += mXSlope * ((cEditingLocation->x - cStartBlockLocation->x) - 1) * IsoRealmsConstants::BLOCK_HEIGHT;
+      int mHeightOffset = mXSlope * ((mWest - mEast)) * IsoRealmsConstants::BLOCK_HEIGHT;
+      mTopNorthWest += mHeightOffset;
+      mTopSouthWest += mHeightOffset;
     }
   
     int mYSlope = cBlockProperties->getYSlope();
     if (mYSlope > 0) {
-      mTopNorthWest -= mYSlope * ((cStartBlockLocation->y - cEditingLocation->y) - 1) * IsoRealmsConstants::BLOCK_HEIGHT;
-      mTopNorthEast -= mYSlope * ((cStartBlockLocation->y - cEditingLocation->y) - 1) * IsoRealmsConstants::BLOCK_HEIGHT;
+      int mHeightOffset = mYSlope * ((mSouth - mNorth)) * IsoRealmsConstants::BLOCK_HEIGHT;
+      mTopNorthWest -= mHeightOffset;
+      mTopNorthEast -= mHeightOffset;
     } else if (mYSlope < 0) {
-      mTopSouthEast += mYSlope * ((cEditingLocation->y - cStartBlockLocation->y) - 1) * IsoRealmsConstants::BLOCK_HEIGHT;
-      mTopSouthWest += mYSlope * ((cEditingLocation->y - cStartBlockLocation->y) - 1) * IsoRealmsConstants::BLOCK_HEIGHT;
+      int mHeightOffset = mYSlope * ((mSouth - mNorth)) * IsoRealmsConstants::BLOCK_HEIGHT;
+      mTopSouthEast += mHeightOffset;
+      mTopSouthWest += mHeightOffset;
     }
   
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -161,7 +165,7 @@ void SpindizzyBlockFactory::renderEditingPreview() {
 
     glBegin(GL_LINES);
     glVertex3f(mWest, mSouth, mTopSouthWest);  glVertex3f(mWest, mSouth, mBottom);
-    glVertex3f(mWest, mNorth, mTopSouthWest);  glVertex3f(mWest, mNorth, mBottom);
+    glVertex3f(mWest, mNorth, mTopNorthWest);  glVertex3f(mWest, mNorth, mBottom);
     glVertex3f(mEast, mSouth, mBottom);        glVertex3f(mEast, mNorth, mBottom);
     glVertex3f(mEast, mSouth, mTopSouthEast);  glVertex3f(mEast, mNorth, mTopNorthEast);
     glEnd();

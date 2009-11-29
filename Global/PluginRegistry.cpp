@@ -126,6 +126,15 @@ std::string PluginRegistry::getInstanceName(std::string type, IPlugin* instance)
   return "";
 }
 
+void PluginRegistry::notifyZoneAction(Zone* zone) {
+  for (std::map<std::string, std::map<std::string, IPlugin*> >::iterator i = cPluginInstances.begin(); i != cPluginInstances.end(); i++) {
+    std::map<std::string, IPlugin*> mInstanceOfType = i->second;
+    for (std::map<std::string, IPlugin*>::iterator j = mInstanceOfType.begin(); j != mInstanceOfType.end(); j++) {
+      j->second->notifyZoneAction(zone);
+    }
+  }
+}
+
 void PluginRegistry::initPlugins(Zone* zone) {
   for (std::map<std::string, std::map<std::string, IPlugin*> >::iterator i = cPluginInstances.begin(); i != cPluginInstances.end(); i++) {
     std::map<std::string, IPlugin*> mInstanceOfType = i->second;

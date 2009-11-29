@@ -2,10 +2,10 @@
 <Map>
   <Plugin implementation="DefaultFourColourSupport" instance="TODO_InstanceName" type="FourColourSupport">
     <Configuration>
-      <Floor alpha="0" blue="1" green="0.6" red="0.6"/>
-      <Extra alpha="0" blue="0.3" green="1" red="1"/>
-      <Wall alpha="0" blue="0" green="0" red="0.6"/>
-      <Background alpha="0" blue="0.5" green="0" red="0"/>
+      <Floor alpha="0" blue="0" green="0.6" red="0"/>
+      <Extra alpha="0" blue="1" green="0" red="0"/>
+      <Wall alpha="0" blue="0.2" green="1" red="1"/>
+      <Background alpha="0" blue="0" green="0" red="0"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="BlockSubtractor" instance="TODO_InstanceName" type="RollableSurfaceCalculator">
@@ -3715,6 +3715,12 @@
         <Location x="2" y="0" z="6"/>
         <Size x="1" y="1" z="1"/>
       </Element>
+      <Element set="Jewels" type="">
+        <Location x="7" y="3" z="3"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="2" y="0" z="7"/>
+      </Element>
     </Elements>
   </Zone>
   <Zone>
@@ -3926,7 +3932,71 @@
   <Zone>
     <Location x="81" y="8" z="0"/>
     <Size x="7" y="7" z="7"/>
-    <Elements/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="8" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="1"/>
+        <Size x="7" y="8" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="5" y="7" z="6"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="1" z="5"/>
+        <Size x="4" y="5" z="-6"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="1" z="0"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="2" z="1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="3" z="2"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="4" z="3"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="1" z="0"/>
+        <Size x="3" y="4" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="2" z="-1"/>
+        <Size x="1" y="1" z="6"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="4" z="-1"/>
+        <Size x="1" y="1" z="6"/>
+        <Slope NorthSouth="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="ArrowEast">
+        <Location x="1" y="3" z="4"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowWest">
+        <Location x="5" y="5" z="4"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="6" z="-1"/>
+        <Size x="1" y="1" z="6"/>
+        <Split Direction="West" NorthEast="1" NorthWest="0" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="0" z="-1"/>
+        <Size x="1" y="1" z="6"/>
+        <Split Direction="East" NorthEast="0" NorthWest="0" SouthEast="1" SouthWest="0"/>
+      </Element>
+    </Elements>
   </Zone>
   <Zone>
     <Location x="1" y="-8" z="0"/>
@@ -10709,7 +10779,43 @@
   <Zone>
     <Location x="161" y="136" z="0"/>
     <Size x="7" y="7" z="7"/>
-    <Elements/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="1" y="8" z="3"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="7" z="-1"/>
+        <Size x="7" y="1" z="3"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="6" z="-1"/>
+        <Size x="6" y="1" z="3"/>
+        <Slope NorthSouth="-1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="6" z="-1"/>
+        <Size x="1" y="1" z="3"/>
+        <Split Direction="West" NorthEast="0" NorthWest="0" SouthEast="1" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="0" z="-1"/>
+        <Size x="1" y="6" z="3"/>
+        <Slope NorthSouth="0" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Ice">
+        <Location x="2" y="0" z="-1"/>
+        <Size x="6" y="6" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Ice">
+        <Location x="7" y="2" z="0"/>
+        <Size x="1" y="1" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Ice">
+        <Location x="7" y="4" z="0"/>
+        <Size x="1" y="1" z="-1"/>
+      </Element>
+    </Elements>
   </Zone>
   <Zone>
     <Location x="-47" y="-8" z="0"/>
@@ -12195,7 +12301,38 @@
   <Zone>
     <Location x="-87" y="-48" z="0"/>
     <Size x="7" y="7" z="7"/>
-    <Elements/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="0" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Ice">
+        <Location x="0" y="1" z="-1"/>
+        <Size x="1" y="3" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Ice">
+        <Location x="1" y="0" z="-1"/>
+        <Size x="7" y="8" z="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowEast">
+        <Location x="1" y="7" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="1" y="7" z="0"/>
+      </Element>
+      <Element set="Blocks" type="ArrowSouth">
+        <Location x="4" y="1" z="-1"/>
+        <Size x="2" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="1" z="0"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="5" y="1" z="0"/>
+      </Element>
+    </Elements>
   </Zone>
   <Zone>
     <Location x="-95" y="-48" z="0"/>
@@ -13135,7 +13272,52 @@
   <Zone>
     <Location x="73" y="32" z="0"/>
     <Size x="7" y="7" z="7"/>
-    <Elements/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="1" y="7" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="0" z="-1"/>
+        <Size x="6" y="1" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="0" z="-1"/>
+        <Size x="1" y="7" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="5" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="5" z="6"/>
+        <Size x="2" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="2" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="2" z="6"/>
+        <Size x="2" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Ice">
+        <Location x="5" y="2" z="-1"/>
+        <Size x="1" y="1" z="7"/>
+      </Element>
+      <Element set="Blocks" type="Ice">
+        <Location x="2" y="5" z="-1"/>
+        <Size x="1" y="1" z="7"/>
+      </Element>
+      <Element set="Blocks" type="Trampoline">
+        <Location x="3" y="3" z="-1"/>
+        <Size x="2" y="2" z="2"/>
+      </Element>
+    </Elements>
   </Zone>
   <Zone>
     <Location x="89" y="32" z="0"/>
@@ -13419,7 +13601,95 @@
   <Zone>
     <Location x="57" y="72" z="0"/>
     <Size x="7" y="7" z="7"/>
-    <Elements/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="5" z="6"/>
+        <Size x="4" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="5" z="-1"/>
+        <Size x="2" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="5" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="5" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="5" z="3"/>
+        <Size x="1" y="3" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="5" z="3"/>
+        <Size x="1" y="3" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="4" z="3"/>
+        <Size x="4" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="0" z="-1"/>
+        <Size x="1" y="2" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="3" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+      </Element>
+      <Element set="Blocks" type="ArrowNorth">
+        <Location x="4" y="3" z="0"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowNorth">
+        <Location x="1" y="3" z="0"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowEast">
+        <Location x="2" y="2" z="0"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowEast">
+        <Location x="5" y="2" z="0"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowSouth">
+        <Location x="6" y="3" z="0"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowSouth">
+        <Location x="3" y="3" z="0"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowWest">
+        <Location x="2" y="4" z="0"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowWest">
+        <Location x="5" y="4" z="0"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchSquareBoth">
+        <Location x="5" y="1" z="0"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchSquareNone">
+        <Location x="2" y="3" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Ice">
+        <Location x="5" y="3" z="0"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="5" y="3" z="1"/>
+      </Element>
+    </Elements>
   </Zone>
   <Zone>
     <Location x="-7" y="-24" z="0"/>
@@ -15048,12 +15318,72 @@
   <Zone>
     <Location x="-87" y="-40" z="0"/>
     <Size x="7" y="7" z="7"/>
-    <Elements/>
+    <Elements>
+      <Element set="Blocks" type="Ice">
+        <Location x="1" y="0" z="-1"/>
+        <Size x="7" y="8" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Water">
+        <Location x="5" y="0" z="0"/>
+        <Size x="0" y="1" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Water">
+        <Location x="4" y="4" z="0"/>
+        <Size x="0" y="0" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="3" z="-1"/>
+        <Size x="2" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowEast">
+        <Location x="7" y="6" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="0" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowWest">
+        <Location x="1" y="0" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="1" y="0" z="0"/>
+      </Element>
+    </Elements>
   </Zone>
   <Zone>
     <Location x="-87" y="-32" z="0"/>
     <Size x="7" y="7" z="7"/>
-    <Elements/>
+    <Elements>
+      <Element set="Blocks" type="Ice">
+        <Location x="1" y="0" z="-1"/>
+        <Size x="7" y="7" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="5" z="0"/>
+        <Size x="2" y="2" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Water">
+        <Location x="3" y="7" z="0"/>
+        <Size x="4" y="0" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="0" y="4" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="4" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="1" z="-1"/>
+        <Size x="1" y="2" z="1"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="3" y="4" z="0"/>
+      </Element>
+    </Elements>
   </Zone>
   <Zone>
     <Location x="-103" y="-48" z="0"/>
@@ -16475,6 +16805,4627 @@
       <Element set="Blocks" type="ArrowNorth">
         <Location x="0" y="7" z="6"/>
         <Size x="1" y="1" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="-95" y="40" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="8" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="0" z="-1"/>
+        <Size x="2" y="7" z="1"/>
+        <Slope NorthSouth="0" Stepped="1" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="0" z="1"/>
+        <Size x="2" y="5" z="1"/>
+        <Slope NorthSouth="0" Stepped="1" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="0" z="3"/>
+        <Size x="2" y="3" z="1"/>
+        <Slope NorthSouth="0" Stepped="1" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="0" z="5"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="6" z="-1"/>
+        <Size x="7" y="2" z="1"/>
+        <Slope NorthSouth="-1" Stepped="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="4" z="1"/>
+        <Size x="5" y="2" z="1"/>
+        <Slope NorthSouth="-1" Stepped="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="2" z="3"/>
+        <Size x="3" y="2" z="1"/>
+        <Slope NorthSouth="-1" Stepped="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="1" z="5"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="-1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="1" z="5"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="0" NorthWest="0" SouthEast="0" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="2" z="4"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="0" NorthWest="0" SouthEast="0" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="3" z="3"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="0" NorthWest="0" SouthEast="0" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="4" z="2"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="0" NorthWest="0" SouthEast="0" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="5" z="1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="0" NorthWest="0" SouthEast="0" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="6" z="0"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="0" NorthWest="0" SouthEast="0" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="7" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="0" NorthWest="0" SouthEast="0" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="6"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="0" z="4"/>
+        <Size x="1" y="1" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="2" z="2"/>
+        <Size x="1" y="1" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="5" z="2"/>
+        <Size x="1" y="1" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="0" z="0"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="0" z="1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="3" y="0" z="2"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="-103" y="40" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="8" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="6" z="-1"/>
+        <Size x="7" y="2" z="1"/>
+        <Slope NorthSouth="-1" Stepped="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="4" z="1"/>
+        <Size x="5" y="2" z="1"/>
+        <Slope NorthSouth="-1" Stepped="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="2" z="3"/>
+        <Size x="3" y="2" z="1"/>
+        <Slope NorthSouth="-1" Stepped="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="2" y="7" z="1"/>
+        <Slope NorthSouth="0" Stepped="1" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="0" z="1"/>
+        <Size x="2" y="5" z="1"/>
+        <Slope NorthSouth="0" Stepped="1" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="0" z="3"/>
+        <Size x="2" y="3" z="1"/>
+        <Slope NorthSouth="0" Stepped="1" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="0" z="5"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="1" z="5"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="0" SouthEast="1" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="2" z="4"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="0" SouthEast="1" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="3" z="3"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="0" SouthEast="1" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="4" z="2"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="0" SouthEast="1" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="5" z="1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="0" SouthEast="1" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="6" z="0"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="0" SouthEast="1" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="7" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="0" SouthEast="1" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="0" z="6"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="1" z="4"/>
+        <Size x="1" y="1" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="1" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="-2" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="ArrowWest">
+        <Location x="7" y="0" z="0"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="-103" y="32" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="8" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="1" z="-1"/>
+        <Size x="2" y="7" z="1"/>
+        <Slope NorthSouth="0" Stepped="1" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="3" z="1"/>
+        <Size x="2" y="5" z="1"/>
+        <Slope NorthSouth="0" Stepped="1" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="5" z="3"/>
+        <Size x="1" y="3" z="1"/>
+        <Slope NorthSouth="0" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="7" z="4"/>
+        <Size x="2" y="1" z="1"/>
+        <Slope NorthSouth="0" Stepped="1" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="0" z="-1"/>
+        <Size x="7" y="2" z="1"/>
+        <Slope NorthSouth="1" Stepped="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="2" z="1"/>
+        <Size x="5" y="2" z="1"/>
+        <Slope NorthSouth="1" Stepped="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="4" z="3"/>
+        <Size x="2" y="2" z="1"/>
+        <Slope NorthSouth="1" Stepped="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="5" z="4"/>
+        <Size x="1" y="2" z="1"/>
+        <Slope NorthSouth="1" Stepped="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="6" z="5"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="1" NorthWest="0" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="5" z="4"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="1" NorthWest="0" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="4" z="3"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="1" NorthWest="0" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="2" z="1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="1" NorthWest="0" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="1" z="0"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="1" NorthWest="0" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="1" NorthWest="0" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="3" z="3"/>
+        <Size x="1" y="1" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowSouth">
+        <Location x="7" y="6" z="0"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowEast">
+        <Location x="6" y="7" z="0"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchDiamondRight">
+        <Location x="7" y="7" z="1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="6" y="6" z="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="7" z="6"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="-95" y="32" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="8" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="1" z="-1"/>
+        <Size x="2" y="7" z="1"/>
+        <Slope NorthSouth="0" Stepped="1" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="3" z="1"/>
+        <Size x="2" y="5" z="1"/>
+        <Slope NorthSouth="0" Stepped="1" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="7" z="3"/>
+        <Size x="3" y="1" z="1"/>
+        <Slope NorthSouth="0" Stepped="1" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="6" z="4"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="5" z="3"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="7" y="2" z="1"/>
+        <Slope NorthSouth="1" Stepped="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="2" z="1"/>
+        <Size x="4" y="3" z="1"/>
+        <Slope NorthSouth="1" Stepped="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="5" z="4"/>
+        <Size x="2" y="2" z="1"/>
+        <Slope NorthSouth="1" Stepped="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="6" z="5"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="1" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="5" z="4"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="1" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="4" z="3"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="1" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="3" z="2"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="1" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="2" z="1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="1" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="1" z="0"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="1" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="0" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="1" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="7" z="6"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="0" y="7" z="7"/>
+      </Element>
+      <Element set="Blocks" type="ArrowEast">
+        <Location x="0" y="7" z="0"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="-111" y="40" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="0" z="-1"/>
+        <Size x="4" y="8" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="3" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="2" z="-1"/>
+        <Size x="1" y="4" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="7" y="8" z="1"/>
+        <Slope NorthSouth="0" Stepped="1" WestEast="-1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="-119" y="48" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="3" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="0" z="-1"/>
+        <Size x="4" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="4" z="-1"/>
+        <Size x="8" y="4" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="7" z="1"/>
+        <Slope NorthSouth="-1" Stepped="1" WestEast="0"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="-127" y="40" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="4" y="0" z="0"/>
+        <Size x="3" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="2" z="-1"/>
+        <Size x="1" y="4" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="4" y="8" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="0" z="-1"/>
+        <Size x="7" y="8" z="1"/>
+        <Slope NorthSouth="0" Stepped="1" WestEast="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="-119" y="32" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="4" z="0"/>
+        <Size x="7" y="3" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="7" z="-1"/>
+        <Size x="4" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="4" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="1" z="-1"/>
+        <Size x="8" y="7" z="1"/>
+        <Slope NorthSouth="1" Stepped="1" WestEast="0"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="-119" y="56" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="8" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="1" z="-1"/>
+        <Size x="1" y="3" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="4" z="-1"/>
+        <Size x="4" y="3" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="5" z="7"/>
+        <Size x="2" y="1" z="-7"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleNone">
+        <Location x="2" y="4" z="6"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="2" y="1" z="7"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="-127" y="56" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="8" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="1" z="-1"/>
+        <Size x="4" y="6" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="5" z="7"/>
+        <Size x="3" y="1" z="-7"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="2" z="7"/>
+        <Size x="3" y="2" z="-7"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleBoth">
+        <Location x="1" y="1" z="6"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchDiamondBoth">
+        <Location x="4" y="5" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchSquareNone">
+        <Location x="2" y="5" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="-63" y="56" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="8" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="4" z="-1"/>
+        <Size x="5" y="3" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="3" z="-1"/>
+        <Size x="3" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="1" z="-1"/>
+        <Size x="1" y="2" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="4" z="7"/>
+        <Size x="3" y="3" z="-7"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="3" z="4"/>
+        <Size x="2" y="1" z="1"/>
+        <Slope NorthSouth="0" Stepped="1" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchSquareNone">
+        <Location x="2" y="6" z="6"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleNone">
+        <Location x="6" y="6" z="6"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="-79" y="32" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="8" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="0" z="-1"/>
+        <Size x="2" y="7" z="1"/>
+        <Slope NorthSouth="0" Stepped="1" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="0" z="1"/>
+        <Size x="2" y="5" z="1"/>
+        <Slope NorthSouth="0" Stepped="1" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="0" z="3"/>
+        <Size x="2" y="3" z="1"/>
+        <Slope NorthSouth="0" Stepped="1" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="0" z="5"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="6" z="-1"/>
+        <Size x="7" y="2" z="1"/>
+        <Slope NorthSouth="-1" Stepped="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="4" z="1"/>
+        <Size x="5" y="2" z="1"/>
+        <Slope NorthSouth="-1" Stepped="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="2" z="3"/>
+        <Size x="3" y="2" z="1"/>
+        <Slope NorthSouth="-1" Stepped="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="1" z="5"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="-1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="6"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="0" NorthWest="0" SouthEast="0" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="1" z="5"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="0" NorthWest="0" SouthEast="0" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="2" z="4"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="0" NorthWest="0" SouthEast="0" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="3" z="3"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="0" NorthWest="0" SouthEast="0" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="4" z="2"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="0" NorthWest="0" SouthEast="0" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="5" z="1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="0" NorthWest="0" SouthEast="0" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="6" z="0"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="0" NorthWest="0" SouthEast="0" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="7" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="0" NorthWest="0" SouthEast="0" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowEast">
+        <Location x="2" y="0" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowNorth">
+        <Location x="0" y="2" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="2" y="2" z="0"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="-79" y="24" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="8" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="1" z="-1"/>
+        <Size x="2" y="7" z="1"/>
+        <Slope NorthSouth="0" Stepped="1" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="3" z="1"/>
+        <Size x="2" y="5" z="1"/>
+        <Slope NorthSouth="0" Stepped="1" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="5" z="3"/>
+        <Size x="2" y="3" z="1"/>
+        <Slope NorthSouth="0" Stepped="1" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="7" z="5"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="6" z="5"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="4" z="3"/>
+        <Size x="3" y="2" z="1"/>
+        <Slope NorthSouth="1" Stepped="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="2" z="1"/>
+        <Size x="5" y="2" z="1"/>
+        <Slope NorthSouth="1" Stepped="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="7" y="2" z="1"/>
+        <Slope NorthSouth="1" Stepped="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="0" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="1" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="1" z="0"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="1" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="2" z="1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="1" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="3" z="2"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="1" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="4" z="3"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="1" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="5" z="4"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="1" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="6" z="5"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="1" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="7" z="6"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="1" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="ArrowNorth">
+        <Location x="0" y="6" z="0"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowWest">
+        <Location x="1" y="7" z="0"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="4" y="3" z="0"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="-87" y="24" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="8" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="0" z="-1"/>
+        <Size x="7" y="2" z="1"/>
+        <Slope NorthSouth="1" Stepped="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="2" z="1"/>
+        <Size x="5" y="2" z="1"/>
+        <Slope NorthSouth="1" Stepped="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="4" z="3"/>
+        <Size x="3" y="2" z="1"/>
+        <Slope NorthSouth="1" Stepped="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="6" z="5"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="1" z="-1"/>
+        <Size x="2" y="7" z="1"/>
+        <Slope NorthSouth="0" Stepped="1" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="3" z="1"/>
+        <Size x="2" y="5" z="1"/>
+        <Slope NorthSouth="0" Stepped="1" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="5" z="3"/>
+        <Size x="2" y="3" z="1"/>
+        <Slope NorthSouth="0" Stepped="1" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="7" z="5"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="7" z="6"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="1" NorthWest="0" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="6" z="5"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="1" NorthWest="0" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="5" z="4"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="1" NorthWest="0" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="4" z="3"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="1" NorthWest="0" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="3" z="-1"/>
+        <Size x="1" y="1" z="4"/>
+        <Split Direction="East" NorthEast="1" NorthWest="0" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="2" z="1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="1" NorthWest="0" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="1" z="0"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="1" NorthWest="0" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="1" NorthWest="0" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="5" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+      </Element>
+      <Element set="Blocks" type="ArrowSouth">
+        <Location x="7" y="6" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowWest">
+        <Location x="6" y="7" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="4" y="4" z="0"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="-87" y="32" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="8" z="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowEast">
+        <Location x="3" y="0" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowNorth">
+        <Location x="7" y="4" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchDiamondBoth">
+        <Location x="4" y="3" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchSquareBoth">
+        <Location x="3" y="3" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchDiamondRight">
+        <Location x="3" y="4" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleBoth">
+        <Location x="4" y="4" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="6" z="-1"/>
+        <Size x="7" y="2" z="1"/>
+        <Slope NorthSouth="-1" Stepped="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="4" z="1"/>
+        <Size x="5" y="2" z="1"/>
+        <Slope NorthSouth="-1" Stepped="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="2" z="3"/>
+        <Size x="3" y="2" z="1"/>
+        <Slope NorthSouth="-1" Stepped="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="1" z="5"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="-1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="2" y="7" z="1"/>
+        <Slope NorthSouth="0" Stepped="1" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="0" z="1"/>
+        <Size x="2" y="5" z="1"/>
+        <Slope NorthSouth="0" Stepped="1" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="0" z="3"/>
+        <Size x="2" y="3" z="1"/>
+        <Slope NorthSouth="0" Stepped="1" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="0" z="5"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="0" z="6"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="0" SouthEast="1" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="1" z="5"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="0" SouthEast="1" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="2" z="4"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="0" SouthEast="1" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="3" z="3"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="0" SouthEast="1" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="4" z="2"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="0" SouthEast="1" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="5" z="1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="0" SouthEast="1" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="6" z="0"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="0" SouthEast="1" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="7" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="0" SouthEast="1" SouthWest="0"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="153" y="168" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="8" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="4" z="2"/>
+        <Size x="6" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="3" z="-1"/>
+        <Size x="6" y="1" z="3"/>
+        <Slope NorthSouth="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="5" z="-1"/>
+        <Size x="6" y="1" z="3"/>
+        <Slope NorthSouth="-1" WestEast="0"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="7" y="4" z="0"/>
+      </Element>
+      <Element set="Blocks" type="SwitchDiamondRight">
+        <Location x="5" y="4" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchSquareLeft">
+        <Location x="4" y="4" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleBoth">
+        <Location x="3" y="4" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchDiamondBoth">
+        <Location x="2" y="4" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="161" y="168" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="8" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="4" z="2"/>
+        <Size x="2" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="1" z="2"/>
+        <Size x="2" y="5" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="2" z="-1"/>
+        <Size x="1" y="1" z="4"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="4" z="-1"/>
+        <Size x="1" y="1" z="4"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="5" z="0"/>
+        <Size x="1" y="1" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="5" z="-1"/>
+        <Size x="1" y="1" z="3"/>
+        <Slope NorthSouth="-1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="6" z="-1"/>
+        <Size x="2" y="1" z="3"/>
+        <Slope NorthSouth="-1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="6" z="-1"/>
+        <Size x="1" y="1" z="3"/>
+        <Split Direction="West" NorthEast="0" NorthWest="0" SouthEast="1" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="5" z="-1"/>
+        <Size x="1" y="1" z="3"/>
+        <Split Direction="West" NorthEast="1" NorthWest="0" SouthEast="1" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="3" z="-1"/>
+        <Size x="1" y="1" z="3"/>
+        <Slope NorthSouth="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="3" z="-1"/>
+        <Size x="1" y="1" z="3"/>
+        <Split Direction="East" NorthEast="1" NorthWest="1" SouthEast="1" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="1" z="-1"/>
+        <Size x="1" y="2" z="3"/>
+        <Slope NorthSouth="0" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="6" z="-1"/>
+        <Size x="1" y="1" z="3"/>
+        <Split Direction="East" NorthEast="0" NorthWest="0" SouthEast="0" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="1" z="-1"/>
+        <Size x="1" y="5" z="3"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="169" y="176" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="6" z="-1"/>
+        <Size x="8" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="4" z="-1"/>
+        <Size x="5" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="2" z="-1"/>
+        <Size x="3" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="1" z="-1"/>
+        <Size x="2" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Trampoline">
+        <Location x="6" y="1" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="6" y="1" z="0"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="169" y="184" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="8" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="5" z="-1"/>
+        <Size x="1" y="1" z="5"/>
+        <Split Direction="West" NorthEast="0" NorthWest="0" SouthEast="1" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="4" z="-1"/>
+        <Size x="1" y="1" z="5"/>
+        <Slope NorthSouth="0" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="3" z="-1"/>
+        <Size x="1" y="1" z="5"/>
+        <Split Direction="East" NorthEast="1" NorthWest="0" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="5" z="-1"/>
+        <Size x="1" y="1" z="5"/>
+        <Slope NorthSouth="-1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="5" z="-1"/>
+        <Size x="1" y="1" z="5"/>
+        <Split Direction="East" NorthEast="0" NorthWest="0" SouthEast="0" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="4" z="-1"/>
+        <Size x="1" y="1" z="6"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="4" z="-1"/>
+        <Size x="1" y="1" z="5"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="3" z="-1"/>
+        <Size x="1" y="1" z="5"/>
+        <Slope NorthSouth="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="3" z="-1"/>
+        <Size x="1" y="1" z="5"/>
+        <Split Direction="West" NorthEast="0" NorthWest="1" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="2" y="4" z="5"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="177" y="184" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="4" y="8" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="1" z="-1"/>
+        <Size x="2" y="7" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="2" z="-1"/>
+        <Size x="1" y="6" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="3" z="-1"/>
+        <Size x="1" y="4" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="1" z="-1"/>
+        <Size x="2" y="1" z="7"/>
+      </Element>
+      <Element set="Blocks" type="ArrowEast">
+        <Location x="3" y="1" z="6"/>
+        <Size x="2" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="4" z="-1"/>
+        <Size x="1" y="1" z="6"/>
+        <Split Direction="East" NorthEast="2" NorthWest="2" SouthEast="0" SouthWest="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="5" z="-1"/>
+        <Size x="1" y="1" z="6"/>
+        <Split Direction="East" NorthEast="2" NorthWest="0" SouthEast="2" SouthWest="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="4" z="-1"/>
+        <Size x="1" y="1" z="6"/>
+        <Split Direction="West" NorthEast="2" NorthWest="2" SouthEast="2" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="5" z="-1"/>
+        <Size x="1" y="1" z="6"/>
+        <Split Direction="West" NorthEast="0" NorthWest="2" SouthEast="2" SouthWest="2"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="3" y="5" z="7"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="161" y="152" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="1" z="-1"/>
+        <Size x="8" y="7" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="6" z="0"/>
+        <Size x="1" y="1" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="4" z="0"/>
+        <Size x="1" y="1" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="4" z="0"/>
+        <Size x="4" y="1" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="1" z="0"/>
+        <Size x="1" y="1" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="2" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="1" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="1" SouthEast="1" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="0" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="1" SouthEast="1" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="1" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="0" SouthEast="0" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="0" z="-1"/>
+        <Size x="6" y="1" z="1"/>
+        <Slope NorthSouth="-1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="3" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="0" SouthEast="0" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="6" z="-1"/>
+        <Size x="2" y="1" z="1"/>
+        <Slope NorthSouth="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="ArrowEast">
+        <Location x="3" y="2" z="0"/>
+        <Size x="2" y="1" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="161" y="144" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="7" z="-1"/>
+        <Size x="7" y="1" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="6" z="3"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="4" z="-1"/>
+        <Size x="2" y="1" z="4"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="1" z="2"/>
+        <Size x="1" y="1" z="-3"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="6" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+        <Split Direction="West" NorthEast="0" NorthWest="1" SouthEast="1" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="7" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+        <Split Direction="West" NorthEast="0" NorthWest="0" SouthEast="0" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="6" z="-1"/>
+        <Size x="6" y="1" z="2"/>
+        <Slope NorthSouth="-1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="4" z="-1"/>
+        <Size x="1" y="1" z="3"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Trampoline">
+        <Location x="7" y="3" z="2"/>
+        <Size x="1" y="1" z="-2"/>
+      </Element>
+      <Element set="Blocks" type="ArrowSouth">
+        <Location x="6" y="4" z="-1"/>
+        <Size x="1" y="1" z="3"/>
+      </Element>
+      <Element set="Blocks" type="ArrowSouth">
+        <Location x="4" y="4" z="2"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="137" y="152" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="7" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="0" z="-1"/>
+        <Size x="6" y="1" z="3"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="2" z="1"/>
+        <Size x="3" y="3" z="-2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="2" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="-1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="1" z="-1"/>
+        <Size x="6" y="1" z="2"/>
+        <Slope NorthSouth="-1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="7" z="-1"/>
+        <Size x="8" y="1" z="1"/>
+        <Slope NorthSouth="-1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="1" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+        <Split Direction="East" NorthEast="0" NorthWest="0" SouthEast="1" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="0" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+        <Slope NorthSouth="0" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="3" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="2" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="1" NorthWest="0" SouthEast="1" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="4" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="1" NorthWest="1" SouthEast="0" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="3" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="4" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="4" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="1" NorthWest="1" SouthEast="1" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="2" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="0" NorthWest="1" SouthEast="1" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchDiamondNone">
+        <Location x="0" y="3" z="0"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="137" y="144" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="8" z="3"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="6" z="2"/>
+        <Size x="2" y="2" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="4" z="2"/>
+        <Size x="1" y="1" z="-3"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="1" z="2"/>
+        <Size x="1" y="2" z="-3"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="4" z="2"/>
+        <Size x="4" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="2" z="2"/>
+        <Size x="2" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowWest">
+        <Location x="6" y="3" z="2"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="6" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+        <Split Direction="West" NorthEast="1" NorthWest="0" SouthEast="1" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="6" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+        <Slope NorthSouth="-1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="7" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+        <Slope NorthSouth="0" WestEast="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="137" y="136" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="2" z="-1"/>
+        <Size x="4" y="5" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="0" z="-1"/>
+        <Size x="2" y="2" z="3"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="1" z="-1"/>
+        <Size x="1" y="3" z="3"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="2" z="-1"/>
+        <Size x="1" y="2" z="3"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="3" z="-1"/>
+        <Size x="1" y="3" z="3"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="5" z="-1"/>
+        <Size x="6" y="1" z="3"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="3" z="-1"/>
+        <Size x="1" y="2" z="3"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="4" z="-1"/>
+        <Size x="1" y="1" z="3"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="6" z="-1"/>
+        <Size x="4" y="1" z="3"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="7" z="-1"/>
+        <Size x="8" y="1" z="3"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="4" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="-2"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="4" y="6" z="0"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="145" y="136" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="8" z="3"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="3" z="2"/>
+        <Size x="2" y="1" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="3" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleLeft">
+        <Location x="0" y="6" z="2"/>
+        <Size x="7" y="1" z="-2"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleLeft">
+        <Location x="6" y="5" z="2"/>
+        <Size x="2" y="1" z="-2"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleLeft">
+        <Location x="1" y="4" z="2"/>
+        <Size x="1" y="2" z="-2"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleLeft">
+        <Location x="2" y="4" z="2"/>
+        <Size x="1" y="1" z="-2"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleLeft">
+        <Location x="3" y="2" z="2"/>
+        <Size x="1" y="2" z="-2"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleLeft">
+        <Location x="4" y="2" z="2"/>
+        <Size x="1" y="1" z="-2"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleLeft">
+        <Location x="0" y="2" z="2"/>
+        <Size x="2" y="1" z="-2"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleLeft">
+        <Location x="1" y="1" z="2"/>
+        <Size x="6" y="1" z="-2"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleLeft">
+        <Location x="6" y="2" z="2"/>
+        <Size x="1" y="2" z="-2"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleLeft">
+        <Location x="7" y="3" z="2"/>
+        <Size x="1" y="1" z="-2"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleLeft">
+        <Location x="6" y="4" z="1"/>
+        <Size x="1" y="1" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleLeft">
+        <Location x="7" y="1" z="1"/>
+        <Size x="1" y="1" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleBoth">
+        <Location x="2" y="3" z="2"/>
+        <Size x="1" y="1" z="-2"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="2" y="2" z="2"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="153" y="136" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="8" z="3"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleBoth">
+        <Location x="0" y="5" z="2"/>
+        <Size x="1" y="2" z="-2"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleBoth">
+        <Location x="1" y="5" z="2"/>
+        <Size x="2" y="1" z="-2"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleBoth">
+        <Location x="2" y="6" z="2"/>
+        <Size x="2" y="1" z="-2"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleBoth">
+        <Location x="4" y="1" z="2"/>
+        <Size x="3" y="6" z="-2"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleBoth">
+        <Location x="1" y="1" z="2"/>
+        <Size x="3" y="2" z="-2"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleBoth">
+        <Location x="0" y="3" z="2"/>
+        <Size x="3" y="1" z="-2"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleBoth">
+        <Location x="1" y="4" z="1"/>
+        <Size x="1" y="1" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleBoth">
+        <Location x="3" y="7" z="1"/>
+        <Size x="1" y="1" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleBoth">
+        <Location x="7" y="6" z="1"/>
+        <Size x="1" y="1" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleBoth">
+        <Location x="7" y="1" z="1"/>
+        <Size x="1" y="1" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleBoth">
+        <Location x="5" y="0" z="1"/>
+        <Size x="1" y="1" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleBoth">
+        <Location x="0" y="1" z="1"/>
+        <Size x="1" y="1" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Trampoline">
+        <Location x="5" y="3" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Trampoline">
+        <Location x="5" y="5" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="5" y="4" z="0"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="161" y="128" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="8" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="7" z="-1"/>
+        <Size x="2" y="1" z="5"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="169" y="128" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="8" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="1"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="3" z="0"/>
+        <Size x="4" y="2" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="5" z="0"/>
+        <Size x="2" y="2" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="6" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="2" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="SwitchSquareNone">
+        <Location x="5" y="5" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="6" y="6" z="0"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="153" y="128" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="1" z="-1"/>
+        <Size x="8" y="6" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="1" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="7" z="-1"/>
+        <Size x="8" y="1" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="2" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="1" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="3" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="-1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="2" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="2" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Trampoline">
+        <Location x="4" y="4" z="-1"/>
+        <Size x="1" y="1" z="7"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="4" y="2" z="7"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="145" y="128" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Trampoline">
+        <Location x="1" y="1" z="-1"/>
+        <Size x="7" y="6" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="7" z="-1"/>
+        <Size x="8" y="1" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="1" y="6" z="3"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="0" z="-1"/>
+        <Size x="6" y="1" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="0" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="6" z="-1"/>
+        <Size x="1" y="1" z="3"/>
+        <Slope NorthSouth="1" WestEast="0"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="0" y="5" z="2"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="161" y="120" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="8" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="1" z="1"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="0" z="-1"/>
+        <Size x="1" y="3" z="1"/>
+        <Slope NorthSouth="-1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="ArrowEast">
+        <Location x="4" y="5" z="-1"/>
+        <Size x="1" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowWest">
+        <Location x="4" y="3" z="-1"/>
+        <Size x="1" y="2" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="169" y="120" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="1" z="-1"/>
+        <Size x="8" y="7" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="7" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="1" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="1" z="0"/>
+        <Size x="5" y="5" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="3" z="0"/>
+        <Size x="1" y="1" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleNone">
+        <Location x="4" y="3" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="4" y="3" z="0"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="177" y="120" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="8" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="0" z="-1"/>
+        <Size x="1" y="8" z="3"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="1" z="2"/>
+        <Size x="7" y="6" z="-2"/>
+      </Element>
+      <Element set="Blocks" type="Ice">
+        <Location x="1" y="1" z="-1"/>
+        <Size x="6" y="6" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="3" z="-1"/>
+        <Size x="2" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="3" z="-1"/>
+        <Size x="1" y="2" z="3"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="4" y="4" z="0"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="161" y="104" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Trampoline">
+        <Location x="4" y="6" z="-1"/>
+        <Size x="1" y="2" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="161" y="96" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Trampoline">
+        <Location x="4" y="2" z="-1"/>
+        <Size x="1" y="2" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="161" y="80" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Trampoline">
+        <Location x="4" y="6" z="-1"/>
+        <Size x="1" y="2" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="161" y="72" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Trampoline">
+        <Location x="4" y="2" z="-1"/>
+        <Size x="1" y="2" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="161" y="56" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="0" z="-1"/>
+        <Size x="6" y="1" z="7"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="1" z="-1"/>
+        <Size x="4" y="1" z="7"/>
+      </Element>
+      <Element set="Blocks" type="Trampoline">
+        <Location x="4" y="6" z="-1"/>
+        <Size x="1" y="2" z="2"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="161" y="48" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="8" z="7"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="0" z="4"/>
+        <Size x="6" y="8" z="-4"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="1" z="4"/>
+        <Size x="8" y="6" z="-4"/>
+      </Element>
+      <Element set="Blocks" type="ArrowNorth">
+        <Location x="2" y="4" z="4"/>
+        <Size x="1" y="1" z="2"/>
+      </Element>
+      <Element set="Blocks" type="ArrowEast">
+        <Location x="3" y="3" z="4"/>
+        <Size x="1" y="1" z="2"/>
+      </Element>
+      <Element set="Blocks" type="ArrowSouth">
+        <Location x="4" y="4" z="4"/>
+        <Size x="1" y="1" z="2"/>
+      </Element>
+      <Element set="Blocks" type="ArrowWest">
+        <Location x="3" y="5" z="4"/>
+        <Size x="1" y="1" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Ice">
+        <Location x="6" y="5" z="-1"/>
+        <Size x="1" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Ice">
+        <Location x="1" y="1" z="-1"/>
+        <Size x="2" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="3" z="-1"/>
+        <Size x="1" y="2" z="1"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="3" z="-1"/>
+        <Size x="1" y="2" z="1"/>
+        <Slope NorthSouth="0" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="5" z="-1"/>
+        <Size x="2" y="1" z="1"/>
+        <Slope NorthSouth="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="6" z="-1"/>
+        <Size x="4" y="1" z="1"/>
+        <Slope NorthSouth="-1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="6" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="0" NorthWest="1" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="5" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="1" NorthWest="1" SouthEast="0" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="5" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="0" NorthWest="0" SouthEast="1" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="4" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="1" NorthWest="0" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="4" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="0" NorthWest="1" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="3" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="-1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="2" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="2" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="0" NorthWest="1" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="3" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="0" NorthWest="0" SouthEast="1" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="2" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="1" NorthWest="0" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="3" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="0" SouthEast="0" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="4" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="1" NorthWest="0" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="5" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="1" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="2" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="0" NorthWest="0" SouthEast="1" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="2" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="-1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="1" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="1" NorthWest="1" SouthEast="0" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Trampoline">
+        <Location x="3" y="1" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="6" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="0" NorthWest="0" SouthEast="1" SouthWest="0"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="3" y="4" z="0"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="169" y="48" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="2" y="0" z="0"/>
+        <Size x="5" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="2" z="-1"/>
+        <Size x="2" y="4" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="3" z="-1"/>
+        <Size x="2" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="6" y="2" z="1"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="6" z="-1"/>
+        <Size x="6" y="2" z="1"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="2" z="3"/>
+        <Size x="2" y="4" z="1"/>
+        <Slope NorthSouth="0" Stepped="1" WestEast="-1"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="3" y="4" z="0"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="161" y="40" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="8" z="7"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="1" z="4"/>
+        <Size x="8" y="6" z="-4"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="0" z="4"/>
+        <Size x="6" y="8" z="-4"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="1" z="0"/>
+        <Size x="2" y="3" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="5" z="0"/>
+        <Size x="1" y="2" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="1" z="0"/>
+        <Size x="3" y="2" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="3" z="0"/>
+        <Size x="1" y="4" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="4" z="0"/>
+        <Size x="2" y="1" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="6" z="0"/>
+        <Size x="3" y="1" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowEast">
+        <Location x="4" y="1" z="5"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowEast">
+        <Location x="2" y="3" z="5"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowEast">
+        <Location x="5" y="6" z="5"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowNorth">
+        <Location x="2" y="5" z="5"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowNorth">
+        <Location x="5" y="4" z="5"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowSouth">
+        <Location x="4" y="3" z="5"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Ice">
+        <Location x="3" y="5" z="5"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="3" y="5" z="0"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="169" y="40" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="5" y="0" z="0"/>
+        <Size x="2" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="5" z="-1"/>
+        <Size x="6" y="3" z="1"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="6" y="3" z="1"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="3" z="-1"/>
+        <Size x="3" y="2" z="7"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="3" z="-1"/>
+        <Size x="1" y="2" z="6"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="3" z="-1"/>
+        <Size x="1" y="2" z="4"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="4" y="3" z="3"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="161" y="32" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="1" z="-1"/>
+        <Size x="6" y="7" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="1" z="-1"/>
+        <Size x="3" y="6" z="1"/>
+        <Slope NorthSouth="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="1" z="-1"/>
+        <Size x="3" y="6" z="1"/>
+        <Slope NorthSouth="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="7" z="5"/>
+        <Size x="8" y="1" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="169" y="32" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="2" z="-1"/>
+        <Size x="2" y="6" z="1"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="4" z="-1"/>
+        <Size x="2" y="4" z="3"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="6" z="-1"/>
+        <Size x="2" y="2" z="5"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="1" z="-1"/>
+        <Size x="5" y="2" z="1"/>
+        <Slope NorthSouth="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="3" z="-1"/>
+        <Size x="3" y="1" z="3"/>
+        <Slope NorthSouth="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="4" z="-1"/>
+        <Size x="1" y="2" z="4"/>
+        <Slope NorthSouth="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="6" z="-1"/>
+        <Size x="1" y="1" z="6"/>
+        <Split Direction="West" NorthEast="0" NorthWest="1" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="5" z="-1"/>
+        <Size x="1" y="1" z="5"/>
+        <Split Direction="West" NorthEast="0" NorthWest="1" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="4" z="-1"/>
+        <Size x="1" y="1" z="4"/>
+        <Split Direction="West" NorthEast="0" NorthWest="1" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="3" z="-1"/>
+        <Size x="1" y="1" z="3"/>
+        <Split Direction="West" NorthEast="0" NorthWest="1" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="2" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+        <Split Direction="West" NorthEast="0" NorthWest="1" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="1" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="1" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="4" z="-1"/>
+        <Size x="1" y="1" z="5"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="1" y="4" z="4"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="153" y="32" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="1" z="-1"/>
+        <Size x="2" y="6" z="1"/>
+        <Slope NorthSouth="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="2" z="-1"/>
+        <Size x="1" y="6" z="7"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="7" z="-1"/>
+        <Size x="2" y="1" z="7"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="5" y="2" z="6"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="153" y="40" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="4" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="5" z="-1"/>
+        <Size x="1" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="2" z="-1"/>
+        <Size x="1" y="6" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="1" z="-1"/>
+        <Size x="3" y="7" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="0" z="-1"/>
+        <Size x="3" y="8" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="0" z="5"/>
+        <Size x="2" y="4" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="4" z="5"/>
+        <Size x="1" y="4" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="5" z="5"/>
+        <Size x="1" y="3" z="1"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="1" z="5"/>
+        <Size x="1" y="3" z="1"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="0" z="-1"/>
+        <Size x="1" y="1" z="7"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="4" z="-1"/>
+        <Size x="1" y="1" z="7"/>
+        <Split Direction="West" NorthEast="1" NorthWest="1" SouthEast="0" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="4" z="5"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="West" NorthEast="0" NorthWest="1" SouthEast="0" SouthWest="0"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="153" y="48" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="0" z="-1"/>
+        <Size x="7" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="2" z="-1"/>
+        <Size x="6" y="3" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="5" z="-1"/>
+        <Size x="5" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="6" z="-1"/>
+        <Size x="3" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="0" z="5"/>
+        <Size x="1" y="8" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="0" z="5"/>
+        <Size x="1" y="7" z="1"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="2" z="-1"/>
+        <Size x="1" y="1" z="7"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="7" z="-1"/>
+        <Size x="1" y="1" z="7"/>
+        <Split Direction="West" NorthEast="0" NorthWest="0" SouthEast="0" SouthWest="1"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="6" y="3" z="0"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="145" y="40" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="5" z="-1"/>
+        <Size x="2" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="5" z="-1"/>
+        <Size x="2" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="1" z="-1"/>
+        <Size x="1" y="4" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="5" z="-1"/>
+        <Size x="1" y="2" z="1"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="5" z="-1"/>
+        <Size x="1" y="2" z="1"/>
+        <Slope NorthSouth="0" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowSouth">
+        <Location x="0" y="1" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="137" y="40" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="1" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="5" z="-1"/>
+        <Size x="1" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="5" z="-1"/>
+        <Size x="1" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="4" z="-1"/>
+        <Size x="1" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="4" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="1" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="1" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="5" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="1" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="1" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowSouth">
+        <Location x="0" y="1" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowNorth">
+        <Location x="2" y="4" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Trampoline">
+        <Location x="3" y="7" z="0"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="129" y="40" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="1" z="-1"/>
+        <Size x="2" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="2" z="-1"/>
+        <Size x="2" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="3" z="-1"/>
+        <Size x="1" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="4" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="1" z="-1"/>
+        <Size x="3" y="4" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="7" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="7" z="-1"/>
+        <Size x="2" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="6" z="-1"/>
+        <Size x="2" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="3" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="6" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="-1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="ArrowNorth">
+        <Location x="4" y="7" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Water">
+        <Location x="2" y="2" z="0"/>
+        <Size x="0" y="1" z="-1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="137" y="48" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Trampoline">
+        <Location x="2" y="2" z="-1"/>
+        <Size x="3" y="5" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Trampoline">
+        <Location x="3" y="5" z="0"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Trampoline">
+        <Location x="3" y="3" z="0"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Trampoline">
+        <Location x="3" y="0" z="0"/>
+        <Size x="1" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Water">
+        <Location x="4" y="3" z="0"/>
+        <Size x="0" y="0" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Water">
+        <Location x="2" y="5" z="0"/>
+        <Size x="0" y="0" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="6" z="-1"/>
+        <Size x="1" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="2" z="-1"/>
+        <Size x="2" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="4" z="0"/>
+        <Size x="1" y="4" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="3" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="1" WestEast="0"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="137" y="56" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="1" y="0" z="0"/>
+        <Size x="6" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="0" z="0"/>
+        <Size x="1" y="8" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="1" y="8" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="3" z="-1"/>
+        <Size x="1" y="1" z="3"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="5" z="0"/>
+        <Size x="1" y="3" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="4" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+        <Slope NorthSouth="-1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="4" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+        <Split Direction="East" NorthEast="0" NorthWest="0" SouthEast="0" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="3" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="4" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+        <Split Direction="West" NorthEast="0" NorthWest="0" SouthEast="1" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="3" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+        <Slope NorthSouth="0" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="2" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+        <Split Direction="East" NorthEast="1" NorthWest="0" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="2" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+        <Split Direction="West" NorthEast="0" NorthWest="1" SouthEast="0" SouthWest="0"/>
+      </Element>
+      <Element set="Blocks" type="ArrowEast">
+        <Location x="3" y="2" z="0"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Trampoline">
+        <Location x="3" y="0" z="0"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowWest">
+        <Location x="1" y="0" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="137" y="64" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="4" y="4" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="0" z="0"/>
+        <Size x="1" y="4" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="5" z="-1"/>
+        <Size x="1" y="1" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="5" z="3"/>
+        <Size x="4" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="5" z="-1"/>
+        <Size x="1" y="1" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="0" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="-1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Water">
+        <Location x="1" y="0" z="0"/>
+        <Size x="1" y="2" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowSouth">
+        <Location x="1" y="5" z="3"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchSquareBoth">
+        <Location x="6" y="4" z="0"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="6" y="3" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="129" y="64" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="3" z="0"/>
+        <Size x="3" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="0" z="-1"/>
+        <Size x="3" y="3" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="1" z="1"/>
+        <Size x="1" y="1" z="-2"/>
+      </Element>
+      <Element set="Blocks" type="Water">
+        <Location x="3" y="1" z="0"/>
+        <Size x="0" y="0" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="5" z="3"/>
+        <Size x="3" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="5" z="-1"/>
+        <Size x="1" y="1" z="5"/>
+      </Element>
+      <Element set="Blocks" type="SwitchDiamondBoth">
+        <Location x="7" y="5" z="3"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchDiamondBoth">
+        <Location x="3" y="1" z="3"/>
+        <Size x="1" y="5" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="2" z="3"/>
+        <Size x="1" y="3" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="1" z="3"/>
+        <Size x="3" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="1" z="-1"/>
+        <Size x="1" y="1" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="3" z="-1"/>
+        <Size x="1" y="1" z="5"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="4" y="3" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="121" y="64" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="1" z="-1"/>
+        <Size x="1" y="5" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="5" z="-1"/>
+        <Size x="4" y="1" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="1" z="-1"/>
+        <Size x="1" y="4" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="1" z="-1"/>
+        <Size x="1" y="4" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Ice">
+        <Location x="0" y="1" z="2"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowSouth">
+        <Location x="6" y="1" z="3"/>
+        <Size x="2" y="1" z="1"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="3" y="1" z="4"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="113" y="64" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="1" z="-1"/>
+        <Size x="1" y="1" z="3"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="1" z="-1"/>
+        <Size x="1" y="1" z="3"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="2" z="-1"/>
+        <Size x="4" y="1" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="3" z="-1"/>
+        <Size x="1" y="4" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="3" z="-1"/>
+        <Size x="1" y="4" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="2" z="-1"/>
+        <Size x="1" y="1" z="5"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchSquareBoth">
+        <Location x="1" y="1" z="2"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Ice">
+        <Location x="2" y="1" z="2"/>
+        <Size x="6" y="1" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="105" y="64" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="1" z="-1"/>
+        <Size x="1" y="5" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="5" z="-1"/>
+        <Size x="4" y="1" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="1" z="-1"/>
+        <Size x="1" y="4" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="1" z="-1"/>
+        <Size x="1" y="4" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="2" z="2"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="1" z="2"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Ice">
+        <Location x="0" y="1" z="2"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="2" y="1" z="4"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="97" y="64" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Ice">
+        <Location x="7" y="1" z="-1"/>
+        <Size x="1" y="1" z="3"/>
+      </Element>
+      <Element set="Blocks" type="Ice">
+        <Location x="0" y="1" z="-1"/>
+        <Size x="1" y="1" z="3"/>
+      </Element>
+      <Element set="Blocks" type="Ice">
+        <Location x="1" y="1" z="2"/>
+        <Size x="6" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowSouth">
+        <Location x="7" y="1" z="2"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowSouth">
+        <Location x="0" y="1" z="2"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="89" y="64" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Ice">
+        <Location x="5" y="1" z="2"/>
+        <Size x="3" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="1" z="-1"/>
+        <Size x="1" y="3" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="6" z="-1"/>
+        <Size x="1" y="1" z="6"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="4" z="-1"/>
+        <Size x="1" y="1" z="5"/>
+        <Slope NorthSouth="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Trampoline">
+        <Location x="0" y="4" z="-1"/>
+        <Size x="2" y="2" z="3"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="3" y="6" z="5"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="81" y="64" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="1" z="-1"/>
+        <Size x="1" y="5" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="3" z="-1"/>
+        <Size x="3" y="1" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="1" z="-1"/>
+        <Size x="1" y="5" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="0" z="0"/>
+        <Size x="1" y="3" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="81" y="56" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="4" z="-1"/>
+        <Size x="3" y="3" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="1" z="-1"/>
+        <Size x="3" y="3" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="2" z="-1"/>
+        <Size x="1" y="1" z="7"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="5" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="5" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="ArrowSouth">
+        <Location x="0" y="3" z="0"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowWest">
+        <Location x="3" y="7" z="0"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Trampoline">
+        <Location x="0" y="2" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchSquareRight">
+        <Location x="2" y="2" z="6"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="4" y="5" z="7"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="65" y="72" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="3" z="-1"/>
+        <Size x="2" y="1" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="2" z="-1"/>
+        <Size x="1" y="5" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="2" z="-1"/>
+        <Size x="1" y="5" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="6" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="4" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="2" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="5" z="-1"/>
+        <Size x="2" y="1" z="2"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="6" y="5" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="73" y="56" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="3" z="0"/>
+        <Size x="4" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="3" z="0"/>
+        <Size x="1" y="4" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="6" z="0"/>
+        <Size x="3" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="4" z="-1"/>
+        <Size x="2" y="1" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="5" z="-1"/>
+        <Size x="1" y="3" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="6" z="3"/>
+        <Size x="1" y="1" z="-2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="2" z="-1"/>
+        <Size x="1" y="3" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="3" z="6"/>
+        <Size x="1" y="1" z="-5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="4" z="6"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="4" z="-1"/>
+        <Size x="1" y="4" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="5" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="ArrowNorth">
+        <Location x="5" y="2" z="6"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Trampoline">
+        <Location x="7" y="2" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="73" y="64" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="2" z="-1"/>
+        <Size x="3" y="3" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="3" z="4"/>
+        <Size x="1" y="1" z="-5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="4" z="-1"/>
+        <Size x="1" y="1" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="0" z="-1"/>
+        <Size x="1" y="1" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="1" z="3"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="1" z="6"/>
+        <Size x="1" y="5" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="6" z="6"/>
+        <Size x="3" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="7" z="6"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="6" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="6" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="6" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="4" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="2" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="0" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="6" z="3"/>
+        <Size x="1" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchSquareBoth">
+        <Location x="3" y="5" z="3"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="73" y="72" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="0" z="6"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="1" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="7" z="6"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="6" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="1" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="6" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="0" z="3"/>
+        <Size x="1" y="8" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="5" z="-1"/>
+        <Size x="1" y="1" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="2" z="-1"/>
+        <Size x="1" y="1" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="2" z="3"/>
+        <Size x="2" y="4" z="1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleNone">
+        <Location x="6" y="5" z="3"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleLeft">
+        <Location x="6" y="4" z="3"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleRight">
+        <Location x="6" y="3" z="3"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleBoth">
+        <Location x="6" y="2" z="3"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="6" y="1" z="7"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="73" y="80" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="0" z="3"/>
+        <Size x="1" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="2" z="3"/>
+        <Size x="5" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="3" z="3"/>
+        <Size x="1" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="5" z="3"/>
+        <Size x="8" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="1" z="6"/>
+        <Size x="5" y="6" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="2" z="7"/>
+        <Size x="3" y="4" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="1" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="1" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="1" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="3" z="-1"/>
+        <Size x="1" y="2" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="6" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="6" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="6" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="3" z="-1"/>
+        <Size x="1" y="2" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="6" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="ArrowNorth">
+        <Location x="1" y="6" z="6"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowWest">
+        <Location x="2" y="0" z="6"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="6" y="5" z="4"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="65" y="80" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="5" z="3"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="5" z="-1"/>
+        <Size x="1" y="1" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="6" z="3"/>
+        <Size x="3" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="6" z="-1"/>
+        <Size x="1" y="1" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="2" z="3"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="2" z="-1"/>
+        <Size x="1" y="1" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="2" z="5"/>
+        <Size x="3" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="1" z="5"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="0" z="-1"/>
+        <Size x="1" y="1" z="7"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="2" z="-1"/>
+        <Size x="1" y="1" z="7"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="6" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="5" z="3"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="2" z="3"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="3" z="5"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="7" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+        <Slope NorthSouth="-2" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="ArrowNorth">
+        <Location x="7" y="6" z="6"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="57" y="80" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="6" z="3"/>
+        <Size x="3" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="6" z="-1"/>
+        <Size x="1" y="1" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="0" z="3"/>
+        <Size x="1" y="7" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="4" z="-1"/>
+        <Size x="1" y="1" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="2" z="-1"/>
+        <Size x="1" y="1" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="0" z="3"/>
+        <Size x="1" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="2" z="3"/>
+        <Size x="2" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="1" z="6"/>
+        <Size x="4" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="1" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="1" z="-1"/>
+        <Size x="2" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="1" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="ArrowSouth">
+        <Location x="3" y="6" z="3"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="5" y="1" z="4"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="65" y="40" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowWest">
+        <Location x="3" y="3" z="6"/>
+        <Size x="1" y="5" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="6" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="4" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="5" z="6"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="2" z="-1"/>
+        <Size x="1" y="1" z="6"/>
+        <Slope NorthSouth="2" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="0" z="0"/>
+        <Size x="1" y="2" z="1"/>
+        <Slope NorthSouth="2" Stepped="1" WestEast="0"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="57" y="48" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="3" z="6"/>
+        <Size x="5" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="3" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="3" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="5" z="6"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="4" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="6" z="-1"/>
+        <Size x="1" y="1" z="8"/>
+      </Element>
+      <Element set="Blocks" type="ArrowWest">
+        <Location x="3" y="7" z="6"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="57" y="56" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="6" z="-1"/>
+        <Size x="2" y="1" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="3" z="0"/>
+        <Size x="1" y="4" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="2" z="-1"/>
+        <Size x="2" y="3" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="0" z="-1"/>
+        <Size x="1" y="2" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Trampoline">
+        <Location x="3" y="3" z="7"/>
+        <Size x="1" y="1" z="-6"/>
+      </Element>
+      <Element set="Blocks" type="SwitchDiamondNone">
+        <Location x="4" y="3" z="0"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="49" y="0" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="4" z="-1"/>
+        <Size x="1" y="4" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="3" z="-1"/>
+        <Size x="7" y="5" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="3" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="2" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="1" z="-1"/>
+        <Size x="4" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="1" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="0" z="-1"/>
+        <Size x="4" y="1" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="1" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="0" NorthWest="1" SouthEast="1" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="2" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="0" NorthWest="1" SouthEast="1" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="3" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="0" NorthWest="1" SouthEast="1" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="4" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Split Direction="East" NorthEast="0" NorthWest="1" SouthEast="1" SouthWest="1"/>
+      </Element>
+      <Element set="Blocks" type="Ice">
+        <Location x="7" y="2" z="0"/>
+        <Size x="1" y="1" z="6"/>
+      </Element>
+      <Element set="Blocks" type="Ice">
+        <Location x="7" y="6" z="0"/>
+        <Size x="1" y="1" z="6"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="2" z="6"/>
+        <Size x="2" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="3" z="6"/>
+        <Size x="2" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="4" z="6"/>
+        <Size x="1" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="5" z="6"/>
+        <Size x="1" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleBoth">
+        <Location x="7" y="6" z="6"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="97" y="16" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="3" z="-1"/>
+        <Size x="2" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="2" z="-1"/>
+        <Size x="2" y="4" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="1" z="-1"/>
+        <Size x="2" y="6" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="0" z="-1"/>
+        <Size x="2" y="8" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="3" z="2"/>
+        <Size x="4" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Trampoline">
+        <Location x="3" y="3" z="-1"/>
+        <Size x="1" y="1" z="4"/>
+      </Element>
+      <Element set="Blocks" type="Trampoline">
+        <Location x="0" y="3" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="105" y="16" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="8" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="3" z="2"/>
+        <Size x="8" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="0" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="2" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="1" z="-1"/>
+        <Size x="1" y="2" z="3"/>
+        <Slope NorthSouth="1" Stepped="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="4" z="-1"/>
+        <Size x="1" y="2" z="3"/>
+        <Slope NorthSouth="-1" Stepped="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="6" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="-2" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Trampoline">
+        <Location x="6" y="1" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Trampoline">
+        <Location x="6" y="3" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Trampoline">
+        <Location x="6" y="5" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Trampoline">
+        <Location x="6" y="7" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="1" y="3" z="4"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="113" y="16" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="3" z="-1"/>
+        <Size x="2" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="2" z="-1"/>
+        <Size x="2" y="4" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="1" z="-1"/>
+        <Size x="2" y="6" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="2" y="8" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="3" z="2"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Trampoline">
+        <Location x="1" y="3" z="-1"/>
+        <Size x="1" y="1" z="4"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="5" z="-1"/>
+        <Size x="1" y="1" z="6"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="5" z="-1"/>
+        <Size x="1" y="1" z="6"/>
+        <Slope NorthSouth="0" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="SwitchDiamondNone">
+        <Location x="4" y="5" z="5"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="105" y="8" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="0" z="-1"/>
+        <Size x="2" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="2" z="-1"/>
+        <Size x="4" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="4" z="-1"/>
+        <Size x="6" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="6" z="-1"/>
+        <Size x="8" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="4" z="-1"/>
+        <Size x="1" y="1" z="3"/>
+        <Slope NorthSouth="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="6" z="-1"/>
+        <Size x="1" y="1" z="3"/>
+        <Slope NorthSouth="-1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleNone">
+        <Location x="6" y="5" z="2"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="6" y="5" z="3"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="105" y="24" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="6" z="-1"/>
+        <Size x="2" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="4" z="-1"/>
+        <Size x="4" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="2" z="-1"/>
+        <Size x="6" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="0" z="-1"/>
+        <Size x="1" y="1" z="3"/>
+        <Slope NorthSouth="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="2" z="-1"/>
+        <Size x="1" y="1" z="3"/>
+        <Slope NorthSouth="-1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="SwitchCircleBoth">
+        <Location x="6" y="1" z="2"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="6" y="1" z="3"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="105" y="40" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="3" z="-1"/>
+        <Size x="8" y="5" z="4"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="1" z="-1"/>
+        <Size x="6" y="2" z="4"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="0" z="-1"/>
+        <Size x="4" y="1" z="4"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="0" z="3"/>
+        <Size x="2" y="2" z="-2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="0" z="-1"/>
+        <Size x="2" y="2" z="2"/>
+        <Slope NorthSouth="1" WestEast="0"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="105" y="48" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="1" z="4"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="1" z="-1"/>
+        <Size x="6" y="1" z="4"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="7" z="-1"/>
+        <Size x="6" y="1" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="4" z="-1"/>
+        <Size x="8" y="1" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="3" z="4"/>
+        <Size x="2" y="3" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="6" z="3"/>
+        <Size x="2" y="1" z="1"/>
+        <Slope NorthSouth="-1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="2" z="3"/>
+        <Size x="2" y="1" z="1"/>
+        <Slope NorthSouth="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="1" z="-1"/>
+        <Size x="2" y="1" z="4"/>
+        <Slope NorthSouth="1" WestEast="0"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="105" y="56" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="8" y="2" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="2" z="-1"/>
+        <Size x="6" y="2" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="4" z="-1"/>
+        <Size x="4" y="2" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="6" z="-1"/>
+        <Size x="2" y="2" z="8"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="5" z="1"/>
+        <Size x="2" y="1" z="1"/>
+        <Slope NorthSouth="0" Stepped="1" WestEast="-1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="113" y="56" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="5" z="0"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="4" z="-1"/>
+        <Size x="3" y="3" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="2" z="-1"/>
+        <Size x="1" y="2" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="2" z="-1"/>
+        <Size x="3" y="1" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="1" z="-1"/>
+        <Size x="2" y="3" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="2" z="1"/>
+        <Size x="1" y="1" z="-2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="5" z="1"/>
+        <Size x="1" y="1" z="-2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="1" y="2" z="5"/>
+      </Element>
+      <Element set="Blocks" type="Water">
+        <Location x="2" y="5" z="0"/>
+        <Size x="0" y="0" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Water">
+        <Location x="7" y="2" z="0"/>
+        <Size x="0" y="0" z="-1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="121" y="56" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="1" z="-1"/>
+        <Size x="3" y="3" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="1" z="-1"/>
+        <Size x="2" y="1" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="0" z="-1"/>
+        <Size x="3" y="3" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="6" z="-1"/>
+        <Size x="2" y="1" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="5" z="-1"/>
+        <Size x="3" y="3" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="6" z="0"/>
+        <Size x="2" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="6" z="1"/>
+        <Size x="1" y="1" z="-2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="2" z="1"/>
+        <Size x="1" y="1" z="-2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="1" z="1"/>
+        <Size x="1" y="1" z="-2"/>
+      </Element>
+      <Element set="Blocks" type="ArrowNorth">
+        <Location x="7" y="3" z="0"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowWest">
+        <Location x="6" y="0" z="0"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Jewels" type="">
+        <Location x="1" y="6" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Water">
+        <Location x="4" y="6" z="0"/>
+        <Size x="0" y="0" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Water">
+        <Location x="1" y="2" z="0"/>
+        <Size x="0" y="0" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Water">
+        <Location x="6" y="1" z="0"/>
+        <Size x="0" y="0" z="-1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="129" y="56" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="1" z="-1"/>
+        <Size x="6" y="3" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="4" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="5" z="-1"/>
+        <Size x="3" y="3" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="6" z="0"/>
+        <Size x="2" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="6" z="1"/>
+        <Size x="1" y="1" z="-2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="2" z="1"/>
+        <Size x="1" y="1" z="-2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="2" z="1"/>
+        <Size x="1" y="1" z="-2"/>
+      </Element>
+      <Element set="Blocks" type="Water">
+        <Location x="1" y="2" z="0"/>
+        <Size x="0" y="0" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Water">
+        <Location x="4" y="2" z="0"/>
+        <Size x="0" y="0" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Water">
+        <Location x="3" y="6" z="0"/>
+        <Size x="0" y="0" z="-1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="121" y="48" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="5" z="-1"/>
+        <Size x="3" y="3" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="2" z="-1"/>
+        <Size x="1" y="3" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="2" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="2" z="-1"/>
+        <Size x="3" y="3" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="4" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="3" z="1"/>
+        <Size x="1" y="1" z="-2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="6" z="1"/>
+        <Size x="1" y="1" z="-2"/>
+      </Element>
+      <Element set="Blocks" type="Water">
+        <Location x="6" y="6" z="0"/>
+        <Size x="0" y="0" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Water">
+        <Location x="2" y="3" z="0"/>
+        <Size x="0" y="0" z="-1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="113" y="48" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="3" z="0"/>
+        <Size x="2" y="2" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="4" z="0"/>
+        <Size x="4" y="1" z="1"/>
+        <Slope NorthSouth="0" Stepped="1" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="4" z="0"/>
+        <Size x="4" y="1" z="1"/>
+        <Slope NorthSouth="0" Stepped="1" WestEast="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="97" y="48" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="4" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="4" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="4" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="4" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="4" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="4" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="3" z="-1"/>
+        <Size x="6" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="ArrowSouth">
+        <Location x="5" y="4" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="89" y="48" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Water">
+        <Location x="0" y="0" z="0"/>
+        <Size x="7" y="7" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="3" z="-1"/>
+        <Size x="6" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="1" z="-1"/>
+        <Size x="1" y="6" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="1" z="-1"/>
+        <Size x="1" y="6" z="3"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="1" z="-1"/>
+        <Size x="2" y="1" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="0" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="4" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="4" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="-1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="4" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="2" y="4" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="81" y="16" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="7" y="8" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="0" z="-1"/>
+        <Size x="1" y="8" z="2"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="2" z="-1"/>
+        <Size x="1" y="1" z="6"/>
+        <Slope NorthSouth="2" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="7" y="4" z="-1"/>
+        <Size x="1" y="1" z="6"/>
+        <Slope NorthSouth="-2" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Ice">
+        <Location x="7" y="3" z="6"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Ice">
+        <Location x="7" y="3" z="0"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+    </Elements>
+  </Zone>
+  <Zone>
+    <Location x="73" y="8" z="0"/>
+    <Size x="7" y="7" z="7"/>
+    <Elements>
+      <Element set="Blocks" type="SwitchDiamondBoth">
+        <Location x="1" y="0" z="-1"/>
+        <Size x="7" y="8" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="3" y="0" z="-1"/>
+        <Size x="5" y="7" z="6"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="4" y="1" z="5"/>
+        <Size x="4" y="5" z="-6"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="0" y="0" z="-1"/>
+        <Size x="1" y="8" z="4"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="0" z="-1"/>
+        <Size x="1" y="1" z="2"/>
+        <Slope NorthSouth="-2" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="1" y="1" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="-1" WestEast="0"/>
+      </Element>
+      <Element set="Blocks" type="Water">
+        <Location x="4" y="1" z="0"/>
+        <Size x="3" y="4" z="-1"/>
+      </Element>
+      <Element set="Blocks" type="Trampoline">
+        <Location x="5" y="4" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Trampoline">
+        <Location x="7" y="2" z="-1"/>
+        <Size x="1" y="1" z="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="2" z="-1"/>
+        <Size x="1" y="1" z="6"/>
       </Element>
     </Elements>
   </Zone>

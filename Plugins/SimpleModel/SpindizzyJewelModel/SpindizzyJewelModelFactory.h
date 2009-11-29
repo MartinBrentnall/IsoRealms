@@ -37,6 +37,7 @@ class SpindizzyJewelModelFactory:public ISimpleModelFactory {
   /****************************************\
    * Implements IPlugin (in ISimpleModel) *
   \****************************************/
+  void notifyZoneAction(Zone*);
   void initPlugin(Zone*);
   std::vector<ICommandInfo*> getCommandInfo();
   void setEditingInfo(IComponentContainer*);

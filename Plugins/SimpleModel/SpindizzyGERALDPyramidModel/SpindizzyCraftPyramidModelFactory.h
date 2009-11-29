@@ -43,6 +43,7 @@ class SpindizzyCraftPyramidModelFactory:public ISimpleModelFactory {
   /***********************************************\
    * Implements IPlugin (in ISimpleModelFactory) *
   \***********************************************/
+  void notifyZoneAction(Zone* zone);
   void initPlugin(Zone* zone);
   std::vector<ICommandInfo*> getCommandInfo();
   void setEditingInfo(IComponentContainer*);

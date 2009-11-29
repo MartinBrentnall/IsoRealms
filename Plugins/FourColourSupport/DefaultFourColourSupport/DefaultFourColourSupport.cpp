@@ -88,8 +88,12 @@ void DefaultFourColourSupport::PaletteConfigurationCommand::execute() {
   cComponentContainer->addComponent(mComponent);
 }
 
+void DefaultFourColourSupport::notifyZoneAction(Zone* zone) {
+  // Nothing to do.
+}
+
 void DefaultFourColourSupport::initPlugin(Zone* zone) {
-  // Nothing to do
+  // Nothing to do.
 }
 
 void DefaultFourColourSupport::save(DOMNodeWriter* node) {

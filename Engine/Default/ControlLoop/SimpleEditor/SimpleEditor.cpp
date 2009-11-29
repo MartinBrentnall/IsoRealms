@@ -114,17 +114,27 @@ bool SimpleEditor::componentAt(float x, float y) {
 bool SimpleEditor::keyDown(SDLKey& key) {
   switch (key) {
     case SDLK_u: {
+      // TODO: Duplicate code: 59217
       Zone* mZone = cCursor->getZone();
-      IElement* mElement = mZone->popElement();
-      if (mElement != NULL) {
-        cUndoStack.push(mElement);
-        mElement->removed();
+      Map* mMap = cCursor->getMap();
+      mMap->notifyZoneAction(mZone); // TODO: Should this be here (immediately before the action), or when the zone is selected?
+      if (mZone != NULL) {
+        IElement* mElement = mZone->popElement();
+        if (mElement != NULL) {
+          cUndoStack.push(mElement);
+          mElement->removed();
+          mMap->zoneChanged(mZone);
+        }
       }
       return true;
     }
 
     case SDLK_r: {
       if (!cUndoStack.empty()) {
+        // TODO: Duplicate code: 59217
+        Zone* mZone = cCursor->getZone();
+        Map* mMap = cCursor->getMap();
+        mMap->notifyZoneAction(mZone); // TODO: Should this be here (immediately before the action), or when the zone is selected?
         IElement* mElement = cUndoStack.top();
         cUndoStack.pop();
         mElement->added();
@@ -223,12 +233,7 @@ void SimpleEditor::input(SDL_Event& event) {
 
 void SimpleEditor::pushElement(IElement* element) {
   cCursor->pushElement(element);
-  while (!cUndoStack.empty()) {
-    IElement* mElement = cUndoStack.top();
-    IElementSet* mElementSet = mElement->getElementSet();
-    mElementSet->destroy(mElement);
-    cUndoStack.pop();
-  }
+  clearUndoStack();
 }
 
 void SimpleEditor::setDirty(IElement* element) {
@@ -344,12 +349,22 @@ void SimpleEditor::bringComponentToFront(IHUDComponent* component) {
   }  
 }
 
+void SimpleEditor::clearUndoStack() {
+  while (!cUndoStack.empty()) {
+    IElement* mElement = cUndoStack.top();
+    IElementSet* mElementSet = mElement->getElementSet();
+    mElementSet->destroy(mElement);
+    cUndoStack.pop();
+  }
+}
+
 void SimpleEditor::saveCurrentMap() {
   cMap->save();
 }
 
 void SimpleEditor::setMap(Map* map) {
   // TODO: We must be sure to destroy the original map when we no longer use it!
+  clearUndoStack();
   cMap = map;
   delete cCursor;
   cCursor = new EditorCursor(cMap);

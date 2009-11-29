@@ -169,6 +169,10 @@ Zone* EditorCursor::getZone() {
   return cEditZonePointer;
 }
 
+Map* EditorCursor::getMap() {
+  return cEditMapPointer;
+}
+
 EditorCursor::~EditorCursor() {
   delete cZoneBrush;
 }

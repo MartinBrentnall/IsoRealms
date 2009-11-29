@@ -33,6 +33,13 @@ class IPlugin:public IPluginSupport {
   virtual ~IPlugin() {}
 
   /**
+   * This allows the plugin to know that an editor action is being performed on
+   * the specified zone.  It will be called immediately prior to the editing
+   * action being carried out.
+   */
+  virtual void notifyZoneAction(Zone*) = 0;
+
+  /**
    * This allows the plugin to know that initialization is being performed for
    * the specified zone.  It may be called multiple times depending on how many
    * initialization passes are required for the zone.

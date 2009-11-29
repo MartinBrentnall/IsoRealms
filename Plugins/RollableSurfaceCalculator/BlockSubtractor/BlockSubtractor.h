@@ -206,6 +206,7 @@ class BlockSubtractor:public IRollableSurfaceCalculator {
   /**********************\
    * Implements IPlugin *
   \**********************/
+  void notifyZoneAction(Zone*);
   void initPlugin(Zone*);
   std::vector<ICommandInfo*> getCommandInfo();
   void setEditingInfo(IComponentContainer*);

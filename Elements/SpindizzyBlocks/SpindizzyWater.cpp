@@ -71,7 +71,7 @@ std::vector<IInteractiveElement*> SpindizzyWater::getInteractiveElements() {
 }
 
 IRollableSurface* SpindizzyWater::createSubSurface(IRollableSurface::FaceDirection facing, int north, int east, int south, int west) {
-  return new RollableSurface(cSpindizzyTextureSet, ISpindizzyTextureSet::WATER, north, east, south, west, cStartLocation.z, 0, 0, facing/*, TODO:CONDITIONAL  mSurfaceCondition*/);
+  return new RollableSurface(cSpindizzyTextureSet, ISpindizzyTextureSet::WATER, north, east, south, west, facing == IRollableSurface::UP ? cStartLocation.z : cEndLocation.z, 0, 0, facing/*, TODO:CONDITIONAL  mSurfaceCondition*/);
 }
 
 IWallSurface* SpindizzyWater::createSubSurface(int x, int y, IWallSurface::FaceDirection facing, int length, int startHeight, int endHeight, int topSlope, int bottomSlope) {

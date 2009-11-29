@@ -44,6 +44,10 @@ IPlugin* SpindizzyCraftGyroscopeModelFactory::getPlugin(PlugSocket* socket) {
   return NULL;
 }
 
+void SpindizzyCraftGyroscopeModelFactory::notifyZoneAction(Zone* zone) {
+  // Nothing to do.
+}
+
 void SpindizzyCraftGyroscopeModelFactory::initPlugin(Zone* zone) {
   // Nothing to do.
 }

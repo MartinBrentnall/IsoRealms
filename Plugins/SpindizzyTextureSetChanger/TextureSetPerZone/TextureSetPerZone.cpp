@@ -82,6 +82,10 @@ IPlugin* TextureSetPerZone::getPlugin(PlugSocket* plugSocket) {
   return NULL;
 }
 
+void TextureSetPerZone::notifyZoneAction(Zone* zone) {
+  // Nothing to do.
+}
+
 void TextureSetPerZone::initPlugin(Zone* zone) {
   // Nothing to do.
 }

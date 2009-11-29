@@ -411,6 +411,10 @@ IPlugin* Commodore64SpindizzyTextureSet::getPlugin(PlugSocket* socket) {
   return NULL;
 }
 
+void Commodore64SpindizzyTextureSet::notifyZoneAction(Zone* zone) {
+  // Nothing to do.
+}
+
 void Commodore64SpindizzyTextureSet::initPlugin(Zone* zone) {
   // Nothing to do.
 }

@@ -35,6 +35,7 @@ class DummyPlugin:public virtual IPlugin {
   /**********************\
    * Implements IPlugin *
   \**********************/
+  void notifyZoneAction(Zone*);
   void initPlugin(Zone*);
   void setEditingInfo(IComponentContainer*);
   std::vector<ICommandInfo*> getCommandInfo();

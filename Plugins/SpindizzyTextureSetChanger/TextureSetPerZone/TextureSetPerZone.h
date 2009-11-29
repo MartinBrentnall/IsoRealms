@@ -73,6 +73,7 @@ class TextureSetPerZone:public ISpindizzyTextureSetChanger {
   /******************************************************\
    * Implements IPlugin (in ISpindizzyTextureSetChanger *
   \******************************************************/
+  void notifyZoneAction(Zone*);
   void initPlugin(Zone*);
   std::vector<ICommandInfo*> getCommandInfo();
   void setEditingInfo(IComponentContainer*);

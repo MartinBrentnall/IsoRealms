@@ -44,6 +44,10 @@ IPlugin* SpindizzyCraftPyramidModelFactory::getPlugin(PlugSocket* socket) {
   return NULL;
 }
 
+void SpindizzyCraftPyramidModelFactory::notifyZoneAction(Zone* zone) {
+  // Nothing to do.
+}
+
 void SpindizzyCraftPyramidModelFactory::initPlugin(Zone* zone) {
   // Nothing to do.
 }

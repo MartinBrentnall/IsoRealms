@@ -48,6 +48,10 @@ IPlugin* SpindizzyCraftBallModelFactory::getPlugin(PlugSocket* socket) {
   return NULL;
 }
 
+void SpindizzyCraftBallModelFactory::notifyZoneAction(Zone* zone) {
+  // Nothing to do.
+}
+
 void SpindizzyCraftBallModelFactory::initPlugin(Zone* zone) {
   // Nothing to do.
 }
