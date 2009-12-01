@@ -26,6 +26,7 @@ SpindizzyWater::SpindizzyWater(IElementFactory* elementFactory, BlockLocation* s
   cEndLocation = BlockLocation(endLocation->x > startLocation->x ? endLocation->x : startLocation->x,
                                endLocation->y > startLocation->y ? endLocation->y : startLocation->y,
                               (endLocation->z <= startLocation->z ? endLocation->z : startLocation->z) - 1);
+  cInitStage = CACHE_SURFACES;
 }
 
 void SpindizzyWater::setDirty() {
