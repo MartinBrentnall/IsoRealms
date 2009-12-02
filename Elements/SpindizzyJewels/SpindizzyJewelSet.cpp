@@ -75,6 +75,12 @@ void SpindizzyJewelSet::save(DOMNodeWriter* node) {
   // Nothing to do
 }
 
+SpindizzyJewelSet::~SpindizzyJewelSet() {
+  for (unsigned int i = 0; i < cElementFactories.size(); i++) {
+    delete cElementFactories[i];
+  }
+}
+
 extern "C" IElementSet* create(DOMNodeWrapper* node) {
   return new SpindizzyJewelSet();
 }

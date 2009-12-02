@@ -76,6 +76,7 @@ void RollableSurface::render() {
   ISpindizzyTexture* mTexture = (*cTextureSet)->getTexture(cTextureType);
   mTexture->set();
   glBegin(GL_QUADS);
+
   switch (cFacing) {
     case IRollableSurface::UP: {
       mTexture->texCoord2f(cEast + 1, cNorth + 1); glVertex3f(xe, ys, xsye);

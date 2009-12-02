@@ -88,9 +88,15 @@ IElementSet* ElementSetRegistry::createInstance(std::string implementation, std:
   if (mDlsymError) {
     throw InitException("Cannot load symbol: " + std::string(mDlsymError));
   }
+  destroyElementSet* destroyElementSetFunction = cast_voidptr_to_funcptr<destroyElementSet*>(dlsym(mElementSO, "destroy"));
+  mDlsymError = dlerror();
+  if (mDlsymError) {
+    throw InitException("Cannot load symbol: " + std::string(mDlsymError));
+  }
   cElementSets[instanceName] = createElementSetFunction(NULL);
   cElementSetTypes[instanceName] = implementation;
-
+  cDestroyFunctions[instanceName] = destroyElementSetFunction;
+  cSOHandles[instanceName] = mElementSO;
   for (unsigned int i = 0; i < cListeners.size(); i++) {
     cListeners[i]->elementSetInstantiated(cElementSets[instanceName]);
   }
@@ -188,3 +194,14 @@ void ElementSetRegistry::save(PluginRegistry* pluginRegistry, DOMNodeWriter* nod
   }
 }
 
+ElementSetRegistry::~ElementSetRegistry() {
+  for (std::map<std::string, IElementSet*>::iterator i = cElementSets.begin(); i != cElementSets.end(); i++) {
+    std::string mInstanceName = i->first;
+    IElementSet* mElementSet = i->second;
+    destroyElementSet* mDestroyFunction = cDestroyFunctions[mInstanceName];
+    mDestroyFunction(mElementSet);
+    void* mHandleToClose = cSOHandles[mInstanceName];
+    // TODO: Remove from cSOHandles if it was the last one!
+    dlclose(mHandleToClose);
+  }
+}

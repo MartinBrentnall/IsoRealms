@@ -101,6 +101,8 @@ class SpindizzyBlockFactory:public ISpindizzyBlockFactory,
    * Implements IComponentCloseListener *
   \**************************************/
   void componentClosed(IHUDComponent*);
+
+  ~SpindizzyBlockFactory();
 };
 
 #endif

@@ -36,6 +36,15 @@ class IElementGateway {
    * @param IElement*  The element to push.
    */
   virtual void pushElement(IElement*) = 0;
+
+  /**
+   * Notify the pending destruction of the specified element.  When this is
+   * called, the client should ensure that the specified element is referenced
+   * any more.
+   * 
+   * @param IElement*  The element that will be destroyed.
+   */
+  virtual void notifyDestruction(IElement*) = 0;
 };
 
 #endif

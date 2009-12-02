@@ -37,8 +37,23 @@ class PluginRegistry {
   static std::map<std::string, IPlugin*> cDummyPlugins;  
 
   std::vector<IPluginRegistryListener*> cListeners;
+
+  /**
+   * Mapping of type to instance map; instance name to plug-in instances.
+   */
   std::map<std::string, std::map<std::string, IPlugin*> > cPluginInstances;
   std::map<IPlugin*, std::string> cImplementationNames;
+
+  /**
+   * Mapping of type, implementation to library handles.
+   */
+  std::map<std::string, std::map<std::string, void*> > cSOHandles;
+
+  /**
+   * Each plug-in maps to the corresponding destroy function found in it's
+   * library.
+   */
+  std::map<IPlugin*, destroyPlugin*> cDestroyFunctions;
 
   public:
 
@@ -110,6 +125,8 @@ class PluginRegistry {
   std::string getInstanceName(std::string, IPlugin*);
 
   void save(DOMNodeWriter*);
+
+  ~PluginRegistry();
 };
 
 #endif

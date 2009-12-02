@@ -19,6 +19,7 @@
 #ifndef ROLLABLE_SURFACE_H
 #define ROLLABLE_SURFACE_H
 
+#include <cmath>
 #include <cstdlib>
 #include <GL/gl.h>
 

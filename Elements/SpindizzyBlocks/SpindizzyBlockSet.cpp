@@ -207,6 +207,12 @@ AbstractSpindizzyBlock* SpindizzyBlockSet::TrampolineFactory::createBlock(BlockL
   return new SpindizzyTrampolineBlock(this, startLocation, endLocation, textureSet, blockProperties, addition);
 }
 
+SpindizzyBlockSet::~SpindizzyBlockSet() {
+  for (unsigned int i = 0; i < cElementFactories.size(); i++) {
+    delete cElementFactories[i];
+  }
+}
+
 extern "C" IElementSet* create(DOMNodeWrapper* node) {
   return new SpindizzyBlockSet();
 }

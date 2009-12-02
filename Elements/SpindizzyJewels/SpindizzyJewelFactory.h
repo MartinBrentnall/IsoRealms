@@ -63,6 +63,8 @@ class SpindizzyJewelFactory:public IElementFactory, public IsoRealmsConstants {
   void updateIcon(int milliseconds);
   void renderIcon();
   void setDirty(IElement*);
+
+  ~SpindizzyJewelFactory();
 };
 
 #endif

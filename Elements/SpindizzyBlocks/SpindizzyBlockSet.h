@@ -148,6 +148,8 @@ class SpindizzyBlockSet:public IElementSet,
    * Implements IChangeableTextureSet *
   \************************************/
   void setSpindizzyTextureSet(ISpindizzyTextureSet*);
+
+  ~SpindizzyBlockSet();
 };
 
 #endif

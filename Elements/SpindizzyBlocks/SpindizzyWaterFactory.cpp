@@ -52,7 +52,6 @@ void SpindizzyWaterFactory::signalAllElementsDirty() {
 }
 
 void SpindizzyWaterFactory::setEditingInfo(BlockLocation* editingLocation, IElementGateway* gateway, IComponentContainer* componentContainer) {
-  cComponentContainer = componentContainer;
   cGateway = gateway;
   cEditingLocation = editingLocation;
 }
@@ -129,4 +128,15 @@ std::string SpindizzyWaterFactory::getName() {
   return "Water";
 }
 
+SpindizzyWaterFactory::~SpindizzyWaterFactory() {
+  std::cout << "Destroying water..." << std::endl;
+  // TODO: Unregister elements from the surface calculator!
+  delete cStartWaterLocation;
+  delete cSampleWater;
+  for (unsigned int i = 0; i < cContent.size(); i++) {
+    cGateway->notifyDestruction(cContent[i]);
+    delete cContent[i];
+  }  
+  std::cout << "Destroyed water!" << std::endl;
+}
 

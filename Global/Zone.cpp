@@ -127,6 +127,17 @@ IElement* Zone::popElement() {
   return NULL;
 }
 
+bool Zone::removeElement(IElement* element) {
+  bool mElementRemoved = false;
+  for (int i = cElements.size(); i >= 0; i--) {
+    if (cElements[i] == element) {
+      cElements.erase(cElements.begin() + i);
+      mElementRemoved = true;
+    }
+  }
+  return mElementRemoved;
+}
+
 void Zone::zoneChanged() {
   for (unsigned int i = 0; i < cChangeListeners.size(); i++) {
     cChangeListeners[i]->zoneChanged(this);

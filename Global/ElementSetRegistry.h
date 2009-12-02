@@ -43,6 +43,17 @@ class ElementSetRegistry {
    * Instantiated element sets by instance name.
    */
   std::map<std::string, IElementSet*> cElementSets;
+
+  /**
+   * Each plug-in maps to its corresponding destroy function.
+   */
+  std::map<std::string, destroyElementSet*> cDestroyFunctions;
+
+  /**
+   * Map each element set instance name to its corresponding library.
+   */
+  std::map<std::string, void*> cSOHandles;
+
   std::map<std::string, std::string> cElementSetTypes;
 
   int indexOf(IElementRegistryListener*);
@@ -104,6 +115,8 @@ class ElementSetRegistry {
   IElementSet* getElementSet(std::string*);
 
   void save(PluginRegistry*, DOMNodeWriter*);
+
+  ~ElementSetRegistry();
 };
 
 #endif

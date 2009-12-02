@@ -31,7 +31,6 @@
 class SpindizzyWaterFactory:public ISpindizzyBlockFactory {
   private:
   std::vector<SpindizzyWater*> cContent;
-  IComponentContainer* cComponentContainer;
   ISpindizzyTextureSet** cSpindizzyTextureSet;
   BlockLocation* cEditingLocation;
   BlockLocation* cStartWaterLocation;
@@ -59,6 +58,8 @@ class SpindizzyWaterFactory:public ISpindizzyBlockFactory {
   void renderIcon();
   void updateIcon(int);
   std::string getName();
+
+  ~SpindizzyWaterFactory();
 };
 
 #endif

@@ -99,6 +99,13 @@ class Map:public IZoneChangeListener {
   PluginRegistry* getPluginRegistry();
 
   /**
+   * Remove the specified element from anywhere in the map.  This function
+   * will be pretty slow, especially on large maps.
+   * TODO: Will we ever have more than one instance of an element or can we assume there is always only one?  If more, we need to remove them all.
+   */
+  void removeElement(IElement*);
+
+  /**
    * This function is called when an editing action is about to be performed on
    * a zone.
    * 
@@ -111,6 +118,8 @@ class Map:public IZoneChangeListener {
    * Implements IZoneChangeListener *
   \**********************************/
   void zoneChanged(Zone*);
+
+  ~Map();
 };
 
 #endif

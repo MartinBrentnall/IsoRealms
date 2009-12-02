@@ -129,6 +129,14 @@ void Map::save() {
   mMapNode->save("Test.isorealms");
 }
 
+void Map::removeElement(IElement* element) {
+  for (unsigned int i = 0; i < cZones.size(); i++) {
+    if (cZones[i]->removeElement(element)) {
+      zoneChanged(cZones[i]);
+    }
+  }
+}
+
 ElementSetRegistry* Map::getElementSetRegistry() {
   return &cElementSetRegistry;
 }
@@ -137,4 +145,9 @@ PluginRegistry* Map::getPluginRegistry() {
   return &cPluginRegistry;
 }
 
-
+Map::~Map() {
+  for (unsigned int i = 0; i < cZones.size(); i++) {
+    delete cZones[i];
+  }
+  cZones.clear();
+}

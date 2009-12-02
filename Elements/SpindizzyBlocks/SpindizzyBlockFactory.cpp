@@ -199,3 +199,28 @@ void SpindizzyBlockFactory::componentClosed(IHUDComponent* component) {
 std::string SpindizzyBlockFactory::getName() {
   return cFactoryName;
 }
+
+SpindizzyBlockFactory::~SpindizzyBlockFactory() {
+  std::cout << "Destroying block factory..." << std::endl;
+  // TODO: Unregister elements from the surface calculator!
+  if (cStartBlockLocation != NULL) {
+    std::cout << "Destroying start block location..." << std::endl;
+    delete cStartBlockLocation;
+  }
+  std::cout << "Destroying sample block..." << std::endl;
+  delete cSampleBlock;
+  std::cout << "Destroying block properties..." << std::endl;
+  delete cBlockProperties;
+  if (cConfigurationComponent != NULL) {
+    std::cout << "Destroying configuration component..." << std::endl;
+    cComponentContainer->removeComponent(cConfigurationComponent);
+    delete cConfigurationComponent;
+  }
+  std::cout << "Destroying content..." << std::endl;
+  for (unsigned int i = 0; i < cContent.size(); i++) {
+    cGateway->notifyDestruction(cContent[i]);
+    delete cContent[i];
+  }
+  std::cout << "Destroyed block!" << std::endl;
+}
+

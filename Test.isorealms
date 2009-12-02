@@ -2,9 +2,9 @@
 <Map>
   <Plugin implementation="DefaultFourColourSupport" instance="TODO_InstanceName" type="FourColourSupport">
     <Configuration>
-      <Floor alpha="0" blue="0" green="0.6" red="0"/>
-      <Extra alpha="0" blue="1" green="0" red="0"/>
-      <Wall alpha="0" blue="0.2" green="1" red="1"/>
+      <Floor alpha="0" blue="1.0" green="0.9" red="1.0"/>
+      <Extra alpha="0" blue="0" green="0" red="0.4"/>
+      <Wall alpha="0" blue="0.6" green="0" red="0.0"/>
       <Background alpha="0" blue="0" green="0" red="0"/>
     </Configuration>
   </Plugin>

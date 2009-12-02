@@ -59,8 +59,15 @@ void PluginRegistry::loadPlugin(std::string& type, std::string& implementation, 
   if (mDlsymError) {
     throw InitException("Cannot load symbol: " + std::string(mDlsymError));
   }
+  destroyPlugin* destroyPluginFunction = cast_voidptr_to_funcptr<destroyPlugin*>(dlsym(mPluginSO, "destroy"));
+  mDlsymError = dlerror();
+  if (mDlsymError) {
+    throw InitException("Cannot load symbol: " + std::string(mDlsymError));
+  }
   cPluginInstances[type][instanceName] = createPluginFunction(NULL);
+  cDestroyFunctions[cPluginInstances[type][instanceName]] = destroyPluginFunction;
   cImplementationNames[cPluginInstances[type][instanceName]] = implementation;
+  cSOHandles[type][implementation] = mPluginSO;
   for (unsigned int i = 0; i < cListeners.size(); i++) {
     cListeners[i]->pluginInstanceAdded(this, type, instanceName);
   }
@@ -173,4 +180,21 @@ void PluginRegistry::save(DOMNodeWriter* node) {
     }
   }
 }
+
+PluginRegistry::~PluginRegistry() {
+  for (std::map<std::string, std::map<std::string, IPlugin*> >::iterator i = cPluginInstances.begin(); i != cPluginInstances.end(); i++) {
+    std::string mTypeName = i->first;
+    std::map<std::string, IPlugin*> mInstanceOfType = i->second;
+    for (std::map<std::string, IPlugin*>::iterator j = mInstanceOfType.begin(); j != mInstanceOfType.end(); j++) {
+      IPlugin* mInstance = j->second;
+      std::string mImplementation = cImplementationNames.find(mInstance)->second;
+      destroyPlugin* mDestroyFunction = cDestroyFunctions.find(mInstance)->second;
+      mDestroyFunction(mInstance);
+      void* mHandleToClose = cSOHandles[mTypeName][mImplementation];
+      // TODO: Remove from cSOHandles if it was the last one!
+      dlclose(mHandleToClose);
+    }
+  }
+}
+
 

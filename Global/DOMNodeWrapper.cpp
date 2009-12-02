@@ -82,8 +82,6 @@ int DOMNodeWrapper::getIntegerAttribute(std::string attribute) {
         throw ParseException("Whilst reading value for node \"" + getNodeName() + "\"");
       }*/
       return mIntegerValue;
-    } else {
-      std::cout << "Named attribute not found: " << attribute << std::endl;
     }
   } else {
     std::cout << "Something bad happened!" << std::endl;

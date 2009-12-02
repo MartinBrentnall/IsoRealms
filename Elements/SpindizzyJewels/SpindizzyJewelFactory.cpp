@@ -159,3 +159,11 @@ void SpindizzyJewelFactory::renderIcon() {
   glEnd();*/
 }
 
+SpindizzyJewelFactory::~SpindizzyJewelFactory() {
+  delete cSampleJewel;
+  for (unsigned int i = 0; i < cContent.size(); i++) {
+    cGateway->notifyDestruction(cContent[i]);
+    delete cContent[i];
+  }
+}
+

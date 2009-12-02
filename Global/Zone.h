@@ -75,6 +75,16 @@ class Zone:public BlockArea,
   IElement* popElement();
 
   /**
+   * Attempt to remove the specified element from this zone.  If the specified
+   * element doesn't exist in this zone, no change occurs.
+   * 
+   * @param IElement*  The element to remove.
+   * @returns true if one or more instances of the specified element were
+   *          removed, otherwise false.
+   */
+  bool removeElement(IElement*);
+
+  /**
    * Add a listener to be notified when elements are added or removed from the
    * zone.
    * 

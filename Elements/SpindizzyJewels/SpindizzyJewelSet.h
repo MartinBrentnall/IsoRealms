@@ -39,15 +39,16 @@ class SpindizzyJewelSet:public IElementSet {
   public:
   SpindizzyJewelSet();
 
-  /*************************************************************************\
-   * Implemented methods of IElementSet.h                                  *
-  \*************************************************************************/
+  /**************************\
+   * Implements IElementSet *
+  \**************************/
   std::vector<IElementFactory*> getElementFactories();
   void destroy(IElement*);
+  ~SpindizzyJewelSet();
 
-  /**************************************************************************\
-   * Implemented methods of IPluginSupport.h (in IElementSet.h)             *
-  \**************************************************************************/
+  /**********************************************\
+   * Implements IPluginSupport (in IElementSet) *
+  \**********************************************/
   std::string getName();
   std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);

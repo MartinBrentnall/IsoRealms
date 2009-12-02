@@ -236,8 +236,8 @@ void SimpleEditor::pushElement(IElement* element) {
   clearUndoStack();
 }
 
-void SimpleEditor::setDirty(IElement* element) {
-  cCursor->setDirty(element);
+void SimpleEditor::notifyDestruction(IElement* element) {
+  cMap->removeElement(element);
 }
 
 void SimpleEditor::elementSelected(IElementFactory* elementFactory) {
@@ -363,10 +363,10 @@ void SimpleEditor::saveCurrentMap() {
 }
 
 void SimpleEditor::setMap(Map* map) {
-  // TODO: We must be sure to destroy the original map when we no longer use it!
   clearUndoStack();
-  cMap = map;
+  delete cMap;
   delete cCursor;
+  cMap = map;
   cCursor = new EditorCursor(cMap);
   ElementSetRegistry* mElementRegistry = cMap->getElementSetRegistry();
   mElementRegistry->setEditingInfo(cCursor, this, this);
