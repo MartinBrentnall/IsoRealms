@@ -22,6 +22,10 @@ ISimpleModel* SpindizzyJewelModelFactory::createModel() {
   return new SpindizzyJewelModel();
 }
 
+void SpindizzyJewelModelFactory::destroyModel(ISimpleModel* jewelModel) {
+  delete jewelModel;
+}
+
 std::string SpindizzyJewelModelFactory::getName() {
   return "Spindizzy Jewel Model";
 }
@@ -69,6 +73,6 @@ extern "C" IPlugin* create() {
   return new SpindizzyJewelModelFactory();
 }
 
-extern "C" void destroy(IPlugin* jewelModel) {
-  delete jewelModel;
+extern "C" void destroy(IPlugin* jewelModelFactory) {
+  delete jewelModelFactory;
 }

@@ -68,8 +68,6 @@ class ISpindizzyTextureSet:public virtual IPlugin {
     WALL_ICE
   };
 
-  virtual ~ISpindizzyTextureSet() {}
-
   /**
    * Return the texture of the specified type.
    * 
@@ -77,6 +75,8 @@ class ISpindizzyTextureSet:public virtual IPlugin {
    * @returns  The texture.
    */
   virtual ISpindizzyTexture* getTexture(TextureType) = 0;
+
+  virtual ~ISpindizzyTextureSet() {}
 };
 
 #endif

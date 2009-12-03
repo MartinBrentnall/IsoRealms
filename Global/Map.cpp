@@ -145,6 +145,15 @@ PluginRegistry* Map::getPluginRegistry() {
   return &cPluginRegistry;
 }
 
+void Map::pluginInstanceAdded(PluginRegistry* registry, std::string, std::string) {
+  // Nothing to do.
+}
+
+void Map::pluginInstanceRemoved(IPlugin* instance, std::string type) {
+  cPluginRegistry.pluginRemoved(instance);
+  cElementSetRegistry.pluginRemoved(instance);
+}
+
 Map::~Map() {
   for (unsigned int i = 0; i < cZones.size(); i++) {
     delete cZones[i];

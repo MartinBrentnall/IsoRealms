@@ -139,9 +139,9 @@ void ChoosePluginInstanceComponent::pluginInstanceAdded(PluginRegistry* pluginRe
   cPluginInstances = pluginRegistry->getInstances(mType);
 }
 
-void ChoosePluginInstanceComponent::pluginInstanceRemoved(PluginRegistry* pluginRegistry, std::string, std::string) {
-  std::string mType = cPlugSocket->getType();
-  cPluginInstances = pluginRegistry->getInstances(mType);
+void ChoosePluginInstanceComponent::pluginInstanceRemoved(IPlugin* instance, std::string type) {
+// TODO: This is wrong; we must handle removal in another way (e.g. just removing the instance from cPluginInstances.
+  //  cPluginInstances = pluginRegistry->getInstances(type);
 }
 
 ChoosePluginInstanceComponent::OKCommand::OKCommand(ChoosePluginInstanceComponent* parent) {

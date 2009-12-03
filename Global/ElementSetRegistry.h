@@ -114,6 +114,12 @@ class ElementSetRegistry {
    */
   IElementSet* getElementSet(std::string*);
 
+  /**
+   * Calling this function will cause all element sets in this registry to
+   * cease using the specified plug-in.
+   */
+  void pluginRemoved(IPlugin*);
+
   void save(PluginRegistry*, DOMNodeWriter*);
 
   ~ElementSetRegistry();

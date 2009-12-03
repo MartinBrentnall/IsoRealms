@@ -19,12 +19,14 @@
 #include "SpindizzyCraftPyramidModel.h"
 
 std::map<SpindizzyCraftPyramidModel::TextureID, GLuint> SpindizzyCraftPyramidModel::cTextures = std::map<SpindizzyCraftPyramidModel::TextureID, GLuint>();
+unsigned int SpindizzyCraftPyramidModel::cInstanceCount = 0;
 
 SpindizzyCraftPyramidModel::SpindizzyCraftPyramidModel() {
   if (cTextures.empty()) {
     cTextures[TEXTURE_TOP] = registerTexture(generateTextureTop());
     cTextures[TEXTURE_SIDE] = registerTexture(generateTextureSide());
   }
+  cInstanceCount++;
 }
 
 void SpindizzyCraftPyramidModel::update(int milliseconds) {
@@ -120,3 +122,13 @@ Image* SpindizzyCraftPyramidModel::generateTextureSide() {
   mImage->drawTriangle(&mSide, mEdgeWidth + 5, mEdgeWidth, mImage->sizeX - (mEdgeWidth + 5), mEdgeWidth, mImage->sizeX / 2, mImage->sizeY - (mEdgeWidth + 32));
   return mImage;
 }
+
+SpindizzyCraftPyramidModel::~SpindizzyCraftPyramidModel() {
+  if (!(--cInstanceCount)) {
+    for (std::map<TextureID, GLuint>::iterator i = cTextures.begin(); i != cTextures.end(); i++) {
+      glDeleteTextures(1, &(i->second));
+    }
+  }
+  // TODO: See if we must clear up the Image object too.
+}
+

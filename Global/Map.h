@@ -25,13 +25,15 @@
 #include "DOMNodeWrapper.h"
 #include "DOMNodeWriter.h"
 #include "ElementSetRegistry.h"
+#include "IPluginRegistryListener.h"
 #include "PluginRegistry.h"
 #include "Zone.h"
 
 /**
  * This class holds data for an IsoRealms map.
  */
-class Map:public IZoneChangeListener {
+class Map:public IZoneChangeListener,
+          public IPluginRegistryListener {
   private:
   PluginRegistry cPluginRegistry;
   ElementSetRegistry cElementSetRegistry;
@@ -113,6 +115,12 @@ class Map:public IZoneChangeListener {
    *           performed.
    */
   void notifyZoneAction(Zone*);
+
+  /**************************************\
+   * Implements IPluginRegistryListener *
+  \**************************************/
+  void pluginInstanceAdded(PluginRegistry*, std::string, std::string);
+  void pluginInstanceRemoved(IPlugin*, std::string);
 
   /**********************************\
    * Implements IZoneChangeListener *

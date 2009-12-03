@@ -178,7 +178,7 @@ class SimpleEditor:public IControlLoop,
    * Implements IElementRegistryListener *
   \***************************************/
   void pluginInstanceAdded(PluginRegistry*, std::string, std::string);
-  void pluginInstanceRemoved(PluginRegistry*, std::string, std::string);
+  void pluginInstanceRemoved(IPlugin*, std::string);
 
   /**********************************\
    * Implements IComponentContainer *

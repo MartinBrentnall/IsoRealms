@@ -26,6 +26,12 @@
 class SpindizzyJewelModelFactory:public ISimpleModelFactory {
   public:
 
+  /***************************\
+   * Implements ISimpleModel *
+  \***************************/
+  ISimpleModel* createModel();
+  void destroyModel(ISimpleModel*);
+
   /******************************************\
    * Implements IPluginSupport (in IPlugin) *
   \******************************************/
@@ -43,11 +49,6 @@ class SpindizzyJewelModelFactory:public ISimpleModelFactory {
   void setEditingInfo(IComponentContainer*);
   void save(DOMNodeWriter*);
   void load(DOMNodeWrapper*);
-
-  /***************************\
-   * Implements ISimpleModel *
-  \***************************/
-  ISimpleModel* createModel();
 };
 
 #endif

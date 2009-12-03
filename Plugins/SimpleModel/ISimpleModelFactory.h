@@ -23,14 +23,32 @@
 
 class ISimpleModelFactory:public virtual IPlugin {
   public:
-  virtual ~ISimpleModelFactory() {}
 
   /**
    * Returns an model instance.  Clients should not assume that the instance
    * will be unique; in cases where a model instance is sufficiently simple to
    * be reused, the same instance may be used across all usages.
+   * 
+   * @returns A new model instance.
    */
   virtual ISimpleModel* createModel() = 0;
+
+  /**
+   * When a model is no longer required by an entity (e.g. it was changed to a
+   * different model), this method should be called with the instance that was
+   * used by the entity to ensure that any necessary clean-up action is
+   * performed on the model instance.
+   * 
+   * @param ISimpleModel*  The model to destroy.
+   */
+  virtual void destroyModel(ISimpleModel*) = 0;
+
+  /**
+   * The destructor cleans up resources used by the model factory.  It should
+   * be assumed that destroyModel() has been called for all instances created
+   * by this factory.  Hence, instance clean-up is not necessary here.
+   */
+  virtual ~ISimpleModelFactory() {}
 };
 
 #endif

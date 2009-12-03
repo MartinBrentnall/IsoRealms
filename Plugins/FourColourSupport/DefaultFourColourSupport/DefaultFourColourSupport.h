@@ -34,10 +34,10 @@
 
 class DefaultFourColourSupport:public IFourColourSupport {
   private:
-  std::vector<ICommandInfo*> cPluginCommands;
-  std::map<PaletteEntry, Colour*> cPalette;
-  std::vector<IFourColourSupportListener*> cChangeListeners;
 
+  /**
+   * This command is executed to show the palette editor component.
+   */
   class PaletteConfigurationCommand:public ICommand {
     private:
     DefaultFourColourSupport* cParent;
@@ -54,6 +54,13 @@ class DefaultFourColourSupport:public IFourColourSupport {
     void execute();
   };
 
+  std::vector<ICommandInfo*> cPluginCommands;
+  std::map<PaletteEntry, Colour*> cPalette;
+  std::vector<IFourColourSupportListener*> cChangeListeners;
+
+  /**
+   * Instance of the command to show the palette editor component.
+   */
   PaletteConfigurationCommand* cPaletteConfigurationCommand;
 
   public:
@@ -83,6 +90,8 @@ class DefaultFourColourSupport:public IFourColourSupport {
   void setEditingInfo(IComponentContainer*);
   void save(DOMNodeWriter*);
   void load(DOMNodeWrapper*);
+
+  ~DefaultFourColourSupport();
 };
 
 #endif

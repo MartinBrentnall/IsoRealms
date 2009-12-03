@@ -181,6 +181,23 @@ void PluginRegistry::save(DOMNodeWriter* node) {
   }
 }
 
+void PluginRegistry::pluginRemoved(IPlugin* instanceToRemove) {
+  for (std::map<std::string, std::map<std::string, IPlugin*> >::iterator i = cPluginInstances.begin(); i != cPluginInstances.end(); i++) {
+    std::string mTypeName = i->first;
+    std::map<std::string, IPlugin*> mInstanceOfType = i->second;
+    for (std::map<std::string, IPlugin*>::iterator j = mInstanceOfType.begin(); j != mInstanceOfType.end(); j++) {
+      IPlugin* mInstance = j->second;
+      std::vector<PlugSocket*> mPlugSockets = mInstance->getPlugSockets();
+      for (unsigned int k = 0; k < mPlugSockets.size(); k++) {
+        IPlugin* mUsedPlugin = mInstance->getPlugin(mPlugSockets[k]);
+        if (mUsedPlugin == instanceToRemove) {
+          mInstance->setPlugin(mPlugSockets[k], NULL);
+        }
+      }
+    }
+  }
+}
+
 PluginRegistry::~PluginRegistry() {
   for (std::map<std::string, std::map<std::string, IPlugin*> >::iterator i = cPluginInstances.begin(); i != cPluginInstances.end(); i++) {
     std::string mTypeName = i->first;
@@ -189,6 +206,9 @@ PluginRegistry::~PluginRegistry() {
       IPlugin* mInstance = j->second;
       std::string mImplementation = cImplementationNames.find(mInstance)->second;
       destroyPlugin* mDestroyFunction = cDestroyFunctions.find(mInstance)->second;
+      for (unsigned int i = 0; i < cListeners.size(); i++) {
+        cListeners[i]->pluginInstanceRemoved(mInstance, mTypeName);
+      }
       mDestroyFunction(mInstance);
       void* mHandleToClose = cSOHandles[mTypeName][mImplementation];
       // TODO: Remove from cSOHandles if it was the last one!

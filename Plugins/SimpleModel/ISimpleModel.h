@@ -23,7 +23,6 @@
 
 class ISimpleModel {
   public:
-  virtual ~ISimpleModel() {}
 
   /**
    * Update the model animation.
@@ -34,6 +33,8 @@ class ISimpleModel {
    * Render the model.
    */
   virtual void render() = 0;
+
+  virtual ~ISimpleModel() {}
 };
 
 #endif

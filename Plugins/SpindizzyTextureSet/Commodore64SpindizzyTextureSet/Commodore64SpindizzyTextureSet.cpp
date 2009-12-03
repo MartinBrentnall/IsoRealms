@@ -440,6 +440,20 @@ void Commodore64SpindizzyTextureSet::load(DOMNodeWrapper* node) {
   // Nothing to do.
 }
 
+Commodore64SpindizzyTextureSet::~Commodore64SpindizzyTextureSet() {
+  delete TRANSPARENT;
+  delete PURPLE;
+  delete YELLOW;
+  delete BLACK;
+  for (unsigned int i = 0; i < cPlugSockets.size(); i++) {
+    delete cPlugSockets[i];
+  }
+  for (std::map<TextureType, ISpindizzyTexture*>::iterator i = cTextures.begin(); i != cTextures.end(); i++) {
+    delete i->second;
+  }
+  // TODO: Maybe we have to clean up the image objects we created the textures from too.
+}
+
 extern "C" IPlugin* create() {
   return new Commodore64SpindizzyTextureSet();
 }

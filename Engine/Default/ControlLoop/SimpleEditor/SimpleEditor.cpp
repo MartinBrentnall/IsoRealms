@@ -268,7 +268,7 @@ void SimpleEditor::pluginInstanceAdded(PluginRegistry* pluginRegistry, std::stri
   }
 }
 
-void SimpleEditor::pluginInstanceRemoved(PluginRegistry* pluginRegistry, std::string type, std::string instance) {
+void SimpleEditor::pluginInstanceRemoved(IPlugin* instance, std::string type) {
   // TODO: Remove plug-in supported commands
 }
 

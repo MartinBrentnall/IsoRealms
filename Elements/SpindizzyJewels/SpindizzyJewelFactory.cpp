@@ -162,6 +162,8 @@ void SpindizzyJewelFactory::renderIcon() {
 SpindizzyJewelFactory::~SpindizzyJewelFactory() {
   delete cSampleJewel;
   for (unsigned int i = 0; i < cContent.size(); i++) {
+    ISimpleModel* mJewelModelInstance = cContent[i]->getModel();
+    cJewelModelFactory->destroyModel(mJewelModelInstance);
     cGateway->notifyDestruction(cContent[i]);
     delete cContent[i];
   }

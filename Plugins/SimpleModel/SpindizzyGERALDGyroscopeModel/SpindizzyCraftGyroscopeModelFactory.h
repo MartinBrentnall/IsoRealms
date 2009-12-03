@@ -31,6 +31,7 @@ class SpindizzyCraftGyroscopeModelFactory:public ISimpleModelFactory {
    * Implements ISimpleModelFactory.h *
   \************************************/
   ISimpleModel* createModel();
+  void destroyModel(ISimpleModel*);
 
   /***************************************************\
    * Implements IPluginSupport (in IPluginAccesor.h) *
@@ -49,6 +50,8 @@ class SpindizzyCraftGyroscopeModelFactory:public ISimpleModelFactory {
   void setEditingInfo(IComponentContainer*);
   void save(DOMNodeWriter*);
   void load(DOMNodeWrapper*);
+
+  ~SpindizzyCraftGyroscopeModelFactory();
 };
 
 #endif

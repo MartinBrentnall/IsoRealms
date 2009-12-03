@@ -19,11 +19,13 @@
 #include "SpindizzyCraftGyroscopeModel.h"
 
 std::map<SpindizzyCraftGyroscopeModel::TextureID, GLuint> SpindizzyCraftGyroscopeModel::cTextures = std::map<SpindizzyCraftGyroscopeModel::TextureID, GLuint>();
+unsigned int SpindizzyCraftGyroscopeModel::cInstanceCount = 0;
 
 SpindizzyCraftGyroscopeModel::SpindizzyCraftGyroscopeModel() {
   if (cTextures.empty()) {
     cTextures[TEXTURE_DISC] = registerTexture(generateTextureDisc());
   }
+  cInstanceCount++;
 }
 
 void SpindizzyCraftGyroscopeModel::update(int milliseconds) {
@@ -96,4 +98,13 @@ Image* SpindizzyCraftGyroscopeModel::generateTextureDisc() {
   mImage->drawQuarterCircle(&mMagenta, int(mImage->sizeX / 2.3), 2);
   mImage->drawQuarterCircle(&mYellow, int(mImage->sizeX / 2.3), 3);
   return mImage;
+}
+
+SpindizzyCraftGyroscopeModel::~SpindizzyCraftGyroscopeModel() {
+  if (!(--cInstanceCount)) {
+    for (std::map<TextureID, GLuint>::iterator i = cTextures.begin(); i != cTextures.end(); i++) {
+      glDeleteTextures(1, &(i->second));
+    }
+  }
+  // TODO: See if we must clear up the Image object too.
 }

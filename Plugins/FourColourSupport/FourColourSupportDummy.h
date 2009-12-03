@@ -43,6 +43,8 @@ class FourColourSupportDummy:public IFourColourSupport,
   Colour* getColour(PaletteEntry);
   void addChangeListener(IFourColourSupportListener*);
   void removeChangeListener(IFourColourSupportListener*);
+
+  ~FourColourSupportDummy();
 };
 
 #endif

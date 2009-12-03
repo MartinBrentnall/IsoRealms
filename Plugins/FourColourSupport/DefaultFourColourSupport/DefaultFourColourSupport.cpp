@@ -125,6 +125,16 @@ void DefaultFourColourSupport::load(DOMNodeWrapper* node) {
   }
 }
 
+DefaultFourColourSupport::~DefaultFourColourSupport() {
+  delete cPaletteConfigurationCommand;
+  for (unsigned int i = 0; i < cPluginCommands.size(); i++) {
+    delete cPluginCommands[i];
+  }
+  for (std::map<PaletteEntry, Colour*>::iterator i = cPalette.begin(); i != cPalette.end(); i++) {
+    delete i->second;
+  }
+}
+
 extern "C" IPlugin* create() {
   return new DefaultFourColourSupport();
 }

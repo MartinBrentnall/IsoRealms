@@ -75,9 +75,9 @@ class ChoosePluginInstanceComponent:public RectangleComponent,
     public:
     OKCommand(ChoosePluginInstanceComponent*);
 
-    /************************************************************************\
-     * Implemented methods of ICommand.h                                    *
-    \************************************************************************/
+    /***********************\
+     * Implements ICommand *
+    \***********************/
     void execute();
   };
 
@@ -88,9 +88,9 @@ class ChoosePluginInstanceComponent:public RectangleComponent,
     public:
     CancelCommand(ChoosePluginInstanceComponent*);
 
-    /************************************************************************\
-     * Implemented methods of ICommand.h                                    *
-    \************************************************************************/
+    /***********************\
+     * Implements ICommand *
+    \***********************/
     void execute();
   };
 
@@ -101,9 +101,9 @@ class ChoosePluginInstanceComponent:public RectangleComponent,
     public:
     ConfigurePluginCommand(ChoosePluginInstanceComponent*);
 
-    /************************************************************************\
-     * Implemented methods of ICommand.h                                    *
-    \************************************************************************/
+    /***********************\
+     * Implements ICommand *
+    \***********************/
     void execute();
   };
 
@@ -121,18 +121,18 @@ class ChoosePluginInstanceComponent:public RectangleComponent,
    */
   ChoosePluginInstanceComponent(IComponentContainer*, PluginRegistry*, IPluginSupport*, PlugSocket*, float, float);
 
-  /**************************************************************************\
-   * Implemented methods of RectangleComponent.h                            *
-  \**************************************************************************/
+  /*********************************\
+   * Implements RectangleComponent *
+  \*********************************/
   void updateContent(int);
   void renderContent();
   bool inputContent(SDL_Event&);
 
-  /**************************************************************************\
-   * Implemented methods of IPluginRegistryListener.h                        *
-  \**************************************************************************/
+  /**************************************\
+   * Implements IPluginRegistryListener *
+  \**************************************/
   void pluginInstanceAdded(PluginRegistry*, std::string, std::string);
-  void pluginInstanceRemoved(PluginRegistry*, std::string, std::string);
+  void pluginInstanceRemoved(IPlugin*, std::string);
 };
 
 #endif

@@ -27,6 +27,14 @@ ISimpleModel* DummyModelFactory::createModel() {
   return cDummyModel;
 }
 
+void DummyModelFactory::destroyModel(ISimpleModel* dummyModel) {
+  // Model is used globall, hence: Nothing to do.
+}
+
+DummyModelFactory::~DummyModelFactory() {
+  delete cDummyModel;
+}
+
 extern "C" IPlugin* create() {
   return new DummyModelFactory();
 }

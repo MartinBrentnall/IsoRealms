@@ -21,27 +21,31 @@
 
 #include <string>
 
+#include "IPlugin.h"
+
 class PluginRegistry;
 
 class IPluginRegistryListener {
   public:
-  virtual ~IPluginRegistryListener() {}
 
   /**
    * Notify parties that a plugin instance has been added.
    * 
-   * @param string  The plugin type.
-   * @param string  The instance name.
+   * @param PluginRegistry*  The registry to which the plug-in was added.
+   * @param std::string  The plugin type.
+   * @param std::string  The instance name.
    */
   virtual void pluginInstanceAdded(PluginRegistry*, std::string, std::string) = 0;
 
   /**
-   * Notify parties that a plugin instance has been removed.
+   * Notify parties that a plugin instance is about to be destroyed.
    * 
-   * @param string  The plugin type.
-   * @param string  The instance name.
+   * @param string  The plugin instance to be destroyed.
+   * @param string  The plugin type of the instance.
    */
-  virtual void pluginInstanceRemoved(PluginRegistry*, std::string, std::string) = 0;
+  virtual void pluginInstanceRemoved(IPlugin*, std::string) = 0;
+
+  virtual ~IPluginRegistryListener() {}
 };
 
 #endif

@@ -36,8 +36,6 @@ class IFourColourSupport:public virtual IPlugin {
     EXTRA
   };
 
-  virtual ~IFourColourSupport() {}
-
   /**
    * Retrieve the specified colour.
    * 
@@ -58,6 +56,8 @@ class IFourColourSupport:public virtual IPlugin {
    * @param IFourColourSupportListener* The listener to remove.
    */
   virtual void removeChangeListener(IFourColourSupportListener*) = 0;
+
+  virtual ~IFourColourSupport() {}
 };
 
 #endif

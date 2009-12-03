@@ -22,6 +22,10 @@ ISimpleModel* SpindizzyCraftPyramidModelFactory::createModel() {
   return new SpindizzyCraftPyramidModel();
 }
 
+void SpindizzyCraftPyramidModelFactory::destroyModel(ISimpleModel* pyramidModel) {
+  delete pyramidModel;
+}
+
 void SpindizzyCraftPyramidModelFactory::setEditingInfo(IComponentContainer*) {
   // We don't need to know this.  Nothing to do.
 }

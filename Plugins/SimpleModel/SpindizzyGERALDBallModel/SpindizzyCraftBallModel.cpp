@@ -19,11 +19,13 @@
 #include "SpindizzyCraftBallModel.h"
 
 std::map<SpindizzyCraftBallModel::TextureID, GLuint> SpindizzyCraftBallModel::cTextures = std::map<SpindizzyCraftBallModel::TextureID, GLuint>();
+unsigned int SpindizzyCraftBallModel::cInstanceCount = 0;
 
 SpindizzyCraftBallModel::SpindizzyCraftBallModel() {
   if (cTextures.empty()) {
     cTextures[TEXTURE_BALL] = registerTexture(generateTextureBall());
   }
+  cInstanceCount++;
 }
 
 void SpindizzyCraftBallModel::update(int milliseconds) {
@@ -74,5 +76,14 @@ Image* SpindizzyCraftBallModel::generateTextureBall() {
   mImage->drawCircle(&mYellow, int(mImage->sizeX / 3.5));
   mImage->drawOffsetCircle(&mMagenta, int(mImage->sizeX / 3.0));
   return mImage;
+}
+
+SpindizzyCraftBallModel::~SpindizzyCraftBallModel() {
+  if (!(--cInstanceCount)) {
+    for (std::map<TextureID, GLuint>::iterator i = cTextures.begin(); i != cTextures.end(); i++) {
+      glDeleteTextures(1, &(i->second));
+    }
+  }
+  // TODO: See if we must clear up the Image object too.
 }
 

@@ -26,6 +26,10 @@ ISimpleModel* SpindizzyCraftBallModelFactory::createModel() {
   return cModelInstance;  
 }
 
+void SpindizzyCraftBallModelFactory::destroyModel(ISimpleModel* ballModel) {
+  // Model is used globally.  Nothing to do.
+}
+
 void SpindizzyCraftBallModelFactory::setEditingInfo(IComponentContainer*) {
   // We don't need to know this.  Nothing to do.
 }
@@ -67,6 +71,10 @@ void SpindizzyCraftBallModelFactory::save(DOMNodeWriter* node) {
 
 void SpindizzyCraftBallModelFactory::load(DOMNodeWrapper* node) {
   // Nothing to do.
+}
+
+SpindizzyCraftBallModelFactory::~SpindizzyCraftBallModelFactory() {
+  delete cModelInstance;
 }
 
 extern "C" IPlugin* create() {

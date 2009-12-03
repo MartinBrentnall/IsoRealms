@@ -36,11 +36,14 @@ class DummyModelFactory:public ISimpleModelFactory,
    * Implements ISimpleModelFactory *
   \**********************************/
   ISimpleModel* createModel();
+  void destroyModel(ISimpleModel*);
 
   /***********************************************\
    * Implements IPluginAccessor (in DummyPlugin) *
   \***********************************************/
   IPlugin* getPlugin();
+
+  ~DummyModelFactory();
 };
 
 #endif

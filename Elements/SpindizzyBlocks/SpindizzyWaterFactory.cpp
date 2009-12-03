@@ -129,14 +129,11 @@ std::string SpindizzyWaterFactory::getName() {
 }
 
 SpindizzyWaterFactory::~SpindizzyWaterFactory() {
-  std::cout << "Destroying water..." << std::endl;
-  // TODO: Unregister elements from the surface calculator!
   delete cStartWaterLocation;
   delete cSampleWater;
   for (unsigned int i = 0; i < cContent.size(); i++) {
     cGateway->notifyDestruction(cContent[i]);
     delete cContent[i];
   }  
-  std::cout << "Destroyed water!" << std::endl;
 }
 

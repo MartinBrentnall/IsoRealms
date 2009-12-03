@@ -35,6 +35,7 @@ class SpindizzyCraftBallModelFactory:public ISimpleModelFactory {
    * Implements ISimpleModelFactory.h *
   \************************************/
   ISimpleModel* createModel();
+  void destroyModel(ISimpleModel*);
 
   /***************************************************\
    * Implements IPluginSupport (in IPluginAccesor.h) *
@@ -53,6 +54,8 @@ class SpindizzyCraftBallModelFactory:public ISimpleModelFactory {
   void setEditingInfo(IComponentContainer*);
   void save(DOMNodeWriter*);
   void load(DOMNodeWrapper*);
+
+  ~SpindizzyCraftBallModelFactory();
 };
 
 #endif

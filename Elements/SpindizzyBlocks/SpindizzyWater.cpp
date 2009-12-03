@@ -145,10 +145,7 @@ void SpindizzyWater::save(DOMNodeWriter* node, BlockLocation& location) {
   cEndLocation.saveRelative(mSizeNode, cStartLocation);
 }
 
-//  glBindTexture(GL_TEXTURE_2D, 0);
-/*  if (symbol == WATER) {
-    glDisable(GL_CULL_FACE);
-  }*/
-/*  if (symbol == WATER) {
-    glEnable(GL_CULL_FACE);
-  }*/
+SpindizzyWater::~SpindizzyWater() {
+  removed();
+}
+

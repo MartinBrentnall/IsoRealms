@@ -28,6 +28,10 @@ void SpindizzyJewel::setModel(ISimpleModel* model) {
   cModel = model;
 }
 
+ISimpleModel* SpindizzyJewel::getModel() {
+  return cModel;
+}
+
 void SpindizzyJewel::renderStatic() {
   // Nothing to do.
 }

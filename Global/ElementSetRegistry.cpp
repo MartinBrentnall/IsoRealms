@@ -194,6 +194,19 @@ void ElementSetRegistry::save(PluginRegistry* pluginRegistry, DOMNodeWriter* nod
   }
 }
 
+void ElementSetRegistry::pluginRemoved(IPlugin* instanceToRemove) {
+  for (std::map<std::string, IElementSet*>::iterator i = cElementSets.begin(); i != cElementSets.end(); i++) {
+    IElementSet* mElementSet = i->second;
+    std::vector<PlugSocket*> mPlugSockets = mElementSet->getPlugSockets();
+    for (unsigned int j = 0; j < mPlugSockets.size(); j++) {
+      IPlugin* mUsedPlugin = mElementSet->getPlugin(mPlugSockets[j]);
+      if (mUsedPlugin == instanceToRemove) {
+        mElementSet->setPlugin(mPlugSockets[j], NULL);
+      }
+    }
+  }  
+}
+
 ElementSetRegistry::~ElementSetRegistry() {
   for (std::map<std::string, IElementSet*>::iterator i = cElementSets.begin(); i != cElementSets.end(); i++) {
     std::string mInstanceName = i->first;

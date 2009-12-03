@@ -30,7 +30,6 @@ class Zone;
 
 class IPlugin:public IPluginSupport {
   public:
-  virtual ~IPlugin() {}
 
   /**
    * This allows the plugin to know that an editor action is being performed on
@@ -62,6 +61,13 @@ class IPlugin:public IPluginSupport {
    * Load the configuration of the plug-in.
    */
   virtual void load(DOMNodeWrapper*) = 0;
+
+  /**
+   * The plug-in should clean up any resources that it allocated itself.  It
+   * can be assumed that resources created by the plug-in are no longer in use
+   * by the time this destructor is reached.
+   */
+  virtual ~IPlugin() {}
 };
 
 #endif

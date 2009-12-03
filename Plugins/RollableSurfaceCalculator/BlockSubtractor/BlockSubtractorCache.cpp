@@ -52,6 +52,7 @@ void BlockSubtractorCache::add(IRollableSurfaceProvider* provider) {
 
 void BlockSubtractorCache::remove(IRollableSurfaceProvider* provider) {
   int mIndex = getIndex(provider);
+  std::cout << "Removing provider at index: " << mIndex << ".." << std::endl;
   cCurrentZoneProviders->erase(cCurrentZoneProviders->begin() + mIndex);
   setDirty(); // TODO: Should this be here?  Maybe we should call it manually instead when necessary.
 }

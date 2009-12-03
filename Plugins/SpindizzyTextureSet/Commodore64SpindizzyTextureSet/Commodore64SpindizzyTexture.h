@@ -42,14 +42,14 @@ class Commodore64SpindizzyTexture:public ISpindizzyTexture {
   Commodore64SpindizzyTexture(GLuint, Direction);
   Commodore64SpindizzyTexture(GLuint, Mapping);
 
-  ~Commodore64SpindizzyTexture();
-
   /**************************************************************************\
    * Implemented methods of ISpindizzyTextureSet.h                          *
   \**************************************************************************/
   void set();
   void texCoord2f(float, float);
   Mapping getMapping();
+
+  ~Commodore64SpindizzyTexture();
 };
 
 #endif

@@ -35,6 +35,7 @@ class SpindizzyCraftGyroscopeModel:public ISimpleModel {
     TEXTURE_DISC
   };
 
+  static unsigned int cInstanceCount;
   static std::map<TextureID, GLuint> cTextures;
 
   GLuint registerTexture(Image*);
@@ -48,6 +49,8 @@ class SpindizzyCraftGyroscopeModel:public ISimpleModel {
   \**************************************************************************/
   void update(int milliseconds);
   void render();
+
+  ~SpindizzyCraftGyroscopeModel();
 };
 
 #endif

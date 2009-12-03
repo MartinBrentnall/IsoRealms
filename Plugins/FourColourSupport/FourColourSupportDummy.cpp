@@ -37,6 +37,12 @@ void FourColourSupportDummy::removeChangeListener(IFourColourSupportListener* li
   // Palette never changes; nothing to do.
 }
 
+FourColourSupportDummy::~FourColourSupportDummy() {
+  for (std::map<PaletteEntry, Colour*>::iterator i = cColours.begin(); i != cColours.end(); i++) {
+    delete i->second;
+  }
+}
+
 extern "C" IPlugin* create() {
   return new FourColourSupportDummy();
 }

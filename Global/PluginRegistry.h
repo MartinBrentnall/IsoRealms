@@ -120,6 +120,15 @@ class PluginRegistry {
   static bool isDummyPlugin(IPlugin*);
 
   /**
+   * Called when a plug-in is removed.  The plug-in registry will check the
+   * plug-ins to see which plug-ins may be using it, and will set reset any
+   * such connections to NULL (typically the dummy plugin).
+   * 
+   * @param IPlugin*  The plugin instance to be removed.
+   */
+  void pluginRemoved(IPlugin*);
+
+  /**
    * Retrieve the plug-in instance name
    */
   std::string getInstanceName(std::string, IPlugin*);

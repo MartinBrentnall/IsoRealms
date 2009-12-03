@@ -31,6 +31,7 @@ class SpindizzyCraftPyramidModelFactory:public ISimpleModelFactory {
    * Implements ISimpleModelFactory.h *
   \************************************/
   ISimpleModel* createModel();
+  void destroyModel(ISimpleModel*);
 
   /***************************************************\
    * Implements IPluginSupport (in IPluginAccesor.h) *

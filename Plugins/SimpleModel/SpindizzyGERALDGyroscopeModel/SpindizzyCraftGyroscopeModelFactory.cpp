@@ -22,6 +22,10 @@ ISimpleModel* SpindizzyCraftGyroscopeModelFactory::createModel() {
   return new SpindizzyCraftGyroscopeModel();
 }
 
+void SpindizzyCraftGyroscopeModelFactory::destroyModel(ISimpleModel* gyroscopeModel) {
+  delete gyroscopeModel;
+}
+
 void SpindizzyCraftGyroscopeModelFactory::setEditingInfo(IComponentContainer*) {
   // We don't need to know this.  Nothing to do.
 }
@@ -71,4 +75,9 @@ extern "C" IPlugin* create() {
 
 extern "C" void destroy(IPlugin* gyroscopeModel) {
   delete gyroscopeModel;
+}
+
+SpindizzyCraftGyroscopeModelFactory::~SpindizzyCraftGyroscopeModelFactory() {
+  // We can assume all models instances have been clean-up up when entities
+  // were notified of the plug-in removal, hence:  Nothing to do.
 }

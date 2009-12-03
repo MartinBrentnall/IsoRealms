@@ -53,6 +53,8 @@ class SpindizzyTextureSetDummy:public ISpindizzyTextureSet,
   \***********************************/
   SpindizzyTextureSetDummy();
   ISpindizzyTexture* getTexture(TextureType);
+
+  ~SpindizzyTextureSetDummy();
 };
 
 #endif

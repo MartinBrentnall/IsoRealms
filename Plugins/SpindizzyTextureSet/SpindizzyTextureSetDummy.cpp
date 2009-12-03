@@ -41,6 +41,10 @@ ISpindizzyTexture::Mapping SpindizzyTextureSetDummy::SpindizzyTextureDummy::getM
   return TILED;
 }
 
+SpindizzyTextureSetDummy::~SpindizzyTextureSetDummy() {
+  delete cDummyTexture;
+}
+
 extern "C" IPlugin* create() {
   return new SpindizzyTextureSetDummy();
 }

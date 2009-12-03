@@ -44,8 +44,6 @@ class ISpindizzyTexture {
     COLUMN_CAPPED
   };
 
-  virtual ~ISpindizzyTexture() {}
-
   virtual void set() = 0;
   virtual void texCoord2f(float, float) = 0;
 
@@ -55,6 +53,8 @@ class ISpindizzyTexture {
    * @returns A hint regarding the way this texture is to be mapped.
    */
   virtual Mapping getMapping() = 0;
+
+  virtual ~ISpindizzyTexture() {}
 };
 
 #endif

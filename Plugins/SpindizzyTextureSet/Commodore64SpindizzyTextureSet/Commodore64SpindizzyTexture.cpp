@@ -18,10 +18,6 @@
  */
 #include "Commodore64SpindizzyTexture.h"
 
-Commodore64SpindizzyTexture::~Commodore64SpindizzyTexture() {
-  // TODO: Deallocate GL ID!
-}
-
 Commodore64SpindizzyTexture::Commodore64SpindizzyTexture(GLuint textureID) {
   cTextureID = textureID;
   cDirection = NORTH;
@@ -56,4 +52,9 @@ void Commodore64SpindizzyTexture::texCoord2f(float x, float y) {
 ISpindizzyTexture::Mapping Commodore64SpindizzyTexture::getMapping() {
   return cMapping;
 }
+
+Commodore64SpindizzyTexture::~Commodore64SpindizzyTexture() {
+  glDeleteTextures(1, &cTextureID);
+}
+
 

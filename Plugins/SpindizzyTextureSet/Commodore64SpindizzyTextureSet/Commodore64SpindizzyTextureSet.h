@@ -189,6 +189,8 @@ class Commodore64SpindizzyTextureSet:public ISpindizzyTextureSet,
   void setEditingInfo(IComponentContainer*);
   void save(DOMNodeWriter*);
   void load(DOMNodeWrapper*);
+
+  ~Commodore64SpindizzyTextureSet();
 };
 
 #endif

@@ -34,6 +34,7 @@ class SpindizzyCraftPyramidModel:public ISimpleModel {
     TEXTURE_SIDE
   };
 
+  static unsigned int cInstanceCount;
   static std::map<TextureID, GLuint> cTextures;
 
   GLuint registerTexture(Image*);
@@ -48,6 +49,8 @@ class SpindizzyCraftPyramidModel:public ISimpleModel {
   \**************************************************************************/
   void update(int milliseconds);
   void render();
+
+  ~SpindizzyCraftPyramidModel();
 };
 
 #endif

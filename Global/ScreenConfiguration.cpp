@@ -92,11 +92,6 @@ void ScreenConfiguration::openScreen(std::string title) {
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_BLEND);
 
-//  glEnable(GL_LIGHTING);
-//  float global_ambient[] = {0.0f, 0.0f, 0.5f, 1.0f};
-//  glLightModelfv(GL_LIGHT_MODEL_AMBIENT, global_ambient);
-//  glShadeModel(GL_SMOOTH);
-
   glViewport(0, 0, cScreenWidth, cScreenHeight);
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();

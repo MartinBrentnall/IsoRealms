@@ -41,6 +41,8 @@ class DummyPlugin:public virtual IPlugin {
   std::vector<ICommandInfo*> getCommandInfo();
   void save(DOMNodeWriter*);
   void load(DOMNodeWrapper*);
+
+  virtual ~DummyPlugin() {}
 };
 
 #endif

@@ -48,6 +48,7 @@ class SpindizzyJewel:public IElement,
   SpindizzyJewel(IElementFactory*, DOMNodeWrapper*, BlockLocation*);
 
   void setModel(ISimpleModel*);
+  ISimpleModel* getModel();
 
   /*************************************************************************\
    * Implemented methods of IElement.h                                     *
