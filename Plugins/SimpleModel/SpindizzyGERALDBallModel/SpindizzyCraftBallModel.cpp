@@ -23,7 +23,7 @@ unsigned int SpindizzyCraftBallModel::cInstanceCount = 0;
 
 SpindizzyCraftBallModel::SpindizzyCraftBallModel() {
   if (cTextures.empty()) {
-    cTextures[TEXTURE_BALL] = registerTexture(generateTextureBall());
+    cTextures[TEXTURE_BALL] = generateTextureBall();
   }
   cInstanceCount++;
 }
@@ -53,29 +53,20 @@ void SpindizzyCraftBallModel::render() {
 }
 
 // TODO: Nasty stuff below here.  Clean up!
-GLuint SpindizzyCraftBallModel::registerTexture(Image* mImage) {
-  GLuint mTextureID;
-  int mDepth = mImage->getDepth();
-  glGenTextures(1, &mTextureID);
-  glBindTexture(GL_TEXTURE_2D, mTextureID);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexImage2D(GL_TEXTURE_2D, 0, 3, mImage->sizeX, mImage->sizeY, 0, mDepth, GL_UNSIGNED_BYTE, mImage->data);
-  return mTextureID;
-}
-
-Image* SpindizzyCraftBallModel::generateTextureBall() {
+GLuint SpindizzyCraftBallModel::generateTextureBall() {
   Image* mImage = new Image(64, 64, false);
   Colour mTransparent(0.0, 0.0, 0.0, 0.0);
   Colour mBlack(0.0, 0.0, 0.0, 1.0);
   Colour mMagenta(0.7, 0.0, 1.0, 1.0);
   Colour mYellow(1.0, 1.0, 0.0, 1.0);
-  mImage->drawSquare(&mTransparent, 0, mImage->sizeX, 0, mImage->sizeY);
-  mImage->drawCircle(&mBlack, mImage->sizeX / 2);
-  mImage->drawCircle(&mMagenta, int(mImage->sizeX / 2.3));
-  mImage->drawCircle(&mYellow, int(mImage->sizeX / 3.5));
-  mImage->drawOffsetCircle(&mMagenta, int(mImage->sizeX / 3.0));
-  return mImage;
+  mImage->drawSquare(&mTransparent, 0, mImage->getWidth(), 0, mImage->getHeight());
+  mImage->drawCircle(&mBlack, mImage->getWidth() / 2);
+  mImage->drawCircle(&mMagenta, int(mImage->getWidth() / 2.3));
+  mImage->drawCircle(&mYellow, int(mImage->getWidth() / 3.5));
+  mImage->drawOffsetCircle(&mMagenta, int(mImage->getWidth() / 3.0));
+  GLuint mTextureID = mImage->generateTexture();
+  delete mImage;
+  return mTextureID;
 }
 
 SpindizzyCraftBallModel::~SpindizzyCraftBallModel() {
@@ -84,6 +75,5 @@ SpindizzyCraftBallModel::~SpindizzyCraftBallModel() {
       glDeleteTextures(1, &(i->second));
     }
   }
-  // TODO: See if we must clear up the Image object too.
 }
 

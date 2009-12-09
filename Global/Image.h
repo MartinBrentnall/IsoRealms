@@ -29,19 +29,20 @@
  * An Image can represent an image with or without transparency (alpha channel).
  */
 class Image {
-  public:
+  private:
   /** X size of the image, in pixels. */
-  unsigned long sizeX;
+  unsigned long cWidth;
 
   /** Y size of the image, in pixels. */
-  unsigned long sizeY;
+  unsigned long cHeight;
 
   /** Depth of the image in bytes.  3 bytes for opaque, 4 for image with alpha channel. */
   int cDepth;
 
   /** Pointer to image data. */
-  GLubyte *data;
+  GLubyte* cData;
 
+  public:
   /**
    * Construct blank an image of the given specifications.
    *
@@ -53,11 +54,6 @@ class Image {
   Image(int, int, bool);
 
   /**
-   * Deallocate data used by this image.
-   */
-  ~Image();
-
-  /**
    * TODO: Replace by e.g. hasAlphaChannel()?
    * Return the depth of this image.
    *
@@ -65,11 +61,26 @@ class Image {
    */
   int getDepth();
 
+  unsigned long getWidth();
+
+  unsigned long getHeight();
+
+  GLubyte* getData();
+
   /**
    * TODO: Throw outside bounds exception?
    * Set the pixel at the specified location to the specified colour.
    */
   void setPixel(unsigned int, unsigned int, Colour);
+
+  /**
+   * Generate an OpenGL texture from this image.  The image can be deleted
+   * safely after generating the texture (the texture is separate from the
+   * image).
+   * 
+   * @return The OpenGL texture ID.
+   */
+  GLuint generateTexture();
 
   // TODO: These are general drawing methods.  It might be nice to move them somewhere else.
   // TODO: It also might be nice to use "Render-To-Texture", once I learn how to do that.
@@ -83,6 +94,8 @@ class Image {
   void drawSemiCircle(const Colour* colour, int size); // TODO: Replace with drawArc() or drawPie();
   void drawQuarterCircle(const Colour* colour, int size, int quarter); // TODO: Replace with drawArc() or drawPie();
   void drawOffsetCircle(const Colour* colour, int size); // TODO: Draw anywhere instead of just middle
+
+  ~Image();
 };
 
 #endif

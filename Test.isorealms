@@ -3,8 +3,8 @@
   <Plugin implementation="DefaultFourColourSupport" instance="TODO_InstanceName" type="FourColourSupport">
     <Configuration>
       <Floor alpha="0" blue="1.0" green="0.9" red="1.0"/>
-      <Extra alpha="0" blue="0" green="0" red="0.4"/>
-      <Wall alpha="0" blue="0.6" green="0" red="0.0"/>
+      <Extra alpha="0" blue="0.4" green="0" red="0.0"/>
+      <Wall alpha="0" blue="0.0" green="0" red="0.6"/>
       <Background alpha="0" blue="0" green="0" red="0"/>
     </Configuration>
   </Plugin>

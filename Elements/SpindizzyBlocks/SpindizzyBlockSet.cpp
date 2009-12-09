@@ -175,6 +175,10 @@ std::vector<IWallSurface*> SpindizzyBlockSet::getWallSurfaces(IRollableSurfacePr
   return cRollableSurfaceCalculator->getWallSurfaces(provider, facing);
 }
 
+void SpindizzyBlockSet::notifyZoneAction(Zone* zone) {
+  cRollableSurfaceCalculator->notifyZoneAction(zone);
+}
+
 SpindizzyBlockSet::BlockFactory::BlockFactory(std::string name, IElementSet* elementSet, ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet::TextureType rollableSurfaceTexture) : SpindizzyBlockFactory(name, textureSet, elementSet) {
   cRollableSurfaceTexture = rollableSurfaceTexture;
 }

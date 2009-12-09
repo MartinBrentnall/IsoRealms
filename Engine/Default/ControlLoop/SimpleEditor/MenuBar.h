@@ -66,10 +66,10 @@ class MenuBar:public IHUDComponent,
   void addCommand(ICommandInfo*);
   void removeCommand(ICommandInfo*);
 
-  float getX();
-  float getY();
-  float getHeight();
-  float getWidth();
+  float getLeft();
+  float getBottom();
+  float getRight();
+  float getTop();
 
   /*****************************\
    * Implements IMenuContainer *

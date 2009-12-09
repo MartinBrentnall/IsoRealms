@@ -24,35 +24,34 @@ void TextFieldComponent::setFont(IFont* font) {
   cFont = font;
 }
 
-TextFieldComponent::TextFieldComponent(IRectangularComponent* relative, IRectangularComponent::Edge edge, float offset, float width) {
+TextFieldComponent::TextFieldComponent(IRectangularComponent* relative, IRectangularComponent::Edge edge, float offset) {
   cRelative = relative;
   cEdge = edge;
   cOffset = offset;
-  cWidth = width;
   cCaret = 0;
 }
 
 void TextFieldComponent::render() {
-  float mX = getX();
-  float mY = getY();
-  float mWidth = getWidth();
-  float mHeight = getHeight();
-  cFont->print(mX + 0.01f, mY + 0.01f, 0.02f, 0, cInput.c_str());
+  float mLeft = getLeft();
+  float mBottom = getBottom();
+  float mRight = getRight();
+  float mTop = getTop();
+  cFont->print(mLeft + 0.01f, mBottom + 0.01f, 0.02f, 0, cInput.c_str());
 
   glBindTexture(GL_TEXTURE_2D, 0);
   glBegin(GL_LINE_LOOP);
   glColor3f(1.0f, 1.0f, 1.0f);
-  glVertex2f(mX,          mY + mHeight);
-  glVertex2f(mX,          mY);
-  glVertex2f(mX + mWidth, mY);
-  glVertex2f(mX + mWidth, mY + mHeight);
+  glVertex2f(mLeft,  mTop);
+  glVertex2f(mLeft,  mBottom);
+  glVertex2f(mRight, mBottom);
+  glVertex2f(mRight, mTop);
   glEnd();
 
   float mCaretOffset = cFont->getWidth(0.02f, cInput.substr(0, cCaret).c_str());
   glColor3f(1.0f, 1.0f, 1.0f);
   glBegin(GL_LINES);
-  glVertex2f(getX() + 0.01f + mCaretOffset, getY() - 0.01f);
-  glVertex2f(getX() + 0.01f + mCaretOffset, getY() + 0.04f);
+  glVertex2f(mLeft + 0.01f + mCaretOffset, mBottom - 0.01f);
+  glVertex2f(mLeft + 0.01f + mCaretOffset, mBottom + 0.04f);
   glEnd();
 }
 
@@ -124,38 +123,6 @@ bool TextFieldComponent::keyDown(SDLKey& key, SDLMod& mod) {
     }
   }
   return false;
-}
-
-float TextFieldComponent::getX() {
-  switch (cEdge) {
-    case TOP:    return cRelative->getX();
-    case BOTTOM: return cRelative->getX();
-    case LEFT:   return (cRelative->getX() - cOffset) - getWidth();
-    case RIGHT:  return cRelative->getX() + cRelative->getWidth() + cOffset;
-  }
-  throw new IllegalStateException(); // TODO: Fill in
-}
-
-float TextFieldComponent::getY() {
-  switch (cEdge) {
-    case TOP:    return cRelative->getY() + cRelative->getHeight() + cOffset;
-    case BOTTOM: return (cRelative->getY() - cOffset) - getHeight();
-    case LEFT:   return cRelative->getY();
-    case RIGHT:  return cRelative->getY();
-  }
-  throw new IllegalStateException(); // TODO Fill in
-}
-
-float TextFieldComponent::getWidth() {
-  return cWidth;
-}
-
-float TextFieldComponent::getHeight() {
-  return 0.05f;
-}
-
-bool TextFieldComponent::contains(float x, float y) {
-  return x >= getX() && x <= getX() + getWidth() && y >= getY() && y <= getY() + getHeight();
 }
 
 std::string TextFieldComponent::getText() {

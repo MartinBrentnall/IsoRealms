@@ -22,9 +22,11 @@
 #include <iostream>
 
 #include "../../../../Global/Configuration.h"
+#include "../../../../Global/GridLayoutComponent.h"
 #include "../../../../Global/IComponentContainer.h"
 #include "../../../../Global/PluginRegistry.h"
-#include "../../../../Global/RectangleComponent.h"
+#include "../../../../Global/RectangleBoundsCalculator.h"
+#include "../../../../Global/ResizableDialog.h"
 #include "../../../../Global/ScreenConfiguration.h"
 
 #include "Button.h"
@@ -33,10 +35,11 @@
 #include "PluginRequirementsComponent.h"
 #include "TextFieldComponent.h"
 
-class ElementSetInstancesComponent:public RectangleComponent {
+class ElementSetInstancesComponent:public ResizableDialog {
   private:
   PluginRegistry* cPluginRegistry;
   ElementSetRegistry* cElementSetRegistry;
+  GridLayoutComponent* cGridLayout;
   IRectangularComponent* cFocusedComponent;
   std::vector<IRectangularComponent*> cComponents;
   InstancesListComponent* cInstancesList;
@@ -58,18 +61,18 @@ class ElementSetInstancesComponent:public RectangleComponent {
     public:
     ConfigureInstanceCommand(ElementSetInstancesComponent* parent);
 
-    /************************************************************************\
-     * Implemented methods of ICommand.h                                    *
-    \************************************************************************/
+    /***********************\
+     * Implements ICommand *
+    \***********************/
     void execute();
   };
 
   class RemoveInstanceCommand:public ICommand {
     public:
 
-    /************************************************************************\
-     * Implemented methods of ICommand.h                                    *
-    \************************************************************************/
+    /***********************\
+     * Implements ICommand *
+    \***********************/
     void execute();
   };
 
@@ -80,9 +83,9 @@ class ElementSetInstancesComponent:public RectangleComponent {
     public:
     CreateInstanceCommand(ElementSetInstancesComponent* parent);
 
-    /************************************************************************\
-     * Implemented methods of ICommand.h                                    *
-    \************************************************************************/
+    /***********************\
+     * Implements ICommand *
+    \***********************/
     void execute();
   };
 
@@ -93,21 +96,21 @@ class ElementSetInstancesComponent:public RectangleComponent {
     public:
     CloseCommand(ElementSetInstancesComponent* parent);
 
-    /************************************************************************\
-     * Implemented methods of ICommand.h                                    *
-    \************************************************************************/
+    /***********************\
+     * Implements ICommand *
+    \***********************/
     void execute();
   };
 
   public:
   ElementSetInstancesComponent(IComponentContainer*, PluginRegistry*, ElementSetRegistry*, float, float);
 
-  /**************************************************************************\
-   * Implemented methods of RectangleComponent.h                            *
-  \**************************************************************************/
-  void updateContent(int);
-  void renderContent();
-  bool inputContent(SDL_Event&);
+  /******************************\
+   * Implements ResizableDialog *
+  \******************************/
+  void updateResizableDialogContent(int);
+  void renderResizableDialogContent();
+  bool inputResizableDialogContent(SDL_Event&);
 };
 
 #endif

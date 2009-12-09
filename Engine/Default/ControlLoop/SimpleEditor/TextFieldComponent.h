@@ -24,18 +24,17 @@
 #include <SDL/SDL.h>
 #include <string>
 
+#include "../../../../Global/AbstractRectangularComponent.h"
 #include "../../../../Global/IFont.h"
 #include "../../../../Global/IllegalStateException.h"
-#include "../../../../Global/IRectangularComponent.h"
 
-class TextFieldComponent:public IRectangularComponent {
+class TextFieldComponent:public AbstractRectangularComponent {
   private:
   static IFont* cFont;
 
   IRectangularComponent* cRelative;
   IRectangularComponent::Edge cEdge;
   float cOffset;
-  float cWidth;
   unsigned int cCaret;
   std::string cInput;
 
@@ -44,22 +43,16 @@ class TextFieldComponent:public IRectangularComponent {
   public:
   void static setFont(IFont*);
 
-  TextFieldComponent(IRectangularComponent*, IRectangularComponent::Edge, float, float);
+  TextFieldComponent(IRectangularComponent*, IRectangularComponent::Edge, float);
 
   std::string getText();
 
+  /****************************\
+   * Implements IHUDComponent *
+  \****************************/
   void update(int);
   void render();
   bool input(SDL_Event&);
-  bool contains(float, float);
-
-  /**************************************************************************\
-   * Implemented methods of IRectangularComponent.h                         *
-  \**************************************************************************/
-  float getX();
-  float getY();
-  float getWidth();
-  float getHeight();
 };
 
 #endif

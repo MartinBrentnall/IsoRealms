@@ -23,7 +23,7 @@ unsigned int SpindizzyCraftGyroscopeModel::cInstanceCount = 0;
 
 SpindizzyCraftGyroscopeModel::SpindizzyCraftGyroscopeModel() {
   if (cTextures.empty()) {
-    cTextures[TEXTURE_DISC] = registerTexture(generateTextureDisc());
+    cTextures[TEXTURE_DISC] = generateTextureDisc();
   }
   cInstanceCount++;
 }
@@ -73,31 +73,22 @@ void SpindizzyCraftGyroscopeModel::render() {
 }
 
 // TODO: Nasty stuff below here.  Clean up!
-GLuint SpindizzyCraftGyroscopeModel::registerTexture(Image* image) {
-  GLuint mTextureID;
-  int mDepth = image->getDepth();
-  glGenTextures(1, &mTextureID);
-  glBindTexture(GL_TEXTURE_2D, mTextureID);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexImage2D(GL_TEXTURE_2D, 0, mDepth, image->sizeX, image->sizeY, 0, mDepth, GL_UNSIGNED_BYTE, image->data);
-  return mTextureID;
-}
-
-Image* SpindizzyCraftGyroscopeModel::generateTextureDisc() {
+GLuint SpindizzyCraftGyroscopeModel::generateTextureDisc() {
   Image* mImage = new Image(64, 64, true);
   Colour mTransparent(0.0, 0.0, 0.0, 0.0);
   Colour mBlack(0.0, 0.0, 0.0, 1.0);
   Colour mMagenta(0.7, 0.0, 1.0, 1.0);
   Colour mCyan(0.0, 1.0, 1.0, 1.0);
   Colour mYellow(1.0, 1.0, 0.0, 1.0);
-  mImage->drawSquare(&mTransparent, 0, mImage->sizeX, 0, mImage->sizeY);
-  mImage->drawCircle(&mBlack, mImage->sizeX / 2);
-  mImage->drawCircle(&mTransparent, int(mImage->sizeX / 2.3));
-  mImage->drawQuarterCircle(&mCyan, int(mImage->sizeX / 2.3), 1);
-  mImage->drawQuarterCircle(&mMagenta, int(mImage->sizeX / 2.3), 2);
-  mImage->drawQuarterCircle(&mYellow, int(mImage->sizeX / 2.3), 3);
-  return mImage;
+  mImage->drawSquare(&mTransparent, 0, mImage->getWidth(), 0, mImage->getHeight());
+  mImage->drawCircle(&mBlack, mImage->getWidth() / 2);
+  mImage->drawCircle(&mTransparent, int(mImage->getWidth() / 2.3));
+  mImage->drawQuarterCircle(&mCyan, int(mImage->getWidth() / 2.3), 1);
+  mImage->drawQuarterCircle(&mMagenta, int(mImage->getWidth() / 2.3), 2);
+  mImage->drawQuarterCircle(&mYellow, int(mImage->getWidth() / 2.3), 3);
+  GLuint mTextureID = mImage->generateTexture();
+  delete mImage;
+  return mTextureID;
 }
 
 SpindizzyCraftGyroscopeModel::~SpindizzyCraftGyroscopeModel() {
@@ -106,5 +97,4 @@ SpindizzyCraftGyroscopeModel::~SpindizzyCraftGyroscopeModel() {
       glDeleteTextures(1, &(i->second));
     }
   }
-  // TODO: See if we must clear up the Image object too.
 }

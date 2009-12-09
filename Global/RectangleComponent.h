@@ -22,10 +22,10 @@
 #include <GL/gl.h>
 #include <SDL/SDL.h>
 
+#include "AbstractRectangularComponent.h"
 #include "Configuration.h"
 #include "IComponentContainer.h"
 #include "IHUDComponent.h"
-#include "IMovableComponent.h"
 #include "IRectangularComponent.h"
 #include "ScreenConfiguration.h"
 
@@ -33,8 +33,7 @@
  * When extending this class, be sure to call render() before doing your own
  * rendering, and input after processing your own input (if required).
  */
-class RectangleComponent:public IMovableComponent,
-                         public IRectangularComponent {
+class RectangleComponent:public AbstractRectangularComponent {
   protected:
   float cX;
   float cY;
@@ -47,6 +46,7 @@ class RectangleComponent:public IMovableComponent,
   RectangleComponent(IComponentContainer*, float, float, float, float);
 
   void translate(float, float);
+  void resize(float, float);
 
   bool mouseButtonDown(SDL_Event&);
   bool mouseMotion(SDL_Event&);
@@ -71,10 +71,10 @@ class RectangleComponent:public IMovableComponent,
   /**************************************************************************\
    * Implemented methods of IMovableComponent.h                             *
   \**************************************************************************/
-  float getX();
-  float getY();
-  float getWidth();
-  float getHeight();
+  float getLeft();
+  float getBottom();
+  float getRight();
+  float getTop();
 };
 
 #endif

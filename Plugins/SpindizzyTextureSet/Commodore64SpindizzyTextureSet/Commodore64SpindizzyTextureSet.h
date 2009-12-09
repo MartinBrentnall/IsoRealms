@@ -61,100 +61,104 @@ class Commodore64SpindizzyTextureSet:public ISpindizzyTextureSet,
   // TODO: End nasty hack
 
   std::map<TextureType, ISpindizzyTexture*> cTextures;
+  std::vector<GLuint> cTextureIDs;
 
   IFourColourSupport* cColourScheme;
 
-  // TODO: Make the texture set support returning a "transformed" texture (e.g. the returned texture also holds its own orientation to prevent duplication of rotated and flipped textures)
-  Image* generatePlain();
-  Image* generateSplitPlain();
-  Image* generateIce(Colour* colour);
-  Image* generateTrampoline();
-  Image* generateSwitchSquare();
-  Image* generateSwitchSquareHalf();
-  Image* generateSwitchSquareBoth();
-  Image* generateSwitchDiamond();
-  Image* generateSwitchDiamondHalf();
-  Image* generateSwitchDiamondBoth();
-  Image* generateSwitchCircle();
-  Image* generateSwitchCircleHalf();
-  Image* generateSwitchCircleBoth();
-  Image* generateArrow();
-  Image* generateWallNorthSouth();
-  Image* generateWallEastWest();
-  Image* generateIceWall();
-
-  /**
-   * Utility method used for setting all pixels in the specified image to
-   * full transparency.
-   *
-   * @param Image&  The image to draw on.
+  /*
+   * The follow functions create template images that can be drawn on.
    */
   Image* makeTransparent();
+  Image* makePlainImage(Colour*);
+  Image* makeTileImage();
+  Image* makeSwitchSquareImage();
+  Image* makeSwitchDiamondImage();
+  Image* makeLiftSquareImage();
+  Image* makeLiftSquareHalfImage();
+  Image* makeLiftCircleImage();
+
+  GLuint generatePlain();
+  GLuint generateSplitPlain();
+  GLuint generateIce();
+  GLuint generateTrampoline();
+  GLuint generateSwitchSquare();
+  GLuint generateSwitchSquareHalf();
+  GLuint generateSwitchSquareBoth();
+  GLuint generateSwitchDiamond();
+  GLuint generateSwitchDiamondHalf();
+  GLuint generateSwitchDiamondBoth();
+  GLuint generateSwitchCircle();
+  GLuint generateSwitchCircleHalf();
+  GLuint generateSwitchCircleBoth();
+  GLuint generateArrow();
+  GLuint generateWallNorthSouth();
+  GLuint generateWallEastWest();
+  GLuint generateIceWall();
 
   /**
    * Draw the plain square lift texture to the specified image.
    *
    * @param Image&  The image to draw on.
    */
-  Image* generateLiftSquare();
+  GLuint generateLiftSquare();
 
   /**
    * Draw the non-symmetrical square lift texture to the specified image.
    *
    * @param Image&  The image to draw on.
    */
-  Image* generateLiftSquareHalf();
+  GLuint generateLiftSquareHalf();
 
   /**
    * Draw the full square lift texture to the specified image.
    *
    * @param Image&  The image to draw on.
    */
-  Image* generateLiftSquareBoth();
+  GLuint generateLiftSquareBoth();
 
   /**
    * Draw the plain diamond lift texture to the specified image.
    *
    * @param Image&  The image to draw on.
    */
-  Image* generateLiftDiamond();
+  GLuint generateLiftDiamond();
 
   /**
    * Draw the non-symmetrical diamond lift texture to the specified image.
    *
    * @param Image&  The image to draw on.
    */
-  Image* generateLiftDiamondHalf();
+  GLuint generateLiftDiamondHalf();
 
   /**
    * Draw the full diamond lift texture to the specified image.
    *
    * @param Image&  The image to draw on.
    */
-  Image* generateLiftDiamondBoth();
+  GLuint generateLiftDiamondBoth();
 
   /**
    * Draw the plain circle lift texture to the specified image.
    *
    * @param Image&  The image to draw on.
    */
-  Image* generateLiftCircle();
+  GLuint generateLiftCircle();
 
   /**
    * Draw the non-symmetrical circle lift texture to the specified image.
    *
    * @param Image&  The image to draw on.
    */
-  Image* generateLiftCircleHalf();
+  GLuint generateLiftCircleHalf();
 
   /**
    * Draw the full circle lift texture to the specified image.
    *
    * @param Image&  The image to draw on.
    */
-  Image* generateLiftCircleBoth();
+  GLuint generateLiftCircleBoth();
 
-  GLuint registerTexture(Image*);
+  GLuint convertToTexture(Image*);
 
   void generateTextures();
   void destroyTextures();

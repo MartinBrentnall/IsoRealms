@@ -145,7 +145,3 @@ void SpindizzyWater::save(DOMNodeWriter* node, BlockLocation& location) {
   cEndLocation.saveRelative(mSizeNode, cStartLocation);
 }
 
-SpindizzyWater::~SpindizzyWater() {
-  removed();
-}
-

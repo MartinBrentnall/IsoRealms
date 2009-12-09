@@ -60,16 +60,16 @@ class PluginRequirementsComponent:public RectangleComponent {
 
   PluginRequirementsComponent(IComponentContainer*, PluginRegistry*, IPluginSupport*, float, float);
 
-  /**************************************************************************\
-   * Implemented methods of IHUDComponent.h                                 *
-  \**************************************************************************/
+  /****************************\
+   * Implements IHUDComponent *
+  \****************************/
   void updateContent(int);
   void renderContent();
   bool inputContent(SDL_Event&);
 
-  /**************************************************************************\
-   * Implemented methods of IItemSelectedCommand.h                          *
-  \**************************************************************************/
+  /***********************************\
+   * Implements IItemSelectedCommand *
+  \***********************************/
   void itemSelected(std::string);
 };
 

@@ -160,7 +160,7 @@ class SimpleEditor:public IControlLoop,
    * Implements IElementGateway *
   \******************************/
   void pushElement(IElement*);
-  void notifyDestruction(IElement*);
+  Zone* notifyDestruction(IElement*);
 
   /****************************************\
    * Implements IElementSelectionListener *

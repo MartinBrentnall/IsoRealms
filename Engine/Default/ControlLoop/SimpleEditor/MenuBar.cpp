@@ -24,7 +24,7 @@ MenuBar::MenuBar(IComponentContainer* componentContainer, DOMNodeWrapper* node, 
   cMenuPopupShowing = NULL;
   cSelectedItem = 0;
 
-  float mXOffset = getX() + 0.01f;
+  float mXOffset = getLeft() + 0.01f;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
@@ -51,9 +51,9 @@ void MenuBar::addCommand(ICommandInfo* commandInfo) {
   if (mCommandPath.size() > 1) {
     MenuPopup* mPopupMenu = cMenuPopups[mPathElementName];
     if (mPopupMenu == NULL) {
-      mPopupMenu = new MenuPopup(this, getX() + getWidth() - 0.01f, 0.95f);
+      mPopupMenu = new MenuPopup(this, getRight() - 0.01f, 0.95f);
       PopupMenuCommand* mPopupMenuCommand = new PopupMenuCommand(cMenuPopupShowing, mPopupMenu);
-      MenuItem* mMenuItem = new MenuItem(mPathElementName, mPopupMenuCommand, getX() + getWidth() - 0.01f, 0.96f);
+      MenuItem* mMenuItem = new MenuItem(mPathElementName, mPopupMenuCommand, getRight() - 0.01f, 0.96f);
       cMenuItems.push_back(mMenuItem);
       std::cout << "Added new drop down menu: " << mPathElementName << std::endl;
     }
@@ -82,28 +82,28 @@ void MenuBar::render() {
   glPopAttrib();
   glDisable(GL_DEPTH_TEST);
 
-  float mX = getX();
-  float mY = getY();
-  float mWidth = getWidth();
-  float mHeight = getHeight();
+  float mLeft = getLeft();
+  float mBottom = getBottom();
+  float mRight = getRight();
+  float mTop = getTop();
   glBindTexture(GL_TEXTURE_2D, 0);
   glLoadIdentity();
   glEnable(GL_BLEND);
   glBegin(GL_QUADS);
   glColor4f(0.05f, 0.0f, 0.1f, 0.85f);
-  glVertex2f(mX,          mY + mHeight);
-  glVertex2f(mX,          mY);
-  glVertex2f(mX + mWidth, mY);
-  glVertex2f(mX + mWidth, mY + mHeight);
+  glVertex2f(mLeft,  mTop);
+  glVertex2f(mLeft,  mBottom);
+  glVertex2f(mRight, mBottom);
+  glVertex2f(mRight, mTop);
   glEnd();
   glDisable(GL_BLEND);
 
   glBegin(GL_LINE_LOOP);
   glColor3f(0.8f, 0.6f, 1.0f);
-  glVertex2f(mX,          mY + mHeight);
-  glVertex2f(mX,          mY);
-  glVertex2f(mX + mWidth, mY);
-  glVertex2f(mX + mWidth, mY + mHeight);
+  glVertex2f(mLeft,  mTop);
+  glVertex2f(mLeft,  mBottom);
+  glVertex2f(mRight, mBottom);
+  glVertex2f(mRight, mTop);
   glEnd();
   glLoadIdentity();  
   glEnable(GL_DEPTH_TEST);
@@ -143,20 +143,20 @@ void MenuBar::closeMenu(IMenu* menu) {
   }
 }
 
-float MenuBar::getX() {
+float MenuBar::getLeft() {
   return -1.0f;
 }
 
-float MenuBar::getY() {
+float MenuBar::getBottom() {
   return 0.95f;
 }
 
-float MenuBar::getHeight() {
-  return 0.05f;
+float MenuBar::getTop() {
+  return 1.0f;
 }
 
-float MenuBar::getWidth() {
-  float mWidth = 0.02;
+float MenuBar::getRight() {
+  float mWidth = -0.98f;
   for (unsigned int i = 0; i < cMenuItems.size(); i++) {
     mWidth += cMenuItems[i]->getWidth() + 0.05f;
   }
@@ -245,10 +245,6 @@ bool MenuBar::input(SDL_Event& event) {
 }
 
 bool MenuBar::contains(float x, float y) {
-  if (x >= -1.0f && x <= -1.04f + getWidth() && y >= 0.95f && y <= 1.0f) {
-    return true;
-  }
-  return false;
-  // TODO: Also do popups!
+  return x >= getLeft() && x <= getRight() && y >= getBottom() && y <= getTop();
 }
 

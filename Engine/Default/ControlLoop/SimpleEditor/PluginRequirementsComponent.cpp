@@ -46,8 +46,8 @@ void PluginRequirementsComponent::updateContent(int milliseconds) {
 
 void PluginRequirementsComponent::renderContent() {
   std::string mTitle = "\"" + cPluginSupport->getName() + "\" supports the following plugin:";
-  float mLine = (getY() + getHeight()) - 0.05f;
-  cFont->print(getX() + 0.02f, mLine, 0.02f, 0, mTitle.c_str());
+  float mLine = getTop() - 0.05f;
+  cFont->print(getLeft() + 0.02f, mLine, 0.02f, 0, mTitle.c_str());
   mLine -= 0.08f;
   for (unsigned int i = 0; i < cSupportedPlugins.size(); i++) {
 //    float mLoadedMultiplier = ElementSetRegistry::isElementSetLoaded(cSupportedPlugins[i]) ? 1.0f : 0.3f;
@@ -57,10 +57,10 @@ void PluginRequirementsComponent::renderContent() {
     } else {
       glColor3f(1.0f * mLoadedMultiplier, 1.0f * mLoadedMultiplier, 1.0f * mLoadedMultiplier);
     }
-    cFont->print(getX() + 0.02f, mLine, 0.02f, 0, cSupportedPlugins[i]->getType().c_str());
+    cFont->print(getLeft() + 0.02f, mLine, 0.02f, 0, cSupportedPlugins[i]->getType().c_str());
  
 // TODO: Plug socket    string mPluginFulfillment = cPluginSupport->getPlugin(cSupportedPlugins[i]);
-//    cFont->print(getX() + 0.52f, mLine, 0.02f, 0, mPluginFulfillment.c_str());
+//    cFont->print(getLeft() + 0.52f, mLine, 0.02f, 0, mPluginFulfillment.c_str());
     mLine -= 0.05f;
   }
 
@@ -86,7 +86,7 @@ bool PluginRequirementsComponent::keyDown(SDLKey& key) {
     }
   
     case SDLK_RETURN: {
-      IHUDComponent* mChooseInstanceComponent = new ChoosePluginInstanceComponent(cComponentContainer, cPluginRegistry, cPluginSupport, cSupportedPlugins[cSelectedPlugin], getX() + 0.05f, getY() - 0.05f);
+      IHUDComponent* mChooseInstanceComponent = new ChoosePluginInstanceComponent(cComponentContainer, cPluginRegistry, cPluginSupport, cSupportedPlugins[cSelectedPlugin], getLeft() + 0.05f, getBottom() - 0.05f);
       cComponentContainer->addComponent(mChooseInstanceComponent);
       return true;
     }

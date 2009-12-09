@@ -27,20 +27,20 @@ RectangleComponent::RectangleComponent(IComponentContainer* componentContainer, 
   cDragging = false;
 }
 
-float RectangleComponent::getX() {
+float RectangleComponent::getLeft() {
   return cX;
 }
 
-float RectangleComponent::getY() {
+float RectangleComponent::getBottom() {
   return cY;
 }
 
-float RectangleComponent::getWidth() {
-  return cWidth;
+float RectangleComponent::getRight() {
+  return cX + cWidth;
 }
 
-float RectangleComponent::getHeight() {
-  return cHeight;
+float RectangleComponent::getTop() {
+  return cY + cHeight;
 }
 
 bool RectangleComponent::contains(float x, float y) {
@@ -50,6 +50,11 @@ bool RectangleComponent::contains(float x, float y) {
 void RectangleComponent::translate(float x, float y) {
   cX += x;
   cY += y;
+}
+
+void RectangleComponent::resize(float x, float y) {
+  cWidth += x;
+  cHeight += y;
 }
 
 void RectangleComponent::update(int milliseconds) {

@@ -23,14 +23,14 @@
 #include <SDL/SDL.h>
 #include <string>
 
+#include "../../../../Global/AbstractRectangularComponent.h"
 #include "../../../../Global/Configuration.h"
 #include "../../../../Global/ICommand.h"
 #include "../../../../Global/IFont.h"
 #include "../../../../Global/IllegalStateException.h"
-#include "../../../../Global/IRectangularComponent.h"
 #include "../../../../Global/ScreenConfiguration.h"
 
-class Button:public IRectangularComponent {
+class Button:public AbstractRectangularComponent {
   private:
   static IFont* cFont;
 
@@ -50,16 +50,6 @@ class Button:public IRectangularComponent {
   void update(int);
   void render();
   bool input(SDL_Event&);
-
-  bool contains(float, float);
-
-  /**************************************************************************\
-   * Implemented methods of IRectangularComponent.h                         *
-  \**************************************************************************/
-  float getX();
-  float getY();
-  float getWidth();
-  float getHeight();
 };
 
 #endif

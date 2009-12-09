@@ -42,19 +42,14 @@ void Commodore64SpindizzyTexture::set() {
 
 void Commodore64SpindizzyTexture::texCoord2f(float x, float y) {
   switch (cDirection) {
-    case NORTH: {glTexCoord2f(x, y); break;}
-    case EAST: {glTexCoord2f(-y, -x); break;}
+    case NORTH: {glTexCoord2f( x,  y); break;}
+    case EAST:  {glTexCoord2f(-y, -x); break;}
     case SOUTH: {glTexCoord2f(-x, -y); break;}
-    case WEST: {glTexCoord2f(y, x); break;}
+    case WEST:  {glTexCoord2f( y,  x); break;}
   }
 }
 
 ISpindizzyTexture::Mapping Commodore64SpindizzyTexture::getMapping() {
   return cMapping;
 }
-
-Commodore64SpindizzyTexture::~Commodore64SpindizzyTexture() {
-  glDeleteTextures(1, &cTextureID);
-}
-
 

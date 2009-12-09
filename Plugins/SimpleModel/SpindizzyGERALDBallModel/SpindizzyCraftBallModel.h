@@ -37,8 +37,7 @@ class SpindizzyCraftBallModel:public ISimpleModel {
   static unsigned int cInstanceCount;
   static std::map<TextureID, GLuint> cTextures;
 
-  GLuint registerTexture(Image*);
-  Image* generateTextureBall();
+  GLuint generateTextureBall();
 
   public:
   SpindizzyCraftBallModel();

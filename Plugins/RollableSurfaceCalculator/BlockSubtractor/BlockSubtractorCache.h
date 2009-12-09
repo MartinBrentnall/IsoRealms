@@ -58,6 +58,8 @@ class BlockSubtractorCache {
    *           one.
    */
   std::vector<IRollableSurfaceProvider*> getSurfaceProviders(bool, IRollableSurfaceProvider*);
+
+  ~BlockSubtractorCache();
 };
 
 #endif

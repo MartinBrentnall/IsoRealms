@@ -25,11 +25,11 @@
 #include <string>
 #include <vector>
 
+#include "../../../../Global/AbstractRectangularComponent.h"
 #include "../../../../Global/IFont.h"
 #include "../../../../Global/IllegalStateException.h"
-#include "../../../../Global/IRectangularComponent.h"
       
-class ImplementationsListComponent:public IRectangularComponent {
+class ImplementationsListComponent:public AbstractRectangularComponent {
   private:
   static IFont* cFont;
 
@@ -51,15 +51,6 @@ class ImplementationsListComponent:public IRectangularComponent {
   void update(int);
   void render();
   bool input(SDL_Event&);
-  bool contains(float, float);
-
-  /**************************************************************************\
-   * Implemented methods of IRectangularComponent.h                         *
-  \**************************************************************************/
-  float getX();
-  float getY();
-  float getWidth();
-  float getHeight();  
 };
 
 #endif

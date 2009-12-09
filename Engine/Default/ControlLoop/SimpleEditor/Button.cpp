@@ -36,11 +36,11 @@ void Button::update(int milliseconds) {
 }
 
 void Button::render() {
-  float mX = getX();
-  float mY = getY();
-  float mWidth = getWidth();
-  float mHeight = getHeight();
-  cFont->print(mX + 0.01f, mY + 0.01f, 0.02f, 0, cText.c_str());
+  float mLeft = getLeft();
+  float mBottom = getBottom();
+  float mRight = getRight();
+  float mTop = getTop();
+  cFont->print(mLeft + 0.01f, mBottom + 0.01f, 0.02f, 0, cText.c_str());
 
   glPushAttrib(GL_TRANSFORM_BIT);
   glMatrixMode(GL_PROJECTION);
@@ -54,10 +54,10 @@ void Button::render() {
 
   glBegin(GL_LINE_LOOP);
   glColor3f(1.0f, 1.0f, 1.0f);
-  glVertex2f(mX,          mY + mHeight);
-  glVertex2f(mX,          mY);
-  glVertex2f(mX + mWidth, mY);
-  glVertex2f(mX + mWidth, mY + mHeight);
+  glVertex2f(mLeft,  mTop);
+  glVertex2f(mLeft,  mBottom);
+  glVertex2f(mRight, mBottom);
+  glVertex2f(mRight, mTop);
   glEnd();  
 
   glLoadIdentity();  
@@ -72,42 +72,6 @@ void Button::render() {
 /*  float mWidth = cFont->getWidth(0.02f, cText.substr(0, cAcceleratorIndex).c_str());
   glColor3f(0.0f, 1.0f, 1.0f);
   cFont->print(cXOffset + mWidth, cYOffset, 0.02f, 0, cText.substr(cAcceleratorIndex, 1).c_str());*/
-}
-
-float Button::getX() {
-  switch (cEdge) {
-    case TOP:    return cParent->getX();
-    case BOTTOM: return cParent->getX();
-    case LEFT:   return (cParent->getX() - cOffset) - getWidth();
-    case RIGHT:  return cParent->getX() + cParent->getWidth() + cOffset;
-  }
-  throw new IllegalStateException(); // TODO: Fill in
-}
-
-float Button::getY() {
-  switch (cEdge) {
-    case TOP:    return cParent->getY() + cParent->getHeight() + cOffset;
-    case BOTTOM: return (cParent->getY() - cOffset) - getHeight();
-    case LEFT:   return cParent->getY();
-    case RIGHT:  return cParent->getY();
-  }
-  throw new IllegalStateException(); // TODO Fill in
-}
-
-float Button::getWidth() {
-  return cFont->getWidth(0.02f, cText.c_str()) + 0.02f;
-}
-
-float Button::getHeight() {
-  return 0.05f;
-}
-
-bool Button::contains(float x, float y) {
-  float mX = getX();
-  float mY = getY();
-  float mWidth = getWidth();
-  float mHeight = getHeight();
-  return x >= mX && x <= mX + mWidth && y >= mY && y <= mY + mHeight;
 }
 
 bool Button::mouseButtonDown(SDL_Event& event) {

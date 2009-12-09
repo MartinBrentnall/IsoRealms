@@ -23,8 +23,8 @@ unsigned int SpindizzyCraftPyramidModel::cInstanceCount = 0;
 
 SpindizzyCraftPyramidModel::SpindizzyCraftPyramidModel() {
   if (cTextures.empty()) {
-    cTextures[TEXTURE_TOP] = registerTexture(generateTextureTop());
-    cTextures[TEXTURE_SIDE] = registerTexture(generateTextureSide());
+    cTextures[TEXTURE_TOP] = generateTextureTop();
+    cTextures[TEXTURE_SIDE] = generateTextureSide();
   }
   cInstanceCount++;
 }
@@ -90,37 +90,32 @@ void SpindizzyCraftPyramidModel::render() {
 }
 
 // TODO: Nasty stuff below here.  Clean up!
-GLuint SpindizzyCraftPyramidModel::registerTexture(Image* image) {
-  GLuint mTextureID;
-  int mDepth = image->getDepth();
-  glGenTextures(1, &mTextureID);
-  glBindTexture(GL_TEXTURE_2D, mTextureID);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexImage2D(GL_TEXTURE_2D, 0, 3, image->sizeX, image->sizeY, 0, mDepth, GL_UNSIGNED_BYTE, image->data);
+GLuint SpindizzyCraftPyramidModel::convertToTexture(Image* image) {
+  GLuint mTextureID = image->generateTexture();
+  delete image;
   return mTextureID;
 }
 
-Image* SpindizzyCraftPyramidModel::generateTextureTop() {
+GLuint SpindizzyCraftPyramidModel::generateTextureTop() {
   Image* mImage = new Image(64, 64, false);
-  int mEdgeWidth = mImage->sizeX / 12;
+  int mEdgeWidth = mImage->getWidth() / 12;
   Colour mEdge(0.0, 0.0, 0.0);
   Colour mTop(0.0, 1.0, 1.0);
-  mImage->drawSquare(&mEdge, 0, mImage->sizeX, 0, mImage->sizeY);
-  mImage->drawSquare(&mTop, mEdgeWidth, mImage->sizeX - mEdgeWidth, mEdgeWidth, mImage->sizeY - mEdgeWidth);
-  return mImage;
+  mImage->drawSquare(&mEdge, 0, mImage->getWidth(), 0, mImage->getHeight());
+  mImage->drawSquare(&mTop, mEdgeWidth, mImage->getWidth() - mEdgeWidth, mEdgeWidth, mImage->getHeight() - mEdgeWidth);
+  return convertToTexture(mImage);
 }
 
-Image* SpindizzyCraftPyramidModel::generateTextureSide() {
+GLuint SpindizzyCraftPyramidModel::generateTextureSide() {
   Image* mImage = new Image(64, 64, false);
-  int mEdgeWidth = mImage->sizeX / 12;
+  int mEdgeWidth = mImage->getWidth() / 12;
   Colour mEdge(0.0, 0.0, 0.0);
   Colour mSide(0.7, 0.0, 1.0);
-  mImage->drawSquare(&mEdge, 0, mImage->sizeX, 0, mImage->sizeY);
+  mImage->drawSquare(&mEdge, 0, mImage->getWidth(), 0, mImage->getHeight());
 
   // TODO: 'magic' numbers 5 and 30 should be calculated from image size
-  mImage->drawTriangle(&mSide, mEdgeWidth + 5, mEdgeWidth, mImage->sizeX - (mEdgeWidth + 5), mEdgeWidth, mImage->sizeX / 2, mImage->sizeY - (mEdgeWidth + 32));
-  return mImage;
+  mImage->drawTriangle(&mSide, mEdgeWidth + 5, mEdgeWidth, mImage->getWidth() - (mEdgeWidth + 5), mEdgeWidth, mImage->getWidth() / 2, mImage->getHeight() - (mEdgeWidth + 32));
+  return convertToTexture(mImage);
 }
 
 SpindizzyCraftPyramidModel::~SpindizzyCraftPyramidModel() {
@@ -129,6 +124,5 @@ SpindizzyCraftPyramidModel::~SpindizzyCraftPyramidModel() {
       glDeleteTextures(1, &(i->second));
     }
   }
-  // TODO: See if we must clear up the Image object too.
 }
 

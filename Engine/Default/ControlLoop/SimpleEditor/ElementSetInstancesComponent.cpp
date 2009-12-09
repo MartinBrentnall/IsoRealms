@@ -18,7 +18,8 @@
  */
 #include "ElementSetInstancesComponent.h"
 
-ElementSetInstancesComponent::ElementSetInstancesComponent(IComponentContainer* componentContainer, PluginRegistry* pluginRegistry, ElementSetRegistry* elementSetRegistry, float x, float y) : RectangleComponent(componentContainer, x, y, 1.26f, 0.78f) {
+//TODO: CLASS REQUIRES REFACTOR FOR NEW COMPONENT FRAMEWORK!
+ElementSetInstancesComponent::ElementSetInstancesComponent(IComponentContainer* componentContainer, PluginRegistry* pluginRegistry, ElementSetRegistry* elementSetRegistry, float x, float y) : ResizableDialog(componentContainer, x, y, 1.26f, 0.78f) {
   std::vector<std::string>* mImplementationsList = System::getFileList("/usr/share/IsoRealms/Elements/", "*");;
   float mOffset = 0.02f;
   ICommand* mConfigureInstanceCommand = new ConfigureInstanceCommand(this);
@@ -28,13 +29,18 @@ ElementSetInstancesComponent::ElementSetInstancesComponent(IComponentContainer* 
 
   cPluginRegistry = pluginRegistry;
   cElementSetRegistry = elementSetRegistry;
-  cInstancesList = new InstancesListComponent(this, cElementSetRegistry);
+
+  cGridLayout = new GridLayoutComponent(2, 1, new RectangleBoundsCalculator(this));
+  cInstancesList = new InstancesListComponent(cElementSetRegistry);
   cImplementationsList = new ImplementationsListComponent(cInstancesList, IRectangularComponent::RIGHT, mOffset, *mImplementationsList);
-  cInstanceNameInputField = new TextFieldComponent(cImplementationsList, IRectangularComponent::BOTTOM, mOffset, cImplementationsList->getWidth());
+  cInstanceNameInputField = new TextFieldComponent(cImplementationsList, IRectangularComponent::BOTTOM, mOffset);
   cConfigureButton = new Button(cInstancesList, IRectangularComponent::BOTTOM, mOffset, mConfigureInstanceCommand, "Configure...");
   cRemoveInstanceButton = new Button(cConfigureButton, IRectangularComponent::RIGHT, mOffset, mRemoveInstanceCommand, "Remove Instance");
   cNewInstanceButton = new Button(cInstanceNameInputField, IRectangularComponent::BOTTOM, mOffset, mCreateInstanceCommand, "New Instance");
   cCloseButton = new Button(cNewInstanceButton, IRectangularComponent::RIGHT, mOffset, mCloseCommand, "Close");
+
+  cGridLayout->setComponentInCell(0, 0, cInstancesList);
+  cGridLayout->setComponentInCell(1, 0, cImplementationsList);
 
   cComponents.push_back(cInstancesList);
   cComponents.push_back(cImplementationsList);
@@ -47,10 +53,11 @@ ElementSetInstancesComponent::ElementSetInstancesComponent(IComponentContainer* 
   cFocusedComponent = cImplementationsList;
 }
 
-void ElementSetInstancesComponent::updateContent(int milliseconds) {
+void ElementSetInstancesComponent::updateResizableDialogContent(int milliseconds) {
+  // Nothing to do.
 }
 
-void ElementSetInstancesComponent::renderContent() {
+void ElementSetInstancesComponent::renderResizableDialogContent() {
   for (unsigned int i = 0; i < cComponents.size(); i++) {
     cComponents[i]->render();
   }
@@ -68,7 +75,7 @@ void ElementSetInstancesComponent::testFocusChange(SDL_Event& event) {
   }
 }
 
-bool ElementSetInstancesComponent::inputContent(SDL_Event& event) {
+bool ElementSetInstancesComponent::inputResizableDialogContent(SDL_Event& event) {
   switch (event.type) {
     case SDL_MOUSEBUTTONDOWN: {
       testFocusChange(event);
@@ -80,7 +87,7 @@ bool ElementSetInstancesComponent::inputContent(SDL_Event& event) {
 void ElementSetInstancesComponent::configureElementSet() {
   IElementSet* mSelectedElementSet = cInstancesList->getSelectedElementSet();
   if (mSelectedElementSet != NULL) {
-    IHUDComponent* mComponent = new PluginRequirementsComponent(cComponentContainer, cPluginRegistry, mSelectedElementSet, getX() + 0.05f, getY() - 0.05f);
+    IHUDComponent* mComponent = new PluginRequirementsComponent(cComponentContainer, cPluginRegistry, mSelectedElementSet, getLeft() + 0.05f, getBottom() - 0.05f);
     cComponentContainer->addComponent(mComponent);
   }
 }

@@ -41,11 +41,6 @@ class BlockSubtractor:public IRollableSurfaceCalculator {
  
   BlockSubtractorCache cCache;
 
-  /**
-   * TODO: What's this for?  How do we initialize it?
-   */
-  std::vector<IRollableSurfaceProvider*> cSurfaceProviders;
-
   std::vector<IRollableSurface*> getRollableSurfaces(IRollableSurface*, IRollableSurfaceProvider*, IRollableSurface::FaceDirection);
 
   int getCompleteRows(IRollableSurfaceProvider*, std::vector<IRollableSurface*>, IRollableSurface*, int, int, int, IRollableSurface::FaceDirection/*, Condition* condition TODO:CONDITIONAL*/);

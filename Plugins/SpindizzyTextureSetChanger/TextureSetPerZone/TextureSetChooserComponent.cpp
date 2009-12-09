@@ -28,18 +28,18 @@ void TextureSetChooserComponent::renderContent() {
   Configuration* mConfiguration = Configuration::getInstance();
   ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
   float mAspectRatio = mScreen->getAspectRatio();
-  float mX = getX();
-  float mY = getY() + getHeight();
+  float mLeft = getLeft();
+  float mTop = getTop();
   for (unsigned int i = 0; i < cTexturePalette.size(); i++) {
     glBegin(GL_LINE_LOOP);
-    glVertex2f(mX + cSpacingSize * mAspectRatio,                         mY - cSpacingSize);
-    glVertex2f(mX + (cSpacingSize + cPreviewSize * 2.0f) * mAspectRatio, mY - cSpacingSize);
-    glVertex2f(mX + (cSpacingSize + cPreviewSize * 2.0f) * mAspectRatio, mY - (cSpacingSize + cPreviewSize * 2.0f));
-    glVertex2f(mX + cSpacingSize * mAspectRatio,                         mY - (cSpacingSize + cPreviewSize * 2.0f));
+    glVertex2f(mLeft + cSpacingSize * mAspectRatio,                         mTop - cSpacingSize);
+    glVertex2f(mLeft + (cSpacingSize + cPreviewSize * 2.0f) * mAspectRatio, mTop - cSpacingSize);
+    glVertex2f(mLeft + (cSpacingSize + cPreviewSize * 2.0f) * mAspectRatio, mTop - (cSpacingSize + cPreviewSize * 2.0f));
+    glVertex2f(mLeft + cSpacingSize * mAspectRatio,                         mTop - (cSpacingSize + cPreviewSize * 2.0f));
     glEnd();
 
     glPushMatrix();
-    glTranslatef(mX + (cSpacingSize + cPreviewSize) * mAspectRatio, mY - (cSpacingSize + cPreviewSize), 0.0f);
+    glTranslatef(mLeft + (cSpacingSize + cPreviewSize) * mAspectRatio, mTop - (cSpacingSize + cPreviewSize), 0.0f);
     glScalef(cPreviewSize * mAspectRatio, cPreviewSize, cPreviewSize);
 /*    glRotatef(-55.0f, 1.0f, 0.0f, 0.0f);
     glRotatef(-45.0f, 0.0f, 0.0f, 1.0f);*/

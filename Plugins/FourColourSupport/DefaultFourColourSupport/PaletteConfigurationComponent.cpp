@@ -61,8 +61,8 @@ void PaletteConfigurationComponent::renderContent() {
   ScreenConfiguration* mScreenConfiguration = mConfiguration->getScreenConfiguration();
   float mAspectRatio = mScreenConfiguration->getAspectRatio();
   float mSpacing = 0.02f;
-  float mX = getX() + mSpacing * mAspectRatio;
-  float mY = (getY() + getHeight()) - mSpacing;
+  float mX = getLeft() + mSpacing * mAspectRatio;
+  float mY = getTop() - mSpacing;
   float mWidth = 0.05f * mAspectRatio;
   float mHeight = 0.05f;
   for (unsigned int i = 0; i < cPalette.size(); i++) {
@@ -88,8 +88,8 @@ void PaletteConfigurationComponent::renderContent() {
     mX += mWidth + mSpacing * mAspectRatio;
   }
 
-  mX = getX() + mSpacing * mAspectRatio;
-  mWidth = getWidth() - mSpacing * 2.0f * mAspectRatio;
+  mX = getLeft() + mSpacing * mAspectRatio;
+  mWidth = (getRight() - getLeft()) - mSpacing * 2.0f * mAspectRatio;
 
   Colour mMax = *cPalette[cSelectedEntry];
   Colour mMin = *cPalette[cSelectedEntry];

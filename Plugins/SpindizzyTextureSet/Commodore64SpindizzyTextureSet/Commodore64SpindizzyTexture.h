@@ -19,6 +19,7 @@
 #ifndef COMMODORE_64_SPINDIZZY_TEXTURE_H
 #define COMMODORE_64_SPINDIZZY_TEXTURE_H
 
+#include <iostream>
 #include <GL/gl.h>
 
 #include "../ISpindizzyTexture.h"
@@ -48,8 +49,6 @@ class Commodore64SpindizzyTexture:public ISpindizzyTexture {
   void set();
   void texCoord2f(float, float);
   Mapping getMapping();
-
-  ~Commodore64SpindizzyTexture();
 };
 
 #endif

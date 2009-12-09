@@ -90,3 +90,9 @@ std::vector<IRollableSurfaceProvider*> BlockSubtractorCache::getSurfaceProviders
 std::vector<IRollableSurfaceProvider*> BlockSubtractorCache::getSurfaceProviders() {
   return *cCurrentZoneProviders;
 }
+
+BlockSubtractorCache::~BlockSubtractorCache() {
+  for (std::map<Zone*, std::vector<IRollableSurfaceProvider*>*>::iterator i = cOrderedSurfaceProvidersByZone.begin(); i != cOrderedSurfaceProvidersByZone.end(); ++i) {
+    delete i->second;
+  }
+}

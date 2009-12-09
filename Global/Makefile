@@ -23,6 +23,7 @@ LDCONFIG = ldconfig
 LN = ln
 
 OBJS = \
+AbstractRectangularComponent.o \
 BlockArea.o \
 BlockLocation.o \
 Colour.o \
@@ -33,6 +34,7 @@ DOMNodeWriter.o \
 DummyPlugin.o \
 ElementSetRegistry.o \
 GlobalConfiguration.o \
+GridLayoutComponent.o \
 IElement.o \
 IElementFactory.o \
 IllegalStateException.o \
@@ -45,7 +47,9 @@ MiscFunctions.o \
 ParseException.o \
 PluginRegistry.o \
 PlugSocket.o \
+RectangleBoundsCalculator.o \
 RectangleComponent.o \
+ResizableDialog.o \
 ScreenConfiguration.o \
 System.o \
 Utils.o \

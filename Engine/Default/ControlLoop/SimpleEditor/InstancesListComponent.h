@@ -25,18 +25,17 @@
 #include <string>
 #include <vector>
 
+#include "../../../../Global/AbstractRectangularComponent.h"
 #include "../../../../Global/ElementSetRegistry.h"
 #include "../../../../Global/IFont.h"
-#include "../../../../Global/IMovableComponent.h"
-#include "../../../../Global/IRectangularComponent.h"
 
-class InstancesListComponent:public IRectangularComponent {
+class InstancesListComponent:public AbstractRectangularComponent {
   private:
   static IFont* cFont;
 
   ElementSetRegistry* cElementSetRegistry;
 
-  IMovableComponent* cParent;
+//  IMovableComponent* cParent;
   std::vector<std::string> cInstances;
   unsigned int cSelectedInstance;
 
@@ -45,22 +44,13 @@ class InstancesListComponent:public IRectangularComponent {
   public:
   static void setFont(IFont*);
 
-  InstancesListComponent(IMovableComponent*, ElementSetRegistry*);
+  InstancesListComponent(ElementSetRegistry*);
 
   IElementSet* getSelectedElementSet();
 
   void update(int);
   void render();
   bool input(SDL_Event&);
-  bool contains(float, float);
-
-  /**************************************************************************\
-   * Implemented methods of IRectangularComponent.h                         *
-  \**************************************************************************/
-  float getX();
-  float getY();
-  float getWidth();
-  float getHeight();
 };
 
 #endif

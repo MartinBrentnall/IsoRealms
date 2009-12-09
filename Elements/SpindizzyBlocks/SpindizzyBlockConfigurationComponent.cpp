@@ -42,20 +42,20 @@ void SpindizzyBlockConfigurationComponent::renderContent() {
   Configuration* mConfiguration = Configuration::getInstance();
   ScreenConfiguration* mScreenConfiguration = mConfiguration->getScreenConfiguration();
   float mScreenAspectRatio = mScreenConfiguration->getAspectRatio();
-  float mXLocation = getX() + getWidth() / 2.0f;
-  float mYLocation = getY() + getHeight() / 2.0f;
+  float mXLocation = getLeft() + (getLeft() - getRight()) / 2.0f;
+  float mYLocation = getBottom() + (getBottom() - getTop()) / 2.0f;
   glBegin(GL_LINE_LOOP);
-  glVertex2f(getX() + 0.01f * mScreenAspectRatio, getY() + 0.01f);
-  glVertex2f(getX() + 0.07f * mScreenAspectRatio, getY() + 0.01f);
-  glVertex2f(getX() + 0.07f * mScreenAspectRatio, getY() + 0.07f);
-  glVertex2f(getX() + 0.01f * mScreenAspectRatio, getY() + 0.07f);
+  glVertex2f(getLeft() + 0.01f * mScreenAspectRatio, getBottom() + 0.01f);
+  glVertex2f(getLeft() + 0.07f * mScreenAspectRatio, getBottom() + 0.01f);
+  glVertex2f(getLeft() + 0.07f * mScreenAspectRatio, getBottom() + 0.07f);
+  glVertex2f(getLeft() + 0.01f * mScreenAspectRatio, getBottom() + 0.07f);
   glEnd();
   if (cBlockProperties->isSteppedBottom()) {
     glBegin(GL_LINES);
-    glVertex2f(getX() + 0.01f * mScreenAspectRatio, getY() + 0.01f);
-    glVertex2f(getX() + 0.07f * mScreenAspectRatio, getY() + 0.07f);
-    glVertex2f(getX() + 0.07f * mScreenAspectRatio, getY() + 0.01f);
-    glVertex2f(getX() + 0.01f * mScreenAspectRatio, getY() + 0.07f);
+    glVertex2f(getLeft() + 0.01f * mScreenAspectRatio, getBottom() + 0.01f);
+    glVertex2f(getLeft() + 0.07f * mScreenAspectRatio, getBottom() + 0.07f);
+    glVertex2f(getLeft() + 0.07f * mScreenAspectRatio, getBottom() + 0.01f);
+    glVertex2f(getLeft() + 0.01f * mScreenAspectRatio, getBottom() + 0.07f);
     glEnd();
   }
   glPushMatrix();

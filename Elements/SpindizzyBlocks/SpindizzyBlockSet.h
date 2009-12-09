@@ -143,6 +143,7 @@ class SpindizzyBlockSet:public IElementSet,
   void setDirty();
   std::vector<IRollableSurface*> getRollableSurfaces(IRollableSurfaceProvider*, IRollableSurface::FaceDirection);
   std::vector<IWallSurface*> getWallSurfaces(IRollableSurfaceProvider*, IWallSurface::FaceDirection);
+  void notifyZoneAction(Zone*);
 
   /************************************\
    * Implements IChangeableTextureSet *

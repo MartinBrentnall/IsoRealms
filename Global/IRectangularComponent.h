@@ -36,10 +36,10 @@ class IRectangularComponent:public IHUDComponent {
     RIGHT
   };
 
-  virtual float getX() = 0;
-  virtual float getY() = 0;
-  virtual float getWidth() = 0;
-  virtual float getHeight() = 0;
+  virtual float getLeft() = 0;
+  virtual float getTop() = 0;
+  virtual float getRight() = 0;
+  virtual float getBottom() = 0;
 };
 
 #endif

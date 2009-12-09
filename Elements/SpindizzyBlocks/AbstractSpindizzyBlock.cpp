@@ -379,7 +379,3 @@ void AbstractSpindizzyBlock::save(DOMNodeWriter* node, BlockLocation& zoneLocati
   }
 }
 
-AbstractSpindizzyBlock::~AbstractSpindizzyBlock() {
-  removed();
-}
-

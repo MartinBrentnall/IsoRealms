@@ -174,14 +174,7 @@ int BlockSubtractor::getCompleteRows(IRollableSurfaceProvider* provider, std::ve
 
 std::vector<IRollableSurface*> BlockSubtractor::getRollableSurfaces(IRollableSurfaceProvider* provider, IRollableSurface::FaceDirection faceDirection) {
   std::vector<IRollableSurface*> mRollableSurfaces = provider->getRollableSurfaces(faceDirection);
-  std::vector<IRollableSurfaceProvider*> mRelevantProviders;
   BlockArea* mBlockCoverage = provider->getCoverage();
-  for (unsigned int i = 0; i < cSurfaceProviders.size(); i++) {
-    BlockArea* mProviderCoverage = cSurfaceProviders[i]->getCoverage();
-    if (mProviderCoverage->overlaps(*mBlockCoverage)) {
-      mRelevantProviders.push_back(cSurfaceProviders[i]);
-    }
-  }
 
   int mWest;
   int mEast;

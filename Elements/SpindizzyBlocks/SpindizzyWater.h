@@ -73,8 +73,6 @@ class SpindizzyWater:public IElement,
   IWallSurface* createSubSurface(int, int, IWallSurface::FaceDirection, int, int, int, int, int);
   BlockArea* getCoverage();
   void setDirty();
-
-  ~SpindizzyWater();
 };
 
 #endif

@@ -54,18 +54,19 @@ void ChoosePluginInstanceComponent::updateContent(int milliseconds) {
 
 void ChoosePluginInstanceComponent::renderContent() {
   std::string mTitle = "Choose a an instance of \"" + cPlugSocket->getType() + "\":";
-  float mLine = (getY() + getHeight()) - 0.05f;
-  cFont->print(getX() + 0.02f, mLine, 0.02f, 0, mTitle.c_str());
+  float mLeft = getLeft();
+  float mLine = getTop() - 0.05f;
+  cFont->print(mLeft + 0.02f, mLine, 0.02f, 0, mTitle.c_str());
   mLine -= 0.08f;
   for (unsigned int i = 0; i < cPluginInstances.size(); i++) {
     float mMultiplier = i == cSelectedInstance ? 1.0f : 0.4f;
 //    IPluginAccessor* mPluginAccessor = cPluginRegistry->getPlugin(cPlugSocket, cPluginInstances[i]);
     glColor3f(1.0f * mMultiplier, 1.0f * mMultiplier, 1.0f * mMultiplier);
-    cFont->print(getX() + 0.02f, mLine, 0.02f, 0, cPluginInstances[i].c_str());
+    cFont->print(mLeft + 0.02f, mLine, 0.02f, 0, cPluginInstances[i].c_str());
     mLine -= 0.05f;
   }
   if (cPluginInstances.empty()) {
-    cFont->print(getX() + 0.02f, mLine, 0.02f, 0, "No instances found!");
+    cFont->print(mLeft + 0.02f, mLine, 0.02f, 0, "No instances found!");
   }
   cNewInstanceButton->render();
   cConfigureButton->render();
@@ -130,7 +131,7 @@ void ChoosePluginInstanceComponent::configureSelectedPlugin() {
   std::string mInstanceName = cPluginInstances[cSelectedInstance];
   std::string mType = cPlugSocket->getType();
   IPlugin* mPlugin = cPluginRegistry->getPlugin(mType, mInstanceName);
-  PluginRequirementsComponent* mSupportedPluginsComponent = new PluginRequirementsComponent(cComponentContainer, cPluginRegistry, mPlugin, getX() + 0.05f, getY() - 0.05f);
+  PluginRequirementsComponent* mSupportedPluginsComponent = new PluginRequirementsComponent(cComponentContainer, cPluginRegistry, mPlugin, getLeft() + 0.05f, getBottom() - 0.05f);
   cComponentContainer->addComponent(mSupportedPluginsComponent);
 }
 

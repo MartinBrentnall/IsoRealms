@@ -20,12 +20,12 @@
 
 IFont* InstancesListComponent::cFont = NULL;
 
+//TODO: CLASS REQUIRES REFACTOR FOR NEW COMPONENT FRAMEWORK!
 void InstancesListComponent::setFont(IFont* font) {
   cFont = font;
 }
 
-InstancesListComponent::InstancesListComponent(IMovableComponent* parent, ElementSetRegistry* elementSetRegistry) {
-  cParent = parent;
+InstancesListComponent::InstancesListComponent(ElementSetRegistry* elementSetRegistry) {
   cElementSetRegistry = elementSetRegistry;
   cSelectedInstance = 0;
 }
@@ -33,8 +33,8 @@ InstancesListComponent::InstancesListComponent(IMovableComponent* parent, Elemen
 void InstancesListComponent::render() {
   glColor3f(1.0f, 1.0f, 1.0f);
   std::vector<std::string*> mElementSetInstances = cElementSetRegistry->getElementSets();
-  float mXOffset = cParent->getX() + 0.02f;
-  float mYOffset = (cParent->getY() + cParent->getHeight()) - 0.02f;
+  float mXOffset = 0.02f;
+  float mYOffset = -0.02f;
   float mLine = mYOffset - 0.05f;
   for (unsigned int i = 0; i < mElementSetInstances.size(); i++) {
     float mBrightness = i == cSelectedInstance ? 1.0f : 0.4f;
@@ -42,17 +42,17 @@ void InstancesListComponent::render() {
     cFont->print(mXOffset, mLine, 0.02f, 0, mElementSetInstances[i]->c_str());
     mLine -= 0.05f;
   }
-  float mX = getX();
-  float mY = getY();
-  float mWidth = getWidth();
-  float mHeight = getHeight();
+  float mLeft = getLeft();
+  float mBottom = getBottom();
+  float mRight = getRight();
+  float mTop = getTop();
   glColor3f(1.0f, 1.0f, 1.0f);
   glBindTexture(GL_TEXTURE_2D, 0);
   glBegin(GL_LINE_LOOP);
-  glVertex2f(mX,          mY + mHeight);
-  glVertex2f(mX + mWidth, mY + mHeight);
-  glVertex2f(mX + mWidth, mY);
-  glVertex2f(mX,          mY);
+  glVertex2f(mLeft,  mTop);
+  glVertex2f(mRight, mTop);
+  glVertex2f(mRight, mBottom);
+  glVertex2f(mLeft,  mBottom);
   glEnd();
 }
 
@@ -104,27 +104,6 @@ bool InstancesListComponent::input(SDL_Event& event) {
     }
   }
   return false;  
-}
-
-float InstancesListComponent::getX() {
-  return cParent->getX() + 0.02f;
-}
-
-float InstancesListComponent::getY() {
-  return (cParent->getY() + cParent->getHeight()) - (getHeight() + 0.02f);
-}
-
-float InstancesListComponent::getWidth() {
-  return 0.6f;
-}
-
-float InstancesListComponent::getHeight() {
-  // TODO: Dynamic, depending on number of element set instances.
-  return 0.6f;
-}
-
-bool InstancesListComponent::contains(float x, float y) {
-  return x >= getX() && x <= getX() + getWidth() && y >= getY() && y <= getY() + getHeight();
 }
 
 

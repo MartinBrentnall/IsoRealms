@@ -49,14 +49,14 @@ void ListSelectionBox::updateContent(int milliseconds) {
 }
 
 void ListSelectionBox::renderContent() {
-  float mLine = (getY() + getHeight()) - 0.05f;
+  float mLine = getTop() - 0.05f;
   for (unsigned int i = 0; i < cItems->size(); i++) {
     if (i == cSelectedItem) {
       glColor3f(0.0f, 1.0f, 0.0f);
     } else {
       glColor3f(1.0f, 1.0f, 1.0f);
     }
-    cFont->print(getX() + 0.02f, mLine, 0.02f, 0, (*cItems)[i].c_str());
+    cFont->print(getLeft() + 0.02f, mLine, 0.02f, 0, (*cItems)[i].c_str());
     mLine -= 0.05f;
   }
 }

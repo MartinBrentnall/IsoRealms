@@ -204,8 +204,6 @@ class AbstractSpindizzyBlock:public IElement,
   IWallSurface* createSubSurface(int, int, IWallSurface::FaceDirection, int, int, int, int, int);
   BlockArea* getCoverage();
   void setDirty();
-
-  virtual ~AbstractSpindizzyBlock();
 };
 
 #endif

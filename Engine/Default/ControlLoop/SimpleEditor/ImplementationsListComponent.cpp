@@ -20,6 +20,7 @@
 
 IFont* ImplementationsListComponent::cFont = NULL;
 
+//TODO: CLASS REQUIRES REFACTOR FOR NEW COMPONENT FRAMEWORK!
 void ImplementationsListComponent::setFont(IFont* font) {
   cFont = font;
 }
@@ -33,13 +34,13 @@ ImplementationsListComponent::ImplementationsListComponent(IRectangularComponent
 }
 
 void ImplementationsListComponent::render() {
-  float mX = getX();
-  float mY = getY();
-  float mWidth = getWidth();
-  float mHeight = getHeight();
+  float mLeft = getLeft();
+  float mBottom = getBottom();
+  float mRight = getRight();
+  float mTop = getTop();
 
-  float mXOffset = mX + 0.02f;
-  float mLine = (mY + mHeight) - 0.05f;
+  float mXOffset = mLeft + 0.02f;
+  float mLine = mTop - 0.05f;
   for (unsigned int i = 0; i < cImplementations.size(); i++) {
     float mBrightness = i == cSelectedImplementation ? 1.0f : 0.4f;
     glColor3f(1.0f * mBrightness, 1.0f * mBrightness, 1.0f * mBrightness);
@@ -50,10 +51,10 @@ void ImplementationsListComponent::render() {
   glBindTexture(GL_TEXTURE_2D, 0);
   glColor3f(1.0f, 1.0f, 1.0f);
   glBegin(GL_LINE_LOOP);
-  glVertex2f(mX,          mY + mHeight);
-  glVertex2f(mX,          mY);
-  glVertex2f(mX + mWidth, mY);
-  glVertex2f(mX + mWidth, mY + mHeight);
+  glVertex2f(mLeft,  mTop);
+  glVertex2f(mLeft,  mBottom);
+  glVertex2f(mRight, mBottom);
+  glVertex2f(mRight, mTop);
   glEnd();  
 }
 
@@ -95,36 +96,4 @@ bool ImplementationsListComponent::input(SDL_Event& event) {
 
 std::string ImplementationsListComponent::getSelectedImplementation() {
   return cImplementations[cSelectedImplementation];
-}
-
-float ImplementationsListComponent::getX() {
-  switch (cEdge) {
-    case TOP:    return cParent->getX();
-    case BOTTOM: return cParent->getX();
-    case LEFT:   return (cParent->getX() - cOffset) - getWidth();
-    case RIGHT:  return cParent->getX() + cParent->getWidth() + cOffset;
-  }
-  throw new IllegalStateException();
-}
-
-float ImplementationsListComponent::getY() {
-  switch (cEdge) {
-    case TOP:    return cParent->getY() + cParent->getHeight() + cOffset;
-    case BOTTOM: return (cParent->getY() - cOffset) - getHeight();
-    case LEFT:   return cParent->getY();
-    case RIGHT:  return cParent->getY();
-  }
-  throw new IllegalStateException();
-}
-
-float ImplementationsListComponent::getWidth() {
-  return 0.6f;
-}
-
-float ImplementationsListComponent::getHeight() {
-  return 0.6f;
-}
-
-bool ImplementationsListComponent::contains(float x, float y) {
-  return x >= getX() && x <= getX() + getWidth() && y >= getY() && y <= getY() + getHeight();
 }

@@ -19,6 +19,8 @@
 #include "SpindizzyWaterFactory.h"
 
 SpindizzyWaterFactory::SpindizzyWaterFactory(ISpindizzyTextureSet** spindizzyTextureSet, IElementSet* elementSet) : ISpindizzyBlockFactory(elementSet) {
+  cStartWaterLocation = NULL;
+  cSampleWater = NULL;
   cSpindizzyTextureSet = spindizzyTextureSet;
 }
 
@@ -129,10 +131,21 @@ std::string SpindizzyWaterFactory::getName() {
 }
 
 SpindizzyWaterFactory::~SpindizzyWaterFactory() {
-  delete cStartWaterLocation;
+  if (cStartWaterLocation != NULL) {
+    delete cStartWaterLocation;
+  }
   delete cSampleWater;
   for (unsigned int i = 0; i < cContent.size(); i++) {
-    cGateway->notifyDestruction(cContent[i]);
+    Zone* mZone = cGateway->notifyDestruction(cContent[i]);
+    if (mZone != NULL) {
+      ISurfaceCalculator* mSurfaceCalculator = dynamic_cast<ISurfaceCalculator*>(getElementSet());
+      if (mSurfaceCalculator == NULL) {
+        std::cout << "Warning: dynamic_cast failed for surface calculation!  Possible memory leak in BlockSubtractor!" << std::endl;
+      } else {
+        mSurfaceCalculator->notifyZoneAction(mZone);
+      }
+      cContent[i]->removed();
+    }
     delete cContent[i];
   }  
 }

@@ -129,12 +129,14 @@ void Map::save() {
   mMapNode->save("Test.isorealms");
 }
 
-void Map::removeElement(IElement* element) {
+Zone* Map::removeElement(IElement* element) {
   for (unsigned int i = 0; i < cZones.size(); i++) {
     if (cZones[i]->removeElement(element)) {
       zoneChanged(cZones[i]);
+      return cZones[i];
     }
   }
+  return NULL;
 }
 
 ElementSetRegistry* Map::getElementSetRegistry() {

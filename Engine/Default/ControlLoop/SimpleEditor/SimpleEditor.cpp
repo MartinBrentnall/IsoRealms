@@ -236,8 +236,8 @@ void SimpleEditor::pushElement(IElement* element) {
   clearUndoStack();
 }
 
-void SimpleEditor::notifyDestruction(IElement* element) {
-  cMap->removeElement(element);
+Zone* SimpleEditor::notifyDestruction(IElement* element) {
+  return cMap->removeElement(element);
 }
 
 void SimpleEditor::elementSelected(IElementFactory* elementFactory) {
