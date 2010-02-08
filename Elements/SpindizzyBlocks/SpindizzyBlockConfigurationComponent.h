@@ -20,6 +20,7 @@
 #define SPINDIZZY_BLOCK_CONFIGURATION_COMPONENT_H
 
 #include <vector>
+#include <string>
 
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 

@@ -52,10 +52,20 @@ std::vector<PlugSocket*> SpindizzyJewelSet::getPlugSockets() {
 }
 
 void SpindizzyJewelSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
-  if (socket->getType() == "SimpleModel") {// TODO: Change to Factory
-    cJewelModelFactory = dynamic_cast<ISimpleModelFactory*>(implementation);
-    if (cJewelModelFactory == NULL) {
-      std::cout << "Something went badly wrong in the model dynamic cast for the jewel!" << std::endl;
+  if (socket->getType() == "SimpleModel" && implementation != cJewelModelFactory) {// TODO: Change to Factory
+    if (implementation == NULL) {
+      std::string mDummyName("SimpleModel");
+      cJewelModelFactory = dynamic_cast<ISimpleModelFactory*>(PluginRegistry::getDummyPlugin(mDummyName));
+      if (cJewelModelFactory == NULL) {
+        std::cout << "Warning: dynamic cast failed for dummy!" << std::endl;
+      }
+    } else {
+      ISimpleModelFactory* mModelFactory = dynamic_cast<ISimpleModelFactory*>(implementation);
+      if (cJewelModelFactory == NULL) {
+        std::cout << "Warning: dynamic cast failed for model!" << std::endl;
+      } else {
+        cJewelModelFactory = mModelFactory;
+      }
     }
     setModel(cJewelModelFactory);
   } else {

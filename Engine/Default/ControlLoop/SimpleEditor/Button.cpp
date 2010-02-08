@@ -24,10 +24,8 @@ void Button::setFont(IFont* font) {
   cFont = font;
 }
 
-Button::Button(IRectangularComponent* parent, IRectangularComponent::Edge edge, float offset, ICommand* command, std::string text) {
-  cParent = parent;
-  cEdge = edge;
-  cOffset = offset;
+Button::Button(IComponentBoundsCalculator* boundsCalculator, ICommand* command, std::string text) {
+  setBoundsCalculator(boundsCalculator);
   cCommand = command;
   cText = text;
 }
@@ -40,7 +38,9 @@ void Button::render() {
   float mBottom = getBottom();
   float mRight = getRight();
   float mTop = getTop();
-  cFont->print(mLeft + 0.01f, mBottom + 0.01f, 0.02f, 0, cText.c_str());
+
+  glColor3f(1.0f, 1.0f, 1.0f);
+  cFont->print(mLeft + (mRight - mLeft) * 0.5f, mBottom + 0.01f, 0.02f, 1, cText.c_str());
 
   glPushAttrib(GL_TRANSFORM_BIT);
   glMatrixMode(GL_PROJECTION);
@@ -52,8 +52,8 @@ void Button::render() {
   glBindTexture(GL_TEXTURE_2D, 0);
   glLoadIdentity();
 
+  glColor3f(0.45f, 0.0f, 0.9f);
   glBegin(GL_LINE_LOOP);
-  glColor3f(1.0f, 1.0f, 1.0f);
   glVertex2f(mLeft,  mTop);
   glVertex2f(mLeft,  mBottom);
   glVertex2f(mRight, mBottom);
@@ -69,9 +69,16 @@ void Button::render() {
   glPopAttrib();
 
   // TODO: Button accelerator
-/*  float mWidth = cFont->getWidth(0.02f, cText.substr(0, cAcceleratorIndex).c_str());
-  glColor3f(0.0f, 1.0f, 1.0f);
+/*  float mWidth = ;
   cFont->print(cXOffset + mWidth, cYOffset, 0.02f, 0, cText.substr(cAcceleratorIndex, 1).c_str());*/
+}
+
+float Button::getWidth() {
+  return cFont->getWidth(0.02f, cText.c_str()) + 0.04f;
+}
+
+float Button::getHeight() {
+  return 0.05f; // TODO: Make this correct
 }
 
 bool Button::mouseButtonDown(SDL_Event& event) {

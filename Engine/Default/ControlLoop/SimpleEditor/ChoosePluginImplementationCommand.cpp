@@ -18,20 +18,19 @@
  */
 #include "ChoosePluginImplementationCommand.h"
 
-ChoosePluginImplementationCommand::ChoosePluginImplementationCommand(IComponentContainer* componentContainer, PluginRegistry* pluginRegistry, std::string type, float* x, float* y) {
+ChoosePluginImplementationCommand::ChoosePluginImplementationCommand(IPluginSupport* pluginSupport, PlugSocket* plugSocket, IComponentContainer* componentContainer, PluginRegistry* pluginRegistry, std::string type) {
+  cPluginSupport = pluginSupport;
+  cPlugSocket = plugSocket;
   cComponentContainer = componentContainer;
   cPluginRegistry = pluginRegistry;
   cPluginType = type;
-  cInvokerX = x;
-  cInvokerY = y;
 }
 
 void ChoosePluginImplementationCommand::execute() {
-  // TODO: This path should NOT be hard coded!
-  std::vector<std::string>* mAvailableImplementations = System::getFileList("/usr/share/IsoRealms/Plugins/" + cPluginType + "/", "*");
-  IItemSelectedCommand* mListener = new SelectionListener(this);
-  IHUDComponent* cChooseImplementationComponent = new ListSelectionBox(cComponentContainer, mListener, *mAvailableImplementations, *cInvokerX + 0.05f, *cInvokerY - 0.05f);
-  cComponentContainer->addComponent(cChooseImplementationComponent);
+  IInstanceSelectionListener* mListener = new SelectionListener(this);
+  PluginEntityClass* mPluginEntityClass = new PluginEntityClass(cPluginRegistry, cPluginType, cComponentContainer);
+  IHUDComponent* cPluginInstancesComponent = new EntityClassInstancesComponent(mPluginEntityClass, cComponentContainer, -0.7f, 0.1f, mListener);
+  cComponentContainer->addComponent(cPluginInstancesComponent);
 }
 
 ChoosePluginImplementationCommand::SelectionListener::SelectionListener(ChoosePluginImplementationCommand* parent) {
@@ -39,7 +38,6 @@ ChoosePluginImplementationCommand::SelectionListener::SelectionListener(ChoosePl
 }
 
 void ChoosePluginImplementationCommand::SelectionListener::itemSelected(std::string item) {
-  std::string mString("TODO_InstanceName");
-  RegisterPluginInstanceCommand mRegistrationCommand(cParent->cPluginRegistry, cParent->cPluginType, item, mString);
-  mRegistrationCommand.execute();
+  IPlugin* mSelectedPlugin = cParent->cPluginRegistry->getPlugin(cParent->cPluginType, item);
+  cParent->cPluginSupport->setPlugin(cParent->cPlugSocket, mSelectedPlugin);
 }

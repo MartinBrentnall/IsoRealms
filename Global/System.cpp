@@ -131,7 +131,6 @@ std::vector<std::string>* System::getFileList(std::string filename) {
 }
 
 std::vector<std::string>* System::getFileList(std::string filename, std::string filter) {
-  std::cout << "Select a file from: " << filename << std::endl;
   std::vector<std::string>* mList = new std::vector<std::string>();
   DIR *dp;
   struct dirent *dirp;
@@ -141,7 +140,9 @@ std::vector<std::string>* System::getFileList(std::string filename, std::string 
 
   while ((dirp = readdir(dp)) != NULL) {
     std::string mFileName(dirp->d_name);
-    if (passesFilter(mFileName, filter)) {
+    std::string mCompletePath = filename + mFileName;
+    bool mIsDir = opendir(mCompletePath.c_str()) != NULL;
+    if (passesFilter(mFileName, filter) && mFileName[0] != '.' && mIsDir) {
       mList->push_back(mFileName);
     }
   }

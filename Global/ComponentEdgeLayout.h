@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2009,2010 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,18 +16,31 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef RECTANGLE_BOUNDS_CALCULATOR_H
-#define RECTANGLE_BOUNDS_CALCULATOR_H
+#ifndef COMPONENT_EDGE_LAYOUT_H
+#define COMPONENT_EDGE_LAYOUT_H
 
+#include <cstdlib>
+#include <iostream>
+
+#include "EdgeRelation.h"
 #include "IComponentBoundsCalculator.h"
-#include "IRectangularComponent.h"
+#include "IComponentSizeCalculator.h"
 
-class RectangleBoundsCalculator:public IComponentBoundsCalculator {
+/**
+ * This implementation of component bounds calculator will place a component
+ * such that it is pressed into a corner, either inside another component or
+ * against the outside of two different components.
+ */
+class ComponentEdgeLayout:public IComponentBoundsCalculator {
   private:
-  IRectangularComponent* cRectangle;
+  IComponentSizeCalculator* cSizeCalculator;
+  EdgeRelation* cTop;
+  EdgeRelation* cBottom;
+  EdgeRelation* cLeft;
+  EdgeRelation* cRight;
 
   public:
-  RectangleBoundsCalculator(IRectangularComponent* rectangle);
+  ComponentEdgeLayout(EdgeRelation*, EdgeRelation*, EdgeRelation*, EdgeRelation*, IComponentSizeCalculator*);
 
   /*****************************************\
    * Implements IComponentBoundsCalculator *
@@ -36,6 +49,8 @@ class RectangleBoundsCalculator:public IComponentBoundsCalculator {
   float getRight();
   float getTop();
   float getBottom();
+
+  virtual ~ComponentEdgeLayout();
 };
 
 #endif

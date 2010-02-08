@@ -16,15 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "RegisterPluginInstanceCommand.h"
+#ifndef I_INISTANCE_SELECTION_LISTENER_H
+#define I_INISTANCE_SELECTION_LISTENER_H
 
-RegisterPluginInstanceCommand::RegisterPluginInstanceCommand(PluginRegistry* pluginRegistry, std::string& type, std::string& implementation, std::string& instanceName) {
-  cPluginRegistry = pluginRegistry;
-  cPluginType = type;
-  cImplementationName = implementation;
-  cInstanceName = instanceName;
-}
+#include <string>
 
-void RegisterPluginInstanceCommand::execute() {
-  cPluginRegistry->loadPlugin(cPluginType, cImplementationName, cInstanceName);
-}
+// TODO: Change from "command" to "listener"
+class IInstanceSelectionListener {
+  public:
+
+  /**
+   * Called when an item is selected in the item selection box.
+   */
+  virtual void itemSelected(std::string) = 0;
+
+  virtual ~IInstanceSelectionListener() {}
+};
+
+#endif

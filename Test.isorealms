@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <Map>
-  <Plugin implementation="DefaultFourColourSupport" instance="TODO_InstanceName" type="FourColourSupport">
+  <Plugin implementation="DefaultFourColourSupport" instance="UserDefinablePalette" type="FourColourSupport">
     <Configuration>
       <Floor alpha="0" blue="1.0" green="0.9" red="1.0"/>
       <Extra alpha="0" blue="0.4" green="0" red="0.0"/>
@@ -8,22 +8,22 @@
       <Background alpha="0" blue="0" green="0" red="0"/>
     </Configuration>
   </Plugin>
-  <Plugin implementation="BlockSubtractor" instance="TODO_InstanceName" type="RollableSurfaceCalculator">
+  <Plugin implementation="BlockSubtractor" instance="BlockSubtractor" type="RollableSurfaceCalculator">
     <Configuration/>
   </Plugin>
-  <Plugin implementation="SpindizzyJewelModel" instance="TODO_InstanceName" type="SimpleModel">
+  <Plugin implementation="SpindizzyJewelModel" instance="C64JewelModel" type="SimpleModel">
     <Configuration/>
   </Plugin>
-  <Plugin implementation="Commodore64SpindizzyTextureSet" instance="TODO_InstanceName" type="SpindizzyTextureSet">
-    <UsePlugin implementation="FourColourSupport" instance="TODO_InstanceName" socketid=""/>
+  <Plugin implementation="Commodore64SpindizzyTextureSet" instance="C64Style" type="SpindizzyTextureSet">
+    <UsePlugin implementation="FourColourSupport" instance="UserDefinablePalette" socketid=""/>
     <Configuration/>
   </Plugin>
   <ElementSet instance="Blocks" type="SpindizzyBlocks">
-    <UsePlugin implementation="SpindizzyTextureSet" instance="TODO_InstanceName"/>
-    <UsePlugin implementation="RollableSurfaceCalculator" instance="TODO_InstanceName"/>
+    <UsePlugin implementation="SpindizzyTextureSet" instance="C64Style"/>
+    <UsePlugin implementation="RollableSurfaceCalculator" instance="BlockSubtractor"/>
   </ElementSet>
   <ElementSet instance="Jewels" type="SpindizzyJewels">
-    <UsePlugin implementation="SimpleModel" instance="TODO_InstanceName"/>
+    <UsePlugin implementation="SimpleModel" instance="C64JewelModel"/>
   </ElementSet>
   <Zone>
     <Location x="-7" y="0" z="0"/>

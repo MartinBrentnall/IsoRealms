@@ -19,20 +19,20 @@
 #include "SimpleEditor.h"
 
 SimpleEditor::SimpleEditor(DOMNodeWrapper* node) {
+  cMap = NULL;
   cRunExitCommands = false;
   cConfirmExitCommands = false;
   cEditorFocus = true;
   BlockLocation mLocation(-7, 0, 0);
   BlockLocation mSize(0, 7, 7);
   Zone* mInitZone = new Zone(mLocation, mSize);
-  cMap = new Map();
-  cMap->addZone(mInitZone);
+  Map* mMap = new Map();
+  mMap->addZone(mInitZone);
+  setMap(mMap);
   cCursor = new EditorCursor(cMap);
   Vertex mNormalDistance(0.0f, 0.0f, -20.0f);
   cViewPoint.addViewPoint(0, mNormalDistance, 315.0f, -50.0f, 0.0f);
   cViewPoint.setViewPoint(0);
-  ElementSetRegistry* mElementSetRegistry = cMap->getElementSetRegistry();
-  mElementSetRegistry->addElementRegistryListener(this);
   PluginRegistry* mPluginRegistry = cMap->getPluginRegistry();
   mPluginRegistry->addListener(this);
   for (int i = 0; i < node->getChildCount(); i++) {
@@ -73,11 +73,11 @@ SimpleEditor::SimpleEditor(DOMNodeWrapper* node) {
       Button::setFont(cFont);
       MenuItem::setFont(cFont);
       PluginRequirementsComponent::setFont(cFont);
-      ChoosePluginInstanceComponent::setFont(cFont);
-      ListSelectionBox::setFont(cFont);
       ImplementationsListComponent::setFont(cFont);
       InstancesListComponent::setFont(cFont);
+      ResizableDialog::setFont(cFont);
       TextFieldComponent::setFont(cFont);
+      TextLabelComponent::setFont(cFont);
     } else if (mValueAsString == "MenuBar") {
       cMenuBar = new MenuBar(this, mNode, cFont);
       addComponent(cMenuBar);
@@ -178,16 +178,29 @@ bool SimpleEditor::editorInput(SDL_Event& event) {
   return false;
 }
 
-bool SimpleEditor::componentInput(SDL_Event& event) {
-  for (int i = cHUDComponents.size() - 1; i >= 0; i--) {
-    if (cHUDComponents[i]->input(event)) {
-      return true;
+void SimpleEditor::testFocusChange(SDL_Event& event) {
+  switch (event.type) {
+    case SDL_MOUSEBUTTONDOWN: {
+      Configuration* mConfiguration = Configuration::getInstance();
+      ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
+      float mX = mScreen->getXLocation(event.button.x);
+      float mY = mScreen->getYLocation(event.button.y);
+      for (int i = cHUDComponents.size() - 1; i >= 0; i--) {
+        if (cHUDComponents[i]->contains(mX, mY)) {
+          cEditorFocus = false;
+          bringComponentToFront(cHUDComponents[i]);
+          return;
+        }
+      }
+      cEditorFocus = true;
+      break;
     }
   }
-  return false;
 }
 
 void SimpleEditor::input(SDL_Event& event) {
+  testFocusChange(event);
+  bool mEventConsumed = false;
   if (cConfirmExitCommands) {
     switch (event.type) {
       case SDL_KEYDOWN: {
@@ -214,18 +227,17 @@ void SimpleEditor::input(SDL_Event& event) {
         }
       }
     }
+  } else if (cEditorFocus) {
+    mEventConsumed = editorInput(event);
   } else {
-    if (cEditorFocus) {
-      if (!editorInput(event)) {
-        if (componentInput(event)) {
-          cEditorFocus = false;
-        }
-      }
-    } else {
-      if (!componentInput(event)) {
-        if (editorInput(event)) {
-          cEditorFocus = true;
-        }
+    mEventConsumed = cHUDComponents[cHUDComponents.size() - 1]->input(event);
+  }
+
+  // Passive input (e.g. mouse overs, etc.)
+  if (!mEventConsumed) {
+    for (int i = cHUDComponents.size() - 1; i >= 0; i--) {
+      if (cHUDComponents[i]->input(event)) {
+        return;
       }
     }
   }
@@ -363,13 +375,23 @@ void SimpleEditor::saveCurrentMap() {
 }
 
 void SimpleEditor::setMap(Map* map) {
-  clearUndoStack();
-  delete cMap;
-  delete cCursor;
+  if (cMap != NULL) {
+    clearUndoStack();
+    delete cMap;
+    delete cCursor;
+    delete cElementSetEntityClass;
+    cElementSetEntityClass = NULL;
+    cCursor = NULL;
+  }
   cMap = map;
-  cCursor = new EditorCursor(cMap);
-  ElementSetRegistry* mElementRegistry = cMap->getElementSetRegistry();
-  mElementRegistry->setEditingInfo(cCursor, this, this);
+  if (cMap != NULL) {
+    cCursor = new EditorCursor(cMap);
+    ElementSetRegistry* mElementSetRegistry = cMap->getElementSetRegistry();
+    PluginRegistry* mPluginRegistry = cMap->getPluginRegistry();
+    mElementSetRegistry->setEditingInfo(cCursor, this, this);
+    mElementSetRegistry->addElementRegistryListener(this);
+    cElementSetEntityClass = new ElementSetEntityClass(mElementSetRegistry, mPluginRegistry, this);
+  }
 }
 
 SimpleEditor::ElementInstancesComponentFactory::ElementInstancesComponentFactory(SimpleEditor* parent) {
@@ -377,9 +399,7 @@ SimpleEditor::ElementInstancesComponentFactory::ElementInstancesComponentFactory
 }
 
 IHUDComponent* SimpleEditor::ElementInstancesComponentFactory::createComponent() {
-  PluginRegistry* mPluginRegistry = cParent->cMap->getPluginRegistry();
-  ElementSetRegistry* mElementSetRegistry = cParent->cMap->getElementSetRegistry();
-  return new ElementSetInstancesComponent(cParent, mPluginRegistry, mElementSetRegistry, -0.9f, -0.1f);
+  return new EntityClassInstancesComponent(cParent->cElementSetEntityClass, cParent, -0.9f, -0.1f);
 }
 
 SimpleEditor::ElementsPaletteComponentFactory::ElementsPaletteComponentFactory(SimpleEditor* parent) {

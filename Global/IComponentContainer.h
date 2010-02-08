@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2009,2010 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *

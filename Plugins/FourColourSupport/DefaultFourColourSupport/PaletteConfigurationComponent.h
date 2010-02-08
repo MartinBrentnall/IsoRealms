@@ -19,6 +19,7 @@
 #ifndef PALETTE_CONFIGURATION_COMPONENT_H
 #define PALETTE_CONFIGURATION_COMPONENT_H
 
+#include <map>
 #include <vector>
 
 #include "../../../Global/Colour.h"
@@ -27,12 +28,14 @@
 #include "../../../Global/RectangleComponent.h"
 #include "../../../Global/ScreenConfiguration.h"
 
+#include "../IFourColourSupport.h"
 #include "../IFourColourSupportListener.h"
 
 class PaletteConfigurationComponent:public RectangleComponent {
   private:
   std::vector<IFourColourSupportListener*>* cChangeListeners;
   std::vector<Colour*> cPalette;
+  std::vector<IFourColourSupport::PaletteEntry> cPaletteEntries;
   unsigned int cSelectedField;
   unsigned int cSelectedEntry;
 
@@ -42,7 +45,7 @@ class PaletteConfigurationComponent:public RectangleComponent {
   void fireChangeEvent();
 
   public:
-  PaletteConfigurationComponent(IComponentContainer*, std::vector<Colour*>, std::vector<IFourColourSupportListener*>&);
+  PaletteConfigurationComponent(IComponentContainer*, std::map<IFourColourSupport::PaletteEntry, Colour*> palette, std::vector<IFourColourSupportListener*>&);
 
   /*************************************************************************\
    * Implements RectangleComponent                                         *

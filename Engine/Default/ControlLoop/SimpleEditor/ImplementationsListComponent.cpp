@@ -25,10 +25,7 @@ void ImplementationsListComponent::setFont(IFont* font) {
   cFont = font;
 }
 
-ImplementationsListComponent::ImplementationsListComponent(IRectangularComponent* parent, IRectangularComponent::Edge edge, float offset, std::vector<std::string> implementations) {
-  cParent = parent;
-  cEdge = edge;
-  cOffset = offset;
+ImplementationsListComponent::ImplementationsListComponent(std::vector<std::string*> implementations) {
   cImplementations = implementations;
   cSelectedImplementation = 0;
 }
@@ -44,12 +41,12 @@ void ImplementationsListComponent::render() {
   for (unsigned int i = 0; i < cImplementations.size(); i++) {
     float mBrightness = i == cSelectedImplementation ? 1.0f : 0.4f;
     glColor3f(1.0f * mBrightness, 1.0f * mBrightness, 1.0f * mBrightness);
-    cFont->print(mXOffset, mLine, 0.02f, 0, cImplementations[i].c_str());
+    cFont->print(mXOffset, mLine, 0.02f, 0, cImplementations[i]->c_str());
     mLine -= 0.05f;
   }
 
   glBindTexture(GL_TEXTURE_2D, 0);
-  glColor3f(1.0f, 1.0f, 1.0f);
+  glColor3f(0.45f, 0.0f, 0.9f);
   glBegin(GL_LINE_LOOP);
   glVertex2f(mLeft,  mTop);
   glVertex2f(mLeft,  mBottom);
@@ -95,5 +92,5 @@ bool ImplementationsListComponent::input(SDL_Event& event) {
 }
 
 std::string ImplementationsListComponent::getSelectedImplementation() {
-  return cImplementations[cSelectedImplementation];
+  return *cImplementations[cSelectedImplementation];
 }

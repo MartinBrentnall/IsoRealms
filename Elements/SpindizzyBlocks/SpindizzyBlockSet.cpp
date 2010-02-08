@@ -93,21 +93,37 @@ void SpindizzyBlockSet::setSpindizzyTextureSet(ISpindizzyTextureSet* textureSet)
 
 void SpindizzyBlockSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
   if (socket->getType() == "SpindizzyTextureSet") {
-    ISpindizzyTextureSet* mSpindizzyTextureSet = dynamic_cast<ISpindizzyTextureSet*>(implementation);
-    if (mSpindizzyTextureSet == NULL) {
-      std::cout << "Warning: dynamic_cast failed for spindizzy texture set!" << std::endl;
+    if (implementation == cSpindizzyTextureSet) {
+      return;
+    }
+    if (implementation == NULL) {
+      std::string mDummyName("SpindizzyTextureSet");
+      cSpindizzyTextureSet = dynamic_cast<ISpindizzyTextureSet*>(PluginRegistry::getDummyPlugin(mDummyName));
     } else {
-      cSpindizzyTextureSet = mSpindizzyTextureSet;
+      ISpindizzyTextureSet* mSpindizzyTextureSet = dynamic_cast<ISpindizzyTextureSet*>(implementation);
+      if (mSpindizzyTextureSet == NULL) {
+        std::cout << "Warning: dynamic_cast failed for spindizzy texture set!" << std::endl;
+      } else {
+        cSpindizzyTextureSet = mSpindizzyTextureSet;
+      }
     }
     for (unsigned int i = 0; i < cElementFactories.size(); i++) {
       static_cast<ISpindizzyBlockFactory*>(cElementFactories[i])->signalAllElementsDirty();
     }
   } else if (socket->getType() == "RollableSurfaceCalculator") {
-    IRollableSurfaceCalculator* mSurfaceCalculator = dynamic_cast<IRollableSurfaceCalculator*>(implementation);
-    if (mSurfaceCalculator == NULL) {
-      std::cout << "Warning: dynamic_cast failed for rollable surface calculator!" << std::endl;
+    if (implementation == cRollableSurfaceCalculator) {
+      return;
+    }
+    if (implementation == NULL) {
+      std::string mDummyName("RollableSurfaceCalculator");
+      cRollableSurfaceCalculator = dynamic_cast<IRollableSurfaceCalculator*>(PluginRegistry::getDummyPlugin(mDummyName));
     } else {
-      cRollableSurfaceCalculator = mSurfaceCalculator;
+      IRollableSurfaceCalculator* mSurfaceCalculator = dynamic_cast<IRollableSurfaceCalculator*>(implementation);
+      if (mSurfaceCalculator == NULL) {
+        std::cout << "Warning: dynamic_cast failed for rollable surface calculator!" << std::endl;
+      } else {
+        cRollableSurfaceCalculator = mSurfaceCalculator;
+      }
     }
     // TODO: We need to recalculate all the surfaces!
   } else if (socket->getType() == "SpindizzyTextureSetChanger") {

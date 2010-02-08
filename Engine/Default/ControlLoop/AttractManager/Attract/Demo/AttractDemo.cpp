@@ -27,7 +27,7 @@ void AttractDemo::init() {
 }
 
 void AttractDemo::update(int ticks) {
-  cRotation += 0.1f;
+  cRotation += 0.1 * ticks;
 }
 
 void AttractDemo::render() {

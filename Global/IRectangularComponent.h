@@ -20,12 +20,14 @@
 #define I_RECTANGULAR_COMPONENT_H
 
 #include "IHUDComponent.h"
+#include "IRectangle.h"
 
 /**
  * This interface allows a component to define its own rectangle.  This is
  * useful when we need to arrange multiple components in a space.
  */
-class IRectangularComponent:public IHUDComponent {
+class IRectangularComponent:public virtual IHUDComponent,
+                            public IRectangle {
   public:
   virtual ~IRectangularComponent() {}
 
@@ -35,11 +37,6 @@ class IRectangularComponent:public IHUDComponent {
     BOTTOM,
     RIGHT
   };
-
-  virtual float getLeft() = 0;
-  virtual float getTop() = 0;
-  virtual float getRight() = 0;
-  virtual float getBottom() = 0;
 };
 
 #endif

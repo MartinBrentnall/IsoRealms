@@ -41,11 +41,10 @@ class DefaultFourColourSupport:public IFourColourSupport {
   class PaletteConfigurationCommand:public ICommand {
     private:
     DefaultFourColourSupport* cParent;
-    std::vector<Colour*> cPalette;
     IComponentContainer* cComponentContainer;
 
     public:
-    PaletteConfigurationCommand(DefaultFourColourSupport*, std::vector<Colour*>);
+    PaletteConfigurationCommand(DefaultFourColourSupport*);
     void setComponentContainer(IComponentContainer*);
 
     /***********************\

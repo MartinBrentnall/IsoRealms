@@ -23,11 +23,7 @@ DefaultFourColourSupport::DefaultFourColourSupport() {
   cPalette[EXTRA] = new Colour(1.0, 1.0, 1.0, 0.0);
   cPalette[WALL] = new Colour(0.0, 0.0, 0.0, 0.0);
   cPalette[BACKGROUND] = new Colour(0.0, 0.0, 0.5, 0.0);
-  std::vector<Colour*> mPalette;
-  for (std::map<PaletteEntry, Colour*>::iterator i = cPalette.begin(); i != cPalette.end(); i++) {
-    mPalette.push_back(i->second);
-  }
-  cPaletteConfigurationCommand = new PaletteConfigurationCommand(this, mPalette);
+  cPaletteConfigurationCommand = new PaletteConfigurationCommand(this);
   std::vector<std::string> mPath;
   mPath.push_back("Edit Palette"); // TODO: Use instance name?
   mPath.push_back("Palettes");
@@ -73,9 +69,8 @@ std::vector<ICommandInfo*> DefaultFourColourSupport::getCommandInfo() {
   return cPluginCommands;
 }
 
-DefaultFourColourSupport::PaletteConfigurationCommand::PaletteConfigurationCommand(DefaultFourColourSupport* parent, std::vector<Colour*> palette) {
+DefaultFourColourSupport::PaletteConfigurationCommand::PaletteConfigurationCommand(DefaultFourColourSupport* parent) {
   cParent = parent;
-  cPalette = palette;
   cComponentContainer = NULL;
 }
 
@@ -84,7 +79,7 @@ void DefaultFourColourSupport::PaletteConfigurationCommand::setComponentContaine
 }
 
 void DefaultFourColourSupport::PaletteConfigurationCommand::execute() {
-  IHUDComponent* mComponent = new PaletteConfigurationComponent(cComponentContainer, cPalette, cParent->cChangeListeners);
+  IHUDComponent* mComponent = new PaletteConfigurationComponent(cComponentContainer, cParent->cPalette, cParent->cChangeListeners);
   cComponentContainer->addComponent(mComponent);
 }
 

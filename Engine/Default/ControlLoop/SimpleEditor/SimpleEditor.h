@@ -40,6 +40,7 @@
 #include "../../../../Global/IHUDComponent.h"
 #include "../../../../Global/IPluginRegistryListener.h"
 #include "../../../../Global/Map.h"
+#include "../../../../Global/ResizableDialog.h"
 #include "../../../../Global/ScreenConfiguration.h"
 
 class OpenCommand;
@@ -47,17 +48,16 @@ class OpenCommand;
 #include "Button.h"
 #include "Camera.h"
 #include "ChooseElementsCommand.h"
-#include "ChoosePluginInstanceComponent.h"
 #include "EditorCommandManager.h"
 #include "EditorCursor.h"
+#include "ElementSetEntityClass.h"
 #include "ElementSetInstancesCommand.h"
-#include "ElementSetInstancesComponent.h"
+#include "EntityClassInstancesComponent.h"
 #include "IComponentFactory.h"
 #include "IElementSelectionListener.h"
 #include "IMapManager.h"
 #include "ImplementationsListComponent.h"
 #include "InstancesListComponent.h"
-#include "ListSelectionBox.h"
 #include "MenuBar.h"
 #include "MenuItem.h"
 #include "OpenCommand.h"
@@ -65,6 +65,7 @@ class OpenCommand;
 #include "SaveAsCommand.h"
 #include "TerminateEditorCommand.h"
 #include "TextFieldComponent.h"
+#include "TextLabelComponent.h"
 
 class SimpleEditor:public IControlLoop,
                    public IComponentContainer,
@@ -76,6 +77,7 @@ class SimpleEditor:public IControlLoop,
   private:
   Map* cMap;
   Camera cViewPoint;
+  ElementSetEntityClass* cElementSetEntityClass;
   EditorCursor* cCursor;
   IFont* cFont;
   bool cEditorFocus;
@@ -117,7 +119,7 @@ class SimpleEditor:public IControlLoop,
   bool keyDown(SDLKey& key);
 
   bool editorInput(SDL_Event&);
-  bool componentInput(SDL_Event&);
+  void testFocusChange(SDL_Event&);
 
   bool componentAt(float, float);
 

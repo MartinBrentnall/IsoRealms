@@ -24,21 +24,31 @@
 #include <vector>
 #include <string>
 
+#include "../../../../Global/ComponentEdgeLayout.h"
+#include "../../../../Global/EdgeRelation.h"
+#include "../../../../Global/FlexibleGridLayoutComponent.h"
 #include "../../../../Global/IComponentContainer.h"
 #include "../../../../Global/IFont.h"
 #include "../../../../Global/IPlugin.h"
 #include "../../../../Global/IPluginSupport.h"
 #include "../../../../Global/PluginRegistry.h"
 #include "../../../../Global/RectangleComponent.h"
+#include "../../../../Global/ResizableDialog.h"
 #include "../../../../Global/System.h"
 
-#include "ChoosePluginInstanceComponent.h"
+#include "ChoosePluginImplementationCommand.h"
+#include "EntityClassInstancesComponent.h"
+#include "TextLabelComponent.h"
 
 // TODO: Overall, class is too hackish.  Has too much in common with ManageLibrariesComponent
-class PluginRequirementsComponent:public RectangleComponent {
+class PluginRequirementsComponent:public ResizableDialog {
   private:
+  static const int TYPE_COLUMN = 0;
+  static const int INSTANCE_COLUMN = 1;
+  static const int CHOOSE_BUTTON_COLUMN = 2;
+  static const int RESET_BUTTON_COLUMN = 3;
+
   static IFont* cFont;
-  unsigned int cSelectedPlugin;
   PluginRegistry* cPluginRegistry;
 
   /**
@@ -50,10 +60,38 @@ class PluginRequirementsComponent:public RectangleComponent {
    * Plugin supported by the element set.
    */
   std::vector<PlugSocket*> cSupportedPlugins;
-  IHUDComponent* cChooseInstanceComponent;
   IComponentContainer* cComponentContainer;
 
   bool keyDown(SDLKey&);
+
+  class CloseCommand:public ICommand {
+    private:
+    PluginRequirementsComponent* cParent;
+
+    public:
+    CloseCommand(PluginRequirementsComponent* parent);
+
+    /***********************\
+     * Implements ICommand *
+    \***********************/
+    void execute();
+  };
+
+  class ResetSocketCommand:public ICommand {
+    private:
+    IPluginSupport* cPluginSupport;
+    PlugSocket* cPlugSocket;
+
+    public:
+    ResetSocketCommand(IPluginSupport*, PlugSocket*);
+
+    /***********************\
+     * Implements ICommand *
+    \***********************/
+    void execute();
+  };
+
+  std::string* getTitle(IPluginSupport*);
 
   public:
   void static setFont(IFont*);
@@ -63,9 +101,9 @@ class PluginRequirementsComponent:public RectangleComponent {
   /****************************\
    * Implements IHUDComponent *
   \****************************/
-  void updateContent(int);
-  void renderContent();
-  bool inputContent(SDL_Event&);
+  void updateResizableDialogContent(int);
+  void renderResizableDialogContent();
+  bool inputResizableDialogContent(SDL_Event&);
 
   /***********************************\
    * Implements IItemSelectedCommand *

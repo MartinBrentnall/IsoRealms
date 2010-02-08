@@ -35,6 +35,7 @@ void SpindizzyJewelFactory::setModel(ISimpleModelFactory* modelFactory) {
   cJewelModelFactory = modelFactory;
   ISimpleModel* mSampleModel = cJewelModelFactory->createModel();
   cSampleJewel->setModel(mSampleModel);
+  std::cout << "There are " << cContent.size() << " jewels to change..." << std::endl;
   for (unsigned int i = 0; i < cContent.size(); i++) {
     ISimpleModel* mModel = cJewelModelFactory->createModel();
     cContent[i]->setModel(mModel);
@@ -52,7 +53,9 @@ IElement* SpindizzyJewelFactory::getElement(DOMNodeWrapper* node, BlockLocation*
     }
   }
   ISimpleModel* mModel = cJewelModelFactory->createModel();
-  return new SpindizzyJewel(this, mLocation, mModel);
+  SpindizzyJewel* mJewel = new SpindizzyJewel(this, mLocation, mModel);
+  cContent.push_back(mJewel);
+  return mJewel;
 }
 
 bool SpindizzyJewelFactory::keyDown(SDLKey& key) {

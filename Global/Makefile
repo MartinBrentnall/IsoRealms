@@ -28,11 +28,14 @@ BlockArea.o \
 BlockLocation.o \
 Colour.o \
 CommandManager.o \
+ComponentEdgeLayout.o \
 Configuration.o \
 DOMNodeWrapper.o \
 DOMNodeWriter.o \
 DummyPlugin.o \
+EdgeRelation.o \
 ElementSetRegistry.o \
+FlexibleGridLayoutComponent.o \
 GlobalConfiguration.o \
 GridLayoutComponent.o \
 IElement.o \

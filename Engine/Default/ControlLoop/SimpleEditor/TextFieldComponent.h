@@ -25,16 +25,19 @@
 #include <string>
 
 #include "../../../../Global/AbstractRectangularComponent.h"
+#include "../../../../Global/IComponentSizeCalculator.h"
 #include "../../../../Global/IFont.h"
 #include "../../../../Global/IllegalStateException.h"
 
-class TextFieldComponent:public AbstractRectangularComponent {
+class TextFieldComponent:public AbstractRectangularComponent,
+                         public IComponentSizeCalculator {
   private:
-  static IFont* cFont;
+  static const unsigned int BLINK_DELAY = 100;
 
-  IRectangularComponent* cRelative;
-  IRectangularComponent::Edge cEdge;
-  float cOffset;
+  static IFont* cFont;
+  static int cDelayUntilBlinkChange;
+  static bool cBlinkShowing;
+
   unsigned int cCaret;
   std::string cInput;
 
@@ -43,9 +46,15 @@ class TextFieldComponent:public AbstractRectangularComponent {
   public:
   void static setFont(IFont*);
 
-  TextFieldComponent(IRectangularComponent*, IRectangularComponent::Edge, float);
+  TextFieldComponent();
 
   std::string getText();
+
+  /***************************************\
+   * Implements IComponentSizeCalculator *
+  \***************************************/
+  float getWidth();
+  float getHeight();  
 
   /****************************\
    * Implements IHUDComponent *

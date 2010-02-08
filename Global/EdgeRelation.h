@@ -16,20 +16,36 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_ITEM_SELECTED_COMMAND_H
-#define I_ITEM_SELECTED_COMMAND_H
+#ifndef EDGE_RELATION_H
+#define EDGE_RELATION_H
 
-#include <string>
+#include <iostream>
 
-// TODO: Change from "command" to "listener"
-class IItemSelectedCommand {
+#include "IRectangle.h"
+
+class EdgeRelation {
   public:
-  virtual ~IItemSelectedCommand() {}
+  enum EdgeRelationType {
+    INSIDE,
+    ALIGNED,
+    OUTSIDE
+  };
 
-  /**
-   * Called when an item is selected in the item selection box.
-   */
-  virtual void itemSelected(std::string) = 0;
+  private:
+  IRectangle* cRectangle;
+  EdgeRelationType cRelationType;
+  float cOffset;
+
+  float getOffset();
+
+  public:
+  EdgeRelation(IRectangle*, EdgeRelationType, float);
+  EdgeRelation(IRectangle*, EdgeRelationType);
+
+  float getLeft();
+  float getRight();
+  float getTop();
+  float getBottom();
 };
 
 #endif

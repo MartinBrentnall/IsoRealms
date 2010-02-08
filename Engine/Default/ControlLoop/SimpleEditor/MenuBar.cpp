@@ -245,6 +245,7 @@ bool MenuBar::input(SDL_Event& event) {
 }
 
 bool MenuBar::contains(float x, float y) {
-  return x >= getLeft() && x <= getRight() && y >= getBottom() && y <= getTop();
+  return (x >= getLeft() && x <= getRight() && y >= getBottom() && y <= getTop())
+      || (cMenuPopupShowing != NULL && cMenuPopupShowing->contains(x, y));
 }
 

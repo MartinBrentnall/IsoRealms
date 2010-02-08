@@ -16,12 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ELEMENT_SET_INSTANCES_COMPONENT_H
-#define ELEMENT_SET_INSTANCES_COMPONENT_H
+#ifndef ENTITY_CLASS_INSTANCES_COMPONENT_H
+#define ENTITY_CLASS_INSTANCES_COMPONENT_H
 
 #include <iostream>
+#include <string>
 
+#include "../../../../Global/ComponentEdgeLayout.h"
 #include "../../../../Global/Configuration.h"
+#include "../../../../Global/EdgeRelation.h"
 #include "../../../../Global/GridLayoutComponent.h"
 #include "../../../../Global/IComponentContainer.h"
 #include "../../../../Global/PluginRegistry.h"
@@ -30,36 +33,42 @@
 #include "../../../../Global/ScreenConfiguration.h"
 
 #include "Button.h"
+#include "IInstanceSelectionListener.h"
+#include "IInstantiable.h"
 #include "ImplementationsListComponent.h"
 #include "InstancesListComponent.h"
 #include "PluginRequirementsComponent.h"
 #include "TextFieldComponent.h"
 
-class ElementSetInstancesComponent:public ResizableDialog {
+/**
+ * This dialog has two purposes:
+ * 
+ * 1.  Allows the user to instantiate instances of an entity class from a list
+ *     of available implementations.
+ * 2.  Optionally allows the user to select an instance of an entity class.
+ */
+class EntityClassInstancesComponent:public ResizableDialog {
   private:
-  PluginRegistry* cPluginRegistry;
-  ElementSetRegistry* cElementSetRegistry;
   GridLayoutComponent* cGridLayout;
-  IRectangularComponent* cFocusedComponent;
-  std::vector<IRectangularComponent*> cComponents;
+  IInstantiable* cInstantiator;
+
+  /**
+   * This listener is used to respond to instance selection when this dialog is
+   * being used to select an instance of an entity class.
+   */
+  IInstanceSelectionListener* cListener;
   InstancesListComponent* cInstancesList;
   ImplementationsListComponent* cImplementationsList;
   TextFieldComponent* cInstanceNameInputField;
-  Button* cConfigureButton;
-  Button* cRemoveInstanceButton;
-  Button* cNewInstanceButton;
-  Button* cCloseButton;
 
-  void testFocusChange(SDL_Event& event);
-
-  void configureElementSet();
+  void configureEntityClass();
 
   class ConfigureInstanceCommand:public ICommand {
     private:
-    ElementSetInstancesComponent* cParent;
+    EntityClassInstancesComponent* cParent;
 
     public:
-    ConfigureInstanceCommand(ElementSetInstancesComponent* parent);
+    ConfigureInstanceCommand(EntityClassInstancesComponent* parent);
 
     /***********************\
      * Implements ICommand *
@@ -78,10 +87,10 @@ class ElementSetInstancesComponent:public ResizableDialog {
 
   class CreateInstanceCommand:public ICommand {
     private:
-    ElementSetInstancesComponent* cParent;
+    EntityClassInstancesComponent* cParent;
 
     public:
-    CreateInstanceCommand(ElementSetInstancesComponent* parent);
+    CreateInstanceCommand(EntityClassInstancesComponent* parent);
 
     /***********************\
      * Implements ICommand *
@@ -91,10 +100,10 @@ class ElementSetInstancesComponent:public ResizableDialog {
 
   class CloseCommand:public ICommand {
     private:
-    ElementSetInstancesComponent* cParent;
+    EntityClassInstancesComponent* cParent;
 
     public:
-    CloseCommand(ElementSetInstancesComponent* parent);
+    CloseCommand(EntityClassInstancesComponent* parent);
 
     /***********************\
      * Implements ICommand *
@@ -102,8 +111,10 @@ class ElementSetInstancesComponent:public ResizableDialog {
     void execute();
   };
 
+  std::string* getTitle(IInstantiable*);
+
   public:
-  ElementSetInstancesComponent(IComponentContainer*, PluginRegistry*, ElementSetRegistry*, float, float);
+  EntityClassInstancesComponent(IInstantiable*, IComponentContainer*, float, float, IInstanceSelectionListener* = NULL);
 
   /******************************\
    * Implements ResizableDialog *

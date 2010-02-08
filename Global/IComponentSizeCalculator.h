@@ -16,26 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "DummyModel.h"
+#ifndef I_COMPONENT_SIZE_CALCULATOR_H
+#define I_COMPONENT_SIZE_CALCULATOR_H
 
-DummyModel::DummyModel() {
-  // Nothing to do.
-}
+/**
+ * This interface is to be implemented by classes that are capable of
+ * determining the size of a component required to display it in full.  In most
+ * common cases, this interface will be implemented by a component itself,
+ * where the component is able to determine its own size via its content.
+ */
+class IComponentSizeCalculator {
+  public:
 
-void DummyModel::update(int milliseconds) {
-  // Nothing to do.
-}
+  /**
+   * Get the width of the component.
+   */
+  virtual float getWidth() = 0;
+  
+  /**
+   * Get the height of the component.
+   */
+  virtual float getHeight() = 0;
+};
 
-void DummyModel::render() {
-  glLineWidth(4.0);
-  glBindTexture(GL_TEXTURE_2D, 0);
-  glBegin(GL_LINES);
-  glColor3f(1.0f, 0.0f, 1.0f); glVertex3f( 0.5f,  0.0f,  0.0f);
-  glColor3f(0.0f, 1.0f, 0.0f); glVertex3f(-0.5f,  0.0f,  0.0f);
-  glColor3f(1.0f, 0.0f, 0.0f); glVertex3f( 0.0f,  0.5f,  0.0f);
-  glColor3f(0.0f, 1.0f, 1.0f); glVertex3f( 0.0f, -0.5f,  0.0f);
-  glColor3f(0.0f, 0.0f, 1.0f); glVertex3f( 0.0f,  0.0f,  0.5f);
-  glColor3f(1.0f, 1.0f, 0.0f); glVertex3f( 0.0f,  0.0f, -0.5f);
-  glEnd();
-  glLineWidth(1.0);// TODO: Shouldn't be needed here.
-}
+#endif

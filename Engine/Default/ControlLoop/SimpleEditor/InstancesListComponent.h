@@ -26,14 +26,15 @@
 #include <vector>
 
 #include "../../../../Global/AbstractRectangularComponent.h"
-#include "../../../../Global/ElementSetRegistry.h"
 #include "../../../../Global/IFont.h"
+
+#include "IInstantiable.h"
 
 class InstancesListComponent:public AbstractRectangularComponent {
   private:
   static IFont* cFont;
 
-  ElementSetRegistry* cElementSetRegistry;
+  IInstantiable* cInstantiator;
 
 //  IMovableComponent* cParent;
   std::vector<std::string> cInstances;
@@ -44,9 +45,9 @@ class InstancesListComponent:public AbstractRectangularComponent {
   public:
   static void setFont(IFont*);
 
-  InstancesListComponent(ElementSetRegistry*);
+  InstancesListComponent(IInstantiable*);
 
-  IElementSet* getSelectedElementSet();
+  std::string* getSelectedInstance();
 
   void update(int);
   void render();

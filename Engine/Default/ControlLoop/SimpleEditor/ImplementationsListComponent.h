@@ -33,10 +33,7 @@ class ImplementationsListComponent:public AbstractRectangularComponent {
   private:
   static IFont* cFont;
 
-  IRectangularComponent* cParent;
-  IRectangularComponent::Edge cEdge;
-  float cOffset;
-  std::vector<std::string> cImplementations;
+  std::vector<std::string*> cImplementations;
   unsigned int cSelectedImplementation;
 
   bool keyDown(SDLKey&);
@@ -44,7 +41,7 @@ class ImplementationsListComponent:public AbstractRectangularComponent {
   public:
   static void setFont(IFont*);
 
-  ImplementationsListComponent(IRectangularComponent*, IRectangularComponent::Edge, float, std::vector<std::string>);
+  ImplementationsListComponent(std::vector<std::string*>);
 
   std::string getSelectedImplementation();
 

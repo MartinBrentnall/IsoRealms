@@ -25,29 +25,30 @@ void InstancesListComponent::setFont(IFont* font) {
   cFont = font;
 }
 
-InstancesListComponent::InstancesListComponent(ElementSetRegistry* elementSetRegistry) {
-  cElementSetRegistry = elementSetRegistry;
+InstancesListComponent::InstancesListComponent(IInstantiable* instantiator) {
+  cInstantiator = instantiator;
   cSelectedInstance = 0;
 }
 
 void InstancesListComponent::render() {
-  glColor3f(1.0f, 1.0f, 1.0f);
-  std::vector<std::string*> mElementSetInstances = cElementSetRegistry->getElementSets();
-  float mXOffset = 0.02f;
-  float mYOffset = -0.02f;
-  float mLine = mYOffset - 0.05f;
-  for (unsigned int i = 0; i < mElementSetInstances.size(); i++) {
-    float mBrightness = i == cSelectedInstance ? 1.0f : 0.4f;
-    glColor3f(1.0f * mBrightness, 1.0f * mBrightness, 1.0f * mBrightness);
-    cFont->print(mXOffset, mLine, 0.02f, 0, mElementSetInstances[i]->c_str());
-    mLine -= 0.05f;
-  }
+  std::vector<std::string*> mInstances = cInstantiator->getInstances();
+
   float mLeft = getLeft();
   float mBottom = getBottom();
   float mRight = getRight();
   float mTop = getTop();
-  glColor3f(1.0f, 1.0f, 1.0f);
+
+  float mXOffset = mLeft + 0.02f;
+  float mLine = mTop - 0.05f;
+  for (unsigned int i = 0; i < mInstances.size(); i++) {
+    float mBrightness = i == cSelectedInstance ? 1.0f : 0.4f;
+    glColor3f(1.0f * mBrightness, 1.0f * mBrightness, 1.0f * mBrightness);
+    cFont->print(mXOffset, mLine, 0.02f, 0, mInstances[i]->c_str());
+    mLine -= 0.05f;
+  }
+
   glBindTexture(GL_TEXTURE_2D, 0);
+  glColor3f(0.45f, 0.0f, 0.9f);
   glBegin(GL_LINE_LOOP);
   glVertex2f(mLeft,  mTop);
   glVertex2f(mRight, mTop);
@@ -56,9 +57,9 @@ void InstancesListComponent::render() {
   glEnd();
 }
 
-IElementSet* InstancesListComponent::getSelectedElementSet() {
-  std::vector<std::string*> mElementSetInstances = cElementSetRegistry->getElementSets();
-  return cElementSetRegistry->getElementSet(mElementSetInstances[cSelectedInstance]);
+std::string* InstancesListComponent::getSelectedInstance() {
+  std::vector<std::string*> mInstances = cInstantiator->getInstances();
+  return mInstances[cSelectedInstance];
 }
 
 void InstancesListComponent::update(int milliseconds) {
@@ -67,8 +68,8 @@ void InstancesListComponent::update(int milliseconds) {
 bool InstancesListComponent::keyDown(SDLKey& key) {
   switch (key) {
     case SDLK_DOWN: {
-      std::vector<std::string*> mElementSetInstances = cElementSetRegistry->getElementSets();
-      if (cSelectedInstance < mElementSetInstances.size() - 1) {
+      std::vector<std::string*> mInstances = cInstantiator->getInstances();
+      if (cSelectedInstance < mInstances.size() - 1) {
         cSelectedInstance++;
       }
       return true;

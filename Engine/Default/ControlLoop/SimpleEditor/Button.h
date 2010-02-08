@@ -26,17 +26,14 @@
 #include "../../../../Global/AbstractRectangularComponent.h"
 #include "../../../../Global/Configuration.h"
 #include "../../../../Global/ICommand.h"
+#include "../../../../Global/ISizedComponent.h"
 #include "../../../../Global/IFont.h"
 #include "../../../../Global/IllegalStateException.h"
 #include "../../../../Global/ScreenConfiguration.h"
 
-class Button:public AbstractRectangularComponent {
+class Button:public ISizedComponent {
   private:
   static IFont* cFont;
-
-  IRectangularComponent* cParent;
-  IRectangularComponent::Edge cEdge;
-  float cOffset;
   ICommand* cCommand;
   std::string cText;
 
@@ -45,8 +42,17 @@ class Button:public AbstractRectangularComponent {
   public:
   void static setFont(IFont*);
 
-  Button(IRectangularComponent*, IRectangularComponent::Edge, float, ICommand*, std::string);
+  Button(IComponentBoundsCalculator*, ICommand*, std::string);
 
+  /***************************************\
+   * Implements IComponentSizeCalculator *
+  \***************************************/
+  float getWidth();
+  float getHeight();
+
+  /****************************\
+   * Implements IHUDComponent *
+  \****************************/
   void update(int);
   void render();
   bool input(SDL_Event&);

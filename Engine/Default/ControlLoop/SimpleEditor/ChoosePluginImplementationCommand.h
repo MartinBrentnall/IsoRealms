@@ -24,36 +24,48 @@
 
 #include "../../../../Global/ICommand.h"
 #include "../../../../Global/IComponentContainer.h"
+#include "../../../../Global/IPluginSupport.h"
 #include "../../../../Global/PluginRegistry.h"
+#include "../../../../Global/PlugSocket.h"
 
-#include "IItemSelectedCommand.h"
-#include "ListSelectionBox.h"
-#include "RegisterPluginInstanceCommand.h"
+#include "EntityClassInstancesComponent.h"
+#include "IInstanceSelectionListener.h"
+#include "PluginEntityClass.h"
 
+// TODO: Rename "ConnectPluginInstanceCommand"
 class ChoosePluginImplementationCommand:public ICommand {
   private:
   IComponentContainer* cComponentContainer;
+  IPluginSupport* cPluginSupport;
+  PlugSocket* cPlugSocket;
   PluginRegistry* cPluginRegistry;
   std::string cPluginType; 
-  std::string cImplementation;
-  float* cInvokerX;
-  float* cInvokerY;
 
-  class SelectionListener:public IItemSelectedCommand {
+  class SelectionListener:public IInstanceSelectionListener {
     private: 
     ChoosePluginImplementationCommand* cParent;
 
     public:
     SelectionListener(ChoosePluginImplementationCommand*);
 
-    /***********************************************************************\
-     * Implemented methods of ICommand.h                                   *
-    \***********************************************************************/
+    /*****************************************\
+     * Implements IInstanceSelectionListener *
+    \*****************************************/
     void itemSelected(std::string);
   };
 
   public:
-  ChoosePluginImplementationCommand(IComponentContainer*, PluginRegistry*, std::string, float*, float*);
+ 
+  /**
+   * Construct the command.
+   * 
+   * @param IComponentContainer*  The container in which to show the chooser
+   *          component.
+   * @param PluginRegistry*  The registry from which to choose an
+   *          implementation.
+   * @param std:;string  The type of implementation to choose.
+   */
+  ChoosePluginImplementationCommand(IPluginSupport*, PlugSocket*, IComponentContainer*, PluginRegistry*, std::string);
 
   /*************************************************************************\
    * Implemented methods of ICommand.h                                     *

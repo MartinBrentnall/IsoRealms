@@ -29,25 +29,25 @@ ChooseElementsCommand.o \
 ChooseElementsComponent.o \
 ChooseElementsComponentRow.o \
 ChoosePluginImplementationCommand.o \
-ChoosePluginInstanceComponent.o \
 EditorCommandManager.o \
 EditorCursor.o \
+ElementSetEntityClass.o \
 ElementSetInstancesCommand.o \
-ElementSetInstancesComponent.o \
+EntityClassInstancesComponent.o \
 ImplementationsListComponent.o \
 InstancesListComponent.o \
-ListSelectionBox.o \
 MenuBar.o \
 MenuItem.o \
 MenuPopup.o \
 OpenCommand.o \
+PluginEntityClass.o \
 PluginRequirementsComponent.o \
 PopupMenuCommand.o \
-RegisterPluginInstanceCommand.o \
 SaveAsCommand.o \
 SimpleEditor.o \
 TerminateEditorCommand.o \
-TextFieldComponent.o
+TextFieldComponent.o \
+TextLabelComponent.o
 
 objs:	$(OBJS)
 	g++ -shared -o ControlLoop.so *.o 

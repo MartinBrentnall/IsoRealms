@@ -1,6 +1,9 @@
 #ifndef ABSTRACT_RECTANGULAR_COMPONENT_H
 #define ABSTRACT_RECTANGULAR_COMPONENT_H
 
+#include <iostream>
+#include <vector>
+
 #include "IComponentBoundsCalculator.h"
 #include "IRectangularComponent.h"
 
@@ -19,9 +22,9 @@ class AbstractRectangularComponent:public IRectangularComponent {
   AbstractRectangularComponent(IComponentBoundsCalculator*);
   void setBoundsCalculator(IComponentBoundsCalculator*);
 
-  /************************************\
-   * Implements IRectangularComponent *
-  \************************************/
+  /****************************************************\
+   * Implements IRectangle (in IRectangularComponent) *
+  \****************************************************/
   float getLeft();
   float getTop();
   float getRight();
@@ -30,7 +33,7 @@ class AbstractRectangularComponent:public IRectangularComponent {
   /****************************\
    * Implements IHUDComponent *
   \****************************/
-  virtual bool contains(float, float);
+  bool contains(float, float);
 
   virtual ~AbstractRectangularComponent();
 };

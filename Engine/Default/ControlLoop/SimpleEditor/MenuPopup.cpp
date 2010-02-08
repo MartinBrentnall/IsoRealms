@@ -255,3 +255,11 @@ bool MenuPopup::input(SDL_Event& event) {
   }
   return false;
 }
+
+bool MenuPopup::contains(float x, float y) {
+  float mHeight = getHeight();
+  float mWidth = getWidth();
+  return x >= cX && x <= cX + mWidth && y <= cY && y >= cY + mHeight;
+}
+
+

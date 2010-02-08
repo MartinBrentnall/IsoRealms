@@ -18,7 +18,7 @@
  */
 #include "TextureSetChooserComponent.h"
 
-TextureSetChooserComponent::TextureSetChooserComponent(IComponentContainer* componentContainer, std::vector<ISpindizzyTextureSet*> texturePalette) : RectangleComponent(componentContainer, 0.18f, 0.68f, 0.8f, 0.3f) {
+TextureSetChooserComponent::TextureSetChooserComponent(IComponentContainer* componentContainer, std::vector<ISpindizzyTextureSet*> texturePalette) : RectangleComponent(componentContainer, new std::string("Choose Texture Set"), 0.18f, 0.68f, 0.8f, 0.3f) {
   cTexturePalette = texturePalette;
   cSpacingSize = 0.01f;
   cPreviewSize = 0.1f;

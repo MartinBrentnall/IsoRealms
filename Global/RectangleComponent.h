@@ -29,11 +29,19 @@
 #include "IRectangularComponent.h"
 #include "ScreenConfiguration.h"
 
+// TODO: Rename Dialog
 /**
  * When extending this class, be sure to call render() before doing your own
  * rendering, and input after processing your own input (if required).
  */
-class RectangleComponent:public AbstractRectangularComponent {
+class RectangleComponent:public IRectangularComponent {
+  private:
+  static const float TITLE_BAR_HEIGHT;
+
+  static IFont* cFont;
+
+  std::string* cTitle;
+
   protected:
   float cX;
   float cY;
@@ -43,7 +51,9 @@ class RectangleComponent:public AbstractRectangularComponent {
   IComponentContainer* cComponentContainer;
 
   public:
-  RectangleComponent(IComponentContainer*, float, float, float, float);
+  void static setFont(IFont*);
+
+  RectangleComponent(IComponentContainer*, std::string*, float, float, float, float);
 
   void translate(float, float);
   void resize(float, float);
@@ -60,17 +70,17 @@ class RectangleComponent:public AbstractRectangularComponent {
   virtual void updateContent(int) = 0;
   virtual bool inputContent(SDL_Event&) = 0;
 
-  /**************************************************************************\
-   * Implemented methods of IHUDComponent.h                                 *
-  \**************************************************************************/
+  /****************************\
+   * Implements IHUDComponent *
+  \****************************/
   void update(int);
   void render();
   bool input(SDL_Event&);
-  bool contains(float, float);
+  virtual bool contains(float, float);
 
-  /**************************************************************************\
-   * Implemented methods of IMovableComponent.h                             *
-  \**************************************************************************/
+  /***************************************************\
+   * Implements IRectangle (in IRectangularComponent *
+  \***************************************************/
   float getLeft();
   float getBottom();
   float getRight();

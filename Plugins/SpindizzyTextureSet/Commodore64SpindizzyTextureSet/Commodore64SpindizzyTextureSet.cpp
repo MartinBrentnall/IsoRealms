@@ -322,6 +322,7 @@ GLuint Commodore64SpindizzyTextureSet::generateLiftCircleBoth() {
 
 GLuint Commodore64SpindizzyTextureSet::convertToTexture(Image* image) {
   GLuint mTextureID = image->generateTexture();
+  cTextureIDs.push_back(mTextureID);
   delete image;
   return mTextureID;
 }
@@ -402,9 +403,8 @@ void Commodore64SpindizzyTextureSet::destroyTextures() {
       delete i->second;
     }
   }
-  for (unsigned int i = 0; i < cTextureIDs.size(); i++) {
-    glDeleteTextures(1, &cTextureIDs[i]);
-  }
+  glDeleteTextures(cTextureIDs.size(), &cTextureIDs[0]);
+  cTextureIDs.clear();
 }
 
 std::string Commodore64SpindizzyTextureSet::getName() {
@@ -416,23 +416,26 @@ std::vector<PlugSocket*> Commodore64SpindizzyTextureSet::getPlugSockets() {
 }
 
 void Commodore64SpindizzyTextureSet::setPlugin(PlugSocket* socket, IPlugin* plugin) {
-  if (socket->getType() == "FourColourSupport") {
-    destroyTextures();
-    cColourScheme->removeChangeListener(this);
-    cColourScheme = dynamic_cast<IFourColourSupport*>(plugin);
-    if (cColourScheme == NULL) {
+  if (socket->getType() == "FourColourSupport" && plugin != cColourScheme) { // TODO: Test against dummy (NULL)
+    std::string mDummyName("FourColourSupport");
+    IFourColourSupport* mPalette = dynamic_cast<IFourColourSupport*>(plugin == NULL ? PluginRegistry::getDummyPlugin(mDummyName) : plugin);
+  
+    if (mPalette == NULL) {
       std::cout << "Warning: dynamic_cast failed for dummy four colour scheme!" << std::endl;
     } else {
-      std::cout << "dynamic_cast succeeded for real four colour support!" << std::endl;
+      destroyTextures();
+      cColourScheme->removeChangeListener(this);
+      cColourScheme = mPalette;
+      cColourScheme->addChangeListener(this);
+      generateTextures();
     }
-    cColourScheme->addChangeListener(this);
-    generateTextures();
   } else {
     // TODO: Throw something
   }
 }
 
 void Commodore64SpindizzyTextureSet::fourColourPaletteChanged(IFourColourSupport*) {
+  // TODO: This isn't good enough because we can't garauntee that the generated texture ID's will match the destroyed ones.
   destroyTextures();
   generateTextures();
 }

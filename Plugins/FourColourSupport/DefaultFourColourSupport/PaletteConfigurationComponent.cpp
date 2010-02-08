@@ -18,8 +18,11 @@
  */
 #include "PaletteConfigurationComponent.h"
 
-PaletteConfigurationComponent::PaletteConfigurationComponent(IComponentContainer* componentContainer, std::vector<Colour*> palette, std::vector<IFourColourSupportListener*>& listeners) : RectangleComponent(componentContainer, 0.18f, 0.68f, 0.8f, 0.3f) {
-  cPalette = palette;
+PaletteConfigurationComponent::PaletteConfigurationComponent(IComponentContainer* componentContainer, std::map<IFourColourSupport::PaletteEntry, Colour*> palette, std::vector<IFourColourSupportListener*>& listeners) : RectangleComponent(componentContainer, new std::string("Palette Editor"), 0.18f, 0.68f, 0.8f, 0.3f) {
+  for (std::map<IFourColourSupport::PaletteEntry, Colour*>::iterator i = palette.begin(); i != palette.end(); i++) {
+    cPaletteEntries.push_back(i->first);
+    cPalette.push_back(i->second);
+  }
   cChangeListeners = &listeners;
   cSelectedField = 0;
   cSelectedEntry = 0;
@@ -57,6 +60,7 @@ void PaletteConfigurationComponent::renderChannel(float x, float y, float width,
 }
 
 void PaletteConfigurationComponent::renderContent() {
+  glBindTexture(GL_TEXTURE_2D, 0);
   Configuration* mConfiguration = Configuration::getInstance();
   ScreenConfiguration* mScreenConfiguration = mConfiguration->getScreenConfiguration();
   float mAspectRatio = mScreenConfiguration->getAspectRatio();
@@ -75,9 +79,9 @@ void PaletteConfigurationComponent::renderContent() {
     glEnd();
     float mBrightness = cSelectedField == 0 ? 1.0f : 0.4f;
     if (cSelectedEntry == i) {
-      glColor3f(0.0f * mBrightness, 1.0f * mBrightness, 0.0f * mBrightness);
-    } else {
       glColor3f(1.0f * mBrightness, 1.0f * mBrightness, 1.0f * mBrightness);
+    } else {
+      glColor3f(0.3f * mBrightness, 0.3f * mBrightness, 0.3f * mBrightness);
     }
     glBegin(GL_LINE_LOOP);
     glVertex2f(mX,          mY - mHeight);

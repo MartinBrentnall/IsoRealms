@@ -1,0 +1,37 @@
+#include "ElementSetEntityClass.h"
+
+ElementSetEntityClass::ElementSetEntityClass(ElementSetRegistry* elementSetRegistry, PluginRegistry* pluginRegistry, IComponentContainer* componentContainer) {
+  cElementSetRegistry = elementSetRegistry;
+  cPluginRegistry = pluginRegistry;
+  cComponentContainer = componentContainer;
+}
+
+std::string ElementSetEntityClass::getEntityClassName() {
+  return "Element Set";
+}
+
+void ElementSetEntityClass::instantiate(std::string& type, std::string& name) {
+  cElementSetRegistry->createInstance(type, name);
+}
+
+void ElementSetEntityClass::configure(std::string& name) {
+  IElementSet* mElementSet = cElementSetRegistry->getElementSet(&name);
+  IHUDComponent* mComponent = new PluginRequirementsComponent(cComponentContainer, cPluginRegistry, mElementSet, -0.8f, 0.0f);
+  cComponentContainer->addComponent(mComponent);
+}
+
+std::vector<std::string*> ElementSetEntityClass::getInstances() {
+  return cElementSetRegistry->getElementSets();
+}
+
+std::vector<std::string*> ElementSetEntityClass::getImplementations() {
+  // TODO: Need to filter non directories.
+  // TODO: Need to make path non-platform specific.
+  std::vector<std::string>* mImplementationsList = System::getFileList("/usr/share/IsoRealms/Elements/", "*");
+  std::vector<std::string*> mReturnList;
+  for (unsigned int i = 0; i < mImplementationsList->size(); i++) {
+    // TODO: This is BAD.  Memory leak here!
+    mReturnList.push_back(new std::string((*mImplementationsList)[i]));
+  }
+  return mReturnList;
+}

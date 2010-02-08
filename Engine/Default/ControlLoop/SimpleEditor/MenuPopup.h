@@ -67,7 +67,9 @@ class MenuPopup:public IMenu {
   float getHeight();
 
   void render();
-  bool input(SDL_Event&);    
+  bool input(SDL_Event&);
+
+  bool contains(float, float);
 };
 
 #endif

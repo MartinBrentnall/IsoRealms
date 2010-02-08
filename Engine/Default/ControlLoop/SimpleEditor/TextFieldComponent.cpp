@@ -19,15 +19,14 @@
 #include "TextFieldComponent.h"
 
 IFont* TextFieldComponent::cFont = NULL;
+int TextFieldComponent::cDelayUntilBlinkChange = BLINK_DELAY;
+bool TextFieldComponent::cBlinkShowing = true;
 
 void TextFieldComponent::setFont(IFont* font) {
   cFont = font;
 }
 
-TextFieldComponent::TextFieldComponent(IRectangularComponent* relative, IRectangularComponent::Edge edge, float offset) {
-  cRelative = relative;
-  cEdge = edge;
-  cOffset = offset;
+TextFieldComponent::TextFieldComponent() {
   cCaret = 0;
 }
 
@@ -40,22 +39,29 @@ void TextFieldComponent::render() {
 
   glBindTexture(GL_TEXTURE_2D, 0);
   glBegin(GL_LINE_LOOP);
-  glColor3f(1.0f, 1.0f, 1.0f);
+  glColor3f(0.45f, 0.0f, 0.9f);
   glVertex2f(mLeft,  mTop);
   glVertex2f(mLeft,  mBottom);
   glVertex2f(mRight, mBottom);
   glVertex2f(mRight, mTop);
   glEnd();
 
-  float mCaretOffset = cFont->getWidth(0.02f, cInput.substr(0, cCaret).c_str());
-  glColor3f(1.0f, 1.0f, 1.0f);
-  glBegin(GL_LINES);
-  glVertex2f(mLeft + 0.01f + mCaretOffset, mBottom - 0.01f);
-  glVertex2f(mLeft + 0.01f + mCaretOffset, mBottom + 0.04f);
-  glEnd();
+  if (cBlinkShowing) {
+    float mCaretOffset = cFont->getWidth(0.02f, cInput.substr(0, cCaret).c_str());
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glBegin(GL_LINES);
+    glVertex2f(mLeft + 0.01f + mCaretOffset, mTop);
+    glVertex2f(mLeft + 0.01f + mCaretOffset, mBottom);
+    glEnd();
+  }
 }
 
 void TextFieldComponent::update(int milliseconds) {
+  cDelayUntilBlinkChange -= milliseconds;
+  if (cDelayUntilBlinkChange <= 0) {
+    cDelayUntilBlinkChange += BLINK_DELAY;
+    cBlinkShowing = !cBlinkShowing;
+  }
 }
 
 bool TextFieldComponent::input(SDL_Event& event) {
@@ -74,7 +80,7 @@ bool TextFieldComponent::keyDown(SDLKey& key, SDLMod& mod) {
       if (cCaret != 0) {
         cCaret--;
       }
-      break;
+      return true;
     }
 
     case SDLK_RIGHT: {
@@ -82,17 +88,17 @@ bool TextFieldComponent::keyDown(SDLKey& key, SDLMod& mod) {
       if (cCaret > cInput.size()) {
         cCaret = cInput.size();
       }
-      break;
+      return true;
     }
 
     case SDLK_HOME: {
       cCaret = 0;
-      break;
+      return true;
     }
 
     case SDLK_END: {
       cCaret = cInput.length();
-      break;
+      return true;
     }
 
     case SDLK_BACKSPACE: {
@@ -100,14 +106,14 @@ bool TextFieldComponent::keyDown(SDLKey& key, SDLMod& mod) {
         cInput = cInput.substr(0, cCaret - 1) + cInput.substr(cCaret);
         cCaret--;
       }
-      break;
+      return true;
     }
 
     case SDLK_DELETE: {
       if (cCaret < cInput.length()) {
         cInput = cInput.substr(0, cCaret) + cInput.substr(cCaret + 1);
       }
-      break;
+      return true;
     }
 
     default: {
@@ -119,7 +125,7 @@ bool TextFieldComponent::keyDown(SDLKey& key, SDLMod& mod) {
         }
         cCaret++;
       }
-      break;
+      return true;
     }
   }
   return false;
@@ -127,4 +133,12 @@ bool TextFieldComponent::keyDown(SDLKey& key, SDLMod& mod) {
 
 std::string TextFieldComponent::getText() {
   return cInput;
+}
+
+float TextFieldComponent::getWidth() {
+  return 0.5f;
+}
+
+float TextFieldComponent::getHeight() {
+  return 0.05f;
 }

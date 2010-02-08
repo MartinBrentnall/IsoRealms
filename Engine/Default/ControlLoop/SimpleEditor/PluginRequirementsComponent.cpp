@@ -25,96 +25,93 @@ void PluginRequirementsComponent::setFont(IFont* font) {
   cFont = font;
 }
 
-PluginRequirementsComponent::PluginRequirementsComponent(IComponentContainer* componentContainer, PluginRegistry* pluginRegistry, IPluginSupport* pluginSupport, float x, float y) : RectangleComponent(componentContainer, x, y, 1.0f, 1.0f) {
+PluginRequirementsComponent::PluginRequirementsComponent(IComponentContainer* componentContainer, PluginRegistry* pluginRegistry, IPluginSupport* pluginSupport, float x, float y) : ResizableDialog(componentContainer, getTitle(pluginSupport), x, y, 1.0f, 1.0f) {
   cPluginRegistry = pluginRegistry;
-  cSelectedPlugin = 0;
-  cChooseInstanceComponent = NULL;
   cComponentContainer = componentContainer;
   cPluginSupport = pluginSupport;
+
+  ICommand* mCloseCommand = new CloseCommand(this);
 
   // Populate supported plugin.
   // TODO: Change to "plug sockets"
   cSupportedPlugins = cPluginSupport->getPlugSockets();
-}
 
-void PluginRequirementsComponent::updateContent(int milliseconds) {
-  // TODO: Anything to do in myself?
-  if (cChooseInstanceComponent != NULL) {
-    cChooseInstanceComponent->update(milliseconds);
-  }
-}
+  // Put "close" button in bottom right.
+  EdgeRelation* mInsideDialog = new EdgeRelation(this, EdgeRelation::INSIDE);
+  Button* mCloseButton = new Button(NULL, mCloseCommand, "Close");
+  IComponentBoundsCalculator* mCloseButtonLayout = new ComponentEdgeLayout(NULL, NULL, mInsideDialog, mInsideDialog, mCloseButton);
+  mCloseButton->setBoundsCalculator(mCloseButtonLayout);
 
-void PluginRequirementsComponent::renderContent() {
-  std::string mTitle = "\"" + cPluginSupport->getName() + "\" supports the following plugin:";
-  float mLine = getTop() - 0.05f;
-  cFont->print(getLeft() + 0.02f, mLine, 0.02f, 0, mTitle.c_str());
-  mLine -= 0.08f;
+  // Put label in top left
+  TextLabelComponent* mTitleLabel = new TextLabelComponent("\"" + cPluginSupport->getName() + "\" supports the following plugins:");
+  IComponentBoundsCalculator* mTitleLayout = new ComponentEdgeLayout(mInsideDialog, mInsideDialog, NULL, NULL, mTitleLabel);
+  mTitleLabel->setBoundsCalculator(mTitleLayout);
+
+  // Put table below label (TODO: and above close button)
+  FlexibleGridLayoutComponent* mRequirementsTable = new FlexibleGridLayoutComponent(4, cSupportedPlugins.size() + 1);
+
+  TextLabelComponent* mTypeHeading = new TextLabelComponent("Type");
+  TextLabelComponent* mSelectedHeading = new TextLabelComponent("Selected");
+  mRequirementsTable->addComponent(mTypeHeading,     TYPE_COLUMN,     cSupportedPlugins.size());
+  mRequirementsTable->addComponent(mSelectedHeading, INSTANCE_COLUMN, cSupportedPlugins.size());
+
   for (unsigned int i = 0; i < cSupportedPlugins.size(); i++) {
-//    float mLoadedMultiplier = ElementSetRegistry::isElementSetLoaded(cSupportedPlugins[i]) ? 1.0f : 0.3f;
-    float mLoadedMultiplier = 1.0f; // TODO: Do we need this?
-    if (i == cSelectedPlugin) {
-      glColor3f(0.0f * mLoadedMultiplier , 1.0f * mLoadedMultiplier, 0.0f * mLoadedMultiplier);
-    } else {
-      glColor3f(1.0f * mLoadedMultiplier, 1.0f * mLoadedMultiplier, 1.0f * mLoadedMultiplier);
-    }
-    cFont->print(getLeft() + 0.02f, mLine, 0.02f, 0, cSupportedPlugins[i]->getType().c_str());
- 
-// TODO: Plug socket    string mPluginFulfillment = cPluginSupport->getPlugin(cSupportedPlugins[i]);
-//    cFont->print(getLeft() + 0.52f, mLine, 0.02f, 0, mPluginFulfillment.c_str());
-    mLine -= 0.05f;
+    std::string mPluginType = cSupportedPlugins[i]->getType();
+    TextLabelComponent* mTypeLabel = new TextLabelComponent(mPluginType);
+    IPlugin* mPlugin = cPluginSupport->getPlugin(cSupportedPlugins[i]);
+    std::string mInstanceName = pluginRegistry->getInstanceName(mPluginType, mPlugin);
+    TextLabelComponent* mSelectedInstanceLabel = new TextLabelComponent(mInstanceName);
+    ICommand* mChoosePluginInstanceCommand = new ChoosePluginImplementationCommand(cPluginSupport, cSupportedPlugins[i], componentContainer, pluginRegistry, mPluginType);
+    Button* mChoosePluginButton = new Button(NULL, mChoosePluginInstanceCommand, "Choose...");
+    ICommand* mResetSocketCommand = new ResetSocketCommand(cPluginSupport, cSupportedPlugins[i]);
+    Button* mResetPluginButton = new Button(NULL, mResetSocketCommand, "Reset");
+
+    mRequirementsTable->addComponent(mTypeLabel,             TYPE_COLUMN,          i);
+    mRequirementsTable->addComponent(mSelectedInstanceLabel, INSTANCE_COLUMN,      i);
+    mRequirementsTable->addComponent(mChoosePluginButton,    CHOOSE_BUTTON_COLUMN, i);
+    mRequirementsTable->addComponent(mResetPluginButton,     RESET_BUTTON_COLUMN,  i);
   }
 
-  if (cChooseInstanceComponent != NULL) {
-    cChooseInstanceComponent->render();
-  }
+  EdgeRelation* mAdjacentTitle = new EdgeRelation(mTitleLabel, EdgeRelation::OUTSIDE);
+  IComponentBoundsCalculator* mTableLayout = new ComponentEdgeLayout(mAdjacentTitle, mInsideDialog, NULL, NULL, mRequirementsTable);
+  mRequirementsTable->setBoundsCalculator(mTableLayout);
+
+  addComponent(mTitleLabel);
+  addComponent(mCloseButton);
+  addComponent(mRequirementsTable);
+
+  setFocusedComponent(mRequirementsTable);
 }
 
-bool PluginRequirementsComponent::keyDown(SDLKey& key) {
-  switch (key) {
-    case SDLK_DOWN: {
-      if (cSelectedPlugin < cSupportedPlugins.size() - 1) {
-        cSelectedPlugin++;
-      }
-      return true;
-    }
-  
-    case SDLK_UP: {
-      if (cSelectedPlugin > 0) {
-        cSelectedPlugin--;
-      }
-      return true;
-    }
-  
-    case SDLK_RETURN: {
-      IHUDComponent* mChooseInstanceComponent = new ChoosePluginInstanceComponent(cComponentContainer, cPluginRegistry, cPluginSupport, cSupportedPlugins[cSelectedPlugin], getLeft() + 0.05f, getBottom() - 0.05f);
-      cComponentContainer->addComponent(mChooseInstanceComponent);
-      return true;
-    }
+std::string* PluginRequirementsComponent::getTitle(IPluginSupport* pluginSupport) {
+  return new std::string(pluginSupport->getName() + " Plugins");
+}
 
-    case SDLK_ESCAPE: {
-      close();
-      return true;
-    }
+void PluginRequirementsComponent::updateResizableDialogContent(int milliseconds) {
+  // Nothing to do.
+}
 
-    default: {
-      return false;
-    }
-  }
+void PluginRequirementsComponent::renderResizableDialogContent() {
+  // Nothing to do.
+}
+
+bool PluginRequirementsComponent::inputResizableDialogContent(SDL_Event& event) {
   return false;
 }
 
-bool PluginRequirementsComponent::inputContent(SDL_Event& event) {
-  if (cChooseInstanceComponent != NULL) {
-    if (cChooseInstanceComponent->input(event)) {
-      return true;
-    }
-  } else {
-    switch (event.type) {
-      case SDL_KEYDOWN: {
-        return keyDown(event.key.keysym.sym);
-      }
-    }
-  }
-  return false;
+PluginRequirementsComponent::ResetSocketCommand::ResetSocketCommand(IPluginSupport* pluginSupport, PlugSocket* plugSocket) {
+  cPluginSupport = pluginSupport;
+  cPlugSocket = plugSocket;
 }
 
+void PluginRequirementsComponent::ResetSocketCommand::execute() {
+  cPluginSupport->setPlugin(cPlugSocket, NULL);
+}
+
+PluginRequirementsComponent::CloseCommand::CloseCommand(PluginRequirementsComponent* parent) {
+  cParent = parent;
+}
+
+void PluginRequirementsComponent::CloseCommand::execute() {
+  cParent->close();
+}

@@ -18,7 +18,7 @@
  */
 #include "SpindizzyBlockConfigurationComponent.h"
 
-SpindizzyBlockConfigurationComponent::SpindizzyBlockConfigurationComponent(IComponentContainer* componentContainer, SpindizzyBlockFactory* blockFactory, SpindizzyBlockProperties* blockProperties, ISpindizzyTextureSet** textureSet, IComponentCloseListener* listener) : RectangleComponent(componentContainer, 0.0f, 0.0f, 0.25f, 0.5f) {
+SpindizzyBlockConfigurationComponent::SpindizzyBlockConfigurationComponent(IComponentContainer* componentContainer, SpindizzyBlockFactory* blockFactory, SpindizzyBlockProperties* blockProperties, ISpindizzyTextureSet** textureSet, IComponentCloseListener* listener) : RectangleComponent(componentContainer, new std::string("Block Editor"), 0.0f, 0.0f, 0.25f, 0.5f) {
   cBlockProperties = blockProperties;
   cBlockFactory = blockFactory;
   cTextureSet = textureSet;
@@ -42,8 +42,10 @@ void SpindizzyBlockConfigurationComponent::renderContent() {
   Configuration* mConfiguration = Configuration::getInstance();
   ScreenConfiguration* mScreenConfiguration = mConfiguration->getScreenConfiguration();
   float mScreenAspectRatio = mScreenConfiguration->getAspectRatio();
-  float mXLocation = getLeft() + (getLeft() - getRight()) / 2.0f;
-  float mYLocation = getBottom() + (getBottom() - getTop()) / 2.0f;
+  float mXLocation = getLeft() + (getRight() - getLeft()) / 2.0f;
+  float mYLocation = getBottom() + (getTop() - getBottom()) / 2.0f;
+  glBindTexture(GL_TEXTURE_2D, 0);
+  glColor3f(0.45f, 0.0f, 0.9f);
   glBegin(GL_LINE_LOOP);
   glVertex2f(getLeft() + 0.01f * mScreenAspectRatio, getBottom() + 0.01f);
   glVertex2f(getLeft() + 0.07f * mScreenAspectRatio, getBottom() + 0.01f);
@@ -51,6 +53,7 @@ void SpindizzyBlockConfigurationComponent::renderContent() {
   glVertex2f(getLeft() + 0.01f * mScreenAspectRatio, getBottom() + 0.07f);
   glEnd();
   if (cBlockProperties->isSteppedBottom()) {
+    glColor3f(1.0f, 1.0f, 1.0f);
     glBegin(GL_LINES);
     glVertex2f(getLeft() + 0.01f * mScreenAspectRatio, getBottom() + 0.01f);
     glVertex2f(getLeft() + 0.07f * mScreenAspectRatio, getBottom() + 0.07f);
