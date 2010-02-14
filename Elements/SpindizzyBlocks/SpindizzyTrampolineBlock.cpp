@@ -21,7 +21,7 @@
 SpindizzyTrampolineBlock::SpindizzyTrampolineBlock(IElementFactory* elementFactory, BlockLocation* startLocation, BlockLocation* endLocation, ISpindizzyTextureSet** spindizzyTextureSet, SpindizzyBlockProperties* blockProperties, bool addition) : AbstractSpindizzyBlock(elementFactory, startLocation, endLocation, spindizzyTextureSet, blockProperties, addition) {
 }
 
-ISpindizzyTextureSet::TextureType SpindizzyTrampolineBlock::getRollableSurfaceTexture() {
+ISpindizzyTextureSet::TextureType SpindizzyTrampolineBlock::getTileSurfaceTexture() {
   return ISpindizzyTextureSet::TRAMPOLINE;
 }
 

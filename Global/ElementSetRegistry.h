@@ -54,6 +54,9 @@ class ElementSetRegistry {
    */
   std::map<std::string, void*> cSOHandles;
 
+  /**
+   * Map each instance name to its implementation type.
+   */
   std::map<std::string, std::string> cElementSetTypes;
 
   int indexOf(IElementRegistryListener*);

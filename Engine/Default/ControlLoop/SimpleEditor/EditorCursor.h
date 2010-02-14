@@ -47,6 +47,7 @@ class EditorCursor:public BlockLocation, public IsoRealmsConstants {
 
   bool keyDown(SDLKey&);
 
+  void selectZone();
   void restrainToZone();
 
   public:

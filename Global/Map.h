@@ -49,6 +49,11 @@ class Map:public IZoneChangeListener,
    */
   std::vector<Zone*> cDirtyZones;
 
+  /**
+   * Register listeners on registries.
+   */
+  void registerListeners();
+
   int getZoneIndex(Zone*);
 
   public:

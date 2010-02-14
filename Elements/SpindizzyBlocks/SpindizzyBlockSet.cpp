@@ -60,16 +60,17 @@ SpindizzyBlockSet::SpindizzyBlockSet() {
   cElementFactories.push_back(new SwitchFactory(SWITCH_DIAMOND_NONE, this, &cSpindizzyTextureSet, ISpindizzyTextureSet::SWITCH_DIAMOND_NONE));
   cElementFactories.push_back(new SpindizzyWaterFactory(&cSpindizzyTextureSet, this));
   std::string mDummyName("SpindizzyTextureSet");
-  cSpindizzyTextureSet = dynamic_cast<ISpindizzyTextureSet*>(PluginRegistry::getDummyPlugin(mDummyName));
-  if (cSpindizzyTextureSet == NULL) {
+  cDummyTextureSet = dynamic_cast<ISpindizzyTextureSet*>(PluginRegistry::getDummyPlugin(mDummyName));
+  if (cDummyTextureSet == NULL) {
     std::cout << "Warning: dynamic_cast failed for dummy spindizzy texture set!" << std::endl;
     // TODO: Throw wobbly
   }
+  cSpindizzyTextureSet = cDummyTextureSet;
   cSpindizzyTextureSetController = NULL;
-  mDummyName = "RollableSurfaceCalculator";
-  cRollableSurfaceCalculator = dynamic_cast<IRollableSurfaceCalculator*>(PluginRegistry::getDummyPlugin(mDummyName));
-  if (cRollableSurfaceCalculator == NULL) {
-    std::cout << "Warning: dynamic_cast failed for dummy rollable surface calculator!" << std::endl;
+  mDummyName = "SurfaceProcessor";
+  cSurfaceProcessor = dynamic_cast<ISurfaceProcessor*>(PluginRegistry::getDummyPlugin(mDummyName));
+  if (cSurfaceProcessor == NULL) {
+    std::cout << "Warning: dynamic_cast failed for dummy surface processor!" << std::endl;
     // TODO: Throw wobbly
   }
 }
@@ -77,18 +78,22 @@ SpindizzyBlockSet::SpindizzyBlockSet() {
 std::vector<PlugSocket*> SpindizzyBlockSet::getPlugSockets() {
   std::vector<PlugSocket*> mSockets;
   if (cSpindizzyTextureSetController == NULL) {
+    if (cSpindizzyTextureSet == cDummyTextureSet) {
+      mSockets.push_back(new PlugSocket("SpindizzyTextureSetChanger", "")); // TODO: Default the second parameter to empty string!
+    }
     mSockets.push_back(new PlugSocket("SpindizzyTextureSet", "")); // TODO: Default the second parameter to empty string!
-  }
-  if (PluginRegistry::isDummyPlugin(cSpindizzyTextureSet)) {
+  } else {
     mSockets.push_back(new PlugSocket("SpindizzyTextureSetChanger", "")); // TODO: Default the second parameter to empty string!
   }
-  mSockets.push_back(new PlugSocket("RollableSurfaceCalculator", "")); // TODO: Default the second parameter to empty string!
+  mSockets.push_back(new PlugSocket("SurfaceProcessor", "")); // TODO: Default the second parameter to empty string!
   return mSockets;
 }
 
 void SpindizzyBlockSet::setSpindizzyTextureSet(ISpindizzyTextureSet* textureSet) {
-  std::cout << "TODO: setSpindizzyTextureSet();" << std::endl;
-  // TODO: Implement this
+  if (textureSet != NULL) {
+    std::cout << "Texture set is not NULL!" << std::endl;
+  }
+  cSpindizzyTextureSet = textureSet != NULL ? textureSet : cDummyTextureSet;
 }
 
 void SpindizzyBlockSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
@@ -97,8 +102,7 @@ void SpindizzyBlockSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
       return;
     }
     if (implementation == NULL) {
-      std::string mDummyName("SpindizzyTextureSet");
-      cSpindizzyTextureSet = dynamic_cast<ISpindizzyTextureSet*>(PluginRegistry::getDummyPlugin(mDummyName));
+      cSpindizzyTextureSet = cDummyTextureSet;
     } else {
       ISpindizzyTextureSet* mSpindizzyTextureSet = dynamic_cast<ISpindizzyTextureSet*>(implementation);
       if (mSpindizzyTextureSet == NULL) {
@@ -110,30 +114,45 @@ void SpindizzyBlockSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
     for (unsigned int i = 0; i < cElementFactories.size(); i++) {
       static_cast<ISpindizzyBlockFactory*>(cElementFactories[i])->signalAllElementsDirty();
     }
-  } else if (socket->getType() == "RollableSurfaceCalculator") {
-    if (implementation == cRollableSurfaceCalculator) {
+  } else if (socket->getType() == "SurfaceProcessor") {
+    if (implementation == cSurfaceProcessor) {
       return;
     }
     if (implementation == NULL) {
-      std::string mDummyName("RollableSurfaceCalculator");
-      cRollableSurfaceCalculator = dynamic_cast<IRollableSurfaceCalculator*>(PluginRegistry::getDummyPlugin(mDummyName));
+      std::string mDummyName("SurfaceProcessor");
+      cSurfaceProcessor->reinitialise();
+      cSurfaceProcessor = dynamic_cast<ISurfaceProcessor*>(PluginRegistry::getDummyPlugin(mDummyName));
     } else {
-      IRollableSurfaceCalculator* mSurfaceCalculator = dynamic_cast<IRollableSurfaceCalculator*>(implementation);
-      if (mSurfaceCalculator == NULL) {
-        std::cout << "Warning: dynamic_cast failed for rollable surface calculator!" << std::endl;
+      ISurfaceProcessor* mSurfaceProcessor = dynamic_cast<ISurfaceProcessor*>(implementation);
+      if (mSurfaceProcessor == NULL) {
+        std::cout << "Warning: dynamic_cast failed for surface processor!" << std::endl;
+        return;
       } else {
-        cRollableSurfaceCalculator = mSurfaceCalculator;
+        // Surface processor might still be in use by other element sets
+        cSurfaceProcessor->reinitialise();
+        cSurfaceProcessor = mSurfaceProcessor;
       }
     }
-    // TODO: We need to recalculate all the surfaces!
   } else if (socket->getType() == "SpindizzyTextureSetChanger") {
-    ISpindizzyTextureSetChanger* mSpindizzyTextureSetController = dynamic_cast<ISpindizzyTextureSetChanger*>(implementation);
-    if (mSpindizzyTextureSetController == NULL) {
-      std::cout << "Warning: dynamic_cast failed for spindizzy texture set!" << std::endl;
+    if (implementation == NULL) {
+      if (cSpindizzyTextureSetController != NULL) {
+        cSpindizzyTextureSetController->setControlObject(NULL);
+      }
+      cSpindizzyTextureSetController = NULL;
+      cSpindizzyTextureSet = cDummyTextureSet;
     } else {
-      cSpindizzyTextureSetController = mSpindizzyTextureSetController;
+      ISpindizzyTextureSetChanger* mSpindizzyTextureSetController = dynamic_cast<ISpindizzyTextureSetChanger*>(implementation);
+      if (mSpindizzyTextureSetController == NULL) {
+        std::cout << "Warning: dynamic_cast failed for spindizzy texture set!" << std::endl;
+      } else {
+        if (cSpindizzyTextureSetController != NULL) {
+          cSpindizzyTextureSetController->setControlObject(NULL);
+        }
+        cSpindizzyTextureSetController = mSpindizzyTextureSetController;
+        cSpindizzyTextureSet = cDummyTextureSet;
+        cSpindizzyTextureSetController->setControlObject(this);
+      }
     }
-    cSpindizzyTextureSetController->setControlObject(this);
   } else {
     std::cout << "WARNING!  I don't know what to do with the implementation I was given!" << std::endl;
   }
@@ -144,9 +163,9 @@ IPlugin* SpindizzyBlockSet::getPlugin(PlugSocket* socket) {
     if (!PluginRegistry::isDummyPlugin(cSpindizzyTextureSet)) {
       return (IPlugin*) cSpindizzyTextureSet;
     }
-  } else if (socket->getType() == "RollableSurfaceCalculator") {
-    if (!PluginRegistry::isDummyPlugin(cRollableSurfaceCalculator)) {
-      return (IPlugin*) cRollableSurfaceCalculator;
+  } else if (socket->getType() == "SurfaceProcessor") {
+    if (!PluginRegistry::isDummyPlugin(cSurfaceProcessor)) {
+      return (IPlugin*) cSurfaceProcessor;
     }
   } else if (socket->getType() == "SpindizzyTextureSetChanger") {
     return cSpindizzyTextureSetController;
@@ -171,36 +190,36 @@ void SpindizzyBlockSet::save(DOMNodeWriter* node) {
   // Nothing to do
 }
 
-void SpindizzyBlockSet::registerRollableSurfaceProvider(IRollableSurfaceProvider* provider) {
-  cRollableSurfaceCalculator->registerRollableSurfaceProvider(provider);
+void SpindizzyBlockSet::registerSurfaceProvider(ISurfaceProvider* provider) {
+  cSurfaceProcessor->registerSurfaceProvider(provider);
 }
 
-void SpindizzyBlockSet::unregisterRollableSurfaceProvider(IRollableSurfaceProvider* provider) {
-  cRollableSurfaceCalculator->unregisterRollableSurfaceProvider(provider);
+void SpindizzyBlockSet::unregisterSurfaceProvider(ISurfaceProvider* provider) {
+  cSurfaceProcessor->unregisterSurfaceProvider(provider);
 }
 
 void SpindizzyBlockSet::setDirty() {
-  cRollableSurfaceCalculator->setDirty();
+  cSurfaceProcessor->setDirty();
 }
 
-std::vector<IRollableSurface*> SpindizzyBlockSet::getRollableSurfaces(IRollableSurfaceProvider* provider, IRollableSurface::FaceDirection facing) {
-  return cRollableSurfaceCalculator->getRollableSurfaces(provider, facing);
+std::vector<ITileSurface*> SpindizzyBlockSet::getTileSurfaces(ISurfaceProvider* provider, ITileSurface::FaceDirection facing) {
+  return cSurfaceProcessor->getTileSurfaces(provider, facing);
 }
 
-std::vector<IWallSurface*> SpindizzyBlockSet::getWallSurfaces(IRollableSurfaceProvider* provider, IWallSurface::FaceDirection facing) {
-  return cRollableSurfaceCalculator->getWallSurfaces(provider, facing);
+std::vector<IWallSurface*> SpindizzyBlockSet::getWallSurfaces(ISurfaceProvider* provider, IWallSurface::FaceDirection facing) {
+  return cSurfaceProcessor->getWallSurfaces(provider, facing);
 }
 
 void SpindizzyBlockSet::notifyZoneAction(Zone* zone) {
-  cRollableSurfaceCalculator->notifyZoneAction(zone);
+  cSurfaceProcessor->notifyZoneAction(zone);
 }
 
-SpindizzyBlockSet::BlockFactory::BlockFactory(std::string name, IElementSet* elementSet, ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet::TextureType rollableSurfaceTexture) : SpindizzyBlockFactory(name, textureSet, elementSet) {
-  cRollableSurfaceTexture = rollableSurfaceTexture;
+SpindizzyBlockSet::BlockFactory::BlockFactory(std::string name, IElementSet* elementSet, ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet::TextureType tileSurfaceTexture) : SpindizzyBlockFactory(name, textureSet, elementSet) {
+  cTileSurfaceTexture = tileSurfaceTexture;
 }
 
 AbstractSpindizzyBlock* SpindizzyBlockSet::BlockFactory::createBlock(BlockLocation* startLocation, BlockLocation* endLocation, ISpindizzyTextureSet** textureSet, SpindizzyBlockProperties* blockProperties, bool addition) {
-  return new SpindizzyBlock(this, startLocation, endLocation, textureSet, cRollableSurfaceTexture, blockProperties, addition);
+  return new SpindizzyBlock(this, startLocation, endLocation, textureSet, cTileSurfaceTexture, blockProperties, addition);
 }
 
 SpindizzyBlockSet::IceFactory::IceFactory(std::string name, IElementSet* elementSet, ISpindizzyTextureSet** textureSet) : SpindizzyBlockFactory(name, textureSet, elementSet) {
@@ -211,12 +230,12 @@ AbstractSpindizzyBlock* SpindizzyBlockSet::IceFactory::createBlock(BlockLocation
   return new SpindizzyIceBlock(this, startLocation, endLocation, textureSet, blockProperties, addition);
 }
 
-SpindizzyBlockSet::SwitchFactory::SwitchFactory(std::string name, IElementSet* elementSet, ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet::TextureType rollableSurfaceTexture) : SpindizzyBlockFactory(name, textureSet, elementSet) {
-  cRollableSurfaceTexture = rollableSurfaceTexture;
+SpindizzyBlockSet::SwitchFactory::SwitchFactory(std::string name, IElementSet* elementSet, ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet::TextureType tileSurfaceTexture) : SpindizzyBlockFactory(name, textureSet, elementSet) {
+  cTileSurfaceTexture = tileSurfaceTexture;
 }
 
 AbstractSpindizzyBlock* SpindizzyBlockSet::SwitchFactory::createBlock(BlockLocation* startLocation, BlockLocation* endLocation, ISpindizzyTextureSet** textureSet, SpindizzyBlockProperties* blockProperties, bool addition) {
-  return new SpindizzySwitchBlock(this, startLocation, endLocation, textureSet, cRollableSurfaceTexture, blockProperties, addition);
+  return new SpindizzySwitchBlock(this, startLocation, endLocation, textureSet, cTileSurfaceTexture, blockProperties, addition);
 }
 
 SpindizzyBlockSet::TrampolineFactory::TrampolineFactory(std::string name, IElementSet* elementSet, ISpindizzyTextureSet** textureSet) : SpindizzyBlockFactory(name, textureSet, elementSet) {
@@ -228,6 +247,7 @@ AbstractSpindizzyBlock* SpindizzyBlockSet::TrampolineFactory::createBlock(BlockL
 }
 
 SpindizzyBlockSet::~SpindizzyBlockSet() {
+  cSurfaceProcessor->reinitialise();
   for (unsigned int i = 0; i < cElementFactories.size(); i++) {
     delete cElementFactories[i];
   }

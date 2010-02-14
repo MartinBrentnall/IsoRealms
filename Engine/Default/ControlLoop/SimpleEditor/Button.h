@@ -34,9 +34,13 @@
 class Button:public ISizedComponent {
   private:
   static IFont* cFont;
+  bool cButtonPressed;
+  bool cHovering;
   ICommand* cCommand;
   std::string cText;
 
+  bool mouseMotion(SDL_Event&);
+  bool mouseButtonUp(SDL_Event&);
   bool mouseButtonDown(SDL_Event&);
 
   public:

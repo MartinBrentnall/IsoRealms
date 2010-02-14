@@ -56,7 +56,13 @@ IElement* SpindizzyBlockFactory::getElement(DOMNodeWrapper* node, BlockLocation*
 
 void SpindizzyBlockFactory::signalAllElementsDirty() {
   for (unsigned int i = 0; i < cContent.size(); i++) {
-    cContent[i]->signalElementDirty();
+    cContent[i]->cacheSurfaces();
+  }
+}
+
+void SpindizzyBlockFactory::unregisterSurfaces(ISurfaceProcessor* surfaceProcessor) {
+  for (unsigned int i = 0; i < cContent.size(); i++) {
+    surfaceProcessor->unregisterSurfaceProvider(cContent[i]);
   }
 }
 
@@ -211,16 +217,7 @@ SpindizzyBlockFactory::~SpindizzyBlockFactory() {
     delete cConfigurationComponent;
   }
   for (unsigned int i = 0; i < cContent.size(); i++) {
-    Zone* mZone = cGateway->notifyDestruction(cContent[i]);
-    if (mZone != NULL) {
-      ISurfaceCalculator* mSurfaceCalculator = dynamic_cast<ISurfaceCalculator*>(getElementSet());
-      if (mSurfaceCalculator == NULL) {
-        std::cout << "Warning: dynamic_cast failed for surface calculation!  Possible memory leak in BlockSubtractor!" << std::endl;
-      } else {
-        mSurfaceCalculator->notifyZoneAction(mZone);
-      }
-      cContent[i]->removed();
-    }
+    cGateway->notifyDestruction(cContent[i]);
     delete cContent[i];
   }
 }

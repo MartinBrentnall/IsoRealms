@@ -21,7 +21,7 @@
 
 #include <cmath>
 
-#include "../../Plugins/SimpleModel/ISimpleModelFactory.h"
+#include "../../Plugins/3DModel/ISimpleModelFactory.h"
 
 #include "../../Global/BlockLocation.h"
 #include "../../Global/IComponentContainer.h"

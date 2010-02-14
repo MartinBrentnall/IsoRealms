@@ -26,6 +26,8 @@ void Button::setFont(IFont* font) {
 
 Button::Button(IComponentBoundsCalculator* boundsCalculator, ICommand* command, std::string text) {
   setBoundsCalculator(boundsCalculator);
+  cButtonPressed = false;
+  cHovering = false;
   cCommand = command;
   cText = text;
 }
@@ -38,6 +40,17 @@ void Button::render() {
   float mBottom = getBottom();
   float mRight = getRight();
   float mTop = getTop();
+
+  if (cHovering) {
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glColor3f(0.85f, 0.0f, 0.2f);
+    glBegin(GL_QUADS);
+    glVertex2f(mLeft,  mTop);
+    glVertex2f(mLeft,  mBottom);
+    glVertex2f(mRight, mBottom);
+    glVertex2f(mRight, mTop);
+    glEnd();  
+  }
 
   glColor3f(1.0f, 1.0f, 1.0f);
   cFont->print(mLeft + (mRight - mLeft) * 0.5f, mBottom + 0.01f, 0.02f, 1, cText.c_str());
@@ -81,13 +94,41 @@ float Button::getHeight() {
   return 0.05f; // TODO: Make this correct
 }
 
+bool Button::mouseMotion(SDL_Event& event) {
+  if (cButtonPressed) {
+    Configuration* mConfiguration = Configuration::getInstance();
+    ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
+    float mX = mScreen->getXLocation(event.button.x);
+    float mY = mScreen->getYLocation(event.button.y);
+    cHovering = contains(mX, mY);
+  }
+  return false;
+}
+
+bool Button::mouseButtonUp(SDL_Event& event) {
+  if (cHovering) {
+    Configuration* mConfiguration = Configuration::getInstance();
+    ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
+    float mX = mScreen->getXLocation(event.button.x);
+    float mY = mScreen->getYLocation(event.button.y);
+    cHovering = false;
+    if (contains(mX, mY)) {
+      cCommand->execute();
+      return true;
+    }
+  }
+  cButtonPressed = false;
+  return false;
+}
+
 bool Button::mouseButtonDown(SDL_Event& event) {
   Configuration* mConfiguration = Configuration::getInstance();
   ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
   float mX = mScreen->getXLocation(event.button.x);
   float mY = mScreen->getYLocation(event.button.y);
   if (contains(mX, mY)) {
-    cCommand->execute();
+    cHovering = true;
+    cButtonPressed = true;
     return true;
   }
   return false;
@@ -97,6 +138,14 @@ bool Button::input(SDL_Event& event) {
   switch (event.type) {
     case SDL_MOUSEBUTTONDOWN: {
       return mouseButtonDown(event);
+    }
+
+    case SDL_MOUSEBUTTONUP: {
+      return mouseButtonUp(event);
+    }
+
+    case SDL_MOUSEMOTION: {
+      return mouseMotion(event);
     }
   }
   return false;

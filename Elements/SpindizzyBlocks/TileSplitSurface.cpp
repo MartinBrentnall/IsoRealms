@@ -16,9 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "RollableSplitSurface.h"
+#include "TileSplitSurface.h"
 
-RollableSplitSurface::RollableSplitSurface(bool splitDirection, BlockLocation& location, ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet::TextureType textureType, int nw, int ne, int se, int sw) {
+TileSplitSurface::TileSplitSurface(bool splitDirection, BlockLocation& location, ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet::TextureType textureType, int nw, int ne, int se, int sw) {
   cTextureSet = textureSet;
   cTextureType = textureType;
   cLocation = location;
@@ -29,17 +29,17 @@ RollableSplitSurface::RollableSplitSurface(bool splitDirection, BlockLocation& l
   cSplitDirection = splitDirection;
 }
 
-int RollableSplitSurface::getSurfaceCellHeight(int x, int y) {
+int TileSplitSurface::getSurfaceCellHeight(int x, int y) {
   return cLocation.z;
 }
 
-int RollableSplitSurface::getSurfaceCellElevation(int x, int y) {
+int TileSplitSurface::getSurfaceCellElevation(int x, int y) {
   int mHighestA = cCornerHeights[0][0] > cCornerHeights[0][1] ? cCornerHeights[0][0] : cCornerHeights[0][1];
   int mHighestB = cCornerHeights[1][0] > cCornerHeights[1][1] ? cCornerHeights[1][0] : cCornerHeights[1][1];
   return mHighestA > mHighestB ? mHighestA : mHighestB;
 }
 
-void RollableSplitSurface::render() {
+void TileSplitSurface::render() {
   // TODO: Change local variable names here
   float mNorthWest = cCornerHeights[0][1] * IsoRealmsConstants::BLOCK_HEIGHT;
   float mNorthEast = cCornerHeights[1][1] * IsoRealmsConstants::BLOCK_HEIGHT;
@@ -72,10 +72,10 @@ void RollableSplitSurface::render() {
   glEnd();
 }
 
-BlockArea* RollableSplitSurface::getCoverage() {
+BlockArea* TileSplitSurface::getCoverage() {
   return new BlockArea(cLocation, cLocation);
 }
 
-bool RollableSplitSurface::alligned(int x, int y) {
+bool TileSplitSurface::alligned(int x, int y) {
   return cLocation.x == x && cLocation.y == y;
 }

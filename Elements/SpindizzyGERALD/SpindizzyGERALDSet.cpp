@@ -19,7 +19,7 @@
 #include "SpindizzyGERALDSet.h"
 
 SpindizzyGERALDSet::SpindizzyGERALDSet() {
-  std::string mDummyName("SimpleModel");
+  std::string mDummyName("3DModel");
   cGERALDModelFactory = dynamic_cast<ISimpleModelFactory*>(PluginRegistry::getDummyPlugin(mDummyName));
   if (cGERALDModelFactory == NULL) {
     std::cout << "Warning: dynamic_cast failed for dummy model plugin" << std::endl;
@@ -47,12 +47,12 @@ std::string SpindizzyGERALDSet::getName() {
 
 std::vector<PlugSocket*> SpindizzyGERALDSet::getPlugSockets() {
   std::vector<PlugSocket*> mSockets;
-  mSockets.push_back(new PlugSocket("SimpleModel", ""));
+  mSockets.push_back(new PlugSocket("3DModel", ""));
   return mSockets;
 }
 
 void SpindizzyGERALDSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
-  if (socket->getType() == "SimpleModel") {
+  if (socket->getType() == "3DModel") {
     cGERALDModelFactory = dynamic_cast<ISimpleModelFactory*>(implementation);
     if (cGERALDModelFactory == NULL) {
       std::cout << "Warning: dynamic_cast failed for model plugin" << std::endl;
@@ -64,7 +64,7 @@ void SpindizzyGERALDSet::setPlugin(PlugSocket* socket, IPlugin* implementation) 
 }
 
 IPlugin* SpindizzyGERALDSet::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "SimpleModel") {
+  if (socket->getType() == "3DModel") {
     return cGERALDModelFactory;
   }
   // TODO: Throw wobbly!

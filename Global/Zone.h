@@ -51,7 +51,7 @@ class Zone:public BlockArea,
 
   public:
   Zone(BlockLocation&, BlockLocation&);
-  Zone(DOMNodeWrapper*, ElementSetRegistry&);
+  Zone(DOMNodeWrapper*, ElementSetRegistry&, PluginRegistry&);
 
   /**
    * TODO: Write more about this.

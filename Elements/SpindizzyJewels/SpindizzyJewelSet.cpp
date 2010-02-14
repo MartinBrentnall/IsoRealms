@@ -19,7 +19,7 @@
 #include "SpindizzyJewelSet.h"
 
 SpindizzyJewelSet::SpindizzyJewelSet() {
-  std::string mDummyName("SimpleModel");
+  std::string mDummyName("3DModel");
   cJewelModelFactory = dynamic_cast<ISimpleModelFactory*>(PluginRegistry::getDummyPlugin(mDummyName));
   if (cJewelModelFactory == NULL) {
     std::cout << "Warning: dynamic cast failed for dummy!" << std::endl;
@@ -47,14 +47,14 @@ std::string SpindizzyJewelSet::getName() {
 
 std::vector<PlugSocket*> SpindizzyJewelSet::getPlugSockets() {
   std::vector<PlugSocket*> mSockets;
-  mSockets.push_back(new PlugSocket("SimpleModel", ""));// TODO: Change to Factory
+  mSockets.push_back(new PlugSocket("3DModel", ""));// TODO: Change to Factory
   return mSockets;
 }
 
 void SpindizzyJewelSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
-  if (socket->getType() == "SimpleModel" && implementation != cJewelModelFactory) {// TODO: Change to Factory
+  if (socket->getType() == "3DModel" && implementation != cJewelModelFactory) {// TODO: Change to Factory
     if (implementation == NULL) {
-      std::string mDummyName("SimpleModel");
+      std::string mDummyName("3DModel");
       cJewelModelFactory = dynamic_cast<ISimpleModelFactory*>(PluginRegistry::getDummyPlugin(mDummyName));
       if (cJewelModelFactory == NULL) {
         std::cout << "Warning: dynamic cast failed for dummy!" << std::endl;
@@ -74,7 +74,7 @@ void SpindizzyJewelSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
 }
 
 IPlugin* SpindizzyJewelSet::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "SimpleModel") {// TODO: Change to Factory
+  if (socket->getType() == "3DModel") {// TODO: Change to Factory
     return cJewelModelFactory;
   }
   // TODO: Throw wobbly!

@@ -19,12 +19,6 @@
 // TODO: Rename "SupportedPluginsComponent.h"
 #include "PluginRequirementsComponent.h"
 
-IFont* PluginRequirementsComponent::cFont = NULL;
-
-void PluginRequirementsComponent::setFont(IFont* font) {
-  cFont = font;
-}
-
 PluginRequirementsComponent::PluginRequirementsComponent(IComponentContainer* componentContainer, PluginRegistry* pluginRegistry, IPluginSupport* pluginSupport, float x, float y) : ResizableDialog(componentContainer, getTitle(pluginSupport), x, y, 1.0f, 1.0f) {
   cPluginRegistry = pluginRegistry;
   cComponentContainer = componentContainer;
@@ -59,7 +53,7 @@ PluginRequirementsComponent::PluginRequirementsComponent(IComponentContainer* co
     std::string mPluginType = cSupportedPlugins[i]->getType();
     TextLabelComponent* mTypeLabel = new TextLabelComponent(mPluginType);
     IPlugin* mPlugin = cPluginSupport->getPlugin(cSupportedPlugins[i]);
-    std::string mInstanceName = pluginRegistry->getInstanceName(mPluginType, mPlugin);
+    std::string mInstanceName = mPlugin != NULL ? pluginRegistry->getInstanceName(mPluginType, mPlugin) : "<none>";
     TextLabelComponent* mSelectedInstanceLabel = new TextLabelComponent(mInstanceName);
     ICommand* mChoosePluginInstanceCommand = new ChoosePluginImplementationCommand(cPluginSupport, cSupportedPlugins[i], componentContainer, pluginRegistry, mPluginType);
     Button* mChoosePluginButton = new Button(NULL, mChoosePluginInstanceCommand, "Choose...");

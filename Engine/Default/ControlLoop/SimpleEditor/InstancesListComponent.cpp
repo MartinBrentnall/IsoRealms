@@ -25,13 +25,13 @@ void InstancesListComponent::setFont(IFont* font) {
   cFont = font;
 }
 
-InstancesListComponent::InstancesListComponent(IInstantiable* instantiator) {
-  cInstantiator = instantiator;
+InstancesListComponent::InstancesListComponent(IEntityClass* entityClass) {
+  cEntityClass = entityClass;
   cSelectedInstance = 0;
 }
 
 void InstancesListComponent::render() {
-  std::vector<std::string*> mInstances = cInstantiator->getInstances();
+  std::vector<std::string*> mInstances = cEntityClass->getInstances();
 
   float mLeft = getLeft();
   float mBottom = getBottom();
@@ -58,7 +58,7 @@ void InstancesListComponent::render() {
 }
 
 std::string* InstancesListComponent::getSelectedInstance() {
-  std::vector<std::string*> mInstances = cInstantiator->getInstances();
+  std::vector<std::string*> mInstances = cEntityClass->getInstances();
   return mInstances[cSelectedInstance];
 }
 
@@ -68,7 +68,7 @@ void InstancesListComponent::update(int milliseconds) {
 bool InstancesListComponent::keyDown(SDLKey& key) {
   switch (key) {
     case SDLK_DOWN: {
-      std::vector<std::string*> mInstances = cInstantiator->getInstances();
+      std::vector<std::string*> mInstances = cEntityClass->getInstances();
       if (cSelectedInstance < mInstances.size() - 1) {
         cSelectedInstance++;
       }

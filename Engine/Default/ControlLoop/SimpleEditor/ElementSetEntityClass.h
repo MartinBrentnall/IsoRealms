@@ -4,33 +4,48 @@
 #include <string>
 #include <vector>
 
-#include "IInstantiable.h"
-
 #include "../../../../Global/IElementSet.h"
 #include "../../../../Global/ElementSetRegistry.h"
 #include "../../../../Global/IComponentContainer.h"
 #include "../../../../Global/PluginRegistry.h"
 #include "../../../../Global/System.h"
 
+#include "ConfirmationBox.h"
+#include "IEntityClass.h"
 #include "PluginRequirementsComponent.h"
 
 /**
  * This class provides a means to interface with element set instances.
  */
-class ElementSetEntityClass:public IInstantiable {
+class ElementSetEntityClass:public IEntityClass {
   private:
   ElementSetRegistry* cElementSetRegistry;
   PluginRegistry* cPluginRegistry;
   IComponentContainer* cComponentContainer;
 
+  class RemoveCommand:public ICommand {
+    private:
+    ElementSetEntityClass* cParent;
+    std::string cName;
+
+    public:
+    RemoveCommand(ElementSetEntityClass*, std::string);
+    
+    /***********************\
+     * Implements ICommand *
+    \***********************/
+    void execute();
+  };
+
   public:
   ElementSetEntityClass(ElementSetRegistry*, PluginRegistry*, IComponentContainer*);
 
-  /*************************\
-   * Implements IInstiable *
-  \*************************/
+  /***************************\
+   * Implements IEntityClass *
+  \***************************/
   std::string getEntityClassName();
   void instantiate(std::string&, std::string&);
+  void remove(std::string&);
   void configure(std::string&);
   std::vector<std::string*> getInstances();
   std::vector<std::string*> getImplementations();

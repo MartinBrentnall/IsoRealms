@@ -188,6 +188,7 @@ class SimpleEditor:public IControlLoop,
   void addComponent(IHUDComponent*);
   void removeComponent(IHUDComponent*);
   void bringComponentToFront(IHUDComponent*);
+  void relinquishFocus(IHUDComponent*);
 
   /***************************\
    * Implements IControlLoop *

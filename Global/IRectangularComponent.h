@@ -26,7 +26,7 @@
  * This interface allows a component to define its own rectangle.  This is
  * useful when we need to arrange multiple components in a space.
  */
-class IRectangularComponent:public virtual IHUDComponent,
+class IRectangularComponent:public IHUDComponent,
                             public IRectangle {
   public:
   virtual ~IRectangularComponent() {}

@@ -100,8 +100,8 @@ void FlexibleGridLayoutComponent::testFocusChange(SDL_Event& event) {
         }
       }
     }
+    cFocusedComponent = NULL;
   }
-  cFocusedComponent = NULL;
 }
 
 bool FlexibleGridLayoutComponent::input(SDL_Event& event) {

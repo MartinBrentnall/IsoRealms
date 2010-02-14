@@ -25,7 +25,7 @@
 #include "../../Global/IPluginSupport.h"
 #include "../../Global/PluginRegistry.h"
 
-#include "../../Plugins/SimpleModel/ISimpleModelFactory.h"
+#include "../../Plugins/3DModel/ISimpleModelFactory.h"
 
 #include "SpindizzyJewelFactory.h"
 

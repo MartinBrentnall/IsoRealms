@@ -48,7 +48,6 @@ class PluginRequirementsComponent:public ResizableDialog {
   static const int CHOOSE_BUTTON_COLUMN = 2;
   static const int RESET_BUTTON_COLUMN = 3;
 
-  static IFont* cFont;
   PluginRegistry* cPluginRegistry;
 
   /**
@@ -94,8 +93,6 @@ class PluginRequirementsComponent:public ResizableDialog {
   std::string* getTitle(IPluginSupport*);
 
   public:
-  void static setFont(IFont*);
-
   PluginRequirementsComponent(IComponentContainer*, PluginRegistry*, IPluginSupport*, float, float);
 
   /****************************\

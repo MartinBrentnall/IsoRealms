@@ -26,13 +26,14 @@
 #include "Hacks.h"
 #include "DOMNodeWriter.h"
 #include "IPlugin.h"
+#include "IPluginRegistry.h"
 #include "IPluginRegistryListener.h"
 #include "InitException.h"
 #include "System.h"
 
 class Zone;
 
-class PluginRegistry {
+class PluginRegistry:public IPluginRegistry {
   private:
   static std::map<std::string, IPlugin*> cDummyPlugins;  
 
@@ -55,11 +56,28 @@ class PluginRegistry {
    */
   std::map<IPlugin*, destroyPlugin*> cDestroyFunctions;
 
+  /**
+   * Get the type of the specified plugin instance.
+   * 
+   * @param IPlugin*  The plugin instance.
+   * @returns  The type of the plugin.
+   */
+  std::string getPluginType(IPlugin*);  
+
   public:
 
   void registerPlugin(DOMNodeWrapper*);
 
   void setPlugin(IPlugin*, DOMNodeWrapper*);
+
+  /**
+   * Called when a plug-in is removed.  The plug-in registry will check the
+   * plug-ins to see which plug-ins may be using it, and will set reset any
+   * such connections to NULL (typically the dummy plugin).
+   * 
+   * @param IPlugin*  The plugin instance to be removed.
+   */
+  void pluginRemoved(IPlugin*);
 
   /**
    * This allows all plugins to know that an editor action is being performed
@@ -76,6 +94,23 @@ class PluginRegistry {
   void initPlugins(Zone*);
 
   /**
+   * This function is called immediately prior to rendering a zone.  It allows
+   * plugins to perform necessary set-up actions for rendering the specified
+   * zone.
+   * 
+   * @param Zone*  The zone to be rendered.
+   */
+  void renderPreZone(Zone*);
+
+  /**
+   * This function is called when the zone editing context has changed.  It is
+   * not used for the runtime.
+   * 
+   * @param Zone*  The new zone.
+   */
+  void zoneContextChanged(Map*, Zone*);
+
+  /**
    * Load a logic module.
    * 
    * @param string&  The logic type.
@@ -85,21 +120,22 @@ class PluginRegistry {
   void loadPlugin(std::string&, std::string&, std::string&);
 
   /**
+   * Remove the specified plugin instance.  All listeners will be notified of
+   * the removal to give them an opportunity to relinquish use of the plugin
+   * prior to removal.  The plugin should not be in use after the removal has
+   * been completed.
+   * 
+   * @param IPlugin*  Instance to remove.
+   */
+  void removePlugin(IPlugin*);
+
+  /**
    * Return instance names for the specified logic type.
    * 
    * @param string@  The logic type.
    * @returns  Instance names loaded for the logic type.
    */
   std::vector<std::string> getInstances(std::string&);
-
-  /**
-   * Retrieve a logic factory instance of the specified type and name.
-   * 
-   * @param string&  The logic type.
-   * @param string&  The logic instance name.
-   * @returns  The instance of the logic.
-   */
-  IPlugin* getPlugin(std::string&, std::string&);
 
   /**
    * Add a listener to listen for logic instance changes.
@@ -118,22 +154,20 @@ class PluginRegistry {
   static IPlugin* getDummyPlugin(std::string&);
 
   static bool isDummyPlugin(IPlugin*);
-
-  /**
-   * Called when a plug-in is removed.  The plug-in registry will check the
-   * plug-ins to see which plug-ins may be using it, and will set reset any
-   * such connections to NULL (typically the dummy plugin).
-   * 
-   * @param IPlugin*  The plugin instance to be removed.
-   */
-  void pluginRemoved(IPlugin*);
-
-  /**
-   * Retrieve the plug-in instance name
-   */
-  std::string getInstanceName(std::string, IPlugin*);
-
   void save(DOMNodeWriter*);
+
+  void loadPluginData(DOMNodeWrapper*, Zone*);
+
+  /**
+   * All plugins should write any zone data.
+   */
+  void saveData(DOMNodeWriter*, Map*, Zone*);
+
+  /******************************\
+   * Implements IPluginRegistry *
+  \******************************/
+  IPlugin* getPlugin(std::string&, std::string&);
+  std::string getInstanceName(std::string, IPlugin*);
 
   ~PluginRegistry();
 };

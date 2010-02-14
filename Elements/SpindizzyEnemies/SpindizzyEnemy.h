@@ -25,7 +25,7 @@
 #include "../../Global/IVisualElement.h"
 #include "../../Global/Vertex.h"
 
-#include "../../Plugins/SimpleModel/ISimpleModel.h"
+#include "../../Plugins/3DModel/ISimpleModel.h"
 
 class SpindizzyEnemy:public IElement, 
                      public IVisualElement {

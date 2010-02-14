@@ -19,16 +19,16 @@
 #include "EntityClassInstancesComponent.h"
 
 //TODO: CLASS REQUIRES REFACTOR FOR NEW COMPONENT FRAMEWORK!
-EntityClassInstancesComponent::EntityClassInstancesComponent(IInstantiable* instantiator, IComponentContainer* componentContainer, float x, float y, IInstanceSelectionListener* listener) : ResizableDialog(componentContainer, getTitle(instantiator), x, y, 1.26f, 0.78f) {
+EntityClassInstancesComponent::EntityClassInstancesComponent(IEntityClass* entityClass, IComponentContainer* componentContainer, float x, float y, IInstanceSelectionListener* listener) : ResizableDialog(componentContainer, getTitle(entityClass), x, y, 1.26f, 0.78f) {
 //  std::vector<std::string>* mImplementationsList = System::getFileList("/usr/share/IsoRealms/Elements/", "*");
-  std::vector<std::string*> mImplementationsList = instantiator->getImplementations();
+  std::vector<std::string*> mImplementationsList = entityClass->getImplementations();
 
   ICommand* mConfigureInstanceCommand = new ConfigureInstanceCommand(this);
-  ICommand* mRemoveInstanceCommand = new RemoveInstanceCommand();
+  ICommand* mRemoveInstanceCommand = new RemoveInstanceCommand(this);
   ICommand* mCreateInstanceCommand = new CreateInstanceCommand(this);
   ICommand* mCloseCommand = new CloseCommand(this);
 
-  cInstantiator = instantiator;
+  cEntityClass = entityClass;
   cListener = listener;
  
   // Put "close" button in bottom right.
@@ -95,7 +95,7 @@ EntityClassInstancesComponent::EntityClassInstancesComponent(IInstantiable* inst
 
   // Put instances list box above "configure..." button and below instances label in left cell.
   EdgeRelation* mAdjacentInstancesLabel = new EdgeRelation(mInstancesLabel, EdgeRelation::OUTSIDE, 0.0f);
-  cInstancesList = new InstancesListComponent(cInstantiator);
+  cInstancesList = new InstancesListComponent(cEntityClass);
   IComponentBoundsCalculator* mInstancesListLayout = new ComponentEdgeLayout(mAdjacentInstancesLabel, mInsideLeftCell, mAdjacentConfigureButton, mInsideLeftCell, NULL);
   cInstancesList->setBoundsCalculator(mInstancesListLayout);
 
@@ -114,8 +114,8 @@ EntityClassInstancesComponent::EntityClassInstancesComponent(IInstantiable* inst
   setFocusedComponent(cImplementationsList);
 }
 
-std::string* EntityClassInstancesComponent::getTitle(IInstantiable* instantiator) {
-  return new std::string(instantiator->getEntityClassName() + " Instances");
+std::string* EntityClassInstancesComponent::getTitle(IEntityClass* entityClass) {
+  return new std::string(entityClass->getEntityClassName() + " Instances");
 }
 
 void EntityClassInstancesComponent::updateResizableDialogContent(int milliseconds) {
@@ -139,10 +139,16 @@ EntityClassInstancesComponent::ConfigureInstanceCommand::ConfigureInstanceComman
 
 void EntityClassInstancesComponent::ConfigureInstanceCommand::execute() {
   std::string* mSelectedInstance = cParent->cInstancesList->getSelectedInstance();
-  cParent->cInstantiator->configure(*mSelectedInstance);
+  cParent->cEntityClass->configure(*mSelectedInstance);
+}
+
+EntityClassInstancesComponent::RemoveInstanceCommand::RemoveInstanceCommand(EntityClassInstancesComponent* parent) {
+  cParent = parent;
 }
 
 void EntityClassInstancesComponent::RemoveInstanceCommand::execute() {
+  std::string* mSelectedInstance = cParent->cInstancesList->getSelectedInstance();
+  cParent->cEntityClass->remove(*mSelectedInstance);
 }
 
 EntityClassInstancesComponent::CreateInstanceCommand::CreateInstanceCommand(EntityClassInstancesComponent* parent) {
@@ -152,7 +158,7 @@ EntityClassInstancesComponent::CreateInstanceCommand::CreateInstanceCommand(Enti
 void EntityClassInstancesComponent::CreateInstanceCommand::execute() {
   std::string mImplementation = cParent->cImplementationsList->getSelectedImplementation();
   std::string mInstanceName = cParent->cInstanceNameInputField->getText();
-  cParent->cInstantiator->instantiate(mImplementation, mInstanceName);
+  cParent->cEntityClass->instantiate(mImplementation, mInstanceName);
 }
 
 EntityClassInstancesComponent::CloseCommand::CloseCommand(EntityClassInstancesComponent* parent) {

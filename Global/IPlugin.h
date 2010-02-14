@@ -26,6 +26,8 @@
 #include "IComponentContainer.h"
 #include "IPluginSupport.h"
 
+class IPluginRegistry;
+class Map;
 class Zone;
 
 class IPlugin:public IPluginSupport {
@@ -45,6 +47,19 @@ class IPlugin:public IPluginSupport {
    */
   virtual void initPlugin(Zone*) = 0;
 
+  /**
+   * This function is called immediately before the content of the specified
+   * zone is rendered.
+   * 
+   * @param Zone*  The zone thaw will be rendered after this.
+   */
+  virtual void renderPreZone(Zone*) {}
+
+  /**
+   * This function is called when the zone context changes.
+   */
+  virtual void zoneContextChanged(Map*, Zone*) {}
+
   virtual void setEditingInfo(IComponentContainer*) = 0;
 
   /**
@@ -56,6 +71,16 @@ class IPlugin:public IPluginSupport {
    * Save the configuration of the plug-in.
    */
   virtual void save(DOMNodeWriter*) = 0;
+
+  /**
+   * Write plugin data for the specified zone.
+   */
+  virtual void saveData(DOMNodeWriter*, Map*, Zone*) {}
+
+  /**
+   * Load plugin data for the specified zone.
+   */
+  virtual void loadData(DOMNodeWrapper*, IPluginRegistry*, Zone*) {};
 
   /**
    * Load the configuration of the plug-in.

@@ -84,6 +84,7 @@ class SpindizzyBlockFactory:public ISpindizzyBlockFactory,
    * Implements ISpindizzyBlockFactory *
   \*************************************/
   void signalAllElementsDirty();
+  void unregisterSurfaces(ISurfaceProcessor*);
 
   /******************************\
    * Implements IElementFactory *

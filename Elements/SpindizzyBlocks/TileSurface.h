@@ -16,8 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ROLLABLE_SURFACE_H
-#define ROLLABLE_SURFACE_H
+#ifndef TILE_SURFACE_H
+#define TILE_SURFACE_H
 
 #include <cmath>
 #include <cstdlib>
@@ -25,13 +25,13 @@
 
 #include "../../Global/IsoRealmsConstants.h"
 
-#include "../../Plugins/RollableSurfaceCalculator/IRollableSurface.h"
+#include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
 
-class RollableSurface:public IRollableSurface {
+class TileSurface:public ITileSurface {
   private:
-  IRollableSurface::FaceDirection cFacing;
+  ITileSurface::FaceDirection cFacing;
   // TODO: Change to refer to the texture set that may change!
   ISpindizzyTextureSet** cTextureSet;
   ISpindizzyTextureSet::TextureType cTextureType;
@@ -46,7 +46,7 @@ class RollableSurface:public IRollableSurface {
   public:
 
   /**
-   * Construct a new RollableSurface.
+   * Construct a new TileSurface.
    * 
    * @param ISpindizzyTexture*  The texture of the surface.
    * @param int  North edge cell (inclusive) of the surface.
@@ -56,13 +56,13 @@ class RollableSurface:public IRollableSurface {
    * @param int  Height of lowest part of the surface.
    * @param int  Slope step along west-to-east (X axis).
    * @param int  Slope step along north-to-south (Y axis).
-   * @param IRollableSurface::FaceDirection  Facing direction of the surface.
+   * @param ITileSurface::FaceDirection  Facing direction of the surface.
    */
-  RollableSurface(ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType, int, int, int, int, int, int, int, IRollableSurface::FaceDirection);
+  TileSurface(ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType, int, int, int, int, int, int, int, ITileSurface::FaceDirection);
 
-  /*******************************\
-   * Implements IRollableSurface *
-  \*******************************/
+  /***************************\
+   * Implements ITileSurface *
+  \***************************/
   int getSurfaceCellHeight(int, int);
   int getSurfaceCellElevation(int, int);
   void render();

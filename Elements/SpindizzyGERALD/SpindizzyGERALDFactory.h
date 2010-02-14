@@ -27,8 +27,8 @@
 #include "../../Global/IElementGateway.h"
 #include "../../Global/IVisualElement.h"
 
-#include "../../Plugins/SimpleModel/ISimpleModel.h"
-#include "../../Plugins/SimpleModel/ISimpleModelFactory.h"
+#include "../../Plugins/3DModel/ISimpleModel.h"
+#include "../../Plugins/3DModel/ISimpleModelFactory.h"
 
 #include "SpindizzyGERALD.h"
 

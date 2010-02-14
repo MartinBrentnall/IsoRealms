@@ -57,6 +57,7 @@ ScreenConfiguration.o \
 System.o \
 Utils.o \
 Vertex.o \
+WrappingGridComponent.o \
 Zone.o \
 ZoneBrush.o
 

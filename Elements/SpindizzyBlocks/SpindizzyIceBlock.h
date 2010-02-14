@@ -31,7 +31,7 @@ class SpindizzyIceBlock:public AbstractSpindizzyBlock {
   /*************************************\
    * Implements AbstractSpindizzyBlock *
   \*************************************/
-  ISpindizzyTextureSet::TextureType getRollableSurfaceTexture();
+  ISpindizzyTextureSet::TextureType getTileSurfaceTexture();
   ISpindizzyTextureSet::TextureType getNorthWallTexture();
   ISpindizzyTextureSet::TextureType getEastWallTexture();
   ISpindizzyTextureSet::TextureType getSouthWallTexture();

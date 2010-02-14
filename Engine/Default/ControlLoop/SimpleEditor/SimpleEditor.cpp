@@ -361,6 +361,10 @@ void SimpleEditor::bringComponentToFront(IHUDComponent* component) {
   }  
 }
 
+void SimpleEditor::relinquishFocus(IHUDComponent*) {
+  cEditorFocus = true;
+}
+
 void SimpleEditor::clearUndoStack() {
   while (!cUndoStack.empty()) {
     IElement* mElement = cUndoStack.top();

@@ -24,11 +24,11 @@
 #include "../../Global/BlockLocation.h"
 #include "../../Global/IsoRealmsConstants.h"
 
-#include "../../Plugins/RollableSurfaceCalculator/IRollableSurface.h"
+#include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
 
-class RollableSplitSurface:public IRollableSurface {
+class TileSplitSurface:public ITileSurface {
   private:
   BlockLocation cLocation;
   // TODO: Change to refer to the texture set that may change!
@@ -40,16 +40,16 @@ class RollableSplitSurface:public IRollableSurface {
   public:
 
   /**
-   * Construct a new RollableSplitSurface.
+   * Construct a new TileSplitSurface.
    * 
    * @param bool  Split direction.
    * @param BlockLocation&  
    */
-  RollableSplitSurface(bool, BlockLocation&, ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType, int, int, int, int);
+  TileSplitSurface(bool, BlockLocation&, ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType, int, int, int, int);
 
-  /*******************************\
-   * Implements IRollableSurface *
-  \*******************************/
+  /***************************\
+   * Implements ITileSurface *
+  \***************************/
   int getSurfaceCellHeight(int, int);
   int getSurfaceCellElevation(int, int);
   void render();

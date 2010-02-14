@@ -71,7 +71,6 @@ void PluginRegistry::loadPlugin(std::string& type, std::string& implementation, 
   for (unsigned int i = 0; i < cListeners.size(); i++) {
     cListeners[i]->pluginInstanceAdded(this, type, instanceName);
   }
-  std::cout << "Loaded Plugin \"" << type << "\" successfully!" << std::endl;
 }
 
 std::vector<std::string> PluginRegistry::getInstances(std::string& type) {
@@ -151,6 +150,25 @@ void PluginRegistry::initPlugins(Zone* zone) {
   }
 }
 
+void PluginRegistry::renderPreZone(Zone* zone) {
+  for (std::map<std::string, std::map<std::string, IPlugin*> >::iterator i = cPluginInstances.begin(); i != cPluginInstances.end(); i++) {
+    std::map<std::string, IPlugin*> mInstanceOfType = i->second;
+    for (std::map<std::string, IPlugin*>::iterator j = mInstanceOfType.begin(); j != mInstanceOfType.end(); j++) {
+      j->second->renderPreZone(zone);
+    }
+  }
+}
+
+void PluginRegistry::zoneContextChanged(Map* map, Zone* zone) {
+  for (std::map<std::string, std::map<std::string, IPlugin*> >::iterator i = cPluginInstances.begin(); i != cPluginInstances.end(); i++) {
+    std::map<std::string, IPlugin*> mInstanceOfType = i->second;
+    for (std::map<std::string, IPlugin*>::iterator j = mInstanceOfType.begin(); j != mInstanceOfType.end(); j++) {
+      j->second->zoneContextChanged(map, zone);
+    }
+  }
+}
+
+
 void PluginRegistry::save(DOMNodeWriter* node) {
   for (std::map<std::string, std::map<std::string, IPlugin*> >::iterator i = cPluginInstances.begin(); i != cPluginInstances.end(); i++) {
     std::string mTypeName = i->first;
@@ -181,6 +199,72 @@ void PluginRegistry::save(DOMNodeWriter* node) {
   }
 }
 
+void PluginRegistry::saveData(DOMNodeWriter* node, Map* map, Zone* zone) {
+  for (std::map<std::string, std::map<std::string, IPlugin*> >::iterator i = cPluginInstances.begin(); i != cPluginInstances.end(); i++) {
+    std::string mTypeName = i->first;
+    std::map<std::string, IPlugin*> mInstanceOfType = i->second;
+    for (std::map<std::string, IPlugin*>::iterator j = mInstanceOfType.begin(); j != mInstanceOfType.end(); j++) {
+      // TODO: Only add branch if there's actually something to write!
+      DOMNodeWriter* mDataBranch = node->addBranch("Plugin");
+      mDataBranch->addAttribute("type", mTypeName);
+      mDataBranch->addAttribute("instance", j->first);
+      j->second->saveData(mDataBranch, map, zone);
+    }
+  }
+}
+
+void PluginRegistry::loadPluginData(DOMNodeWrapper* node, Zone* zone) {
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "Plugin") {
+      std::string mPluginType = mNode->getAttribute("type");
+      std::string mPluginInstance = mNode->getAttribute("instance");
+      IPlugin* mPlugin = getPlugin(mPluginType, mPluginInstance);
+      mPlugin->loadData(mNode, this, zone);
+    }
+  }  
+}
+
+std::string PluginRegistry::getPluginType(IPlugin* instance) {
+  for (std::map<std::string, std::map<std::string, IPlugin*> >::iterator i = cPluginInstances.begin(); i != cPluginInstances.end(); i++) {
+    std::map<std::string, IPlugin*> mInstanceOfType = i->second;
+    for (std::map<std::string, IPlugin*>::iterator j = mInstanceOfType.begin(); j != mInstanceOfType.end(); j++) {
+      if (instance == j->second) {
+        return i->first;
+      }
+    }
+  }
+  // TODO: Throw exception
+  std::cout << "Warning: plugin type was not found!" << std::endl;
+  return "";
+}
+
+void PluginRegistry::removePlugin(IPlugin* instance) {
+  std::string mImplementation = cImplementationNames.find(instance)->second;
+  destroyPlugin* mDestroyFunction = cDestroyFunctions.find(instance)->second;
+  std::string mTypeName = getPluginType(instance);
+  pluginRemoved(instance);
+  for (unsigned int i = 0; i < cListeners.size(); i++) {
+    cListeners[i]->pluginInstanceRemoved(instance, mTypeName);
+  }
+  mDestroyFunction(instance);
+  void* mHandleToClose = cSOHandles[mTypeName][mImplementation];
+
+  for (std::map<std::string, std::map<std::string, IPlugin*> >::iterator i = cPluginInstances.begin(); i != cPluginInstances.end(); i++) {
+    std::map<std::string, IPlugin*> mInstanceOfType = i->second;
+    for (std::map<std::string, IPlugin*>::iterator j = mInstanceOfType.begin(); j != mInstanceOfType.end(); j++) {
+      if (instance == j->second) {
+        mInstanceOfType.erase(j);
+        cPluginInstances[i->first] = mInstanceOfType;
+        // TODO: Check if it's empty, and remove if so?
+      }
+    }
+  }
+  // TODO: Remove from cSOHandles if it was the last one!
+  dlclose(mHandleToClose);
+}
+
 void PluginRegistry::pluginRemoved(IPlugin* instanceToRemove) {
   for (std::map<std::string, std::map<std::string, IPlugin*> >::iterator i = cPluginInstances.begin(); i != cPluginInstances.end(); i++) {
     std::string mTypeName = i->first;
@@ -204,15 +288,7 @@ PluginRegistry::~PluginRegistry() {
     std::map<std::string, IPlugin*> mInstanceOfType = i->second;
     for (std::map<std::string, IPlugin*>::iterator j = mInstanceOfType.begin(); j != mInstanceOfType.end(); j++) {
       IPlugin* mInstance = j->second;
-      std::string mImplementation = cImplementationNames.find(mInstance)->second;
-      destroyPlugin* mDestroyFunction = cDestroyFunctions.find(mInstance)->second;
-      for (unsigned int i = 0; i < cListeners.size(); i++) {
-        cListeners[i]->pluginInstanceRemoved(mInstance, mTypeName);
-      }
-      mDestroyFunction(mInstance);
-      void* mHandleToClose = cSOHandles[mTypeName][mImplementation];
-      // TODO: Remove from cSOHandles if it was the last one!
-      dlclose(mHandleToClose);
+      removePlugin(mInstance);
     }
   }
 }

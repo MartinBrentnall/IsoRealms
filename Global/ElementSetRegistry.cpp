@@ -109,7 +109,16 @@ bool ElementSetRegistry::exists(std::string instanceName) {
 }
 
 void ElementSetRegistry::destroyInstance(IElementSet* elementSet) {
-  // TODO: Destroy the element set.
+  std::string mInstanceName = getInstanceName(elementSet);
+  destroyElementSet* mDestroyFunction = cDestroyFunctions[mInstanceName];
+  IElementSet* mElementSet = cElementSets[mInstanceName];
+  mDestroyFunction(mElementSet);
+  void* mHandleToClose = cSOHandles[mInstanceName];
+  cElementSetTypes.erase(mInstanceName);
+  cElementSets.erase(mInstanceName);
+  cDestroyFunctions.erase(mInstanceName);
+  // TODO: Remove from cSOHandles if it was the last one!
+  dlclose(mHandleToClose);
   // TODO: Fire event to listeners.
 }
 
@@ -209,12 +218,6 @@ void ElementSetRegistry::pluginRemoved(IPlugin* instanceToRemove) {
 
 ElementSetRegistry::~ElementSetRegistry() {
   for (std::map<std::string, IElementSet*>::iterator i = cElementSets.begin(); i != cElementSets.end(); i++) {
-    std::string mInstanceName = i->first;
-    IElementSet* mElementSet = i->second;
-    destroyElementSet* mDestroyFunction = cDestroyFunctions[mInstanceName];
-    mDestroyFunction(mElementSet);
-    void* mHandleToClose = cSOHandles[mInstanceName];
-    // TODO: Remove from cSOHandles if it was the last one!
-    dlclose(mHandleToClose);
+    destroyInstance(i->second);
   }
 }

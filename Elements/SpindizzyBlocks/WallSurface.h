@@ -26,8 +26,8 @@
 
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
-#include "../../Plugins/RollableSurfaceCalculator/IWallSurface.h"
-#include "../../Plugins/RollableSurfaceCalculator/IWallEdge.h"
+#include "../../Plugins/SurfaceProcessor/IWallSurface.h"
+#include "../../Plugins/SurfaceProcessor/IWallEdge.h"
 
 class WallSurface:public IWallSurface {
   private:

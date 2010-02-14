@@ -21,6 +21,7 @@
 
 #include "../../Global/IElementFactory.h"
 
+#include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 
 /**
@@ -30,7 +31,18 @@ class ISpindizzyBlockFactory:public IElementFactory {
   public:
   ISpindizzyBlockFactory(IElementSet*);
 
+  /**
+   * Signal all elements of the factory as dirty.
+   */
   virtual void signalAllElementsDirty() = 0;
+
+  /**
+   * Unregister all the blocks (surface providers) with the specified surface
+   * calculator.
+   * 
+   * @param ISurfaceProcessor  The surface calculator to unregister on.
+   */
+  virtual void unregisterSurfaces(ISurfaceProcessor*) = 0;
 };
 
 #endif

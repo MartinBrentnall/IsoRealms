@@ -23,7 +23,7 @@
 #include <cstdlib>
 #include <GL/gl.h>
 
-#include "../../Plugins/SimpleModel/ISimpleModel.h"
+#include "../../Plugins/3DModel/ISimpleModel.h"
 
 #include "../../Global/BlockLocation.h"
 #include "../../Global/IDynamicElement.h"

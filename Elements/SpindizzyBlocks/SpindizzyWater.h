@@ -21,18 +21,18 @@
 
 #include "../../Global/IElement.h"
 
-#include "../../Plugins/RollableSurfaceCalculator/IRollableSurfaceCalculator.h"
-#include "../../Plugins/RollableSurfaceCalculator/IRollableSurfaceProvider.h"
-#include "../../Plugins/RollableSurfaceCalculator/IWallSurface.h"
+#include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
+#include "../../Plugins/SurfaceProcessor/ISurfaceProvider.h"
+#include "../../Plugins/SurfaceProcessor/IWallSurface.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
 
-#include "ISurfaceCalculator.h"
-#include "RollableSurface.h"
+#include "ISurfaceProcessorProxy.h"
+#include "TileSurface.h"
 #include "WallSurface.h"
 
 class SpindizzyWater:public IElement,
-                     public IRollableSurfaceProvider {
+                     public ISurfaceProvider {
   private:
   enum InitStage {
     CACHE_SURFACES,
@@ -47,7 +47,7 @@ class SpindizzyWater:public IElement,
   /**
    * TODO: Document
    */
-  std::vector<IRollableSurface*> getWaterSurfaces();
+  std::vector<ITileSurface*> getWaterSurfaces();
 
   public:
   SpindizzyWater(IElementFactory*, BlockLocation*, BlockLocation*, ISpindizzyTextureSet**);
@@ -64,11 +64,11 @@ class SpindizzyWater:public IElement,
   std::vector<IInteractiveElement*> getInteractiveElements();
   void save(DOMNodeWriter*, BlockLocation&);
 
-  /***************************************\
-   * Implements IRollableSurfaceProvider *
-  \***************************************/
-  std::vector<IRollableSurface*> getRollableSurfaces(IRollableSurface::FaceDirection);
-  IRollableSurface* createSubSurface(IRollableSurface::FaceDirection, int, int, int, int);
+  /*******************************\
+   * Implements ISurfaceProvider *
+  \*******************************/
+  std::vector<ITileSurface*> getTileSurfaces(ITileSurface::FaceDirection);
+  ITileSurface* createSubSurface(ITileSurface::FaceDirection, int, int, int, int);
   std::vector<IWallSurface*> getWallSurfaces(int, IWallSurface::FaceDirection);
   IWallSurface* createSubSurface(int, int, IWallSurface::FaceDirection, int, int, int, int, int);
   BlockArea* getCoverage();

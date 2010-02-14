@@ -29,6 +29,7 @@ ChooseElementsCommand.o \
 ChooseElementsComponent.o \
 ChooseElementsComponentRow.o \
 ChoosePluginImplementationCommand.o \
+ConfirmationBox.o \
 EditorCommandManager.o \
 EditorCursor.o \
 ElementSetEntityClass.o \

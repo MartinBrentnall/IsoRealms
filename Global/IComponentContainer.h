@@ -27,6 +27,12 @@ class IComponentContainer {
   virtual void removeComponent(IHUDComponent*) = 0;
   virtual void addComponent(IHUDComponent*) = 0;
   virtual void bringComponentToFront(IHUDComponent*) = 0;
+
+  /**
+   * Tell the container to lose focus on the specified component, if it has it.
+   * The subsequent focus is undefined and implementation dependent.
+   */
+  virtual void relinquishFocus(IHUDComponent*) = 0;
 };
 
 #endif

@@ -34,7 +34,7 @@
 
 #include "Button.h"
 #include "IInstanceSelectionListener.h"
-#include "IInstantiable.h"
+#include "IEntityClass.h"
 #include "ImplementationsListComponent.h"
 #include "InstancesListComponent.h"
 #include "PluginRequirementsComponent.h"
@@ -50,7 +50,7 @@
 class EntityClassInstancesComponent:public ResizableDialog {
   private:
   GridLayoutComponent* cGridLayout;
-  IInstantiable* cInstantiator;
+  IEntityClass* cEntityClass;
 
   /**
    * This listener is used to respond to instance selection when this dialog is
@@ -77,7 +77,11 @@ class EntityClassInstancesComponent:public ResizableDialog {
   };
 
   class RemoveInstanceCommand:public ICommand {
+    private:
+    EntityClassInstancesComponent* cParent;
+
     public:
+    RemoveInstanceCommand(EntityClassInstancesComponent* parent);
 
     /***********************\
      * Implements ICommand *
@@ -111,10 +115,10 @@ class EntityClassInstancesComponent:public ResizableDialog {
     void execute();
   };
 
-  std::string* getTitle(IInstantiable*);
+  std::string* getTitle(IEntityClass*);
 
   public:
-  EntityClassInstancesComponent(IInstantiable*, IComponentContainer*, float, float, IInstanceSelectionListener* = NULL);
+  EntityClassInstancesComponent(IEntityClass*, IComponentContainer*, float, float, IInstanceSelectionListener* = NULL);
 
   /******************************\
    * Implements ResizableDialog *

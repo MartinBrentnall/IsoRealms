@@ -25,8 +25,6 @@ LN = ln
 OBJS = \
 AbstractSpindizzyBlock.o \
 ISpindizzyBlockFactory.o \
-RollableSplitSurface.o \
-RollableSurface.o \
 SpindizzyBlock.o \
 SpindizzyBlockConfigurationComponent.o \
 SpindizzyBlockFactory.o \
@@ -37,6 +35,8 @@ SpindizzySwitchBlock.o \
 SpindizzyTrampolineBlock.o \
 SpindizzyWater.o \
 SpindizzyWaterFactory.o \
+TileSplitSurface.o \
+TileSurface.o \
 WallSurface.o
 
 objs:	$(OBJS)

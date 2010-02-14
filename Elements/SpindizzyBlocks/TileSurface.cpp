@@ -16,9 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "RollableSurface.h"
+#include "TileSurface.h"
 
-RollableSurface::RollableSurface(ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet::TextureType textureType, int north, int east, int south, int west, int height, int westEastSlope, int northSouthSlope, IRollableSurface::FaceDirection facing) {
+TileSurface::TileSurface(ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet::TextureType textureType, int north, int east, int south, int west, int height, int westEastSlope, int northSouthSlope, ITileSurface::FaceDirection facing) {
   cTextureSet = textureSet;
   cTextureType = textureType;
   cNorth = north;
@@ -31,17 +31,17 @@ RollableSurface::RollableSurface(ISpindizzyTextureSet** textureSet, ISpindizzyTe
   cFacing = facing;
 }
 
-int RollableSurface::getSurfaceCellHeight(int x, int y) {
+int TileSurface::getSurfaceCellHeight(int x, int y) {
   return abs(((cWestEastSlope   >= 0 ? cWest  : cEast)  - x) * cWestEastSlope)
        + abs(((cNorthSouthSlope >= 0 ? cNorth : cSouth) - y) * cNorthSouthSlope)
        + cHeight;
 }
 
-int RollableSurface::getSurfaceCellElevation(int x, int y) {
+int TileSurface::getSurfaceCellElevation(int x, int y) {
   return abs(cWestEastSlope) + abs(cNorthSouthSlope);
 }
 
-void RollableSurface::render() {
+void TileSurface::render() {
 /*  if (cCondition != NULL) {
     if (!(cCondition->isTrue())) {
       return;
@@ -78,7 +78,7 @@ void RollableSurface::render() {
   glBegin(GL_QUADS);
 
   switch (cFacing) {
-    case IRollableSurface::UP: {
+    case ITileSurface::UP: {
       mTexture->texCoord2f(cEast + 1, cNorth + 1); glVertex3f(xe, ys, xsye);
       mTexture->texCoord2f(cEast + 1, cSouth    ); glVertex3f(xe, ye, xeye);
       mTexture->texCoord2f(cWest,     cSouth    ); glVertex3f(xs, ye, xeys);
@@ -90,7 +90,7 @@ void RollableSurface::render() {
       break;
     }
 
-    case IRollableSurface::DOWN: {
+    case ITileSurface::DOWN: {
       mTexture->texCoord2f(cWest,     cNorth + 1); glVertex3f(xs, ye, xeys);
       mTexture->texCoord2f(cEast + 1, cNorth + 1); glVertex3f(xe, ye, xeye);
       mTexture->texCoord2f(cEast + 1, cSouth);     glVertex3f(xe, ys, xsye);
@@ -105,7 +105,7 @@ void RollableSurface::render() {
   glEnd();
 }
 
-BlockArea* RollableSurface::getCoverage() {
+BlockArea* TileSurface::getCoverage() {
   BlockLocation mStartLocation(cWest, cSouth, cHeight);
   // TODO: Not sure if next line is correct
   int mTopHeight = cHeight + (((cEast - cWest) + 1) * cWestEastSlope) + (((cNorth - cSouth) + 1) * cNorthSouthSlope);
@@ -113,6 +113,6 @@ BlockArea* RollableSurface::getCoverage() {
   return new BlockArea(mStartLocation, mEndLocation);
 }
 
-bool RollableSurface::alligned(int x, int y) {
+bool TileSurface::alligned(int x, int y) {
   return y >= cSouth && y <= cNorth && x >= cWest && x <= cEast;
 }

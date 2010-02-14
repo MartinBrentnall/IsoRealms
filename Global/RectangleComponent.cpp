@@ -169,6 +169,10 @@ bool RectangleComponent::mouseMotion(SDL_Event& event) {
   return false;
 }
 
+void RectangleComponent::relinquishFocus() {
+  cComponentContainer->relinquishFocus(this);
+}
+
 void RectangleComponent::close() {
   cComponentContainer->removeComponent(this);
 }

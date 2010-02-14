@@ -28,13 +28,13 @@
 #include "../../../../Global/AbstractRectangularComponent.h"
 #include "../../../../Global/IFont.h"
 
-#include "IInstantiable.h"
+#include "IEntityClass.h"
 
 class InstancesListComponent:public AbstractRectangularComponent {
   private:
   static IFont* cFont;
 
-  IInstantiable* cInstantiator;
+  IEntityClass* cEntityClass;
 
 //  IMovableComponent* cParent;
   std::vector<std::string> cInstances;
@@ -45,7 +45,7 @@ class InstancesListComponent:public AbstractRectangularComponent {
   public:
   static void setFont(IFont*);
 
-  InstancesListComponent(IInstantiable*);
+  InstancesListComponent(IEntityClass*);
 
   std::string* getSelectedInstance();
 

@@ -1,5 +1,5 @@
-#ifndef I_INSTANTIABLE_H
-#define I_INSTANTIABLE_H
+#ifndef I_ENTITY_CLASS_H
+#define I_ENTITY_CLASS_H
 
 #include <vector>
 #include <string>
@@ -8,7 +8,7 @@
  * Implement this interface if you wish to use the instantiation dialog to
  * instantiate something.
  */
-class IInstantiable {
+class IEntityClass {
   public:  
 
   /**
@@ -21,10 +21,17 @@ class IInstantiable {
   /**
    * Create a new instance.
    * 
-   * @param std::string  The type to instantiate.
-   * @param std::string  The name of the new instance.
+   * @param std::string&  The type to instantiate.
+   * @param std::string&  The name of the new instance.
    */
   virtual void instantiate(std::string&, std::string&) = 0;
+
+  /**
+   * Remove an existing instance.
+   * 
+   * @param std::string&  The name of the instance to remove.
+   */
+  virtual void remove(std::string&) = 0;
 
   /**
    * Invoke a command that allows the specified instance to be configured.

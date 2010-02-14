@@ -21,7 +21,7 @@
 SpindizzyIceBlock::SpindizzyIceBlock(IElementFactory* elementFactory, BlockLocation* startLocation, BlockLocation* endLocation, ISpindizzyTextureSet** spindizzyTextureSet, SpindizzyBlockProperties* blockProperties, bool addition) : AbstractSpindizzyBlock(elementFactory, startLocation, endLocation, spindizzyTextureSet, blockProperties, addition) {
 }
 
-ISpindizzyTextureSet::TextureType SpindizzyIceBlock::getRollableSurfaceTexture() {
+ISpindizzyTextureSet::TextureType SpindizzyIceBlock::getTileSurfaceTexture() {
   return ISpindizzyTextureSet::ICE;
 }
 

@@ -23,6 +23,7 @@ EditorCursor::EditorCursor(Map* mapPointer) {
   cElementBrush = NULL;
   cEditMapPointer = mapPointer;
   set(0, 0, 0);
+  selectZone();
   cEditZonePointer = cEditMapPointer->getZone(*this);
   cEditZonePointer->restrainLocation(this);
 }
@@ -58,6 +59,12 @@ void EditorCursor::render() {
   if (cElementBrush != NULL) {
     cElementBrush->renderEditingPreview();
   }
+}
+
+void EditorCursor::selectZone() {
+  cEditZonePointer = cEditMapPointer->getZone(*this);
+  PluginRegistry* mPluginRegistry = cEditMapPointer->getPluginRegistry();
+  mPluginRegistry->zoneContextChanged(cEditMapPointer, cEditZonePointer);
 }
 
 void EditorCursor::setElementFactory(IElementFactory* elementFactory) {
@@ -138,7 +145,7 @@ bool EditorCursor::keyDown(SDLKey& key) {
 
     case SDLK_RETURN: {
       if (cEditZonePointer == NULL) {
-        cEditZonePointer = cEditMapPointer->getZone(*this);
+        selectZone();
         return true;
       }
       break;

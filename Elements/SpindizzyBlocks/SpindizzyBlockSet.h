@@ -26,7 +26,7 @@
 #include "../../Plugins/SpindizzyTextureSet/SpindizzyTextureSetDummy.h"
 #include "../../Plugins/SpindizzyTextureSetChanger/ISpindizzyTextureSetChanger.h"
 #include "../../Plugins/SpindizzyTextureSetChanger/IChangeableTextureSet.h"
-#include "../../Plugins/RollableSurfaceCalculator/IRollableSurfaceCalculator.h"
+#include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
 
 #include "../../Global/IElementSet.h"
 #include "../../Global/IPlugin.h"
@@ -34,7 +34,7 @@
 #include "../../Global/PluginRegistry.h"
 
 #include "ISpindizzyBlockFactory.h"
-#include "ISurfaceCalculator.h"
+#include "ISurfaceProcessorProxy.h"
 #include "SpindizzyBlock.h"
 #include "SpindizzyBlockFactory.h"
 #include "SpindizzyIceBlock.h"
@@ -43,7 +43,7 @@
 #include "SpindizzyWaterFactory.h"
 
 class SpindizzyBlockSet:public IElementSet,
-                        public ISurfaceCalculator,
+                        public ISurfaceProcessorProxy,
                         public IChangeableTextureSet {
   private:
   static const std::string PLAIN;
@@ -68,12 +68,13 @@ class SpindizzyBlockSet:public IElementSet,
 
   std::vector<IElementFactory*> cElementFactories;
   ISpindizzyTextureSet* cSpindizzyTextureSet;
+  ISpindizzyTextureSet* cDummyTextureSet;
   ISpindizzyTextureSetChanger* cSpindizzyTextureSetController;
-  IRollableSurfaceCalculator* cRollableSurfaceCalculator;
+  ISurfaceProcessor* cSurfaceProcessor;
 
   class BlockFactory:public SpindizzyBlockFactory {
     private:
-    ISpindizzyTextureSet::TextureType cRollableSurfaceTexture;
+    ISpindizzyTextureSet::TextureType cTileSurfaceTexture;
 
     public:
     BlockFactory(std::string, IElementSet*, ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType);
@@ -96,7 +97,7 @@ class SpindizzyBlockSet:public IElementSet,
 
   class SwitchFactory:public SpindizzyBlockFactory {
     private:
-    ISpindizzyTextureSet::TextureType cRollableSurfaceTexture;
+    ISpindizzyTextureSet::TextureType cTileSurfaceTexture;
 
     public:
     SwitchFactory(std::string, IElementSet*, ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType);
@@ -135,14 +136,14 @@ class SpindizzyBlockSet:public IElementSet,
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
 
-  /*****************************************\
-   * Implements IRollableSurfaceCalculator *
-  \*****************************************/
-  void registerRollableSurfaceProvider(IRollableSurfaceProvider*);
-  void unregisterRollableSurfaceProvider(IRollableSurfaceProvider*);
+  /*************************************\
+   * Implements ISurfaceProcessorProxy *
+  \*************************************/
+  void registerSurfaceProvider(ISurfaceProvider*);
+  void unregisterSurfaceProvider(ISurfaceProvider*);
   void setDirty();
-  std::vector<IRollableSurface*> getRollableSurfaces(IRollableSurfaceProvider*, IRollableSurface::FaceDirection);
-  std::vector<IWallSurface*> getWallSurfaces(IRollableSurfaceProvider*, IWallSurface::FaceDirection);
+  std::vector<ITileSurface*> getTileSurfaces(ISurfaceProvider*, ITileSurface::FaceDirection);
+  std::vector<IWallSurface*> getWallSurfaces(ISurfaceProvider*, IWallSurface::FaceDirection);
   void notifyZoneAction(Zone*);
 
   /************************************\

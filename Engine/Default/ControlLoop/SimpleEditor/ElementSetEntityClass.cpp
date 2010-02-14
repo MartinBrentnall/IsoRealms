@@ -14,6 +14,14 @@ void ElementSetEntityClass::instantiate(std::string& type, std::string& name) {
   cElementSetRegistry->createInstance(type, name);
 }
 
+void ElementSetEntityClass::remove(std::string& name) {
+  std::string mMessage = "Are you sure you want to remove \"" + name + "\"?  This operation will irreversibly destroy all elements of this set in your map!";
+  std::string mTitle = "Confirm Remove Element Set";
+  ICommand* mRemoveCommand = new RemoveCommand(this, name);
+  IHUDComponent* mConfirmationBox = new ConfirmationBox(cComponentContainer, mRemoveCommand, mMessage, mTitle);
+  cComponentContainer->addComponent(mConfirmationBox);
+}
+
 void ElementSetEntityClass::configure(std::string& name) {
   IElementSet* mElementSet = cElementSetRegistry->getElementSet(&name);
   IHUDComponent* mComponent = new PluginRequirementsComponent(cComponentContainer, cPluginRegistry, mElementSet, -0.8f, 0.0f);
@@ -35,3 +43,14 @@ std::vector<std::string*> ElementSetEntityClass::getImplementations() {
   }
   return mReturnList;
 }
+
+ElementSetEntityClass::RemoveCommand::RemoveCommand(ElementSetEntityClass* parent, std::string name) {
+  cParent = parent;
+  cName = name;
+}
+
+void ElementSetEntityClass::RemoveCommand::execute() {
+  IElementSet* mElementSet = cParent->cElementSetRegistry->getElementSet(&cName);
+  cParent->cElementSetRegistry->destroyInstance(mElementSet);
+}
+

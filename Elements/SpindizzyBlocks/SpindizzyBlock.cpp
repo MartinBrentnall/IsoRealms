@@ -18,16 +18,16 @@
  */
 #include "SpindizzyBlock.h"
 
-SpindizzyBlock::SpindizzyBlock(IElementFactory* elementFactory, BlockLocation* startLocation, BlockLocation* endLocation, ISpindizzyTextureSet** spindizzyTextureSet, ISpindizzyTextureSet::TextureType rollableSurfaceTexture, SpindizzyBlockProperties* blockProperties, bool addition) : AbstractSpindizzyBlock(elementFactory, startLocation, endLocation, spindizzyTextureSet, blockProperties, addition) {
-  if (isSplit() && rollableSurfaceTexture == ISpindizzyTextureSet::PLAIN) {
-    cRollableSurfaceTexture = ISpindizzyTextureSet::PLAIN_SPLIT_NE_SW;
+SpindizzyBlock::SpindizzyBlock(IElementFactory* elementFactory, BlockLocation* startLocation, BlockLocation* endLocation, ISpindizzyTextureSet** spindizzyTextureSet, ISpindizzyTextureSet::TextureType tileSurfaceTexture, SpindizzyBlockProperties* blockProperties, bool addition) : AbstractSpindizzyBlock(elementFactory, startLocation, endLocation, spindizzyTextureSet, blockProperties, addition) {
+  if (isSplit() && tileSurfaceTexture == ISpindizzyTextureSet::PLAIN) {
+    cTileSurfaceTexture = ISpindizzyTextureSet::PLAIN_SPLIT_NE_SW;
   } else {
-    cRollableSurfaceTexture = rollableSurfaceTexture;
+    cTileSurfaceTexture = tileSurfaceTexture;
   }
 }
 
-ISpindizzyTextureSet::TextureType SpindizzyBlock::getRollableSurfaceTexture() {
-  return cRollableSurfaceTexture;
+ISpindizzyTextureSet::TextureType SpindizzyBlock::getTileSurfaceTexture() {
+  return cTileSurfaceTexture;
 }
 
 ISpindizzyTextureSet::TextureType SpindizzyBlock::getNorthWallTexture() {

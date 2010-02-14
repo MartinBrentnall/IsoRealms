@@ -49,13 +49,16 @@ void MenuBar::addCommand(ICommandInfo* commandInfo) {
   std::vector<std::string> mCommandPath = commandInfo->getCommandPath();
   std::string mPathElementName = mCommandPath[mCommandPath.size() - 1];
   if (mCommandPath.size() > 1) {
-    MenuPopup* mPopupMenu = cMenuPopups[mPathElementName];
-    if (mPopupMenu == NULL) {
+    std::map<std::string, MenuPopup*>::iterator mIterator = cMenuPopups.find(mPathElementName);
+    MenuPopup* mPopupMenu;
+    if (mIterator == cMenuPopups.end()) {
       mPopupMenu = new MenuPopup(this, getRight() - 0.01f, 0.95f);
+      cMenuPopups[mPathElementName] = mPopupMenu;
       PopupMenuCommand* mPopupMenuCommand = new PopupMenuCommand(cMenuPopupShowing, mPopupMenu);
       MenuItem* mMenuItem = new MenuItem(mPathElementName, mPopupMenuCommand, getRight() - 0.01f, 0.96f);
       cMenuItems.push_back(mMenuItem);
-      std::cout << "Added new drop down menu: " << mPathElementName << std::endl;
+    } else {
+      mPopupMenu = mIterator->second;
     }
     mCommandPath.pop_back();
     mPopupMenu->addCommand(mCommandPath, commandInfo);

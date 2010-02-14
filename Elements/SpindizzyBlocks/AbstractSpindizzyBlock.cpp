@@ -58,34 +58,34 @@ int AbstractSpindizzyBlock::getYSlope() {
   return 0;
 }
 
-std::vector<IRollableSurface*> AbstractSpindizzyBlock::getRollableSurfaces(IRollableSurface::FaceDirection faceDirection) {
-  std::vector<IRollableSurface*> mRawSurfaces;
+std::vector<ITileSurface*> AbstractSpindizzyBlock::getTileSurfaces(ITileSurface::FaceDirection faceDirection) {
+  std::vector<ITileSurface*> mRawSurfaces;
   int mXSlope = getXSlope();
   int mYSlope = getYSlope();
-  if (cSteppedBottom && faceDirection == IRollableSurface::DOWN) {
+  if (cSteppedBottom && faceDirection == ITileSurface::DOWN) {
     if (mXSlope != 0 && mYSlope != 0) {
       for (int y = cStartLocation.y; y <= cEndLocation.y; y++) {
         for (int x = cStartLocation.x; x <= cEndLocation.x; x++) {
-          IRollableSurface* mRawSurface = createSubSurface(faceDirection, y, x, y, x);
+          ITileSurface* mRawSurface = createSubSurface(faceDirection, y, x, y, x);
           mRawSurfaces.push_back(mRawSurface);
         }
       }
     } else if (mYSlope != 0) {
       for (int y = cStartLocation.y; y <= cEndLocation.y; y++) {
-        IRollableSurface* mRawSurface = createSubSurface(faceDirection, y, cEndLocation.x, y, cStartLocation.x);
+        ITileSurface* mRawSurface = createSubSurface(faceDirection, y, cEndLocation.x, y, cStartLocation.x);
         mRawSurfaces.push_back(mRawSurface);
       }
     } else if (mXSlope != 0) {
       for (int x = cStartLocation.x; x <= cEndLocation.x; x++) {
-        IRollableSurface* mRawSurface = createSubSurface(faceDirection, cEndLocation.y, x, cStartLocation.y, x);
+        ITileSurface* mRawSurface = createSubSurface(faceDirection, cEndLocation.y, x, cStartLocation.y, x);
         mRawSurfaces.push_back(mRawSurface);
       }
     } else {
-      IRollableSurface* mRawSurface = createSubSurface(faceDirection, cEndLocation.y, cEndLocation.x, cStartLocation.y, cStartLocation.x);
+      ITileSurface* mRawSurface = createSubSurface(faceDirection, cEndLocation.y, cEndLocation.x, cStartLocation.y, cStartLocation.x);
       mRawSurfaces.push_back(mRawSurface);
     }
   } else {
-    IRollableSurface* mRawSurface = createSubSurface(faceDirection, cEndLocation.y, cEndLocation.x, cStartLocation.y, cStartLocation.x);
+    ITileSurface* mRawSurface = createSubSurface(faceDirection, cEndLocation.y, cEndLocation.x, cStartLocation.y, cStartLocation.x);
     mRawSurfaces.push_back(mRawSurface);
   }
   return mRawSurfaces;
@@ -101,42 +101,42 @@ Condition AbstractSpindizzyBlock::createCondition(Condition* mSurfaceCondition) 
 */
 
 int AbstractSpindizzyBlock::getBottomHeight(int x, int y) {
-  return cSteppedBottom ? getRollableSurfaceHeight(x, y) - (cEndLocation.z - cStartLocation.z)
+  return cSteppedBottom ? getTileSurfaceHeight(x, y) - (cEndLocation.z - cStartLocation.z)
                         : cStartLocation.z;
 }
 
-IRollableSurface* AbstractSpindizzyBlock::createSubSurface(IRollableSurface::FaceDirection faceDirection, int north, int east, int south, int west) {
-  ISpindizzyTextureSet::TextureType mTextureType = getRollableSurfaceTexture();
+ITileSurface* AbstractSpindizzyBlock::createSubSurface(ITileSurface::FaceDirection faceDirection, int north, int east, int south, int west) {
+  ISpindizzyTextureSet::TextureType mTextureType = getTileSurfaceTexture();
   switch (faceDirection) {
-    case IRollableSurface::UP: {
+    case ITileSurface::UP: {
       int mXSlope = getXSlope();
       int mYSlope = getYSlope();
-      int mHeight = getRollableSurfaceHeight(mXSlope > 0 ? west : east, mYSlope > 0 ? south : north);
+      int mHeight = getTileSurfaceHeight(mXSlope > 0 ? west : east, mYSlope > 0 ? south : north);
       // TODO: Get condition for surface.
       BlockLocation mSurfaceLocation(cStartLocation.x, cStartLocation.y, cEndLocation.z);
-      return isSplit() ? (IRollableSurface*) new RollableSplitSurface(cSplitType == NORTH_SOUTH, mSurfaceLocation, cSpindizzyTextureSet, mTextureType, cNorthWestHeight, cNorthEastHeight, cSouthEastHeight, cSouthWestHeight/* TODO:CONDITIONAL, mSurfaceCondition*/)
-                       : (IRollableSurface*) new RollableSurface(cSpindizzyTextureSet, mTextureType, north, east, south, west, mHeight, mXSlope, mYSlope, faceDirection/*, TODO:CONDITIONAL  mSurfaceCondition*/);
+      return isSplit() ? (ITileSurface*) new TileSplitSurface(cSplitType == NORTH_SOUTH, mSurfaceLocation, cSpindizzyTextureSet, mTextureType, cNorthWestHeight, cNorthEastHeight, cSouthEastHeight, cSouthWestHeight/* TODO:CONDITIONAL, mSurfaceCondition*/)
+                       : (ITileSurface*) new TileSurface(cSpindizzyTextureSet, mTextureType, north, east, south, west, mHeight, mXSlope, mYSlope, faceDirection/*, TODO:CONDITIONAL  mSurfaceCondition*/);
     }
     
-    case IRollableSurface::DOWN: {
+    case ITileSurface::DOWN: {
       // TODO: Make sure the subsurface does not violate the stepping
       int mHeight = getBottomHeight(east, north);
       // TODO: Get condition for surface.
-      return new RollableSurface(cSpindizzyTextureSet, mTextureType, north, east, south, west, mHeight, 0, 0, faceDirection/*, TODO:CONDITIONAL  mSurfaceCondition*/);
+      return new TileSurface(cSpindizzyTextureSet, mTextureType, north, east, south, west, mHeight, 0, 0, faceDirection/*, TODO:CONDITIONAL  mSurfaceCondition*/);
     }
   }
   std::cout << "ERROR: Face direction does not exist" << std::endl;
   exit(1);
 }
 
-std::vector<IRollableSurface*> AbstractSpindizzyBlock::calculateRollableSurfaces(const IRollableSurface::FaceDirection faceDirection) {
-  ISurfaceCalculator* mSurfaceCalculator = dynamic_cast<ISurfaceCalculator*>(getElementSet());
-  if (mSurfaceCalculator == NULL) {
+std::vector<ITileSurface*> AbstractSpindizzyBlock::calculateTileSurfaces(const ITileSurface::FaceDirection faceDirection) {
+  ISurfaceProcessorProxy* mSurfaceProcessor = dynamic_cast<ISurfaceProcessorProxy*>(getElementSet());
+  if (mSurfaceProcessor == NULL) {
     std::cout << "Warning: dynamic_cast failed for surface calculation!  Surfaces may appear incorrect!" << std::endl;
-    std::vector<IRollableSurface*> mRawSurface;
-    return getRollableSurfaces(faceDirection);
+    std::vector<ITileSurface*> mRawSurface;
+    return getTileSurfaces(faceDirection);
   }
-  return mSurfaceCalculator->getRollableSurfaces(this, faceDirection);
+  return mSurfaceProcessor->getTileSurfaces(this, faceDirection);
 }
 
 ISpindizzyTextureSet::TextureType AbstractSpindizzyBlock::getWallTexture(WallSurface::FaceDirection direction) {
@@ -151,7 +151,7 @@ ISpindizzyTextureSet::TextureType AbstractSpindizzyBlock::getWallTexture(WallSur
   exit(1);
 }
 
-int AbstractSpindizzyBlock::getRollableSurfaceHeight(int x, int y) {
+int AbstractSpindizzyBlock::getTileSurfaceHeight(int x, int y) {
   return abs(((getXSlope() >= 0 ? cStartLocation.x : cEndLocation.x) - x) * getXSlope())
        + abs(((getYSlope() >= 0 ? cStartLocation.y : cEndLocation.y) - y) * getYSlope())
        + cEndLocation.z;
@@ -211,7 +211,7 @@ std::vector<IWallSurface*> AbstractSpindizzyBlock::getWallSurfaces(int location,
     int mLowestY = mFacesPole ? mY : (mSlope > 0 ? cStartLocation.y : cEndLocation.y);
     int mBaseHeight = getBottomHeight(mX, mY);
     int mHeight = cSteppedBottom ? (cEndLocation.z - cStartLocation.z) + getMinimumWallElevation(facing)
-                                 : (getRollableSurfaceHeight(mLowestX, mLowestY) + getMinimumWallElevation(facing)) - cStartLocation.z;
+                                 : (getTileSurfaceHeight(mLowestX, mLowestY) + getMinimumWallElevation(facing)) - cStartLocation.z;
     IWallSurface* mWallSurface = new WallSurface(mX, mY, mBaseHeight, mLength, mHeight, mSlope, facing, cSpindizzyTextureSet, mTexture);
     mWallSurfaces.push_back(mWallSurface);
   }
@@ -231,24 +231,24 @@ int AbstractSpindizzyBlock::getOuterWallFaceLocation(IWallSurface::FaceDirection
 }
 
 std::vector<IWallSurface*> AbstractSpindizzyBlock::calculateWallSurfaces(const IWallSurface::FaceDirection facing) {
-  ISurfaceCalculator* mSurfaceCalculator = dynamic_cast<ISurfaceCalculator*>(getElementSet());
-  if (mSurfaceCalculator == NULL) {
+  ISurfaceProcessorProxy* mSurfaceProcessor = dynamic_cast<ISurfaceProcessorProxy*>(getElementSet());
+  if (mSurfaceProcessor == NULL) {
     std::cout << "Warning: dynamic_cast failed for surface calculation!  Surfaces may appear incorrect!" << std::endl;
     return getWallSurfaces(getOuterWallFaceLocation(facing), facing);
   }
-  return mSurfaceCalculator->getWallSurfaces(this, facing);
+  return mSurfaceProcessor->getWallSurfaces(this, facing);
 }
 
 void AbstractSpindizzyBlock::renderStatic() {
-  std::vector<IRollableSurface*> mTopRollableSurfaces = calculateRollableSurfaces(IRollableSurface::UP);
-  for (unsigned int i = 0; i < mTopRollableSurfaces.size(); i++) {
-    mTopRollableSurfaces[i]->render();
-    delete mTopRollableSurfaces[i];
+  std::vector<ITileSurface*> mTopTileSurfaces = calculateTileSurfaces(ITileSurface::UP);
+  for (unsigned int i = 0; i < mTopTileSurfaces.size(); i++) {
+    mTopTileSurfaces[i]->render();
+    delete mTopTileSurfaces[i];
   }
-  std::vector<IRollableSurface*> mBottomRollableSurfaces = calculateRollableSurfaces(IRollableSurface::DOWN);
-  for (unsigned int i = 0; i < mBottomRollableSurfaces.size(); i++) {
-    mBottomRollableSurfaces[i]->render();
-    delete mBottomRollableSurfaces[i];
+  std::vector<ITileSurface*> mBottomTileSurfaces = calculateTileSurfaces(ITileSurface::DOWN);
+  for (unsigned int i = 0; i < mBottomTileSurfaces.size(); i++) {
+    mBottomTileSurfaces[i]->render();
+    delete mBottomTileSurfaces[i];
   }
   if (cStartLocation.z <= cEndLocation.z) {
     std::vector<IWallSurface*> mNorthWallSurfaces = calculateWallSurfaces(IWallSurface::NORTH);
@@ -274,33 +274,38 @@ void AbstractSpindizzyBlock::renderStatic() {
   }
 }
 
+void AbstractSpindizzyBlock::cacheSurfaces() {
+  cInitStage = CACHE_SURFACES;
+  signalElementDirty();
+}
+
 void AbstractSpindizzyBlock::removed() {
-  ISurfaceCalculator* mSurfaceCalculator = dynamic_cast<ISurfaceCalculator*>(getElementSet());
-  if (mSurfaceCalculator == NULL) {
+  ISurfaceProcessorProxy* mSurfaceProcessor = dynamic_cast<ISurfaceProcessorProxy*>(getElementSet());
+  if (mSurfaceProcessor == NULL) {
     std::cout << "Warning: dynamic_cast failed for surface calculation!  Surfaces may appear incorrect!" << std::endl;
   } else {
-    mSurfaceCalculator->unregisterRollableSurfaceProvider(this);
+    mSurfaceProcessor->unregisterSurfaceProvider(this);
   }
 }
 
 void AbstractSpindizzyBlock::added() {
-  ISurfaceCalculator* mSurfaceCalculator = dynamic_cast<ISurfaceCalculator*>(getElementSet());
-  if (mSurfaceCalculator == NULL) {
+  ISurfaceProcessorProxy* mSurfaceProcessor = dynamic_cast<ISurfaceProcessorProxy*>(getElementSet());
+  if (mSurfaceProcessor == NULL) {
     std::cout << "Warning: dynamic_cast failed for surface calculation!  Surfaces may appear incorrect!" << std::endl;
   } else {
-    mSurfaceCalculator->registerRollableSurfaceProvider(this);
-    mSurfaceCalculator->setDirty();
+    mSurfaceProcessor->registerSurfaceProvider(this);
+    mSurfaceProcessor->setDirty();
   }
 }
 
 bool AbstractSpindizzyBlock::initElement() {
   switch (cInitStage) {
     case CACHE_SURFACES: {
-      ISurfaceCalculator* mSurfaceCalculator = dynamic_cast<ISurfaceCalculator*>(getElementSet());
-      if (mSurfaceCalculator == NULL) {
+      ISurfaceProcessorProxy* mSurfaceProcessor = dynamic_cast<ISurfaceProcessorProxy*>(getElementSet());
+      if (mSurfaceProcessor == NULL) {
         std::cout << "Warning: dynamic_cast failed for surface calculation!  Surfaces may appear incorrect!" << std::endl;
       } else {
-        mSurfaceCalculator->registerRollableSurfaceProvider(this);
+        mSurfaceProcessor->registerSurfaceProvider(this);
       }
       cInitStage = CALCULATE_SURFACES;
       return false;

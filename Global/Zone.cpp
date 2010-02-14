@@ -21,13 +21,15 @@
 Zone::Zone(BlockLocation& location, BlockLocation& size) : BlockArea(location, size) {
 }
 
-Zone::Zone(DOMNodeWrapper* node, ElementSetRegistry& elementSetRegistry) : BlockArea(node) {
+Zone::Zone(DOMNodeWrapper* node, ElementSetRegistry& elementSetRegistry, PluginRegistry& pluginRegistry) : BlockArea(node) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Elements") {
       cElements = elementSetRegistry.loadElements(mNode, &cStartLocation);
       cDirtyElements = cElements;
+    } else if (mValueAsString == "Plugins") {
+      pluginRegistry.loadPluginData(mNode, this);
     }
   }
   for (unsigned int i = 0; i < cElements.size(); i++) {
@@ -128,14 +130,19 @@ IElement* Zone::popElement() {
 }
 
 bool Zone::removeElement(IElement* element) {
-  bool mElementRemoved = false;
-  for (int i = cElements.size(); i >= 0; i--) {
+  for (unsigned int i = 0; i < cElements.size(); i++) {
     if (cElements[i] == element) {
       cElements.erase(cElements.begin() + i);
-      mElementRemoved = true;
+      for (unsigned int j = 0; j < cDirtyElements.size(); j++) {
+        if (cDirtyElements[j] == element) {
+          cDirtyElements.erase(cDirtyElements.begin() + j);
+          return true;
+        }
+      }
+      return true;
     }
   }
-  return mElementRemoved;
+  return false;
 }
 
 void Zone::zoneChanged() {
@@ -207,12 +214,11 @@ void Zone::removeChangeListener(IZoneChangeListener* listener) {
 }
 
 void Zone::save(ElementSetRegistry* elementSetRegistry, DOMNodeWriter* node) {
-  DOMNodeWriter* mZoneNode = node->addBranch("Zone");
-  DOMNodeWriter* mLocationNode = mZoneNode->addBranch("Location");
+  DOMNodeWriter* mLocationNode = node->addBranch("Location");
   cStartLocation.save(mLocationNode);
-  DOMNodeWriter* mSizeNode = mZoneNode->addBranch("Size");
+  DOMNodeWriter* mSizeNode = node->addBranch("Size");
   cEndLocation.saveRelative(mSizeNode, cStartLocation);
-  DOMNodeWriter* mElementsNode = mZoneNode->addBranch("Elements");
+  DOMNodeWriter* mElementsNode = node->addBranch("Elements");
   for (unsigned int i = 0; i < cElements.size(); i++) {
     IElementSet* mElementSet = cElements[i]->getElementSet();
     std::string mElementSetName = elementSetRegistry->getInstanceName(mElementSet);

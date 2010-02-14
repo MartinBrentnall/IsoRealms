@@ -4,6 +4,7 @@ const float ResizableDialog::RESIZE_HANDLE_SIZE = 0.05f;
 
 ResizableDialog::ResizableDialog(IComponentContainer* componentContainer, std::string* title, float x, float y, float width, float height) : RectangleComponent(componentContainer, title, x, y, width, height) {
   cResizing = false;
+  cFocusedComponent = NULL;
 }
 
 void ResizableDialog::addComponent(IHUDComponent* child) {
@@ -94,7 +95,7 @@ bool ResizableDialog::mouseMotion(SDL_Event& event) {
 
 bool ResizableDialog::inputContent(SDL_Event& event) {
   testFocusChange(event);
-  if (cFocusedComponent->input(event)) {
+  if (cFocusedComponent != NULL && cFocusedComponent->input(event)) {
     return true;
   }
 

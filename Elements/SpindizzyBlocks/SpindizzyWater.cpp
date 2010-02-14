@@ -33,26 +33,26 @@ void SpindizzyWater::setDirty() {
   signalElementDirty();
 }
 
-std::vector<IRollableSurface*> SpindizzyWater::getWaterSurfaces() {
-  ISurfaceCalculator* mSurfaceCalculator = dynamic_cast<ISurfaceCalculator*>(getElementSet());
-  if (mSurfaceCalculator == NULL) {
-    return getRollableSurfaces(IRollableSurface::UP);
+std::vector<ITileSurface*> SpindizzyWater::getWaterSurfaces() {
+  ISurfaceProcessorProxy* mSurfaceProcessor = dynamic_cast<ISurfaceProcessorProxy*>(getElementSet());
+  if (mSurfaceProcessor == NULL) {
+    return getTileSurfaces(ITileSurface::UP);
   }
-  return mSurfaceCalculator->getRollableSurfaces(this, IRollableSurface::UP);
+  return mSurfaceProcessor->getTileSurfaces(this, ITileSurface::UP);
 }
 
-std::vector<IRollableSurface*> SpindizzyWater::getRollableSurfaces(IRollableSurface::FaceDirection facing) {
-  std::vector<IRollableSurface*> mSurfaces;
-  IRollableSurface* mWaterSurface = createSubSurface(facing, cEndLocation.y, cEndLocation.x, cStartLocation.y, cStartLocation.x);
+std::vector<ITileSurface*> SpindizzyWater::getTileSurfaces(ITileSurface::FaceDirection facing) {
+  std::vector<ITileSurface*> mSurfaces;
+  ITileSurface* mWaterSurface = createSubSurface(facing, cEndLocation.y, cEndLocation.x, cStartLocation.y, cStartLocation.x);
   mSurfaces.push_back(mWaterSurface);
   return mSurfaces;
 }
 
 void SpindizzyWater::renderStatic() {
-  std::vector<IRollableSurface*> mTopRollableSurfaces = getWaterSurfaces();
-  for (unsigned int i = 0; i < mTopRollableSurfaces.size(); i++) {
-    mTopRollableSurfaces[i]->render();
-    delete mTopRollableSurfaces[i];
+  std::vector<ITileSurface*> mTopTileSurfaces = getWaterSurfaces();
+  for (unsigned int i = 0; i < mTopTileSurfaces.size(); i++) {
+    mTopTileSurfaces[i]->render();
+    delete mTopTileSurfaces[i];
   }
 }
 
@@ -71,8 +71,8 @@ std::vector<IInteractiveElement*> SpindizzyWater::getInteractiveElements() {
   return mInteractiveElements;
 }
 
-IRollableSurface* SpindizzyWater::createSubSurface(IRollableSurface::FaceDirection facing, int north, int east, int south, int west) {
-  return new RollableSurface(cSpindizzyTextureSet, ISpindizzyTextureSet::WATER, north, east, south, west, facing == IRollableSurface::UP ? cStartLocation.z : cEndLocation.z, 0, 0, facing/*, TODO:CONDITIONAL  mSurfaceCondition*/);
+ITileSurface* SpindizzyWater::createSubSurface(ITileSurface::FaceDirection facing, int north, int east, int south, int west) {
+  return new TileSurface(cSpindizzyTextureSet, ISpindizzyTextureSet::WATER, north, east, south, west, facing == ITileSurface::UP ? cStartLocation.z : cEndLocation.z, 0, 0, facing/*, TODO:CONDITIONAL  mSurfaceCondition*/);
 }
 
 IWallSurface* SpindizzyWater::createSubSurface(int x, int y, IWallSurface::FaceDirection facing, int length, int startHeight, int endHeight, int topSlope, int bottomSlope) {
@@ -97,32 +97,32 @@ BlockArea* SpindizzyWater::getCoverage() {
 }
 
 void SpindizzyWater::removed() {
-  ISurfaceCalculator* mSurfaceCalculator = dynamic_cast<ISurfaceCalculator*>(getElementSet());
-  if (mSurfaceCalculator == NULL) {
+  ISurfaceProcessorProxy* mSurfaceProcessor = dynamic_cast<ISurfaceProcessorProxy*>(getElementSet());
+  if (mSurfaceProcessor == NULL) {
     std::cout << "Warning: dynamic_cast failed for surface calculation!  Surfaces may appear incorrect!" << std::endl;
   } else {
-    mSurfaceCalculator->unregisterRollableSurfaceProvider(this);
+    mSurfaceProcessor->unregisterSurfaceProvider(this);
   }
 }
 
 void SpindizzyWater::added() {
-  ISurfaceCalculator* mSurfaceCalculator = dynamic_cast<ISurfaceCalculator*>(getElementSet());
-  if (mSurfaceCalculator == NULL) {
+  ISurfaceProcessorProxy* mSurfaceProcessor = dynamic_cast<ISurfaceProcessorProxy*>(getElementSet());
+  if (mSurfaceProcessor == NULL) {
     std::cout << "Warning: dynamic_cast failed for surface calculation!  Surfaces may appear incorrect!" << std::endl;
   } else {
-    mSurfaceCalculator->registerRollableSurfaceProvider(this);
-    mSurfaceCalculator->setDirty();
+    mSurfaceProcessor->registerSurfaceProvider(this);
+    mSurfaceProcessor->setDirty();
   }
 }
 
 bool SpindizzyWater::initElement() {
   switch (cInitStage) {
     case CACHE_SURFACES: {
-      ISurfaceCalculator* mSurfaceCalculator = dynamic_cast<ISurfaceCalculator*>(getElementSet());
-      if (mSurfaceCalculator == NULL) {
+      ISurfaceProcessorProxy* mSurfaceProcessor = dynamic_cast<ISurfaceProcessorProxy*>(getElementSet());
+      if (mSurfaceProcessor == NULL) {
         std::cout << "Warning: dynamic_cast failed for surface calculation!  Surfaces may appear incorrect!" << std::endl;
       } else {
-        mSurfaceCalculator->registerRollableSurfaceProvider(this);
+        mSurfaceProcessor->registerSurfaceProvider(this);
       }
       cInitStage = CALCULATE_SURFACES;
       return false;

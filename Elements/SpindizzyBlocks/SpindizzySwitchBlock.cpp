@@ -18,12 +18,12 @@
  */
 #include "SpindizzySwitchBlock.h"
 
-SpindizzySwitchBlock::SpindizzySwitchBlock(IElementFactory* elementFactory, BlockLocation* startLocation, BlockLocation* endLocation, ISpindizzyTextureSet** spindizzyTextureSet, ISpindizzyTextureSet::TextureType rollableSurfaceTexture, SpindizzyBlockProperties* blockProperties, bool addition) : AbstractSpindizzyBlock(elementFactory, startLocation, endLocation, spindizzyTextureSet, blockProperties, addition) {
-  cRollableSurfaceTexture = rollableSurfaceTexture;
+SpindizzySwitchBlock::SpindizzySwitchBlock(IElementFactory* elementFactory, BlockLocation* startLocation, BlockLocation* endLocation, ISpindizzyTextureSet** spindizzyTextureSet, ISpindizzyTextureSet::TextureType tileSurfaceTexture, SpindizzyBlockProperties* blockProperties, bool addition) : AbstractSpindizzyBlock(elementFactory, startLocation, endLocation, spindizzyTextureSet, blockProperties, addition) {
+  cTileSurfaceTexture = tileSurfaceTexture;
 }
 
-ISpindizzyTextureSet::TextureType SpindizzySwitchBlock::getRollableSurfaceTexture() {
-  return cRollableSurfaceTexture;
+ISpindizzyTextureSet::TextureType SpindizzySwitchBlock::getTileSurfaceTexture() {
+  return cTileSurfaceTexture;
 }
 
 ISpindizzyTextureSet::TextureType SpindizzySwitchBlock::getNorthWallTexture() {

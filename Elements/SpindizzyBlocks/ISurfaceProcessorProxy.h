@@ -16,25 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_SURFACE_CALCULATOR_H
-#define I_SURFACE_CALCULATOR_H
+#ifndef I_SURFACE_PROCESSOR_PROXY_H
+#define I_SURFACE_PROCESSOR_PROXY_H
 
 #include <vector>
 
 #include "../../Global/Zone.h"
 
-#include "../../Plugins/RollableSurfaceCalculator/IRollableSurface.h"
-#include "../../Plugins/RollableSurfaceCalculator/IRollableSurfaceCalculator.h"
-#include "../../Plugins/RollableSurfaceCalculator/IRollableSurfaceProvider.h"
-#include "../../Plugins/RollableSurfaceCalculator/IWallSurface.h"
+#include "../../Plugins/SurfaceProcessor/ITileSurface.h"
+#include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
+#include "../../Plugins/SurfaceProcessor/ISurfaceProvider.h"
+#include "../../Plugins/SurfaceProcessor/IWallSurface.h"
 
-class ISurfaceCalculator {
+class ISurfaceProcessorProxy {
   public:
-  virtual void registerRollableSurfaceProvider(IRollableSurfaceProvider*) = 0;
-  virtual void unregisterRollableSurfaceProvider(IRollableSurfaceProvider*) = 0;
+  virtual void registerSurfaceProvider(ISurfaceProvider*) = 0;
+  virtual void unregisterSurfaceProvider(ISurfaceProvider*) = 0;
   virtual void setDirty() = 0;
-  virtual std::vector<IRollableSurface*> getRollableSurfaces(IRollableSurfaceProvider*, IRollableSurface::FaceDirection) = 0;
-  virtual std::vector<IWallSurface*> getWallSurfaces(IRollableSurfaceProvider*, IWallSurface::FaceDirection) = 0;
+  virtual std::vector<ITileSurface*> getTileSurfaces(ISurfaceProvider*, ITileSurface::FaceDirection) = 0;
+  virtual std::vector<IWallSurface*> getWallSurfaces(ISurfaceProvider*, IWallSurface::FaceDirection) = 0;
   virtual void notifyZoneAction(Zone*) = 0;
 };
 

@@ -62,6 +62,12 @@ class RectangleComponent:public IRectangularComponent {
   bool mouseMotion(SDL_Event&);
 
   /**
+   * Call this function to tell the dialog that we probably wish to do
+   * something outside the dialog.  
+   */
+  void relinquishFocus();
+
+  /**
    * Close this component.
    */
   void close();  

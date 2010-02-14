@@ -23,9 +23,9 @@
 
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
-#include "../../Plugins/RollableSurfaceCalculator/IRollableSurface.h"
-#include "../../Plugins/RollableSurfaceCalculator/IRollableSurfaceCalculator.h"
-#include "../../Plugins/RollableSurfaceCalculator/IRollableSurfaceProvider.h"
+#include "../../Plugins/SurfaceProcessor/ITileSurface.h"
+#include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
+#include "../../Plugins/SurfaceProcessor/ISurfaceProvider.h"
 
 #include "../../Global/BlockArea.h"
 #include "../../Global/BlockLocation.h"
@@ -33,17 +33,17 @@
 #include "../../Global/IElement.h"
 #include "../../Global/MiscFunctions.h"
 
-#include "ISurfaceCalculator.h"
+#include "ISurfaceProcessorProxy.h"
 #include "SpindizzyBlockProperties.h"
-#include "RollableSurface.h"
-#include "RollableSplitSurface.h"
+#include "TileSurface.h"
+#include "TileSplitSurface.h"
 #include "WallSurface.h"
 
 /**
  * TODO: Refactor dynamic_casts into static_casts.
  */
 class AbstractSpindizzyBlock:public IElement,
-                             public IRollableSurfaceProvider {
+                             public ISurfaceProvider {
   private:
   enum SplitType {
     NORTH_SOUTH,
@@ -55,8 +55,8 @@ class AbstractSpindizzyBlock:public IElement,
     CALCULATE_SURFACES
   };
   
-//  std::vector<IRollableSurface*> cStaticRollableSurfaces;
-//  std::vector<IRollableSurface*> cDynamicRollableSurfaces;
+//  std::vector<ITileSurface*> cStaticTileSurfaces;
+//  std::vector<ITileSurface*> cDynamicTileSurfaces;
 
   BlockLocation cStartLocation;
   BlockLocation cEndLocation;
@@ -92,11 +92,11 @@ class AbstractSpindizzyBlock:public IElement,
   int getYSlope();
 
   /**
-   * Return rollable surfaces for constructing this block.
+   * Return tile surfaces for constructing this block.
    * 
    * TODO
    */ 
-  std::vector<IRollableSurface*> calculateRollableSurfaces(const IRollableSurface::FaceDirection);
+  std::vector<ITileSurface*> calculateTileSurfaces(const ITileSurface::FaceDirection);
 
   std::vector<IWallSurface*> calculateWallSurfaces(const IWallSurface::FaceDirection);
 
@@ -145,14 +145,14 @@ class AbstractSpindizzyBlock:public IElement,
   int getMinimumWallElevation(IWallSurface::FaceDirection facing);
 
   /**
-   * Return the height of the rollable surface at the specified cell.
+   * Return the height of the tile surface at the specified cell.
    * 
    * @param int  X cell location.
    * @param int  Y cell location.
    * @returns  The step height of the specified cell.
    * @throws  Something TODO: Fill this in, e.g.  IllegalArgumentException.
    */
-  int getRollableSurfaceHeight(int, int);
+  int getTileSurfaceHeight(int, int);
 
   protected:
 
@@ -177,11 +177,17 @@ class AbstractSpindizzyBlock:public IElement,
 
   ISpindizzyTextureSet* getTextureSet();
 
-  virtual ISpindizzyTextureSet::TextureType getRollableSurfaceTexture() = 0;
+  virtual ISpindizzyTextureSet::TextureType getTileSurfaceTexture() = 0;
   virtual ISpindizzyTextureSet::TextureType getNorthWallTexture() = 0;
   virtual ISpindizzyTextureSet::TextureType getEastWallTexture() = 0;
   virtual ISpindizzyTextureSet::TextureType getSouthWallTexture() = 0;
   virtual ISpindizzyTextureSet::TextureType getWestWallTexture() = 0;
+
+  /**
+   * Flag this block for caching with the surface processor at next init.
+   * This will also implicitly signal the element as dirty.
+   */
+  void cacheSurfaces();
 
   /***********************\
    * Implements IElement *
@@ -195,11 +201,11 @@ class AbstractSpindizzyBlock:public IElement,
   std::vector<IInteractiveElement*> getInteractiveElements();
   void save(DOMNodeWriter*, BlockLocation&);
 
-  /***************************************\
-   * Implements IRollableSurfaceProvider *
-  \***************************************/
-  std::vector<IRollableSurface*> getRollableSurfaces(IRollableSurface::FaceDirection);
-  IRollableSurface* createSubSurface(IRollableSurface::FaceDirection, int, int, int, int);
+  /*******************************\
+   * Implements ISurfaceProvider *
+  \*******************************/
+  std::vector<ITileSurface*> getTileSurfaces(ITileSurface::FaceDirection);
+  ITileSurface* createSubSurface(ITileSurface::FaceDirection, int, int, int, int);
   std::vector<IWallSurface*> getWallSurfaces(int, IWallSurface::FaceDirection);
   IWallSurface* createSubSurface(int, int, IWallSurface::FaceDirection, int, int, int, int, int);
   BlockArea* getCoverage();

@@ -95,8 +95,15 @@ class IElement {
 
   virtual void renderStatic() = 0;
 
+  /**
+   * Retrieve a list of interfaces through which this element is represented
+   * visually.
+   */
   virtual std::vector<IVisualElement*> getVisualElements() = 0;
 
+  /**
+   * Retrieve a list of interfaces through which this element can be updated.
+   */
   virtual std::vector<IDynamicElement*> getDynamicElements() = 0;
 
   virtual std::vector<IInteractiveElement*> getInteractiveElements() = 0;

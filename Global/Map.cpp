@@ -19,6 +19,7 @@
 #include "Map.h"
 
 Map::Map() {
+  registerListeners();
 }
 
 Map::Map(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, IElementRegistryListener* elementRegistryListener) {
@@ -32,12 +33,18 @@ Map::Map(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, 
     } else if (mValueAsString == "ElementSet") {
       cElementSetRegistry.registerElementSet(&cPluginRegistry, mNode);
     } else if (mValueAsString == "Zone") {
-      Zone* mZone = new Zone(mNode, cElementSetRegistry);
+      Zone* mZone = new Zone(mNode, cElementSetRegistry, cPluginRegistry);
       addZone(mZone);
     } else {
       // TODO: Throw something
     }
   }
+  registerListeners();
+}
+
+void Map::registerListeners() {
+  cPluginRegistry.addListener(this);
+//  cElementSetRegistry.addElementRegistryListener(this);
 }
 
 void Map::addZone(Zone* zone) {
@@ -83,6 +90,7 @@ void Map::initMap() {
   std::vector<Zone*> mCleanZones;
   for (unsigned int i = 0; i < cDirtyZones.size(); i++) {
     cPluginRegistry.initPlugins(cDirtyZones[i]);
+    cPluginRegistry.renderPreZone(cDirtyZones[i]);
     if (cDirtyZones[i]->initZone()) {
       mCleanZones.push_back(cDirtyZones[i]);
     }
@@ -91,7 +99,6 @@ void Map::initMap() {
     int mIndexToRemove = getZoneIndex(mCleanZones[i]);
     cDirtyZones.erase(cDirtyZones.begin() + mIndexToRemove);
   }
-  mCleanZones.clear();
 }
 
 void Map::update(int milliseconds) {
@@ -124,7 +131,10 @@ void Map::save() {
   cPluginRegistry.save(mMapNode);
   cElementSetRegistry.save(&cPluginRegistry, mMapNode);
   for (unsigned int i = 0; i < cZones.size(); i++) {
-    cZones[i]->save(&cElementSetRegistry, mMapNode);
+    DOMNodeWriter* mZoneNode = mMapNode->addBranch("Zone");
+    DOMNodeWriter* mPluginsNode = mZoneNode->addBranch("Plugins");
+    cPluginRegistry.saveData(mPluginsNode, this, cZones[i]);
+    cZones[i]->save(&cElementSetRegistry, mZoneNode);
   }
   mMapNode->save("Test.isorealms");
 }
@@ -152,7 +162,6 @@ void Map::pluginInstanceAdded(PluginRegistry* registry, std::string, std::string
 }
 
 void Map::pluginInstanceRemoved(IPlugin* instance, std::string type) {
-  cPluginRegistry.pluginRemoved(instance);
   cElementSetRegistry.pluginRemoved(instance);
 }
 
