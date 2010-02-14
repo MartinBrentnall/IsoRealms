@@ -28,6 +28,15 @@ TextureSetPerZone::TextureSetPerZone() {
   cPluginCommands.push_back(mChooseTextureSetCommandInfo);
 }
 
+void TextureSetPerZone::setTextureSet(ISpindizzyTextureSet* textureSet) {
+  if (textureSet != NULL) {
+    cZoneMapping[cCurrentZone] = textureSet;
+  } else {
+    cZoneMapping.erase(cCurrentZone);
+  }
+  cCurrentMap->zoneChanged(cCurrentZone);
+}
+
 void TextureSetPerZone::setControlObject(IChangeableTextureSet* objectToControl) {
   cControlledObject = objectToControl;
 }
@@ -75,9 +84,11 @@ IPlugin* TextureSetPerZone::getPlugin(PlugSocket* plugSocket) {
   if (plugSocket->getType() == "SpindizzyTextureSet") {
     std::string mSocketID = plugSocket->getID();
     std::stringstream mInputString(mSocketID);
-    int mIndex;
+    unsigned int mIndex;
     mInputString >> mIndex;
-    return cTexturePalette[mIndex]; 
+    if (mIndex < cTexturePalette.size()) {
+      return cTexturePalette[mIndex]; 
+    }
   }
   return NULL;
 }
@@ -90,6 +101,16 @@ void TextureSetPerZone::initPlugin(Zone* zone) {
   // Nothing to do.
 }
 
+void TextureSetPerZone::renderPreZone(Zone* zone) {  
+  std::map<Zone*, ISpindizzyTextureSet*>::iterator mIterator = cZoneMapping.find(zone);
+  cControlledObject->setSpindizzyTextureSet(mIterator != cZoneMapping.end() ? mIterator->second : NULL);
+}
+
+void TextureSetPerZone::zoneContextChanged(Map* map, Zone* zone) {
+  cCurrentMap = map;
+  cCurrentZone = zone;
+}
+
 std::vector<ICommandInfo*> TextureSetPerZone::getCommandInfo() {
   return cPluginCommands;
 }
@@ -100,6 +121,39 @@ void TextureSetPerZone::setEditingInfo(IComponentContainer* componentContainer) 
 
 void TextureSetPerZone::save(DOMNodeWriter*) {
   // Nothing to do.
+}
+
+void TextureSetPerZone::saveData(DOMNodeWriter* node, Map* map, Zone* zone) {
+  std::map<Zone*, ISpindizzyTextureSet*>::iterator mIterator = cZoneMapping.find(zone);
+  if (mIterator != cZoneMapping.end()) {
+    ISpindizzyTextureSet* mTextureSet = mIterator->second;
+    DOMNodeWriter* mTextureSetNode = node->addBranch("TextureSet");
+    PluginRegistry* mPluginRegistry = map->getPluginRegistry();
+    std::string mTextureSetName = mPluginRegistry->getInstanceName("SpindizzyTextureSet", mTextureSet);
+    mTextureSetNode->addText(mTextureSetName);
+  }
+}
+
+void TextureSetPerZone::loadData(DOMNodeWrapper* node, IPluginRegistry* pluginRegistry, Zone* zone) {
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "TextureSet") {
+      std::string mTextureSetName = mNode->getStringValue();
+      std::string mPluginType("SpindizzyTextureSet");
+      IPlugin* mPlugin = pluginRegistry->getPlugin(mPluginType, mTextureSetName);
+      if (mPlugin != NULL) {
+        ISpindizzyTextureSet* mTextureSet = dynamic_cast<ISpindizzyTextureSet*>(mPlugin);
+        if (mTextureSet != NULL) {
+          cZoneMapping[zone] = mTextureSet;
+        } else {
+          std::cout << "Warning: dynamic_cast for \"" << mTextureSetName << "\" failed!" << std::endl;
+        }
+      } else {
+        std::cout << "Warning: Texture set \"" << mTextureSetName << "\" specified for zone is undefined!" << std::endl;
+      }
+    }
+  }
 }
 
 void TextureSetPerZone::load(DOMNodeWrapper*) {
@@ -116,7 +170,7 @@ void TextureSetPerZone::ChooseTextureSetCommand::setComponentContainer(IComponen
 }
 
 void TextureSetPerZone::ChooseTextureSetCommand::execute() {
-  IHUDComponent* mComponent = new TextureSetChooserComponent(cComponentContainer, cParent->cTexturePalette/*, cParent->cChangeListeners*/);
+  IHUDComponent* mComponent = new TextureSetChooserComponent(cComponentContainer, cParent, cParent->cTexturePalette);
   cComponentContainer->addComponent(mComponent);
 }
 

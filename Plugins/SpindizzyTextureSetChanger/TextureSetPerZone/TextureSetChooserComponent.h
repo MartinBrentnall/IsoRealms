@@ -19,27 +19,52 @@
 #ifndef TEXTURE_SET_CHOOSER_COMPONENT_H
 #define TEXTURE_SET_CHOOSER_COMPONENT_H
 
+#include <SDL/SDL.h>
 #include <vector>
 
-#include "../../../Global/RectangleComponent.h"
+#include "../../../Global/ComponentEdgeLayout.h"
+#include "../../../Global/EdgeRelation.h"
+#include "../../../Global/IsoRealmsConstants.h"
+#include "../../../Global/ResizableDialog.h"
+#include "../../../Global/WrappingGridComponent.h"
 
 #include "../../SpindizzyTextureSet/ISpindizzyTextureSet.h"
 
-class TextureSetChooserComponent:public RectangleComponent {
+#include "IZoneTextureSetter.h"
+
+class TextureSetChooserComponent:public ResizableDialog {
   private:
-  float cPreviewSize;
-  float cSpacingSize;
-  std::vector<ISpindizzyTextureSet*> cTexturePalette;
+  IZoneTextureSetter* cZoneTextureSetter;
+
+  class TextureIcon:public ISizedComponent {
+    private:
+    TextureSetChooserComponent* cParent;
+    ISpindizzyTextureSet* cTextureSet;
+
+    bool mouseButtonDown(SDL_Event&);
+
+    public:
+    TextureIcon(TextureSetChooserComponent*, ISpindizzyTextureSet*);
+
+    /******************************\
+     * Implements ISizedComponent *
+    \******************************/
+    float getWidth();
+    float getHeight();
+    void render();
+    void update(int);
+    bool input(SDL_Event&);
+  };
 
   public:
-  TextureSetChooserComponent(IComponentContainer*, std::vector<ISpindizzyTextureSet*>);
+  TextureSetChooserComponent(IComponentContainer*, IZoneTextureSetter*, std::vector<ISpindizzyTextureSet*>);
 
-  /*********************************\
-   * Implements RectangleComponent *
-  \*********************************/
-  void renderContent();
-  void updateContent(int);
-  bool inputContent(SDL_Event&);
+  /******************************\
+   * Implements ResizableDialog *
+  \******************************/
+  void renderResizableDialogContent();
+  void updateResizableDialogContent(int);
+  bool inputResizableDialogContent(SDL_Event&);
 };
 
 #endif

@@ -333,8 +333,6 @@ Commodore64SpindizzyTextureSet::Commodore64SpindizzyTextureSet() {
   cColourScheme = dynamic_cast<IFourColourSupport*>(PluginRegistry::getDummyPlugin(mDummyName));
   if (cColourScheme == NULL) {
     std::cout << "Dynamic cast of colour scheme dummy didn't work!" << std::endl;
-  } else {
-    std::cout << "dynamic_cast succeeded for dummy four colour palette" << std::endl;
   }
 
   // TODO: Nasty hack; get rid of.

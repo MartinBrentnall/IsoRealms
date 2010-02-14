@@ -25,13 +25,16 @@
 
 #include "../../../Global/ICommand.h"
 #include "../../../Global/IHUDComponent.h"
+#include "../../../Global/IPluginRegistry.h"
+#include "../../../Global/Map.h"
 
 #include "../ISpindizzyTextureSetChanger.h"
 
 #include "ChooseTextureSetCommandInfo.h"
 #include "TextureSetChooserComponent.h"
 
-class TextureSetPerZone:public ISpindizzyTextureSetChanger {
+class TextureSetPerZone:public ISpindizzyTextureSetChanger,
+                        public IZoneTextureSetter {
   private:
   class ChooseTextureSetCommand:public ICommand {
     private:
@@ -48,6 +51,8 @@ class TextureSetPerZone:public ISpindizzyTextureSetChanger {
     void execute();
   };
 
+  Map* cCurrentMap;
+  Zone* cCurrentZone;
   ChooseTextureSetCommand* cChooseTextureSetCommand;
   std::vector<ICommandInfo*> cPluginCommands;
   IChangeableTextureSet* cControlledObject;
@@ -56,6 +61,11 @@ class TextureSetPerZone:public ISpindizzyTextureSetChanger {
 
   public:
   TextureSetPerZone();
+
+  /*********************************\
+   * Implements IZoneTextureSetter *
+  \*********************************/
+  void setTextureSet(ISpindizzyTextureSet*);
 
   /******************************************\
    * Implements ISpindizzyTextureSetChanger *
@@ -75,9 +85,13 @@ class TextureSetPerZone:public ISpindizzyTextureSetChanger {
   \******************************************************/
   void notifyZoneAction(Zone*);
   void initPlugin(Zone*);
+  void renderPreZone(Zone*);
+  void zoneContextChanged(Map*, Zone*);
   std::vector<ICommandInfo*> getCommandInfo();
   void setEditingInfo(IComponentContainer*);
   void save(DOMNodeWriter*);
+  void saveData(DOMNodeWriter*, Map*, Zone*);
+  void loadData(DOMNodeWrapper*, IPluginRegistry*, Zone*);
   void load(DOMNodeWrapper*);
 };
 

@@ -18,50 +18,146 @@
  */
 #include "TextureSetChooserComponent.h"
 
-TextureSetChooserComponent::TextureSetChooserComponent(IComponentContainer* componentContainer, std::vector<ISpindizzyTextureSet*> texturePalette) : RectangleComponent(componentContainer, new std::string("Choose Texture Set"), 0.18f, 0.68f, 0.8f, 0.3f) {
-  cTexturePalette = texturePalette;
-  cSpacingSize = 0.01f;
-  cPreviewSize = 0.1f;
+TextureSetChooserComponent::TextureIcon::TextureIcon(TextureSetChooserComponent* parent, ISpindizzyTextureSet* textureSet) {
+  cParent = parent;
+  cTextureSet = textureSet;
 }
 
-void TextureSetChooserComponent::renderContent() {
+float TextureSetChooserComponent::TextureIcon::getWidth() {
   Configuration* mConfiguration = Configuration::getInstance();
   ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
   float mAspectRatio = mScreen->getAspectRatio();
+  return 0.2f * mAspectRatio;
+}
+
+float TextureSetChooserComponent::TextureIcon::getHeight() {
+  return 0.2f;
+}
+
+void TextureSetChooserComponent::TextureIcon::render() {
   float mLeft = getLeft();
+  float mRight = getRight();
   float mTop = getTop();
-  for (unsigned int i = 0; i < cTexturePalette.size(); i++) {
-    glBegin(GL_LINE_LOOP);
-    glVertex2f(mLeft + cSpacingSize * mAspectRatio,                         mTop - cSpacingSize);
-    glVertex2f(mLeft + (cSpacingSize + cPreviewSize * 2.0f) * mAspectRatio, mTop - cSpacingSize);
-    glVertex2f(mLeft + (cSpacingSize + cPreviewSize * 2.0f) * mAspectRatio, mTop - (cSpacingSize + cPreviewSize * 2.0f));
-    glVertex2f(mLeft + cSpacingSize * mAspectRatio,                         mTop - (cSpacingSize + cPreviewSize * 2.0f));
-    glEnd();
+  float mBottom = getBottom();
+  glBindTexture(GL_TEXTURE_2D, 0);
+  glColor3f(1.0f, 1.0f, 1.0f);
+  glBegin(GL_LINE_LOOP);
+  glVertex2f(mLeft, mTop);
+  glVertex2f(mLeft, mBottom);
+  glVertex2f(mRight, mBottom);
+  glVertex2f(mRight, mTop);
+  glEnd();
 
-    glPushMatrix();
-    glTranslatef(mLeft + (cSpacingSize + cPreviewSize) * mAspectRatio, mTop - (cSpacingSize + cPreviewSize), 0.0f);
-    glScalef(cPreviewSize * mAspectRatio, cPreviewSize, cPreviewSize);
-/*    glRotatef(-55.0f, 1.0f, 0.0f, 0.0f);
-    glRotatef(-45.0f, 0.0f, 0.0f, 1.0f);*/
-    // TODO: Scale the icon
-//  glScalef(1.3f, 1.3f, 1.3f);
-    glColor3f(1.0f, 1.0f, 1.0f);
+  glPushMatrix();
+  float mScale = 0.12f;
+  Configuration* mConfiguration = Configuration::getInstance();
+  ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
+  float mXLocation = getLeft() + (getRight() - getLeft()) / 2.0f;
+  float mYLocation = getBottom() + (getTop() - getBottom()) / 2.0f;
+  glTranslatef(mXLocation, mYLocation, 0.0f);
+  float mAspectRatio = mScreen->getAspectRatio();
+  glScalef(mAspectRatio * mScale, mScale, mScale);
+  glRotatef(-55.0f, 1.0f, 0.0f, 0.0f);
+  glRotatef(-45.0f, 0.0f, 0.0f, 1.0f); // TODO: Must get this right; check with how the editor is doing it!
+  glColor3f(1.0f, 1.0f, 1.0f);
 
-    glBegin(GL_QUADS);
-    glVertex2f(-1.0f, -1.0f);
-    glVertex2f( 1.0f, -1.0f);
-    glVertex2f( 1.0f,  1.0f);
-    glVertex2f(-1.0f,  1.0f);
-    glEnd();
-    glPopMatrix();
+  ISpindizzyTexture* mTexture = cTextureSet->getTexture(ISpindizzyTextureSet::SWITCH_DIAMOND_BOTH);
+  mTexture->set();
+  glBegin(GL_QUADS);
+  mTexture->texCoord2f(1.0f, 1.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+  mTexture->texCoord2f(0.0f, 1.0f);  glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+  mTexture->texCoord2f(0.0f, 0.0f);  glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+  mTexture->texCoord2f(1.0f, 0.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+  glEnd();
+
+  mTexture = cTextureSet->getTexture(ISpindizzyTextureSet::WALL_SOUTH);
+  mTexture->set();
+  glBegin(GL_QUADS);
+  mTexture->texCoord2f(1.0f, 1.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+  mTexture->texCoord2f(0.0f, 1.0f);  glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+  mTexture->texCoord2f(0.0f, 0.0f);  glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+  mTexture->texCoord2f(1.0f, 0.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+  glEnd();
+
+  mTexture = cTextureSet->getTexture(ISpindizzyTextureSet::WALL_NORTH);
+  mTexture->set();
+  glBegin(GL_QUADS);
+  mTexture->texCoord2f(1.0f, 0.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+  mTexture->texCoord2f(0.0f, 0.0f);  glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+  mTexture->texCoord2f(0.0f, 1.0f);  glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+  mTexture->texCoord2f(1.0f, 1.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+  glEnd();
+
+  mTexture = cTextureSet->getTexture(ISpindizzyTextureSet::WALL_EAST);
+  mTexture->set();
+  glBegin(GL_QUADS);
+  mTexture->texCoord2f(1.0f, 0.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+  mTexture->texCoord2f(0.0f, 0.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+  mTexture->texCoord2f(0.0f, 1.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+  mTexture->texCoord2f(1.0f, 1.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+  glEnd();
+
+  mTexture = cTextureSet->getTexture(ISpindizzyTextureSet::WALL_WEST);
+  mTexture->set();
+  glBegin(GL_QUADS);
+  mTexture->texCoord2f(1.0f, 1.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+  mTexture->texCoord2f(0.0f, 1.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+  mTexture->texCoord2f(0.0f, 0.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+  mTexture->texCoord2f(1.0f, 0.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+  glEnd();
+
+  glPopMatrix();
+}
+
+void TextureSetChooserComponent::TextureIcon::update(int ticks) {
+  // Nothing to do
+}
+
+bool TextureSetChooserComponent::TextureIcon::mouseButtonDown(SDL_Event& event) {
+  Configuration* mConfiguration = Configuration::getInstance();
+  ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
+  float mX = mScreen->getXLocation(event.button.x);
+  float mY = mScreen->getYLocation(event.button.y);
+  if (contains(mX, mY)) {
+    cParent->cZoneTextureSetter->setTextureSet(cTextureSet);
+    cParent->relinquishFocus();
+    return true;
   }
-  
+  return false;
 }
 
-void TextureSetChooserComponent::updateContent(int) {
+bool TextureSetChooserComponent::TextureIcon::input(SDL_Event& event) {
+  switch (event.type) {
+    case SDL_MOUSEBUTTONDOWN: {
+      return mouseButtonDown(event);
+    }
+  }
+  return false;
 }
 
-bool TextureSetChooserComponent::inputContent(SDL_Event& event) {
+TextureSetChooserComponent::TextureSetChooserComponent(IComponentContainer* componentContainer, IZoneTextureSetter* zoneTextureSetter, std::vector<ISpindizzyTextureSet*> texturePalette) : ResizableDialog(componentContainer, new std::string("Choose Texture Set"), 0.18f, 0.68f, 0.8f, 0.3f) {
+  cZoneTextureSetter = zoneTextureSetter;
+  WrappingGridComponent* mWrappingComponent = new WrappingGridComponent();
+  for (unsigned int i = 0; i < texturePalette.size(); i++) {
+    ISizedComponent* mTextureIcon = new TextureIcon(this, texturePalette[i]);
+    mWrappingComponent->addComponent(mTextureIcon);
+  }
+
+  EdgeRelation* mInsideDialog = new EdgeRelation(this, EdgeRelation::INSIDE);
+  IComponentBoundsCalculator* mWrappingComponentLayout = new ComponentEdgeLayout(mInsideDialog, mInsideDialog, mInsideDialog, mInsideDialog, NULL);
+  mWrappingComponent->setBoundsCalculator(mWrappingComponentLayout);
+  addComponent(mWrappingComponent);
+}
+
+void TextureSetChooserComponent::renderResizableDialogContent() {
+  // Nothing to do.
+}
+
+void TextureSetChooserComponent::updateResizableDialogContent(int) {
+  // Nothing to do.
+}
+
+bool TextureSetChooserComponent::inputResizableDialogContent(SDL_Event& event) {
   return false;
 }
 
