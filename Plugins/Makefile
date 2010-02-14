@@ -16,8 +16,8 @@
 # along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
 objs:
 	cd FourColourSupport; make
-	cd RollableSurfaceCalculator; make
-	cd SimpleModel; make
+	cd SurfaceProcessor; make
+	cd 3DModel; make
 	cd SpindizzySwitches; make
 	cd SpindizzyTextureSet; make
 	cd SpindizzyTextureSetChanger; make
@@ -25,8 +25,8 @@ objs:
 
 clean:
 	cd FourColourSupport; make clean
-	cd RollableSurfaceCalculator; make clean
-	cd SimpleModel; make clean
+	cd SurfaceProcessor; make clean
+	cd 3DModel; make clean
 	cd SpindizzySwitches; make clean
 	cd SpindizzyTextureSet; make clean
 	cd SpindizzyTextureSetChanger; make clean
