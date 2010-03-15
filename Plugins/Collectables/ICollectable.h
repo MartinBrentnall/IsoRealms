@@ -6,7 +6,7 @@
 class ICollectable {
   public:
   virtual bool isCollected(Vertex&, Vertex&) = 0;
-  virtual bool setDirty() = 0;
+  virtual void setDirty() = 0;
 };
 
 #endif
