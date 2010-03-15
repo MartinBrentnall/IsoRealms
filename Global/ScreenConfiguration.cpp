@@ -86,7 +86,7 @@ void ScreenConfiguration::openScreen(std::string title) {
   glHint(GL_FOG_HINT, GL_FASTEST);
   glFogf(GL_FOG_START, 20.0f);
   glFogf(GL_FOG_END, 40.0f);
-/*  glEnable(GL_FOG);*/
+//  glEnable(GL_FOG);
   glEnable(GL_TEXTURE_2D);
   glEnable(GL_CULL_FACE);
   glEnable(GL_DEPTH_TEST);
@@ -118,4 +118,15 @@ float ScreenConfiguration::getYLocation(int y) {
   float mHalfScreen = cScreenHeight / 2.0f;
   return -(y - mHalfScreen) / mHalfScreen;
 }
+
+int ScreenConfiguration::convertToXPixels(float x) {
+  float mHalfScreen = cScreenWidth / 2.0f;
+  return x * mHalfScreen + mHalfScreen;
+}
+
+int ScreenConfiguration::convertToYPixels(float y) {
+  float mHalfScreen = cScreenHeight / 2.0f;
+  return y * mHalfScreen + mHalfScreen;
+}
+
 

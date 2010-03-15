@@ -30,6 +30,7 @@ SelectionList::SelectionList(std::vector<std::string>& activeMenu, std::string d
 void SelectionList::execute() {
   *cSelectedMenuItem = 0;
   std::string mActualDir = System::getResource(cDir);
+  std::cout << "Populating menu from: \"" << mActualDir << "\"" << std::endl;
   std::vector<std::string>* mFileList = System::getFileList(mActualDir, cFilter);
   *cActiveMenu = *mFileList;
   *cMenuLocation = &cDestinationLocation;

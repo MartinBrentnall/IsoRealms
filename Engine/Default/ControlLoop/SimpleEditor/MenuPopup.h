@@ -26,15 +26,18 @@
 
 #include "../../../../Global/Configuration.h"
 #include "../../../../Global/DOMNodeWrapper.h"
+#include "../../../../Global/IComponentContainer.h"
 #include "../../../../Global/ICommand.h"
 #include "../../../../Global/ICommandInfo.h"
 #include "../../../../Global/ScreenConfiguration.h"
 
 class PopupMenuCommand;
 
+#include "ChoosePluginImplementationCommand.h"
 #include "EditorCommandManager.h"
 #include "IMenuContainer.h"
 #include "IMenu.h"
+#include "IPluginRegistryAccessor.h"
 #include "MenuItem.h"
 #include "PopupMenuCommand.h"
 
@@ -56,7 +59,7 @@ class MenuPopup:public IMenu {
   void addMenuItem(std::string, ICommand*);
 
   public:
-  MenuPopup(DOMNodeWrapper*, IMenuContainer*, float, float);
+  MenuPopup(DOMNodeWrapper*, IMenuContainer*, float, float, IPluginRegistryAccessor*, IComponentContainer*);
   MenuPopup(IMenuContainer*, float, float);
 
   void addCommand(std::vector<std::string>, ICommandInfo*);

@@ -22,6 +22,7 @@
 #include <vector>
 
 class IElementSet;
+class IMap;
 
 #include "BlockLocation.h"
 #include "DOMNodeWriter.h"
@@ -91,9 +92,17 @@ class IElement {
 
   void setElementContainer(IElementContainer*);
 
+  virtual void setRuntimeContext(IMap*) {}
+
   void signalElementDirty();
 
   virtual void renderStatic() = 0;
+
+  /**
+   * This function can be called by editing tools to render things that should
+   * only be shown to help with editing and not during the game.
+   */
+  virtual void renderStaticEditing() {};
 
   /**
    * Retrieve a list of interfaces through which this element is represented
@@ -105,6 +114,11 @@ class IElement {
    * Retrieve a list of interfaces through which this element can be updated.
    */
   virtual std::vector<IDynamicElement*> getDynamicElements() = 0;
+
+  virtual std::vector<IDynamicElement*> getDynamicElementsRuntime() {
+    std::vector<IDynamicElement*> mEmptyVector;
+    return mEmptyVector;
+  }
 
   virtual std::vector<IInteractiveElement*> getInteractiveElements() = 0;
 

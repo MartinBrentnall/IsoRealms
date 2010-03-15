@@ -27,8 +27,12 @@
 #include "../../Global/IElementGateway.h"
 #include "../../Global/IVisualElement.h"
 
+#include "../../Plugins/LocationAwareness/ILocationAwareness.h"
+#include "../../Plugins/Camera/ICamera.h"
+#include "../../Plugins/Collectables/ICollectables.h"
 #include "../../Plugins/3DModel/ISimpleModel.h"
 #include "../../Plugins/3DModel/ISimpleModelFactory.h"
+#include "../../Plugins/ZoneContext/IZoneContext.h"
 
 #include "SpindizzyGERALD.h"
 
@@ -36,6 +40,10 @@ class SpindizzyGERALDFactory:public IElementFactory {
   private:
   std::vector<SpindizzyGERALD*> cContent;
   ISimpleModelFactory* cGERALDModelFactory;
+  ICamera* cCamera;
+  ICollectables* cCollectables;
+  ILocationAwareness* cLocationAwareness;
+  IZoneContext* cZoneContext;
   SpindizzyGERALD* cSampleGERALD;
   std::vector<IVisualElement*> cSampleGERALDVisuals;
   BlockLocation* cEditingLocation;
@@ -46,9 +54,13 @@ class SpindizzyGERALDFactory:public IElementFactory {
   bool keyDown(SDLKey&);
 
   public:
-  SpindizzyGERALDFactory(IElementSet*, ISimpleModelFactory*);
+  SpindizzyGERALDFactory(IElementSet*, ISimpleModelFactory*, ILocationAwareness*, IZoneContext*);
 
   void setModel(ISimpleModelFactory*);
+  void setCamera(ICamera*);
+  void setCollectables(ICollectables*);
+  void setLocationAwareness(ILocationAwareness*);
+  void setZoneContext(IZoneContext*);
 
   /******************************\
    * Implements IElementFactory *

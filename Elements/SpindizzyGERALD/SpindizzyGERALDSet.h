@@ -25,6 +25,10 @@
 #include "../../Global/PluginRegistry.h"
 
 #include "../../Plugins/3DModel/ISimpleModelFactory.h"
+#include "../../Plugins/Camera/ICamera.h"
+#include "../../Plugins/Collectables/ICollectables.h"
+#include "../../Plugins/LocationAwareness/ILocationAwareness.h"
+#include "../../Plugins/ZoneContext/IZoneContext.h"
 
 #include "SpindizzyGERALDFactory.h"
 
@@ -32,6 +36,10 @@ class SpindizzyGERALDSet:public IElementSet {
   private:
   std::vector<IElementFactory*> cElementFactories;
   ISimpleModelFactory* cGERALDModelFactory;
+  ICamera* cCamera;
+  ICollectables* cCollectables;
+  ILocationAwareness* cLocationAwareness;
+  IZoneContext* cZoneContext;
 
   void setModel(ISimpleModelFactory*);
 

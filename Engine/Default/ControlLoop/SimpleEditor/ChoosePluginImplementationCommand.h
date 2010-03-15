@@ -30,6 +30,7 @@
 
 #include "EntityClassInstancesComponent.h"
 #include "IInstanceSelectionListener.h"
+#include "IPluginRegistryAccessor.h"
 #include "PluginEntityClass.h"
 
 // TODO: Rename "ConnectPluginInstanceCommand"
@@ -38,7 +39,7 @@ class ChoosePluginImplementationCommand:public ICommand {
   IComponentContainer* cComponentContainer;
   IPluginSupport* cPluginSupport;
   PlugSocket* cPlugSocket;
-  PluginRegistry* cPluginRegistry;
+  IPluginRegistryAccessor* cPluginRegistryAccessor;
   std::string cPluginType; 
 
   class SelectionListener:public IInstanceSelectionListener {
@@ -65,7 +66,7 @@ class ChoosePluginImplementationCommand:public ICommand {
    *          implementation.
    * @param std:;string  The type of implementation to choose.
    */
-  ChoosePluginImplementationCommand(IPluginSupport*, PlugSocket*, IComponentContainer*, PluginRegistry*, std::string);
+  ChoosePluginImplementationCommand(IPluginSupport*, PlugSocket*, IComponentContainer*, IPluginRegistryAccessor*, std::string);
 
   /*************************************************************************\
    * Implemented methods of ICommand.h                                     *

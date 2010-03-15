@@ -33,6 +33,7 @@
 
 class SpindizzyEnemyFactory:public IElementFactory {
   private:
+  std::string cType;
   IElementSet* cElementSet;
   std::vector<SpindizzyEnemy*> cContent;
   ISimpleModelFactory* cEnemyModelFactory;
@@ -44,7 +45,7 @@ class SpindizzyEnemyFactory:public IElementFactory {
   bool keyDown(SDLKey&);
 
   public:
-  SpindizzyEnemyFactory(IElementSet*, ISimpleModelFactory*);
+  SpindizzyEnemyFactory(IElementSet*, ISimpleModelFactory*, const std::string&);
 
   void setModel(ISimpleModelFactory*);
 

@@ -25,6 +25,7 @@
 #include "DOMNodeWrapper.h"
 #include "DOMNodeWriter.h"
 #include "ElementSetRegistry.h"
+#include "IMap.h"
 #include "IPluginRegistryListener.h"
 #include "PluginRegistry.h"
 #include "Zone.h"
@@ -32,11 +33,21 @@
 /**
  * This class holds data for an IsoRealms map.
  */
-class Map:public IZoneChangeListener,
-          public IPluginRegistryListener {
+class Map:public IMap,
+          public IZoneChangeListener,
+          public IPluginRegistryListener,
+          public IElementContainer {
   private:
   PluginRegistry cPluginRegistry;
   ElementSetRegistry cElementSetRegistry;
+
+  /**
+   * These elements are not confined to one specific zone.
+   */
+  std::vector<IElement*> cElements;
+  std::vector<IElement*> cDirtyElements;
+  GLuint cDisplayList;
+  GLuint cEditingDisplayList;
 
   /**
    * The zones in the map.
@@ -47,28 +58,27 @@ class Map:public IZoneChangeListener,
    * A list of zones to be reinitialized at the next update.  This list is
    * cleared when the zones have been reinitialized.
    */
-  std::vector<Zone*> cDirtyZones;
+  std::vector<IZone*> cDirtyZones;
+
+  std::vector<IDynamicElement*> cPreLoopCommands;
+  std::vector<IDynamicElement*> cPostLoopCommands;
+  std::vector<IInteractiveElement*> cInteractivePlugins;
 
   /**
    * Register listeners on registries.
    */
   void registerListeners();
 
-  int getZoneIndex(Zone*);
+  int getZoneIndex(IZone*);
+  int getElementIndex(IElement*);
+
+  bool containsElement(IElement*);
 
   public:
   Map();
   Map(DOMNodeWrapper*, IPluginRegistryListener*, IElementRegistryListener*);
 
   void addZone(Zone*);
-
-  /**
-   * Return the zone at the specified block location.
-   *
-   * @param BlockLocation&  The location.
-   * @returns  The zone at the location.
-   */
-  Zone* getZone(BlockLocation&);
 
   /**
    * Test whether the specified block area overlaps with a zone in this map.
@@ -80,26 +90,45 @@ class Map:public IZoneChangeListener,
 
   /**
    * Initialize the map.  This function will only initialise dirty zones and
-   * element sof the map.  It is called immediately when a map is loaded by the
+   * elements of the map.  It is called immediately when a map is loaded by the
    * editor or runtime, and when a change takes place on an element that may
    * require some recalculations.
    */
   void initMap();
 
   /**
+   * Initialise the map for runtime.  TODO
+   */
+  void initRuntime();
+
+  /**
    * Update the map.
    */
   void update(int);
+  void updateRuntime(int);
 
   /**
    * Render the map.
    */
   void render();
 
+  void renderEditing();
+
+  /**
+   * Pass input to interactive elements and plugins.
+   */
+  void input(SDL_Event&);
+
+  void executePreLoopCommands(int);
+
+  void executePostLoopCommands(int);
+
   /**
    *
    */
   void save();
+
+  void pushElement(IElement*);
 
   ElementSetRegistry* getElementSetRegistry();
 
@@ -124,6 +153,13 @@ class Map:public IZoneChangeListener,
    */
   void notifyZoneAction(Zone*);
 
+  /*******************\
+   * Implements IMap *
+  \*******************/
+  Zone* getZone(BlockLocation&);
+  IZone* getZone(Vertex&);
+  std::vector<ZoneEvent*> getZoneEvents(Vertex&, Vertex&);
+
   /**************************************\
    * Implements IPluginRegistryListener *
   \**************************************/
@@ -133,7 +169,12 @@ class Map:public IZoneChangeListener,
   /**********************************\
    * Implements IZoneChangeListener *
   \**********************************/
-  void zoneChanged(Zone*);
+  void zoneChanged(IZone*);
+
+  /********************************\
+   * Implements IElementContainer *
+  \********************************/
+  void elementDirty(IElement*);
 
   ~Map();
 };

@@ -26,18 +26,36 @@
 #include "../../Global/PluginRegistry.h"
 
 #include "../../Plugins/3DModel/ISimpleModelFactory.h"
+#include "../../Plugins/Collectables/ICollectables.h"
+#include "../../Plugins/CommandRegistry/ICommandRegistry.h"
+#include "../../Plugins/CommandRegistry/IUserCommand.h"
 
+#include "ICollectablesAccessor.h"
 #include "SpindizzyJewelFactory.h"
 
-class SpindizzyJewelSet:public IElementSet {
+class SpindizzyJewelSet:public IElementSet,
+                        public ICollectablesAccessor {
   private:
+  std::vector<PlugSocket*> cJewelSockets;
   std::vector<IElementFactory*> cElementFactories;
   ISimpleModelFactory* cJewelModelFactory;
+  ICollectables* cCollectables;
+
+  ICommandRegistry* cCommandRegistry;
+  std::vector<IUserCommand*> cJewelCollectedCommands;
+  std::vector<IUserCommand*> cAllJewelsCollectedCommands;
 
   void setModel(ISimpleModelFactory*);
 
   public:
   SpindizzyJewelSet();
+
+  /*************************\
+   * ICollectablesAccessor *
+  \*************************/
+  ICollectables* getCollectables();
+  void jewelCollected();
+  void allJewelsCollected();
 
   /**************************\
    * Implements IElementSet *
@@ -54,6 +72,7 @@ class SpindizzyJewelSet:public IElementSet {
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
   void save(DOMNodeWriter*);
+  void load(DOMNodeWrapper*);
 };
 
 #endif

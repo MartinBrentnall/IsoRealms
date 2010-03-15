@@ -18,15 +18,62 @@
  */
 #include "SpindizzyJewelModel.h"
 
-SpindizzyJewelModel::SpindizzyJewelModel() {
+unsigned int SpindizzyJewelModel::cReferenceCount = 0;
+GLuint SpindizzyJewelModel::cPanelDisplayList;
+GLuint SpindizzyJewelModel::cFrameDisplayList;
+
+SpindizzyJewelModel::SpindizzyJewelModel(Vertex* location) {
+  cLocation = location;
   long int mRandomNumber = random();
   cColourChannel = mRandomNumber % 3 == 0 ? &cCurrentColour.cRed 
                 : (mRandomNumber % 3 == 1 ? &cCurrentColour.cGreen
                                           : &cCurrentColour.cBlue);
   cColourUp = mRandomNumber % 2 == 1 ? true : false;
-  cCurrentColour.cRed   = cColourChannel == &cCurrentColour.cRed   ? (mRandomNumber % 10000) / 10000.0 : 0.0;
-  cCurrentColour.cGreen = cColourChannel == &cCurrentColour.cGreen ? (mRandomNumber % 10000) / 10000.0 : 0.0;
-  cCurrentColour.cBlue  = cColourChannel == &cCurrentColour.cBlue  ? (mRandomNumber % 10000) / 10000.0 : 0.0;
+  cCurrentColour.cRed   = cColourChannel == &cCurrentColour.cRed   ? (mRandomNumber % 1000) / 1000.0f : 0.0f;
+  cCurrentColour.cGreen = cColourChannel == &cCurrentColour.cGreen ? (mRandomNumber % 1000) / 1000.0f : 0.0f;
+  cCurrentColour.cBlue  = cColourChannel == &cCurrentColour.cBlue  ? (mRandomNumber % 1000) / 1000.0f : 0.0f;
+
+  if (cReferenceCount == 0) {
+    float mRadius = IsoRealmsConstants::BLOCK_RADIUS;
+    float mLineWidth = 0.05f;
+    Vertex mBottom(0.0f, 0.0f, 0.0f);
+    Vertex mTop(0.0f, 0.0f,  IsoRealmsConstants::BLOCK_HEIGHT * 1.4f);
+    Vertex mNorth(0.0f, mRadius, IsoRealmsConstants::BLOCK_HEIGHT * 0.7f);
+    Vertex mEast(mRadius, 0.0f, IsoRealmsConstants::BLOCK_HEIGHT * 0.7f);
+    Vertex mSouth(0.0f, -mRadius, IsoRealmsConstants::BLOCK_HEIGHT * 0.7f);
+    Vertex mWest(-mRadius, 0.0f, IsoRealmsConstants::BLOCK_HEIGHT * 0.7f);
+
+    cPanelDisplayList = glGenLists(1);
+    glNewList(cPanelDisplayList, GL_COMPILE);
+    glBegin(GL_TRIANGLES);
+    renderInnerTriangle(mBottom, mNorth, mEast,  mLineWidth);
+    renderInnerTriangle(mBottom, mEast,  mSouth, mLineWidth);
+    renderInnerTriangle(mBottom, mSouth, mWest,  mLineWidth);
+    renderInnerTriangle(mBottom, mWest,  mNorth, mLineWidth);
+    renderInnerTriangle(mTop,    mNorth, mWest,  mLineWidth);
+    renderInnerTriangle(mTop,    mWest,  mSouth, mLineWidth);
+    renderInnerTriangle(mTop,    mSouth, mEast,  mLineWidth);
+    renderInnerTriangle(mTop,    mEast,  mNorth, mLineWidth);
+    glEnd();
+    glEndList();
+  
+    cFrameDisplayList = glGenLists(1);
+    glNewList(cFrameDisplayList, GL_COMPILE);
+    glColor3f(1.0f, 1.0f, 0.4f);
+    glBegin(GL_TRIANGLES);
+    renderOuterTriangle(mBottom, mNorth, mEast,  mLineWidth);
+    renderOuterTriangle(mBottom, mEast,  mSouth, mLineWidth);
+    renderOuterTriangle(mBottom, mSouth, mWest,  mLineWidth);
+    renderOuterTriangle(mBottom, mWest,  mNorth, mLineWidth);
+    renderOuterTriangle(mTop,    mNorth, mWest,  mLineWidth);
+    renderOuterTriangle(mTop,    mWest,  mSouth, mLineWidth);
+    renderOuterTriangle(mTop,    mSouth, mEast,  mLineWidth);
+    renderOuterTriangle(mTop,    mEast,  mNorth, mLineWidth);
+    glEnd();
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glEndList();
+  }
+  cReferenceCount++;
 }
 
 void SpindizzyJewelModel::update(int milliseconds) {
@@ -42,58 +89,19 @@ void SpindizzyJewelModel::update(int milliseconds) {
 }
 
 void SpindizzyJewelModel::render() {
-/*  glPushMatrix();
-  glTranslatef(cLocation.x, cLocation.y, cLocation.z * BLOCK_HEIGHT);
+  glTranslatef(cLocation->x, cLocation->y, cLocation->z * IsoRealmsConstants::BLOCK_HEIGHT);
   glBindTexture(GL_TEXTURE_2D, 0);
-  glCallList(cPanelDisplayList);
-  glColor4f(1.0, 1.0, 0.4, alpha);
   glCallList(cFrameDisplayList);
-  glColor4f(1.0, 1.0, 1.0, alpha);
-  glPopMatrix();*/
-
-  glBindTexture(GL_TEXTURE_2D, 0);
-  
-  float mRadius = IsoRealmsConstants::BLOCK_RADIUS;
-  float mLineWidth = 0.05;
-  Vertex mBottom(0.0, 0.0, 0.0);
-  Vertex mTop(0.0, 0.0,  IsoRealmsConstants::BLOCK_HEIGHT * 1.4);
-  Vertex mNorth(0.0, mRadius, IsoRealmsConstants::BLOCK_HEIGHT * 0.7);
-  Vertex mEast(mRadius, 0.0, IsoRealmsConstants::BLOCK_HEIGHT * 0.7);
-  Vertex mSouth(0.0, -mRadius, IsoRealmsConstants::BLOCK_HEIGHT * 0.7);
-  Vertex mWest(-mRadius, 0.0, IsoRealmsConstants::BLOCK_HEIGHT * 0.7);
-
   glColor3f(cCurrentColour.cRed, cCurrentColour.cGreen, cCurrentColour.cBlue);
+  glCallList(cPanelDisplayList);
+  glColor3f(1.0, 1.0, 1.0);
+}
 
-//  cPanelDisplayList = glGenLists(1);
-//  glNewList(cPanelDisplayList, GL_COMPILE);
-  glBegin(GL_TRIANGLES);
-  renderInnerTriangle(mBottom, mNorth, mEast, mLineWidth);
-  renderInnerTriangle(mBottom, mEast, mSouth, mLineWidth);
-  renderInnerTriangle(mBottom, mSouth, mWest, mLineWidth);
-  renderInnerTriangle(mBottom, mWest, mNorth, mLineWidth);
-  renderInnerTriangle(mTop, mNorth, mWest, mLineWidth);
-  renderInnerTriangle(mTop, mWest, mSouth, mLineWidth);
-  renderInnerTriangle(mTop, mSouth, mEast, mLineWidth);
-  renderInnerTriangle(mTop, mEast, mNorth, mLineWidth);
-  glEnd();
-//  glEndList();
-
-  glColor3f(1.0f, 1.0f, 0.4f);
-
-//  cFrameDisplayList = glGenLists(1);
-//  glNewList(cFrameDisplayList, GL_COMPILE);
-  glBegin(GL_TRIANGLES);
-  renderOuterTriangle(mBottom, mNorth, mEast, mLineWidth);
-  renderOuterTriangle(mBottom, mEast, mSouth, mLineWidth);
-  renderOuterTriangle(mBottom, mSouth, mWest, mLineWidth);
-  renderOuterTriangle(mBottom, mWest, mNorth, mLineWidth);
-  renderOuterTriangle(mTop, mNorth, mWest, mLineWidth);
-  renderOuterTriangle(mTop, mWest, mSouth, mLineWidth);
-  renderOuterTriangle(mTop, mSouth, mEast, mLineWidth);
-  renderOuterTriangle(mTop, mEast, mNorth, mLineWidth);
-  glEnd();
-//  glEndList();
-  glColor3f(1.0f, 1.0f, 1.0f);
+SpindizzyJewelModel::~SpindizzyJewelModel() {
+  cReferenceCount--;
+  if (cReferenceCount == 0) {
+    // TODO: Destroy display lists
+  }
 }
 
 // TODO: Everything below here is pretty shitty.

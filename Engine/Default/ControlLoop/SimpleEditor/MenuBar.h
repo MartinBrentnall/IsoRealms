@@ -25,6 +25,7 @@
 #include <map>
 #include <vector>
 
+#include "../../../../Global/GUI/LookAndFeel.h"
 #include "../../../../Global/Configuration.h"
 #include "../../../../Global/DOMNodeWrapper.h"
 #include "../../../../Global/ICommand.h"
@@ -32,8 +33,10 @@
 #include "../../../../Global/IFont.h"
 #include "../../../../Global/IHUDComponent.h"
 #include "../../../../Global/KeyStates.h"
+#include "../../../../Global/PluginRegistry.h"
 #include "../../../../Global/ScreenConfiguration.h"
 
+#include "IPluginRegistryAccessor.h"
 #include "MenuItem.h"
 #include "MenuPopup.h"
 #include "PopupMenuCommand.h"
@@ -45,7 +48,6 @@ class MenuBar:public IHUDComponent,
   std::map<std::string, MenuPopup*> cMenuPopups;
   std::vector<MenuItem*> cMenuItems;
   MenuPopup* cMenuPopupShowing;
-  IFont* cFont;
   float cWidth;
   unsigned int cSelectedItem;
 
@@ -61,7 +63,7 @@ class MenuBar:public IHUDComponent,
   bool keyDown(SDLKey&);
 
   public:
-  MenuBar(IComponentContainer*, DOMNodeWrapper*, IFont*);
+  MenuBar(IComponentContainer*, DOMNodeWrapper*, IPluginRegistryAccessor*);
 
   void addCommand(ICommandInfo*);
   void removeCommand(ICommandInfo*);

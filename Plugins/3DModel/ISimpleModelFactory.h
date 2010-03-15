@@ -19,6 +19,8 @@
 #ifndef I_SIMPLE_MODEL_FACTORY_H
 #define I_SIMPLE_MODEL_FACTORY_H
 
+#include "../../Global/Vertex.h"
+
 #include "ISimpleModel.h"
 
 class ISimpleModelFactory:public virtual IPlugin {
@@ -31,7 +33,7 @@ class ISimpleModelFactory:public virtual IPlugin {
    * 
    * @returns A new model instance.
    */
-  virtual ISimpleModel* createModel() = 0;
+  virtual ISimpleModel* createModel(Vertex*) = 0;
 
   /**
    * When a model is no longer required by an entity (e.g. it was changed to a

@@ -31,6 +31,11 @@
 
 class SpindizzyJewelModel:public ISimpleModel {
   private:
+  static unsigned int cReferenceCount;
+  static GLuint cPanelDisplayList;
+  static GLuint cFrameDisplayList;
+
+  Vertex* cLocation;
 
   /**
    * Current colour of the jewel.
@@ -81,13 +86,15 @@ class SpindizzyJewelModel:public ISimpleModel {
   static double distance(double a1, double a2, double b1, double b2);
 
   public:
-  SpindizzyJewelModel();
+  SpindizzyJewelModel(Vertex*);
 
-  /*************************************************************************\
-   * Implemented methods of ISimpleModel.h                                 *
-  \*************************************************************************/
+  /***************************\
+   * Implements ISimpleModel *
+  \***************************/
   void update(int);
   void render();
+
+  ~SpindizzyJewelModel();
 };
 
 #endif

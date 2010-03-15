@@ -22,6 +22,7 @@
 #include <GL/gl.h>
 #include <SDL/SDL.h>
 
+#include "../../Global/GUI/IComponentCloseListener.h"
 #include "../../Global/IComponentContainer.h"
 #include "../../Global/IElement.h"
 #include "../../Global/IElementFactory.h"
@@ -34,7 +35,6 @@
 class SpindizzyBlockConfigurationComponent;
 
 #include "AbstractSpindizzyBlock.h"
-#include "IComponentCloseListener.h"
 #include "ISpindizzyBlockFactory.h"
 #include "SpindizzyBlockConfigurationComponent.h"
 #include "SpindizzyBlockProperties.h"

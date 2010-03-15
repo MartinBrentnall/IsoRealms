@@ -8,11 +8,12 @@
 
 #include "ConfirmationBox.h"
 #include "IEntityClass.h"
+#include "IPluginRegistryAccessor.h"
 #include "PluginRequirementsComponent.h"
 
 class PluginEntityClass:public IEntityClass {
   private:
-  PluginRegistry* cPluginRegistry;
+  IPluginRegistryAccessor* cPluginRegistryAccessor;
   std::string cPluginType;
   IComponentContainer* cComponentContainer;
 
@@ -31,7 +32,7 @@ class PluginEntityClass:public IEntityClass {
   };
 
   public:
-  PluginEntityClass(PluginRegistry*, std::string&, IComponentContainer*);
+  PluginEntityClass(IPluginRegistryAccessor*, std::string&, IComponentContainer*);
 
   /***************************\
    * Implements IEntityClass *

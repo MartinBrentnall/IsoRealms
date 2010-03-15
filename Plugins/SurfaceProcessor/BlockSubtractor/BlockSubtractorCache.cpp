@@ -22,7 +22,7 @@ BlockSubtractorCache::BlockSubtractorCache() {
   cCurrentZoneProviders = NULL;
 }
 
-void BlockSubtractorCache::setZone(Zone* zone) {
+void BlockSubtractorCache::setZone(IZone* zone) {
   cCurrentZoneProviders = cOrderedSurfaceProvidersByZone[zone];
   if (cCurrentZoneProviders == NULL) {
     cCurrentZoneProviders = new std::vector<ISurfaceProvider*>();
@@ -44,7 +44,7 @@ void BlockSubtractorCache::add(ISurfaceProvider* provider) {
 }
 
 void BlockSubtractorCache::remove(ISurfaceProvider* provider) {
-  for (std::map<Zone*, std::vector<ISurfaceProvider*>*>::iterator i = cOrderedSurfaceProvidersByZone.begin(); i != cOrderedSurfaceProvidersByZone.end(); ++i) {
+  for (std::map<IZone*, std::vector<ISurfaceProvider*>*>::iterator i = cOrderedSurfaceProvidersByZone.begin(); i != cOrderedSurfaceProvidersByZone.end(); ++i) {
     int mIndex = getIndex(i->second, provider);
     if (mIndex >= 0) {
       i->second->erase(i->second->begin() + mIndex);
@@ -63,7 +63,7 @@ void BlockSubtractorCache::setDirty() {
 }
 
 void BlockSubtractorCache::reinitialise() {
-  for (std::map<Zone*, std::vector<ISurfaceProvider*>*>::iterator i = cOrderedSurfaceProvidersByZone.begin(); i != cOrderedSurfaceProvidersByZone.end(); ++i) {
+  for (std::map<IZone*, std::vector<ISurfaceProvider*>*>::iterator i = cOrderedSurfaceProvidersByZone.begin(); i != cOrderedSurfaceProvidersByZone.end(); ++i) {
     for (unsigned int j = 0; j < i->second->size(); j++) {
       (*i->second)[j]->setDirty();
     }
@@ -101,7 +101,7 @@ std::vector<ISurfaceProvider*> BlockSubtractorCache::getSurfaceProviders() {
 }
 
 BlockSubtractorCache::~BlockSubtractorCache() {
-  for (std::map<Zone*, std::vector<ISurfaceProvider*>*>::iterator i = cOrderedSurfaceProvidersByZone.begin(); i != cOrderedSurfaceProvidersByZone.end(); ++i) {
+  for (std::map<IZone*, std::vector<ISurfaceProvider*>*>::iterator i = cOrderedSurfaceProvidersByZone.begin(); i != cOrderedSurfaceProvidersByZone.end(); ++i) {
     delete i->second;
   }
 }

@@ -20,7 +20,6 @@
 
 //TODO: CLASS REQUIRES REFACTOR FOR NEW COMPONENT FRAMEWORK!
 EntityClassInstancesComponent::EntityClassInstancesComponent(IEntityClass* entityClass, IComponentContainer* componentContainer, float x, float y, IInstanceSelectionListener* listener) : ResizableDialog(componentContainer, getTitle(entityClass), x, y, 1.26f, 0.78f) {
-//  std::vector<std::string>* mImplementationsList = System::getFileList("/usr/share/IsoRealms/Elements/", "*");
   std::vector<std::string*> mImplementationsList = entityClass->getImplementations();
 
   ICommand* mConfigureInstanceCommand = new ConfigureInstanceCommand(this);
@@ -69,12 +68,19 @@ EntityClassInstancesComponent::EntityClassInstancesComponent(IEntityClass* entit
   IComponentBoundsCalculator* mImplementationsLabelLayout = new ComponentEdgeLayout(mInsideRightCell, mInsideRightCell, NULL, NULL, mImplementationsLabel);
   mImplementationsLabel->setBoundsCalculator(mImplementationsLabelLayout);
 
-  // Put implementations list box above instance name and below implementations label in right cell.
+  // Put scrollable container above instance name and below implementations label in right cell.
   EdgeRelation* mAdjacentInstanceNameField = new EdgeRelation(cInstanceNameInputField, EdgeRelation::OUTSIDE);
   EdgeRelation* mAdjacentImplementationsLabel = new EdgeRelation(mImplementationsLabel, EdgeRelation::OUTSIDE, 0.0f);
-  IComponentBoundsCalculator* mImplementationsListLayout = new ComponentEdgeLayout(mAdjacentImplementationsLabel, mInsideRightCell, mAdjacentInstanceNameField, mInsideRightCell, NULL);
-  cImplementationsList = new ImplementationsListComponent(mImplementationsList);
-  cImplementationsList->setBoundsCalculator(mImplementationsListLayout);
+  IComponentBoundsCalculator* mISCLayout = new ComponentEdgeLayout(mAdjacentImplementationsLabel, mInsideRightCell, mAdjacentInstanceNameField, mInsideRightCell, NULL);
+  ScrollableContainer* mScrollableContainer = new ScrollableContainer();
+  mScrollableContainer->setBoundsCalculator(mISCLayout);
+
+  // Put implementations list box inside scrollable container.
+  cImplementationsList = new ListBox();
+  for (unsigned int i = 0; i < mImplementationsList.size(); i++) {
+    cImplementationsList->addItem(*mImplementationsList[i]);
+  }
+  mScrollableContainer->setRootComponent(cImplementationsList);
 
   // Put "configure..." button at bottom right of left cell.
   Button* mConfigureButton = new Button(NULL, mConfigureInstanceCommand, "Configure...");
@@ -95,27 +101,35 @@ EntityClassInstancesComponent::EntityClassInstancesComponent(IEntityClass* entit
 
   // Put instances list box above "configure..." button and below instances label in left cell.
   EdgeRelation* mAdjacentInstancesLabel = new EdgeRelation(mInstancesLabel, EdgeRelation::OUTSIDE, 0.0f);
-  cInstancesList = new InstancesListComponent(cEntityClass);
   IComponentBoundsCalculator* mInstancesListLayout = new ComponentEdgeLayout(mAdjacentInstancesLabel, mInsideLeftCell, mAdjacentConfigureButton, mInsideLeftCell, NULL);
-  cInstancesList->setBoundsCalculator(mInstancesListLayout);
+  ScrollableContainer* mInstancesScrollableContainer = new ScrollableContainer();
+  mInstancesScrollableContainer->setBoundsCalculator(mInstancesListLayout);
+
+  // Put instances list box inside scrollable container.
+  cInstancesList = new ListBox();
+  std::vector<std::string*> mInstances = cEntityClass->getInstances();
+  for (unsigned int i = 0; i < mInstances.size(); i++) {
+    cInstancesList->addItem(*mInstances[i]);
+  }
+  mInstancesScrollableContainer->setRootComponent(cInstancesList);
 
   addComponent(mCloseButton);
   addComponent(mNewInstanceButton);
   addComponent(mInstanceNameLabel);
-  addComponent(cImplementationsList);
+  addComponent(mScrollableContainer);
   addComponent(mImplementationsLabel);
 
   addComponent(mRemoveInstanceButton);
   addComponent(mConfigureButton);
-  addComponent(cInstancesList);
+  addComponent(mInstancesScrollableContainer);
   addComponent(mInstancesLabel);
   addComponent(cInstanceNameInputField);
 
-  setFocusedComponent(cImplementationsList);
+  setFocusedComponent(cInstanceNameInputField);
 }
 
-std::string* EntityClassInstancesComponent::getTitle(IEntityClass* entityClass) {
-  return new std::string(entityClass->getEntityClassName() + " Instances");
+std::string EntityClassInstancesComponent::getTitle(IEntityClass* entityClass) {
+  return entityClass->getEntityClassName() + " Instances";
 }
 
 void EntityClassInstancesComponent::updateResizableDialogContent(int milliseconds) {
@@ -138,8 +152,8 @@ EntityClassInstancesComponent::ConfigureInstanceCommand::ConfigureInstanceComman
 }
 
 void EntityClassInstancesComponent::ConfigureInstanceCommand::execute() {
-  std::string* mSelectedInstance = cParent->cInstancesList->getSelectedInstance();
-  cParent->cEntityClass->configure(*mSelectedInstance);
+  std::string mSelectedInstance = cParent->cInstancesList->getSelectedItem();
+  cParent->cEntityClass->configure(mSelectedInstance);
 }
 
 EntityClassInstancesComponent::RemoveInstanceCommand::RemoveInstanceCommand(EntityClassInstancesComponent* parent) {
@@ -147,8 +161,8 @@ EntityClassInstancesComponent::RemoveInstanceCommand::RemoveInstanceCommand(Enti
 }
 
 void EntityClassInstancesComponent::RemoveInstanceCommand::execute() {
-  std::string* mSelectedInstance = cParent->cInstancesList->getSelectedInstance();
-  cParent->cEntityClass->remove(*mSelectedInstance);
+  std::string mSelectedInstance = cParent->cInstancesList->getSelectedItem();
+  cParent->cEntityClass->remove(mSelectedInstance);
 }
 
 EntityClassInstancesComponent::CreateInstanceCommand::CreateInstanceCommand(EntityClassInstancesComponent* parent) {
@@ -156,7 +170,7 @@ EntityClassInstancesComponent::CreateInstanceCommand::CreateInstanceCommand(Enti
 }
 
 void EntityClassInstancesComponent::CreateInstanceCommand::execute() {
-  std::string mImplementation = cParent->cImplementationsList->getSelectedImplementation();
+  std::string mImplementation = cParent->cImplementationsList->getSelectedItem();
   std::string mInstanceName = cParent->cInstanceNameInputField->getText();
   cParent->cEntityClass->instantiate(mImplementation, mInstanceName);
 }
@@ -167,8 +181,8 @@ EntityClassInstancesComponent::CloseCommand::CloseCommand(EntityClassInstancesCo
 
 void EntityClassInstancesComponent::CloseCommand::execute() {
   if (cParent->cListener != NULL) {
-    std::string* mSelectedInstance = cParent->cInstancesList->getSelectedInstance();
-    cParent->cListener->itemSelected(*mSelectedInstance);
+    std::string mSelectedInstance = cParent->cInstancesList->getSelectedItem();
+    cParent->cListener->itemSelected(mSelectedInstance);
   }
   cParent->close();
 }

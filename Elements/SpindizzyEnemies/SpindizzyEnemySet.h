@@ -31,7 +31,7 @@
 class SpindizzyEnemySet:public IElementSet {
   private:
   std::vector<IElementFactory*> cElementFactories;
-  ISimpleModelFactory* cEnemyModelFactory;
+  std::vector<ISimpleModelFactory*> cEnemyModelFactories;
 
   void setModel(ISimpleModelFactory*);
 

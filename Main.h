@@ -27,5 +27,6 @@
 #include "Global/Configuration.h"
 #include "Global/InitException.h"
 #include "Global/KeyStates.h"
+#include "Global/PluginSupportException.h"
 
 #endif

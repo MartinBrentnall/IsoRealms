@@ -26,11 +26,14 @@
 
 #include "../../../Global/IsoRealmsConstants.h"
 #include "../../../Global/Image.h"
+#include "../../../Global/Vertex.h"
 
 #include "../ISimpleModel.h"
 
 class SpindizzyCraftGyroscopeModel:public ISimpleModel {
   private:
+  Vertex* cLocation;
+
   enum TextureID {
     TEXTURE_DISC
   };
@@ -41,11 +44,11 @@ class SpindizzyCraftGyroscopeModel:public ISimpleModel {
   GLuint generateTextureDisc();
 
   public:
-  SpindizzyCraftGyroscopeModel();
+  SpindizzyCraftGyroscopeModel(Vertex*);
 
-  /**************************************************************************\
-   * Implemented methods of ILogicRequirements.h (in ISimpleModel.h)        *
-  \**************************************************************************/
+  /*********************\
+   * Implements IModel *
+  \*********************/
   void update(int milliseconds);
   void render();
 

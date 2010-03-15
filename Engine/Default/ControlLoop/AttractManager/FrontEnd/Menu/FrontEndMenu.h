@@ -114,9 +114,9 @@ class FrontEndMenu:public IFrontEnd {
    */
   void terminate();
 
-  /**************************************************************************\
-   * Implemented methods of IFrontEnd.h                                     *
-  \**************************************************************************/
+  /************************\
+   * Implements IFrontEnd *
+  \************************/
   void update(int);
   void render();
   void setActive(bool);

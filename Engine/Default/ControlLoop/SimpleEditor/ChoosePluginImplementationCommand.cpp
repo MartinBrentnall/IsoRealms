@@ -18,17 +18,17 @@
  */
 #include "ChoosePluginImplementationCommand.h"
 
-ChoosePluginImplementationCommand::ChoosePluginImplementationCommand(IPluginSupport* pluginSupport, PlugSocket* plugSocket, IComponentContainer* componentContainer, PluginRegistry* pluginRegistry, std::string type) {
+ChoosePluginImplementationCommand::ChoosePluginImplementationCommand(IPluginSupport* pluginSupport, PlugSocket* plugSocket, IComponentContainer* componentContainer, IPluginRegistryAccessor* pluginRegistryAccessor, std::string type) {
   cPluginSupport = pluginSupport;
   cPlugSocket = plugSocket;
   cComponentContainer = componentContainer;
-  cPluginRegistry = pluginRegistry;
+  cPluginRegistryAccessor = pluginRegistryAccessor;
   cPluginType = type;
 }
 
 void ChoosePluginImplementationCommand::execute() {
-  IInstanceSelectionListener* mListener = new SelectionListener(this);
-  PluginEntityClass* mPluginEntityClass = new PluginEntityClass(cPluginRegistry, cPluginType, cComponentContainer);
+  IInstanceSelectionListener* mListener = cPlugSocket != NULL ? new SelectionListener(this) : NULL;
+  PluginEntityClass* mPluginEntityClass = new PluginEntityClass(cPluginRegistryAccessor, cPluginType, cComponentContainer);
   IHUDComponent* cPluginInstancesComponent = new EntityClassInstancesComponent(mPluginEntityClass, cComponentContainer, -0.7f, 0.1f, mListener);
   cComponentContainer->addComponent(cPluginInstancesComponent);
 }
@@ -38,6 +38,7 @@ ChoosePluginImplementationCommand::SelectionListener::SelectionListener(ChoosePl
 }
 
 void ChoosePluginImplementationCommand::SelectionListener::itemSelected(std::string item) {
-  IPlugin* mSelectedPlugin = cParent->cPluginRegistry->getPlugin(cParent->cPluginType, item);
+  PluginRegistry* mPluginRegistry = cParent->cPluginRegistryAccessor->getPluginRegistry();
+  IPlugin* mSelectedPlugin = mPluginRegistry->getPlugin(cParent->cPluginType, item);
   cParent->cPluginSupport->setPlugin(cParent->cPlugSocket, mSelectedPlugin);
 }

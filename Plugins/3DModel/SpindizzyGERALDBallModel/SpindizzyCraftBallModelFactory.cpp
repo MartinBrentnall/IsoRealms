@@ -19,19 +19,16 @@
 #include "SpindizzyCraftBallModelFactory.h"
 
 SpindizzyCraftBallModelFactory::SpindizzyCraftBallModelFactory() {
-  cModelInstance = new SpindizzyCraftBallModel();
+  assignDummyPlugin(&cCamera, "Camera");
+  cCameraSocket.push_back(new PlugSocket("Camera"));
 }
 
-ISimpleModel* SpindizzyCraftBallModelFactory::createModel() {
-  return cModelInstance;  
+ISimpleModel* SpindizzyCraftBallModelFactory::createModel(Vertex* location) {
+  return new SpindizzyCraftBallModel(location, cCamera);
 }
 
 void SpindizzyCraftBallModelFactory::destroyModel(ISimpleModel* ballModel) {
-  // Model is used globally.  Nothing to do.
-}
-
-void SpindizzyCraftBallModelFactory::setEditingInfo(IComponentContainer*) {
-  // We don't need to know this.  Nothing to do.
+  delete ballModel;
 }
 
 std::string SpindizzyCraftBallModelFactory::getName() {
@@ -39,42 +36,21 @@ std::string SpindizzyCraftBallModelFactory::getName() {
 }
 
 std::vector<PlugSocket*> SpindizzyCraftBallModelFactory::getPlugSockets() {
-  std::vector<PlugSocket*> mEmptyVector;
-  return mEmptyVector;
+  return cCameraSocket;
 }
 
 void SpindizzyCraftBallModelFactory::setPlugin(PlugSocket* socket, IPlugin* plugin) {
-  // TODO: Throw something
+  if (socket->getType() == "Camera") {
+    assignPlugin(plugin, &cCamera, *socket);
+  } else {
+    // TODO: Throw something
+  }
 }
 
 IPlugin* SpindizzyCraftBallModelFactory::getPlugin(PlugSocket* socket) {
+  if (socket->getType() == "Camera") {return cCamera;}
   // TODO: Throw something
   return NULL;
-}
-
-void SpindizzyCraftBallModelFactory::notifyZoneAction(Zone* zone) {
-  // Nothing to do.
-}
-
-void SpindizzyCraftBallModelFactory::initPlugin(Zone* zone) {
-  // Nothing to do.
-}
-
-std::vector<ICommandInfo*> SpindizzyCraftBallModelFactory::getCommandInfo() {
-  std::vector<ICommandInfo*> mEmptyVector;
-  return mEmptyVector;
-}
-
-void SpindizzyCraftBallModelFactory::save(DOMNodeWriter* node) {
-  // Nothing to do.
-}
-
-void SpindizzyCraftBallModelFactory::load(DOMNodeWrapper* node) {
-  // Nothing to do.
-}
-
-SpindizzyCraftBallModelFactory::~SpindizzyCraftBallModelFactory() {
-  delete cModelInstance;
 }
 
 extern "C" IPlugin* create() {

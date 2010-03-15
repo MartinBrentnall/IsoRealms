@@ -59,20 +59,11 @@ SpindizzyBlockSet::SpindizzyBlockSet() {
   cElementFactories.push_back(new SwitchFactory(SWITCH_DIAMOND_RIGHT, this, &cSpindizzyTextureSet, ISpindizzyTextureSet::SWITCH_DIAMOND_RIGHT));
   cElementFactories.push_back(new SwitchFactory(SWITCH_DIAMOND_NONE, this, &cSpindizzyTextureSet, ISpindizzyTextureSet::SWITCH_DIAMOND_NONE));
   cElementFactories.push_back(new SpindizzyWaterFactory(&cSpindizzyTextureSet, this));
-  std::string mDummyName("SpindizzyTextureSet");
-  cDummyTextureSet = dynamic_cast<ISpindizzyTextureSet*>(PluginRegistry::getDummyPlugin(mDummyName));
-  if (cDummyTextureSet == NULL) {
-    std::cout << "Warning: dynamic_cast failed for dummy spindizzy texture set!" << std::endl;
-    // TODO: Throw wobbly
-  }
+
+  assignDummyPlugin(&cDummyTextureSet, "SpindizzyTextureSet");
   cSpindizzyTextureSet = cDummyTextureSet;
   cSpindizzyTextureSetController = NULL;
-  mDummyName = "SurfaceProcessor";
-  cSurfaceProcessor = dynamic_cast<ISurfaceProcessor*>(PluginRegistry::getDummyPlugin(mDummyName));
-  if (cSurfaceProcessor == NULL) {
-    std::cout << "Warning: dynamic_cast failed for dummy surface processor!" << std::endl;
-    // TODO: Throw wobbly
-  }
+  assignDummyPlugin(&cSurfaceProcessor, "SurfaceProcessor");
 }
 
 std::vector<PlugSocket*> SpindizzyBlockSet::getPlugSockets() {
@@ -90,66 +81,28 @@ std::vector<PlugSocket*> SpindizzyBlockSet::getPlugSockets() {
 }
 
 void SpindizzyBlockSet::setSpindizzyTextureSet(ISpindizzyTextureSet* textureSet) {
-  if (textureSet != NULL) {
-    std::cout << "Texture set is not NULL!" << std::endl;
-  }
   cSpindizzyTextureSet = textureSet != NULL ? textureSet : cDummyTextureSet;
 }
 
 void SpindizzyBlockSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
   if (socket->getType() == "SpindizzyTextureSet") {
-    if (implementation == cSpindizzyTextureSet) {
-      return;
-    }
-    if (implementation == NULL) {
-      cSpindizzyTextureSet = cDummyTextureSet;
-    } else {
-      ISpindizzyTextureSet* mSpindizzyTextureSet = dynamic_cast<ISpindizzyTextureSet*>(implementation);
-      if (mSpindizzyTextureSet == NULL) {
-        std::cout << "Warning: dynamic_cast failed for spindizzy texture set!" << std::endl;
-      } else {
-        cSpindizzyTextureSet = mSpindizzyTextureSet;
+    if (assignPlugin(implementation, &cSpindizzyTextureSet, *socket)) {
+      for (unsigned int i = 0; i < cElementFactories.size(); i++) {
+        static_cast<ISpindizzyBlockFactory*>(cElementFactories[i])->signalAllElementsDirty();
       }
-    }
-    for (unsigned int i = 0; i < cElementFactories.size(); i++) {
-      static_cast<ISpindizzyBlockFactory*>(cElementFactories[i])->signalAllElementsDirty();
     }
   } else if (socket->getType() == "SurfaceProcessor") {
-    if (implementation == cSurfaceProcessor) {
-      return;
-    }
-    if (implementation == NULL) {
-      std::string mDummyName("SurfaceProcessor");
-      cSurfaceProcessor->reinitialise();
-      cSurfaceProcessor = dynamic_cast<ISurfaceProcessor*>(PluginRegistry::getDummyPlugin(mDummyName));
-    } else {
-      ISurfaceProcessor* mSurfaceProcessor = dynamic_cast<ISurfaceProcessor*>(implementation);
-      if (mSurfaceProcessor == NULL) {
-        std::cout << "Warning: dynamic_cast failed for surface processor!" << std::endl;
-        return;
-      } else {
-        // Surface processor might still be in use by other element sets
-        cSurfaceProcessor->reinitialise();
-        cSurfaceProcessor = mSurfaceProcessor;
-      }
+    ISurfaceProcessor* mPreviousSurfaceProcessor = cSurfaceProcessor;
+    if (assignPlugin(implementation, &cSurfaceProcessor, *socket)) {
+      mPreviousSurfaceProcessor->reinitialise();
     }
   } else if (socket->getType() == "SpindizzyTextureSetChanger") {
-    if (implementation == NULL) {
-      if (cSpindizzyTextureSetController != NULL) {
+    ISpindizzyTextureSetChanger* mPreviousController = cSpindizzyTextureSetController;
+    if (assignPlugin(implementation, &cSpindizzyTextureSetController, *socket, false)) {
+      if (mPreviousController != NULL) {
         cSpindizzyTextureSetController->setControlObject(NULL);
       }
-      cSpindizzyTextureSetController = NULL;
-      cSpindizzyTextureSet = cDummyTextureSet;
-    } else {
-      ISpindizzyTextureSetChanger* mSpindizzyTextureSetController = dynamic_cast<ISpindizzyTextureSetChanger*>(implementation);
-      if (mSpindizzyTextureSetController == NULL) {
-        std::cout << "Warning: dynamic_cast failed for spindizzy texture set!" << std::endl;
-      } else {
-        if (cSpindizzyTextureSetController != NULL) {
-          cSpindizzyTextureSetController->setControlObject(NULL);
-        }
-        cSpindizzyTextureSetController = mSpindizzyTextureSetController;
-        cSpindizzyTextureSet = cDummyTextureSet;
+      if (cSpindizzyTextureSetController != NULL) {
         cSpindizzyTextureSetController->setControlObject(this);
       }
     }
@@ -159,17 +112,9 @@ void SpindizzyBlockSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
 }
 
 IPlugin* SpindizzyBlockSet::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "SpindizzyTextureSet") {
-    if (!PluginRegistry::isDummyPlugin(cSpindizzyTextureSet)) {
-      return (IPlugin*) cSpindizzyTextureSet;
-    }
-  } else if (socket->getType() == "SurfaceProcessor") {
-    if (!PluginRegistry::isDummyPlugin(cSurfaceProcessor)) {
-      return (IPlugin*) cSurfaceProcessor;
-    }
-  } else if (socket->getType() == "SpindizzyTextureSetChanger") {
-    return cSpindizzyTextureSetController;
-  }
+  if (socket->getType() == "SpindizzyTextureSet")        {return cSpindizzyTextureSet;}
+  if (socket->getType() == "SurfaceProcessor")           {return cSurfaceProcessor;}
+  if (socket->getType() == "SpindizzyTextureSetChanger") {return cSpindizzyTextureSetController;}
   // TODO: Throw wobbly!
   return NULL;
 }

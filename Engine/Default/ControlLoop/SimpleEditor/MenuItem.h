@@ -23,18 +23,13 @@
 #include <SDL/SDL.h>
 #include <string>
 
+#include "../../../../Global/GUI/LookAndFeel.h"
 #include "../../../../Global/IFont.h"
 #include "../../../../Global/ICommand.h"
 #include "../../../../Global/KeyStates.h"
 
 class MenuItem {
   private:
-  
-  /**
-   * Font used for rendering all menu items.
-   */
-  static IFont* cFont;
-
   char cAccelerator;
   std::string::size_type cAcceleratorIndex;
   std::string cText;
@@ -43,7 +38,6 @@ class MenuItem {
   float cYOffset;
 
   public:
-  static void setFont(IFont*);
 
   /**
    * Construct a new menu item with the specified command.

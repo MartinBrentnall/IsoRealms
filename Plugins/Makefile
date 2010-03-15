@@ -15,22 +15,34 @@
 # You should have received a copy of the GNU General Public License
 # along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
 objs:
-	cd FourColourSupport; make
-	cd SurfaceProcessor; make
 	cd 3DModel; make
-	cd SpindizzySwitches; make
+	cd Camera; make
+	cd Collectables; make
+	cd CommandRegistry; make
+	cd FourColourSupport; make
+	cd IntegerValue; make
+	cd LocationAwareness; make
+	cd SoundSupport; make
 	cd SpindizzyTextureSet; make
 	cd SpindizzyTextureSetChanger; make
-	cd SpindizzyWorldsSwitches; make
+	cd SurfaceProcessor; make
+	cd Utilities; make
+	cd ZoneContext; make
 
 clean:
-	cd FourColourSupport; make clean
-	cd SurfaceProcessor; make clean
 	cd 3DModel; make clean
-	cd SpindizzySwitches; make clean
+	cd Camera; make clean
+	cd Collectables; make clean
+	cd CommandRegistry; make clean
+	cd FourColourSupport; make clean
+	cd IntegerValue; make clean
+	cd LocationAwareness; make clean
+	cd SoundSupport; make clean
 	cd SpindizzyTextureSet; make clean
 	cd SpindizzyTextureSetChanger; make clean
-	cd SpindizzyWorldsSwitches; make clean
+	cd SurfaceProcessor; make clean
+	cd Utilities; make clean
+	cd ZoneContext; make clean
 
 all:
 	make clean

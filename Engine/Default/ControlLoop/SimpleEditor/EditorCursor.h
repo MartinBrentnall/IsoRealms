@@ -33,7 +33,8 @@
 /**
  * TODO: Class description
  */
-class EditorCursor:public BlockLocation, public IsoRealmsConstants {
+class EditorCursor:public BlockLocation,
+                   public IsoRealmsConstants {
   private:
 //  Zone** cEditZonePointer;
   Zone* cEditZonePointer;
@@ -70,6 +71,7 @@ class EditorCursor:public BlockLocation, public IsoRealmsConstants {
   void restrainTo(BlockLocation, BlockLocation);  // Bound the cursor to within the specified cuboid
 
   void pushElement(IElement*);
+  void pushMapElement(IElement*);
   void setDirty(IElement*);
 
   Zone* getZone();

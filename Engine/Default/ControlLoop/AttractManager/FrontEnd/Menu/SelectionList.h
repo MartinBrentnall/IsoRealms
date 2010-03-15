@@ -47,9 +47,9 @@ class SelectionList:public ICommand {
    */
   SelectionList(std::vector<std::string>&, std::string, std::string, unsigned int&, std::string*&, std::string);
 
-  /*************************************************************************\
-   * Implemented methods of ICommand.h                                     *
-  \*************************************************************************/
+  /***********************\
+   * Implements ICommand *
+  \***********************/
   void execute();    
 };
 

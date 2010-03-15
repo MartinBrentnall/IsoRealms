@@ -18,11 +18,15 @@
  */
 #include "SpindizzyLift.h"
 
-SpindizzyLift::SpindizzyLift(IElementFactory* elementFactory, BlockLocation* location, ISpindizzyTexture* texture, int bottom, int top) : IElement(elementFactory) {
-  cTexture = texture;
-  cLocation = BlockLocation(*location);
-  cBottom = bottom;
-  cTop = top;
+SpindizzyLift::SpindizzyLift(IElementFactory* elementFactory, BlockLocation* location, ISpindizzyTexture* texture, SpindizzyLiftProperties* properties, int bottom, int top) : IElement(elementFactory) {
+  cTopDelay    = properties->getTopDelay();
+  cBottomDelay = properties->getBottomDelay();
+  cUpSpeed     = properties->getUpSpeed();
+  cDownSpeed   = properties->getDownSpeed();
+  cTexture     = texture;
+  cLocation    = BlockLocation(*location);
+  cBottom      = bottom;
+  cTop         = top;
 }
 
 void SpindizzyLift::setTexture(ISpindizzyTexture* texture) {
@@ -31,6 +35,43 @@ void SpindizzyLift::setTexture(ISpindizzyTexture* texture) {
 
 void SpindizzyLift::renderStatic() {
   // Nothing to do.
+}
+
+void SpindizzyLift::renderEditingArrow() {
+  float mLineRadius = IsoRealmsConstants::BLOCK_RADIUS * 0.5;
+  float mArrowOffset = IsoRealmsConstants::BLOCK_HEIGHT * 0.5;
+  glBegin(GL_LINES);
+  glVertex3f(cLocation.x, cLocation.y, cTop * IsoRealmsConstants::BLOCK_HEIGHT);
+  glVertex3f(cLocation.x, cLocation.y, cBottom * IsoRealmsConstants::BLOCK_HEIGHT);
+
+  // Top point
+  glVertex3f(cLocation.x,               cLocation.y, cTop * IsoRealmsConstants::BLOCK_HEIGHT);
+  glVertex3f(cLocation.x + mLineRadius, cLocation.y, cTop * IsoRealmsConstants::BLOCK_HEIGHT - mArrowOffset);
+  glVertex3f(cLocation.x,               cLocation.y, cTop * IsoRealmsConstants::BLOCK_HEIGHT);
+  glVertex3f(cLocation.x - mLineRadius, cLocation.y, cTop * IsoRealmsConstants::BLOCK_HEIGHT - mArrowOffset);
+
+  // Bottom point
+  glVertex3f(cLocation.x,               cLocation.y, cBottom * IsoRealmsConstants::BLOCK_HEIGHT);
+  glVertex3f(cLocation.x + mLineRadius, cLocation.y, cBottom * IsoRealmsConstants::BLOCK_HEIGHT + mArrowOffset);
+  glVertex3f(cLocation.x,               cLocation.y, cBottom * IsoRealmsConstants::BLOCK_HEIGHT);
+  glVertex3f(cLocation.x - mLineRadius, cLocation.y, cBottom * IsoRealmsConstants::BLOCK_HEIGHT + mArrowOffset);
+  glEnd();
+}
+
+void SpindizzyLift::renderStaticEditing() {
+  glBindTexture(GL_TEXTURE_2D, 0);
+  glColor3f(1.0, 1.0, 0.0);
+  glLineWidth(3.0);
+  glLineStipple(1, 255);
+  glEnable(GL_LINE_STIPPLE);
+  renderEditingArrow();
+  glColor3f(1.0, 0.0, 0.0);
+  glDisable(GL_LINE_STIPPLE);
+  glLineWidth(5.0);
+  renderEditingArrow();
+  glColor3f(1.0, 1.0, 1.0);
+  glLineWidth(1.0);
+  glPopMatrix();
 }
 
 std::vector<IVisualElement*> SpindizzyLift::getVisualElements() {
@@ -63,10 +104,10 @@ void SpindizzyLift::render() {
   glDisable(GL_CULL_FACE);
   glBegin(GL_QUADS);
   float mScaleFactor = 1.45;
-  cTexture->texCoord2f(0.0, 1.0); glVertex3f(    IsoRealmsConstants::BLOCK_RADIUS * mScaleFactor, 0 - IsoRealmsConstants::BLOCK_RADIUS * mScaleFactor, 0.0);
-  cTexture->texCoord2f(0.0, 0.0); glVertex3f(    IsoRealmsConstants::BLOCK_RADIUS * mScaleFactor,     IsoRealmsConstants::BLOCK_RADIUS * mScaleFactor, 0.0);
-  cTexture->texCoord2f(1.0, 0.0); glVertex3f(0 - IsoRealmsConstants::BLOCK_RADIUS * mScaleFactor,     IsoRealmsConstants::BLOCK_RADIUS * mScaleFactor, 0.0);
-  cTexture->texCoord2f(1.0, 1.0); glVertex3f(0 - IsoRealmsConstants::BLOCK_RADIUS * mScaleFactor, 0 - IsoRealmsConstants::BLOCK_RADIUS * mScaleFactor, 0.0);
+  cTexture->texCoord2f(1.0, 1.0); glVertex3f(    IsoRealmsConstants::BLOCK_RADIUS * mScaleFactor, 0 - IsoRealmsConstants::BLOCK_RADIUS * mScaleFactor, 0.0);
+  cTexture->texCoord2f(1.0, 0.0); glVertex3f(    IsoRealmsConstants::BLOCK_RADIUS * mScaleFactor,     IsoRealmsConstants::BLOCK_RADIUS * mScaleFactor, 0.0);
+  cTexture->texCoord2f(0.0, 0.0); glVertex3f(0 - IsoRealmsConstants::BLOCK_RADIUS * mScaleFactor,     IsoRealmsConstants::BLOCK_RADIUS * mScaleFactor, 0.0);
+  cTexture->texCoord2f(0.0, 1.0); glVertex3f(0 - IsoRealmsConstants::BLOCK_RADIUS * mScaleFactor, 0 - IsoRealmsConstants::BLOCK_RADIUS * mScaleFactor, 0.0);
   glEnd();
   glEnable(GL_CULL_FACE);
   glDisable(GL_ALPHA_TEST);
@@ -75,7 +116,15 @@ void SpindizzyLift::render() {
 }
 
 void SpindizzyLift::save(DOMNodeWriter* node, BlockLocation& relative) {
-  cLocation.saveRelative(node, relative);
-  // TODO: Write top and bottom
+  DOMNodeWriter* mLocation = node->addBranch("Location");
+  cLocation.saveRelative(mLocation, relative);
+  DOMNodeWriter* mLiftRange = node->addBranch("LiftMovement");
+  mLiftRange->addAttribute("top", cTop - relative.z);
+  mLiftRange->addAttribute("bottom", cBottom - relative.z);
+  DOMNodeWriter* mLiftProperties = node->addBranch("LiftProperties");
+  mLiftProperties->addAttribute("upSpeed", cUpSpeed);
+  mLiftProperties->addAttribute("downSpeed", cDownSpeed);
+  mLiftProperties->addAttribute("topDelay", cTopDelay);
+  mLiftProperties->addAttribute("bottomDelay", cBottomDelay);
 }
 

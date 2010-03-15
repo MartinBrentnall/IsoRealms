@@ -19,38 +19,93 @@
 #ifndef SPINDIZZY_GERALD_H
 #define SPINDIZZY_GERALD_H
 
+#include <iostream>
+#include <iomanip>
+#include <cmath>
+
 #include "../../Global/BlockLocation.h"
 #include "../../Global/IElement.h"
+#include "../../Global/IInteractiveElement.h"
+#include "../../Global/IMap.h"
 #include "../../Global/IsoRealmsConstants.h"
 #include "../../Global/IVisualElement.h"
+#include "../../Global/KeyStates.h"
 #include "../../Global/Vertex.h"
 
 #include "../../Plugins/3DModel/ISimpleModel.h"
+#include "../../Plugins/3DModel/ISimpleModelFactory.h"
+#include "../../Plugins/Camera/ICamera.h"
+#include "../../Plugins/Collectables/ICollectables.h"
+#include "../../Plugins/LocationAwareness/ILocationAwareness.h"
+#include "../../Plugins/ZoneContext/IZoneContext.h"
 
 class SpindizzyGERALD:public IElement, 
+                      public ICollector,
+                      public IDynamicElement,
+                      public IInteractiveElement,
                       public IVisualElement {
   private:
+  static const float CRAFT_ACCELERATION;
+
+  SDLKey cNorthKey;
+  SDLKey cSouthKey;
+  SDLKey cEastKey;
+  SDLKey cWestKey;
+
+  IMap* cMap;
+  IZone* cZone;
   BlockLocation cStartLocation;
-  Vertex* cCurrentLocation;
+  Vertex cLocation;
+  Vertex cMomentum;
   ISimpleModel* cGERALDModel;
+  ICamera* cCamera;
+  ICollectables* cCollectables;
+  IZoneContext* cZoneContext;
+
+  SDLKey rotateKey(const SDLKey&);
+  void keyDown(SDLKey&);
 
   public:
-  SpindizzyGERALD(IElementFactory*, BlockLocation*, ISimpleModel*);
+  SpindizzyGERALD(IElementFactory*, BlockLocation*, ISimpleModelFactory*, ICollectables*, ILocationAwareness*, IZoneContext*, ICamera*);
 
-  void setModel(ISimpleModel*);
+  void checkCurrentZoneEvents(Vertex&, Vertex&);
+  void checkMapZoneEvents(IZone*, Vertex&, Vertex&);
+  void updateZoneContext(Vertex&, Vertex&);
 
-  /*************************************************************************\
-   * Implemented methods of IElement.h                                     *
-  \*************************************************************************/
+  void setCamera(ICamera*);
+  void setModel(ISimpleModelFactory*);
+  void setCollectables(ICollectables*);
+  void setZoneContext(IZoneContext*);
+
+  /*************************\
+   * Implements ICollector *
+  \*************************/
+  void collected(ICollectable*);
+
+  /***********************\
+   * Implements IElement *
+  \***********************/
   void renderStatic();
+  void setRuntimeContext(IMap*);
   std::vector<IVisualElement*> getVisualElements();
   std::vector<IDynamicElement*> getDynamicElements();
+  std::vector<IDynamicElement*> getDynamicElementsRuntime();
   std::vector<IInteractiveElement*> getInteractiveElements();
   void save(DOMNodeWriter*, BlockLocation&);
 
-  /*************************************************************************\
-   * Implemented methods of IVisualElement.h                               *
-  \*************************************************************************/
+  /********************************\
+   * Implementeds IDynamicElement *
+  \********************************/
+  void update(int);
+
+  /**********************************\
+   * Implements IInteractiveElement *
+  \**********************************/
+  bool input(SDL_Event&);
+
+  /*******************************\
+   * Implementeds IVisualElement *
+  \*******************************/
   void render();
 };
 

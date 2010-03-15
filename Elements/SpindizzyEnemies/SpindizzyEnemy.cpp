@@ -18,18 +18,15 @@
  */
 #include "SpindizzyEnemy.h"
 
-SpindizzyEnemy::SpindizzyEnemy(IElementFactory* elementFactory, BlockLocation* startLocation, ISimpleModel* enemyModel) : IElement(elementFactory) {
-  cEnemyModel = enemyModel;
+SpindizzyEnemy::SpindizzyEnemy(IElementFactory* elementFactory, BlockLocation* startLocation, ISimpleModelFactory* enemyModelFactory) : IElement(elementFactory) {
   cStartLocation = BlockLocation(*startLocation);
   cCurrentLocation = new Vertex(cStartLocation.x, cStartLocation.y, cStartLocation.z);
+  cEnemyModel = enemyModelFactory->createModel(cCurrentLocation);
 }
 
-SpindizzyEnemy::SpindizzyEnemy(IElementFactory* elementFactory, DOMNodeWrapper* node, BlockLocation* relative) : IElement(elementFactory) {
-//  cLocation.set(node); // TODO:
-}
-
-void SpindizzyEnemy::setModel(ISimpleModel* enemyModel) {
-  cEnemyModel = enemyModel;
+void SpindizzyEnemy::setModel(ISimpleModelFactory* enemyModelFactory) {
+  // TODO: Where's the model clean-up done!?
+  cEnemyModel = enemyModelFactory->createModel(cCurrentLocation);
 }
 
 void SpindizzyEnemy::renderStatic() {
@@ -54,13 +51,13 @@ std::vector<IInteractiveElement*> SpindizzyEnemy::getInteractiveElements() {
 
 void SpindizzyEnemy::render() {
   glPushMatrix();
-  glTranslatef(cCurrentLocation->x, cCurrentLocation->y, cCurrentLocation->z * IsoRealmsConstants::BLOCK_HEIGHT);
   cEnemyModel->render();
   glPopMatrix();
 }
 
 void SpindizzyEnemy::save(DOMNodeWriter* node, BlockLocation& relative) {
-  cStartLocation.saveRelative(node, relative);  
+  DOMNodeWriter* mLocationNode = node->addBranch("Location");
+  cStartLocation.saveRelative(mLocationNode, relative);  
 }
 
 

@@ -48,6 +48,8 @@ class IElementSet:public IPluginSupport {
    */
   virtual void save(DOMNodeWriter*) = 0;
 
+  virtual void load(DOMNodeWrapper*) {}
+
   /**
    * Destroy the element.  Make sure you've removed the element from your map
    * before calling this!  You should only call this function with an element

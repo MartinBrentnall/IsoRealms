@@ -24,6 +24,7 @@ int main(int argc, char **argv) {
     std::cout << "ERROR: " << std::endl << SDL_GetError() << std::endl;
     return 1;
   }
+  SDL_EnableKeyRepeat(250, SDL_DEFAULT_REPEAT_INTERVAL); 
 
   // Initialise Xerces-C++
   try {
@@ -50,6 +51,8 @@ int main(int argc, char **argv) {
     mSuccess = 1;
   } catch (DOMException &e) {
     std::cout << "Fatal: " << std::endl << e.code << ": " << e.msg << std::endl;
+  } catch (PluginSupportException* e) {
+    std::cout << "Fatal: " << std::endl << e->getMessage() << std::endl;
   } catch (...) {
     std::cout << "Fatal: " << std::endl << "Something unknown was thrown" << std::endl;
     mSuccess = 1;

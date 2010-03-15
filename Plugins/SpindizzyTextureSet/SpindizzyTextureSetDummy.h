@@ -43,6 +43,7 @@ class SpindizzyTextureSetDummy:public ISpindizzyTextureSet,
     \********************************/
     void set();
     void texCoord2f(float, float);
+    Colour* getColour(float, float);
     Mapping getMapping();
   };
 

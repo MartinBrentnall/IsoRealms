@@ -18,7 +18,7 @@
  */
 #include "PaletteConfigurationComponent.h"
 
-PaletteConfigurationComponent::PaletteConfigurationComponent(IComponentContainer* componentContainer, std::map<IFourColourSupport::PaletteEntry, Colour*> palette, std::vector<IFourColourSupportListener*>& listeners) : RectangleComponent(componentContainer, new std::string("Palette Editor"), 0.18f, 0.68f, 0.8f, 0.3f) {
+PaletteConfigurationComponent::PaletteConfigurationComponent(IComponentContainer* componentContainer, std::map<IFourColourSupport::PaletteEntry, Colour*> palette, std::vector<IFourColourSupportListener*>& listeners) : Dialog(componentContainer, "Palette Editor", 0.18f, 0.68f, 0.8f, 0.3f) {
   for (std::map<IFourColourSupport::PaletteEntry, Colour*>::iterator i = palette.begin(); i != palette.end(); i++) {
     cPaletteEntries.push_back(i->first);
     cPalette.push_back(i->second);

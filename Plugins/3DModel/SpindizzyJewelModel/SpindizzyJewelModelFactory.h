@@ -29,26 +29,13 @@ class SpindizzyJewelModelFactory:public ISimpleModelFactory {
   /***************************\
    * Implements ISimpleModel *
   \***************************/
-  ISimpleModel* createModel();
+  ISimpleModel* createModel(Vertex*);
   void destroyModel(ISimpleModel*);
 
   /******************************************\
    * Implements IPluginSupport (in IPlugin) *
   \******************************************/
   std::string getName();
-  std::vector<PlugSocket*> getPlugSockets();
-  void setPlugin(PlugSocket*, IPlugin*);
-  IPlugin* getPlugin(PlugSocket*);
-
-  /****************************************\
-   * Implements IPlugin (in ISimpleModel) *
-  \****************************************/
-  void notifyZoneAction(Zone*);
-  void initPlugin(Zone*);
-  std::vector<ICommandInfo*> getCommandInfo();
-  void setEditingInfo(IComponentContainer*);
-  void save(DOMNodeWriter*);
-  void load(DOMNodeWrapper*);
 };
 
 #endif

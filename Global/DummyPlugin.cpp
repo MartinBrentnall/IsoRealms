@@ -19,46 +19,7 @@
 #include "DummyPlugin.h"
 
 std::string DummyPlugin::getName() {
-  return "";
-}
-
-std::vector<PlugSocket*> DummyPlugin::getPlugSockets() {
-  std::vector<PlugSocket*> mSockets;
-  return mSockets;
-}
-
-void DummyPlugin::setPlugin(PlugSocket*, IPlugin*) {
-  // Nothing to do // TODO: Throw exception
-}
-
-IPlugin* DummyPlugin::getPlugin(PlugSocket*) {
-  // TODO Throw exception
-  return NULL;
-}
-
-void DummyPlugin::notifyZoneAction(Zone*) {
-  // Nothing to do.
-}
-
-void DummyPlugin::initPlugin(Zone*) {
-  // Nothing to do.
-}
-
-void DummyPlugin::setEditingInfo(IComponentContainer* componentContainer) {
-  // We don't need to know.  Nothing to do.
-}
-
-std::vector<ICommandInfo*> DummyPlugin::getCommandInfo() {
-  std::vector<ICommandInfo*> mEmptyVector;
-  return mEmptyVector;
-}
-
-void DummyPlugin::save(DOMNodeWriter* node) {
-  // Nothing to do.
-}
-
-void DummyPlugin::load(DOMNodeWrapper* node) {
-  // Nothing to do.
+  return "<dummy>";
 }
 
 

@@ -1,7 +1,7 @@
 #include "PluginEntityClass.h"
 
-PluginEntityClass::PluginEntityClass(PluginRegistry* pluginRegistry, std::string& pluginType, IComponentContainer* componentContainer) {
-  cPluginRegistry = pluginRegistry;
+PluginEntityClass::PluginEntityClass(IPluginRegistryAccessor* pluginRegistryAccessor, std::string& pluginType, IComponentContainer* componentContainer) {
+  cPluginRegistryAccessor = pluginRegistryAccessor;
   cPluginType = pluginType;
   cComponentContainer = componentContainer;
 }
@@ -11,7 +11,8 @@ std::string PluginEntityClass::getEntityClassName() {
 }
 
 void PluginEntityClass::instantiate(std::string& type, std::string& instanceName) {
-  cPluginRegistry->loadPlugin(cPluginType, type, instanceName);
+  PluginRegistry* mPluginRegistry = cPluginRegistryAccessor->getPluginRegistry();
+  mPluginRegistry->loadPlugin(cPluginType, type, instanceName);
 }
 
 void PluginEntityClass::remove(std::string& name) {
@@ -23,13 +24,15 @@ void PluginEntityClass::remove(std::string& name) {
 }
 
 void PluginEntityClass::configure(std::string& name) {
-  IPlugin* mPlugin = cPluginRegistry->getPlugin(cPluginType, name);
-  IHUDComponent* mSupportedPluginsComponent = new PluginRequirementsComponent(cComponentContainer, cPluginRegistry, mPlugin, 0.05f, 0.05f);
+  PluginRegistry* mPluginRegistry = cPluginRegistryAccessor->getPluginRegistry();
+  IPlugin* mPlugin = mPluginRegistry->getPlugin(cPluginType, name);
+  IHUDComponent* mSupportedPluginsComponent = new PluginRequirementsComponent(cComponentContainer, cPluginRegistryAccessor, mPlugin, 0.05f, 0.05f);
   cComponentContainer->addComponent(mSupportedPluginsComponent);
 }
 
 std::vector<std::string*> PluginEntityClass::getInstances() {
-  std::vector<std::string> mInstanceNames = cPluginRegistry->getInstances(cPluginType);
+  PluginRegistry* mPluginRegistry = cPluginRegistryAccessor->getPluginRegistry();
+  std::vector<std::string> mInstanceNames = mPluginRegistry->getInstances(cPluginType);
   std::vector<std::string*> mReturnList;
   for (unsigned int i = 0; i < mInstanceNames.size(); i++) {
     // TODO: This is BAD.  Memory leak here!
@@ -56,8 +59,8 @@ PluginEntityClass::RemoveCommand::RemoveCommand(PluginEntityClass* parent, std::
 }
 
 void PluginEntityClass::RemoveCommand::execute() {
-  std::cout << "Executing remove command!" << std::endl;
-  IPlugin* mPlugin = cParent->cPluginRegistry->getPlugin(cParent->cPluginType, cName);
-  cParent->cPluginRegistry->removePlugin(mPlugin);
+  PluginRegistry* mPluginRegistry = cParent->cPluginRegistryAccessor->getPluginRegistry();
+  IPlugin* mPlugin = mPluginRegistry->getPlugin(cParent->cPluginType, cName);
+  mPluginRegistry->removePlugin(mPlugin);
 }
 

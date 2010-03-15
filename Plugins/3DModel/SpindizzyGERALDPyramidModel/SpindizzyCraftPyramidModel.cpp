@@ -21,7 +21,8 @@
 std::map<SpindizzyCraftPyramidModel::TextureID, GLuint> SpindizzyCraftPyramidModel::cTextures = std::map<SpindizzyCraftPyramidModel::TextureID, GLuint>();
 unsigned int SpindizzyCraftPyramidModel::cInstanceCount = 0;
 
-SpindizzyCraftPyramidModel::SpindizzyCraftPyramidModel() {
+SpindizzyCraftPyramidModel::SpindizzyCraftPyramidModel(Vertex* location) {
+  cLocation = location;
   if (cTextures.empty()) {
     cTextures[TEXTURE_TOP] = generateTextureTop();
     cTextures[TEXTURE_SIDE] = generateTextureSide();
@@ -33,19 +34,14 @@ void SpindizzyCraftPyramidModel::update(int milliseconds) {
   // Nothing to do
 }
 
-// TODO: Where to do this rotation?
-//       1. In here with a "location aware" plug-in?
-//       2. Configurable in the craft itself?
-/*  float mHeight = cLocation.z * IsoRealmsConstants::BLOCK_HEIGHT;
-  glTranslatef(cLocation.x, cLocation.y, mHeight);
-  glRotatef((-cLocation.x + cLocation.y) * 90.0, 0.0, 0.0, 1.0);*/
-
 void SpindizzyCraftPyramidModel::render() {
   float mBaseWidth = 0.03;
   float mTopWidth = 0.3;
   float mBaseHeight = IsoRealmsConstants::BLOCK_HEIGHT * 0.5;
   float mTopHeight = IsoRealmsConstants::BLOCK_HEIGHT * 1.50;
 
+  glTranslatef(cLocation->x, cLocation->y, cLocation->z * IsoRealmsConstants::BLOCK_HEIGHT);
+  glRotatef((cLocation->x + cLocation->y) * -90.0f, 0.0f, 0.0f, 1.0f);
   glBindTexture(GL_TEXTURE_2D, 0);
   glDisable(GL_CULL_FACE);
   glBegin(GL_TRIANGLES);

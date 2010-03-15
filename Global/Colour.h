@@ -162,6 +162,13 @@ class Colour {
   float getBlue();
 
   /**
+   * Returns the alpha intensity of this colour.
+   *
+   * @returns  The alpha intensity of this colour.
+   */
+  float getAlpha();
+
+  /**
    * Get the colour of the specified channel as an 8-bit integer (from 0 to 255).
    *
    * @param int  The channel to return.

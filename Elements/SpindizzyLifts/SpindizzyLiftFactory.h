@@ -32,9 +32,12 @@
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 
 #include "SpindizzyLift.h"
+#include "SpindizzyLiftConfigurationComponent.h"
+#include "SpindizzyLiftProperties.h"
 
 class SpindizzyLiftFactory:public IElementFactory {
   private:
+  std::string cLiftTypeName;
   std::vector<SpindizzyLift*> cContent;
   ISpindizzyTextureSet* cTextureSet;
   ISpindizzyTextureSet::TextureType cTexture;
@@ -42,6 +45,9 @@ class SpindizzyLiftFactory:public IElementFactory {
   std::vector<IVisualElement*> cSampleVisualElements;
   BlockLocation* cEditingLocation;
   BlockLocation* cInsertLocation;
+  SpindizzyLiftConfigurationComponent* cConfigurationComponent;
+  SpindizzyLiftProperties* cProperties;
+  IComponentContainer* cComponentContainer;
   int* cFirstRange;
   IElementGateway* cGateway;
 
@@ -50,7 +56,7 @@ class SpindizzyLiftFactory:public IElementFactory {
   void renderArrowLines();
 
   public:
-  SpindizzyLiftFactory(IElementSet*, ISpindizzyTextureSet::TextureType);
+  SpindizzyLiftFactory(IElementSet*, ISpindizzyTextureSet::TextureType, SpindizzyLiftProperties*, const std::string& liftTypeName);
 
   void setTextureSet(ISpindizzyTextureSet*);
 

@@ -19,8 +19,7 @@
 // TODO: Rename "SupportedPluginsComponent.h"
 #include "PluginRequirementsComponent.h"
 
-PluginRequirementsComponent::PluginRequirementsComponent(IComponentContainer* componentContainer, PluginRegistry* pluginRegistry, IPluginSupport* pluginSupport, float x, float y) : ResizableDialog(componentContainer, getTitle(pluginSupport), x, y, 1.0f, 1.0f) {
-  cPluginRegistry = pluginRegistry;
+PluginRequirementsComponent::PluginRequirementsComponent(IComponentContainer* componentContainer, IPluginRegistryAccessor* pluginRegistryAccessor, IPluginSupport* pluginSupport, float x, float y) : ResizableDialog(componentContainer, getTitle(pluginSupport), x, y, 1.0f, 1.0f) {
   cComponentContainer = componentContainer;
   cPluginSupport = pluginSupport;
 
@@ -41,21 +40,28 @@ PluginRequirementsComponent::PluginRequirementsComponent(IComponentContainer* co
   IComponentBoundsCalculator* mTitleLayout = new ComponentEdgeLayout(mInsideDialog, mInsideDialog, NULL, NULL, mTitleLabel);
   mTitleLabel->setBoundsCalculator(mTitleLayout);
 
-  // Put table below label (TODO: and above close button)
+  // Put a scrollable container below label and above close button
+  EdgeRelation* mAdjacentTitle = new EdgeRelation(mTitleLabel, EdgeRelation::OUTSIDE);
+  EdgeRelation* mAdjacentButton = new EdgeRelation(mCloseButton, EdgeRelation::OUTSIDE);
+  IComponentBoundsCalculator* mTableLayout = new ComponentEdgeLayout(mAdjacentTitle, mInsideDialog, mAdjacentButton, mInsideDialog, NULL);
+  ScrollableContainer* mScrollableContainer = new ScrollableContainer();
+  mScrollableContainer->setBoundsCalculator(mTableLayout);
+
+  // Put table inside the scrollable container
   FlexibleGridLayoutComponent* mRequirementsTable = new FlexibleGridLayoutComponent(4, cSupportedPlugins.size() + 1);
 
   TextLabelComponent* mTypeHeading = new TextLabelComponent("Type");
   TextLabelComponent* mSelectedHeading = new TextLabelComponent("Selected");
   mRequirementsTable->addComponent(mTypeHeading,     TYPE_COLUMN,     cSupportedPlugins.size());
   mRequirementsTable->addComponent(mSelectedHeading, INSTANCE_COLUMN, cSupportedPlugins.size());
-
+  PluginRegistry* mPluginRegistry = pluginRegistryAccessor->getPluginRegistry();
   for (unsigned int i = 0; i < cSupportedPlugins.size(); i++) {
     std::string mPluginType = cSupportedPlugins[i]->getType();
     TextLabelComponent* mTypeLabel = new TextLabelComponent(mPluginType);
-    IPlugin* mPlugin = cPluginSupport->getPlugin(cSupportedPlugins[i]);
-    std::string mInstanceName = mPlugin != NULL ? pluginRegistry->getInstanceName(mPluginType, mPlugin) : "<none>";
+    IPlugin* mPlugin = cPluginSupport->getClientPlugin(cSupportedPlugins[i]);
+    std::string mInstanceName = mPlugin != NULL ? mPluginRegistry->getInstanceName(mPluginType, mPlugin) : "<none>";
     TextLabelComponent* mSelectedInstanceLabel = new TextLabelComponent(mInstanceName);
-    ICommand* mChoosePluginInstanceCommand = new ChoosePluginImplementationCommand(cPluginSupport, cSupportedPlugins[i], componentContainer, pluginRegistry, mPluginType);
+    ICommand* mChoosePluginInstanceCommand = new ChoosePluginImplementationCommand(cPluginSupport, cSupportedPlugins[i], componentContainer, pluginRegistryAccessor, mPluginType);
     Button* mChoosePluginButton = new Button(NULL, mChoosePluginInstanceCommand, "Choose...");
     ICommand* mResetSocketCommand = new ResetSocketCommand(cPluginSupport, cSupportedPlugins[i]);
     Button* mResetPluginButton = new Button(NULL, mResetSocketCommand, "Reset");
@@ -65,20 +71,17 @@ PluginRequirementsComponent::PluginRequirementsComponent(IComponentContainer* co
     mRequirementsTable->addComponent(mChoosePluginButton,    CHOOSE_BUTTON_COLUMN, i);
     mRequirementsTable->addComponent(mResetPluginButton,     RESET_BUTTON_COLUMN,  i);
   }
-
-  EdgeRelation* mAdjacentTitle = new EdgeRelation(mTitleLabel, EdgeRelation::OUTSIDE);
-  IComponentBoundsCalculator* mTableLayout = new ComponentEdgeLayout(mAdjacentTitle, mInsideDialog, NULL, NULL, mRequirementsTable);
-  mRequirementsTable->setBoundsCalculator(mTableLayout);
+  mScrollableContainer->setRootComponent(mRequirementsTable);
 
   addComponent(mTitleLabel);
   addComponent(mCloseButton);
-  addComponent(mRequirementsTable);
+  addComponent(mScrollableContainer);
 
   setFocusedComponent(mRequirementsTable);
 }
 
-std::string* PluginRequirementsComponent::getTitle(IPluginSupport* pluginSupport) {
-  return new std::string(pluginSupport->getName() + " Plugins");
+std::string PluginRequirementsComponent::getTitle(IPluginSupport* pluginSupport) {
+  return pluginSupport->getName() + " Plugins";
 }
 
 void PluginRequirementsComponent::updateResizableDialogContent(int milliseconds) {

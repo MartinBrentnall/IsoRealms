@@ -19,6 +19,8 @@
 #ifndef I_SPINDIZZY_TEXTURE_H
 #define I_SPINDIZZY_TEXTURE_H
 
+#include "../../Global/Colour.h"
+
 class ISpindizzyTexture {
   public:
   enum Mapping {
@@ -41,11 +43,14 @@ class ISpindizzyTexture {
      * instances of the center half (i.e. more than two blocks high), and even
      * with sloped top and bottom sections.
      */
-    COLUMN_CAPPED
+    COLUMN_CAPPED,
+
+    PLAIN_COLOUR
   };
 
   virtual void set() = 0;
   virtual void texCoord2f(float, float) = 0;
+  virtual Colour* getColour(float, float) = 0;
 
   /**
    * Provide a hint regarding the intended use of this texture.

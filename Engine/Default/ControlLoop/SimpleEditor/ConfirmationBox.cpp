@@ -1,6 +1,6 @@
 #include "ConfirmationBox.h"
 
-ConfirmationBox::ConfirmationBox(IComponentContainer* componentContainer, ICommand* commandToExecute, std::string& message, std::string& title) : ResizableDialog(componentContainer, new std::string(title), -0.5f, 0.2f, 1.0f, 0.4f)  {
+ConfirmationBox::ConfirmationBox(IComponentContainer* componentContainer, ICommand* commandToExecute, std::string& message, std::string& title) : ResizableDialog(componentContainer, title, -0.5f, 0.2f, 1.0f, 0.4f)  {
   ICommand* mOKCommand = new OKCommand(this, commandToExecute);
   ICommand* mCancelCommand = new CancelCommand(this);
 

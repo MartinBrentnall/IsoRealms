@@ -24,11 +24,14 @@
 
 #include "../../../Global/IsoRealmsConstants.h"
 #include "../../../Global/Image.h"
+#include "../../../Global/Vertex.h"
 
 #include "../ISimpleModel.h"
 
 class SpindizzyCraftPyramidModel:public ISimpleModel {
   private:
+  Vertex* cLocation;
+
   enum TextureID {
     TEXTURE_TOP,
     TEXTURE_SIDE
@@ -42,7 +45,7 @@ class SpindizzyCraftPyramidModel:public ISimpleModel {
   GLuint generateTextureSide();
 
   public:
-  SpindizzyCraftPyramidModel();
+  SpindizzyCraftPyramidModel(Vertex*);
 
   /**************************************************************************\
    * Implemented methods of ILogicRequirements.h (in ISimpleModel.h)        *

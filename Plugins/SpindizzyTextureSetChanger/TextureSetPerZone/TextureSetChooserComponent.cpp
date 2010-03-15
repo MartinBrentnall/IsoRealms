@@ -18,6 +18,20 @@
  */
 #include "TextureSetChooserComponent.h"
 
+TextureSetChooserComponent::TextureSetChooserComponent(IComponentContainer* componentContainer, IZoneTextureSetter* zoneTextureSetter, std::vector<ISpindizzyTextureSet*> texturePalette) : ResizableDialog(componentContainer, "Choose Texture Set", 0.18f, 0.68f, 0.8f, 0.3f) {
+  cZoneTextureSetter = zoneTextureSetter;
+  WrappingGridComponent* mWrappingComponent = new WrappingGridComponent();
+  for (unsigned int i = 0; i < texturePalette.size(); i++) {
+    ISizedComponent* mTextureIcon = new TextureIcon(this, texturePalette[i]);
+    mWrappingComponent->addComponent(mTextureIcon);
+  }
+
+  EdgeRelation* mInsideDialog = new EdgeRelation(this, EdgeRelation::INSIDE);
+  IComponentBoundsCalculator* mWrappingComponentLayout = new ComponentEdgeLayout(mInsideDialog, mInsideDialog, mInsideDialog, mInsideDialog, NULL);
+  mWrappingComponent->setBoundsCalculator(mWrappingComponentLayout);
+  addComponent(mWrappingComponent);
+}
+
 TextureSetChooserComponent::TextureIcon::TextureIcon(TextureSetChooserComponent* parent, ISpindizzyTextureSet* textureSet) {
   cParent = parent;
   cTextureSet = textureSet;
@@ -133,20 +147,6 @@ bool TextureSetChooserComponent::TextureIcon::input(SDL_Event& event) {
     }
   }
   return false;
-}
-
-TextureSetChooserComponent::TextureSetChooserComponent(IComponentContainer* componentContainer, IZoneTextureSetter* zoneTextureSetter, std::vector<ISpindizzyTextureSet*> texturePalette) : ResizableDialog(componentContainer, new std::string("Choose Texture Set"), 0.18f, 0.68f, 0.8f, 0.3f) {
-  cZoneTextureSetter = zoneTextureSetter;
-  WrappingGridComponent* mWrappingComponent = new WrappingGridComponent();
-  for (unsigned int i = 0; i < texturePalette.size(); i++) {
-    ISizedComponent* mTextureIcon = new TextureIcon(this, texturePalette[i]);
-    mWrappingComponent->addComponent(mTextureIcon);
-  }
-
-  EdgeRelation* mInsideDialog = new EdgeRelation(this, EdgeRelation::INSIDE);
-  IComponentBoundsCalculator* mWrappingComponentLayout = new ComponentEdgeLayout(mInsideDialog, mInsideDialog, mInsideDialog, mInsideDialog, NULL);
-  mWrappingComponent->setBoundsCalculator(mWrappingComponentLayout);
-  addComponent(mWrappingComponent);
 }
 
 void TextureSetChooserComponent::renderResizableDialogContent() {

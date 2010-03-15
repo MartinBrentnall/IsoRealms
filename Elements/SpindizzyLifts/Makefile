@@ -24,7 +24,9 @@ LN = ln
 
 OBJS = \
 SpindizzyLift.o \
+SpindizzyLiftConfigurationComponent.o \
 SpindizzyLiftFactory.o \
+SpindizzyLiftProperties.o \
 SpindizzyLiftSet.o
 
 objs:	$(OBJS)

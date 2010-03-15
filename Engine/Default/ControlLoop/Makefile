@@ -16,6 +16,7 @@
 # along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
 objs:
 	cd AttractManager; make
+	cd Runtime; make
 	cd SimpleEditor; make
 
 all:
@@ -24,5 +25,6 @@ all:
 
 clean:
 	cd AttractManager; make clean
+	cd Runtime; make clean
 	cd SimpleEditor; make clean
 

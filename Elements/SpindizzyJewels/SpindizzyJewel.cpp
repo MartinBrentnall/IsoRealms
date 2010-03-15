@@ -18,14 +18,17 @@
  */
 #include "SpindizzyJewel.h"
 
-SpindizzyJewel::SpindizzyJewel(IElementFactory* elementFactory, BlockLocation* location, ISimpleModel* jewelModel) : IElement(elementFactory) {
-  cModel = jewelModel;
+SpindizzyJewel::SpindizzyJewel(IElementFactory* elementFactory, BlockLocation* location, ISimpleModelFactory* jewelModelFactory) : IElement(elementFactory) {
   cLocation = BlockLocation(*location);
-//  cCollected = false;
+  cVertexLocation.x = cLocation.x;
+  cVertexLocation.y = cLocation.y;
+  cVertexLocation.z = cLocation.z;
+  cModel = jewelModelFactory->createModel(&cVertexLocation);
+  cCollected = false;
 }
 
-void SpindizzyJewel::setModel(ISimpleModel* model) {
-  cModel = model;
+void SpindizzyJewel::setModel(ISimpleModelFactory* modelFactory) {
+  cModel = modelFactory->createModel(&cVertexLocation);;
 }
 
 ISimpleModel* SpindizzyJewel::getModel() {
@@ -59,12 +62,115 @@ void SpindizzyJewel::save(DOMNodeWriter* node, BlockLocation& location) {
 }
 
 void SpindizzyJewel::update(int milliseconds) {
-  cModel->update(milliseconds);
+  if (!cCollected) {
+    cModel->update(milliseconds);
+  }
 }
 
 void SpindizzyJewel::render() {
-  glPushMatrix();
-  glTranslatef(cLocation.x, cLocation.y, cLocation.z * IsoRealmsConstants::BLOCK_HEIGHT);
-  cModel->render();
-  glPopMatrix();
+  if (!cCollected) {
+    glPushMatrix();
+    cModel->render();
+    glPopMatrix();
+  }
+}
+
+bool SpindizzyJewel::initElement() {
+  ICollectablesAccessor* mCollectablesAccessor = dynamic_cast<ICollectablesAccessor*>(getElementSet());
+  if (mCollectablesAccessor == NULL) {
+    std::cout << "Warning: dynamic_cast failed for jewels!" << std::endl;
+  } else {
+    ICollectables* mCollectables = mCollectablesAccessor->getCollectables();
+    mCollectables->registerCollectable(this);
+  }
+  return true;
+}
+
+void SpindizzyJewel::collect() {
+  cCollected = true;
+  ICollectablesAccessor* mCollectablesAccessor = dynamic_cast<ICollectablesAccessor*>(getElementSet());
+  if (mCollectablesAccessor == NULL) {
+    std::cout << "Warning: dynamic_cast failed for jewels!" << std::endl;
+  } else {
+    mCollectablesAccessor->jewelCollected();
+  }
+}
+
+bool SpindizzyJewel::isCollected(Vertex& start, Vertex& end) {
+  if (!cCollected) {
+    float mXMovement = end.x - start.x;
+    float mYMovement = end.y - start.y;
+    float mZMovement = end.z - start.z;
+    float mWest   = cLocation.x - IsoRealmsConstants::BLOCK_RADIUS;
+    float mEast   = cLocation.x + IsoRealmsConstants::BLOCK_RADIUS;
+    float mSouth  = cLocation.y - IsoRealmsConstants::BLOCK_RADIUS;
+    float mNorth  = cLocation.y + IsoRealmsConstants::BLOCK_RADIUS;
+    float mBottom = cLocation.z;
+    float mTop    = cLocation.z + 1.0f;
+  
+    float mGradient = (mWest - start.x) / mXMovement;
+    if (mGradient >= 0.0f && mGradient <= 1.0f) {
+      float mYLocation = start.y + mYMovement * mGradient;
+      float mZLocation = start.z + mZMovement * mGradient;
+      if (mYLocation >= mSouth && mYLocation <= mNorth && mZLocation >= mBottom && mZLocation <= mTop) {
+        collect();
+        return true;
+      }
+    }
+  
+    mGradient = (mEast - start.x) / mXMovement;
+    if (mGradient >= 0.0f && mGradient <= 1.0f) {
+      float mYLocation = start.y + mYMovement * mGradient;
+      float mZLocation = start.z + mZMovement * mGradient;
+      if (mYLocation >= mSouth && mYLocation <= mNorth && mZLocation >= mBottom && mZLocation <= mTop) {
+        collect();
+        return true;
+      }
+    }
+  
+    mGradient = (mNorth - start.y) / mYMovement;
+    if (mGradient >= 0.0f && mGradient <= 1.0f) {
+      float mXLocation = start.x + mXMovement * mGradient;
+      float mZLocation = start.z + mZMovement * mGradient;
+      if (mXLocation >= mWest && mXLocation <= mEast && mZLocation >= mBottom && mZLocation <= mTop) {
+        collect();
+        return true;
+      }
+    }
+  
+    mGradient = (mSouth - start.y) / mYMovement;
+    if (mGradient >= 0.0f && mGradient <= 1.0f) {
+      float mXLocation = start.x + mXMovement * mGradient;
+      float mZLocation = start.z + mZMovement * mGradient;
+      if (mXLocation >= mWest && mXLocation <= mEast && mZLocation >= mBottom && mZLocation <= mTop) {
+        collect();
+        return true;
+      }
+    }
+  
+    mGradient = (mTop - start.z) / mYMovement;
+    if (mGradient >= 0.0f && mGradient <= 1.0f) {
+      float mXLocation = start.x + mXMovement * mGradient;
+      float mYLocation = start.y + mYMovement * mGradient;
+      if (mXLocation >= mWest && mXLocation <= mEast && mYLocation >= mSouth && mYLocation <= mNorth) {
+        collect();
+        return true;
+      }
+    }
+  
+    mGradient = (mBottom - start.z) / mYMovement;
+    if (mGradient >= 0.0f && mGradient <= 1.0f) {
+      float mXLocation = start.x + mXMovement * mGradient;
+      float mYLocation = start.y + mYMovement * mGradient;
+      if (mXLocation >= mWest && mXLocation <= mEast && mYLocation >= mSouth && mYLocation <= mNorth) {
+        collect();
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+void SpindizzyJewel::setDirty() {
+  signalElementDirty();
 }

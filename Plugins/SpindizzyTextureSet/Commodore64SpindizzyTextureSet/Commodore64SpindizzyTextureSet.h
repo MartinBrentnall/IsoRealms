@@ -36,6 +36,7 @@
 #include "../ISpindizzyTexture.h"
 
 #include "Commodore64SpindizzyTexture.h"
+#include "PlainColourTexture.h"
 
 class Commodore64SpindizzyTextureSet:public ISpindizzyTextureSet,
                                      public IFourColourSupportListener {

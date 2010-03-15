@@ -37,6 +37,11 @@ void SpindizzyTextureSetDummy::SpindizzyTextureDummy::texCoord2f(float x, float 
   // Nothing to do
 }
 
+Colour* SpindizzyTextureSetDummy::SpindizzyTextureDummy::getColour(float, float) {
+  std::cout << "Should never be called!" << std::endl;
+  return NULL;
+}
+
 ISpindizzyTexture::Mapping SpindizzyTextureSetDummy::SpindizzyTextureDummy::getMapping() {
   return TILED;
 }

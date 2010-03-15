@@ -23,50 +23,67 @@
 #include <cstdlib>
 #include <GL/gl.h>
 
-#include "../../Plugins/3DModel/ISimpleModel.h"
-
 #include "../../Global/BlockLocation.h"
 #include "../../Global/IDynamicElement.h"
 #include "../../Global/IElement.h"
 #include "../../Global/IElementFactory.h"
 #include "../../Global/IsoRealmsConstants.h"
 #include "../../Global/IVisualElement.h"
+#include "../../Global/Vertex.h"
+
+#include "../../Plugins/Collectables/ICollectable.h"
+#include "../../Plugins/3DModel/ISimpleModel.h"
+#include "../../Plugins/3DModel/ISimpleModelFactory.h"
+
+#include "ICollectablesAccessor.h"
 
 class SpindizzyJewel:public IElement,
+                     public ICollectable,
                      public IDynamicElement,
                      public IVisualElement {
   private:
   ISimpleModel* cModel;
+  bool cCollected;
 
   /**
    * Location of the jewel.
    */
   BlockLocation cLocation;
+  Vertex cVertexLocation;
+
+  void collect();
 
   public:
-  SpindizzyJewel(IElementFactory*, BlockLocation*, ISimpleModel*);
+  SpindizzyJewel(IElementFactory*, BlockLocation*, ISimpleModelFactory*);
   SpindizzyJewel(IElementFactory*, DOMNodeWrapper*, BlockLocation*);
 
-  void setModel(ISimpleModel*);
+  void setModel(ISimpleModelFactory*);
   ISimpleModel* getModel();
 
-  /*************************************************************************\
-   * Implemented methods of IElement.h                                     *
-  \*************************************************************************/
+  /***************************\
+   * Implements ICollectable *
+  \***************************/
+  bool isCollected(Vertex& start, Vertex& end);
+  void setDirty();
+
+  /***********************\
+   * Implements IElement *
+  \***********************/
+  bool initElement();
   void renderStatic();
   std::vector<IVisualElement*> getVisualElements();
   std::vector<IDynamicElement*> getDynamicElements();
   std::vector<IInteractiveElement*> getInteractiveElements();
   void save(DOMNodeWriter*, BlockLocation&);
 
-  /*************************************************************************\
-   * Implemented methods of IDynamicElement.h                              *
-  \*************************************************************************/
+  /******************************\
+   * Implements IDynamicElement *
+  \******************************/
   void update(int milliseconds);
 
-  /*************************************************************************\
-   * Implemented methods of IVisualElement.h                               *
-  \*************************************************************************/
+  /*****************************\
+   * Implements IVisualElement *
+  \*****************************/
   void render();
 };
 

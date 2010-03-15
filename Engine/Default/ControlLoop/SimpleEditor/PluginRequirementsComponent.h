@@ -24,21 +24,22 @@
 #include <vector>
 #include <string>
 
-#include "../../../../Global/ComponentEdgeLayout.h"
-#include "../../../../Global/EdgeRelation.h"
-#include "../../../../Global/FlexibleGridLayoutComponent.h"
+#include "../../../../Global/GUI/ComponentEdgeLayout.h"
+#include "../../../../Global/GUI/EdgeRelation.h"
+#include "../../../../Global/GUI/FlexibleGridLayoutComponent.h"
+#include "../../../../Global/GUI/ResizableDialog.h"
+#include "../../../../Global/GUI/ScrollableContainer.h"
+#include "../../../../Global/GUI/TextLabelComponent.h"
 #include "../../../../Global/IComponentContainer.h"
 #include "../../../../Global/IFont.h"
 #include "../../../../Global/IPlugin.h"
 #include "../../../../Global/IPluginSupport.h"
 #include "../../../../Global/PluginRegistry.h"
-#include "../../../../Global/RectangleComponent.h"
-#include "../../../../Global/ResizableDialog.h"
 #include "../../../../Global/System.h"
 
 #include "ChoosePluginImplementationCommand.h"
 #include "EntityClassInstancesComponent.h"
-#include "TextLabelComponent.h"
+#include "IPluginRegistryAccessor.h"
 
 // TODO: Overall, class is too hackish.  Has too much in common with ManageLibrariesComponent
 class PluginRequirementsComponent:public ResizableDialog {
@@ -47,8 +48,6 @@ class PluginRequirementsComponent:public ResizableDialog {
   static const int INSTANCE_COLUMN = 1;
   static const int CHOOSE_BUTTON_COLUMN = 2;
   static const int RESET_BUTTON_COLUMN = 3;
-
-  PluginRegistry* cPluginRegistry;
 
   /**
    * The plugin support to satisfy.
@@ -90,10 +89,10 @@ class PluginRequirementsComponent:public ResizableDialog {
     void execute();
   };
 
-  std::string* getTitle(IPluginSupport*);
+  std::string getTitle(IPluginSupport*);
 
   public:
-  PluginRequirementsComponent(IComponentContainer*, PluginRegistry*, IPluginSupport*, float, float);
+  PluginRequirementsComponent(IComponentContainer*, IPluginRegistryAccessor*, IPluginSupport*, float, float);
 
   /****************************\
    * Implements IHUDComponent *

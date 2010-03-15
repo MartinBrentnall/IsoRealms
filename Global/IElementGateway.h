@@ -20,7 +20,6 @@
 #define I_ELEMENT_GATEWAY_H
 
 #include "IElement.h"
-#include "IHUDComponent.h"
 
 class Zone;
 
@@ -33,11 +32,19 @@ class IElementGateway {
   virtual ~IElementGateway() {}
 
   /**
-   * Push the specified element through the gateway.
+   * Push the specified element through the gateway and into the current zone.
    * 
    * @param IElement*  The element to push.
    */
   virtual void pushElement(IElement*) = 0;
+
+  /**
+   * Push the specified element through the gateway and into the map (i.e. not
+   * confined to a specific zone).
+   * 
+   * @param IElement*  The element to push.
+   */
+  virtual void pushMapElement(IElement*) = 0;
 
   /**
    * Notify the pending destruction of the specified element.  When this is

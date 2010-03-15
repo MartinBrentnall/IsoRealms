@@ -23,7 +23,7 @@
 #include <vector>
 
 #include "../../../Global/BlockArea.h"
-#include "../../../Global/Zone.h"
+#include "../../../Global/IZone.h"
 
 #include "../ISurfaceProcessor.h"
 
@@ -181,6 +181,11 @@ class BlockSubtractor:public ISurfaceProcessor {
   IWallSurface* findSurfaceAt(std::vector<IWallSurface*>, int, int);
   public:
 
+  /*****************************\
+   * Implements IPluginSupport *
+  \*****************************/
+  std::string getName();
+
   /********************************\
    * Implements ISurfaceProcessor *
   \********************************/
@@ -191,23 +196,11 @@ class BlockSubtractor:public ISurfaceProcessor {
   void setDirty();
   void reinitialise();
 
-  /*************************************************\
-   * Implements IPluginSupport (in IPluginAccesor) *
-  \*************************************************/
-  std::string getName();
-  std::vector<PlugSocket*> getPlugSockets();
-  void setPlugin(PlugSocket*, IPlugin*);
-  IPlugin* getPlugin(PlugSocket*);
-
   /**********************\
    * Implements IPlugin *
   \**********************/
-  void notifyZoneAction(Zone*);
-  void initPlugin(Zone*);
-  std::vector<ICommandInfo*> getCommandInfo();
-  void setEditingInfo(IComponentContainer*);
-  void save(DOMNodeWriter*);
-  void load(DOMNodeWrapper*);
+  void notifyZoneAction(IZone*);
+  void initPlugin(IZone*);
 };
 
 #endif

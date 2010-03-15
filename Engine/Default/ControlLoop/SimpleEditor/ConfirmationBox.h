@@ -3,13 +3,12 @@
 
 #include <string>
 
-#include "../../../../Global/ComponentEdgeLayout.h"
-#include "../../../../Global/EdgeRelation.h"
+#include "../../../../Global/GUI/Button.h"
+#include "../../../../Global/GUI/ComponentEdgeLayout.h"
+#include "../../../../Global/GUI/EdgeRelation.h"
+#include "../../../../Global/GUI/ResizableDialog.h"
+#include "../../../../Global/GUI/TextLabelComponent.h"
 #include "../../../../Global/ICommand.h"
-#include "../../../../Global/ResizableDialog.h"
-
-#include "Button.h"
-#include "TextLabelComponent.h"
 
 class ConfirmationBox:public ResizableDialog {
   private:

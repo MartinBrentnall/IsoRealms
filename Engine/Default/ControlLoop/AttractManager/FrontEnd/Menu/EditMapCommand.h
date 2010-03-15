@@ -31,9 +31,9 @@ class EditMapCommand:public ICommand {
   public:
   EditMapCommand(std::string&);
 
-  /*************************************************************************\
-   * Implemented methods of ICommand.h                                     *
-  \*************************************************************************/
+  /***********************\
+   * Implements ICommand *
+  \***********************/
   void execute();    
 };
 

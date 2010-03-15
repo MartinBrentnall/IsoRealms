@@ -18,22 +18,48 @@
  */
 #include "SpindizzyLiftFactory.h"
 
-SpindizzyLiftFactory::SpindizzyLiftFactory(IElementSet* elementSet, ISpindizzyTextureSet::TextureType texture) : IElementFactory(elementSet) {
+SpindizzyLiftFactory::SpindizzyLiftFactory(IElementSet* elementSet, ISpindizzyTextureSet::TextureType texture, SpindizzyLiftProperties* properties, const std::string& liftTypeName) : IElementFactory(elementSet) {
+  cLiftTypeName = liftTypeName;
+  cProperties = properties;
   cTexture = texture;
   cInsertLocation = NULL;
   cFirstRange = NULL;
   BlockLocation mIdentityLocation(0, 0, 0);
-  cSampleLift = new SpindizzyLift(this, &mIdentityLocation, NULL, 0, 0);
+  cSampleLift = new SpindizzyLift(this, &mIdentityLocation, NULL, properties, 0, 0);
   cSampleVisualElements = cSampleLift->getVisualElements();
+  cConfigurationComponent = NULL;
 }
 
-std::string getName() {
-  return ""; // TODO: Return the actual lift type
+std::string SpindizzyLiftFactory::getName() {
+  return cLiftTypeName;
 }
 
 IElement* SpindizzyLiftFactory::getElement(DOMNodeWrapper* node, BlockLocation* relative) {
-  // TODO: Do this!
-  return NULL;
+  cProperties->reset();
+  BlockLocation mStartLocation;
+  int mLiftBottom = -1;
+  int mLiftTop = -1;
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "Location") {
+      mStartLocation.setRelative(mNode, *relative);
+    } else if (mValueAsString == "LiftMovement") {
+      mLiftTop = mNode->getIntegerAttribute("top");
+      mLiftBottom = mNode->getIntegerAttribute("bottom");
+    } else if (mValueAsString == "LiftProperties") {
+      cProperties->setup(mNode);
+    }
+  }
+  if (mLiftBottom < 0 || mLiftTop < 0) {
+    std::cout << "Exiting due to unspecified lift heights" << std::endl;
+    exit(1);
+    // TODO: Throw something
+  }
+  ISpindizzyTexture* mTexture = cTextureSet->getTexture(cTexture);
+  SpindizzyLift* mLoadedLift = new SpindizzyLift(this, &mStartLocation, mTexture, cProperties, mLiftBottom, mLiftTop);
+  cContent.push_back(mLoadedLift);
+  return mLoadedLift;
 }
 
 bool SpindizzyLiftFactory::keyDown(SDLKey& key) {
@@ -47,7 +73,7 @@ bool SpindizzyLiftFactory::keyDown(SDLKey& key) {
         int mTopRange = *cFirstRange > cEditingLocation->z ? *cFirstRange : cEditingLocation->z;
         int mBottomRange = *cFirstRange > cEditingLocation->z ? cEditingLocation->z : *cFirstRange;
         ISpindizzyTexture* mTexture = cTextureSet->getTexture(cTexture);
-        SpindizzyLift* mLiftElement = new SpindizzyLift(this, cInsertLocation, mTexture, mBottomRange, mTopRange);
+        SpindizzyLift* mLiftElement = new SpindizzyLift(this, cInsertLocation, mTexture, cProperties, mBottomRange, mTopRange);
         cGateway->pushElement(mLiftElement);
         cContent.push_back(mLiftElement);
         delete cInsertLocation;
@@ -75,7 +101,10 @@ void SpindizzyLiftFactory::setTextureSet(ISpindizzyTextureSet* textureSet) {
 }
 
 void SpindizzyLiftFactory::configureElement() {
-  // Nothing to do.
+  if (cConfigurationComponent == NULL) {
+    cConfigurationComponent = new SpindizzyLiftConfigurationComponent(cComponentContainer, cProperties);
+    cComponentContainer->addComponent(cConfigurationComponent);
+  }
 }
 
 bool SpindizzyLiftFactory::input(SDL_Event& event) {
@@ -87,9 +116,10 @@ bool SpindizzyLiftFactory::input(SDL_Event& event) {
   return false;
 }
 
-void SpindizzyLiftFactory::setEditingInfo(BlockLocation* editingLocation, IElementGateway* gateway, IComponentContainer* cComponentContainer) {
+void SpindizzyLiftFactory::setEditingInfo(BlockLocation* editingLocation, IElementGateway* gateway, IComponentContainer* componentContainer) {
   cGateway = gateway;
   cEditingLocation = editingLocation;  
+  cComponentContainer = componentContainer;
 }
 
 void SpindizzyLiftFactory::renderArrowLines() {
@@ -144,7 +174,7 @@ void SpindizzyLiftFactory::renderEditingPreview() {
 
 void SpindizzyLiftFactory::renderIcon() {
   glRotatef(-55.0f, 1.0f, 0.0f, 0.0f);
-  glRotatef(45.0f, 0.0f, 0.0f, 1.0f); // TODO: Must get this right; check with how the editor is doing it!
+  glRotatef(-45.0f, 0.0f, 0.0f, 1.0f); // TODO: Must get this right; check with how the editor is doing it!
   // TODO: Scale the icon
 //  glScalef(0.7f, 0.7f, 0.7f);
   glColor3f(1.0f, 1.0f, 1.0f);

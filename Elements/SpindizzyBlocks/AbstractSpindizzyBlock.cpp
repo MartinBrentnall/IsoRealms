@@ -245,11 +245,11 @@ void AbstractSpindizzyBlock::renderStatic() {
     mTopTileSurfaces[i]->render();
     delete mTopTileSurfaces[i];
   }
-  std::vector<ITileSurface*> mBottomTileSurfaces = calculateTileSurfaces(ITileSurface::DOWN);
+/*  std::vector<ITileSurface*> mBottomTileSurfaces = calculateTileSurfaces(ITileSurface::DOWN);
   for (unsigned int i = 0; i < mBottomTileSurfaces.size(); i++) {
     mBottomTileSurfaces[i]->render();
     delete mBottomTileSurfaces[i];
-  }
+  }*/
   if (cStartLocation.z <= cEndLocation.z) {
     std::vector<IWallSurface*> mNorthWallSurfaces = calculateWallSurfaces(IWallSurface::NORTH);
     for (unsigned int i = 0; i < mNorthWallSurfaces.size(); i++) {

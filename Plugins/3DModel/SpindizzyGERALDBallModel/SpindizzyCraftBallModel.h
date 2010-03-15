@@ -25,11 +25,17 @@
 
 #include "../../../Global/IsoRealmsConstants.h"
 #include "../../../Global/Image.h"
+#include "../../../Global/Vertex.h"
+
+#include "../../Camera/ICamera.h"
 
 #include "../ISimpleModel.h"
 
 class SpindizzyCraftBallModel:public ISimpleModel {
   private:
+  ICamera* cCamera;
+  Vertex* cLocation;
+
   enum TextureID {
     TEXTURE_BALL
   };
@@ -40,11 +46,11 @@ class SpindizzyCraftBallModel:public ISimpleModel {
   GLuint generateTextureBall();
 
   public:
-  SpindizzyCraftBallModel();
+  SpindizzyCraftBallModel(Vertex*, ICamera*);
 
-  /**************************************************************************\
-   * Implemented methods of ILogicRequirements.h (in ISimpleModel.h)        *
-  \**************************************************************************/
+  /*********************\
+   * Implements IModel *
+  \*********************/
   void update(int milliseconds);
   void render();
 

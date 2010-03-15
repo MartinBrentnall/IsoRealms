@@ -76,15 +76,10 @@ class DefaultFourColourSupport:public IFourColourSupport {
    * Implements IPluginSupport (in IPluginAccesor) *
   \*************************************************/
   std::string getName();
-  std::vector<PlugSocket*> getPlugSockets();
-  void setPlugin(PlugSocket*, IPlugin*);
-  IPlugin* getPlugin(PlugSocket*);
 
   /**********************\
    * Implements IPlugin *
   \**********************/
-  void notifyZoneAction(Zone*);
-  void initPlugin(Zone*);
   std::vector<ICommandInfo*> getCommandInfo();
   void setEditingInfo(IComponentContainer*);
   void save(DOMNodeWriter*);

@@ -47,20 +47,6 @@ std::string DefaultFourColourSupport::getName() {
   return "Custom Four Colour Palette";
 }
 
-std::vector<PlugSocket*> DefaultFourColourSupport::getPlugSockets() {
-  std::vector<PlugSocket*> mEmptyVector;
-  return mEmptyVector;
-}
-
-void DefaultFourColourSupport::setPlugin(PlugSocket* socket, IPlugin* plugin) {
-  // TODO: Throw something
-}
-
-IPlugin* DefaultFourColourSupport::getPlugin(PlugSocket* socket) {
-  // TODO: Throw something
-  return NULL;
-}
-
 void DefaultFourColourSupport::setEditingInfo(IComponentContainer* componentContainer) {
   cPaletteConfigurationCommand->setComponentContainer(componentContainer);
 }
@@ -81,14 +67,6 @@ void DefaultFourColourSupport::PaletteConfigurationCommand::setComponentContaine
 void DefaultFourColourSupport::PaletteConfigurationCommand::execute() {
   IHUDComponent* mComponent = new PaletteConfigurationComponent(cComponentContainer, cParent->cPalette, cParent->cChangeListeners);
   cComponentContainer->addComponent(mComponent);
-}
-
-void DefaultFourColourSupport::notifyZoneAction(Zone* zone) {
-  // Nothing to do.
-}
-
-void DefaultFourColourSupport::initPlugin(Zone* zone) {
-  // Nothing to do.
 }
 
 void DefaultFourColourSupport::save(DOMNodeWriter* node) {

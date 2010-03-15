@@ -19,12 +19,13 @@
 #include "SpindizzyJewelSet.h"
 
 SpindizzyJewelSet::SpindizzyJewelSet() {
-  std::string mDummyName("3DModel");
-  cJewelModelFactory = dynamic_cast<ISimpleModelFactory*>(PluginRegistry::getDummyPlugin(mDummyName));
-  if (cJewelModelFactory == NULL) {
-    std::cout << "Warning: dynamic cast failed for dummy!" << std::endl;
-  }
+  assignDummyPlugin(&cJewelModelFactory, "3DModel");
+  assignDummyPlugin(&cCollectables, "Collectables");
+  cCommandRegistry = NULL;
   cElementFactories.push_back(new SpindizzyJewelFactory(this, cJewelModelFactory));
+  cJewelSockets.push_back(new PlugSocket("3DModel", ""));// TODO: Change to Factory
+  cJewelSockets.push_back(new PlugSocket("Collectables", ""));
+  cJewelSockets.push_back(new PlugSocket("CommandRegistry", ""));
 }
 
 void SpindizzyJewelSet::setModel(ISimpleModelFactory* modelFactory) {
@@ -46,43 +47,83 @@ std::string SpindizzyJewelSet::getName() {
 }
 
 std::vector<PlugSocket*> SpindizzyJewelSet::getPlugSockets() {
-  std::vector<PlugSocket*> mSockets;
-  mSockets.push_back(new PlugSocket("3DModel", ""));// TODO: Change to Factory
-  return mSockets;
+  return cJewelSockets;
 }
 
 void SpindizzyJewelSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
-  if (socket->getType() == "3DModel" && implementation != cJewelModelFactory) {// TODO: Change to Factory
-    if (implementation == NULL) {
-      std::string mDummyName("3DModel");
-      cJewelModelFactory = dynamic_cast<ISimpleModelFactory*>(PluginRegistry::getDummyPlugin(mDummyName));
-      if (cJewelModelFactory == NULL) {
-        std::cout << "Warning: dynamic cast failed for dummy!" << std::endl;
-      }
-    } else {
-      ISimpleModelFactory* mModelFactory = dynamic_cast<ISimpleModelFactory*>(implementation);
-      if (cJewelModelFactory == NULL) {
-        std::cout << "Warning: dynamic cast failed for model!" << std::endl;
-      } else {
-        cJewelModelFactory = mModelFactory;
-      }
+  std::cout << "Setting plugin on jewels" << std::endl;
+  if (socket->getType() == "3DModel") {
+    if (assignPlugin(implementation, &cJewelModelFactory, *socket)) {
+      setModel(cJewelModelFactory);
     }
-    setModel(cJewelModelFactory);
+  } else if (socket->getType() == "Collectables") {
+    ICollectables* mPreviousCollectables = cCollectables;
+    if (assignPlugin(implementation, &cCollectables, *socket)) {
+      mPreviousCollectables->reinitialise();
+    }
+  } else if (socket->getType() == "CommandRegistry") {
+    if (assignPlugin(implementation, &cCommandRegistry, *socket, false)) {
+      cJewelCollectedCommands.clear();
+      cAllJewelsCollectedCommands.clear();
+    }
   } else {
     // TODO: Throw exception or something
   }  
 }
 
 IPlugin* SpindizzyJewelSet::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "3DModel") {// TODO: Change to Factory
-    return cJewelModelFactory;
-  }
+  if      (socket->getType() == "3DModel")         {return cJewelModelFactory;}
+  else if (socket->getType() == "Collectables")    {return cCollectables;}
+  else if (socket->getType() == "CommandRegistry") {return cCommandRegistry;}
   // TODO: Throw wobbly!
   return NULL;
 }
 
 void SpindizzyJewelSet::save(DOMNodeWriter* node) {
-  // Nothing to do
+  for (unsigned int i = 0; i < cJewelCollectedCommands.size(); i++) {
+    DOMNodeWriter* mCommandNode = node->addBranch("JewelCollectedCommand");
+    std::string mCommandName = cJewelCollectedCommands[i]->getCommandName();
+    mCommandNode->addText(mCommandName);
+  }
+  for (unsigned int i = 0; i < cAllJewelsCollectedCommands.size(); i++) {
+    DOMNodeWriter* mCommandNode = node->addBranch("AllJewelsCollectedCommand");
+    std::string mCommandName = cAllJewelsCollectedCommands[i]->getCommandName();
+    mCommandNode->addText(mCommandName);
+  }
+}
+
+void SpindizzyJewelSet::load(DOMNodeWrapper* node) {
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "JewelCollectedCommand") {
+      std::string mCommandName = mNode->getStringValue();
+      IUserCommand* mCommand = cCommandRegistry->getCommand(mCommandName);
+      cJewelCollectedCommands.push_back(mCommand);
+    } else if (mValueAsString == "AllJewelsCollectedCommand") {
+      std::string mCommandName = mNode->getStringValue();
+      IUserCommand* mCommand = cCommandRegistry->getCommand(mCommandName);
+      cAllJewelsCollectedCommands.push_back(mCommand);
+    } else {
+      // TODO: Throw something!
+    }
+  }
+}
+
+ICollectables* SpindizzyJewelSet::getCollectables() {
+  return cCollectables;
+}
+
+void SpindizzyJewelSet::jewelCollected() {
+  for (unsigned int i = 0; i < cJewelCollectedCommands.size(); i++) {
+    cJewelCollectedCommands[i]->execute();
+  }
+}
+
+void SpindizzyJewelSet::allJewelsCollected() {
+  for (unsigned int i = 0; i < cAllJewelsCollectedCommands.size(); i++) {
+    cAllJewelsCollectedCommands[i]->execute();
+  }
 }
 
 SpindizzyJewelSet::~SpindizzyJewelSet() {

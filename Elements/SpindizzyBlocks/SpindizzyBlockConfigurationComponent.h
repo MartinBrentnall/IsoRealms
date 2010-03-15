@@ -25,21 +25,20 @@
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 
 #include "../../Global/Configuration.h"
+#include "../../Global/GUI/Dialog.h"
+#include "../../Global/GUI/IComponentCloseListener.h"
 #include "../../Global/IComponentContainer.h"
 #include "../../Global/IElement.h"
-#include "../../Global/RectangleComponent.h"
 #include "../../Global/ScreenConfiguration.h"
 
 class SpindizzyBlockFactory;
 
 #include "AbstractSpindizzyBlock.h"
-#include "IComponentCloseListener.h"
 #include "SpindizzyBlockFactory.h"
 #include "SpindizzyBlockProperties.h"
 
-class SpindizzyBlockConfigurationComponent:public RectangleComponent {
+class SpindizzyBlockConfigurationComponent:public Dialog {
   private:
-  IComponentCloseListener* cCloseListener;
   ISpindizzyTextureSet** cTextureSet;
   SpindizzyBlockProperties* cBlockProperties;
   SpindizzyBlockFactory* cBlockFactory;

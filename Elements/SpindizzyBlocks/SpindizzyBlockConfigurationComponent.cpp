@@ -18,11 +18,11 @@
  */
 #include "SpindizzyBlockConfigurationComponent.h"
 
-SpindizzyBlockConfigurationComponent::SpindizzyBlockConfigurationComponent(IComponentContainer* componentContainer, SpindizzyBlockFactory* blockFactory, SpindizzyBlockProperties* blockProperties, ISpindizzyTextureSet** textureSet, IComponentCloseListener* listener) : RectangleComponent(componentContainer, new std::string("Block Editor"), 0.0f, 0.0f, 0.25f, 0.5f) {
+SpindizzyBlockConfigurationComponent::SpindizzyBlockConfigurationComponent(IComponentContainer* componentContainer, SpindizzyBlockFactory* blockFactory, SpindizzyBlockProperties* blockProperties, ISpindizzyTextureSet** textureSet, IComponentCloseListener* listener) : Dialog(componentContainer, "Block Editor", 0.0f, 0.0f, 0.25f, 0.5f) {
   cBlockProperties = blockProperties;
   cBlockFactory = blockFactory;
   cTextureSet = textureSet;
-  cCloseListener = listener;
+  addCloseListener(listener);
   cSampleBlock = NULL;
   updateSampleBlock();
 }
@@ -81,7 +81,6 @@ bool SpindizzyBlockConfigurationComponent::keyDown(SDLKey& key) {
   switch (key) {
     case SDLK_ESCAPE: { 
       close();
-      cCloseListener->componentClosed(this);
       return true;
     }
 

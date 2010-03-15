@@ -21,7 +21,9 @@
 std::map<SpindizzyCraftBallModel::TextureID, GLuint> SpindizzyCraftBallModel::cTextures = std::map<SpindizzyCraftBallModel::TextureID, GLuint>();
 unsigned int SpindizzyCraftBallModel::cInstanceCount = 0;
 
-SpindizzyCraftBallModel::SpindizzyCraftBallModel() {
+SpindizzyCraftBallModel::SpindizzyCraftBallModel(Vertex* location, ICamera* camera) {
+  cLocation = location;
+  cCamera = camera;
   if (cTextures.empty()) {
     cTextures[TEXTURE_BALL] = generateTextureBall();
   }
@@ -33,37 +35,38 @@ void SpindizzyCraftBallModel::update(int milliseconds) {
 }
 
 void SpindizzyCraftBallModel::render() {
-  float mBallWidth = 0.33;
-  float mBallHeight = 0.33;
+  float mBallWidth = 0.33f;
+  float mBallHeight = 0.33f;
 
-  // TODO: Camera awareness!
-/*  glRotatef(-rotation + 90.0, 0.0, 0.0, 1.0);
-  glRotatef(tilt, 0.0, 1.0, 0.0);*/
-  glColor3f(1.0, 1.0, 1.0);
+  glTranslatef(cLocation->x, cLocation->y, cLocation->z * IsoRealmsConstants::BLOCK_HEIGHT + mBallHeight);
+  float mAngle = cCamera->getAngle();
+  float mTilt = cCamera->getTilt();
+  glRotatef(-mAngle + 90.0f, 0.0f, 0.0f, 1.0f);
+  glRotatef(mTilt, 0.0f, 1.0f, 0.0f);
+  glColor3f(1.0f, 1.0f, 1.0f);
   glEnable(GL_ALPHA_TEST);
   glBindTexture(GL_TEXTURE_2D, cTextures[TEXTURE_BALL]);
   glBegin(GL_QUADS);
-  glTexCoord2f(1.0, 1.0); glVertex3f(0.0 + mBallHeight, 0.0 + mBallWidth, 0.0);
-  glTexCoord2f(0.0, 1.0); glVertex3f(0.0 - mBallHeight, 0.0 + mBallWidth, 0.0);
-  glTexCoord2f(0.0, 0.0); glVertex3f(0.0 - mBallHeight, 0.0 - mBallWidth, 0.0);
-  glTexCoord2f(1.0, 0.0); glVertex3f(0.0 + mBallHeight, 0.0 - mBallWidth, 0.0);
+  glTexCoord2f(1.0f, 1.0f); glVertex3f(0.0f + mBallHeight, 0.0f + mBallWidth, 0.0f);
+  glTexCoord2f(0.0f, 1.0f); glVertex3f(0.0f - mBallHeight, 0.0f + mBallWidth, 0.0f);
+  glTexCoord2f(0.0f, 0.0f); glVertex3f(0.0f - mBallHeight, 0.0f - mBallWidth, 0.0f);
+  glTexCoord2f(1.0f, 0.0f); glVertex3f(0.0f + mBallHeight, 0.0f - mBallWidth, 0.0f);
   glEnd();
   glDisable(GL_ALPHA_TEST);
-  
 }
 
 // TODO: Nasty stuff below here.  Clean up!
 GLuint SpindizzyCraftBallModel::generateTextureBall() {
-  Image* mImage = new Image(64, 64, false);
-  Colour mTransparent(0.0, 0.0, 0.0, 0.0);
-  Colour mBlack(0.0, 0.0, 0.0, 1.0);
-  Colour mMagenta(0.7, 0.0, 1.0, 1.0);
-  Colour mYellow(1.0, 1.0, 0.0, 1.0);
+  Image* mImage = new Image(64, 64, true);
+  Colour mTransparent(0.0f, 0.0f, 0.0f, 0.0f);
+  Colour mBlack(0.0f, 0.0f, 0.0f, 1.0f);
+  Colour mMagenta(0.7f, 0.0f, 1.0f, 1.0f);
+  Colour mYellow(1.0f, 1.0f, 0.0f, 1.0f);
   mImage->drawSquare(&mTransparent, 0, mImage->getWidth(), 0, mImage->getHeight());
   mImage->drawCircle(&mBlack, mImage->getWidth() / 2);
-  mImage->drawCircle(&mMagenta, int(mImage->getWidth() / 2.3));
-  mImage->drawCircle(&mYellow, int(mImage->getWidth() / 3.5));
-  mImage->drawOffsetCircle(&mMagenta, int(mImage->getWidth() / 3.0));
+  mImage->drawCircle(&mMagenta, int(mImage->getWidth() / 2.3f));
+  mImage->drawCircle(&mYellow, int(mImage->getWidth() / 3.5f));
+  mImage->drawOffsetCircle(&mMagenta, int(mImage->getWidth() / 3.0f));
   GLuint mTextureID = mImage->generateTexture();
   delete mImage;
   return mTextureID;

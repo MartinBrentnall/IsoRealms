@@ -12,6 +12,7 @@
 
 #include "ConfirmationBox.h"
 #include "IEntityClass.h"
+#include "IPluginRegistryAccessor.h"
 #include "PluginRequirementsComponent.h"
 
 /**
@@ -20,7 +21,7 @@
 class ElementSetEntityClass:public IEntityClass {
   private:
   ElementSetRegistry* cElementSetRegistry;
-  PluginRegistry* cPluginRegistry;
+  IPluginRegistryAccessor* cPluginRegistryAccessor;
   IComponentContainer* cComponentContainer;
 
   class RemoveCommand:public ICommand {
@@ -38,7 +39,7 @@ class ElementSetEntityClass:public IEntityClass {
   };
 
   public:
-  ElementSetEntityClass(ElementSetRegistry*, PluginRegistry*, IComponentContainer*);
+  ElementSetEntityClass(ElementSetRegistry*, IPluginRegistryAccessor*, IComponentContainer*);
 
   /***************************\
    * Implements IEntityClass *

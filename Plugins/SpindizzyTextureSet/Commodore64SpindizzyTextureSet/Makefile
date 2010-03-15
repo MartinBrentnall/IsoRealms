@@ -24,7 +24,8 @@ LN = ln
 
 OBJS = \
 Commodore64SpindizzyTexture.o \
-Commodore64SpindizzyTextureSet.o
+Commodore64SpindizzyTextureSet.o \
+PlainColourTexture.o
 
 objs:	$(OBJS)
 	g++ -Wl,-E -shared -o module.so *.o 

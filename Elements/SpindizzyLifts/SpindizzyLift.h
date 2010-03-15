@@ -29,6 +29,8 @@
 
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
 
+#include "SpindizzyLiftProperties.h"
+
 class SpindizzyLift:public IElement,
                            IDynamicElement,
                            IVisualElement {
@@ -37,9 +39,15 @@ class SpindizzyLift:public IElement,
   ISpindizzyTexture* cTexture;
   int cBottom;
   int cTop;
+  unsigned int cTopDelay;
+  unsigned int cBottomDelay;
+  unsigned int cUpSpeed;
+  unsigned int cDownSpeed;
+
+  void renderEditingArrow();
 
   public:
-  SpindizzyLift(IElementFactory*, BlockLocation*, ISpindizzyTexture*, int, int);
+  SpindizzyLift(IElementFactory*, BlockLocation*, ISpindizzyTexture*, SpindizzyLiftProperties*, int, int);
 
   void setTexture(ISpindizzyTexture*);
 
@@ -47,6 +55,7 @@ class SpindizzyLift:public IElement,
    * Implemented methods of IElement.h                                     *
   \*************************************************************************/
   void renderStatic();
+  void renderStaticEditing();
   std::vector<IVisualElement*> getVisualElements();
   std::vector<IDynamicElement*> getDynamicElements();
   std::vector<IInteractiveElement*> getInteractiveElements();

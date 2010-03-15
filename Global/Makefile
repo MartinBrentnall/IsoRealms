@@ -23,46 +23,45 @@ LDCONFIG = ldconfig
 LN = ln
 
 OBJS = \
-AbstractRectangularComponent.o \
 BlockArea.o \
 BlockLocation.o \
 Colour.o \
 CommandManager.o \
-ComponentEdgeLayout.o \
 Configuration.o \
+DefaultCommandInfo.o \
 DOMNodeWrapper.o \
 DOMNodeWriter.o \
 DummyPlugin.o \
-EdgeRelation.o \
+DummyPluginRegistry.o \
 ElementSetRegistry.o \
-FlexibleGridLayoutComponent.o \
 GlobalConfiguration.o \
-GridLayoutComponent.o \
 IElement.o \
 IElementFactory.o \
 IllegalStateException.o \
 Image.o \
 InitException.o \
+IPlugin.o \
+IPluginSupport.o \
 IsoRealmsConstants.o \
 KeyStates.o \
 Map.o \
 MiscFunctions.o \
 ParseException.o \
 PluginRegistry.o \
+PluginSupportException.o \
 PlugSocket.o \
-RectangleBoundsCalculator.o \
-RectangleComponent.o \
-ResizableDialog.o \
+Rectangle.o \
 ScreenConfiguration.o \
 System.o \
 Utils.o \
 Vertex.o \
-WrappingGridComponent.o \
 Zone.o \
-ZoneBrush.o
+ZoneBrush.o \
+ZoneEvent.o
 
 objs:	$(OBJS)
-	g++ -shared -o libIsoRealms.so *.o
+	cd GUI; make
+	g++ -shared -o libIsoRealms.so *.o GUI/*.o
 
 install:
 	cp libIsoRealms.so /usr/lib/
@@ -72,4 +71,5 @@ all:
 	make objs
 
 clean:
+	cd GUI; make clean
 	$(RM) *.o Engine.so

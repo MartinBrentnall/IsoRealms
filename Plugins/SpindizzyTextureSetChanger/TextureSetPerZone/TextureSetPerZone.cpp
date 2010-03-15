@@ -19,6 +19,7 @@
 #include "TextureSetPerZone.h"
 
 TextureSetPerZone::TextureSetPerZone() {
+  assignDummyPlugin(&cZoneContext, "ZoneContext");
   std::vector<std::string> mPath;
   mPath.push_back("Choose Texture");
   // TODO: How to identify which element set(s) are being controlled by this plugin?
@@ -26,6 +27,7 @@ TextureSetPerZone::TextureSetPerZone() {
   cChooseTextureSetCommand = new ChooseTextureSetCommand(this);
   ChooseTextureSetCommandInfo* mChooseTextureSetCommandInfo = new ChooseTextureSetCommandInfo(mPath, cChooseTextureSetCommand);
   cPluginCommands.push_back(mChooseTextureSetCommandInfo);
+  cProgressBackgroundColour = 1.0f;
 }
 
 void TextureSetPerZone::setTextureSet(ISpindizzyTextureSet* textureSet) {
@@ -54,6 +56,7 @@ std::vector<PlugSocket*> TextureSetPerZone::getPlugSockets() {
     PlugSocket* mPlugSocket = new PlugSocket("SpindizzyTextureSet", mSocketID.str());
     mSockets.push_back(mPlugSocket);
   }
+  mSockets.push_back(new PlugSocket("ZoneContext"));
   return mSockets;
 }
 
@@ -77,6 +80,12 @@ void TextureSetPerZone::setPlugin(PlugSocket* plugSocket, IPlugin* plugin) {
     } else if (mIndex != cTexturePalette.size()) {
       cTexturePalette.erase(cTexturePalette.begin() + mIndex);
     }
+  } else if (plugSocket->getType() == "ZoneContext") {
+    IZoneContext* mPreviousZoneContext = cZoneContext;
+    if (assignPlugin(plugin, &cZoneContext, *plugSocket)) {
+      mPreviousZoneContext->removeZoneContextListener(this);
+      cZoneContext->addZoneContextListener(this);
+    }
   }
 }
 
@@ -89,24 +98,20 @@ IPlugin* TextureSetPerZone::getPlugin(PlugSocket* plugSocket) {
     if (mIndex < cTexturePalette.size()) {
       return cTexturePalette[mIndex]; 
     }
+  } else if (plugSocket->getType() == "ZoneContext") {
+    return cZoneContext;
+  } else {
+    // TODO: Chuck something
   }
   return NULL;
 }
 
-void TextureSetPerZone::notifyZoneAction(Zone* zone) {
-  // Nothing to do.
-}
-
-void TextureSetPerZone::initPlugin(Zone* zone) {
-  // Nothing to do.
-}
-
-void TextureSetPerZone::renderPreZone(Zone* zone) {  
-  std::map<Zone*, ISpindizzyTextureSet*>::iterator mIterator = cZoneMapping.find(zone);
+void TextureSetPerZone::renderPreZone(IZone* zone) {  
+  std::map<IZone*, ISpindizzyTextureSet*>::iterator mIterator = cZoneMapping.find(zone);
   cControlledObject->setSpindizzyTextureSet(mIterator != cZoneMapping.end() ? mIterator->second : NULL);
 }
 
-void TextureSetPerZone::zoneContextChanged(Map* map, Zone* zone) {
+void TextureSetPerZone::zoneContextChanged(IMap* map, IZone* zone) {
   cCurrentMap = map;
   cCurrentZone = zone;
 }
@@ -115,26 +120,22 @@ std::vector<ICommandInfo*> TextureSetPerZone::getCommandInfo() {
   return cPluginCommands;
 }
 
-void TextureSetPerZone::setEditingInfo(IComponentContainer* componentContainer) {
+void TextureSetPerZone::setEditingContext(IComponentContainer* componentContainer) {
   cChooseTextureSetCommand->setComponentContainer(componentContainer);
 }
 
-void TextureSetPerZone::save(DOMNodeWriter*) {
-  // Nothing to do.
-}
-
-void TextureSetPerZone::saveData(DOMNodeWriter* node, Map* map, Zone* zone) {
-  std::map<Zone*, ISpindizzyTextureSet*>::iterator mIterator = cZoneMapping.find(zone);
+void TextureSetPerZone::saveData(DOMNodeWriter* node, IMap* map, IZone* zone) {
+  std::map<IZone*, ISpindizzyTextureSet*>::iterator mIterator = cZoneMapping.find(zone);
   if (mIterator != cZoneMapping.end()) {
     ISpindizzyTextureSet* mTextureSet = mIterator->second;
     DOMNodeWriter* mTextureSetNode = node->addBranch("TextureSet");
-    PluginRegistry* mPluginRegistry = map->getPluginRegistry();
+    IPluginRegistry* mPluginRegistry = map->getPluginRegistry();
     std::string mTextureSetName = mPluginRegistry->getInstanceName("SpindizzyTextureSet", mTextureSet);
     mTextureSetNode->addText(mTextureSetName);
   }
 }
 
-void TextureSetPerZone::loadData(DOMNodeWrapper* node, IPluginRegistry* pluginRegistry, Zone* zone) {
+void TextureSetPerZone::loadData(DOMNodeWrapper* node, IPluginRegistry* pluginRegistry, IZone* zone) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
@@ -156,8 +157,48 @@ void TextureSetPerZone::loadData(DOMNodeWrapper* node, IPluginRegistry* pluginRe
   }
 }
 
-void TextureSetPerZone::load(DOMNodeWrapper*) {
-  // Nothing to do.
+std::vector<IDynamicElement*> TextureSetPerZone::getPreLoopCommands() {
+  std::vector<IDynamicElement*> mBackgroundFader;
+  mBackgroundFader.push_back(this);
+  return mBackgroundFader;
+}
+
+void TextureSetPerZone::update(int ticks) {
+  if (cProgressBackgroundColour < 1.0f) {
+    cProgressBackgroundColour += 0.0025f * ticks;
+    if (cProgressBackgroundColour > 1.0f) {
+      cProgressBackgroundColour = 1.0f;
+    }
+    float mRed   = cPreviousBackgroundColour.getRed()   + (cTargetBackgroundColour.getRed()   - cPreviousBackgroundColour.getRed())   * cProgressBackgroundColour;
+    float mGreen = cPreviousBackgroundColour.getGreen() + (cTargetBackgroundColour.getGreen() - cPreviousBackgroundColour.getGreen()) * cProgressBackgroundColour;
+    float mBlue  = cPreviousBackgroundColour.getBlue()  + (cTargetBackgroundColour.getBlue()  - cPreviousBackgroundColour.getBlue())  * cProgressBackgroundColour;
+    glClearColor(mRed, mGreen, mBlue, 0.0f);
+  }
+}
+
+void TextureSetPerZone::zoneContextChanged(IZone* zone) {
+  std::map<IZone*, ISpindizzyTextureSet*>::iterator i = cZoneMapping.find(zone);
+  if (i != cZoneMapping.end()) {
+    ISpindizzyTexture* mBackgroundTexture = i->second->getTexture(ISpindizzyTextureSet::BACKGROUND);
+    switch (mBackgroundTexture->getMapping()) {
+      case ISpindizzyTexture::PLAIN_COLOUR: {
+        cPreviousBackgroundColour.set(
+            cPreviousBackgroundColour.getRed()   + (cTargetBackgroundColour.getRed()   - cPreviousBackgroundColour.getRed())   * cProgressBackgroundColour,
+            cPreviousBackgroundColour.getGreen() + (cTargetBackgroundColour.getGreen() - cPreviousBackgroundColour.getGreen()) * cProgressBackgroundColour,
+            cPreviousBackgroundColour.getBlue()  + (cTargetBackgroundColour.getBlue()  - cPreviousBackgroundColour.getBlue())  * cProgressBackgroundColour,
+            0.0f
+        );
+        cTargetBackgroundColour = *mBackgroundTexture->getColour(0.0f, 0.0f);
+        cProgressBackgroundColour = 0.0f;
+        break;
+      }
+
+      default: {
+        std::cout << "Background type not supported" << std::endl;
+        break;
+      }
+    }
+  }
 }
 
 TextureSetPerZone::ChooseTextureSetCommand::ChooseTextureSetCommand(TextureSetPerZone* parent) {

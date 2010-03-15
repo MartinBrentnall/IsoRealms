@@ -103,6 +103,10 @@ float Colour::getBlue() {
   return cBlue;
 }
 
+float Colour::getAlpha() {
+  return cAlpha;
+}
+
 void Colour::debug() {
   std::cout << "  " << cRed << " " << cGreen << " " << cBlue << std::endl;
 }

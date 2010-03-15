@@ -30,7 +30,7 @@ class IZoneChangeListener {
    * 
    * @param Zone*  The Zone that changed.
    */
-  virtual void zoneChanged(Zone*) = 0;
+  virtual void zoneChanged(IZone*) = 0;
 };
 
 #endif

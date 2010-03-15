@@ -39,7 +39,7 @@ class PlugSocket {
   std::string cID;
 
   public:
-  PlugSocket(std::string, std::string);
+  PlugSocket(const std::string&, const std::string& = "");
 
   std::string getType();
 

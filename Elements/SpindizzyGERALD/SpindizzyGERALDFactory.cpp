@@ -18,12 +18,14 @@
  */
 #include "SpindizzyGERALDFactory.h"
 
-SpindizzyGERALDFactory::SpindizzyGERALDFactory(IElementSet* elementSet, ISimpleModelFactory* geraldModelFactory) : IElementFactory(elementSet) {
+SpindizzyGERALDFactory::SpindizzyGERALDFactory(IElementSet* elementSet, ISimpleModelFactory* geraldModelFactory, ILocationAwareness* locationAwareness, IZoneContext* zoneContext) : IElementFactory(elementSet) {
+  cLocationAwareness = locationAwareness;
+  cZoneContext = zoneContext;
   cGERALDModelFactory = geraldModelFactory;
   BlockLocation mIdentityLocation(0, 0, 0);
-  ISimpleModel* mSampleModel = cGERALDModelFactory->createModel();
-  cSampleGERALD = new SpindizzyGERALD(this, &mIdentityLocation, mSampleModel);
+  cSampleGERALD = new SpindizzyGERALD(this, &mIdentityLocation, cGERALDModelFactory, NULL, NULL, NULL, NULL);
   cSampleGERALDVisuals = cSampleGERALD->getVisualElements();
+  cCamera = NULL;
 }
 
 std::string SpindizzyGERALDFactory::getName() {
@@ -32,26 +34,61 @@ std::string SpindizzyGERALDFactory::getName() {
 
 void SpindizzyGERALDFactory::setModel(ISimpleModelFactory* modelFactory) {
   cGERALDModelFactory = modelFactory;
-  ISimpleModel* mSampleModel = cGERALDModelFactory->createModel();
-  cSampleGERALD->setModel(mSampleModel);
+  cSampleGERALD->setModel(cGERALDModelFactory);
   for (unsigned int i = 0; i < cContent.size(); i++) {
-    ISimpleModel* mModel = cGERALDModelFactory->createModel();
-    cContent[i]->setModel(mModel);
+    cContent[i]->setModel(cGERALDModelFactory);
+  }
+}
+
+void SpindizzyGERALDFactory::setCamera(ICamera* camera) {
+  cCamera = camera;
+  for (unsigned int i = 0; i < cContent.size(); i++) {
+    cContent[i]->setCamera(camera);
+  }
+}
+
+void SpindizzyGERALDFactory::setCollectables(ICollectables* collectables) {
+  cCollectables = collectables;
+  for (unsigned int i = 0; i < cContent.size(); i++) {
+    cContent[i]->setCollectables(collectables);
+  }
+}
+
+void SpindizzyGERALDFactory::setLocationAwareness(ILocationAwareness* locationAwareness) {
+  cLocationAwareness = locationAwareness;
+}
+
+void SpindizzyGERALDFactory::setZoneContext(IZoneContext* zoneContext) {
+  cZoneContext = zoneContext;
+  for (unsigned int i = 0; i < cContent.size(); i++) {
+    cContent[i]->setZoneContext(zoneContext);
   }
 }
 
 IElement* SpindizzyGERALDFactory::getElement(DOMNodeWrapper* node, BlockLocation* relative) {
-  // TODO: Implement this!
-  return NULL;
+  BlockLocation mStartLocation;
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "Location") {
+      mStartLocation.setRelative(mNode, *relative);
+    }
+  }
+  SpindizzyGERALD* mLoadedGERALD = new SpindizzyGERALD(this, &mStartLocation, cGERALDModelFactory, cCollectables, cLocationAwareness, cZoneContext, cCamera);
+  cContent.push_back(mLoadedGERALD);
+  return mLoadedGERALD;
 }
 
 bool SpindizzyGERALDFactory::keyDown(SDLKey& key) {
   switch (key) {
     case SDLK_SPACE: {
-      ISimpleModel* mModel = cGERALDModelFactory->createModel();
-      SpindizzyGERALD* mGERALD = new SpindizzyGERALD(this, cEditingLocation, mModel);
-      cGateway->pushElement(mGERALD);
-      cContent.push_back(mGERALD);
+      if (cContent.size() == 0) {
+        SpindizzyGERALD* mGERALD = new SpindizzyGERALD(this, cEditingLocation, cGERALDModelFactory, cCollectables, cLocationAwareness, cZoneContext, cCamera);
+        cGateway->pushMapElement(mGERALD);
+        cContent.push_back(mGERALD);
+      } else {
+        // TODO: How to replace existing element?
+      }
       return true;
     }
 

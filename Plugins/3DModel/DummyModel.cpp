@@ -18,8 +18,8 @@
  */
 #include "DummyModel.h"
 
-DummyModel::DummyModel() {
-  // Nothing to do.
+DummyModel::DummyModel(Vertex* location) {
+  cLocation = location;
 }
 
 void DummyModel::update(int milliseconds) {

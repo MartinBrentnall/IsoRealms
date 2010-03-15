@@ -28,11 +28,17 @@
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 
 #include "SpindizzyLiftFactory.h"
+#include "SpindizzyLiftProperties.h"
 
 class SpindizzyLiftSet:public IElementSet {
   private:
   std::vector<IElementFactory*> cElementFactories;
   ISpindizzyTextureSet* cSpindizzyTextureSet;
+
+  /**
+   * Properties are applied to all lift types.
+   */
+  SpindizzyLiftProperties cSpindizzyLiftProperties;
 
   void setTextureSet(ISpindizzyTextureSet*);
 

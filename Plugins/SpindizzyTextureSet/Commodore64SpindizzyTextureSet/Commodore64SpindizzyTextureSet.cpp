@@ -234,7 +234,7 @@ GLuint Commodore64SpindizzyTextureSet::generateLiftSquareBoth() {
   return convertToTexture(mImage);
 }
 
-GLuint Commodore64SpindizzyTextureSet::generateLiftDiamond() {
+GLuint Commodore64SpindizzyTextureSet::generateLiftDiamondBoth() {
   Image* mImage = makeTransparent();
   int mSquareOuterEdge = int(mImage->getWidth() * 0.16);
   int mSquareOuterFill = int(mImage->getWidth() * 0.20);
@@ -274,7 +274,7 @@ GLuint Commodore64SpindizzyTextureSet::generateLiftDiamondHalf() {
   return convertToTexture(mImage);
 }
 
-GLuint Commodore64SpindizzyTextureSet::generateLiftDiamondBoth() {
+GLuint Commodore64SpindizzyTextureSet::generateLiftDiamond() {
   Image* mImage = makeTransparent();
   int mSquareOuterEdge = int(mImage->getWidth() * 0.16);
   int mSquareOuterFill = int(mImage->getWidth() * 0.20);
@@ -328,12 +328,8 @@ GLuint Commodore64SpindizzyTextureSet::convertToTexture(Image* image) {
 }
 
 Commodore64SpindizzyTextureSet::Commodore64SpindizzyTextureSet() {
-  cPlugSockets.push_back(new PlugSocket("FourColourSupport", ""));
-  std::string mDummyName("FourColourSupport");
-  cColourScheme = dynamic_cast<IFourColourSupport*>(PluginRegistry::getDummyPlugin(mDummyName));
-  if (cColourScheme == NULL) {
-    std::cout << "Dynamic cast of colour scheme dummy didn't work!" << std::endl;
-  }
+  cPlugSockets.push_back(new PlugSocket("FourColourSupport"));
+  assignDummyPlugin(&cColourScheme, "FourColourSupport");
 
   // TODO: Nasty hack; get rid of.
   TRANSPARENT = new Colour(0.0, 0.0, 0.0, 0.0);
@@ -389,10 +385,12 @@ void Commodore64SpindizzyTextureSet::generateTextures() {
   cTextures[LIFT_SQUARE_NONE] = new Commodore64SpindizzyTexture(generateLiftSquare());
   cTextures[LIFT_SQUARE_BOTH] = new Commodore64SpindizzyTexture(generateLiftSquareBoth());
   GLuint mLiftDiamondHalf = generateLiftDiamondHalf();
-  cTextures[LIFT_DIAMOND_LEFT] = new Commodore64SpindizzyTexture(mLiftDiamondHalf, Commodore64SpindizzyTexture::NORTH);
-  cTextures[LIFT_DIAMOND_RIGHT] = new Commodore64SpindizzyTexture(mLiftDiamondHalf, Commodore64SpindizzyTexture::SOUTH);
+  cTextures[LIFT_DIAMOND_LEFT] = new Commodore64SpindizzyTexture(mLiftDiamondHalf, Commodore64SpindizzyTexture::SOUTH);
+  cTextures[LIFT_DIAMOND_RIGHT] = new Commodore64SpindizzyTexture(mLiftDiamondHalf, Commodore64SpindizzyTexture::NORTH);
   cTextures[LIFT_DIAMOND_NONE] = new Commodore64SpindizzyTexture(generateLiftDiamond());
   cTextures[LIFT_DIAMOND_BOTH] = new Commodore64SpindizzyTexture(generateLiftDiamondBoth());
+
+  cTextures[BACKGROUND] = new PlainColourTexture(cColourScheme->getColour(IFourColourSupport::BACKGROUND));
 }
 
 void Commodore64SpindizzyTextureSet::destroyTextures() {
@@ -414,16 +412,11 @@ std::vector<PlugSocket*> Commodore64SpindizzyTextureSet::getPlugSockets() {
 }
 
 void Commodore64SpindizzyTextureSet::setPlugin(PlugSocket* socket, IPlugin* plugin) {
-  if (socket->getType() == "FourColourSupport" && plugin != cColourScheme) { // TODO: Test against dummy (NULL)
-    std::string mDummyName("FourColourSupport");
-    IFourColourSupport* mPalette = dynamic_cast<IFourColourSupport*>(plugin == NULL ? PluginRegistry::getDummyPlugin(mDummyName) : plugin);
-  
-    if (mPalette == NULL) {
-      std::cout << "Warning: dynamic_cast failed for dummy four colour scheme!" << std::endl;
-    } else {
+  if (socket->getType() == "FourColourSupport") {
+    IFourColourSupport* mPreviousColourScheme = cColourScheme;
+    if (assignPlugin(plugin, &cColourScheme, *socket)) {
       destroyTextures();
-      cColourScheme->removeChangeListener(this);
-      cColourScheme = mPalette;
+      mPreviousColourScheme->removeChangeListener(this);
       cColourScheme->addChangeListener(this);
       generateTextures();
     }
@@ -439,9 +432,7 @@ void Commodore64SpindizzyTextureSet::fourColourPaletteChanged(IFourColourSupport
 }
 
 IPlugin* Commodore64SpindizzyTextureSet::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "FourColourSupport") {
-    return PluginRegistry::isDummyPlugin(cColourScheme) ? NULL : cColourScheme;
-  } 
+  if (socket->getType() == "FourColourSupport") {return cColourScheme;}
   // TODO: Throw something
   return NULL;
 }

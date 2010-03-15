@@ -1,8 +1,8 @@
 #include "ElementSetEntityClass.h"
 
-ElementSetEntityClass::ElementSetEntityClass(ElementSetRegistry* elementSetRegistry, PluginRegistry* pluginRegistry, IComponentContainer* componentContainer) {
+ElementSetEntityClass::ElementSetEntityClass(ElementSetRegistry* elementSetRegistry, IPluginRegistryAccessor* pluginRegistryAccessor, IComponentContainer* componentContainer) {
   cElementSetRegistry = elementSetRegistry;
-  cPluginRegistry = pluginRegistry;
+  cPluginRegistryAccessor = pluginRegistryAccessor;
   cComponentContainer = componentContainer;
 }
 
@@ -24,7 +24,7 @@ void ElementSetEntityClass::remove(std::string& name) {
 
 void ElementSetEntityClass::configure(std::string& name) {
   IElementSet* mElementSet = cElementSetRegistry->getElementSet(&name);
-  IHUDComponent* mComponent = new PluginRequirementsComponent(cComponentContainer, cPluginRegistry, mElementSet, -0.8f, 0.0f);
+  IHUDComponent* mComponent = new PluginRequirementsComponent(cComponentContainer, cPluginRegistryAccessor, mElementSet, -0.8f, 0.0f);
   cComponentContainer->addComponent(mComponent);
 }
 

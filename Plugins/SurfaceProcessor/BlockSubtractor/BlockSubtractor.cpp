@@ -18,11 +18,11 @@
  */
 #include "BlockSubtractor.h"
 
-void BlockSubtractor::notifyZoneAction(Zone* zone) {
+void BlockSubtractor::notifyZoneAction(IZone* zone) {
   cCache.setZone(zone);
 }
 
-void BlockSubtractor::initPlugin(Zone* zone) {
+void BlockSubtractor::initPlugin(IZone* zone) {
   cCache.setZone(zone);
 }
 
@@ -446,37 +446,6 @@ std::vector<IWallSurface*> BlockSubtractor::getWallSurfaces(ISurfaceProvider* pr
 
 std::string BlockSubtractor::getName() {
   return "Block Subtractor";
-}
-
-std::vector<PlugSocket*> BlockSubtractor::getPlugSockets() {
-  std::vector<PlugSocket*> mEmptyVector;
-  return mEmptyVector;
-}
-
-void BlockSubtractor::setPlugin(PlugSocket*, IPlugin*) {
-  // TODO: Throw something
-}
-
-IPlugin* BlockSubtractor::getPlugin(PlugSocket*) {
-  // TODO: Throw something
-  return NULL;
-}
-
-std::vector<ICommandInfo*> BlockSubtractor::getCommandInfo() {
-  std::vector<ICommandInfo*> mEmptyVector;
-  return mEmptyVector;
-}
-
-void BlockSubtractor::setEditingInfo(IComponentContainer*) {
-  // Nothing to do.
-}
-
-void BlockSubtractor::save(DOMNodeWriter*) {
-  // Nothing to do.
-}
-
-void BlockSubtractor::load(DOMNodeWrapper*) {
-  // Nothing to do.
 }
 
 extern "C" IPlugin* create() {

@@ -18,12 +18,6 @@
  */
 #include "MenuItem.h"
 
-IFont* MenuItem::cFont = NULL;
-
-void MenuItem::setFont(IFont* font) {
-  cFont = font;
-}
-
 MenuItem::MenuItem(std::string text, ICommand* command, float xOffset, float yOffset) {
   cText = text;
   cAcceleratorIndex = cText.find('^');
@@ -41,16 +35,20 @@ MenuItem::MenuItem(std::string text, ICommand* command, float xOffset, float yOf
 void MenuItem::render(bool selected) {
   float mMultiplier = selected ? 1.0f : 0.3f;
   glColor3f(1.0f * mMultiplier, 1.0f * mMultiplier, 1.0f * mMultiplier);
-  cFont->print(cXOffset, cYOffset, 0.02f, 0, cText.c_str());
+  IFont* mFont = LookAndFeel::getDefaultFont();
+  float mFontSize = LookAndFeel::getDefaultFontSize();
+  mFont->print(cXOffset, cYOffset, mFontSize, 0, cText.c_str());
   if (cAcceleratorIndex != std::string::npos) {
-    float mWidth = cFont->getWidth(0.02f, cText.substr(0, cAcceleratorIndex).c_str());
+    float mWidth = mFont->getWidth(mFontSize, cText.substr(0, cAcceleratorIndex).c_str());
     glColor3f(0.0f * mMultiplier, 1.0f * mMultiplier, 1.0f * mMultiplier);
-    cFont->print(cXOffset + mWidth, cYOffset, 0.02f, 0, cText.substr(cAcceleratorIndex, 1).c_str());
+    mFont->print(cXOffset + mWidth, cYOffset, mFontSize, 0, cText.substr(cAcceleratorIndex, 1).c_str());
   }
 }
 
 float MenuItem::getWidth() {
-  return cFont->getWidth(0.02f, cText.c_str());
+  IFont* mFont = LookAndFeel::getDefaultFont();
+  float mFontSize = LookAndFeel::getDefaultFontSize();
+  return mFont->getWidth(mFontSize, cText.c_str());
 }
 
 float MenuItem::getHeight() {
@@ -75,7 +73,9 @@ void MenuItem::execute() {
 }
 
 bool MenuItem::contains(float x, float y) {
-  float mWidth = cFont->getWidth(0.02f, cText.c_str());
+  IFont* mFont = LookAndFeel::getDefaultFont();
+  float mFontSize = LookAndFeel::getDefaultFontSize();
+  float mWidth = mFont->getWidth(mFontSize, cText.c_str());
   if (x >= cXOffset && x <= cXOffset + mWidth && y >= cYOffset - 0.02f * 0.5f && y <= cYOffset + 0.02f * 2.0f) {
     return true;
   }

@@ -19,12 +19,6 @@
 #include "SpindizzyEnemySet.h"
 
 SpindizzyEnemySet::SpindizzyEnemySet() {
-  std::string mDummyName("SimpleModel");
-  cEnemyModelFactory = dynamic_cast<ISimpleModelFactory*>(PluginRegistry::getDummyPlugin(mDummyName));
-  if (cEnemyModelFactory == NULL) {
-    std::cout << "Warning: dynamic_cast failed for dummy model" << std::endl;
-  }
-  cElementFactories.push_back(new SpindizzyEnemyFactory(this, cEnemyModelFactory));
 }
 
 void SpindizzyEnemySet::setModel(ISimpleModelFactory* modelFactory) {
@@ -47,31 +41,59 @@ std::string SpindizzyEnemySet::getName() {
 
 std::vector<PlugSocket*> SpindizzyEnemySet::getPlugSockets() {
   std::vector<PlugSocket*> mSockets;
-  mSockets.push_back(new PlugSocket("SimpleModel", ""));
+  // TODO: Should not construct plug sockets on-the-fly.
+  for (unsigned int i = 0; i <= cEnemyModelFactories.size(); i++) {
+    std::ostringstream mSocketID;
+    mSocketID << i;
+    PlugSocket* mPlugSocket = new PlugSocket("3DModel", mSocketID.str());
+    mSockets.push_back(mPlugSocket);
+  }
   return mSockets;
 }
 
-void SpindizzyEnemySet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
-  if (socket->getType() == "SimpleModel") {
-    cEnemyModelFactory = dynamic_cast<ISimpleModelFactory*>(implementation);
-    if (cEnemyModelFactory == NULL) {
-      std::cout << "Warning: dynamic cast failed for simple model" << std::endl;
+void SpindizzyEnemySet::setPlugin(PlugSocket* plugSocket, IPlugin* plugin) {
+  if (plugSocket->getType() == "3DModel") {
+    std::string mSocketID = plugSocket->getID();
+    std::stringstream mInputString(mSocketID);
+    unsigned int mIndex;
+    mInputString >> mIndex;
+    if (plugin != NULL) {
+      ISimpleModelFactory* mModelFactory = dynamic_cast<ISimpleModelFactory*>(plugin);
+      if (mModelFactory != NULL) {
+        // TODO: Setting the socket ID as the factory name like this is bad because if another model is removed, the factory name should update, but it doesn't
+        IElementFactory* mEnemyFactory = new SpindizzyEnemyFactory(this, mModelFactory, mSocketID);
+        if (mIndex == cEnemyModelFactories.size()) {
+          cEnemyModelFactories.push_back(mModelFactory);
+          cElementFactories.push_back(mEnemyFactory);
+        } else {
+          cEnemyModelFactories[mIndex] = mModelFactory;
+          // TODO: Convert the old one?  The old factory still has all the old models!
+          cElementFactories[mIndex] = mEnemyFactory;
+        }
+      } else {
+        std::cout << "Warning: dynamic_cast failed for ISpindizzyTextureSet" << std::endl;
+      }
+    } else if (mIndex != cEnemyModelFactories.size()) {
+      cEnemyModelFactories.erase(cEnemyModelFactories.begin() + mIndex);
+      cElementFactories.erase(cElementFactories.begin() + mIndex);
     }
-    setModel(cEnemyModelFactory);
-  } else {
-    // TODO: Throw exception or something
-  }  
+  }
 }
 
-IPlugin* SpindizzyEnemySet::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "SimpleModel") {
-    return static_cast<IPlugin*>(cEnemyModelFactory);
+IPlugin* SpindizzyEnemySet::getPlugin(PlugSocket* plugSocket) {
+  if (plugSocket->getType() == "3DModel") {
+    std::string mSocketID = plugSocket->getID();
+    std::stringstream mInputString(mSocketID);
+    unsigned int mIndex;
+    mInputString >> mIndex;
+    if (mIndex < cEnemyModelFactories.size()) {
+      return cEnemyModelFactories[mIndex]; 
+    }
   }
-  // TODO: Throw wobbly!
   return NULL;
 }
 
-void IElementSet::save(DOMNodeWriter* node) {
+void SpindizzyEnemySet::save(DOMNodeWriter* node) {
   // Nothing to do.
 }
 

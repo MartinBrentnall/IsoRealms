@@ -99,13 +99,10 @@ bool ChooseElementsComponentRow::keyDown(SDLKey& key) {
     }
 
     case SDLK_RETURN: {
-      std::cout << "Notifying listeners..." << std::endl;
       for (unsigned int i = 0; i < cElementSelectionListeners.size(); i++) {
         cElementSelectionListeners[i]->elementSelected(cElements[cSelectedElement]);
       }
-      std::cout << "Closing myself..." << std::endl;
       cCloseCommand->execute();
-      std::cout << "Done!" << std::endl;
       return true;
     }
 

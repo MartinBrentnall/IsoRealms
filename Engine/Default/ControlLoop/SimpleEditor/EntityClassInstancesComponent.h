@@ -22,23 +22,23 @@
 #include <iostream>
 #include <string>
 
-#include "../../../../Global/ComponentEdgeLayout.h"
 #include "../../../../Global/Configuration.h"
-#include "../../../../Global/EdgeRelation.h"
-#include "../../../../Global/GridLayoutComponent.h"
+#include "../../../../Global/GUI/Button.h"
+#include "../../../../Global/GUI/ComponentEdgeLayout.h"
+#include "../../../../Global/GUI/EdgeRelation.h"
+#include "../../../../Global/GUI/GridLayoutComponent.h"
+#include "../../../../Global/GUI/ListBox.h"
+#include "../../../../Global/GUI/RectangleBoundsCalculator.h"
+#include "../../../../Global/GUI/ResizableDialog.h"
+#include "../../../../Global/GUI/ScrollableContainer.h"
+#include "../../../../Global/GUI/TextFieldComponent.h"
 #include "../../../../Global/IComponentContainer.h"
 #include "../../../../Global/PluginRegistry.h"
-#include "../../../../Global/RectangleBoundsCalculator.h"
-#include "../../../../Global/ResizableDialog.h"
 #include "../../../../Global/ScreenConfiguration.h"
 
-#include "Button.h"
 #include "IInstanceSelectionListener.h"
 #include "IEntityClass.h"
-#include "ImplementationsListComponent.h"
-#include "InstancesListComponent.h"
 #include "PluginRequirementsComponent.h"
-#include "TextFieldComponent.h"
 
 /**
  * This dialog has two purposes:
@@ -57,8 +57,8 @@ class EntityClassInstancesComponent:public ResizableDialog {
    * being used to select an instance of an entity class.
    */
   IInstanceSelectionListener* cListener;
-  InstancesListComponent* cInstancesList;
-  ImplementationsListComponent* cImplementationsList;
+  ListBox* cInstancesList;
+  ListBox* cImplementationsList;
   TextFieldComponent* cInstanceNameInputField;
 
   void configureEntityClass();
@@ -115,7 +115,7 @@ class EntityClassInstancesComponent:public ResizableDialog {
     void execute();
   };
 
-  std::string* getTitle(IEntityClass*);
+  std::string getTitle(IEntityClass*);
 
   public:
   EntityClassInstancesComponent(IEntityClass*, IComponentContainer*, float, float, IInstanceSelectionListener* = NULL);

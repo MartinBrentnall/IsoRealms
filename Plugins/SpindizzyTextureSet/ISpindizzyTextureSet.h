@@ -65,7 +65,8 @@ class ISpindizzyTextureSet:public virtual IPlugin {
     WALL_EAST,
     WALL_SOUTH,
     WALL_WEST,
-    WALL_ICE
+    WALL_ICE,
+    BACKGROUND
   };
 
   /**

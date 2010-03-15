@@ -24,23 +24,10 @@
 class DummyPlugin:public virtual IPlugin {
   public:
 
-  /*****************************************\
-   * Implements IPluginSupport (in IPlugin *
-  \*****************************************/
-  std::string getName();
-  std::vector<PlugSocket*> getPlugSockets();
-  void setPlugin(PlugSocket*, IPlugin*);
-  IPlugin* getPlugin(PlugSocket*);
-
   /**********************\
    * Implements IPlugin *
   \**********************/
-  void notifyZoneAction(Zone*);
-  void initPlugin(Zone*);
-  void setEditingInfo(IComponentContainer*);
-  std::vector<ICommandInfo*> getCommandInfo();
-  void save(DOMNodeWriter*);
-  void load(DOMNodeWrapper*);
+  std::string getName();
 
   virtual ~DummyPlugin() {}
 };

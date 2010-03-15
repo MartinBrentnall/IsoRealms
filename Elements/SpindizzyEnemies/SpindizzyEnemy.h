@@ -26,6 +26,7 @@
 #include "../../Global/Vertex.h"
 
 #include "../../Plugins/3DModel/ISimpleModel.h"
+#include "../../Plugins/3DModel/ISimpleModelFactory.h"
 
 class SpindizzyEnemy:public IElement, 
                      public IVisualElement {
@@ -36,10 +37,10 @@ class SpindizzyEnemy:public IElement,
   ISimpleModel* cEnemyModel;
 
   public:
-  SpindizzyEnemy(IElementFactory*, BlockLocation*, ISimpleModel*);
+  SpindizzyEnemy(IElementFactory*, BlockLocation*, ISimpleModelFactory*);
   SpindizzyEnemy(IElementFactory*, DOMNodeWrapper*, BlockLocation*);
 
-  void setModel(ISimpleModel*);
+  void setModel(ISimpleModelFactory*);
 
   /*************************************************************************\
    * Implemented methods of IElement.h                                     *

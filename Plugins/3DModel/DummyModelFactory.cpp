@@ -18,21 +18,12 @@
  */
 #include "DummyModelFactory.h"
 
-DummyModelFactory::DummyModelFactory() {
-  cDummyModel = new DummyModel();
-}
-
-ISimpleModel* DummyModelFactory::createModel() {
-  // Dummy model has no variation so we can re-use the same one every time!
-  return cDummyModel;
+ISimpleModel* DummyModelFactory::createModel(Vertex* location) {
+  return new DummyModel(location);
 }
 
 void DummyModelFactory::destroyModel(ISimpleModel* dummyModel) {
-  // Model is used globall, hence: Nothing to do.
-}
-
-DummyModelFactory::~DummyModelFactory() {
-  delete cDummyModel;
+  delete dummyModel;
 }
 
 extern "C" IPlugin* create() {

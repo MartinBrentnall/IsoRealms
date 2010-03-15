@@ -166,6 +166,10 @@ void EditorCursor::pushElement(IElement* element) {
   cEditZonePointer->pushElement(element);
 }
 
+void EditorCursor::pushMapElement(IElement* element) {
+  cEditMapPointer->pushElement(element);
+}
+
 void EditorCursor::setDirty(IElement* element) {
   // TODO: Do we know for sure that the element is in the current zone?
   cEditZonePointer->setDirty(element);

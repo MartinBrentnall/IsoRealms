@@ -21,7 +21,8 @@
 std::map<SpindizzyCraftGyroscopeModel::TextureID, GLuint> SpindizzyCraftGyroscopeModel::cTextures = std::map<SpindizzyCraftGyroscopeModel::TextureID, GLuint>();
 unsigned int SpindizzyCraftGyroscopeModel::cInstanceCount = 0;
 
-SpindizzyCraftGyroscopeModel::SpindizzyCraftGyroscopeModel() {
+SpindizzyCraftGyroscopeModel::SpindizzyCraftGyroscopeModel(Vertex* location) {
+  cLocation = location;
   if (cTextures.empty()) {
     cTextures[TEXTURE_DISC] = generateTextureDisc();
   }
@@ -33,6 +34,8 @@ void SpindizzyCraftGyroscopeModel::update(int milliseconds) {
 }
 
 void SpindizzyCraftGyroscopeModel::render() {
+  glTranslatef(cLocation->x, cLocation->y, cLocation->z * IsoRealmsConstants::BLOCK_HEIGHT);
+  glRotatef((cLocation->x + cLocation->y) * -180.0f, 0.0f, 0.0f, 1.0f);
   float mBaseWidth = 0.03;
   float mTopWidth = 0.33;
   float mBaseHeight = IsoRealmsConstants::BLOCK_HEIGHT * 0.9;

@@ -182,17 +182,35 @@ bool Zone::initZone() {
     cDirtyElements.erase(cDirtyElements.begin() + mIndexToRemove);
   }
   if (cDirtyElements.empty()) {
-    // TODO: SOMETHING IN HERE IS ALLOCATING MEMORY AND THEN NOT FREEING IT!
+
+    // Game rendering
     glDeleteLists(cDisplayList, 1);
     cDisplayList = glGenLists(1);
     glNewList(cDisplayList, GL_COMPILE);
-    renderBounds();
     for (unsigned int i = 0; i < cElements.size(); i++) {
       cElements[i]->renderStatic();
     }
     glEndList();
+
+    // Editor-only rendering
+    glDeleteLists(cEditingDisplayList, 1);
+    cEditingDisplayList = glGenLists(1);
+    glNewList(cEditingDisplayList, GL_COMPILE);
+//    renderBounds();
+    for (unsigned int i = 0; i < cElements.size(); i++) {
+      cElements[i]->renderStaticEditing();
+    }
+    glEndList();
   }
   return cDirtyElements.empty();
+}
+
+void Zone::input(SDL_Event& event) {
+  // TODO: Implement this...
+}
+
+void Zone::renderEditing() {
+  glCallList(cEditingDisplayList);
 }
 
 void Zone::render() {
@@ -211,6 +229,136 @@ void Zone::addChangeListener(IZoneChangeListener* listener) {
 
 void Zone::removeChangeListener(IZoneChangeListener* listener) {
   // TODO: Actually do the removal!
+}
+
+bool Zone::contains(Vertex& location) {
+  float mSouthFace  = cStartLocation.y - BLOCK_RADIUS;
+  float mWestFace   = cStartLocation.x - BLOCK_RADIUS;
+  float mNorthFace  = cEndLocation.y   + BLOCK_RADIUS;
+  float mEastFace   = cEndLocation.x   + BLOCK_RADIUS;
+  float mBottomFace = cStartLocation.z - 1.0f;
+  float mTopFace    = cEndLocation.z;
+  return location.y > mSouthFace  && location.y <= mNorthFace &&
+         location.x > mWestFace   && location.x <= mEastFace  &&
+         location.z > mBottomFace && location.z <= mTopFace;
+}
+
+ZoneEvent* Zone::getIntersection(Vertex& start, Vertex& end, ZoneEvent::Type type) {
+  float mXMovement  = end.x - start.x;
+  float mYMovement  = end.y - start.y;
+  float mZMovement  = end.z - start.z;
+  float mSouthFace  = nextafterf(cStartLocation.y - BLOCK_RADIUS, INFINITY);
+  float mWestFace   = nextafterf(cStartLocation.x - BLOCK_RADIUS, INFINITY);
+  float mBottomFace = nextafterf(cStartLocation.z - 1.0f,         INFINITY);
+  float mNorthFace  =            cEndLocation.y   + BLOCK_RADIUS;
+  float mEastFace   =            cEndLocation.x   + BLOCK_RADIUS;
+  float mTopFace    =            cEndLocation.z;
+
+  std::cout.setf(std::ios::fixed, std::ios::floatfield);
+  std::cout.setf(std::ios::showpoint);
+
+  bool mMovingWest  = mXMovement < 0.0f;
+  bool mMovingEast  = mXMovement > 0.0f;
+  if ((mMovingWest && type == ZoneEvent::EXITED) || (mMovingEast && type == ZoneEvent::ENTERED)) {
+    float mTempGradient = (mWestFace - start.x) / mXMovement;
+    if (mMovingWest ? (mTempGradient >= 0.0f && mTempGradient < 1.0f) : (mTempGradient > 0.0f && mTempGradient <= 1.0f)) {
+      float mEventYLocation = start.y + mYMovement * mTempGradient;
+      float mEventZLocation = start.z + mZMovement * mTempGradient;
+      if (mEventYLocation >= mSouthFace && mEventYLocation <= mNorthFace && mEventZLocation >= mBottomFace && mEventZLocation <= mTopFace) {
+        Vertex* mLocation = new Vertex(mWestFace, mEventYLocation, mEventZLocation);
+        return new ZoneEvent(this, type, mTempGradient, mLocation);
+      }
+    }
+  }
+  
+  if ((mMovingEast && type == ZoneEvent::EXITED) || (mMovingWest && type == ZoneEvent::ENTERED)) {
+    float mTempGradient = (mEastFace - start.x) / mXMovement;
+    if (mMovingWest ? (mTempGradient > 0.0f && mTempGradient <= 1.0f) : (mTempGradient >= 0.0f && mTempGradient < 1.0f)) {
+      float mEventYLocation = start.y + mYMovement * mTempGradient;
+      float mEventZLocation = start.z + mZMovement * mTempGradient;
+      if (mEventYLocation >= mSouthFace && mEventYLocation <= mNorthFace && mEventZLocation >= mBottomFace && mEventZLocation <= mTopFace) {
+        Vertex* mLocation = new Vertex(mEastFace, mEventYLocation, mEventZLocation);
+        return new ZoneEvent(this, type, mTempGradient, mLocation);
+      }
+    }
+  }
+  
+  bool mMovingSouth = mYMovement < 0.0f;
+  bool mMovingNorth = mYMovement > 0.0f;
+  if ((mMovingSouth && type == ZoneEvent::EXITED) || (mMovingNorth && type == ZoneEvent::ENTERED)) {
+    float mTempGradient = (mSouthFace - start.y) / mYMovement;
+    if (mMovingSouth ? (mTempGradient >= 0.0f && mTempGradient < 1.0f) : (mTempGradient > 0.0f && mTempGradient <= 1.0f)) {
+      float mEventXLocation = start.x + mXMovement * mTempGradient;
+      float mEventZLocation = start.z + mZMovement * mTempGradient;
+      if (mEventXLocation >= mWestFace && mEventXLocation <= mEastFace && mEventZLocation >= mBottomFace && mEventZLocation <= mTopFace) {
+        Vertex* mLocation = new Vertex(mEventXLocation, mSouthFace, mEventZLocation);
+        return new ZoneEvent(this, type, mTempGradient, mLocation);
+      }
+    }
+  }
+
+  if ((mMovingNorth && type == ZoneEvent::EXITED) || (mMovingSouth && type == ZoneEvent::ENTERED)) {
+    float mTempGradient = (mNorthFace - start.y) / mYMovement;
+    if (mMovingSouth ? (mTempGradient > 0.0f && mTempGradient <= 1.0f) : (mTempGradient >= 0.0f && mTempGradient < 1.0f)) {
+      float mEventXLocation = start.x + mXMovement * mTempGradient;
+      float mEventZLocation = start.z + mZMovement * mTempGradient;
+      if (mEventXLocation >= mWestFace && mEventXLocation <= mEastFace && mEventZLocation >= mBottomFace && mEventZLocation <= mTopFace) {
+        Vertex* mLocation = new Vertex(mEventXLocation, mNorthFace, mEventZLocation);
+        return new ZoneEvent(this, type, mTempGradient, mLocation);
+      }
+    }
+  }
+
+  bool mMovingDown  = mZMovement < 0.0f;
+  bool mMovingUp    = mZMovement > 0.0f;
+  if ((mMovingDown && type == ZoneEvent::EXITED) || (mMovingUp && type == ZoneEvent::ENTERED)) {
+    float mTempGradient = (mBottomFace - start.z) / mZMovement;
+    if (mMovingDown ? (mTempGradient >= 0.0f && mTempGradient < 1.0f) : (mTempGradient > 0.0f && mTempGradient <= 1.0f)) {
+      float mEventXLocation = start.x + mXMovement * mTempGradient;
+      float mEventYLocation = start.y + mYMovement * mTempGradient;
+      if (mEventXLocation >= mWestFace && mEventXLocation <= mEastFace && mEventYLocation >= mSouthFace && mEventYLocation <= mNorthFace) {
+        Vertex* mLocation = new Vertex(mEventXLocation, mEventYLocation, mBottomFace);
+        return new ZoneEvent(this, type, mTempGradient, mLocation);
+      }
+    }
+  }
+
+  if ((mMovingUp && type == ZoneEvent::EXITED) || (mMovingDown && type == ZoneEvent::ENTERED)) {
+    float mTempGradient = (mTopFace - start.z) / mZMovement;
+    if (mMovingDown ? (mTempGradient > 0.0f && mTempGradient <= 1.0f) : (mTempGradient >= 0.0f && mTempGradient < 1.0f)) {
+      float mEventXLocation = start.x + mXMovement * mTempGradient;
+      float mEventYLocation = start.y + mYMovement * mTempGradient;
+      if (mEventXLocation >= mWestFace && mEventXLocation <= mEastFace && mEventYLocation >= mSouthFace && mEventYLocation <= mNorthFace) {
+        Vertex* mLocation = new Vertex(mEventXLocation, mEventYLocation, mTopFace);
+        return new ZoneEvent(this, type, mTempGradient, mLocation);
+      }
+    }
+  }
+  return NULL;
+}
+
+std::vector<ZoneEvent*> Zone::getZoneEvents(Vertex& start, Vertex& end) {
+  std::vector<ZoneEvent*> mZoneEvents;
+  bool mContainsStart = contains(start);
+  bool mContainsEnd = contains(end);
+
+  if (mContainsStart != mContainsEnd) { // One event
+    ZoneEvent::Type mEventType = mContainsStart ? ZoneEvent::EXITED : ZoneEvent::ENTERED;
+    ZoneEvent* mZoneEvent = getIntersection(start, end, mEventType);
+    mZoneEvents.push_back(mZoneEvent);
+  } else if (!mContainsStart && !mContainsEnd) { // Two events or no events
+    ZoneEvent* mEntranceZoneEvent = getIntersection(start, end, ZoneEvent::ENTERED);
+    if (mEntranceZoneEvent != NULL) {
+      ZoneEvent* mExitZoneEvent = getIntersection(start, end, ZoneEvent::EXITED);
+      mZoneEvents.push_back(mEntranceZoneEvent);
+      mZoneEvents.push_back(mExitZoneEvent);
+    }
+  }
+  return mZoneEvents;
+}
+
+bool Zone::contains(BlockLocation& location) {
+  return BlockArea::contains(location);
 }
 
 void Zone::save(ElementSetRegistry* elementSetRegistry, DOMNodeWriter* node) {

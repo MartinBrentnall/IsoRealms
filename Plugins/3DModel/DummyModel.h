@@ -21,13 +21,16 @@
 
 #include <GL/gl.h>
 
-#include "../../Global/DummyPlugin.h"
+#include "../../Global/Vertex.h"
 
 #include "ISimpleModel.h"
 
 class DummyModel:public ISimpleModel {
+  private:
+  Vertex* cLocation;
+
   public:
-  DummyModel();
+  DummyModel(Vertex* location);
 
   /***************************\
    * Implements ISimpleModel *

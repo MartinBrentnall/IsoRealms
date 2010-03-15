@@ -21,8 +21,7 @@
 SpindizzyJewelFactory::SpindizzyJewelFactory(IElementSet* elementSet, ISimpleModelFactory* jewelModelFactory) : IElementFactory(elementSet) {
   cJewelModelFactory = jewelModelFactory;
   BlockLocation mIdentityLocation(0, 0, 0);
-  ISimpleModel* mSampleModel = jewelModelFactory->createModel();
-  cSampleJewel = new SpindizzyJewel(this, &mIdentityLocation, mSampleModel);
+  cSampleJewel = new SpindizzyJewel(this, &mIdentityLocation, cJewelModelFactory);
   cSampleJewelDynamics = cSampleJewel->getDynamicElements();
   cSampleJewelVisuals = cSampleJewel->getVisualElements();
 }
@@ -33,12 +32,9 @@ std::string SpindizzyJewelFactory::getName() {
 
 void SpindizzyJewelFactory::setModel(ISimpleModelFactory* modelFactory) {
   cJewelModelFactory = modelFactory;
-  ISimpleModel* mSampleModel = cJewelModelFactory->createModel();
-  cSampleJewel->setModel(mSampleModel);
-  std::cout << "There are " << cContent.size() << " jewels to change..." << std::endl;
+  cSampleJewel->setModel(cJewelModelFactory);
   for (unsigned int i = 0; i < cContent.size(); i++) {
-    ISimpleModel* mModel = cJewelModelFactory->createModel();
-    cContent[i]->setModel(mModel);
+    cContent[i]->setModel(cJewelModelFactory);
   }
 }
 
@@ -52,8 +48,7 @@ IElement* SpindizzyJewelFactory::getElement(DOMNodeWrapper* node, BlockLocation*
       mLocation->setRelative(mNode, *relative);
     }
   }
-  ISimpleModel* mModel = cJewelModelFactory->createModel();
-  SpindizzyJewel* mJewel = new SpindizzyJewel(this, mLocation, mModel);
+  SpindizzyJewel* mJewel = new SpindizzyJewel(this, mLocation, cJewelModelFactory);
   cContent.push_back(mJewel);
   return mJewel;
 }
@@ -61,8 +56,7 @@ IElement* SpindizzyJewelFactory::getElement(DOMNodeWrapper* node, BlockLocation*
 bool SpindizzyJewelFactory::keyDown(SDLKey& key) {
   switch (key) {
     case SDLK_SPACE: {
-      ISimpleModel* mModel = cJewelModelFactory->createModel();
-      SpindizzyJewel* mJewel = new SpindizzyJewel(this, cEditingLocation, mModel);
+      SpindizzyJewel* mJewel = new SpindizzyJewel(this, cEditingLocation, cJewelModelFactory);
       cGateway->pushElement(mJewel);
       cContent.push_back(mJewel);
       return true;

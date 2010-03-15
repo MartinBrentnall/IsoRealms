@@ -28,15 +28,15 @@
 #include "IPlugin.h"
 #include "IPluginRegistry.h"
 #include "IPluginRegistryListener.h"
+#include "IMap.h"
 #include "InitException.h"
+#include "IZone.h"
 #include "System.h"
 
 class Zone;
 
 class PluginRegistry:public IPluginRegistry {
   private:
-  static std::map<std::string, IPlugin*> cDummyPlugins;  
-
   std::vector<IPluginRegistryListener*> cListeners;
 
   /**
@@ -68,6 +68,8 @@ class PluginRegistry:public IPluginRegistry {
 
   void registerPlugin(DOMNodeWrapper*);
 
+  void connectPlugin(DOMNodeWrapper*);
+
   void setPlugin(IPlugin*, DOMNodeWrapper*);
 
   /**
@@ -84,14 +86,14 @@ class PluginRegistry:public IPluginRegistry {
    * on the specified zone.  It will be called immediately prior to the editing
    * action being carried out.
    */
-  void notifyZoneAction(Zone*);
+  void notifyZoneAction(IZone*);
 
   /**
    * This allows all plugins to know that initialization is being performed for
    * the specified zone.  It may be called multiple times depending on how many
    * initialization passes are required for the zone.
    */
-  void initPlugins(Zone*);
+  void initPlugins(IZone*);
 
   /**
    * This function is called immediately prior to rendering a zone.  It allows
@@ -100,7 +102,7 @@ class PluginRegistry:public IPluginRegistry {
    * 
    * @param Zone*  The zone to be rendered.
    */
-  void renderPreZone(Zone*);
+  void renderPreZone(IZone*);
 
   /**
    * This function is called when the zone editing context has changed.  It is
@@ -108,7 +110,7 @@ class PluginRegistry:public IPluginRegistry {
    * 
    * @param Zone*  The new zone.
    */
-  void zoneContextChanged(Map*, Zone*);
+  void zoneContextChanged(IMap*, IZone*);
 
   /**
    * Load a logic module.
@@ -151,17 +153,18 @@ class PluginRegistry:public IPluginRegistry {
    */
   void removeListener(IPluginRegistryListener*);
 
-  static IPlugin* getDummyPlugin(std::string&);
-
-  static bool isDummyPlugin(IPlugin*);
   void save(DOMNodeWriter*);
 
-  void loadPluginData(DOMNodeWrapper*, Zone*);
+  void loadPluginData(DOMNodeWrapper*, IZone*);
 
   /**
    * All plugins should write any zone data.
    */
-  void saveData(DOMNodeWriter*, Map*, Zone*);
+  void saveData(DOMNodeWriter*, IMap*, IZone*);
+
+  std::vector<IDynamicElement*> getPreLoopCommands();
+
+  std::vector<IInteractiveElement*> getInteractiveElements();
 
   /******************************\
    * Implements IPluginRegistry *

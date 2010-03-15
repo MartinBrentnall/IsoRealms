@@ -18,33 +18,40 @@
  */
 #include "SpindizzyEnemyFactory.h"
 
-SpindizzyEnemyFactory::SpindizzyEnemyFactory(IElementSet* elementSet, ISimpleModelFactory* enemyModelFactory) : IElementFactory(elementSet) {
+SpindizzyEnemyFactory::SpindizzyEnemyFactory(IElementSet* elementSet, ISimpleModelFactory* enemyModelFactory, const std::string& type) : IElementFactory(elementSet) {
+  cType = type;
   cEnemyModelFactory = enemyModelFactory;
   BlockLocation mIdentityLocation(0, 0, 0);
-  ISimpleModel* mSampleModel = cEnemyModelFactory->createModel();
-  cSampleEnemy = new SpindizzyEnemy(this, &mIdentityLocation, mSampleModel);
+  cSampleEnemy = new SpindizzyEnemy(this, &mIdentityLocation, cEnemyModelFactory);
   cSampleEnemyVisuals = cSampleEnemy->getVisualElements();
 }
 
 void SpindizzyEnemyFactory::setModel(ISimpleModelFactory* modelFactory) {
   cEnemyModelFactory = modelFactory;
-  ISimpleModel* mSampleModel = cEnemyModelFactory->createModel();
-  cSampleEnemy->setModel(mSampleModel);
+  cSampleEnemy->setModel(cEnemyModelFactory);
   for (unsigned int i = 0; i < cContent.size(); i++) {
-    ISimpleModel* mModel = cEnemyModelFactory->createModel();
-    cContent[i]->setModel(mModel);
+    cContent[i]->setModel(cEnemyModelFactory);
   }
 }
 
 IElement* SpindizzyEnemyFactory::getElement(DOMNodeWrapper* node, BlockLocation* relative) {
-  return new SpindizzyEnemy(this, node, relative);
+  BlockLocation mLocation;
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "Location") {
+      mLocation.setRelative(mNode, *relative);
+    }
+  }
+  SpindizzyEnemy* mLoadedEnemy = new SpindizzyEnemy(this, &mLocation, cEnemyModelFactory);
+  cContent.push_back(mLoadedEnemy);
+  return mLoadedEnemy;
 }
 
 bool SpindizzyEnemyFactory::keyDown(SDLKey& key) {
   switch (key) {
     case SDLK_SPACE: {
-      ISimpleModel* mModel = cEnemyModelFactory->createModel();
-      SpindizzyEnemy* mEnemy = new SpindizzyEnemy(this, cEditingLocation, mModel);
+      SpindizzyEnemy* mEnemy = new SpindizzyEnemy(this, cEditingLocation, cEnemyModelFactory);
       cGateway->pushElement(mEnemy);
       cContent.push_back(mEnemy);
       return true;
@@ -95,6 +102,6 @@ void SpindizzyEnemyFactory::renderIcon() {
 }
 
 std::string SpindizzyEnemyFactory::getName() {
-  return "";
+  return cType;
 }
 

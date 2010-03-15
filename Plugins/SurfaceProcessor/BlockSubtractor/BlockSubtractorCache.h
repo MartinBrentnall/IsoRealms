@@ -22,20 +22,20 @@
 #include <map>
 #include <vector>
 
-#include "../../../Global/Zone.h"
+#include "../../../Global/IZone.h"
 
 #include "../ISurfaceProvider.h"
 
 class BlockSubtractorCache {
   private:
   std::vector<ISurfaceProvider*>* cCurrentZoneProviders;
-  std::map<Zone*, std::vector<ISurfaceProvider*>*> cOrderedSurfaceProvidersByZone;
+  std::map<IZone*, std::vector<ISurfaceProvider*>*> cOrderedSurfaceProvidersByZone;
 
   int getIndex(std::vector<ISurfaceProvider*>*, ISurfaceProvider*);
 
   public:
   BlockSubtractorCache();
-  void setZone(Zone*);
+  void setZone(IZone*);
   void add(ISurfaceProvider*);
   void remove(ISurfaceProvider*);
   void setDirty();

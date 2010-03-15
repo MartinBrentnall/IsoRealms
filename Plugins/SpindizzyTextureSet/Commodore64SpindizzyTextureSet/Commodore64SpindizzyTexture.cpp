@@ -49,6 +49,11 @@ void Commodore64SpindizzyTexture::texCoord2f(float x, float y) {
   }
 }
 
+Colour* Commodore64SpindizzyTexture::getColour(float, float) {
+  std::cout << "WARNING: Colour not supported here yet!" << std::endl;
+  return NULL;
+}
+
 ISpindizzyTexture::Mapping Commodore64SpindizzyTexture::getMapping() {
   return cMapping;
 }

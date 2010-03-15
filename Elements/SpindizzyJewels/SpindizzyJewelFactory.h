@@ -38,6 +38,7 @@ class SpindizzyJewelFactory:public IElementFactory, public IsoRealmsConstants {
   private:
   std::vector<SpindizzyJewel*> cContent;
   ISimpleModelFactory* cJewelModelFactory;
+  ICollectables* cCollectables;
   SpindizzyJewel* cSampleJewel;
   std::vector<IDynamicElement*> cSampleJewelDynamics;
   std::vector<IVisualElement*> cSampleJewelVisuals;

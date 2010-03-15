@@ -30,28 +30,13 @@ class SpindizzyCraftGyroscopeModelFactory:public ISimpleModelFactory {
   /************************************\
    * Implements ISimpleModelFactory.h *
   \************************************/
-  ISimpleModel* createModel();
+  ISimpleModel* createModel(Vertex*);
   void destroyModel(ISimpleModel*);
 
-  /***************************************************\
-   * Implements IPluginSupport (in IPluginAccesor.h) *
-  \***************************************************/
+  /*****************************\
+   * Implements IPluginSupport *
+  \*****************************/
   std::string getName();
-  std::vector<PlugSocket*> getPlugSockets();
-  void setPlugin(PlugSocket*, IPlugin*);
-  IPlugin* getPlugin(PlugSocket*);
-
-  /***********************************************\
-   * Implements IPlugin (in ISimpleModelFactory) *
-  \***********************************************/
-  void notifyZoneAction(Zone*);
-  void initPlugin(Zone*);
-  std::vector<ICommandInfo*> getCommandInfo();
-  void setEditingInfo(IComponentContainer*);
-  void save(DOMNodeWriter*);
-  void load(DOMNodeWrapper*);
-
-  ~SpindizzyCraftGyroscopeModelFactory();
 };
 
 #endif

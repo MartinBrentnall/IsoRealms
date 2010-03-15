@@ -53,9 +53,9 @@ class EnterMenuCommand:public ICommand {
    */
   EnterMenuCommand(std::vector<std::string>&, std::vector<std::string>&, unsigned int&, std::string*&, std::string);
     
-  /*************************************************************************\
-   * Implemented methods of ICommand.h                                     *
-  \*************************************************************************/
+  /***********************\
+   * Implements ICommand *
+  \***********************/
   void execute();  
 };
 

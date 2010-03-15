@@ -19,6 +19,8 @@
 #ifndef SPINDIZZY_CRAFT_BALL_MODEL_FACTORY_H
 #define SPINDIZZY_CRAFT_BALL_MODEL_FACTORY_H
 
+#include "../../Camera/ICamera.h"
+
 #include "../ISimpleModelFactory.h"
 #include "../ISimpleModel.h"
 
@@ -26,7 +28,8 @@
 
 class SpindizzyCraftBallModelFactory:public ISimpleModelFactory {
   private:
-  ISimpleModel* cModelInstance;
+  std::vector<PlugSocket*> cCameraSocket;
+  ICamera* cCamera;
 
   public:
   SpindizzyCraftBallModelFactory();
@@ -34,28 +37,16 @@ class SpindizzyCraftBallModelFactory:public ISimpleModelFactory {
   /************************************\
    * Implements ISimpleModelFactory.h *
   \************************************/
-  ISimpleModel* createModel();
+  ISimpleModel* createModel(Vertex*);
   void destroyModel(ISimpleModel*);
 
-  /***************************************************\
-   * Implements IPluginSupport (in IPluginAccesor.h) *
-  \***************************************************/
+  /*****************************\
+   * Implements IPluginSupport *
+  \*****************************/
   std::string getName();
   std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
-
-  /***********************************************\
-   * Implements IPlugin (in ISimpleModelFactory) *
-  \***********************************************/
-  void notifyZoneAction(Zone*);
-  void initPlugin(Zone*);
-  std::vector<ICommandInfo*> getCommandInfo();
-  void setEditingInfo(IComponentContainer*);
-  void save(DOMNodeWriter*);
-  void load(DOMNodeWrapper*);
-
-  ~SpindizzyCraftBallModelFactory();
 };
 
 #endif

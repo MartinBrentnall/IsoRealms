@@ -23,7 +23,6 @@ LDCONFIG = ldconfig
 LN = ln
 
 OBJS = \
-Button.o \
 Camera.o \
 ChooseElementsCommand.o \
 ChooseElementsComponent.o \
@@ -35,8 +34,6 @@ EditorCursor.o \
 ElementSetEntityClass.o \
 ElementSetInstancesCommand.o \
 EntityClassInstancesComponent.o \
-ImplementationsListComponent.o \
-InstancesListComponent.o \
 MenuBar.o \
 MenuItem.o \
 MenuPopup.o \
@@ -46,9 +43,7 @@ PluginRequirementsComponent.o \
 PopupMenuCommand.o \
 SaveAsCommand.o \
 SimpleEditor.o \
-TerminateEditorCommand.o \
-TextFieldComponent.o \
-TextLabelComponent.o
+TerminateEditorCommand.o
 
 objs:	$(OBJS)
 	g++ -shared -o ControlLoop.so *.o 

@@ -25,17 +25,15 @@ ElementSetRegistry::ElementSetRegistry() {
 void ElementSetRegistry::registerElementSet(PluginRegistry* pluginRegistry, DOMNodeWrapper* node) {
   std::string mInstance = node->getAttribute("instance");
   std::string mType = node->getAttribute("type");
+  std::cout << "Setting element set connections \"" << mType << ":" << mInstance << "\"" << std::endl;
   IElementSet* mElementSet = createInstance(mType, mInstance);
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "UsePlugin") {
-      // TODO: WE CANNOT ASSUME THE PLUGIN EXISTS IMMEDIATELY!
       setPlugin(pluginRegistry, mElementSet, mNode);
-
-      // TODO: We don't support configuration on element sets yet!
-/*    } else if (mValueAsString == "Configuration") {
-      mPlugin->load(mNode);*/
+    } else if (mValueAsString == "Configuration") {
+      mElementSet->load(mNode);
     }
   }
 }
@@ -186,7 +184,7 @@ void ElementSetRegistry::save(PluginRegistry* pluginRegistry, DOMNodeWriter* nod
     mElementSetBranch->addAttribute("instance", mInstanceName);
     std::vector<PlugSocket*> mPlugSockets = mElementSet->getPlugSockets();
     for (unsigned int j = 0; j < mPlugSockets.size(); j++) {
-      IPlugin* mPlugin = mElementSet->getPlugin(mPlugSockets[j]);
+      IPlugin* mPlugin = mElementSet->getClientPlugin(mPlugSockets[j]);
       if (mPlugin != NULL) {
         DOMNodeWriter* mUseBranch = mElementSetBranch->addBranch("UsePlugin");
         std::string mType = mPlugSockets[j]->getType();
@@ -199,7 +197,8 @@ void ElementSetRegistry::save(PluginRegistry* pluginRegistry, DOMNodeWriter* nod
         }
       }
     }
-    mElementSet->save(mElementSetBranch);
+    DOMNodeWriter* mConfigurationBranch = mElementSetBranch->addBranch("Configuration");
+    mElementSet->save(mConfigurationBranch);
   }
 }
 
@@ -208,7 +207,7 @@ void ElementSetRegistry::pluginRemoved(IPlugin* instanceToRemove) {
     IElementSet* mElementSet = i->second;
     std::vector<PlugSocket*> mPlugSockets = mElementSet->getPlugSockets();
     for (unsigned int j = 0; j < mPlugSockets.size(); j++) {
-      IPlugin* mUsedPlugin = mElementSet->getPlugin(mPlugSockets[j]);
+      IPlugin* mUsedPlugin = mElementSet->getClientPlugin(mPlugSockets[j]);
       if (mUsedPlugin == instanceToRemove) {
         mElementSet->setPlugin(mPlugSockets[j], NULL);
       }

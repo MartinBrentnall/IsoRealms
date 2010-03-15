@@ -19,7 +19,10 @@
 #ifndef ZONE_H
 #define ZONE_H
 
+#include <cmath>
 #include <GL/gl.h>
+#include <iomanip>
+#include <set>
 
 #include "BlockArea.h"
 #include "BlockLocation.h"
@@ -29,13 +32,24 @@
 #include "IElement.h"
 #include "IElementContainer.h"
 #include "IsoRealmsConstants.h"
+#include "IZone.h"
 #include "IZoneChangeListener.h"
 
+/**
+ * When performing collision and contains tests and edge cases show up, zones
+ * have the following bias:
+ * 
+ *  - On south/north faces, south zone is preferred over north.
+ *  - On west/east faces, West zone is preferred over east.
+ *  - On bottom/top faces, bottom zone preferred over top.
+ */
 class Zone:public BlockArea, 
            public IElementContainer,
-           public IsoRealmsConstants {
+           public IsoRealmsConstants,
+           public IZone {
   private:
   GLuint cDisplayList;
+  GLuint cEditingDisplayList;
   std::vector<IElement*> cElements;
   std::vector<IElement*> cDirtyElements;
   std::vector<IZoneChangeListener*> cChangeListeners;
@@ -48,6 +62,8 @@ class Zone:public BlockArea,
   void zoneChanged();
 
   bool containsElement(IElement*);
+
+  ZoneEvent* getIntersection(Vertex&, Vertex&, ZoneEvent::Type);
 
   public:
   Zone(BlockLocation&, BlockLocation&);
@@ -63,7 +79,11 @@ class Zone:public BlockArea,
    */
   void restrainLocation(BlockLocation*);
  
+  void input(SDL_Event&);
+
   void update(int);
+
+  void renderEditing();
 
   void render();
 
@@ -102,9 +122,17 @@ class Zone:public BlockArea,
    */
   void removeChangeListener(IZoneChangeListener*);
 
-  /**********************************\
-   * Implements IElementContainer.h *
-  \**********************************/
+  bool contains(BlockLocation&);
+
+  /********************\
+   * Implements IZone *
+  \********************/
+  bool contains(Vertex&);
+  std::vector<ZoneEvent*> getZoneEvents(Vertex&, Vertex&);
+
+  /********************************\
+   * Implements IElementContainer *
+  \********************************/
   void elementDirty(IElement*);
 };
 

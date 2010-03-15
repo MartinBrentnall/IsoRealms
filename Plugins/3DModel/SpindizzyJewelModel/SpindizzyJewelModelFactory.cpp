@@ -18,8 +18,8 @@
  */
 #include "SpindizzyJewelModelFactory.h"
 
-ISimpleModel* SpindizzyJewelModelFactory::createModel() {
-  return new SpindizzyJewelModel();
+ISimpleModel* SpindizzyJewelModelFactory::createModel(Vertex* vertex) {
+  return new SpindizzyJewelModel(vertex);
 }
 
 void SpindizzyJewelModelFactory::destroyModel(ISimpleModel* jewelModel) {
@@ -28,45 +28,6 @@ void SpindizzyJewelModelFactory::destroyModel(ISimpleModel* jewelModel) {
 
 std::string SpindizzyJewelModelFactory::getName() {
   return "Spindizzy Jewel Model";
-}
-
-std::vector<PlugSocket*> SpindizzyJewelModelFactory::getPlugSockets() {
-  std::vector<PlugSocket*> mEmptyVector;
-  return mEmptyVector;
-}
-
-void SpindizzyJewelModelFactory::setPlugin(PlugSocket* socket, IPlugin* plugin) {
-  // TODO: Throw something
-}
-
-IPlugin* SpindizzyJewelModelFactory::getPlugin(PlugSocket* socket) {
-  // TODO: Throw something
-  return NULL;
-}
-
-void SpindizzyJewelModelFactory::notifyZoneAction(Zone* zone) {
-  // Nothing to do.
-}
-
-void SpindizzyJewelModelFactory::initPlugin(Zone* zone) {
-  // Nothing to do.
-}
-
-void SpindizzyJewelModelFactory::setEditingInfo(IComponentContainer* componentContainer) {
-  // We don't need to know this.  Nothing to do.
-}
-
-std::vector<ICommandInfo*> SpindizzyJewelModelFactory::getCommandInfo() {
-  std::vector<ICommandInfo*> mEmptyVector;
-  return mEmptyVector;
-}
-
-void SpindizzyJewelModelFactory::save(DOMNodeWriter* node) {
-  // Nothing to do
-}
-
-void SpindizzyJewelModelFactory::load(DOMNodeWrapper* node) {
-  // Nothing to do
 }
 
 extern "C" IPlugin* create() {

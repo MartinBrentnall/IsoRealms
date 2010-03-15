@@ -18,55 +18,16 @@
  */
 #include "SpindizzyCraftGyroscopeModelFactory.h"
 
-ISimpleModel* SpindizzyCraftGyroscopeModelFactory::createModel() {
-  return new SpindizzyCraftGyroscopeModel();
+ISimpleModel* SpindizzyCraftGyroscopeModelFactory::createModel(Vertex* location) {
+  return new SpindizzyCraftGyroscopeModel(location);
 }
 
 void SpindizzyCraftGyroscopeModelFactory::destroyModel(ISimpleModel* gyroscopeModel) {
   delete gyroscopeModel;
 }
 
-void SpindizzyCraftGyroscopeModelFactory::setEditingInfo(IComponentContainer*) {
-  // We don't need to know this.  Nothing to do.
-}
-
 std::string SpindizzyCraftGyroscopeModelFactory::getName() {
   return "Spindizzy Craft Gyroscope Model";
-}
-
-std::vector<PlugSocket*> SpindizzyCraftGyroscopeModelFactory::getPlugSockets() {
-  std::vector<PlugSocket*> mEmptyVector;
-  return mEmptyVector;
-}
-
-void SpindizzyCraftGyroscopeModelFactory::setPlugin(PlugSocket* socket, IPlugin* plugin) {
-  // TODO: Throw something
-}
-
-IPlugin* SpindizzyCraftGyroscopeModelFactory::getPlugin(PlugSocket* socket) {
-  // TODO: Throw something
-  return NULL;
-}
-
-void SpindizzyCraftGyroscopeModelFactory::notifyZoneAction(Zone* zone) {
-  // Nothing to do.
-}
-
-void SpindizzyCraftGyroscopeModelFactory::initPlugin(Zone* zone) {
-  // Nothing to do.
-}
-
-std::vector<ICommandInfo*> SpindizzyCraftGyroscopeModelFactory::getCommandInfo() {
-  std::vector<ICommandInfo*> mEmptyVector;
-  return mEmptyVector;
-}
-
-void SpindizzyCraftGyroscopeModelFactory::save(DOMNodeWriter* node) {
-  // Nothing to do.
-}
-
-void SpindizzyCraftGyroscopeModelFactory::load(DOMNodeWrapper* node) {
-  // Nothing to do.
 }
 
 extern "C" IPlugin* create() {
@@ -75,9 +36,4 @@ extern "C" IPlugin* create() {
 
 extern "C" void destroy(IPlugin* gyroscopeModel) {
   delete gyroscopeModel;
-}
-
-SpindizzyCraftGyroscopeModelFactory::~SpindizzyCraftGyroscopeModelFactory() {
-  // We can assume all models instances have been clean-up up when entities
-  // were notified of the plug-in removal, hence:  Nothing to do.
 }

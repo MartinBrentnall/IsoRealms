@@ -19,12 +19,12 @@
 #include "SpindizzyGERALDSet.h"
 
 SpindizzyGERALDSet::SpindizzyGERALDSet() {
-  std::string mDummyName("3DModel");
-  cGERALDModelFactory = dynamic_cast<ISimpleModelFactory*>(PluginRegistry::getDummyPlugin(mDummyName));
-  if (cGERALDModelFactory == NULL) {
-    std::cout << "Warning: dynamic_cast failed for dummy model plugin" << std::endl;
-  }
-  cElementFactories.push_back(new SpindizzyGERALDFactory(this, cGERALDModelFactory));
+  assignDummyPlugin(&cGERALDModelFactory, "3DModel");
+  assignDummyPlugin(&cCollectables, "Collectables");
+  assignDummyPlugin(&cLocationAwareness, "LocationAwareness");
+  cCamera = NULL;
+  cZoneContext = NULL;
+  cElementFactories.push_back(new SpindizzyGERALDFactory(this, cGERALDModelFactory, cLocationAwareness, cZoneContext));
 }
 
 void SpindizzyGERALDSet::setModel(ISimpleModelFactory* modelFactory) {
@@ -48,25 +48,56 @@ std::string SpindizzyGERALDSet::getName() {
 std::vector<PlugSocket*> SpindizzyGERALDSet::getPlugSockets() {
   std::vector<PlugSocket*> mSockets;
   mSockets.push_back(new PlugSocket("3DModel", ""));
+  mSockets.push_back(new PlugSocket("Camera", ""));
+  // TODO: Support for multiple collectables.
+  mSockets.push_back(new PlugSocket("Collectables", ""));
+  mSockets.push_back(new PlugSocket("LocationAwareness", ""));
+  mSockets.push_back(new PlugSocket("ZoneContext", ""));
   return mSockets;
 }
 
 void SpindizzyGERALDSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
   if (socket->getType() == "3DModel") {
-    cGERALDModelFactory = dynamic_cast<ISimpleModelFactory*>(implementation);
-    if (cGERALDModelFactory == NULL) {
-      std::cout << "Warning: dynamic_cast failed for model plugin" << std::endl;
+    if (assignPlugin(implementation, &cGERALDModelFactory, *socket)) {
+      setModel(cGERALDModelFactory);
     }
-    setModel(cGERALDModelFactory);
+  } else if (socket->getType() == "Camera") {
+    if (assignPlugin(implementation, &cCamera, *socket, false)) {
+      for (unsigned int i = 0; i < cElementFactories.size(); i++) {
+        static_cast<SpindizzyGERALDFactory*>(cElementFactories[i])->setCamera(cCamera);
+      }
+    }
+  } else if (socket->getType() == "Collectables") {
+    if (assignPlugin(implementation, &cCollectables, *socket)) {
+      for (unsigned int i = 0; i < cElementFactories.size(); i++) {
+        static_cast<SpindizzyGERALDFactory*>(cElementFactories[i])->setCollectables(cCollectables);
+      }
+    }
+  } else if (socket->getType() == "LocationAwareness") {
+    if (assignPlugin(implementation, &cLocationAwareness, *socket)) {
+      for (unsigned int i = 0; i < cElementFactories.size(); i++) {
+        static_cast<SpindizzyGERALDFactory*>(cElementFactories[i])->setLocationAwareness(cLocationAwareness);
+      }
+    }
+  } else if (socket->getType() == "ZoneContext") {
+    if (assignPlugin(implementation, &cZoneContext, *socket, false)) {
+      for (unsigned int i = 0; i < cElementFactories.size(); i++) {
+        static_cast<SpindizzyGERALDFactory*>(cElementFactories[i])->setZoneContext(cZoneContext);
+      }
+    } else {
+      std::cout << "Failure" << std::endl;
+    }
   } else {
     // TODO: Throw exception or something
   }  
 }
 
 IPlugin* SpindizzyGERALDSet::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "3DModel") {
-    return cGERALDModelFactory;
-  }
+  if (socket->getType() == "3DModel")           {return cGERALDModelFactory;}
+  if (socket->getType() == "Camera")            {return cCamera;}
+  if (socket->getType() == "Collectables")      {return cCollectables;}
+  if (socket->getType() == "LocationAwareness") {return cLocationAwareness;}
+  if (socket->getType() == "ZoneContext")       {return cZoneContext;}
   // TODO: Throw wobbly!
   return NULL;
 }

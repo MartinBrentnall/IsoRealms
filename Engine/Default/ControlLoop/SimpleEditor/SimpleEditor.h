@@ -40,12 +40,10 @@
 #include "../../../../Global/IHUDComponent.h"
 #include "../../../../Global/IPluginRegistryListener.h"
 #include "../../../../Global/Map.h"
-#include "../../../../Global/ResizableDialog.h"
 #include "../../../../Global/ScreenConfiguration.h"
 
 class OpenCommand;
 
-#include "Button.h"
 #include "Camera.h"
 #include "ChooseElementsCommand.h"
 #include "EditorCommandManager.h"
@@ -56,22 +54,17 @@ class OpenCommand;
 #include "IComponentFactory.h"
 #include "IElementSelectionListener.h"
 #include "IMapManager.h"
-#include "ImplementationsListComponent.h"
-#include "InstancesListComponent.h"
 #include "MenuBar.h"
-#include "MenuItem.h"
 #include "OpenCommand.h"
-#include "PluginRequirementsComponent.h"
 #include "SaveAsCommand.h"
 #include "TerminateEditorCommand.h"
-#include "TextFieldComponent.h"
-#include "TextLabelComponent.h"
 
 class SimpleEditor:public IControlLoop,
                    public IComponentContainer,
                    public IElementSelectionListener,
                    public IElementRegistryListener,
                    public IElementGateway,
+                   public IPluginRegistryAccessor,
                    public IPluginRegistryListener,
                    public IMapManager {
   private:
@@ -162,6 +155,7 @@ class SimpleEditor:public IControlLoop,
    * Implements IElementGateway *
   \******************************/
   void pushElement(IElement*);
+  void pushMapElement(IElement*);
   Zone* notifyDestruction(IElement*);
 
   /****************************************\
@@ -169,18 +163,23 @@ class SimpleEditor:public IControlLoop,
   \****************************************/
   void elementSelected(IElementFactory*);
 
-  /***************************************\
-   * Implements IElementRegistryListener *
-  \***************************************/
+  /******************************************\
+   * Implements IElementSetRegistryListener *
+  \******************************************/
   void elementSetInstantiated(IElementSet*);
   void elementSetDestroyed(IElementSet*);
   void elementSetChanged(IElementSet*);
 
-  /***************************************\
-   * Implements IElementRegistryListener *
-  \***************************************/
+  /**************************************\
+   * Implements IPluginRegistryListener *
+  \**************************************/
   void pluginInstanceAdded(PluginRegistry*, std::string, std::string);
   void pluginInstanceRemoved(IPlugin*, std::string);
+
+  /**************************************\
+   * Implements IPluginRegistryAccessor *
+  \**************************************/
+  PluginRegistry* getPluginRegistry();
 
   /**********************************\
    * Implements IComponentContainer *

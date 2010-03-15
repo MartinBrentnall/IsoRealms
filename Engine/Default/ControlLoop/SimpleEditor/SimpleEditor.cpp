@@ -67,19 +67,11 @@ SimpleEditor::SimpleEditor(DOMNodeWrapper* node) {
     } else if (mValueAsString == "Font") {
       IFontEngine* mFontEngine = GlobalConfiguration::getFontEngine();
       std::string mFontName = mNode->getAttribute("name");
+      // TODO: Make font into local variable!
       cFont = mFontEngine->getFont(mFontName);
-      // TODO: Have a reference to the font!  Use that instead!
-      // TODO: Make font common to IHUDComponent!
-      Button::setFont(cFont);
-      MenuItem::setFont(cFont);
-      PluginRequirementsComponent::setFont(cFont);
-      ImplementationsListComponent::setFont(cFont);
-      InstancesListComponent::setFont(cFont);
-      ResizableDialog::setFont(cFont);
-      TextFieldComponent::setFont(cFont);
-      TextLabelComponent::setFont(cFont);
+      LookAndFeel::setDefaultFont(cFont, 0.02f);
     } else if (mValueAsString == "MenuBar") {
-      cMenuBar = new MenuBar(this, mNode, cFont);
+      cMenuBar = new MenuBar(this, mNode, this);
       addComponent(cMenuBar);
     }
   }
@@ -226,6 +218,10 @@ void SimpleEditor::input(SDL_Event& event) {
           }
         }
       }
+
+      case SDL_QUIT: {
+        cConfirmExitCommands = true;
+      }
     }
   } else if (cEditorFocus) {
     mEventConsumed = editorInput(event);
@@ -246,6 +242,11 @@ void SimpleEditor::input(SDL_Event& event) {
 void SimpleEditor::pushElement(IElement* element) {
   cCursor->pushElement(element);
   clearUndoStack();
+}
+
+void SimpleEditor::pushMapElement(IElement* element) {
+  cCursor->pushMapElement(element);
+  // TODO: Need a map stack!
 }
 
 Zone* SimpleEditor::notifyDestruction(IElement* element) {
@@ -273,7 +274,7 @@ void SimpleEditor::elementSetChanged(IElementSet* elementSet) {
 
 void SimpleEditor::pluginInstanceAdded(PluginRegistry* pluginRegistry, std::string type, std::string instance) {
   IPlugin* mPlugin = pluginRegistry->getPlugin(type, instance);
-  mPlugin->setEditingInfo(this);
+  mPlugin->setEditingContext(cCursor, this);
   std::vector<ICommandInfo*> mCommandInfo = mPlugin->getCommandInfo();
   for (unsigned int i = 0; i < mCommandInfo.size(); i++) {
     cMenuBar->addCommand(mCommandInfo[i]);
@@ -283,24 +284,6 @@ void SimpleEditor::pluginInstanceAdded(PluginRegistry* pluginRegistry, std::stri
 void SimpleEditor::pluginInstanceRemoved(IPlugin* instance, std::string type) {
   // TODO: Remove plug-in supported commands
 }
-
-/*  if (editMode == EDIT_COLOUR) {
-    glLoadIdentity();
-    glTranslatef(1.45, 2.75, -6.0);
-    cColourEditor.render();
-  }
-  if (editMode == EDIT_BLOCK) {
-    glLoadIdentity();
-    glTranslatef(0.0, 0.0, -10.0);
-    glRotatef(-55.0, 1.0, 0.0, 0.0);
-    glRotatef(45.0, 0.0, 0.0, 1.0);
-    cBlockEditor.render(*cTextureSet, angle, tilt);
-  }
-  if (editMode == EDIT_CONDITION) {
-    glLoadIdentity();
-    glTranslatef(0.0, 0.0, -6.0);
-    cConditionEditor.render();
-  }*/
 
 void SimpleEditor::execute(int milliseconds) {
   for (unsigned int i = 0; i < cHUDComponents.size(); i++) {
@@ -317,6 +300,7 @@ void SimpleEditor::execute(int milliseconds) {
     cViewPoint.place();
     cCursor->moveToCamera();
     cMap->render();
+    cMap->renderEditing();
     cCursor->render();
   
     // Render UI components
@@ -391,11 +375,14 @@ void SimpleEditor::setMap(Map* map) {
   if (cMap != NULL) {
     cCursor = new EditorCursor(cMap);
     ElementSetRegistry* mElementSetRegistry = cMap->getElementSetRegistry();
-    PluginRegistry* mPluginRegistry = cMap->getPluginRegistry();
     mElementSetRegistry->setEditingInfo(cCursor, this, this);
     mElementSetRegistry->addElementRegistryListener(this);
-    cElementSetEntityClass = new ElementSetEntityClass(mElementSetRegistry, mPluginRegistry, this);
+    cElementSetEntityClass = new ElementSetEntityClass(mElementSetRegistry, this, this);
   }
+}
+
+PluginRegistry* SimpleEditor::getPluginRegistry() {
+  return cMap->getPluginRegistry();
 }
 
 SimpleEditor::ElementInstancesComponentFactory::ElementInstancesComponentFactory(SimpleEditor* parent) {

@@ -18,7 +18,7 @@
  */
 #include "PlugSocket.h"
 
-PlugSocket::PlugSocket(std::string type, std::string id) {
+PlugSocket::PlugSocket(const std::string& type, const std::string& id) {
   cType = type;
   cID = id;
 }

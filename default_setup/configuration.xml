@@ -43,16 +43,11 @@
           </MenuItem>
         </Menu>
         <Menu name="^Edit">
-          <MenuItem name="^Undo"/>
-          <MenuItem name="^Redo"/>
-          <MenuItem name="Cu^t"/>
-          <MenuItem name="^Copy"/>
-          <MenuItem name="^Paste"/>
-          <MenuItem name="^Delete"/>
+          <MenuItem name="^Pop Stack"/>
+          <MenuItem name="P^ush Stack"/>
         </Menu>
-        <Menu name="^View">
-          <MenuItem name="^Reset Camera"/>
-          <MenuItem name="Change ^Projection Mode"/>
+        <Menu name="^Plugins">
+          <Plugins/>
         </Menu>
         <Menu name="E^lements">
           <MenuItem name="^Element Set Instances...">
@@ -73,6 +68,16 @@
       <ControlLoop>SimpleEditor</ControlLoop>
     </GlobalAction>
     
+    <ControlLoop name="Runtime" init="false">
+      <OnExit>
+        <ExecuteCommand type="PopControlLoop"/>
+      </OnExit>
+    </ControlLoop>
+    
+    <GlobalAction type="PushControlLoopCommand" name="StartGame">
+      <ControlLoop>Runtime</ControlLoop>
+    </GlobalAction>
+    
     <!-- Front-end configuration -->
     <ControlLoop name="AttractManager" init="true">
       <AttractScene name="Intro"/>
@@ -83,12 +88,14 @@
       <AttractScene name="FadeOut"/>
     
       <FrontEnd name="Menu">
-        <MenuItem name="Start!"/>
+        <MenuItem name="Start!">
+          <ExecuteCommand type="StartGame"/>
+        </MenuItem>
         <Menu name="Editor">
           <MenuItem name="Create a new map">
             <ExecuteCommand type="CreateNewMap"/>
           </MenuItem>
-          <MenuItemList name="Edit an existing map" fromdir="Maps/" filter="*.map">
+          <MenuItemList name="Edit an existing map" fromdir="Maps/" filter="*.isorealms">
             <LoadMapForEditing/>
           </MenuItemList>
         </Menu>

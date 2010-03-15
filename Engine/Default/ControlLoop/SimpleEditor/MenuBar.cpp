@@ -18,9 +18,8 @@
  */
 #include "MenuBar.h"
 
-MenuBar::MenuBar(IComponentContainer* componentContainer, DOMNodeWrapper* node, IFont* font) {
+MenuBar::MenuBar(IComponentContainer* componentContainer, DOMNodeWrapper* node, IPluginRegistryAccessor* pluginRegistryAccessor) {
   cComponentContainer = componentContainer;
-  cFont = font;
   cMenuPopupShowing = NULL;
   cSelectedItem = 0;
 
@@ -30,7 +29,7 @@ MenuBar::MenuBar(IComponentContainer* componentContainer, DOMNodeWrapper* node, 
     std::string mValueAsString = mNode->getNodeName();
     
     if (mValueAsString == "Menu") {
-      MenuPopup* mPopupMenu = new MenuPopup(mNode, this, mXOffset, 0.95f);
+      MenuPopup* mPopupMenu = new MenuPopup(mNode, this, mXOffset, 0.95f, pluginRegistryAccessor, componentContainer);
       PopupMenuCommand* mPopupMenuCommand = new PopupMenuCommand(cMenuPopupShowing, mPopupMenu);
       std::string mMenuItemName = mNode->getAttribute("name");
       MenuItem* mMenuItem = new MenuItem(mMenuItemName, mPopupMenuCommand, mXOffset, 0.96f);

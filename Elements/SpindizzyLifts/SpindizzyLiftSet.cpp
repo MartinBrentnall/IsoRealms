@@ -19,23 +19,20 @@
 #include "SpindizzyLiftSet.h"
 
 SpindizzyLiftSet::SpindizzyLiftSet() {
-  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_CIRCLE_BOTH));
-  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_CIRCLE_LEFT));
-  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_CIRCLE_RIGHT));
-  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_CIRCLE_NONE));
-  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_SQUARE_BOTH));
-  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_SQUARE_LEFT));
-  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_SQUARE_RIGHT));
-  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_SQUARE_NONE));
-  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_DIAMOND_BOTH));
-  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_DIAMOND_LEFT));
-  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_DIAMOND_RIGHT));
-  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_DIAMOND_NONE));
-  std::string mDummyName("SpindizzyTextureSet");
-  cSpindizzyTextureSet = dynamic_cast<ISpindizzyTextureSet*>(PluginRegistry::getDummyPlugin(mDummyName));
-  if (cSpindizzyTextureSet == NULL) {
-    std::cout << "Warning: dynamic_cast failed for dummy texture set!" << std::endl;
-  }
+  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_CIRCLE_BOTH, &cSpindizzyLiftProperties, "CircleBoth"));
+  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_CIRCLE_LEFT, &cSpindizzyLiftProperties, "CircleLeft"));
+  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_CIRCLE_RIGHT, &cSpindizzyLiftProperties, "CircleRight"));
+  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_CIRCLE_NONE, &cSpindizzyLiftProperties, "CircleNone"));
+  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_SQUARE_BOTH, &cSpindizzyLiftProperties, "SquareBoth"));
+  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_SQUARE_LEFT, &cSpindizzyLiftProperties, "SquareLeft"));
+  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_SQUARE_RIGHT, &cSpindizzyLiftProperties, "SquareRight"));
+  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_SQUARE_NONE, &cSpindizzyLiftProperties, "SquareNone"));
+  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_DIAMOND_BOTH, &cSpindizzyLiftProperties, "DiamondBoth"));
+  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_DIAMOND_LEFT, &cSpindizzyLiftProperties, "DiamondLeft"));
+  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_DIAMOND_RIGHT, &cSpindizzyLiftProperties, "DiamondRight"));
+  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_DIAMOND_NONE, &cSpindizzyLiftProperties, "DiamondNone"));
+
+  assignDummyPlugin(&cSpindizzyTextureSet, "SpindizzyTextureSet");
   setTextureSet(cSpindizzyTextureSet);
 }
 
@@ -61,11 +58,9 @@ std::vector<PlugSocket*> SpindizzyLiftSet::getPlugSockets() {
 
 void SpindizzyLiftSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
   if (socket->getType() == "SpindizzyTextureSet") {
-    cSpindizzyTextureSet = dynamic_cast<ISpindizzyTextureSet*>(implementation);
-    if (cSpindizzyTextureSet == NULL) {
-      std::cout << "Warning: dynamic_cast failed for texture set!" << std::endl;
+    if (assignPlugin(implementation, &cSpindizzyTextureSet, *socket)) {
+      setTextureSet(cSpindizzyTextureSet);
     }
-    setTextureSet(cSpindizzyTextureSet);
   } else {
     // TODO: Throw exception or something
   }  

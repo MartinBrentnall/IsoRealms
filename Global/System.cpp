@@ -19,29 +19,18 @@
 #include "System.h"
 
 bool System::passesFilter(std::string test, std::string filter) {
-  if (test == "." || test == "..") {
-    return false;
+  // TODO: This is absolutely awful...  Must find and learn regular expressions library
+  if (filter == "*") {
+    return true;
   }
-  unsigned int mFilterLocation = 0;
-  int mPatternMatch = 0;
-  for (unsigned int i = 0; i < test.length(); i++) {
-    if (filter[mFilterLocation] == '*') {
-      if (filter[mFilterLocation + mPatternMatch + 1] == test[i]) {
-        mPatternMatch++;
-      // TODO: Next if clause is for matching patterns where the * appears AFTER a concrete thingy, e.g. *.map.*.  It has NOT BEEN TESTED!
-      } else if (filter[mFilterLocation + mPatternMatch + 1] == '*') {
-        mFilterLocation += mPatternMatch + 1;
-      } else {
-        mPatternMatch = 0;
-      }
-    } else if (test[i] != filter[mFilterLocation]) {
-      return false;
-    } else {
-      mFilterLocation++;
+  if (filter[0] == '*' && test.size() > filter.size() + 1) {
+    std::string mFilterMatch = filter.substr(1);
+    std::string mTestEnd = test.substr(test.size() - (filter.size() - 1));
+    if (mTestEnd == mFilterMatch) {
+      return true;
     }
   }
-  mFilterLocation += mPatternMatch + (filter[mFilterLocation] == '*' ? 1 : 0);
-  return mFilterLocation == filter.length();
+  return false;
 }
 
 std::string System::getConfigurationFileLocation() {
@@ -142,7 +131,7 @@ std::vector<std::string>* System::getFileList(std::string filename, std::string 
     std::string mFileName(dirp->d_name);
     std::string mCompletePath = filename + mFileName;
     bool mIsDir = opendir(mCompletePath.c_str()) != NULL;
-    if (passesFilter(mFileName, filter) && mFileName[0] != '.' && mIsDir) {
+    if (passesFilter(mFileName, filter) && mFileName[0] != '.' && (mIsDir || filter == "*.isorealms" || filter == "*.ogg")) {
       mList->push_back(mFileName);
     }
   }

@@ -26,24 +26,13 @@
 
 class DummyModelFactory:public ISimpleModelFactory,
                         public DummyPlugin {
-  private:
-  DummyModel* cDummyModel;
-
   public:
-  DummyModelFactory();
 
   /**********************************\
    * Implements ISimpleModelFactory *
   \**********************************/
-  ISimpleModel* createModel();
+  ISimpleModel* createModel(Vertex* location);
   void destroyModel(ISimpleModel*);
-
-  /***********************************************\
-   * Implements IPluginAccessor (in DummyPlugin) *
-  \***********************************************/
-  IPlugin* getPlugin();
-
-  ~DummyModelFactory();
 };
 
 #endif

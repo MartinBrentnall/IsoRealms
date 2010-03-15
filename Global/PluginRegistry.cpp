@@ -18,19 +18,23 @@
  */
 #include "PluginRegistry.h"
 
-std::map<std::string, IPlugin*> PluginRegistry::cDummyPlugins;  
-
 void PluginRegistry::registerPlugin(DOMNodeWrapper* node) {
   std::string mImplementation = node->getAttribute("implementation");
   std::string mInstance = node->getAttribute("instance");
   std::string mType = node->getAttribute("type");
+  std::cout << "Loading plugin \"" << mType << ":" << mImplementation << "\"" << std::endl;
   loadPlugin(mType, mImplementation, mInstance);
+}
+
+void PluginRegistry::connectPlugin(DOMNodeWrapper* node) {
+  std::string mInstance = node->getAttribute("instance");
+  std::string mType = node->getAttribute("type");
   IPlugin* mPlugin = getPlugin(mType, mInstance);
+  std::cout << "Setting connections for plugin \"" << mType << ":" << mInstance << "\"" << std::endl;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "UsePlugin") {
-      // TODO: WE CANNOT ASSUME THE PLUGIN EXISTS IMMEDIATELY!
       setPlugin(mPlugin, mNode);
     } else if (mValueAsString == "Configuration") {
       mPlugin->load(mNode);
@@ -42,6 +46,7 @@ void PluginRegistry::setPlugin(IPlugin* plugin, DOMNodeWrapper* node) {
   std::string mImplementation = node->getAttribute("implementation");
   std::string mInstance = node->getAttribute("instance");
   std::string mSocketID = node->getAttribute("socketid");
+  std::cout << "    Connecting plugin \"" << mImplementation << ":" << mInstance << "\"" << std::endl;
   PlugSocket* mPlugSocket = new PlugSocket(mImplementation, mSocketID);
   IPlugin* mPlugin = getPlugin(mImplementation, mInstance);
   plugin->setPlugin(mPlugSocket, mPlugin);
@@ -86,34 +91,6 @@ IPlugin* PluginRegistry::getPlugin(std::string& type, std::string& instanceName)
   return cPluginInstances[type][instanceName];
 }
 
-bool PluginRegistry::isDummyPlugin(IPlugin* instance) {
-  for (std::map<std::string, IPlugin*>::iterator i = cDummyPlugins.begin(); i != cDummyPlugins.end(); i++) {
-    if (instance == i->second) {
-      return true;
-    }
-  }
-  return false;
-}
-
-IPlugin* PluginRegistry::getDummyPlugin(std::string& type) {
-  IPlugin* mDummyPlugin = cDummyPlugins[type];
-  if (mDummyPlugin == NULL) {
-    std::string mPluginLocation = System::getConfigurationResource("Plugins/" + type + "/dummy");
-    void* mPluginSO = dlopen(mPluginLocation.c_str(), RTLD_LAZY | RTLD_GLOBAL);
-    if (!mPluginSO) {
-      throw InitException("Cannot load library: " + std::string(dlerror()));
-    }
-    createPlugin* createPluginFunction = cast_voidptr_to_funcptr<createPlugin*>(dlsym(mPluginSO, "create"));
-    const char* mDlsymError = dlerror();
-    if (mDlsymError) {
-      throw InitException("Cannot load symbol: " + std::string(mDlsymError));
-    }
-    mDummyPlugin = createPluginFunction(NULL);
-    cDummyPlugins[type] = mDummyPlugin;
-  }
-  return mDummyPlugin;
-}
-
 void PluginRegistry::addListener(IPluginRegistryListener* listener) {
   cListeners.push_back(listener);
 }
@@ -132,7 +109,7 @@ std::string PluginRegistry::getInstanceName(std::string type, IPlugin* instance)
   return "";
 }
 
-void PluginRegistry::notifyZoneAction(Zone* zone) {
+void PluginRegistry::notifyZoneAction(IZone* zone) {
   for (std::map<std::string, std::map<std::string, IPlugin*> >::iterator i = cPluginInstances.begin(); i != cPluginInstances.end(); i++) {
     std::map<std::string, IPlugin*> mInstanceOfType = i->second;
     for (std::map<std::string, IPlugin*>::iterator j = mInstanceOfType.begin(); j != mInstanceOfType.end(); j++) {
@@ -141,7 +118,7 @@ void PluginRegistry::notifyZoneAction(Zone* zone) {
   }
 }
 
-void PluginRegistry::initPlugins(Zone* zone) {
+void PluginRegistry::initPlugins(IZone* zone) {
   for (std::map<std::string, std::map<std::string, IPlugin*> >::iterator i = cPluginInstances.begin(); i != cPluginInstances.end(); i++) {
     std::map<std::string, IPlugin*> mInstanceOfType = i->second;
     for (std::map<std::string, IPlugin*>::iterator j = mInstanceOfType.begin(); j != mInstanceOfType.end(); j++) {
@@ -150,7 +127,7 @@ void PluginRegistry::initPlugins(Zone* zone) {
   }
 }
 
-void PluginRegistry::renderPreZone(Zone* zone) {
+void PluginRegistry::renderPreZone(IZone* zone) {
   for (std::map<std::string, std::map<std::string, IPlugin*> >::iterator i = cPluginInstances.begin(); i != cPluginInstances.end(); i++) {
     std::map<std::string, IPlugin*> mInstanceOfType = i->second;
     for (std::map<std::string, IPlugin*>::iterator j = mInstanceOfType.begin(); j != mInstanceOfType.end(); j++) {
@@ -159,7 +136,7 @@ void PluginRegistry::renderPreZone(Zone* zone) {
   }
 }
 
-void PluginRegistry::zoneContextChanged(Map* map, Zone* zone) {
+void PluginRegistry::zoneContextChanged(IMap* map, IZone* zone) {
   for (std::map<std::string, std::map<std::string, IPlugin*> >::iterator i = cPluginInstances.begin(); i != cPluginInstances.end(); i++) {
     std::map<std::string, IPlugin*> mInstanceOfType = i->second;
     for (std::map<std::string, IPlugin*>::iterator j = mInstanceOfType.begin(); j != mInstanceOfType.end(); j++) {
@@ -183,14 +160,16 @@ void PluginRegistry::save(DOMNodeWriter* node) {
       mPluginBranch->addAttribute("instance", mInstanceName);
       std::vector<PlugSocket*> mPlugSockets = mInstance->getPlugSockets();
       for (unsigned int k = 0; k < mPlugSockets.size(); k++) {
-        IPlugin* mPlugin = mInstance->getPlugin(mPlugSockets[k]);
+        IPlugin* mPlugin = mInstance->getClientPlugin(mPlugSockets[k]);
         if (mPlugin != NULL) {
           DOMNodeWriter* mUseBranch = mPluginBranch->addBranch("UsePlugin");
           std::string mType = mPlugSockets[k]->getType();
           std::string mInstanceName = getInstanceName(mType, mPlugin);
           mUseBranch->addAttribute("implementation", mType);
           mUseBranch->addAttribute("instance", mInstanceName);
-          mUseBranch->addAttribute("socketid", mPlugSockets[k]->getID());
+          if (mPlugSockets[k]->getID() != "") {
+            mUseBranch->addAttribute("socketid", mPlugSockets[k]->getID());
+          }
         }
       }
       DOMNodeWriter* mPluginConfigurationBranch = mPluginBranch->addBranch("Configuration");
@@ -199,7 +178,7 @@ void PluginRegistry::save(DOMNodeWriter* node) {
   }
 }
 
-void PluginRegistry::saveData(DOMNodeWriter* node, Map* map, Zone* zone) {
+void PluginRegistry::saveData(DOMNodeWriter* node, IMap* map, IZone* zone) {
   for (std::map<std::string, std::map<std::string, IPlugin*> >::iterator i = cPluginInstances.begin(); i != cPluginInstances.end(); i++) {
     std::string mTypeName = i->first;
     std::map<std::string, IPlugin*> mInstanceOfType = i->second;
@@ -213,7 +192,7 @@ void PluginRegistry::saveData(DOMNodeWriter* node, Map* map, Zone* zone) {
   }
 }
 
-void PluginRegistry::loadPluginData(DOMNodeWrapper* node, Zone* zone) {
+void PluginRegistry::loadPluginData(DOMNodeWrapper* node, IZone* zone) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
@@ -273,13 +252,41 @@ void PluginRegistry::pluginRemoved(IPlugin* instanceToRemove) {
       IPlugin* mInstance = j->second;
       std::vector<PlugSocket*> mPlugSockets = mInstance->getPlugSockets();
       for (unsigned int k = 0; k < mPlugSockets.size(); k++) {
-        IPlugin* mUsedPlugin = mInstance->getPlugin(mPlugSockets[k]);
+        IPlugin* mUsedPlugin = mInstance->getClientPlugin(mPlugSockets[k]);
         if (mUsedPlugin == instanceToRemove) {
           mInstance->setPlugin(mPlugSockets[k], NULL);
         }
       }
     }
   }
+}
+
+std::vector<IDynamicElement*> PluginRegistry::getPreLoopCommands() {
+  std::vector<IDynamicElement*> mCommands;
+  for (std::map<std::string, std::map<std::string, IPlugin*> >::iterator i = cPluginInstances.begin(); i != cPluginInstances.end(); i++) {
+    std::map<std::string, IPlugin*> mInstanceOfType = i->second;
+    for (std::map<std::string, IPlugin*>::iterator j = mInstanceOfType.begin(); j != mInstanceOfType.end(); j++) {
+      std::vector<IDynamicElement*> mPluginCommands = j->second->getPreLoopCommands();
+      for (unsigned int k = 0; k < mPluginCommands.size(); k++) {
+        mCommands.push_back(mPluginCommands[k]);
+      }
+    }
+  }
+  return mCommands;
+}
+
+std::vector<IInteractiveElement*> PluginRegistry::getInteractiveElements() {
+  std::vector<IInteractiveElement*> mAllInteractiveElements;
+  for (std::map<std::string, std::map<std::string, IPlugin*> >::iterator i = cPluginInstances.begin(); i != cPluginInstances.end(); i++) {
+    std::map<std::string, IPlugin*> mInstanceOfType = i->second;
+    for (std::map<std::string, IPlugin*>::iterator j = mInstanceOfType.begin(); j != mInstanceOfType.end(); j++) {
+      std::vector<IInteractiveElement*> mPluginInteractiveElements = j->second->getInteractiveElements();
+      for (unsigned int k = 0; k < mPluginInteractiveElements.size(); k++) {
+        mAllInteractiveElements.push_back(mPluginInteractiveElements[k]);
+      }
+    }
+  }
+  return mAllInteractiveElements;
 }
 
 PluginRegistry::~PluginRegistry() {

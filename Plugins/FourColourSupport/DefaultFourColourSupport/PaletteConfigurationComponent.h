@@ -24,14 +24,14 @@
 
 #include "../../../Global/Colour.h"
 #include "../../../Global/Configuration.h"
+#include "../../../Global/GUI/Dialog.h"
 #include "../../../Global/IComponentContainer.h"
-#include "../../../Global/RectangleComponent.h"
 #include "../../../Global/ScreenConfiguration.h"
 
 #include "../IFourColourSupport.h"
 #include "../IFourColourSupportListener.h"
 
-class PaletteConfigurationComponent:public RectangleComponent {
+class PaletteConfigurationComponent:public Dialog {
   private:
   std::vector<IFourColourSupportListener*>* cChangeListeners;
   std::vector<Colour*> cPalette;
