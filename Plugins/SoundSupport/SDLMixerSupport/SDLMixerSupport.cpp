@@ -10,6 +10,11 @@ SDLMixerSupport::SDLMixerSupport() {
   } else {
     Mix_AllocateChannels(32);
   }
+  std::vector<std::string> mPath;
+  mPath.push_back("Configure");
+  mPath.push_back("Sounds");
+  cConfigureSoundsCommand = new ConfigureSoundsCommand(this);
+  cPluginCommands.push_back(new DefaultCommandInfo(mPath, cConfigureSoundsCommand));
 }
 
 std::string SDLMixerSupport::getName() {
@@ -68,6 +73,14 @@ void SDLMixerSupport::load(DOMNodeWrapper* node) {
       addSound(mSound);
     }
   }
+}
+
+std::vector<ICommandInfo*> SDLMixerSupport::getCommandInfo() {
+  return cPluginCommands;
+}
+
+void SDLMixerSupport::setEditingContext(BlockLocation*, IComponentContainer* componentContainer) {
+  cConfigureSoundsCommand->setComponentContainer(componentContainer);
 }
 
 extern "C" IPlugin* create() {

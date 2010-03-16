@@ -151,7 +151,7 @@ class System {
    * @param string  Filter on filename.
    * @return        The list of filenames.
    */
-  static std::vector<std::string>* getFileList(std::string, std::string);
+  static std::vector<std::string>* getFileList(const std::string&, const std::string&);
 };
 
 #endif

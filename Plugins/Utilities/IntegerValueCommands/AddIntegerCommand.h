@@ -14,6 +14,10 @@ class AddIntegerCommand:public IUserCommand {
 
   public:
   AddIntegerCommand(std::string, IIntegerValue*, int);
+  AddIntegerCommand(DOMNodeWrapper*, IIntegerValue*);
+
+  void setVariable(IIntegerValue*);
+  void save(DOMNodeWriter*);
 
   /***************************\
    * Implements IUserCommand *

@@ -119,7 +119,7 @@ std::vector<std::string>* System::getFileList(std::string filename) {
   return mList;
 }
 
-std::vector<std::string>* System::getFileList(std::string filename, std::string filter) {
+std::vector<std::string>* System::getFileList(const std::string& filename, const std::string& filter) {
   std::vector<std::string>* mList = new std::vector<std::string>();
   DIR *dp;
   struct dirent *dirp;

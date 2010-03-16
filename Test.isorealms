@@ -242,6 +242,13 @@
     <UsePlugin implementation="SoundSupport" instance="SpindizzySounds" socketid=""/>
     <Configuration/>
   </Plugin>
+  <Plugin implementation="IntegerValueCommands" instance="TimerCommands" type="Utilities">
+    <UsePlugin implementation="CommandRegistry" instance="SpindizzyCommands" socketid=""/>
+    <UsePlugin implementation="IntegerValue" instance="SpindizzyTimeLimit" socketid=""/>
+    <Configuration>
+      <Command name="IncreaseTimeForJewel" value="8000"/>
+    </Configuration>
+  </Plugin>
   <Plugin implementation="DefaultZoneContext" instance="PlayerZoneContext" type="ZoneContext">
     <Configuration/>
   </Plugin>
@@ -262,6 +269,7 @@
     <UsePlugin implementation="Collectables" instance="Jewels"/>
     <Configuration>
       <JewelCollectedCommand>Play Jewel.ogg</JewelCollectedCommand>
+      <JewelCollectedCommand>IncreaseTimeForJewel</JewelCollectedCommand>
     </Configuration>
   </ElementSet>
   <ElementSet instance="Lifts" type="SpindizzyLifts">
