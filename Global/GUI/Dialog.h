@@ -20,6 +20,7 @@
 #define DIALOG_H
 
 #include <GL/gl.h>
+#include <map>
 #include <SDL/SDL.h>
 #include <vector>
 
@@ -29,16 +30,36 @@
 #include "../ScreenConfiguration.h"
 
 #include "AbstractRectangularComponent.h"
+#include "Button.h"
+#include "ComponentEdgeLayout.h"
+#include "EdgeRelation.h"
+#include "FlexibleGridLayoutComponent.h"
+#include "IComponentBoundsCalculator.h"
 #include "IComponentCloseListener.h"
 #include "IRectangularComponent.h"
+#include "ITextComponent.h"
 #include "LookAndFeel.h"
+#include "TextLabelComponent.h"
+#include "TextFieldComponent.h"
 
 class Dialog:public IRectangularComponent {
   private:
   static const float TITLE_BAR_HEIGHT;
 
+  std::map<std::string, ISizedComponent*> cSizedComponents;
   std::string cTitle;
   std::vector<IComponentCloseListener*> cCloseListeners;
+  std::vector<IHUDComponent*> cChildren;
+  IHUDComponent* cFocusedComponent;
+
+  void loadDialog(DOMNodeWrapper* node);
+  void setComponentText(DOMNodeWrapper*, ITextComponent*);
+  IComponentBoundsCalculator* getBoundsCalculator(DOMNodeWrapper*, IRectangle*, ISizedComponent*);
+  ISizedComponent* loadSizedComponent(DOMNodeWrapper*);
+  void loadFlexibleGridCells(DOMNodeWrapper*, FlexibleGridLayoutComponent*);
+  std::vector<std::string> splitWords(std::string&);
+
+  void testFocusChange(SDL_Event& event);
 
   protected:
   float cX;
@@ -49,6 +70,7 @@ class Dialog:public IRectangularComponent {
   IComponentContainer* cComponentContainer;
 
   public:
+  Dialog(IComponentContainer*, const std::string&);
   Dialog(IComponentContainer*, const std::string&, float, float, float, float);
 
   void translate(float, float);
@@ -70,6 +92,9 @@ class Dialog:public IRectangularComponent {
 
   void addCloseListener(IComponentCloseListener*);
 
+  void addComponent(IHUDComponent*);
+  void setFocusedComponent(IHUDComponent*);
+
   virtual void renderContent() = 0;
   virtual void updateContent(int) = 0;
   virtual bool inputContent(SDL_Event&) = 0;
@@ -89,6 +114,8 @@ class Dialog:public IRectangularComponent {
   float getBottom();
   float getRight();
   float getTop();
+
+  virtual ~Dialog();
 };
 
 #endif

@@ -31,9 +31,11 @@
 
 #include "AbstractRectangularComponent.h"
 #include "ISizedComponent.h"
+#include "ITextComponent.h"
 #include "LookAndFeel.h"
 
-class Button:public ISizedComponent {
+class Button:public ISizedComponent,
+             public ITextComponent {
   private:
   bool cButtonPressed;
   bool cHovering;
@@ -45,7 +47,13 @@ class Button:public ISizedComponent {
   bool mouseButtonDown(SDL_Event&);
 
   public:
-  Button(IComponentBoundsCalculator*, ICommand*, std::string);
+  Button();
+  Button(IComponentBoundsCalculator*, ICommand*, const std::string&);
+
+  /*****************************\
+   * Implements ITextComponent *
+  \*****************************/
+  void setText(const std::string&);
 
   /***************************************\
    * Implements IComponentSizeCalculator *

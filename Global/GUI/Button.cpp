@@ -18,11 +18,22 @@
  */
 #include "Button.h"
 
-Button::Button(IComponentBoundsCalculator* boundsCalculator, ICommand* command, std::string text) {
+Button::Button(IComponentBoundsCalculator* boundsCalculator, ICommand* command, const std::string& text) {
   setBoundsCalculator(boundsCalculator);
   cButtonPressed = false;
   cHovering = false;
   cCommand = command;
+  cText = text;
+}
+
+Button::Button() {
+  cButtonPressed = false;
+  cHovering = false;
+  cCommand = NULL;
+  cText = "";
+}
+
+void Button::setText(const std::string& text) {
   cText = text;
 }
 

@@ -16,17 +16,13 @@ class ResizableDialog:public Dialog {
   static const float RESIZE_HANDLE_SIZE;
 
   bool cResizing;
-  std::vector<IHUDComponent*> cChildren;
-  IHUDComponent* cFocusedComponent;
 
-  void testFocusChange(SDL_Event& event);
   bool mouseButtonDown(SDL_Event&);
   bool mouseMotion(SDL_Event&);
 
   public:
+  ResizableDialog(IComponentContainer*, const std::string&);
   ResizableDialog(IComponentContainer*, const std::string&, float, float, float, float);
-  void addComponent(IHUDComponent*);
-  void setFocusedComponent(IHUDComponent*);
 
   virtual void renderResizableDialogContent() {}
   virtual void updateResizableDialogContent(int) {}
@@ -38,8 +34,6 @@ class ResizableDialog:public Dialog {
   void renderContent();
   void updateContent(int);
   bool inputContent(SDL_Event&);
-
-  virtual ~ResizableDialog();
 };
 
 #endif

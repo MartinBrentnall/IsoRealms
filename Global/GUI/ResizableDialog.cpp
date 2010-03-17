@@ -4,33 +4,10 @@ const float ResizableDialog::RESIZE_HANDLE_SIZE = 0.05f;
 
 ResizableDialog::ResizableDialog(IComponentContainer* componentContainer, const std::string& title, float x, float y, float width, float height) : Dialog(componentContainer, title, x, y, width, height) {
   cResizing = false;
-  cFocusedComponent = NULL;
 }
 
-void ResizableDialog::addComponent(IHUDComponent* child) {
-  cChildren.push_back(child);
-}
-
-void ResizableDialog::setFocusedComponent(IHUDComponent* child) {
-  cFocusedComponent = child;
-  // TODO: Make sure focused component actually exists in this dialog.
-}
-
-void ResizableDialog::testFocusChange(SDL_Event& event) {
-  if (event.type == SDL_MOUSEBUTTONDOWN) {
-    Configuration* mConfiguration = Configuration::getInstance();
-    ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
-    float mX = mScreen->getXLocation(event.button.x);
-    float mY = mScreen->getYLocation(event.button.y);
-    if (contains(mX, mY)) {
-      for (unsigned int i = 0; i < cChildren.size(); i++) {
-        if (cChildren[i]->contains(mX, mY)) {
-          cFocusedComponent = cChildren[i];
-          return;
-        }
-      }
-    }
-  }
+ResizableDialog::ResizableDialog(IComponentContainer* componentContainer, const std::string& dialogDescriptionFile) : Dialog(componentContainer, dialogDescriptionFile) {
+  cResizing = false;
 }
 
 void ResizableDialog::renderContent() {
@@ -51,16 +28,10 @@ void ResizableDialog::renderContent() {
   glVertex2f(mRight - RESIZE_HANDLE_SIZE * mAspectRatio, mBottom);
   glEnd();
 
-  for (unsigned int i = 0; i < cChildren.size(); i++) {
-    cChildren[i]->render();
-  }
   renderResizableDialogContent();
 }
 
 void ResizableDialog::updateContent(int ticks) {
-  for (unsigned int i = 0; i < cChildren.size(); i++) {
-    cChildren[i]->update(ticks);
-  }
   updateResizableDialogContent(ticks);
 }
 
@@ -73,9 +44,6 @@ bool ResizableDialog::mouseButtonDown(SDL_Event& event) {
   float mX = mScreen->getXLocation(event.button.x);
   float mY = mScreen->getYLocation(event.button.y);
   if (contains(mX, mY)) {
-    if (cFocusedComponent != NULL && cFocusedComponent->input(event)) {
-      return true;
-    }
     if (mX >= mRight - RESIZE_HANDLE_SIZE * mAspectRatio && mX <= mRight && mY >= mBottom && mY <= mBottom + RESIZE_HANDLE_SIZE) {
       cResizing = true;
       // TODO: Bring container to front?
@@ -99,39 +67,24 @@ bool ResizableDialog::mouseMotion(SDL_Event& event) {
 }
 
 bool ResizableDialog::inputContent(SDL_Event& event) {
-  testFocusChange(event);
   switch (event.type) {
     case SDL_MOUSEBUTTONDOWN: {
       return mouseButtonDown(event);
     }
 
     case SDL_MOUSEBUTTONUP: {
-      if (cFocusedComponent != NULL && cFocusedComponent->input(event)) {
-        return true;
-      }
       bool cWasResizing = cResizing;
       cResizing = false;
       return cWasResizing;
     }
 
     case SDL_MOUSEMOTION: {
-      if (cFocusedComponent != NULL && cFocusedComponent->input(event)) {
-        return true;
-      }
       return mouseMotion(event);
     }
 
     default: {
-      if (cFocusedComponent != NULL && cFocusedComponent->input(event)) {
-        return true;
-      }
+      break;
     }
   }
   return inputResizableDialogContent(event);
-}
-
-ResizableDialog::~ResizableDialog() {
-  for (unsigned int i = 0; i < cChildren.size(); i++) {
-    delete cChildren[i];
-  }
 }

@@ -6,6 +6,8 @@
 
 class ISizedComponent:public AbstractRectangularComponent,
                       public IComponentSizeCalculator {
+  public:
+  virtual ~ISizedComponent() {}
 };
 
 #endif

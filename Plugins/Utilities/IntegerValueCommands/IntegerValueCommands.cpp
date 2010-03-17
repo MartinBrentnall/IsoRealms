@@ -5,6 +5,11 @@ IntegerValueCommands::IntegerValueCommands() {
   assignDummyPlugin(&cVariable, "IntegerValue");
   cSockets.push_back(new PlugSocket("CommandRegistry"));
   cSockets.push_back(new PlugSocket("IntegerValue"));
+  std::vector<std::string> mPath;
+  mPath.push_back("Configure");
+  mPath.push_back("Variable Commands");
+  cConfigureIntegerCommands = new ConfigureIntegerCommands(this);
+  cPluginCommands.push_back(new DefaultCommandInfo(mPath, cConfigureIntegerCommands));
 }
 
 void IntegerValueCommands::addCommand(AddIntegerCommand* command) {
@@ -44,6 +49,14 @@ void IntegerValueCommands::load(DOMNodeWrapper* node) {
       addCommand(mCommand);
     }
   }
+}
+
+std::vector<ICommandInfo*> IntegerValueCommands::getCommandInfo() {
+  return cPluginCommands;
+}
+
+void IntegerValueCommands::setEditingContext(BlockLocation*, IComponentContainer* componentContainer) {
+  cConfigureIntegerCommands->setComponentContainer(componentContainer);
 }
 
 std::string IntegerValueCommands::getName() {

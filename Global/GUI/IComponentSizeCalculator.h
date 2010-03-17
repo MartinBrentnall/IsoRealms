@@ -37,6 +37,8 @@ class IComponentSizeCalculator {
    * Get the height of the component.
    */
   virtual float getHeight() = 0;
+
+  virtual ~IComponentSizeCalculator() {}
 };
 
 #endif

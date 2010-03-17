@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<Dialog title="Entity Class Instances">
+  <Button name="closeButton" allign="bottom right"/>
+  <EvenGrid rows="1" columns="2" bottom="above closeButton">
+    <Cell row="1" column="1">
+      <Label   name="instancesLabel" text="Instances"        allign="top left"/>
+      <Button  name="removeButton"   text="Remove Instances" allign="bottom right"/>
+      <ListBox name="instancesList" top="below instancesLabel" bottom="above removeButton"/>
+    </Cell>
+    <Cell row="1" column="2">
+      <Label     name="implementationsLabel" text="Implementations"  allign="top left"/>
+      <Button    name="createButton"         text="Create Instances" allign="bottom right"/>
+      <Label     name="instanceNameLabel"    text="Instance Name:"   allign="left" bottom="above createButton"/>
+      <TextField name="instanceField" left="rightof instanceNameLabel" bottom="above createButton" right="inside dialog"/>
+      <ListBox   name="implementationsList" top="below implementationsLabel" bottom="above instanceNameLabel"/>
+    </Cell>
+  </EvenGrid>
+</Dialog>

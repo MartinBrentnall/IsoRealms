@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<Dialog title="Lift Configuration">
+  <ScrollableContainer>
+    <FlexibleGrid rows="4" columns="2">
+      <Cell row="1" column="1"><Label text="Up Speed:"/></Cell>
+      <Cell row="2" column="1"><Label text="Down Speed:"/></Cell>
+      <Cell row="3" column="1"><Label text="Top Pause:"/></Cell>
+      <Cell row="4" column="1"><Label text="Bottom Pause:"/></Cell>
+      <Cell row="1" column="2"><TextField name="upSpeedField"/></Cell>
+      <Cell row="2" column="2"><TextField name="downSpeedField"/></Cell>
+      <Cell row="3" column="2"><TextField name="topPauseField"/></Cell>
+      <Cell row="4" column="2"><TextField name="bottomPauseField"/></Cell>
+    </FlexibleGrid>
+  </ScrollableContainer>
+</Dialog>

@@ -1,12 +1,15 @@
 #ifndef INTEGER_VALUE_COMMANDS_H
 #define INTEGER_VALUE_COMMANDS_H
 
+#include "../../../Global/DefaultCommandInfo.h"
+
 #include "../../CommandRegistry/ICommandRegistry.h"
 #include "../../IntegerValue/IIntegerValue.h"
 
 #include "../IUtilities.h"
 
 #include "AddIntegerCommand.h"
+#include "ConfigureIntegerCommands.h"
 #include "IIntegerCommandRegistry.h"
 
 class IntegerValueCommands:public IUtilities,
@@ -16,6 +19,8 @@ class IntegerValueCommands:public IUtilities,
   IIntegerValue* cVariable;
   ICommandRegistry* cCommandRegistry;
   std::vector<AddIntegerCommand*> cCommands;
+  ConfigureIntegerCommands* cConfigureIntegerCommands;
+  std::vector<ICommandInfo*> cPluginCommands;
 
   public:
   IntegerValueCommands();
@@ -32,6 +37,8 @@ class IntegerValueCommands:public IUtilities,
   \**********************/
   void save(DOMNodeWriter*);
   void load(DOMNodeWrapper*);
+  std::vector<ICommandInfo*> getCommandInfo();
+  void setEditingContext(BlockLocation*, IComponentContainer*);
 
   /*****************************\
    * Implements IPluginSupport *
