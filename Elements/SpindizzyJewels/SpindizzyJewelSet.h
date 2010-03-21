@@ -33,8 +33,7 @@
 #include "ICollectablesAccessor.h"
 #include "SpindizzyJewelFactory.h"
 
-class SpindizzyJewelSet:public IElementSet,
-                        public ICollectablesAccessor {
+class SpindizzyJewelSet:public ICollectablesAccessor {
   private:
   std::vector<PlugSocket*> cJewelSockets;
   std::vector<IElementFactory*> cElementFactories;

@@ -18,7 +18,7 @@
  */
 #include "SpindizzyGERALDFactory.h"
 
-SpindizzyGERALDFactory::SpindizzyGERALDFactory(IElementSet* elementSet, ISimpleModelFactory* geraldModelFactory, ILocationAwareness* locationAwareness, IZoneContext* zoneContext) : IElementFactory(elementSet) {
+SpindizzyGERALDFactory::SpindizzyGERALDFactory(IElementSet* elementSet, ISimpleModelFactory* geraldModelFactory, ILocationAwareness* locationAwareness, IZoneContext* zoneContext) : ElementFactory<>(elementSet) {
   cLocationAwareness = locationAwareness;
   cZoneContext = zoneContext;
   cGERALDModelFactory = geraldModelFactory;

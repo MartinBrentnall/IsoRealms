@@ -33,15 +33,8 @@ class IElement;
  * The element factory creates engine elements.
  */
 class IElementFactory {
-  private:
-  IElementSet* cElementSet;
-
   public:
-  IElementFactory(IElementSet*);
-
-  IElementSet* getElementSet();
-
-  virtual ~IElementFactory() {}
+  virtual IElementSet* getElementSet() = 0;
 
   // Runtime and parsing functions.
   /**
@@ -100,6 +93,8 @@ class IElementFactory {
    * @param int  Time passed in milliseconds since last update.
    */
   virtual void updateIcon(int) = 0;
+
+  virtual ~IElementFactory() {}
 };
 
 #endif

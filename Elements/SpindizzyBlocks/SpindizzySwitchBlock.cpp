@@ -18,7 +18,7 @@
  */
 #include "SpindizzySwitchBlock.h"
 
-SpindizzySwitchBlock::SpindizzySwitchBlock(IElementFactory* elementFactory, BlockLocation* startLocation, BlockLocation* endLocation, ISpindizzyTextureSet** spindizzyTextureSet, ISpindizzyTextureSet::TextureType tileSurfaceTexture, SpindizzyBlockProperties* blockProperties, bool addition) : AbstractSpindizzyBlock(elementFactory, startLocation, endLocation, spindizzyTextureSet, blockProperties, addition) {
+SpindizzySwitchBlock::SpindizzySwitchBlock(ISpindizzyBlockFactory* elementFactory, BlockLocation* startLocation, BlockLocation* endLocation, ISpindizzyTextureSet** spindizzyTextureSet, ISpindizzyTextureSet::TextureType tileSurfaceTexture, SpindizzyBlockProperties* blockProperties, bool addition) : AbstractSpindizzyBlock(elementFactory, startLocation, endLocation, spindizzyTextureSet, blockProperties, addition) {
   cTileSurfaceTexture = tileSurfaceTexture;
 }
 

@@ -26,7 +26,7 @@
 class SpindizzyIceBlock:public AbstractSpindizzyBlock {
 
   public:
-  SpindizzyIceBlock(IElementFactory*, BlockLocation*, BlockLocation*, ISpindizzyTextureSet**, SpindizzyBlockProperties*, bool);
+  SpindizzyIceBlock(ISpindizzyBlockFactory*, BlockLocation*, BlockLocation*, ISpindizzyTextureSet**, SpindizzyBlockProperties*, bool);
 
   /*************************************\
    * Implements AbstractSpindizzyBlock *

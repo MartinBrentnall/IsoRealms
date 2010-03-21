@@ -18,7 +18,7 @@
  */
 #include "SpindizzyBlock.h"
 
-SpindizzyBlock::SpindizzyBlock(IElementFactory* elementFactory, BlockLocation* startLocation, BlockLocation* endLocation, ISpindizzyTextureSet** spindizzyTextureSet, ISpindizzyTextureSet::TextureType tileSurfaceTexture, SpindizzyBlockProperties* blockProperties, bool addition) : AbstractSpindizzyBlock(elementFactory, startLocation, endLocation, spindizzyTextureSet, blockProperties, addition) {
+SpindizzyBlock::SpindizzyBlock(ISpindizzyBlockFactory* elementFactory, BlockLocation* startLocation, BlockLocation* endLocation, ISpindizzyTextureSet** spindizzyTextureSet, ISpindizzyTextureSet::TextureType tileSurfaceTexture, SpindizzyBlockProperties* blockProperties, bool addition) : AbstractSpindizzyBlock(elementFactory, startLocation, endLocation, spindizzyTextureSet, blockProperties, addition) {
   if (isSplit() && tileSurfaceTexture == ISpindizzyTextureSet::PLAIN) {
     cTileSurfaceTexture = ISpindizzyTextureSet::PLAIN_SPLIT_NE_SW;
   } else {

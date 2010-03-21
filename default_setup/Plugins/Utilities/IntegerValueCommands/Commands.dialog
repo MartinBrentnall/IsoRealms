@@ -8,5 +8,5 @@
   </FlexibleGrid>
   <Button name="addButton" text="Add Command" top="below inputFields" align="left"/>
   <Button name="removeButton" text="Remove Command" align="bottom right"/>
-<!--  <ListBox name="commandList" top="below addButton" bottom="above removeButton"/>-->
+  <ListBox name="commandList" top="below addButton" bottom="above removeButton"/>
 </Dialog>

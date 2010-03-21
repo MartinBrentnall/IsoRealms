@@ -18,7 +18,7 @@
  */
 #include "SpindizzyEnemy.h"
 
-SpindizzyEnemy::SpindizzyEnemy(IElementFactory* elementFactory, BlockLocation* startLocation, ISimpleModelFactory* enemyModelFactory) : IElement(elementFactory) {
+SpindizzyEnemy::SpindizzyEnemy(IElementFactory* elementFactory, BlockLocation* startLocation, ISimpleModelFactory* enemyModelFactory) : Element<>(elementFactory) {
   cStartLocation = BlockLocation(*startLocation);
   cCurrentLocation = new Vertex(cStartLocation.x, cStartLocation.y, cStartLocation.z);
   cEnemyModel = enemyModelFactory->createModel(cCurrentLocation);

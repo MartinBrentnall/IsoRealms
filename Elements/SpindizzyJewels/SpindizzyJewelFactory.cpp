@@ -18,7 +18,7 @@
  */
 #include "SpindizzyJewelFactory.h"
 
-SpindizzyJewelFactory::SpindizzyJewelFactory(IElementSet* elementSet, ISimpleModelFactory* jewelModelFactory) : IElementFactory(elementSet) {
+SpindizzyJewelFactory::SpindizzyJewelFactory(ICollectablesAccessor* elementSet, ISimpleModelFactory* jewelModelFactory) : BaseSpindizzyJewelFactory(elementSet) {
   cJewelModelFactory = jewelModelFactory;
   BlockLocation mIdentityLocation(0, 0, 0);
   cSampleJewel = new SpindizzyJewel(this, &mIdentityLocation, cJewelModelFactory);

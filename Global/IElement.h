@@ -21,6 +21,7 @@
 
 #include <vector>
 
+class IElementFactory;
 class IElementSet;
 class IMap;
 
@@ -28,36 +29,21 @@ class IMap;
 #include "DOMNodeWriter.h"
 #include "IDynamicElement.h"
 #include "IElementContainer.h"
-#include "IElementSet.h"
 #include "IInteractiveElement.h"
 #include "IVisualElement.h"
 
 class IElement {
-  private:
-
-  /**
-   *
-   */
-  IElementFactory* cElementFactory;
-
-  /**
-   * The element container is the entity that is holding the element for use in
-   * game.  For example, this may be a Zone or a Map.
-   */
-  IElementContainer* cElementContainer;
-
   public:
-  IElement(IElementFactory*);
 
   /**
    * Retrieve the element set to which this element belongs.
    */
-  IElementSet* getElementSet();
+  virtual IElementSet* getElementSet() = 0;
 
   /**
    * Retrieve the element factory to which this element belongs.
    */
-  IElementFactory* getElementFactory();
+  virtual IElementFactory* getElementFactory() = 0;
 
   /**
    * Initialise the element.
@@ -72,14 +58,14 @@ class IElement {
    *           runtime, otherwise false to indicate that a call to initElement
    *           is required.
    */
-  virtual bool initElement();
+  virtual bool initElement() = 0;
 
   /**
    * This function is called to notify the element that it's been removed from a
    * zone.  This is useful when the element has a relation with other elements
    * or plugins and wishes to perform some cleanup operations.
    */
-  virtual void removed();
+  virtual void removed() = 0;
 
   /**
    * This function is called to notify the element that it's been re-added to a
@@ -88,13 +74,13 @@ class IElement {
    * 
    * Note that this function should only be called after a call to removed().
    */
-  virtual void added();
+  virtual void added() = 0;
 
-  void setElementContainer(IElementContainer*);
+  virtual void setElementContainer(IElementContainer*) = 0;
 
-  virtual void setRuntimeContext(IMap*) {}
+  virtual void setRuntimeContext(IMap*) = 0;
 
-  void signalElementDirty();
+  virtual void signalElementDirty() = 0;
 
   virtual void renderStatic() = 0;
 
@@ -102,7 +88,7 @@ class IElement {
    * This function can be called by editing tools to render things that should
    * only be shown to help with editing and not during the game.
    */
-  virtual void renderStaticEditing() {};
+  virtual void renderStaticEditing() = 0;
 
   /**
    * Retrieve a list of interfaces through which this element is represented
@@ -115,10 +101,7 @@ class IElement {
    */
   virtual std::vector<IDynamicElement*> getDynamicElements() = 0;
 
-  virtual std::vector<IDynamicElement*> getDynamicElementsRuntime() {
-    std::vector<IDynamicElement*> mEmptyVector;
-    return mEmptyVector;
-  }
+  virtual std::vector<IDynamicElement*> getDynamicElementsRuntime() = 0;
 
   virtual std::vector<IInteractiveElement*> getInteractiveElements() = 0;
 

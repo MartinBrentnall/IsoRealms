@@ -22,8 +22,8 @@
 #include <GL/gl.h>
 
 #include "../../Global/BlockLocation.h"
+#include "../../Global/Element.h"
 #include "../../Global/IDynamicElement.h"
-#include "../../Global/IElement.h"
 #include "../../Global/IsoRealmsConstants.h"
 #include "../../Global/IVisualElement.h"
 
@@ -31,7 +31,7 @@
 
 #include "SpindizzyLiftProperties.h"
 
-class SpindizzyLift:public IElement,
+class SpindizzyLift:public Element<>,
                            IDynamicElement,
                            IVisualElement {
   private:

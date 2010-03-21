@@ -28,7 +28,8 @@
 #include "../../Plugins/SurfaceProcessor/ISurfaceProvider.h"
 #include "../../Plugins/SurfaceProcessor/IWallSurface.h"
 
-class ISurfaceProcessorProxy {
+// TODO: Rename
+class ISurfaceProcessorProxy:public IElementSet {
   public:
   virtual void registerSurfaceProvider(ISurfaceProvider*) = 0;
   virtual void unregisterSurfaceProvider(ISurfaceProvider*) = 0;

@@ -18,7 +18,7 @@
  */
 #include "SpindizzyJewel.h"
 
-SpindizzyJewel::SpindizzyJewel(IElementFactory* elementFactory, BlockLocation* location, ISimpleModelFactory* jewelModelFactory) : IElement(elementFactory) {
+SpindizzyJewel::SpindizzyJewel(BaseSpindizzyJewelFactory* elementFactory, BlockLocation* location, ISimpleModelFactory* jewelModelFactory) : Element<ICollectablesAccessor, BaseSpindizzyJewelFactory>(elementFactory) {
   cLocation = BlockLocation(*location);
   cVertexLocation.x = cLocation.x;
   cVertexLocation.y = cLocation.y;
@@ -76,24 +76,16 @@ void SpindizzyJewel::render() {
 }
 
 bool SpindizzyJewel::initElement() {
-  ICollectablesAccessor* mCollectablesAccessor = dynamic_cast<ICollectablesAccessor*>(getElementSet());
-  if (mCollectablesAccessor == NULL) {
-    std::cout << "Warning: dynamic_cast failed for jewels!" << std::endl;
-  } else {
-    ICollectables* mCollectables = mCollectablesAccessor->getCollectables();
-    mCollectables->registerCollectable(this);
-  }
+  ICollectablesAccessor* mCollectablesAccessor = getElementSet();
+  ICollectables* mCollectables = mCollectablesAccessor->getCollectables();
+  mCollectables->registerCollectable(this);
   return true;
 }
 
 void SpindizzyJewel::collect() {
   cCollected = true;
-  ICollectablesAccessor* mCollectablesAccessor = dynamic_cast<ICollectablesAccessor*>(getElementSet());
-  if (mCollectablesAccessor == NULL) {
-    std::cout << "Warning: dynamic_cast failed for jewels!" << std::endl;
-  } else {
-    mCollectablesAccessor->jewelCollected();
-  }
+  ICollectablesAccessor* mCollectablesAccessor = getElementSet();
+  mCollectablesAccessor->jewelCollected();
 }
 
 bool SpindizzyJewel::isCollected(Vertex& start, Vertex& end) {

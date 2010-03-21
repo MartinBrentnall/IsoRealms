@@ -46,7 +46,7 @@ class IElementSet:public IPluginSupport {
   /**
    * Save the configuration of this element set to the specified node.
    */
-  virtual void save(DOMNodeWriter*) = 0;
+  virtual void save(DOMNodeWriter*) {};
 
   virtual void load(DOMNodeWrapper*) {}
 

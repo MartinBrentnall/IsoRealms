@@ -35,8 +35,6 @@ DummyPlugin.o \
 DummyPluginRegistry.o \
 ElementSetRegistry.o \
 GlobalConfiguration.o \
-IElement.o \
-IElementFactory.o \
 IllegalStateException.o \
 Image.o \
 InitException.o \

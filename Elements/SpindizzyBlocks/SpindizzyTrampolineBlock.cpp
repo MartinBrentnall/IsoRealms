@@ -18,7 +18,7 @@
  */
 #include "SpindizzyTrampolineBlock.h"
 
-SpindizzyTrampolineBlock::SpindizzyTrampolineBlock(IElementFactory* elementFactory, BlockLocation* startLocation, BlockLocation* endLocation, ISpindizzyTextureSet** spindizzyTextureSet, SpindizzyBlockProperties* blockProperties, bool addition) : AbstractSpindizzyBlock(elementFactory, startLocation, endLocation, spindizzyTextureSet, blockProperties, addition) {
+SpindizzyTrampolineBlock::SpindizzyTrampolineBlock(ISpindizzyBlockFactory* elementFactory, BlockLocation* startLocation, BlockLocation* endLocation, ISpindizzyTextureSet** spindizzyTextureSet, SpindizzyBlockProperties* blockProperties, bool addition) : AbstractSpindizzyBlock(elementFactory, startLocation, endLocation, spindizzyTextureSet, blockProperties, addition) {
 }
 
 ISpindizzyTextureSet::TextureType SpindizzyTrampolineBlock::getTileSurfaceTexture() {

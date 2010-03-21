@@ -85,10 +85,6 @@ IComponentBoundsCalculator* Dialog::getBoundsCalculator(DOMNodeWrapper* node, IR
     }
   }
 
-  if ((mLeftEdge != NULL && mRightEdge != NULL) || (mTopEdge != NULL && mBottomEdge != NULL)) {
-    std::cout << "WARNING: Component specifies alignment to opposing edges!" << std::endl;
-  }
-
   // TODO: Warn about ignored things in case parent is fully used and relations are still specified
 
   if (mLeftEdge == NULL && mRightEdge == NULL) {
@@ -99,6 +95,10 @@ IComponentBoundsCalculator* Dialog::getBoundsCalculator(DOMNodeWrapper* node, IR
     }
     if (mRight != "") {
       // TODO: Left edge
+    }
+    if (mLeftEdge == NULL && mRightEdge == NULL) {
+      mLeftEdge = mInsideParent;
+      mRightEdge = mInsideParent;
     }
   }
 
@@ -119,7 +119,17 @@ IComponentBoundsCalculator* Dialog::getBoundsCalculator(DOMNodeWrapper* node, IR
       }
     }
     if (mBottom != "") {
-      // TODO: Bottom edge
+      std::vector<std::string> mBottomWords = splitWords(mBottom);
+      for (unsigned int i = 0; i < mBottomWords.size(); i++) {
+        // Find component to go below
+        std::map<std::string, ISizedComponent*>::iterator j = cSizedComponents.find(mBottomWords[i]);
+        if (j != cSizedComponents.end()) {
+          // TODO: Cache this relation for later!
+          // TODO: Dealloc this relation!
+          mBottomEdge = new EdgeRelation(j->second, EdgeRelation::OUTSIDE);
+          break;
+        }
+      }
     }
   }
   // TODO: Dealloc mInsideParent relation
@@ -138,7 +148,7 @@ ISizedComponent* Dialog::loadSizedComponent(DOMNodeWrapper* node) {
       std::string mName = mNode->getAttribute("name");
       return new TextFieldComponent();
     } else {
-      std::cout << "WARNING: Unknown tag at this point: \"" << mValueAsString << "\"" << std::endl;
+      std::cout << "WARNING: Unknown sized component tag: \"" << mValueAsString << "\"" << std::endl;
       // TODO: Throw
     }
   }  
@@ -157,7 +167,7 @@ void Dialog::loadFlexibleGridCells(DOMNodeWrapper* node, FlexibleGridLayoutCompo
       setFocusedComponent(mCellComponent);
       grid->addComponent(mCellComponent, mColumn, mRow);
     } else {
-      std::cout << "WARNING: Unknown tag at this point: \"" << mValueAsString << "\"" << std::endl;
+      std::cout << "WARNING: Unknown cell tag: \"" << mValueAsString << "\"" << std::endl;
       // TODO: Throw
     }
   }  
@@ -186,8 +196,17 @@ void Dialog::loadDialog(DOMNodeWrapper* node) {
       cSizedComponents[mName] = mButton;
       addComponent(mButton);
       setFocusedComponent(mButton);
+    } else if (mValueAsString == "ListBox") {
+      std::string mName = mNode->getAttribute("name");
+      ScrollableContainer* mListContainer = new ScrollableContainer();
+      ListBox* mListBox = new ListBox();
+      mListContainer->setRootComponent(mListBox);
+      IComponentBoundsCalculator* mListLayout = getBoundsCalculator(mNode, this, NULL);
+      mListContainer->setBoundsCalculator(mListLayout);
+      addComponent(mListContainer);
+      setFocusedComponent(mListContainer);
     } else {
-      std::cout << "WARNING: Unknown tag at this point: \"" << mValueAsString << "\"" << std::endl;
+      std::cout << "WARNING: Unknown dialog tag: \"" << mValueAsString << "\"" << std::endl;
       // TODO: Throw
     }
   }

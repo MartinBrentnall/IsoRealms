@@ -26,7 +26,7 @@
 class SpindizzyTrampolineBlock:public AbstractSpindizzyBlock {
 
   public:
-  SpindizzyTrampolineBlock(IElementFactory*, BlockLocation*, BlockLocation*, ISpindizzyTextureSet**, SpindizzyBlockProperties*, bool);
+  SpindizzyTrampolineBlock(ISpindizzyBlockFactory*, BlockLocation*, BlockLocation*, ISpindizzyTextureSet**, SpindizzyBlockProperties*, bool);
 
   /*************************************\
    * Implements AbstractSpindizzyBlock *

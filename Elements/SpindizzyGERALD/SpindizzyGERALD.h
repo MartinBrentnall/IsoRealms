@@ -24,7 +24,7 @@
 #include <cmath>
 
 #include "../../Global/BlockLocation.h"
-#include "../../Global/IElement.h"
+#include "../../Global/Element.h"
 #include "../../Global/IInteractiveElement.h"
 #include "../../Global/IMap.h"
 #include "../../Global/IsoRealmsConstants.h"
@@ -39,7 +39,7 @@
 #include "../../Plugins/LocationAwareness/ILocationAwareness.h"
 #include "../../Plugins/ZoneContext/IZoneContext.h"
 
-class SpindizzyGERALD:public IElement, 
+class SpindizzyGERALD:public Element<>, 
                       public ICollector,
                       public IDynamicElement,
                       public IInteractiveElement,

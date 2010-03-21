@@ -42,8 +42,7 @@
 #include "SpindizzyTrampolineBlock.h"
 #include "SpindizzyWaterFactory.h"
 
-class SpindizzyBlockSet:public IElementSet,
-                        public ISurfaceProcessorProxy,
+class SpindizzyBlockSet:public ISurfaceProcessorProxy,
                         public IChangeableTextureSet {
   private:
   static const std::string PLAIN;
@@ -77,7 +76,7 @@ class SpindizzyBlockSet:public IElementSet,
     ISpindizzyTextureSet::TextureType cTileSurfaceTexture;
 
     public:
-    BlockFactory(std::string, IElementSet*, ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType);
+    BlockFactory(std::string, ISurfaceProcessorProxy*, ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType);
 
     /************************************\
      * Implements SpindizzyBlockFactory *
@@ -87,7 +86,7 @@ class SpindizzyBlockSet:public IElementSet,
 
   class IceFactory:public SpindizzyBlockFactory {
     public:
-    IceFactory(std::string, IElementSet*, ISpindizzyTextureSet**);
+    IceFactory(std::string, ISurfaceProcessorProxy*, ISpindizzyTextureSet**);
 
     /************************************\
      * Implements SpindizzyBlockFactory *
@@ -100,7 +99,7 @@ class SpindizzyBlockSet:public IElementSet,
     ISpindizzyTextureSet::TextureType cTileSurfaceTexture;
 
     public:
-    SwitchFactory(std::string, IElementSet*, ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType);
+    SwitchFactory(std::string, ISurfaceProcessorProxy*, ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType);
 
     /************************************\
      * Implements SpindizzyBlockFactory *
@@ -110,7 +109,7 @@ class SpindizzyBlockSet:public IElementSet,
 
   class TrampolineFactory:public SpindizzyBlockFactory {
     public:
-    TrampolineFactory(std::string, IElementSet*, ISpindizzyTextureSet**);
+    TrampolineFactory(std::string, ISurfaceProcessorProxy*, ISpindizzyTextureSet**);
 
     /************************************\
      * Implements SpindizzyBlockFactory *

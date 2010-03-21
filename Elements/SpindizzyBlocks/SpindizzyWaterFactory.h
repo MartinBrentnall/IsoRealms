@@ -40,7 +40,7 @@ class SpindizzyWaterFactory:public ISpindizzyBlockFactory {
   bool keyDown(SDLKey& key);
 
   public:
-  SpindizzyWaterFactory(ISpindizzyTextureSet**, IElementSet*);
+  SpindizzyWaterFactory(ISpindizzyTextureSet**, ISurfaceProcessorProxy*);
 
   /*************************************\
    * Implements ISpindizzyBlockFactory *

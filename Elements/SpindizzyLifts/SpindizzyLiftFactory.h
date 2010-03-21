@@ -22,8 +22,8 @@
 #include <GL/gl.h>
 
 #include "../../Global/BlockLocation.h"
+#include "../../Global/ElementFactory.h"
 #include "../../Global/IComponentContainer.h"
-#include "../../Global/IElementFactory.h"
 #include "../../Global/IElementGateway.h"
 #include "../../Global/IsoRealmsConstants.h"
 #include "../../Global/IVisualElement.h"
@@ -35,7 +35,7 @@
 #include "SpindizzyLiftConfigurationComponent.h"
 #include "SpindizzyLiftProperties.h"
 
-class SpindizzyLiftFactory:public IElementFactory {
+class SpindizzyLiftFactory:public ElementFactory<> {
   private:
   std::string cLiftTypeName;
   std::vector<SpindizzyLift*> cContent;

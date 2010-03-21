@@ -22,8 +22,8 @@
 #include <GL/gl.h>
 
 #include "../../Global/BlockLocation.h"
+#include "../../Global/ElementFactory.h"
 #include "../../Global/IComponentContainer.h"
-#include "../../Global/IElementFactory.h"
 #include "../../Global/IElementGateway.h"
 #include "../../Global/IVisualElement.h"
 
@@ -31,7 +31,7 @@
 
 #include "SpindizzyEnemy.h"
 
-class SpindizzyEnemyFactory:public IElementFactory {
+class SpindizzyEnemyFactory:public ElementFactory<> {
   private:
   std::string cType;
   IElementSet* cElementSet;
@@ -54,7 +54,6 @@ class SpindizzyEnemyFactory:public IElementFactory {
   \*************************************************************************/
   std::string getName();
   IElement* getElement(DOMNodeWrapper*, BlockLocation*);
-  IElementSet* getElementSet();
   bool input(SDL_Event&);
   void configureElement();
   void setEditingInfo(BlockLocation*, IElementGateway*, IComponentContainer*);

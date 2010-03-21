@@ -20,7 +20,7 @@
 #define SPINDIZZY_ENEMY_H
 
 #include "../../Global/BlockLocation.h"
-#include "../../Global/IElement.h"
+#include "../../Global/Element.h"
 #include "../../Global/IsoRealmsConstants.h"
 #include "../../Global/IVisualElement.h"
 #include "../../Global/Vertex.h"
@@ -28,7 +28,7 @@
 #include "../../Plugins/3DModel/ISimpleModel.h"
 #include "../../Plugins/3DModel/ISimpleModelFactory.h"
 
-class SpindizzyEnemy:public IElement, 
+class SpindizzyEnemy:public Element<>, 
                      public IVisualElement {
   private:
   IElementFactory* cElementFactory;
@@ -42,20 +42,18 @@ class SpindizzyEnemy:public IElement,
 
   void setModel(ISimpleModelFactory*);
 
-  /*************************************************************************\
-   * Implemented methods of IElement.h                                     *
-  \*************************************************************************/
+  /***********************\
+   * Implements IElement *
+  \***********************/
   void renderStatic();
   std::vector<IVisualElement*> getVisualElements();
   std::vector<IDynamicElement*> getDynamicElements();
   std::vector<IInteractiveElement*> getInteractiveElements();
   void save(DOMNodeWriter*, BlockLocation&);
-  IElementSet* getElementSet();
-  IElementFactory* getElementFactory();
 
-  /*************************************************************************\
-   * Implemented methods of IVisualElement.h                               *
-  \*************************************************************************/
+  /*****************************\
+   * Implements IVisualElement *
+  \*****************************/
   void render();
 };
 

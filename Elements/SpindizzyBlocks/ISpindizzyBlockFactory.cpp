@@ -18,6 +18,6 @@
  */
 #include "ISpindizzyBlockFactory.h"
 
-ISpindizzyBlockFactory::ISpindizzyBlockFactory(IElementSet* elementSet) : IElementFactory(elementSet) {
+ISpindizzyBlockFactory::ISpindizzyBlockFactory(ISurfaceProcessorProxy* elementSet) : ElementFactory<ISurfaceProcessorProxy>(elementSet) {
 }
 

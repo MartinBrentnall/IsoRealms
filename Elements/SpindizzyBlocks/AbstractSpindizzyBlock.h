@@ -30,10 +30,11 @@
 #include "../../Global/BlockArea.h"
 #include "../../Global/BlockLocation.h"
 #include "../../Global/DOMNodeWrapper.h"
-#include "../../Global/IElement.h"
+#include "../../Global/Element.h"
 #include "../../Global/MiscFunctions.h"
 
 #include "ISurfaceProcessorProxy.h"
+#include "ISpindizzyBlockFactory.h"
 #include "SpindizzyBlockProperties.h"
 #include "TileSurface.h"
 #include "TileSplitSurface.h"
@@ -42,7 +43,7 @@
 /**
  * TODO: Refactor dynamic_casts into static_casts.
  */
-class AbstractSpindizzyBlock:public IElement,
+class AbstractSpindizzyBlock:public Element<ISurfaceProcessorProxy, ISpindizzyBlockFactory>,
                              public ISurfaceProvider {
   private:
   enum SplitType {
@@ -172,8 +173,8 @@ class AbstractSpindizzyBlock:public IElement,
   int getBottomHeight(int, int);
 
   public:
-  AbstractSpindizzyBlock(IElementFactory*, BlockLocation*, BlockLocation*, ISpindizzyTextureSet**, SpindizzyBlockProperties*, bool);
-  AbstractSpindizzyBlock(IElementFactory*, ISpindizzyTextureSet**, DOMNodeWrapper*);
+  AbstractSpindizzyBlock(ISpindizzyBlockFactory*, BlockLocation*, BlockLocation*, ISpindizzyTextureSet**, SpindizzyBlockProperties*, bool);
+  AbstractSpindizzyBlock(ISpindizzyBlockFactory*, ISpindizzyTextureSet**, DOMNodeWrapper*);
 
   ISpindizzyTextureSet* getTextureSet();
 

@@ -19,17 +19,19 @@
 #ifndef I_SPINDIZZY_BLOCK_FACTORY_H
 #define I_SPINDIZZY_BLOCK_FACTORY_H
 
-#include "../../Global/IElementFactory.h"
+#include "../../Global/ElementFactory.h"
 
 #include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 
+#include "ISurfaceProcessorProxy.h"
+
 /**
  * TODO: Not an interface anymore.
  */
-class ISpindizzyBlockFactory:public IElementFactory {
+class ISpindizzyBlockFactory:public ElementFactory<ISurfaceProcessorProxy> {
   public:
-  ISpindizzyBlockFactory(IElementSet*);
+  ISpindizzyBlockFactory(ISurfaceProcessorProxy*);
 
   /**
    * Signal all elements of the factory as dirty.

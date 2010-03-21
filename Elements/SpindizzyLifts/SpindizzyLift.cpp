@@ -18,7 +18,7 @@
  */
 #include "SpindizzyLift.h"
 
-SpindizzyLift::SpindizzyLift(IElementFactory* elementFactory, BlockLocation* location, ISpindizzyTexture* texture, SpindizzyLiftProperties* properties, int bottom, int top) : IElement(elementFactory) {
+SpindizzyLift::SpindizzyLift(IElementFactory* elementFactory, BlockLocation* location, ISpindizzyTexture* texture, SpindizzyLiftProperties* properties, int bottom, int top) : Element<>(elementFactory) {
   cTopDelay    = properties->getTopDelay();
   cBottomDelay = properties->getBottomDelay();
   cUpSpeed     = properties->getUpSpeed();

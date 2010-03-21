@@ -18,7 +18,7 @@
  */
 #include "SpindizzyBlockFactory.h"
 
-SpindizzyBlockFactory::SpindizzyBlockFactory(std::string name, ISpindizzyTextureSet** textureSet, IElementSet* elementSet) : ISpindizzyBlockFactory(elementSet) {
+SpindizzyBlockFactory::SpindizzyBlockFactory(std::string name, ISpindizzyTextureSet** textureSet, ISurfaceProcessorProxy* elementSet) : ISpindizzyBlockFactory(elementSet) {
   cFactoryName = name;
   cConfigurationComponent = NULL;
   cStartBlockLocation = NULL;

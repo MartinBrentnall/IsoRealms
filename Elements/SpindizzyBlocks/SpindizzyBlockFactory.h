@@ -36,6 +36,7 @@ class SpindizzyBlockConfigurationComponent;
 
 #include "AbstractSpindizzyBlock.h"
 #include "ISpindizzyBlockFactory.h"
+#include "ISurfaceProcessorProxy.h"
 #include "SpindizzyBlockConfigurationComponent.h"
 #include "SpindizzyBlockProperties.h"
 
@@ -66,7 +67,7 @@ class SpindizzyBlockFactory:public ISpindizzyBlockFactory,
    * 
    * @param ISpindizzyTextureSet*  A texture set to use for texturing blocks.
    */
-  SpindizzyBlockFactory(std::string, ISpindizzyTextureSet**, IElementSet*);
+  SpindizzyBlockFactory(std::string, ISpindizzyTextureSet**, ISurfaceProcessorProxy*);
 
   /**
    * Create a new usable block according to the specified parameters.

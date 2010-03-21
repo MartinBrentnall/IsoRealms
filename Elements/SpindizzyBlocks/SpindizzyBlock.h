@@ -22,13 +22,14 @@
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 
 #include "AbstractSpindizzyBlock.h"
+#include "ISpindizzyBlockFactory.h"
 
 class SpindizzyBlock:public AbstractSpindizzyBlock {
   private:
   ISpindizzyTextureSet::TextureType cTileSurfaceTexture;
 
   public:
-  SpindizzyBlock(IElementFactory*, BlockLocation*, BlockLocation*, ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType, SpindizzyBlockProperties*, bool);
+  SpindizzyBlock(ISpindizzyBlockFactory*, BlockLocation*, BlockLocation*, ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType, SpindizzyBlockProperties*, bool);
 
   /*************************************\
    * Implements AbstractSpindizzyBlock *

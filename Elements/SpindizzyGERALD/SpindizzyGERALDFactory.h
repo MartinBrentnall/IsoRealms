@@ -22,8 +22,8 @@
 #include <GL/gl.h>
 
 #include "../../Global/BlockLocation.h"
+#include "../../Global/ElementFactory.h"
 #include "../../Global/IComponentContainer.h"
-#include "../../Global/IElementFactory.h"
 #include "../../Global/IElementGateway.h"
 #include "../../Global/IVisualElement.h"
 
@@ -36,7 +36,7 @@
 
 #include "SpindizzyGERALD.h"
 
-class SpindizzyGERALDFactory:public IElementFactory {
+class SpindizzyGERALDFactory:public ElementFactory<> {
   private:
   std::vector<SpindizzyGERALD*> cContent;
   ISimpleModelFactory* cGERALDModelFactory;

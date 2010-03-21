@@ -18,7 +18,7 @@
  */
 #include "AbstractSpindizzyBlock.h"
 
-AbstractSpindizzyBlock::AbstractSpindizzyBlock(IElementFactory* elementFactory, BlockLocation* startLocation, BlockLocation* endLocation, ISpindizzyTextureSet** spindizzyTextureSet, SpindizzyBlockProperties* blockProperties, bool addition) : IElement(elementFactory) {
+AbstractSpindizzyBlock::AbstractSpindizzyBlock(ISpindizzyBlockFactory* elementFactory, BlockLocation* startLocation, BlockLocation* endLocation, ISpindizzyTextureSet** spindizzyTextureSet, SpindizzyBlockProperties* blockProperties, bool addition) : Element<ISurfaceProcessorProxy, ISpindizzyBlockFactory>(elementFactory) {
   cSpindizzyTextureSet = spindizzyTextureSet;
   cStartLocation = BlockLocation(endLocation->x > startLocation->x              ? startLocation->x : endLocation->x,
                                  endLocation->y > startLocation->y              ? startLocation->y : endLocation->y,
@@ -36,7 +36,7 @@ AbstractSpindizzyBlock::AbstractSpindizzyBlock(IElementFactory* elementFactory, 
   cInitStage = CACHE_SURFACES;
 }
 
-AbstractSpindizzyBlock::AbstractSpindizzyBlock(IElementFactory* elementFactory, ISpindizzyTextureSet** spindizzyTextureSet, DOMNodeWrapper* node) : IElement(elementFactory) {
+AbstractSpindizzyBlock::AbstractSpindizzyBlock(ISpindizzyBlockFactory* elementFactory, ISpindizzyTextureSet** spindizzyTextureSet, DOMNodeWrapper* node) : Element<ISurfaceProcessorProxy, ISpindizzyBlockFactory>(elementFactory) {
   cSpindizzyTextureSet = spindizzyTextureSet;
 }
 
@@ -130,12 +130,7 @@ ITileSurface* AbstractSpindizzyBlock::createSubSurface(ITileSurface::FaceDirecti
 }
 
 std::vector<ITileSurface*> AbstractSpindizzyBlock::calculateTileSurfaces(const ITileSurface::FaceDirection faceDirection) {
-  ISurfaceProcessorProxy* mSurfaceProcessor = dynamic_cast<ISurfaceProcessorProxy*>(getElementSet());
-  if (mSurfaceProcessor == NULL) {
-    std::cout << "Warning: dynamic_cast failed for surface calculation!  Surfaces may appear incorrect!" << std::endl;
-    std::vector<ITileSurface*> mRawSurface;
-    return getTileSurfaces(faceDirection);
-  }
+  ISurfaceProcessorProxy* mSurfaceProcessor = getElementSet();
   return mSurfaceProcessor->getTileSurfaces(this, faceDirection);
 }
 
@@ -231,11 +226,7 @@ int AbstractSpindizzyBlock::getOuterWallFaceLocation(IWallSurface::FaceDirection
 }
 
 std::vector<IWallSurface*> AbstractSpindizzyBlock::calculateWallSurfaces(const IWallSurface::FaceDirection facing) {
-  ISurfaceProcessorProxy* mSurfaceProcessor = dynamic_cast<ISurfaceProcessorProxy*>(getElementSet());
-  if (mSurfaceProcessor == NULL) {
-    std::cout << "Warning: dynamic_cast failed for surface calculation!  Surfaces may appear incorrect!" << std::endl;
-    return getWallSurfaces(getOuterWallFaceLocation(facing), facing);
-  }
+  ISurfaceProcessorProxy* mSurfaceProcessor = getElementSet();
   return mSurfaceProcessor->getWallSurfaces(this, facing);
 }
 
@@ -280,33 +271,21 @@ void AbstractSpindizzyBlock::cacheSurfaces() {
 }
 
 void AbstractSpindizzyBlock::removed() {
-  ISurfaceProcessorProxy* mSurfaceProcessor = dynamic_cast<ISurfaceProcessorProxy*>(getElementSet());
-  if (mSurfaceProcessor == NULL) {
-    std::cout << "Warning: dynamic_cast failed for surface calculation!  Surfaces may appear incorrect!" << std::endl;
-  } else {
-    mSurfaceProcessor->unregisterSurfaceProvider(this);
-  }
+  ISurfaceProcessorProxy* mSurfaceProcessor = getElementSet();
+  mSurfaceProcessor->unregisterSurfaceProvider(this);
 }
 
 void AbstractSpindizzyBlock::added() {
-  ISurfaceProcessorProxy* mSurfaceProcessor = dynamic_cast<ISurfaceProcessorProxy*>(getElementSet());
-  if (mSurfaceProcessor == NULL) {
-    std::cout << "Warning: dynamic_cast failed for surface calculation!  Surfaces may appear incorrect!" << std::endl;
-  } else {
-    mSurfaceProcessor->registerSurfaceProvider(this);
-    mSurfaceProcessor->setDirty();
-  }
+  ISurfaceProcessorProxy* mSurfaceProcessor = getElementSet();
+  mSurfaceProcessor->registerSurfaceProvider(this);
+  mSurfaceProcessor->setDirty();
 }
 
 bool AbstractSpindizzyBlock::initElement() {
   switch (cInitStage) {
     case CACHE_SURFACES: {
-      ISurfaceProcessorProxy* mSurfaceProcessor = dynamic_cast<ISurfaceProcessorProxy*>(getElementSet());
-      if (mSurfaceProcessor == NULL) {
-        std::cout << "Warning: dynamic_cast failed for surface calculation!  Surfaces may appear incorrect!" << std::endl;
-      } else {
-        mSurfaceProcessor->registerSurfaceProvider(this);
-      }
+      ISurfaceProcessorProxy* mSurfaceProcessor = getElementSet();
+      mSurfaceProcessor->registerSurfaceProvider(this);
       cInitStage = CALCULATE_SURFACES;
       return false;
     }

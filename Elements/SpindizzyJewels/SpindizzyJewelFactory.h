@@ -26,15 +26,17 @@
 #include "../../Global/BlockLocation.h"
 #include "../../Global/IComponentContainer.h"
 #include "../../Global/IDynamicElement.h"
-#include "../../Global/IElementFactory.h"
 #include "../../Global/IElementGateway.h"
 #include "../../Global/IsoRealmsConstants.h"
 #include "../../Global/IVisualElement.h"
 #include "../../Global/Vertex.h"
 
+#include "BaseSpindizzyJewelFactory.h"
+#include "ICollectablesAccessor.h"
 #include "SpindizzyJewel.h"
 
-class SpindizzyJewelFactory:public IElementFactory, public IsoRealmsConstants {
+class SpindizzyJewelFactory:public BaseSpindizzyJewelFactory,
+                            public IsoRealmsConstants {
   private:
   std::vector<SpindizzyJewel*> cContent;
   ISimpleModelFactory* cJewelModelFactory;
@@ -48,7 +50,7 @@ class SpindizzyJewelFactory:public IElementFactory, public IsoRealmsConstants {
   bool keyDown(SDLKey&);
 
   public:
-  SpindizzyJewelFactory(IElementSet*, ISimpleModelFactory*);
+  SpindizzyJewelFactory(ICollectablesAccessor*, ISimpleModelFactory*);
 
   void setModel(ISimpleModelFactory*);
 

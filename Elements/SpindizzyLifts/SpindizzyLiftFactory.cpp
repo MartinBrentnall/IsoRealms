@@ -18,7 +18,7 @@
  */
 #include "SpindizzyLiftFactory.h"
 
-SpindizzyLiftFactory::SpindizzyLiftFactory(IElementSet* elementSet, ISpindizzyTextureSet::TextureType texture, SpindizzyLiftProperties* properties, const std::string& liftTypeName) : IElementFactory(elementSet) {
+SpindizzyLiftFactory::SpindizzyLiftFactory(IElementSet* elementSet, ISpindizzyTextureSet::TextureType texture, SpindizzyLiftProperties* properties, const std::string& liftTypeName) : ElementFactory<>(elementSet) {
   cLiftTypeName = liftTypeName;
   cProperties = properties;
   cTexture = texture;

@@ -38,7 +38,9 @@
 #include "IComponentCloseListener.h"
 #include "IRectangularComponent.h"
 #include "ITextComponent.h"
+#include "ListBox.h"
 #include "LookAndFeel.h"
+#include "ScrollableContainer.h"
 #include "TextLabelComponent.h"
 #include "TextFieldComponent.h"
 

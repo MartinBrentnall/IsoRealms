@@ -28,7 +28,7 @@ class SpindizzySwitchBlock:public AbstractSpindizzyBlock {
   ISpindizzyTextureSet::TextureType cTileSurfaceTexture;
 
   public:
-  SpindizzySwitchBlock(IElementFactory*, BlockLocation*, BlockLocation*, ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType, SpindizzyBlockProperties*, bool);
+  SpindizzySwitchBlock(ISpindizzyBlockFactory*, BlockLocation*, BlockLocation*, ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType, SpindizzyBlockProperties*, bool);
 
   /*************************************\
    * Implements AbstractSpindizzyBlock *

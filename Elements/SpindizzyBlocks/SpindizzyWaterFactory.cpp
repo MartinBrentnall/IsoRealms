@@ -18,7 +18,7 @@
  */
 #include "SpindizzyWaterFactory.h"
 
-SpindizzyWaterFactory::SpindizzyWaterFactory(ISpindizzyTextureSet** spindizzyTextureSet, IElementSet* elementSet) : ISpindizzyBlockFactory(elementSet) {
+SpindizzyWaterFactory::SpindizzyWaterFactory(ISpindizzyTextureSet** spindizzyTextureSet, ISurfaceProcessorProxy* elementSet) : ISpindizzyBlockFactory(elementSet) {
   cStartWaterLocation = NULL;
   cSampleWater = NULL;
   cSpindizzyTextureSet = spindizzyTextureSet;

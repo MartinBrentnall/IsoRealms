@@ -18,7 +18,7 @@
  */
 #include "SpindizzyIceBlock.h"
 
-SpindizzyIceBlock::SpindizzyIceBlock(IElementFactory* elementFactory, BlockLocation* startLocation, BlockLocation* endLocation, ISpindizzyTextureSet** spindizzyTextureSet, SpindizzyBlockProperties* blockProperties, bool addition) : AbstractSpindizzyBlock(elementFactory, startLocation, endLocation, spindizzyTextureSet, blockProperties, addition) {
+SpindizzyIceBlock::SpindizzyIceBlock(ISpindizzyBlockFactory* elementFactory, BlockLocation* startLocation, BlockLocation* endLocation, ISpindizzyTextureSet** spindizzyTextureSet, SpindizzyBlockProperties* blockProperties, bool addition) : AbstractSpindizzyBlock(elementFactory, startLocation, endLocation, spindizzyTextureSet, blockProperties, addition) {
 }
 
 ISpindizzyTextureSet::TextureType SpindizzyIceBlock::getTileSurfaceTexture() {

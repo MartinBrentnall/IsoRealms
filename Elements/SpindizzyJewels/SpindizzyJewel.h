@@ -24,8 +24,8 @@
 #include <GL/gl.h>
 
 #include "../../Global/BlockLocation.h"
+#include "../../Global/Element.h"
 #include "../../Global/IDynamicElement.h"
-#include "../../Global/IElement.h"
 #include "../../Global/IElementFactory.h"
 #include "../../Global/IsoRealmsConstants.h"
 #include "../../Global/IVisualElement.h"
@@ -35,9 +35,10 @@
 #include "../../Plugins/3DModel/ISimpleModel.h"
 #include "../../Plugins/3DModel/ISimpleModelFactory.h"
 
+#include "BaseSpindizzyJewelFactory.h"
 #include "ICollectablesAccessor.h"
 
-class SpindizzyJewel:public IElement,
+class SpindizzyJewel:public Element<ICollectablesAccessor, BaseSpindizzyJewelFactory>,
                      public ICollectable,
                      public IDynamicElement,
                      public IVisualElement {
@@ -54,9 +55,8 @@ class SpindizzyJewel:public IElement,
   void collect();
 
   public:
-  SpindizzyJewel(IElementFactory*, BlockLocation*, ISimpleModelFactory*);
-  SpindizzyJewel(IElementFactory*, DOMNodeWrapper*, BlockLocation*);
-
+  SpindizzyJewel(BaseSpindizzyJewelFactory*, BlockLocation*, ISimpleModelFactory*);
+  
   void setModel(ISimpleModelFactory*);
   ISimpleModel* getModel();
 

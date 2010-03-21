@@ -18,7 +18,7 @@
  */
 #include "SpindizzyEnemyFactory.h"
 
-SpindizzyEnemyFactory::SpindizzyEnemyFactory(IElementSet* elementSet, ISimpleModelFactory* enemyModelFactory, const std::string& type) : IElementFactory(elementSet) {
+SpindizzyEnemyFactory::SpindizzyEnemyFactory(IElementSet* elementSet, ISimpleModelFactory* enemyModelFactory, const std::string& type) : ElementFactory<>(elementSet) {
   cType = type;
   cEnemyModelFactory = enemyModelFactory;
   BlockLocation mIdentityLocation(0, 0, 0);

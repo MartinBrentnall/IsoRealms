@@ -159,7 +159,7 @@ void SpindizzyBlockSet::notifyZoneAction(Zone* zone) {
   cSurfaceProcessor->notifyZoneAction(zone);
 }
 
-SpindizzyBlockSet::BlockFactory::BlockFactory(std::string name, IElementSet* elementSet, ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet::TextureType tileSurfaceTexture) : SpindizzyBlockFactory(name, textureSet, elementSet) {
+SpindizzyBlockSet::BlockFactory::BlockFactory(std::string name, ISurfaceProcessorProxy* elementSet, ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet::TextureType tileSurfaceTexture) : SpindizzyBlockFactory(name, textureSet, elementSet) {
   cTileSurfaceTexture = tileSurfaceTexture;
 }
 
@@ -167,7 +167,7 @@ AbstractSpindizzyBlock* SpindizzyBlockSet::BlockFactory::createBlock(BlockLocati
   return new SpindizzyBlock(this, startLocation, endLocation, textureSet, cTileSurfaceTexture, blockProperties, addition);
 }
 
-SpindizzyBlockSet::IceFactory::IceFactory(std::string name, IElementSet* elementSet, ISpindizzyTextureSet** textureSet) : SpindizzyBlockFactory(name, textureSet, elementSet) {
+SpindizzyBlockSet::IceFactory::IceFactory(std::string name, ISurfaceProcessorProxy* elementSet, ISpindizzyTextureSet** textureSet) : SpindizzyBlockFactory(name, textureSet, elementSet) {
   // Nothing to do.
 }
 
@@ -175,7 +175,7 @@ AbstractSpindizzyBlock* SpindizzyBlockSet::IceFactory::createBlock(BlockLocation
   return new SpindizzyIceBlock(this, startLocation, endLocation, textureSet, blockProperties, addition);
 }
 
-SpindizzyBlockSet::SwitchFactory::SwitchFactory(std::string name, IElementSet* elementSet, ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet::TextureType tileSurfaceTexture) : SpindizzyBlockFactory(name, textureSet, elementSet) {
+SpindizzyBlockSet::SwitchFactory::SwitchFactory(std::string name, ISurfaceProcessorProxy* elementSet, ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet::TextureType tileSurfaceTexture) : SpindizzyBlockFactory(name, textureSet, elementSet) {
   cTileSurfaceTexture = tileSurfaceTexture;
 }
 
@@ -183,7 +183,7 @@ AbstractSpindizzyBlock* SpindizzyBlockSet::SwitchFactory::createBlock(BlockLocat
   return new SpindizzySwitchBlock(this, startLocation, endLocation, textureSet, cTileSurfaceTexture, blockProperties, addition);
 }
 
-SpindizzyBlockSet::TrampolineFactory::TrampolineFactory(std::string name, IElementSet* elementSet, ISpindizzyTextureSet** textureSet) : SpindizzyBlockFactory(name, textureSet, elementSet) {
+SpindizzyBlockSet::TrampolineFactory::TrampolineFactory(std::string name, ISurfaceProcessorProxy* elementSet, ISpindizzyTextureSet** textureSet) : SpindizzyBlockFactory(name, textureSet, elementSet) {
   // Nothing to do.
 }
 

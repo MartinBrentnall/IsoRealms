@@ -19,7 +19,7 @@
 #ifndef SPINDIZZY_WATER_H
 #define SPINDIZZY_WATER_H
 
-#include "../../Global/IElement.h"
+#include "../../Global/Element.h"
 
 #include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
 #include "../../Plugins/SurfaceProcessor/ISurfaceProvider.h"
@@ -27,11 +27,12 @@
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
 
+#include "ISpindizzyBlockFactory.h"
 #include "ISurfaceProcessorProxy.h"
 #include "TileSurface.h"
 #include "WallSurface.h"
 
-class SpindizzyWater:public IElement,
+class SpindizzyWater:public Element<ISurfaceProcessorProxy, ISpindizzyBlockFactory>,
                      public ISurfaceProvider {
   private:
   enum InitStage {
@@ -50,7 +51,7 @@ class SpindizzyWater:public IElement,
   std::vector<ITileSurface*> getWaterSurfaces();
 
   public:
-  SpindizzyWater(IElementFactory*, BlockLocation*, BlockLocation*, ISpindizzyTextureSet**);
+  SpindizzyWater(ISpindizzyBlockFactory*, BlockLocation*, BlockLocation*, ISpindizzyTextureSet**);
 
   /*************************************************************************\
    * Implemented methods of IElement.h                                     *
