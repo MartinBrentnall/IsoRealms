@@ -18,7 +18,7 @@
  */
 #include "SpindizzyLift.h"
 
-SpindizzyLift::SpindizzyLift(IElementFactory* elementFactory, BlockLocation* location, ISpindizzyTexture* texture, SpindizzyLiftProperties* properties, int bottom, int top) : Element<>(elementFactory) {
+SpindizzyLift::SpindizzyLift(ISpindizzyLiftFactory* elementFactory, BlockLocation* location, ISpindizzyTexture* texture, SpindizzyLiftProperties* properties, int bottom, int top) : Element<ISpindizzyLiftSet, ISpindizzyLiftFactory>(elementFactory) {
   cTopDelay    = properties->getTopDelay();
   cBottomDelay = properties->getBottomDelay();
   cUpSpeed     = properties->getUpSpeed();
@@ -92,7 +92,10 @@ std::vector<IInteractiveElement*> SpindizzyLift::getInteractiveElements() {
 }
 
 void SpindizzyLift::update(int milliseconds) {
-  // TODO: Make the lift move!
+  ISpindizzyLiftFactory* mLiftFactory = getElementFactory();
+  if (mLiftFactory->isActive()) {
+    // TODO: Make the lift move!
+  }
 }
 
 void SpindizzyLift::render() {

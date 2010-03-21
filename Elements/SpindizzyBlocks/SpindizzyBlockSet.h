@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2009,2010 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -22,6 +22,7 @@
 #include <string>
 #include <vector>
 
+#include "../../Plugins/CommandRegistry/ICommandRegistry.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 #include "../../Plugins/SpindizzyTextureSet/SpindizzyTextureSetDummy.h"
 #include "../../Plugins/SpindizzyTextureSetChanger/ISpindizzyTextureSetChanger.h"
@@ -33,6 +34,7 @@
 #include "../../Global/PlugSocket.h"
 #include "../../Global/PluginRegistry.h"
 
+#include "BlockStateCommand.h"
 #include "ISpindizzyBlockFactory.h"
 #include "ISurfaceProcessorProxy.h"
 #include "SpindizzyBlock.h"
@@ -52,7 +54,7 @@ class SpindizzyBlockSet:public ISurfaceProcessorProxy,
   static const std::string ARROW_WEST;
   static const std::string ICE;
   static const std::string TRAMPOLINE;
-  static const std::string SWITCH_CICRLE_BOTH;
+  static const std::string SWITCH_CIRCLE_BOTH;
   static const std::string SWITCH_CIRCLE_LEFT;
   static const std::string SWITCH_CIRCLE_RIGHT;
   static const std::string SWITCH_CIRCLE_NONE;
@@ -65,11 +67,16 @@ class SpindizzyBlockSet:public ISurfaceProcessorProxy,
   static const std::string SWITCH_DIAMOND_RIGHT;
   static const std::string SWITCH_DIAMOND_NONE;
 
+  static const int BLOCK_STATES;
+
   std::vector<IElementFactory*> cElementFactories;
+  std::vector<IUserCommand*> cSpindizzyBlockCommands;
+  ICommandRegistry* cCommandRegistry;
   ISpindizzyTextureSet* cSpindizzyTextureSet;
   ISpindizzyTextureSet* cDummyTextureSet;
   ISpindizzyTextureSetChanger* cSpindizzyTextureSetController;
   ISurfaceProcessor* cSurfaceProcessor;
+  std::map<std::string, bool*> cBlockStates;
 
   class BlockFactory:public SpindizzyBlockFactory {
     private:
@@ -116,6 +123,8 @@ class SpindizzyBlockSet:public ISurfaceProcessorProxy,
     \************************************/
     AbstractSpindizzyBlock* createBlock(BlockLocation*, BlockLocation*, ISpindizzyTextureSet**, SpindizzyBlockProperties*, bool);
   };
+
+  void addBlockState(const std::string&);
 
   public:
   SpindizzyBlockSet();

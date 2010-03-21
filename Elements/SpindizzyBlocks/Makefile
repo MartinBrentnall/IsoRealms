@@ -24,6 +24,7 @@ LN = ln
 
 OBJS = \
 AbstractSpindizzyBlock.o \
+BlockStateCommand.o \
 ISpindizzyBlockFactory.o \
 SpindizzyBlock.o \
 SpindizzyBlockConfigurationComponent.o \

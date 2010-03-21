@@ -23,15 +23,18 @@
 
 #include "../../Global/BlockLocation.h"
 #include "../../Global/Element.h"
+#include "../../Global/ElementFactory.h"
 #include "../../Global/IDynamicElement.h"
 #include "../../Global/IsoRealmsConstants.h"
 #include "../../Global/IVisualElement.h"
 
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
 
+#include "ISpindizzyLiftFactory.h"
+#include "ISpindizzyLiftSet.h"
 #include "SpindizzyLiftProperties.h"
 
-class SpindizzyLift:public Element<>,
+class SpindizzyLift:public Element<ISpindizzyLiftSet, ISpindizzyLiftFactory>,
                            IDynamicElement,
                            IVisualElement {
   private:
@@ -47,13 +50,13 @@ class SpindizzyLift:public Element<>,
   void renderEditingArrow();
 
   public:
-  SpindizzyLift(IElementFactory*, BlockLocation*, ISpindizzyTexture*, SpindizzyLiftProperties*, int, int);
+  SpindizzyLift(ISpindizzyLiftFactory*, BlockLocation*, ISpindizzyTexture*, SpindizzyLiftProperties*, int, int);
 
   void setTexture(ISpindizzyTexture*);
 
-  /*************************************************************************\
-   * Implemented methods of IElement.h                                     *
-  \*************************************************************************/
+  /***********************\
+   * Implements IElement *
+  \***********************/
   void renderStatic();
   void renderStaticEditing();
   std::vector<IVisualElement*> getVisualElements();
@@ -61,14 +64,14 @@ class SpindizzyLift:public Element<>,
   std::vector<IInteractiveElement*> getInteractiveElements();
   void save(DOMNodeWriter*, BlockLocation&);
 
-  /*************************************************************************\
-   * Implemented methods of IDynamicElement.h                              *
-  \*************************************************************************/
+  /******************************\
+   * Implements IDynamicElement *
+  \******************************/
   void update(int);
 
-  /*************************************************************************\
-   * Implemented methods of IVisualElement.h                               *
-  \*************************************************************************/
+  /*****************************\
+   * Implements IVisualElement *
+  \*****************************/
   void render();
 };
 

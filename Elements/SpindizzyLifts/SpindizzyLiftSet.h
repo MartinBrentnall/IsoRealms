@@ -24,15 +24,19 @@
 #include "../../Global/IElementSet.h"
 #include "../../Global/PluginRegistry.h"
 
+#include "../../Plugins/CommandRegistry/ICommandRegistry.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 
+#include "ISpindizzyLiftSet.h"
 #include "SpindizzyLiftFactory.h"
 #include "SpindizzyLiftProperties.h"
 
-class SpindizzyLiftSet:public IElementSet {
+class SpindizzyLiftSet:public ISpindizzyLiftSet {
   private:
   std::vector<IElementFactory*> cElementFactories;
+  ICommandRegistry* cCommandRegistry;
+  std::vector<IUserCommand*> cCommands;
   ISpindizzyTextureSet* cSpindizzyTextureSet;
 
   /**

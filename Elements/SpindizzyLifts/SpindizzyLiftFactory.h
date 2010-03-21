@@ -31,11 +31,12 @@
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 
+#include "ISpindizzyLiftFactory.h"
 #include "SpindizzyLift.h"
 #include "SpindizzyLiftConfigurationComponent.h"
 #include "SpindizzyLiftProperties.h"
 
-class SpindizzyLiftFactory:public ElementFactory<> {
+class SpindizzyLiftFactory:public ISpindizzyLiftFactory {
   private:
   std::string cLiftTypeName;
   std::vector<SpindizzyLift*> cContent;
@@ -56,13 +57,18 @@ class SpindizzyLiftFactory:public ElementFactory<> {
   void renderArrowLines();
 
   public:
-  SpindizzyLiftFactory(IElementSet*, ISpindizzyTextureSet::TextureType, SpindizzyLiftProperties*, const std::string& liftTypeName);
+  SpindizzyLiftFactory(ISpindizzyLiftSet*, ISpindizzyTextureSet::TextureType, SpindizzyLiftProperties*, const std::string& liftTypeName);
 
   void setTextureSet(ISpindizzyTextureSet*);
 
-  /*************************************************************************\
-   * Implemented methods of IElementFactory.h                              *
-  \*************************************************************************/
+  /************************************\
+   * Implements ISpindizzyLiftFactory *
+  \************************************/
+  bool isActive();
+
+  /******************************\
+   * Implements IElementFactory *
+  \******************************/
   std::string getName();
   IElement* getElement(DOMNodeWrapper*, BlockLocation*);
   void configureElement();

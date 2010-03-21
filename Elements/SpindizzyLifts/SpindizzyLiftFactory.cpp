@@ -18,7 +18,7 @@
  */
 #include "SpindizzyLiftFactory.h"
 
-SpindizzyLiftFactory::SpindizzyLiftFactory(IElementSet* elementSet, ISpindizzyTextureSet::TextureType texture, SpindizzyLiftProperties* properties, const std::string& liftTypeName) : ElementFactory<>(elementSet) {
+SpindizzyLiftFactory::SpindizzyLiftFactory(ISpindizzyLiftSet* elementSet, ISpindizzyTextureSet::TextureType texture, SpindizzyLiftProperties* properties, const std::string& liftTypeName) : ISpindizzyLiftFactory(elementSet) {
   cLiftTypeName = liftTypeName;
   cProperties = properties;
   cTexture = texture;
@@ -32,6 +32,10 @@ SpindizzyLiftFactory::SpindizzyLiftFactory(IElementSet* elementSet, ISpindizzyTe
 
 std::string SpindizzyLiftFactory::getName() {
   return cLiftTypeName;
+}
+
+bool SpindizzyLiftFactory::isActive() {
+  return true; // TODO: Lift states
 }
 
 IElement* SpindizzyLiftFactory::getElement(DOMNodeWrapper* node, BlockLocation* relative) {

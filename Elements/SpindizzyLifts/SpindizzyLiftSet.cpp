@@ -33,6 +33,7 @@ SpindizzyLiftSet::SpindizzyLiftSet() {
   cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_DIAMOND_NONE, &cSpindizzyLiftProperties, "DiamondNone"));
 
   assignDummyPlugin(&cSpindizzyTextureSet, "SpindizzyTextureSet");
+  assignDummyPlugin(&cCommandRegistry, "CommandRegistry");
   setTextureSet(cSpindizzyTextureSet);
 }
 
@@ -52,7 +53,8 @@ void SpindizzyLiftSet::destroy(IElement* element) {
 
 std::vector<PlugSocket*> SpindizzyLiftSet::getPlugSockets() {
   std::vector<PlugSocket*> mSockets;
-  mSockets.push_back(new PlugSocket("SpindizzyTextureSet", ""));
+  mSockets.push_back(new PlugSocket("SpindizzyTextureSet"));
+  mSockets.push_back(new PlugSocket("CommandRegistry"));
   return mSockets;
 }
 
@@ -60,6 +62,14 @@ void SpindizzyLiftSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
   if (socket->getType() == "SpindizzyTextureSet") {
     if (assignPlugin(implementation, &cSpindizzyTextureSet, *socket)) {
       setTextureSet(cSpindizzyTextureSet);
+    }
+  } else if (socket->getType() == "CommandRegistry") {
+    ICommandRegistry* mPreviousCommandRegistry = cCommandRegistry;
+    if (assignPlugin(implementation, &cCommandRegistry, *socket)) {
+      for (unsigned int i = 0; i < cCommands.size(); i++) {
+        mPreviousCommandRegistry->unregisterCommand(cCommands[i]);
+        cCommandRegistry->registerCommand(cCommands[i]);
+      }
     }
   } else {
     // TODO: Throw exception or something

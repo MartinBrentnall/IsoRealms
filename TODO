@@ -1,0 +1,32 @@
+Convert dialogs to use parsing:
+ - Lift Configuration Dialog
+
+Implement cleanup in Dialog for dialog resources.
+Implement a command selection mechanism.
+Implement mechanism for showing an existing dialog instead of always opening a new one.
+Mechanism to position dialogs more appropriately in the container.
+In Plugin Support dialog, plugins should be selected from a combo box.
+Entity Class Instances dialog should not be used in selecting plugin instances.
+Add shadow property to the Font class.
+There should be a HUD designer.
+The HUD designer should have standard components.
+A HUD designer standard component should be the text label component.
+Utility to provide a variable as a number label to the HUD designer.
+Utility to provide a variable as a time formatted label to the HUD designer.
+Utility to provide camera aware compass to the HUD designer.
+Refactor Utilities to be a separate entity class.
+
+Pause / Unpause Commands provided to the Command Registry:
+ - GERALD
+ - Lifts
+ - Enemies
+ - Timer
+
+Utility to invoke pause / unpause on all "pausables" from a key press event.
+Add zone context awareness to lift set - hide and stop lifts on zone exit, reset and start lifts on zone entry.
+Add zone context awareness to enemy set - hide and stop enemies on zone exit, reset and start enemies on zone entry.
+Lifts should provide activate / deactivate commands for each lift type to the Command Registry.
+Block set should provide customizable set of activate / deactivate commands to the Command Registry.
+Add condition configuration to block elements.
+Block set should provide a configuration for commands to execute on each switch type.
+Utility to implement Spindizzy switch logic (provide switch commands to registry, which invoke appropriate commands on blocks and lifts)

@@ -25,7 +25,7 @@ const std::string SpindizzyBlockSet::ARROW_SOUTH = "ArrowSouth";
 const std::string SpindizzyBlockSet::ARROW_WEST = "ArrowWest";
 const std::string SpindizzyBlockSet::ICE = "Ice";
 const std::string SpindizzyBlockSet::TRAMPOLINE = "Trampoline";
-const std::string SpindizzyBlockSet::SWITCH_CICRLE_BOTH = "SwitchCircleBoth";
+const std::string SpindizzyBlockSet::SWITCH_CIRCLE_BOTH = "SwitchCircleBoth";
 const std::string SpindizzyBlockSet::SWITCH_CIRCLE_LEFT = "SwitchCircleLeft";
 const std::string SpindizzyBlockSet::SWITCH_CIRCLE_RIGHT = "SwitchCircleRight";
 const std::string SpindizzyBlockSet::SWITCH_CIRCLE_NONE = "SwitchCircleNone";
@@ -38,6 +38,8 @@ const std::string SpindizzyBlockSet::SWITCH_DIAMOND_LEFT = "SwitchDiamondLeft";
 const std::string SpindizzyBlockSet::SWITCH_DIAMOND_RIGHT = "SwitchDiamondRight";
 const std::string SpindizzyBlockSet::SWITCH_DIAMOND_NONE = "SwitchDiamondNone";
 
+const int SpindizzyBlockSet::BLOCK_STATES = 11;
+
 SpindizzyBlockSet::SpindizzyBlockSet() {
   cElementFactories.push_back(new BlockFactory(PLAIN, this, &cSpindizzyTextureSet, ISpindizzyTextureSet::PLAIN));
   cElementFactories.push_back(new BlockFactory(ARROW_NORTH, this, &cSpindizzyTextureSet, ISpindizzyTextureSet::ARROW_NORTH));
@@ -46,7 +48,7 @@ SpindizzyBlockSet::SpindizzyBlockSet() {
   cElementFactories.push_back(new BlockFactory(ARROW_WEST, this, &cSpindizzyTextureSet, ISpindizzyTextureSet::ARROW_WEST));
   cElementFactories.push_back(new IceFactory(ICE, this, &cSpindizzyTextureSet));
   cElementFactories.push_back(new TrampolineFactory(TRAMPOLINE, this, &cSpindizzyTextureSet));
-  cElementFactories.push_back(new SwitchFactory(SWITCH_CICRLE_BOTH, this, &cSpindizzyTextureSet, ISpindizzyTextureSet::SWITCH_CIRCLE_BOTH));
+  cElementFactories.push_back(new SwitchFactory(SWITCH_CIRCLE_BOTH, this, &cSpindizzyTextureSet, ISpindizzyTextureSet::SWITCH_CIRCLE_BOTH));
   cElementFactories.push_back(new SwitchFactory(SWITCH_CIRCLE_LEFT, this, &cSpindizzyTextureSet, ISpindizzyTextureSet::SWITCH_CIRCLE_LEFT));
   cElementFactories.push_back(new SwitchFactory(SWITCH_CIRCLE_RIGHT, this, &cSpindizzyTextureSet, ISpindizzyTextureSet::SWITCH_CIRCLE_RIGHT));
   cElementFactories.push_back(new SwitchFactory(SWITCH_CIRCLE_NONE, this, &cSpindizzyTextureSet, ISpindizzyTextureSet::SWITCH_CIRCLE_NONE));
@@ -64,19 +66,42 @@ SpindizzyBlockSet::SpindizzyBlockSet() {
   cSpindizzyTextureSet = cDummyTextureSet;
   cSpindizzyTextureSetController = NULL;
   assignDummyPlugin(&cSurfaceProcessor, "SurfaceProcessor");
+  assignDummyPlugin(&cCommandRegistry, "CommandRegistry");
+
+  addBlockState(SWITCH_CIRCLE_BOTH);
+  addBlockState(SWITCH_CIRCLE_LEFT);
+  addBlockState(SWITCH_CIRCLE_RIGHT);
+  addBlockState(SWITCH_CIRCLE_NONE);
+  addBlockState(SWITCH_SQUARE_BOTH);
+  addBlockState(SWITCH_SQUARE_LEFT);
+  addBlockState(SWITCH_SQUARE_RIGHT);
+  addBlockState(SWITCH_SQUARE_NONE);
+  addBlockState(SWITCH_DIAMOND_BOTH);
+  addBlockState(SWITCH_DIAMOND_LEFT);
+  addBlockState(SWITCH_DIAMOND_RIGHT);
+}
+
+void SpindizzyBlockSet::addBlockState(const std::string& name) {
+  bool* mState = new bool(false);
+  cBlockStates[name] = mState;
+  IUserCommand* mStateOnCommand = new BlockStateCommand(name, mState, true);
+  IUserCommand* mStateOffCommand = new BlockStateCommand(name, mState, false);
+  cSpindizzyBlockCommands.push_back(mStateOnCommand);
+  cSpindizzyBlockCommands.push_back(mStateOffCommand);
 }
 
 std::vector<PlugSocket*> SpindizzyBlockSet::getPlugSockets() {
   std::vector<PlugSocket*> mSockets;
   if (cSpindizzyTextureSetController == NULL) {
     if (cSpindizzyTextureSet == cDummyTextureSet) {
-      mSockets.push_back(new PlugSocket("SpindizzyTextureSetChanger", "")); // TODO: Default the second parameter to empty string!
+      mSockets.push_back(new PlugSocket("SpindizzyTextureSetChanger")); // TODO: Default the second parameter to empty string!
     }
-    mSockets.push_back(new PlugSocket("SpindizzyTextureSet", "")); // TODO: Default the second parameter to empty string!
+    mSockets.push_back(new PlugSocket("SpindizzyTextureSet")); // TODO: Default the second parameter to empty string!
   } else {
-    mSockets.push_back(new PlugSocket("SpindizzyTextureSetChanger", "")); // TODO: Default the second parameter to empty string!
+    mSockets.push_back(new PlugSocket("SpindizzyTextureSetChanger")); // TODO: Default the second parameter to empty string!
   }
-  mSockets.push_back(new PlugSocket("SurfaceProcessor", "")); // TODO: Default the second parameter to empty string!
+  mSockets.push_back(new PlugSocket("SurfaceProcessor")); // TODO: Default the second parameter to empty string!
+  mSockets.push_back(new PlugSocket("CommandRegistry"));
   return mSockets;
 }
 
@@ -85,7 +110,15 @@ void SpindizzyBlockSet::setSpindizzyTextureSet(ISpindizzyTextureSet* textureSet)
 }
 
 void SpindizzyBlockSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
-  if (socket->getType() == "SpindizzyTextureSet") {
+  if (socket->getType() == "CommandRegistry") {
+    ICommandRegistry* mPreviousCommandRegistry = cCommandRegistry;
+    if (assignPlugin(implementation, &cCommandRegistry, *socket)) { 
+      for (unsigned int i = 0; i < cSpindizzyBlockCommands.size(); i++) {
+        mPreviousCommandRegistry->unregisterCommand(cSpindizzyBlockCommands[i]);
+        cCommandRegistry->registerCommand(cSpindizzyBlockCommands[i]);
+      }
+    }
+  } else if (socket->getType() == "SpindizzyTextureSet") {
     if (assignPlugin(implementation, &cSpindizzyTextureSet, *socket)) {
       for (unsigned int i = 0; i < cElementFactories.size(); i++) {
         static_cast<ISpindizzyBlockFactory*>(cElementFactories[i])->signalAllElementsDirty();
