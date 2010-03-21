@@ -390,7 +390,7 @@ SimpleEditor::ElementInstancesComponentFactory::ElementInstancesComponentFactory
 }
 
 IHUDComponent* SimpleEditor::ElementInstancesComponentFactory::createComponent() {
-  return new EntityClassInstancesComponent(cParent->cElementSetEntityClass, cParent, -0.9f, -0.1f);
+  return new EntityClassInstancesComponent(cParent->cElementSetEntityClass, cParent);
 }
 
 SimpleEditor::ElementsPaletteComponentFactory::ElementsPaletteComponentFactory(SimpleEditor* parent) {

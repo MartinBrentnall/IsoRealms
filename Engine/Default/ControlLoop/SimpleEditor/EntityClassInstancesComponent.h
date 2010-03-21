@@ -59,7 +59,6 @@ class EntityClassInstancesComponent:public ResizableDialog {
   IInstanceSelectionListener* cListener;
   ListBox* cInstancesList;
   ListBox* cImplementationsList;
-  TextFieldComponent* cInstanceNameInputField;
 
   void configureEntityClass();
 
@@ -115,10 +114,8 @@ class EntityClassInstancesComponent:public ResizableDialog {
     void execute();
   };
 
-  std::string getTitle(IEntityClass*);
-
   public:
-  EntityClassInstancesComponent(IEntityClass*, IComponentContainer*, float, float, IInstanceSelectionListener* = NULL);
+  EntityClassInstancesComponent(IEntityClass*, IComponentContainer*, IInstanceSelectionListener* = NULL);
 
   /******************************\
    * Implements ResizableDialog *

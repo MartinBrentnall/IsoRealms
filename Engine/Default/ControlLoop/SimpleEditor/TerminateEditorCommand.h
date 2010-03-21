@@ -28,9 +28,9 @@ class TerminateEditorCommand:public ICommand {
   public:
   TerminateEditorCommand(bool&);
     
-  /*************************************************************************\
-   * Implemented methods of ICommand.h                                     *
-  \*************************************************************************/
+  /***********************\
+   * Implements ICommand *
+  \***********************/
   void execute();  
 };
 

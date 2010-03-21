@@ -37,6 +37,10 @@ void Button::setText(const std::string& text) {
   cText = text;
 }
 
+void Button::setCommand(ICommand* command) {
+  cCommand = command;
+}
+
 void Button::update(int milliseconds) {
 }
 
@@ -57,7 +61,11 @@ void Button::render() {
     glEnd();  
   }
 
-  glColor3f(1.0f, 1.0f, 1.0f);
+  if (cCommand == NULL) {
+    glColor3f(0.4f, 0.4f, 0.4f);
+  } else {
+    glColor3f(1.0f, 1.0f, 1.0f);
+  }
   IFont* mFont = LookAndFeel::getDefaultFont();
   float mFontSize = LookAndFeel::getDefaultFontSize();
   mFont->print(mLeft + (mRight - mLeft) * 0.5f, mBottom + 0.01f, mFontSize, 1, cText.c_str());
@@ -144,17 +152,19 @@ bool Button::mouseButtonDown(SDL_Event& event) {
 }
 
 bool Button::input(SDL_Event& event) {
-  switch (event.type) {
-    case SDL_MOUSEBUTTONDOWN: {
-      return mouseButtonDown(event);
-    }
-
-    case SDL_MOUSEBUTTONUP: {
-      return mouseButtonUp(event);
-    }
-
-    case SDL_MOUSEMOTION: {
-      return mouseMotion(event);
+  if (cCommand != NULL) {
+    switch (event.type) {
+      case SDL_MOUSEBUTTONDOWN: {
+        return mouseButtonDown(event);
+      }
+  
+      case SDL_MOUSEBUTTONUP: {
+        return mouseButtonUp(event);
+      }
+  
+      case SDL_MOUSEMOTION: {
+        return mouseMotion(event);
+      }
     }
   }
   return false;

@@ -29,7 +29,7 @@ ChoosePluginImplementationCommand::ChoosePluginImplementationCommand(IPluginSupp
 void ChoosePluginImplementationCommand::execute() {
   IInstanceSelectionListener* mListener = cPlugSocket != NULL ? new SelectionListener(this) : NULL;
   PluginEntityClass* mPluginEntityClass = new PluginEntityClass(cPluginRegistryAccessor, cPluginType, cComponentContainer);
-  IHUDComponent* cPluginInstancesComponent = new EntityClassInstancesComponent(mPluginEntityClass, cComponentContainer, -0.7f, 0.1f, mListener);
+  IHUDComponent* cPluginInstancesComponent = new EntityClassInstancesComponent(mPluginEntityClass, cComponentContainer, mListener);
   cComponentContainer->addComponent(cPluginInstancesComponent);
 }
 

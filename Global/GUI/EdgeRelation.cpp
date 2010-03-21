@@ -24,18 +24,18 @@ EdgeRelation::EdgeRelation(IRectangle* rectangle, EdgeRelationType relationType,
   cOffset = offset;
 }
 
-EdgeRelation::EdgeRelation(IRectangle* rectangle, EdgeRelationType relationType) {
-  cRectangle = rectangle;
-  cRelationType = relationType;
-  cOffset = 0.02f;
-}
-
 float EdgeRelation::getLeft() {
-  return (cRelationType == OUTSIDE ? cRectangle->getRight() - getOffset() : cRectangle->getLeft() + getOffset());
+  Configuration* mConfiguration = Configuration::getInstance();
+  ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
+  float mAspectRatio = mScreen->getAspectRatio();
+  return (cRelationType == OUTSIDE ? cRectangle->getRight() - getOffset() * mAspectRatio : cRectangle->getLeft() + getOffset() * mAspectRatio);
 }
 
 float EdgeRelation::getRight() {
-  return (cRelationType == OUTSIDE ? cRectangle->getLeft() + getOffset() : cRectangle->getRight() - getOffset());
+  Configuration* mConfiguration = Configuration::getInstance();
+  ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
+  float mAspectRatio = mScreen->getAspectRatio();
+  return (cRelationType == OUTSIDE ? cRectangle->getLeft() + getOffset() * mAspectRatio : cRectangle->getRight() - getOffset() * mAspectRatio);
 }
 
 float EdgeRelation::getTop() {

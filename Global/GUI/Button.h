@@ -50,6 +50,8 @@ class Button:public ISizedComponent,
   Button();
   Button(IComponentBoundsCalculator*, ICommand*, const std::string&);
 
+  void setCommand(ICommand*);
+
   /*****************************\
    * Implements ITextComponent *
   \*****************************/

@@ -21,7 +21,9 @@
 
 #include <iostream>
 
+#include "../Configuration.h"
 #include "../IRectangle.h"
+#include "../ScreenConfiguration.h"
 
 class EdgeRelation {
   public:
@@ -39,8 +41,7 @@ class EdgeRelation {
   float getOffset();
 
   public:
-  EdgeRelation(IRectangle*, EdgeRelationType, float);
-  EdgeRelation(IRectangle*, EdgeRelationType);
+  EdgeRelation(IRectangle*, EdgeRelationType, float = 0.02f);
 
   float getLeft();
   float getRight();

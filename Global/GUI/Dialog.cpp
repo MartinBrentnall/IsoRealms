@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2009,2010 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -35,7 +35,8 @@ Dialog::Dialog(IComponentContainer* componentContainer, const std::string& dialo
     DOMNodeWrapper *mNode = mFileNode->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Dialog") {
-      loadDialog(mNode);
+      cTitle = mNode->getAttribute("title");
+      loadDialog(mNode, this, 0.02f);
     }
   }
 }
@@ -65,12 +66,12 @@ std::vector<std::string> Dialog::splitWords(std::string& words) {
   return mSplitWords;
 }
 
-IComponentBoundsCalculator* Dialog::getBoundsCalculator(DOMNodeWrapper* node, IRectangle* parent, ISizedComponent* component) {
+IComponentBoundsCalculator* Dialog::getBoundsCalculator(DOMNodeWrapper* node, IRectangle* parent, float padding, ISizedComponent* component) {
   std::string mAlignment = node->getAttribute("align");
   std::vector<std::string> mAlignWords = splitWords(mAlignment);
 
   // TODO: Cache this relation for later!
-  EdgeRelation* mInsideParent = new EdgeRelation(parent, EdgeRelation::INSIDE);
+  EdgeRelation* mInsideParent = new EdgeRelation(parent, EdgeRelation::INSIDE, padding);
   EdgeRelation* mLeftEdge   = NULL;
   EdgeRelation* mRightEdge  = NULL;
   EdgeRelation* mTopEdge    = NULL;
@@ -87,50 +88,69 @@ IComponentBoundsCalculator* Dialog::getBoundsCalculator(DOMNodeWrapper* node, IR
 
   // TODO: Warn about ignored things in case parent is fully used and relations are still specified
 
-  if (mLeftEdge == NULL && mRightEdge == NULL) {
-    std::string mLeft = node->getAttribute("left");
-    std::string mRight = node->getAttribute("right");
-    if (mLeft != "") {
-      // TODO: Left edge
+  std::string mLeft = node->getAttribute("left");
+  std::string mRight = node->getAttribute("right");
+  if (mLeft != "") {
+    std::vector<std::string> mLeftWords = splitWords(mLeft);
+    for (unsigned int i = 0; i < mLeftWords.size(); i++) {
+      // Find component to go to the right of
+      std::map<std::string, ISizedComponent*>::iterator j = cSizedComponents.find(mLeftWords[i]);
+      if (j != cSizedComponents.end()) {
+        // TODO: Cache this relation for later!
+        // TODO: Dealloc this relation!
+        mLeftEdge = new EdgeRelation(j->second, EdgeRelation::OUTSIDE);
+        break;
+      }
     }
-    if (mRight != "") {
-      // TODO: Left edge
-    }
-    if (mLeftEdge == NULL && mRightEdge == NULL) {
-      mLeftEdge = mInsideParent;
-      mRightEdge = mInsideParent;
+  }
+  if (mRight != "") {
+    std::vector<std::string> mRightWords = splitWords(mRight);
+    for (unsigned int i = 0; i < mRightWords.size(); i++) {
+      // Find component to go to the left of
+      std::map<std::string, ISizedComponent*>::iterator j = cSizedComponents.find(mRightWords[i]);
+      if (j != cSizedComponents.end()) {
+        // TODO: Cache this relation for later!
+        // TODO: Dealloc this relation!
+        mRightEdge = new EdgeRelation(j->second, EdgeRelation::OUTSIDE);
+        break;
+      }
     }
   }
 
-  if (mTopEdge == NULL && mBottomEdge == NULL) {
-    std::string mTop = node->getAttribute("top");
-    std::string mBottom = node->getAttribute("bottom");
-    if (mTop != "") {
-      std::vector<std::string> mTopWords = splitWords(mTop);
-      for (unsigned int i = 0; i < mTopWords.size(); i++) {
-        // Find component to go below
-        std::map<std::string, ISizedComponent*>::iterator j = cSizedComponents.find(mTopWords[i]);
-        if (j != cSizedComponents.end()) {
-          // TODO: Cache this relation for later!
-          // TODO: Dealloc this relation!
-          mTopEdge = new EdgeRelation(j->second, EdgeRelation::OUTSIDE);
-          break;
-        }
+  std::string mTop = node->getAttribute("top");
+  std::string mBottom = node->getAttribute("bottom");
+  if (mTop != "") {
+    std::vector<std::string> mTopWords = splitWords(mTop);
+    for (unsigned int i = 0; i < mTopWords.size(); i++) {
+      // Find component to go below
+      std::map<std::string, ISizedComponent*>::iterator j = cSizedComponents.find(mTopWords[i]);
+      if (j != cSizedComponents.end()) {
+        // TODO: Cache this relation for later!
+        // TODO: Dealloc this relation!
+        mTopEdge = new EdgeRelation(j->second, EdgeRelation::OUTSIDE);
+        break;
       }
     }
-    if (mBottom != "") {
-      std::vector<std::string> mBottomWords = splitWords(mBottom);
-      for (unsigned int i = 0; i < mBottomWords.size(); i++) {
-        // Find component to go below
-        std::map<std::string, ISizedComponent*>::iterator j = cSizedComponents.find(mBottomWords[i]);
-        if (j != cSizedComponents.end()) {
-          // TODO: Cache this relation for later!
-          // TODO: Dealloc this relation!
-          mBottomEdge = new EdgeRelation(j->second, EdgeRelation::OUTSIDE);
-          break;
-        }
+  }
+  if (mBottom != "") {
+    std::vector<std::string> mBottomWords = splitWords(mBottom);
+    for (unsigned int i = 0; i < mBottomWords.size(); i++) {
+      // Find component to go below
+      std::map<std::string, ISizedComponent*>::iterator j = cSizedComponents.find(mBottomWords[i]);
+      if (j != cSizedComponents.end()) {
+        // TODO: Cache this relation for later!
+        // TODO: Dealloc this relation!
+        mBottomEdge = new EdgeRelation(j->second, EdgeRelation::OUTSIDE);
+        break;
       }
     }
+  }
+
+  if (component == NULL) {
+    if (mLeftEdge == NULL)   {mLeftEdge   = mInsideParent;}
+    if (mRightEdge == NULL)  {mRightEdge  = mInsideParent;}
+    if (mTopEdge == NULL)    {mTopEdge    = mInsideParent;}
+    if (mBottomEdge == NULL) {mBottomEdge = mInsideParent;}
   }
   // TODO: Dealloc mInsideParent relation
   // TODO: Dealloc FlexibleGrid
@@ -146,13 +166,32 @@ ISizedComponent* Dialog::loadSizedComponent(DOMNodeWrapper* node) {
       return new TextLabelComponent(mLabelText);
     } else if (mValueAsString == "TextField") {
       std::string mName = mNode->getAttribute("name");
-      return new TextFieldComponent();
+      TextFieldComponent* mTextField = new TextFieldComponent();
+      cStringValueComponents[mName] = mTextField;
+      return mTextField;
     } else {
       std::cout << "WARNING: Unknown sized component tag: \"" << mValueAsString << "\"" << std::endl;
       // TODO: Throw
     }
   }  
   return NULL;
+}
+
+void Dialog::loadEvenGridCells(DOMNodeWrapper* node, GridLayoutComponent* grid) {
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper* mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "Cell") {
+      int mRow = mNode->getIntegerAttribute("row") - 1;
+      int mColumn = mNode->getIntegerAttribute("column") - 1;
+      IComponentBoundsCalculator* mCellRectangle = grid->getCellLayout(mColumn, mRow);
+      std::cout << "Loading even cell " << mRow << "," << mColumn << std::endl;
+      loadDialog(mNode, mCellRectangle, 0.0f);
+    } else {
+      std::cout << "WARNING: Unknown cell tag: \"" << mValueAsString << "\"" << std::endl;
+      // TODO: Throw
+    }
+  }
 }
 
 void Dialog::loadFlexibleGridCells(DOMNodeWrapper* node, FlexibleGridLayoutComponent* grid) {
@@ -173,17 +212,23 @@ void Dialog::loadFlexibleGridCells(DOMNodeWrapper* node, FlexibleGridLayoutCompo
   }  
 }
 
-void Dialog::loadDialog(DOMNodeWrapper* node) {
-  cTitle = node->getAttribute("title");
+void Dialog::loadDialog(DOMNodeWrapper* node, IRectangle* parent, float padding) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper* mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "FlexibleGrid") {
+    if (mValueAsString == "EvenGrid") {
+      int mRows = mNode->getIntegerAttribute("rows");
+      int mColumns = mNode->getIntegerAttribute("columns");
+      std::string mName = mNode->getAttribute("name");
+      IComponentBoundsCalculator* mGridLayout = getBoundsCalculator(mNode, parent, padding, NULL);
+      GridLayoutComponent* mGridComponent = new GridLayoutComponent(mColumns, mRows, mGridLayout);
+      loadEvenGridCells(mNode, mGridComponent);
+    } else if (mValueAsString == "FlexibleGrid") {
       int mRows = mNode->getIntegerAttribute("rows");
       int mColumns = mNode->getIntegerAttribute("columns");
       std::string mName = mNode->getAttribute("name");
       FlexibleGridLayoutComponent* mGridComponent = new FlexibleGridLayoutComponent(mColumns, mRows);
-      IComponentBoundsCalculator* mGridLayout = getBoundsCalculator(mNode, this, mGridComponent);
+      IComponentBoundsCalculator* mGridLayout = getBoundsCalculator(mNode, parent, padding, mGridComponent);
       mGridComponent->setBoundsCalculator(mGridLayout);
       loadFlexibleGridCells(mNode, mGridComponent);
       cSizedComponents[mName] = mGridComponent;
@@ -191,18 +236,38 @@ void Dialog::loadDialog(DOMNodeWrapper* node) {
       std::string mText = mNode->getAttribute("text");
       std::string mName = mNode->getAttribute("name");
       Button* mButton = new Button(NULL, NULL, mText);
-      IComponentBoundsCalculator* mButtonLayout = getBoundsCalculator(mNode, this, mButton);
+      IComponentBoundsCalculator* mButtonLayout = getBoundsCalculator(mNode, parent, padding, mButton);
       mButton->setBoundsCalculator(mButtonLayout);
       cSizedComponents[mName] = mButton;
+      cCommandableComponents[mName] = mButton;
       addComponent(mButton);
       setFocusedComponent(mButton);
+    } else if (mValueAsString == "Label") {
+      std::string mLabelText = mNode->getStringValue();
+      std::string mName = mNode->getAttribute("name");
+      TextLabelComponent* mLabel = new TextLabelComponent(mLabelText);
+      IComponentBoundsCalculator* mLabelLayout = getBoundsCalculator(mNode, parent, padding, mLabel);
+      mLabel->setBoundsCalculator(mLabelLayout);
+      cSizedComponents[mName] = mLabel;
+      addComponent(mLabel);
+      setFocusedComponent(mLabel);
+    } else if (mValueAsString == "TextField") {
+      std::string mName = mNode->getAttribute("name");
+      TextFieldComponent* mTextField = new TextFieldComponent();
+      IComponentBoundsCalculator* mTextFieldLayout = getBoundsCalculator(mNode, parent, padding, mTextField);
+      mTextField->setBoundsCalculator(mTextFieldLayout);
+      cSizedComponents[mName] = mTextField;
+      cStringValueComponents[mName] = mTextField;
+      addComponent(mTextField);
+      setFocusedComponent(mTextField);
     } else if (mValueAsString == "ListBox") {
       std::string mName = mNode->getAttribute("name");
       ScrollableContainer* mListContainer = new ScrollableContainer();
       ListBox* mListBox = new ListBox();
       mListContainer->setRootComponent(mListBox);
-      IComponentBoundsCalculator* mListLayout = getBoundsCalculator(mNode, this, NULL);
+      IComponentBoundsCalculator* mListLayout = getBoundsCalculator(mNode, parent, padding, NULL);
       mListContainer->setBoundsCalculator(mListLayout);
+      cListBoxComponents[mName] = mListBox;
       addComponent(mListContainer);
       setFocusedComponent(mListContainer);
     } else {
@@ -221,6 +286,34 @@ Dialog::Dialog(IComponentContainer* componentContainer, const std::string& title
   cHeight = height;
   cDragging = false;
   cFocusedComponent = NULL;
+}
+
+void Dialog::setComponentAction(const std::string& componentName, ICommand* command) {
+  std::map<std::string, Button*>::iterator i = cCommandableComponents.find(componentName);
+  if (i != cCommandableComponents.end()) {
+    i->second->setCommand(command);
+  } else {
+    std::cout << "WARNING: Specified commandable component isn't known in this dialog!" << std::endl;
+    // TODO: Chuck
+    exit(1);
+  }
+}
+
+ListBox* Dialog::getListBox(const std::string& componentName) {
+  std::map<std::string, ListBox*>::iterator i = cListBoxComponents.find(componentName);
+  return i != cListBoxComponents.end() ? i->second : NULL;
+}
+
+std::string Dialog::getStringValue(const std::string& componentName) {
+  std::map<std::string, TextFieldComponent*>::iterator i = cStringValueComponents.find(componentName);
+  if (i != cStringValueComponents.end()) {
+    return i->second->getText();
+  } else {
+    std::cout << "WARNING: Specified commandable component isn't known in this dialog!" << std::endl;
+    // TODO: Chuck
+    exit(1);
+  }
+  return NULL;
 }
 
 float Dialog::getLeft() {

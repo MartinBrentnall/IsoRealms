@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2009,2010 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -34,6 +34,7 @@
 #include "ComponentEdgeLayout.h"
 #include "EdgeRelation.h"
 #include "FlexibleGridLayoutComponent.h"
+#include "GridLayoutComponent.h"
 #include "IComponentBoundsCalculator.h"
 #include "IComponentCloseListener.h"
 #include "IRectangularComponent.h"
@@ -49,16 +50,21 @@ class Dialog:public IRectangularComponent {
   static const float TITLE_BAR_HEIGHT;
 
   std::map<std::string, ISizedComponent*> cSizedComponents;
+  std::map<std::string, Button*> cCommandableComponents;
+  std::map<std::string, ListBox*> cListBoxComponents;
+  // TODO: Should use interface to support other components; e.g. ListBoxes
+  std::map<std::string, TextFieldComponent*> cStringValueComponents;
   std::string cTitle;
   std::vector<IComponentCloseListener*> cCloseListeners;
   std::vector<IHUDComponent*> cChildren;
   IHUDComponent* cFocusedComponent;
 
-  void loadDialog(DOMNodeWrapper* node);
+  void loadDialog(DOMNodeWrapper*, IRectangle*, float);
   void setComponentText(DOMNodeWrapper*, ITextComponent*);
-  IComponentBoundsCalculator* getBoundsCalculator(DOMNodeWrapper*, IRectangle*, ISizedComponent*);
+  IComponentBoundsCalculator* getBoundsCalculator(DOMNodeWrapper*, IRectangle*, float, ISizedComponent*);
   ISizedComponent* loadSizedComponent(DOMNodeWrapper*);
   void loadFlexibleGridCells(DOMNodeWrapper*, FlexibleGridLayoutComponent*);
+  void loadEvenGridCells(DOMNodeWrapper*, GridLayoutComponent*);
   std::vector<std::string> splitWords(std::string&);
 
   void testFocusChange(SDL_Event& event);
@@ -96,6 +102,9 @@ class Dialog:public IRectangularComponent {
 
   void addComponent(IHUDComponent*);
   void setFocusedComponent(IHUDComponent*);
+  void setComponentAction(const std::string&, ICommand*);
+  ListBox* getListBox(const std::string&);
+  std::string getStringValue(const std::string&);
 
   virtual void renderContent() = 0;
   virtual void updateContent(int) = 0;
