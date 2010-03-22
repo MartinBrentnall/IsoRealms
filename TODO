@@ -1,19 +1,28 @@
-Convert dialogs to use parsing:
- - Lift Configuration Dialog
 
-Implement cleanup in Dialog for dialog resources.
-Implement a command selection mechanism.
-Implement mechanism for showing an existing dialog instead of always opening a new one.
-Mechanism to position dialogs more appropriately in the container.
-In Plugin Support dialog, plugins should be selected from a combo box.
-Entity Class Instances dialog should not be used in selecting plugin instances.
-Add shadow property to the Font class.
-There should be a HUD designer.
-The HUD designer should have standard components.
-A HUD designer standard component should be the text label component.
-Utility to provide a variable as a number label to the HUD designer.
-Utility to provide a variable as a time formatted label to the HUD designer.
-Utility to provide camera aware compass to the HUD designer.
+Dialog Engine and UI framework:
+ - Implement cleanup in Dialog Engine for dialog resources.
+ - Convert dialogs to use parsing:
+   - Lift Configuration Dialog
+ - Implement a mechanism for showing an existing dialog instead of always opening a new one.
+ - Implement a mechanism to position dialogs more appropriately in the container.
+ - In Plugin Support dialog, plugins should be selected from a combo box.
+ - Entity Class Instances dialog should not be used in selecting plugin instances.
+
+Command Registry:
+ - Implement a command selection mechanism.
+
+Font Issues:
+ - Add shadow and colour properties to the GLFreeType Font class.
+ - Add support to reuse existing texture ID's for same font name and size.
+
+Implement a HUD designer utility:
+ - The HUD designer should have "standard" components:
+   - Text label component.
+   - Decoration component (?).
+ - Utility to convert a variable to a number label HUD designer component.
+ - Utility to convert a variable to a time formatted label HUD designer component.
+ - Utility to convert a camera angle to a compass HUD designer component.
+
 Refactor Utilities to be a separate entity class.
 
 Pause / Unpause Commands provided to the Command Registry:
@@ -30,3 +39,13 @@ Block set should provide customizable set of activate / deactivate commands to t
 Add condition configuration to block elements.
 Block set should provide a configuration for commands to execute on each switch type.
 Utility to implement Spindizzy switch logic (provide switch commands to registry, which invoke appropriate commands on blocks and lifts)
+
+Surface Collisions:
+ - Register rollable surfaces
+ - Register intercepting rollable surfaces
+ - Register wall surfaces
+
+Build Process:
+ - Modify build process to use "Global" as an include directory.
+ - Modify headers to use non-relative include paths for Global / Plugins stuff.
+ - Change build process to use cmake.

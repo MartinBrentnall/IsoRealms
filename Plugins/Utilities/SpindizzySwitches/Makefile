@@ -23,20 +23,15 @@ LDCONFIG = ldconfig
 LN = ln
 
 OBJS = \
-DummyUtilities.o
+SpindizzySwitches.o \
+Switch.o
 
 objs:	$(OBJS)
-	g++ -Wl,-E -shared -o dummy.so *.o 
-	cd SoundCommandSupport; make
-	cd SpindizzySwitches; make
-	cd IntegerValueCommands; make
-
-clean:
-	$(RM) *.o dummy.so
-	cd SoundCommandSupport; make clean
-	cd SpindizzySwitches; make clean
-	cd IntegerValueCommands; make clean
+	g++ -Wl,-E -shared -o module.so *.o 
 
 all:
 	make clean
 	make objs
+
+clean:
+	$(RM) *.o module.so
