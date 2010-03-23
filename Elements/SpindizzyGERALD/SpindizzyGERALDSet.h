@@ -27,6 +27,7 @@
 #include "../../Plugins/3DModel/ISimpleModelFactory.h"
 #include "../../Plugins/Camera/ICamera.h"
 #include "../../Plugins/Collectables/ICollectables.h"
+#include "../../Plugins/CollidableSurfaceRegistry/ICollidableSurfaceRegistry.h"
 #include "../../Plugins/LocationAwareness/ILocationAwareness.h"
 #include "../../Plugins/ZoneContext/IZoneContext.h"
 
@@ -38,6 +39,7 @@ class SpindizzyGERALDSet:public IElementSet {
   ISimpleModelFactory* cGERALDModelFactory;
   ICamera* cCamera;
   ICollectables* cCollectables;
+  ICollidableSurfaceRegistry* cCollidableSurfaceRegistry;
   ILocationAwareness* cLocationAwareness;
   IZoneContext* cZoneContext;
 
@@ -46,15 +48,15 @@ class SpindizzyGERALDSet:public IElementSet {
   public:
   SpindizzyGERALDSet();
 
-  /*************************************************************************\
-   * Implemented methods of IElementSet.h                                  *
-  \*************************************************************************/
+  /**************************\
+   * Implements IElementSet *
+  \**************************/
   std::vector<IElementFactory*> getElementFactories();
   void destroy(IElement*);
 
-  /**************************************************************************\
-   * Implemented methods of IPluginSupport.h (in IElementSet.h)             *
-  \**************************************************************************/
+  /*****************************\
+   * Implements IPluginSupport *
+  \*****************************/
   std::string getName();
   std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);

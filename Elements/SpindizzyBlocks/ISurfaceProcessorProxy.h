@@ -23,6 +23,8 @@
 
 #include "../../Global/Zone.h"
 
+#include "../../Plugins/CollidableSurfaceRegistry/IRollableSurface.h"
+#include "../../Plugins/CollidableSurfaceRegistry/ICollidableWallSurface.h"
 #include "../../Plugins/SurfaceProcessor/ITileSurface.h"
 #include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
 #include "../../Plugins/SurfaceProcessor/ISurfaceProvider.h"
@@ -37,6 +39,8 @@ class ISurfaceProcessorProxy:public IElementSet {
   virtual std::vector<ITileSurface*> getTileSurfaces(ISurfaceProvider*, ITileSurface::FaceDirection) = 0;
   virtual std::vector<IWallSurface*> getWallSurfaces(ISurfaceProvider*, IWallSurface::FaceDirection) = 0;
   virtual void notifyZoneAction(Zone*) = 0;
+  virtual void registerRollableSurface(IRollableSurface*) = 0;
+  virtual void registerWallSurface(ICollidableWallSurface*) = 0;
 };
 
 #endif

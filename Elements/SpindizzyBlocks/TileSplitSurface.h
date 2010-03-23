@@ -28,7 +28,9 @@
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
 
-class TileSplitSurface:public ITileSurface {
+#include "ISpindizzyTileSurface.h"
+
+class TileSplitSurface:public ISpindizzyTileSurface {
   private:
   BlockLocation cLocation;
   // TODO: Change to refer to the texture set that may change!

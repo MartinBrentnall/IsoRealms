@@ -67,6 +67,7 @@ SpindizzyBlockSet::SpindizzyBlockSet() {
   cSpindizzyTextureSetController = NULL;
   assignDummyPlugin(&cSurfaceProcessor, "SurfaceProcessor");
   assignDummyPlugin(&cCommandRegistry, "CommandRegistry");
+  assignDummyPlugin(&cCollidableSurfaceRegistry, "CollidableSurfaceRegistry");
 
   addBlockState(SWITCH_CIRCLE_BOTH);
   addBlockState(SWITCH_CIRCLE_LEFT);
@@ -94,14 +95,15 @@ std::vector<PlugSocket*> SpindizzyBlockSet::getPlugSockets() {
   std::vector<PlugSocket*> mSockets;
   if (cSpindizzyTextureSetController == NULL) {
     if (cSpindizzyTextureSet == cDummyTextureSet) {
-      mSockets.push_back(new PlugSocket("SpindizzyTextureSetChanger")); // TODO: Default the second parameter to empty string!
+      mSockets.push_back(new PlugSocket("SpindizzyTextureSetChanger"));
     }
-    mSockets.push_back(new PlugSocket("SpindizzyTextureSet")); // TODO: Default the second parameter to empty string!
+    mSockets.push_back(new PlugSocket("SpindizzyTextureSet"));
   } else {
-    mSockets.push_back(new PlugSocket("SpindizzyTextureSetChanger")); // TODO: Default the second parameter to empty string!
+    mSockets.push_back(new PlugSocket("SpindizzyTextureSetChanger"));
   }
-  mSockets.push_back(new PlugSocket("SurfaceProcessor")); // TODO: Default the second parameter to empty string!
+  mSockets.push_back(new PlugSocket("SurfaceProcessor"));
   mSockets.push_back(new PlugSocket("CommandRegistry"));
+  mSockets.push_back(new PlugSocket("CollidableSurfaceRegistry"));
   return mSockets;
 }
 
@@ -118,16 +120,13 @@ void SpindizzyBlockSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
         cCommandRegistry->registerCommand(cSpindizzyBlockCommands[i]);
       }
     }
+  } else if (socket->getType() == "CollidableSurfaceRegistry") {
+    assignPlugin(implementation, &cCollidableSurfaceRegistry, *socket);
   } else if (socket->getType() == "SpindizzyTextureSet") {
     if (assignPlugin(implementation, &cSpindizzyTextureSet, *socket)) {
       for (unsigned int i = 0; i < cElementFactories.size(); i++) {
         static_cast<ISpindizzyBlockFactory*>(cElementFactories[i])->signalAllElementsDirty();
       }
-    }
-  } else if (socket->getType() == "SurfaceProcessor") {
-    ISurfaceProcessor* mPreviousSurfaceProcessor = cSurfaceProcessor;
-    if (assignPlugin(implementation, &cSurfaceProcessor, *socket)) {
-      mPreviousSurfaceProcessor->reinitialise();
     }
   } else if (socket->getType() == "SpindizzyTextureSetChanger") {
     ISpindizzyTextureSetChanger* mPreviousController = cSpindizzyTextureSetController;
@@ -139,12 +138,19 @@ void SpindizzyBlockSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
         cSpindizzyTextureSetController->setControlObject(this);
       }
     }
+  } else if (socket->getType() == "SurfaceProcessor") {
+    ISurfaceProcessor* mPreviousSurfaceProcessor = cSurfaceProcessor;
+    if (assignPlugin(implementation, &cSurfaceProcessor, *socket)) {
+      mPreviousSurfaceProcessor->reinitialise();
+    }
   } else {
     std::cout << "WARNING!  I don't know what to do with the implementation I was given!" << std::endl;
   }
 }
 
 IPlugin* SpindizzyBlockSet::getPlugin(PlugSocket* socket) {
+  if (socket->getType() == "CommandRegistry")            {return cCommandRegistry;}
+  if (socket->getType() == "CollidableSurfaceRegistry")  {return cCollidableSurfaceRegistry;}
   if (socket->getType() == "SpindizzyTextureSet")        {return cSpindizzyTextureSet;}
   if (socket->getType() == "SurfaceProcessor")           {return cSurfaceProcessor;}
   if (socket->getType() == "SpindizzyTextureSetChanger") {return cSpindizzyTextureSetController;}
@@ -186,6 +192,14 @@ std::vector<ITileSurface*> SpindizzyBlockSet::getTileSurfaces(ISurfaceProvider* 
 
 std::vector<IWallSurface*> SpindizzyBlockSet::getWallSurfaces(ISurfaceProvider* provider, IWallSurface::FaceDirection facing) {
   return cSurfaceProcessor->getWallSurfaces(provider, facing);
+}
+
+void SpindizzyBlockSet::registerRollableSurface(IRollableSurface* rollableSurface) {
+  cCollidableSurfaceRegistry->registerRollableSurface(rollableSurface);
+}
+
+void SpindizzyBlockSet::registerWallSurface(ICollidableWallSurface* wallSurface) {
+  cCollidableSurfaceRegistry->registerWallSurface(wallSurface);
 }
 
 void SpindizzyBlockSet::notifyZoneAction(Zone* zone) {

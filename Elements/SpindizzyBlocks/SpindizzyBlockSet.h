@@ -23,6 +23,7 @@
 #include <vector>
 
 #include "../../Plugins/CommandRegistry/ICommandRegistry.h"
+#include "../../Plugins/CollidableSurfaceRegistry/ICollidableSurfaceRegistry.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 #include "../../Plugins/SpindizzyTextureSet/SpindizzyTextureSetDummy.h"
 #include "../../Plugins/SpindizzyTextureSetChanger/ISpindizzyTextureSetChanger.h"
@@ -76,6 +77,7 @@ class SpindizzyBlockSet:public ISurfaceProcessorProxy,
   ISpindizzyTextureSet* cDummyTextureSet;
   ISpindizzyTextureSetChanger* cSpindizzyTextureSetController;
   ISurfaceProcessor* cSurfaceProcessor;
+  ICollidableSurfaceRegistry* cCollidableSurfaceRegistry;
   std::map<std::string, bool*> cBlockStates;
 
   class BlockFactory:public SpindizzyBlockFactory {
@@ -153,6 +155,9 @@ class SpindizzyBlockSet:public ISurfaceProcessorProxy,
   std::vector<ITileSurface*> getTileSurfaces(ISurfaceProvider*, ITileSurface::FaceDirection);
   std::vector<IWallSurface*> getWallSurfaces(ISurfaceProvider*, IWallSurface::FaceDirection);
   void notifyZoneAction(Zone*);
+
+  void registerRollableSurface(IRollableSurface*);
+  void registerWallSurface(ICollidableWallSurface*);
 
   /************************************\
    * Implements IChangeableTextureSet *
