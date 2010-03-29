@@ -88,6 +88,8 @@ class Map:public IMap,
    */
   bool overlaps(BlockArea&);
 
+  void initMap(unsigned int pass);
+
   /**
    * Initialize the map.  This function will only initialise dirty zones and
    * elements of the map.  It is called immediately when a map is loaded by the

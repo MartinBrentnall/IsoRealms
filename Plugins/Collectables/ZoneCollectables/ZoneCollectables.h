@@ -32,7 +32,8 @@ class ZoneCollectables:public ICollectables,
                        public IZoneContextListener {
   private:
   IZoneContext* cZoneContext;
-  IZone* cCurrentZone;
+  IZone* cEditingZone;
+  IZone* cRuntimeZone;
   std::vector<PlugSocket*> cZoneContextSocket;
   std::map<IZone*, std::vector<ICollectable*>*> cCollectables;
 

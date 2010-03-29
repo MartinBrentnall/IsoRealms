@@ -6,10 +6,10 @@ DefaultCollidableSurfaceRegistry::DefaultCollidableSurfaceRegistry() {
 }
 
 void DefaultCollidableSurfaceRegistry::registerRollableSurface(IRollableSurface* rollableSurface) {
-  SurfaceCache* mSurfaceCache = cZoneSurfaceCaches[cZone];
+  SurfaceCache* mSurfaceCache = cZoneSurfaceCaches[cEditingZone];
   if (mSurfaceCache == NULL) {
     mSurfaceCache = new SurfaceCache();
-    cZoneSurfaceCaches[cZone];
+    cZoneSurfaceCaches[cEditingZone] = mSurfaceCache;
   }
   mSurfaceCache->addRollableSurface(rollableSurface);
 }
@@ -18,16 +18,34 @@ void DefaultCollidableSurfaceRegistry::registerWallSurface(ICollidableWallSurfac
   // TODO: Implement this
 }
 
+ICollisionData* DefaultCollidableSurfaceRegistry::getNextEvent(Vertex& start, Vertex& end) {
+  std::map<IZone*, SurfaceCache*>::iterator i = cZoneSurfaceCaches.find(cRuntimeZone);
+  if (i != cZoneSurfaceCaches.end()) {
+    return i->second->getNextEvent(start, end);
+  }
+  return NULL;
+}
+
+IRollableSurface* DefaultCollidableSurfaceRegistry::getSurfaceAt(Vertex& location) {
+  std::map<IZone*, SurfaceCache*>::iterator i = cZoneSurfaceCaches.find(cRuntimeZone);
+  std::cout << "Finding surface in zone " << cRuntimeZone << "..." << std::endl; 
+  if (i != cZoneSurfaceCaches.end()) {
+    std::cout << "Checking surfaces..." << std::endl; 
+    return i->second->getSurfaceAt(location);
+  }
+  return NULL;
+}
+
 void DefaultCollidableSurfaceRegistry::notifyZoneAction(IZone* zone) {
-  cZone = zone;
+  cEditingZone = zone;
 }
 
 void DefaultCollidableSurfaceRegistry::initPlugin(IZone* zone) {
-  cZone = zone;
+  cEditingZone = zone;
 }
 
 void DefaultCollidableSurfaceRegistry::zoneContextChanged(IZone* zone) {
-  cZone = zone;
+  cRuntimeZone = zone;
 }
 
 std::string DefaultCollidableSurfaceRegistry::getName() {
@@ -44,6 +62,8 @@ void DefaultCollidableSurfaceRegistry::setPlugin(PlugSocket* socket, IPlugin* pl
     if (assignPlugin(plugin, &cZoneContext, *socket)) {
       mPreviousZoneContext->removeZoneContextListener(this);
       cZoneContext->addZoneContextListener(this);
+      cEditingZone = cZoneContext->getZoneContext();
+      cRuntimeZone = cEditingZone;
     }
   } else {
     // TODO: Throw

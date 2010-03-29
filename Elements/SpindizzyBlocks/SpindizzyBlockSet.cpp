@@ -186,7 +186,7 @@ void SpindizzyBlockSet::setDirty() {
   cSurfaceProcessor->setDirty();
 }
 
-std::vector<ITileSurface*> SpindizzyBlockSet::getTileSurfaces(ISurfaceProvider* provider, ITileSurface::FaceDirection facing) {
+std::vector<ITileSurfaceTemplate*> SpindizzyBlockSet::getTileSurfaces(ISurfaceProvider* provider, ITileSurface::FaceDirection facing) {
   return cSurfaceProcessor->getTileSurfaces(provider, facing);
 }
 

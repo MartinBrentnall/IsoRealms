@@ -25,6 +25,7 @@
 
 #include "ISurfaceProvider.h"
 #include "ITileSurface.h"
+#include "ITileSurfaceTemplate.h"
 #include "IWallSurface.h"
 
 class ISurfaceProcessor:public virtual IPlugin {
@@ -72,7 +73,7 @@ class ISurfaceProcessor:public virtual IPlugin {
    * @param IRollableSurfaceProvider*  The provider to calculate surfaces for.
    * @returns  A vector containing the calculated surfaces.
    */
-  virtual std::vector<ITileSurface*> getTileSurfaces(ISurfaceProvider*, ITileSurface::FaceDirection) = 0;
+  virtual std::vector<ITileSurfaceTemplate*> getTileSurfaces(ISurfaceProvider*, ITileSurface::FaceDirection) = 0;
 
   /**
    * Retrieve the wall surfaces from the specified provider according to the

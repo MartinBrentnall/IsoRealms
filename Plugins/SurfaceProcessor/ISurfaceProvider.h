@@ -61,35 +61,6 @@ class ISurfaceProvider {
    */
   virtual std::vector<IWallSurface*> getWallSurfaces(int, IWallSurface::FaceDirection) = 0;
 
-  /**
-   * Create a new rectangular surface by using the specified section of this
-   * surface.  Values are inclusive!
-   * 
-   * @param IRollableSurface::FaceDirection  The direction that the surface
-   *           faces.
-   * @param int  North surface location.
-   * @param int  East surface location.
-   * @param int  South surface location.
-   * @param int  West surface location.
-   * @returns  The sub surface.
-   */
-  virtual ITileSurface* createSubSurface(ITileSurface::FaceDirection, int, int, int, int) = 0;
-
-  /**
-   * Create a new wall face surface according to the specified parameters.
-   * 
-   * @param int  X tile location of the wall.
-   * @param int  Y tile location of the wall.
-   * @param IWallSurface::FaceDirection  The direction that the wall faces,
-   *           away from the tile location.
-   * @param int  Length of the wall.
-   * @param int  Bottom height of the wall.
-   * @param int  Top height of the wall.
-   * @param int  Bottom slope step of the wall.
-   * @param int  Top slope step of the wall.
-   * @returns  The wall surface meeting the specification.
-   * @throws Something  TODO: If a wall cannot be created to the specification.
-   */
   virtual IWallSurface* createSubSurface(int, int, IWallSurface::FaceDirection, int, int, int, int, int) = 0;
 
   /**

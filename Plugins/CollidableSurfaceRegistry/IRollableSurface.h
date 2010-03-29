@@ -7,7 +7,10 @@
 
 class IRollableSurface {
   public:
-  ICollisionData getCollision(Vertex&, Vertex&);
+  virtual ICollisionData* getCollision(Vertex&, Vertex&) = 0;
+  virtual ICollisionData* getRollingEvent(Vertex&, Vertex&) = 0;
+  virtual float getHeightAt(float, float) = 0;
+  virtual bool contains(Vertex&) = 0;
 };
 
 #endif

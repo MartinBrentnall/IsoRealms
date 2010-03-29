@@ -75,7 +75,7 @@ void SpindizzyJewel::render() {
   }
 }
 
-bool SpindizzyJewel::initElement() {
+bool SpindizzyJewel::initElement(unsigned int) {
   ICollectablesAccessor* mCollectablesAccessor = getElementSet();
   ICollectables* mCollectables = mCollectablesAccessor->getCollectables();
   mCollectables->registerCollectable(this);

@@ -21,6 +21,10 @@
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext" socketid=""/>
     <Configuration/>
   </Plugin>
+  <Plugin implementation="DefaultCollidableSurfaceRegistry" instance="SpindizzySurfaces" type="CollidableSurfaceRegistry">
+    <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext" socketid=""/>
+    <Configuration/>
+  </Plugin>
   <Plugin implementation="DefaultCommandRegistry" instance="SpindizzyCommands" type="CommandRegistry">
     <Configuration/>
   </Plugin>
@@ -253,6 +257,7 @@
     <Configuration/>
   </Plugin>
   <ElementSet instance="Blocks" type="SpindizzyBlocks">
+    <UsePlugin implementation="CollidableSurfaceRegistry" instance="SpindizzySurfaces"/>
     <UsePlugin implementation="SpindizzyTextureSetChanger" instance="PerZone"/>
     <UsePlugin implementation="SurfaceProcessor" instance="BlockSubtractor"/>
     <Configuration/>
@@ -280,6 +285,7 @@
     <UsePlugin implementation="3DModel" instance="Pyramid"/>
     <UsePlugin implementation="Camera" instance="CraftCamera"/>
     <UsePlugin implementation="Collectables" instance="Jewels"/>
+    <UsePlugin implementation="CollidableSurfaceRegistry" instance="SpindizzySurfaces"/>
     <UsePlugin implementation="LocationAwareness" instance="PlayerLocation"/>
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext"/>
     <Configuration/>

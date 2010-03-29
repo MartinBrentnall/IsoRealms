@@ -18,6 +18,11 @@
  */
 #include "SpindizzyWater.h"
 
+const unsigned int SpindizzyWater::INIT_REGISTER_BLOCKS = 0;
+const unsigned int SpindizzyWater::INIT_PROCESS_BLOCKS = 1;
+const unsigned int SpindizzyWater::INIT_REGISTER_SURFACES = 2;
+const unsigned int SpindizzyWater::INIT_USE_SURFACES = 3;
+
 SpindizzyWater::SpindizzyWater(ISpindizzyBlockFactory* elementFactory, BlockLocation* startLocation, BlockLocation* endLocation, ISpindizzyTextureSet** textureSet) : Element<ISurfaceProcessorProxy, ISpindizzyBlockFactory>(elementFactory) {
   cSpindizzyTextureSet = textureSet;
   cStartLocation = BlockLocation(endLocation->x > startLocation->x ? startLocation->x : endLocation->x,
@@ -26,14 +31,13 @@ SpindizzyWater::SpindizzyWater(ISpindizzyBlockFactory* elementFactory, BlockLoca
   cEndLocation = BlockLocation(endLocation->x > startLocation->x ? endLocation->x : startLocation->x,
                                endLocation->y > startLocation->y ? endLocation->y : startLocation->y,
                               (endLocation->z <= startLocation->z ? endLocation->z : startLocation->z) - 1);
-  cInitStage = CACHE_SURFACES;
 }
 
 void SpindizzyWater::setDirty() {
   signalElementDirty();
 }
 
-std::vector<ITileSurface*> SpindizzyWater::getWaterSurfaces() {
+std::vector<ITileSurfaceTemplate*> SpindizzyWater::getWaterSurfaces() {
   ISurfaceProcessorProxy* mSurfaceProcessor = getElementSet();
   return mSurfaceProcessor->getTileSurfaces(this, ITileSurface::UP);
 }
@@ -46,10 +50,16 @@ std::vector<ITileSurface*> SpindizzyWater::getTileSurfaces(ITileSurface::FaceDir
 }
 
 void SpindizzyWater::renderStatic() {
-  std::vector<ITileSurface*> mTopTileSurfaces = getWaterSurfaces();
+  std::vector<ITileSurfaceTemplate*> mTopTileSurfaces = getWaterSurfaces();
   for (unsigned int i = 0; i < mTopTileSurfaces.size(); i++) {
-    mTopTileSurfaces[i]->render();
+    int mNorth = mTopTileSurfaces[i]->getNorth();
+    int mEast = mTopTileSurfaces[i]->getEast();
+    int mSouth = mTopTileSurfaces[i]->getSouth();
+    int mWest = mTopTileSurfaces[i]->getWest();
+    ISpindizzyTileSurface* mTileSurface = createSubSurface(ITileSurface::UP, mNorth, mEast, mSouth, mWest);
+    mTileSurface->render();
     delete mTopTileSurfaces[i];
+    delete mTileSurface;
   }
 }
 
@@ -68,7 +78,7 @@ std::vector<IInteractiveElement*> SpindizzyWater::getInteractiveElements() {
   return mInteractiveElements;
 }
 
-ITileSurface* SpindizzyWater::createSubSurface(ITileSurface::FaceDirection facing, int north, int east, int south, int west) {
+ISpindizzyTileSurface* SpindizzyWater::createSubSurface(ITileSurface::FaceDirection facing, int north, int east, int south, int west) {
   return new TileSurface(cSpindizzyTextureSet, ISpindizzyTextureSet::WATER, north, east, south, west, facing == ITileSurface::UP ? cStartLocation.z : cEndLocation.z, 0, 0, facing/*, TODO:CONDITIONAL  mSurfaceCondition*/);
 }
 
@@ -104,16 +114,15 @@ void SpindizzyWater::added() {
   mSurfaceProcessor->setDirty();
 }
 
-bool SpindizzyWater::initElement() {
-  switch (cInitStage) {
-    case CACHE_SURFACES: {
+bool SpindizzyWater::initElement(unsigned int pass) {
+  switch (pass) {
+    case INIT_REGISTER_BLOCKS: {
       ISurfaceProcessorProxy* mSurfaceProcessor = getElementSet();
       mSurfaceProcessor->registerSurfaceProvider(this);
-      cInitStage = CALCULATE_SURFACES;
       return false;
     }
 
-    case CALCULATE_SURFACES: {
+    case INIT_PROCESS_BLOCKS: {
       // TODO: Use the calculator to calculate surfaces
       return true;
     }

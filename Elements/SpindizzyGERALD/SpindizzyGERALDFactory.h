@@ -30,6 +30,7 @@
 #include "../../Plugins/LocationAwareness/ILocationAwareness.h"
 #include "../../Plugins/Camera/ICamera.h"
 #include "../../Plugins/Collectables/ICollectables.h"
+#include "../../Plugins/CollidableSurfaceRegistry/ICollidableSurfaceRegistry.h"
 #include "../../Plugins/3DModel/ISimpleModel.h"
 #include "../../Plugins/3DModel/ISimpleModelFactory.h"
 #include "../../Plugins/ZoneContext/IZoneContext.h"
@@ -42,6 +43,7 @@ class SpindizzyGERALDFactory:public ElementFactory<> {
   ISimpleModelFactory* cGERALDModelFactory;
   ICamera* cCamera;
   ICollectables* cCollectables;
+  ICollidableSurfaceRegistry* cCollidableSurfaceRegistry;
   ILocationAwareness* cLocationAwareness;
   IZoneContext* cZoneContext;
   SpindizzyGERALD* cSampleGERALD;
@@ -59,6 +61,7 @@ class SpindizzyGERALDFactory:public ElementFactory<> {
   void setModel(ISimpleModelFactory*);
   void setCamera(ICamera*);
   void setCollectables(ICollectables*);
+  void setCollidableSurfaceRegistry(ICollidableSurfaceRegistry*);
   void setLocationAwareness(ILocationAwareness*);
   void setZoneContext(IZoneContext*);
 

@@ -36,6 +36,8 @@
 #include "../../Plugins/3DModel/ISimpleModelFactory.h"
 #include "../../Plugins/Camera/ICamera.h"
 #include "../../Plugins/Collectables/ICollectables.h"
+#include "../../Plugins/CollidableSurfaceRegistry/ICollidableSurfaceRegistry.h"
+#include "../../Plugins/CommandRegistry/IUserCommand.h"
 #include "../../Plugins/LocationAwareness/ILocationAwareness.h"
 #include "../../Plugins/ZoneContext/IZoneContext.h"
 
@@ -46,6 +48,12 @@ class SpindizzyGERALD:public Element<>,
                       public IVisualElement {
   private:
   static const float CRAFT_ACCELERATION;
+  static const float GRAVITY_STRENGTH;
+  // TODO: Need to define an "initialisation scheme" somewhere
+  static const unsigned int INIT_REGISTER_BLOCKS;
+  static const unsigned int INIT_PROCESS_BLOCKS;
+  static const unsigned int INIT_REGISTER_SURFACES;
+  static const unsigned int INIT_USE_SURFACES;
 
   SDLKey cNorthKey;
   SDLKey cSouthKey;
@@ -60,13 +68,20 @@ class SpindizzyGERALD:public Element<>,
   ISimpleModel* cGERALDModel;
   ICamera* cCamera;
   ICollectables* cCollectables;
+  ICollidableSurfaceRegistry* cCollidableSurfaceRegistry;
   IZoneContext* cZoneContext;
+  IRollableSurface* cCurrentSurface;
+  IRollableSurface* cRespawnSurface;
+  int cRespawnX;
+  int cRespawnY;
+  float cMapBottom;
+  std::vector<IUserCommand*> cFallenCommands;
 
   SDLKey rotateKey(const SDLKey&);
   void keyDown(SDLKey&);
 
   public:
-  SpindizzyGERALD(IElementFactory*, BlockLocation*, ISimpleModelFactory*, ICollectables*, ILocationAwareness*, IZoneContext*, ICamera*);
+  SpindizzyGERALD(IElementFactory*, BlockLocation*, ISimpleModelFactory*, ICollectables*, ICollidableSurfaceRegistry*, ILocationAwareness*, IZoneContext*, ICamera*);
 
   void checkCurrentZoneEvents(Vertex&, Vertex&);
   void checkMapZoneEvents(IZone*, Vertex&, Vertex&);
@@ -87,6 +102,7 @@ class SpindizzyGERALD:public Element<>,
   \***********************/
   void renderStatic();
   void setRuntimeContext(IMap*);
+  bool initElement(unsigned int);
   std::vector<IVisualElement*> getVisualElements();
   std::vector<IDynamicElement*> getDynamicElements();
   std::vector<IDynamicElement*> getDynamicElementsRuntime();

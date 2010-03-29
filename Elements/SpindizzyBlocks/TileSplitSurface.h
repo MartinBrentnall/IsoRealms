@@ -49,6 +49,14 @@ class TileSplitSurface:public ISpindizzyTileSurface {
    */
   TileSplitSurface(bool, BlockLocation&, ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType, int, int, int, int);
 
+  /*******************************\
+   * Implements IRollableSurface *
+  \*******************************/
+  bool contains(Vertex&);
+  ICollisionData* getCollision(Vertex&, Vertex&);
+  ICollisionData* getRollingEvent(Vertex&, Vertex&);
+  float getHeightAt(float, float);
+
   /***************************\
    * Implements ITileSurface *
   \***************************/

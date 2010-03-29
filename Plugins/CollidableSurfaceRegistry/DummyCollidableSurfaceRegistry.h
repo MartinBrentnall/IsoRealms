@@ -14,6 +14,8 @@ class DummyCollidableSurfaceRegistry:public ICollidableSurfaceRegistry,
   \*****************************************/
   void registerRollableSurface(IRollableSurface*);
   void registerWallSurface(ICollidableWallSurface*);
+  ICollisionData* getNextEvent(Vertex&, Vertex&);
+  IRollableSurface* getSurfaceAt(Vertex&);
 };
 
 #endif

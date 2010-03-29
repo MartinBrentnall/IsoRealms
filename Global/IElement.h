@@ -58,7 +58,7 @@ class IElement {
    *           runtime, otherwise false to indicate that a call to initElement
    *           is required.
    */
-  virtual bool initElement() = 0;
+  virtual bool initElement(unsigned int) = 0;
 
   /**
    * This function is called to notify the element that it's been removed from a

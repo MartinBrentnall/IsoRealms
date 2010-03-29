@@ -25,6 +25,7 @@ LN = ln
 OBJS = \
 BlockSubtractor.o \
 BlockSubtractorCache.o \
+TileSurfaceTemplate.o \
 WallColumn.o \
 WallConstructionData.o
 

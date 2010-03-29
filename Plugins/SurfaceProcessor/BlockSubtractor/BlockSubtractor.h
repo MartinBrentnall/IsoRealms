@@ -30,6 +30,7 @@
 #include "BlockSubtractorCache.h"
 #include "WallColumn.h"
 #include "WallConstructionData.h"
+#include "TileSurfaceTemplate.h"
 
 /**
  * Each surface provider is mapped to the original surfaces that it provides.
@@ -41,9 +42,9 @@ class BlockSubtractor:public ISurfaceProcessor {
  
   BlockSubtractorCache cCache;
 
-  std::vector<ITileSurface*> getTileSurfaces(ITileSurface*, ISurfaceProvider*, ITileSurface::FaceDirection);
+  std::vector<ITileSurfaceTemplate*> getTileSurfaces(ITileSurface*, ISurfaceProvider*, ITileSurface::FaceDirection);
 
-  int getCompleteRows(ISurfaceProvider*, std::vector<ITileSurface*>, ITileSurface*, int, int, int, ITileSurface::FaceDirection/*, Condition* condition TODO:CONDITIONAL*/);
+  int getCompleteRows(ISurfaceProvider*, std::vector<ITileSurfaceTemplate*>, ITileSurface*, int, int, int, ITileSurface::FaceDirection/*, Condition* condition TODO:CONDITIONAL*/);
 
   IWallSurface::FaceDirection getOppositeOf(IWallSurface::FaceDirection);
 
@@ -116,7 +117,7 @@ class BlockSubtractor:public ISurfaceProcessor {
    * @param int  TODO:
    * @returns true if TODO:
    */
-  bool inSurface(std::vector<ITileSurface*>, int, int);
+  bool inSurface(std::vector<ITileSurfaceTemplate*>, int, int);
 
   /**
    * TODO
@@ -191,7 +192,7 @@ class BlockSubtractor:public ISurfaceProcessor {
   \********************************/
   void registerSurfaceProvider(ISurfaceProvider*);
   void unregisterSurfaceProvider(ISurfaceProvider*);
-  std::vector<ITileSurface*> getTileSurfaces(ISurfaceProvider*, ITileSurface::FaceDirection);
+  std::vector<ITileSurfaceTemplate*> getTileSurfaces(ISurfaceProvider*, ITileSurface::FaceDirection);
   std::vector<IWallSurface*> getWallSurfaces(ISurfaceProvider*, IWallSurface::FaceDirection);
   void setDirty();
   void reinitialise();

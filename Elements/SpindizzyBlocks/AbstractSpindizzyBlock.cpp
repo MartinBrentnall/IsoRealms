@@ -18,6 +18,11 @@
  */
 #include "AbstractSpindizzyBlock.h"
 
+const unsigned int AbstractSpindizzyBlock::INIT_REGISTER_BLOCKS = 0;
+const unsigned int AbstractSpindizzyBlock::INIT_PROCESS_BLOCKS = 1;
+const unsigned int AbstractSpindizzyBlock::INIT_REGISTER_SURFACES = 2;
+const unsigned int AbstractSpindizzyBlock::INIT_USE_SURFACES = 3;
+
 AbstractSpindizzyBlock::AbstractSpindizzyBlock(ISpindizzyBlockFactory* elementFactory, BlockLocation* startLocation, BlockLocation* endLocation, ISpindizzyTextureSet** spindizzyTextureSet, SpindizzyBlockProperties* blockProperties, bool addition) : Element<ISurfaceProcessorProxy, ISpindizzyBlockFactory>(elementFactory) {
   cSpindizzyTextureSet = spindizzyTextureSet;
   cStartLocation = BlockLocation(endLocation->x > startLocation->x              ? startLocation->x : endLocation->x,
@@ -33,7 +38,6 @@ AbstractSpindizzyBlock::AbstractSpindizzyBlock(ISpindizzyBlockFactory* elementFa
   cSouthEastHeight = blockProperties->getSouthEastHeight();
   cSplitType = blockProperties->isSplitNorthWestSouthEast() ? NORTH_SOUTH : EAST_WEST;
   cSteppedBottom = blockProperties->isSteppedBottom();
-  cInitStage = CACHE_SURFACES;
 }
 
 AbstractSpindizzyBlock::AbstractSpindizzyBlock(ISpindizzyBlockFactory* elementFactory, ISpindizzyTextureSet** spindizzyTextureSet, DOMNodeWrapper* node) : Element<ISurfaceProcessorProxy, ISpindizzyBlockFactory>(elementFactory) {
@@ -105,7 +109,7 @@ int AbstractSpindizzyBlock::getBottomHeight(int x, int y) {
                         : cStartLocation.z;
 }
 
-ITileSurface* AbstractSpindizzyBlock::createSubSurface(ITileSurface::FaceDirection faceDirection, int north, int east, int south, int west) {
+ISpindizzyTileSurface* AbstractSpindizzyBlock::createSubSurface(ITileSurface::FaceDirection faceDirection, int north, int east, int south, int west) {
   ISpindizzyTextureSet::TextureType mTextureType = getTileSurfaceTexture();
   switch (faceDirection) {
     case ITileSurface::UP: {
@@ -114,8 +118,11 @@ ITileSurface* AbstractSpindizzyBlock::createSubSurface(ITileSurface::FaceDirecti
       int mHeight = getTileSurfaceHeight(mXSlope > 0 ? west : east, mYSlope > 0 ? south : north);
       // TODO: Get condition for surface.
       BlockLocation mSurfaceLocation(cStartLocation.x, cStartLocation.y, cEndLocation.z);
-      return isSplit() ? (ITileSurface*) new TileSplitSurface(cSplitType == NORTH_SOUTH, mSurfaceLocation, cSpindizzyTextureSet, mTextureType, cNorthWestHeight, cNorthEastHeight, cSouthEastHeight, cSouthWestHeight/* TODO:CONDITIONAL, mSurfaceCondition*/)
-                       : (ITileSurface*) new TileSurface(cSpindizzyTextureSet, mTextureType, north, east, south, west, mHeight, mXSlope, mYSlope, faceDirection/*, TODO:CONDITIONAL  mSurfaceCondition*/);
+      if (isSplit()) {
+        return new TileSplitSurface(cSplitType == NORTH_SOUTH, mSurfaceLocation, cSpindizzyTextureSet, mTextureType, cNorthWestHeight, cNorthEastHeight, cSouthEastHeight, cSouthWestHeight/* TODO:CONDITIONAL, mSurfaceCondition*/);
+      } else {
+        return new TileSurface(cSpindizzyTextureSet, mTextureType, north, east, south, west, mHeight, mXSlope, mYSlope, faceDirection/*, TODO:CONDITIONAL  mSurfaceCondition*/);
+      }
     }
     
     case ITileSurface::DOWN: {
@@ -129,7 +136,7 @@ ITileSurface* AbstractSpindizzyBlock::createSubSurface(ITileSurface::FaceDirecti
   exit(1);
 }
 
-std::vector<ITileSurface*> AbstractSpindizzyBlock::calculateTileSurfaces(const ITileSurface::FaceDirection faceDirection) {
+std::vector<ITileSurfaceTemplate*> AbstractSpindizzyBlock::calculateTileSurfaces(const ITileSurface::FaceDirection faceDirection) {
   ISurfaceProcessorProxy* mSurfaceProcessor = getElementSet();
   return mSurfaceProcessor->getTileSurfaces(this, faceDirection);
 }
@@ -231,11 +238,10 @@ std::vector<IWallSurface*> AbstractSpindizzyBlock::calculateWallSurfaces(const I
 }
 
 void AbstractSpindizzyBlock::renderStatic() {
-  std::vector<ITileSurface*> mTopTileSurfaces = calculateTileSurfaces(ITileSurface::UP);
-  for (unsigned int i = 0; i < mTopTileSurfaces.size(); i++) {
-    mTopTileSurfaces[i]->render();
-    delete mTopTileSurfaces[i];
+  for (unsigned int i = 0; i < cStaticTileSurfaces.size(); i++) {
+    cStaticTileSurfaces[i]->render();
   }
+  
 /*  std::vector<ITileSurface*> mBottomTileSurfaces = calculateTileSurfaces(ITileSurface::DOWN);
   for (unsigned int i = 0; i < mBottomTileSurfaces.size(); i++) {
     mBottomTileSurfaces[i]->render();
@@ -266,7 +272,6 @@ void AbstractSpindizzyBlock::renderStatic() {
 }
 
 void AbstractSpindizzyBlock::cacheSurfaces() {
-  cInitStage = CACHE_SURFACES;
   signalElementDirty();
 }
 
@@ -281,16 +286,28 @@ void AbstractSpindizzyBlock::added() {
   mSurfaceProcessor->setDirty();
 }
 
-bool AbstractSpindizzyBlock::initElement() {
-  switch (cInitStage) {
-    case CACHE_SURFACES: {
+bool AbstractSpindizzyBlock::initElement(unsigned int pass) {
+  switch (pass) {
+    case INIT_REGISTER_BLOCKS: {
       ISurfaceProcessorProxy* mSurfaceProcessor = getElementSet();
       mSurfaceProcessor->registerSurfaceProvider(this);
-      cInitStage = CALCULATE_SURFACES;
       return false;
     }
 
-    case CALCULATE_SURFACES: {
+    case INIT_PROCESS_BLOCKS: {
+      std::vector<ITileSurfaceTemplate*> mTopTileSurfaces = calculateTileSurfaces(ITileSurface::UP);
+      for (unsigned int i = 0; i < mTopTileSurfaces.size(); i++) {
+        int mNorth = mTopTileSurfaces[i]->getNorth();
+        int mEast = mTopTileSurfaces[i]->getEast();
+        int mSouth = mTopTileSurfaces[i]->getSouth();
+        int mWest = mTopTileSurfaces[i]->getWest();
+        ISpindizzyTileSurface* mTileSurface = createSubSurface(ITileSurface::UP, mNorth, mEast, mSouth, mWest);
+        cStaticTileSurfaces.push_back(mTileSurface);
+        ISurfaceProcessorProxy* mBlockElementSet = getElementSet();
+        // TODO: This should only happen in runtime
+        mBlockElementSet->registerRollableSurface(mTileSurface);
+        delete mTopTileSurfaces[i];
+      }
       // TODO: Use the calculator to calculate surfaces
       return true;
     }

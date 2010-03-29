@@ -19,6 +19,7 @@
 #ifndef SPINDIZZY_CAMERA_H
 #define SPINDIZZY_CAMERA_H
 
+#include "../../../Global/IsoRealmsConstants.h"
 #include "../../../Global/MiscFunctions.h"
 
 #include "../../LocationAwareness/ILocationAwareness.h"

@@ -150,12 +150,12 @@ void Map::notifyZoneAction(Zone* zone) {
   cPluginRegistry.notifyZoneAction(zone);
 }
 
-void Map::initMap() {
+void Map::initMap(unsigned int pass) {
   std::vector<IZone*> mCleanZones;
   for (unsigned int i = 0; i < cDirtyZones.size(); i++) {
     cPluginRegistry.initPlugins(cDirtyZones[i]);
     cPluginRegistry.renderPreZone(cDirtyZones[i]);
-    if (cDirtyZones[i]->initZone()) {
+    if (cDirtyZones[i]->initZone(pass)) {
       mCleanZones.push_back(cDirtyZones[i]);
     }
   }
@@ -166,7 +166,8 @@ void Map::initMap() {
 
   std::vector<IElement*> mCleanElements;
   for (unsigned int i = 0; i < cDirtyElements.size(); i++) {
-    if (cDirtyElements[i]->initElement()) {
+    if (cDirtyElements[i]->initElement(pass)) {
+      std::cout << "Element has been cleaned" << std::endl;
       mCleanElements.push_back(cDirtyElements[i]);
     }
   }
@@ -203,6 +204,7 @@ void Map::initRuntime() {
   for (unsigned int i = 0; i < cElements.size(); i++) {
     cElements[i]->setRuntimeContext(this);
   }
+  initMap();
 }
 
 void Map::input(SDL_Event& event) {
@@ -220,10 +222,16 @@ void Map::input(SDL_Event& event) {
   }
 }
 
-void Map::update(int milliseconds) {
-  while (!cDirtyZones.empty()) {
-    initMap();
+void Map::initMap() {
+  unsigned int mInitPass = 0;
+  while (!cDirtyZones.empty() || !cDirtyElements.empty()) {
+    initMap(mInitPass);
+    mInitPass++;
   }
+}
+
+void Map::update(int milliseconds) {
+  initMap();
   for (unsigned int i = 0; i < cZones.size(); i++) {
     cZones[i]->update(milliseconds);
   }
@@ -236,9 +244,6 @@ void Map::update(int milliseconds) {
 }
 
 void Map::updateRuntime(int milliseconds) {
-  while (!cDirtyZones.empty()) {
-    initMap();
-  }
   for (unsigned int i = 0; i < cZones.size(); i++) {
     cZones[i]->update(milliseconds);
   }

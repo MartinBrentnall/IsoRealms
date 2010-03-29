@@ -37,7 +37,8 @@ void ZoneCollectables::setPlugin(PlugSocket* socket, IPlugin* plugin) {
     if (assignPlugin(plugin, &cZoneContext, *socket)) {
       mPreviousZoneContext->removeZoneContextListener(this);
       cZoneContext->addZoneContextListener(this);
-      cCurrentZone = cZoneContext->getZoneContext();
+      cEditingZone = cZoneContext->getZoneContext();
+      cRuntimeZone = cEditingZone;
     }
   }
 }
@@ -49,30 +50,30 @@ IPlugin* ZoneCollectables::getPlugin(PlugSocket* socket) {
 }
 
 void ZoneCollectables::zoneContextChanged(IZone* zone) {
-  cCurrentZone = zone;
+  cRuntimeZone = zone;
 }
 
 void ZoneCollectables::notifyZoneAction(IZone* zone) {
-  cCurrentZone = zone;
+  cEditingZone = zone;
 }
 
 void ZoneCollectables::initPlugin(IZone* zone) {
-  cCurrentZone = zone;
+  cEditingZone = zone;
 }
 
 void ZoneCollectables::registerCollectable(ICollectable* collectable) {
-  std::vector<ICollectable*>* mZoneCollectables = cCollectables[cCurrentZone];
+  std::vector<ICollectable*>* mZoneCollectables = cCollectables[cEditingZone];
   if (mZoneCollectables == NULL) {
     mZoneCollectables = new std::vector<ICollectable*>();
-    cCollectables[cCurrentZone] = mZoneCollectables;
+    cCollectables[cEditingZone] = mZoneCollectables;
   }
   mZoneCollectables->push_back(collectable);  
 }
 
 void ZoneCollectables::collect(ICollector* collector, Vertex& start, Vertex& end) {
-  if (cCurrentZone != NULL) {
-    std::map<IZone*, std::vector<ICollectable*>*>::iterator i = cCollectables.find(cCurrentZone);
-      if (i != cCollectables.end()) {
+  if (cRuntimeZone != NULL) {
+    std::map<IZone*, std::vector<ICollectable*>*>::iterator i = cCollectables.find(cRuntimeZone);
+    if (i != cCollectables.end()) {
       for (unsigned int j = 0; j < i->second->size(); j++) {
         if ((*i->second)[j]->isCollected(start, end)) {
           collector->collected((*i->second)[j]);

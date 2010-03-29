@@ -8,6 +8,14 @@ void DummyCollidableSurfaceRegistry::registerWallSurface(ICollidableWallSurface*
   // Nothing to do.
 }
 
+ICollisionData* DummyCollidableSurfaceRegistry::getNextEvent(Vertex&, Vertex&) {
+  return NULL;
+}
+
+IRollableSurface* DummyCollidableSurfaceRegistry::getSurfaceAt(Vertex&) {
+  return NULL;
+}
+
 extern "C" IPlugin* create() {
   return new DummyCollidableSurfaceRegistry();
 }

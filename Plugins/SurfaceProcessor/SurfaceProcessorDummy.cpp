@@ -27,8 +27,14 @@ void SurfaceProcessorDummy::unregisterSurfaceProvider(ISurfaceProvider*) {
   // Nothing to do.
 }
 
-std::vector<ITileSurface*> SurfaceProcessorDummy::getTileSurfaces(ISurfaceProvider* provider, ITileSurface::FaceDirection faceDirection) {
-  return provider->getTileSurfaces(faceDirection);
+std::vector<ITileSurfaceTemplate*> SurfaceProcessorDummy::getTileSurfaces(ISurfaceProvider* provider, ITileSurface::FaceDirection faceDirection) {
+  std::vector<ITileSurface*> mTileSurfaces = provider->getTileSurfaces(faceDirection);
+  std::vector<ITileSurfaceTemplate*> mTileSurfaceTemplates;
+  for (unsigned int i = 0; i < mTileSurfaces.size(); i++) {
+    // TODO: Make some dummy templates from the surfaces
+//    mTileSurfaceTemplate.push_back();
+  }
+  return mTileSurfaceTemplates;
 }
 
 int SurfaceProcessorDummy::getOuterWallFaceLocation(BlockArea* coverage, IWallSurface::FaceDirection facing) {

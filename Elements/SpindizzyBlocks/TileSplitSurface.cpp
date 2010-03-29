@@ -79,3 +79,22 @@ BlockArea* TileSplitSurface::getCoverage() {
 bool TileSplitSurface::alligned(int x, int y) {
   return cLocation.x == x && cLocation.y == y;
 }
+
+bool TileSplitSurface::contains(Vertex& location) {
+  // TODO: Implement
+  return false;
+}
+
+float TileSplitSurface::getHeightAt(float x, float y) {
+  // TODO: Implement
+  return 0.0;
+}
+
+ICollisionData* TileSplitSurface::getCollision(Vertex& start, Vertex& end) {
+  return NULL;
+}
+
+ICollisionData* TileSplitSurface::getRollingEvent(Vertex& start, Vertex& end) {
+  return NULL;
+}
+

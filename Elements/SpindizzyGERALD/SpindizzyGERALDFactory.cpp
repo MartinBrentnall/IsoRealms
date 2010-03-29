@@ -23,7 +23,7 @@ SpindizzyGERALDFactory::SpindizzyGERALDFactory(IElementSet* elementSet, ISimpleM
   cZoneContext = zoneContext;
   cGERALDModelFactory = geraldModelFactory;
   BlockLocation mIdentityLocation(0, 0, 0);
-  cSampleGERALD = new SpindizzyGERALD(this, &mIdentityLocation, cGERALDModelFactory, NULL, NULL, NULL, NULL);
+  cSampleGERALD = new SpindizzyGERALD(this, &mIdentityLocation, cGERALDModelFactory, NULL, NULL, NULL, NULL, NULL);
   cSampleGERALDVisuals = cSampleGERALD->getVisualElements();
   cCamera = NULL;
 }
@@ -54,6 +54,10 @@ void SpindizzyGERALDFactory::setCollectables(ICollectables* collectables) {
   }
 }
 
+void SpindizzyGERALDFactory::setCollidableSurfaceRegistry(ICollidableSurfaceRegistry* collidableSurfaceRegistry) {
+  cCollidableSurfaceRegistry = collidableSurfaceRegistry;
+}
+
 void SpindizzyGERALDFactory::setLocationAwareness(ILocationAwareness* locationAwareness) {
   cLocationAwareness = locationAwareness;
 }
@@ -74,7 +78,7 @@ IElement* SpindizzyGERALDFactory::getElement(DOMNodeWrapper* node, BlockLocation
       mStartLocation.setRelative(mNode, *relative);
     }
   }
-  SpindizzyGERALD* mLoadedGERALD = new SpindizzyGERALD(this, &mStartLocation, cGERALDModelFactory, cCollectables, cLocationAwareness, cZoneContext, cCamera);
+  SpindizzyGERALD* mLoadedGERALD = new SpindizzyGERALD(this, &mStartLocation, cGERALDModelFactory, cCollectables, cCollidableSurfaceRegistry, cLocationAwareness, cZoneContext, cCamera);
   cContent.push_back(mLoadedGERALD);
   return mLoadedGERALD;
 }
@@ -83,7 +87,7 @@ bool SpindizzyGERALDFactory::keyDown(SDLKey& key) {
   switch (key) {
     case SDLK_SPACE: {
       if (cContent.size() == 0) {
-        SpindizzyGERALD* mGERALD = new SpindizzyGERALD(this, cEditingLocation, cGERALDModelFactory, cCollectables, cLocationAwareness, cZoneContext, cCamera);
+        SpindizzyGERALD* mGERALD = new SpindizzyGERALD(this, cEditingLocation, cGERALDModelFactory, cCollectables, cCollidableSurfaceRegistry, cLocationAwareness, cZoneContext, cCamera);
         cGateway->pushMapElement(mGERALD);
         cContent.push_back(mGERALD);
       } else {

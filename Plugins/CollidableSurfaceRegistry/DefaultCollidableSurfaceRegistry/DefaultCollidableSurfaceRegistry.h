@@ -19,7 +19,8 @@ class DefaultCollidableSurfaceRegistry:public ICollidableSurfaceRegistry,
   std::map<IZone*, SurfaceCache*> cZoneSurfaceCaches;
   std::vector<PlugSocket*> cZoneContextSocket;
   IZoneContext* cZoneContext;
-  IZone* cZone;
+  IZone* cEditingZone;
+  IZone* cRuntimeZone;
 
   public:
   DefaultCollidableSurfaceRegistry();
@@ -29,6 +30,8 @@ class DefaultCollidableSurfaceRegistry:public ICollidableSurfaceRegistry,
   \*****************************************/
   void registerRollableSurface(IRollableSurface*);
   void registerWallSurface(ICollidableWallSurface*);
+  ICollisionData* getNextEvent(Vertex&, Vertex&);
+  IRollableSurface* getSurfaceAt(Vertex&);
 
   /***********************************\
    * Implements IZoneContextListener *

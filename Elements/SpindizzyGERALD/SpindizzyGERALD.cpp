@@ -19,18 +19,26 @@
 #include "SpindizzyGERALD.h"
 
 const float SpindizzyGERALD::CRAFT_ACCELERATION = 0.0005f;
+const float SpindizzyGERALD::GRAVITY_STRENGTH = -0.1f;
+const unsigned int SpindizzyGERALD::INIT_REGISTER_BLOCKS = 0;
+const unsigned int SpindizzyGERALD::INIT_PROCESS_BLOCKS = 1;
+const unsigned int SpindizzyGERALD::INIT_REGISTER_SURFACES = 2;
+const unsigned int SpindizzyGERALD::INIT_USE_SURFACES = 3;
 
-SpindizzyGERALD::SpindizzyGERALD(IElementFactory* elementFactory, BlockLocation* startLocation, ISimpleModelFactory* geraldModelFactory, ICollectables* collectables, ILocationAwareness* locationAwareness, IZoneContext* zoneContext, ICamera* camera) : Element<>(elementFactory) {
+SpindizzyGERALD::SpindizzyGERALD(IElementFactory* elementFactory, BlockLocation* startLocation, ISimpleModelFactory* geraldModelFactory, ICollectables* collectables, ICollidableSurfaceRegistry* collidableSurfaceRegistry, ILocationAwareness* locationAwareness, IZoneContext* zoneContext, ICamera* camera) : Element<>(elementFactory) {
   cStartLocation = BlockLocation(*startLocation);
   cLocation.x = cStartLocation.x + IsoRealmsConstants::BLOCK_RADIUS;
   cLocation.y = cStartLocation.y + IsoRealmsConstants::BLOCK_RADIUS;
   cLocation.z = cStartLocation.z;
+  cRespawnX = round(cLocation.x);
+  cRespawnY = round(cLocation.y);
   if (locationAwareness != NULL) {
     locationAwareness->setLocation(&cLocation);
   }
   cGERALDModel = geraldModelFactory->createModel(&cLocation);
   cCamera = camera;
   cCollectables = collectables;
+  cCollidableSurfaceRegistry = collidableSurfaceRegistry;
   cZoneContext = zoneContext;
   cZone = NULL;
   cMap = NULL;
@@ -64,9 +72,31 @@ void SpindizzyGERALD::renderStatic() {
   // Nothing to do.
 }
 
+bool SpindizzyGERALD::initElement(unsigned int pass) {
+  switch (pass) {
+    case INIT_REGISTER_BLOCKS: {
+      if (cZoneContext != NULL) {
+        cZone = cMap->getZone(cLocation);
+        cZoneContext->setZoneContext(cZone);
+      }
+      return false;
+    }
+
+    case INIT_USE_SURFACES: {
+      cCurrentSurface = cCollidableSurfaceRegistry->getSurfaceAt(cLocation);
+      cRespawnSurface = cCurrentSurface;
+      return true;
+    }
+
+    default: {
+      return false;
+    }
+  }
+}
+
 void SpindizzyGERALD::setRuntimeContext(IMap* map) {
   cMap = map;
-  cZone = cMap->getZone(cLocation);
+  cMapBottom = -20.0f; // TODO: Do this for real!
 }
 
 std::vector<IVisualElement*> SpindizzyGERALD::getVisualElements() {
@@ -180,31 +210,65 @@ SDLKey SpindizzyGERALD::rotateKey(const SDLKey& key) {
 
 void SpindizzyGERALD::update(int ticks) {
   float mAcceleration = (KeyStates::isKeyDown(SDLK_TAB) ? CRAFT_ACCELERATION * 2.0f : CRAFT_ACCELERATION) * ticks;
-  // TODO: Only works when on surface === START
-  if (KeyStates::isKeyDown(rotateKey(cWestKey))) {
-    cMomentum.x -= mAcceleration;
+  if (cCurrentSurface != NULL) {
+    if (KeyStates::isKeyDown(rotateKey(cWestKey))) {
+      cMomentum.x -= mAcceleration;
+    }
+    if (KeyStates::isKeyDown(rotateKey(cEastKey))) {
+      cMomentum.x += mAcceleration;
+    }
+    if (KeyStates::isKeyDown(rotateKey(cSouthKey))) {
+      cMomentum.y -= mAcceleration;
+    }
+    if (KeyStates::isKeyDown(rotateKey(cNorthKey))) {
+      cMomentum.y += mAcceleration;
+    }
+    float mResistance = pow(0.999f, ticks);
+    cMomentum.x *= mResistance;
+    cMomentum.y *= mResistance;
+  } else {
+    cMomentum.z += GRAVITY_STRENGTH;
   }
-  if (KeyStates::isKeyDown(rotateKey(cEastKey))) {
-    cMomentum.x += mAcceleration;
-  }
-  if (KeyStates::isKeyDown(rotateKey(cSouthKey))) {
-    cMomentum.y -= mAcceleration;
-  }
-  if (KeyStates::isKeyDown(rotateKey(cNorthKey))) {
-    cMomentum.y += mAcceleration;
-  }
-  float mResistance = pow(0.999f, ticks);
-  cMomentum.x *= mResistance;
-  cMomentum.y *= mResistance;
-  // TODO: Only works when on surface === END
   Vertex mNewLocation(cLocation.x + cMomentum.x, cLocation.y + cMomentum.y, cLocation.z + cMomentum.z);
+  if (mNewLocation.z < cMapBottom) {
+    cLocation.x = cRespawnX;
+    cLocation.y = cRespawnY;
+    cLocation.z = cRespawnSurface->getHeightAt(cLocation.x, cLocation.y);
+    cCurrentSurface = cRespawnSurface;
+    cZone = cMap->getZone(cLocation);
+    cZoneContext->setZoneContext(cZone);
+    cMomentum.x = 0.0f;
+    cMomentum.y = 0.0f;
+    cMomentum.z = 0.0f;
+    for (unsigned int i = 0; i < cFallenCommands.size(); i++) {
+      cFallenCommands[i]->execute();
+    }
+  } else {
+    if (cCurrentSurface != NULL) {
+      ICollisionData* mCollision = cCurrentSurface->getRollingEvent(cLocation, mNewLocation);
+      if (mCollision != NULL) {
+        cCurrentSurface = NULL;
+        // TODO: Test from this point on
+      }
+    }
+    if (cCurrentSurface == NULL) {
+      ICollisionData* mCollision = cCollidableSurfaceRegistry->getNextEvent(cLocation, mNewLocation);
+      if (mCollision != NULL) {
+        // TODO:
+      }
+    }
+    if (cCurrentSurface != NULL) {
+      cRespawnX = round(cLocation.x);
+      cRespawnY = round(cLocation.y);
+    }
 
-  if (cZoneContext != NULL) {
-    updateZoneContext(cLocation, mNewLocation);
+    if (cZoneContext != NULL) {
+      updateZoneContext(cLocation, mNewLocation);
+    }
+    cLocation.x = mNewLocation.x;
+    cLocation.y = mNewLocation.y;
+    cLocation.z = mNewLocation.z;
   }
-  cLocation.x = mNewLocation.x;
-  cLocation.y = mNewLocation.y;
-  cLocation.z = mNewLocation.z;
 }
 
 void SpindizzyGERALD::keyDown(SDLKey& key) {

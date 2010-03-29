@@ -26,6 +26,7 @@
 #include "../../Plugins/CollidableSurfaceRegistry/IRollableSurface.h"
 #include "../../Plugins/CollidableSurfaceRegistry/ICollidableWallSurface.h"
 #include "../../Plugins/SurfaceProcessor/ITileSurface.h"
+#include "../../Plugins/SurfaceProcessor/ITileSurfaceTemplate.h"
 #include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
 #include "../../Plugins/SurfaceProcessor/ISurfaceProvider.h"
 #include "../../Plugins/SurfaceProcessor/IWallSurface.h"
@@ -36,7 +37,7 @@ class ISurfaceProcessorProxy:public IElementSet {
   virtual void registerSurfaceProvider(ISurfaceProvider*) = 0;
   virtual void unregisterSurfaceProvider(ISurfaceProvider*) = 0;
   virtual void setDirty() = 0;
-  virtual std::vector<ITileSurface*> getTileSurfaces(ISurfaceProvider*, ITileSurface::FaceDirection) = 0;
+  virtual std::vector<ITileSurfaceTemplate*> getTileSurfaces(ISurfaceProvider*, ITileSurface::FaceDirection) = 0;
   virtual std::vector<IWallSurface*> getWallSurfaces(ISurfaceProvider*, IWallSurface::FaceDirection) = 0;
   virtual void notifyZoneAction(Zone*) = 0;
   virtual void registerRollableSurface(IRollableSurface*) = 0;

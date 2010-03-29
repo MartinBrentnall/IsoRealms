@@ -152,7 +152,7 @@ class SpindizzyBlockSet:public ISurfaceProcessorProxy,
   void registerSurfaceProvider(ISurfaceProvider*);
   void unregisterSurfaceProvider(ISurfaceProvider*);
   void setDirty();
-  std::vector<ITileSurface*> getTileSurfaces(ISurfaceProvider*, ITileSurface::FaceDirection);
+  std::vector<ITileSurfaceTemplate*> getTileSurfaces(ISurfaceProvider*, ITileSurface::FaceDirection);
   std::vector<IWallSurface*> getWallSurfaces(ISurfaceProvider*, IWallSurface::FaceDirection);
   void notifyZoneAction(Zone*);
 

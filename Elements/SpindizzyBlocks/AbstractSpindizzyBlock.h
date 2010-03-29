@@ -51,12 +51,13 @@ class AbstractSpindizzyBlock:public Element<ISurfaceProcessorProxy, ISpindizzyBl
     EAST_WEST    
   };
 
-  enum InitStage {
-    CACHE_SURFACES,
-    CALCULATE_SURFACES
-  };
+  // TODO: Need to define an "initialisation scheme" somewhere
+  static const unsigned int INIT_REGISTER_BLOCKS;
+  static const unsigned int INIT_PROCESS_BLOCKS;
+  static const unsigned int INIT_REGISTER_SURFACES;
+  static const unsigned int INIT_USE_SURFACES;
   
-//  std::vector<ITileSurface*> cStaticTileSurfaces;
+  std::vector<ISpindizzyTileSurface*> cStaticTileSurfaces;
 //  std::vector<ITileSurface*> cDynamicTileSurfaces;
 
   BlockLocation cStartLocation;
@@ -66,7 +67,6 @@ class AbstractSpindizzyBlock:public Element<ISurfaceProcessorProxy, ISpindizzyBl
   int cSouthWestHeight;
   int cSouthEastHeight;
   SplitType cSplitType;
-  InitStage cInitStage;
 
   /**
    * When a block is sloped, the bottom of the block can be stepped along with
@@ -97,7 +97,7 @@ class AbstractSpindizzyBlock:public Element<ISurfaceProcessorProxy, ISpindizzyBl
    * 
    * TODO
    */ 
-  std::vector<ITileSurface*> calculateTileSurfaces(const ITileSurface::FaceDirection);
+  std::vector<ITileSurfaceTemplate*> calculateTileSurfaces(const ITileSurface::FaceDirection);
 
   std::vector<IWallSurface*> calculateWallSurfaces(const IWallSurface::FaceDirection);
 
@@ -190,12 +190,43 @@ class AbstractSpindizzyBlock:public Element<ISurfaceProcessorProxy, ISpindizzyBl
    */
   void cacheSurfaces();
 
+  /**
+   * Create a new rectangular surface by using the specified section of this
+   * surface.  Values are inclusive!
+   * 
+   * @param IRollableSurface::FaceDirection  The direction that the surface
+   *           faces.
+   * @param int  North surface location.
+   * @param int  East surface location.
+   * @param int  South surface location.
+   * @param int  West surface location.
+   * @returns  The sub surface.
+   */
+  ISpindizzyTileSurface* createSubSurface(ITileSurface::FaceDirection, int, int, int, int);
+
+  /**
+   * Create a new wall face surface according to the specified parameters.
+   * 
+   * @param int  X tile location of the wall.
+   * @param int  Y tile location of the wall.
+   * @param IWallSurface::FaceDirection  The direction that the wall faces,
+   *           away from the tile location.
+   * @param int  Length of the wall.
+   * @param int  Bottom height of the wall.
+   * @param int  Top height of the wall.
+   * @param int  Bottom slope step of the wall.
+   * @param int  Top slope step of the wall.
+   * @returns  The wall surface meeting the specification.
+   * @throws Something  TODO: If a wall cannot be created to the specification.
+   */
+  IWallSurface* createSubSurface(int, int, IWallSurface::FaceDirection, int, int, int, int, int);
+
   /***********************\
    * Implements IElement *
   \***********************/
   void removed();
   void added();
-  bool initElement();
+  bool initElement(unsigned int);
   void renderStatic();
   std::vector<IVisualElement*> getVisualElements();
   std::vector<IDynamicElement*> getDynamicElements();
@@ -206,9 +237,7 @@ class AbstractSpindizzyBlock:public Element<ISurfaceProcessorProxy, ISpindizzyBl
    * Implements ISurfaceProvider *
   \*******************************/
   std::vector<ITileSurface*> getTileSurfaces(ITileSurface::FaceDirection);
-  ITileSurface* createSubSurface(ITileSurface::FaceDirection, int, int, int, int);
   std::vector<IWallSurface*> getWallSurfaces(int, IWallSurface::FaceDirection);
-  IWallSurface* createSubSurface(int, int, IWallSurface::FaceDirection, int, int, int, int, int);
   BlockArea* getCoverage();
   void setDirty();
 };

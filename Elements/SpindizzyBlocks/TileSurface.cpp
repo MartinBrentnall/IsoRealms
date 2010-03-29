@@ -105,6 +105,110 @@ void TileSurface::render() {
   glEnd();
 }
 
+float TileSurface::getHeightAt(float x, float y) {
+  return cWestEastSlope   * ((cWestEastSlope   > 0 ? x - cWest  : -(cEast  + 1 - x)) + IsoRealmsConstants::BLOCK_RADIUS) +
+         cNorthSouthSlope * ((cNorthSouthSlope > 0 ? y - cNorth : -(cSouth + 1 - y)) + IsoRealmsConstants::BLOCK_RADIUS) + cHeight;
+}
+
+Vertex* TileSurface::getBoundaryCrossingPoint(Vertex& start, Vertex& end, float* mLowestGradient) {
+  *mLowestGradient = 2.0f;
+  float mXMovement = end.x - start.x;
+  float mYMovement = end.y - start.y;
+  float mNorth = cNorth + IsoRealmsConstants::BLOCK_RADIUS;
+  float mEast = cEast + IsoRealmsConstants::BLOCK_RADIUS;
+  float mSouth = cSouth - IsoRealmsConstants::BLOCK_RADIUS;
+  float mWest = cWest - IsoRealmsConstants::BLOCK_RADIUS;
+  float mImpactX;
+  float mImpactY;
+  bool mXKnown = false;
+  bool mYKnown = false;
+
+  float mTempGradient = (mWest - start.x) / mXMovement;
+  if (mTempGradient > 0.0f && mTempGradient <= *mLowestGradient) {
+    float mWestYLocation = start.y + mYMovement * mTempGradient;
+    if (mWestYLocation >= mSouth && mWestYLocation <= mNorth) {
+      *mLowestGradient = mTempGradient;
+      mImpactX = mWest;
+      mXKnown = true;
+    }
+  }
+
+  mTempGradient = (mEast - start.x) / mXMovement;
+  if (mTempGradient > 0.0f && mTempGradient <= *mLowestGradient) {
+    float mEastYLocation = start.y + mYMovement * mTempGradient;
+    if (mEastYLocation >= mSouth && mEastYLocation <= mNorth) {
+      *mLowestGradient = mTempGradient;
+      mImpactX = mEast;
+      mXKnown = true;
+    }
+  }
+
+  mTempGradient = (mNorth - start.y) / mYMovement;
+  if (mTempGradient > 0.0f && mTempGradient <= *mLowestGradient) {
+    float mNorthXLocation = start.x + mXMovement * mTempGradient;
+    if (mNorthXLocation >= mWest && mNorthXLocation <= mEast) {
+      *mLowestGradient = mTempGradient;
+      mImpactY = mNorth;
+      mXKnown = false;
+      mYKnown = true;
+    }
+  }
+
+  mTempGradient = (mSouth - start.y) / mYMovement;
+  if (mTempGradient > 0.0f && mTempGradient <= *mLowestGradient) {
+    float mSouthXLocation = start.x + mXMovement * mTempGradient;
+    if (mSouthXLocation >= mWest && mSouthXLocation <= mEast) {
+      *mLowestGradient = mTempGradient;
+      mImpactY = mSouth;
+      mXKnown = false;
+      mYKnown = true;
+    }
+  }
+
+  float mMovementZ = end.z - start.z;
+  if (*mLowestGradient <= 1.0f) {
+    if (!mXKnown) {
+      mImpactX = start.x + mXMovement * *mLowestGradient;
+    }
+    if (!mYKnown) {
+      mImpactY = start.y + mYMovement * *mLowestGradient;
+    }
+    float mImpactZ = start.z + mMovementZ * *mLowestGradient;
+    return new Vertex(mImpactX, mImpactY, mImpactZ);
+  }
+
+  // Line doesn't cross boundary
+  return NULL;
+}
+
+bool TileSurface::contains(Vertex& location) {
+  float mSouthEdge  = cSouth - IsoRealmsConstants::BLOCK_RADIUS;
+  float mWestEdge   = cWest  - IsoRealmsConstants::BLOCK_RADIUS;
+  float mNorthEdge  = cNorth + IsoRealmsConstants::BLOCK_RADIUS;
+  float mEastEdge   = cEast  + IsoRealmsConstants::BLOCK_RADIUS;
+  if (location.y > mSouthEdge  && location.y <= mNorthEdge && location.x > mWestEdge && location.x <= mEastEdge) {
+    return location.z == getHeightAt(location.x, location.y);
+  }
+  return false;
+}
+
+ICollisionData* TileSurface::getRollingEvent(Vertex& start, Vertex& end) {
+  float mGradient;
+  Vertex* mLeavePoint = getBoundaryCrossingPoint(start, end, &mGradient);
+  if (mLeavePoint != NULL) {
+    SurfaceCollisionEvent* mEvent = new SurfaceCollisionEvent();
+//    mImpactPoint->setRelocationPoint(*mLeavePoint);
+    return mEvent;
+  }
+
+  // No event
+  return NULL;
+}
+
+ICollisionData* TileSurface::getCollision(Vertex& start, Vertex& end) {
+  return NULL;
+}
+
 BlockArea* TileSurface::getCoverage() {
   BlockLocation mStartLocation(cWest, cSouth, cHeight);
   // TODO: Not sure if next line is correct

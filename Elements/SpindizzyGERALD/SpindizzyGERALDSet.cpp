@@ -30,7 +30,7 @@ SpindizzyGERALDSet::SpindizzyGERALDSet() {
 
 void SpindizzyGERALDSet::setModel(ISimpleModelFactory* modelFactory) {
   for (unsigned int i = 0; i < cElementFactories.size(); i++) {
-    ((SpindizzyGERALDFactory*) cElementFactories[i])->setModel(modelFactory);
+    static_cast<SpindizzyGERALDFactory*>(cElementFactories[i])->setModel(modelFactory);
   }
 }
 
@@ -75,7 +75,11 @@ void SpindizzyGERALDSet::setPlugin(PlugSocket* socket, IPlugin* implementation) 
       }
     }
   } else if (socket->getType() == "CollidableSurfaceRegistry") {
-    assignPlugin(implementation, &cCollidableSurfaceRegistry, *socket);
+    if (assignPlugin(implementation, &cCollidableSurfaceRegistry, *socket)) {
+      for (unsigned int i = 0; i < cElementFactories.size(); i++) {
+        static_cast<SpindizzyGERALDFactory*>(cElementFactories[i])->setCollidableSurfaceRegistry(cCollidableSurfaceRegistry);
+      }
+    }
   } else if (socket->getType() == "LocationAwareness") {
     if (assignPlugin(implementation, &cLocationAwareness, *socket)) {
       for (unsigned int i = 0; i < cElementFactories.size(); i++) {

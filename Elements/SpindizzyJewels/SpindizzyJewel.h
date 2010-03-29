@@ -69,7 +69,7 @@ class SpindizzyJewel:public Element<ICollectablesAccessor, BaseSpindizzyJewelFac
   /***********************\
    * Implements IElement *
   \***********************/
-  bool initElement();
+  bool initElement(unsigned int);
   void renderStatic();
   std::vector<IVisualElement*> getVisualElements();
   std::vector<IDynamicElement*> getDynamicElements();

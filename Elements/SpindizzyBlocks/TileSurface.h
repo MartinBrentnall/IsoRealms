@@ -30,6 +30,7 @@
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
 
 #include "ISpindizzyTileSurface.h"
+#include "SurfaceCollisionEvent.h"
 
 class TileSurface:public ISpindizzyTileSurface {
   private:
@@ -44,6 +45,8 @@ class TileSurface:public ISpindizzyTileSurface {
   int cHeight;
   int cWestEastSlope;
   int cNorthSouthSlope;
+
+  Vertex* getBoundaryCrossingPoint(Vertex& start, Vertex& end, float* mLowestGradient);
 
   public:
 
@@ -62,12 +65,24 @@ class TileSurface:public ISpindizzyTileSurface {
    */
   TileSurface(ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType, int, int, int, int, int, int, int, ITileSurface::FaceDirection);
 
+  /************************************\
+   * Implements ISpindizzyTileSurface *
+  \************************************/
+  void render();
+
+  /*******************************\
+   * Implements IRollableSurface *
+  \*******************************/
+  bool contains(Vertex&);
+  ICollisionData* getCollision(Vertex&, Vertex&);
+  ICollisionData* getRollingEvent(Vertex&, Vertex&);
+  float getHeightAt(float, float);
+
   /***************************\
    * Implements ITileSurface *
   \***************************/
   int getSurfaceCellHeight(int, int);
   int getSurfaceCellElevation(int, int);
-  void render();
   BlockArea* getCoverage();
   bool alligned(int, int);
 };

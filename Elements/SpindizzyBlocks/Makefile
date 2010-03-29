@@ -36,6 +36,7 @@ SpindizzySwitchBlock.o \
 SpindizzyTrampolineBlock.o \
 SpindizzyWater.o \
 SpindizzyWaterFactory.o \
+SurfaceCollisionEvent.o \
 TileSplitSurface.o \
 TileSurface.o \
 WallSurface.o

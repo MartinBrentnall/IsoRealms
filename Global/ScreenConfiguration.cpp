@@ -79,7 +79,7 @@ void ScreenConfiguration::openScreen(std::string title) {
 
   // Setup OpenGL options
   float mFogColour[4] = {0.0f, 0.0f, 0.2f, 0.0f};
-  glClearColor(0.0f, 0.0f, 0.2f, 0.0f);
+  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
   glFogi(GL_FOG_MODE, GL_LINEAR);
   glFogfv(GL_FOG_COLOR, mFogColour);
   glFogf(GL_FOG_DENSITY, 0.001f);

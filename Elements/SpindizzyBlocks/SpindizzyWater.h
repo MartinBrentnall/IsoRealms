@@ -35,20 +35,20 @@
 class SpindizzyWater:public Element<ISurfaceProcessorProxy, ISpindizzyBlockFactory>,
                      public ISurfaceProvider {
   private:
-  enum InitStage {
-    CACHE_SURFACES,
-    CALCULATE_SURFACES
-  };
+  // TODO: Need to define an "initialisation scheme" somewhere
+  static const unsigned int INIT_REGISTER_BLOCKS;
+  static const unsigned int INIT_PROCESS_BLOCKS;
+  static const unsigned int INIT_REGISTER_SURFACES;
+  static const unsigned int INIT_USE_SURFACES;
 
   ISpindizzyTextureSet** cSpindizzyTextureSet;
   BlockLocation cStartLocation;
   BlockLocation cEndLocation;
-  InitStage cInitStage;
   
   /**
    * TODO: Document
    */
-  std::vector<ITileSurface*> getWaterSurfaces();
+  std::vector<ITileSurfaceTemplate*> getWaterSurfaces();
 
   public:
   SpindizzyWater(ISpindizzyBlockFactory*, BlockLocation*, BlockLocation*, ISpindizzyTextureSet**);
@@ -58,7 +58,7 @@ class SpindizzyWater:public Element<ISurfaceProcessorProxy, ISpindizzyBlockFacto
   \*************************************************************************/
   void removed();
   void added();
-  bool initElement();
+  bool initElement(unsigned int);
   void renderStatic();
   std::vector<IVisualElement*> getVisualElements();
   std::vector<IDynamicElement*> getDynamicElements();
@@ -69,7 +69,7 @@ class SpindizzyWater:public Element<ISurfaceProcessorProxy, ISpindizzyBlockFacto
    * Implements ISurfaceProvider *
   \*******************************/
   std::vector<ITileSurface*> getTileSurfaces(ITileSurface::FaceDirection);
-  ITileSurface* createSubSurface(ITileSurface::FaceDirection, int, int, int, int);
+  ISpindizzyTileSurface* createSubSurface(ITileSurface::FaceDirection, int, int, int, int);
   std::vector<IWallSurface*> getWallSurfaces(int, IWallSurface::FaceDirection);
   IWallSurface* createSubSurface(int, int, IWallSurface::FaceDirection, int, int, int, int, int);
   BlockArea* getCoverage();

@@ -72,7 +72,7 @@ class Zone:public BlockArea,
   /**
    * TODO: Write more about this.
    */
-  bool initZone();
+  bool initZone(unsigned int);
 
   /**
    * Return the location inside this zone closest to the specified location.

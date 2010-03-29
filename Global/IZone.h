@@ -37,7 +37,7 @@ class IZone {
   /**
    * TODO: THIS SHOULD NOT BE PART OF THIS INTERFACE!
    */ 
-  virtual bool initZone() = 0;
+  virtual bool initZone(unsigned int) = 0;
 };
 
 #endif

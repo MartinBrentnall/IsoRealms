@@ -13,6 +13,8 @@ class SurfaceCache {
 
   public:
   void addRollableSurface(IRollableSurface*);
+  ICollisionData* getNextEvent(Vertex&, Vertex&);
+  IRollableSurface* getSurfaceAt(Vertex&);
 };
 
 #endif

@@ -144,7 +144,7 @@ bool BlockSubtractor::isSurfaceTileVisible(ISurfaceProvider* provider, ITileSurf
   return isSurfaceTileVisible(surface, x, y, mSurfaceColumnsWithPriority, true, facing, false);
 }
 
-bool BlockSubtractor::inSurface(std::vector<ITileSurface*> surfaces, int x, int y) {
+bool BlockSubtractor::inSurface(std::vector<ITileSurfaceTemplate*> surfaces, int x, int y) {
   for (unsigned int i = 0; i < surfaces.size(); i++) {
     if (surfaces[i]->alligned(x, y)) {
       return true;
@@ -153,7 +153,7 @@ bool BlockSubtractor::inSurface(std::vector<ITileSurface*> surfaces, int x, int 
   return false;
 }
 
-int BlockSubtractor::getCompleteRows(ISurfaceProvider* provider, std::vector<ITileSurface*> calculatedSurfaces, ITileSurface* surface, int west, int east, int south, ITileSurface::FaceDirection facing/*, Condition* condition TODO:CONDITIONAL*/) {
+int BlockSubtractor::getCompleteRows(ISurfaceProvider* provider, std::vector<ITileSurfaceTemplate*> calculatedSurfaces, ITileSurface* surface, int west, int east, int south, ITileSurface::FaceDirection facing/*, Condition* condition TODO:CONDITIONAL*/) {
   BlockArea* mSurfaceCoverage = surface->getCoverage();
   if (south == mSurfaceCoverage->getNorth()) {
     return south;
@@ -176,7 +176,7 @@ int BlockSubtractor::getCompleteRows(ISurfaceProvider* provider, std::vector<ITi
   // TODO: No return yet; deliberate warning to finish implementing this function!
 }
 
-std::vector<ITileSurface*> BlockSubtractor::getTileSurfaces(ISurfaceProvider* provider, ITileSurface::FaceDirection faceDirection) {
+std::vector<ITileSurfaceTemplate*> BlockSubtractor::getTileSurfaces(ISurfaceProvider* provider, ITileSurface::FaceDirection faceDirection) {
   std::vector<ITileSurface*> mTileSurfaces = provider->getTileSurfaces(faceDirection);
   BlockArea* mBlockCoverage = provider->getCoverage();
 
@@ -184,7 +184,7 @@ std::vector<ITileSurface*> BlockSubtractor::getTileSurfaces(ISurfaceProvider* pr
   int mEast;
   int mSouth;
   bool mDefiningSurface = false;
-  std::vector<ITileSurface*> mCalculatedSurfaces;
+  std::vector<ITileSurfaceTemplate*> mCalculatedSurfaces;
   ITileSurface* mPreviousSurface = NULL;
   for (int y = mBlockCoverage->getSouth(); y <= mBlockCoverage->getNorth(); y++) {
     for (int x = mBlockCoverage->getWest(); x <= mBlockCoverage->getEast(); x++) {
@@ -221,7 +221,7 @@ std::vector<ITileSurface*> BlockSubtractor::getTileSurfaces(ISurfaceProvider* pr
         // TODO: DUPLICATE SUBSURFACE!
         // TODO: ==================== CONDITIONAL CONSIDERATIONS NEED TO GO HERE ACCORDING TO PROTOTYPE!
         int mNorth = getCompleteRows(provider, mCalculatedSurfaces, mPreviousSurface, mWest, mEast, mSouth, faceDirection/*, mThisCondition TODO:CONDITIONAL*/); 
-        mCalculatedSurfaces.push_back(provider->createSubSurface(faceDirection, mNorth, mEast, mSouth, mWest));
+        mCalculatedSurfaces.push_back(new TileSurfaceTemplate(mNorth, mEast, mSouth, mWest));
         mDefiningSurface = false;
         // TODO: DUPLICATE SUBSURFACE END!
         if (mSurfaceCellVisible && !mOccupiedByCalculatedSurface && (!mSurfaceSame /*|| !mConditionSame TODO:CONDITIONAL*/)) {
@@ -234,7 +234,7 @@ std::vector<ITileSurface*> BlockSubtractor::getTileSurfaces(ISurfaceProvider* pr
             // TODO: DUPLICATE SUBSURFACE!
             // TODO: ==================== CONDITIONAL CONSIDERATIONS NEED TO GO HERE ACCORDING TO PROTOTYPE!
             int mNorth = getCompleteRows(provider, mCalculatedSurfaces, mPreviousSurface, mWest, mEast, mSouth, faceDirection/*, mThisCondition TODO:CONDITIONAL*/); 
-            mCalculatedSurfaces.push_back(provider->createSubSurface(faceDirection, mNorth, mEast, mSouth, mWest));
+            mCalculatedSurfaces.push_back(new TileSurfaceTemplate(mNorth, mEast, mSouth, mWest));
             mDefiningSurface = false;
             // TODO: DUPLICATE SUBSURFACE END!
           }

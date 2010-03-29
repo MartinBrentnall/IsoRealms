@@ -67,7 +67,7 @@ void TimeLimit::update(int milliseconds) {
   int mSeconds = cMilliseconds / 1000;
   int mMinutes = mSeconds / 60;
   mSeconds = mSeconds % 60;
-  std::cout << mMinutes << ":" << std::setfill('0') << std::setw(2) << mSeconds << "." << std::setw(3) << mMilliseconds << std::endl;
+//  std::cout << mMinutes << ":" << std::setfill('0') << std::setw(2) << mSeconds << "." << std::setw(3) << mMilliseconds << std::endl;
 }
 
 std::string TimeLimit::getName() {

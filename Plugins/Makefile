@@ -18,6 +18,7 @@ objs:
 	cd 3DModel; make
 	cd Camera; make
 	cd Collectables; make
+	cd CollidableSurfaceRegistry; make
 	cd CommandRegistry; make
 	cd FourColourSupport; make
 	cd IntegerValue; make
@@ -33,6 +34,7 @@ clean:
 	cd 3DModel; make clean
 	cd Camera; make clean
 	cd Collectables; make clean
+	cd CollidableSurfaceRegistry; make clean
 	cd CommandRegistry; make clean
 	cd FourColourSupport; make clean
 	cd IntegerValue; make clean
