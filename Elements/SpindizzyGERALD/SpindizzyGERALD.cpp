@@ -75,9 +75,13 @@ void SpindizzyGERALD::renderStatic() {
 bool SpindizzyGERALD::initElement(unsigned int pass) {
   switch (pass) {
     case INIT_REGISTER_BLOCKS: {
-      if (cZoneContext != NULL) {
+      std::cout << "Initializing zone context..." << std::endl;
+      if (cZoneContext != NULL && cMap != NULL) {
+        std::cout << "Getting zone..." << std::endl;
         cZone = cMap->getZone(cLocation);
+        std::cout << "Setting zone context..." << std::endl;
         cZoneContext->setZoneContext(cZone);
+        std::cout << "Done!" << std::endl;
       }
       return false;
     }
