@@ -27,11 +27,11 @@
 #include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
 #include "../../Plugins/SurfaceProcessor/ISurfaceProvider.h"
 
-#include "../../Global/BlockArea.h"
-#include "../../Global/BlockLocation.h"
-#include "../../Global/DOMNodeWrapper.h"
-#include "../../Global/Element.h"
-#include "../../Global/MiscFunctions.h"
+#include <IsoRealms/BlockArea.h>
+#include <IsoRealms/BlockLocation.h>
+#include <IsoRealms/DOMNodeWrapper.h>
+#include <IsoRealms/Element.h>
+#include <IsoRealms/MiscFunctions.h>
 
 #include "ISurfaceProcessorProxy.h"
 #include "ISpindizzyBlockFactory.h"

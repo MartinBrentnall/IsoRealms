@@ -19,7 +19,7 @@
 #ifndef I_SPINDIZZY_TEXTURE_H
 #define I_SPINDIZZY_TEXTURE_H
 
-#include "../../Global/Colour.h"
+#include <IsoRealms/Colour.h>
 
 class ISpindizzyTexture {
   public:

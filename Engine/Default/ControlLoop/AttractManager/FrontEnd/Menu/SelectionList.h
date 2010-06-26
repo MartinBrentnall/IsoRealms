@@ -21,8 +21,8 @@
 
 #include <iostream>
 
-#include "../../../../../../Global/ICommand.h"
-#include "../../../../../../Global/System.h"
+#include <IsoRealms/ICommand.h>
+#include <IsoRealms/System.h>
 
 /**
  * This class will dynamically populate the front-end menu with a list of files

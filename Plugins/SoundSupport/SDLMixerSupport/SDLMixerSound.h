@@ -22,7 +22,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_mixer.h>
 
-#include "../../../Global/System.h"
+#include <IsoRealms/System.h>
 
 #include "../ISound.h"
 

@@ -19,7 +19,7 @@
 #ifndef I_ELEMENT_SELECTION_LISTENER_H
 #define I_ELEMENT_SELECTION_LISTENER_H
 
-#include "../../../../Global/IElementFactory.h"
+#include <IsoRealms/IElementFactory.h>
 
 class IElementSelectionListener {
   public:

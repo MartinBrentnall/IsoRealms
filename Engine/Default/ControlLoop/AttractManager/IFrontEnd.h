@@ -21,7 +21,7 @@
 
 #include <SDL/SDL.h>
 
-#include "../../../../Global/DOMNodeWrapper.h"
+#include <IsoRealms/DOMNodeWrapper.h>
 
 /**
  * A front-end allows the user to control the engine by executing various

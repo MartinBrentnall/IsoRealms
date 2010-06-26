@@ -19,7 +19,7 @@
 #ifndef I_SPINDIZZY_BLOCK_FACTORY_H
 #define I_SPINDIZZY_BLOCK_FACTORY_H
 
-#include "../../Global/ElementFactory.h"
+#include <IsoRealms/ElementFactory.h>
 
 #include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"

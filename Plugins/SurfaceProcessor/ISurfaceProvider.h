@@ -24,7 +24,7 @@
 #include "ITileSurface.h"
 #include "IWallSurface.h"
 
-#include "../../Global/BlockArea.h"
+#include <IsoRealms/BlockArea.h>
 
 /**
  * This class is to be implemented by objects being provided to the processor.

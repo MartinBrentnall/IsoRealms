@@ -23,13 +23,13 @@
 #include <cstdlib>
 #include <GL/gl.h>
 
-#include "../../Global/BlockLocation.h"
-#include "../../Global/Element.h"
-#include "../../Global/IDynamicElement.h"
-#include "../../Global/IElementFactory.h"
-#include "../../Global/IsoRealmsConstants.h"
-#include "../../Global/IVisualElement.h"
-#include "../../Global/Vertex.h"
+#include <IsoRealms/BlockLocation.h>
+#include <IsoRealms/Element.h>
+#include <IsoRealms/IDynamicElement.h>
+#include <IsoRealms/IElementFactory.h>
+#include <IsoRealms/IsoRealmsConstants.h>
+#include <IsoRealms/IVisualElement.h>
+#include <IsoRealms/Vertex.h>
 
 #include "../../Plugins/Collectables/ICollectable.h"
 #include "../../Plugins/3DModel/ISimpleModel.h"

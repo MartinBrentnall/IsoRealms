@@ -16,18 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_INTEGER_VALUE_H
-#define I_INTEGER_VALUE_H
+#ifndef ZONE_REPRESENTATION_BY_MODEL_H
+#define ZONE_REPRESENTATION_BY_MODEL_H
 
-#include <IsoRealms/IPlugin.h>
+#include <IsoRealms/MapRenderer.h>
 
-#include "IIntegerValueListener.h"
-
-class IIntegerValue:public virtual IPlugin {
+/**
+ * This Map Renderer uses a 3DModelFactory plugin instance to create a model
+ * that represents each zone.  Each model instance is scaled and positioned to
+ * appropriately represent the size and location of each zone.
+ */
+class ZoneRepresentationByModel:public MapRenderer {
   public:
-  virtual IIntegerValue& operator+=(const int&) = 0;
-  virtual void addIntegerValueListener(IIntegerValueListener*) = 0;
-  virtual void removeIntegerValueListener(IIntegerValueListener*) = 0;
+  ZoneRepresentationByModel(IMap*);
+  
+  /**************************\
+   * Implements MapRenderer *
+  \**************************/
+  void render();
+  void update(unsigned int ticks);
 };
 
 #endif

@@ -21,8 +21,8 @@
 
 #include <map>
 
-#include "../../Global/Colour.h"
-#include "../../Global/DummyPlugin.h"
+#include <IsoRealms/Colour.h>
+#include <IsoRealms/DummyPlugin.h>
 
 #include "IFourColourSupport.h"
 

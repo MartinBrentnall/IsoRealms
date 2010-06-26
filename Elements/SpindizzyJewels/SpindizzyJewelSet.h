@@ -21,9 +21,9 @@
 
 #include <vector>
 
-#include "../../Global/IElementSet.h"
-#include "../../Global/IPluginSupport.h"
-#include "../../Global/PluginRegistry.h"
+#include <IsoRealms/IElementSet.h>
+#include <IsoRealms/IPluginSupport.h>
+#include <IsoRealms/PluginRegistry.h>
 
 #include "../../Plugins/3DModel/ISimpleModelFactory.h"
 #include "../../Plugins/Collectables/ICollectables.h"

@@ -19,7 +19,7 @@
 #ifndef I_UTILITIES_H
 #define I_UTILITIES_H
 
-#include "../../Global/IPlugin.h"
+#include <IsoRealms/IPlugin.h>
 
 class IUtilities:public virtual IPlugin {
   public:

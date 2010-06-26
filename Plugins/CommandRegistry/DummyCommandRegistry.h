@@ -19,7 +19,7 @@
 #ifndef DUMMY_COMMAND_REGISTRY_H
 #define DUMMY_COMMAND_REGISTRY_H
 
-#include "../../Global/DummyPlugin.h"
+#include <IsoRealms/DummyPlugin.h>
 
 #include "ICommandRegistry.h"
 

@@ -22,11 +22,11 @@
 #include <vector>
 #include <string>
 
-#include "../../../../Global/ICommand.h"
-#include "../../../../Global/IComponentContainer.h"
-#include "../../../../Global/IPluginSupport.h"
-#include "../../../../Global/PluginRegistry.h"
-#include "../../../../Global/PlugSocket.h"
+#include <IsoRealms/ICommand.h>
+#include <IsoRealms/IComponentContainer.h>
+#include <IsoRealms/IPluginSupport.h>
+#include <IsoRealms/PluginRegistry.h>
+#include <IsoRealms/PlugSocket.h>
 
 #include "EntityClassInstancesComponent.h"
 #include "IInstanceSelectionListener.h"

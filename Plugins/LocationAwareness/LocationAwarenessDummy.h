@@ -19,7 +19,7 @@
 #ifndef LOCATION_AWARENESS_DUMMY_H
 #define LOCATION_AWARENESS_DUMMY_H
 
-#include "../../Global/DummyPlugin.h"
+#include <IsoRealms/DummyPlugin.h>
 
 #include "ILocationAwareness.h"
 

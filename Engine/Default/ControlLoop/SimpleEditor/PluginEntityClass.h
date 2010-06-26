@@ -21,8 +21,8 @@
 
 #include <string>
 
-#include "../../../../Global/PluginRegistry.h"
-#include "../../../../Global/IComponentContainer.h"
+#include <IsoRealms/PluginRegistry.h>
+#include <IsoRealms/IComponentContainer.h>
 
 #include "ConfirmationBox.h"
 #include "IEntityClass.h"

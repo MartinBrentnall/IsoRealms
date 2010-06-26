@@ -25,22 +25,23 @@
 
 #include "../../IControlLoop.h"
 
-#include "../../../../Global/CommandManager.h"
-#include "../../../../Global/Configuration.h"
-#include "../../../../Global/DOMNodeWrapper.h"
-#include "../../../../Global/ElementSetRegistry.h"
-#include "../../../../Global/GlobalConfiguration.h"
-#include "../../../../Global/ICommandInfo.h"
-#include "../../../../Global/IComponentContainer.h"
-#include "../../../../Global/IElementFactory.h"
-#include "../../../../Global/IElementGateway.h"
-#include "../../../../Global/IElementRegistryListener.h"
-#include "../../../../Global/IFont.h"
-#include "../../../../Global/IFontEngine.h"
-#include "../../../../Global/IHUDComponent.h"
-#include "../../../../Global/IPluginRegistryListener.h"
-#include "../../../../Global/Map.h"
-#include "../../../../Global/ScreenConfiguration.h"
+#include <IsoRealms/CommandManager.h>
+#include <IsoRealms/Configuration.h>
+#include <IsoRealms/DOMNodeWrapper.h>
+#include <IsoRealms/ElementSetRegistry.h>
+#include <IsoRealms/GlobalConfiguration.h>
+#include <IsoRealms/GUI/OpenDialogCommand.h>
+#include <IsoRealms/ICommandInfo.h>
+#include <IsoRealms/IComponentContainer.h>
+#include <IsoRealms/IElementFactory.h>
+#include <IsoRealms/IElementGateway.h>
+#include <IsoRealms/IElementRegistryListener.h>
+#include <IsoRealms/IFont.h>
+#include <IsoRealms/IFontEngine.h>
+#include <IsoRealms/IHUDComponent.h>
+#include <IsoRealms/IPluginRegistryListener.h>
+#include <IsoRealms/Map.h>
+#include <IsoRealms/ScreenConfiguration.h>
 
 class OpenCommand;
 

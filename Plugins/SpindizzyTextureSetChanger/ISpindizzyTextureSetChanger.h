@@ -19,7 +19,7 @@
 #ifndef SPINDIZZY_TEXTURE_SET_CHANGER_H
 #define SPINDIZZY_TEXTURE_SET_CHANGER_H
 
-#include "../../Global/IPlugin.h"
+#include <IsoRealms/IPlugin.h>
 
 #include "IChangeableTextureSet.h"
 

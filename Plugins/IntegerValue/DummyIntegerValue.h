@@ -19,7 +19,7 @@
 #ifndef DUMMY_INTEGER_VALUE_H
 #define DUMMY_INTEGER_VALUE_H
 
-#include "../../Global/DummyPlugin.h"
+#include <IsoRealms/DummyPlugin.h>
 
 #include "IIntegerValue.h"
 

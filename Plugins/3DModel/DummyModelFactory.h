@@ -19,7 +19,7 @@
 #ifndef DUMMY_MODEL_FACTORY_H
 #define DUMMY_MODEL_FACTORY_H
 
-#include "../../Global/DummyPlugin.h"
+#include <IsoRealms/DummyPlugin.h>
 
 #include "DummyModel.h"
 #include "ISimpleModelFactory.h"

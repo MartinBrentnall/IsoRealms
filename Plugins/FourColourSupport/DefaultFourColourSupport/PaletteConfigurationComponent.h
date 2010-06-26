@@ -22,11 +22,11 @@
 #include <map>
 #include <vector>
 
-#include "../../../Global/Colour.h"
-#include "../../../Global/Configuration.h"
-#include "../../../Global/GUI/Dialog.h"
-#include "../../../Global/IComponentContainer.h"
-#include "../../../Global/ScreenConfiguration.h"
+#include <IsoRealms/Colour.h>
+#include <IsoRealms/Configuration.h>
+#include <IsoRealms/GUI/Dialog.h>
+#include <IsoRealms/IComponentContainer.h>
+#include <IsoRealms/ScreenConfiguration.h>
 
 #include "../IFourColourSupport.h"
 #include "../IFourColourSupportListener.h"

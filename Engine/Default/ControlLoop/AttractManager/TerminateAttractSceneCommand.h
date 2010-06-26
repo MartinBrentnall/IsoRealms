@@ -21,7 +21,7 @@
 
 #include "AttractSceneManager.h"
 
-#include "../../../../Global/ICommand.h"
+#include <IsoRealms/ICommand.h>
 
 class TerminateAttractSceneCommand:public ICommand {
   private:

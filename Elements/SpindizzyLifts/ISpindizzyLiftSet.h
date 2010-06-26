@@ -19,7 +19,7 @@
 #ifndef I_SPINDIZZY_LIFT_SET_H
 #define I_SPINDIZZY_LIFT_SET_H
 
-#include "../../Global/IElementSet.h"
+#include <IsoRealms/IElementSet.h>
 
 class ISpindizzyLiftSet:public IElementSet {
   public:

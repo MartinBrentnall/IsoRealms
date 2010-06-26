@@ -19,7 +19,7 @@
 #ifndef I_COLLECTABLES_ACCESSOR_H
 #define I_COLLECTABLES_ACCESSOR_H
 
-#include "../../Global/IElementSet.h"
+#include <IsoRealms/IElementSet.h>
 
 #include "../../Plugins/Collectables/ICollectables.h"
 

@@ -36,7 +36,7 @@ PluginRequirementsComponent::PluginRequirementsComponent(IComponentContainer* co
   mCloseButton->setBoundsCalculator(mCloseButtonLayout);
 
   // Put label in top left
-  TextLabelComponent* mTitleLabel = new TextLabelComponent("\"" + cPluginSupport->getName() + "\" supports the following plugins:");
+  TextLabelComponent* mTitleLabel = new TextLabelComponent("\"TODO\" supports the following plugins:");
   IComponentBoundsCalculator* mTitleLayout = new ComponentEdgeLayout(mInsideDialog, mInsideDialog, NULL, NULL, mTitleLabel);
   mTitleLabel->setBoundsCalculator(mTitleLayout);
 
@@ -81,7 +81,7 @@ PluginRequirementsComponent::PluginRequirementsComponent(IComponentContainer* co
 }
 
 std::string PluginRequirementsComponent::getTitle(IPluginSupport* pluginSupport) {
-  return pluginSupport->getName() + " Plugins";
+  return "Plugins";
 }
 
 void PluginRequirementsComponent::updateResizableDialogContent(int milliseconds) {

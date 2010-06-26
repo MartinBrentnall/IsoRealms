@@ -24,18 +24,18 @@
 #include <vector>
 #include <string>
 
-#include "../../../../Global/GUI/ComponentEdgeLayout.h"
-#include "../../../../Global/GUI/EdgeRelation.h"
-#include "../../../../Global/GUI/FlexibleGridLayoutComponent.h"
-#include "../../../../Global/GUI/ResizableDialog.h"
-#include "../../../../Global/GUI/ScrollableContainer.h"
-#include "../../../../Global/GUI/TextLabelComponent.h"
-#include "../../../../Global/IComponentContainer.h"
-#include "../../../../Global/IFont.h"
-#include "../../../../Global/IPlugin.h"
-#include "../../../../Global/IPluginSupport.h"
-#include "../../../../Global/PluginRegistry.h"
-#include "../../../../Global/System.h"
+#include <IsoRealms/GUI/ComponentEdgeLayout.h>
+#include <IsoRealms/GUI/EdgeRelation.h>
+#include <IsoRealms/GUI/FlexibleGridLayoutComponent.h>
+#include <IsoRealms/GUI/ResizableDialog.h>
+#include <IsoRealms/GUI/ScrollableContainer.h>
+#include <IsoRealms/GUI/TextLabelComponent.h>
+#include <IsoRealms/IComponentContainer.h>
+#include <IsoRealms/IFont.h>
+#include <IsoRealms/IPlugin.h>
+#include <IsoRealms/IPluginSupport.h>
+#include <IsoRealms/PluginRegistry.h>
+#include <IsoRealms/System.h>
 
 #include "ChoosePluginImplementationCommand.h"
 #include "EntityClassInstancesComponent.h"

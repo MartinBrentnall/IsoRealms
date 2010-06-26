@@ -19,7 +19,7 @@
 #ifndef I_SOUND_SUPPORT_H
 #define I_SOUND_SUPPORT_H
 
-#include "../../Global/IPlugin.h"
+#include <IsoRealms/IPlugin.h>
 
 #include "ISound.h"
 #include "ISoundSupportListener.h"

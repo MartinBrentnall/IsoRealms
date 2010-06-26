@@ -23,10 +23,10 @@
 #include <SDL/SDL.h>
 #include <string>
 
-#include "../../../../Global/GUI/LookAndFeel.h"
-#include "../../../../Global/IFont.h"
-#include "../../../../Global/ICommand.h"
-#include "../../../../Global/KeyStates.h"
+#include <IsoRealms/GUI/LookAndFeel.h>
+#include <IsoRealms/IFont.h>
+#include <IsoRealms/ICommand.h>
+#include <IsoRealms/KeyStates.h>
 
 class MenuItem {
   private:

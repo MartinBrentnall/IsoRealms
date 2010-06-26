@@ -19,7 +19,7 @@
 #ifndef WALL_COLUMN_H
 #define WALL_COLUMN_H
 
-#include "../../../Global/MiscFunctions.h"
+#include <IsoRealms/MiscFunctions.h>
 
 #include <iostream>
 

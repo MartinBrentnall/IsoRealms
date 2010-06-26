@@ -19,7 +19,7 @@
 #ifndef I_SIMPLE_MODEL_H
 #define I_SIMPLE_MODEL_H
 
-#include "../../Global/IPlugin.h"
+#include <IsoRealms/IPlugin.h>
 
 class ISimpleModel {
   public:

@@ -50,6 +50,8 @@ SimpleEditor::SimpleEditor(DOMNodeWrapper* node) {
       } else if (mCommandType == "ElementSetInstancesCommand") {
         IComponentFactory* mComponentFactory = new ElementInstancesComponentFactory(this);
         mCommand = new ElementSetInstancesCommand(this, mComponentFactory);
+//      } else if (mCommandType == "ZoneRendererInstances") {
+//        mCommand = new OpenDialogCommand<>;
       } else if (mCommandType == "SaveAsCommand") {
         mCommand = new SaveAsCommand(this, true);
       } else if (mCommandType == "SaveCommand") {

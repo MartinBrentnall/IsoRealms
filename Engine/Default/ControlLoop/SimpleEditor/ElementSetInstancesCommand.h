@@ -19,8 +19,8 @@
 #ifndef ELEMENT_SET_INSTANCES_COMMAND_H
 #define ELEMENT_SET_INSTANCES_COMMAND_H
 
-#include "../../../../Global/ICommand.h"
-#include "../../../../Global/IComponentContainer.h"
+#include <IsoRealms/ICommand.h>
+#include <IsoRealms/IComponentContainer.h>
 
 #include "IComponentFactory.h"
 

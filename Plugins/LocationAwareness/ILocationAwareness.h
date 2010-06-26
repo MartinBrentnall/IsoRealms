@@ -19,8 +19,8 @@
 #ifndef I_LOCATION_AWARENESS_H
 #define I_LOCATION_AWARENESS_H
 
-#include "../../Global/IPlugin.h"
-#include "../../Global/Vertex.h"
+#include <IsoRealms/IPlugin.h>
+#include <IsoRealms/Vertex.h>
 
 class ILocationAwareness:public virtual IPlugin {
   public:

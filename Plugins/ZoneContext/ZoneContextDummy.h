@@ -19,7 +19,7 @@
 #ifndef ZONE_CONTEXT_DUMMY_H
 #define ZONE_CONTEXT_DUMMY_H
 
-#include "../../Global/DummyPlugin.h"
+#include <IsoRealms/DummyPlugin.h>
 
 #include "IZoneContext.h"
 

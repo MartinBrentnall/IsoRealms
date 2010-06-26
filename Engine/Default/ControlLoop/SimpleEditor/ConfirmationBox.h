@@ -21,12 +21,12 @@
 
 #include <string>
 
-#include "../../../../Global/GUI/Button.h"
-#include "../../../../Global/GUI/ComponentEdgeLayout.h"
-#include "../../../../Global/GUI/EdgeRelation.h"
-#include "../../../../Global/GUI/ResizableDialog.h"
-#include "../../../../Global/GUI/TextLabelComponent.h"
-#include "../../../../Global/ICommand.h"
+#include <IsoRealms/GUI/Button.h>
+#include <IsoRealms/GUI/ComponentEdgeLayout.h>
+#include <IsoRealms/GUI/EdgeRelation.h>
+#include <IsoRealms/GUI/ResizableDialog.h>
+#include <IsoRealms/GUI/TextLabelComponent.h>
+#include <IsoRealms/ICommand.h>
 
 class ConfirmationBox:public ResizableDialog {
   private:

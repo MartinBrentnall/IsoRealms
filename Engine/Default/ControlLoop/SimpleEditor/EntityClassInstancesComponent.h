@@ -22,19 +22,19 @@
 #include <iostream>
 #include <string>
 
-#include "../../../../Global/Configuration.h"
-#include "../../../../Global/GUI/Button.h"
-#include "../../../../Global/GUI/ComponentEdgeLayout.h"
-#include "../../../../Global/GUI/EdgeRelation.h"
-#include "../../../../Global/GUI/GridLayoutComponent.h"
-#include "../../../../Global/GUI/ListBox.h"
-#include "../../../../Global/GUI/RectangleBoundsCalculator.h"
-#include "../../../../Global/GUI/ResizableDialog.h"
-#include "../../../../Global/GUI/ScrollableContainer.h"
-#include "../../../../Global/GUI/TextFieldComponent.h"
-#include "../../../../Global/IComponentContainer.h"
-#include "../../../../Global/PluginRegistry.h"
-#include "../../../../Global/ScreenConfiguration.h"
+#include <IsoRealms/Configuration.h>
+#include <IsoRealms/GUI/Button.h>
+#include <IsoRealms/GUI/ComponentEdgeLayout.h>
+#include <IsoRealms/GUI/EdgeRelation.h>
+#include <IsoRealms/GUI/GridLayoutComponent.h>
+#include <IsoRealms/GUI/ListBox.h>
+#include <IsoRealms/GUI/RectangleBoundsCalculator.h>
+#include <IsoRealms/GUI/ResizableDialog.h>
+#include <IsoRealms/GUI/ScrollableContainer.h>
+#include <IsoRealms/GUI/TextFieldComponent.h>
+#include <IsoRealms/IComponentContainer.h>
+#include <IsoRealms/PluginRegistry.h>
+#include <IsoRealms/ScreenConfiguration.h>
 
 #include "IInstanceSelectionListener.h"
 #include "IEntityClass.h"

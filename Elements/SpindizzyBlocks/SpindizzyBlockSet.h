@@ -30,10 +30,10 @@
 #include "../../Plugins/SpindizzyTextureSetChanger/IChangeableTextureSet.h"
 #include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
 
-#include "../../Global/IElementSet.h"
-#include "../../Global/IPlugin.h"
-#include "../../Global/PlugSocket.h"
-#include "../../Global/PluginRegistry.h"
+#include <IsoRealms/IElementSet.h>
+#include <IsoRealms/IPlugin.h>
+#include <IsoRealms/PlugSocket.h>
+#include <IsoRealms/PluginRegistry.h>
 
 #include "BlockStateCommand.h"
 #include "ISpindizzyBlockFactory.h"

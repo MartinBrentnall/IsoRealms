@@ -19,8 +19,8 @@
 #ifndef I_COLLECTABLES_H
 #define I_COLLECTABLES_H
 
-#include "../../Global/IPlugin.h"
-#include "../../Global/Vertex.h"
+#include <IsoRealms/IPlugin.h>
+#include <IsoRealms/Vertex.h>
 
 #include "ICollectable.h"
 #include "ICollector.h"

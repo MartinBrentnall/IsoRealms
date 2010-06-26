@@ -24,12 +24,12 @@
 
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 
-#include "../../Global/Configuration.h"
-#include "../../Global/GUI/Dialog.h"
-#include "../../Global/GUI/IComponentCloseListener.h"
-#include "../../Global/IComponentContainer.h"
-#include "../../Global/IElement.h"
-#include "../../Global/ScreenConfiguration.h"
+#include <IsoRealms/Configuration.h>
+#include <IsoRealms/GUI/Dialog.h>
+#include <IsoRealms/GUI/IComponentCloseListener.h>
+#include <IsoRealms/IComponentContainer.h>
+#include <IsoRealms/IElement.h>
+#include <IsoRealms/ScreenConfiguration.h>
 
 class SpindizzyBlockFactory;
 

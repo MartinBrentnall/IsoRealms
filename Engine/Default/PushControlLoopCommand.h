@@ -22,7 +22,7 @@
 #include <iostream>
 #include <stack>
 
-#include "../../Global/ICommand.h"
+#include <IsoRealms/ICommand.h>
 
 #include "IControlLoop.h"
 

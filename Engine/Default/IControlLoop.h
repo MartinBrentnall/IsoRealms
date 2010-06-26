@@ -21,7 +21,7 @@
 
 #include <SDL/SDL.h>
 
-#include "../../Global/DOMNodeWrapper.h"
+#include <IsoRealms/DOMNodeWrapper.h>
 
 /**
  * This interface is to be implemented by any class wishing to act as a control

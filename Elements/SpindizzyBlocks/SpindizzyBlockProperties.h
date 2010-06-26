@@ -21,8 +21,8 @@
 
 #include <GL/gl.h>
 
-#include "../../Global/DOMNodeWrapper.h"
-#include "../../Global/IsoRealmsConstants.h"
+#include <IsoRealms/DOMNodeWrapper.h>
+#include <IsoRealms/IsoRealmsConstants.h>
 
 /**
  * 

@@ -24,9 +24,9 @@
 #include <xercesc/util/PlatformUtils.hpp>
 #include <SDL/SDL.h>
 
-#include "Global/Configuration.h"
-#include "Global/InitException.h"
-#include "Global/KeyStates.h"
-#include "Global/PluginSupportException.h"
+#include <IsoRealms/Configuration.h>
+#include <IsoRealms/InitException.h>
+#include <IsoRealms/KeyStates.h>
+#include <IsoRealms/PluginSupportException.h>
 
 #endif

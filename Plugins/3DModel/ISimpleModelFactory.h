@@ -19,7 +19,7 @@
 #ifndef I_SIMPLE_MODEL_FACTORY_H
 #define I_SIMPLE_MODEL_FACTORY_H
 
-#include "../../Global/Vertex.h"
+#include <IsoRealms/Vertex.h>
 
 #include "ISimpleModel.h"
 

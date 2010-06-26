@@ -21,7 +21,7 @@
 
 #include <iomanip>
 
-#include "../../../Global/IDynamicElement.h"
+#include <IsoRealms/IDynamicElement.h>
 
 #include "../../CommandRegistry/ICommandRegistry.h"
 

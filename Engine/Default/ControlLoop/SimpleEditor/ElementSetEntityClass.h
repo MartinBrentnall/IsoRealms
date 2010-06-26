@@ -22,11 +22,11 @@
 #include <string>
 #include <vector>
 
-#include "../../../../Global/IElementSet.h"
-#include "../../../../Global/ElementSetRegistry.h"
-#include "../../../../Global/IComponentContainer.h"
-#include "../../../../Global/PluginRegistry.h"
-#include "../../../../Global/System.h"
+#include <IsoRealms/IElementSet.h>
+#include <IsoRealms/ElementSetRegistry.h>
+#include <IsoRealms/IComponentContainer.h>
+#include <IsoRealms/PluginRegistry.h>
+#include <IsoRealms/System.h>
 
 #include "ConfirmationBox.h"
 #include "IEntityClass.h"

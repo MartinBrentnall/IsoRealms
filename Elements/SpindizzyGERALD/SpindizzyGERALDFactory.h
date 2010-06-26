@@ -21,11 +21,11 @@
 
 #include <GL/gl.h>
 
-#include "../../Global/BlockLocation.h"
-#include "../../Global/ElementFactory.h"
-#include "../../Global/IComponentContainer.h"
-#include "../../Global/IElementGateway.h"
-#include "../../Global/IVisualElement.h"
+#include <IsoRealms/BlockLocation.h>
+#include <IsoRealms/ElementFactory.h>
+#include <IsoRealms/IComponentContainer.h>
+#include <IsoRealms/IElementGateway.h>
+#include <IsoRealms/IVisualElement.h>
 
 #include "../../Plugins/LocationAwareness/ILocationAwareness.h"
 #include "../../Plugins/Camera/ICamera.h"

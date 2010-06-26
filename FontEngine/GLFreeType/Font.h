@@ -38,9 +38,9 @@
 // STL exception library.
 #include <stdexcept>
 
-#include "../../Global/Configuration.h" 
-#include "../../Global/IFont.h" 
-#include "../../Global/ScreenConfiguration.h" 
+#include <IsoRealms/Configuration.h>
+#include <IsoRealms/IFont.h>
+#include <IsoRealms/ScreenConfiguration.h>
 
 class Font:public IFont {
   private:

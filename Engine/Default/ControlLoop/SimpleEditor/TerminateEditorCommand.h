@@ -19,7 +19,7 @@
 #ifndef TERMINATE_EDITOR_COMMAND_H
 #define TERMINATE_EDITOR_COMMAND_H
 
-#include "../../../../Global/ICommand.h"
+#include <IsoRealms/ICommand.h>
 
 class TerminateEditorCommand:public ICommand {
   private:

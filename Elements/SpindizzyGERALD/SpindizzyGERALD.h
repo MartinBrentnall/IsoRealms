@@ -23,14 +23,14 @@
 #include <iomanip>
 #include <cmath>
 
-#include "../../Global/BlockLocation.h"
-#include "../../Global/Element.h"
-#include "../../Global/IInteractiveElement.h"
-#include "../../Global/IMap.h"
-#include "../../Global/IsoRealmsConstants.h"
-#include "../../Global/IVisualElement.h"
-#include "../../Global/KeyStates.h"
-#include "../../Global/Vertex.h"
+#include <IsoRealms/BlockLocation.h>
+#include <IsoRealms/Element.h>
+#include <IsoRealms/IInteractiveElement.h>
+#include <IsoRealms/IMap.h>
+#include <IsoRealms/IsoRealmsConstants.h>
+#include <IsoRealms/IVisualElement.h>
+#include <IsoRealms/KeyStates.h>
+#include <IsoRealms/Vertex.h>
 
 #include "../../Plugins/3DModel/ISimpleModel.h"
 #include "../../Plugins/3DModel/ISimpleModelFactory.h"

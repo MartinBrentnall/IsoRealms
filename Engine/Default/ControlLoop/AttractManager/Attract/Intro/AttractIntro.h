@@ -26,9 +26,9 @@
 
 #include "../../IAttract.h"
 
-#include "../../../../../../Global/GlobalConfiguration.h"
-#include "../../../../../../Global/IFont.h"
-#include "../../../../../../Global/IFontEngine.h"
+#include <IsoRealms/GlobalConfiguration.h>
+#include <IsoRealms/IFont.h>
+#include <IsoRealms/IFontEngine.h>
 
 /**
  * This attract scene displays a short introduction animation.

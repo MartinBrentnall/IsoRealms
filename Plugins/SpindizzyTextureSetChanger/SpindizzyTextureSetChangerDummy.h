@@ -19,7 +19,7 @@
 #ifndef SPINDIZZY_TEXTURE_SET_CHANGER_DUMMY_H
 #define SPINDIZZY_TEXTURE_SET_CHANGER_DUMMY_H
 
-#include "../../Global/DummyPlugin.h"
+#include <IsoRealms/DummyPlugin.h>
 
 #include "ISpindizzyTextureSetChanger.h"
 

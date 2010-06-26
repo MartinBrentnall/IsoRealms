@@ -22,10 +22,10 @@
 #include <string>
 #include <vector>
 
-#include "../../../../Global/CommandManager.h"
-#include "../../../../Global/DOMNodeWrapper.h"
-#include "../../../../Global/ICommand.h"
-#include "../../../../Global/Map.h"
+#include <IsoRealms/CommandManager.h>
+#include <IsoRealms/DOMNodeWrapper.h>
+#include <IsoRealms/ICommand.h>
+#include <IsoRealms/Map.h>
 
 #include "../../IControlLoop.h"
 

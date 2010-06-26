@@ -21,16 +21,16 @@
 
 #include <string>
 
-#include "../../Global/GUI/Button.h"
-#include "../../Global/GUI/CloseDialogCommand.h"
-#include "../../Global/GUI/ComponentEdgeLayout.h"
-#include "../../Global/GUI/EdgeRelation.h"
-#include "../../Global/GUI/FlexibleGridLayoutComponent.h"
-#include "../../Global/GUI/ResizableDialog.h"
-#include "../../Global/GUI/ScrollableContainer.h"
-#include "../../Global/GUI/TextLabelComponent.h"
-#include "../../Global/GUI/TextFieldComponent.h"
-#include "../../Global/IComponentContainer.h"
+#include <IsoRealms/GUI/Button.h>
+#include <IsoRealms/GUI/CloseDialogCommand.h>
+#include <IsoRealms/GUI/ComponentEdgeLayout.h>
+#include <IsoRealms/GUI/EdgeRelation.h>
+#include <IsoRealms/GUI/FlexibleGridLayoutComponent.h>
+#include <IsoRealms/GUI/ResizableDialog.h>
+#include <IsoRealms/GUI/ScrollableContainer.h>
+#include <IsoRealms/GUI/TextLabelComponent.h>
+#include <IsoRealms/GUI/TextFieldComponent.h>
+#include <IsoRealms/IComponentContainer.h>
 
 #include "SpindizzyLiftProperties.h"
 

@@ -19,11 +19,11 @@
 #ifndef SPINDIZZY_ENEMY_H
 #define SPINDIZZY_ENEMY_H
 
-#include "../../Global/BlockLocation.h"
-#include "../../Global/Element.h"
-#include "../../Global/IsoRealmsConstants.h"
-#include "../../Global/IVisualElement.h"
-#include "../../Global/Vertex.h"
+#include <IsoRealms/BlockLocation.h>
+#include <IsoRealms/Element.h>
+#include <IsoRealms/IsoRealmsConstants.h>
+#include <IsoRealms/IVisualElement.h>
+#include <IsoRealms/Vertex.h>
 
 #include "../../Plugins/3DModel/ISimpleModel.h"
 #include "../../Plugins/3DModel/ISimpleModelFactory.h"

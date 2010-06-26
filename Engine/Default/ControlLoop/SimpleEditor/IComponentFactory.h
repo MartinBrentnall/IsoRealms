@@ -19,7 +19,7 @@
 #ifndef I_COMPONENT_FACTORY_H
 #define I_COMPONENT_FACTORY_H
 
-#include "../../../../Global/IHUDComponent.h"
+#include <IsoRealms/IHUDComponent.h>
 
 class IComponentFactory {
   public:

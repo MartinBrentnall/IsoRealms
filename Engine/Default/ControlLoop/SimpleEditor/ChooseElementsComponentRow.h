@@ -22,9 +22,9 @@
 #include <GL/gl.h>
 #include <SDL/SDL.h>
 
-#include "../../../../Global/ICommand.h"
-#include "../../../../Global/IElementFactory.h"
-#include "../../../../Global/IElementSet.h"
+#include <IsoRealms/ICommand.h>
+#include <IsoRealms/IElementFactory.h>
+#include <IsoRealms/IElementSet.h>
 
 #include "IElementSelectionListener.h"
 

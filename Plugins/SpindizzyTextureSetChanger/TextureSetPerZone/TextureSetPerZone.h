@@ -23,10 +23,10 @@
 #include <sstream>
 #include <vector>
 
-#include "../../../Global/ICommand.h"
-#include "../../../Global/IHUDComponent.h"
-#include "../../../Global/IPluginRegistry.h"
-#include "../../../Global/Map.h"
+#include <IsoRealms/ICommand.h>
+#include <IsoRealms/IHUDComponent.h>
+#include <IsoRealms/IPluginRegistry.h>
+#include <IsoRealms/Map.h>
 
 #include "../../ZoneContext/IZoneContext.h"
 #include "../../ZoneContext/IZoneContextListener.h"

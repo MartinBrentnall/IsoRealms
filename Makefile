@@ -14,7 +14,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
-CPPFLAGS = -fPIC -Wall -pedantic
+CPPFLAGS = -fPIC -Wall -pedantic -I.
 MAJOR_VER = 1
 MINOR_VER = 0
 LDFLAGS = -shared -soname $(SONAME).$(MAJOR_VER) -o $(SONAME).$(MAJOR_VER).$(MINOR_VER)
@@ -29,23 +29,23 @@ objs:	$(OBJS)
 	cd Elements; make
 	cd Engine; make
 	cd FontEngine; make
-	cd Global; make
+	cd IsoRealms; make
 	cd Plugins; make
 
 install:
-	cd Global; make install
-	g++ *.o -o IsoRealms `sdl-config --cflags --libs` -L./IsoRealms -lIsoRealms -lGL -lGLU -lxerces-c -lfreetype
-	ln -s "$(PWD)" /usr/share/IsoRealms
+	cd IsoRealms; make install
+	g++ *.o -o IsoRealms.bin `sdl-config --cflags --libs` -L./IsoRealms -lIsoRealms -lGL -lGLU -lxerces-c -lfreetype
+	ln -s "$(PWD)" /usr/share/IsoRealms.bin
 
 all:
 	make clean
 	make objs
 
 clean:
-	$(RM) *.o IsoRealms 
+	$(RM) *.o IsoRealms.bin
 	cd Elements; make clean
 	cd Engine; make clean
 	cd FontEngine; make clean
-	cd Global; make clean
+	cd IsoRealms; make clean
 	cd Plugins; make clean
 

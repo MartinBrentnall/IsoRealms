@@ -26,9 +26,9 @@
 
 #include "Font.h"
 
-#include "../../Global/IFontEngine.h"
-#include "../../Global/DOMNodeWrapper.h"
-#include "../../Global/System.h"
+#include <IsoRealms/IFontEngine.h>
+#include <IsoRealms/DOMNodeWrapper.h>
+#include <IsoRealms/System.h>
 
 class GLFreeTypeFontEngine:public IFontEngine {
   private:

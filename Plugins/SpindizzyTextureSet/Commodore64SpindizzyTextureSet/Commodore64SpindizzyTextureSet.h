@@ -22,12 +22,12 @@
 #include <cmath>
 #include <map>
 
-#include "../../../Global/DummyPlugin.h"
-#include "../../../Global/ICommandInfo.h"
-#include "../../../Global/Image.h"
-#include "../../../Global/IPlugin.h"
-#include "../../../Global/PluginRegistry.h"
-#include "../../../Global/PlugSocket.h"
+#include <IsoRealms/DummyPlugin.h>
+#include <IsoRealms/ICommandInfo.h>
+#include <IsoRealms/Image.h>
+#include <IsoRealms/IPlugin.h>
+#include <IsoRealms/PluginRegistry.h>
+#include <IsoRealms/PlugSocket.h>
 
 #include "../../FourColourSupport/IFourColourSupport.h"
 #include "../../FourColourSupport/IFourColourSupportListener.h"

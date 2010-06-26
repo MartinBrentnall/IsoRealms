@@ -21,15 +21,15 @@
 
 #include <string>
 
-#include "../../../Global/GUI/Button.h"
-#include "../../../Global/GUI/ComponentEdgeLayout.h"
-#include "../../../Global/GUI/EdgeRelation.h"
-#include "../../../Global/GUI/GridLayoutComponent.h"
-#include "../../../Global/GUI/ListBox.h"
-#include "../../../Global/GUI/ResizableDialog.h"
-#include "../../../Global/GUI/ScrollableContainer.h"
-#include "../../../Global/GUI/TextLabelComponent.h"
-#include "../../../Global/System.h"
+#include <IsoRealms/GUI/Button.h>
+#include <IsoRealms/GUI/ComponentEdgeLayout.h>
+#include <IsoRealms/GUI/EdgeRelation.h>
+#include <IsoRealms/GUI/GridLayoutComponent.h>
+#include <IsoRealms/GUI/ListBox.h>
+#include <IsoRealms/GUI/ResizableDialog.h>
+#include <IsoRealms/GUI/ScrollableContainer.h>
+#include <IsoRealms/GUI/TextLabelComponent.h>
+#include <IsoRealms/System.h>
 
 #include "ISoundRegistry.h"
 

@@ -19,7 +19,7 @@
 #ifndef SDL_MIXER_SUPPORT_H
 #define SDL_MIXER_SUPPORT_H
 
-#include "../../../Global/DefaultCommandInfo.h"
+#include <IsoRealms/DefaultCommandInfo.h>
 
 #include "../ISoundSupport.h"
 

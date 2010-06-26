@@ -22,10 +22,10 @@
 #include <map>
 #include <vector>
 
-#include "../../../Global/ICommand.h"
-#include "../../../Global/ICommandInfo.h"
-#include "../../../Global/IComponentContainer.h"
-#include "../../../Global/IPlugin.h"
+#include <IsoRealms/ICommand.h>
+#include <IsoRealms/ICommandInfo.h>
+#include <IsoRealms/IComponentContainer.h>
+#include <IsoRealms/IPlugin.h>
 
 #include "../IFourColourSupport.h"
 

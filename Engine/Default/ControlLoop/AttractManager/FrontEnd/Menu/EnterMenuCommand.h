@@ -23,7 +23,7 @@
 #include <string>
 #include <vector>
 
-#include "../../../../../../Global/ICommand.h"
+#include <IsoRealms/ICommand.h>
 
 /**
  * This command performs the following actions:

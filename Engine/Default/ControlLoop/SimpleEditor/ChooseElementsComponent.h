@@ -23,12 +23,12 @@
 #include <GL/gl.h>
 #include <SDL/SDL.h>
 
-#include "../../../../Global/Configuration.h"
-#include "../../../../Global/ICommand.h"
-#include "../../../../Global/IComponentContainer.h"
-#include "../../../../Global/IHUDComponent.h"
-#include "../../../../Global/ElementSetRegistry.h"
-#include "../../../../Global/ScreenConfiguration.h"
+#include <IsoRealms/Configuration.h>
+#include <IsoRealms/ICommand.h>
+#include <IsoRealms/IComponentContainer.h>
+#include <IsoRealms/IHUDComponent.h>
+#include <IsoRealms/ElementSetRegistry.h>
+#include <IsoRealms/ScreenConfiguration.h>
 
 #include "ChooseElementsComponentRow.h"
 

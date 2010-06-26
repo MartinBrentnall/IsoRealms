@@ -21,6 +21,7 @@
       
       <EditorCommand type="TerminateEditorCommand" name="TerminateEditor"/>
       <EditorCommand type="ElementSetInstancesCommand" name="ElementSetInstances"/>
+      <EditorCommand type="ZoneRendererInstancesCommand" name="ZoneRendererInstances"/>
       <EditorCommand type="ChooseElementsCommand" name="ChooseElements"/>
       <EditorCommand type="OpenCommand" name="Open"/>
       <EditorCommand type="SaveAsCommand" name="SaveAs"/>
@@ -55,6 +56,9 @@
           </MenuItem>
           <MenuItem name="Element ^Palette...">
             <ExecuteEditorCommand type="ChooseElements"/>
+          </MenuItem>
+          <MenuItem name="Zone Renderers...">
+            <ExecuteEditorCommand type="ZoneRendererInstances"/>
           </MenuItem>
         </Menu>
       </MenuBar>

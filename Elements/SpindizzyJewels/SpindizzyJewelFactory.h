@@ -23,13 +23,13 @@
 
 #include "../../Plugins/3DModel/ISimpleModelFactory.h"
 
-#include "../../Global/BlockLocation.h"
-#include "../../Global/IComponentContainer.h"
-#include "../../Global/IDynamicElement.h"
-#include "../../Global/IElementGateway.h"
-#include "../../Global/IsoRealmsConstants.h"
-#include "../../Global/IVisualElement.h"
-#include "../../Global/Vertex.h"
+#include <IsoRealms/BlockLocation.h>
+#include <IsoRealms/IComponentContainer.h>
+#include <IsoRealms/IDynamicElement.h>
+#include <IsoRealms/IElementGateway.h>
+#include <IsoRealms/IsoRealmsConstants.h>
+#include <IsoRealms/IVisualElement.h>
+#include <IsoRealms/Vertex.h>
 
 #include "BaseSpindizzyJewelFactory.h"
 #include "ICollectablesAccessor.h"

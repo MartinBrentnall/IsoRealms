@@ -21,7 +21,7 @@
 
 #include <string>
 
-#include "../../Global/ICommand.h"
+#include <IsoRealms/ICommand.h>
 
 class IUserCommand:public ICommand {
   public:

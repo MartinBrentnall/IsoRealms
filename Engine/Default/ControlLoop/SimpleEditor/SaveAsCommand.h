@@ -21,7 +21,7 @@
 
 #include "IMapManager.h"
 
-#include "../../../../Global/ICommand.h"
+#include <IsoRealms/ICommand.h>
 
 class SaveAsCommand:public ICommand {
   private:

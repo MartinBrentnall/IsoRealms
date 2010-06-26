@@ -22,13 +22,13 @@
 #include <GL/gl.h>
 #include <SDL/SDL.h>
 
-#include "../../Global/GUI/IComponentCloseListener.h"
-#include "../../Global/IComponentContainer.h"
-#include "../../Global/IElement.h"
-#include "../../Global/IElementFactory.h"
-#include "../../Global/IElementGateway.h"
-#include "../../Global/IElementSet.h"
-#include "../../Global/IsoRealmsConstants.h"
+#include <IsoRealms/GUI/IComponentCloseListener.h>
+#include <IsoRealms/IComponentContainer.h>
+#include <IsoRealms/IElement.h>
+#include <IsoRealms/IElementFactory.h>
+#include <IsoRealms/IElementGateway.h>
+#include <IsoRealms/IElementSet.h>
+#include <IsoRealms/IsoRealmsConstants.h>
 
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 

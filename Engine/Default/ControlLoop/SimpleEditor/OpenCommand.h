@@ -19,8 +19,8 @@
 #ifndef OPEN_COMMAND_H
 #define OPEN_COMMAND_H
 
-#include "../../../../Global/ICommand.h"
-#include "../../../../Global/Map.h"
+#include <IsoRealms/ICommand.h>
+#include <IsoRealms/Map.h>
 
 class SimpleEditor;
 

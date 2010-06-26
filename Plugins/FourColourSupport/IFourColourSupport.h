@@ -19,8 +19,8 @@
 #ifndef I_FOUR_COLOUR_SUPPORT_H
 #define I_FOUR_COLOUR_SUPPORT_H
 
-#include "../../Global/Colour.h"
-#include "../../Global/IPlugin.h"
+#include <IsoRealms/Colour.h>
+#include <IsoRealms/IPlugin.h>
 
 class IFourColourSupportListener;
 

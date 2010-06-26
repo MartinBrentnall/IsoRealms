@@ -33,14 +33,14 @@
 #include "PushControlLoopCommand.h"
 #include "TerminateEngineCommand.h"
 
-#include "../../Global/CommandManager.h"
-#include "../../Global/DOMNodeWrapper.h"
-#include "../../Global/Hacks.h"
-#include "../../Global/InitException.h"
-#include "../../Global/ICommand.h"
-#include "../../Global/IEngine.h"
-#include "../../Global/KeyStates.h"
-#include "../../Global/System.h"
+#include <IsoRealms/CommandManager.h>
+#include <IsoRealms/DOMNodeWrapper.h>
+#include <IsoRealms/Hacks.h>
+#include <IsoRealms/InitException.h>
+#include <IsoRealms/ICommand.h>
+#include <IsoRealms/IEngine.h>
+#include <IsoRealms/KeyStates.h>
+#include <IsoRealms/System.h>
 
 /**
  * TODO: Documentation below is wrong!

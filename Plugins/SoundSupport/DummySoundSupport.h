@@ -19,7 +19,7 @@
 #ifndef DUMMY_SOUND_SUPPORT_H
 #define DUMMY_SOUND_SUPPORT_H
 
-#include "../../Global/DummyPlugin.h"
+#include <IsoRealms/DummyPlugin.h>
 
 #include "ISoundSupport.h"
 

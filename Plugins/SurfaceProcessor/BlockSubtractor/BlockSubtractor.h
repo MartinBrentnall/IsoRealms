@@ -22,8 +22,8 @@
 #include <map>
 #include <vector>
 
-#include "../../../Global/BlockArea.h"
-#include "../../../Global/IZone.h"
+#include <IsoRealms/BlockArea.h>
+#include <IsoRealms/IZone.h>
 
 #include "../ISurfaceProcessor.h"
 

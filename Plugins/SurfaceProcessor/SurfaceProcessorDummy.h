@@ -21,7 +21,7 @@
 
 #include <vector>
 
-#include "../../Global/DummyPlugin.h"
+#include <IsoRealms/DummyPlugin.h>
 
 #include "ISurfaceProcessor.h"
 

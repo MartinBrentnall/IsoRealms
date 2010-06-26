@@ -25,7 +25,7 @@
 #include <string>
 #include <map>
 
-#include "../../../../Global/Vertex.h"
+#include <IsoRealms/Vertex.h>
 
 class Camera {
   private:

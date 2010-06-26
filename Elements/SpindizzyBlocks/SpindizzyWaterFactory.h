@@ -23,7 +23,7 @@
 
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 
-#include "../../Global/IElementFactory.h"
+#include <IsoRealms/IElementFactory.h>
 
 #include "ISpindizzyBlockFactory.h"
 #include "SpindizzyWater.h"

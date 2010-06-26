@@ -23,9 +23,9 @@
 #include <cstdlib>
 #include <GL/gl.h>
 
-#include "../../../Global/Colour.h"
-#include "../../../Global/IsoRealmsConstants.h"
-#include "../../../Global/Vertex.h"
+#include <IsoRealms/Colour.h>
+#include <IsoRealms/IsoRealmsConstants.h>
+#include <IsoRealms/Vertex.h>
 
 #include "../ISimpleModel.h"
 

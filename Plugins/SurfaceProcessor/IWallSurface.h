@@ -19,7 +19,7 @@
 #ifndef I_WALL_SURFACE_H
 #define I_WALL_SURFACE_H
 
-#include "../../Global/BlockArea.h"
+#include <IsoRealms/BlockArea.h>
 
 #include "IWallEdge.h"
 

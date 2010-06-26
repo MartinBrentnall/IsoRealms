@@ -23,7 +23,7 @@
 #include <cstdlib>
 #include <GL/gl.h>
 
-#include "../../Global/IsoRealmsConstants.h"
+#include <IsoRealms/IsoRealmsConstants.h>
 
 #include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"

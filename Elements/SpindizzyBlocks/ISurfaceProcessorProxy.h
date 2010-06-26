@@ -21,7 +21,7 @@
 
 #include <vector>
 
-#include "../../Global/Zone.h"
+#include <IsoRealms/Zone.h>
 
 #include "../../Plugins/CollidableSurfaceRegistry/IRollableSurface.h"
 #include "../../Plugins/CollidableSurfaceRegistry/ICollidableWallSurface.h"

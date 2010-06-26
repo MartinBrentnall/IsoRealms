@@ -29,12 +29,12 @@
 #include "EnterMenuCommand.h"
 #include "SelectionList.h"
 
-#include "../../../../../../Global/CommandManager.h"
-#include "../../../../../../Global/DOMNodeWrapper.h"
-#include "../../../../../../Global/GlobalConfiguration.h"
-#include "../../../../../../Global/IFont.h"
-#include "../../../../../../Global/IFontEngine.h"
-#include "../../../../../../Global/ICommand.h"
+#include <IsoRealms/CommandManager.h>
+#include <IsoRealms/DOMNodeWrapper.h>
+#include <IsoRealms/GlobalConfiguration.h>
+#include <IsoRealms/IFont.h>
+#include <IsoRealms/IFontEngine.h>
+#include <IsoRealms/ICommand.h>
 
 #include "../../IFrontEnd.h"
 

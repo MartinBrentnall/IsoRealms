@@ -19,7 +19,7 @@
 #ifndef I_TILE_SURFACE_H
 #define I_TILE_SURFACE_H
 
-#include "../../Global/BlockArea.h"
+#include <IsoRealms/BlockArea.h>
 
 class ITileSurface {
   public:

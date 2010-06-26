@@ -19,7 +19,7 @@
 #ifndef I_CAMERA_H
 #define I_CAMERA_H
 
-#include "../../Global/IPlugin.h"
+#include <IsoRealms/IPlugin.h>
 
 class ICamera:public virtual IPlugin {
   public:

@@ -22,7 +22,7 @@
 #include <map>
 #include <vector>
 
-#include "../../../Global/IZone.h"
+#include <IsoRealms/IZone.h>
 
 #include "../../ZoneContext/IZoneContext.h"
 

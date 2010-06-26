@@ -19,7 +19,7 @@
 #ifndef SPINDIZZY_LIFT_PROPERTIES_H
 #define SPINDIZZY_LIFT_PROPERTIES_H
 
-#include "../../Global/DOMNodeWrapper.h"
+#include <IsoRealms/DOMNodeWrapper.h>
 
 class SpindizzyLiftProperties {
   private:

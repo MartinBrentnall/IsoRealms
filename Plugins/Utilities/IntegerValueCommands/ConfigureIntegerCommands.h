@@ -19,8 +19,8 @@
 #ifndef CONFIGURE_INTEGER_COMMANDS_H
 #define CONFIGURE_INTEGER_COMMANDS_H
 
-#include "../../../Global/ICommand.h"
-#include "../../../Global/IComponentContainer.h"
+#include <IsoRealms/ICommand.h>
+#include <IsoRealms/IComponentContainer.h>
 
 #include "IIntegerCommandRegistry.h"
 #include "IntegerCommandDialog.h"

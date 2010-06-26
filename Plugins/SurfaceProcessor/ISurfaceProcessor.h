@@ -21,7 +21,7 @@
 
 #include <vector>
 
-#include "../../Global/IPlugin.h"
+#include <IsoRealms/IPlugin.h>
 
 #include "ISurfaceProvider.h"
 #include "ITileSurface.h"

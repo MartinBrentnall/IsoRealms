@@ -21,7 +21,7 @@
 
 #include <GL/gl.h>
 
-#include "../../Global/Vertex.h"
+#include <IsoRealms/Vertex.h>
 
 #include "ISimpleModel.h"
 

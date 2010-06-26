@@ -14,7 +14,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
-CPPFLAGS = -fPIC -Wall -pedantic
+CPPFLAGS = -fPIC -Wall -pedantic -I../../../../
 MAJOR_VER = 1
 MINOR_VER = 0
 LDFLAGS = -shared -soname $(SONAME).$(MAJOR_VER) -o $(SONAME).$(MAJOR_VER).$(MINOR_VER)

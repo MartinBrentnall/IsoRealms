@@ -19,7 +19,7 @@
 #ifndef DUMMY_CAMERA_H
 #define DUMMY_CAMERA_H
 
-#include "../../Global/DummyPlugin.h"
+#include <IsoRealms/DummyPlugin.h>
 
 #include "ICamera.h"
 

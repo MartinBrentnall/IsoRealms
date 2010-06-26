@@ -19,7 +19,7 @@
 #ifndef DUMMY_COLLECTABLES_H
 #define DUMMY_COLLECTABLES_H
 
-#include "../../Global/DummyPlugin.h"
+#include <IsoRealms/DummyPlugin.h>
 
 #include "ICollectables.h"
 

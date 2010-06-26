@@ -19,7 +19,7 @@
 #ifndef SPINDIZZY_WATER_H
 #define SPINDIZZY_WATER_H
 
-#include "../../Global/Element.h"
+#include <IsoRealms/Element.h>
 
 #include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
 #include "../../Plugins/SurfaceProcessor/ISurfaceProvider.h"

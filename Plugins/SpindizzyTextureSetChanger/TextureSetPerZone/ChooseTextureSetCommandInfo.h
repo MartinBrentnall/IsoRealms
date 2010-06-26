@@ -22,8 +22,8 @@
 #include <vector>
 #include <string>
 
-#include "../../../Global/ICommand.h"
-#include "../../../Global/ICommandInfo.h"
+#include <IsoRealms/ICommand.h>
+#include <IsoRealms/ICommandInfo.h>
 
 class ChooseTextureSetCommandInfo:public ICommandInfo {
   private:

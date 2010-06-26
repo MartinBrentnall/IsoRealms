@@ -24,9 +24,9 @@
 #include <GL/gl.h>
 #include <map>
 
-#include "../../../Global/IsoRealmsConstants.h"
-#include "../../../Global/Image.h"
-#include "../../../Global/Vertex.h"
+#include <IsoRealms/IsoRealmsConstants.h>
+#include <IsoRealms/Image.h>
+#include <IsoRealms/Vertex.h>
 
 #include "../ISimpleModel.h"
 

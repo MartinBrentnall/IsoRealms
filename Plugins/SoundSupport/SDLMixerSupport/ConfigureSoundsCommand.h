@@ -19,8 +19,8 @@
 #ifndef CONFIGURE_SOUNDS_COMMAND_H
 #define CONFIGURE_SOUNDS_COMMAND_H
 
-#include "../../../Global/ICommand.h"
-#include "../../../Global/IComponentContainer.h"
+#include <IsoRealms/ICommand.h>
+#include <IsoRealms/IComponentContainer.h>
 
 #include "ISoundRegistry.h"
 #include "SoundConfigurationDialog.h"

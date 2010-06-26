@@ -19,7 +19,7 @@
 #ifndef BASE_SPINDIZZY_JEWEL_FACTORY_H
 #define BASE_SPINDIZZY_JEWEL_FACTORY_H
 
-#include "../../Global/ElementFactory.h"
+#include <IsoRealms/ElementFactory.h>
 
 #include "ICollectablesAccessor.h"
 

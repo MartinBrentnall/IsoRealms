@@ -21,7 +21,7 @@
 
 #include <queue>
 
-#include "../../Global/ICommand.h"
+#include <IsoRealms/ICommand.h>
 
 /**
  * When executed, this command will register a command to be executed on the

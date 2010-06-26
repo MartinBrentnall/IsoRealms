@@ -21,7 +21,7 @@
 
 #include <string>
 
-#include "../../Global/IPlugin.h"
+#include <IsoRealms/IPlugin.h>
 
 #include "IUserCommand.h"
 

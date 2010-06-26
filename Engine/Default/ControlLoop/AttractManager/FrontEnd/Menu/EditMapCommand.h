@@ -22,7 +22,7 @@
 #include <iostream>
 #include <string>
 
-#include "../../../../../../Global/ICommand.h"
+#include <IsoRealms/ICommand.h>
 
 class EditMapCommand:public ICommand {
   private:

@@ -19,8 +19,8 @@
 #ifndef I_ZONE_CONTEXT_H
 #define I_ZONE_CONTEXT_H
 
-#include "../../Global/IPlugin.h"
-#include "../../Global/IZone.h"
+#include <IsoRealms/IPlugin.h>
+#include <IsoRealms/IZone.h>
 
 #include "IZoneContextListener.h"
 

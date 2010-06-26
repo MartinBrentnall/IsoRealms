@@ -31,11 +31,11 @@
 
 #include "../../IControlLoop.h"
 
-#include "../../../../Global/DOMNodeWrapper.h"
-#include "../../../../Global/Hacks.h"
-#include "../../../../Global/ICommand.h"
-#include "../../../../Global/InitException.h"
-#include "../../../../Global/System.h"
+#include <IsoRealms/DOMNodeWrapper.h>
+#include <IsoRealms/Hacks.h>
+#include <IsoRealms/ICommand.h>
+#include <IsoRealms/InitException.h>
+#include <IsoRealms/System.h>
 
 class AttractControlLoop:public IControlLoop {
   private:

@@ -290,6 +290,7 @@
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext"/>
     <Configuration/>
   </ElementSet>
+  <ZoneRenderer use="true"/>
   <Elements>
     <Element set="Player" type="">
       <Location x="-4" y="3" z="0"/>

@@ -19,7 +19,7 @@
 #ifndef I_COLLECTABLE_H
 #define I_COLLECTABLE_H
 
-#include "../../Global/Vertex.h"
+#include <IsoRealms/Vertex.h>
 
 class ICollectable {
   public:

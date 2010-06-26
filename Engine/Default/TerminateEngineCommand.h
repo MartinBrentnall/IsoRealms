@@ -21,7 +21,7 @@
 
 #include <iostream>
 
-#include "../../Global/ICommand.h"
+#include <IsoRealms/ICommand.h>
 
 class TerminateEngineCommand:public ICommand {
   private:

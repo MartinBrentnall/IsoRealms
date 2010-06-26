@@ -22,8 +22,8 @@
 #include <GL/gl.h>
 #include <vector>
 
-#include "../../Global/DummyPlugin.h"
-#include "../../Global/ICommandInfo.h"
+#include <IsoRealms/DummyPlugin.h>
+#include <IsoRealms/ICommandInfo.h>
 
 #include "ISpindizzyTexture.h"
 #include "ISpindizzyTextureSet.h"

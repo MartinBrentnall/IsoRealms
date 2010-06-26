@@ -23,12 +23,12 @@
 #include <SDL/SDL.h>
 #include <iostream>
 
-#include "../../../../Global/BlockLocation.h"
-#include "../../../../Global/IElementFactory.h"
-#include "../../../../Global/IsoRealmsConstants.h"
-#include "../../../../Global/Map.h"
-#include "../../../../Global/Zone.h"
-#include "../../../../Global/ZoneBrush.h"
+#include <IsoRealms/BlockLocation.h>
+#include <IsoRealms/IElementFactory.h>
+#include <IsoRealms/IsoRealmsConstants.h>
+#include <IsoRealms/Map.h>
+#include <IsoRealms/Zone.h>
+#include <IsoRealms/ZoneBrush.h>
 
 /**
  * TODO: Class description

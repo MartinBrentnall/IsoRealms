@@ -19,7 +19,7 @@
 #ifndef INTEGER_VALUE_COMMANDS_H
 #define INTEGER_VALUE_COMMANDS_H
 
-#include "../../../Global/DefaultCommandInfo.h"
+#include <IsoRealms/DefaultCommandInfo.h>
 
 #include "../../CommandRegistry/ICommandRegistry.h"
 #include "../../IntegerValue/IIntegerValue.h"

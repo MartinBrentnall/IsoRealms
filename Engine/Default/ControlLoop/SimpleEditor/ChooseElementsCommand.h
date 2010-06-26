@@ -21,10 +21,10 @@
 
 #include <vector>
 
-#include "../../../../Global/ElementSetRegistry.h"
-#include "../../../../Global/ICommand.h"
-#include "../../../../Global/IComponentContainer.h"
-#include "../../../../Global/IHUDComponent.h"
+#include <IsoRealms/ElementSetRegistry.h>
+#include <IsoRealms/ICommand.h>
+#include <IsoRealms/IComponentContainer.h>
+#include <IsoRealms/IHUDComponent.h>
 
 #include "ChooseElementsComponent.h"
 #include "IElementSelectionListener.h"

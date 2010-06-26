@@ -24,12 +24,12 @@
 #include <map>
 #include <vector>
 
-#include "../../../../Global/Configuration.h"
-#include "../../../../Global/DOMNodeWrapper.h"
-#include "../../../../Global/IComponentContainer.h"
-#include "../../../../Global/ICommand.h"
-#include "../../../../Global/ICommandInfo.h"
-#include "../../../../Global/ScreenConfiguration.h"
+#include <IsoRealms/Configuration.h>
+#include <IsoRealms/DOMNodeWrapper.h>
+#include <IsoRealms/IComponentContainer.h>
+#include <IsoRealms/ICommand.h>
+#include <IsoRealms/ICommandInfo.h>
+#include <IsoRealms/ScreenConfiguration.h>
 
 class PopupMenuCommand;
 

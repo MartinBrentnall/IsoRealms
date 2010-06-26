@@ -22,11 +22,11 @@
 #include <SDL/SDL.h>
 #include <vector>
 
-#include "../../../Global/GUI/ComponentEdgeLayout.h"
-#include "../../../Global/GUI/EdgeRelation.h"
-#include "../../../Global/GUI/ResizableDialog.h"
-#include "../../../Global/GUI/WrappingGridComponent.h"
-#include "../../../Global/IsoRealmsConstants.h"
+#include <IsoRealms/GUI/ComponentEdgeLayout.h>
+#include <IsoRealms/GUI/EdgeRelation.h>
+#include <IsoRealms/GUI/ResizableDialog.h>
+#include <IsoRealms/GUI/WrappingGridComponent.h>
+#include <IsoRealms/IsoRealmsConstants.h>
 
 #include "../../SpindizzyTextureSet/ISpindizzyTextureSet.h"
 
