@@ -72,16 +72,11 @@ class DefaultFourColourSupport:public IFourColourSupport {
   void addChangeListener(IFourColourSupportListener*);
   void removeChangeListener(IFourColourSupportListener*);
 
-  /*************************************************\
-   * Implements IPluginSupport (in IPluginAccesor) *
-  \*************************************************/
-  std::string getName();
-
   /**********************\
    * Implements IPlugin *
   \**********************/
   std::vector<ICommandInfo*> getCommandInfo();
-  void setEditingInfo(IComponentContainer*);
+  void setEditingContext(BlockLocation*, IComponentContainer*);
   void save(DOMNodeWriter*);
   void load(DOMNodeWrapper*);
 

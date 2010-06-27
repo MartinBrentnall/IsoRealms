@@ -31,12 +31,15 @@ TextureSetPerZone::TextureSetPerZone() {
 }
 
 void TextureSetPerZone::setTextureSet(ISpindizzyTextureSet* textureSet) {
-  if (textureSet != NULL) {
-    cZoneMapping[cCurrentZone] = textureSet;
-  } else {
-    cZoneMapping.erase(cCurrentZone);
+  IZone* mZone = cCurrentMap->getZone(*cBlockLocation);
+  if (mZone != NULL) {
+    if (textureSet != NULL) {
+      cZoneMapping[mZone] = textureSet;
+    } else {
+      cZoneMapping.erase(mZone);
+    }
+    cCurrentMap->zoneChanged(mZone);
   }
-  cCurrentMap->zoneChanged(cCurrentZone);
 }
 
 void TextureSetPerZone::setControlObject(IChangeableTextureSet* objectToControl) {
@@ -120,7 +123,8 @@ std::vector<ICommandInfo*> TextureSetPerZone::getCommandInfo() {
   return cPluginCommands;
 }
 
-void TextureSetPerZone::setEditingContext(IComponentContainer* componentContainer) {
+void TextureSetPerZone::setEditingContext(BlockLocation* blockLocation, IComponentContainer* componentContainer) {
+  cBlockLocation = blockLocation;
   cChooseTextureSetCommand->setComponentContainer(componentContainer);
 }
 

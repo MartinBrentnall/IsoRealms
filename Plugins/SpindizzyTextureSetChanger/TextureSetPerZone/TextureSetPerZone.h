@@ -58,6 +58,7 @@ class TextureSetPerZone:public ISpindizzyTextureSetChanger,
 
   IMap* cCurrentMap;
   IZone* cCurrentZone;
+  BlockLocation* cBlockLocation;
   ChooseTextureSetCommand* cChooseTextureSetCommand;
   std::vector<ICommandInfo*> cPluginCommands;
   IChangeableTextureSet* cControlledObject;
@@ -105,7 +106,7 @@ class TextureSetPerZone:public ISpindizzyTextureSetChanger,
   void renderPreZone(IZone*);
   void zoneContextChanged(IMap*, IZone*);
   std::vector<ICommandInfo*> getCommandInfo();
-  void setEditingContext(IComponentContainer*);
+  void setEditingContext(BlockLocation*, IComponentContainer*);
   void saveData(DOMNodeWriter*, IMap*, IZone*);
   void loadData(DOMNodeWrapper*, IPluginRegistry*, IZone*);
   std::vector<IDynamicElement*> getPreLoopCommands();

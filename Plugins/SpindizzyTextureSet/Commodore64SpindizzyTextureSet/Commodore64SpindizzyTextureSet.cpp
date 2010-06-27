@@ -33,26 +33,26 @@ Image* Commodore64SpindizzyTextureSet::makeTileImage() {
 
 GLuint Commodore64SpindizzyTextureSet::generateIce() {
   Image* mImage = makePlainImage(cColourScheme->getColour(IFourColourSupport::EXTRA));
-  return convertToTexture(mImage);
+  return convertToTexture(mImage, ICE);
 }
 
 GLuint Commodore64SpindizzyTextureSet::generatePlain() {
   Image* mImage = makeTileImage();
-  return convertToTexture(mImage);
+  return convertToTexture(mImage, PLAIN);
 }
 
 GLuint Commodore64SpindizzyTextureSet::generateSplitPlain() {
   Image* mImage = makePlainImage(cColourScheme->getColour(IFourColourSupport::EXTRA));
   mImage->drawTriangle(cColourScheme->getColour(IFourColourSupport::FLOOR), GRID_WIDTH, GRID_WIDTH, RESOLUTION - (GRID_WIDTH * 2), GRID_WIDTH, GRID_WIDTH, RESOLUTION - (GRID_WIDTH * 2));
   mImage->drawTriangle(cColourScheme->getColour(IFourColourSupport::FLOOR), RESOLUTION - GRID_WIDTH, RESOLUTION - GRID_WIDTH, RESOLUTION - GRID_WIDTH, GRID_WIDTH * 2, GRID_WIDTH * 2, RESOLUTION - GRID_WIDTH);
-  return convertToTexture(mImage);
+  return convertToTexture(mImage, PLAIN_SPLIT_NE_SW);
 }
 
 GLuint Commodore64SpindizzyTextureSet::generateTrampoline() {
   Image* mImage = makePlainImage(cColourScheme->getColour(IFourColourSupport::EXTRA));
   mImage->drawSquare(cColourScheme->getColour(IFourColourSupport::BACKGROUND), GRID_WIDTH, RESOLUTION - GRID_WIDTH, GRID_WIDTH, RESOLUTION - GRID_WIDTH);
   mImage->drawSquare(cColourScheme->getColour(IFourColourSupport::WALL), GRID_WIDTH * 2, RESOLUTION - GRID_WIDTH * 2, GRID_WIDTH * 2, RESOLUTION - GRID_WIDTH * 2);
-  return convertToTexture(mImage);
+  return convertToTexture(mImage, TRAMPOLINE);
 }
 
 Image* Commodore64SpindizzyTextureSet::makeSwitchSquareImage() {
@@ -66,7 +66,7 @@ Image* Commodore64SpindizzyTextureSet::makeSwitchSquareImage() {
 
 GLuint Commodore64SpindizzyTextureSet::generateSwitchSquare() {
   Image* mImage = makeSwitchSquareImage();
-  return convertToTexture(mImage);
+  return convertToTexture(mImage, SWITCH_SQUARE_NONE);
 }
 
 GLuint Commodore64SpindizzyTextureSet::generateSwitchSquareHalf() {
@@ -76,7 +76,7 @@ GLuint Commodore64SpindizzyTextureSet::generateSwitchSquareHalf() {
   mImage->drawTriangle(cColourScheme->getColour(IFourColourSupport::EXTRA), RESOLUTION - mInnerSquare, mInnerSquare
                                                  , RESOLUTION - mInnerSquare, mHalfSquare
                                                  , mHalfSquare, mInnerSquare);
-  return convertToTexture(mImage);
+  return convertToTexture(mImage, SWITCH_SQUARE_LEFT);
 }
 
 GLuint Commodore64SpindizzyTextureSet::generateSwitchSquareBoth() {
@@ -89,7 +89,7 @@ GLuint Commodore64SpindizzyTextureSet::generateSwitchSquareBoth() {
   mImage->drawTriangle(cColourScheme->getColour(IFourColourSupport::EXTRA), RESOLUTION - mInnerSquare, mInnerSquare
                                                  , RESOLUTION - mInnerSquare, mHalfSquare
                                                  , mHalfSquare, mInnerSquare);
-  return convertToTexture(mImage);
+  return convertToTexture(mImage, SWITCH_SQUARE_BOTH);
 }
 
 Image* Commodore64SpindizzyTextureSet::makeSwitchDiamondImage() {
@@ -105,7 +105,7 @@ Image* Commodore64SpindizzyTextureSet::makeSwitchDiamondImage() {
 
 GLuint Commodore64SpindizzyTextureSet::generateSwitchDiamond() {
   Image* mImage = makeSwitchDiamondImage();
-  return convertToTexture(mImage);
+  return convertToTexture(mImage, SWITCH_DIAMOND_NONE);
 }
 
 
@@ -115,7 +115,7 @@ GLuint Commodore64SpindizzyTextureSet::generateSwitchDiamondHalf() {
   int mInnerSquare = (int) (RESOLUTION * 0.3);
   mImage->drawSquare(cColourScheme->getColour(IFourColourSupport::WALL), mOuterSquare, mInnerSquare, mOuterSquare, RESOLUTION - mOuterSquare);
   mImage->drawSquare(cColourScheme->getColour(IFourColourSupport::WALL), mOuterSquare, RESOLUTION - mOuterSquare, RESOLUTION - mInnerSquare, RESOLUTION - mOuterSquare);
-  return convertToTexture(mImage);
+  return convertToTexture(mImage, SWITCH_DIAMOND_LEFT);
 }
 
 GLuint Commodore64SpindizzyTextureSet::generateSwitchDiamondBoth() {
@@ -126,7 +126,7 @@ GLuint Commodore64SpindizzyTextureSet::generateSwitchDiamondBoth() {
   mImage->drawSquare(cColourScheme->getColour(IFourColourSupport::WALL), RESOLUTION - mInnerSquare, RESOLUTION - mOuterSquare, mOuterSquare, RESOLUTION - mOuterSquare);
   mImage->drawSquare(cColourScheme->getColour(IFourColourSupport::WALL), mOuterSquare, mInnerSquare, mOuterSquare, RESOLUTION - mOuterSquare);
   mImage->drawSquare(cColourScheme->getColour(IFourColourSupport::WALL), mOuterSquare, RESOLUTION - mOuterSquare, RESOLUTION - mInnerSquare, RESOLUTION - mOuterSquare);
-  return convertToTexture(mImage);
+  return convertToTexture(mImage, SWITCH_DIAMOND_BOTH);
 }
 
 GLuint Commodore64SpindizzyTextureSet::generateSwitchCircle() {
@@ -135,7 +135,7 @@ GLuint Commodore64SpindizzyTextureSet::generateSwitchCircle() {
   int mInnerCircle = (int) (RESOLUTION * 0.24);
   mImage->drawCircle(cColourScheme->getColour(IFourColourSupport::EXTRA), mOuterCircle);
   mImage->drawCircle(cColourScheme->getColour(IFourColourSupport::FLOOR), mInnerCircle);
-  return convertToTexture(mImage);
+  return convertToTexture(mImage, SWITCH_CIRCLE_NONE);
 }
 
 GLuint Commodore64SpindizzyTextureSet::generateSwitchCircleBoth() {
@@ -144,7 +144,7 @@ GLuint Commodore64SpindizzyTextureSet::generateSwitchCircleBoth() {
   int mInnerCircle = (int) (RESOLUTION * 0.24);
   mImage->drawCircle(cColourScheme->getColour(IFourColourSupport::EXTRA), mOuterCircle);
   mImage->drawCircle(cColourScheme->getColour(IFourColourSupport::WALL), mInnerCircle);
-  return convertToTexture(mImage);
+  return convertToTexture(mImage, SWITCH_CIRCLE_BOTH);
 }
 
 GLuint Commodore64SpindizzyTextureSet::generateSwitchCircleHalf() {
@@ -154,7 +154,7 @@ GLuint Commodore64SpindizzyTextureSet::generateSwitchCircleHalf() {
   mImage->drawCircle(cColourScheme->getColour(IFourColourSupport::EXTRA), mOuterCircle);
   mImage->drawCircle(cColourScheme->getColour(IFourColourSupport::WALL), mInnerCircle);
   mImage->drawSemiCircle(cColourScheme->getColour(IFourColourSupport::FLOOR), mInnerCircle);
-  return convertToTexture(mImage);
+  return convertToTexture(mImage, SWITCH_CIRCLE_LEFT);
 }
 
 GLuint Commodore64SpindizzyTextureSet::generateArrow() {
@@ -164,14 +164,14 @@ GLuint Commodore64SpindizzyTextureSet::generateArrow() {
   int mHalfSquare = (int) (RESOLUTION * 0.5);
   mImage->drawSquare(cColourScheme->getColour(IFourColourSupport::WALL), mOuterPoint, mHalfSquare, mInnerPoint, RESOLUTION - mInnerPoint);
   mImage->drawTriangle(cColourScheme->getColour(IFourColourSupport::WALL), mHalfSquare, mOuterPoint, RESOLUTION - mOuterPoint, mHalfSquare, mHalfSquare, RESOLUTION - mOuterPoint);
-  return convertToTexture(mImage);
+  return convertToTexture(mImage, ARROW_EAST);
 }
 
 GLuint Commodore64SpindizzyTextureSet::generateWallNorthSouth() {
   Colour mGridColour = cColourScheme->getColour(IFourColourSupport::EXTRA)->brightness(0.70);
   Image* mImage = makePlainImage(&mGridColour);
   mImage->drawSquare(cColourScheme->getColour(IFourColourSupport::WALL), GRID_WIDTH, RESOLUTION - GRID_WIDTH, GRID_WIDTH, RESOLUTION - GRID_WIDTH);
-  return convertToTexture(mImage);
+  return convertToTexture(mImage, WALL_NORTH);
 }
 
 GLuint Commodore64SpindizzyTextureSet::generateWallEastWest() {
@@ -179,7 +179,7 @@ GLuint Commodore64SpindizzyTextureSet::generateWallEastWest() {
   Image* mImage = makePlainImage(&mGridColour);
   Colour mWallFloorMix(*(cColourScheme->getColour(IFourColourSupport::FLOOR)), *(cColourScheme->getColour(IFourColourSupport::WALL)));
   mImage->drawSquare(&mWallFloorMix, GRID_WIDTH, RESOLUTION - GRID_WIDTH, GRID_WIDTH, RESOLUTION - GRID_WIDTH);
-  return convertToTexture(mImage);
+  return convertToTexture(mImage, WALL_EAST);
 }
 
 GLuint Commodore64SpindizzyTextureSet::generateIceWall() {
@@ -187,7 +187,7 @@ GLuint Commodore64SpindizzyTextureSet::generateIceWall() {
   int mIceWidth = (int) (RESOLUTION * 0.1);
   mImage->drawTriangle(cColourScheme->getColour(IFourColourSupport::BACKGROUND), 0, RESOLUTION, RESOLUTION, RESOLUTION, mIceWidth, RESOLUTION - mIceWidth);
   mImage->drawTriangle(cColourScheme->getColour(IFourColourSupport::BACKGROUND), mIceWidth, RESOLUTION - mIceWidth, RESOLUTION, RESOLUTION, RESOLUTION - mIceWidth, RESOLUTION - mIceWidth);
-  return convertToTexture(mImage);
+  return convertToTexture(mImage, WALL_ICE);
 }
 
 Image* Commodore64SpindizzyTextureSet::makeTransparent() {
@@ -212,7 +212,7 @@ Image* Commodore64SpindizzyTextureSet::makeLiftSquareImage() {
 
 GLuint Commodore64SpindizzyTextureSet::generateLiftSquare() {
   Image* mImage = makeLiftSquareImage();
-  return convertToTexture(mImage);
+  return convertToTexture(mImage, LIFT_SQUARE_NONE);
 }
 
 Image* Commodore64SpindizzyTextureSet::makeLiftSquareHalfImage() {
@@ -224,14 +224,14 @@ Image* Commodore64SpindizzyTextureSet::makeLiftSquareHalfImage() {
 
 GLuint Commodore64SpindizzyTextureSet::generateLiftSquareHalf() {
   Image* mImage = makeLiftSquareHalfImage();
-  return convertToTexture(mImage);
+  return convertToTexture(mImage, LIFT_SQUARE_LEFT);
 }
 
 GLuint Commodore64SpindizzyTextureSet::generateLiftSquareBoth() {
   Image* mImage = makeLiftSquareHalfImage();
   mImage->drawTriangle(BLACK,  int(RESOLUTION - EDGE_WIDTH * 2.4), int(EDGE_WIDTH * 2.4), int(RESOLUTION * 0.44), int(EDGE_WIDTH * 2.4), int(RESOLUTION - EDGE_WIDTH * 2.4), int(RESOLUTION * 0.56));
   mImage->drawTriangle(PURPLE, int(RESOLUTION - EDGE_WIDTH * 2.4), int(EDGE_WIDTH * 2.4), int(RESOLUTION * 0.5),  int(EDGE_WIDTH * 2.4), int(RESOLUTION - EDGE_WIDTH * 2.4), int(RESOLUTION * 0.5));
-  return convertToTexture(mImage);
+  return convertToTexture(mImage, LIFT_SQUARE_BOTH);
 }
 
 GLuint Commodore64SpindizzyTextureSet::generateLiftDiamondBoth() {
@@ -249,7 +249,7 @@ GLuint Commodore64SpindizzyTextureSet::generateLiftDiamondBoth() {
   mImage->drawDiamond(YELLOW,      int(mImage->getWidth() * 0.94));
   mImage->drawDiamond(BLACK,       int(mImage->getWidth() * 0.84));
   mImage->drawDiamond(TRANSPARENT, int(mImage->getWidth() * 0.78));
-  return convertToTexture(mImage);
+  return convertToTexture(mImage, LIFT_DIAMOND_BOTH);
 }
 
 GLuint Commodore64SpindizzyTextureSet::generateLiftDiamondHalf() {
@@ -271,7 +271,7 @@ GLuint Commodore64SpindizzyTextureSet::generateLiftDiamondHalf() {
   mImage->drawHalfDiamond( YELLOW,      int(mImage->getWidth() * 0.44));
   mImage->drawHalfDiamond( BLACK,       int(mImage->getWidth() * 0.34));
   mImage->drawHalfDiamond( TRANSPARENT, int(mImage->getWidth() * 0.28));
-  return convertToTexture(mImage);
+  return convertToTexture(mImage, LIFT_DIAMOND_LEFT);
 }
 
 GLuint Commodore64SpindizzyTextureSet::generateLiftDiamond() {
@@ -289,7 +289,7 @@ GLuint Commodore64SpindizzyTextureSet::generateLiftDiamond() {
   mImage->drawSquare(PURPLE,      mSquareOuterFill, RESOLUTION - mSquareOuterFill, mSquareOuterFill, RESOLUTION - mSquareOuterFill);
   mImage->drawSquare(BLACK,       mSquareInnerFill, RESOLUTION - mSquareInnerFill, mSquareInnerFill, RESOLUTION - mSquareInnerFill);
   mImage->drawSquare(TRANSPARENT, mSquareInnerEdge, RESOLUTION - mSquareInnerEdge, mSquareInnerEdge, RESOLUTION - mSquareInnerEdge);
-  return convertToTexture(mImage);
+  return convertToTexture(mImage, LIFT_DIAMOND_NONE);
 }
 
 Image* Commodore64SpindizzyTextureSet::makeLiftCircleImage() {
@@ -303,13 +303,13 @@ Image* Commodore64SpindizzyTextureSet::makeLiftCircleImage() {
 
 GLuint Commodore64SpindizzyTextureSet::generateLiftCircle() {
   Image* mImage = makeLiftCircleImage();
-  return convertToTexture(mImage);
+  return convertToTexture(mImage, LIFT_CIRCLE_NONE);
 }
 
 GLuint Commodore64SpindizzyTextureSet::generateLiftCircleHalf() {
   Image* mImage = makeLiftCircleImage();
   mImage->drawSemiCircle(YELLOW, int(mImage->getWidth() * 0.9 * 0.34));
-  return convertToTexture(mImage);
+  return convertToTexture(mImage, LIFT_CIRCLE_LEFT);
 }
 
 GLuint Commodore64SpindizzyTextureSet::generateLiftCircleBoth() {
@@ -317,12 +317,19 @@ GLuint Commodore64SpindizzyTextureSet::generateLiftCircleBoth() {
   mImage->drawCircle(BLACK,  int(mImage->getWidth() * 0.9 * 0.5));
   mImage->drawCircle(PURPLE, int(mImage->getWidth() * 0.9 * 0.46));
   mImage->drawCircle(YELLOW, int(mImage->getWidth() * 0.9 * 0.34));
-  return convertToTexture(mImage);
+  return convertToTexture(mImage, LIFT_CIRCLE_BOTH);
 }
 
-GLuint Commodore64SpindizzyTextureSet::convertToTexture(Image* image) {
-  GLuint mTextureID = image->generateTexture();
-  cTextureIDs.push_back(mTextureID);
+GLuint Commodore64SpindizzyTextureSet::convertToTexture(Image* image, TextureType type) {
+  std::map<TextureType, GLuint>::iterator i = cTextureIDs.find(type);
+  GLuint mTextureID;
+  if (i == cTextureIDs.end()) {
+    mTextureID = image->generateTexture();
+    cTextureIDs[type] = mTextureID;
+  } else {
+    mTextureID = i->second;
+    image->generateTexture(mTextureID);
+  }
   delete image;
   return mTextureID;
 }
@@ -399,12 +406,10 @@ void Commodore64SpindizzyTextureSet::destroyTextures() {
       delete i->second;
     }
   }
-  glDeleteTextures(cTextureIDs.size(), &cTextureIDs[0]);
+  for (std::map<TextureType, GLuint>::iterator i = cTextureIDs.begin(); i != cTextureIDs.end(); i++) {
+    glDeleteTextures(1, &(i->second));
+  }
   cTextureIDs.clear();
-}
-
-std::string Commodore64SpindizzyTextureSet::getName() {
-  return "C64 Texture Set";
 }
 
 std::vector<PlugSocket*> Commodore64SpindizzyTextureSet::getPlugSockets() {
@@ -426,8 +431,6 @@ void Commodore64SpindizzyTextureSet::setPlugin(PlugSocket* socket, IPlugin* plug
 }
 
 void Commodore64SpindizzyTextureSet::fourColourPaletteChanged(IFourColourSupport*) {
-  // TODO: This isn't good enough because we can't garauntee that the generated texture ID's will match the destroyed ones.
-  destroyTextures();
   generateTextures();
 }
 
@@ -437,33 +440,8 @@ IPlugin* Commodore64SpindizzyTextureSet::getPlugin(PlugSocket* socket) {
   return NULL;
 }
 
-void Commodore64SpindizzyTextureSet::notifyZoneAction(Zone* zone) {
-  // Nothing to do.
-}
-
-void Commodore64SpindizzyTextureSet::initPlugin(Zone* zone) {
-  // Nothing to do.
-}
-
-void Commodore64SpindizzyTextureSet::setEditingInfo(IComponentContainer* componentContainer) {
-  // We don't need to know.  Nothing to do.
-}
-
 ISpindizzyTexture* Commodore64SpindizzyTextureSet::getTexture(TextureType type) {
   return cTextures[type];
-}
-
-std::vector<ICommandInfo*> Commodore64SpindizzyTextureSet::getCommandInfo() {
-  std::vector<ICommandInfo*> mEmptyVector;
-  return mEmptyVector;
-}
-
-void Commodore64SpindizzyTextureSet::save(DOMNodeWriter* node) {
-  // Nothing to do.
-}
-
-void Commodore64SpindizzyTextureSet::load(DOMNodeWrapper* node) {
-  // Nothing to do.
 }
 
 Commodore64SpindizzyTextureSet::~Commodore64SpindizzyTextureSet() {

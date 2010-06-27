@@ -43,11 +43,7 @@ void DefaultFourColourSupport::removeChangeListener(IFourColourSupportListener* 
   // TODO: Remove listener!
 }
 
-std::string DefaultFourColourSupport::getName() {
-  return "Custom Four Colour Palette";
-}
-
-void DefaultFourColourSupport::setEditingInfo(IComponentContainer* componentContainer) {
+void DefaultFourColourSupport::setEditingContext(BlockLocation* blockLocation, IComponentContainer* componentContainer) {
   cPaletteConfigurationCommand->setComponentContainer(componentContainer);
 }
 

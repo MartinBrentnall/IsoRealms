@@ -62,7 +62,7 @@ class Commodore64SpindizzyTextureSet:public ISpindizzyTextureSet,
   // TODO: End nasty hack
 
   std::map<TextureType, ISpindizzyTexture*> cTextures;
-  std::vector<GLuint> cTextureIDs;
+  std::map<TextureType, GLuint> cTextureIDs;
 
   IFourColourSupport* cColourScheme;
 
@@ -159,7 +159,7 @@ class Commodore64SpindizzyTextureSet:public ISpindizzyTextureSet,
    */
   GLuint generateLiftCircleBoth();
 
-  GLuint convertToTexture(Image*);
+  GLuint convertToTexture(Image*, TextureType);
 
   void generateTextures();
   void destroyTextures();
@@ -180,20 +180,9 @@ class Commodore64SpindizzyTextureSet:public ISpindizzyTextureSet,
   /******************************************\
    * Implements IPluginSupport (in IPlugin) *
   \******************************************/
-  std::string getName();
   std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
-
-  /**********************\
-   * Implements IPlugin *
-  \**********************/
-  void notifyZoneAction(Zone*);
-  void initPlugin(Zone*);
-  std::vector<ICommandInfo*> getCommandInfo();
-  void setEditingInfo(IComponentContainer*);
-  void save(DOMNodeWriter*);
-  void load(DOMNodeWrapper*);
 
   ~Commodore64SpindizzyTextureSet();
 };

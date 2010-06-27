@@ -64,6 +64,14 @@ GLuint Image::generateTexture() {
   return mTextureID;
 }
 
+void Image::generateTexture(GLuint textureID) {
+  int mDepth = getDepth();
+  glBindTexture(GL_TEXTURE_2D, textureID);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexImage2D(GL_TEXTURE_2D, 0, mDepth, getWidth(), getHeight(), 0, mDepth, GL_UNSIGNED_BYTE, getData());
+}
+
 void Image::drawSquare(const Colour* colour, unsigned int startX, unsigned int endX, unsigned int startY, unsigned int endY) {
   for (unsigned int y = startY; y < endY; y++) {
     for (unsigned int x = startX; x < endX; x++) {

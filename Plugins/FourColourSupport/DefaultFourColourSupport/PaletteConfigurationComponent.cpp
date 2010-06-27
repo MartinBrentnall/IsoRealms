@@ -129,7 +129,7 @@ void PaletteConfigurationComponent::adjustChannel(float amount) {
 
 void PaletteConfigurationComponent::fireChangeEvent() {
   for (unsigned int i = 0; i < cChangeListeners->size(); i++) {
-    // TODO: DON'T FIRE NULL!
+    // TODO: Should not fire NULL
     (*cChangeListeners)[i]->fourColourPaletteChanged(NULL);
   }
 }
