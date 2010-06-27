@@ -19,14 +19,6 @@
     <ControlLoop name="SimpleEditor" init="false">
       <Font name="Editor"/>
       
-      <EditorCommand type="TerminateEditorCommand" name="TerminateEditor"/>
-      <EditorCommand type="ElementSetInstancesCommand" name="ElementSetInstances"/>
-      <EditorCommand type="ZoneRendererInstancesCommand" name="ZoneRendererInstances"/>
-      <EditorCommand type="ChooseElementsCommand" name="ChooseElements"/>
-      <EditorCommand type="OpenCommand" name="Open"/>
-      <EditorCommand type="SaveAsCommand" name="SaveAs"/>
-      <EditorCommand type="SaveCommand" name="Save"/>
-      
       <MenuBar>
         <Menu name="^File">
           <MenuItem name="^New..."/>
@@ -40,7 +32,7 @@
             <ExecuteEditorCommand type="SaveAs"/>
           </MenuItem>          
           <MenuItem name="^Quit">
-            <ExecuteEditorCommand type="TerminateEditor"/>
+            <ExecuteEditorCommand type="Exit"/>
           </MenuItem>
         </Menu>
         <Menu name="^Edit">
@@ -52,13 +44,13 @@
         </Menu>
         <Menu name="E^lements">
           <MenuItem name="^Element Set Instances...">
-            <ExecuteEditorCommand type="ElementSetInstances"/>
+            <ExecuteEditorCommand type="ElementSets"/>
           </MenuItem>
           <MenuItem name="Element ^Palette...">
-            <ExecuteEditorCommand type="ChooseElements"/>
+            <ExecuteEditorCommand type="Elements"/>
           </MenuItem>
           <MenuItem name="Zone Renderers...">
-            <ExecuteEditorCommand type="ZoneRendererInstances"/>
+            <ExecuteEditorCommand type="ZoneRenderers"/>
           </MenuItem>
         </Menu>
       </MenuBar>

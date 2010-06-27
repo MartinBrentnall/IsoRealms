@@ -46,10 +46,6 @@ void TextureSetPerZone::setControlObject(IChangeableTextureSet* objectToControl)
   cControlledObject = objectToControl;
 }
 
-std::string TextureSetPerZone::getName() {
-  return "Texture Set Per Zone";
-}
-
 std::vector<PlugSocket*> TextureSetPerZone::getPlugSockets() {
   std::vector<PlugSocket*> mSockets;
   // TODO: Should not construct plug sockets on-the-fly.

@@ -140,6 +140,8 @@ class Map:public IMap,
   ElementSetRegistry* getElementSetRegistry();
 
   PluginRegistry* getPluginRegistry();
+  
+  ZoneRendererRegistry* getZoneRendererRegistry();
 
   /**
    * Remove the specified element from anywhere in the map.  This function

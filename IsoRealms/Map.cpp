@@ -372,6 +372,10 @@ PluginRegistry* Map::getPluginRegistry() {
   return &cPluginRegistry;
 }
 
+ZoneRendererRegistry* Map::getZoneRendererRegistry() {
+  return &cZoneRendererRegistry;
+}
+
 void Map::pluginInstanceAdded(PluginRegistry* registry, std::string, std::string) {
   // Nothing to do.
 }

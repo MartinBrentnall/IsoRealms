@@ -18,6 +18,14 @@
  */
 #include "SimpleEditor.h"
 
+const std::string SimpleEditor::COMMAND_SAVE_AS        = "SaveAs";
+const std::string SimpleEditor::COMMAND_SAVE           = "Save";
+const std::string SimpleEditor::COMMAND_EXIT           = "Exit";
+const std::string SimpleEditor::COMMAND_OPEN           = "Open";
+const std::string SimpleEditor::COMMAND_ELEMENT_SETS   = "ElementSets";
+const std::string SimpleEditor::COMMAND_ELEMENTS       = "Elements";
+const std::string SimpleEditor::COMMAND_ZONE_RENDERERS = "ZoneRenderers";
+
 SimpleEditor::SimpleEditor(DOMNodeWrapper* node) {
   cMap = NULL;
   cRunExitCommands = false;
@@ -28,6 +36,13 @@ SimpleEditor::SimpleEditor(DOMNodeWrapper* node) {
   Zone* mInitZone = new Zone(mLocation, mSize);
   Map* mMap = new Map();
   mMap->addZone(mInitZone);
+
+  // Create dialog factories
+  IComponentFactory* mElementPaletteDialogFactory = new ElementsPaletteComponentFactory(this);
+  cElementSetsFactory                             = new EntityClassDialogFactory(this, cElementSetEntityClass);
+  cZoneRenderersFactory                           = new EntityClassDialogFactory(this, cZoneRendererEntityClass);
+  
+  // Setup map for editing
   setMap(mMap);
   cCursor = new EditorCursor(cMap);
   Vertex mNormalDistance(0.0f, 0.0f, -20.0f);
@@ -35,37 +50,21 @@ SimpleEditor::SimpleEditor(DOMNodeWrapper* node) {
   cViewPoint.setViewPoint(0);
   PluginRegistry* mPluginRegistry = cMap->getPluginRegistry();
   mPluginRegistry->addListener(this);
+  
+  // Register commands
+  EditorCommandManager::registerCommand(COMMAND_EXIT,           new TerminateEditorCommand(cConfirmExitCommands));
+  EditorCommandManager::registerCommand(COMMAND_SAVE_AS,        new SaveAsCommand(this, true));
+  EditorCommandManager::registerCommand(COMMAND_SAVE,           new SaveAsCommand(this, false));
+  EditorCommandManager::registerCommand(COMMAND_OPEN,           new OpenCommand(this));
+  EditorCommandManager::registerCommand(COMMAND_ELEMENTS,       new ElementSetInstancesCommand(this, mElementPaletteDialogFactory));
+  EditorCommandManager::registerCommand(COMMAND_ZONE_RENDERERS, new ElementSetInstancesCommand(this, cZoneRenderersFactory));
+  EditorCommandManager::registerCommand(COMMAND_ELEMENT_SETS,   new ElementSetInstancesCommand(this, cElementSetsFactory));
+                                                                                                  
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "OnExit") {
       cExitCommands = parseCommands(mNode);
-    } else if (mValueAsString == "EditorCommand") {
-      std::string mCommandName = mNode->getAttribute("name");
-      std::string mCommandType = mNode->getAttribute("type");
-      // TODO: Convert below into function
-      ICommand* mCommand = NULL;
-      if (mCommandType == "TerminateEditorCommand") {
-        mCommand = new TerminateEditorCommand(cConfirmExitCommands);
-      } else if (mCommandType == "ElementSetInstancesCommand") {
-        IComponentFactory* mComponentFactory = new ElementInstancesComponentFactory(this);
-        mCommand = new ElementSetInstancesCommand(this, mComponentFactory);
-//      } else if (mCommandType == "ZoneRendererInstances") {
-//        mCommand = new OpenDialogCommand<>;
-      } else if (mCommandType == "SaveAsCommand") {
-        mCommand = new SaveAsCommand(this, true);
-      } else if (mCommandType == "SaveCommand") {
-        mCommand = new SaveAsCommand(this, false);
-      } else if (mCommandType == "OpenCommand") {
-        mCommand = new OpenCommand(this);
-      } else if (mCommandType == "ChooseElementsCommand") {
-        IComponentFactory* mComponentFactory = new ElementsPaletteComponentFactory(this);
-        mCommand = new ElementSetInstancesCommand(this, mComponentFactory);
-      } else {
-        std::cout << "Warning: type not recognised: " << mCommandType << std::endl;
-        // TODO: Throw init exception!
-      }
-      EditorCommandManager::registerCommand(mCommandName, mCommand);
     } else if (mValueAsString == "Font") {
       IFontEngine* mFontEngine = GlobalConfiguration::getFontEngine();
       std::string mFontName = mNode->getAttribute("name");
@@ -371,6 +370,8 @@ void SimpleEditor::setMap(Map* map) {
     delete cCursor;
     delete cElementSetEntityClass;
     cElementSetEntityClass = NULL;
+    delete cZoneRendererEntityClass;
+    cZoneRendererEntityClass = NULL;
     cCursor = NULL;
   }
   cMap = map;
@@ -380,6 +381,11 @@ void SimpleEditor::setMap(Map* map) {
     mElementSetRegistry->setEditingInfo(cCursor, this, this);
     mElementSetRegistry->addElementRegistryListener(this);
     cElementSetEntityClass = new ElementSetEntityClass(mElementSetRegistry, this, this);
+    ZoneRendererRegistry* mZoneRendererRegistry = cMap->getZoneRendererRegistry();
+    cZoneRendererEntityClass = new ZoneRendererEntityClass(mZoneRendererRegistry);
+    
+    cElementSetsFactory->setEntityClass(cElementSetEntityClass);
+    cZoneRenderersFactory->setEntityClass(cZoneRendererEntityClass);
   }
 }
 
@@ -387,12 +393,17 @@ PluginRegistry* SimpleEditor::getPluginRegistry() {
   return cMap->getPluginRegistry();
 }
 
-SimpleEditor::ElementInstancesComponentFactory::ElementInstancesComponentFactory(SimpleEditor* parent) {
+SimpleEditor::EntityClassDialogFactory::EntityClassDialogFactory(SimpleEditor* parent, IEntityClass* entityClass) {
   cParent = parent;
+  setEntityClass(entityClass);
 }
 
-IHUDComponent* SimpleEditor::ElementInstancesComponentFactory::createComponent() {
-  return new EntityClassInstancesComponent(cParent->cElementSetEntityClass, cParent);
+void SimpleEditor::EntityClassDialogFactory::setEntityClass(IEntityClass* entityClass) {
+  cEntityClass = entityClass;
+}
+
+IHUDComponent* SimpleEditor::EntityClassDialogFactory::createComponent() {
+  return new EntityClassInstancesComponent(cEntityClass, cParent);
 }
 
 SimpleEditor::ElementsPaletteComponentFactory::ElementsPaletteComponentFactory(SimpleEditor* parent) {

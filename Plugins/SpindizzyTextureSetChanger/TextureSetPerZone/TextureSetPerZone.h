@@ -95,7 +95,6 @@ class TextureSetPerZone:public ISpindizzyTextureSetChanger,
   /******************************************\
    * Implements IPluginSupport (in IPlugin) *
   \******************************************/
-  std::string getName();
   std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);

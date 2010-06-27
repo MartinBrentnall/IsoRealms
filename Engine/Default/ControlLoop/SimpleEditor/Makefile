@@ -1,3 +1,4 @@
+
 # Copyright 2009 Martin Brentnall
 #
 # This file is part of Iso-Realms.
@@ -43,7 +44,8 @@ PluginRequirementsComponent.o \
 PopupMenuCommand.o \
 SaveAsCommand.o \
 SimpleEditor.o \
-TerminateEditorCommand.o
+TerminateEditorCommand.o \
+ZoneRendererEntityClass.o
 
 objs:	$(OBJS)
 	g++ -shared -o ControlLoop.so *.o 

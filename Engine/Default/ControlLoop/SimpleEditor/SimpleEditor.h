@@ -59,6 +59,7 @@ class OpenCommand;
 #include "OpenCommand.h"
 #include "SaveAsCommand.h"
 #include "TerminateEditorCommand.h"
+#include "ZoneRendererEntityClass.h"
 
 class SimpleEditor:public IControlLoop,
                    public IComponentContainer,
@@ -69,13 +70,26 @@ class SimpleEditor:public IControlLoop,
                    public IPluginRegistryListener,
                    public IMapManager {
   private:
+  class EntityClassDialogFactory;
+    
+  static const std::string COMMAND_SAVE_AS;
+  static const std::string COMMAND_SAVE;
+  static const std::string COMMAND_EXIT;
+  static const std::string COMMAND_OPEN;
+  static const std::string COMMAND_ELEMENT_SETS;
+  static const std::string COMMAND_ELEMENTS;
+  static const std::string COMMAND_ZONE_RENDERERS;
+  
   Map* cMap;
   Camera cViewPoint;
   ElementSetEntityClass* cElementSetEntityClass;
+  ZoneRendererEntityClass* cZoneRendererEntityClass;
   EditorCursor* cCursor;
   IFont* cFont;
   bool cEditorFocus;
   MenuBar* cMenuBar;
+  EntityClassDialogFactory* cElementSetsFactory;
+  EntityClassDialogFactory* cZoneRenderersFactory;
 
   // TODO: Need undo stack per zone... or at least to empty it when changing zones.
   std::stack<IElement*> cUndoStack;
@@ -117,12 +131,14 @@ class SimpleEditor:public IControlLoop,
 
   bool componentAt(float, float);
 
-  class ElementInstancesComponentFactory:public IComponentFactory {
+  class EntityClassDialogFactory:public IComponentFactory {
     private:
     SimpleEditor* cParent;
+    IEntityClass* cEntityClass;
 
     public:
-    ElementInstancesComponentFactory(SimpleEditor*);
+    EntityClassDialogFactory(SimpleEditor*, IEntityClass*);
+    void setEntityClass(IEntityClass*);
 
     /********************************\
      * Implements IComponentFactory *
