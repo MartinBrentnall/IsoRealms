@@ -1,0 +1,53 @@
+# Copyright 2009,2010 Martin Brentnall
+#
+# This file is part of Iso-Realms.
+#
+# Iso-Realms is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Iso-Realms is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+add_library(IsoRealms SHARED
+  BlockArea.cpp
+  BlockLocation.cpp
+  Colour.cpp
+  CommandManager.cpp
+  Configuration.cpp
+  DOMNodeWrapper.cpp
+  DOMNodeWriter.cpp
+  DefaultCommandInfo.cpp
+  DefaultZoneRenderer.cpp
+  DummyPlugin.cpp
+  DummyPluginRegistry.cpp
+  ElementSetRegistry.cpp
+  GlobalConfiguration.cpp
+  IHUDComponent.cpp
+  IPlugin.cpp
+  IPluginSupport.cpp
+  IllegalStateException.cpp
+  Image.cpp
+  InitException.cpp
+  IsoRealmsConstants.cpp
+  KeyStates.cpp
+  Map.cpp
+  MiscFunctions.cpp
+  ParseException.cpp
+  PlugSocket.cpp
+  PluginRegistry.cpp
+  PluginSupportException.cpp
+  Rectangle.cpp
+  ScreenConfiguration.cpp
+  System.cpp
+  Utils.cpp
+  Vertex.cpp
+  Zone.cpp
+  ZoneBrush.cpp
+  ZoneEvent.cpp 
+)
