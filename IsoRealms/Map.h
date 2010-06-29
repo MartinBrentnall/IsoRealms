@@ -30,7 +30,6 @@
 #include "IPluginRegistryListener.h"
 #include "PluginRegistry.h"
 #include "Zone.h"
-#include "ZoneRendererRegistry.h"
 
 /**
  * This class holds data for an IsoRealms map.
@@ -42,7 +41,6 @@ class Map:public IMap,
   private:
   PluginRegistry cPluginRegistry;
   ElementSetRegistry cElementSetRegistry;
-  ZoneRendererRegistry cZoneRendererRegistry;
 
   /**
    * These elements are not confined to one specific zone.
@@ -141,8 +139,6 @@ class Map:public IMap,
 
   PluginRegistry* getPluginRegistry();
   
-  ZoneRendererRegistry* getZoneRendererRegistry();
-
   /**
    * Remove the specified element from anywhere in the map.  This function
    * will be pretty slow, especially on large maps.

@@ -25,6 +25,7 @@
 
 #include "Hacks.h"
 #include "DOMNodeWriter.h"
+#include "DefaultZoneRenderer.h"
 #include "IPlugin.h"
 #include "IPluginRegistry.h"
 #include "IPluginRegistryListener.h"
@@ -37,6 +38,9 @@ class Zone;
 
 class PluginRegistry:public IPluginRegistry {
   private:
+  // TODO: Change to const?
+  static DefaultZoneRenderer DEFAULT_ZONE_RENDERER;
+    
   std::vector<IPluginRegistryListener*> cListeners;
 
   /**
@@ -166,6 +170,8 @@ class PluginRegistry:public IPluginRegistry {
 
   std::vector<IInteractiveElement*> getInteractiveElements();
 
+  IZoneRenderer* getZoneRenderer(DOMNodeWrapper*);
+  
   /******************************\
    * Implements IPluginRegistry *
   \******************************/

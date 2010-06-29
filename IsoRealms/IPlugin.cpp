@@ -73,3 +73,9 @@ void IPlugin::load(DOMNodeWrapper*) {
 void IPlugin::loadData(DOMNodeWrapper*, IPluginRegistry*, IZone*) {
   // Nothing to do.
 }
+
+IZoneRenderer* IPlugin::getZoneRenderer(const std::string& name) {
+  return NULL;
+}
+
+

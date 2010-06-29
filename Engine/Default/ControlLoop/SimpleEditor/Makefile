@@ -44,8 +44,7 @@ PluginRequirementsComponent.o \
 PopupMenuCommand.o \
 SaveAsCommand.o \
 SimpleEditor.o \
-TerminateEditorCommand.o \
-ZoneRendererEntityClass.o
+TerminateEditorCommand.o
 
 objs:	$(OBJS)
 	g++ -shared -o ControlLoop.so *.o 

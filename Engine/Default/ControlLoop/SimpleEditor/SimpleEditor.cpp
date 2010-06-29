@@ -24,7 +24,6 @@ const std::string SimpleEditor::COMMAND_EXIT           = "Exit";
 const std::string SimpleEditor::COMMAND_OPEN           = "Open";
 const std::string SimpleEditor::COMMAND_ELEMENT_SETS   = "ElementSets";
 const std::string SimpleEditor::COMMAND_ELEMENTS       = "Elements";
-const std::string SimpleEditor::COMMAND_ZONE_RENDERERS = "ZoneRenderers";
 
 SimpleEditor::SimpleEditor(DOMNodeWrapper* node) {
   cMap = NULL;
@@ -40,7 +39,6 @@ SimpleEditor::SimpleEditor(DOMNodeWrapper* node) {
   // Create dialog factories
   IComponentFactory* mElementPaletteDialogFactory = new ElementsPaletteComponentFactory(this);
   cElementSetsFactory                             = new EntityClassDialogFactory(this, cElementSetEntityClass);
-  cZoneRenderersFactory                           = new EntityClassDialogFactory(this, cZoneRendererEntityClass);
   
   // Setup map for editing
   setMap(mMap);
@@ -57,7 +55,6 @@ SimpleEditor::SimpleEditor(DOMNodeWrapper* node) {
   EditorCommandManager::registerCommand(COMMAND_SAVE,           new SaveAsCommand(this, false));
   EditorCommandManager::registerCommand(COMMAND_OPEN,           new OpenCommand(this));
   EditorCommandManager::registerCommand(COMMAND_ELEMENTS,       new ElementSetInstancesCommand(this, mElementPaletteDialogFactory));
-  EditorCommandManager::registerCommand(COMMAND_ZONE_RENDERERS, new ElementSetInstancesCommand(this, cZoneRenderersFactory));
   EditorCommandManager::registerCommand(COMMAND_ELEMENT_SETS,   new ElementSetInstancesCommand(this, cElementSetsFactory));
                                                                                                   
   for (int i = 0; i < node->getChildCount(); i++) {
@@ -370,8 +367,6 @@ void SimpleEditor::setMap(Map* map) {
     delete cCursor;
     delete cElementSetEntityClass;
     cElementSetEntityClass = NULL;
-    delete cZoneRendererEntityClass;
-    cZoneRendererEntityClass = NULL;
     cCursor = NULL;
   }
   cMap = map;
@@ -381,11 +376,7 @@ void SimpleEditor::setMap(Map* map) {
     mElementSetRegistry->setEditingInfo(cCursor, this, this);
     mElementSetRegistry->addElementRegistryListener(this);
     cElementSetEntityClass = new ElementSetEntityClass(mElementSetRegistry, this, this);
-    ZoneRendererRegistry* mZoneRendererRegistry = cMap->getZoneRendererRegistry();
-    cZoneRendererEntityClass = new ZoneRendererEntityClass(mZoneRendererRegistry);
-    
     cElementSetsFactory->setEntityClass(cElementSetEntityClass);
-    cZoneRenderersFactory->setEntityClass(cZoneRendererEntityClass);
   }
 }
 

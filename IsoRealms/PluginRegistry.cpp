@@ -18,6 +18,8 @@
  */
 #include "PluginRegistry.h"
 
+DefaultZoneRenderer PluginRegistry::DEFAULT_ZONE_RENDERER;
+
 void PluginRegistry::registerPlugin(DOMNodeWrapper* node) {
   std::string mImplementation = node->getAttribute("implementation");
   std::string mInstance = node->getAttribute("instance");
@@ -217,6 +219,17 @@ std::string PluginRegistry::getPluginType(IPlugin* instance) {
   // TODO: Throw exception
   std::cout << "Warning: plugin type was not found!" << std::endl;
   return "";
+}
+
+IZoneRenderer* PluginRegistry::getZoneRenderer(DOMNodeWrapper* node) {
+  std::string mType = node->getAttribute("type");
+  if (mType == "") {
+    return &DEFAULT_ZONE_RENDERER;
+  }
+  std::string mInstance = node->getAttribute("instance");
+  IPlugin* mPlugin = getPlugin(mType, mInstance);
+  std::string mRenderer = node->getAttribute("renderer");
+  return mPlugin->getZoneRenderer(mRenderer);
 }
 
 void PluginRegistry::removePlugin(IPlugin* instance) {

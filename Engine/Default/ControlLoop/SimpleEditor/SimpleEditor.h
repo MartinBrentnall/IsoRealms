@@ -59,7 +59,6 @@ class OpenCommand;
 #include "OpenCommand.h"
 #include "SaveAsCommand.h"
 #include "TerminateEditorCommand.h"
-#include "ZoneRendererEntityClass.h"
 
 class SimpleEditor:public IControlLoop,
                    public IComponentContainer,
@@ -83,13 +82,11 @@ class SimpleEditor:public IControlLoop,
   Map* cMap;
   Camera cViewPoint;
   ElementSetEntityClass* cElementSetEntityClass;
-  ZoneRendererEntityClass* cZoneRendererEntityClass;
   EditorCursor* cCursor;
   IFont* cFont;
   bool cEditorFocus;
   MenuBar* cMenuBar;
   EntityClassDialogFactory* cElementSetsFactory;
-  EntityClassDialogFactory* cZoneRenderersFactory;
 
   // TODO: Need undo stack per zone... or at least to empty it when changing zones.
   std::stack<IElement*> cUndoStack;

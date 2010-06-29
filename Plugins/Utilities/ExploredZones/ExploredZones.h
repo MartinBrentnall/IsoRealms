@@ -20,6 +20,34 @@ class ExploredZones:public IUtilities,
   std::vector<PlugSocket*> cSockets;
   std::vector<IUserCommand*> cAllZonesExploredCommands;
   std::vector<IUserCommand*> cZoneExploredCommands;
+  IZoneRenderer* cExploredZoneRenderer;
+  IZoneRenderer* cMapOverviewRenderer;
+  
+  class ExploredZoneRenderer:public IZoneRenderer {
+    private:
+    ExploredZones* cParent;
+    
+    public:
+    ExploredZoneRenderer(ExploredZones*);
+    
+    /****************************\
+     * Implements IZoneRenderer *
+    \****************************/
+    void render(std::vector<IZone*>&);
+  };
+  
+  class MapOverviewRenderer:public IZoneRenderer {
+    private:
+    ExploredZones* cParent;
+    
+    public:
+    MapOverviewRenderer(ExploredZones*);
+    
+    /****************************\
+     * Implements IZoneRenderer *
+    \****************************/
+    void render(std::vector<IZone*>&);
+  };
   
   public:
   ExploredZones();
@@ -28,11 +56,11 @@ class ExploredZones:public IUtilities,
    * Implements IPlugin *
   \**********************/
   void initPlugin(IZone*);
+  IZoneRenderer* getZoneRenderer(const std::string&);
 
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/
-  std::string getName();
   std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*); 

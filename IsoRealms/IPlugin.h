@@ -30,6 +30,7 @@
 #include "IInteractiveElement.h"
 #include "IPluginSupport.h"
 #include "IZone.h"
+#include "IZoneRenderer.h"
 
 class IPluginRegistry;
 class IMap;
@@ -122,6 +123,11 @@ class IPlugin:public IPluginSupport {
    */
   virtual void loadData(DOMNodeWrapper*, IPluginRegistry*, IZone*);
 
+  /**
+   * Retrieve the zone renderer of the specified name.
+   */
+  virtual IZoneRenderer* getZoneRenderer(const std::string&);
+  
   /**
    * The plug-in should clean up any resources that it allocated itself.  It
    * can be assumed that resources created by the plug-in are no longer in use

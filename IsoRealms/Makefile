@@ -56,8 +56,7 @@ Utils.o \
 Vertex.o \
 Zone.o \
 ZoneBrush.o \
-ZoneEvent.o \
-ZoneRendererRegistry.o
+ZoneEvent.o
 
 objs:	$(OBJS)
 	cd GUI; make

@@ -241,6 +241,10 @@
   <Plugin implementation="TimeLimit" instance="SpindizzyTimeLimit" type="IntegerValue">
     <Configuration/>
   </Plugin>
+  <Plugin implementation="ExploredZones" instance="ExploredZones" type="Utilities">
+    <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext" socketid=""/>
+    <Configuration/>
+  </Plugin>
   <Plugin implementation="SoundCommandSupport" instance="SoundCommandWrapper" type="Utilities">
     <UsePlugin implementation="CommandRegistry" instance="SpindizzyCommands" socketid=""/>
     <UsePlugin implementation="SoundSupport" instance="SpindizzySounds" socketid=""/>
@@ -290,7 +294,7 @@
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext"/>
     <Configuration/>
   </ElementSet>
-  <ZoneRenderer use="true"/>
+  <ZoneRenderer/>
   <Elements>
     <Element set="Player" type="">
       <Location x="-4" y="3" z="0"/>

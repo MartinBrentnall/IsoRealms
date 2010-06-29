@@ -49,9 +49,6 @@
           <MenuItem name="Element ^Palette...">
             <ExecuteEditorCommand type="Elements"/>
           </MenuItem>
-          <MenuItem name="Zone Renderers...">
-            <ExecuteEditorCommand type="ZoneRenderers"/>
-          </MenuItem>
         </Menu>
       </MenuBar>
       
