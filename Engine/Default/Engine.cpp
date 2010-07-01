@@ -25,7 +25,7 @@ Engine::Engine(DOMNodeWrapper* node) {
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "ControlLoop") {
       std::string mControlLoopName = mNode->getAttribute("name");
-      std::string mControlLoopLocation = System::getConfigurationResource("Engine/Default/ControlLoop/" + mControlLoopName + "/ControlLoop");
+      std::string mControlLoopLocation = System::getConfigurationResource("Engine/Default/ControlLoop/" + mControlLoopName + "/libControlLoop");
       void* mControlLoopSO = dlopen(mControlLoopLocation.c_str(), RTLD_LAZY);
       if (!mControlLoopSO) {
         throw InitException("Cannot load library: " + std::string(dlerror()));

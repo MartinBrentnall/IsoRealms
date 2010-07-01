@@ -28,6 +28,22 @@ add_library(IsoRealms SHARED
   DummyPluginRegistry.cpp
   ElementSetRegistry.cpp
   GlobalConfiguration.cpp
+  GUI/AbstractRectangularComponent.cpp
+  GUI/Button.cpp
+  GUI/CloseDialogCommand.cpp
+  GUI/ComponentEdgeLayout.cpp
+  GUI/Dialog.cpp
+  GUI/EdgeRelation.cpp
+  GUI/FlexibleGridLayoutComponent.cpp
+  GUI/GridLayoutComponent.cpp
+  GUI/ListBox.cpp
+  GUI/LookAndFeel.cpp
+  GUI/RectangleBoundsCalculator.cpp
+  GUI/ResizableDialog.cpp
+  GUI/ScrollableContainer.cpp
+  GUI/TextFieldComponent.cpp
+  GUI/TextLabelComponent.cpp
+  GUI/WrappingGridComponent.cpp
   IHUDComponent.cpp
   IPlugin.cpp
   IPluginSupport.cpp
@@ -51,3 +67,5 @@ add_library(IsoRealms SHARED
   ZoneBrush.cpp
   ZoneEvent.cpp 
 )
+
+

@@ -56,7 +56,7 @@ void PluginRegistry::setPlugin(IPlugin* plugin, DOMNodeWrapper* node) {
 
 void PluginRegistry::loadPlugin(std::string& type, std::string& implementation, std::string& instanceName) {
   // TODO: Test if it exists already!
-  std::string mPluginLocation = System::getConfigurationResource("Plugins/" + type + "/" + implementation + "/module");
+  std::string mPluginLocation = System::getConfigurationResource("Plugins/" + type + "/" + implementation + "/libModule");
   void* mPluginSO = dlopen(mPluginLocation.c_str(), RTLD_LAZY | RTLD_GLOBAL);
   if (!mPluginSO) {
     throw InitException("Cannot load library: " + std::string(dlerror()));

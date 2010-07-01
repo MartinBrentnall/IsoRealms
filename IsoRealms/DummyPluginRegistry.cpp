@@ -32,7 +32,7 @@ bool DummyPluginRegistry::isDummyPlugin(IPlugin* instance) {
 IPlugin* DummyPluginRegistry::getDummyPlugin(const std::string& type) {
   IPlugin* mDummyPlugin = cDummyPlugins[type];
   if (mDummyPlugin == NULL) {
-    std::string mPluginLocation = System::getConfigurationResource("Plugins/" + type + "/dummy");
+    std::string mPluginLocation = System::getConfigurationResource("Plugins/" + type + "/libDummy");
     void* mPluginSO = dlopen(mPluginLocation.c_str(), RTLD_LAZY | RTLD_GLOBAL);
     if (!mPluginSO) {
       // TODO: This causes segmentation fault

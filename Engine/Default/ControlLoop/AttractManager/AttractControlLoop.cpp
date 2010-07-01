@@ -27,7 +27,7 @@ AttractControlLoop::AttractControlLoop(DOMNodeWrapper* node) {
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "FrontEnd") {
       std::string mFrontEndName = mNode->getAttribute("name");
-      std::string mFrontEndLocation = System::getConfigurationResource("Engine/Default/ControlLoop/AttractManager/FrontEnd/" + mFrontEndName + "/FrontEnd");
+      std::string mFrontEndLocation = System::getConfigurationResource("Engine/Default/ControlLoop/AttractManager/FrontEnd/" + mFrontEndName + "/libFrontEnd");
       void* mFrontEndSO = dlopen(mFrontEndLocation.c_str(), RTLD_LAZY);
       if (!mFrontEndSO) {
         throw InitException("Cannot load library: " + std::string(dlerror()));
@@ -42,7 +42,7 @@ AttractControlLoop::AttractControlLoop(DOMNodeWrapper* node) {
       // TODO: Use relative path
       try {
         std::string mAttractName = mNode->getAttribute("name");
-        std::string mAttractLocation = System::getConfigurationResource("Engine/Default/ControlLoop/AttractManager/Attract/" + mAttractName + "/Attract");
+        std::string mAttractLocation = System::getConfigurationResource("Engine/Default/ControlLoop/AttractManager/Attract/" + mAttractName + "/libAttract");
         void* mAttractSO = dlopen(mAttractLocation.c_str(), RTLD_LAZY);
         if (!mAttractSO) {
           throw InitException("Cannot load library: " + std::string(dlerror()));

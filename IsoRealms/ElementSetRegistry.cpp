@@ -76,7 +76,7 @@ IElementSet* ElementSetRegistry::createInstance(std::string implementation, std:
     exit(1);
   }
 
-  std::string mElementLocation = System::getConfigurationResource("Elements/" + implementation + "/ElementSet");
+  std::string mElementLocation = System::getConfigurationResource("Elements/" + implementation + "/libElementSet");
   void* mElementSO = dlopen(mElementLocation.c_str(), RTLD_LAZY | RTLD_GLOBAL);
   if (!mElementSO) {
     throw InitException("Cannot load library: " + std::string(dlerror()));

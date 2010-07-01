@@ -41,11 +41,8 @@ Block set should provide a configuration for commands to execute on each switch 
 Utility to implement Spindizzy switch logic (provide switch commands to registry, which invoke appropriate commands on blocks and lifts)
 
 Surface Collisions:
- - Register rollable surfaces
  - Register intercepting rollable surfaces
  - Register wall surfaces
 
 Build Process:
- - Modify build process to use "Global" as an include directory.
  - Modify headers to use non-relative include paths for Global / Plugins stuff.
- - Change build process to use cmake.

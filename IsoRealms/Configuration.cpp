@@ -44,7 +44,7 @@ void Configuration::parseConfiguration(DOMNodeWrapper *node) {
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Engine") {
       std::string mEngineName = mNode->getAttribute("name");
-      std::string mEngineLocation = System::getConfigurationResource("Engine/" + mEngineName + "/Engine");
+      std::string mEngineLocation = System::getConfigurationResource("Engine/" + mEngineName + "/libEngine");
       void* mEngineSO = dlopen(mEngineLocation.c_str(), RTLD_LAZY);
       if (!mEngineSO) {
         throw InitException("Cannot load library: " + std::string(dlerror()));
@@ -57,7 +57,7 @@ void Configuration::parseConfiguration(DOMNodeWrapper *node) {
       cEngine = createEngineFunction(mNode);
     } else if (mValueAsString == "FontEngine") {
       std::string mFontEngineLocation = mNode->getAttribute("name");
-      std::string mEngineLocation = System::getConfigurationResource("FontEngine/" + mFontEngineLocation + "/FontEngine");
+      std::string mEngineLocation = System::getConfigurationResource("FontEngine/" + mFontEngineLocation + "/libFontEngine");
       void* mFontEngineSO = dlopen(mEngineLocation.c_str(), RTLD_LAZY);
       if (!mFontEngineSO) {
         throw InitException("Cannot load library: " + std::string(dlerror()));

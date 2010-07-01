@@ -1,23 +1,19 @@
 To compile, run the following commands:
 
+$ cmake .
 $ make
-$ su
-$ make install
 
-Note that the installation will currently create symbolic links to the project
-tree instead of copying any real files.  Do not change the locations of these
-links as the program will not work (it's currently hard-coded with these paths
-in certain places).  Symbolic links are used to ease development and testing.
-The following symbolic links are created:
+At present (during development), some paths are hard-coded.  In order to run
+Iso-Realms, you must create the following symbolic links:
 
-/usr/lib/libIsoRealms.so
-/usr/share/IsoRealms
+/usr/share/IsoRealms --> ./
+/usr/lib/libIsoRealms.so --> ./IsoRealms/libIsoRealms.so
 
 There is currently no automated uninstall.  To uninstall, simply remove these
 symbolic links.  To run the program, run from the root director of the project
 tree:
 
-$ ./IsoRealms
+$ ./IsoRealms.bin
 
 When first run, the program will create a symbol link at the following
 location:
@@ -25,6 +21,7 @@ location:
 $HOME/.isorealms
 
 This symbolic link points to the "default_setup" folder of the project tree.
+This is only temporary for development and testing purposes.
 
 
 NOTES ON USING THE PROGRAM:
