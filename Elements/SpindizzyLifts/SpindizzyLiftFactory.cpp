@@ -38,7 +38,7 @@ bool SpindizzyLiftFactory::isActive() {
   return true; // TODO: Lift states
 }
 
-IElement* SpindizzyLiftFactory::getElement(DOMNodeWrapper* node, BlockLocation* relative) {
+IElement* SpindizzyLiftFactory::getElement(DOMNodeWrapper* node, BlockLocation* relative, IElementContainer* elementContainer) {
   cProperties->reset();
   BlockLocation mStartLocation;
   int mLiftBottom = -1;
@@ -63,6 +63,7 @@ IElement* SpindizzyLiftFactory::getElement(DOMNodeWrapper* node, BlockLocation* 
   ISpindizzyTexture* mTexture = cTextureSet->getTexture(cTexture);
   SpindizzyLift* mLoadedLift = new SpindizzyLift(this, &mStartLocation, mTexture, cProperties, mLiftBottom, mLiftTop);
   cContent.push_back(mLoadedLift);
+  registerElement(mLoadedLift, elementContainer);
   return mLoadedLift;
 }
 
@@ -78,7 +79,7 @@ bool SpindizzyLiftFactory::keyDown(SDLKey& key) {
         int mBottomRange = *cFirstRange > cEditingLocation->z ? cEditingLocation->z : *cFirstRange;
         ISpindizzyTexture* mTexture = cTextureSet->getTexture(cTexture);
         SpindizzyLift* mLiftElement = new SpindizzyLift(this, cInsertLocation, mTexture, cProperties, mBottomRange, mTopRange);
-        cGateway->pushElement(mLiftElement);
+        addElement(mLiftElement);
         cContent.push_back(mLiftElement);
         delete cInsertLocation;
         cInsertLocation = NULL;
@@ -120,8 +121,7 @@ bool SpindizzyLiftFactory::input(SDL_Event& event) {
   return false;
 }
 
-void SpindizzyLiftFactory::setEditingInfo(BlockLocation* editingLocation, IElementGateway* gateway, IComponentContainer* componentContainer) {
-  cGateway = gateway;
+void SpindizzyLiftFactory::setEditingContext(BlockLocation* editingLocation, IComponentContainer* componentContainer) {
   cEditingLocation = editingLocation;  
   cComponentContainer = componentContainer;
 }

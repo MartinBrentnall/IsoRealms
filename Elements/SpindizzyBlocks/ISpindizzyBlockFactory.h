@@ -24,14 +24,14 @@
 #include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 
-#include "ISurfaceProcessorProxy.h"
+#include "ISpindizzyBlockSet.h"
 
 /**
  * TODO: Not an interface anymore.
  */
-class ISpindizzyBlockFactory:public ElementFactory<ISurfaceProcessorProxy> {
+class ISpindizzyBlockFactory:public ElementFactory<ISpindizzyBlockSet, IElement> {
   public:
-  ISpindizzyBlockFactory(ISurfaceProcessorProxy*);
+  ISpindizzyBlockFactory(ISpindizzyBlockSet*);
 
   /**
    * Signal all elements of the factory as dirty.

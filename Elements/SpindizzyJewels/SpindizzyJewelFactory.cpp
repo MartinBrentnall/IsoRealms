@@ -18,7 +18,7 @@
  */
 #include "SpindizzyJewelFactory.h"
 
-SpindizzyJewelFactory::SpindizzyJewelFactory(ICollectablesAccessor* elementSet, ISimpleModelFactory* jewelModelFactory) : BaseSpindizzyJewelFactory(elementSet) {
+SpindizzyJewelFactory::SpindizzyJewelFactory(ISpindizzyJewelSet* elementSet, ISimpleModelFactory* jewelModelFactory) : BaseSpindizzyJewelFactory(elementSet) {
   cJewelModelFactory = jewelModelFactory;
   BlockLocation mIdentityLocation(0, 0, 0);
   cSampleJewel = new SpindizzyJewel(this, &mIdentityLocation, cJewelModelFactory);
@@ -38,7 +38,7 @@ void SpindizzyJewelFactory::setModel(ISimpleModelFactory* modelFactory) {
   }
 }
 
-IElement* SpindizzyJewelFactory::getElement(DOMNodeWrapper* node, BlockLocation* relative) {
+IElement* SpindizzyJewelFactory::getElement(DOMNodeWrapper* node, BlockLocation* relative, IElementContainer* elementContainer) {
   BlockLocation* mLocation = new BlockLocation();
   // TODO: Should throw something if these are not specified!
   for (int i = 0; i < node->getChildCount(); i++) {
@@ -50,6 +50,7 @@ IElement* SpindizzyJewelFactory::getElement(DOMNodeWrapper* node, BlockLocation*
   }
   SpindizzyJewel* mJewel = new SpindizzyJewel(this, mLocation, cJewelModelFactory);
   cContent.push_back(mJewel);
+  registerElement(mJewel, elementContainer);
   return mJewel;
 }
 
@@ -57,7 +58,7 @@ bool SpindizzyJewelFactory::keyDown(SDLKey& key) {
   switch (key) {
     case SDLK_SPACE: {
       SpindizzyJewel* mJewel = new SpindizzyJewel(this, cEditingLocation, cJewelModelFactory);
-      cGateway->pushElement(mJewel);
+      addElement(mJewel);
       cContent.push_back(mJewel);
       return true;
     }
@@ -82,8 +83,7 @@ void SpindizzyJewelFactory::configureElement() {
   // Nothing to do.
 }
 
-void SpindizzyJewelFactory::setEditingInfo(BlockLocation* editingLocation, IElementGateway* gateway, IComponentContainer* componentContainer) {
-  cGateway = gateway;
+void SpindizzyJewelFactory::setEditingContext(BlockLocation* editingLocation, IComponentContainer* componentContainer) {
   cEditingLocation = editingLocation;  
 }
 
@@ -161,7 +161,7 @@ SpindizzyJewelFactory::~SpindizzyJewelFactory() {
   for (unsigned int i = 0; i < cContent.size(); i++) {
     ISimpleModel* mJewelModelInstance = cContent[i]->getModel();
     cJewelModelFactory->destroyModel(mJewelModelInstance);
-    cGateway->notifyDestruction(cContent[i]);
+    removeElement(cContent[i]);
     delete cContent[i];
   }
 }

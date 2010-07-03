@@ -36,9 +36,9 @@
 #include "../../Plugins/3DModel/ISimpleModelFactory.h"
 
 #include "BaseSpindizzyJewelFactory.h"
-#include "ICollectablesAccessor.h"
+#include "ISpindizzyJewelSet.h"
 
-class SpindizzyJewel:public Element<ICollectablesAccessor, BaseSpindizzyJewelFactory>,
+class SpindizzyJewel:public Element<ISpindizzyJewelSet, BaseSpindizzyJewelFactory>,
                      public ICollectable,
                      public IDynamicElement,
                      public IVisualElement {

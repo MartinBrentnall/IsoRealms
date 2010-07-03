@@ -18,7 +18,7 @@
  */
 #include "SpindizzyEnemyFactory.h"
 
-SpindizzyEnemyFactory::SpindizzyEnemyFactory(IElementSet* elementSet, ISimpleModelFactory* enemyModelFactory, const std::string& type) : ElementFactory<>(elementSet) {
+SpindizzyEnemyFactory::SpindizzyEnemyFactory(ISpindizzyEnemySet* elementSet, ISimpleModelFactory* enemyModelFactory, const std::string& type) : ElementFactory<ISpindizzyEnemySet, SpindizzyEnemy>(elementSet) {
   cType = type;
   cEnemyModelFactory = enemyModelFactory;
   BlockLocation mIdentityLocation(0, 0, 0);
@@ -34,7 +34,7 @@ void SpindizzyEnemyFactory::setModel(ISimpleModelFactory* modelFactory) {
   }
 }
 
-IElement* SpindizzyEnemyFactory::getElement(DOMNodeWrapper* node, BlockLocation* relative) {
+IElement* SpindizzyEnemyFactory::getElement(DOMNodeWrapper* node, BlockLocation* relative, IElementContainer* elementContainer) {
   BlockLocation mLocation;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
@@ -45,6 +45,7 @@ IElement* SpindizzyEnemyFactory::getElement(DOMNodeWrapper* node, BlockLocation*
   }
   SpindizzyEnemy* mLoadedEnemy = new SpindizzyEnemy(this, &mLocation, cEnemyModelFactory);
   cContent.push_back(mLoadedEnemy);
+  registerElement(mLoadedEnemy, elementContainer);
   return mLoadedEnemy;
 }
 
@@ -52,7 +53,7 @@ bool SpindizzyEnemyFactory::keyDown(SDLKey& key) {
   switch (key) {
     case SDLK_SPACE: {
       SpindizzyEnemy* mEnemy = new SpindizzyEnemy(this, cEditingLocation, cEnemyModelFactory);
-      cGateway->pushElement(mEnemy);
+      addElement(mEnemy);
       cContent.push_back(mEnemy);
       return true;
     }
@@ -77,8 +78,7 @@ void SpindizzyEnemyFactory::configureElement() {
   // Nothing to do.
 }
 
-void SpindizzyEnemyFactory::setEditingInfo(BlockLocation* editingLocation, IElementGateway* gateway, IComponentContainer* componentContainer) {
-  cGateway = gateway;
+void SpindizzyEnemyFactory::setEditingContext(BlockLocation* editingLocation, IComponentContainer* componentContainer) {
   cEditingLocation = editingLocation;  
 }
 

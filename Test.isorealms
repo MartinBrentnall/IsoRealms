@@ -270,6 +270,7 @@
     <UsePlugin implementation="3DModel" instance="Ball" socketid="0"/>
     <UsePlugin implementation="3DModel" instance="Gyroscope" socketid="1"/>
     <UsePlugin implementation="3DModel" instance="Pyramid" socketid="2"/>
+    <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext" socketid=""/>
     <Configuration/>
   </ElementSet>
   <ElementSet instance="Jewels" type="SpindizzyJewels">
@@ -283,6 +284,7 @@
   </ElementSet>
   <ElementSet instance="Lifts" type="SpindizzyLifts">
     <UsePlugin implementation="SpindizzyTextureSet" instance="C64Blue"/>
+    <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext" socketid=""/>
     <Configuration/>
   </ElementSet>
   <ElementSet instance="Player" type="SpindizzyGERALD">

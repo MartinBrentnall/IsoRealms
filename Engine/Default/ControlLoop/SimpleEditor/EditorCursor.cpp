@@ -162,12 +162,14 @@ void EditorCursor::moveToCamera() {
   glTranslatef(-x * BLOCK_SIZE, -y * BLOCK_SIZE, -z * BLOCK_HEIGHT);
 }
 
-void EditorCursor::pushElement(IElement* element) {
+IElementContainer* EditorCursor::pushElement(IElement* element) {
   cEditZonePointer->pushElement(element);
+  return cEditZonePointer;
 }
 
-void EditorCursor::pushMapElement(IElement* element) {
+IElementContainer* EditorCursor::pushMapElement(IElement* element) {
   cEditMapPointer->pushElement(element);
+  return cEditMapPointer;
 }
 
 void EditorCursor::setDirty(IElement* element) {

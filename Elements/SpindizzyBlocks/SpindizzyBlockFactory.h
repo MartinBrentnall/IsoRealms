@@ -36,7 +36,7 @@ class SpindizzyBlockConfigurationComponent;
 
 #include "AbstractSpindizzyBlock.h"
 #include "ISpindizzyBlockFactory.h"
-#include "ISurfaceProcessorProxy.h"
+#include "ISpindizzyBlockSet.h"
 #include "SpindizzyBlockConfigurationComponent.h"
 #include "SpindizzyBlockProperties.h"
 
@@ -51,7 +51,6 @@ class SpindizzyBlockFactory:public ISpindizzyBlockFactory,
   SpindizzyBlockProperties* cBlockProperties;
   BlockLocation* cStartBlockLocation;
   BlockLocation* cEditingLocation;
-  IElementGateway* cGateway;
   AbstractSpindizzyBlock* cSampleBlock;
 
   bool keyDown(SDLKey&);  
@@ -67,7 +66,7 @@ class SpindizzyBlockFactory:public ISpindizzyBlockFactory,
    * 
    * @param ISpindizzyTextureSet*  A texture set to use for texturing blocks.
    */
-  SpindizzyBlockFactory(std::string, ISpindizzyTextureSet**, ISurfaceProcessorProxy*);
+  SpindizzyBlockFactory(std::string, ISpindizzyTextureSet**, ISpindizzyBlockSet*);
 
   /**
    * Create a new usable block according to the specified parameters.
@@ -91,8 +90,8 @@ class SpindizzyBlockFactory:public ISpindizzyBlockFactory,
    * Implements IElementFactory *
   \******************************/
   void configureElement();
-  IElement* getElement(DOMNodeWrapper*, BlockLocation*);
-  void setEditingInfo(BlockLocation*, IElementGateway*, IComponentContainer*);
+  IElement* getElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*);
+  void setEditingContext(BlockLocation*, IComponentContainer*);
   bool input(SDL_Event&);
   void renderEditingPreview();
   void renderIcon();

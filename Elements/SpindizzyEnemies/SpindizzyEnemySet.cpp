@@ -19,6 +19,7 @@
 #include "SpindizzyEnemySet.h"
 
 SpindizzyEnemySet::SpindizzyEnemySet() {
+  assignDummyPlugin(&cZoneContext, "ZoneContext");
 }
 
 void SpindizzyEnemySet::setModel(ISimpleModelFactory* modelFactory) {
@@ -48,6 +49,7 @@ std::vector<PlugSocket*> SpindizzyEnemySet::getPlugSockets() {
     PlugSocket* mPlugSocket = new PlugSocket("3DModel", mSocketID.str());
     mSockets.push_back(mPlugSocket);
   }
+  mSockets.push_back(new PlugSocket("ZoneContext"));
   return mSockets;
 }
 
@@ -77,6 +79,14 @@ void SpindizzyEnemySet::setPlugin(PlugSocket* plugSocket, IPlugin* plugin) {
       cEnemyModelFactories.erase(cEnemyModelFactories.begin() + mIndex);
       cElementFactories.erase(cElementFactories.begin() + mIndex);
     }
+  } else if (plugSocket->getType() == "ZoneContext") {
+    IZoneContext* mPreviousZoneContext = cZoneContext;
+    if (assignPlugin(plugin, &cZoneContext, *plugSocket)) {
+      mPreviousZoneContext->removeZoneContextListener(this);
+      cZoneContext->addZoneContextListener(this);
+    }
+  } else {
+    // TODO: Throw exception or something
   }
 }
 
@@ -89,12 +99,31 @@ IPlugin* SpindizzyEnemySet::getPlugin(PlugSocket* plugSocket) {
     if (mIndex < cEnemyModelFactories.size()) {
       return cEnemyModelFactories[mIndex]; 
     }
+  } else if (plugSocket->getType() == "ZoneContext") {
+    return cZoneContext;
   }
   return NULL;
 }
 
 void SpindizzyEnemySet::save(DOMNodeWriter* node) {
   // Nothing to do.
+}
+
+DefaultElementHandler<SpindizzyEnemy>* SpindizzyEnemySet::createHandler(IElementContainer* elementContainer) {
+  return new SpindizzyEnemyHandler(this, elementContainer);
+}
+
+IZone* SpindizzyEnemySet::getCurrentZone() {
+  return cZone;
+}
+
+void SpindizzyEnemySet::zoneContextChanged(IZone* zone) {
+  cZone = zone;
+  if (cZone != NULL) {
+    // TODO: Dynamic casts are bad
+    IElementContainer* mContainer = dynamic_cast<IElementContainer*>(cZone);
+    setHandlerActive(mContainer, true);
+  }
 }
 
 extern "C" IElementSet* create(DOMNodeWrapper* node) {

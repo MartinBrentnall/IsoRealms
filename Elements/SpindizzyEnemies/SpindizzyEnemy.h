@@ -42,6 +42,8 @@ class SpindizzyEnemy:public Element<>,
 
   void setModel(ISimpleModelFactory*);
 
+  void reset();
+  
   /***********************\
    * Implements IElement *
   \***********************/

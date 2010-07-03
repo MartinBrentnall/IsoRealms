@@ -71,7 +71,7 @@ class ElementSetRegistry {
 
   void setPlugin(PluginRegistry*, IPluginSupport*, DOMNodeWrapper*);
 
-  std::vector<IElement*> loadElements(DOMNodeWrapper*, BlockLocation*);
+  std::vector<IElement*> loadElements(DOMNodeWrapper*, BlockLocation*, IElementContainer*);
 
   /**
    * Create an element set instance of the specified type and assign it the

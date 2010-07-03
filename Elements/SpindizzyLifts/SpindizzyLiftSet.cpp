@@ -34,6 +34,7 @@ SpindizzyLiftSet::SpindizzyLiftSet() {
 
   assignDummyPlugin(&cSpindizzyTextureSet, "SpindizzyTextureSet");
   assignDummyPlugin(&cCommandRegistry, "CommandRegistry");
+  assignDummyPlugin(&cZoneContext, "ZoneContext");
   setTextureSet(cSpindizzyTextureSet);
 }
 
@@ -55,6 +56,7 @@ std::vector<PlugSocket*> SpindizzyLiftSet::getPlugSockets() {
   std::vector<PlugSocket*> mSockets;
   mSockets.push_back(new PlugSocket("SpindizzyTextureSet"));
   mSockets.push_back(new PlugSocket("CommandRegistry"));
+  mSockets.push_back(new PlugSocket("ZoneContext"));
   return mSockets;
 }
 
@@ -71,25 +73,44 @@ void SpindizzyLiftSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
         cCommandRegistry->registerCommand(cCommands[i]);
       }
     }
+  } else if (socket->getType() == "ZoneContext") {
+    IZoneContext* mPreviousZoneContext = cZoneContext;
+    if (assignPlugin(implementation, &cZoneContext, *socket)) {
+      mPreviousZoneContext->removeZoneContextListener(this);
+      cZoneContext->addZoneContextListener(this);
+    }
   } else {
     // TODO: Throw exception or something
   }  
 }
 
 IPlugin* SpindizzyLiftSet::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "SpindizzyTextureSet") {
-    return cSpindizzyTextureSet;
-  }
+  if (socket->getType() == "SpindizzyTextureSet")  {return cSpindizzyTextureSet;}
+  else if (socket->getType() == "CommandRegistry") {return cCommandRegistry;}
+  else if (socket->getType() == "ZoneContext")     {return cZoneContext;}
   // TODO: Throw wobbly!
   return NULL;
 }
 
-std::string SpindizzyLiftSet::getName() {
-  return "Spindizzy Lifts";
+DefaultElementHandler<SpindizzyLift>* SpindizzyLiftSet::createHandler(IElementContainer* elementContainer) {
+  return new SpindizzyLiftHandler(this, elementContainer);
 }
 
 void SpindizzyLiftSet::save(DOMNodeWriter* node) {
   // Nothing to do.
+}
+
+IZone* SpindizzyLiftSet::getCurrentZone() {
+  return cZone;
+}
+
+void SpindizzyLiftSet::zoneContextChanged(IZone* zone) {
+  cZone = zone;
+  if (cZone != NULL) {
+    // TODO: Dynamic casts are bad
+    IElementContainer* mContainer = dynamic_cast<IElementContainer*>(cZone);
+    setHandlerActive(mContainer, true);
+  }
 }
 
 extern "C" IElementSet* create(DOMNodeWrapper* node) {

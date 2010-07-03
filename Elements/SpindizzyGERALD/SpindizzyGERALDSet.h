@@ -21,7 +21,6 @@
 
 #include <vector>
 
-#include <IsoRealms/IElementSet.h>
 #include <IsoRealms/PluginRegistry.h>
 
 #include "../../Plugins/3DModel/ISimpleModelFactory.h"
@@ -31,9 +30,10 @@
 #include "../../Plugins/LocationAwareness/ILocationAwareness.h"
 #include "../../Plugins/ZoneContext/IZoneContext.h"
 
+#include "ISpindizzyGERALDSet.h"
 #include "SpindizzyGERALDFactory.h"
 
-class SpindizzyGERALDSet:public IElementSet {
+class SpindizzyGERALDSet:public ISpindizzyGERALDSet {
   private:
   std::vector<IElementFactory*> cElementFactories;
   ISimpleModelFactory* cGERALDModelFactory;

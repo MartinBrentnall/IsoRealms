@@ -98,6 +98,10 @@ void SpindizzyLift::update(int milliseconds) {
   }
 }
 
+void SpindizzyLift::reset() {
+  // TODO: Reset the lift!
+}
+
 void SpindizzyLift::render() {
   glPushMatrix();
   glTranslatef(cLocation.x, cLocation.y, cLocation.z * IsoRealmsConstants::BLOCK_HEIGHT + (IsoRealmsConstants::BLOCK_HEIGHT * 0.05));

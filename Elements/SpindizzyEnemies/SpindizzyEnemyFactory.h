@@ -23,15 +23,17 @@
 
 #include <IsoRealms/BlockLocation.h>
 #include <IsoRealms/ElementFactory.h>
+#include <IsoRealms/ElementSet.h>
 #include <IsoRealms/IComponentContainer.h>
 #include <IsoRealms/IElementGateway.h>
 #include <IsoRealms/IVisualElement.h>
 
 #include "../../Plugins/3DModel/ISimpleModelFactory.h"
 
+#include "ISpindizzyEnemySet.h"
 #include "SpindizzyEnemy.h"
 
-class SpindizzyEnemyFactory:public ElementFactory<> {
+class SpindizzyEnemyFactory:public ElementFactory<ISpindizzyEnemySet, SpindizzyEnemy> {
   private:
   std::string cType;
   IElementSet* cElementSet;
@@ -40,23 +42,22 @@ class SpindizzyEnemyFactory:public ElementFactory<> {
   SpindizzyEnemy* cSampleEnemy;
   std::vector<IVisualElement*> cSampleEnemyVisuals;
   BlockLocation* cEditingLocation;
-  IElementGateway* cGateway;
 
   bool keyDown(SDLKey&);
 
   public:
-  SpindizzyEnemyFactory(IElementSet*, ISimpleModelFactory*, const std::string&);
+  SpindizzyEnemyFactory(ISpindizzyEnemySet*, ISimpleModelFactory*, const std::string&);
 
   void setModel(ISimpleModelFactory*);
 
-  /*************************************************************************\
-   * Implemented methods of IElementFactory.h                              *
-  \*************************************************************************/
+  /******************************\
+   * Implements IElementFactory *
+  \******************************/
   std::string getName();
-  IElement* getElement(DOMNodeWrapper*, BlockLocation*);
+  IElement* getElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*);
   bool input(SDL_Event&);
   void configureElement();
-  void setEditingInfo(BlockLocation*, IElementGateway*, IComponentContainer*);
+  void setEditingContext(BlockLocation*, IComponentContainer*);
   void renderEditingPreview();
   void updateIcon(int);
   void renderIcon();

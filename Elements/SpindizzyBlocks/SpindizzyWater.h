@@ -28,11 +28,11 @@
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
 
 #include "ISpindizzyBlockFactory.h"
-#include "ISurfaceProcessorProxy.h"
+#include "ISpindizzyBlockSet.h"
 #include "TileSurface.h"
 #include "WallSurface.h"
 
-class SpindizzyWater:public Element<ISurfaceProcessorProxy, ISpindizzyBlockFactory>,
+class SpindizzyWater:public Element<ISpindizzyBlockSet, ISpindizzyBlockFactory>,
                      public ISurfaceProvider {
   private:
   // TODO: Need to define an "initialisation scheme" somewhere

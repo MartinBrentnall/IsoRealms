@@ -26,7 +26,7 @@ Zone::Zone(DOMNodeWrapper* node, ElementSetRegistry& elementSetRegistry, PluginR
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Elements") {
-      cElements = elementSetRegistry.loadElements(mNode, &cStartLocation);
+      cElements = elementSetRegistry.loadElements(mNode, &cStartLocation, this);
       cDirtyElements = cElements;
     } else if (mValueAsString == "Plugins") {
       pluginRegistry.loadPluginData(mNode, this);
@@ -104,6 +104,10 @@ void Zone::elementDirty(IElement* element) {
   setDirty(element);
 }
 
+void Zone::addElementHandler(IElementHandler* elementHandler) {
+  cElementHandlers.push_back(elementHandler);
+}
+
 void Zone::setDirty(IElement* element) {
   if (!containsElement(element)) {
     std::cout << "WARNING: Specified dirty element is not a member of this Zone!  Did you forget to set the cursor's Zone?" << std::endl;
@@ -152,11 +156,15 @@ void Zone::zoneChanged() {
 }
 
 void Zone::update(int milliseconds) {
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    std::vector<IDynamicElement*> mDynamicElements = cElements[i]->getDynamicElements();
-    for (unsigned int j = 0; j < mDynamicElements.size(); j++) {
-      mDynamicElements[j]->update(milliseconds);
-    }
+  for (unsigned int i = 0; i < cElementHandlers.size(); i++) {
+    cElementHandlers[i]->update(milliseconds);
+  }
+}
+
+void Zone::updateRuntime(int milliseconds) {
+  update(milliseconds);
+  for (unsigned int i = 0; i < cElementHandlers.size(); i++) {
+    cElementHandlers[i]->updateRuntime(milliseconds);
   }
 }
 
@@ -215,12 +223,13 @@ void Zone::renderEditing() {
 
 void Zone::render() {
   glCallList(cDisplayList);
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    std::vector<IVisualElement*> mVisualElements = cElements[i]->getVisualElements();
-    for (unsigned int j = 0; j < mVisualElements.size(); j++) {
-      mVisualElements[j]->render();
-    }
+  for (unsigned int i = 0; i < cElementHandlers.size(); i++) {
+    cElementHandlers[i]->render();
   }
+}
+
+void Zone::setHandlerActive(IElementHandler*, bool) {
+  // TODO: Implement this
 }
 
 void Zone::addChangeListener(IZoneChangeListener* listener) {

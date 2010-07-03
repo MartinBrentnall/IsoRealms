@@ -20,6 +20,7 @@ add_library(Elements_SpindizzyLifts MODULE
   SpindizzyLift.cpp
   SpindizzyLiftConfigurationComponent.cpp
   SpindizzyLiftFactory.cpp
+  SpindizzyLiftHandler.cpp
   SpindizzyLiftProperties.cpp
   SpindizzyLiftSet.cpp 
 )

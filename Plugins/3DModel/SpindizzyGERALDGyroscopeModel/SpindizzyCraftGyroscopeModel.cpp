@@ -41,10 +41,10 @@ void SpindizzyCraftGyroscopeModel::render() {
   float mBaseHeight = IsoRealmsConstants::BLOCK_HEIGHT * 0.9;
   float mTopHeight = IsoRealmsConstants::BLOCK_HEIGHT * 1.80;
 
-  glBindTexture(GL_TEXTURE_2D, 0);
+  glBindTexture(GL_TEXTURE_2D, cTextures[TEXTURE_DISC]);
   glDisable(GL_CULL_FACE);
   glBegin(GL_TRIANGLES);
-  glColor3f(0.0, 0.0, 0.0);
+  glTexCoord2f(1.0, 0.5);
   glVertex3f(0.0, 0.0, 0.0);
   glVertex3f(0.0, 0.0 - mBaseWidth, 0.0 + mBaseHeight);
   glVertex3f(0.0, 0.0 + mBaseWidth, 0.0 + mBaseHeight);
@@ -58,12 +58,10 @@ void SpindizzyCraftGyroscopeModel::render() {
   glVertex3f(0.0, 0.0, mTopHeight);
   glVertex3f(0.0 + mBaseWidth, 0.0, 0.0 + mBaseHeight);
   glVertex3f(0.0 - mBaseWidth, 0.0, 0.0 + mBaseHeight);
-  glColor3f(1.0, 1.0, 1.0);
   glEnd();
 
   glAlphaFunc(GL_GREATER, 0.1f);
   glEnable(GL_ALPHA_TEST);
-  glBindTexture(GL_TEXTURE_2D, cTextures[TEXTURE_DISC]);
   glBegin(GL_QUADS);
   glTexCoord2f(1.0, 1.0); glVertex3f(0.0 + mTopWidth, 0.0 + mTopWidth, 0.0 + mBaseHeight);
   glTexCoord2f(0.0, 1.0); glVertex3f(0.0 - mTopWidth, 0.0 + mTopWidth, 0.0 + mBaseHeight);

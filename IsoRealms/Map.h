@@ -26,6 +26,7 @@
 #include "DOMNodeWrapper.h"
 #include "DOMNodeWriter.h"
 #include "ElementSetRegistry.h"
+#include "IElementHandler.h"
 #include "IMap.h"
 #include "IPluginRegistryListener.h"
 #include "PluginRegistry.h"
@@ -46,6 +47,7 @@ class Map:public IMap,
    * These elements are not confined to one specific zone.
    */
   std::vector<IElement*> cElements;
+  std::vector<IElementHandler*> cElementHandlers;
   std::vector<IElement*> cDirtyElements;
   GLuint cDisplayList;
   GLuint cEditingDisplayList;
@@ -180,6 +182,8 @@ class Map:public IMap,
    * Implements IElementContainer *
   \********************************/
   void elementDirty(IElement*);
+  void addElementHandler(IElementHandler*);
+  void setHandlerActive(IElementHandler*, bool);
 
   ~Map();
 };

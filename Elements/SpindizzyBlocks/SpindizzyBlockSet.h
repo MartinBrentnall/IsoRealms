@@ -37,7 +37,7 @@
 
 #include "BlockStateCommand.h"
 #include "ISpindizzyBlockFactory.h"
-#include "ISurfaceProcessorProxy.h"
+#include "ISpindizzyBlockSet.h"
 #include "SpindizzyBlock.h"
 #include "SpindizzyBlockFactory.h"
 #include "SpindizzyIceBlock.h"
@@ -45,7 +45,7 @@
 #include "SpindizzyTrampolineBlock.h"
 #include "SpindizzyWaterFactory.h"
 
-class SpindizzyBlockSet:public ISurfaceProcessorProxy,
+class SpindizzyBlockSet:public ISpindizzyBlockSet,
                         public IChangeableTextureSet {
   private:
   static const std::string PLAIN;
@@ -85,7 +85,7 @@ class SpindizzyBlockSet:public ISurfaceProcessorProxy,
     ISpindizzyTextureSet::TextureType cTileSurfaceTexture;
 
     public:
-    BlockFactory(std::string, ISurfaceProcessorProxy*, ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType);
+    BlockFactory(std::string, ISpindizzyBlockSet*, ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType);
 
     /************************************\
      * Implements SpindizzyBlockFactory *
@@ -95,7 +95,7 @@ class SpindizzyBlockSet:public ISurfaceProcessorProxy,
 
   class IceFactory:public SpindizzyBlockFactory {
     public:
-    IceFactory(std::string, ISurfaceProcessorProxy*, ISpindizzyTextureSet**);
+    IceFactory(std::string, ISpindizzyBlockSet*, ISpindizzyTextureSet**);
 
     /************************************\
      * Implements SpindizzyBlockFactory *
@@ -108,7 +108,7 @@ class SpindizzyBlockSet:public ISurfaceProcessorProxy,
     ISpindizzyTextureSet::TextureType cTileSurfaceTexture;
 
     public:
-    SwitchFactory(std::string, ISurfaceProcessorProxy*, ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType);
+    SwitchFactory(std::string, ISpindizzyBlockSet*, ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType);
 
     /************************************\
      * Implements SpindizzyBlockFactory *
@@ -118,7 +118,7 @@ class SpindizzyBlockSet:public ISurfaceProcessorProxy,
 
   class TrampolineFactory:public SpindizzyBlockFactory {
     public:
-    TrampolineFactory(std::string, ISurfaceProcessorProxy*, ISpindizzyTextureSet**);
+    TrampolineFactory(std::string, ISpindizzyBlockSet*, ISpindizzyTextureSet**);
 
     /************************************\
      * Implements SpindizzyBlockFactory *
@@ -141,14 +141,13 @@ class SpindizzyBlockSet:public ISurfaceProcessorProxy,
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/
-  std::string getName();
   std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
 
-  /*************************************\
-   * Implements ISurfaceProcessorProxy *
-  \*************************************/
+  /*********************************\
+   * Implements ISpindizzyBlockSet *
+  \*********************************/
   void registerSurfaceProvider(ISurfaceProvider*);
   void unregisterSurfaceProvider(ISurfaceProvider*);
   void setDirty();

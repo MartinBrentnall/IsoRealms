@@ -18,6 +18,7 @@ include_directories(${PROJECT_SOURCE_DIR})
 
 add_library(Elements_SpindizzyEnemies MODULE
   SpindizzyEnemy.cpp
+  SpindizzyEnemyHandler.cpp
   SpindizzyEnemyFactory.cpp
   SpindizzyEnemySet.cpp 
 )

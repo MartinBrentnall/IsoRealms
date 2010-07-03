@@ -18,7 +18,7 @@
  */
 #include "SpindizzyWaterFactory.h"
 
-SpindizzyWaterFactory::SpindizzyWaterFactory(ISpindizzyTextureSet** spindizzyTextureSet, ISurfaceProcessorProxy* elementSet) : ISpindizzyBlockFactory(elementSet) {
+SpindizzyWaterFactory::SpindizzyWaterFactory(ISpindizzyTextureSet** spindizzyTextureSet, ISpindizzyBlockSet* elementSet) : ISpindizzyBlockFactory(elementSet) {
   cStartWaterLocation = NULL;
   cSampleWater = NULL;
   cSpindizzyTextureSet = spindizzyTextureSet;
@@ -28,7 +28,7 @@ void SpindizzyWaterFactory::configureElement() {
   // Nothing to do.
 }
 
-IElement* SpindizzyWaterFactory::getElement(DOMNodeWrapper* node, BlockLocation* zoneLocation) {
+IElement* SpindizzyWaterFactory::getElement(DOMNodeWrapper* node, BlockLocation* zoneLocation, IElementContainer* elementContainer) {
   BlockLocation mStartLocation;
   BlockLocation mEndLocation;
   // TODO: Should throw something if these are not specified!
@@ -44,6 +44,7 @@ IElement* SpindizzyWaterFactory::getElement(DOMNodeWrapper* node, BlockLocation*
   mEndLocation.z++;
   SpindizzyWater* mLoadedWater = new SpindizzyWater(this, &mStartLocation, &mEndLocation, cSpindizzyTextureSet);
   cContent.push_back(mLoadedWater);
+  registerElement(mLoadedWater, elementContainer);
   return mLoadedWater;
 }
 
@@ -59,8 +60,7 @@ void SpindizzyWaterFactory::unregisterSurfaces(ISurfaceProcessor* surfaceProcess
   }
 }
 
-void SpindizzyWaterFactory::setEditingInfo(BlockLocation* editingLocation, IElementGateway* gateway, IComponentContainer* componentContainer) {
-  cGateway = gateway;
+void SpindizzyWaterFactory::setEditingContext(BlockLocation* editingLocation, IComponentContainer* componentContainer) {
   cEditingLocation = editingLocation;
 }
 
@@ -72,7 +72,7 @@ bool SpindizzyWaterFactory::keyDown(SDLKey& key) {
       } else {
         SpindizzyWater* mNewBlock = new SpindizzyWater(this, cStartWaterLocation, cEditingLocation, cSpindizzyTextureSet);
         cContent.push_back(mNewBlock);
-        cGateway->pushElement(mNewBlock);
+        addElement(mNewBlock);
         delete cStartWaterLocation;
         cStartWaterLocation = NULL;
       }
@@ -142,7 +142,7 @@ SpindizzyWaterFactory::~SpindizzyWaterFactory() {
   }
   delete cSampleWater;
   for (unsigned int i = 0; i < cContent.size(); i++) {
-    cGateway->notifyDestruction(cContent[i]);
+    removeElement(cContent[i]);
     delete cContent[i];
   }  
 }

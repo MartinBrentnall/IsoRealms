@@ -33,7 +33,7 @@
 #include <IsoRealms/Element.h>
 #include <IsoRealms/MiscFunctions.h>
 
-#include "ISurfaceProcessorProxy.h"
+#include "ISpindizzyBlockSet.h"
 #include "ISpindizzyBlockFactory.h"
 #include "SpindizzyBlockProperties.h"
 #include "TileSurface.h"
@@ -43,7 +43,7 @@
 /**
  * TODO: Refactor dynamic_casts into static_casts.
  */
-class AbstractSpindizzyBlock:public Element<ISurfaceProcessorProxy, ISpindizzyBlockFactory>,
+class AbstractSpindizzyBlock:public Element<ISpindizzyBlockSet, ISpindizzyBlockFactory>,
                              public ISurfaceProvider {
   private:
   enum SplitType {

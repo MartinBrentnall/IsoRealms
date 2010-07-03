@@ -31,6 +31,7 @@
 #include "ElementSetRegistry.h"
 #include "IElement.h"
 #include "IElementContainer.h"
+#include "IElementHandler.h"
 #include "IsoRealmsConstants.h"
 #include "IZone.h"
 #include "IZoneChangeListener.h"
@@ -51,6 +52,7 @@ class Zone:public BlockArea,
   GLuint cDisplayList;
   GLuint cEditingDisplayList;
   std::vector<IElement*> cElements;
+  std::vector<IElementHandler*> cElementHandlers;
   std::vector<IElement*> cDirtyElements;
   std::vector<IZoneChangeListener*> cChangeListeners;
 
@@ -82,6 +84,7 @@ class Zone:public BlockArea,
   void input(SDL_Event&);
 
   void update(int);
+  void updateRuntime(int);
 
   void renderEditing();
 
@@ -134,6 +137,8 @@ class Zone:public BlockArea,
    * Implements IElementContainer *
   \********************************/
   void elementDirty(IElement*);
+  void addElementHandler(IElementHandler*);
+  void setHandlerActive(IElementHandler*, bool);
 };
 
 #endif

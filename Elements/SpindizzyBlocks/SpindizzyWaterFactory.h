@@ -34,13 +34,12 @@ class SpindizzyWaterFactory:public ISpindizzyBlockFactory {
   ISpindizzyTextureSet** cSpindizzyTextureSet;
   BlockLocation* cEditingLocation;
   BlockLocation* cStartWaterLocation;
-  IElementGateway* cGateway;
   SpindizzyWater* cSampleWater;
 
   bool keyDown(SDLKey& key);
 
   public:
-  SpindizzyWaterFactory(ISpindizzyTextureSet**, ISurfaceProcessorProxy*);
+  SpindizzyWaterFactory(ISpindizzyTextureSet**, ISpindizzyBlockSet*);
 
   /*************************************\
    * Implements ISpindizzyBlockFactory *
@@ -52,8 +51,8 @@ class SpindizzyWaterFactory:public ISpindizzyBlockFactory {
    * Implements IElementFactory *
   \******************************/
   void configureElement();
-  IElement* getElement(DOMNodeWrapper*, BlockLocation*);
-  void setEditingInfo(BlockLocation*, IElementGateway*, IComponentContainer*);
+  IElement* getElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*);
+  void setEditingContext(BlockLocation*, IComponentContainer*);
   bool input(SDL_Event&);
   void renderEditingPreview();
   void renderIcon();

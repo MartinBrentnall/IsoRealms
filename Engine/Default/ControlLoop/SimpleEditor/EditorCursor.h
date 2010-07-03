@@ -70,8 +70,8 @@ class EditorCursor:public BlockLocation,
   void moveToCamera();                                  // Position the camera at the cursor
   void restrainTo(BlockLocation, BlockLocation);  // Bound the cursor to within the specified cuboid
 
-  void pushElement(IElement*);
-  void pushMapElement(IElement*);
+  IElementContainer* pushElement(IElement*);
+  IElementContainer* pushMapElement(IElement*);
   void setDirty(IElement*);
 
   Zone* getZone();

@@ -237,13 +237,13 @@ void SimpleEditor::input(SDL_Event& event) {
   }
 }
 
-void SimpleEditor::pushElement(IElement* element) {
-  cCursor->pushElement(element);
+IElementContainer* SimpleEditor::pushElement(IElement* element) {
   clearUndoStack();
+  return cCursor->pushElement(element);
 }
 
-void SimpleEditor::pushMapElement(IElement* element) {
-  cCursor->pushMapElement(element);
+IElementContainer* SimpleEditor::pushMapElement(IElement* element) {
+  return cCursor->pushMapElement(element);
   // TODO: Need a map stack!
 }
 
@@ -258,7 +258,7 @@ void SimpleEditor::elementSelected(IElementFactory* elementFactory) {
 void SimpleEditor::elementSetInstantiated(IElementSet* elementSet) {
   std::vector<IElementFactory*> mElementFactories = elementSet->getElementFactories();
   for (unsigned int i = 0; i < mElementFactories.size(); i++) {
-    mElementFactories[i]->setEditingInfo(cCursor, this, this);
+    mElementFactories[i]->setEditingContext(cCursor, this, this);
   }
 }
 

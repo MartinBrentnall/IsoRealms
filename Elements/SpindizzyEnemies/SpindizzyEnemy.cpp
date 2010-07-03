@@ -33,6 +33,10 @@ void SpindizzyEnemy::renderStatic() {
   // Nothing to do.
 }
 
+void SpindizzyEnemy::reset() {
+  // TODO: Implement this
+}
+
 std::vector<IVisualElement*> SpindizzyEnemy::getVisualElements() {
   std::vector<IVisualElement*> mVisualElements;
   mVisualElements.push_back(this);

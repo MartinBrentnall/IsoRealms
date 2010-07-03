@@ -43,7 +43,6 @@ void SpindizzyCraftBallModel::render() {
   float mTilt = cCamera->getTilt();
   glRotatef(-mAngle + 90.0f, 0.0f, 0.0f, 1.0f);
   glRotatef(mTilt, 0.0f, 1.0f, 0.0f);
-  glColor3f(1.0f, 1.0f, 1.0f);
   glEnable(GL_ALPHA_TEST);
   glBindTexture(GL_TEXTURE_2D, cTextures[TEXTURE_BALL]);
   glBegin(GL_QUADS);

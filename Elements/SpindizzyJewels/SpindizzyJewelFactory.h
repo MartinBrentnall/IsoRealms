@@ -32,7 +32,7 @@
 #include <IsoRealms/Vertex.h>
 
 #include "BaseSpindizzyJewelFactory.h"
-#include "ICollectablesAccessor.h"
+#include "ISpindizzyJewelSet.h"
 #include "SpindizzyJewel.h"
 
 class SpindizzyJewelFactory:public BaseSpindizzyJewelFactory,
@@ -45,22 +45,21 @@ class SpindizzyJewelFactory:public BaseSpindizzyJewelFactory,
   std::vector<IDynamicElement*> cSampleJewelDynamics;
   std::vector<IVisualElement*> cSampleJewelVisuals;
   BlockLocation* cEditingLocation;
-  IElementGateway* cGateway;
 
   bool keyDown(SDLKey&);
 
   public:
-  SpindizzyJewelFactory(ICollectablesAccessor*, ISimpleModelFactory*);
+  SpindizzyJewelFactory(ISpindizzyJewelSet*, ISimpleModelFactory*);
 
   void setModel(ISimpleModelFactory*);
 
-  /*************************************************************************\
-   * Implemented methods of IElementFactory.h                              *
-  \*************************************************************************/
-  IElement* getElement(DOMNodeWrapper*, BlockLocation*);
+  /******************************\
+   * Implements IElementFactory *
+  \******************************/
+  IElement* getElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*);
   std::string getName();
   void configureElement();
-  void setEditingInfo(BlockLocation*, IElementGateway*, IComponentContainer*);
+  void setEditingContext(BlockLocation*, IComponentContainer*);
   void renderEditingPreview();
   bool input(SDL_Event&);
   void updateIcon(int milliseconds);

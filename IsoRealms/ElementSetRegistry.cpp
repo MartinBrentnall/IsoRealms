@@ -47,7 +47,7 @@ void ElementSetRegistry::setPlugin(PluginRegistry* pluginRegistry, IPluginSuppor
   pluginSupporter->setPlugin(mPlugSocket, mPlugin);
 }
 
-std::vector<IElement*> ElementSetRegistry::loadElements(DOMNodeWrapper* node, BlockLocation* zoneLocation) {
+std::vector<IElement*> ElementSetRegistry::loadElements(DOMNodeWrapper* node, BlockLocation* zoneLocation, IElementContainer* elementContainer) {
   std::vector<IElement*> mElements;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
@@ -59,7 +59,7 @@ std::vector<IElement*> ElementSetRegistry::loadElements(DOMNodeWrapper* node, Bl
       std::vector<IElementFactory*> mElementFactories = mElementSet->getElementFactories();
       for (unsigned int j = 0; j < mElementFactories.size(); j++) {
         if (mElementFactories[j]->getName() == mElementFactoryName) {
-          IElement* mElement = mElementFactories[j]->getElement(mNode, zoneLocation);
+          IElement* mElement = mElementFactories[j]->getElement(mNode, zoneLocation, elementContainer);
           mElements.push_back(mElement);
           break;
         }
@@ -124,7 +124,7 @@ void ElementSetRegistry::setEditingInfo(BlockLocation* location, IElementGateway
   for (std::map<std::string, IElementSet*>::iterator i = cElementSets.begin(); i != cElementSets.end(); i++) {
     std::vector<IElementFactory*> mElementFactories = i->second->getElementFactories();
     for (std::vector<IElementFactory*>::iterator j = mElementFactories.begin(); j != mElementFactories.end(); j++) {
-      (*j)->setEditingInfo(location, gateway, container);
+      (*j)->setEditingContext(location, gateway, container);
     }
   }
 }

@@ -50,7 +50,6 @@ class SpindizzyLiftFactory:public ISpindizzyLiftFactory {
   SpindizzyLiftProperties* cProperties;
   IComponentContainer* cComponentContainer;
   int* cFirstRange;
-  IElementGateway* cGateway;
 
   bool keyDown(SDLKey&);
 
@@ -70,10 +69,10 @@ class SpindizzyLiftFactory:public ISpindizzyLiftFactory {
    * Implements IElementFactory *
   \******************************/
   std::string getName();
-  IElement* getElement(DOMNodeWrapper*, BlockLocation*);
+  IElement* getElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*);
   void configureElement();
   bool input(SDL_Event&);
-  void setEditingInfo(BlockLocation*, IElementGateway*, IComponentContainer*);
+  void setEditingContext(BlockLocation*, IComponentContainer*);
   void renderEditingPreview();
   void renderIcon();
   void updateIcon(int);

@@ -23,7 +23,7 @@ const unsigned int AbstractSpindizzyBlock::INIT_PROCESS_BLOCKS = 1;
 const unsigned int AbstractSpindizzyBlock::INIT_REGISTER_SURFACES = 2;
 const unsigned int AbstractSpindizzyBlock::INIT_USE_SURFACES = 3;
 
-AbstractSpindizzyBlock::AbstractSpindizzyBlock(ISpindizzyBlockFactory* elementFactory, BlockLocation* startLocation, BlockLocation* endLocation, ISpindizzyTextureSet** spindizzyTextureSet, SpindizzyBlockProperties* blockProperties, bool addition) : Element<ISurfaceProcessorProxy, ISpindizzyBlockFactory>(elementFactory) {
+AbstractSpindizzyBlock::AbstractSpindizzyBlock(ISpindizzyBlockFactory* elementFactory, BlockLocation* startLocation, BlockLocation* endLocation, ISpindizzyTextureSet** spindizzyTextureSet, SpindizzyBlockProperties* blockProperties, bool addition) : Element<ISpindizzyBlockSet, ISpindizzyBlockFactory>(elementFactory) {
   cSpindizzyTextureSet = spindizzyTextureSet;
   cStartLocation = BlockLocation(endLocation->x > startLocation->x              ? startLocation->x : endLocation->x,
                                  endLocation->y > startLocation->y              ? startLocation->y : endLocation->y,
@@ -40,7 +40,7 @@ AbstractSpindizzyBlock::AbstractSpindizzyBlock(ISpindizzyBlockFactory* elementFa
   cSteppedBottom = blockProperties->isSteppedBottom();
 }
 
-AbstractSpindizzyBlock::AbstractSpindizzyBlock(ISpindizzyBlockFactory* elementFactory, ISpindizzyTextureSet** spindizzyTextureSet, DOMNodeWrapper* node) : Element<ISurfaceProcessorProxy, ISpindizzyBlockFactory>(elementFactory) {
+AbstractSpindizzyBlock::AbstractSpindizzyBlock(ISpindizzyBlockFactory* elementFactory, ISpindizzyTextureSet** spindizzyTextureSet, DOMNodeWrapper* node) : Element<ISpindizzyBlockSet, ISpindizzyBlockFactory>(elementFactory) {
   cSpindizzyTextureSet = spindizzyTextureSet;
 }
 
@@ -137,8 +137,8 @@ ISpindizzyTileSurface* AbstractSpindizzyBlock::createSubSurface(ITileSurface::Fa
 }
 
 std::vector<ITileSurfaceTemplate*> AbstractSpindizzyBlock::calculateTileSurfaces(const ITileSurface::FaceDirection faceDirection) {
-  ISurfaceProcessorProxy* mSurfaceProcessor = getElementSet();
-  return mSurfaceProcessor->getTileSurfaces(this, faceDirection);
+  ISpindizzyBlockSet* mSpindizzyBlockSet = getElementSet();
+  return mSpindizzyBlockSet->getTileSurfaces(this, faceDirection);
 }
 
 ISpindizzyTextureSet::TextureType AbstractSpindizzyBlock::getWallTexture(WallSurface::FaceDirection direction) {
@@ -233,8 +233,8 @@ int AbstractSpindizzyBlock::getOuterWallFaceLocation(IWallSurface::FaceDirection
 }
 
 std::vector<IWallSurface*> AbstractSpindizzyBlock::calculateWallSurfaces(const IWallSurface::FaceDirection facing) {
-  ISurfaceProcessorProxy* mSurfaceProcessor = getElementSet();
-  return mSurfaceProcessor->getWallSurfaces(this, facing);
+  ISpindizzyBlockSet* mSpindizzyBlockSet = getElementSet();
+  return mSpindizzyBlockSet->getWallSurfaces(this, facing);
 }
 
 void AbstractSpindizzyBlock::renderStatic() {
@@ -276,21 +276,21 @@ void AbstractSpindizzyBlock::cacheSurfaces() {
 }
 
 void AbstractSpindizzyBlock::removed() {
-  ISurfaceProcessorProxy* mSurfaceProcessor = getElementSet();
-  mSurfaceProcessor->unregisterSurfaceProvider(this);
+  ISpindizzyBlockSet* mSpindizzyBlockSet = getElementSet();
+  mSpindizzyBlockSet->unregisterSurfaceProvider(this);
 }
 
 void AbstractSpindizzyBlock::added() {
-  ISurfaceProcessorProxy* mSurfaceProcessor = getElementSet();
-  mSurfaceProcessor->registerSurfaceProvider(this);
-  mSurfaceProcessor->setDirty();
+  ISpindizzyBlockSet* mSpindizzyBlockSet = getElementSet();
+  mSpindizzyBlockSet->registerSurfaceProvider(this);
+  mSpindizzyBlockSet->setDirty();
 }
 
 bool AbstractSpindizzyBlock::initElement(unsigned int pass) {
   switch (pass) {
     case INIT_REGISTER_BLOCKS: {
-      ISurfaceProcessorProxy* mSurfaceProcessor = getElementSet();
-      mSurfaceProcessor->registerSurfaceProvider(this);
+      ISpindizzyBlockSet* mSpindizzyBlockSet = getElementSet();
+      mSpindizzyBlockSet->registerSurfaceProvider(this);
       return false;
     }
 
@@ -303,7 +303,7 @@ bool AbstractSpindizzyBlock::initElement(unsigned int pass) {
         int mWest = mTopTileSurfaces[i]->getWest();
         ISpindizzyTileSurface* mTileSurface = createSubSurface(ITileSurface::UP, mNorth, mEast, mSouth, mWest);
         cStaticTileSurfaces.push_back(mTileSurface);
-        ISurfaceProcessorProxy* mBlockElementSet = getElementSet();
+        ISpindizzyBlockSet* mBlockElementSet = getElementSet();
         // TODO: This should only happen in runtime
         mBlockElementSet->registerRollableSurface(mTileSurface);
         delete mTopTileSurfaces[i];

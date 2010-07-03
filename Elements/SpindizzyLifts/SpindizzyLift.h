@@ -54,6 +54,8 @@ class SpindizzyLift:public Element<ISpindizzyLiftSet, ISpindizzyLiftFactory>,
 
   void setTexture(ISpindizzyTexture*);
 
+  void reset();
+  
   /***********************\
    * Implements IElement *
   \***********************/

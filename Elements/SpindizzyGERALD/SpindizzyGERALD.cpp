@@ -210,7 +210,7 @@ SDLKey SpindizzyGERALD::rotateKey(const SDLKey& key) {
 
 void SpindizzyGERALD::update(int ticks) {
   float mAcceleration = (KeyStates::isKeyDown(SDLK_TAB) ? CRAFT_ACCELERATION * 2.0f : CRAFT_ACCELERATION) * ticks;
-  if (cCurrentSurface != NULL) {
+//   if (cCurrentSurface != NULL) {
     if (KeyStates::isKeyDown(rotateKey(cWestKey))) {
       cMomentum.x -= mAcceleration;
     }
@@ -226,9 +226,9 @@ void SpindizzyGERALD::update(int ticks) {
     float mResistance = pow(0.999f, ticks);
     cMomentum.x *= mResistance;
     cMomentum.y *= mResistance;
-  } else {
+/*  } else {
     cMomentum.z += GRAVITY_STRENGTH;
-  }
+  }*/
   Vertex mNewLocation(cLocation.x + cMomentum.x, cLocation.y + cMomentum.y, cLocation.z + cMomentum.z);
   if (mNewLocation.z < cMapBottom) {
     cLocation.x = cRespawnX;

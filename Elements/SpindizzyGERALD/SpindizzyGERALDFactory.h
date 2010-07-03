@@ -35,9 +35,10 @@
 #include "../../Plugins/3DModel/ISimpleModelFactory.h"
 #include "../../Plugins/ZoneContext/IZoneContext.h"
 
+#include "ISpindizzyGERALDSet.h"
 #include "SpindizzyGERALD.h"
 
-class SpindizzyGERALDFactory:public ElementFactory<> {
+class SpindizzyGERALDFactory:public ElementFactory<ISpindizzyGERALDSet> {
   private:
   std::vector<SpindizzyGERALD*> cContent;
   ISimpleModelFactory* cGERALDModelFactory;
@@ -49,14 +50,13 @@ class SpindizzyGERALDFactory:public ElementFactory<> {
   SpindizzyGERALD* cSampleGERALD;
   std::vector<IVisualElement*> cSampleGERALDVisuals;
   BlockLocation* cEditingLocation;
-  IElementGateway* cGateway;
 
   IElement* getElement();
 
   bool keyDown(SDLKey&);
 
   public:
-  SpindizzyGERALDFactory(IElementSet*, ISimpleModelFactory*, ILocationAwareness*, IZoneContext*);
+  SpindizzyGERALDFactory(ISpindizzyGERALDSet*, ISimpleModelFactory*, ILocationAwareness*, IZoneContext*);
 
   void setModel(ISimpleModelFactory*);
   void setCamera(ICamera*);
@@ -69,10 +69,10 @@ class SpindizzyGERALDFactory:public ElementFactory<> {
    * Implements IElementFactory *
   \******************************/
   std::string getName();
-  IElement* getElement(DOMNodeWrapper*, BlockLocation*);
+  IElement* getElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*);
   bool input(SDL_Event&);
   void configureElement();
-  void setEditingInfo(BlockLocation*, IElementGateway*, IComponentContainer*);
+  void setEditingContext(BlockLocation*, IComponentContainer*);
   void renderEditingPreview();
   void updateIcon(int);
   void renderIcon();

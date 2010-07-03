@@ -168,8 +168,8 @@ class SimpleEditor:public IControlLoop,
   /******************************\
    * Implements IElementGateway *
   \******************************/
-  void pushElement(IElement*);
-  void pushMapElement(IElement*);
+  IElementContainer* pushElement(IElement*);
+  IElementContainer* pushMapElement(IElement*);
   Zone* notifyDestruction(IElement*);
 
   /****************************************\

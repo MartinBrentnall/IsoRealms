@@ -18,7 +18,7 @@
  */
 #include "SpindizzyGERALDFactory.h"
 
-SpindizzyGERALDFactory::SpindizzyGERALDFactory(IElementSet* elementSet, ISimpleModelFactory* geraldModelFactory, ILocationAwareness* locationAwareness, IZoneContext* zoneContext) : ElementFactory<>(elementSet) {
+SpindizzyGERALDFactory::SpindizzyGERALDFactory(ISpindizzyGERALDSet* elementSet, ISimpleModelFactory* geraldModelFactory, ILocationAwareness* locationAwareness, IZoneContext* zoneContext) : ElementFactory<ISpindizzyGERALDSet>(elementSet) {
   cLocationAwareness = locationAwareness;
   cZoneContext = zoneContext;
   cGERALDModelFactory = geraldModelFactory;
@@ -69,7 +69,7 @@ void SpindizzyGERALDFactory::setZoneContext(IZoneContext* zoneContext) {
   }
 }
 
-IElement* SpindizzyGERALDFactory::getElement(DOMNodeWrapper* node, BlockLocation* relative) {
+IElement* SpindizzyGERALDFactory::getElement(DOMNodeWrapper* node, BlockLocation* relative, IElementContainer* elementContainer) {
   BlockLocation mStartLocation;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
@@ -80,6 +80,7 @@ IElement* SpindizzyGERALDFactory::getElement(DOMNodeWrapper* node, BlockLocation
   }
   SpindizzyGERALD* mLoadedGERALD = new SpindizzyGERALD(this, &mStartLocation, cGERALDModelFactory, cCollectables, cCollidableSurfaceRegistry, cLocationAwareness, cZoneContext, cCamera);
   cContent.push_back(mLoadedGERALD);
+  registerElement(mLoadedGERALD, elementContainer);
   return mLoadedGERALD;
 }
 
@@ -88,7 +89,7 @@ bool SpindizzyGERALDFactory::keyDown(SDLKey& key) {
     case SDLK_SPACE: {
       if (cContent.size() == 0) {
         SpindizzyGERALD* mGERALD = new SpindizzyGERALD(this, cEditingLocation, cGERALDModelFactory, cCollectables, cCollidableSurfaceRegistry, cLocationAwareness, cZoneContext, cCamera);
-        cGateway->pushMapElement(mGERALD);
+        addElement(mGERALD);
         cContent.push_back(mGERALD);
       } else {
         // TODO: How to replace existing element?
@@ -116,8 +117,7 @@ void SpindizzyGERALDFactory::configureElement() {
   // Nothing to do.
 }
 
-void SpindizzyGERALDFactory::setEditingInfo(BlockLocation* editingLocation, IElementGateway* gateway, IComponentContainer* componentContainer) {
-  cGateway = gateway;
+void SpindizzyGERALDFactory::setEditingContext(BlockLocation* editingLocation, IComponentContainer* componentContainer) {
   cEditingLocation = editingLocation;  
 }
 

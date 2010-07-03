@@ -21,11 +21,11 @@
 
 #include <IsoRealms/ElementFactory.h>
 
-#include "ICollectablesAccessor.h"
+#include "ISpindizzyJewelSet.h"
 
-class BaseSpindizzyJewelFactory:public ElementFactory<ICollectablesAccessor> {
+class BaseSpindizzyJewelFactory:public ElementFactory<ISpindizzyJewelSet> {
   public:
-  BaseSpindizzyJewelFactory(ICollectablesAccessor* elementSet) : ElementFactory<ICollectablesAccessor>(elementSet) {}
+  BaseSpindizzyJewelFactory(ISpindizzyJewelSet* elementSet) : ElementFactory<ISpindizzyJewelSet>(elementSet) {}
 };
 
 #endif

@@ -16,11 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_SURFACE_PROCESSOR_PROXY_H
-#define I_SURFACE_PROCESSOR_PROXY_H
+#ifndef I_SPINDIZZY_BLOCK_SET_H
+#define I_SPINDIZZY_BLOCK_SET_H
 
 #include <vector>
 
+#include <IsoRealms/ElementSet.h>
 #include <IsoRealms/Zone.h>
 
 #include "../../Plugins/CollidableSurfaceRegistry/IRollableSurface.h"
@@ -31,8 +32,7 @@
 #include "../../Plugins/SurfaceProcessor/ISurfaceProvider.h"
 #include "../../Plugins/SurfaceProcessor/IWallSurface.h"
 
-// TODO: Rename
-class ISurfaceProcessorProxy:public IElementSet {
+class ISpindizzyBlockSet:public ElementSet<IElement> {
   public:
   virtual void registerSurfaceProvider(ISurfaceProvider*) = 0;
   virtual void unregisterSurfaceProvider(ISurfaceProvider*) = 0;

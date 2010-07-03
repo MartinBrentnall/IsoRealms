@@ -27,6 +27,7 @@ class IElement;
 #include "DOMNodeWrapper.h"
 #include "IComponentContainer.h"
 #include "IElement.h"
+#include "IElementContainer.h"
 #include "IElementGateway.h"
 
 /**
@@ -43,7 +44,7 @@ class IElementFactory {
    * @param DOMNodeWrapper*  The node to parse from.
    * @returns  The parsed element.
    */
-  virtual IElement* getElement(DOMNodeWrapper*, BlockLocation*) = 0;
+  virtual IElement* getElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*) = 0;
 
   /**
    * Retrieve the unique identifying name of this factory.
@@ -59,7 +60,7 @@ class IElementFactory {
    * @param BlockLocation*  The editing location within the map.
    * @param IElementGateway*  The gateway through which to push new elements.
    */
-  virtual void setEditingInfo(BlockLocation*, IElementGateway*, IComponentContainer*) = 0;
+  virtual void setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*) = 0;
 
   /**
    * Signal to the factory that the user wishes to configure the element.  This

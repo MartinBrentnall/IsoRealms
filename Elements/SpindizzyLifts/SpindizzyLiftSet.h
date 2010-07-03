@@ -27,15 +27,21 @@
 #include "../../Plugins/CommandRegistry/ICommandRegistry.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
+#include "../../Plugins/ZoneContext/IZoneContext.h"
+#include "../../Plugins/ZoneContext/IZoneContextListener.h"
 
 #include "ISpindizzyLiftSet.h"
+#include "SpindizzyLiftHandler.h"
 #include "SpindizzyLiftFactory.h"
 #include "SpindizzyLiftProperties.h"
 
-class SpindizzyLiftSet:public ISpindizzyLiftSet {
+class SpindizzyLiftSet:public ISpindizzyLiftSet,
+                       public IZoneContextListener {
   private:
   std::vector<IElementFactory*> cElementFactories;
   ICommandRegistry* cCommandRegistry;
+  IZoneContext* cZoneContext;
+  IZone* cZone;
   std::vector<IUserCommand*> cCommands;
   ISpindizzyTextureSet* cSpindizzyTextureSet;
 
@@ -55,14 +61,28 @@ class SpindizzyLiftSet:public ISpindizzyLiftSet {
   std::vector<IElementFactory*> getElementFactories();
   void destroy(IElement*);
 
+  /*************************\
+   * Implements ElementSet *
+  \*************************/
+  DefaultElementHandler<SpindizzyLift>* createHandler(IElementContainer*);
+  
   /**********************************************\
    * Implements IPluginSupport (in IElementSet) *
   \**********************************************/
-  std::string getName();
   std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
   void save(DOMNodeWriter*);
+
+  /********************************\
+   * Implements ISpindizzyLiftSet *
+  \********************************/
+  IZone* getCurrentZone();
+  
+  /***********************************\
+   * Implements IZoneContextListener *
+  \***********************************/
+  void zoneContextChanged(IZone* zone);
 };
 
 #endif

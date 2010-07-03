@@ -16,18 +16,19 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_SPINDIZZY_LIFT_FACTORY_H
-#define I_SPINDIZZY_LIFT_FACTORY_H
+#ifndef I_SPINDIZZY_JEWEL_SET_H
+#define I_SPINDIZZY_JEWEL_SET_H
 
-#include "ISpindizzyLiftSet.h"
+#include <IsoRealms/ElementSet.h>
+#include <IsoRealms/IElement.h>
 
-class SpindizzyLift;
+#include "../../Plugins/Collectables/ICollectables.h"
 
-class ISpindizzyLiftFactory:public ElementFactory<ISpindizzyLiftSet, SpindizzyLift> {
+class ISpindizzyJewelSet:public ElementSet<IElement> {
   public:
-  ISpindizzyLiftFactory(ISpindizzyLiftSet* elementSet) : ElementFactory<ISpindizzyLiftSet, SpindizzyLift>(elementSet) {}
-
-  virtual bool isActive() = 0;
+  virtual ICollectables* getCollectables() = 0;
+  virtual void jewelCollected() = 0;
+  virtual void allJewelsCollected() = 0;
 };
 
 #endif

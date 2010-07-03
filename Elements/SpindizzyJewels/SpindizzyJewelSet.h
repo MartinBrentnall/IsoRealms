@@ -30,10 +30,10 @@
 #include "../../Plugins/CommandRegistry/ICommandRegistry.h"
 #include "../../Plugins/CommandRegistry/IUserCommand.h"
 
-#include "ICollectablesAccessor.h"
+#include "ISpindizzyJewelSet.h"
 #include "SpindizzyJewelFactory.h"
 
-class SpindizzyJewelSet:public ICollectablesAccessor {
+class SpindizzyJewelSet:public ISpindizzyJewelSet {
   private:
   std::vector<PlugSocket*> cJewelSockets;
   std::vector<IElementFactory*> cElementFactories;
@@ -49,9 +49,9 @@ class SpindizzyJewelSet:public ICollectablesAccessor {
   public:
   SpindizzyJewelSet();
 
-  /*************************\
-   * ICollectablesAccessor *
-  \*************************/
+  /**********************\
+   * ISpindizzyJewelSet *
+  \**********************/
   ICollectables* getCollectables();
   void jewelCollected();
   void allJewelsCollected();

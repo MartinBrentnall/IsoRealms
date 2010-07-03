@@ -16,6 +16,9 @@
 # along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
 cmake_minimum_required(VERSION 2.6)
 project(Iso-Realms)
+
+set(CMAKE_CXX_FLAGS "-fPIC -Wall -pedantic")
+
 find_package(SDL REQUIRED)
 if(SDL_FOUND)
   include_directories(${SDL_INCLUDE_DIR})

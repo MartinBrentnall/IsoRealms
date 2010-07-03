@@ -16,18 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_COLLECTABLES_ACCESSOR_H
-#define I_COLLECTABLES_ACCESSOR_H
+#ifndef SPINDIZZY_ENEMY_HANDLER_H
+#define SPINDIZZY_ENEMY_HANDLER_H
 
-#include <IsoRealms/IElementSet.h>
+#include <IsoRealms/DefaultElementHandler.h>
 
-#include "../../Plugins/Collectables/ICollectables.h"
+#include "SpindizzyEnemy.h"
+#include "ISpindizzyEnemySet.h"
 
-class ICollectablesAccessor:public IElementSet {
+class SpindizzyEnemyHandler:public DefaultElementHandler<SpindizzyEnemy> {
+  private:
+  ISpindizzyEnemySet* cSpindizzyEnemySet;
+  bool cReinit;
+  float cVisibility;
+  IElementContainer* cElementContainer;
+  std::vector<SpindizzyEnemy*> cEnemies;
+
+  void resetEnemies();
+
   public:
-  virtual ICollectables* getCollectables() = 0;
-  virtual void jewelCollected() = 0;
-  virtual void allJewelsCollected() = 0;
+  SpindizzyEnemyHandler(ISpindizzyEnemySet*, IElementContainer*);
+
+  void elementAdded(SpindizzyEnemy* enemy);
+  void render();
+  void updateRuntime(int ticks);
 };
 
 #endif

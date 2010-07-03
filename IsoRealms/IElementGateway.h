@@ -20,6 +20,7 @@
 #define I_ELEMENT_GATEWAY_H
 
 #include "IElement.h"
+#include "IElementContainer.h"
 
 class Zone;
 
@@ -36,7 +37,7 @@ class IElementGateway {
    * 
    * @param IElement*  The element to push.
    */
-  virtual void pushElement(IElement*) = 0;
+  virtual IElementContainer* pushElement(IElement*) = 0;
 
   /**
    * Push the specified element through the gateway and into the map (i.e. not
@@ -44,7 +45,7 @@ class IElementGateway {
    * 
    * @param IElement*  The element to push.
    */
-  virtual void pushMapElement(IElement*) = 0;
+  virtual IElementContainer* pushMapElement(IElement*) = 0;
 
   /**
    * Notify the pending destruction of the specified element.  When this is
@@ -54,7 +55,7 @@ class IElementGateway {
    * @param IElement*  The element that will be destroyed.
    * @returns The Zone that the element was in.
    */
-  virtual Zone* notifyDestruction(IElement*) = 0;
+  virtual IElementContainer* notifyDestruction(IElement*) = 0;
 };
 
 #endif

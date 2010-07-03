@@ -19,22 +19,49 @@
 #ifndef ELEMENT_FACTORY_H
 #define ELEMENT_FACTORY_H
 
+#include "BlockLocation.h"
+#include "DefaultElementHandler.h"
+#include "IComponentContainer.h"
+#include "IElementContainer.h"
 #include "IElementFactory.h"
+#include "IElementGateway.h"
 
-template<class T = IElementSet> class ElementFactory:public IElementFactory {
+template<class T1 = IElementSet, class T2 = IElement> class ElementFactory:public IElementFactory {
   private:
-  T* cElementSet;
+  T1* cElementSet;
+  IElementGateway* cElementGateway;
 
   public:
-  ElementFactory(T* elementSet) {
+  ElementFactory(T1* elementSet) {
     cElementSet = elementSet;
+  }
+
+  void setEditingContext(BlockLocation* blockLocation, IElementGateway* elementGateway, IComponentContainer* componentContainer) {
+    setEditingContext(blockLocation, componentContainer);
+    cElementGateway = elementGateway;
+  }
+  
+  virtual void setEditingContext(BlockLocation*, IComponentContainer*) = 0;
+  
+  void addElement(T2* element) {
+    IElementContainer* mElementContainer = cElementGateway->pushElement(element);
+    cElementSet->addElement(element, mElementContainer);
+  }
+  
+  void removeElement(T2* element) {
+    IElementContainer* mElementContainer = cElementGateway->notifyDestruction(element);
+    cElementSet->removeElement(element, mElementContainer);
   }
 
   /******************************\
    * Implements IElementFactory *
   \******************************/
-  T* getElementSet() {
+  T1* getElementSet() {
     return cElementSet;
+  }
+  
+  void registerElement(T2* element, IElementContainer* elementContainer) {
+    cElementSet->addElement(element, elementContainer);
   }
 };
 

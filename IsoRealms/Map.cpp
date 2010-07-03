@@ -52,7 +52,7 @@ Map::Map(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, 
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Elements") {
-      cElements = cElementSetRegistry.loadElements(mNode, &mStartLocation);
+      cElements = cElementSetRegistry.loadElements(mNode, &mStartLocation, this);
       cDirtyElements = cElements;
     } else if (mValueAsString == "Plugin") {
       cPluginRegistry.connectPlugin(mNode);
@@ -244,27 +244,17 @@ void Map::update(int milliseconds) {
   for (unsigned int i = 0; i < cZones.size(); i++) {
     cZones[i]->update(milliseconds);
   }
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    std::vector<IDynamicElement*> mDynamicElements = cElements[i]->getDynamicElements();
-    for (unsigned int j = 0; j < mDynamicElements.size(); j++) {
-      mDynamicElements[j]->update(milliseconds);
-    }
+  for (unsigned int i = 0; i < cElementHandlers.size(); i++) {
+    cElementHandlers[i]->update(milliseconds);
   }
 }
 
 void Map::updateRuntime(int milliseconds) {
   for (unsigned int i = 0; i < cZones.size(); i++) {
-    cZones[i]->update(milliseconds);
+    cZones[i]->updateRuntime(milliseconds);
   }
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    std::vector<IDynamicElement*> mDynamicElements = cElements[i]->getDynamicElements();
-    for (unsigned int j = 0; j < mDynamicElements.size(); j++) {
-      mDynamicElements[j]->update(milliseconds);
-    }
-    std::vector<IDynamicElement*> mRuntimeDynamicElements = cElements[i]->getDynamicElementsRuntime();
-    for (unsigned int j = 0; j < mRuntimeDynamicElements.size(); j++) {
-      mRuntimeDynamicElements[j]->update(milliseconds);
-    }
+  for (unsigned int i = 0; i < cElementHandlers.size(); i++) {
+    cElementHandlers[i]->updateRuntime(milliseconds);
   }
 }
 
@@ -281,11 +271,8 @@ void Map::render() {
     cZoneRenderers[i]->render(mZones);
   }
   glCallList(cDisplayList);
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    std::vector<IVisualElement*> mVisualElements = cElements[i]->getVisualElements();
-    for (unsigned int j = 0; j < mVisualElements.size(); j++) {
-      mVisualElements[j]->render();
-    }
+  for (unsigned int i = 0; i < cElementHandlers.size(); i++) {
+    cElementHandlers[i]->render();
   }
 }
 
@@ -401,6 +388,14 @@ void Map::elementDirty(IElement* element) {
   // TODO: Does order matter?
   cDirtyElements.push_back(element);
 // TODO  zoneChanged();
+}
+
+void Map::addElementHandler(IElementHandler* elementHandler) {
+  cElementHandlers.push_back(elementHandler);
+}
+
+void Map::setHandlerActive(IElementHandler*, bool) {
+  // TODO: Implement this
 }
 
 Map::~Map() {

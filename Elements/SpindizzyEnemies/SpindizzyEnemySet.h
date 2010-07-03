@@ -25,13 +25,20 @@
 #include <IsoRealms/PluginRegistry.h>
 
 #include "../../Plugins/3DModel/ISimpleModelFactory.h"
+#include "../../Plugins/ZoneContext/IZoneContext.h"
+#include "../../Plugins/ZoneContext/IZoneContextListener.h"
 
+#include "ISpindizzyEnemySet.h"
 #include "SpindizzyEnemyFactory.h"
+#include "SpindizzyEnemyHandler.h"
 
-class SpindizzyEnemySet:public IElementSet {
+class SpindizzyEnemySet:public ISpindizzyEnemySet,
+                        public IZoneContextListener {
   private:
   std::vector<IElementFactory*> cElementFactories;
   std::vector<ISimpleModelFactory*> cEnemyModelFactories;
+  IZoneContext* cZoneContext;
+  IZone* cZone;
 
   void setModel(ISimpleModelFactory*);
 
@@ -44,6 +51,11 @@ class SpindizzyEnemySet:public IElementSet {
   std::vector<IElementFactory*> getElementFactories();
   void destroy(IElement*);
 
+  /*************************\
+   * Implements ElementSet *
+  \*************************/
+  DefaultElementHandler<SpindizzyEnemy>* createHandler(IElementContainer*);
+  
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/
@@ -52,6 +64,16 @@ class SpindizzyEnemySet:public IElementSet {
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
   void save(DOMNodeWriter*);
+
+  /********************************\
+   * Implements ISpindizzyLiftSet *
+  \********************************/
+  IZone* getCurrentZone();
+  
+  /***********************************\
+   * Implements IZoneContextListener *
+  \***********************************/
+  void zoneContextChanged(IZone* zone);
 };
 
 #endif

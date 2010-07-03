@@ -19,11 +19,15 @@
 #ifndef I_SPINDIZZY_LIFT_SET_H
 #define I_SPINDIZZY_LIFT_SET_H
 
-#include <IsoRealms/IElementSet.h>
+#include <IsoRealms/ElementSet.h>
+#include <IsoRealms/IElement.h>
+#include <IsoRealms/IZone.h>
 
-class ISpindizzyLiftSet:public IElementSet {
+class SpindizzyLift;
+
+class ISpindizzyLiftSet:public ElementSet<SpindizzyLift> {
   public:
-  // TODO: Is this class needed?
+  virtual IZone* getCurrentZone() = 0;
 };
 
 #endif

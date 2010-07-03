@@ -23,7 +23,7 @@ const unsigned int SpindizzyWater::INIT_PROCESS_BLOCKS = 1;
 const unsigned int SpindizzyWater::INIT_REGISTER_SURFACES = 2;
 const unsigned int SpindizzyWater::INIT_USE_SURFACES = 3;
 
-SpindizzyWater::SpindizzyWater(ISpindizzyBlockFactory* elementFactory, BlockLocation* startLocation, BlockLocation* endLocation, ISpindizzyTextureSet** textureSet) : Element<ISurfaceProcessorProxy, ISpindizzyBlockFactory>(elementFactory) {
+SpindizzyWater::SpindizzyWater(ISpindizzyBlockFactory* elementFactory, BlockLocation* startLocation, BlockLocation* endLocation, ISpindizzyTextureSet** textureSet) : Element<ISpindizzyBlockSet, ISpindizzyBlockFactory>(elementFactory) {
   cSpindizzyTextureSet = textureSet;
   cStartLocation = BlockLocation(endLocation->x > startLocation->x ? startLocation->x : endLocation->x,
                                  endLocation->y > startLocation->y ? startLocation->y : endLocation->y,
@@ -38,7 +38,7 @@ void SpindizzyWater::setDirty() {
 }
 
 std::vector<ITileSurfaceTemplate*> SpindizzyWater::getWaterSurfaces() {
-  ISurfaceProcessorProxy* mSurfaceProcessor = getElementSet();
+  ISpindizzyBlockSet* mSurfaceProcessor = getElementSet();
   return mSurfaceProcessor->getTileSurfaces(this, ITileSurface::UP);
 }
 
@@ -104,12 +104,12 @@ BlockArea* SpindizzyWater::getCoverage() {
 }
 
 void SpindizzyWater::removed() {
-  ISurfaceProcessorProxy* mSurfaceProcessor = getElementSet();
+  ISpindizzyBlockSet* mSurfaceProcessor = getElementSet();
   mSurfaceProcessor->unregisterSurfaceProvider(this);
 }
 
 void SpindizzyWater::added() {
-  ISurfaceProcessorProxy* mSurfaceProcessor = getElementSet();
+  ISpindizzyBlockSet* mSurfaceProcessor = getElementSet();
   mSurfaceProcessor->registerSurfaceProvider(this);
   mSurfaceProcessor->setDirty();
 }
@@ -117,7 +117,7 @@ void SpindizzyWater::added() {
 bool SpindizzyWater::initElement(unsigned int pass) {
   switch (pass) {
     case INIT_REGISTER_BLOCKS: {
-      ISurfaceProcessorProxy* mSurfaceProcessor = getElementSet();
+      ISpindizzyBlockSet* mSurfaceProcessor = getElementSet();
       mSurfaceProcessor->registerSurfaceProvider(this);
       return false;
     }

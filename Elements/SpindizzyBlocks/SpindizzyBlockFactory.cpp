@@ -18,7 +18,7 @@
  */
 #include "SpindizzyBlockFactory.h"
 
-SpindizzyBlockFactory::SpindizzyBlockFactory(std::string name, ISpindizzyTextureSet** textureSet, ISurfaceProcessorProxy* elementSet) : ISpindizzyBlockFactory(elementSet) {
+SpindizzyBlockFactory::SpindizzyBlockFactory(std::string name, ISpindizzyTextureSet** textureSet, ISpindizzyBlockSet* elementSet) : ISpindizzyBlockFactory(elementSet) {
   cFactoryName = name;
   cConfigurationComponent = NULL;
   cStartBlockLocation = NULL;
@@ -27,7 +27,7 @@ SpindizzyBlockFactory::SpindizzyBlockFactory(std::string name, ISpindizzyTexture
   cSpindizzyTextureSet = textureSet;
 }
 
-IElement* SpindizzyBlockFactory::getElement(DOMNodeWrapper* node, BlockLocation* zoneLocation) {
+IElement* SpindizzyBlockFactory::getElement(DOMNodeWrapper* node, BlockLocation* zoneLocation, IElementContainer* elementContainer) {
   BlockLocation mStartLocation;
   BlockLocation mEndLocation;
   // TODO: Should throw something if these are not specified!
@@ -51,6 +51,7 @@ IElement* SpindizzyBlockFactory::getElement(DOMNodeWrapper* node, BlockLocation*
   mEndLocation.y--;
   AbstractSpindizzyBlock* mLoadedBlock = createBlock(&mStartLocation, &mEndLocation, cSpindizzyTextureSet, cBlockProperties, mAddition);
   cContent.push_back(mLoadedBlock);
+  registerElement(mLoadedBlock, elementContainer);
   return mLoadedBlock;
 }
 
@@ -66,9 +67,8 @@ void SpindizzyBlockFactory::unregisterSurfaces(ISurfaceProcessor* surfaceProcess
   }
 }
 
-void SpindizzyBlockFactory::setEditingInfo(BlockLocation* editingLocation, IElementGateway* gateway, IComponentContainer* componentContainer) {
+void SpindizzyBlockFactory::setEditingContext(BlockLocation* editingLocation, IComponentContainer* componentContainer) {
   cComponentContainer = componentContainer;
-  cGateway = gateway;
   cEditingLocation = editingLocation;
 }
 
@@ -80,7 +80,7 @@ bool SpindizzyBlockFactory::keyDown(SDLKey& key) {
       } else {
         AbstractSpindizzyBlock* mNewBlock = createBlock(cStartBlockLocation, cEditingLocation, cSpindizzyTextureSet, cBlockProperties, true);
         cContent.push_back(mNewBlock);
-        cGateway->pushElement(mNewBlock);
+        addElement(mNewBlock);
         delete cStartBlockLocation;
         cStartBlockLocation = NULL;
       }
@@ -93,7 +93,7 @@ bool SpindizzyBlockFactory::keyDown(SDLKey& key) {
       } else {
         AbstractSpindizzyBlock* mNewBlock = createBlock(cStartBlockLocation, cEditingLocation, cSpindizzyTextureSet, cBlockProperties, false);
         cContent.push_back(mNewBlock);
-        cGateway->pushElement(mNewBlock);
+        addElement(mNewBlock);
         delete cStartBlockLocation;
         cStartBlockLocation = NULL;
       }
@@ -217,7 +217,7 @@ SpindizzyBlockFactory::~SpindizzyBlockFactory() {
     delete cConfigurationComponent;
   }
   for (unsigned int i = 0; i < cContent.size(); i++) {
-    cGateway->notifyDestruction(cContent[i]);
+    removeElement(cContent[i]);
     delete cContent[i];
   }
 }

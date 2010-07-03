@@ -16,18 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_SPINDIZZY_LIFT_FACTORY_H
-#define I_SPINDIZZY_LIFT_FACTORY_H
+#ifndef SPINDIZZY_LIFT_HANDLER_H
+#define SPINDIZZY_LIFT_HANDLER_H
 
+#include <IsoRealms/DefaultElementHandler.h>
+
+#include "SpindizzyLift.h"
 #include "ISpindizzyLiftSet.h"
 
-class SpindizzyLift;
+class SpindizzyLiftHandler:public DefaultElementHandler<SpindizzyLift> {
+  private:
+  ISpindizzyLiftSet* cSpindizzyLiftSet;
+  bool cReinit;
+  float cVisibility;
+  IElementContainer* cElementContainer;
+  std::vector<SpindizzyLift*> cLifts;
 
-class ISpindizzyLiftFactory:public ElementFactory<ISpindizzyLiftSet, SpindizzyLift> {
+  void resetLifts();
+
   public:
-  ISpindizzyLiftFactory(ISpindizzyLiftSet* elementSet) : ElementFactory<ISpindizzyLiftSet, SpindizzyLift>(elementSet) {}
+  SpindizzyLiftHandler(ISpindizzyLiftSet*, IElementContainer*);
 
-  virtual bool isActive() = 0;
+  void elementAdded(SpindizzyLift* lift);
+  void render();
+  void updateRuntime(int ticks);
 };
 
 #endif

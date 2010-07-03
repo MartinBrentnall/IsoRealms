@@ -20,6 +20,7 @@
 #define I_ELEMENT_CONTAINER_H
 
 class IElement;
+class IElementHandler;
 
 class IElementContainer {
   public:
@@ -30,6 +31,10 @@ class IElementContainer {
    */
   virtual void elementDirty(IElement*) = 0;
 
+  virtual void addElementHandler(IElementHandler*) = 0;
+  
+  virtual void setHandlerActive(IElementHandler*, bool) = 0;
+  
   virtual ~IElementContainer() {}
 };
 

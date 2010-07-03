@@ -18,7 +18,7 @@
  */
 #include "SpindizzyJewel.h"
 
-SpindizzyJewel::SpindizzyJewel(BaseSpindizzyJewelFactory* elementFactory, BlockLocation* location, ISimpleModelFactory* jewelModelFactory) : Element<ICollectablesAccessor, BaseSpindizzyJewelFactory>(elementFactory) {
+SpindizzyJewel::SpindizzyJewel(BaseSpindizzyJewelFactory* elementFactory, BlockLocation* location, ISimpleModelFactory* jewelModelFactory) : Element<ISpindizzyJewelSet, BaseSpindizzyJewelFactory>(elementFactory) {
   cLocation = BlockLocation(*location);
   cVertexLocation.x = cLocation.x;
   cVertexLocation.y = cLocation.y;
@@ -76,16 +76,16 @@ void SpindizzyJewel::render() {
 }
 
 bool SpindizzyJewel::initElement(unsigned int) {
-  ICollectablesAccessor* mCollectablesAccessor = getElementSet();
-  ICollectables* mCollectables = mCollectablesAccessor->getCollectables();
+  ISpindizzyJewelSet* mSpindizzyJewelSet = getElementSet();
+  ICollectables* mCollectables = mSpindizzyJewelSet->getCollectables();
   mCollectables->registerCollectable(this);
   return true;
 }
 
 void SpindizzyJewel::collect() {
   cCollected = true;
-  ICollectablesAccessor* mCollectablesAccessor = getElementSet();
-  mCollectablesAccessor->jewelCollected();
+  ISpindizzyJewelSet* mSpindizzyJewelSet = getElementSet();
+  mSpindizzyJewelSet->jewelCollected();
 }
 
 bool SpindizzyJewel::isCollected(Vertex& start, Vertex& end) {
