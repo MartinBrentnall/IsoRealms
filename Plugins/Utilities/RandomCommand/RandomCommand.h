@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2009,2010 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,51 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef BLOCK_AREA_H
-#define BLOCK_AREA_H
+#ifndef RANDOM_COMMAND_H
+#define RANDOM_COMMAND_H
 
-#include <iostream>
-#include <string>
+#include "../../CommandRegistry/ICommandRegistry.h"
+#include "../../CommandRegistry/IUserCommand.h"
 
-#include "BlockLocation.h"
-#include "DOMNodeWrapper.h"
+#include "../IUtilities.h"
 
-/**
- *
- */
-class BlockArea {
+class RandomCommand:public IUtilities {
   private:
-
-  protected:
-  /**
-   * Start location of this area, inclusive.
-   */
-  BlockLocation cStartLocation;
-
-  /** 
-   * End location of this area, inclusive.
-   */
-  BlockLocation cEndLocation;
-
+  ICommandRegistry* cCommandRegistry;
+  std::vector<IUserCommand*> cRandomCommands;
+  
   public:
-
-  BlockArea(BlockLocation&, BlockLocation&);
-  BlockArea(DOMNodeWrapper*);
-
-  int getNorth();
-  int getSouth();
-  int getWest();
-  int getEast();
-  int getTop();
-  int getBottom();
-
-  int alligned(int, int);  
-
-  bool contains(BlockLocation&);
-
-  bool overlaps(BlockArea&);
-
-  void debug();
+    
+  /*****************************\
+   * Implements IPluginSupport *
+  \*****************************/
+  std::vector<PlugSocket*> getPlugSockets();
+  void setPlugin(PlugSocket*, IPlugin*);
+  IPlugin* getPlugin(PlugSocket*);
+    
 };
 
 #endif

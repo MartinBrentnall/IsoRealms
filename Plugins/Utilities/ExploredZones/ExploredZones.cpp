@@ -15,7 +15,7 @@ void ExploredZones::initPlugin(IZone* zone) {
 }
 
 void ExploredZones::zoneContextChanged(IZone* zone) {
-  if (cExploredZones.find(zone) == cExploredZones.end()) {
+  if (zone != NULL && cExploredZones.find(zone) == cExploredZones.end()) {
     cExploredZones.insert(zone);
     for (unsigned int i = 0; i < cZoneExploredCommands.size(); i++) {
       cZoneExploredCommands[i]->execute();
@@ -42,7 +42,11 @@ void ExploredZones::setPlugin(PlugSocket* socket, IPlugin* plugin) {
   if (socket->getType() == "CommandRegistry") {
     assignPlugin(plugin, &cCommandRegistry, *socket);
   } else if (socket->getType() == "ZoneContext") {
-    assignPlugin(plugin, &cZoneContext, *socket);
+    IZoneContext* mPreviousZoneContext = cZoneContext;
+    if (assignPlugin(plugin, &cZoneContext, *socket)) {
+      mPreviousZoneContext->removeZoneContextListener(this);
+      cZoneContext->addZoneContextListener(this);
+    }
   } else {
     // TODO: Throw
   }
@@ -59,8 +63,9 @@ ExploredZones::ExploredZoneRenderer::ExploredZoneRenderer(ExploredZones* parent)
 }
 
 void ExploredZones::ExploredZoneRenderer::render(std::vector<IZone*>& zones) {
-  std::cout << "Rendering explored zones..." << std::endl;
-  // TODO: Implement this
+  for (std::set<IZone*>::iterator i = cParent->cExploredZones.begin(); i != cParent->cExploredZones.end(); ++i) {
+    (*i)->render();
+  }
 }
 
 ExploredZones::MapOverviewRenderer::MapOverviewRenderer(ExploredZones* parent) {
@@ -68,8 +73,40 @@ ExploredZones::MapOverviewRenderer::MapOverviewRenderer(ExploredZones* parent) {
 }
 
 void ExploredZones::MapOverviewRenderer::render(std::vector<IZone*>& zones) {
-  std::cout << "Rendering map overview..." << std::endl;
-  // TODO: Implement this
+  for (unsigned int i = 0; i < zones.size(); i++) {
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glLineWidth(2.0);
+    if (cParent->cExploredZones.find(zones[i]) != cParent->cExploredZones.end()) {
+      glColor3f(0.8, 1.0, 1.0);
+    } else {
+      glColor3f(0.0, 0.2, 0.3);
+    }
+    BlockArea* mZoneArea = zones[i]->getZoneArea();
+    float x = mZoneArea->getWest()    * IsoRealmsConstants::BLOCK_SIZE   - IsoRealmsConstants::BLOCK_RADIUS * 0.5f;
+    float y = mZoneArea->getSouth()   * IsoRealmsConstants::BLOCK_SIZE   - IsoRealmsConstants::BLOCK_RADIUS * 0.5f;
+    float z = mZoneArea->getTop()     * IsoRealmsConstants::BLOCK_HEIGHT - IsoRealmsConstants::BLOCK_HEIGHT * 0.25f;
+    float xs = mZoneArea->getEast()   * IsoRealmsConstants::BLOCK_SIZE   + IsoRealmsConstants::BLOCK_RADIUS * 0.5f;
+    float ys = mZoneArea->getNorth()  * IsoRealmsConstants::BLOCK_SIZE   + IsoRealmsConstants::BLOCK_RADIUS * 0.5f;
+    float zs = (mZoneArea->getBottom() - 1) * IsoRealmsConstants::BLOCK_HEIGHT + IsoRealmsConstants::BLOCK_HEIGHT * 0.25f;
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glBegin(GL_LINES);
+    glVertex3f(xs, ys, z); glVertex3f(x,  ys, z);
+    glVertex3f(x,  ys, z); glVertex3f(x,  y,  z);
+    glVertex3f(x,  y,  z); glVertex3f(xs, y,  z);
+    glVertex3f(xs, y,  z); glVertex3f(xs, ys, z);
+
+    glVertex3f(xs, ys, zs);   glVertex3f(x,  ys, zs);
+    glVertex3f(x,  ys, zs);   glVertex3f(x,  y,  zs);
+    glVertex3f(x,  y,  zs);   glVertex3f(xs, y,  zs);
+    glVertex3f(xs, y,  zs);   glVertex3f(xs, ys, zs);
+
+    glVertex3f(x,  ys, z); glVertex3f(x,  ys, zs);
+    glVertex3f(x,  y,  z); glVertex3f(x,  y,  zs);
+    glVertex3f(xs, y,  z); glVertex3f(xs, y,  zs);
+    glVertex3f(xs, ys, z); glVertex3f(xs, ys, zs);
+    glEnd();
+  }
 }
 
 extern "C" IPlugin* create() {

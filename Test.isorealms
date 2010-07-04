@@ -233,6 +233,9 @@
   <Plugin implementation="SDLMixerSupport" instance="SpindizzySounds" type="SoundSupport">
     <Configuration>
       <File>Jewel.ogg</File>
+      <File>Lift Click 1.ogg</File>
+      <File>Lift Click 2.ogg</File>
+      <File>Lift Click 3.ogg</File>
     </Configuration>
   </Plugin>
   <Plugin implementation="BlockSubtractor" instance="BlockSubtractor" type="SurfaceProcessor">
@@ -244,6 +247,16 @@
   <Plugin implementation="ExploredZones" instance="ExploredZones" type="Utilities">
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext" socketid=""/>
     <Configuration/>
+  </Plugin>
+  <Plugin implementation="RandomCommand" instance="PlayLiftClick" type="Utilities">
+    <UsePlugin implementation="CommandRegistry" instance="SpindizzyCommands" socketid=""/>
+    <Configuration>
+      <Command name="PlayLiftClick">
+        <RandomCommand>Play Lift Click 1.ogg</RandomCommand>
+        <RandomCommand>Play Lift Click 2.ogg</RandomCommand>
+        <RandomCommand>Play Lift Click 3.ogg</RandomCommand>
+      </Command>
+    </Configuration>
   </Plugin>
   <Plugin implementation="SoundCommandSupport" instance="SoundCommandWrapper" type="Utilities">
     <UsePlugin implementation="CommandRegistry" instance="SpindizzyCommands" socketid=""/>
@@ -283,9 +296,12 @@
     </Configuration>
   </ElementSet>
   <ElementSet instance="Lifts" type="SpindizzyLifts">
+    <UsePlugin implementation="CommandRegistry" instance="SpindizzyCommands"/>
     <UsePlugin implementation="SpindizzyTextureSet" instance="C64Blue"/>
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext" socketid=""/>
-    <Configuration/>
+    <Configuration>
+<!--      <LiftMovedCommand>PlayLiftClick</LiftMovedCommand>-->
+    </Configuration>
   </ElementSet>
   <ElementSet instance="Player" type="SpindizzyGERALD">
     <UsePlugin implementation="3DModel" instance="Pyramid"/>
@@ -296,7 +312,7 @@
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext"/>
     <Configuration/>
   </ElementSet>
-  <ZoneRenderer/>
+  <ZoneRenderer type="Utilities" instance="ExploredZones" renderer="explored"/>
   <Elements>
     <Element set="Player" type="">
       <Location x="-4" y="3" z="0"/>

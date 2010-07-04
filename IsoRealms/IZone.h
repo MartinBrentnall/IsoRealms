@@ -21,6 +21,7 @@
 
 #include <vector>
 
+#include "BlockArea.h"
 #include "Vertex.h"
 #include "ZoneEvent.h"
 
@@ -34,6 +35,8 @@ class IZone {
    */
   virtual std::vector<ZoneEvent*> getZoneEvents(Vertex&, Vertex&) = 0;
 
+  virtual BlockArea* getZoneArea() = 0;
+  
   /**
    * TODO: THESE SHOULD NOT BE PART OF THIS INTERFACE!
    */ 

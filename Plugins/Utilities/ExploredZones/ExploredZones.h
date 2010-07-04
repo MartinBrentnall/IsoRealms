@@ -4,6 +4,9 @@
 #include <set>
 #include <vector>
 
+#include <IsoRealms/BlockArea.h>
+#include <IsoRealms/IsoRealmsConstants.h>
+
 #include "../IUtilities.h"
 
 #include "../../CommandRegistry/ICommandRegistry.h"

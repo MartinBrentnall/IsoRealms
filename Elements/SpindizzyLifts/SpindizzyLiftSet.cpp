@@ -97,11 +97,35 @@ DefaultElementHandler<SpindizzyLift>* SpindizzyLiftSet::createHandler(IElementCo
 }
 
 void SpindizzyLiftSet::save(DOMNodeWriter* node) {
-  // Nothing to do.
+  for (unsigned int i = 0; i < cLiftMovedCommands.size(); i++) {
+    DOMNodeWriter* mCommandNode = node->addBranch("LiftMovedCommand");
+    std::string mCommandName = cLiftMovedCommands[i]->getCommandName();
+    mCommandNode->addText(mCommandName);
+  }
+}
+
+void SpindizzyLiftSet::load(DOMNodeWrapper* node) {
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "LiftMovedCommand") {
+      std::string mCommandName = mNode->getStringValue();
+      IUserCommand* mCommand = cCommandRegistry->getCommand(mCommandName);
+      cLiftMovedCommands.push_back(mCommand);
+    } else {
+      // TODO: Throw something!
+    }
+  }
 }
 
 IZone* SpindizzyLiftSet::getCurrentZone() {
   return cZone;
+}
+
+void SpindizzyLiftSet::executeLiftMovedCommands() {
+  for (unsigned int i = 0; i < cLiftMovedCommands.size(); i++) {
+    cLiftMovedCommands[i]->execute();
+  }
 }
 
 void SpindizzyLiftSet::zoneContextChanged(IZone* zone) {

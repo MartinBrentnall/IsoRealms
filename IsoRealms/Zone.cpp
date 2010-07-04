@@ -366,6 +366,10 @@ std::vector<ZoneEvent*> Zone::getZoneEvents(Vertex& start, Vertex& end) {
   return mZoneEvents;
 }
 
+BlockArea* Zone::getZoneArea() {
+  return this;
+}
+
 bool Zone::contains(BlockLocation& location) {
   return BlockArea::contains(location);
 }

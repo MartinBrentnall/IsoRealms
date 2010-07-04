@@ -132,6 +132,7 @@ class Zone:public BlockArea,
   \********************/
   bool contains(Vertex&);
   std::vector<ZoneEvent*> getZoneEvents(Vertex&, Vertex&);
+  BlockArea* getZoneArea();
 
   /********************************\
    * Implements IElementContainer *

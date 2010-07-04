@@ -38,6 +38,15 @@ class SpindizzyLift:public Element<ISpindizzyLiftSet, ISpindizzyLiftFactory>,
                            IDynamicElement,
                            IVisualElement {
   private:
+  
+  enum LiftState {
+    MOVING_UP,
+    MOVING_DOWN,
+    PAUSED_TOP,
+    PAUSED_BOTTOM
+  };
+    
+  // Definition values
   BlockLocation cLocation;
   ISpindizzyTexture* cTexture;
   int cBottom;
@@ -46,14 +55,26 @@ class SpindizzyLift:public Element<ISpindizzyLiftSet, ISpindizzyLiftFactory>,
   unsigned int cBottomDelay;
   unsigned int cUpSpeed;
   unsigned int cDownSpeed;
+  
+  // Runtime values
+  struct LiftValues {
+    float cZ;
+    LiftState cState;
+    int cDelay;
+  };
+  LiftValues cLiftValues;
+  
 
   void renderEditingArrow();
 
+  void executeLiftMovedCommands();
+  
   public:
   SpindizzyLift(ISpindizzyLiftFactory*, BlockLocation*, ISpindizzyTexture*, SpindizzyLiftProperties*, int, int);
 
   void setTexture(ISpindizzyTexture*);
 
+  LiftValues getZLocationAfter(int);
   void reset();
   
   /***********************\

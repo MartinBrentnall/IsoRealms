@@ -16,19 +16,26 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_SPINDIZZY_LIFT_SET_H
-#define I_SPINDIZZY_LIFT_SET_H
+#include "RandomCommand.h"
 
-#include <IsoRealms/ElementSet.h>
-#include <IsoRealms/IElement.h>
-#include <IsoRealms/IZone.h>
+std::vector<PlugSocket*> RandomCommand::getPlugSockets() {
+  std::vector<PlugSocket*> mEmptyVector;
+  return mEmptyVector;
+}
 
-class SpindizzyLift;
+void RandomCommand::setPlugin(PlugSocket*, IPlugin*) {
+  // TODO: Implement this
+}
 
-class ISpindizzyLiftSet:public ElementSet<SpindizzyLift> {
-  public:
-  virtual IZone* getCurrentZone() = 0;
-  virtual void executeLiftMovedCommands() = 0;
-};
+IPlugin* RandomCommand::getPlugin(PlugSocket*) {
+  return NULL;
+}
 
-#endif
+extern "C" IPlugin* create() {
+  return new RandomCommand();
+}
+
+extern "C" void destroy(IPlugin* plugin) {
+  delete plugin;
+}
+

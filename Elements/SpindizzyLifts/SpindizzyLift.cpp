@@ -27,6 +27,7 @@ SpindizzyLift::SpindizzyLift(ISpindizzyLiftFactory* elementFactory, BlockLocatio
   cLocation    = BlockLocation(*location);
   cBottom      = bottom;
   cTop         = top;
+  reset();
 }
 
 void SpindizzyLift::setTexture(ISpindizzyTexture* texture) {
@@ -91,20 +92,112 @@ std::vector<IInteractiveElement*> SpindizzyLift::getInteractiveElements() {
   return mInteractiveElements;
 }
 
+void SpindizzyLift::executeLiftMovedCommands() {
+  ISpindizzyLiftSet* mLiftSet = getElementSet();
+  mLiftSet->executeLiftMovedCommands();
+}
+
+SpindizzyLift::LiftValues SpindizzyLift::getZLocationAfter(int milliseconds) {
+  LiftValues mLift = cLiftValues;
+  
+  ISpindizzyLiftFactory* mLiftFactory = getElementFactory();
+  if (mLiftFactory->isActive()) {
+
+    // Prevent an infinite loop occurring when pause intervals are both zero and the range of the lift is zero
+    if (cTop == cBottom && cBottom == mLift.cZ) {
+      return mLift;
+    }
+
+    while (milliseconds > 0) {
+      switch (mLift.cState) {
+        case SpindizzyLift::MOVING_UP: {
+          float mToMove = milliseconds * cUpSpeed / 1000000.0f;
+          mLift.cZ += mToMove;
+          if (mLift.cZ > cTop) {
+            mLift.cState = SpindizzyLift::PAUSED_TOP;
+            mLift.cDelay = cTopDelay;
+            milliseconds = 0; // TODO: Recover remaining ticks for pause
+            mLift.cZ = cTop;
+          } else if ((int) mLift.cZ != (int) cLiftValues.cZ) {
+            executeLiftMovedCommands();
+            milliseconds = 0;
+          } else {
+            milliseconds = 0;
+          }
+          break;
+        }
+  
+        case SpindizzyLift::MOVING_DOWN: {
+          float mToMove = milliseconds * cDownSpeed / 1000000.0f;
+          mLift.cZ -= mToMove;
+          if (mLift.cZ < cBottom) {
+            mLift.cState = SpindizzyLift::PAUSED_BOTTOM;
+            mLift.cDelay = cBottomDelay;
+            milliseconds = 0; // TODO: Recover remaining ticks for pause
+            mLift.cZ = cBottom;
+          } else if ((int) mLift.cZ != (int) cLiftValues.cZ) {
+            executeLiftMovedCommands();
+            milliseconds = 0;
+          } else {
+            milliseconds = 0;
+          }
+          break;
+        }
+  
+        case SpindizzyLift::PAUSED_TOP:
+          mLift.cDelay -= milliseconds;
+          if (mLift.cDelay < 0) {
+            milliseconds = mLift.cDelay > 0 ? mLift.cDelay : -mLift.cDelay;
+            mLift.cState = mLift.cZ <= cBottom ? SpindizzyLift::PAUSED_BOTTOM : SpindizzyLift::MOVING_DOWN;
+            if (mLift.cState == SpindizzyLift::PAUSED_BOTTOM) {
+              mLift.cDelay = cBottomDelay;
+            }
+          } else {
+            milliseconds = 0;
+          }
+          break;
+  
+        case SpindizzyLift::PAUSED_BOTTOM:
+          mLift.cDelay -= milliseconds;
+          if (mLift.cDelay < 0) {
+            milliseconds = mLift.cDelay > 0 ? mLift.cDelay : -mLift.cDelay;
+            mLift.cState = mLift.cZ >= cTop ? SpindizzyLift::PAUSED_TOP : SpindizzyLift::MOVING_UP;
+            if (mLift.cState == SpindizzyLift::MOVING_UP) {
+              executeLiftMovedCommands();
+            } else {
+              mLift.cDelay = cTopDelay;
+            }
+          } else {
+            milliseconds = 0;
+          }
+          break;
+      }
+    }
+  }
+  return mLift;
+}
+
 void SpindizzyLift::update(int milliseconds) {
   ISpindizzyLiftFactory* mLiftFactory = getElementFactory();
   if (mLiftFactory->isActive()) {
-    // TODO: Make the lift move!
+    cLiftValues = getZLocationAfter(milliseconds);
   }
 }
 
 void SpindizzyLift::reset() {
-  // TODO: Reset the lift!
+  cLiftValues.cZ = cLocation.z;
+  if (cTop < cLocation.z) {
+    cLiftValues.cState = SpindizzyLift::PAUSED_TOP;
+    cLiftValues.cDelay = cTopDelay;
+  } else {
+    cLiftValues.cState = SpindizzyLift::PAUSED_BOTTOM;
+    cLiftValues.cDelay = cBottomDelay;
+  }
 }
 
 void SpindizzyLift::render() {
   glPushMatrix();
-  glTranslatef(cLocation.x, cLocation.y, cLocation.z * IsoRealmsConstants::BLOCK_HEIGHT + (IsoRealmsConstants::BLOCK_HEIGHT * 0.05));
+  glTranslatef(cLocation.x, cLocation.y, cLiftValues.cZ * IsoRealmsConstants::BLOCK_HEIGHT + (IsoRealmsConstants::BLOCK_HEIGHT * 0.05));
   cTexture->set();
   glAlphaFunc(GL_GREATER, 0.1f);
   glEnable(GL_ALPHA_TEST);

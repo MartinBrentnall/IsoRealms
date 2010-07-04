@@ -58,6 +58,14 @@ int BlockArea::getEast() {
   return cEndLocation.x;
 }
 
+int BlockArea::getTop() {
+  return cEndLocation.z;  
+}
+
+int BlockArea::getBottom() {
+  return cStartLocation.z;
+}
+
 int BlockArea::alligned(int x, int y) {
   return x >= cStartLocation.x && x <= cEndLocation.x && y >= cStartLocation.y && y <= cEndLocation.y;
 }

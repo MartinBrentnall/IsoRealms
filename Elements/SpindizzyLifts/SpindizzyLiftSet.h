@@ -41,6 +41,7 @@ class SpindizzyLiftSet:public ISpindizzyLiftSet,
   std::vector<IElementFactory*> cElementFactories;
   ICommandRegistry* cCommandRegistry;
   IZoneContext* cZoneContext;
+  std::vector<IUserCommand*> cLiftMovedCommands;
   IZone* cZone;
   std::vector<IUserCommand*> cCommands;
   ISpindizzyTextureSet* cSpindizzyTextureSet;
@@ -73,11 +74,13 @@ class SpindizzyLiftSet:public ISpindizzyLiftSet,
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
   void save(DOMNodeWriter*);
+  void load(DOMNodeWrapper*);
 
   /********************************\
    * Implements ISpindizzyLiftSet *
   \********************************/
   IZone* getCurrentZone();
+  void executeLiftMovedCommands();
   
   /***********************************\
    * Implements IZoneContextListener *
