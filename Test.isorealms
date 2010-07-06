@@ -312,7 +312,8 @@
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext"/>
     <Configuration/>
   </ElementSet>
-  <ZoneRenderer type="Utilities" instance="ExploredZones" renderer="explored"/>
+<!--  <ZoneRenderer type="Utilities" instance="ExploredZones" renderer="explored"/>-->
+  <ZoneRenderer/>
   <Elements>
     <Element set="Player" type="">
       <Location x="-4" y="3" z="0"/>
@@ -14466,7 +14467,7 @@
       </Element>
     </Elements>
   </Zone>
-  <Zone>
+<!--  <Zone>
     <Plugins>
       <Plugin instance="Ball" type="3DModel"/>
       <Plugin instance="C64JewelModel" type="3DModel"/>
@@ -14563,7 +14564,7 @@
         <LiftProperties bottomDelay="0" downSpeed="750" topDelay="0" upSpeed="750"/>
       </Element>
     </Elements>
-  </Zone>
+  </Zone>-->
   <Zone>
     <Plugins>
       <Plugin instance="Ball" type="3DModel"/>
@@ -16515,7 +16516,7 @@
       </Element>
     </Elements>
   </Zone>
-  <Zone>
+<!--  <Zone>
     <Plugins>
       <Plugin instance="Ball" type="3DModel"/>
       <Plugin instance="C64JewelModel" type="3DModel"/>
@@ -16613,7 +16614,7 @@
         <LiftProperties bottomDelay="1500" downSpeed="750" topDelay="1500" upSpeed="750"/>
       </Element>
     </Elements>
-  </Zone>
+  </Zone>-->
   <Zone>
     <Plugins>
       <Plugin instance="Ball" type="3DModel"/>
@@ -25402,7 +25403,7 @@
       </Element>
     </Elements>
   </Zone>
-  <Zone>
+<!--  <Zone>
     <Plugins>
       <Plugin instance="Ball" type="3DModel"/>
       <Plugin instance="C64JewelModel" type="3DModel"/>
@@ -25573,7 +25574,7 @@
         <Location x="4" y="5" z="7"/>
       </Element>
     </Elements>
-  </Zone>
+  </Zone>-->
   <Zone>
     <Plugins>
       <Plugin instance="Ball" type="3DModel"/>
@@ -27775,7 +27776,7 @@
       </Element>
     </Elements>
   </Zone>
-  <Zone>
+<!--  <Zone>
     <Plugins>
       <Plugin instance="Ball" type="3DModel"/>
       <Plugin instance="C64JewelModel" type="3DModel"/>
@@ -27971,7 +27972,7 @@
         <LiftProperties bottomDelay="1500" downSpeed="750" topDelay="1500" upSpeed="750"/>
       </Element>
     </Elements>
-  </Zone>
+  </Zone>-->
   <Zone>
     <Plugins>
       <Plugin instance="Ball" type="3DModel"/>

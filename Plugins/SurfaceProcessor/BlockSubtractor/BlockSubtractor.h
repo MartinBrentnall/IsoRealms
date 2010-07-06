@@ -28,9 +28,11 @@
 #include "../ISurfaceProcessor.h"
 
 #include "BlockSubtractorCache.h"
+#include "TileBlock.h"
+#include "TileColumn.h"
+#include "TileSurfaceTemplate.h"
 #include "WallColumn.h"
 #include "WallConstructionData.h"
-#include "TileSurfaceTemplate.h"
 
 /**
  * Each surface provider is mapped to the original surfaces that it provides.
@@ -44,69 +46,21 @@ class BlockSubtractor:public ISurfaceProcessor {
 
   std::vector<ITileSurfaceTemplate*> getTileSurfaces(ITileSurface*, ISurfaceProvider*, ITileSurface::FaceDirection);
 
-  int getCompleteRows(ISurfaceProvider*, std::vector<ITileSurfaceTemplate*>, ITileSurface*, int, int, int, ITileSurface::FaceDirection/*, Condition* condition TODO:CONDITIONAL*/);
+  int getCompleteRows(ISurfaceProvider*, std::vector<ITileSurfaceTemplate*>, ITileSurface*, ITileSurface*, int, int, int, ITileSurface::FaceDirection/*, Condition* condition TODO:CONDITIONAL*/);
 
   IWallSurface::FaceDirection getOppositeOf(IWallSurface::FaceDirection);
-
-  /**
-   * Test whether the specified surface is removed according to the specified
-   * column.  The surface is assumed to be facing up.
-   * 
-   * @param int  Height of the surface.
-   * @param int  Elevation of the surface.
-   * @param int  Height of the top surface of the column.
-   * @param int  Elevation of the top surface of the column.
-   * @param int  Height of the bottom surface of the column.
-   * @param int  Elevation of the bottom surface of the column.
-   * @param bool  True if the column has priority over the surface.
-   * @returns  True if the surface is removed by the column.
-   */
-  bool isSurfaceTileRemoved(int, int, int, int, int, int, bool);
-
-  /**
-   * Test whether the specified surface is hidden according to the specified
-   * column.  The surface is assumed to be facing up.
-   * 
-   * @param int  Height of the surface.
-   * @param int  Elevation of the surface.
-   * @param int  Height of the top surface of the column.
-   * @param int  Elevation of the top surface of the column.
-   * @param int  Height of the bottom surface of the column.
-   * @param int  Elevation of the bottom surface of the column.
-   * @returns  True if the surface is removed by the column.
-   */
-  bool isSurfaceTileHidden(int, int, int, int, int, int);
-
-  /**
-   * Determine whether the tile at the specified position of the specified
-   * surface is visible according to the specified ordered set of surface
-   * columns.
-   * 
-   * @param ITileSurface*  The surface to test for visibility.
-   * @param int  The X location of the tile to test in the surface.
-   * @param int  The Y location of the tile to test in the surface.
-   * @param std::vector<ISurfaceProvider*>  The ordered columns.
-   * @param bool  True if the columns have priority over the specified surface,
-   *              otherwise false.
-   * @param ITileSurface::FaceDirection  Direction the surface being tested
-   *           is facing.
-   * @param bool True if the surface is part of a subtraction, otherwise false.
-   * @returns  True if the surface tile is visible, otherwise false.
-   */
-  bool isSurfaceTileVisible(ITileSurface*, int, int, std::vector<ISurfaceProvider*>, bool, ITileSurface::FaceDirection, bool);
 
   /**
    * Determine whether the tile at the specified position of the specified
    * surface is visible according to the data in our cache.
    * 
-   * @param ITileSurface*  The surface to test for visibility.
    * @param int  The X location of the tile to test in the surface.
    * @param int  The Y location of the tile to test in the surface.
    * @param ITileSurface::FaceDirection  Direction the surface being tested
    *           is facing.
    * @returns  True if the surface tile is visible, otherwise false.
    */
-  bool isSurfaceTileVisible(ISurfaceProvider*, ITileSurface*, int x, int y, ITileSurface::FaceDirection);
+  bool isSurfaceTileVisible(ISurfaceProvider*, int x, int y, ITileSurface::FaceDirection);
 
   /**
    * Test whether the specified 2D location is vertically aligned with any of

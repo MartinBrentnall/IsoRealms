@@ -42,36 +42,6 @@ void BlockSubtractor::reinitialise() {
   cCache.reinitialise();
 }
 
-bool BlockSubtractor::isSurfaceTileRemoved(int testTileHeight, int testTileElevation, int topTileHeight, int topTileElevation, int bottomTileHeight, int bottomTileElevation, bool columnHasPriority) {
-  if (topTileHeight >= bottomTileHeight) {
-  
-    // Handle an addition
-    if (columnHasPriority) {
-    
-      // Column surface must only be equal to the test to replace it
-      return topTileHeight + (topTileElevation > 0 ? 1 : 0) >= testTileHeight + (testTileElevation > 0 ? 1 : 0) && topTileHeight >= testTileHeight && bottomTileHeight < testTileHeight + (testTileElevation > 0 ? 1 : 0);
-    } else { // Tile has priority
-
-      // Column surface must exceed the test to replace it
-      return (topTileHeight == testTileHeight ? topTileHeight + (topTileElevation > 0 ? 1 : 0) > testTileHeight + (testTileElevation > 0 ? 1 : 0)
-                                              : topTileHeight + (topTileElevation > 0 ? 1 : 0) >= testTileHeight + (testTileElevation > 0 ? 1 : 0))
-                            && bottomTileHeight < testTileHeight + (testTileElevation > 0 ? 1 : 0);
-    }
-  }
-
-  // Handle a subtraction  
-  return /*columnHasPriority                                    // Subtraction must have priority to remove the surface
-      && */bottomTileHeight >= testTileHeight                   // Tile must be inside the subtraction base heights
-      && topTileHeight <= testTileHeight                      // Tile must be inside the subtraction base heights
-      && topTileHeight < testTileHeight + testTileElevation;  // Tile must meet the subtraction including elevation
-}
-
-bool BlockSubtractor::isSurfaceTileHidden(int testTileHeight, int testTileElevation, int topTileHeight, int topTileElevation, int bottomTileHeight, int bottomTileElevation) {
-  return testTileElevation == 0                              // Hiding onlysupp orted for flat surfaces.
-      && topTileHeight + topTileElevation > testTileHeight   // Column must extend above the surface
-      && bottomTileHeight <= testTileHeight;                 // Column must extend to at least cover the surface
-}
-
 ITileSurface* BlockSubtractor::getSurfaceAt(std::vector<ITileSurface*> surfaces, int x, int y) {
   for (unsigned int i = 0; i < surfaces.size(); i++) {
     BlockArea* mSurfaceCoverage = surfaces[i]->getCoverage();
@@ -94,54 +64,25 @@ IWallSurface* BlockSubtractor::findSurfaceAt(std::vector<IWallSurface*> surfaces
   return NULL;
 }
 
-bool BlockSubtractor::isSurfaceTileVisible(ITileSurface* surface, int x, int y, std::vector<ISurfaceProvider*> columns, bool columnHasPriority, ITileSurface::FaceDirection facing, bool isTileHidden) {
-  bool mIsTileHidden = isTileHidden;
-  bool mIsTopSurface = facing == ITileSurface::UP;
-  int mSurfaceHeight    = mIsTopSurface ? surface->getSurfaceCellHeight(x, y)    : -surface->getSurfaceCellHeight(x, y);
-  int mSurfaceElevation = mIsTopSurface ? surface->getSurfaceCellElevation(x, y) : -surface->getSurfaceCellElevation(x, y);
-  for (unsigned int i = 0; i < columns.size(); i++) {
-    BlockArea* mBlockArea = columns[i]->getCoverage();
-    if (mBlockArea->alligned(x, y)) {
-      std::vector<ITileSurface*> mTopSurfaces = columns[i]->getTileSurfaces(ITileSurface::UP);
-      std::vector<ITileSurface*> mBottomSurfaces = columns[i]->getTileSurfaces(ITileSurface::DOWN);
-      ITileSurface* mTopSurface = getSurfaceAt(mTopSurfaces, x, y);
+bool BlockSubtractor::isSurfaceTileVisible(ISurfaceProvider* provider, int x, int y, ITileSurface::FaceDirection facing) {
+  TileColumn mTileColumn;
+  std::vector<ISurfaceProvider*> mSurfaceProviders = cCache.getSurfaceProviders();
+  for (unsigned int i = 0; i < mSurfaceProviders.size(); i++) {
+    std::vector<ITileSurface*> mTopSurfaces    = mSurfaceProviders[i]->getTileSurfaces(ITileSurface::UP);
+    std::vector<ITileSurface*> mBottomSurfaces = mSurfaceProviders[i]->getTileSurfaces(ITileSurface::DOWN);
+    ITileSurface* mTopSurface    = getSurfaceAt(mTopSurfaces,    x, y);
+    if (mTopSurface != NULL) {
       ITileSurface* mBottomSurface = getSurfaceAt(mBottomSurfaces, x, y);
-      int mBottomHeight    = mIsTopSurface ? mBottomSurface->getSurfaceCellHeight(x, y)    : -mBottomSurface->getSurfaceCellHeight(x, y);
-      int mBottomElevation = mIsTopSurface ? mBottomSurface->getSurfaceCellElevation(x, y) : -mBottomSurface->getSurfaceCellElevation(x, y);
-      int mTopHeight       = mIsTopSurface ? mTopSurface->getSurfaceCellHeight(x, y)       : -mTopSurface->getSurfaceCellHeight(x, y);
-      int mTopElevation    = mIsTopSurface ? mTopSurface->getSurfaceCellElevation(x, y)    : -mTopSurface->getSurfaceCellElevation(x, y);
-      bool mIsSubtraction = mBottomHeight > mTopHeight;
-      if (isSurfaceTileRemoved(mSurfaceHeight, mSurfaceElevation, mTopHeight, mTopElevation, mBottomHeight, mBottomElevation, columnHasPriority)) {
-        if (columnHasPriority) {
-          return false;
-        } else if (!columnHasPriority) {
-          mIsTileHidden = !mIsSubtraction;
-        }
-      } 
-      if (mIsSubtraction ? isSurfaceTileHidden(mSurfaceHeight, mSurfaceElevation, mBottomHeight, mBottomElevation, mTopHeight,    mTopElevation)
-                         : isSurfaceTileHidden(mSurfaceHeight, mSurfaceElevation, mTopHeight,    mTopElevation,    mBottomHeight, mBottomElevation)) {
-        mIsTileHidden = !mIsSubtraction;
-      }
+      int mTop = mTopSurface->getSurfaceCellHeight(x, y);
+      bool mTopExtended = mTopSurface->getSurfaceCellElevation(x, y) != 0;
+      int mBottom = mBottomSurface->getSurfaceCellHeight(x, y);
+      bool mBottomExtended = mBottomSurface->getSurfaceCellElevation(x, y) != 0;
+      TileBlock* mTileBlock = new TileBlock(mSurfaceProviders[i], mTop, mBottom, mTopExtended, mBottomExtended);
+      mTileColumn.addTileBlock(mTileBlock);
     }
   }
-  return !mIsTileHidden;
-}
-
-bool BlockSubtractor::isSurfaceTileVisible(ISurfaceProvider* provider, ITileSurface* surface, int x, int y, ITileSurface::FaceDirection facing) {
-  // TODO: Cache needs to know what it's relating to (e.g. the ISurfaceProvider) to determine priority
-  std::vector<ITileSurface*> mTopSurfaces = provider->getTileSurfaces(ITileSurface::UP);
-  std::vector<ITileSurface*> mBottomSurfaces = provider->getTileSurfaces(ITileSurface::DOWN);
-  ITileSurface* mTopSurface = getSurfaceAt(mTopSurfaces, x, y);
-  ITileSurface* mBottomSurface = getSurfaceAt(mBottomSurfaces, x, y);
-  int mTopHeight = mTopSurface->getSurfaceCellHeight(x, y);
-  int mBottomHeight = mBottomSurface->getSurfaceCellHeight(x, y);
-  bool mIsSubtraction = mBottomHeight > mTopHeight;
-  std::vector<ISurfaceProvider*> mSurfaceColumnsWithoutPriority = cCache.getSurfaceProviders(false, provider);
-  if (!isSurfaceTileVisible(surface, x, y, mSurfaceColumnsWithoutPriority, false, facing, mIsSubtraction) != mIsSubtraction) {
-    return false;
-  }
-  std::vector<ISurfaceProvider*> mSurfaceColumnsWithPriority = cCache.getSurfaceProviders(true, provider);
-  return isSurfaceTileVisible(surface, x, y, mSurfaceColumnsWithPriority, true, facing, false);
+  return facing == ITileSurface::UP ? mTileColumn.isTopTileVisible(provider)
+                                    : mTileColumn.isBottomTileVisible(provider);
 }
 
 bool BlockSubtractor::inSurface(std::vector<ITileSurfaceTemplate*> surfaces, int x, int y) {
@@ -153,8 +94,9 @@ bool BlockSubtractor::inSurface(std::vector<ITileSurfaceTemplate*> surfaces, int
   return false;
 }
 
-int BlockSubtractor::getCompleteRows(ISurfaceProvider* provider, std::vector<ITileSurfaceTemplate*> calculatedSurfaces, ITileSurface* surface, int west, int east, int south, ITileSurface::FaceDirection facing/*, Condition* condition TODO:CONDITIONAL*/) {
-  BlockArea* mSurfaceCoverage = surface->getCoverage();
+int BlockSubtractor::getCompleteRows(ISurfaceProvider* provider, std::vector<ITileSurfaceTemplate*> calculatedSurfaces, ITileSurface* topSurface, ITileSurface* bottomSurface, int west, int east, int south, ITileSurface::FaceDirection facing/*, Condition* condition TODO:CONDITIONAL*/) {
+  BlockArea* mSurfaceCoverage = facing == ITileSurface::UP ? topSurface->getCoverage()
+                                                           : bottomSurface->getCoverage();
   if (south == mSurfaceCoverage->getNorth()) {
     return south;
   }
@@ -163,7 +105,7 @@ int BlockSubtractor::getCompleteRows(ISurfaceProvider* provider, std::vector<ITi
     bool mCompleteRow = true;
     for (int x = west; x <= east; x++) {
       // TODO: ==================== CONDITIONAL CONSIDERATIONS NEED TO GO HERE ACCORDING TO PROTOTYPE!
-      if (!isSurfaceTileVisible(provider, surface, x, y, facing)/*TODO:CONDITIONAL || !mConditionSame*/) {
+      if (!isSurfaceTileVisible(provider, x, y, facing)/*TODO:CONDITIONAL || !mConditionSame*/) {
         mCompleteRow = false;
         break;
       }
@@ -173,11 +115,11 @@ int BlockSubtractor::getCompleteRows(ISurfaceProvider* provider, std::vector<ITi
     } 
   }
   return mSurfaceCoverage->getNorth();
-  // TODO: No return yet; deliberate warning to finish implementing this function!
 }
 
 std::vector<ITileSurfaceTemplate*> BlockSubtractor::getTileSurfaces(ISurfaceProvider* provider, ITileSurface::FaceDirection faceDirection) {
-  std::vector<ITileSurface*> mTileSurfaces = provider->getTileSurfaces(faceDirection);
+  std::vector<ITileSurface*> mTopTileSurfaces    = provider->getTileSurfaces(ITileSurface::UP);
+  std::vector<ITileSurface*> mBottomTileSurfaces = provider->getTileSurfaces(ITileSurface::DOWN);
   BlockArea* mBlockCoverage = provider->getCoverage();
 
   int mWest;
@@ -185,25 +127,30 @@ std::vector<ITileSurfaceTemplate*> BlockSubtractor::getTileSurfaces(ISurfaceProv
   int mSouth;
   bool mDefiningSurface = false;
   std::vector<ITileSurfaceTemplate*> mCalculatedSurfaces;
-  ITileSurface* mPreviousSurface = NULL;
+  ITileSurface* mPreviousTopSurface    = NULL;
+  ITileSurface* mPreviousBottomSurface = NULL;
   for (int y = mBlockCoverage->getSouth(); y <= mBlockCoverage->getNorth(); y++) {
     for (int x = mBlockCoverage->getWest(); x <= mBlockCoverage->getEast(); x++) {
-      ITileSurface* mSurface = getSurfaceAt(mTileSurfaces, x, y);
+      ITileSurface* mTopSurface    = getSurfaceAt(mTopTileSurfaces,    x, y);
+      ITileSurface* mBottomSurface = getSurfaceAt(mBottomTileSurfaces, x, y);
       bool mOccupiedByCalculatedSurface = inSurface(mCalculatedSurfaces, x, y);
-      bool mSurfaceCellVisible = isSurfaceTileVisible(provider, mSurface, x, y, faceDirection);
-      if (mPreviousSurface == NULL) {
-        mPreviousSurface = mSurface;
+      bool mSurfaceCellVisible = isSurfaceTileVisible(provider, x, y, faceDirection);
+      if (mPreviousTopSurface == NULL) {
+        mPreviousTopSurface    = mTopSurface;
+        mPreviousBottomSurface = mBottomSurface;
       }
-      bool mSurfaceSame = mSurface == mPreviousSurface;
+      ITileSurface* mTestSurface         = faceDirection == ITileSurface::UP ? mTopSurface         : mBottomSurface;
+      ITileSurface* mPreviousTestSurface = faceDirection == ITileSurface::UP ? mPreviousTopSurface : mPreviousBottomSurface;
+      bool mSurfaceSame = mTestSurface == mPreviousTestSurface;
       // TODO: ==================== CONDITIONAL CONSIDERATIONS NEED TO GO HERE ACCORDING TO PROTOTYPE!
       if (mSurfaceCellVisible && !mOccupiedByCalculatedSurface) {
-        if (!mDefiningSurface && mSurface != NULL) {
+        if (!mDefiningSurface && mTestSurface != NULL) {
           mWest = x;
           mEast = x;
           mSouth = y;
 // TODO:CONDITIONAL          mConditionSame = true; // Condition by definition cannot have changed when we start
           mDefiningSurface = true;
-        } else if (/*&& mConditionSame TODO:CONDITIONAL && */mDefiningSurface && x >= mWest && mSurface == mPreviousSurface) {
+        } else if (/*&& mConditionSame TODO:CONDITIONAL && */mDefiningSurface && x >= mWest && mTestSurface == mPreviousTestSurface) {
           mEast = x;
         } 
       }
@@ -220,7 +167,7 @@ std::vector<ITileSurfaceTemplate*> BlockSubtractor::getTileSurfaces(ISurfaceProv
       if (mDefiningSurface && (x == mBlockCoverage->getEast() || !mSurfaceCellVisible || mOccupiedByCalculatedSurface || !mSurfaceSame /*|| !mConditionSame TODO:CONDITIONAL*/)) {
         // TODO: DUPLICATE SUBSURFACE!
         // TODO: ==================== CONDITIONAL CONSIDERATIONS NEED TO GO HERE ACCORDING TO PROTOTYPE!
-        int mNorth = getCompleteRows(provider, mCalculatedSurfaces, mPreviousSurface, mWest, mEast, mSouth, faceDirection/*, mThisCondition TODO:CONDITIONAL*/); 
+        int mNorth = getCompleteRows(provider, mCalculatedSurfaces, mPreviousTopSurface, mPreviousBottomSurface, mWest, mEast, mSouth, faceDirection/*, mThisCondition TODO:CONDITIONAL*/); 
         mCalculatedSurfaces.push_back(new TileSurfaceTemplate(mNorth, mEast, mSouth, mWest));
         mDefiningSurface = false;
         // TODO: DUPLICATE SUBSURFACE END!
@@ -233,16 +180,18 @@ std::vector<ITileSurfaceTemplate*> BlockSubtractor::getTileSurfaces(ISurfaceProv
           if (x == mBlockCoverage->getEast()) {
             // TODO: DUPLICATE SUBSURFACE!
             // TODO: ==================== CONDITIONAL CONSIDERATIONS NEED TO GO HERE ACCORDING TO PROTOTYPE!
-            int mNorth = getCompleteRows(provider, mCalculatedSurfaces, mPreviousSurface, mWest, mEast, mSouth, faceDirection/*, mThisCondition TODO:CONDITIONAL*/); 
+            int mNorth = getCompleteRows(provider, mCalculatedSurfaces, mPreviousTopSurface, mPreviousBottomSurface, mWest, mEast, mSouth, faceDirection/*, mThisCondition TODO:CONDITIONAL*/); 
             mCalculatedSurfaces.push_back(new TileSurfaceTemplate(mNorth, mEast, mSouth, mWest));
             mDefiningSurface = false;
             // TODO: DUPLICATE SUBSURFACE END!
           }
         }
       }
-      mPreviousSurface = mSurface;
+      mPreviousTopSurface    = mTopSurface;
+      mPreviousBottomSurface = mBottomSurface;
     }
-    mPreviousSurface = NULL;
+    mPreviousTopSurface    = NULL;
+    mPreviousBottomSurface = NULL;
   }
   return mCalculatedSurfaces;
 }

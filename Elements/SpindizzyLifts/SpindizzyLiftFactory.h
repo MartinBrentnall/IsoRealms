@@ -28,6 +28,7 @@
 #include <IsoRealms/IsoRealmsConstants.h>
 #include <IsoRealms/IVisualElement.h>
 
+#include "../../Plugins/CommandRegistry/IUserCommand.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 
@@ -50,16 +51,34 @@ class SpindizzyLiftFactory:public ISpindizzyLiftFactory {
   SpindizzyLiftProperties* cProperties;
   IComponentContainer* cComponentContainer;
   int* cFirstRange;
+  bool cState;
+  std::vector<IUserCommand*> cLiftCommands;
 
   bool keyDown(SDLKey&);
 
   void renderArrowLines();
 
+  class LiftCommand:public IUserCommand {
+    private:
+    SpindizzyLiftFactory* cParent;
+    bool cTargetState;
+    
+    public:
+    LiftCommand(SpindizzyLiftFactory*, bool);
+      
+    /***************************\
+     * Implements IUserCommand *
+    \***************************/
+    void execute();
+    std::string getCommandName();
+  };
+  
   public:
   SpindizzyLiftFactory(ISpindizzyLiftSet*, ISpindizzyTextureSet::TextureType, SpindizzyLiftProperties*, const std::string& liftTypeName);
 
   void setTextureSet(ISpindizzyTextureSet*);
-
+  std::vector<IUserCommand*> getLiftCommands();  
+  
   /************************************\
    * Implements ISpindizzyLiftFactory *
   \************************************/
