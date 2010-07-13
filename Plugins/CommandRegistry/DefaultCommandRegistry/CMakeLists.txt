@@ -17,6 +17,7 @@
 include_directories(${PROJECT_SOURCE_DIR})
 
 add_library(CommandRegistry_DefaultCommandRegistry MODULE 
+  CommandProxy.cpp
   DefaultCommandRegistry.cpp
 )
 set_target_properties(CommandRegistry_DefaultCommandRegistry PROPERTIES OUTPUT_NAME "Module")

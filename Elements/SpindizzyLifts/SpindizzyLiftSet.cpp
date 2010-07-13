@@ -19,19 +19,27 @@
 #include "SpindizzyLiftSet.h"
 
 SpindizzyLiftSet::SpindizzyLiftSet() {
-  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_CIRCLE_BOTH, &cSpindizzyLiftProperties, "CircleBoth"));
-  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_CIRCLE_LEFT, &cSpindizzyLiftProperties, "CircleLeft"));
-  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_CIRCLE_RIGHT, &cSpindizzyLiftProperties, "CircleRight"));
-  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_CIRCLE_NONE, &cSpindizzyLiftProperties, "CircleNone"));
-  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_SQUARE_BOTH, &cSpindizzyLiftProperties, "SquareBoth"));
-  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_SQUARE_LEFT, &cSpindizzyLiftProperties, "SquareLeft"));
-  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_SQUARE_RIGHT, &cSpindizzyLiftProperties, "SquareRight"));
-  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_SQUARE_NONE, &cSpindizzyLiftProperties, "SquareNone"));
-  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_DIAMOND_BOTH, &cSpindizzyLiftProperties, "DiamondBoth"));
-  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_DIAMOND_LEFT, &cSpindizzyLiftProperties, "DiamondLeft"));
-  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_DIAMOND_RIGHT, &cSpindizzyLiftProperties, "DiamondRight"));
-  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_DIAMOND_NONE, &cSpindizzyLiftProperties, "DiamondNone"));
+  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_CIRCLE_BOTH, &cSpindizzyLiftProperties, false, "CircleBoth"));
+  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_CIRCLE_LEFT, &cSpindizzyLiftProperties, false, "CircleLeft"));
+  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_CIRCLE_RIGHT, &cSpindizzyLiftProperties, false, "CircleRight"));
+  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_CIRCLE_NONE, &cSpindizzyLiftProperties, false, "CircleNone"));
+  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_SQUARE_BOTH, &cSpindizzyLiftProperties, false, "SquareBoth"));
+  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_SQUARE_LEFT, &cSpindizzyLiftProperties, false, "SquareLeft"));
+  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_SQUARE_RIGHT, &cSpindizzyLiftProperties, false, "SquareRight"));
+  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_SQUARE_NONE, &cSpindizzyLiftProperties, false, "SquareNone"));
+  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_DIAMOND_BOTH, &cSpindizzyLiftProperties, false, "DiamondBoth"));
+  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_DIAMOND_LEFT, &cSpindizzyLiftProperties, false, "DiamondLeft"));
+  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_DIAMOND_RIGHT, &cSpindizzyLiftProperties, false, "DiamondRight"));
+  cElementFactories.push_back(new SpindizzyLiftFactory(this, ISpindizzyTextureSet::LIFT_DIAMOND_NONE, &cSpindizzyLiftProperties, true, "DiamondNone"));
 
+  for (unsigned int i = 0; i < cElementFactories.size(); i++) {
+    SpindizzyLiftFactory* mLiftFactory = dynamic_cast<SpindizzyLiftFactory*>(cElementFactories[i]);
+    std::vector<IUserCommand*> mLiftCommands = mLiftFactory->getLiftCommands();
+    for (unsigned int j = 0; j < mLiftCommands.size(); j++) {
+      cCommands.push_back(mLiftCommands[j]);
+    }
+  }
+  
   assignDummyPlugin(&cSpindizzyTextureSet, "SpindizzyTextureSet");
   assignDummyPlugin(&cCommandRegistry, "CommandRegistry");
   assignDummyPlugin(&cZoneContext, "ZoneContext");
@@ -40,6 +48,7 @@ SpindizzyLiftSet::SpindizzyLiftSet() {
 
 void SpindizzyLiftSet::setTextureSet(ISpindizzyTextureSet* textureSet) {
   for (unsigned int i = 0; i < cElementFactories.size(); i++) {
+    // TODO: Should not cast!
     ((SpindizzyLiftFactory*) cElementFactories[i])->setTextureSet(textureSet);
   }
 }

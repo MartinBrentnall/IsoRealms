@@ -88,7 +88,8 @@ class Zone:public BlockArea,
 
   void renderEditing();
 
-  void render();
+  void renderStatic();
+  void renderDynamic();
 
   void save(ElementSetRegistry*, DOMNodeWriter*);
 

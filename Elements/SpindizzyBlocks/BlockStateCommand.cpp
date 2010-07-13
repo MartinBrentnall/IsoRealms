@@ -29,6 +29,6 @@ void BlockStateCommand::execute() {
 }
 
 std::string BlockStateCommand::getCommandName() {
-  return "Change block state \"" + cName + "\" to " + (cValue ? "true" : "false");
+  return (cValue ? std::string("Set") : std::string("Unset")) + " Block Flag " + cName;
 }
 

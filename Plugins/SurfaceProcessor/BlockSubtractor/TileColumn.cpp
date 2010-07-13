@@ -18,67 +18,102 @@
  */
 #include "TileColumn.h"
 
-void TileColumn::addTileBlock(TileBlock* tileBlock) {
+void TileColumn::addTileBlock(TileBlock* tileBlock, bool ghost) {
   std::vector<unsigned int> mToRemove;
   bool mMerged = false;
-  for (unsigned int i = 0; i < cTileBlocks.size(); i++) {
-    TileBlock* mSplitTileBlock = cTileBlocks[i]->split(*tileBlock);
-    if (mSplitTileBlock != NULL) {
-      cTileBlocks.push_back(mSplitTileBlock);
-      return;
-    }
-    if (cTileBlocks[i]->merge(*tileBlock)) {
-      if (tileBlock->isAddition()) {
-        if (mMerged) {
-          mToRemove.push_back(i);
-        }
-        tileBlock = cTileBlocks[i];
-        mMerged = true;
+  unsigned int mTileBlockIndex = -1;
+  if (!ghost) {
+    for (int i = cGhostTileBlocks.size() - 1; i >= 0; i--) {
+      if (cGhostTileBlocks[i]->subtractAsGhost(*tileBlock)) {
+        cGhostTileBlocks.erase(cGhostTileBlocks.begin() + i);
       }
     }
-    if (!cTileBlocks[i]->isAddition()) {
-      mToRemove.push_back(i);
+    for (unsigned int i = 0; i < cTileBlocks.size(); i++) {
+      TileBlock* mSplitTileBlock = cTileBlocks[i]->split(*tileBlock);
+      if (mSplitTileBlock != NULL) {
+        cTileBlocks.push_back(mSplitTileBlock);
+        return;
+      }
+      if (cTileBlocks[i]->merge(*tileBlock)) {
+        if (tileBlock->isAddition()) {
+          if (mMerged) {
+            mToRemove.push_back(mTileBlockIndex);
+          }
+          tileBlock = cTileBlocks[i];
+          mTileBlockIndex = i;
+          mMerged = true;
+        }
+      }
+      if (!cTileBlocks[i]->isAddition()) {
+        mToRemove.push_back(i);
+      }
     }
-  }
-  if (!mMerged && tileBlock->isAddition()) {
-    cTileBlocks.push_back(tileBlock);
-  }
-  for (unsigned int i = 0; i < mToRemove.size(); i++) {
-    cTileBlocks.erase(cTileBlocks.begin() + mToRemove[i]);
-  }
-}
-
-void TileColumn::debug() {
-  std::cout << "Column contents:" << std::endl;
-  for (unsigned int i = 0; i < cTileBlocks.size(); i++) {
-    cTileBlocks[i]->debug();
+    if (!mMerged && tileBlock->isAddition()) {
+      cTileBlocks.push_back(tileBlock);
+    }
+    for (int i = mToRemove.size() - 1; i >= 0; i--) {
+      cTileBlocks.erase(cTileBlocks.begin() + mToRemove[i]);
+    }
+  } else {
+    cGhostTileBlocks.push_back(tileBlock);
+    // TODO: Needs more testing to make sure this is correct handling for ghost blocks
+    // TODO: DUPLICATE CODE
+    for (unsigned int i = 0; i < cTileBlocks.size(); i++) {
+      TileBlock* mSplitTileBlock = cTileBlocks[i]->split(*tileBlock);
+      if (mSplitTileBlock != NULL) {
+        cTileBlocks.push_back(mSplitTileBlock);
+        return;
+      }
+      if (cTileBlocks[i]->merge(*tileBlock)) {
+        if (tileBlock->isAddition()) {
+          if (mMerged) {
+            mToRemove.push_back(mTileBlockIndex);
+          }
+          tileBlock = cTileBlocks[i];
+          mTileBlockIndex = i;
+          mMerged = true;
+        }
+      }
+      if (!cTileBlocks[i]->isAddition()) {
+        mToRemove.push_back(i);
+      }
+    }
   }
 }
 
 bool TileColumn::isBottomTileVisible(ISurfaceProvider* surfaceProvider) {
-  debug();
-  std::cout << "Is surface provider \"" << surfaceProvider << "\" represented at bottom?" << std::endl;
   for (unsigned int i = 0; i < cTileBlocks.size(); i++) {
-    std::cout << "   " << i << ": " << cTileBlocks[i]->getBottomSurfaceProvider() << std::endl;
     if (cTileBlocks[i]->getBottomSurfaceProvider() == surfaceProvider) {
-      std::cout << "          Found it!" << std::endl;
       return true;
     }
   }
-  std::cout << "          Not Found!" << std::endl;
+  for (unsigned int i = 0; i < cGhostTileBlocks.size(); i++) {
+    if (cGhostTileBlocks[i]->getBottomSurfaceProvider() == surfaceProvider) {
+      return true;
+    }
+  }
   return false;
 }
 
 bool TileColumn::isTopTileVisible(ISurfaceProvider* surfaceProvider) {
-  debug();
-  std::cout << "Is surface provider \"" << surfaceProvider << "\" represented at top?" << std::endl;
   for (unsigned int i = 0; i < cTileBlocks.size(); i++) {
-    std::cout << "   " << i << ": " << cTileBlocks[i]->getTopSurfaceProvider() << std::endl;
     if (cTileBlocks[i]->getTopSurfaceProvider() == surfaceProvider) {
-      std::cout << "          Found it!" << std::endl;
       return true;
     }
   }
-  std::cout << "          Not Found!" << std::endl;
+  for (unsigned int i = 0; i < cGhostTileBlocks.size(); i++) {
+    if (cGhostTileBlocks[i]->getTopSurfaceProvider() == surfaceProvider) {
+      return true;
+    }
+  }
   return false;
 }
+
+void TileColumn::debug() {
+  std::cout << "Column has " << cTileBlocks.size() << " blocks" << std::endl;
+  for (unsigned int i = 0; i < cTileBlocks.size(); i++) {
+    std::cout << "   Block " << i << ": ";
+    cTileBlocks[i]->debug();
+  }
+}
+

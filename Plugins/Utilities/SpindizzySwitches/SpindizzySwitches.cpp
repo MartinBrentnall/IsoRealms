@@ -21,6 +21,7 @@
 SpindizzySwitches::SpindizzySwitches() {
   cActiveSwitchA = NULL;
   cActiveSwitchB = NULL;
+  cNextSwitch = &cActiveSwitchA;
   cResetCommand = new ResetCommand(this);
   assignDummyPlugin(&cCommandRegistry, "CommandRegistry");
   cCommandRegistrySocket.push_back(new PlugSocket("CommandRegistry"));
@@ -31,10 +32,15 @@ void SpindizzySwitches::addSwitch(const std::string& name, bool primary) {
   Switch* mSwitch = new Switch(name);
   SwitchCommand* mSwitchCommand = new SwitchCommand(this, mSwitch, primary);
   cSwitchCommands.push_back(mSwitchCommand);
+  cCommandRegistry->registerCommand(mSwitchCommand);
 }
 
 SpindizzySwitches::ResetCommand::ResetCommand(SpindizzySwitches* parent) {
   cParent = parent;
+}
+
+void SpindizzySwitches::ResetCommand::setCommands(std::vector<IUserCommand*> commands) {
+  cResetCommands = commands;
 }
 
 void SpindizzySwitches::ResetCommand::execute() {
@@ -46,6 +52,9 @@ void SpindizzySwitches::ResetCommand::execute() {
       cParent->cActiveSwitchB = NULL;
     }
     cParent->cNextSwitch = &cParent->cActiveSwitchA;
+    for (unsigned int i = 0; i < cResetCommands.size(); i++) {
+      cResetCommands[i]->execute();
+    }
   }
 }
 
@@ -57,6 +66,28 @@ SpindizzySwitches::SwitchCommand::SwitchCommand(SpindizzySwitches* parent, Switc
   cParent = parent;
   cSwitch = aSwitch;
   cPrimary = primary;
+}
+
+SpindizzySwitches::SwitchCommand::SwitchCommand(SpindizzySwitches* parent, DOMNodeWrapper* node) {
+  cParent = parent;
+  std::string mSwitchName = node->getAttribute("name");
+  std::string mSwitchType = node->getAttribute("type");
+  cPrimary = mSwitchType == "primary";
+  cSwitch = NULL;
+  std::vector<IUserCommand*> mOnCommands;
+  std::vector<IUserCommand*> mOffCommands;
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "On") {
+      mOnCommands = cParent->getCommands(mNode);
+    } else if (mValueAsString == "Off") {
+      mOffCommands = cParent->getCommands(mNode);
+    } else {
+      // TODO: Throw
+    }
+  }
+  cSwitch = new Switch(mSwitchName, mOnCommands, mOffCommands);
 }
 
 void SpindizzySwitches::SwitchCommand::deactivate() {
@@ -90,11 +121,7 @@ void SpindizzySwitches::SwitchCommand::execute() {
 }
 
 std::string SpindizzySwitches::SwitchCommand::getCommandName() {
-  return "Activate switch \"" + cSwitch->getName() + "\"";
-}
-
-std::string SpindizzySwitches::getName() {
-  return "Spindizzy Switches";
+  return "Activate switch " + cSwitch->getName();
 }
 
 std::vector<PlugSocket*> SpindizzySwitches::getPlugSockets() {
@@ -121,6 +148,41 @@ IPlugin* SpindizzySwitches::getPlugin(PlugSocket* socket) {
   if (socket->getType() == "CommandRegistry") {return cCommandRegistry;}
   // TODO: Throw
   return NULL;
+}
+
+std::vector<IUserCommand*> SpindizzySwitches::getCommands(DOMNodeWrapper* node) {
+  std::vector<IUserCommand*> mCommands;
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "Command") {
+      std::string mCommandName = mNode->getStringValue();
+      mCommands.push_back(cCommandRegistry->getCommand(mCommandName));
+    } else {
+      // TODO: Throw
+    }
+  }
+  return mCommands;
+}
+
+void SpindizzySwitches::load(DOMNodeWrapper* node) {
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "Switch") {
+      SwitchCommand* mSwitchCommand = new SwitchCommand(this, mNode);
+      cSwitchCommands.push_back(mSwitchCommand);
+      cCommandRegistry->registerCommand(mSwitchCommand);
+    } else if (mValueAsString == "ResetSwitch") {
+      cResetCommand->setCommands(getCommands(mNode));
+    } else {
+      // TODO: Throw
+    }
+  }
+}
+
+void SpindizzySwitches::save(DOMNodeWriter* node) {
+  // TODO: Implement this
 }
 
 extern "C" IPlugin* create() {

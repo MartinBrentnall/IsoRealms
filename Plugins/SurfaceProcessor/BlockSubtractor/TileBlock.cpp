@@ -33,7 +33,7 @@ TileBlock::TileBlock(ISurfaceProvider* surfaceProvider, int top, int bottom, boo
 
 TileBlock* TileBlock::split(TileBlock& tileBlock) {
   if (!tileBlock.isAddition() && tileBlock.cTop > cBottom && tileBlock.cBottom < cTop) {
-    TileBlock* mLowerTileBlock = new TileBlock(cBottomSurfaceProvider, cBottom, tileBlock.cTop, cBottomExtended, false);
+    TileBlock* mLowerTileBlock = new TileBlock(cBottomSurfaceProvider, tileBlock.cTop, cBottom, cBottomExtended, false);
     cBottom = tileBlock.cBottom;
     mLowerTileBlock->cTopSurfaceProvider = tileBlock.cTopSurfaceProvider;
     cBottomSurfaceProvider = tileBlock.cBottomSurfaceProvider;
@@ -89,6 +89,16 @@ bool TileBlock::merge(TileBlock& tileBlock) {
   return false;
 }
 
+bool TileBlock::subtractAsGhost(TileBlock& tileBlock) {
+  if (tileBlock.cTop >= cTop && tileBlock.cBottom <= cTop) {
+    cTopSurfaceProvider = NULL;
+  }
+  if (tileBlock.cBottom <= cBottom && tileBlock.cTop >= cBottom) {
+    cBottomSurfaceProvider = NULL;
+  }
+  return cBottomSurfaceProvider == NULL && cTopSurfaceProvider == NULL;
+}
+
 ISurfaceProvider* TileBlock::getTopSurfaceProvider() {
   return cTopSurfaceProvider;
 }
@@ -98,11 +108,12 @@ ISurfaceProvider* TileBlock::getBottomSurfaceProvider() {
 }
 
 void TileBlock::debug() {
-  for (int i = -2; i < 10; i++) {
-    if (i < cBottom || i >= cTop) {
-      std::cout << "   ";
+  std::cout << "From " << cBottom << " to " << cTop << ": ";
+  for (int i = -2; i < 8; i++) {
+    if (i > cBottom && i <= cTop) {
+      std::cout << "[x]";
     } else {
-      std::cout << "[X]";
+      std::cout << "   ";
     }
   }
   std::cout << std::endl;

@@ -55,7 +55,7 @@ class IPlugin:public IPluginSupport {
    * the specified zone.  It may be called multiple times depending on how many
    * initialization passes are required for the zone.
    */
-  virtual void initPlugin(IZone*);
+  virtual void initPlugin(IZone*, unsigned int);
 
   /**
    * Retrieve commands to execute from this plugin before entering a game loop.

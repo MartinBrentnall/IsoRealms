@@ -160,8 +160,7 @@ void Map::notifyZoneAction(Zone* zone) {
 void Map::initMap(unsigned int pass) {
   std::vector<IZone*> mCleanZones;
   for (unsigned int i = 0; i < cDirtyZones.size(); i++) {
-    std::cout << " =========== INIT ZONE " << i << " ===========================================================" << std::endl;
-    cPluginRegistry.initPlugins(cDirtyZones[i]);
+    cPluginRegistry.initPlugins(cDirtyZones[i], pass);
     cPluginRegistry.renderPreZone(cDirtyZones[i]);
     if (cDirtyZones[i]->initZone(pass)) {
       mCleanZones.push_back(cDirtyZones[i]);

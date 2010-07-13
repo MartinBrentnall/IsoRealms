@@ -18,6 +18,7 @@
     <Configuration/>
   </Plugin>
   <Plugin implementation="ZoneCollectables" instance="Jewels" type="Collectables">
+    <UsePlugin implementation="Objectives" instance="SpindizzyEndingTrigger"/>
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext" socketid=""/>
     <Configuration/>
   </Plugin>
@@ -236,6 +237,18 @@
       <File>Lift Click 1.ogg</File>
       <File>Lift Click 2.ogg</File>
       <File>Lift Click 3.ogg</File>
+      <File>Diamond None.ogg</File>
+      <File>Diamond Left.ogg</File>
+      <File>Diamond Right.ogg</File>
+      <File>Diamond Both.ogg</File>
+      <File>Square None.ogg</File>
+      <File>Square Left.ogg</File>
+      <File>Square Right.ogg</File>
+      <File>Square Both.ogg</File>
+      <File>Circle None.ogg</File>
+      <File>Circle Left.ogg</File>
+      <File>Circle Right.ogg</File>
+      <File>Circle Both.ogg</File>
     </Configuration>
   </Plugin>
   <Plugin implementation="BlockSubtractor" instance="BlockSubtractor" type="SurfaceProcessor">
@@ -244,14 +257,65 @@
   <Plugin implementation="TimeLimit" instance="SpindizzyTimeLimit" type="IntegerValue">
     <Configuration/>
   </Plugin>
+  <Plugin implementation="CommandTrigger" instance="SpindizzyEndingTrigger" type="Objectives">
+    <UsePlugin implementation="CommandRegistry" instance="SpindizzyCommands" socketid=""/>
+  </Plugin>
   <Plugin implementation="ExploredZones" instance="ExploredZones" type="Utilities">
+    <UsePlugin implementation="CommandRegistry" instance="SpindizzyCommands"/>
+    <UsePlugin implementation="Objectives" instance="SpindizzyEndingTrigger"/>
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext" socketid=""/>
-    <Configuration/>
+    <Configuration>
+      <ZoneExploredCommand>IncreaseTimeForZone</ZoneExploredCommand>
+    </Configuration>
+  </Plugin>
+  <Plugin implementation="KeyCommands" instance="DebugCommands" type="Utilities">
+    <UsePlugin implementation="CommandRegistry" instance="SpindizzyCommands" socketid=""/>
+    <Configuration>
+      <Input type="key" value="1">
+        <Command>Reset Spindizzy Switches</Command>
+      </Input>
+      <Input type="key" value="2">
+        <Command>Activate switch LeftDiamondSwitch</Command>
+      </Input>
+      <Input type="key" value="3">
+        <Command>Activate switch RightDiamondSwitch</Command>
+      </Input>
+      <Input type="key" value="4">
+        <Command>Activate switch FilledDiamondSwitch</Command>
+      </Input>
+      <Input type="key" value="5">
+        <Command>Activate switch EmptySquareSwitch</Command>
+      </Input>
+      <Input type="key" value="6">
+        <Command>Activate switch LeftSquareSwitch</Command>
+      </Input>
+      <Input type="key" value="7">
+        <Command>Activate switch RightSquareSwitch</Command>
+      </Input>
+      <Input type="key" value="8">
+        <Command>Activate switch FilledSquareSwitch</Command>
+      </Input>
+      <Input type="key" value="9">
+        <Command>Activate switch EmptyCircleSwitch</Command>
+      </Input>
+      <Input type="key" value="0">
+        <Command>Activate switch LeftCircleSwitch</Command>
+      </Input>
+      <Input type="key" value="[">
+        <Command>Activate switch RightCircleSwitch</Command>
+      </Input>
+      <Input type="key" value="]">
+        <Command>Activate switch FilledCircleSwitch</Command>
+      </Input>
+      <Input type="key" value="m">
+        <Command>Toggle MapOverview</Command>
+      </Input>
+    </Configuration>
   </Plugin>
   <Plugin implementation="RandomCommand" instance="PlayLiftClick" type="Utilities">
     <UsePlugin implementation="CommandRegistry" instance="SpindizzyCommands" socketid=""/>
     <Configuration>
-      <Command name="PlayLiftClick">
+      <Command name="LiftClick">
         <RandomCommand>Play Lift Click 1.ogg</RandomCommand>
         <RandomCommand>Play Lift Click 2.ogg</RandomCommand>
         <RandomCommand>Play Lift Click 3.ogg</RandomCommand>
@@ -263,21 +327,177 @@
     <UsePlugin implementation="SoundSupport" instance="SpindizzySounds" socketid=""/>
     <Configuration/>
   </Plugin>
-  <Plugin implementation="IntegerValueCommands" instance="TimerCommands" type="Utilities">
+  <Plugin implementation="SpindizzySwitches" instance="SpindizzySwitches" type="Utilities">
     <UsePlugin implementation="CommandRegistry" instance="SpindizzyCommands" socketid=""/>
-    <UsePlugin implementation="IntegerValue" instance="SpindizzyTimeLimit" socketid=""/>
     <Configuration>
-      <Command name="IncreaseTimeForJewel" value="8000"/>
+      <ResetSwitch>
+        <Command>Play Diamond None.ogg</Command>
+      </ResetSwitch>
+      <Switch name="FilledDiamondSwitch" type="primary">
+        <On>
+          <Command>Play Diamond Both.ogg</Command>
+          <Command>Enable Lifts DiamondBoth</Command>
+          <Command>Set Block Flag SwitchDiamondBoth</Command>
+        </On>
+        <Off>
+          <Command>Disable Lifts DiamondBoth</Command>
+          <Command>Unset Block Flag SwitchDiamondBoth</Command>
+        </Off>
+      </Switch>
+      <Switch name="LeftDiamondSwitch" type="primary">
+        <On>
+          <Command>Play Diamond Left.ogg</Command>
+          <Command>Enable Lifts DiamondLeft</Command>
+          <Command>Set Block Flag SwitchDiamondLeft</Command>
+        </On>
+        <Off>
+          <Command>Disable Lifts DiamondLeft</Command>
+          <Command>Unset Block Flag SwitchDiamondLeft</Command>
+        </Off>
+      </Switch>
+      <Switch name="RightDiamondSwitch" type="primary">
+        <On>
+          <Command>Play Diamond Right.ogg</Command>
+          <Command>Enable Lifts DiamondRight</Command>
+          <Command>Set Block Flag SwitchDiamondRight</Command>
+        </On>
+        <Off>
+          <Command>Disable Lifts DiamondRight</Command>
+          <Command>Unset Block Flag SwitchDiamondRight</Command>
+        </Off>
+      </Switch>
+      <Switch name="FilledSquareSwitch" type="primary">
+        <On>
+          <Command>Play Square Both.ogg</Command>
+          <Command>Enable Lifts SquareBoth</Command>
+          <Command>Set Block Flag SwitchSquareBoth</Command>
+        </On>
+        <Off>
+          <Command>Disable Lifts SquareBoth</Command>
+          <Command>Unset Block Flag SwitchSquareBoth</Command>
+        </Off>
+      </Switch>
+      <Switch name="LeftSquareSwitch" type="primary">
+        <On>
+          <Command>Play Square Left.ogg</Command>
+          <Command>Enable Lifts SquareLeft</Command>
+          <Command>Set Block Flag SwitchSquareLeft</Command>
+        </On>
+        <Off>
+          <Command>Disable Lifts SquareLeft</Command>
+          <Command>Unset Block Flag SwitchSquareLeft</Command>
+        </Off>
+      </Switch>
+      <Switch name="RightSquareSwitch" type="primary">
+        <On>
+          <Command>Play Square Right.ogg</Command>
+          <Command>Enable Lifts SquareRight</Command>
+          <Command>Set Block Flag SwitchSquareRight</Command>
+        </On>
+        <Off>
+          <Command>Disable Lifts SquareRight</Command>
+          <Command>Unset Block Flag SwitchSquareRight</Command>
+        </Off>
+      </Switch>
+      <Switch name="EmptySquareSwitch" type="primary">
+        <On>
+          <Command>Play Square None.ogg</Command>
+          <Command>Enable Lifts SquareNone</Command>
+          <Command>Set Block Flag SwitchSquareNone</Command>
+        </On>
+        <Off>
+          <Command>Disable Lifts SquareNone</Command>
+          <Command>Unset Block Flag SwitchSquareNone</Command>
+        </Off>
+      </Switch>
+      <Switch name="FilledCircleSwitch" type="secondary">
+        <On>
+          <Command>Play Circle Both.ogg</Command>
+          <Command>Enable Lifts CircleBoth</Command>
+          <Command>Set Block Flag SwitchCircleBoth</Command>
+        </On>
+        <Off>
+          <Command>Disable Lifts CircleBoth</Command>
+          <Command>Unset Block Flag SwitchCircleBoth</Command>
+        </Off>
+      </Switch>
+      <Switch name="LeftCircleSwitch" type="secondary">
+        <On>
+          <Command>Play Circle Left.ogg</Command>
+          <Command>Enable Lifts CircleLeft</Command>
+          <Command>Set Block Flag SwitchCircleLeft</Command>
+        </On>
+        <Off>
+          <Command>Disable Lifts CircleLeft</Command>
+          <Command>Unset Block Flag SwitchCircleLeft</Command>
+        </Off>
+      </Switch>
+      <Switch name="RightCircleSwitch" type="secondary">
+        <On>
+          <Command>Play Circle Right.ogg</Command>
+          <Command>Enable Lifts CircleRight</Command>
+          <Command>Set Block Flag SwitchCircleRight</Command>
+        </On>
+        <Off>
+          <Command>Disable Lifts CircleRight</Command>
+          <Command>Unset Block Flag SwitchCircleRight</Command>
+        </Off>
+      </Switch>
+      <Switch name="EmptyCircleSwitch" type="secondary">
+        <On>
+          <Command>Play Circle None.ogg</Command>
+          <Command>Enable Lifts CircleNone</Command>
+          <Command>Set Block Flag SwitchCircleNone</Command>
+        </On>
+        <Off>
+          <Command>Disable Lifts CircleNone</Command>
+          <Command>Unset Block Flag SwitchCircleNone</Command>
+        </Off>
+      </Switch>
+    </Configuration>
+  </Plugin>
+  <Plugin implementation="ToggleSwitches" instance="GameSwitches" type="Utilities">
+    <UsePlugin implementation="CommandRegistry" instance="SpindizzyCommands" socketid=""/>
+    <Configuration>
+      <Switch name="MapOverview">
+        <On>
+          <Command>Play Lift Click 1.ogg</Command>
+        </On>
+        <Off>
+          <Command>Play Lift Click 2.ogg</Command>
+        </Off>
+      </Switch>
     </Configuration>
   </Plugin>
   <Plugin implementation="DefaultZoneContext" instance="PlayerZoneContext" type="ZoneContext">
     <Configuration/>
   </Plugin>
+  <Plugin implementation="IntegerValueCommands" instance="TimerCommands" type="Utilities">
+    <UsePlugin implementation="CommandRegistry" instance="SpindizzyCommands" socketid=""/>
+    <UsePlugin implementation="IntegerValue" instance="SpindizzyTimeLimit" socketid=""/>
+    <Configuration>
+      <Command name="IncreaseTimeForJewel" value="12000"/>
+      <Command name="IncreaseTimeForZone" value="8000"/>
+    </Configuration>
+  </Plugin>
   <ElementSet instance="Blocks" type="SpindizzyBlocks">
     <UsePlugin implementation="CollidableSurfaceRegistry" instance="SpindizzySurfaces"/>
+    <UsePlugin implementation="CommandRegistry" instance="SpindizzyCommands"/>
     <UsePlugin implementation="SpindizzyTextureSetChanger" instance="PerZone"/>
     <UsePlugin implementation="SurfaceProcessor" instance="BlockSubtractor"/>
-    <Configuration/>
+    <Configuration>
+      <State>DiamondLeft</State>
+      <State>DiamondRight</State>
+      <State>DiamondBoth</State>
+      <State>SquareNone</State>
+      <State>SquareLeft</State>
+      <State>SquareRight</State>
+      <State>SquareBoth</State>
+      <State>CircleNone</State>
+      <State>CircleLeft</State>
+      <State>CircleRight</State>
+      <State>CircleBoth</State>
+    </Configuration>
   </ElementSet>
   <ElementSet instance="Enemies" type="SpindizzyEnemies">
     <UsePlugin implementation="3DModel" instance="Ball" socketid="0"/>
@@ -300,7 +520,7 @@
     <UsePlugin implementation="SpindizzyTextureSet" instance="C64Blue"/>
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext" socketid=""/>
     <Configuration>
-<!--      <LiftMovedCommand>PlayLiftClick</LiftMovedCommand>-->
+      <LiftMovedCommand>Random LiftClick</LiftMovedCommand>
     </Configuration>
   </ElementSet>
   <ElementSet instance="Player" type="SpindizzyGERALD">
@@ -312,8 +532,8 @@
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext"/>
     <Configuration/>
   </ElementSet>
-<!--  <ZoneRenderer type="Utilities" instance="ExploredZones" renderer="explored"/>-->
-  <ZoneRenderer/>
+  <ZoneRenderer type="Utilities" instance="ExploredZones" renderer="explored"/>
+<!--  <ZoneRenderer/>-->
   <Elements>
     <Element set="Player" type="">
       <Location x="-4" y="3" z="0"/>
@@ -3093,17 +3313,23 @@
       </Element>
       <Element set="Blocks" type="Plain">
         <Location x="6" y="4" z="-1"/>
-        <Size x="1" y="3" z="5"/>
+        <Size x="1" y="1" z="5"/>
+        <Slope NorthSouth="0" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="5" z="3"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="6" y="6" z="-1"/>
+        <Size x="1" y="1" z="5"/>
         <Slope NorthSouth="0" WestEast="1"/>
       </Element>
       <Element set="Blocks" type="Plain">
         <Location x="4" y="0" z="3"/>
         <Size x="1" y="2" z="1"/>
         <Slope NorthSouth="0" WestEast="1"/>
-      </Element>
-      <Element set="Blocks" type="Plain">
-        <Location x="6" y="5" z="3"/>
-        <Size x="1" y="1" z="-4"/>
       </Element>
       <Element set="Blocks" type="Plain">
         <Location x="4" y="4" z="-1"/>
@@ -3708,12 +3934,18 @@
       </Element>
       <Element set="Blocks" type="Plain">
         <Location x="5" y="2" z="-1"/>
-        <Size x="1" y="3" z="5"/>
+        <Size x="1" y="1" z="5"/>
         <Slope NorthSouth="0" WestEast="1"/>
       </Element>
       <Element set="Blocks" type="Plain">
         <Location x="5" y="3" z="3"/>
-        <Size x="1" y="1" z="-4"/>
+        <Size x="1" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="1"/>
+      </Element>
+      <Element set="Blocks" type="Plain">
+        <Location x="5" y="4" z="-1"/>
+        <Size x="1" y="1" z="5"/>
+        <Slope NorthSouth="0" WestEast="1"/>
       </Element>
       <Element set="Blocks" type="Plain">
         <Location x="5" y="1" z="-1"/>
@@ -14467,7 +14699,7 @@
       </Element>
     </Elements>
   </Zone>
-<!--  <Zone>
+  <Zone>
     <Plugins>
       <Plugin instance="Ball" type="3DModel"/>
       <Plugin instance="C64JewelModel" type="3DModel"/>
@@ -14564,7 +14796,7 @@
         <LiftProperties bottomDelay="0" downSpeed="750" topDelay="0" upSpeed="750"/>
       </Element>
     </Elements>
-  </Zone>-->
+  </Zone>
   <Zone>
     <Plugins>
       <Plugin instance="Ball" type="3DModel"/>
@@ -16516,7 +16748,7 @@
       </Element>
     </Elements>
   </Zone>
-<!--  <Zone>
+  <Zone>
     <Plugins>
       <Plugin instance="Ball" type="3DModel"/>
       <Plugin instance="C64JewelModel" type="3DModel"/>
@@ -16614,7 +16846,7 @@
         <LiftProperties bottomDelay="1500" downSpeed="750" topDelay="1500" upSpeed="750"/>
       </Element>
     </Elements>
-  </Zone>-->
+  </Zone>
   <Zone>
     <Plugins>
       <Plugin instance="Ball" type="3DModel"/>
@@ -25403,7 +25635,7 @@
       </Element>
     </Elements>
   </Zone>
-<!--  <Zone>
+  <Zone>
     <Plugins>
       <Plugin instance="Ball" type="3DModel"/>
       <Plugin instance="C64JewelModel" type="3DModel"/>
@@ -25574,7 +25806,7 @@
         <Location x="4" y="5" z="7"/>
       </Element>
     </Elements>
-  </Zone>-->
+  </Zone>
   <Zone>
     <Plugins>
       <Plugin instance="Ball" type="3DModel"/>
@@ -27776,7 +28008,7 @@
       </Element>
     </Elements>
   </Zone>
-<!--  <Zone>
+  <Zone>
     <Plugins>
       <Plugin instance="Ball" type="3DModel"/>
       <Plugin instance="C64JewelModel" type="3DModel"/>
@@ -27972,7 +28204,7 @@
         <LiftProperties bottomDelay="1500" downSpeed="750" topDelay="1500" upSpeed="750"/>
       </Element>
     </Elements>
-  </Zone>-->
+  </Zone>
   <Zone>
     <Plugins>
       <Plugin instance="Ball" type="3DModel"/>

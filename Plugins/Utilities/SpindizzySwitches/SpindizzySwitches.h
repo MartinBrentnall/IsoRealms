@@ -33,9 +33,11 @@ class SpindizzySwitches:public IUtilities {
   class ResetCommand:public IUserCommand {
     private:
     SpindizzySwitches* cParent;
+    std::vector<IUserCommand*> cResetCommands;
 
     public:
     ResetCommand(SpindizzySwitches*);
+    void setCommands(std::vector<IUserCommand*>);
 
     /***************************\
      * Implements IUserCommand *
@@ -52,6 +54,7 @@ class SpindizzySwitches:public IUtilities {
 
     public:
     SwitchCommand(SpindizzySwitches*, Switch*, bool);
+    SwitchCommand(SpindizzySwitches*, DOMNodeWrapper*);
     void deactivate();
 
     /***************************\
@@ -69,15 +72,22 @@ class SpindizzySwitches:public IUtilities {
   SwitchCommand* cActiveSwitchB;
   SwitchCommand** cNextSwitch;
 
+  std::vector<IUserCommand*> getCommands(DOMNodeWrapper*);
+  
   public:
   SpindizzySwitches();
 
   void addSwitch(const std::string&, bool);
 
+  /**********************\
+   * Implements IPlugin *
+  \**********************/
+  void load(DOMNodeWrapper*);
+  void save(DOMNodeWriter*);
+
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/
-  std::string getName();
   std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);

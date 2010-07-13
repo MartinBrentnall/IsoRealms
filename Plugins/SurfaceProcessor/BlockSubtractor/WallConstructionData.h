@@ -36,6 +36,8 @@ class WallConstructionData {
   WallConstructionData(WallColumn*);
   bool unite(WallColumn*);
 
+  int getWallBottom();
+  
   /**
    * Instruct the surface provider to create us a new wall surface based on our
    * construction data.

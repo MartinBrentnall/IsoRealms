@@ -24,18 +24,23 @@
 
 #include <IsoRealms/IZone.h>
 
+#include "../../Objectives/IObjectives.h"
 #include "../../ZoneContext/IZoneContext.h"
 
 #include "../ICollectables.h"
 
 class ZoneCollectables:public ICollectables,
+                       public IObjective,
                        public IZoneContextListener {
   private:
   IZoneContext* cZoneContext;
+  IObjectives* cObjectives;
   IZone* cEditingZone;
   IZone* cRuntimeZone;
   std::vector<PlugSocket*> cZoneContextSocket;
   std::map<IZone*, std::vector<ICollectable*>*> cCollectables;
+  unsigned int cCollectablesCount;
+  unsigned int cCollectedCount;
 
   public:
   ZoneCollectables();
@@ -44,12 +49,17 @@ class ZoneCollectables:public ICollectables,
    * Implements IZoneContextListener *
   \***********************************/
   void zoneContextChanged(IZone*);
+  
+  /*************************\
+   * Implements IObjective *
+  \*************************/
+  bool isMet();
 
   /**********************\
    * Implements IPlugin *
   \**********************/
   void notifyZoneAction(IZone*);
-  void initPlugin(IZone*);
+  void initPlugin(IZone*, unsigned int);
 
   /*****************************\
    * Implements IPluginSupport *

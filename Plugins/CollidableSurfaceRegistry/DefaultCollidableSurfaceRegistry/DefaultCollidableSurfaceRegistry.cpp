@@ -21,6 +21,7 @@ void DefaultCollidableSurfaceRegistry::registerWallSurface(ICollidableWallSurfac
 ICollisionData* DefaultCollidableSurfaceRegistry::getNextEvent(Vertex& start, Vertex& end) {
   std::map<IZone*, SurfaceCache*>::iterator i = cZoneSurfaceCaches.find(cRuntimeZone);
   if (i != cZoneSurfaceCaches.end()) {
+    std::cout << "   Finding next event..." << std::endl;
     return i->second->getNextEvent(start, end);
   }
   return NULL;
@@ -40,16 +41,12 @@ void DefaultCollidableSurfaceRegistry::notifyZoneAction(IZone* zone) {
   cEditingZone = zone;
 }
 
-void DefaultCollidableSurfaceRegistry::initPlugin(IZone* zone) {
+void DefaultCollidableSurfaceRegistry::initPlugin(IZone* zone, unsigned int pass) {
   cEditingZone = zone;
 }
 
 void DefaultCollidableSurfaceRegistry::zoneContextChanged(IZone* zone) {
   cRuntimeZone = zone;
-}
-
-std::string DefaultCollidableSurfaceRegistry::getName() {
-  return "Default Collidable Surface Registry";
 }
 
 std::vector<PlugSocket*> DefaultCollidableSurfaceRegistry::getPlugSockets() {

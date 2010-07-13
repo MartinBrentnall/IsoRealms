@@ -48,7 +48,6 @@ class SoundCommandSupport:public IUtilities,
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/
-  std::string getName();
   std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);

@@ -23,12 +23,6 @@
 
 class DummyPlugin:public virtual IPlugin {
   public:
-
-  /**********************\
-   * Implements IPlugin *
-  \**********************/
-  std::string getName();
-
   virtual ~DummyPlugin() {}
 };
 

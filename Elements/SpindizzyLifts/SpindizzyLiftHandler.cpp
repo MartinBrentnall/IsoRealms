@@ -42,6 +42,10 @@ void SpindizzyLiftHandler::resetLifts() {
   }
 }
 
+void SpindizzyLiftHandler::update(int ticks) {
+  // No action
+}
+
 void SpindizzyLiftHandler::updateRuntime(int ticks) {
   IZone* mZone = cSpindizzyLiftSet->getCurrentZone();
   // TODO: Dynamic casts are BAD

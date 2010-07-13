@@ -97,7 +97,7 @@ class PluginRegistry:public IPluginRegistry {
    * the specified zone.  It may be called multiple times depending on how many
    * initialization passes are required for the zone.
    */
-  void initPlugins(IZone*);
+  void initPlugins(IZone*, unsigned int);
 
   /**
    * This function is called immediately prior to rendering a zone.  It allows

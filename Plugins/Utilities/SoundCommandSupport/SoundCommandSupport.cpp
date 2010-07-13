@@ -25,10 +25,6 @@ SoundCommandSupport::SoundCommandSupport() {
   cSockets.push_back(new PlugSocket("SoundSupport"));
 }
 
-std::string SoundCommandSupport::getName() {
-  return "Sound Command Support";
-}
-
 std::vector<PlugSocket*> SoundCommandSupport::getPlugSockets() {
   return cSockets;
 }

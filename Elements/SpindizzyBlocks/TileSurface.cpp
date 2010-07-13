@@ -33,7 +33,7 @@ TileSurface::TileSurface(ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet
 
 int TileSurface::getSurfaceCellHeight(int x, int y) {
   return abs(((cWestEastSlope   >= 0 ? cWest  : cEast)  - x) * cWestEastSlope)
-       + abs(((cNorthSouthSlope >= 0 ? cNorth : cSouth) - y) * cNorthSouthSlope)
+       + abs(((cNorthSouthSlope >= 0 ? cSouth : cNorth) - y) * cNorthSouthSlope)
        + cHeight;
 }
 
@@ -79,14 +79,14 @@ void TileSurface::render() {
 
   switch (cFacing) {
     case ITileSurface::UP: {
-      mTexture->texCoord2f(cEast + 1, cNorth + 1); glVertex3f(xe, ys, xsye);
+/*      mTexture->texCoord2f(cEast + 1, cNorth + 1); glVertex3f(xe, ys, xsye);
       mTexture->texCoord2f(cEast + 1, cSouth    ); glVertex3f(xe, ye, xeye);
       mTexture->texCoord2f(cWest,     cSouth    ); glVertex3f(xs, ye, xeys);
-      mTexture->texCoord2f(cWest,     cNorth + 1); glVertex3f(xs, ys, xsys);
-/*      glColor3f(0.0, 1.0, 0.0); mTexture->texCoord2f(cEast + 1, cNorth + 1); glVertex3f(xe, ys, xsye);
+      mTexture->texCoord2f(cWest,     cNorth + 1); glVertex3f(xs, ys, xsys);*/
+      glColor3f(0.0, 1.0, 0.0); mTexture->texCoord2f(cEast + 1, cNorth + 1); glVertex3f(xe, ys, xsye);
       glColor3f(1.0, 1.0, 0.0); mTexture->texCoord2f(cEast + 1, cSouth);     glVertex3f(xe, ye, xeye);
       glColor3f(1.0, 0.0, 0.0); mTexture->texCoord2f(cWest,     cSouth);     glVertex3f(xs, ye, xeys);
-      glColor3f(0.0, 0.0, 1.0); mTexture->texCoord2f(cWest,     cNorth + 1);  glVertex3f(xs, ys, xsys);*/
+      glColor3f(0.0, 0.0, 1.0); mTexture->texCoord2f(cWest,     cNorth + 1);  glVertex3f(xs, ys, xsys);
       break;
     }
 
@@ -196,7 +196,7 @@ ICollisionData* TileSurface::getRollingEvent(Vertex& start, Vertex& end) {
   float mGradient;
   Vertex* mLeavePoint = getBoundaryCrossingPoint(start, end, &mGradient);
   if (mLeavePoint != NULL) {
-    SurfaceCollisionEvent* mEvent = new SurfaceCollisionEvent();
+    SurfaceCollisionEvent* mEvent = new SurfaceCollisionEvent(this);
 //    mImpactPoint->setRelocationPoint(*mLeavePoint);
     return mEvent;
   }
@@ -206,6 +206,17 @@ ICollisionData* TileSurface::getRollingEvent(Vertex& start, Vertex& end) {
 }
 
 ICollisionData* TileSurface::getCollision(Vertex& start, Vertex& end) {
+  if (!contains(start)) {
+    float mGradient;
+    Vertex* mEnterPoint = getBoundaryCrossingPoint(start, end, &mGradient);
+    if (mEnterPoint != NULL) {
+      SurfaceCollisionEvent* mEvent = new SurfaceCollisionEvent(this);
+//      mImpactPoint->setRelocationPoint(*mLeavePoint);
+      return mEvent;
+    }
+  }
+  
+  // No event
   return NULL;
 }
 

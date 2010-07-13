@@ -27,6 +27,7 @@ AddIntegerCommand::AddIntegerCommand(std::string name, IIntegerValue* variable, 
 AddIntegerCommand::AddIntegerCommand(DOMNodeWrapper* node, IIntegerValue* variable) {
   cName = node->getAttribute("name");
   cValue = node->getIntegerAttribute("value");
+  std::cout << "               Creating commnad \"" << cName << "\"..." << std::endl;
   cVariable = variable;
 }
 

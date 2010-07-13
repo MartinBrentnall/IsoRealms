@@ -239,6 +239,7 @@ class AbstractSpindizzyBlock:public Element<ISpindizzyBlockSet, ISpindizzyBlockF
   std::vector<ITileSurface*> getTileSurfaces(ITileSurface::FaceDirection);
   std::vector<IWallSurface*> getWallSurfaces(int, IWallSurface::FaceDirection);
   BlockArea* getCoverage();
+  bool isGhost();
   void setDirty();
 };
 

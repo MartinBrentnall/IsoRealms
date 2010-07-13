@@ -22,8 +22,13 @@
 #include "../../Plugins/CollidableSurfaceRegistry/ICollisionData.h"
 
 class SurfaceCollisionEvent:public ICollisionData {
+  private:
+  IRollableSurface* cSurface;
+  
   public:
-
+  SurfaceCollisionEvent(IRollableSurface*);
+    
+  IRollableSurface* getSurface();
 };
 
 #endif

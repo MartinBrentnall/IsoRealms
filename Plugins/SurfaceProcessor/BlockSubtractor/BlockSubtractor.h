@@ -136,11 +136,6 @@ class BlockSubtractor:public ISurfaceProcessor {
   IWallSurface* findSurfaceAt(std::vector<IWallSurface*>, int, int);
   public:
 
-  /*****************************\
-   * Implements IPluginSupport *
-  \*****************************/
-  std::string getName();
-
   /********************************\
    * Implements ISurfaceProcessor *
   \********************************/
@@ -155,7 +150,7 @@ class BlockSubtractor:public ISurfaceProcessor {
    * Implements IPlugin *
   \**********************/
   void notifyZoneAction(IZone*);
-  void initPlugin(IZone*);
+  void initPlugin(IZone*, unsigned int);
 };
 
 #endif

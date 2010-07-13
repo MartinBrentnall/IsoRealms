@@ -26,12 +26,12 @@
 class TileColumn {
   private:
   std::vector<TileBlock*> cTileBlocks;
+  std::vector<TileBlock*> cGhostTileBlocks;
 
   public:
-  void addTileBlock(TileBlock*);
+  void addTileBlock(TileBlock*, bool);
   bool isBottomTileVisible(ISurfaceProvider*);
   bool isTopTileVisible(ISurfaceProvider*);
-  
   void debug();
 };
 

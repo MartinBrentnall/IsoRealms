@@ -3,15 +3,19 @@
 ExploredZones::ExploredZones() {
   assignDummyPlugin(&cCommandRegistry, "CommandRegistry");
   assignDummyPlugin(&cZoneContext, "ZoneContext");
+  assignDummyPlugin(&cObjectives, "Objectives");
   cSockets.push_back(new PlugSocket("CommandRegistry"));
   cSockets.push_back(new PlugSocket("ZoneContext"));
+  cSockets.push_back(new PlugSocket("Objectives"));
   cZoneCount = 0;
   cExploredZoneRenderer = new ExploredZoneRenderer(this);
   cMapOverviewRenderer = new MapOverviewRenderer(this);
 }
 
-void ExploredZones::initPlugin(IZone* zone) {
-  cZoneCount++;
+void ExploredZones::initPlugin(IZone* zone, unsigned int pass) {
+  if (pass == 0) {
+    cZoneCount++;
+  }
 }
 
 void ExploredZones::zoneContextChanged(IZone* zone) {
@@ -20,7 +24,8 @@ void ExploredZones::zoneContextChanged(IZone* zone) {
     for (unsigned int i = 0; i < cZoneExploredCommands.size(); i++) {
       cZoneExploredCommands[i]->execute();
     }
-    if (cExploredZones.size() == cZoneCount) {
+    cObjectives->check();
+    if (isMet()) {
       for (unsigned int i = 0; i < cAllZonesExploredCommands.size(); i++) {
         cAllZonesExploredCommands[i]->execute();
       }
@@ -41,6 +46,12 @@ std::vector<PlugSocket*> ExploredZones::getPlugSockets() {
 void ExploredZones::setPlugin(PlugSocket* socket, IPlugin* plugin) {
   if (socket->getType() == "CommandRegistry") {
     assignPlugin(plugin, &cCommandRegistry, *socket);
+  } else if (socket->getType() == "Objectives") {
+    IObjectives* mPreviousObjectives = cObjectives;
+    if (assignPlugin(plugin, &cObjectives, *socket)) {
+      mPreviousObjectives->unregisterObjective(this);
+      cObjectives->registerObjective(this);
+    }
   } else if (socket->getType() == "ZoneContext") {
     IZoneContext* mPreviousZoneContext = cZoneContext;
     if (assignPlugin(plugin, &cZoneContext, *socket)) {
@@ -54,6 +65,7 @@ void ExploredZones::setPlugin(PlugSocket* socket, IPlugin* plugin) {
 
 IPlugin* ExploredZones::getPlugin(PlugSocket* socket) {
   if (socket->getType() == "CommandRegistry") {return cCommandRegistry;}
+  if (socket->getType() == "Objectives")      {return cObjectives;}
   if (socket->getType() == "ZoneContext")     {return cZoneContext;}
   return NULL;
 }
@@ -64,7 +76,10 @@ ExploredZones::ExploredZoneRenderer::ExploredZoneRenderer(ExploredZones* parent)
 
 void ExploredZones::ExploredZoneRenderer::render(std::vector<IZone*>& zones) {
   for (std::set<IZone*>::iterator i = cParent->cExploredZones.begin(); i != cParent->cExploredZones.end(); ++i) {
-    (*i)->render();
+    (*i)->renderStatic();
+  }
+  for (std::set<IZone*>::iterator i = cParent->cExploredZones.begin(); i != cParent->cExploredZones.end(); ++i) {
+    (*i)->renderDynamic();
   }
 }
 
@@ -107,6 +122,41 @@ void ExploredZones::MapOverviewRenderer::render(std::vector<IZone*>& zones) {
     glVertex3f(xs, ys, z); glVertex3f(xs, ys, zs);
     glEnd();
   }
+}
+
+void ExploredZones::save(DOMNodeWriter* node) {
+  for (unsigned int i = 0; i < cZoneExploredCommands.size(); i++) {
+    DOMNodeWriter* mCommandNode = node->addBranch("ZoneExploredCommand");
+    std::string mCommandName = cZoneExploredCommands[i]->getCommandName();
+    mCommandNode->addText(mCommandName);
+  }
+  for (unsigned int i = 0; i < cAllZonesExploredCommands.size(); i++) {
+    DOMNodeWriter* mCommandNode = node->addBranch("AllZonesExploredCommand");
+    std::string mCommandName = cAllZonesExploredCommands[i]->getCommandName();
+    mCommandNode->addText(mCommandName);
+  }
+}
+
+void ExploredZones::load(DOMNodeWrapper* node) {
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "ZoneExploredCommand") {
+      std::string mCommandName = mNode->getStringValue();
+      IUserCommand* mCommand = cCommandRegistry->getCommand(mCommandName);
+      cZoneExploredCommands.push_back(mCommand);
+    } else if (mValueAsString == "AllZonesExploredCommand") {
+      std::string mCommandName = mNode->getStringValue();
+      IUserCommand* mCommand = cCommandRegistry->getCommand(mCommandName);
+      cAllZonesExploredCommands.push_back(mCommand);
+    } else {
+      // TODO: Throw something!
+    }
+  }
+}
+
+bool ExploredZones::isMet() {
+  return cExploredZones.size() == cZoneCount;
 }
 
 extern "C" IPlugin* create() {

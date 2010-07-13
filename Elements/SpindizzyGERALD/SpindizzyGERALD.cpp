@@ -210,7 +210,7 @@ SDLKey SpindizzyGERALD::rotateKey(const SDLKey& key) {
 
 void SpindizzyGERALD::update(int ticks) {
   float mAcceleration = (KeyStates::isKeyDown(SDLK_TAB) ? CRAFT_ACCELERATION * 2.0f : CRAFT_ACCELERATION) * ticks;
-//   if (cCurrentSurface != NULL) {
+  if (cCurrentSurface != NULL) {
     if (KeyStates::isKeyDown(rotateKey(cWestKey))) {
       cMomentum.x -= mAcceleration;
     }
@@ -226,9 +226,9 @@ void SpindizzyGERALD::update(int ticks) {
     float mResistance = pow(0.999f, ticks);
     cMomentum.x *= mResistance;
     cMomentum.y *= mResistance;
-/*  } else {
+  } else {
     cMomentum.z += GRAVITY_STRENGTH;
-  }*/
+  }
   Vertex mNewLocation(cLocation.x + cMomentum.x, cLocation.y + cMomentum.y, cLocation.z + cMomentum.z);
   if (mNewLocation.z < cMapBottom) {
     cLocation.x = cRespawnX;
@@ -247,6 +247,7 @@ void SpindizzyGERALD::update(int ticks) {
     if (cCurrentSurface != NULL) {
       ICollisionData* mCollision = cCurrentSurface->getRollingEvent(cLocation, mNewLocation);
       if (mCollision != NULL) {
+        std::cout << " - - - We left: " << mCollision->getSurface() << std::endl;
         cCurrentSurface = NULL;
         // TODO: Test from this point on
       }
@@ -254,7 +255,10 @@ void SpindizzyGERALD::update(int ticks) {
     if (cCurrentSurface == NULL) {
       ICollisionData* mCollision = cCollidableSurfaceRegistry->getNextEvent(cLocation, mNewLocation);
       if (mCollision != NULL) {
-        // TODO:
+        cCurrentSurface = mCollision->getSurface();
+        // TODO: Respawn surface should only be for normal surfaces!
+        cRespawnSurface = cCurrentSurface;
+        std::cout << " + + + We entd: " << cCurrentSurface << std::endl;
       }
     }
     if (cCurrentSurface != NULL) {
@@ -267,7 +271,11 @@ void SpindizzyGERALD::update(int ticks) {
     }
     cLocation.x = mNewLocation.x;
     cLocation.y = mNewLocation.y;
-    cLocation.z = mNewLocation.z;
+    if (cCurrentSurface == NULL) {
+      cLocation.z = mNewLocation.z;
+    } else {
+      cLocation.z = cCurrentSurface->getHeightAt(cLocation.x, cLocation.y);
+    }
   }
 }
 

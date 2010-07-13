@@ -73,6 +73,7 @@ class SpindizzyWater:public Element<ISpindizzyBlockSet, ISpindizzyBlockFactory>,
   std::vector<IWallSurface*> getWallSurfaces(int, IWallSurface::FaceDirection);
   IWallSurface* createSubSurface(int, int, IWallSurface::FaceDirection, int, int, int, int, int);
   BlockArea* getCoverage();
+  bool isGhost();
   void setDirty();
 };
 

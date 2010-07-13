@@ -18,7 +18,7 @@
  */
 #include "SpindizzyLiftFactory.h"
 
-SpindizzyLiftFactory::SpindizzyLiftFactory(ISpindizzyLiftSet* elementSet, ISpindizzyTextureSet::TextureType texture, SpindizzyLiftProperties* properties, const std::string& liftTypeName) : ISpindizzyLiftFactory(elementSet) {
+SpindizzyLiftFactory::SpindizzyLiftFactory(ISpindizzyLiftSet* elementSet, ISpindizzyTextureSet::TextureType texture, SpindizzyLiftProperties* properties, bool active, const std::string& liftTypeName) : ISpindizzyLiftFactory(elementSet) {
   cLiftTypeName = liftTypeName;
   cProperties = properties;
   cTexture = texture;
@@ -28,7 +28,7 @@ SpindizzyLiftFactory::SpindizzyLiftFactory(ISpindizzyLiftSet* elementSet, ISpind
   cSampleLift = new SpindizzyLift(this, &mIdentityLocation, NULL, properties, 0, 0);
   cSampleVisualElements = cSampleLift->getVisualElements();
   cConfigurationComponent = NULL;
-  cState = false;
+  cState = active;
   cLiftCommands.push_back(new LiftCommand(this, false));
   cLiftCommands.push_back(new LiftCommand(this, true));
 }
@@ -55,7 +55,7 @@ void SpindizzyLiftFactory::LiftCommand::execute() {
 }
 
 std::string SpindizzyLiftFactory::LiftCommand::getCommandName() {
-  return (cTargetState ? std::string("Enable") : std::string("Disable")) + " " + cParent->cLiftTypeName;
+  return (cTargetState ? std::string("Enable") : std::string("Disable")) + " Lifts " + cParent->cLiftTypeName;
 }
 
 IElement* SpindizzyLiftFactory::getElement(DOMNodeWrapper* node, BlockLocation* relative, IElementContainer* elementContainer) {

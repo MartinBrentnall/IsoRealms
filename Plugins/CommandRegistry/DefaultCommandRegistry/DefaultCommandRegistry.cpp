@@ -19,31 +19,28 @@
 #include "DefaultCommandRegistry.h"
 
 void DefaultCommandRegistry::registerCommand(IUserCommand* command) {
-  // TODO: Shouldn't permit multiple commands of same name.
-  cCommands.push_back(command);
+  std::string mCommandName = command->getCommandName();
+  CommandProxy* mCommandProxy = getCommandProxy(mCommandName);
+  mCommandProxy->setUserCommand(command);
+}
+
+CommandProxy* DefaultCommandRegistry::getCommandProxy(const std::string& name) {
+  CommandProxy* mCommandProxy = cCommands[name];
+  if (mCommandProxy == NULL) {
+    mCommandProxy = new CommandProxy();
+    cCommands[name] = mCommandProxy;
+  }
+  return mCommandProxy;
 }
 
 void DefaultCommandRegistry::unregisterCommand(IUserCommand* command) {
-  for (unsigned int i = 0; i < cCommands.size(); i++) {
-    if (cCommands[i] == command) {
-      cCommands.erase(cCommands.begin() + i);
-      return;
-    }
-  }
-  // TODO: Throw
+  std::string mCommandName = command->getCommandName();
+  CommandProxy* mCommandProxy = getCommandProxy(mCommandName);
+  mCommandProxy->setUserCommand(NULL);
 }
 
 IUserCommand* DefaultCommandRegistry::getCommand(const std::string& commandName) {
-  for (unsigned int i = 0; i < cCommands.size(); i++) {
-    if (cCommands[i]->getCommandName() == commandName) {
-      return cCommands[i];
-    }
-  }
-  return NULL;
-}
-
-std::string DefaultCommandRegistry::getName() {
-  return "Default Command Registry";
+  return getCommandProxy(commandName);
 }
 
 extern "C" IPlugin* create() {

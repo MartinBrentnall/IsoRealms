@@ -111,7 +111,7 @@ SpindizzyLift::LiftValues SpindizzyLift::getZLocationAfter(int milliseconds) {
     while (milliseconds > 0) {
       switch (mLift.cState) {
         case SpindizzyLift::MOVING_UP: {
-          float mToMove = milliseconds * cUpSpeed / 1000000.0f;
+          float mToMove = milliseconds * 1.0f / cUpSpeed;
           mLift.cZ += mToMove;
           if (mLift.cZ > cTop) {
             mLift.cState = SpindizzyLift::PAUSED_TOP;
@@ -128,7 +128,7 @@ SpindizzyLift::LiftValues SpindizzyLift::getZLocationAfter(int milliseconds) {
         }
   
         case SpindizzyLift::MOVING_DOWN: {
-          float mToMove = milliseconds * cDownSpeed / 1000000.0f;
+          float mToMove = milliseconds * 1.0f / cDownSpeed;
           mLift.cZ -= mToMove;
           if (mLift.cZ < cBottom) {
             mLift.cState = SpindizzyLift::PAUSED_BOTTOM;

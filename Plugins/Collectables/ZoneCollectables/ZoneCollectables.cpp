@@ -19,8 +19,12 @@
 #include "ZoneCollectables.h"
 
 ZoneCollectables::ZoneCollectables() {
+  assignDummyPlugin(&cObjectives, "Objectives");
   assignDummyPlugin(&cZoneContext, "ZoneContext");
+  cZoneContextSocket.push_back(new PlugSocket("Objectives"));
   cZoneContextSocket.push_back(new PlugSocket("ZoneContext"));
+  cCollectablesCount = 0;
+  cCollectedCount = 0;
 }
 
 std::string ZoneCollectables::getName() {
@@ -32,7 +36,13 @@ std::vector<PlugSocket*> ZoneCollectables::getPlugSockets() {
 }
 
 void ZoneCollectables::setPlugin(PlugSocket* socket, IPlugin* plugin) {
-  if (socket->getType() == "ZoneContext") {
+  if (socket->getType() == "Objectives") {
+    IObjectives* mPreviousObjectives = cObjectives;
+    if (assignPlugin(plugin, &cObjectives, *socket)) {
+      mPreviousObjectives->unregisterObjective(this);
+      cObjectives->registerObjective(this);
+    }
+  } else if (socket->getType() == "ZoneContext") {
     IZoneContext* mPreviousZoneContext = cZoneContext;
     if (assignPlugin(plugin, &cZoneContext, *socket)) {
       mPreviousZoneContext->removeZoneContextListener(this);
@@ -57,7 +67,7 @@ void ZoneCollectables::notifyZoneAction(IZone* zone) {
   cEditingZone = zone;
 }
 
-void ZoneCollectables::initPlugin(IZone* zone) {
+void ZoneCollectables::initPlugin(IZone* zone, unsigned int pass) {
   cEditingZone = zone;
 }
 
@@ -67,7 +77,8 @@ void ZoneCollectables::registerCollectable(ICollectable* collectable) {
     mZoneCollectables = new std::vector<ICollectable*>();
     cCollectables[cEditingZone] = mZoneCollectables;
   }
-  mZoneCollectables->push_back(collectable);  
+  mZoneCollectables->push_back(collectable);
+  cCollectablesCount++;
 }
 
 void ZoneCollectables::collect(ICollector* collector, Vertex& start, Vertex& end) {
@@ -77,7 +88,9 @@ void ZoneCollectables::collect(ICollector* collector, Vertex& start, Vertex& end
       for (unsigned int j = 0; j < i->second->size(); j++) {
         if ((*i->second)[j]->isCollected(start, end)) {
           collector->collected((*i->second)[j]);
-          // TODO: Remove collectable?
+          cCollectedCount++;
+          cObjectives->check();
+          // TODO: Remove collectable.
         }
       }
     }
@@ -92,6 +105,10 @@ void ZoneCollectables::reinitialise() {
     delete i->second;
   }
   cCollectables.clear();
+}
+
+bool ZoneCollectables::isMet() {
+  return cCollectedCount == cCollectablesCount;
 }
 
 extern "C" IPlugin* create() {

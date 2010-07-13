@@ -26,7 +26,7 @@ void IPlugin::notifyZoneAction(IZone*) {
   // Nothing to do.
 }
 
-void IPlugin::initPlugin(IZone*) {
+void IPlugin::initPlugin(IZone*, unsigned int) {
   // Nothing to do.
 }
 

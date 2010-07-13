@@ -221,8 +221,11 @@ void Zone::renderEditing() {
   glCallList(cEditingDisplayList);
 }
 
-void Zone::render() {
+void Zone::renderStatic() {
   glCallList(cDisplayList);
+}
+
+void Zone::renderDynamic() {
   for (unsigned int i = 0; i < cElementHandlers.size(); i++) {
     cElementHandlers[i]->render();
   }

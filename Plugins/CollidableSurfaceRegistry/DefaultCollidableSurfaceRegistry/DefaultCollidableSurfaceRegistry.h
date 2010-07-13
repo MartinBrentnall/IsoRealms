@@ -60,12 +60,11 @@ class DefaultCollidableSurfaceRegistry:public ICollidableSurfaceRegistry,
    * Implements IPlugin *
   \**********************/
   void notifyZoneAction(IZone*);
-  void initPlugin(IZone*);
+  void initPlugin(IZone*, unsigned int);
 
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/
-  std::string getName();
   std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);

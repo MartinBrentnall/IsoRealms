@@ -30,6 +30,7 @@ add_library(Elements_SpindizzyBlocks MODULE
   SpindizzyTrampolineBlock.cpp
   SpindizzyWater.cpp
   SpindizzyWaterFactory.cpp
+  SurfaceCollisionEvent.cpp
   TileSplitSurface.cpp
   TileSurface.cpp
   WallSurface.cpp

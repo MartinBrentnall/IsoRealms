@@ -19,14 +19,18 @@
 #ifndef DEFAULT_COMMAND_REGISTRY_H
 #define DEFAULT_COMMAND_REGISTRY_H
 
-#include <vector>
+#include <map>
 
 #include "../ICommandRegistry.h"
 
+#include "CommandProxy.h"
+
 class DefaultCommandRegistry:public ICommandRegistry {
   private:
-  std::vector<IUserCommand*> cCommands;
+  std::map<std::string, CommandProxy*> cCommands;
 
+  CommandProxy* getCommandProxy(const std::string&);
+  
   public:
 
   /*******************************\
@@ -35,11 +39,6 @@ class DefaultCommandRegistry:public ICommandRegistry {
   void registerCommand(IUserCommand*);
   void unregisterCommand(IUserCommand*);
   IUserCommand* getCommand(const std::string&);
-
-  /*****************************\
-   * Implements IPluginSupport *
-  \*****************************/
-  std::string getName();
 };
 
 #endif

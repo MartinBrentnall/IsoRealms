@@ -26,11 +26,36 @@
 
 class RandomCommand:public IUtilities {
   private:
+  class ARandomCommand:public IUserCommand {
+    private:
+    std::string cName;
+    std::vector<IUserCommand*> cCommands;
+    
+    public:
+    ARandomCommand(const std::string&, std::vector<IUserCommand*>);
+    
+    /***************************\
+     * Implements IUserCommand *
+    \***************************/
+    void execute();
+    std::string getCommandName();
+  };
+    
   ICommandRegistry* cCommandRegistry;
+  std::vector<PlugSocket*> cCommandRegistrySocket;
   std::vector<IUserCommand*> cRandomCommands;
   
+  std::vector<IUserCommand*> getCommands(DOMNodeWrapper*);
+
   public:
-    
+  RandomCommand();
+  
+  /**********************\
+   * Implements IPlugin *
+  \**********************/
+  void load(DOMNodeWrapper*);
+  void save(DOMNodeWriter*);
+
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/

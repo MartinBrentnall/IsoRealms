@@ -63,6 +63,8 @@ class ISurfaceProvider {
 
   virtual IWallSurface* createSubSurface(int, int, IWallSurface::FaceDirection, int, int, int, int, int) = 0;
 
+  virtual bool isGhost() = 0;
+  
   /**
    * Signal to the element of the provider that it needs reinitialization.
    */

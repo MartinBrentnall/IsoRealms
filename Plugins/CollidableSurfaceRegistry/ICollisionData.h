@@ -19,8 +19,11 @@
 #ifndef I_COLLISION_DATA_H
 #define I_COLLISION_DATA_H
 
+class IRollableSurface;
+
 class ICollisionData {
   public:
+  virtual IRollableSurface* getSurface() = 0;
 };
 
 #endif

@@ -74,7 +74,7 @@ class SpindizzyLiftFactory:public ISpindizzyLiftFactory {
   };
   
   public:
-  SpindizzyLiftFactory(ISpindizzyLiftSet*, ISpindizzyTextureSet::TextureType, SpindizzyLiftProperties*, const std::string& liftTypeName);
+  SpindizzyLiftFactory(ISpindizzyLiftSet*, ISpindizzyTextureSet::TextureType, SpindizzyLiftProperties*, bool, const std::string& liftTypeName);
 
   void setTextureSet(ISpindizzyTextureSet*);
   std::vector<IUserCommand*> getLiftCommands();  

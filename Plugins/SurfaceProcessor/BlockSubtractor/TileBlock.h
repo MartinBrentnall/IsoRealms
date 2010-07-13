@@ -39,6 +39,7 @@ class TileBlock {
   bool isAddition();
   TileBlock* split(TileBlock&);
   bool merge(TileBlock&);
+  bool subtractAsGhost(TileBlock&);
   
   ISurfaceProvider* getTopSurfaceProvider();
   ISurfaceProvider* getBottomSurfaceProvider();

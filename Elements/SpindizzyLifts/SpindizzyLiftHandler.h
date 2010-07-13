@@ -37,9 +37,10 @@ class SpindizzyLiftHandler:public DefaultElementHandler<SpindizzyLift> {
   public:
   SpindizzyLiftHandler(ISpindizzyLiftSet*, IElementContainer*);
 
-  void elementAdded(SpindizzyLift* lift);
+  void elementAdded(SpindizzyLift*);
   void render();
-  void updateRuntime(int ticks);
+  void update(int);
+  void updateRuntime(int);
 };
 
 #endif

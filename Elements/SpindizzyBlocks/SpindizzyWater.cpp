@@ -33,6 +33,10 @@ SpindizzyWater::SpindizzyWater(ISpindizzyBlockFactory* elementFactory, BlockLoca
                               (endLocation->z <= startLocation->z ? endLocation->z : startLocation->z) - 1);
 }
 
+bool SpindizzyWater::isGhost() {
+  return true;
+}
+
 void SpindizzyWater::setDirty() {
   signalElementDirty();
 }
@@ -79,6 +83,7 @@ std::vector<IInteractiveElement*> SpindizzyWater::getInteractiveElements() {
 }
 
 ISpindizzyTileSurface* SpindizzyWater::createSubSurface(ITileSurface::FaceDirection facing, int north, int east, int south, int west) {
+//  return new TileSurface(cSpindizzyTextureSet, ISpindizzyTextureSet::WATER, north, east, south, west, cStartLocation.z, 0, 0, facing/*, TODO:CONDITIONAL  mSurfaceCondition*/);
   return new TileSurface(cSpindizzyTextureSet, ISpindizzyTextureSet::WATER, north, east, south, west, facing == ITileSurface::UP ? cStartLocation.z : cEndLocation.z, 0, 0, facing/*, TODO:CONDITIONAL  mSurfaceCondition*/);
 }
 

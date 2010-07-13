@@ -10,14 +10,17 @@
 #include "../IUtilities.h"
 
 #include "../../CommandRegistry/ICommandRegistry.h"
+#include "../../Objectives/IObjectives.h"
 #include "../../ZoneContext/IZoneContextListener.h"
 #include "../../ZoneContext/IZoneContext.h"
 
 class ExploredZones:public IUtilities,
-                    public IZoneContextListener {
+                    public IZoneContextListener,
+                    public IObjective {
   private:
   IZoneContext* cZoneContext;
   ICommandRegistry* cCommandRegistry;
+  IObjectives* cObjectives;
   std::set<IZone*> cExploredZones;
   unsigned int cZoneCount;
   std::vector<PlugSocket*> cSockets;
@@ -58,9 +61,11 @@ class ExploredZones:public IUtilities,
   /**********************\
    * Implements IPlugin *
   \**********************/
-  void initPlugin(IZone*);
+  void initPlugin(IZone*, unsigned int);
   IZoneRenderer* getZoneRenderer(const std::string&);
-
+  void save(DOMNodeWriter*);
+  void load(DOMNodeWrapper*);
+  
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/
@@ -72,6 +77,11 @@ class ExploredZones:public IUtilities,
    * Implements IZoneContextListener *
   \***********************************/
   void zoneContextChanged(IZone*);
+  
+  /*************************\
+   * Implements IObjective *
+  \*************************/
+  bool isMet();
 };
 
 #endif

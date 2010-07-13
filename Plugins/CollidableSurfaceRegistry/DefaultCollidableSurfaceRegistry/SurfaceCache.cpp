@@ -5,6 +5,12 @@ void SurfaceCache::addRollableSurface(IRollableSurface* surface) {
 }
 
 ICollisionData* SurfaceCache::getNextEvent(Vertex& start, Vertex& end) {
+  for (unsigned int i = 0; i < cRollableSurfaces.size(); i++) {
+    ICollisionData* mEvent = cRollableSurfaces[i]->getCollision(start, end);
+    if (mEvent != NULL) {
+      return mEvent;
+    }
+  }
   return NULL;
 }
 

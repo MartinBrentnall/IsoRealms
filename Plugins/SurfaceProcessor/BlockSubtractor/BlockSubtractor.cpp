@@ -22,7 +22,7 @@ void BlockSubtractor::notifyZoneAction(IZone* zone) {
   cCache.setZone(zone);
 }
 
-void BlockSubtractor::initPlugin(IZone* zone) {
+void BlockSubtractor::initPlugin(IZone* zone, unsigned int pass) {
   cCache.setZone(zone);
 }
 
@@ -70,7 +70,8 @@ bool BlockSubtractor::isSurfaceTileVisible(ISurfaceProvider* provider, int x, in
   for (unsigned int i = 0; i < mSurfaceProviders.size(); i++) {
     std::vector<ITileSurface*> mTopSurfaces    = mSurfaceProviders[i]->getTileSurfaces(ITileSurface::UP);
     std::vector<ITileSurface*> mBottomSurfaces = mSurfaceProviders[i]->getTileSurfaces(ITileSurface::DOWN);
-    ITileSurface* mTopSurface    = getSurfaceAt(mTopSurfaces,    x, y);
+    bool mGhost = mSurfaceProviders[i]->isGhost();
+    ITileSurface* mTopSurface = getSurfaceAt(mTopSurfaces, x, y);
     if (mTopSurface != NULL) {
       ITileSurface* mBottomSurface = getSurfaceAt(mBottomSurfaces, x, y);
       int mTop = mTopSurface->getSurfaceCellHeight(x, y);
@@ -78,7 +79,8 @@ bool BlockSubtractor::isSurfaceTileVisible(ISurfaceProvider* provider, int x, in
       int mBottom = mBottomSurface->getSurfaceCellHeight(x, y);
       bool mBottomExtended = mBottomSurface->getSurfaceCellElevation(x, y) != 0;
       TileBlock* mTileBlock = new TileBlock(mSurfaceProviders[i], mTop, mBottom, mTopExtended, mBottomExtended);
-      mTileColumn.addTileBlock(mTileBlock);
+      mTileColumn.addTileBlock(mTileBlock, mGhost);
+//      mTileColumn.debug();
     }
   }
   return facing == ITileSurface::UP ? mTileColumn.isTopTileVisible(provider)
@@ -276,6 +278,16 @@ std::vector<WallColumn*> BlockSubtractor::getPhysicalWallColumn(ISurfaceProvider
       }
     }
   }
+  for (int i = mProcessedWallColumns.size() - 1; i >= 0; i--) {
+    // TODO: This should not only be based on the start bottom height, but also the end bottom height aswell.
+    int mWallBottom = mProcessedWallColumns[i]->getBottomHeightStart();
+    std::vector<ITileSurface*> mTileSurfaces = provider->getTileSurfaces(ITileSurface::UP);
+    ITileSurface* mTileSurface = getSurfaceAt(mTileSurfaces, x, y);
+    int mHeight = mTileSurface->getSurfaceCellHeight(x, y);
+    if (mWallBottom >= mHeight && !isSurfaceTileVisible(provider, x, y, ITileSurface::UP)) {
+      mProcessedWallColumns.erase(mProcessedWallColumns.begin() + i);
+    }
+  }
   return mProcessedWallColumns;
 }
 
@@ -391,10 +403,6 @@ std::vector<IWallSurface*> BlockSubtractor::getWallSurfaces(ISurfaceProvider* pr
     mExtendedConstructionData->clear();
   }
   return mWallSurfaces;
-}
-
-std::string BlockSubtractor::getName() {
-  return "Block Subtractor";
 }
 
 extern "C" IPlugin* create() {

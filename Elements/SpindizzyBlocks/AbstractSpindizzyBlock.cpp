@@ -342,6 +342,10 @@ void AbstractSpindizzyBlock::setDirty() {
   signalElementDirty();
 }
 
+bool AbstractSpindizzyBlock::isGhost() {
+  return false;
+}
+
 bool AbstractSpindizzyBlock::isSplit() {
   return !isFlat() && getXSlope() == 0 && getYSlope() == 0;
 }

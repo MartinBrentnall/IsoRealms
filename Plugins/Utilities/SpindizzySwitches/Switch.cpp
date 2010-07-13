@@ -22,6 +22,12 @@ Switch::Switch(const std::string& name) {
   cName = name;
 }
 
+Switch::Switch(const std::string& name, std::vector<IUserCommand*> onCommands, std::vector<IUserCommand*> offCommands) {
+  cName = name;
+  cOnCommands = onCommands;
+  cOffCommands = offCommands;
+}
+
 std::string Switch::getName() {
   return cName;
 }

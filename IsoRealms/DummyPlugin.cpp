@@ -18,10 +18,6 @@
  */
 #include "DummyPlugin.h"
 
-std::string DummyPlugin::getName() {
-  return "<dummy>";
-}
-
 
 
 

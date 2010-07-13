@@ -40,6 +40,11 @@ bool WallConstructionData::unite(WallColumn* wallColumn) {
   return false;
 }
 
+int WallConstructionData::getWallBottom() {
+  // TODO: Needs to work for slopes
+  return cBottomHeightStart;
+}
+
 IWallSurface* WallConstructionData::constructSurface(ISurfaceProvider* provider, int x, int y, IWallSurface::FaceDirection facing) {
   switch (facing) {
     case IWallSurface::NORTH: 

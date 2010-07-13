@@ -22,6 +22,8 @@
 #include <string>
 #include <vector>
 
+#include <IsoRealms/DOMNodeWrapper.h>
+
 #include "../../CommandRegistry/IUserCommand.h"
 
 class Switch {
@@ -32,6 +34,7 @@ class Switch {
 
   public:
   Switch(const std::string&);
+  Switch(const std::string&, std::vector<IUserCommand*>, std::vector<IUserCommand*>);
 
   std::string getName();
   void addOnCommand(IUserCommand*);
