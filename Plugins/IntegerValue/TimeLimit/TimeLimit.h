@@ -21,9 +21,8 @@
 
 #include <iomanip>
 
+#include <IsoRealms/ICommandRegistry.h>
 #include <IsoRealms/IDynamicElement.h>
-
-#include "../../CommandRegistry/ICommandRegistry.h"
 
 #include "../IIntegerValue.h"
 

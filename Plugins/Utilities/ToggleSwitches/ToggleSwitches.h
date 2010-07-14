@@ -21,7 +21,7 @@
 
 #include <vector>
 
-#include "../../CommandRegistry/ICommandRegistry.h"
+#include <IsoRealms/ICommandRegistry.h>
 
 #include "../IUtilities.h"
 
@@ -31,11 +31,11 @@ class ToggleSwitches:public IUtilities {
     private:
     std::string cName;
     bool cState;
-    std::vector<IUserCommand*> cOnCommands;
-    std::vector<IUserCommand*> cOffCommands;
+    Script* cOnScript;
+    Script* cOffScript;
       
     public:
-    SwitchCommand(const std::string&, std::vector<IUserCommand*>, std::vector<IUserCommand*>);
+    SwitchCommand(const std::string&, Script*, Script*);
     
     /***************************\
      * Implements IUserCommand *
@@ -48,24 +48,16 @@ class ToggleSwitches:public IUtilities {
   std::vector<PlugSocket*> cCommandRegistrySocket;
   std::vector<IUserCommand*> cSwitchCommands;
   
-  std::vector<IUserCommand*> getCommands(DOMNodeWrapper*);
   SwitchCommand* createSwitchCommand(DOMNodeWrapper*);
 
   public:
-  ToggleSwitches();
 
   /**********************\
    * Implements IPlugin *
   \**********************/
   void load(DOMNodeWrapper*);
   void save(DOMNodeWriter*);
-
-  /*****************************\
-   * Implements IPluginSupport *
-  \*****************************/
-  std::vector<PlugSocket*> getPlugSockets();
-  void setPlugin(PlugSocket*, IPlugin*);
-  IPlugin* getPlugin(PlugSocket*);
+  void setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry*);
 };
 
 #endif

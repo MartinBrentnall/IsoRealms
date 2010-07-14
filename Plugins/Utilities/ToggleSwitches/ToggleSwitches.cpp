@@ -18,64 +18,20 @@
  */
 #include "ToggleSwitches.h"
 
-ToggleSwitches::ToggleSwitches() {
-  assignDummyPlugin(&cCommandRegistry, "CommandRegistry");
-  cCommandRegistrySocket.push_back(new PlugSocket("CommandRegistry"));
-}
-
-std::vector<PlugSocket*> ToggleSwitches::getPlugSockets() {
-  return cCommandRegistrySocket;
-}
-
-void ToggleSwitches::setPlugin(PlugSocket* socket, IPlugin* plugin) {
-  if (socket->getType() == "CommandRegistry") {
-    ICommandRegistry* mPreviousCommandRegistry = cCommandRegistry;
-    if (assignPlugin(plugin, &cCommandRegistry, *socket)) {
-      for (unsigned int i = 0; i < cSwitchCommands.size(); i++) {
-        mPreviousCommandRegistry->unregisterCommand(cSwitchCommands[i]);
-        cCommandRegistry->registerCommand(cSwitchCommands[i]);
-      }
-    }
-  } else {
-    // TODO: Throw
-  }
-}
-
-IPlugin* ToggleSwitches::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "CommandRegistry") {return cCommandRegistry;}
-  // TODO: Throw
-  return NULL;
-}
-
-std::vector<IUserCommand*> ToggleSwitches::getCommands(DOMNodeWrapper* node) {
-  std::vector<IUserCommand*> mCommands;
-  for (int i = 0; i < node->getChildCount(); i++) {
-    DOMNodeWrapper *mNode = node->getChild(i);
-    std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "Command") {
-      std::string mCommandName = mNode->getStringValue();
-      mCommands.push_back(cCommandRegistry->getCommand(mCommandName));
-    } else {
-      // TODO: Throw
-    }
-  }
-  return mCommands;
-}
-
 ToggleSwitches::SwitchCommand* ToggleSwitches::createSwitchCommand(DOMNodeWrapper* node) {
-  std::vector<IUserCommand*> mOnCommands;
-  std::vector<IUserCommand*> mOffCommands;
+  Script* mOnScript;
+  Script* mOffScript;
   std::string mCommandName = node->getAttribute("name");
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "On") {
-      mOnCommands = getCommands(mNode);
+      mOnScript = cCommandRegistry->getScript(mNode);
     } else if (mValueAsString == "Off") {
-      mOffCommands = getCommands(mNode);
+      mOffScript = cCommandRegistry->getScript(mNode);
     }
   }
-  return new SwitchCommand(mCommandName, mOnCommands, mOffCommands);
+  return new SwitchCommand(mCommandName, mOnScript, mOffScript);
 }
 
 void ToggleSwitches::load(DOMNodeWrapper* node) {
@@ -96,18 +52,20 @@ void ToggleSwitches::save(DOMNodeWriter* node) {
   // TODO: Implement this
 }
 
-ToggleSwitches::SwitchCommand::SwitchCommand(const std::string& name, std::vector<IUserCommand*> onCommands, std::vector<IUserCommand*> offCommands) {
+void ToggleSwitches::setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry* commandRegistry) {
+  cCommandRegistry = commandRegistry;
+}
+
+ToggleSwitches::SwitchCommand::SwitchCommand(const std::string& name, Script* onScript, Script* offScript) {
   cName = name;
   cState = false;
-  cOnCommands = onCommands;
-  cOffCommands = offCommands;
+  cOnScript = onScript;
+  cOffScript = offScript;
 }
 
 void ToggleSwitches::SwitchCommand::execute() {
-  std::vector<IUserCommand*>* mCommandsToExecute = cState ? &cOffCommands : &cOnCommands;
-  for (unsigned int i = 0; i < mCommandsToExecute->size(); i++) {
-    (*mCommandsToExecute)[i]->execute();
-  }
+  Script* mScriptToExecute = cState ? cOffScript : cOnScript;
+  mScriptToExecute->execute();
   cState = !cState;
 }
 

@@ -42,6 +42,7 @@ class Map:public IMap,
   private:
   PluginRegistry cPluginRegistry;
   ElementSetRegistry cElementSetRegistry;
+  CommandDirectory cCommandRegistry;
 
   /**
    * These elements are not confined to one specific zone.
@@ -140,6 +141,8 @@ class Map:public IMap,
   ElementSetRegistry* getElementSetRegistry();
 
   PluginRegistry* getPluginRegistry();
+  
+  CommandDirectory* getCommandRegistry();
   
   /**
    * Remove the specified element from anywhere in the map.  This function

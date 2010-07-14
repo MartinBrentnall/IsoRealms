@@ -23,8 +23,12 @@
 
 class IElementFactory;
 
+#include "BlockLocation.h"
 #include "DOMNodeWriter.h"
+#include "ICommandRegistry.h"
+#include "IComponentContainer.h"
 #include "IElementFactory.h"
+#include "IElementGateway.h"
 #include "IPluginSupport.h"
 
 /**
@@ -49,6 +53,14 @@ class IElementSet:public IPluginSupport {
   virtual void save(DOMNodeWriter*) {};
 
   virtual void load(DOMNodeWrapper*) {}
+
+  /**
+   * Set a pointer to the editing location within the map.
+   * 
+   * @param BlockLocation*  The editing location within the map.
+   * @param IElementGateway*  The gateway through which to push new elements.
+   */
+  virtual void setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*, ICommandRegistry*) = 0;
 
   /**
    * Destroy the element.  Make sure you've removed the element from your map

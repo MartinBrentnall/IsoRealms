@@ -16,29 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SWITCH_H
-#define SWITCH_H
+#include "CommandProxy.h"
 
-#include <string>
-#include <vector>
+CommandProxy::CommandProxy() {
+  cCommand = NULL;
+}
 
-#include <IsoRealms/DOMNodeWrapper.h>
-#include <IsoRealms/IUserCommand.h>
-#include <IsoRealms/Script.h>
+void CommandProxy::setUserCommand(IUserCommand* command) {
+  cCommand = command;
+}
 
-class Switch {
-  private:
-  std::string cName;
-  Script* cOnScript;
-  Script* cOffScript;
+void CommandProxy::execute() {
+  if (cCommand != NULL) {
+    cCommand->execute();
+  } else {
+    std::cout << "Warning: No implementation set for proxy command" << std::endl;
+  }
+}
 
-  public:
-  Switch(const std::string&);
-  Switch(const std::string&, Script*, Script*);
-
-  std::string getName();
-  void switchOn();
-  void switchOff();
-};
-
-#endif
+std::string CommandProxy::getCommandName() {
+  if (cCommand != NULL) {
+    return cCommand->getCommandName();
+  } else {
+    std::cout << "Warning: No implementation set for proxy command" << std::endl;
+  }
+  return "<UNKNOWN>";
+}

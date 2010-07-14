@@ -20,12 +20,19 @@
 
 DefaultZoneRenderer PluginRegistry::DEFAULT_ZONE_RENDERER;
 
-void PluginRegistry::registerPlugin(DOMNodeWrapper* node) {
+void PluginRegistry::registerPlugin(DOMNodeWrapper* node, CommandDirectory* directory) {
   std::string mImplementation = node->getAttribute("implementation");
   std::string mInstance = node->getAttribute("instance");
   std::string mType = node->getAttribute("type");
   std::cout << "Loading plugin \"" << mType << ":" << mImplementation << "\"" << std::endl;
   loadPlugin(mType, mImplementation, mInstance);
+  std::vector<std::string> mDirectory;
+  mDirectory.push_back("Plugin");
+  mDirectory.push_back(mType);
+  mDirectory.push_back(mInstance);
+  IPlugin* mPlugin = getPlugin(mType, mInstance);  
+  CommandRegistryProxy* mCommandRegistryProxy = new CommandRegistryProxy(directory, mDirectory);
+  mPlugin->setEditingContext(NULL, NULL, mCommandRegistryProxy);
 }
 
 void PluginRegistry::connectPlugin(DOMNodeWrapper* node) {

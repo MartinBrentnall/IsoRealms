@@ -272,7 +272,13 @@ void SimpleEditor::elementSetChanged(IElementSet* elementSet) {
 
 void SimpleEditor::pluginInstanceAdded(PluginRegistry* pluginRegistry, std::string type, std::string instance) {
   IPlugin* mPlugin = pluginRegistry->getPlugin(type, instance);
-  mPlugin->setEditingContext(cCursor, this);
+  CommandDirectory* mCommandRegistry = cMap->getCommandRegistry();
+  std::vector<std::string> mDirectory;
+  mDirectory.push_back("Plugin");
+  mDirectory.push_back(type);
+  mDirectory.push_back(instance);
+  CommandRegistryProxy* mCommandRegistryProxy = new CommandRegistryProxy(mCommandRegistry, mDirectory);
+  mPlugin->setEditingContext(cCursor, this, mCommandRegistryProxy);
   std::vector<ICommandInfo*> mCommandInfo = mPlugin->getCommandInfo();
   for (unsigned int i = 0; i < mCommandInfo.size(); i++) {
     cMenuBar->addCommand(mCommandInfo[i]);
@@ -373,7 +379,8 @@ void SimpleEditor::setMap(Map* map) {
   if (cMap != NULL) {
     cCursor = new EditorCursor(cMap);
     ElementSetRegistry* mElementSetRegistry = cMap->getElementSetRegistry();
-    mElementSetRegistry->setEditingInfo(cCursor, this, this);
+    CommandDirectory* mCommandRegistry = cMap->getCommandRegistry();
+    mElementSetRegistry->setEditingInfo(cCursor, this, this, mCommandRegistry);
     mElementSetRegistry->addElementRegistryListener(this);
     cElementSetEntityClass = new ElementSetEntityClass(mElementSetRegistry, this, this);
     cElementSetsFactory->setEntityClass(cElementSetEntityClass);

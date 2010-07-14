@@ -26,9 +26,6 @@
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext" socketid=""/>
     <Configuration/>
   </Plugin>
-  <Plugin implementation="DefaultCommandRegistry" instance="SpindizzyCommands" type="CommandRegistry">
-    <Configuration/>
-  </Plugin>
   <Plugin implementation="DefaultFourColourSupport" instance="Blue" type="FourColourSupport">
     <Configuration>
       <Floor alpha="0" blue="1" green="0.48" red="0.48"/>
@@ -258,213 +255,214 @@
     <Configuration/>
   </Plugin>
   <Plugin implementation="CommandTrigger" instance="SpindizzyEndingTrigger" type="Objectives">
-    <UsePlugin implementation="CommandRegistry" instance="SpindizzyCommands" socketid=""/>
   </Plugin>
   <Plugin implementation="ExploredZones" instance="ExploredZones" type="Utilities">
-    <UsePlugin implementation="CommandRegistry" instance="SpindizzyCommands"/>
     <UsePlugin implementation="Objectives" instance="SpindizzyEndingTrigger"/>
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext" socketid=""/>
     <Configuration>
-      <ZoneExploredCommand>IncreaseTimeForZone</ZoneExploredCommand>
+      <ZoneExploredScript>
+        <Command>Plugin/Utilities/TimerCommands/IncreaseTimeForZone</Command>
+      </ZoneExploredScript>
     </Configuration>
   </Plugin>
   <Plugin implementation="KeyCommands" instance="DebugCommands" type="Utilities">
-    <UsePlugin implementation="CommandRegistry" instance="SpindizzyCommands" socketid=""/>
     <Configuration>
       <Input type="key" value="1">
-        <Command>Reset Spindizzy Switches</Command>
+        <Command>Plugin/Utilities/SpindizzySwitches/Reset Spindizzy Switches</Command>
       </Input>
       <Input type="key" value="2">
-        <Command>Activate switch LeftDiamondSwitch</Command>
+        <Command>Plugin/Utilities/SpindizzySwitches/Activate switch LeftDiamondSwitch</Command>
       </Input>
       <Input type="key" value="3">
-        <Command>Activate switch RightDiamondSwitch</Command>
+        <Command>Plugin/Utilities/SpindizzySwitches/Activate switch RightDiamondSwitch</Command>
       </Input>
       <Input type="key" value="4">
-        <Command>Activate switch FilledDiamondSwitch</Command>
+        <Command>Plugin/Utilities/SpindizzySwitches/Activate switch FilledDiamondSwitch</Command>
       </Input>
       <Input type="key" value="5">
-        <Command>Activate switch EmptySquareSwitch</Command>
+        <Command>Plugin/Utilities/SpindizzySwitches/Activate switch EmptySquareSwitch</Command>
       </Input>
       <Input type="key" value="6">
-        <Command>Activate switch LeftSquareSwitch</Command>
+        <Command>Plugin/Utilities/SpindizzySwitches/Activate switch LeftSquareSwitch</Command>
       </Input>
       <Input type="key" value="7">
-        <Command>Activate switch RightSquareSwitch</Command>
+        <Command>Plugin/Utilities/SpindizzySwitches/Activate switch RightSquareSwitch</Command>
       </Input>
       <Input type="key" value="8">
-        <Command>Activate switch FilledSquareSwitch</Command>
+        <Command>Plugin/Utilities/SpindizzySwitches/Activate switch FilledSquareSwitch</Command>
       </Input>
       <Input type="key" value="9">
-        <Command>Activate switch EmptyCircleSwitch</Command>
+        <Command>Plugin/Utilities/SpindizzySwitches/Activate switch EmptyCircleSwitch</Command>
       </Input>
       <Input type="key" value="0">
-        <Command>Activate switch LeftCircleSwitch</Command>
+        <Command>Plugin/Utilities/SpindizzySwitches/Activate switch LeftCircleSwitch</Command>
       </Input>
       <Input type="key" value="[">
-        <Command>Activate switch RightCircleSwitch</Command>
+        <Command>Plugin/Utilities/SpindizzySwitches/Activate switch RightCircleSwitch</Command>
       </Input>
       <Input type="key" value="]">
-        <Command>Activate switch FilledCircleSwitch</Command>
+        <Command>Plugin/Utilities/SpindizzySwitches/Activate switch FilledCircleSwitch</Command>
       </Input>
       <Input type="key" value="m">
-        <Command>Toggle MapOverview</Command>
+        <Command>Plugin/Utilities/GameSwitches/Toggle MapOverview</Command>
       </Input>
     </Configuration>
   </Plugin>
   <Plugin implementation="RandomCommand" instance="PlayLiftClick" type="Utilities">
-    <UsePlugin implementation="CommandRegistry" instance="SpindizzyCommands" socketid=""/>
     <Configuration>
       <Command name="LiftClick">
-        <RandomCommand>Play Lift Click 1.ogg</RandomCommand>
-        <RandomCommand>Play Lift Click 2.ogg</RandomCommand>
-        <RandomCommand>Play Lift Click 3.ogg</RandomCommand>
+        <PossibleScript>
+          <Command>Plugin/Utilities/SoundCommandWrapper/Play Lift Click 1.ogg</Command>
+        </PossibleScript>
+        <PossibleScript>
+          <Command>Plugin/Utilities/SoundCommandWrapper/Play Lift Click 2.ogg</Command>
+        </PossibleScript>
+        <PossibleScript>
+          <Command>Plugin/Utilities/SoundCommandWrapper/Play Lift Click 3.ogg</Command>
+        </PossibleScript>
       </Command>
     </Configuration>
   </Plugin>
   <Plugin implementation="SoundCommandSupport" instance="SoundCommandWrapper" type="Utilities">
-    <UsePlugin implementation="CommandRegistry" instance="SpindizzyCommands" socketid=""/>
     <UsePlugin implementation="SoundSupport" instance="SpindizzySounds" socketid=""/>
     <Configuration/>
   </Plugin>
   <Plugin implementation="SpindizzySwitches" instance="SpindizzySwitches" type="Utilities">
-    <UsePlugin implementation="CommandRegistry" instance="SpindizzyCommands" socketid=""/>
     <Configuration>
       <ResetSwitch>
-        <Command>Play Diamond None.ogg</Command>
+        <Command>Plugin/Utilities/SoundCommandWrapper/Play Diamond None.ogg</Command>
       </ResetSwitch>
       <Switch name="FilledDiamondSwitch" type="primary">
         <On>
-          <Command>Play Diamond Both.ogg</Command>
-          <Command>Enable Lifts DiamondBoth</Command>
-          <Command>Set Block Flag SwitchDiamondBoth</Command>
+          <Command>Plugin/Utilities/SoundCommandWrapper/Play Diamond Both.ogg</Command>
+          <Command>ElementSet/Lifts/Enable Lifts DiamondBoth</Command>
+          <Command>ElementSet/Blocks/Set Block Flag SwitchDiamondBoth</Command>
         </On>
         <Off>
-          <Command>Disable Lifts DiamondBoth</Command>
-          <Command>Unset Block Flag SwitchDiamondBoth</Command>
+          <Command>ElementSet/Lifts/Disable Lifts DiamondBoth</Command>
+          <Command>ElementSet/Blocks/Unset Block Flag SwitchDiamondBoth</Command>
         </Off>
       </Switch>
       <Switch name="LeftDiamondSwitch" type="primary">
         <On>
-          <Command>Play Diamond Left.ogg</Command>
-          <Command>Enable Lifts DiamondLeft</Command>
-          <Command>Set Block Flag SwitchDiamondLeft</Command>
+          <Command>Plugin/Utilities/SoundCommandWrapper/Play Diamond Left.ogg</Command>
+          <Command>ElementSet/Lifts/Enable Lifts DiamondLeft</Command>
+          <Command>ElementSet/Blocks/Set Block Flag SwitchDiamondLeft</Command>
         </On>
         <Off>
-          <Command>Disable Lifts DiamondLeft</Command>
-          <Command>Unset Block Flag SwitchDiamondLeft</Command>
+          <Command>ElementSet/Lifts/Disable Lifts DiamondLeft</Command>
+          <Command>ElementSet/Blocks/Unset Block Flag SwitchDiamondLeft</Command>
         </Off>
       </Switch>
       <Switch name="RightDiamondSwitch" type="primary">
         <On>
-          <Command>Play Diamond Right.ogg</Command>
-          <Command>Enable Lifts DiamondRight</Command>
-          <Command>Set Block Flag SwitchDiamondRight</Command>
+          <Command>Plugin/Utilities/SoundCommandWrapper/Play Diamond Right.ogg</Command>
+          <Command>ElementSet/Lifts/Enable Lifts DiamondRight</Command>
+          <Command>ElementSet/Blocks/Set Block Flag SwitchDiamondRight</Command>
         </On>
         <Off>
-          <Command>Disable Lifts DiamondRight</Command>
-          <Command>Unset Block Flag SwitchDiamondRight</Command>
+          <Command>ElementSet/Lifts/Disable Lifts DiamondRight</Command>
+          <Command>ElementSet/Blocks/Unset Block Flag SwitchDiamondRight</Command>
         </Off>
       </Switch>
       <Switch name="FilledSquareSwitch" type="primary">
         <On>
-          <Command>Play Square Both.ogg</Command>
-          <Command>Enable Lifts SquareBoth</Command>
-          <Command>Set Block Flag SwitchSquareBoth</Command>
+          <Command>Plugin/Utilities/SoundCommandWrapper/Play Square Both.ogg</Command>
+          <Command>ElementSet/Lifts/Enable Lifts SquareBoth</Command>
+          <Command>ElementSet/Blocks/Set Block Flag SwitchSquareBoth</Command>
         </On>
         <Off>
-          <Command>Disable Lifts SquareBoth</Command>
-          <Command>Unset Block Flag SwitchSquareBoth</Command>
+          <Command>ElementSet/Lifts/Disable Lifts SquareBoth</Command>
+          <Command>ElementSet/Blocks/Unset Block Flag SwitchSquareBoth</Command>
         </Off>
       </Switch>
       <Switch name="LeftSquareSwitch" type="primary">
         <On>
-          <Command>Play Square Left.ogg</Command>
-          <Command>Enable Lifts SquareLeft</Command>
-          <Command>Set Block Flag SwitchSquareLeft</Command>
+          <Command>Plugin/Utilities/SoundCommandWrapper/Play Square Left.ogg</Command>
+          <Command>ElementSet/Lifts/Enable Lifts SquareLeft</Command>
+          <Command>ElementSet/Blocks/Set Block Flag SwitchSquareLeft</Command>
         </On>
         <Off>
-          <Command>Disable Lifts SquareLeft</Command>
-          <Command>Unset Block Flag SwitchSquareLeft</Command>
+          <Command>ElementSet/Lifts/Disable Lifts SquareLeft</Command>
+          <Command>ElementSet/Blocks/Unset Block Flag SwitchSquareLeft</Command>
         </Off>
       </Switch>
       <Switch name="RightSquareSwitch" type="primary">
         <On>
-          <Command>Play Square Right.ogg</Command>
-          <Command>Enable Lifts SquareRight</Command>
-          <Command>Set Block Flag SwitchSquareRight</Command>
+          <Command>Plugin/Utilities/SoundCommandWrapper/Play Square Right.ogg</Command>
+          <Command>ElementSet/Lifts/Enable Lifts SquareRight</Command>
+          <Command>ElementSet/Blocks/Set Block Flag SwitchSquareRight</Command>
         </On>
         <Off>
-          <Command>Disable Lifts SquareRight</Command>
-          <Command>Unset Block Flag SwitchSquareRight</Command>
+          <Command>ElementSet/Lifts/Disable Lifts SquareRight</Command>
+          <Command>ElementSet/Blocks/Unset Block Flag SwitchSquareRight</Command>
         </Off>
       </Switch>
       <Switch name="EmptySquareSwitch" type="primary">
         <On>
-          <Command>Play Square None.ogg</Command>
-          <Command>Enable Lifts SquareNone</Command>
-          <Command>Set Block Flag SwitchSquareNone</Command>
+          <Command>Plugin/Utilities/SoundCommandWrapper/Play Square None.ogg</Command>
+          <Command>ElementSet/Lifts/Enable Lifts SquareNone</Command>
+          <Command>ElementSet/Blocks/Set Block Flag SwitchSquareNone</Command>
         </On>
         <Off>
-          <Command>Disable Lifts SquareNone</Command>
-          <Command>Unset Block Flag SwitchSquareNone</Command>
+          <Command>ElementSet/Lifts/Disable Lifts SquareNone</Command>
+          <Command>ElementSet/Blocks/Unset Block Flag SwitchSquareNone</Command>
         </Off>
       </Switch>
       <Switch name="FilledCircleSwitch" type="secondary">
         <On>
-          <Command>Play Circle Both.ogg</Command>
-          <Command>Enable Lifts CircleBoth</Command>
-          <Command>Set Block Flag SwitchCircleBoth</Command>
+          <Command>Plugin/Utilities/SoundCommandWrapper/Play Circle Both.ogg</Command>
+          <Command>ElementSet/Lifts/Enable Lifts CircleBoth</Command>
+          <Command>ElementSet/Blocks/Set Block Flag SwitchCircleBoth</Command>
         </On>
         <Off>
-          <Command>Disable Lifts CircleBoth</Command>
-          <Command>Unset Block Flag SwitchCircleBoth</Command>
+          <Command>ElementSet/Lifts/Disable Lifts CircleBoth</Command>
+          <Command>ElementSet/Blocks/Unset Block Flag SwitchCircleBoth</Command>
         </Off>
       </Switch>
       <Switch name="LeftCircleSwitch" type="secondary">
         <On>
-          <Command>Play Circle Left.ogg</Command>
-          <Command>Enable Lifts CircleLeft</Command>
-          <Command>Set Block Flag SwitchCircleLeft</Command>
+          <Command>Plugin/Utilities/SoundCommandWrapper/Play Circle Left.ogg</Command>
+          <Command>ElementSet/Lifts/Enable Lifts CircleLeft</Command>
+          <Command>ElementSet/Blocks/Set Block Flag SwitchCircleLeft</Command>
         </On>
         <Off>
-          <Command>Disable Lifts CircleLeft</Command>
-          <Command>Unset Block Flag SwitchCircleLeft</Command>
+          <Command>ElementSet/Lifts/Disable Lifts CircleLeft</Command>
+          <Command>ElementSet/Blocks/Unset Block Flag SwitchCircleLeft</Command>
         </Off>
       </Switch>
       <Switch name="RightCircleSwitch" type="secondary">
         <On>
-          <Command>Play Circle Right.ogg</Command>
-          <Command>Enable Lifts CircleRight</Command>
-          <Command>Set Block Flag SwitchCircleRight</Command>
+          <Command>Plugin/Utilities/SoundCommandWrapper/Play Circle Right.ogg</Command>
+          <Command>ElementSet/Lifts/Enable Lifts CircleRight</Command>
+          <Command>ElementSet/Blocks/Set Block Flag SwitchCircleRight</Command>
         </On>
         <Off>
-          <Command>Disable Lifts CircleRight</Command>
-          <Command>Unset Block Flag SwitchCircleRight</Command>
+          <Command>ElementSet/Lifts/Disable Lifts CircleRight</Command>
+          <Command>ElementSet/Blocks/Unset Block Flag SwitchCircleRight</Command>
         </Off>
       </Switch>
       <Switch name="EmptyCircleSwitch" type="secondary">
         <On>
-          <Command>Play Circle None.ogg</Command>
-          <Command>Enable Lifts CircleNone</Command>
-          <Command>Set Block Flag SwitchCircleNone</Command>
+          <Command>Plugin/Utilities/SoundCommandWrapper/Play Circle None.ogg</Command>
+          <Command>ElementSet/Lifts/Enable Lifts CircleNone</Command>
+          <Command>ElementSet/Blocks/Set Block Flag SwitchCircleNone</Command>
         </On>
         <Off>
-          <Command>Disable Lifts CircleNone</Command>
-          <Command>Unset Block Flag SwitchCircleNone</Command>
+          <Command>ElementSet/Lifts/Disable Lifts CircleNone</Command>
+          <Command>ElementSet/Blocks/Unset Block Flag SwitchCircleNone</Command>
         </Off>
       </Switch>
     </Configuration>
   </Plugin>
   <Plugin implementation="ToggleSwitches" instance="GameSwitches" type="Utilities">
-    <UsePlugin implementation="CommandRegistry" instance="SpindizzyCommands" socketid=""/>
     <Configuration>
       <Switch name="MapOverview">
         <On>
-          <Command>Play Lift Click 1.ogg</Command>
+          <Command>Plugin/Utilities/SoundCommandWrapper/Play Lift Click 1.ogg</Command>
         </On>
         <Off>
-          <Command>Play Lift Click 2.ogg</Command>
+          <Command>Plugin/Utilities/SoundCommandWrapper/Play Lift Click 2.ogg</Command>
         </Off>
       </Switch>
     </Configuration>
@@ -473,7 +471,6 @@
     <Configuration/>
   </Plugin>
   <Plugin implementation="IntegerValueCommands" instance="TimerCommands" type="Utilities">
-    <UsePlugin implementation="CommandRegistry" instance="SpindizzyCommands" socketid=""/>
     <UsePlugin implementation="IntegerValue" instance="SpindizzyTimeLimit" socketid=""/>
     <Configuration>
       <Command name="IncreaseTimeForJewel" value="12000"/>
@@ -482,7 +479,6 @@
   </Plugin>
   <ElementSet instance="Blocks" type="SpindizzyBlocks">
     <UsePlugin implementation="CollidableSurfaceRegistry" instance="SpindizzySurfaces"/>
-    <UsePlugin implementation="CommandRegistry" instance="SpindizzyCommands"/>
     <UsePlugin implementation="SpindizzyTextureSetChanger" instance="PerZone"/>
     <UsePlugin implementation="SurfaceProcessor" instance="BlockSubtractor"/>
     <Configuration>
@@ -508,19 +504,21 @@
   </ElementSet>
   <ElementSet instance="Jewels" type="SpindizzyJewels">
     <UsePlugin implementation="3DModel" instance="C64JewelModel"/>
-    <UsePlugin implementation="CommandRegistry" instance="SpindizzyCommands"/>
     <UsePlugin implementation="Collectables" instance="Jewels"/>
     <Configuration>
-      <JewelCollectedCommand>Play Jewel.ogg</JewelCollectedCommand>
-      <JewelCollectedCommand>IncreaseTimeForJewel</JewelCollectedCommand>
+      <JewelCollectedScript>
+        <Command>Plugin/Utilities/SoundCommandWrapper/Play Jewel.ogg</Command>
+        <Command>Plugin/Utilities/TimerCommands/IncreaseTimeForJewel</Command>
+      </JewelCollectedScript>
     </Configuration>
   </ElementSet>
   <ElementSet instance="Lifts" type="SpindizzyLifts">
-    <UsePlugin implementation="CommandRegistry" instance="SpindizzyCommands"/>
     <UsePlugin implementation="SpindizzyTextureSet" instance="C64Blue"/>
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext" socketid=""/>
     <Configuration>
-      <LiftMovedCommand>Random LiftClick</LiftMovedCommand>
+      <LiftMovedScript>
+        <Command>Plugin/Utilities/PlayLiftClick/Random LiftClick</Command>
+      </LiftMovedScript>
     </Configuration>
   </ElementSet>
   <ElementSet instance="Player" type="SpindizzyGERALD">

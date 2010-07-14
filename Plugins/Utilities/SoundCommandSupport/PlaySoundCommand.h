@@ -19,8 +19,9 @@
 #ifndef PLAY_SOUND_COMMAND_H
 #define PLAY_SOUND_COMMAND_H
 
+#include <IsoRealms/IUserCommand.h>
+
 #include "../../SoundSupport/ISound.h"
-#include "../../CommandRegistry/IUserCommand.h"
 
 class PlaySoundCommand:public IUserCommand {
   private:

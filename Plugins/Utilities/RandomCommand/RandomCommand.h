@@ -19,8 +19,8 @@
 #ifndef RANDOM_COMMAND_H
 #define RANDOM_COMMAND_H
 
-#include "../../CommandRegistry/ICommandRegistry.h"
-#include "../../CommandRegistry/IUserCommand.h"
+#include <IsoRealms/ICommandRegistry.h>
+#include <IsoRealms/IUserCommand.h>
 
 #include "../IUtilities.h"
 
@@ -29,10 +29,10 @@ class RandomCommand:public IUtilities {
   class ARandomCommand:public IUserCommand {
     private:
     std::string cName;
-    std::vector<IUserCommand*> cCommands;
+    std::vector<Script*> cScripts;
     
     public:
-    ARandomCommand(const std::string&, std::vector<IUserCommand*>);
+    ARandomCommand(const std::string&, std::vector<Script*>);
     
     /***************************\
      * Implements IUserCommand *
@@ -45,24 +45,16 @@ class RandomCommand:public IUtilities {
   std::vector<PlugSocket*> cCommandRegistrySocket;
   std::vector<IUserCommand*> cRandomCommands;
   
-  std::vector<IUserCommand*> getCommands(DOMNodeWrapper*);
-
+  std::vector<Script*> getScripts(DOMNodeWrapper*);
+  
   public:
-  RandomCommand();
   
   /**********************\
    * Implements IPlugin *
   \**********************/
   void load(DOMNodeWrapper*);
   void save(DOMNodeWriter*);
-
-  /*****************************\
-   * Implements IPluginSupport *
-  \*****************************/
-  std::vector<PlugSocket*> getPlugSockets();
-  void setPlugin(PlugSocket*, IPlugin*);
-  IPlugin* getPlugin(PlugSocket*);
-    
+  void setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry*);
 };
 
 #endif

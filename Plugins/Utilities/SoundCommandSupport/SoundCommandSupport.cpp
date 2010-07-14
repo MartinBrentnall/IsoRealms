@@ -19,9 +19,7 @@
 #include "SoundCommandSupport.h"
 
 SoundCommandSupport::SoundCommandSupport() {
-  assignDummyPlugin(&cCommandRegistry, "CommandRegistry");
   assignDummyPlugin(&cSoundSupport, "SoundSupport");
-  cSockets.push_back(new PlugSocket("CommandRegistry"));
   cSockets.push_back(new PlugSocket("SoundSupport"));
 }
 
@@ -30,15 +28,7 @@ std::vector<PlugSocket*> SoundCommandSupport::getPlugSockets() {
 }
 
 void SoundCommandSupport::setPlugin(PlugSocket* socket, IPlugin* plugin) {
-  if (socket->getType() == "CommandRegistry") {
-    ICommandRegistry* mPreviousCommandRegistry = cCommandRegistry;
-    if (assignPlugin(plugin, &cCommandRegistry, *socket)) {
-      for (std::map<ISound*, PlaySoundCommand*>::iterator i = cCommands.begin(); i != cCommands.end(); i++) {
-        mPreviousCommandRegistry->unregisterCommand(i->second);
-        cCommandRegistry->registerCommand(i->second);
-      }
-    }
-  } else if (socket->getType() == "SoundSupport") {
+  if (socket->getType() == "SoundSupport") {
     ISoundSupport* mPreviousSoundSupport = cSoundSupport;
     if (assignPlugin(plugin, &cSoundSupport, *socket)) {
       mPreviousSoundSupport->removeSoundSupportListener(this);
@@ -60,7 +50,6 @@ void SoundCommandSupport::setPlugin(PlugSocket* socket, IPlugin* plugin) {
 }
 
 IPlugin* SoundCommandSupport::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "CommandRegistry") {return cCommandRegistry;}
   if (socket->getType() == "SoundSupport")    {return cSoundSupport;}
   // TODO: Throw
   return NULL;
@@ -73,6 +62,10 @@ void SoundCommandSupport::soundAdded(ISound* sound) {
 
 void SoundCommandSupport::soundRemoved(ISound* sound) {
   cCommands.erase(sound);
+}
+
+void SoundCommandSupport::setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry* commandRegistry) {
+  cCommandRegistry = commandRegistry;
 }
 
 extern "C" IPlugin* create() {

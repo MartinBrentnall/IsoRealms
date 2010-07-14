@@ -19,9 +19,7 @@
 #include "IntegerValueCommands.h"
 
 IntegerValueCommands::IntegerValueCommands() {
-  assignDummyPlugin(&cCommandRegistry, "CommandRegistry");
   assignDummyPlugin(&cVariable, "IntegerValue");
-  cSockets.push_back(new PlugSocket("CommandRegistry"));
   cSockets.push_back(new PlugSocket("IntegerValue"));
   std::vector<std::string> mPath;
   mPath.push_back("Configure");
@@ -73,12 +71,9 @@ std::vector<ICommandInfo*> IntegerValueCommands::getCommandInfo() {
   return cPluginCommands;
 }
 
-void IntegerValueCommands::setEditingContext(BlockLocation*, IComponentContainer* componentContainer) {
+void IntegerValueCommands::setEditingContext(BlockLocation*, IComponentContainer* componentContainer, ICommandRegistry* commandRegistry) {
+  cCommandRegistry = commandRegistry;
   cConfigureIntegerCommands->setComponentContainer(componentContainer);
-}
-
-std::string IntegerValueCommands::getName() {
-  return "Integer Value Commands";
 }
 
 std::vector<PlugSocket*> IntegerValueCommands::getPlugSockets() {
@@ -86,15 +81,7 @@ std::vector<PlugSocket*> IntegerValueCommands::getPlugSockets() {
 }
 
 void IntegerValueCommands::setPlugin(PlugSocket* socket, IPlugin* plugin) {
-  if (socket->getType() == "CommandRegistry") {
-    ICommandRegistry* mPreviousCommandRegistry = cCommandRegistry;
-    if (assignPlugin(plugin, &cCommandRegistry, *socket)) {
-      for (unsigned int i = 0; i < cCommands.size(); i++) {
-        mPreviousCommandRegistry->unregisterCommand(cCommands[i]);
-        cCommandRegistry->registerCommand(cCommands[i]);
-      }
-    }
-  } else if (socket->getType() == "IntegerValue") {
+  if (socket->getType() == "IntegerValue") {
     if (assignPlugin(plugin, &cVariable, *socket)) {
       for (unsigned int i = 0; i < cCommands.size(); i++) {
         cCommands[i]->setVariable(cVariable);
@@ -106,7 +93,6 @@ void IntegerValueCommands::setPlugin(PlugSocket* socket, IPlugin* plugin) {
 }
 
 IPlugin* IntegerValueCommands::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "CommandRegistry") {return cCommandRegistry;}
   if (socket->getType() == "IntegerValue")    {return cVariable;}
   // TODO: chuck
   return NULL;

@@ -42,6 +42,10 @@ void SpindizzyGERALDSet::destroy(IElement* element) {
   delete element;
 }
 
+void SpindizzyGERALDSet::setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*, ICommandRegistry*) {
+  // Nothing to do... yet
+}
+
 std::string SpindizzyGERALDSet::getName() {
   return "GERALD";
 }

@@ -16,29 +16,32 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SWITCH_H
-#define SWITCH_H
+#ifndef COMMAND_DIRECTORY_H
+#define COMMAND_DIRECTORY_H
 
-#include <string>
+#include <map>
+#include <set>
 #include <vector>
 
-#include <IsoRealms/DOMNodeWrapper.h>
-#include <IsoRealms/IUserCommand.h>
-#include <IsoRealms/Script.h>
+#include "CommandProxy.h"
+#include "DOMNodeWrapper.h"
 
-class Switch {
+#include "Script.h"
+
+class CommandDirectory {
   private:
-  std::string cName;
-  Script* cOnScript;
-  Script* cOffScript;
+  std::map<std::string, CommandDirectory*> cSubDirectories;
+  std::map<std::string, CommandProxy*> cCommands;
 
+  CommandProxy* getCommandProxy(const std::string&);
+  
   public:
-  Switch(const std::string&);
-  Switch(const std::string&, Script*, Script*);
-
-  std::string getName();
-  void switchOn();
-  void switchOff();
+  std::vector<std::string> getSubDirectories();
+  CommandDirectory* getSubDirectory(const std::string&);
+  CommandDirectory* createSubDirectory(const std::string&);
+  Script* getScript(DOMNodeWrapper*);
+  void registerCommand(IUserCommand*);
+  void unregisterCommand(IUserCommand*);
 };
 
 #endif

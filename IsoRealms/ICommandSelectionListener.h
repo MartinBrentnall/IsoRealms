@@ -16,29 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SWITCH_H
-#define SWITCH_H
+#ifndef I_COMMAND_SELECTION_LISTENER_H
+#define I_COMMAND_SELECTION_LISTENER_H
 
-#include <string>
-#include <vector>
-
-#include <IsoRealms/DOMNodeWrapper.h>
-#include <IsoRealms/IUserCommand.h>
-#include <IsoRealms/Script.h>
-
-class Switch {
-  private:
-  std::string cName;
-  Script* cOnScript;
-  Script* cOffScript;
-
+class ICommandSelectionListener {
   public:
-  Switch(const std::string&);
-  Switch(const std::string&, Script*, Script*);
-
-  std::string getName();
-  void switchOn();
-  void switchOff();
 };
 
 #endif

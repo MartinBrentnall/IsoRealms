@@ -21,7 +21,8 @@
 
 #include <string>
 
-#include "../../CommandRegistry/IUserCommand.h"
+#include <IsoRealms/IUserCommand.h>
+
 #include "../../IntegerValue/IIntegerValue.h"
 
 class AddIntegerCommand:public IUserCommand {

@@ -22,11 +22,16 @@ ElementSetRegistry::ElementSetRegistry() {
   // Nothing to do.
 }
 
-void ElementSetRegistry::registerElementSet(PluginRegistry* pluginRegistry, DOMNodeWrapper* node) {
+void ElementSetRegistry::registerElementSet(PluginRegistry* pluginRegistry, DOMNodeWrapper* node, CommandDirectory* commandDirectory) {
   std::string mInstance = node->getAttribute("instance");
   std::string mType = node->getAttribute("type");
   std::cout << "Setting element set connections \"" << mType << ":" << mInstance << "\"" << std::endl;
   IElementSet* mElementSet = createInstance(mType, mInstance);
+  std::vector<std::string> mDirectory;
+  mDirectory.push_back("ElementSet");
+  mDirectory.push_back(mInstance);
+  CommandRegistryProxy* mCommandRegistry = new CommandRegistryProxy(commandDirectory, mDirectory);
+  mElementSet->setEditingContext(NULL, NULL, NULL, mCommandRegistry);
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
@@ -120,8 +125,13 @@ void ElementSetRegistry::destroyInstance(IElementSet* elementSet) {
   // TODO: Fire event to listeners.
 }
 
-void ElementSetRegistry::setEditingInfo(BlockLocation* location, IElementGateway* gateway, IComponentContainer* container) {
+void ElementSetRegistry::setEditingInfo(BlockLocation* location, IElementGateway* gateway, IComponentContainer* container, CommandDirectory* commandDirectory) {
   for (std::map<std::string, IElementSet*>::iterator i = cElementSets.begin(); i != cElementSets.end(); i++) {
+    std::vector<std::string> mCommandDirectory;
+    mCommandDirectory.push_back("ElementSet");
+    mCommandDirectory.push_back(i->first);
+    CommandRegistryProxy* mCommandRegistry = new CommandRegistryProxy(commandDirectory, mCommandDirectory);
+    i->second->setEditingContext(location, gateway, container, mCommandRegistry);
     std::vector<IElementFactory*> mElementFactories = i->second->getElementFactories();
     for (std::vector<IElementFactory*>::iterator j = mElementFactories.begin(); j != mElementFactories.end(); j++) {
       (*j)->setEditingContext(location, gateway, container);

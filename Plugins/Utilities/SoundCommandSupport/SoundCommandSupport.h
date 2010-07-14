@@ -19,7 +19,8 @@
 #ifndef SOUND_COMMAND_SUPPORT_H
 #define SOUND_COMMAND_SUPPORT_H
 
-#include "../../CommandRegistry/ICommandRegistry.h"
+#include <IsoRealms/ICommandRegistry.h>
+
 #include "../../SoundSupport/ISound.h"
 #include "../../SoundSupport/ISoundSupport.h"
 #include "../../SoundSupport/ISoundSupportListener.h"
@@ -44,6 +45,8 @@ class SoundCommandSupport:public IUtilities,
   \************************************/
   void soundAdded(ISound*);
   void soundRemoved(ISound*);
+
+  void setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry*);
 
   /*****************************\
    * Implements IPluginSupport *

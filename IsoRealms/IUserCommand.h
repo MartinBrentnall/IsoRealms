@@ -16,29 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SWITCH_H
-#define SWITCH_H
+#ifndef I_USER_COMMAND_H
+#define I_USER_COMMAND_H
 
 #include <string>
-#include <vector>
 
-#include <IsoRealms/DOMNodeWrapper.h>
-#include <IsoRealms/IUserCommand.h>
-#include <IsoRealms/Script.h>
+#include "ICommand.h"
 
-class Switch {
-  private:
-  std::string cName;
-  Script* cOnScript;
-  Script* cOffScript;
-
+class IUserCommand:public ICommand {
   public:
-  Switch(const std::string&);
-  Switch(const std::string&, Script*, Script*);
-
-  std::string getName();
-  void switchOn();
-  void switchOff();
+  virtual std::string getCommandName() = 0;
 };
 
 #endif

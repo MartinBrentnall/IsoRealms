@@ -5,11 +5,11 @@
 #include <vector>
 
 #include <IsoRealms/BlockArea.h>
+#include <IsoRealms/ICommandRegistry.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 
 #include "../IUtilities.h"
 
-#include "../../CommandRegistry/ICommandRegistry.h"
 #include "../../Objectives/IObjectives.h"
 #include "../../ZoneContext/IZoneContextListener.h"
 #include "../../ZoneContext/IZoneContext.h"
@@ -24,8 +24,8 @@ class ExploredZones:public IUtilities,
   std::set<IZone*> cExploredZones;
   unsigned int cZoneCount;
   std::vector<PlugSocket*> cSockets;
-  std::vector<IUserCommand*> cAllZonesExploredCommands;
-  std::vector<IUserCommand*> cZoneExploredCommands;
+  Script* cAllZonesExploredScript;
+  Script* cZoneExploredScript;
   IZoneRenderer* cExploredZoneRenderer;
   IZoneRenderer* cMapOverviewRenderer;
   
@@ -65,6 +65,7 @@ class ExploredZones:public IUtilities,
   IZoneRenderer* getZoneRenderer(const std::string&);
   void save(DOMNodeWriter*);
   void load(DOMNodeWrapper*);
+  void setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry*);
   
   /*****************************\
    * Implements IPluginSupport *

@@ -16,29 +16,18 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SWITCH_H
-#define SWITCH_H
+#include "Script.h"
 
-#include <string>
-#include <vector>
+Script::Script(std::vector<IUserCommand*> commands) {
+  cCommands = commands;
+}
 
-#include <IsoRealms/DOMNodeWrapper.h>
-#include <IsoRealms/IUserCommand.h>
-#include <IsoRealms/Script.h>
+void Script::save(DOMNodeWriter* node, const std::string& name) {
+  // TODO: Save the script
+}
 
-class Switch {
-  private:
-  std::string cName;
-  Script* cOnScript;
-  Script* cOffScript;
-
-  public:
-  Switch(const std::string&);
-  Switch(const std::string&, Script*, Script*);
-
-  std::string getName();
-  void switchOn();
-  void switchOff();
-};
-
-#endif
+void Script::execute() {
+  for (unsigned int i = 0; i < cCommands.size(); i++) {
+    cCommands[i]->execute();
+  }
+}

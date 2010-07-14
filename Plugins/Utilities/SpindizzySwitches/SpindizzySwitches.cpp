@@ -23,8 +23,6 @@ SpindizzySwitches::SpindizzySwitches() {
   cActiveSwitchB = NULL;
   cNextSwitch = &cActiveSwitchA;
   cResetCommand = new ResetCommand(this);
-  assignDummyPlugin(&cCommandRegistry, "CommandRegistry");
-  cCommandRegistrySocket.push_back(new PlugSocket("CommandRegistry"));
 }
 
 void SpindizzySwitches::addSwitch(const std::string& name, bool primary) {
@@ -39,8 +37,8 @@ SpindizzySwitches::ResetCommand::ResetCommand(SpindizzySwitches* parent) {
   cParent = parent;
 }
 
-void SpindizzySwitches::ResetCommand::setCommands(std::vector<IUserCommand*> commands) {
-  cResetCommands = commands;
+void SpindizzySwitches::ResetCommand::setScript(Script* script) {
+  cResetScript = script;
 }
 
 void SpindizzySwitches::ResetCommand::execute() {
@@ -52,9 +50,7 @@ void SpindizzySwitches::ResetCommand::execute() {
       cParent->cActiveSwitchB = NULL;
     }
     cParent->cNextSwitch = &cParent->cActiveSwitchA;
-    for (unsigned int i = 0; i < cResetCommands.size(); i++) {
-      cResetCommands[i]->execute();
-    }
+    cResetScript->execute();
   }
 }
 
@@ -74,20 +70,20 @@ SpindizzySwitches::SwitchCommand::SwitchCommand(SpindizzySwitches* parent, DOMNo
   std::string mSwitchType = node->getAttribute("type");
   cPrimary = mSwitchType == "primary";
   cSwitch = NULL;
-  std::vector<IUserCommand*> mOnCommands;
-  std::vector<IUserCommand*> mOffCommands;
+  Script* mOnScript;
+  Script* mOffScript;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "On") {
-      mOnCommands = cParent->getCommands(mNode);
+      mOnScript = cParent->cCommandRegistry->getScript(mNode);
     } else if (mValueAsString == "Off") {
-      mOffCommands = cParent->getCommands(mNode);
+      mOffScript = cParent->cCommandRegistry->getScript(mNode);
     } else {
       // TODO: Throw
     }
   }
-  cSwitch = new Switch(mSwitchName, mOnCommands, mOffCommands);
+  cSwitch = new Switch(mSwitchName, mOnScript, mOffScript);
 }
 
 void SpindizzySwitches::SwitchCommand::deactivate() {
@@ -124,47 +120,6 @@ std::string SpindizzySwitches::SwitchCommand::getCommandName() {
   return "Activate switch " + cSwitch->getName();
 }
 
-std::vector<PlugSocket*> SpindizzySwitches::getPlugSockets() {
-  return cCommandRegistrySocket;
-}
-
-void SpindizzySwitches::setPlugin(PlugSocket* socket, IPlugin* plugin) {
-  if (socket->getType() == "CommandRegistry") {
-    ICommandRegistry* mPreviousCommandRegistry = cCommandRegistry;
-    if (assignPlugin(plugin, &cCommandRegistry, *socket)) {
-      mPreviousCommandRegistry->unregisterCommand(cResetCommand);
-      cCommandRegistry->registerCommand(cResetCommand);
-      for (unsigned int i = 0; i < cSwitchCommands.size(); i++) {
-        mPreviousCommandRegistry->unregisterCommand(cSwitchCommands[i]);
-        cCommandRegistry->registerCommand(cSwitchCommands[i]);
-      }
-    }
-  } else {
-    // TODO: Throw
-  }
-}
-
-IPlugin* SpindizzySwitches::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "CommandRegistry") {return cCommandRegistry;}
-  // TODO: Throw
-  return NULL;
-}
-
-std::vector<IUserCommand*> SpindizzySwitches::getCommands(DOMNodeWrapper* node) {
-  std::vector<IUserCommand*> mCommands;
-  for (int i = 0; i < node->getChildCount(); i++) {
-    DOMNodeWrapper *mNode = node->getChild(i);
-    std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "Command") {
-      std::string mCommandName = mNode->getStringValue();
-      mCommands.push_back(cCommandRegistry->getCommand(mCommandName));
-    } else {
-      // TODO: Throw
-    }
-  }
-  return mCommands;
-}
-
 void SpindizzySwitches::load(DOMNodeWrapper* node) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
@@ -174,7 +129,7 @@ void SpindizzySwitches::load(DOMNodeWrapper* node) {
       cSwitchCommands.push_back(mSwitchCommand);
       cCommandRegistry->registerCommand(mSwitchCommand);
     } else if (mValueAsString == "ResetSwitch") {
-      cResetCommand->setCommands(getCommands(mNode));
+      cResetCommand->setScript(cCommandRegistry->getScript(mNode));
     } else {
       // TODO: Throw
     }
@@ -183,6 +138,11 @@ void SpindizzySwitches::load(DOMNodeWrapper* node) {
 
 void SpindizzySwitches::save(DOMNodeWriter* node) {
   // TODO: Implement this
+}
+
+void SpindizzySwitches::setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry* commandRegistry) {
+  cCommandRegistry = commandRegistry;
+  cCommandRegistry->registerCommand(cResetCommand);
 }
 
 extern "C" IPlugin* create() {

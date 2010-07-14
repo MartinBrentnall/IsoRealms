@@ -22,7 +22,6 @@
 #include <string>
 #include <vector>
 
-#include "../../Plugins/CommandRegistry/ICommandRegistry.h"
 #include "../../Plugins/CollidableSurfaceRegistry/ICollidableSurfaceRegistry.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 #include "../../Plugins/SpindizzyTextureSet/SpindizzyTextureSetDummy.h"
@@ -30,6 +29,7 @@
 #include "../../Plugins/SpindizzyTextureSetChanger/IChangeableTextureSet.h"
 #include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
 
+#include <IsoRealms/ICommandRegistry.h>
 #include <IsoRealms/IElementSet.h>
 #include <IsoRealms/IPlugin.h>
 #include <IsoRealms/PlugSocket.h>
@@ -135,6 +135,7 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
    * Implements IElementSet *
   \**************************/
   std::vector<IElementFactory*> getElementFactories();
+  void setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*, ICommandRegistry*);
   void destroy(IElement*);
   void save(DOMNodeWriter*);
 

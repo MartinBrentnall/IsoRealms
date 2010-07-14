@@ -20,8 +20,8 @@
 #define INTEGER_VALUE_COMMANDS_H
 
 #include <IsoRealms/DefaultCommandInfo.h>
+#include <IsoRealms/ICommandRegistry.h>
 
-#include "../../CommandRegistry/ICommandRegistry.h"
 #include "../../IntegerValue/IIntegerValue.h"
 
 #include "../IUtilities.h"
@@ -56,12 +56,11 @@ class IntegerValueCommands:public IUtilities,
   void save(DOMNodeWriter*);
   void load(DOMNodeWrapper*);
   std::vector<ICommandInfo*> getCommandInfo();
-  void setEditingContext(BlockLocation*, IComponentContainer*);
+  void setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry*);
 
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/
-  std::string getName();
   std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);

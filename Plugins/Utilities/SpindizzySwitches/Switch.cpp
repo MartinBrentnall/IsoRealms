@@ -22,58 +22,20 @@ Switch::Switch(const std::string& name) {
   cName = name;
 }
 
-Switch::Switch(const std::string& name, std::vector<IUserCommand*> onCommands, std::vector<IUserCommand*> offCommands) {
+Switch::Switch(const std::string& name, Script* onScript, Script* offScript) {
   cName = name;
-  cOnCommands = onCommands;
-  cOffCommands = offCommands;
+  cOnScript = onScript;
+  cOffScript = offScript;
 }
 
 std::string Switch::getName() {
   return cName;
 }
 
-void Switch::addOnCommand(IUserCommand* command) {
-  cOnCommands.push_back(command);
-}
-
-void Switch::addOffCommand(IUserCommand* command) {
-  cOffCommands.push_back(command);
-}
-
-std::vector<IUserCommand*>& Switch::getOnCommands() {
-  return cOnCommands;
-}
-
-std::vector<IUserCommand*>& Switch::getOffCommands() {
-  return cOffCommands;
-}
-
-void Switch::removeOnCommand(IUserCommand* command) {
-  for (unsigned int i = 0; i < cOnCommands.size(); i++) {
-    if (cOnCommands[i] == command) {
-      cOnCommands.erase(cOnCommands.begin() + i);
-      return;
-    }
-  }
-}
-
-void Switch::removeOffCommand(IUserCommand* command) {
-  for (unsigned int i = 0; i < cOffCommands.size(); i++) {
-    if (cOffCommands[i] == command) {
-      cOffCommands.erase(cOffCommands.begin() + i);
-      return;
-    }
-  }
-}
-
 void Switch::switchOn() {
-  for (unsigned int i = 0; i < cOnCommands.size(); i++) {
-    cOnCommands[i]->execute();
-  }
+  cOnScript->execute();
 }
 
 void Switch::switchOff() {
-  for (unsigned int i = 0; i < cOffCommands.size(); i++) {
-    cOffCommands[i]->execute();
-  }
+  cOffScript->execute();
 }

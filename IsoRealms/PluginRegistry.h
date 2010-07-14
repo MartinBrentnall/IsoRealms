@@ -24,6 +24,8 @@
 #include <string>
 
 #include "Hacks.h"
+#include "CommandDirectory.h"
+#include "CommandRegistryProxy.h"
 #include "DOMNodeWriter.h"
 #include "DefaultZoneRenderer.h"
 #include "IPlugin.h"
@@ -70,7 +72,7 @@ class PluginRegistry:public IPluginRegistry {
 
   public:
 
-  void registerPlugin(DOMNodeWrapper*);
+  void registerPlugin(DOMNodeWrapper*, CommandDirectory*);
 
   void connectPlugin(DOMNodeWrapper*);
 

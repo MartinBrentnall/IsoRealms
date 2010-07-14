@@ -41,7 +41,6 @@ SpindizzyLiftSet::SpindizzyLiftSet() {
   }
   
   assignDummyPlugin(&cSpindizzyTextureSet, "SpindizzyTextureSet");
-  assignDummyPlugin(&cCommandRegistry, "CommandRegistry");
   assignDummyPlugin(&cZoneContext, "ZoneContext");
   setTextureSet(cSpindizzyTextureSet);
 }
@@ -57,6 +56,13 @@ std::vector<IElementFactory*> SpindizzyLiftSet::getElementFactories() {
   return cElementFactories;
 }
 
+void SpindizzyLiftSet::setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*, ICommandRegistry* commandRegistry) {
+  cCommandRegistry = commandRegistry;
+  for (unsigned int i = 0; i < cCommands.size(); i++) {
+    cCommandRegistry->registerCommand(cCommands[i]);
+  }
+}
+
 void SpindizzyLiftSet::destroy(IElement* element) {
   delete element;
 }
@@ -64,7 +70,6 @@ void SpindizzyLiftSet::destroy(IElement* element) {
 std::vector<PlugSocket*> SpindizzyLiftSet::getPlugSockets() {
   std::vector<PlugSocket*> mSockets;
   mSockets.push_back(new PlugSocket("SpindizzyTextureSet"));
-  mSockets.push_back(new PlugSocket("CommandRegistry"));
   mSockets.push_back(new PlugSocket("ZoneContext"));
   return mSockets;
 }
@@ -73,14 +78,6 @@ void SpindizzyLiftSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
   if (socket->getType() == "SpindizzyTextureSet") {
     if (assignPlugin(implementation, &cSpindizzyTextureSet, *socket)) {
       setTextureSet(cSpindizzyTextureSet);
-    }
-  } else if (socket->getType() == "CommandRegistry") {
-    ICommandRegistry* mPreviousCommandRegistry = cCommandRegistry;
-    if (assignPlugin(implementation, &cCommandRegistry, *socket)) {
-      for (unsigned int i = 0; i < cCommands.size(); i++) {
-        mPreviousCommandRegistry->unregisterCommand(cCommands[i]);
-        cCommandRegistry->registerCommand(cCommands[i]);
-      }
     }
   } else if (socket->getType() == "ZoneContext") {
     IZoneContext* mPreviousZoneContext = cZoneContext;
@@ -95,7 +92,6 @@ void SpindizzyLiftSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
 
 IPlugin* SpindizzyLiftSet::getPlugin(PlugSocket* socket) {
   if (socket->getType() == "SpindizzyTextureSet")  {return cSpindizzyTextureSet;}
-  else if (socket->getType() == "CommandRegistry") {return cCommandRegistry;}
   else if (socket->getType() == "ZoneContext")     {return cZoneContext;}
   // TODO: Throw wobbly!
   return NULL;
@@ -106,21 +102,15 @@ DefaultElementHandler<SpindizzyLift>* SpindizzyLiftSet::createHandler(IElementCo
 }
 
 void SpindizzyLiftSet::save(DOMNodeWriter* node) {
-  for (unsigned int i = 0; i < cLiftMovedCommands.size(); i++) {
-    DOMNodeWriter* mCommandNode = node->addBranch("LiftMovedCommand");
-    std::string mCommandName = cLiftMovedCommands[i]->getCommandName();
-    mCommandNode->addText(mCommandName);
-  }
+  cLiftMovedScript->save(node, "LiftMovedScript");
 }
 
 void SpindizzyLiftSet::load(DOMNodeWrapper* node) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "LiftMovedCommand") {
-      std::string mCommandName = mNode->getStringValue();
-      IUserCommand* mCommand = cCommandRegistry->getCommand(mCommandName);
-      cLiftMovedCommands.push_back(mCommand);
+    if (mValueAsString == "LiftMovedScript") {
+      cLiftMovedScript = cCommandRegistry->getScript(mNode);
     } else {
       // TODO: Throw something!
     }
@@ -131,10 +121,8 @@ IZone* SpindizzyLiftSet::getCurrentZone() {
   return cZone;
 }
 
-void SpindizzyLiftSet::executeLiftMovedCommands() {
-  for (unsigned int i = 0; i < cLiftMovedCommands.size(); i++) {
-    cLiftMovedCommands[i]->execute();
-  }
+void SpindizzyLiftSet::executeLiftMovedScript() {
+  cLiftMovedScript->execute();
 }
 
 void SpindizzyLiftSet::zoneContextChanged(IZone* zone) {

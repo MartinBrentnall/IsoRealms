@@ -18,7 +18,10 @@ add_library(IsoRealms SHARED
   BlockArea.cpp
   BlockLocation.cpp
   Colour.cpp
+  CommandDirectory.cpp
   CommandManager.cpp
+  CommandProxy.cpp
+  CommandRegistryProxy.cpp
   Configuration.cpp
   DOMNodeWrapper.cpp
   DOMNodeWriter.cpp
@@ -60,6 +63,7 @@ add_library(IsoRealms SHARED
   PluginSupportException.cpp
   Rectangle.cpp
   ScreenConfiguration.cpp
+  Script.cpp
   System.cpp
   Utils.cpp
   Vertex.cpp

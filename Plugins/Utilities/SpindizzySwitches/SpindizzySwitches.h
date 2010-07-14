@@ -21,8 +21,8 @@
 
 #include <map>
 
-#include "../../CommandRegistry/ICommandRegistry.h"
-#include "../../CommandRegistry/IUserCommand.h"
+#include <IsoRealms/ICommandRegistry.h>
+#include <IsoRealms/IUserCommand.h>
 
 #include "../IUtilities.h"
 
@@ -33,11 +33,11 @@ class SpindizzySwitches:public IUtilities {
   class ResetCommand:public IUserCommand {
     private:
     SpindizzySwitches* cParent;
-    std::vector<IUserCommand*> cResetCommands;
+    Script* cResetScript;
 
     public:
     ResetCommand(SpindizzySwitches*);
-    void setCommands(std::vector<IUserCommand*>);
+    void setScript(Script*);
 
     /***************************\
      * Implements IUserCommand *
@@ -72,8 +72,6 @@ class SpindizzySwitches:public IUtilities {
   SwitchCommand* cActiveSwitchB;
   SwitchCommand** cNextSwitch;
 
-  std::vector<IUserCommand*> getCommands(DOMNodeWrapper*);
-  
   public:
   SpindizzySwitches();
 
@@ -84,13 +82,7 @@ class SpindizzySwitches:public IUtilities {
   \**********************/
   void load(DOMNodeWrapper*);
   void save(DOMNodeWriter*);
-
-  /*****************************\
-   * Implements IPluginSupport *
-  \*****************************/
-  std::vector<PlugSocket*> getPlugSockets();
-  void setPlugin(PlugSocket*, IPlugin*);
-  IPlugin* getPlugin(PlugSocket*);
+  void setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry*);
 };
 
 #endif

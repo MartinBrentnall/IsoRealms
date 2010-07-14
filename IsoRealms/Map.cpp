@@ -41,7 +41,7 @@ Map::Map(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, 
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Plugin") {
-      cPluginRegistry.registerPlugin(mNode);
+      cPluginRegistry.registerPlugin(mNode, &cCommandRegistry);
     } else {
       // TODO: Throw something
     }
@@ -57,7 +57,7 @@ Map::Map(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, 
     } else if (mValueAsString == "Plugin") {
       cPluginRegistry.connectPlugin(mNode);
     } else if (mValueAsString == "ElementSet") {
-      cElementSetRegistry.registerElementSet(&cPluginRegistry, mNode);
+      cElementSetRegistry.registerElementSet(&cPluginRegistry, mNode, &cCommandRegistry);
     } else if (mValueAsString == "ZoneRenderer") {
       IZoneRenderer* mZoneRenderer = cPluginRegistry.getZoneRenderer(mNode);
       cZoneRenderers.push_back(mZoneRenderer);
@@ -355,6 +355,10 @@ ElementSetRegistry* Map::getElementSetRegistry() {
 
 PluginRegistry* Map::getPluginRegistry() {
   return &cPluginRegistry;
+}
+
+CommandDirectory* Map::getCommandRegistry() {
+  return &cCommandRegistry;
 }
 
 void Map::pluginInstanceAdded(PluginRegistry* registry, std::string, std::string) {

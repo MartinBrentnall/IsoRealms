@@ -28,7 +28,7 @@ class SpindizzyLift;
 class ISpindizzyLiftSet:public ElementSet<SpindizzyLift> {
   public:
   virtual IZone* getCurrentZone() = 0;
-  virtual void executeLiftMovedCommands() = 0;
+  virtual void executeLiftMovedScript() = 0;
 };
 
 #endif

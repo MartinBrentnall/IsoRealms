@@ -24,6 +24,7 @@
 
 #include "BlockLocation.h"
 #include "DOMNodeWriter.h"
+#include "ICommandRegistry.h"
 #include "IComponentContainer.h"
 #include "ICommandInfo.h"
 #include "IDynamicElement.h"
@@ -96,7 +97,7 @@ class IPlugin:public IPluginSupport {
   /**
    * Set the editing context.
    */
-  virtual void setEditingContext(BlockLocation*, IComponentContainer*);
+  virtual void setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry*);
 
   /**
    * Return the command info associated with this plugin.

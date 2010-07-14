@@ -92,9 +92,9 @@ std::vector<IInteractiveElement*> SpindizzyLift::getInteractiveElements() {
   return mInteractiveElements;
 }
 
-void SpindizzyLift::executeLiftMovedCommands() {
+void SpindizzyLift::executeLiftMovedScript() {
   ISpindizzyLiftSet* mLiftSet = getElementSet();
-  mLiftSet->executeLiftMovedCommands();
+  mLiftSet->executeLiftMovedScript();
 }
 
 SpindizzyLift::LiftValues SpindizzyLift::getZLocationAfter(int milliseconds) {
@@ -119,7 +119,7 @@ SpindizzyLift::LiftValues SpindizzyLift::getZLocationAfter(int milliseconds) {
             milliseconds = 0; // TODO: Recover remaining ticks for pause
             mLift.cZ = cTop;
           } else if ((int) mLift.cZ != (int) cLiftValues.cZ) {
-            executeLiftMovedCommands();
+            executeLiftMovedScript();
             milliseconds = 0;
           } else {
             milliseconds = 0;
@@ -136,7 +136,7 @@ SpindizzyLift::LiftValues SpindizzyLift::getZLocationAfter(int milliseconds) {
             milliseconds = 0; // TODO: Recover remaining ticks for pause
             mLift.cZ = cBottom;
           } else if ((int) mLift.cZ != (int) cLiftValues.cZ) {
-            executeLiftMovedCommands();
+            executeLiftMovedScript();
             milliseconds = 0;
           } else {
             milliseconds = 0;
@@ -163,7 +163,7 @@ SpindizzyLift::LiftValues SpindizzyLift::getZLocationAfter(int milliseconds) {
             milliseconds = mLift.cDelay > 0 ? mLift.cDelay : -mLift.cDelay;
             mLift.cState = mLift.cZ >= cTop ? SpindizzyLift::PAUSED_TOP : SpindizzyLift::MOVING_UP;
             if (mLift.cState == SpindizzyLift::MOVING_UP) {
-              executeLiftMovedCommands();
+              executeLiftMovedScript();
             } else {
               mLift.cDelay = cTopDelay;
             }

@@ -26,9 +26,9 @@
 #include <IsoRealms/IComponentContainer.h>
 #include <IsoRealms/IElementGateway.h>
 #include <IsoRealms/IsoRealmsConstants.h>
+#include <IsoRealms/IUserCommand.h>
 #include <IsoRealms/IVisualElement.h>
 
-#include "../../Plugins/CommandRegistry/IUserCommand.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 

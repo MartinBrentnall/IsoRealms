@@ -22,8 +22,7 @@
 #include <vector>
 
 #include <IsoRealms/IInteractiveElement.h>
-
-#include "../../CommandRegistry/ICommandRegistry.h"
+#include <IsoRealms/ICommandRegistry.h>
 
 #include "../IUtilities.h"
 
@@ -32,15 +31,12 @@ class InputCommands:public IUtilities,
   private:
   std::vector<PlugSocket*> cSockets;
   ICommandRegistry* cCommandRegistry;
-  std::map<SDLKey, std::vector<IUserCommand*> > cKeyCommands;
+  std::map<SDLKey, Script*> cKeyCommands;
 
   bool keyDown(SDLKey&);
   SDLKey getSDLKey(const std::string&);
   
-  std::vector<IUserCommand*> getCommands(DOMNodeWrapper*);
-
   public:
-  InputCommands();
 
   /**********************\
    * Implements IPlugin *
@@ -48,13 +44,7 @@ class InputCommands:public IUtilities,
   void load(DOMNodeWrapper*);
   void save(DOMNodeWriter*);
   std::vector<IInteractiveElement*> getInteractiveElements();
-
-  /*****************************\
-   * Implements IPluginSupport *
-  \*****************************/
-  std::vector<PlugSocket*> getPlugSockets();
-  void setPlugin(PlugSocket*, IPlugin*);
-  IPlugin* getPlugin(PlugSocket*);
+  void setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry*);
 
   /**********************************\
    * Implements IInteractiveElement *

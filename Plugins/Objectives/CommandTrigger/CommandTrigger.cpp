@@ -18,11 +18,6 @@
  */
 #include "CommandTrigger.h"
 
-CommandTrigger::CommandTrigger() {
-  assignDummyPlugin(&cCommandRegistry, "CommandRegistry");
-  cSockets.push_back(new PlugSocket("CommandRegistry"));
-}
-
 void CommandTrigger::check() {
   for (std::set<IObjective*>::iterator i = cObjectives.begin(); i != cObjectives.end(); i++) {
     if (!(*i)->isMet()) {
@@ -30,9 +25,7 @@ void CommandTrigger::check() {
     }
   }
   std::cout << "Triggering ending!" << std::endl;
-  for (unsigned int i = 0; i < cObjectivesMetCommands.size(); i++) {
-    cObjectivesMetCommands[i]->execute();
-  }
+  cObjectivesMetScript->execute();
 }
 
 void CommandTrigger::registerObjective(IObjective* objective) {
@@ -43,22 +36,8 @@ void CommandTrigger::unregisterObjective(IObjective* objective) {
   cObjectives.erase(objective);
 }
 
-std::vector<PlugSocket*> CommandTrigger::getPlugSockets() {
-  return cSockets;
-}
-
-void CommandTrigger::setPlugin(PlugSocket* socket, IPlugin* plugin) {
-  if (socket->getType() == "CommandRegistry") {
-    if (assignPlugin(plugin, &cCommandRegistry, *socket)) {
-      cObjectivesMetCommands.clear();
-    }
-  }
-}
-
-IPlugin* CommandTrigger::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "CommandRegistry") {return cCommandRegistry;}
-  // TODO: Throw
-  return NULL;
+void CommandTrigger::setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry* commandRegistry) {
+  cCommandRegistry = commandRegistry;
 }
 
 extern "C" IPlugin* create() {

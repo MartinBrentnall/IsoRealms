@@ -66,7 +66,6 @@ SpindizzyBlockSet::SpindizzyBlockSet() {
   cSpindizzyTextureSet = cDummyTextureSet;
   cSpindizzyTextureSetController = NULL;
   assignDummyPlugin(&cSurfaceProcessor, "SurfaceProcessor");
-  assignDummyPlugin(&cCommandRegistry, "CommandRegistry");
   assignDummyPlugin(&cCollidableSurfaceRegistry, "CollidableSurfaceRegistry");
 
   addBlockState(SWITCH_CIRCLE_BOTH);
@@ -102,7 +101,6 @@ std::vector<PlugSocket*> SpindizzyBlockSet::getPlugSockets() {
     mSockets.push_back(new PlugSocket("SpindizzyTextureSetChanger"));
   }
   mSockets.push_back(new PlugSocket("SurfaceProcessor"));
-  mSockets.push_back(new PlugSocket("CommandRegistry"));
   mSockets.push_back(new PlugSocket("CollidableSurfaceRegistry"));
   return mSockets;
 }
@@ -112,15 +110,7 @@ void SpindizzyBlockSet::setSpindizzyTextureSet(ISpindizzyTextureSet* textureSet)
 }
 
 void SpindizzyBlockSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
-  if (socket->getType() == "CommandRegistry") {
-    ICommandRegistry* mPreviousCommandRegistry = cCommandRegistry;
-    if (assignPlugin(implementation, &cCommandRegistry, *socket)) { 
-      for (unsigned int i = 0; i < cSpindizzyBlockCommands.size(); i++) {
-        mPreviousCommandRegistry->unregisterCommand(cSpindizzyBlockCommands[i]);
-        cCommandRegistry->registerCommand(cSpindizzyBlockCommands[i]);
-      }
-    }
-  } else if (socket->getType() == "CollidableSurfaceRegistry") {
+  if (socket->getType() == "CollidableSurfaceRegistry") {
     assignPlugin(implementation, &cCollidableSurfaceRegistry, *socket);
   } else if (socket->getType() == "SpindizzyTextureSet") {
     if (assignPlugin(implementation, &cSpindizzyTextureSet, *socket)) {
@@ -149,7 +139,6 @@ void SpindizzyBlockSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
 }
 
 IPlugin* SpindizzyBlockSet::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "CommandRegistry")            {return cCommandRegistry;}
   if (socket->getType() == "CollidableSurfaceRegistry")  {return cCollidableSurfaceRegistry;}
   if (socket->getType() == "SpindizzyTextureSet")        {return cSpindizzyTextureSet;}
   if (socket->getType() == "SurfaceProcessor")           {return cSurfaceProcessor;}
@@ -160,6 +149,13 @@ IPlugin* SpindizzyBlockSet::getPlugin(PlugSocket* socket) {
 
 std::vector<IElementFactory*> SpindizzyBlockSet::getElementFactories() {
   return cElementFactories;
+}
+
+void SpindizzyBlockSet::setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*, ICommandRegistry* commandRegistry) {
+  cCommandRegistry = commandRegistry;
+  for (unsigned int i = 0; i < cSpindizzyBlockCommands.size(); i++) {
+    cCommandRegistry->registerCommand(cSpindizzyBlockCommands[i]);
+  }
 }
 
 void SpindizzyBlockSet::destroy(IElement* element) {

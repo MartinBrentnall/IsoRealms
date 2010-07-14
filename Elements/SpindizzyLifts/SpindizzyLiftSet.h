@@ -23,8 +23,8 @@
 
 #include <IsoRealms/IElementSet.h>
 #include <IsoRealms/PluginRegistry.h>
+#include <IsoRealms/ICommandRegistry.h>
 
-#include "../../Plugins/CommandRegistry/ICommandRegistry.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 #include "../../Plugins/ZoneContext/IZoneContext.h"
@@ -41,7 +41,7 @@ class SpindizzyLiftSet:public ISpindizzyLiftSet,
   std::vector<IElementFactory*> cElementFactories;
   ICommandRegistry* cCommandRegistry;
   IZoneContext* cZoneContext;
-  std::vector<IUserCommand*> cLiftMovedCommands;
+  Script* cLiftMovedScript;
   IZone* cZone;
   std::vector<IUserCommand*> cCommands;
   ISpindizzyTextureSet* cSpindizzyTextureSet;
@@ -60,6 +60,7 @@ class SpindizzyLiftSet:public ISpindizzyLiftSet,
    * Implements IElementSet *
   \**************************/
   std::vector<IElementFactory*> getElementFactories();
+  void setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*, ICommandRegistry*);
   void destroy(IElement*);
 
   /*************************\
@@ -80,7 +81,7 @@ class SpindizzyLiftSet:public ISpindizzyLiftSet,
    * Implements ISpindizzyLiftSet *
   \********************************/
   IZone* getCurrentZone();
-  void executeLiftMovedCommands();
+  void executeLiftMovedScript();
   
   /***********************************\
    * Implements IZoneContextListener *

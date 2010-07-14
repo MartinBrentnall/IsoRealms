@@ -21,14 +21,14 @@
 
 #include <vector>
 
+#include <IsoRealms/ICommandRegistry.h>
 #include <IsoRealms/IElementSet.h>
 #include <IsoRealms/IPluginSupport.h>
 #include <IsoRealms/PluginRegistry.h>
+#include <IsoRealms/Script.h>
 
 #include "../../Plugins/3DModel/ISimpleModelFactory.h"
 #include "../../Plugins/Collectables/ICollectables.h"
-#include "../../Plugins/CommandRegistry/ICommandRegistry.h"
-#include "../../Plugins/CommandRegistry/IUserCommand.h"
 
 #include "ISpindizzyJewelSet.h"
 #include "SpindizzyJewelFactory.h"
@@ -41,8 +41,8 @@ class SpindizzyJewelSet:public ISpindizzyJewelSet {
   ICollectables* cCollectables;
 
   ICommandRegistry* cCommandRegistry;
-  std::vector<IUserCommand*> cJewelCollectedCommands;
-  std::vector<IUserCommand*> cAllJewelsCollectedCommands;
+  Script* cJewelCollectedScript;
+  Script* cAllJewelsCollectedScript;
 
   void setModel(ISimpleModelFactory*);
 
@@ -60,6 +60,7 @@ class SpindizzyJewelSet:public ISpindizzyJewelSet {
    * Implements IElementSet *
   \**************************/
   std::vector<IElementFactory*> getElementFactories();
+  void setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*, ICommandRegistry*);
   void destroy(IElement*);
   ~SpindizzyJewelSet();
 

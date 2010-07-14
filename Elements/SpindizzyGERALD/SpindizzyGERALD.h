@@ -28,6 +28,7 @@
 #include <IsoRealms/IInteractiveElement.h>
 #include <IsoRealms/IMap.h>
 #include <IsoRealms/IsoRealmsConstants.h>
+#include <IsoRealms/IUserCommand.h>
 #include <IsoRealms/IVisualElement.h>
 #include <IsoRealms/KeyStates.h>
 #include <IsoRealms/Vertex.h>
@@ -37,7 +38,6 @@
 #include "../../Plugins/Camera/ICamera.h"
 #include "../../Plugins/Collectables/ICollectables.h"
 #include "../../Plugins/CollidableSurfaceRegistry/ICollidableSurfaceRegistry.h"
-#include "../../Plugins/CommandRegistry/IUserCommand.h"
 #include "../../Plugins/LocationAwareness/ILocationAwareness.h"
 #include "../../Plugins/ZoneContext/IZoneContext.h"
 

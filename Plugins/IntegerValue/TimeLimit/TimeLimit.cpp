@@ -19,9 +19,7 @@
 #include "TimeLimit.h"
 
 TimeLimit::TimeLimit() {
-  assignDummyPlugin(&cCommandRegistry, "CommandRegistry");
   assignDummyPlugin(&cIntegerValue, "IntegerValue");
-  cSockets.push_back(new PlugSocket("CommandRegistry"));
   cSockets.push_back(new PlugSocket("IntegerValue"));
   cMilliseconds = 180000;
   cMaximumMilliseconds = 180000;
@@ -79,17 +77,12 @@ std::vector<PlugSocket*> TimeLimit::getPlugSockets() {
 }
 
 void TimeLimit::setPlugin(PlugSocket* socket, IPlugin* plugin) {
-  if (socket->getType() == "CommandRegistry") {
-    if (assignPlugin(plugin, &cCommandRegistry, *socket)) {
-      cTimeOutCommands.clear();
-    }
-  } else if (socket->getType() == "IntegerValue") {
+  if (socket->getType() == "IntegerValue") {
     assignPlugin(plugin, &cIntegerValue, *socket);
   }
 }
 
 IPlugin* TimeLimit::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "CommandRegistry") {return cCommandRegistry;}
   if (socket->getType() == "IntegerValue")    {return cIntegerValue;}
   // TODO: Throw
   return NULL;

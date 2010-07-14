@@ -19,7 +19,7 @@
 #ifndef BLOCK_STATE_COMMAND_H
 #define BLOCK_STATE_COMMAND_H
 
-#include "../../Plugins/CommandRegistry/IUserCommand.h"
+#include <IsoRealms/IUserCommand.h>
 
 class BlockStateCommand:public IUserCommand {
   private:

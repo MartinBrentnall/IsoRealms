@@ -18,48 +18,18 @@
  */
 #include "RandomCommand.h"
 
-RandomCommand::RandomCommand() {
-  assignDummyPlugin(&cCommandRegistry, "CommandRegistry");
-  cCommandRegistrySocket.push_back(new PlugSocket("CommandRegistry"));
-}
-
-std::vector<PlugSocket*> RandomCommand::getPlugSockets() {
-  return cCommandRegistrySocket;
-}
-
-void RandomCommand::setPlugin(PlugSocket* socket, IPlugin* plugin) {
-  if (socket->getType() == "CommandRegistry") {
-    ICommandRegistry* mPreviousCommandRegistry = cCommandRegistry;
-    if (assignPlugin(plugin, &cCommandRegistry, *socket)) {
-      for (unsigned int i = 0; i < cRandomCommands.size(); i++) {
-        mPreviousCommandRegistry->unregisterCommand(cRandomCommands[i]);
-        cCommandRegistry->registerCommand(cRandomCommands[i]);
-      }
-    }
-  } else {
-    // TODO: Throw
-  }
-}
-
-IPlugin* RandomCommand::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "CommandRegistry") {return cCommandRegistry;}
-  // TODO: Throw
-  return NULL;
-}
-
-std::vector<IUserCommand*> RandomCommand::getCommands(DOMNodeWrapper* node) {
-  std::vector<IUserCommand*> mCommands;
+std::vector<Script*> RandomCommand::getScripts(DOMNodeWrapper* node) {
+  std::vector<Script*> mScripts;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "RandomCommand") {
-      std::string mCommandName = mNode->getStringValue();
-      mCommands.push_back(cCommandRegistry->getCommand(mCommandName));
+    if (mValueAsString == "PossibleScript") {
+      mScripts.push_back(cCommandRegistry->getScript(mNode));
     } else {
       // TODO: Throw
     }
   }
-  return mCommands;
+  return mScripts;
 }
 
 void RandomCommand::load(DOMNodeWrapper* node) {
@@ -68,8 +38,8 @@ void RandomCommand::load(DOMNodeWrapper* node) {
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Command") {
       std::string mCommandName = mNode->getAttribute("name");
-      std::vector<IUserCommand*> mCommands = getCommands(mNode);
-      ARandomCommand* mRandomCommand = new ARandomCommand(mCommandName, mCommands);
+      std::vector<Script*> mScripts = getScripts(mNode);
+      ARandomCommand* mRandomCommand = new ARandomCommand(mCommandName, mScripts);
       cRandomCommands.push_back(mRandomCommand);
       cCommandRegistry->registerCommand(mRandomCommand);
     } else {
@@ -82,13 +52,17 @@ void RandomCommand::save(DOMNodeWriter* node) {
   // TODO: Implement this
 }
 
-RandomCommand::ARandomCommand::ARandomCommand(const std::string& name, std::vector<IUserCommand*> commands) {
+void RandomCommand::setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry* commandRegistry) {
+  cCommandRegistry = commandRegistry;
+}
+
+RandomCommand::ARandomCommand::ARandomCommand(const std::string& name, std::vector<Script*> scripts) {
   cName = name;
-  cCommands = commands;
+  cScripts = scripts;
 }
 
 void RandomCommand::ARandomCommand::execute() {
-  cCommands[rand() % cCommands.size()]->execute(); 
+  cScripts[rand() % cScripts.size()]->execute(); 
 }
 
 std::string RandomCommand::ARandomCommand::getCommandName() {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2009,2010 Martin Brentnall
+ * Copyright 2009 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,29 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SWITCH_H
-#define SWITCH_H
+#ifndef I_COMMAND_REGISTRY_H
+#define I_COMMAND_REGISTRY_H
 
 #include <string>
-#include <vector>
 
-#include <IsoRealms/DOMNodeWrapper.h>
-#include <IsoRealms/IUserCommand.h>
-#include <IsoRealms/Script.h>
+#include "DOMNodeWrapper.h"
+#include "ICommandSelectionListener.h"
+#include "IUserCommand.h"
+#include "Script.h"
 
-class Switch {
-  private:
-  std::string cName;
-  Script* cOnScript;
-  Script* cOffScript;
-
+class ICommandRegistry {
   public:
-  Switch(const std::string&);
-  Switch(const std::string&, Script*, Script*);
-
-  std::string getName();
-  void switchOn();
-  void switchOff();
+  virtual void selectCommands(ICommandSelectionListener*) = 0;
+  virtual Script* getScript(DOMNodeWrapper*) = 0;
+  virtual void registerCommand(IUserCommand*) = 0;
+  virtual void unregisterCommand(IUserCommand*) = 0;
 };
 
 #endif

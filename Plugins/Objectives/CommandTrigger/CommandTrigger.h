@@ -21,8 +21,8 @@
 
 #include <set>
 
-#include "../../CommandRegistry/ICommandRegistry.h"
-#include "../../CommandRegistry/IUserCommand.h"
+#include <IsoRealms/ICommandRegistry.h>
+#include <IsoRealms/Script.h>
 
 #include "../IObjectives.h"
 
@@ -30,11 +30,9 @@ class CommandTrigger:public IObjectives {
   private:
   std::set<IObjective*> cObjectives;
   ICommandRegistry* cCommandRegistry;
-  std::vector<IUserCommand*> cObjectivesMetCommands;
-  std::vector<PlugSocket*> cSockets;
+  Script* cObjectivesMetScript;
 
   public:
-  CommandTrigger();
     
   /**************************\
    * Implements IObjectives *
@@ -43,12 +41,7 @@ class CommandTrigger:public IObjectives {
   void registerObjective(IObjective*);
   void unregisterObjective(IObjective*);
 
-  /*****************************\
-   * Implements IPluginSupport *
-  \*****************************/
-  std::vector<PlugSocket*> getPlugSockets();
-  void setPlugin(PlugSocket*, IPlugin*);
-  IPlugin* getPlugin(PlugSocket*);
+  void setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry*);
 };
 
 #endif

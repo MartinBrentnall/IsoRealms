@@ -50,7 +50,7 @@ void IPlugin::zoneContextChanged(IMap*, IZone*) {
   // Nothing to do.
 }
 
-void IPlugin::setEditingContext(BlockLocation*, IComponentContainer*) {
+void IPlugin::setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry*) {
   // Nothing to do.
 }
 

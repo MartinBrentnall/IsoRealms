@@ -32,6 +32,10 @@ std::vector<IElementFactory*> SpindizzyEnemySet::getElementFactories() {
   return cElementFactories;
 }
 
+void SpindizzyEnemySet::setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*, ICommandRegistry*) {
+  // Nothing to do yet
+}
+
 void SpindizzyEnemySet::destroy(IElement* element) {
   delete element;
 }

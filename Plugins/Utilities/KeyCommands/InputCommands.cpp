@@ -18,10 +18,6 @@
  */
 #include "InputCommands.h"
 
-InputCommands::InputCommands() {
-  assignDummyPlugin(&cCommandRegistry, "CommandRegistry");
-}
-
 SDLKey InputCommands::getSDLKey(const std::string& name) {
   if (name == "1") {return SDLK_1;}
   if (name == "2") {return SDLK_2;}
@@ -65,21 +61,6 @@ SDLKey InputCommands::getSDLKey(const std::string& name) {
   exit(1);
 }
 
-std::vector<IUserCommand*> InputCommands::getCommands(DOMNodeWrapper* node) {
-  std::vector<IUserCommand*> mCommands;
-  for (int i = 0; i < node->getChildCount(); i++) {
-    DOMNodeWrapper *mNode = node->getChild(i);
-    std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "Command") {
-      std::string mCommandName = mNode->getStringValue();
-      mCommands.push_back(cCommandRegistry->getCommand(mCommandName));
-    } else {
-      // TODO: Throw
-    }
-  }
-  return mCommands;
-}
-
 void InputCommands::load(DOMNodeWrapper* node) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
@@ -87,9 +68,9 @@ void InputCommands::load(DOMNodeWrapper* node) {
     if (mValueAsString == "Input") {
       std::string mType = mNode->getAttribute("type");
       std::string mValue = mNode->getAttribute("value");
-      std::vector<IUserCommand*> mCommands = getCommands(mNode);
+      Script* mScript = cCommandRegistry->getScript(mNode);
       if (mType == "key") {
-        cKeyCommands[getSDLKey(mValue)] = mCommands;
+        cKeyCommands[getSDLKey(mValue)] = mScript;
       } else {
         // TODO: Throw
         std::cout << "Unknown input type: \"" << mType << "\"" << std::endl;
@@ -104,36 +85,20 @@ void InputCommands::load(DOMNodeWrapper* node) {
 void InputCommands::save(DOMNodeWriter*) {
 }
 
-std::vector<PlugSocket*> InputCommands::getPlugSockets() {
-  return cSockets;
-}
-
-void InputCommands::setPlugin(PlugSocket* socket, IPlugin* plugin) {
-  if (socket->getType() == "CommandRegistry") {
-    if (assignPlugin(plugin, &cCommandRegistry, *socket)) {
-      cKeyCommands.clear();
-    }
-  }
-}
-
-IPlugin* InputCommands::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "CommandRegistry") {return cCommandRegistry;}
-  // TODO: Throw something
-  return NULL;
-}
-
 std::vector<IInteractiveElement*> InputCommands::getInteractiveElements() {
   std::vector<IInteractiveElement*> mInteractiveElements;
   mInteractiveElements.push_back(this);
   return mInteractiveElements;
 }
 
+void InputCommands::setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry* commandRegistry) {
+  cCommandRegistry = commandRegistry;
+}
+
 bool InputCommands::keyDown(SDLKey& key) {
-  std::map<SDLKey, std::vector<IUserCommand*> >::iterator i = cKeyCommands.find(key);
+  std::map<SDLKey, Script*>::iterator i = cKeyCommands.find(key);
   if (i != cKeyCommands.end()) {
-    for (unsigned int j = 0; j < i->second.size(); j++) {
-      i->second[j]->execute();
-    }
+    i->second->execute();
     return true;
   }
   return false;

@@ -67,7 +67,7 @@ class SpindizzyLift:public Element<ISpindizzyLiftSet, ISpindizzyLiftFactory>,
 
   void renderEditingArrow();
 
-  void executeLiftMovedCommands();
+  void executeLiftMovedScript();
   
   public:
   SpindizzyLift(ISpindizzyLiftFactory*, BlockLocation*, ISpindizzyTexture*, SpindizzyLiftProperties*, int, int);
