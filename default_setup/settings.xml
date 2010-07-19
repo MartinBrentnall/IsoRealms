@@ -3,8 +3,8 @@
   <Screen>
     <Fullscreen>false</Fullscreen>
     <Size>
-      <Width>640</Width>
-      <Height>480</Height>
+      <Width>800</Width>
+      <Height>600</Height>
     </Size>
     <Depth>24</Depth>
   </Screen>

@@ -22,6 +22,7 @@
 #include <GL/gl.h>
 
 #include <IsoRealms/BlockLocation.h>
+#include <IsoRealms/Condition.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 
 #include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
@@ -38,6 +39,7 @@ class TileSplitSurface:public ISpindizzyTileSurface {
   ISpindizzyTextureSet::TextureType cTextureType;
   int cCornerHeights[2][2];
   bool cSplitDirection;
+  Condition* cCondition;
 
   public:
 
@@ -47,7 +49,7 @@ class TileSplitSurface:public ISpindizzyTileSurface {
    * @param bool  Split direction.
    * @param BlockLocation&  
    */
-  TileSplitSurface(bool, BlockLocation&, ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType, int, int, int, int);
+  TileSplitSurface(bool, BlockLocation&, ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType, int, int, int, int, Condition*);
 
   /*******************************\
    * Implements IRollableSurface *

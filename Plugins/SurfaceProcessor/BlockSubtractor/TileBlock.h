@@ -41,8 +41,7 @@ class TileBlock {
   bool merge(TileBlock&);
   bool subtractAsGhost(TileBlock&);
   
-  ISurfaceProvider* getTopSurfaceProvider();
-  ISurfaceProvider* getBottomSurfaceProvider();
+  ISurfaceProvider* getSurfaceProvider(ITileSurface::FaceDirection);
   
   void debug();
 };

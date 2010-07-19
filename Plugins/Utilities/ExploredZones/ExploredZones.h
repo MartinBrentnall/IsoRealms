@@ -6,7 +6,9 @@
 
 #include <IsoRealms/BlockArea.h>
 #include <IsoRealms/ICommandRegistry.h>
+#include <IsoRealms/IPluginRegistry.h>
 #include <IsoRealms/IsoRealmsConstants.h>
+#include <IsoRealms/IZoneRenderer.h>
 
 #include "../IUtilities.h"
 
@@ -39,7 +41,7 @@ class ExploredZones:public IUtilities,
     /****************************\
      * Implements IZoneRenderer *
     \****************************/
-    void render(std::vector<IZone*>&);
+    void render(std::vector<IZone*>&, IPluginRegistry&);
   };
   
   class MapOverviewRenderer:public IZoneRenderer {
@@ -52,7 +54,7 @@ class ExploredZones:public IUtilities,
     /****************************\
      * Implements IZoneRenderer *
     \****************************/
-    void render(std::vector<IZone*>&);
+    void render(std::vector<IZone*>&, IPluginRegistry&);
   };
   
   public:

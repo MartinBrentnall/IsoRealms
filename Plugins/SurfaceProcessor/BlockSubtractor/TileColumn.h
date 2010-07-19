@@ -21,17 +21,25 @@
 
 #include <vector>
 
+#include <IsoRealms/Condition.h>
+
 #include "TileBlock.h"
 
 class TileColumn {
   private:
   std::vector<TileBlock*> cTileBlocks;
   std::vector<TileBlock*> cGhostTileBlocks;
+  Condition* cCondition;
 
+  TileColumn(TileColumn*, Condition*);
+  
   public:
-  void addTileBlock(TileBlock*, bool);
-  bool isBottomTileVisible(ISurfaceProvider*);
-  bool isTopTileVisible(ISurfaceProvider*);
+  TileColumn(Condition*);
+    
+  void addTileBlock(TileBlock*, bool, Condition*);
+  bool isTileVisible(ISurfaceProvider*, ITileSurface::FaceDirection);
+  TileColumn* split(Condition*);
+  Condition* getCondition();
   void debug();
 };
 

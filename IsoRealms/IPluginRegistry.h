@@ -22,6 +22,7 @@
 #include <string>
 
 #include "IPlugin.h"
+#include "IZone.h"
 
 class IPluginRegistry {
   public:
@@ -39,6 +40,9 @@ class IPluginRegistry {
    * Retrieve the plug-in instance name
    */
   virtual std::string getInstanceName(std::string, IPlugin*) = 0;
+  
+  // TODO: Remove this
+  virtual void renderPreZone(IZone*) = 0;
 };
 
 #endif

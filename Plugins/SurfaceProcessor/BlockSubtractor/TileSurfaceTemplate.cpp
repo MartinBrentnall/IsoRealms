@@ -1,10 +1,11 @@
 #include "TileSurfaceTemplate.h"
 
-TileSurfaceTemplate::TileSurfaceTemplate(int north, int east, int south, int west) {
+TileSurfaceTemplate::TileSurfaceTemplate(int north, int east, int south, int west, Condition* condition) {
   cNorth = north;
   cEast = east;
   cSouth = south;
   cWest = west;
+  cCondition = condition;
 }
 
 int TileSurfaceTemplate::getNorth() {
@@ -21,6 +22,10 @@ int TileSurfaceTemplate::getSouth() {
 
 int TileSurfaceTemplate::getWest() {
   return cWest;
+}
+
+Condition* TileSurfaceTemplate::getCondition() {
+  return cCondition;
 }
 
 bool TileSurfaceTemplate::alligned(int x, int y) {

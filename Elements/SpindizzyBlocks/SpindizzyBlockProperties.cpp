@@ -67,6 +67,7 @@ void SpindizzyBlockProperties::reset() {
   cCornerHeight[0][1] = 0;
   cCornerHeight[1][0] = 0;
   cCornerHeight[1][1] = 0;
+  cCondition = NULL;
 }
 
 void SpindizzyBlockProperties::setup(DOMNodeWrapper* node) {
@@ -88,6 +89,10 @@ void SpindizzyBlockProperties::setupSlope(DOMNodeWrapper* node) {
   cCornerHeight[mXSideToRaise][1] += abs(mXSlope);
   cCornerHeight[0][mYSideToRaise] += abs(mYSlope);
   cCornerHeight[1][mYSideToRaise] += abs(mYSlope);
+}
+
+void SpindizzyBlockProperties::setupCondition(DOMNodeWrapper* node, std::vector<ConditionElement*> elements) {
+  cCondition = new Condition(node, elements);
 }
 
 int SpindizzyBlockProperties::getNorthWestHeight() {
@@ -112,6 +117,10 @@ bool SpindizzyBlockProperties::isSplitNorthWestSouthEast() {
 
 bool SpindizzyBlockProperties::isSteppedBottom() {
   return cSteppedBottom;
+}
+
+Condition* SpindizzyBlockProperties::getCondition() {
+  return cCondition;
 }
 
 void SpindizzyBlockProperties::renderConfiguration() {

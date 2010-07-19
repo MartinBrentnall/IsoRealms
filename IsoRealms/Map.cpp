@@ -268,7 +268,7 @@ void Map::render() {
   // TODO: End.
   
   for (unsigned int i = 0; i < cZoneRenderers.size(); i++) {
-    cZoneRenderers[i]->render(mZones);
+    cZoneRenderers[i]->render(mZones, cPluginRegistry);
   }
   glCallList(cDisplayList);
   for (unsigned int i = 0; i < cElementHandlers.size(); i++) {

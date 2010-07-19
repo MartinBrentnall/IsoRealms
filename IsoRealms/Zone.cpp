@@ -189,6 +189,7 @@ bool Zone::initZone(unsigned int pass) {
     int mIndexToRemove = getZoneIndex(mCleanElements[i]);
     cDirtyElements.erase(cDirtyElements.begin() + mIndexToRemove);
   }
+  
   if (cDirtyElements.empty()) {
 
     // Game rendering

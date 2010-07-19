@@ -46,7 +46,6 @@ class BlockSubtractor:public ISurfaceProcessor {
 
   std::vector<ITileSurfaceTemplate*> getTileSurfaces(ITileSurface*, ISurfaceProvider*, ITileSurface::FaceDirection);
 
-  int getCompleteRows(ISurfaceProvider*, std::vector<ITileSurfaceTemplate*>, ITileSurface*, ITileSurface*, int, int, int, ITileSurface::FaceDirection/*, Condition* condition TODO:CONDITIONAL*/);
 
   IWallSurface::FaceDirection getOppositeOf(IWallSurface::FaceDirection);
 
@@ -60,7 +59,7 @@ class BlockSubtractor:public ISurfaceProcessor {
    *           is facing.
    * @returns  True if the surface tile is visible, otherwise false.
    */
-  bool isSurfaceTileVisible(ISurfaceProvider*, int x, int y, ITileSurface::FaceDirection);
+  Condition* getSurfaceTileCondition(ISurfaceProvider*, int x, int y, ITileSurface::FaceDirection);
 
   /**
    * Test whether the specified 2D location is vertically aligned with any of
@@ -134,6 +133,11 @@ class BlockSubtractor:public ISurfaceProcessor {
 
   ITileSurface* getSurfaceAt(std::vector<ITileSurface*>, int, int);
   IWallSurface* findSurfaceAt(std::vector<IWallSurface*>, int, int);
+
+  
+  int getEast(ISurfaceProvider*, std::vector<ITileSurfaceTemplate*>&, int, int, ITileSurface::FaceDirection);
+  int getNorth(ISurfaceProvider*, std::vector<ITileSurfaceTemplate*>&, int, int, int, ITileSurface::FaceDirection);
+  
   public:
 
   /********************************\

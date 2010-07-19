@@ -73,22 +73,31 @@ void SpindizzyGERALD::renderStatic() {
 }
 
 bool SpindizzyGERALD::initElement(unsigned int pass) {
+  std::cout << "Init GERALD " << pass << std::endl;
   switch (pass) {
     case INIT_REGISTER_BLOCKS: {
+      std::cout << "   Register blocks" << std::endl;
       if (cZoneContext != NULL && cMap != NULL) {
+        std::cout << "   Getting GERALD start zone..." << std::endl;
         cZone = cMap->getZone(cLocation);
+        std::cout << "   Setting zone in zone context..." << std::endl;
         cZoneContext->setZoneContext(cZone);
       }
+      std::cout << "   Done!" << std::endl;
       return false;
     }
 
     case INIT_USE_SURFACES: {
+      std::cout << "   Getting current surface..." << std::endl;
       cCurrentSurface = cCollidableSurfaceRegistry->getSurfaceAt(cLocation);
+      std::cout << "   Setting respawn surface..." << std::endl;
       cRespawnSurface = cCurrentSurface;
+      std::cout << "   Done!" << std::endl;
       return true;
     }
 
     default: {
+      std::cout << "   Done!" << std::endl;
       return false;
     }
   }

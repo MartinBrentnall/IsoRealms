@@ -64,27 +64,54 @@ IWallSurface* BlockSubtractor::findSurfaceAt(std::vector<IWallSurface*> surfaces
   return NULL;
 }
 
-bool BlockSubtractor::isSurfaceTileVisible(ISurfaceProvider* provider, int x, int y, ITileSurface::FaceDirection facing) {
-  TileColumn mTileColumn;
+Condition* BlockSubtractor::getSurfaceTileCondition(ISurfaceProvider* provider, int x, int y, ITileSurface::FaceDirection facing) {
+  std::vector<TileColumn*> mPossibleTileColumns;
+  mPossibleTileColumns.push_back(new TileColumn(new Condition(true)));
   std::vector<ISurfaceProvider*> mSurfaceProviders = cCache.getSurfaceProviders();
   for (unsigned int i = 0; i < mSurfaceProviders.size(); i++) {
     std::vector<ITileSurface*> mTopSurfaces    = mSurfaceProviders[i]->getTileSurfaces(ITileSurface::UP);
     std::vector<ITileSurface*> mBottomSurfaces = mSurfaceProviders[i]->getTileSurfaces(ITileSurface::DOWN);
-    bool mGhost = mSurfaceProviders[i]->isGhost();
+    Condition* mCondition                      = mSurfaceProviders[i]->getCondition();
+    bool mGhost                                = mSurfaceProviders[i]->isGhost();
     ITileSurface* mTopSurface = getSurfaceAt(mTopSurfaces, x, y);
     if (mTopSurface != NULL) {
       ITileSurface* mBottomSurface = getSurfaceAt(mBottomSurfaces, x, y);
       int mTop = mTopSurface->getSurfaceCellHeight(x, y);
-      bool mTopExtended = mTopSurface->getSurfaceCellElevation(x, y) != 0;
       int mBottom = mBottomSurface->getSurfaceCellHeight(x, y);
+      bool mTopExtended = mTopSurface->getSurfaceCellElevation(x, y) != 0;
       bool mBottomExtended = mBottomSurface->getSurfaceCellElevation(x, y) != 0;
       TileBlock* mTileBlock = new TileBlock(mSurfaceProviders[i], mTop, mBottom, mTopExtended, mBottomExtended);
-      mTileColumn.addTileBlock(mTileBlock, mGhost);
-//      mTileColumn.debug();
+      
+      // Split possible columns into mutually exclusive conditions
+      std::vector<TileColumn*> mSplitColumns;
+      if (mCondition != NULL) {
+        for (unsigned int i = 0; i < mPossibleTileColumns.size(); i++) {
+          TileColumn* mTileColumn = mPossibleTileColumns[i]->split(mCondition);
+          if (mTileColumn != NULL) {
+            mSplitColumns.push_back(mTileColumn);
+          }
+        }
+      }
+      for (unsigned int i = 0; i < mSplitColumns.size(); i++) {
+        mPossibleTileColumns.push_back(mSplitColumns[i]);
+      }
+      for (unsigned int i = 0; i < mPossibleTileColumns.size(); i++) {
+        Condition* mColumnCondition = mPossibleTileColumns[i]->getCondition();
+        if (mCondition == NULL || mColumnCondition->isCompatibleWith(mCondition)) {
+          mPossibleTileColumns[i]->addTileBlock(mTileBlock, mGhost, mCondition);
+        }
+//        mPossibleTileColumns[i]->debug();
+      }
     }
   }
-  return facing == ITileSurface::UP ? mTileColumn.isTopTileVisible(provider)
-                                    : mTileColumn.isBottomTileVisible(provider);
+  Condition* mComposedCondition = new Condition(false);
+  for (unsigned int i = 0; i < mPossibleTileColumns.size(); i++) {
+    if (mPossibleTileColumns[i]->isTileVisible(provider, facing)) {
+      Condition* mEnabledCondition = mPossibleTileColumns[i]->getCondition();
+      mComposedCondition->compose(mEnabledCondition);
+    }
+  }
+  return mComposedCondition;
 }
 
 bool BlockSubtractor::inSurface(std::vector<ITileSurfaceTemplate*> surfaces, int x, int y) {
@@ -96,104 +123,68 @@ bool BlockSubtractor::inSurface(std::vector<ITileSurfaceTemplate*> surfaces, int
   return false;
 }
 
-int BlockSubtractor::getCompleteRows(ISurfaceProvider* provider, std::vector<ITileSurfaceTemplate*> calculatedSurfaces, ITileSurface* topSurface, ITileSurface* bottomSurface, int west, int east, int south, ITileSurface::FaceDirection facing/*, Condition* condition TODO:CONDITIONAL*/) {
-  BlockArea* mSurfaceCoverage = facing == ITileSurface::UP ? topSurface->getCoverage()
-                                                           : bottomSurface->getCoverage();
-  if (south == mSurfaceCoverage->getNorth()) {
-    return south;
-  }
-
-  for (int y = south + 1; y <= mSurfaceCoverage->getNorth(); y++) { // TODO: Isn't the first row ALWAYS going to be true?
-    bool mCompleteRow = true;
+int BlockSubtractor::getNorth(ISurfaceProvider* provider, std::vector<ITileSurfaceTemplate*>& calculatedSurfaces, int west, int east, int south, ITileSurface::FaceDirection faceDirection) {
+  Condition* mSurfaceCondition = getSurfaceTileCondition(provider, west, south, faceDirection);
+  std::vector<ITileSurface*> mRawSurfaces = provider->getTileSurfaces(faceDirection);
+  ITileSurface* mSurface = getSurfaceAt(mRawSurfaces, west, south);
+  
+  BlockArea* mSurfaceCoverage = mSurface->getCoverage();
+  for (int y = south + 1; y <= mSurfaceCoverage->getNorth(); y++) {
     for (int x = west; x <= east; x++) {
-      // TODO: ==================== CONDITIONAL CONSIDERATIONS NEED TO GO HERE ACCORDING TO PROTOTYPE!
-      if (!isSurfaceTileVisible(provider, x, y, facing)/*TODO:CONDITIONAL || !mConditionSame*/) {
-        mCompleteRow = false;
-        break;
+      Condition* mTileCondition = getSurfaceTileCondition(provider, x, y, faceDirection);
+      ITileSurface* mTileSurface = getSurfaceAt(mRawSurfaces, x, y);
+      bool mConditionSame = *mSurfaceCondition == *mTileCondition;
+      bool mSurfaceSame   = mTileSurface == mSurface;
+      bool mUsedTile      = inSurface(calculatedSurfaces, x, y); // TODO: Might be able to remove this test
+      if (!mConditionSame || !mSurfaceSame || mUsedTile) {
+        return y - 1;
       }
     }
-    if (!mCompleteRow) {
-      return y - 1;
-    } 
   }
   return mSurfaceCoverage->getNorth();
 }
 
-std::vector<ITileSurfaceTemplate*> BlockSubtractor::getTileSurfaces(ISurfaceProvider* provider, ITileSurface::FaceDirection faceDirection) {
-  std::vector<ITileSurface*> mTopTileSurfaces    = provider->getTileSurfaces(ITileSurface::UP);
-  std::vector<ITileSurface*> mBottomTileSurfaces = provider->getTileSurfaces(ITileSurface::DOWN);
-  BlockArea* mBlockCoverage = provider->getCoverage();
+int BlockSubtractor::getEast(ISurfaceProvider* provider, std::vector<ITileSurfaceTemplate*>& calculatedSurfaces, int x, int y, ITileSurface::FaceDirection faceDirection) {
+  Condition* mSurfaceCondition = getSurfaceTileCondition(provider, x, y, faceDirection);
+  std::vector<ITileSurface*> mRawSurfaces = provider->getTileSurfaces(faceDirection);
+  ITileSurface* mSurface = getSurfaceAt(mRawSurfaces, x, y);
 
-  int mWest;
-  int mEast;
-  int mSouth;
-  bool mDefiningSurface = false;
+  BlockArea* mBlockCoverage = provider->getCoverage();
+  for (int i = x + 1; i <= mBlockCoverage->getEast(); i++) {
+    Condition* mTileCondition = getSurfaceTileCondition(provider, i, y, faceDirection);
+    ITileSurface* mTileSurface = getSurfaceAt(mRawSurfaces, i, y);
+    bool mConditionSame = *mSurfaceCondition == *mTileCondition;
+    bool mSurfaceSame   = mTileSurface == mSurface;
+    bool mUsedTile      = inSurface(calculatedSurfaces, i, y);
+    if (!mConditionSame || !mSurfaceSame || mUsedTile) {
+      return i - 1;
+    }
+  }
+  return mBlockCoverage->getEast();
+}
+
+std::vector<ITileSurfaceTemplate*> BlockSubtractor::getTileSurfaces(ISurfaceProvider* provider, ITileSurface::FaceDirection faceDirection) {
   std::vector<ITileSurfaceTemplate*> mCalculatedSurfaces;
-  ITileSurface* mPreviousTopSurface    = NULL;
-  ITileSurface* mPreviousBottomSurface = NULL;
+  
+  BlockArea* mBlockCoverage = provider->getCoverage();
   for (int y = mBlockCoverage->getSouth(); y <= mBlockCoverage->getNorth(); y++) {
     for (int x = mBlockCoverage->getWest(); x <= mBlockCoverage->getEast(); x++) {
-      ITileSurface* mTopSurface    = getSurfaceAt(mTopTileSurfaces,    x, y);
-      ITileSurface* mBottomSurface = getSurfaceAt(mBottomTileSurfaces, x, y);
-      bool mOccupiedByCalculatedSurface = inSurface(mCalculatedSurfaces, x, y);
-      bool mSurfaceCellVisible = isSurfaceTileVisible(provider, x, y, faceDirection);
-      if (mPreviousTopSurface == NULL) {
-        mPreviousTopSurface    = mTopSurface;
-        mPreviousBottomSurface = mBottomSurface;
-      }
-      ITileSurface* mTestSurface         = faceDirection == ITileSurface::UP ? mTopSurface         : mBottomSurface;
-      ITileSurface* mPreviousTestSurface = faceDirection == ITileSurface::UP ? mPreviousTopSurface : mPreviousBottomSurface;
-      bool mSurfaceSame = mTestSurface == mPreviousTestSurface;
-      // TODO: ==================== CONDITIONAL CONSIDERATIONS NEED TO GO HERE ACCORDING TO PROTOTYPE!
-      if (mSurfaceCellVisible && !mOccupiedByCalculatedSurface) {
-        if (!mDefiningSurface && mTestSurface != NULL) {
-          mWest = x;
-          mEast = x;
-          mSouth = y;
-// TODO:CONDITIONAL          mConditionSame = true; // Condition by definition cannot have changed when we start
-          mDefiningSurface = true;
-        } else if (/*&& mConditionSame TODO:CONDITIONAL && */mDefiningSurface && x >= mWest && mTestSurface == mPreviousTestSurface) {
-          mEast = x;
-        } 
-      }
+      Condition* mSurfaceCondition = getSurfaceTileCondition(provider, x, y, faceDirection);
+      bool mTileOccupied = inSurface(mCalculatedSurfaces, x, y);
+      bool mTileNeeded = !mSurfaceCondition->isAbsolute() || mSurfaceCondition->isTrue();
 
-      /*
-       * We must finish constructing the surface when we encounter one of the following:
-       * 
-       *   - A hidden / removed surface cell.
-       *   - The location of an already constructed surface rectangle.
-       *   - A physical surface that is different from the current one.
-       *   - A surface cell that has a different condition than the current one.
-       *   - The end of the current row.
-       */
-      if (mDefiningSurface && (x == mBlockCoverage->getEast() || !mSurfaceCellVisible || mOccupiedByCalculatedSurface || !mSurfaceSame /*|| !mConditionSame TODO:CONDITIONAL*/)) {
-        // TODO: DUPLICATE SUBSURFACE!
-        // TODO: ==================== CONDITIONAL CONSIDERATIONS NEED TO GO HERE ACCORDING TO PROTOTYPE!
-        int mNorth = getCompleteRows(provider, mCalculatedSurfaces, mPreviousTopSurface, mPreviousBottomSurface, mWest, mEast, mSouth, faceDirection/*, mThisCondition TODO:CONDITIONAL*/); 
-        mCalculatedSurfaces.push_back(new TileSurfaceTemplate(mNorth, mEast, mSouth, mWest));
-        mDefiningSurface = false;
-        // TODO: DUPLICATE SUBSURFACE END!
-        if (mSurfaceCellVisible && !mOccupiedByCalculatedSurface && (!mSurfaceSame /*|| !mConditionSame TODO:CONDITIONAL*/)) {
-          mWest = x;
-          mEast = x;
-          mSouth = y;
-// TODO:CONDITIONAL          mConditionSame = true; // Condition by definition cannot have changed when we start
-          mDefiningSurface = true;
-          if (x == mBlockCoverage->getEast()) {
-            // TODO: DUPLICATE SUBSURFACE!
-            // TODO: ==================== CONDITIONAL CONSIDERATIONS NEED TO GO HERE ACCORDING TO PROTOTYPE!
-            int mNorth = getCompleteRows(provider, mCalculatedSurfaces, mPreviousTopSurface, mPreviousBottomSurface, mWest, mEast, mSouth, faceDirection/*, mThisCondition TODO:CONDITIONAL*/); 
-            mCalculatedSurfaces.push_back(new TileSurfaceTemplate(mNorth, mEast, mSouth, mWest));
-            mDefiningSurface = false;
-            // TODO: DUPLICATE SUBSURFACE END!
-          }
+      if (!mTileOccupied && mTileNeeded) {
+        int mEast = getEast(provider, mCalculatedSurfaces, x, y, faceDirection);
+        int mNorth = getNorth(provider, mCalculatedSurfaces, x, mEast, y, faceDirection); 
+/*        std::cout << "CREATING SURFACE WITH CONDITION:" << std::endl;
+        mSurfaceCondition->debug();*/
+        if (mSurfaceCondition->isAbsolute() && mSurfaceCondition->isTrue()) {
+          mSurfaceCondition = NULL;
         }
+        ITileSurfaceTemplate* mTileSurfaceTemplate = new TileSurfaceTemplate(mNorth, mEast, y, x, mSurfaceCondition);
+        mCalculatedSurfaces.push_back(mTileSurfaceTemplate);
       }
-      mPreviousTopSurface    = mTopSurface;
-      mPreviousBottomSurface = mBottomSurface;
     }
-    mPreviousTopSurface    = NULL;
-    mPreviousBottomSurface = NULL;
   }
   return mCalculatedSurfaces;
 }
@@ -284,7 +275,10 @@ std::vector<WallColumn*> BlockSubtractor::getPhysicalWallColumn(ISurfaceProvider
     std::vector<ITileSurface*> mTileSurfaces = provider->getTileSurfaces(ITileSurface::UP);
     ITileSurface* mTileSurface = getSurfaceAt(mTileSurfaces, x, y);
     int mHeight = mTileSurface->getSurfaceCellHeight(x, y);
-    if (mWallBottom >= mHeight && !isSurfaceTileVisible(provider, x, y, ITileSurface::UP)) {
+    
+    // TODO: Take condition into real consideration
+    Condition* mCondition = getSurfaceTileCondition(provider, x, y, ITileSurface::UP);
+    if (mWallBottom >= mHeight && mCondition->isAbsolute() && !mCondition->isTrue()) {
       mProcessedWallColumns.erase(mProcessedWallColumns.begin() + i);
     }
   }

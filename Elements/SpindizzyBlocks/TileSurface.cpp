@@ -18,7 +18,7 @@
  */
 #include "TileSurface.h"
 
-TileSurface::TileSurface(ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet::TextureType textureType, int north, int east, int south, int west, int height, int westEastSlope, int northSouthSlope, ITileSurface::FaceDirection facing) {
+TileSurface::TileSurface(ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet::TextureType textureType, int north, int east, int south, int west, int height, int westEastSlope, int northSouthSlope, ITileSurface::FaceDirection facing, Condition* condition) {
   cTextureSet = textureSet;
   cTextureType = textureType;
   cNorth = north;
@@ -29,6 +29,7 @@ TileSurface::TileSurface(ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet
   cWestEastSlope = westEastSlope;
   cNorthSouthSlope = northSouthSlope;
   cFacing = facing;
+  cCondition = condition;
 }
 
 int TileSurface::getSurfaceCellHeight(int x, int y) {
@@ -42,72 +43,68 @@ int TileSurface::getSurfaceCellElevation(int x, int y) {
 }
 
 void TileSurface::render() {
-/*  if (cCondition != NULL) {
-    if (!(cCondition->isTrue())) {
-      return;
-    }
-  }*/
-  double xs = cWest - IsoRealmsConstants::BLOCK_RADIUS; // TODO: Rename this
-  double ys = cSouth - IsoRealmsConstants::BLOCK_RADIUS; // TODO: Rename this
-  double xe = cEast + IsoRealmsConstants::BLOCK_RADIUS; // TODO: Rename this
-  double ye = cNorth + IsoRealmsConstants::BLOCK_RADIUS; // TODO: Rename this
+  if (cCondition == NULL || cCondition->isTrue()) {
+    double xs = cWest - IsoRealmsConstants::BLOCK_RADIUS; // TODO: Rename this
+    double ys = cSouth - IsoRealmsConstants::BLOCK_RADIUS; // TODO: Rename this
+    double xe = cEast + IsoRealmsConstants::BLOCK_RADIUS; // TODO: Rename this
+    double ye = cNorth + IsoRealmsConstants::BLOCK_RADIUS; // TODO: Rename this
+    
+    double xsys = cHeight * IsoRealmsConstants::BLOCK_HEIGHT; // TODO: Rename this
+    double xsye = cHeight * IsoRealmsConstants::BLOCK_HEIGHT; // TODO: Rename this
+    double xeye = cHeight * IsoRealmsConstants::BLOCK_HEIGHT; // TODO: Rename this
+    double xeys = cHeight * IsoRealmsConstants::BLOCK_HEIGHT; // TODO: Rename this
 
-  
-  double xsys = cHeight * IsoRealmsConstants::BLOCK_HEIGHT; // TODO: Rename this
-  double xsye = cHeight * IsoRealmsConstants::BLOCK_HEIGHT; // TODO: Rename this
-  double xeye = cHeight * IsoRealmsConstants::BLOCK_HEIGHT; // TODO: Rename this
-  double xeys = cHeight * IsoRealmsConstants::BLOCK_HEIGHT; // TODO: Rename this
-
-  if (cWestEastSlope < 0) {
-    xsys += (abs(cWestEastSlope) * IsoRealmsConstants::BLOCK_HEIGHT * (xe - xs));
-    xeys += (abs(cWestEastSlope) * IsoRealmsConstants::BLOCK_HEIGHT * (xe - xs));
-  } else {
-    xsye += (abs(cWestEastSlope) * IsoRealmsConstants::BLOCK_HEIGHT * (xe - xs));
-    xeye += (abs(cWestEastSlope) * IsoRealmsConstants::BLOCK_HEIGHT * (xe - xs));
-  }
-
-  if (cNorthSouthSlope < 0) {
-    xsys += (abs(cNorthSouthSlope) * IsoRealmsConstants::BLOCK_HEIGHT * (ye - ys));
-    xsye += (abs(cNorthSouthSlope) * IsoRealmsConstants::BLOCK_HEIGHT * (ye - ys));
-  } else {
-    xeys += (abs(cNorthSouthSlope) * IsoRealmsConstants::BLOCK_HEIGHT * (ye - ys));
-    xeye += (abs(cNorthSouthSlope) * IsoRealmsConstants::BLOCK_HEIGHT * (ye - ys));
-  }
-  ISpindizzyTexture* mTexture = (*cTextureSet)->getTexture(cTextureType);
-  mTexture->set();
-  glBegin(GL_QUADS);
-
-  switch (cFacing) {
-    case ITileSurface::UP: {
-/*      mTexture->texCoord2f(cEast + 1, cNorth + 1); glVertex3f(xe, ys, xsye);
-      mTexture->texCoord2f(cEast + 1, cSouth    ); glVertex3f(xe, ye, xeye);
-      mTexture->texCoord2f(cWest,     cSouth    ); glVertex3f(xs, ye, xeys);
-      mTexture->texCoord2f(cWest,     cNorth + 1); glVertex3f(xs, ys, xsys);*/
-      glColor3f(0.0, 1.0, 0.0); mTexture->texCoord2f(cEast + 1, cNorth + 1); glVertex3f(xe, ys, xsye);
-      glColor3f(1.0, 1.0, 0.0); mTexture->texCoord2f(cEast + 1, cSouth);     glVertex3f(xe, ye, xeye);
-      glColor3f(1.0, 0.0, 0.0); mTexture->texCoord2f(cWest,     cSouth);     glVertex3f(xs, ye, xeys);
-      glColor3f(0.0, 0.0, 1.0); mTexture->texCoord2f(cWest,     cNorth + 1);  glVertex3f(xs, ys, xsys);
-      break;
+    if (cWestEastSlope < 0) {
+      xsys += (abs(cWestEastSlope) * IsoRealmsConstants::BLOCK_HEIGHT * (xe - xs));
+      xeys += (abs(cWestEastSlope) * IsoRealmsConstants::BLOCK_HEIGHT * (xe - xs));
+    } else {
+      xsye += (abs(cWestEastSlope) * IsoRealmsConstants::BLOCK_HEIGHT * (xe - xs));
+      xeye += (abs(cWestEastSlope) * IsoRealmsConstants::BLOCK_HEIGHT * (xe - xs));
     }
 
-    case ITileSurface::DOWN: {
-      mTexture->texCoord2f(cWest,     cNorth + 1); glVertex3f(xs, ye, xeys);
-      mTexture->texCoord2f(cEast + 1, cNorth + 1); glVertex3f(xe, ye, xeye);
-      mTexture->texCoord2f(cEast + 1, cSouth);     glVertex3f(xe, ys, xsye);
-      mTexture->texCoord2f(cWest,     cSouth);     glVertex3f(xs, ys, xsys);
-/*      glColor3f(0.0, 1.0, 0.0); mTexture->texCoord2f(cWest,     cNorth + 1); glVertex3f(xs, ye, xeys);
-      glColor3f(1.0, 1.0, 0.0); mTexture->texCoord2f(cEast + 1, cNorth + 1); glVertex3f(xe, ye, xeye);
-      glColor3f(1.0, 0.0, 0.0); mTexture->texCoord2f(cEast + 1, cSouth);     glVertex3f(xe, ys, xsye);
-      glColor3f(0.0, 0.0, 1.0); mTexture->texCoord2f(cWest,     cSouth);     glVertex3f(xs, ys, xsys);*/
-      break;
+    if (cNorthSouthSlope < 0) {
+      xsys += (abs(cNorthSouthSlope) * IsoRealmsConstants::BLOCK_HEIGHT * (ye - ys));
+      xsye += (abs(cNorthSouthSlope) * IsoRealmsConstants::BLOCK_HEIGHT * (ye - ys));
+    } else {
+      xeys += (abs(cNorthSouthSlope) * IsoRealmsConstants::BLOCK_HEIGHT * (ye - ys));
+      xeye += (abs(cNorthSouthSlope) * IsoRealmsConstants::BLOCK_HEIGHT * (ye - ys));
     }
+    ISpindizzyTexture* mTexture = (*cTextureSet)->getTexture(cTextureType);
+    mTexture->set();
+    glBegin(GL_QUADS);
+
+    switch (cFacing) {
+      case ITileSurface::UP: {
+        mTexture->texCoord2f(cEast + 1, cNorth + 1); glVertex3f(xe, ys, xsye);
+        mTexture->texCoord2f(cEast + 1, cSouth    ); glVertex3f(xe, ye, xeye);
+        mTexture->texCoord2f(cWest,     cSouth    ); glVertex3f(xs, ye, xeys);
+        mTexture->texCoord2f(cWest,     cNorth + 1); glVertex3f(xs, ys, xsys);
+/*        glColor3f(1.0, 1.0, 0.0); mTexture->texCoord2f(cEast + 1, cNorth + 1); glVertex3f(xe, ys, xsye);
+        glColor3f(0.0, 1.0, 1.0); mTexture->texCoord2f(cEast + 1, cSouth);     glVertex3f(xe, ye, xeye);
+        glColor3f(1.0, 0.0, 1.0); mTexture->texCoord2f(cWest,     cSouth);     glVertex3f(xs, ye, xeys);
+        glColor3f(1.0, 1.0, 1.0); mTexture->texCoord2f(cWest,     cNorth + 1);  glVertex3f(xs, ys, xsys);*/
+        break;
+      }
+
+      case ITileSurface::DOWN: {
+        mTexture->texCoord2f(cWest,     cNorth + 1); glVertex3f(xs, ye, xeys);
+        mTexture->texCoord2f(cEast + 1, cNorth + 1); glVertex3f(xe, ye, xeye);
+        mTexture->texCoord2f(cEast + 1, cSouth);     glVertex3f(xe, ys, xsye);
+        mTexture->texCoord2f(cWest,     cSouth);     glVertex3f(xs, ys, xsys);
+  /*      glColor3f(0.0, 1.0, 0.0); mTexture->texCoord2f(cWest,     cNorth + 1); glVertex3f(xs, ye, xeys);
+        glColor3f(1.0, 1.0, 0.0); mTexture->texCoord2f(cEast + 1, cNorth + 1); glVertex3f(xe, ye, xeye);
+        glColor3f(1.0, 0.0, 0.0); mTexture->texCoord2f(cEast + 1, cSouth);     glVertex3f(xe, ys, xsye);
+        glColor3f(0.0, 0.0, 1.0); mTexture->texCoord2f(cWest,     cSouth);     glVertex3f(xs, ys, xsys);*/
+        break;
+      }
+    }
+    glEnd();
   }
-  glEnd();
 }
 
 float TileSurface::getHeightAt(float x, float y) {
   return cWestEastSlope   * ((cWestEastSlope   > 0 ? x - cWest  : -(cEast  + 1 - x)) + IsoRealmsConstants::BLOCK_RADIUS) +
-         cNorthSouthSlope * ((cNorthSouthSlope > 0 ? y - cNorth : -(cSouth + 1 - y)) + IsoRealmsConstants::BLOCK_RADIUS) + cHeight;
+         cNorthSouthSlope * ((cNorthSouthSlope > 0 ? y - cSouth : -(cNorth + 1 - y)) + IsoRealmsConstants::BLOCK_RADIUS) + cHeight;
 }
 
 Vertex* TileSurface::getBoundaryCrossingPoint(Vertex& start, Vertex& end, float* mLowestGradient) {

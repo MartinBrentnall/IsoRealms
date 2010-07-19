@@ -18,7 +18,7 @@
  */
 #include "TileSplitSurface.h"
 
-TileSplitSurface::TileSplitSurface(bool splitDirection, BlockLocation& location, ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet::TextureType textureType, int nw, int ne, int se, int sw) {
+TileSplitSurface::TileSplitSurface(bool splitDirection, BlockLocation& location, ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet::TextureType textureType, int nw, int ne, int se, int sw, Condition* condition) {
   cTextureSet = textureSet;
   cTextureType = textureType;
   cLocation = location;
@@ -27,6 +27,7 @@ TileSplitSurface::TileSplitSurface(bool splitDirection, BlockLocation& location,
   cCornerHeights[1][0] = se;
   cCornerHeights[0][0] = sw;
   cSplitDirection = splitDirection;
+  cCondition = condition;
 }
 
 int TileSplitSurface::getSurfaceCellHeight(int x, int y) {
@@ -40,36 +41,37 @@ int TileSplitSurface::getSurfaceCellElevation(int x, int y) {
 }
 
 void TileSplitSurface::render() {
-  // TODO: Change local variable names here
-  float mNorthWest = cCornerHeights[0][1] * IsoRealmsConstants::BLOCK_HEIGHT;
-  float mNorthEast = cCornerHeights[1][1] * IsoRealmsConstants::BLOCK_HEIGHT;
-  float mSouthEast = cCornerHeights[1][0] * IsoRealmsConstants::BLOCK_HEIGHT;
-  float mSouthWest = cCornerHeights[0][0] * IsoRealmsConstants::BLOCK_HEIGHT;
-  float mZ = cLocation.z * IsoRealmsConstants::BLOCK_HEIGHT;
-  int mX = cLocation.x;
-  int mY = cLocation.y;
+  if (cCondition == NULL || cCondition->isTrue()) {
+    float mNorthWest = cCornerHeights[0][1] * IsoRealmsConstants::BLOCK_HEIGHT;
+    float mNorthEast = cCornerHeights[1][1] * IsoRealmsConstants::BLOCK_HEIGHT;
+    float mSouthEast = cCornerHeights[1][0] * IsoRealmsConstants::BLOCK_HEIGHT;
+    float mSouthWest = cCornerHeights[0][0] * IsoRealmsConstants::BLOCK_HEIGHT;
+    float mZ = cLocation.z * IsoRealmsConstants::BLOCK_HEIGHT;
+    int mX = cLocation.x;
+    int mY = cLocation.y;
 
-  ISpindizzyTexture* mTexture = (*cTextureSet)->getTexture(cTextureType);
-  mTexture->set();
-  glBegin(GL_TRIANGLES);
-  if (cSplitDirection) {
-    mTexture->texCoord2f(mX + 1.0f, mY + 1.0f); glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS + mX,  IsoRealmsConstants::BLOCK_RADIUS + mY, mNorthWest + mZ);
-    mTexture->texCoord2f(mX,        mY + 1.0f); glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS + mX, -IsoRealmsConstants::BLOCK_RADIUS + mY, mSouthWest + mZ);
-    mTexture->texCoord2f(mX + 1.0f, mY       ); glVertex3f( IsoRealmsConstants::BLOCK_RADIUS + mX,  IsoRealmsConstants::BLOCK_RADIUS + mY, mNorthEast + mZ);
+    ISpindizzyTexture* mTexture = (*cTextureSet)->getTexture(cTextureType);
+    mTexture->set();
+    glBegin(GL_TRIANGLES);
+    if (cSplitDirection) {
+      mTexture->texCoord2f(mX + 1.0f, mY + 1.0f); glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS + mX,  IsoRealmsConstants::BLOCK_RADIUS + mY, mNorthWest + mZ);
+      mTexture->texCoord2f(mX,        mY + 1.0f); glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS + mX, -IsoRealmsConstants::BLOCK_RADIUS + mY, mSouthWest + mZ);
+      mTexture->texCoord2f(mX + 1.0f, mY       ); glVertex3f( IsoRealmsConstants::BLOCK_RADIUS + mX,  IsoRealmsConstants::BLOCK_RADIUS + mY, mNorthEast + mZ);
 
-    mTexture->texCoord2f(mX,        mY + 1.0f); glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS + mX, -IsoRealmsConstants::BLOCK_RADIUS + mY, mSouthWest + mZ);
-    mTexture->texCoord2f(mX,        mY       ); glVertex3f( IsoRealmsConstants::BLOCK_RADIUS + mX, -IsoRealmsConstants::BLOCK_RADIUS + mY, mSouthEast + mZ);
-    mTexture->texCoord2f(mX + 1.0f, mY       ); glVertex3f( IsoRealmsConstants::BLOCK_RADIUS + mX,  IsoRealmsConstants::BLOCK_RADIUS + mY, mNorthEast + mZ);
-  } else {
-    mTexture->texCoord2f(mX,        mY + 1.0f); glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS + mX,  IsoRealmsConstants::BLOCK_RADIUS + mY, mNorthWest + mZ);
-    mTexture->texCoord2f(mX + 1.0f, mY       ); glVertex3f( IsoRealmsConstants::BLOCK_RADIUS + mX, -IsoRealmsConstants::BLOCK_RADIUS + mY, mSouthEast + mZ);
-    mTexture->texCoord2f(mX + 1.0f, mY + 1.0f); glVertex3f( IsoRealmsConstants::BLOCK_RADIUS + mX,  IsoRealmsConstants::BLOCK_RADIUS + mY, mNorthEast + mZ);
+      mTexture->texCoord2f(mX,        mY + 1.0f); glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS + mX, -IsoRealmsConstants::BLOCK_RADIUS + mY, mSouthWest + mZ);
+      mTexture->texCoord2f(mX,        mY       ); glVertex3f( IsoRealmsConstants::BLOCK_RADIUS + mX, -IsoRealmsConstants::BLOCK_RADIUS + mY, mSouthEast + mZ);
+      mTexture->texCoord2f(mX + 1.0f, mY       ); glVertex3f( IsoRealmsConstants::BLOCK_RADIUS + mX,  IsoRealmsConstants::BLOCK_RADIUS + mY, mNorthEast + mZ);
+    } else {
+      mTexture->texCoord2f(mX,        mY + 1.0f); glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS + mX,  IsoRealmsConstants::BLOCK_RADIUS + mY, mNorthWest + mZ);
+      mTexture->texCoord2f(mX + 1.0f, mY       ); glVertex3f( IsoRealmsConstants::BLOCK_RADIUS + mX, -IsoRealmsConstants::BLOCK_RADIUS + mY, mSouthEast + mZ);
+      mTexture->texCoord2f(mX + 1.0f, mY + 1.0f); glVertex3f( IsoRealmsConstants::BLOCK_RADIUS + mX,  IsoRealmsConstants::BLOCK_RADIUS + mY, mNorthEast + mZ);
 
-    mTexture->texCoord2f(mX,        mY + 1.0f); glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS + mX,  IsoRealmsConstants::BLOCK_RADIUS + mY, mNorthWest + mZ);
-    mTexture->texCoord2f(mX,        mY       ); glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS + mX, -IsoRealmsConstants::BLOCK_RADIUS + mY, mSouthWest + mZ);
-    mTexture->texCoord2f(mX + 1.0f, mY       ); glVertex3f( IsoRealmsConstants::BLOCK_RADIUS + mX, -IsoRealmsConstants::BLOCK_RADIUS + mY, mSouthEast + mZ);
+      mTexture->texCoord2f(mX,        mY + 1.0f); glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS + mX,  IsoRealmsConstants::BLOCK_RADIUS + mY, mNorthWest + mZ);
+      mTexture->texCoord2f(mX,        mY       ); glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS + mX, -IsoRealmsConstants::BLOCK_RADIUS + mY, mSouthWest + mZ);
+      mTexture->texCoord2f(mX + 1.0f, mY       ); glVertex3f( IsoRealmsConstants::BLOCK_RADIUS + mX, -IsoRealmsConstants::BLOCK_RADIUS + mY, mSouthEast + mZ);
+    }
+    glEnd();
   }
-  glEnd();
 }
 
 BlockArea* TileSplitSurface::getCoverage() {
@@ -81,12 +83,12 @@ bool TileSplitSurface::alligned(int x, int y) {
 }
 
 bool TileSplitSurface::contains(Vertex& location) {
-  // TODO: Implement
+  // TODO: Implement this
   return false;
 }
 
 float TileSplitSurface::getHeightAt(float x, float y) {
-  // TODO: Implement
+  // TODO: Implement this
   return 0.0;
 }
 

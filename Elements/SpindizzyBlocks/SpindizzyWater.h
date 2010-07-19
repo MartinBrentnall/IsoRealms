@@ -19,6 +19,7 @@
 #ifndef SPINDIZZY_WATER_H
 #define SPINDIZZY_WATER_H
 
+#include <IsoRealms/Condition.h>
 #include <IsoRealms/Element.h>
 
 #include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
@@ -53,9 +54,9 @@ class SpindizzyWater:public Element<ISpindizzyBlockSet, ISpindizzyBlockFactory>,
   public:
   SpindizzyWater(ISpindizzyBlockFactory*, BlockLocation*, BlockLocation*, ISpindizzyTextureSet**);
 
-  /*************************************************************************\
-   * Implemented methods of IElement.h                                     *
-  \*************************************************************************/
+  /***********************\
+   * Implements IElement *
+  \***********************/
   void removed();
   void added();
   bool initElement(unsigned int);
@@ -73,6 +74,7 @@ class SpindizzyWater:public Element<ISpindizzyBlockSet, ISpindizzyBlockFactory>,
   std::vector<IWallSurface*> getWallSurfaces(int, IWallSurface::FaceDirection);
   IWallSurface* createSubSurface(int, int, IWallSurface::FaceDirection, int, int, int, int, int);
   BlockArea* getCoverage();
+  Condition* getCondition();
   bool isGhost();
   void setDirty();
 };

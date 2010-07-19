@@ -21,17 +21,19 @@
 
 #include <cmath>
 
+#include <IsoRealms/BlockArea.h>
+#include <IsoRealms/BlockLocation.h>
+#include <IsoRealms/Condition.h>
+#include <IsoRealms/DOMNodeWrapper.h>
+#include <IsoRealms/Element.h>
+#include <IsoRealms/IVisualElement.h>
+#include <IsoRealms/MiscFunctions.h>
+
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
 #include "../../Plugins/SurfaceProcessor/ITileSurface.h"
 #include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
 #include "../../Plugins/SurfaceProcessor/ISurfaceProvider.h"
-
-#include <IsoRealms/BlockArea.h>
-#include <IsoRealms/BlockLocation.h>
-#include <IsoRealms/DOMNodeWrapper.h>
-#include <IsoRealms/Element.h>
-#include <IsoRealms/MiscFunctions.h>
 
 #include "ISpindizzyBlockSet.h"
 #include "ISpindizzyBlockFactory.h"
@@ -44,7 +46,8 @@
  * TODO: Refactor dynamic_casts into static_casts.
  */
 class AbstractSpindizzyBlock:public Element<ISpindizzyBlockSet, ISpindizzyBlockFactory>,
-                             public ISurfaceProvider {
+                             public ISurfaceProvider,
+                             public IVisualElement {
   private:
   enum SplitType {
     NORTH_SOUTH,
@@ -58,7 +61,7 @@ class AbstractSpindizzyBlock:public Element<ISpindizzyBlockSet, ISpindizzyBlockF
   static const unsigned int INIT_USE_SURFACES;
   
   std::vector<ISpindizzyTileSurface*> cStaticTileSurfaces;
-//  std::vector<ITileSurface*> cDynamicTileSurfaces;
+  std::vector<ISpindizzyTileSurface*> cDynamicTileSurfaces;
 
   BlockLocation cStartLocation;
   BlockLocation cEndLocation;
@@ -73,6 +76,7 @@ class AbstractSpindizzyBlock:public Element<ISpindizzyBlockSet, ISpindizzyBlockF
    * the slope.  When the block is flat or split, this flag has no effect.
    */
   bool cSteppedBottom;
+  Condition* cCondition;
 
   /**
    * Return the stepping of the slope along the X axis.  A negative value
@@ -202,7 +206,7 @@ class AbstractSpindizzyBlock:public Element<ISpindizzyBlockSet, ISpindizzyBlockF
    * @param int  West surface location.
    * @returns  The sub surface.
    */
-  ISpindizzyTileSurface* createSubSurface(ITileSurface::FaceDirection, int, int, int, int);
+  ISpindizzyTileSurface* createSubSurface(ITileSurface::FaceDirection, int, int, int, int, Condition*);
 
   /**
    * Create a new wall face surface according to the specified parameters.
@@ -233,11 +237,17 @@ class AbstractSpindizzyBlock:public Element<ISpindizzyBlockSet, ISpindizzyBlockF
   std::vector<IInteractiveElement*> getInteractiveElements();
   void save(DOMNodeWriter*, BlockLocation&);
 
+  /*****************************\
+   * Implements IVisualElement *
+  \*****************************/
+  void render();
+
   /*******************************\
    * Implements ISurfaceProvider *
   \*******************************/
   std::vector<ITileSurface*> getTileSurfaces(ITileSurface::FaceDirection);
   std::vector<IWallSurface*> getWallSurfaces(int, IWallSurface::FaceDirection);
+  Condition* getCondition();
   BlockArea* getCoverage();
   bool isGhost();
   void setDirty();

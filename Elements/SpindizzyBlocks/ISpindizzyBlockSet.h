@@ -42,6 +42,7 @@ class ISpindizzyBlockSet:public ElementSet<IElement> {
   virtual void notifyZoneAction(Zone*) = 0;
   virtual void registerRollableSurface(IRollableSurface*) = 0;
   virtual void registerWallSurface(ICollidableWallSurface*) = 0;
+  virtual std::vector<ConditionElement*> getConditionElements() = 0;
 };
 
 #endif

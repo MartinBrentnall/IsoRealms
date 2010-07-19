@@ -31,10 +31,10 @@
 #include "IInteractiveElement.h"
 #include "IPluginSupport.h"
 #include "IZone.h"
-#include "IZoneRenderer.h"
 
-class IPluginRegistry;
 class IMap;
+class IPluginRegistry;
+class IZoneRenderer;
 
 class IPlugin:public IPluginSupport {
   private:

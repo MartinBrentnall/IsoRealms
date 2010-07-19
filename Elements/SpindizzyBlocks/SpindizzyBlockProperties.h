@@ -21,6 +21,8 @@
 
 #include <GL/gl.h>
 
+#include <IsoRealms/Condition.h>
+#include <IsoRealms/ConditionElement.h>
 #include <IsoRealms/DOMNodeWrapper.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 
@@ -34,6 +36,7 @@ class SpindizzyBlockProperties {
   bool cSteppedBottom;
   int cX;
   int cY;
+  Condition* cCondition;
 
   public:
   SpindizzyBlockProperties();
@@ -53,6 +56,7 @@ class SpindizzyBlockProperties {
   void reset();
   void setup(DOMNodeWrapper*);
   void setupSlope(DOMNodeWrapper*);
+  void setupCondition(DOMNodeWrapper*, std::vector<ConditionElement*>);
 
   // Block preparation functions
   int getNorthWestHeight();
@@ -61,6 +65,7 @@ class SpindizzyBlockProperties {
   int getSouthEastHeight();
   bool isSplitNorthWestSouthEast();
   bool isSteppedBottom();
+  Condition* getCondition();
 
   // Convenience functions
   /**

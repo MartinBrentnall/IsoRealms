@@ -43,6 +43,10 @@ IElement* SpindizzyBlockFactory::getElement(DOMNodeWrapper* node, BlockLocation*
       cBlockProperties->setup(mNode);
     } else if (mValueAsString == "Slope") {
       cBlockProperties->setupSlope(mNode);
+    } else if (mValueAsString == "Condition") {
+      ISpindizzyBlockSet* mBlockSet = getElementSet();
+      std::vector<ConditionElement*> mElements = mBlockSet->getConditionElements();
+      cBlockProperties->setupCondition(mNode, mElements);
     }
   }
   bool mAddition = mStartLocation.z <= mEndLocation.z;

@@ -21,10 +21,11 @@
 
 #include <vector>
 
+#include <IsoRealms/BlockArea.h>
+#include <IsoRealms/Condition.h>
+
 #include "ITileSurface.h"
 #include "IWallSurface.h"
-
-#include <IsoRealms/BlockArea.h>
 
 /**
  * This class is to be implemented by objects being provided to the processor.
@@ -63,6 +64,8 @@ class ISurfaceProvider {
 
   virtual IWallSurface* createSubSurface(int, int, IWallSurface::FaceDirection, int, int, int, int, int) = 0;
 
+  virtual Condition* getCondition() = 0;
+  
   virtual bool isGhost() = 0;
   
   /**

@@ -18,7 +18,21 @@
  */
 #include "TileColumn.h"
 
-void TileColumn::addTileBlock(TileBlock* tileBlock, bool ghost) {
+TileColumn::TileColumn(Condition* condition) {
+  cCondition = condition;
+}
+
+TileColumn::TileColumn(TileColumn* tileColumn, Condition* condition) {
+  cCondition = condition;
+  for (unsigned int i = 0; i < tileColumn->cGhostTileBlocks.size(); i++) {
+    cGhostTileBlocks.push_back(new TileBlock(*tileColumn->cGhostTileBlocks[i]));
+  }
+  for (unsigned int i = 0; i < tileColumn->cTileBlocks.size(); i++) {
+    cTileBlocks.push_back(new TileBlock(*tileColumn->cTileBlocks[i]));
+  }
+}
+
+void TileColumn::addTileBlock(TileBlock* tileBlock, bool ghost, Condition* condition) {
   std::vector<unsigned int> mToRemove;
   bool mMerged = false;
   unsigned int mTileBlockIndex = -1;
@@ -81,36 +95,42 @@ void TileColumn::addTileBlock(TileBlock* tileBlock, bool ghost) {
   }
 }
 
-bool TileColumn::isBottomTileVisible(ISurfaceProvider* surfaceProvider) {
+bool TileColumn::isTileVisible(ISurfaceProvider* surfaceProvider, ITileSurface::FaceDirection facing) {
   for (unsigned int i = 0; i < cTileBlocks.size(); i++) {
-    if (cTileBlocks[i]->getBottomSurfaceProvider() == surfaceProvider) {
+    if (cTileBlocks[i]->getSurfaceProvider(facing) == surfaceProvider) {
       return true;
     }
   }
   for (unsigned int i = 0; i < cGhostTileBlocks.size(); i++) {
-    if (cGhostTileBlocks[i]->getBottomSurfaceProvider() == surfaceProvider) {
+    if (cGhostTileBlocks[i]->getSurfaceProvider(facing) == surfaceProvider) {
       return true;
     }
   }
   return false;
 }
 
-bool TileColumn::isTopTileVisible(ISurfaceProvider* surfaceProvider) {
-  for (unsigned int i = 0; i < cTileBlocks.size(); i++) {
-    if (cTileBlocks[i]->getTopSurfaceProvider() == surfaceProvider) {
-      return true;
+TileColumn* TileColumn::split(Condition* condition) {
+  if (cCondition != NULL) {
+    Condition* mSplitCondition = cCondition->split(condition);
+    if (mSplitCondition != NULL) {
+      return new TileColumn(this, mSplitCondition);
     }
+  } else {
+    cCondition = condition;
+    Condition* mNegatedCondition = new Condition(*cCondition);
+    mNegatedCondition->negate();
+    return new TileColumn(this, mNegatedCondition);
   }
-  for (unsigned int i = 0; i < cGhostTileBlocks.size(); i++) {
-    if (cGhostTileBlocks[i]->getTopSurfaceProvider() == surfaceProvider) {
-      return true;
-    }
-  }
-  return false;
+  return NULL;
+}
+
+Condition* TileColumn::getCondition() {
+  return cCondition;
 }
 
 void TileColumn::debug() {
-  std::cout << "Column has " << cTileBlocks.size() << " blocks" << std::endl;
+  std::cout << "Column has " << cTileBlocks.size() << " blocks for: ";
+  cCondition->debug();
   for (unsigned int i = 0; i < cTileBlocks.size(); i++) {
     std::cout << "   Block " << i << ": ";
     cTileBlocks[i]->debug();

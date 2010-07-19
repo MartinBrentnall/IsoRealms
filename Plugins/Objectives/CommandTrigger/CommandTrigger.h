@@ -33,6 +33,7 @@ class CommandTrigger:public IObjectives {
   Script* cObjectivesMetScript;
 
   public:
+  CommandTrigger();
     
   /**************************\
    * Implements IObjectives *

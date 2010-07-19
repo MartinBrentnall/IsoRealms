@@ -16,28 +16,31 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef TILE_SURFACE_TEMPLATE_H
-#define TILE_SURFACE_TEMPLATE_H
+#ifndef CONDITION_ELEMENT_H
+#define CONDITION_ELEMENT_H
 
-#include "../ITileSurfaceTemplate.h"
+#include <iostream>
+#include <string>
 
-class TileSurfaceTemplate:public ITileSurfaceTemplate {
+class ConditionElement {
   private:
-  int cNorth;
-  int cSouth;
-  int cEast;
-  int cWest;
-  Condition* cCondition;
+  std::string cInputName;
+  bool* cInput;
+  bool cNegated;
+
+  ConditionElement(const ConditionElement&);
 
   public:
-  TileSurfaceTemplate(int, int, int, int, Condition* = NULL);
+  ConditionElement(const std::string&, bool*, bool = false);
 
-  int getNorth();
-  int getEast();
-  int getSouth();
-  int getWest();
-  Condition* getCondition();
-  bool alligned(int, int);
+  ConditionElement* getNegatedElement();
+  bool operator==(const ConditionElement&) const;
+  bool operator!=(const ConditionElement&) const;
+  bool isTrue();
+  bool isNegated();
+  bool* getInputAddress();
+  std::string getName();
+  void debug();
 };
 
 #endif

@@ -99,16 +99,11 @@ bool TileBlock::subtractAsGhost(TileBlock& tileBlock) {
   return cBottomSurfaceProvider == NULL && cTopSurfaceProvider == NULL;
 }
 
-ISurfaceProvider* TileBlock::getTopSurfaceProvider() {
-  return cTopSurfaceProvider;
-}
-
-ISurfaceProvider* TileBlock::getBottomSurfaceProvider() {
-  return cBottomSurfaceProvider;
+ISurfaceProvider* TileBlock::getSurfaceProvider(ITileSurface::FaceDirection facing) {
+  return facing == ITileSurface::UP ? cTopSurfaceProvider : cBottomSurfaceProvider;
 }
 
 void TileBlock::debug() {
-  std::cout << "From " << cBottom << " to " << cTop << ": ";
   for (int i = -2; i < 8; i++) {
     if (i > cBottom && i <= cTop) {
       std::cout << "[x]";

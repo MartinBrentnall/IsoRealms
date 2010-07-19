@@ -84,7 +84,8 @@ std::vector<IInteractiveElement*> SpindizzyWater::getInteractiveElements() {
 
 ISpindizzyTileSurface* SpindizzyWater::createSubSurface(ITileSurface::FaceDirection facing, int north, int east, int south, int west) {
 //  return new TileSurface(cSpindizzyTextureSet, ISpindizzyTextureSet::WATER, north, east, south, west, cStartLocation.z, 0, 0, facing/*, TODO:CONDITIONAL  mSurfaceCondition*/);
-  return new TileSurface(cSpindizzyTextureSet, ISpindizzyTextureSet::WATER, north, east, south, west, facing == ITileSurface::UP ? cStartLocation.z : cEndLocation.z, 0, 0, facing/*, TODO:CONDITIONAL  mSurfaceCondition*/);
+  /*, TODO:CONDITIONAL WATER */
+  return new TileSurface(cSpindizzyTextureSet, ISpindizzyTextureSet::WATER, north, east, south, west, facing == ITileSurface::UP ? cStartLocation.z : cEndLocation.z, 0, 0, facing, NULL);
 }
 
 IWallSurface* SpindizzyWater::createSubSurface(int x, int y, IWallSurface::FaceDirection facing, int length, int startHeight, int endHeight, int topSlope, int bottomSlope) {
@@ -106,6 +107,10 @@ std::vector<IWallSurface*> SpindizzyWater::getWallSurfaces(int location, IWallSu
 
 BlockArea* SpindizzyWater::getCoverage() {
   return new BlockArea(cStartLocation, cEndLocation);
+}
+
+Condition* SpindizzyWater::getCondition() {
+  return NULL; // TODO: Allow dynamic surfaces
 }
 
 void SpindizzyWater::removed() {

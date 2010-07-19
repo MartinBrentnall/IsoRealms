@@ -22,6 +22,8 @@ add_library(IsoRealms SHARED
   CommandManager.cpp
   CommandProxy.cpp
   CommandRegistryProxy.cpp
+  Condition.cpp
+  ConditionElement.cpp
   Configuration.cpp
   DOMNodeWrapper.cpp
   DOMNodeWriter.cpp

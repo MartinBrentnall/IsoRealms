@@ -29,6 +29,7 @@
 #include "../../Plugins/SpindizzyTextureSetChanger/IChangeableTextureSet.h"
 #include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
 
+#include <IsoRealms/ConditionElement.h>
 #include <IsoRealms/ICommandRegistry.h>
 #include <IsoRealms/IElementSet.h>
 #include <IsoRealms/IPlugin.h>
@@ -78,7 +79,7 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
   ISpindizzyTextureSetChanger* cSpindizzyTextureSetController;
   ISurfaceProcessor* cSurfaceProcessor;
   ICollidableSurfaceRegistry* cCollidableSurfaceRegistry;
-  std::map<std::string, bool*> cBlockStates;
+  std::vector<ConditionElement*> cBlockStates;
 
   class BlockFactory:public SpindizzyBlockFactory {
     private:
@@ -158,6 +159,7 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
 
   void registerRollableSurface(IRollableSurface*);
   void registerWallSurface(ICollidableWallSurface*);
+  std::vector<ConditionElement*> getConditionElements();
 
   /************************************\
    * Implements IChangeableTextureSet *

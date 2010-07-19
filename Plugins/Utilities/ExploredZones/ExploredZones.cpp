@@ -8,6 +8,8 @@ ExploredZones::ExploredZones() {
   cZoneCount = 0;
   cExploredZoneRenderer = new ExploredZoneRenderer(this);
   cMapOverviewRenderer = new MapOverviewRenderer(this);
+  cZoneExploredScript = NULL;
+  cAllZonesExploredScript = NULL;
 }
 
 void ExploredZones::initPlugin(IZone* zone, unsigned int pass) {
@@ -19,9 +21,11 @@ void ExploredZones::initPlugin(IZone* zone, unsigned int pass) {
 void ExploredZones::zoneContextChanged(IZone* zone) {
   if (zone != NULL && cExploredZones.find(zone) == cExploredZones.end()) {
     cExploredZones.insert(zone);
-    cZoneExploredScript->execute();
+    if (cZoneExploredScript != NULL) {
+      cZoneExploredScript->execute();
+    }
     cObjectives->check();
-    if (isMet()) {
+    if (isMet() && cAllZonesExploredScript != NULL) {
       cAllZonesExploredScript->execute();
     }
   }
@@ -65,11 +69,12 @@ ExploredZones::ExploredZoneRenderer::ExploredZoneRenderer(ExploredZones* parent)
   cParent = parent;
 }
 
-void ExploredZones::ExploredZoneRenderer::render(std::vector<IZone*>& zones) {
+void ExploredZones::ExploredZoneRenderer::render(std::vector<IZone*>& zones, IPluginRegistry& pluginRegistry) {
   for (std::set<IZone*>::iterator i = cParent->cExploredZones.begin(); i != cParent->cExploredZones.end(); ++i) {
     (*i)->renderStatic();
   }
   for (std::set<IZone*>::iterator i = cParent->cExploredZones.begin(); i != cParent->cExploredZones.end(); ++i) {
+    pluginRegistry.renderPreZone(*i);
     (*i)->renderDynamic();
   }
 }
@@ -78,8 +83,9 @@ ExploredZones::MapOverviewRenderer::MapOverviewRenderer(ExploredZones* parent) {
   cParent = parent;
 }
 
-void ExploredZones::MapOverviewRenderer::render(std::vector<IZone*>& zones) {
+void ExploredZones::MapOverviewRenderer::render(std::vector<IZone*>& zones, IPluginRegistry& pluginRegistry) {
   for (unsigned int i = 0; i < zones.size(); i++) {
+    pluginRegistry.renderPreZone(zones[i]);
     glBindTexture(GL_TEXTURE_2D, 0);
     glLineWidth(2.0);
     if (cParent->cExploredZones.find(zones[i]) != cParent->cExploredZones.end()) {

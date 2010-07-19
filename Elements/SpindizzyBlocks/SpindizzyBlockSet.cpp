@@ -83,7 +83,7 @@ SpindizzyBlockSet::SpindizzyBlockSet() {
 
 void SpindizzyBlockSet::addBlockState(const std::string& name) {
   bool* mState = new bool(false);
-  cBlockStates[name] = mState;
+  cBlockStates.push_back(new ConditionElement(name, mState));
   IUserCommand* mStateOnCommand = new BlockStateCommand(name, mState, true);
   IUserCommand* mStateOffCommand = new BlockStateCommand(name, mState, false);
   cSpindizzyBlockCommands.push_back(mStateOnCommand);
@@ -192,6 +192,10 @@ void SpindizzyBlockSet::registerRollableSurface(IRollableSurface* rollableSurfac
 
 void SpindizzyBlockSet::registerWallSurface(ICollidableWallSurface* wallSurface) {
   cCollidableSurfaceRegistry->registerWallSurface(wallSurface);
+}
+
+std::vector<ConditionElement*> SpindizzyBlockSet::getConditionElements() {
+  return cBlockStates;
 }
 
 void SpindizzyBlockSet::notifyZoneAction(Zone* zone) {

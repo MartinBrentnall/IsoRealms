@@ -38,6 +38,7 @@ AbstractSpindizzyBlock::AbstractSpindizzyBlock(ISpindizzyBlockFactory* elementFa
   cSouthEastHeight = blockProperties->getSouthEastHeight();
   cSplitType = blockProperties->isSplitNorthWestSouthEast() ? NORTH_SOUTH : EAST_WEST;
   cSteppedBottom = blockProperties->isSteppedBottom();
+  cCondition = blockProperties->getCondition();
 }
 
 AbstractSpindizzyBlock::AbstractSpindizzyBlock(ISpindizzyBlockFactory* elementFactory, ISpindizzyTextureSet** spindizzyTextureSet, DOMNodeWrapper* node) : Element<ISpindizzyBlockSet, ISpindizzyBlockFactory>(elementFactory) {
@@ -70,26 +71,26 @@ std::vector<ITileSurface*> AbstractSpindizzyBlock::getTileSurfaces(ITileSurface:
     if (mXSlope != 0 && mYSlope != 0) {
       for (int y = cStartLocation.y; y <= cEndLocation.y; y++) {
         for (int x = cStartLocation.x; x <= cEndLocation.x; x++) {
-          ITileSurface* mRawSurface = createSubSurface(faceDirection, y, x, y, x);
+          ITileSurface* mRawSurface = createSubSurface(faceDirection, y, x, y, x, cCondition);
           mRawSurfaces.push_back(mRawSurface);
         }
       }
     } else if (mYSlope != 0) {
       for (int y = cStartLocation.y; y <= cEndLocation.y; y++) {
-        ITileSurface* mRawSurface = createSubSurface(faceDirection, y, cEndLocation.x, y, cStartLocation.x);
+        ITileSurface* mRawSurface = createSubSurface(faceDirection, y, cEndLocation.x, y, cStartLocation.x, cCondition);
         mRawSurfaces.push_back(mRawSurface);
       }
     } else if (mXSlope != 0) {
       for (int x = cStartLocation.x; x <= cEndLocation.x; x++) {
-        ITileSurface* mRawSurface = createSubSurface(faceDirection, cEndLocation.y, x, cStartLocation.y, x);
+        ITileSurface* mRawSurface = createSubSurface(faceDirection, cEndLocation.y, x, cStartLocation.y, x, cCondition);
         mRawSurfaces.push_back(mRawSurface);
       }
     } else {
-      ITileSurface* mRawSurface = createSubSurface(faceDirection, cEndLocation.y, cEndLocation.x, cStartLocation.y, cStartLocation.x);
+      ITileSurface* mRawSurface = createSubSurface(faceDirection, cEndLocation.y, cEndLocation.x, cStartLocation.y, cStartLocation.x, cCondition);
       mRawSurfaces.push_back(mRawSurface);
     }
   } else {
-    ITileSurface* mRawSurface = createSubSurface(faceDirection, cEndLocation.y, cEndLocation.x, cStartLocation.y, cStartLocation.x);
+    ITileSurface* mRawSurface = createSubSurface(faceDirection, cEndLocation.y, cEndLocation.x, cStartLocation.y, cStartLocation.x, cCondition);
     mRawSurfaces.push_back(mRawSurface);
   }
   return mRawSurfaces;
@@ -109,27 +110,25 @@ int AbstractSpindizzyBlock::getBottomHeight(int x, int y) {
                         : cStartLocation.z;
 }
 
-ISpindizzyTileSurface* AbstractSpindizzyBlock::createSubSurface(ITileSurface::FaceDirection faceDirection, int north, int east, int south, int west) {
+ISpindizzyTileSurface* AbstractSpindizzyBlock::createSubSurface(ITileSurface::FaceDirection faceDirection, int north, int east, int south, int west, Condition* condition) {
   ISpindizzyTextureSet::TextureType mTextureType = getTileSurfaceTexture();
   switch (faceDirection) {
     case ITileSurface::UP: {
       int mXSlope = getXSlope();
       int mYSlope = getYSlope();
       int mHeight = getTileSurfaceHeight(mXSlope > 0 ? west : east, mYSlope > 0 ? south : north);
-      // TODO: Get condition for surface.
       BlockLocation mSurfaceLocation(cStartLocation.x, cStartLocation.y, cEndLocation.z);
       if (isSplit()) {
-        return new TileSplitSurface(cSplitType == NORTH_SOUTH, mSurfaceLocation, cSpindizzyTextureSet, mTextureType, cNorthWestHeight, cNorthEastHeight, cSouthEastHeight, cSouthWestHeight/* TODO:CONDITIONAL, mSurfaceCondition*/);
+        return new TileSplitSurface(cSplitType == NORTH_SOUTH, mSurfaceLocation, cSpindizzyTextureSet, mTextureType, cNorthWestHeight, cNorthEastHeight, cSouthEastHeight, cSouthWestHeight, condition);
       } else {
-        return new TileSurface(cSpindizzyTextureSet, mTextureType, north, east, south, west, mHeight, mXSlope, mYSlope, faceDirection/*, TODO:CONDITIONAL  mSurfaceCondition*/);
+        return new TileSurface(cSpindizzyTextureSet, mTextureType, north, east, south, west, mHeight, mXSlope, mYSlope, faceDirection, condition);
       }
     }
     
     case ITileSurface::DOWN: {
       // TODO: Make sure the subsurface does not violate the stepping
       int mHeight = getBottomHeight(east, north);
-      // TODO: Get condition for surface.
-      return new TileSurface(cSpindizzyTextureSet, mTextureType, north, east, south, west, mHeight, 0, 0, faceDirection/*, TODO:CONDITIONAL  mSurfaceCondition*/);
+      return new TileSurface(cSpindizzyTextureSet, mTextureType, north, east, south, west, mHeight, 0, 0, faceDirection, condition);
     }
   }
   std::cout << "ERROR: Face direction does not exist" << std::endl;
@@ -271,6 +270,14 @@ void AbstractSpindizzyBlock::renderStatic() {
   }
 }
 
+void AbstractSpindizzyBlock::render() {
+  for (unsigned int i = 0; i < cDynamicTileSurfaces.size(); i++) {
+    cDynamicTileSurfaces[i]->render();
+  }
+  
+  // TODO: Do walls too!
+}
+
 void AbstractSpindizzyBlock::cacheSurfaces() {
   signalElementDirty();
 }
@@ -301,11 +308,18 @@ bool AbstractSpindizzyBlock::initElement(unsigned int pass) {
         int mEast = mTopTileSurfaces[i]->getEast();
         int mSouth = mTopTileSurfaces[i]->getSouth();
         int mWest = mTopTileSurfaces[i]->getWest();
-        ISpindizzyTileSurface* mTileSurface = createSubSurface(ITileSurface::UP, mNorth, mEast, mSouth, mWest);
-        cStaticTileSurfaces.push_back(mTileSurface);
+        Condition* mCondition = mTopTileSurfaces[i]->getCondition();
+        ISpindizzyTileSurface* mTileSurface = createSubSurface(ITileSurface::UP, mNorth, mEast, mSouth, mWest, mCondition);
+        if (mCondition == NULL) {
+          cStaticTileSurfaces.push_back(mTileSurface);
+        } else {
+          cDynamicTileSurfaces.push_back(mTileSurface);
+        }
         ISpindizzyBlockSet* mBlockElementSet = getElementSet();
         // TODO: This should only happen in runtime
         mBlockElementSet->registerRollableSurface(mTileSurface);
+        
+        // TODO: SHOULD NOT DELETE THIS BECAUSE WE DIDN'T CREATE IT; THE SURFACE PROCESSOR DID!
         delete mTopTileSurfaces[i];
       }
       // TODO: Use the calculator to calculate surfaces
@@ -318,6 +332,9 @@ bool AbstractSpindizzyBlock::initElement(unsigned int pass) {
 
 std::vector<IVisualElement*> AbstractSpindizzyBlock::getVisualElements() {
   std::vector<IVisualElement*> mVisualElements;
+//  if (!cDynamicTileSurfaces.empty()) {
+    mVisualElements.push_back(this);
+//  }
   return mVisualElements;
 }
 
@@ -354,6 +371,10 @@ BlockArea* AbstractSpindizzyBlock::getCoverage() {
   return new BlockArea(cStartLocation, cEndLocation);
 }
 
+Condition* AbstractSpindizzyBlock::getCondition() {
+  return cCondition;
+}
+
 void AbstractSpindizzyBlock::save(DOMNodeWriter* node, BlockLocation& zoneLocation) {
   DOMNodeWriter* mLocationNode = node->addBranch("Location");
   cStartLocation.saveRelative(mLocationNode, zoneLocation);
@@ -381,6 +402,10 @@ void AbstractSpindizzyBlock::save(DOMNodeWriter* node, BlockLocation& zoneLocati
         mSlopeNode->addAttribute("Stepped", cSteppedBottom);
       }
     }
+  }
+  if (cCondition != NULL) {
+    DOMNodeWriter* mConditionNode = node->addBranch("Condition");
+    cCondition->save(mConditionNode);
   }
 }
 

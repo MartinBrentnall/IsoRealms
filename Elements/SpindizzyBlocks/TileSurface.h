@@ -23,7 +23,9 @@
 #include <cstdlib>
 #include <GL/gl.h>
 
+#include <IsoRealms/Condition.h>
 #include <IsoRealms/IsoRealmsConstants.h>
+#include <IsoRealms/IVisualElement.h>
 
 #include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
@@ -45,6 +47,7 @@ class TileSurface:public ISpindizzyTileSurface {
   int cHeight;
   int cWestEastSlope;
   int cNorthSouthSlope;
+  Condition* cCondition;
 
   Vertex* getBoundaryCrossingPoint(Vertex& start, Vertex& end, float* mLowestGradient);
 
@@ -63,7 +66,7 @@ class TileSurface:public ISpindizzyTileSurface {
    * @param int  Slope step along north-to-south (Y axis).
    * @param ITileSurface::FaceDirection  Facing direction of the surface.
    */
-  TileSurface(ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType, int, int, int, int, int, int, int, ITileSurface::FaceDirection);
+  TileSurface(ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType, int, int, int, int, int, int, int, ITileSurface::FaceDirection, Condition*);
 
   /************************************\
    * Implements ISpindizzyTileSurface *

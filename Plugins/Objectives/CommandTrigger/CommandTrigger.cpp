@@ -18,14 +18,20 @@
  */
 #include "CommandTrigger.h"
 
+CommandTrigger::CommandTrigger() {
+  cObjectivesMetScript = NULL;
+}
+
 void CommandTrigger::check() {
   for (std::set<IObjective*>::iterator i = cObjectives.begin(); i != cObjectives.end(); i++) {
     if (!(*i)->isMet()) {
       return;
     }
   }
-  std::cout << "Triggering ending!" << std::endl;
-  cObjectivesMetScript->execute();
+
+  if (cObjectivesMetScript != NULL) {
+     cObjectivesMetScript->execute();
+  }
 }
 
 void CommandTrigger::registerObjective(IObjective* objective) {

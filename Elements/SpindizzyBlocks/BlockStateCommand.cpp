@@ -25,7 +25,7 @@ BlockStateCommand::BlockStateCommand(const std::string& name, bool* state, bool 
 }
 
 void BlockStateCommand::execute() {
-  cState = &cValue;
+  *cState = cValue;
 }
 
 std::string BlockStateCommand::getCommandName() {
