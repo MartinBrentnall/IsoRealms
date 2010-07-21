@@ -18,15 +18,22 @@
  */
 #include "WallConstructionData.h"
 
-WallConstructionData::WallConstructionData(WallColumn* wallColumn) {
+WallConstructionData::WallConstructionData(int x, int y, WallColumn* wallColumn, Condition* condition, IWallSurface::FaceDirection facing) {
+  cX = x;
+  cY = y;
   cBottomHeightStart = wallColumn->getBottomHeightStart();
   cTopHeightStart    = wallColumn->getTopHeightStart();
   cBottomHeightSlope = wallColumn->getBottomHeightEnd() - cBottomHeightStart;
   cTopHeightSlope    = wallColumn->getTopHeightEnd()    - cTopHeightStart;
   cLength = 1;
+  cCondition = condition;
+  cFacing = facing;
 }
 
-bool WallConstructionData::unite(WallColumn* wallColumn) {
+bool WallConstructionData::unite(WallColumn* wallColumn, Condition* condition) {
+  if ((condition != NULL && cCondition != NULL && !(*condition == *cCondition)) || (cCondition == NULL) != (condition == NULL)) {
+    return false;
+  } 
   int mBottomHeightStart = wallColumn->getBottomHeightStart();
   int mTopHeightStart    = wallColumn->getTopHeightStart();
   int mBottomHeightSlope = wallColumn->getBottomHeightEnd() - mBottomHeightStart;
@@ -45,20 +52,42 @@ int WallConstructionData::getWallBottom() {
   return cBottomHeightStart;
 }
 
-IWallSurface* WallConstructionData::constructSurface(ISurfaceProvider* provider, int x, int y, IWallSurface::FaceDirection facing) {
-  switch (facing) {
-    case IWallSurface::NORTH: 
-    case IWallSurface::SOUTH: {
-      x -= (cLength - 1);
-      break;
-    }
-
-    case IWallSurface::EAST: 
-    case IWallSurface::WEST: {
-      y -= (cLength - 1);
-      break;
-    }
-  }
-  int mSlopeOffset = cTopHeightSlope < 0 ? cLength * cTopHeightSlope : 0;
-  return provider->createSubSurface(x, y, facing, cLength, cBottomHeightStart, (cTopHeightStart - cBottomHeightStart) + mSlopeOffset, cBottomHeightSlope, cTopHeightSlope);
+IWallSurface::FaceDirection WallConstructionData::getFaceDirection() {
+  return cFacing;
 }
+
+int WallConstructionData::getX() {
+  return cX;
+//  return cFacing == IWallSurface::NORTH || IWallSurface::SOUTH ? cX - (cLength - 1) : cX;
+}
+
+int WallConstructionData::getY() {
+  return cY;
+//  return cFacing == IWallSurface::EAST || IWallSurface::WEST ? cY - (cLength - 1) : cY;
+}
+
+int WallConstructionData::getLength() {
+  return cLength;
+}
+
+int WallConstructionData::getStartHeight() {
+  return cBottomHeightStart;
+}
+
+int WallConstructionData::getEndHeight() {
+  int mSlopeOffset = cTopHeightSlope < 0 ? cLength * cTopHeightSlope : 0;
+  return (cTopHeightStart - cBottomHeightStart) + mSlopeOffset;
+}
+
+int WallConstructionData::getBottomSlope() {
+  return cBottomHeightSlope;
+}
+
+int WallConstructionData::getTopSlope() {
+  return cTopHeightSlope;
+}
+
+Condition* WallConstructionData::getCondition() {
+  return cCondition;
+}
+

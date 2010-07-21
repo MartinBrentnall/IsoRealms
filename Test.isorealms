@@ -27047,7 +27047,7 @@
         <Location x="0" y="0" z="-1"/>
         <Size x="8" y="1" z="1"/>
         <Slope NorthSouth="1" WestEast="0"/>
-        <Condition type="or">
+        <Condition type="or" negated="true">
           <Element name="SwitchCircleBoth"/>
           <Condition type="and">
             <Element name="SwitchCircleLeft"/>
@@ -27944,7 +27944,7 @@
       <Element set="Blocks" type="Plain">
         <Location x="0" y="5" z="-1"/>
         <Size x="3" y="3" z="3"/>
-        <Condition type="and">
+        <Condition type="and" negated="true">
           <Element name="SwitchCircleBoth"/>
           <Element name="SwitchCircleNone"/>
         </Condition>
@@ -30927,7 +30927,7 @@
       <Element set="Blocks" type="Water">
         <Location x="0" y="0" z="0"/>
         <Size x="3" y="7" z="-1"/>
-      </Element>-->
+      </Element>
       <Element set="Blocks" type="Plain">
         <Location x="0" y="2" z="-1"/>
         <Size x="1" y="4" z="1"/>
@@ -31130,7 +31130,7 @@
       <Element set="Blocks" type="Water">
         <Location x="4" y="0" z="0"/>
         <Size x="3" y="7" z="-1"/>
-      </Element>-->
+      </Element>
       <Element set="Blocks" type="Plain">
         <Location x="7" y="2" z="-1"/>
         <Size x="1" y="4" z="1"/>
@@ -31230,7 +31230,7 @@
       <Element set="Blocks" type="Water">
         <Location x="0" y="4" z="0"/>
         <Size x="7" y="3" z="-1"/>
-      </Element>-->
+      </Element>
       <Element set="Blocks" type="Plain">
         <Location x="2" y="7" z="-1"/>
         <Size x="4" y="1" z="1"/>

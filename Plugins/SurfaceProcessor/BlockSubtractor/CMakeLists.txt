@@ -23,6 +23,7 @@ add_library(SurfaceProcessor_BlockSubtractor MODULE
   TileColumn.cpp
   TileSurfaceTemplate.cpp
   WallColumn.cpp
+  WallColumnPossibility.cpp
   WallConstructionData.cpp
 )
 set_target_properties(SurfaceProcessor_BlockSubtractor PROPERTIES OUTPUT_NAME "Module")

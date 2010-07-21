@@ -63,6 +63,9 @@ class AbstractSpindizzyBlock:public Element<ISpindizzyBlockSet, ISpindizzyBlockF
   std::vector<ISpindizzyTileSurface*> cStaticTileSurfaces;
   std::vector<ISpindizzyTileSurface*> cDynamicTileSurfaces;
 
+  std::vector<IWallSurface*> cStaticWallSurfaces;
+  std::vector<IWallSurface*> cDynamicWallSurfaces;
+  
   BlockLocation cStartLocation;
   BlockLocation cEndLocation;
   int cNorthWestHeight;
@@ -102,8 +105,7 @@ class AbstractSpindizzyBlock:public Element<ISpindizzyBlockSet, ISpindizzyBlockF
    * TODO
    */ 
   std::vector<ITileSurfaceTemplate*> calculateTileSurfaces(const ITileSurface::FaceDirection);
-
-  std::vector<IWallSurface*> calculateWallSurfaces(const IWallSurface::FaceDirection);
+  std::vector<IWallSurfaceTemplate*> calculateWallSurfaces(const IWallSurface::FaceDirection);
 
   /**
    * Determine if the surface of this block is flat.
@@ -175,6 +177,8 @@ class AbstractSpindizzyBlock:public Element<ISpindizzyBlockSet, ISpindizzyBlockF
   bool isSplit();  
 
   int getBottomHeight(int, int);
+  
+  void generateWallSurfaces(IWallSurface::FaceDirection);
 
   public:
   AbstractSpindizzyBlock(ISpindizzyBlockFactory*, BlockLocation*, BlockLocation*, ISpindizzyTextureSet**, SpindizzyBlockProperties*, bool);
@@ -223,7 +227,7 @@ class AbstractSpindizzyBlock:public Element<ISpindizzyBlockSet, ISpindizzyBlockF
    * @returns  The wall surface meeting the specification.
    * @throws Something  TODO: If a wall cannot be created to the specification.
    */
-  IWallSurface* createSubSurface(int, int, IWallSurface::FaceDirection, int, int, int, int, int);
+  IWallSurface* createSubSurface(int, int, IWallSurface::FaceDirection, int, int, int, int, int, Condition*);
 
   /***********************\
    * Implements IElement *

@@ -72,7 +72,7 @@ class WallColumn {
    * @param int  Top height end.
    */
   WallColumn(int, int, int, int);
-
+  
   int getBottomHeightStart();
   int getBottomHeightEnd();
   int getTopHeightStart();

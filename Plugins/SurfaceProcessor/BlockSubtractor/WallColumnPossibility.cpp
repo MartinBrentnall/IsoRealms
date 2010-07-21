@@ -1,0 +1,156 @@
+/*
+ * Copyright 2009,2010 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#include "WallColumnPossibility.h"
+
+WallColumnPossibility::WallColumnPossibility(WallColumn* wallColumn, Condition* condition) {
+  cCondition = condition;
+  cSegments.push_back(wallColumn);
+}
+
+WallColumnPossibility::WallColumnPossibility(WallColumnPossibility* wallColumn, Condition* condition) {
+  cCondition = condition;
+  for (unsigned int i = 0; i < wallColumn->cSegments.size(); i++) {
+    cSegments.push_back(new WallColumn(*wallColumn->cSegments[i]));
+  }
+}
+
+WallColumnPossibility* WallColumnPossibility::split(Condition* condition) {
+  if (cCondition != NULL) {
+    Condition* mSplitCondition = cCondition->split(condition);
+    if (mSplitCondition != NULL) {
+      return new WallColumnPossibility(this, mSplitCondition);
+    }
+  } else if (condition != NULL) {
+    cCondition = condition;
+    Condition* mNegatedCondition = new Condition(*condition);
+    mNegatedCondition->negate();
+    return new WallColumnPossibility(this, mNegatedCondition);
+  }
+  return NULL;
+}
+
+bool WallColumnPossibility::isCompatibleWith(Condition* condition) {
+  if (cCondition == NULL && condition == NULL) {
+    return true;
+  }
+  return cCondition != NULL && cCondition->isCompatibleWith(condition);
+}
+
+std::vector<WallColumn*> WallColumnPossibility::getSections() {
+  return cSegments;
+}
+
+void WallColumnPossibility::applyOverlapping(WallColumnPossibility* wallColumn) {
+  std::vector<int> mIndicesToRemove;
+  std::vector<WallColumn*> mColumnsAdded;
+  for (unsigned int i = 0; i < wallColumn->cSegments.size(); i++) {
+    WallColumn* mWallColumn = wallColumn->cSegments[i];
+    for (unsigned int j = 0; j < cSegments.size(); j++) {
+      switch (cSegments[j]->getRelationWith(mWallColumn)) {
+        case WallColumn::INSIDE: {
+          WallColumn* mSplitColumn = new WallColumn(*cSegments[j]);
+          mSplitColumn->lowerTop(mWallColumn);
+          cSegments[j]->raiseBottom(mWallColumn);
+          if (mSplitColumn->isAddition()) {
+            mColumnsAdded.push_back(mSplitColumn);
+          }
+          if (!cSegments[j]->isAddition()) {
+            mIndicesToRemove.push_back(j);
+          }
+          break;
+        }
+        
+        case WallColumn::COVERING: {
+          mIndicesToRemove.push_back(j);
+          break;
+        }
+
+        case WallColumn::HIGHER: {
+          if (!cSegments[j]->lowerTop(mWallColumn)) {
+            mIndicesToRemove.push_back(j);
+          }
+          break;
+        }
+
+        case WallColumn::LOWER: {
+          if (!cSegments[j]->raiseBottom(mWallColumn)) {
+            mIndicesToRemove.push_back(j);
+          }
+          break;
+        }
+      }
+    }
+  }
+  for (int j = mIndicesToRemove.size() - 1; j >= 0; j--) {
+    cSegments.erase(cSegments.begin() + mIndicesToRemove[j]);
+  }
+  mIndicesToRemove.clear();
+  for (unsigned int j = 0; j < mColumnsAdded.size(); j++) {
+    cSegments.push_back(mColumnsAdded[j]);
+  }
+  mColumnsAdded.clear();
+}
+
+bool WallColumnPossibility::empty() {
+  return cSegments.empty();
+}
+
+bool WallColumnPossibility::isSubtraction() {
+  if (!empty()) {
+    return !cSegments[0]->isAddition();
+  }
+  return false;
+}
+
+void WallColumnPossibility::convertToAddition() {
+  for (unsigned int i = 0; i < cSegments.size(); i++) {
+    cSegments[i]->convertToAddition();
+  }
+}
+
+void WallColumnPossibility::unite(WallColumnPossibility* wallColumn) {
+  for (unsigned int i = 0; i < wallColumn->cSegments.size(); i++) {
+    cSegments.push_back(wallColumn->cSegments[i]);
+  }
+
+  for (int i = 0; i < (signed int) (cSegments.size() - 1); i++) {
+    for (unsigned int j = i + 1; j < cSegments.size(); j++) {
+      if (cSegments[i]->unite(cSegments[j])) {
+        cSegments.erase(cSegments.begin() + j--);
+      }
+    }
+  }
+}
+
+Condition* WallColumnPossibility::getCondition() {
+  return cCondition;
+}
+
+void WallColumnPossibility::shaveTop(int height, Condition* condition) {
+  for (int i = cSegments.size() - 1; i >= 0; i--) {
+    // TODO: This should not only be based on the start bottom height, but also the end bottom height aswell.
+    int mWallBottom = cSegments[i]->getBottomHeightStart();
+    
+    // TODO: Take condition into real consideration
+    if (mWallBottom >= height && condition->isAbsolute() && !condition->isTrue()) {
+      cSegments.erase(cSegments.begin() + i);
+    }
+  }
+}
+

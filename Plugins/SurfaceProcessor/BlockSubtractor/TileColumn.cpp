@@ -115,9 +115,9 @@ TileColumn* TileColumn::split(Condition* condition) {
     if (mSplitCondition != NULL) {
       return new TileColumn(this, mSplitCondition);
     }
-  } else {
+  } else if (condition != NULL) {
     cCondition = condition;
-    Condition* mNegatedCondition = new Condition(*cCondition);
+    Condition* mNegatedCondition = new Condition(*condition);
     mNegatedCondition->negate();
     return new TileColumn(this, mNegatedCondition);
   }

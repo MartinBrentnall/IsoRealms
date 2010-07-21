@@ -62,8 +62,6 @@ class ISurfaceProvider {
    */
   virtual std::vector<IWallSurface*> getWallSurfaces(int, IWallSurface::FaceDirection) = 0;
 
-  virtual IWallSurface* createSubSurface(int, int, IWallSurface::FaceDirection, int, int, int, int, int) = 0;
-
   virtual Condition* getCondition() = 0;
   
   virtual bool isGhost() = 0;

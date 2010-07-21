@@ -32,6 +32,7 @@
 #include "TileColumn.h"
 #include "TileSurfaceTemplate.h"
 #include "WallColumn.h"
+#include "WallColumnPossibility.h"
 #include "WallConstructionData.h"
 
 /**
@@ -89,7 +90,7 @@ class BlockSubtractor:public ISurfaceProcessor {
    *           get.
    * @returns  The completely raw unprocessed wall column.
    */
-  WallColumn* getRawWallColumn(ISurfaceProvider*, int, int, IWallSurface::FaceDirection);
+  WallColumnPossibility* getRawWallColumn(ISurfaceProvider*, int, int, IWallSurface::FaceDirection);
 
   /**
    * Get a wall column from the specified provider at the specified location
@@ -104,7 +105,7 @@ class BlockSubtractor:public ISurfaceProcessor {
    *           get.
    * @returns  The completely raw unprocessed wall column.
    */
-  std::vector<WallColumn*> getPhysicalWallColumn(ISurfaceProvider*, int, int, IWallSurface::FaceDirection);
+  std::vector<WallColumnPossibility*> getPhysicalWallColumn(ISurfaceProvider*, int, int, IWallSurface::FaceDirection);
 
   /**
    * Unite a set of wall columns with another set of wall columns.
@@ -129,7 +130,7 @@ class BlockSubtractor:public ISurfaceProcessor {
    *           get.
    * @returns  The completely raw unprocessed wall column.
    */
-  std::vector<WallColumn*> getOptimisedWallColumn(ISurfaceProvider*, int, int, IWallSurface::FaceDirection);
+  std::vector<WallColumnPossibility*> getOptimisedWallColumn(ISurfaceProvider*, int, int, IWallSurface::FaceDirection);
 
   ITileSurface* getSurfaceAt(std::vector<ITileSurface*>, int, int);
   IWallSurface* findSurfaceAt(std::vector<IWallSurface*>, int, int);
@@ -146,7 +147,7 @@ class BlockSubtractor:public ISurfaceProcessor {
   void registerSurfaceProvider(ISurfaceProvider*);
   void unregisterSurfaceProvider(ISurfaceProvider*);
   std::vector<ITileSurfaceTemplate*> getTileSurfaces(ISurfaceProvider*, ITileSurface::FaceDirection);
-  std::vector<IWallSurface*> getWallSurfaces(ISurfaceProvider*, IWallSurface::FaceDirection);
+  std::vector<IWallSurfaceTemplate*> getWallSurfaces(ISurfaceProvider*, IWallSurface::FaceDirection);
   void setDirty();
   void reinitialise();
 

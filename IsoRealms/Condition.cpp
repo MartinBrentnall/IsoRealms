@@ -54,7 +54,11 @@ Condition::Condition(DOMNodeWrapper* node, std::vector<ConditionElement*> elemen
         std::cout << "Element \"" << mName << "\" not in list of conditions" << std::endl;
         exit(1);
       }
-      cElements.insert(i->second);
+      if (mNegated == "true") {
+        cElements.insert(i->second->getNegatedElement());
+      } else {
+        cElements.insert(i->second);
+      }
     } else if (mValueAsString == "Condition") {
       Condition* mCondition = new Condition(mNode, elements); // TODO: Make constructor pass map instead
       cConditions.push_back(mCondition);
@@ -102,11 +106,14 @@ bool Condition::operator!=(const Condition& condition) const {
 }
 
 Condition* Condition::split(Condition* condition) {
-//   std::cout << " ========================== Splitting condition:" << std::endl;
-//   std::cout << "   This: ";
-//   debug();
-//   std::cout << "  Split: ";
-//   condition->debug();
+  if (condition == NULL) {
+    return NULL;
+  }
+  std::cout << " ========================== Splitting condition:" << std::endl;
+  std::cout << "   This: ";
+  debug();
+  std::cout << "  Split: ";
+  condition->debug();
 
   // Create a condition based on this condition AND the split condition
   Condition* mCondition = new Condition(true);
@@ -129,16 +136,16 @@ Condition* Condition::split(Condition* condition) {
   cConditions = mCondition->cConditions;
   cElements = mCondition->cElements;
   
-//   std::cout << "Result:" << std::endl;
-//   debug();
-//   mOpposingCondition->debug();
+  std::cout << "Result:" << std::endl;
+  debug();
+  mOpposingCondition->debug();
 
   simplify();
   mOpposingCondition->simplify();
   
-/*  std::cout << "Simplified Result:" << std::endl;
+  std::cout << "Simplified Result:" << std::endl;
   debug();
-  mOpposingCondition->debug();*/
+  mOpposingCondition->debug();
   return mOpposingCondition;
 }
 
@@ -190,6 +197,8 @@ void Condition::raiseConditions() {
 }
 
 void Condition::checkForConflictingElements() {
+  
+  // TODO: This seems to assume AND gate...  for OR gate, conflicting elements should simply be removed
   std::set<bool*> mPositiveElements;
   std::set<bool*> mNegativeElements;
   for (std::set<ConditionElement*>::iterator i = cElements.begin(); i != cElements.end(); i++) {
@@ -206,13 +215,59 @@ void Condition::checkForConflictingElements() {
   }
 }
 
+void Condition::checkForConflictingConditions() {
+  std::vector<ConditionElement*> cElementsToRemove;
+  
+  // TODO: We should really check ALL subconditions recursively!
+  // TODO: How should this deal with OR conditions?  I've only thought this through using AND so far
+  // From here we assume that the gate of the subcondition is different to this one!
+  for (unsigned int i = 0; i < cConditions.size(); i++) {
+    for (std::set<ConditionElement*>::iterator j = cConditions[i]->cElements.begin(); j != cConditions[i]->cElements.end(); j++) {
+      for (std::set<ConditionElement*>::iterator k = cElements.begin(); k != cElements.end(); k++) {
+        if ((*k)->getInputAddress() == (*j)->getInputAddress() && (*k)->isNegated() != (*j)->isNegated()) {
+          cElementsToRemove.push_back(*j);
+        }
+      }
+    }
+    for (unsigned int j = 0; j < cElementsToRemove.size(); j++) {
+      cConditions[i]->cElements.erase(cElementsToRemove[j]);
+    }
+    cElementsToRemove.clear();
+  }
+}
+
+void Condition::negateEverything() {
+  cNegated = !cNegated;
+  cAnd = !cAnd;
+  for (unsigned int i = 0; i < cConditions.size(); i++) {
+    cConditions[i]->cNegated = !cConditions[i]->cNegated;
+  }
+  std::set<ConditionElement*> mNegatedElements;
+  for (std::set<ConditionElement*>::iterator i = cElements.begin(); i != cElements.end(); i++) {
+    ConditionElement* mNegatedElement = (*i)->getNegatedElement();
+    mNegatedElements.insert(mNegatedElement);
+  }
+  cElements = mNegatedElements;
+}
+
+void Condition::convertNegatedConditions() {
+  for (unsigned int i = 0; i < cConditions.size(); i++) {
+    if (cConditions[i]->cNegated) {
+      cConditions[i]->negateEverything();
+    }
+  }
+}
+
 void Condition::simplify() {
+  convertNegatedConditions();
   for (unsigned int i = 0; i < cConditions.size(); i++) {
     cConditions[i]->simplify();
   }
   checkForAbsoluteConditions();
   raiseConditions();
   checkForConflictingElements();
+/*  checkForConflictingConditions();
+  checkForAbsoluteConditions();*/
 }
 
 bool Condition::isAbsolute() const {
@@ -257,16 +312,19 @@ void Condition::compose(Condition* condition) {
 }
 
 bool Condition::isCompatibleWith(Condition* condition) {
+  if (condition == NULL) {
+    return true;
+  }
   Condition mThisCondition(*this);
   Condition mBothConditions(true);
   mBothConditions.cConditions.push_back(&mThisCondition);
   mBothConditions.cConditions.push_back(condition);
-/*  std::cout << "Compatibility check condition:" << std::endl;
-  mBothConditions.debug();*/
+  std::cout << "Compatibility check condition:" << std::endl;
+  mBothConditions.debug();
   mBothConditions.simplify();
-/*  std::cout << "Simplified:" << std::endl;
-  mBothConditions.debug();*/
-  return !mBothConditions.isAbsolute() && !mBothConditions.isTrue();
+  std::cout << "Simplified:" << std::endl;
+  mBothConditions.debug();
+  return !mBothConditions.isAbsolute() || mBothConditions.isTrue();
 }
 
 void Condition::negate() {

@@ -21,35 +21,40 @@
 
 #include "../ISurfaceProvider.h"
 #include "../IWallSurface.h"
+#include "../IWallSurfaceTemplate.h"
 
 #include "WallColumn.h"
 
-class WallConstructionData {
+class WallConstructionData:public IWallSurfaceTemplate {
   private:
+  int cX;
+  int cY;
   int cLength;
   int cBottomHeightStart;
   int cBottomHeightSlope;
   int cTopHeightStart;
   int cTopHeightSlope;
+  Condition* cCondition;
+  IWallSurface::FaceDirection cFacing;
 
   public:
-  WallConstructionData(WallColumn*);
-  bool unite(WallColumn*);
+  WallConstructionData(int, int, WallColumn*, Condition*, IWallSurface::FaceDirection);
+  bool unite(WallColumn*, Condition*);
 
   int getWallBottom();
-  
-  /**
-   * Instruct the surface provider to create us a new wall surface based on our
-   * construction data.
-   * 
-   * @param ISurfaceProvider*  The provider for creating the wall.
-   * @param int  The X tile end location of the wall.
-   * @param int  The Y tile end location of the wall.
-   * @param IWallSurface::FaceDirection  The face direction of the wall, away
-   *           from the specified tile.
-   * @returns  The newly constructed wall surface.
-   */
-  IWallSurface* constructSurface(ISurfaceProvider*, int, int, IWallSurface::FaceDirection);
+
+  /***********************************\
+   * Implements IWallSurfaceTemplate *
+  \***********************************/
+  int getX();
+  int getY();
+  IWallSurface::FaceDirection getFaceDirection();
+  int getLength();
+  int getStartHeight();
+  int getEndHeight();
+  int getBottomSlope();
+  int getTopSlope();
+  Condition* getCondition();
 };
 
 #endif

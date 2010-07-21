@@ -22,6 +22,7 @@
 #include <iostream>
 #include <GL/gl.h>
 
+#include <IsoRealms/Condition.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
@@ -76,6 +77,8 @@ class WallSurface:public IWallSurface {
    */
   ISpindizzyTextureSet::TextureType cTextureType;
 
+  Condition* cCondition;
+  
   class WallEdge:public IWallEdge {
     private:
     int cStartHeight;
@@ -115,8 +118,9 @@ class WallSurface:public IWallSurface {
    * @param FaceDirection  facing direction of the wall.
    * @param ISpindizzyTexture*  Appearance of the wall.
    * @param ISpindizzyTextureSet::TextureType  Appearance of the wall.
+   * @param Condition  Condition of the walls existence.
    */
-  WallSurface(int, int, int, int, int, int, FaceDirection, ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType);
+  WallSurface(int, int, int, int, int, int, FaceDirection, ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType, Condition*);
 
   /***************************\
    * Implements IWallSurface *

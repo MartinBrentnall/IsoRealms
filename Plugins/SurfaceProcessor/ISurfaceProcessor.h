@@ -27,6 +27,7 @@
 #include "ITileSurface.h"
 #include "ITileSurfaceTemplate.h"
 #include "IWallSurface.h"
+#include "IWallSurfaceTemplate.h"
 
 class ISurfaceProcessor:public virtual IPlugin {
   public:
@@ -83,7 +84,7 @@ class ISurfaceProcessor:public virtual IPlugin {
    * @param IWallSurface::FaceDirection  The facing direction of walls to return.
    * @returns  A vector containing the calculated wall surfaces.
    */
-  virtual std::vector<IWallSurface*> getWallSurfaces(ISurfaceProvider*, IWallSurface::FaceDirection) = 0;
+  virtual std::vector<IWallSurfaceTemplate*> getWallSurfaces(ISurfaceProvider*, IWallSurface::FaceDirection) = 0;
 };
 
 #endif

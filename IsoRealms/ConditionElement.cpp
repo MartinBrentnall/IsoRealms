@@ -41,7 +41,6 @@ bool ConditionElement::operator==(const ConditionElement& conditionElement) cons
 }
 
 bool ConditionElement::operator!=(const ConditionElement& conditionElement) const {
-  std::cout << "Input " << cInput << " is: " << *cInput << std::endl;
   return !(*this == conditionElement);
 }
 

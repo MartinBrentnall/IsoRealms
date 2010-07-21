@@ -182,7 +182,7 @@ std::vector<ITileSurfaceTemplate*> SpindizzyBlockSet::getTileSurfaces(ISurfacePr
   return cSurfaceProcessor->getTileSurfaces(provider, facing);
 }
 
-std::vector<IWallSurface*> SpindizzyBlockSet::getWallSurfaces(ISurfaceProvider* provider, IWallSurface::FaceDirection facing) {
+std::vector<IWallSurfaceTemplate*> SpindizzyBlockSet::getWallSurfaces(ISurfaceProvider* provider, IWallSurface::FaceDirection facing) {
   return cSurfaceProcessor->getWallSurfaces(provider, facing);
 }
 

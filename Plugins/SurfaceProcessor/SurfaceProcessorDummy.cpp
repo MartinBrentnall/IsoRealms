@@ -49,13 +49,14 @@ int SurfaceProcessorDummy::getOuterWallFaceLocation(BlockArea* coverage, IWallSu
   exit(1);
 }
 
-std::vector<IWallSurface*> SurfaceProcessorDummy::getWallSurfaces(ISurfaceProvider* provider, IWallSurface::FaceDirection facing) {
+std::vector<IWallSurfaceTemplate*> SurfaceProcessorDummy::getWallSurfaces(ISurfaceProvider* provider, IWallSurface::FaceDirection facing) {
   BlockArea* mCoverage = provider->getCoverage();
   // TODO: Get all visible walls
   int mOuterFaceLocation = getOuterWallFaceLocation(mCoverage, facing);
   std::vector<IWallSurface*> mRawSurfaces = provider->getWallSurfaces(mOuterFaceLocation, facing);
-  delete mCoverage;
-  return mRawSurfaces;
+// TODO: SHOULDN'T DO THIS HERE:  delete mCoverage;
+  std::vector<IWallSurfaceTemplate*> mDummySurfaceTemplates;
+  return mDummySurfaceTemplates;
 }
 
 void SurfaceProcessorDummy::setDirty() {
