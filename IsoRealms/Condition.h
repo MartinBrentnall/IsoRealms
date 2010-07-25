@@ -78,6 +78,7 @@ class Condition {
   void checkForConflictingConditions();
   void raiseCondition(int);
   void negateEverything();
+  void removeDuplicates();
 
   public:
   Condition(bool, bool = false);
@@ -93,11 +94,12 @@ class Condition {
   
   bool isCompatibleWith(Condition*);
   
-  void simplify();
+  void simplify(int = 0);
   
   bool operator==(const Condition&) const;
   bool operator!=(const Condition&) const;
-  
+
+  void debug(const std::string&) const;
   void debug(int = 0) const;
 };
 

@@ -26018,6 +26018,14 @@
         <Size x="1" y="1" z="1"/>
       </Element>
       <Element set="Blocks" type="Plain">
+        <Location x="1" y="6" z="-1"/>
+        <Size x="6" y="1" z="1"/>
+        <Slope NorthSouth="0" WestEast="1"/>
+        <Condition>
+          <Element name="SwitchDiamondLeft"/>
+        </Condition>
+      </Element>
+      <Element set="Blocks" type="Plain">
         <Location x="5" y="6" z="3"/>
         <Size x="2" y="1" z="1"/>
         <Slope NorthSouth="0" Stepped="1" WestEast="1"/>
@@ -26031,14 +26039,6 @@
         <Slope NorthSouth="0" Stepped="1" WestEast="1"/>
         <Condition>
           <Element name="SwitchCircleLeft"/>
-        </Condition>
-      </Element>
-      <Element set="Blocks" type="Plain">
-        <Location x="1" y="6" z="-1"/>
-        <Size x="6" y="1" z="1"/>
-        <Slope NorthSouth="0" WestEast="1"/>
-        <Condition>
-          <Element name="SwitchDiamondLeft"/>
         </Condition>
       </Element>
       <Element set="Jewels" type="">

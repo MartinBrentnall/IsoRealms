@@ -34,7 +34,8 @@
 #include "WallSurface.h"
 
 class SpindizzyWater:public Element<ISpindizzyBlockSet, ISpindizzyBlockFactory>,
-                     public ISurfaceProvider {
+                     public ISurfaceProvider,
+                     public IVisualElement {
   private:
   // TODO: Need to define an "initialisation scheme" somewhere
   static const unsigned int INIT_REGISTER_BLOCKS;
@@ -45,7 +46,11 @@ class SpindizzyWater:public Element<ISpindizzyBlockSet, ISpindizzyBlockFactory>,
   ISpindizzyTextureSet** cSpindizzyTextureSet;
   BlockLocation cStartLocation;
   BlockLocation cEndLocation;
+  Condition* cCondition;
   
+  std::vector<ISpindizzyTileSurface*> cStaticTileSurfaces;
+  std::vector<ISpindizzyTileSurface*> cDynamicTileSurfaces;
+
   /**
    * TODO: Document
    */
@@ -66,11 +71,16 @@ class SpindizzyWater:public Element<ISpindizzyBlockSet, ISpindizzyBlockFactory>,
   std::vector<IInteractiveElement*> getInteractiveElements();
   void save(DOMNodeWriter*, BlockLocation&);
 
+  /*****************************\
+   * Implements IVisualElement *
+  \*****************************/
+  void render();
+
   /*******************************\
    * Implements ISurfaceProvider *
   \*******************************/
   std::vector<ITileSurface*> getTileSurfaces(ITileSurface::FaceDirection);
-  ISpindizzyTileSurface* createSubSurface(ITileSurface::FaceDirection, int, int, int, int);
+  ISpindizzyTileSurface* createSubSurface(ITileSurface::FaceDirection, int, int, int, int, Condition*);
   std::vector<IWallSurface*> getWallSurfaces(int, IWallSurface::FaceDirection);
   IWallSurface* createSubSurface(int, int, IWallSurface::FaceDirection, int, int, int, int, int);
   BlockArea* getCoverage();

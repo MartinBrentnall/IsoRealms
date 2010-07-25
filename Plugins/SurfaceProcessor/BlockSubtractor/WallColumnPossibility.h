@@ -33,6 +33,7 @@ class WallColumnPossibility {
   WallColumnPossibility(WallColumnPossibility*, Condition*);
 
   public:
+  WallColumnPossibility();
   WallColumnPossibility(WallColumn*, Condition*);
   
   std::vector<WallColumn*> getSections();
@@ -45,6 +46,9 @@ class WallColumnPossibility {
   void convertToAddition();
   void shaveTop(int, Condition*);
   bool isSubtraction();
+  void removeHiddenSections(WallColumnPossibility*);
+  
+  void debug();
 };
 
 #endif

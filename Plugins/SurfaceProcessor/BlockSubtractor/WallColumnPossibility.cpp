@@ -18,6 +18,10 @@
  */
 #include "WallColumnPossibility.h"
 
+WallColumnPossibility::WallColumnPossibility() {
+  cCondition = new Condition(true);
+}
+
 WallColumnPossibility::WallColumnPossibility(WallColumn* wallColumn, Condition* condition) {
   cCondition = condition;
   cSegments.push_back(wallColumn);
@@ -37,10 +41,15 @@ WallColumnPossibility* WallColumnPossibility::split(Condition* condition) {
       return new WallColumnPossibility(this, mSplitCondition);
     }
   } else if (condition != NULL) {
-    cCondition = condition;
+    cCondition = new Condition(true);
+    Condition* mSplitCondition = cCondition->split(condition);
+    if (mSplitCondition != NULL) {
+      return new WallColumnPossibility(this, mSplitCondition);
+    }
+/*    cCondition = condition;
     Condition* mNegatedCondition = new Condition(*condition);
     mNegatedCondition->negate();
-    return new WallColumnPossibility(this, mNegatedCondition);
+    return new WallColumnPossibility(this, mNegatedCondition);*/
   }
   return NULL;
 }
@@ -146,11 +155,34 @@ void WallColumnPossibility::shaveTop(int height, Condition* condition) {
   for (int i = cSegments.size() - 1; i >= 0; i--) {
     // TODO: This should not only be based on the start bottom height, but also the end bottom height aswell.
     int mWallBottom = cSegments[i]->getBottomHeightStart();
-    
-    // TODO: Take condition into real consideration
-    if (mWallBottom >= height && condition->isAbsolute() && !condition->isTrue()) {
+    if (mWallBottom >= height && !condition->isCompatibleWith(cCondition)) {
       cSegments.erase(cSegments.begin() + i);
     }
   }
 }
+
+void WallColumnPossibility::removeHiddenSections(WallColumnPossibility* wallMask) {
+  for (int i = cSegments.size() - 1; i >= 0; i--) {
+    for (unsigned int j = 0; j < wallMask->cSegments.size(); j++) {
+      if (wallMask->cSegments[j]->isCovering(cSegments[i])) {
+        cSegments.erase(cSegments.begin() + i);
+      }
+    }
+  }
+}
+
+void WallColumnPossibility::debug() {
+  std::cout << "Column has " << cSegments.size() << " segments for: ";
+  if (cCondition != NULL) {
+    cCondition->debug();
+  } else {
+    std::cout << "(true)" << std::endl;
+  }
+  for (unsigned int i = 0; i < cSegments.size(); i++) {
+    std::cout << "   Segment " << i << ": ";
+    cSegments[i]->debug();
+  }
+}
+
+
 

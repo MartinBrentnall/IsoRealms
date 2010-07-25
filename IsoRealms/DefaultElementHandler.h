@@ -19,6 +19,8 @@
 #ifndef DEFAULT_ELEMENT_HANDLER_H
 #define DEFAULT_ELEMENT_HANDLER_H
 
+#include <GL/gl.h>
+
 #include "IDynamicElement.h"
 #include "IElement.h"
 #include "IElementHandler.h"
@@ -86,6 +88,8 @@ template<class T = IElement> class DefaultElementHandler:public IElementHandler 
   }
   
   virtual void render() {
+    // NOTE: Enable this line to see which surfaces are dynamic!
+/*    glColor3f(0.3f, 0.3f, 0.3f);*/
     for (unsigned int i = 0; i < cVisualElements.size(); i++) {
       cVisualElements[i]->render();
     }

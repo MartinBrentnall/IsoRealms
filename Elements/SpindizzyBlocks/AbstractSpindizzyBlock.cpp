@@ -289,7 +289,7 @@ void AbstractSpindizzyBlock::generateWallSurfaces(IWallSurface::FaceDirection fa
     
     Condition* mCondition = mWallSurfaces[i]->getCondition();
     IWallSurface* mWallSurface = createSubSurface(mX, mY, mFaceDirection, mLength, mStartHeight, mEndHeight, mBottomSlope, mTopSlope, mCondition);
-    if (mCondition == NULL) {
+    if (mCondition == NULL || (mCondition->isAbsolute() && mCondition->isTrue())) {
       cStaticWallSurfaces.push_back(mWallSurface);
     } else {
       cDynamicWallSurfaces.push_back(mWallSurface);

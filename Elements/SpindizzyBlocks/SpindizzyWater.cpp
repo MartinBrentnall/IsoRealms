@@ -31,6 +31,7 @@ SpindizzyWater::SpindizzyWater(ISpindizzyBlockFactory* elementFactory, BlockLoca
   cEndLocation = BlockLocation(endLocation->x > startLocation->x ? endLocation->x : startLocation->x,
                                endLocation->y > startLocation->y ? endLocation->y : startLocation->y,
                               (endLocation->z <= startLocation->z ? endLocation->z : startLocation->z) - 1);
+  cCondition = new Condition(true);
 }
 
 bool SpindizzyWater::isGhost() {
@@ -48,27 +49,26 @@ std::vector<ITileSurfaceTemplate*> SpindizzyWater::getWaterSurfaces() {
 
 std::vector<ITileSurface*> SpindizzyWater::getTileSurfaces(ITileSurface::FaceDirection facing) {
   std::vector<ITileSurface*> mSurfaces;
-  ITileSurface* mWaterSurface = createSubSurface(facing, cEndLocation.y, cEndLocation.x, cStartLocation.y, cStartLocation.x);
+  ITileSurface* mWaterSurface = createSubSurface(facing, cEndLocation.y, cEndLocation.x, cStartLocation.y, cStartLocation.x, cCondition);
   mSurfaces.push_back(mWaterSurface);
   return mSurfaces;
 }
 
 void SpindizzyWater::renderStatic() {
-  std::vector<ITileSurfaceTemplate*> mTopTileSurfaces = getWaterSurfaces();
-  for (unsigned int i = 0; i < mTopTileSurfaces.size(); i++) {
-    int mNorth = mTopTileSurfaces[i]->getNorth();
-    int mEast = mTopTileSurfaces[i]->getEast();
-    int mSouth = mTopTileSurfaces[i]->getSouth();
-    int mWest = mTopTileSurfaces[i]->getWest();
-    ISpindizzyTileSurface* mTileSurface = createSubSurface(ITileSurface::UP, mNorth, mEast, mSouth, mWest);
-    mTileSurface->render();
-    delete mTopTileSurfaces[i];
-    delete mTileSurface;
+  for (unsigned int i = 0; i < cStaticTileSurfaces.size(); i++) {
+    cStaticTileSurfaces[i]->render();
+  }
+}
+
+void SpindizzyWater::render() {
+  for (unsigned int i = 0; i < cDynamicTileSurfaces.size(); i++) {
+    cDynamicTileSurfaces[i]->render();
   }
 }
 
 std::vector<IVisualElement*> SpindizzyWater::getVisualElements() {
   std::vector<IVisualElement*> mVisualElements;
+  mVisualElements.push_back(this);
   return mVisualElements;
 }
 
@@ -82,10 +82,8 @@ std::vector<IInteractiveElement*> SpindizzyWater::getInteractiveElements() {
   return mInteractiveElements;
 }
 
-ISpindizzyTileSurface* SpindizzyWater::createSubSurface(ITileSurface::FaceDirection facing, int north, int east, int south, int west) {
-//  return new TileSurface(cSpindizzyTextureSet, ISpindizzyTextureSet::WATER, north, east, south, west, cStartLocation.z, 0, 0, facing/*, TODO:CONDITIONAL  mSurfaceCondition*/);
-  /*, TODO:CONDITIONAL WATER */
-  return new TileSurface(cSpindizzyTextureSet, ISpindizzyTextureSet::WATER, north, east, south, west, facing == ITileSurface::UP ? cStartLocation.z : cEndLocation.z, 0, 0, facing, NULL);
+ISpindizzyTileSurface* SpindizzyWater::createSubSurface(ITileSurface::FaceDirection facing, int north, int east, int south, int west, Condition* condition) {
+  return new TileSurface(cSpindizzyTextureSet, ISpindizzyTextureSet::WATER, north, east, south, west, facing == ITileSurface::UP ? cStartLocation.z : cEndLocation.z, 0, 0, facing, condition);
 }
 
 IWallSurface* SpindizzyWater::createSubSurface(int x, int y, IWallSurface::FaceDirection facing, int length, int startHeight, int endHeight, int topSlope, int bottomSlope) {
@@ -133,6 +131,26 @@ bool SpindizzyWater::initElement(unsigned int pass) {
     }
 
     case INIT_PROCESS_BLOCKS: {
+      std::vector<ITileSurfaceTemplate*> mTopTileSurfaces = getWaterSurfaces();
+      for (unsigned int i = 0; i < mTopTileSurfaces.size(); i++) {
+        int mNorth = mTopTileSurfaces[i]->getNorth();
+        int mEast = mTopTileSurfaces[i]->getEast();
+        int mSouth = mTopTileSurfaces[i]->getSouth();
+        int mWest = mTopTileSurfaces[i]->getWest();
+        Condition* mCondition = mTopTileSurfaces[i]->getCondition();
+        ISpindizzyTileSurface* mTileSurface = createSubSurface(ITileSurface::UP, mNorth, mEast, mSouth, mWest, mCondition);
+        if (mCondition == NULL) {
+          cStaticTileSurfaces.push_back(mTileSurface);
+        } else {
+          cDynamicTileSurfaces.push_back(mTileSurface);
+        }
+        ISpindizzyBlockSet* mBlockElementSet = getElementSet();
+        // TODO: This should only happen in runtime
+        mBlockElementSet->registerRollableSurface(mTileSurface);
+        
+        // TODO: SHOULD NOT DELETE THIS BECAUSE WE DIDN'T CREATE IT; THE SURFACE PROCESSOR DID!
+        delete mTopTileSurfaces[i];
+      }
       // TODO: Use the calculator to calculate surfaces
       return true;
     }

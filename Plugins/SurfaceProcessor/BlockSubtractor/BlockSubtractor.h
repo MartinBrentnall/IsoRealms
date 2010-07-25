@@ -107,6 +107,8 @@ class BlockSubtractor:public ISurfaceProcessor {
    */
   std::vector<WallColumnPossibility*> getPhysicalWallColumn(ISurfaceProvider*, int, int, IWallSurface::FaceDirection);
 
+  std::vector<WallColumnPossibility*> getPhysicalWallMasks(int, int, IWallSurface::FaceDirection);
+  
   /**
    * Unite a set of wall columns with another set of wall columns.
    * 

@@ -110,3 +110,15 @@ void WallColumn::convertToAddition() {
   }
 }
 
+void WallColumn::debug() {
+  for (int i = -2; i < 8; i++) {
+    if (i > cBottomHeightStart && i <= cTopHeightStart) {
+      std::cout << "[O]";
+    } else {
+      std::cout << "   ";
+    }
+  }
+  std::cout << std::endl;
+}
+
+

@@ -121,6 +121,8 @@ class WallColumn {
    * wall.
    */
   void convertToAddition();
+  
+  void debug();
 };
 
 #endif
