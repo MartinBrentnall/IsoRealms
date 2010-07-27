@@ -18,6 +18,8 @@
  */
 #include "TileSurface.h"
 
+const float TileSurface::SLOPE_ACCELERATION = 0.0005f;
+
 TileSurface::TileSurface(ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet::TextureType textureType, int north, int east, int south, int west, int height, int westEastSlope, int northSouthSlope, ITileSurface::FaceDirection facing, Condition* condition) {
   cTextureSet = textureSet;
   cTextureType = textureType;
@@ -215,6 +217,14 @@ ICollisionData* TileSurface::getCollision(Vertex& start, Vertex& end) {
   
   // No event
   return NULL;
+}
+
+float TileSurface::getXAcceleration(float, float) {
+  return -cWestEastSlope * SLOPE_ACCELERATION;
+}
+
+float TileSurface::getYAcceleration(float, float) {
+  return -cNorthSouthSlope * SLOPE_ACCELERATION;
 }
 
 BlockArea* TileSurface::getCoverage() {

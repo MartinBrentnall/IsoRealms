@@ -29,6 +29,8 @@ class IRollableSurface {
   virtual ICollisionData* getRollingEvent(Vertex&, Vertex&) = 0;
   virtual float getHeightAt(float, float) = 0;
   virtual bool contains(Vertex&) = 0;
+  virtual float getXAcceleration(float, float) = 0;
+  virtual float getYAcceleration(float, float) = 0;
 };
 
 #endif

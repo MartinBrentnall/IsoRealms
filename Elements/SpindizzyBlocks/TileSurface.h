@@ -36,6 +36,8 @@
 
 class TileSurface:public ISpindizzyTileSurface {
   private:
+  static const float SLOPE_ACCELERATION;
+
   ITileSurface::FaceDirection cFacing;
   // TODO: Change to refer to the texture set that may change!
   ISpindizzyTextureSet** cTextureSet;
@@ -80,6 +82,8 @@ class TileSurface:public ISpindizzyTileSurface {
   ICollisionData* getCollision(Vertex&, Vertex&);
   ICollisionData* getRollingEvent(Vertex&, Vertex&);
   float getHeightAt(float, float);
+  float getXAcceleration(float, float);
+  float getYAcceleration(float, float);
 
   /***************************\
    * Implements ITileSurface *

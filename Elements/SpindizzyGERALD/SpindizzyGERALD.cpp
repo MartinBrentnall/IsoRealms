@@ -218,26 +218,39 @@ SDLKey SpindizzyGERALD::rotateKey(const SDLKey& key) {
 }
 
 void SpindizzyGERALD::update(int ticks) {
-  float mAcceleration = (KeyStates::isKeyDown(SDLK_TAB) ? CRAFT_ACCELERATION * 2.0f : CRAFT_ACCELERATION) * ticks;
-/*  if (cCurrentSurface != NULL) {*/
+  if (cCurrentSurface != NULL) {
+    float mXSlopeMomentum = cCurrentSurface->getXAcceleration(cLocation.x, cLocation.y) * ticks;
+    float mYSlopeMomentum = cCurrentSurface->getYAcceleration(cLocation.x, cLocation.y) * ticks;
+    bool mFast = KeyStates::isKeyDown(SDLK_TAB);
+    float mAcceleration = (mFast ? CRAFT_ACCELERATION * 2.0f : CRAFT_ACCELERATION) * ticks;
     if (KeyStates::isKeyDown(rotateKey(cWestKey))) {
-      cMomentum.x -= mAcceleration;
+      cMomentum.x -= (!mFast && mAcceleration > 0.0f && mAcceleration < mXSlopeMomentum)
+                   ? std::max(mAcceleration * 2.0f, -mXSlopeMomentum)
+                   : mAcceleration;
     }
     if (KeyStates::isKeyDown(rotateKey(cEastKey))) {
-      cMomentum.x += mAcceleration;
+      cMomentum.x += (!mFast && mAcceleration > 0.0f && mAcceleration < -mXSlopeMomentum)
+                   ? std::max(mAcceleration * 2.0f, mXSlopeMomentum)
+                   : mAcceleration;
     }
     if (KeyStates::isKeyDown(rotateKey(cSouthKey))) {
-      cMomentum.y -= mAcceleration;
+      cMomentum.y -= (!mFast && mAcceleration > 0.0f && mAcceleration < mYSlopeMomentum)
+                   ? std::max(mAcceleration * 2.0f, -mYSlopeMomentum)
+                   : mAcceleration;
     }
     if (KeyStates::isKeyDown(rotateKey(cNorthKey))) {
-      cMomentum.y += mAcceleration;
+      cMomentum.y += (!mFast && mAcceleration > 0.0f && mAcceleration < -mYSlopeMomentum)
+                   ? std::max(mAcceleration * 2.0f, mYSlopeMomentum)
+                   : mAcceleration;
     }
+    cMomentum.x += mXSlopeMomentum;
+    cMomentum.y += mYSlopeMomentum;
     float mResistance = pow(0.999f, ticks);
     cMomentum.x *= mResistance;
     cMomentum.y *= mResistance;
-/*  } else {
+  } else {
     cMomentum.z += GRAVITY_STRENGTH;
-  }*/
+  }
   Vertex mNewLocation(cLocation.x + cMomentum.x, cLocation.y + cMomentum.y, cLocation.z + cMomentum.z);
   if (mNewLocation.z < cMapBottom) {
     cLocation.x = cRespawnX;

@@ -30,9 +30,12 @@
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
 
 #include "ISpindizzyTileSurface.h"
+#include "SurfaceCollisionEvent.h"
 
 class TileSplitSurface:public ISpindizzyTileSurface {
   private:
+  static const float SLOPE_ACCELERATION;
+
   BlockLocation cLocation;
   // TODO: Change to refer to the texture set that may change!
   ISpindizzyTextureSet** cTextureSet;
@@ -40,6 +43,8 @@ class TileSplitSurface:public ISpindizzyTileSurface {
   int cCornerHeights[2][2];
   bool cSplitDirection;
   Condition* cCondition;
+
+  Vertex* getBoundaryCrossingPoint(Vertex& start, Vertex& end, float* mLowestGradient);
 
   public:
 
@@ -50,6 +55,11 @@ class TileSplitSurface:public ISpindizzyTileSurface {
    * @param BlockLocation&  
    */
   TileSplitSurface(bool, BlockLocation&, ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType, int, int, int, int, Condition*);
+
+  /************************************\
+   * Implements ISpindizzyTileSurface *
+  \************************************/
+  void render();
 
   /*******************************\
    * Implements IRollableSurface *
@@ -64,9 +74,10 @@ class TileSplitSurface:public ISpindizzyTileSurface {
   \***************************/
   int getSurfaceCellHeight(int, int);
   int getSurfaceCellElevation(int, int);
-  void render();
   BlockArea* getCoverage();
   bool alligned(int, int);
+  float getXAcceleration(float, float);
+  float getYAcceleration(float, float);
 };
 
 #endif

@@ -19,6 +19,7 @@
 #ifndef SPINDIZZY_GERALD_H
 #define SPINDIZZY_GERALD_H
 
+#include <algorithm>
 #include <iostream>
 #include <iomanip>
 #include <cmath>
