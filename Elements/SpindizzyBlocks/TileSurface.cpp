@@ -18,9 +18,7 @@
  */
 #include "TileSurface.h"
 
-const float TileSurface::SLOPE_ACCELERATION = 0.0005f;
-
-TileSurface::TileSurface(ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet::TextureType textureType, int north, int east, int south, int west, int height, int westEastSlope, int northSouthSlope, ITileSurface::FaceDirection facing, Condition* condition) {
+TileSurface::TileSurface(ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet::TextureType textureType, int north, int east, int south, int west, int height, int westEastSlope, int northSouthSlope, ITileSurface::FaceDirection facing, Condition* condition, Script* contactScript, float friction, float grip, bool respawnAllowed) {
   cTextureSet = textureSet;
   cTextureType = textureType;
   cNorth = north;
@@ -32,6 +30,10 @@ TileSurface::TileSurface(ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet
   cNorthSouthSlope = northSouthSlope;
   cFacing = facing;
   cCondition = condition;
+  cContactScript = contactScript;
+  cFriction = friction;
+  cGrip = grip;
+  cRespawnAllowed = respawnAllowed;
 }
 
 int TileSurface::getSurfaceCellHeight(int x, int y) {
@@ -192,10 +194,15 @@ bool TileSurface::contains(Vertex& location) {
 }
 
 ICollisionData* TileSurface::getRollingEvent(Vertex& start, Vertex& end) {
+  if (cCondition != NULL && !cCondition->isTrue()) {
+    std::cout << "Surface disappeared!" << std::endl;
+    return new SurfaceCollisionEvent(this, ICollisionData::SURFACE_LEAVE, new Vertex(start), 0.0f);
+  }
+  
   float mGradient;
   Vertex* mLeavePoint = getBoundaryCrossingPoint(start, end, &mGradient);
   if (mLeavePoint != NULL) {
-    SurfaceCollisionEvent* mEvent = new SurfaceCollisionEvent(this);
+    SurfaceCollisionEvent* mEvent = new SurfaceCollisionEvent(this, ICollisionData::SURFACE_LEAVE, mLeavePoint, mGradient);
 //    mImpactPoint->setRelocationPoint(*mLeavePoint);
     return mEvent;
   }
@@ -205,26 +212,71 @@ ICollisionData* TileSurface::getRollingEvent(Vertex& start, Vertex& end) {
 }
 
 ICollisionData* TileSurface::getCollision(Vertex& start, Vertex& end) {
-  if (!contains(start)) {
+  if (!contains(start) && (cCondition == NULL || cCondition->isTrue())) {
     float mGradient;
     Vertex* mEnterPoint = getBoundaryCrossingPoint(start, end, &mGradient);
     if (mEnterPoint != NULL) {
-      SurfaceCollisionEvent* mEvent = new SurfaceCollisionEvent(this);
-//      mImpactPoint->setRelocationPoint(*mLeavePoint);
+      float mEnterHeight = getHeightAt(mEnterPoint->x, mEnterPoint->y);
+      std::cout << "From " << start.z << " to " << end.z << "..." << std::endl;
+      std::cout << "Height: " << mEnterPoint->z << " (" << (mEnterHeight - 0.5f) << " to " << mEnterHeight << ")" << std::endl;
+      // TODO: The "0.01f" is a bit nasty magic number
+      if (mEnterPoint->z <= mEnterHeight + 0.01f && mEnterPoint->z >= mEnterHeight - 0.5f) {
+        SurfaceCollisionEvent* mEvent = new SurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mEnterPoint, mGradient);
+//        mImpactPoint->setRelocationPoint(*mLeavePoint);
+        return mEvent;
+      }
+    }
+  }
+
+  float mStartHeight = getHeightAt(start.x, start.y);
+  float mEndHeight = getHeightAt(end.x, end.y);
+  if ((start.z > mStartHeight) != (end.z > mEndHeight) && start.z > mStartHeight) {
+    float mEndHeightModified = mEndHeight - (start.z - end.z);
+    float mGradient = (start.z - mStartHeight) / (mEndHeightModified - mStartHeight);
+    float mXImpact = start.x + (end.x - start.x) * mGradient;
+    float mYImpact = start.y + (end.y - start.y) * mGradient;
+    float mZImpact = start.z + (end.z - start.z) * mGradient;
+    Vertex* mImpactLocation = new Vertex(mXImpact, mYImpact, mZImpact);
+    if (alligned(round(mImpactLocation->x), round(mImpactLocation->y))) {
+      SurfaceCollisionEvent *mEvent = new SurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mImpactLocation, mGradient);
       return mEvent;
     }
   }
-  
+
   // No event
   return NULL;
 }
 
 float TileSurface::getXAcceleration(float, float) {
-  return -cWestEastSlope * SLOPE_ACCELERATION;
+  return -cWestEastSlope;
 }
 
 float TileSurface::getYAcceleration(float, float) {
-  return -cNorthSouthSlope * SLOPE_ACCELERATION;
+  return -cNorthSouthSlope;
+}
+
+void TileSurface::notifyContact() {
+  if (cContactScript != NULL) {
+    cContactScript->execute();
+  }
+}
+
+float TileSurface::getSurfaceFriction() {
+  return cFriction;
+}
+
+float TileSurface::getSurfaceGrip() {
+  return cGrip;
+}
+
+IRollableSurface::RespawnPossibility TileSurface::getRespawnPossibility() {
+  return cRespawnAllowed 
+       ? (cCondition != NULL ? IRollableSurface::CONDITIONAL : IRollableSurface::YES)
+       : IRollableSurface::NO;
+}
+
+bool TileSurface::isRespawnPossibleNow() {
+  return cRespawnAllowed && (cCondition == NULL || cCondition->isTrue());
 }
 
 BlockArea* TileSurface::getCoverage() {

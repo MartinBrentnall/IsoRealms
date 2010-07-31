@@ -100,6 +100,11 @@ class IPlugin:public IPluginSupport {
   virtual void setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry*);
 
   /**
+   * Set the runtime context.
+   */
+  virtual void setRuntimeContext(IMap*);
+  
+  /**
    * Return the command info associated with this plugin.
    */
   virtual std::vector<ICommandInfo*> getCommandInfo();

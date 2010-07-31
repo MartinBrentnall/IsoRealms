@@ -25,12 +25,33 @@
 
 class IRollableSurface {
   public:
+  enum RespawnPossibility {
+    YES,
+    CONDITIONAL,
+    NO
+  };
+    
   virtual ICollisionData* getCollision(Vertex&, Vertex&) = 0;
   virtual ICollisionData* getRollingEvent(Vertex&, Vertex&) = 0;
   virtual float getHeightAt(float, float) = 0;
   virtual bool contains(Vertex&) = 0;
   virtual float getXAcceleration(float, float) = 0;
   virtual float getYAcceleration(float, float) = 0;
+  virtual void notifyContact() = 0;
+  
+  /**
+   * Value between 0.0f (no friction) and 1.0f (instant halt).
+   */
+  virtual float getSurfaceFriction() = 0;
+
+    /**
+   * Value between 0.0f (no control) and 1.0f (full control).
+   */
+  virtual float getSurfaceGrip() = 0;
+  
+  virtual RespawnPossibility getRespawnPossibility() = 0;
+  
+  virtual bool isRespawnPossibleNow() = 0;
 };
 
 #endif

@@ -21,17 +21,34 @@ void DefaultCollidableSurfaceRegistry::registerWallSurface(ICollidableWallSurfac
 ICollisionData* DefaultCollidableSurfaceRegistry::getNextEvent(Vertex& start, Vertex& end) {
   std::map<IZone*, SurfaceCache*>::iterator i = cZoneSurfaceCaches.find(cRuntimeZone);
   if (i != cZoneSurfaceCaches.end()) {
-    std::cout << "   Finding next event..." << std::endl;
-    return i->second->getNextEvent(start, end);
+    ICollisionData* mEvent = i->second->getNextEvent(start, end);
+    if (mEvent != NULL) {
+      return mEvent;
+    }
+  }
+  std::vector<ZoneEvent*> mZoneEvents = cMap->getZoneEvents(start, end);
+  for (unsigned int i = 0; i < mZoneEvents.size(); i++) {
+    if (mZoneEvents[i]->getType() == ZoneEvent::ENTERED) {
+      IZone* mEnteredZone = mZoneEvents[i]->getZone();
+      std::map<IZone*, SurfaceCache*>::iterator j = cZoneSurfaceCaches.find(mEnteredZone);
+      if (j != cZoneSurfaceCaches.end()) {
+        ICollisionData* mEvent = j->second->getNextEvent(start, end);
+        if (mEvent != NULL) {
+          return mEvent;
+        }
+      }
+    }
   }
   return NULL;
 }
 
+void DefaultCollidableSurfaceRegistry::setRuntimeContext(IMap* map) {
+  cMap = map;
+}
+
 IRollableSurface* DefaultCollidableSurfaceRegistry::getSurfaceAt(Vertex& location) {
   std::map<IZone*, SurfaceCache*>::iterator i = cZoneSurfaceCaches.find(cRuntimeZone);
-  std::cout << "Finding surface in zone " << cRuntimeZone << "..." << std::endl; 
   if (i != cZoneSurfaceCaches.end()) {
-    std::cout << "Checking surfaces..." << std::endl; 
     return i->second->getSurfaceAt(location);
   }
   return NULL;

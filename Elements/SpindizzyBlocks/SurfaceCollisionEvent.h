@@ -23,12 +23,18 @@
 
 class SurfaceCollisionEvent:public ICollisionData {
   private:
+  ICollisionData::CollisionType cType;
   IRollableSurface* cSurface;
+  Vertex* cLocation;
+  float cGradient;
   
   public:
-  SurfaceCollisionEvent(IRollableSurface*);
+  SurfaceCollisionEvent(IRollableSurface*, ICollisionData::CollisionType, Vertex*, float);
     
   IRollableSurface* getSurface();
+  ICollisionData::CollisionType getType();
+  Vertex* getEventLocation();
+  float getGradient();
 };
 
 #endif

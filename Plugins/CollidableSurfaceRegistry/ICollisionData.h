@@ -19,11 +19,23 @@
 #ifndef I_COLLISION_DATA_H
 #define I_COLLISION_DATA_H
 
+#include <IsoRealms/Vertex.h>
+
 class IRollableSurface;
 
 class ICollisionData {
   public:
+  enum CollisionType {
+    SURFACE_LEAVE,
+    SURFACE_MOUNT,
+    WALL_IMPACT,
+    WALL_CLIP
+  };
+  
   virtual IRollableSurface* getSurface() = 0;
+  virtual CollisionType getType() = 0;
+  virtual Vertex* getEventLocation() = 0;
+  virtual float getGradient() = 0;
 };
 
 #endif

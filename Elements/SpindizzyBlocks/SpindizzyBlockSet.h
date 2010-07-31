@@ -128,7 +128,8 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
   };
 
   void addBlockState(const std::string&);
-
+  ISpindizzyBlockFactory* getFactory(const std::string&);  
+  
   public:
   SpindizzyBlockSet();
 
@@ -139,6 +140,7 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
   void setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*, ICommandRegistry*);
   void destroy(IElement*);
   void save(DOMNodeWriter*);
+  void load(DOMNodeWrapper*);
 
   /*****************************\
    * Implements IPluginSupport *

@@ -36,8 +36,6 @@
 
 class TileSurface:public ISpindizzyTileSurface {
   private:
-  static const float SLOPE_ACCELERATION;
-
   ITileSurface::FaceDirection cFacing;
   // TODO: Change to refer to the texture set that may change!
   ISpindizzyTextureSet** cTextureSet;
@@ -50,6 +48,10 @@ class TileSurface:public ISpindizzyTileSurface {
   int cWestEastSlope;
   int cNorthSouthSlope;
   Condition* cCondition;
+  Script* cContactScript;
+  float cFriction;
+  float cGrip;
+  bool cRespawnAllowed;
 
   Vertex* getBoundaryCrossingPoint(Vertex& start, Vertex& end, float* mLowestGradient);
 
@@ -68,7 +70,7 @@ class TileSurface:public ISpindizzyTileSurface {
    * @param int  Slope step along north-to-south (Y axis).
    * @param ITileSurface::FaceDirection  Facing direction of the surface.
    */
-  TileSurface(ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType, int, int, int, int, int, int, int, ITileSurface::FaceDirection, Condition*);
+  TileSurface(ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType, int, int, int, int, int, int, int, ITileSurface::FaceDirection, Condition*, Script*, float, float, bool);
 
   /************************************\
    * Implements ISpindizzyTileSurface *
@@ -84,6 +86,11 @@ class TileSurface:public ISpindizzyTileSurface {
   float getHeightAt(float, float);
   float getXAcceleration(float, float);
   float getYAcceleration(float, float);
+  void notifyContact();
+  float getSurfaceFriction();
+  float getSurfaceGrip();
+  IRollableSurface::RespawnPossibility getRespawnPossibility();
+  bool isRespawnPossibleNow();
 
   /***************************\
    * Implements ITileSurface *

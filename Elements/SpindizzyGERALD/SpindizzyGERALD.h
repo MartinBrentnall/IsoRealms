@@ -20,9 +20,11 @@
 #define SPINDIZZY_GERALD_H
 
 #include <algorithm>
+#include <cmath>
 #include <iostream>
 #include <iomanip>
-#include <cmath>
+#include <queue>
+#include <stack>
 
 #include <IsoRealms/BlockLocation.h>
 #include <IsoRealms/Element.h>
@@ -61,6 +63,12 @@ class SpindizzyGERALD:public Element<>,
   SDLKey cEastKey;
   SDLKey cWestKey;
 
+  struct RespawnData {
+    IRollableSurface* cSurface;
+    int cX;
+    int cY;
+  };
+  
   IMap* cMap;
   IZone* cZone;
   BlockLocation cStartLocation;
@@ -72,21 +80,29 @@ class SpindizzyGERALD:public Element<>,
   ICollidableSurfaceRegistry* cCollidableSurfaceRegistry;
   IZoneContext* cZoneContext;
   IRollableSurface* cCurrentSurface;
-  IRollableSurface* cRespawnSurface;
-  int cRespawnX;
-  int cRespawnY;
+  RespawnData* cRespawnData;
   float cMapBottom;
-  std::vector<IUserCommand*> cFallenCommands;
+  Script* cFallScript;
+  std::queue<ICollisionData*> cEventQueue;
+  std::stack<RespawnData*> cRespawnSurfaceStack;
 
   SDLKey rotateKey(const SDLKey&);
   void keyDown(SDLKey&);
+  void pollEvent(float&);
+  void getNewLocation(float, Vertex*, Vertex*);
+  ICollisionData* pollCollisionEvent(Vertex&, Vertex&);
+  void processEvent(ICollisionData&);
+  void updateLocation(Vertex&);
+  void updateRespawnLocation();
+  void updateRespawnData();
+  RespawnData* getRespawnData();
+  void checkFall();
 
   public:
   SpindizzyGERALD(IElementFactory*, BlockLocation*, ISimpleModelFactory*, ICollectables*, ICollidableSurfaceRegistry*, ILocationAwareness*, IZoneContext*, ICamera*);
 
   void checkCurrentZoneEvents(Vertex&, Vertex&);
   void checkMapZoneEvents(IZone*, Vertex&, Vertex&);
-  void updateZoneContext(Vertex&, Vertex&);
 
   void setCamera(ICamera*);
   void setModel(ISimpleModelFactory*);

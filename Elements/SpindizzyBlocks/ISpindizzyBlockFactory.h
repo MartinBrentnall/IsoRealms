@@ -26,9 +26,6 @@
 
 #include "ISpindizzyBlockSet.h"
 
-/**
- * TODO: Not an interface anymore.
- */
 class ISpindizzyBlockFactory:public ElementFactory<ISpindizzyBlockSet, IElement> {
   public:
   ISpindizzyBlockFactory(ISpindizzyBlockSet*);
@@ -45,6 +42,16 @@ class ISpindizzyBlockFactory:public ElementFactory<ISpindizzyBlockSet, IElement>
    * @param ISurfaceProcessor  The surface calculator to unregister on.
    */
   virtual void unregisterSurfaces(ISurfaceProcessor*) = 0;
+  
+  virtual Script* getContactScript() = 0;
+  
+  virtual float getSurfaceFriction() = 0;
+
+  virtual float getSurfaceGrip() = 0;
+  
+  virtual bool isRespawnAllowed() = 0;
+
+  virtual void configureBlock(DOMNodeWrapper*, ICommandRegistry*) = 0;
 };
 
 #endif

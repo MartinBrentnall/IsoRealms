@@ -18,9 +18,7 @@
  */
 #include "TileSplitSurface.h"
 
-const float TileSplitSurface::SLOPE_ACCELERATION = 0.0005f;
-
-TileSplitSurface::TileSplitSurface(bool splitDirection, BlockLocation& location, ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet::TextureType textureType, int nw, int ne, int se, int sw, Condition* condition) {
+TileSplitSurface::TileSplitSurface(bool splitDirection, BlockLocation& location, ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet::TextureType textureType, int nw, int ne, int se, int sw, Condition* condition, Script* contactScript, float friction, float grip, bool respawnAllowed) {
   cTextureSet = textureSet;
   cTextureType = textureType;
   cLocation = location;
@@ -30,6 +28,10 @@ TileSplitSurface::TileSplitSurface(bool splitDirection, BlockLocation& location,
   cCornerHeights[0][0] = sw;
   cSplitDirection = splitDirection;
   cCondition = condition;
+  cContactScript = contactScript;
+  cFriction = friction;
+  cGrip = grip;
+  cRespawnAllowed = respawnAllowed;
 }
 
 int TileSplitSurface::getSurfaceCellHeight(int x, int y) {
@@ -110,15 +112,15 @@ float TileSplitSurface::getHeightAt(float x, float y) {
   float mY = y - (cLocation.y - IsoRealmsConstants::BLOCK_RADIUS);
   if (cSplitDirection) {
     if (mX > mY) {
-      return cCornerHeights[0][0] + (cCornerHeights[1][0] - cCornerHeights[0][0]) * mX + (cCornerHeights[1][1] - cCornerHeights[1][0]) * mY;
+      return cLocation.z + (cCornerHeights[0][0] + (cCornerHeights[1][0] - cCornerHeights[0][0]) * mX + (cCornerHeights[1][1] - cCornerHeights[1][0]) * mY);
     } else {
-      return cCornerHeights[0][0] + (cCornerHeights[1][1] - cCornerHeights[0][1]) * mX + (cCornerHeights[0][1] - cCornerHeights[0][0]) * mY;
+      return cLocation.z + (cCornerHeights[0][0] + (cCornerHeights[1][1] - cCornerHeights[0][1]) * mX + (cCornerHeights[0][1] - cCornerHeights[0][0]) * mY);
     }
   } else {
     if (mX + mY > 1.0f) {
-      return cCornerHeights[1][0] + (cCornerHeights[1][1] - cCornerHeights[1][0]) * mY + (cCornerHeights[0][1] - cCornerHeights[1][1]) * (1.0f - mX);
+      return cLocation.z + (cCornerHeights[1][0] + (cCornerHeights[1][1] - cCornerHeights[1][0]) * mY + (cCornerHeights[0][1] - cCornerHeights[1][1]) * (1.0f - mX));
     } else {
-      return cCornerHeights[0][0] + (cCornerHeights[1][0] - cCornerHeights[0][0]) * mX + (cCornerHeights[0][1] - cCornerHeights[0][0]) * mY;
+      return cLocation.z + (cCornerHeights[0][0] + (cCornerHeights[1][0] - cCornerHeights[0][0]) * mX + (cCornerHeights[0][1] - cCornerHeights[0][0]) * mY);
     }
   }
 }
@@ -128,11 +130,11 @@ float TileSplitSurface::getXAcceleration(float x, float y) {
   float mY = y - (cLocation.y - IsoRealmsConstants::BLOCK_RADIUS);
   return cSplitDirection
        ? (mX > mY
-          ? (cCornerHeights[0][0] - cCornerHeights[1][0]) * SLOPE_ACCELERATION
-          : (cCornerHeights[0][1] - cCornerHeights[1][1]) * SLOPE_ACCELERATION)
+          ? (cCornerHeights[0][0] - cCornerHeights[1][0])
+          : (cCornerHeights[0][1] - cCornerHeights[1][1]))
        : (mX + mY > 1.0f
-          ? (cCornerHeights[0][1] - cCornerHeights[1][1]) * SLOPE_ACCELERATION
-          : (cCornerHeights[0][0] - cCornerHeights[1][0]) * SLOPE_ACCELERATION);
+          ? (cCornerHeights[0][1] - cCornerHeights[1][1])
+          : (cCornerHeights[0][0] - cCornerHeights[1][0]));
 }
 
 float TileSplitSurface::getYAcceleration(float x, float y) {
@@ -140,11 +142,35 @@ float TileSplitSurface::getYAcceleration(float x, float y) {
   float mY = y - (cLocation.y - IsoRealmsConstants::BLOCK_RADIUS);
   return cSplitDirection
        ? (mX > mY
-          ? (cCornerHeights[1][0] - cCornerHeights[1][1]) * SLOPE_ACCELERATION
-          : (cCornerHeights[0][0] - cCornerHeights[0][1]) * SLOPE_ACCELERATION)
+          ? (cCornerHeights[1][0] - cCornerHeights[1][1])
+          : (cCornerHeights[0][0] - cCornerHeights[0][1]))
        : (mX + mY > 1.0f
-          ? (cCornerHeights[1][0] - cCornerHeights[1][1]) * SLOPE_ACCELERATION
-          : (cCornerHeights[0][0] - cCornerHeights[0][1]) * SLOPE_ACCELERATION);
+          ? (cCornerHeights[1][0] - cCornerHeights[1][1])
+          : (cCornerHeights[0][0] - cCornerHeights[0][1]));
+}
+
+void TileSplitSurface::notifyContact() {
+  if (cContactScript != NULL) {
+    cContactScript->execute();
+  }
+}
+
+float TileSplitSurface::getSurfaceFriction() {
+  return cFriction;
+}
+
+float TileSplitSurface::getSurfaceGrip() {
+  return cGrip;
+}
+
+IRollableSurface::RespawnPossibility TileSplitSurface::getRespawnPossibility() {
+  return cRespawnAllowed 
+       ? (cCondition != NULL ? IRollableSurface::CONDITIONAL : IRollableSurface::YES)
+       : IRollableSurface::NO;
+}
+
+bool TileSplitSurface::isRespawnPossibleNow() {
+  return cRespawnAllowed && (cCondition == NULL || cCondition->isTrue());
 }
 
 Vertex* TileSplitSurface::getBoundaryCrossingPoint(Vertex& start, Vertex& end, float* mLowestGradient) {
@@ -219,13 +245,16 @@ Vertex* TileSplitSurface::getBoundaryCrossingPoint(Vertex& start, Vertex& end, f
 }
 
 ICollisionData* TileSplitSurface::getCollision(Vertex& start, Vertex& end) {
-  if (!contains(start)) {
+  if (!contains(start) && (cCondition == NULL || cCondition->isTrue())) {
     float mGradient;
     Vertex* mEnterPoint = getBoundaryCrossingPoint(start, end, &mGradient);
     if (mEnterPoint != NULL) {
-      SurfaceCollisionEvent* mEvent = new SurfaceCollisionEvent(this);
-//      mImpactPoint->setRelocationPoint(*mLeavePoint);
-      return mEvent;
+      float mEnterHeight = getHeightAt(mEnterPoint->x, mEnterPoint->y);
+      // TODO: The "0.01f" is a bit nasty magic number
+      if (mEnterPoint->z <= mEnterHeight + 0.01f && mEnterPoint->z >= mEnterHeight - 0.5f) {
+        SurfaceCollisionEvent* mEvent = new SurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mEnterPoint, mGradient);
+        return mEvent;
+      }
     }
   }
   
@@ -234,10 +263,14 @@ ICollisionData* TileSplitSurface::getCollision(Vertex& start, Vertex& end) {
 }
 
 ICollisionData* TileSplitSurface::getRollingEvent(Vertex& start, Vertex& end) {
+  if (cCondition != NULL && !cCondition->isTrue()) {
+    return new SurfaceCollisionEvent(this, ICollisionData::SURFACE_LEAVE, new Vertex(start), 0.0f);
+  }
+  
   float mGradient;
   Vertex* mLeavePoint = getBoundaryCrossingPoint(start, end, &mGradient);
   if (mLeavePoint != NULL) {
-    SurfaceCollisionEvent* mEvent = new SurfaceCollisionEvent(this);
+    SurfaceCollisionEvent* mEvent = new SurfaceCollisionEvent(this, ICollisionData::SURFACE_LEAVE, mLeavePoint, mGradient);
 //    mImpactPoint->setRelocationPoint(*mLeavePoint);
     return mEvent;
   }

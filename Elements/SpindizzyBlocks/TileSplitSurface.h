@@ -34,8 +34,6 @@
 
 class TileSplitSurface:public ISpindizzyTileSurface {
   private:
-  static const float SLOPE_ACCELERATION;
-
   BlockLocation cLocation;
   // TODO: Change to refer to the texture set that may change!
   ISpindizzyTextureSet** cTextureSet;
@@ -43,6 +41,10 @@ class TileSplitSurface:public ISpindizzyTileSurface {
   int cCornerHeights[2][2];
   bool cSplitDirection;
   Condition* cCondition;
+  Script* cContactScript;
+  float cFriction;
+  float cGrip;
+  bool cRespawnAllowed;
 
   Vertex* getBoundaryCrossingPoint(Vertex& start, Vertex& end, float* mLowestGradient);
 
@@ -54,7 +56,7 @@ class TileSplitSurface:public ISpindizzyTileSurface {
    * @param bool  Split direction.
    * @param BlockLocation&  
    */
-  TileSplitSurface(bool, BlockLocation&, ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType, int, int, int, int, Condition*);
+  TileSplitSurface(bool, BlockLocation&, ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType, int, int, int, int, Condition*, Script*, float, float, bool);
 
   /************************************\
    * Implements ISpindizzyTileSurface *
@@ -68,6 +70,13 @@ class TileSplitSurface:public ISpindizzyTileSurface {
   ICollisionData* getCollision(Vertex&, Vertex&);
   ICollisionData* getRollingEvent(Vertex&, Vertex&);
   float getHeightAt(float, float);
+  float getXAcceleration(float, float);
+  float getYAcceleration(float, float);
+  void notifyContact();
+  float getSurfaceFriction();
+  float getSurfaceGrip();
+  IRollableSurface::RespawnPossibility getRespawnPossibility();
+  bool isRespawnPossibleNow();
 
   /***************************\
    * Implements ITileSurface *
@@ -76,8 +85,6 @@ class TileSplitSurface:public ISpindizzyTileSurface {
   int getSurfaceCellElevation(int, int);
   BlockArea* getCoverage();
   bool alligned(int, int);
-  float getXAcceleration(float, float);
-  float getYAcceleration(float, float);
 };
 
 #endif

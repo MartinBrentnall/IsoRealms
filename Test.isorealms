@@ -482,17 +482,84 @@
     <UsePlugin implementation="SpindizzyTextureSetChanger" instance="PerZone"/>
     <UsePlugin implementation="SurfaceProcessor" instance="BlockSubtractor"/>
     <Configuration>
-      <State>DiamondLeft</State>
-      <State>DiamondRight</State>
-      <State>DiamondBoth</State>
-      <State>SquareNone</State>
-      <State>SquareLeft</State>
-      <State>SquareRight</State>
-      <State>SquareBoth</State>
-      <State>CircleNone</State>
-      <State>CircleLeft</State>
-      <State>CircleRight</State>
-      <State>CircleBoth</State>
+      <State>SwitchDiamondLeft</State>
+      <State>SwitchDiamondRight</State>
+      <State>SwitchDiamondBoth</State>
+      <State>SwitchSquareNone</State>
+      <State>SwitchSquareLeft</State>
+      <State>SwitchSquareRight</State>
+      <State>SwitchSquareBoth</State>
+      <State>SwitchCircleNone</State>
+      <State>SwitchCircleLeft</State>
+      <State>SwitchCircleRight</State>
+      <State>SwitchCircleBoth</State>
+      <BlockType name="Ice" friction="0.0" grip="0.0" respawnAllowed="false"/>
+      <BlockType name="Trampoline" friction="0.0" grip="1.0" respawnAllowed="false"/>
+      <BlockType name="Plain" friction="0.001" grip="1.0" respawnAllowed="true"/>
+      <BlockType name="ArrowWest" friction="0.001" grip="1.0" respawnAllowed="true"/>
+      <BlockType name="ArrowEast" friction="0.001" grip="1.0" respawnAllowed="true"/>
+      <BlockType name="ArrowNorth" friction="0.001" grip="1.0" respawnAllowed="true"/>
+      <BlockType name="ArrowNorth" friction="0.001" grip="1.0" respawnAllowed="true"/>
+      <BlockType name="SwitchDiamondNone" friction="0.001" grip="1.0" respawnAllowed="true">
+        <ContactScript>
+          <Command>Plugin/Utilities/SpindizzySwitches/Reset Spindizzy Switches</Command>
+        </ContactScript>
+      </BlockType>
+      <BlockType name="SwitchDiamondLeft" friction="0.001" grip="1.0" respawnAllowed="true">
+        <ContactScript>
+          <Command>Plugin/Utilities/SpindizzySwitches/Activate switch LeftDiamondSwitch</Command>
+        </ContactScript>
+      </BlockType>
+      <BlockType name="SwitchDiamondRight" friction="0.001" grip="1.0" respawnAllowed="true">
+        <ContactScript>
+          <Command>Plugin/Utilities/SpindizzySwitches/Activate switch RightDiamondSwitch</Command>
+        </ContactScript>
+      </BlockType>
+      <BlockType name="SwitchDiamondBoth" friction="0.001" grip="1.0" respawnAllowed="true">
+        <ContactScript>
+          <Command>Plugin/Utilities/SpindizzySwitches/Activate switch FilledDiamondSwitch</Command>
+        </ContactScript>
+      </BlockType>
+      <BlockType name="SwitchSquareNone" friction="0.001" grip="1.0" respawnAllowed="true">
+        <ContactScript>
+          <Command>Plugin/Utilities/SpindizzySwitches/Activate switch EmptySquareSwitch</Command>
+        </ContactScript>
+      </BlockType>
+      <BlockType name="SwitchSquareLeft" friction="0.001" grip="1.0" respawnAllowed="true">
+        <ContactScript>
+          <Command>Plugin/Utilities/SpindizzySwitches/Activate switch LeftSquareSwitch</Command>
+        </ContactScript>
+      </BlockType>
+      <BlockType name="SwitchSquareRight" friction="0.001" grip="1.0" respawnAllowed="true">
+        <ContactScript>
+          <Command>Plugin/Utilities/SpindizzySwitches/Activate switch RightSquareSwitch</Command>
+        </ContactScript>
+      </BlockType>
+      <BlockType name="SwitchSquareBoth" friction="0.001" grip="1.0" respawnAllowed="true">
+        <ContactScript>
+          <Command>Plugin/Utilities/SpindizzySwitches/Activate switch FilledSquareSwitch</Command>
+        </ContactScript>
+      </BlockType>
+      <BlockType name="SwitchCircleNone" friction="0.001" grip="1.0" respawnAllowed="true">
+        <ContactScript>
+          <Command>Plugin/Utilities/SpindizzySwitches/Activate switch EmptyCircleSwitch</Command>
+        </ContactScript>
+      </BlockType>
+      <BlockType name="SwitchCircleLeft" friction="0.001" grip="1.0" respawnAllowed="true">
+        <ContactScript>
+          <Command>Plugin/Utilities/SpindizzySwitches/Activate switch LeftCircleSwitch</Command>
+        </ContactScript>
+      </BlockType>
+      <BlockType name="SwitchCircleRight" friction="0.001" grip="1.0" respawnAllowed="true">
+        <ContactScript>
+          <Command>Plugin/Utilities/SpindizzySwitches/Activate switch RightCircleSwitch</Command>
+        </ContactScript>
+      </BlockType>
+      <BlockType name="SwitchCircleBoth" friction="0.001" grip="1.0" respawnAllowed="true">
+        <ContactScript>
+          <Command>Plugin/Utilities/SpindizzySwitches/Activate switch FilledCircleSwitch</Command>
+        </ContactScript>
+      </BlockType>
     </Configuration>
   </ElementSet>
   <ElementSet instance="Enemies" type="SpindizzyEnemies">
@@ -958,7 +1025,7 @@
         <Location x="0" y="3" z="4"/>
         <Size x="1" y="2" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="0" y="3" z="-1"/>
         <Size x="1" y="2" z="1"/>
       </Element>
@@ -1057,15 +1124,15 @@
         <Location x="3" y="4" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchSquareLeft">
+      <Element set="Blocks" type="SwitchSquareRight">
         <Location x="4" y="3" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchSquareRight">
+      <Element set="Blocks" type="SwitchSquareLeft">
         <Location x="3" y="3" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchSquareRight">
+      <Element set="Blocks" type="SwitchSquareLeft">
         <Location x="5" y="4" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
@@ -1073,31 +1140,31 @@
         <Location x="4" y="4" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="5" y="3" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="2" y="5" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="3" y="0" z="-1"/>
         <Size x="2" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondLeft">
+      <Element set="Blocks" type="SwitchDiamondRight">
         <Location x="4" y="5" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondRight">
+      <Element set="Blocks" type="SwitchDiamondLeft">
         <Location x="3" y="5" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondNone">
+      <Element set="Blocks" type="SwitchDiamondBoth">
         <Location x="5" y="5" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondNone">
+      <Element set="Blocks" type="SwitchDiamondBoth">
         <Location x="2" y="3" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
@@ -3233,7 +3300,7 @@
         <Size x="1" y="1" z="1"/>
         <Split Direction="East" NorthEast="0" NorthWest="1" SouthEast="0" SouthWest="0"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="0" y="2" z="3"/>
         <Size x="1" y="2" z="1"/>
       </Element>
@@ -6026,7 +6093,7 @@
     <Location x="57" y="8" z="0"/>
     <Size x="7" y="7" z="7"/>
     <Elements>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="0" y="0" z="-1"/>
         <Size x="7" y="8" z="1"/>
       </Element>
@@ -6196,7 +6263,7 @@
         <Size x="2" y="1" z="2"/>
         <Slope NorthSouth="0" WestEast="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="0" y="1" z="-1"/>
         <Size x="8" y="7" z="1"/>
       </Element>
@@ -7229,7 +7296,7 @@
         <Location x="1" y="1" z="1"/>
         <Size x="6" y="6" z="-1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="3" y="7" z="1"/>
         <Size x="2" y="1" z="-1"/>
       </Element>
@@ -7437,7 +7504,7 @@
         <Location x="6" y="2" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondRight">
+      <Element set="Blocks" type="SwitchDiamondLeft">
         <Location x="6" y="1" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
@@ -9480,7 +9547,7 @@
         <Size x="1" y="1" z="1"/>
         <Split Direction="West" NorthEast="0" NorthWest="1" SouthEast="0" SouthWest="0"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="4" y="4" z="1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
@@ -9936,7 +10003,7 @@
         <Location x="1" y="1" z="7"/>
         <Size x="6" y="6" z="-1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="2" y="7" z="6"/>
         <Size x="4" y="1" z="1"/>
       </Element>
@@ -11658,7 +11725,7 @@
         <Location x="3" y="0" z="-1"/>
         <Size x="2" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="1" y="1" z="-1"/>
         <Size x="6" y="6" z="1"/>
       </Element>
@@ -11786,7 +11853,7 @@
         <Location x="3" y="7" z="-1"/>
         <Size x="2" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="1" y="1" z="-1"/>
         <Size x="6" y="6" z="1"/>
       </Element>
@@ -12168,7 +12235,7 @@
         <Location x="3" y="0" z="-1"/>
         <Size x="1" y="8" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="3" y="3" z="-1"/>
         <Size x="1" y="2" z="1"/>
       </Element>
@@ -12352,7 +12419,7 @@
         <Location x="7" y="4" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="1" y="1" z="-1"/>
         <Size x="6" y="6" z="1"/>
       </Element>
@@ -14716,7 +14783,7 @@
         <Location x="7" y="4" z="6"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="6" y="4" z="6"/>
         <Size x="1" y="1" z="1"/>
       </Element>
@@ -18098,7 +18165,7 @@
         <Size x="1" y="1" z="1"/>
         <Split Direction="West" NorthEast="1" NorthWest="0" SouthEast="0" SouthWest="0"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="1" y="0" z="-1"/>
         <Size x="3" y="1" z="1"/>
       </Element>
@@ -18981,7 +19048,7 @@
         <Size x="8" y="1" z="1"/>
         <Slope NorthSouth="-1" WestEast="0"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondRight">
+      <Element set="Blocks" type="SwitchDiamondLeft">
         <Location x="3" y="2" z="0"/>
         <Size x="1" y="1" z="1"/>
       </Element>
@@ -19122,7 +19189,7 @@
         <Size x="1" y="1" z="2"/>
         <Slope NorthSouth="-1" WestEast="0"/>
       </Element>
-      <Element set="Blocks" type="SwitchSquareRight">
+      <Element set="Blocks" type="SwitchSquareLeft">
         <Location x="4" y="4" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
@@ -19661,7 +19728,7 @@
         <Location x="3" y="3" z="0"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="3" y="4" z="0"/>
         <Size x="1" y="1" z="1"/>
       </Element>
@@ -20476,7 +20543,7 @@
         <Location x="0" y="3" z="1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="1" y="3" z="1"/>
         <Size x="2" y="1" z="1"/>
       </Element>
@@ -20496,7 +20563,7 @@
         <Location x="6" y="4" z="1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondLeft">
+      <Element set="Blocks" type="SwitchDiamondRight">
         <Location x="4" y="4" z="1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
@@ -20790,7 +20857,7 @@
         <Location x="7" y="4" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondLeft">
+      <Element set="Blocks" type="SwitchDiamondRight">
         <Location x="7" y="2" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
@@ -22413,7 +22480,7 @@
         <Location x="5" y="2" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="5" y="1" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
@@ -23030,7 +23097,7 @@
         <Location x="0" y="0" z="-1"/>
         <Size x="8" y="1" z="4"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="0" y="1" z="-1"/>
         <Size x="8" y="7" z="1"/>
       </Element>
@@ -23056,7 +23123,7 @@
         <Location x="4" y="3" z="2"/>
         <Size x="2" y="1" z="-1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="1" y="3" z="2"/>
         <Size x="2" y="1" z="-2"/>
       </Element>
@@ -23374,39 +23441,39 @@
     <Location x="57" y="16" z="0"/>
     <Size x="7" y="7" z="7"/>
     <Elements>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="0" y="0" z="-1"/>
         <Size x="8" y="8" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="3" y="2" z="0"/>
         <Size x="3" y="5" z="-1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="2" y="3" z="0"/>
         <Size x="5" y="3" z="-1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="4" y="2" z="-1"/>
         <Size x="1" y="5" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="2" y="4" z="-1"/>
         <Size x="5" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="3" y="3" z="-1"/>
         <Size x="3" y="3" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="3" y="4" z="0"/>
         <Size x="3" y="1" z="-1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="4" y="3" z="0"/>
         <Size x="1" y="3" z="-1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="4" y="4" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
@@ -24989,7 +25056,7 @@
         <Location x="3" y="6" z="0"/>
         <Size x="2" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondNone">
+      <Element set="Blocks" type="SwitchDiamondBoth">
         <Location x="5" y="5" z="2"/>
         <Size x="1" y="1" z="1"/>
       </Element>
@@ -26009,7 +26076,7 @@
         <Location x="7" y="6" z="-1"/>
         <Size x="1" y="1" z="6"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondRight">
+      <Element set="Blocks" type="SwitchDiamondLeft">
         <Location x="7" y="6" z="5"/>
         <Size x="1" y="1" z="1"/>
       </Element>
@@ -26460,7 +26527,7 @@
         <Location x="2" y="3" z="-1"/>
         <Size x="1" y="2" z="2"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondNone">
+      <Element set="Blocks" type="SwitchDiamondBoth">
         <Location x="4" y="5" z="0"/>
         <Size x="1" y="1" z="1"/>
       </Element>
@@ -26759,7 +26826,7 @@
         <Location x="1" y="1" z="-1"/>
         <Size x="6" y="6" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="7" y="3" z="-1"/>
         <Size x="1" y="2" z="1"/>
         <Condition>
@@ -26923,7 +26990,7 @@
         <Location x="3" y="5" z="-1"/>
         <Size x="2" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="6" y="5" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
@@ -26990,7 +27057,7 @@
     <Location x="57" y="-96" z="0"/>
     <Size x="7" y="7" z="7"/>
     <Elements>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="0" y="0" z="-1"/>
         <Size x="8" y="8" z="1"/>
       </Element>
@@ -27035,11 +27102,11 @@
         <Location x="3" y="0" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="4" y="2" z="1"/>
         <Size x="1" y="3" z="-1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="2" y="2" z="1"/>
         <Size x="1" y="3" z="-1"/>
       </Element>
@@ -27142,7 +27209,7 @@
         <Location x="6" y="5" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondRight">
+      <Element set="Blocks" type="SwitchDiamondLeft">
         <Location x="5" y="5" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
@@ -27676,11 +27743,11 @@
         <Size x="1" y="1" z="1"/>
         <Slope NorthSouth="1" WestEast="0"/>
       </Element>
-      <Element set="Blocks" type="SwitchSquareRight">
+      <Element set="Blocks" type="SwitchSquareLeft">
         <Location x="2" y="6" z="0"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchSquareRight">
+      <Element set="Blocks" type="SwitchSquareLeft">
         <Location x="1" y="7" z="5"/>
         <Size x="1" y="1" z="1"/>
       </Element>
@@ -27937,7 +28004,7 @@
         <Location x="7" y="1" z="0"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="6" y="1" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
@@ -28039,21 +28106,21 @@
         <Location x="5" y="3" z="5"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondNone">
+      <Element set="Blocks" type="SwitchDiamondBoth">
         <Location x="4" y="3" z="5"/>
         <Size x="1" y="1" z="1"/>
         <Condition>
           <Element name="SwitchDiamondBoth" negated="true"/>
         </Condition>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondRight">
+      <Element set="Blocks" type="SwitchDiamondLeft">
         <Location x="4" y="3" z="3"/>
         <Size x="1" y="1" z="1"/>
         <Condition>
           <Element name="SwitchDiamondRight" negated="true"/>
         </Condition>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondLeft">
+      <Element set="Blocks" type="SwitchDiamondRight">
         <Location x="4" y="3" z="1"/>
         <Size x="1" y="1" z="1"/>
         <Condition>
@@ -28855,7 +28922,7 @@
         <Location x="0" y="2" z="-1"/>
         <Size x="1" y="1" z="3"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="1" y="2" z="1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
@@ -29099,7 +29166,7 @@
         <Location x="0" y="6" z="-1"/>
         <Size x="7" y="2" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="7" y="6" z="-1"/>
         <Size x="1" y="2" z="1"/>
       </Element>
@@ -30723,7 +30790,7 @@
         <Location x="6" y="7" z="0"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondRight">
+      <Element set="Blocks" type="SwitchDiamondLeft">
         <Location x="7" y="7" z="1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
@@ -31440,7 +31507,7 @@
         <Location x="1" y="1" z="6"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="4" y="5" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
@@ -32075,7 +32142,7 @@
         <Location x="7" y="4" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="4" y="3" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
@@ -32083,7 +32150,7 @@
         <Location x="3" y="3" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondRight">
+      <Element set="Blocks" type="SwitchDiamondLeft">
         <Location x="3" y="4" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
@@ -32240,11 +32307,11 @@
       <Element set="Jewels" type="">
         <Location x="7" y="4" z="0"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondRight">
+      <Element set="Blocks" type="SwitchDiamondLeft">
         <Location x="5" y="4" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchSquareLeft">
+      <Element set="Blocks" type="SwitchSquareRight">
         <Location x="4" y="4" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
@@ -32252,7 +32319,7 @@
         <Location x="3" y="4" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="2" y="4" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
@@ -33030,7 +33097,7 @@
         <Size x="1" y="1" z="1"/>
         <Split Direction="East" NorthEast="0" NorthWest="1" SouthEast="1" SouthWest="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondNone">
+      <Element set="Blocks" type="SwitchDiamondBoth">
         <Location x="0" y="3" z="0"/>
         <Size x="1" y="1" z="1"/>
       </Element>
@@ -35884,11 +35951,11 @@
         <Location x="5" y="5" z="-1"/>
         <Size x="1" y="1" z="5"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="7" y="5" z="3"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="3" y="1" z="3"/>
         <Size x="1" y="5" z="1"/>
       </Element>
@@ -36478,7 +36545,7 @@
         <Location x="0" y="2" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchSquareRight">
+      <Element set="Blocks" type="SwitchSquareLeft">
         <Location x="2" y="2" z="6"/>
         <Size x="1" y="1" z="1"/>
       </Element>
@@ -37518,7 +37585,7 @@
         <Location x="3" y="3" z="7"/>
         <Size x="1" y="1" z="-6"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondNone">
+      <Element set="Blocks" type="SwitchDiamondBoth">
         <Location x="4" y="3" z="0"/>
         <Size x="1" y="1" z="1"/>
       </Element>
@@ -37914,7 +37981,7 @@
         <Size x="1" y="1" z="6"/>
         <Slope NorthSouth="0" WestEast="1"/>
       </Element>
-      <Element set="Blocks" type="SwitchDiamondNone">
+      <Element set="Blocks" type="SwitchDiamondBoth">
         <Location x="4" y="5" z="5"/>
         <Size x="1" y="1" z="1"/>
       </Element>
@@ -39097,7 +39164,7 @@
     <Location x="73" y="8" z="0"/>
     <Size x="7" y="7" z="7"/>
     <Elements>
-      <Element set="Blocks" type="SwitchDiamondBoth">
+      <Element set="Blocks" type="SwitchDiamondNone">
         <Location x="1" y="0" z="-1"/>
         <Size x="7" y="8" z="1"/>
       </Element>

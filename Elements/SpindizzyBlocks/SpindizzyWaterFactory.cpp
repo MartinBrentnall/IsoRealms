@@ -136,6 +136,26 @@ std::string SpindizzyWaterFactory::getName() {
   return "Water";
 }
 
+Script* SpindizzyWaterFactory::getContactScript() {
+  return NULL;
+}
+
+float SpindizzyWaterFactory::getSurfaceFriction() {
+  return 0.0f;
+}
+
+float SpindizzyWaterFactory::getSurfaceGrip() {
+  return 0.0f;
+}
+
+bool SpindizzyWaterFactory::isRespawnAllowed() {
+  return false;
+}
+
+void SpindizzyWaterFactory::configureBlock(DOMNodeWrapper*, ICommandRegistry*) {
+  // Nothing to do.
+}
+
 SpindizzyWaterFactory::~SpindizzyWaterFactory() {
   if (cStartWaterLocation != NULL) {
     delete cStartWaterLocation;

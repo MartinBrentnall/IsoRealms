@@ -163,7 +163,34 @@ void SpindizzyBlockSet::destroy(IElement* element) {
 }
 
 void SpindizzyBlockSet::save(DOMNodeWriter* node) {
-  // Nothing to do
+  // TODO: Save states and block type configurations
+}
+
+ISpindizzyBlockFactory* SpindizzyBlockSet::getFactory(const std::string& name) {
+  for (unsigned int i = 0; i < cElementFactories.size(); i++) {
+    if (cElementFactories[i]->getName() == name) {
+      // TODO: Should not use static cast!
+      return static_cast<ISpindizzyBlockFactory*>(cElementFactories[i]);
+    }
+  }
+  std::cout << "WARNING: Requested block type doesn't exist!" << std::endl;
+  return NULL;
+}
+
+void SpindizzyBlockSet::load(DOMNodeWrapper* node) {
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "State") {
+      std::string mStateName = mNode->getAttribute("name");
+      // TODO: Will this work instead of where it's hardcoded into the constructor at the moment?
+//      addBlockState(mStateName);
+    } else if (mValueAsString == "BlockType") {
+      std::string mBlockTypeName = mNode->getAttribute("name");
+      ISpindizzyBlockFactory* mFactory = getFactory(mBlockTypeName);
+      mFactory->configureBlock(mNode, cCommandRegistry);
+    }
+  }
 }
 
 void SpindizzyBlockSet::registerSurfaceProvider(ISurfaceProvider* provider) {

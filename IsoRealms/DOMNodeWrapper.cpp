@@ -45,7 +45,7 @@ DOMNodeWrapper::DOMNodeWrapper(DOMNode* node) {
   cNode = node;
 }
 
-std::string DOMNodeWrapper::getAttribute(std::string attribute) {
+std::string DOMNodeWrapper::getAttribute(const std::string& attribute) {
   DOMNamedNodeMap* mNamedNodeMap = cNode->getAttributes();
   if (mNamedNodeMap != NULL) {
     XMLCh* mAttribute = XMLString::transcode(attribute.c_str());
@@ -65,7 +65,7 @@ std::string DOMNodeWrapper::getAttribute(std::string attribute) {
   return "";
 }
 
-int DOMNodeWrapper::getIntegerAttribute(std::string attribute) {
+int DOMNodeWrapper::getIntegerAttribute(const std::string& attribute) {
   DOMNamedNodeMap* mNamedNodeMap = cNode->getAttributes();
   char *mEndPointer;
   if (mNamedNodeMap != NULL) {
@@ -90,7 +90,7 @@ int DOMNodeWrapper::getIntegerAttribute(std::string attribute) {
   return 0;
 }
 
-float DOMNodeWrapper::getFloatAttribute(std::string attribute) {
+float DOMNodeWrapper::getFloatAttribute(const std::string& attribute) {
   DOMNamedNodeMap* mNamedNodeMap = cNode->getAttributes();
   char *mEndPointer;
   if (mNamedNodeMap != NULL) {
@@ -115,6 +115,28 @@ float DOMNodeWrapper::getFloatAttribute(std::string attribute) {
   }
   // TODO: Throw something
   return 0.0f;
+}
+
+bool DOMNodeWrapper::getBooleanAttribute(const std::string& attribute) {
+  DOMNamedNodeMap* mNamedNodeMap = cNode->getAttributes();
+  if (mNamedNodeMap != NULL) {
+    XMLCh* mAttribute = XMLString::transcode(attribute.c_str());
+    DOMNode* mAttributesNode = mNamedNodeMap->getNamedItem(mAttribute);
+    XMLString::release(&mAttribute);
+    if (mAttributesNode != NULL) {
+      char *mTextValue = XMLString::transcode(mAttributesNode->getChildNodes()->item(0)->getNodeValue());
+      std::string mTextValueString(mTextValue);
+      bool mBoolValue = mTextValueString == "true";
+      XMLString::release(&mTextValue);
+      return mBoolValue;
+    } else {
+      std::cout << "Named attribute not found: " << attribute << std::endl;
+    }
+  } else {
+    std::cout << "Something bad happened!" << std::endl;
+  }
+  // TODO: Throw something
+  return false;
 }
 
 int DOMNodeWrapper::getChildCount() {

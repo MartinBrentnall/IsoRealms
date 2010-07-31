@@ -18,8 +18,8 @@
  */
 #include "SpindizzyGERALD.h"
 
-const float SpindizzyGERALD::CRAFT_ACCELERATION = 0.0005f;
-const float SpindizzyGERALD::GRAVITY_STRENGTH = -0.1f;
+const float SpindizzyGERALD::CRAFT_ACCELERATION = 0.00003f;
+const float SpindizzyGERALD::GRAVITY_STRENGTH = -0.0002f;
 const unsigned int SpindizzyGERALD::INIT_REGISTER_BLOCKS = 0;
 const unsigned int SpindizzyGERALD::INIT_PROCESS_BLOCKS = 1;
 const unsigned int SpindizzyGERALD::INIT_REGISTER_SURFACES = 2;
@@ -30,8 +30,6 @@ SpindizzyGERALD::SpindizzyGERALD(IElementFactory* elementFactory, BlockLocation*
   cLocation.x = cStartLocation.x + IsoRealmsConstants::BLOCK_RADIUS;
   cLocation.y = cStartLocation.y + IsoRealmsConstants::BLOCK_RADIUS;
   cLocation.z = cStartLocation.z;
-  cRespawnX = round(cLocation.x);
-  cRespawnY = round(cLocation.y);
   if (locationAwareness != NULL) {
     locationAwareness->setLocation(&cLocation);
   }
@@ -46,6 +44,7 @@ SpindizzyGERALD::SpindizzyGERALD(IElementFactory* elementFactory, BlockLocation*
   cSouthKey = SDLK_DOWN;
   cEastKey = SDLK_RIGHT;
   cWestKey = SDLK_LEFT;
+  cFallScript = NULL;
 }
 
 void SpindizzyGERALD::setModel(ISimpleModelFactory* geraldModelFactory) {
@@ -73,31 +72,24 @@ void SpindizzyGERALD::renderStatic() {
 }
 
 bool SpindizzyGERALD::initElement(unsigned int pass) {
-  std::cout << "Init GERALD " << pass << std::endl;
   switch (pass) {
     case INIT_REGISTER_BLOCKS: {
-      std::cout << "   Register blocks" << std::endl;
       if (cZoneContext != NULL && cMap != NULL) {
-        std::cout << "   Getting GERALD start zone..." << std::endl;
         cZone = cMap->getZone(cLocation);
-        std::cout << "   Setting zone in zone context..." << std::endl;
         cZoneContext->setZoneContext(cZone);
       }
-      std::cout << "   Done!" << std::endl;
       return false;
     }
 
     case INIT_USE_SURFACES: {
-      std::cout << "   Getting current surface..." << std::endl;
       cCurrentSurface = cCollidableSurfaceRegistry->getSurfaceAt(cLocation);
-      std::cout << "   Setting respawn surface..." << std::endl;
-      cRespawnSurface = cCurrentSurface;
-      std::cout << "   Done!" << std::endl;
+      cRespawnData = new RespawnData();
+      cRespawnData->cSurface = cCurrentSurface;
+      cRespawnSurfaceStack.push(cRespawnData);
       return true;
     }
 
     default: {
-      std::cout << "   Done!" << std::endl;
       return false;
     }
   }
@@ -181,17 +173,6 @@ void SpindizzyGERALD::checkMapZoneEvents(IZone* previousZone, Vertex& start, Ver
   }
 }
 
-void SpindizzyGERALD::updateZoneContext(Vertex& start, Vertex& end) {
-  IZone* mPreviousZone = cZone;
-  cCollectables->collect(this, start, end);
-  if (cZone != NULL) {
-    checkCurrentZoneEvents(start, end);
-  }
-  if (cZone == NULL) {
-    checkMapZoneEvents(mPreviousZone, start, end);
-  }
-}
-
 SDLKey SpindizzyGERALD::rotateKey(const SDLKey& key) {
   if (cCamera != NULL) {
     float mCameraAngle = cCamera->getAngle();
@@ -217,97 +198,234 @@ SDLKey SpindizzyGERALD::rotateKey(const SDLKey& key) {
   return key;  
 }
 
-void SpindizzyGERALD::update(int ticks) {
+void SpindizzyGERALD::getNewLocation(float ticks, Vertex* location, Vertex* momentum) {
+  bool mFast = KeyStates::isKeyDown(SDLK_TAB);
+  bool mGoingWest = KeyStates::isKeyDown(rotateKey(cWestKey));
+  bool mGoingEast = KeyStates::isKeyDown(rotateKey(cEastKey));
+  bool mGoingSouth = KeyStates::isKeyDown(rotateKey(cSouthKey));
+  bool mGoingNorth = KeyStates::isKeyDown(rotateKey(cNorthKey));
   if (cCurrentSurface != NULL) {
-    float mXSlopeMomentum = cCurrentSurface->getXAcceleration(cLocation.x, cLocation.y) * ticks;
-    float mYSlopeMomentum = cCurrentSurface->getYAcceleration(cLocation.x, cLocation.y) * ticks;
-    bool mFast = KeyStates::isKeyDown(SDLK_TAB);
-    float mAcceleration = (mFast ? CRAFT_ACCELERATION * 2.0f : CRAFT_ACCELERATION) * ticks;
-    if (KeyStates::isKeyDown(rotateKey(cWestKey))) {
-      cMomentum.x -= (!mFast && mAcceleration > 0.0f && mAcceleration < mXSlopeMomentum)
-                   ? std::max(mAcceleration * 2.0f, -mXSlopeMomentum)
-                   : mAcceleration;
+    float mXSlopeMomentum = cCurrentSurface->getXAcceleration(cLocation.x, cLocation.y) * CRAFT_ACCELERATION;
+    float mYSlopeMomentum = cCurrentSurface->getYAcceleration(cLocation.x, cLocation.y) * CRAFT_ACCELERATION;
+    float mSurfaceFriction = 1.0f - cCurrentSurface->getSurfaceFriction();
+    float mSurfaceGrip = cCurrentSurface->getSurfaceGrip();
+    for (unsigned int i = 0; i < ticks; i++) {
+      float mAcceleration = (mFast ? CRAFT_ACCELERATION * 2.0f : CRAFT_ACCELERATION);
+      if (mGoingWest && !mGoingEast) {
+        momentum->x -= mSurfaceGrip * ((!mFast && mAcceleration > 0.0f && mAcceleration < mXSlopeMomentum)
+                     ? std::max(mAcceleration * 2.0f, -mXSlopeMomentum)
+                     : mAcceleration);
+      }
+      if (mGoingEast && !mGoingWest) {
+        momentum->x += mSurfaceGrip * ((!mFast && mAcceleration > 0.0f && mAcceleration < -mXSlopeMomentum)
+                     ? std::max(mAcceleration * 2.0f, mXSlopeMomentum)
+                     : mAcceleration);
+      }
+      if (mGoingSouth && !mGoingNorth) {
+        momentum->y -= mSurfaceGrip * ((!mFast && mAcceleration > 0.0f && mAcceleration < mYSlopeMomentum)
+                     ? std::max(mAcceleration * 2.0f, -mYSlopeMomentum)
+                     : mAcceleration);
+      }
+      if (mGoingNorth && !mGoingSouth) {
+        momentum->y += mSurfaceGrip * ((!mFast && mAcceleration > 0.0f && mAcceleration < -mYSlopeMomentum)
+                     ? std::max(mAcceleration * 2.0f, mYSlopeMomentum)
+                     : mAcceleration);
+      }
+      momentum->x += mXSlopeMomentum;
+      momentum->y += mYSlopeMomentum;
+      momentum->x *= mSurfaceFriction;
+      momentum->y *= mSurfaceFriction;
+      location->x += momentum->x;
+      location->y += momentum->y;
     }
-    if (KeyStates::isKeyDown(rotateKey(cEastKey))) {
-      cMomentum.x += (!mFast && mAcceleration > 0.0f && mAcceleration < -mXSlopeMomentum)
-                   ? std::max(mAcceleration * 2.0f, mXSlopeMomentum)
-                   : mAcceleration;
-    }
-    if (KeyStates::isKeyDown(rotateKey(cSouthKey))) {
-      cMomentum.y -= (!mFast && mAcceleration > 0.0f && mAcceleration < mYSlopeMomentum)
-                   ? std::max(mAcceleration * 2.0f, -mYSlopeMomentum)
-                   : mAcceleration;
-    }
-    if (KeyStates::isKeyDown(rotateKey(cNorthKey))) {
-      cMomentum.y += (!mFast && mAcceleration > 0.0f && mAcceleration < -mYSlopeMomentum)
-                   ? std::max(mAcceleration * 2.0f, mYSlopeMomentum)
-                   : mAcceleration;
-    }
-    cMomentum.x += mXSlopeMomentum;
-    cMomentum.y += mYSlopeMomentum;
-    float mResistance = pow(0.999f, ticks);
-    cMomentum.x *= mResistance;
-    cMomentum.y *= mResistance;
+    location->z = cCurrentSurface->getHeightAt(location->x, location->y);
   } else {
-    cMomentum.z += GRAVITY_STRENGTH;
+    for (unsigned int i = 0; i < ticks; i++) {
+      momentum->z += GRAVITY_STRENGTH;
+      location->x += momentum->x;
+      location->y += momentum->y;
+      location->z += momentum->z;
+    }
   }
-  Vertex mNewLocation(cLocation.x + cMomentum.x, cLocation.y + cMomentum.y, cLocation.z + cMomentum.z);
-  if (mNewLocation.z < cMapBottom) {
-    cLocation.x = cRespawnX;
-    cLocation.y = cRespawnY;
-    cLocation.z = cRespawnSurface->getHeightAt(cLocation.x, cLocation.y);
-    cCurrentSurface = cRespawnSurface;
+}
+
+ICollisionData* SpindizzyGERALD::pollCollisionEvent(Vertex& startLocation, Vertex& endLocation) {
+  if (!cEventQueue.empty()) {
+    ICollisionData* mEvent = cEventQueue.front();
+    cEventQueue.pop();
+    return mEvent;
+  }
+  
+  if (cCurrentSurface != NULL) {
+    ICollisionData* mEvent = cCurrentSurface->getRollingEvent(startLocation, endLocation);
+    if (mEvent != NULL) {
+      cEventQueue.push(mEvent);
+    }
+  }
+  
+  if (!cEventQueue.empty() || cCurrentSurface == NULL) {
+    ICollisionData* mEvent = cCollidableSurfaceRegistry->getNextEvent(startLocation, endLocation);
+    if (mEvent != NULL) {
+      if (cEventQueue.empty()) {
+        return mEvent;
+      }
+
+      if (cEventQueue.front()->getGradient() == mEvent->getGradient()) {
+        cEventQueue.push(mEvent);
+        ICollisionData* mFrontEvent = cEventQueue.front();
+        cEventQueue.pop();
+        return mFrontEvent;
+      }
+    } else { // Test for surfaces in other zones that we pass through or into
+/*      std::vector<ZoneEvent*> mZoneEvents = cMap->getZoneEvents(cLocation, endLocation);
+      for (unsigned int i = 0; i < mZoneEvents.size(); i++) {
+        cZone = mZoneEvents[i]->getZone();
+        cZoneContext->setZoneContext(cZone);
+        ICollisionData* mCollision = cCollidableSurfaceRegistry->getNextEvent(startLocation, endLocation);
+      }*/
+    }
+  }
+  if (!cEventQueue.empty()) {
+    ICollisionData* mEvent = cEventQueue.front();
+    cEventQueue.pop();
+    return mEvent;
+  }
+  return NULL;
+}
+
+void SpindizzyGERALD::updateRespawnData() {
+  IRollableSurface::RespawnPossibility mRespawnPossility = cCurrentSurface->getRespawnPossibility();
+  switch (mRespawnPossility) {
+    case IRollableSurface::YES: {
+      while (cRespawnSurfaceStack.size() > 1) {
+        delete cRespawnSurfaceStack.top();
+        cRespawnSurfaceStack.pop();
+      }
+      cRespawnData = cRespawnSurfaceStack.top();
+      cRespawnData->cSurface = cCurrentSurface;
+      break;
+    }
+    
+    case IRollableSurface::CONDITIONAL: {
+      cRespawnData = new RespawnData();
+      cRespawnData->cSurface = cCurrentSurface;
+      cRespawnSurfaceStack.push(cRespawnData);
+      break;
+    }
+    
+    case IRollableSurface::NO: {
+      // Nothing to do
+      break;
+    }
+  }
+}
+
+void SpindizzyGERALD::processEvent(ICollisionData& event) {
+  Vertex* mEventLocation = event.getEventLocation();
+  switch (event.getType()) {
+    case ICollisionData::SURFACE_LEAVE: {
+      std::cout << " - - - We left: " << event.getSurface() << std::endl;
+      cCurrentSurface = NULL;
+      break;
+    }
+    
+    case ICollisionData::SURFACE_MOUNT: {
+      cCurrentSurface = event.getSurface();
+      cCurrentSurface->notifyContact();
+      cMomentum.z = 0.0f;
+      updateRespawnData();
+      std::cout << " + + + We entd: " << cCurrentSurface << std::endl;
+      break;
+    }
+    
+    case ICollisionData::WALL_IMPACT: {
+      break;
+    }
+    
+    case ICollisionData::WALL_CLIP: {
+      // TODO: Implement this
+      break;
+    }
+  }
+  updateLocation(*mEventLocation);
+}
+
+SpindizzyGERALD::RespawnData* SpindizzyGERALD::getRespawnData() {
+  SpindizzyGERALD::RespawnData* mRespawnData = cRespawnSurfaceStack.top();
+  while (!mRespawnData->cSurface->isRespawnPossibleNow()) {
+    cRespawnSurfaceStack.pop();
+    mRespawnData = cRespawnSurfaceStack.top();
+  }
+  return mRespawnData;
+}
+
+void SpindizzyGERALD::checkFall() {
+  if (cLocation.z < cMapBottom) {
+    SpindizzyGERALD::RespawnData* mRespawnData = getRespawnData();
+    cLocation.x = mRespawnData->cX;
+    cLocation.y = mRespawnData->cY;
+    cCurrentSurface = mRespawnData->cSurface;
+    cLocation.z = cCurrentSurface->getHeightAt(cLocation.x, cLocation.y);
     cZone = cMap->getZone(cLocation);
     cZoneContext->setZoneContext(cZone);
     cMomentum.x = 0.0f;
     cMomentum.y = 0.0f;
     cMomentum.z = 0.0f;
-    for (unsigned int i = 0; i < cFallenCommands.size(); i++) {
-      cFallenCommands[i]->execute();
-    }
-  } else {
-    if (cCurrentSurface != NULL) {
-      ICollisionData* mCollision = cCurrentSurface->getRollingEvent(cLocation, mNewLocation);
-      if (mCollision != NULL) {
-        std::cout << " - - - We left: " << mCollision->getSurface() << std::endl;
-        cCurrentSurface = NULL;
-        // TODO: Test from this point on
-      }
-    }
-    if (cCurrentSurface == NULL) {
-      ICollisionData* mCollision = cCollidableSurfaceRegistry->getNextEvent(cLocation, mNewLocation);
-      if (mCollision != NULL) {
-        cCurrentSurface = mCollision->getSurface();
-        // TODO: Respawn surface should only be for normal surfaces!
-        cRespawnSurface = cCurrentSurface;
-        std::cout << " + + + We entd: " << cCurrentSurface << std::endl;
-      }
-    }
-    if (cCurrentSurface != NULL) {
-      cRespawnX = round(cLocation.x);
-      cRespawnY = round(cLocation.y);
-    }
-
-    if (cZoneContext != NULL) {
-      updateZoneContext(cLocation, mNewLocation);
-    }
-    cLocation.x = mNewLocation.x;
-    cLocation.y = mNewLocation.y;
-    if (cCurrentSurface == NULL) {
-      cLocation.z = mNewLocation.z;
-    } else {
-      cLocation.z = cCurrentSurface->getHeightAt(cLocation.x, cLocation.y);
+    if (cFallScript != NULL) {
+      cFallScript->execute();
     }
   }
+}
+
+void SpindizzyGERALD::updateRespawnLocation() {
+  if (cCurrentSurface == cRespawnData->cSurface) {
+    cRespawnData->cX = round(cLocation.x);
+    cRespawnData->cY = round(cLocation.y);
+  }
+}
+
+void SpindizzyGERALD::updateLocation(Vertex& location) {
+  IZone* mPreviousZone = cZone;
+  cCollectables->collect(this, cLocation, location);
+  if (cZone != NULL) {
+    checkCurrentZoneEvents(cLocation, location);
+  }
+  if (cZone == NULL) {
+    checkMapZoneEvents(mPreviousZone, cLocation, location);
+  }
+  cLocation = location;
+  updateRespawnLocation();
+}
+
+void SpindizzyGERALD::update(int ticks) {
+  float mTicks = static_cast<float>(ticks);
+  Vertex mProposedLocation = cLocation;
+  Vertex mProposedMomentum = cMomentum;
+  getNewLocation(mTicks, &mProposedLocation, &mProposedMomentum);
+  ICollisionData* mNextEvent = pollCollisionEvent(cLocation, mProposedLocation);
+  while (mNextEvent != NULL) {
+    processEvent(*mNextEvent);
+    mTicks -= mTicks * mNextEvent->getGradient();
+    mProposedLocation = cLocation;
+    mProposedMomentum = cMomentum;
+    getNewLocation(mTicks, &mProposedLocation, &mProposedMomentum);
+    mNextEvent = pollCollisionEvent(cLocation, mProposedLocation);
+  }
+  mProposedLocation = cLocation;
+  mProposedMomentum = cMomentum;
+  getNewLocation(mTicks, &mProposedLocation, &cMomentum);
+  updateLocation(mProposedLocation);
+  checkFall();
 }
 
 void SpindizzyGERALD::keyDown(SDLKey& key) {
   switch (key) {
     case SDLK_SPACE: {
-      // TODO: Only works when on surface
-      cMomentum.x = 0.0f;
-      cMomentum.y = 0.0f;
-      cMomentum.z = 0.0f;
+      if (cCurrentSurface != NULL && cCurrentSurface->getSurfaceGrip() > 0.5f) {
+        cMomentum.x = 0.0f;
+        cMomentum.y = 0.0f;
+        cMomentum.z = 0.0f;
+      }
       break;
     }
 

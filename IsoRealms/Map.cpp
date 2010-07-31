@@ -41,7 +41,7 @@ Map::Map(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, 
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Plugin") {
-      cPluginRegistry.registerPlugin(mNode, &cCommandRegistry);
+      cPluginRegistry.registerPlugin(mNode, &cCommandRegistry, this);
     } else {
       // TODO: Throw something
     }

@@ -22,6 +22,7 @@
 #include <map>
 #include <vector>
 
+#include <IsoRealms/IMap.h>
 #include <IsoRealms/IZone.h>
 
 #include "../../ZoneContext/IZoneContext.h"
@@ -39,6 +40,7 @@ class DefaultCollidableSurfaceRegistry:public ICollidableSurfaceRegistry,
   IZoneContext* cZoneContext;
   IZone* cEditingZone;
   IZone* cRuntimeZone;
+  IMap* cMap;
 
   public:
   DefaultCollidableSurfaceRegistry();
@@ -61,6 +63,7 @@ class DefaultCollidableSurfaceRegistry:public ICollidableSurfaceRegistry,
   \**********************/
   void notifyZoneAction(IZone*);
   void initPlugin(IZone*, unsigned int);
+  void setRuntimeContext(IMap*);
 
   /*****************************\
    * Implements IPluginSupport *

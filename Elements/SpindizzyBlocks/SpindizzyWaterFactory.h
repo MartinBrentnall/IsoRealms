@@ -46,6 +46,11 @@ class SpindizzyWaterFactory:public ISpindizzyBlockFactory {
   \*************************************/
   void signalAllElementsDirty();
   void unregisterSurfaces(ISurfaceProcessor*);
+  Script* getContactScript();
+  float getSurfaceFriction();
+  float getSurfaceGrip();
+  bool isRespawnAllowed();
+  void configureBlock(DOMNodeWrapper*, ICommandRegistry*);
 
   /******************************\
    * Implements IElementFactory *

@@ -72,7 +72,7 @@ class PluginRegistry:public IPluginRegistry {
 
   public:
 
-  void registerPlugin(DOMNodeWrapper*, CommandDirectory*);
+  void registerPlugin(DOMNodeWrapper*, CommandDirectory*, IMap*);
 
   void connectPlugin(DOMNodeWrapper*);
 

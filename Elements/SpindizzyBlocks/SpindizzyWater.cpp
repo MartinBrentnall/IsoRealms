@@ -83,7 +83,7 @@ std::vector<IInteractiveElement*> SpindizzyWater::getInteractiveElements() {
 }
 
 ISpindizzyTileSurface* SpindizzyWater::createSubSurface(ITileSurface::FaceDirection facing, int north, int east, int south, int west, Condition* condition) {
-  return new TileSurface(cSpindizzyTextureSet, ISpindizzyTextureSet::WATER, north, east, south, west, facing == ITileSurface::UP ? cStartLocation.z : cEndLocation.z, 0, 0, facing, condition);
+  return new TileSurface(cSpindizzyTextureSet, ISpindizzyTextureSet::WATER, north, east, south, west, facing == ITileSurface::UP ? cStartLocation.z : cEndLocation.z, 0, 0, facing, condition, NULL, 0.0f, 0.0f, false);
 }
 
 IWallSurface* SpindizzyWater::createSubSurface(int x, int y, IWallSurface::FaceDirection facing, int length, int startHeight, int endHeight, int topSlope, int bottomSlope) {
@@ -144,9 +144,6 @@ bool SpindizzyWater::initElement(unsigned int pass) {
         } else {
           cDynamicTileSurfaces.push_back(mTileSurface);
         }
-        ISpindizzyBlockSet* mBlockElementSet = getElementSet();
-        // TODO: This should only happen in runtime
-        mBlockElementSet->registerRollableSurface(mTileSurface);
         
         // TODO: SHOULD NOT DELETE THIS BECAUSE WE DIDN'T CREATE IT; THE SURFACE PROCESSOR DID!
         delete mTopTileSurfaces[i];

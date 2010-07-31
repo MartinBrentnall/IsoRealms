@@ -96,15 +96,6 @@ std::vector<ITileSurface*> AbstractSpindizzyBlock::getTileSurfaces(ITileSurface:
   return mRawSurfaces;
 }
 
-/* TODO: Enable this; it's never been used or tested!  WILL NEED MODIFICATION
-Condition AbstractSpindizzyBlock::createCondition(Condition* mSurfaceCondition) {
-  Condition* mSurfaceCondition = (mThisCondition != NULL ? mThisCondition : (cCondition != NULL ? new GroupAndCondition() : NULL));
-  if (cCondition != NULL) {
-    mSurfaceCondition->addCondition(cCondition);
-  }
-}
-*/
-
 int AbstractSpindizzyBlock::getBottomHeight(int x, int y) {
   return cSteppedBottom ? getTileSurfaceHeight(x, y) - (cEndLocation.z - cStartLocation.z)
                         : cStartLocation.z;
@@ -118,17 +109,22 @@ ISpindizzyTileSurface* AbstractSpindizzyBlock::createSubSurface(ITileSurface::Fa
       int mYSlope = getYSlope();
       int mHeight = getTileSurfaceHeight(mXSlope > 0 ? west : east, mYSlope > 0 ? south : north);
       BlockLocation mSurfaceLocation(cStartLocation.x, cStartLocation.y, cEndLocation.z);
+      ISpindizzyBlockFactory* mFactory = getElementFactory();
+      Script* mContactScript = mFactory->getContactScript();
+      float mSurfaceFriction = mFactory->getSurfaceFriction();
+      float mSurfaceGrip = mFactory->getSurfaceGrip();
+      bool mRespawnAllowed = mFactory->isRespawnAllowed();
       if (isSplit()) {
-        return new TileSplitSurface(cSplitType == NORTH_SOUTH, mSurfaceLocation, cSpindizzyTextureSet, mTextureType, cNorthWestHeight, cNorthEastHeight, cSouthEastHeight, cSouthWestHeight, condition);
+        return new TileSplitSurface(cSplitType == NORTH_SOUTH, mSurfaceLocation, cSpindizzyTextureSet, mTextureType, cNorthWestHeight, cNorthEastHeight, cSouthEastHeight, cSouthWestHeight, condition, mContactScript, mSurfaceFriction, mSurfaceGrip, mRespawnAllowed);
       } else {
-        return new TileSurface(cSpindizzyTextureSet, mTextureType, north, east, south, west, mHeight, mXSlope, mYSlope, faceDirection, condition);
+        return new TileSurface(cSpindizzyTextureSet, mTextureType, north, east, south, west, mHeight, mXSlope, mYSlope, faceDirection, condition, mContactScript, mSurfaceFriction, mSurfaceGrip, mRespawnAllowed);
       }
     }
     
     case ITileSurface::DOWN: {
       // TODO: Make sure the subsurface does not violate the stepping
       int mHeight = getBottomHeight(east, north);
-      return new TileSurface(cSpindizzyTextureSet, mTextureType, north, east, south, west, mHeight, 0, 0, faceDirection, condition);
+      return new TileSurface(cSpindizzyTextureSet, mTextureType, north, east, south, west, mHeight, 0, 0, faceDirection, condition, NULL, 0.0f, 0.0f, false);
     }
   }
   std::cout << "ERROR: Face direction does not exist" << std::endl;

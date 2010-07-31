@@ -54,6 +54,10 @@ void IPlugin::setEditingContext(BlockLocation*, IComponentContainer*, ICommandRe
   // Nothing to do.
 }
 
+void IPlugin::setRuntimeContext(IMap*) {
+  // Nothing to do.
+}
+
 std::vector<ICommandInfo*> IPlugin::getCommandInfo() {
   return cNoCommands;
 }

@@ -57,11 +57,13 @@ class DOMNodeWrapper {
    *
    * @returns  Named attribute of this node.
    */
-  std::string getAttribute(std::string);
+  std::string getAttribute(const std::string&);
 
-  int getIntegerAttribute(std::string);
+  int getIntegerAttribute(const std::string&);
 
-  float getFloatAttribute(std::string);
+  float getFloatAttribute(const std::string&);
+  
+  bool getBooleanAttribute(const std::string&);
 
   /**
    * Get the name of the node.
