@@ -1,6 +1,6 @@
 #include "DummyCollidableSurfaceRegistry.h"
 
-void DummyCollidableSurfaceRegistry::registerRollableSurface(IRollableSurface*) {
+void DummyCollidableSurfaceRegistry::registerRollableSurface(IRollableSurface*, bool) {
   // Nothing to do.
 }
 
@@ -8,8 +8,9 @@ void DummyCollidableSurfaceRegistry::registerWallSurface(ICollidableWallSurface*
   // Nothing to do.
 }
 
-ICollisionData* DummyCollidableSurfaceRegistry::getNextEvent(Vertex&, Vertex&) {
-  return NULL;
+std::vector<ICollisionData*> DummyCollidableSurfaceRegistry::getNextEvent(Vertex&, Vertex&, bool) {
+  std::vector<ICollisionData*> mNoEvents;
+  return mNoEvents;
 }
 
 IRollableSurface* DummyCollidableSurfaceRegistry::getSurfaceAt(Vertex&) {

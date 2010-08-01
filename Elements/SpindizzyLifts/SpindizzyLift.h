@@ -19,6 +19,7 @@
 #ifndef SPINDIZZY_LIFT_H
 #define SPINDIZZY_LIFT_H
 
+#include <cmath>
 #include <GL/gl.h>
 
 #include <IsoRealms/BlockLocation.h>
@@ -28,14 +29,17 @@
 #include <IsoRealms/IsoRealmsConstants.h>
 #include <IsoRealms/IVisualElement.h>
 
+#include "../../Plugins/CollidableSurfaceRegistry/IRollableSurface.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
 
 #include "ISpindizzyLiftFactory.h"
 #include "ISpindizzyLiftSet.h"
 #include "SpindizzyLiftProperties.h"
+#include "SurfaceCollisionEvent.h"
 
 class SpindizzyLift:public Element<ISpindizzyLiftSet, ISpindizzyLiftFactory>,
                            IDynamicElement,
+                           IRollableSurface,
                            IVisualElement {
   private:
   
@@ -64,10 +68,9 @@ class SpindizzyLift:public Element<ISpindizzyLiftSet, ISpindizzyLiftFactory>,
   };
   LiftValues cLiftValues;
   
-
   void renderEditingArrow();
-
   void executeLiftMovedScript();
+  Vertex* getBoundaryCrossingPoint(Vertex& start, Vertex& end, float* mLowestGradient);
   
   public:
   SpindizzyLift(ISpindizzyLiftFactory*, BlockLocation*, ISpindizzyTexture*, SpindizzyLiftProperties*, int, int);
@@ -86,6 +89,22 @@ class SpindizzyLift:public Element<ISpindizzyLiftSet, ISpindizzyLiftFactory>,
   std::vector<IDynamicElement*> getDynamicElements();
   std::vector<IInteractiveElement*> getInteractiveElements();
   void save(DOMNodeWriter*, BlockLocation&);
+  bool initElement(unsigned int);
+
+  /*******************************\
+   * Implements IRollableSurface *
+  \*******************************/
+  bool contains(Vertex&);
+  ICollisionData* getCollision(Vertex&, Vertex&);
+  ICollisionData* getRollingEvent(Vertex&, Vertex&);
+  float getHeightAt(float, float);
+  float getXAcceleration(float, float);
+  float getYAcceleration(float, float);
+  void notifyContact();
+  float getSurfaceFriction();
+  float getSurfaceGrip();
+  IRollableSurface::RespawnPossibility getRespawnPossibility();
+  bool isRespawnPossibleNow();
 
   /******************************\
    * Implements IDynamicElement *

@@ -42,6 +42,7 @@ SpindizzyLiftSet::SpindizzyLiftSet() {
   
   assignDummyPlugin(&cSpindizzyTextureSet, "SpindizzyTextureSet");
   assignDummyPlugin(&cZoneContext, "ZoneContext");
+  assignDummyPlugin(&cCollidableSurfaceRegistry, "CollidableSurfaceRegistry");
   setTextureSet(cSpindizzyTextureSet);
 }
 
@@ -71,6 +72,7 @@ std::vector<PlugSocket*> SpindizzyLiftSet::getPlugSockets() {
   std::vector<PlugSocket*> mSockets;
   mSockets.push_back(new PlugSocket("SpindizzyTextureSet"));
   mSockets.push_back(new PlugSocket("ZoneContext"));
+  mSockets.push_back(new PlugSocket("CollidableSurfaceRegistry"));
   return mSockets;
 }
 
@@ -85,14 +87,17 @@ void SpindizzyLiftSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
       mPreviousZoneContext->removeZoneContextListener(this);
       cZoneContext->addZoneContextListener(this);
     }
+  } else if (socket->getType() == "CollidableSurfaceRegistry") {
+    assignPlugin(implementation, &cCollidableSurfaceRegistry, *socket);
   } else {
     // TODO: Throw exception or something
   }  
 }
 
 IPlugin* SpindizzyLiftSet::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "SpindizzyTextureSet")  {return cSpindizzyTextureSet;}
-  else if (socket->getType() == "ZoneContext")     {return cZoneContext;}
+  if (socket->getType() == "SpindizzyTextureSet")       {return cSpindizzyTextureSet;}
+  if (socket->getType() == "ZoneContext")               {return cZoneContext;}
+  if (socket->getType() == "CollidableSurfaceRegistry") {return cCollidableSurfaceRegistry;}
   // TODO: Throw wobbly!
   return NULL;
 }
@@ -123,6 +128,10 @@ IZone* SpindizzyLiftSet::getCurrentZone() {
 
 void SpindizzyLiftSet::executeLiftMovedScript() {
   cLiftMovedScript->execute();
+}
+
+void SpindizzyLiftSet::registerInterceptingSurface(IRollableSurface* surface) {
+  cCollidableSurfaceRegistry->registerRollableSurface(surface, true);
 }
 
 void SpindizzyLiftSet::zoneContextChanged(IZone* zone) {

@@ -48,9 +48,9 @@ class DefaultCollidableSurfaceRegistry:public ICollidableSurfaceRegistry,
   /*****************************************\
    * Implements ICollidableSurfaceRegistry *
   \*****************************************/
-  void registerRollableSurface(IRollableSurface*);
+  void registerRollableSurface(IRollableSurface*, bool);
   void registerWallSurface(ICollidableWallSurface*);
-  ICollisionData* getNextEvent(Vertex&, Vertex&);
+  std::vector<ICollisionData*> getNextEvent(Vertex&, Vertex&, bool);
   IRollableSurface* getSurfaceAt(Vertex&);
 
   /***********************************\

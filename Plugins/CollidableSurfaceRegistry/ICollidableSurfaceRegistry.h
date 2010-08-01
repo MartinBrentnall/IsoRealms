@@ -19,6 +19,8 @@
 #ifndef I_COLLIDABLE_SURFACE_REGISTRY_H
 #define I_COLLIDABLE_SURFACE_REGISTRY_H
 
+#include <vector>
+
 #include <IsoRealms/IPlugin.h>
 
 #include "IRollableSurface.h"
@@ -26,9 +28,9 @@
 
 class ICollidableSurfaceRegistry:public virtual IPlugin {
   public:
-  virtual void registerRollableSurface(IRollableSurface*) = 0;
+  virtual void registerRollableSurface(IRollableSurface*, bool) = 0;
   virtual void registerWallSurface(ICollidableWallSurface*) = 0;
-  virtual ICollisionData* getNextEvent(Vertex&, Vertex&) = 0;
+  virtual std::vector<ICollisionData*> getNextEvent(Vertex&, Vertex&, bool) = 0;
   virtual IRollableSurface* getSurfaceAt(Vertex&) = 0;
 };
 

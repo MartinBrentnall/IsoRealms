@@ -214,7 +214,7 @@ std::vector<IWallSurfaceTemplate*> SpindizzyBlockSet::getWallSurfaces(ISurfacePr
 }
 
 void SpindizzyBlockSet::registerRollableSurface(IRollableSurface* rollableSurface) {
-  cCollidableSurfaceRegistry->registerRollableSurface(rollableSurface);
+  cCollidableSurfaceRegistry->registerRollableSurface(rollableSurface, false);
 }
 
 void SpindizzyBlockSet::registerWallSurface(ICollidableWallSurface* wallSurface) {

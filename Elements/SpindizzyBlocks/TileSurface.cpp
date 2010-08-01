@@ -226,20 +226,20 @@ ICollisionData* TileSurface::getCollision(Vertex& start, Vertex& end) {
         return mEvent;
       }
     }
-  }
 
-  float mStartHeight = getHeightAt(start.x, start.y);
-  float mEndHeight = getHeightAt(end.x, end.y);
-  if ((start.z > mStartHeight) != (end.z > mEndHeight) && start.z > mStartHeight) {
-    float mEndHeightModified = mEndHeight - (start.z - end.z);
-    float mGradient = (start.z - mStartHeight) / (mEndHeightModified - mStartHeight);
-    float mXImpact = start.x + (end.x - start.x) * mGradient;
-    float mYImpact = start.y + (end.y - start.y) * mGradient;
-    float mZImpact = start.z + (end.z - start.z) * mGradient;
-    Vertex* mImpactLocation = new Vertex(mXImpact, mYImpact, mZImpact);
-    if (alligned(round(mImpactLocation->x), round(mImpactLocation->y))) {
-      SurfaceCollisionEvent *mEvent = new SurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mImpactLocation, mGradient);
-      return mEvent;
+    float mStartHeight = getHeightAt(start.x, start.y);
+    float mEndHeight = getHeightAt(end.x, end.y);
+    if ((start.z > mStartHeight) != (end.z > mEndHeight) && start.z > mStartHeight) {
+      float mEndHeightModified = mEndHeight - (start.z - end.z);
+      float mGradient = (start.z - mStartHeight) / (mEndHeightModified - mStartHeight);
+      float mXImpact = start.x + (end.x - start.x) * mGradient;
+      float mYImpact = start.y + (end.y - start.y) * mGradient;
+      float mZImpact = start.z + (end.z - start.z) * mGradient;
+      Vertex* mImpactLocation = new Vertex(mXImpact, mYImpact, mZImpact);
+      if (alligned(round(mImpactLocation->x), round(mImpactLocation->y))) {
+        SurfaceCollisionEvent *mEvent = new SurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mImpactLocation, mGradient);
+        return mEvent;
+      }
     }
   }
 

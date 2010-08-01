@@ -228,3 +228,171 @@ void SpindizzyLift::save(DOMNodeWriter* node, BlockLocation& relative) {
   mLiftProperties->addAttribute("bottomDelay", cBottomDelay);
 }
 
+bool SpindizzyLift::initElement(unsigned int pass) {
+  switch (pass) {
+    case 1: {
+      ISpindizzyLiftSet* mLiftSet = getElementSet();
+      // TODO: This should only happen in runtime
+      mLiftSet->registerInterceptingSurface(this);
+      return true;
+    }
+  }
+  return false;
+}
+
+Vertex* SpindizzyLift::getBoundaryCrossingPoint(Vertex& start, Vertex& end, float* mLowestGradient) {
+  *mLowestGradient = 2.0f;
+  float mXMovement = end.x - start.x;
+  float mYMovement = end.y - start.y;
+  float mSouth = cLocation.y - IsoRealmsConstants::BLOCK_RADIUS;
+  float mWest  = cLocation.x - IsoRealmsConstants::BLOCK_RADIUS;
+  float mNorth = cLocation.y + IsoRealmsConstants::BLOCK_RADIUS;
+  float mEast  = cLocation.x + IsoRealmsConstants::BLOCK_RADIUS;
+  float mImpactX;
+  float mImpactY;
+  bool mXKnown = false;
+  bool mYKnown = false;
+
+  float mTempGradient = (mWest - start.x) / mXMovement;
+  if (mTempGradient > 0.0f && mTempGradient <= *mLowestGradient) {
+    float mWestYLocation = start.y + mYMovement * mTempGradient;
+    if (mWestYLocation >= mSouth && mWestYLocation <= mNorth) {
+      *mLowestGradient = mTempGradient;
+      mImpactX = mWest;
+      mXKnown = true;
+    }
+  }
+
+  mTempGradient = (mEast - start.x) / mXMovement;
+  if (mTempGradient > 0.0f && mTempGradient <= *mLowestGradient) {
+    float mEastYLocation = start.y + mYMovement * mTempGradient;
+    if (mEastYLocation >= mSouth && mEastYLocation <= mNorth) {
+      *mLowestGradient = mTempGradient;
+      mImpactX = mEast;
+      mXKnown = true;
+    }
+  }
+
+  mTempGradient = (mNorth - start.y) / mYMovement;
+  if (mTempGradient > 0.0f && mTempGradient <= *mLowestGradient) {
+    float mNorthXLocation = start.x + mXMovement * mTempGradient;
+    if (mNorthXLocation >= mWest && mNorthXLocation <= mEast) {
+      *mLowestGradient = mTempGradient;
+      mImpactY = mNorth;
+      mXKnown = false;
+      mYKnown = true;
+    }
+  }
+
+  mTempGradient = (mSouth - start.y) / mYMovement;
+  if (mTempGradient > 0.0f && mTempGradient <= *mLowestGradient) {
+    float mSouthXLocation = start.x + mXMovement * mTempGradient;
+    if (mSouthXLocation >= mWest && mSouthXLocation <= mEast) {
+      *mLowestGradient = mTempGradient;
+      mImpactY = mSouth;
+      mXKnown = false;
+      mYKnown = true;
+    }
+  }
+
+  float mMovementZ = end.z - start.z;
+  if (*mLowestGradient <= 1.0f) {
+    if (!mXKnown) {
+      mImpactX = start.x + mXMovement * *mLowestGradient;
+    }
+    if (!mYKnown) {
+      mImpactY = start.y + mYMovement * *mLowestGradient;
+    }
+    float mImpactZ = start.z + mMovementZ * *mLowestGradient;
+    return new Vertex(mImpactX, mImpactY, mImpactZ);
+  }
+
+  // Line doesn't cross boundary
+  return NULL;
+}
+
+bool SpindizzyLift::contains(Vertex& location) {
+  float mSouthEdge = cLocation.y - IsoRealmsConstants::BLOCK_RADIUS;
+  float mWestEdge  = cLocation.x - IsoRealmsConstants::BLOCK_RADIUS;
+  float mNorthEdge = cLocation.y + IsoRealmsConstants::BLOCK_RADIUS;
+  float mEastEdge  = cLocation.x + IsoRealmsConstants::BLOCK_RADIUS;
+  if (location.y > mSouthEdge  && location.y <= mNorthEdge && location.x > mWestEdge && location.x <= mEastEdge) {
+    float mEnterHeight = getHeightAt(location.x, location.y);
+    return location.z <= mEnterHeight + 0.01f && location.z >= mEnterHeight - 0.5f;
+  }
+  return false;
+}
+
+ICollisionData* SpindizzyLift::getCollision(Vertex& start, Vertex& end) {
+  if (!contains(start)) {
+    float mGradient;
+    Vertex* mEnterPoint = getBoundaryCrossingPoint(start, end, &mGradient);
+    if (mEnterPoint != NULL) {
+      float mEnterHeight = getHeightAt(mEnterPoint->x, mEnterPoint->y);
+      // TODO: The "0.01f" is a bit nasty magic number
+      if (mEnterPoint->z <= mEnterHeight + 0.01f && mEnterPoint->z >= mEnterHeight - 0.5f) {
+        return new SurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mEnterPoint, mGradient);
+      }
+    }
+  }
+
+  float mStartHeight = getHeightAt(start.x, start.y);
+  float mEndHeight = getHeightAt(end.x, end.y);
+  if ((start.z > mStartHeight) != (end.z > mEndHeight) && start.z > mStartHeight) {
+    float mEndHeightModified = mEndHeight - (start.z - end.z);
+    float mGradient = (start.z - mStartHeight) / (mEndHeightModified - mStartHeight);
+    float mXImpact = start.x + (end.x - start.x) * mGradient;
+    float mYImpact = start.y + (end.y - start.y) * mGradient;
+    float mZImpact = start.z + (end.z - start.z) * mGradient;
+    Vertex* mImpactLocation = new Vertex(mXImpact, mYImpact, mZImpact);
+    int mX = round(mXImpact);
+    int mY = round(mYImpact);
+    if (mX == cLocation.x && mY == cLocation.y) {
+      SurfaceCollisionEvent *mEvent = new SurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mImpactLocation, mGradient);
+      return mEvent;
+    }
+  }
+  return NULL;
+}
+
+ICollisionData* SpindizzyLift::getRollingEvent(Vertex& start, Vertex& end) {
+  float mGradient;
+  Vertex* mLeavePoint = getBoundaryCrossingPoint(start, end, &mGradient);
+  if (mLeavePoint != NULL) {
+    return new SurfaceCollisionEvent(this, ICollisionData::SURFACE_LEAVE, mLeavePoint, mGradient);
+//    mImpactPoint->setRelocationPoint(*mLeavePoint);
+  }
+  return NULL;
+}
+
+float SpindizzyLift::getHeightAt(float, float) {
+  return cLiftValues.cZ;
+}
+
+float SpindizzyLift::getXAcceleration(float, float) {
+  return 0.0f;
+}
+
+float SpindizzyLift::getYAcceleration(float, float) {
+  return 0.0f;
+}
+
+void SpindizzyLift::notifyContact() {
+  // Nothing to do
+}
+
+float SpindizzyLift::getSurfaceFriction() {
+  return 0.001f;
+}
+
+float SpindizzyLift::getSurfaceGrip() {
+  return 1.0f;
+}
+
+IRollableSurface::RespawnPossibility SpindizzyLift::getRespawnPossibility() {
+  return IRollableSurface::NO;
+}
+
+bool SpindizzyLift::isRespawnPossibleNow() {
+  return false;
+}

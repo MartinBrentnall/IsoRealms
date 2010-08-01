@@ -5,41 +5,44 @@ DefaultCollidableSurfaceRegistry::DefaultCollidableSurfaceRegistry() {
   cZoneContextSocket.push_back(new PlugSocket("ZoneContext"));
 }
 
-void DefaultCollidableSurfaceRegistry::registerRollableSurface(IRollableSurface* rollableSurface) {
+void DefaultCollidableSurfaceRegistry::registerRollableSurface(IRollableSurface* rollableSurface, bool intercepting) {
   SurfaceCache* mSurfaceCache = cZoneSurfaceCaches[cEditingZone];
   if (mSurfaceCache == NULL) {
     mSurfaceCache = new SurfaceCache();
     cZoneSurfaceCaches[cEditingZone] = mSurfaceCache;
   }
-  mSurfaceCache->addRollableSurface(rollableSurface);
+  mSurfaceCache->addRollableSurface(rollableSurface, intercepting);
 }
 
 void DefaultCollidableSurfaceRegistry::registerWallSurface(ICollidableWallSurface*) {
   // TODO: Implement this
 }
 
-ICollisionData* DefaultCollidableSurfaceRegistry::getNextEvent(Vertex& start, Vertex& end) {
+std::vector<ICollisionData*> DefaultCollidableSurfaceRegistry::getNextEvent(Vertex& start, Vertex& end, bool intercepting) {
   std::map<IZone*, SurfaceCache*>::iterator i = cZoneSurfaceCaches.find(cRuntimeZone);
   if (i != cZoneSurfaceCaches.end()) {
-    ICollisionData* mEvent = i->second->getNextEvent(start, end);
-    if (mEvent != NULL) {
-      return mEvent;
+    std::vector<ICollisionData*> mEvents = i->second->getNextEvent(start, end, intercepting);
+    if (!mEvents.empty()) {
+      return mEvents;
     }
   }
-  std::vector<ZoneEvent*> mZoneEvents = cMap->getZoneEvents(start, end);
-  for (unsigned int i = 0; i < mZoneEvents.size(); i++) {
-    if (mZoneEvents[i]->getType() == ZoneEvent::ENTERED) {
-      IZone* mEnteredZone = mZoneEvents[i]->getZone();
-      std::map<IZone*, SurfaceCache*>::iterator j = cZoneSurfaceCaches.find(mEnteredZone);
-      if (j != cZoneSurfaceCaches.end()) {
-        ICollisionData* mEvent = j->second->getNextEvent(start, end);
-        if (mEvent != NULL) {
-          return mEvent;
+  if (!intercepting) {
+    std::vector<ZoneEvent*> mZoneEvents = cMap->getZoneEvents(start, end);
+    for (unsigned int i = 0; i < mZoneEvents.size(); i++) {
+      if (mZoneEvents[i]->getType() == ZoneEvent::ENTERED) {
+        IZone* mEnteredZone = mZoneEvents[i]->getZone();
+        std::map<IZone*, SurfaceCache*>::iterator j = cZoneSurfaceCaches.find(mEnteredZone);
+        if (j != cZoneSurfaceCaches.end()) {
+          std::vector<ICollisionData*> mEvents = j->second->getNextEvent(start, end, false);
+          if (!mEvents.empty()) {
+            return mEvents;
+          }
         }
       }
     }
   }
-  return NULL;
+  std::vector<ICollisionData*> mNoEvents;
+  return mNoEvents;
 }
 
 void DefaultCollidableSurfaceRegistry::setRuntimeContext(IMap* map) {

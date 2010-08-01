@@ -27,11 +27,12 @@
 class SurfaceCache {
   private:
   std::vector<IRollableSurface*> cRollableSurfaces;
+  std::vector<IRollableSurface*> cInterceptingSurfaces;
   std::vector<ICollidableWallSurface*> cWallSurfaces;
 
   public:
-  void addRollableSurface(IRollableSurface*);
-  ICollisionData* getNextEvent(Vertex&, Vertex&);
+  void addRollableSurface(IRollableSurface*, bool);
+  std::vector<ICollisionData*> getNextEvent(Vertex&, Vertex&, bool);
   IRollableSurface* getSurfaceAt(Vertex&);
 };
 

@@ -23,12 +23,15 @@
 #include <IsoRealms/IElement.h>
 #include <IsoRealms/IZone.h>
 
+#include "../../Plugins/CollidableSurfaceRegistry/IRollableSurface.h"
+
 class SpindizzyLift;
 
 class ISpindizzyLiftSet:public ElementSet<SpindizzyLift> {
   public:
   virtual IZone* getCurrentZone() = 0;
   virtual void executeLiftMovedScript() = 0;
+  virtual void registerInterceptingSurface(IRollableSurface*) = 0;
 };
 
 #endif

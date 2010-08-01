@@ -25,6 +25,7 @@
 #include <IsoRealms/PluginRegistry.h>
 #include <IsoRealms/ICommandRegistry.h>
 
+#include "../../Plugins/CollidableSurfaceRegistry/ICollidableSurfaceRegistry.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 #include "../../Plugins/ZoneContext/IZoneContext.h"
@@ -41,6 +42,7 @@ class SpindizzyLiftSet:public ISpindizzyLiftSet,
   std::vector<IElementFactory*> cElementFactories;
   ICommandRegistry* cCommandRegistry;
   IZoneContext* cZoneContext;
+  ICollidableSurfaceRegistry* cCollidableSurfaceRegistry;
   Script* cLiftMovedScript;
   IZone* cZone;
   std::vector<IUserCommand*> cCommands;
@@ -82,6 +84,7 @@ class SpindizzyLiftSet:public ISpindizzyLiftSet,
   \********************************/
   IZone* getCurrentZone();
   void executeLiftMovedScript();
+  void registerInterceptingSurface(IRollableSurface*);
   
   /***********************************\
    * Implements IZoneContextListener *

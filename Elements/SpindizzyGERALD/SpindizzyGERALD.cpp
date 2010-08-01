@@ -263,26 +263,13 @@ ICollisionData* SpindizzyGERALD::pollCollisionEvent(Vertex& startLocation, Verte
     }
   }
   
-  if (!cEventQueue.empty() || cCurrentSurface == NULL) {
-    ICollisionData* mEvent = cCollidableSurfaceRegistry->getNextEvent(startLocation, endLocation);
-    if (mEvent != NULL) {
-      if (cEventQueue.empty()) {
-        return mEvent;
+  std::vector<ICollisionData*> mEvents = cCollidableSurfaceRegistry->getNextEvent(startLocation, endLocation, cCurrentSurface != NULL && cEventQueue.empty());
+  for (unsigned int i = 0; i < mEvents.size(); i++) {
+    if (cEventQueue.empty() || cEventQueue.front()->getGradient() == mEvents[i]->getGradient()) {
+      IRollableSurface* mEventSurface = mEvents[i]->getSurface();
+      if (mEventSurface != cCurrentSurface) {
+        cEventQueue.push(mEvents[i]);
       }
-
-      if (cEventQueue.front()->getGradient() == mEvent->getGradient()) {
-        cEventQueue.push(mEvent);
-        ICollisionData* mFrontEvent = cEventQueue.front();
-        cEventQueue.pop();
-        return mFrontEvent;
-      }
-    } else { // Test for surfaces in other zones that we pass through or into
-/*      std::vector<ZoneEvent*> mZoneEvents = cMap->getZoneEvents(cLocation, endLocation);
-      for (unsigned int i = 0; i < mZoneEvents.size(); i++) {
-        cZone = mZoneEvents[i]->getZone();
-        cZoneContext->setZoneContext(cZone);
-        ICollisionData* mCollision = cCollidableSurfaceRegistry->getNextEvent(startLocation, endLocation);
-      }*/
     }
   }
   if (!cEventQueue.empty()) {
@@ -330,11 +317,14 @@ void SpindizzyGERALD::processEvent(ICollisionData& event) {
     }
     
     case ICollisionData::SURFACE_MOUNT: {
-      cCurrentSurface = event.getSurface();
-      cCurrentSurface->notifyContact();
-      cMomentum.z = 0.0f;
-      updateRespawnData();
-      std::cout << " + + + We entd: " << cCurrentSurface << std::endl;
+      IRollableSurface* mMountedSurface = event.getSurface();
+      if (mMountedSurface != cCurrentSurface) {
+        cCurrentSurface = event.getSurface();
+        cCurrentSurface->notifyContact();
+        cMomentum.z = 0.0f;
+        updateRespawnData();
+        std::cout << " + + + We entd: " << cCurrentSurface << std::endl;
+      }
       break;
     }
     

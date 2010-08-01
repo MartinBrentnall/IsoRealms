@@ -23,6 +23,7 @@ add_library(Elements_SpindizzyLifts MODULE
   SpindizzyLiftHandler.cpp
   SpindizzyLiftProperties.cpp
   SpindizzyLiftSet.cpp 
+  SurfaceCollisionEvent.cpp
 )
 set_target_properties(Elements_SpindizzyLifts PROPERTIES OUTPUT_NAME "ElementSet")
 set_target_properties(Elements_SpindizzyLifts PROPERTIES PREFIX "lib")
