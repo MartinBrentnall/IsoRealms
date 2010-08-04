@@ -246,6 +246,7 @@
       <File>Circle Left.ogg</File>
       <File>Circle Right.ogg</File>
       <File>Circle Both.ogg</File>
+      <File>Trampoline.ogg</File>
     </Configuration>
   </Plugin>
   <Plugin implementation="BlockSubtractor" instance="BlockSubtractor" type="SurfaceProcessor">
@@ -493,69 +494,73 @@
       <State>SwitchCircleLeft</State>
       <State>SwitchCircleRight</State>
       <State>SwitchCircleBoth</State>
-      <BlockType name="Ice" friction="0.0" grip="0.0" respawnAllowed="false"/>
-      <BlockType name="Trampoline" friction="0.0" grip="1.0" respawnAllowed="false"/>
-      <BlockType name="Plain" friction="0.001" grip="1.0" respawnAllowed="true"/>
-      <BlockType name="ArrowWest" friction="0.001" grip="1.0" respawnAllowed="true"/>
-      <BlockType name="ArrowEast" friction="0.001" grip="1.0" respawnAllowed="true"/>
-      <BlockType name="ArrowNorth" friction="0.001" grip="1.0" respawnAllowed="true"/>
-      <BlockType name="ArrowNorth" friction="0.001" grip="1.0" respawnAllowed="true"/>
-      <BlockType name="SwitchDiamondNone" friction="0.001" grip="1.0" respawnAllowed="true">
+      <BlockType name="Ice" friction="0.0" grip="0.0" bounce="0.0" respawnAllowed="false"/>
+      <BlockType name="Trampoline" friction="0.0" grip="1.0" bounce="1.0" respawnAllowed="false">
+        <ImpactScript>
+          <Command>Plugin/Utilities/SoundCommandWrapper/Play Trampoline.ogg</Command>
+        </ImpactScript>
+      </BlockType>
+      <BlockType name="Plain" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true"/>
+      <BlockType name="ArrowWest" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true"/>
+      <BlockType name="ArrowEast" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true"/>
+      <BlockType name="ArrowNorth" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true"/>
+      <BlockType name="ArrowNorth" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true"/>
+      <BlockType name="SwitchDiamondNone" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true">
         <ContactScript>
           <Command>Plugin/Utilities/SpindizzySwitches/Reset Spindizzy Switches</Command>
         </ContactScript>
       </BlockType>
-      <BlockType name="SwitchDiamondLeft" friction="0.001" grip="1.0" respawnAllowed="true">
+      <BlockType name="SwitchDiamondLeft" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true">
         <ContactScript>
           <Command>Plugin/Utilities/SpindizzySwitches/Activate switch LeftDiamondSwitch</Command>
         </ContactScript>
       </BlockType>
-      <BlockType name="SwitchDiamondRight" friction="0.001" grip="1.0" respawnAllowed="true">
+      <BlockType name="SwitchDiamondRight" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true">
         <ContactScript>
           <Command>Plugin/Utilities/SpindizzySwitches/Activate switch RightDiamondSwitch</Command>
         </ContactScript>
       </BlockType>
-      <BlockType name="SwitchDiamondBoth" friction="0.001" grip="1.0" respawnAllowed="true">
+      <BlockType name="SwitchDiamondBoth" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true">
         <ContactScript>
           <Command>Plugin/Utilities/SpindizzySwitches/Activate switch FilledDiamondSwitch</Command>
         </ContactScript>
       </BlockType>
-      <BlockType name="SwitchSquareNone" friction="0.001" grip="1.0" respawnAllowed="true">
+      <BlockType name="SwitchSquareNone" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true">
         <ContactScript>
           <Command>Plugin/Utilities/SpindizzySwitches/Activate switch EmptySquareSwitch</Command>
         </ContactScript>
       </BlockType>
-      <BlockType name="SwitchSquareLeft" friction="0.001" grip="1.0" respawnAllowed="true">
+      <BlockType name="SwitchSquareLeft" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true">
         <ContactScript>
           <Command>Plugin/Utilities/SpindizzySwitches/Activate switch LeftSquareSwitch</Command>
         </ContactScript>
       </BlockType>
-      <BlockType name="SwitchSquareRight" friction="0.001" grip="1.0" respawnAllowed="true">
+      <BlockType name="SwitchSquareRight" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true">
         <ContactScript>
           <Command>Plugin/Utilities/SpindizzySwitches/Activate switch RightSquareSwitch</Command>
         </ContactScript>
       </BlockType>
-      <BlockType name="SwitchSquareBoth" friction="0.001" grip="1.0" respawnAllowed="true">
+      <BlockType name="SwitchSquareBoth" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true">
         <ContactScript>
           <Command>Plugin/Utilities/SpindizzySwitches/Activate switch FilledSquareSwitch</Command>
         </ContactScript>
       </BlockType>
-      <BlockType name="SwitchCircleNone" friction="0.001" grip="1.0" respawnAllowed="true">
+      <BlockType name="SwitchCircleNone" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true">
         <ContactScript>
           <Command>Plugin/Utilities/SpindizzySwitches/Activate switch EmptyCircleSwitch</Command>
         </ContactScript>
       </BlockType>
-      <BlockType name="SwitchCircleLeft" friction="0.001" grip="1.0" respawnAllowed="true">
+      <BlockType name="SwitchCircleLeft" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true">
         <ContactScript>
           <Command>Plugin/Utilities/SpindizzySwitches/Activate switch LeftCircleSwitch</Command>
         </ContactScript>
       </BlockType>
-      <BlockType name="SwitchCircleRight" friction="0.001" grip="1.0" respawnAllowed="true">
+      <BlockType name="SwitchCircleRight" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true">
         <ContactScript>
           <Command>Plugin/Utilities/SpindizzySwitches/Activate switch RightCircleSwitch</Command>
         </ContactScript>
       </BlockType>
-      <BlockType name="SwitchCircleBoth" friction="0.001" grip="1.0" respawnAllowed="true">
+      <BlockType name="SwitchCircleBoth" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true">
         <ContactScript>
           <Command>Plugin/Utilities/SpindizzySwitches/Activate switch FilledCircleSwitch</Command>
         </ContactScript>
@@ -603,6 +608,7 @@
   <Elements>
     <Element set="Player" type="">
       <Location x="-4" y="3" z="0"/>
+<!--      <Location x="-23" y="163" z="7"/>-->
     </Element>
   </Elements>
   <Zone>
@@ -21102,7 +21108,7 @@
     <Elements>
       <Element set="Blocks" type="Plain">
         <Location x="0" y="0" z="-1"/>
-        <Size x="7" y="7" z="8"/>
+        <Size x="7" y="7" z="7"/>
       </Element>
       <Element set="Blocks" type="Plain">
         <Location x="0" y="0" z="6"/>
@@ -21294,7 +21300,7 @@
       </Element>
       <Element set="Blocks" type="Plain">
         <Location x="1" y="0" z="-1"/>
-        <Size x="7" y="7" z="8"/>
+        <Size x="7" y="7" z="7"/>
       </Element>
       <Element set="Blocks" type="Plain">
         <Location x="2" y="0" z="6"/>
@@ -21515,7 +21521,7 @@
       </Element>
       <Element set="Blocks" type="Plain">
         <Location x="0" y="1" z="-1"/>
-        <Size x="7" y="7" z="8"/>
+        <Size x="7" y="7" z="7"/>
       </Element>
       <Element set="Blocks" type="Plain">
         <Location x="0" y="2" z="6"/>
@@ -21759,7 +21765,7 @@
       </Element>
       <Element set="Blocks" type="Plain">
         <Location x="1" y="1" z="-1"/>
-        <Size x="7" y="7" z="8"/>
+        <Size x="7" y="7" z="7"/>
       </Element>
       <Element set="Blocks" type="Plain">
         <Location x="2" y="2" z="6"/>

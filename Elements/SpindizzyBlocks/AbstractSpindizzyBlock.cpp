@@ -110,21 +110,18 @@ ISpindizzyTileSurface* AbstractSpindizzyBlock::createSubSurface(ITileSurface::Fa
       int mHeight = getTileSurfaceHeight(mXSlope > 0 ? west : east, mYSlope > 0 ? south : north);
       BlockLocation mSurfaceLocation(cStartLocation.x, cStartLocation.y, cEndLocation.z);
       ISpindizzyBlockFactory* mFactory = getElementFactory();
-      Script* mContactScript = mFactory->getContactScript();
-      float mSurfaceFriction = mFactory->getSurfaceFriction();
-      float mSurfaceGrip = mFactory->getSurfaceGrip();
-      bool mRespawnAllowed = mFactory->isRespawnAllowed();
+      BlockTypeProperties* mBlockTypeProperties = mFactory->getBlockTypeProperties();
       if (isSplit()) {
-        return new TileSplitSurface(cSplitType == NORTH_SOUTH, mSurfaceLocation, cSpindizzyTextureSet, mTextureType, cNorthWestHeight, cNorthEastHeight, cSouthEastHeight, cSouthWestHeight, condition, mContactScript, mSurfaceFriction, mSurfaceGrip, mRespawnAllowed);
+        return new TileSplitSurface(cSplitType == NORTH_SOUTH, mSurfaceLocation, cSpindizzyTextureSet, mTextureType, cNorthWestHeight, cNorthEastHeight, cSouthEastHeight, cSouthWestHeight, condition, mBlockTypeProperties);
       } else {
-        return new TileSurface(cSpindizzyTextureSet, mTextureType, north, east, south, west, mHeight, mXSlope, mYSlope, faceDirection, condition, mContactScript, mSurfaceFriction, mSurfaceGrip, mRespawnAllowed);
+        return new TileSurface(cSpindizzyTextureSet, mTextureType, north, east, south, west, mHeight, mXSlope, mYSlope, faceDirection, condition, mBlockTypeProperties);
       }
     }
     
     case ITileSurface::DOWN: {
       // TODO: Make sure the subsurface does not violate the stepping
       int mHeight = getBottomHeight(east, north);
-      return new TileSurface(cSpindizzyTextureSet, mTextureType, north, east, south, west, mHeight, 0, 0, faceDirection, condition, NULL, 0.0f, 0.0f, false);
+      return new TileSurface(cSpindizzyTextureSet, mTextureType, north, east, south, west, mHeight, 0, 0, faceDirection, condition, NULL);
     }
   }
   std::cout << "ERROR: Face direction does not exist" << std::endl;

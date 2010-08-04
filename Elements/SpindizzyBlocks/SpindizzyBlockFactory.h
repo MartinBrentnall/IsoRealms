@@ -52,10 +52,7 @@ class SpindizzyBlockFactory:public ISpindizzyBlockFactory,
   BlockLocation* cStartBlockLocation;
   BlockLocation* cEditingLocation;
   AbstractSpindizzyBlock* cSampleBlock;
-  Script* cContactScript;
-  float cSurfaceFriction;
-  float cSurfaceGrip;
-  bool cRespawnAllowed;
+  BlockTypeProperties cBlockTypeProperties;
 
   bool keyDown(SDLKey&);  
 
@@ -89,10 +86,7 @@ class SpindizzyBlockFactory:public ISpindizzyBlockFactory,
   \*************************************/
   void signalAllElementsDirty();
   void unregisterSurfaces(ISurfaceProcessor*);
-  Script* getContactScript();
-  float getSurfaceFriction();
-  float getSurfaceGrip();
-  bool isRespawnAllowed();
+  BlockTypeProperties* getBlockTypeProperties();
   void configureBlock(DOMNodeWrapper*, ICommandRegistry*);
 
   /******************************\

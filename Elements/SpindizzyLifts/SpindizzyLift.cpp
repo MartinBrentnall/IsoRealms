@@ -381,12 +381,20 @@ void SpindizzyLift::notifyContact() {
   // Nothing to do
 }
 
+void SpindizzyLift::notifyImpact() {
+  // Nothing to do
+}
+
 float SpindizzyLift::getSurfaceFriction() {
   return 0.001f;
 }
 
 float SpindizzyLift::getSurfaceGrip() {
   return 1.0f;
+}
+
+float SpindizzyLift::getSurfaceBounce() {
+  return 0.0f;
 }
 
 IRollableSurface::RespawnPossibility SpindizzyLift::getRespawnPossibility() {

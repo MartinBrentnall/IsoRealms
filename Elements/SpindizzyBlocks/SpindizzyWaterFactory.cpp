@@ -136,20 +136,8 @@ std::string SpindizzyWaterFactory::getName() {
   return "Water";
 }
 
-Script* SpindizzyWaterFactory::getContactScript() {
+BlockTypeProperties* SpindizzyWaterFactory::getBlockTypeProperties() {
   return NULL;
-}
-
-float SpindizzyWaterFactory::getSurfaceFriction() {
-  return 0.0f;
-}
-
-float SpindizzyWaterFactory::getSurfaceGrip() {
-  return 0.0f;
-}
-
-bool SpindizzyWaterFactory::isRespawnAllowed() {
-  return false;
 }
 
 void SpindizzyWaterFactory::configureBlock(DOMNodeWrapper*, ICommandRegistry*) {

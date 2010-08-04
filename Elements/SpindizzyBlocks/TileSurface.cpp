@@ -18,7 +18,7 @@
  */
 #include "TileSurface.h"
 
-TileSurface::TileSurface(ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet::TextureType textureType, int north, int east, int south, int west, int height, int westEastSlope, int northSouthSlope, ITileSurface::FaceDirection facing, Condition* condition, Script* contactScript, float friction, float grip, bool respawnAllowed) {
+TileSurface::TileSurface(ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet::TextureType textureType, int north, int east, int south, int west, int height, int westEastSlope, int northSouthSlope, ITileSurface::FaceDirection facing, Condition* condition, BlockTypeProperties* blockTypeProperties) {
   cTextureSet = textureSet;
   cTextureType = textureType;
   cNorth = north;
@@ -30,10 +30,7 @@ TileSurface::TileSurface(ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet
   cNorthSouthSlope = northSouthSlope;
   cFacing = facing;
   cCondition = condition;
-  cContactScript = contactScript;
-  cFriction = friction;
-  cGrip = grip;
-  cRespawnAllowed = respawnAllowed;
+  cBlockTypeProperties = blockTypeProperties;
 }
 
 int TileSurface::getSurfaceCellHeight(int x, int y) {
@@ -111,7 +108,7 @@ float TileSurface::getHeightAt(float x, float y) {
          cNorthSouthSlope * ((cNorthSouthSlope > 0 ? y - cSouth : -(cNorth + 1 - y)) + IsoRealmsConstants::BLOCK_RADIUS) + cHeight;
 }
 
-Vertex* TileSurface::getBoundaryCrossingPoint(Vertex& start, Vertex& end, float* mLowestGradient) {
+Vertex* TileSurface::getBoundaryCrossingPoint(Vertex& start, Vertex& end, float* mLowestGradient, float infinity) {
   *mLowestGradient = 2.0f;
   float mXMovement = end.x - start.x;
   float mYMovement = end.y - start.y;
@@ -129,7 +126,7 @@ Vertex* TileSurface::getBoundaryCrossingPoint(Vertex& start, Vertex& end, float*
     float mWestYLocation = start.y + mYMovement * mTempGradient;
     if (mWestYLocation >= mSouth && mWestYLocation <= mNorth) {
       *mLowestGradient = mTempGradient;
-      mImpactX = mWest;
+      mImpactX = nextafterf(mWest, -infinity);
       mXKnown = true;
     }
   }
@@ -139,7 +136,7 @@ Vertex* TileSurface::getBoundaryCrossingPoint(Vertex& start, Vertex& end, float*
     float mEastYLocation = start.y + mYMovement * mTempGradient;
     if (mEastYLocation >= mSouth && mEastYLocation <= mNorth) {
       *mLowestGradient = mTempGradient;
-      mImpactX = mEast;
+      mImpactX = nextafterf(mEast, infinity);
       mXKnown = true;
     }
   }
@@ -149,7 +146,8 @@ Vertex* TileSurface::getBoundaryCrossingPoint(Vertex& start, Vertex& end, float*
     float mNorthXLocation = start.x + mXMovement * mTempGradient;
     if (mNorthXLocation >= mWest && mNorthXLocation <= mEast) {
       *mLowestGradient = mTempGradient;
-      mImpactY = mNorth;
+      std::cout << "Impact Y: " << mImpactY << std::endl;
+      mImpactY = nextafterf(mNorth, infinity);
       mXKnown = false;
       mYKnown = true;
     }
@@ -160,7 +158,7 @@ Vertex* TileSurface::getBoundaryCrossingPoint(Vertex& start, Vertex& end, float*
     float mSouthXLocation = start.x + mXMovement * mTempGradient;
     if (mSouthXLocation >= mWest && mSouthXLocation <= mEast) {
       *mLowestGradient = mTempGradient;
-      mImpactY = mSouth;
+      mImpactY = nextafterf(mSouth, -infinity);
       mXKnown = false;
       mYKnown = true;
     }
@@ -195,12 +193,11 @@ bool TileSurface::contains(Vertex& location) {
 
 ICollisionData* TileSurface::getRollingEvent(Vertex& start, Vertex& end) {
   if (cCondition != NULL && !cCondition->isTrue()) {
-    std::cout << "Surface disappeared!" << std::endl;
     return new SurfaceCollisionEvent(this, ICollisionData::SURFACE_LEAVE, new Vertex(start), 0.0f);
   }
   
   float mGradient;
-  Vertex* mLeavePoint = getBoundaryCrossingPoint(start, end, &mGradient);
+  Vertex* mLeavePoint = getBoundaryCrossingPoint(start, end, &mGradient, INFINITY);
   if (mLeavePoint != NULL) {
     SurfaceCollisionEvent* mEvent = new SurfaceCollisionEvent(this, ICollisionData::SURFACE_LEAVE, mLeavePoint, mGradient);
 //    mImpactPoint->setRelocationPoint(*mLeavePoint);
@@ -214,11 +211,9 @@ ICollisionData* TileSurface::getRollingEvent(Vertex& start, Vertex& end) {
 ICollisionData* TileSurface::getCollision(Vertex& start, Vertex& end) {
   if (!contains(start) && (cCondition == NULL || cCondition->isTrue())) {
     float mGradient;
-    Vertex* mEnterPoint = getBoundaryCrossingPoint(start, end, &mGradient);
+    Vertex* mEnterPoint = getBoundaryCrossingPoint(start, end, &mGradient, -INFINITY);
     if (mEnterPoint != NULL) {
       float mEnterHeight = getHeightAt(mEnterPoint->x, mEnterPoint->y);
-      std::cout << "From " << start.z << " to " << end.z << "..." << std::endl;
-      std::cout << "Height: " << mEnterPoint->z << " (" << (mEnterHeight - 0.5f) << " to " << mEnterHeight << ")" << std::endl;
       // TODO: The "0.01f" is a bit nasty magic number
       if (mEnterPoint->z <= mEnterHeight + 0.01f && mEnterPoint->z >= mEnterHeight - 0.5f) {
         SurfaceCollisionEvent* mEvent = new SurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mEnterPoint, mGradient);
@@ -234,7 +229,7 @@ ICollisionData* TileSurface::getCollision(Vertex& start, Vertex& end) {
       float mGradient = (start.z - mStartHeight) / (mEndHeightModified - mStartHeight);
       float mXImpact = start.x + (end.x - start.x) * mGradient;
       float mYImpact = start.y + (end.y - start.y) * mGradient;
-      float mZImpact = start.z + (end.z - start.z) * mGradient;
+      float mZImpact = getHeightAt(mXImpact, mYImpact);
       Vertex* mImpactLocation = new Vertex(mXImpact, mYImpact, mZImpact);
       if (alligned(round(mImpactLocation->x), round(mImpactLocation->y))) {
         SurfaceCollisionEvent *mEvent = new SurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mImpactLocation, mGradient);
@@ -256,27 +251,33 @@ float TileSurface::getYAcceleration(float, float) {
 }
 
 void TileSurface::notifyContact() {
-  if (cContactScript != NULL) {
-    cContactScript->execute();
-  }
+  cBlockTypeProperties->executeContactScript();
+}
+
+void TileSurface::notifyImpact() {
+  cBlockTypeProperties->executeImpactScript();
 }
 
 float TileSurface::getSurfaceFriction() {
-  return cFriction;
+  return cBlockTypeProperties->getSurfaceFriction();
 }
 
 float TileSurface::getSurfaceGrip() {
-  return cGrip;
+  return cBlockTypeProperties->getSurfaceGrip();
+}
+
+float TileSurface::getSurfaceBounce() {
+  return cBlockTypeProperties->getSurfaceBounce();
 }
 
 IRollableSurface::RespawnPossibility TileSurface::getRespawnPossibility() {
-  return cRespawnAllowed 
+  return cBlockTypeProperties->isRespawnAllowed() 
        ? (cCondition != NULL ? IRollableSurface::CONDITIONAL : IRollableSurface::YES)
        : IRollableSurface::NO;
 }
 
 bool TileSurface::isRespawnPossibleNow() {
-  return cRespawnAllowed && (cCondition == NULL || cCondition->isTrue());
+  return cBlockTypeProperties->isRespawnAllowed() && (cCondition == NULL || cCondition->isTrue());
 }
 
 BlockArea* TileSurface::getCoverage() {

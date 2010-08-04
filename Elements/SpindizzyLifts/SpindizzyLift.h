@@ -101,8 +101,10 @@ class SpindizzyLift:public Element<ISpindizzyLiftSet, ISpindizzyLiftFactory>,
   float getXAcceleration(float, float);
   float getYAcceleration(float, float);
   void notifyContact();
+  void notifyImpact();
   float getSurfaceFriction();
   float getSurfaceGrip();
+  float getSurfaceBounce();
   IRollableSurface::RespawnPossibility getRespawnPossibility();
   bool isRespawnPossibleNow();
 

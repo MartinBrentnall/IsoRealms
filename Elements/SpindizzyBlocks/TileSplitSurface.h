@@ -29,6 +29,7 @@
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
 
+#include "BlockTypeProperties.h"
 #include "ISpindizzyTileSurface.h"
 #include "SurfaceCollisionEvent.h"
 
@@ -41,12 +42,9 @@ class TileSplitSurface:public ISpindizzyTileSurface {
   int cCornerHeights[2][2];
   bool cSplitDirection;
   Condition* cCondition;
-  Script* cContactScript;
-  float cFriction;
-  float cGrip;
-  bool cRespawnAllowed;
+  BlockTypeProperties* cBlockTypeProperties;
 
-  Vertex* getBoundaryCrossingPoint(Vertex& start, Vertex& end, float* mLowestGradient);
+  Vertex* getBoundaryCrossingPoint(Vertex&, Vertex&, float*);
 
   public:
 
@@ -56,7 +54,7 @@ class TileSplitSurface:public ISpindizzyTileSurface {
    * @param bool  Split direction.
    * @param BlockLocation&  
    */
-  TileSplitSurface(bool, BlockLocation&, ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType, int, int, int, int, Condition*, Script*, float, float, bool);
+  TileSplitSurface(bool, BlockLocation&, ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType, int, int, int, int, Condition*, BlockTypeProperties*);
 
   /************************************\
    * Implements ISpindizzyTileSurface *
@@ -73,8 +71,10 @@ class TileSplitSurface:public ISpindizzyTileSurface {
   float getXAcceleration(float, float);
   float getYAcceleration(float, float);
   void notifyContact();
+  void notifyImpact();
   float getSurfaceFriction();
   float getSurfaceGrip();
+  float getSurfaceBounce();
   IRollableSurface::RespawnPossibility getRespawnPossibility();
   bool isRespawnPossibleNow();
 

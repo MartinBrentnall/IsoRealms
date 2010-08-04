@@ -31,6 +31,7 @@
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
 
+#include "BlockTypeProperties.h"
 #include "ISpindizzyTileSurface.h"
 #include "SurfaceCollisionEvent.h"
 
@@ -48,12 +49,9 @@ class TileSurface:public ISpindizzyTileSurface {
   int cWestEastSlope;
   int cNorthSouthSlope;
   Condition* cCondition;
-  Script* cContactScript;
-  float cFriction;
-  float cGrip;
-  bool cRespawnAllowed;
+  BlockTypeProperties* cBlockTypeProperties;
 
-  Vertex* getBoundaryCrossingPoint(Vertex& start, Vertex& end, float* mLowestGradient);
+  Vertex* getBoundaryCrossingPoint(Vertex&, Vertex&, float*, float);
 
   public:
 
@@ -70,7 +68,7 @@ class TileSurface:public ISpindizzyTileSurface {
    * @param int  Slope step along north-to-south (Y axis).
    * @param ITileSurface::FaceDirection  Facing direction of the surface.
    */
-  TileSurface(ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType, int, int, int, int, int, int, int, ITileSurface::FaceDirection, Condition*, Script*, float, float, bool);
+  TileSurface(ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType, int, int, int, int, int, int, int, ITileSurface::FaceDirection, Condition*, BlockTypeProperties*);
 
   /************************************\
    * Implements ISpindizzyTileSurface *
@@ -87,8 +85,10 @@ class TileSurface:public ISpindizzyTileSurface {
   float getXAcceleration(float, float);
   float getYAcceleration(float, float);
   void notifyContact();
+  void notifyImpact();
   float getSurfaceFriction();
   float getSurfaceGrip();
+  float getSurfaceBounce();
   IRollableSurface::RespawnPossibility getRespawnPossibility();
   bool isRespawnPossibleNow();
 

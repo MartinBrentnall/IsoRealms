@@ -25,10 +25,6 @@ SpindizzyBlockFactory::SpindizzyBlockFactory(std::string name, ISpindizzyTexture
   cBlockProperties = new SpindizzyBlockProperties();
   cSampleBlock = NULL;
   cSpindizzyTextureSet = textureSet;
-  cContactScript = NULL;
-  cSurfaceFriction = 0.001f;
-  cSurfaceGrip = 1.0f;
-  cRespawnAllowed = true;
 }
 
 IElement* SpindizzyBlockFactory::getElement(DOMNodeWrapper* node, BlockLocation* zoneLocation, IElementContainer* elementContainer) {
@@ -75,20 +71,8 @@ void SpindizzyBlockFactory::unregisterSurfaces(ISurfaceProcessor* surfaceProcess
   }
 }
 
-Script* SpindizzyBlockFactory::getContactScript() {
-  return cContactScript;
-}
-
-float SpindizzyBlockFactory::getSurfaceFriction() {
-  return cSurfaceFriction;
-}
-
-float SpindizzyBlockFactory::getSurfaceGrip() {
-  return cSurfaceGrip;
-}
-
-bool SpindizzyBlockFactory::isRespawnAllowed() {
-  return cRespawnAllowed;
+BlockTypeProperties* SpindizzyBlockFactory::getBlockTypeProperties() {
+  return &cBlockTypeProperties;
 }
 
 void SpindizzyBlockFactory::setEditingContext(BlockLocation* editingLocation, IComponentContainer* componentContainer) {
@@ -231,16 +215,7 @@ std::string SpindizzyBlockFactory::getName() {
 }
 
 void SpindizzyBlockFactory::configureBlock(DOMNodeWrapper* node, ICommandRegistry* commandRegistry) {
-  cSurfaceFriction = node->getFloatAttribute("friction");
-  cSurfaceGrip = node->getFloatAttribute("grip");
-  cRespawnAllowed = node->getBooleanAttribute("respawnAllowed");
-  for (int i = 0; i < node->getChildCount(); i++) {
-    DOMNodeWrapper *mNode = node->getChild(i);
-    std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "ContactScript") {
-      cContactScript = commandRegistry->getScript(mNode);
-    }
-  }
+  cBlockTypeProperties.configure(node, commandRegistry);
 }
 
 SpindizzyBlockFactory::~SpindizzyBlockFactory() {

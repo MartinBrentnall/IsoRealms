@@ -57,6 +57,7 @@ class SpindizzyGERALD:public Element<>,
   static const unsigned int INIT_PROCESS_BLOCKS;
   static const unsigned int INIT_REGISTER_SURFACES;
   static const unsigned int INIT_USE_SURFACES;
+  static const unsigned int BOUNCE_CONTROL_TIME;
 
   SDLKey cNorthKey;
   SDLKey cSouthKey;
@@ -82,6 +83,9 @@ class SpindizzyGERALD:public Element<>,
   IRollableSurface* cCurrentSurface;
   RespawnData* cRespawnData;
   float cMapBottom;
+  float cPeakHeight;
+  bool cJumpedFromRamp;
+  double cSurfaceLeaveVerticalMomentum;
   Script* cFallScript;
   std::queue<ICollisionData*> cEventQueue;
   std::stack<RespawnData*> cRespawnSurfaceStack;
@@ -91,7 +95,7 @@ class SpindizzyGERALD:public Element<>,
   void pollEvent(float&);
   void getNewLocation(float, Vertex*, Vertex*);
   ICollisionData* pollCollisionEvent(Vertex&, Vertex&);
-  void processEvent(ICollisionData&);
+  void processEvent(ICollisionData&, bool);
   void updateLocation(Vertex&);
   void updateRespawnLocation();
   void updateRespawnData();

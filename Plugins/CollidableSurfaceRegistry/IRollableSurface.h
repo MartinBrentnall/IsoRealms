@@ -38,6 +38,7 @@ class IRollableSurface {
   virtual float getXAcceleration(float, float) = 0;
   virtual float getYAcceleration(float, float) = 0;
   virtual void notifyContact() = 0;
+  virtual void notifyImpact() = 0;
   
   /**
    * Value between 0.0f (no friction) and 1.0f (instant halt).
@@ -48,6 +49,8 @@ class IRollableSurface {
    * Value between 0.0f (no control) and 1.0f (full control).
    */
   virtual float getSurfaceGrip() = 0;
+  
+  virtual float getSurfaceBounce() = 0;
   
   virtual RespawnPossibility getRespawnPossibility() = 0;
   

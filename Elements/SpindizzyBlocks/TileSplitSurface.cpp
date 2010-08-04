@@ -18,7 +18,7 @@
  */
 #include "TileSplitSurface.h"
 
-TileSplitSurface::TileSplitSurface(bool splitDirection, BlockLocation& location, ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet::TextureType textureType, int nw, int ne, int se, int sw, Condition* condition, Script* contactScript, float friction, float grip, bool respawnAllowed) {
+TileSplitSurface::TileSplitSurface(bool splitDirection, BlockLocation& location, ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet::TextureType textureType, int nw, int ne, int se, int sw, Condition* condition, BlockTypeProperties* blockTypeProperties) {
   cTextureSet = textureSet;
   cTextureType = textureType;
   cLocation = location;
@@ -28,10 +28,7 @@ TileSplitSurface::TileSplitSurface(bool splitDirection, BlockLocation& location,
   cCornerHeights[0][0] = sw;
   cSplitDirection = splitDirection;
   cCondition = condition;
-  cContactScript = contactScript;
-  cFriction = friction;
-  cGrip = grip;
-  cRespawnAllowed = respawnAllowed;
+  cBlockTypeProperties = blockTypeProperties;
 }
 
 int TileSplitSurface::getSurfaceCellHeight(int x, int y) {
@@ -150,27 +147,33 @@ float TileSplitSurface::getYAcceleration(float x, float y) {
 }
 
 void TileSplitSurface::notifyContact() {
-  if (cContactScript != NULL) {
-    cContactScript->execute();
-  }
+  cBlockTypeProperties->executeContactScript();
+}
+
+void TileSplitSurface::notifyImpact() {
+  cBlockTypeProperties->executeImpactScript();
 }
 
 float TileSplitSurface::getSurfaceFriction() {
-  return cFriction;
+  return cBlockTypeProperties->getSurfaceFriction();
 }
 
 float TileSplitSurface::getSurfaceGrip() {
-  return cGrip;
+  return cBlockTypeProperties->getSurfaceGrip();
+}
+
+float TileSplitSurface::getSurfaceBounce() {
+  return cBlockTypeProperties->getSurfaceBounce();
 }
 
 IRollableSurface::RespawnPossibility TileSplitSurface::getRespawnPossibility() {
-  return cRespawnAllowed 
+  return cBlockTypeProperties->isRespawnAllowed() 
        ? (cCondition != NULL ? IRollableSurface::CONDITIONAL : IRollableSurface::YES)
        : IRollableSurface::NO;
 }
 
 bool TileSplitSurface::isRespawnPossibleNow() {
-  return cRespawnAllowed && (cCondition == NULL || cCondition->isTrue());
+  return cBlockTypeProperties->isRespawnAllowed() && (cCondition == NULL || cCondition->isTrue());
 }
 
 Vertex* TileSplitSurface::getBoundaryCrossingPoint(Vertex& start, Vertex& end, float* mLowestGradient) {
