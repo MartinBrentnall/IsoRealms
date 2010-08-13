@@ -18,6 +18,7 @@ add_library(IsoRealms SHARED
   BlockArea.cpp
   BlockLocation.cpp
   Colour.cpp
+  Collision.cpp
   CommandDirectory.cpp
   CommandManager.cpp
   CommandProxy.cpp

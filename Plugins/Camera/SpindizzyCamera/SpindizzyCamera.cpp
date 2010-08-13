@@ -83,7 +83,7 @@ void SpindizzyCamera::update(int ticks) {
   Vertex* mLocation = cLocationAwareness->getLocation();
   glRotatef(-50.0f, 1.0, 0.0, 0.0);
   glRotatef(getCurrentAngle(), 0.0, 0.0, 1.0);
-  glTranslatef(-mLocation->x, -mLocation->y, -mLocation->z * IsoRealmsConstants::BLOCK_HEIGHT);
+  glTranslatef(-mLocation->x, -mLocation->y, min(-mLocation->z * IsoRealmsConstants::BLOCK_HEIGHT, 0.0f));
 }
 
 void SpindizzyCamera::changeAngle(float angle) {

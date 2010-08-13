@@ -19,6 +19,7 @@
 #ifndef ROLLABLE_SPLIT_SURFACE_H
 #define ROLLABLE_SPLIT_SURFACE_H
 
+#include <cmath>
 #include <GL/gl.h>
 
 #include <IsoRealms/BlockLocation.h>
@@ -44,7 +45,12 @@ class TileSplitSurface:public ISpindizzyTileSurface {
   Condition* cCondition;
   BlockTypeProperties* cBlockTypeProperties;
 
-  Vertex* getBoundaryCrossingPoint(Vertex&, Vertex&, float*);
+  Vertex* getSplitCrossingPoint(Vertex&, Vertex&, float*);
+  Vertex* getBoundaryCrossingPoint(Vertex&, Vertex&, float*, float);
+  bool hasFlatSide();
+  float getHeightAt(float, float, bool);
+  bool inNorthSplit(float, float);
+  ICollisionData* getImpactCollision(Vertex&, Vertex&, bool);
 
   public:
 
@@ -77,6 +83,7 @@ class TileSplitSurface:public ISpindizzyTileSurface {
   float getSurfaceBounce();
   IRollableSurface::RespawnPossibility getRespawnPossibility();
   bool isRespawnPossibleNow();
+  void getRestingLocation(Vertex&);
 
   /***************************\
    * Implements ITileSurface *

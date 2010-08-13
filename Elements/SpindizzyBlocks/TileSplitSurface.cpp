@@ -89,59 +89,90 @@ bool TileSplitSurface::contains(Vertex& location) {
   float mNorthEdge  = cLocation.y + IsoRealmsConstants::BLOCK_RADIUS;
   float mEastEdge   = cLocation.x  + IsoRealmsConstants::BLOCK_RADIUS;
   if (location.y > mSouthEdge  && location.y <= mNorthEdge && location.x > mWestEdge && location.x <= mEastEdge) {
-    return location.z == getHeightAt(location.x, location.y);
+    float mSurfaceHeight = getHeightAt(location.x, location.y);
+    return location.z <= mSurfaceHeight && location.z >= mSurfaceHeight - 0.5f;
   }
   return false;
 }
-/*
- 3 - 4 = -1 * mX == -1 
 
--1    0.5   0
- 3 +------+ 4
-          |
-      +   | 0
-          |
-          + 4      4 + 0
- 
-*/ 
-float TileSplitSurface::getHeightAt(float x, float y) {
-  float mX = x - (cLocation.x - IsoRealmsConstants::BLOCK_RADIUS);
-  float mY = y - (cLocation.y - IsoRealmsConstants::BLOCK_RADIUS);
+float TileSplitSurface::getHeightAt(float x, float y, bool northSplit) {
+  x -= cLocation.x - IsoRealmsConstants::BLOCK_RADIUS;
+  y -= cLocation.y - IsoRealmsConstants::BLOCK_RADIUS;
   if (cSplitDirection) {
-    if (mX > mY) {
-      return cLocation.z + (cCornerHeights[0][0] + (cCornerHeights[1][0] - cCornerHeights[0][0]) * mX + (cCornerHeights[1][1] - cCornerHeights[1][0]) * mY);
+    if (northSplit) {
+      return cLocation.z + (cCornerHeights[0][0] + (cCornerHeights[1][1] - cCornerHeights[0][1]) * x + (cCornerHeights[0][1] - cCornerHeights[0][0]) * y);
     } else {
-      return cLocation.z + (cCornerHeights[0][0] + (cCornerHeights[1][1] - cCornerHeights[0][1]) * mX + (cCornerHeights[0][1] - cCornerHeights[0][0]) * mY);
+      return cLocation.z + (cCornerHeights[0][0] + (cCornerHeights[1][0] - cCornerHeights[0][0]) * x + (cCornerHeights[1][1] - cCornerHeights[1][0]) * y);
     }
   } else {
-    if (mX + mY > 1.0f) {
-      return cLocation.z + (cCornerHeights[1][0] + (cCornerHeights[1][1] - cCornerHeights[1][0]) * mY + (cCornerHeights[0][1] - cCornerHeights[1][1]) * (1.0f - mX));
+    if (northSplit) {
+      return cLocation.z + (cCornerHeights[1][0] + (cCornerHeights[1][1] - cCornerHeights[1][0]) * y + (cCornerHeights[0][1] - cCornerHeights[1][1]) * (1.0f - x));
     } else {
-      return cLocation.z + (cCornerHeights[0][0] + (cCornerHeights[1][0] - cCornerHeights[0][0]) * mX + (cCornerHeights[0][1] - cCornerHeights[0][0]) * mY);
+      return cLocation.z + (cCornerHeights[0][0] + (cCornerHeights[1][0] - cCornerHeights[0][0]) * x + (cCornerHeights[0][1] - cCornerHeights[0][0]) * y);
     }
   }
 }
 
-float TileSplitSurface::getXAcceleration(float x, float y) {
-  float mX = x - (cLocation.x - IsoRealmsConstants::BLOCK_RADIUS);
-  float mY = y - (cLocation.y - IsoRealmsConstants::BLOCK_RADIUS);
+float TileSplitSurface::getHeightAt(float x, float y) {
+  return getHeightAt(x, y, inNorthSplit(x, y));
+}
+
+bool TileSplitSurface::hasFlatSide() {
   return cSplitDirection
-       ? (mX > mY
+       ? (cCornerHeights[0][0] == cCornerHeights[1][0] && cCornerHeights[0][0] == cCornerHeights[1][1])
+      || (cCornerHeights[0][0] == cCornerHeights[0][1] && cCornerHeights[0][0] == cCornerHeights[1][1])
+       : (cCornerHeights[0][0] == cCornerHeights[1][0] && cCornerHeights[0][0] == cCornerHeights[0][1])
+      || (cCornerHeights[1][1] == cCornerHeights[1][0] && cCornerHeights[1][1] == cCornerHeights[0][1]);
+}
+
+Vertex* TileSplitSurface::getSplitCrossingPoint(Vertex& start, Vertex& end, float* mGradient) {
+  Vertex mStart(cSplitDirection ? -(start.x - cLocation.x) : start.x - cLocation.x, start.y - cLocation.y, start.z);
+  Vertex mEnd(  cSplitDirection ? -(end.x   - cLocation.x) : end.x   - cLocation.x, end.y   - cLocation.y, end.z);
+  float mDistanceToStart = mStart.x + mStart.y;
+  float mDistanceToEnd   = mEnd.x   + mEnd.y;
+  bool mStartAtNorth = mDistanceToStart > 0;
+  if (mStartAtNorth != (mDistanceToEnd > 0)) {
+    float mGradient = mDistanceToStart / (mDistanceToStart - mDistanceToEnd);
+    float mYLocation = mStart.y + (mEnd.y - mStart.y) * mGradient;
+    if (mYLocation >= -IsoRealmsConstants::BLOCK_RADIUS && mYLocation < IsoRealmsConstants::BLOCK_RADIUS) {
+      float mXLocation = cSplitDirection ? mYLocation : -mYLocation;
+      mXLocation += cLocation.x;
+      mYLocation += cLocation.y;
+      float mZLocation = getHeightAt(mXLocation, mYLocation);
+      float mXDirection = mStartAtNorth == cSplitDirection ?  INFINITY : -INFINITY;
+      float mYDirection = mStartAtNorth                    ? -INFINITY :  INFINITY;
+      return new Vertex(nextafterf(mXLocation, mXDirection), nextafterf(mYLocation, mYDirection), mZLocation);
+    }
+  }
+  return NULL;
+}
+
+float TileSplitSurface::getXAcceleration(float x, float y) {
+  x -= cLocation.x;
+  y -= cLocation.y;
+  if (x == 0.0f && y == 0.0f && hasFlatSide()) {
+    return 0.0f;
+  }
+  return cSplitDirection
+       ? (x > y
           ? (cCornerHeights[0][0] - cCornerHeights[1][0])
           : (cCornerHeights[0][1] - cCornerHeights[1][1]))
-       : (mX + mY > 1.0f
+       : (x + y > 0.0f
           ? (cCornerHeights[0][1] - cCornerHeights[1][1])
           : (cCornerHeights[0][0] - cCornerHeights[1][0]));
 }
 
 float TileSplitSurface::getYAcceleration(float x, float y) {
-  float mX = x - (cLocation.x - IsoRealmsConstants::BLOCK_RADIUS);
-  float mY = y - (cLocation.y - IsoRealmsConstants::BLOCK_RADIUS);
+  x -= cLocation.x;
+  y -= cLocation.y;
+  if (x == 0.0f && y == 0.0f && hasFlatSide()) {
+    return 0.0f;
+  }
   return cSplitDirection
-       ? (mX > mY
+       ? (x > y
           ? (cCornerHeights[1][0] - cCornerHeights[1][1])
           : (cCornerHeights[0][0] - cCornerHeights[0][1]))
-       : (mX + mY > 1.0f
+       : (x + y > 0.0f
           ? (cCornerHeights[1][0] - cCornerHeights[1][1])
           : (cCornerHeights[0][0] - cCornerHeights[0][1]));
 }
@@ -176,7 +207,7 @@ bool TileSplitSurface::isRespawnPossibleNow() {
   return cBlockTypeProperties->isRespawnAllowed() && (cCondition == NULL || cCondition->isTrue());
 }
 
-Vertex* TileSplitSurface::getBoundaryCrossingPoint(Vertex& start, Vertex& end, float* mLowestGradient) {
+Vertex* TileSplitSurface::getBoundaryCrossingPoint(Vertex& start, Vertex& end, float* mLowestGradient, float infinity) {
   *mLowestGradient = 2.0f;
   float mXMovement = end.x - start.x;
   float mYMovement = end.y - start.y;
@@ -194,7 +225,7 @@ Vertex* TileSplitSurface::getBoundaryCrossingPoint(Vertex& start, Vertex& end, f
     float mWestYLocation = start.y + mYMovement * mTempGradient;
     if (mWestYLocation >= mSouth && mWestYLocation <= mNorth) {
       *mLowestGradient = mTempGradient;
-      mImpactX = mWest;
+      mImpactX = nextafterf(mWest, -infinity);
       mXKnown = true;
     }
   }
@@ -204,7 +235,7 @@ Vertex* TileSplitSurface::getBoundaryCrossingPoint(Vertex& start, Vertex& end, f
     float mEastYLocation = start.y + mYMovement * mTempGradient;
     if (mEastYLocation >= mSouth && mEastYLocation <= mNorth) {
       *mLowestGradient = mTempGradient;
-      mImpactX = mEast;
+      mImpactX = nextafterf(mEast, infinity);
       mXKnown = true;
     }
   }
@@ -214,7 +245,7 @@ Vertex* TileSplitSurface::getBoundaryCrossingPoint(Vertex& start, Vertex& end, f
     float mNorthXLocation = start.x + mXMovement * mTempGradient;
     if (mNorthXLocation >= mWest && mNorthXLocation <= mEast) {
       *mLowestGradient = mTempGradient;
-      mImpactY = mNorth;
+      mImpactY = nextafterf(mNorth, infinity);
       mXKnown = false;
       mYKnown = true;
     }
@@ -225,7 +256,7 @@ Vertex* TileSplitSurface::getBoundaryCrossingPoint(Vertex& start, Vertex& end, f
     float mSouthXLocation = start.x + mXMovement * mTempGradient;
     if (mSouthXLocation >= mWest && mSouthXLocation <= mEast) {
       *mLowestGradient = mTempGradient;
-      mImpactY = mSouth;
+      mImpactY = nextafterf(mSouth, -infinity);
       mXKnown = false;
       mYKnown = true;
     }
@@ -247,18 +278,57 @@ Vertex* TileSplitSurface::getBoundaryCrossingPoint(Vertex& start, Vertex& end, f
   return NULL;
 }
 
+bool TileSplitSurface::inNorthSplit(float x, float y) {
+  x -= cLocation.x;
+  y -= cLocation.y;
+  return cSplitDirection ? y > x : x + y > 0.0f;
+}
+
+ICollisionData* TileSplitSurface::getImpactCollision(Vertex& start, Vertex& end, bool northSplit) {
+  float mStartHeight = getHeightAt(start.x, start.y, northSplit);
+  float mEndHeight = getHeightAt(end.x, end.y, northSplit);
+  if ((start.z > mStartHeight) != (end.z > mEndHeight) && start.z > mStartHeight) {
+    float mEndHeightModified = mEndHeight - (start.z - end.z);
+    float mGradient = (start.z - mStartHeight) / (mEndHeightModified - mStartHeight);
+    double mXImpact = start.x + (end.x - start.x) * mGradient;
+    double mYImpact = start.y + (end.y - start.y) * mGradient;
+    if (inNorthSplit(mXImpact, mYImpact) == northSplit) {
+      if (alligned(round(mXImpact), round(mYImpact))) {
+        double mZImpact = getHeightAt(mXImpact, mYImpact);
+        float mXSlope = getXAcceleration(start.x, start.y);
+        float mYSlope = getYAcceleration(start.x, start.y);
+        Vertex* mImpactLocation = new Vertex(mXImpact, mYImpact, mZImpact);
+        return new SurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mImpactLocation, -mXSlope, -mYSlope, mGradient);
+      }
+    }
+  }
+  return NULL;
+}
+
 ICollisionData* TileSplitSurface::getCollision(Vertex& start, Vertex& end) {
-  if (!contains(start) && (cCondition == NULL || cCondition->isTrue())) {
+  if (cCondition == NULL || cCondition->isTrue()) {
+    if (contains(start)) {
+      Vertex* mEnterPoint = new Vertex(start);
+      return new SurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mEnterPoint, getXAcceleration(start.x, start.y), getYAcceleration(start.x, start.y), 0.0f);
+    }
+  
     float mGradient;
-    Vertex* mEnterPoint = getBoundaryCrossingPoint(start, end, &mGradient);
+    Vertex* mEnterPoint = getBoundaryCrossingPoint(start, end, &mGradient, -INFINITY);
     if (mEnterPoint != NULL) {
       float mEnterHeight = getHeightAt(mEnterPoint->x, mEnterPoint->y);
-      // TODO: The "0.01f" is a bit nasty magic number
-      if (mEnterPoint->z <= mEnterHeight + 0.01f && mEnterPoint->z >= mEnterHeight - 0.5f) {
-        SurfaceCollisionEvent* mEvent = new SurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mEnterPoint, mGradient);
+      if (mEnterPoint->z <= mEnterHeight && mEnterPoint->z >= mEnterHeight - 0.5f) {
+        SurfaceCollisionEvent* mEvent = new SurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mEnterPoint, getXAcceleration(start.x, start.y), getYAcceleration(start.x, start.y), mGradient);
         return mEvent;
       }
     }
+
+// TODO: EXPERIMENTAL
+    ICollisionData* mImpact = getImpactCollision(start, end, true);
+    if (mImpact != NULL) {
+      return mImpact;
+    }
+    return getImpactCollision(start, end, false);
+// TODO: END EXPERIMENTAL
   }
   
   // No event
@@ -267,18 +337,39 @@ ICollisionData* TileSplitSurface::getCollision(Vertex& start, Vertex& end) {
 
 ICollisionData* TileSplitSurface::getRollingEvent(Vertex& start, Vertex& end) {
   if (cCondition != NULL && !cCondition->isTrue()) {
-    return new SurfaceCollisionEvent(this, ICollisionData::SURFACE_LEAVE, new Vertex(start), 0.0f);
+    return new SurfaceCollisionEvent(this, ICollisionData::SURFACE_LEAVE, new Vertex(start), getXAcceleration(start.x, start.y), getYAcceleration(start.x, start.y), 0.0f);
   }
   
   float mGradient;
-  Vertex* mLeavePoint = getBoundaryCrossingPoint(start, end, &mGradient);
+  Vertex* mLeavePoint = getSplitCrossingPoint(start, end, &mGradient);
   if (mLeavePoint != NULL) {
-    SurfaceCollisionEvent* mEvent = new SurfaceCollisionEvent(this, ICollisionData::SURFACE_LEAVE, mLeavePoint, mGradient);
-//    mImpactPoint->setRelocationPoint(*mLeavePoint);
-    return mEvent;
+    return new SurfaceCollisionEvent(this, ICollisionData::SURFACE_LEAVE, mLeavePoint, getXAcceleration(start.x, start.y), getYAcceleration(start.x, start.y), mGradient);
   }
 
-  // No event
+  mLeavePoint = getBoundaryCrossingPoint(start, end, &mGradient, INFINITY);
+  if (mLeavePoint != NULL) {
+    return new SurfaceCollisionEvent(this, ICollisionData::SURFACE_LEAVE, mLeavePoint, getXAcceleration(start.x, start.y), getYAcceleration(start.x, start.y), mGradient);
+  }
   return NULL;
 }
 
+void TileSplitSurface::getRestingLocation(Vertex& location) {
+  float mXSlope = -getXAcceleration(location.x, location.y);
+  float mYSlope = -getYAcceleration(location.x, location.y);
+  float mYEdgeLocation = mYSlope > 0.0f ? nextafterf(cLocation.y - IsoRealmsConstants::BLOCK_RADIUS,  INFINITY)
+                       : mYSlope < 0.0f ? nextafterf(cLocation.y + IsoRealmsConstants::BLOCK_RADIUS, -INFINITY)
+                       :                  location.y;
+  float mXEdgeLocation = mXSlope > 0.0f ? nextafterf(cLocation.x - IsoRealmsConstants::BLOCK_RADIUS,  INFINITY)
+                       : mXSlope < 0.0f ? nextafterf(cLocation.x + IsoRealmsConstants::BLOCK_RADIUS, -INFINITY)
+                       :                  location.x;
+  float mDistanceToY = mYEdgeLocation - location.y;
+  float mDistanceToX = mXEdgeLocation - location.x;
+  if (fabs(mDistanceToY / mYSlope) < fabs(mDistanceToX / mXSlope)) {
+    location.y = mYEdgeLocation;
+    // TODO: location.x
+  } else {
+    location.x = mXEdgeLocation;
+    // TODO: location.y
+  }
+  // TODO: Need to consider the case where we cross over the split
+}

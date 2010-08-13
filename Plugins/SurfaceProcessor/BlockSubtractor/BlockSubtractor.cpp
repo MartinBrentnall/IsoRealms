@@ -65,61 +65,67 @@ IWallSurface* BlockSubtractor::findSurfaceAt(std::vector<IWallSurface*> surfaces
 }
 
 Condition* BlockSubtractor::getSurfaceTileCondition(ISurfaceProvider* provider, int x, int y, ITileSurface::FaceDirection facing) {
-/*  std::cout << "STARTING!" << std::endl;*/
-  std::vector<TileColumn*> mPossibleTileColumns;
-  mPossibleTileColumns.push_back(new TileColumn(new Condition(true)));
-  std::vector<ISurfaceProvider*> mSurfaceProviders = cCache.getSurfaceProviders();
-  for (unsigned int i = 0; i < mSurfaceProviders.size(); i++) {
-    std::vector<ITileSurface*> mTopSurfaces    = mSurfaceProviders[i]->getTileSurfaces(ITileSurface::UP);
-    std::vector<ITileSurface*> mBottomSurfaces = mSurfaceProviders[i]->getTileSurfaces(ITileSurface::DOWN);
-    Condition* mCondition                      = mSurfaceProviders[i]->getCondition();
-    if (mCondition != NULL) {
-      mCondition = new Condition(*mCondition);
-    }
-    bool mGhost                                = mSurfaceProviders[i]->isGhost();
-    ITileSurface* mTopSurface = getSurfaceAt(mTopSurfaces, x, y);
-    if (mTopSurface != NULL) {
-      ITileSurface* mBottomSurface = getSurfaceAt(mBottomSurfaces, x, y);
-      int mTop = mTopSurface->getSurfaceCellHeight(x, y);
-      int mBottom = mBottomSurface->getSurfaceCellHeight(x, y);
-      bool mTopExtended = mTopSurface->getSurfaceCellElevation(x, y) != 0;
-      bool mBottomExtended = mBottomSurface->getSurfaceCellElevation(x, y) != 0;
-      TileBlock* mTileBlock = new TileBlock(mSurfaceProviders[i], mTop, mBottom, mTopExtended, mBottomExtended);
-      
-      // Split possible columns into mutually exclusive conditions
-      std::vector<TileColumn*> mSplitColumns;
+  std::vector<TileColumn*>* mCachedTileColumn = cCache.getTileColumn(x, y);
+  if (mCachedTileColumn == NULL) {
+  /*    std::cout << "STARTING!" << std::endl;*/
+    std::vector<TileColumn*> mPossibleTileColumns;
+    mPossibleTileColumns.push_back(new TileColumn(new Condition(true)));
+    std::vector<ISurfaceProvider*> mSurfaceProviders = cCache.getSurfaceProviders();
+    for (unsigned int i = 0; i < mSurfaceProviders.size(); i++) {
+      std::vector<ITileSurface*> mTopSurfaces    = mSurfaceProviders[i]->getTileSurfaces(ITileSurface::UP);
+      std::vector<ITileSurface*> mBottomSurfaces = mSurfaceProviders[i]->getTileSurfaces(ITileSurface::DOWN);
+      Condition* mCondition                      = mSurfaceProviders[i]->getCondition();
       if (mCondition != NULL) {
-        for (unsigned int j = 0; j < mPossibleTileColumns.size(); j++) {
-          TileColumn* mTileColumn = mPossibleTileColumns[j]->split(mCondition);
-          if (mTileColumn != NULL) {
-            mSplitColumns.push_back(mTileColumn);
+        mCondition = new Condition(*mCondition);
+      }
+      bool mGhost                                = mSurfaceProviders[i]->isGhost();
+      ITileSurface* mTopSurface = getSurfaceAt(mTopSurfaces, x, y);
+      if (mTopSurface != NULL) {
+        ITileSurface* mBottomSurface = getSurfaceAt(mBottomSurfaces, x, y);
+        int mTop = mTopSurface->getSurfaceCellHeight(x, y);
+        int mBottom = mBottomSurface->getSurfaceCellHeight(x, y);
+        bool mTopExtended = mTopSurface->getSurfaceCellElevation(x, y) != 0;
+        bool mBottomExtended = mBottomSurface->getSurfaceCellElevation(x, y) != 0;
+        TileBlock* mTileBlock = new TileBlock(mSurfaceProviders[i], mTop, mBottom, mTopExtended, mBottomExtended);
+        
+        // Split possible columns into mutually exclusive conditions
+        std::vector<TileColumn*> mSplitColumns;
+        if (mCondition != NULL) {
+          for (unsigned int j = 0; j < mPossibleTileColumns.size(); j++) {
+            TileColumn* mTileColumn = mPossibleTileColumns[j]->split(mCondition);
+            if (mTileColumn != NULL) {
+              mSplitColumns.push_back(mTileColumn);
+            }
           }
         }
-      }
-      for (unsigned int j = 0; j < mSplitColumns.size(); j++) {
-        mPossibleTileColumns.push_back(mSplitColumns[j]);
-      }
-      for (unsigned int j = 0; j < mPossibleTileColumns.size(); j++) {
-        Condition* mColumnCondition = mPossibleTileColumns[j]->getCondition();
-        if (mCondition == NULL || mColumnCondition->isCompatibleWith(mCondition)) {
-          mPossibleTileColumns[j]->addTileBlock(mTileBlock, mGhost, mCondition);
+        for (unsigned int j = 0; j < mSplitColumns.size(); j++) {
+          mPossibleTileColumns.push_back(mSplitColumns[j]);
         }
-      }
+        for (unsigned int j = 0; j < mPossibleTileColumns.size(); j++) {
+          Condition* mColumnCondition = mPossibleTileColumns[j]->getCondition();
+          if (mCondition == NULL || mColumnCondition->isCompatibleWith(mCondition)) {
+            mPossibleTileColumns[j]->addTileBlock(mTileBlock, mGhost, mCondition);
+          }
+        }
 
-/*      std::cout << std::endl;
-      std::cout << "Possibilities after " << i << " providers --------------------" << std::endl;
-      for (unsigned int j = 0; j < mPossibleTileColumns.size(); j++) {
-        mPossibleTileColumns[j]->debug();
-      }*/
+  /*      std::cout << std::endl;
+        std::cout << "Possibilities after " << i << " providers --------------------" << std::endl;
+        for (unsigned int j = 0; j < mPossibleTileColumns.size(); j++) {
+          mPossibleTileColumns[j]->debug();
+        }*/
+      }
     }
+    mCachedTileColumn = new std::vector<TileColumn*>(mPossibleTileColumns);
+    cCache.putTileColumn(mCachedTileColumn, x, y);
   }
   Condition* mComposedCondition = new Condition(false);
-  for (unsigned int i = 0; i < mPossibleTileColumns.size(); i++) {
-    if (mPossibleTileColumns[i]->isTileVisible(provider, facing)) {
-      Condition* mEnabledCondition = mPossibleTileColumns[i]->getCondition();
+  for (unsigned int i = 0; i < mCachedTileColumn->size(); i++) {
+    if ((*mCachedTileColumn)[i]->isTileVisible(provider, facing)) {
+      Condition* mEnabledCondition = (*mCachedTileColumn)[i]->getCondition();
       mComposedCondition->compose(mEnabledCondition);
     }
   }
+  
 //   std::cout << "ENDING!" << std::endl;
   return mComposedCondition;
 }

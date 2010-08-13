@@ -22,6 +22,7 @@
 #include <map>
 #include <vector>
 
+#include <IsoRealms/IMap.h>
 #include <IsoRealms/IZone.h>
 
 #include "../../Objectives/IObjectives.h"
@@ -37,11 +38,14 @@ class ZoneCollectables:public ICollectables,
   IObjectives* cObjectives;
   IZone* cEditingZone;
   IZone* cRuntimeZone;
+  IMap* cMap;
   std::vector<PlugSocket*> cZoneContextSocket;
   std::map<IZone*, std::vector<ICollectable*>*> cCollectables;
   unsigned int cCollectablesCount;
   unsigned int cCollectedCount;
 
+  void collect(ICollector*, Vertex&, Vertex&, IZone*);
+  
   public:
   ZoneCollectables();
 
@@ -60,6 +64,7 @@ class ZoneCollectables:public ICollectables,
   \**********************/
   void notifyZoneAction(IZone*);
   void initPlugin(IZone*, unsigned int);
+  void setRuntimeContext(IMap*);
 
   /*****************************\
    * Implements IPluginSupport *

@@ -70,7 +70,7 @@ class SpindizzyLift:public Element<ISpindizzyLiftSet, ISpindizzyLiftFactory>,
   
   void renderEditingArrow();
   void executeLiftMovedScript();
-  Vertex* getBoundaryCrossingPoint(Vertex& start, Vertex& end, float* mLowestGradient);
+  Vertex* getBoundaryCrossingPoint(Vertex&, Vertex&, float*, float);
   
   public:
   SpindizzyLift(ISpindizzyLiftFactory*, BlockLocation*, ISpindizzyTexture*, SpindizzyLiftProperties*, int, int);
@@ -107,6 +107,7 @@ class SpindizzyLift:public Element<ISpindizzyLiftSet, ISpindizzyLiftFactory>,
   float getSurfaceBounce();
   IRollableSurface::RespawnPossibility getRespawnPossibility();
   bool isRespawnPossibleNow();
+  void getRestingLocation(Vertex&);
 
   /******************************\
    * Implements IDynamicElement *

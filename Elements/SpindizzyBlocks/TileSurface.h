@@ -91,6 +91,7 @@ class TileSurface:public ISpindizzyTileSurface {
   float getSurfaceBounce();
   IRollableSurface::RespawnPossibility getRespawnPossibility();
   bool isRespawnPossibleNow();
+  void getRestingLocation(Vertex&);
 
   /***************************\
    * Implements ITileSurface *

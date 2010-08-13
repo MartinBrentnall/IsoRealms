@@ -19,6 +19,7 @@ include_directories(${PROJECT_SOURCE_DIR})
 add_library(SurfaceProcessor_BlockSubtractor MODULE 
   BlockSubtractor.cpp
   BlockSubtractorCache.cpp
+  SurfaceDataCache.cpp
   TileBlock.cpp
   TileColumn.cpp
   TileSurfaceTemplate.cpp

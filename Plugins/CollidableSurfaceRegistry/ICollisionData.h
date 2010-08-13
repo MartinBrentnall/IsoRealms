@@ -35,6 +35,8 @@ class ICollisionData {
   virtual IRollableSurface* getSurface() = 0;
   virtual CollisionType getType() = 0;
   virtual Vertex* getEventLocation() = 0;
+  virtual float getXSlope() = 0;
+  virtual float getYSlope() = 0;
   virtual float getGradient() = 0;
 };
 

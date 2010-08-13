@@ -81,20 +81,35 @@ void ZoneCollectables::registerCollectable(ICollectable* collectable) {
   cCollectablesCount++;
 }
 
-void ZoneCollectables::collect(ICollector* collector, Vertex& start, Vertex& end) {
-  if (cRuntimeZone != NULL) {
-    std::map<IZone*, std::vector<ICollectable*>*>::iterator i = cCollectables.find(cRuntimeZone);
-    if (i != cCollectables.end()) {
-      for (unsigned int j = 0; j < i->second->size(); j++) {
-        if ((*i->second)[j]->isCollected(start, end)) {
-          collector->collected((*i->second)[j]);
-          cCollectedCount++;
-          cObjectives->check();
-          // TODO: Remove collectable.
-        }
+void ZoneCollectables::collect(ICollector* collector, Vertex& start, Vertex& end, IZone* zone) {
+  std::map<IZone*, std::vector<ICollectable*>*>::iterator i = cCollectables.find(zone);
+  if (i != cCollectables.end()) {
+    for (unsigned int j = 0; j < i->second->size(); j++) {
+      if ((*i->second)[j]->isCollected(start, end)) {
+        collector->collected((*i->second)[j]);
+        cCollectedCount++;
+        cObjectives->check();
+        // TODO: Remove collectable.
       }
     }
   }
+}
+
+void ZoneCollectables::collect(ICollector* collector, Vertex& start, Vertex& end) {
+  if (cRuntimeZone != NULL) {
+    collect(collector, start, end, cRuntimeZone);
+  }
+  std::vector<ZoneEvent*> mZoneEvents = cMap->getZoneEvents(start, end);
+  for (unsigned int i = 0; i < mZoneEvents.size(); i++) {
+    if (mZoneEvents[i]->getType() == ZoneEvent::ENTERED) {
+      IZone* mEnteredZone = mZoneEvents[i]->getZone();
+      collect(collector, start, end, mEnteredZone);
+    }
+  }
+}
+
+void ZoneCollectables::setRuntimeContext(IMap* map) {
+  cMap = map;
 }
 
 void ZoneCollectables::reinitialise() {

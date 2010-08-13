@@ -50,6 +50,8 @@ class SpindizzyGERALDFactory:public ElementFactory<ISpindizzyGERALDSet> {
   SpindizzyGERALD* cSampleGERALD;
   std::vector<IVisualElement*> cSampleGERALDVisuals;
   BlockLocation* cEditingLocation;
+  float cFallLimit;
+  Script* cFallLimitScript;
 
   IElement* getElement();
 
@@ -64,6 +66,7 @@ class SpindizzyGERALDFactory:public ElementFactory<ISpindizzyGERALDSet> {
   void setCollidableSurfaceRegistry(ICollidableSurfaceRegistry*);
   void setLocationAwareness(ILocationAwareness*);
   void setZoneContext(IZoneContext*);
+  void loadConfiguration(DOMNodeWrapper*, ICommandRegistry*);
 
   /******************************\
    * Implements IElementFactory *

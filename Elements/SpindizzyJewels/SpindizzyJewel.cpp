@@ -97,7 +97,7 @@ bool SpindizzyJewel::isCollected(Vertex& start, Vertex& end) {
     float mEast   = cLocation.x + IsoRealmsConstants::BLOCK_RADIUS;
     float mSouth  = cLocation.y - IsoRealmsConstants::BLOCK_RADIUS;
     float mNorth  = cLocation.y + IsoRealmsConstants::BLOCK_RADIUS;
-    float mBottom = cLocation.z;
+    float mBottom = cLocation.z - 0.25f;
     float mTop    = cLocation.z + 1.0f;
   
     float mGradient = (mWest - start.x) / mXMovement;
@@ -140,7 +140,7 @@ bool SpindizzyJewel::isCollected(Vertex& start, Vertex& end) {
       }
     }
   
-    mGradient = (mTop - start.z) / mYMovement;
+    mGradient = (mTop - start.z) / mZMovement;
     if (mGradient >= 0.0f && mGradient <= 1.0f) {
       float mXLocation = start.x + mXMovement * mGradient;
       float mYLocation = start.y + mYMovement * mGradient;
@@ -150,7 +150,7 @@ bool SpindizzyJewel::isCollected(Vertex& start, Vertex& end) {
       }
     }
   
-    mGradient = (mBottom - start.z) / mYMovement;
+    mGradient = (mBottom - start.z) / mZMovement;
     if (mGradient >= 0.0f && mGradient <= 1.0f) {
       float mXLocation = start.x + mXMovement * mGradient;
       float mYLocation = start.y + mYMovement * mGradient;

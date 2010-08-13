@@ -146,7 +146,6 @@ Vertex* TileSurface::getBoundaryCrossingPoint(Vertex& start, Vertex& end, float*
     float mNorthXLocation = start.x + mXMovement * mTempGradient;
     if (mNorthXLocation >= mWest && mNorthXLocation <= mEast) {
       *mLowestGradient = mTempGradient;
-      std::cout << "Impact Y: " << mImpactY << std::endl;
       mImpactY = nextafterf(mNorth, infinity);
       mXKnown = false;
       mYKnown = true;
@@ -185,21 +184,22 @@ bool TileSurface::contains(Vertex& location) {
   float mWestEdge   = cWest  - IsoRealmsConstants::BLOCK_RADIUS;
   float mNorthEdge  = cNorth + IsoRealmsConstants::BLOCK_RADIUS;
   float mEastEdge   = cEast  + IsoRealmsConstants::BLOCK_RADIUS;
-  if (location.y > mSouthEdge  && location.y <= mNorthEdge && location.x > mWestEdge && location.x <= mEastEdge) {
-    return location.z == getHeightAt(location.x, location.y);
+  if (location.y >= mSouthEdge  && location.y < mNorthEdge && location.x >= mWestEdge && location.x < mEastEdge) {
+    float mSurfaceHeight = getHeightAt(location.x, location.y);
+    return location.z <= mSurfaceHeight && location.z >= mSurfaceHeight - 0.5f;
   }
   return false;
 }
 
 ICollisionData* TileSurface::getRollingEvent(Vertex& start, Vertex& end) {
   if (cCondition != NULL && !cCondition->isTrue()) {
-    return new SurfaceCollisionEvent(this, ICollisionData::SURFACE_LEAVE, new Vertex(start), 0.0f);
+    return new SurfaceCollisionEvent(this, ICollisionData::SURFACE_LEAVE, new Vertex(start), -cWestEastSlope, -cNorthSouthSlope, 0.0f);
   }
   
   float mGradient;
   Vertex* mLeavePoint = getBoundaryCrossingPoint(start, end, &mGradient, INFINITY);
   if (mLeavePoint != NULL) {
-    SurfaceCollisionEvent* mEvent = new SurfaceCollisionEvent(this, ICollisionData::SURFACE_LEAVE, mLeavePoint, mGradient);
+    SurfaceCollisionEvent* mEvent = new SurfaceCollisionEvent(this, ICollisionData::SURFACE_LEAVE, mLeavePoint, -cWestEastSlope, -cNorthSouthSlope, mGradient);
 //    mImpactPoint->setRelocationPoint(*mLeavePoint);
     return mEvent;
   }
@@ -209,16 +209,24 @@ ICollisionData* TileSurface::getRollingEvent(Vertex& start, Vertex& end) {
 }
 
 ICollisionData* TileSurface::getCollision(Vertex& start, Vertex& end) {
-  if (!contains(start) && (cCondition == NULL || cCondition->isTrue())) {
-    float mGradient;
-    Vertex* mEnterPoint = getBoundaryCrossingPoint(start, end, &mGradient, -INFINITY);
-    if (mEnterPoint != NULL) {
-      float mEnterHeight = getHeightAt(mEnterPoint->x, mEnterPoint->y);
-      // TODO: The "0.01f" is a bit nasty magic number
-      if (mEnterPoint->z <= mEnterHeight + 0.01f && mEnterPoint->z >= mEnterHeight - 0.5f) {
-        SurfaceCollisionEvent* mEvent = new SurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mEnterPoint, mGradient);
-//        mImpactPoint->setRelocationPoint(*mLeavePoint);
-        return mEvent;
+  if (cCondition == NULL || cCondition->isTrue()) {
+    if (contains(start)) {
+      float mStartDifference = start.z - getHeightAt(start.x, start.y);
+      float mEndDifference = end.z - getHeightAt(end.x, end.y);
+      if (mStartDifference >= mEndDifference) {
+        Vertex* mEnterPoint = new Vertex(start);
+        mEnterPoint->x = max(min(mEnterPoint->x, nextafterf(cEast  + IsoRealmsConstants::BLOCK_RADIUS, -INFINITY)), nextafterf(cWest  - IsoRealmsConstants::BLOCK_RADIUS, INFINITY));
+        mEnterPoint->y = max(min(mEnterPoint->y, nextafterf(cNorth + IsoRealmsConstants::BLOCK_RADIUS, -INFINITY)), nextafterf(cSouth - IsoRealmsConstants::BLOCK_RADIUS, INFINITY));
+        return new SurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mEnterPoint, -cWestEastSlope, -cNorthSouthSlope, 0.0f);
+      }
+    } else {
+      float mGradient;
+      Vertex* mEnterPoint = getBoundaryCrossingPoint(start, end, &mGradient, -INFINITY);
+      if (mEnterPoint != NULL) {
+        float mEnterHeight = getHeightAt(mEnterPoint->x, mEnterPoint->y);
+        if (mEnterPoint->z <= mEnterHeight && mEnterPoint->z >= mEnterHeight - 0.5f) {
+          return new SurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mEnterPoint, -cWestEastSlope, -cNorthSouthSlope, mGradient);
+        }
       }
     }
 
@@ -227,12 +235,12 @@ ICollisionData* TileSurface::getCollision(Vertex& start, Vertex& end) {
     if ((start.z > mStartHeight) != (end.z > mEndHeight) && start.z > mStartHeight) {
       float mEndHeightModified = mEndHeight - (start.z - end.z);
       float mGradient = (start.z - mStartHeight) / (mEndHeightModified - mStartHeight);
-      float mXImpact = start.x + (end.x - start.x) * mGradient;
-      float mYImpact = start.y + (end.y - start.y) * mGradient;
-      float mZImpact = getHeightAt(mXImpact, mYImpact);
+      double mXImpact = start.x + (end.x - start.x) * mGradient;
+      double mYImpact = start.y + (end.y - start.y) * mGradient;
+      double mZImpact = getHeightAt(mXImpact, mYImpact);
       Vertex* mImpactLocation = new Vertex(mXImpact, mYImpact, mZImpact);
       if (alligned(round(mImpactLocation->x), round(mImpactLocation->y))) {
-        SurfaceCollisionEvent *mEvent = new SurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mImpactLocation, mGradient);
+        SurfaceCollisionEvent *mEvent = new SurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mImpactLocation, -cWestEastSlope, -cNorthSouthSlope, mGradient);
         return mEvent;
       }
     }
@@ -278,6 +286,31 @@ IRollableSurface::RespawnPossibility TileSurface::getRespawnPossibility() {
 
 bool TileSurface::isRespawnPossibleNow() {
   return cBlockTypeProperties->isRespawnAllowed() && (cCondition == NULL || cCondition->isTrue());
+}
+
+void TileSurface::getRestingLocation(Vertex& location) {
+  float mYEdgeLocation = cNorthSouthSlope > 0 ? nextafterf(cSouth - IsoRealmsConstants::BLOCK_RADIUS,  INFINITY)
+                       : cNorthSouthSlope < 0 ? nextafterf(cNorth + IsoRealmsConstants::BLOCK_RADIUS, -INFINITY)
+                       :                        location.y;
+  float mXEdgeLocation = cWestEastSlope > 0 ? nextafterf(cWest - IsoRealmsConstants::BLOCK_RADIUS,  INFINITY)
+                       : cWestEastSlope < 0 ? nextafterf(cEast + IsoRealmsConstants::BLOCK_RADIUS, -INFINITY)
+                       :                      location.x;
+  std::cout << "X EDGE: " << mXEdgeLocation << std::endl;
+  float mDistanceToY = mYEdgeLocation - location.y;
+  float mDistanceToX = mXEdgeLocation - location.x;
+  std::cout << "Time to reach X: " << mDistanceToX << " / " << cWestEastSlope << " == " << fabs(mDistanceToX / cWestEastSlope) << std::endl;
+  std::cout << "Time to reach Y: " << fabs(mDistanceToY / cNorthSouthSlope) << std::endl;
+  if (fabs(mDistanceToY / cNorthSouthSlope) < fabs(mDistanceToX / cWestEastSlope) || isnan(fabs(mDistanceToX / cWestEastSlope))) {
+    std::cout << "Closer to Y" << std::endl;
+    // Reach Y edge first
+    location.y = mYEdgeLocation;
+    // TODO: location.x
+  } else {
+    std::cout << "Closer to X" << std::endl;
+    // Reach X edge first
+    location.x = mXEdgeLocation;
+    // TODO: location.y
+  }
 }
 
 BlockArea* TileSurface::getCoverage() {

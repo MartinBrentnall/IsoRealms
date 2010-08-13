@@ -16,29 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SURFACE_COLLISION_EVENT_H
-#define SURFACE_COLLISION_EVENT_H
+#include "SurfaceDataCache.h"
 
-#include "../../Plugins/CollidableSurfaceRegistry/ICollisionData.h"
+std::vector<TileColumn*>* SurfaceDataCache::getTileColumn(unsigned int x, unsigned int y) {
+  if (x < cTileColumns.size()) {
+    std::vector<std::vector<TileColumn*>*>* mRow = cTileColumns[x];
+    if (y < mRow->size()) {
+      return (*mRow)[y];
+    }
+  }
+  return NULL;
+}
 
-class SurfaceCollisionEvent:public ICollisionData {
-  private:
-  ICollisionData::CollisionType cType;
-  IRollableSurface* cSurface;
-  Vertex* cLocation;
-  float cXSlope;
-  float cYSlope;
-  float cGradient;
-  
-  public:
-  SurfaceCollisionEvent(IRollableSurface*, ICollisionData::CollisionType, Vertex*, float, float, float);
-    
-  IRollableSurface* getSurface();
-  ICollisionData::CollisionType getType();
-  Vertex* getEventLocation();
-  float getXSlope();
-  float getYSlope();
-  float getGradient();
-};
+void SurfaceDataCache::putTileColumn(std::vector<TileColumn*>* tileColumn, unsigned int x, unsigned int y) {
+  while (cTileColumns.size() <= x) {
+    cTileColumns.push_back(new std::vector<std::vector<TileColumn*>*>());
+  }
+  std::vector<std::vector<TileColumn*>*>* mRow = cTileColumns[x];
+  while (mRow->size() <= y) {
+    mRow->push_back(NULL);
+  }
+  (*mRow)[y] = tileColumn;
+}
 
-#endif
+

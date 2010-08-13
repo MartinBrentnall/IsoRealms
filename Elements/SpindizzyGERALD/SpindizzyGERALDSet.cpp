@@ -42,8 +42,8 @@ void SpindizzyGERALDSet::destroy(IElement* element) {
   delete element;
 }
 
-void SpindizzyGERALDSet::setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*, ICommandRegistry*) {
-  // Nothing to do... yet
+void SpindizzyGERALDSet::setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*, ICommandRegistry* commandRegistry) {
+  cCommandRegistry = commandRegistry;
 }
 
 std::string SpindizzyGERALDSet::getName() {
@@ -104,18 +104,30 @@ void SpindizzyGERALDSet::setPlugin(PlugSocket* socket, IPlugin* implementation) 
 }
 
 IPlugin* SpindizzyGERALDSet::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "3DModel")                    {return cGERALDModelFactory;}
-  if (socket->getType() == "Camera")                     {return cCamera;}
-  if (socket->getType() == "Collectables")               {return cCollectables;}
-  if (socket->getType() == "cCollidableSurfaceRegistry") {return cCollidableSurfaceRegistry;}
-  if (socket->getType() == "LocationAwareness")          {return cLocationAwareness;}
-  if (socket->getType() == "ZoneContext")                {return cZoneContext;}
+  if (socket->getType() == "3DModel")                   {return cGERALDModelFactory;}
+  if (socket->getType() == "Camera")                    {return cCamera;}
+  if (socket->getType() == "Collectables")              {return cCollectables;}
+  if (socket->getType() == "CollidableSurfaceRegistry") {return cCollidableSurfaceRegistry;}
+  if (socket->getType() == "LocationAwareness")         {return cLocationAwareness;}
+  if (socket->getType() == "ZoneContext")               {return cZoneContext;}
   // TODO: Throw wobbly!
   return NULL;
 }
 
 void SpindizzyGERALDSet::save(DOMNodeWriter* node) {
-  // Nothing to do.
+  // TODO: Implement this
+}
+
+void SpindizzyGERALDSet::load(DOMNodeWrapper* node) {
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "FallLimit") {
+      for (unsigned int i = 0; i < cElementFactories.size(); i++) {
+        static_cast<SpindizzyGERALDFactory*>(cElementFactories[i])->loadConfiguration(mNode, cCommandRegistry);
+      }
+    }
+  }
 }
 
 extern "C" IElementSet* create(DOMNodeWrapper* node) {

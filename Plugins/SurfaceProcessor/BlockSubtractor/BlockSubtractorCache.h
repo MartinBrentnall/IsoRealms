@@ -26,10 +26,16 @@
 
 #include "../ISurfaceProvider.h"
 
+#include "SurfaceDataCache.h"
+
 class BlockSubtractorCache {
   private:
+  int cZoneXOffset;
+  int cZoneYOffset;
   std::vector<ISurfaceProvider*>* cCurrentZoneProviders;
+  SurfaceDataCache* cCurrentSurfaceDataCache;
   std::map<IZone*, std::vector<ISurfaceProvider*>*> cOrderedSurfaceProvidersByZone;
+  std::map<IZone*, SurfaceDataCache*> cSurfaceDataCaches;
 
   int getIndex(std::vector<ISurfaceProvider*>*, ISurfaceProvider*);
 
@@ -41,6 +47,9 @@ class BlockSubtractorCache {
   void setDirty();
   void reinitialise();
 
+  std::vector<TileColumn*>* getTileColumn(int, int);
+  void putTileColumn(std::vector<TileColumn*>*, int, int);
+  
   /**
    * Return all surface provides in this cache.
    * 

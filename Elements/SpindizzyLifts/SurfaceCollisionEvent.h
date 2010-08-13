@@ -34,6 +34,8 @@ class SurfaceCollisionEvent:public ICollisionData {
   IRollableSurface* getSurface();
   ICollisionData::CollisionType getType();
   Vertex* getEventLocation();
+  float getXSlope();
+  float getYSlope();
   float getGradient();
 };
 

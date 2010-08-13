@@ -32,7 +32,7 @@ class DummyCollidableSurfaceRegistry:public ICollidableSurfaceRegistry,
   \*****************************************/
   void registerRollableSurface(IRollableSurface*, bool);
   void registerWallSurface(ICollidableWallSurface*);
-  std::vector<ICollisionData*> getNextEvent(Vertex&, Vertex&, bool);
+  ICollisionData* getNextEvent(Vertex&, Vertex&, bool);
   IRollableSurface* getSurfaceAt(Vertex&);
 };
 

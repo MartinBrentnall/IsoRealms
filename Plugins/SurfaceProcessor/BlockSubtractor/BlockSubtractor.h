@@ -34,6 +34,7 @@
 #include "WallColumn.h"
 #include "WallColumnPossibility.h"
 #include "WallConstructionData.h"
+#include "SurfaceDataCache.h"
 
 /**
  * Each surface provider is mapped to the original surfaces that it provides.
@@ -44,6 +45,7 @@ class BlockSubtractor:public ISurfaceProcessor {
   private:
  
   BlockSubtractorCache cCache;
+  std::map<IZone*, SurfaceDataCache*> cSurfaceDataCaches;
 
   std::vector<ITileSurfaceTemplate*> getTileSurfaces(ITileSurface*, ISurfaceProvider*, ITileSurface::FaceDirection);
 

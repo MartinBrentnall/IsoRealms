@@ -32,7 +32,7 @@ class SurfaceCache {
 
   public:
   void addRollableSurface(IRollableSurface*, bool);
-  std::vector<ICollisionData*> getNextEvent(Vertex&, Vertex&, bool);
+  ICollisionData* getNextEvent(Vertex&, Vertex&, bool);
   IRollableSurface* getSurfaceAt(Vertex&);
 };
 

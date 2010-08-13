@@ -26,7 +26,7 @@ const unsigned int SpindizzyGERALD::INIT_REGISTER_SURFACES = 2;
 const unsigned int SpindizzyGERALD::INIT_USE_SURFACES = 3;
 const unsigned int SpindizzyGERALD::BOUNCE_CONTROL_TIME = 40;
 
-SpindizzyGERALD::SpindizzyGERALD(IElementFactory* elementFactory, BlockLocation* startLocation, ISimpleModelFactory* geraldModelFactory, ICollectables* collectables, ICollidableSurfaceRegistry* collidableSurfaceRegistry, ILocationAwareness* locationAwareness, IZoneContext* zoneContext, ICamera* camera) : Element<>(elementFactory) {
+SpindizzyGERALD::SpindizzyGERALD(IElementFactory* elementFactory, BlockLocation* startLocation, ISimpleModelFactory* geraldModelFactory, ICollectables* collectables, ICollidableSurfaceRegistry* collidableSurfaceRegistry, ILocationAwareness* locationAwareness, IZoneContext* zoneContext, ICamera* camera, float fallLimit, Script* fallLimitScript) : Element<>(elementFactory) {
   cStartLocation = BlockLocation(*startLocation);
   cLocation.x = cStartLocation.x + IsoRealmsConstants::BLOCK_RADIUS;
   cLocation.y = cStartLocation.y + IsoRealmsConstants::BLOCK_RADIUS;
@@ -46,6 +46,8 @@ SpindizzyGERALD::SpindizzyGERALD(IElementFactory* elementFactory, BlockLocation*
   cEastKey = SDLK_RIGHT;
   cWestKey = SDLK_LEFT;
   cFallScript = NULL;
+  cFallLimitScript = fallLimitScript;
+  cFallLimit = fallLimit;
 }
 
 void SpindizzyGERALD::setModel(ISimpleModelFactory* geraldModelFactory) {
@@ -252,35 +254,22 @@ void SpindizzyGERALD::getNewLocation(float ticks, Vertex* location, Vertex* mome
 }
 
 ICollisionData* SpindizzyGERALD::pollCollisionEvent(Vertex& startLocation, Vertex& endLocation) {
-  if (!cEventQueue.empty()) {
-    ICollisionData* mEvent = cEventQueue.front();
-    cEventQueue.pop();
-    std::cout << "Returning queued event!" << std::endl;
-    return mEvent;
-  }
-  
+  ICollisionData* mEvent = NULL;
   if (cCurrentSurface != NULL) {
-    ICollisionData* mEvent = cCurrentSurface->getRollingEvent(startLocation, endLocation);
-    if (mEvent != NULL) {
-      cEventQueue.push(mEvent);
+    ICollisionData* mSurfaceLeftEvent = cCurrentSurface->getRollingEvent(startLocation, endLocation);
+    if (mSurfaceLeftEvent != NULL) {
+      mEvent = mSurfaceLeftEvent;
     }
   }
   
-  std::vector<ICollisionData*> mEvents = cCollidableSurfaceRegistry->getNextEvent(startLocation, endLocation, cCurrentSurface != NULL && cEventQueue.empty());
-  for (unsigned int i = 0; i < mEvents.size(); i++) {
-    if (cEventQueue.empty() || cEventQueue.front()->getGradient() == mEvents[i]->getGradient()) {
-      IRollableSurface* mEventSurface = mEvents[i]->getSurface();
-      if (mEventSurface != cCurrentSurface) {
-        cEventQueue.push(mEvents[i]);
-      }
+  ICollisionData* mOtherEvent = cCollidableSurfaceRegistry->getNextEvent(startLocation, endLocation, cCurrentSurface != NULL);
+  if (mOtherEvent != NULL) {
+    IRollableSurface* mEventSurface = mOtherEvent->getSurface();
+    if (mEventSurface != cCurrentSurface && (mEvent == NULL || mOtherEvent->getGradient() < mEvent->getGradient())) {
+      return mOtherEvent;
     }
   }
-  if (!cEventQueue.empty()) {
-    ICollisionData* mEvent = cEventQueue.front();
-    cEventQueue.pop();
-    return mEvent;
-  }
-  return NULL;
+  return mEvent;
 }
 
 void SpindizzyGERALD::updateRespawnData() {
@@ -310,14 +299,14 @@ void SpindizzyGERALD::updateRespawnData() {
   }
 }
 
-void SpindizzyGERALD::processEvent(ICollisionData& event, bool simultaneousEvent) {
+int mCycle = 0;
+
+bool SpindizzyGERALD::processEvent(ICollisionData& event) {
   Vertex* mEventLocation = event.getEventLocation();
   switch (event.getType()) {
     case ICollisionData::SURFACE_LEAVE: {
       std::cout << " - - - We left: " << event.getSurface() << std::endl;
-      Vertex* mEventLocation = event.getEventLocation();
-      cMomentum.z = cMomentum.x * -cCurrentSurface->getXAcceleration(mEventLocation->x, mEventLocation->y) +
-                    cMomentum.y * -cCurrentSurface->getYAcceleration(mEventLocation->x, mEventLocation->y); 
+      cMomentum.z = cMomentum.x * -event.getXSlope() + cMomentum.y * -event.getYSlope(); 
       cJumpedFromRamp = cMomentum.z > 0.0f;
       cSurfaceLeaveVerticalMomentum = cMomentum.z;
       cCurrentSurface = NULL;
@@ -327,23 +316,22 @@ void SpindizzyGERALD::processEvent(ICollisionData& event, bool simultaneousEvent
     case ICollisionData::SURFACE_MOUNT: {
       IRollableSurface* mMountedSurface = event.getSurface();
       if (mMountedSurface != cCurrentSurface) {
-        if (cMomentum.z == cSurfaceLeaveVerticalMomentum) { // TODO: This condition could pass in rare cases when GERALD bounces
-          float mMountedSurfaceIncline = cMomentum.x * -mMountedSurface->getXAcceleration(mEventLocation->x, mEventLocation->y) +
-                                         cMomentum.y * -mMountedSurface->getYAcceleration(mEventLocation->x, mEventLocation->y); 
-          if (cMomentum.z > mMountedSurfaceIncline) {
-            // Ignore this event because GERALD went over a bump, so he'll go into the air
-            std::cout << "IGNORED SURFACE MOUNT EVENT!" << std::endl;
-            return;
-          }
-        }
-        
         cMomentum.z = -cMomentum.z * mMountedSurface->getSurfaceBounce();
-        if (cMomentum.z == 0.0f || cPeakHeight <= mMountedSurface->getHeightAt(mEventLocation->x, mEventLocation->y)) {
-          cCurrentSurface = mMountedSurface;
-          cCurrentSurface->notifyContact();
-          updateRespawnData();
-          std::cout << " + + + We entd: " << cCurrentSurface << std::endl;
-          cPeakHeight = cMapBottom;
+        if (cCycleBounce || cMomentum.z == 0.0f || cPeakHeight <= mMountedSurface->getHeightAt(mEventLocation->x, mEventLocation->y)) {
+          if (cPeakHeight - mEventLocation->z > cFallLimit) {
+            std::cout << "Peak height " << cPeakHeight << std::endl;
+            if (cFallLimitScript != NULL) {
+              cFallLimitScript->execute();
+            }
+            destroy();
+            return false;
+          } else {
+            cCurrentSurface = mMountedSurface;
+            cCurrentSurface->notifyContact();
+            updateRespawnData();
+            std::cout << " + + + We entd: " << cCurrentSurface << std::endl;
+            cPeakHeight = cMapBottom;
+          }
         } else {
           Vertex mDummyLocation = *mEventLocation;
           cCurrentSurface = mMountedSurface;
@@ -354,12 +342,13 @@ void SpindizzyGERALD::processEvent(ICollisionData& event, bool simultaneousEvent
           std::cout << "Bounced to " << cMomentum.z << "...!" << std::endl;
           std::cout << "Peak height is " << cPeakHeight << "...!" << std::endl;
           std::cout << "Current height is " << mEventLocation->z << "...!" << std::endl;
-          float mFallHeight = cPeakHeight - mEventLocation->z;
+          float mFallHeight = (cPeakHeight - mEventLocation->z) + (cJumpedFromRamp ? 0.0f : 0.335f);
           std::cout << "Fall height is " << mFallHeight << "...!" << std::endl;
           float mIdealProjection = sqrt(mFallHeight * 2 * -GRAVITY_STRENGTH);
           std::cout << "Ideal projection is " << mIdealProjection << "...!" << std::endl;
           std::cout << "Jumped from ramp? " << cJumpedFromRamp << "...!" << std::endl;
           cMomentum.z = mIdealProjection;
+          cCycleBounce = true;
         }
       }
       break;
@@ -375,6 +364,7 @@ void SpindizzyGERALD::processEvent(ICollisionData& event, bool simultaneousEvent
     }
   }
   updateLocation(*mEventLocation);
+  return true;
 }
 
 SpindizzyGERALD::RespawnData* SpindizzyGERALD::getRespawnData() {
@@ -386,21 +376,35 @@ SpindizzyGERALD::RespawnData* SpindizzyGERALD::getRespawnData() {
   return mRespawnData;
 }
 
+void SpindizzyGERALD::destroy() {
+  cDestroyLocation = cLocation;
+  cRespawnAnimation = 0.0f;
+  cRespawning = true;
+  cZone = NULL;
+  cZoneContext->setZoneContext(cZone);
+}
+
+void SpindizzyGERALD::respawn() {
+  SpindizzyGERALD::RespawnData* mRespawnData = getRespawnData();
+  cLocation.x = mRespawnData->cX;
+  cLocation.y = mRespawnData->cY;
+  cCurrentSurface = mRespawnData->cSurface;
+  cLocation.z = cCurrentSurface->getHeightAt(cLocation.x, cLocation.y);
+  cZone = cMap->getZone(cLocation);
+  cZoneContext->setZoneContext(cZone);
+  cMomentum.x = 0.0f;
+  cMomentum.y = 0.0f;
+  cMomentum.z = 0.0f;
+  cRespawning = false;
+  cPeakHeight = cMapBottom;
+}
+
 void SpindizzyGERALD::checkFall() {
   if (cLocation.z < cMapBottom) {
-    SpindizzyGERALD::RespawnData* mRespawnData = getRespawnData();
-    cLocation.x = mRespawnData->cX;
-    cLocation.y = mRespawnData->cY;
-    cCurrentSurface = mRespawnData->cSurface;
-    cLocation.z = cCurrentSurface->getHeightAt(cLocation.x, cLocation.y);
-    cZone = cMap->getZone(cLocation);
-    cZoneContext->setZoneContext(cZone);
-    cMomentum.x = 0.0f;
-    cMomentum.y = 0.0f;
-    cMomentum.z = 0.0f;
     if (cFallScript != NULL) {
       cFallScript->execute();
     }
+    destroy();
   }
 }
 
@@ -427,35 +431,78 @@ void SpindizzyGERALD::updateLocation(Vertex& location) {
   updateRespawnLocation();
 }
 
-void SpindizzyGERALD::update(int ticks) {
+void SpindizzyGERALD::updateAlive(int ticks) {
+  std::cout << "CYCLE START ==================================================" << std::endl;
+  cCycleBounce = false;
   float mTicks = static_cast<float>(ticks);
   Vertex mProposedLocation = cLocation;
   Vertex mProposedMomentum = cMomentum;
   getNewLocation(mTicks, &mProposedLocation, &mProposedMomentum);
   ICollisionData* mNextEvent = pollCollisionEvent(cLocation, mProposedLocation);
+  bool mProposedLocationSet = false;
   while (mNextEvent != NULL) {
-    bool mSimultaneousEvent = !cEventQueue.empty();
-    processEvent(*mNextEvent, mSimultaneousEvent);
-    if (!mSimultaneousEvent) {
-      std::cout << "Processing last event of set!" << std::endl;
+    if (!processEvent(*mNextEvent)) {
+      mTicks = 0.0f;
+      mNextEvent = NULL;
+    } else {
+      float mOldTicks = mTicks;
       mTicks -= mTicks * mNextEvent->getGradient();
-      mProposedLocation = cLocation;
-      mProposedMomentum = cMomentum;
-      getNewLocation(mTicks, &mProposedLocation, &mProposedMomentum);
+      if (mOldTicks - mTicks < 0.1f) {
+        cFastEvents++;
+      } else {
+        cFastEvents = 0;
+      }
+      if (mTicks > 0.0f) {
+        mProposedLocation = cLocation;
+        mProposedMomentum = cMomentum;
+        getNewLocation(mTicks, &mProposedLocation, &mProposedMomentum);
+      }
+      mNextEvent = pollCollisionEvent(cLocation, mProposedLocation);
+      if (cFastEvents > 4 && mNextEvent != NULL && mNextEvent->getType() == ICollisionData::SURFACE_LEAVE) {
+        mProposedLocation = cLocation;
+        mProposedMomentum = cMomentum;
+        getNewLocation(mTicks, &mProposedLocation, &mProposedMomentum);
+        cCurrentSurface = mNextEvent->getSurface();
+        cCurrentSurface->getRestingLocation(mProposedLocation);
+        mProposedLocationSet = true;
+        mNextEvent = pollCollisionEvent(cLocation, mProposedLocation);
+      }
     }
-    mNextEvent = pollCollisionEvent(cLocation, mProposedLocation);
   }
-  mProposedLocation = cLocation;
-  mProposedMomentum = cMomentum;
-  getNewLocation(mTicks, &mProposedLocation, &cMomentum);
+  if (!mProposedLocationSet) {
+    mProposedLocation = cLocation;
+    getNewLocation(mTicks, &mProposedLocation, &cMomentum);
+  } else {
+    cMomentum = mProposedMomentum;
+  }
   updateLocation(mProposedLocation);
   checkFall();
+}
+
+void SpindizzyGERALD::updateDead(int ticks) {
+  cRespawnAnimation += ticks / 500.0f;
+  if (cRespawnAnimation >= 1.0f) {
+    respawn();
+  } else {
+    SpindizzyGERALD::RespawnData* mRespawnData = getRespawnData();
+    cLocation.x = sine(cDestroyLocation.x, mRespawnData->cX, cRespawnAnimation);
+    cLocation.y = sine(cDestroyLocation.y, mRespawnData->cY, cRespawnAnimation);
+    cLocation.z = sine(cDestroyLocation.z, mRespawnData->cSurface->getHeightAt(mRespawnData->cX, mRespawnData->cY), cRespawnAnimation);
+  }
+}
+
+void SpindizzyGERALD::update(int ticks) {
+  if (cRespawning) {
+    updateDead(ticks);
+  } else {
+    updateAlive(ticks);
+  }
 }
 
 void SpindizzyGERALD::keyDown(SDLKey& key) {
   switch (key) {
     case SDLK_SPACE: {
-      if (cCurrentSurface != NULL && cCurrentSurface->getSurfaceGrip() > 0.5f) {
+      if (cCurrentSurface != NULL && cCurrentSurface->getSurfaceFriction() > 0.0f) {
         cMomentum.x = 0.0f;
         cMomentum.y = 0.0f;
         cMomentum.z = 0.0f;
@@ -480,9 +527,11 @@ bool SpindizzyGERALD::input(SDL_Event& event) {
 }
 
 void SpindizzyGERALD::render() {
-  glPushMatrix();
-  cGERALDModel->render();
-  glPopMatrix();
+  if (!cRespawning) {
+    glPushMatrix();
+    cGERALDModel->render();
+    glPopMatrix();
+  }
 }
 
 void SpindizzyGERALD::save(DOMNodeWriter* node, BlockLocation& relative) {

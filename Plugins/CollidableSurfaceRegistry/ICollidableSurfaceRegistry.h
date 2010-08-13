@@ -30,7 +30,7 @@ class ICollidableSurfaceRegistry:public virtual IPlugin {
   public:
   virtual void registerRollableSurface(IRollableSurface*, bool) = 0;
   virtual void registerWallSurface(ICollidableWallSurface*) = 0;
-  virtual std::vector<ICollisionData*> getNextEvent(Vertex&, Vertex&, bool) = 0;
+  virtual ICollisionData* getNextEvent(Vertex&, Vertex&, bool) = 0;
   virtual IRollableSurface* getSurfaceAt(Vertex&) = 0;
 };
 

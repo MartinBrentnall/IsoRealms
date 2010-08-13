@@ -8,9 +8,8 @@ void DummyCollidableSurfaceRegistry::registerWallSurface(ICollidableWallSurface*
   // Nothing to do.
 }
 
-std::vector<ICollisionData*> DummyCollidableSurfaceRegistry::getNextEvent(Vertex&, Vertex&, bool) {
-  std::vector<ICollisionData*> mNoEvents;
-  return mNoEvents;
+ICollisionData* DummyCollidableSurfaceRegistry::getNextEvent(Vertex&, Vertex&, bool) {
+  return NULL;
 }
 
 IRollableSurface* DummyCollidableSurfaceRegistry::getSurfaceAt(Vertex&) {

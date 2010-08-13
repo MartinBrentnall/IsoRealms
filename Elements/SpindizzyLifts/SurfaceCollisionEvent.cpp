@@ -19,6 +19,14 @@ Vertex* SurfaceCollisionEvent::getEventLocation() {
   return cLocation;
 }
 
+float SurfaceCollisionEvent::getXSlope() {
+  return 0.0f;
+}
+
+float SurfaceCollisionEvent::getYSlope() {
+  return 0.0f;
+}
+
 float SurfaceCollisionEvent::getGradient() {
   return cGradient;
 }

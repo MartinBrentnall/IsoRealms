@@ -16,29 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SURFACE_COLLISION_EVENT_H
-#define SURFACE_COLLISION_EVENT_H
+#ifndef SURFACE_DATA_CACHE_H
+#define SURFACE_DATA_CACHE_H
 
-#include "../../Plugins/CollidableSurfaceRegistry/ICollisionData.h"
+#include <vector>
 
-class SurfaceCollisionEvent:public ICollisionData {
+#include "TileColumn.h"
+
+class SurfaceDataCache {
   private:
-  ICollisionData::CollisionType cType;
-  IRollableSurface* cSurface;
-  Vertex* cLocation;
-  float cXSlope;
-  float cYSlope;
-  float cGradient;
-  
-  public:
-  SurfaceCollisionEvent(IRollableSurface*, ICollisionData::CollisionType, Vertex*, float, float, float);
+  std::vector<std::vector<std::vector<TileColumn*>*>*> cTileColumns;
     
-  IRollableSurface* getSurface();
-  ICollisionData::CollisionType getType();
-  Vertex* getEventLocation();
-  float getXSlope();
-  float getYSlope();
-  float getGradient();
+  public:
+  std::vector<TileColumn*>* getTileColumn(unsigned int, unsigned int);
+  void putTileColumn(std::vector<TileColumn*>*, unsigned int, unsigned int);
+
 };
 
 #endif

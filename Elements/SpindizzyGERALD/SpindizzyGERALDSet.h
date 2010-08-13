@@ -42,6 +42,7 @@ class SpindizzyGERALDSet:public ISpindizzyGERALDSet {
   ICollidableSurfaceRegistry* cCollidableSurfaceRegistry;
   ILocationAwareness* cLocationAwareness;
   IZoneContext* cZoneContext;
+  ICommandRegistry* cCommandRegistry;
 
   void setModel(ISimpleModelFactory*);
 
@@ -54,6 +55,8 @@ class SpindizzyGERALDSet:public ISpindizzyGERALDSet {
   std::vector<IElementFactory*> getElementFactories();
   void setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*, ICommandRegistry*);
   void destroy(IElement*);
+  void save(DOMNodeWriter*);
+  void load(DOMNodeWrapper*);
 
   /*****************************\
    * Implements IPluginSupport *
@@ -62,7 +65,6 @@ class SpindizzyGERALDSet:public ISpindizzyGERALDSet {
   std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
-  void save(DOMNodeWriter*);
 };
 
 #endif

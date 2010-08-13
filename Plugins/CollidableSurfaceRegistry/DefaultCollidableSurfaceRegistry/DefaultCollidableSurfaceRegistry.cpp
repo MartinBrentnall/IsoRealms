@@ -18,12 +18,12 @@ void DefaultCollidableSurfaceRegistry::registerWallSurface(ICollidableWallSurfac
   // TODO: Implement this
 }
 
-std::vector<ICollisionData*> DefaultCollidableSurfaceRegistry::getNextEvent(Vertex& start, Vertex& end, bool intercepting) {
+ICollisionData* DefaultCollidableSurfaceRegistry::getNextEvent(Vertex& start, Vertex& end, bool intercepting) {
   std::map<IZone*, SurfaceCache*>::iterator i = cZoneSurfaceCaches.find(cRuntimeZone);
   if (i != cZoneSurfaceCaches.end()) {
-    std::vector<ICollisionData*> mEvents = i->second->getNextEvent(start, end, intercepting);
-    if (!mEvents.empty()) {
-      return mEvents;
+    ICollisionData* mEvent = i->second->getNextEvent(start, end, intercepting);
+    if (mEvent != NULL) {
+      return mEvent;
     }
   }
   if (!intercepting) {
@@ -33,16 +33,15 @@ std::vector<ICollisionData*> DefaultCollidableSurfaceRegistry::getNextEvent(Vert
         IZone* mEnteredZone = mZoneEvents[i]->getZone();
         std::map<IZone*, SurfaceCache*>::iterator j = cZoneSurfaceCaches.find(mEnteredZone);
         if (j != cZoneSurfaceCaches.end()) {
-          std::vector<ICollisionData*> mEvents = j->second->getNextEvent(start, end, false);
-          if (!mEvents.empty()) {
-            return mEvents;
+          ICollisionData* mEvent = j->second->getNextEvent(start, end, false);
+          if (mEvent != NULL) {
+            return mEvent;
           }
         }
       }
     }
   }
-  std::vector<ICollisionData*> mNoEvents;
-  return mNoEvents;
+  return NULL;
 }
 
 void DefaultCollidableSurfaceRegistry::setRuntimeContext(IMap* map) {

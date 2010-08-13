@@ -16,29 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SURFACE_COLLISION_EVENT_H
-#define SURFACE_COLLISION_EVENT_H
+#ifndef COLLISION_H
+#define COLLISION_H
 
-#include "../../Plugins/CollidableSurfaceRegistry/ICollisionData.h"
+#include "Vertex.h"
 
-class SurfaceCollisionEvent:public ICollisionData {
-  private:
-  ICollisionData::CollisionType cType;
-  IRollableSurface* cSurface;
-  Vertex* cLocation;
-  float cXSlope;
-  float cYSlope;
-  float cGradient;
-  
+class Collision {
   public:
-  SurfaceCollisionEvent(IRollableSurface*, ICollisionData::CollisionType, Vertex*, float, float, float);
-    
-  IRollableSurface* getSurface();
-  ICollisionData::CollisionType getType();
-  Vertex* getEventLocation();
-  float getXSlope();
-  float getYSlope();
-  float getGradient();
+  Vertex* getXPlaneIntersection(float, Vertex&, Vertex&, float*);
+  Vertex* getYPlaneIntersection(float, Vertex&, Vertex&, float*);
+  Vertex* getZPlaneIntersection(float, Vertex&, Vertex&, float*);
+  Vertex* getLineSegmentIntersection(Vertex&, Vertex&, Vertex&, Vertex&);
 };
 
 #endif

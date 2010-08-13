@@ -1,9 +1,11 @@
 #include "SurfaceCollisionEvent.h"
 
-SurfaceCollisionEvent::SurfaceCollisionEvent(IRollableSurface* surface, ICollisionData::CollisionType type, Vertex* location, float gradient) {
+SurfaceCollisionEvent::SurfaceCollisionEvent(IRollableSurface* surface, ICollisionData::CollisionType type, Vertex* location, float xSlope, float ySlope, float gradient) {
   cSurface = surface;
   cType = type;
   cLocation = location;
+  cXSlope = xSlope;
+  cYSlope = ySlope;
   cGradient = gradient;
 }
 
@@ -19,10 +21,15 @@ Vertex* SurfaceCollisionEvent::getEventLocation() {
   return cLocation;
 }
 
+float SurfaceCollisionEvent::getXSlope() {
+  return cXSlope;
+}
+
+float SurfaceCollisionEvent::getYSlope() {
+  return cYSlope;
+}
+
 float SurfaceCollisionEvent::getGradient() {
   return cGradient;
 }
-
-
-
 
