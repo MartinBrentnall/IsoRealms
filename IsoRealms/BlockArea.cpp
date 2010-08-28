@@ -83,6 +83,14 @@ bool BlockArea::overlaps(BlockArea& blockArea) {
       && blockArea.cEndLocation.z >= cStartLocation.z && blockArea.cStartLocation.z <= cEndLocation.z;
 }
 
+// CollisionVertex* BlockArea::getEntryPoint(Vertex& start, Vertex& end) {
+//   return Collision::getEntryPoint(start, end, cWest, cEast, cSouth, cNorth, cBottom, cTop);
+// }
+//   
+// CollisionVertex* BlockArea::getExitPoint(Vertex& start, Vertex& end) {
+//   return Collision::getExitPoint(start, end, cWest, cEast, cSouth, cNorth, cBottom, cTop);
+// }
+
 void BlockArea::debug() {
   cStartLocation.debug();
   cEndLocation.debug();

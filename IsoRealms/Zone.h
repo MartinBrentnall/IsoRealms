@@ -26,6 +26,8 @@
 
 #include "BlockArea.h"
 #include "BlockLocation.h"
+#include "Collision.h"
+#include "CollisionVertex.h"
 #include "DOMNodeWrapper.h"
 #include "DOMNodeWriter.h"
 #include "ElementSetRegistry.h"
@@ -64,8 +66,6 @@ class Zone:public BlockArea,
   void zoneChanged();
 
   bool containsElement(IElement*);
-
-  ZoneEvent* getIntersection(Vertex&, Vertex&, ZoneEvent::Type);
 
   public:
   Zone(BlockLocation&, BlockLocation&);

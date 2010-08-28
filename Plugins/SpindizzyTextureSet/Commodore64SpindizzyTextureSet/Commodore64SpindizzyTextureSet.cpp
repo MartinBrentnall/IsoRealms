@@ -18,6 +18,19 @@
  */
 #include "Commodore64SpindizzyTextureSet.h"
 
+const std::string Commodore64SpindizzyTextureSet::LIFT_CIRCLE_BOTH_NAME   = "LiftCircleFilled";
+const std::string Commodore64SpindizzyTextureSet::LIFT_CIRCLE_LEFT_NAME   = "LiftCircleLeft";
+const std::string Commodore64SpindizzyTextureSet::LIFT_CIRCLE_RIGHT_NAME  = "LiftCircleRight";
+const std::string Commodore64SpindizzyTextureSet::LIFT_CIRCLE_NONE_NAME   = "LiftCircleEmpty";
+const std::string Commodore64SpindizzyTextureSet::LIFT_SQUARE_BOTH_NAME   = "LiftSquareFilled";
+const std::string Commodore64SpindizzyTextureSet::LIFT_SQUARE_LEFT_NAME   = "LiftSquareLeft";
+const std::string Commodore64SpindizzyTextureSet::LIFT_SQUARE_RIGHT_NAME  = "LiftSquareRight";
+const std::string Commodore64SpindizzyTextureSet::LIFT_SQUARE_NONE_NAME   = "LiftSquareEmpty";
+const std::string Commodore64SpindizzyTextureSet::LIFT_DIAMOND_BOTH_NAME  = "LiftDiamondFilled";
+const std::string Commodore64SpindizzyTextureSet::LIFT_DIAMOND_LEFT_NAME  = "LiftDiamondLeft";
+const std::string Commodore64SpindizzyTextureSet::LIFT_DIAMOND_RIGHT_NAME = "LiftDiamondRight";
+const std::string Commodore64SpindizzyTextureSet::LIFT_DIAMOND_NONE_NAME  = "LiftDiamondEmpty";
+
 /* Generation functions */
 Image* Commodore64SpindizzyTextureSet::makePlainImage(Colour* colour) {
   Image* mImage = new Image(RESOLUTION, RESOLUTION, false);
@@ -398,6 +411,19 @@ void Commodore64SpindizzyTextureSet::generateTextures() {
   cTextures[LIFT_DIAMOND_BOTH] = new Commodore64SpindizzyTexture(generateLiftDiamondBoth());
 
   cTextures[BACKGROUND] = new PlainColourTexture(cColourScheme->getColour(IFourColourSupport::BACKGROUND));
+  
+  cTexturesByName[LIFT_CIRCLE_BOTH_NAME]   = cTextures[LIFT_CIRCLE_BOTH];
+  cTexturesByName[LIFT_CIRCLE_LEFT_NAME]   = cTextures[LIFT_CIRCLE_LEFT];
+  cTexturesByName[LIFT_CIRCLE_RIGHT_NAME]  = cTextures[LIFT_CIRCLE_RIGHT];
+  cTexturesByName[LIFT_CIRCLE_NONE_NAME]   = cTextures[LIFT_CIRCLE_NONE];
+  cTexturesByName[LIFT_SQUARE_BOTH_NAME]   = cTextures[LIFT_SQUARE_BOTH];
+  cTexturesByName[LIFT_SQUARE_LEFT_NAME]   = cTextures[LIFT_SQUARE_LEFT];
+  cTexturesByName[LIFT_SQUARE_RIGHT_NAME]  = cTextures[LIFT_SQUARE_RIGHT];
+  cTexturesByName[LIFT_SQUARE_NONE_NAME]   = cTextures[LIFT_SQUARE_NONE];
+  cTexturesByName[LIFT_DIAMOND_BOTH_NAME]  = cTextures[LIFT_DIAMOND_BOTH];
+  cTexturesByName[LIFT_DIAMOND_LEFT_NAME]  = cTextures[LIFT_DIAMOND_LEFT];
+  cTexturesByName[LIFT_DIAMOND_RIGHT_NAME] = cTextures[LIFT_DIAMOND_RIGHT];
+  cTexturesByName[LIFT_DIAMOND_NONE_NAME]  = cTextures[LIFT_DIAMOND_NONE];
 }
 
 void Commodore64SpindizzyTextureSet::destroyTextures() {
@@ -442,6 +468,10 @@ IPlugin* Commodore64SpindizzyTextureSet::getPlugin(PlugSocket* socket) {
 
 ISpindizzyTexture* Commodore64SpindizzyTextureSet::getTexture(TextureType type) {
   return cTextures[type];
+}
+
+ISpindizzyTexture* Commodore64SpindizzyTextureSet::getTexture(const std::string& name) {
+  return cTexturesByName[name]; // TODO: Return a default if the specified one doesn't exist.
 }
 
 Commodore64SpindizzyTextureSet::~Commodore64SpindizzyTextureSet() {

@@ -112,10 +112,10 @@ Vertex* TileSurface::getBoundaryCrossingPoint(Vertex& start, Vertex& end, float*
   *mLowestGradient = 2.0f;
   float mXMovement = end.x - start.x;
   float mYMovement = end.y - start.y;
-  float mNorth = cNorth + IsoRealmsConstants::BLOCK_RADIUS;
-  float mEast = cEast + IsoRealmsConstants::BLOCK_RADIUS;
   float mSouth = cSouth - IsoRealmsConstants::BLOCK_RADIUS;
-  float mWest = cWest - IsoRealmsConstants::BLOCK_RADIUS;
+  float mWest  = cWest  - IsoRealmsConstants::BLOCK_RADIUS;
+  float mNorth = cNorth + IsoRealmsConstants::BLOCK_RADIUS;
+  float mEast  = cEast  + IsoRealmsConstants::BLOCK_RADIUS;
   float mImpactX;
   float mImpactY;
   bool mXKnown = false;
@@ -199,12 +199,8 @@ ICollisionData* TileSurface::getRollingEvent(Vertex& start, Vertex& end) {
   float mGradient;
   Vertex* mLeavePoint = getBoundaryCrossingPoint(start, end, &mGradient, INFINITY);
   if (mLeavePoint != NULL) {
-    SurfaceCollisionEvent* mEvent = new SurfaceCollisionEvent(this, ICollisionData::SURFACE_LEAVE, mLeavePoint, -cWestEastSlope, -cNorthSouthSlope, mGradient);
-//    mImpactPoint->setRelocationPoint(*mLeavePoint);
-    return mEvent;
+    return new SurfaceCollisionEvent(this, ICollisionData::SURFACE_LEAVE, mLeavePoint, -cWestEastSlope, -cNorthSouthSlope, mGradient);
   }
-
-  // No event
   return NULL;
 }
 
@@ -233,8 +229,7 @@ ICollisionData* TileSurface::getCollision(Vertex& start, Vertex& end) {
     float mStartHeight = getHeightAt(start.x, start.y);
     float mEndHeight = getHeightAt(end.x, end.y);
     if ((start.z > mStartHeight) != (end.z > mEndHeight) && start.z > mStartHeight) {
-      float mEndHeightModified = mEndHeight - (start.z - end.z);
-      float mGradient = (start.z - mStartHeight) / (mEndHeightModified - mStartHeight);
+      float mGradient = Collision::getCrossingPoint(start.z, end.z, mStartHeight, mEndHeight);
       double mXImpact = start.x + (end.x - start.x) * mGradient;
       double mYImpact = start.y + (end.y - start.y) * mGradient;
       double mZImpact = getHeightAt(mXImpact, mYImpact);

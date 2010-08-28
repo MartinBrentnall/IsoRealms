@@ -19,14 +19,42 @@
 #ifndef COLLISION_H
 #define COLLISION_H
 
+#include <cmath>
+
+#include "BlockArea.h"
+#include "CollisionVertex.h"
 #include "Vertex.h"
 
 class Collision {
   public:
-  Vertex* getXPlaneIntersection(float, Vertex&, Vertex&, float*);
-  Vertex* getYPlaneIntersection(float, Vertex&, Vertex&, float*);
-  Vertex* getZPlaneIntersection(float, Vertex&, Vertex&, float*);
-  Vertex* getLineSegmentIntersection(Vertex&, Vertex&, Vertex&, Vertex&);
+  static void clamp(float, float, float*);
+  static float getCrossingPoint(float, float, float);
+  static float getCrossingPoint(float, float, float, float);
+  static bool contains(Vertex&, float, float, float, float, float, float);
+  static CollisionVertex* getXCrossingPoint(Vertex&, Vertex&, float); 
+  static CollisionVertex* getYCrossingPoint(Vertex&, Vertex&, float);
+  static CollisionVertex* getZCrossingPoint(Vertex&, Vertex&, float);
+/*  static CollisionVertex* getCrossingPoint(float, float, float, float, float, float, float);
+  static CollisionVertex* getCrossingPoint(float, float, float, float, float, float, float, float);
+  static CollisionVertex* getXCrossingPoint(Vertex&, Vertex&, float, float, float, float);
+  static CollisionVertex* getYCrossingPoint(Vertex&, Vertex&, float, float, float, float);
+  static CollisionVertex* getZCrossingPoint(Vertex&, Vertex&, float, float, float, float);*/
+  static CollisionVertex* getXCrossingPoint(Vertex&, Vertex&, float, float, float, float, float);
+  static CollisionVertex* getYCrossingPoint(Vertex&, Vertex&, float, float, float, float, float);
+  static CollisionVertex* getZCrossingPoint(Vertex&, Vertex&, float, float, float, float, float);
+  static CollisionVertex* getXCrossingPoint(Vertex&, Vertex&, float, BlockArea&);
+  static CollisionVertex* getYCrossingPoint(Vertex&, Vertex&, float, BlockArea&);
+  static CollisionVertex* getZCrossingPoint(Vertex&, Vertex&, float, BlockArea&);
+  static CollisionVertex* getCrossingPoint(Vertex&, Vertex&, float, float, float, float, float, float, bool);
+  static bool hasCrossed(Vertex&, Vertex&, float, float, float, float, float, float, bool);
+  static CollisionVertex* getEntryPoint(Vertex&, Vertex&, float, float, float, float, float, float);
+  static CollisionVertex* getExitPoint(Vertex&, Vertex&, float, float, float, float, float, float);
+  static float getCrossingPoint(Vertex&, Vertex&, Vertex&, float, bool);
+  static float getEntryPoint(Vertex&, Vertex&, Vertex&, float);
+  static float getExitPoint(Vertex&, Vertex&, Vertex&, float);
+  static float getCrossingPoint(Vertex&, Vertex&, float, Vertex&, Vertex&, float, bool);
+  static float getEntryPoint(Vertex&, Vertex&, float, Vertex&, Vertex&, float);
+  static float getExitPoint(Vertex&, Vertex&, float, Vertex&, Vertex&, float);
 };
 
 #endif

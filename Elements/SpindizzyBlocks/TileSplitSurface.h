@@ -23,6 +23,7 @@
 #include <GL/gl.h>
 
 #include <IsoRealms/BlockLocation.h>
+#include <IsoRealms/Collision.h>
 #include <IsoRealms/Condition.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 
@@ -49,6 +50,7 @@ class TileSplitSurface:public ISpindizzyTileSurface {
   Vertex* getBoundaryCrossingPoint(Vertex&, Vertex&, float*, float);
   bool hasFlatSide();
   float getHeightAt(float, float, bool);
+  void confine(double*, double*);
   bool inNorthSplit(float, float);
   ICollisionData* getImpactCollision(Vertex&, Vertex&, bool);
 

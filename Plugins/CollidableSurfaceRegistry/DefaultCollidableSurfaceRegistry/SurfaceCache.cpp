@@ -9,11 +9,11 @@ void SurfaceCache::addRollableSurface(IRollableSurface* surface, bool intercepti
   }
 }
 
-ICollisionData* SurfaceCache::getNextEvent(Vertex& start, Vertex& end, bool interceptingOnly) {
+ICollisionData* SurfaceCache::getNextEvent(Vertex& start, Vertex& end, IRollableSurface* currentSurface) {
   std::vector<ICollisionData*> mEvents;
   float mEventGradient = -1.0f;
   ICollisionData* mStaticEvent = NULL;
-  if (!interceptingOnly) {
+  if (currentSurface == NULL) {
     for (unsigned int i = 0; i < cRollableSurfaces.size(); i++) {
       ICollisionData* mEvent = cRollableSurfaces[i]->getCollision(start, end);
       if (mEvent != NULL) {

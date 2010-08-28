@@ -90,74 +90,14 @@ void SpindizzyJewel::collect() {
 
 bool SpindizzyJewel::isCollected(Vertex& start, Vertex& end) {
   if (!cCollected) {
-    float mXMovement = end.x - start.x;
-    float mYMovement = end.y - start.y;
-    float mZMovement = end.z - start.z;
     float mWest   = cLocation.x - IsoRealmsConstants::BLOCK_RADIUS;
     float mEast   = cLocation.x + IsoRealmsConstants::BLOCK_RADIUS;
     float mSouth  = cLocation.y - IsoRealmsConstants::BLOCK_RADIUS;
     float mNorth  = cLocation.y + IsoRealmsConstants::BLOCK_RADIUS;
     float mBottom = cLocation.z - 0.25f;
     float mTop    = cLocation.z + 1.0f;
-  
-    float mGradient = (mWest - start.x) / mXMovement;
-    if (mGradient >= 0.0f && mGradient <= 1.0f) {
-      float mYLocation = start.y + mYMovement * mGradient;
-      float mZLocation = start.z + mZMovement * mGradient;
-      if (mYLocation >= mSouth && mYLocation <= mNorth && mZLocation >= mBottom && mZLocation <= mTop) {
-        collect();
-        return true;
-      }
-    }
-  
-    mGradient = (mEast - start.x) / mXMovement;
-    if (mGradient >= 0.0f && mGradient <= 1.0f) {
-      float mYLocation = start.y + mYMovement * mGradient;
-      float mZLocation = start.z + mZMovement * mGradient;
-      if (mYLocation >= mSouth && mYLocation <= mNorth && mZLocation >= mBottom && mZLocation <= mTop) {
-        collect();
-        return true;
-      }
-    }
-  
-    mGradient = (mNorth - start.y) / mYMovement;
-    if (mGradient >= 0.0f && mGradient <= 1.0f) {
-      float mXLocation = start.x + mXMovement * mGradient;
-      float mZLocation = start.z + mZMovement * mGradient;
-      if (mXLocation >= mWest && mXLocation <= mEast && mZLocation >= mBottom && mZLocation <= mTop) {
-        collect();
-        return true;
-      }
-    }
-  
-    mGradient = (mSouth - start.y) / mYMovement;
-    if (mGradient >= 0.0f && mGradient <= 1.0f) {
-      float mXLocation = start.x + mXMovement * mGradient;
-      float mZLocation = start.z + mZMovement * mGradient;
-      if (mXLocation >= mWest && mXLocation <= mEast && mZLocation >= mBottom && mZLocation <= mTop) {
-        collect();
-        return true;
-      }
-    }
-  
-    mGradient = (mTop - start.z) / mZMovement;
-    if (mGradient >= 0.0f && mGradient <= 1.0f) {
-      float mXLocation = start.x + mXMovement * mGradient;
-      float mYLocation = start.y + mYMovement * mGradient;
-      if (mXLocation >= mWest && mXLocation <= mEast && mYLocation >= mSouth && mYLocation <= mNorth) {
-        collect();
-        return true;
-      }
-    }
-  
-    mGradient = (mBottom - start.z) / mZMovement;
-    if (mGradient >= 0.0f && mGradient <= 1.0f) {
-      float mXLocation = start.x + mXMovement * mGradient;
-      float mYLocation = start.y + mYMovement * mGradient;
-      if (mXLocation >= mWest && mXLocation <= mEast && mYLocation >= mSouth && mYLocation <= mNorth) {
-        collect();
-        return true;
-      }
+    if (Collision::hasCrossed(start, end, mWest, mEast, mSouth, mNorth, mBottom, mTop, true)) {
+      collect();
     }
   }
   return false;

@@ -23,6 +23,7 @@
 
 class IZone;
 
+#include "CollisionVertex.h"
 #include "Vertex.h"
 
 class ZoneEvent {
@@ -52,15 +53,9 @@ class ZoneEvent {
   Type cType;
 
   /**
-   * The time at which this event occurred within a known interval, from 0.0f
-   * (start) until 1.0f (end).
-   */
-  float cTime;
-
-  /**
    * The location at which the event occurred.
    */
-  Vertex* cLocation;
+  CollisionVertex* cCollisionVertex;
 
   public:
 
@@ -73,7 +68,7 @@ class ZoneEvent {
    *        interval from 0.0f (start) until 1.0f (end).
    * @param Vertex*  The location of the event.
    */
-  ZoneEvent(IZone*, Type, float, Vertex*);
+  ZoneEvent(IZone*, Type, CollisionVertex*);
 
   /**
    * Get the zone on which this event occurred.

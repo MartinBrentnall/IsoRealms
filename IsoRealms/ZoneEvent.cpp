@@ -18,11 +18,10 @@
  */
 #include "ZoneEvent.h"
 
-ZoneEvent::ZoneEvent(IZone* zone, Type type, float time, Vertex* location) {
+ZoneEvent::ZoneEvent(IZone* zone, Type type, CollisionVertex* collisionVertex) {
   cZone = zone;
   cType = type;
-  cTime = time;
-  cLocation = location;
+  cCollisionVertex = collisionVertex;
 }
 
 IZone* ZoneEvent::getZone() {
@@ -34,15 +33,17 @@ ZoneEvent::Type ZoneEvent::getType() {
 }
 
 float ZoneEvent::getTime() {
-  return cTime;
+  return cCollisionVertex->gradient;
 }
 
 Vertex* ZoneEvent::getLocation() {
-  return cLocation;
+  return NULL; // TODO: Implement this... although do we really need it?
 }
 
 bool ZoneEvent::operator==(const ZoneEvent& other) const {
-  return cTime == other.cTime && cType == other.cType;
+  float mThisTime = cCollisionVertex->gradient;
+  float mOtherTime = other.cCollisionVertex->gradient;
+  return mThisTime == mOtherTime && cType == other.cType;
 }
 
 bool ZoneEvent::operator!=(const ZoneEvent& other) const {
@@ -50,18 +51,22 @@ bool ZoneEvent::operator!=(const ZoneEvent& other) const {
 }
 
 bool ZoneEvent::operator<(const ZoneEvent& other) const {
+  float mThisTime = cCollisionVertex->gradient;
+  float mOtherTime = other.cCollisionVertex->gradient;
   if (cZone == other.cZone) {
-    return cTime < other.cTime || (cTime == other.cTime && cType == ENTERED && other.cType == EXITED);
+    return mThisTime < mOtherTime || (mThisTime == mOtherTime && cType == ENTERED && other.cType == EXITED);
   } else {
-    return cTime < other.cTime || (cTime == other.cTime && cType == EXITED && other.cType == ENTERED);
+    return mThisTime < mOtherTime || (mThisTime == mOtherTime && cType == EXITED && other.cType == ENTERED);
   }
 }
 
 bool ZoneEvent::operator>(const ZoneEvent& other) const {
+  float mThisTime = cCollisionVertex->gradient;
+  float mOtherTime = other.cCollisionVertex->gradient;
   if (cZone == other.cZone) {
-    return cTime > other.cTime || (cTime == other.cTime && cType == EXITED && other.cType == ENTERED);
+    return mThisTime > mOtherTime || (mThisTime == mOtherTime && cType == EXITED && other.cType == ENTERED);
   } else {
-    return cTime > other.cTime || (cTime == other.cTime && cType == ENTERED && other.cType == EXITED);
+    return mThisTime > mOtherTime || (mThisTime == mOtherTime && cType == ENTERED && other.cType == EXITED);
   }
 }
 

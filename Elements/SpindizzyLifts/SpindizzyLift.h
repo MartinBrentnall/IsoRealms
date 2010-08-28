@@ -21,8 +21,10 @@
 
 #include <cmath>
 #include <GL/gl.h>
+#include <iomanip>
 
 #include <IsoRealms/BlockLocation.h>
+#include <IsoRealms/Collision.h>
 #include <IsoRealms/Element.h>
 #include <IsoRealms/ElementFactory.h>
 #include <IsoRealms/IDynamicElement.h>

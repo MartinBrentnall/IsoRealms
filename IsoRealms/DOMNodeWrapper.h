@@ -72,6 +72,8 @@ class DOMNodeWrapper {
    */
   std::string getNodeName();
 
+  float getFloatValue();
+  
   /**
    * Parse and return an integer value from the node.
    *

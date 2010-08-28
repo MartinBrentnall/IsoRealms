@@ -18,6 +18,7 @@ add_subdirectory(SpindizzyGERALDBallModel)
 add_subdirectory(SpindizzyGERALDGyroscopeModel)
 add_subdirectory(SpindizzyGERALDPyramidModel)
 add_subdirectory(SpindizzyJewelModel)
+add_subdirectory(FlatRectangle)
 
 include_directories(${PROJECT_SOURCE_DIR})
 

@@ -45,6 +45,19 @@ class Commodore64SpindizzyTextureSet:public ISpindizzyTextureSet,
   static const int GRID_WIDTH = RESOLUTION / 16;
   static const int EDGE_WIDTH = RESOLUTION / 8;
 
+  static const std::string LIFT_CIRCLE_BOTH_NAME;
+  static const std::string LIFT_CIRCLE_LEFT_NAME;
+  static const std::string LIFT_CIRCLE_RIGHT_NAME;
+  static const std::string LIFT_CIRCLE_NONE_NAME;
+  static const std::string LIFT_SQUARE_BOTH_NAME;
+  static const std::string LIFT_SQUARE_LEFT_NAME;
+  static const std::string LIFT_SQUARE_RIGHT_NAME;
+  static const std::string LIFT_SQUARE_NONE_NAME;
+  static const std::string LIFT_DIAMOND_BOTH_NAME;
+  static const std::string LIFT_DIAMOND_LEFT_NAME;
+  static const std::string LIFT_DIAMOND_RIGHT_NAME;
+  static const std::string LIFT_DIAMOND_NONE_NAME;
+
   std::vector<PlugSocket*> cPlugSockets;
 
   // TODO: Start nasty hack
@@ -62,6 +75,7 @@ class Commodore64SpindizzyTextureSet:public ISpindizzyTextureSet,
   // TODO: End nasty hack
 
   std::map<TextureType, ISpindizzyTexture*> cTextures;
+  std::map<std::string, ISpindizzyTexture*> cTexturesByName; 
   std::map<TextureType, GLuint> cTextureIDs;
 
   IFourColourSupport* cColourScheme;
@@ -171,6 +185,7 @@ class Commodore64SpindizzyTextureSet:public ISpindizzyTextureSet,
    * Implements ISpindizzyTextureSet *
   \***********************************/
   ISpindizzyTexture* getTexture(TextureType);
+  ISpindizzyTexture* getTexture(const std::string&);
 
   /*****************************************\
    * Implements IFourColourSupportListener *

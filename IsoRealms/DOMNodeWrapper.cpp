@@ -155,6 +155,27 @@ std::string DOMNodeWrapper::getNodeName() {
   return mStringValue;
 }
 
+float DOMNodeWrapper::getFloatValue() {
+  DOMNodeList *mChildNodes = cNode->getChildNodes();
+  char *mEndPointer;
+  for (unsigned int i = 0; i < mChildNodes->getLength(); i++) {
+    DOMNode *mNode = mChildNodes->item(i);
+    DOMNode::NodeType mType = mNode->getNodeType();
+    if (mType == (DOMNode::TEXT_NODE)) {
+      char *mTextValue = XMLString::transcode(mNode->getNodeValue());
+      std::string mTextValueString(mTextValue);
+      float mFloatValue = strtof(mTextValue, &mEndPointer);
+      XMLString::release(&mTextValue);
+      // TODO: Work out what this was for and enable it
+/*      if ((errno == ERANGE && (mIntegerValue == LONG_MAX || mIntegerValue == LONG_MIN)) || (errno != 0 && mIntegerValue == 0)) {
+        throw ParseException("Whilst reading value for node \"" + getNodeName() + "\"");
+      }*/
+      return mFloatValue;
+    }
+  }
+  throw ParseException("No value specified for node \"" + getNodeName() + "\" (expected integer)");
+}
+
 int DOMNodeWrapper::getIntegerValue() {
   DOMNodeList *mChildNodes = cNode->getChildNodes();
   char *mEndPointer;

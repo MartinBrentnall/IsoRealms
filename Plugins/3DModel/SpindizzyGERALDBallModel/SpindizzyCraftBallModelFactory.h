@@ -34,16 +34,15 @@ class SpindizzyCraftBallModelFactory:public ISimpleModelFactory {
   public:
   SpindizzyCraftBallModelFactory();
 
-  /************************************\
-   * Implements ISimpleModelFactory.h *
-  \************************************/
+  /**********************************\
+   * Implements ISimpleModelFactory *
+  \**********************************/
   ISimpleModel* createModel(Vertex*);
   void destroyModel(ISimpleModel*);
 
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/
-  std::string getName();
   std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);

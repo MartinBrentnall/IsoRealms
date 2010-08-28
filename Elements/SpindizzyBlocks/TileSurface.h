@@ -23,6 +23,7 @@
 #include <cstdlib>
 #include <GL/gl.h>
 
+#include <IsoRealms/Collision.h>
 #include <IsoRealms/Condition.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 #include <IsoRealms/IVisualElement.h>

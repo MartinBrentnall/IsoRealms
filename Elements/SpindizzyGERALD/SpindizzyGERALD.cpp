@@ -262,7 +262,7 @@ ICollisionData* SpindizzyGERALD::pollCollisionEvent(Vertex& startLocation, Verte
     }
   }
   
-  ICollisionData* mOtherEvent = cCollidableSurfaceRegistry->getNextEvent(startLocation, endLocation, cCurrentSurface != NULL);
+  ICollisionData* mOtherEvent = cCollidableSurfaceRegistry->getNextEvent(startLocation, endLocation, cCurrentSurface);
   if (mOtherEvent != NULL) {
     IRollableSurface* mEventSurface = mOtherEvent->getSurface();
     if (mEventSurface != cCurrentSurface && (mEvent == NULL || mOtherEvent->getGradient() < mEvent->getGradient())) {
@@ -432,7 +432,7 @@ void SpindizzyGERALD::updateLocation(Vertex& location) {
 }
 
 void SpindizzyGERALD::updateAlive(int ticks) {
-  std::cout << "CYCLE START ==================================================" << std::endl;
+  cFastEvents = 0;
   cCycleBounce = false;
   float mTicks = static_cast<float>(ticks);
   Vertex mProposedLocation = cLocation;
@@ -457,13 +457,18 @@ void SpindizzyGERALD::updateAlive(int ticks) {
         mProposedMomentum = cMomentum;
         getNewLocation(mTicks, &mProposedLocation, &mProposedMomentum);
       }
+
       mNextEvent = pollCollisionEvent(cLocation, mProposedLocation);
-      if (cFastEvents > 4 && mNextEvent != NULL && mNextEvent->getType() == ICollisionData::SURFACE_LEAVE) {
+      if (cFastEvents > 8 && mNextEvent != NULL && mNextEvent->getType() == ICollisionData::SURFACE_LEAVE) {
         mProposedLocation = cLocation;
         mProposedMomentum = cMomentum;
         getNewLocation(mTicks, &mProposedLocation, &mProposedMomentum);
         cCurrentSurface = mNextEvent->getSurface();
-        cCurrentSurface->getRestingLocation(mProposedLocation);
+        if (cFastEvents < 16) {
+          cCurrentSurface->getRestingLocation(mProposedLocation);
+        } else {
+          mProposedLocation = cLocation;
+        }
         mProposedLocationSet = true;
         mNextEvent = pollCollisionEvent(cLocation, mProposedLocation);
       }

@@ -43,34 +43,35 @@ int TileSplitSurface::getSurfaceCellElevation(int x, int y) {
 
 void TileSplitSurface::render() {
   if (cCondition == NULL || cCondition->isTrue()) {
-    float mNorthWest = cCornerHeights[0][1] * IsoRealmsConstants::BLOCK_HEIGHT;
-    float mNorthEast = cCornerHeights[1][1] * IsoRealmsConstants::BLOCK_HEIGHT;
-    float mSouthEast = cCornerHeights[1][0] * IsoRealmsConstants::BLOCK_HEIGHT;
-    float mSouthWest = cCornerHeights[0][0] * IsoRealmsConstants::BLOCK_HEIGHT;
-    float mZ = cLocation.z * IsoRealmsConstants::BLOCK_HEIGHT;
-    int mX = cLocation.x;
-    int mY = cLocation.y;
-
+    float mNorthWest = (cLocation.z + cCornerHeights[0][1]) * IsoRealmsConstants::BLOCK_HEIGHT;
+    float mNorthEast = (cLocation.z + cCornerHeights[1][1]) * IsoRealmsConstants::BLOCK_HEIGHT;
+    float mSouthEast = (cLocation.z + cCornerHeights[1][0]) * IsoRealmsConstants::BLOCK_HEIGHT;
+    float mSouthWest = (cLocation.z + cCornerHeights[0][0]) * IsoRealmsConstants::BLOCK_HEIGHT;
+    float mWest  = cLocation.x - IsoRealmsConstants::BLOCK_RADIUS;
+    float mEast  = cLocation.x + IsoRealmsConstants::BLOCK_RADIUS;
+    float mSouth = cLocation.y - IsoRealmsConstants::BLOCK_RADIUS;
+    float mNorth = cLocation.y + IsoRealmsConstants::BLOCK_RADIUS;
     ISpindizzyTexture* mTexture = (*cTextureSet)->getTexture(cTextureType);
     mTexture->set();
     glBegin(GL_TRIANGLES);
     if (cSplitDirection) {
-      mTexture->texCoord2f(mX + 1.0f, mY + 1.0f); glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS + mX,  IsoRealmsConstants::BLOCK_RADIUS + mY, mNorthWest + mZ);
-      mTexture->texCoord2f(mX,        mY + 1.0f); glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS + mX, -IsoRealmsConstants::BLOCK_RADIUS + mY, mSouthWest + mZ);
-      mTexture->texCoord2f(mX + 1.0f, mY       ); glVertex3f( IsoRealmsConstants::BLOCK_RADIUS + mX,  IsoRealmsConstants::BLOCK_RADIUS + mY, mNorthEast + mZ);
+      mTexture->texCoord2f(1.0f, 1.0f); glVertex3f(mWest, mNorth, mNorthWest);
+      mTexture->texCoord2f(0.0f, 1.0f); glVertex3f(mWest, mSouth, mSouthWest);
+      mTexture->texCoord2f(1.0f, 0.0f); glVertex3f(mEast, mNorth, mNorthEast);
 
-      mTexture->texCoord2f(mX,        mY + 1.0f); glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS + mX, -IsoRealmsConstants::BLOCK_RADIUS + mY, mSouthWest + mZ);
-      mTexture->texCoord2f(mX,        mY       ); glVertex3f( IsoRealmsConstants::BLOCK_RADIUS + mX, -IsoRealmsConstants::BLOCK_RADIUS + mY, mSouthEast + mZ);
-      mTexture->texCoord2f(mX + 1.0f, mY       ); glVertex3f( IsoRealmsConstants::BLOCK_RADIUS + mX,  IsoRealmsConstants::BLOCK_RADIUS + mY, mNorthEast + mZ);
+      mTexture->texCoord2f(0.0f, 1.0f); glVertex3f(mWest, mSouth, mSouthWest);
+      mTexture->texCoord2f(0.0f, 0.0f); glVertex3f(mEast, mSouth, mSouthEast);
+      mTexture->texCoord2f(1.0f, 0.0f); glVertex3f(mEast, mNorth, mNorthEast);
     } else {
-      mTexture->texCoord2f(mX,        mY + 1.0f); glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS + mX,  IsoRealmsConstants::BLOCK_RADIUS + mY, mNorthWest + mZ);
-      mTexture->texCoord2f(mX + 1.0f, mY       ); glVertex3f( IsoRealmsConstants::BLOCK_RADIUS + mX, -IsoRealmsConstants::BLOCK_RADIUS + mY, mSouthEast + mZ);
-      mTexture->texCoord2f(mX + 1.0f, mY + 1.0f); glVertex3f( IsoRealmsConstants::BLOCK_RADIUS + mX,  IsoRealmsConstants::BLOCK_RADIUS + mY, mNorthEast + mZ);
+      mTexture->texCoord2f(0.0f, 1.0f); glVertex3f(mWest, mNorth, mNorthWest);
+      mTexture->texCoord2f(1.0f, 0.0f); glVertex3f(mEast, mSouth, mSouthEast);
+      mTexture->texCoord2f(1.0f, 1.0f); glVertex3f(mEast, mNorth, mNorthEast);
 
-      mTexture->texCoord2f(mX,        mY + 1.0f); glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS + mX,  IsoRealmsConstants::BLOCK_RADIUS + mY, mNorthWest + mZ);
-      mTexture->texCoord2f(mX,        mY       ); glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS + mX, -IsoRealmsConstants::BLOCK_RADIUS + mY, mSouthWest + mZ);
-      mTexture->texCoord2f(mX + 1.0f, mY       ); glVertex3f( IsoRealmsConstants::BLOCK_RADIUS + mX, -IsoRealmsConstants::BLOCK_RADIUS + mY, mSouthEast + mZ);
+      mTexture->texCoord2f(0.0f, 1.0f); glVertex3f(mWest, mNorth, mNorthWest);
+      mTexture->texCoord2f(0.0f, 0.0f); glVertex3f(mWest, mSouth, mSouthWest);
+      mTexture->texCoord2f(1.0f, 0.0f); glVertex3f(mEast, mSouth, mSouthEast);
     }
+    glColor3f(1.0f, 1.0f, 1.0f);
     glEnd();
   }
 }
@@ -288,8 +289,7 @@ ICollisionData* TileSplitSurface::getImpactCollision(Vertex& start, Vertex& end,
   float mStartHeight = getHeightAt(start.x, start.y, northSplit);
   float mEndHeight = getHeightAt(end.x, end.y, northSplit);
   if ((start.z > mStartHeight) != (end.z > mEndHeight) && start.z > mStartHeight) {
-    float mEndHeightModified = mEndHeight - (start.z - end.z);
-    float mGradient = (start.z - mStartHeight) / (mEndHeightModified - mStartHeight);
+    float mGradient = Collision::getCrossingPoint(start.z, end.z, mStartHeight, mEndHeight);
     double mXImpact = start.x + (end.x - start.x) * mGradient;
     double mYImpact = start.y + (end.y - start.y) * mGradient;
     if (inNorthSplit(mXImpact, mYImpact) == northSplit) {
@@ -305,10 +305,20 @@ ICollisionData* TileSplitSurface::getImpactCollision(Vertex& start, Vertex& end,
   return NULL;
 }
 
+void TileSplitSurface::confine(double* x, double* y) {
+  float mEast  = nextafterf(cLocation.x + IsoRealmsConstants::BLOCK_RADIUS, -INFINITY);
+  float mWest  = nextafterf(cLocation.x - IsoRealmsConstants::BLOCK_RADIUS,  INFINITY);
+  float mNorth = nextafterf(cLocation.y + IsoRealmsConstants::BLOCK_RADIUS, -INFINITY);
+  float mSouth = nextafterf(cLocation.y - IsoRealmsConstants::BLOCK_RADIUS,  INFINITY);
+  *x = max(mWest,  min(mEast,  *x));
+  *y = max(mSouth, min(mNorth, *y));
+}
+
 ICollisionData* TileSplitSurface::getCollision(Vertex& start, Vertex& end) {
   if (cCondition == NULL || cCondition->isTrue()) {
     if (contains(start)) {
       Vertex* mEnterPoint = new Vertex(start);
+      confine(&(mEnterPoint->x), &(mEnterPoint->y));
       return new SurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mEnterPoint, getXAcceleration(start.x, start.y), getYAcceleration(start.x, start.y), 0.0f);
     }
   
@@ -317,18 +327,17 @@ ICollisionData* TileSplitSurface::getCollision(Vertex& start, Vertex& end) {
     if (mEnterPoint != NULL) {
       float mEnterHeight = getHeightAt(mEnterPoint->x, mEnterPoint->y);
       if (mEnterPoint->z <= mEnterHeight && mEnterPoint->z >= mEnterHeight - 0.5f) {
+        confine(&(mEnterPoint->x), &(mEnterPoint->y));
         SurfaceCollisionEvent* mEvent = new SurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mEnterPoint, getXAcceleration(start.x, start.y), getYAcceleration(start.x, start.y), mGradient);
         return mEvent;
       }
     }
 
-// TODO: EXPERIMENTAL
     ICollisionData* mImpact = getImpactCollision(start, end, true);
     if (mImpact != NULL) {
       return mImpact;
     }
     return getImpactCollision(start, end, false);
-// TODO: END EXPERIMENTAL
   }
   
   // No event
@@ -343,6 +352,7 @@ ICollisionData* TileSplitSurface::getRollingEvent(Vertex& start, Vertex& end) {
   float mGradient;
   Vertex* mLeavePoint = getSplitCrossingPoint(start, end, &mGradient);
   if (mLeavePoint != NULL) {
+    confine(&(mLeavePoint->x), &(mLeavePoint->y));
     return new SurfaceCollisionEvent(this, ICollisionData::SURFACE_LEAVE, mLeavePoint, getXAcceleration(start.x, start.y), getYAcceleration(start.x, start.y), mGradient);
   }
 
@@ -354,22 +364,30 @@ ICollisionData* TileSplitSurface::getRollingEvent(Vertex& start, Vertex& end) {
 }
 
 void TileSplitSurface::getRestingLocation(Vertex& location) {
-  float mXSlope = -getXAcceleration(location.x, location.y);
-  float mYSlope = -getYAcceleration(location.x, location.y);
-  float mYEdgeLocation = mYSlope > 0.0f ? nextafterf(cLocation.y - IsoRealmsConstants::BLOCK_RADIUS,  INFINITY)
-                       : mYSlope < 0.0f ? nextafterf(cLocation.y + IsoRealmsConstants::BLOCK_RADIUS, -INFINITY)
-                       :                  location.y;
-  float mXEdgeLocation = mXSlope > 0.0f ? nextafterf(cLocation.x - IsoRealmsConstants::BLOCK_RADIUS,  INFINITY)
-                       : mXSlope < 0.0f ? nextafterf(cLocation.x + IsoRealmsConstants::BLOCK_RADIUS, -INFINITY)
-                       :                  location.x;
-  float mDistanceToY = mYEdgeLocation - location.y;
-  float mDistanceToX = mXEdgeLocation - location.x;
-  if (fabs(mDistanceToY / mYSlope) < fabs(mDistanceToX / mXSlope)) {
-    location.y = mYEdgeLocation;
-    // TODO: location.x
+  float mXLocation = location.x - cLocation.x;
+  float mYLocation = location.y - cLocation.y;
+  float mSplitDistance = mXLocation + (cSplitDirection ? -(location.y - cLocation.y): location.y - cLocation.y);
+  float mXDistance = IsoRealmsConstants::BLOCK_RADIUS - fabs(mXLocation);
+  float mYDistance = IsoRealmsConstants::BLOCK_RADIUS - fabs(mYLocation);
+  float mAbsSplitDistance = fabs(mSplitDistance);
+  if (mAbsSplitDistance < mXDistance && mAbsSplitDistance < mYDistance) {
+    mXLocation -= mSplitDistance / 2.0f;
+    mYLocation = cSplitDirection ? mXLocation : -mXLocation;
+    bool mInNorth = inNorthSplit(location.x, location.y);
+    float mXDirection = mInNorth == cSplitDirection ?  INFINITY : -INFINITY;
+    float mYDirection = mInNorth                    ? -INFINITY :  INFINITY;
+    location.x = nextafterf(cLocation.x + mXLocation, mXDirection);
+    location.y = nextafterf(cLocation.y + mYLocation, mYDirection);
+  } else if (mXDistance < mYDistance) {
+    mXLocation = mXLocation > 0.0f
+               ? nextafterf(cLocation.x + IsoRealmsConstants::BLOCK_RADIUS, -INFINITY)
+               : nextafterf(cLocation.x - IsoRealmsConstants::BLOCK_RADIUS,  INFINITY);
+    location.x = mXLocation;
   } else {
-    location.x = mXEdgeLocation;
-    // TODO: location.y
+    mYLocation = mYLocation > 0.0f
+               ? nextafterf(cLocation.y + IsoRealmsConstants::BLOCK_RADIUS, -INFINITY)
+               : nextafterf(cLocation.y - IsoRealmsConstants::BLOCK_RADIUS,  INFINITY);
+    location.y = mYLocation;
   }
-  // TODO: Need to consider the case where we cross over the split
+  location.z = getHeightAt(location.x, location.y);
 }

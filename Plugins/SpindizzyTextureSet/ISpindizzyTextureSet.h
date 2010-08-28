@@ -76,6 +76,8 @@ class ISpindizzyTextureSet:public virtual IPlugin {
    * @returns  The texture.
    */
   virtual ISpindizzyTexture* getTexture(TextureType) = 0;
+  
+  virtual ISpindizzyTexture* getTexture(const std::string&) = 0;
 
   virtual ~ISpindizzyTextureSet() {}
 };

@@ -60,6 +60,9 @@ class BlockArea {
 
   bool overlaps(BlockArea&);
 
+//   CollisionVertex* getEntryPoint(Vertex&, Vertex&);
+//   CollisionVertex* getExitPoint(Vertex&, Vertex&);
+
   void debug();
 };
 

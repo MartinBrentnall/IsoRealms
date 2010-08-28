@@ -31,10 +31,6 @@ void SpindizzyCraftBallModelFactory::destroyModel(ISimpleModel* ballModel) {
   delete ballModel;
 }
 
-std::string SpindizzyCraftBallModelFactory::getName() {
-  return "Spindizzy Craft Ball Model";
-}
-
 std::vector<PlugSocket*> SpindizzyCraftBallModelFactory::getPlugSockets() {
   return cCameraSocket;
 }

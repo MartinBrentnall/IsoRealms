@@ -24,6 +24,7 @@
 #include <GL/gl.h>
 
 #include <IsoRealms/BlockLocation.h>
+#include <IsoRealms/Collision.h>
 #include <IsoRealms/Element.h>
 #include <IsoRealms/IDynamicElement.h>
 #include <IsoRealms/IElementFactory.h>

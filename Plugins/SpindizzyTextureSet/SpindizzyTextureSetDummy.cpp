@@ -26,6 +26,10 @@ ISpindizzyTexture* SpindizzyTextureSetDummy::getTexture(TextureType) {
   return cDummyTexture;
 }
 
+ISpindizzyTexture* SpindizzyTextureSetDummy::getTexture(const std::string&) {
+  return cDummyTexture;
+}
+
 SpindizzyTextureSetDummy::SpindizzyTextureDummy::SpindizzyTextureDummy() {
 }
 

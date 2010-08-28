@@ -16,24 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SURFACE_CACHE_H
-#define SURFACE_CACHE_H
+#include "CollisionVertex.h"
 
-#include <vector>
-
-#include "../IRollableSurface.h"
-#include "../ICollidableWallSurface.h"
-
-class SurfaceCache {
-  private:
-  std::vector<IRollableSurface*> cRollableSurfaces;
-  std::vector<IRollableSurface*> cInterceptingSurfaces;
-  std::vector<ICollidableWallSurface*> cWallSurfaces;
-
-  public:
-  void addRollableSurface(IRollableSurface*, bool);
-  ICollisionData* getNextEvent(Vertex&, Vertex&, IRollableSurface*);
-  IRollableSurface* getSurfaceAt(Vertex&);
-};
-
-#endif
+CollisionVertex::CollisionVertex(float x, float y, float z, float gradient) {
+  this->x = x;
+  this->y = y;
+  this->z = z;
+  this->gradient = gradient;
+}

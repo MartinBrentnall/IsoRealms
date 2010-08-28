@@ -8,7 +8,7 @@ void DummyCollidableSurfaceRegistry::registerWallSurface(ICollidableWallSurface*
   // Nothing to do.
 }
 
-ICollisionData* DummyCollidableSurfaceRegistry::getNextEvent(Vertex&, Vertex&, bool) {
+ICollisionData* DummyCollidableSurfaceRegistry::getNextEvent(Vertex&, Vertex&, IRollableSurface*) {
   return NULL;
 }
 

@@ -54,6 +54,7 @@ class SpindizzyTextureSetDummy:public ISpindizzyTextureSet,
   \***********************************/
   SpindizzyTextureSetDummy();
   ISpindizzyTexture* getTexture(TextureType);
+  ISpindizzyTexture* getTexture(const std::string&);
 
   ~SpindizzyTextureSetDummy();
 };

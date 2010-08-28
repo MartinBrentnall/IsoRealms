@@ -18,15 +18,15 @@ void DefaultCollidableSurfaceRegistry::registerWallSurface(ICollidableWallSurfac
   // TODO: Implement this
 }
 
-ICollisionData* DefaultCollidableSurfaceRegistry::getNextEvent(Vertex& start, Vertex& end, bool intercepting) {
+ICollisionData* DefaultCollidableSurfaceRegistry::getNextEvent(Vertex& start, Vertex& end, IRollableSurface* currentSurface) {
   std::map<IZone*, SurfaceCache*>::iterator i = cZoneSurfaceCaches.find(cRuntimeZone);
   if (i != cZoneSurfaceCaches.end()) {
-    ICollisionData* mEvent = i->second->getNextEvent(start, end, intercepting);
+    ICollisionData* mEvent = i->second->getNextEvent(start, end, currentSurface);
     if (mEvent != NULL) {
       return mEvent;
     }
   }
-  if (!intercepting) {
+  if (currentSurface == NULL) {
     std::vector<ZoneEvent*> mZoneEvents = cMap->getZoneEvents(start, end);
     for (unsigned int i = 0; i < mZoneEvents.size(); i++) {
       if (mZoneEvents[i]->getType() == ZoneEvent::ENTERED) {
