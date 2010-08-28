@@ -74,8 +74,9 @@ class Commodore64SpindizzyTextureSet:public ISpindizzyTextureSet,
   Colour* BLACK;
   // TODO: End nasty hack
 
-  std::map<TextureType, ISpindizzyTexture*> cTextures;
-  std::map<std::string, ISpindizzyTexture*> cTexturesByName; 
+  std::map<TextureType, Commodore64SpindizzyTexture*> cTextures;
+  std::map<std::string, Commodore64SpindizzyTexture*> cTexturesByName; 
+  PlainColourTexture* cBackgroundTexture;
   std::map<TextureType, GLuint> cTextureIDs;
 
   IFourColourSupport* cColourScheme;

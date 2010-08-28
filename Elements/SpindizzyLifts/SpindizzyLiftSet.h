@@ -25,9 +25,9 @@
 #include <IsoRealms/PluginRegistry.h>
 #include <IsoRealms/ICommandRegistry.h>
 
+#include "../../Plugins/3DModel/ISimpleModel.h"
+#include "../../Plugins/3DModel/ISimpleModelFactory.h"
 #include "../../Plugins/CollidableSurfaceRegistry/ICollidableSurfaceRegistry.h"
-#include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
-#include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 #include "../../Plugins/ZoneContext/IZoneContext.h"
 #include "../../Plugins/ZoneContext/IZoneContextListener.h"
 
@@ -46,14 +46,12 @@ class SpindizzyLiftSet:public ISpindizzyLiftSet,
   Script* cLiftMovedScript;
   IZone* cZone;
   std::vector<IUserCommand*> cCommands;
-  ISpindizzyTextureSet* cSpindizzyTextureSet;
+  std::vector<ISimpleModelFactory*> cLiftModels;
 
   /**
    * Properties are applied to all lift types.
    */
   SpindizzyLiftProperties cSpindizzyLiftProperties;
-
-  void setTextureSet(ISpindizzyTextureSet*);
 
   public:
   SpindizzyLiftSet();

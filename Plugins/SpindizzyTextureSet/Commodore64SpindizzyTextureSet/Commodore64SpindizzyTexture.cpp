@@ -18,19 +18,22 @@
  */
 #include "Commodore64SpindizzyTexture.h"
 
-Commodore64SpindizzyTexture::Commodore64SpindizzyTexture(GLuint textureID) {
+Commodore64SpindizzyTexture::Commodore64SpindizzyTexture() {
+}
+
+void Commodore64SpindizzyTexture::setTexture(GLuint textureID) {
   cTextureID = textureID;
   cDirection = NORTH;
   cMapping = TILED;
 }
 
-Commodore64SpindizzyTexture::Commodore64SpindizzyTexture(GLuint textureID, Direction direction) {
+void Commodore64SpindizzyTexture::setTexture(GLuint textureID, Direction direction) {
   cTextureID = textureID;
   cDirection = direction;
   cMapping = TILED;
 }
 
-Commodore64SpindizzyTexture::Commodore64SpindizzyTexture(GLuint textureID, Mapping mapping) {
+void Commodore64SpindizzyTexture::setTexture(GLuint textureID, Mapping mapping) {
   cTextureID = textureID;
   cDirection = NORTH;
   cMapping = mapping;

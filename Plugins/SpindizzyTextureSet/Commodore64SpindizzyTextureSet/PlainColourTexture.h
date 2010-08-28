@@ -28,7 +28,9 @@ class PlainColourTexture:public ISpindizzyTexture {
   Colour* cColour;
 
   public:
-  PlainColourTexture(Colour* colour);
+  PlainColourTexture();
+  
+  void setTexture(Colour* colour);
 
   /***********************************\
    * Implements ISpindizzyTextureSet *

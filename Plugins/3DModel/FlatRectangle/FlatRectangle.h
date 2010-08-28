@@ -16,27 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "PlainColourTexture.h"
+#ifndef FLAT_RECTANGLE_H
+#define FLAT_RECTANGLE_H
 
-PlainColourTexture::PlainColourTexture() {
-}
+#include <IsoRealms/IsoRealmsConstants.h>
+#include <IsoRealms/Vertex.h>
 
-void PlainColourTexture::setTexture(Colour* colour) {
-  cColour = colour;
-}
+#include "../../SpindizzyTextureSet/ISpindizzyTexture.h"
 
-void PlainColourTexture::set() {
-  glColor3f(cColour->getRed(), cColour->getGreen(), cColour->getBlue());
-}
+#include "../ISimpleModel.h"
 
-void PlainColourTexture::texCoord2f(float, float) {
-  // Nothing to do
-}
+class FlatRectangle:public ISimpleModel {
+  private:
+  Vertex* cLocation;
+  ISpindizzyTexture** cTexture;
+  float* cSize;
+  
+  public:
+  FlatRectangle(Vertex*, ISpindizzyTexture**, float*);
 
-Colour* PlainColourTexture::getColour(float, float) {
-  return cColour;
-}
+  /*********************\
+   * Implements IModel *
+  \*********************/
+  void update(int milliseconds);
+  void render();
+};
 
-ISpindizzyTexture::Mapping PlainColourTexture::getMapping() {
-  return PLAIN_COLOUR;
-}
+#endif

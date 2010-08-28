@@ -356,61 +356,120 @@ Commodore64SpindizzyTextureSet::Commodore64SpindizzyTextureSet() {
   PURPLE = new Colour(0.7, 0.0, 1.0, 1.0);
   YELLOW = new Colour(1.0, 1.0, 0.0, 1.0);
   BLACK = new Colour(0.0, 0.0, 0.0, 1.0);
+
+  cTextures[SWITCH_CIRCLE_BOTH]   = new Commodore64SpindizzyTexture();
+  cTextures[SWITCH_CIRCLE_LEFT]   = new Commodore64SpindizzyTexture();
+  cTextures[SWITCH_CIRCLE_RIGHT]  = new Commodore64SpindizzyTexture();
+  cTextures[SWITCH_CIRCLE_NONE]   = new Commodore64SpindizzyTexture();
+  cTextures[SWITCH_SQUARE_BOTH]   = new Commodore64SpindizzyTexture();
+  cTextures[SWITCH_SQUARE_RIGHT]  = new Commodore64SpindizzyTexture();
+  cTextures[SWITCH_SQUARE_LEFT]   = new Commodore64SpindizzyTexture();
+  cTextures[SWITCH_SQUARE_NONE]   = new Commodore64SpindizzyTexture();
+  cTextures[SWITCH_DIAMOND_NONE]  = new Commodore64SpindizzyTexture();
+  cTextures[SWITCH_DIAMOND_RIGHT] = new Commodore64SpindizzyTexture();
+  cTextures[SWITCH_DIAMOND_LEFT]  = new Commodore64SpindizzyTexture();
+  cTextures[SWITCH_DIAMOND_BOTH]  = new Commodore64SpindizzyTexture();
+  cTextures[ARROW_NORTH]          = new Commodore64SpindizzyTexture();
+  cTextures[ARROW_EAST]           = new Commodore64SpindizzyTexture();
+  cTextures[ARROW_SOUTH]          = new Commodore64SpindizzyTexture();
+  cTextures[ARROW_WEST]           = new Commodore64SpindizzyTexture();
+  cTextures[TRAMPOLINE]           = new Commodore64SpindizzyTexture();
+  cTextures[ICE]                  = new Commodore64SpindizzyTexture();
+  cTextures[PLAIN]                = new Commodore64SpindizzyTexture();
+  cTextures[PLAIN_SPLIT_NE_SW]    = new Commodore64SpindizzyTexture();
+  cTextures[PLAIN_SPLIT_NW_SE]    = new Commodore64SpindizzyTexture();
+  cTextures[WALL_NORTH]           = new Commodore64SpindizzyTexture();
+  cTextures[WALL_EAST]            = new Commodore64SpindizzyTexture();
+  cTextures[WALL_ICE]             = new Commodore64SpindizzyTexture();
+  cTextures[LIFT_CIRCLE_LEFT]     = new Commodore64SpindizzyTexture();
+  cTextures[LIFT_CIRCLE_RIGHT]    = new Commodore64SpindizzyTexture();
+  cTextures[LIFT_CIRCLE_NONE]     = new Commodore64SpindizzyTexture();
+  cTextures[LIFT_CIRCLE_BOTH]     = new Commodore64SpindizzyTexture();
+  cTextures[LIFT_SQUARE_LEFT]     = new Commodore64SpindizzyTexture();
+  cTextures[LIFT_SQUARE_RIGHT]    = new Commodore64SpindizzyTexture();
+  cTextures[LIFT_SQUARE_NONE]     = new Commodore64SpindizzyTexture();
+  cTextures[LIFT_SQUARE_BOTH]     = new Commodore64SpindizzyTexture();
+  cTextures[LIFT_DIAMOND_LEFT]    = new Commodore64SpindizzyTexture();
+  cTextures[LIFT_DIAMOND_RIGHT]   = new Commodore64SpindizzyTexture();
+  cTextures[LIFT_DIAMOND_NONE]    = new Commodore64SpindizzyTexture();
+  cTextures[LIFT_DIAMOND_BOTH]    = new Commodore64SpindizzyTexture();
+  
+  cBackgroundTexture = new PlainColourTexture();
+
+  cTextures[SWITCH_RESET] = cTextures[SWITCH_DIAMOND_NONE];
+  cTextures[WALL_SOUTH] = cTextures[WALL_NORTH];
+  cTextures[WALL_WEST] = cTextures[WALL_EAST];
+  cTextures[WATER] = cTextures[ICE];
+  
+  cTexturesByName[LIFT_CIRCLE_BOTH_NAME]   = cTextures[LIFT_CIRCLE_BOTH];
+  cTexturesByName[LIFT_CIRCLE_LEFT_NAME]   = cTextures[LIFT_CIRCLE_LEFT];
+  cTexturesByName[LIFT_CIRCLE_RIGHT_NAME]  = cTextures[LIFT_CIRCLE_RIGHT];
+  cTexturesByName[LIFT_CIRCLE_NONE_NAME]   = cTextures[LIFT_CIRCLE_NONE];
+  cTexturesByName[LIFT_SQUARE_BOTH_NAME]   = cTextures[LIFT_SQUARE_BOTH];
+  cTexturesByName[LIFT_SQUARE_LEFT_NAME]   = cTextures[LIFT_SQUARE_LEFT];
+  cTexturesByName[LIFT_SQUARE_RIGHT_NAME]  = cTextures[LIFT_SQUARE_RIGHT];
+  cTexturesByName[LIFT_SQUARE_NONE_NAME]   = cTextures[LIFT_SQUARE_NONE];
+  cTexturesByName[LIFT_DIAMOND_BOTH_NAME]  = cTextures[LIFT_DIAMOND_BOTH];
+  cTexturesByName[LIFT_DIAMOND_LEFT_NAME]  = cTextures[LIFT_DIAMOND_LEFT];
+  cTexturesByName[LIFT_DIAMOND_RIGHT_NAME] = cTextures[LIFT_DIAMOND_RIGHT];
+  cTexturesByName[LIFT_DIAMOND_NONE_NAME]  = cTextures[LIFT_DIAMOND_NONE];
+
   generateTextures();
 }
 
 void Commodore64SpindizzyTextureSet::generateTextures() {
-  cTextures[SWITCH_CIRCLE_BOTH] = new Commodore64SpindizzyTexture(generateSwitchCircleBoth());
+  // TODO: Clean-up old ones
+  cTextures[SWITCH_CIRCLE_BOTH]->setTexture(generateSwitchCircleBoth());
   GLuint mSwitchCircleHalf = generateSwitchCircleHalf();
-  cTextures[SWITCH_CIRCLE_LEFT] = new Commodore64SpindizzyTexture(mSwitchCircleHalf, Commodore64SpindizzyTexture::NORTH);
-  cTextures[SWITCH_CIRCLE_RIGHT] = new Commodore64SpindizzyTexture(mSwitchCircleHalf, Commodore64SpindizzyTexture::SOUTH);
-  cTextures[SWITCH_CIRCLE_NONE] = new Commodore64SpindizzyTexture(generateSwitchCircle());
-  cTextures[SWITCH_SQUARE_BOTH] = new Commodore64SpindizzyTexture(generateSwitchSquareBoth());
+  cTextures[SWITCH_CIRCLE_LEFT]->setTexture(mSwitchCircleHalf, Commodore64SpindizzyTexture::NORTH);
+  cTextures[SWITCH_CIRCLE_RIGHT]->setTexture(mSwitchCircleHalf, Commodore64SpindizzyTexture::SOUTH);
+  cTextures[SWITCH_CIRCLE_NONE]->setTexture(generateSwitchCircle());
+  cTextures[SWITCH_SQUARE_BOTH]->setTexture(generateSwitchSquareBoth());
   GLuint mSwitchSquareHalf = generateSwitchSquareHalf();
-  cTextures[SWITCH_SQUARE_RIGHT] = new Commodore64SpindizzyTexture(mSwitchSquareHalf, Commodore64SpindizzyTexture::NORTH);
-  cTextures[SWITCH_SQUARE_LEFT] = new Commodore64SpindizzyTexture(mSwitchSquareHalf, Commodore64SpindizzyTexture::SOUTH);
-  cTextures[SWITCH_SQUARE_NONE] = new Commodore64SpindizzyTexture(generateSwitchSquare());
-  cTextures[SWITCH_DIAMOND_NONE] = new Commodore64SpindizzyTexture(generateSwitchDiamondBoth());
+  cTextures[SWITCH_SQUARE_RIGHT]->setTexture(mSwitchSquareHalf, Commodore64SpindizzyTexture::NORTH);
+  cTextures[SWITCH_SQUARE_LEFT]->setTexture(mSwitchSquareHalf, Commodore64SpindizzyTexture::SOUTH);
+  cTextures[SWITCH_SQUARE_NONE]->setTexture(generateSwitchSquare());
+  cTextures[SWITCH_DIAMOND_NONE]->setTexture(generateSwitchDiamondBoth());
   GLuint mSwitchDiamondHalf = generateSwitchDiamondHalf();
-  cTextures[SWITCH_DIAMOND_RIGHT] = new Commodore64SpindizzyTexture(mSwitchDiamondHalf, Commodore64SpindizzyTexture::NORTH);
-  cTextures[SWITCH_DIAMOND_LEFT] = new Commodore64SpindizzyTexture(mSwitchDiamondHalf, Commodore64SpindizzyTexture::SOUTH);
-  cTextures[SWITCH_DIAMOND_BOTH] = new Commodore64SpindizzyTexture(generateSwitchDiamond());
+  cTextures[SWITCH_DIAMOND_RIGHT]->setTexture(mSwitchDiamondHalf, Commodore64SpindizzyTexture::NORTH);
+  cTextures[SWITCH_DIAMOND_LEFT]->setTexture(mSwitchDiamondHalf, Commodore64SpindizzyTexture::SOUTH);
+  cTextures[SWITCH_DIAMOND_BOTH]->setTexture(generateSwitchDiamond());
   cTextures[SWITCH_RESET] = cTextures[SWITCH_DIAMOND_NONE];
   GLuint mArrowImage = generateArrow();
-  cTextures[ARROW_NORTH] = new Commodore64SpindizzyTexture(mArrowImage, Commodore64SpindizzyTexture::NORTH);
-  cTextures[ARROW_EAST] = new Commodore64SpindizzyTexture(mArrowImage, Commodore64SpindizzyTexture::EAST);
-  cTextures[ARROW_SOUTH] = new Commodore64SpindizzyTexture(mArrowImage, Commodore64SpindizzyTexture::SOUTH);
-  cTextures[ARROW_WEST] = new Commodore64SpindizzyTexture(mArrowImage, Commodore64SpindizzyTexture::WEST);
-  cTextures[TRAMPOLINE] = new Commodore64SpindizzyTexture(generateTrampoline());
-  cTextures[ICE] = new Commodore64SpindizzyTexture(generateIce());
+  cTextures[ARROW_NORTH]->setTexture(mArrowImage, Commodore64SpindizzyTexture::NORTH);
+  cTextures[ARROW_EAST]->setTexture(mArrowImage, Commodore64SpindizzyTexture::EAST);
+  cTextures[ARROW_SOUTH]->setTexture(mArrowImage, Commodore64SpindizzyTexture::SOUTH);
+  cTextures[ARROW_WEST]->setTexture(mArrowImage, Commodore64SpindizzyTexture::WEST);
+  cTextures[TRAMPOLINE]->setTexture(generateTrampoline());
+  cTextures[ICE]->setTexture(generateIce());
   cTextures[WATER] = cTextures[ICE];
-  cTextures[PLAIN] = new Commodore64SpindizzyTexture(generatePlain());
+  cTextures[PLAIN]->setTexture(generatePlain());
   GLuint mSplitPlain = generateSplitPlain();
-  cTextures[PLAIN_SPLIT_NE_SW] = new Commodore64SpindizzyTexture(mSplitPlain, Commodore64SpindizzyTexture::NORTH);
-  cTextures[PLAIN_SPLIT_NW_SE] = new Commodore64SpindizzyTexture(mSplitPlain, Commodore64SpindizzyTexture::EAST);
-  cTextures[WALL_NORTH] = new Commodore64SpindizzyTexture(generateWallNorthSouth(), ISpindizzyTexture::COLUMN_CAPPED);
-  cTextures[WALL_EAST] = new Commodore64SpindizzyTexture(generateWallEastWest(), ISpindizzyTexture::COLUMN_CAPPED);
+  cTextures[PLAIN_SPLIT_NE_SW]->setTexture(mSplitPlain, Commodore64SpindizzyTexture::NORTH);
+  cTextures[PLAIN_SPLIT_NW_SE]->setTexture(mSplitPlain, Commodore64SpindizzyTexture::EAST);
+  cTextures[WALL_NORTH]->setTexture(generateWallNorthSouth(), ISpindizzyTexture::COLUMN_CAPPED);
+  cTextures[WALL_EAST]->setTexture(generateWallEastWest(), ISpindizzyTexture::COLUMN_CAPPED);
   cTextures[WALL_SOUTH] = cTextures[WALL_NORTH];
   cTextures[WALL_WEST] = cTextures[WALL_EAST];
-  cTextures[WALL_ICE] = new Commodore64SpindizzyTexture(generateIceWall(), ISpindizzyTexture::TILED);
+  cTextures[WALL_ICE]->setTexture(generateIceWall(), ISpindizzyTexture::TILED);
 
   GLuint mLiftCircleHalf = generateLiftCircleHalf();
-  cTextures[LIFT_CIRCLE_LEFT] = new Commodore64SpindizzyTexture(mLiftCircleHalf, Commodore64SpindizzyTexture::NORTH);
-  cTextures[LIFT_CIRCLE_RIGHT] = new Commodore64SpindizzyTexture(mLiftCircleHalf, Commodore64SpindizzyTexture::SOUTH);
-  cTextures[LIFT_CIRCLE_NONE] = new Commodore64SpindizzyTexture(generateLiftCircle());
-  cTextures[LIFT_CIRCLE_BOTH] = new Commodore64SpindizzyTexture(generateLiftCircleBoth());
+  cTextures[LIFT_CIRCLE_LEFT]->setTexture(mLiftCircleHalf, Commodore64SpindizzyTexture::NORTH);
+  cTextures[LIFT_CIRCLE_RIGHT]->setTexture(mLiftCircleHalf, Commodore64SpindizzyTexture::SOUTH);
+  cTextures[LIFT_CIRCLE_NONE]->setTexture(generateLiftCircle());
+  cTextures[LIFT_CIRCLE_BOTH]->setTexture(generateLiftCircleBoth());
   GLuint mLiftSquareHalf = generateLiftSquareHalf();
-  cTextures[LIFT_SQUARE_LEFT] = new Commodore64SpindizzyTexture(mLiftSquareHalf, Commodore64SpindizzyTexture::NORTH);
-  cTextures[LIFT_SQUARE_RIGHT] = new Commodore64SpindizzyTexture(mLiftSquareHalf, Commodore64SpindizzyTexture::SOUTH);
-  cTextures[LIFT_SQUARE_NONE] = new Commodore64SpindizzyTexture(generateLiftSquare());
-  cTextures[LIFT_SQUARE_BOTH] = new Commodore64SpindizzyTexture(generateLiftSquareBoth());
+  cTextures[LIFT_SQUARE_LEFT]->setTexture(mLiftSquareHalf, Commodore64SpindizzyTexture::NORTH);
+  cTextures[LIFT_SQUARE_RIGHT]->setTexture(mLiftSquareHalf, Commodore64SpindizzyTexture::SOUTH);
+  cTextures[LIFT_SQUARE_NONE]->setTexture(generateLiftSquare());
+  cTextures[LIFT_SQUARE_BOTH]->setTexture(generateLiftSquareBoth());
   GLuint mLiftDiamondHalf = generateLiftDiamondHalf();
-  cTextures[LIFT_DIAMOND_LEFT] = new Commodore64SpindizzyTexture(mLiftDiamondHalf, Commodore64SpindizzyTexture::SOUTH);
-  cTextures[LIFT_DIAMOND_RIGHT] = new Commodore64SpindizzyTexture(mLiftDiamondHalf, Commodore64SpindizzyTexture::NORTH);
-  cTextures[LIFT_DIAMOND_NONE] = new Commodore64SpindizzyTexture(generateLiftDiamond());
-  cTextures[LIFT_DIAMOND_BOTH] = new Commodore64SpindizzyTexture(generateLiftDiamondBoth());
+  cTextures[LIFT_DIAMOND_LEFT]->setTexture(mLiftDiamondHalf, Commodore64SpindizzyTexture::SOUTH);
+  cTextures[LIFT_DIAMOND_RIGHT]->setTexture(mLiftDiamondHalf, Commodore64SpindizzyTexture::NORTH);
+  cTextures[LIFT_DIAMOND_NONE]->setTexture(generateLiftDiamond());
+  cTextures[LIFT_DIAMOND_BOTH]->setTexture(generateLiftDiamondBoth());
 
-  cTextures[BACKGROUND] = new PlainColourTexture(cColourScheme->getColour(IFourColourSupport::BACKGROUND));
+  cBackgroundTexture->setTexture(cColourScheme->getColour(IFourColourSupport::BACKGROUND));
   
   cTexturesByName[LIFT_CIRCLE_BOTH_NAME]   = cTextures[LIFT_CIRCLE_BOTH];
   cTexturesByName[LIFT_CIRCLE_LEFT_NAME]   = cTextures[LIFT_CIRCLE_LEFT];
@@ -427,11 +486,12 @@ void Commodore64SpindizzyTextureSet::generateTextures() {
 }
 
 void Commodore64SpindizzyTextureSet::destroyTextures() {
-  for (std::map<TextureType, ISpindizzyTexture*>::iterator i = cTextures.begin(); i != cTextures.end(); i++) {
+  for (std::map<TextureType, Commodore64SpindizzyTexture*>::iterator i = cTextures.begin(); i != cTextures.end(); i++) {
     if (i->first != SWITCH_RESET && i->first != WATER && i->first != WALL_SOUTH && i->first != WALL_WEST) {
       delete i->second;
     }
   }
+  delete cBackgroundTexture;
   for (std::map<TextureType, GLuint>::iterator i = cTextureIDs.begin(); i != cTextureIDs.end(); i++) {
     glDeleteTextures(1, &(i->second));
   }
@@ -446,7 +506,6 @@ void Commodore64SpindizzyTextureSet::setPlugin(PlugSocket* socket, IPlugin* plug
   if (socket->getType() == "FourColourSupport") {
     IFourColourSupport* mPreviousColourScheme = cColourScheme;
     if (assignPlugin(plugin, &cColourScheme, *socket)) {
-      destroyTextures();
       mPreviousColourScheme->removeChangeListener(this);
       cColourScheme->addChangeListener(this);
       generateTextures();
@@ -467,11 +526,15 @@ IPlugin* Commodore64SpindizzyTextureSet::getPlugin(PlugSocket* socket) {
 }
 
 ISpindizzyTexture* Commodore64SpindizzyTextureSet::getTexture(TextureType type) {
+  if (type == BACKGROUND) {
+    return cBackgroundTexture;
+  }
   return cTextures[type];
 }
 
 ISpindizzyTexture* Commodore64SpindizzyTextureSet::getTexture(const std::string& name) {
-  return cTexturesByName[name]; // TODO: Return a default if the specified one doesn't exist.
+  std::map<std::string, Commodore64SpindizzyTexture*>::iterator i = cTexturesByName.find(name);
+  return i != cTexturesByName.end() ? i->second : cTexturesByName.begin()->second;
 }
 
 Commodore64SpindizzyTextureSet::~Commodore64SpindizzyTextureSet() {

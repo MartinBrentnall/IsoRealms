@@ -39,9 +39,11 @@ class Commodore64SpindizzyTexture:public ISpindizzyTexture {
   Mapping cMapping;
 
   public:
-  Commodore64SpindizzyTexture(GLuint);
-  Commodore64SpindizzyTexture(GLuint, Direction);
-  Commodore64SpindizzyTexture(GLuint, Mapping);
+  Commodore64SpindizzyTexture();
+
+  void setTexture(GLuint);
+  void setTexture(GLuint, Direction);
+  void setTexture(GLuint, Mapping);
 
   /***********************************\
    * Implements ISpindizzyTextureSet *

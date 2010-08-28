@@ -32,7 +32,8 @@
 #include <IsoRealms/IVisualElement.h>
 
 #include "../../Plugins/CollidableSurfaceRegistry/IRollableSurface.h"
-#include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
+#include "../../Plugins/3DModel/ISimpleModel.h"
+#include "../../Plugins/3DModel/ISimpleModelFactory.h"
 
 #include "ISpindizzyLiftFactory.h"
 #include "ISpindizzyLiftSet.h"
@@ -54,7 +55,7 @@ class SpindizzyLift:public Element<ISpindizzyLiftSet, ISpindizzyLiftFactory>,
     
   // Definition values
   BlockLocation cLocation;
-  ISpindizzyTexture* cTexture;
+  ISimpleModel* cLiftModel;
   int cBottom;
   int cTop;
   unsigned int cTopDelay;
@@ -64,7 +65,7 @@ class SpindizzyLift:public Element<ISpindizzyLiftSet, ISpindizzyLiftFactory>,
   
   // Runtime values
   struct LiftValues {
-    float cZ;
+    Vertex cLocation;
     LiftState cState;
     int cDelay;
   };
@@ -75,9 +76,9 @@ class SpindizzyLift:public Element<ISpindizzyLiftSet, ISpindizzyLiftFactory>,
   Vertex* getBoundaryCrossingPoint(Vertex&, Vertex&, float*, float);
   
   public:
-  SpindizzyLift(ISpindizzyLiftFactory*, BlockLocation*, ISpindizzyTexture*, SpindizzyLiftProperties*, int, int);
+  SpindizzyLift(ISpindizzyLiftFactory*, BlockLocation*, ISimpleModelFactory*, SpindizzyLiftProperties*, int, int);
 
-  void setTexture(ISpindizzyTexture*);
+  void setModel(ISimpleModelFactory*, ISimpleModelFactory*);
 
   LiftValues getZLocationAfter(int);
   void reset();

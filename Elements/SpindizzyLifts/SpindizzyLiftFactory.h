@@ -29,8 +29,8 @@
 #include <IsoRealms/IUserCommand.h>
 #include <IsoRealms/IVisualElement.h>
 
-#include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
-#include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
+#include "../../Plugins/3DModel/ISimpleModel.h"
+#include "../../Plugins/3DModel/ISimpleModelFactory.h"
 
 #include "ISpindizzyLiftFactory.h"
 #include "SpindizzyLift.h"
@@ -41,8 +41,7 @@ class SpindizzyLiftFactory:public ISpindizzyLiftFactory {
   private:
   std::string cLiftTypeName;
   std::vector<SpindizzyLift*> cContent;
-  ISpindizzyTextureSet* cTextureSet;
-  ISpindizzyTextureSet::TextureType cTexture;
+  ISimpleModelFactory* cLiftModelFactory;
   SpindizzyLift* cSampleLift;
   std::vector<IVisualElement*> cSampleVisualElements;
   BlockLocation* cEditingLocation;
@@ -74,9 +73,9 @@ class SpindizzyLiftFactory:public ISpindizzyLiftFactory {
   };
   
   public:
-  SpindizzyLiftFactory(ISpindizzyLiftSet*, ISpindizzyTextureSet::TextureType, SpindizzyLiftProperties*, bool, const std::string& liftTypeName);
+  SpindizzyLiftFactory(ISpindizzyLiftSet*, ISimpleModelFactory*, SpindizzyLiftProperties*, bool, const std::string& liftTypeName);
 
-  void setTextureSet(ISpindizzyTextureSet*);
+  void setLiftModelFactory(ISimpleModelFactory*);
   std::vector<IUserCommand*> getLiftCommands();  
   
   /************************************\

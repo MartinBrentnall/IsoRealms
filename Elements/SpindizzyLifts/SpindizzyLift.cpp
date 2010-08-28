@@ -18,20 +18,24 @@
  */
 #include "SpindizzyLift.h"
 
-SpindizzyLift::SpindizzyLift(ISpindizzyLiftFactory* elementFactory, BlockLocation* location, ISpindizzyTexture* texture, SpindizzyLiftProperties* properties, int bottom, int top) : Element<ISpindizzyLiftSet, ISpindizzyLiftFactory>(elementFactory) {
+SpindizzyLift::SpindizzyLift(ISpindizzyLiftFactory* elementFactory, BlockLocation* location, ISimpleModelFactory* liftModelFactory, SpindizzyLiftProperties* properties, int bottom, int top) : Element<ISpindizzyLiftSet, ISpindizzyLiftFactory>(elementFactory) {
   cTopDelay    = properties->getTopDelay();
   cBottomDelay = properties->getBottomDelay();
   cUpSpeed     = properties->getUpSpeed();
   cDownSpeed   = properties->getDownSpeed();
-  cTexture     = texture;
   cLocation    = BlockLocation(*location);
   cBottom      = bottom;
   cTop         = top;
+  cLiftValues.cLocation.x = cLocation.x;
+  cLiftValues.cLocation.y = cLocation.y;
+  cLiftValues.cLocation.z = cLocation.z;
+  cLiftModel   = liftModelFactory->createModel(&cLiftValues.cLocation);
   reset();
 }
 
-void SpindizzyLift::setTexture(ISpindizzyTexture* texture) {
-  cTexture = texture;
+void SpindizzyLift::setModel(ISimpleModelFactory* oldFactory, ISimpleModelFactory* newFactory) {
+  oldFactory->destroyModel(cLiftModel);
+  cLiftModel = newFactory->createModel(&cLiftValues.cLocation);
 }
 
 void SpindizzyLift::renderStatic() {
@@ -104,21 +108,21 @@ SpindizzyLift::LiftValues SpindizzyLift::getZLocationAfter(int milliseconds) {
   if (mLiftFactory->isActive()) {
 
     // Prevent an infinite loop occurring when pause intervals are both zero and the range of the lift is zero
-    if (cTop == cBottom && cBottom == mLift.cZ) {
+    if (cTop == cBottom && cBottom == mLift.cLocation.z) {
       return mLift;
     }
 
     while (milliseconds > 0) {
       switch (mLift.cState) {
         case SpindizzyLift::MOVING_UP: {
-          float mToMove = milliseconds * 1.0f / cUpSpeed;
-          mLift.cZ += mToMove;
-          if (mLift.cZ > cTop) {
+          double mToMove = milliseconds * 1.0f / cUpSpeed;
+          mLift.cLocation.z += mToMove;
+          if (mLift.cLocation.z > cTop) {
             mLift.cState = SpindizzyLift::PAUSED_TOP;
             mLift.cDelay = cTopDelay;
             milliseconds = 0; // TODO: Recover remaining ticks for pause
-            mLift.cZ = cTop;
-          } else if ((int) mLift.cZ != (int) cLiftValues.cZ) {
+            mLift.cLocation.z = cTop;
+          } else if ((int) mLift.cLocation.z != (int) cLiftValues.cLocation.z) {
             executeLiftMovedScript();
             milliseconds = 0;
           } else {
@@ -128,14 +132,14 @@ SpindizzyLift::LiftValues SpindizzyLift::getZLocationAfter(int milliseconds) {
         }
   
         case SpindizzyLift::MOVING_DOWN: {
-          float mToMove = milliseconds * 1.0f / cDownSpeed;
-          mLift.cZ -= mToMove;
-          if (mLift.cZ < cBottom) {
+          double mToMove = milliseconds * 1.0f / cDownSpeed;
+          mLift.cLocation.z -= mToMove;
+          if (mLift.cLocation.z < cBottom) {
             mLift.cState = SpindizzyLift::PAUSED_BOTTOM;
             mLift.cDelay = cBottomDelay;
             milliseconds = 0; // TODO: Recover remaining ticks for pause
-            mLift.cZ = cBottom;
-          } else if ((int) mLift.cZ != (int) cLiftValues.cZ) {
+            mLift.cLocation.z = cBottom;
+          } else if ((int) mLift.cLocation.z != (int) cLiftValues.cLocation.z) {
             executeLiftMovedScript();
             milliseconds = 0;
           } else {
@@ -148,7 +152,7 @@ SpindizzyLift::LiftValues SpindizzyLift::getZLocationAfter(int milliseconds) {
           mLift.cDelay -= milliseconds;
           if (mLift.cDelay < 0) {
             milliseconds = mLift.cDelay > 0 ? mLift.cDelay : -mLift.cDelay;
-            mLift.cState = mLift.cZ <= cBottom ? SpindizzyLift::PAUSED_BOTTOM : SpindizzyLift::MOVING_DOWN;
+            mLift.cState = mLift.cLocation.z <= cBottom ? SpindizzyLift::PAUSED_BOTTOM : SpindizzyLift::MOVING_DOWN;
             if (mLift.cState == SpindizzyLift::PAUSED_BOTTOM) {
               mLift.cDelay = cBottomDelay;
             }
@@ -161,7 +165,7 @@ SpindizzyLift::LiftValues SpindizzyLift::getZLocationAfter(int milliseconds) {
           mLift.cDelay -= milliseconds;
           if (mLift.cDelay < 0) {
             milliseconds = mLift.cDelay > 0 ? mLift.cDelay : -mLift.cDelay;
-            mLift.cState = mLift.cZ >= cTop ? SpindizzyLift::PAUSED_TOP : SpindizzyLift::MOVING_UP;
+            mLift.cState = mLift.cLocation.z >= cTop ? SpindizzyLift::PAUSED_TOP : SpindizzyLift::MOVING_UP;
             if (mLift.cState == SpindizzyLift::MOVING_UP) {
               executeLiftMovedScript();
             } else {
@@ -185,7 +189,7 @@ void SpindizzyLift::update(int milliseconds) {
 }
 
 void SpindizzyLift::reset() {
-  cLiftValues.cZ = cLocation.z;
+  cLiftValues.cLocation.z = cLocation.z;
   if (cTop < cLocation.z) {
     cLiftValues.cState = SpindizzyLift::PAUSED_TOP;
     cLiftValues.cDelay = cTopDelay;
@@ -196,23 +200,7 @@ void SpindizzyLift::reset() {
 }
 
 void SpindizzyLift::render() {
-  glPushMatrix();
-  glTranslatef(cLocation.x, cLocation.y, cLiftValues.cZ * IsoRealmsConstants::BLOCK_HEIGHT + (IsoRealmsConstants::BLOCK_HEIGHT * 0.05));
-  cTexture->set();
-  glAlphaFunc(GL_GREATER, 0.1f);
-  glEnable(GL_ALPHA_TEST);
-  glDisable(GL_CULL_FACE);
-  glBegin(GL_QUADS);
-  float mScaleFactor = 1.45;
-  cTexture->texCoord2f(1.0, 1.0); glVertex3f(    IsoRealmsConstants::BLOCK_RADIUS * mScaleFactor, 0 - IsoRealmsConstants::BLOCK_RADIUS * mScaleFactor, 0.0);
-  cTexture->texCoord2f(1.0, 0.0); glVertex3f(    IsoRealmsConstants::BLOCK_RADIUS * mScaleFactor,     IsoRealmsConstants::BLOCK_RADIUS * mScaleFactor, 0.0);
-  cTexture->texCoord2f(0.0, 0.0); glVertex3f(0 - IsoRealmsConstants::BLOCK_RADIUS * mScaleFactor,     IsoRealmsConstants::BLOCK_RADIUS * mScaleFactor, 0.0);
-  cTexture->texCoord2f(0.0, 1.0); glVertex3f(0 - IsoRealmsConstants::BLOCK_RADIUS * mScaleFactor, 0 - IsoRealmsConstants::BLOCK_RADIUS * mScaleFactor, 0.0);
-  glEnd();
-  glEnable(GL_CULL_FACE);
-  glDisable(GL_ALPHA_TEST);
-  glBindTexture(GL_TEXTURE_2D, 0);
-  glPopMatrix();
+  cLiftModel->render();
 }
 
 void SpindizzyLift::save(DOMNodeWriter* node, BlockLocation& relative) {
@@ -334,8 +322,7 @@ ICollisionData* SpindizzyLift::getCollision(Vertex& start, Vertex& end) {
   Vertex* mEnterPoint = getBoundaryCrossingPoint(start, end, &mGradient, -INFINITY);
   if (mEnterPoint != NULL) {
     float mEnterHeight = getHeightAt(mEnterPoint->x, mEnterPoint->y);
-    // TODO: The "0.01f" is a bit nasty magic number
-    if (mEnterPoint->z <= mEnterHeight + 0.01f && mEnterPoint->z >= mEnterHeight - 0.5f) {
+    if (mEnterPoint->z <= mEnterHeight && mEnterPoint->z >= mEnterHeight - 0.5f) {
       return new SurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mEnterPoint, mGradient);
     }
   }
@@ -366,7 +353,7 @@ ICollisionData* SpindizzyLift::getRollingEvent(Vertex& start, Vertex& end) {
 }
 
 float SpindizzyLift::getHeightAt(float, float) {
-  return cLiftValues.cZ;
+  return cLiftValues.cLocation.z;
 }
 
 float SpindizzyLift::getXAcceleration(float, float) {

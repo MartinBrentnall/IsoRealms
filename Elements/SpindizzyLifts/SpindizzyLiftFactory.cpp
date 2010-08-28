@@ -18,14 +18,14 @@
  */
 #include "SpindizzyLiftFactory.h"
 
-SpindizzyLiftFactory::SpindizzyLiftFactory(ISpindizzyLiftSet* elementSet, ISpindizzyTextureSet::TextureType texture, SpindizzyLiftProperties* properties, bool active, const std::string& liftTypeName) : ISpindizzyLiftFactory(elementSet) {
+SpindizzyLiftFactory::SpindizzyLiftFactory(ISpindizzyLiftSet* elementSet, ISimpleModelFactory* liftModelFactory, SpindizzyLiftProperties* properties, bool active, const std::string& liftTypeName) : ISpindizzyLiftFactory(elementSet) {
   cLiftTypeName = liftTypeName;
   cProperties = properties;
-  cTexture = texture;
+  cLiftModelFactory = liftModelFactory;
   cInsertLocation = NULL;
   cFirstRange = NULL;
   BlockLocation mIdentityLocation(0, 0, 0);
-  cSampleLift = new SpindizzyLift(this, &mIdentityLocation, NULL, properties, 0, 0);
+  cSampleLift = new SpindizzyLift(this, &mIdentityLocation, liftModelFactory, properties, 0, 0);
   cSampleVisualElements = cSampleLift->getVisualElements();
   cConfigurationComponent = NULL;
   cState = active;
@@ -51,6 +51,7 @@ SpindizzyLiftFactory::LiftCommand::LiftCommand(SpindizzyLiftFactory* parent, boo
 }
 
 void SpindizzyLiftFactory::LiftCommand::execute() {
+  std::cout << "State set to: " << cTargetState << std::endl;
   cParent->cState = cTargetState;
 }
 
@@ -80,8 +81,7 @@ IElement* SpindizzyLiftFactory::getElement(DOMNodeWrapper* node, BlockLocation* 
     exit(1);
     // TODO: Throw something
   }
-  ISpindizzyTexture* mTexture = cTextureSet->getTexture(cTexture);
-  SpindizzyLift* mLoadedLift = new SpindizzyLift(this, &mStartLocation, mTexture, cProperties, mLiftBottom, mLiftTop);
+  SpindizzyLift* mLoadedLift = new SpindizzyLift(this, &mStartLocation, cLiftModelFactory, cProperties, mLiftBottom, mLiftTop);
   cContent.push_back(mLoadedLift);
   registerElement(mLoadedLift, elementContainer);
   return mLoadedLift;
@@ -97,8 +97,7 @@ bool SpindizzyLiftFactory::keyDown(SDLKey& key) {
       } else {
         int mTopRange = *cFirstRange > cEditingLocation->z ? *cFirstRange : cEditingLocation->z;
         int mBottomRange = *cFirstRange > cEditingLocation->z ? cEditingLocation->z : *cFirstRange;
-        ISpindizzyTexture* mTexture = cTextureSet->getTexture(cTexture);
-        SpindizzyLift* mLiftElement = new SpindizzyLift(this, cInsertLocation, mTexture, cProperties, mBottomRange, mTopRange);
+        SpindizzyLift* mLiftElement = new SpindizzyLift(this, cInsertLocation, cLiftModelFactory, cProperties, mBottomRange, mTopRange);
         addElement(mLiftElement);
         cContent.push_back(mLiftElement);
         delete cInsertLocation;
@@ -116,13 +115,12 @@ bool SpindizzyLiftFactory::keyDown(SDLKey& key) {
   return false;
 }
 
-void SpindizzyLiftFactory::setTextureSet(ISpindizzyTextureSet* textureSet) {
-  cTextureSet = textureSet;
-  ISpindizzyTexture* mTexture = cTextureSet->getTexture(cTexture);
-  cSampleLift->setTexture(mTexture);
+void SpindizzyLiftFactory::setLiftModelFactory(ISimpleModelFactory* liftModelFactory) {
+  cSampleLift->setModel(cLiftModelFactory, liftModelFactory);
   for (unsigned int i = 0; i < cContent.size(); i++) {
-    cContent[i]->setTexture(mTexture);
+    cContent[i]->setModel(cLiftModelFactory, liftModelFactory);
   }
+  cLiftModelFactory = liftModelFactory;
 }
 
 void SpindizzyLiftFactory::configureElement() {
