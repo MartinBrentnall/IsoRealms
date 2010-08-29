@@ -75,7 +75,7 @@ void TextureSetChooserComponent::TextureIcon::render() {
   glRotatef(-45.0f, 0.0f, 0.0f, 1.0f); // TODO: Must get this right; check with how the editor is doing it!
   glColor3f(1.0f, 1.0f, 1.0f);
 
-  ISpindizzyTexture* mTexture = cTextureSet->getTexture(ISpindizzyTextureSet::SWITCH_DIAMOND_BOTH);
+  ISpindizzyTexture* mTexture = cTextureSet->getTexture("SwitchDiamondFilled");
   mTexture->set();
   glBegin(GL_QUADS);
   mTexture->texCoord2f(1.0f, 1.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
@@ -84,7 +84,7 @@ void TextureSetChooserComponent::TextureIcon::render() {
   mTexture->texCoord2f(1.0f, 0.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
   glEnd();
 
-  mTexture = cTextureSet->getTexture(ISpindizzyTextureSet::WALL_SOUTH);
+  mTexture = cTextureSet->getTexture("WallSouth");
   mTexture->set();
   glBegin(GL_QUADS);
   mTexture->texCoord2f(1.0f, 1.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
@@ -93,7 +93,7 @@ void TextureSetChooserComponent::TextureIcon::render() {
   mTexture->texCoord2f(1.0f, 0.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
   glEnd();
 
-  mTexture = cTextureSet->getTexture(ISpindizzyTextureSet::WALL_NORTH);
+  mTexture = cTextureSet->getTexture("WallNorth");
   mTexture->set();
   glBegin(GL_QUADS);
   mTexture->texCoord2f(1.0f, 0.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
@@ -102,7 +102,7 @@ void TextureSetChooserComponent::TextureIcon::render() {
   mTexture->texCoord2f(1.0f, 1.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
   glEnd();
 
-  mTexture = cTextureSet->getTexture(ISpindizzyTextureSet::WALL_EAST);
+  mTexture = cTextureSet->getTexture("WallEast");
   mTexture->set();
   glBegin(GL_QUADS);
   mTexture->texCoord2f(1.0f, 0.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
@@ -111,7 +111,7 @@ void TextureSetChooserComponent::TextureIcon::render() {
   mTexture->texCoord2f(1.0f, 1.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
   glEnd();
 
-  mTexture = cTextureSet->getTexture(ISpindizzyTextureSet::WALL_WEST);
+  mTexture = cTextureSet->getTexture("WallWest");
   mTexture->set();
   glBegin(GL_QUADS);
   mTexture->texCoord2f(1.0f, 1.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_HEIGHT / 2.0);

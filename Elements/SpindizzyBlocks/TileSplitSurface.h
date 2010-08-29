@@ -39,8 +39,7 @@ class TileSplitSurface:public ISpindizzyTileSurface {
   private:
   BlockLocation cLocation;
   // TODO: Change to refer to the texture set that may change!
-  ISpindizzyTextureSet** cTextureSet;
-  ISpindizzyTextureSet::TextureType cTextureType;
+  ISpindizzyTexture* cTexture;
   int cCornerHeights[2][2];
   bool cSplitDirection;
   Condition* cCondition;
@@ -62,7 +61,7 @@ class TileSplitSurface:public ISpindizzyTileSurface {
    * @param bool  Split direction.
    * @param BlockLocation&  
    */
-  TileSplitSurface(bool, BlockLocation&, ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType, int, int, int, int, Condition*, BlockTypeProperties*);
+  TileSplitSurface(bool, BlockLocation&, ISpindizzyTexture*, int, int, int, int, Condition*, BlockTypeProperties*);
 
   /************************************\
    * Implements ISpindizzyTileSurface *

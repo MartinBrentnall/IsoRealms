@@ -144,6 +144,34 @@ void SpindizzyWaterFactory::configureBlock(DOMNodeWrapper*, ICommandRegistry*) {
   // Nothing to do.
 }
 
+ISpindizzyTexture** SpindizzyWaterFactory::getSurfaceTexture() {
+  return NULL; // TODO: Implement this
+}
+
+ISpindizzyTexture** SpindizzyWaterFactory::getSplitNETexture() {
+  return NULL; // TODO: Implement this
+}
+
+ISpindizzyTexture** SpindizzyWaterFactory::getSplitNWTexture() {
+  return NULL; // TODO: Implement this
+}
+
+ISpindizzyTexture** SpindizzyWaterFactory::getWestWallTexture() {
+  return NULL; // TODO: Implement this
+}
+
+ISpindizzyTexture** SpindizzyWaterFactory::getEastWallTexture() {
+  return NULL; // TODO: Implement this
+}
+
+ISpindizzyTexture** SpindizzyWaterFactory::getSouthWallTexture() {
+  return NULL; // TODO: Implement this
+}
+
+ISpindizzyTexture** SpindizzyWaterFactory::getNorthWallTexture() {
+  return NULL; // TODO: Implement this
+}
+
 SpindizzyWaterFactory::~SpindizzyWaterFactory() {
   if (cStartWaterLocation != NULL) {
     delete cStartWaterLocation;

@@ -17,7 +17,6 @@
 include_directories(${PROJECT_SOURCE_DIR})
 
 add_library(Elements_SpindizzyBlocks MODULE 
-  AbstractSpindizzyBlock.cpp
   BlockStateCommand.cpp
   BlockTypeProperties.cpp
   ISpindizzyBlockFactory.cpp
@@ -26,9 +25,6 @@ add_library(Elements_SpindizzyBlocks MODULE
   SpindizzyBlockFactory.cpp
   SpindizzyBlockProperties.cpp
   SpindizzyBlockSet.cpp
-  SpindizzyIceBlock.cpp
-  SpindizzySwitchBlock.cpp
-  SpindizzyTrampolineBlock.cpp
   SpindizzyWater.cpp
   SpindizzyWaterFactory.cpp
   SurfaceCollisionEvent.cpp

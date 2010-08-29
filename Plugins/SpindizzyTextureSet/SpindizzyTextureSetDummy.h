@@ -53,7 +53,6 @@ class SpindizzyTextureSetDummy:public ISpindizzyTextureSet,
    * Implements ISpindizzyTextureSet *
   \***********************************/
   SpindizzyTextureSetDummy();
-  ISpindizzyTexture* getTexture(TextureType);
   ISpindizzyTexture* getTexture(const std::string&);
 
   ~SpindizzyTextureSetDummy();

@@ -45,18 +45,46 @@ class Commodore64SpindizzyTextureSet:public ISpindizzyTextureSet,
   static const int GRID_WIDTH = RESOLUTION / 16;
   static const int EDGE_WIDTH = RESOLUTION / 8;
 
-  static const std::string LIFT_CIRCLE_BOTH_NAME;
-  static const std::string LIFT_CIRCLE_LEFT_NAME;
-  static const std::string LIFT_CIRCLE_RIGHT_NAME;
-  static const std::string LIFT_CIRCLE_NONE_NAME;
-  static const std::string LIFT_SQUARE_BOTH_NAME;
-  static const std::string LIFT_SQUARE_LEFT_NAME;
-  static const std::string LIFT_SQUARE_RIGHT_NAME;
-  static const std::string LIFT_SQUARE_NONE_NAME;
-  static const std::string LIFT_DIAMOND_BOTH_NAME;
-  static const std::string LIFT_DIAMOND_LEFT_NAME;
-  static const std::string LIFT_DIAMOND_RIGHT_NAME;
-  static const std::string LIFT_DIAMOND_NONE_NAME;
+  static const std::string PLAIN;
+  static const std::string PLAIN_NE_SPLIT;
+  static const std::string PLAIN_NW_SPLIT;
+  static const std::string ICE;
+  static const std::string ARROW_WEST;
+  static const std::string ARROW_EAST;
+  static const std::string ARROW_SOUTH;
+  static const std::string ARROW_NORTH;
+  static const std::string SWITCH_CIRCLE_BOTH;
+  static const std::string SWITCH_CIRCLE_LEFT;
+  static const std::string SWITCH_CIRCLE_RIGHT;
+  static const std::string SWITCH_CIRCLE_NONE;
+  static const std::string SWITCH_SQUARE_BOTH;
+  static const std::string SWITCH_SQUARE_LEFT;
+  static const std::string SWITCH_SQUARE_RIGHT;
+  static const std::string SWITCH_SQUARE_NONE;
+  static const std::string SWITCH_DIAMOND_BOTH;
+  static const std::string SWITCH_DIAMOND_LEFT;
+  static const std::string SWITCH_DIAMOND_RIGHT;
+  static const std::string SWITCH_DIAMOND_NONE;
+  static const std::string TRAMPOLINE;
+  static const std::string WATER;
+  static const std::string WALL_ICE;
+  static const std::string WALL_WEST;
+  static const std::string WALL_EAST;
+  static const std::string WALL_SOUTH;
+  static const std::string WALL_NORTH;
+
+  static const std::string LIFT_CIRCLE_BOTH;
+  static const std::string LIFT_CIRCLE_LEFT;
+  static const std::string LIFT_CIRCLE_RIGHT;
+  static const std::string LIFT_CIRCLE_NONE;
+  static const std::string LIFT_SQUARE_BOTH;
+  static const std::string LIFT_SQUARE_LEFT;
+  static const std::string LIFT_SQUARE_RIGHT;
+  static const std::string LIFT_SQUARE_NONE;
+  static const std::string LIFT_DIAMOND_BOTH;
+  static const std::string LIFT_DIAMOND_LEFT;
+  static const std::string LIFT_DIAMOND_RIGHT;
+  static const std::string LIFT_DIAMOND_NONE;
 
   std::vector<PlugSocket*> cPlugSockets;
 
@@ -74,10 +102,9 @@ class Commodore64SpindizzyTextureSet:public ISpindizzyTextureSet,
   Colour* BLACK;
   // TODO: End nasty hack
 
-  std::map<TextureType, Commodore64SpindizzyTexture*> cTextures;
-  std::map<std::string, Commodore64SpindizzyTexture*> cTexturesByName; 
+  std::map<std::string, Commodore64SpindizzyTexture*> cTextures; 
   PlainColourTexture* cBackgroundTexture;
-  std::map<TextureType, GLuint> cTextureIDs;
+  std::map<std::string, GLuint> cTextureIDs;
 
   IFourColourSupport* cColourScheme;
 
@@ -174,7 +201,7 @@ class Commodore64SpindizzyTextureSet:public ISpindizzyTextureSet,
    */
   GLuint generateLiftCircleBoth();
 
-  GLuint convertToTexture(Image*, TextureType);
+  GLuint convertToTexture(Image*, const std::string&);
 
   void generateTextures();
   void destroyTextures();
@@ -185,7 +212,6 @@ class Commodore64SpindizzyTextureSet:public ISpindizzyTextureSet,
   /***********************************\
    * Implements ISpindizzyTextureSet *
   \***********************************/
-  ISpindizzyTexture* getTexture(TextureType);
   ISpindizzyTexture* getTexture(const std::string&);
 
   /*****************************************\

@@ -18,9 +18,8 @@
  */
 #include "TileSurface.h"
 
-TileSurface::TileSurface(ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet::TextureType textureType, int north, int east, int south, int west, int height, int westEastSlope, int northSouthSlope, ITileSurface::FaceDirection facing, Condition* condition, BlockTypeProperties* blockTypeProperties) {
-  cTextureSet = textureSet;
-  cTextureType = textureType;
+TileSurface::TileSurface(ISpindizzyTexture* texture, int north, int east, int south, int west, int height, int westEastSlope, int northSouthSlope, ITileSurface::FaceDirection facing, Condition* condition, BlockTypeProperties* blockTypeProperties) {
+  cTexture = texture;
   cNorth = north;
   cEast = east;
   cSouth = south;
@@ -70,32 +69,31 @@ void TileSurface::render() {
       xeys += (abs(cNorthSouthSlope) * IsoRealmsConstants::BLOCK_HEIGHT * (ye - ys));
       xeye += (abs(cNorthSouthSlope) * IsoRealmsConstants::BLOCK_HEIGHT * (ye - ys));
     }
-    ISpindizzyTexture* mTexture = (*cTextureSet)->getTexture(cTextureType);
-    mTexture->set();
+    cTexture->set();
     glBegin(GL_QUADS);
 
     switch (cFacing) {
       case ITileSurface::UP: {
-        mTexture->texCoord2f(cEast + 1, cNorth + 1); glVertex3f(xe, ys, xsye);
-        mTexture->texCoord2f(cEast + 1, cSouth    ); glVertex3f(xe, ye, xeye);
-        mTexture->texCoord2f(cWest,     cSouth    ); glVertex3f(xs, ye, xeys);
-        mTexture->texCoord2f(cWest,     cNorth + 1); glVertex3f(xs, ys, xsys);
-/*        glColor3f(1.0, 1.0, 0.0); mTexture->texCoord2f(cEast + 1, cNorth + 1); glVertex3f(xe, ys, xsye);
-        glColor3f(0.0, 1.0, 1.0); mTexture->texCoord2f(cEast + 1, cSouth);     glVertex3f(xe, ye, xeye);
-        glColor3f(1.0, 0.0, 1.0); mTexture->texCoord2f(cWest,     cSouth);     glVertex3f(xs, ye, xeys);
-        glColor3f(1.0, 1.0, 1.0); mTexture->texCoord2f(cWest,     cNorth + 1);  glVertex3f(xs, ys, xsys);*/
+        cTexture->texCoord2f(cEast + 1, cNorth + 1); glVertex3f(xe, ys, xsye);
+        cTexture->texCoord2f(cEast + 1, cSouth    ); glVertex3f(xe, ye, xeye);
+        cTexture->texCoord2f(cWest,     cSouth    ); glVertex3f(xs, ye, xeys);
+        cTexture->texCoord2f(cWest,     cNorth + 1); glVertex3f(xs, ys, xsys);
+/*        glColor3f(1.0, 1.0, 0.0); cTexture->texCoord2f(cEast + 1, cNorth + 1); glVertex3f(xe, ys, xsye);
+        glColor3f(0.0, 1.0, 1.0); cTexture->texCoord2f(cEast + 1, cSouth);     glVertex3f(xe, ye, xeye);
+        glColor3f(1.0, 0.0, 1.0); cTexture->texCoord2f(cWest,     cSouth);     glVertex3f(xs, ye, xeys);
+        glColor3f(1.0, 1.0, 1.0); cTexture->texCoord2f(cWest,     cNorth + 1);  glVertex3f(xs, ys, xsys);*/
         break;
       }
 
       case ITileSurface::DOWN: {
-        mTexture->texCoord2f(cWest,     cNorth + 1); glVertex3f(xs, ye, xeys);
-        mTexture->texCoord2f(cEast + 1, cNorth + 1); glVertex3f(xe, ye, xeye);
-        mTexture->texCoord2f(cEast + 1, cSouth);     glVertex3f(xe, ys, xsye);
-        mTexture->texCoord2f(cWest,     cSouth);     glVertex3f(xs, ys, xsys);
-  /*      glColor3f(0.0, 1.0, 0.0); mTexture->texCoord2f(cWest,     cNorth + 1); glVertex3f(xs, ye, xeys);
-        glColor3f(1.0, 1.0, 0.0); mTexture->texCoord2f(cEast + 1, cNorth + 1); glVertex3f(xe, ye, xeye);
-        glColor3f(1.0, 0.0, 0.0); mTexture->texCoord2f(cEast + 1, cSouth);     glVertex3f(xe, ys, xsye);
-        glColor3f(0.0, 0.0, 1.0); mTexture->texCoord2f(cWest,     cSouth);     glVertex3f(xs, ys, xsys);*/
+        cTexture->texCoord2f(cWest,     cNorth + 1); glVertex3f(xs, ye, xeys);
+        cTexture->texCoord2f(cEast + 1, cNorth + 1); glVertex3f(xe, ye, xeye);
+        cTexture->texCoord2f(cEast + 1, cSouth);     glVertex3f(xe, ys, xsye);
+        cTexture->texCoord2f(cWest,     cSouth);     glVertex3f(xs, ys, xsys);
+  /*      glColor3f(0.0, 1.0, 0.0); cTexture->texCoord2f(cWest,     cNorth + 1); glVertex3f(xs, ye, xeys);
+        glColor3f(1.0, 1.0, 0.0); cTexture->texCoord2f(cEast + 1, cNorth + 1); glVertex3f(xe, ye, xeye);
+        glColor3f(1.0, 0.0, 0.0); cTexture->texCoord2f(cEast + 1, cSouth);     glVertex3f(xe, ys, xsye);
+        glColor3f(0.0, 0.0, 1.0); cTexture->texCoord2f(cWest,     cSouth);     glVertex3f(xs, ys, xsys);*/
         break;
       }
     }

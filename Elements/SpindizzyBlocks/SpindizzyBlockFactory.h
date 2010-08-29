@@ -34,9 +34,9 @@
 
 class SpindizzyBlockConfigurationComponent;
 
-#include "AbstractSpindizzyBlock.h"
 #include "ISpindizzyBlockFactory.h"
 #include "ISpindizzyBlockSet.h"
+#include "SpindizzyBlock.h"
 #include "SpindizzyBlockConfigurationComponent.h"
 #include "SpindizzyBlockProperties.h"
 
@@ -44,16 +44,16 @@ class SpindizzyBlockFactory:public ISpindizzyBlockFactory,
                             public IComponentCloseListener {
   private:
   std::string cFactoryName;
-  std::vector<AbstractSpindizzyBlock*> cContent;
+  std::vector<SpindizzyBlock*> cContent;
   SpindizzyBlockConfigurationComponent* cConfigurationComponent;
   IComponentContainer* cComponentContainer;
   ISpindizzyTextureSet** cSpindizzyTextureSet;
   SpindizzyBlockProperties* cBlockProperties;
   BlockLocation* cStartBlockLocation;
   BlockLocation* cEditingLocation;
-  AbstractSpindizzyBlock* cSampleBlock;
+  SpindizzyBlock* cSampleBlock;
   BlockTypeProperties cBlockTypeProperties;
-
+  
   bool keyDown(SDLKey&);  
 
   void drawSlopeWireFrameCuboid(BlockLocation* location, BlockLocation* dimension, int xslope, int yslope);
@@ -67,7 +67,7 @@ class SpindizzyBlockFactory:public ISpindizzyBlockFactory,
    * 
    * @param ISpindizzyTextureSet*  A texture set to use for texturing blocks.
    */
-  SpindizzyBlockFactory(std::string, ISpindizzyTextureSet**, ISpindizzyBlockSet*);
+  SpindizzyBlockFactory(std::string, ISpindizzyTextureSet**, ISpindizzyBlockSet*, DOMNodeWrapper*, ICommandRegistry*);
 
   /**
    * Create a new usable block according to the specified parameters.
@@ -79,7 +79,7 @@ class SpindizzyBlockFactory:public ISpindizzyBlockFactory,
    * @param bool  true to create an addition, false to create a subtraction.
    * @returns  The new usable block.
    */
-  virtual AbstractSpindizzyBlock* createBlock(BlockLocation*, BlockLocation*, ISpindizzyTextureSet**, SpindizzyBlockProperties*, bool) = 0;
+  SpindizzyBlock* createBlock(BlockLocation*, BlockLocation*, ISpindizzyTextureSet**, SpindizzyBlockProperties*, bool);
   
   /*************************************\
    * Implements ISpindizzyBlockFactory *
@@ -87,7 +87,6 @@ class SpindizzyBlockFactory:public ISpindizzyBlockFactory,
   void signalAllElementsDirty();
   void unregisterSurfaces(ISurfaceProcessor*);
   BlockTypeProperties* getBlockTypeProperties();
-  void configureBlock(DOMNodeWrapper*, ICommandRegistry*);
 
   /******************************\
    * Implements IElementFactory *

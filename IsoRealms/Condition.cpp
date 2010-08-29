@@ -51,7 +51,10 @@ Condition::Condition(DOMNodeWrapper* node, std::vector<ConditionElement*> elemen
       std::string mNegated = mNode->getAttribute("negated");
       std::map<std::string, ConditionElement*>::iterator i = mElements.find(mName);
       if (i == mElements.end()) {
-        std::cout << "Element \"" << mName << "\" not in list of conditions" << std::endl;
+        std::cout << "Element \"" << mName << "\" not in list of conditions.  Available conditions:" << std::endl;
+        for (unsigned int i = 0; i < elements.size(); i++) {
+          std::cout << "      " << elements[i]->getName() << std::endl;
+        }
         exit(1);
       }
       if (mNegated == "true") {

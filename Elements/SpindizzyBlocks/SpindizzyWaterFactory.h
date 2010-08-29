@@ -48,6 +48,13 @@ class SpindizzyWaterFactory:public ISpindizzyBlockFactory {
   void unregisterSurfaces(ISurfaceProcessor*);
   BlockTypeProperties* getBlockTypeProperties();
   void configureBlock(DOMNodeWrapper*, ICommandRegistry*);
+  ISpindizzyTexture** getSurfaceTexture();
+  ISpindizzyTexture** getSplitNETexture();
+  ISpindizzyTexture** getSplitNWTexture();
+  ISpindizzyTexture** getWestWallTexture();
+  ISpindizzyTexture** getEastWallTexture();
+  ISpindizzyTexture** getSouthWallTexture();
+  ISpindizzyTexture** getNorthWallTexture();
 
   /******************************\
    * Implements IElementFactory *

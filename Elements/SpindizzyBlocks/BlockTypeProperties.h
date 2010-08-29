@@ -23,6 +23,9 @@
 #include <IsoRealms/ICommandRegistry.h>
 #include <IsoRealms/Script.h>
 
+#include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
+#include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
+
 class BlockTypeProperties {
   private:
   Script* cContactScript;
@@ -31,11 +34,19 @@ class BlockTypeProperties {
   float cSurfaceGrip;
   float cSurfaceBounce;
   bool cRespawnAllowed;
+  ISpindizzyTextureSet** cTextureSet;
+  std::string cSurfaceTexture;
+  std::string cSurfaceSplitNETexture;
+  std::string cSurfaceSplitNWTexture;
+  std::string cWestWallTexture;
+  std::string cEastWallTexture;
+  std::string cSouthWallTexture;
+  std::string cNorthWallTexture;
   
   public:
   BlockTypeProperties();
   
-  void configure(DOMNodeWrapper*, ICommandRegistry*);
+  void configure(DOMNodeWrapper*, ICommandRegistry*, ISpindizzyTextureSet**);
   
   void executeContactScript();
   void executeImpactScript();
@@ -43,6 +54,13 @@ class BlockTypeProperties {
   float getSurfaceGrip();
   float getSurfaceBounce();
   bool isRespawnAllowed();
+  ISpindizzyTexture* getSurfaceTexture();
+  ISpindizzyTexture* getSplitNETexture();
+  ISpindizzyTexture* getSplitNWTexture();
+  ISpindizzyTexture* getWestWallTexture();
+  ISpindizzyTexture* getEastWallTexture();
+  ISpindizzyTexture* getSouthWallTexture();
+  ISpindizzyTexture* getNorthWallTexture();
 };
 
 #endif

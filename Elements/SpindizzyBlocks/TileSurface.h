@@ -39,9 +39,7 @@
 class TileSurface:public ISpindizzyTileSurface {
   private:
   ITileSurface::FaceDirection cFacing;
-  // TODO: Change to refer to the texture set that may change!
-  ISpindizzyTextureSet** cTextureSet;
-  ISpindizzyTextureSet::TextureType cTextureType;
+  ISpindizzyTexture* cTexture;
   int cNorth;
   int cEast;
   int cSouth;
@@ -69,7 +67,7 @@ class TileSurface:public ISpindizzyTileSurface {
    * @param int  Slope step along north-to-south (Y axis).
    * @param ITileSurface::FaceDirection  Facing direction of the surface.
    */
-  TileSurface(ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType, int, int, int, int, int, int, int, ITileSurface::FaceDirection, Condition*, BlockTypeProperties*);
+  TileSurface(ISpindizzyTexture*, int, int, int, int, int, int, int, ITileSurface::FaceDirection, Condition*, BlockTypeProperties*);
 
   /************************************\
    * Implements ISpindizzyTileSurface *

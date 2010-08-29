@@ -179,7 +179,7 @@ void TextureSetPerZone::update(int ticks) {
 void TextureSetPerZone::zoneContextChanged(IZone* zone) {
   std::map<IZone*, ISpindizzyTextureSet*>::iterator i = cZoneMapping.find(zone);
   if (i != cZoneMapping.end()) {
-    ISpindizzyTexture* mBackgroundTexture = i->second->getTexture(ISpindizzyTextureSet::BACKGROUND);
+    ISpindizzyTexture* mBackgroundTexture = i->second->getTexture("Background");
     switch (mBackgroundTexture->getMapping()) {
       case ISpindizzyTexture::PLAIN_COLOUR: {
         cPreviousBackgroundColour.set(

@@ -18,67 +18,15 @@
  */
 #include "SpindizzyBlockSet.h"
 
-const std::string SpindizzyBlockSet::PLAIN = "Plain";
-const std::string SpindizzyBlockSet::ARROW_NORTH = "ArrowNorth";
-const std::string SpindizzyBlockSet::ARROW_EAST = "ArrowEast";
-const std::string SpindizzyBlockSet::ARROW_SOUTH = "ArrowSouth";
-const std::string SpindizzyBlockSet::ARROW_WEST = "ArrowWest";
-const std::string SpindizzyBlockSet::ICE = "Ice";
-const std::string SpindizzyBlockSet::TRAMPOLINE = "Trampoline";
-const std::string SpindizzyBlockSet::SWITCH_CIRCLE_BOTH = "SwitchCircleBoth";
-const std::string SpindizzyBlockSet::SWITCH_CIRCLE_LEFT = "SwitchCircleLeft";
-const std::string SpindizzyBlockSet::SWITCH_CIRCLE_RIGHT = "SwitchCircleRight";
-const std::string SpindizzyBlockSet::SWITCH_CIRCLE_NONE = "SwitchCircleNone";
-const std::string SpindizzyBlockSet::SWITCH_SQUARE_BOTH = "SwitchSquareBoth";
-const std::string SpindizzyBlockSet::SWITCH_SQUARE_LEFT = "SwitchSquareLeft";
-const std::string SpindizzyBlockSet::SWITCH_SQUARE_RIGHT = "SwitchSquareRight";
-const std::string SpindizzyBlockSet::SWITCH_SQUARE_NONE = "SwitchSquareNone";
-const std::string SpindizzyBlockSet::SWITCH_DIAMOND_BOTH = "SwitchDiamondBoth";
-const std::string SpindizzyBlockSet::SWITCH_DIAMOND_LEFT = "SwitchDiamondLeft";
-const std::string SpindizzyBlockSet::SWITCH_DIAMOND_RIGHT = "SwitchDiamondRight";
-const std::string SpindizzyBlockSet::SWITCH_DIAMOND_NONE = "SwitchDiamondNone";
-
 const int SpindizzyBlockSet::BLOCK_STATES = 11;
 
 SpindizzyBlockSet::SpindizzyBlockSet() {
-  cElementFactories.push_back(new BlockFactory(PLAIN, this, &cSpindizzyTextureSet, ISpindizzyTextureSet::PLAIN));
-  cElementFactories.push_back(new BlockFactory(ARROW_NORTH, this, &cSpindizzyTextureSet, ISpindizzyTextureSet::ARROW_NORTH));
-  cElementFactories.push_back(new BlockFactory(ARROW_EAST, this, &cSpindizzyTextureSet, ISpindizzyTextureSet::ARROW_EAST));
-  cElementFactories.push_back(new BlockFactory(ARROW_SOUTH, this, &cSpindizzyTextureSet, ISpindizzyTextureSet::ARROW_SOUTH));
-  cElementFactories.push_back(new BlockFactory(ARROW_WEST, this, &cSpindizzyTextureSet, ISpindizzyTextureSet::ARROW_WEST));
-  cElementFactories.push_back(new IceFactory(ICE, this, &cSpindizzyTextureSet));
-  cElementFactories.push_back(new TrampolineFactory(TRAMPOLINE, this, &cSpindizzyTextureSet));
-  cElementFactories.push_back(new SwitchFactory(SWITCH_CIRCLE_BOTH, this, &cSpindizzyTextureSet, ISpindizzyTextureSet::SWITCH_CIRCLE_BOTH));
-  cElementFactories.push_back(new SwitchFactory(SWITCH_CIRCLE_LEFT, this, &cSpindizzyTextureSet, ISpindizzyTextureSet::SWITCH_CIRCLE_LEFT));
-  cElementFactories.push_back(new SwitchFactory(SWITCH_CIRCLE_RIGHT, this, &cSpindizzyTextureSet, ISpindizzyTextureSet::SWITCH_CIRCLE_RIGHT));
-  cElementFactories.push_back(new SwitchFactory(SWITCH_CIRCLE_NONE, this, &cSpindizzyTextureSet, ISpindizzyTextureSet::SWITCH_CIRCLE_NONE));
-  cElementFactories.push_back(new SwitchFactory(SWITCH_SQUARE_BOTH, this, &cSpindizzyTextureSet, ISpindizzyTextureSet::SWITCH_SQUARE_BOTH));
-  cElementFactories.push_back(new SwitchFactory(SWITCH_SQUARE_LEFT, this, &cSpindizzyTextureSet, ISpindizzyTextureSet::SWITCH_SQUARE_LEFT));
-  cElementFactories.push_back(new SwitchFactory(SWITCH_SQUARE_RIGHT, this, &cSpindizzyTextureSet, ISpindizzyTextureSet::SWITCH_SQUARE_RIGHT));
-  cElementFactories.push_back(new SwitchFactory(SWITCH_SQUARE_NONE, this, &cSpindizzyTextureSet, ISpindizzyTextureSet::SWITCH_SQUARE_NONE));
-  cElementFactories.push_back(new SwitchFactory(SWITCH_DIAMOND_BOTH, this, &cSpindizzyTextureSet, ISpindizzyTextureSet::SWITCH_DIAMOND_BOTH));
-  cElementFactories.push_back(new SwitchFactory(SWITCH_DIAMOND_LEFT, this, &cSpindizzyTextureSet, ISpindizzyTextureSet::SWITCH_DIAMOND_LEFT));
-  cElementFactories.push_back(new SwitchFactory(SWITCH_DIAMOND_RIGHT, this, &cSpindizzyTextureSet, ISpindizzyTextureSet::SWITCH_DIAMOND_RIGHT));
-  cElementFactories.push_back(new SwitchFactory(SWITCH_DIAMOND_NONE, this, &cSpindizzyTextureSet, ISpindizzyTextureSet::SWITCH_DIAMOND_NONE));
   cElementFactories.push_back(new SpindizzyWaterFactory(&cSpindizzyTextureSet, this));
-
   assignDummyPlugin(&cDummyTextureSet, "SpindizzyTextureSet");
   cSpindizzyTextureSet = cDummyTextureSet;
   cSpindizzyTextureSetController = NULL;
   assignDummyPlugin(&cSurfaceProcessor, "SurfaceProcessor");
   assignDummyPlugin(&cCollidableSurfaceRegistry, "CollidableSurfaceRegistry");
-
-  addBlockState(SWITCH_CIRCLE_BOTH);
-  addBlockState(SWITCH_CIRCLE_LEFT);
-  addBlockState(SWITCH_CIRCLE_RIGHT);
-  addBlockState(SWITCH_CIRCLE_NONE);
-  addBlockState(SWITCH_SQUARE_BOTH);
-  addBlockState(SWITCH_SQUARE_LEFT);
-  addBlockState(SWITCH_SQUARE_RIGHT);
-  addBlockState(SWITCH_SQUARE_NONE);
-  addBlockState(SWITCH_DIAMOND_BOTH);
-  addBlockState(SWITCH_DIAMOND_LEFT);
-  addBlockState(SWITCH_DIAMOND_RIGHT);
 }
 
 void SpindizzyBlockSet::addBlockState(const std::string& name) {
@@ -88,6 +36,8 @@ void SpindizzyBlockSet::addBlockState(const std::string& name) {
   IUserCommand* mStateOffCommand = new BlockStateCommand(name, mState, false);
   cSpindizzyBlockCommands.push_back(mStateOnCommand);
   cSpindizzyBlockCommands.push_back(mStateOffCommand);
+  cCommandRegistry->registerCommand(mStateOnCommand);
+  cCommandRegistry->registerCommand(mStateOffCommand);
 }
 
 std::vector<PlugSocket*> SpindizzyBlockSet::getPlugSockets() {
@@ -182,13 +132,13 @@ void SpindizzyBlockSet::load(DOMNodeWrapper* node) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "State") {
-      std::string mStateName = mNode->getAttribute("name");
-      // TODO: Will this work instead of where it's hardcoded into the constructor at the moment?
-//      addBlockState(mStateName);
+      std::string mStateName = mNode->getStringValue();
+      addBlockState(mStateName);
     } else if (mValueAsString == "BlockType") {
       std::string mBlockTypeName = mNode->getAttribute("name");
-      ISpindizzyBlockFactory* mFactory = getFactory(mBlockTypeName);
-      mFactory->configureBlock(mNode, cCommandRegistry);
+      // TODO: Pass the textures into the factory
+      ISpindizzyBlockFactory* mFactory = new SpindizzyBlockFactory(mBlockTypeName, &cSpindizzyTextureSet, this, mNode, cCommandRegistry);
+      cElementFactories.push_back(mFactory);
     }
   }
 }
@@ -227,38 +177,6 @@ std::vector<ConditionElement*> SpindizzyBlockSet::getConditionElements() {
 
 void SpindizzyBlockSet::notifyZoneAction(Zone* zone) {
   cSurfaceProcessor->notifyZoneAction(zone);
-}
-
-SpindizzyBlockSet::BlockFactory::BlockFactory(std::string name, ISpindizzyBlockSet* elementSet, ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet::TextureType tileSurfaceTexture) : SpindizzyBlockFactory(name, textureSet, elementSet) {
-  cTileSurfaceTexture = tileSurfaceTexture;
-}
-
-AbstractSpindizzyBlock* SpindizzyBlockSet::BlockFactory::createBlock(BlockLocation* startLocation, BlockLocation* endLocation, ISpindizzyTextureSet** textureSet, SpindizzyBlockProperties* blockProperties, bool addition) {
-  return new SpindizzyBlock(this, startLocation, endLocation, textureSet, cTileSurfaceTexture, blockProperties, addition);
-}
-
-SpindizzyBlockSet::IceFactory::IceFactory(std::string name, ISpindizzyBlockSet* elementSet, ISpindizzyTextureSet** textureSet) : SpindizzyBlockFactory(name, textureSet, elementSet) {
-  // Nothing to do.
-}
-
-AbstractSpindizzyBlock* SpindizzyBlockSet::IceFactory::createBlock(BlockLocation* startLocation, BlockLocation* endLocation, ISpindizzyTextureSet** textureSet, SpindizzyBlockProperties* blockProperties, bool addition) {
-  return new SpindizzyIceBlock(this, startLocation, endLocation, textureSet, blockProperties, addition);
-}
-
-SpindizzyBlockSet::SwitchFactory::SwitchFactory(std::string name, ISpindizzyBlockSet* elementSet, ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet::TextureType tileSurfaceTexture) : SpindizzyBlockFactory(name, textureSet, elementSet) {
-  cTileSurfaceTexture = tileSurfaceTexture;
-}
-
-AbstractSpindizzyBlock* SpindizzyBlockSet::SwitchFactory::createBlock(BlockLocation* startLocation, BlockLocation* endLocation, ISpindizzyTextureSet** textureSet, SpindizzyBlockProperties* blockProperties, bool addition) {
-  return new SpindizzySwitchBlock(this, startLocation, endLocation, textureSet, cTileSurfaceTexture, blockProperties, addition);
-}
-
-SpindizzyBlockSet::TrampolineFactory::TrampolineFactory(std::string name, ISpindizzyBlockSet* elementSet, ISpindizzyTextureSet** textureSet) : SpindizzyBlockFactory(name, textureSet, elementSet) {
-  // Nothing to do.
-}
-
-AbstractSpindizzyBlock* SpindizzyBlockSet::TrampolineFactory::createBlock(BlockLocation* startLocation, BlockLocation* endLocation, ISpindizzyTextureSet** textureSet, SpindizzyBlockProperties* blockProperties, bool addition) {
-  return new SpindizzyTrampolineBlock(this, startLocation, endLocation, textureSet, blockProperties, addition);
 }
 
 SpindizzyBlockSet::~SpindizzyBlockSet() {

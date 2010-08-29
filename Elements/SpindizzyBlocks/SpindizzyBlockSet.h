@@ -24,7 +24,6 @@
 
 #include "../../Plugins/CollidableSurfaceRegistry/ICollidableSurfaceRegistry.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
-#include "../../Plugins/SpindizzyTextureSet/SpindizzyTextureSetDummy.h"
 #include "../../Plugins/SpindizzyTextureSetChanger/ISpindizzyTextureSetChanger.h"
 #include "../../Plugins/SpindizzyTextureSetChanger/IChangeableTextureSet.h"
 #include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
@@ -41,34 +40,11 @@
 #include "ISpindizzyBlockSet.h"
 #include "SpindizzyBlock.h"
 #include "SpindizzyBlockFactory.h"
-#include "SpindizzyIceBlock.h"
-#include "SpindizzySwitchBlock.h"
-#include "SpindizzyTrampolineBlock.h"
 #include "SpindizzyWaterFactory.h"
 
 class SpindizzyBlockSet:public ISpindizzyBlockSet,
                         public IChangeableTextureSet {
   private:
-  static const std::string PLAIN;
-  static const std::string ARROW_NORTH;
-  static const std::string ARROW_EAST;
-  static const std::string ARROW_SOUTH;
-  static const std::string ARROW_WEST;
-  static const std::string ICE;
-  static const std::string TRAMPOLINE;
-  static const std::string SWITCH_CIRCLE_BOTH;
-  static const std::string SWITCH_CIRCLE_LEFT;
-  static const std::string SWITCH_CIRCLE_RIGHT;
-  static const std::string SWITCH_CIRCLE_NONE;
-  static const std::string SWITCH_SQUARE_BOTH;
-  static const std::string SWITCH_SQUARE_LEFT;
-  static const std::string SWITCH_SQUARE_RIGHT;
-  static const std::string SWITCH_SQUARE_NONE;
-  static const std::string SWITCH_DIAMOND_BOTH;
-  static const std::string SWITCH_DIAMOND_LEFT;
-  static const std::string SWITCH_DIAMOND_RIGHT;
-  static const std::string SWITCH_DIAMOND_NONE;
-
   static const int BLOCK_STATES;
 
   std::vector<IElementFactory*> cElementFactories;
@@ -80,52 +56,6 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
   ISurfaceProcessor* cSurfaceProcessor;
   ICollidableSurfaceRegistry* cCollidableSurfaceRegistry;
   std::vector<ConditionElement*> cBlockStates;
-
-  class BlockFactory:public SpindizzyBlockFactory {
-    private:
-    ISpindizzyTextureSet::TextureType cTileSurfaceTexture;
-
-    public:
-    BlockFactory(std::string, ISpindizzyBlockSet*, ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType);
-
-    /************************************\
-     * Implements SpindizzyBlockFactory *
-    \************************************/
-    AbstractSpindizzyBlock* createBlock(BlockLocation*, BlockLocation*, ISpindizzyTextureSet**, SpindizzyBlockProperties*, bool);
-  };
-
-  class IceFactory:public SpindizzyBlockFactory {
-    public:
-    IceFactory(std::string, ISpindizzyBlockSet*, ISpindizzyTextureSet**);
-
-    /************************************\
-     * Implements SpindizzyBlockFactory *
-    \************************************/
-    AbstractSpindizzyBlock* createBlock(BlockLocation*, BlockLocation*, ISpindizzyTextureSet**, SpindizzyBlockProperties*, bool);
-  };
-
-  class SwitchFactory:public SpindizzyBlockFactory {
-    private:
-    ISpindizzyTextureSet::TextureType cTileSurfaceTexture;
-
-    public:
-    SwitchFactory(std::string, ISpindizzyBlockSet*, ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType);
-
-    /************************************\
-     * Implements SpindizzyBlockFactory *
-    \************************************/
-    AbstractSpindizzyBlock* createBlock(BlockLocation*, BlockLocation*, ISpindizzyTextureSet**, SpindizzyBlockProperties*, bool);
-  };
-
-  class TrampolineFactory:public SpindizzyBlockFactory {
-    public:
-    TrampolineFactory(std::string, ISpindizzyBlockSet*, ISpindizzyTextureSet**);
-
-    /************************************\
-     * Implements SpindizzyBlockFactory *
-    \************************************/
-    AbstractSpindizzyBlock* createBlock(BlockLocation*, BlockLocation*, ISpindizzyTextureSet**, SpindizzyBlockProperties*, bool);
-  };
 
   void addBlockState(const std::string&);
   ISpindizzyBlockFactory* getFactory(const std::string&);  

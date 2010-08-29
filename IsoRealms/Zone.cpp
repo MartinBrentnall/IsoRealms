@@ -185,6 +185,7 @@ bool Zone::initZone(unsigned int pass) {
       mCleanElements.push_back(cDirtyElements[i]);
     }
   }
+  
   for (unsigned int i = 0; i < mCleanElements.size(); i++) {
     int mIndexToRemove = getZoneIndex(mCleanElements[i]);
     cDirtyElements.erase(cDirtyElements.begin() + mIndexToRemove);

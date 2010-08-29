@@ -27,7 +27,8 @@ BlockTypeProperties::BlockTypeProperties() {
   cRespawnAllowed = true;
 }
 
-void BlockTypeProperties::configure(DOMNodeWrapper* node, ICommandRegistry* commandRegistry) {
+void BlockTypeProperties::configure(DOMNodeWrapper* node, ICommandRegistry* commandRegistry, ISpindizzyTextureSet** textureSet) {
+  cTextureSet = textureSet;
   cSurfaceFriction = node->getFloatAttribute("friction");
   cSurfaceGrip = node->getFloatAttribute("grip");
   cRespawnAllowed = node->getBooleanAttribute("respawnAllowed");
@@ -39,6 +40,28 @@ void BlockTypeProperties::configure(DOMNodeWrapper* node, ICommandRegistry* comm
       cContactScript = commandRegistry->getScript(mNode);
     } else if (mValueAsString == "ImpactScript") {
       cImpactScript = commandRegistry->getScript(mNode);
+    } else if (mValueAsString == "Texture") {
+      std::string mApplyTo = mNode->getAttribute("type");
+      std::string mTextureName = mNode->getAttribute("name");
+      if (mApplyTo == "Surface") {
+        cSurfaceTexture = mTextureName;
+      } else if (mApplyTo == "NESplitSurface") {
+        cSurfaceSplitNETexture = mTextureName;
+      } else if (mApplyTo == "NWSplitSurface") {
+        cSurfaceSplitNWTexture = mTextureName;
+      } else if (mApplyTo == "WallWest") {
+        cWestWallTexture = mTextureName;
+      } else if (mApplyTo == "WallEast") {
+        cEastWallTexture = mTextureName;
+      } else if (mApplyTo == "WallSouth") {
+        cSouthWallTexture = mTextureName;
+      } else if (mApplyTo == "WallNorth") {
+        cNorthWallTexture = mTextureName;
+      } else {
+        // TODO: Throw
+        std::cout << "Unknown texture type" << std::endl;
+        exit(1);
+      }
     }
   }
 }
@@ -69,4 +92,34 @@ float BlockTypeProperties::getSurfaceBounce() {
 
 bool BlockTypeProperties::isRespawnAllowed() {
   return cRespawnAllowed;
+}
+
+ISpindizzyTexture* BlockTypeProperties::getSurfaceTexture() {
+  return (*cTextureSet)->getTexture(cSurfaceTexture);
+}
+
+ISpindizzyTexture* BlockTypeProperties::getSplitNETexture() {
+  ISpindizzyTexture* mSplitTexture = (*cTextureSet)->getTexture(cSurfaceSplitNETexture);
+  return mSplitTexture != NULL ? mSplitTexture : getSurfaceTexture();
+}
+
+ISpindizzyTexture* BlockTypeProperties::getSplitNWTexture() {
+  ISpindizzyTexture* mSplitTexture = (*cTextureSet)->getTexture(cSurfaceSplitNWTexture);
+  return mSplitTexture != NULL ? mSplitTexture : getSurfaceTexture();
+}
+
+ISpindizzyTexture* BlockTypeProperties::getWestWallTexture() {
+  return (*cTextureSet)->getTexture(cWestWallTexture);
+}
+
+ISpindizzyTexture* BlockTypeProperties::getEastWallTexture() {
+  return (*cTextureSet)->getTexture(cEastWallTexture);
+}
+
+ISpindizzyTexture* BlockTypeProperties::getSouthWallTexture() {
+  return (*cTextureSet)->getTexture(cSouthWallTexture);
+}
+
+ISpindizzyTexture* BlockTypeProperties::getNorthWallTexture() {
+  return (*cTextureSet)->getTexture(cNorthWallTexture);
 }

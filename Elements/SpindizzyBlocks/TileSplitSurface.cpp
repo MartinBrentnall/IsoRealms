@@ -18,9 +18,8 @@
  */
 #include "TileSplitSurface.h"
 
-TileSplitSurface::TileSplitSurface(bool splitDirection, BlockLocation& location, ISpindizzyTextureSet** textureSet, ISpindizzyTextureSet::TextureType textureType, int nw, int ne, int se, int sw, Condition* condition, BlockTypeProperties* blockTypeProperties) {
-  cTextureSet = textureSet;
-  cTextureType = textureType;
+TileSplitSurface::TileSplitSurface(bool splitDirection, BlockLocation& location, ISpindizzyTexture* texture, int nw, int ne, int se, int sw, Condition* condition, BlockTypeProperties* blockTypeProperties) {
+  cTexture = texture;
   cLocation = location;
   cCornerHeights[0][1] = nw;
   cCornerHeights[1][1] = ne;
@@ -51,25 +50,24 @@ void TileSplitSurface::render() {
     float mEast  = cLocation.x + IsoRealmsConstants::BLOCK_RADIUS;
     float mSouth = cLocation.y - IsoRealmsConstants::BLOCK_RADIUS;
     float mNorth = cLocation.y + IsoRealmsConstants::BLOCK_RADIUS;
-    ISpindizzyTexture* mTexture = (*cTextureSet)->getTexture(cTextureType);
-    mTexture->set();
+    cTexture->set();
     glBegin(GL_TRIANGLES);
     if (cSplitDirection) {
-      mTexture->texCoord2f(1.0f, 1.0f); glVertex3f(mWest, mNorth, mNorthWest);
-      mTexture->texCoord2f(0.0f, 1.0f); glVertex3f(mWest, mSouth, mSouthWest);
-      mTexture->texCoord2f(1.0f, 0.0f); glVertex3f(mEast, mNorth, mNorthEast);
+      cTexture->texCoord2f(1.0f, 1.0f); glVertex3f(mWest, mNorth, mNorthWest);
+      cTexture->texCoord2f(0.0f, 1.0f); glVertex3f(mWest, mSouth, mSouthWest);
+      cTexture->texCoord2f(1.0f, 0.0f); glVertex3f(mEast, mNorth, mNorthEast);
 
-      mTexture->texCoord2f(0.0f, 1.0f); glVertex3f(mWest, mSouth, mSouthWest);
-      mTexture->texCoord2f(0.0f, 0.0f); glVertex3f(mEast, mSouth, mSouthEast);
-      mTexture->texCoord2f(1.0f, 0.0f); glVertex3f(mEast, mNorth, mNorthEast);
+      cTexture->texCoord2f(0.0f, 1.0f); glVertex3f(mWest, mSouth, mSouthWest);
+      cTexture->texCoord2f(0.0f, 0.0f); glVertex3f(mEast, mSouth, mSouthEast);
+      cTexture->texCoord2f(1.0f, 0.0f); glVertex3f(mEast, mNorth, mNorthEast);
     } else {
-      mTexture->texCoord2f(0.0f, 1.0f); glVertex3f(mWest, mNorth, mNorthWest);
-      mTexture->texCoord2f(1.0f, 0.0f); glVertex3f(mEast, mSouth, mSouthEast);
-      mTexture->texCoord2f(1.0f, 1.0f); glVertex3f(mEast, mNorth, mNorthEast);
+      cTexture->texCoord2f(0.0f, 1.0f); glVertex3f(mWest, mNorth, mNorthWest);
+      cTexture->texCoord2f(1.0f, 0.0f); glVertex3f(mEast, mSouth, mSouthEast);
+      cTexture->texCoord2f(1.0f, 1.0f); glVertex3f(mEast, mNorth, mNorthEast);
 
-      mTexture->texCoord2f(0.0f, 1.0f); glVertex3f(mWest, mNorth, mNorthWest);
-      mTexture->texCoord2f(0.0f, 0.0f); glVertex3f(mWest, mSouth, mSouthWest);
-      mTexture->texCoord2f(1.0f, 0.0f); glVertex3f(mEast, mSouth, mSouthEast);
+      cTexture->texCoord2f(0.0f, 1.0f); glVertex3f(mWest, mNorth, mNorthWest);
+      cTexture->texCoord2f(0.0f, 0.0f); glVertex3f(mWest, mSouth, mSouthWest);
+      cTexture->texCoord2f(1.0f, 0.0f); glVertex3f(mEast, mSouth, mSouthEast);
     }
     glColor3f(1.0f, 1.0f, 1.0f);
     glEnd();

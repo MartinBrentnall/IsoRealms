@@ -70,12 +70,7 @@ class WallSurface:public IWallSurface {
   /**
    * Texture set used for rendering the wall
    */
-  ISpindizzyTextureSet** cTextureSet;
-
-  /**
-   * The texture type to use for this surface.
-   */
-  ISpindizzyTextureSet::TextureType cTextureType;
+  ISpindizzyTexture* cTexture;
 
   Condition* cCondition;
   
@@ -117,10 +112,9 @@ class WallSurface:public IWallSurface {
    * @param int  Step slope of the wall.
    * @param FaceDirection  facing direction of the wall.
    * @param ISpindizzyTexture*  Appearance of the wall.
-   * @param ISpindizzyTextureSet::TextureType  Appearance of the wall.
    * @param Condition  Condition of the walls existence.
    */
-  WallSurface(int, int, int, int, int, int, FaceDirection, ISpindizzyTextureSet**, ISpindizzyTextureSet::TextureType, Condition*);
+  WallSurface(int, int, int, int, int, int, FaceDirection, ISpindizzyTexture*, Condition*);
 
   /***************************\
    * Implements IWallSurface *
