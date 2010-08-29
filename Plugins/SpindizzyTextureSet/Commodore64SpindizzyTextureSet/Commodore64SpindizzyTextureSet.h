@@ -73,34 +73,7 @@ class Commodore64SpindizzyTextureSet:public ISpindizzyTextureSet,
   static const std::string WALL_SOUTH;
   static const std::string WALL_NORTH;
 
-  static const std::string LIFT_CIRCLE_BOTH;
-  static const std::string LIFT_CIRCLE_LEFT;
-  static const std::string LIFT_CIRCLE_RIGHT;
-  static const std::string LIFT_CIRCLE_NONE;
-  static const std::string LIFT_SQUARE_BOTH;
-  static const std::string LIFT_SQUARE_LEFT;
-  static const std::string LIFT_SQUARE_RIGHT;
-  static const std::string LIFT_SQUARE_NONE;
-  static const std::string LIFT_DIAMOND_BOTH;
-  static const std::string LIFT_DIAMOND_LEFT;
-  static const std::string LIFT_DIAMOND_RIGHT;
-  static const std::string LIFT_DIAMOND_NONE;
-
   std::vector<PlugSocket*> cPlugSockets;
-
-  // TODO: Start nasty hack
-  /** Fully transparent constant. */
-  Colour* TRANSPARENT;
-
-  /** Purple constant. */
-  Colour* PURPLE;
-
-  /** Yellow constant. */
-  Colour* YELLOW;
-
-  /** Black constant. */
-  Colour* BLACK;
-  // TODO: End nasty hack
 
   std::map<std::string, Commodore64SpindizzyTexture*> cTextures; 
   PlainColourTexture* cBackgroundTexture;
@@ -111,14 +84,10 @@ class Commodore64SpindizzyTextureSet:public ISpindizzyTextureSet,
   /*
    * The follow functions create template images that can be drawn on.
    */
-  Image* makeTransparent();
   Image* makePlainImage(Colour*);
   Image* makeTileImage();
   Image* makeSwitchSquareImage();
   Image* makeSwitchDiamondImage();
-  Image* makeLiftSquareImage();
-  Image* makeLiftSquareHalfImage();
-  Image* makeLiftCircleImage();
 
   GLuint generatePlain();
   GLuint generateSplitPlain();
@@ -137,69 +106,6 @@ class Commodore64SpindizzyTextureSet:public ISpindizzyTextureSet,
   GLuint generateWallNorthSouth();
   GLuint generateWallEastWest();
   GLuint generateIceWall();
-
-  /**
-   * Draw the plain square lift texture to the specified image.
-   *
-   * @param Image&  The image to draw on.
-   */
-  GLuint generateLiftSquare();
-
-  /**
-   * Draw the non-symmetrical square lift texture to the specified image.
-   *
-   * @param Image&  The image to draw on.
-   */
-  GLuint generateLiftSquareHalf();
-
-  /**
-   * Draw the full square lift texture to the specified image.
-   *
-   * @param Image&  The image to draw on.
-   */
-  GLuint generateLiftSquareBoth();
-
-  /**
-   * Draw the plain diamond lift texture to the specified image.
-   *
-   * @param Image&  The image to draw on.
-   */
-  GLuint generateLiftDiamond();
-
-  /**
-   * Draw the non-symmetrical diamond lift texture to the specified image.
-   *
-   * @param Image&  The image to draw on.
-   */
-  GLuint generateLiftDiamondHalf();
-
-  /**
-   * Draw the full diamond lift texture to the specified image.
-   *
-   * @param Image&  The image to draw on.
-   */
-  GLuint generateLiftDiamondBoth();
-
-  /**
-   * Draw the plain circle lift texture to the specified image.
-   *
-   * @param Image&  The image to draw on.
-   */
-  GLuint generateLiftCircle();
-
-  /**
-   * Draw the non-symmetrical circle lift texture to the specified image.
-   *
-   * @param Image&  The image to draw on.
-   */
-  GLuint generateLiftCircleHalf();
-
-  /**
-   * Draw the full circle lift texture to the specified image.
-   *
-   * @param Image&  The image to draw on.
-   */
-  GLuint generateLiftCircleBoth();
 
   GLuint convertToTexture(Image*, const std::string&);
 

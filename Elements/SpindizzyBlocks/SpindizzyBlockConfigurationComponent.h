@@ -33,7 +33,6 @@
 
 class SpindizzyBlockFactory;
 
-#include "AbstractSpindizzyBlock.h"
 #include "SpindizzyBlockFactory.h"
 #include "SpindizzyBlockProperties.h"
 
@@ -51,9 +50,9 @@ class SpindizzyBlockConfigurationComponent:public Dialog {
   public:
   SpindizzyBlockConfigurationComponent(IComponentContainer*, SpindizzyBlockFactory*, SpindizzyBlockProperties*, ISpindizzyTextureSet**, IComponentCloseListener*);
 
-  /**************************************************************************\
-   * Implemented methods of IHUDComponent.h                                 *
-  \**************************************************************************/
+  /****************************\
+   * Implements IHUDComponent *
+  \****************************/
   void updateContent(int);
   void renderContent();
   bool inputContent(SDL_Event&);

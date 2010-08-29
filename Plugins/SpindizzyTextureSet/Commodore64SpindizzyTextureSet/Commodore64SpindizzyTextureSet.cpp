@@ -46,19 +46,6 @@ const std::string Commodore64SpindizzyTextureSet::WALL_EAST            = "WallEa
 const std::string Commodore64SpindizzyTextureSet::WALL_SOUTH           = "WallSouth";
 const std::string Commodore64SpindizzyTextureSet::WALL_NORTH           = "WallNorth";
 
-const std::string Commodore64SpindizzyTextureSet::LIFT_CIRCLE_BOTH   = "LiftCircleFilled";
-const std::string Commodore64SpindizzyTextureSet::LIFT_CIRCLE_LEFT   = "LiftCircleLeft";
-const std::string Commodore64SpindizzyTextureSet::LIFT_CIRCLE_RIGHT  = "LiftCircleRight";
-const std::string Commodore64SpindizzyTextureSet::LIFT_CIRCLE_NONE   = "LiftCircleEmpty";
-const std::string Commodore64SpindizzyTextureSet::LIFT_SQUARE_BOTH   = "LiftSquareFilled";
-const std::string Commodore64SpindizzyTextureSet::LIFT_SQUARE_LEFT   = "LiftSquareLeft";
-const std::string Commodore64SpindizzyTextureSet::LIFT_SQUARE_RIGHT  = "LiftSquareRight";
-const std::string Commodore64SpindizzyTextureSet::LIFT_SQUARE_NONE   = "LiftSquareEmpty";
-const std::string Commodore64SpindizzyTextureSet::LIFT_DIAMOND_BOTH  = "LiftDiamondFilled";
-const std::string Commodore64SpindizzyTextureSet::LIFT_DIAMOND_LEFT  = "LiftDiamondLeft";
-const std::string Commodore64SpindizzyTextureSet::LIFT_DIAMOND_RIGHT = "LiftDiamondRight";
-const std::string Commodore64SpindizzyTextureSet::LIFT_DIAMOND_NONE  = "LiftDiamondEmpty";
-
 /* Generation functions */
 Image* Commodore64SpindizzyTextureSet::makePlainImage(Colour* colour) {
   Image* mImage = new Image(RESOLUTION, RESOLUTION, false);
@@ -231,136 +218,6 @@ GLuint Commodore64SpindizzyTextureSet::generateIceWall() {
   return convertToTexture(mImage, WALL_ICE);
 }
 
-Image* Commodore64SpindizzyTextureSet::makeTransparent() {
-  Image* mImage = new Image(RESOLUTION, RESOLUTION, true);
-  mImage->drawSquare(TRANSPARENT, 0, RESOLUTION, 0, RESOLUTION);
-  return mImage;
-}
-
-Image* Commodore64SpindizzyTextureSet::makeLiftSquareImage() {
-  Image* mImage = makeTransparent();
-  int mSquareOuterEdge = (int) (mImage->getWidth() * 0.16);
-  int mSquareOuterFill = (int) (mImage->getWidth() * 0.20);
-  int mSquareInnerFill = (int) (mImage->getWidth() * 0.30);
-  int mSquareInnerEdge = (int) (mImage->getWidth() * 0.34);
-
-  mImage->drawSquare(BLACK,       mSquareOuterEdge, RESOLUTION - mSquareOuterEdge, mSquareOuterEdge, RESOLUTION - mSquareOuterEdge);
-  mImage->drawSquare(YELLOW,      mSquareOuterFill, RESOLUTION - mSquareOuterFill, mSquareOuterFill, RESOLUTION - mSquareOuterFill);
-  mImage->drawSquare(BLACK,       mSquareInnerFill, RESOLUTION - mSquareInnerFill, mSquareInnerFill, RESOLUTION - mSquareInnerFill);
-  mImage->drawSquare(TRANSPARENT, mSquareInnerEdge, RESOLUTION - mSquareInnerEdge, mSquareInnerEdge, RESOLUTION - mSquareInnerEdge);
-  return mImage;
-}
-
-GLuint Commodore64SpindizzyTextureSet::generateLiftSquare() {
-  Image* mImage = makeLiftSquareImage();
-  return convertToTexture(mImage, LIFT_SQUARE_NONE);
-}
-
-Image* Commodore64SpindizzyTextureSet::makeLiftSquareHalfImage() {
-  Image* mImage = makeLiftSquareImage();
-  mImage->drawTriangle(BLACK,  int(EDGE_WIDTH * 2.4), int(RESOLUTION - EDGE_WIDTH * 2.4), int(RESOLUTION * 0.56), int(RESOLUTION - EDGE_WIDTH * 2.4), int(EDGE_WIDTH * 2.4), int(RESOLUTION * 0.44));
-  mImage->drawTriangle(PURPLE, int(EDGE_WIDTH * 2.4), int(RESOLUTION - EDGE_WIDTH * 2.4), int(RESOLUTION * 0.5),  int(RESOLUTION - EDGE_WIDTH * 2.4), int(EDGE_WIDTH * 2.4), int(RESOLUTION * 0.5));
-  return mImage;
-}
-
-GLuint Commodore64SpindizzyTextureSet::generateLiftSquareHalf() {
-  Image* mImage = makeLiftSquareHalfImage();
-  return convertToTexture(mImage, LIFT_SQUARE_LEFT);
-}
-
-GLuint Commodore64SpindizzyTextureSet::generateLiftSquareBoth() {
-  Image* mImage = makeLiftSquareHalfImage();
-  mImage->drawTriangle(BLACK,  int(RESOLUTION - EDGE_WIDTH * 2.4), int(EDGE_WIDTH * 2.4), int(RESOLUTION * 0.44), int(EDGE_WIDTH * 2.4), int(RESOLUTION - EDGE_WIDTH * 2.4), int(RESOLUTION * 0.56));
-  mImage->drawTriangle(PURPLE, int(RESOLUTION - EDGE_WIDTH * 2.4), int(EDGE_WIDTH * 2.4), int(RESOLUTION * 0.5),  int(EDGE_WIDTH * 2.4), int(RESOLUTION - EDGE_WIDTH * 2.4), int(RESOLUTION * 0.5));
-  return convertToTexture(mImage, LIFT_SQUARE_BOTH);
-}
-
-GLuint Commodore64SpindizzyTextureSet::generateLiftDiamondBoth() {
-  Image* mImage = makeTransparent();
-  int mSquareOuterEdge = int(mImage->getWidth() * 0.16);
-  int mSquareOuterFill = int(mImage->getWidth() * 0.20);
-  int mSquareInnerFill = int(mImage->getWidth() * 0.26);
-  int mSquareInnerEdge = int(mImage->getWidth() * 0.30);
-
-  mImage->drawSquare(BLACK,       mSquareOuterEdge, RESOLUTION - mSquareOuterEdge, mSquareOuterEdge, RESOLUTION - mSquareOuterEdge);
-  mImage->drawSquare(PURPLE,      mSquareOuterFill, RESOLUTION - mSquareOuterFill, mSquareOuterFill, RESOLUTION - mSquareOuterFill);
-  mImage->drawSquare(BLACK,       mSquareInnerFill, RESOLUTION - mSquareInnerFill, mSquareInnerFill, RESOLUTION - mSquareInnerFill);
-  mImage->drawSquare(TRANSPARENT, mSquareInnerEdge, RESOLUTION - mSquareInnerEdge, mSquareInnerEdge, RESOLUTION - mSquareInnerEdge);
-  mImage->drawDiamond(BLACK,       mImage->getWidth());
-  mImage->drawDiamond(YELLOW,      int(mImage->getWidth() * 0.94));
-  mImage->drawDiamond(BLACK,       int(mImage->getWidth() * 0.84));
-  mImage->drawDiamond(TRANSPARENT, int(mImage->getWidth() * 0.78));
-  return convertToTexture(mImage, LIFT_DIAMOND_BOTH);
-}
-
-GLuint Commodore64SpindizzyTextureSet::generateLiftDiamondHalf() {
-  Image* mImage = makeTransparent();
-  int mSquareOuterEdge = int(mImage->getWidth() * 0.16);
-  int mSquareOuterFill = int(mImage->getWidth() * 0.20);
-  int mSquareInnerFill = int(mImage->getWidth() * 0.26);
-  int mSquareInnerEdge = int(mImage->getWidth() * 0.30);
-
-  mImage->drawDiamond(BLACK,       mImage->getWidth());
-  mImage->drawDiamond(YELLOW,      int(mImage->getWidth() * 0.94));
-  mImage->drawDiamond(BLACK,       int(mImage->getWidth() * 0.84));
-  mImage->drawDiamond(TRANSPARENT, int(mImage->getWidth() * 0.78));
-  mImage->drawSquare(BLACK,       mSquareOuterEdge, RESOLUTION - mSquareOuterEdge, mSquareOuterEdge, RESOLUTION - mSquareOuterEdge);
-  mImage->drawSquare(PURPLE,      mSquareOuterFill, RESOLUTION - mSquareOuterFill, mSquareOuterFill, RESOLUTION - mSquareOuterFill);
-  mImage->drawSquare(BLACK,       mSquareInnerFill, RESOLUTION - mSquareInnerFill, mSquareInnerFill, RESOLUTION - mSquareInnerFill);
-  mImage->drawSquare(TRANSPARENT, mSquareInnerEdge, RESOLUTION - mSquareInnerEdge, mSquareInnerEdge, RESOLUTION - mSquareInnerEdge);
-  mImage->drawHalfDiamond2(BLACK,       int(mImage->getWidth() * 0.50));
-  mImage->drawHalfDiamond( YELLOW,      int(mImage->getWidth() * 0.44));
-  mImage->drawHalfDiamond( BLACK,       int(mImage->getWidth() * 0.34));
-  mImage->drawHalfDiamond( TRANSPARENT, int(mImage->getWidth() * 0.28));
-  return convertToTexture(mImage, LIFT_DIAMOND_LEFT);
-}
-
-GLuint Commodore64SpindizzyTextureSet::generateLiftDiamond() {
-  Image* mImage = makeTransparent();
-  int mSquareOuterEdge = int(mImage->getWidth() * 0.16);
-  int mSquareOuterFill = int(mImage->getWidth() * 0.20);
-  int mSquareInnerFill = int(mImage->getWidth() * 0.26);
-  int mSquareInnerEdge = int(mImage->getWidth() * 0.30);
-
-  mImage->drawDiamond(BLACK,       mImage->getWidth());
-  mImage->drawDiamond(YELLOW,      int(mImage->getWidth() * 0.94));
-  mImage->drawDiamond(BLACK,       int(mImage->getWidth() * 0.84));
-  mImage->drawDiamond(TRANSPARENT, int(mImage->getWidth() * 0.78));
-  mImage->drawSquare(BLACK,       mSquareOuterEdge, RESOLUTION - mSquareOuterEdge, mSquareOuterEdge, RESOLUTION - mSquareOuterEdge);
-  mImage->drawSquare(PURPLE,      mSquareOuterFill, RESOLUTION - mSquareOuterFill, mSquareOuterFill, RESOLUTION - mSquareOuterFill);
-  mImage->drawSquare(BLACK,       mSquareInnerFill, RESOLUTION - mSquareInnerFill, mSquareInnerFill, RESOLUTION - mSquareInnerFill);
-  mImage->drawSquare(TRANSPARENT, mSquareInnerEdge, RESOLUTION - mSquareInnerEdge, mSquareInnerEdge, RESOLUTION - mSquareInnerEdge);
-  return convertToTexture(mImage, LIFT_DIAMOND_NONE);
-}
-
-Image* Commodore64SpindizzyTextureSet::makeLiftCircleImage() {
-  Image* mImage = makeTransparent();
-  mImage->drawCircle(BLACK,       int(mImage->getWidth() * 0.9 * 0.5));
-  mImage->drawCircle(PURPLE,      int(mImage->getWidth() * 0.9 * 0.46));
-  mImage->drawCircle(BLACK,       int(mImage->getWidth() * 0.9 * 0.34));
-  mImage->drawCircle(TRANSPARENT, int(mImage->getWidth() * 0.9 * 0.30));
-  return mImage;
-}
-
-GLuint Commodore64SpindizzyTextureSet::generateLiftCircle() {
-  Image* mImage = makeLiftCircleImage();
-  return convertToTexture(mImage, LIFT_CIRCLE_NONE);
-}
-
-GLuint Commodore64SpindizzyTextureSet::generateLiftCircleHalf() {
-  Image* mImage = makeLiftCircleImage();
-  mImage->drawSemiCircle(YELLOW, int(mImage->getWidth() * 0.9 * 0.34));
-  return convertToTexture(mImage, LIFT_CIRCLE_LEFT);
-}
-
-GLuint Commodore64SpindizzyTextureSet::generateLiftCircleBoth() {
-  Image* mImage = makeTransparent();
-  mImage->drawCircle(BLACK,  int(mImage->getWidth() * 0.9 * 0.5));
-  mImage->drawCircle(PURPLE, int(mImage->getWidth() * 0.9 * 0.46));
-  mImage->drawCircle(YELLOW, int(mImage->getWidth() * 0.9 * 0.34));
-  return convertToTexture(mImage, LIFT_CIRCLE_BOTH);
-}
-
 GLuint Commodore64SpindizzyTextureSet::convertToTexture(Image* image, const std::string& type) {
   std::map<std::string, GLuint>::iterator i = cTextureIDs.find(type);
   GLuint mTextureID;
@@ -378,12 +235,6 @@ GLuint Commodore64SpindizzyTextureSet::convertToTexture(Image* image, const std:
 Commodore64SpindizzyTextureSet::Commodore64SpindizzyTextureSet() {
   cPlugSockets.push_back(new PlugSocket("FourColourSupport"));
   assignDummyPlugin(&cColourScheme, "FourColourSupport");
-
-  // TODO: Nasty hack; get rid of.
-  TRANSPARENT = new Colour(0.0, 0.0, 0.0, 0.0);
-  PURPLE = new Colour(0.7, 0.0, 1.0, 1.0);
-  YELLOW = new Colour(1.0, 1.0, 0.0, 1.0);
-  BLACK = new Colour(0.0, 0.0, 0.0, 1.0);
 
   cTextures[SWITCH_CIRCLE_BOTH]   = new Commodore64SpindizzyTexture();
   cTextures[SWITCH_CIRCLE_LEFT]   = new Commodore64SpindizzyTexture();
@@ -409,18 +260,6 @@ Commodore64SpindizzyTextureSet::Commodore64SpindizzyTextureSet() {
   cTextures[WALL_NORTH]           = new Commodore64SpindizzyTexture();
   cTextures[WALL_EAST]            = new Commodore64SpindizzyTexture();
   cTextures[WALL_ICE]             = new Commodore64SpindizzyTexture();
-  cTextures[LIFT_CIRCLE_LEFT]     = new Commodore64SpindizzyTexture();
-  cTextures[LIFT_CIRCLE_RIGHT]    = new Commodore64SpindizzyTexture();
-  cTextures[LIFT_CIRCLE_NONE]     = new Commodore64SpindizzyTexture();
-  cTextures[LIFT_CIRCLE_BOTH]     = new Commodore64SpindizzyTexture();
-  cTextures[LIFT_SQUARE_LEFT]     = new Commodore64SpindizzyTexture();
-  cTextures[LIFT_SQUARE_RIGHT]    = new Commodore64SpindizzyTexture();
-  cTextures[LIFT_SQUARE_NONE]     = new Commodore64SpindizzyTexture();
-  cTextures[LIFT_SQUARE_BOTH]     = new Commodore64SpindizzyTexture();
-  cTextures[LIFT_DIAMOND_LEFT]    = new Commodore64SpindizzyTexture();
-  cTextures[LIFT_DIAMOND_RIGHT]   = new Commodore64SpindizzyTexture();
-  cTextures[LIFT_DIAMOND_NONE]    = new Commodore64SpindizzyTexture();
-  cTextures[LIFT_DIAMOND_BOTH]    = new Commodore64SpindizzyTexture();
   
   cBackgroundTexture = new PlainColourTexture();
 
@@ -465,22 +304,6 @@ void Commodore64SpindizzyTextureSet::generateTextures() {
   cTextures[WALL_SOUTH] = cTextures[WALL_NORTH];
   cTextures[WALL_WEST] = cTextures[WALL_EAST];
   cTextures[WALL_ICE]->setTexture(generateIceWall(), ISpindizzyTexture::TILED);
-
-  GLuint mLiftCircleHalf = generateLiftCircleHalf();
-  cTextures[LIFT_CIRCLE_LEFT]->setTexture(mLiftCircleHalf, Commodore64SpindizzyTexture::NORTH);
-  cTextures[LIFT_CIRCLE_RIGHT]->setTexture(mLiftCircleHalf, Commodore64SpindizzyTexture::SOUTH);
-  cTextures[LIFT_CIRCLE_NONE]->setTexture(generateLiftCircle());
-  cTextures[LIFT_CIRCLE_BOTH]->setTexture(generateLiftCircleBoth());
-  GLuint mLiftSquareHalf = generateLiftSquareHalf();
-  cTextures[LIFT_SQUARE_LEFT]->setTexture(mLiftSquareHalf, Commodore64SpindizzyTexture::NORTH);
-  cTextures[LIFT_SQUARE_RIGHT]->setTexture(mLiftSquareHalf, Commodore64SpindizzyTexture::SOUTH);
-  cTextures[LIFT_SQUARE_NONE]->setTexture(generateLiftSquare());
-  cTextures[LIFT_SQUARE_BOTH]->setTexture(generateLiftSquareBoth());
-  GLuint mLiftDiamondHalf = generateLiftDiamondHalf();
-  cTextures[LIFT_DIAMOND_LEFT]->setTexture(mLiftDiamondHalf, Commodore64SpindizzyTexture::SOUTH);
-  cTextures[LIFT_DIAMOND_RIGHT]->setTexture(mLiftDiamondHalf, Commodore64SpindizzyTexture::NORTH);
-  cTextures[LIFT_DIAMOND_NONE]->setTexture(generateLiftDiamond());
-  cTextures[LIFT_DIAMOND_BOTH]->setTexture(generateLiftDiamondBoth());
 
   cBackgroundTexture->setTexture(cColourScheme->getColour(IFourColourSupport::BACKGROUND));
 }
@@ -534,10 +357,6 @@ ISpindizzyTexture* Commodore64SpindizzyTextureSet::getTexture(const std::string&
 }
 
 Commodore64SpindizzyTextureSet::~Commodore64SpindizzyTextureSet() {
-  delete TRANSPARENT;
-  delete PURPLE;
-  delete YELLOW;
-  delete BLACK;
   for (unsigned int i = 0; i < cPlugSockets.size(); i++) {
     delete cPlugSockets[i];
   }

@@ -1,84 +1,84 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <Map>
   <Plugin implementation="FlatRectangle" instance="LiftDiamondEmpty" type="3DModel">
-    <UsePlugin implementation="SpindizzyTextureSet" instance="C64Blue"/>
+    <UsePlugin implementation="SpindizzyTextureSet" instance="C64Sprites"/>
     <Configuration>
       <Texture>LiftDiamondEmpty</Texture>
       <Size>1.45</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="LiftDiamondLeft" type="3DModel">
-    <UsePlugin implementation="SpindizzyTextureSet" instance="C64Blue"/>
+    <UsePlugin implementation="SpindizzyTextureSet" instance="C64Sprites"/>
     <Configuration>
       <Texture>LiftDiamondLeft</Texture>
       <Size>1.45</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="LiftDiamondRight" type="3DModel">
-    <UsePlugin implementation="SpindizzyTextureSet" instance="C64Blue"/>
+    <UsePlugin implementation="SpindizzyTextureSet" instance="C64Sprites"/>
     <Configuration>
       <Texture>LiftDiamondRight</Texture>
       <Size>1.45</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="LiftDiamondFilled" type="3DModel">
-    <UsePlugin implementation="SpindizzyTextureSet" instance="C64Blue"/>
+    <UsePlugin implementation="SpindizzyTextureSet" instance="C64Sprites"/>
     <Configuration>
       <Texture>LiftDiamondFilled</Texture>
       <Size>1.45</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="LiftSquareEmpty" type="3DModel">
-    <UsePlugin implementation="SpindizzyTextureSet" instance="C64Blue"/>
+    <UsePlugin implementation="SpindizzyTextureSet" instance="C64Sprites"/>
     <Configuration>
       <Texture>LiftSquareEmpty</Texture>
       <Size>1.45</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="LiftSquareLeft" type="3DModel">
-    <UsePlugin implementation="SpindizzyTextureSet" instance="C64Blue"/>
+    <UsePlugin implementation="SpindizzyTextureSet" instance="C64Sprites"/>
     <Configuration>
       <Texture>LiftSquareLeft</Texture>
       <Size>1.45</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="LiftSquareRight" type="3DModel">
-    <UsePlugin implementation="SpindizzyTextureSet" instance="C64Blue"/>
+    <UsePlugin implementation="SpindizzyTextureSet" instance="C64Sprites"/>
     <Configuration>
       <Texture>LiftSquareRight</Texture>
       <Size>1.45</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="LiftSquareFilled" type="3DModel">
-    <UsePlugin implementation="SpindizzyTextureSet" instance="C64Blue"/>
+    <UsePlugin implementation="SpindizzyTextureSet" instance="C64Sprites"/>
     <Configuration>
       <Texture>LiftSquareFilled</Texture>
       <Size>1.45</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="LiftCircleEmpty" type="3DModel">
-    <UsePlugin implementation="SpindizzyTextureSet" instance="C64Blue"/>
+    <UsePlugin implementation="SpindizzyTextureSet" instance="C64Sprites"/>
     <Configuration>
       <Texture>LiftCircleEmpty</Texture>
       <Size>1.45</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="LiftCircleLeft" type="3DModel">
-    <UsePlugin implementation="SpindizzyTextureSet" instance="C64Blue"/>
+    <UsePlugin implementation="SpindizzyTextureSet" instance="C64Sprites"/>
     <Configuration>
       <Texture>LiftCircleLeft</Texture>
       <Size>1.45</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="LiftCircleRight" type="3DModel">
-    <UsePlugin implementation="SpindizzyTextureSet" instance="C64Blue"/>
+    <UsePlugin implementation="SpindizzyTextureSet" instance="C64Sprites"/>
     <Configuration>
       <Texture>LiftCircleRight</Texture>
       <Size>1.45</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="LiftCircleFilled" type="3DModel">
-    <UsePlugin implementation="SpindizzyTextureSet" instance="C64Blue"/>
+    <UsePlugin implementation="SpindizzyTextureSet" instance="C64Sprites"/>
     <Configuration>
       <Texture>LiftCircleFilled</Texture>
       <Size>1.45</Size>
@@ -109,6 +109,14 @@
   <Plugin implementation="DefaultCollidableSurfaceRegistry" instance="SpindizzySurfaces" type="CollidableSurfaceRegistry">
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext" socketid=""/>
     <Configuration/>
+  </Plugin>
+  <Plugin implementation="DefaultFourColourSupport" instance="Sprites" type="FourColourSupport">
+    <Configuration>
+      <Floor alpha="1.0" blue="1.0" green="0.0" red="0.7"/>
+      <Extra alpha="1.0" blue="0.4" green="0.4" red="1.0"/>
+      <Wall alpha="1.0" blue="0" green="1.0" red="1.0"/>
+      <Background alpha="1.0" blue="0" green="0" red="0"/>
+    </Configuration>
   </Plugin>
   <Plugin implementation="DefaultFourColourSupport" instance="Blue" type="FourColourSupport">
     <Configuration>
@@ -231,6 +239,10 @@
     </Configuration>
   </Plugin>
   <Plugin implementation="FixedLocationAwareness" instance="PlayerLocation" type="LocationAwareness">
+    <Configuration/>
+  </Plugin>
+  <Plugin implementation="C64SpindizzySprites" instance="C64Sprites" type="SpindizzyTextureSet">
+    <UsePlugin implementation="FourColourSupport" instance="Sprites" socketid=""/>
     <Configuration/>
   </Plugin>
   <Plugin implementation="Commodore64SpindizzyTextureSet" instance="C64Blue" type="SpindizzyTextureSet">
