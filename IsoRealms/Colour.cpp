@@ -26,7 +26,6 @@ Colour::Colour() {
 }
 
 Colour::Colour(DOMNodeWrapper* node) {
-  
   cRed = node->getFloatAttribute("red");
   cGreen = node->getFloatAttribute("green");
   cBlue = node->getFloatAttribute("blue");

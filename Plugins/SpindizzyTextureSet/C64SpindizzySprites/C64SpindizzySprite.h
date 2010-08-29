@@ -16,24 +16,42 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "FourColourSupportDummy.h"
+#ifndef C64_SPINDIZZY_SPRITE_H
+#define C64_SPINDIZZY_SPRITE_H
 
-Colour* FourColourSupportDummy::getColour(const std::string&) {
-  return &cDummyColour;
-}
+#include <iostream>
+#include <GL/gl.h>
 
-void FourColourSupportDummy::addChangeListener(IFourColourSupportListener* listener) {
-  // Palette never changes; nothing to do.
-}
+#include "../ISpindizzyTexture.h"
 
-void FourColourSupportDummy::removeChangeListener(IFourColourSupportListener* listener) {
-  // Palette never changes; nothing to do.
-}
+class C64SpindizzySprite:public ISpindizzyTexture {
+  public:
+  enum Direction {
+    NORTH,
+    EAST,
+    SOUTH,
+    WEST
+  };
 
-extern "C" IPlugin* create() {
-  return new FourColourSupportDummy();
-}
+  private:
+  GLuint cTextureID;
+  Direction cDirection;
+  Mapping cMapping;
 
-extern "C" void destroy(IPlugin* dummyPalette) {
-  delete dummyPalette;
-}
+  public:
+  C64SpindizzySprite();
+
+  void setTexture(GLuint);
+  void setTexture(GLuint, Direction);
+  void setTexture(GLuint, Mapping);
+
+  /***********************************\
+   * Implements ISpindizzyTextureSet *
+  \***********************************/
+  void set();
+  void texCoord2f(float, float);
+  Colour* getColour(float, float);
+  Mapping getMapping();
+};
+
+#endif

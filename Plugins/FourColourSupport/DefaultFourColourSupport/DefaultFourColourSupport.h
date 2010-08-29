@@ -54,7 +54,7 @@ class DefaultFourColourSupport:public IFourColourSupport {
   };
 
   std::vector<ICommandInfo*> cPluginCommands;
-  std::map<PaletteEntry, Colour*> cPalette;
+  std::map<std::string, Colour*> cPalette;
   std::vector<IFourColourSupportListener*> cChangeListeners;
 
   /**
@@ -68,7 +68,7 @@ class DefaultFourColourSupport:public IFourColourSupport {
   /*********************************\
    * Implements IFourColourSupport *
   \*********************************/
-  Colour* getColour(PaletteEntry);
+  Colour* getColour(const std::string&);
   void addChangeListener(IFourColourSupportListener*);
   void removeChangeListener(IFourColourSupportListener*);
 

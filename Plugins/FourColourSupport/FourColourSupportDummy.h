@@ -32,19 +32,16 @@
 class FourColourSupportDummy:public IFourColourSupport,
                              public DummyPlugin {
   private:
-  std::map<PaletteEntry, Colour*> cColours;
+  Colour cDummyColour;
 
   public:
-  FourColourSupportDummy();
 
   /*********************************\
    * Implements IFourColourSupport *
   \*********************************/
-  Colour* getColour(PaletteEntry);
+  Colour* getColour(const std::string&);
   void addChangeListener(IFourColourSupportListener*);
   void removeChangeListener(IFourColourSupportListener*);
-
-  ~FourColourSupportDummy();
 };
 
 #endif

@@ -80,6 +80,14 @@ class Commodore64SpindizzyTextureSet:public ISpindizzyTextureSet,
   std::map<std::string, GLuint> cTextureIDs;
 
   IFourColourSupport* cColourScheme;
+  std::string cFloorColourName;
+  std::string cWallColourName;
+  std::string cGridColourName;
+  std::string cBackgroundColourName;
+  Colour* cFloorColour;
+  Colour* cWallColour;
+  Colour* cGridColour;
+  Colour* cBackgroundColour;
 
   /*
    * The follow functions create template images that can be drawn on.
@@ -123,7 +131,7 @@ class Commodore64SpindizzyTextureSet:public ISpindizzyTextureSet,
   /*****************************************\
    * Implements IFourColourSupportListener *
   \*****************************************/
-  void fourColourPaletteChanged(IFourColourSupport*);
+  void fourColourPaletteChanged(IFourColourSupport*, const std::string&);
 
   /******************************************\
    * Implements IPluginSupport (in IPlugin) *
@@ -131,6 +139,8 @@ class Commodore64SpindizzyTextureSet:public ISpindizzyTextureSet,
   std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
+
+  void load(DOMNodeWrapper*);
 
   ~Commodore64SpindizzyTextureSet();
 };

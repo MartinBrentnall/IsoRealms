@@ -27,9 +27,6 @@ FlatRectangleFactory::FlatRectangleFactory() {
 }
 
 ISimpleModel* FlatRectangleFactory::createModel(Vertex* location) {
-  std::cout << "CREATING MODEL WITH TEXTURE! " << cTexture << std::endl;
-  cTexture->set();
-  std::cout << "DONE SETTING TEXTURE!" << std::endl;
   return new FlatRectangle(location, &cTexture, &cSize);
 }
 

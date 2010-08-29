@@ -19,10 +19,6 @@
 #include "DefaultFourColourSupport.h"
 
 DefaultFourColourSupport::DefaultFourColourSupport() {
-  cPalette[FLOOR] = new Colour(0.5, 0.5, 1.0, 0.0);
-  cPalette[EXTRA] = new Colour(1.0, 1.0, 1.0, 0.0);
-  cPalette[WALL] = new Colour(0.0, 0.0, 0.0, 0.0);
-  cPalette[BACKGROUND] = new Colour(0.0, 0.0, 0.5, 0.0);
   cPaletteConfigurationCommand = new PaletteConfigurationCommand(this);
   std::vector<std::string> mPath;
   mPath.push_back("Edit Palette"); // TODO: Use instance name?
@@ -31,8 +27,13 @@ DefaultFourColourSupport::DefaultFourColourSupport() {
   cPluginCommands.push_back(mPaletteConfigurationCommandInfo);
 }
 
-Colour* DefaultFourColourSupport::getColour(PaletteEntry entry) {
-  return cPalette[entry];
+Colour* DefaultFourColourSupport::getColour(const std::string& entry) {
+  Colour* mColour= cPalette[entry];
+  if (mColour == NULL) {
+    mColour = new Colour(1.0f, 0.0f, 0.0f, 0.0f);
+    cPalette[entry] = mColour;
+  }
+  return mColour;
 }
 
 void DefaultFourColourSupport::addChangeListener(IFourColourSupportListener* listener) {
@@ -66,28 +67,20 @@ void DefaultFourColourSupport::PaletteConfigurationCommand::execute() {
 }
 
 void DefaultFourColourSupport::save(DOMNodeWriter* node) {
-  DOMNodeWriter* mFloorNode = node->addBranch("Floor");
-  cPalette[FLOOR]->save(mFloorNode);
-  DOMNodeWriter* mExtraNode = node->addBranch("Extra");
-  cPalette[EXTRA]->save(mExtraNode);
-  DOMNodeWriter* mWallNode = node->addBranch("Wall");
-  cPalette[WALL]->save(mWallNode);
-  DOMNodeWriter* mBackgroundNode = node->addBranch("Background");
-  cPalette[BACKGROUND]->save(mBackgroundNode);
+  for (std::map<std::string, Colour*>::iterator i = cPalette.begin(); i != cPalette.end(); i++) {
+    DOMNodeWriter* mColourNode = node->addBranch("Colour");
+    mColourNode->addAttribute("name", i->first);
+    i->second->save(mColourNode);
+  }
 }
 
 void DefaultFourColourSupport::load(DOMNodeWrapper* node) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "Floor") {
-      cPalette[FLOOR] = new Colour(mNode);
-    } else if (mValueAsString == "Extra") {
-      cPalette[EXTRA] = new Colour(mNode);
-    } else if (mValueAsString == "Wall") {
-      cPalette[WALL] = new Colour(mNode);
-    } else if (mValueAsString == "Background") {
-      cPalette[BACKGROUND] = new Colour(mNode);
+    if (mValueAsString == "Colour") {
+      std::string mColourName = mNode->getAttribute("name");
+      cPalette[mColourName] = new Colour(mNode);
     } else {
       // TODO: Throw something!
     }
@@ -99,7 +92,7 @@ DefaultFourColourSupport::~DefaultFourColourSupport() {
   for (unsigned int i = 0; i < cPluginCommands.size(); i++) {
     delete cPluginCommands[i];
   }
-  for (std::map<PaletteEntry, Colour*>::iterator i = cPalette.begin(); i != cPalette.end(); i++) {
+  for (std::map<std::string, Colour*>::iterator i = cPalette.begin(); i != cPalette.end(); i++) {
     delete i->second;
   }
 }

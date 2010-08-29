@@ -29,19 +29,12 @@ class IFourColourSupportListener;
 class IFourColourSupport:public virtual IPlugin {
   public:
   
-  enum PaletteEntry {
-    FLOOR,
-    WALL,
-    BACKGROUND,
-    EXTRA
-  };
-
   /**
    * Retrieve the specified colour.
    * 
    * @returns The specified colour.
    */
-  virtual Colour* getColour(PaletteEntry) = 0;
+  virtual Colour* getColour(const std::string&) = 0;
 
   /**
    * Add a listener to be notified of changes to this palette.

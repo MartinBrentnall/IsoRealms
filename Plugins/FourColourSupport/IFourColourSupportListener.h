@@ -21,13 +21,15 @@
 
 class IFourColourSupport;
 
+#include <string>
+
 #include "IFourColourSupport.h"
 
 class IFourColourSupportListener {
   public:
   virtual ~IFourColourSupportListener() {}
 
-  virtual void fourColourPaletteChanged(IFourColourSupport*) = 0;
+  virtual void fourColourPaletteChanged(IFourColourSupport*, const std::string&) = 0;
 };
 
 #endif
