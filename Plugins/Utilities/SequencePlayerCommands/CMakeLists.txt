@@ -14,19 +14,10 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
-add_subdirectory(ExploredZones)
-add_subdirectory(IntegerValueCommands)
-add_subdirectory(KeyCommands)
-add_subdirectory(RandomCommand)
-add_subdirectory(SequencePlayerCommands)
-add_subdirectory(SoundCommandSupport)
-add_subdirectory(SpindizzySwitches)
-add_subdirectory(ToggleSwitches)
-
 include_directories(${PROJECT_SOURCE_DIR})
 
-add_library(UtilitiesDummy MODULE 
-  DummyUtilities.cpp
+add_library(Utilities_SequencePlayerCommands MODULE 
+  SequencePlayerCommands.cpp
 )
-set_target_properties(UtilitiesDummy PROPERTIES OUTPUT_NAME "Dummy")
-set_target_properties(UtilitiesDummy PROPERTIES PREFIX "lib")
+set_target_properties(Utilities_SequencePlayerCommands PROPERTIES OUTPUT_NAME "Module")
+set_target_properties(Utilities_SequencePlayerCommands PROPERTIES PREFIX "lib")

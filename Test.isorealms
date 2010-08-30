@@ -531,10 +531,10 @@
     <Configuration>
       <Switch name="MapOverview">
         <On>
-          <Command>Plugin/Utilities/SoundCommandWrapper/Play Lift Click 1.ogg</Command>
+          <Command>Plugin/Utilities/MapOverviewSequenceCommands/Play</Command>
         </On>
         <Off>
-          <Command>Plugin/Utilities/SoundCommandWrapper/Play Lift Click 2.ogg</Command>
+          <Command>Plugin/Utilities/MapOverviewSequenceCommands/Rewind</Command>
         </Off>
       </Switch>
     </Configuration>
@@ -548,6 +548,26 @@
       <Command name="IncreaseTimeForJewel" value="12000"/>
       <Command name="IncreaseTimeForZone" value="8000"/>
     </Configuration>
+  </Plugin>
+  <Plugin implementation="PlayerWithScripts" instance="CameraMapOverviewAnimator" type="SequencePlayer">
+    <Configuration length="500">
+      <LeftStartScript>
+        <Command>Elements/SpindizzyGERALD/Pause</Command>
+        <Command>Elements/SpindizzyLifts/Pause</Command>
+        <Command>Elements/SpindizzyEnemies/Pause</Command>
+        <Command>Plugins/IntegerValue/Timer/Pause</Command>
+      </LeftStartScript>
+      <ReachedStartScript>
+        <Command>Elements/SpindizzyGERALD/Unpause</Command>
+        <Command>Elements/SpindizzyLifts/Unpause</Command>
+        <Command>Elements/SpindizzyEnemies/Unpause</Command>
+        <Command>Plugins/IntegerValue/Timer/Unpause</Command>
+      </ReachedStartScript>
+    </Configuration>
+  </Plugin>
+  <Plugin implementation="SequencePlayerCommands" instance="MapOverviewSequenceCommands" type="Utilities">
+    <UsePlugin implementation="SequencePlayer" instance="CameraMapOverviewAnimator"/>
+    <Configuration/>
   </Plugin>
   <ElementSet instance="Blocks" type="SpindizzyBlocks">
     <UsePlugin implementation="CollidableSurfaceRegistry" instance="SpindizzySurfaces"/>
