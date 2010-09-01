@@ -36,7 +36,24 @@ class TimeLimit:public IIntegerValue,
   IIntegerValue* cIntegerValue;
   std::vector<IUserCommand*> cTimeOutCommands;
   std::vector<PlugSocket*> cSockets;
+  unsigned int cLocks;
+  std::vector<IUserCommand*> cCommands;
 
+  class LockControlCommand:public IUserCommand {
+    private:
+    TimeLimit* cParent;
+    bool cLock;
+    
+    public:
+    LockControlCommand(TimeLimit*, bool);
+    
+    /***************************\
+     * Implements IUserCommand *
+    \***************************/
+    void execute();
+    std::string getCommandName();
+  };
+  
   public:
   TimeLimit();
 
@@ -51,6 +68,7 @@ class TimeLimit:public IIntegerValue,
    * Implements IPlugin *
   \**********************/
   std::vector<IDynamicElement*> getPreLoopCommands();
+  void setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry*);
 
   /******************************\
    * Implements IDynamicElement *

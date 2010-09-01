@@ -21,6 +21,9 @@
 SpindizzyLiftSet::SpindizzyLiftSet() {
   assignDummyPlugin(&cZoneContext, "ZoneContext");
   assignDummyPlugin(&cCollidableSurfaceRegistry, "CollidableSurfaceRegistry");
+  cLocked = 0;
+  cCommands.push_back(new LockControlCommand(this, true));
+  cCommands.push_back(new LockControlCommand(this, false));
 }
 
 std::vector<IElementFactory*> SpindizzyLiftSet::getElementFactories() {
@@ -151,6 +154,24 @@ void SpindizzyLiftSet::zoneContextChanged(IZone* zone) {
   }
 }
 
+bool SpindizzyLiftSet::isLocked() {
+  return cLocked > 0;
+}
+
+SpindizzyLiftSet::LockControlCommand::LockControlCommand(SpindizzyLiftSet* parent, bool lock) {
+  cParent = parent;
+  cLock = lock;
+}
+
+void SpindizzyLiftSet::LockControlCommand::execute() {
+  // TODO: Catch underflow?
+  cParent->cLocked += cLock ? 1 : -1;
+}
+
+std::string SpindizzyLiftSet::LockControlCommand::getCommandName() {
+  return cLock ? "AddLock" : "RemoveLock";
+}
+    
 extern "C" IElementSet* create(DOMNodeWrapper* node) {
   return new SpindizzyLiftSet();
 }

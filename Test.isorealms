@@ -552,16 +552,16 @@
   <Plugin implementation="PlayerWithScripts" instance="CameraMapOverviewAnimator" type="SequencePlayer">
     <Configuration length="500">
       <LeftStartScript>
-        <Command>Elements/SpindizzyGERALD/Pause</Command>
-        <Command>Elements/SpindizzyLifts/Pause</Command>
-        <Command>Elements/SpindizzyEnemies/Pause</Command>
-        <Command>Plugins/IntegerValue/Timer/Pause</Command>
+        <Command>ElementSet/Player/AddLock</Command>
+        <Command>ElementSet/Lifts/AddLock</Command>
+        <Command>ElementSet/Enemies/AddLock</Command>
+        <Command>Plugin/IntegerValue/SpindizzyTimeLimit/AddLock</Command>
       </LeftStartScript>
       <ReachedStartScript>
-        <Command>Elements/SpindizzyGERALD/Unpause</Command>
-        <Command>Elements/SpindizzyLifts/Unpause</Command>
-        <Command>Elements/SpindizzyEnemies/Unpause</Command>
-        <Command>Plugins/IntegerValue/Timer/Unpause</Command>
+        <Command>ElementSet/Player/RemoveLock</Command>
+        <Command>ElementSet/Lifts/RemoveLock</Command>
+        <Command>ElementSet/Enemies/RemoveLock</Command>
+        <Command>Plugin/IntegerValue/SpindizzyTimeLimit/RemoveLock</Command>
       </ReachedStartScript>
     </Configuration>
   </Plugin>

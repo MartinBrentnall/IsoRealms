@@ -52,7 +52,24 @@ class SpindizzyLiftSet:public ISpindizzyLiftSet,
    * Properties are applied to all lift types.
    */
   SpindizzyLiftProperties cSpindizzyLiftProperties;
+  
+  unsigned int cLocked;
 
+  class LockControlCommand:public IUserCommand {
+    private:
+    SpindizzyLiftSet* cParent;
+    bool cLock;
+    
+    public:
+    LockControlCommand(SpindizzyLiftSet*, bool);
+    
+    /***************************\
+     * Implements IUserCommand *
+    \***************************/
+    void execute();
+    std::string getCommandName();
+  };
+  
   public:
   SpindizzyLiftSet();
 
@@ -83,6 +100,7 @@ class SpindizzyLiftSet:public ISpindizzyLiftSet,
   IZone* getCurrentZone();
   void executeLiftMovedScript();
   void registerInterceptingSurface(IRollableSurface*);
+  bool isLocked();
   
   /***********************************\
    * Implements IZoneContextListener *

@@ -35,10 +35,11 @@
 #include "../../Plugins/3DModel/ISimpleModelFactory.h"
 #include "../../Plugins/ZoneContext/IZoneContext.h"
 
+#include "ISpindizzyGERALDFactory.h"
 #include "ISpindizzyGERALDSet.h"
 #include "SpindizzyGERALD.h"
 
-class SpindizzyGERALDFactory:public ElementFactory<ISpindizzyGERALDSet> {
+class SpindizzyGERALDFactory:public ISpindizzyGERALDFactory {
   private:
   std::vector<SpindizzyGERALD*> cContent;
   ISimpleModelFactory* cGERALDModelFactory;

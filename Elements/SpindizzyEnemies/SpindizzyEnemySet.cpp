@@ -20,6 +20,9 @@
 
 SpindizzyEnemySet::SpindizzyEnemySet() {
   assignDummyPlugin(&cZoneContext, "ZoneContext");
+  cCommands.push_back(new LockControlCommand(this, true));
+  cCommands.push_back(new LockControlCommand(this, false));
+  cLocks = 0;
 }
 
 void SpindizzyEnemySet::setModel(ISimpleModelFactory* modelFactory) {
@@ -32,8 +35,11 @@ std::vector<IElementFactory*> SpindizzyEnemySet::getElementFactories() {
   return cElementFactories;
 }
 
-void SpindizzyEnemySet::setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*, ICommandRegistry*) {
-  // Nothing to do yet
+void SpindizzyEnemySet::setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*, ICommandRegistry* commandRegistry) {
+  cCommandRegistry = commandRegistry;
+  for (unsigned int i = 0; i < cCommands.size(); i++) {
+    cCommandRegistry->registerCommand(cCommands[i]);
+  }
 }
 
 void SpindizzyEnemySet::destroy(IElement* element) {
@@ -121,6 +127,10 @@ IZone* SpindizzyEnemySet::getCurrentZone() {
   return cZone;
 }
 
+bool SpindizzyEnemySet::isLocked() {
+  return cLocks > 0;
+}
+
 void SpindizzyEnemySet::zoneContextChanged(IZone* zone) {
   cZone = zone;
   if (cZone != NULL) {
@@ -130,6 +140,19 @@ void SpindizzyEnemySet::zoneContextChanged(IZone* zone) {
   }
 }
 
+SpindizzyEnemySet::LockControlCommand::LockControlCommand(SpindizzyEnemySet* parent, bool lock) {
+  cParent = parent;
+  cLock = lock;
+}
+
+void SpindizzyEnemySet::LockControlCommand::execute() {
+  cParent->cLocks += cLock ? 1 : -1;
+}
+
+std::string SpindizzyEnemySet::LockControlCommand::getCommandName() {
+  return cLock ? "AddLock" : "RemoveLock";
+}
+    
 extern "C" IElementSet* create(DOMNodeWrapper* node) {
   return new SpindizzyEnemySet();
 }

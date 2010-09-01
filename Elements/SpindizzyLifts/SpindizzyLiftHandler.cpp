@@ -61,7 +61,9 @@ void SpindizzyLiftHandler::updateRuntime(int ticks) {
         cVisibility = 1.0f;
       }
     }
-    DefaultElementHandler<SpindizzyLift>::update(ticks);
+    if (!cSpindizzyLiftSet->isLocked()) {
+      DefaultElementHandler<SpindizzyLift>::update(ticks);
+    }
   } else {
     if (cVisibility > 0.0f) {
       cVisibility -= ticks / 500.0f;

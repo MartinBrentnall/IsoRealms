@@ -32,6 +32,7 @@ class ISpindizzyLiftSet:public ElementSet<SpindizzyLift> {
   virtual IZone* getCurrentZone() = 0;
   virtual void executeLiftMovedScript() = 0;
   virtual void registerInterceptingSurface(IRollableSurface*) = 0;
+  virtual bool isLocked() = 0;
 };
 
 #endif

@@ -39,9 +39,27 @@ class SpindizzyEnemySet:public ISpindizzyEnemySet,
   std::vector<ISimpleModelFactory*> cEnemyModelFactories;
   IZoneContext* cZoneContext;
   IZone* cZone;
+  unsigned int cLocks;
+  ICommandRegistry* cCommandRegistry;
+  std::vector<IUserCommand*> cCommands;
 
   void setModel(ISimpleModelFactory*);
 
+  class LockControlCommand:public IUserCommand {
+    private:
+    SpindizzyEnemySet* cParent;
+    bool cLock;
+    
+    public:
+    LockControlCommand(SpindizzyEnemySet*, bool);
+    
+    /***************************\
+     * Implements IUserCommand *
+    \***************************/
+    void execute();
+    std::string getCommandName();
+  };
+  
   public:
   SpindizzyEnemySet();
 
@@ -66,10 +84,11 @@ class SpindizzyEnemySet:public ISpindizzyEnemySet,
   IPlugin* getPlugin(PlugSocket*);
   void save(DOMNodeWriter*);
 
-  /********************************\
-   * Implements ISpindizzyLiftSet *
-  \********************************/
+  /*********************************\
+   * Implements ISpindizzyEnemySet *
+  \*********************************/
   IZone* getCurrentZone();
+  bool isLocked();
   
   /***********************************\
    * Implements IZoneContextListener *

@@ -43,9 +43,26 @@ class SpindizzyGERALDSet:public ISpindizzyGERALDSet {
   ILocationAwareness* cLocationAwareness;
   IZoneContext* cZoneContext;
   ICommandRegistry* cCommandRegistry;
+  std::vector<IUserCommand*> cCommands;
+  unsigned int cLocks;
 
   void setModel(ISimpleModelFactory*);
 
+  class LockControlCommand:public IUserCommand {
+    private:
+    SpindizzyGERALDSet* cParent;
+    bool cLock;
+    
+    public:
+    LockControlCommand(SpindizzyGERALDSet*, bool);
+    
+    /***************************\
+     * Implements IUserCommand *
+    \***************************/
+    void execute();
+    std::string getCommandName();
+  };
+  
   public:
   SpindizzyGERALDSet();
 
@@ -65,6 +82,11 @@ class SpindizzyGERALDSet:public ISpindizzyGERALDSet {
   std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
+
+  /**********************************\
+   * Implements ISpindizzyGERALDSet *
+  \**********************************/
+  bool isLocked();
 };
 
 #endif

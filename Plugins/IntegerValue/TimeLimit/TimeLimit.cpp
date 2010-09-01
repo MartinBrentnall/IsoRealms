@@ -24,6 +24,9 @@ TimeLimit::TimeLimit() {
   cMilliseconds = 180000;
   cMaximumMilliseconds = 180000;
   cValuePerSecond = 100;
+  cLocks = 0;
+  cCommands.push_back(new LockControlCommand(this, true));
+  cCommands.push_back(new LockControlCommand(this, false));
 }
 
 IIntegerValue& TimeLimit::operator+=(const int& value) {
@@ -35,6 +38,13 @@ IIntegerValue& TimeLimit::operator+=(const int& value) {
     cMilliseconds = cMaximumMilliseconds;
   }
   return *this;
+}
+
+void TimeLimit::setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry* commandRegistry) {
+  cCommandRegistry = commandRegistry;
+  for (unsigned int i = 0; i < cCommands.size(); i++) {
+    cCommandRegistry->registerCommand(cCommands[i]);
+  }
 }
 
 void TimeLimit::addIntegerValueListener(IIntegerValueListener*) {
@@ -52,20 +62,22 @@ std::vector<IDynamicElement*> TimeLimit::getPreLoopCommands() {
 }
 
 void TimeLimit::update(int milliseconds) {
-  if (cMilliseconds > 0) {
-    cMilliseconds -= milliseconds;
-    if (cMilliseconds <= 0) {
-      for (unsigned int i = 0; i < cTimeOutCommands.size(); i++) {
-        cTimeOutCommands[i]->execute();
+  if (cLocks == 0) {
+    if (cMilliseconds > 0) {
+      cMilliseconds -= milliseconds;
+      if (cMilliseconds <= 0) {
+        for (unsigned int i = 0; i < cTimeOutCommands.size(); i++) {
+          cTimeOutCommands[i]->execute();
+        }
+        cMilliseconds = 0;
       }
-      cMilliseconds = 0;
     }
+    int mMilliseconds = cMilliseconds % 1000;
+    int mSeconds = cMilliseconds / 1000;
+    int mMinutes = mSeconds / 60;
+    mSeconds = mSeconds % 60;
+    std::cout << mMinutes << ":" << std::setfill('0') << std::setw(2) << mSeconds << "." << std::setw(3) << mMilliseconds << std::endl;
   }
-  int mMilliseconds = cMilliseconds % 1000;
-  int mSeconds = cMilliseconds / 1000;
-  int mMinutes = mSeconds / 60;
-  mSeconds = mSeconds % 60;
-//  std::cout << mMinutes << ":" << std::setfill('0') << std::setw(2) << mSeconds << "." << std::setw(3) << mMilliseconds << std::endl;
 }
 
 std::string TimeLimit::getName() {
@@ -86,6 +98,19 @@ IPlugin* TimeLimit::getPlugin(PlugSocket* socket) {
   if (socket->getType() == "IntegerValue")    {return cIntegerValue;}
   // TODO: Throw
   return NULL;
+}
+
+TimeLimit::LockControlCommand::LockControlCommand(TimeLimit* parent, bool lock) {
+  cParent = parent;
+  cLock = lock;
+}
+
+void TimeLimit::LockControlCommand::execute() {
+  cParent->cLocks += cLock ? 1 : -1;
+}
+
+std::string TimeLimit::LockControlCommand::getCommandName() {
+  return cLock ? "AddLock" : "RemoveLock";
 }
 
 extern "C" IPlugin* create() {

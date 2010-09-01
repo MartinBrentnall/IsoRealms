@@ -27,6 +27,7 @@ class SpindizzyEnemy;
 class ISpindizzyEnemySet:public ElementSet<SpindizzyEnemy> {
   public:
   virtual IZone* getCurrentZone() = 0;
+  virtual bool isLocked() = 0;
 };
 
 #endif

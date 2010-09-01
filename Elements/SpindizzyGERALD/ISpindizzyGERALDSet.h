@@ -22,7 +22,11 @@
 #include <IsoRealms/ElementSet.h>
 #include <IsoRealms/IElement.h>
 
-class ISpindizzyGERALDSet:public ElementSet<IElement> {
+class SpindizzyGERALD;
+
+class ISpindizzyGERALDSet:public ElementSet<SpindizzyGERALD> {
+  public:
+  virtual bool isLocked() = 0; 
 };
 
 #endif

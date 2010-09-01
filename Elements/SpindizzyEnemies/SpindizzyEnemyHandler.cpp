@@ -57,7 +57,9 @@ void SpindizzyEnemyHandler::updateRuntime(int ticks) {
         cVisibility = 1.0f;
       }
     }
-    DefaultElementHandler<SpindizzyEnemy>::update(ticks);
+    if (!cSpindizzyEnemySet->isLocked()) {
+      DefaultElementHandler<SpindizzyEnemy>::update(ticks);
+    }
   } else {
     if (cVisibility > 0.0f) {
       cVisibility -= ticks / 500.0f;

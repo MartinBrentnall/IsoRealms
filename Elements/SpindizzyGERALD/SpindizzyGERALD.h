@@ -44,7 +44,10 @@
 #include "../../Plugins/LocationAwareness/ILocationAwareness.h"
 #include "../../Plugins/ZoneContext/IZoneContext.h"
 
-class SpindizzyGERALD:public Element<>, 
+#include "ISpindizzyGERALDFactory.h"
+#include "ISpindizzyGERALDSet.h"
+
+class SpindizzyGERALD:public Element<ISpindizzyGERALDSet, ISpindizzyGERALDFactory>, 
                       public ICollector,
                       public IDynamicElement,
                       public IInteractiveElement,
@@ -113,7 +116,7 @@ class SpindizzyGERALD:public Element<>,
   void respawn();
 
   public:
-  SpindizzyGERALD(IElementFactory*, BlockLocation*, ISimpleModelFactory*, ICollectables*, ICollidableSurfaceRegistry*, ILocationAwareness*, IZoneContext*, ICamera*, float, Script*);
+  SpindizzyGERALD(ISpindizzyGERALDFactory*, BlockLocation*, ISimpleModelFactory*, ICollectables*, ICollidableSurfaceRegistry*, ILocationAwareness*, IZoneContext*, ICamera*, float, Script*);
 
   void checkCurrentZoneEvents(Vertex&, Vertex&);
   void checkMapZoneEvents(IZone*, Vertex&, Vertex&);
