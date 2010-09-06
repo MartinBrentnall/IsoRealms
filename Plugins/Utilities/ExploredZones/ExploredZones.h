@@ -1,6 +1,25 @@
+/*
+ * Copyright 2009,2010 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
 #ifndef EXPLORED_ZONES_H
 #define EXPLORED_ZONES_H
 
+#include <climits>
 #include <set>
 #include <vector>
 
@@ -12,6 +31,8 @@
 
 #include "../IUtilities.h"
 
+#include "../../3DModel/ISimpleModelFactory.h"
+#include "../../FlaggedZones/IFlaggedZones.h"
 #include "../../Objectives/IObjectives.h"
 #include "../../ZoneContext/IZoneContextListener.h"
 #include "../../ZoneContext/IZoneContext.h"
@@ -21,15 +42,18 @@ class ExploredZones:public IUtilities,
                     public IObjective {
   private:
   IZoneContext* cZoneContext;
+  IZone* cZone;
   ICommandRegistry* cCommandRegistry;
   IObjectives* cObjectives;
-  std::set<IZone*> cExploredZones;
+  std::map<IZone*, ISimpleModel*> cExploredZones;
   unsigned int cZoneCount;
   std::vector<PlugSocket*> cSockets;
   Script* cAllZonesExploredScript;
   Script* cZoneExploredScript;
   IZoneRenderer* cExploredZoneRenderer;
   IZoneRenderer* cMapOverviewRenderer;
+  ISimpleModelFactory* cFlagModel;
+  IFlaggedZones* cFlaggedZones;
   
   class ExploredZoneRenderer:public IZoneRenderer {
     private:

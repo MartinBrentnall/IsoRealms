@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2009,2010 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,27 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef DUMMY_MODEL_H
-#define DUMMY_MODEL_H
+#ifndef I_FLAGGED_ZONES_SOURCE_H
+#define I_FLAGGED_ZONES_SOURCE_H
 
-#include <GL/gl.h>
-
-#include <IsoRealms/Vertex.h>
-
-#include "ISimpleModel.h"
-
-class DummyModel:public ISimpleModel {
-  private:
-  Vertex* cLocation;
-
+class IFlaggedZonesSource {
   public:
-  DummyModel(Vertex*);
-
-  /***************************\
-   * Implements ISimpleModel *
-  \***************************/
-  void update(int);
-  void render();
+  virtual bool isZoneFlagged(IZone*) = 0;
 };
 
 #endif

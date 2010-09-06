@@ -35,6 +35,7 @@
 #include "InitException.h"
 #include "IZone.h"
 #include "System.h"
+#include "ZoneRendererProxy.h"
 
 class Zone;
 
@@ -172,7 +173,7 @@ class PluginRegistry:public IPluginRegistry {
 
   std::vector<IInteractiveElement*> getInteractiveElements();
 
-  IZoneRenderer* getZoneRenderer(DOMNodeWrapper*);
+  IZoneRenderer* getZoneRenderer(DOMNodeWrapper*, CommandDirectory*);
   
   /******************************\
    * Implements IPluginRegistry *

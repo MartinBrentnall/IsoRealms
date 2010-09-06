@@ -25,17 +25,20 @@
 #include <IsoRealms/IMap.h>
 #include <IsoRealms/IZone.h>
 
+#include "../../FlaggedZones/IFlaggedZones.h"
 #include "../../Objectives/IObjectives.h"
 #include "../../ZoneContext/IZoneContext.h"
 
 #include "../ICollectables.h"
 
 class ZoneCollectables:public ICollectables,
+                       public IFlaggedZonesSource,
                        public IObjective,
                        public IZoneContextListener {
   private:
   IZoneContext* cZoneContext;
   IObjectives* cObjectives;
+  IFlaggedZones* cFlaggedZones;
   IZone* cEditingZone;
   IZone* cRuntimeZone;
   IMap* cMap;
@@ -58,6 +61,11 @@ class ZoneCollectables:public ICollectables,
    * Implements IObjective *
   \*************************/
   bool isMet();
+  
+  /**********************************\
+   * Implements IFlaggedZonesSource *
+  \**********************************/
+  bool isZoneFlagged(IZone*);
 
   /**********************\
    * Implements IPlugin *

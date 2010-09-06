@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2009,2010 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,27 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef DUMMY_MODEL_H
-#define DUMMY_MODEL_H
+#include "SimpleFlaggedZones.h"
 
-#include <GL/gl.h>
+SimpleFlaggedZones::SimpleFlaggedZones() {
+  cSource = NULL;
+}
 
-#include <IsoRealms/Vertex.h>
+void SimpleFlaggedZones::registerSource(IFlaggedZonesSource* source) {
+  if (cSource != NULL) {
+    // TODO: Throw a runtime exception
+    std::cout << "Can't assign more than one source" << std::endl;
+    exit(1);
+  }
+  cSource = source;
+}
 
-#include "ISimpleModel.h"
+void SimpleFlaggedZones::unregisterSource(IFlaggedZonesSource* source) {
+  cSource = NULL;
+}
 
-class DummyModel:public ISimpleModel {
-  private:
-  Vertex* cLocation;
+bool SimpleFlaggedZones::isZoneFlagged(IZone* zone) {
+  return cSource->isZoneFlagged(zone);
+}
 
-  public:
-  DummyModel(Vertex*);
+extern "C" IPlugin* create() {
+  return new SimpleFlaggedZones();
+}
 
-  /***************************\
-   * Implements ISimpleModel *
-  \***************************/
-  void update(int);
-  void render();
-};
-
-#endif
+extern "C" void destroy(IPlugin* plugin) {
+  delete plugin;
+}

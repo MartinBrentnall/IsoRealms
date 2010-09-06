@@ -18,7 +18,7 @@
  */
 #include "DummyModelFactory.h"
 
-ISimpleModel* DummyModelFactory::createModel(Vertex* location) {
+ISimpleModel* DummyModelFactory::createModel(Vertex* location, float scale) {
   return new DummyModel(location);
 }
 

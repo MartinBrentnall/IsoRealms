@@ -98,6 +98,7 @@ bool SpindizzyJewel::isCollected(Vertex& start, Vertex& end) {
     float mTop    = cLocation.z + 1.0f;
     if (Collision::hasCrossed(start, end, mWest, mEast, mSouth, mNorth, mBottom, mTop, true)) {
       collect();
+      return true;
     }
   }
   return false;

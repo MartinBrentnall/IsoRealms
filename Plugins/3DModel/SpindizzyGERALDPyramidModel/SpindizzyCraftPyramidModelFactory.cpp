@@ -18,7 +18,7 @@
  */
 #include "SpindizzyCraftPyramidModelFactory.h"
 
-ISimpleModel* SpindizzyCraftPyramidModelFactory::createModel(Vertex* vertex) {
+ISimpleModel* SpindizzyCraftPyramidModelFactory::createModel(Vertex* vertex, float scale) {
   return new SpindizzyCraftPyramidModel(vertex);
 }
 

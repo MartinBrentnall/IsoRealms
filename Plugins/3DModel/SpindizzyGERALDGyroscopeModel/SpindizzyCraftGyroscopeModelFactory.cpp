@@ -18,7 +18,7 @@
  */
 #include "SpindizzyCraftGyroscopeModelFactory.h"
 
-ISimpleModel* SpindizzyCraftGyroscopeModelFactory::createModel(Vertex* location) {
+ISimpleModel* SpindizzyCraftGyroscopeModelFactory::createModel(Vertex* location, float scale) {
   return new SpindizzyCraftGyroscopeModel(location);
 }
 

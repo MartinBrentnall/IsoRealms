@@ -59,7 +59,7 @@ Map::Map(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, 
     } else if (mValueAsString == "ElementSet") {
       cElementSetRegistry.registerElementSet(&cPluginRegistry, mNode, &cCommandRegistry);
     } else if (mValueAsString == "ZoneRenderer") {
-      IZoneRenderer* mZoneRenderer = cPluginRegistry.getZoneRenderer(mNode);
+      IZoneRenderer* mZoneRenderer = cPluginRegistry.getZoneRenderer(mNode, &cCommandRegistry);
       cZoneRenderers.push_back(mZoneRenderer);
     } else if (mValueAsString == "Zone") {
       Zone* mZone = new Zone(mNode, cElementSetRegistry, cPluginRegistry);

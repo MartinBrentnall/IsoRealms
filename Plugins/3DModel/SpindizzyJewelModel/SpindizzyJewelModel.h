@@ -36,6 +36,7 @@ class SpindizzyJewelModel:public ISimpleModel {
   static GLuint cFrameDisplayList;
 
   Vertex* cLocation;
+  float cScale;
 
   /**
    * Current colour of the jewel.
@@ -86,7 +87,7 @@ class SpindizzyJewelModel:public ISimpleModel {
   static double distance(double a1, double a2, double b1, double b2);
 
   public:
-  SpindizzyJewelModel(Vertex*);
+  SpindizzyJewelModel(Vertex*, float);
 
   /***************************\
    * Implements ISimpleModel *

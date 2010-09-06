@@ -29,7 +29,7 @@ class SpindizzyJewelModelFactory:public ISimpleModelFactory {
   /***************************\
    * Implements ISimpleModel *
   \***************************/
-  ISimpleModel* createModel(Vertex*);
+  ISimpleModel* createModel(Vertex*, float);
   void destroyModel(ISimpleModel*);
 
   /******************************************\

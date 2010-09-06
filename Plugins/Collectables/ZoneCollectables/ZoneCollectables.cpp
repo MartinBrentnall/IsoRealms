@@ -19,8 +19,10 @@
 #include "ZoneCollectables.h"
 
 ZoneCollectables::ZoneCollectables() {
+  assignDummyPlugin(&cFlaggedZones, "FlaggedZones");
   assignDummyPlugin(&cObjectives, "Objectives");
   assignDummyPlugin(&cZoneContext, "ZoneContext");
+  cZoneContextSocket.push_back(new PlugSocket("FlaggedZones"));
   cZoneContextSocket.push_back(new PlugSocket("Objectives"));
   cZoneContextSocket.push_back(new PlugSocket("ZoneContext"));
   cCollectablesCount = 0;
@@ -50,11 +52,19 @@ void ZoneCollectables::setPlugin(PlugSocket* socket, IPlugin* plugin) {
       cEditingZone = cZoneContext->getZoneContext();
       cRuntimeZone = cEditingZone;
     }
+  } else if (socket->getType() == "FlaggedZones") {
+    IFlaggedZones* mPreviousFlaggedZones = cFlaggedZones;
+    if (assignPlugin(plugin, &cFlaggedZones, *socket)) {
+      mPreviousFlaggedZones->unregisterSource(this);
+      cFlaggedZones->registerSource(this);
+    }
   }
 }
 
 IPlugin* ZoneCollectables::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "ZoneContext") {return cZoneContext;}
+  if (socket->getType() == "ZoneContext")  {return cZoneContext;}
+  if (socket->getType() == "Objectives")   {return cObjectives;}
+  if (socket->getType() == "FlaggedZones") {return cFlaggedZones;}
   // TODO: Throw something
   return NULL;
 }
@@ -84,12 +94,14 @@ void ZoneCollectables::registerCollectable(ICollectable* collectable) {
 void ZoneCollectables::collect(ICollector* collector, Vertex& start, Vertex& end, IZone* zone) {
   std::map<IZone*, std::vector<ICollectable*>*>::iterator i = cCollectables.find(zone);
   if (i != cCollectables.end()) {
-    for (unsigned int j = 0; j < i->second->size(); j++) {
+    for (int j = i->second->size() - 1; j >= 0; j--) {
       if ((*i->second)[j]->isCollected(start, end)) {
         collector->collected((*i->second)[j]);
         cCollectedCount++;
         cObjectives->check();
-        // TODO: Remove collectable.
+        std::cout << "Jewels to go before: " << i->second->size() << std::endl;
+        i->second->erase(i->second->begin() + j);
+        std::cout << "Jewels to go now: " << i->second->size() << std::endl;
       }
     }
   }
@@ -124,6 +136,14 @@ void ZoneCollectables::reinitialise() {
 
 bool ZoneCollectables::isMet() {
   return cCollectedCount == cCollectablesCount;
+}
+
+bool ZoneCollectables::isZoneFlagged(IZone* zone) {
+  std::map<IZone*, std::vector<ICollectable*>*>::iterator i = cCollectables.find(zone);
+  if (i != cCollectables.end()) {
+    std::cout << "Jewels to go: " << i->second->size() << std::endl;
+  }
+  return i != cCollectables.end() && i->second->size() > 0;
 }
 
 extern "C" IPlugin* create() {

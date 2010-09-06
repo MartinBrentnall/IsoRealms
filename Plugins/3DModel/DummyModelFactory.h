@@ -31,7 +31,7 @@ class DummyModelFactory:public ISimpleModelFactory,
   /**********************************\
    * Implements ISimpleModelFactory *
   \**********************************/
-  ISimpleModel* createModel(Vertex* location);
+  ISimpleModel* createModel(Vertex*, float);
   void destroyModel(ISimpleModel*);
 };
 

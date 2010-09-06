@@ -229,7 +229,7 @@ std::string PluginRegistry::getPluginType(IPlugin* instance) {
   return "";
 }
 
-IZoneRenderer* PluginRegistry::getZoneRenderer(DOMNodeWrapper* node) {
+IZoneRenderer* PluginRegistry::getZoneRenderer(DOMNodeWrapper* node, CommandDirectory* commandRegistry) {
   std::string mType = node->getAttribute("type");
   if (mType == "") {
     return &DEFAULT_ZONE_RENDERER;
@@ -237,7 +237,13 @@ IZoneRenderer* PluginRegistry::getZoneRenderer(DOMNodeWrapper* node) {
   std::string mInstance = node->getAttribute("instance");
   IPlugin* mPlugin = getPlugin(mType, mInstance);
   std::string mRenderer = node->getAttribute("renderer");
-  return mPlugin->getZoneRenderer(mRenderer);
+  bool mActive = node->getBooleanAttribute("active");
+  std::vector<std::string> mDirectory;
+  mDirectory.push_back("ZoneRenderer");
+  mDirectory.push_back(mType);
+  mDirectory.push_back(mInstance);
+  CommandRegistryProxy* mCommandRegistry = new CommandRegistryProxy(commandRegistry, mDirectory);
+  return new ZoneRendererProxy(mPlugin->getZoneRenderer(mRenderer), mActive, mCommandRegistry, mRenderer);
 }
 
 void PluginRegistry::removePlugin(IPlugin* instance) {

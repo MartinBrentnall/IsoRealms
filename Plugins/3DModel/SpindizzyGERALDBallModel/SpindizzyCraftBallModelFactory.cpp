@@ -23,7 +23,7 @@ SpindizzyCraftBallModelFactory::SpindizzyCraftBallModelFactory() {
   cCameraSocket.push_back(new PlugSocket("Camera"));
 }
 
-ISimpleModel* SpindizzyCraftBallModelFactory::createModel(Vertex* location) {
+ISimpleModel* SpindizzyCraftBallModelFactory::createModel(Vertex* location, float scale) {
   return new SpindizzyCraftBallModel(location, cCamera);
 }
 

@@ -74,6 +74,7 @@ add_library(IsoRealms SHARED
   Zone.cpp
   ZoneBrush.cpp
   ZoneEvent.cpp 
+  ZoneRendererProxy.cpp
 )
 
 

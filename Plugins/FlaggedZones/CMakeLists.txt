@@ -14,19 +14,12 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
-add_subdirectory(3DModel)
-add_subdirectory(Camera)
-add_subdirectory(Collectables)
-add_subdirectory(CollidableSurfaceRegistry)
-add_subdirectory(FlaggedZones)
-add_subdirectory(FourColourSupport)
-add_subdirectory(IntegerValue)
-add_subdirectory(LocationAwareness)
-add_subdirectory(Objectives)
-add_subdirectory(SequencePlayer)
-add_subdirectory(SoundSupport)
-add_subdirectory(SpindizzyTextureSet)
-add_subdirectory(SpindizzyTextureSetChanger)
-add_subdirectory(SurfaceProcessor)
-add_subdirectory(Utilities)
-add_subdirectory(ZoneContext)
+add_subdirectory(SimpleFlaggedZones)
+
+include_directories(${PROJECT_SOURCE_DIR})
+
+add_library(FlaggedZonesDummy MODULE 
+  DummyFlaggedZones.cpp
+)
+set_target_properties(FlaggedZonesDummy PROPERTIES OUTPUT_NAME "Dummy")
+set_target_properties(FlaggedZonesDummy PROPERTIES PREFIX "lib")

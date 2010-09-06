@@ -99,9 +99,11 @@
   </Plugin>
   <Plugin implementation="SpindizzyCamera" instance="CraftCamera" type="Camera">
     <UsePlugin implementation="LocationAwareness" instance="PlayerLocation" socketid=""/>
+    <UsePlugin implementation="SequencePlayer" instance="CameraMapOverviewAnimator" socketid=""/>
     <Configuration/>
   </Plugin>
   <Plugin implementation="ZoneCollectables" instance="Jewels" type="Collectables">
+    <UsePlugin implementation="FlaggedZones" instance="JewelsToCollectFlags"/>
     <UsePlugin implementation="Objectives" instance="SpindizzyEndingTrigger"/>
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext" socketid=""/>
     <Configuration/>
@@ -110,9 +112,12 @@
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext" socketid=""/>
     <Configuration/>
   </Plugin>
+  <Plugin implementation="SimpleFlaggedZones" instance="JewelsToCollectFlags" type="FlaggedZones">
+    <Configuration/>
+  </Plugin>
   <Plugin implementation="DefaultFourColourSupport" instance="C64Palette" type="FourColourSupport">
     <Configuration>
-      <Colour name="Black" alpha="1.0" blue="0" green="0" red="0"/>
+<!--      <Colour name="Black" alpha="1.0" blue="0" green="0" red="0"/>
       <Colour name="White" alpha="1.0" blue="1" green="1" red="1"/>
       <Colour name="Red" alpha="1.0" blue="0" green="0" red="1"/>
       <Colour name="Cyan" alpha="1.0" blue="0.9" green="0.8" red="0.2"/>
@@ -127,7 +132,23 @@
       <Colour name="MediumGray" alpha="1.0" blue="0.5" green="0.5" red="0.5"/>
       <Colour name="LightGreen" alpha="1.0" blue="0.6" green="1" red="0.5"/>
       <Colour name="LightBlue" alpha="1.0" blue="1" green="0.48" red="0.48"/>
-      <Colour name="LightGray" alpha="1.0" blue="0.72" green="0.72" red="0.72"/>
+      <Colour name="LightGray" alpha="1.0" blue="0.72" green="0.72" red="0.72"/>-->
+      <Colour name="Black" alpha="1.0" blue="0" green="0" red="0"/>
+      <Colour name="White" alpha="1.0" blue="1" green="1" red="1"/>
+      <Colour name="Red" alpha="1.0" blue="0.203125" green="0.2421875" red="0.546875"/>
+      <Colour name="Cyan" alpha="1.0" blue="0.77734375" green="0.74609375" red="0.4765625"/>
+      <Colour name="Purple" alpha="1.0" blue="0.69921875" green="0.27734375" red="0.55078125"/>
+      <Colour name="Green" alpha="1.0" blue="0.25390625" green="0.66015625" red="0.40625"/>
+      <Colour name="Blue" alpha="1.0" blue="0.6328125" green="0.19140625" red="0.2421875"/>
+      <Colour name="Yellow" alpha="1.0" blue="0.44140625" green="0.859375" red="0.8125"/>
+      <Colour name="Orange" alpha="1.0" blue="0.14453125" green="0.37109375" red="0.5625"/>
+      <Colour name="Brown" alpha="1.0" blue="0" green="0.2578125" red="0.33984375"/>
+      <Colour name="Pink" alpha="1.0" blue="0.42578125" green="0.46484375" red="0.73046875"/>
+      <Colour name="DarkGray" alpha="1.0" blue="0.328125" green="0.328125" red="0.328125"/>
+      <Colour name="MediumGray" alpha="1.0" blue="0.5" green="0.5" red="0.5"/>
+      <Colour name="LightGreen" alpha="1.0" blue="0.53125" green="0.9140625" red="0.671875"/>
+      <Colour name="LightBlue" alpha="1.0" blue="0.8515625" green="0.4375" red="0.484375"/>
+      <Colour name="LightGray" alpha="1.0" blue="0.66796875" green="0.66796875" red="0.66796875"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="FixedLocationAwareness" instance="PlayerLocation" type="LocationAwareness">
@@ -329,6 +350,8 @@
   <Plugin implementation="CommandTrigger" instance="SpindizzyEndingTrigger" type="Objectives">
   </Plugin>
   <Plugin implementation="ExploredZones" instance="ExploredZones" type="Utilities">
+    <UsePlugin implementation="3DModel" instance="C64JewelModel"/>
+    <UsePlugin implementation="FlaggedZones" instance="JewelsToCollectFlags"/>
     <UsePlugin implementation="Objectives" instance="SpindizzyEndingTrigger"/>
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext" socketid=""/>
     <Configuration>
@@ -556,12 +579,16 @@
         <Command>ElementSet/Lifts/AddLock</Command>
         <Command>ElementSet/Enemies/AddLock</Command>
         <Command>Plugin/IntegerValue/SpindizzyTimeLimit/AddLock</Command>
+        <Command>ZoneRenderer/Utilities/ExploredZones/mapOverview_Activate</Command>
+        <Command>ZoneRenderer/Utilities/ExploredZones/explored_Deactivate</Command>
       </LeftStartScript>
       <ReachedStartScript>
         <Command>ElementSet/Player/RemoveLock</Command>
         <Command>ElementSet/Lifts/RemoveLock</Command>
         <Command>ElementSet/Enemies/RemoveLock</Command>
         <Command>Plugin/IntegerValue/SpindizzyTimeLimit/RemoveLock</Command>
+        <Command>ZoneRenderer/Utilities/ExploredZones/explored_Activate</Command>
+        <Command>ZoneRenderer/Utilities/ExploredZones/mapOverview_Deactivate</Command>
       </ReachedStartScript>
     </Configuration>
   </Plugin>
@@ -826,8 +853,9 @@
       </FallLimit>
     </Configuration>
   </ElementSet>
-  <ZoneRenderer type="Utilities" instance="ExploredZones" renderer="explored"/>
-<!--   <ZoneRenderer/> -->
+  <ZoneRenderer type="Utilities" instance="ExploredZones" renderer="explored" active="true"/>
+  <ZoneRenderer type="Utilities" instance="ExploredZones" renderer="mapOverview" active="false"/>
+<!--  <ZoneRenderer/>-->
   <Elements>
     <Element set="Player" type="">
       <Location x="-4" y="3" z="0"/>

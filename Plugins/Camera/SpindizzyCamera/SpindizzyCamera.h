@@ -23,15 +23,18 @@
 #include <IsoRealms/MiscFunctions.h>
 
 #include "../../LocationAwareness/ILocationAwareness.h"
+#include "../../SequencePlayer/ISequencePlayer.h"
 
 #include "../ICamera.h"
 
 class SpindizzyCamera:public ICamera,
                       public IDynamicElement,
-                      public IInteractiveElement {
+                      public IInteractiveElement,
+                      public ISequence {
   private:
   std::vector<PlugSocket*> cLocationAwarenessSocket;
   ILocationAwareness* cLocationAwareness;
+  ISequencePlayer* cSequencePlayer;
   Vertex* cLocation;
   float cTargetAngle;
   float cPreviousAngle;
@@ -40,6 +43,15 @@ class SpindizzyCamera:public ICamera,
   float getCurrentAngle();
   void keyDown(SDLKey&);
   void changeAngle(float);
+  
+  float cSequencePosition;
+  
+  int cMinX;
+  int cMaxX;
+  int cMinY;
+  int cMaxY;
+  int cMinZ;
+  int cMaxZ;
 
   public:
   SpindizzyCamera();
@@ -57,12 +69,18 @@ class SpindizzyCamera:public ICamera,
   \**********************/
   std::vector<IDynamicElement*> getPreLoopCommands();
   std::vector<IInteractiveElement*> getInteractiveElements();
+  void initPlugin(IZone*, unsigned int);
 
   /******************************\
    * Implements IDynamicElement *
   \******************************/
   void update(int);
 
+  /************************\
+   * Implements ISequence *
+  \************************/
+  void update(float);
+  
   /**********************************\
    * Implements IInteractiveElement *
   \**********************************/

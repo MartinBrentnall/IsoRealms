@@ -20,10 +20,19 @@
 
 SpindizzyCamera::SpindizzyCamera() {
   assignDummyPlugin(&cLocationAwareness, "LocationAwareness");
+  assignDummyPlugin(&cSequencePlayer, "SequencePlayer");
   cLocationAwarenessSocket.push_back(new PlugSocket("LocationAwareness"));
+  cLocationAwarenessSocket.push_back(new PlugSocket("SequencePlayer"));
   cTargetAngle = -45.0f;
   cPreviousAngle = -45.0f;
   cProgress = 1.0f;
+  cSequencePosition = 0.0f;
+  cMinX = INT_MAX;
+  cMaxX = INT_MIN;
+  cMinY = INT_MAX;
+  cMaxY = INT_MIN;
+  cMinZ = INT_MAX;
+  cMaxZ = INT_MIN;
 }
 
 std::string SpindizzyCamera::getName() {
@@ -34,9 +43,25 @@ std::vector<PlugSocket*> SpindizzyCamera::getPlugSockets() {
   return cLocationAwarenessSocket;
 }
 
+void SpindizzyCamera::initPlugin(IZone* zone, unsigned int pass) {
+  BlockArea* mZoneArea = zone->getZoneArea();
+  cMinX = std::min(cMinX, mZoneArea->getWest());
+  cMaxX = std::max(cMaxX, mZoneArea->getEast());
+  cMinY = std::min(cMinY, mZoneArea->getSouth());
+  cMaxY = std::max(cMaxY, mZoneArea->getNorth());
+  cMinZ = std::min(cMinZ, mZoneArea->getBottom());
+  cMaxZ = std::max(cMaxZ, mZoneArea->getTop());
+}
+
 void SpindizzyCamera::setPlugin(PlugSocket* socket, IPlugin* plugin) {
   if (socket->getType() == "LocationAwareness") {
     assignPlugin(plugin, &cLocationAwareness, *socket);
+  } else if (socket->getType() == "SequencePlayer") {
+    ISequencePlayer* mOldSequencePlayer = cSequencePlayer;
+    if (assignPlugin(plugin, &cSequencePlayer, *socket)) {
+      mOldSequencePlayer->removeSequence(this);
+      cSequencePlayer->addSequence(this);
+    }
   } else {
     // TODO: Throw something
   }
@@ -44,12 +69,13 @@ void SpindizzyCamera::setPlugin(PlugSocket* socket, IPlugin* plugin) {
 
 IPlugin* SpindizzyCamera::getPlugin(PlugSocket* socket) {
   if (socket->getType() == "LocationAwareness") {return cLocationAwareness;}
+  if (socket->getType() == "SequencePlayer")    {return cSequencePlayer;}
   // TODO: Throw something
   return NULL;
 }
 
 float SpindizzyCamera::getCurrentAngle() {
-  return sine(cPreviousAngle, cTargetAngle, cProgress);
+  return sine(sine(cPreviousAngle, cTargetAngle, cProgress), 0.0f, cSequencePosition);
 }
 
 float SpindizzyCamera::getAngle() {
@@ -79,11 +105,22 @@ void SpindizzyCamera::update(int ticks) {
       cProgress = 1.0f;
     }
   }
-  glTranslatef(0.0f, 0.0f, -20.0f);
+  glTranslatef(0.0f, 0.0f, sine(-20.0f, -380.0f, cSequencePosition));
   Vertex* mLocation = cLocationAwareness->getLocation();
-  glRotatef(-50.0f, 1.0, 0.0, 0.0);
+  glRotatef(sine(-50.0f, 0.0f, cSequencePosition), 1.0, 0.0, 0.0);
   glRotatef(getCurrentAngle(), 0.0, 0.0, 1.0);
-  glTranslatef(-mLocation->x, -mLocation->y, min(-mLocation->z * IsoRealmsConstants::BLOCK_HEIGHT, 0.0f));
+  if (cSequencePosition > 0) {
+    float mX = sine(mLocation->x, cMinX + (cMaxX - cMinX) / 2.0f, cSequencePosition);
+    float mY = sine(mLocation->y, cMinY + (cMaxY - cMinY) / 2.0f, cSequencePosition);
+    float mZ = sine(mLocation->z, cMinZ + (cMaxZ - cMinZ) / 2.0f, cSequencePosition) * IsoRealmsConstants::BLOCK_HEIGHT;
+    glTranslatef(-mX, -mY, -mZ);
+  } else {
+    glTranslatef(-mLocation->x, -mLocation->y, min(-mLocation->z * IsoRealmsConstants::BLOCK_HEIGHT, 0.0f));
+  }
+}
+
+void SpindizzyCamera::update(float position) {
+  cSequencePosition = position;
 }
 
 void SpindizzyCamera::changeAngle(float angle) {

@@ -22,8 +22,9 @@ unsigned int SpindizzyJewelModel::cReferenceCount = 0;
 GLuint SpindizzyJewelModel::cPanelDisplayList;
 GLuint SpindizzyJewelModel::cFrameDisplayList;
 
-SpindizzyJewelModel::SpindizzyJewelModel(Vertex* location) {
+SpindizzyJewelModel::SpindizzyJewelModel(Vertex* location, float scale) {
   cLocation = location;
+  cScale = scale;
   long int mRandomNumber = random();
   cColourChannel = mRandomNumber % 3 == 0 ? &cCurrentColour.cRed 
                 : (mRandomNumber % 3 == 1 ? &cCurrentColour.cGreen
@@ -89,12 +90,15 @@ void SpindizzyJewelModel::update(int milliseconds) {
 }
 
 void SpindizzyJewelModel::render() {
+  glPushMatrix();
   glTranslatef(cLocation->x, cLocation->y, cLocation->z * IsoRealmsConstants::BLOCK_HEIGHT);
+  glScalef(cScale, cScale, cScale);
   glBindTexture(GL_TEXTURE_2D, 0);
   glCallList(cFrameDisplayList);
   glColor3f(cCurrentColour.cRed, cCurrentColour.cGreen, cCurrentColour.cBlue);
   glCallList(cPanelDisplayList);
   glColor3f(1.0, 1.0, 1.0);
+  glPopMatrix();
 }
 
 SpindizzyJewelModel::~SpindizzyJewelModel() {

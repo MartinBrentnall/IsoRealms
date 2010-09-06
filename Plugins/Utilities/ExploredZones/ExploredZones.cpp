@@ -1,10 +1,32 @@
+/*
+ * Copyright 2009,2010 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
 #include "ExploredZones.h"
 
 ExploredZones::ExploredZones() {
+  assignDummyPlugin(&cFlagModel, "3DModel");
   assignDummyPlugin(&cZoneContext, "ZoneContext");
   assignDummyPlugin(&cObjectives, "Objectives");
+  assignDummyPlugin(&cFlaggedZones, "FlaggedZones");
+  cSockets.push_back(new PlugSocket("3DModel"));
   cSockets.push_back(new PlugSocket("ZoneContext"));
   cSockets.push_back(new PlugSocket("Objectives"));
+  cSockets.push_back(new PlugSocket("FlaggedZones"));
   cZoneCount = 0;
   cExploredZoneRenderer = new ExploredZoneRenderer(this);
   cMapOverviewRenderer = new MapOverviewRenderer(this);
@@ -19,8 +41,19 @@ void ExploredZones::initPlugin(IZone* zone, unsigned int pass) {
 }
 
 void ExploredZones::zoneContextChanged(IZone* zone) {
+  cZone = zone;
   if (zone != NULL && cExploredZones.find(zone) == cExploredZones.end()) {
-    cExploredZones.insert(zone);
+    BlockArea* mBlockArea = zone->getZoneArea();
+    float mXDifference = mBlockArea->getEast() - mBlockArea->getWest();
+    float mYDifference = mBlockArea->getNorth() - mBlockArea->getSouth();
+    float mZDifference = mBlockArea->getTop() - mBlockArea->getBottom();
+    float mX = mBlockArea->getWest() + (mXDifference / 2.0f);
+    float mY = mBlockArea->getSouth() + (mYDifference / 2.0f);
+    float mZ = (mBlockArea->getBottom() + (mZDifference / 2.0f) - 1.0f) * IsoRealmsConstants::BLOCK_HEIGHT;
+    float mScale = std::min(mXDifference, std::min(mYDifference, mZDifference)) + 1;
+    
+    Vertex* mLocation = new Vertex(mX, mY, mZ);
+    cExploredZones[zone] = cFlagModel->createModel(mLocation, mScale);
     if (cZoneExploredScript != NULL) {
       cZoneExploredScript->execute();
     }
@@ -54,14 +87,20 @@ void ExploredZones::setPlugin(PlugSocket* socket, IPlugin* plugin) {
       mPreviousZoneContext->removeZoneContextListener(this);
       cZoneContext->addZoneContextListener(this);
     }
+  } else if (socket->getType() == "3DModel") {
+    assignPlugin(plugin, &cFlagModel, *socket);
+  } else if (socket->getType() == "FlaggedZones") {
+    assignPlugin(plugin, &cFlaggedZones, *socket);
   } else {
     // TODO: Throw
   }
 }
 
 IPlugin* ExploredZones::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "Objectives")      {return cObjectives;}
-  if (socket->getType() == "ZoneContext")     {return cZoneContext;}
+  if (socket->getType() == "Objectives")   {return cObjectives;}
+  if (socket->getType() == "ZoneContext")  {return cZoneContext;}
+  if (socket->getType() == "3DModel")      {return cFlagModel;}
+  if (socket->getType() == "FlaggedZones") {return cFlaggedZones;}
   return NULL;
 }
 
@@ -70,12 +109,12 @@ ExploredZones::ExploredZoneRenderer::ExploredZoneRenderer(ExploredZones* parent)
 }
 
 void ExploredZones::ExploredZoneRenderer::render(std::vector<IZone*>& zones, IPluginRegistry& pluginRegistry) {
-  for (std::set<IZone*>::iterator i = cParent->cExploredZones.begin(); i != cParent->cExploredZones.end(); ++i) {
-    (*i)->renderStatic();
+  for (std::map<IZone*, ISimpleModel*>::iterator i = cParent->cExploredZones.begin(); i != cParent->cExploredZones.end(); ++i) {
+    i->first->renderStatic();
   }
-  for (std::set<IZone*>::iterator i = cParent->cExploredZones.begin(); i != cParent->cExploredZones.end(); ++i) {
-    pluginRegistry.renderPreZone(*i);
-    (*i)->renderDynamic();
+  for (std::map<IZone*, ISimpleModel*>::iterator i = cParent->cExploredZones.begin(); i != cParent->cExploredZones.end(); ++i) {
+    pluginRegistry.renderPreZone(i->first);
+    i->first->renderDynamic();
   }
 }
 
@@ -88,10 +127,18 @@ void ExploredZones::MapOverviewRenderer::render(std::vector<IZone*>& zones, IPlu
     pluginRegistry.renderPreZone(zones[i]);
     glBindTexture(GL_TEXTURE_2D, 0);
     glLineWidth(2.0);
-    if (cParent->cExploredZones.find(zones[i]) != cParent->cExploredZones.end()) {
-      glColor3f(0.8, 1.0, 1.0);
+    std::map<IZone*, ISimpleModel*>::iterator j = cParent->cExploredZones.find(zones[i]);
+    if (j != cParent->cExploredZones.end()) {
+      if (cParent->cFlaggedZones->isZoneFlagged(zones[i])) {
+        j->second->render();
+      }
+      if (zones[i] == cParent->cZone) {
+        glColor3f(1.0f, 0.3f, 0.3f);
+      } else {
+        glColor3f(0.8f, 1.0f, 1.0f);
+      }
     } else {
-      glColor3f(0.0, 0.2, 0.3);
+      glColor3f(0.0f, 0.2f, 0.3f);
     }
     BlockArea* mZoneArea = zones[i]->getZoneArea();
     float x = mZoneArea->getWest()    * IsoRealmsConstants::BLOCK_SIZE   - IsoRealmsConstants::BLOCK_RADIUS * 0.5f;

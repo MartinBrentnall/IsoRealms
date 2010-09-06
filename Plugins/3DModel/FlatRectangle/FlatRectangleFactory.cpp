@@ -26,7 +26,7 @@ FlatRectangleFactory::FlatRectangleFactory() {
   updateTexture();
 }
 
-ISimpleModel* FlatRectangleFactory::createModel(Vertex* location) {
+ISimpleModel* FlatRectangleFactory::createModel(Vertex* location, float scale) {
   return new FlatRectangle(location, &cTexture, &cSize);
 }
 

@@ -18,8 +18,8 @@
  */
 #include "SpindizzyJewelModelFactory.h"
 
-ISimpleModel* SpindizzyJewelModelFactory::createModel(Vertex* vertex) {
-  return new SpindizzyJewelModel(vertex);
+ISimpleModel* SpindizzyJewelModelFactory::createModel(Vertex* vertex, float scale) {
+  return new SpindizzyJewelModel(vertex, scale);
 }
 
 void SpindizzyJewelModelFactory::destroyModel(ISimpleModel* jewelModel) {

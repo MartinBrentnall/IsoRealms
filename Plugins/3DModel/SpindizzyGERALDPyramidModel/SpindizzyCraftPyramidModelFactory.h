@@ -30,7 +30,7 @@ class SpindizzyCraftPyramidModelFactory:public ISimpleModelFactory {
   /************************************\
    * Implements ISimpleModelFactory.h *
   \************************************/
-  ISimpleModel* createModel(Vertex*);
+  ISimpleModel* createModel(Vertex*, float);
   void destroyModel(ISimpleModel*);
 
   /*****************************\

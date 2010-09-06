@@ -33,7 +33,7 @@ class ISimpleModelFactory:public virtual IPlugin {
    * 
    * @returns A new model instance.
    */
-  virtual ISimpleModel* createModel(Vertex*) = 0;
+  virtual ISimpleModel* createModel(Vertex*, float = 1.0f) = 0;
 
   /**
    * When a model is no longer required by an entity (e.g. it was changed to a

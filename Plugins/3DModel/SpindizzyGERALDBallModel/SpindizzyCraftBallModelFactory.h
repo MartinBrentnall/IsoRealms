@@ -37,7 +37,7 @@ class SpindizzyCraftBallModelFactory:public ISimpleModelFactory {
   /**********************************\
    * Implements ISimpleModelFactory *
   \**********************************/
-  ISimpleModel* createModel(Vertex*);
+  ISimpleModel* createModel(Vertex*, float);
   void destroyModel(ISimpleModel*);
 
   /*****************************\
