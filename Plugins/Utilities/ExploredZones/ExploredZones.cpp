@@ -118,6 +118,18 @@ void ExploredZones::ExploredZoneRenderer::render(std::vector<IZone*>& zones, IPl
   }
 }
 
+void ExploredZones::ExploredZoneRenderer::update(std::vector<IZone*>& zones, unsigned int milliseconds) {
+  for (std::map<IZone*, ISimpleModel*>::iterator i = cParent->cExploredZones.begin(); i != cParent->cExploredZones.end(); ++i) {
+    i->first->update(milliseconds);
+  }
+}
+
+void ExploredZones::ExploredZoneRenderer::updateRuntime(std::vector<IZone*>& zones, unsigned int milliseconds) {
+  for (std::map<IZone*, ISimpleModel*>::iterator i = cParent->cExploredZones.begin(); i != cParent->cExploredZones.end(); ++i) {
+    i->first->updateRuntime(milliseconds);
+  }
+}
+
 ExploredZones::MapOverviewRenderer::MapOverviewRenderer(ExploredZones* parent) {
   cParent = parent;
 }
@@ -165,6 +177,24 @@ void ExploredZones::MapOverviewRenderer::render(std::vector<IZone*>& zones, IPlu
     glVertex3f(xs, y,  z); glVertex3f(xs, y,  zs);
     glVertex3f(xs, ys, z); glVertex3f(xs, ys, zs);
     glEnd();
+  }
+}
+
+void ExploredZones::MapOverviewRenderer::update(std::vector<IZone*>& zones, unsigned int milliseconds) {
+  for (unsigned int i = 0; i < zones.size(); i++) {
+    std::map<IZone*, ISimpleModel*>::iterator j = cParent->cExploredZones.find(zones[i]);
+    if (j != cParent->cExploredZones.end() && cParent->cFlaggedZones->isZoneFlagged(zones[i])) {
+      j->second->update(milliseconds);
+    }
+  }
+}
+
+void ExploredZones::MapOverviewRenderer::updateRuntime(std::vector<IZone*>& zones, unsigned int milliseconds) {
+  for (unsigned int i = 0; i < zones.size(); i++) {
+    std::map<IZone*, ISimpleModel*>::iterator j = cParent->cExploredZones.find(zones[i]);
+    if (j != cParent->cExploredZones.end() && cParent->cFlaggedZones->isZoneFlagged(zones[i])) {
+      j->second->update(milliseconds);
+    }
   }
 }
 

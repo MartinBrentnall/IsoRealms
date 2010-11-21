@@ -66,6 +66,8 @@ class ExploredZones:public IUtilities,
      * Implements IZoneRenderer *
     \****************************/
     void render(std::vector<IZone*>&, IPluginRegistry&);
+    void update(std::vector<IZone*>&, unsigned int);
+    void updateRuntime(std::vector<IZone*>&, unsigned int);
   };
   
   class MapOverviewRenderer:public IZoneRenderer {
@@ -79,6 +81,8 @@ class ExploredZones:public IUtilities,
      * Implements IZoneRenderer *
     \****************************/
     void render(std::vector<IZone*>&, IPluginRegistry&);
+    void update(std::vector<IZone*>&, unsigned int);
+    void updateRuntime(std::vector<IZone*>&, unsigned int);
   };
   
   public:

@@ -32,6 +32,8 @@ class IZoneRenderer:public IPluginSupport {
    * TODO: Interface should NOT expose whole zone!
    */
   virtual void render(std::vector<IZone*>&, IPluginRegistry&) = 0;
+  virtual void update(std::vector<IZone*>&, unsigned int) = 0;
+  virtual void updateRuntime(std::vector<IZone*>&, unsigned int) = 0;
 };
 
 #endif

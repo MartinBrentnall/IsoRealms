@@ -32,6 +32,18 @@ void ZoneRendererProxy::render(std::vector<IZone*>& zones, IPluginRegistry& plug
   }
 }
 
+void ZoneRendererProxy::update(std::vector<IZone*>& zones, unsigned int milliseconds) {
+  if (cActive) { // TODO: Only when active?
+    cZoneRenderer->update(zones, milliseconds);
+  }
+}
+
+void ZoneRendererProxy::updateRuntime(std::vector<IZone*>& zones, unsigned int milliseconds) {
+  if (cActive) { // TODO: Only when active?
+    cZoneRenderer->updateRuntime(zones, milliseconds);
+  }
+}
+
 ZoneRendererProxy::RendererActivationCommand::RendererActivationCommand(ZoneRendererProxy* parent, bool activate) {
   cParent = parent;
   cActivate = activate;

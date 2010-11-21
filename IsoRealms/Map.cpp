@@ -241,8 +241,15 @@ void Map::initMap() {
 
 void Map::update(int milliseconds) {
   initMap();
+  // TODO: Need a more permanent solution for better performance.
+  std::vector<IZone*> mZones;
   for (unsigned int i = 0; i < cZones.size(); i++) {
-    cZones[i]->update(milliseconds);
+    mZones.push_back(cZones[i]);
+  }
+  // TODO: End.
+
+  for (unsigned int i = 0; i < cZoneRenderers.size(); i++) {
+    cZoneRenderers[i]->update(mZones, milliseconds);
   }
   for (unsigned int i = 0; i < cElementHandlers.size(); i++) {
     cElementHandlers[i]->update(milliseconds);
@@ -250,8 +257,15 @@ void Map::update(int milliseconds) {
 }
 
 void Map::updateRuntime(int milliseconds) {
+  // TODO: Need a more permanent solution for better performance.
+  std::vector<IZone*> mZones;
   for (unsigned int i = 0; i < cZones.size(); i++) {
-    cZones[i]->updateRuntime(milliseconds);
+    mZones.push_back(cZones[i]);
+  }
+  // TODO: End.
+  
+  for (unsigned int i = 0; i < cZoneRenderers.size(); i++) {
+    cZoneRenderers[i]->updateRuntime(mZones, milliseconds);
   }
   for (unsigned int i = 0; i < cElementHandlers.size(); i++) {
     cElementHandlers[i]->updateRuntime(milliseconds);
@@ -266,7 +280,7 @@ void Map::render() {
     mZones.push_back(cZones[i]);
   }
   // TODO: End.
-  
+
   for (unsigned int i = 0; i < cZoneRenderers.size(); i++) {
     cZoneRenderers[i]->render(mZones, cPluginRegistry);
   }

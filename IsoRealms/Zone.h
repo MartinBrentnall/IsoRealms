@@ -83,13 +83,7 @@ class Zone:public BlockArea,
  
   void input(SDL_Event&);
 
-  void update(int);
-  void updateRuntime(int);
-
   void renderEditing();
-
-  void renderStatic();
-  void renderDynamic();
 
   void save(ElementSetRegistry*, DOMNodeWriter*);
 
@@ -134,6 +128,10 @@ class Zone:public BlockArea,
   bool contains(Vertex&);
   std::vector<ZoneEvent*> getZoneEvents(Vertex&, Vertex&);
   BlockArea* getZoneArea();
+  void update(unsigned int);
+  void updateRuntime(unsigned int);
+  void renderStatic();
+  void renderDynamic();
 
   /********************************\
    * Implements IElementContainer *

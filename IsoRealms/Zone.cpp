@@ -155,13 +155,13 @@ void Zone::zoneChanged() {
   }
 }
 
-void Zone::update(int milliseconds) {
+void Zone::update(unsigned int milliseconds) {
   for (unsigned int i = 0; i < cElementHandlers.size(); i++) {
     cElementHandlers[i]->update(milliseconds);
   }
 }
 
-void Zone::updateRuntime(int milliseconds) {
+void Zone::updateRuntime(unsigned int milliseconds) {
   update(milliseconds);
   for (unsigned int i = 0; i < cElementHandlers.size(); i++) {
     cElementHandlers[i]->updateRuntime(milliseconds);

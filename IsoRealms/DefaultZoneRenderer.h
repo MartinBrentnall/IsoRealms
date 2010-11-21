@@ -27,6 +27,8 @@ class DefaultZoneRenderer:public IZoneRenderer {
    * Implements IZoneRenderer *
   \****************************/
   void render(std::vector<IZone*>&, IPluginRegistry&);
+  void update(std::vector<IZone*>&, unsigned int);
+  void updateRuntime(std::vector<IZone*>&, unsigned int);
 };
 
 #endif
