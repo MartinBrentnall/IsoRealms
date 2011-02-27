@@ -1,5 +1,5 @@
 /*
- * Copyright 2009,2010 Martin Brentnall
+ * Copyright 2009,2010,2011 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,32 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SWITCH_H
-#define SWITCH_H
+#ifndef I_HUD_COMPONENT_FACTORY_H
+#define I_HUD_COMPONENT_FACTORY_H
 
 #include <string>
-#include <vector>
 
-#include "../../3DModel/ISimpleModel.h"
+#include "IHUDGameComponent.h"
 
-#include <IsoRealms/DOMNodeWrapper.h>
-#include <IsoRealms/IUserCommand.h>
-#include <IsoRealms/Script.h>
-
-class Switch {
-  private:
-  std::string cName;
-  ISimpleModel* cHUDRepresentation;
-  Script* cOnScript;
-  Script* cOffScript;
-
+class IHUDComponentFactory {
   public:
-  Switch(const std::string&);
-  Switch(const std::string&, Script*, Script*);
-
-  std::string getName();
-  void switchOn();
-  void switchOff();
+  virtual std::string getHUDComponentFactoryName() = 0;
+  virtual IHUDGameComponent* getHUDComponent(const std::string&) = 0;
 };
 
 #endif

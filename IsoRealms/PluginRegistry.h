@@ -77,6 +77,8 @@ class PluginRegistry:public IPluginRegistry {
 
   void connectPlugin(DOMNodeWrapper*);
 
+  void loadConfiguration(DOMNodeWrapper*);
+
   void setPlugin(IPlugin*, DOMNodeWrapper*);
 
   /**
@@ -170,6 +172,8 @@ class PluginRegistry:public IPluginRegistry {
   void saveData(DOMNodeWriter*, IMap*, IZone*);
 
   std::vector<IDynamicElement*> getPreLoopCommands();
+
+  std::vector<IDynamicElement*> getPostLoopCommands();
 
   std::vector<IInteractiveElement*> getInteractiveElements();
 

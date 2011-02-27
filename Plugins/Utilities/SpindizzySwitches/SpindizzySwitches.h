@@ -1,5 +1,5 @@
 /*
- * Copyright 2009,2010 Martin Brentnall
+ * Copyright 2009,2010,2011 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -24,11 +24,18 @@
 #include <IsoRealms/ICommandRegistry.h>
 #include <IsoRealms/IUserCommand.h>
 
+#include "../../3DModel/ISimpleModelFactory.h"
+
+#include "../../HUD/IHUD.h"
+#include "../../HUD/IHUDComponentFactory.h"
+
 #include "../IUtilities.h"
 
+#include "HUDComponent.h"
 #include "Switch.h"
 
-class SpindizzySwitches:public IUtilities {
+class SpindizzySwitches:public IUtilities,
+                        public IHUDComponentFactory {
   private:
   class ResetCommand:public IUserCommand {
     private:
@@ -49,6 +56,7 @@ class SpindizzySwitches:public IUtilities {
   class SwitchCommand:public IUserCommand {
     private:
     SpindizzySwitches* cParent;
+    ISimpleModel* cHUDModel;
     Switch* cSwitch;
     bool cPrimary;
 
@@ -56,6 +64,7 @@ class SpindizzySwitches:public IUtilities {
     SwitchCommand(SpindizzySwitches*, Switch*, bool);
     SwitchCommand(SpindizzySwitches*, DOMNodeWrapper*);
     void deactivate();
+    ISimpleModel* getModel();
 
     /***************************\
      * Implements IUserCommand *
@@ -65,6 +74,12 @@ class SpindizzySwitches:public IUtilities {
   };
 
   ICommandRegistry* cCommandRegistry;
+  std::vector<PlugSocket*> cSockets;
+  IHUD* cHUD;
+  HUDComponent cHUDSwitchA;
+  HUDComponent cHUDSwitchB;
+  Vertex cDefaultVertex;
+  std::vector<ISimpleModelFactory*> cHUDModels;
   std::vector<SwitchCommand*> cSwitchCommands;
   std::vector<PlugSocket*> cCommandRegistrySocket;
   ResetCommand* cResetCommand;
@@ -72,10 +87,25 @@ class SpindizzySwitches:public IUtilities {
   SwitchCommand* cActiveSwitchB;
   SwitchCommand** cNextSwitch;
 
+  void updateHUD();
+  
   public:
   SpindizzySwitches();
 
   void addSwitch(const std::string&, bool);
+
+  /***********************************\
+   * Implements IHUDComponentFactory *
+  \***********************************/
+  std::string getHUDComponentFactoryName();
+  IHUDGameComponent* getHUDComponent(const std::string&);
+  
+  /*****************************\
+   * Implements IPluginSupport *
+  \*****************************/
+  std::vector<PlugSocket*> getPlugSockets();
+  void setPlugin(PlugSocket*, IPlugin*);
+  IPlugin* getPlugin(PlugSocket*);
 
   /**********************\
    * Implements IPlugin *

@@ -46,7 +46,19 @@ void PluginRegistry::connectPlugin(DOMNodeWrapper* node) {
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "UsePlugin") {
       setPlugin(mPlugin, mNode);
-    } else if (mValueAsString == "Configuration") {
+    }
+  }
+}
+
+void PluginRegistry::loadConfiguration(DOMNodeWrapper* node) {
+  std::string mInstance = node->getAttribute("instance");
+  std::string mType = node->getAttribute("type");
+  IPlugin* mPlugin = getPlugin(mType, mInstance);
+  std::cout << "Loading configuration for plugin \"" << mType << ":" << mInstance << "\"" << std::endl;
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "Configuration") {
       mPlugin->load(mNode);
     }
   }
@@ -294,6 +306,20 @@ std::vector<IDynamicElement*> PluginRegistry::getPreLoopCommands() {
     std::map<std::string, IPlugin*> mInstanceOfType = i->second;
     for (std::map<std::string, IPlugin*>::iterator j = mInstanceOfType.begin(); j != mInstanceOfType.end(); j++) {
       std::vector<IDynamicElement*> mPluginCommands = j->second->getPreLoopCommands();
+      for (unsigned int k = 0; k < mPluginCommands.size(); k++) {
+        mCommands.push_back(mPluginCommands[k]);
+      }
+    }
+  }
+  return mCommands;
+}
+
+std::vector<IDynamicElement*> PluginRegistry::getPostLoopCommands() {
+  std::vector<IDynamicElement*> mCommands;
+  for (std::map<std::string, std::map<std::string, IPlugin*> >::iterator i = cPluginInstances.begin(); i != cPluginInstances.end(); i++) {
+    std::map<std::string, IPlugin*> mInstanceOfType = i->second;
+    for (std::map<std::string, IPlugin*>::iterator j = mInstanceOfType.begin(); j != mInstanceOfType.end(); j++) {
+      std::vector<IDynamicElement*> mPluginCommands = j->second->getPostLoopCommands();
       for (unsigned int k = 0; k < mPluginCommands.size(); k++) {
         mCommands.push_back(mPluginCommands[k]);
       }

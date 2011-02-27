@@ -23,6 +23,57 @@ SpindizzySwitches::SpindizzySwitches() {
   cActiveSwitchB = NULL;
   cNextSwitch = &cActiveSwitchA;
   cResetCommand = new ResetCommand(this);
+  assignDummyPlugin(&cHUD, "HUD");
+  cSockets.push_back(new PlugSocket("HUD"));
+}
+
+std::vector<PlugSocket*> SpindizzySwitches::getPlugSockets() {
+  return cSockets;
+}
+
+void SpindizzySwitches::setPlugin(PlugSocket* socket, IPlugin* plugin) {
+  if (socket->getType() == "3DModel") {
+    std::string mSocketID = socket->getID();
+    std::stringstream mInputString(mSocketID);
+    unsigned int mIndex;
+    mInputString >> mIndex;
+    // TODO: Elements using the model should be notified of model change.
+    if (plugin != NULL) {
+      ISimpleModelFactory* mModelFactory = NULL;
+      assignPlugin(plugin, &mModelFactory, *socket);
+      // TODO: Throw if index is out of bounds.
+      if (mIndex == cHUDModels.size()) {
+        cHUDModels.push_back(mModelFactory);
+      } else {
+        cHUDModels[mIndex] = mModelFactory;
+      }
+    } else if (mIndex != cHUDModels.size()) {
+      cHUDModels.erase(cHUDModels.begin() + mIndex);
+    }
+  } else if (socket->getType() == "HUD") {
+    IHUD* mPreviousHUD = cHUD;
+    if (assignPlugin(plugin, &cHUD, *socket)) {
+      mPreviousHUD->unregisterHUDComponentFactory(this);
+      cHUD->registerHUDComponentFactory(this);
+    }
+  } else {
+    // TODO: Throw
+  }
+}
+
+IPlugin* SpindizzySwitches::getPlugin(PlugSocket* socket) {
+  if (socket->getType() == "3DModel") {
+    std::string mSocketID = socket->getID();
+    std::stringstream mInputString(mSocketID);
+    unsigned int mIndex;
+    mInputString >> mIndex;
+    if (mIndex < cHUDModels.size()) {
+      return cHUDModels[mIndex]; 
+    }
+  }
+  if (socket->getType() == "HUD") {return cHUD;}
+  // TODO: Throw
+  return NULL;
 }
 
 void SpindizzySwitches::addSwitch(const std::string& name, bool primary) {
@@ -52,6 +103,7 @@ void SpindizzySwitches::ResetCommand::execute() {
     cParent->cNextSwitch = &cParent->cActiveSwitchA;
     cResetScript->execute();
   }
+  cParent->updateHUD();
 }
 
 std::string SpindizzySwitches::ResetCommand::getCommandName() {
@@ -68,8 +120,11 @@ SpindizzySwitches::SwitchCommand::SwitchCommand(SpindizzySwitches* parent, DOMNo
   cParent = parent;
   std::string mSwitchName = node->getAttribute("name");
   std::string mSwitchType = node->getAttribute("type");
+  // TODO: What if this isn't specified?
+  int mHUDModelIndex = node->getIntegerAttribute("HUDModel");
   cPrimary = mSwitchType == "primary";
   cSwitch = NULL;
+  cHUDModel = cParent->cHUDModels[mHUDModelIndex]->createModel(&(cParent->cDefaultVertex));
   Script* mOnScript;
   Script* mOffScript;
   for (int i = 0; i < node->getChildCount(); i++) {
@@ -88,6 +143,10 @@ SpindizzySwitches::SwitchCommand::SwitchCommand(SpindizzySwitches* parent, DOMNo
 
 void SpindizzySwitches::SwitchCommand::deactivate() {
   cSwitch->switchOff();
+}
+
+ISimpleModel* SpindizzySwitches::SwitchCommand::getModel() {
+  return cHUDModel;
 }
 
 void SpindizzySwitches::SwitchCommand::execute() {
@@ -114,6 +173,12 @@ void SpindizzySwitches::SwitchCommand::execute() {
       cSwitch->switchOn();
     }
   }
+  cParent->updateHUD();
+}
+
+void SpindizzySwitches::updateHUD() {
+  cHUDSwitchA.setModel(cActiveSwitchA != NULL ? cActiveSwitchA->getModel() : NULL);
+  cHUDSwitchB.setModel(cActiveSwitchB != NULL ? cActiveSwitchB->getModel() : NULL);
 }
 
 std::string SpindizzySwitches::SwitchCommand::getCommandName() {
@@ -143,6 +208,18 @@ void SpindizzySwitches::save(DOMNodeWriter* node) {
 void SpindizzySwitches::setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry* commandRegistry) {
   cCommandRegistry = commandRegistry;
   cCommandRegistry->registerCommand(cResetCommand);
+}
+
+std::string SpindizzySwitches::getHUDComponentFactoryName() {
+  return "SpindizzySwitches";
+}
+
+IHUDGameComponent* SpindizzySwitches::getHUDComponent(const std::string& component) {
+  if      (component == "ActiveSwitchA") {return &cHUDSwitchA;}
+  else if (component == "ActiveSwitchB") {return &cHUDSwitchB;}
+  // TODO: Throw
+  std::cout << "WARNING: Returning NULL component!" << std::endl;
+  return NULL;
 }
 
 extern "C" IPlugin* create() {

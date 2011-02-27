@@ -1,0 +1,58 @@
+/*
+ * Copyright 2009,2010,2011 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#ifndef DEFAULT_HUD_H
+#define DEFAULT_HUD_H
+
+#include <map>
+#include <string>
+
+#include <IsoRealms/Configuration.h>
+#include <IsoRealms/GUI/LookAndFeel.h>
+
+#include "../IHUD.h"
+
+#include "HUDComponentPosition.h"
+
+class DefaultHUD:public IHUD,
+                 public IDynamicElement {
+  private:
+  std::map<std::string, IHUDComponentFactory*> cHUDComponentSources;
+  std::vector<HUDComponentPosition*> cComponents;
+  
+  public:
+  
+  /******************************\
+   * Implements IDynamicElement *
+  \******************************/
+  void update(int);
+    
+  /**********************\
+   * Implements IPlugin *
+  \**********************/
+  void load(DOMNodeWrapper*);
+  std::vector<IDynamicElement*> getPostLoopCommands();
+
+  /*******************\
+   * Implements IHUD *
+  \*******************/
+  void registerHUDComponentFactory(IHUDComponentFactory*);
+  void unregisterHUDComponentFactory(IHUDComponentFactory*);
+};
+
+#endif

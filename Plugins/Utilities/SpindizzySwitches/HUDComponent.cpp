@@ -1,5 +1,5 @@
 /*
- * Copyright 2009,2010 Martin Brentnall
+ * Copyright 2009,2010,2011 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,32 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SWITCH_H
-#define SWITCH_H
+#include "HUDComponent.h"
 
-#include <string>
-#include <vector>
+HUDComponent::HUDComponent() {
+  cModel = NULL;
+}
 
-#include "../../3DModel/ISimpleModel.h"
+void HUDComponent::setModel(ISimpleModel* model) {
+  cModel = model;
+}
 
-#include <IsoRealms/DOMNodeWrapper.h>
-#include <IsoRealms/IUserCommand.h>
-#include <IsoRealms/Script.h>
+void HUDComponent::render() {
+  if (cModel != NULL) {
+    glBegin(GL_LINE_LOOP);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glVertex2f( 0.5f,  0.5f);
+    glVertex2f(-0.5f,  0.5f);
+    glVertex2f(-0.5f, -0.5f);
+    glVertex2f( 0.5f, -0.5f);
+    glEnd();
 
-class Switch {
-  private:
-  std::string cName;
-  ISimpleModel* cHUDRepresentation;
-  Script* cOnScript;
-  Script* cOffScript;
-
-  public:
-  Switch(const std::string&);
-  Switch(const std::string&, Script*, Script*);
-
-  std::string getName();
-  void switchOn();
-  void switchOff();
-};
-
-#endif
+    glRotatef(-60.0f, 1.0f, 0.0f, 0.0f);
+    glRotatef(-45.0f, 0.0f, 0.0f, 1.0f);
+    cModel->render();
+    glRotatef(45.0f, 0.0f, 0.0f, 1.0f);
+    glRotatef(60.0f, 1.0f, 0.0f, 0.0f);
+  }
+}

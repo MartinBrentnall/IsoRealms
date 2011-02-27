@@ -84,6 +84,83 @@
       <Size>1.45</Size>
     </Configuration>
   </Plugin>
+  <Plugin implementation="FlatRectangle" instance="HUDDiamondLeft" type="3DModel">
+    <UsePlugin implementation="SpindizzyTextureSet" instance="C64HUDSprites"/>
+    <Configuration>
+      <Texture>LiftDiamondLeft</Texture>
+      <Size>1.0</Size>
+    </Configuration>
+  </Plugin>
+  <Plugin implementation="FlatRectangle" instance="HUDDiamondRight" type="3DModel">
+    <UsePlugin implementation="SpindizzyTextureSet" instance="C64HUDSprites"/>
+    <Configuration>
+      <Texture>LiftDiamondRight</Texture>
+      <Size>1.0</Size>
+    </Configuration>
+  </Plugin>
+  <Plugin implementation="FlatRectangle" instance="HUDDiamondFilled" type="3DModel">
+    <UsePlugin implementation="SpindizzyTextureSet" instance="C64HUDSprites"/>
+    <Configuration>
+      <Texture>LiftDiamondFilled</Texture>
+      <Size>1.0</Size>
+    </Configuration>
+  </Plugin>
+  <Plugin implementation="FlatRectangle" instance="HUDSquareEmpty" type="3DModel">
+    <UsePlugin implementation="SpindizzyTextureSet" instance="C64HUDSprites"/>
+    <Configuration>
+      <Texture>LiftSquareEmpty</Texture>
+      <Size>1.0</Size>
+    </Configuration>
+  </Plugin>
+  <Plugin implementation="FlatRectangle" instance="HUDSquareLeft" type="3DModel">
+    <UsePlugin implementation="SpindizzyTextureSet" instance="C64HUDSprites"/>
+    <Configuration>
+      <Texture>LiftSquareLeft</Texture>
+      <Size>1.0</Size>
+    </Configuration>
+  </Plugin>
+  <Plugin implementation="FlatRectangle" instance="HUDSquareRight" type="3DModel">
+    <UsePlugin implementation="SpindizzyTextureSet" instance="C64HUDSprites"/>
+    <Configuration>
+      <Texture>LiftSquareRight</Texture>
+      <Size>1.0</Size>
+    </Configuration>
+  </Plugin>
+  <Plugin implementation="FlatRectangle" instance="HUDSquareFilled" type="3DModel">
+    <UsePlugin implementation="SpindizzyTextureSet" instance="C64HUDSprites"/>
+    <Configuration>
+      <Texture>LiftSquareFilled</Texture>
+      <Size>1.0</Size>
+    </Configuration>
+  </Plugin>
+  <Plugin implementation="FlatRectangle" instance="HUDCircleEmpty" type="3DModel">
+    <UsePlugin implementation="SpindizzyTextureSet" instance="C64HUDSprites"/>
+    <Configuration>
+      <Texture>LiftCircleEmpty</Texture>
+      <Size>1.0</Size>
+    </Configuration>
+  </Plugin>
+  <Plugin implementation="FlatRectangle" instance="HUDCircleLeft" type="3DModel">
+    <UsePlugin implementation="SpindizzyTextureSet" instance="C64HUDSprites"/>
+    <Configuration>
+      <Texture>LiftCircleLeft</Texture>
+      <Size>1.0</Size>
+    </Configuration>
+  </Plugin>
+  <Plugin implementation="FlatRectangle" instance="HUDCircleRight" type="3DModel">
+    <UsePlugin implementation="SpindizzyTextureSet" instance="C64HUDSprites"/>
+    <Configuration>
+      <Texture>LiftCircleRight</Texture>
+      <Size>1.0</Size>
+    </Configuration>
+  </Plugin>
+  <Plugin implementation="FlatRectangle" instance="HUDCircleFilled" type="3DModel">
+    <UsePlugin implementation="SpindizzyTextureSet" instance="C64HUDSprites"/>
+    <Configuration>
+      <Texture>LiftCircleFilled</Texture>
+      <Size>1.0</Size>
+    </Configuration>
+  </Plugin>  
   <Plugin implementation="SpindizzyGERALDBallModel" instance="Ball" type="3DModel">
     <UsePlugin implementation="Camera" instance="CraftCamera"/>
     <Configuration/>
@@ -159,6 +236,15 @@
     <Configuration>
       <Colour1 type="Palette" name="Purple"/>
       <Colour2 type="Palette" name="Yellow"/>
+      <Colour3 type="Palette" name="Pink"/>
+      <Outline type="Palette" name="Black"/>
+    </Configuration>
+  </Plugin>
+  <Plugin implementation="C64SpindizzySprites" instance="C64HUDSprites" type="SpindizzyTextureSet">
+    <UsePlugin implementation="FourColourSupport" instance="C64Palette" socketid=""/>
+    <Configuration>
+      <Colour1 type="Palette" name="Cyan"/>
+      <Colour2 type="Palette" name="Orange"/>
       <Colour3 type="Palette" name="Pink"/>
       <Outline type="Palette" name="Black"/>
     </Configuration>
@@ -317,6 +403,12 @@
     <UsePlugin implementation="SpindizzyTextureSet" instance="C64Pink" socketid="14"/>
     <Configuration/>
   </Plugin>
+  <Plugin implementation="DefaultHUD" instance="SpindizzyHUD" type="HUD">
+    <Configuration>
+      <Component source="SpindizzySwitches" component="ActiveSwitchA" top="1.0" right="0.0"/>
+      <Component source="SpindizzySwitches" component="ActiveSwitchB" top="1.0" left="0.0"/>
+    </Configuration>
+  </Plugin>
   <Plugin implementation="SDLMixerSupport" instance="SpindizzySounds" type="SoundSupport">
     <Configuration>
       <File>Jewel.ogg</File>
@@ -423,11 +515,23 @@
     <Configuration/>
   </Plugin>
   <Plugin implementation="SpindizzySwitches" instance="SpindizzySwitches" type="Utilities">
+    <UsePlugin implementation="3DModel" instance="HUDDiamondLeft" socketid="0"/>
+    <UsePlugin implementation="3DModel" instance="HUDDiamondRight" socketid="1"/>
+    <UsePlugin implementation="3DModel" instance="HUDDiamondFilled" socketid="2"/>
+    <UsePlugin implementation="3DModel" instance="HUDSquareEmpty" socketid="3"/>
+    <UsePlugin implementation="3DModel" instance="HUDSquareLeft" socketid="4"/>
+    <UsePlugin implementation="3DModel" instance="HUDSquareRight" socketid="5"/>
+    <UsePlugin implementation="3DModel" instance="HUDSquareFilled" socketid="6"/>
+    <UsePlugin implementation="3DModel" instance="HUDCircleEmpty" socketid="7"/>
+    <UsePlugin implementation="3DModel" instance="HUDCircleLeft" socketid="8"/>
+    <UsePlugin implementation="3DModel" instance="HUDCircleRight" socketid="9"/>
+    <UsePlugin implementation="3DModel" instance="HUDSquareFilled" socketid="10"/>
+    <UsePlugin implementation="HUD" instance="SpindizzyHUD" socketid=""/>
     <Configuration>
       <ResetSwitch>
         <Command>Plugin/Utilities/SoundCommandWrapper/Play Diamond None.ogg</Command>
       </ResetSwitch>
-      <Switch name="FilledDiamondSwitch" type="primary">
+      <Switch name="FilledDiamondSwitch" type="primary" HUDModel="2">
         <On>
           <Command>Plugin/Utilities/SoundCommandWrapper/Play Diamond Both.ogg</Command>
           <Command>ElementSet/Lifts/Enable Lifts DiamondFilled</Command>
@@ -438,7 +542,7 @@
           <Command>ElementSet/Blocks/Unset Block Flag SwitchDiamondBoth</Command>
         </Off>
       </Switch>
-      <Switch name="LeftDiamondSwitch" type="primary">
+      <Switch name="LeftDiamondSwitch" type="primary" HUDModel="0">
         <On>
           <Command>Plugin/Utilities/SoundCommandWrapper/Play Diamond Left.ogg</Command>
           <Command>ElementSet/Lifts/Enable Lifts DiamondLeft</Command>
@@ -449,7 +553,7 @@
           <Command>ElementSet/Blocks/Unset Block Flag SwitchDiamondLeft</Command>
         </Off>
       </Switch>
-      <Switch name="RightDiamondSwitch" type="primary">
+      <Switch name="RightDiamondSwitch" type="primary" HUDModel="1">
         <On>
           <Command>Plugin/Utilities/SoundCommandWrapper/Play Diamond Right.ogg</Command>
           <Command>ElementSet/Lifts/Enable Lifts DiamondRight</Command>
@@ -460,7 +564,7 @@
           <Command>ElementSet/Blocks/Unset Block Flag SwitchDiamondRight</Command>
         </Off>
       </Switch>
-      <Switch name="FilledSquareSwitch" type="primary">
+      <Switch name="FilledSquareSwitch" type="primary" HUDModel="6">
         <On>
           <Command>Plugin/Utilities/SoundCommandWrapper/Play Square Both.ogg</Command>
           <Command>ElementSet/Lifts/Enable Lifts SquareFilled</Command>
@@ -471,7 +575,7 @@
           <Command>ElementSet/Blocks/Unset Block Flag SwitchSquareBoth</Command>
         </Off>
       </Switch>
-      <Switch name="LeftSquareSwitch" type="primary">
+      <Switch name="LeftSquareSwitch" type="primary" HUDModel="4">
         <On>
           <Command>Plugin/Utilities/SoundCommandWrapper/Play Square Left.ogg</Command>
           <Command>ElementSet/Lifts/Enable Lifts SquareLeft</Command>
@@ -482,7 +586,7 @@
           <Command>ElementSet/Blocks/Unset Block Flag SwitchSquareLeft</Command>
         </Off>
       </Switch>
-      <Switch name="RightSquareSwitch" type="primary">
+      <Switch name="RightSquareSwitch" type="primary" HUDModel="5">
         <On>
           <Command>Plugin/Utilities/SoundCommandWrapper/Play Square Right.ogg</Command>
           <Command>ElementSet/Lifts/Enable Lifts SquareRight</Command>
@@ -493,7 +597,7 @@
           <Command>ElementSet/Blocks/Unset Block Flag SwitchSquareRight</Command>
         </Off>
       </Switch>
-      <Switch name="EmptySquareSwitch" type="primary">
+      <Switch name="EmptySquareSwitch" type="primary" HUDModel="3">
         <On>
           <Command>Plugin/Utilities/SoundCommandWrapper/Play Square None.ogg</Command>
           <Command>ElementSet/Lifts/Enable Lifts SquareEmpty</Command>
@@ -504,7 +608,7 @@
           <Command>ElementSet/Blocks/Unset Block Flag SwitchSquareNone</Command>
         </Off>
       </Switch>
-      <Switch name="FilledCircleSwitch" type="secondary">
+      <Switch name="FilledCircleSwitch" type="secondary" HUDModel="10">
         <On>
           <Command>Plugin/Utilities/SoundCommandWrapper/Play Circle Both.ogg</Command>
           <Command>ElementSet/Lifts/Enable Lifts CircleFilled</Command>
@@ -515,7 +619,7 @@
           <Command>ElementSet/Blocks/Unset Block Flag SwitchCircleBoth</Command>
         </Off>
       </Switch>
-      <Switch name="LeftCircleSwitch" type="secondary">
+      <Switch name="LeftCircleSwitch" type="secondary" HUDModel="8">
         <On>
           <Command>Plugin/Utilities/SoundCommandWrapper/Play Circle Left.ogg</Command>
           <Command>ElementSet/Lifts/Enable Lifts CircleLeft</Command>
@@ -526,7 +630,7 @@
           <Command>ElementSet/Blocks/Unset Block Flag SwitchCircleLeft</Command>
         </Off>
       </Switch>
-      <Switch name="RightCircleSwitch" type="secondary">
+      <Switch name="RightCircleSwitch" type="secondary" HUDModel="9">
         <On>
           <Command>Plugin/Utilities/SoundCommandWrapper/Play Circle Right.ogg</Command>
           <Command>ElementSet/Lifts/Enable Lifts CircleRight</Command>
@@ -537,7 +641,7 @@
           <Command>ElementSet/Blocks/Unset Block Flag SwitchCircleRight</Command>
         </Off>
       </Switch>
-      <Switch name="EmptyCircleSwitch" type="secondary">
+      <Switch name="EmptyCircleSwitch" type="secondary" HUDModel="7">
         <On>
           <Command>Plugin/Utilities/SoundCommandWrapper/Play Circle None.ogg</Command>
           <Command>ElementSet/Lifts/Enable Lifts CircleEmpty</Command>

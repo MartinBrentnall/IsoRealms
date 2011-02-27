@@ -87,7 +87,7 @@ void SpindizzyLiftSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
 }
 
 IPlugin* SpindizzyLiftSet::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "3DModel")                   {
+  if (socket->getType() == "3DModel") {
     std::string mSocketID = socket->getID();
     std::stringstream mInputString(mSocketID);
     unsigned int mIndex;

@@ -14,12 +14,12 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+add_subdirectory(DefaultHUD)
+
 include_directories(${PROJECT_SOURCE_DIR})
 
-add_library(Utilities_SpindizzySwitches MODULE 
-  HUDComponent.cpp
-  SpindizzySwitches.cpp
-  Switch.cpp
+add_library(HUDDummy MODULE 
+  DummyHUD.cpp
 )
-set_target_properties(Utilities_SpindizzySwitches PROPERTIES OUTPUT_NAME "Module")
-set_target_properties(Utilities_SpindizzySwitches PROPERTIES PREFIX "lib")
+set_target_properties(HUDDummy PROPERTIES OUTPUT_NAME "Dummy")
+set_target_properties(HUDDummy PROPERTIES PREFIX "lib")

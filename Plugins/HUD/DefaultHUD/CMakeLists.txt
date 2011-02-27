@@ -16,10 +16,9 @@
 # along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
 include_directories(${PROJECT_SOURCE_DIR})
 
-add_library(Utilities_SpindizzySwitches MODULE 
-  HUDComponent.cpp
-  SpindizzySwitches.cpp
-  Switch.cpp
+add_library(HUD_DefaultHUD MODULE 
+  DefaultHUD.cpp
+  HUDComponentPosition.cpp
 )
-set_target_properties(Utilities_SpindizzySwitches PROPERTIES OUTPUT_NAME "Module")
-set_target_properties(Utilities_SpindizzySwitches PROPERTIES PREFIX "lib")
+set_target_properties(HUD_DefaultHUD PROPERTIES OUTPUT_NAME "Module")
+set_target_properties(HUD_DefaultHUD PROPERTIES PREFIX "lib")

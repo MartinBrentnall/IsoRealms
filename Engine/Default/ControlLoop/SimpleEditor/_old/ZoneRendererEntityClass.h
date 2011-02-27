@@ -16,32 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SWITCH_H
-#define SWITCH_H
+#ifndef ZONE_RENDERER_ENTITY_CLASS_H
+#define ZONE_RENDERER_ENTITY_CLASS_H
 
-#include <string>
-#include <vector>
+#include <IsoRealms/ZoneRendererRegistry.h>
 
-#include "../../3DModel/ISimpleModel.h"
+#include "IEntityClass.h"
 
-#include <IsoRealms/DOMNodeWrapper.h>
-#include <IsoRealms/IUserCommand.h>
-#include <IsoRealms/Script.h>
-
-class Switch {
+class ZoneRendererEntityClass:public IEntityClass {
   private:
-  std::string cName;
-  ISimpleModel* cHUDRepresentation;
-  Script* cOnScript;
-  Script* cOffScript;
-
+  ZoneRendererRegistry* cZoneRendererRegistry;
+  
   public:
-  Switch(const std::string&);
-  Switch(const std::string&, Script*, Script*);
+  ZoneRendererEntityClass(ZoneRendererRegistry*);
 
-  std::string getName();
-  void switchOn();
-  void switchOff();
+  /***************************\
+   * Implements IEntityClass *
+  \***************************/
+  std::string getEntityClassName();
+  void instantiate(std::string&, std::string&);
+  void remove(std::string&);
+  void configure(std::string&);
+  std::vector<std::string*> getInstances();
+  std::vector<std::string*> getImplementations();
 };
 
 #endif

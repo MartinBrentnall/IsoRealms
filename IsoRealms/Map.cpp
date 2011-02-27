@@ -51,11 +51,22 @@ Map::Map(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, 
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "Plugin") {
+      cPluginRegistry.connectPlugin(mNode);
+    } else {
+      // TODO: Throw something
+    }
+  }
+  
+  std::cout << "Loading plugin configurations..." << std::endl;
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Elements") {
       cElements = cElementSetRegistry.loadElements(mNode, &mStartLocation, this);
       cDirtyElements = cElements;
     } else if (mValueAsString == "Plugin") {
-      cPluginRegistry.connectPlugin(mNode);
+      cPluginRegistry.loadConfiguration(mNode);
     } else if (mValueAsString == "ElementSet") {
       cElementSetRegistry.registerElementSet(&cPluginRegistry, mNode, &cCommandRegistry);
     } else if (mValueAsString == "ZoneRenderer") {
@@ -210,6 +221,7 @@ void Map::initMap(unsigned int pass) {
 void Map::initRuntime() {
   cInteractivePlugins = cPluginRegistry.getInteractiveElements();
   cPreLoopCommands = cPluginRegistry.getPreLoopCommands();
+  cPostLoopCommands = cPluginRegistry.getPostLoopCommands();
   for (unsigned int i = 0; i < cElements.size(); i++) {
     cElements[i]->setRuntimeContext(this);
   }
