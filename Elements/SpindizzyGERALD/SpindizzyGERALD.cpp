@@ -36,6 +36,7 @@ SpindizzyGERALD::SpindizzyGERALD(ISpindizzyGERALDFactory* elementFactory, BlockL
   }
   cGERALDModel = geraldModelFactory->createModel(&cLocation);
   cCamera = camera;
+  cRespawning = false;
   cCollectables = collectables;
   cCollidableSurfaceRegistry = collidableSurfaceRegistry;
   cZoneContext = zoneContext;

@@ -28,6 +28,7 @@ SpindizzyGERALDSet::SpindizzyGERALDSet() {
   cElementFactories.push_back(new SpindizzyGERALDFactory(this, cGERALDModelFactory, cLocationAwareness, cZoneContext));
   cCommands.push_back(new LockControlCommand(this, true));
   cCommands.push_back(new LockControlCommand(this, false));
+  cLocks = 0;
 }
 
 void SpindizzyGERALDSet::setModel(ISimpleModelFactory* modelFactory) {
