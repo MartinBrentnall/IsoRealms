@@ -22,27 +22,27 @@
 #include <map>
 #include <string>
 
+#include <IsoRealms/Configuration.h>
+#include <IsoRealms/ScreenConfiguration.h>
+
 #include "../IHUD.h"
 
 class HUDComponentPosition {
-  public:
-  enum PositionType {
-    BOTTOM_LEFT,
-    TOP_RIGHT,
-    CENTER
-  };
-  
   private:
   IHUDGameComponent* cComponent;
+  float cScale;
   float cXPosition;
   float cYPosition;
-  PositionType cXType;
-  PositionType cYType;
+  float cXAlign;
+  float cYAlign;
 
   public:
   HUDComponentPosition(IHUDGameComponent*);
-  void setXPosition(PositionType, float);
-  void setYPosition(PositionType, float);
+  void setScale(float);
+  void setXPosition(float);
+  void setYPosition(float);
+  void setXAlign(float);
+  void setYAlign(float);
   void render();
 };
 

@@ -28,6 +28,7 @@
 #include "../IComponentContainer.h"
 #include "../IHUDComponent.h"
 #include "../ScreenConfiguration.h"
+#include "../Utils.h"
 
 #include "AbstractRectangularComponent.h"
 #include "Button.h"
@@ -65,7 +66,6 @@ class Dialog:public IRectangularComponent {
   ISizedComponent* loadSizedComponent(DOMNodeWrapper*);
   void loadFlexibleGridCells(DOMNodeWrapper*, FlexibleGridLayoutComponent*);
   void loadEvenGridCells(DOMNodeWrapper*, GridLayoutComponent*);
-  std::vector<std::string> splitWords(std::string&);
 
   void testFocusChange(SDL_Event& event);
 

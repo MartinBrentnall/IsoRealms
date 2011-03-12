@@ -20,21 +20,44 @@
 
 HUDComponentPosition::HUDComponentPosition(IHUDGameComponent* component) {
   cComponent = component;
+  cXPosition = 0.0f;
+  cXAlign = 0.0f;
+  cYPosition = 0.0f;
+  cYAlign = 0.0f;
+  cScale = 1.0f;
 }
 
-void HUDComponentPosition::setXPosition(PositionType relation, float position) {
-  cXType = relation;
+void HUDComponentPosition::setScale(float scale) {
+  cScale = scale;
+}
+
+void HUDComponentPosition::setXPosition(float position) {
   cXPosition = position;
 }
 
-void HUDComponentPosition::setYPosition(PositionType relation, float position) {
-  cYType = relation;
+void HUDComponentPosition::setYPosition(float position) {
   cYPosition = position;
 }
 
+void HUDComponentPosition::setXAlign(float align) {
+  cXAlign = align;
+}
+
+void HUDComponentPosition::setYAlign(float align) {
+  cYAlign = align;
+}
+
 void HUDComponentPosition::render() {
-  glTranslatef(-0.5f, 0.5f, 0.0f);
+  Configuration* mConfiguration = Configuration::getInstance();
+  ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
+  float mAspectRatio = mScreen->getAspectRatio();
+  float mHeight = cComponent->getTop()   - cComponent->getBottom();
+  float mWidth  = cComponent->getRight() - cComponent->getLeft();
+  
+  glPushMatrix();
+  glScalef(cScale, cScale, cScale);
+  glTranslatef((((cXPosition / cScale) / mAspectRatio - cXAlign / 2.0f)), (cYPosition / cScale - cYAlign / 2.0f), 0.0f);
   cComponent->render();
-  glTranslatef(0.5f, -0.5f, 0.0f);
+  glPopMatrix();
 }
 

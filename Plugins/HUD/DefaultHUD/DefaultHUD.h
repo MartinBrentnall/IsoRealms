@@ -24,6 +24,7 @@
 
 #include <IsoRealms/Configuration.h>
 #include <IsoRealms/GUI/LookAndFeel.h>
+#include <IsoRealms/Utils.h>
 
 #include "../IHUD.h"
 

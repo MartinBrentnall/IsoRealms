@@ -46,29 +46,9 @@ void Dialog::setComponentText(DOMNodeWrapper* node, ITextComponent* component) {
   component->setText(mComponentText);
 }
 
-// TODO: Move this into a generic "split into words" function class... or something
-std::vector<std::string> Dialog::splitWords(std::string& words) {
-  std::vector<std::string> mSplitWords;
-  std::string::size_type mWordStart = words.find_first_not_of(' ');
-  while (mWordStart != std::string::npos) {
-    words = words.substr(mWordStart);
-    std::string::size_type mWordEnd = words.find_first_of(' ');
-    if (mWordEnd != std::string::npos) {
-      std::string mAlignWord = words.substr(0, mWordEnd);
-      words = words.substr(mWordEnd);
-      mSplitWords.push_back(mAlignWord);
-      mWordStart = words.find_first_not_of(' ');
-    } else {
-      mSplitWords.push_back(words);
-      mWordStart = std::string::npos;
-    }
-  }
-  return mSplitWords;
-}
-
 IComponentBoundsCalculator* Dialog::getBoundsCalculator(DOMNodeWrapper* node, IRectangle* parent, float padding, ISizedComponent* component) {
   std::string mAlignment = node->getAttribute("align");
-  std::vector<std::string> mAlignWords = splitWords(mAlignment);
+  std::vector<std::string> mAlignWords = Utils::splitWords(mAlignment);
 
   // TODO: Cache this relation for later!
   EdgeRelation* mInsideParent = new EdgeRelation(parent, EdgeRelation::INSIDE, padding);
@@ -91,7 +71,7 @@ IComponentBoundsCalculator* Dialog::getBoundsCalculator(DOMNodeWrapper* node, IR
   std::string mLeft = node->getAttribute("left");
   std::string mRight = node->getAttribute("right");
   if (mLeft != "") {
-    std::vector<std::string> mLeftWords = splitWords(mLeft);
+    std::vector<std::string> mLeftWords = Utils::splitWords(mLeft);
     for (unsigned int i = 0; i < mLeftWords.size(); i++) {
       // Find component to go to the right of
       std::map<std::string, ISizedComponent*>::iterator j = cSizedComponents.find(mLeftWords[i]);
@@ -104,7 +84,7 @@ IComponentBoundsCalculator* Dialog::getBoundsCalculator(DOMNodeWrapper* node, IR
     }
   }
   if (mRight != "") {
-    std::vector<std::string> mRightWords = splitWords(mRight);
+    std::vector<std::string> mRightWords = Utils::splitWords(mRight);
     for (unsigned int i = 0; i < mRightWords.size(); i++) {
       // Find component to go to the left of
       std::map<std::string, ISizedComponent*>::iterator j = cSizedComponents.find(mRightWords[i]);
@@ -120,7 +100,7 @@ IComponentBoundsCalculator* Dialog::getBoundsCalculator(DOMNodeWrapper* node, IR
   std::string mTop = node->getAttribute("top");
   std::string mBottom = node->getAttribute("bottom");
   if (mTop != "") {
-    std::vector<std::string> mTopWords = splitWords(mTop);
+    std::vector<std::string> mTopWords = Utils::splitWords(mTop);
     for (unsigned int i = 0; i < mTopWords.size(); i++) {
       // Find component to go below
       std::map<std::string, ISizedComponent*>::iterator j = cSizedComponents.find(mTopWords[i]);
@@ -133,7 +113,7 @@ IComponentBoundsCalculator* Dialog::getBoundsCalculator(DOMNodeWrapper* node, IR
     }
   }
   if (mBottom != "") {
-    std::vector<std::string> mBottomWords = splitWords(mBottom);
+    std::vector<std::string> mBottomWords = Utils::splitWords(mBottom);
     for (unsigned int i = 0; i < mBottomWords.size(); i++) {
       // Find component to go below
       std::map<std::string, ISizedComponent*>::iterator j = cSizedComponents.find(mBottomWords[i]);

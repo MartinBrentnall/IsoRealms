@@ -405,8 +405,8 @@
   </Plugin>
   <Plugin implementation="DefaultHUD" instance="SpindizzyHUD" type="HUD">
     <Configuration>
-      <Component source="SpindizzySwitches" component="ActiveSwitchA" top="1.0" right="0.0"/>
-      <Component source="SpindizzySwitches" component="ActiveSwitchB" top="1.0" left="0.0"/>
+      <Component source="SpindizzySwitches" component="ActiveSwitchA" scale="0.15" align="top" right="0.0"/>
+      <Component source="SpindizzySwitches" component="ActiveSwitchB" scale="0.15" align="top" left="0.0"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="SDLMixerSupport" instance="SpindizzySounds" type="SoundSupport">
@@ -525,7 +525,8 @@
     <UsePlugin implementation="3DModel" instance="HUDCircleEmpty" socketid="7"/>
     <UsePlugin implementation="3DModel" instance="HUDCircleLeft" socketid="8"/>
     <UsePlugin implementation="3DModel" instance="HUDCircleRight" socketid="9"/>
-    <UsePlugin implementation="3DModel" instance="HUDSquareFilled" socketid="10"/>
+    <UsePlugin implementation="3DModel" instance="HUDCircleFilled" socketid="10"/>
+    <UsePlugin implementation="Camera" instance="CraftCamera" socketid=""/>
     <UsePlugin implementation="HUD" instance="SpindizzyHUD" socketid=""/>
     <Configuration>
       <ResetSwitch>

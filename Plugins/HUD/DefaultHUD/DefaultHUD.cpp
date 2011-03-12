@@ -38,13 +38,49 @@ void DefaultHUD::load(DOMNodeWrapper* node) {
     if (mValueAsString == "Component") {
       std::string mComponentSource = mNode->getAttribute("source");
       std::string mComponentName = mNode->getAttribute("component");
+      std::string mComponentAlign = mNode->getAttribute("align");
+      std::string mComponentRight = mNode->getAttribute("right");
+      std::string mComponentLeft = mNode->getAttribute("left");
+      float mScale = mNode->getFloatAttribute("scale");
+      if (mScale <= 0.0f) {
+        mScale = 1.0f;
+      }
+      
       IHUDComponentFactory* mFactory = cHUDComponentSources[mComponentSource];
       if (mFactory != NULL) {
         IHUDGameComponent* mHUDComponent = mFactory->getHUDComponent(mComponentName);
+
+        std::vector<std::string> mAlignWords = Utils::splitWords(mComponentAlign);
+        float mX = 0.0f;
+        float mY = 0.0f;
+        float mXAlign = 0.0f;
+        float mYAlign = 0.0f;
+        for (unsigned int i = 0; i < mAlignWords.size(); i++) {
+          if      (mAlignWords[i] == "left")   {mX = -1.0f; mXAlign = -1.0f;}
+          else if (mAlignWords[i] == "right")  {mX =  1.0f; mXAlign =  1.0f;}
+          else if (mAlignWords[i] == "top")    {mY =  1.0f; mYAlign =  1.0f;}
+          else if (mAlignWords[i] == "bottom") {mY = -1.0f; mYAlign = -1.0f;}
+          else {
+            std::cout << "WARNING: Unknown word in alignment attribute: \"" << mAlignWords[i] << "\"" << std::endl;
+          }
+        }
+        
+        if (mComponentRight != "") {
+          mXAlign = 1.0f;
+          mX = mNode->getFloatAttribute("right");
+        }
+        if (mComponentLeft != "") {
+          mXAlign = -1.0f;
+          mX = mNode->getFloatAttribute("left");
+        }
+
         HUDComponentPosition* mHUDRenderer = new HUDComponentPosition(mHUDComponent);
         // TODO: Set position
-        mHUDRenderer->setXPosition(HUDComponentPosition::TOP_RIGHT, 0.0f);
-        mHUDRenderer->setYPosition(HUDComponentPosition::TOP_RIGHT, 1.0f);
+        mHUDRenderer->setScale(mScale);
+        mHUDRenderer->setXPosition(mX);
+        mHUDRenderer->setYPosition(mY);
+        mHUDRenderer->setXAlign(mXAlign);
+        mHUDRenderer->setYAlign(mYAlign);
         cComponents.push_back(mHUDRenderer);
       } else {
         std::cout << "FACTORY IS NULL!" << std::endl;

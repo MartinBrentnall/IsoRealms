@@ -22,6 +22,10 @@
 class IHUDGameComponent {
   public:
   virtual void render() = 0;
+  virtual float getTop() = 0;
+  virtual float getLeft() = 0;
+  virtual float getBottom() = 0;
+  virtual float getRight() = 0;
 };
 
 #endif

@@ -25,7 +25,7 @@
 #include <IsoRealms/IUserCommand.h>
 
 #include "../../3DModel/ISimpleModelFactory.h"
-
+#include "../../Camera/ICamera.h"
 #include "../../HUD/IHUD.h"
 #include "../../HUD/IHUDComponentFactory.h"
 
@@ -76,6 +76,7 @@ class SpindizzySwitches:public IUtilities,
   ICommandRegistry* cCommandRegistry;
   std::vector<PlugSocket*> cSockets;
   IHUD* cHUD;
+  ICamera* cCamera;
   HUDComponent cHUDSwitchA;
   HUDComponent cHUDSwitchB;
   Vertex cDefaultVertex;

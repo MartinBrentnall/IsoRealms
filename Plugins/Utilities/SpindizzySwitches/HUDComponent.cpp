@@ -20,26 +20,43 @@
 
 HUDComponent::HUDComponent() {
   cModel = NULL;
+  cCamera = NULL;
 }
 
 void HUDComponent::setModel(ISimpleModel* model) {
   cModel = model;
 }
 
+void HUDComponent::setCamera(ICamera* camera) {
+  cCamera = camera;
+}
+
 void HUDComponent::render() {
   if (cModel != NULL) {
-    glBegin(GL_LINE_LOOP);
-    glColor3f(1.0f, 1.0f, 1.0f);
-    glVertex2f( 0.5f,  0.5f);
-    glVertex2f(-0.5f,  0.5f);
-    glVertex2f(-0.5f, -0.5f);
-    glVertex2f( 0.5f, -0.5f);
-    glEnd();
-
-    glRotatef(-60.0f, 1.0f, 0.0f, 0.0f);
-    glRotatef(-45.0f, 0.0f, 0.0f, 1.0f);
+    float mAngle = cCamera->getAngle();
+    float mTilt = cCamera->getTilt();
+    
+    glRotatef(mTilt, 1.0f, 0.0f, 0.0f);
+    glRotatef(mAngle, 0.0f, 0.0f, 1.0f);
     cModel->render();
-    glRotatef(45.0f, 0.0f, 0.0f, 1.0f);
-    glRotatef(60.0f, 1.0f, 0.0f, 0.0f);
+    glRotatef(-mAngle, 0.0f, 0.0f, 1.0f);
+    glRotatef(-mTilt, 1.0f, 0.0f, 0.0f);
   }
 }
+
+float HUDComponent::getTop() {
+  return 0.5f;
+}
+
+float HUDComponent::getLeft() {
+  return -0.5f;
+}
+
+float HUDComponent::getBottom() {
+  return -0.5f;
+}
+
+float HUDComponent::getRight() {
+  return 0.5f;
+}
+

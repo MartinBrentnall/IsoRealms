@@ -31,3 +31,24 @@ std::string Utils::toString(float number) {
   std::string mString = mStringStream.str();
   return mString;
 }
+
+// TODO: Move this into a generic "split into words" function class... or something
+std::vector<std::string> Utils::splitWords(std::string& words) {
+  std::vector<std::string> mSplitWords;
+  std::string::size_type mWordStart = words.find_first_not_of(' ');
+  while (mWordStart != std::string::npos) {
+    words = words.substr(mWordStart);
+    std::string::size_type mWordEnd = words.find_first_of(' ');
+    if (mWordEnd != std::string::npos) {
+      std::string mAlignWord = words.substr(0, mWordEnd);
+      words = words.substr(mWordEnd);
+      mSplitWords.push_back(mAlignWord);
+      mWordStart = words.find_first_not_of(' ');
+    } else {
+      mSplitWords.push_back(words);
+      mWordStart = std::string::npos;
+    }
+  }
+  return mSplitWords;
+}
+

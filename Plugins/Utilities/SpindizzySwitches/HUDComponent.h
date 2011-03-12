@@ -20,20 +20,27 @@
 #define HUD_COMPONENT_H
 
 #include "../../3DModel/ISimpleModel.h"
+#include "../../Camera/ICamera.h"
 #include "../../HUD/IHUDGameComponent.h"
 
 class HUDComponent:public IHUDGameComponent {
   private:
   ISimpleModel* cModel;
+  ICamera* cCamera;
   
   public:
   HUDComponent();
   void setModel(ISimpleModel*);
+  void setCamera(ICamera*);
   
   /********************************\
    * Implements IHUDGameComponent *
   \********************************/
   void render();
+  float getTop();
+  float getLeft();
+  float getBottom();
+  float getRight();
 };
 
 #endif

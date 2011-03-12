@@ -21,6 +21,7 @@
 
 #include <sstream>
 #include <string>
+#include <vector>
 
 class Utils {
   public:
@@ -34,6 +35,8 @@ class Utils {
    * Convert the specified float value to a string.
    */
   static std::string toString(float);
+  
+  static std::vector<std::string> splitWords(std::string&);
 };
 
 #endif
