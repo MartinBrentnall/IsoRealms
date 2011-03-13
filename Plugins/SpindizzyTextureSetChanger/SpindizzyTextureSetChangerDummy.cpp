@@ -18,7 +18,11 @@
  */
 #include "SpindizzyTextureSetChangerDummy.h"
 
-void SpindizzyTextureSetChangerDummy::setControlObject(IChangeableTextureSet* changeable) {
+void SpindizzyTextureSetChangerDummy::addControlObject(IChangeableTextureSet* changeable) {
+  // Nothing to do.
+}
+
+void SpindizzyTextureSetChangerDummy::removeControlObject(IChangeableTextureSet* changeable) {
   // Nothing to do.
 }
 

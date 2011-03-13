@@ -28,6 +28,7 @@ TextureSetPerZone::TextureSetPerZone() {
   ChooseTextureSetCommandInfo* mChooseTextureSetCommandInfo = new ChooseTextureSetCommandInfo(mPath, cChooseTextureSetCommand);
   cPluginCommands.push_back(mChooseTextureSetCommandInfo);
   cProgressBackgroundColour = 1.0f;
+  cDefaultTextureSetCommand = new DefaultTextureSetCommand(this);
 }
 
 void TextureSetPerZone::setTextureSet(ISpindizzyTextureSet* textureSet) {
@@ -42,8 +43,12 @@ void TextureSetPerZone::setTextureSet(ISpindizzyTextureSet* textureSet) {
   }
 }
 
-void TextureSetPerZone::setControlObject(IChangeableTextureSet* objectToControl) {
-  cControlledObject = objectToControl;
+void TextureSetPerZone::addControlObject(IChangeableTextureSet* objectToControl) {
+  cControlledObjects.push_back(objectToControl);
+}
+
+void TextureSetPerZone::removeControlObject(IChangeableTextureSet* objectToControl) {
+  // TODO: ERASE
 }
 
 std::vector<PlugSocket*> TextureSetPerZone::getPlugSockets() {
@@ -107,7 +112,9 @@ IPlugin* TextureSetPerZone::getPlugin(PlugSocket* plugSocket) {
 
 void TextureSetPerZone::renderPreZone(IZone* zone) {  
   std::map<IZone*, ISpindizzyTextureSet*>::iterator mIterator = cZoneMapping.find(zone);
-  cControlledObject->setSpindizzyTextureSet(mIterator != cZoneMapping.end() ? mIterator->second : NULL);
+  for (unsigned int i = 0; i < cControlledObjects.size(); i++) {
+    cControlledObjects[i]->setSpindizzyTextureSet(mIterator != cZoneMapping.end() ? mIterator->second : NULL);
+  }
 }
 
 void TextureSetPerZone::zoneContextChanged(IMap* map, IZone* zone) {
@@ -163,6 +170,23 @@ std::vector<IDynamicElement*> TextureSetPerZone::getPreLoopCommands() {
   return mBackgroundFader;
 }
 
+std::vector<IDynamicElement*> TextureSetPerZone::getPostLoopCommands() {
+  std::vector<IDynamicElement*> mZoneTextureSetter;
+  mZoneTextureSetter.push_back(cDefaultTextureSetCommand);
+  return mZoneTextureSetter;
+}
+
+TextureSetPerZone::DefaultTextureSetCommand::DefaultTextureSetCommand(TextureSetPerZone* parent) {
+  cParent = parent;
+}
+
+void TextureSetPerZone::DefaultTextureSetCommand::update(int milliseconds) {
+  std::map<IZone*, ISpindizzyTextureSet*>::iterator mIterator = cParent->cZoneMapping.find(cParent->cCurrentZone);
+  for (unsigned int i = 0; i < cParent->cControlledObjects.size(); i++) {
+    cParent->cControlledObjects[i]->setSpindizzyTextureSet(mIterator != cParent->cZoneMapping.end() ? mIterator->second : NULL);
+  }
+}
+
 void TextureSetPerZone::update(int ticks) {
   if (cProgressBackgroundColour < 1.0f) {
     cProgressBackgroundColour += 0.0025f * ticks;
@@ -179,6 +203,7 @@ void TextureSetPerZone::update(int ticks) {
 void TextureSetPerZone::zoneContextChanged(IZone* zone) {
   std::map<IZone*, ISpindizzyTextureSet*>::iterator i = cZoneMapping.find(zone);
   if (i != cZoneMapping.end()) {
+    cCurrentZone = zone;
     ISpindizzyTexture* mBackgroundTexture = i->second->getTexture("Background");
     switch (mBackgroundTexture->getMapping()) {
       case ISpindizzyTexture::PLAIN_COLOUR: {

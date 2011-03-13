@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2009,2010,2011 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,17 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SPINDIZZY_TEXTURE_SET_CHANGER_H
-#define SPINDIZZY_TEXTURE_SET_CHANGER_H
+#ifndef BLOCK_H
+#define BLOCK_H
 
-#include <IsoRealms/IPlugin.h>
+#include <IsoRealms/IsoRealmsConstants.h>
+#include <IsoRealms/Vertex.h>
 
-#include "IChangeableTextureSet.h"
+#include "../../SpindizzyTextureSet/ISpindizzyTexture.h"
 
-class ISpindizzyTextureSetChanger:public virtual IPlugin {
+#include "../ISimpleModel.h"
+
+class Block:public ISimpleModel {
+  private:
+  Vertex* cLocation;
+  
   public:
-  virtual void addControlObject(IChangeableTextureSet*) = 0;
-  virtual void removeControlObject(IChangeableTextureSet*) = 0;
+  Block(Vertex*);
+
+  /*********************\
+   * Implements IModel *
+  \*********************/
+  void update(int milliseconds);
+  void render();
 };
 
 #endif

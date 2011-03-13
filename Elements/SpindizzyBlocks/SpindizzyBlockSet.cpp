@@ -72,10 +72,10 @@ void SpindizzyBlockSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
     ISpindizzyTextureSetChanger* mPreviousController = cSpindizzyTextureSetController;
     if (assignPlugin(implementation, &cSpindizzyTextureSetController, *socket, false)) {
       if (mPreviousController != NULL) {
-        cSpindizzyTextureSetController->setControlObject(NULL);
+        cSpindizzyTextureSetController->removeControlObject(this);
       }
       if (cSpindizzyTextureSetController != NULL) {
-        cSpindizzyTextureSetController->setControlObject(this);
+        cSpindizzyTextureSetController->addControlObject(this);
       }
     }
   } else if (socket->getType() == "SurfaceProcessor") {

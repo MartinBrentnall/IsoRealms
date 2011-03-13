@@ -30,7 +30,8 @@ class SpindizzyTextureSetChangerDummy:public ISpindizzyTextureSetChanger,
   /******************************************\
    * Implements ISpindizzyTextureSetChanger *
   \******************************************/
-  void setControlObject(IChangeableTextureSet*);
+  void addControlObject(IChangeableTextureSet*);
+  void removeControlObject(IChangeableTextureSet*);
 };
 
 #endif

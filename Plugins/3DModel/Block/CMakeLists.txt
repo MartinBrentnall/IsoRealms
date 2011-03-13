@@ -1,4 +1,4 @@
-# Copyright 2009,2010 Martin Brentnall
+# Copyright 2009,2010,2011 Martin Brentnall
 #
 # This file is part of Iso-Realms.
 #
@@ -14,18 +14,13 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
-add_subdirectory(Block)
-add_subdirectory(SpindizzyGERALDBallModel)
-add_subdirectory(SpindizzyGERALDGyroscopeModel)
-add_subdirectory(SpindizzyGERALDPyramidModel)
-add_subdirectory(SpindizzyJewelModel)
-add_subdirectory(FlatRectangle)
-
 include_directories(${PROJECT_SOURCE_DIR})
 
-add_library(3DModelDummy MODULE 
-  DummyModel.cpp
-  DummyModelFactory.cpp
+add_library(3DModel_Block MODULE 
+  Block.cpp
+  BlockFactory.cpp
 )
-set_target_properties(3DModelDummy PROPERTIES OUTPUT_NAME "Dummy")
-set_target_properties(3DModelDummy PROPERTIES PREFIX "lib")
+set_target_properties(3DModel_Block PROPERTIES OUTPUT_NAME "Module")
+set_target_properties(3DModel_Block PROPERTIES PREFIX "lib")
+
+target_link_libraries(3DModel_Block IsoRealms)

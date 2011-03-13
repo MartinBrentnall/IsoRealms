@@ -55,13 +55,27 @@ class TextureSetPerZone:public ISpindizzyTextureSetChanger,
     \***********************/
     void execute();
   };
+  
+  class DefaultTextureSetCommand:public IDynamicElement {
+    private:
+    TextureSetPerZone* cParent;
+    
+    public:
+    DefaultTextureSetCommand(TextureSetPerZone*);
+    
+    /******************************\
+     * Implements IDynamicElement *
+    \******************************/
+    void update(int);
+  };
 
+  DefaultTextureSetCommand* cDefaultTextureSetCommand;
   IMap* cCurrentMap;
   IZone* cCurrentZone;
   BlockLocation* cBlockLocation;
   ChooseTextureSetCommand* cChooseTextureSetCommand;
   std::vector<ICommandInfo*> cPluginCommands;
-  IChangeableTextureSet* cControlledObject;
+  std::vector<IChangeableTextureSet*> cControlledObjects;
   std::vector<ISpindizzyTextureSet*> cTexturePalette;
   std::map<IZone*, ISpindizzyTextureSet*> cZoneMapping;
   IZoneContext* cZoneContext;
@@ -82,15 +96,16 @@ class TextureSetPerZone:public ISpindizzyTextureSetChanger,
   \***********************************/
   void zoneContextChanged(IZone*);
 
-  /*******************\
-   * IDynamicElement *
-  \*******************/
+  /******************************\
+   * Implements IDynamicElement *
+  \******************************/
   void update(int);
 
   /******************************************\
    * Implements ISpindizzyTextureSetChanger *
   \******************************************/
-  void setControlObject(IChangeableTextureSet*);
+  void addControlObject(IChangeableTextureSet*);
+  void removeControlObject(IChangeableTextureSet*);
 
   /******************************************\
    * Implements IPluginSupport (in IPlugin) *
@@ -109,6 +124,7 @@ class TextureSetPerZone:public ISpindizzyTextureSetChanger,
   void saveData(DOMNodeWriter*, IMap*, IZone*);
   void loadData(DOMNodeWrapper*, IPluginRegistry*, IZone*);
   std::vector<IDynamicElement*> getPreLoopCommands();
+  std::vector<IDynamicElement*> getPostLoopCommands();
 };
 
 #endif
