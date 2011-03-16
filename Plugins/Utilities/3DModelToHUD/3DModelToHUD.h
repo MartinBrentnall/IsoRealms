@@ -16,23 +16,42 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef HUD_COMPONENT_H
-#define HUD_COMPONENT_H
+#ifndef MODEL_TO_HUD
+#define MODEL_TO_HUD
 
-#include "../../3DModel/ISimpleModel.h"
+#include "../../3DModel/ISimpleModelFactory.h"
 #include "../../Camera/ICamera.h"
-#include "../../HUD/IHUDGameComponent.h"
+#include "../../HUD/IHUD.h"
 
-class HUDComponent:public IHUDGameComponent {
+#include "../IUtilities.h"
+
+class ModelToHUD:public IUtilities,
+                 public IHUDComponentFactory,
+                 public IHUDGameComponent {
   private:
-  ISimpleModel* cModel;
+  std::vector<PlugSocket*> cSockets;
+  Vertex cModelLocation;
   ICamera* cCamera;
-  
+  ISimpleModelFactory* cModelFactory;
+  ISimpleModel* cModel;
+  IHUD* cHUD;
+
   public:
-  HUDComponent();
-  void setModel(ISimpleModel*);
-  void setCamera(ICamera*);
-  
+  ModelToHUD();
+    
+  /*****************************\
+   * Implements IPluginSupport *
+  \*****************************/
+  std::vector<PlugSocket*> getPlugSockets();
+  void setPlugin(PlugSocket*, IPlugin*);
+  IPlugin* getPlugin(PlugSocket*);
+
+  /***********************************\
+   * Implements IHUDComponentFactory *
+  \***********************************/
+  std::string getHUDComponentFactoryName();
+  IHUDGameComponent* getHUDComponent(const std::string&);
+
   /********************************\
    * Implements IHUDGameComponent *
   \********************************/

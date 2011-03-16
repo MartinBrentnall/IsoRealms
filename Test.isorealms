@@ -407,6 +407,8 @@
     <Configuration>
       <Component source="SpindizzySwitches" component="ActiveSwitchA" scale="0.15" align="top" right="0.0"/>
       <Component source="SpindizzySwitches" component="ActiveSwitchB" scale="0.15" align="top" left="0.0"/>
+<!--      <Component source="3DModelToHUD" component="3DModel" scale="0.15" align="top" left="SpindizzySwitches/ActiveSwitchB"/>-->
+      <Component source="3DModelToHUD" component="3DModel" scale="0.15" align="bottom" left="0.0"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="SDLMixerSupport" instance="SpindizzySounds" type="SoundSupport">
@@ -451,6 +453,11 @@
         <Command>Plugin/Utilities/TimerCommands/IncreaseTimeForZone</Command>
       </ZoneExploredScript>
     </Configuration>
+  </Plugin>
+  <Plugin implementation="3DModelToHUD" instance="Compass" type="Utilities">
+    <UsePlugin implementation="3DModel" instance="C64JewelModel" socketid=""/>
+    <UsePlugin implementation="Camera" instance="CraftCamera" socketid=""/>
+    <UsePlugin implementation="HUD" instance="SpindizzyHUD" socketid=""/>
   </Plugin>
   <Plugin implementation="KeyCommands" instance="DebugCommands" type="Utilities">
     <Configuration>

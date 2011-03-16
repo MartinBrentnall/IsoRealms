@@ -47,6 +47,10 @@ void HUDComponentPosition::setYAlign(float align) {
   cYAlign = align;
 }
 
+void HUDComponentPosition::update(int milliseconds) {
+  cComponent->update(milliseconds);
+}
+
 void HUDComponentPosition::render() {
   Configuration* mConfiguration = Configuration::getInstance();
   ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();

@@ -43,6 +43,7 @@ class HUDComponentPosition {
   void setYPosition(float);
   void setXAlign(float);
   void setYAlign(float);
+  void update(int);
   void render();
 };
 

@@ -1,4 +1,4 @@
-# Copyright 2009,2010 Martin Brentnall
+# Copyright 2009,2010,2011 Martin Brentnall
 #
 # This file is part of Iso-Realms.
 #
@@ -14,20 +14,10 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
-add_subdirectory(3DModelToHUD)
-add_subdirectory(ExploredZones)
-add_subdirectory(IntegerValueCommands)
-add_subdirectory(KeyCommands)
-add_subdirectory(RandomCommand)
-add_subdirectory(SequencePlayerCommands)
-add_subdirectory(SoundCommandSupport)
-add_subdirectory(SpindizzySwitches)
-add_subdirectory(ToggleSwitches)
-
 include_directories(${PROJECT_SOURCE_DIR})
 
-add_library(UtilitiesDummy MODULE 
-  DummyUtilities.cpp
+add_library(Utilities_3DModelToHUD MODULE 
+  3DModelToHUD.cpp
 )
-set_target_properties(UtilitiesDummy PROPERTIES OUTPUT_NAME "Dummy")
-set_target_properties(UtilitiesDummy PROPERTIES PREFIX "lib")
+set_target_properties(Utilities_3DModelToHUD PROPERTIES OUTPUT_NAME "Module")
+set_target_properties(Utilities_3DModelToHUD PROPERTIES PREFIX "lib")

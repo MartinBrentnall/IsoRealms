@@ -92,7 +92,12 @@ void DefaultHUD::load(DOMNodeWrapper* node) {
 }
 
 void DefaultHUD::update(int milliseconds) {
-  Configuration* mConfiguration = Configuration::getInstance();
+  // TODO: This is nasty; we need separate render and update functions
+  for (unsigned int i = 0; i < cComponents.size(); i++) {
+    cComponents[i]->update(milliseconds);
+  }
+
+Configuration* mConfiguration = Configuration::getInstance();
   ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
   float mAspectRatio = mScreen->getAspectRatio();
 

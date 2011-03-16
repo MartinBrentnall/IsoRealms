@@ -31,6 +31,12 @@ void HUDComponent::setCamera(ICamera* camera) {
   cCamera = camera;
 }
 
+void HUDComponent::update(int milliseconds) {
+  if (cModel != NULL) {
+    cModel->update(milliseconds);
+  }
+}
+
 void HUDComponent::render() {
   if (cModel != NULL) {
     float mAngle = cCamera->getAngle();

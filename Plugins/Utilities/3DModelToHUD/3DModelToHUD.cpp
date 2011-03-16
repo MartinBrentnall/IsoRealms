@@ -1,0 +1,112 @@
+/*
+ * Copyright 2009,2010,2011 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#include "3DModelToHUD.h"
+
+ModelToHUD::ModelToHUD() {
+  assignDummyPlugin(&cModelFactory, "3DModel");
+  assignDummyPlugin(&cCamera, "Camera");
+  assignDummyPlugin(&cHUD, "HUD");
+  cSockets.push_back(new PlugSocket("3DModel"));
+  cSockets.push_back(new PlugSocket("Camera"));
+  cSockets.push_back(new PlugSocket("HUD"));
+  cModel = cModelFactory->createModel(&cModelLocation);
+}
+
+std::vector<PlugSocket*> ModelToHUD::getPlugSockets() {
+  return cSockets;
+}
+
+void ModelToHUD::setPlugin(PlugSocket* socket, IPlugin* plugin) {
+  if (socket->getType() == "3DModel") {
+    ISimpleModelFactory* mPreviousModelFactory = cModelFactory;
+    if (assignPlugin(plugin, &cModelFactory, *socket)) {
+      mPreviousModelFactory->destroyModel(cModel);
+      cModel = cModelFactory->createModel(&cModelLocation);
+    }
+  } else if (socket->getType() == "Camera") {
+    assignPlugin(plugin, &cCamera, *socket);
+  } else if (socket->getType() == "HUD") {
+    IHUD* mPreviousHUD = cHUD;
+    if (assignPlugin(plugin, &cHUD, *socket)) {
+      mPreviousHUD->unregisterHUDComponentFactory(this);
+      cHUD->registerHUDComponentFactory(this);
+    }
+  } else {
+    // TODO: Throw
+  }
+}
+
+IPlugin* ModelToHUD::getPlugin(PlugSocket* socket) {
+  if (socket->getType() == "3DModel") {return cModelFactory;}
+  if (socket->getType() == "Camera")  {return cCamera;}
+  if (socket->getType() == "HUD")     {return cHUD;}
+  // TODO: Throw
+  return NULL;
+}
+
+std::string ModelToHUD::getHUDComponentFactoryName() {
+  std::cout << "Getting HUD Factory name!" << std::endl;
+  return "3DModelToHUD";
+}
+
+IHUDGameComponent* ModelToHUD::getHUDComponent(const std::string& component) {
+  std::cout << "Getting HUD!" << std::endl;
+  return component == "3DModel" ? this : NULL;
+}
+  
+void ModelToHUD::update(int milliseconds) {
+  cModel->update(milliseconds);
+}
+  
+void ModelToHUD::render() {
+  std::cout << "Render!" << std::endl;
+  float mAngle = cCamera->getAngle();
+  float mTilt = cCamera->getTilt();
+    
+  glRotatef(mTilt, 1.0f, 0.0f, 0.0f);
+  glRotatef(mAngle, 0.0f, 0.0f, 1.0f);
+  cModel->render();
+  glRotatef(-mAngle, 0.0f, 0.0f, 1.0f);
+  glRotatef(-mTilt, 1.0f, 0.0f, 0.0f);
+  std::cout << "Render done!" << std::endl;
+}
+
+float ModelToHUD::getTop() {
+  return 0.5f;
+}
+
+float ModelToHUD::getLeft() {
+  return -0.5f;
+}
+
+float ModelToHUD::getBottom() {
+  return -0.5f;
+}
+
+float ModelToHUD::getRight() {
+  return 0.5f;
+}
+
+extern "C" IPlugin* create() {
+  return new ModelToHUD();
+}
+
+extern "C" void destroy(IPlugin* plugin) {
+  delete plugin;
+}
