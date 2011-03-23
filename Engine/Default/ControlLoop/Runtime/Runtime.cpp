@@ -90,6 +90,7 @@ void Runtime::execute(int milliseconds) {
     cMap->render();
   }
   cMap->executePostLoopCommands(milliseconds);
+  cMap->executePostLoopRenderers();
 }
 
 extern "C" IControlLoop* create(DOMNodeWrapper* node) {

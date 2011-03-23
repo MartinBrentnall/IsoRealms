@@ -25,6 +25,8 @@ HUDComponentPosition::HUDComponentPosition(IHUDGameComponent* component) {
   cYPosition = 0.0f;
   cYAlign = 0.0f;
   cScale = 1.0f;
+  cYPositionRelative = NULL;
+  cXPositionRelative = NULL;
 }
 
 void HUDComponentPosition::setScale(float scale) {
@@ -37,6 +39,30 @@ void HUDComponentPosition::setXPosition(float position) {
 
 void HUDComponentPosition::setYPosition(float position) {
   cYPosition = position;
+}
+
+void HUDComponentPosition::setXPosition(HUDComponentPosition* relative) {
+  cXPositionRelative = relative;
+}
+
+void HUDComponentPosition::setYPosition(HUDComponentPosition* relative) {
+  cYPositionRelative = relative;
+}
+
+float HUDComponentPosition::getXPosition() {
+  Configuration* mConfiguration = Configuration::getInstance();
+  ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
+  float mAspectRatio = mScreen->getAspectRatio();
+  if (cXPositionRelative != NULL) {
+    return cXPositionRelative->getXPosition() - cXAlign; // TODO: Don't assume that the right edge of relative is 1.0 and the left edge of this is 1.0.
+  } else {
+    return (cXPosition / cScale) / mAspectRatio - cXAlign / 2.0f; // TODO: Should use *actual* width, not just assume 2.0
+  }
+}
+
+float HUDComponentPosition::getYPosition() {
+  float mYPosition = cYPositionRelative != NULL ? cYPositionRelative->getYPosition() : cYPosition;
+  return mYPosition / cScale - cYAlign / 2.0f; // TODO: Should use *actual* height, not just assume 2.0
 }
 
 void HUDComponentPosition::setXAlign(float align) {
@@ -52,15 +78,9 @@ void HUDComponentPosition::update(int milliseconds) {
 }
 
 void HUDComponentPosition::render() {
-  Configuration* mConfiguration = Configuration::getInstance();
-  ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
-  float mAspectRatio = mScreen->getAspectRatio();
-  float mHeight = cComponent->getTop()   - cComponent->getBottom();
-  float mWidth  = cComponent->getRight() - cComponent->getLeft();
-  
   glPushMatrix();
   glScalef(cScale, cScale, cScale);
-  glTranslatef((((cXPosition / cScale) / mAspectRatio - cXAlign / 2.0f)), (cYPosition / cScale - cYAlign / 2.0f), 0.0f);
+  glTranslatef(getXPosition(), getYPosition(), 0.0f);
   cComponent->render();
   glPopMatrix();
 }

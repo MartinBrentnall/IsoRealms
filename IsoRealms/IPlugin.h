@@ -30,6 +30,7 @@
 #include "IDynamicElement.h"
 #include "IInteractiveElement.h"
 #include "IPluginSupport.h"
+#include "IVisualElement.h"
 #include "IZone.h"
 
 class IMap;
@@ -40,6 +41,7 @@ class IPlugin:public IPluginSupport {
   private:
   static std::vector<ICommandInfo*> cNoCommands;
   static std::vector<IDynamicElement*> cNoDynamicElements;
+  static std::vector<IVisualElement*> cNoVisualElements;
   static std::vector<IInteractiveElement*> cNoInteractiveElements;
 
   public:
@@ -76,6 +78,11 @@ class IPlugin:public IPluginSupport {
    */
   virtual std::vector<IDynamicElement*> getPostLoopCommands();
 
+  /**
+   * TODO
+   */
+  virtual std::vector<IVisualElement*> getPostLoopRenderers();
+  
   /**
    * TODO
    */

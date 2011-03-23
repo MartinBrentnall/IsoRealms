@@ -22,16 +22,17 @@
 #include <IsoRealms/IsoRealmsConstants.h>
 #include <IsoRealms/Vertex.h>
 
-#include "../../SpindizzyTextureSet/ISpindizzyTexture.h"
-
 #include "../ISimpleModel.h"
+
+#include "BlockProperties.h"
 
 class Block:public ISimpleModel {
   private:
   Vertex* cLocation;
+  BlockProperties* cProperties;
   
   public:
-  Block(Vertex*);
+  Block(Vertex*, BlockProperties*);
 
   /*********************\
    * Implements IModel *

@@ -68,6 +68,7 @@ class Map:public IMap,
 
   std::vector<IDynamicElement*> cPreLoopCommands;
   std::vector<IDynamicElement*> cPostLoopCommands;
+  std::vector<IVisualElement*> cPostLoopRenderers;
   std::vector<IInteractiveElement*> cInteractivePlugins;
 
   /**
@@ -130,6 +131,8 @@ class Map:public IMap,
   void executePreLoopCommands(int);
 
   void executePostLoopCommands(int);
+  
+  void executePostLoopRenderers();  
 
   /**
    *

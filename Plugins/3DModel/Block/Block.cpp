@@ -18,9 +18,9 @@
  */
 #include "Block.h"
 
-Block::Block(Vertex* location) {
+Block::Block(Vertex* location, BlockProperties* properties) {
   cLocation = location;
-/*  cTexture = texture;*/
+  cProperties = properties;
 }
 
 void Block::update(int milliseconds) {
@@ -28,20 +28,156 @@ void Block::update(int milliseconds) {
 }
 
 void Block::render() {
-/*  glPushMatrix();
-  glTranslatef(cLocation->x, cLocation->y, (cLocation->z + 0.05f) * IsoRealmsConstants::BLOCK_HEIGHT);
-  (*cTexture)->set();
-  glAlphaFunc(GL_GREATER, 0.1f);
-  glEnable(GL_ALPHA_TEST);
-  glDisable(GL_CULL_FACE);
+  glScalef(0.75f, 0.75f, 0.75f);
+  
+  float xs = -IsoRealmsConstants::BLOCK_RADIUS; // TODO: Rename this
+  float ys = -IsoRealmsConstants::BLOCK_RADIUS; // TODO: Rename this
+  float xe =  IsoRealmsConstants::BLOCK_RADIUS; // TODO: Rename this
+  float ye =  IsoRealmsConstants::BLOCK_RADIUS; // TODO: Rename this
+  
+  ISpindizzyTexture* mTexture = cProperties->getTopSurfaceTexture();
+  mTexture->set();
   glBegin(GL_QUADS);
-  (*cTexture)->texCoord2f(1.0, 1.0); glVertex3f( IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS, 0.0);
-  (*cTexture)->texCoord2f(1.0, 0.0); glVertex3f( IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS, 0.0);
-  (*cTexture)->texCoord2f(0.0, 0.0); glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS, 0.0);
-  (*cTexture)->texCoord2f(0.0, 1.0); glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS, 0.0);
+  mTexture->texCoord2f(1.0f, 1.0f); glVertex3f(xe, ys, 0.0f);
+  mTexture->texCoord2f(1.0f, 0.0f); glVertex3f(xe, ye, 0.0f);
+  mTexture->texCoord2f(0.0f, 0.0f); glVertex3f(xs, ye, 0.0f);
+  mTexture->texCoord2f(0.0f, 1.0f); glVertex3f(xs, ys, 0.0f);
   glEnd();
-  glEnable(GL_CULL_FACE);
-  glDisable(GL_ALPHA_TEST);
-  glBindTexture(GL_TEXTURE_2D, 0);
-  glPopMatrix();*/
+
+  mTexture = cProperties->getBottomSurfaceTexture();
+  mTexture->set();
+  glBegin(GL_QUADS);
+  mTexture->texCoord2f(0.0f, 1.0f); glVertex3f(xs, ye, 0.0f);
+  mTexture->texCoord2f(1.0f, 1.0f); glVertex3f(xe, ye, 0.0f);
+  mTexture->texCoord2f(1.0f, 0.0f); glVertex3f(xe, ys, 0.0f);
+  mTexture->texCoord2f(0.0f, 0.0f); glVertex3f(xs, ys, 0.0f);
+  glEnd();
+
+  float mBlockRadius = IsoRealmsConstants::BLOCK_RADIUS;
+  float mBlockHeight = IsoRealmsConstants::BLOCK_HEIGHT;
+  float mCapHeight   = mBlockHeight * 0.5;
+
+  mTexture = cProperties->getNorthSurfaceTexture();
+  mTexture->set();
+  glBegin(GL_QUADS);
+  switch (mTexture->getMapping()) {
+    case ISpindizzyTexture::TILED: {
+      mTexture->texCoord2f(0.0f, 1.0f); glVertex3f(-mBlockRadius,  mBlockRadius, mBlockHeight);
+      mTexture->texCoord2f(1.0f, 1.0f); glVertex3f( mBlockRadius,  mBlockRadius, mBlockHeight);
+      mTexture->texCoord2f(1.0f, 0.0f); glVertex3f( mBlockRadius,  mBlockRadius, -mBlockHeight);
+      mTexture->texCoord2f(0.0f, 0.0f); glVertex3f(-mBlockRadius,  mBlockRadius, -mBlockHeight);
+      break;
+    }
+    
+    case ISpindizzyTexture::COLUMN_CAPPED: {
+      mTexture->texCoord2f(0.0f, 0.25f); glVertex3f(-mBlockRadius,  mBlockRadius, -mBlockHeight + mCapHeight);
+      mTexture->texCoord2f(1.0f, 0.25f); glVertex3f( mBlockRadius,  mBlockRadius, -mBlockHeight + mCapHeight);
+      mTexture->texCoord2f(1.0f, 0.0f);  glVertex3f( mBlockRadius,  mBlockRadius, -mBlockHeight);
+      mTexture->texCoord2f(0.0f, 0.0f);  glVertex3f(-mBlockRadius,  mBlockRadius, -mBlockHeight);
+      mTexture->texCoord2f(0.0f, 1.0f);  glVertex3f(-mBlockRadius,  mBlockRadius,  0.0f);
+      mTexture->texCoord2f(1.0f, 1.0f);  glVertex3f( mBlockRadius,  mBlockRadius,  0.0f);
+      mTexture->texCoord2f(1.0f, 0.75f); glVertex3f( mBlockRadius,  mBlockRadius, -mCapHeight);
+      mTexture->texCoord2f(0.0f, 0.75f); glVertex3f(-mBlockRadius,  mBlockRadius, -mCapHeight);
+      break;
+    }
+
+    default: {
+      // TODO: Throw Unsupported map type exception
+      break;
+    }
+  }
+  glEnd();
+
+  mTexture = cProperties->getEastSurfaceTexture();
+  mTexture->set();
+  glBegin(GL_QUADS);
+  switch (mTexture->getMapping()) {
+    case ISpindizzyTexture::TILED: {
+      mTexture->texCoord2f(0.0f, 0.0f); glVertex3f( mBlockRadius, -mBlockRadius, -mBlockHeight);
+      mTexture->texCoord2f(1.0f, 0.0f); glVertex3f( mBlockRadius,  mBlockRadius, -mBlockHeight);
+      mTexture->texCoord2f(1.0f, 1.0f); glVertex3f( mBlockRadius,  mBlockRadius,  0.0f);
+      mTexture->texCoord2f(0.0f, 1.0f); glVertex3f( mBlockRadius, -mBlockRadius,  0.0f);
+      break;
+    }
+    
+    case ISpindizzyTexture::COLUMN_CAPPED: {
+      mTexture->texCoord2f(0.0f, 0.0f);  glVertex3f( mBlockRadius, -mBlockRadius, -mBlockHeight);
+      mTexture->texCoord2f(1.0f, 0.0f);  glVertex3f( mBlockRadius,  mBlockRadius, -mBlockHeight);
+      mTexture->texCoord2f(1.0f, 0.25f); glVertex3f( mBlockRadius,  mBlockRadius, -mBlockHeight + mCapHeight);
+      mTexture->texCoord2f(0.0f, 0.25f); glVertex3f( mBlockRadius, -mBlockRadius, -mBlockHeight + mCapHeight);
+      mTexture->texCoord2f(0.0f, 0.75f); glVertex3f( mBlockRadius, -mBlockRadius, -mCapHeight);
+      mTexture->texCoord2f(1.0f, 0.75f); glVertex3f( mBlockRadius,  mBlockRadius, -mCapHeight);
+      mTexture->texCoord2f(1.0f, 1.0f);  glVertex3f( mBlockRadius,  mBlockRadius,  0.0f);
+      mTexture->texCoord2f(0.0f, 1.0f);  glVertex3f( mBlockRadius, -mBlockRadius,  0.0f);
+      break;
+    }
+
+    default: {
+      // TODO: Throw Unsupported map type exception
+      break;
+    }
+  }
+  glEnd();
+    
+  mTexture = cProperties->getSouthSurfaceTexture();
+  mTexture->set();
+  glBegin(GL_QUADS);
+  switch (mTexture->getMapping()) {
+    case ISpindizzyTexture::TILED: {
+      mTexture->texCoord2f(0.0f, 0.0f); glVertex3f(-mBlockRadius, -mBlockRadius, -mBlockHeight);
+      mTexture->texCoord2f(1.0f, 0.0f); glVertex3f( mBlockRadius, -mBlockRadius, -mBlockHeight);
+      mTexture->texCoord2f(1.0f, 1.0f); glVertex3f( mBlockRadius, -mBlockRadius,  0.0f);
+      mTexture->texCoord2f(0.0f, 1.0f); glVertex3f(-mBlockRadius, -mBlockRadius,  0.0f);
+      break;
+    }
+    
+    case ISpindizzyTexture::COLUMN_CAPPED: {
+      mTexture->texCoord2f(0.0f, 0.0f);  glVertex3f(-mBlockRadius, -mBlockRadius, -mBlockHeight);
+      mTexture->texCoord2f(1.0f, 0.0f);  glVertex3f( mBlockRadius, -mBlockRadius, -mBlockHeight);
+      mTexture->texCoord2f(1.0f, 0.25f); glVertex3f( mBlockRadius, -mBlockRadius, -mBlockHeight + mCapHeight);
+      mTexture->texCoord2f(0.0f, 0.25f); glVertex3f(-mBlockRadius, -mBlockRadius, -mBlockHeight + mCapHeight);
+      mTexture->texCoord2f(0.0f, 0.75f); glVertex3f(-mBlockRadius, -mBlockRadius, -mCapHeight);
+      mTexture->texCoord2f(1.0f, 0.75f); glVertex3f( mBlockRadius, -mBlockRadius, -mCapHeight);
+      mTexture->texCoord2f(1.0f, 1.0f);  glVertex3f( mBlockRadius, -mBlockRadius,  0.0f);
+      mTexture->texCoord2f(0.0f, 1.0f);  glVertex3f(-mBlockRadius, -mBlockRadius,  0.0f);
+      break;
+    }
+
+    default: {
+      // TODO: Throw Unsupported map type exception
+      break;
+    }
+  }
+  glEnd();
+    
+  mTexture = cProperties->getWestSurfaceTexture();
+  mTexture->set();
+  glBegin(GL_QUADS);
+  switch (mTexture->getMapping()) {
+    case ISpindizzyTexture::TILED: {
+      mTexture->texCoord2f(0.0f, 1.0f); glVertex3f(-mBlockRadius, -mBlockRadius,  0.0f);
+      mTexture->texCoord2f(1.0f, 1.0f); glVertex3f(-mBlockRadius,  mBlockRadius,  0.0f);
+      mTexture->texCoord2f(1.0f, 0.0f); glVertex3f(-mBlockRadius,  mBlockRadius, -mBlockHeight);
+      mTexture->texCoord2f(0.0f, 0.0f); glVertex3f(-mBlockRadius, -mBlockRadius, -mBlockHeight);
+      break;
+    }
+    
+    case ISpindizzyTexture::COLUMN_CAPPED: {
+      mTexture->texCoord2f(0.0f, 0.25f); glVertex3f(-mBlockRadius, -mBlockRadius, -mBlockHeight + mCapHeight);
+      mTexture->texCoord2f(1.0f, 0.25f); glVertex3f(-mBlockRadius,  mBlockRadius, -mBlockHeight + mCapHeight);
+      mTexture->texCoord2f(1.0f, 0.0f);  glVertex3f(-mBlockRadius,  mBlockRadius, -mBlockHeight);
+      mTexture->texCoord2f(0.0f, 0.0f);  glVertex3f(-mBlockRadius, -mBlockRadius, -mBlockHeight);
+      mTexture->texCoord2f(0.0f, 1.0f);  glVertex3f(-mBlockRadius, -mBlockRadius,  0.0f);
+      mTexture->texCoord2f(1.0f, 1.0f);  glVertex3f(-mBlockRadius,  mBlockRadius,  0.0f);
+      mTexture->texCoord2f(1.0f, 0.75f); glVertex3f(-mBlockRadius,  mBlockRadius, -mCapHeight);
+      mTexture->texCoord2f(0.0f, 0.75f); glVertex3f(-mBlockRadius, -mBlockRadius, -mCapHeight);
+      break;
+    }
+
+    default: {
+      // TODO: Throw Unsupported map type exception
+      break;
+    }
+  }
+  glEnd();
 }

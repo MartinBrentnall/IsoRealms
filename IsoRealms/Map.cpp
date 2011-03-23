@@ -222,6 +222,7 @@ void Map::initRuntime() {
   cInteractivePlugins = cPluginRegistry.getInteractiveElements();
   cPreLoopCommands = cPluginRegistry.getPreLoopCommands();
   cPostLoopCommands = cPluginRegistry.getPostLoopCommands();
+  cPostLoopRenderers = cPluginRegistry.getPostLoopRenderers();
   for (unsigned int i = 0; i < cElements.size(); i++) {
     cElements[i]->setRuntimeContext(this);
   }
@@ -318,6 +319,12 @@ void Map::executePreLoopCommands(int ticks) {
 void Map::executePostLoopCommands(int ticks) {
   for (unsigned int i = 0; i < cPostLoopCommands.size(); i++) {
     cPostLoopCommands[i]->update(ticks);
+  }
+}
+
+void Map::executePostLoopRenderers() {
+  for (unsigned int i = 0; i < cPostLoopRenderers.size(); i++) {
+    cPostLoopRenderers[i]->render();
   }
 }
 

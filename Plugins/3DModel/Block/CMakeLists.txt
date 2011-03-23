@@ -19,6 +19,7 @@ include_directories(${PROJECT_SOURCE_DIR})
 add_library(3DModel_Block MODULE 
   Block.cpp
   BlockFactory.cpp
+  BlockProperties.cpp
 )
 set_target_properties(3DModel_Block PROPERTIES OUTPUT_NAME "Module")
 set_target_properties(3DModel_Block PROPERTIES PREFIX "lib")

@@ -19,6 +19,7 @@
 #include "IPlugin.h"
 
 std::vector<IDynamicElement*> IPlugin::cNoDynamicElements;
+std::vector<IVisualElement*> IPlugin::cNoVisualElements;
 std::vector<IInteractiveElement*> IPlugin::cNoInteractiveElements;
 std::vector<ICommandInfo*> IPlugin::cNoCommands;
 
@@ -36,6 +37,10 @@ std::vector<IDynamicElement*> IPlugin::getPreLoopCommands() {
 
 std::vector<IDynamicElement*> IPlugin::getPostLoopCommands() {
   return cNoDynamicElements;
+}
+
+std::vector<IVisualElement*> IPlugin::getPostLoopRenderers() {
+  return cNoVisualElements;
 }
 
 std::vector<IInteractiveElement*> IPlugin::getInteractiveElements() {

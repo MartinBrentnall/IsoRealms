@@ -26,17 +26,18 @@
 #include "../ISimpleModelFactory.h"
 
 #include "Block.h"
+#include "BlockProperties.h"
 
 class BlockFactory:public ISimpleModelFactory,
                    public IChangeableTextureSet {
   private:
-  std::vector<PlugSocket*> cTextureSetSocket;
+  std::vector<PlugSocket*> cSockets;
+  ISpindizzyTextureSetChanger* cSpindizzyTextureSetController;
+  ISpindizzyTextureSet* cDummyTextureSet;
   ISpindizzyTextureSet* cTextureSet;
   ISpindizzyTexture* cTexture;
-  std::string cTextureName;
+  BlockProperties* cProperties;
 
-  void updateTexture();
-  
   public:
   BlockFactory();
 

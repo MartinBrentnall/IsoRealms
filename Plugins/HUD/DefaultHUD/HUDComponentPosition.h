@@ -35,12 +35,19 @@ class HUDComponentPosition {
   float cYPosition;
   float cXAlign;
   float cYAlign;
+  HUDComponentPosition* cXPositionRelative;
+  HUDComponentPosition* cYPositionRelative;
 
+  float getXPosition();
+  float getYPosition();
+  
   public:
   HUDComponentPosition(IHUDGameComponent*);
   void setScale(float);
   void setXPosition(float);
   void setYPosition(float);
+  void setXPosition(HUDComponentPosition*);
+  void setYPosition(HUDComponentPosition*);
   void setXAlign(float);
   void setYAlign(float);
   void update(int);

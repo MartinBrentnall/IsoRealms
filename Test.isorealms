@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <Map>
+  <Plugin implementation="Block" instance="Compass" type="3DModel">
+<!--    <UsePlugin implementation="SpindizzyTextureSet" instance="C64Blue" socketid=""/>-->
+    <UsePlugin implementation="SpindizzyTextureSetChanger" instance="PerZone"/>
+    <Configuration>
+      <TopSurfaceTexture>ArrowEast</TopSurfaceTexture>
+      <BottomSurfaceTexture>Plain</BottomSurfaceTexture>
+      <NorthSurfaceTexture>WallNorth</NorthSurfaceTexture>
+      <SouthSurfaceTexture>WallSouth</SouthSurfaceTexture>
+      <WestSurfaceTexture>WallWest</WestSurfaceTexture>
+      <EastSurfaceTexture>WallEast</EastSurfaceTexture>
+    </Configuration>
+  </Plugin>
   <Plugin implementation="FlatRectangle" instance="LiftDiamondEmpty" type="3DModel">
     <UsePlugin implementation="SpindizzyTextureSet" instance="C64Sprites"/>
     <Configuration>
@@ -407,8 +419,7 @@
     <Configuration>
       <Component source="SpindizzySwitches" component="ActiveSwitchA" scale="0.15" align="top" right="0.0"/>
       <Component source="SpindizzySwitches" component="ActiveSwitchB" scale="0.15" align="top" left="0.0"/>
-<!--      <Component source="3DModelToHUD" component="3DModel" scale="0.15" align="top" left="SpindizzySwitches/ActiveSwitchB"/>-->
-      <Component source="3DModelToHUD" component="3DModel" scale="0.15" align="bottom" left="0.0"/>
+      <Component source="3DModelToHUD" component="3DModel" scale="0.15" align="top" left="SpindizzySwitches/ActiveSwitchB"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="SDLMixerSupport" instance="SpindizzySounds" type="SoundSupport">
@@ -455,7 +466,7 @@
     </Configuration>
   </Plugin>
   <Plugin implementation="3DModelToHUD" instance="Compass" type="Utilities">
-    <UsePlugin implementation="3DModel" instance="C64JewelModel" socketid=""/>
+    <UsePlugin implementation="3DModel" instance="Compass" socketid=""/>
     <UsePlugin implementation="Camera" instance="CraftCamera" socketid=""/>
     <UsePlugin implementation="HUD" instance="SpindizzyHUD" socketid=""/>
   </Plugin>

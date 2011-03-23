@@ -110,7 +110,7 @@ IPlugin* TextureSetPerZone::getPlugin(PlugSocket* plugSocket) {
   return NULL;
 }
 
-void TextureSetPerZone::renderPreZone(IZone* zone) {  
+void TextureSetPerZone::renderPreZone(IZone* zone) {
   std::map<IZone*, ISpindizzyTextureSet*>::iterator mIterator = cZoneMapping.find(zone);
   for (unsigned int i = 0; i < cControlledObjects.size(); i++) {
     cControlledObjects[i]->setSpindizzyTextureSet(mIterator != cZoneMapping.end() ? mIterator->second : NULL);
@@ -181,10 +181,7 @@ TextureSetPerZone::DefaultTextureSetCommand::DefaultTextureSetCommand(TextureSet
 }
 
 void TextureSetPerZone::DefaultTextureSetCommand::update(int milliseconds) {
-  std::map<IZone*, ISpindizzyTextureSet*>::iterator mIterator = cParent->cZoneMapping.find(cParent->cCurrentZone);
-  for (unsigned int i = 0; i < cParent->cControlledObjects.size(); i++) {
-    cParent->cControlledObjects[i]->setSpindizzyTextureSet(mIterator != cParent->cZoneMapping.end() ? mIterator->second : NULL);
-  }
+  cParent->renderPreZone(cParent->cCurrentZone);
 }
 
 void TextureSetPerZone::update(int ticks) {

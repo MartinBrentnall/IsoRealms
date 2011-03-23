@@ -31,10 +31,12 @@
 #include "HUDComponentPosition.h"
 
 class DefaultHUD:public IHUD,
-                 public IDynamicElement {
+                 public IDynamicElement,
+                 public IVisualElement {
   private:
   std::map<std::string, IHUDComponentFactory*> cHUDComponentSources;
   std::vector<HUDComponentPosition*> cComponents;
+  std::map<std::string, HUDComponentPosition*> cComponentsByName;
   
   public:
   
@@ -42,12 +44,18 @@ class DefaultHUD:public IHUD,
    * Implements IDynamicElement *
   \******************************/
   void update(int);
+  
+  /*****************************\
+   * Implements IVisualElement *
+  \*****************************/
+  void render();
     
   /**********************\
    * Implements IPlugin *
   \**********************/
   void load(DOMNodeWrapper*);
   std::vector<IDynamicElement*> getPostLoopCommands();
+  std::vector<IVisualElement*> getPostLoopRenderers();
 
   /*******************\
    * Implements IHUD *

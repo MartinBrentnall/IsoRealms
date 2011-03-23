@@ -328,6 +328,20 @@ std::vector<IDynamicElement*> PluginRegistry::getPostLoopCommands() {
   return mCommands;
 }
 
+std::vector<IVisualElement*> PluginRegistry::getPostLoopRenderers() {
+  std::vector<IVisualElement*> mRenderers;
+  for (std::map<std::string, std::map<std::string, IPlugin*> >::iterator i = cPluginInstances.begin(); i != cPluginInstances.end(); i++) {
+    std::map<std::string, IPlugin*> mInstanceOfType = i->second;
+    for (std::map<std::string, IPlugin*>::iterator j = mInstanceOfType.begin(); j != mInstanceOfType.end(); j++) {
+      std::vector<IVisualElement*> mPluginRenderers = j->second->getPostLoopRenderers();
+      for (unsigned int k = 0; k < mPluginRenderers.size(); k++) {
+        mRenderers.push_back(mPluginRenderers[k]);
+      }
+    }
+  }
+  return mRenderers;
+}
+
 std::vector<IInteractiveElement*> PluginRegistry::getInteractiveElements() {
   std::vector<IInteractiveElement*> mAllInteractiveElements;
   for (std::map<std::string, std::map<std::string, IPlugin*> >::iterator i = cPluginInstances.begin(); i != cPluginInstances.end(); i++) {

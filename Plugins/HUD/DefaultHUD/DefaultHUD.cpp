@@ -39,8 +39,8 @@ void DefaultHUD::load(DOMNodeWrapper* node) {
       std::string mComponentSource = mNode->getAttribute("source");
       std::string mComponentName = mNode->getAttribute("component");
       std::string mComponentAlign = mNode->getAttribute("align");
-      std::string mComponentRight = mNode->getAttribute("right");
       std::string mComponentLeft = mNode->getAttribute("left");
+      std::string mComponentRight = mNode->getAttribute("right");
       float mScale = mNode->getFloatAttribute("scale");
       if (mScale <= 0.0f) {
         mScale = 1.0f;
@@ -65,16 +65,25 @@ void DefaultHUD::load(DOMNodeWrapper* node) {
           }
         }
         
+        HUDComponentPosition* mHUDRenderer = new HUDComponentPosition(mHUDComponent);
+
         if (mComponentRight != "") {
           mXAlign = 1.0f;
-          mX = mNode->getFloatAttribute("right");
+          if (mComponentRight.find("/") != std::string::npos) {
+            mHUDRenderer->setXPosition(cComponentsByName[mComponentRight]);
+          } else {
+            mX = mNode->getFloatAttribute("right");
+          }
         }
         if (mComponentLeft != "") {
           mXAlign = -1.0f;
-          mX = mNode->getFloatAttribute("left");
+          if (mComponentLeft.find("/") != std::string::npos) {
+            mHUDRenderer->setXPosition(cComponentsByName[mComponentLeft]);
+          } else {
+            mX = mNode->getFloatAttribute("left");
+          }
         }
 
-        HUDComponentPosition* mHUDRenderer = new HUDComponentPosition(mHUDComponent);
         // TODO: Set position
         mHUDRenderer->setScale(mScale);
         mHUDRenderer->setXPosition(mX);
@@ -82,6 +91,7 @@ void DefaultHUD::load(DOMNodeWrapper* node) {
         mHUDRenderer->setXAlign(mXAlign);
         mHUDRenderer->setYAlign(mYAlign);
         cComponents.push_back(mHUDRenderer);
+        cComponentsByName[mComponentSource + "/" + mComponentName] = mHUDRenderer;
       } else {
         std::cout << "FACTORY IS NULL!" << std::endl;
       }
@@ -92,12 +102,13 @@ void DefaultHUD::load(DOMNodeWrapper* node) {
 }
 
 void DefaultHUD::update(int milliseconds) {
-  // TODO: This is nasty; we need separate render and update functions
   for (unsigned int i = 0; i < cComponents.size(); i++) {
     cComponents[i]->update(milliseconds);
   }
+}
 
-Configuration* mConfiguration = Configuration::getInstance();
+void DefaultHUD::render() {
+  Configuration* mConfiguration = Configuration::getInstance();
   ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
   float mAspectRatio = mScreen->getAspectRatio();
 
@@ -126,6 +137,12 @@ Configuration* mConfiguration = Configuration::getInstance();
 
 std::vector<IDynamicElement*> DefaultHUD::getPostLoopCommands() {
   std::vector<IDynamicElement*> mThis;
+  mThis.push_back(this);
+  return mThis;
+}
+
+std::vector<IVisualElement*> DefaultHUD::getPostLoopRenderers() {
+  std::vector<IVisualElement*> mThis;
   mThis.push_back(this);
   return mThis;
 }

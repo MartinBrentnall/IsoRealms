@@ -19,14 +19,16 @@
 #include "BlockFactory.h"
 
 BlockFactory::BlockFactory() {
-  assignDummyPlugin(&cTextureSet, "SpindizzyTextureSet");
-  cTextureSetSocket.push_back(new PlugSocket("SpindizzyTextureSet"));
-  cTextureName = "";
-  updateTexture();
+  assignDummyPlugin(&cDummyTextureSet, "SpindizzyTextureSet");
+  cTextureSet = cDummyTextureSet;
+  cSpindizzyTextureSetController = NULL;
+  cSockets.push_back(new PlugSocket("SpindizzyTextureSet"));
+  cSockets.push_back(new PlugSocket("SpindizzyTextureSetChanger"));
+  cProperties = new BlockProperties(&cTextureSet);
 }
 
 ISimpleModel* BlockFactory::createModel(Vertex* location, float scale) {
-  return new Block(location);
+  return new Block(location, cProperties);
 }
 
 void BlockFactory::destroyModel(ISimpleModel* block) {
@@ -34,13 +36,22 @@ void BlockFactory::destroyModel(ISimpleModel* block) {
 }
 
 std::vector<PlugSocket*> BlockFactory::getPlugSockets() {
-  return cTextureSetSocket;
+  return cSockets;
 }
 
 void BlockFactory::setPlugin(PlugSocket* socket, IPlugin* plugin) {
   if (socket->getType() == "SpindizzyTextureSet") {
     assignPlugin(plugin, &cTextureSet, *socket);
-    updateTexture();
+  } else if (socket->getType() == "SpindizzyTextureSetChanger") {
+    ISpindizzyTextureSetChanger* mPreviousController = cSpindizzyTextureSetController;
+    if (assignPlugin(plugin, &cSpindizzyTextureSetController, *socket, false)) {
+      if (mPreviousController != NULL) {
+        cSpindizzyTextureSetController->removeControlObject(this);
+      }
+      if (cSpindizzyTextureSetController != NULL) {
+        cSpindizzyTextureSetController->addControlObject(this);
+      }
+    }
   } else {
     // TODO: Throw
   }
@@ -52,22 +63,32 @@ IPlugin* BlockFactory::getPlugin(PlugSocket* socket) {
   return NULL;
 }
 
-void BlockFactory::updateTexture() {
-  cTexture = cTextureSet->getTexture(cTextureName);
-}
-
 void BlockFactory::save(DOMNodeWriter* node) {
+  // TODO: Implement save functionality
 }
 
 void BlockFactory::load(DOMNodeWrapper* node) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "Texture") {
-      cTextureName = mNode->getStringValue();
-      updateTexture();
+    if (mValueAsString == "TopSurfaceTexture") {
+      cProperties->setTopSurfaceTexture(mNode->getStringValue());
+    } else if (mValueAsString == "BottomSurfaceTexture") {
+      cProperties->setBottomSurfaceTexture(mNode->getStringValue());
+    } else if (mValueAsString == "NorthSurfaceTexture") {
+      cProperties->setNorthSurfaceTexture(mNode->getStringValue());
+    } else if (mValueAsString == "EastSurfaceTexture") {
+      cProperties->setEastSurfaceTexture(mNode->getStringValue());
+    } else if (mValueAsString == "SouthSurfaceTexture") {
+      cProperties->setSouthSurfaceTexture(mNode->getStringValue());
+    } else if (mValueAsString == "WestSurfaceTexture") {
+      cProperties->setWestSurfaceTexture(mNode->getStringValue());
     }
   }
+}
+
+void BlockFactory::setSpindizzyTextureSet(ISpindizzyTextureSet* textureSet) {
+  cTextureSet = textureSet != NULL ? textureSet : cDummyTextureSet;
 }
 
 extern "C" IPlugin* create() {

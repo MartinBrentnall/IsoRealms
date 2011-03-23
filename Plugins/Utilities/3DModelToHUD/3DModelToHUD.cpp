@@ -61,12 +61,10 @@ IPlugin* ModelToHUD::getPlugin(PlugSocket* socket) {
 }
 
 std::string ModelToHUD::getHUDComponentFactoryName() {
-  std::cout << "Getting HUD Factory name!" << std::endl;
   return "3DModelToHUD";
 }
 
 IHUDGameComponent* ModelToHUD::getHUDComponent(const std::string& component) {
-  std::cout << "Getting HUD!" << std::endl;
   return component == "3DModel" ? this : NULL;
 }
   
@@ -75,7 +73,6 @@ void ModelToHUD::update(int milliseconds) {
 }
   
 void ModelToHUD::render() {
-  std::cout << "Render!" << std::endl;
   float mAngle = cCamera->getAngle();
   float mTilt = cCamera->getTilt();
     
@@ -84,7 +81,6 @@ void ModelToHUD::render() {
   cModel->render();
   glRotatef(-mAngle, 0.0f, 0.0f, 1.0f);
   glRotatef(-mTilt, 1.0f, 0.0f, 0.0f);
-  std::cout << "Render done!" << std::endl;
 }
 
 float ModelToHUD::getTop() {

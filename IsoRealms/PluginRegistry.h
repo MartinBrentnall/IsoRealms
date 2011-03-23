@@ -175,6 +175,8 @@ class PluginRegistry:public IPluginRegistry {
 
   std::vector<IDynamicElement*> getPostLoopCommands();
 
+  std::vector<IVisualElement*> getPostLoopRenderers();
+
   std::vector<IInteractiveElement*> getInteractiveElements();
 
   IZoneRenderer* getZoneRenderer(DOMNodeWrapper*, CommandDirectory*);
