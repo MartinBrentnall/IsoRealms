@@ -19,10 +19,12 @@ include_directories(${PROJECT_SOURCE_DIR})
 add_library(Elements_SpindizzyBlocks MODULE 
   BlockStateCommand.cpp
   BlockTypeProperties.cpp
+  HUDClue.cpp
   ISpindizzyBlockFactory.cpp
   SpindizzyBlock.cpp
   SpindizzyBlockConfigurationComponent.cpp
   SpindizzyBlockFactory.cpp
+  SpindizzyBlockHandler.cpp
   SpindizzyBlockProperties.cpp
   SpindizzyBlockSet.cpp
   SpindizzyWater.cpp

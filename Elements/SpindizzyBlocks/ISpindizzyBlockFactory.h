@@ -27,7 +27,9 @@
 #include "BlockTypeProperties.h"
 #include "ISpindizzyBlockSet.h"
 
-class ISpindizzyBlockFactory:public ElementFactory<ISpindizzyBlockSet, IElement> {
+class ISpindizzyBlock;
+
+class ISpindizzyBlockFactory:public ElementFactory<ISpindizzyBlockSet, ISpindizzyBlock> {
   public:
   ISpindizzyBlockFactory(ISpindizzyBlockSet*);
 

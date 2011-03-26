@@ -20,7 +20,6 @@
 #define SPINDIZZY_WATER_H
 
 #include <IsoRealms/Condition.h>
-#include <IsoRealms/Element.h>
 
 #include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
 #include "../../Plugins/SurfaceProcessor/ISurfaceProvider.h"
@@ -28,12 +27,13 @@
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
 
+#include "ISpindizzyBlock.h"
 #include "ISpindizzyBlockFactory.h"
 #include "ISpindizzyBlockSet.h"
 #include "TileSurface.h"
 #include "WallSurface.h"
 
-class SpindizzyWater:public Element<ISpindizzyBlockSet, ISpindizzyBlockFactory>,
+class SpindizzyWater:public ISpindizzyBlock,
                      public ISurfaceProvider,
                      public IVisualElement {
   private:
@@ -58,6 +58,11 @@ class SpindizzyWater:public Element<ISpindizzyBlockSet, ISpindizzyBlockFactory>,
 
   public:
   SpindizzyWater(ISpindizzyBlockFactory*, BlockLocation*, BlockLocation*, ISpindizzyTextureSet**);
+
+  /******************************\
+   * Implements ISpindizzyBlock *
+  \******************************/
+  std::set<bool*> getInputs();
 
   /***********************\
    * Implements IElement *

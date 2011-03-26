@@ -1,5 +1,5 @@
 /*
- * Copyright 2009,2010 Martin Brentnall
+ * Copyright 2009,2010,2011 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,20 +16,36 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_SPINDIZZY_LIFT_FACTORY_H
-#define I_SPINDIZZY_LIFT_FACTORY_H
+#ifndef HUD_CLUE_H
+#define HUD_CLUE_H
 
-#include <IsoRealms/ElementFactory.h>
+#include <iostream>
+#include <GL/gl.h>
 
-#include "ISpindizzyLiftSet.h"
+#include "../../Plugins/3DModel/ISimpleModel.h"
+#include "../../Plugins/Camera/ICamera.h"
+#include "../../Plugins/HUD/IHUDGameComponent.h"
 
-class SpindizzyLift;
+class HUDClue:public IHUDGameComponent {
+  private:
+  ISimpleModel* cClueModel;
+  ICamera* cCamera;
 
-class ISpindizzyLiftFactory:public ElementFactory<ISpindizzyLiftSet, SpindizzyLift> {
   public:
-  ISpindizzyLiftFactory(ISpindizzyLiftSet* elementSet) : ElementFactory<ISpindizzyLiftSet, SpindizzyLift>(elementSet) {}
-
-  virtual bool isActive() = 0;
+  HUDClue(ICamera*);
+    
+  void setModel(ISimpleModel*);
+  void setCamera(ICamera*);  
+  
+  /********************************\
+   * Implements IHUDGameComponent *
+  \********************************/
+  void render();
+  void update(int);
+  float getTop();
+  float getLeft();
+  float getBottom();
+  float getRight();
 };
 
 #endif

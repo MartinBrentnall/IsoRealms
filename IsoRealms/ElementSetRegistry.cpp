@@ -22,7 +22,7 @@ ElementSetRegistry::ElementSetRegistry() {
   // Nothing to do.
 }
 
-void ElementSetRegistry::registerElementSet(PluginRegistry* pluginRegistry, DOMNodeWrapper* node, CommandDirectory* commandDirectory) {
+void ElementSetRegistry::registerElementSet(DOMNodeWrapper* node, CommandDirectory* commandDirectory) {
   std::string mInstance = node->getAttribute("instance");
   std::string mType = node->getAttribute("type");
   std::cout << "Setting element set connections \"" << mType << ":" << mInstance << "\"" << std::endl;
@@ -32,12 +32,29 @@ void ElementSetRegistry::registerElementSet(PluginRegistry* pluginRegistry, DOMN
   mDirectory.push_back(mInstance);
   CommandRegistryProxy* mCommandRegistry = new CommandRegistryProxy(commandDirectory, mDirectory);
   mElementSet->setEditingContext(NULL, NULL, NULL, mCommandRegistry);
+}
+
+void ElementSetRegistry::connectPlugin(PluginRegistry* pluginRegistry, DOMNodeWrapper* node) {
+  std::string mInstance = node->getAttribute("instance");
+  IElementSet* mElementSet = getElementSet(&mInstance);
+  std::cout << "Setting connections for element set \"" << mInstance << "\"" << std::endl;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "UsePlugin") {
       setPlugin(pluginRegistry, mElementSet, mNode);
-    } else if (mValueAsString == "Configuration") {
+    }
+  }
+}
+
+void ElementSetRegistry::loadConfiguration(DOMNodeWrapper* node) {
+  std::string mInstance = node->getAttribute("instance");
+  IElementSet* mElementSet = getElementSet(&mInstance);
+  std::cout << "Setting connections for element set \"" << mInstance << "\"" << std::endl;
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "Configuration") {
       mElementSet->load(mNode);
     }
   }

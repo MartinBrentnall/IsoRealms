@@ -1,10 +1,130 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <Map>
   <Plugin implementation="Block" instance="Compass" type="3DModel">
-<!--    <UsePlugin implementation="SpindizzyTextureSet" instance="C64Blue" socketid=""/>-->
     <UsePlugin implementation="SpindizzyTextureSetChanger" instance="PerZone"/>
     <Configuration>
       <TopSurfaceTexture>ArrowEast</TopSurfaceTexture>
+      <BottomSurfaceTexture>Plain</BottomSurfaceTexture>
+      <NorthSurfaceTexture>WallNorth</NorthSurfaceTexture>
+      <SouthSurfaceTexture>WallSouth</SouthSurfaceTexture>
+      <WestSurfaceTexture>WallWest</WestSurfaceTexture>
+      <EastSurfaceTexture>WallEast</EastSurfaceTexture>
+    </Configuration>
+  </Plugin>
+  <Plugin implementation="Block" instance="ClueDiamondLeft" type="3DModel">
+    <UsePlugin implementation="SpindizzyTextureSetChanger" instance="PerZone"/>
+    <Configuration>
+      <TopSurfaceTexture>SwitchDiamondLeft</TopSurfaceTexture>
+      <BottomSurfaceTexture>Plain</BottomSurfaceTexture>
+      <NorthSurfaceTexture>WallNorth</NorthSurfaceTexture>
+      <SouthSurfaceTexture>WallSouth</SouthSurfaceTexture>
+      <WestSurfaceTexture>WallWest</WestSurfaceTexture>
+      <EastSurfaceTexture>WallEast</EastSurfaceTexture>
+    </Configuration>
+  </Plugin>
+  <Plugin implementation="Block" instance="ClueDiamondRight" type="3DModel">
+    <UsePlugin implementation="SpindizzyTextureSetChanger" instance="PerZone"/>
+    <Configuration>
+      <TopSurfaceTexture>SwitchDiamondRight</TopSurfaceTexture>
+      <BottomSurfaceTexture>Plain</BottomSurfaceTexture>
+      <NorthSurfaceTexture>WallNorth</NorthSurfaceTexture>
+      <SouthSurfaceTexture>WallSouth</SouthSurfaceTexture>
+      <WestSurfaceTexture>WallWest</WestSurfaceTexture>
+      <EastSurfaceTexture>WallEast</EastSurfaceTexture>
+    </Configuration>
+  </Plugin>
+  <Plugin implementation="Block" instance="ClueDiamondFilled" type="3DModel">
+    <UsePlugin implementation="SpindizzyTextureSetChanger" instance="PerZone"/>
+    <Configuration>
+      <TopSurfaceTexture>SwitchDiamondFilled</TopSurfaceTexture>
+      <BottomSurfaceTexture>Plain</BottomSurfaceTexture>
+      <NorthSurfaceTexture>WallNorth</NorthSurfaceTexture>
+      <SouthSurfaceTexture>WallSouth</SouthSurfaceTexture>
+      <WestSurfaceTexture>WallWest</WestSurfaceTexture>
+      <EastSurfaceTexture>WallEast</EastSurfaceTexture>
+    </Configuration>
+  </Plugin>
+  <Plugin implementation="Block" instance="ClueSquareEmpty" type="3DModel">
+    <UsePlugin implementation="SpindizzyTextureSetChanger" instance="PerZone"/>
+    <Configuration>
+      <TopSurfaceTexture>SwitchSquareEmpty</TopSurfaceTexture>
+      <BottomSurfaceTexture>Plain</BottomSurfaceTexture>
+      <NorthSurfaceTexture>WallNorth</NorthSurfaceTexture>
+      <SouthSurfaceTexture>WallSouth</SouthSurfaceTexture>
+      <WestSurfaceTexture>WallWest</WestSurfaceTexture>
+      <EastSurfaceTexture>WallEast</EastSurfaceTexture>
+    </Configuration>
+  </Plugin>
+  <Plugin implementation="Block" instance="ClueSquareLeft" type="3DModel">
+    <UsePlugin implementation="SpindizzyTextureSetChanger" instance="PerZone"/>
+    <Configuration>
+      <TopSurfaceTexture>SwitchSquareLeft</TopSurfaceTexture>
+      <BottomSurfaceTexture>Plain</BottomSurfaceTexture>
+      <NorthSurfaceTexture>WallNorth</NorthSurfaceTexture>
+      <SouthSurfaceTexture>WallSouth</SouthSurfaceTexture>
+      <WestSurfaceTexture>WallWest</WestSurfaceTexture>
+      <EastSurfaceTexture>WallEast</EastSurfaceTexture>
+    </Configuration>
+  </Plugin>
+  <Plugin implementation="Block" instance="ClueSquareRight" type="3DModel">
+    <UsePlugin implementation="SpindizzyTextureSetChanger" instance="PerZone"/>
+    <Configuration>
+      <TopSurfaceTexture>SwitchSquareRight</TopSurfaceTexture>
+      <BottomSurfaceTexture>Plain</BottomSurfaceTexture>
+      <NorthSurfaceTexture>WallNorth</NorthSurfaceTexture>
+      <SouthSurfaceTexture>WallSouth</SouthSurfaceTexture>
+      <WestSurfaceTexture>WallWest</WestSurfaceTexture>
+      <EastSurfaceTexture>WallEast</EastSurfaceTexture>
+    </Configuration>
+  </Plugin>
+  <Plugin implementation="Block" instance="ClueSquareFilled" type="3DModel">
+    <UsePlugin implementation="SpindizzyTextureSetChanger" instance="PerZone"/>
+    <Configuration>
+      <TopSurfaceTexture>SwitchSquareFilled</TopSurfaceTexture>
+      <BottomSurfaceTexture>Plain</BottomSurfaceTexture>
+      <NorthSurfaceTexture>WallNorth</NorthSurfaceTexture>
+      <SouthSurfaceTexture>WallSouth</SouthSurfaceTexture>
+      <WestSurfaceTexture>WallWest</WestSurfaceTexture>
+      <EastSurfaceTexture>WallEast</EastSurfaceTexture>
+    </Configuration>
+  </Plugin>
+  <Plugin implementation="Block" instance="ClueCircleEmpty" type="3DModel">
+    <UsePlugin implementation="SpindizzyTextureSetChanger" instance="PerZone"/>
+    <Configuration>
+      <TopSurfaceTexture>SwitchCircleEmpty</TopSurfaceTexture>
+      <BottomSurfaceTexture>Plain</BottomSurfaceTexture>
+      <NorthSurfaceTexture>WallNorth</NorthSurfaceTexture>
+      <SouthSurfaceTexture>WallSouth</SouthSurfaceTexture>
+      <WestSurfaceTexture>WallWest</WestSurfaceTexture>
+      <EastSurfaceTexture>WallEast</EastSurfaceTexture>
+    </Configuration>
+  </Plugin>
+  <Plugin implementation="Block" instance="ClueCircleLeft" type="3DModel">
+    <UsePlugin implementation="SpindizzyTextureSetChanger" instance="PerZone"/>
+    <Configuration>
+      <TopSurfaceTexture>SwitchCircleLeft</TopSurfaceTexture>
+      <BottomSurfaceTexture>Plain</BottomSurfaceTexture>
+      <NorthSurfaceTexture>WallNorth</NorthSurfaceTexture>
+      <SouthSurfaceTexture>WallSouth</SouthSurfaceTexture>
+      <WestSurfaceTexture>WallWest</WestSurfaceTexture>
+      <EastSurfaceTexture>WallEast</EastSurfaceTexture>
+    </Configuration>
+  </Plugin>
+  <Plugin implementation="Block" instance="ClueCircleRight" type="3DModel">
+    <UsePlugin implementation="SpindizzyTextureSetChanger" instance="PerZone"/>
+    <Configuration>
+      <TopSurfaceTexture>SwitchCircleRight</TopSurfaceTexture>
+      <BottomSurfaceTexture>Plain</BottomSurfaceTexture>
+      <NorthSurfaceTexture>WallNorth</NorthSurfaceTexture>
+      <SouthSurfaceTexture>WallSouth</SouthSurfaceTexture>
+      <WestSurfaceTexture>WallWest</WestSurfaceTexture>
+      <EastSurfaceTexture>WallEast</EastSurfaceTexture>
+    </Configuration>
+  </Plugin>
+  <Plugin implementation="Block" instance="ClueCircleFilled" type="3DModel">
+    <UsePlugin implementation="SpindizzyTextureSetChanger" instance="PerZone"/>
+    <Configuration>
+      <TopSurfaceTexture>SwitchCircleFilled</TopSurfaceTexture>
       <BottomSurfaceTexture>Plain</BottomSurfaceTexture>
       <NorthSurfaceTexture>WallNorth</NorthSurfaceTexture>
       <SouthSurfaceTexture>WallSouth</SouthSurfaceTexture>
@@ -420,6 +540,7 @@
       <Component source="SpindizzySwitches" component="ActiveSwitchA" scale="0.15" align="top" right="0.0"/>
       <Component source="SpindizzySwitches" component="ActiveSwitchB" scale="0.15" align="top" left="0.0"/>
       <Component source="3DModelToHUD" component="3DModel" scale="0.15" align="top" left="SpindizzySwitches/ActiveSwitchB"/>
+      <Component source="SpindizzyBlocks" component="Clue" scale="0.15" align="top" right="SpindizzySwitches/ActiveSwitchA"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="SDLMixerSupport" instance="SpindizzySounds" type="SoundSupport">
@@ -720,21 +841,35 @@
     <Configuration/>
   </Plugin>
   <ElementSet instance="Blocks" type="SpindizzyBlocks">
+    <UsePlugin implementation="3DModel" instance="ClueDiamondLeft" socketid="0"/>
+    <UsePlugin implementation="3DModel" instance="ClueDiamondRight" socketid="1"/>
+    <UsePlugin implementation="3DModel" instance="ClueDiamondFilled" socketid="2"/>
+    <UsePlugin implementation="3DModel" instance="ClueSquareEmpty" socketid="3"/>
+    <UsePlugin implementation="3DModel" instance="ClueSquareLeft" socketid="4"/>
+    <UsePlugin implementation="3DModel" instance="ClueSquareRight" socketid="5"/>
+    <UsePlugin implementation="3DModel" instance="ClueSquareFilled" socketid="6"/>
+    <UsePlugin implementation="3DModel" instance="ClueCircleEmpty" socketid="7"/>
+    <UsePlugin implementation="3DModel" instance="ClueCircleLeft" socketid="8"/>
+    <UsePlugin implementation="3DModel" instance="ClueCircleRight" socketid="9"/>
+    <UsePlugin implementation="3DModel" instance="ClueCircleFilled" socketid="10"/>
+    <UsePlugin implementation="Camera" instance="CraftCamera"/>
     <UsePlugin implementation="CollidableSurfaceRegistry" instance="SpindizzySurfaces"/>
+    <UsePlugin implementation="HUD" instance="SpindizzyHUD" socketid=""/>
     <UsePlugin implementation="SpindizzyTextureSetChanger" instance="PerZone"/>
     <UsePlugin implementation="SurfaceProcessor" instance="BlockSubtractor"/>
+    <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext" socketid=""/>
     <Configuration>
-      <State>SwitchDiamondLeft</State>
-      <State>SwitchDiamondRight</State>
-      <State>SwitchDiamondBoth</State>
-      <State>SwitchSquareNone</State>
-      <State>SwitchSquareLeft</State>
-      <State>SwitchSquareRight</State>
-      <State>SwitchSquareBoth</State>
-      <State>SwitchCircleNone</State>
-      <State>SwitchCircleLeft</State>
-      <State>SwitchCircleRight</State>
-      <State>SwitchCircleBoth</State>
+      <State hudModel="0">SwitchDiamondLeft</State>
+      <State hudModel="1">SwitchDiamondRight</State>
+      <State hudModel="2">SwitchDiamondBoth</State>
+      <State hudModel="3">SwitchSquareNone</State>
+      <State hudModel="4">SwitchSquareLeft</State>
+      <State hudModel="5">SwitchSquareRight</State>
+      <State hudModel="6">SwitchSquareBoth</State>
+      <State hudModel="7">SwitchCircleNone</State>
+      <State hudModel="8">SwitchCircleLeft</State>
+      <State hudModel="9">SwitchCircleRight</State>
+      <State hudModel="10">SwitchCircleBoth</State>
       <BlockType name="Ice" friction="0.0" grip="0.0" bounce="0.0" respawnAllowed="false">
         <Texture type="Surface" name="Ice"/>
         <Texture type="WallWest" name="WallIce"/>

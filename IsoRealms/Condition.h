@@ -85,6 +85,7 @@ class Condition {
   Condition(const Condition&);
   Condition(DOMNodeWrapper*, std::vector<ConditionElement*>);
     
+  std::set<bool*> getInputs();
   Condition* split(Condition*);
   void compose(Condition*);
   void negate();

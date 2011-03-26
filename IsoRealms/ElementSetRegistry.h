@@ -69,7 +69,9 @@ class ElementSetRegistry {
   public:
   ElementSetRegistry();
 
-  void registerElementSet(PluginRegistry*, DOMNodeWrapper*, CommandDirectory*);
+  void registerElementSet(DOMNodeWrapper*, CommandDirectory*);
+  void connectPlugin(PluginRegistry*, DOMNodeWrapper*);
+  void loadConfiguration(DOMNodeWrapper*);
 
   void setPlugin(PluginRegistry*, IPluginSupport*, DOMNodeWrapper*);
 

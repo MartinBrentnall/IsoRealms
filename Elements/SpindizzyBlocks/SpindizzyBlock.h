@@ -25,7 +25,6 @@
 #include <IsoRealms/BlockLocation.h>
 #include <IsoRealms/Condition.h>
 #include <IsoRealms/DOMNodeWrapper.h>
-#include <IsoRealms/Element.h>
 #include <IsoRealms/IVisualElement.h>
 #include <IsoRealms/MiscFunctions.h>
 
@@ -35,6 +34,7 @@
 #include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
 #include "../../Plugins/SurfaceProcessor/ISurfaceProvider.h"
 
+#include "ISpindizzyBlock.h"
 #include "ISpindizzyBlockSet.h"
 #include "ISpindizzyBlockFactory.h"
 #include "SpindizzyBlockProperties.h"
@@ -45,7 +45,7 @@
 /**
  * TODO: Refactor dynamic_casts into static_casts.
  */
-class SpindizzyBlock:public Element<ISpindizzyBlockSet, ISpindizzyBlockFactory>,
+class SpindizzyBlock:public ISpindizzyBlock,
                      public ISurfaceProvider,
                      public IVisualElement {
   private:
@@ -222,6 +222,11 @@ class SpindizzyBlock:public Element<ISpindizzyBlockSet, ISpindizzyBlockFactory>,
    * @throws Something  TODO: If a wall cannot be created to the specification.
    */
   IWallSurface* createSubSurface(int, int, IWallSurface::FaceDirection, int, int, int, int, int, Condition*);
+
+  /******************************\
+   * Implements ISpindizzyBlock *
+  \******************************/
+  std::set<bool*> getInputs();
 
   /***********************\
    * Implements IElement *

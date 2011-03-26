@@ -32,7 +32,9 @@
 #include "../../Plugins/SurfaceProcessor/ISurfaceProvider.h"
 #include "../../Plugins/SurfaceProcessor/IWallSurface.h"
 
-class ISpindizzyBlockSet:public ElementSet<IElement> {
+class ISpindizzyBlock;
+
+class ISpindizzyBlockSet:public ElementSet<ISpindizzyBlock> {
   public:
   virtual void registerSurfaceProvider(ISurfaceProvider*) = 0;
   virtual void unregisterSurfaceProvider(ISurfaceProvider*) = 0;

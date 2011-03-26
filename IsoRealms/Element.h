@@ -20,7 +20,9 @@
 #define ELEMENT_H
 
 #include "IElement.h"
+#include "IElementContainer.h"
 #include "IElementFactory.h"
+#include "IElementSet.h"
 
 /**
  * 

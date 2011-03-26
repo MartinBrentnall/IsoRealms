@@ -1,5 +1,5 @@
 /*
- * Copyright 2009,2010 Martin Brentnall
+ * Copyright 2009,2010,2011 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,20 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_SPINDIZZY_LIFT_FACTORY_H
-#define I_SPINDIZZY_LIFT_FACTORY_H
+#include "SpindizzyBlockHandler.h"
 
-#include <IsoRealms/ElementFactory.h>
+std::set<bool*> SpindizzyBlockHandler::getInputs() {
+  return cZoneInputs;
+}  
 
-#include "ISpindizzyLiftSet.h"
-
-class SpindizzyLift;
-
-class ISpindizzyLiftFactory:public ElementFactory<ISpindizzyLiftSet, SpindizzyLift> {
-  public:
-  ISpindizzyLiftFactory(ISpindizzyLiftSet* elementSet) : ElementFactory<ISpindizzyLiftSet, SpindizzyLift>(elementSet) {}
-
-  virtual bool isActive() = 0;
-};
-
-#endif
+void SpindizzyBlockHandler::elementAdded(ISpindizzyBlock* block) {
+  std::set<bool*> mInputs = block->getInputs();
+  cZoneInputs.insert(mInputs.begin(), mInputs.end());
+}

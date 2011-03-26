@@ -1,5 +1,5 @@
 /*
- * Copyright 2009,2010 Martin Brentnall
+ * Copyright 2009,2010,2011 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -19,14 +19,19 @@
 #ifndef SPINDIZZY_BLOCK_SET_H
 #define SPINDIZZY_BLOCK_SET_H
 
+#include <map>
 #include <string>
 #include <vector>
 
+#include "../../Plugins/3DModel/ISimpleModelFactory.h"
+#include "../../Plugins/Camera/ICamera.h"
 #include "../../Plugins/CollidableSurfaceRegistry/ICollidableSurfaceRegistry.h"
+#include "../../Plugins/HUD/IHUD.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 #include "../../Plugins/SpindizzyTextureSetChanger/ISpindizzyTextureSetChanger.h"
 #include "../../Plugins/SpindizzyTextureSetChanger/IChangeableTextureSet.h"
 #include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
+#include "../../Plugins/ZoneContext/IZoneContext.h"
 
 #include <IsoRealms/ConditionElement.h>
 #include <IsoRealms/ICommandRegistry.h>
@@ -36,33 +41,50 @@
 #include <IsoRealms/PluginRegistry.h>
 
 #include "BlockStateCommand.h"
+#include "HUDClue.h"
+#include "ISpindizzyBlock.h"
 #include "ISpindizzyBlockFactory.h"
 #include "ISpindizzyBlockSet.h"
 #include "SpindizzyBlock.h"
 #include "SpindizzyBlockFactory.h"
+#include "SpindizzyBlockHandler.h"
 #include "SpindizzyWaterFactory.h"
 
 class SpindizzyBlockSet:public ISpindizzyBlockSet,
-                        public IChangeableTextureSet {
+                        public IChangeableTextureSet,
+                        public IHUDComponentFactory,
+                        public IZoneContextListener {
   private:
-  static const int BLOCK_STATES;
-
+  std::map<IElementContainer*, SpindizzyBlockHandler*> cElementHandlers;
   std::vector<IElementFactory*> cElementFactories;
   std::vector<IUserCommand*> cSpindizzyBlockCommands;
   ICommandRegistry* cCommandRegistry;
+  Vertex cClueModelLocation;
+  std::vector<ISimpleModelFactory*> cClueModelFactories;
+  std::vector<ISimpleModel*> cClueModels;
+  ICamera* cCamera;
+  IHUD* cHUD;
   ISpindizzyTextureSet* cSpindizzyTextureSet;
   ISpindizzyTextureSet* cDummyTextureSet;
   ISpindizzyTextureSetChanger* cSpindizzyTextureSetController;
   ISurfaceProcessor* cSurfaceProcessor;
   ICollidableSurfaceRegistry* cCollidableSurfaceRegistry;
+  IZoneContext* cZoneContext;
   std::vector<ConditionElement*> cBlockStates;
+  std::vector<ISimpleModel*> cBlockStateClueModels;
+  HUDClue* cHUDClue;
 
-  void addBlockState(const std::string&);
+  void addBlockState(const std::string&, ISimpleModel*);
   ISpindizzyBlockFactory* getFactory(const std::string&);  
   
   public:
   SpindizzyBlockSet();
 
+  /*************************\
+   * Implements ElementSet *
+  \*************************/
+  SpindizzyBlockHandler* createHandler(IElementContainer*);
+  
   /**************************\
    * Implements IElementSet *
   \**************************/
@@ -72,6 +94,17 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
   void save(DOMNodeWriter*);
   void load(DOMNodeWrapper*);
 
+  /***********************************\
+   * Implements IHUDComponentFactory *
+  \***********************************/
+  std::string getHUDComponentFactoryName();
+  IHUDGameComponent* getHUDComponent(const std::string&);
+
+  /***********************************\
+   * Implements IZoneContextListener *
+  \***********************************/
+  void zoneContextChanged(IZone*);
+  
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/

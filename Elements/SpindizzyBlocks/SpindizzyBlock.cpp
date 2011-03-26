@@ -23,7 +23,7 @@ const unsigned int SpindizzyBlock::INIT_PROCESS_BLOCKS = 1;
 const unsigned int SpindizzyBlock::INIT_REGISTER_SURFACES = 2;
 const unsigned int SpindizzyBlock::INIT_USE_SURFACES = 3;
 
-SpindizzyBlock::SpindizzyBlock(ISpindizzyBlockFactory* elementFactory, BlockLocation* startLocation, BlockLocation* endLocation, SpindizzyBlockProperties* blockProperties, bool addition) : Element<ISpindizzyBlockSet, ISpindizzyBlockFactory>(elementFactory) {
+SpindizzyBlock::SpindizzyBlock(ISpindizzyBlockFactory* elementFactory, BlockLocation* startLocation, BlockLocation* endLocation, SpindizzyBlockProperties* blockProperties, bool addition) : ISpindizzyBlock(elementFactory) {
   cStartLocation = BlockLocation(endLocation->x > startLocation->x              ? startLocation->x : endLocation->x,
                                  endLocation->y > startLocation->y              ? startLocation->y : endLocation->y,
                                 (endLocation->z > startLocation->z) == addition ? startLocation->z : endLocation->z);
@@ -40,7 +40,7 @@ SpindizzyBlock::SpindizzyBlock(ISpindizzyBlockFactory* elementFactory, BlockLoca
   cCondition = blockProperties->getCondition();
 }
 
-SpindizzyBlock::SpindizzyBlock(ISpindizzyBlockFactory* elementFactory, DOMNodeWrapper* node) : Element<ISpindizzyBlockSet, ISpindizzyBlockFactory>(elementFactory) {
+SpindizzyBlock::SpindizzyBlock(ISpindizzyBlockFactory* elementFactory, DOMNodeWrapper* node) : ISpindizzyBlock(elementFactory) {
 }
 
 ISpindizzyTexture* SpindizzyBlock::getTileSurfaceTexture() {
@@ -257,6 +257,14 @@ void SpindizzyBlock::render() {
 
 void SpindizzyBlock::cacheSurfaces() {
   signalElementDirty();
+}
+
+std::set<bool*> SpindizzyBlock::getInputs() {
+  if (cCondition != NULL) {
+    return cCondition->getInputs();
+  }
+  std::set<bool*> mNoInputs;
+  return mNoInputs;
 }
 
 void SpindizzyBlock::removed() {

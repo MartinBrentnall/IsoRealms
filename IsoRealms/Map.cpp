@@ -42,6 +42,8 @@ Map::Map(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, 
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Plugin") {
       cPluginRegistry.registerPlugin(mNode, &cCommandRegistry, this);
+    } else if (mValueAsString == "ElementSet") {
+      cElementSetRegistry.registerElementSet(mNode, &cCommandRegistry);
     } else {
       // TODO: Throw something
     }
@@ -53,6 +55,8 @@ Map::Map(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, 
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Plugin") {
       cPluginRegistry.connectPlugin(mNode);
+    } else if (mValueAsString == "ElementSet") {
+      cElementSetRegistry.connectPlugin(&cPluginRegistry, mNode);
     } else {
       // TODO: Throw something
     }
@@ -65,10 +69,12 @@ Map::Map(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, 
     if (mValueAsString == "Elements") {
       cElements = cElementSetRegistry.loadElements(mNode, &mStartLocation, this);
       cDirtyElements = cElements;
+    } else if (mValueAsString == "ElementSet") {
+      cElementSetRegistry.loadConfiguration(mNode);
     } else if (mValueAsString == "Plugin") {
       cPluginRegistry.loadConfiguration(mNode);
-    } else if (mValueAsString == "ElementSet") {
-      cElementSetRegistry.registerElementSet(&cPluginRegistry, mNode, &cCommandRegistry);
+    } else if (mValueAsString == "Plugin") {
+      cElementSetRegistry.loadConfiguration(mNode);
     } else if (mValueAsString == "ZoneRenderer") {
       IZoneRenderer* mZoneRenderer = cPluginRegistry.getZoneRenderer(mNode, &cCommandRegistry);
       cZoneRenderers.push_back(mZoneRenderer);

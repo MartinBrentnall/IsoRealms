@@ -23,7 +23,7 @@ const unsigned int SpindizzyWater::INIT_PROCESS_BLOCKS = 1;
 const unsigned int SpindizzyWater::INIT_REGISTER_SURFACES = 2;
 const unsigned int SpindizzyWater::INIT_USE_SURFACES = 3;
 
-SpindizzyWater::SpindizzyWater(ISpindizzyBlockFactory* elementFactory, BlockLocation* startLocation, BlockLocation* endLocation, ISpindizzyTextureSet** textureSet) : Element<ISpindizzyBlockSet, ISpindizzyBlockFactory>(elementFactory) {
+SpindizzyWater::SpindizzyWater(ISpindizzyBlockFactory* elementFactory, BlockLocation* startLocation, BlockLocation* endLocation, ISpindizzyTextureSet** textureSet) : ISpindizzyBlock(elementFactory) {
   cSpindizzyTextureSet = textureSet;
   cStartLocation = BlockLocation(endLocation->x > startLocation->x ? startLocation->x : endLocation->x,
                                  endLocation->y > startLocation->y ? startLocation->y : endLocation->y,
@@ -110,6 +110,14 @@ BlockArea* SpindizzyWater::getCoverage() {
 
 Condition* SpindizzyWater::getCondition() {
   return NULL; // TODO: Allow dynamic surfaces
+}
+
+std::set<bool*> SpindizzyWater::getInputs() {
+  if (cCondition != NULL) {
+    return cCondition->getInputs();
+  }
+  std::set<bool*> mNoInputs;
+  return mNoInputs;
 }
 
 void SpindizzyWater::removed() {

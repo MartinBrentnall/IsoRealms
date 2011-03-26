@@ -119,6 +119,19 @@ bool Condition::operator!=(const Condition& condition) const {
   return !(*this == condition);
 }
 
+std::set<bool*> Condition::getInputs() {
+  std::set<bool*> mInputs;
+  for (unsigned int i = 0; i < cConditions.size(); i++) {
+    std::set<bool*> mSubInputs = cConditions[i]->getInputs();
+    mInputs.insert(mSubInputs.begin(), mSubInputs.end());
+  }
+  for (std::set<ConditionElement*>::iterator i = cElements.begin(); i != cElements.end(); i++) {
+    bool* mInput = (*i)->getInputAddress();
+    mInputs.insert(mInput);
+  }
+  return mInputs;
+}
+
 Condition* Condition::split(Condition* condition) {
   if (condition == NULL) {
     return NULL;
