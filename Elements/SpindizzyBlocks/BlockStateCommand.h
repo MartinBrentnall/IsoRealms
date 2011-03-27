@@ -21,14 +21,17 @@
 
 #include <IsoRealms/IUserCommand.h>
 
+#include "ISpindizzyBlockSet.h"
+
 class BlockStateCommand:public IUserCommand {
   private:
+  ISpindizzyBlockSet* cParent;
   std::string cName;
   bool* cState;
   bool cValue;
 
   public:
-  BlockStateCommand(const std::string&, bool*, bool);
+  BlockStateCommand(ISpindizzyBlockSet*, const std::string&, bool*, bool);
 
   /***************************\
    * Implements IUserCommand *

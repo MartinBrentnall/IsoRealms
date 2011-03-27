@@ -125,6 +125,7 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
   void registerRollableSurface(IRollableSurface*);
   void registerWallSurface(ICollidableWallSurface*);
   std::vector<ConditionElement*> getConditionElements();
+  void updateClue();
 
   /************************************\
    * Implements IChangeableTextureSet *

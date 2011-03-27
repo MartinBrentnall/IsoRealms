@@ -18,7 +18,8 @@
  */
 #include "BlockStateCommand.h"
 
-BlockStateCommand::BlockStateCommand(const std::string& name, bool* state, bool value) {
+BlockStateCommand::BlockStateCommand(ISpindizzyBlockSet* parent, const std::string& name, bool* state, bool value) {
+  cParent = parent;
   cName = name;
   cState = state;
   cValue = value;
@@ -26,6 +27,7 @@ BlockStateCommand::BlockStateCommand(const std::string& name, bool* state, bool 
 
 void BlockStateCommand::execute() {
   *cState = cValue;
+  cParent->updateClue();
 }
 
 std::string BlockStateCommand::getCommandName() {

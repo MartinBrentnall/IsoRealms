@@ -35,8 +35,8 @@ void SpindizzyBlockSet::addBlockState(const std::string& name, ISimpleModel* mod
   bool* mState = new bool(false);
   cBlockStates.push_back(new ConditionElement(name, mState));
   cBlockStateClueModels.push_back(model);
-  IUserCommand* mStateOnCommand = new BlockStateCommand(name, mState, true);
-  IUserCommand* mStateOffCommand = new BlockStateCommand(name, mState, false);
+  IUserCommand* mStateOnCommand = new BlockStateCommand(this, name, mState, true);
+  IUserCommand* mStateOffCommand = new BlockStateCommand(this, name, mState, false);
   cSpindizzyBlockCommands.push_back(mStateOnCommand);
   cSpindizzyBlockCommands.push_back(mStateOffCommand);
   cCommandRegistry->registerCommand(mStateOnCommand);
@@ -220,25 +220,7 @@ IHUDGameComponent* SpindizzyBlockSet::getHUDComponent(const std::string& compone
 }
   
 void SpindizzyBlockSet::zoneContextChanged(IZone* zone) {
-  SpindizzyBlockHandler* mElementHandler = cElementHandlers[dynamic_cast<IElementContainer*>(zone)];
-  if (mElementHandler != NULL) {
-    std::set<bool*> mInputs = mElementHandler->getInputs();
-    for (std::set<bool*>::iterator i = mInputs.begin(); i != mInputs.end(); i++) {
-      if (!(**i)) {
-        for (unsigned int j = 0; j < cBlockStates.size(); j++) {
-          if (cBlockStates[j]->getInputAddress() == (*i)) {
-            ISimpleModel* mClueModel = cBlockStateClueModels[j];
-            cHUDClue->setModel(mClueModel);
-            return;
-          }
-        }
-      }
-    }
-  }
-  cHUDClue->setModel(NULL);
-/*  unsigned int mClue = rand() % (cBlockStateClueModels.size() * 2);
-  ISimpleModel* mClueModel = mClue >= cBlockStateClueModels.size() ? NULL : cBlockStateClueModels[mClue];
-  cHUDClue->setModel(mClueModel);*/
+  updateClue();
 }
 
 void SpindizzyBlockSet::registerSurfaceProvider(ISurfaceProvider* provider) {
@@ -271,6 +253,25 @@ void SpindizzyBlockSet::registerWallSurface(ICollidableWallSurface* wallSurface)
 
 std::vector<ConditionElement*> SpindizzyBlockSet::getConditionElements() {
   return cBlockStates;
+}
+
+void SpindizzyBlockSet::updateClue() {
+  SpindizzyBlockHandler* mElementHandler = cElementHandlers[dynamic_cast<IElementContainer*>(cZoneContext->getZoneContext())];
+  if (mElementHandler != NULL) {
+    std::set<bool*> mInputs = mElementHandler->getInputs();
+    for (std::set<bool*>::iterator i = mInputs.begin(); i != mInputs.end(); i++) {
+      if (!(**i)) {
+        for (unsigned int j = 0; j < cBlockStates.size(); j++) {
+          if (cBlockStates[j]->getInputAddress() == (*i)) {
+            ISimpleModel* mClueModel = cBlockStateClueModels[j];
+            cHUDClue->setModel(mClueModel);
+            return;
+          }
+        }
+      }
+    }
+  }
+  cHUDClue->setModel(NULL);
 }
 
 void SpindizzyBlockSet::notifyZoneAction(Zone* zone) {
