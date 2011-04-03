@@ -28,7 +28,8 @@ void Block::update(int milliseconds) {
 }
 
 void Block::render() {
-  glScalef(0.75f, 0.75f, 0.75f);
+  glTranslatef(cLocation->x, cLocation->y, cLocation->z * IsoRealmsConstants::BLOCK_HEIGHT);
+  glScalef(0.65f, 0.65f, 0.65f);
   
   float xs = -IsoRealmsConstants::BLOCK_RADIUS; // TODO: Rename this
   float ys = -IsoRealmsConstants::BLOCK_RADIUS; // TODO: Rename this

@@ -28,11 +28,12 @@
 #include "CommandRegistryProxy.h"
 #include "IElementRegistryListener.h"
 #include "IElementSet.h"
+#include "IElementSetRegistry.h"
 #include "InitException.h"
 #include "PluginRegistry.h"
 #include "System.h"
 
-class ElementSetRegistry {
+class ElementSetRegistry:public IElementSetRegistry {
   private:
 
   /**
@@ -128,6 +129,11 @@ class ElementSetRegistry {
   void pluginRemoved(IPlugin*);
 
   void save(PluginRegistry*, DOMNodeWriter*);
+
+  /**********************************\
+   * Implements IElementSetRegistry *
+  \**********************************/
+  std::string getEntityPath(IElementSet*);
 
   ~ElementSetRegistry();
 };

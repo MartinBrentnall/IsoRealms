@@ -218,10 +218,6 @@ void SpindizzySwitches::setEditingContext(BlockLocation*, IComponentContainer*, 
   cCommandRegistry->registerCommand(cResetCommand);
 }
 
-std::string SpindizzySwitches::getHUDComponentFactoryName() {
-  return "SpindizzySwitches";
-}
-
 IHUDGameComponent* SpindizzySwitches::getHUDComponent(const std::string& component) {
   if      (component == "ActiveSwitchA") {return &cHUDSwitchA;}
   else if (component == "ActiveSwitchB") {return &cHUDSwitchB;}

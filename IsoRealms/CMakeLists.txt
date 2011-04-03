@@ -34,7 +34,6 @@ add_library(IsoRealms SHARED
   DummyPlugin.cpp
   DummyPluginRegistry.cpp
   ElementSetRegistry.cpp
-  GlobalConfiguration.cpp
   GUI/AbstractRectangularComponent.cpp
   GUI/Button.cpp
   GUI/CloseDialogCommand.cpp

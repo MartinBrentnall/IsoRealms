@@ -21,9 +21,11 @@
 
 #include "DefaultElementHandler.h"
 #include "IElementSet.h"
+#include "IElementSetRegistry.h"
 
 template<class T = IElement> class ElementSet:public IElementSet {
   private:
+  IElementSetRegistry* cElementSetRegistry;
   std::map<IElementContainer*, DefaultElementHandler<T>*> cHandlers;
 
   DefaultElementHandler<T>* getElementHandler(IElementContainer* elementContainer) {
@@ -55,6 +57,20 @@ template<class T = IElement> class ElementSet:public IElementSet {
   
   virtual DefaultElementHandler<T>* createHandler(IElementContainer* elementContainer) {
     return new DefaultElementHandler<T>();
+  }
+  
+  /**************************\
+   * Implements IElementSet *
+  \**************************/
+  void setElementSetRegistry(IElementSetRegistry* elementSetRegistry) {
+    cElementSetRegistry = elementSetRegistry;
+  }
+  
+  /*********************************\
+   * Implements IAddressableEntity *
+  \*********************************/
+  std::string getEntityAddress() {
+    return cElementSetRegistry->getEntityPath(this);
   }
 };
 

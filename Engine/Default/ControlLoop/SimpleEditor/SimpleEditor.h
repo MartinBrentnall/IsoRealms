@@ -29,19 +29,20 @@
 #include <IsoRealms/Configuration.h>
 #include <IsoRealms/DOMNodeWrapper.h>
 #include <IsoRealms/ElementSetRegistry.h>
-#include <IsoRealms/GlobalConfiguration.h>
 #include <IsoRealms/GUI/OpenDialogCommand.h>
 #include <IsoRealms/ICommandInfo.h>
 #include <IsoRealms/IComponentContainer.h>
 #include <IsoRealms/IElementFactory.h>
 #include <IsoRealms/IElementGateway.h>
 #include <IsoRealms/IElementRegistryListener.h>
-#include <IsoRealms/IFont.h>
-#include <IsoRealms/IFontEngine.h>
 #include <IsoRealms/IHUDComponent.h>
 #include <IsoRealms/IPluginRegistryListener.h>
+#include <IsoRealms/IPluginSupport.h>
 #include <IsoRealms/Map.h>
+#include <IsoRealms/PlugSocket.h>
 #include <IsoRealms/ScreenConfiguration.h>
+
+#include "../../../../Plugins/Font/IFontPlugin.h"
 
 class OpenCommand;
 
@@ -65,9 +66,10 @@ class SimpleEditor:public IControlLoop,
                    public IElementSelectionListener,
                    public IElementRegistryListener,
                    public IElementGateway,
+                   public IMapManager,
                    public IPluginRegistryAccessor,
                    public IPluginRegistryListener,
-                   public IMapManager {
+                   public IPluginSupport {
   private:
   class EntityClassDialogFactory;
     
@@ -83,7 +85,10 @@ class SimpleEditor:public IControlLoop,
   Camera cViewPoint;
   ElementSetEntityClass* cElementSetEntityClass;
   EditorCursor* cCursor;
-  IFont* cFont;
+  CommandDirectory cCommandRegistry;
+  PluginRegistry cPluginRegistry;
+  std::vector<PlugSocket*> cFontSocket;
+  IFontPlugin* cFont;
   bool cEditorFocus;
   MenuBar* cMenuBar;
   EntityClassDialogFactory* cElementSetsFactory;
@@ -158,6 +163,13 @@ class SimpleEditor:public IControlLoop,
 
   public:
   SimpleEditor(DOMNodeWrapper*);
+
+  /*****************************\
+   * Implements IPluginSupport *
+  \*****************************/
+  std::vector<PlugSocket*> getPlugSockets();
+  void setPlugin(PlugSocket*, IPlugin*);
+  IPlugin* getPlugin(PlugSocket*);
 
   /******************************\
    * Implements IElementGateway *

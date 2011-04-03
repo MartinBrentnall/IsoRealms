@@ -18,11 +18,8 @@
  */
 #include "AttractIntro.h"
 
-AttractIntro::AttractIntro() {
-  IFontEngine* mFontEngine = GlobalConfiguration::getFontEngine();
-
-  // TODO: Get font from XML!
-  cFont = mFontEngine->getFont("Menu");
+AttractIntro::AttractIntro(IFont* font) {
+  cFont = font;
   init();
 }
 
@@ -75,8 +72,8 @@ bool AttractIntro::hasFinished() {
 void AttractIntro::frontEndActive(bool active) {
 }
 
-extern "C" IAttract* create() {
-  return new AttractIntro();
+extern "C" IAttract* create(IFont* font) {
+  return new AttractIntro(font);
 }
 
 extern "C" void destroy(IAttract* attract) {

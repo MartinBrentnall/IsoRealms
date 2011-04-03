@@ -34,6 +34,7 @@ void PluginRegistry::registerPlugin(DOMNodeWrapper* node, CommandDirectory* dire
   CommandRegistryProxy* mCommandRegistryProxy = new CommandRegistryProxy(directory, mDirectory);
   mPlugin->setRuntimeContext(map);
   mPlugin->setEditingContext(NULL, NULL, mCommandRegistryProxy);
+  mPlugin->setPluginRegistry(this);
 }
 
 void PluginRegistry::connectPlugin(DOMNodeWrapper* node) {
@@ -64,14 +65,14 @@ void PluginRegistry::loadConfiguration(DOMNodeWrapper* node) {
   }
 }
 
-void PluginRegistry::setPlugin(IPlugin* plugin, DOMNodeWrapper* node) {
+void PluginRegistry::setPlugin(IPluginSupport* entity, DOMNodeWrapper* node) {
   std::string mImplementation = node->getAttribute("implementation");
   std::string mInstance = node->getAttribute("instance");
   std::string mSocketID = node->getAttribute("socketid");
   std::cout << "    Connecting plugin \"" << mImplementation << ":" << mInstance << "\"" << std::endl;
   PlugSocket* mPlugSocket = new PlugSocket(mImplementation, mSocketID);
   IPlugin* mPlugin = getPlugin(mImplementation, mInstance);
-  plugin->setPlugin(mPlugSocket, mPlugin);
+  entity->setPlugin(mPlugSocket, mPlugin);
 }
 
 void PluginRegistry::loadPlugin(std::string& type, std::string& implementation, std::string& instanceName) {
@@ -129,6 +130,11 @@ std::string PluginRegistry::getInstanceName(std::string type, IPlugin* instance)
     }
   }
   return "";
+}
+
+std::string PluginRegistry::getEntityPath(IPlugin* plugin) {
+  std::string mType = getPluginType(plugin);
+  return "Plugin/" + mType + "/" + getInstanceName(mType, plugin) + "/";
 }
 
 void PluginRegistry::notifyZoneAction(IZone* zone) {

@@ -27,9 +27,7 @@
 #include "DOMNodeWrapper.h"
 #include "DOMNodeWriter.h"
 #include "Hacks.h"
-#include "GlobalConfiguration.h"
 #include "IEngine.h"
-#include "IFontEngine.h"
 #include "InitException.h"
 #include "ParseException.h"
 #include "ScreenConfiguration.h"
@@ -80,8 +78,6 @@ class Configuration {
    *                          configuration.
    */
   void parseConfiguration(DOMNodeWrapper*);
-
-  IFontEngine* parseFontEngine(DOMNodeWrapper*);
 
   public:
 

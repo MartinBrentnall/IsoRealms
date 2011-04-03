@@ -55,13 +55,25 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
                         public IHUDComponentFactory,
                         public IZoneContextListener {
   private:
+  class HUDClueData {
+    private:
+    Vertex cLocation;
+    ISimpleModelFactory* cFactory;
+    ISimpleModel* cModel;
+    
+    public:
+    HUDClueData(ISimpleModelFactory*); 
+    
+    ISimpleModel* initClueData(DOMNodeWrapper*);
+    
+    ISimpleModelFactory* getFactory();
+  };
+    
   std::map<IElementContainer*, SpindizzyBlockHandler*> cElementHandlers;
   std::vector<IElementFactory*> cElementFactories;
   std::vector<IUserCommand*> cSpindizzyBlockCommands;
+  std::vector<HUDClueData*> cHUDClueData;
   ICommandRegistry* cCommandRegistry;
-  Vertex cClueModelLocation;
-  std::vector<ISimpleModelFactory*> cClueModelFactories;
-  std::vector<ISimpleModel*> cClueModels;
   ICamera* cCamera;
   IHUD* cHUD;
   ISpindizzyTextureSet* cSpindizzyTextureSet;
@@ -97,7 +109,6 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
   /***********************************\
    * Implements IHUDComponentFactory *
   \***********************************/
-  std::string getHUDComponentFactoryName();
   IHUDGameComponent* getHUDComponent(const std::string&);
 
   /***********************************\

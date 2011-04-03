@@ -125,14 +125,8 @@ void SpindizzyGERALDSet::save(DOMNodeWriter* node) {
 }
 
 void SpindizzyGERALDSet::load(DOMNodeWrapper* node) {
-  for (int i = 0; i < node->getChildCount(); i++) {
-    DOMNodeWrapper *mNode = node->getChild(i);
-    std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "FallLimit") {
-      for (unsigned int i = 0; i < cElementFactories.size(); i++) {
-        static_cast<SpindizzyGERALDFactory*>(cElementFactories[i])->loadConfiguration(mNode, cCommandRegistry);
-      }
-    }
+  for (unsigned int i = 0; i < cElementFactories.size(); i++) {
+    static_cast<SpindizzyGERALDFactory*>(cElementFactories[i])->loadConfiguration(node, cCommandRegistry);
   }
 }
 

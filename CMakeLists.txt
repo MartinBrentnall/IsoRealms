@@ -43,7 +43,6 @@ endif(XERCESC_FOUND)
 
 add_subdirectory(Elements)
 add_subdirectory(Engine)
-add_subdirectory(FontEngine)
 add_subdirectory(IsoRealms)
 add_subdirectory(Plugins)
 

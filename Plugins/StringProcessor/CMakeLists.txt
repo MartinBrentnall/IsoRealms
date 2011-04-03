@@ -1,4 +1,4 @@
-# Copyright 2009,2010 Martin Brentnall
+# Copyright 2009,2010,2011 Martin Brentnall
 #
 # This file is part of Iso-Realms.
 #
@@ -14,4 +14,12 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
-add_subdirectory(GLFreeType)
+add_subdirectory(StringToHUD)
+
+include_directories(${PROJECT_SOURCE_DIR})
+
+add_library(StringProcessorDummy MODULE 
+  StringProcessorDummy.cpp
+)
+set_target_properties(StringProcessorDummy PROPERTIES OUTPUT_NAME "Dummy")
+set_target_properties(StringProcessorDummy PROPERTIES PREFIX "lib")

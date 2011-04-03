@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2009,2010,2011 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,15 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "GlobalConfiguration.h"
+#ifndef I_STRING_PROCESSOR_H
+#define I_STRING_PROCESSOR_H
 
-IFontEngine* GlobalConfiguration::cFontEngine = NULL;
+#include <string>
 
-void GlobalConfiguration::setFontEngine(IFontEngine* fontEngine) {
-  cFontEngine = fontEngine;
-}
+#include <IsoRealms/IPlugin.h>
 
-IFontEngine* GlobalConfiguration::getFontEngine() {
-  return cFontEngine;
-}
+class IStringProcessor:public virtual IPlugin {
+  public:
+  virtual void registerString(std::string*) = 0;
+};
 
+#endif

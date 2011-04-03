@@ -24,26 +24,30 @@
 
 #include "BlockLocation.h"
 #include "DOMNodeWriter.h"
+#include "IAddressableEntity.h"
 #include "ICommandRegistry.h"
 #include "IComponentContainer.h"
 #include "ICommandInfo.h"
 #include "IDynamicElement.h"
 #include "IInteractiveElement.h"
+#include "IPluginRegistry.h"
 #include "IPluginSupport.h"
 #include "IVisualElement.h"
 #include "IZone.h"
 
 class IMap;
-class IPluginRegistry;
 class IZoneRenderer;
 
-class IPlugin:public IPluginSupport {
+class IPlugin:public IPluginSupport,
+              public virtual IAddressableEntity {
   private:
   static std::vector<ICommandInfo*> cNoCommands;
   static std::vector<IDynamicElement*> cNoDynamicElements;
   static std::vector<IVisualElement*> cNoVisualElements;
   static std::vector<IInteractiveElement*> cNoInteractiveElements;
 
+  IPluginRegistry* cPluginRegistry;
+  
   public:
 
   /**
@@ -141,6 +145,14 @@ class IPlugin:public IPluginSupport {
    */
   virtual IZoneRenderer* getZoneRenderer(const std::string&);
   
+  // TODO: I'm not sure I like this being here
+  void setPluginRegistry(IPluginRegistry*);
+
+  /*********************************\
+   * Implements IAddressableEntity *
+  \*********************************/
+  std::string getEntityAddress();
+    
   /**
    * The plug-in should clean up any resources that it allocated itself.  It
    * can be assumed that resources created by the plug-in are no longer in use

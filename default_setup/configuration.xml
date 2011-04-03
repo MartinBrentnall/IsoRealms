@@ -1,24 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <IsoRealmsConfiguration>
-  <FontEngine name="GLFreeType">
-    <Font name="Menu">
-      <File>MenuFont.ttf</File>
-      <Detail>64</Detail>
-    </Font>
-    <Font name="Editor">
-      <File>EditorFont.ttf</File>
-      <Detail>64</Detail>
-    </Font>
-  </FontEngine>
-
   <Engine name="Default">
     <GlobalAction type="PopControlLoopCommand" name="PopControlLoop"/>
     <GlobalAction type="TerminateEngineCommand" name="TerminateEngineCommand"/>
     
     <!-- Editor configuration -->
     <ControlLoop name="SimpleEditor" init="false">
-      <Font name="Editor"/>
+      <Plugin implementation="GLFreeType" instance="EditorFont" type="Font">
+        <Configuration>
+          <File>EditorFont.ttf</File>
+          <Detail>64</Detail>
+        </Configuration>
+      </Plugin>
       
+      <UsePlugin implementation="Font" instance="EditorFont"/>
       <MenuBar>
         <Menu name="^File">
           <MenuItem name="^New..."/>
@@ -73,6 +68,14 @@
     
     <!-- Front-end configuration -->
     <ControlLoop name="AttractManager" init="true">
+      <Plugin implementation="GLFreeType" instance="AttractFont" type="Font">
+        <Configuration>
+          <File>MenuFont.ttf</File>
+          <Detail>64</Detail>
+        </Configuration>
+      </Plugin>
+
+      <UsePlugin implementation="Font" instance="AttractFont"/>
       <AttractScene name="Intro"/>
       <AttractScene name="Title"/>
       <AttractScene name="HiScore"/>

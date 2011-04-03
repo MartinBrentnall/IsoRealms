@@ -61,27 +61,31 @@ class Font:public IFont {
    */
   GLuint cGLListBase;
 
-  int next_p2(int);
-  void make_dlist(FT_Face, char, GLuint, GLuint*);
+  // This function gets the first power of 2 >= the int that we pass it.
+  int nextPowerOfTwo(int);
+
+  /**
+   * Create a display list coresponding to the give character.
+   *
+   * TODO
+   */
+  void makeDisplayList(FT_Face, char, GLuint, GLuint*);
   void pushScreenCoordinateMatrix();
-  void pop_projection_matrix();
+  void popProjectionMatrix();
 
   public:
 
-  /**
-   * Construct a font from the specified filename of the specified detail.
-   * 
-   * @param char*   The filename of the font file.
-   * @param int     Detail level (resolution) of the font.
-   */
-  Font(const char*, unsigned int);
-
   //Free all the resources assosiated with the font.
   void clean();
+  
+  /**********************\
+   * Implements IPlugin *
+  \**********************/
+  void load(DOMNodeWrapper*);
 
-  /**************************************************************************\
-   * Implemented methods of IFont.h                                         *
-  \**************************************************************************/
+  /********************\
+   * Implements IFont *
+  \********************/
   void print(float, float, float, int, const char*, ...);
   float getWidth(float, const char*, ...);
 };

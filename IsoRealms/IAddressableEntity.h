@@ -16,48 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ATTRACT_INTRO_H
-#define ATTRACT_INTRO_H
+#ifndef I_ADDRESSABLE_ENTITY_H
+#define I_ADDRESSABLE_ENTITY_H
 
-#include <iostream>
-#include <vector>
-#include <GL/gl.h>
-#include <SDL/SDL.h>
-
-#include "../../IAttract.h"
-
-#include <IsoRealms/IFont.h>
-
-/**
- * This attract scene displays a short introduction animation.
- */
-class AttractIntro:public IAttract {
-  private:
-  IFont* cFont;
-  int cStage;
-  double cFade;
-  int cDelay;
-  
-  /**
-   * Has the scene started yet?
-   */
-  bool cFinished;
-
+class IAddressableEntity {
   public:
-
-  /**
-   * Default constructor.
-   */
-  AttractIntro(IFont*);
-
-  /***********************\
-   * Implements IAttract *
-  \***********************/
-  void init();
-  void update(int);
-  void render();
-  bool hasFinished();
-  void frontEndActive(bool);
+  virtual std::string getEntityAddress() = 0;
 };
 
 #endif

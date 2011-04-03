@@ -56,23 +56,63 @@ SimpleEditor::SimpleEditor(DOMNodeWrapper* node) {
   EditorCommandManager::registerCommand(COMMAND_OPEN,           new OpenCommand(this));
   EditorCommandManager::registerCommand(COMMAND_ELEMENTS,       new ElementSetInstancesCommand(this, mElementPaletteDialogFactory));
   EditorCommandManager::registerCommand(COMMAND_ELEMENT_SETS,   new ElementSetInstancesCommand(this, cElementSetsFactory));
-                                                                                                  
+
+  assignDummyPlugin(&cFont, "Font");
+  LookAndFeel::setDefaultFont(cFont, 0.02f);
+  cFontSocket.push_back(new PlugSocket("Font"));
+
+  // TODO: This three pass code path seems quite common for loading plugins; used here, in the editor and in the map.  Maybe we can reduce duplication.
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "Plugin") {
+      // TODO: Deallocate plugins on destruction of the attract control loop
+      cPluginRegistry.registerPlugin(mNode, &cCommandRegistry, NULL);
+    }
+  }
+  
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "Plugin") {
+      cPluginRegistry.connectPlugin(mNode);
+    }
+  }
+  
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "OnExit") {
       cExitCommands = parseCommands(mNode);
-    } else if (mValueAsString == "Font") {
-      IFontEngine* mFontEngine = GlobalConfiguration::getFontEngine();
-      std::string mFontName = mNode->getAttribute("name");
-      // TODO: Make font into local variable!
-      cFont = mFontEngine->getFont(mFontName);
-      LookAndFeel::setDefaultFont(cFont, 0.02f);
+    } else if (mValueAsString == "Plugin") {
+      cPluginRegistry.loadConfiguration(mNode);
+    } else if (mValueAsString == "UsePlugin") {
+      cPluginRegistry.setPlugin(this, mNode);
     } else if (mValueAsString == "MenuBar") {
       cMenuBar = new MenuBar(this, mNode, this);
       addComponent(cMenuBar);
     }
   }
+}
+
+std::vector<PlugSocket*> SimpleEditor::getPlugSockets() {
+  return cFontSocket;
+}
+
+void SimpleEditor::setPlugin(PlugSocket* socket, IPlugin* plugin) {
+  if (socket->getType() == "Font") {
+    assignPlugin(plugin, &cFont, *socket);
+    // TODO: Make font into local variable!  // TODO: What does the todo to the left of this one mean?
+    LookAndFeel::setDefaultFont(cFont, 0.02f);
+  } else {
+    // TODO: Throw
+  }
+}
+
+IPlugin* SimpleEditor::getPlugin(PlugSocket* socket) {
+  if (socket->getType() == "Font") {return cFont;}
+  // TODO: Throw
+  return NULL;
 }
 
 std::vector<ICommand*> SimpleEditor::parseCommands(DOMNodeWrapper* node) {

@@ -16,31 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef MODEL_TO_HUD
-#define MODEL_TO_HUD
+#ifndef STRING_TO_HUD_H
+#define STRING_TO_HUD_H
 
-#include <IsoRealms/IsoRealmsConstants.h>
+#include <string>
 
-#include "../../3DModel/ISimpleModelFactory.h"
-#include "../../Camera/ICamera.h"
+#include "../../Font/IFontPlugin.h"
 #include "../../HUD/IHUD.h"
 
-#include "../IUtilities.h"
+#include "../IStringProcessor.h"
 
-class ModelToHUD:public IUtilities,
-                 public IHUDComponentFactory,
-                 public IHUDGameComponent {
+class StringToHUD:public IStringProcessor,
+                  public IHUDComponentFactory,
+                  public IHUDGameComponent {
   private:
   std::vector<PlugSocket*> cSockets;
-  Vertex cModelLocation;
-  ICamera* cCamera;
-  ISimpleModelFactory* cModelFactory;
-  ISimpleModel* cModel;
+  std::string* cText;
+  IFont* cFont;
   IHUD* cHUD;
 
   public:
-  ModelToHUD();
-    
+  StringToHUD();
+
+  /*******************************\
+   * Implements IStringProcessor *
+  \*******************************/
+  void registerString(std::string*);
+
   /**********************\
    * Implements IPlugin *
   \**********************/

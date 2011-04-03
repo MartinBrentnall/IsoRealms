@@ -22,13 +22,38 @@
 AttractControlLoop::AttractControlLoop(DOMNodeWrapper* node) {
   cFrontEndActive = false;
   int mCurrentLayer = 0;
+  assignDummyPlugin(&cFont, "Font");
+  cFontSocket.push_back(new PlugSocket("Font"));
+  
+  // TODO: This three pass code path seems quite common for loading plugins; used here, in the editor and in the map.  Maybe we can reduce duplication.
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "FrontEnd") {
+    if (mValueAsString == "Plugin") {
+      // TODO: Deallocate plugins on destruction of the attract control loop
+      cPluginRegistry.registerPlugin(mNode, &cCommandRegistry, NULL);
+    }
+  }
+  
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "Plugin") {
+      cPluginRegistry.connectPlugin(mNode);
+    }
+  }
+  
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "Plugin") {
+      cPluginRegistry.loadConfiguration(mNode);
+    } else if (mValueAsString == "UsePlugin") {
+      cPluginRegistry.setPlugin(this, mNode);
+    } else if (mValueAsString == "FrontEnd") {
       std::string mFrontEndName = mNode->getAttribute("name");
       std::string mFrontEndLocation = System::getConfigurationResource("Engine/Default/ControlLoop/AttractManager/FrontEnd/" + mFrontEndName + "/libFrontEnd");
-      void* mFrontEndSO = dlopen(mFrontEndLocation.c_str(), RTLD_LAZY);
+      void* mFrontEndSO = dlopen(mFrontEndLocation.c_str(), RTLD_LAZY | RTLD_GLOBAL);
       if (!mFrontEndSO) {
         throw InitException("Cannot load library: " + std::string(dlerror()));
       }
@@ -37,13 +62,13 @@ AttractControlLoop::AttractControlLoop(DOMNodeWrapper* node) {
       if (mDlsymError) {
         throw InitException("Cannot load symbol: " + std::string(mDlsymError));
       }
-      cFrontEnd = createFrontEndFunction(mNode);
+      cFrontEnd = createFrontEndFunction(mNode, cFont);
     } else if (mValueAsString == "AttractScene") {
       // TODO: Use relative path
       try {
         std::string mAttractName = mNode->getAttribute("name");
         std::string mAttractLocation = System::getConfigurationResource("Engine/Default/ControlLoop/AttractManager/Attract/" + mAttractName + "/libAttract");
-        void* mAttractSO = dlopen(mAttractLocation.c_str(), RTLD_LAZY);
+        void* mAttractSO = dlopen(mAttractLocation.c_str(), RTLD_LAZY | RTLD_GLOBAL);
         if (!mAttractSO) {
           throw InitException("Cannot load library: " + std::string(dlerror()));
         }
@@ -52,7 +77,7 @@ AttractControlLoop::AttractControlLoop(DOMNodeWrapper* node) {
         if (mDlsymError) {
           throw InitException("Cannot load symbol: " + std::string(mDlsymError));
         }
-        cAttractServices[mAttractName] = createAttractFunction();
+        cAttractServices[mAttractName] = createAttractFunction(cFont);
       } catch (InitException e) {
         std::cout << e.getMessage() << std::endl;
         std::cout << "Warning: could not load attract plug-in \"" << mNode->getStringValue() << "\":" << std::endl << e.getMessage() << std::endl;
@@ -97,6 +122,24 @@ bool AttractControlLoop::checkActiveInput(int type) {
     case SDL_MOUSEBUTTONDOWN : return true; break;
   }
   return false;
+}
+
+std::vector<PlugSocket*> AttractControlLoop::getPlugSockets() {
+  return cFontSocket;
+}
+
+void AttractControlLoop::setPlugin(PlugSocket* socket, IPlugin* plugin) {
+  if (socket->getType() == "Font") {
+    assignPlugin(plugin, &cFont, *socket);
+  } else {
+    // TODO: Throw
+  }
+}
+
+IPlugin* AttractControlLoop::getPlugin(PlugSocket* socket) {
+  if (socket->getType() == "Font") {return cFont;}
+  // TODO: Throw
+  return NULL;
 }
 
 void AttractControlLoop::input(SDL_Event& event) {

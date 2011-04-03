@@ -98,7 +98,6 @@ class SpindizzySwitches:public IUtilities,
   /***********************************\
    * Implements IHUDComponentFactory *
   \***********************************/
-  std::string getHUDComponentFactoryName();
   IHUDGameComponent* getHUDComponent(const std::string&);
   
   /*****************************\

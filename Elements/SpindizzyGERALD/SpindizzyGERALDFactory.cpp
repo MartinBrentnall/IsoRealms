@@ -23,7 +23,7 @@ SpindizzyGERALDFactory::SpindizzyGERALDFactory(ISpindizzyGERALDSet* elementSet, 
   cZoneContext = zoneContext;
   cGERALDModelFactory = geraldModelFactory;
   BlockLocation mIdentityLocation(0, 0, 0);
-  cSampleGERALD = new SpindizzyGERALD(this, &mIdentityLocation, cGERALDModelFactory, NULL, NULL, NULL, NULL, NULL, 0.0f, NULL);
+  cSampleGERALD = new SpindizzyGERALD(this, &mIdentityLocation, cGERALDModelFactory, NULL, NULL, NULL, NULL, NULL, 0.0f, NULL, NULL);
   cSampleGERALDVisuals = cSampleGERALD->getVisualElements();
   cCamera = NULL;
 }
@@ -78,7 +78,7 @@ IElement* SpindizzyGERALDFactory::getElement(DOMNodeWrapper* node, BlockLocation
       mStartLocation.setRelative(mNode, *relative);
     }
   }
-  SpindizzyGERALD* mLoadedGERALD = new SpindizzyGERALD(this, &mStartLocation, cGERALDModelFactory, cCollectables, cCollidableSurfaceRegistry, cLocationAwareness, cZoneContext, cCamera, cFallLimit, cFallLimitScript);
+  SpindizzyGERALD* mLoadedGERALD = new SpindizzyGERALD(this, &mStartLocation, cGERALDModelFactory, cCollectables, cCollidableSurfaceRegistry, cLocationAwareness, cZoneContext, cCamera, cFallLimit, cFallLimitScript, cFallScript);
   cContent.push_back(mLoadedGERALD);
   registerElement(mLoadedGERALD, elementContainer);
   return mLoadedGERALD;
@@ -88,7 +88,7 @@ bool SpindizzyGERALDFactory::keyDown(SDLKey& key) {
   switch (key) {
     case SDLK_SPACE: {
       if (cContent.size() == 0) {
-        SpindizzyGERALD* mGERALD = new SpindizzyGERALD(this, cEditingLocation, cGERALDModelFactory, cCollectables, cCollidableSurfaceRegistry, cLocationAwareness, cZoneContext, cCamera, cFallLimit, cFallLimitScript);
+        SpindizzyGERALD* mGERALD = new SpindizzyGERALD(this, cEditingLocation, cGERALDModelFactory, cCollectables, cCollidableSurfaceRegistry, cLocationAwareness, cZoneContext, cCamera, cFallLimit, cFallLimitScript, cFallScript);
         addElement(mGERALD);
         cContent.push_back(mGERALD);
       } else {
@@ -141,6 +141,18 @@ void SpindizzyGERALDFactory::renderIcon() {
 }
 
 void SpindizzyGERALDFactory::loadConfiguration(DOMNodeWrapper* node, ICommandRegistry* commandRegistry) {
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "FallLimit") {
+      loadFallLimitConfiguration(mNode, commandRegistry);
+    } else if (mValueAsString == "Respawn") {
+      loadRespawnConfiguration(mNode, commandRegistry);
+    }
+  }
+}
+
+void SpindizzyGERALDFactory::loadFallLimitConfiguration(DOMNodeWrapper* node, ICommandRegistry* commandRegistry) {
   cFallLimit = node->getFloatAttribute("height");
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
@@ -150,3 +162,14 @@ void SpindizzyGERALDFactory::loadConfiguration(DOMNodeWrapper* node, ICommandReg
     }
   }
 }
+
+void SpindizzyGERALDFactory::loadRespawnConfiguration(DOMNodeWrapper* node, ICommandRegistry* commandRegistry) {
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "Script") {
+      cFallScript = commandRegistry->getScript(mNode);
+    }
+  }
+}
+

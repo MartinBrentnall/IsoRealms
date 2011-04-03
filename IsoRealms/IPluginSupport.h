@@ -79,9 +79,9 @@ class IPluginSupport {
 
   template<class T> void assignDummyPlugin(T** dest, const std::string& type) {
     *dest = dynamic_cast<T*>(DummyPluginRegistry::getDummyPlugin(type));
-    if (dest == NULL) {
+    if (*dest == NULL) {
       // TODO: Throw wobbly
-      std::cout << "WARNING: Could not create dummy plugin for type \"" << type << "\"!" << std::endl;
+      std::cout << "WARNING: Setting dummy plugin failed for type \"" << type << "\"!" << std::endl;
     }
   }
 

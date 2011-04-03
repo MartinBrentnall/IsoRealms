@@ -26,9 +26,7 @@
 
 #include "../../IAttract.h"
 
-#include <IsoRealms/GlobalConfiguration.h>
 #include <IsoRealms/IFont.h>
-#include <IsoRealms/IFontEngine.h>
 
 /**
  * This attract scene displays the title logo for a limited time.
@@ -55,11 +53,11 @@ class AttractTitle:public IAttract {
   /**
    * Default constructor.
    */
-  AttractTitle();
+  AttractTitle(IFont*);
 
-  /**************************************************************************\
-   * Implemented methods of IAttract.h                                      *
-  \**************************************************************************/
+  /***********************\
+   * Implements IAttract *
+  \***********************/
   void init();
   void update(int);
   void render();

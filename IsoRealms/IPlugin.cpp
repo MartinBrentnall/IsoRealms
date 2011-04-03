@@ -83,6 +83,14 @@ void IPlugin::loadData(DOMNodeWrapper*, IPluginRegistry*, IZone*) {
   // Nothing to do.
 }
 
+void IPlugin::setPluginRegistry(IPluginRegistry* pluginRegistry) {
+  cPluginRegistry = pluginRegistry;
+}
+
+std::string IPlugin::getEntityAddress() {
+  return cPluginRegistry->getEntityPath(this);
+}
+
 IZoneRenderer* IPlugin::getZoneRenderer(const std::string& name) {
   return NULL;
 }

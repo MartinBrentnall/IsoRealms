@@ -18,9 +18,8 @@
  */
 #include "AttractHiScore.h"
 
-AttractHiScore::AttractHiScore() {
-  IFontEngine* mFontEngine = GlobalConfiguration::getFontEngine();
-  cFont = mFontEngine->getFont("Menu");
+AttractHiScore::AttractHiScore(IFont* font) {
+  cFont = font;
   init();
 }
 
@@ -95,8 +94,8 @@ bool AttractHiScore::hasFinished() {
 void AttractHiScore::frontEndActive(bool active) {
 }
 
-extern "C" IAttract* create() {
-  return new AttractHiScore();
+extern "C" IAttract* create(IFont* font) {
+  return new AttractHiScore(font);
 }
 
 extern "C" void destroy(IAttract* attract) {

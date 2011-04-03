@@ -19,13 +19,13 @@
 #include "DefaultHUD.h"
 
 void DefaultHUD::registerHUDComponentFactory(IHUDComponentFactory* componentFactory) {
-  std::string mFactoryName = componentFactory->getHUDComponentFactoryName();
+  std::string mFactoryName = componentFactory->getEntityAddress();
   // TODO: Check if it already exists first!
   cHUDComponentSources[mFactoryName] = componentFactory;
 }
 
 void DefaultHUD::unregisterHUDComponentFactory(IHUDComponentFactory* componentFactory) {
-  std::string mFactoryName = componentFactory->getHUDComponentFactoryName();
+  std::string mFactoryName = componentFactory->getEntityAddress();
   // TODO: Verify that the erased factory is this one!
   // TODO: Verify that the name exists in the map!
   cHUDComponentSources.erase(mFactoryName);
@@ -37,16 +37,23 @@ void DefaultHUD::load(DOMNodeWrapper* node) {
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Component") {
       std::string mComponentSource = mNode->getAttribute("source");
-      std::string mComponentName = mNode->getAttribute("component");
-      std::string mComponentAlign = mNode->getAttribute("align");
-      std::string mComponentLeft = mNode->getAttribute("left");
-      std::string mComponentRight = mNode->getAttribute("right");
+      std::string mComponentAlign  = mNode->getAttribute("align");
+      std::string mComponentLeft   = mNode->getAttribute("left");
+      std::string mComponentRight  = mNode->getAttribute("right");
+      std::string mComponentTop    = mNode->getAttribute("top");
+      std::string mComponentBottom = mNode->getAttribute("bottom");
       float mScale = mNode->getFloatAttribute("scale");
       if (mScale <= 0.0f) {
         mScale = 1.0f;
       }
+
+      std::string::size_type mLastSplit = mComponentSource.find_last_of('/');
+      std::string mComponentName = mComponentSource.substr(mLastSplit + 1);
+      std::string mComponentPath = mComponentSource.substr(0, mLastSplit + 1);
       
-      IHUDComponentFactory* mFactory = cHUDComponentSources[mComponentSource];
+      std::cout << "Loading component: " << mComponentName << " from " << mComponentPath << std::endl;
+
+      IHUDComponentFactory* mFactory = cHUDComponentSources[mComponentPath];
       if (mFactory != NULL) {
         IHUDGameComponent* mHUDComponent = mFactory->getHUDComponent(mComponentName);
 
@@ -83,6 +90,22 @@ void DefaultHUD::load(DOMNodeWrapper* node) {
             mX = mNode->getFloatAttribute("left");
           }
         }
+        if (mComponentTop != "") {
+          mYAlign = 1.0f;
+          if (mComponentTop.find("/") != std::string::npos) {
+            mHUDRenderer->setYPosition(cComponentsByName[mComponentTop]);
+          } else {
+            mY = mNode->getFloatAttribute("top");
+          }
+        }
+        if (mComponentBottom != "") {
+          mYAlign = -1.0;
+          if (mComponentBottom.find("/") != std::string::npos) {
+            mHUDRenderer->setYPosition(cComponentsByName[mComponentBottom]);
+          } else {
+            mY = mNode->getFloatAttribute("bottom");
+          }
+        }
 
         // TODO: Set position
         mHUDRenderer->setScale(mScale);
@@ -91,7 +114,7 @@ void DefaultHUD::load(DOMNodeWrapper* node) {
         mHUDRenderer->setXAlign(mXAlign);
         mHUDRenderer->setYAlign(mYAlign);
         cComponents.push_back(mHUDRenderer);
-        cComponentsByName[mComponentSource + "/" + mComponentName] = mHUDRenderer;
+        cComponentsByName[mComponentSource] = mHUDRenderer;
       } else {
         std::cout << "FACTORY IS NULL!" << std::endl;
       }

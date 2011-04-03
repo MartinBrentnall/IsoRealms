@@ -16,19 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_FONT_ENGINE_H
-#define I_FONT_ENGINE_H
+#ifndef I_ELEMENT_SET_REGISTRY_H
+#define I_ELEMENT_SET_REGISTRY_H
 
-#include "DOMNodeWrapper.h"
-#include "IFont.h"
+class IElementSet;
 
-class IFontEngine {
+class IElementSetRegistry {
   public:
-  virtual IFont* getFont(std::string) = 0;
-  virtual ~IFontEngine() {}
+  virtual std::string getEntityPath(IElementSet*) = 0;
 };
 
-typedef IFontEngine* createFontEngine(DOMNodeWrapper*);
-typedef void destroyFontEngine(IFontEngine*);
-
 #endif
+

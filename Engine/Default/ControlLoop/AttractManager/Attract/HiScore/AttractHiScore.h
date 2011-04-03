@@ -26,9 +26,7 @@
 
 #include "../../IAttract.h"
 
-#include <IsoRealms/GlobalConfiguration.h>
 #include <IsoRealms/IFont.h>
-#include <IsoRealms/IFontEngine.h>
 
 /**
  * This attract scene displays the high-score table for a limited time.
@@ -50,7 +48,7 @@ class AttractHiScore:public IAttract {
   /**
    * Default constructor.
    */
-  AttractHiScore();
+  AttractHiScore(IFont*);
 
   /**************************************************************************\
    * Implemented methods of IAttract.h                                      *

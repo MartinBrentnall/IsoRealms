@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2009,2010,2011 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -19,11 +19,10 @@
 #ifndef I_FONT_H
 #define I_FONT_H
 
-class IFont {
+#include "IPlugin.h"
+
+class IFont:public virtual IPlugin {
   public:
-//   static int ALIGN_CENTER;
-//   static int ALIGN_LEFT;
-//   static int ALIGN_RIGHT;
   virtual ~IFont() {}
 
   /**
@@ -50,9 +49,5 @@ class IFont {
    */
   virtual float getWidth(float, const char*, ...) = 0;
 };
-
-// int IFont::ALIGN_CENTER = 0;
-// int IFont::ALIGN_LEFT = 1;
-// int IFont::ALIGN_RIGHT = 2;
 
 #endif

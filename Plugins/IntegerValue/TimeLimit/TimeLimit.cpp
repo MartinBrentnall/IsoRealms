@@ -20,7 +20,9 @@
 
 TimeLimit::TimeLimit() {
   assignDummyPlugin(&cIntegerValue, "IntegerValue");
+  assignDummyPlugin(&cStringProcessor, "StringProcessor");
   cSockets.push_back(new PlugSocket("IntegerValue"));
+  cSockets.push_back(new PlugSocket("StringProcessor"));
   cMilliseconds = 180000;
   cMaximumMilliseconds = 180000;
   cValuePerSecond = 100;
@@ -76,12 +78,10 @@ void TimeLimit::update(int milliseconds) {
     int mSeconds = cMilliseconds / 1000;
     int mMinutes = mSeconds / 60;
     mSeconds = mSeconds % 60;
-//    std::cout << mMinutes << ":" << std::setfill('0') << std::setw(2) << mSeconds << "." << std::setw(3) << mMilliseconds << std::endl;
+    std::stringstream mStringStream;
+    mStringStream << mMinutes << ":" << std::setfill('0') << std::setw(2) << mSeconds << "." << std::setw(1) << mMilliseconds;
+    cText = mStringStream.str();
   }
-}
-
-std::string TimeLimit::getName() {
-  return "Time Limit";
 }
 
 std::vector<PlugSocket*> TimeLimit::getPlugSockets() {
@@ -91,6 +91,9 @@ std::vector<PlugSocket*> TimeLimit::getPlugSockets() {
 void TimeLimit::setPlugin(PlugSocket* socket, IPlugin* plugin) {
   if (socket->getType() == "IntegerValue") {
     assignPlugin(plugin, &cIntegerValue, *socket);
+  } else if (socket->getType() == "StringProcessor") {
+    assignPlugin(plugin, &cStringProcessor, *socket);
+    cStringProcessor->registerString(&cText);
   }
 }
 

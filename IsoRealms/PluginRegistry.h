@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2009 Martin Brentnall
  *
@@ -63,6 +64,8 @@ class PluginRegistry:public IPluginRegistry {
    */
   std::map<IPlugin*, destroyPlugin*> cDestroyFunctions;
 
+  public:
+
   /**
    * Get the type of the specified plugin instance.
    * 
@@ -71,15 +74,13 @@ class PluginRegistry:public IPluginRegistry {
    */
   std::string getPluginType(IPlugin*);  
 
-  public:
-
   void registerPlugin(DOMNodeWrapper*, CommandDirectory*, IMap*);
 
   void connectPlugin(DOMNodeWrapper*);
 
   void loadConfiguration(DOMNodeWrapper*);
 
-  void setPlugin(IPlugin*, DOMNodeWrapper*);
+  void setPlugin(IPluginSupport*, DOMNodeWrapper*);
 
   /**
    * Called when a plug-in is removed.  The plug-in registry will check the
@@ -186,6 +187,7 @@ class PluginRegistry:public IPluginRegistry {
   \******************************/
   IPlugin* getPlugin(std::string&, std::string&);
   std::string getInstanceName(std::string, IPlugin*);
+  std::string getEntityPath(IPlugin*);
 
   ~PluginRegistry();
 };

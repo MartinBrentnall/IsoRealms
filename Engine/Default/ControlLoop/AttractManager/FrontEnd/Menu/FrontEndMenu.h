@@ -31,9 +31,7 @@
 
 #include <IsoRealms/CommandManager.h>
 #include <IsoRealms/DOMNodeWrapper.h>
-#include <IsoRealms/GlobalConfiguration.h>
 #include <IsoRealms/IFont.h>
-#include <IsoRealms/IFontEngine.h>
 #include <IsoRealms/ICommand.h>
 
 #include "../../IFrontEnd.h"
@@ -107,7 +105,7 @@ class FrontEndMenu:public IFrontEnd {
   void executeAction(std::string);
 
   public:
-  FrontEndMenu(DOMNodeWrapper*);
+  FrontEndMenu(DOMNodeWrapper*, IFont*);
 
   /**
    * Signal the front-end to terminate.

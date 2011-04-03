@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2009,2010,2011 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,48 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ATTRACT_INTRO_H
-#define ATTRACT_INTRO_H
-
-#include <iostream>
-#include <vector>
-#include <GL/gl.h>
-#include <SDL/SDL.h>
-
-#include "../../IAttract.h"
+#ifndef I_PLUGIN_FONT_H
+#define I_PLUGIN_FONT_H
 
 #include <IsoRealms/IFont.h>
+#include <IsoRealms/IPlugin.h>
 
-/**
- * This attract scene displays a short introduction animation.
- */
-class AttractIntro:public IAttract {
-  private:
-  IFont* cFont;
-  int cStage;
-  double cFade;
-  int cDelay;
-  
-  /**
-   * Has the scene started yet?
-   */
-  bool cFinished;
-
-  public:
-
-  /**
-   * Default constructor.
-   */
-  AttractIntro(IFont*);
-
-  /***********************\
-   * Implements IAttract *
-  \***********************/
-  void init();
-  void update(int);
-  void render();
-  bool hasFinished();
-  void frontEndActive(bool);
+class IFontPlugin:public IFont {
 };
 
 #endif

@@ -20,9 +20,12 @@
 #define TIME_LIMIT_H
 
 #include <iomanip>
+#include <sstream>
 
 #include <IsoRealms/ICommandRegistry.h>
 #include <IsoRealms/IDynamicElement.h>
+
+#include "../../StringProcessor/IStringProcessor.h"
 
 #include "../IIntegerValue.h"
 
@@ -34,10 +37,12 @@ class TimeLimit:public IIntegerValue,
   int cValuePerSecond;
   ICommandRegistry* cCommandRegistry;
   IIntegerValue* cIntegerValue;
+  IStringProcessor* cStringProcessor;
   std::vector<IUserCommand*> cTimeOutCommands;
   std::vector<PlugSocket*> cSockets;
   unsigned int cLocks;
   std::vector<IUserCommand*> cCommands;
+  std::string cText;
 
   class LockControlCommand:public IUserCommand {
     private:
@@ -78,7 +83,6 @@ class TimeLimit:public IIntegerValue,
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/
-  std::string getName();
   std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);

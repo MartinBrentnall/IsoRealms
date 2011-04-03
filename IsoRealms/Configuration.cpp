@@ -55,20 +55,6 @@ void Configuration::parseConfiguration(DOMNodeWrapper *node) {
         throw InitException("Cannot load symbol: " + std::string(mDlsymError));
       }
       cEngine = createEngineFunction(mNode);
-    } else if (mValueAsString == "FontEngine") {
-      std::string mFontEngineLocation = mNode->getAttribute("name");
-      std::string mEngineLocation = System::getConfigurationResource("FontEngine/" + mFontEngineLocation + "/libFontEngine");
-      void* mFontEngineSO = dlopen(mEngineLocation.c_str(), RTLD_LAZY);
-      if (!mFontEngineSO) {
-        throw InitException("Cannot load library: " + std::string(dlerror()));
-      }
-      createFontEngine* createFontEngineFunction = cast_voidptr_to_funcptr<createFontEngine*>(dlsym(mFontEngineSO, "create"));
-      const char* mDlsymError = dlerror();
-      if (mDlsymError) {
-        throw InitException("Cannot load symbol: " + std::string(mDlsymError));
-      }
-      IFontEngine* mFontEngine = createFontEngineFunction(mNode);
-      GlobalConfiguration::setFontEngine(mFontEngine);
     }
   }
 }

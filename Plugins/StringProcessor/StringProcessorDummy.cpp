@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2009,2010,2011 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,30 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef GLOBAL_CONFIGURATION_H
-#define GLOBAL_CONFIGURATION_H
+#include "StringProcessorDummy.h"
 
-#include <iostream>
+void StringProcessorDummy::registerString(std::string*) {
+  // Nothing to do.
+}
 
-#include "IFontEngine.h"
+extern "C" IPlugin* create() {
+  return new StringProcessorDummy();
+}
 
-class GlobalConfiguration {
-  public:
-  static IFontEngine* cFontEngine;
-
-  /**
-   * Set the global font engine.
-   * 
-   * @param FontEngine*  Font engine to set.
-   */
-  static void setFontEngine(IFontEngine*);
-
-  /**
-   * Return the global font engine.
-   *
-   * @returns  The global font engine.
-   */
-  static IFontEngine* getFontEngine();
-};
-
-#endif
+extern "C" void destroy(IPlugin* plugin) {
+  delete plugin;
+}

@@ -18,10 +18,25 @@
  */
 #include "Font.h"
 
-Font::Font(const char* fname, unsigned int detail) {
+void Font::load(DOMNodeWrapper* node) {
+  std::string mFontLocation;
+  std::string mFontName;
+  int mDetail = 64;
+  
+  // TODO: Prevent duplicate details / unspecified details
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "File") {
+      std::string mFontFileName = mNode->getStringValue();
+      mFontLocation = System::getResource(mFontFileName);
+    } else if (mValueAsString == "Detail") {
+      mDetail = mNode->getIntegerValue();
+    }
+  }
 
   // TODO: Correct for screen shape.
-  cScale = detail / 2.0;
+  cScale = mDetail / 2.0;
   cTextures = new GLuint[128];
   cWidths = new double[128];
 
@@ -35,12 +50,12 @@ Font::Font(const char* fname, unsigned int detail) {
   FT_Face face;
 
   // Try to load the font from the given file.
-  if (FT_New_Face(library, fname, 0, &face)) {
+  if (FT_New_Face(library, mFontLocation.c_str(), 0, &face)) {
     throw std::runtime_error("FT_New_Face failed (there is probably a problem with your font file)");
   }
 
   // Set the character size (1 pixel is 64 units)
-  FT_Set_Char_Size(face, detail << 6, detail << 6, 96, 96);
+  FT_Set_Char_Size(face, mDetail << 6, mDetail << 6, 96, 96);
 
   // Allocate memory for OpenGL stuff we're creating.
   cGLListBase = glGenLists(128);
@@ -48,7 +63,7 @@ Font::Font(const char* fname, unsigned int detail) {
 
   // Create each of the fonts display lists.
   for (unsigned char c = 0; c < 128; c++) {
-    make_dlist(face, c, cGLListBase, cTextures);
+    makeDisplayList(face, c, cGLListBase, cTextures);
   }
 
   // Free up some stuff that we no longer need.
@@ -56,17 +71,15 @@ Font::Font(const char* fname, unsigned int detail) {
   FT_Done_FreeType(library);
 }
 
-// This function gets the first power of 2 >= the int that we pass it.
-int Font::next_p2(int a) {
-  int rval=1;
+int Font::nextPowerOfTwo(int a) {
+  int rval = 1;
   while (rval < a) {
     rval <<= 1;
   }
   return rval;
 }
 
-// Create a display list coresponding to the give character.
-void Font::make_dlist(FT_Face face, char ch, GLuint listBase, GLuint * tex_base) {
+void Font::makeDisplayList(FT_Face face, char ch, GLuint listBase, GLuint * tex_base) {
 
   // Load the glyph.
   if (FT_Load_Glyph(face, FT_Get_Char_Index(face, ch), FT_LOAD_DEFAULT)) {
@@ -89,8 +102,8 @@ void Font::make_dlist(FT_Face face, char ch, GLuint listBase, GLuint * tex_base)
   // Use our helper function to get the widths of
   // the bitmap data that we will need in order to create
   // our texture.
-  int width = next_p2(bitmap.width);
-  int height = next_p2(bitmap.rows);
+  int width = nextPowerOfTwo(bitmap.width);
+  int height = nextPowerOfTwo(bitmap.rows);
 
   // Allocate memory for the texture data.
   GLubyte* expanded_data = new GLubyte[2 * width * height];
@@ -162,23 +175,23 @@ void Font::pushScreenCoordinateMatrix() {
 }
 
 // Pops the projection matrix without changing the current MatrixMode.
-void Font::pop_projection_matrix() {
+void Font::popProjectionMatrix() {
   glPushAttrib(GL_TRANSFORM_BIT);
   glMatrixMode(GL_PROJECTION);
   glPopMatrix();
   glPopAttrib();
 }
-	
+
 void Font::print(float x, float y, float size, int alignment, const char *fmt, ...) {
   if (fmt == NULL) {
     return;
   }
 
   // We want a coordinate system where things coresponding to window pixels.
-  pushScreenCoordinateMatrix();					
-	
+  pushScreenCoordinateMatrix();
+
   GLuint font = cGLListBase;
-	
+
   char text[256]; // Holds Our String
   va_list ap; // Pointer To List Of Arguments
 
@@ -209,13 +222,13 @@ void Font::print(float x, float y, float size, int alignment, const char *fmt, .
     lines.push_back(line);
   }
 
-  glPushAttrib(GL_LIST_BIT | GL_CURRENT_BIT  | GL_ENABLE_BIT | GL_TRANSFORM_BIT);	
+  glPushAttrib(GL_LIST_BIT | GL_CURRENT_BIT  | GL_ENABLE_BIT | GL_TRANSFORM_BIT);
   glMatrixMode(GL_MODELVIEW);
   glDisable(GL_LIGHTING);
   glEnable(GL_TEXTURE_2D);
   glDisable(GL_DEPTH_TEST);
   glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);	
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   glListBase(font);
 
@@ -257,8 +270,8 @@ void Font::print(float x, float y, float size, int alignment, const char *fmt, .
     glPopMatrix();
   }
 
-  glPopAttrib();		
-  pop_projection_matrix();
+  glPopAttrib();
+  popProjectionMatrix();
 }
 
 float Font::getWidth(float size, const char *fmt, ...) {
@@ -307,4 +320,12 @@ float Font::getWidth(float size, const char *fmt, ...) {
     }
   }
   return mHighestWidth * size;
+}
+
+extern "C" IPlugin* create() {
+  return new Font();
+}
+
+extern "C" void destroy(IPlugin* plugin) {
+  delete plugin;
 }

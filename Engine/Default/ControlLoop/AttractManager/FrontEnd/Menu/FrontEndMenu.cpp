@@ -20,12 +20,9 @@
 
 int FrontEndMenu::MAX_IDLE_TIME = 60000;
 
-FrontEndMenu::FrontEndMenu(DOMNodeWrapper* node) {
+FrontEndMenu::FrontEndMenu(DOMNodeWrapper* node, IFont* font) {
   cExitCommand = NULL;
-  IFontEngine* mFontEngine = GlobalConfiguration::getFontEngine();
-
-  // TODO: Get font from XML!
-  cFont = mFontEngine->getFont("Menu");
+  cFont = font;
   std::vector<std::string>* mMainMenu = new std::vector<std::string>;
   cActiveMenuItems = new std::vector<std::string>;
   parseMenu(node, "", mMainMenu);
@@ -261,8 +258,8 @@ bool FrontEndMenu::hasExited() {
   return cHasExited;
 }
 
-extern "C" IFrontEnd* create(DOMNodeWrapper* node) {
-  return new FrontEndMenu(node);
+extern "C" IFrontEnd* create(DOMNodeWrapper* node, IFont* font) {
+  return new FrontEndMenu(node, font);
 }
 
 extern "C" void destroy(IFrontEnd* frontEnd) {

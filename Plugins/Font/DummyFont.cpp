@@ -16,18 +16,20 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_HUD_COMPONENT_FACTORY_H
-#define I_HUD_COMPONENT_FACTORY_H
+#include "DummyFont.h"
 
-#include <string>
+void DummyFont::print(float, float, float, int, const char*, ...) {
+  // Nothing to do.
+}
 
-#include <IsoRealms/IAddressableEntity.h>
+float DummyFont::getWidth(float, const char*, ...) {
+  return 0.0f;
+}
 
-#include "IHUDGameComponent.h"
+extern "C" IPlugin* create() {
+  return new DummyFont();
+}
 
-class IHUDComponentFactory:public virtual IAddressableEntity {
-  public:
-  virtual IHUDGameComponent* getHUDComponent(const std::string&) = 0;
-};
-
-#endif
+extern "C" void destroy(IPlugin* plugin) {
+  delete plugin;
+}

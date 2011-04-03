@@ -32,6 +32,7 @@ void ElementSetRegistry::registerElementSet(DOMNodeWrapper* node, CommandDirecto
   mDirectory.push_back(mInstance);
   CommandRegistryProxy* mCommandRegistry = new CommandRegistryProxy(commandDirectory, mDirectory);
   mElementSet->setEditingContext(NULL, NULL, NULL, mCommandRegistry);
+  mElementSet->setElementSetRegistry(this);
 }
 
 void ElementSetRegistry::connectPlugin(PluginRegistry* pluginRegistry, DOMNodeWrapper* node) {
@@ -240,6 +241,10 @@ void ElementSetRegistry::pluginRemoved(IPlugin* instanceToRemove) {
       }
     }
   }  
+}
+
+std::string ElementSetRegistry::getEntityPath(IElementSet* elementSet) {
+  return "ElementSet/" + getInstanceName(elementSet) + "/";
 }
 
 ElementSetRegistry::~ElementSetRegistry() {

@@ -25,16 +25,20 @@ class IElementFactory;
 
 #include "BlockLocation.h"
 #include "DOMNodeWriter.h"
+#include "IAddressableEntity.h"
 #include "ICommandRegistry.h"
 #include "IComponentContainer.h"
 #include "IElementFactory.h"
 #include "IElementGateway.h"
 #include "IPluginSupport.h"
 
+class IElementSetRegistry;
+
 /**
  * TODO: Write a description of this interface
  */
-class IElementSet:public IPluginSupport {
+class IElementSet:public IPluginSupport,
+                  public virtual IAddressableEntity {
   public:
 
   /**
@@ -72,6 +76,11 @@ class IElementSet:public IPluginSupport {
    */
   virtual void destroy(IElement*) = 0;
 
+  /**
+   * TODO
+   */
+  virtual void setElementSetRegistry(IElementSetRegistry*) = 0;
+  
   /**
    * Destroy the element set.  Do not call this until all elements from this
    * set have been destroyed!

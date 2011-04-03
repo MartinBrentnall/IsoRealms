@@ -193,6 +193,8 @@ void TextureSetPerZone::update(int ticks) {
     float mRed   = cPreviousBackgroundColour.getRed()   + (cTargetBackgroundColour.getRed()   - cPreviousBackgroundColour.getRed())   * cProgressBackgroundColour;
     float mGreen = cPreviousBackgroundColour.getGreen() + (cTargetBackgroundColour.getGreen() - cPreviousBackgroundColour.getGreen()) * cProgressBackgroundColour;
     float mBlue  = cPreviousBackgroundColour.getBlue()  + (cTargetBackgroundColour.getBlue()  - cPreviousBackgroundColour.getBlue())  * cProgressBackgroundColour;
+    float mFogColour[4] = {mRed, mGreen, mBlue, 0.0f};
+    glFogfv(GL_FOG_COLOR, mFogColour);
     glClearColor(mRed, mGreen, mBlue, 0.0f);
   }
 }

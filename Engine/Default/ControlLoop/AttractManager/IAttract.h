@@ -19,6 +19,8 @@
 #ifndef I_ATTRACT_H
 #define I_ATTRACT_H
 
+#include <IsoRealms/IFont.h>
+
 /**
  * An attraction is a non-interactive animated scene that is intended to draw
  * the attention of the user.  The attract scene will play via continuous calls
@@ -71,7 +73,7 @@ class IAttract {
   virtual ~IAttract() {}
 };
 
-typedef IAttract* createAttract();
+typedef IAttract* createAttract(IFont*);
 typedef void destroyAttract(IAttract*);
 
 #endif

@@ -18,9 +18,8 @@
  */
 #include "AttractTitle.h"
 
-AttractTitle::AttractTitle() {
-  IFontEngine* mFontEngine = GlobalConfiguration::getFontEngine();
-  cFont = mFontEngine->getFont("Menu");
+AttractTitle::AttractTitle(IFont* font) {
+  cFont = font;
   init();
 }
 
@@ -85,8 +84,8 @@ void AttractTitle::frontEndActive(bool active) {
   }
 }
 
-extern "C" IAttract* create() {
-  return new AttractTitle();
+extern "C" IAttract* create(IFont* font) {
+  return new AttractTitle(font);
 }
 
 extern "C" void destroy(IAttract* attract) {

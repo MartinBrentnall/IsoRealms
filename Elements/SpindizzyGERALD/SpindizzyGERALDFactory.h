@@ -52,11 +52,15 @@ class SpindizzyGERALDFactory:public ISpindizzyGERALDFactory {
   std::vector<IVisualElement*> cSampleGERALDVisuals;
   BlockLocation* cEditingLocation;
   float cFallLimit;
+  Script* cFallScript;
   Script* cFallLimitScript;
 
   IElement* getElement();
 
   bool keyDown(SDLKey&);
+
+  void loadFallLimitConfiguration(DOMNodeWrapper*, ICommandRegistry*);
+  void loadRespawnConfiguration(DOMNodeWrapper*, ICommandRegistry*);
 
   public:
   SpindizzyGERALDFactory(ISpindizzyGERALDSet*, ISimpleModelFactory*, ILocationAwareness*, IZoneContext*);

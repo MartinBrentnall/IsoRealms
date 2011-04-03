@@ -74,7 +74,7 @@ class IFrontEnd {
   virtual ~IFrontEnd() {}
 };
 
-typedef IFrontEnd* createFrontEnd(DOMNodeWrapper*);
+typedef IFrontEnd* createFrontEnd(DOMNodeWrapper*, IFont*);
 typedef void destroyFrontEnd(IFrontEnd*);
 
 #endif

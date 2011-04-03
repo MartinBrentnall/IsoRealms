@@ -31,21 +31,31 @@
 
 #include "../../IControlLoop.h"
 
+#include <IsoRealms/CommandDirectory.h>
 #include <IsoRealms/DOMNodeWrapper.h>
 #include <IsoRealms/Hacks.h>
 #include <IsoRealms/ICommand.h>
+#include <IsoRealms/IFont.h>
 #include <IsoRealms/InitException.h>
+#include <IsoRealms/IPluginSupport.h>
+#include <IsoRealms/PluginRegistry.h>
+#include <IsoRealms/PlugSocket.h>
 #include <IsoRealms/System.h>
 
-class AttractControlLoop:public IControlLoop {
+class AttractControlLoop:public IControlLoop,
+                         public IPluginSupport {
   private:
   std::map<IAttract*, std::vector<ICommand*> > cSceneEndCommands;
   std::vector<ICommand*> cFrontEndStartCommands; // TODO: Implement
   std::vector<ICommand*> cFrontEndEndCommands; // TODO: Implement
   std::map<std::string, IAttract*> cAttractServices;
   AttractSceneManager cAttractSceneManager;
+  CommandDirectory cCommandRegistry;
   std::vector<ICommand*> cInitCommands;
   IFrontEnd* cFrontEnd;
+  PluginRegistry cPluginRegistry;
+  std::vector<PlugSocket*> cFontSocket;
+  IFont* cFont;
   bool cFrontEndActive;
   std::map<std::string, int> cLayers;
 
@@ -61,9 +71,16 @@ class AttractControlLoop:public IControlLoop {
   AttractControlLoop(DOMNodeWrapper*);
   bool checkActiveInput(int);
 
-  /**************************************************************************\
-   * Implemented methods of IControlLoop.h                                  *
-  \**************************************************************************/
+  /*****************************\
+   * Implements IPluginSupport *
+  \*****************************/
+  std::vector<PlugSocket*> getPlugSockets();
+  void setPlugin(PlugSocket*, IPlugin*);
+  IPlugin* getPlugin(PlugSocket*);
+
+  /***************************\
+   * Implements IControlLoop *
+  \***************************/
   void input(SDL_Event&);
   void execute(int);
 };

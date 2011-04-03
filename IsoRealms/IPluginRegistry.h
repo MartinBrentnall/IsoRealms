@@ -21,8 +21,8 @@
 
 #include <string>
 
-#include "IPlugin.h"
-#include "IZone.h"
+class IPlugin;
+class IZone;
 
 class IPluginRegistry {
   public:
@@ -37,9 +37,14 @@ class IPluginRegistry {
   virtual IPlugin* getPlugin(std::string&, std::string&) = 0;
 
   /**
-   * Retrieve the plug-in instance name
+   * Retrieve the plug-in instance name TODO
    */
   virtual std::string getInstanceName(std::string, IPlugin*) = 0;
+  
+  /**
+   * Get the path of the specified plugin TODO
+   */
+  virtual std::string getEntityPath(IPlugin*) = 0;
   
   // TODO: Remove this
   virtual void renderPreZone(IZone*) = 0;

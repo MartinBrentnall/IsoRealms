@@ -14,6 +14,8 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+include_directories(${PROJECT_SOURCE_DIR})
+
 find_package(SDL REQUIRED)
 if(SDL_FOUND)
   include_directories(${SDL_INCLUDE_DIR})
@@ -37,5 +39,10 @@ endif(FREETYPE_FOUND)
 
 include_directories(${PROJECT_SOURCE_DIR})
 
-add_library(FontEngine MODULE Font.cpp GLFreeTypeFontEngine.cpp)
-target_link_libraries(FontEngine ${SDL_LIBRARY} ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY} ${FREETYPE_LIBRARIES} IsoRealms)
+add_library(Font_GLFreeType MODULE
+  Font.cpp
+)
+set_target_properties(Font_GLFreeType PROPERTIES OUTPUT_NAME "Module")
+set_target_properties(Font_GLFreeType PROPERTIES PREFIX "lib")
+
+target_link_libraries(Font_GLFreeType ${SDL_LIBRARY} ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY} ${FREETYPE_LIBRARIES} IsoRealms)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2009,2010,2011 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,48 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ATTRACT_INTRO_H
-#define ATTRACT_INTRO_H
+#ifndef STRING_PROCESSOR_DUMMY_H
+#define STRING_PROCESSOR_DUMMY_H
 
-#include <iostream>
-#include <vector>
-#include <GL/gl.h>
-#include <SDL/SDL.h>
+#include <string>
 
-#include "../../IAttract.h"
+#include <IsoRealms/DummyPlugin.h>
 
-#include <IsoRealms/IFont.h>
+#include "IStringProcessor.h"
 
-/**
- * This attract scene displays a short introduction animation.
- */
-class AttractIntro:public IAttract {
-  private:
-  IFont* cFont;
-  int cStage;
-  double cFade;
-  int cDelay;
-  
-  /**
-   * Has the scene started yet?
-   */
-  bool cFinished;
-
+class StringProcessorDummy:public DummyPlugin,
+                           public IStringProcessor {
   public:
 
-  /**
-   * Default constructor.
-   */
-  AttractIntro(IFont*);
-
-  /***********************\
-   * Implements IAttract *
-  \***********************/
-  void init();
-  void update(int);
-  void render();
-  bool hasFinished();
-  void frontEndActive(bool);
+  /*******************************\
+   * Implements IStringProcessor *
+  \*******************************/
+  void registerString(std::string*);
 };
 
 #endif

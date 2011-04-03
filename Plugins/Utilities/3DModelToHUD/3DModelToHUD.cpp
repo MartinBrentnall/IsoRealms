@@ -28,6 +28,18 @@ ModelToHUD::ModelToHUD() {
   cModel = cModelFactory->createModel(&cModelLocation);
 }
 
+void ModelToHUD::load(DOMNodeWrapper* node) {
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "Location") {
+      cModelLocation.x = mNode->getFloatAttribute("x");
+      cModelLocation.y = mNode->getFloatAttribute("y");
+      cModelLocation.z = mNode->getFloatAttribute("z");
+    }
+  }
+}
+
 std::vector<PlugSocket*> ModelToHUD::getPlugSockets() {
   return cSockets;
 }
@@ -60,10 +72,6 @@ IPlugin* ModelToHUD::getPlugin(PlugSocket* socket) {
   return NULL;
 }
 
-std::string ModelToHUD::getHUDComponentFactoryName() {
-  return "3DModelToHUD";
-}
-
 IHUDGameComponent* ModelToHUD::getHUDComponent(const std::string& component) {
   return component == "3DModel" ? this : NULL;
 }
@@ -75,7 +83,6 @@ void ModelToHUD::update(int milliseconds) {
 void ModelToHUD::render() {
   float mAngle = cCamera->getAngle();
   float mTilt = cCamera->getTilt();
-    
   glRotatef(mTilt, 1.0f, 0.0f, 0.0f);
   glRotatef(mAngle, 0.0f, 0.0f, 1.0f);
   cModel->render();

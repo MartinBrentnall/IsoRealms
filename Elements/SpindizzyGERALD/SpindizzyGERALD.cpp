@@ -26,7 +26,7 @@ const unsigned int SpindizzyGERALD::INIT_REGISTER_SURFACES = 2;
 const unsigned int SpindizzyGERALD::INIT_USE_SURFACES = 3;
 const unsigned int SpindizzyGERALD::BOUNCE_CONTROL_TIME = 40;
 
-SpindizzyGERALD::SpindizzyGERALD(ISpindizzyGERALDFactory* elementFactory, BlockLocation* startLocation, ISimpleModelFactory* geraldModelFactory, ICollectables* collectables, ICollidableSurfaceRegistry* collidableSurfaceRegistry, ILocationAwareness* locationAwareness, IZoneContext* zoneContext, ICamera* camera, float fallLimit, Script* fallLimitScript) : Element<ISpindizzyGERALDSet, ISpindizzyGERALDFactory>(elementFactory) {
+SpindizzyGERALD::SpindizzyGERALD(ISpindizzyGERALDFactory* elementFactory, BlockLocation* startLocation, ISimpleModelFactory* geraldModelFactory, ICollectables* collectables, ICollidableSurfaceRegistry* collidableSurfaceRegistry, ILocationAwareness* locationAwareness, IZoneContext* zoneContext, ICamera* camera, float fallLimit, Script* fallLimitScript, Script* respawnScript) : Element<ISpindizzyGERALDSet, ISpindizzyGERALDFactory>(elementFactory) {
   cStartLocation = BlockLocation(*startLocation);
   cLocation.x = cStartLocation.x + IsoRealmsConstants::BLOCK_RADIUS;
   cLocation.y = cStartLocation.y + IsoRealmsConstants::BLOCK_RADIUS;
@@ -46,7 +46,7 @@ SpindizzyGERALD::SpindizzyGERALD(ISpindizzyGERALDFactory* elementFactory, BlockL
   cSouthKey = SDLK_DOWN;
   cEastKey = SDLK_RIGHT;
   cWestKey = SDLK_LEFT;
-  cFallScript = NULL;
+  cFallScript = respawnScript;
   cFallLimitScript = fallLimitScript;
   cFallLimit = fallLimit;
 }

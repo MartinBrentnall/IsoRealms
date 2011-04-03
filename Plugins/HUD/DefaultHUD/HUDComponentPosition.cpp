@@ -54,15 +54,18 @@ float HUDComponentPosition::getXPosition() {
   ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
   float mAspectRatio = mScreen->getAspectRatio();
   if (cXPositionRelative != NULL) {
-    return cXPositionRelative->getXPosition() - cXAlign; // TODO: Don't assume that the right edge of relative is 1.0 and the left edge of this is 1.0.
+    return cXPositionRelative->getXPosition() - (cXAlign * (cComponent->getRight() - cComponent->getLeft() + 1.0f) / 2.0f); // TODO: Don't assume that the right edge of relative is 1.0 and the left edge of this is 1.0.
   } else {
     return (cXPosition / cScale) / mAspectRatio - cXAlign / 2.0f; // TODO: Should use *actual* width, not just assume 2.0
   }
 }
 
 float HUDComponentPosition::getYPosition() {
-  float mYPosition = cYPositionRelative != NULL ? cYPositionRelative->getYPosition() : cYPosition;
-  return mYPosition / cScale - cYAlign / 2.0f; // TODO: Should use *actual* height, not just assume 2.0
+  if (cYPositionRelative != NULL) {
+    return cYPositionRelative->getYPosition() - cYAlign; // TODO: Don't assume that the right edge of relative is 1.0 and the left edge of this is 1.0.
+  } else {
+    return (cYPosition / cScale) - cYAlign / 2.0f; // TODO: Should use *actual* width, not just assume 2.0
+  }
 }
 
 void HUDComponentPosition::setXAlign(float align) {
@@ -81,6 +84,13 @@ void HUDComponentPosition::render() {
   glPushMatrix();
   glScalef(cScale, cScale, cScale);
   glTranslatef(getXPosition(), getYPosition(), 0.0f);
+/*  glColor3f(1.0f, 1.0f, 1.0f);
+  glBegin(GL_LINE_LOOP);
+  glVertex2f(cComponent->getLeft(), cComponent->getTop());
+  glVertex2f(cComponent->getRight(), cComponent->getTop());
+  glVertex2f(cComponent->getRight(), cComponent->getBottom());
+  glVertex2f(cComponent->getLeft(), cComponent->getBottom());
+  glEnd();*/
   cComponent->render();
   glPopMatrix();
 }

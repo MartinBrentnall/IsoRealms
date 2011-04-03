@@ -86,7 +86,7 @@ void ScreenConfiguration::openScreen(std::string title) {
   glHint(GL_FOG_HINT, GL_FASTEST);
   glFogf(GL_FOG_START, 20.0f);
   glFogf(GL_FOG_END, 40.0f);
-//  glEnable(GL_FOG);
+  glEnable(GL_FOG);
   glEnable(GL_TEXTURE_2D);
   glEnable(GL_CULL_FACE);
   glEnable(GL_DEPTH_TEST);
