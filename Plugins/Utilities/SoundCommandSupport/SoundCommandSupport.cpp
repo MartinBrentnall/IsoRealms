@@ -58,6 +58,7 @@ IPlugin* SoundCommandSupport::getPlugin(PlugSocket* socket) {
 void SoundCommandSupport::soundAdded(ISound* sound) {
   PlaySoundCommand* mPlaySoundCommand = new PlaySoundCommand(sound);
   cCommands[sound] = mPlaySoundCommand;
+  cCommandRegistry->registerCommand(mPlaySoundCommand);
 }
 
 void SoundCommandSupport::soundRemoved(ISound* sound) {
