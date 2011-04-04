@@ -552,10 +552,10 @@
       <Component source="Plugin/Utilities/TimeIcon/3DModel" scale="0.09" align="top right"/>
       <Component source="Plugin/Utilities/JewelIcon/3DModel" scale="0.09" align="left" top="Plugin/Utilities/ScoreIcon/3DModel"/>
       <Component source="Plugin/Utilities/MapIcon/3DModel" scale="0.09" align="right" top="Plugin/Utilities/TimeIcon/3DModel"/>
-      <Component source="Plugin/StringProcessor/TimeDisplay/Component" scale="0.09" align="top" right="Plugin/Utilities/TimeIcon/3DModel"/>
-<!--      <Component source="Plugin/StringProcessor/ScoreDisplay/Component" scale="0.09" align="top" left="Plugin/Utilities/ScoreIcon/3DModel"/>
-      <Component source="Plugin/StringProcessor/JewelCountDisplay/Component" scale="0.09" top="Plugin/Utilities/TimeIcon/3DModel" left="Plugin/Utilities/JewelIcon/3DModel"/>
-      <Component source="Plugin/StringProcessor/ZonesToExploreDisplay/Component" scale="0.09" top="Plugin/Utilities/ScoreIcon/3DModel" right="Plugin/Utilities/MapIcon/3DModel"/>-->
+<!--      <Component source="Plugin/StringProcessor/TimeDisplay/Component" scale="0.09" align="top" right="Plugin/Utilities/TimeIcon/3DModel"/>
+      <Component source="Plugin/StringProcessor/ScoreDisplay/Component" scale="0.09" align="top" left="Plugin/Utilities/ScoreIcon/3DModel"/>
+      <Component source="Plugin/StringProcessor/JewelCountDisplay/Component" scale="0.09" top="Plugin/Utilities/TimeIcon/3DModel" left="Plugin/Utilities/JewelIcon/3DModel"/>-->
+      <Component source="Plugin/StringProcessor/ZonesToExploreDisplay/Component" scale="0.09" top="Plugin/Utilities/ScoreIcon/3DModel" right="Plugin/Utilities/MapIcon/3DModel"/>
 
 <!--       <Component source="Plugin/StringProcessor/TimeDisplay/Component" scale="0.045"/> -->
     </Configuration>

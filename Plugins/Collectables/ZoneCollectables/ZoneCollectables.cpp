@@ -22,11 +22,14 @@ ZoneCollectables::ZoneCollectables() {
   assignDummyPlugin(&cFlaggedZones, "FlaggedZones");
   assignDummyPlugin(&cObjectives, "Objectives");
   assignDummyPlugin(&cZoneContext, "ZoneContext");
+  assignDummyPlugin(&cCountStringProcessor, "StringProcessor");
   cZoneContextSocket.push_back(new PlugSocket("FlaggedZones"));
   cZoneContextSocket.push_back(new PlugSocket("Objectives"));
   cZoneContextSocket.push_back(new PlugSocket("ZoneContext"));
+  cZoneContextSocket.push_back(new PlugSocket("StringProcessor"));
   cCollectablesCount = 0;
   cCollectedCount = 0;
+  cCollectedCountString = "0";
 }
 
 std::string ZoneCollectables::getName() {
@@ -52,6 +55,9 @@ void ZoneCollectables::setPlugin(PlugSocket* socket, IPlugin* plugin) {
       cEditingZone = cZoneContext->getZoneContext();
       cRuntimeZone = cEditingZone;
     }
+  } else if (socket->getType() == "StringProcessor") {
+    assignPlugin(plugin, &cCountStringProcessor, *socket);
+    cCountStringProcessor->registerString(&cCollectedCountString);
   } else if (socket->getType() == "FlaggedZones") {
     IFlaggedZones* mPreviousFlaggedZones = cFlaggedZones;
     if (assignPlugin(plugin, &cFlaggedZones, *socket)) {
@@ -62,9 +68,10 @@ void ZoneCollectables::setPlugin(PlugSocket* socket, IPlugin* plugin) {
 }
 
 IPlugin* ZoneCollectables::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "ZoneContext")  {return cZoneContext;}
-  if (socket->getType() == "Objectives")   {return cObjectives;}
-  if (socket->getType() == "FlaggedZones") {return cFlaggedZones;}
+  if (socket->getType() == "ZoneContext")     {return cZoneContext;}
+  if (socket->getType() == "Objectives")      {return cObjectives;}
+  if (socket->getType() == "StringProcessor") {return cCountStringProcessor;}
+  if (socket->getType() == "FlaggedZones")    {return cFlaggedZones;}
   // TODO: Throw something
   return NULL;
 }
@@ -97,11 +104,11 @@ void ZoneCollectables::collect(ICollector* collector, Vertex& start, Vertex& end
     for (int j = i->second->size() - 1; j >= 0; j--) {
       if ((*i->second)[j]->isCollected(start, end)) {
         collector->collected((*i->second)[j]);
-        cCollectedCount++;
+        std::stringstream mStringStream;
+        mStringStream << ++cCollectedCount;
+        cCollectedCountString = mStringStream.str();
         cObjectives->check();
-        std::cout << "Jewels to go before: " << i->second->size() << std::endl;
         i->second->erase(i->second->begin() + j);
-        std::cout << "Jewels to go now: " << i->second->size() << std::endl;
       }
     }
   }

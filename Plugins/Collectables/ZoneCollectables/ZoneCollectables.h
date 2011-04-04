@@ -20,6 +20,7 @@
 #define ZONE_COLLECTABLES_H
 
 #include <map>
+#include <sstream>
 #include <vector>
 
 #include <IsoRealms/IMap.h>
@@ -27,6 +28,7 @@
 
 #include "../../FlaggedZones/IFlaggedZones.h"
 #include "../../Objectives/IObjectives.h"
+#include "../../StringProcessor/IStringProcessor.h"
 #include "../../ZoneContext/IZoneContext.h"
 
 #include "../ICollectables.h"
@@ -38,6 +40,7 @@ class ZoneCollectables:public ICollectables,
   private:
   IZoneContext* cZoneContext;
   IObjectives* cObjectives;
+  IStringProcessor* cCountStringProcessor;
   IFlaggedZones* cFlaggedZones;
   IZone* cEditingZone;
   IZone* cRuntimeZone;
@@ -46,6 +49,7 @@ class ZoneCollectables:public ICollectables,
   std::map<IZone*, std::vector<ICollectable*>*> cCollectables;
   unsigned int cCollectablesCount;
   unsigned int cCollectedCount;
+  std::string cCollectedCountString;
 
   void collect(ICollector*, Vertex&, Vertex&, IZone*);
   

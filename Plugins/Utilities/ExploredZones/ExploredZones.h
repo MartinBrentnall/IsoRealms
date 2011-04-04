@@ -34,6 +34,7 @@
 #include "../../3DModel/ISimpleModelFactory.h"
 #include "../../FlaggedZones/IFlaggedZones.h"
 #include "../../Objectives/IObjectives.h"
+#include "../../StringProcessor/IStringProcessor.h"
 #include "../../ZoneContext/IZoneContextListener.h"
 #include "../../ZoneContext/IZoneContext.h"
 
@@ -45,6 +46,8 @@ class ExploredZones:public IUtilities,
   IZone* cZone;
   ICommandRegistry* cCommandRegistry;
   IObjectives* cObjectives;
+  IStringProcessor* cToGoStringProcessor;
+  std::string cToGoString;
   std::map<IZone*, ISimpleModel*> cExploredZones;
   unsigned int cZoneCount;
   std::vector<PlugSocket*> cSockets;
@@ -84,6 +87,8 @@ class ExploredZones:public IUtilities,
     void update(std::vector<IZone*>&, unsigned int);
     void updateRuntime(std::vector<IZone*>&, unsigned int);
   };
+  
+  void updateToGoString();
   
   public:
   ExploredZones();

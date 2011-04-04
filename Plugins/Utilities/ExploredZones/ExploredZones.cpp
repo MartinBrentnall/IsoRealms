@@ -22,10 +22,12 @@ ExploredZones::ExploredZones() {
   assignDummyPlugin(&cFlagModel, "3DModel");
   assignDummyPlugin(&cZoneContext, "ZoneContext");
   assignDummyPlugin(&cObjectives, "Objectives");
+  assignDummyPlugin(&cToGoStringProcessor, "StringProcessor");
   assignDummyPlugin(&cFlaggedZones, "FlaggedZones");
   cSockets.push_back(new PlugSocket("3DModel"));
   cSockets.push_back(new PlugSocket("ZoneContext"));
   cSockets.push_back(new PlugSocket("Objectives"));
+  cSockets.push_back(new PlugSocket("StringProcessor"));
   cSockets.push_back(new PlugSocket("FlaggedZones"));
   cZoneCount = 0;
   cExploredZoneRenderer = new ExploredZoneRenderer(this);
@@ -37,6 +39,7 @@ ExploredZones::ExploredZones() {
 void ExploredZones::initPlugin(IZone* zone, unsigned int pass) {
   if (pass == 0) {
     cZoneCount++;
+    updateToGoString();
   }
 }
 
@@ -57,11 +60,18 @@ void ExploredZones::zoneContextChanged(IZone* zone) {
     if (cZoneExploredScript != NULL) {
       cZoneExploredScript->execute();
     }
+    updateToGoString();
     cObjectives->check();
     if (isMet() && cAllZonesExploredScript != NULL) {
       cAllZonesExploredScript->execute();
     }
   }
+}
+
+void ExploredZones::updateToGoString() {
+  std::stringstream mStringStream;
+  mStringStream << cZoneCount - cExploredZones.size();
+  cToGoString = mStringStream.str();
 }
 
 IZoneRenderer* ExploredZones::getZoneRenderer(const std::string& name) {
@@ -91,16 +101,20 @@ void ExploredZones::setPlugin(PlugSocket* socket, IPlugin* plugin) {
     assignPlugin(plugin, &cFlagModel, *socket);
   } else if (socket->getType() == "FlaggedZones") {
     assignPlugin(plugin, &cFlaggedZones, *socket);
+  } else if (socket->getType() == "StringProcessor") {
+    assignPlugin(plugin, &cToGoStringProcessor, *socket);
+    cToGoStringProcessor->registerString(&cToGoString);
   } else {
     // TODO: Throw
   }
 }
 
 IPlugin* ExploredZones::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "Objectives")   {return cObjectives;}
-  if (socket->getType() == "ZoneContext")  {return cZoneContext;}
-  if (socket->getType() == "3DModel")      {return cFlagModel;}
-  if (socket->getType() == "FlaggedZones") {return cFlaggedZones;}
+  if (socket->getType() == "Objectives")      {return cObjectives;}
+  if (socket->getType() == "ZoneContext")     {return cZoneContext;}
+  if (socket->getType() == "3DModel")         {return cFlagModel;}
+  if (socket->getType() == "FlaggedZones")    {return cFlaggedZones;}
+  if (socket->getType() == "StringProcessor") {return cToGoStringProcessor;}
   return NULL;
 }
 
