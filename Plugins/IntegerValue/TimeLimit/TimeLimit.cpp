@@ -36,7 +36,8 @@ IIntegerValue& TimeLimit::operator+=(const int& value) {
   if (cMilliseconds > cMaximumMilliseconds) {
     int mExcessMilliseconds = cMilliseconds - cMaximumMilliseconds;
     int mExcessValue = (mExcessMilliseconds * 0.001f) * cValuePerSecond;
-    cIntegerValue += mExcessValue;
+    std::cout << "Excess value is " << mExcessValue << std::endl;
+    (*cIntegerValue) += mExcessValue;
     cMilliseconds = cMaximumMilliseconds;
   }
   return *this;
@@ -99,6 +100,7 @@ void TimeLimit::setPlugin(PlugSocket* socket, IPlugin* plugin) {
 
 IPlugin* TimeLimit::getPlugin(PlugSocket* socket) {
   if (socket->getType() == "IntegerValue")    {return cIntegerValue;}
+  if (socket->getType() == "StringProcessor") {return cStringProcessor;}
   // TODO: Throw
   return NULL;
 }

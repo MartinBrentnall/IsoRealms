@@ -19,12 +19,17 @@
 #ifndef DUMB_INTEGER_VALUE_H
 #define DUMB_INTEGER_VALUE_H
 
+#include "../../StringProcessor/IStringProcessor.h"
+
 #include "../IIntegerValue.h"
 
 class DumbIntegerValue:public IIntegerValue {
   private:
   std::vector<IIntegerValueListener*> cListeners;
   int cValue;
+  IStringProcessor* cStringProcessor;
+  std::vector<PlugSocket*> cSockets;
+  std::string cText;
 
   public:
   DumbIntegerValue();
@@ -39,7 +44,9 @@ class DumbIntegerValue:public IIntegerValue {
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/
-  std::string getName();
+  std::vector<PlugSocket*> getPlugSockets();
+  void setPlugin(PlugSocket*, IPlugin*);
+  IPlugin* getPlugin(PlugSocket*);
 };
 
 #endif

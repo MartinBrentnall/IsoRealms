@@ -552,10 +552,10 @@
       <Component source="Plugin/Utilities/TimeIcon/3DModel" scale="0.09" align="top right"/>
       <Component source="Plugin/Utilities/JewelIcon/3DModel" scale="0.09" align="left" top="Plugin/Utilities/ScoreIcon/3DModel"/>
       <Component source="Plugin/Utilities/MapIcon/3DModel" scale="0.09" align="right" top="Plugin/Utilities/TimeIcon/3DModel"/>
-<!--      <Component source="Plugin/StringProcessor/TimeDisplay/Component" scale="0.09" align="top" right="Plugin/Utilities/TimeIcon/3DModel"/>
+<!--      <Component source="Plugin/StringProcessor/TimeDisplay/Component" scale="0.09" align="top" right="Plugin/Utilities/TimeIcon/3DModel"/>-->
       <Component source="Plugin/StringProcessor/ScoreDisplay/Component" scale="0.09" align="top" left="Plugin/Utilities/ScoreIcon/3DModel"/>
-      <Component source="Plugin/StringProcessor/JewelCountDisplay/Component" scale="0.09" top="Plugin/Utilities/TimeIcon/3DModel" left="Plugin/Utilities/JewelIcon/3DModel"/>-->
-      <Component source="Plugin/StringProcessor/ZonesToExploreDisplay/Component" scale="0.09" top="Plugin/Utilities/ScoreIcon/3DModel" right="Plugin/Utilities/MapIcon/3DModel"/>
+<!--      <Component source="Plugin/StringProcessor/JewelCountDisplay/Component" scale="0.09" top="Plugin/Utilities/TimeIcon/3DModel" left="Plugin/Utilities/JewelIcon/3DModel"/>
+      <Component source="Plugin/StringProcessor/ZonesToExploreDisplay/Component" scale="0.09" top="Plugin/Utilities/ScoreIcon/3DModel" right="Plugin/Utilities/MapIcon/3DModel"/>-->
 
 <!--       <Component source="Plugin/StringProcessor/TimeDisplay/Component" scale="0.045"/> -->
     </Configuration>
@@ -588,7 +588,12 @@
     <Configuration/>
   </Plugin>
   <Plugin implementation="TimeLimit" instance="SpindizzyTimeLimit" type="IntegerValue">
+    <UsePlugin implementation="IntegerValue" instance="SpindizzyScore"/>
     <UsePlugin implementation="StringProcessor" instance="TimeDisplay"/>
+    <Configuration/>
+  </Plugin>
+  <Plugin implementation="DumbIntegerValue" instance="SpindizzyScore" type="IntegerValue">
+    <UsePlugin implementation="StringProcessor" instance="ScoreDisplay"/>
     <Configuration/>
   </Plugin>
   <Plugin implementation="CommandTrigger" instance="SpindizzyEndingTrigger" type="Objectives">
@@ -602,6 +607,7 @@
     <Configuration>
       <ZoneExploredScript>
         <Command>Plugin/Utilities/TimerCommands/IncreaseTimeForZone</Command>
+        <Command>Plugin/Utilities/ScoreCommands/IncreaseScoreForZone</Command>
       </ZoneExploredScript>
     </Configuration>
   </Plugin>
@@ -871,6 +877,13 @@
       <Command name="DecreaseTimeForRespawn" value="-10000"/>
     </Configuration>
   </Plugin>
+  <Plugin implementation="IntegerValueCommands" instance="ScoreCommands" type="Utilities">
+    <UsePlugin implementation="IntegerValue" instance="SpindizzyScore" socketid=""/>
+    <Configuration>
+      <Command name="IncreaseScoreForJewel" value="600"/>
+      <Command name="IncreaseScoreForZone" value="400"/>
+    </Configuration>
+  </Plugin>
   <Plugin implementation="PlayerWithScripts" instance="CameraMapOverviewAnimator" type="SequencePlayer">
     <Configuration length="500">
       <LeftStartScript>
@@ -1135,6 +1148,7 @@
       <JewelCollectedScript>
         <Command>Plugin/Utilities/SoundCommandWrapper/Play Jewel.ogg</Command>
         <Command>Plugin/Utilities/TimerCommands/IncreaseTimeForJewel</Command>
+        <Command>Plugin/Utilities/ScoreCommands/IncreaseScoreForJewel</Command>
       </JewelCollectedScript>
     </Configuration>
   </ElementSet>
