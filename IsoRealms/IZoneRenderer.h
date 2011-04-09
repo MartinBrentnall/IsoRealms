@@ -22,10 +22,9 @@
 #include <vector>
 
 #include "IPluginRegistry.h"
-#include "IPluginSupport.h"
 #include "IZone.h"
 
-class IZoneRenderer:public IPluginSupport {
+class IZoneRenderer {
   public:
     
   /**

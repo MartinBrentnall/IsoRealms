@@ -19,8 +19,12 @@
 #ifndef SPINDIZZY_CAMERA_H
 #define SPINDIZZY_CAMERA_H
 
+#include <GL/glu.h>
+
+#include <IsoRealms/Configuration.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 #include <IsoRealms/MiscFunctions.h>
+#include <IsoRealms/ScreenConfiguration.h>
 
 #include "../../LocationAwareness/ILocationAwareness.h"
 #include "../../SequencePlayer/ISequencePlayer.h"
@@ -29,10 +33,11 @@
 
 class SpindizzyCamera:public ICamera,
                       public IDynamicElement,
+                      public IVisualElement,
                       public IInteractiveElement,
                       public ISequence {
   private:
-  std::vector<PlugSocket*> cLocationAwarenessSocket;
+  std::vector<PlugSocket*> cSockets;
   ILocationAwareness* cLocationAwareness;
   ISequencePlayer* cSequencePlayer;
   Vertex* cLocation;
@@ -56,10 +61,9 @@ class SpindizzyCamera:public ICamera,
   public:
   SpindizzyCamera();
 
-  /******************\
-   * IPluginSupport *
-  \******************/
-  std::string getName();
+  /*****************************\
+   * Implements IPluginSupport *
+  \*****************************/
   std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
@@ -67,10 +71,16 @@ class SpindizzyCamera:public ICamera,
   /**********************\
    * Implements IPlugin *
   \**********************/
+  std::vector<IVisualElement*> getPreLoopRenderers();
   std::vector<IDynamicElement*> getPreLoopCommands();
   std::vector<IInteractiveElement*> getInteractiveElements();
   void initPlugin(IZone*, unsigned int);
 
+  /*****************************\
+   * Implements IVisualElement *
+  \*****************************/
+  void render();
+  
   /******************************\
    * Implements IDynamicElement *
   \******************************/

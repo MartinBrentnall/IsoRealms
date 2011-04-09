@@ -18,11 +18,38 @@
  */
 #include "DefaultZoneContext.h"
 
-std::string DefaultZoneContext::getName() {
-  return "Default Zone Context";
+DefaultZoneContext::DefaultZoneContext() {
+  assignDummyPlugin(&cLocationAwareness, "LocationAwareness");
+  cLocationAwarenessSocket.push_back(new PlugSocket("LocationAwareness"));
 }
 
+std::vector<PlugSocket*> DefaultZoneContext::getPlugSockets() {
+  return cLocationAwarenessSocket;
+}
+
+void DefaultZoneContext::setPlugin(PlugSocket* socket, IPlugin* plugin) {
+  if (socket->getType() == "LocationAwareness") {
+    if (assignPlugin(plugin, &cLocationAwareness, *socket)) {
+      cLocationAwareness->setLocation(&cLocation);
+    }
+  } else {
+    // TODO: Throw something
+  }
+}
+
+IPlugin* DefaultZoneContext::getPlugin(PlugSocket* socket) {
+  if (socket->getType() == "LocationAwareness") {return cLocationAwareness;}
+  // TODO: Throw
+  return NULL;
+}
+  
 void DefaultZoneContext::setZoneContext(IZone* context) {
+  if (context != NULL) {
+    BlockArea* mZoneArea = context->getZoneArea();
+    cLocation.x = mZoneArea->getWest()   + (mZoneArea->getEast()  - mZoneArea->getWest())   / 2.0f;
+    cLocation.y = mZoneArea->getSouth()  + (mZoneArea->getNorth() - mZoneArea->getSouth())  / 2.0f;
+    cLocation.z = mZoneArea->getBottom() + (mZoneArea->getTop()   - mZoneArea->getBottom()) / 2.0f;
+  }
   cContext = context;
   for (unsigned int i = 0; i < cListeners.size(); i++) {
     cListeners[i]->zoneContextChanged(cContext);

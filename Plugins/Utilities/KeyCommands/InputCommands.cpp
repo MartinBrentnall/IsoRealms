@@ -57,6 +57,21 @@ SDLKey InputCommands::getSDLKey(const std::string& name) {
   if (name == "x") {return SDLK_x;}
   if (name == "y") {return SDLK_y;}
   if (name == "z") {return SDLK_z;}
+  if (name == "F1") {return SDLK_F1;}
+  if (name == "F2") {return SDLK_F2;}
+  if (name == "F3") {return SDLK_F3;}
+  if (name == "F4") {return SDLK_F4;}
+  if (name == "F5") {return SDLK_F5;}
+  if (name == "F6") {return SDLK_F6;}
+  if (name == "F7") {return SDLK_F7;}
+  if (name == "F8") {return SDLK_F8;}
+  if (name == "F9") {return SDLK_F9;}
+  if (name == "F10") {return SDLK_F10;}
+  if (name == "F11") {return SDLK_F11;}
+  if (name == "F12") {return SDLK_F12;}
+  if (name == "F13") {return SDLK_F13;}
+  if (name == "F14") {return SDLK_F14;}
+  if (name == "F15") {return SDLK_F15;}
   std::cout << "Unrecognised key name: \"" << name << "\"" << std::endl;
   exit(1);
 }

@@ -307,9 +307,13 @@
     <Configuration/>
   </Plugin>
   <Plugin implementation="SpindizzyCamera" instance="CraftCamera" type="Camera">
-    <UsePlugin implementation="LocationAwareness" instance="PlayerLocation" socketid=""/>
+<!--    <UsePlugin implementation="LocationAwareness" instance="PlayerLocation" socketid="Player"/>-->
+    <UsePlugin implementation="LocationAwareness" instance="CurrentZoneLocation" socketid="Zone"/>
     <UsePlugin implementation="SequencePlayer" instance="CameraMapOverviewAnimator" socketid=""/>
-    <Configuration/>
+    <Configuration>
+      <Mode name="Modern" type="Perspective" angle="45.0"/>
+      <Mode name="Classic" type="Orthogonal" width="20.0"/>
+    </Configuration>
   </Plugin>
   <Plugin implementation="ZoneCollectables" instance="Jewels" type="Collectables">
     <UsePlugin implementation="FlaggedZones" instance="JewelsToCollectFlags"/>
@@ -368,6 +372,9 @@
     </Configuration>
   </Plugin>
   <Plugin implementation="FixedLocationAwareness" instance="PlayerLocation" type="LocationAwareness">
+    <Configuration/>
+  </Plugin>
+  <Plugin implementation="FixedLocationAwareness" instance="CurrentZoneLocation" type="LocationAwareness">
     <Configuration/>
   </Plugin>
   <Plugin implementation="C64SpindizzySprites" instance="C64Sprites" type="SpindizzyTextureSet">
@@ -552,10 +559,10 @@
       <Component source="Plugin/Utilities/TimeIcon/3DModel" scale="0.09" align="top right"/>
       <Component source="Plugin/Utilities/JewelIcon/3DModel" scale="0.09" align="left" top="Plugin/Utilities/ScoreIcon/3DModel"/>
       <Component source="Plugin/Utilities/MapIcon/3DModel" scale="0.09" align="right" top="Plugin/Utilities/TimeIcon/3DModel"/>
-<!--      <Component source="Plugin/StringProcessor/TimeDisplay/Component" scale="0.09" align="top" right="Plugin/Utilities/TimeIcon/3DModel"/>-->
+      <Component source="Plugin/StringProcessor/TimeDisplay/Component" scale="0.09" align="top" right="Plugin/Utilities/TimeIcon/3DModel"/>
       <Component source="Plugin/StringProcessor/ScoreDisplay/Component" scale="0.09" align="top" left="Plugin/Utilities/ScoreIcon/3DModel"/>
-<!--      <Component source="Plugin/StringProcessor/JewelCountDisplay/Component" scale="0.09" top="Plugin/Utilities/TimeIcon/3DModel" left="Plugin/Utilities/JewelIcon/3DModel"/>
-      <Component source="Plugin/StringProcessor/ZonesToExploreDisplay/Component" scale="0.09" top="Plugin/Utilities/ScoreIcon/3DModel" right="Plugin/Utilities/MapIcon/3DModel"/>-->
+      <Component source="Plugin/StringProcessor/JewelCountDisplay/Component" scale="0.09" top="Plugin/Utilities/TimeIcon/3DModel" left="Plugin/Utilities/JewelIcon/3DModel"/>
+      <Component source="Plugin/StringProcessor/ZonesToExploreDisplay/Component" scale="0.09" top="Plugin/Utilities/ScoreIcon/3DModel" right="Plugin/Utilities/MapIcon/3DModel"/>
 
 <!--       <Component source="Plugin/StringProcessor/TimeDisplay/Component" scale="0.045"/> -->
     </Configuration>
@@ -691,6 +698,9 @@
       </Input>
       <Input type="key" value="m">
         <Command>Plugin/Utilities/GameSwitches/Toggle MapOverview</Command>
+      </Input>
+      <Input type="key" value="F9">
+        <Command>Plugin/Utilities/GameSwitches/Toggle RenderingMode</Command>
       </Input>
     </Configuration>
   </Plugin>
@@ -864,9 +874,28 @@
           <Command>Plugin/Utilities/MapOverviewSequenceCommands/Rewind</Command>
         </Off>
       </Switch>
+      <Switch name="RenderingMode">
+        <On>
+          <Command>Plugin/Camera/SpindizzyCamera/SetMode Classic</Command>
+          <Command>Plugin/Camera/SpindizzyCamera/Track Zone</Command>
+          <Command>ZoneRenderer/Utilities/ZoneContextRenderer/zone_Activate</Command>
+          <Command>ZoneRenderer/Utilities/ExploredZones/explored_Deactivate</Command>
+        </On>
+        <Off>
+          <Command>Plugin/Camera/SpindizzyCamera/SetMode Modern</Command>
+          <Command>Plugin/Camera/SpindizzyCamera/Track Player</Command>
+          <Command>ZoneRenderer/Utilities/ZoneContextRenderer/zone_Deactivate</Command>
+          <Command>ZoneRenderer/Utilities/ExploredZones/explored_Activate</Command>
+        </Off>
+      </Switch>
     </Configuration>
   </Plugin>
+  <Plugin implementation="ZoneContextRenderer" instance="ZoneContextRenderer" type="Utilities">
+    <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext" socketid=""/>
+    <Configuration/>
+  </Plugin>
   <Plugin implementation="DefaultZoneContext" instance="PlayerZoneContext" type="ZoneContext">
+    <UsePlugin implementation="LocationAwareness" instance="CurrentZoneLocation"/>
     <Configuration/>
   </Plugin>
   <Plugin implementation="IntegerValueCommands" instance="TimerCommands" type="Utilities">
@@ -892,6 +921,7 @@
         <Command>ElementSet/Enemies/AddLock</Command>
         <Command>Plugin/IntegerValue/SpindizzyTimeLimit/AddLock</Command>
         <Command>ZoneRenderer/Utilities/ExploredZones/mapOverview_Activate</Command>
+        <Command>ZoneRenderer/Utilities/ZoneContextRenderer/zone_Deactivate</Command>
         <Command>ZoneRenderer/Utilities/ExploredZones/explored_Deactivate</Command>
       </LeftStartScript>
       <ReachedStartScript>
@@ -899,8 +929,8 @@
         <Command>ElementSet/Lifts/RemoveLock</Command>
         <Command>ElementSet/Enemies/RemoveLock</Command>
         <Command>Plugin/IntegerValue/SpindizzyTimeLimit/RemoveLock</Command>
-        <Command>ZoneRenderer/Utilities/ExploredZones/explored_Activate</Command>
-        <Command>ZoneRenderer/Utilities/ExploredZones/mapOverview_Deactivate</Command>
+        <Command>ZoneRendererGroup/Utilities/ExploredZones/game_Activate</Command>
+        <Command>Plugin/Utilities/ToggleSwitches/Refresh RenderingMode</Command>
       </ReachedStartScript>
     </Configuration>
   </Plugin>
@@ -1205,8 +1235,9 @@
       </Respawn>
     </Configuration>
   </ElementSet>
-  <ZoneRenderer type="Utilities" instance="ExploredZones" renderer="explored" active="true"/>
   <ZoneRenderer type="Utilities" instance="ExploredZones" renderer="mapOverview" active="false"/>
+  <ZoneRenderer type="Utilities" instance="ExploredZones" renderer="explored" active="false"/>
+  <ZoneRenderer type="Utilities" instance="ZoneContextRenderer" renderer="zone" active="true"/>
 <!--  <ZoneRenderer/>-->
   <Elements>
     <Element set="Player" type="">

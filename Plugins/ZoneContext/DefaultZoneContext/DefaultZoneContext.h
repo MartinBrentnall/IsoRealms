@@ -19,19 +19,27 @@
 #ifndef DEFAULT_ZONE_CONTEXT_H
 #define DEFAULT_ZONE_CONTEXT_H
 
+#include "../../LocationAwareness/ILocationAwareness.h"
+
 #include "../IZoneContext.h"
 
 class DefaultZoneContext:public IZoneContext {
   private:
   std::vector<IZoneContextListener*> cListeners;
   IZone* cContext;
+  std::vector<PlugSocket*> cLocationAwarenessSocket;
+  ILocationAwareness* cLocationAwareness;
+  Vertex cLocation;
 
   public:
+  DefaultZoneContext();
 
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/
-  std::string getName();
+  std::vector<PlugSocket*> getPlugSockets();
+  void setPlugin(PlugSocket*, IPlugin*);
+  IPlugin* getPlugin(PlugSocket*);
 
   /***************************\
    * Implements IZoneContext *

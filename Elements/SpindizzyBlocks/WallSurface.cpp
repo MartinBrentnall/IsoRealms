@@ -104,7 +104,7 @@ void WallSurface::render() {
 
       case ISpindizzyTexture::COLUMN_CAPPED: {
         if (cFacing == EAST || cFacing == SOUTH) {
-          if (mHighEndSlopeZ - mFromZ > 1.0 || mHighStartSlopeZ - mFromZ > 1.0) {
+          if (mHighEndSlopeZ - mFromZ > 0.0 || mHighStartSlopeZ - mFromZ > 0.0) {
             cTexture->texCoord2f(cX,           0.25); glVertex3f(mFromX, mFromY, mFromZ + mEdgeWidth);
             cTexture->texCoord2f(cX + cLength, 0.25); glVertex3f(mToX,   mToY,   mFromZ + mEdgeWidth);
             cTexture->texCoord2f(cX + cLength, 0.75); glVertex3f(mToX,   mToY,   mHighEndSlopeZ - mEdgeWidth);
@@ -132,7 +132,7 @@ void WallSurface::render() {
           glColor3f(1.0f, 0.0, 0.0f);
           cTexture->texCoord2f(cX,           1.00); glVertex3f(mFromX, mFromY, mHighStartSlopeZ);*/
         } else {
-          if (mHighEndSlopeZ - mFromZ > 1.0 || mHighStartSlopeZ - mFromZ > 1.0) {
+          if (mHighEndSlopeZ - mFromZ > 0.0 || mHighStartSlopeZ - mFromZ > 0.0) {
             cTexture->texCoord2f(cX,           0.75); glVertex3f(mFromX, mFromY, mHighStartSlopeZ - mEdgeWidth);
             cTexture->texCoord2f(cX + cLength, 0.75); glVertex3f(mToX,   mToY,   mHighEndSlopeZ - mEdgeWidth);
             cTexture->texCoord2f(cX + cLength, 0.25); glVertex3f(mToX,   mToY,   mFromZ + mEdgeWidth);

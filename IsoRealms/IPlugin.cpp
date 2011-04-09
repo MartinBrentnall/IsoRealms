@@ -39,6 +39,10 @@ std::vector<IDynamicElement*> IPlugin::getPostLoopCommands() {
   return cNoDynamicElements;
 }
 
+std::vector<IVisualElement*> IPlugin::getPreLoopRenderers() {
+  return cNoVisualElements;
+}
+
 std::vector<IVisualElement*> IPlugin::getPostLoopRenderers() {
   return cNoVisualElements;
 }

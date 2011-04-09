@@ -74,15 +74,33 @@ void StringToHUD::update(int milliseconds) {
 void StringToHUD::render() {
   glLoadIdentity();
   glColor3f(0.0f, 0.0f, 0.0f);
-  float mX = -0.9f;
+  float mX = -0.92f;
   float mY =  0.905f;
 /*  float mX = 0.0f;
   float mY = -0.065f;*/
   float mShadow = 0.0065f; 
   float mSize = 0.04f;
-  cFont->print(mX + mShadow, mY - mShadow, mSize, 0, cText->c_str());
-  glColor3f(1.0f, 1.0f, 1.0f);
-  cFont->print(mX, mY, mSize, 0, cText->c_str());
+  if (cText->length() < 3) {
+    // Jewels
+    cFont->print(-mX + mShadow, (mY - 0.09f) - mShadow, mSize, 2, cText->c_str());
+    glColor3f(1.0f, 1.0f, 1.0f);
+    cFont->print(-mX, mY - 0.09f, mSize, 2, cText->c_str());
+  } else if (cText->length() == 3) {
+    // Zones
+    cFont->print(mX + mShadow, (mY - 0.09f) - mShadow, mSize, 0, cText->c_str());
+    glColor3f(1.0f, 1.0f, 1.0f);
+    cFont->print(mX, mY - 0.09f, mSize, 0, cText->c_str());
+  } else if (cText->find('.') != std::string::npos) {
+    // Timer
+    cFont->print(mX + mShadow, mY - mShadow, mSize, 0, cText->c_str());
+    glColor3f(1.0f, 1.0f, 1.0f);
+    cFont->print(mX, mY, mSize, 0, cText->c_str());
+  } else {
+    // Score
+    cFont->print(-mX + mShadow, mY - mShadow, mSize, 2, cText->c_str());
+    glColor3f(1.0f, 1.0f, 1.0f);
+    cFont->print(-mX, mY, mSize, 2, cText->c_str());
+  }
 //  cFont->print(3.5f, -0.1f, 0.99f, 1, "Testing");
 }
 

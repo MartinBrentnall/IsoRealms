@@ -20,6 +20,6 @@
 
 const double IsoRealmsConstants::BLOCK_SIZE = 1.0;
 const double IsoRealmsConstants::BLOCK_RADIUS = 0.5;
-const double IsoRealmsConstants::BLOCK_HEIGHT = 0.6;
+const double IsoRealmsConstants::BLOCK_HEIGHT = 0.5;
 const double IsoRealmsConstants::LINE_WIDTH = 0.06;  
 const double IsoRealmsConstants::STEP_HEIGHT = 0.75;  // 1 = One block high

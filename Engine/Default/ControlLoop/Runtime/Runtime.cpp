@@ -81,16 +81,15 @@ void Runtime::input(SDL_Event& event) {
 void Runtime::execute(int milliseconds) {
   cMap->executePreLoopCommands(milliseconds);
   cMap->updateRuntime(milliseconds);
+  cMap->executePostLoopCommands(milliseconds);
+  cMap->executePreLoopRenderers();
+  cMap->render();
+  cMap->executePostLoopRenderers();
   if (cRunExitCommands) {
     for (unsigned int i = 0; i < cExitCommands.size(); i++) {
       cExitCommands[i]->execute();
     }
-    cRunExitCommands = false;
-  } else {
-    cMap->render();
   }
-  cMap->executePostLoopCommands(milliseconds);
-  cMap->executePostLoopRenderers();
 }
 
 extern "C" IControlLoop* create(DOMNodeWrapper* node) {

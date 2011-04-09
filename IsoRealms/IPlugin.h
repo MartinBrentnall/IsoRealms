@@ -82,6 +82,8 @@ class IPlugin:public IPluginSupport,
    */
   virtual std::vector<IDynamicElement*> getPostLoopCommands();
 
+  virtual std::vector<IVisualElement*> getPreLoopRenderers();
+  
   /**
    * TODO
    */
