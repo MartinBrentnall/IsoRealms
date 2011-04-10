@@ -36,9 +36,10 @@ IIntegerValue& TimeLimit::operator+=(const int& value) {
   if (cMilliseconds > cMaximumMilliseconds) {
     int mExcessMilliseconds = cMilliseconds - cMaximumMilliseconds;
     int mExcessValue = (mExcessMilliseconds * 0.001f) * cValuePerSecond;
-    std::cout << "Excess value is " << mExcessValue << std::endl;
     (*cIntegerValue) += mExcessValue;
     cMilliseconds = cMaximumMilliseconds;
+  } else if (cMilliseconds < 0) {
+    cMilliseconds = 0;
   }
   return *this;
 }
