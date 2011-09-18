@@ -14,14 +14,21 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
-add_subdirectory(Commodore64SpindizzyTextureSet)
-add_subdirectory(C64SpindizzySprites)
-add_subdirectory(ImageTextureSet)
-
 include_directories(${PROJECT_SOURCE_DIR})
 
-add_library(SpindizzyTextureSetDummy MODULE 
-  SpindizzyTextureSetDummy.cpp
+find_package(SDL_image REQUIRED)
+if(SDLIMAGE_FOUND)
+  include_directories(${SDLIMAGE_INCLUDE_DIR})
+else(SDLIMAGE_FOUND)
+  message(STATUS "SDL_Image not found.") 
+endif(SDLIMAGE_FOUND)
+
+add_library(SpindizzyTextureSet_ImageTextureSet MODULE 
+  ImageTexture.cpp
+  ImageTextureProxy.cpp
+  ImageTextureSet.cpp
 )
-set_target_properties(SpindizzyTextureSetDummy PROPERTIES OUTPUT_NAME "Dummy")
-set_target_properties(SpindizzyTextureSetDummy PROPERTIES PREFIX "lib")
+set_target_properties(SpindizzyTextureSet_ImageTextureSet PROPERTIES OUTPUT_NAME "Module")
+set_target_properties(SpindizzyTextureSet_ImageTextureSet PROPERTIES PREFIX "lib")
+
+target_link_libraries(SpindizzyTextureSet_ImageTextureSet ${SDLIMAGE_LIBRARY})

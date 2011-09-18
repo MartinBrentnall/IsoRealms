@@ -132,6 +132,27 @@
       <EastSurfaceTexture>WallEast</EastSurfaceTexture>
     </Configuration>
   </Plugin>
+  <Plugin implementation="FlatRectangle" instance="HUDIconMap" type="3DModel">
+    <UsePlugin implementation="SpindizzyTextureSet" instance="HUDIcons"/>
+    <Configuration>
+      <Texture>Map</Texture>
+      <Size>1.0</Size>
+    </Configuration>
+  </Plugin>
+  <Plugin implementation="FlatRectangle" instance="HUDIconScore" type="3DModel">
+    <UsePlugin implementation="SpindizzyTextureSet" instance="HUDIcons"/>
+    <Configuration>
+      <Texture>Score</Texture>
+      <Size>1.0</Size>
+    </Configuration>
+  </Plugin>
+  <Plugin implementation="FlatRectangle" instance="HUDIconTime" type="3DModel">
+    <UsePlugin implementation="SpindizzyTextureSet" instance="HUDIcons"/>
+    <Configuration>
+      <Texture>Time</Texture>
+      <Size>1.0</Size>
+    </Configuration>
+  </Plugin>
   <Plugin implementation="FlatRectangle" instance="LiftDiamondEmpty" type="3DModel">
     <UsePlugin implementation="SpindizzyTextureSet" instance="C64Sprites"/>
     <Configuration>
@@ -530,6 +551,13 @@
       <Extra type="Palette" name="MediumGray"/>
     </Configuration>
   </Plugin>
+  <Plugin implementation="ImageTextureSet" instance="HUDIcons" type="SpindizzyTextureSet">
+    <Configuration>
+      <Texture file="Map.png" id="Map"/>
+      <Texture file="Score.png" id="Score"/>
+      <Texture file="Time.png" id="Time"/>
+    </Configuration>
+  </Plugin>
   <Plugin implementation="TextureSetPerZone" instance="PerZone" type="SpindizzyTextureSetChanger">
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext"/>
     <UsePlugin implementation="SpindizzyTextureSet" instance="C64Blue" socketid="0"/>
@@ -555,10 +583,10 @@
       <Component source="Plugin/Utilities/SpindizzySwitches/ActiveSwitchB" scale="0.12" align="top" left="0.0"/>
       <Component source="Plugin/Utilities/Compass/3DModel" scale="0.12" align="top" left="Plugin/Utilities/SpindizzySwitches/ActiveSwitchB"/>
       <Component source="ElementSet/Blocks/Clue" scale="0.12" align="top" right="Plugin/Utilities/SpindizzySwitches/ActiveSwitchA"/>
-      <Component source="Plugin/Utilities/ScoreIcon/3DModel" scale="0.09" align="top left"/>
-      <Component source="Plugin/Utilities/TimeIcon/3DModel" scale="0.09" align="top right"/>
-      <Component source="Plugin/Utilities/JewelIcon/3DModel" scale="0.09" align="left" top="Plugin/Utilities/ScoreIcon/3DModel"/>
-      <Component source="Plugin/Utilities/MapIcon/3DModel" scale="0.09" align="right" top="Plugin/Utilities/TimeIcon/3DModel"/>
+      <Component source="Plugin/Utilities/ScoreIcon/3DModel" scale="0.09" align="top right"/>
+      <Component source="Plugin/Utilities/TimeIcon/3DModel" scale="0.09" align="top left"/>
+      <Component source="Plugin/Utilities/JewelIcon/3DModel" scale="0.09" align="right" top="Plugin/Utilities/ScoreIcon/3DModel"/>
+      <Component source="Plugin/Utilities/MapIcon/3DModel" scale="0.09" align="left" top="Plugin/Utilities/TimeIcon/3DModel"/>
       <Component source="Plugin/StringProcessor/TimeDisplay/Component" scale="0.09" align="top" right="Plugin/Utilities/TimeIcon/3DModel"/>
       <Component source="Plugin/StringProcessor/ScoreDisplay/Component" scale="0.09" align="top" left="Plugin/Utilities/ScoreIcon/3DModel"/>
       <Component source="Plugin/StringProcessor/JewelCountDisplay/Component" scale="0.09" top="Plugin/Utilities/TimeIcon/3DModel" left="Plugin/Utilities/JewelIcon/3DModel"/>
@@ -635,27 +663,24 @@
     </Configuration>
   </Plugin>
   <Plugin implementation="3DModelToHUD" instance="MapIcon" type="Utilities">
-    <UsePlugin implementation="3DModel" instance="C64JewelModel" socketid=""/>
-    <UsePlugin implementation="Camera" instance="CraftCamera" socketid=""/>
+    <UsePlugin implementation="3DModel" instance="HUDIconMap" socketid=""/>
     <UsePlugin implementation="HUD" instance="SpindizzyHUD" socketid=""/>
     <Configuration>
-      <Location x="0.0" y="0.0" z="-0.6"/>
+      <Location x="0.0" y="0.0" z="0.0"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="3DModelToHUD" instance="ScoreIcon" type="Utilities">
-    <UsePlugin implementation="3DModel" instance="C64JewelModel" socketid=""/>
-    <UsePlugin implementation="Camera" instance="CraftCamera" socketid=""/>
+    <UsePlugin implementation="3DModel" instance="HUDIconScore" socketid=""/>
     <UsePlugin implementation="HUD" instance="SpindizzyHUD" socketid=""/>
     <Configuration>
-      <Location x="0.0" y="0.0" z="-0.6"/>
+      <Location x="0.0" y="0.0" z="0.0"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="3DModelToHUD" instance="TimeIcon" type="Utilities">
-    <UsePlugin implementation="3DModel" instance="C64JewelModel" socketid=""/>
-    <UsePlugin implementation="Camera" instance="CraftCamera" socketid=""/>
+    <UsePlugin implementation="3DModel" instance="HUDIconTime" socketid=""/>
     <UsePlugin implementation="HUD" instance="SpindizzyHUD" socketid=""/>
     <Configuration>
-      <Location x="0.0" y="0.0" z="-0.6"/>
+      <Location x="0.0" y="0.0" z="0.0"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="KeyCommands" instance="DebugCommands" type="Utilities">
