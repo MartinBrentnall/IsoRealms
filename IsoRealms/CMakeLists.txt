@@ -31,6 +31,7 @@ add_library(IsoRealms SHARED
   DOMNodeWriter.cpp
   DefaultCommandInfo.cpp
   DefaultZoneRenderer.cpp
+  DigitalInput.cpp
   DummyPlugin.cpp
   DummyPluginRegistry.cpp
   ElementSetRegistry.cpp
@@ -55,6 +56,7 @@ add_library(IsoRealms SHARED
   IPluginSupport.cpp
   IllegalStateException.cpp
   Image.cpp
+  InputCommands.cpp
   InitException.cpp
   IsoRealmsConstants.cpp
   KeyStates.cpp

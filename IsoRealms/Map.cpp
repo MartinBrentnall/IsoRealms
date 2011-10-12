@@ -81,6 +81,8 @@ Map::Map(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, 
     } else if (mValueAsString == "Zone") {
       Zone* mZone = new Zone(mNode, cElementSetRegistry, cPluginRegistry);
       addZone(mZone);
+    } else if (mValueAsString == "InputConfiguration") {
+      cInputCommands.loadConfiguration(mNode, &cCommandRegistry);
     } else {
       // TODO: Throw something
     }
@@ -139,6 +141,10 @@ std::vector<ZoneEvent*> Map::getZoneEvents(Vertex& start, Vertex& end) {
     }
   }
   return mAllZoneEvents;
+}
+
+bool* Map::registerDigitalInput(const std::string& name) {
+  return cInputCommands.registerDigitalInput(name);
 }
 
 bool Map::overlaps(BlockArea& blockArea) {
@@ -237,6 +243,7 @@ void Map::initRuntime() {
 }
 
 void Map::input(SDL_Event& event) {
+  cInputCommands.input(event);
   for (unsigned int i = 0; i < cZones.size(); i++) {
     cZones[i]->input(event);
   }

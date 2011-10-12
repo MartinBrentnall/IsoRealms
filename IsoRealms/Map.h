@@ -28,6 +28,7 @@
 #include "ElementSetRegistry.h"
 #include "IElementHandler.h"
 #include "IMap.h"
+#include "InputCommands.h"
 #include "IPluginRegistryListener.h"
 #include "PluginRegistry.h"
 #include "Zone.h"
@@ -43,6 +44,7 @@ class Map:public IMap,
   PluginRegistry cPluginRegistry;
   ElementSetRegistry cElementSetRegistry;
   CommandDirectory cCommandRegistry;
+  InputCommands cInputCommands;
 
   /**
    * These elements are not confined to one specific zone.
@@ -175,6 +177,7 @@ class Map:public IMap,
   Zone* getZone(BlockLocation&);
   IZone* getZone(Vertex&);
   std::vector<ZoneEvent*> getZoneEvents(Vertex&, Vertex&);
+  bool* registerDigitalInput(const std::string&);
 
   /**************************************\
    * Implements IPluginRegistryListener *

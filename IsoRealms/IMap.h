@@ -52,6 +52,8 @@ class IMap {
 
   virtual void zoneChanged(IZone*) = 0;
 
+  virtual bool* registerDigitalInput(const std::string&) = 0;
+  
   virtual IPluginRegistry* getPluginRegistry() = 0;
 };
 

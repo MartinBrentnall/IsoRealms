@@ -19,36 +19,25 @@
 #ifndef INPUT_COMMANDS_H
 #define INPUT_COMMANDS_H
 
+#include <map>
 #include <vector>
 
-#include <IsoRealms/IInteractiveElement.h>
-#include <IsoRealms/ICommandRegistry.h>
+#include "BlockLocation.h"
+#include "CommandDirectory.h"
+#include "DigitalInput.h"
+#include "IInteractiveElement.h"
+#include "IComponentContainer.h"
 
-#include "../IUtilities.h"
-
-class InputCommands:public IUtilities,
-                    public IInteractiveElement {
+class InputCommands {
   private:
-  std::vector<PlugSocket*> cSockets;
-  ICommandRegistry* cCommandRegistry;
-  std::map<SDLKey, Script*> cKeyCommands;
-
-  bool keyDown(SDLKey&);
-  SDLKey getSDLKey(const std::string&);
+  std::map<std::string, DigitalInput*> cDigitalInputs;
   
+  DigitalInput* getDigitalInput(const std::string&);
+
   public:
-
-  /**********************\
-   * Implements IPlugin *
-  \**********************/
-  void load(DOMNodeWrapper*);
+  void loadConfiguration(DOMNodeWrapper*, CommandDirectory*);
   void save(DOMNodeWriter*);
-  std::vector<IInteractiveElement*> getInteractiveElements();
-  void setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry*);
-
-  /**********************************\
-   * Implements IInteractiveElement *
-  \**********************************/
+  bool* registerDigitalInput(const std::string&);
   bool input(SDL_Event&);
 };
 

@@ -34,9 +34,43 @@
 class SpindizzyCamera:public ICamera,
                       public IDynamicElement,
                       public IVisualElement,
-                      public IInteractiveElement,
                       public ISequence {
   private:
+  
+  class AbsoluteCommand:public IUserCommand {
+    private:
+    SpindizzyCamera* cParent;
+    std::string cCommandName;
+    float cDestination;
+    
+    public:
+    AbsoluteCommand(SpindizzyCamera*, const std::string&, float);
+
+    /***************************\
+     * Implements IUserCommand *
+    \***************************/
+    void execute();
+    std::string getCommandName();
+  };
+  
+  class RelativeCommand:public IUserCommand {
+    private:
+    SpindizzyCamera* cParent;
+    std::string cCommandName;
+    float cAmount;
+    
+    public:
+    RelativeCommand(SpindizzyCamera*, const std::string&, float);
+    
+    /***************************\
+     * Implements IUserCommand *
+    \***************************/
+    void execute();
+    std::string getCommandName();
+  };
+    
+  std::vector<IUserCommand*> cCameraCommands;
+  
   std::vector<PlugSocket*> cSockets;
   ILocationAwareness* cLocationAwareness;
   ISequencePlayer* cSequencePlayer;
@@ -46,8 +80,8 @@ class SpindizzyCamera:public ICamera,
   float cProgress;
 
   float getCurrentAngle();
-  void keyDown(SDLKey&);
   void changeAngle(float);
+  void changeAngleRelative(float);
   
   float cSequencePosition;
   
@@ -73,8 +107,8 @@ class SpindizzyCamera:public ICamera,
   \**********************/
   std::vector<IVisualElement*> getPreLoopRenderers();
   std::vector<IDynamicElement*> getPreLoopCommands();
-  std::vector<IInteractiveElement*> getInteractiveElements();
   void initPlugin(IZone*, unsigned int);
+  void setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry*);
 
   /*****************************\
    * Implements IVisualElement *
@@ -91,11 +125,6 @@ class SpindizzyCamera:public ICamera,
   \************************/
   void update(float);
   
-  /**********************************\
-   * Implements IInteractiveElement *
-  \**********************************/
-  bool input(SDL_Event&);
-
   /**********************\
    * Implements ICamera *
   \**********************/

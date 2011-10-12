@@ -42,10 +42,6 @@ SpindizzyGERALD::SpindizzyGERALD(ISpindizzyGERALDFactory* elementFactory, BlockL
   cZoneContext = zoneContext;
   cZone = NULL;
   cMap = NULL;
-  cNorthKey = SDLK_UP;
-  cSouthKey = SDLK_DOWN;
-  cEastKey = SDLK_RIGHT;
-  cWestKey = SDLK_LEFT;
   cFallScript = respawnScript;
   cFallLimitScript = fallLimitScript;
   cFallLimit = fallLimit;
@@ -102,6 +98,11 @@ bool SpindizzyGERALD::initElement(unsigned int pass) {
 
 void SpindizzyGERALD::setRuntimeContext(IMap* map) {
   cMap = map;
+  cMovingNorth = map->registerDigitalInput("Move North");
+  cMovingEast  = map->registerDigitalInput("Move East");
+  cMovingSouth = map->registerDigitalInput("Move South");
+  cMovingWest  = map->registerDigitalInput("Move West");
+  cThrust      = map->registerDigitalInput("Thrust");
   cMapBottom = -20.0f; // TODO: Do this for real!
 }
 
@@ -178,61 +179,79 @@ void SpindizzyGERALD::checkMapZoneEvents(IZone* previousZone, Vertex& start, Ver
   }
 }
 
-SDLKey SpindizzyGERALD::rotateKey(const SDLKey& key) {
+bool SpindizzyGERALD::isMovingNorth() {
   if (cCamera != NULL) {
     float mCameraAngle = cCamera->getAngle();
-    if (mCameraAngle >= 40.0f && mCameraAngle <= 130.0f) {
-      if (key == cNorthKey) {return cWestKey;}
-      if (key == cWestKey)  {return cSouthKey;}
-      if (key == cSouthKey) {return cEastKey;}
-      if (key == cEastKey)  {return cNorthKey;}
-    } else if (mCameraAngle >= -50.0f && mCameraAngle <= 40.0f) {
-      //  Normal orientation
-    } else if (mCameraAngle >= -140.0f && mCameraAngle <= -50.0f) {
-      if (key == cNorthKey) {return cEastKey;}
-      if (key == cWestKey)  {return cNorthKey;}
-      if (key == cSouthKey) {return cWestKey;}
-      if (key == cEastKey)  {return cSouthKey;}
-    } else {
-      if (key == cNorthKey) {return cSouthKey;}
-      if (key == cWestKey)  {return cEastKey;}
-      if (key == cSouthKey) {return cNorthKey;}
-      if (key == cEastKey)  {return cWestKey;}
-    } 
+    return mCameraAngle >= 40.0f && mCameraAngle <= 130.0f   ? *cMovingWest
+         : mCameraAngle >= -50.0f && mCameraAngle <= 40.0f   ? *cMovingNorth
+         : mCameraAngle >= -140.0f && mCameraAngle <= -50.0f ? *cMovingEast
+         :                                                     *cMovingSouth;
   }
-  return key;  
+  return false;
+}
+
+bool SpindizzyGERALD::isMovingEast() {
+  if (cCamera != NULL) {
+    float mCameraAngle = cCamera->getAngle();
+    return mCameraAngle >= 40.0f && mCameraAngle <= 130.0f   ? *cMovingNorth
+         : mCameraAngle >= -50.0f && mCameraAngle <= 40.0f   ? *cMovingEast
+         : mCameraAngle >= -140.0f && mCameraAngle <= -50.0f ? *cMovingSouth
+         :                                                     *cMovingWest;
+  }
+  return false;
+}
+
+bool SpindizzyGERALD::isMovingSouth() {
+  if (cCamera != NULL) {
+    float mCameraAngle = cCamera->getAngle();
+    return mCameraAngle >= 40.0f && mCameraAngle <= 130.0f   ? *cMovingEast
+         : mCameraAngle >= -50.0f && mCameraAngle <= 40.0f   ? *cMovingSouth
+         : mCameraAngle >= -140.0f && mCameraAngle <= -50.0f ? *cMovingWest
+         :                                                     *cMovingNorth;
+  }
+  return false;
+}
+
+bool SpindizzyGERALD::isMovingWest() {
+  if (cCamera != NULL) {
+    float mCameraAngle = cCamera->getAngle();
+    return mCameraAngle >= 40.0f && mCameraAngle <= 130.0f   ? *cMovingSouth
+         : mCameraAngle >= -50.0f && mCameraAngle <= 40.0f   ? *cMovingWest
+         : mCameraAngle >= -140.0f && mCameraAngle <= -50.0f ? *cMovingNorth
+         :                                                     *cMovingEast;
+  }
+  return false;
 }
 
 void SpindizzyGERALD::getNewLocation(float ticks, Vertex* location, Vertex* momentum) {
-  bool mFast = KeyStates::isKeyDown(SDLK_TAB);
-  bool mGoingWest = KeyStates::isKeyDown(rotateKey(cWestKey));
-  bool mGoingEast = KeyStates::isKeyDown(rotateKey(cEastKey));
-  bool mGoingSouth = KeyStates::isKeyDown(rotateKey(cSouthKey));
-  bool mGoingNorth = KeyStates::isKeyDown(rotateKey(cNorthKey));
+  bool mMovingNorth = isMovingNorth();
+  bool mMovingEast  = isMovingEast();
+  bool mMovingSouth = isMovingSouth();
+  bool mMovingWest  = isMovingWest();
   if (cCurrentSurface != NULL) {
     float mXSlopeMomentum = cCurrentSurface->getXAcceleration(cLocation.x, cLocation.y) * CRAFT_ACCELERATION;
     float mYSlopeMomentum = cCurrentSurface->getYAcceleration(cLocation.x, cLocation.y) * CRAFT_ACCELERATION;
     float mSurfaceFriction = 1.0f - cCurrentSurface->getSurfaceFriction();
     float mSurfaceGrip = cCurrentSurface->getSurfaceGrip();
     for (unsigned int i = 0; i < ticks; i++) {
-      float mAcceleration = (mFast ? CRAFT_ACCELERATION * 2.0f : CRAFT_ACCELERATION);
-      if (mGoingWest && !mGoingEast) {
-        momentum->x -= mSurfaceGrip * ((!mFast && mAcceleration > 0.0f && mAcceleration < mXSlopeMomentum)
+      float mAcceleration = (*cThrust ? CRAFT_ACCELERATION * 2.0f : CRAFT_ACCELERATION);
+      if (mMovingWest && !mMovingEast) {
+        momentum->x -= mSurfaceGrip * ((!*cThrust && mAcceleration > 0.0f && mAcceleration < mXSlopeMomentum)
                      ? std::max(mAcceleration * 2.0f, -mXSlopeMomentum)
                      : mAcceleration);
       }
-      if (mGoingEast && !mGoingWest) {
-        momentum->x += mSurfaceGrip * ((!mFast && mAcceleration > 0.0f && mAcceleration < -mXSlopeMomentum)
+      if (mMovingEast && !mMovingWest) {
+        momentum->x += mSurfaceGrip * ((!*cThrust && mAcceleration > 0.0f && mAcceleration < -mXSlopeMomentum)
                      ? std::max(mAcceleration * 2.0f, mXSlopeMomentum)
                      : mAcceleration);
       }
-      if (mGoingSouth && !mGoingNorth) {
-        momentum->y -= mSurfaceGrip * ((!mFast && mAcceleration > 0.0f && mAcceleration < mYSlopeMomentum)
+      if (mMovingSouth && !mMovingNorth) {
+        momentum->y -= mSurfaceGrip * ((!*cThrust && mAcceleration > 0.0f && mAcceleration < mYSlopeMomentum)
                      ? std::max(mAcceleration * 2.0f, -mYSlopeMomentum)
                      : mAcceleration);
       }
-      if (mGoingNorth && !mGoingSouth) {
-        momentum->y += mSurfaceGrip * ((!mFast && mAcceleration > 0.0f && mAcceleration < -mYSlopeMomentum)
+      if (mMovingNorth && !mMovingSouth) {
+        momentum->y += mSurfaceGrip * ((!*cThrust && mAcceleration > 0.0f && mAcceleration < -mYSlopeMomentum)
                      ? std::max(mAcceleration * 2.0f, mYSlopeMomentum)
                      : mAcceleration);
       }

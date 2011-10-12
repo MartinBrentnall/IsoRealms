@@ -33,6 +33,11 @@ SpindizzyCamera::SpindizzyCamera() {
   cMaxY = INT_MIN;
   cMinZ = INT_MAX;
   cMaxZ = INT_MIN;
+  
+  cCameraCommands.push_back(new AbsoluteCommand(this, "Reset",      -45.0f));
+  cCameraCommands.push_back(new RelativeCommand(this, "RotateLeft", -90.0f));
+  cCameraCommands.push_back(new RelativeCommand(this, "RotateRight", 90.0f));
+  cCameraCommands.push_back(new RelativeCommand(this, "Rotate180",   180.0f));
 }
 
 std::vector<PlugSocket*> SpindizzyCamera::getPlugSockets() {
@@ -94,12 +99,6 @@ std::vector<IDynamicElement*> SpindizzyCamera::getPreLoopCommands() {
   return mCameraSetupCommand;
 }
 
-std::vector<IInteractiveElement*> SpindizzyCamera::getInteractiveElements() {
-  std::vector<IInteractiveElement*> mCameraController;
-  mCameraController.push_back(this);
-  return mCameraController;
-}
-
 void SpindizzyCamera::update(int ticks) {
   if (cProgress < 1.0f) {
     cProgress += ticks * 0.0025f;
@@ -147,6 +146,12 @@ void SpindizzyCamera::render() {
   glPopAttrib();*/
 }
 
+void SpindizzyCamera::setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry* commandRegistry) {
+  for (unsigned int i = 0; i < cCameraCommands.size(); i++) {
+    commandRegistry->registerCommand(cCameraCommands[i]);
+  }
+}
+
 void SpindizzyCamera::update(float position) {
   cSequencePosition = position;
 }
@@ -168,42 +173,36 @@ void SpindizzyCamera::changeAngle(float angle) {
   cProgress = 0.0f;
 }
 
-void SpindizzyCamera::keyDown(SDLKey& key) {
-  switch (key) {
-    case SDLK_F1: {
-      changeAngle(-45.0f);
-      break;
-    }
-
-    case SDLK_F3: {
-      changeAngle(cTargetAngle - 90.0f);
-      break;
-    }
-
-    case SDLK_F5: {
-      changeAngle(cTargetAngle + 90.0f);
-      break;
-    }
-
-    case SDLK_F7: {
-      changeAngle(cTargetAngle + 180.0f);
-      break;
-    }
-
-    default: {
-      break;
-    }
-  }
+void SpindizzyCamera::changeAngleRelative(float amount) {
+  changeAngle(cTargetAngle + amount);
 }
 
-bool SpindizzyCamera::input(SDL_Event& event) {
-  switch (event.type) {
-    case SDL_KEYDOWN: {
-      keyDown(event.key.keysym.sym);
-      return false;
-    }
-  }
-  return false;
+SpindizzyCamera::RelativeCommand::RelativeCommand(SpindizzyCamera* parent, const std::string& commandName, float amount) {
+  cCommandName = commandName;
+  cParent = parent;
+  cAmount = amount;
+}
+
+void SpindizzyCamera::RelativeCommand::execute() {
+  cParent->changeAngleRelative(cAmount);
+}
+
+std::string SpindizzyCamera::RelativeCommand::getCommandName() {
+  return cCommandName;
+}
+
+SpindizzyCamera::AbsoluteCommand::AbsoluteCommand(SpindizzyCamera* parent, const std::string& commandName, float destination) {
+  cCommandName = commandName;
+  cParent = parent;
+  cDestination = destination;
+}
+
+void SpindizzyCamera::AbsoluteCommand::execute() {
+  cParent->changeAngle(cDestination);
+}
+
+std::string SpindizzyCamera::AbsoluteCommand::getCommandName() {
+  return cCommandName;
 }
 
 extern "C" IPlugin* create() {

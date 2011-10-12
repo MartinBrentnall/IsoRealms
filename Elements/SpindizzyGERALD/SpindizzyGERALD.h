@@ -61,18 +61,18 @@ class SpindizzyGERALD:public Element<ISpindizzyGERALDSet, ISpindizzyGERALDFactor
   static const unsigned int INIT_REGISTER_SURFACES;
   static const unsigned int INIT_USE_SURFACES;
   static const unsigned int BOUNCE_CONTROL_TIME;
-
-  SDLKey cNorthKey;
-  SDLKey cSouthKey;
-  SDLKey cEastKey;
-  SDLKey cWestKey;
-
+  
   struct RespawnData {
     IRollableSurface* cSurface;
     int cX;
     int cY;
   };
-  
+
+  bool* cMovingNorth;
+  bool* cMovingEast;
+  bool* cMovingSouth;
+  bool* cMovingWest;
+  bool* cThrust;
   IMap* cMap;
   IZone* cZone;
   BlockLocation cStartLocation;
@@ -99,7 +99,10 @@ class SpindizzyGERALD:public Element<ISpindizzyGERALDSet, ISpindizzyGERALDFactor
   bool cCycleBounce;
   int cFastEvents;
 
-  SDLKey rotateKey(const SDLKey&);
+  bool isMovingNorth();
+  bool isMovingEast();
+  bool isMovingSouth();
+  bool isMovingWest();
   void keyDown(SDLKey&);
   void pollEvent(float&);
   void getNewLocation(float, Vertex*, Vertex*);
