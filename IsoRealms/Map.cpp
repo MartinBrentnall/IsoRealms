@@ -82,17 +82,31 @@ Map::Map(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, 
       Zone* mZone = new Zone(mNode, cElementSetRegistry, cPluginRegistry);
       addZone(mZone);
     } else if (mValueAsString == "InputConfiguration") {
-      std::string mGlobalConfigurationFile = System::getResource("controls.config");
       std::string mProjectConfigurationFile = System::getProjectResource(projectName, "controls.config");
-      DOMNodeWrapper* mGlobalConfiguration = new DOMNodeWrapper(mGlobalConfigurationFile);
-      DOMNodeWrapper* mProjectConfiguration = new DOMNodeWrapper(mProjectConfigurationFile);
-      cInputCommands.loadConfiguration(mNode, mGlobalConfiguration, mProjectConfiguration, &cCommandRegistry);
+      std::string mGlobalConfigurationFile = System::getResource("controls.config");
+      std::vector<DOMNodeWrapper*> mConfigNodes;
+      DOMNodeWrapper* mProjectConfigurationRoot = new DOMNodeWrapper(mProjectConfigurationFile);
+      DOMNodeWrapper* mGlobalConfigurationRoot = new DOMNodeWrapper(mGlobalConfigurationFile);
+      mConfigNodes.push_back(getConfigurationNode(mProjectConfigurationRoot));
+      mConfigNodes.push_back(getConfigurationNode(mGlobalConfigurationRoot));
+      cInputCommands.loadConfiguration(mNode, mConfigNodes, &cCommandRegistry);
     } else {
       // TODO: Throw something
     }
   }
   registerListeners();
   std::cout << "Done!" << std::endl;
+}
+
+DOMNodeWrapper* Map::getConfigurationNode(DOMNodeWrapper* node) {
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "InputConfiguration") {
+      return mNode;
+    }
+  }
+  return NULL;
 }
 
 void Map::registerListeners() {

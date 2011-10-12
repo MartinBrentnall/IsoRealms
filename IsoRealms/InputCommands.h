@@ -33,9 +33,10 @@ class InputCommands {
   std::map<std::string, DigitalInput*> cDigitalInputs;
   
   DigitalInput* getDigitalInput(const std::string&);
+  DOMNodeWrapper* findConfiguration(std::vector<DOMNodeWrapper*>, const std::string&);
 
   public:
-  void loadConfiguration(DOMNodeWrapper*, DOMNodeWrapper*, DOMNodeWrapper*, CommandDirectory*);
+  void loadConfiguration(DOMNodeWrapper*, std::vector<DOMNodeWrapper*>, CommandDirectory*);
   void save(DOMNodeWriter*);
   bool* registerDigitalInput(const std::string&);
   bool input(SDL_Event&);

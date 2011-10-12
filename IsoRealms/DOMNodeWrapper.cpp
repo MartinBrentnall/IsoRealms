@@ -35,8 +35,11 @@ DOMNodeWrapper::DOMNodeWrapper(std::string filename) {
     ParseException mException("XML parsing exception: " + std::string(mMessage));
     XMLString::release(&mMessage);
     throw mException;
-  } catch (...) {
-    throw ParseException("Unknown XML parsing exception");
+  } catch (const SAXException& mException) {
+    char* mMessage = XMLString::transcode(mException.getMessage());
+    ParseException mException("XML parsing exception: " + std::string(mMessage));
+    XMLString::release(&mMessage);
+    throw mException;
   }
   cNode = mParser->getDocument(); 
 }

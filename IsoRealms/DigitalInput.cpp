@@ -6,12 +6,21 @@ DigitalInput::DigitalInput() {
   *cInput = false;
 }
 
-bool DigitalInput::loadMapping(DOMNodeWrapper* node, const std::string& mappingTag) {
-  bool mConfigurationLoaded = false;
+void DigitalInput::setup(DOMNodeWrapper* node, CommandDirectory* commandRegistry) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == mappingTag) {
+    if (mValueAsString == "OnStart") {
+      cActivatedScript = commandRegistry->getScript(mNode);
+    }
+  }
+}
+
+void DigitalInput::configure(DOMNodeWrapper* node) {
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "Mapping") {
       std::string mType = mNode->getAttribute("type");
       std::string mValue = mNode->getAttribute("value");
       if (mType == "keyDown") {
@@ -20,33 +29,6 @@ bool DigitalInput::loadMapping(DOMNodeWrapper* node, const std::string& mappingT
       } else {
         // TODO: Throw something
       }
-      mConfigurationLoaded = true;
-    }
-  }
-  return mConfigurationLoaded;
-}
-
-void DigitalInput::configure(DOMNodeWrapper* node, DOMNodeWrapper* globalConfiguration, DOMNodeWrapper* projectConfiguration, CommandDirectory* commandRegistry) {
-  for (int i = 0; i < node->getChildCount(); i++) {
-    DOMNodeWrapper *mNode = node->getChild(i);
-    std::string mValueAsString = mNode->getNodeName();
-    std::cout << "Loading project mapping..." << std::endl;
-    bool mLoaded = loadMapping(projectConfiguration, "Mapping");
-    if (!mLoaded) {
-      std::cout << "Loading global mapping..." << std::endl;
-      mLoaded = loadMapping(globalConfiguration, "Mapping");
-      if (!mLoaded) {
-        std::cout << "Loading default mapping..." << std::endl;
-        loadMapping(node, "DefaultMapping");
-      }
-    }
-  }
-  
-  for (int i = 0; i < node->getChildCount(); i++) {
-    DOMNodeWrapper *mNode = node->getChild(i);
-    std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "OnStart") {
-      cActivatedScript = commandRegistry->getScript(mNode);
     }
   }
 }

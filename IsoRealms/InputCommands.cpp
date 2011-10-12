@@ -27,14 +27,35 @@ DigitalInput* InputCommands::getDigitalInput(const std::string& name) {
   return cDigitalInputs[name];
 }
 
-void InputCommands::loadConfiguration(DOMNodeWrapper* node, DOMNodeWrapper* globalConfiguration, DOMNodeWrapper* projectConfiguration, CommandDirectory* commandRegistry) {
+DOMNodeWrapper* InputCommands::findConfiguration(std::vector<DOMNodeWrapper*> node, const std::string& name) {
+  for (unsigned int i = 0; i < node.size(); i++) {
+    for (int j = 0; j < node[i]->getChildCount(); j++) {
+      DOMNodeWrapper *mNode = node[i]->getChild(j);
+      std::string mValueAsString = mNode->getNodeName();
+      if (mValueAsString == "DigitalInput") {
+        std::string mName = mNode->getAttribute("name");
+        if (mName == name) {
+          return mNode;
+        }
+      }
+    }
+  }
+  return NULL;
+}
+
+void InputCommands::loadConfiguration(DOMNodeWrapper* node, std::vector<DOMNodeWrapper*> configurationNodes, CommandDirectory* commandRegistry) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "DigitalInput") {
       std::string mName = mNode->getAttribute("name");
       DigitalInput* mDigitalInput = getDigitalInput(mName);
-      mDigitalInput->configure(mNode, globalConfiguration, projectConfiguration, commandRegistry);
+      DOMNodeWrapper* mConfigurationNode = findConfiguration(configurationNodes, mName);
+      if (mConfigurationNode == NULL) {
+        mConfigurationNode = mNode;
+      }
+      mDigitalInput->setup(mNode, commandRegistry);
+      mDigitalInput->configure(mConfigurationNode);
     } else {
       // TODO: Throw
     }

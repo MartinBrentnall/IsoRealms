@@ -84,6 +84,8 @@ class Map:public IMap,
 
   bool containsElement(IElement*);
 
+  DOMNodeWrapper* getConfigurationNode(DOMNodeWrapper*);
+
   public:
   Map();
   Map(DOMNodeWrapper*, IPluginRegistryListener*, IElementRegistryListener*, const std::string&);

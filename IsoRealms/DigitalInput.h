@@ -21,11 +21,11 @@ class DigitalInput {
   bool isMapped(SDLKey& key);
   SDLKey getSDLKey(const std::string&);
 
-  bool loadMapping(DOMNodeWrapper*, const std::string&);
   
   public:
   DigitalInput();
-  void configure(DOMNodeWrapper*, DOMNodeWrapper*, DOMNodeWrapper*, CommandDirectory*);
+  void setup(DOMNodeWrapper*, CommandDirectory*);
+  void configure(DOMNodeWrapper*);
   bool input(SDL_Event&);
   bool* getDigitalInput();
 };

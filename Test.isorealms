@@ -1220,135 +1220,135 @@
 <!--  <ZoneRenderer/>-->
   <InputConfiguration>
     <DigitalInput name="Move North">
-      <DefaultMapping type="keyDown" value="ArrowUp"/>
-      <DefaultMapping type="keyDown" value="w"/>
+      <Mapping type="keyDown" value="ArrowUp"/>
+      <Mapping type="keyDown" value="w"/>
     </DigitalInput>
     <DigitalInput name="Move East">
-      <DefaultMapping type="keyDown" value="ArrowRight"/>
-      <DefaultMapping type="keyDown" value="d"/>
+      <Mapping type="keyDown" value="ArrowRight"/>
+      <Mapping type="keyDown" value="d"/>
     </DigitalInput>
     <DigitalInput name="Move South">
-      <DefaultMapping type="keyDown" value="ArrowDown"/>
-      <DefaultMapping type="keyDown" value="s"/>
+      <Mapping type="keyDown" value="ArrowDown"/>
+      <Mapping type="keyDown" value="s"/>
     </DigitalInput>
     <DigitalInput name="Move West">
-      <DefaultMapping type="keyDown" value="ArrowLeft"/>
-      <DefaultMapping type="keyDown" value="a"/>
+      <Mapping type="keyDown" value="ArrowLeft"/>
+      <Mapping type="keyDown" value="a"/>
     </DigitalInput>
     <DigitalInput name="Thrust">
-      <DefaultMapping type="keyDown" value="LeftControl"/>
+      <Mapping type="keyDown" value="LeftControl"/>
     </DigitalInput>
     <DigitalInput name="Brake">
-      <DefaultMapping type="keyDown" value="Space"/>
+      <Mapping type="keyDown" value="Space"/>
       <OnStart>
         <Command>ElementSet/Player/Stop</Command>
         <Command>Plugin/Timer/DeductForStop</Command>
       </OnStart>
     </DigitalInput>
     <DigitalInput name="Map">
-      <DefaultMapping type="keyDown" value="m"/>
+      <Mapping type="keyDown" value="m"/>
       <OnStart>
         <Command>Plugin/Utilities/GameSwitches/Toggle MapOverview</Command>
       </OnStart>
     </DigitalInput>
     <DigitalInput name="View Mode">
-      <DefaultMapping type="keyDown" value="F9"/>
+      <Mapping type="keyDown" value="F9"/>
       <OnStart>
         <Command>Plugin/Utilities/GameSwitches/Toggle RenderingMode</Command>
       </OnStart>
     </DigitalInput>
     <DigitalInput name="Reset Camera">
-      <DefaultMapping type="keyDown" value="F1"/>
+      <Mapping type="keyDown" value="F1"/>
       <OnStart>
         <Command>Plugin/Camera/CraftCamera/Reset</Command>
       </OnStart>
     </DigitalInput>
     <DigitalInput name="Rotate Camera Left">
-      <DefaultMapping type="keyDown" value="F3"/>
+      <Mapping type="keyDown" value="F3"/>
       <OnStart>
         <Command>Plugin/Camera/CraftCamera/RotateLeft</Command>
       </OnStart>
     </DigitalInput>
     <DigitalInput name="Rotate Camera Right">
-      <DefaultMapping type="keyDown" value="F5"/>
+      <Mapping type="keyDown" value="F5"/>
       <OnStart>
         <Command>Plugin/Camera/CraftCamera/RotateRight</Command>
       </OnStart>
     </DigitalInput>
     <DigitalInput name="Reverse Camera">
-      <DefaultMapping type="keyDown" value="F7"/>
+      <Mapping type="keyDown" value="F7"/>
       <OnStart>
         <Command>Plugin/Camera/CraftCamera/Rotate180</Command>
       </OnStart>
     </DigitalInput>
     <DigitalInput name="Debug Reset Switches">
-      <DefaultMapping type="keyDown" value="1"/>
+      <Mapping type="keyDown" value="1"/>
       <OnStart>
         <Command>Plugin/Utilities/SpindizzySwitches/Reset Spindizzy Switches</Command>
       </OnStart>
     </DigitalInput>
     <DigitalInput name="Debug Activate Left Diamond Switch">
-      <DefaultMapping type="keyDown" value="2"/>
+      <Mapping type="keyDown" value="2"/>
       <OnStart>
         <Command>Plugin/Utilities/SpindizzySwitches/Activate switch LeftDiamondSwitch</Command>
       </OnStart>
     </DigitalInput>
     <DigitalInput name="Debug Activate Right Diamond Switch">
-      <DefaultMapping type="keyDown" value="3"/>
+      <Mapping type="keyDown" value="3"/>
       <OnStart>
         <Command>Plugin/Utilities/SpindizzySwitches/Activate switch RightDiamondSwitch</Command>
       </OnStart>
     </DigitalInput>
     <DigitalInput name="Debug Activate Filled Diamond Switch">
-      <DefaultMapping type="keyDown" value="4"/>
+      <Mapping type="keyDown" value="4"/>
       <OnStart>
         <Command>Plugin/Utilities/SpindizzySwitches/Activate switch FilledDiamondSwitch</Command>
       </OnStart>
     </DigitalInput>
     <DigitalInput name="Debug Activate Empty Square Switch">
-      <DefaultMapping type="keyDown" value="5"/>
+      <Mapping type="keyDown" value="5"/>
       <OnStart>
         <Command>Plugin/Utilities/SpindizzySwitches/Activate switch EmptySquareSwitch</Command>
       </OnStart>
     </DigitalInput>
     <DigitalInput name="Debug Activate Left Square Switch">
-      <DefaultMapping type="keyDown" value="6"/>
+      <Mapping type="keyDown" value="6"/>
       <OnStart>
         <Command>Plugin/Utilities/SpindizzySwitches/Activate switch LeftSquareSwitch</Command>
       </OnStart>
     </DigitalInput>
     <DigitalInput name="Debug Activate Right Square Switch">
-      <DefaultMapping type="keyDown" value="7"/>
+      <Mapping type="keyDown" value="7"/>
       <OnStart>
         <Command>Plugin/Utilities/SpindizzySwitches/Activate switch RightSquareSwitch</Command>
       </OnStart>
     </DigitalInput>
     <DigitalInput name="Debug Activate Filled Square Switch">
-      <DefaultMapping type="keyDown" value="8"/>
+      <Mapping type="keyDown" value="8"/>
       <OnStart>
         <Command>Plugin/Utilities/SpindizzySwitches/Activate switch FilledSquareSwitch</Command>
       </OnStart>
     </DigitalInput>
     <DigitalInput name="Debug Activate Empty Circle Switch">
-      <DefaultMapping type="keyDown" value="9"/>
+      <Mapping type="keyDown" value="9"/>
       <OnStart>
         <Command>Plugin/Utilities/SpindizzySwitches/Activate switch EmptyCircleSwitch</Command>
       </OnStart>
     </DigitalInput>
     <DigitalInput name="Debug Activate Left Circle Switch">
-      <DefaultMapping ype="keyDown" value="0"/>
+      <Mapping ype="keyDown" value="0"/>
       <OnStart>
         <Command>Plugin/Utilities/SpindizzySwitches/Activate switch LeftCircleSwitch</Command>
       </OnStart>
     </DigitalInput>
     <DigitalInput name="Debug Activate Right Circle Switch">
-      <DefaultMapping type="keyDown" value="["/>
+      <Mapping type="keyDown" value="["/>
       <OnStart>
         <Command>Plugin/Utilities/SpindizzySwitches/Activate switch RightCircleSwitch</Command>
       </OnStart>
     </DigitalInput>
     <DigitalInput name="Debug Activate Filled Circle Switch">
-      <DefaultMapping type="keyDown" value="]"/>
+      <Mapping type="keyDown" value="]"/>
       <OnStart>
         <Command>Plugin/Utilities/SpindizzySwitches/Activate switch FilledCircleSwitch</Command>
       </OnStart>
