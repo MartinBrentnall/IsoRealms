@@ -86,7 +86,7 @@ class Map:public IMap,
 
   public:
   Map();
-  Map(DOMNodeWrapper*, IPluginRegistryListener*, IElementRegistryListener*);
+  Map(DOMNodeWrapper*, IPluginRegistryListener*, IElementRegistryListener*, const std::string&);
 
   void addZone(Zone*);
 

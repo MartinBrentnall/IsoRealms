@@ -27,14 +27,14 @@ DigitalInput* InputCommands::getDigitalInput(const std::string& name) {
   return cDigitalInputs[name];
 }
 
-void InputCommands::loadConfiguration(DOMNodeWrapper* node, CommandDirectory* commandRegistry) {
+void InputCommands::loadConfiguration(DOMNodeWrapper* node, DOMNodeWrapper* globalConfiguration, DOMNodeWrapper* projectConfiguration, CommandDirectory* commandRegistry) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "DigitalInput") {
       std::string mName = mNode->getAttribute("name");
       DigitalInput* mDigitalInput = getDigitalInput(mName);
-      mDigitalInput->configure(mNode, commandRegistry);
+      mDigitalInput->configure(mNode, globalConfiguration, projectConfiguration, commandRegistry);
     } else {
       // TODO: Throw
     }

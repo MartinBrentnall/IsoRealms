@@ -23,7 +23,7 @@ Map::Map() {
   cZoneRenderers.push_back(new DefaultZoneRenderer());
 }
 
-Map::Map(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, IElementRegistryListener* elementRegistryListener) {
+Map::Map(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, IElementRegistryListener* elementRegistryListener, const std::string& projectName) {
   if (pluginRegistryListener != NULL) {
     cPluginRegistry.addListener(pluginRegistryListener);
   }
@@ -82,7 +82,11 @@ Map::Map(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, 
       Zone* mZone = new Zone(mNode, cElementSetRegistry, cPluginRegistry);
       addZone(mZone);
     } else if (mValueAsString == "InputConfiguration") {
-      cInputCommands.loadConfiguration(mNode, &cCommandRegistry);
+      std::string mGlobalConfigurationFile = System::getResource("controls.config");
+      std::string mProjectConfigurationFile = System::getProjectResource(projectName, "controls.config");
+      DOMNodeWrapper* mGlobalConfiguration = new DOMNodeWrapper(mGlobalConfigurationFile);
+      DOMNodeWrapper* mProjectConfiguration = new DOMNodeWrapper(mProjectConfigurationFile);
+      cInputCommands.loadConfiguration(mNode, mGlobalConfiguration, mProjectConfiguration, &cCommandRegistry);
     } else {
       // TODO: Throw something
     }

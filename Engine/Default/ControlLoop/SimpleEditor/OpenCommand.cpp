@@ -28,7 +28,7 @@ void OpenCommand::execute() {
     DOMNodeWrapper *mNode = mConfigurationRootNode->getChild(i);
     std::string mValue = mNode->getNodeName();
     if (mValue == "Map") {
-      Map* mMap = new Map(mNode, cEditor, cEditor);
+      Map* mMap = new Map(mNode, cEditor, cEditor, "Test.isorealms");
       cEditor->setMap(mMap);
       return;
     }

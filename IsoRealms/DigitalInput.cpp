@@ -6,11 +6,12 @@ DigitalInput::DigitalInput() {
   *cInput = false;
 }
 
-void DigitalInput::configure(DOMNodeWrapper* node, CommandDirectory* commandRegistry) {
+bool DigitalInput::loadMapping(DOMNodeWrapper* node, const std::string& mappingTag) {
+  bool mConfigurationLoaded = false;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "DefaultMapping") {
+    if (mValueAsString == mappingTag) {
       std::string mType = mNode->getAttribute("type");
       std::string mValue = mNode->getAttribute("value");
       if (mType == "keyDown") {
@@ -19,7 +20,32 @@ void DigitalInput::configure(DOMNodeWrapper* node, CommandDirectory* commandRegi
       } else {
         // TODO: Throw something
       }
-    } else if (mValueAsString == "OnStart") {
+      mConfigurationLoaded = true;
+    }
+  }
+  return mConfigurationLoaded;
+}
+
+void DigitalInput::configure(DOMNodeWrapper* node, DOMNodeWrapper* globalConfiguration, DOMNodeWrapper* projectConfiguration, CommandDirectory* commandRegistry) {
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    std::cout << "Loading project mapping..." << std::endl;
+    bool mLoaded = loadMapping(projectConfiguration, "Mapping");
+    if (!mLoaded) {
+      std::cout << "Loading global mapping..." << std::endl;
+      mLoaded = loadMapping(globalConfiguration, "Mapping");
+      if (!mLoaded) {
+        std::cout << "Loading default mapping..." << std::endl;
+        loadMapping(node, "DefaultMapping");
+      }
+    }
+  }
+  
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "OnStart") {
       cActivatedScript = commandRegistry->getScript(mNode);
     }
   }

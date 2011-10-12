@@ -130,6 +130,13 @@ class System {
   static std::string getResource(std::string);
 
   /**
+   * Return the project-specific file name for the specified resource.
+   * 
+   * @return  The project-specific file name for the specified resource.
+   */
+  static std::string getProjectResource(const std::string&, const std::string&);
+  
+  /**
    * Return the file name for the specified resource.
    *
    * @return  The file name for the specified resource.

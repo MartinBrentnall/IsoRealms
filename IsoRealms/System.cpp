@@ -100,6 +100,10 @@ std::string System::getResource(std::string filename) {
   return getUserDataDirectory() + convertToSystemFormat(filename);
 }
 
+std::string System::getProjectResource(const std::string& projectName, const std::string& filename) {
+  return getUserDataDirectory() + "projectConfig" + getDirectorySeparator() + projectName + getDirectorySeparator() + convertToSystemFormat(filename);
+}
+
 std::string System::getConfigurationResource(std::string filename) {
   return "/usr/share/IsoRealms/" + convertToSystemFormat(filename) + ".so";
 }
