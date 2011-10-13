@@ -37,7 +37,7 @@ void HUDComponent::update(int milliseconds) {
   }
 }
 
-void HUDComponent::render() {
+void HUDComponent::render(float xZoom, float yZoom) {
   if (cModel != NULL) {
     float mAngle = cCamera->getAngle();
     float mTilt = cCamera->getTilt();
@@ -50,19 +50,7 @@ void HUDComponent::render() {
   }
 }
 
-float HUDComponent::getTop() {
-  return 0.5f;
-}
-
-float HUDComponent::getLeft() {
-  return -0.5f;
-}
-
-float HUDComponent::getBottom() {
-  return -0.5f;
-}
-
-float HUDComponent::getRight() {
-  return 0.5f;
+float HUDComponent::getAspectRatio() {
+  return 1.0f;
 }
 

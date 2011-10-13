@@ -54,7 +54,7 @@ float HUDComponentPosition::getXPosition() {
   ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
   float mAspectRatio = mScreen->getAspectRatio();
   if (cXPositionRelative != NULL) {
-    return cXPositionRelative->getXPosition() - (cXAlign * (cComponent->getRight() - cComponent->getLeft() + 1.0f) / 2.0f); // TODO: Don't assume that the right edge of relative is 1.0 and the left edge of this is 1.0.
+    return cXPositionRelative->getXPosition() - (cXAlign * (1.0f) / 2.0f); // TODO: Don't assume that the right edge of relative is 1.0 and the left edge of this is 1.0.
   } else {
     return (cXPosition / cScale) / mAspectRatio - cXAlign / 2.0f; // TODO: Should use *actual* width, not just assume 2.0
   }
@@ -91,7 +91,7 @@ void HUDComponentPosition::render() {
   glVertex2f(cComponent->getRight(), cComponent->getBottom());
   glVertex2f(cComponent->getLeft(), cComponent->getBottom());
   glEnd();*/
-  cComponent->render();
+  cComponent->render(cScale, cScale);
   glPopMatrix();
 }
 

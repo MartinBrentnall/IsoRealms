@@ -80,7 +80,7 @@ void ModelToHUD::update(int milliseconds) {
   cModel->update(milliseconds);
 }
   
-void ModelToHUD::render() {
+void ModelToHUD::render(float xZoom, float yZoom) {
   float mAngle = cCamera->getAngle();
   float mTilt = cCamera->getTilt();
   glRotatef(mTilt, 1.0f, 0.0f, 0.0f);
@@ -90,20 +90,8 @@ void ModelToHUD::render() {
   glRotatef(-mTilt, 1.0f, 0.0f, 0.0f);
 }
 
-float ModelToHUD::getTop() {
-  return 0.5f;
-}
-
-float ModelToHUD::getLeft() {
-  return -0.5f;
-}
-
-float ModelToHUD::getBottom() {
-  return -0.5f;
-}
-
-float ModelToHUD::getRight() {
-  return 0.5f;
+float ModelToHUD::getAspectRatio() {
+  return 1.0f;
 }
 
 extern "C" IPlugin* create() {

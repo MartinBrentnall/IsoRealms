@@ -71,7 +71,7 @@ void StringToHUD::update(int milliseconds) {
   // TODO: Nothing to do
 }
   
-void StringToHUD::render() {
+void StringToHUD::render(float xZoom, float yZoom) {
   glLoadIdentity();
   glColor3f(0.0f, 0.0f, 0.0f);
   float mX = -0.92f;
@@ -104,20 +104,8 @@ void StringToHUD::render() {
 //  cFont->print(3.5f, -0.1f, 0.99f, 1, "Testing");
 }
 
-float StringToHUD::getTop() {
-  return 1.0f;
-}
-
-float StringToHUD::getLeft() {
-  return -8.0f;
-}
-
-float StringToHUD::getBottom() {
-  return -1.0f;
-}
-
-float StringToHUD::getRight() {
-  return 8.0f;
+float StringToHUD::getAspectRatio() {
+  return 16.0f;
 }
 
 extern "C" IPlugin* create() {

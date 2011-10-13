@@ -93,6 +93,7 @@ class Image {
   void drawHalfDiamond(const Colour* colour, int size); // TODO: Draw anywhere instead of just middle
   void drawHalfDiamond2(const Colour* colour, int size); // TODO: Draw anywhere instead of just middle
   void drawCircle(const Colour* colour, int size); // TODO: Draw anywhere instead of just middle
+  void drawCircle(float, float, const Colour*, int);
   void drawSemiCircle(const Colour* colour, int size); // TODO: Replace with drawArc() or drawPie();
   void drawQuarterCircle(const Colour* colour, int size, int quarter); // TODO: Replace with drawArc() or drawPie();
   void drawOffsetCircle(const Colour* colour, int size); // TODO: Draw anywhere instead of just middle

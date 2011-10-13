@@ -95,6 +95,19 @@ void Image::drawCircle(const Colour* colour, int size) {
   }
 }
 
+void Image::drawCircle(float centerX, float centerY, const Colour* colour, int size) {
+  for (unsigned int y = 0; y < cHeight; y++) {
+    for (unsigned int x = 0; x < cWidth; x++) {
+      int mXDiff = x - centerX;
+      int mYDiff = y - centerY;
+      int mDistance = (int) sqrt(mXDiff * mXDiff + mYDiff * mYDiff);
+      if (mDistance < size) {
+        setPixel(x, y, *colour);
+      }
+    }
+  }
+}
+
 void Image::drawOffsetCircle(const Colour* colour, int size) {
   int mCenterX = (int) (cWidth * 0.57);
   int mCenterY = (int) (cHeight * 0.57);

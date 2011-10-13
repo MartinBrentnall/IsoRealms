@@ -31,7 +31,7 @@ void HUDClue::setCamera(ICamera* camera) {
   cCamera = camera;
 }
 
-void HUDClue::render() {
+void HUDClue::render(float xZoom, float yZoom) {
   if (cClueModel != NULL) {
     float mAngle = cCamera->getAngle();
     float mTilt = cCamera->getTilt();
@@ -50,19 +50,7 @@ void HUDClue::update(int milliseconds) {
   }
 }
 
-float HUDClue::getTop() {
-  return 0.5f;
-}
-
-float HUDClue::getLeft() {
-  return -0.5f;
-}
-
-float HUDClue::getBottom() {
-  return -0.5f;
-}
-
-float HUDClue::getRight() {
-  return 0.5f;
+float HUDClue::getAspectRatio() {
+  return 1.0f;
 }
 

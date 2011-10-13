@@ -36,12 +36,9 @@ class HUDComponent:public IHUDGameComponent {
   /********************************\
    * Implements IHUDGameComponent *
   \********************************/
-  void render();
+  void render(float, float);
   void update(int);
-  float getTop();
-  float getLeft();
-  float getBottom();
-  float getRight();
+  float getAspectRatio();
 };
 
 #endif
