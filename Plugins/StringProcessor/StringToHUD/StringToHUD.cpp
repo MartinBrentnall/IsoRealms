@@ -74,8 +74,8 @@ void StringToHUD::update(int milliseconds) {
 void StringToHUD::render(float xZoom, float yZoom) {
   glLoadIdentity();
   glColor3f(0.0f, 0.0f, 0.0f);
-  float mX = -0.92f;
-  float mY =  0.905f;
+  float mX = -0.90f;
+  float mY =  0.885f;
 /*  float mX = 0.0f;
   float mY = -0.065f;*/
   float mShadow = 0.0065f; 

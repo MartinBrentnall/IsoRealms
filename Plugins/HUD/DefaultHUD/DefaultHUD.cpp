@@ -61,7 +61,6 @@ void DefaultHUD::load(DOMNodeWrapper* node) {
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Component") {
       std::string mComponentSource = mNode->getAttribute("source");
-      std::string mComponentAlign  = mNode->getAttribute("align");
       float mScale = mNode->getFloatAttribute("scale");
       if (mScale <= 0.0f) {
         mScale = 1.0f;
@@ -73,20 +72,10 @@ void DefaultHUD::load(DOMNodeWrapper* node) {
       IHUDComponentFactory* mFactory = cHUDComponentSources[mComponentPath];
       if (mFactory != NULL) {
         IHUDGameComponent* mHUDComponent = mFactory->getHUDComponent(mComponentName);
-        std::vector<std::string> mAlignWords = Utils::splitWords(mComponentAlign);
         IHUDComponentRelation* mLeftRelation   = getRelation(mNode->getAttribute("left"),   "left");
         IHUDComponentRelation* mRightRelation  = getRelation(mNode->getAttribute("right"),  "right");
         IHUDComponentRelation* mBottomRelation = getRelation(mNode->getAttribute("bottom"), "bottom");
         IHUDComponentRelation* mTopRelation    = getRelation(mNode->getAttribute("top"),    "top");
-        for (unsigned int i = 0; i < mAlignWords.size(); i++) {
-          if      (mAlignWords[i] == "left")   {mLeftRelation   = new ScreenRelation(-1.0f);}
-          else if (mAlignWords[i] == "right")  {mRightRelation  = new ScreenRelation( 1.0f);}
-          else if (mAlignWords[i] == "top")    {mTopRelation    = new ScreenRelation( 1.0f);}
-          else if (mAlignWords[i] == "bottom") {mBottomRelation = new ScreenRelation(-1.0f);}
-          else {
-            std::cout << "WARNING: Unknown word in alignment attribute: \"" << mAlignWords[i] << "\"" << std::endl;
-          }
-        }
         HUDComponentPosition* mHUDRenderer = new HUDComponentPosition(mHUDComponent, mLeftRelation, mRightRelation, mTopRelation, mBottomRelation, mScale, mScale);
         cComponents.push_back(mHUDRenderer);
         HUDComponentProxy* mHUDComponentProxy = getComponentProxy(mComponentSource);
