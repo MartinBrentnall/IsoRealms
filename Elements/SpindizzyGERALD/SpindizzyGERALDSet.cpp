@@ -28,12 +28,19 @@ SpindizzyGERALDSet::SpindizzyGERALDSet() {
   cElementFactories.push_back(new SpindizzyGERALDFactory(this, cGERALDModelFactory, cLocationAwareness, cZoneContext));
   cCommands.push_back(new LockControlCommand(this, true));
   cCommands.push_back(new LockControlCommand(this, false));
+  cCommands.push_back(new StopCommand(this));
   cLocks = 0;
 }
 
 void SpindizzyGERALDSet::setModel(ISimpleModelFactory* modelFactory) {
   for (unsigned int i = 0; i < cElementFactories.size(); i++) {
     static_cast<SpindizzyGERALDFactory*>(cElementFactories[i])->setModel(modelFactory);
+  }
+}
+
+void SpindizzyGERALDSet::stop() {
+  for (unsigned int i = 0; i < cElementFactories.size(); i++) {
+    static_cast<SpindizzyGERALDFactory*>(cElementFactories[i])->stop();
   }
 }
 
@@ -145,6 +152,18 @@ void SpindizzyGERALDSet::LockControlCommand::execute() {
 
 std::string SpindizzyGERALDSet::LockControlCommand::getCommandName() {
   return cLock ? "AddLock" : "RemoveLock";
+}
+
+SpindizzyGERALDSet::StopCommand::StopCommand(SpindizzyGERALDSet* parent) {
+  cParent = parent;  
+}
+
+void SpindizzyGERALDSet::StopCommand::execute() {
+  cParent->stop();
+}
+
+std::string SpindizzyGERALDSet::StopCommand::getCommandName() {
+  return "Stop";
 }
 
 extern "C" IElementSet* create(DOMNodeWrapper* node) {

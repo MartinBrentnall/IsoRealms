@@ -47,6 +47,7 @@ class SpindizzyGERALDSet:public ISpindizzyGERALDSet {
   unsigned int cLocks;
 
   void setModel(ISimpleModelFactory*);
+  void stop();
 
   class LockControlCommand:public IUserCommand {
     private:
@@ -55,6 +56,20 @@ class SpindizzyGERALDSet:public ISpindizzyGERALDSet {
     
     public:
     LockControlCommand(SpindizzyGERALDSet*, bool);
+    
+    /***************************\
+     * Implements IUserCommand *
+    \***************************/
+    void execute();
+    std::string getCommandName();
+  };
+  
+  class StopCommand:public IUserCommand {
+    private:
+    SpindizzyGERALDSet* cParent;
+    
+    public:
+    StopCommand(SpindizzyGERALDSet*);
     
     /***************************\
      * Implements IUserCommand *

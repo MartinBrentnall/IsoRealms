@@ -123,12 +123,6 @@ std::vector<IDynamicElement*> SpindizzyGERALD::getDynamicElementsRuntime() {
   return mDynamicElements;
 }
 
-std::vector<IInteractiveElement*> SpindizzyGERALD::getInteractiveElements() {
-  std::vector<IInteractiveElement*> mInteractiveElements;
-  mInteractiveElements.push_back(this);
-  return mInteractiveElements;
-}
-
 void SpindizzyGERALD::checkCurrentZoneEvents(Vertex& start, Vertex& end) {
   std::vector<ZoneEvent*> mZoneEvents = cZone->getZoneEvents(start, end);
   for (unsigned int i = 0; i < mZoneEvents.size(); i++) {
@@ -527,31 +521,12 @@ void SpindizzyGERALD::update(int ticks) {
   }
 }
 
-void SpindizzyGERALD::keyDown(SDLKey& key) {
-  switch (key) {
-    case SDLK_SPACE: {
-      if (cCurrentSurface != NULL && cCurrentSurface->getSurfaceFriction() > 0.0f) {
-        cMomentum.x = 0.0f;
-        cMomentum.y = 0.0f;
-        cMomentum.z = 0.0f;
-      }
-      break;
-    }
-
-    default: {
-      // Nothing to do
-    }
+void SpindizzyGERALD::stop() {
+  if (cCurrentSurface != NULL && cCurrentSurface->getSurfaceFriction() > 0.0f) {
+    cMomentum.x = 0.0f;
+    cMomentum.y = 0.0f;
+    cMomentum.z = 0.0f;
   }
-}
-
-bool SpindizzyGERALD::input(SDL_Event& event) {
-  switch (event.type) {
-    case SDL_KEYDOWN: {
-      keyDown(event.key.keysym.sym);
-      break;
-    }
-  }
-  return false;
 }
 
 void SpindizzyGERALD::render() {

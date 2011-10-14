@@ -31,6 +31,30 @@ void DefaultHUD::unregisterHUDComponentFactory(IHUDComponentFactory* componentFa
   cHUDComponentSources.erase(mFactoryName);
 }
 
+HUDComponentProxy* DefaultHUD::getComponentProxy(const std::string& name) {
+  std::map<std::string, HUDComponentProxy*>::iterator i = cComponentsByName.find(name);
+  if (i != cComponentsByName.end()) {
+    return i->second;
+  }
+  HUDComponentProxy* mProxy = new HUDComponentProxy();
+  cComponentsByName[name] = mProxy;
+  return mProxy;
+}
+
+IHUDComponentRelation* DefaultHUD::getRelation(const std::string& description, const std::string& edge) {
+  if (description == "") {
+    return NULL;
+  }
+  std::vector<std::string> mRelationWords = Utils::splitWords(description);
+  if (mRelationWords.size() == 2) {
+    return new HUDComponentRelation(getComponentProxy(mRelationWords[1]), mRelationWords[0], edge);
+  }
+  if (mRelationWords.size() == 1) {
+    return new ScreenRelation(atof(mRelationWords[0].c_str()));
+  }
+  return NULL;
+}
+
 void DefaultHUD::load(DOMNodeWrapper* node) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
@@ -38,10 +62,6 @@ void DefaultHUD::load(DOMNodeWrapper* node) {
     if (mValueAsString == "Component") {
       std::string mComponentSource = mNode->getAttribute("source");
       std::string mComponentAlign  = mNode->getAttribute("align");
-      std::string mComponentLeft   = mNode->getAttribute("left");
-      std::string mComponentRight  = mNode->getAttribute("right");
-      std::string mComponentTop    = mNode->getAttribute("top");
-      std::string mComponentBottom = mNode->getAttribute("bottom");
       float mScale = mNode->getFloatAttribute("scale");
       if (mScale <= 0.0f) {
         mScale = 1.0f;
@@ -50,71 +70,27 @@ void DefaultHUD::load(DOMNodeWrapper* node) {
       std::string::size_type mLastSplit = mComponentSource.find_last_of('/');
       std::string mComponentName = mComponentSource.substr(mLastSplit + 1);
       std::string mComponentPath = mComponentSource.substr(0, mLastSplit + 1);
-      
-      std::cout << "Loading component: " << mComponentName << " from " << mComponentPath << std::endl;
-
       IHUDComponentFactory* mFactory = cHUDComponentSources[mComponentPath];
       if (mFactory != NULL) {
         IHUDGameComponent* mHUDComponent = mFactory->getHUDComponent(mComponentName);
-
         std::vector<std::string> mAlignWords = Utils::splitWords(mComponentAlign);
-        float mX = 0.0f;
-        float mY = 0.0f;
-        float mXAlign = 0.0f;
-        float mYAlign = 0.0f;
+        IHUDComponentRelation* mLeftRelation   = getRelation(mNode->getAttribute("left"),   "left");
+        IHUDComponentRelation* mRightRelation  = getRelation(mNode->getAttribute("right"),  "right");
+        IHUDComponentRelation* mBottomRelation = getRelation(mNode->getAttribute("bottom"), "bottom");
+        IHUDComponentRelation* mTopRelation    = getRelation(mNode->getAttribute("top"),    "top");
         for (unsigned int i = 0; i < mAlignWords.size(); i++) {
-          if      (mAlignWords[i] == "left")   {mX = -1.0f; mXAlign = -1.0f;}
-          else if (mAlignWords[i] == "right")  {mX =  1.0f; mXAlign =  1.0f;}
-          else if (mAlignWords[i] == "top")    {mY =  1.0f; mYAlign =  1.0f;}
-          else if (mAlignWords[i] == "bottom") {mY = -1.0f; mYAlign = -1.0f;}
+          if      (mAlignWords[i] == "left")   {mLeftRelation   = new ScreenRelation(-1.0f);}
+          else if (mAlignWords[i] == "right")  {mRightRelation  = new ScreenRelation( 1.0f);}
+          else if (mAlignWords[i] == "top")    {mTopRelation    = new ScreenRelation( 1.0f);}
+          else if (mAlignWords[i] == "bottom") {mBottomRelation = new ScreenRelation(-1.0f);}
           else {
             std::cout << "WARNING: Unknown word in alignment attribute: \"" << mAlignWords[i] << "\"" << std::endl;
           }
         }
-        
-        HUDComponentPosition* mHUDRenderer = new HUDComponentPosition(mHUDComponent);
-
-        if (mComponentRight != "") {
-          mXAlign = 1.0f;
-          if (mComponentRight.find("/") != std::string::npos) {
-            mHUDRenderer->setXPosition(cComponentsByName[mComponentRight]);
-          } else {
-            mX = mNode->getFloatAttribute("right");
-          }
-        }
-        if (mComponentLeft != "") {
-          mXAlign = -1.0f;
-          if (mComponentLeft.find("/") != std::string::npos) {
-            mHUDRenderer->setXPosition(cComponentsByName[mComponentLeft]);
-          } else {
-            mX = mNode->getFloatAttribute("left");
-          }
-        }
-        if (mComponentTop != "") {
-          mYAlign = 1.0f;
-          if (mComponentTop.find("/") != std::string::npos) {
-            mHUDRenderer->setYPosition(cComponentsByName[mComponentTop]);
-          } else {
-            mY = mNode->getFloatAttribute("top");
-          }
-        }
-        if (mComponentBottom != "") {
-          mYAlign = -1.0;
-          if (mComponentBottom.find("/") != std::string::npos) {
-            mHUDRenderer->setYPosition(cComponentsByName[mComponentBottom]);
-          } else {
-            mY = mNode->getFloatAttribute("bottom");
-          }
-        }
-
-        // TODO: Set position
-        mHUDRenderer->setScale(mScale);
-        mHUDRenderer->setXPosition(mX);
-        mHUDRenderer->setYPosition(mY);
-        mHUDRenderer->setXAlign(mXAlign);
-        mHUDRenderer->setYAlign(mYAlign);
+        HUDComponentPosition* mHUDRenderer = new HUDComponentPosition(mHUDComponent, mLeftRelation, mRightRelation, mTopRelation, mBottomRelation, mScale, mScale);
         cComponents.push_back(mHUDRenderer);
-        cComponentsByName[mComponentSource] = mHUDRenderer;
+        HUDComponentProxy* mHUDComponentProxy = getComponentProxy(mComponentSource);
+        mHUDComponentProxy->setHUDComponentPosition(mHUDRenderer);
       } else {
         std::cout << "FACTORY IS NULL!" << std::endl;
       }
@@ -149,7 +125,6 @@ void DefaultHUD::render() {
   for (unsigned int i = 0; i < cComponents.size(); i++) {
     cComponents[i]->render();
   }
-
   glLoadIdentity();  
   glEnable(GL_DEPTH_TEST);
   glPushAttrib(GL_TRANSFORM_BIT);

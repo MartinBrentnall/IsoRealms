@@ -18,80 +18,128 @@
  */
 #include "HUDComponentPosition.h"
 
-HUDComponentPosition::HUDComponentPosition(IHUDGameComponent* component) {
+HUDComponentPosition::HUDComponentPosition(IHUDGameComponent* component, IHUDComponentRelation* leftRelation, IHUDComponentRelation* rightRelation, IHUDComponentRelation* topRelation, IHUDComponentRelation* bottomRelation, float xScale, float yScale) {
+  cLeftRelation = leftRelation;
+  cRightRelation = rightRelation;
+  cTopRelation = topRelation;
+  cBottomRelation = bottomRelation;
   cComponent = component;
-  cXPosition = 0.0f;
-  cXAlign = 0.0f;
-  cYPosition = 0.0f;
-  cYAlign = 0.0f;
-  cScale = 1.0f;
-  cYPositionRelative = NULL;
-  cXPositionRelative = NULL;
-}
-
-void HUDComponentPosition::setScale(float scale) {
-  cScale = scale;
-}
-
-void HUDComponentPosition::setXPosition(float position) {
-  cXPosition = position;
-}
-
-void HUDComponentPosition::setYPosition(float position) {
-  cYPosition = position;
-}
-
-void HUDComponentPosition::setXPosition(HUDComponentPosition* relative) {
-  cXPositionRelative = relative;
-}
-
-void HUDComponentPosition::setYPosition(HUDComponentPosition* relative) {
-  cYPositionRelative = relative;
-}
-
-float HUDComponentPosition::getXPosition() {
-  Configuration* mConfiguration = Configuration::getInstance();
-  ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
-  float mAspectRatio = mScreen->getAspectRatio();
-  if (cXPositionRelative != NULL) {
-    return cXPositionRelative->getXPosition() - (cXAlign * (1.0f) / 2.0f); // TODO: Don't assume that the right edge of relative is 1.0 and the left edge of this is 1.0.
-  } else {
-    return (cXPosition / cScale) / mAspectRatio - cXAlign / 2.0f; // TODO: Should use *actual* width, not just assume 2.0
-  }
-}
-
-float HUDComponentPosition::getYPosition() {
-  if (cYPositionRelative != NULL) {
-    return cYPositionRelative->getYPosition() - cYAlign; // TODO: Don't assume that the right edge of relative is 1.0 and the left edge of this is 1.0.
-  } else {
-    return (cYPosition / cScale) - cYAlign / 2.0f; // TODO: Should use *actual* width, not just assume 2.0
-  }
-}
-
-void HUDComponentPosition::setXAlign(float align) {
-  cXAlign = align;
-}
-
-void HUDComponentPosition::setYAlign(float align) {
-  cYAlign = align;
+  cXScale = xScale;
+  cYScale = yScale;
 }
 
 void HUDComponentPosition::update(int milliseconds) {
   cComponent->update(milliseconds);
 }
 
+float HUDComponentPosition::getXScale() {
+  Configuration* mConfiguration = Configuration::getInstance();
+  ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
+  float mAspectRatio = mScreen->getAspectRatio();
+  if (cLeftRelation != NULL && cRightRelation != NULL) {
+    return ((cRightRelation->getLocation() - cLeftRelation->getLocation()) / mAspectRatio) / 2.0f;
+  }
+  return cXScale;
+}
+
+float HUDComponentPosition::getYScale() {
+  if (cTopRelation != NULL && cBottomRelation != NULL) {
+    return (cTopRelation->getLocation() - cBottomRelation->getLocation()) / 2.0f;
+  }
+  return cYScale;
+}
+
+float HUDComponentPosition::getXPosition() {
+  Configuration* mConfiguration = Configuration::getInstance();
+  ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
+  float mAspectRatio = mScreen->getAspectRatio();
+  if (cLeftRelation == NULL && cRightRelation == NULL) {
+    return 0.0f;
+  }
+  if (cRightRelation == NULL) {
+    return cLeftRelation->getLocation() / mAspectRatio + cXScale * cComponent->getAspectRatio();
+  }
+  if (cLeftRelation == NULL) {
+    return cRightRelation->getLocation() / mAspectRatio - cXScale * cComponent->getAspectRatio();
+  }
+  return (cRightRelation->getLocation() / mAspectRatio - cLeftRelation->getLocation() / mAspectRatio) / 2.0f + cLeftRelation->getLocation() / mAspectRatio;
+}
+
+float HUDComponentPosition::getYPosition() {
+  if (cBottomRelation == NULL && cTopRelation == NULL) {
+    return 0.0f;
+  }
+  if (cTopRelation == NULL) {
+    return cBottomRelation->getLocation() + cYScale;
+  }
+  if (cBottomRelation == NULL) {
+    return cTopRelation->getLocation() - cYScale;
+  }
+  return (cTopRelation->getLocation() - cBottomRelation->getLocation()) / 2.0f + cBottomRelation->getLocation();
+}
+
 void HUDComponentPosition::render() {
   glPushMatrix();
-  glScalef(cScale, cScale, cScale);
-  glTranslatef(getXPosition(), getYPosition(), 0.0f);
-/*  glColor3f(1.0f, 1.0f, 1.0f);
-  glBegin(GL_LINE_LOOP);
-  glVertex2f(cComponent->getLeft(), cComponent->getTop());
-  glVertex2f(cComponent->getRight(), cComponent->getTop());
-  glVertex2f(cComponent->getRight(), cComponent->getBottom());
-  glVertex2f(cComponent->getLeft(), cComponent->getBottom());
+  float mXScale = getXScale();
+  float mYScale = getYScale();
+  float mXPosition = getXPosition();
+  float mYPosition = getYPosition();
+  float mScaledXPosition = mXPosition / mXScale;
+  float mScaledYPosition = mYPosition / mYScale;
+  glScalef(mXScale, mYScale, 0.0f);
+  glTranslatef(mScaledXPosition, mScaledYPosition, 0.0f);
+  glColor3f(1.0f, 1.0f, 1.0f);
+  glBindTexture(GL_TEXTURE_2D, 0);
+/*  glBegin(GL_LINES);
+  for (float x = -cComponent->getAspectRatio(); x < cComponent->getAspectRatio(); x += cComponent->getAspectRatio() / 4.0f) {
+    glVertex2f(x, -1.0f);
+    glVertex2f(x,  1.0f);
+  }
+  for (float y = -1.0f; y < 1.0f; y += 2.0f / 8.0f) {
+    glVertex2f(-cComponent->getAspectRatio(), y);
+    glVertex2f( cComponent->getAspectRatio(), y);
+  }
+  glVertex2f( cComponent->getAspectRatio(), -1.0f);
+  glVertex2f( cComponent->getAspectRatio(),  1.0f);
+  glVertex2f(-cComponent->getAspectRatio(),  1.0f);
+  glVertex2f( cComponent->getAspectRatio(),  1.0f);
   glEnd();*/
-  cComponent->render(cScale, cScale);
+/*  glBegin(GL_LINE_LOOP);
+  glVertex2f( cComponent->getAspectRatio(),  1.0f);
+  glVertex2f(-cComponent->getAspectRatio(),  1.0f);
+  glVertex2f(-cComponent->getAspectRatio(), -1.0f);
+  glVertex2f( cComponent->getAspectRatio(), -1.0f);
+  glEnd();*/
+  cComponent->render(mXScale, mYScale);
   glPopMatrix();
 }
 
+float HUDComponentPosition::getLeft() {
+  Configuration* mConfiguration = Configuration::getInstance();
+  ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
+  float mAspectRatio = mScreen->getAspectRatio();
+  float mXScale = getXScale() * mAspectRatio;
+  float mXPosition = getXPosition() * mAspectRatio;
+  return mXPosition - mXScale * cComponent->getAspectRatio();
+}
+
+float HUDComponentPosition::getRight() {
+  Configuration* mConfiguration = Configuration::getInstance();
+  ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
+  float mAspectRatio = mScreen->getAspectRatio();
+  float mXScale = getXScale() * mAspectRatio;
+  float mXPosition = getXPosition() * mAspectRatio;
+  return mXPosition + mXScale * cComponent->getAspectRatio();
+}
+
+float HUDComponentPosition::getBottom() {
+  float mYScale = getYScale();
+  float mYPosition = getYPosition();
+  return mYPosition - mYScale;
+}
+
+float HUDComponentPosition::getTop() {
+  float mYScale = getYScale();
+  float mYPosition = getYPosition();
+  return mYPosition + mYScale;
+}

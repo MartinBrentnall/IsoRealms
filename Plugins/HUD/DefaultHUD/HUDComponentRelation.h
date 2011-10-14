@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2009,2010,2011 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,27 +16,37 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef UTILS_H
-#define UTILS_H
+#ifndef HUD_COMPONENT_RELATION_H
+#define HUD_COMPONENT_RELATION_H
 
-#include <sstream>
-#include <string>
-#include <vector>
+#include "HUDComponentProxy.h"
+#include "IHUDComponentRelation.h"
 
-class Utils {
+class HUDComponentRelation:public IHUDComponentRelation {
   public:
-
-  /**
-   * Convert the specified integer value to a string.
-   */
-  static std::string toString(int);
-
-  /**
-   * Convert the specified float value to a string.
-   */
-  static std::string toString(float);
+  enum Edge {
+    LEFT,
+    RIGHT,
+    TOP,
+    BOTTOM
+  };
+  enum EdgeRelationType {
+    ADJACENT,
+    ALIGNED
+  };
   
-  static std::vector<std::string> splitWords(const std::string&);
+  private:
+  HUDComponentProxy* cRelative;
+  EdgeRelationType cRelationType;
+  Edge cEdge;
+  
+  public:
+  HUDComponentRelation(HUDComponentProxy*, const std::string&, const std::string&);
+    
+  /************************************\
+   * Implements IHUDComponentRelation *
+  \************************************/
+  float getLocation();
 };
 
 #endif

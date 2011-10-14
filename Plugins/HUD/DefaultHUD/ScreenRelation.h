@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2009,2010,2011 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,27 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef UTILS_H
-#define UTILS_H
+#ifndef SCREEN_RELATION_H
+#define SCREEN_RELATION_H
 
-#include <sstream>
-#include <string>
-#include <vector>
+#include "IHUDComponentRelation.h"
 
-class Utils {
-  public:
-
-  /**
-   * Convert the specified integer value to a string.
-   */
-  static std::string toString(int);
-
-  /**
-   * Convert the specified float value to a string.
-   */
-  static std::string toString(float);
+class ScreenRelation:public IHUDComponentRelation {
+  private:
+  float cLocation;
   
-  static std::vector<std::string> splitWords(const std::string&);
+  public:
+  ScreenRelation(float);
+    
+  /************************************\
+   * Implements IHUDComponentRelation *
+  \************************************/
+  float getLocation();   
 };
 
 #endif

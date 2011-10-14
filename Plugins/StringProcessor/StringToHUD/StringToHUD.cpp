@@ -105,7 +105,7 @@ void StringToHUD::render(float xZoom, float yZoom) {
 }
 
 float StringToHUD::getAspectRatio() {
-  return 16.0f;
+  return 6.0f;
 }
 
 extern "C" IPlugin* create() {

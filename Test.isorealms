@@ -579,20 +579,21 @@
   </Plugin>
   <Plugin implementation="DefaultHUD" instance="SpindizzyHUD" type="HUD">
     <Configuration>
-      <Component source="Plugin/Utilities/SpindizzySwitches/ActiveSwitchA" scale="0.12" align="top" right="0.0"/>
-      <Component source="Plugin/Utilities/SpindizzySwitches/ActiveSwitchB" scale="0.12" align="top" left="0.0"/>
-      <Component source="Plugin/Utilities/Compass/3DModel" scale="0.12" align="top" left="Plugin/Utilities/SpindizzySwitches/ActiveSwitchB"/>
-      <Component source="ElementSet/Blocks/Clue" scale="0.12" align="top" right="Plugin/Utilities/SpindizzySwitches/ActiveSwitchA"/>
-      <Component source="Plugin/Utilities/ScoreIcon/3DModel" scale="0.09" align="top right"/>
-      <Component source="Plugin/Utilities/TimeIcon/3DModel" scale="0.09" align="top left"/>
-      <Component source="Plugin/Utilities/JewelIcon/3DModel" scale="0.09" align="right" top="Plugin/Utilities/ScoreIcon/3DModel"/>
-      <Component source="Plugin/Utilities/MapIcon/3DModel" scale="0.09" align="left" top="Plugin/Utilities/TimeIcon/3DModel"/>
-      <Component source="Plugin/StringProcessor/TimeDisplay/Component" scale="0.09" align="top" right="Plugin/Utilities/TimeIcon/3DModel"/>
-      <Component source="Plugin/StringProcessor/ScoreDisplay/Component" scale="0.09" align="top" left="Plugin/Utilities/ScoreIcon/3DModel"/>
-      <Component source="Plugin/StringProcessor/JewelCountDisplay/Component" scale="0.09" top="Plugin/Utilities/TimeIcon/3DModel" left="Plugin/Utilities/JewelIcon/3DModel"/>
-      <Component source="Plugin/StringProcessor/ZonesToExploreDisplay/Component" scale="0.09" top="Plugin/Utilities/ScoreIcon/3DModel" right="Plugin/Utilities/MapIcon/3DModel"/>
-
-<!--       <Component source="Plugin/StringProcessor/TimeDisplay/Component" scale="0.045"/> -->
+      <Component source="Plugin/Utilities/HUDRoundedRectangle/0" top="align Plugin/Utilities/SpindizzySwitches/ActiveSwitchA" bottom="align Plugin/Utilities/SpindizzySwitches/ActiveSwitchA" left="align ElementSet/Blocks/Clue" right="align Plugin/Utilities/Compass/3DModel"/>
+      <Component source="Plugin/Utilities/HUDRoundedRectangle/1" top="align Plugin/Utilities/TimeIcon/3DModel" bottom="align Plugin/StringProcessor/ZonesToExploreDisplay/Component" left="align Plugin/Utilities/TimeIcon/3DModel" right="align Plugin/StringProcessor/ZonesToExploreDisplay/Component"/>
+      <Component source="Plugin/Utilities/HUDRoundedRectangle/2" top="align Plugin/Utilities/ScoreIcon/3DModel" bottom="align Plugin/StringProcessor/JewelCountDisplay/Component" left="align Plugin/StringProcessor/JewelCountDisplay/Component" right="align Plugin/Utilities/ScoreIcon/3DModel"/>
+      <Component source="Plugin/Utilities/SpindizzySwitches/ActiveSwitchA" scale="0.06" align="top" right="0.0"/>
+      <Component source="Plugin/Utilities/SpindizzySwitches/ActiveSwitchB" scale="0.06" align="top" left="0.0"/>
+      <Component source="Plugin/Utilities/Compass/3DModel" scale="0.06" align="top" left="adjacent Plugin/Utilities/SpindizzySwitches/ActiveSwitchB"/>
+      <Component source="ElementSet/Blocks/Clue" scale="0.06" align="top" right="adjacent Plugin/Utilities/SpindizzySwitches/ActiveSwitchA"/>
+      <Component source="Plugin/Utilities/ScoreIcon/3DModel" scale="0.045" align="top right"/>
+      <Component source="Plugin/Utilities/TimeIcon/3DModel" scale="0.045" align="top left"/>
+      <Component source="Plugin/Utilities/JewelIcon/3DModel" scale="0.045" align="right" top="adjacent Plugin/Utilities/ScoreIcon/3DModel"/>
+      <Component source="Plugin/Utilities/MapIcon/3DModel" scale="0.045" align="left" top="adjacent Plugin/Utilities/TimeIcon/3DModel"/>
+      <Component source="Plugin/StringProcessor/TimeDisplay/Component" scale="0.045" align="top" left="adjacent Plugin/Utilities/TimeIcon/3DModel"/>
+      <Component source="Plugin/StringProcessor/ScoreDisplay/Component" scale="0.045" align="top" right="adjacent Plugin/Utilities/ScoreIcon/3DModel"/>
+      <Component source="Plugin/StringProcessor/ZonesToExploreDisplay/Component" scale="0.045" top="adjacent Plugin/Utilities/ScoreIcon/3DModel" left="adjacent Plugin/Utilities/MapIcon/3DModel"/>
+      <Component source="Plugin/StringProcessor/JewelCountDisplay/Component" scale="0.045" top="adjacent Plugin/Utilities/TimeIcon/3DModel" right="adjacent Plugin/Utilities/JewelIcon/3DModel"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="SDLMixerSupport" instance="SpindizzySounds" type="SoundSupport">
@@ -653,6 +654,10 @@
     <Configuration>
       <Location x="0.0" y="0.0" z="0.3"/>
     </Configuration>
+  </Plugin>
+  <Plugin implementation="HUDRoundedRectangle" instance="HUDRoundedRectangle" type="Utilities">
+    <UsePlugin implementation="HUD" instance="SpindizzyHUD" socketid=""/>
+    <Configuration/>
   </Plugin>
   <Plugin implementation="3DModelToHUD" instance="JewelIcon" type="Utilities">
     <UsePlugin implementation="3DModel" instance="C64JewelModel" socketid=""/>

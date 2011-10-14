@@ -16,38 +16,20 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef HUD_COMPONENT_POSITION_H
-#define HUD_COMPONENT_POSITION_H
+#ifndef HUD_COMPONENT_PROXY_H
+#define HUD_COMPONENT_PROXY_H
 
-#include <map>
-#include <string>
+#include "HUDComponentPosition.h"
 
-#include <IsoRealms/Configuration.h>
-#include <IsoRealms/ScreenConfiguration.h>
-
-#include "../IHUD.h"
-
-#include "IHUDComponentRelation.h"
-
-class HUDComponentPosition {
+class HUDComponentProxy {
   private:
-  IHUDGameComponent* cComponent;
-  float cXScale;
-  float cYScale;
-  IHUDComponentRelation* cLeftRelation;
-  IHUDComponentRelation* cRightRelation;
-  IHUDComponentRelation* cTopRelation;
-  IHUDComponentRelation* cBottomRelation;
+  HUDComponentPosition* cHUDComponentPosition;
 
-  float getXScale();
-  float getYScale();
-  float getXPosition();
-  float getYPosition();  
-  
   public:
-  HUDComponentPosition(IHUDGameComponent*, IHUDComponentRelation*, IHUDComponentRelation*, IHUDComponentRelation*, IHUDComponentRelation*, float, float);
-  void update(int);
-  void render();
+  HUDComponentProxy();
+  
+  void setHUDComponentPosition(HUDComponentPosition*);
+  
   float getLeft();
   float getRight();
   float getBottom();

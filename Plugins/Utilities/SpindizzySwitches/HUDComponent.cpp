@@ -42,11 +42,12 @@ void HUDComponent::render(float xZoom, float yZoom) {
     float mAngle = cCamera->getAngle();
     float mTilt = cCamera->getTilt();
     
+    glPushMatrix();
+    glScalef(2.0f, 2.0f, 2.0f); // TODO: Make this configurable
     glRotatef(mTilt, 1.0f, 0.0f, 0.0f);
     glRotatef(mAngle, 0.0f, 0.0f, 1.0f);
     cModel->render();
-    glRotatef(-mAngle, 0.0f, 0.0f, 1.0f);
-    glRotatef(-mTilt, 1.0f, 0.0f, 0.0f);
+    glPopMatrix();
   }
 }
 

@@ -173,3 +173,8 @@ void SpindizzyGERALDFactory::loadRespawnConfiguration(DOMNodeWrapper* node, ICom
   }
 }
 
+void SpindizzyGERALDFactory::stop() {
+  for (unsigned int i = 0; i < cContent.size(); i++) {
+    cContent[i]->stop();
+  }
+}

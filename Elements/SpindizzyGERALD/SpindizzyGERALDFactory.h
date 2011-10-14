@@ -72,6 +72,7 @@ class SpindizzyGERALDFactory:public ISpindizzyGERALDFactory {
   void setLocationAwareness(ILocationAwareness*);
   void setZoneContext(IZoneContext*);
   void loadConfiguration(DOMNodeWrapper*, ICommandRegistry*);
+  void stop();
 
   /******************************\
    * Implements IElementFactory *

@@ -27,7 +27,6 @@
 
 #include <IsoRealms/BlockLocation.h>
 #include <IsoRealms/Element.h>
-#include <IsoRealms/IInteractiveElement.h>
 #include <IsoRealms/IMap.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 #include <IsoRealms/IUserCommand.h>
@@ -50,7 +49,6 @@
 class SpindizzyGERALD:public Element<ISpindizzyGERALDSet, ISpindizzyGERALDFactory>, 
                       public ICollector,
                       public IDynamicElement,
-                      public IInteractiveElement,
                       public IVisualElement {
   private:
   static const float CRAFT_ACCELERATION;
@@ -103,7 +101,6 @@ class SpindizzyGERALD:public Element<ISpindizzyGERALDSet, ISpindizzyGERALDFactor
   bool isMovingEast();
   bool isMovingSouth();
   bool isMovingWest();
-  void keyDown(SDLKey&);
   void pollEvent(float&);
   void getNewLocation(float, Vertex*, Vertex*);
   ICollisionData* pollCollisionEvent(Vertex&, Vertex&);
@@ -129,6 +126,8 @@ class SpindizzyGERALD:public Element<ISpindizzyGERALDSet, ISpindizzyGERALDFactor
   void setCollectables(ICollectables*);
   void setZoneContext(IZoneContext*);
 
+  void stop();
+
   /*************************\
    * Implements ICollector *
   \*************************/
@@ -143,18 +142,12 @@ class SpindizzyGERALD:public Element<ISpindizzyGERALDSet, ISpindizzyGERALDFactor
   std::vector<IVisualElement*> getVisualElements();
   std::vector<IDynamicElement*> getDynamicElements();
   std::vector<IDynamicElement*> getDynamicElementsRuntime();
-  std::vector<IInteractiveElement*> getInteractiveElements();
   void save(DOMNodeWriter*, BlockLocation&);
 
   /********************************\
    * Implementeds IDynamicElement *
   \********************************/
   void update(int);
-
-  /**********************************\
-   * Implements IInteractiveElement *
-  \**********************************/
-  bool input(SDL_Event&);
 
   /*******************************\
    * Implementeds IVisualElement *

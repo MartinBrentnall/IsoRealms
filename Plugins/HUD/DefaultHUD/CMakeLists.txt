@@ -19,6 +19,9 @@ include_directories(${PROJECT_SOURCE_DIR})
 add_library(HUD_DefaultHUD MODULE 
   DefaultHUD.cpp
   HUDComponentPosition.cpp
+  HUDComponentProxy.cpp
+  HUDComponentRelation.cpp
+  ScreenRelation.cpp
 )
 set_target_properties(HUD_DefaultHUD PROPERTIES OUTPUT_NAME "Module")
 set_target_properties(HUD_DefaultHUD PROPERTIES PREFIX "lib")

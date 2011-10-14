@@ -78,6 +78,11 @@ template<class T1 = IElementSet, class T2 = IElementFactory> class Element:publi
     return mEmptyVector;
   }
 
+  std::vector<IInteractiveElement*> getInteractiveElements() {
+    std::vector<IInteractiveElement*> mEmptyVector;
+    return mEmptyVector;
+  }
+
   void save(DOMNodeWriter*, BlockLocation&) {}
   bool initElement(unsigned int) {return true;}
   void removed() {}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2009,2010,2011 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,27 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef UTILS_H
-#define UTILS_H
+#include "ScreenRelation.h"
 
-#include <sstream>
-#include <string>
-#include <vector>
+ScreenRelation::ScreenRelation(float location) {
+  cLocation = location;
+}
 
-class Utils {
-  public:
-
-  /**
-   * Convert the specified integer value to a string.
-   */
-  static std::string toString(int);
-
-  /**
-   * Convert the specified float value to a string.
-   */
-  static std::string toString(float);
-  
-  static std::vector<std::string> splitWords(const std::string&);
-};
-
-#endif
+float ScreenRelation::getLocation() {
+  return cLocation;
+}

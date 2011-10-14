@@ -40,3 +40,10 @@ IHUDGameComponent* HUDRoundedRectangleFactory::getHUDComponent(const std::string
   return NULL;
 }
 
+extern "C" IPlugin* create() {
+  return new HUDRoundedRectangleFactory();
+}
+
+extern "C" void destroy(IPlugin* plugin) {
+  delete plugin;
+}

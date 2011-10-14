@@ -28,7 +28,10 @@
 
 #include "../IHUD.h"
 
+#include "HUDComponentProxy.h"
 #include "HUDComponentPosition.h"
+#include "HUDComponentRelation.h"
+#include "ScreenRelation.h"
 
 class DefaultHUD:public IHUD,
                  public IDynamicElement,
@@ -36,7 +39,10 @@ class DefaultHUD:public IHUD,
   private:
   std::map<std::string, IHUDComponentFactory*> cHUDComponentSources;
   std::vector<HUDComponentPosition*> cComponents;
-  std::map<std::string, HUDComponentPosition*> cComponentsByName;
+  std::map<std::string, HUDComponentProxy*> cComponentsByName;
+  
+  IHUDComponentRelation* getRelation(const std::string&, const std::string&);
+  HUDComponentProxy* getComponentProxy(const std::string&);
   
   public:
   
