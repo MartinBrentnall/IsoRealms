@@ -19,7 +19,6 @@
 #include "SpindizzyCamera.h"
 
 SpindizzyCamera::SpindizzyCamera() {
-  assignDummyPlugin(&cLocationAwareness, "LocationAwareness");
   assignDummyPlugin(&cSequencePlayer, "SequencePlayer");
   cSockets.push_back(new PlugSocket("LocationAwareness"));
   cSockets.push_back(new PlugSocket("SequencePlayer"));
@@ -38,6 +37,7 @@ SpindizzyCamera::SpindizzyCamera() {
   cCameraCommands.push_back(new RelativeCommand(this, "RotateLeft", -90.0f));
   cCameraCommands.push_back(new RelativeCommand(this, "RotateRight", 90.0f));
   cCameraCommands.push_back(new RelativeCommand(this, "Rotate180",   180.0f));
+  cSelectedLocation = 0;
 }
 
 std::vector<PlugSocket*> SpindizzyCamera::getPlugSockets() {
@@ -56,7 +56,22 @@ void SpindizzyCamera::initPlugin(IZone* zone, unsigned int pass) {
 
 void SpindizzyCamera::setPlugin(PlugSocket* socket, IPlugin* plugin) {
   if (socket->getType() == "LocationAwareness") {
-    assignPlugin(plugin, &cLocationAwareness, *socket);
+    std::string mSocketID = socket->getID();
+    std::stringstream mInputString(mSocketID);
+    unsigned int mIndex;
+    mInputString >> mIndex;
+    if (plugin != NULL) {
+      ILocationAwareness* mLocationAwareness = NULL;
+      assignPlugin(plugin, &mLocationAwareness, *socket);
+      // TODO: Throw if index is out of bounds.
+      if (mIndex == cLocationAwareness.size()) {
+        cLocationAwareness.push_back(mLocationAwareness);
+      } else {
+        cLocationAwareness[mIndex] = mLocationAwareness;
+      }
+    } else if (mIndex != cLocationAwareness.size()) {
+      cLocationAwareness.erase(cLocationAwareness.begin() + mIndex);
+    }
   } else if (socket->getType() == "SequencePlayer") {
     ISequencePlayer* mOldSequencePlayer = cSequencePlayer;
     if (assignPlugin(plugin, &cSequencePlayer, *socket)) {
@@ -69,7 +84,15 @@ void SpindizzyCamera::setPlugin(PlugSocket* socket, IPlugin* plugin) {
 }
 
 IPlugin* SpindizzyCamera::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "LocationAwareness") {return cLocationAwareness;}
+  if (socket->getType() == "LocationAwareness") {
+    std::string mSocketID = socket->getID();
+    std::stringstream mInputString(mSocketID);
+    unsigned int mIndex;
+    mInputString >> mIndex;
+    if (mIndex < cLocationAwareness.size()) {
+      return cLocationAwareness[mIndex]; 
+    }
+  }
   if (socket->getType() == "SequencePlayer")    {return cSequencePlayer;}
   // TODO: Throw something
   return NULL;
@@ -110,7 +133,7 @@ void SpindizzyCamera::update(int ticks) {
 
 void SpindizzyCamera::render() {
 //  glTranslatef(0.0f, 0.0f, sine(-20.0f, -380.0f, cSequencePosition));
-  Vertex* mLocation = cLocationAwareness->getLocation();
+  Vertex* mLocation = cLocationAwareness[cSelectedLocation]->getLocation();
 /*  if (cSequencePosition > 0) {
     float mX = sine(mLocation->x, cMinX + (cMaxX - cMinX) / 2.0f, cSequencePosition);
     float mY = sine(mLocation->y, cMinY + (cMaxY - cMinY) / 2.0f, cSequencePosition);
@@ -135,7 +158,7 @@ void SpindizzyCamera::render() {
 //  glScalef(mAspectRatio, 1.0f, 1.0f);
   glRotatef(sine(-90.0f + 35.264389682754654f, 0.0f, cSequencePosition), 1.0f, 0.0f, 0.0f);
   glRotatef(getCurrentAngle(), 0.0f, 0.0f, 1.0f);
-  glTranslatef(-mLocation->x, -mLocation->y, min(-mLocation->z * IsoRealmsConstants::BLOCK_HEIGHT, 0.0f));
+  glTranslatef(-mLocation->x, -mLocation->y, min(-mLocation->z * IsoRealmsConstants::BLOCK_HEIGHT, 0.0f) - cOffset.z * IsoRealmsConstants::BLOCK_HEIGHT);
 
 
 /*  glLoadIdentity();  
@@ -147,8 +170,27 @@ void SpindizzyCamera::render() {
 }
 
 void SpindizzyCamera::setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry* commandRegistry) {
+  cCommandRegistry = commandRegistry;
   for (unsigned int i = 0; i < cCameraCommands.size(); i++) {
     commandRegistry->registerCommand(cCameraCommands[i]);
+  }
+}
+
+void SpindizzyCamera::load(DOMNodeWrapper* node) {
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "Mode") {
+      std::string mModeName = mNode->getAttribute("name");
+      int mTrack = mNode->getIntegerAttribute("track");
+      float mXOffset = mNode->getFloatAttribute("xOffset");
+      float mYOffset = mNode->getFloatAttribute("yOffset");
+      float mZOffset = mNode->getFloatAttribute("zOffset");
+      SetLocationCommand* mSetLocationCommand = new SetLocationCommand(this, mModeName, mTrack, mXOffset, mYOffset, mZOffset);
+      cCameraCommands.push_back(mSetLocationCommand);
+      cCommandRegistry->registerCommand(mSetLocationCommand);
+      mSetLocationCommand->execute(); // TODO: Should be configurable instead of just setting the last mode like this line does
+    }
   }
 }
 
@@ -203,6 +245,24 @@ void SpindizzyCamera::AbsoluteCommand::execute() {
 
 std::string SpindizzyCamera::AbsoluteCommand::getCommandName() {
   return cCommandName;
+}
+
+SpindizzyCamera::SetLocationCommand::SetLocationCommand(SpindizzyCamera* parent, const std::string& modeName, int targetLocation, float xOffset, float yOffset, float zOffset) {
+  cModeName = modeName;
+  cParent = parent;
+  cTargetLocation = targetLocation;
+  cOffset.x = xOffset;
+  cOffset.y = yOffset;
+  cOffset.z = zOffset;
+}
+
+void SpindizzyCamera::SetLocationCommand::execute() {
+  cParent->cSelectedLocation = cTargetLocation;
+  cParent->cOffset = cOffset;
+}
+
+std::string SpindizzyCamera::SetLocationCommand::getCommandName() {
+  return "SetMode " + cModeName;
 }
 
 extern "C" IPlugin* create() {

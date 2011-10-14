@@ -68,13 +68,33 @@ class SpindizzyCamera:public ICamera,
     void execute();
     std::string getCommandName();
   };
+  
+  class SetLocationCommand:public IUserCommand {
+    private:
+    SpindizzyCamera* cParent;
+    std::string cModeName;
+    int cTargetLocation;
+    Vertex cOffset;
+    
+    public:
+    SetLocationCommand(SpindizzyCamera*, const std::string&, int, float, float, float);
+    
+    /***************************\
+     * Implements IUserCommand *
+    \***************************/
+    void execute();
+    std::string getCommandName();
+  };
     
   std::vector<IUserCommand*> cCameraCommands;
   
+  ICommandRegistry* cCommandRegistry;
   std::vector<PlugSocket*> cSockets;
-  ILocationAwareness* cLocationAwareness;
+  std::vector<ILocationAwareness*> cLocationAwareness;
+  int cSelectedLocation;
   ISequencePlayer* cSequencePlayer;
   Vertex* cLocation;
+  Vertex cOffset;
   float cTargetAngle;
   float cPreviousAngle;
   float cProgress;
@@ -109,7 +129,8 @@ class SpindizzyCamera:public ICamera,
   std::vector<IDynamicElement*> getPreLoopCommands();
   void initPlugin(IZone*, unsigned int);
   void setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry*);
-
+  void load(DOMNodeWrapper*);
+  
   /*****************************\
    * Implements IVisualElement *
   \*****************************/

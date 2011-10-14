@@ -328,12 +328,12 @@
     <Configuration/>
   </Plugin>
   <Plugin implementation="SpindizzyCamera" instance="CraftCamera" type="Camera">
-<!--    <UsePlugin implementation="LocationAwareness" instance="PlayerLocation" socketid="Player"/>-->
-    <UsePlugin implementation="LocationAwareness" instance="CurrentZoneLocation" socketid="Zone"/>
+    <UsePlugin implementation="LocationAwareness" instance="PlayerLocation" socketid="0"/>
+    <UsePlugin implementation="LocationAwareness" instance="CurrentZoneLocation" socketid="1"/>
     <UsePlugin implementation="SequencePlayer" instance="CameraMapOverviewAnimator" socketid=""/>
     <Configuration>
-      <Mode name="Modern" type="Perspective" angle="45.0"/>
-      <Mode name="Classic" type="Orthogonal" width="20.0"/>
+      <Mode name="Classic" track="1"/>
+      <Mode name="Modern" track="0" zOffset="7.5"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="ZoneCollectables" instance="Jewels" type="Collectables">
@@ -860,14 +860,12 @@
       </Switch>
       <Switch name="RenderingMode">
         <On>
-          <Command>Plugin/Camera/SpindizzyCamera/SetMode Classic</Command>
-          <Command>Plugin/Camera/SpindizzyCamera/Track Zone</Command>
+          <Command>Plugin/Camera/CraftCamera/SetMode Classic</Command>
           <Command>ZoneRenderer/Utilities/ZoneContextRenderer/zone_Activate</Command>
           <Command>ZoneRenderer/Utilities/ExploredZones/explored_Deactivate</Command>
         </On>
         <Off>
-          <Command>Plugin/Camera/SpindizzyCamera/SetMode Modern</Command>
-          <Command>Plugin/Camera/SpindizzyCamera/Track Player</Command>
+          <Command>Plugin/Camera/CraftCamera/SetMode Modern</Command>
           <Command>ZoneRenderer/Utilities/ZoneContextRenderer/zone_Deactivate</Command>
           <Command>ZoneRenderer/Utilities/ExploredZones/explored_Activate</Command>
         </Off>
@@ -1220,8 +1218,8 @@
     </Configuration>
   </ElementSet>
   <ZoneRenderer type="Utilities" instance="ExploredZones" renderer="mapOverview" active="false"/>
-  <ZoneRenderer type="Utilities" instance="ExploredZones" renderer="explored" active="false"/>
-  <ZoneRenderer type="Utilities" instance="ZoneContextRenderer" renderer="zone" active="true"/>
+  <ZoneRenderer type="Utilities" instance="ExploredZones" renderer="explored" active="true"/>
+  <ZoneRenderer type="Utilities" instance="ZoneContextRenderer" renderer="zone" active="false"/>
 <!--  <ZoneRenderer/>-->
   <InputConfiguration>
     <DigitalInput name="Move North">
