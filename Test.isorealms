@@ -332,8 +332,8 @@
     <UsePlugin implementation="LocationAwareness" instance="CurrentZoneLocation" socketid="1"/>
     <UsePlugin implementation="SequencePlayer" instance="CameraMapOverviewAnimator" socketid=""/>
     <Configuration>
-      <Mode name="Classic" track="1"/>
-      <Mode name="Modern" track="0" zOffset="7.5"/>
+      <Mode name="Classic" track="1" zOffset="-4.0"/>
+      <Mode name="Modern" track="0" zOffset="3.5"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="ZoneCollectables" instance="Jewels" type="Collectables">

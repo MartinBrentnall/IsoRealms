@@ -132,16 +132,7 @@ void SpindizzyCamera::update(int ticks) {
 }
 
 void SpindizzyCamera::render() {
-//  glTranslatef(0.0f, 0.0f, sine(-20.0f, -380.0f, cSequencePosition));
   Vertex* mLocation = cLocationAwareness[cSelectedLocation]->getLocation();
-/*  if (cSequencePosition > 0) {
-    float mX = sine(mLocation->x, cMinX + (cMaxX - cMinX) / 2.0f, cSequencePosition);
-    float mY = sine(mLocation->y, cMinY + (cMaxY - cMinY) / 2.0f, cSequencePosition);
-    float mZ = sine(mLocation->z, cMinZ + (cMaxZ - cMinZ) / 2.0f, cSequencePosition) * IsoRealmsConstants::BLOCK_HEIGHT;
-    glTranslatef(-mX, -mY, -mZ);
-  } else {
-    glTranslatef(-mLocation->x, -mLocation->y, min(-mLocation->z * IsoRealmsConstants::BLOCK_HEIGHT, 0.0f));
-  }*/
   glPushAttrib(GL_TRANSFORM_BIT);
   glMatrixMode(GL_PROJECTION);
   glPushMatrix();
@@ -154,19 +145,17 @@ void SpindizzyCamera::render() {
   Configuration* mConfiguration = Configuration::getInstance();
   ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
   float mAspectRatio = mScreen->getAspectRatio();
-  glOrtho(-6.0f / mAspectRatio, 6.0f / mAspectRatio, -7.5f, 4.5f, -60.0f, 60.0f);
-//  glScalef(mAspectRatio, 1.0f, 1.0f);
+  float mXMapSize = (cMaxX - cMinX) / 1.98f;
+  float mYMapSize = (cMaxY - cMinY) / 1.98f;
+  float mMapSize = max(mXMapSize * mAspectRatio, mYMapSize);
+  float mSize  = sine( 6.0f, mMapSize, cSequencePosition);
+  glOrtho(-mSize / mAspectRatio, mSize / mAspectRatio, -mSize, mSize, -60.0f, 60.0f);
   glRotatef(sine(-90.0f + 35.264389682754654f, 0.0f, cSequencePosition), 1.0f, 0.0f, 0.0f);
   glRotatef(getCurrentAngle(), 0.0f, 0.0f, 1.0f);
-  glTranslatef(-mLocation->x, -mLocation->y, min(-mLocation->z * IsoRealmsConstants::BLOCK_HEIGHT, 0.0f) - cOffset.z * IsoRealmsConstants::BLOCK_HEIGHT);
-
-
-/*  glLoadIdentity();  
-  glEnable(GL_DEPTH_TEST);
-  glPushAttrib(GL_TRANSFORM_BIT);
-  glMatrixMode(GL_PROJECTION);
-  glPopMatrix();
-  glPopAttrib();*/
+  float mXLocation = sine(-mLocation->x, -(cMinX + (cMaxX - cMinX) / 2.0f), cSequencePosition);
+  float mYLocation = sine(-mLocation->y, -(cMinY + (cMaxY - cMinY) / 2.0f), cSequencePosition);
+  float mZLocation = sine(min(-mLocation->z * IsoRealmsConstants::BLOCK_HEIGHT, cMinZ + (cMaxZ - cMinZ) / 2.0f) - cOffset.z * IsoRealmsConstants::BLOCK_HEIGHT, 0.0f, cSequencePosition);
+  glTranslatef(mXLocation, mYLocation, mZLocation);
 }
 
 void SpindizzyCamera::setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry* commandRegistry) {
