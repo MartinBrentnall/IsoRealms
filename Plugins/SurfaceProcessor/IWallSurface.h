@@ -32,8 +32,6 @@ class IWallSurface {
     WEST
   };
 
-  virtual void render() = 0;
-
   /**
    * Get the bottom height of the wall at the specified location.
    * 

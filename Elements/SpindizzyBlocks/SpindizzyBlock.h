@@ -63,8 +63,8 @@ class SpindizzyBlock:public ISpindizzyBlock,
   std::vector<ISpindizzyTileSurface*> cStaticTileSurfaces;
   std::vector<ISpindizzyTileSurface*> cDynamicTileSurfaces;
 
-  std::vector<IWallSurface*> cStaticWallSurfaces;
-  std::vector<IWallSurface*> cDynamicWallSurfaces;
+  std::vector<ISpindizzyWallSurface*> cStaticWallSurfaces;
+  std::vector<ISpindizzyWallSurface*> cDynamicWallSurfaces;
   
   BlockLocation cStartLocation;
   BlockLocation cEndLocation;
@@ -221,7 +221,7 @@ class SpindizzyBlock:public ISpindizzyBlock,
    * @returns  The wall surface meeting the specification.
    * @throws Something  TODO: If a wall cannot be created to the specification.
    */
-  IWallSurface* createSubSurface(int, int, IWallSurface::FaceDirection, int, int, int, int, int, Condition*);
+  ISpindizzyWallSurface* createSubSurface(int, int, IWallSurface::FaceDirection, int, int, int, int, int, Condition*);
 
   /******************************\
    * Implements ISpindizzyBlock *

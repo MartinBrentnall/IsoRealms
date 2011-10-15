@@ -27,10 +27,11 @@
 
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
 #include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
-#include "../../Plugins/SurfaceProcessor/IWallSurface.h"
 #include "../../Plugins/SurfaceProcessor/IWallEdge.h"
 
-class WallSurface:public IWallSurface {
+#include "ISpindizzyWallSurface.h"
+
+class WallSurface:public ISpindizzyWallSurface {
   private:
   /** 
    * Starting X location of the wall surface.
@@ -116,10 +117,14 @@ class WallSurface:public IWallSurface {
    */
   WallSurface(int, int, int, int, int, int, FaceDirection, ISpindizzyTexture*, Condition*);
 
+  /************************************\
+   * Implements ISpindizzyWallSurface *
+  \************************************/
+  void render();
+  
   /***************************\
    * Implements IWallSurface *
   \***************************/
-  void render();
   IWallEdge* getTopEdge(int);
   IWallEdge* getBottomEdge(int);
   BlockArea* getCoverage();

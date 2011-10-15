@@ -16,25 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SURFACE_CACHE_H
-#define SURFACE_CACHE_H
+#ifndef I_SPINDIZZY_WALL_SURFACE_H
+#define I_SPINDIZZY_WALL_SURFACE_H
 
-#include <vector>
+#include "../../Plugins/CollidableSurfaceRegistry/ICollidableWallSurface.h"
+#include "../../Plugins/SurfaceProcessor/IWallSurface.h"
 
-#include "../IRollableSurface.h"
-#include "../ICollidableWallSurface.h"
-
-class SurfaceCache {
-  private:
-  std::vector<IRollableSurface*> cRollableSurfaces;
-  std::vector<IRollableSurface*> cInterceptingSurfaces;
-  std::vector<ICollidableWallSurface*> cWallSurfaces;
-
+class ISpindizzyWallSurface:public IWallSurface,
+                            public ICollidableWallSurface {
   public:
-  void addRollableSurface(IRollableSurface*, bool);
-  void addWallSurface(ICollidableWallSurface*);
-  ICollisionData* getNextEvent(Vertex&, Vertex&, IRollableSurface*);
-  IRollableSurface* getSurfaceAt(Vertex&);
+  virtual void render() = 0;
 };
 
 #endif

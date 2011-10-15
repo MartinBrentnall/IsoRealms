@@ -2,11 +2,13 @@
 
 void SurfaceCache::addRollableSurface(IRollableSurface* surface, bool intercepting) {
   if (intercepting) {
-    std::cout << "Registering intercepting surface...!" << std::endl;
     cInterceptingSurfaces.push_back(surface);
   } else {
     cRollableSurfaces.push_back(surface);
   }
+}
+
+void SurfaceCache::addWallSurface(ICollidableWallSurface* surface) {
 }
 
 ICollisionData* SurfaceCache::getNextEvent(Vertex& start, Vertex& end, IRollableSurface* currentSurface) {

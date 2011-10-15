@@ -177,7 +177,7 @@ int SpindizzyBlock::getMinimumWallElevation(IWallSurface::FaceDirection facing) 
   exit(1);
 }
 
-IWallSurface* SpindizzyBlock::createSubSurface(int x, int y, IWallSurface::FaceDirection facing, int length, int startHeight, int endHeight, int bottomSlope, int topSlope, Condition* condition) {
+ISpindizzyWallSurface* SpindizzyBlock::createSubSurface(int x, int y, IWallSurface::FaceDirection facing, int length, int startHeight, int endHeight, int bottomSlope, int topSlope, Condition* condition) {
   ISpindizzyTexture* mTexture = getWallTexture(facing);
   // TODO: Bottom slope.
   return new WallSurface(x, y, startHeight, length, endHeight, topSlope, facing, mTexture, condition);
@@ -291,12 +291,15 @@ void SpindizzyBlock::generateWallSurfaces(IWallSurface::FaceDirection faceDirect
     int mTopSlope = mWallSurfaces[i]->getTopSlope();
     
     Condition* mCondition = mWallSurfaces[i]->getCondition();
-    IWallSurface* mWallSurface = createSubSurface(mX, mY, mFaceDirection, mLength, mStartHeight, mEndHeight, mBottomSlope, mTopSlope, mCondition);
+    ISpindizzyWallSurface* mWallSurface = createSubSurface(mX, mY, mFaceDirection, mLength, mStartHeight, mEndHeight, mBottomSlope, mTopSlope, mCondition);
     if (mCondition == NULL || (mCondition->isAbsolute() && mCondition->isTrue())) {
       cStaticWallSurfaces.push_back(mWallSurface);
     } else {
       cDynamicWallSurfaces.push_back(mWallSurface);
     }
+    ISpindizzyBlockSet* mBlockElementSet = getElementSet();
+    // TODO: This should only happen in runtime
+    mBlockElementSet->registerWallSurface(mWallSurface);
   }
 }
 

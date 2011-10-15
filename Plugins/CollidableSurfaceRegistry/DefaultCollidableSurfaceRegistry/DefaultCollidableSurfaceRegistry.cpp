@@ -14,8 +14,13 @@ void DefaultCollidableSurfaceRegistry::registerRollableSurface(IRollableSurface*
   mSurfaceCache->addRollableSurface(rollableSurface, intercepting);
 }
 
-void DefaultCollidableSurfaceRegistry::registerWallSurface(ICollidableWallSurface*) {
-  // TODO: Implement this
+void DefaultCollidableSurfaceRegistry::registerWallSurface(ICollidableWallSurface* wallSurface) {
+  SurfaceCache* mSurfaceCache = cZoneSurfaceCaches[cEditingZone];
+  if (mSurfaceCache == NULL) {
+    mSurfaceCache = new SurfaceCache();
+    cZoneSurfaceCaches[cEditingZone] = mSurfaceCache;
+  }
+  mSurfaceCache->addWallSurface(wallSurface);
 }
 
 ICollisionData* DefaultCollidableSurfaceRegistry::getNextEvent(Vertex& start, Vertex& end, IRollableSurface* currentSurface) {
@@ -33,7 +38,7 @@ ICollisionData* DefaultCollidableSurfaceRegistry::getNextEvent(Vertex& start, Ve
         IZone* mEnteredZone = mZoneEvents[i]->getZone();
         std::map<IZone*, SurfaceCache*>::iterator j = cZoneSurfaceCaches.find(mEnteredZone);
         if (j != cZoneSurfaceCaches.end()) {
-          ICollisionData* mEvent = j->second->getNextEvent(start, end, false);
+          ICollisionData* mEvent = j->second->getNextEvent(start, end, NULL);
           if (mEvent != NULL) {
             return mEvent;
           }
