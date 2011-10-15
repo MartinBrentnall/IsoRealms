@@ -184,3 +184,51 @@ int WallSurface::WallEdge::getStartHeight() {
 int WallSurface::WallEdge::getEndHeight() {
   return cEndHeight;
 }
+
+ICollidableWallSurface::WallFaceDirection WallSurface::getWallFaceDirection() {
+  switch (cFacing) {
+    case IWallSurface::NORTH: return ICollidableWallSurface::FACE_NORTH;
+    case IWallSurface::SOUTH: return ICollidableWallSurface::FACE_SOUTH;
+    case IWallSurface::EAST: return ICollidableWallSurface::FACE_EAST;
+    case IWallSurface::WEST: return ICollidableWallSurface::FACE_WEST;
+  }
+}
+
+ICollisionData* WallSurface::getCollision(Vertex& start, Vertex& end) {
+  // TODO: Only do one way collision detection
+  // TODO: Craft radius consideration
+  switch (cFacing) {
+    case IWallSurface::NORTH: {
+      CollisionVertex* mVertex = Collision::getYCrossingPoint(start, end, cY + IsoRealmsConstants::BLOCK_RADIUS);
+      if (mVertex != NULL) {
+        // TODO: Determine whether plane vertex is in the wall
+      }
+      break;
+    }
+    
+    case IWallSurface::SOUTH: {
+      CollisionVertex* mVertex = Collision::getYCrossingPoint(start, end, cY - IsoRealmsConstants::BLOCK_RADIUS);
+      if (mVertex != NULL) {
+        // TODO: Determine whether plane vertex is in the wall
+      }
+      break;
+    }
+    
+    case IWallSurface::EAST: {
+      CollisionVertex* mVertex = Collision::getXCrossingPoint(start, end, cX + IsoRealmsConstants::BLOCK_RADIUS);
+      if (mVertex != NULL) {
+        // TODO: Determine whether plane vertex is in the wall
+      }
+      break;
+    }
+    
+    case IWallSurface::WEST: {
+      CollisionVertex* mVertex = Collision::getXCrossingPoint(start, end, cX - IsoRealmsConstants::BLOCK_RADIUS);
+      if (mVertex != NULL) {
+        // TODO: Determine whether plane vertex is in the wall
+      }
+      break;
+    }
+  }
+  return NULL;
+}

@@ -28,7 +28,10 @@ class SurfaceCache {
   private:
   std::vector<IRollableSurface*> cRollableSurfaces;
   std::vector<IRollableSurface*> cInterceptingSurfaces;
-  std::vector<ICollidableWallSurface*> cWallSurfaces;
+  std::vector<ICollidableWallSurface*> cNorthWallSurfaces;
+  std::vector<ICollidableWallSurface*> cSouthWallSurfaces;
+  std::vector<ICollidableWallSurface*> cWestWallSurfaces;
+  std::vector<ICollidableWallSurface*> cEastWallSurfaces;
 
   public:
   void addRollableSurface(IRollableSurface*, bool);

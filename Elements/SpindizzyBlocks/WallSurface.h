@@ -22,6 +22,7 @@
 #include <iostream>
 #include <GL/gl.h>
 
+#include <IsoRealms/Collision.h>
 #include <IsoRealms/Condition.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 
@@ -128,6 +129,12 @@ class WallSurface:public ISpindizzyWallSurface {
   IWallEdge* getTopEdge(int);
   IWallEdge* getBottomEdge(int);
   BlockArea* getCoverage();
+  
+  /*************************************\
+   * Implements ICollidableWallSurface *
+  \*************************************/
+  WallFaceDirection getWallFaceDirection();
+  ICollisionData* getCollision(Vertex&, Vertex&);
 };
 
 #endif

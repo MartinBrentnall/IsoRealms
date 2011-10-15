@@ -19,8 +19,27 @@
 #ifndef I_COLLIDABLE_WALL_SURFACE_H
 #define I_COLLIDABLE_WALL_SURFACE_H
 
+#include "ICollisionData.h"
+
 class ICollidableWallSurface {
   public:
+  enum WallFaceDirection {
+    FACE_NORTH,
+    FACE_SOUTH,
+    FACE_EAST,
+    FACE_WEST
+  };
+  
+  virtual WallFaceDirection getWallFaceDirection() = 0;
+
+  /**
+   * Determine whether an impact event occurs.
+   * 
+   * @param Vertex&  Starting point of movement along the surface.
+   * @param Vertex&  Ending point of movement along the surface.
+   * @returns  An event if one is generated, otherwise NULL.
+   */
+  virtual ICollisionData* getCollision(Vertex&, Vertex&) = 0;  
 };
 
 #endif
