@@ -17,6 +17,7 @@
 include_directories(${PROJECT_SOURCE_DIR})
 
 add_library(Utilities_ToggleSwitches MODULE 
+  ToggleSwitch.cpp
   ToggleSwitches.cpp
 )
 set_target_properties(Utilities_ToggleSwitches PROPERTIES OUTPUT_NAME "Module")

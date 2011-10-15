@@ -1,5 +1,5 @@
 /*
- * Copyright 2009,2010 Martin Brentnall
+ * Copyright 2009,2010,2011 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -25,17 +25,17 @@
 
 #include "../IUtilities.h"
 
+#include "ToggleSwitch.h"
+
 class ToggleSwitches:public IUtilities {
   private:
-  class SwitchCommand:public IUserCommand {
+  class ToggleCommand:public IUserCommand {
     private:
+    ToggleSwitch* cSwitch;
     std::string cName;
-    bool cState;
-    Script* cOnScript;
-    Script* cOffScript;
       
     public:
-    SwitchCommand(const std::string&, Script*, Script*);
+    ToggleCommand(ToggleSwitch*, const std::string&);
     
     /***************************\
      * Implements IUserCommand *
@@ -43,12 +43,27 @@ class ToggleSwitches:public IUtilities {
     void execute();
     std::string getCommandName();
   };
+  
+  class RefreshCommand:public IUserCommand {
+    private:
+    ToggleSwitch* cSwitch;
+    std::string cName;
     
+    public:
+    RefreshCommand(ToggleSwitch*, const std::string&);
+    
+    /***************************\
+     * Implements IUserCommand *
+    \***************************/
+    void execute();
+    std::string getCommandName();
+  };
+
   ICommandRegistry* cCommandRegistry;
   std::vector<PlugSocket*> cCommandRegistrySocket;
   std::vector<IUserCommand*> cSwitchCommands;
   
-  SwitchCommand* createSwitchCommand(DOMNodeWrapper*);
+  void createSwitchCommand(DOMNodeWrapper*);
 
   public:
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2009,2010 Martin Brentnall
+ * Copyright 2009,2010,2011 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -18,7 +18,7 @@
  */
 #include "ToggleSwitches.h"
 
-ToggleSwitches::SwitchCommand* ToggleSwitches::createSwitchCommand(DOMNodeWrapper* node) {
+void ToggleSwitches::createSwitchCommand(DOMNodeWrapper* node) {
   Script* mOnScript;
   Script* mOffScript;
   std::string mCommandName = node->getAttribute("name");
@@ -31,7 +31,13 @@ ToggleSwitches::SwitchCommand* ToggleSwitches::createSwitchCommand(DOMNodeWrappe
       mOffScript = cCommandRegistry->getScript(mNode);
     }
   }
-  return new SwitchCommand(mCommandName, mOnScript, mOffScript);
+  ToggleSwitch* mSwitch = new ToggleSwitch(mOnScript, mOffScript);
+  ToggleCommand* mToggleCommand = new ToggleCommand(mSwitch, mCommandName);
+  RefreshCommand* mRefreshCommand = new RefreshCommand(mSwitch, mCommandName);
+  cSwitchCommands.push_back(mToggleCommand);
+  cSwitchCommands.push_back(mRefreshCommand);
+  cCommandRegistry->registerCommand(mToggleCommand);
+  cCommandRegistry->registerCommand(mRefreshCommand);
 }
 
 void ToggleSwitches::load(DOMNodeWrapper* node) {
@@ -39,9 +45,7 @@ void ToggleSwitches::load(DOMNodeWrapper* node) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Switch") {
-      SwitchCommand* mSwitchCommand = createSwitchCommand(mNode);
-      cSwitchCommands.push_back(mSwitchCommand);
-      cCommandRegistry->registerCommand(mSwitchCommand);
+      createSwitchCommand(mNode);
     } else {
       // TODO: Throw
     }
@@ -56,21 +60,30 @@ void ToggleSwitches::setEditingContext(BlockLocation*, IComponentContainer*, ICo
   cCommandRegistry = commandRegistry;
 }
 
-ToggleSwitches::SwitchCommand::SwitchCommand(const std::string& name, Script* onScript, Script* offScript) {
+ToggleSwitches::ToggleCommand::ToggleCommand(ToggleSwitch* aSwitch, const std::string& name) {
+  cSwitch = aSwitch;
   cName = name;
-  cState = false;
-  cOnScript = onScript;
-  cOffScript = offScript;
 }
 
-void ToggleSwitches::SwitchCommand::execute() {
-  Script* mScriptToExecute = cState ? cOffScript : cOnScript;
-  mScriptToExecute->execute();
-  cState = !cState;
+void ToggleSwitches::ToggleCommand::execute() {
+  cSwitch->toggle();
 }
 
-std::string ToggleSwitches::SwitchCommand::getCommandName() {
+std::string ToggleSwitches::ToggleCommand::getCommandName() {
   return "Toggle " + cName;
+}
+
+ToggleSwitches::RefreshCommand::RefreshCommand(ToggleSwitch* aSwitch, const std::string& name) {
+  cSwitch = aSwitch;
+  cName = name;
+}
+
+void ToggleSwitches::RefreshCommand::execute() {
+  cSwitch->refresh();
+}
+
+std::string ToggleSwitches::RefreshCommand::getCommandName() {
+  return "Refresh " + cName;
 }
 
 extern "C" IPlugin* create() {

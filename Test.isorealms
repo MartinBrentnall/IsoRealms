@@ -911,8 +911,8 @@
         <Command>ElementSet/Lifts/RemoveLock</Command>
         <Command>ElementSet/Enemies/RemoveLock</Command>
         <Command>Plugin/IntegerValue/SpindizzyTimeLimit/RemoveLock</Command>
-        <Command>ZoneRendererGroup/Utilities/ExploredZones/game_Activate</Command>
-        <Command>Plugin/Utilities/ToggleSwitches/Refresh RenderingMode</Command>
+        <Command>ZoneRenderer/Utilities/ExploredZones/mapOverview_Deactivate</Command>
+        <Command>Plugin/Utilities/GameSwitches/Refresh RenderingMode</Command>
       </ReachedStartScript>
     </Configuration>
   </Plugin>
