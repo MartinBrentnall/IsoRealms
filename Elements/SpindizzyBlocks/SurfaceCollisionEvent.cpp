@@ -9,8 +9,19 @@ SurfaceCollisionEvent::SurfaceCollisionEvent(IRollableSurface* surface, ICollisi
   cGradient = gradient;
 }
 
+SurfaceCollisionEvent::SurfaceCollisionEvent(ICollidableWallSurface* surface, ICollisionData::CollisionType type, Vertex* location, float gradient) {
+  cWallSurface = surface;
+  cType = type;
+  cLocation = location;
+  cGradient = gradient;
+}
+
 IRollableSurface* SurfaceCollisionEvent::getSurface() {
   return cSurface;
+}
+
+ICollidableWallSurface* SurfaceCollisionEvent::getWallSurface() {
+  return cWallSurface;
 }
 
 ICollisionData::CollisionType SurfaceCollisionEvent::getType() {

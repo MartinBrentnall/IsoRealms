@@ -31,6 +31,7 @@
 #include "../../Plugins/SurfaceProcessor/IWallEdge.h"
 
 #include "ISpindizzyWallSurface.h"
+#include "SurfaceCollisionEvent.h"
 
 class WallSurface:public ISpindizzyWallSurface {
   private:
@@ -118,6 +119,8 @@ class WallSurface:public ISpindizzyWallSurface {
    */
   WallSurface(int, int, int, int, int, int, FaceDirection, ISpindizzyTexture*, Condition*);
 
+  float getHeightAt(float);
+  
   /************************************\
    * Implements ISpindizzyWallSurface *
   \************************************/
@@ -135,6 +138,7 @@ class WallSurface:public ISpindizzyWallSurface {
   \*************************************/
   WallFaceDirection getWallFaceDirection();
   ICollisionData* getCollision(Vertex&, Vertex&);
+  float getSurfaceBounce();
 };
 
 #endif

@@ -195,40 +195,52 @@ ICollidableWallSurface::WallFaceDirection WallSurface::getWallFaceDirection() {
 }
 
 ICollisionData* WallSurface::getCollision(Vertex& start, Vertex& end) {
-  // TODO: Only do one way collision detection
-  // TODO: Craft radius consideration
-  switch (cFacing) {
-    case IWallSurface::NORTH: {
-      CollisionVertex* mVertex = Collision::getYCrossingPoint(start, end, cY + IsoRealmsConstants::BLOCK_RADIUS);
-      if (mVertex != NULL) {
-        // TODO: Determine whether plane vertex is in the wall
-      }
-      break;
-    }
+  if (cCondition == NULL || cCondition->isTrue()) {
+    // TODO: Only do one way collision detection
+    // TODO: Craft radius consideration
     
-    case IWallSurface::SOUTH: {
-      CollisionVertex* mVertex = Collision::getYCrossingPoint(start, end, cY - IsoRealmsConstants::BLOCK_RADIUS);
-      if (mVertex != NULL) {
-        // TODO: Determine whether plane vertex is in the wall
-      }
-      break;
-    }
+    float mStepHeight = 0.5f; // TODO: This should be configurable somewhere
+    float mCraftHeight = 1.7f; // TODO: This should be configurable somewhere
+    float mCraftRadius = 0.4f; // TODO: This should be configurable somewhere
     
-    case IWallSurface::EAST: {
-      CollisionVertex* mVertex = Collision::getXCrossingPoint(start, end, cX + IsoRealmsConstants::BLOCK_RADIUS);
-      if (mVertex != NULL) {
-        // TODO: Determine whether plane vertex is in the wall
+    float mOffset = cFacing == IWallSurface::NORTH || cFacing == IWallSurface::EAST
+                  ?   IsoRealmsConstants::BLOCK_RADIUS + mCraftRadius
+                  : -(IsoRealmsConstants::BLOCK_RADIUS + mCraftRadius);
+    switch (cFacing) {
+      case IWallSurface::NORTH: 
+      case IWallSurface::SOUTH: {
+        CollisionVertex* mVertex = Collision::getYCrossingPoint(start, end, cY + mOffset);
+        if (mVertex != NULL && mVertex->x >= cX - IsoRealmsConstants::BLOCK_RADIUS && mVertex->x < (cX + cLength) - IsoRealmsConstants::BLOCK_RADIUS) {
+          float mWallHeight = getHeightAt(mVertex->x);
+          if (mVertex->z >= cZ - mCraftHeight && mVertex->z < mWallHeight - mStepHeight) {
+            return new SurfaceCollisionEvent(this, ICollisionData::WALL_IMPACT, new Vertex(mVertex->x, mVertex->y, mVertex->z), mVertex->gradient);
+          }
+        }
+        break;
       }
-      break;
-    }
-    
-    case IWallSurface::WEST: {
-      CollisionVertex* mVertex = Collision::getXCrossingPoint(start, end, cX - IsoRealmsConstants::BLOCK_RADIUS);
-      if (mVertex != NULL) {
-        // TODO: Determine whether plane vertex is in the wall
+      
+      case IWallSurface::EAST:
+      case IWallSurface::WEST: {
+        CollisionVertex* mVertex = Collision::getXCrossingPoint(start, end, cX + mOffset);
+        if (mVertex != NULL && mVertex->y >= cY - IsoRealmsConstants::BLOCK_RADIUS && mVertex->y < (cY + cLength) - IsoRealmsConstants::BLOCK_RADIUS) {
+          float mWallHeight = getHeightAt(mVertex->y);
+          if (mVertex->z >= cZ - mCraftHeight && mVertex->z < mWallHeight - mStepHeight) {
+            return new SurfaceCollisionEvent(this, ICollisionData::WALL_IMPACT, new Vertex(mVertex->x, mVertex->y, mVertex->z), mVertex->gradient);
+          }
+        }
+        break;
       }
-      break;
     }
   }
   return NULL;
 }
+
+float WallSurface::getHeightAt(float location) {
+  int mStart = cFacing == NORTH || cFacing == SOUTH ? cX : cY;
+  return (cTopSlope * ((cTopSlope > 0 ? location - mStart  : -((mStart + (cLength - 1)) - location)) + IsoRealmsConstants::BLOCK_RADIUS) + cHeight) + cZ;
+}
+
+float WallSurface::getSurfaceBounce() {
+  return 0.4f; // TODO: This should be configurable
+}
+

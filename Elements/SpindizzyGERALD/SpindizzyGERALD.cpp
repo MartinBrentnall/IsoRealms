@@ -267,6 +267,17 @@ void SpindizzyGERALD::getNewLocation(float ticks, Vertex* location, Vertex* mome
   }
 }
 
+bool SpindizzyGERALD::isValidEvent(ICollisionData* event) {
+  if (event->getType() == ICollisionData::WALL_IMPACT) {
+    return true;
+  }
+  if (event->getType() == ICollisionData::SURFACE_MOUNT) {
+    IRollableSurface* mEventSurface = event->getSurface();
+    return mEventSurface != cCurrentSurface;
+  }
+  return false;
+}
+
 ICollisionData* SpindizzyGERALD::pollCollisionEvent(Vertex& startLocation, Vertex& endLocation) {
   ICollisionData* mEvent = NULL;
   if (cCurrentSurface != NULL) {
@@ -278,8 +289,8 @@ ICollisionData* SpindizzyGERALD::pollCollisionEvent(Vertex& startLocation, Verte
   
   ICollisionData* mOtherEvent = cCollidableSurfaceRegistry->getNextEvent(startLocation, endLocation, cCurrentSurface);
   if (mOtherEvent != NULL) {
-    IRollableSurface* mEventSurface = mOtherEvent->getSurface();
-    if (mEventSurface != cCurrentSurface && (mEvent == NULL || mOtherEvent->getGradient() < mEvent->getGradient())) {
+    bool mValidEvent = isValidEvent(mOtherEvent);
+    if (mValidEvent && (mEvent == NULL || mOtherEvent->getGradient() < mEvent->getGradient())) {
       return mOtherEvent;
     }
   }
@@ -312,8 +323,6 @@ void SpindizzyGERALD::updateRespawnData() {
     }
   }
 }
-
-int mCycle = 0;
 
 bool SpindizzyGERALD::processEvent(ICollisionData& event) {
   Vertex* mEventLocation = event.getEventLocation();
@@ -369,6 +378,15 @@ bool SpindizzyGERALD::processEvent(ICollisionData& event) {
     }
     
     case ICollisionData::WALL_IMPACT: {
+      ICollidableWallSurface* mWallSurface = event.getWallSurface();
+      ICollidableWallSurface::WallFaceDirection mFaceDirection = mWallSurface->getWallFaceDirection();
+      float mSurfaceBounce = mWallSurface->getSurfaceBounce();
+      if (mFaceDirection == ICollidableWallSurface::FACE_NORTH || mFaceDirection == ICollidableWallSurface::FACE_SOUTH) {
+        cMomentum.y = -cMomentum.y * mSurfaceBounce;
+      } else {
+        cMomentum.x = -cMomentum.x * mSurfaceBounce;
+      }
+      std::cout << "Updating to event location: " << mEventLocation->x << ", " << mEventLocation->y << std::endl;
       break;
     }
     
@@ -377,6 +395,7 @@ bool SpindizzyGERALD::processEvent(ICollisionData& event) {
       break;
     }
   }
+  
   updateLocation(*mEventLocation);
   return true;
 }

@@ -25,6 +25,7 @@ class SurfaceCollisionEvent:public ICollisionData {
   private:
   ICollisionData::CollisionType cType;
   IRollableSurface* cSurface;
+  ICollidableWallSurface* cWallSurface;
   Vertex* cLocation;
   float cXSlope;
   float cYSlope;
@@ -32,8 +33,11 @@ class SurfaceCollisionEvent:public ICollisionData {
   
   public:
   SurfaceCollisionEvent(IRollableSurface*, ICollisionData::CollisionType, Vertex*, float, float, float);
+  // TODO: Probably should be split to separate class for wall collisions
+  SurfaceCollisionEvent(ICollidableWallSurface*, ICollisionData::CollisionType, Vertex*, float);
     
   IRollableSurface* getSurface();
+  ICollidableWallSurface* getWallSurface();
   ICollisionData::CollisionType getType();
   Vertex* getEventLocation();
   float getXSlope();

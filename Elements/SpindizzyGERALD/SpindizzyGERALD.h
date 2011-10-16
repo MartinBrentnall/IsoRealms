@@ -101,6 +101,7 @@ class SpindizzyGERALD:public Element<ISpindizzyGERALDSet, ISpindizzyGERALDFactor
   bool isMovingEast();
   bool isMovingSouth();
   bool isMovingWest();
+  bool isValidEvent(ICollisionData*);
   void pollEvent(float&);
   void getNewLocation(float, Vertex*, Vertex*);
   ICollisionData* pollCollisionEvent(Vertex&, Vertex&);

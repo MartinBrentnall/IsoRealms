@@ -40,6 +40,16 @@ class ICollidableWallSurface {
    * @returns  An event if one is generated, otherwise NULL.
    */
   virtual ICollisionData* getCollision(Vertex&, Vertex&) = 0;  
+
+  /**
+   * Returns the bounciness of this surface.  The bounciness determines how much
+   * of the momentum lost due to a fall onto this surface should be transferred
+   * back into the entity.  A value of 0.0f should give back no momentum, whilst
+   * a value of 1.0f should give back 100% of the momentum.
+   * 
+   * @return The bounciness of the surface.
+   */
+  virtual float getSurfaceBounce() = 0;
 };
 
 #endif

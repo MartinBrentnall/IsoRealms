@@ -32,6 +32,7 @@ class SurfaceCollisionEvent:public ICollisionData {
   SurfaceCollisionEvent(IRollableSurface*, ICollisionData::CollisionType, Vertex*, float);
     
   IRollableSurface* getSurface();
+  ICollidableWallSurface* getWallSurface();
   ICollisionData::CollisionType getType();
   Vertex* getEventLocation();
   float getXSlope();

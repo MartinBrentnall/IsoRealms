@@ -22,6 +22,7 @@
 #include <IsoRealms/Vertex.h>
 
 class IRollableSurface;
+class ICollidableWallSurface;
 
 class ICollisionData {
   public:
@@ -33,6 +34,7 @@ class ICollisionData {
   };
   
   virtual IRollableSurface* getSurface() = 0;
+  virtual ICollidableWallSurface* getWallSurface() = 0;
   virtual CollisionType getType() = 0;
   virtual Vertex* getEventLocation() = 0;
   virtual float getXSlope() = 0;

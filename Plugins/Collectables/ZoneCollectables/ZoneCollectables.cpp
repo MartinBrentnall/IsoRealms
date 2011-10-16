@@ -147,9 +147,6 @@ bool ZoneCollectables::isMet() {
 
 bool ZoneCollectables::isZoneFlagged(IZone* zone) {
   std::map<IZone*, std::vector<ICollectable*>*>::iterator i = cCollectables.find(zone);
-  if (i != cCollectables.end()) {
-    std::cout << "Jewels to go: " << i->second->size() << std::endl;
-  }
   return i != cCollectables.end() && i->second->size() > 0;
 }
 

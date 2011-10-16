@@ -11,6 +11,10 @@ IRollableSurface* SurfaceCollisionEvent::getSurface() {
   return cSurface;
 }
 
+ICollidableWallSurface* SurfaceCollisionEvent::getWallSurface() {
+  return NULL;
+}
+
 ICollisionData::CollisionType SurfaceCollisionEvent::getType() {
   return cType;  
 }
