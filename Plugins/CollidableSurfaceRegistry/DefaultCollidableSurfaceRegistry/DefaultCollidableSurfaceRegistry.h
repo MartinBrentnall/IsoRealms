@@ -36,6 +36,7 @@ class DefaultCollidableSurfaceRegistry:public ICollidableSurfaceRegistry,
                                        public IZoneContextListener {
   private:
   std::map<IZone*, SurfaceCache*> cZoneSurfaceCaches;
+  std::map<IZone*, std::vector<IZone*> > cAdjacentZones;
   std::vector<PlugSocket*> cZoneContextSocket;
   IZoneContext* cZoneContext;
   IZone* cEditingZone;

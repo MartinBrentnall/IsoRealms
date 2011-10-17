@@ -25,11 +25,26 @@ void DefaultCollidableSurfaceRegistry::registerWallSurface(ICollidableWallSurfac
 
 ICollisionData* DefaultCollidableSurfaceRegistry::getNextEvent(Vertex& start, Vertex& end, IRollableSurface* currentSurface) {
   std::map<IZone*, SurfaceCache*>::iterator i = cZoneSurfaceCaches.find(cRuntimeZone);
+  ICollisionData* mFirstEvent = NULL;
   if (i != cZoneSurfaceCaches.end()) {
     ICollisionData* mEvent = i->second->getNextEvent(start, end, currentSurface);
     if (mEvent != NULL) {
-      return mEvent;
+      mFirstEvent = mEvent;
     }
+  }
+  std::vector<IZone*> mAdjacentZones = cAdjacentZones[i->first];
+  for (unsigned int i = 0; i < mAdjacentZones.size(); i++) {
+    std::map<IZone*, SurfaceCache*>::iterator j = cZoneSurfaceCaches.find(mAdjacentZones[i]);
+    ICollisionData* mEvent = j->second->getNextEvent(start, end, currentSurface);
+    if (mEvent != NULL) {
+      float mGradient = mEvent->getGradient();
+      if (mFirstEvent == NULL || mGradient < mFirstEvent->getGradient()) {
+        mFirstEvent = mEvent;
+      }
+    }
+  }
+  if (mFirstEvent != NULL) {
+    return mFirstEvent;
   }
   if (currentSurface == NULL) {
     std::vector<ZoneEvent*> mZoneEvents = cMap->getZoneEvents(start, end);
@@ -67,6 +82,7 @@ void DefaultCollidableSurfaceRegistry::notifyZoneAction(IZone* zone) {
 
 void DefaultCollidableSurfaceRegistry::initPlugin(IZone* zone, unsigned int pass) {
   cEditingZone = zone;
+  cAdjacentZones[cEditingZone] = cMap->getAdjacentZones(zone);
 }
 
 void DefaultCollidableSurfaceRegistry::zoneContextChanged(IZone* zone) {

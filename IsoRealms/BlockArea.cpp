@@ -83,6 +83,12 @@ bool BlockArea::overlaps(BlockArea& blockArea) {
       && blockArea.cEndLocation.z >= cStartLocation.z && blockArea.cStartLocation.z <= cEndLocation.z;
 }
 
+bool BlockArea::isAdjacent(BlockArea& blockArea) {
+  return blockArea.cEndLocation.x >= cStartLocation.x - 1 && blockArea.cStartLocation.x <= cEndLocation.x + 1
+      && blockArea.cEndLocation.y >= cStartLocation.y - 1 && blockArea.cStartLocation.y <= cEndLocation.y + 1
+      && blockArea.cEndLocation.z >= cStartLocation.z - 1 && blockArea.cStartLocation.z <= cEndLocation.z + 1;
+}
+
 // CollisionVertex* BlockArea::getEntryPoint(Vertex& start, Vertex& end) {
 //   return Collision::getEntryPoint(start, end, cWest, cEast, cSouth, cNorth, cBottom, cTop);
 // }

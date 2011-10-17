@@ -180,6 +180,7 @@ class Map:public IMap,
   IZone* getZone(Vertex&);
   std::vector<ZoneEvent*> getZoneEvents(Vertex&, Vertex&);
   bool* registerDigitalInput(const std::string&);
+  std::vector<IZone*> getAdjacentZones(IZone*);
 
   /**************************************\
    * Implements IPluginRegistryListener *

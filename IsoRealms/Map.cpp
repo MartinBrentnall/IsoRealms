@@ -165,6 +165,16 @@ bool* Map::registerDigitalInput(const std::string& name) {
   return cInputCommands.registerDigitalInput(name);
 }
 
+std::vector<IZone*> Map::getAdjacentZones(IZone* zone) {
+  std::vector<IZone*> mAdjacentZones;
+  for (unsigned int i = 0; i < cZones.size(); i++) {
+    if (cZones[i]->isAdjacent(*(dynamic_cast<Zone*>(zone)))) { // TODO: THIS DYNAMIC CAST DEFINITELY SHOULD NOT BE HERE
+      mAdjacentZones.push_back(cZones[i]);
+    }
+  }
+  return mAdjacentZones;
+}
+
 bool Map::overlaps(BlockArea& blockArea) {
   for (unsigned int i = 0; i < cZones.size(); i++) {
     if (cZones[i]->overlaps(blockArea)) {

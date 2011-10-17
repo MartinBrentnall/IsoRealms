@@ -59,6 +59,8 @@ class BlockArea {
   bool contains(BlockLocation&);
 
   bool overlaps(BlockArea&);
+  
+  bool isAdjacent(BlockArea&);
 
 //   CollisionVertex* getEntryPoint(Vertex&, Vertex&);
 //   CollisionVertex* getExitPoint(Vertex&, Vertex&);
