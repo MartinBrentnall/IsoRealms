@@ -30,7 +30,8 @@ class ICollisionData {
     SURFACE_LEAVE,
     SURFACE_MOUNT,
     WALL_IMPACT,
-    WALL_CLIP
+    WALL_CLIP,
+    WALL_LEAVE
   };
   
   virtual IRollableSurface* getSurface() = 0;

@@ -9,12 +9,7 @@ void SurfaceCache::addRollableSurface(IRollableSurface* surface, bool intercepti
 }
 
 void SurfaceCache::addWallSurface(ICollidableWallSurface* surface) {
-  switch (surface->getWallFaceDirection()) {
-    case ICollidableWallSurface::FACE_NORTH: cNorthWallSurfaces.push_back(surface); break;
-    case ICollidableWallSurface::FACE_EAST:  cEastWallSurfaces.push_back(surface);  break;
-    case ICollidableWallSurface::FACE_SOUTH: cSouthWallSurfaces.push_back(surface); break;
-    case ICollidableWallSurface::FACE_WEST:  cWestWallSurfaces.push_back(surface);  break;
-  }
+  cWallSurfaces.push_back(surface);
 }
 
 ICollisionData* SurfaceCache::getNextEvent(Vertex& start, Vertex& end, IRollableSurface* currentSurface) {
@@ -34,29 +29,13 @@ ICollisionData* SurfaceCache::getNextEvent(Vertex& start, Vertex& end, IRollable
     }
   }
   
-  if (start.x != end.x) {
-    std::vector<ICollidableWallSurface*> mTestSurfaces = start.x > end.x ? cEastWallSurfaces : cWestWallSurfaces;
-    for (unsigned int i = 0; i < mTestSurfaces.size(); i++) {
-      ICollisionData* mEvent = mTestSurfaces[i]->getCollision(start, end);
-      if (mEvent != NULL) {
-        float mGradient = mEvent->getGradient();
-        if (mEventGradient == -1.0f || mGradient < mEventGradient) {
-          mEventGradient = mEvent->getGradient();
-          mStaticEvent = mEvent;
-        }
-      }
-    }
-  }
-  if (start.y != end.y) {
-    std::vector<ICollidableWallSurface*> mTestSurfaces = start.y > end.y ? cNorthWallSurfaces : cSouthWallSurfaces;
-    for (unsigned int i = 0; i < mTestSurfaces.size(); i++) {
-      ICollisionData* mEvent = mTestSurfaces[i]->getCollision(start, end);
-      if (mEvent != NULL) {
-        float mGradient = mEvent->getGradient();
-        if (mEventGradient == -1.0f || mGradient < mEventGradient) {
-          mEventGradient = mEvent->getGradient();
-          mStaticEvent = mEvent;
-        }
+  for (unsigned int i = 0; i < cWallSurfaces.size(); i++) {
+    ICollisionData* mEvent = cWallSurfaces[i]->getCollision(start, end);
+    if (mEvent != NULL) {
+      float mGradient = mEvent->getGradient();
+      if (mEventGradient == -1.0f || mGradient < mEventGradient) {
+        mEventGradient = mEvent->getGradient();
+        mStaticEvent = mEvent;
       }
     }
   }

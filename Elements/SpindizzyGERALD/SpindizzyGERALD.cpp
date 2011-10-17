@@ -45,6 +45,10 @@ SpindizzyGERALD::SpindizzyGERALD(ISpindizzyGERALDFactory* elementFactory, BlockL
   cFallScript = respawnScript;
   cFallLimitScript = fallLimitScript;
   cFallLimit = fallLimit;
+  cLockNorth = NULL;
+  cLockSouth = NULL;
+  cLockEast = NULL;
+  cLockWest = NULL;
 }
 
 void SpindizzyGERALD::setModel(ISimpleModelFactory* geraldModelFactory) {
@@ -174,7 +178,7 @@ void SpindizzyGERALD::checkMapZoneEvents(IZone* previousZone, Vertex& start, Ver
 }
 
 bool SpindizzyGERALD::isMovingNorth() {
-  if (cCamera != NULL) {
+  if (cCamera != NULL && cLockNorth == NULL) {
     float mCameraAngle = cCamera->getAngle();
     return mCameraAngle >= 40.0f && mCameraAngle <= 130.0f   ? *cMovingWest
          : mCameraAngle >= -50.0f && mCameraAngle <= 40.0f   ? *cMovingNorth
@@ -185,7 +189,7 @@ bool SpindizzyGERALD::isMovingNorth() {
 }
 
 bool SpindizzyGERALD::isMovingEast() {
-  if (cCamera != NULL) {
+  if (cCamera != NULL && cLockEast == NULL) {
     float mCameraAngle = cCamera->getAngle();
     return mCameraAngle >= 40.0f && mCameraAngle <= 130.0f   ? *cMovingNorth
          : mCameraAngle >= -50.0f && mCameraAngle <= 40.0f   ? *cMovingEast
@@ -196,7 +200,7 @@ bool SpindizzyGERALD::isMovingEast() {
 }
 
 bool SpindizzyGERALD::isMovingSouth() {
-  if (cCamera != NULL) {
+  if (cCamera != NULL && cLockSouth == NULL) {
     float mCameraAngle = cCamera->getAngle();
     return mCameraAngle >= 40.0f && mCameraAngle <= 130.0f   ? *cMovingEast
          : mCameraAngle >= -50.0f && mCameraAngle <= 40.0f   ? *cMovingSouth
@@ -207,7 +211,7 @@ bool SpindizzyGERALD::isMovingSouth() {
 }
 
 bool SpindizzyGERALD::isMovingWest() {
-  if (cCamera != NULL) {
+  if (cCamera != NULL && cLockWest == NULL) {
     float mCameraAngle = cCamera->getAngle();
     return mCameraAngle >= 40.0f && mCameraAngle <= 130.0f   ? *cMovingSouth
          : mCameraAngle >= -50.0f && mCameraAngle <= 40.0f   ? *cMovingWest
@@ -233,21 +237,25 @@ void SpindizzyGERALD::getNewLocation(float ticks, Vertex* location, Vertex* mome
         momentum->x -= mSurfaceGrip * ((!*cThrust && mAcceleration > 0.0f && mAcceleration < mXSlopeMomentum)
                      ? std::max(mAcceleration * 2.0f, -mXSlopeMomentum)
                      : mAcceleration);
+        cLockEast = NULL;
       }
       if (mMovingEast && !mMovingWest) {
         momentum->x += mSurfaceGrip * ((!*cThrust && mAcceleration > 0.0f && mAcceleration < -mXSlopeMomentum)
                      ? std::max(mAcceleration * 2.0f, mXSlopeMomentum)
                      : mAcceleration);
+        cLockWest = NULL;
       }
       if (mMovingSouth && !mMovingNorth) {
         momentum->y -= mSurfaceGrip * ((!*cThrust && mAcceleration > 0.0f && mAcceleration < mYSlopeMomentum)
                      ? std::max(mAcceleration * 2.0f, -mYSlopeMomentum)
                      : mAcceleration);
+        cLockNorth = NULL;
       }
       if (mMovingNorth && !mMovingSouth) {
         momentum->y += mSurfaceGrip * ((!*cThrust && mAcceleration > 0.0f && mAcceleration < -mYSlopeMomentum)
                      ? std::max(mAcceleration * 2.0f, mYSlopeMomentum)
                      : mAcceleration);
+        cLockSouth = NULL;
       }
       momentum->x += mXSlopeMomentum;
       momentum->y += mYSlopeMomentum;
@@ -271,6 +279,12 @@ bool SpindizzyGERALD::isValidEvent(ICollisionData* event) {
   if (event->getType() == ICollisionData::WALL_IMPACT) {
     return true;
   }
+  if (event->getType() == ICollisionData::WALL_CLIP) {
+    return true;
+  }
+  if (event->getType() == ICollisionData::SURFACE_LEAVE) {
+    return true;
+  }
   if (event->getType() == ICollisionData::SURFACE_MOUNT) {
     IRollableSurface* mEventSurface = event->getSurface();
     return mEventSurface != cCurrentSurface;
@@ -287,11 +301,23 @@ ICollisionData* SpindizzyGERALD::pollCollisionEvent(Vertex& startLocation, Verte
     }
   }
   
+  ICollidableWallSurface* mWallLocks[4] = {cLockNorth, cLockSouth, cLockEast, cLockWest};
+  for (unsigned int i = 0; i < 4; i++) {
+    if (mWallLocks[i] != NULL) {
+      ICollisionData* mSurfaceLeftEvent = mWallLocks[i]->getSlidingEvent(startLocation, endLocation);
+      if (mSurfaceLeftEvent != NULL) {
+        if (mEvent == NULL || mSurfaceLeftEvent->getGradient() < mEvent->getGradient()) {
+          mEvent = mSurfaceLeftEvent;
+        }
+      }
+    }
+  }
+  
   ICollisionData* mOtherEvent = cCollidableSurfaceRegistry->getNextEvent(startLocation, endLocation, cCurrentSurface);
   if (mOtherEvent != NULL) {
     bool mValidEvent = isValidEvent(mOtherEvent);
     if (mValidEvent && (mEvent == NULL || mOtherEvent->getGradient() < mEvent->getGradient())) {
-      return mOtherEvent;
+      mEvent = mOtherEvent;
     }
   }
   return mEvent;
@@ -383,19 +409,34 @@ bool SpindizzyGERALD::processEvent(ICollisionData& event) {
       float mSurfaceBounce = mWallSurface->getSurfaceBounce();
       if (mFaceDirection == ICollidableWallSurface::FACE_NORTH || mFaceDirection == ICollidableWallSurface::FACE_SOUTH) {
         cMomentum.y = -cMomentum.y * mSurfaceBounce;
+        if (fabs(cMomentum.y) < CRAFT_ACCELERATION) {
+          (mFaceDirection == ICollidableWallSurface::FACE_NORTH ? cLockSouth : cLockNorth) = mWallSurface;
+        }
       } else {
         cMomentum.x = -cMomentum.x * mSurfaceBounce;
+        if (fabs(cMomentum.x) < CRAFT_ACCELERATION) {
+          (mFaceDirection == ICollidableWallSurface::FACE_EAST ? cLockWest : cLockEast) = mWallSurface;
+        }
       }
-      std::cout << "Updating to event location: " << mEventLocation->x << ", " << mEventLocation->y << std::endl;
       break;
     }
     
     case ICollisionData::WALL_CLIP: {
-      // TODO: Implement this
+      break;
+    }
+    
+    case ICollisionData::WALL_LEAVE: {
+      ICollidableWallSurface* mWallSurface = event.getWallSurface();
+      ICollidableWallSurface::WallFaceDirection mFaceDirection = mWallSurface->getWallFaceDirection();
+      switch (mFaceDirection) {
+        case ICollidableWallSurface::FACE_NORTH: cLockSouth = NULL; break;
+        case ICollidableWallSurface::FACE_EAST:  cLockWest  = NULL; break;
+        case ICollidableWallSurface::FACE_SOUTH: cLockNorth = NULL; break;
+        case ICollidableWallSurface::FACE_WEST:  cLockEast  = NULL; break;
+      }
       break;
     }
   }
-  
   updateLocation(*mEventLocation);
   return true;
 }

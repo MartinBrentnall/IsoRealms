@@ -50,6 +50,17 @@ class ICollidableWallSurface {
    * @return The bounciness of the surface.
    */
   virtual float getSurfaceBounce() = 0;
+
+  /**
+   * Determine whether an event occurs assuming that the specified vertices
+   * represent a sliding movement against the surface.  The only possible event
+   * type is a ICollisionData::WALL_LEAVE event.
+   * 
+   * @param Vertex&  Starting point of movement along the surface.
+   * @param Vertex&  Ending point of movement along the surface.
+   * @returns  An event if one is generated, otherwise NULL.
+   */
+  virtual ICollisionData* getSlidingEvent(Vertex&, Vertex&) = 0;
 };
 
 #endif

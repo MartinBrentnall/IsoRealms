@@ -71,6 +71,10 @@ class SpindizzyGERALD:public Element<ISpindizzyGERALDSet, ISpindizzyGERALDFactor
   bool* cMovingSouth;
   bool* cMovingWest;
   bool* cThrust;
+  ICollidableWallSurface* cLockNorth;
+  ICollidableWallSurface* cLockEast;
+  ICollidableWallSurface* cLockSouth;
+  ICollidableWallSurface* cLockWest;
   IMap* cMap;
   IZone* cZone;
   BlockLocation cStartLocation;

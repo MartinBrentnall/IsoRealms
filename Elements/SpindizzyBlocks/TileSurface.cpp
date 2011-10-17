@@ -86,10 +86,10 @@ void TileSurface::render() {
       }
 
       case ITileSurface::DOWN: {
-        cTexture->texCoord2f(cWest,     cNorth + 1); glVertex3f(xs, ye, xeys);
+/*        cTexture->texCoord2f(cWest,     cNorth + 1); glVertex3f(xs, ye, xeys);
         cTexture->texCoord2f(cEast + 1, cNorth + 1); glVertex3f(xe, ye, xeye);
         cTexture->texCoord2f(cEast + 1, cSouth);     glVertex3f(xe, ys, xsye);
-        cTexture->texCoord2f(cWest,     cSouth);     glVertex3f(xs, ys, xsys);
+        cTexture->texCoord2f(cWest,     cSouth);     glVertex3f(xs, ys, xsys);*/
   /*      glColor3f(0.0, 1.0, 0.0); cTexture->texCoord2f(cWest,     cNorth + 1); glVertex3f(xs, ye, xeys);
         glColor3f(1.0, 1.0, 0.0); cTexture->texCoord2f(cEast + 1, cNorth + 1); glVertex3f(xe, ye, xeye);
         glColor3f(1.0, 0.0, 0.0); cTexture->texCoord2f(cEast + 1, cSouth);     glVertex3f(xe, ys, xsye);

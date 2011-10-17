@@ -139,6 +139,7 @@ class WallSurface:public ISpindizzyWallSurface {
   WallFaceDirection getWallFaceDirection();
   ICollisionData* getCollision(Vertex&, Vertex&);
   float getSurfaceBounce();
+  ICollisionData* getSlidingEvent(Vertex&, Vertex&);
 };
 
 #endif
