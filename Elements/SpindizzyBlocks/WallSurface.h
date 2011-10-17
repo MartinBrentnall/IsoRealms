@@ -88,6 +88,12 @@ class WallSurface:public ISpindizzyWallSurface {
     int getEndHeight();
   };
 
+  float getSouthEdge(float);
+  float getEastEdge(float);
+  float getNorthEdge(float);
+  float getWestEdge(float);
+  bool contains(Vertex&, float, float, float);
+
   public:
 
   /**

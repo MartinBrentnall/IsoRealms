@@ -1339,7 +1339,7 @@
       </OnStart>
     </DigitalInput>
     <DigitalInput name="Debug Activate Left Circle Switch">
-      <Mapping ype="keyDown" value="0"/>
+      <Mapping type="keyDown" value="0"/>
       <OnStart>
         <Command>Plugin/Utilities/SpindizzySwitches/Activate switch LeftCircleSwitch</Command>
       </OnStart>

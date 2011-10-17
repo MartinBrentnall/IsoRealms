@@ -455,7 +455,7 @@ void SpindizzyGERALD::destroy() {
   cRespawnAnimation = 0.0f;
   cRespawning = true;
   cZone = NULL;
-  cZoneContext->setZoneContext(cZone);
+  cZoneContext->setZoneContext(NULL);
 }
 
 void SpindizzyGERALD::respawn() {
