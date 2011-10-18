@@ -244,6 +244,32 @@ bool WallSurface::contains(Vertex& location, float craftRadius, float craftHeigh
   return false;
 }
 
+ICollisionData* WallSurface::checkVerticalEdgeCollision(Vertex& start, Vertex& end, float startZ, float endZ, float craftRadius, bool sliding) {
+  if ((start.z > startZ) != (end.z > endZ)) {
+    float mGradient  = Collision::getCrossingPoint(start.z, end.z, startZ, endZ);
+    float mXImpact   = start.x + (end.x - start.x) * mGradient;
+    float mYImpact   = start.y + (end.y - start.y) * mGradient;
+    float mZImpact   = start.z + (end.z - start.z) * mGradient;
+    float mNorthEdge = getNorthEdge(craftRadius);
+    float mEastEdge  = getEastEdge(craftRadius);
+    float mSouthEdge = getSouthEdge(craftRadius);
+    float mWestEdge  = getWestEdge(craftRadius);
+    bool mIgnoreX = sliding && (cFacing == IWallSurface::EAST  || cFacing == IWallSurface::WEST);
+    bool mIgnoreY = sliding && (cFacing == IWallSurface::NORTH || cFacing == IWallSurface::SOUTH);
+    if ((mIgnoreY || (mYImpact >= mSouthEdge && mYImpact <= mNorthEdge)) && (mIgnoreX || (mXImpact >= mWestEdge && mXImpact <= mEastEdge))) {
+      float mXLocation = cFacing == IWallSurface::EAST  ? nextafterf(mEastEdge,   INFINITY)
+                       : cFacing == IWallSurface::WEST  ? nextafterf(mWestEdge,  -INFINITY)
+                       :                                  mXImpact;
+      float mYLocation = cFacing == IWallSurface::NORTH ? nextafterf(mNorthEdge,  INFINITY)
+                       : cFacing == IWallSurface::SOUTH ? nextafterf(mSouthEdge, -INFINITY)
+                       :                                  mYImpact;
+      Vertex* mImpactLocation = new Vertex(mXLocation, mYLocation, mZImpact);
+      return new SurfaceCollisionEvent(this, sliding ? ICollisionData::WALL_LEAVE : ICollisionData::WALL_CLIP, mImpactLocation, mGradient);
+    }
+  }
+  return NULL;
+}
+
 ICollisionData* WallSurface::getCollision(Vertex& start, Vertex& end) {
   if (cCondition == NULL || cCondition->isTrue()) {
     // TODO: Only do one way collision detection
@@ -357,6 +383,19 @@ ICollisionData* WallSurface::getCollision(Vertex& start, Vertex& end) {
         break;
       }
     }
+    
+    // Top Clip Detection
+    float mStartHeight = getHeightAt(cFacing == IWallSurface::NORTH || cFacing == IWallSurface::SOUTH ? start.x : start.y) - mStepHeight;
+    float mEndHeight   = getHeightAt(cFacing == IWallSurface::NORTH || cFacing == IWallSurface::SOUTH ? end.x   : end.y) - mStepHeight;
+    ICollisionData* mClipEvent = checkVerticalEdgeCollision(start, end, mStartHeight, mEndHeight, mCraftRadius, false);
+    if (mClipEvent != NULL) {
+      return mClipEvent;
+    }
+    float mCeilingHeight = cZ - mCraftHeight;
+    mClipEvent = checkVerticalEdgeCollision(start, end, mCeilingHeight, mCeilingHeight, mCraftRadius, false);
+    if (mClipEvent != NULL) {
+      return mClipEvent;
+    }
   }
   return NULL;
 }
@@ -394,7 +433,22 @@ ICollisionData* WallSurface::getSlidingEvent(Vertex& start, Vertex& end) {
       return new SurfaceCollisionEvent(this, ICollisionData::WALL_LEAVE, new Vertex(start.x, start.y, start.z), 0.0f);
     }
   }
-  // TODO: Leave slide via top edge (e.g. sloped wall, or moving on a slope)
+  
+  // Leave by vertical edge
+  float mStepHeight = 0.5f; // TODO: This should be configurable somewhere
+  float mCraftHeight = 1.7f; // TODO: This should be configurable somewhere
+  float mCraftRadius = 0.4f; // TODO: This should be configurable somewhere
+  float mStartHeight = getHeightAt(cFacing == IWallSurface::NORTH || cFacing == IWallSurface::SOUTH ? start.x : start.y) - mStepHeight;
+  float mEndHeight   = getHeightAt(cFacing == IWallSurface::NORTH || cFacing == IWallSurface::SOUTH ? end.x   : end.y) - mStepHeight;
+  ICollisionData* mClipEvent = checkVerticalEdgeCollision(start, end, mStartHeight, mEndHeight, mCraftRadius, true);
+  if (mClipEvent != NULL) {
+    return mClipEvent;
+  }
+  float mCeilingHeight = cZ - mCraftHeight;
+  mClipEvent = checkVerticalEdgeCollision(start, end, mCeilingHeight, mCeilingHeight, mCraftRadius, true);
+  if (mClipEvent != NULL) {
+    return mClipEvent;
+  }
   return NULL;
 }
 

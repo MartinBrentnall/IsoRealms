@@ -1,5 +1,8 @@
 Misc
  - Make background go black on map overview
+ - Collision problem:  Stand on doorway on inside of the castle (white screen), fall off, then immediately go north after respawning.  GERALD will fall through the wall.
+ - Freeze problem:  Immediately after getting onto west wall of castle, slide along the top upper part of the wall to the southwest corner.
+ - Lifts cause segmentation fault
 
 Dialog Engine and UI framework:
  - Implement cleanup in Dialog Engine for dialog resources.

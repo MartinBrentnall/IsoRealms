@@ -93,6 +93,7 @@ class WallSurface:public ISpindizzyWallSurface {
   float getNorthEdge(float);
   float getWestEdge(float);
   bool contains(Vertex&, float, float, float);
+  ICollisionData* checkVerticalEdgeCollision(Vertex&, Vertex&, float, float, float, bool);
 
   public:
 
