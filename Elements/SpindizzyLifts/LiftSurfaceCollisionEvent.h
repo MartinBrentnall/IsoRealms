@@ -16,12 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SURFACE_COLLISION_EVENT_H
-#define SURFACE_COLLISION_EVENT_H
+#ifndef LIFT_SURFACE_COLLISION_EVENT_H
+#define LIFT_SURFACE_COLLISION_EVENT_H
 
 #include "../../Plugins/CollidableSurfaceRegistry/ICollisionData.h"
 
-class SurfaceCollisionEvent:public ICollisionData {
+class LiftSurfaceCollisionEvent:public ICollisionData {
   private:
   ICollisionData::CollisionType cType;
   IRollableSurface* cSurface;
@@ -29,7 +29,7 @@ class SurfaceCollisionEvent:public ICollisionData {
   float cGradient;
   
   public:
-  SurfaceCollisionEvent(IRollableSurface*, ICollisionData::CollisionType, Vertex*, float);
+  LiftSurfaceCollisionEvent(IRollableSurface*, ICollisionData::CollisionType, Vertex*, float);
     
   IRollableSurface* getSurface();
   ICollidableWallSurface* getWallSurface();

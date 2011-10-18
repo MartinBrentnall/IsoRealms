@@ -315,7 +315,7 @@ bool SpindizzyLift::contains(Vertex& location) {
 ICollisionData* SpindizzyLift::getCollision(Vertex& start, Vertex& end) {
   if (contains(start)) {
     Vertex* mEnterPoint = new Vertex(start);
-    return new SurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mEnterPoint, 0.0f);
+    return new LiftSurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mEnterPoint, 0.0f);;
   }
   
   float mGradient;
@@ -323,7 +323,7 @@ ICollisionData* SpindizzyLift::getCollision(Vertex& start, Vertex& end) {
   if (mEnterPoint != NULL) {
     float mEnterHeight = getHeightAt(mEnterPoint->x, mEnterPoint->y);
     if (mEnterPoint->z <= mEnterHeight && mEnterPoint->z >= mEnterHeight - 0.5f) {
-      return new SurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mEnterPoint, mGradient);
+      return new LiftSurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mEnterPoint, mGradient);
     }
   }
 
@@ -337,7 +337,7 @@ ICollisionData* SpindizzyLift::getCollision(Vertex& start, Vertex& end) {
     int mX = round(mXImpact);
     int mY = round(mYImpact);
     if (mX == cLocation.x && mY == cLocation.y) {
-      return new SurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mImpactLocation, mGradient);
+      return new LiftSurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mImpactLocation, mGradient);
     }
   }
   return NULL;
@@ -347,7 +347,7 @@ ICollisionData* SpindizzyLift::getRollingEvent(Vertex& start, Vertex& end) {
   float mGradient;
   Vertex* mLeavePoint = getBoundaryCrossingPoint(start, end, &mGradient, INFINITY);
   if (mLeavePoint != NULL) {
-    return new SurfaceCollisionEvent(this, ICollisionData::SURFACE_LEAVE, mLeavePoint, mGradient);
+    return new LiftSurfaceCollisionEvent(this, ICollisionData::SURFACE_LEAVE, mLeavePoint, mGradient);
   }
   return NULL;
 }

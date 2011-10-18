@@ -36,8 +36,8 @@
 
 #include "ISpindizzyLiftFactory.h"
 #include "ISpindizzyLiftSet.h"
+#include "LiftSurfaceCollisionEvent.h"
 #include "SpindizzyLiftProperties.h"
-#include "SurfaceCollisionEvent.h"
 
 class SpindizzyLift:public Element<ISpindizzyLiftSet, ISpindizzyLiftFactory>,
                            IDynamicElement,
