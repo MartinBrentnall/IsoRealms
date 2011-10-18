@@ -119,6 +119,7 @@ class SpindizzyGERALD:public Element<ISpindizzyGERALDSet, ISpindizzyGERALDFactor
   void checkFall();
   void destroy();
   void respawn();
+  void discoverZone(ICollidableWallSurface*);
 
   public:
   SpindizzyGERALD(ISpindizzyGERALDFactory*, BlockLocation*, ISimpleModelFactory*, ICollectables*, ICollidableSurfaceRegistry*, ILocationAwareness*, IZoneContext*, ICamera*, float, Script*, Script*);

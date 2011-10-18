@@ -397,3 +397,8 @@ ICollisionData* WallSurface::getSlidingEvent(Vertex& start, Vertex& end) {
   // TODO: Leave slide via top edge (e.g. sloped wall, or moving on a slope)
   return NULL;
 }
+
+Vertex* WallSurface::getLocation() {
+  return new Vertex(cX, cY, cZ);
+}
+

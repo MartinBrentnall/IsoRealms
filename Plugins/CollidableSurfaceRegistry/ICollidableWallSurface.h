@@ -61,6 +61,14 @@ class ICollidableWallSurface {
    * @returns  An event if one is generated, otherwise NULL.
    */
   virtual ICollisionData* getSlidingEvent(Vertex&, Vertex&) = 0;
+  
+  /**
+   * For the purpose of finding which zone the wall is in.
+   * TODO: Should this really be part of this interface?
+   * 
+   * @returns  Location of this wall.
+   */
+  virtual Vertex* getLocation() = 0;
 };
 
 #endif

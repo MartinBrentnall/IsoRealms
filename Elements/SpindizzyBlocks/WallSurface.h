@@ -146,6 +146,7 @@ class WallSurface:public ISpindizzyWallSurface {
   ICollisionData* getCollision(Vertex&, Vertex&);
   float getSurfaceBounce();
   ICollisionData* getSlidingEvent(Vertex&, Vertex&);
+  Vertex* getLocation();
 };
 
 #endif

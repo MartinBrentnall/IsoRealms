@@ -350,6 +350,16 @@ void SpindizzyGERALD::updateRespawnData() {
   }
 }
 
+void SpindizzyGERALD::discoverZone(ICollidableWallSurface* wallSurface) {
+  Vertex* mLocation = wallSurface->getLocation();
+  IZone* mWallZone = cMap->getZone(*mLocation);
+  delete mLocation; // TODO: Should this be done here?
+  if (cZone != mWallZone) {
+    cZoneContext->setZoneContext(mWallZone);
+    cZoneContext->setZoneContext(cZone);
+  }
+}
+
 bool SpindizzyGERALD::processEvent(ICollisionData& event) {
   Vertex* mEventLocation = event.getEventLocation();
   switch (event.getType()) {
@@ -418,10 +428,13 @@ bool SpindizzyGERALD::processEvent(ICollisionData& event) {
           (mFaceDirection == ICollidableWallSurface::FACE_EAST ? cLockWest : cLockEast) = mWallSurface;
         }
       }
+      discoverZone(mWallSurface);
       break;
     }
     
     case ICollisionData::WALL_CLIP: {
+      ICollidableWallSurface* mWallSurface = event.getWallSurface();
+      discoverZone(mWallSurface);
       break;
     }
     
