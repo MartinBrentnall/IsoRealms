@@ -414,6 +414,18 @@ bool SpindizzyGERALD::processEvent(ICollisionData& event) {
     }
     
     case ICollisionData::WALL_IMPACT: {
+      
+      // If GERALD hits a wall whilst running up a slope, he might leave the slope
+      if (cCurrentSurface != NULL) {
+        cMomentum.z = cMomentum.x * -cCurrentSurface->getXAcceleration(mEventLocation->x, mEventLocation->y) + cMomentum.y * -cCurrentSurface->getYAcceleration(mEventLocation->x, mEventLocation->y); 
+        if (cMomentum.z > 0.0f) {
+          cJumpedFromRamp = true;
+          cSurfaceLeaveVerticalMomentum = cMomentum.z;
+          cCurrentSurface = NULL;
+        }
+      }
+      
+      // Handle wall bounce
       ICollidableWallSurface* mWallSurface = event.getWallSurface();
       ICollidableWallSurface::WallFaceDirection mFaceDirection = mWallSurface->getWallFaceDirection();
       float mSurfaceBounce = mWallSurface->getSurfaceBounce();

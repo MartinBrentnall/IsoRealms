@@ -1359,8 +1359,9 @@
   </InputConfiguration>
   <Elements>
     <Element set="Player" type="">
-      <Location x="-4" y="3" z="0"/>
-<!--      <Location x="-23" y="163" z="7"/>-->
+      <Location x="-4" y="3" z="0"/> <!-- Game Start -->
+<!--      <Location x="-23" y="163" z="7"/>--> <!-- Big Jump -->
+<!--      <Location x="137" y="163" z="7"/>--> <!-- Moon -->
     </Element>
   </Elements>
   <Zone>
