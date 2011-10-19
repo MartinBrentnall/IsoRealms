@@ -22,6 +22,7 @@
 #include <IsoRealms/MiscFunctions.h>
 
 #include <iostream>
+#include <stdlib.h>
 
 class WallColumn {
   private:
@@ -72,6 +73,7 @@ class WallColumn {
    * @param int  Top height end.
    */
   WallColumn(int, int, int, int);
+  WallColumn(const WallColumn&);
   
   int getBottomHeightStart();
   int getBottomHeightEnd();
@@ -123,6 +125,8 @@ class WallColumn {
   void convertToAddition();
   
   void debug();
+  
+  ~WallColumn();
 };
 
 #endif

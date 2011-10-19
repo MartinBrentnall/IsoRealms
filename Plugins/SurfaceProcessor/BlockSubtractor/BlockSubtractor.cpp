@@ -226,7 +226,9 @@ WallColumnPossibility* BlockSubtractor::getRawWallColumn(ISurfaceProvider* provi
       mCondition = new Condition(*mCondition);
     }
     WallColumn* mWallColumn = new WallColumn(mBottomEdge->getStartHeight(), mBottomEdge->getEndHeight(), mTopEdge->getStartHeight(), mTopEdge->getEndHeight());
-    return new WallColumnPossibility(mWallColumn, mCondition);
+    WallColumnPossibility* mPossibility = new WallColumnPossibility(mWallColumn, mCondition);
+    delete mWallColumn;
+    return mPossibility;
   }
   return NULL;
 }
@@ -237,6 +239,7 @@ std::vector<WallColumnPossibility*> BlockSubtractor::getPhysicalWallColumn(ISurf
   WallColumnPossibility* mRawWallColumn = getRawWallColumn(provider, x, y, facing);
   std::vector<WallColumnPossibility*> mPhysicalColumns;
   if (mRawWallColumn == NULL || mRawWallColumn->isSubtraction()) {
+    delete mRawWallColumn;
     return mPhysicalColumns;
   }
   mPhysicalColumns.push_back(mRawWallColumn);
@@ -252,11 +255,11 @@ std::vector<WallColumnPossibility*> BlockSubtractor::getPhysicalWallColumn(ISurf
       WallColumnPossibility* mWallColumn = getRawWallColumn(mSurfaceProviders[i], x, y, facing);
       if (!mWallColumn->empty()) {
         mWallColumn->convertToAddition();
-        std::vector<WallColumnPossibility*> mSplitColumns;
         Condition* mCondition = mSurfaceProviders[i]->getCondition();
         if (mCondition != NULL) {
           mCondition = new Condition(*mCondition);
         }
+        std::vector<WallColumnPossibility*> mSplitColumns;
         for (unsigned int j = 0; j < mPhysicalColumns.size(); j++) {
           WallColumnPossibility* mNewPossibility = mPhysicalColumns[j]->split(mCondition);
           if (mNewPossibility != NULL) {
@@ -279,6 +282,7 @@ std::vector<WallColumnPossibility*> BlockSubtractor::getPhysicalWallColumn(ISurf
           mPhysicalColumns[j]->debug();
         }*/
       }
+      delete mWallColumn;
     }
   }
 
@@ -338,11 +342,13 @@ std::vector<WallColumnPossibility*> BlockSubtractor::getPhysicalWallMasks(int x,
             mOpposingMask[j]->unite(mOpposingPossibilities[k]);
           }
         }
+        delete mOpposingPossibilities[k];
       }
     }
   }
   for (int i = mOpposingMask.size() - 1; i >= 0; i--) {
     if (mOpposingMask.empty()) {
+      delete mOpposingMask[i];
       mOpposingMask.erase(mOpposingMask.begin() + i);
     }
   }
@@ -374,10 +380,10 @@ std::vector<WallColumnPossibility*> BlockSubtractor::getOptimisedWallColumn(ISur
 
   for (unsigned int i = 0; i < mWallMasks.size(); i++) {
     Condition* mMaskCondition = mWallMasks[i]->getCondition();
-    std::vector<WallColumnPossibility*> mSplitColumns;
     if (mMaskCondition != NULL) {
       mMaskCondition = new Condition(*mMaskCondition);
     }
+    std::vector<WallColumnPossibility*> mSplitColumns;
     for (unsigned int j = 0; j < mWallColumns.size(); j++) {
       WallColumnPossibility* mNewPossibility = mWallColumns[j]->split(mMaskCondition);
       if (mNewPossibility != NULL) {
@@ -393,11 +399,67 @@ std::vector<WallColumnPossibility*> BlockSubtractor::getOptimisedWallColumn(ISur
         mWallColumns[j]->removeHiddenSections(mWallMasks[i]);
       }
     }
+    delete mWallMasks[i];
   }
+  
 /*  std::cout << "After masks: -----------------------------------------------------" << std::endl;
   for (unsigned int j = 0; j < mWallColumns.size(); j++) {
     mWallColumns[j]->debug();
   }*/
+  return mWallColumns;
+}
+
+std::vector<WallColumnPossibility*> BlockSubtractor::getVisibleWallColumn(ISurfaceProvider* provider, int x, int y, IWallSurface::FaceDirection facing) {
+  std::vector<WallColumnPossibility*> mWallColumns = getOptimisedWallColumn(provider, x, y, facing);
+  switch (facing) {
+    case IWallSurface::NORTH: y++; break;
+    case IWallSurface::EAST:  x++; break;
+    case IWallSurface::SOUTH: y--; break;
+    case IWallSurface::WEST:  x--; break;
+  }
+  facing = getOppositeOf(facing);
+  std::vector<WallColumnPossibility*> mWallMasks = getPhysicalWallMasks(x, y, facing);
+
+  // TODO: THIS PART IS VERY EXPERIMENTAL
+  for (unsigned int i = 0; i < mWallMasks.size(); i++) {
+    WallColumnPossibility* mWallMask = mWallMasks[i];
+    if (!mWallMask->empty()) {
+      std::vector<WallColumnPossibility*> mSplitColumns;
+      Condition* mCondition = mWallMask->getCondition();
+      if (mCondition != NULL) {
+        mCondition = new Condition(*mCondition);
+      }
+      for (unsigned int j = 0; j < mWallColumns.size(); j++) {
+        WallColumnPossibility* mNewPossibility = mWallColumns[j]->split(mCondition);
+        if (mNewPossibility != NULL) {
+          mSplitColumns.push_back(mNewPossibility);
+        }
+      }
+      for (unsigned int j = 0; j < mSplitColumns.size(); j++) {
+        mWallColumns.push_back(mSplitColumns[j]);
+      }
+
+//       std::cout << "    Applying to the wall columns!" << std::endl;
+      for (unsigned int j = 0; j < mWallColumns.size(); j++) {
+        if (mWallColumns[j]->isCompatibleWith(mCondition)) {
+          mWallColumns[j]->applyOverlapping(mWallMask);
+        }
+      }
+//       std::cout << "    Done!" << std::endl;
+    }
+    delete mWallMasks[i];
+  }
+  mWallMasks.clear();
+
+  // Shave the top off invisible surfaces
+/*  std::vector<ITileSurface*> mTileSurfaces = provider->getTileSurfaces(ITileSurface::UP);
+  ITileSurface* mTileSurface = getSurfaceAt(mTileSurfaces, x, y);
+  int mHeight = mTileSurface->getSurfaceCellHeight(x, y);
+  Condition* mCondition = getSurfaceTileCondition(provider, x, y, ITileSurface::UP);
+  for (unsigned int i = 0; i < mWallColumns.size(); i++) {
+    mWallColumns[i]->shaveTop(mHeight, mCondition);
+  }*/
+
   return mWallColumns;
 }
 
@@ -410,13 +472,16 @@ std::vector<IWallSurfaceTemplate*> BlockSubtractor::getWallSurfaces(ISurfaceProv
   int mEndRow = mXWalls ? mCoverage->getEast() : mCoverage->getNorth();
   std::vector<IWallSurfaceTemplate*> mWallSurfaces;
   std::vector<WallConstructionData*>* mExtendedConstructionData;
+  // TODO: These allocated vectors need to be deleted when we're done
   std::vector<WallConstructionData*>* mCompletedConstructionData = new std::vector<WallConstructionData*>();
+//  std::cout << "Getting wall surfaces for provider: " << provider << std::endl;
   for (int row = mStartRow; row <= mEndRow; row++) {
     for (int cell = mStartCell; cell <= mEndCell; cell++) {
+      // TODO: These allocated vectors need to be deleted when we're done
       mExtendedConstructionData = new std::vector<WallConstructionData*>();
       int mX = mXWalls ? row : cell;
       int mY = mXWalls ? cell : row;
-/*      std::cout << "DOING " << mX << "," << mY << " ===============================================" << std::endl;*/
+//       std::cout << "DOING " << mX << "," << mY << " ==================================================================" << std::endl;
       std::vector<WallColumnPossibility*> mWallColumns = getOptimisedWallColumn(provider, mX, mY, facing);
 
       for (unsigned int j = 0; j < mWallColumns.size(); j++) {
@@ -442,6 +507,7 @@ std::vector<IWallSurfaceTemplate*> BlockSubtractor::getWallSurfaces(ISurfaceProv
             mExtendedConstructionData->push_back(mNewConstructionData);
           }
         }
+        delete mWallColumns[j];
       }
 
       for (unsigned int i = 0; i < mCompletedConstructionData->size(); i++) {
@@ -459,6 +525,14 @@ std::vector<IWallSurfaceTemplate*> BlockSubtractor::getWallSurfaces(ISurfaceProv
     mExtendedConstructionData->clear();
   }
   return mWallSurfaces;
+}
+
+void BlockSubtractor::destroyTileTemplate(ITileSurfaceTemplate* tileTemplate) {
+  delete tileTemplate;
+}
+
+void BlockSubtractor::destroyWallTemplate(IWallSurfaceTemplate* wallTemplate) {
+  delete wallTemplate;
 }
 
 extern "C" IPlugin* create() {

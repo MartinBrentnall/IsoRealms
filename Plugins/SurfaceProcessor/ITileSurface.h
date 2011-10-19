@@ -54,6 +54,8 @@ class ITileSurface {
   virtual bool alligned(int x, int y) = 0;
 
   virtual BlockArea* getCoverage() = 0;
+  
+  virtual ~ITileSurface() {}
 };
 
 #endif

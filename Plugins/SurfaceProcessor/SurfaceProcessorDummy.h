@@ -43,6 +43,8 @@ class SurfaceProcessorDummy:public DummyPlugin,
   void unregisterSurfaceProvider(ISurfaceProvider*);
   std::vector<ITileSurfaceTemplate*> getTileSurfaces(ISurfaceProvider*, ITileSurface::FaceDirection);
   std::vector<IWallSurfaceTemplate*> getWallSurfaces(ISurfaceProvider*, IWallSurface::FaceDirection);
+  void destroyTileTemplate(ITileSurfaceTemplate*);
+  void destroyWallTemplate(IWallSurfaceTemplate*);
   void setDirty();
   void reinitialise();
 };

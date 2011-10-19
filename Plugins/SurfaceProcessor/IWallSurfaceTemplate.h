@@ -32,6 +32,8 @@ class IWallSurfaceTemplate {
   virtual int getBottomSlope() = 0;
   virtual int getTopSlope() = 0;
   virtual Condition* getCondition() = 0;
+  
+  virtual ~IWallSurfaceTemplate() {}
 };
 
 #endif

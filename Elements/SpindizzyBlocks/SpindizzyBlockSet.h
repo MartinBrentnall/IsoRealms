@@ -131,6 +131,8 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
   void setDirty();
   std::vector<ITileSurfaceTemplate*> getTileSurfaces(ISurfaceProvider*, ITileSurface::FaceDirection);
   std::vector<IWallSurfaceTemplate*> getWallSurfaces(ISurfaceProvider*, IWallSurface::FaceDirection);
+  void destroyTileTemplate(ITileSurfaceTemplate*);
+  void destroyWallTemplate(IWallSurfaceTemplate*);
   void notifyZoneAction(Zone*);
 
   void registerRollableSurface(IRollableSurface*);

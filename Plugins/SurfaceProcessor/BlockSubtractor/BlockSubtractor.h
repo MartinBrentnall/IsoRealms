@@ -136,6 +136,8 @@ class BlockSubtractor:public ISurfaceProcessor {
    */
   std::vector<WallColumnPossibility*> getOptimisedWallColumn(ISurfaceProvider*, int, int, IWallSurface::FaceDirection);
 
+  std::vector<WallColumnPossibility*> getVisibleWallColumn(ISurfaceProvider*, int, int, IWallSurface::FaceDirection);
+  
   ITileSurface* getSurfaceAt(std::vector<ITileSurface*>, int, int);
   IWallSurface* findSurfaceAt(std::vector<IWallSurface*>, int, int);
 
@@ -152,6 +154,8 @@ class BlockSubtractor:public ISurfaceProcessor {
   void unregisterSurfaceProvider(ISurfaceProvider*);
   std::vector<ITileSurfaceTemplate*> getTileSurfaces(ISurfaceProvider*, ITileSurface::FaceDirection);
   std::vector<IWallSurfaceTemplate*> getWallSurfaces(ISurfaceProvider*, IWallSurface::FaceDirection);
+  void destroyTileTemplate(ITileSurfaceTemplate*);
+  void destroyWallTemplate(IWallSurfaceTemplate*);
   void setDirty();
   void reinitialise();
 

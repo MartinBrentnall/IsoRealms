@@ -91,3 +91,6 @@ Condition* WallConstructionData::getCondition() {
   return cCondition;
 }
 
+WallConstructionData::~WallConstructionData() {
+  // TODO: Implement this
+}

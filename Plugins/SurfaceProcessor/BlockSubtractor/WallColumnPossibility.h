@@ -49,6 +49,8 @@ class WallColumnPossibility {
   void removeHiddenSections(WallColumnPossibility*);
   
   void debug();
+  
+  ~WallColumnPossibility();
 };
 
 #endif

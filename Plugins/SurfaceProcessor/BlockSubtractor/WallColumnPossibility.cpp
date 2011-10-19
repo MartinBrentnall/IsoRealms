@@ -24,7 +24,7 @@ WallColumnPossibility::WallColumnPossibility() {
 
 WallColumnPossibility::WallColumnPossibility(WallColumn* wallColumn, Condition* condition) {
   cCondition = condition;
-  cSegments.push_back(wallColumn);
+  cSegments.push_back(new WallColumn(*wallColumn));
 }
 
 WallColumnPossibility::WallColumnPossibility(WallColumnPossibility* wallColumn, Condition* condition) {
@@ -78,6 +78,8 @@ void WallColumnPossibility::applyOverlapping(WallColumnPossibility* wallColumn) 
           cSegments[j]->raiseBottom(mWallColumn);
           if (mSplitColumn->isAddition()) {
             mColumnsAdded.push_back(mSplitColumn);
+          } else {
+            delete mSplitColumn;
           }
           if (!cSegments[j]->isAddition()) {
             mIndicesToRemove.push_back(j);
@@ -107,6 +109,7 @@ void WallColumnPossibility::applyOverlapping(WallColumnPossibility* wallColumn) 
     }
   }
   for (int j = mIndicesToRemove.size() - 1; j >= 0; j--) {
+    delete cSegments[mIndicesToRemove[j]];
     cSegments.erase(cSegments.begin() + mIndicesToRemove[j]);
   }
   mIndicesToRemove.clear();
@@ -135,12 +138,13 @@ void WallColumnPossibility::convertToAddition() {
 
 void WallColumnPossibility::unite(WallColumnPossibility* wallColumn) {
   for (unsigned int i = 0; i < wallColumn->cSegments.size(); i++) {
-    cSegments.push_back(wallColumn->cSegments[i]);
+    cSegments.push_back(new WallColumn(*wallColumn->cSegments[i]));
   }
 
   for (int i = 0; i < (signed int) (cSegments.size() - 1); i++) {
     for (unsigned int j = i + 1; j < cSegments.size(); j++) {
       if (cSegments[i]->unite(cSegments[j])) {
+        delete cSegments[j];
         cSegments.erase(cSegments.begin() + j--);
       }
     }
@@ -156,6 +160,7 @@ void WallColumnPossibility::shaveTop(int height, Condition* condition) {
     // TODO: This should not only be based on the start bottom height, but also the end bottom height aswell.
     int mWallBottom = cSegments[i]->getBottomHeightStart();
     if (mWallBottom >= height && !condition->isCompatibleWith(cCondition)) {
+      delete cSegments[i];
       cSegments.erase(cSegments.begin() + i);
     }
   }
@@ -165,6 +170,7 @@ void WallColumnPossibility::removeHiddenSections(WallColumnPossibility* wallMask
   for (int i = cSegments.size() - 1; i >= 0; i--) {
     for (unsigned int j = 0; j < wallMask->cSegments.size(); j++) {
       if (wallMask->cSegments[j]->isCovering(cSegments[i])) {
+        delete cSegments[i];
         cSegments.erase(cSegments.begin() + i);
       }
     }
@@ -184,5 +190,12 @@ void WallColumnPossibility::debug() {
   }
 }
 
+WallColumnPossibility::~WallColumnPossibility() {
+  for (unsigned int i = 0; i < cSegments.size(); i++) {
+    delete cSegments[i];
+  }
+  cSegments.clear();
+//  delete cCondition;
+}
 
 

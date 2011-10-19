@@ -85,6 +85,10 @@ class ISurfaceProcessor:public virtual IPlugin {
    * @returns  A vector containing the calculated wall surfaces.
    */
   virtual std::vector<IWallSurfaceTemplate*> getWallSurfaces(ISurfaceProvider*, IWallSurface::FaceDirection) = 0;
+
+  virtual void destroyTileTemplate(ITileSurfaceTemplate*) = 0;
+  
+  virtual void destroyWallTemplate(IWallSurfaceTemplate*) = 0;
 };
 
 #endif

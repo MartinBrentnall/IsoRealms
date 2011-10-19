@@ -25,6 +25,13 @@ WallColumn::WallColumn(int bottomStart, int bottomEnd, int topStart, int topEnd)
   cTopHeightEnd = topEnd;
 }
 
+WallColumn::WallColumn(const WallColumn& wallColumn) {
+  cBottomHeightStart = wallColumn.cBottomHeightStart;
+  cBottomHeightEnd = wallColumn.cBottomHeightEnd;
+  cTopHeightStart = wallColumn.cTopHeightStart;
+  cTopHeightEnd = wallColumn.cTopHeightEnd;
+}
+
 int WallColumn::getBottomHeightStart() {
   return cBottomHeightStart;
 }
@@ -88,12 +95,18 @@ bool WallColumn::isAddition() {
 }
 
 bool WallColumn::raiseBottom(WallColumn* wallColumn) {
+  if (!isAddition()) {
+    return true;
+  }
   cTopHeightStart = min(cTopHeightStart, wallColumn->cBottomHeightStart);
   cTopHeightEnd   = min(cTopHeightEnd,   wallColumn->cBottomHeightEnd);
   return isAddition();
 }
 
 bool WallColumn::lowerTop(WallColumn* wallColumn) {
+  if (!isAddition()) {
+    return true;
+  }
   cBottomHeightStart = max(cBottomHeightStart, wallColumn->cTopHeightStart);
   cBottomHeightEnd   = max(cBottomHeightEnd,   wallColumn->cTopHeightEnd);
   return isAddition();
@@ -119,6 +132,9 @@ void WallColumn::debug() {
     }
   }
   std::cout << std::endl;
+}
+
+WallColumn::~WallColumn() {
 }
 
 

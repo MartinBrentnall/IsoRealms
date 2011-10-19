@@ -279,6 +279,7 @@ void SpindizzyBlock::added() {
 }
 
 void SpindizzyBlock::generateWallSurfaces(IWallSurface::FaceDirection faceDirection) {
+  ISpindizzyBlockSet* mSpindizzyBlockSet = getElementSet();
   std::vector<IWallSurfaceTemplate*> mWallSurfaces = calculateWallSurfaces(faceDirection);
   for (unsigned int i = 0; i < mWallSurfaces.size(); i++) {
     int mX = mWallSurfaces[i]->getX();
@@ -300,6 +301,7 @@ void SpindizzyBlock::generateWallSurfaces(IWallSurface::FaceDirection faceDirect
     ISpindizzyBlockSet* mBlockElementSet = getElementSet();
     // TODO: This should only happen in runtime
     mBlockElementSet->registerWallSurface(mWallSurface);
+    mSpindizzyBlockSet->destroyWallTemplate(mWallSurfaces[i]);
   }
 }
 
@@ -329,8 +331,7 @@ bool SpindizzyBlock::initElement(unsigned int pass) {
         // TODO: This should only happen in runtime
         mBlockElementSet->registerRollableSurface(mTileSurface);
         
-        // TODO: SHOULD NOT DELETE THIS BECAUSE WE DIDN'T CREATE IT; THE SURFACE PROCESSOR DID!
-        delete mTopTileSurfaces[i];
+        mBlockElementSet->destroyTileTemplate(mTopTileSurfaces[i]);
       }
       // TODO: Use the calculator to calculate surfaces
 

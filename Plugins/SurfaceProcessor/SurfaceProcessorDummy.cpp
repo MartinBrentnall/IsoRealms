@@ -59,6 +59,14 @@ std::vector<IWallSurfaceTemplate*> SurfaceProcessorDummy::getWallSurfaces(ISurfa
   return mDummySurfaceTemplates;
 }
 
+void SurfaceProcessorDummy::destroyTileTemplate(ITileSurfaceTemplate* tileTemplate) {
+  delete tileTemplate;
+}
+
+void SurfaceProcessorDummy::destroyWallTemplate(IWallSurfaceTemplate* wallTemplate) {
+  delete wallTemplate;
+}
+
 void SurfaceProcessorDummy::setDirty() {
   // Nothing to do.
 }

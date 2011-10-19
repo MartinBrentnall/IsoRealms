@@ -55,6 +55,8 @@ class WallConstructionData:public IWallSurfaceTemplate {
   int getBottomSlope();
   int getTopSlope();
   Condition* getCondition();
+  
+  ~WallConstructionData();
 };
 
 #endif

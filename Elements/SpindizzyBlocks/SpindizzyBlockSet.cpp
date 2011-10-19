@@ -237,6 +237,14 @@ std::vector<IWallSurfaceTemplate*> SpindizzyBlockSet::getWallSurfaces(ISurfacePr
   return cSurfaceProcessor->getWallSurfaces(provider, facing);
 }
 
+void SpindizzyBlockSet::destroyWallTemplate(IWallSurfaceTemplate* wallTemplate) {
+  cSurfaceProcessor->destroyWallTemplate(wallTemplate);
+}
+
+void SpindizzyBlockSet::destroyTileTemplate(ITileSurfaceTemplate* tileTemplate) {
+  cSurfaceProcessor->destroyTileTemplate(tileTemplate);
+}
+
 void SpindizzyBlockSet::registerRollableSurface(IRollableSurface* rollableSurface) {
   cCollidableSurfaceRegistry->registerRollableSurface(rollableSurface, false);
 }
