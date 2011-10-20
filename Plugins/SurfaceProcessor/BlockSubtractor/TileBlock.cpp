@@ -18,6 +18,8 @@
  */
 #include "TileBlock.h"
 
+int TileBlock::cInstanceCount = 0;
+
 bool TileBlock::isAddition() {
   return cTop > cBottom;
 }
@@ -29,6 +31,17 @@ TileBlock::TileBlock(ISurfaceProvider* surfaceProvider, int top, int bottom, boo
   cBottomSurfaceProvider = surfaceProvider;
   cTopExtended = topExtended;
   cBottomExtended = bottomExtended;
+//  std::cout << "Created tile block: " << (++cInstanceCount) << std::endl;
+}
+
+TileBlock::TileBlock(const TileBlock& tileBlock) {
+  cTopSurfaceProvider = tileBlock.cTopSurfaceProvider;
+  cBottomSurfaceProvider = tileBlock.cBottomSurfaceProvider;
+  cTop = tileBlock.cTop;
+  cBottom = tileBlock.cBottom;
+  cTopExtended = tileBlock.cTopExtended;
+  cBottomExtended = tileBlock.cBottomExtended;
+//  std::cout << "Copied tile block: " << (++cInstanceCount) << std::endl;
 }
 
 TileBlock* TileBlock::split(TileBlock& tileBlock) {
@@ -112,4 +125,8 @@ void TileBlock::debug() {
     }
   }
   std::cout << std::endl;
+}
+
+TileBlock::~TileBlock() {
+//  std::cout << "Destroying tile block " << cTop << " to " << cBottom << ": " << (--cInstanceCount) << std::endl;
 }

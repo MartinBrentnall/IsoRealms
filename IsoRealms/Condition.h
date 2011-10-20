@@ -30,6 +30,7 @@
 
 class Condition {
   private:
+  static int cInstanceCount;
   bool cAnd;
   bool cNegated;
   std::vector<Condition*> cConditions;
@@ -102,6 +103,8 @@ class Condition {
 
   void debug(const std::string&) const;
   void debug(int = 0) const;
+  
+  ~Condition();
 };
 
 #endif

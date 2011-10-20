@@ -78,6 +78,10 @@ BlockArea* TileSplitSurface::getCoverage() {
   return new BlockArea(cLocation, cLocation);
 }
 
+void TileSplitSurface::destroyCoverage(BlockArea* coverage) {
+  delete coverage;
+}
+
 bool TileSplitSurface::alligned(int x, int y) {
   return cLocation.x == x && cLocation.y == y;
 }

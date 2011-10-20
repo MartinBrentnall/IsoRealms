@@ -67,6 +67,10 @@ void SurfaceProcessorDummy::destroyWallTemplate(IWallSurfaceTemplate* wallTempla
   delete wallTemplate;
 }
 
+void SurfaceProcessorDummy::initElementsComplete() {
+  // Nothing to do.
+}
+
 void SurfaceProcessorDummy::setDirty() {
   // Nothing to do.
 }

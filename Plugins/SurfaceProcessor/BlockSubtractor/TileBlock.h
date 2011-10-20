@@ -23,6 +23,7 @@
 
 class TileBlock {
   private:
+  static int cInstanceCount;
   ISurfaceProvider* cTopSurfaceProvider;
   ISurfaceProvider* cBottomSurfaceProvider;
   int cTop;
@@ -35,6 +36,7 @@ class TileBlock {
 
   public:
   TileBlock(ISurfaceProvider*, int, int, bool, bool);
+  TileBlock(const TileBlock&);
 
   bool isAddition();
   TileBlock* split(TileBlock&);
@@ -44,6 +46,8 @@ class TileBlock {
   ISurfaceProvider* getSurfaceProvider(ITileSurface::FaceDirection);
   
   void debug();
+  
+  ~TileBlock();
 };
 
 #endif

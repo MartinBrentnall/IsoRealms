@@ -254,6 +254,8 @@ void Map::initMap(unsigned int pass) {
       cElements[i]->renderStaticEditing();
     }
     glEndList();
+    
+    cElementSetRegistry.initElementsComplete();
   }
   std::cout << "Init map done!" << std::endl;
 }

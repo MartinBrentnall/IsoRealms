@@ -40,6 +40,8 @@ class ISurfaceProvider {
    */
   virtual BlockArea* getCoverage() = 0;
 
+  virtual void destroyCoverage(BlockArea*) = 0;
+  
   /**
    * Get all of the tile surfaces from this block.  No two surfaces should be
    * alligned on the Z-axis, and should not exceed the area defined by the

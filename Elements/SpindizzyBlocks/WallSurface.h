@@ -139,6 +139,8 @@ class WallSurface:public ISpindizzyWallSurface {
   IWallEdge* getTopEdge(int);
   IWallEdge* getBottomEdge(int);
   BlockArea* getCoverage();
+  void destroyEdge(IWallEdge*);
+  void destroyCoverage(BlockArea*);
   
   /*************************************\
    * Implements ICollidableWallSurface *

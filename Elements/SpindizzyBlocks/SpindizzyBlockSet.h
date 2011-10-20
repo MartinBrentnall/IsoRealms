@@ -105,6 +105,7 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
   void destroy(IElement*);
   void save(DOMNodeWriter*);
   void load(DOMNodeWrapper*);
+  void initElementsComplete();
 
   /***********************************\
    * Implements IHUDComponentFactory *

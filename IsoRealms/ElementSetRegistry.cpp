@@ -230,6 +230,12 @@ void ElementSetRegistry::save(PluginRegistry* pluginRegistry, DOMNodeWriter* nod
   }
 }
 
+void ElementSetRegistry::initElementsComplete() {
+  for (std::map<std::string, IElementSet*>::iterator i = cElementSets.begin(); i != cElementSets.end(); i++) {
+    i->second->initElementsComplete();
+  }
+}
+
 void ElementSetRegistry::pluginRemoved(IPlugin* instanceToRemove) {
   for (std::map<std::string, IElementSet*>::iterator i = cElementSets.begin(); i != cElementSets.end(); i++) {
     IElementSet* mElementSet = i->second;

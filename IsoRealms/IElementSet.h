@@ -54,7 +54,7 @@ class IElementSet:public IPluginSupport,
   /**
    * Save the configuration of this element set to the specified node.
    */
-  virtual void save(DOMNodeWriter*) {};
+  virtual void save(DOMNodeWriter*) {}
 
   virtual void load(DOMNodeWrapper*) {}
 
@@ -80,6 +80,12 @@ class IElementSet:public IPluginSupport,
    * TODO
    */
   virtual void setElementSetRegistry(IElementSetRegistry*) = 0;
+  
+  /**
+   * This method is called to notify that all elements have been initialized
+   * TODO: The specification of this function probably needs to be more detailed.
+   */
+  virtual void initElementsComplete() {}
   
   /**
    * Destroy the element set.  Do not call this until all elements from this

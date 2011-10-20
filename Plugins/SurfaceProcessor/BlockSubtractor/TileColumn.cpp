@@ -32,13 +32,13 @@ TileColumn::TileColumn(TileColumn* tileColumn, Condition* condition) {
   }
 }
 
-void TileColumn::addTileBlock(TileBlock* tileBlock, bool ghost, Condition* condition) {
+bool TileColumn::addTileBlock(TileBlock* tileBlock, bool ghost, Condition* condition) {
   std::vector<unsigned int> mToRemove;
-  bool mMerged = false;
-  unsigned int mTileBlockIndex = -1;
+  int mTileBlockIndex = -1;
   if (!ghost) {
     for (int i = cGhostTileBlocks.size() - 1; i >= 0; i--) {
       if (cGhostTileBlocks[i]->subtractAsGhost(*tileBlock)) {
+        delete cGhostTileBlocks[i];
         cGhostTileBlocks.erase(cGhostTileBlocks.begin() + i);
       }
     }
@@ -46,28 +46,30 @@ void TileColumn::addTileBlock(TileBlock* tileBlock, bool ghost, Condition* condi
       TileBlock* mSplitTileBlock = cTileBlocks[i]->split(*tileBlock);
       if (mSplitTileBlock != NULL) {
         cTileBlocks.push_back(mSplitTileBlock);
-        return;
+        return false;
       }
       if (cTileBlocks[i]->merge(*tileBlock)) {
         if (tileBlock->isAddition()) {
-          if (mMerged) {
+          if (mTileBlockIndex != -1) {
             mToRemove.push_back(mTileBlockIndex);
           }
           tileBlock = cTileBlocks[i];
           mTileBlockIndex = i;
-          mMerged = true;
         }
       }
       if (!cTileBlocks[i]->isAddition()) {
         mToRemove.push_back(i);
       }
     }
-    if (!mMerged && tileBlock->isAddition()) {
-      cTileBlocks.push_back(tileBlock);
-    }
     for (int i = mToRemove.size() - 1; i >= 0; i--) {
+      delete cTileBlocks[mToRemove[i]];
       cTileBlocks.erase(cTileBlocks.begin() + mToRemove[i]);
     }
+    bool mTileBlockUsed = mTileBlockIndex == -1 && tileBlock->isAddition();
+    if (mTileBlockUsed) {
+      cTileBlocks.push_back(tileBlock);
+    }
+    return mTileBlockUsed;
   } else {
     cGhostTileBlocks.push_back(tileBlock);
     // TODO: Needs more testing to make sure this is correct handling for ghost blocks
@@ -76,22 +78,22 @@ void TileColumn::addTileBlock(TileBlock* tileBlock, bool ghost, Condition* condi
       TileBlock* mSplitTileBlock = cTileBlocks[i]->split(*tileBlock);
       if (mSplitTileBlock != NULL) {
         cTileBlocks.push_back(mSplitTileBlock);
-        return;
+        return true;
       }
       if (cTileBlocks[i]->merge(*tileBlock)) {
         if (tileBlock->isAddition()) {
-          if (mMerged) {
+          if (mTileBlockIndex != -1) {
             mToRemove.push_back(mTileBlockIndex);
           }
           tileBlock = cTileBlocks[i];
           mTileBlockIndex = i;
-          mMerged = true;
         }
       }
       if (!cTileBlocks[i]->isAddition()) {
         mToRemove.push_back(i);
       }
     }
+    return true;
   }
 }
 
@@ -136,4 +138,14 @@ void TileColumn::debug() {
     cTileBlocks[i]->debug();
   }
 }
+
+TileColumn::~TileColumn() {
+  for (unsigned int i = 0; i < cTileBlocks.size(); i++) {
+    delete cTileBlocks[i];
+  }
+  for (unsigned int i = 0; i < cGhostTileBlocks.size(); i++) {
+    delete cGhostTileBlocks[i];
+  }
+}
+
 

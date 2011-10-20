@@ -18,9 +18,12 @@
  */
 #include "Condition.h"
 
+int Condition::cInstanceCount = 0;
+
 Condition::Condition(bool aand, bool negated) {
   cAnd = aand;
   cNegated = negated;
+//  std::cout << "Creating condition: " << (++cInstanceCount) << std::endl;
 }
 
 Condition::Condition(const Condition& condition) {
@@ -32,6 +35,7 @@ Condition::Condition(const Condition& condition) {
   }
   cNegated = condition.cNegated;
   cAnd = condition.cAnd;
+//  std::cout << "Copying condition: " << (++cInstanceCount) << std::endl;
 }
 
 Condition::Condition(DOMNodeWrapper* node, std::vector<ConditionElement*> elements) {
@@ -69,6 +73,7 @@ Condition::Condition(DOMNodeWrapper* node, std::vector<ConditionElement*> elemen
       // TODO: Throw
     }
   }
+//  std::cout << "Loading condition: " << (++cInstanceCount) << std::endl;
 }
 
 void Condition::save(DOMNodeWriter* node) {
@@ -436,4 +441,8 @@ void Condition::debug(int depth) const {
   if (depth == 0) {
     std::cout << std::endl;
   }
+}
+
+Condition::~Condition() {
+//  std::cout << "Destroying condition: " << (--cInstanceCount) << std::endl;
 }

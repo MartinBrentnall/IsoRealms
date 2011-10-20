@@ -69,6 +69,14 @@ BlockArea* WallSurface::getCoverage() {
   return new BlockArea(mStartLocation, mEndLocation);
 }
 
+void WallSurface::destroyCoverage(BlockArea* coverage) {
+  delete coverage;
+}
+
+void WallSurface::destroyEdge(IWallEdge* wallEdge) {
+  delete wallEdge;
+}
+
 void WallSurface::render() {
   if (cCondition == NULL || cCondition->isTrue()) {
     float mBlockRadius = IsoRealmsConstants::BLOCK_RADIUS;

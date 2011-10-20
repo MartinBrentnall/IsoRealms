@@ -20,8 +20,10 @@
 #define BLOCK_SUBTRACTOR_CACHE_H
 
 #include <map>
+#include <stdlib.h>
 #include <vector>
 
+#include <IsoRealms/IMap.h>
 #include <IsoRealms/IZone.h>
 
 #include "../ISurfaceProvider.h"
@@ -34,6 +36,8 @@ class BlockSubtractorCache {
   int cZoneYOffset;
   std::vector<ISurfaceProvider*>* cCurrentZoneProviders;
   SurfaceDataCache* cCurrentSurfaceDataCache;
+  IZone* cCurrentZone;
+  IMap* cCurrentMap;
   std::map<IZone*, std::vector<ISurfaceProvider*>*> cOrderedSurfaceProvidersByZone;
   std::map<IZone*, SurfaceDataCache*> cSurfaceDataCaches;
 
@@ -42,6 +46,7 @@ class BlockSubtractorCache {
   public:
   BlockSubtractorCache();
   void setZone(IZone*);
+  void setMap(IMap*);
   void add(ISurfaceProvider*);
   void remove(ISurfaceProvider*);
   void setDirty();
@@ -68,6 +73,8 @@ class BlockSubtractorCache {
    */
   std::vector<ISurfaceProvider*> getSurfaceProviders(bool, ISurfaceProvider*);
 
+  void clear();
+  
   ~BlockSubtractorCache();
 };
 

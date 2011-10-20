@@ -130,6 +130,12 @@ class ElementSetRegistry:public IElementSetRegistry {
 
   void save(PluginRegistry*, DOMNodeWriter*);
 
+  /**
+   * This method is called to notify that all elements have been initialized
+   * TODO: The specification of this function probably needs to be more detailed.
+   */
+  void initElementsComplete();
+  
   /**********************************\
    * Implements IElementSetRegistry *
   \**********************************/

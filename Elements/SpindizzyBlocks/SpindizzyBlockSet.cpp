@@ -180,6 +180,10 @@ void SpindizzyBlockSet::save(DOMNodeWriter* node) {
   // TODO: Save states and block type configurations
 }
 
+void SpindizzyBlockSet::initElementsComplete() {
+  cSurfaceProcessor->initElementsComplete();
+}
+
 ISpindizzyBlockFactory* SpindizzyBlockSet::getFactory(const std::string& name) {
   for (unsigned int i = 0; i < cElementFactories.size(); i++) {
     if (cElementFactories[i]->getName() == name) {

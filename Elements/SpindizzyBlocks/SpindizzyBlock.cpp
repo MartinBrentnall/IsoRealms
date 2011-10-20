@@ -177,10 +177,19 @@ int SpindizzyBlock::getMinimumWallElevation(IWallSurface::FaceDirection facing) 
   exit(1);
 }
 
-ISpindizzyWallSurface* SpindizzyBlock::createSubSurface(int x, int y, IWallSurface::FaceDirection facing, int length, int startHeight, int endHeight, int bottomSlope, int topSlope, Condition* condition) {
-  ISpindizzyTexture* mTexture = getWallTexture(facing);
+ISpindizzyWallSurface* SpindizzyBlock::createSubSurface(IWallSurfaceTemplate* wallTemplate) {
+  int mX                                     = wallTemplate->getX();
+  int mY                                     = wallTemplate->getY();
+  int mLength                                = wallTemplate->getLength();
+  IWallSurface::FaceDirection mFaceDirection = wallTemplate->getFaceDirection();
+  int mStartHeight                           = wallTemplate->getStartHeight();
+  int mEndHeight                             = wallTemplate->getEndHeight();
+//  int mBottomSlope                           = wallTemplate->getBottomSlope();
+  int mTopSlope                              = wallTemplate->getTopSlope();
+  Condition* mCondition                      = wallTemplate->getCondition();
+  ISpindizzyTexture* mTexture                = getWallTexture(mFaceDirection);
   // TODO: Bottom slope.
-  return new WallSurface(x, y, startHeight, length, endHeight, topSlope, facing, mTexture, condition);
+  return new WallSurface(mX, mY, mStartHeight, mLength, mEndHeight, mTopSlope, mFaceDirection, mTexture, mCondition);
 }
 
 std::vector<IWallSurface*> SpindizzyBlock::getWallSurfaces(int location, IWallSurface::FaceDirection facing) {
@@ -282,17 +291,8 @@ void SpindizzyBlock::generateWallSurfaces(IWallSurface::FaceDirection faceDirect
   ISpindizzyBlockSet* mSpindizzyBlockSet = getElementSet();
   std::vector<IWallSurfaceTemplate*> mWallSurfaces = calculateWallSurfaces(faceDirection);
   for (unsigned int i = 0; i < mWallSurfaces.size(); i++) {
-    int mX = mWallSurfaces[i]->getX();
-    int mY = mWallSurfaces[i]->getY();
-    int mLength = mWallSurfaces[i]->getLength();
-    IWallSurface::FaceDirection mFaceDirection = mWallSurfaces[i]->getFaceDirection();
-    int mStartHeight = mWallSurfaces[i]->getStartHeight();
-    int mEndHeight = mWallSurfaces[i]->getEndHeight();
-    int mBottomSlope = mWallSurfaces[i]->getBottomSlope();
-    int mTopSlope = mWallSurfaces[i]->getTopSlope();
-    
+    ISpindizzyWallSurface* mWallSurface = createSubSurface(mWallSurfaces[i]);
     Condition* mCondition = mWallSurfaces[i]->getCondition();
-    ISpindizzyWallSurface* mWallSurface = createSubSurface(mX, mY, mFaceDirection, mLength, mStartHeight, mEndHeight, mBottomSlope, mTopSlope, mCondition);
     if (mCondition == NULL || (mCondition->isAbsolute() && mCondition->isTrue())) {
       cStaticWallSurfaces.push_back(mWallSurface);
     } else {
@@ -385,6 +385,10 @@ bool SpindizzyBlock::isSplit() {
 
 BlockArea* SpindizzyBlock::getCoverage() {
   return new BlockArea(cStartLocation, cEndLocation);
+}
+
+void SpindizzyBlock::destroyCoverage(BlockArea* coverage) {
+  delete coverage;
 }
 
 Condition* SpindizzyBlock::getCondition() {

@@ -209,19 +209,11 @@ class SpindizzyBlock:public ISpindizzyBlock,
   /**
    * Create a new wall face surface according to the specified parameters.
    * 
-   * @param int  X tile location of the wall.
-   * @param int  Y tile location of the wall.
-   * @param IWallSurface::FaceDirection  The direction that the wall faces,
-   *           away from the tile location.
-   * @param int  Length of the wall.
-   * @param int  Bottom height of the wall.
-   * @param int  Top height of the wall.
-   * @param int  Bottom slope step of the wall.
-   * @param int  Top slope step of the wall.
+   * @param IWallSurfaceTemplate*  Specification of the wall.
    * @returns  The wall surface meeting the specification.
    * @throws Something  TODO: If a wall cannot be created to the specification.
    */
-  ISpindizzyWallSurface* createSubSurface(int, int, IWallSurface::FaceDirection, int, int, int, int, int, Condition*);
+  ISpindizzyWallSurface* createSubSurface(IWallSurfaceTemplate*);
 
   /******************************\
    * Implements ISpindizzyBlock *
@@ -252,6 +244,7 @@ class SpindizzyBlock:public ISpindizzyBlock,
   std::vector<IWallSurface*> getWallSurfaces(int, IWallSurface::FaceDirection);
   Condition* getCondition();
   BlockArea* getCoverage();
+  void destroyCoverage(BlockArea*);
   bool isGhost();
   void setDirty();
 };

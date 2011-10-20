@@ -314,6 +314,10 @@ BlockArea* TileSurface::getCoverage() {
   return new BlockArea(mStartLocation, mEndLocation);
 }
 
+void TileSurface::destroyCoverage(BlockArea* coverage) {
+  delete coverage;
+}
+
 bool TileSurface::alligned(int x, int y) {
   return y >= cSouth && y <= cNorth && x >= cWest && x <= cEast;
 }

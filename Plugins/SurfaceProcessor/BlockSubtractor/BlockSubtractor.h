@@ -44,6 +44,8 @@
 class BlockSubtractor:public ISurfaceProcessor {
   private:
  
+  IMap* cCurrentMap;
+  IZone* cCurrentZone;
   BlockSubtractorCache cCache;
   std::map<IZone*, SurfaceDataCache*> cSurfaceDataCaches;
 
@@ -156,6 +158,7 @@ class BlockSubtractor:public ISurfaceProcessor {
   std::vector<IWallSurfaceTemplate*> getWallSurfaces(ISurfaceProvider*, IWallSurface::FaceDirection);
   void destroyTileTemplate(ITileSurfaceTemplate*);
   void destroyWallTemplate(IWallSurfaceTemplate*);
+  void initElementsComplete();
   void setDirty();
   void reinitialise();
 
@@ -164,6 +167,7 @@ class BlockSubtractor:public ISurfaceProcessor {
   \**********************/
   void notifyZoneAction(IZone*);
   void initPlugin(IZone*, unsigned int);
+  void setRuntimeContext(IMap*);
 };
 
 #endif

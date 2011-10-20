@@ -89,6 +89,8 @@ class ISurfaceProcessor:public virtual IPlugin {
   virtual void destroyTileTemplate(ITileSurfaceTemplate*) = 0;
   
   virtual void destroyWallTemplate(IWallSurfaceTemplate*) = 0;
+  
+  virtual void initElementsComplete() = 0;
 };
 
 #endif

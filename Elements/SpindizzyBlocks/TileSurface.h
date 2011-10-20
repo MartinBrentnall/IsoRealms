@@ -98,6 +98,7 @@ class TileSurface:public ISpindizzyTileSurface {
   int getSurfaceCellHeight(int, int);
   int getSurfaceCellElevation(int, int);
   BlockArea* getCoverage();
+  void destroyCoverage(BlockArea*);
   bool alligned(int, int);
 };
 

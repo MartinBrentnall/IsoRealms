@@ -46,11 +46,15 @@ class IWallSurface {
    */
   virtual IWallEdge* getTopEdge(int) = 0;
 
+  virtual void destroyEdge(IWallEdge*) = 0;
+  
   /**
    * 
    * @returns TODO
    */
   virtual BlockArea* getCoverage() = 0;
+
+  virtual void destroyCoverage(BlockArea*) = 0;
 };
 
 #endif

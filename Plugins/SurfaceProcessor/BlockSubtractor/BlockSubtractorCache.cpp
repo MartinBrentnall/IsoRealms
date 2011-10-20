@@ -20,10 +20,12 @@
 
 BlockSubtractorCache::BlockSubtractorCache() {
   cCurrentZoneProviders = NULL;
+  cCurrentZone = NULL;
 }
 
 void BlockSubtractorCache::setZone(IZone* zone) {
   cCurrentZoneProviders = cOrderedSurfaceProvidersByZone[zone];
+  cCurrentZone = zone;
   if (cCurrentZoneProviders == NULL) {
     cCurrentZoneProviders = new std::vector<ISurfaceProvider*>();
     cOrderedSurfaceProvidersByZone[zone] = cCurrentZoneProviders;
@@ -36,6 +38,10 @@ void BlockSubtractorCache::setZone(IZone* zone) {
   BlockArea* mZoneArea = zone->getZoneArea();
   cZoneXOffset = mZoneArea->getWest();
   cZoneYOffset = mZoneArea->getSouth();
+}
+
+void BlockSubtractorCache::setMap(IMap* map) {
+  cCurrentMap = map;
 }
 
 int BlockSubtractorCache::getIndex(std::vector<ISurfaceProvider*>* list, ISurfaceProvider* provider) {
@@ -100,6 +106,7 @@ std::vector<ISurfaceProvider*> BlockSubtractorCache::getSurfaceProviders(bool pr
     }
     mReturnList.clear();
     std::cout << "Warning: Specified provider isn't cached!  Surfaces will not be calculated correctly!" << std::endl;
+    exit(1);
   }
   return mReturnList;
 }
@@ -116,10 +123,19 @@ void BlockSubtractorCache::putTileColumn(std::vector<TileColumn*>* tileColumn, i
   cCurrentSurfaceDataCache->putTileColumn(tileColumn, x - cZoneXOffset, y - cZoneYOffset);
 }
 
-BlockSubtractorCache::~BlockSubtractorCache() {
+void BlockSubtractorCache::clear() {
   for (std::map<IZone*, std::vector<ISurfaceProvider*>*>::iterator i = cOrderedSurfaceProvidersByZone.begin(); i != cOrderedSurfaceProvidersByZone.end(); ++i) {
     delete i->second;
   }
+  cOrderedSurfaceProvidersByZone.clear();
+  for (std::map<IZone*, SurfaceDataCache*>::iterator i = cSurfaceDataCaches.begin(); i != cSurfaceDataCaches.end(); i++) {
+    delete i->second;
+  }
+  cSurfaceDataCaches.clear();
+}
+
+BlockSubtractorCache::~BlockSubtractorCache() {
+  clear();
 }
 
 

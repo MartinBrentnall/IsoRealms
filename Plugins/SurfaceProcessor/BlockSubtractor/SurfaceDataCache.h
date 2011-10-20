@@ -31,6 +31,7 @@ class SurfaceDataCache {
   std::vector<TileColumn*>* getTileColumn(unsigned int, unsigned int);
   void putTileColumn(std::vector<TileColumn*>*, unsigned int, unsigned int);
 
+  ~SurfaceDataCache();
 };
 
 #endif

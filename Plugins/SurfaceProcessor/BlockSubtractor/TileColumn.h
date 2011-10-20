@@ -36,11 +36,13 @@ class TileColumn {
   public:
   TileColumn(Condition*);
     
-  void addTileBlock(TileBlock*, bool, Condition*);
+  bool addTileBlock(TileBlock*, bool, Condition*);
   bool isTileVisible(ISurfaceProvider*, ITileSurface::FaceDirection);
   TileColumn* split(Condition*);
   Condition* getCondition();
   void debug();
+  
+  ~TileColumn();
 };
 
 #endif

@@ -39,4 +39,18 @@ void SurfaceDataCache::putTileColumn(std::vector<TileColumn*>* tileColumn, unsig
   (*mRow)[y] = tileColumn;
 }
 
+SurfaceDataCache::~SurfaceDataCache() {
+  for (unsigned int i = 0; i < cTileColumns.size(); i++) {
+    for (unsigned int j = 0; j < cTileColumns[i]->size(); j++) {
+      if ((*cTileColumns[i])[j] != NULL) {
+        for (unsigned int k = 0; k < (*cTileColumns[i])[j]->size(); k++) {
+          delete (*(*cTileColumns[i])[j])[k];
+        }
+        delete (*cTileColumns[i])[j];
+      }
+    }
+    delete cTileColumns[i];
+  }
+}
+
 

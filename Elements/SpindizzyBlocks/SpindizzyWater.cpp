@@ -108,6 +108,10 @@ BlockArea* SpindizzyWater::getCoverage() {
   return new BlockArea(cStartLocation, cEndLocation);
 }
 
+void SpindizzyWater::destroyCoverage(BlockArea* coverage) {
+  delete coverage;
+}
+
 Condition* SpindizzyWater::getCondition() {
   return NULL; // TODO: Allow dynamic surfaces
 }
