@@ -23,7 +23,6 @@ int Condition::cInstanceCount = 0;
 Condition::Condition(bool aand, bool negated) {
   cAnd = aand;
   cNegated = negated;
-//  std::cout << "Creating condition: " << (++cInstanceCount) << std::endl;
 }
 
 Condition::Condition(const Condition& condition) {
@@ -35,7 +34,6 @@ Condition::Condition(const Condition& condition) {
   }
   cNegated = condition.cNegated;
   cAnd = condition.cAnd;
-//  std::cout << "Copying condition: " << (++cInstanceCount) << std::endl;
 }
 
 Condition::Condition(DOMNodeWrapper* node, std::vector<ConditionElement*> elements) {
@@ -67,13 +65,11 @@ Condition::Condition(DOMNodeWrapper* node, std::vector<ConditionElement*> elemen
         cElements.insert(i->second);
       }
     } else if (mValueAsString == "Condition") {
-      Condition* mCondition = new Condition(mNode, elements); // TODO: Make constructor pass map instead
-      cConditions.push_back(mCondition);
+      cConditions.push_back(new Condition(mNode, elements)); // TODO: Make constructor pass map instead
     } else {
       // TODO: Throw
     }
   }
-//  std::cout << "Loading condition: " << (++cInstanceCount) << std::endl;
 }
 
 void Condition::save(DOMNodeWriter* node) {
@@ -83,19 +79,13 @@ void Condition::save(DOMNodeWriter* node) {
 bool Condition::operator==(const Condition& condition) const {
   Condition mThis(*this);
   Condition mThat(condition);
-/*  mThis.debug("Equality Test:");
-  mThat.debug("With This:");*/
   mThis.simplify();
   mThat.simplify();
-/*  mThis.debug("Simplified Equality Test:");
-  mThat.debug("Simplified With This:");*/
   if (mThis.cElements.size() != mThat.cElements.size() || mThis.cConditions.size() != mThat.cConditions.size() || mThis.cNegated != mThat.cNegated) {
-/*    std::cout << "Basic difference." << std::endl;*/
     return false;
   }
   
   if (mThis.cElements.size() + mThis.cConditions.size() != 1 && mThis.cAnd != mThat.cAnd) {
-/*    std::cout << "Gate or negation difference" << std::endl;*/
     return false;
   }
   // TODO: This test assumes that simplify has sorted the elements, which simplify doesn't do yet.
@@ -103,7 +93,6 @@ bool Condition::operator==(const Condition& condition) const {
   std::set<ConditionElement*>::iterator mThatElement = mThat.cElements.begin();
   while (mThisElement != mThis.cElements.end()) {
     if (**mThisElement != **mThatElement) {
-/*      std::cout << "Element difference." << std::endl;*/
       return false;
     }
     mThisElement++;
@@ -112,11 +101,9 @@ bool Condition::operator==(const Condition& condition) const {
   // TODO: This test assumes that simplify has sorted the conditions, which simplify doesn't do yet.
   for (unsigned int i = 0; i < mThis.cConditions.size(); i++) {
     if (*(mThis.cConditions[i]) != *(mThat.cConditions[i])) {
-/*      std::cout << "Condition difference." << std::endl;*/
       return false;
     }
   }
-/*  std::cout << "Both the same." << std::endl;*/
   return true;
 }
 
@@ -137,50 +124,44 @@ std::set<bool*> Condition::getInputs() {
   return mInputs;
 }
 
-Condition* Condition::split(Condition* condition) {
+std::vector<Condition*> Condition::split(Condition* condition) {
+  std::vector<Condition*> mSplitConditions;
   if (condition == NULL) {
-    return NULL;
+    return mSplitConditions;
   }
-//   std::cout << " ========================== Splitting condition:" << std::endl;
-//   debug("   This: ");
-//   condition->debug("  Split: ");
 
   // Create a condition based on this condition AND the split condition
   Condition* mCondition = new Condition(true);
   mCondition->cConditions.push_back(new Condition(*this));
   mCondition->cConditions.push_back(new Condition(*condition));
-/*  mCondition->debug("Test Condition for Split");*/
   mCondition->simplify();
-/*  mCondition->debug("Simplified Test Condition for Split");*/
   
+  // Create a condition based on this condition AND the negation of the split condition
   Condition* mOpposingCondition = new Condition(true);
   mOpposingCondition->cConditions.push_back(new Condition(*this));
-  Condition* mNegatedCondition = new Condition(*condition);
-  mNegatedCondition->cNegated = !mNegatedCondition->cNegated;
-  mOpposingCondition->cConditions.push_back(mNegatedCondition);
+  mOpposingCondition->cConditions.push_back(condition->negate());
   mOpposingCondition->simplify();
   
   if (mCondition->isAbsolute() || mOpposingCondition->isAbsolute()) {
-/*    std::cout << "Condition cannot be split!" << std::endl;*/
-    return NULL;
+    delete mCondition;
+    delete mOpposingCondition;
+    return mSplitConditions;
   }
-
-  // Modify this condition
-  cConditions = mCondition->cConditions;
-  cElements = mCondition->cElements;
-  cAnd = mCondition->cAnd;
-  
-/*  debug("Result:");
-  mOpposingCondition->debug();*/
-  return mOpposingCondition;
+  mSplitConditions.push_back(mCondition);
+  mSplitConditions.push_back(mOpposingCondition);
+  return mSplitConditions;
 }
 
 void Condition::checkForAbsoluteConditions() {
   for (int i = cConditions.size() - 1; i >= 0; i--) {
     if (cConditions[i]->isAbsolute()) {
       if (cConditions[i]->isTrue() == cAnd) {
+        delete cConditions[i];
         cConditions.erase(cConditions.begin() + i);
       } else {
+        for (unsigned int j = 0; j < cConditions.size(); j++) {
+          delete cConditions[j];
+        }
         cConditions.clear();
         cElements.clear();
         cNegated = !cNegated;
@@ -191,41 +172,36 @@ void Condition::checkForAbsoluteConditions() {
 }
 
 void Condition::raiseCondition(int index) {
-/*  std::cout << "RAISING " << cConditions[index]->cConditions.size() << " CONDITIONS..." << std::endl;
-  debug();*/
   for (unsigned int i = 0; i < cConditions[index]->cConditions.size(); i++) {
-    cConditions.push_back(cConditions[index]->cConditions[i]);
+    cConditions.push_back(new Condition(*(cConditions[index]->cConditions[i])));
   }
-/*  std::cout << "RAISING " << cConditions[index]->cElements.size() << " CONDITIONS..." << std::endl;
-  debug();*/
   for (std::set<ConditionElement*>::iterator i = cConditions[index]->cElements.begin(); i != cConditions[index]->cElements.end(); i++) {
     if (cConditions[index]->cNegated) {
-      ConditionElement* mNegatedElement = (*i)->getNegatedElement();
-      cElements.insert(mNegatedElement);
+      cElements.insert((*i)->getNegatedElement());
     } else {
       cElements.insert(*i);
     }
   }
-/*  std::cout << "SIMPLIFY STAGE 3" << std::endl;
-  debug();*/
+  delete cConditions[index];
   cConditions.erase(cConditions.begin() + index);
-/*  std::cout << "SIMPLIFY STAGE 4" << std::endl;
-  debug();*/
 }
 
 void Condition::raiseConditions() {
   for (int i = cConditions.size() - 1; i >= 0; i--) {
     cConditions[i]->raiseConditions();
-    if ((cConditions[i]->cConditions.empty() && cConditions[i]->cElements.size() == 1) ||
-        (cConditions[i]->cAnd == cAnd && cConditions[i]->cNegated == cNegated)) {
+    if ((cConditions[i]->cConditions.empty() && cConditions[i]->cElements.size() == 1) || (cConditions[i]->cAnd == cAnd && cConditions[i]->cNegated == cNegated)) {
       raiseCondition(i);
     } 
   }
   
   if (cConditions.size() == 1 && cElements.empty()) {
-    cElements = cConditions[0]->cElements;
-    cAnd = cConditions[0]->cAnd;
-    cConditions = cConditions[0]->cConditions;
+    Condition* mConditionToRaise = cConditions[0];
+    cElements   = mConditionToRaise->cElements;
+    cAnd        = mConditionToRaise->cAnd;
+    cConditions = mConditionToRaise->cConditions;
+    // Clear conditions before deletion so the conditions we've raised don't get destroyed.
+    mConditionToRaise->cConditions.clear();
+    delete mConditionToRaise;
   }
 }
 
@@ -240,6 +216,9 @@ void Condition::checkForConflictingElements() {
     std::set<bool*>& mOtherSet   = (*i)->isNegated() ? mPositiveElements : mNegativeElements;
     if (mOtherSet.find(mAddress) != mOtherSet.end()) {
       cElements.clear();
+      for (int j = cConditions.size() - 1; j >= 0; j--) {
+        delete cConditions[j];
+      }
       cConditions.clear();
       cNegated = !cNegated;
       return;
@@ -309,38 +288,18 @@ void Condition::removeDuplicates() {
 }
 
 void Condition::simplify(int depth) {
-//   std::string mIndent;
-//   for (unsigned int i = 0; i < depth; i++) {
-//     mIndent += "        ";
-//   }
-
-/*  if (depth == 0) {*/
-/*    std::cout << std::endl;
-    std::cout << "            SIMPLIFY DEBUG ==================================================" << std::endl;*/
-/*  }*/
-//   debug(mIndent + "Condition to simplify");
   convertNegatedConditions();
-//   debug(mIndent + "Converted negative conditions");
   for (unsigned int i = 0; i < cConditions.size(); i++) {
     cConditions[i]->simplify(depth + 1);
   }
-//   debug(mIndent + "Performed recursive simplify");
   checkForAbsoluteConditions();
-//   debug(mIndent + "Checked for absolute conditions");
   raiseConditions();
-//   debug(mIndent + "Raised conditions");
   checkForConflictingElements();
-//   debug(mIndent + "Checked conflicting elements");
   checkForConflictingConditions();
-//   debug(mIndent + "Checked conflicting conditions");
   raiseConditions();
-//   debug(mIndent + "Raised conditions again");
   checkForConflictingConditions();
-//  debug(mIndent + "Checked conflicting conditions again");
   checkForAbsoluteConditions();
-  
   removeDuplicates();
-//  debug(mIndent + "Final result");
 }
 
 bool Condition::isAbsolute() const {
@@ -361,50 +320,39 @@ bool Condition::isTrue() {
   return cAnd != cNegated;
 }
 
-void Condition::compose(Condition* condition) {
-//   std::cout << " ========================== Composing conditions:" << std::endl;
-//   debug();
-//   condition->debug();
-
+Condition* Condition::compose(Condition* condition) {
+  if (condition == NULL) {
+    return cAnd ? new Condition(*this) : new Condition(true);
+  }
+  Condition* mNewCondition = new Condition(*this);
   if (cAnd) {
     Condition* mThisCondition = new Condition(*this);
-    cConditions.clear();
-    cElements.clear();
-    cAnd = false;
-    cNegated = false;
-    cConditions.push_back(mThisCondition);
+    mNewCondition->cConditions.clear();
+    mNewCondition->cElements.clear();
+    mNewCondition->cAnd = false;
+    mNewCondition->cNegated = false;
+    mNewCondition->cConditions.push_back(mThisCondition);
   }
-  cConditions.push_back(condition);
-  
-/*  std::cout << "Result:" << std::endl;
-  debug();*/
-  
-  simplify();
-/*  std::cout << "Simplified:" << std::endl;
-  debug();*/
+  mNewCondition->cConditions.push_back(new Condition(*condition));
+  mNewCondition->simplify();
+  return mNewCondition;
 }
 
 bool Condition::isCompatibleWith(Condition* condition) {
   if (condition == NULL) {
-    return !isAbsolute() || isTrue();
+    return true;
   }
-/*  debug("Is this:");
-  condition->debug("Compatible with this?");*/
-  Condition mThisCondition(*this);
-  Condition mTestCondition(*condition);
   Condition mBothConditions(true);
-  mBothConditions.cConditions.push_back(&mThisCondition);
-  mBothConditions.cConditions.push_back(&mTestCondition);
-/*  mBothConditions.debug("Both conditions");*/
+  mBothConditions.cConditions.push_back(new Condition(*this));
+  mBothConditions.cConditions.push_back(new Condition(*condition));
   mBothConditions.simplify();
-/*  mBothConditions.debug("Both conditions simplified");
-  std::cout << "Can the condition vary? " << !mBothConditions.isAbsolute() << std::endl;
-  std::cout << "Are both conditions true? " << mBothConditions.isTrue() << std::endl;*/
   return !mBothConditions.isAbsolute() || mBothConditions.isTrue();
 }
 
-void Condition::negate() {
-  cNegated = !cNegated;
+Condition* Condition::negate() {
+  Condition* mNegatedCondition = new Condition(*this);
+  mNegatedCondition->cNegated = !cNegated;
+  return mNegatedCondition;
 }
 
 void Condition::debug(const std::string& message) const {
@@ -444,5 +392,7 @@ void Condition::debug(int depth) const {
 }
 
 Condition::~Condition() {
-//  std::cout << "Destroying condition: " << (--cInstanceCount) << std::endl;
+  for (unsigned int i = 0; i < cConditions.size(); i++) {
+    delete cConditions[i];
+  }
 }

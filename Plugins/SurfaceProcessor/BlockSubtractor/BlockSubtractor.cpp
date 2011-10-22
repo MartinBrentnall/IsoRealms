@@ -76,17 +76,13 @@ IWallSurface* BlockSubtractor::findSurfaceAt(std::vector<IWallSurface*> surfaces
 Condition* BlockSubtractor::getSurfaceTileCondition(ISurfaceProvider* provider, int x, int y, ITileSurface::FaceDirection facing) {
   std::vector<TileColumn*>* mCachedTileColumn = cCache.getTileColumn(x, y);
   if (mCachedTileColumn == NULL) {
-  /*    std::cout << "STARTING!" << std::endl;*/
     std::vector<TileColumn*> mPossibleTileColumns;
-    mPossibleTileColumns.push_back(new TileColumn(new Condition(true)));
+    mPossibleTileColumns.push_back(new TileColumn(NULL));
     std::vector<ISurfaceProvider*> mSurfaceProviders = cCache.getSurfaceProviders();
     for (unsigned int i = 0; i < mSurfaceProviders.size(); i++) {
       std::vector<ITileSurface*> mTopSurfaces    = mSurfaceProviders[i]->getTileSurfaces(ITileSurface::UP);
       std::vector<ITileSurface*> mBottomSurfaces = mSurfaceProviders[i]->getTileSurfaces(ITileSurface::DOWN);
       Condition* mCondition                      = mSurfaceProviders[i]->getCondition();
-      if (mCondition != NULL) {
-        mCondition = new Condition(*mCondition);
-      }
       bool mGhost                                = mSurfaceProviders[i]->isGhost();
       ITileSurface* mTopSurface = getSurfaceAt(mTopSurfaces, x, y);
       if (mTopSurface != NULL) {
@@ -113,21 +109,21 @@ Condition* BlockSubtractor::getSurfaceTileCondition(ISurfaceProvider* provider, 
         bool mTileBlockUsed = false;
         for (unsigned int j = 0; j < mPossibleTileColumns.size(); j++) {
           Condition* mColumnCondition = mPossibleTileColumns[j]->getCondition();
-          if (mCondition == NULL || mColumnCondition->isCompatibleWith(mCondition)) {
+          bool mIsCompatible = mColumnCondition != NULL ? mColumnCondition->isCompatibleWith(mCondition)
+                             : mCondition != NULL       ? !mCondition->isAbsolute() || mCondition->isTrue()
+                             :                            true;
+          if (mIsCompatible) {
             if (mPossibleTileColumns[j]->addTileBlock(mTileBlock, mGhost, mCondition)) {
               mTileBlockUsed = true;
             }
+          }
+          if (mColumnCondition != NULL) {
+            delete mColumnCondition;
           }
         }
         if (!mTileBlockUsed) {
           delete mTileBlock;
         }
-
-  /*      std::cout << std::endl;
-        std::cout << "Possibilities after " << i << " providers --------------------" << std::endl;
-        for (unsigned int j = 0; j < mPossibleTileColumns.size(); j++) {
-          mPossibleTileColumns[j]->debug();
-        }*/
       }
     }
     mCachedTileColumn = new std::vector<TileColumn*>(mPossibleTileColumns);
@@ -137,11 +133,21 @@ Condition* BlockSubtractor::getSurfaceTileCondition(ISurfaceProvider* provider, 
   for (unsigned int i = 0; i < mCachedTileColumn->size(); i++) {
     if ((*mCachedTileColumn)[i]->isTileVisible(provider, facing)) {
       Condition* mEnabledCondition = (*mCachedTileColumn)[i]->getCondition();
-      mComposedCondition->compose(mEnabledCondition);
+      if (mEnabledCondition != NULL) {
+        Condition* mModifiedCondition = mComposedCondition->compose(mEnabledCondition);
+        delete mEnabledCondition;
+        delete mComposedCondition;
+        mComposedCondition = mModifiedCondition;
+      } else {
+        delete mComposedCondition;
+        mComposedCondition = new Condition(true);
+      }
     }
   }
-  
-//   std::cout << "ENDING!" << std::endl;
+  if (mComposedCondition->isAbsolute() && mComposedCondition->isTrue()) {
+    delete mComposedCondition;
+    mComposedCondition = NULL;
+  }
   return mComposedCondition;
 }
 
@@ -154,8 +160,15 @@ bool BlockSubtractor::inSurface(std::vector<ITileSurfaceTemplate*> surfaces, int
   return false;
 }
 
+bool BlockSubtractor::safeEquals(Condition* a, Condition* b) {
+  return a == NULL ? b == NULL
+       : b == NULL ? false
+       : *a == *b;
+}
+
 int BlockSubtractor::getNorth(ISurfaceProvider* provider, std::vector<ITileSurfaceTemplate*>& calculatedSurfaces, int west, int east, int south, ITileSurface::FaceDirection faceDirection) {
   Condition* mSurfaceCondition = getSurfaceTileCondition(provider, west, south, faceDirection);
+
   std::vector<ITileSurface*> mRawSurfaces = provider->getTileSurfaces(faceDirection);
   ITileSurface* mSurface = getSurfaceAt(mRawSurfaces, west, south);
   
@@ -164,16 +177,26 @@ int BlockSubtractor::getNorth(ISurfaceProvider* provider, std::vector<ITileSurfa
     for (int x = west; x <= east; x++) {
       Condition* mTileCondition = getSurfaceTileCondition(provider, x, y, faceDirection);
       ITileSurface* mTileSurface = getSurfaceAt(mRawSurfaces, x, y);
-      bool mConditionSame = *mSurfaceCondition == *mTileCondition;
+      bool mConditionSame = safeEquals(mSurfaceCondition, mTileCondition);
+      if (mTileCondition != NULL) {
+        delete mTileCondition;
+      }
       bool mSurfaceSame   = mTileSurface == mSurface;
       bool mUsedTile      = inSurface(calculatedSurfaces, x, y); // TODO: Might be able to remove this test
       if (!mConditionSame || !mSurfaceSame || mUsedTile) {
+        mSurface->destroyCoverage(mSurfaceCoverage);
+        if (mSurfaceCondition != NULL) {
+          delete mSurfaceCondition;
+        }
         return y - 1;
       }
     }
   }
   int mNorth = mSurfaceCoverage->getNorth();
   mSurface->destroyCoverage(mSurfaceCoverage);
+  if (mSurfaceCondition != NULL) {
+    delete mSurfaceCondition;
+  }
   return mNorth;
 }
 
@@ -186,15 +209,25 @@ int BlockSubtractor::getEast(ISurfaceProvider* provider, std::vector<ITileSurfac
   for (int i = x + 1; i <= mBlockCoverage->getEast(); i++) {
     Condition* mTileCondition = getSurfaceTileCondition(provider, i, y, faceDirection);
     ITileSurface* mTileSurface = getSurfaceAt(mRawSurfaces, i, y);
-    bool mConditionSame = *mSurfaceCondition == *mTileCondition;
+    bool mConditionSame = safeEquals(mSurfaceCondition, mTileCondition);
+    if (mTileCondition != NULL) {
+      delete mTileCondition;
+    }
     bool mSurfaceSame   = mTileSurface == mSurface;
     bool mUsedTile      = inSurface(calculatedSurfaces, i, y);
     if (!mConditionSame || !mSurfaceSame || mUsedTile) {
+      provider->destroyCoverage(mBlockCoverage);
+      if (mSurfaceCondition != NULL) {
+        delete mSurfaceCondition;
+      }
       return i - 1;
     }
   }
   int mEast = mBlockCoverage->getEast();
   provider->destroyCoverage(mBlockCoverage);
+  if (mSurfaceCondition != NULL) {
+    delete mSurfaceCondition;
+  }
   return mEast;
 }
 
@@ -204,23 +237,17 @@ std::vector<ITileSurfaceTemplate*> BlockSubtractor::getTileSurfaces(ISurfaceProv
   BlockArea* mBlockCoverage = provider->getCoverage();
   for (int y = mBlockCoverage->getSouth(); y <= mBlockCoverage->getNorth(); y++) {
     for (int x = mBlockCoverage->getWest(); x <= mBlockCoverage->getEast(); x++) {
-/*      std::cout << std::endl;
-      std::cout << "FINDING CONDITION FOR PROVIDER: =======================================================" << std::endl;*/
       Condition* mSurfaceCondition = getSurfaceTileCondition(provider, x, y, faceDirection);
       bool mTileOccupied = inSurface(mCalculatedSurfaces, x, y);
-      bool mTileNeeded = !mSurfaceCondition->isAbsolute() || mSurfaceCondition->isTrue();
+      bool mTileNeeded = mSurfaceCondition == NULL || !mSurfaceCondition->isAbsolute() || mSurfaceCondition->isTrue();
 
       if (!mTileOccupied && mTileNeeded) {
         int mEast = getEast(provider, mCalculatedSurfaces, x, y, faceDirection);
         int mNorth = getNorth(provider, mCalculatedSurfaces, x, mEast, y, faceDirection); 
-/*        std::cout << std::endl;
-        std::cout << "CREATING SURFACE WITH CONDITION: =======================================================" << std::endl;
-        mSurfaceCondition->debug();*/
-        if (mSurfaceCondition->isAbsolute() && mSurfaceCondition->isTrue()) {
-          mSurfaceCondition = NULL;
-        }
         ITileSurfaceTemplate* mTileSurfaceTemplate = new TileSurfaceTemplate(mNorth, mEast, y, x, mSurfaceCondition);
         mCalculatedSurfaces.push_back(mTileSurfaceTemplate);
+      } else if (mSurfaceCondition != NULL) {
+        delete mSurfaceCondition;
       }
     }
   }
@@ -242,9 +269,6 @@ WallColumnPossibility* BlockSubtractor::getRawWallColumn(ISurfaceProvider* provi
     IWallEdge* mTopEdge = mWallSurface->getTopEdge(mCellLocation);
     IWallEdge* mBottomEdge = mWallSurface->getBottomEdge(mCellLocation);
     Condition* mCondition = provider->getCondition();
-    if (mCondition != NULL) {
-      mCondition = new Condition(*mCondition);
-    }
     WallColumn* mWallColumn = new WallColumn(mBottomEdge->getStartHeight(), mBottomEdge->getEndHeight(), mTopEdge->getStartHeight(), mTopEdge->getEndHeight());
     WallColumnPossibility* mPossibility = new WallColumnPossibility(mWallColumn, mCondition);
     mWallSurface->destroyEdge(mTopEdge);
@@ -256,8 +280,6 @@ WallColumnPossibility* BlockSubtractor::getRawWallColumn(ISurfaceProvider* provi
 }
 
 std::vector<WallColumnPossibility*> BlockSubtractor::getPhysicalWallColumn(ISurfaceProvider* provider, int x, int y, IWallSurface::FaceDirection facing) {
-/*  std::cout << std::endl;
-  std::cout << "GETTING PHYSICAL WALL COLUMN FOR " << provider << " ==================================" << std::endl;*/
   WallColumnPossibility* mRawWallColumn = getRawWallColumn(provider, x, y, facing);
   std::vector<WallColumnPossibility*> mPhysicalColumns;
   if (mRawWallColumn == NULL || mRawWallColumn->isSubtraction()) {
@@ -265,10 +287,6 @@ std::vector<WallColumnPossibility*> BlockSubtractor::getPhysicalWallColumn(ISurf
     return mPhysicalColumns;
   }
   mPhysicalColumns.push_back(mRawWallColumn);
-  Condition* mWallCondition = provider->getCondition();
-  if (mWallCondition != NULL) {
-    mWallCondition = new Condition(*mWallCondition);
-  }
   std::vector<ISurfaceProvider*> mSurfaceProviders = cCache.getSurfaceProviders(true, provider);
   for (unsigned int i = 0; i < mSurfaceProviders.size(); i++) {
 /*    std::cout << "Applying surface provide " << i << std::endl;*/
@@ -278,9 +296,6 @@ std::vector<WallColumnPossibility*> BlockSubtractor::getPhysicalWallColumn(ISurf
       if (!mWallColumn->empty()) {
         mWallColumn->convertToAddition();
         Condition* mCondition = mSurfaceProviders[i]->getCondition();
-        if (mCondition != NULL) {
-          mCondition = new Condition(*mCondition);
-        }
         std::vector<WallColumnPossibility*> mSplitColumns;
         for (unsigned int j = 0; j < mPhysicalColumns.size(); j++) {
           WallColumnPossibility* mNewPossibility = mPhysicalColumns[j]->split(mCondition);
@@ -294,15 +309,9 @@ std::vector<WallColumnPossibility*> BlockSubtractor::getPhysicalWallColumn(ISurf
 
         for (unsigned int j = 0; j < mPhysicalColumns.size(); j++) {
           if (mPhysicalColumns[j]->isCompatibleWith(mCondition)) {
-//            std::cout << "It's compatible with " << j << "!" << std::endl;
             mPhysicalColumns[j]->applyOverlapping(mWallColumn);
           }
         }
-
-/*        std::cout << "New Statuses: -----------------------------------------------------" << std::endl;
-        for (unsigned int j = 0; j < mPhysicalColumns.size(); j++) {
-          mPhysicalColumns[j]->debug();
-        }*/
       }
       delete mWallColumn;
     }
@@ -314,15 +323,12 @@ std::vector<WallColumnPossibility*> BlockSubtractor::getPhysicalWallColumn(ISurf
   ITileSurface* mTileSurface = getSurfaceAt(mTileSurfaces, x, y);
   int mHeight = mTileSurface->getSurfaceCellHeight(x, y);
   Condition* mCondition = getSurfaceTileCondition(provider, x, y, ITileSurface::UP);
-/*  std::cout << "SHAVING WALLS: Tile is there when:" << std::endl;
-  mCondition->debug();*/
   for (unsigned int i = 0; i < mPhysicalColumns.size(); i++) {
     mPhysicalColumns[i]->shaveTop(mHeight, mCondition);
   }
-/*  std::cout << "New Statuses: -----------------------------------------------------" << std::endl;
-  for (unsigned int j = 0; j < mPhysicalColumns.size(); j++) {
-    mPhysicalColumns[j]->debug();
-  }*/
+  if (mCondition != NULL) {
+    delete mCondition;
+  }
   return mPhysicalColumns;
 }
 
@@ -353,9 +359,6 @@ std::vector<WallColumnPossibility*> BlockSubtractor::getPhysicalWallMasks(int x,
       for (unsigned int k = 0; k < mOpposingPossibilities.size(); k++) {
         Condition* mCondition = mOpposingPossibilities[k]->getCondition();
         std::vector<WallColumnPossibility*> mSplitColumns;
-        if (mCondition != NULL) {
-          mCondition = new Condition(*mCondition);
-        }
         for (unsigned int j = 0; j < mOpposingMask.size(); j++) {
           WallColumnPossibility* mNewPossibility = mOpposingMask[j]->split(mCondition);
           if (mNewPossibility != NULL) {
@@ -369,6 +372,9 @@ std::vector<WallColumnPossibility*> BlockSubtractor::getPhysicalWallMasks(int x,
           if (mOpposingMask[j]->isCompatibleWith(mCondition)) {
             mOpposingMask[j]->unite(mOpposingPossibilities[k]);
           }
+        }
+        if (mCondition != NULL) {
+          delete mCondition;
         }
         delete mOpposingPossibilities[k];
       }
@@ -396,22 +402,8 @@ std::vector<WallColumnPossibility*> BlockSubtractor::getOptimisedWallColumn(ISur
   facing = getOppositeOf(facing);
   std::vector<WallColumnPossibility*> mWallMasks = getPhysicalWallMasks(x, y, facing);
   
-/*  std::cout << "Before masks: -----------------------------------------------------" << std::endl;
-  for (unsigned int j = 0; j < mWallColumns.size(); j++) {
-    mWallColumns[j]->debug();
-  }*/
-/*  std::cout << "There are " << mWallMasks.size() << " masks at " << x << "," << y << "..." << std::endl;*/
-
-/*  std::cout << "The masks: -----------------------------------------------------" << std::endl;
-  for (unsigned int j = 0; j < mWallMasks.size(); j++) {
-    mWallMasks[j]->debug();
-  }*/
-
   for (unsigned int i = 0; i < mWallMasks.size(); i++) {
     Condition* mMaskCondition = mWallMasks[i]->getCondition();
-    if (mMaskCondition != NULL) {
-      mMaskCondition = new Condition(*mMaskCondition);
-    }
     std::vector<WallColumnPossibility*> mSplitColumns;
     for (unsigned int j = 0; j < mWallColumns.size(); j++) {
       WallColumnPossibility* mNewPossibility = mWallColumns[j]->split(mMaskCondition);
@@ -428,13 +420,11 @@ std::vector<WallColumnPossibility*> BlockSubtractor::getOptimisedWallColumn(ISur
         mWallColumns[j]->removeHiddenSections(mWallMasks[i]);
       }
     }
+    if (mMaskCondition != NULL) {
+      delete mMaskCondition;
+    }
     delete mWallMasks[i];
   }
-  
-/*  std::cout << "After masks: -----------------------------------------------------" << std::endl;
-  for (unsigned int j = 0; j < mWallColumns.size(); j++) {
-    mWallColumns[j]->debug();
-  }*/
   return mWallColumns;
 }
 
@@ -454,9 +444,6 @@ std::vector<WallColumnPossibility*> BlockSubtractor::getVisibleWallColumn(ISurfa
     if (!mWallMask->empty()) {
       std::vector<WallColumnPossibility*> mSplitColumns;
       Condition* mCondition = mWallMask->getCondition();
-      if (mCondition != NULL) {
-        mCondition = new Condition(*mCondition);
-      }
       for (unsigned int j = 0; j < mWallColumns.size(); j++) {
         WallColumnPossibility* mNewPossibility = mWallColumns[j]->split(mCondition);
         if (mNewPossibility != NULL) {
@@ -467,13 +454,14 @@ std::vector<WallColumnPossibility*> BlockSubtractor::getVisibleWallColumn(ISurfa
         mWallColumns.push_back(mSplitColumns[j]);
       }
 
-//       std::cout << "    Applying to the wall columns!" << std::endl;
       for (unsigned int j = 0; j < mWallColumns.size(); j++) {
         if (mWallColumns[j]->isCompatibleWith(mCondition)) {
           mWallColumns[j]->applyOverlapping(mWallMask);
         }
       }
-//       std::cout << "    Done!" << std::endl;
+      if (mCondition != NULL) {
+        delete mCondition;
+      }
     }
     delete mWallMasks[i];
   }
@@ -512,7 +500,6 @@ std::vector<IWallSurfaceTemplate*> BlockSubtractor::getWallSurfaces(ISurfaceProv
 //       std::cout << "DOING " << mX << "," << mY << " ==================================================================" << std::endl;
 //      std::vector<WallColumnPossibility*> mWallColumns = getVisibleWallColumn(provider, mX, mY, facing);
       std::vector<WallColumnPossibility*> mWallColumns = getOptimisedWallColumn(provider, mX, mY, facing);
-
       for (unsigned int j = 0; j < mWallColumns.size(); j++) {
         std::vector<WallColumn*> mSections = mWallColumns[j]->getSections();
         Condition* mColumnCondition = mWallColumns[j]->getCondition();
@@ -530,11 +517,12 @@ std::vector<IWallSurfaceTemplate*> BlockSubtractor::getWallSurfaces(ISurfaceProv
           }
 
           if (!mTileUsed) {
-/*            std::cout << "Column condition:" << std::endl;
-            mColumnCondition->debug();*/
             WallConstructionData* mNewConstructionData = new WallConstructionData(mX, mY, mSections[i], mColumnCondition, facing);
             mExtendedConstructionData->push_back(mNewConstructionData);
           }
+        }
+        if (mColumnCondition != NULL) {
+          delete mColumnCondition;
         }
         delete mWallColumns[j];
       }

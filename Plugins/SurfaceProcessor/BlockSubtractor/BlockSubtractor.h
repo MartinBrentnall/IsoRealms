@@ -147,6 +147,9 @@ class BlockSubtractor:public ISurfaceProcessor {
   int getEast(ISurfaceProvider*, std::vector<ITileSurfaceTemplate*>&, int, int, ITileSurface::FaceDirection);
   int getNorth(ISurfaceProvider*, std::vector<ITileSurfaceTemplate*>&, int, int, int, ITileSurface::FaceDirection);
   
+  // TODO: Maybe this should be moved to Condition class as static function
+  bool safeEquals(Condition* a, Condition* b);
+
   public:
 
   /********************************\

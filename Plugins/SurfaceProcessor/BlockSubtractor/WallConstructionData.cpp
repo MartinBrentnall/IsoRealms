@@ -26,7 +26,7 @@ WallConstructionData::WallConstructionData(int x, int y, WallColumn* wallColumn,
   cBottomHeightSlope = wallColumn->getBottomHeightEnd() - cBottomHeightStart;
   cTopHeightSlope    = wallColumn->getTopHeightEnd()    - cTopHeightStart;
   cLength = 1;
-  cCondition = condition;
+  cCondition = condition != NULL ? new Condition(*condition) : NULL;
   cFacing = facing;
 }
 

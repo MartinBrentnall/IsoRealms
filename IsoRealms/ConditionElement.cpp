@@ -22,18 +22,19 @@ ConditionElement::ConditionElement(const std::string& name, bool* input, bool ne
   cInputName = name;
   cInput = input;
   cNegated = negated;
+  cNegatedVersion = new ConditionElement(*this);
+  cNegatedVersion->cNegated = !cNegated;
+  cNegatedVersion->cNegatedVersion = this;
 }
 
 ConditionElement::ConditionElement(const ConditionElement& conditionElement) {
   cInputName = conditionElement.cInputName;
   cInput = conditionElement.cInput;
-  cNegated = conditionElement.cNegated; 
+  cNegated = conditionElement.cNegated;
 }
 
 ConditionElement* ConditionElement::getNegatedElement() {
-  ConditionElement* mNegatedElement = new ConditionElement(*this);
-  mNegatedElement->cNegated = !cNegated;
-  return mNegatedElement;
+  return cNegatedVersion;
 }
 
 bool ConditionElement::operator==(const ConditionElement& conditionElement) const {

@@ -27,6 +27,7 @@ class ConditionElement {
   std::string cInputName;
   bool* cInput;
   bool cNegated;
+  ConditionElement* cNegatedVersion;
 
   ConditionElement(const ConditionElement&);
 

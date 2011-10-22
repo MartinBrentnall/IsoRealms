@@ -31,7 +31,7 @@ SpindizzyWater::SpindizzyWater(ISpindizzyBlockFactory* elementFactory, BlockLoca
   cEndLocation = BlockLocation(endLocation->x > startLocation->x ? endLocation->x : startLocation->x,
                                endLocation->y > startLocation->y ? endLocation->y : startLocation->y,
                               (endLocation->z <= startLocation->z ? endLocation->z : startLocation->z) - 1);
-  cCondition = new Condition(true);
+  cCondition = NULL;
 }
 
 bool SpindizzyWater::isGhost() {

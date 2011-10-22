@@ -32,6 +32,7 @@ TileColumn::TileColumn(TileColumn* tileColumn, Condition* condition) {
   }
 }
 
+// TODO: Why is condition a parameter here when it's never used?
 bool TileColumn::addTileBlock(TileBlock* tileBlock, bool ghost, Condition* condition) {
   std::vector<unsigned int> mToRemove;
   int mTileBlockIndex = -1;
@@ -113,26 +114,31 @@ bool TileColumn::isTileVisible(ISurfaceProvider* surfaceProvider, ITileSurface::
 
 TileColumn* TileColumn::split(Condition* condition) {
   if (cCondition != NULL) {
-    Condition* mSplitCondition = cCondition->split(condition);
-    if (mSplitCondition != NULL) {
-      return new TileColumn(this, mSplitCondition);
+    std::vector<Condition*> mSplitCondition = cCondition->split(condition);
+    if (mSplitCondition.size() == 2) {
+      delete cCondition;
+      cCondition = mSplitCondition[0];
+      return new TileColumn(this, mSplitCondition[1]);
     }
   } else if (condition != NULL) {
-    cCondition = condition;
-    Condition* mNegatedCondition = new Condition(*condition);
-    mNegatedCondition->negate();
+    cCondition = new Condition(*condition);
+    Condition* mNegatedCondition = cCondition->negate();
     return new TileColumn(this, mNegatedCondition);
   }
   return NULL;
 }
 
 Condition* TileColumn::getCondition() {
-  return cCondition;
+  return cCondition != NULL ? new Condition(*cCondition) : NULL;;
 }
 
 void TileColumn::debug() {
   std::cout << "Column has " << cTileBlocks.size() << " blocks for: ";
-  cCondition->debug();
+  if (cCondition != NULL) {
+    cCondition->debug();
+  } else {
+    std::cout << "Unconditional" << std::endl;
+  }
   for (unsigned int i = 0; i < cTileBlocks.size(); i++) {
     std::cout << "   Block " << i << ": ";
     cTileBlocks[i]->debug();
@@ -146,6 +152,7 @@ TileColumn::~TileColumn() {
   for (unsigned int i = 0; i < cGhostTileBlocks.size(); i++) {
     delete cGhostTileBlocks[i];
   }
+  delete cCondition;
 }
 
 

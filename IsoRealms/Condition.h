@@ -36,6 +36,7 @@ class Condition {
   std::vector<Condition*> cConditions;
   std::set<ConditionElement*> cElements;
 
+  // Simplification methods
   /**
    * Convert all negated conditions into positive conditions.
    * This is the first step in the simplification process.  It ensures that we
@@ -82,24 +83,47 @@ class Condition {
   void removeDuplicates();
 
   public:
+    
+  // Constructors
   Condition(bool, bool = false);
   Condition(const Condition&);
   Condition(DOMNodeWrapper*, std::vector<ConditionElement*>);
     
+  // Modifications
+  /**
+   * TODO
+   */
+  std::vector<Condition*> split(Condition*);
+  
+  /**
+   * Add the specified condition to this condition using an OR gate.
+   * 
+   * @param Condition*  The condition to add.
+   */
+  Condition* compose(Condition*);
+  
+  /**
+   * TODO
+   */
+  Condition* negate();
+  
+  /**
+   * TODO
+   */
+  void simplify(int = 0);
+
+  // Tests
   std::set<bool*> getInputs();
-  Condition* split(Condition*);
-  void compose(Condition*);
-  void negate();
   bool isAbsolute() const;
   bool isTrue();
-  void save(DOMNodeWriter*);
-  
   bool isCompatibleWith(Condition*);
-  
-  void simplify(int = 0);
-  
   bool operator==(const Condition&) const;
   bool operator!=(const Condition&) const;
+
+  // Persistence
+  void save(DOMNodeWriter*);
+  
+  
 
   void debug(const std::string&) const;
   void debug(int = 0) const;

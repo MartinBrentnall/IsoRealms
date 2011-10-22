@@ -19,16 +19,16 @@
 #include "WallColumnPossibility.h"
 
 WallColumnPossibility::WallColumnPossibility() {
-  cCondition = new Condition(true);
+  cCondition = NULL;
 }
 
 WallColumnPossibility::WallColumnPossibility(WallColumn* wallColumn, Condition* condition) {
-  cCondition = condition;
+  cCondition = condition != NULL ? new Condition(*condition) : NULL;
   cSegments.push_back(new WallColumn(*wallColumn));
 }
 
 WallColumnPossibility::WallColumnPossibility(WallColumnPossibility* wallColumn, Condition* condition) {
-  cCondition = condition;
+  cCondition = condition != NULL ? new Condition(*condition) : NULL;
   for (unsigned int i = 0; i < wallColumn->cSegments.size(); i++) {
     cSegments.push_back(new WallColumn(*wallColumn->cSegments[i]));
   }
@@ -36,29 +36,24 @@ WallColumnPossibility::WallColumnPossibility(WallColumnPossibility* wallColumn, 
 
 WallColumnPossibility* WallColumnPossibility::split(Condition* condition) {
   if (cCondition != NULL) {
-    Condition* mSplitCondition = cCondition->split(condition);
-    if (mSplitCondition != NULL) {
-      return new WallColumnPossibility(this, mSplitCondition);
+    std::vector<Condition*> mSplitCondition = cCondition->split(condition);
+    if (mSplitCondition.size() == 2) {
+      delete cCondition;
+      cCondition = mSplitCondition[0];
+      return new WallColumnPossibility(this, mSplitCondition[1]);
     }
   } else if (condition != NULL) {
-    cCondition = new Condition(true);
-    Condition* mSplitCondition = cCondition->split(condition);
-    if (mSplitCondition != NULL) {
-      return new WallColumnPossibility(this, mSplitCondition);
-    }
-/*    cCondition = condition;
-    Condition* mNegatedCondition = new Condition(*condition);
-    mNegatedCondition->negate();
-    return new WallColumnPossibility(this, mNegatedCondition);*/
+    cCondition = new Condition(*condition);
+    Condition* mNegatedCondition = cCondition->negate();
+    return new WallColumnPossibility(this, mNegatedCondition);
   }
   return NULL;
 }
 
 bool WallColumnPossibility::isCompatibleWith(Condition* condition) {
-  if (cCondition == NULL && condition == NULL) {
-    return true;
-  }
-  return cCondition != NULL && cCondition->isCompatibleWith(condition);
+  return cCondition != NULL ? cCondition->isCompatibleWith(condition)
+       : condition != NULL  ? !condition->isAbsolute() || condition->isTrue()
+       :                      true;
 }
 
 std::vector<WallColumn*> WallColumnPossibility::getSections() {
@@ -152,7 +147,7 @@ void WallColumnPossibility::unite(WallColumnPossibility* wallColumn) {
 }
 
 Condition* WallColumnPossibility::getCondition() {
-  return cCondition;
+  return cCondition != NULL ? new Condition(*cCondition) : NULL;
 }
 
 void WallColumnPossibility::shaveTop(int height, Condition* condition) {
@@ -195,7 +190,7 @@ WallColumnPossibility::~WallColumnPossibility() {
     delete cSegments[i];
   }
   cSegments.clear();
-//  delete cCondition;
+  delete cCondition;
 }
 
 

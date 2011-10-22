@@ -40,7 +40,7 @@ void HUDRoundedRectangle::render(float xZoom, float yZoom) {
   float mYEndCorner = 1.0f - mYCornerSize;
   glBindTexture(GL_TEXTURE_2D, cCornerTexture);
   glEnable(GL_BLEND);
-  glColor4f(0.0f, 0.0f, 0.0f, 0.5f);
+  glColor4f(0.2f, 0.2f, 0.2f, 0.5f);
   glBegin(GL_QUADS);
   renderCorner(-1.0f,       -1.0f,        mXStartCorner, mYStartCorner,  1.0f,  1.0f);
   renderCorner(-1.0f,        mYEndCorner, mXStartCorner, 1.0f,           1.0f, -1.0f);
