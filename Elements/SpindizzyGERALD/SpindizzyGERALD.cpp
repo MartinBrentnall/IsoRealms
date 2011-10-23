@@ -178,7 +178,7 @@ void SpindizzyGERALD::checkMapZoneEvents(IZone* previousZone, Vertex& start, Ver
 }
 
 bool SpindizzyGERALD::isMovingNorth() {
-  if (cCamera != NULL && cLockNorth == NULL) {
+  if (cCamera != NULL) {
     float mCameraAngle = cCamera->getAngle();
     return mCameraAngle >= 40.0f && mCameraAngle <= 130.0f   ? *cMovingWest
          : mCameraAngle >= -50.0f && mCameraAngle <= 40.0f   ? *cMovingNorth
@@ -189,7 +189,7 @@ bool SpindizzyGERALD::isMovingNorth() {
 }
 
 bool SpindizzyGERALD::isMovingEast() {
-  if (cCamera != NULL && cLockEast == NULL) {
+  if (cCamera != NULL) {
     float mCameraAngle = cCamera->getAngle();
     return mCameraAngle >= 40.0f && mCameraAngle <= 130.0f   ? *cMovingNorth
          : mCameraAngle >= -50.0f && mCameraAngle <= 40.0f   ? *cMovingEast
@@ -200,7 +200,7 @@ bool SpindizzyGERALD::isMovingEast() {
 }
 
 bool SpindizzyGERALD::isMovingSouth() {
-  if (cCamera != NULL && cLockSouth == NULL) {
+  if (cCamera != NULL) {
     float mCameraAngle = cCamera->getAngle();
     return mCameraAngle >= 40.0f && mCameraAngle <= 130.0f   ? *cMovingEast
          : mCameraAngle >= -50.0f && mCameraAngle <= 40.0f   ? *cMovingSouth
@@ -211,7 +211,7 @@ bool SpindizzyGERALD::isMovingSouth() {
 }
 
 bool SpindizzyGERALD::isMovingWest() {
-  if (cCamera != NULL && cLockWest == NULL) {
+  if (cCamera != NULL) {
     float mCameraAngle = cCamera->getAngle();
     return mCameraAngle >= 40.0f && mCameraAngle <= 130.0f   ? *cMovingSouth
          : mCameraAngle >= -50.0f && mCameraAngle <= 40.0f   ? *cMovingWest
@@ -229,33 +229,41 @@ void SpindizzyGERALD::getNewLocation(float ticks, Vertex* location, Vertex* mome
   if (cCurrentSurface != NULL) {
     float mXSlopeMomentum = cCurrentSurface->getXAcceleration(cLocation.x, cLocation.y) * CRAFT_ACCELERATION;
     float mYSlopeMomentum = cCurrentSurface->getYAcceleration(cLocation.x, cLocation.y) * CRAFT_ACCELERATION;
+    if (cLockEast != NULL && mMovingEast) {
+      mXSlopeMomentum = max(mXSlopeMomentum, 0.0f);
+    }
+    if (cLockWest != NULL && mMovingWest) {
+      mXSlopeMomentum = min(mXSlopeMomentum, 0.0f);
+    }
+    if (cLockNorth != NULL && mMovingNorth) {
+      mYSlopeMomentum = max(mYSlopeMomentum, 0.0f);
+    }
+    if (cLockSouth != NULL && mMovingSouth) {
+      mYSlopeMomentum = min(mYSlopeMomentum, 0.0f);
+    }
     float mSurfaceFriction = 1.0f - cCurrentSurface->getSurfaceFriction();
     float mSurfaceGrip = cCurrentSurface->getSurfaceGrip();
     for (unsigned int i = 0; i < ticks; i++) {
       float mAcceleration = (*cThrust ? CRAFT_ACCELERATION * 2.0f : CRAFT_ACCELERATION);
-      if (mMovingWest && !mMovingEast) {
+      if (mMovingWest && cLockWest == NULL && !mMovingEast) {
         momentum->x -= mSurfaceGrip * ((!*cThrust && mAcceleration > 0.0f && mAcceleration < mXSlopeMomentum)
                      ? std::max(mAcceleration * 2.0f, -mXSlopeMomentum)
                      : mAcceleration);
-        cLockEast = NULL;
       }
-      if (mMovingEast && !mMovingWest) {
+      if (mMovingEast && cLockEast == NULL && !mMovingWest) {
         momentum->x += mSurfaceGrip * ((!*cThrust && mAcceleration > 0.0f && mAcceleration < -mXSlopeMomentum)
                      ? std::max(mAcceleration * 2.0f, mXSlopeMomentum)
                      : mAcceleration);
-        cLockWest = NULL;
       }
-      if (mMovingSouth && !mMovingNorth) {
+      if (mMovingSouth && cLockSouth == NULL && !mMovingNorth) {
         momentum->y -= mSurfaceGrip * ((!*cThrust && mAcceleration > 0.0f && mAcceleration < mYSlopeMomentum)
                      ? std::max(mAcceleration * 2.0f, -mYSlopeMomentum)
                      : mAcceleration);
-        cLockNorth = NULL;
       }
-      if (mMovingNorth && !mMovingSouth) {
+      if (mMovingNorth && cLockNorth == NULL && !mMovingSouth) {
         momentum->y += mSurfaceGrip * ((!*cThrust && mAcceleration > 0.0f && mAcceleration < -mYSlopeMomentum)
                      ? std::max(mAcceleration * 2.0f, mYSlopeMomentum)
                      : mAcceleration);
-        cLockSouth = NULL;
       }
       momentum->x += mXSlopeMomentum;
       momentum->y += mYSlopeMomentum;
@@ -263,6 +271,16 @@ void SpindizzyGERALD::getNewLocation(float ticks, Vertex* location, Vertex* mome
       momentum->y *= mSurfaceFriction;
       location->x += momentum->x;
       location->y += momentum->y;
+      if (momentum->x > 0.0f) {
+        cLockWest = NULL;
+      } else if (momentum->x < 0.0f) {
+        cLockEast = NULL;
+      }
+      if (momentum->y > 0.0f) {
+        cLockSouth = NULL;
+      } else if (momentum->y < 0.0f) {
+        cLockNorth = NULL;
+      }
     }
     location->z = cCurrentSurface->getHeightAt(location->x, location->y);
   } else {
@@ -433,11 +451,13 @@ bool SpindizzyGERALD::processEvent(ICollisionData& event) {
         cMomentum.y = -cMomentum.y * mSurfaceBounce;
         if (fabs(cMomentum.y) < CRAFT_ACCELERATION) {
           (mFaceDirection == ICollidableWallSurface::FACE_NORTH ? cLockSouth : cLockNorth) = mWallSurface;
+          cMomentum.y = 0.0f;
         }
       } else {
         cMomentum.x = -cMomentum.x * mSurfaceBounce;
         if (fabs(cMomentum.x) < CRAFT_ACCELERATION) {
           (mFaceDirection == ICollidableWallSurface::FACE_EAST ? cLockWest : cLockEast) = mWallSurface;
+          cMomentum.x = 0.0f;
         }
       }
       discoverZone(mWallSurface);
