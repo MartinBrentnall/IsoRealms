@@ -393,3 +393,9 @@ void TileSplitSurface::getRestingLocation(Vertex& location) {
   }
   location.z = getHeightAt(location.x, location.y);
 }
+
+TileSplitSurface::~TileSplitSurface() {
+  if (cCondition != NULL) {
+    delete cCondition; // TODO: The surface processor created this... should we really delete it?
+  }
+}

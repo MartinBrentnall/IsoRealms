@@ -104,8 +104,8 @@ class SpindizzyBlock:public ISpindizzyBlock,
    * 
    * TODO
    */ 
-  std::vector<ITileSurfaceTemplate*> calculateTileSurfaces(const ITileSurface::FaceDirection);
-  std::vector<IWallSurfaceTemplate*> calculateWallSurfaces(const IWallSurface::FaceDirection);
+  std::vector<ITileSurfaceTemplate*> calculateTileSurfaces(const ITileSurface::FaceDirection, bool);
+  std::vector<IWallSurfaceTemplate*> calculateWallSurfaces(const IWallSurface::FaceDirection, bool);
 
   /**
    * Determine if the surface of this block is flat.

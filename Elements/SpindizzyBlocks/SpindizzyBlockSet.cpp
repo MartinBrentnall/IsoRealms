@@ -25,7 +25,8 @@ SpindizzyBlockSet::SpindizzyBlockSet() {
   cSpindizzyTextureSetController = NULL;
   assignDummyPlugin(&cCamera, "Camera");
   assignDummyPlugin(&cHUD, "HUD");
-  assignDummyPlugin(&cSurfaceProcessor, "SurfaceProcessor");
+  assignDummyPlugin(&cPhysicalProcessor, "SurfaceProcessor");
+  assignDummyPlugin(&cVisualProcessor, "SurfaceProcessor");
   assignDummyPlugin(&cCollidableSurfaceRegistry, "CollidableSurfaceRegistry");
   assignDummyPlugin(&cZoneContext, "ZoneContext");
   cHUDClue = new HUDClue(cCamera);
@@ -60,7 +61,9 @@ std::vector<PlugSocket*> SpindizzyBlockSet::getPlugSockets() {
   }
   mSockets.push_back(new PlugSocket("Camera"));
   mSockets.push_back(new PlugSocket("HUD"));
-  mSockets.push_back(new PlugSocket("SurfaceProcessor"));
+  mSockets.push_back(new PlugSocket("SurfaceProcessor", "Visual"));
+  mSockets.push_back(new PlugSocket("SurfaceProcessor", "Physical"));
+  
   mSockets.push_back(new PlugSocket("CollidableSurfaceRegistry"));
   mSockets.push_back(new PlugSocket("ZoneContext"));
   return mSockets;
@@ -77,7 +80,7 @@ void SpindizzyBlockSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
     std::stringstream mInputString(mSocketID);
     unsigned int mIndex;
     mInputString >> mIndex;
-    ISimpleModelFactory* mNewModelFactory;
+    ISimpleModelFactory* mNewModelFactory = NULL;
     if (implementation != NULL) {
       assignPlugin(implementation, &mNewModelFactory, *socket);
       HUDClueData* mNewHUDClueData = new HUDClueData(mNewModelFactory);
@@ -119,9 +122,16 @@ void SpindizzyBlockSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
       }
     }
   } else if (socket->getType() == "SurfaceProcessor") {
-    ISurfaceProcessor* mPreviousSurfaceProcessor = cSurfaceProcessor;
-    if (assignPlugin(implementation, &cSurfaceProcessor, *socket)) {
-      mPreviousSurfaceProcessor->reinitialise();
+    if (socket->getID() == "Visual") {
+      ISurfaceProcessor* mPreviousSurfaceProcessor = cVisualProcessor;
+      if (assignPlugin(implementation, &cVisualProcessor, *socket)) {
+        mPreviousSurfaceProcessor->reinitialise();
+      }
+    } else {
+      ISurfaceProcessor* mPreviousSurfaceProcessor = cPhysicalProcessor;
+      if (assignPlugin(implementation, &cPhysicalProcessor, *socket)) {
+        mPreviousSurfaceProcessor->reinitialise();
+      }
     }
   } else if (socket->getType() == "ZoneContext") {
     IZoneContext* mPreviousZoneContext = cZoneContext;
@@ -148,7 +158,7 @@ IPlugin* SpindizzyBlockSet::getPlugin(PlugSocket* socket) {
   if (socket->getType() == "CollidableSurfaceRegistry")  {return cCollidableSurfaceRegistry;}
   if (socket->getType() == "HUD")                        {return cHUD;}
   if (socket->getType() == "SpindizzyTextureSet")        {return cSpindizzyTextureSet;}
-  if (socket->getType() == "SurfaceProcessor")           {return cSurfaceProcessor;}
+  if (socket->getType() == "SurfaceProcessor")           {return socket->getID() == "Visual" ? cVisualProcessor : cPhysicalProcessor;}
   if (socket->getType() == "SpindizzyTextureSetChanger") {return cSpindizzyTextureSetController;}
   if (socket->getType() == "ZoneContext")                {return cZoneContext;}
   // TODO: Throw wobbly!
@@ -181,7 +191,8 @@ void SpindizzyBlockSet::save(DOMNodeWriter* node) {
 }
 
 void SpindizzyBlockSet::initElementsComplete() {
-  cSurfaceProcessor->initElementsComplete();
+  cVisualProcessor->initElementsComplete();
+  cPhysicalProcessor->initElementsComplete();
 }
 
 ISpindizzyBlockFactory* SpindizzyBlockSet::getFactory(const std::string& name) {
@@ -222,31 +233,34 @@ void SpindizzyBlockSet::zoneContextChanged(IZone* zone) {
 }
 
 void SpindizzyBlockSet::registerSurfaceProvider(ISurfaceProvider* provider) {
-  cSurfaceProcessor->registerSurfaceProvider(provider);
+  cVisualProcessor->registerSurfaceProvider(provider);
+  cPhysicalProcessor->registerSurfaceProvider(provider);
 }
 
 void SpindizzyBlockSet::unregisterSurfaceProvider(ISurfaceProvider* provider) {
-  cSurfaceProcessor->unregisterSurfaceProvider(provider);
+  cVisualProcessor->unregisterSurfaceProvider(provider);
+  cPhysicalProcessor->unregisterSurfaceProvider(provider);
 }
 
 void SpindizzyBlockSet::setDirty() {
-  cSurfaceProcessor->setDirty();
+  cVisualProcessor->setDirty();
+  cPhysicalProcessor->setDirty();
 }
 
-std::vector<ITileSurfaceTemplate*> SpindizzyBlockSet::getTileSurfaces(ISurfaceProvider* provider, ITileSurface::FaceDirection facing) {
-  return cSurfaceProcessor->getTileSurfaces(provider, facing);
+std::vector<ITileSurfaceTemplate*> SpindizzyBlockSet::getTileSurfaces(ISurfaceProvider* provider, ITileSurface::FaceDirection facing, bool visual) {
+  return (visual ? cVisualProcessor : cPhysicalProcessor)->getTileSurfaces(provider, facing);
 }
 
-std::vector<IWallSurfaceTemplate*> SpindizzyBlockSet::getWallSurfaces(ISurfaceProvider* provider, IWallSurface::FaceDirection facing) {
-  return cSurfaceProcessor->getWallSurfaces(provider, facing);
+std::vector<IWallSurfaceTemplate*> SpindizzyBlockSet::getWallSurfaces(ISurfaceProvider* provider, IWallSurface::FaceDirection facing, bool visual) {
+  return (visual ? cVisualProcessor : cPhysicalProcessor)->getWallSurfaces(provider, facing);
 }
 
-void SpindizzyBlockSet::destroyWallTemplate(IWallSurfaceTemplate* wallTemplate) {
-  cSurfaceProcessor->destroyWallTemplate(wallTemplate);
+void SpindizzyBlockSet::destroyWallTemplate(IWallSurfaceTemplate* wallTemplate, bool visual) {
+  (visual ? cVisualProcessor : cPhysicalProcessor)->destroyWallTemplate(wallTemplate);
 }
 
-void SpindizzyBlockSet::destroyTileTemplate(ITileSurfaceTemplate* tileTemplate) {
-  cSurfaceProcessor->destroyTileTemplate(tileTemplate);
+void SpindizzyBlockSet::destroyTileTemplate(ITileSurfaceTemplate* tileTemplate, bool visual) {
+  (visual ? cVisualProcessor : cPhysicalProcessor)->destroyTileTemplate(tileTemplate);
 }
 
 void SpindizzyBlockSet::registerRollableSurface(IRollableSurface* rollableSurface) {
@@ -281,11 +295,13 @@ void SpindizzyBlockSet::updateClue() {
 }
 
 void SpindizzyBlockSet::notifyZoneAction(Zone* zone) {
-  cSurfaceProcessor->notifyZoneAction(zone);
+  cVisualProcessor->notifyZoneAction(zone);
+  cPhysicalProcessor->notifyZoneAction(zone);
 }
 
 SpindizzyBlockSet::~SpindizzyBlockSet() {
-  cSurfaceProcessor->reinitialise();
+  cVisualProcessor->reinitialise();
+  cPhysicalProcessor->reinitialise();
   for (unsigned int i = 0; i < cElementFactories.size(); i++) {
     delete cElementFactories[i];
   }

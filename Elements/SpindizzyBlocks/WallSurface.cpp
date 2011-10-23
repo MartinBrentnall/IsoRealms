@@ -464,3 +464,8 @@ Vertex* WallSurface::getLocation() {
   return new Vertex(cX, cY, cZ);
 }
 
+WallSurface::~WallSurface() {
+  if (cCondition != NULL) {
+    delete cCondition; // TODO: The surface processor created this... should we really delete it?
+  }
+}

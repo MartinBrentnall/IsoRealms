@@ -79,7 +79,8 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
   ISpindizzyTextureSet* cSpindizzyTextureSet;
   ISpindizzyTextureSet* cDummyTextureSet;
   ISpindizzyTextureSetChanger* cSpindizzyTextureSetController;
-  ISurfaceProcessor* cSurfaceProcessor;
+  ISurfaceProcessor* cPhysicalProcessor;
+  ISurfaceProcessor* cVisualProcessor;
   ICollidableSurfaceRegistry* cCollidableSurfaceRegistry;
   IZoneContext* cZoneContext;
   std::vector<ConditionElement*> cBlockStates;
@@ -130,10 +131,10 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
   void registerSurfaceProvider(ISurfaceProvider*);
   void unregisterSurfaceProvider(ISurfaceProvider*);
   void setDirty();
-  std::vector<ITileSurfaceTemplate*> getTileSurfaces(ISurfaceProvider*, ITileSurface::FaceDirection);
-  std::vector<IWallSurfaceTemplate*> getWallSurfaces(ISurfaceProvider*, IWallSurface::FaceDirection);
-  void destroyTileTemplate(ITileSurfaceTemplate*);
-  void destroyWallTemplate(IWallSurfaceTemplate*);
+  std::vector<ITileSurfaceTemplate*> getTileSurfaces(ISurfaceProvider*, ITileSurface::FaceDirection, bool);
+  std::vector<IWallSurfaceTemplate*> getWallSurfaces(ISurfaceProvider*, IWallSurface::FaceDirection, bool);
+  void destroyTileTemplate(ITileSurfaceTemplate*, bool);
+  void destroyWallTemplate(IWallSurfaceTemplate*, bool);
   void notifyZoneAction(Zone*);
 
   void registerRollableSurface(IRollableSurface*);

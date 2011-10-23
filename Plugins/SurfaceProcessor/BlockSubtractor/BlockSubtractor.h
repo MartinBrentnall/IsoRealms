@@ -48,6 +48,8 @@ class BlockSubtractor:public ISurfaceProcessor {
   IZone* cCurrentZone;
   BlockSubtractorCache cCache;
   std::map<IZone*, SurfaceDataCache*> cSurfaceDataCaches;
+  bool cRemoveHiddenSurfaces;
+  bool cUseAdjacentZones;
 
   std::vector<ITileSurfaceTemplate*> getTileSurfaces(ITileSurface*, ISurfaceProvider*, ITileSurface::FaceDirection);
 
@@ -151,6 +153,7 @@ class BlockSubtractor:public ISurfaceProcessor {
   bool safeEquals(Condition* a, Condition* b);
 
   public:
+  BlockSubtractor();
 
   /********************************\
    * Implements ISurfaceProcessor *
@@ -171,6 +174,7 @@ class BlockSubtractor:public ISurfaceProcessor {
   void notifyZoneAction(IZone*);
   void initPlugin(IZone*, unsigned int);
   void setRuntimeContext(IMap*);
+  void load(DOMNodeWrapper*);
 };
 
 #endif

@@ -620,8 +620,17 @@
       <File>Impact Soft.ogg</File>
     </Configuration>
   </Plugin>
-  <Plugin implementation="BlockSubtractor" instance="BlockSubtractor" type="SurfaceProcessor">
-    <Configuration/>
+  <Plugin implementation="BlockSubtractor" instance="VisualProcessor" type="SurfaceProcessor">
+    <Configuration>
+      <RemoveHiddenSurfaces>false</RemoveHiddenSurfaces>
+      <UseAdjacentZones>false</UseAdjacentZones>
+    </Configuration>
+  </Plugin>
+  <Plugin implementation="BlockSubtractor" instance="PhysicalProcessor" type="SurfaceProcessor">
+    <Configuration>
+      <RemoveHiddenSurfaces>true</RemoveHiddenSurfaces>
+      <UseAdjacentZones>true</UseAdjacentZones>
+    </Configuration>
   </Plugin>
   <Plugin implementation="TimeLimit" instance="SpindizzyTimeLimit" type="IntegerValue">
     <UsePlugin implementation="IntegerValue" instance="SpindizzyScore"/>
@@ -956,7 +965,8 @@
     <UsePlugin implementation="CollidableSurfaceRegistry" instance="SpindizzySurfaces"/>
     <UsePlugin implementation="HUD" instance="SpindizzyHUD" socketid=""/>
     <UsePlugin implementation="SpindizzyTextureSetChanger" instance="PerZone"/>
-    <UsePlugin implementation="SurfaceProcessor" instance="BlockSubtractor"/>
+    <UsePlugin implementation="SurfaceProcessor" instance="VisualProcessor" socketid="Visual"/>
+    <UsePlugin implementation="SurfaceProcessor" instance="PhysicalProcessor" socketid="Physical"/>
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext" socketid=""/>
     <Configuration>
       <State hudModel="0" z="0.3">SwitchDiamondLeft</State>

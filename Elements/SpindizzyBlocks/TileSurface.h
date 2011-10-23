@@ -100,6 +100,8 @@ class TileSurface:public ISpindizzyTileSurface {
   BlockArea* getCoverage();
   void destroyCoverage(BlockArea*);
   bool alligned(int, int);
+  
+  ~TileSurface();
 };
 
 #endif

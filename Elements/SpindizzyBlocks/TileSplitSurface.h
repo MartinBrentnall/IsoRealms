@@ -94,6 +94,8 @@ class TileSplitSurface:public ISpindizzyTileSurface {
   BlockArea* getCoverage();
   void destroyCoverage(BlockArea*);
   bool alligned(int, int);
+  
+  ~TileSplitSurface();
 };
 
 #endif

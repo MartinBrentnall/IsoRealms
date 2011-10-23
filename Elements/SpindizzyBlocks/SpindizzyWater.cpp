@@ -44,7 +44,7 @@ void SpindizzyWater::setDirty() {
 
 std::vector<ITileSurfaceTemplate*> SpindizzyWater::getWaterSurfaces() {
   ISpindizzyBlockSet* mSurfaceProcessor = getElementSet();
-  return mSurfaceProcessor->getTileSurfaces(this, ITileSurface::UP);
+  return mSurfaceProcessor->getTileSurfaces(this, ITileSurface::UP, true);
 }
 
 std::vector<ITileSurface*> SpindizzyWater::getTileSurfaces(ITileSurface::FaceDirection facing) {

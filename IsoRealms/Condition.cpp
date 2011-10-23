@@ -340,7 +340,7 @@ Condition* Condition::compose(Condition* condition) {
 
 bool Condition::isCompatibleWith(Condition* condition) {
   if (condition == NULL) {
-    return true;
+    return !isAbsolute() || isTrue();
   }
   Condition mBothConditions(true);
   mBothConditions.cConditions.push_back(new Condition(*this));

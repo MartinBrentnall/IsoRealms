@@ -39,10 +39,10 @@ class ISpindizzyBlockSet:public ElementSet<ISpindizzyBlock> {
   virtual void registerSurfaceProvider(ISurfaceProvider*) = 0;
   virtual void unregisterSurfaceProvider(ISurfaceProvider*) = 0;
   virtual void setDirty() = 0;
-  virtual std::vector<ITileSurfaceTemplate*> getTileSurfaces(ISurfaceProvider*, ITileSurface::FaceDirection) = 0;
-  virtual std::vector<IWallSurfaceTemplate*> getWallSurfaces(ISurfaceProvider*, IWallSurface::FaceDirection) = 0;
-  virtual void destroyTileTemplate(ITileSurfaceTemplate*) = 0;
-  virtual void destroyWallTemplate(IWallSurfaceTemplate*) = 0;
+  virtual std::vector<ITileSurfaceTemplate*> getTileSurfaces(ISurfaceProvider*, ITileSurface::FaceDirection, bool) = 0;
+  virtual std::vector<IWallSurfaceTemplate*> getWallSurfaces(ISurfaceProvider*, IWallSurface::FaceDirection, bool) = 0;
+  virtual void destroyTileTemplate(ITileSurfaceTemplate*, bool) = 0;
+  virtual void destroyWallTemplate(IWallSurfaceTemplate*, bool) = 0;
   virtual void notifyZoneAction(Zone*) = 0;
   virtual void registerRollableSurface(IRollableSurface*) = 0;
   virtual void registerWallSurface(ICollidableWallSurface*) = 0;

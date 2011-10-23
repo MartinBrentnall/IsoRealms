@@ -51,7 +51,7 @@ void ElementSetRegistry::connectPlugin(PluginRegistry* pluginRegistry, DOMNodeWr
 void ElementSetRegistry::loadConfiguration(DOMNodeWrapper* node) {
   std::string mInstance = node->getAttribute("instance");
   IElementSet* mElementSet = getElementSet(&mInstance);
-  std::cout << "Setting connections for element set \"" << mInstance << "\"" << std::endl;
+  std::cout << "Loading configuration for element set \"" << mInstance << "\"" << std::endl;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();

@@ -18,6 +18,11 @@
  */
 #include "BlockSubtractor.h"
 
+BlockSubtractor::BlockSubtractor() {
+  cRemoveHiddenSurfaces = false;
+  cUseAdjacentZones = false;
+}
+
 void BlockSubtractor::notifyZoneAction(IZone* zone) {
   cCache.setZone(zone);
   cCurrentZone = zone;
@@ -31,6 +36,20 @@ void BlockSubtractor::initPlugin(IZone* zone, unsigned int pass) {
 void BlockSubtractor::setRuntimeContext(IMap* map) {
   cCache.setMap(map);
   cCurrentMap = map;
+}
+
+void BlockSubtractor::load(DOMNodeWrapper* node) {
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "RemoveHiddenSurfaces") {
+      cRemoveHiddenSurfaces = mNode->getBooleanValue();
+    } else if (mValueAsString == "UseAdjacentZones") {
+      cUseAdjacentZones = mNode->getBooleanValue();
+    } else {
+      // TODO: Throw
+    }
+  }
 }
 
 void BlockSubtractor::registerSurfaceProvider(ISurfaceProvider* provider) {
@@ -346,8 +365,8 @@ IWallSurface::FaceDirection BlockSubtractor::getOppositeOf(IWallSurface::FaceDir
 std::vector<WallColumnPossibility*> BlockSubtractor::getPhysicalWallMasks(int x, int y, IWallSurface::FaceDirection facing) {
   Vertex mVertex(x, y, 0); // TODO: Should not be fixed at zero height.  Also, we should be able to create a wall mask from multiple adjacent zones.
   IZone* mZone = cCurrentMap->getZone(mVertex);
-  if (mZone != NULL) {
-//    cCache.setZone(mZone); // TODO: Enable this to permit walls from adjacent zones to be considered.
+  if (mZone != NULL && cUseAdjacentZones) {
+    cCache.setZone(mZone);
   }
   std::vector<ISurfaceProvider*> mSurfaceProviders = cCache.getSurfaceProviders();
   std::vector<WallColumnPossibility*> mOpposingMask;
@@ -498,8 +517,8 @@ std::vector<IWallSurfaceTemplate*> BlockSubtractor::getWallSurfaces(ISurfaceProv
       int mX = mXWalls ? row : cell;
       int mY = mXWalls ? cell : row;
 //       std::cout << "DOING " << mX << "," << mY << " ==================================================================" << std::endl;
-//      std::vector<WallColumnPossibility*> mWallColumns = getVisibleWallColumn(provider, mX, mY, facing);
-      std::vector<WallColumnPossibility*> mWallColumns = getOptimisedWallColumn(provider, mX, mY, facing);
+      std::vector<WallColumnPossibility*> mWallColumns = cRemoveHiddenSurfaces ? getVisibleWallColumn(provider, mX, mY, facing)
+                                                                               : getOptimisedWallColumn(provider, mX, mY, facing);
       for (unsigned int j = 0; j < mWallColumns.size(); j++) {
         std::vector<WallColumn*> mSections = mWallColumns[j]->getSections();
         Condition* mColumnCondition = mWallColumns[j]->getCondition();

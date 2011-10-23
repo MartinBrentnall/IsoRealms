@@ -321,3 +321,9 @@ void TileSurface::destroyCoverage(BlockArea* coverage) {
 bool TileSurface::alligned(int x, int y) {
   return y >= cSouth && y <= cNorth && x >= cWest && x <= cEast;
 }
+
+TileSurface::~TileSurface() {
+  if (cCondition != NULL) {
+    delete cCondition; // TODO: The surface processor created this... should we really delete it?
+  }
+}
