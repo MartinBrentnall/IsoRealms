@@ -62,7 +62,6 @@ std::vector<WallColumn*> WallColumnPossibility::getSections() {
 
 void WallColumnPossibility::applyOverlapping(WallColumnPossibility* wallColumn) {
   std::vector<int> mIndicesToRemove;
-  std::vector<WallColumn*> mColumnsAdded;
   for (unsigned int i = 0; i < wallColumn->cSegments.size(); i++) {
     WallColumn* mWallColumn = wallColumn->cSegments[i];
     for (unsigned int j = 0; j < cSegments.size(); j++) {
@@ -72,7 +71,7 @@ void WallColumnPossibility::applyOverlapping(WallColumnPossibility* wallColumn) 
           mSplitColumn->lowerTop(mWallColumn);
           cSegments[j]->raiseBottom(mWallColumn);
           if (mSplitColumn->isAddition()) {
-            mColumnsAdded.push_back(mSplitColumn);
+            cSegments.push_back(mSplitColumn);
           } else {
             delete mSplitColumn;
           }
@@ -108,10 +107,6 @@ void WallColumnPossibility::applyOverlapping(WallColumnPossibility* wallColumn) 
     cSegments.erase(cSegments.begin() + mIndicesToRemove[j]);
   }
   mIndicesToRemove.clear();
-  for (unsigned int j = 0; j < mColumnsAdded.size(); j++) {
-    cSegments.push_back(mColumnsAdded[j]);
-  }
-  mColumnsAdded.clear();
 }
 
 bool WallColumnPossibility::empty() {
