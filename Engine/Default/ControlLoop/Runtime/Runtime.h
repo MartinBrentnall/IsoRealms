@@ -35,7 +35,6 @@ class Runtime:public IControlLoop {
   std::vector<ICommand*> cExitCommands;
   Map* cMap;
 
-  std::vector<ICommand*> parseCommands(DOMNodeWrapper* node);
   void keyDown(SDLKey&);
 
   public:

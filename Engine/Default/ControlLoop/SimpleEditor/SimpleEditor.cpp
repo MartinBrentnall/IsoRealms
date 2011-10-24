@@ -26,6 +26,9 @@ const std::string SimpleEditor::COMMAND_ELEMENT_SETS   = "ElementSets";
 const std::string SimpleEditor::COMMAND_ELEMENTS       = "Elements";
 
 SimpleEditor::SimpleEditor(DOMNodeWrapper* node) {
+  ICommand* mCommand = CommandManager::getCommand("Pop");
+  cExitCommands.push_back(mCommand);
+  
   cMap = NULL;
   cRunExitCommands = false;
   cConfirmExitCommands = false;
@@ -82,9 +85,7 @@ SimpleEditor::SimpleEditor(DOMNodeWrapper* node) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "OnExit") {
-      cExitCommands = parseCommands(mNode);
-    } else if (mValueAsString == "Plugin") {
+    if (mValueAsString == "Plugin") {
       cPluginRegistry.loadConfiguration(mNode);
     } else if (mValueAsString == "UsePlugin") {
       cPluginRegistry.setPlugin(this, mNode);
@@ -113,23 +114,6 @@ IPlugin* SimpleEditor::getPlugin(PlugSocket* socket) {
   if (socket->getType() == "Font") {return cFont;}
   // TODO: Throw
   return NULL;
-}
-
-std::vector<ICommand*> SimpleEditor::parseCommands(DOMNodeWrapper* node) {
-  std::vector<ICommand*> cParsedCommands;
-  for (int i = 0; i < node->getChildCount(); i++) {
-    DOMNodeWrapper *mNode = node->getChild(i);
-    std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "ExecuteCommand") {
-      std::string mCommandType = mNode->getAttribute("type");
-      ICommand* mCommand = CommandManager::getCommand(mCommandType);
-      if (mCommand == NULL) { 
-        std::cout << "Oh noes for " << mCommandType << std::endl;
-      }
-      cParsedCommands.push_back(mCommand);
-    }
-  }
-  return cParsedCommands;
 }
 
 bool SimpleEditor::componentAt(float x, float y) {

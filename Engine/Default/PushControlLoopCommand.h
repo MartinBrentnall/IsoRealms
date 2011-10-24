@@ -21,22 +21,24 @@
 
 #include <iostream>
 #include <stack>
+#include <string>
 
 #include <IsoRealms/ICommand.h>
 
 #include "IControlLoop.h"
+#include "IControlLoopStack.h"
 
 class PushControlLoopCommand:public ICommand {
   private:
-  IControlLoop* cControlLoopToPush;
-  std::stack<IControlLoop*>* cControlLoopStackPointer;
+  DOMNodeWrapper* cNode;
+  IControlLoopStack* cEngine;
   
   public:
-  PushControlLoopCommand(std::stack<IControlLoop*>*, IControlLoop&);
+  PushControlLoopCommand(IControlLoopStack*, DOMNodeWrapper*);
 
-  /*************************************************************************\
-   * Implemented methods of ICommand.h                                     *
-  \*************************************************************************/
+  /***********************\
+   * Implements ICommand *
+  \***********************/
   void execute();  
 };
 

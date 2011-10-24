@@ -18,10 +18,10 @@
  */
 #include "PopControlLoopCommand.h"
 
-PopControlLoopCommand::PopControlLoopCommand(std::stack<IControlLoop*>* controlLoopStackPointer) {
-  cControlLoopStackPointer = controlLoopStackPointer;
+PopControlLoopCommand::PopControlLoopCommand(IControlLoopStack* engine) {
+  cEngine = engine;
 }
 
 void PopControlLoopCommand::execute() {
-  cControlLoopStackPointer->pop();
+  cEngine->popControlLoop();
 }

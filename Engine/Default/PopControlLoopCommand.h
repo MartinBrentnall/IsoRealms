@@ -24,18 +24,18 @@
 
 #include <IsoRealms/ICommand.h>
 
-#include "IControlLoop.h"
+#include "IControlLoopStack.h"
 
 class PopControlLoopCommand:public ICommand {
   private:
-  std::stack<IControlLoop*>* cControlLoopStackPointer;
+  IControlLoopStack* cEngine;
   
   public:
-  PopControlLoopCommand(std::stack<IControlLoop*>*);
+  PopControlLoopCommand(IControlLoopStack*);
 
-  /*************************************************************************\
-   * Implemented methods of ICommand.h                                     *
-  \*************************************************************************/
+  /***********************\
+   * Implements ICommand *
+  \***********************/
   void execute();  
 };
 

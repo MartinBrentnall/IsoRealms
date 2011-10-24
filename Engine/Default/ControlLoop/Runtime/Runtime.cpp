@@ -19,14 +19,9 @@
 #include "Runtime.h"
 
 Runtime::Runtime(DOMNodeWrapper* node) {
-  for (int i = 0; i < node->getChildCount(); i++) {
-    DOMNodeWrapper *mNode = node->getChild(i);
-    std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "OnExit") {
-      cExitCommands = parseCommands(mNode);
-    }
-  }
-
+  ICommand* mCommand = CommandManager::getCommand("Pop");
+  cExitCommands.push_back(mCommand);
+  
   DOMNodeWrapper* mConfigurationRootNode = new DOMNodeWrapper("Test.isorealms");
   for (int i = 0; i < mConfigurationRootNode->getChildCount(); i++) {
     DOMNodeWrapper *mNode = mConfigurationRootNode->getChild(i);
@@ -37,23 +32,6 @@ Runtime::Runtime(DOMNodeWrapper* node) {
   }
   cMap->initRuntime();
   cRunExitCommands = false;
-}
-
-std::vector<ICommand*> Runtime::parseCommands(DOMNodeWrapper* node) {
-  std::vector<ICommand*> cParsedCommands;
-  for (int i = 0; i < node->getChildCount(); i++) {
-    DOMNodeWrapper *mNode = node->getChild(i);
-    std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "ExecuteCommand") {
-      std::string mCommandType = mNode->getAttribute("type");
-      ICommand* mCommand = CommandManager::getCommand(mCommandType);
-      if (mCommand == NULL) { 
-        std::cout << "Warning: Command not found \"" << mCommandType << "\"" << std::endl;
-      }
-      cParsedCommands.push_back(mCommand);
-    }
-  }
-  return cParsedCommands;
 }
 
 void Runtime::keyDown(SDLKey& key) {

@@ -5,12 +5,12 @@
 #include <string>
 #include <vector>
 
+#include <IsoRealms/System.h>
+
 #include "EnterMenuCommand.h"
 #include "FrontEndMenuItem.h"
 #include "IFrontEndCommands.h"
 #include "IMenuStack.h"
-
-#include <IsoRealms/System.h>
 
 class FrontEndMenu {
   private:

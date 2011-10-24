@@ -32,7 +32,9 @@ FrontEndMenu::FrontEndMenu(IFrontEndCommands* commandRegistry, DOMNodeWrapper* n
   std::string mFileNameFilter = node->getAttribute("filter");
   std::string mActualDir = System::getResource(mDirForSelection);
   std::vector<std::string>* mFileList = System::getFileList(mActualDir, mFileNameFilter); // TODO: Destruction
+  std::cout << "Got file list: =========================================================================================" << std::endl;
   for (unsigned int i = 0; i < mFileList->size(); i++) {
+    std::cout << "   - " << (*mFileList)[i] << std::endl;
     ICommand* mArgumentCommand = commandRegistry->parseArgumentCommand(node, (*mFileList)[i]);
     FrontEndMenuItem* mMenuItem = new FrontEndMenuItem((*mFileList)[i], mArgumentCommand);
     cMenuItems.push_back(mMenuItem);

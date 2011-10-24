@@ -18,11 +18,11 @@
  */
 #include "PushControlLoopCommand.h"
 
-PushControlLoopCommand::PushControlLoopCommand(std::stack<IControlLoop*>* controlLoopStackPointer, IControlLoop& controlLoopToPush) {
-  cControlLoopStackPointer = controlLoopStackPointer;
-  cControlLoopToPush = &controlLoopToPush;
+PushControlLoopCommand::PushControlLoopCommand(IControlLoopStack* engine, DOMNodeWrapper* node) {
+  cEngine = engine;
+  cNode = node;
 }
 
 void PushControlLoopCommand::execute() {
-  cControlLoopStackPointer->push(cControlLoopToPush);
+  cEngine->pushControlLoop(cNode);
 }

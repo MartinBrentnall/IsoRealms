@@ -27,12 +27,6 @@
 #include <GL/gl.h>
 #include <SDL/SDL.h>
 
-#include "GenerateEngineCommand.h"
-#include "IControlLoop.h"
-#include "PopControlLoopCommand.h"
-#include "PushControlLoopCommand.h"
-#include "TerminateEngineCommand.h"
-
 #include <IsoRealms/CommandManager.h>
 #include <IsoRealms/DOMNodeWrapper.h>
 #include <IsoRealms/Hacks.h>
@@ -41,6 +35,13 @@
 #include <IsoRealms/IEngine.h>
 #include <IsoRealms/KeyStates.h>
 #include <IsoRealms/System.h>
+
+#include "GenerateEngineCommand.h"
+#include "IControlLoop.h"
+#include "IControlLoopStack.h"
+#include "PopControlLoopCommand.h"
+#include "PushControlLoopCommand.h"
+#include "TerminateEngineCommand.h"
 
 /**
  * TODO: Documentation below is wrong!
@@ -64,7 +65,8 @@
  * a signal will be sent to all attract services to indicate that the front-end
  * is no longer active.
  */
-class Engine:public IEngine {
+class Engine:public IEngine,
+             public IControlLoopStack {
   private:
   std::stack<IControlLoop*> cControlLoop;
   std::map<std::string, IControlLoop*> cControlLoops;
@@ -77,21 +79,22 @@ class Engine:public IEngine {
    * Register the specified command so that it is properly queued for execution
    * when called by third parties.
    */
-  void registerEngineCommand(std::string, ICommand*);
-
-  /**
-   * Parse a declared control loop from the specified node.
-   */
-  IControlLoop* parseControlLoop(DOMNodeWrapper*);
+  void registerEngineCommand(const std::string&, ICommand*);
 
   public:
 
   Engine(DOMNodeWrapper*);
 
-  /**************************************************************************\
-   * Implemented methods of IEngine.h                                       *
-  \**************************************************************************/
+  /**********************\
+   * Implements IEngine *
+  \**********************/
   void run();
+  
+  /********************************\
+   * Implements IControlLoopStack *
+  \********************************/
+  void pushControlLoop(DOMNodeWrapper*);
+  void popControlLoop();
 };
 
 #endif

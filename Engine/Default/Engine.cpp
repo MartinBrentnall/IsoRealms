@@ -20,61 +20,48 @@
 
 Engine::Engine(DOMNodeWrapper* node) {
   cTerminate = false;
+  
+  registerEngineCommand("Pop", new PopControlLoopCommand(this));
+  registerEngineCommand("Terminate", new TerminateEngineCommand(cTerminate));
+  
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "ControlLoop") {
-      std::string mControlLoopName = mNode->getAttribute("name");
-      std::string mControlLoopLocation = System::getConfigurationResource("Engine/Default/ControlLoop/" + mControlLoopName + "/libControlLoop");
-      void* mControlLoopSO = dlopen(mControlLoopLocation.c_str(), RTLD_LAZY | RTLD_GLOBAL);
-      if (!mControlLoopSO) {
-        throw InitException("Cannot load library: " + std::string(dlerror()));
-      }
-      createControlLoop* createControlLoopFunction = cast_voidptr_to_funcptr<createControlLoop*>(dlsym(mControlLoopSO, "create"));
-      const char* mDlsymError = dlerror();
-      if (mDlsymError) {
-        throw InitException("Cannot load symbol: " + std::string(mDlsymError));
-      }
-      cControlLoops[mControlLoopName] = createControlLoopFunction(mNode);
       std::string mControlLoopInit = mNode->getAttribute("init");
+      std::string mControlLoopName = mNode->getAttribute("name");
       if (mControlLoopInit == "true") {
-        cControlLoop.push(cControlLoops[mControlLoopName]);
+        pushControlLoop(mNode);
       }
-    } else if (mValueAsString == "GlobalAction") {
-      std::string mCommandType = mNode->getAttribute("type");
-      ICommand* mCommand;
-      if (mCommandType == "TerminateEngineCommand") {
-        mCommand = new TerminateEngineCommand(cTerminate);
-      } else if (mCommandType == "PopControlLoopCommand") {
-        mCommand = new PopControlLoopCommand(&cControlLoop);
-      } else if (mCommandType == "PushControlLoopCommand") {
-        IControlLoop* mControlLoop = parseControlLoop(mNode);
-        if (mControlLoop == NULL) {
-          throw new InitException("PushControlLoopCommand must specified a declared control loop!");
-        }
-        mCommand = new PushControlLoopCommand(&cControlLoop, *mControlLoop);
-      }
-      std::string mCommandName = mNode->getAttribute("name");
-      registerEngineCommand(mCommandName, mCommand);
+      std::string mCommandName = "Push:" + mControlLoopName;
+      registerEngineCommand(mCommandName, new PushControlLoopCommand(this, mNode));
     }
   }
 }
 
-void Engine::registerEngineCommand(std::string name, ICommand* command) {
+void Engine::pushControlLoop(DOMNodeWrapper* node) {
+  std::string mControlLoopName = node->getAttribute("name");
+  std::string mControlLoopLocation = System::getConfigurationResource("Engine/Default/ControlLoop/" + mControlLoopName + "/libControlLoop");
+  void* mControlLoopSO = dlopen(mControlLoopLocation.c_str(), RTLD_LAZY | RTLD_GLOBAL);
+  if (!mControlLoopSO) {
+    throw InitException("Cannot load library: " + std::string(dlerror()));
+  }
+  createControlLoop* createControlLoopFunction = cast_voidptr_to_funcptr<createControlLoop*>(dlsym(mControlLoopSO, "create"));
+  const char* mDlsymError = dlerror();
+  if (mDlsymError) {
+    throw InitException("Cannot load symbol: " + std::string(mDlsymError));
+  }
+  IControlLoop* mControlLoop = createControlLoopFunction(node);
+  cControlLoop.push(mControlLoop);
+}
+
+void Engine::popControlLoop() {
+  cControlLoop.pop();
+}
+
+void Engine::registerEngineCommand(const std::string& name, ICommand* command) {
   GenerateEngineCommand* mGenerateEngineCommand = new GenerateEngineCommand(&cPendingCommands, command);
   CommandManager::addCommand(name, mGenerateEngineCommand);
-}
-
-IControlLoop* Engine::parseControlLoop(DOMNodeWrapper* node) {
-  for (int i = 0; i < node->getChildCount(); i++) {
-    DOMNodeWrapper *mNode = node->getChild(i);
-    std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "ControlLoop") {
-      std::string mControlLoopName = mNode->getStringValue();
-      return cControlLoops[mControlLoopName];
-    }
-  }
-  return NULL;
 }
 
 void Engine::run() {

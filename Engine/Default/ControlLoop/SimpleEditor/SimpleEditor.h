@@ -116,9 +116,6 @@ class SimpleEditor:public IControlLoop,
    */
   std::vector<ICommand*> cExitCommands;
   
-
-  std::vector<ICommand*> parseCommands(DOMNodeWrapper*);
-
   /**
    * Clear the undo stack.  Called when the current undo stack is rendered
    * meaningless by some action (e.g. changed zone, loaded new map, etc.)
