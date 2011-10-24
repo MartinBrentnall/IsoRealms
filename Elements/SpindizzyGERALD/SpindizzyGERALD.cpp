@@ -221,6 +221,8 @@ bool SpindizzyGERALD::isMovingWest() {
   return false;
 }
 
+int mShitCount = 0;
+
 void SpindizzyGERALD::getNewLocation(float ticks, Vertex* location, Vertex* momentum) {
   bool mMovingNorth = isMovingNorth();
   bool mMovingEast  = isMovingEast();
@@ -310,15 +312,8 @@ bool SpindizzyGERALD::isValidEvent(ICollisionData* event) {
   return false;
 }
 
-ICollisionData* SpindizzyGERALD::pollCollisionEvent(Vertex& startLocation, Vertex& endLocation) {
+ICollisionData* SpindizzyGERALD::pollSlideEvent(Vertex& startLocation, Vertex& endLocation) {
   ICollisionData* mEvent = NULL;
-  if (cCurrentSurface != NULL) {
-    ICollisionData* mSurfaceLeftEvent = cCurrentSurface->getRollingEvent(startLocation, endLocation);
-    if (mSurfaceLeftEvent != NULL) {
-      mEvent = mSurfaceLeftEvent;
-    }
-  }
-  
   ICollidableWallSurface* mWallLocks[4] = {cLockNorth, cLockSouth, cLockEast, cLockWest};
   for (unsigned int i = 0; i < 4; i++) {
     if (mWallLocks[i] != NULL) {
@@ -329,6 +324,22 @@ ICollisionData* SpindizzyGERALD::pollCollisionEvent(Vertex& startLocation, Verte
         }
       }
     }
+  }
+  return mEvent;
+}
+
+ICollisionData* SpindizzyGERALD::pollCollisionEvent(Vertex& startLocation, Vertex& endLocation) {
+  ICollisionData* mEvent = NULL;
+  if (cCurrentSurface != NULL) {
+    ICollisionData* mSurfaceLeftEvent = cCurrentSurface->getRollingEvent(startLocation, endLocation);
+    if (mSurfaceLeftEvent != NULL) {
+      mEvent = mSurfaceLeftEvent;
+    }
+  }
+  
+  ICollisionData* mSlideEvent = pollSlideEvent(startLocation, endLocation);
+  if (mSlideEvent != NULL && (mEvent == NULL || mSlideEvent->getGradient() < mEvent->getGradient())) {
+    mEvent = mSlideEvent;
   }
   
   ICollisionData* mOtherEvent = cCollidableSurfaceRegistry->getNextEvent(startLocation, endLocation, cCurrentSurface);

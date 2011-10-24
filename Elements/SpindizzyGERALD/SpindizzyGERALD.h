@@ -66,40 +66,56 @@ class SpindizzyGERALD:public Element<ISpindizzyGERALDSet, ISpindizzyGERALDFactor
     int cY;
   };
 
+  IMap* cMap;
+  IZone* cZone;
+
+  // User inputs
   bool* cMovingNorth;
   bool* cMovingEast;
   bool* cMovingSouth;
   bool* cMovingWest;
   bool* cThrust;
-  ICollidableWallSurface* cLockNorth;
-  ICollidableWallSurface* cLockEast;
-  ICollidableWallSurface* cLockSouth;
-  ICollidableWallSurface* cLockWest;
-  IMap* cMap;
-  IZone* cZone;
+  
+  // Definition data
   BlockLocation cStartLocation;
   Vertex cLocation;
   Vertex cMomentum;
+  
+  // Supported plugins
   ISimpleModel* cGERALDModel;
   ICamera* cCamera;
   ICollectables* cCollectables;
   ICollidableSurfaceRegistry* cCollidableSurfaceRegistry;
   IZoneContext* cZoneContext;
-  IRollableSurface* cCurrentSurface;
+  
+  // Death and respawn handling
+  std::stack<RespawnData*> cRespawnSurfaceStack;
   RespawnData* cRespawnData;
+  bool cRespawning;
+  Vertex cDestroyLocation;
+  
+  // Craft limits
   float cMapBottom;
-  float cPeakHeight;
-  bool cJumpedFromRamp;
-  double cSurfaceLeaveVerticalMomentum;
+  float cFallLimit;
+
+  // Event scripts
   Script* cFallScript;
   Script* cFallLimitScript;
-  float cFallLimit;
-  std::stack<RespawnData*> cRespawnSurfaceStack;
-  bool cRespawning;
+
+  // Physics
+  bool cJumpedFromRamp;
+  float cPeakHeight;
+  float cSurfaceLeaveVerticalMomentum;
   float cRespawnAnimation;
-  Vertex cDestroyLocation;
   bool cCycleBounce;
   int cFastEvents;
+  
+  // Surfaces
+  IRollableSurface* cCurrentSurface;
+  ICollidableWallSurface* cLockNorth;
+  ICollidableWallSurface* cLockEast;
+  ICollidableWallSurface* cLockSouth;
+  ICollidableWallSurface* cLockWest;
 
   bool isMovingNorth();
   bool isMovingEast();
@@ -108,6 +124,7 @@ class SpindizzyGERALD:public Element<ISpindizzyGERALDSet, ISpindizzyGERALDFactor
   bool isValidEvent(ICollisionData*);
   void pollEvent(float&);
   void getNewLocation(float, Vertex*, Vertex*);
+  ICollisionData* pollSlideEvent(Vertex&, Vertex&);
   ICollisionData* pollCollisionEvent(Vertex&, Vertex&);
   bool processEvent(ICollisionData&);
   void updateLocation(Vertex&);
