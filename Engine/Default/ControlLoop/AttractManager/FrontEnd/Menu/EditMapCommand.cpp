@@ -18,10 +18,10 @@
  */
 #include "EditMapCommand.h"
 
-EditMapCommand::EditMapCommand(std::string& map) {
-  cMapArgument = &map;
+EditMapCommand::EditMapCommand(const std::string& map) {
+  cMapArgument = map;
 }
 
 void EditMapCommand::execute() {
-  std::cout << "Going to load \"" << *cMapArgument << "\" for editing!" << std::endl;
+  std::cout << "Going to load \"" << cMapArgument << "\" for editing!" << std::endl;
 }

@@ -18,16 +18,11 @@
  */
 #include "EnterMenuCommand.h"
 
-EnterMenuCommand::EnterMenuCommand(std::vector<std::string>& activeMenu, std::vector<std::string>& menuToShow, unsigned int& selectedMenuItem, std::string*& newLocationPointer, std::string destinationLocation) {
-  cActiveMenu = &activeMenu;
-  cMenuToShow = &menuToShow;
-  cSelectedMenuItem = &selectedMenuItem;
-  cMenuLocation = &newLocationPointer;
-  cDestinationLocation = destinationLocation;
+EnterMenuCommand::EnterMenuCommand(IMenuStack* menuStack, FrontEndMenu* menuToEnter) {
+  cMenuStack = menuStack;
+  cMenuToEnter = menuToEnter;
 }
 
 void EnterMenuCommand::execute() {
-  *cActiveMenu = *cMenuToShow;
-  *cSelectedMenuItem = 0;
-  *cMenuLocation = &cDestinationLocation;
+  cMenuStack->push(cMenuToEnter);
 }

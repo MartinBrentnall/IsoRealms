@@ -26,10 +26,10 @@
 
 class EditMapCommand:public ICommand {
   private:
-  std::string* cMapArgument;
+  std::string cMapArgument;
 
   public:
-  EditMapCommand(std::string&);
+  EditMapCommand(const std::string&);
 
   /***********************\
    * Implements ICommand *

@@ -19,7 +19,9 @@ include_directories(${PROJECT_SOURCE_DIR})
 add_library(FrontEnd_Menu MODULE 
   EditMapCommand.cpp
   EnterMenuCommand.cpp
+  FrontEnd.cpp
   FrontEndMenu.cpp
+  FrontEndMenuItem.cpp
   SelectionList.cpp
 )
 set_target_properties(FrontEnd_Menu PROPERTIES OUTPUT_NAME "FrontEnd")

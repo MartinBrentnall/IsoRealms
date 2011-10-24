@@ -19,11 +19,10 @@
 #ifndef ENTER_MENU_COMMAND
 #define ENTER_MENU_COMMAND
 
-#include <iostream>
-#include <string>
-#include <vector>
-
 #include <IsoRealms/ICommand.h>
+
+#include "FrontEndMenu.h"
+#include "IMenuStack.h"
 
 /**
  * This command performs the following actions:
@@ -34,11 +33,8 @@
  */
 class EnterMenuCommand:public ICommand {
   private:
-  std::vector<std::string>* cMenuToShow;
-  std::vector<std::string>* cActiveMenu;
-  unsigned int* cSelectedMenuItem;
-  std::string** cMenuLocation;
-  std::string cDestinationLocation;
+  IMenuStack* cMenuStack;
+  FrontEndMenu* cMenuToEnter;
 
   public:
 
@@ -46,12 +42,8 @@ class EnterMenuCommand:public ICommand {
    * 
    * 
    * @param
-   * @param
-   * @param
-   * @param string**  A pointer to the pointer to the location handle.
-   * @param
    */
-  EnterMenuCommand(std::vector<std::string>&, std::vector<std::string>&, unsigned int&, std::string*&, std::string);
+  EnterMenuCommand(IMenuStack*, FrontEndMenu*);
     
   /***********************\
    * Implements ICommand *
