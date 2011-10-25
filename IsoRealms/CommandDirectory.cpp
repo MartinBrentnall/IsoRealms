@@ -70,7 +70,11 @@ Script* CommandDirectory::getScript(DOMNodeWrapper* node) {
       // TODO: Throw
     }
   }
-  return new Script(mCommands);
+  return new Script(mCommands, this);
+}
+
+void CommandDirectory::selectCommands(ICommandSelectionListener* listener) {
+  // TODO: Implement this
 }
 
 void CommandDirectory::registerCommand(IUserCommand* command) {
@@ -85,5 +89,20 @@ void CommandDirectory::unregisterCommand(IUserCommand* command) {
   std::string mCommandName = command->getCommandName();
   CommandProxy* mCommandProxy = getCommandProxy(mCommandName);
   mCommandProxy->setUserCommand(NULL);
+}
+
+std::string CommandDirectory::getLocation(IUserCommand* command) {
+  for (std::map<std::string, CommandProxy*>::iterator i = cCommands.begin(); i != cCommands.end(); i++) {
+    if (i->second == command) {
+      return command->getCommandName();
+    }
+  }
+  for (std::map<std::string, CommandDirectory*>::iterator i = cSubDirectories.begin(); i != cSubDirectories.end(); i++) {
+    std::string mCommandName = i->second->getLocation(command);
+    if (mCommandName != "") {
+      return i->first + "/" + mCommandName;
+    }
+  }
+  return "";
 }
 

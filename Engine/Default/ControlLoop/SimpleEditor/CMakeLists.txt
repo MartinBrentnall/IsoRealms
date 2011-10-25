@@ -41,5 +41,3 @@ add_library(ControlLoopSimpleEditor MODULE
 )
 set_target_properties(ControlLoopSimpleEditor PROPERTIES OUTPUT_NAME "ControlLoop")
 set_target_properties(ControlLoopSimpleEditor PROPERTIES PREFIX "lib")
-
-target_link_libraries(ControlLoopSimpleEditor IsoRealms)

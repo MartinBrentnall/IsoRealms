@@ -28,7 +28,7 @@
 
 #include "Script.h"
 
-class CommandDirectory {
+class CommandDirectory:public ICommandRegistry {
   private:
   std::map<std::string, CommandDirectory*> cSubDirectories;
   std::map<std::string, CommandProxy*> cCommands;
@@ -36,10 +36,16 @@ class CommandDirectory {
   CommandProxy* getCommandProxy(const std::string&);
   
   public:
-  std::vector<std::string> getSubDirectories();
   CommandDirectory* getSubDirectory(const std::string&);
   CommandDirectory* createSubDirectory(const std::string&);
+  std::vector<std::string> getSubDirectories();
+  
+  /*******************************\
+   * Implements ICommandRegistry *
+  \*******************************/
+  void selectCommands(ICommandSelectionListener*);
   Script* getScript(DOMNodeWrapper*);
+  std::string getLocation(IUserCommand*);
   void registerCommand(IUserCommand*);
   void unregisterCommand(IUserCommand*);
 };

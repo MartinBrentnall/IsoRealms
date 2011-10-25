@@ -20,8 +20,6 @@
 
 SpindizzyCamera::SpindizzyCamera() {
   assignDummyPlugin(&cSequencePlayer, "SequencePlayer");
-  cSockets.push_back(new PlugSocket("LocationAwareness"));
-  cSockets.push_back(new PlugSocket("SequencePlayer"));
   cTargetAngle = -45.0f;
   cPreviousAngle = -45.0f;
   cProgress = 1.0f;
@@ -41,7 +39,16 @@ SpindizzyCamera::SpindizzyCamera() {
 }
 
 std::vector<PlugSocket*> SpindizzyCamera::getPlugSockets() {
-  return cSockets;
+  std::vector<PlugSocket*> mSockets;
+  // TODO: Should not construct plug sockets on-the-fly.
+  for (unsigned int i = 0; i <= cLocationAwareness.size(); i++) {
+    std::ostringstream mSocketID;
+    mSocketID << i;
+    PlugSocket* mPlugSocket = new PlugSocket("LocationAwareness", mSocketID.str());
+    mSockets.push_back(mPlugSocket);
+  }
+  mSockets.push_back(new PlugSocket("SequencePlayer"));
+  return mSockets;
 }
 
 void SpindizzyCamera::initPlugin(IZone* zone, unsigned int pass) {
@@ -177,9 +184,16 @@ void SpindizzyCamera::load(DOMNodeWrapper* node) {
       float mZOffset = mNode->getFloatAttribute("zOffset");
       SetLocationCommand* mSetLocationCommand = new SetLocationCommand(this, mModeName, mTrack, mXOffset, mYOffset, mZOffset);
       cCameraCommands.push_back(mSetLocationCommand);
+      cModes.push_back(mSetLocationCommand);
       cCommandRegistry->registerCommand(mSetLocationCommand);
       mSetLocationCommand->execute(); // TODO: Should be configurable instead of just setting the last mode like this line does
     }
+  }
+}
+
+void SpindizzyCamera::save(DOMNodeWriter* node) {
+  for (unsigned int i = 0; i < cModes.size(); i++) {
+    cModes[i]->save(node);
   }
 }
 
@@ -248,6 +262,21 @@ SpindizzyCamera::SetLocationCommand::SetLocationCommand(SpindizzyCamera* parent,
 void SpindizzyCamera::SetLocationCommand::execute() {
   cParent->cSelectedLocation = cTargetLocation;
   cParent->cOffset = cOffset;
+}
+
+void SpindizzyCamera::SetLocationCommand::save(DOMNodeWriter* node) {
+  DOMNodeWriter* mNode = node->addBranch("Mode");
+  mNode->addAttribute("name", cModeName);
+  mNode->addAttribute("track", cTargetLocation);
+  if (cOffset.x != 0.0f) {
+    mNode->addAttribute("xOffset", cOffset.x);
+  }
+  if (cOffset.y != 0.0f) {
+    mNode->addAttribute("yOffset", cOffset.y);
+  }
+  if (cOffset.z != 0.0f) {
+    mNode->addAttribute("zOffset", cOffset.z);
+  }
 }
 
 std::string SpindizzyCamera::SetLocationCommand::getCommandName() {

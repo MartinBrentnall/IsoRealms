@@ -29,11 +29,13 @@ class HUDComponentProxy {
   HUDComponentProxy();
   
   void setHUDComponentPosition(HUDComponentPosition*);
+  bool isComponent(HUDComponentPosition*);
   
   float getLeft();
   float getRight();
   float getBottom();
   float getTop();
+  std::string getSource(IComponentSources*);
 };
 
 #endif

@@ -21,6 +21,8 @@
 
 #include <set>
 
+#include <IsoRealms/Script.h>
+
 #include "../ISequencePlayer.h"
 
 /**
@@ -116,6 +118,7 @@ class PlayerWithScripts:public ISequencePlayer,
    * Implements IPlugin *
   \**********************/
   void load(DOMNodeWrapper* node);
+  void save(DOMNodeWriter* node);
   void setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry*);
   std::vector<IDynamicElement*> getPreLoopCommands();
 };

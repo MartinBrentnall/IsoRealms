@@ -64,7 +64,7 @@ IPlugin* BlockFactory::getPlugin(PlugSocket* socket) {
 }
 
 void BlockFactory::save(DOMNodeWriter* node) {
-  // TODO: Implement save functionality
+  cProperties->save(node);
 }
 
 void BlockFactory::load(DOMNodeWrapper* node) {

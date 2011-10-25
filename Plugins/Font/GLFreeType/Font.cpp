@@ -20,23 +20,22 @@
 
 void Font::load(DOMNodeWrapper* node) {
   std::string mFontLocation;
-  std::string mFontName;
-  int mDetail = 64;
+  cDetail = 64;
   
   // TODO: Prevent duplicate details / unspecified details
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "File") {
-      std::string mFontFileName = mNode->getStringValue();
-      mFontLocation = System::getResource(mFontFileName);
+      cFilename = mNode->getStringValue();
+      mFontLocation = System::getResource(cFilename);
     } else if (mValueAsString == "Detail") {
-      mDetail = mNode->getIntegerValue();
+      cDetail = mNode->getIntegerValue();
     }
   }
 
   // TODO: Correct for screen shape.
-  cScale = mDetail / 2.0;
+  cScale = cDetail / 2.0;
   cTextures = new GLuint[128];
   cWidths = new double[128];
 
@@ -55,7 +54,7 @@ void Font::load(DOMNodeWrapper* node) {
   }
 
   // Set the character size (1 pixel is 64 units)
-  FT_Set_Char_Size(face, mDetail << 6, mDetail << 6, 96, 96);
+  FT_Set_Char_Size(face, cDetail << 6, cDetail << 6, 96, 96);
 
   // Allocate memory for OpenGL stuff we're creating.
   cGLListBase = glGenLists(128);
@@ -69,6 +68,16 @@ void Font::load(DOMNodeWrapper* node) {
   // Free up some stuff that we no longer need.
   FT_Done_Face(face);
   FT_Done_FreeType(library);
+}
+
+void Font::save(DOMNodeWriter* node) {
+  DOMNodeWriter* mFileNode = node->addBranch("File");
+  mFileNode->addText(cFilename);
+  
+  DOMNodeWriter* mDetailNode = node->addBranch("Detail");
+  std::stringstream mDetailString;
+  mDetailString << cDetail;
+  mDetailNode->addText(mDetailString.str());
 }
 
 int Font::nextPowerOfTwo(int a) {

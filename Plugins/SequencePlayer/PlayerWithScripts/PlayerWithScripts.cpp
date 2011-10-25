@@ -105,6 +105,22 @@ void PlayerWithScripts::load(DOMNodeWrapper* node) {
   }
 }
 
+void PlayerWithScripts::save(DOMNodeWriter* node) {
+  node->addAttribute("length", cLength);
+  if (cLeftStartScript != NULL) {
+    cLeftStartScript->save(node, "LeftStartScript");
+  }
+  if (cLeftEndScript != NULL) {
+    cLeftEndScript->save(node, "LeftEndScript");
+  }
+  if (cReachedStartScript != NULL) {
+    cReachedStartScript->save(node, "ReachedStartScript");
+  }
+  if (cReachedEndScript != NULL) {
+    cReachedEndScript->save(node, "ReachedEndScript");
+  }
+}
+
 std::vector<IDynamicElement*> PlayerWithScripts::getPreLoopCommands() {
   std::vector<IDynamicElement*> mPlayerUpdater;
   mPlayerUpdater.push_back(this);

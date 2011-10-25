@@ -79,6 +79,8 @@ class SpindizzyCamera:public ICamera,
     public:
     SetLocationCommand(SpindizzyCamera*, const std::string&, int, float, float, float);
     
+    void save(DOMNodeWriter*);
+    
     /***************************\
      * Implements IUserCommand *
     \***************************/
@@ -87,9 +89,9 @@ class SpindizzyCamera:public ICamera,
   };
     
   std::vector<IUserCommand*> cCameraCommands;
+  std::vector<SetLocationCommand*> cModes;
   
   ICommandRegistry* cCommandRegistry;
-  std::vector<PlugSocket*> cSockets;
   std::vector<ILocationAwareness*> cLocationAwareness;
   int cSelectedLocation;
   ISequencePlayer* cSequencePlayer;
@@ -130,6 +132,7 @@ class SpindizzyCamera:public ICamera,
   void initPlugin(IZone*, unsigned int);
   void setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry*);
   void load(DOMNodeWrapper*);
+  void save(DOMNodeWriter*);
   
   /*****************************\
    * Implements IVisualElement *

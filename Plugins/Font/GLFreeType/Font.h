@@ -44,6 +44,8 @@
 
 class Font:public IFont {
   private:
+  std::string cFilename;
+  int cDetail;
   double cScale;
 
   /**
@@ -82,6 +84,7 @@ class Font:public IFont {
    * Implements IPlugin *
   \**********************/
   void load(DOMNodeWrapper*);
+  void save(DOMNodeWriter*);
 
   /********************\
    * Implements IFont *

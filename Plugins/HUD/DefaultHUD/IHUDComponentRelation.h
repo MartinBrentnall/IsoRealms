@@ -19,9 +19,16 @@
 #ifndef I_HUD_COMPONENT_RELATION_H
 #define I_HUD_COMPONENT_RELATION_H
 
+#include <string>
+
+#include <IsoRealms/DOMNodeWriter.h>
+
+#include "IComponentSources.h"
+
 class IHUDComponentRelation {
   public:
   virtual float getLocation() = 0;
+  virtual void save(DOMNodeWriter*, const std::string&, IComponentSources*) = 0;
 };
 
 #endif

@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <IsoRealmsConfiguration>
   <Engine name="Default">
-    <GlobalAction type="PopControlLoopCommand" name="PopControlLoop"/>
-    <GlobalAction type="TerminateEngineCommand" name="TerminateEngineCommand"/>
     
     <!-- Editor configuration -->
     <ControlLoop name="SimpleEditor" init="false">
@@ -46,25 +44,9 @@
           </MenuItem>
         </Menu>
       </MenuBar>
-      
-      <OnExit>
-        <ExecuteCommand type="PopControlLoop"/>
-      </OnExit>
     </ControlLoop>
     
-    <GlobalAction type="PushControlLoopCommand" name="CreateNewMap">
-      <ControlLoop>SimpleEditor</ControlLoop>
-    </GlobalAction>
-    
-    <ControlLoop name="Runtime" init="false">
-      <OnExit>
-        <ExecuteCommand type="PopControlLoop"/>
-      </OnExit>
-    </ControlLoop>
-    
-    <GlobalAction type="PushControlLoopCommand" name="StartGame">
-      <ControlLoop>Runtime</ControlLoop>
-    </GlobalAction>
+    <ControlLoop name="Runtime" init="false"/>
     
     <!-- Front-end configuration -->
     <ControlLoop name="AttractManager" init="true">
@@ -85,11 +67,11 @@
     
       <FrontEnd name="Menu">
         <MenuItem name="Start!">
-          <ExecuteCommand type="StartGame"/>
+          <ExecuteCommand type="Push:Runtime"/>
         </MenuItem>
         <Menu name="Editor">
           <MenuItem name="Create a new map">
-            <ExecuteCommand type="CreateNewMap"/>
+            <ExecuteCommand type="Push:SimpleEditor"/>
           </MenuItem>
           <MenuItemList name="Edit an existing map" fromdir="Maps/" filter="*.isorealms">
             <LoadMapForEditing/>
@@ -113,12 +95,8 @@
         <MenuItem name="High Scores"/>
         <MenuItem name="Help"/>
         <MenuItem name="Quit">
-          <ExecuteCommand type="TerminateEngineCommand"/>
-        </MenuItem>
-        
-        <ExitCommand>
-          <ExecuteCommand type="TerminateEngineCommand"/>
-        </ExitCommand>
+          <ExecuteCommand type="Pop"/>
+        </MenuItem>        
       </FrontEnd>
   
       <Layer>Background</Layer>

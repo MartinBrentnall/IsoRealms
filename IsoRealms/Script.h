@@ -22,14 +22,16 @@
 #include <vector>
 
 #include "DOMNodeWriter.h"
+#include "ICommandRegistry.h"
 #include "IUserCommand.h"
 
 class Script {
   private:
+  ICommandRegistry* cCommandRegistry;
   std::vector<IUserCommand*> cCommands;
 
   public:
-  Script(std::vector<IUserCommand*>);
+  Script(std::vector<IUserCommand*>, ICommandRegistry*);
     
   void save(DOMNodeWriter*, const std::string&);
   void execute();

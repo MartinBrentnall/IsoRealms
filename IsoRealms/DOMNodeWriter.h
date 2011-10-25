@@ -81,6 +81,30 @@ class DOMNodeWriter {
    * @param int          Attribute content.
    */
   void addAttribute(std::string, int);
+  
+  /**
+   * Add the specified attribute of the specified name.
+   * 
+   * @param std::string  Attribute name.
+   * @param int          Attribute content.
+   */
+  void addAttribute(std::string, unsigned int);
+  
+  /**
+   * Add the specified attribute of the specified name.
+   * 
+   * @param std::string&  Attribute name.
+   * @param float         Attribute content.
+   */
+  void addAttribute(const std::string&, float);
+
+  /**
+   * Add the specified attribute of the specified name.
+   * 
+   * @param std::string&  Attribute name.
+   * @param double        Attribute content.
+   */
+  void addAttribute(const std::string&, double);
 
   /**
    * Save the structure to the specified filename.

@@ -18,6 +18,8 @@
  */
 #include "DefaultFourColourSupport.h"
 
+Colour* DefaultFourColourSupport::DEFAULT_COLOUR = new Colour(1.0f, 0.0f, 1.0f, 1.0f);
+
 DefaultFourColourSupport::DefaultFourColourSupport() {
   cPaletteConfigurationCommand = new PaletteConfigurationCommand(this);
   std::vector<std::string> mPath;
@@ -28,12 +30,8 @@ DefaultFourColourSupport::DefaultFourColourSupport() {
 }
 
 Colour* DefaultFourColourSupport::getColour(const std::string& entry) {
-  Colour* mColour= cPalette[entry];
-  if (mColour == NULL) {
-    mColour = new Colour(1.0f, 0.0f, 0.0f, 0.0f);
-    cPalette[entry] = mColour;
-  }
-  return mColour;
+  std::map<std::string, Colour*>::iterator i = cPalette.find(entry);
+  return i == cPalette.end() ? DEFAULT_COLOUR : i->second;
 }
 
 void DefaultFourColourSupport::addChangeListener(IFourColourSupportListener* listener) {

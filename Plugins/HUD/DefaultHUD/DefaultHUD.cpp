@@ -89,6 +89,24 @@ void DefaultHUD::load(DOMNodeWrapper* node) {
   }
 }
 
+std::string DefaultHUD::getSource(HUDComponentPosition* component) {
+  for (std::map<std::string, HUDComponentProxy*>::iterator i = cComponentsByName.begin(); i != cComponentsByName.end(); i++) {
+    if (i->second->isComponent(component)) {
+      return i->first;
+    }
+  }
+  return "";
+}
+
+void DefaultHUD::save(DOMNodeWriter* node) {
+  for (unsigned int i = 0; i < cComponents.size(); i++) {
+    DOMNodeWriter* mComponentNode = node->addBranch("Component");
+    std::string mSource = getSource(cComponents[i]);
+    mComponentNode->addAttribute("source", mSource);
+    cComponents[i]->save(mComponentNode, this);
+  }
+}
+
 void DefaultHUD::update(int milliseconds) {
   for (unsigned int i = 0; i < cComponents.size(); i++) {
     cComponents[i]->update(milliseconds);

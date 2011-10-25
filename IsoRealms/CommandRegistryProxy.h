@@ -33,12 +33,17 @@ class CommandRegistryProxy:public ICommandRegistry {
 
   public:
   CommandRegistryProxy(CommandDirectory*, std::vector<std::string>);
-    
+
+  IUserCommand* getCommand(const std::string&);
+  
+  /*******************************\
+   * Implements ICommandRegistry *
+  \*******************************/
   void selectCommands(ICommandSelectionListener*);
   Script* getScript(DOMNodeWrapper*);
+  std::string getLocation(IUserCommand*);
   void registerCommand(IUserCommand*);
   void unregisterCommand(IUserCommand*);
-  IUserCommand* getCommand(const std::string&);
 };
 
 #endif

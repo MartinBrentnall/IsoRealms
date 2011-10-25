@@ -31,7 +31,8 @@ class ScreenRelation:public IHUDComponentRelation {
   /************************************\
    * Implements IHUDComponentRelation *
   \************************************/
-  float getLocation();   
+  float getLocation();
+  void save(DOMNodeWriter*, const std::string&, IComponentSources*);
 };
 
 #endif

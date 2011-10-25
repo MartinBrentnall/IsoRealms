@@ -27,6 +27,7 @@
 
 #include "../IHUD.h"
 
+#include "IComponentSources.h"
 #include "IHUDComponentRelation.h"
 
 class HUDComponentPosition {
@@ -52,6 +53,7 @@ class HUDComponentPosition {
   float getRight();
   float getBottom();
   float getTop();
+  void save(DOMNodeWriter*, IComponentSources*);
 };
 
 #endif

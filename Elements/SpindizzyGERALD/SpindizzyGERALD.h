@@ -33,6 +33,7 @@
 #include <IsoRealms/IVisualElement.h>
 #include <IsoRealms/KeyStates.h>
 #include <IsoRealms/MiscFunctions.h>
+#include <IsoRealms/Script.h>
 #include <IsoRealms/Vertex.h>
 
 #include "../../Plugins/3DModel/ISimpleModel.h"

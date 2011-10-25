@@ -34,7 +34,8 @@
 
 class DefaultFourColourSupport:public IFourColourSupport {
   private:
-
+  static Colour* DEFAULT_COLOUR; // TODO: Should be const?
+    
   /**
    * This command is executed to show the palette editor component.
    */

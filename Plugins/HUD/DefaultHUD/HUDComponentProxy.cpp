@@ -26,6 +26,10 @@ void HUDComponentProxy::setHUDComponentPosition(HUDComponentPosition* hudCompone
   cHUDComponentPosition = hudComponentPosition;
 }
 
+bool HUDComponentProxy::isComponent(HUDComponentPosition* hudComponentPosition) {
+  return cHUDComponentPosition == hudComponentPosition;
+}
+
 float HUDComponentProxy::getLeft() {
   return cHUDComponentPosition->getLeft();
 }
@@ -40,4 +44,8 @@ float HUDComponentProxy::getBottom() {
 
 float HUDComponentProxy::getTop() {
   return cHUDComponentPosition->getTop();
+}
+
+std::string HUDComponentProxy::getSource(IComponentSources* sources) {
+  return sources->getSource(cHUDComponentPosition);
 }

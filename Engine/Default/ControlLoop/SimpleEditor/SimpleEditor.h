@@ -35,14 +35,13 @@
 #include <IsoRealms/IElementFactory.h>
 #include <IsoRealms/IElementGateway.h>
 #include <IsoRealms/IElementRegistryListener.h>
+#include <IsoRealms/IFont.h>
 #include <IsoRealms/IHUDComponent.h>
 #include <IsoRealms/IPluginRegistryListener.h>
 #include <IsoRealms/IPluginSupport.h>
 #include <IsoRealms/Map.h>
 #include <IsoRealms/PlugSocket.h>
 #include <IsoRealms/ScreenConfiguration.h>
-
-#include "../../../../Plugins/Font/IFontPlugin.h"
 
 class OpenCommand;
 
@@ -88,7 +87,7 @@ class SimpleEditor:public IControlLoop,
   CommandDirectory cCommandRegistry;
   PluginRegistry cPluginRegistry;
   std::vector<PlugSocket*> cFontSocket;
-  IFontPlugin* cFont;
+  IFont* cFont;
   bool cEditorFocus;
   MenuBar* cMenuBar;
   EntityClassDialogFactory* cElementSetsFactory;

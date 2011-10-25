@@ -143,3 +143,28 @@ float HUDComponentPosition::getTop() {
   float mYPosition = getYPosition();
   return mYPosition + mYScale;
 }
+
+void HUDComponentPosition::save(DOMNodeWriter* node, IComponentSources* sources) {
+  if ((cTopRelation == NULL || cBottomRelation == NULL) && (cLeftRelation == NULL || cRightRelation == NULL) && (cXScale == cYScale && cXScale != 1.0f)) {
+    node->addAttribute("scale", cXScale);
+  } else {
+    if ((cLeftRelation == NULL || cRightRelation == NULL) && cXScale != 1.0f) {
+      node->addAttribute("xScale", cXScale);
+    }
+    if ((cTopRelation == NULL || cBottomRelation == NULL) && cYScale != 1.0f) {
+      node->addAttribute("yScale", cYScale);
+    }
+  }
+  if (cTopRelation != NULL) {
+    cTopRelation->save(node, "top", sources);
+  }
+  if (cBottomRelation != NULL) {
+    cBottomRelation->save(node, "bottom", sources);
+  }
+  if (cLeftRelation != NULL) {
+    cLeftRelation->save(node, "left", sources);
+  }
+  if (cRightRelation != NULL) {
+    cRightRelation->save(node, "right", sources);
+  }
+}

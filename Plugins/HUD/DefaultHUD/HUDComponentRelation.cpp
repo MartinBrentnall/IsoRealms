@@ -39,3 +39,7 @@ float HUDComponentRelation::getLocation() {
   return 0.0f;
 }
 
+void HUDComponentRelation::save(DOMNodeWriter* node, const std::string& name, IComponentSources* sources) {
+  std::string mSource = cRelative->getSource(sources);
+  node->addAttribute(name, (cRelationType == ADJACENT ? "adjacent " : "align ") + mSource); 
+}

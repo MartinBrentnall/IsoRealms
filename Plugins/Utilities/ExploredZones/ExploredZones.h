@@ -28,6 +28,7 @@
 #include <IsoRealms/IPluginRegistry.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 #include <IsoRealms/IZoneRenderer.h>
+#include <IsoRealms/Script.h>
 
 #include "../IUtilities.h"
 

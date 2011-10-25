@@ -24,12 +24,14 @@
 #include "DOMNodeWrapper.h"
 #include "ICommandSelectionListener.h"
 #include "IUserCommand.h"
-#include "Script.h"
+
+class Script;
 
 class ICommandRegistry {
   public:
   virtual void selectCommands(ICommandSelectionListener*) = 0;
   virtual Script* getScript(DOMNodeWrapper*) = 0;
+  virtual std::string getLocation(IUserCommand*) = 0;
   virtual void registerCommand(IUserCommand*) = 0;
   virtual void unregisterCommand(IUserCommand*) = 0;
 };

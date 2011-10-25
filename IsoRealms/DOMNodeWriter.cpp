@@ -47,10 +47,34 @@ void DOMNodeWriter::addAttribute(std::string name, std::string text) {
   cElement->setAttributeNode(mAttribute);
 }
 
+void DOMNodeWriter::addAttribute(std::string name, unsigned int val) {
+  DOMAttr* mAttribute = cDocument->createAttribute(XMLString::transcode(name.c_str()));
+  char mAttributeValue[16];
+  sprintf(mAttributeValue, "%u", val);
+  mAttribute->setValue(XMLString::transcode(mAttributeValue));
+  cElement->setAttributeNode(mAttribute);
+}
+
 void DOMNodeWriter::addAttribute(std::string name, int val) {
   DOMAttr* mAttribute = cDocument->createAttribute(XMLString::transcode(name.c_str()));
   char mAttributeValue[16];
   sprintf(mAttributeValue, "%d", val);
+  mAttribute->setValue(XMLString::transcode(mAttributeValue));
+  cElement->setAttributeNode(mAttribute);
+}
+
+void DOMNodeWriter::addAttribute(const std::string& name, float val) {
+  DOMAttr* mAttribute = cDocument->createAttribute(XMLString::transcode(name.c_str()));
+  char mAttributeValue[16];
+  sprintf(mAttributeValue, "%f", val);
+  mAttribute->setValue(XMLString::transcode(mAttributeValue));
+  cElement->setAttributeNode(mAttribute);
+}
+
+void DOMNodeWriter::addAttribute(const std::string& name, double val) {
+  DOMAttr* mAttribute = cDocument->createAttribute(XMLString::transcode(name.c_str()));
+  char mAttributeValue[16];
+  sprintf(mAttributeValue, "%f", val);
   mAttribute->setValue(XMLString::transcode(mAttributeValue));
   cElement->setAttributeNode(mAttribute);
 }

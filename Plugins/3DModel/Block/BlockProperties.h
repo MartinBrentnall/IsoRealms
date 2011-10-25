@@ -23,6 +23,7 @@
 
 #include "../../SpindizzyTextureSet/ISpindizzyTextureSet.h"
 
+// TODO: This class is not required during gameplay
 class BlockProperties {
   private:
   ISpindizzyTextureSet** cTextureSet;
@@ -49,6 +50,9 @@ class BlockProperties {
   void setEastSurfaceTexture(const std::string&);
   void setSouthSurfaceTexture(const std::string&);
   void setWestSurfaceTexture(const std::string&);
+
+  void saveProperty(DOMNodeWriter*, const std::string&, const std::string&);
+  void save(DOMNodeWriter*);
 };
 
 #endif

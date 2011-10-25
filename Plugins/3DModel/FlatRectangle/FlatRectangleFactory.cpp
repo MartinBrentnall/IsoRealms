@@ -21,7 +21,7 @@
 FlatRectangleFactory::FlatRectangleFactory() {
   assignDummyPlugin(&cTextureSet, "SpindizzyTextureSet");
   cTextureSetSocket.push_back(new PlugSocket("SpindizzyTextureSet"));
-  cSize = 1.0;
+  cSize = 1.0f;
   cTextureName = "";
   updateTexture();
 }
@@ -58,6 +58,16 @@ void FlatRectangleFactory::updateTexture() {
 }
 
 void FlatRectangleFactory::save(DOMNodeWriter* node) {
+  if (cTextureName != "") {
+    DOMNodeWriter* mTextureNode = node->addBranch("Texture");
+    mTextureNode->addText(cTextureName);
+  }
+  if (cSize != 1.0f) {
+    DOMNodeWriter* mSizeNode = node->addBranch("Size");
+    std::stringstream mSizeString;
+    mSizeString << cSize;
+    mSizeNode->addText(mSizeString.str());
+  }
 }
 
 void FlatRectangleFactory::load(DOMNodeWrapper* node) {

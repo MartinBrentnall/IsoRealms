@@ -18,12 +18,20 @@
  */
 #include "Script.h"
 
-Script::Script(std::vector<IUserCommand*> commands) {
+Script::Script(std::vector<IUserCommand*> commands, ICommandRegistry* commandRegistry) {
+  cCommandRegistry = commandRegistry;
   cCommands = commands;
 }
 
 void Script::save(DOMNodeWriter* node, const std::string& name) {
-  // TODO: Save the script
+  if (!cCommands.empty()) {
+    DOMNodeWriter* mScriptNode = node->addBranch(name);
+    for (unsigned int i = 0; i < cCommands.size(); i++) {
+      DOMNodeWriter* mCommandNode = mScriptNode->addBranch("Command");
+      std::string mCommandLocation = cCommandRegistry->getLocation(cCommands[i]);
+      mCommandNode->addText(mCommandLocation);
+    }
+  }
 }
 
 void Script::execute() {

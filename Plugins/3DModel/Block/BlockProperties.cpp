@@ -70,3 +70,18 @@ void BlockProperties::setWestSurfaceTexture(const std::string& name) {
   cWestSurfaceTexture = name;
 }
 
+void BlockProperties::saveProperty(DOMNodeWriter* node, const std::string& name, const std::string& texture) {
+  if (texture != "") {
+    DOMNodeWriter* mNode = node->addBranch(name); // TODO: Dealloc
+    mNode->addText(texture);
+  }
+}
+
+void BlockProperties::save(DOMNodeWriter* node) {
+  saveProperty(node, "TopSurfaceTexture",    cTopSurfaceTexture);
+  saveProperty(node, "BottomSurfaceTexture", cBottomSurfaceTexture);
+  saveProperty(node, "NorthSurfaceTexture",  cNorthSurfaceTexture);
+  saveProperty(node, "EastSurfaceTexture",   cEastSurfaceTexture);
+  saveProperty(node, "SouthSurfaceTexture",  cSouthSurfaceTexture);
+  saveProperty(node, "WestSurfaceTexture",   cWestSurfaceTexture);
+}

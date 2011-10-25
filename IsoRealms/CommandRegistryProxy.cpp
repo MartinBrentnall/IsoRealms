@@ -48,3 +48,6 @@ void CommandRegistryProxy::unregisterCommand(IUserCommand* command) {
   cRegistrationDirectory->unregisterCommand(command);
 }
 
+std::string CommandRegistryProxy::getLocation(IUserCommand* command) {
+  return cRegistrationDirectory->getLocation(command);  
+}

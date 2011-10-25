@@ -31,11 +31,13 @@
 #include "HUDComponentProxy.h"
 #include "HUDComponentPosition.h"
 #include "HUDComponentRelation.h"
+#include "IComponentSources.h"
 #include "ScreenRelation.h"
 
 class DefaultHUD:public IHUD,
                  public IDynamicElement,
-                 public IVisualElement {
+                 public IVisualElement,
+                 public IComponentSources {
   private:
   std::map<std::string, IHUDComponentFactory*> cHUDComponentSources;
   std::vector<HUDComponentPosition*> cComponents;
@@ -60,6 +62,7 @@ class DefaultHUD:public IHUD,
    * Implements IPlugin *
   \**********************/
   void load(DOMNodeWrapper*);
+  void save(DOMNodeWriter*);
   std::vector<IDynamicElement*> getPostLoopCommands();
   std::vector<IVisualElement*> getPostLoopRenderers();
 
@@ -68,6 +71,11 @@ class DefaultHUD:public IHUD,
   \*******************/
   void registerHUDComponentFactory(IHUDComponentFactory*);
   void unregisterHUDComponentFactory(IHUDComponentFactory*);
+  
+  /********************************\
+   * Implements IComponentSources *
+  \********************************/
+  std::string getSource(HUDComponentPosition* component);
 };
 
 #endif

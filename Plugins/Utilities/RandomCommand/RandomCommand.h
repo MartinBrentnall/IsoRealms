@@ -21,6 +21,7 @@
 
 #include <IsoRealms/ICommandRegistry.h>
 #include <IsoRealms/IUserCommand.h>
+#include <IsoRealms/Script.h>
 
 #include "../IUtilities.h"
 
