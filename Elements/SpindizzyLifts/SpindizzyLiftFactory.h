@@ -78,6 +78,8 @@ class SpindizzyLiftFactory:public ISpindizzyLiftFactory {
   void setLiftModelFactory(ISimpleModelFactory*);
   std::vector<IUserCommand*> getLiftCommands();  
   
+  void save(DOMNodeWriter*, std::vector<ISimpleModelFactory*>);
+  
   /************************************\
    * Implements ISpindizzyLiftFactory *
   \************************************/

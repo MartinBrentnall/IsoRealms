@@ -47,6 +47,8 @@ class ISpindizzyBlockFactory:public ElementFactory<ISpindizzyBlockSet, ISpindizz
   virtual void unregisterSurfaces(ISurfaceProcessor*) = 0;
   
   virtual BlockTypeProperties* getBlockTypeProperties() = 0;
+  
+  virtual void save(DOMNodeWriter*) = 0;
 };
 
 #endif

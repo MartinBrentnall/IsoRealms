@@ -127,13 +127,15 @@ IPlugin* SpindizzyGERALDSet::getPlugin(PlugSocket* socket) {
   return NULL;
 }
 
-void SpindizzyGERALDSet::save(DOMNodeWriter* node) {
-  // TODO: Implement this
-}
-
 void SpindizzyGERALDSet::load(DOMNodeWrapper* node) {
   for (unsigned int i = 0; i < cElementFactories.size(); i++) {
     static_cast<SpindizzyGERALDFactory*>(cElementFactories[i])->loadConfiguration(node, cCommandRegistry);
+  }
+}
+
+void SpindizzyGERALDSet::save(DOMNodeWriter* node) {
+  for (unsigned int i = 0; i < cElementFactories.size(); i++) {
+    static_cast<SpindizzyGERALDFactory*>(cElementFactories[i])->save(node);
   }
 }
 

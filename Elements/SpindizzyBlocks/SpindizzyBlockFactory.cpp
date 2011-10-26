@@ -76,6 +76,12 @@ BlockTypeProperties* SpindizzyBlockFactory::getBlockTypeProperties() {
   return &cBlockTypeProperties;
 }
 
+void SpindizzyBlockFactory::save(DOMNodeWriter* node) {
+  DOMNodeWriter* mBlockTypeNode = node->addBranch("BlockType");
+  mBlockTypeNode->addAttribute("name", cFactoryName);
+  cBlockTypeProperties.save(mBlockTypeNode);
+}
+
 void SpindizzyBlockFactory::setEditingContext(BlockLocation* editingLocation, IComponentContainer* componentContainer) {
   cComponentContainer = componentContainer;
   cEditingLocation = editingLocation;

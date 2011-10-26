@@ -40,6 +40,13 @@ void ModelToHUD::load(DOMNodeWrapper* node) {
   }
 }
 
+void ModelToHUD::save(DOMNodeWriter* node) {
+  DOMNodeWriter* mLocationNode = node->addBranch("Location");
+  mLocationNode->addAttribute("x", cModelLocation.x);
+  mLocationNode->addAttribute("y", cModelLocation.y);
+  mLocationNode->addAttribute("z", cModelLocation.z);
+}
+
 std::vector<PlugSocket*> ModelToHUD::getPlugSockets() {
   return cSockets;
 }

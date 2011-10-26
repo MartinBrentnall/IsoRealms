@@ -57,6 +57,7 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
   private:
   class HUDClueData {
     private:
+    std::string cName;
     Vertex cLocation;
     ISimpleModelFactory* cFactory;
     ISimpleModel* cModel;
@@ -64,9 +65,11 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
     public:
     HUDClueData(ISimpleModelFactory*); 
     
-    ISimpleModel* initClueData(DOMNodeWrapper*);
+    ISimpleModel* initClueData(DOMNodeWrapper*, const std::string&);
     
     ISimpleModelFactory* getFactory();
+    
+    void save(DOMNodeWriter*);
   };
     
   std::map<IElementContainer*, SpindizzyBlockHandler*> cElementHandlers;

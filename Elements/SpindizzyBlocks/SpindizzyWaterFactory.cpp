@@ -140,6 +140,10 @@ BlockTypeProperties* SpindizzyWaterFactory::getBlockTypeProperties() {
   return NULL;
 }
 
+void SpindizzyWaterFactory::save(DOMNodeWriter*) {
+  // Nothing to do.
+}
+
 void SpindizzyWaterFactory::configureBlock(DOMNodeWrapper*, ICommandRegistry*) {
   // Nothing to do.
 }

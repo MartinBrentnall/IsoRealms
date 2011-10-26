@@ -32,6 +32,7 @@ class ToggleSwitch {
   
   void toggle();
   void refresh();
+  void save(DOMNodeWriter*);
 };
 
 #endif

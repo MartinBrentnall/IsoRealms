@@ -19,8 +19,8 @@
 #include "ToggleSwitches.h"
 
 void ToggleSwitches::createSwitchCommand(DOMNodeWrapper* node) {
-  Script* mOnScript;
-  Script* mOffScript;
+  Script* mOnScript = Script::getDummy();
+  Script* mOffScript = Script::getDummy();
   std::string mCommandName = node->getAttribute("name");
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
@@ -53,7 +53,9 @@ void ToggleSwitches::load(DOMNodeWrapper* node) {
 }
 
 void ToggleSwitches::save(DOMNodeWriter* node) {
-  // TODO: Implement this
+  for (unsigned int i = 0; i < cSwitchCommands.size(); i++) {
+    cSwitchCommands[i]->save(node);
+  }
 }
 
 void ToggleSwitches::setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry* commandRegistry) {
@@ -73,6 +75,12 @@ std::string ToggleSwitches::ToggleCommand::getCommandName() {
   return "Toggle " + cName;
 }
 
+void ToggleSwitches::ToggleCommand::save(DOMNodeWriter* node) {
+  DOMNodeWriter* mSwitchNode = node->addBranch("Switch");
+  mSwitchNode->addAttribute("name", cName);
+  cSwitch->save(mSwitchNode);
+}
+
 ToggleSwitches::RefreshCommand::RefreshCommand(ToggleSwitch* aSwitch, const std::string& name) {
   cSwitch = aSwitch;
   cName = name;
@@ -84,6 +92,10 @@ void ToggleSwitches::RefreshCommand::execute() {
 
 std::string ToggleSwitches::RefreshCommand::getCommandName() {
   return "Refresh " + cName;
+}
+
+void ToggleSwitches::RefreshCommand::save(DOMNodeWriter* node) {
+  // Nothing to do.
 }
 
 extern "C" IPlugin* create() {

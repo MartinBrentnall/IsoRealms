@@ -94,6 +94,7 @@ void SpindizzySwitches::addSwitch(const std::string& name, bool primary) {
 
 SpindizzySwitches::ResetCommand::ResetCommand(SpindizzySwitches* parent) {
   cParent = parent;
+  cResetScript = Script::getDummy();
 }
 
 void SpindizzySwitches::ResetCommand::setScript(Script* script) {
@@ -133,8 +134,8 @@ SpindizzySwitches::SwitchCommand::SwitchCommand(SpindizzySwitches* parent, DOMNo
   cPrimary = mSwitchType == "primary";
   cSwitch = NULL;
   cHUDModel = cParent->cHUDModels[mHUDModelIndex]->createModel(&(cParent->cDefaultVertex));
-  Script* mOnScript;
-  Script* mOffScript;
+  Script* mOnScript = Script::getDummy();
+  Script* mOffScript = Script::getDummy();
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();

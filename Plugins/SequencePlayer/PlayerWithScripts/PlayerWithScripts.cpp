@@ -23,10 +23,10 @@ PlayerWithScripts::PlayerWithScripts() {
   cForward = false;
   cLength = 1000;
   cPosition = 0;
-  cLeftStartScript = NULL;
-  cLeftEndScript = NULL;
-  cReachedEndScript = NULL;
-  cReachedStartScript = NULL;
+  cLeftStartScript = Script::getDummy();
+  cLeftEndScript = Script::getDummy();
+  cReachedEndScript = Script::getDummy();
+  cReachedStartScript = Script::getDummy();
 }
 
 void PlayerWithScripts::addSequence(ISequence* sequence) {
@@ -56,26 +56,18 @@ void PlayerWithScripts::unpause() {
 void PlayerWithScripts::update(int milliseconds) {
   if (!cPaused && (cForward ? cPosition < cLength : cPosition > 0)) {
     if (cForward && cPosition == 0) {
-      if (cLeftStartScript != NULL) {
-        cLeftStartScript->execute();
-      }
+      cLeftStartScript->execute();
     } else if (!cForward && cPosition < cLength) {
-      if (cLeftEndScript != NULL) {
-        cLeftEndScript->execute();
-      }
+      cLeftEndScript->execute();
     }
     cPosition += cForward ? milliseconds : -milliseconds;
     if (cPosition >= cLength || cPosition <= 0) {
       if (cForward) {
         cPosition = cLength;
-        if (cReachedEndScript != NULL) {
-          cReachedEndScript->execute();
-        }
+        cReachedEndScript->execute();
       } else {
         cPosition = 0;
-        if (cReachedStartScript != NULL) {
-          cReachedStartScript->execute();
-        }
+        cReachedStartScript->execute();
       }
     }
     for (std::set<ISequence*>::iterator i = cSequences.begin(); i != cSequences.end(); i++) {
@@ -107,18 +99,10 @@ void PlayerWithScripts::load(DOMNodeWrapper* node) {
 
 void PlayerWithScripts::save(DOMNodeWriter* node) {
   node->addAttribute("length", cLength);
-  if (cLeftStartScript != NULL) {
-    cLeftStartScript->save(node, "LeftStartScript");
-  }
-  if (cLeftEndScript != NULL) {
-    cLeftEndScript->save(node, "LeftEndScript");
-  }
-  if (cReachedStartScript != NULL) {
-    cReachedStartScript->save(node, "ReachedStartScript");
-  }
-  if (cReachedEndScript != NULL) {
-    cReachedEndScript->save(node, "ReachedEndScript");
-  }
+  cLeftStartScript->save(node, "LeftStartScript");
+  cLeftEndScript->save(node, "LeftEndScript");
+  cReachedStartScript->save(node, "ReachedStartScript");
+  cReachedEndScript->save(node, "ReachedEndScript");
 }
 
 std::vector<IDynamicElement*> PlayerWithScripts::getPreLoopCommands() {

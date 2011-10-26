@@ -19,7 +19,7 @@
 #include "CommandTrigger.h"
 
 CommandTrigger::CommandTrigger() {
-  cObjectivesMetScript = NULL;
+  cObjectivesMetScript = Script::getDummy();
 }
 
 void CommandTrigger::check() {
@@ -28,10 +28,7 @@ void CommandTrigger::check() {
       return;
     }
   }
-
-  if (cObjectivesMetScript != NULL) {
-     cObjectivesMetScript->execute();
-  }
+  cObjectivesMetScript->execute();
 }
 
 void CommandTrigger::registerObjective(IObjective* objective) {

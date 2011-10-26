@@ -32,8 +32,8 @@ ExploredZones::ExploredZones() {
   cZoneCount = 0;
   cExploredZoneRenderer = new ExploredZoneRenderer(this);
   cMapOverviewRenderer = new MapOverviewRenderer(this);
-  cZoneExploredScript = NULL;
-  cAllZonesExploredScript = NULL;
+  cZoneExploredScript = Script::getDummy();
+  cAllZonesExploredScript = Script::getDummy();
 }
 
 void ExploredZones::initPlugin(IZone* zone, unsigned int pass) {
@@ -57,12 +57,10 @@ void ExploredZones::zoneContextChanged(IZone* zone) {
     
     Vertex* mLocation = new Vertex(mX, mY, mZ);
     cExploredZones[zone] = cFlagModel->createModel(mLocation, mScale);
-    if (cZoneExploredScript != NULL) {
-      cZoneExploredScript->execute();
-    }
+    cZoneExploredScript->execute();
     updateToGoString();
     cObjectives->check();
-    if (isMet() && cAllZonesExploredScript != NULL) {
+    if (isMet()) {
       cAllZonesExploredScript->execute();
     }
   }

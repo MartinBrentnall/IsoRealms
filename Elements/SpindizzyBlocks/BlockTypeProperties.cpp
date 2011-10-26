@@ -19,8 +19,8 @@
 #include "BlockTypeProperties.h"
 
 BlockTypeProperties::BlockTypeProperties() {
-  cContactScript = NULL;
-  cImpactScript = NULL;
+  cContactScript = Script::getDummy();
+  cImpactScript = Script::getDummy();
   cSurfaceFriction = 0.001f;
   cSurfaceGrip = 1.0f;
   cSurfaceBounce = 0.0f;
@@ -67,15 +67,11 @@ void BlockTypeProperties::configure(DOMNodeWrapper* node, ICommandRegistry* comm
 }
 
 void BlockTypeProperties::executeContactScript() {
-  if (cContactScript != NULL) {
-    cContactScript->execute();
-  }
+  cContactScript->execute();
 }
 
 void BlockTypeProperties::executeImpactScript() {
-  if (cImpactScript != NULL) {
-    cImpactScript->execute();
-  }
+  cImpactScript->execute();
 }
 
 float BlockTypeProperties::getSurfaceFriction() {
@@ -122,4 +118,29 @@ ISpindizzyTexture* BlockTypeProperties::getSouthWallTexture() {
 
 ISpindizzyTexture* BlockTypeProperties::getNorthWallTexture() {
   return (*cTextureSet)->getTexture(cNorthWallTexture);
+}
+
+void BlockTypeProperties::saveTexture(DOMNodeWriter* node, const std::string& type, const std::string& name) {
+  if (name != "") {
+    DOMNodeWriter* mTextureNode = node->addBranch("Texture");
+    mTextureNode->addAttribute("type", type);
+    mTextureNode->addAttribute("name", name);
+  }    
+}
+
+void BlockTypeProperties::save(DOMNodeWriter* node) {
+  node->addAttribute("friction", cSurfaceFriction);
+  node->addAttribute("grip", cSurfaceGrip);
+  node->addAttribute("bounce", cSurfaceBounce);
+  node->addAttribute("respawnAllowed", cRespawnAllowed ? "true" : "false");
+  cImpactScript->save(node, "ImpactScript");
+  cContactScript->save(node, "ContactScript");
+  saveTexture(node, "Surface", cSurfaceTexture);
+  saveTexture(node, "NESplitSurface", cSurfaceSplitNETexture);
+  saveTexture(node, "NWSplitSurface", cSurfaceSplitNWTexture);
+  saveTexture(node, "WallWest", cWestWallTexture);
+  saveTexture(node, "WallEast", cEastWallTexture);
+  saveTexture(node, "WallSouth", cSouthWallTexture);
+  saveTexture(node, "WallNorth", cNorthWallTexture);
+  
 }

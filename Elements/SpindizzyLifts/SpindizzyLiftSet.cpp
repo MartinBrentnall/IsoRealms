@@ -19,6 +19,7 @@
 #include "SpindizzyLiftSet.h"
 
 SpindizzyLiftSet::SpindizzyLiftSet() {
+  cLiftMovedScript = Script::getDummy();
   assignDummyPlugin(&cZoneContext, "ZoneContext");
   assignDummyPlugin(&cCollidableSurfaceRegistry, "CollidableSurfaceRegistry");
   cLocked = 0;
@@ -108,6 +109,9 @@ DefaultElementHandler<SpindizzyLift>* SpindizzyLiftSet::createHandler(IElementCo
 
 void SpindizzyLiftSet::save(DOMNodeWriter* node) {
   cLiftMovedScript->save(node, "LiftMovedScript");
+  for (unsigned int i = 0; i < cElementFactories.size(); i++) {
+    static_cast<SpindizzyLiftFactory*>(cElementFactories[i])->save(node, cLiftModels);
+  }
 }
 
 void SpindizzyLiftSet::load(DOMNodeWrapper* node) {

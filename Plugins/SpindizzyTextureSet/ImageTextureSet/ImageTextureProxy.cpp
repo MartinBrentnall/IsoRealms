@@ -1,6 +1,7 @@
 #include "ImageTextureProxy.h"
 
-void ImageTextureProxy::setTexture(ISpindizzyTexture* texture) {
+void ImageTextureProxy::setTexture(const std::string& filename, ISpindizzyTexture* texture) {
+  cFilename = filename;
   cTexture = texture;
 }
 
@@ -28,6 +29,14 @@ ISpindizzyTexture::Mapping ImageTextureProxy::getMapping() {
     return cTexture->getMapping();
   }
   return TILED;
+}
+
+void ImageTextureProxy::save(DOMNodeWriter* node, const std::string& id) {
+  if (cTexture != NULL) {
+    DOMNodeWriter* mTextureNode = node->addBranch("Texture");
+    mTextureNode->addAttribute("file", cFilename);
+    mTextureNode->addAttribute("id", id);
+  }
 }
 
 ImageTextureProxy::~ImageTextureProxy() {

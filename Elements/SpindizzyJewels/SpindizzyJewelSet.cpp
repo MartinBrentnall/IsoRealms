@@ -19,6 +19,8 @@
 #include "SpindizzyJewelSet.h"
 
 SpindizzyJewelSet::SpindizzyJewelSet() {
+  cJewelCollectedScript = Script::getDummy();
+  cAllJewelsCollectedScript = Script::getDummy();
   assignDummyPlugin(&cJewelModelFactory, "3DModel");
   assignDummyPlugin(&cCollectables, "Collectables");
   cElementFactories.push_back(new SpindizzyJewelFactory(this, cJewelModelFactory));

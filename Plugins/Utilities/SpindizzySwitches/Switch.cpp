@@ -20,6 +20,8 @@
 
 Switch::Switch(const std::string& name) {
   cName = name;
+  cOnScript = Script::getDummy();
+  cOffScript = Script::getDummy();
 }
 
 Switch::Switch(const std::string& name, Script* onScript, Script* offScript) {

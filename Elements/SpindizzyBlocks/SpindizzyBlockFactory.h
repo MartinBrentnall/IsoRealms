@@ -87,6 +87,7 @@ class SpindizzyBlockFactory:public ISpindizzyBlockFactory,
   void signalAllElementsDirty();
   void unregisterSurfaces(ISurfaceProcessor*);
   BlockTypeProperties* getBlockTypeProperties();
+  void save(DOMNodeWriter*);
 
   /******************************\
    * Implements IElementFactory *

@@ -45,6 +45,7 @@ class ModelToHUD:public IUtilities,
    * Implements IPlugin *
   \**********************/
   void load(DOMNodeWrapper*);
+  void save(DOMNodeWriter*);
   
   /*****************************\
    * Implements IPluginSupport *

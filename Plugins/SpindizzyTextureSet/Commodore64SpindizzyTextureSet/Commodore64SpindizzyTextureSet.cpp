@@ -386,6 +386,19 @@ void Commodore64SpindizzyTextureSet::load(DOMNodeWrapper* node) {
   generateTextures();
 }
 
+void Commodore64SpindizzyTextureSet::saveColour(DOMNodeWriter* node, const std::string& type, const std::string& name) {
+  DOMNodeWriter* mColourNode = node->addBranch(type);
+  mColourNode->addAttribute("type", "Palette");
+  mColourNode->addAttribute("name", name);
+}
+
+void Commodore64SpindizzyTextureSet::save(DOMNodeWriter* node) {
+  saveColour(node, "Floor", cFloorColourName);
+  saveColour(node, "Wall", cWallColourName);
+  saveColour(node, "Grid", cGridColourName);
+  saveColour(node, "Extra", cBackgroundColourName);
+}
+
 extern "C" IPlugin* create() {
   return new Commodore64SpindizzyTextureSet();
 }

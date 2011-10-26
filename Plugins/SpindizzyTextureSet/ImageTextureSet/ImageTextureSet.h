@@ -27,6 +27,7 @@ class ImageTextureSet:public ISpindizzyTextureSet {
   ISpindizzyTexture* getTexture(const std::string&);
 
   void load(DOMNodeWrapper*);
+  void save(DOMNodeWriter*);
 
   ~ImageTextureSet();
 };

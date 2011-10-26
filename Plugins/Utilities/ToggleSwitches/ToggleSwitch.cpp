@@ -33,3 +33,8 @@ void ToggleSwitch::refresh() {
   Script* mScriptToExecute = cState ? cOnScript : cOffScript;
   mScriptToExecute->execute();
 }
+
+void ToggleSwitch::save(DOMNodeWriter* node) {
+  cOnScript->save(node, "On");
+  cOffScript->save(node, "Off");
+}

@@ -18,6 +18,15 @@
  */
 #include "Script.h"
 
+Script Script::DUMMY;
+
+Script* Script::getDummy() {
+  return &DUMMY; 
+}
+
+Script::Script() {
+}
+
 Script::Script(std::vector<IUserCommand*> commands, ICommandRegistry* commandRegistry) {
   cCommandRegistry = commandRegistry;
   cCommands = commands;

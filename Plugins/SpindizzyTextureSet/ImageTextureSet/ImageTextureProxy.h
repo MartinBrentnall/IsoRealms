@@ -6,9 +6,10 @@
 class ImageTextureProxy:public ISpindizzyTexture {
   private:
   ISpindizzyTexture* cTexture;
+  std::string cFilename;
 
   public:
-  void setTexture(ISpindizzyTexture*);
+  void setTexture(const std::string&, ISpindizzyTexture*);
   
   /***********************\
    * Implements ITexture *
@@ -17,6 +18,7 @@ class ImageTextureProxy:public ISpindizzyTexture {
   void texCoord2f(float, float);
   Colour* getColour(float, float);
   Mapping getMapping();
+  void save(DOMNodeWriter*, const std::string&);
   
   ~ImageTextureProxy();
 };

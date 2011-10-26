@@ -45,6 +45,22 @@ std::vector<IUserCommand*> SpindizzyLiftFactory::getLiftCommands() {
   return cLiftCommands;
 }
 
+void SpindizzyLiftFactory::save(DOMNodeWriter* node, std::vector<ISimpleModelFactory*> liftModels) {
+  int mModelIndex = -1;
+  for (unsigned int i = 0; i < liftModels.size(); i++) {
+    if (liftModels[i] == cLiftModelFactory) {
+      mModelIndex = i;
+      break;
+    }
+  }
+  DOMNodeWriter* mLiftTypeNode = node->addBranch("LiftType");
+  mLiftTypeNode->addAttribute("name", cLiftTypeName);
+  if (cState) {
+    mLiftTypeNode->addAttribute("active", "true");
+  }
+  mLiftTypeNode->addAttribute("model", mModelIndex);
+}
+
 SpindizzyLiftFactory::LiftCommand::LiftCommand(SpindizzyLiftFactory* parent, bool targetState) {
   cParent = parent;
   cTargetState = targetState;

@@ -52,6 +52,13 @@ void BlockSubtractor::load(DOMNodeWrapper* node) {
   }
 }
 
+void BlockSubtractor::save(DOMNodeWriter* node) {
+  DOMNodeWriter* mRemoveHiddenSurfacesNode = node->addBranch("RemoveHiddenSurfaces");
+  mRemoveHiddenSurfacesNode->addText(cRemoveHiddenSurfaces ? "true" : "false");
+  DOMNodeWriter* mUseAdjacentZonesNode = node->addBranch("UseAdjacentZones");
+  mUseAdjacentZonesNode->addText(cUseAdjacentZones ? "true" : "false");
+}
+
 void BlockSubtractor::registerSurfaceProvider(ISurfaceProvider* provider) {
   cCache.add(provider);
 }

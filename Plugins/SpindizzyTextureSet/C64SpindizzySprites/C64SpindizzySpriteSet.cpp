@@ -294,6 +294,19 @@ void C64SpindizzySpriteSet::load(DOMNodeWrapper* node) {
   generateTextures();
 }
 
+void C64SpindizzySpriteSet::saveColour(DOMNodeWriter* node, const std::string& type, const std::string& name) {
+  DOMNodeWriter* mColourNode = node->addBranch(type);
+  mColourNode->addAttribute("type", "Palette");
+  mColourNode->addAttribute("name", name);
+}
+
+void C64SpindizzySpriteSet::save(DOMNodeWriter* node) {
+  saveColour(node, "Colour1", cColour1Name);
+  saveColour(node, "Colour2", cColour2Name);
+  saveColour(node, "Colour3", cColour3Name);
+  saveColour(node, "Outline", cOutlineColourName);
+}
+
 C64SpindizzySpriteSet::~C64SpindizzySpriteSet() {
   delete TRANSPARENT;
   for (unsigned int i = 0; i < cPlugSockets.size(); i++) {

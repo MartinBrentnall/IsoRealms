@@ -186,10 +186,6 @@ void SpindizzyBlockSet::destroy(IElement* element) {
   delete element;
 }
 
-void SpindizzyBlockSet::save(DOMNodeWriter* node) {
-  // TODO: Save states and block type configurations
-}
-
 void SpindizzyBlockSet::initElementsComplete() {
   cVisualProcessor->initElementsComplete();
   cPhysicalProcessor->initElementsComplete();
@@ -213,7 +209,7 @@ void SpindizzyBlockSet::load(DOMNodeWrapper* node) {
     if (mValueAsString == "State") {
       std::string mStateName = mNode->getStringValue();
       int mClue = mNode->getIntegerAttribute("hudModel");
-      ISimpleModel* mClueModel = cHUDClueData[mClue]->initClueData(mNode);
+      ISimpleModel* mClueModel = cHUDClueData[mClue]->initClueData(mNode, mStateName);
       addBlockState(mStateName, mClueModel);
     } else if (mValueAsString == "BlockType") {
       std::string mBlockTypeName = mNode->getAttribute("name");
@@ -221,6 +217,17 @@ void SpindizzyBlockSet::load(DOMNodeWrapper* node) {
       ISpindizzyBlockFactory* mFactory = new SpindizzyBlockFactory(mBlockTypeName, &cSpindizzyTextureSet, this, mNode, cCommandRegistry);
       cElementFactories.push_back(mFactory);
     }
+  }
+}
+
+void SpindizzyBlockSet::save(DOMNodeWriter* node) {
+  for (unsigned int i = 0; i < cHUDClueData.size(); i++) {
+    DOMNodeWriter* mStateNode = node->addBranch("State");
+    cHUDClueData[i]->save(mStateNode);
+    mStateNode->addAttribute("hudModel", i);
+  }
+  for (unsigned int i = 0; i < cElementFactories.size(); i++) {
+    static_cast<ISpindizzyBlockFactory*>(cElementFactories[i])->save(node);
   }
 }
 
@@ -312,7 +319,8 @@ SpindizzyBlockSet::HUDClueData::HUDClueData(ISimpleModelFactory* factory) {
   cModel = cFactory->createModel(&cLocation);
 }
     
-ISimpleModel* SpindizzyBlockSet::HUDClueData::initClueData(DOMNodeWrapper* node) {
+ISimpleModel* SpindizzyBlockSet::HUDClueData::initClueData(DOMNodeWrapper* node, const std::string& name) {
+  cName = name;
   cLocation.x = node->getFloatAttribute("x");
   cLocation.y = node->getFloatAttribute("y");
   cLocation.z = node->getFloatAttribute("z");
@@ -321,6 +329,19 @@ ISimpleModel* SpindizzyBlockSet::HUDClueData::initClueData(DOMNodeWrapper* node)
     
 ISimpleModelFactory* SpindizzyBlockSet::HUDClueData::getFactory() {
   return cFactory;
+}
+
+void SpindizzyBlockSet::HUDClueData::save(DOMNodeWriter* node) {
+  if (cLocation.x != 0.0f) {
+    node->addAttribute("x", cLocation.x);
+  }
+  if (cLocation.y != 0.0f) {
+    node->addAttribute("y", cLocation.y);
+  }
+  if (cLocation.z != 0.0f) {
+    node->addAttribute("z", cLocation.z);
+  }
+  node->addText(cName);
 }
 
 extern "C" IElementSet* create(DOMNodeWrapper* node) {

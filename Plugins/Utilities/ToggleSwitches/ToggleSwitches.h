@@ -25,11 +25,12 @@
 
 #include "../IUtilities.h"
 
+#include "IToggleSwitchCommand.h"
 #include "ToggleSwitch.h"
 
 class ToggleSwitches:public IUtilities {
   private:
-  class ToggleCommand:public IUserCommand {
+  class ToggleCommand:public IToggleSwitchCommand {
     private:
     ToggleSwitch* cSwitch;
     std::string cName;
@@ -42,9 +43,10 @@ class ToggleSwitches:public IUtilities {
     \***************************/
     void execute();
     std::string getCommandName();
+    void save(DOMNodeWriter*);
   };
   
-  class RefreshCommand:public IUserCommand {
+  class RefreshCommand:public IToggleSwitchCommand {
     private:
     ToggleSwitch* cSwitch;
     std::string cName;
@@ -57,11 +59,12 @@ class ToggleSwitches:public IUtilities {
     \***************************/
     void execute();
     std::string getCommandName();
+    void save(DOMNodeWriter*);
   };
 
   ICommandRegistry* cCommandRegistry;
   std::vector<PlugSocket*> cCommandRegistrySocket;
-  std::vector<IUserCommand*> cSwitchCommands;
+  std::vector<IToggleSwitchCommand*> cSwitchCommands;
   
   void createSwitchCommand(DOMNodeWrapper*);
 

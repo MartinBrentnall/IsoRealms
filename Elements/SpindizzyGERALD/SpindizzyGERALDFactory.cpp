@@ -19,6 +19,8 @@
 #include "SpindizzyGERALDFactory.h"
 
 SpindizzyGERALDFactory::SpindizzyGERALDFactory(ISpindizzyGERALDSet* elementSet, ISimpleModelFactory* geraldModelFactory, ILocationAwareness* locationAwareness, IZoneContext* zoneContext) : ISpindizzyGERALDFactory(elementSet) {
+  cFallScript = Script::getDummy();
+  cFallLimitScript = Script::getDummy();
   cLocationAwareness = locationAwareness;
   cZoneContext = zoneContext;
   cGERALDModelFactory = geraldModelFactory;
@@ -150,6 +152,14 @@ void SpindizzyGERALDFactory::loadConfiguration(DOMNodeWrapper* node, ICommandReg
       loadRespawnConfiguration(mNode, commandRegistry);
     }
   }
+}
+
+void SpindizzyGERALDFactory::save(DOMNodeWriter* node) {
+  DOMNodeWriter* mFallLimitNode = node->addBranch("FallLimit");
+  mFallLimitNode->addAttribute("height", cFallLimit);
+  cFallLimitScript->save(mFallLimitNode, "Script");
+  DOMNodeWriter* mRespawnNode = node->addBranch("Respawn");
+  cFallScript->save(mRespawnNode, "Script");
 }
 
 void SpindizzyGERALDFactory::loadFallLimitConfiguration(DOMNodeWrapper* node, ICommandRegistry* commandRegistry) {

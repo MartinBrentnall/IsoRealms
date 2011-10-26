@@ -62,7 +62,9 @@ RandomCommand::ARandomCommand::ARandomCommand(const std::string& name, std::vect
 }
 
 void RandomCommand::ARandomCommand::execute() {
-  cScripts[rand() % cScripts.size()]->execute(); 
+  if (!cScripts.empty()) {
+    cScripts[rand() % cScripts.size()]->execute(); 
+  }
 }
 
 std::string RandomCommand::ARandomCommand::getCommandName() {

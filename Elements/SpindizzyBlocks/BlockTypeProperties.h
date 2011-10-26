@@ -43,6 +43,8 @@ class BlockTypeProperties {
   std::string cSouthWallTexture;
   std::string cNorthWallTexture;
   
+  void saveTexture(DOMNodeWriter*, const std::string&, const std::string&);
+
   public:
   BlockTypeProperties();
   
@@ -61,6 +63,7 @@ class BlockTypeProperties {
   ISpindizzyTexture* getEastWallTexture();
   ISpindizzyTexture* getSouthWallTexture();
   ISpindizzyTexture* getNorthWallTexture();
+  void save(DOMNodeWriter*);
 };
 
 #endif

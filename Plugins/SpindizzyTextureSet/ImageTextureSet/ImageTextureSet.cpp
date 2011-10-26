@@ -6,7 +6,7 @@ ImageTextureSet::ImageTextureSet() {
   int mInit = IMG_Init(mFlags);
   if ((mInit & mFlags) != mFlags) {
     std::cout << "Failed to initialise SDL_Image" << std::endl;
-	// TODO: Throw here
+    // TODO: Throw here
   }
 }
 
@@ -39,7 +39,7 @@ void ImageTextureSet::loadTexture(const std::string& filename, const std::string
   }
   SDL_FreeSurface(mSurface);
   ImageTextureProxy* mTextureProxy = getTextureProxy(id);
-  mTextureProxy->setTexture(new ImageTexture(mTextureID));
+  mTextureProxy->setTexture(filename, new ImageTexture(mTextureID));
 }
 
 void ImageTextureSet::load(DOMNodeWrapper* node) {
@@ -53,6 +53,12 @@ void ImageTextureSet::load(DOMNodeWrapper* node) {
     } else {
       // TODO: Throw here
     }
+  }
+}
+
+void ImageTextureSet::save(DOMNodeWriter* node) {
+  for (std::map<std::string, ImageTextureProxy*>::iterator i = cTextures.begin(); i != cTextures.end(); i++) {
+    i->second->save(node, i->first);
   }
 }
 

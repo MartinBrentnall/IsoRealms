@@ -175,6 +175,7 @@ class BlockSubtractor:public ISurfaceProcessor {
   void initPlugin(IZone*, unsigned int);
   void setRuntimeContext(IMap*);
   void load(DOMNodeWrapper*);
+  void save(DOMNodeWriter*);
 };
 
 #endif

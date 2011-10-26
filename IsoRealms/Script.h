@@ -27,14 +27,20 @@
 
 class Script {
   private:
+  static Script DUMMY;
+
   ICommandRegistry* cCommandRegistry;
   std::vector<IUserCommand*> cCommands;
 
+  Script();
+  
   public:
   Script(std::vector<IUserCommand*>, ICommandRegistry*);
     
   void save(DOMNodeWriter*, const std::string&);
   void execute();
+  
+  static Script* getDummy();
 };
 
 #endif

@@ -119,6 +119,8 @@ class Commodore64SpindizzyTextureSet:public ISpindizzyTextureSet,
 
   void generateTextures();
   void destroyTextures();
+  
+  void saveColour(DOMNodeWriter*, const std::string&, const std::string&);
 
   public:
   Commodore64SpindizzyTextureSet();
@@ -141,6 +143,7 @@ class Commodore64SpindizzyTextureSet:public ISpindizzyTextureSet,
   IPlugin* getPlugin(PlugSocket*);
 
   void load(DOMNodeWrapper*);
+  void save(DOMNodeWriter*);
 
   ~Commodore64SpindizzyTextureSet();
 };

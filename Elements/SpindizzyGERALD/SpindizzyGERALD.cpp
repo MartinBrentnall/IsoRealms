@@ -408,9 +408,7 @@ bool SpindizzyGERALD::processEvent(ICollisionData& event) {
         if (cCycleBounce || cMomentum.z == 0.0f || cPeakHeight <= mMountedSurface->getHeightAt(mEventLocation->x, mEventLocation->y)) {
           if (cPeakHeight - mEventLocation->z > cFallLimit) {
             std::cout << "Peak height " << cPeakHeight << std::endl;
-            if (cFallLimitScript != NULL) {
-              cFallLimitScript->execute();
-            }
+            cFallLimitScript->execute();
             destroy();
             return false;
           } else {
@@ -531,9 +529,7 @@ void SpindizzyGERALD::respawn() {
 
 void SpindizzyGERALD::checkFall() {
   if (cLocation.z < cMapBottom) {
-    if (cFallScript != NULL) {
-      cFallScript->execute();
-    }
+    cFallScript->execute();
     destroy();
   }
 }
