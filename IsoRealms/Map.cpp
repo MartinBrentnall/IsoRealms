@@ -23,7 +23,10 @@ Map::Map() {
   cZoneRenderers.push_back(new DefaultZoneRenderer());
 }
 
-Map::Map(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, IElementRegistryListener* elementRegistryListener, const std::string& projectName) {
+Map::Map(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, IElementRegistryListener* elementRegistryListener, const std::string& projectName, bool editing) {
+  if (editing) {
+    cZoneRenderers.push_back(new DefaultZoneRenderer());
+  }
   if (pluginRegistryListener != NULL) {
     cPluginRegistry.addListener(pluginRegistryListener);
   }
@@ -77,7 +80,9 @@ Map::Map(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, 
       cElementSetRegistry.loadConfiguration(mNode);
     } else if (mValueAsString == "ZoneRenderer") {
       IZoneRenderer* mZoneRenderer = cPluginRegistry.getZoneRenderer(mNode, &cCommandRegistry);
-      cZoneRenderers.push_back(mZoneRenderer);
+      if (!editing) {
+        cZoneRenderers.push_back(mZoneRenderer);
+      }
     } else if (mValueAsString == "Zone") {
       Zone* mZone = new Zone(mNode, cElementSetRegistry, cPluginRegistry);
       addZone(mZone);
@@ -208,12 +213,12 @@ void Map::notifyZoneAction(Zone* zone) {
   cPluginRegistry.notifyZoneAction(zone);
 }
 
-void Map::initMap(unsigned int pass) {
+void Map::initMap(unsigned int pass, bool editing) {
   std::vector<IZone*> mCleanZones;
   for (unsigned int i = 0; i < cDirtyZones.size(); i++) {
     cPluginRegistry.initPlugins(cDirtyZones[i], pass);
     cPluginRegistry.renderPreZone(cDirtyZones[i]);
-    if (cDirtyZones[i]->initZone(pass)) {
+    if (cDirtyZones[i]->initZone(pass, editing)) {
       mCleanZones.push_back(cDirtyZones[i]);
     }
   }
@@ -225,7 +230,7 @@ void Map::initMap(unsigned int pass) {
 
   std::vector<IElement*> mCleanElements;
   for (unsigned int i = 0; i < cDirtyElements.size(); i++) {
-    if (cDirtyElements[i]->initElement(pass)) {
+    if (cDirtyElements[i]->initElement(pass, editing)) {
       mCleanElements.push_back(cDirtyElements[i]);
     }
   }
@@ -269,7 +274,7 @@ void Map::initRuntime() {
   for (unsigned int i = 0; i < cElements.size(); i++) {
     cElements[i]->setRuntimeContext(this);
   }
-  initMap();
+  initMap(false);
 }
 
 void Map::input(SDL_Event& event) {
@@ -288,16 +293,16 @@ void Map::input(SDL_Event& event) {
   }
 }
 
-void Map::initMap() {
+void Map::initMap(bool editing) {
   unsigned int mInitPass = 0;
   while (!cDirtyZones.empty() || !cDirtyElements.empty()) {
-    initMap(mInitPass);
+    initMap(mInitPass, editing);
     mInitPass++;
   }
 }
 
 void Map::update(int milliseconds) {
-  initMap();
+  initMap(true);
   // TODO: Need a more permanent solution for better performance.
   std::vector<IZone*> mZones;
   for (unsigned int i = 0; i < cZones.size(); i++) {

@@ -40,7 +40,7 @@ class IZone {
   /**
    * TODO: THESE SHOULD NOT BE PART OF THIS INTERFACE!
    */ 
-  virtual bool initZone(unsigned int) = 0;
+  virtual bool initZone(unsigned int, bool) = 0;
   virtual void renderStatic() = 0;
   virtual void renderDynamic() = 0;
   virtual void update(unsigned int) = 0;

@@ -45,7 +45,7 @@ class Map:public IMap,
   ElementSetRegistry cElementSetRegistry;
   CommandDirectory cCommandRegistry;
   InputCommands cInputCommands;
-
+  
   /**
    * These elements are not confined to one specific zone.
    */
@@ -60,6 +60,9 @@ class Map:public IMap,
    */
   std::vector<Zone*> cZones;
   
+  /**
+   * Used for updating and rendering the map.  These are not used for saving.
+   */
   std::vector<IZoneRenderer*> cZoneRenderers;
 
   /**
@@ -88,7 +91,7 @@ class Map:public IMap,
 
   public:
   Map();
-  Map(DOMNodeWrapper*, IPluginRegistryListener*, IElementRegistryListener*, const std::string&);
+  Map(DOMNodeWrapper*, IPluginRegistryListener*, IElementRegistryListener*, const std::string&, bool);
 
   void addZone(Zone*);
 
@@ -100,7 +103,7 @@ class Map:public IMap,
    */
   bool overlaps(BlockArea&);
 
-  void initMap(unsigned int pass);
+  void initMap(unsigned int pass, bool);
 
   /**
    * Initialize the map.  This function will only initialise dirty zones and
@@ -108,7 +111,7 @@ class Map:public IMap,
    * editor or runtime, and when a change takes place on an element that may
    * require some recalculations.
    */
-  void initMap();
+  void initMap(bool);
 
   /**
    * Initialise the map for runtime.  TODO

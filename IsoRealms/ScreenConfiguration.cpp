@@ -78,15 +78,15 @@ void ScreenConfiguration::openScreen(std::string title) {
   SDL_WM_SetCaption(title.c_str(), title.c_str());
 
   // Setup OpenGL options
-  float mFogColour[4] = {0.0f, 0.0f, 0.2f, 0.0f};
+//   float mFogColour[4] = {0.0f, 0.0f, 0.2f, 0.0f};
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-  glFogi(GL_FOG_MODE, GL_LINEAR);
+/*  glFogi(GL_FOG_MODE, GL_LINEAR);
   glFogfv(GL_FOG_COLOR, mFogColour);
   glFogf(GL_FOG_DENSITY, 0.001f);
   glHint(GL_FOG_HINT, GL_FASTEST);
   glFogf(GL_FOG_START, 20.0f);
   glFogf(GL_FOG_END, 40.0f);
-  glEnable(GL_FOG);
+  glEnable(GL_FOG);*/
   glEnable(GL_TEXTURE_2D);
   glEnable(GL_CULL_FACE);
   glEnable(GL_DEPTH_TEST);

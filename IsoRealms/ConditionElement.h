@@ -22,6 +22,8 @@
 #include <iostream>
 #include <string>
 
+#include "DOMNodeWriter.h"
+
 class ConditionElement {
   private:
   std::string cInputName;
@@ -42,6 +44,7 @@ class ConditionElement {
   bool* getInputAddress();
   std::string getName();
   void debug();
+  void save(DOMNodeWriter*);
 };
 
 #endif

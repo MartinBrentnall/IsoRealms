@@ -84,7 +84,7 @@ template<class T1 = IElementSet, class T2 = IElementFactory> class Element:publi
   }
 
   void save(DOMNodeWriter*, BlockLocation&) {}
-  bool initElement(unsigned int) {return true;}
+  bool initElement(unsigned int, bool) {return true;}
   void removed() {}
   void added() {}
   void setRuntimeContext(IMap*) {}

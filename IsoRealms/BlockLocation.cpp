@@ -63,13 +63,13 @@ void BlockLocation::save(DOMNodeWriter* node) {
   node->addAttribute("z", mZString);
 }
 
-void BlockLocation::saveRelative(DOMNodeWriter* node, BlockLocation& relative) {
+void BlockLocation::saveRelative(DOMNodeWriter* node, BlockLocation& relative, const std::string& xName, const std::string& yName, const std::string& zName) {
   std::string mXString = Utils::toString(x - relative.x);
   std::string mYString = Utils::toString(y - relative.y);
   std::string mZString = Utils::toString(z - relative.z);
-  node->addAttribute("x", mXString);
-  node->addAttribute("y", mYString);
-  node->addAttribute("z", mZString);
+  node->addAttribute(xName, mXString);
+  node->addAttribute(yName, mYString);
+  node->addAttribute(zName, mZString);
 }
 
 void BlockLocation::debug() {

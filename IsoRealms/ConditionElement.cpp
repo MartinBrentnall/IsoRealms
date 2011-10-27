@@ -61,13 +61,20 @@ std::string ConditionElement::getName() {
   return cInputName;
 }
 
+void ConditionElement::save(DOMNodeWriter* node) {
+  DOMNodeWriter* mElementBranch = node->addBranch("Element");
+  mElementBranch->addAttribute("name", cInputName);
+  if (cNegated) {
+    mElementBranch->addAttribute("negated", "true");
+  }
+}
+
 void ConditionElement::debug() {
   if (cNegated) {
     std::cout << "!";
   }
   std::cout << cInputName;
 }
-
 
 
 

@@ -56,7 +56,11 @@ void Engine::pushControlLoop(DOMNodeWrapper* node) {
 }
 
 void Engine::popControlLoop() {
-  cControlLoop.pop();
+  if (cControlLoop.size() == 1) {
+    cTerminate = true;
+  } else {
+    cControlLoop.pop();
+  }
 }
 
 void Engine::registerEngineCommand(const std::string& name, ICommand* command) {

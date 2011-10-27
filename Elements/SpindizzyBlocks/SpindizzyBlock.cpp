@@ -315,7 +315,7 @@ void SpindizzyBlock::generateWallSurfaces(IWallSurface::FaceDirection faceDirect
   }
 }
 
-bool SpindizzyBlock::initElement(unsigned int pass) {
+bool SpindizzyBlock::initElement(unsigned int pass, bool editing) {
   switch (pass) {
     case INIT_REGISTER_BLOCKS: {
       ISpindizzyBlockSet* mSpindizzyBlockSet = getElementSet();
@@ -327,21 +327,22 @@ bool SpindizzyBlock::initElement(unsigned int pass) {
       ISpindizzyBlockSet* mBlockElementSet = getElementSet();
       
       // Physical surfaces
-      // TODO: This should only happen in runtime
-      std::vector<ITileSurfaceTemplate*> mTopTileSurfaces = calculateTileSurfaces(ITileSurface::UP, false);
-      for (unsigned int i = 0; i < mTopTileSurfaces.size(); i++) {
-        int mNorth = mTopTileSurfaces[i]->getNorth();
-        int mEast = mTopTileSurfaces[i]->getEast();
-        int mSouth = mTopTileSurfaces[i]->getSouth();
-        int mWest = mTopTileSurfaces[i]->getWest();
-        Condition* mCondition = mTopTileSurfaces[i]->getCondition();
-        ISpindizzyTileSurface* mTileSurface = createSubSurface(ITileSurface::UP, mNorth, mEast, mSouth, mWest, mCondition);
-        mBlockElementSet->registerRollableSurface(mTileSurface);
-        mBlockElementSet->destroyTileTemplate(mTopTileSurfaces[i], false);
+      if (!editing) {
+        std::vector<ITileSurfaceTemplate*> mTopTileSurfaces = calculateTileSurfaces(ITileSurface::UP, false);
+        for (unsigned int i = 0; i < mTopTileSurfaces.size(); i++) {
+          int mNorth = mTopTileSurfaces[i]->getNorth();
+          int mEast = mTopTileSurfaces[i]->getEast();
+          int mSouth = mTopTileSurfaces[i]->getSouth();
+          int mWest = mTopTileSurfaces[i]->getWest();
+          Condition* mCondition = mTopTileSurfaces[i]->getCondition();
+          ISpindizzyTileSurface* mTileSurface = createSubSurface(ITileSurface::UP, mNorth, mEast, mSouth, mWest, mCondition);
+          mBlockElementSet->registerRollableSurface(mTileSurface);
+          mBlockElementSet->destroyTileTemplate(mTopTileSurfaces[i], false);
+        }
       }
 
       // Visual surfaces
-      mTopTileSurfaces = calculateTileSurfaces(ITileSurface::UP, true);
+      std::vector<ITileSurfaceTemplate*> mTopTileSurfaces = calculateTileSurfaces(ITileSurface::UP, true);
       for (unsigned int i = 0; i < mTopTileSurfaces.size(); i++) {
         Condition* mCondition = mTopTileSurfaces[i]->getCondition();
         int mNorth = mTopTileSurfaces[i]->getNorth();
@@ -449,5 +450,32 @@ void SpindizzyBlock::save(DOMNodeWriter* node, BlockLocation& zoneLocation) {
     DOMNodeWriter* mConditionNode = node->addBranch("Condition");
     cCondition->save(mConditionNode);
   }
+/*  cStartLocation.saveRelative(node, zoneLocation);
+  // TODO: Only save size if it's bigger than 1.
+  BlockLocation mEndLocation = cEndLocation;
+  mEndLocation.x++;
+  mEndLocation.y++;
+  mEndLocation.saveRelative(node, cStartLocation, "w", "l", "h");
+  if (!isFlat()) {
+    if (isSplit()) {
+      node->addAttribute("NorthWest", cNorthWestHeight);
+      node->addAttribute("NorthEast", cNorthEastHeight);
+      node->addAttribute("SouthEast", cSouthEastHeight);
+      node->addAttribute("SouthWest", cSouthWestHeight);
+      node->addAttribute("Direction", cSplitType == NORTH_SOUTH ? "East"  : "West");
+    } else {
+      int mXSlope = getXSlope();
+      int mYSlope = getYSlope();
+      node->addAttribute("NorthSouth", mYSlope);
+      node->addAttribute("WestEast", mXSlope);
+      if (cSteppedBottom && ((cEndLocation.x != cStartLocation.x && mXSlope != 0) || (cEndLocation.y != cStartLocation.y && mYSlope != 0))) {
+        node->addAttribute("Stepped", cSteppedBottom);
+      }
+    }
+  }
+  if (cCondition != NULL) {
+    DOMNodeWriter* mConditionNode = node->addBranch("Condition");
+    cCondition->save(mConditionNode);
+  }*/
 }
 

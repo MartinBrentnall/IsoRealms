@@ -135,10 +135,10 @@ void SpindizzyWater::added() {
   mSurfaceProcessor->setDirty();
 }
 
-bool SpindizzyWater::initElement(unsigned int pass) {
+bool SpindizzyWater::initElement(unsigned int pass, bool editing) {
+  ISpindizzyBlockSet* mSurfaceProcessor = getElementSet();
   switch (pass) {
     case INIT_REGISTER_BLOCKS: {
-      ISpindizzyBlockSet* mSurfaceProcessor = getElementSet();
       mSurfaceProcessor->registerSurfaceProvider(this);
       return false;
     }
@@ -157,9 +157,7 @@ bool SpindizzyWater::initElement(unsigned int pass) {
         } else {
           cDynamicTileSurfaces.push_back(mTileSurface);
         }
-        
-        // TODO: SHOULD NOT DELETE THIS BECAUSE WE DIDN'T CREATE IT; THE SURFACE PROCESSOR DID!
-        delete mTopTileSurfaces[i];
+        mSurfaceProcessor->destroyTileTemplate(mTopTileSurfaces[i], true);
       }
       // TODO: Use the calculator to calculate surfaces
       return true;

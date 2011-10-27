@@ -75,10 +75,12 @@ void SpindizzyJewel::render() {
   }
 }
 
-bool SpindizzyJewel::initElement(unsigned int) {
-  ISpindizzyJewelSet* mSpindizzyJewelSet = getElementSet();
-  ICollectables* mCollectables = mSpindizzyJewelSet->getCollectables();
-  mCollectables->registerCollectable(this);
+bool SpindizzyJewel::initElement(unsigned int, bool editing) {
+  if (!editing) {
+    ISpindizzyJewelSet* mSpindizzyJewelSet = getElementSet();
+    ICollectables* mCollectables = mSpindizzyJewelSet->getCollectables();
+    mCollectables->registerCollectable(this);
+  }
   return true;
 }
 

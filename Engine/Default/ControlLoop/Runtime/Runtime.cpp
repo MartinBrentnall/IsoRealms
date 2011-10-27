@@ -27,7 +27,7 @@ Runtime::Runtime(DOMNodeWrapper* node) {
     DOMNodeWrapper *mNode = mConfigurationRootNode->getChild(i);
     std::string mValue = mNode->getNodeName();
     if (mValue == "Map") {
-      cMap = new Map(mNode, NULL, NULL, "Test.isorealms");
+      cMap = new Map(mNode, NULL, NULL, "Test.isorealms", false);
     }
   }
   cMap->initRuntime();

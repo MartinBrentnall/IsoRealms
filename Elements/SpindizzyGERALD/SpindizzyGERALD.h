@@ -162,7 +162,7 @@ class SpindizzyGERALD:public Element<ISpindizzyGERALDSet, ISpindizzyGERALDFactor
   \***********************/
   void renderStatic();
   void setRuntimeContext(IMap*);
-  bool initElement(unsigned int);
+  bool initElement(unsigned int, bool);
   std::vector<IVisualElement*> getVisualElements();
   std::vector<IDynamicElement*> getDynamicElements();
   std::vector<IDynamicElement*> getDynamicElementsRuntime();

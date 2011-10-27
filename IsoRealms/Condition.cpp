@@ -73,7 +73,19 @@ Condition::Condition(DOMNodeWrapper* node, std::vector<ConditionElement*> elemen
 }
 
 void Condition::save(DOMNodeWriter* node) {
-  // TODO: Save the condition
+  DOMNodeWriter* mConditionNode = node->addBranch("Condition");
+  if (cElements.size() + cConditions.size() > 1) {
+    mConditionNode->addAttribute("type", cAnd ? "and" : "or");
+  }
+  if (cNegated) {
+    mConditionNode->addAttribute("negated", "true");
+  }
+  for (std::set<ConditionElement*>::iterator i = cElements.begin(); i != cElements.end(); i++) {
+    (*i)->save(mConditionNode);
+  }
+  for (unsigned int i = 0; i < cConditions.size(); i++) {
+    cConditions[i]->save(mConditionNode);
+  }
 }
 
 bool Condition::operator==(const Condition& condition) const {

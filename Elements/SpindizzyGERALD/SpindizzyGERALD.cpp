@@ -75,7 +75,10 @@ void SpindizzyGERALD::renderStatic() {
   // Nothing to do.
 }
 
-bool SpindizzyGERALD::initElement(unsigned int pass) {
+bool SpindizzyGERALD::initElement(unsigned int pass, bool editing) {
+  if (editing) {
+    return true;
+  }
   switch (pass) {
     case INIT_REGISTER_BLOCKS: {
       if (cZoneContext != NULL && cMap != NULL) {

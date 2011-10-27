@@ -178,10 +178,10 @@ int Zone::getZoneIndex(IElement* element) {
   return -1;
 }
 
-bool Zone::initZone(unsigned int pass) {
+bool Zone::initZone(unsigned int pass, bool editing) {
   std::vector<IElement*> mCleanElements;
   for (unsigned int i = 0; i < cDirtyElements.size(); i++) {
-    if (cDirtyElements[i]->initElement(pass)) {
+    if (cDirtyElements[i]->initElement(pass, editing)) {
       mCleanElements.push_back(cDirtyElements[i]);
     }
   }

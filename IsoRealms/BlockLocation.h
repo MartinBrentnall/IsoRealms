@@ -87,7 +87,7 @@ class BlockLocation {
 
   void save(DOMNodeWriter*);
 
-  void saveRelative(DOMNodeWriter*, BlockLocation&);
+  void saveRelative(DOMNodeWriter*, BlockLocation&, const std::string& = "x", const std::string& = "y", const std::string& = "z");
 
   void debug();
 };
