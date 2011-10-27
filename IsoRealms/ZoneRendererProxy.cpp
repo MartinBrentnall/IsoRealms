@@ -18,12 +18,22 @@
  */
 #include "ZoneRendererProxy.h"
 
-ZoneRendererProxy::ZoneRendererProxy(IZoneRenderer* zoneRenderer, bool active, ICommandRegistry* commandRegistry, const std::string& rendererName) {
+ZoneRendererProxy::ZoneRendererProxy(IZoneRenderer* zoneRenderer, bool active, ICommandRegistry* commandRegistry, const std::string& rendererName, const std::string& type, const std::string& instance) {
   cZoneRenderer = zoneRenderer;
   cActive = active;
   cName = rendererName;
   commandRegistry->registerCommand(new RendererActivationCommand(this, true));
   commandRegistry->registerCommand(new RendererActivationCommand(this, false));
+  cType = type;
+  cInstance = instance;
+}
+
+void ZoneRendererProxy::save(DOMNodeWriter* node) {
+  DOMNodeWriter* mZoneRendererBranch = node->addBranch("ZoneRenderer");
+  mZoneRendererBranch->addAttribute("type", cType);
+  mZoneRendererBranch->addAttribute("instance", cInstance);
+  mZoneRendererBranch->addAttribute("renderer", cName);
+  mZoneRendererBranch->addAttribute("active", cActive ? "true" : "false");
 }
 
 void ZoneRendererProxy::render(std::vector<IZone*>& zones, IPluginRegistry& pluginRegistry) {
@@ -50,7 +60,6 @@ ZoneRendererProxy::RendererActivationCommand::RendererActivationCommand(ZoneRend
 }
 
 void ZoneRendererProxy::RendererActivationCommand::execute() {
-  std::cout << (cActivate ? "Activate" : "Disable") << " " << cParent->cName << std::endl;
   cParent->cActive = cActivate;
 }
 

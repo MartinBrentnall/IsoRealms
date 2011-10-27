@@ -406,6 +406,7 @@ void Map::save() {
     mElementNode->addAttribute("type", mElementTypeName);
     cElements[i]->save(mElementNode, mStartLocation);
   }
+  cPluginRegistry.saveZoneRenderers(mMapNode);
   for (unsigned int i = 0; i < cZones.size(); i++) {
     DOMNodeWriter* mZoneNode = mMapNode->addBranch("Zone");
     DOMNodeWriter* mPluginsNode = mZoneNode->addBranch("Plugins");

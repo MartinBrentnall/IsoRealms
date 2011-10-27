@@ -59,6 +59,11 @@ class PluginRegistry:public IPluginRegistry {
   std::map<std::string, std::map<std::string, void*> > cSOHandles;
 
   /**
+   * We keep these so we can save them and (TODO) destroy them.
+   */
+  std::vector<ZoneRendererProxy*> cZoneRendererProxies;
+  
+  /**
    * Each plug-in maps to the corresponding destroy function found in it's
    * library.
    */
@@ -171,6 +176,8 @@ class PluginRegistry:public IPluginRegistry {
    * All plugins should write any zone data.
    */
   void saveData(DOMNodeWriter*, IMap*, IZone*);
+  
+  void saveZoneRenderers(DOMNodeWriter*);
 
   std::vector<IDynamicElement*> getPreLoopCommands();
 

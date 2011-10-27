@@ -200,8 +200,11 @@ void PluginRegistry::save(DOMNodeWriter* node) {
           }
         }
       }
-      DOMNodeWriter* mPluginConfigurationBranch = mPluginBranch->addBranch("Configuration");
+      DOMNodeWriter* mPluginConfigurationBranch = mPluginBranch->createBranch("Configuration");
       mInstance->save(mPluginConfigurationBranch);
+      if (!mPluginConfigurationBranch->empty()) {
+        mPluginBranch->addBranch(mPluginConfigurationBranch);
+      }
     }
   }
 }
@@ -212,11 +215,20 @@ void PluginRegistry::saveData(DOMNodeWriter* node, IMap* map, IZone* zone) {
     std::map<std::string, IPlugin*> mInstanceOfType = i->second;
     for (std::map<std::string, IPlugin*>::iterator j = mInstanceOfType.begin(); j != mInstanceOfType.end(); j++) {
       // TODO: Only add branch if there's actually something to write!
-      DOMNodeWriter* mDataBranch = node->addBranch("Plugin");
-      mDataBranch->addAttribute("type", mTypeName);
-      mDataBranch->addAttribute("instance", j->first);
+      DOMNodeWriter* mDataBranch = node->createBranch("Plugin");
       j->second->saveData(mDataBranch, map, zone);
+      if (!mDataBranch->empty()) {
+        mDataBranch->addAttribute("type", mTypeName);
+        mDataBranch->addAttribute("instance", j->first);
+        node->addBranch(mDataBranch);
+      }
     }
+  }
+}
+
+void PluginRegistry::saveZoneRenderers(DOMNodeWriter* node) {
+  for (unsigned int i = 0; i < cZoneRendererProxies.size(); i++) {
+    cZoneRendererProxies[i]->save(node);
   }
 }
 
@@ -261,7 +273,9 @@ IZoneRenderer* PluginRegistry::getZoneRenderer(DOMNodeWrapper* node, CommandDire
   mDirectory.push_back(mType);
   mDirectory.push_back(mInstance);
   CommandRegistryProxy* mCommandRegistry = new CommandRegistryProxy(commandRegistry, mDirectory);
-  return new ZoneRendererProxy(mPlugin->getZoneRenderer(mRenderer), mActive, mCommandRegistry, mRenderer);
+  ZoneRendererProxy* mZoneRendererProxy = new ZoneRendererProxy(mPlugin->getZoneRenderer(mRenderer), mActive, mCommandRegistry, mRenderer, mType, mInstance);
+  cZoneRendererProxies.push_back(mZoneRendererProxy);
+  return mZoneRendererProxy;
 }
 
 void PluginRegistry::removePlugin(IPlugin* instance) {

@@ -30,10 +30,19 @@ DOMNodeWriter::DOMNodeWriter(std::string nodeName) {
   cElement = cDocument->getDocumentElement();
 }
 
+DOMNodeWriter* DOMNodeWriter::createBranch(std::string branchName) {
+  DOMElement* mElement = cDocument->createElement(XMLString::transcode(branchName.c_str()));
+  return new DOMNodeWriter(cDocument, mElement);
+}
+
 DOMNodeWriter* DOMNodeWriter::addBranch(std::string branchName) {
   DOMElement* mElement = cDocument->createElement(XMLString::transcode(branchName.c_str()));
   cElement->appendChild(mElement);
   return new DOMNodeWriter(cDocument, mElement);
+}
+
+void DOMNodeWriter::addBranch(DOMNodeWriter* node) {
+  cElement->appendChild(node->cElement);
 }
 
 void DOMNodeWriter::addText(std::string text) {
@@ -92,4 +101,6 @@ void DOMNodeWriter::save(std::string filename) {
   cDocument->release();// TODO: Probably should be somewhere else!
 }
 
-
+bool DOMNodeWriter::empty() {
+  return !cElement->hasChildNodes();
+}

@@ -60,6 +60,21 @@ class DOMNodeWriter {
   DOMNodeWriter* addBranch(std::string);
 
   /**
+   * Create a branch of the specified name, but do not add it.
+   * 
+   * @param std::string  The name of the branch.
+   * @returns  The branch.
+   */
+  DOMNodeWriter* createBranch(std::string);
+
+  /**
+   * Add specified DOMNodeWriter as a branch.
+   * 
+   * @param DOMNodeWriter  The branch.
+   */
+  void addBranch(DOMNodeWriter*);
+  
+  /**
    * Add the specified text to this node.
    * 
    * @param std::string  The text to add.
@@ -112,6 +127,13 @@ class DOMNodeWriter {
    * @param std::string  The filename to save to.
    */
   void save(std::string);
+  
+  /**
+   * See if this node has anything in it.
+   * 
+   * @returns  True if it does, otherwise false.
+   */
+  bool empty();
 };
 
 #endif

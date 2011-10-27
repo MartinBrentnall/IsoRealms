@@ -29,6 +29,8 @@ class ZoneRendererProxy:public IZoneRenderer {
   IZoneRenderer* cZoneRenderer;
   bool cActive;
   std::string cName;
+  std::string cInstance;
+  std::string cType;
   
   class RendererActivationCommand:public IUserCommand {
     private:
@@ -46,8 +48,10 @@ class ZoneRendererProxy:public IZoneRenderer {
   };
   
   public:
-  ZoneRendererProxy(IZoneRenderer*, bool, ICommandRegistry*, const std::string&);
+  ZoneRendererProxy(IZoneRenderer*, bool, ICommandRegistry*, const std::string&, const std::string&, const std::string&);
 
+  void save(DOMNodeWriter*);
+  
   /****************************\
    * Implements IZoneRenderer *
   \****************************/
