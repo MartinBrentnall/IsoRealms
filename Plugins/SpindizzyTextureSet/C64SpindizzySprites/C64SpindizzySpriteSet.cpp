@@ -32,8 +32,8 @@ const std::string C64SpindizzySpriteSet::LIFT_DIAMOND_RIGHT = "LiftDiamondRight"
 const std::string C64SpindizzySpriteSet::LIFT_DIAMOND_NONE  = "LiftDiamondEmpty";
 
 C64SpindizzySpriteSet::C64SpindizzySpriteSet() {
-  cPlugSockets.push_back(new PlugSocket("FourColourSupport"));
-  assignDummyPlugin(&cColourScheme, "FourColourSupport");
+  cPlugSockets.push_back(new PlugSocket("Palette"));
+  assignDummyPlugin(&cPalette, "Palette");
 
   TRANSPARENT = new Colour(0.0, 0.0, 0.0, 0.0);
 
@@ -211,10 +211,10 @@ GLuint C64SpindizzySpriteSet::convertToTexture(Image* image, const std::string& 
 }
 
 void C64SpindizzySpriteSet::generateTextures() {
-  cColour1 = cColourScheme->getColour(cColour1Name);
-  cColour2 = cColourScheme->getColour(cColour2Name);
-  cColour3 = cColourScheme->getColour(cColour3Name);
-  cOutlineColour = cColourScheme->getColour(cOutlineColourName);
+  cColour1 = cPalette->getColour(cColour1Name);
+  cColour2 = cPalette->getColour(cColour2Name);
+  cColour3 = cPalette->getColour(cColour3Name);
+  cOutlineColour = cPalette->getColour(cOutlineColourName);
   
   GLuint mLiftCircleHalf = generateLiftCircleHalf();
   cTextures[LIFT_CIRCLE_LEFT]->setTexture(mLiftCircleHalf, C64SpindizzySprite::NORTH);
@@ -248,11 +248,11 @@ std::vector<PlugSocket*> C64SpindizzySpriteSet::getPlugSockets() {
 }
 
 void C64SpindizzySpriteSet::setPlugin(PlugSocket* socket, IPlugin* plugin) {
-  if (socket->getType() == "FourColourSupport") {
-    IFourColourSupport* mPreviousColourScheme = cColourScheme;
-    if (assignPlugin(plugin, &cColourScheme, *socket)) {
-      mPreviousColourScheme->removeChangeListener(this);
-      cColourScheme->addChangeListener(this);
+  if (socket->getType() == "Palette") {
+    IPalette* mPreviousPalette = cPalette;
+    if (assignPlugin(plugin, &cPalette, *socket)) {
+      mPreviousPalette->removeChangeListener(this);
+      cPalette->addChangeListener(this);
       generateTextures();
     }
   } else {
@@ -260,12 +260,12 @@ void C64SpindizzySpriteSet::setPlugin(PlugSocket* socket, IPlugin* plugin) {
   }
 }
 
-void C64SpindizzySpriteSet::fourColourPaletteChanged(IFourColourSupport*, const std::string&) {
+void C64SpindizzySpriteSet::paletteChanged(IPalette*, const std::string&) {
   generateTextures();
 }
 
 IPlugin* C64SpindizzySpriteSet::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "FourColourSupport") {return cColourScheme;}
+  if (socket->getType() == "Palette") {return cPalette;}
   // TODO: Throw something
   return NULL;
 }

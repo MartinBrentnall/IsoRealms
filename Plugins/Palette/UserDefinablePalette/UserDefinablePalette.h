@@ -16,8 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef DEFAULT_FOUR_COLOUR_SUPPORT_H
-#define DEFAULT_FOUR_COLOUR_SUPPORT_H
+#ifndef USER_DEFINABLE_PALETTE_H
+#define USER_DEFINABLE_PALETTE_H
 
 #include <map>
 #include <vector>
@@ -27,12 +27,12 @@
 #include <IsoRealms/IComponentContainer.h>
 #include <IsoRealms/IPlugin.h>
 
-#include "../IFourColourSupport.h"
+#include "../IPalette.h"
 
 #include "PaletteConfigurationComponent.h"
 #include "PaletteConfigurationCommandInfo.h"
 
-class DefaultFourColourSupport:public IFourColourSupport {
+class UserDefinablePalette:public IPalette {
   private:
   static Colour* DEFAULT_COLOUR; // TODO: Should be const?
     
@@ -41,11 +41,11 @@ class DefaultFourColourSupport:public IFourColourSupport {
    */
   class PaletteConfigurationCommand:public ICommand {
     private:
-    DefaultFourColourSupport* cParent;
+    UserDefinablePalette* cParent;
     IComponentContainer* cComponentContainer;
 
     public:
-    PaletteConfigurationCommand(DefaultFourColourSupport*);
+    PaletteConfigurationCommand(UserDefinablePalette*);
     void setComponentContainer(IComponentContainer*);
 
     /***********************\
@@ -56,7 +56,7 @@ class DefaultFourColourSupport:public IFourColourSupport {
 
   std::vector<ICommandInfo*> cPluginCommands;
   std::map<std::string, Colour*> cPalette;
-  std::vector<IFourColourSupportListener*> cChangeListeners;
+  std::vector<IPaletteListener*> cChangeListeners;
 
   /**
    * Instance of the command to show the palette editor component.
@@ -64,14 +64,14 @@ class DefaultFourColourSupport:public IFourColourSupport {
   PaletteConfigurationCommand* cPaletteConfigurationCommand;
 
   public:
-  DefaultFourColourSupport();
+  UserDefinablePalette();
 
-  /*********************************\
-   * Implements IFourColourSupport *
-  \*********************************/
+  /***********************\
+   * Implements IPalette *
+  \***********************/
   Colour* getColour(const std::string&);
-  void addChangeListener(IFourColourSupportListener*);
-  void removeChangeListener(IFourColourSupportListener*);
+  void addChangeListener(IPaletteListener*);
+  void removeChangeListener(IPaletteListener*);
 
   /**********************\
    * Implements IPlugin *
@@ -81,7 +81,7 @@ class DefaultFourColourSupport:public IFourColourSupport {
   void save(DOMNodeWriter*);
   void load(DOMNodeWrapper*);
 
-  ~DefaultFourColourSupport();
+  ~UserDefinablePalette();
 };
 
 #endif

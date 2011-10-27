@@ -14,12 +14,12 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
-add_subdirectory(DefaultFourColourSupport)
+add_subdirectory(UserDefinablePalette)
 
 include_directories(${PROJECT_SOURCE_DIR})
 
-add_library(FourColourSupportDummy MODULE 
-  FourColourSupportDummy.cpp
+add_library(DummyPalette MODULE 
+  DummyPalette.cpp
 )
-set_target_properties(FourColourSupportDummy PROPERTIES OUTPUT_NAME "Dummy")
-set_target_properties(FourColourSupportDummy PROPERTIES PREFIX "lib")
+set_target_properties(DummyPalette PROPERTIES OUTPUT_NAME "Dummy")
+set_target_properties(DummyPalette PROPERTIES PREFIX "lib")

@@ -29,8 +29,8 @@
 #include <IsoRealms/PluginRegistry.h>
 #include <IsoRealms/PlugSocket.h>
 
-#include "../../FourColourSupport/IFourColourSupport.h"
-#include "../../FourColourSupport/IFourColourSupportListener.h"
+#include "../../Palette/IPalette.h"
+#include "../../Palette/IPaletteListener.h"
 
 #include "../ISpindizzyTextureSet.h"
 #include "../ISpindizzyTexture.h"
@@ -38,7 +38,7 @@
 #include "C64SpindizzySprite.h"
 
 class C64SpindizzySpriteSet:public ISpindizzyTextureSet,
-                            public IFourColourSupportListener {
+                            public IPaletteListener {
   private:
   static const int RESOLUTION = 128;
   static const int GRID_WIDTH = RESOLUTION / 16;
@@ -65,7 +65,7 @@ class C64SpindizzySpriteSet:public ISpindizzyTextureSet,
   std::map<std::string, C64SpindizzySprite*> cTextures; 
   std::map<std::string, GLuint> cTextureIDs;
 
-  IFourColourSupport* cColourScheme;
+  IPalette* cPalette;
 
   std::string cColour1Name;
   std::string cColour2Name;
@@ -164,10 +164,10 @@ class C64SpindizzySpriteSet:public ISpindizzyTextureSet,
   \***********************************/
   ISpindizzyTexture* getTexture(const std::string&);
 
-  /*****************************************\
-   * Implements IFourColourSupportListener *
-  \*****************************************/
-  void fourColourPaletteChanged(IFourColourSupport*, const std::string&);
+  /*******************************\
+   * Implements IPaletteListener *
+  \*******************************/
+  void paletteChanged(IPalette*, const std::string&);
 
   /******************************************\
    * Implements IPluginSupport (in IPlugin) *

@@ -16,17 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_FOUR_COLOUR_SUPPORT_H
-#define I_FOUR_COLOUR_SUPPORT_H
+#ifndef I_PALETTE_H
+#define I_PALETTE_H
 
 #include <IsoRealms/Colour.h>
 #include <IsoRealms/IPlugin.h>
 
-class IFourColourSupportListener;
+class IPaletteListener;
 
-#include "IFourColourSupportListener.h"
-
-class IFourColourSupport:public virtual IPlugin {
+class IPalette:public virtual IPlugin {
   public:
   
   /**
@@ -41,16 +39,16 @@ class IFourColourSupport:public virtual IPlugin {
    * 
    * @param IFourColourSupportListener* The listener to remove.
    */
-  virtual void addChangeListener(IFourColourSupportListener*) = 0;
+  virtual void addChangeListener(IPaletteListener*) = 0;
 
   /**
    * Remove a listener to be notified of changes to this palette.
    * 
    * @param IFourColourSupportListener* The listener to remove.
    */
-  virtual void removeChangeListener(IFourColourSupportListener*) = 0;
+  virtual void removeChangeListener(IPaletteListener*) = 0;
 
-  virtual ~IFourColourSupport() {}
+  virtual ~IPalette() {}
 };
 
 #endif

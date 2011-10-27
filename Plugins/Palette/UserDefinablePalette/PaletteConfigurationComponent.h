@@ -28,12 +28,12 @@
 #include <IsoRealms/IComponentContainer.h>
 #include <IsoRealms/ScreenConfiguration.h>
 
-#include "../IFourColourSupport.h"
-#include "../IFourColourSupportListener.h"
+#include "../IPalette.h"
+#include "../IPaletteListener.h"
 
 class PaletteConfigurationComponent:public Dialog {
   private:
-  std::vector<IFourColourSupportListener*>* cChangeListeners;
+  std::vector<IPaletteListener*>* cChangeListeners;
   std::vector<Colour*> cPalette;
   std::vector<std::string> cPaletteEntries;
   unsigned int cSelectedField;
@@ -45,7 +45,7 @@ class PaletteConfigurationComponent:public Dialog {
   void fireChangeEvent();
 
   public:
-  PaletteConfigurationComponent(IComponentContainer*, std::map<std::string, Colour*> palette, std::vector<IFourColourSupportListener*>&);
+  PaletteConfigurationComponent(IComponentContainer*, std::map<std::string, Colour*> palette, std::vector<IPaletteListener*>&);
 
   /*********************\
    * Implements Dialog *

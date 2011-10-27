@@ -16,11 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "DefaultFourColourSupport.h"
+#include "UserDefinablePalette.h"
 
-Colour* DefaultFourColourSupport::DEFAULT_COLOUR = new Colour(1.0f, 0.0f, 1.0f, 1.0f);
+Colour* UserDefinablePalette::DEFAULT_COLOUR = new Colour(1.0f, 0.0f, 1.0f, 1.0f);
 
-DefaultFourColourSupport::DefaultFourColourSupport() {
+UserDefinablePalette::UserDefinablePalette() {
   cPaletteConfigurationCommand = new PaletteConfigurationCommand(this);
   std::vector<std::string> mPath;
   mPath.push_back("Edit Palette"); // TODO: Use instance name?
@@ -29,42 +29,42 @@ DefaultFourColourSupport::DefaultFourColourSupport() {
   cPluginCommands.push_back(mPaletteConfigurationCommandInfo);
 }
 
-Colour* DefaultFourColourSupport::getColour(const std::string& entry) {
+Colour* UserDefinablePalette::getColour(const std::string& entry) {
   std::map<std::string, Colour*>::iterator i = cPalette.find(entry);
   return i == cPalette.end() ? DEFAULT_COLOUR : i->second;
 }
 
-void DefaultFourColourSupport::addChangeListener(IFourColourSupportListener* listener) {
+void UserDefinablePalette::addChangeListener(IPaletteListener* listener) {
   cChangeListeners.push_back(listener);
 }
 
-void DefaultFourColourSupport::removeChangeListener(IFourColourSupportListener* listener) {
+void UserDefinablePalette::removeChangeListener(IPaletteListener* listener) {
   // TODO: Remove listener!
 }
 
-void DefaultFourColourSupport::setEditingContext(BlockLocation* blockLocation, IComponentContainer* componentContainer) {
+void UserDefinablePalette::setEditingContext(BlockLocation* blockLocation, IComponentContainer* componentContainer) {
   cPaletteConfigurationCommand->setComponentContainer(componentContainer);
 }
 
-std::vector<ICommandInfo*> DefaultFourColourSupport::getCommandInfo() {
+std::vector<ICommandInfo*> UserDefinablePalette::getCommandInfo() {
   return cPluginCommands;
 }
 
-DefaultFourColourSupport::PaletteConfigurationCommand::PaletteConfigurationCommand(DefaultFourColourSupport* parent) {
+UserDefinablePalette::PaletteConfigurationCommand::PaletteConfigurationCommand(UserDefinablePalette* parent) {
   cParent = parent;
   cComponentContainer = NULL;
 }
 
-void DefaultFourColourSupport::PaletteConfigurationCommand::setComponentContainer(IComponentContainer* componentContainer) {
+void UserDefinablePalette::PaletteConfigurationCommand::setComponentContainer(IComponentContainer* componentContainer) {
   cComponentContainer = componentContainer;
 }
 
-void DefaultFourColourSupport::PaletteConfigurationCommand::execute() {
+void UserDefinablePalette::PaletteConfigurationCommand::execute() {
   IHUDComponent* mComponent = new PaletteConfigurationComponent(cComponentContainer, cParent->cPalette, cParent->cChangeListeners);
   cComponentContainer->addComponent(mComponent);
 }
 
-void DefaultFourColourSupport::save(DOMNodeWriter* node) {
+void UserDefinablePalette::save(DOMNodeWriter* node) {
   for (std::map<std::string, Colour*>::iterator i = cPalette.begin(); i != cPalette.end(); i++) {
     DOMNodeWriter* mColourNode = node->addBranch("Colour");
     mColourNode->addAttribute("name", i->first);
@@ -72,7 +72,7 @@ void DefaultFourColourSupport::save(DOMNodeWriter* node) {
   }
 }
 
-void DefaultFourColourSupport::load(DOMNodeWrapper* node) {
+void UserDefinablePalette::load(DOMNodeWrapper* node) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
@@ -85,7 +85,7 @@ void DefaultFourColourSupport::load(DOMNodeWrapper* node) {
   }
 }
 
-DefaultFourColourSupport::~DefaultFourColourSupport() {
+UserDefinablePalette::~UserDefinablePalette() {
   delete cPaletteConfigurationCommand;
   for (unsigned int i = 0; i < cPluginCommands.size(); i++) {
     delete cPluginCommands[i];
@@ -96,7 +96,7 @@ DefaultFourColourSupport::~DefaultFourColourSupport() {
 }
 
 extern "C" IPlugin* create() {
-  return new DefaultFourColourSupport();
+  return new UserDefinablePalette();
 }
 
 extern "C" void destroy(IPlugin* palette) {

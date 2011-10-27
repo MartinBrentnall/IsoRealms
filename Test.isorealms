@@ -356,7 +356,7 @@
       <Detail>64</Detail>
     </Configuration>
   </Plugin>
-  <Plugin implementation="DefaultFourColourSupport" instance="C64Palette" type="FourColourSupport">
+  <Plugin implementation="UserDefinablePalette" instance="C64Palette" type="Palette">
     <Configuration>
 <!--      <Colour name="Black" alpha="1.0" blue="0" green="0" red="0"/>
       <Colour name="White" alpha="1.0" blue="1" green="1" red="1"/>
@@ -399,7 +399,7 @@
     <Configuration/>
   </Plugin>
   <Plugin implementation="C64SpindizzySprites" instance="C64Sprites" type="SpindizzyTextureSet">
-    <UsePlugin implementation="FourColourSupport" instance="C64Palette" socketid=""/>
+    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
       <Colour1 type="Palette" name="Purple"/>
       <Colour2 type="Palette" name="Yellow"/>
@@ -408,7 +408,7 @@
     </Configuration>
   </Plugin>
   <Plugin implementation="C64SpindizzySprites" instance="C64HUDSprites" type="SpindizzyTextureSet">
-    <UsePlugin implementation="FourColourSupport" instance="C64Palette" socketid=""/>
+    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
       <Colour1 type="Palette" name="Cyan"/>
       <Colour2 type="Palette" name="Orange"/>
@@ -417,7 +417,7 @@
     </Configuration>
   </Plugin>
   <Plugin implementation="Commodore64SpindizzyTextureSet" instance="C64Blue" type="SpindizzyTextureSet">
-    <UsePlugin implementation="FourColourSupport" instance="C64Palette" socketid=""/>
+    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
       <Floor type="Palette" name="LightBlue"/>
       <Wall type="Palette" name="Black"/>
@@ -426,7 +426,7 @@
     </Configuration>
   </Plugin>
   <Plugin implementation="Commodore64SpindizzyTextureSet" instance="C64BlueRed" type="SpindizzyTextureSet">
-    <UsePlugin implementation="FourColourSupport" instance="C64Palette" socketid=""/>
+    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
       <Floor type="Palette" name="LightBlue"/>
       <Wall type="Palette" name="Red"/>
@@ -435,7 +435,7 @@
     </Configuration>
   </Plugin>
   <Plugin implementation="Commodore64SpindizzyTextureSet" instance="C64BlueYellow" type="SpindizzyTextureSet">
-    <UsePlugin implementation="FourColourSupport" instance="C64Palette" socketid=""/>
+    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
       <Floor type="Palette" name="Blue"/>
       <Wall type="Palette" name="Orange"/>
@@ -444,7 +444,7 @@
     </Configuration>
   </Plugin>
   <Plugin implementation="Commodore64SpindizzyTextureSet" instance="C64Chocolate" type="SpindizzyTextureSet">
-    <UsePlugin implementation="FourColourSupport" instance="C64Palette" socketid=""/>
+    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
       <Floor type="Palette" name="Purple"/>
       <Wall type="Palette" name="Brown"/>
@@ -453,7 +453,7 @@
     </Configuration>
   </Plugin>
   <Plugin implementation="Commodore64SpindizzyTextureSet" instance="C64Dark" type="SpindizzyTextureSet">
-    <UsePlugin implementation="FourColourSupport" instance="C64Palette" socketid=""/>
+    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
       <Floor type="Palette" name="Black"/>
       <Wall type="Palette" name="Red"/>
@@ -462,7 +462,7 @@
     </Configuration>
   </Plugin>
   <Plugin implementation="Commodore64SpindizzyTextureSet" instance="C64Green" type="SpindizzyTextureSet">
-    <UsePlugin implementation="FourColourSupport" instance="C64Palette" socketid=""/>
+    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
       <Floor type="Palette" name="Green"/>
       <Wall type="Palette" name="Yellow"/>
@@ -471,7 +471,7 @@
     </Configuration>
   </Plugin>
   <Plugin implementation="Commodore64SpindizzyTextureSet" instance="C64GreenRed" type="SpindizzyTextureSet">
-    <UsePlugin implementation="FourColourSupport" instance="C64Palette" socketid=""/>
+    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
       <Floor type="Palette" name="Green"/>
       <Wall type="Palette" name="Red"/>
@@ -480,7 +480,7 @@
     </Configuration>
   </Plugin>
   <Plugin implementation="Commodore64SpindizzyTextureSet" instance="C64Grey" type="SpindizzyTextureSet">
-    <UsePlugin implementation="FourColourSupport" instance="C64Palette" socketid=""/>
+    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
       <Floor type="Palette" name="White"/>
       <Wall type="Palette" name="DarkGray"/>
@@ -489,7 +489,7 @@
     </Configuration>
   </Plugin>
   <Plugin implementation="Commodore64SpindizzyTextureSet" instance="C64GreyForWater" type="SpindizzyTextureSet">
-    <UsePlugin implementation="FourColourSupport" instance="C64Palette" socketid=""/>
+    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
       <Floor type="Palette" name="White"/>
       <Wall type="Palette" name="DarkGray"/>
@@ -498,7 +498,7 @@
     </Configuration>
   </Plugin>
   <Plugin implementation="Commodore64SpindizzyTextureSet" instance="C64LightGreen" type="SpindizzyTextureSet">
-    <UsePlugin implementation="FourColourSupport" instance="C64Palette" socketid=""/>
+    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
       <Floor type="Palette" name="LightGreen"/>
       <Wall type="Palette" name="Pink"/>
@@ -507,7 +507,7 @@
     </Configuration>
   </Plugin>
   <Plugin implementation="Commodore64SpindizzyTextureSet" instance="C64Pink" type="SpindizzyTextureSet">
-    <UsePlugin implementation="FourColourSupport" instance="C64Palette" socketid=""/>
+    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
       <Floor type="Palette" name="Pink"/>
       <Wall type="Palette" name="LightGreen"/>
@@ -516,7 +516,7 @@
     </Configuration>
   </Plugin>
   <Plugin implementation="Commodore64SpindizzyTextureSet" instance="C64RedGreen" type="SpindizzyTextureSet">
-    <UsePlugin implementation="FourColourSupport" instance="C64Palette" socketid=""/>
+    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
       <Floor type="Palette" name="Red"/>
       <Wall type="Palette" name="Green"/>
@@ -525,7 +525,7 @@
     </Configuration>
   </Plugin>
   <Plugin implementation="Commodore64SpindizzyTextureSet" instance="C64RedPurple" type="SpindizzyTextureSet">
-    <UsePlugin implementation="FourColourSupport" instance="C64Palette" socketid=""/>
+    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
       <Floor type="Palette" name="Red"/>
       <Wall type="Palette" name="Purple"/>
@@ -534,7 +534,7 @@
     </Configuration>
   </Plugin>
   <Plugin implementation="Commodore64SpindizzyTextureSet" instance="C64Yellow" type="SpindizzyTextureSet">
-    <UsePlugin implementation="FourColourSupport" instance="C64Palette" socketid=""/>
+    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
       <Floor type="Palette" name="Yellow"/>
       <Wall type="Palette" name="Orange"/>
@@ -543,7 +543,7 @@
     </Configuration>
   </Plugin>
   <Plugin implementation="Commodore64SpindizzyTextureSet" instance="C64YellowPurple" type="SpindizzyTextureSet">
-    <UsePlugin implementation="FourColourSupport" instance="C64Palette" socketid=""/>
+    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
       <Floor type="Palette" name="Yellow"/>
       <Wall type="Palette" name="Purple"/>

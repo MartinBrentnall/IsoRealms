@@ -18,7 +18,7 @@
  */
 #include "PaletteConfigurationComponent.h"
 
-PaletteConfigurationComponent::PaletteConfigurationComponent(IComponentContainer* componentContainer, std::map<std::string, Colour*> palette, std::vector<IFourColourSupportListener*>& listeners) : Dialog(componentContainer, "Palette Editor", 0.18f, 0.68f, 0.8f, 0.3f) {
+PaletteConfigurationComponent::PaletteConfigurationComponent(IComponentContainer* componentContainer, std::map<std::string, Colour*> palette, std::vector<IPaletteListener*>& listeners) : Dialog(componentContainer, "Palette Editor", 0.18f, 0.68f, 0.8f, 0.3f) {
   for (std::map<std::string, Colour*>::iterator i = palette.begin(); i != palette.end(); i++) {
     cPaletteEntries.push_back(i->first);
     cPalette.push_back(i->second);
@@ -131,7 +131,7 @@ void PaletteConfigurationComponent::fireChangeEvent() {
   for (unsigned int i = 0; i < cChangeListeners->size(); i++) {
     // TODO: Should not fire NULL
     // TODO: Should not fire empty string
-    (*cChangeListeners)[i]->fourColourPaletteChanged(NULL, "");
+    (*cChangeListeners)[i]->paletteChanged(NULL, "");
   }
 }
 

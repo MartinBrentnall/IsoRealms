@@ -16,22 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "FourColourSupportDummy.h"
+#include "DummyPalette.h"
 
-Colour* FourColourSupportDummy::getColour(const std::string&) {
+Colour* DummyPalette::getColour(const std::string&) {
   return &cDummyColour;
 }
 
-void FourColourSupportDummy::addChangeListener(IFourColourSupportListener* listener) {
+void DummyPalette::addChangeListener(IPaletteListener* listener) {
   // Palette never changes; nothing to do.
 }
 
-void FourColourSupportDummy::removeChangeListener(IFourColourSupportListener* listener) {
+void DummyPalette::removeChangeListener(IPaletteListener* listener) {
   // Palette never changes; nothing to do.
 }
 
 extern "C" IPlugin* create() {
-  return new FourColourSupportDummy();
+  return new DummyPalette();
 }
 
 extern "C" void destroy(IPlugin* dummyPalette) {

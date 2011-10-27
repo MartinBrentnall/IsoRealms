@@ -16,32 +16,18 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef FOUR_COLOUR_SUPPORT_DUMMY_H
-#define FOUR_COLOUR_SUPPORT_DUMMY_H
+#ifndef I_PALETTE_LISTENER_H
+#define I_PALETTE_LISTENER_H
 
-#include <map>
+#include <string>
 
-#include <IsoRealms/Colour.h>
-#include <IsoRealms/DummyPlugin.h>
+class IPalette;
 
-#include "IFourColourSupport.h"
-
-/**
- * This dummy implementation uses four fixed grayscales as the palette entries.
- */
-class FourColourSupportDummy:public IFourColourSupport,
-                             public DummyPlugin {
-  private:
-  Colour cDummyColour;
-
+class IPaletteListener {
   public:
+  virtual void paletteChanged(IPalette*, const std::string&) = 0;
 
-  /*********************************\
-   * Implements IFourColourSupport *
-  \*********************************/
-  Colour* getColour(const std::string&);
-  void addChangeListener(IFourColourSupportListener*);
-  void removeChangeListener(IFourColourSupportListener*);
+  virtual ~IPaletteListener() {}
 };
 
 #endif

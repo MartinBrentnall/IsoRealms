@@ -16,10 +16,10 @@
 # along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
 include_directories(${PROJECT_SOURCE_DIR})
 
-add_library(FourColourSupport_DefaultFourColourSupport MODULE 
-  DefaultFourColourSupport.cpp
+add_library(Palette_UserDefinablePalette MODULE 
+  UserDefinablePalette.cpp
   PaletteConfigurationCommandInfo.cpp
   PaletteConfigurationComponent.cpp
 )
-set_target_properties(FourColourSupport_DefaultFourColourSupport PROPERTIES OUTPUT_NAME "Module")
-set_target_properties(FourColourSupport_DefaultFourColourSupport PROPERTIES PREFIX "lib")
+set_target_properties(Palette_UserDefinablePalette PROPERTIES OUTPUT_NAME "Module")
+set_target_properties(Palette_UserDefinablePalette PROPERTIES PREFIX "lib")

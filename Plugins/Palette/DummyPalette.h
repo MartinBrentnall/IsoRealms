@@ -16,42 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef COLOUR_EDITOR_H
-#define COLOUR_EDITOR_H
+#ifndef FOUR_COLOUR_SUPPORT_DUMMY_H
+#define FOUR_COLOUR_SUPPORT_DUMMY_H
 
-#include <GL/gl.h>
-#include <iostream>
+#include <map>
 
-#include "MiscFunctions.h"
-#include "ColourScheme.h"
-#include "TextureSet.h"
-#include "Colour.h"
+#include <IsoRealms/Colour.h>
+#include <IsoRealms/DummyPlugin.h>
 
-// TODO: Make into C++ static consts
-#define ELEMENT 0
-#define RED     1
-#define GREEN   2
-#define BLUE    3
+#include "IPalette.h"
 
-using namespace std; // TODO: Give this local scope
-
-class ColourSchemeEditor {
+class DummyPalette:public IPalette,
+                   public DummyPlugin {
   private:
-  float red;
-  float green;
-  float blue;
-  int element;
-  int focus;
-  ColourScheme *cColourScheme;
-  
+  Colour cDummyColour;
+
   public:
-  ColourSchemeEditor();
-  void move(int, int, int);
-  void setColour(Colour, int);
-  ColourScheme& getColourScheme();
-  void setColourScheme(ColourScheme& colours);
-  void render();
-  void reset();
+
+  /***********************\
+   * Implements IPalette *
+  \***********************/
+  Colour* getColour(const std::string&);
+  void addChangeListener(IPaletteListener*);
+  void removeChangeListener(IPaletteListener*);
 };
 
 #endif

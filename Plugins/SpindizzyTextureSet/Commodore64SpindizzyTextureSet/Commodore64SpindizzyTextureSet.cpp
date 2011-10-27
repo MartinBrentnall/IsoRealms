@@ -233,8 +233,8 @@ GLuint Commodore64SpindizzyTextureSet::convertToTexture(Image* image, const std:
 }
 
 Commodore64SpindizzyTextureSet::Commodore64SpindizzyTextureSet() {
-  cPlugSockets.push_back(new PlugSocket("FourColourSupport"));
-  assignDummyPlugin(&cColourScheme, "FourColourSupport");
+  cPlugSockets.push_back(new PlugSocket("Palette"));
+  assignDummyPlugin(&cPalette, "Palette");
 
   cTextures[SWITCH_CIRCLE_BOTH]   = new Commodore64SpindizzyTexture();
   cTextures[SWITCH_CIRCLE_LEFT]   = new Commodore64SpindizzyTexture();
@@ -271,10 +271,10 @@ Commodore64SpindizzyTextureSet::Commodore64SpindizzyTextureSet() {
 }
 
 void Commodore64SpindizzyTextureSet::generateTextures() {
-  cFloorColour      = cColourScheme->getColour(cFloorColourName);
-  cWallColour       = cColourScheme->getColour(cWallColourName);
-  cGridColour       = cColourScheme->getColour(cGridColourName);
-  cBackgroundColour = cColourScheme->getColour(cBackgroundColourName);
+  cFloorColour      = cPalette->getColour(cFloorColourName);
+  cWallColour       = cPalette->getColour(cWallColourName);
+  cGridColour       = cPalette->getColour(cGridColourName);
+  cBackgroundColour = cPalette->getColour(cBackgroundColourName);
   // TODO: Clean-up old ones
   cTextures[SWITCH_CIRCLE_BOTH]->setTexture(generateSwitchCircleBoth());
   GLuint mSwitchCircleHalf = generateSwitchCircleHalf();
@@ -330,11 +330,11 @@ std::vector<PlugSocket*> Commodore64SpindizzyTextureSet::getPlugSockets() {
 }
 
 void Commodore64SpindizzyTextureSet::setPlugin(PlugSocket* socket, IPlugin* plugin) {
-  if (socket->getType() == "FourColourSupport") {
-    IFourColourSupport* mPreviousColourScheme = cColourScheme;
-    if (assignPlugin(plugin, &cColourScheme, *socket)) {
-      mPreviousColourScheme->removeChangeListener(this);
-      cColourScheme->addChangeListener(this);
+  if (socket->getType() == "Palette") {
+    IPalette* mPreviousPalette = cPalette;
+    if (assignPlugin(plugin, &cPalette, *socket)) {
+      mPreviousPalette->removeChangeListener(this);
+      cPalette->addChangeListener(this);
       generateTextures();
     }
   } else {
@@ -342,12 +342,12 @@ void Commodore64SpindizzyTextureSet::setPlugin(PlugSocket* socket, IPlugin* plug
   }
 }
 
-void Commodore64SpindizzyTextureSet::fourColourPaletteChanged(IFourColourSupport*, const std::string&) {
+void Commodore64SpindizzyTextureSet::paletteChanged(IPalette*, const std::string&) {
   generateTextures();
 }
 
 IPlugin* Commodore64SpindizzyTextureSet::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "FourColourSupport") {return cColourScheme;}
+  if (socket->getType() == "Palette") {return cPalette;}
   // TODO: Throw something
   return NULL;
 }
