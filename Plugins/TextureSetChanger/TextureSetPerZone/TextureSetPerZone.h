@@ -31,12 +31,12 @@
 #include "../../ZoneContext/IZoneContext.h"
 #include "../../ZoneContext/IZoneContextListener.h"
 
-#include "../ISpindizzyTextureSetChanger.h"
+#include "../ITextureSetChanger.h"
 
 #include "ChooseTextureSetCommandInfo.h"
 #include "TextureSetChooserComponent.h"
 
-class TextureSetPerZone:public ISpindizzyTextureSetChanger,
+class TextureSetPerZone:public ITextureSetChanger,
                         public IZoneTextureSetter,
                         public IZoneContextListener,
                         public IDynamicElement {
@@ -76,8 +76,8 @@ class TextureSetPerZone:public ISpindizzyTextureSetChanger,
   ChooseTextureSetCommand* cChooseTextureSetCommand;
   std::vector<ICommandInfo*> cPluginCommands;
   std::vector<IChangeableTextureSet*> cControlledObjects;
-  std::vector<ISpindizzyTextureSet*> cTexturePalette;
-  std::map<IZone*, ISpindizzyTextureSet*> cZoneMapping;
+  std::vector<ITextureSet*> cTexturePalette;
+  std::map<IZone*, ITextureSet*> cZoneMapping;
   IZoneContext* cZoneContext;
   Colour cPreviousBackgroundColour;
   Colour cTargetBackgroundColour;
@@ -89,7 +89,7 @@ class TextureSetPerZone:public ISpindizzyTextureSetChanger,
   /*********************************\
    * Implements IZoneTextureSetter *
   \*********************************/
-  void setTextureSet(ISpindizzyTextureSet*);
+  void setTextureSet(ITextureSet*);
 
   /***********************************\
    * Implements IZoneContextListener *
@@ -101,9 +101,9 @@ class TextureSetPerZone:public ISpindizzyTextureSetChanger,
   \******************************/
   void update(int);
 
-  /******************************************\
-   * Implements ISpindizzyTextureSetChanger *
-  \******************************************/
+  /*********************************\
+   * Implements ITextureSetChanger *
+  \*********************************/
   void addControlObject(IChangeableTextureSet*);
   void removeControlObject(IChangeableTextureSet*);
 
@@ -114,9 +114,9 @@ class TextureSetPerZone:public ISpindizzyTextureSetChanger,
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
 
-  /******************************************************\
-   * Implements IPlugin (in ISpindizzyTextureSetChanger *
-  \******************************************************/
+  /*********************************************\
+   * Implements IPlugin (in ITextureSetChanger *
+  \*********************************************/
   void renderPreZone(IZone*);
   void zoneContextChanged(IMap*, IZone*);
   std::vector<ICommandInfo*> getCommandInfo();

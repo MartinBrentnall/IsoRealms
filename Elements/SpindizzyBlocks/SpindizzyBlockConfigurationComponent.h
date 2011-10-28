@@ -22,7 +22,7 @@
 #include <vector>
 #include <string>
 
-#include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
+#include "../../Plugins/TextureSet/ITextureSet.h"
 
 #include <IsoRealms/Configuration.h>
 #include <IsoRealms/GUI/Dialog.h>
@@ -38,7 +38,7 @@ class SpindizzyBlockFactory;
 
 class SpindizzyBlockConfigurationComponent:public Dialog {
   private:
-  ISpindizzyTextureSet** cTextureSet;
+  ITextureSet** cTextureSet;
   SpindizzyBlockProperties* cBlockProperties;
   SpindizzyBlockFactory* cBlockFactory;
   IElement* cSampleBlock;
@@ -48,7 +48,7 @@ class SpindizzyBlockConfigurationComponent:public Dialog {
   bool keyDown(SDLKey&);
 
   public:
-  SpindizzyBlockConfigurationComponent(IComponentContainer*, SpindizzyBlockFactory*, SpindizzyBlockProperties*, ISpindizzyTextureSet**, IComponentCloseListener*);
+  SpindizzyBlockConfigurationComponent(IComponentContainer*, SpindizzyBlockFactory*, SpindizzyBlockProperties*, ITextureSet**, IComponentCloseListener*);
 
   /****************************\
    * Implements IHUDComponent *

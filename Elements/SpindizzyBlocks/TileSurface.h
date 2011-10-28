@@ -29,17 +29,19 @@
 #include <IsoRealms/IVisualElement.h>
 
 #include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
-#include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
-#include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
+#include "../../Plugins/TextureSet/ITexture.h"
+#include "../../Plugins/TextureSet/ITextureSet.h"
 
 #include "BlockTypeProperties.h"
 #include "ISpindizzyTileSurface.h"
 #include "SurfaceCollisionEvent.h"
+#include "TextureRotation.h"
 
 class TileSurface:public ISpindizzyTileSurface {
   private:
   ITileSurface::FaceDirection cFacing;
-  ISpindizzyTexture* cTexture;
+  ITexture* cTexture;
+  TextureRotation cRotation;
   int cNorth;
   int cEast;
   int cSouth;
@@ -52,12 +54,19 @@ class TileSurface:public ISpindizzyTileSurface {
 
   Vertex* getBoundaryCrossingPoint(Vertex&, Vertex&, float*, float);
 
+  float getEastTextureCoord();
+  float getWestTextureCoord();
+  float getNorthTextureCoord();
+  float getSouthTextureCoord();
+  
+  void coord(float, float);
+  
   public:
 
   /**
    * Construct a new TileSurface.
    * 
-   * @param ISpindizzyTexture*  The texture of the surface.
+   * @param ITexture*  The texture of the surface.
    * @param int  North edge cell (inclusive) of the surface.
    * @param int  East edge cell (inclusive) of the surface.
    * @param int  South edge cell (inclusive) of the surface.
@@ -67,7 +76,7 @@ class TileSurface:public ISpindizzyTileSurface {
    * @param int  Slope step along north-to-south (Y axis).
    * @param ITileSurface::FaceDirection  Facing direction of the surface.
    */
-  TileSurface(ISpindizzyTexture*, int, int, int, int, int, int, int, ITileSurface::FaceDirection, Condition*, BlockTypeProperties*);
+  TileSurface(ITexture*, TextureRotation, int, int, int, int, int, int, int, ITileSurface::FaceDirection, Condition*, BlockTypeProperties*);
 
   /************************************\
    * Implements ISpindizzyTileSurface *

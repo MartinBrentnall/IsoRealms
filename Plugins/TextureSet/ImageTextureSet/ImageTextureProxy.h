@@ -1,5 +1,5 @@
 /*
- * Copyright 2009,2010 Martin Brentnall
+ * Copyright 2009,2010,2011 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,31 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef FLAT_RECTANGLE_H
-#define FLAT_RECTANGLE_H
+#ifndef IMAGE_TEXTURE_PROXY_H
+#define IMAGE_TEXTURE_PROXY_H
 
-#include <IsoRealms/IsoRealmsConstants.h>
-#include <IsoRealms/Vertex.h>
+#include "../ITexture.h"
 
-#include "../../TextureSet/ITexture.h"
-
-#include "../ISimpleModel.h"
-
-class FlatRectangle:public ISimpleModel {
+class ImageTextureProxy:public ITexture {
   private:
-  Vertex* cLocation;
-  ITexture** cTexture;
-  float* cSize;
-  bool cFlip;
-  
-  public:
-  FlatRectangle(Vertex*, ITexture**, float*, bool);
+  ITexture* cTexture;
+  std::string cFilename;
 
-  /*********************\
-   * Implements IModel *
-  \*********************/
-  void update(int milliseconds);
-  void render();
+  public:
+  void setTexture(const std::string&, ITexture*);
+  
+  /***********************\
+   * Implements ITexture *
+  \***********************/
+  void set();
+  void texCoord2f(float, float);
+  Colour* getColour(float, float);
+  void save(DOMNodeWriter*, const std::string&);
+  
+  ~ImageTextureProxy();
 };
 
 #endif

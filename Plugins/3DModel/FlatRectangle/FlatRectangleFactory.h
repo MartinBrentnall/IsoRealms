@@ -21,7 +21,7 @@
 
 #include <IsoRealms/PlugSocket.h>
 
-#include "../../SpindizzyTextureSet/ISpindizzyTextureSet.h"
+#include "../../TextureSet/ITextureSet.h"
 
 #include "../ISimpleModelFactory.h"
 
@@ -30,10 +30,11 @@
 class FlatRectangleFactory:public ISimpleModelFactory {
   private:
   std::vector<PlugSocket*> cTextureSetSocket;
-  ISpindizzyTextureSet* cTextureSet;
-  ISpindizzyTexture* cTexture;
+  ITextureSet* cTextureSet;
+  ITexture* cTexture;
   std::string cTextureName;
   float cSize;
+  bool cFlip;
 
   void updateTexture();
   

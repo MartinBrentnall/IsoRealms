@@ -18,10 +18,11 @@
  */
 #include "FlatRectangle.h"
 
-FlatRectangle::FlatRectangle(Vertex* location, ISpindizzyTexture** texture, float* size) {
+FlatRectangle::FlatRectangle(Vertex* location, ITexture** texture, float* size, bool flip) {
   cLocation = location;
   cTexture = texture;
   cSize = size;
+  cFlip = flip;
 }
 
 void FlatRectangle::update(int milliseconds) {
@@ -37,10 +38,11 @@ void FlatRectangle::render() {
   glDisable(GL_CULL_FACE);
   glBegin(GL_QUADS);
   float mRadius = IsoRealmsConstants::BLOCK_RADIUS * *cSize;
-  (*cTexture)->texCoord2f(1.0, 1.0); glVertex3f( mRadius, -mRadius, 0.0);
-  (*cTexture)->texCoord2f(1.0, 0.0); glVertex3f( mRadius,  mRadius, 0.0);
-  (*cTexture)->texCoord2f(0.0, 0.0); glVertex3f(-mRadius,  mRadius, 0.0);
-  (*cTexture)->texCoord2f(0.0, 1.0); glVertex3f(-mRadius, -mRadius, 0.0);
+  float mTextureCoord = cFlip ? -1.0f : 1.0f;
+  (*cTexture)->texCoord2f(mTextureCoord, mTextureCoord); glVertex3f( mRadius, -mRadius, 0.0f);
+  (*cTexture)->texCoord2f(mTextureCoord, 0.0f);          glVertex3f( mRadius,  mRadius, 0.0f);
+  (*cTexture)->texCoord2f(0.0f,          0.0f);          glVertex3f(-mRadius,  mRadius, 0.0f);
+  (*cTexture)->texCoord2f(0.0f,          mTextureCoord); glVertex3f(-mRadius, -mRadius, 0.0f);
   glEnd();
   glEnable(GL_CULL_FACE);
   glDisable(GL_ALPHA_TEST);

@@ -18,10 +18,10 @@
  */
 #include "SpindizzyWaterFactory.h"
 
-SpindizzyWaterFactory::SpindizzyWaterFactory(ISpindizzyTextureSet** spindizzyTextureSet, ISpindizzyBlockSet* elementSet) : ISpindizzyBlockFactory(elementSet) {
+SpindizzyWaterFactory::SpindizzyWaterFactory(ITextureSet** textureSet, ISpindizzyBlockSet* elementSet) : ISpindizzyBlockFactory(elementSet) {
   cStartWaterLocation = NULL;
   cSampleWater = NULL;
-  cSpindizzyTextureSet = spindizzyTextureSet;
+  cTextureSet = textureSet;
 }
 
 void SpindizzyWaterFactory::configureElement() {
@@ -42,7 +42,7 @@ IElement* SpindizzyWaterFactory::getElement(DOMNodeWrapper* node, BlockLocation*
     }
   }
   mEndLocation.z++;
-  SpindizzyWater* mLoadedWater = new SpindizzyWater(this, &mStartLocation, &mEndLocation, cSpindizzyTextureSet);
+  SpindizzyWater* mLoadedWater = new SpindizzyWater(this, &mStartLocation, &mEndLocation, cTextureSet);
   cContent.push_back(mLoadedWater);
   registerElement(mLoadedWater, elementContainer);
   return mLoadedWater;
@@ -70,7 +70,7 @@ bool SpindizzyWaterFactory::keyDown(SDLKey& key) {
       if (cStartWaterLocation == NULL) {
         cStartWaterLocation = new BlockLocation(*cEditingLocation);
       } else {
-        SpindizzyWater* mNewBlock = new SpindizzyWater(this, cStartWaterLocation, cEditingLocation, cSpindizzyTextureSet);
+        SpindizzyWater* mNewBlock = new SpindizzyWater(this, cStartWaterLocation, cEditingLocation, cTextureSet);
         cContent.push_back(mNewBlock);
         addElement(mNewBlock);
         delete cStartWaterLocation;
@@ -123,7 +123,7 @@ void SpindizzyWaterFactory::renderIcon() {
   glColor3f(1.0f, 1.0f, 1.0f);
   if (cSampleWater == NULL) {
     BlockLocation mIdentityBlockLocation(0, 0, 0);
-    cSampleWater = new SpindizzyWater(this, &mIdentityBlockLocation, &mIdentityBlockLocation, cSpindizzyTextureSet);
+    cSampleWater = new SpindizzyWater(this, &mIdentityBlockLocation, &mIdentityBlockLocation, cTextureSet);
   }
   cSampleWater->renderStatic();
 }
@@ -148,31 +148,31 @@ void SpindizzyWaterFactory::configureBlock(DOMNodeWrapper*, ICommandRegistry*) {
   // Nothing to do.
 }
 
-ISpindizzyTexture** SpindizzyWaterFactory::getSurfaceTexture() {
+ITexture** SpindizzyWaterFactory::getSurfaceTexture() {
   return NULL; // TODO: Implement this
 }
 
-ISpindizzyTexture** SpindizzyWaterFactory::getSplitNETexture() {
+ITexture** SpindizzyWaterFactory::getSplitNETexture() {
   return NULL; // TODO: Implement this
 }
 
-ISpindizzyTexture** SpindizzyWaterFactory::getSplitNWTexture() {
+ITexture** SpindizzyWaterFactory::getSplitNWTexture() {
   return NULL; // TODO: Implement this
 }
 
-ISpindizzyTexture** SpindizzyWaterFactory::getWestWallTexture() {
+ITexture** SpindizzyWaterFactory::getWestWallTexture() {
   return NULL; // TODO: Implement this
 }
 
-ISpindizzyTexture** SpindizzyWaterFactory::getEastWallTexture() {
+ITexture** SpindizzyWaterFactory::getEastWallTexture() {
   return NULL; // TODO: Implement this
 }
 
-ISpindizzyTexture** SpindizzyWaterFactory::getSouthWallTexture() {
+ITexture** SpindizzyWaterFactory::getSouthWallTexture() {
   return NULL; // TODO: Implement this
 }
 
-ISpindizzyTexture** SpindizzyWaterFactory::getNorthWallTexture() {
+ITexture** SpindizzyWaterFactory::getNorthWallTexture() {
   return NULL; // TODO: Implement this
 }
 

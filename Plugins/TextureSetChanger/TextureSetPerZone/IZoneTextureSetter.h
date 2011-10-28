@@ -19,11 +19,11 @@
 #ifndef I_ZONE_TEXTURE_SETTER_H
 #define I_ZONE_TEXTURE_SETTER_H
 
-#include "../../SpindizzyTextureSet/ISpindizzyTextureSet.h"
+#include "../../TextureSet/ITextureSet.h"
 
 class IZoneTextureSetter {
   public:
-  virtual void setTextureSet(ISpindizzyTextureSet*) = 0;
+  virtual void setTextureSet(ITextureSet*) = 0;
 };
 
 #endif

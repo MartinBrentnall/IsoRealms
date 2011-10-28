@@ -23,8 +23,8 @@ const unsigned int SpindizzyWater::INIT_PROCESS_BLOCKS = 1;
 const unsigned int SpindizzyWater::INIT_REGISTER_SURFACES = 2;
 const unsigned int SpindizzyWater::INIT_USE_SURFACES = 3;
 
-SpindizzyWater::SpindizzyWater(ISpindizzyBlockFactory* elementFactory, BlockLocation* startLocation, BlockLocation* endLocation, ISpindizzyTextureSet** textureSet) : ISpindizzyBlock(elementFactory) {
-  cSpindizzyTextureSet = textureSet;
+SpindizzyWater::SpindizzyWater(ISpindizzyBlockFactory* elementFactory, BlockLocation* startLocation, BlockLocation* endLocation, ITextureSet** textureSet) : ISpindizzyBlock(elementFactory) {
+  cTextureSet = textureSet;
   cStartLocation = BlockLocation(endLocation->x > startLocation->x ? startLocation->x : endLocation->x,
                                  endLocation->y > startLocation->y ? startLocation->y : endLocation->y,
                                  endLocation->z <= startLocation->z ? startLocation->z : endLocation->z);
@@ -83,8 +83,8 @@ std::vector<IInteractiveElement*> SpindizzyWater::getInteractiveElements() {
 }
 
 ISpindizzyTileSurface* SpindizzyWater::createSubSurface(ITileSurface::FaceDirection facing, int north, int east, int south, int west, Condition* condition) {
-  ISpindizzyTexture* mWaterTexture = (*cSpindizzyTextureSet)->getTexture("Water");
-  return new TileSurface(mWaterTexture, north, east, south, west, facing == ITileSurface::UP ? cStartLocation.z : cEndLocation.z, 0, 0, facing, condition, NULL);
+  ITexture* mWaterTexture = (*cTextureSet)->getTexture("IceWater");
+  return new TileSurface(mWaterTexture, STRAIGHT, north, east, south, west, facing == ITileSurface::UP ? cStartLocation.z : cEndLocation.z, 0, 0, facing, condition, NULL);
 }
 
 IWallSurface* SpindizzyWater::createSubSurface(int x, int y, IWallSurface::FaceDirection facing, int length, int startHeight, int endHeight, int topSlope, int bottomSlope) {

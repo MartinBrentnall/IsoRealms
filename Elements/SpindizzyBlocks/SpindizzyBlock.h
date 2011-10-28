@@ -28,11 +28,11 @@
 #include <IsoRealms/IVisualElement.h>
 #include <IsoRealms/MiscFunctions.h>
 
-#include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
-#include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
 #include "../../Plugins/SurfaceProcessor/ITileSurface.h"
 #include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
 #include "../../Plugins/SurfaceProcessor/ISurfaceProvider.h"
+#include "../../Plugins/TextureSet/ITexture.h"
+#include "../../Plugins/TextureSet/ITextureSet.h"
 
 #include "ISpindizzyBlock.h"
 #include "ISpindizzyBlockSet.h"
@@ -165,7 +165,7 @@ class SpindizzyBlock:public ISpindizzyBlock,
    * The texture set is represented by a pointer to a pointer to the actual
    * texture set.  This allows us to quickly change the texture set externally.
    */
-  ISpindizzyTextureSet** cSpindizzyTextureSet;
+  ITextureSet** cTextureSet;
 
   /**
    * Determine if the surface of this block is split.
@@ -178,13 +178,18 @@ class SpindizzyBlock:public ISpindizzyBlock,
   
   void generateWallSurfaces(IWallSurface::FaceDirection);
   
-  ISpindizzyTexture* getWallTexture(WallSurface::FaceDirection);
+  WallType getWallType();
+  ITexture* getWallTexture(WallSurface::FaceDirection);
+  ITexture* getWallTextureTop(WallSurface::FaceDirection);
+  ITexture* getWallTextureBottom(WallSurface::FaceDirection);
+  bool isWallBottomFlipped(WallSurface::FaceDirection);
 
   public:
   SpindizzyBlock(ISpindizzyBlockFactory*, BlockLocation*, BlockLocation*, SpindizzyBlockProperties*, bool);
   SpindizzyBlock(ISpindizzyBlockFactory*, DOMNodeWrapper*);
 
-  ISpindizzyTexture* getTileSurfaceTexture();
+  ITexture* getTileSurfaceTexture();
+  TextureRotation getTileSurfaceRotation();
 
   /**
    * Flag this block for caching with the surface processor at next init.

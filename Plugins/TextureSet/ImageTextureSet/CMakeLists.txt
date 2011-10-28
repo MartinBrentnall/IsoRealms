@@ -16,10 +16,19 @@
 # along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
 include_directories(${PROJECT_SOURCE_DIR})
 
-add_library(SpindizzyTextureSetChanger_TextureSetPerZone MODULE 
-  ChooseTextureSetCommandInfo.cpp
-  TextureSetChooserComponent.cpp
-  TextureSetPerZone.cpp
+find_package(SDL_image REQUIRED)
+if(SDLIMAGE_FOUND)
+  include_directories(${SDLIMAGE_INCLUDE_DIR})
+else(SDLIMAGE_FOUND)
+  message(STATUS "SDL_Image not found.") 
+endif(SDLIMAGE_FOUND)
+
+add_library(TextureSet_ImageTextureSet MODULE 
+  ImageTexture.cpp
+  ImageTextureProxy.cpp
+  ImageTextureSet.cpp
 )
-set_target_properties(SpindizzyTextureSetChanger_TextureSetPerZone PROPERTIES OUTPUT_NAME "Module")
-set_target_properties(SpindizzyTextureSetChanger_TextureSetPerZone PROPERTIES PREFIX "lib")
+set_target_properties(TextureSet_ImageTextureSet PROPERTIES OUTPUT_NAME "Module")
+set_target_properties(TextureSet_ImageTextureSet PROPERTIES PREFIX "lib")
+
+target_link_libraries(TextureSet_ImageTextureSet ${SDLIMAGE_LIBRARY})

@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2009,2010 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,17 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SPINDIZZY_TEXTURE_SET_CHANGER_H
-#define SPINDIZZY_TEXTURE_SET_CHANGER_H
+#include "PlainColourTexture.h"
 
-#include <IsoRealms/IPlugin.h>
+PlainColourTexture::PlainColourTexture() {
+}
 
-#include "IChangeableTextureSet.h"
+void PlainColourTexture::setTexture(Colour* colour) {
+  cColour = colour;
+}
 
-class ISpindizzyTextureSetChanger:public virtual IPlugin {
-  public:
-  virtual void addControlObject(IChangeableTextureSet*) = 0;
-  virtual void removeControlObject(IChangeableTextureSet*) = 0;
-};
+void PlainColourTexture::set() {
+  glColor3f(cColour->getRed(), cColour->getGreen(), cColour->getBlue());
+}
 
-#endif
+void PlainColourTexture::texCoord2f(float, float) {
+  // Nothing to do
+}
+
+Colour* PlainColourTexture::getColour(float, float) {
+  return cColour;
+}

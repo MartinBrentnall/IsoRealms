@@ -14,12 +14,12 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
-add_subdirectory(TextureSetPerZone)
-
 include_directories(${PROJECT_SOURCE_DIR})
 
-add_library(SpindizzyTextureSetChangerDummy MODULE 
-  SpindizzyTextureSetChangerDummy.cpp
+add_library(TextureSet_C64SpindizzyTextureSet MODULE 
+  C64SpindizzyTexture.cpp
+  C64SpindizzyTextureSet.cpp
+  PlainColourTexture.cpp
 )
-set_target_properties(SpindizzyTextureSetChangerDummy PROPERTIES OUTPUT_NAME "Dummy")
-set_target_properties(SpindizzyTextureSetChangerDummy PROPERTIES PREFIX "lib")
+set_target_properties(TextureSet_C64SpindizzyTextureSet PROPERTIES OUTPUT_NAME "Module")
+set_target_properties(TextureSet_C64SpindizzyTextureSet PROPERTIES PREFIX "lib")

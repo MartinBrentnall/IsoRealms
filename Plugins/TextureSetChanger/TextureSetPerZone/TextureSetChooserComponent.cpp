@@ -18,7 +18,7 @@
  */
 #include "TextureSetChooserComponent.h"
 
-TextureSetChooserComponent::TextureSetChooserComponent(IComponentContainer* componentContainer, IZoneTextureSetter* zoneTextureSetter, std::vector<ISpindizzyTextureSet*> texturePalette) : ResizableDialog(componentContainer, "Choose Texture Set", 0.18f, 0.68f, 0.8f, 0.3f) {
+TextureSetChooserComponent::TextureSetChooserComponent(IComponentContainer* componentContainer, IZoneTextureSetter* zoneTextureSetter, std::vector<ITextureSet*> texturePalette) : ResizableDialog(componentContainer, "Choose Texture Set", 0.18f, 0.68f, 0.8f, 0.3f) {
   cZoneTextureSetter = zoneTextureSetter;
   WrappingGridComponent* mWrappingComponent = new WrappingGridComponent();
   for (unsigned int i = 0; i < texturePalette.size(); i++) {
@@ -32,7 +32,7 @@ TextureSetChooserComponent::TextureSetChooserComponent(IComponentContainer* comp
   addComponent(mWrappingComponent);
 }
 
-TextureSetChooserComponent::TextureIcon::TextureIcon(TextureSetChooserComponent* parent, ISpindizzyTextureSet* textureSet) {
+TextureSetChooserComponent::TextureIcon::TextureIcon(TextureSetChooserComponent* parent, ITextureSet* textureSet) {
   cParent = parent;
   cTextureSet = textureSet;
 }
@@ -75,7 +75,7 @@ void TextureSetChooserComponent::TextureIcon::render() {
   glRotatef(-45.0f, 0.0f, 0.0f, 1.0f); // TODO: Must get this right; check with how the editor is doing it!
   glColor3f(1.0f, 1.0f, 1.0f);
 
-  ISpindizzyTexture* mTexture = cTextureSet->getTexture("SwitchDiamondFilled");
+  ITexture* mTexture = cTextureSet->getTexture("SwitchDiamondFilled");
   mTexture->set();
   glBegin(GL_QUADS);
   mTexture->texCoord2f(1.0f, 1.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);

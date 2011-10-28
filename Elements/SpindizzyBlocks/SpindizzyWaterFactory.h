@@ -21,7 +21,7 @@
 
 #include <iostream>
 
-#include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
+#include "../../Plugins/TextureSet/ITextureSet.h"
 
 #include <IsoRealms/IElementFactory.h>
 
@@ -31,7 +31,7 @@
 class SpindizzyWaterFactory:public ISpindizzyBlockFactory {
   private:
   std::vector<SpindizzyWater*> cContent;
-  ISpindizzyTextureSet** cSpindizzyTextureSet;
+  ITextureSet** cTextureSet;
   BlockLocation* cEditingLocation;
   BlockLocation* cStartWaterLocation;
   SpindizzyWater* cSampleWater;
@@ -39,7 +39,7 @@ class SpindizzyWaterFactory:public ISpindizzyBlockFactory {
   bool keyDown(SDLKey& key);
 
   public:
-  SpindizzyWaterFactory(ISpindizzyTextureSet**, ISpindizzyBlockSet*);
+  SpindizzyWaterFactory(ITextureSet**, ISpindizzyBlockSet*);
 
   /*************************************\
    * Implements ISpindizzyBlockFactory *
@@ -49,13 +49,13 @@ class SpindizzyWaterFactory:public ISpindizzyBlockFactory {
   BlockTypeProperties* getBlockTypeProperties();
   void save(DOMNodeWriter*);
   void configureBlock(DOMNodeWrapper*, ICommandRegistry*);
-  ISpindizzyTexture** getSurfaceTexture();
-  ISpindizzyTexture** getSplitNETexture();
-  ISpindizzyTexture** getSplitNWTexture();
-  ISpindizzyTexture** getWestWallTexture();
-  ISpindizzyTexture** getEastWallTexture();
-  ISpindizzyTexture** getSouthWallTexture();
-  ISpindizzyTexture** getNorthWallTexture();
+  ITexture** getSurfaceTexture();
+  ITexture** getSplitNETexture();
+  ITexture** getSplitNWTexture();
+  ITexture** getWestWallTexture();
+  ITexture** getEastWallTexture();
+  ITexture** getSouthWallTexture();
+  ITexture** getNorthWallTexture();
 
   /******************************\
    * Implements IElementFactory *

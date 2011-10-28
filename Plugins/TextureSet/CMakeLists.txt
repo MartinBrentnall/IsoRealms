@@ -14,22 +14,14 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
-add_subdirectory(3DModel)
-add_subdirectory(Camera)
-add_subdirectory(Collectables)
-add_subdirectory(CollidableSurfaceRegistry)
-add_subdirectory(FlaggedZones)
-add_subdirectory(Font)
-add_subdirectory(HUD)
-add_subdirectory(IntegerValue)
-add_subdirectory(LocationAwareness)
-add_subdirectory(Objectives)
-add_subdirectory(Palette)
-add_subdirectory(SequencePlayer)
-add_subdirectory(SoundSupport)
-add_subdirectory(TextureSet)
-add_subdirectory(TextureSetChanger)
-add_subdirectory(StringProcessor)
-add_subdirectory(SurfaceProcessor)
-add_subdirectory(Utilities)
-add_subdirectory(ZoneContext)
+add_subdirectory(C64SpindizzyTextureSet)
+add_subdirectory(C64SpindizzySprites)
+add_subdirectory(ImageTextureSet)
+
+include_directories(${PROJECT_SOURCE_DIR})
+
+add_library(DummyTextureSet MODULE 
+  DummyTextureSet.cpp
+)
+set_target_properties(DummyTextureSet PROPERTIES OUTPUT_NAME "Dummy")
+set_target_properties(DummyTextureSet PROPERTIES PREFIX "lib")

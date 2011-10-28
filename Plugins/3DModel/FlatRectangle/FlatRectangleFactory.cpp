@@ -19,15 +19,16 @@
 #include "FlatRectangleFactory.h"
 
 FlatRectangleFactory::FlatRectangleFactory() {
-  assignDummyPlugin(&cTextureSet, "SpindizzyTextureSet");
-  cTextureSetSocket.push_back(new PlugSocket("SpindizzyTextureSet"));
+  assignDummyPlugin(&cTextureSet, "TextureSet");
+  cTextureSetSocket.push_back(new PlugSocket("TextureSet"));
   cSize = 1.0f;
+  cFlip = false;
   cTextureName = "";
   updateTexture();
 }
 
 ISimpleModel* FlatRectangleFactory::createModel(Vertex* location, float scale) {
-  return new FlatRectangle(location, &cTexture, &cSize);
+  return new FlatRectangle(location, &cTexture, &cSize, cFlip);
 }
 
 void FlatRectangleFactory::destroyModel(ISimpleModel* flatRectangle) {
@@ -39,7 +40,7 @@ std::vector<PlugSocket*> FlatRectangleFactory::getPlugSockets() {
 }
 
 void FlatRectangleFactory::setPlugin(PlugSocket* socket, IPlugin* plugin) {
-  if (socket->getType() == "SpindizzyTextureSet") {
+  if (socket->getType() == "TextureSet") {
     assignPlugin(plugin, &cTextureSet, *socket);
     updateTexture();
   } else {
@@ -48,7 +49,7 @@ void FlatRectangleFactory::setPlugin(PlugSocket* socket, IPlugin* plugin) {
 }
 
 IPlugin* FlatRectangleFactory::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "SpindizzyTextureSet") {return cTextureSet;}
+  if (socket->getType() == "TextureSet") {return cTextureSet;}
   // TODO: Throw
   return NULL;
 }
@@ -79,6 +80,9 @@ void FlatRectangleFactory::load(DOMNodeWrapper* node) {
       updateTexture();
     } else if (mValueAsString == "Size") {
       cSize = mNode->getFloatValue();
+    } else if (mValueAsString == "Rotate") {
+      std::string mRotate = mNode->getStringValue();
+      cFlip = mRotate == "Reverse";
     }
   }
 }

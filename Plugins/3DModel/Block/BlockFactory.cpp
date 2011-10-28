@@ -19,11 +19,11 @@
 #include "BlockFactory.h"
 
 BlockFactory::BlockFactory() {
-  assignDummyPlugin(&cDummyTextureSet, "SpindizzyTextureSet");
+  assignDummyPlugin(&cDummyTextureSet, "TextureSet");
   cTextureSet = cDummyTextureSet;
-  cSpindizzyTextureSetController = NULL;
-  cSockets.push_back(new PlugSocket("SpindizzyTextureSet"));
-  cSockets.push_back(new PlugSocket("SpindizzyTextureSetChanger"));
+  cTextureSetController = NULL;
+  cSockets.push_back(new PlugSocket("TextureSet"));
+  cSockets.push_back(new PlugSocket("TextureSetChanger"));
   cProperties = new BlockProperties(&cTextureSet);
 }
 
@@ -40,16 +40,16 @@ std::vector<PlugSocket*> BlockFactory::getPlugSockets() {
 }
 
 void BlockFactory::setPlugin(PlugSocket* socket, IPlugin* plugin) {
-  if (socket->getType() == "SpindizzyTextureSet") {
+  if (socket->getType() == "TextureSet") {
     assignPlugin(plugin, &cTextureSet, *socket);
-  } else if (socket->getType() == "SpindizzyTextureSetChanger") {
-    ISpindizzyTextureSetChanger* mPreviousController = cSpindizzyTextureSetController;
-    if (assignPlugin(plugin, &cSpindizzyTextureSetController, *socket, false)) {
+  } else if (socket->getType() == "TextureSetChanger") {
+    ITextureSetChanger* mPreviousController = cTextureSetController;
+    if (assignPlugin(plugin, &cTextureSetController, *socket, false)) {
       if (mPreviousController != NULL) {
-        cSpindizzyTextureSetController->removeControlObject(this);
+        cTextureSetController->removeControlObject(this);
       }
-      if (cSpindizzyTextureSetController != NULL) {
-        cSpindizzyTextureSetController->addControlObject(this);
+      if (cTextureSetController != NULL) {
+        cTextureSetController->addControlObject(this);
       }
     }
   } else {
@@ -58,7 +58,7 @@ void BlockFactory::setPlugin(PlugSocket* socket, IPlugin* plugin) {
 }
 
 IPlugin* BlockFactory::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "SpindizzyTextureSet") {return cTextureSet;}
+  if (socket->getType() == "TextureSet") {return cTextureSet;}
   // TODO: Throw
   return NULL;
 }
@@ -75,19 +75,27 @@ void BlockFactory::load(DOMNodeWrapper* node) {
       cProperties->setTopSurfaceTexture(mNode->getStringValue());
     } else if (mValueAsString == "BottomSurfaceTexture") {
       cProperties->setBottomSurfaceTexture(mNode->getStringValue());
-    } else if (mValueAsString == "NorthSurfaceTexture") {
-      cProperties->setNorthSurfaceTexture(mNode->getStringValue());
-    } else if (mValueAsString == "EastSurfaceTexture") {
-      cProperties->setEastSurfaceTexture(mNode->getStringValue());
-    } else if (mValueAsString == "SouthSurfaceTexture") {
-      cProperties->setSouthSurfaceTexture(mNode->getStringValue());
-    } else if (mValueAsString == "WestSurfaceTexture") {
-      cProperties->setWestSurfaceTexture(mNode->getStringValue());
+    } else if (mValueAsString == "NorthSurfaceTextureTop") {
+      cProperties->setNorthSurfaceTextureTop(mNode->getStringValue());
+    } else if (mValueAsString == "EastSurfaceTextureTop") {
+      cProperties->setEastSurfaceTextureTop(mNode->getStringValue());
+    } else if (mValueAsString == "SouthSurfaceTextureTop") {
+      cProperties->setSouthSurfaceTextureTop(mNode->getStringValue());
+    } else if (mValueAsString == "WestSurfaceTextureTop") {
+      cProperties->setWestSurfaceTextureTop(mNode->getStringValue());
+    } else if (mValueAsString == "NorthSurfaceTextureBottom") {
+      cProperties->setNorthSurfaceTextureBottom(mNode->getStringValue());
+    } else if (mValueAsString == "EastSurfaceTextureBottom") {
+      cProperties->setEastSurfaceTextureBottom(mNode->getStringValue());
+    } else if (mValueAsString == "SouthSurfaceTextureBottom") {
+      cProperties->setSouthSurfaceTextureBottom(mNode->getStringValue());
+    } else if (mValueAsString == "WestSurfaceTextureBottom") {
+      cProperties->setWestSurfaceTextureBottom(mNode->getStringValue());
     }
   }
 }
 
-void BlockFactory::setSpindizzyTextureSet(ISpindizzyTextureSet* textureSet) {
+void BlockFactory::setTextureSet(ITextureSet* textureSet) {
   cTextureSet = textureSet != NULL ? textureSet : cDummyTextureSet;
 }
 

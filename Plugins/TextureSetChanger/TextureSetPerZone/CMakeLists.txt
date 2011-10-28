@@ -14,22 +14,12 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
-add_subdirectory(3DModel)
-add_subdirectory(Camera)
-add_subdirectory(Collectables)
-add_subdirectory(CollidableSurfaceRegistry)
-add_subdirectory(FlaggedZones)
-add_subdirectory(Font)
-add_subdirectory(HUD)
-add_subdirectory(IntegerValue)
-add_subdirectory(LocationAwareness)
-add_subdirectory(Objectives)
-add_subdirectory(Palette)
-add_subdirectory(SequencePlayer)
-add_subdirectory(SoundSupport)
-add_subdirectory(TextureSet)
-add_subdirectory(TextureSetChanger)
-add_subdirectory(StringProcessor)
-add_subdirectory(SurfaceProcessor)
-add_subdirectory(Utilities)
-add_subdirectory(ZoneContext)
+include_directories(${PROJECT_SOURCE_DIR})
+
+add_library(TextureSetChanger_TextureSetPerZone MODULE 
+  ChooseTextureSetCommandInfo.cpp
+  TextureSetChooserComponent.cpp
+  TextureSetPerZone.cpp
+)
+set_target_properties(TextureSetChanger_TextureSetPerZone PROPERTIES OUTPUT_NAME "Module")
+set_target_properties(TextureSetChanger_TextureSetPerZone PROPERTIES PREFIX "lib")

@@ -18,7 +18,7 @@
  */
 #include "TileSplitSurface.h"
 
-TileSplitSurface::TileSplitSurface(bool splitDirection, BlockLocation& location, ISpindizzyTexture* texture, int nw, int ne, int se, int sw, Condition* condition, BlockTypeProperties* blockTypeProperties) {
+TileSplitSurface::TileSplitSurface(bool splitDirection, BlockLocation& location, ITexture* texture, int nw, int ne, int se, int sw, Condition* condition, BlockTypeProperties* blockTypeProperties) {
   cTexture = texture;
   cLocation = location;
   cCornerHeights[0][1] = nw;

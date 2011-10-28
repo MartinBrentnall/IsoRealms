@@ -30,7 +30,7 @@
 #include <IsoRealms/IElementSet.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 
-#include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
+#include "../../Plugins/TextureSet/ITextureSet.h"
 
 class SpindizzyBlockConfigurationComponent;
 
@@ -47,7 +47,7 @@ class SpindizzyBlockFactory:public ISpindizzyBlockFactory,
   std::vector<SpindizzyBlock*> cContent;
   SpindizzyBlockConfigurationComponent* cConfigurationComponent;
   IComponentContainer* cComponentContainer;
-  ISpindizzyTextureSet** cSpindizzyTextureSet;
+  ITextureSet** cTextureSet;
   SpindizzyBlockProperties* cBlockProperties;
   BlockLocation* cStartBlockLocation;
   BlockLocation* cEditingLocation;
@@ -65,21 +65,21 @@ class SpindizzyBlockFactory:public ISpindizzyBlockFactory,
    * block properties can be passed for editing and generation of blocks based
    * on the specified type.
    * 
-   * @param ISpindizzyTextureSet*  A texture set to use for texturing blocks.
+   * @param ITextureSet*  A texture set to use for texturing blocks.
    */
-  SpindizzyBlockFactory(std::string, ISpindizzyTextureSet**, ISpindizzyBlockSet*, DOMNodeWrapper*, ICommandRegistry*);
+  SpindizzyBlockFactory(std::string, ITextureSet**, ISpindizzyBlockSet*, DOMNodeWrapper*, ICommandRegistry*);
 
   /**
    * Create a new usable block according to the specified parameters.
    * 
    * @param BlockLocation*  Start location of the block.
    * @param BlockLocation*  End location of the block.
-   * @param ISpindizzyTextureSet*  Textures to use for the block.
+   * @param ITextureSet*  Textures to use for the block.
    * @param SpindizzyBlockProperties*  Properties to apply to the block.
    * @param bool  true to create an addition, false to create a subtraction.
    * @returns  The new usable block.
    */
-  SpindizzyBlock* createBlock(BlockLocation*, BlockLocation*, ISpindizzyTextureSet**, SpindizzyBlockProperties*, bool);
+  SpindizzyBlock* createBlock(BlockLocation*, BlockLocation*, ITextureSet**, SpindizzyBlockProperties*, bool);
   
   /*************************************\
    * Implements ISpindizzyBlockFactory *

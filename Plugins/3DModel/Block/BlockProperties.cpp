@@ -18,32 +18,48 @@
  */
 #include "BlockProperties.h"
 
-BlockProperties::BlockProperties(ISpindizzyTextureSet** textureSet) {
+BlockProperties::BlockProperties(ITextureSet** textureSet) {
   cTextureSet = textureSet;
 }
 
-ISpindizzyTexture* BlockProperties::getTopSurfaceTexture() {
+ITexture* BlockProperties::getTopSurfaceTexture() {
   return (*cTextureSet)->getTexture(cTopSurfaceTexture);
 }
 
-ISpindizzyTexture* BlockProperties::getBottomSurfaceTexture() {
+ITexture* BlockProperties::getBottomSurfaceTexture() {
   return (*cTextureSet)->getTexture(cBottomSurfaceTexture);
 }
 
-ISpindizzyTexture* BlockProperties::getNorthSurfaceTexture() {
-  return (*cTextureSet)->getTexture(cNorthSurfaceTexture);
+ITexture* BlockProperties::getNorthSurfaceTextureTop() {
+  return (*cTextureSet)->getTexture(cNorthSurfaceTextureTop);
 }
 
-ISpindizzyTexture* BlockProperties::getEastSurfaceTexture() {
-  return (*cTextureSet)->getTexture(cEastSurfaceTexture);
+ITexture* BlockProperties::getEastSurfaceTextureTop() {
+  return (*cTextureSet)->getTexture(cEastSurfaceTextureTop);
 }
 
-ISpindizzyTexture* BlockProperties::getSouthSurfaceTexture() {
-  return (*cTextureSet)->getTexture(cSouthSurfaceTexture);
+ITexture* BlockProperties::getSouthSurfaceTextureTop() {
+  return (*cTextureSet)->getTexture(cSouthSurfaceTextureTop);
 }
 
-ISpindizzyTexture* BlockProperties::getWestSurfaceTexture() {
-  return (*cTextureSet)->getTexture(cWestSurfaceTexture);
+ITexture* BlockProperties::getWestSurfaceTextureTop() {
+  return (*cTextureSet)->getTexture(cWestSurfaceTextureTop);
+}
+
+ITexture* BlockProperties::getNorthSurfaceTextureBottom() {
+  return (*cTextureSet)->getTexture(cNorthSurfaceTextureBottom);
+}
+
+ITexture* BlockProperties::getEastSurfaceTextureBottom() {
+  return (*cTextureSet)->getTexture(cEastSurfaceTextureBottom);
+}
+
+ITexture* BlockProperties::getSouthSurfaceTextureBottom() {
+  return (*cTextureSet)->getTexture(cSouthSurfaceTextureBottom);
+}
+
+ITexture* BlockProperties::getWestSurfaceTextureBottom() {
+  return (*cTextureSet)->getTexture(cWestSurfaceTextureBottom);
 }
 
 void BlockProperties::setTopSurfaceTexture(const std::string& name) {
@@ -54,20 +70,36 @@ void BlockProperties::setBottomSurfaceTexture(const std::string& name) {
   cBottomSurfaceTexture = name;
 }
 
-void BlockProperties::setNorthSurfaceTexture(const std::string& name) {
-  cNorthSurfaceTexture = name;
+void BlockProperties::setNorthSurfaceTextureTop(const std::string& name) {
+  cNorthSurfaceTextureTop = name;
 }
 
-void BlockProperties::setEastSurfaceTexture(const std::string& name) {
-  cEastSurfaceTexture = name;
+void BlockProperties::setEastSurfaceTextureTop(const std::string& name) {
+  cEastSurfaceTextureTop = name;
 }
 
-void BlockProperties::setSouthSurfaceTexture(const std::string& name) {
-  cSouthSurfaceTexture = name;
+void BlockProperties::setSouthSurfaceTextureTop(const std::string& name) {
+  cSouthSurfaceTextureTop = name;
 }
 
-void BlockProperties::setWestSurfaceTexture(const std::string& name) {
-  cWestSurfaceTexture = name;
+void BlockProperties::setWestSurfaceTextureTop(const std::string& name) {
+  cWestSurfaceTextureTop = name;
+}
+
+void BlockProperties::setNorthSurfaceTextureBottom(const std::string& name) {
+  cNorthSurfaceTextureBottom = name;
+}
+
+void BlockProperties::setEastSurfaceTextureBottom(const std::string& name) {
+  cEastSurfaceTextureBottom = name;
+}
+
+void BlockProperties::setSouthSurfaceTextureBottom(const std::string& name) {
+  cSouthSurfaceTextureBottom = name;
+}
+
+void BlockProperties::setWestSurfaceTextureBottom(const std::string& name) {
+  cWestSurfaceTextureBottom = name;
 }
 
 void BlockProperties::saveProperty(DOMNodeWriter* node, const std::string& name, const std::string& texture) {
@@ -78,10 +110,14 @@ void BlockProperties::saveProperty(DOMNodeWriter* node, const std::string& name,
 }
 
 void BlockProperties::save(DOMNodeWriter* node) {
-  saveProperty(node, "TopSurfaceTexture",    cTopSurfaceTexture);
-  saveProperty(node, "BottomSurfaceTexture", cBottomSurfaceTexture);
-  saveProperty(node, "NorthSurfaceTexture",  cNorthSurfaceTexture);
-  saveProperty(node, "EastSurfaceTexture",   cEastSurfaceTexture);
-  saveProperty(node, "SouthSurfaceTexture",  cSouthSurfaceTexture);
-  saveProperty(node, "WestSurfaceTexture",   cWestSurfaceTexture);
+  saveProperty(node, "TopSurfaceTexture",         cTopSurfaceTexture);
+  saveProperty(node, "BottomSurfaceTexture",      cBottomSurfaceTexture);
+  saveProperty(node, "NorthSurfaceTextureTop",    cNorthSurfaceTextureTop);
+  saveProperty(node, "EastSurfaceTextureTop",     cEastSurfaceTextureTop);
+  saveProperty(node, "SouthSurfaceTextureTop",    cSouthSurfaceTextureTop);
+  saveProperty(node, "WestSurfaceTextureTop",     cWestSurfaceTextureTop);
+  saveProperty(node, "NorthSurfaceTextureBottom", cNorthSurfaceTextureBottom);
+  saveProperty(node, "EastSurfaceTextureBottom",  cEastSurfaceTextureBottom);
+  saveProperty(node, "SouthSurfaceTextureBottom", cSouthSurfaceTextureBottom);
+  saveProperty(node, "WestSurfaceTextureBottom",  cWestSurfaceTextureBottom);
 }

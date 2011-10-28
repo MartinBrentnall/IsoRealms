@@ -1,5 +1,5 @@
 /*
- * Copyright 2009,2010 Martin Brentnall
+ * Copyright 2009 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,31 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef FLAT_RECTANGLE_H
-#define FLAT_RECTANGLE_H
+#ifndef DUMMY_TEXTURE_SET_CHANGER_H
+#define DUMMY_TEXTURE_SET_CHANGER_H
 
-#include <IsoRealms/IsoRealmsConstants.h>
-#include <IsoRealms/Vertex.h>
+#include <IsoRealms/DummyPlugin.h>
 
-#include "../../TextureSet/ITexture.h"
+#include "ITextureSetChanger.h"
 
-#include "../ISimpleModel.h"
-
-class FlatRectangle:public ISimpleModel {
-  private:
-  Vertex* cLocation;
-  ITexture** cTexture;
-  float* cSize;
-  bool cFlip;
-  
+class DummyTextureSetChanger:public ITextureSetChanger,
+                             public DummyPlugin {
   public:
-  FlatRectangle(Vertex*, ITexture**, float*, bool);
 
-  /*********************\
-   * Implements IModel *
-  \*********************/
-  void update(int milliseconds);
-  void render();
+  /*********************************\
+   * Implements ITextureSetChanger *
+  \*********************************/
+  void addControlObject(IChangeableTextureSet*);
+  void removeControlObject(IChangeableTextureSet*);
 };
 
 #endif
+
+

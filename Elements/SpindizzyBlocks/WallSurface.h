@@ -26,12 +26,13 @@
 #include <IsoRealms/Condition.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 
-#include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
-#include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
+#include "../../Plugins/TextureSet/ITexture.h"
+#include "../../Plugins/TextureSet/ITextureSet.h"
 #include "../../Plugins/SurfaceProcessor/IWallEdge.h"
 
 #include "ISpindizzyWallSurface.h"
 #include "SurfaceCollisionEvent.h"
+#include "WallType.h"
 
 class WallSurface:public ISpindizzyWallSurface {
   private:
@@ -73,7 +74,11 @@ class WallSurface:public ISpindizzyWallSurface {
   /**
    * Texture set used for rendering the wall
    */
-  ISpindizzyTexture* cTexture;
+  ITexture* cTexture;
+  ITexture* cTextureTop;
+  ITexture* cTextureBottom;
+  WallType cWallType;
+  bool cFlipBottom;
 
   Condition* cCondition;
   
@@ -121,10 +126,10 @@ class WallSurface:public ISpindizzyWallSurface {
    * @param int  Height of the wall.
    * @param int  Step slope of the wall.
    * @param FaceDirection  facing direction of the wall.
-   * @param ISpindizzyTexture*  Appearance of the wall.
+   * @param ITexture*  Appearance of the wall.
    * @param Condition  Condition of the walls existence.
    */
-  WallSurface(int, int, int, int, int, int, FaceDirection, ISpindizzyTexture*, Condition*);
+  WallSurface(int, int, int, int, int, int, FaceDirection, WallType, ITexture*, ITexture*, ITexture*, bool, Condition*);
 
   float getHeightAt(float);
   

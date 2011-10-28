@@ -18,7 +18,7 @@
  */
 #include "SpindizzyBlockConfigurationComponent.h"
 
-SpindizzyBlockConfigurationComponent::SpindizzyBlockConfigurationComponent(IComponentContainer* componentContainer, SpindizzyBlockFactory* blockFactory, SpindizzyBlockProperties* blockProperties, ISpindizzyTextureSet** textureSet, IComponentCloseListener* listener) : Dialog(componentContainer, "Block Editor", 0.0f, 0.0f, 0.25f, 0.5f) {
+SpindizzyBlockConfigurationComponent::SpindizzyBlockConfigurationComponent(IComponentContainer* componentContainer, SpindizzyBlockFactory* blockFactory, SpindizzyBlockProperties* blockProperties, ITextureSet** textureSet, IComponentCloseListener* listener) : Dialog(componentContainer, "Block Editor", 0.0f, 0.0f, 0.25f, 0.5f) {
   cBlockProperties = blockProperties;
   cBlockFactory = blockFactory;
   cTextureSet = textureSet;

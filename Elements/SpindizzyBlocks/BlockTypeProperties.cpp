@@ -25,14 +25,19 @@ BlockTypeProperties::BlockTypeProperties() {
   cSurfaceGrip = 1.0f;
   cSurfaceBounce = 0.0f;
   cRespawnAllowed = true;
+  cSurfaceRotation = STRAIGHT;
+  cWallType = TILED;
 }
 
-void BlockTypeProperties::configure(DOMNodeWrapper* node, ICommandRegistry* commandRegistry, ISpindizzyTextureSet** textureSet) {
+void BlockTypeProperties::configure(DOMNodeWrapper* node, ICommandRegistry* commandRegistry, ITextureSet** textureSet) {
   cTextureSet = textureSet;
   cSurfaceFriction = node->getFloatAttribute("friction");
   cSurfaceGrip = node->getFloatAttribute("grip");
   cRespawnAllowed = node->getBooleanAttribute("respawnAllowed");
   cSurfaceBounce = node->getFloatAttribute("bounce");
+  std::string mWallType = node->getAttribute("wallType");
+  cWallType = mWallType == "capped" ? CAPPED
+            :                         TILED;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
@@ -45,6 +50,11 @@ void BlockTypeProperties::configure(DOMNodeWrapper* node, ICommandRegistry* comm
       std::string mTextureName = mNode->getAttribute("name");
       if (mApplyTo == "Surface") {
         cSurfaceTexture = mTextureName;
+        std::string mTextureRotation = mNode->getAttribute("rotate");
+        cSurfaceRotation = mTextureRotation == "Left"    ? LEFT
+                         : mTextureRotation == "Right"   ? RIGHT
+                         : mTextureRotation == "Reverse" ? REVERSE
+                         :                                 STRAIGHT;
       } else if (mApplyTo == "NESplitSurface") {
         cSurfaceSplitNETexture = mTextureName;
       } else if (mApplyTo == "NWSplitSurface") {
@@ -57,6 +67,30 @@ void BlockTypeProperties::configure(DOMNodeWrapper* node, ICommandRegistry* comm
         cSouthWallTexture = mTextureName;
       } else if (mApplyTo == "WallNorth") {
         cNorthWallTexture = mTextureName;
+      } else if (mApplyTo == "WallWestTop") {
+        cWestWallTextureTop = mTextureName;
+      } else if (mApplyTo == "WallEastTop") {
+        cEastWallTextureTop = mTextureName;
+      } else if (mApplyTo == "WallSouthTop") {
+        cSouthWallTextureTop = mTextureName;
+      } else if (mApplyTo == "WallNorthTop") {
+        cNorthWallTextureTop = mTextureName;
+      } else if (mApplyTo == "WallWestBottom") {
+        cWestWallTextureBottom = mTextureName;
+        std::string mFlip = mNode->getAttribute("flip");
+        cWestBottomFlip = mFlip == "true" ? true : false;
+      } else if (mApplyTo == "WallEastBottom") {
+        cEastWallTextureBottom = mTextureName;
+        std::string mFlip = mNode->getAttribute("flip");
+        cEastBottomFlip = mFlip == "true" ? true : false;
+      } else if (mApplyTo == "WallSouthBottom") {
+        cSouthWallTextureBottom = mTextureName;
+        std::string mFlip = mNode->getAttribute("flip");
+        cSouthBottomFlip = mFlip == "true" ? true : false;
+      } else if (mApplyTo == "WallNorthBottom") {
+        cNorthWallTextureBottom = mTextureName;
+        std::string mFlip = mNode->getAttribute("flip");
+        cNorthBottomFlip = mFlip == "true" ? true : false;
       } else {
         // TODO: Throw
         std::cout << "Unknown texture type" << std::endl;
@@ -90,34 +124,90 @@ bool BlockTypeProperties::isRespawnAllowed() {
   return cRespawnAllowed;
 }
 
-ISpindizzyTexture* BlockTypeProperties::getSurfaceTexture() {
+ITexture* BlockTypeProperties::getSurfaceTexture() {
   return (*cTextureSet)->getTexture(cSurfaceTexture);
 }
 
-ISpindizzyTexture* BlockTypeProperties::getSplitNETexture() {
-  ISpindizzyTexture* mSplitTexture = (*cTextureSet)->getTexture(cSurfaceSplitNETexture);
+ITexture* BlockTypeProperties::getSplitNETexture() {
+  ITexture* mSplitTexture = (*cTextureSet)->getTexture(cSurfaceSplitNETexture);
   return mSplitTexture != NULL ? mSplitTexture : getSurfaceTexture();
 }
 
-ISpindizzyTexture* BlockTypeProperties::getSplitNWTexture() {
-  ISpindizzyTexture* mSplitTexture = (*cTextureSet)->getTexture(cSurfaceSplitNWTexture);
+ITexture* BlockTypeProperties::getSplitNWTexture() {
+  ITexture* mSplitTexture = (*cTextureSet)->getTexture(cSurfaceSplitNWTexture);
   return mSplitTexture != NULL ? mSplitTexture : getSurfaceTexture();
 }
 
-ISpindizzyTexture* BlockTypeProperties::getWestWallTexture() {
+WallType BlockTypeProperties::getWallType() {
+  return cWallType;
+}
+
+ITexture* BlockTypeProperties::getWestWallTexture() {
   return (*cTextureSet)->getTexture(cWestWallTexture);
 }
 
-ISpindizzyTexture* BlockTypeProperties::getEastWallTexture() {
+ITexture* BlockTypeProperties::getEastWallTexture() {
   return (*cTextureSet)->getTexture(cEastWallTexture);
 }
 
-ISpindizzyTexture* BlockTypeProperties::getSouthWallTexture() {
+ITexture* BlockTypeProperties::getSouthWallTexture() {
   return (*cTextureSet)->getTexture(cSouthWallTexture);
 }
 
-ISpindizzyTexture* BlockTypeProperties::getNorthWallTexture() {
+ITexture* BlockTypeProperties::getNorthWallTexture() {
   return (*cTextureSet)->getTexture(cNorthWallTexture);
+}
+
+ITexture* BlockTypeProperties::getWestWallTextureTop() {
+  return (*cTextureSet)->getTexture(cWestWallTextureTop);
+}
+
+ITexture* BlockTypeProperties::getEastWallTextureTop() {
+  return (*cTextureSet)->getTexture(cEastWallTextureTop);
+}
+
+ITexture* BlockTypeProperties::getSouthWallTextureTop() {
+  return (*cTextureSet)->getTexture(cSouthWallTextureTop);
+}
+
+ITexture* BlockTypeProperties::getNorthWallTextureTop() {
+  return (*cTextureSet)->getTexture(cNorthWallTextureTop);
+}
+
+ITexture* BlockTypeProperties::getWestWallTextureBottom() {
+  return (*cTextureSet)->getTexture(cWestWallTextureBottom);
+}
+
+ITexture* BlockTypeProperties::getEastWallTextureBottom() {
+  return (*cTextureSet)->getTexture(cEastWallTextureBottom);
+}
+
+ITexture* BlockTypeProperties::getSouthWallTextureBottom() {
+  return (*cTextureSet)->getTexture(cSouthWallTextureBottom);
+}
+
+ITexture* BlockTypeProperties::getNorthWallTextureBottom() {
+  return (*cTextureSet)->getTexture(cNorthWallTextureBottom);
+}
+
+bool BlockTypeProperties::isWestWallBottomFlipped() {
+  return cWestBottomFlip;
+}
+
+bool BlockTypeProperties::isEastWallBottomFlipped() {
+  return cEastBottomFlip;
+}
+
+bool BlockTypeProperties::isSouthWallBottomFlipped() {
+  return cSouthBottomFlip;
+}
+
+bool BlockTypeProperties::isNorthWallBottomFlipped() {
+  return cNorthBottomFlip;
+}
+  
+TextureRotation BlockTypeProperties::getSurfaceRotation() {
+  return cSurfaceRotation;
 }
 
 void BlockTypeProperties::saveTexture(DOMNodeWriter* node, const std::string& type, const std::string& name) {

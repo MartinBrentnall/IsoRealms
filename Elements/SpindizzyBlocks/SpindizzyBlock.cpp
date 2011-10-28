@@ -43,10 +43,16 @@ SpindizzyBlock::SpindizzyBlock(ISpindizzyBlockFactory* elementFactory, BlockLoca
 SpindizzyBlock::SpindizzyBlock(ISpindizzyBlockFactory* elementFactory, DOMNodeWrapper* node) : ISpindizzyBlock(elementFactory) {
 }
 
-ISpindizzyTexture* SpindizzyBlock::getTileSurfaceTexture() {
+ITexture* SpindizzyBlock::getTileSurfaceTexture() {
   ISpindizzyBlockFactory* mFactory = getElementFactory();
   BlockTypeProperties* mBlockTypeProperties = mFactory->getBlockTypeProperties();
   return isSplit() ? mBlockTypeProperties->getSplitNETexture() : mBlockTypeProperties->getSurfaceTexture();
+}
+
+TextureRotation SpindizzyBlock::getTileSurfaceRotation() {
+  ISpindizzyBlockFactory* mFactory = getElementFactory();
+  BlockTypeProperties* mBlockTypeProperties = mFactory->getBlockTypeProperties();
+  return mBlockTypeProperties->getSurfaceRotation();
 }
 
 int SpindizzyBlock::getXSlope() {
@@ -102,7 +108,8 @@ int SpindizzyBlock::getBottomHeight(int x, int y) {
 }
 
 ISpindizzyTileSurface* SpindizzyBlock::createSubSurface(ITileSurface::FaceDirection faceDirection, int north, int east, int south, int west, Condition* condition) {
-  ISpindizzyTexture* mTexture = getTileSurfaceTexture();
+  ITexture* mTexture = getTileSurfaceTexture();
+  TextureRotation mRotation = getTileSurfaceRotation();
   switch (faceDirection) {
     case ITileSurface::UP: {
       int mXSlope = getXSlope();
@@ -114,14 +121,14 @@ ISpindizzyTileSurface* SpindizzyBlock::createSubSurface(ITileSurface::FaceDirect
       if (isSplit()) {
         return new TileSplitSurface(cSplitType == NORTH_SOUTH, mSurfaceLocation, mTexture, cNorthWestHeight, cNorthEastHeight, cSouthEastHeight, cSouthWestHeight, condition, mBlockTypeProperties);
       } else {
-        return new TileSurface(mTexture, north, east, south, west, mHeight, mXSlope, mYSlope, faceDirection, condition, mBlockTypeProperties);
+        return new TileSurface(mTexture, mRotation, north, east, south, west, mHeight, mXSlope, mYSlope, faceDirection, condition, mBlockTypeProperties);
       }
     }
     
     case ITileSurface::DOWN: {
       // TODO: Make sure the subsurface does not violate the stepping
       int mHeight = getBottomHeight(east, north);
-      return new TileSurface(mTexture, north, east, south, west, mHeight, 0, 0, faceDirection, condition, NULL);
+      return new TileSurface(mTexture, mRotation, north, east, south, west, mHeight, 0, 0, faceDirection, condition, NULL);
     }
   }
   std::cout << "ERROR: Face direction does not exist" << std::endl;
@@ -133,7 +140,13 @@ std::vector<ITileSurfaceTemplate*> SpindizzyBlock::calculateTileSurfaces(const I
   return mSpindizzyBlockSet->getTileSurfaces(this, faceDirection, visual);
 }
 
-ISpindizzyTexture* SpindizzyBlock::getWallTexture(WallSurface::FaceDirection direction) {
+WallType SpindizzyBlock::getWallType() {
+  ISpindizzyBlockFactory* mFactory = getElementFactory();
+  BlockTypeProperties* mBlockTypeProperties = mFactory->getBlockTypeProperties();
+  return mBlockTypeProperties->getWallType();
+}
+
+ITexture* SpindizzyBlock::getWallTexture(WallSurface::FaceDirection direction) {
   ISpindizzyBlockFactory* mFactory = getElementFactory();
   BlockTypeProperties* mBlockTypeProperties = mFactory->getBlockTypeProperties();
   switch (direction) {
@@ -141,6 +154,48 @@ ISpindizzyTexture* SpindizzyBlock::getWallTexture(WallSurface::FaceDirection dir
     case IWallSurface::EAST:  return mBlockTypeProperties->getEastWallTexture();
     case IWallSurface::SOUTH: return mBlockTypeProperties->getSouthWallTexture();
     case IWallSurface::WEST:  return mBlockTypeProperties->getWestWallTexture();
+  }
+  // TODO: Throw a wobbly
+  std::cout << "Unknown face direction in SpindizzyBlock!" << std::endl;
+  exit(1);
+}
+
+ITexture* SpindizzyBlock::getWallTextureTop(WallSurface::FaceDirection direction) {
+  ISpindizzyBlockFactory* mFactory = getElementFactory();
+  BlockTypeProperties* mBlockTypeProperties = mFactory->getBlockTypeProperties();
+  switch (direction) {
+    case IWallSurface::NORTH: return mBlockTypeProperties->getNorthWallTextureTop();
+    case IWallSurface::EAST:  return mBlockTypeProperties->getEastWallTextureTop();
+    case IWallSurface::SOUTH: return mBlockTypeProperties->getSouthWallTextureTop();
+    case IWallSurface::WEST:  return mBlockTypeProperties->getWestWallTextureTop();
+  }
+  // TODO: Throw a wobbly
+  std::cout << "Unknown face direction in SpindizzyBlock!" << std::endl;
+  exit(1);
+}
+
+ITexture* SpindizzyBlock::getWallTextureBottom(WallSurface::FaceDirection direction) {
+  ISpindizzyBlockFactory* mFactory = getElementFactory();
+  BlockTypeProperties* mBlockTypeProperties = mFactory->getBlockTypeProperties();
+  switch (direction) {
+    case IWallSurface::NORTH: return mBlockTypeProperties->getNorthWallTextureBottom();
+    case IWallSurface::EAST:  return mBlockTypeProperties->getEastWallTextureBottom();
+    case IWallSurface::SOUTH: return mBlockTypeProperties->getSouthWallTextureBottom();
+    case IWallSurface::WEST:  return mBlockTypeProperties->getWestWallTextureBottom();
+  }
+  // TODO: Throw a wobbly
+  std::cout << "Unknown face direction in SpindizzyBlock!" << std::endl;
+  exit(1);
+}
+
+bool SpindizzyBlock::isWallBottomFlipped(WallSurface::FaceDirection direction) {
+  ISpindizzyBlockFactory* mFactory = getElementFactory();
+  BlockTypeProperties* mBlockTypeProperties = mFactory->getBlockTypeProperties();
+  switch (direction) {
+    case IWallSurface::NORTH: return mBlockTypeProperties->isNorthWallBottomFlipped();
+    case IWallSurface::EAST:  return mBlockTypeProperties->isEastWallBottomFlipped();
+    case IWallSurface::SOUTH: return mBlockTypeProperties->isSouthWallBottomFlipped();
+    case IWallSurface::WEST:  return mBlockTypeProperties->isWestWallBottomFlipped();
   }
   // TODO: Throw a wobbly
   std::cout << "Unknown face direction in SpindizzyBlock!" << std::endl;
@@ -187,16 +242,24 @@ ISpindizzyWallSurface* SpindizzyBlock::createSubSurface(IWallSurfaceTemplate* wa
 //  int mBottomSlope                           = wallTemplate->getBottomSlope();
   int mTopSlope                              = wallTemplate->getTopSlope();
   Condition* mCondition                      = wallTemplate->getCondition();
-  ISpindizzyTexture* mTexture                = getWallTexture(mFaceDirection);
+  WallType mWallType                         = getWallType();
+  ITexture* mTexture                         = getWallTexture(mFaceDirection);
+  ITexture* mTextureTop                      = getWallTextureTop(mFaceDirection);
+  ITexture* mTextureBottom                   = getWallTextureBottom(mFaceDirection);
+  bool mFlipBottom                           = isWallBottomFlipped(mFaceDirection);
   // TODO: Bottom slope.
-  return new WallSurface(mX, mY, mStartHeight, mLength, mEndHeight, mTopSlope, mFaceDirection, mTexture, mCondition);
+  return new WallSurface(mX, mY, mStartHeight, mLength, mEndHeight, mTopSlope, mFaceDirection, mWallType, mTexture, mTextureTop, mTextureBottom, mFlipBottom, mCondition);
 }
 
 std::vector<IWallSurface*> SpindizzyBlock::getWallSurfaces(int location, IWallSurface::FaceDirection facing) {
   bool mFacesPole = facing == IWallSurface::NORTH || facing == IWallSurface::SOUTH;
   int mSlope = getWallSlope(facing);
   std::vector<IWallSurface*> mWallSurfaces;
-  ISpindizzyTexture* mTexture = getWallTexture(facing);
+  WallType mWallType = getWallType();
+  ITexture* mTexture = getWallTexture(facing);
+  ITexture* mTextureTop = getWallTextureTop(facing);
+  ITexture* mTextureBottom = getWallTextureBottom(facing);
+  bool mFlipBottom = isWallBottomFlipped(facing);
   if (cSteppedBottom && mSlope != 0) {
     int mStart = mFacesPole ? cStartLocation.x : cStartLocation.y;
     int mEnd   = mFacesPole ? cEndLocation.x   : cEndLocation.y;
@@ -205,7 +268,7 @@ std::vector<IWallSurface*> SpindizzyBlock::getWallSurfaces(int location, IWallSu
       int mY = mFacesPole ? location : i;
       int mBaseHeight = getBottomHeight(mX, mY);
       int mHeight = cEndLocation.z - cStartLocation.z;
-      IWallSurface* mWallSurface = new WallSurface(mX, mY, mBaseHeight, 1, mHeight, mSlope, facing, mTexture, cCondition);
+      IWallSurface* mWallSurface = new WallSurface(mX, mY, mBaseHeight, 1, mHeight, mSlope, facing, mWallType, mTexture, mTextureTop, mTextureBottom, mFlipBottom, cCondition);
       mWallSurfaces.push_back(mWallSurface);
     }
   } else {
@@ -217,7 +280,7 @@ std::vector<IWallSurface*> SpindizzyBlock::getWallSurfaces(int location, IWallSu
     int mBaseHeight = getBottomHeight(mX, mY);
     int mHeight = cSteppedBottom ? (cEndLocation.z - cStartLocation.z) + getMinimumWallElevation(facing)
                                  : (getTileSurfaceHeight(mLowestX, mLowestY) + getMinimumWallElevation(facing)) - cStartLocation.z;
-    IWallSurface* mWallSurface = new WallSurface(mX, mY, mBaseHeight, mLength, mHeight, mSlope, facing, mTexture, cCondition);
+    IWallSurface* mWallSurface = new WallSurface(mX, mY, mBaseHeight, mLength, mHeight, mSlope, facing, mWallType, mTexture, mTextureTop, mTextureBottom, mFlipBottom, cCondition);
     mWallSurfaces.push_back(mWallSurface);
   }
   return mWallSurfaces;

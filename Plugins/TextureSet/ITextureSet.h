@@ -16,14 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_CHANGEABLE_TEXTURE_SET_H
-#define I_CHANGEABLE_TEXTURE_SET_H
+#ifndef I_TEXTURE_SET_H
+#define I_TEXTURE_SET_H
 
-#include "../SpindizzyTextureSet/ISpindizzyTextureSet.h"
+#include <IsoRealms/IPlugin.h>
 
-class IChangeableTextureSet {
+#include "ITexture.h"
+
+class ITextureSet:public virtual IPlugin {
   public:
-  virtual void setSpindizzyTextureSet(ISpindizzyTextureSet*) = 0;
+
+  /**
+   * Return the texture of the specified name.
+   * 
+   * @param std::string&  The texture name.
+   * @returns  The texture.
+   */
+  virtual ITexture* getTexture(const std::string&) = 0;
+
+  virtual ~ITextureSet() {}
 };
 
 #endif

@@ -21,7 +21,7 @@
 
 #include <IsoRealms/PlugSocket.h>
 
-#include "../../SpindizzyTextureSetChanger/ISpindizzyTextureSetChanger.h"
+#include "../../TextureSetChanger/ITextureSetChanger.h"
 
 #include "../ISimpleModelFactory.h"
 
@@ -32,10 +32,10 @@ class BlockFactory:public ISimpleModelFactory,
                    public IChangeableTextureSet {
   private:
   std::vector<PlugSocket*> cSockets;
-  ISpindizzyTextureSetChanger* cSpindizzyTextureSetController;
-  ISpindizzyTextureSet* cDummyTextureSet;
-  ISpindizzyTextureSet* cTextureSet;
-  ISpindizzyTexture* cTexture;
+  ITextureSetChanger* cTextureSetController;
+  ITextureSet* cDummyTextureSet;
+  ITextureSet* cTextureSet;
+  ITexture* cTexture;
   BlockProperties* cProperties;
 
   public:
@@ -63,7 +63,7 @@ class BlockFactory:public ISimpleModelFactory,
   /************************************\
    * Implements IChangeableTextureSet *
   \************************************/
-  void setSpindizzyTextureSet(ISpindizzyTextureSet*);
+  void setTextureSet(ITextureSet*);
 };
 
 #endif

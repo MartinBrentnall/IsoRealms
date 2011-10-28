@@ -18,8 +18,9 @@
  */
 #include "TileSurface.h"
 
-TileSurface::TileSurface(ISpindizzyTexture* texture, int north, int east, int south, int west, int height, int westEastSlope, int northSouthSlope, ITileSurface::FaceDirection facing, Condition* condition, BlockTypeProperties* blockTypeProperties) {
+TileSurface::TileSurface(ITexture* texture, TextureRotation rotation, int north, int east, int south, int west, int height, int westEastSlope, int northSouthSlope, ITileSurface::FaceDirection facing, Condition* condition, BlockTypeProperties* blockTypeProperties) {
   cTexture = texture;
+  cRotation = rotation;
   cNorth = north;
   cEast = east;
   cSouth = south;
@@ -40,6 +41,51 @@ int TileSurface::getSurfaceCellHeight(int x, int y) {
 
 int TileSurface::getSurfaceCellElevation(int x, int y) {
   return abs(cWestEastSlope) + abs(cNorthSouthSlope);
+}
+
+float TileSurface::getEastTextureCoord() {
+  switch (cRotation) {
+    case STRAIGHT: return   cEast  + 1;
+    case RIGHT:    return -(cNorth + 1);
+    case LEFT:     return   cNorth + 1;
+    case REVERSE:  return -(cEast  + 1);
+  }
+}
+
+float TileSurface::getWestTextureCoord() {
+  switch (cRotation) {
+    case STRAIGHT: return   cWest;
+    case RIGHT:    return  -cSouth;
+    case LEFT:     return   cSouth;
+    case REVERSE:  return  -cWest;
+  }
+}
+
+float TileSurface::getNorthTextureCoord() {
+  switch (cRotation) {
+    case STRAIGHT: return   cNorth + 1;
+    case RIGHT:    return -(cEast  + 1);
+    case LEFT:     return   cEast  + 1;    
+    case REVERSE:  return -(cNorth + 1);
+  }
+}
+
+float TileSurface::getSouthTextureCoord() {
+  switch (cRotation) {
+    case STRAIGHT: return   cSouth;
+    case RIGHT:    return  -cWest;
+    case LEFT:     return   cWest;
+    case REVERSE:  return  -cSouth;
+  }
+}
+
+void TileSurface::coord(float x, float y) {
+  switch (cRotation) {
+    case STRAIGHT: cTexture->texCoord2f( x,  y); break;
+    case RIGHT:    cTexture->texCoord2f( y,  x); break;
+    case REVERSE:  cTexture->texCoord2f(-x, -y); break;
+    case LEFT:     cTexture->texCoord2f(-y, -x); break;
+  }
 }
 
 void TileSurface::render() {
@@ -74,10 +120,18 @@ void TileSurface::render() {
 
     switch (cFacing) {
       case ITileSurface::UP: {
-        cTexture->texCoord2f(cEast + 1, cNorth + 1); glVertex3f(xe, ys, xsye);
-        cTexture->texCoord2f(cEast + 1, cSouth    ); glVertex3f(xe, ye, xeye);
-        cTexture->texCoord2f(cWest,     cSouth    ); glVertex3f(xs, ye, xeys);
-        cTexture->texCoord2f(cWest,     cNorth + 1); glVertex3f(xs, ys, xsys);
+/*        float mEast  = getEastTextureCoord();
+        float mWest  = getWestTextureCoord();
+        float mNorth = getNorthTextureCoord();
+        float mSouth = getSouthTextureCoord();
+        cTexture->texCoord2f(mEast, mNorth); glVertex3f(xe, ys, xsye);
+        cTexture->texCoord2f(mEast, mSouth); glVertex3f(xe, ye, xeye);
+        cTexture->texCoord2f(mWest, mSouth); glVertex3f(xs, ye, xeys);
+        cTexture->texCoord2f(mWest, mNorth); glVertex3f(xs, ys, xsys);*/
+        coord(cEast + 1, cNorth + 1); glVertex3f(xe, ys, xsye);
+        coord(cEast + 1, cSouth);     glVertex3f(xe, ye, xeye);
+        coord(cWest,     cSouth);     glVertex3f(xs, ye, xeys);
+        coord(cWest,     cNorth + 1); glVertex3f(xs, ys, xsys);
 /*        glColor3f(1.0, 1.0, 0.0); cTexture->texCoord2f(cEast + 1, cNorth + 1); glVertex3f(xe, ys, xsye);
         glColor3f(0.0, 1.0, 1.0); cTexture->texCoord2f(cEast + 1, cSouth);     glVertex3f(xe, ye, xeye);
         glColor3f(1.0, 0.0, 1.0); cTexture->texCoord2f(cWest,     cSouth);     glVertex3f(xs, ye, xeys);

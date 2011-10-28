@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2009,2010 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,20 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "SpindizzyTextureSetChangerDummy.h"
+#ifndef PLAIN_COLOUR_TEXTURE_H
+#define PLAIN_COLOUR_TEXTURE_H
 
-void SpindizzyTextureSetChangerDummy::addControlObject(IChangeableTextureSet* changeable) {
-  // Nothing to do.
-}
+#include <GL/gl.h>
 
-void SpindizzyTextureSetChangerDummy::removeControlObject(IChangeableTextureSet* changeable) {
-  // Nothing to do.
-}
+#include "../ITexture.h"
 
-extern "C" IPlugin* create() {
-  return new SpindizzyTextureSetChangerDummy();
-}
+class PlainColourTexture:public ITexture {
+  private:
+  Colour* cColour;
 
-extern "C" void destroy(IPlugin* spindizzyTextureSetChangerDummy) {
-  delete spindizzyTextureSetChangerDummy;
-}
+  public:
+  PlainColourTexture();
+  
+  void setTexture(Colour* colour);
+
+  /***********************\
+   * Implements ITexture *
+  \***********************/
+  void set();
+  void texCoord2f(float, float);
+  Colour* getColour(float, float);
+};
+
+#endif

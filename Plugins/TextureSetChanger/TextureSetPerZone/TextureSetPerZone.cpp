@@ -31,7 +31,7 @@ TextureSetPerZone::TextureSetPerZone() {
   cDefaultTextureSetCommand = new DefaultTextureSetCommand(this);
 }
 
-void TextureSetPerZone::setTextureSet(ISpindizzyTextureSet* textureSet) {
+void TextureSetPerZone::setTextureSet(ITextureSet* textureSet) {
   IZone* mZone = cCurrentMap->getZone(*cBlockLocation);
   if (mZone != NULL) {
     if (textureSet != NULL) {
@@ -57,7 +57,7 @@ std::vector<PlugSocket*> TextureSetPerZone::getPlugSockets() {
   for (unsigned int i = 0; i <= cTexturePalette.size(); i++) {
     std::ostringstream mSocketID;
     mSocketID << i;
-    PlugSocket* mPlugSocket = new PlugSocket("SpindizzyTextureSet", mSocketID.str());
+    PlugSocket* mPlugSocket = new PlugSocket("TextureSet", mSocketID.str());
     mSockets.push_back(mPlugSocket);
   }
   mSockets.push_back(new PlugSocket("ZoneContext"));
@@ -65,13 +65,13 @@ std::vector<PlugSocket*> TextureSetPerZone::getPlugSockets() {
 }
 
 void TextureSetPerZone::setPlugin(PlugSocket* plugSocket, IPlugin* plugin) {
-  if (plugSocket->getType() == "SpindizzyTextureSet") {
+  if (plugSocket->getType() == "TextureSet") {
     std::string mSocketID = plugSocket->getID();
     std::stringstream mInputString(mSocketID);
     unsigned int mIndex;
     mInputString >> mIndex;
     if (plugin != NULL) {
-      ISpindizzyTextureSet* mTextureSet = dynamic_cast<ISpindizzyTextureSet*>(plugin);
+      ITextureSet* mTextureSet = dynamic_cast<ITextureSet*>(plugin);
       if (mTextureSet != NULL) {
         if (mIndex == cTexturePalette.size()) {
           cTexturePalette.push_back(mTextureSet);
@@ -79,7 +79,7 @@ void TextureSetPerZone::setPlugin(PlugSocket* plugSocket, IPlugin* plugin) {
           cTexturePalette[mIndex] = mTextureSet;
         }
       } else {
-        std::cout << "Warning: dynamic_cast failed for ISpindizzyTextureSet" << std::endl;
+        std::cout << "Warning: dynamic_cast failed for ITextureSet" << std::endl;
       }
     } else if (mIndex != cTexturePalette.size()) {
       cTexturePalette.erase(cTexturePalette.begin() + mIndex);
@@ -94,7 +94,7 @@ void TextureSetPerZone::setPlugin(PlugSocket* plugSocket, IPlugin* plugin) {
 }
 
 IPlugin* TextureSetPerZone::getPlugin(PlugSocket* plugSocket) {
-  if (plugSocket->getType() == "SpindizzyTextureSet") {
+  if (plugSocket->getType() == "TextureSet") {
     std::string mSocketID = plugSocket->getID();
     std::stringstream mInputString(mSocketID);
     unsigned int mIndex;
@@ -111,9 +111,9 @@ IPlugin* TextureSetPerZone::getPlugin(PlugSocket* plugSocket) {
 }
 
 void TextureSetPerZone::renderPreZone(IZone* zone) {
-  std::map<IZone*, ISpindizzyTextureSet*>::iterator mIterator = cZoneMapping.find(zone);
+  std::map<IZone*, ITextureSet*>::iterator mIterator = cZoneMapping.find(zone);
   for (unsigned int i = 0; i < cControlledObjects.size(); i++) {
-    cControlledObjects[i]->setSpindizzyTextureSet(mIterator != cZoneMapping.end() ? mIterator->second : NULL);
+    cControlledObjects[i]->setTextureSet(mIterator != cZoneMapping.end() ? mIterator->second : NULL);
   }
 }
 
@@ -132,12 +132,12 @@ void TextureSetPerZone::setEditingContext(BlockLocation* blockLocation, ICompone
 }
 
 void TextureSetPerZone::saveData(DOMNodeWriter* node, IMap* map, IZone* zone) {
-  std::map<IZone*, ISpindizzyTextureSet*>::iterator mIterator = cZoneMapping.find(zone);
+  std::map<IZone*, ITextureSet*>::iterator mIterator = cZoneMapping.find(zone);
   if (mIterator != cZoneMapping.end()) {
-    ISpindizzyTextureSet* mTextureSet = mIterator->second;
+    ITextureSet* mTextureSet = mIterator->second;
     DOMNodeWriter* mTextureSetNode = node->addBranch("TextureSet");
     IPluginRegistry* mPluginRegistry = map->getPluginRegistry();
-    std::string mTextureSetName = mPluginRegistry->getInstanceName("SpindizzyTextureSet", mTextureSet);
+    std::string mTextureSetName = mPluginRegistry->getInstanceName("TextureSet", mTextureSet);
     mTextureSetNode->addText(mTextureSetName);
   }
 }
@@ -148,10 +148,10 @@ void TextureSetPerZone::loadData(DOMNodeWrapper* node, IPluginRegistry* pluginRe
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "TextureSet") {
       std::string mTextureSetName = mNode->getStringValue();
-      std::string mPluginType("SpindizzyTextureSet");
+      std::string mPluginType("TextureSet");
       IPlugin* mPlugin = pluginRegistry->getPlugin(mPluginType, mTextureSetName);
       if (mPlugin != NULL) {
-        ISpindizzyTextureSet* mTextureSet = dynamic_cast<ISpindizzyTextureSet*>(mPlugin);
+        ITextureSet* mTextureSet = dynamic_cast<ITextureSet*>(mPlugin);
         if (mTextureSet != NULL) {
           cZoneMapping[zone] = mTextureSet;
         } else {
@@ -200,28 +200,18 @@ void TextureSetPerZone::update(int ticks) {
 }
 
 void TextureSetPerZone::zoneContextChanged(IZone* zone) {
-  std::map<IZone*, ISpindizzyTextureSet*>::iterator i = cZoneMapping.find(zone);
+  std::map<IZone*, ITextureSet*>::iterator i = cZoneMapping.find(zone);
   if (i != cZoneMapping.end()) {
     cCurrentZone = zone;
-    ISpindizzyTexture* mBackgroundTexture = i->second->getTexture("Background");
-    switch (mBackgroundTexture->getMapping()) {
-      case ISpindizzyTexture::PLAIN_COLOUR: {
-        cPreviousBackgroundColour.set(
-            cPreviousBackgroundColour.getRed()   + (cTargetBackgroundColour.getRed()   - cPreviousBackgroundColour.getRed())   * cProgressBackgroundColour,
-            cPreviousBackgroundColour.getGreen() + (cTargetBackgroundColour.getGreen() - cPreviousBackgroundColour.getGreen()) * cProgressBackgroundColour,
-            cPreviousBackgroundColour.getBlue()  + (cTargetBackgroundColour.getBlue()  - cPreviousBackgroundColour.getBlue())  * cProgressBackgroundColour,
-            0.0f
-        );
-        cTargetBackgroundColour = *mBackgroundTexture->getColour(0.0f, 0.0f);
-        cProgressBackgroundColour = 0.0f;
-        break;
-      }
-
-      default: {
-        std::cout << "Background type not supported" << std::endl;
-        break;
-      }
-    }
+    ITexture* mBackgroundTexture = i->second->getTexture("Background");
+    cPreviousBackgroundColour.set(
+        cPreviousBackgroundColour.getRed()   + (cTargetBackgroundColour.getRed()   - cPreviousBackgroundColour.getRed())   * cProgressBackgroundColour,
+        cPreviousBackgroundColour.getGreen() + (cTargetBackgroundColour.getGreen() - cPreviousBackgroundColour.getGreen()) * cProgressBackgroundColour,
+        cPreviousBackgroundColour.getBlue()  + (cTargetBackgroundColour.getBlue()  - cPreviousBackgroundColour.getBlue())  * cProgressBackgroundColour,
+        0.0f
+    );
+    cTargetBackgroundColour = *mBackgroundTexture->getColour(0.0f, 0.0f);
+    cProgressBackgroundColour = 0.0f;
   }
 }
 

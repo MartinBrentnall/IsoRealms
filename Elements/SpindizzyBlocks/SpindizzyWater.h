@@ -24,8 +24,8 @@
 #include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
 #include "../../Plugins/SurfaceProcessor/ISurfaceProvider.h"
 #include "../../Plugins/SurfaceProcessor/IWallSurface.h"
-#include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
-#include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
+#include "../../Plugins/TextureSet/ITexture.h"
+#include "../../Plugins/TextureSet/ITextureSet.h"
 
 #include "ISpindizzyBlock.h"
 #include "ISpindizzyBlockFactory.h"
@@ -43,7 +43,7 @@ class SpindizzyWater:public ISpindizzyBlock,
   static const unsigned int INIT_REGISTER_SURFACES;
   static const unsigned int INIT_USE_SURFACES;
 
-  ISpindizzyTextureSet** cSpindizzyTextureSet;
+  ITextureSet** cTextureSet;
   BlockLocation cStartLocation;
   BlockLocation cEndLocation;
   Condition* cCondition;
@@ -57,7 +57,7 @@ class SpindizzyWater:public ISpindizzyBlock,
   std::vector<ITileSurfaceTemplate*> getWaterSurfaces();
 
   public:
-  SpindizzyWater(ISpindizzyBlockFactory*, BlockLocation*, BlockLocation*, ISpindizzyTextureSet**);
+  SpindizzyWater(ISpindizzyBlockFactory*, BlockLocation*, BlockLocation*, ITextureSet**);
 
   /******************************\
    * Implements ISpindizzyBlock *

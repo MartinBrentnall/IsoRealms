@@ -16,24 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SPINDIZZY_TEXTURE_SET_CHANGER_DUMMY_H
-#define SPINDIZZY_TEXTURE_SET_CHANGER_DUMMY_H
+#include "C64SpindizzyTexture.h"
 
-#include <IsoRealms/DummyPlugin.h>
+C64SpindizzyTexture::C64SpindizzyTexture() {
+}
 
-#include "ISpindizzyTextureSetChanger.h"
+void C64SpindizzyTexture::setTexture(GLuint textureID) {
+  cTextureID = textureID;
+}
 
-class SpindizzyTextureSetChangerDummy:public ISpindizzyTextureSetChanger,
-                                      public DummyPlugin {
-  public:
+void C64SpindizzyTexture::set() {
+  glBindTexture(GL_TEXTURE_2D, cTextureID);
+}
 
-  /******************************************\
-   * Implements ISpindizzyTextureSetChanger *
-  \******************************************/
-  void addControlObject(IChangeableTextureSet*);
-  void removeControlObject(IChangeableTextureSet*);
-};
+void C64SpindizzyTexture::texCoord2f(float x, float y) {
+  glTexCoord2f(x,  y);
+}
 
-#endif
-
+Colour* C64SpindizzyTexture::getColour(float, float) {
+  std::cout << "WARNING: Colour not supported here yet!" << std::endl;
+  return NULL;
+}
 

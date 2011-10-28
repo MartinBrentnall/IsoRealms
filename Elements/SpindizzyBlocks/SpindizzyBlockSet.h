@@ -27,10 +27,10 @@
 #include "../../Plugins/Camera/ICamera.h"
 #include "../../Plugins/CollidableSurfaceRegistry/ICollidableSurfaceRegistry.h"
 #include "../../Plugins/HUD/IHUD.h"
-#include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
-#include "../../Plugins/SpindizzyTextureSetChanger/ISpindizzyTextureSetChanger.h"
-#include "../../Plugins/SpindizzyTextureSetChanger/IChangeableTextureSet.h"
 #include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
+#include "../../Plugins/TextureSet/ITextureSet.h"
+#include "../../Plugins/TextureSetChanger/ITextureSetChanger.h"
+#include "../../Plugins/TextureSetChanger/IChangeableTextureSet.h"
 #include "../../Plugins/ZoneContext/IZoneContext.h"
 
 #include <IsoRealms/ConditionElement.h>
@@ -79,9 +79,9 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
   ICommandRegistry* cCommandRegistry;
   ICamera* cCamera;
   IHUD* cHUD;
-  ISpindizzyTextureSet* cSpindizzyTextureSet;
-  ISpindizzyTextureSet* cDummyTextureSet;
-  ISpindizzyTextureSetChanger* cSpindizzyTextureSetController;
+  ITextureSet* cTextureSet;
+  ITextureSet* cDummyTextureSet;
+  ITextureSetChanger* cTextureSetController;
   ISurfaceProcessor* cPhysicalProcessor;
   ISurfaceProcessor* cVisualProcessor;
   ICollidableSurfaceRegistry* cCollidableSurfaceRegistry;
@@ -148,7 +148,7 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
   /************************************\
    * Implements IChangeableTextureSet *
   \************************************/
-  void setSpindizzyTextureSet(ISpindizzyTextureSet*);
+  void setTextureSet(ITextureSet*);
 
   ~SpindizzyBlockSet();
 };

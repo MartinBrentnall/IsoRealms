@@ -28,8 +28,8 @@
 #include <IsoRealms/IsoRealmsConstants.h>
 
 #include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
-#include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
-#include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
+#include "../../Plugins/TextureSet/ITexture.h"
+#include "../../Plugins/TextureSet/ITextureSet.h"
 
 #include "BlockTypeProperties.h"
 #include "ISpindizzyTileSurface.h"
@@ -39,7 +39,7 @@ class TileSplitSurface:public ISpindizzyTileSurface {
   private:
   BlockLocation cLocation;
   // TODO: Change to refer to the texture set that may change!
-  ISpindizzyTexture* cTexture;
+  ITexture* cTexture;
   int cCornerHeights[2][2];
   bool cSplitDirection;
   Condition* cCondition;
@@ -61,7 +61,7 @@ class TileSplitSurface:public ISpindizzyTileSurface {
    * @param bool  Split direction.
    * @param BlockLocation&  
    */
-  TileSplitSurface(bool, BlockLocation&, ISpindizzyTexture*, int, int, int, int, Condition*, BlockTypeProperties*);
+  TileSplitSurface(bool, BlockLocation&, ITexture*, int, int, int, int, Condition*, BlockTypeProperties*);
 
   /************************************\
    * Implements ISpindizzyTileSurface *

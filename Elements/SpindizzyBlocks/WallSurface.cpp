@@ -33,7 +33,7 @@ WallSurface::WallSurface(int x, int y, int z, int length, int height, int topSlo
   cCondition = NULL;
 }
 
-WallSurface::WallSurface(int x, int y, int z, int length, int height, int topSlope, FaceDirection facing, ISpindizzyTexture* texture, Condition* condition) {
+WallSurface::WallSurface(int x, int y, int z, int length, int height, int topSlope, FaceDirection facing, WallType wallType, ITexture* texture, ITexture* textureTop, ITexture* textureBottom, bool flipBottom, Condition* condition) {
   cX = x;
   cY = y;
   cZ = z;
@@ -44,7 +44,11 @@ WallSurface::WallSurface(int x, int y, int z, int length, int height, int topSlo
     cHeight = height;
   }
   cFacing = facing;
+  cWallType = wallType;
   cTexture = texture;
+  cTextureTop = textureTop;
+  cTextureBottom = textureBottom;
+  cFlipBottom = flipBottom;
   cTopSlope = topSlope;
   cCondition = condition;
 }
@@ -91,11 +95,11 @@ void WallSurface::render() {
     double mHighEndSlopeTexture = (cZ + cHeight) + cTopSlope * cLength;
 
     cTexture->set();
-    double mEdgeWidth = IsoRealmsConstants::BLOCK_HEIGHT * 0.5;
+    float mEdgeWidth = IsoRealmsConstants::BLOCK_HEIGHT * 0.5f;
     glBegin(GL_QUADS);
 
-    switch (cTexture->getMapping()) {
-      case ISpindizzyTexture::TILED: {
+    switch (cWallType) {
+      case TILED: {
         if (cFacing == EAST || cFacing == SOUTH) {
           cTexture->texCoord2f(cX,           cZ);                     glVertex3f(mFromX, mFromY, mFromZ);
           cTexture->texCoord2f(cX + cLength, cZ);                     glVertex3f(mToX,   mToY,   mFromZ);
@@ -110,22 +114,28 @@ void WallSurface::render() {
         break;
       }
 
-      case ISpindizzyTexture::COLUMN_CAPPED: {
+      case CAPPED: {
         if (cFacing == EAST || cFacing == SOUTH) {
-          if (mHighEndSlopeZ - mFromZ > 0.0 || mHighStartSlopeZ - mFromZ > 0.0) {
-            cTexture->texCoord2f(cX,           0.25); glVertex3f(mFromX, mFromY, mFromZ + mEdgeWidth);
-            cTexture->texCoord2f(cX + cLength, 0.25); glVertex3f(mToX,   mToY,   mFromZ + mEdgeWidth);
-            cTexture->texCoord2f(cX + cLength, 0.75); glVertex3f(mToX,   mToY,   mHighEndSlopeZ - mEdgeWidth);
-            cTexture->texCoord2f(cX,           0.75); glVertex3f(mFromX, mFromY, mHighStartSlopeZ - mEdgeWidth);
+          if (mHighEndSlopeZ - mFromZ > 0.0f || mHighStartSlopeZ - mFromZ > 0.0f) {
+            cTexture->texCoord2f(cX,           cZ                     + 0.25f); glVertex3f(mFromX, mFromY, mFromZ + mEdgeWidth);
+            cTexture->texCoord2f(cX + cLength, cZ                     + 0.25f); glVertex3f(mToX,   mToY,   mFromZ + mEdgeWidth);
+            cTexture->texCoord2f(cX + cLength, mHighEndSlopeTexture   - 0.25f); glVertex3f(mToX,   mToY,   mHighEndSlopeZ - mEdgeWidth);
+            cTexture->texCoord2f(cX,           mHighStartSlopeTexture - 0.25f); glVertex3f(mFromX, mFromY, mHighStartSlopeZ - mEdgeWidth);
           }
-          cTexture->texCoord2f(cX,           0.0);  glVertex3f(mFromX, mFromY, mFromZ);
-          cTexture->texCoord2f(cX + cLength, 0.0);  glVertex3f(mToX,   mToY,   mFromZ);
-          cTexture->texCoord2f(cX + cLength, 0.25); glVertex3f(mToX,   mToY,   mFromZ + mEdgeWidth);
-          cTexture->texCoord2f(cX,           0.25); glVertex3f(mFromX, mFromY, mFromZ + mEdgeWidth);
-          cTexture->texCoord2f(cX,           0.75); glVertex3f(mFromX, mFromY, mHighStartSlopeZ - mEdgeWidth);
-          cTexture->texCoord2f(cX + cLength, 0.75); glVertex3f(mToX,   mToY,   mHighEndSlopeZ - mEdgeWidth);
-          cTexture->texCoord2f(cX + cLength, 1.00); glVertex3f(mToX,   mToY,   mHighEndSlopeZ);
-          cTexture->texCoord2f(cX,           1.00); glVertex3f(mFromX, mFromY, mHighStartSlopeZ);
+          glEnd();
+          cTextureBottom->set();
+          glBegin(GL_QUADS);
+          cTexture->texCoord2f(cX,           0.0f); glVertex3f(mFromX, mFromY, mFromZ);
+          cTexture->texCoord2f(cX + cLength, 0.0f); glVertex3f(mToX,   mToY,   mFromZ);
+          cTexture->texCoord2f(cX + cLength, 1.0f); glVertex3f(mToX,   mToY,   mFromZ + mEdgeWidth);
+          cTexture->texCoord2f(cX,           1.0f); glVertex3f(mFromX, mFromY, mFromZ + mEdgeWidth);
+          glEnd();
+          cTextureTop->set();
+          glBegin(GL_QUADS);
+          cTexture->texCoord2f(cX,           1.0f); glVertex3f(mFromX, mFromY, mHighStartSlopeZ - mEdgeWidth);
+          cTexture->texCoord2f(cX + cLength, 1.0f); glVertex3f(mToX,   mToY,   mHighEndSlopeZ - mEdgeWidth);
+          cTexture->texCoord2f(cX + cLength, 0.0f); glVertex3f(mToX,   mToY,   mHighEndSlopeZ);
+          cTexture->texCoord2f(cX,           0.0f); glVertex3f(mFromX, mFromY, mHighStartSlopeZ);
   /*        glColor3f(1.0f, 0.0, 0.0f);
           cTexture->texCoord2f(cX,           0.0);  glVertex3f(mFromX, mFromY, mFromZ);
           glColor3f(0.0f, 1.0, 0.0f);
@@ -140,20 +150,26 @@ void WallSurface::render() {
           glColor3f(1.0f, 0.0, 0.0f);
           cTexture->texCoord2f(cX,           1.00); glVertex3f(mFromX, mFromY, mHighStartSlopeZ);*/
         } else {
-          if (mHighEndSlopeZ - mFromZ > 0.0 || mHighStartSlopeZ - mFromZ > 0.0) {
-            cTexture->texCoord2f(cX,           0.75); glVertex3f(mFromX, mFromY, mHighStartSlopeZ - mEdgeWidth);
-            cTexture->texCoord2f(cX + cLength, 0.75); glVertex3f(mToX,   mToY,   mHighEndSlopeZ - mEdgeWidth);
-            cTexture->texCoord2f(cX + cLength, 0.25); glVertex3f(mToX,   mToY,   mFromZ + mEdgeWidth);
-            cTexture->texCoord2f(cX,           0.25); glVertex3f(mFromX, mFromY, mFromZ + mEdgeWidth);
+          if (mHighEndSlopeZ - mFromZ > 0.0f || mHighStartSlopeZ - mFromZ > 0.0f) {
+            cTexture->texCoord2f(cX,           mHighStartSlopeTexture - 0.25f); glVertex3f(mFromX, mFromY, mHighStartSlopeZ - mEdgeWidth);
+            cTexture->texCoord2f(cX + cLength, mHighEndSlopeTexture   - 0.25f); glVertex3f(mToX,   mToY,   mHighEndSlopeZ - mEdgeWidth);
+            cTexture->texCoord2f(cX + cLength, cZ                     + 0.25f); glVertex3f(mToX,   mToY,   mFromZ + mEdgeWidth);
+            cTexture->texCoord2f(cX,           cZ                     + 0.25f); glVertex3f(mFromX, mFromY, mFromZ + mEdgeWidth);
           }
-          cTexture->texCoord2f(cX,           0.25); glVertex3f(mFromX, mFromY, mFromZ + mEdgeWidth);
-          cTexture->texCoord2f(cX + cLength, 0.25); glVertex3f(mToX,   mToY,   mFromZ + mEdgeWidth);
-          cTexture->texCoord2f(cX + cLength, 0.0);  glVertex3f(mToX,   mToY,   mFromZ);
-          cTexture->texCoord2f(cX,           0.0);  glVertex3f(mFromX, mFromY, mFromZ);
-          cTexture->texCoord2f(cX,           1.00); glVertex3f(mFromX, mFromY, mHighStartSlopeZ);
-          cTexture->texCoord2f(cX + cLength, 1.00); glVertex3f(mToX,   mToY,   mHighEndSlopeZ);
-          cTexture->texCoord2f(cX + cLength, 0.75); glVertex3f(mToX,   mToY,   mHighEndSlopeZ - mEdgeWidth);
-          cTexture->texCoord2f(cX,           0.75); glVertex3f(mFromX, mFromY, mHighStartSlopeZ - mEdgeWidth);
+          glEnd();
+          cTextureBottom->set();
+          glBegin(GL_QUADS);
+          cTexture->texCoord2f(cX,           1.0f); glVertex3f(mFromX, mFromY, mFromZ + mEdgeWidth);
+          cTexture->texCoord2f(cX + cLength, 1.0f); glVertex3f(mToX,   mToY,   mFromZ + mEdgeWidth);
+          cTexture->texCoord2f(cX + cLength, 0.0f);  glVertex3f(mToX,   mToY,   mFromZ);
+          cTexture->texCoord2f(cX,           0.0f);  glVertex3f(mFromX, mFromY, mFromZ);
+          glEnd();
+          cTextureTop->set();
+          glBegin(GL_QUADS);
+          cTexture->texCoord2f(cX,           0.0f); glVertex3f(mFromX, mFromY, mHighStartSlopeZ);
+          cTexture->texCoord2f(cX + cLength, 0.0f); glVertex3f(mToX,   mToY,   mHighEndSlopeZ);
+          cTexture->texCoord2f(cX + cLength, 1.0f); glVertex3f(mToX,   mToY,   mHighEndSlopeZ - mEdgeWidth);
+          cTexture->texCoord2f(cX,           1.0f); glVertex3f(mFromX, mFromY, mHighStartSlopeZ - mEdgeWidth);
   /*        glColor3f(1.0f, 0.0, 0.0f);
           cTexture->texCoord2f(cX,           0.25); glVertex3f(mFromX, mFromY, mFromZ + mEdgeWidth);
           glColor3f(0.0f, 1.0, 0.0f);
@@ -168,11 +184,6 @@ void WallSurface::render() {
           glColor3f(1.0f, 0.0, 0.0f);
           cTexture->texCoord2f(cX,           0.75); glVertex3f(mFromX, mFromY, mHighStartSlopeZ - mEdgeWidth);*/
         }
-        break;
-      }
-
-      default: {
-        // TODO: Throw Unsupported map type exception
         break;
       }
     }

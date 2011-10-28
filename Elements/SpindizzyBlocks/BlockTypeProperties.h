@@ -23,8 +23,11 @@
 #include <IsoRealms/ICommandRegistry.h>
 #include <IsoRealms/Script.h>
 
-#include "../../Plugins/SpindizzyTextureSet/ISpindizzyTexture.h"
-#include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
+#include "../../Plugins/TextureSet/ITexture.h"
+#include "../../Plugins/TextureSet/ITextureSet.h"
+
+#include "TextureRotation.h"
+#include "WallType.h"
 
 class BlockTypeProperties {
   private:
@@ -34,7 +37,7 @@ class BlockTypeProperties {
   float cSurfaceGrip;
   float cSurfaceBounce;
   bool cRespawnAllowed;
-  ISpindizzyTextureSet** cTextureSet;
+  ITextureSet** cTextureSet;
   std::string cSurfaceTexture;
   std::string cSurfaceSplitNETexture;
   std::string cSurfaceSplitNWTexture;
@@ -42,13 +45,27 @@ class BlockTypeProperties {
   std::string cEastWallTexture;
   std::string cSouthWallTexture;
   std::string cNorthWallTexture;
+  std::string cWestWallTextureTop;
+  std::string cEastWallTextureTop;
+  std::string cSouthWallTextureTop;
+  std::string cNorthWallTextureTop;
+  std::string cWestWallTextureBottom;
+  std::string cEastWallTextureBottom;
+  std::string cSouthWallTextureBottom;
+  std::string cNorthWallTextureBottom;
+  bool cWestBottomFlip;
+  bool cEastBottomFlip;
+  bool cSouthBottomFlip;
+  bool cNorthBottomFlip;
+  TextureRotation cSurfaceRotation;
+  WallType cWallType;
   
   void saveTexture(DOMNodeWriter*, const std::string&, const std::string&);
 
   public:
   BlockTypeProperties();
   
-  void configure(DOMNodeWrapper*, ICommandRegistry*, ISpindizzyTextureSet**);
+  void configure(DOMNodeWrapper*, ICommandRegistry*, ITextureSet**);
   
   void executeContactScript();
   void executeImpactScript();
@@ -56,13 +73,27 @@ class BlockTypeProperties {
   float getSurfaceGrip();
   float getSurfaceBounce();
   bool isRespawnAllowed();
-  ISpindizzyTexture* getSurfaceTexture();
-  ISpindizzyTexture* getSplitNETexture();
-  ISpindizzyTexture* getSplitNWTexture();
-  ISpindizzyTexture* getWestWallTexture();
-  ISpindizzyTexture* getEastWallTexture();
-  ISpindizzyTexture* getSouthWallTexture();
-  ISpindizzyTexture* getNorthWallTexture();
+  WallType getWallType();
+  ITexture* getSurfaceTexture();
+  ITexture* getSplitNETexture();
+  ITexture* getSplitNWTexture();
+  ITexture* getWestWallTexture();
+  ITexture* getEastWallTexture();
+  ITexture* getSouthWallTexture();
+  ITexture* getNorthWallTexture();
+  ITexture* getWestWallTextureTop();
+  ITexture* getEastWallTextureTop();
+  ITexture* getSouthWallTextureTop();
+  ITexture* getNorthWallTextureTop();
+  ITexture* getWestWallTextureBottom();
+  ITexture* getEastWallTextureBottom();
+  ITexture* getSouthWallTextureBottom();
+  ITexture* getNorthWallTextureBottom();
+  bool isWestWallBottomFlipped();
+  bool isEastWallBottomFlipped();
+  bool isSouthWallBottomFlipped();
+  bool isNorthWallBottomFlipped();
+  TextureRotation getSurfaceRotation();
   void save(DOMNodeWriter*);
 };
 

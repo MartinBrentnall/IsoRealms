@@ -1,5 +1,5 @@
 /*
- * Copyright 2009,2010 Martin Brentnall
+ * Copyright 2009 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,31 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef FLAT_RECTANGLE_H
-#define FLAT_RECTANGLE_H
+#ifndef C64_SPINDIZZY_SPRITE_H
+#define C64_SPINDIZZY_SPRITE_H
 
-#include <IsoRealms/IsoRealmsConstants.h>
-#include <IsoRealms/Vertex.h>
+#include <iostream>
+#include <GL/gl.h>
 
-#include "../../TextureSet/ITexture.h"
+#include "../ITexture.h"
 
-#include "../ISimpleModel.h"
-
-class FlatRectangle:public ISimpleModel {
-  private:
-  Vertex* cLocation;
-  ITexture** cTexture;
-  float* cSize;
-  bool cFlip;
-  
+class C64SpindizzySprite:public ITexture {
   public:
-  FlatRectangle(Vertex*, ITexture**, float*, bool);
+  private:
+  GLuint cTextureID;
 
-  /*********************\
-   * Implements IModel *
-  \*********************/
-  void update(int milliseconds);
-  void render();
+  public:
+  C64SpindizzySprite();
+
+  void setTexture(GLuint);
+
+  /***********************\
+   * Implements ITexture *
+  \***********************/
+  void set();
+  void texCoord2f(float, float);
+  Colour* getColour(float, float);
 };
 
 #endif

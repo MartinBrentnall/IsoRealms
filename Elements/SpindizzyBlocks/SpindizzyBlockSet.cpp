@@ -19,10 +19,10 @@
 #include "SpindizzyBlockSet.h"
 
 SpindizzyBlockSet::SpindizzyBlockSet() {
-  cElementFactories.push_back(new SpindizzyWaterFactory(&cSpindizzyTextureSet, this));
-  assignDummyPlugin(&cDummyTextureSet, "SpindizzyTextureSet");
-  cSpindizzyTextureSet = cDummyTextureSet;
-  cSpindizzyTextureSetController = NULL;
+  cElementFactories.push_back(new SpindizzyWaterFactory(&cTextureSet, this));
+  assignDummyPlugin(&cDummyTextureSet, "TextureSet");
+  cTextureSet = cDummyTextureSet;
+  cTextureSetController = NULL;
   assignDummyPlugin(&cCamera, "Camera");
   assignDummyPlugin(&cHUD, "HUD");
   assignDummyPlugin(&cPhysicalProcessor, "SurfaceProcessor");
@@ -51,13 +51,13 @@ std::vector<PlugSocket*> SpindizzyBlockSet::getPlugSockets() {
     mSocketID << i;
     mSockets.push_back(new PlugSocket("3DModel", mSocketID.str()));
   }
-  if (cSpindizzyTextureSetController == NULL) {
-    if (cSpindizzyTextureSet == cDummyTextureSet) {
-      mSockets.push_back(new PlugSocket("SpindizzyTextureSetChanger"));
+  if (cTextureSetController == NULL) {
+    if (cTextureSet == cDummyTextureSet) {
+      mSockets.push_back(new PlugSocket("TextureSetChanger"));
     }
-    mSockets.push_back(new PlugSocket("SpindizzyTextureSet"));
+    mSockets.push_back(new PlugSocket("TextureSet"));
   } else {
-    mSockets.push_back(new PlugSocket("SpindizzyTextureSetChanger"));
+    mSockets.push_back(new PlugSocket("TextureSetChanger"));
   }
   mSockets.push_back(new PlugSocket("Camera"));
   mSockets.push_back(new PlugSocket("HUD"));
@@ -69,8 +69,8 @@ std::vector<PlugSocket*> SpindizzyBlockSet::getPlugSockets() {
   return mSockets;
 }
 
-void SpindizzyBlockSet::setSpindizzyTextureSet(ISpindizzyTextureSet* textureSet) {
-  cSpindizzyTextureSet = textureSet != NULL ? textureSet : cDummyTextureSet;
+void SpindizzyBlockSet::setTextureSet(ITextureSet* textureSet) {
+  cTextureSet = textureSet != NULL ? textureSet : cDummyTextureSet;
 }
 
 //      ISimpleModel* mNewModel = ->createModel(&cClueModelLocation);
@@ -99,8 +99,8 @@ void SpindizzyBlockSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
     cHUDClue->setCamera(cCamera);
   } else if (socket->getType() == "CollidableSurfaceRegistry") {
     assignPlugin(implementation, &cCollidableSurfaceRegistry, *socket);
-  } else if (socket->getType() == "SpindizzyTextureSet") {
-    if (assignPlugin(implementation, &cSpindizzyTextureSet, *socket)) {
+  } else if (socket->getType() == "TextureSet") {
+    if (assignPlugin(implementation, &cTextureSet, *socket)) {
       for (unsigned int i = 0; i < cElementFactories.size(); i++) {
         static_cast<ISpindizzyBlockFactory*>(cElementFactories[i])->signalAllElementsDirty();
       }
@@ -111,14 +111,14 @@ void SpindizzyBlockSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
       mPreviousHUD->unregisterHUDComponentFactory(this);
       cHUD->registerHUDComponentFactory(this);
     }
-  } else if (socket->getType() == "SpindizzyTextureSetChanger") {
-    ISpindizzyTextureSetChanger* mPreviousController = cSpindizzyTextureSetController;
-    if (assignPlugin(implementation, &cSpindizzyTextureSetController, *socket, false)) {
+  } else if (socket->getType() == "TextureSetChanger") {
+    ITextureSetChanger* mPreviousController = cTextureSetController;
+    if (assignPlugin(implementation, &cTextureSetController, *socket, false)) {
       if (mPreviousController != NULL) {
-        cSpindizzyTextureSetController->removeControlObject(this);
+        cTextureSetController->removeControlObject(this);
       }
-      if (cSpindizzyTextureSetController != NULL) {
-        cSpindizzyTextureSetController->addControlObject(this);
+      if (cTextureSetController != NULL) {
+        cTextureSetController->addControlObject(this);
       }
     }
   } else if (socket->getType() == "SurfaceProcessor") {
@@ -154,13 +154,13 @@ IPlugin* SpindizzyBlockSet::getPlugin(PlugSocket* socket) {
       return cHUDClueData[mIndex]->getFactory(); 
     }
   }
-  if (socket->getType() == "Camera")                     {return cCamera;}
-  if (socket->getType() == "CollidableSurfaceRegistry")  {return cCollidableSurfaceRegistry;}
-  if (socket->getType() == "HUD")                        {return cHUD;}
-  if (socket->getType() == "SpindizzyTextureSet")        {return cSpindizzyTextureSet;}
-  if (socket->getType() == "SurfaceProcessor")           {return socket->getID() == "Visual" ? cVisualProcessor : cPhysicalProcessor;}
-  if (socket->getType() == "SpindizzyTextureSetChanger") {return cSpindizzyTextureSetController;}
-  if (socket->getType() == "ZoneContext")                {return cZoneContext;}
+  if (socket->getType() == "Camera")                    {return cCamera;}
+  if (socket->getType() == "CollidableSurfaceRegistry") {return cCollidableSurfaceRegistry;}
+  if (socket->getType() == "HUD")                       {return cHUD;}
+  if (socket->getType() == "SurfaceProcessor")          {return socket->getID() == "Visual" ? cVisualProcessor : cPhysicalProcessor;}
+  if (socket->getType() == "TextureSet")                {return cTextureSet;}
+  if (socket->getType() == "TextureSetChanger")         {return cTextureSetController;}
+  if (socket->getType() == "ZoneContext")               {return cZoneContext;}
   // TODO: Throw wobbly!
   return NULL;
 }
@@ -214,7 +214,7 @@ void SpindizzyBlockSet::load(DOMNodeWrapper* node) {
     } else if (mValueAsString == "BlockType") {
       std::string mBlockTypeName = mNode->getAttribute("name");
       // TODO: Pass the textures into the factory
-      ISpindizzyBlockFactory* mFactory = new SpindizzyBlockFactory(mBlockTypeName, &cSpindizzyTextureSet, this, mNode, cCommandRegistry);
+      ISpindizzyBlockFactory* mFactory = new SpindizzyBlockFactory(mBlockTypeName, &cTextureSet, this, mNode, cCommandRegistry);
       cElementFactories.push_back(mFactory);
     }
   }
