@@ -22,7 +22,7 @@
 #include <IsoRealms/ElementFactory.h>
 
 #include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
-#include "../../Plugins/SpindizzyTextureSet/ISpindizzyTextureSet.h"
+#include "../../Plugins/TextureSet/ITextureSet.h"
 
 #include "BlockTypeProperties.h"
 #include "ISpindizzyBlockSet.h"
