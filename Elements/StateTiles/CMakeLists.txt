@@ -14,9 +14,15 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
-add_subdirectory(SpindizzyBlocks)
-add_subdirectory(SpindizzyEnemies)
-add_subdirectory(SpindizzyGERALD)
-add_subdirectory(SpindizzyJewels)
-add_subdirectory(SpindizzyLifts)
-add_subdirectory(StateTiles)
+include_directories(${PROJECT_SOURCE_DIR})
+
+add_library(Elements_StateTiles MODULE
+  StateTile.cpp
+  StateTileFactory.cpp
+  StateTileSet.cpp
+  StateTileStateController.cpp
+  StateTileTheme.cpp
+  TargetState.cpp
+)
+set_target_properties(Elements_StateTiles PROPERTIES OUTPUT_NAME "ElementSet")
+set_target_properties(Elements_StateTiles PROPERTIES PREFIX "lib")
