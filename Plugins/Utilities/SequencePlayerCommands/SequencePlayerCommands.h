@@ -123,7 +123,7 @@ class SequencePlayerCommands:public IUtilities {
   IPlugin* getPlugin(PlugSocket*);
   void setPlugin(PlugSocket*, IPlugin*);
 
-  void setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry*);
+  void setRuntimeContext(IRuntimeContext*);
 };
 
 #endif

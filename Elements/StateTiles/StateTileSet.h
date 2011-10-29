@@ -20,16 +20,35 @@
 #define STATE_TILE_SET_H
 
 #include <map>
+#include <vector>
 
 #include "IStateTileSet.h"
+#include "StateTileStateController.h"
 #include "TargetState.h"
 
 class StateTileSet:public IStateTileSet {
   private:
+  std::vector<IElementFactory*> cElementFactories;
   std::map<unsigned int, TargetState*> cContactTransitions;
   
   public:
+  
+  /****************************\
+   * Implements IStateTileSet *
+  \****************************/
   unsigned int getContactTransition(unsigned int);
+  StateTileStateController* getStateController();
+
+  /**************************\
+   * Implements IElementSet *
+  \**************************/
+  std::vector<IElementFactory*> getElementFactories();
+  void destroy(IElement*);
+
+  /*************************\
+   * Implements ElementSet *
+  \*************************/
+  void setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*, ICommandRegistry*);
 };
 
 #endif

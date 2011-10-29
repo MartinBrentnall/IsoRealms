@@ -58,8 +58,8 @@ void ToggleSwitches::save(DOMNodeWriter* node) {
   }
 }
 
-void ToggleSwitches::setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry* commandRegistry) {
-  cCommandRegistry = commandRegistry;
+void ToggleSwitches::setRuntimeContext(IRuntimeContext* runtimeContext) {
+  cCommandRegistry = runtimeContext->getCommandRegistry();
 }
 
 ToggleSwitches::ToggleCommand::ToggleCommand(ToggleSwitch* aSwitch, const std::string& name) {

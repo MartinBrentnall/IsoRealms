@@ -46,7 +46,7 @@ class SoundCommandSupport:public IUtilities,
   void soundAdded(ISound*);
   void soundRemoved(ISound*);
 
-  void setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry*);
+  void setRuntimeContext(IRuntimeContext*);
 
   /*****************************\
    * Implements IPluginSupport *

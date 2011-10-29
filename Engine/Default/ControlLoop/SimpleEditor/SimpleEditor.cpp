@@ -296,13 +296,7 @@ void SimpleEditor::elementSetChanged(IElementSet* elementSet) {
 
 void SimpleEditor::pluginInstanceAdded(PluginRegistry* pluginRegistry, std::string type, std::string instance) {
   IPlugin* mPlugin = pluginRegistry->getPlugin(type, instance);
-  CommandDirectory* mCommandRegistry = cMap->getCommandRegistry();
-  std::vector<std::string> mDirectory;
-  mDirectory.push_back("Plugin");
-  mDirectory.push_back(type);
-  mDirectory.push_back(instance);
-  CommandRegistryProxy* mCommandRegistryProxy = new CommandRegistryProxy(mCommandRegistry, mDirectory);
-  mPlugin->setEditingContext(cCursor, this, mCommandRegistryProxy);
+  mPlugin->setEditingContext(cCursor, this);
   std::vector<ICommandInfo*> mCommandInfo = mPlugin->getCommandInfo();
   for (unsigned int i = 0; i < mCommandInfo.size(); i++) {
     cMenuBar->addCommand(mCommandInfo[i]);

@@ -119,7 +119,7 @@ class PlayerWithScripts:public ISequencePlayer,
   \**********************/
   void load(DOMNodeWrapper* node);
   void save(DOMNodeWriter* node);
-  void setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry*);
+  void setRuntimeContext(IRuntimeContext*);
   std::vector<IDynamicElement*> getPreLoopCommands();
 };
 

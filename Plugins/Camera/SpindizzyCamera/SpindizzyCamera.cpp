@@ -165,10 +165,10 @@ void SpindizzyCamera::render() {
   glTranslatef(mXLocation, mYLocation, mZLocation);
 }
 
-void SpindizzyCamera::setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry* commandRegistry) {
-  cCommandRegistry = commandRegistry;
+void SpindizzyCamera::setRuntimeContext(IRuntimeContext* runtimeContext) {
+  cCommandRegistry = runtimeContext->getCommandRegistry();
   for (unsigned int i = 0; i < cCameraCommands.size(); i++) {
-    commandRegistry->registerCommand(cCameraCommands[i]);
+    cCommandRegistry->registerCommand(cCameraCommands[i]);
   }
 }
 

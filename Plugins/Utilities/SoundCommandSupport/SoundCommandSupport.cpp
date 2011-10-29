@@ -65,8 +65,8 @@ void SoundCommandSupport::soundRemoved(ISound* sound) {
   cCommands.erase(sound);
 }
 
-void SoundCommandSupport::setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry* commandRegistry) {
-  cCommandRegistry = commandRegistry;
+void SoundCommandSupport::setRuntimeContext(IRuntimeContext* runtimeContext) {
+  cCommandRegistry = runtimeContext->getCommandRegistry();
 }
 
 extern "C" IPlugin* create() {

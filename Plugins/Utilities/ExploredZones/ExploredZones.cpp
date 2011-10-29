@@ -229,8 +229,8 @@ void ExploredZones::load(DOMNodeWrapper* node) {
   }
 }
 
-void ExploredZones::setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry* commandRegistry) {
-  cCommandRegistry = commandRegistry;
+void ExploredZones::setRuntimeContext(IRuntimeContext* runtimeContext) {
+  cCommandRegistry = runtimeContext->getCommandRegistry();
 }
 
 bool ExploredZones::isMet() {

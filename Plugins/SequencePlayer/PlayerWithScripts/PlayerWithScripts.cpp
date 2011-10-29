@@ -76,8 +76,8 @@ void PlayerWithScripts::update(int milliseconds) {
   }
 }
 
-void PlayerWithScripts::setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry* commandRegistry) {
-  cCommandRegistry = commandRegistry;
+void PlayerWithScripts::setRuntimeContext(IRuntimeContext* runtimeContext) {
+  cCommandRegistry = runtimeContext->getCommandRegistry();
 }
 
 void PlayerWithScripts::load(DOMNodeWrapper* node) {

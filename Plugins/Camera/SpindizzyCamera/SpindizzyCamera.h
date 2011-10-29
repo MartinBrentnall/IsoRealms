@@ -130,7 +130,7 @@ class SpindizzyCamera:public ICamera,
   std::vector<IVisualElement*> getPreLoopRenderers();
   std::vector<IDynamicElement*> getPreLoopCommands();
   void initPlugin(IZone*, unsigned int);
-  void setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry*);
+  void setRuntimeContext(IRuntimeContext*);
   void load(DOMNodeWrapper*);
   void save(DOMNodeWriter*);
   

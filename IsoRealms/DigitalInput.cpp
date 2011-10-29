@@ -146,6 +146,5 @@ bool DigitalInput::input(SDL_Event& event) {
 }
 
 bool* DigitalInput::getDigitalInput() {
-  std::cout << "Using input (" << cInput << ")" << std::endl;
   return cInput;
 }

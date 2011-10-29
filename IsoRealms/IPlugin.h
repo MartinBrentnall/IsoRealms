@@ -32,6 +32,7 @@
 #include "IInteractiveElement.h"
 #include "IPluginRegistry.h"
 #include "IPluginSupport.h"
+#include "IRuntimeContext.h"
 #include "IVisualElement.h"
 #include "IZone.h"
 
@@ -110,12 +111,12 @@ class IPlugin:public IPluginSupport,
   /**
    * Set the editing context.
    */
-  virtual void setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry*);
+  virtual void setEditingContext(BlockLocation*, IComponentContainer*);
 
   /**
    * Set the runtime context.
    */
-  virtual void setRuntimeContext(IMap*);
+  virtual void setRuntimeContext(IRuntimeContext*);
   
   /**
    * Return the command info associated with this plugin.

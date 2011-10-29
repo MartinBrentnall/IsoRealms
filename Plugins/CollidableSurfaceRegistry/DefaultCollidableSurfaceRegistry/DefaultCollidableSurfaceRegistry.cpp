@@ -64,8 +64,8 @@ ICollisionData* DefaultCollidableSurfaceRegistry::getNextEvent(Vertex& start, Ve
   return NULL;
 }
 
-void DefaultCollidableSurfaceRegistry::setRuntimeContext(IMap* map) {
-  cMap = map;
+void DefaultCollidableSurfaceRegistry::setRuntimeContext(IRuntimeContext* runtimeContext) {
+  cMap = runtimeContext->getMap();
 }
 
 IRollableSurface* DefaultCollidableSurfaceRegistry::getSurfaceAt(Vertex& location) {

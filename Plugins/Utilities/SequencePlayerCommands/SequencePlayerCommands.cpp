@@ -45,9 +45,10 @@ void SequencePlayerCommands::setPlugin(PlugSocket* socket, IPlugin* plugin) {
   }
 }
 
-void SequencePlayerCommands::setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry* commandRegistry) {
+void SequencePlayerCommands::setRuntimeContext(IRuntimeContext* runtimeContext) {
+  ICommandRegistry* mCommandRegistry = runtimeContext->getCommandRegistry();
   for (unsigned int i = 0; i < cPlayerCommands.size(); i++) {
-    commandRegistry->registerCommand(cPlayerCommands[i]);
+    mCommandRegistry->registerCommand(cPlayerCommands[i]);
   }
 }
 

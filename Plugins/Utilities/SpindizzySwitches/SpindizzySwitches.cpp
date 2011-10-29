@@ -214,8 +214,8 @@ void SpindizzySwitches::save(DOMNodeWriter* node) {
   // TODO: Implement this
 }
 
-void SpindizzySwitches::setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry* commandRegistry) {
-  cCommandRegistry = commandRegistry;
+void SpindizzySwitches::setRuntimeContext(IRuntimeContext* runtimeContext) {
+  cCommandRegistry = runtimeContext->getCommandRegistry();
   cCommandRegistry->registerCommand(cResetCommand);
 }
 

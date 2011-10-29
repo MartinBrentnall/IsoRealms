@@ -127,8 +127,8 @@ void ZoneCollectables::collect(ICollector* collector, Vertex& start, Vertex& end
   }
 }
 
-void ZoneCollectables::setRuntimeContext(IMap* map) {
-  cMap = map;
+void ZoneCollectables::setRuntimeContext(IRuntimeContext* runtimeContext) {
+  cMap = runtimeContext->getMap();
 }
 
 void ZoneCollectables::reinitialise() {

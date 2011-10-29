@@ -22,3 +22,27 @@ unsigned int StateTileSet::getContactTransition(unsigned int state) {
   std::map<unsigned int, TargetState*>::iterator i = cContactTransitions.find(state);
   return i != cContactTransitions.end() ? i->second->getState() : state;
 }
+
+StateTileStateController* StateTileSet::getStateController() {
+  return NULL; // TODO: What to do here?
+}
+
+std::vector<IElementFactory*> StateTileSet::getElementFactories() {
+  return cElementFactories;
+}
+
+void StateTileSet::destroy(IElement* element) {
+  delete element;
+}
+
+void StateTileSet::setEditingContext(BlockLocation* blockLocation, IElementGateway* elementGateway, IComponentContainer* componentContainer, ICommandRegistry* commandRegistry) {
+  // TODO: Do whatever needs doing
+}
+
+extern "C" IElementSet* create(DOMNodeWrapper* node) {
+  return new StateTileSet();
+}
+
+extern "C" void destroy(IElementSet* elementSet) {
+  delete elementSet;
+}

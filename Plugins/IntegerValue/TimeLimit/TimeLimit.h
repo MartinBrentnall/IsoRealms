@@ -73,7 +73,7 @@ class TimeLimit:public IIntegerValue,
    * Implements IPlugin *
   \**********************/
   std::vector<IDynamicElement*> getPreLoopCommands();
-  void setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry*);
+  void setRuntimeContext(IRuntimeContext*);
 
   /******************************\
    * Implements IDynamicElement *

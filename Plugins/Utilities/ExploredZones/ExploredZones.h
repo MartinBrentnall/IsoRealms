@@ -101,7 +101,7 @@ class ExploredZones:public IUtilities,
   IZoneRenderer* getZoneRenderer(const std::string&);
   void save(DOMNodeWriter*);
   void load(DOMNodeWrapper*);
-  void setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry*);
+  void setRuntimeContext(IRuntimeContext*);
   
   /*****************************\
    * Implements IPluginSupport *

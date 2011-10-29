@@ -64,7 +64,7 @@ class DefaultCollidableSurfaceRegistry:public ICollidableSurfaceRegistry,
   \**********************/
   void notifyZoneAction(IZone*);
   void initPlugin(IZone*, unsigned int);
-  void setRuntimeContext(IMap*);
+  void setRuntimeContext(IRuntimeContext*);
 
   /*****************************\
    * Implements IPluginSupport *

@@ -39,8 +39,8 @@ void CommandTrigger::unregisterObjective(IObjective* objective) {
   cObjectives.erase(objective);
 }
 
-void CommandTrigger::setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry* commandRegistry) {
-  cCommandRegistry = commandRegistry;
+void CommandTrigger::setRuntimeContext(IRuntimeContext* runtimeContext) {
+  cCommandRegistry = runtimeContext->getCommandRegistry();
 }
 
 extern "C" IPlugin* create() {

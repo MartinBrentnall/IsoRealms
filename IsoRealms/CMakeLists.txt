@@ -67,6 +67,7 @@ add_library(IsoRealms SHARED
   PluginRegistry.cpp
   PluginSupportException.cpp
   Rectangle.cpp
+  RuntimeContext.cpp
   ScreenConfiguration.cpp
   Script.cpp
   System.cpp

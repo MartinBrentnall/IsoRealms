@@ -32,8 +32,8 @@ void PluginRegistry::registerPlugin(DOMNodeWrapper* node, CommandDirectory* dire
   mDirectory.push_back(mInstance);
   IPlugin* mPlugin = getPlugin(mType, mInstance);  
   CommandRegistryProxy* mCommandRegistryProxy = new CommandRegistryProxy(directory, mDirectory);
-  mPlugin->setRuntimeContext(map);
-  mPlugin->setEditingContext(NULL, NULL, mCommandRegistryProxy);
+  RuntimeContext* mRuntimeContext = new RuntimeContext(map, mCommandRegistryProxy);
+  mPlugin->setRuntimeContext(mRuntimeContext);
   mPlugin->setPluginRegistry(this);
 }
 

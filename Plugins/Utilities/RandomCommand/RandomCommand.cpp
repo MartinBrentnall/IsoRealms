@@ -52,8 +52,8 @@ void RandomCommand::save(DOMNodeWriter* node) {
   // TODO: Implement this
 }
 
-void RandomCommand::setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry* commandRegistry) {
-  cCommandRegistry = commandRegistry;
+void RandomCommand::setRuntimeContext(IRuntimeContext* runtimeContext) {
+  cCommandRegistry = runtimeContext->getCommandRegistry();
 }
 
 RandomCommand::ARandomCommand::ARandomCommand(const std::string& name, std::vector<Script*> scripts) {

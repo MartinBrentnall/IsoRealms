@@ -59,11 +59,11 @@ void IPlugin::zoneContextChanged(IMap*, IZone*) {
   // Nothing to do.
 }
 
-void IPlugin::setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry*) {
+void IPlugin::setEditingContext(BlockLocation*, IComponentContainer*) {
   // Nothing to do.
 }
 
-void IPlugin::setRuntimeContext(IMap*) {
+void IPlugin::setRuntimeContext(IRuntimeContext*) {
   // Nothing to do.
 }
 

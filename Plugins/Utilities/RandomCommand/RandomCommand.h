@@ -55,7 +55,7 @@ class RandomCommand:public IUtilities {
   \**********************/
   void load(DOMNodeWrapper*);
   void save(DOMNodeWriter*);
-  void setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry*);
+  void setRuntimeContext(IRuntimeContext*);
 };
 
 #endif

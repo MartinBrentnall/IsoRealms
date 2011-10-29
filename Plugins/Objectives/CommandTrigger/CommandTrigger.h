@@ -42,7 +42,7 @@ class CommandTrigger:public IObjectives {
   void registerObjective(IObjective*);
   void unregisterObjective(IObjective*);
 
-  void setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry*);
+  void setRuntimeContext(IRuntimeContext*);
 };
 
 #endif

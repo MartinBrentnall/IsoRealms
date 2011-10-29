@@ -71,8 +71,11 @@ std::vector<ICommandInfo*> IntegerValueCommands::getCommandInfo() {
   return cPluginCommands;
 }
 
-void IntegerValueCommands::setEditingContext(BlockLocation*, IComponentContainer* componentContainer, ICommandRegistry* commandRegistry) {
-  cCommandRegistry = commandRegistry;
+void IntegerValueCommands::setRuntimeContext(IRuntimeContext* runtimeContext) {
+  cCommandRegistry = runtimeContext->getCommandRegistry();
+}
+
+void IntegerValueCommands::setEditingContext(BlockLocation*, IComponentContainer* componentContainer) {
   cConfigureIntegerCommands->setComponentContainer(componentContainer);
 }
 

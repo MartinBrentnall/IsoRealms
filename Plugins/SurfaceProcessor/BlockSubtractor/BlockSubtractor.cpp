@@ -33,9 +33,9 @@ void BlockSubtractor::initPlugin(IZone* zone, unsigned int pass) {
   cCurrentZone = zone;
 }
 
-void BlockSubtractor::setRuntimeContext(IMap* map) {
-  cCache.setMap(map);
-  cCurrentMap = map;
+void BlockSubtractor::setRuntimeContext(IRuntimeContext* runtimeContext) {
+  cCurrentMap = runtimeContext->getMap();
+  cCache.setMap(cCurrentMap);
 }
 
 void BlockSubtractor::load(DOMNodeWrapper* node) {

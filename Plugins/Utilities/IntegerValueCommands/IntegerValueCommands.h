@@ -56,7 +56,8 @@ class IntegerValueCommands:public IUtilities,
   void save(DOMNodeWriter*);
   void load(DOMNodeWrapper*);
   std::vector<ICommandInfo*> getCommandInfo();
-  void setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry*);
+  void setRuntimeContext(IRuntimeContext*);
+  void setEditingContext(BlockLocation*, IComponentContainer*);
 
   /*****************************\
    * Implements IPluginSupport *

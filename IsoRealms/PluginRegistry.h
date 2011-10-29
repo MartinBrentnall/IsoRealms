@@ -35,6 +35,7 @@
 #include "IMap.h"
 #include "InitException.h"
 #include "IZone.h"
+#include "RuntimeContext.h"
 #include "System.h"
 #include "ZoneRendererProxy.h"
 

@@ -44,8 +44,8 @@ IIntegerValue& TimeLimit::operator+=(const int& value) {
   return *this;
 }
 
-void TimeLimit::setEditingContext(BlockLocation*, IComponentContainer*, ICommandRegistry* commandRegistry) {
-  cCommandRegistry = commandRegistry;
+void TimeLimit::setRuntimeContext(IRuntimeContext* runtimeContext) {
+  cCommandRegistry = runtimeContext->getCommandRegistry();
   for (unsigned int i = 0; i < cCommands.size(); i++) {
     cCommandRegistry->registerCommand(cCommands[i]);
   }
