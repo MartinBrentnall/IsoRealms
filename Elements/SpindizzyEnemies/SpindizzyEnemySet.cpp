@@ -35,8 +35,8 @@ std::vector<IElementFactory*> SpindizzyEnemySet::getElementFactories() {
   return cElementFactories;
 }
 
-void SpindizzyEnemySet::setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*, ICommandRegistry* commandRegistry) {
-  cCommandRegistry = commandRegistry;
+void SpindizzyEnemySet::setRuntimeContext(IRuntimeContext* runtimeContext) {
+  cCommandRegistry = runtimeContext->getCommandRegistry();
   for (unsigned int i = 0; i < cCommands.size(); i++) {
     cCommandRegistry->registerCommand(cCommands[i]);
   }

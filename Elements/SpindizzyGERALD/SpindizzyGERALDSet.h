@@ -85,7 +85,7 @@ class SpindizzyGERALDSet:public ISpindizzyGERALDSet {
    * Implements IElementSet *
   \**************************/
   std::vector<IElementFactory*> getElementFactories();
-  void setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*, ICommandRegistry*);
+  void setRuntimeContext(IRuntimeContext*);
   void destroy(IElement*);
   void save(DOMNodeWriter*);
   void load(DOMNodeWrapper*);

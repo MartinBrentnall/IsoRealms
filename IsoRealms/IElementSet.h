@@ -31,6 +31,7 @@ class IElementFactory;
 #include "IElementFactory.h"
 #include "IElementGateway.h"
 #include "IPluginSupport.h"
+#include "IRuntimeContext.h"
 
 class IElementSetRegistry;
 
@@ -64,8 +65,10 @@ class IElementSet:public IPluginSupport,
    * @param BlockLocation*  The editing location within the map.
    * @param IElementGateway*  The gateway through which to push new elements.
    */
-  virtual void setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*, ICommandRegistry*) = 0;
+  virtual void setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*) = 0;
 
+  virtual void setRuntimeContext(IRuntimeContext*) = 0;
+  
   /**
    * Destroy the element.  Make sure you've removed the element from your map
    * before calling this!  You should only call this function with an element

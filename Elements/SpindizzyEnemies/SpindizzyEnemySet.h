@@ -72,7 +72,7 @@ class SpindizzyEnemySet:public ISpindizzyEnemySet,
   /*************************\
    * Implements ElementSet *
   \*************************/
-  void setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*, ICommandRegistry*);
+  void setRuntimeContext(IRuntimeContext*);
   DefaultElementHandler<SpindizzyEnemy>* createHandler(IElementContainer*);
   
   /*****************************\

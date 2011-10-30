@@ -38,8 +38,8 @@ std::vector<IElementFactory*> SpindizzyJewelSet::getElementFactories() {
   return cElementFactories;
 }
 
-void SpindizzyJewelSet::setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*, ICommandRegistry* commandRegistry) {
-  cCommandRegistry = commandRegistry;
+void SpindizzyJewelSet::setRuntimeContext(IRuntimeContext* runtimeContext) {
+  cCommandRegistry = runtimeContext->getCommandRegistry();
 }
 
 void SpindizzyJewelSet::destroy(IElement* jewel) {

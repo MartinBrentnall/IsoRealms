@@ -48,7 +48,7 @@ class StateTileSet:public IStateTileSet {
   /*************************\
    * Implements ElementSet *
   \*************************/
-  void setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*, ICommandRegistry*);
+  void setRuntimeContext(IRuntimeContext*);
 };
 
 #endif

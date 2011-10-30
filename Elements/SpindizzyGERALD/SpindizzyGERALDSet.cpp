@@ -52,8 +52,8 @@ void SpindizzyGERALDSet::destroy(IElement* element) {
   delete element;
 }
 
-void SpindizzyGERALDSet::setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*, ICommandRegistry* commandRegistry) {
-  cCommandRegistry = commandRegistry;
+void SpindizzyGERALDSet::setRuntimeContext(IRuntimeContext* runtimeContext) {
+  cCommandRegistry = runtimeContext->getCommandRegistry();
   for (unsigned int i = 0; i < cCommands.size(); i++) {
     cCommandRegistry->registerCommand(cCommands[i]);
   }

@@ -48,6 +48,7 @@ class ISpindizzyBlockSet:public ElementSet<ISpindizzyBlock> {
   virtual void registerWallSurface(ICollidableWallSurface*) = 0;
   virtual std::vector<ConditionElement*> getConditionElements() = 0;
   virtual void updateClue() = 0;
+  virtual bool isEditing() = 0;
 };
 
 #endif

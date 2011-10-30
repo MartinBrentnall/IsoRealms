@@ -60,7 +60,7 @@ class SpindizzyJewelSet:public ISpindizzyJewelSet {
    * Implements IElementSet *
   \**************************/
   std::vector<IElementFactory*> getElementFactories();
-  void setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*, ICommandRegistry*);
+  void setRuntimeContext(IRuntimeContext*);
   void destroy(IElement*);
   ~SpindizzyJewelSet();
 

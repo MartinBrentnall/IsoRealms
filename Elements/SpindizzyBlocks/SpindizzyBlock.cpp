@@ -304,9 +304,14 @@ std::vector<IWallSurfaceTemplate*> SpindizzyBlock::calculateWallSurfaces(const I
 }
 
 void SpindizzyBlock::renderStatic() {
+  ISpindizzyBlockSet* mSpindizzyBlockSet = getElementSet();
+  bool mEditing = mSpindizzyBlockSet->isEditing();
+  
   for (unsigned int i = 0; i < cStaticTileSurfaces.size(); i++) {
     cStaticTileSurfaces[i]->render();
-    delete cStaticTileSurfaces[i];
+    if (!mEditing) {
+      delete cStaticTileSurfaces[i];
+    }
   }
 
 /* std::vector<ITileSurface*> mBottomTileSurfaces = calculateTileSurfaces(ITileSurface::DOWN);
@@ -316,7 +321,9 @@ void SpindizzyBlock::renderStatic() {
   }*/
   for (unsigned int i = 0; i < cStaticWallSurfaces.size(); i++) {
     cStaticWallSurfaces[i]->render();
-    delete cStaticWallSurfaces[i];
+    if (!mEditing) {
+      delete cStaticWallSurfaces[i];
+    }
   } 
 }
 

@@ -89,6 +89,7 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
   std::vector<ConditionElement*> cBlockStates;
   std::vector<ISimpleModel*> cBlockStateClueModels;
   HUDClue* cHUDClue;
+  bool cEditing;
 
   void addBlockState(const std::string&, ISimpleModel*);
   ISpindizzyBlockFactory* getFactory(const std::string&);  
@@ -105,7 +106,8 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
    * Implements IElementSet *
   \**************************/
   std::vector<IElementFactory*> getElementFactories();
-  void setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*, ICommandRegistry*);
+  void setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*);
+  void setRuntimeContext(IRuntimeContext*);  
   void destroy(IElement*);
   void save(DOMNodeWriter*);
   void load(DOMNodeWrapper*);
@@ -144,6 +146,7 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
   void registerWallSurface(ICollidableWallSurface*);
   std::vector<ConditionElement*> getConditionElements();
   void updateClue();
+  bool isEditing();
 
   /************************************\
    * Implements IChangeableTextureSet *

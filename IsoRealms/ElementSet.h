@@ -72,6 +72,8 @@ template<class T = IElement> class ElementSet:public IElementSet {
   std::string getEntityAddress() {
     return cElementSetRegistry->getEntityPath(this);
   }
+  
+  void setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*) {}
 };
 
 #endif

@@ -35,7 +35,7 @@ void StateTileSet::destroy(IElement* element) {
   delete element;
 }
 
-void StateTileSet::setEditingContext(BlockLocation* blockLocation, IElementGateway* elementGateway, IComponentContainer* componentContainer, ICommandRegistry* commandRegistry) {
+void StateTileSet::setRuntimeContext(IRuntimeContext* runtimeContext) {
   // TODO: Do whatever needs doing
 }
 

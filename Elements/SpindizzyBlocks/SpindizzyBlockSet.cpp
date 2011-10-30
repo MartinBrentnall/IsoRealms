@@ -30,6 +30,7 @@ SpindizzyBlockSet::SpindizzyBlockSet() {
   assignDummyPlugin(&cCollidableSurfaceRegistry, "CollidableSurfaceRegistry");
   assignDummyPlugin(&cZoneContext, "ZoneContext");
   cHUDClue = new HUDClue(cCamera);
+  cEditing = false;
 }
 
 void SpindizzyBlockSet::addBlockState(const std::string& name, ISimpleModel* model) {
@@ -175,8 +176,12 @@ SpindizzyBlockHandler* SpindizzyBlockSet::createHandler(IElementContainer* eleme
   return mHandler;
 }
 
-void SpindizzyBlockSet::setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*, ICommandRegistry* commandRegistry) {
-  cCommandRegistry = commandRegistry;
+void SpindizzyBlockSet::setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*) {
+  cEditing = true;
+}
+
+void SpindizzyBlockSet::setRuntimeContext(IRuntimeContext* runtimeContext) {
+  cCommandRegistry = runtimeContext->getCommandRegistry();
   for (unsigned int i = 0; i < cSpindizzyBlockCommands.size(); i++) {
     cCommandRegistry->registerCommand(cSpindizzyBlockCommands[i]);
   }
@@ -299,6 +304,10 @@ void SpindizzyBlockSet::updateClue() {
     }
   }
   cHUDClue->setModel(NULL);
+}
+
+bool SpindizzyBlockSet::isEditing() {
+  return cEditing;
 }
 
 void SpindizzyBlockSet::notifyZoneAction(Zone* zone) {

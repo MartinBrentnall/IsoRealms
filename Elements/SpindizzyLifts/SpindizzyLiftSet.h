@@ -77,7 +77,7 @@ class SpindizzyLiftSet:public ISpindizzyLiftSet,
    * Implements IElementSet *
   \**************************/
   std::vector<IElementFactory*> getElementFactories();
-  void setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*, ICommandRegistry*);
+  void setRuntimeContext(IRuntimeContext*);
   void destroy(IElement*);
 
   /*************************\
