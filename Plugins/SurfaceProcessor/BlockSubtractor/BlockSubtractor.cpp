@@ -23,7 +23,7 @@ BlockSubtractor::BlockSubtractor() {
   cUseAdjacentZones = false;
 }
 
-void BlockSubtractor::notifyZoneAction(IZone* zone) {
+void BlockSubtractor::zoneContextChanged(IMap* map, IZone* zone) {
   cCache.setZone(zone);
   cCurrentZone = zone;
 }

@@ -72,9 +72,9 @@ class EditorCursor:public BlockLocation,
 
   IElementContainer* pushElement(IElement*);
   IElementContainer* pushMapElement(IElement*);
+  IElement* popElement();
   void setDirty(IElement*);
 
-  Zone* getZone();
   Map* getMap();
 
   ~EditorCursor();

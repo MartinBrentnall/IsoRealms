@@ -70,7 +70,7 @@ class ElementSetRegistry:public IElementSetRegistry {
   public:
   ElementSetRegistry();
 
-  void registerElementSet(DOMNodeWrapper*, CommandDirectory*);
+  void registerElementSet(DOMNodeWrapper*, CommandDirectory*, IMap*);
   void connectPlugin(PluginRegistry*, DOMNodeWrapper*);
   void loadConfiguration(DOMNodeWrapper*);
 

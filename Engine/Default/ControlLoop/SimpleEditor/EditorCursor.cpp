@@ -172,14 +172,14 @@ IElementContainer* EditorCursor::pushMapElement(IElement* element) {
   return cEditMapPointer;
 }
 
+IElement* EditorCursor::popElement() {
+  return cEditZonePointer != NULL ? cEditZonePointer->popElement() : NULL;
+}
+
 void EditorCursor::setDirty(IElement* element) {
   // TODO: Do we know for sure that the element is in the current zone?
   cEditZonePointer->setDirty(element);
   cEditMapPointer->zoneChanged(cEditZonePointer);
-}
-
-Zone* EditorCursor::getZone() {
-  return cEditZonePointer;
 }
 
 Map* EditorCursor::getMap() {

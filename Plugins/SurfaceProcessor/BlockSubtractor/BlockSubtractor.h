@@ -171,7 +171,7 @@ class BlockSubtractor:public ISurfaceProcessor {
   /**********************\
    * Implements IPlugin *
   \**********************/
-  void notifyZoneAction(IZone*);
+  void zoneContextChanged(IMap*, IZone*);
   void initPlugin(IZone*, unsigned int);
   void setRuntimeContext(IRuntimeContext*);
   void load(DOMNodeWrapper*);

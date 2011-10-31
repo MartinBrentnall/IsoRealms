@@ -69,7 +69,7 @@ class Zone:public BlockArea,
 
   public:
   Zone(BlockLocation&, BlockLocation&);
-  Zone(DOMNodeWrapper*, ElementSetRegistry&, PluginRegistry&);
+  Zone(DOMNodeWrapper*, ElementSetRegistry&, PluginRegistry&, IMap*);
 
   /**
    * TODO: Write more about this.
@@ -122,6 +122,8 @@ class Zone:public BlockArea,
 
   bool contains(BlockLocation&);
 
+  bool contains(IElement*);
+  
   /********************\
    * Implements IZone *
   \********************/

@@ -55,10 +55,7 @@ class SpindizzyBlock:public ISpindizzyBlock,
   };
 
   // TODO: Need to define an "initialisation scheme" somewhere
-  static const unsigned int INIT_REGISTER_BLOCKS;
   static const unsigned int INIT_PROCESS_BLOCKS;
-  static const unsigned int INIT_REGISTER_SURFACES;
-  static const unsigned int INIT_USE_SURFACES;
   
   std::vector<ISpindizzyTileSurface*> cStaticTileSurfaces;
   std::vector<ISpindizzyTileSurface*> cDynamicTileSurfaces;
@@ -228,7 +225,7 @@ class SpindizzyBlock:public ISpindizzyBlock,
   /***********************\
    * Implements IElement *
   \***********************/
-  void removed();
+  void elementRemoved();
   void added();
   bool initElement(unsigned int, bool);
   void renderStatic();

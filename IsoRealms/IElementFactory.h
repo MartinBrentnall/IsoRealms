@@ -95,6 +95,11 @@ class IElementFactory {
    */
   virtual void updateIcon(int) = 0;
 
+  /**
+   * Called when the element is about to be removed from its parent container.
+   */
+  virtual void removingElement(IElement*, IElementContainer*) = 0;
+  
   virtual ~IElementFactory() {}
 };
 

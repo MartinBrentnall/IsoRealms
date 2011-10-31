@@ -76,7 +76,7 @@ IRollableSurface* DefaultCollidableSurfaceRegistry::getSurfaceAt(Vertex& locatio
   return NULL;
 }
 
-void DefaultCollidableSurfaceRegistry::notifyZoneAction(IZone* zone) {
+void DefaultCollidableSurfaceRegistry::zoneContextChanged(IMap* map, IZone* zone) {
   cEditingZone = zone;
 }
 

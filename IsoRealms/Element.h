@@ -65,7 +65,14 @@ template<class T1 = IElementSet, class T2 = IElementFactory> class Element:publi
   }
 
   void setElementContainer(IElementContainer* elementContainer) {
+    if (cElementContainer != NULL) {
+      cElementFactory->removingElement(this, cElementContainer);
+      removingElement();
+    }
     cElementContainer = elementContainer;
+    if (cElementContainer != NULL) {
+      added();
+    }
   }
 
   std::vector<IDynamicElement*> getDynamicElements() {
@@ -85,11 +92,11 @@ template<class T1 = IElementSet, class T2 = IElementFactory> class Element:publi
 
   void save(DOMNodeWriter*, BlockLocation&) {}
   bool initElement(unsigned int, bool) {return true;}
-  void removed() {}
-  void added() {}
-  void setRuntimeContext(IMap*) {}
-  void renderStatic() {}
-  void renderStaticEditing() {}
+  
+  virtual void removingElement() {};
+
+  virtual void added() {}
+  virtual void renderStaticEditing() {}
 
   ~Element() {}
 };

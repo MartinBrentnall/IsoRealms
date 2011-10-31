@@ -61,13 +61,6 @@ class IElement {
   virtual bool initElement(unsigned int, bool) = 0;
 
   /**
-   * This function is called to notify the element that it's been removed from a
-   * zone.  This is useful when the element has a relation with other elements
-   * or plugins and wishes to perform some cleanup operations.
-   */
-  virtual void removed() = 0;
-
-  /**
    * This function is called to notify the element that it's been re-added to a
    * zone.  This is useful when the element has a relation with other elements
    * or plugins and wishes to perform some initialization operations.
@@ -77,8 +70,6 @@ class IElement {
   virtual void added() = 0;
 
   virtual void setElementContainer(IElementContainer*) = 0;
-
-  virtual void setRuntimeContext(IMap*) = 0;
 
   virtual void signalElementDirty() = 0;
 

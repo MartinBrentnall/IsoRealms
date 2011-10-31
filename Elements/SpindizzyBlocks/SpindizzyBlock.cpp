@@ -18,10 +18,7 @@
  */
 #include "SpindizzyBlock.h"
 
-const unsigned int SpindizzyBlock::INIT_REGISTER_BLOCKS = 0;
-const unsigned int SpindizzyBlock::INIT_PROCESS_BLOCKS = 1;
-const unsigned int SpindizzyBlock::INIT_REGISTER_SURFACES = 2;
-const unsigned int SpindizzyBlock::INIT_USE_SURFACES = 3;
+const unsigned int SpindizzyBlock::INIT_PROCESS_BLOCKS = 0;
 
 SpindizzyBlock::SpindizzyBlock(ISpindizzyBlockFactory* elementFactory, BlockLocation* startLocation, BlockLocation* endLocation, SpindizzyBlockProperties* blockProperties, bool addition) : ISpindizzyBlock(elementFactory) {
   cStartLocation = BlockLocation(endLocation->x > startLocation->x              ? startLocation->x : endLocation->x,
@@ -348,7 +345,7 @@ std::set<bool*> SpindizzyBlock::getInputs() {
   return mNoInputs;
 }
 
-void SpindizzyBlock::removed() {
+void SpindizzyBlock::elementRemoved() {
   ISpindizzyBlockSet* mSpindizzyBlockSet = getElementSet();
   mSpindizzyBlockSet->unregisterSurfaceProvider(this);
 }
@@ -387,12 +384,6 @@ void SpindizzyBlock::generateWallSurfaces(IWallSurface::FaceDirection faceDirect
 
 bool SpindizzyBlock::initElement(unsigned int pass, bool editing) {
   switch (pass) {
-    case INIT_REGISTER_BLOCKS: {
-      ISpindizzyBlockSet* mSpindizzyBlockSet = getElementSet();
-      mSpindizzyBlockSet->registerSurfaceProvider(this);
-      return false;
-    }
-
     case INIT_PROCESS_BLOCKS: {
       ISpindizzyBlockSet* mBlockElementSet = getElementSet();
       

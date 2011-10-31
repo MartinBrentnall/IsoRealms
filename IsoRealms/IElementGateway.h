@@ -47,15 +47,7 @@ class IElementGateway {
    */
   virtual IElementContainer* pushMapElement(IElement*) = 0;
 
-  /**
-   * Notify the pending destruction of the specified element.  When this is
-   * called, the client should ensure that the specified element is referenced
-   * any more.
-   * 
-   * @param IElement*  The element that will be destroyed.
-   * @returns The Zone that the element was in.
-   */
-  virtual IElementContainer* notifyDestruction(IElement*) = 0;
+  virtual void removeElement(IElement*) = 0;
 };
 
 #endif

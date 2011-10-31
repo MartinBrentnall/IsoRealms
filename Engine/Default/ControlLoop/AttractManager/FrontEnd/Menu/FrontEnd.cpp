@@ -21,17 +21,10 @@
 int FrontEnd::MAX_IDLE_TIME = 60000;
 
 FrontEnd::FrontEnd(DOMNodeWrapper* node, IFont* font) {
-  cExitCommand = NULL;
+  cExitCommand = CommandManager::getCommand("Pop");
   cFont = font;
   FrontEndMenu* mMainMenu = new FrontEndMenu(this, this, node);
   cActiveMenu.push_back(mMainMenu);
-  for (int i = 0; i < node->getChildCount(); i++) {
-    DOMNodeWrapper *mNode = node->getChild(i);
-    std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "ExitCommand") {
-      cExitCommand = parseCommand(mNode);
-    }
-  }
 }
 
 ICommand* FrontEnd::parseCommand(DOMNodeWrapper* node) {

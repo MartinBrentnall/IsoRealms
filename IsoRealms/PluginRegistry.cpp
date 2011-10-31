@@ -137,15 +137,6 @@ std::string PluginRegistry::getEntityPath(IPlugin* plugin) {
   return "Plugin/" + mType + "/" + getInstanceName(mType, plugin) + "/";
 }
 
-void PluginRegistry::notifyZoneAction(IZone* zone) {
-  for (std::map<std::string, std::map<std::string, IPlugin*> >::iterator i = cPluginInstances.begin(); i != cPluginInstances.end(); i++) {
-    std::map<std::string, IPlugin*> mInstanceOfType = i->second;
-    for (std::map<std::string, IPlugin*>::iterator j = mInstanceOfType.begin(); j != mInstanceOfType.end(); j++) {
-      j->second->notifyZoneAction(zone);
-    }
-  }
-}
-
 void PluginRegistry::initPlugins(IZone* zone, unsigned int pass) {
   for (std::map<std::string, std::map<std::string, IPlugin*> >::iterator i = cPluginInstances.begin(); i != cPluginInstances.end(); i++) {
     std::map<std::string, IPlugin*> mInstanceOfType = i->second;

@@ -128,30 +128,17 @@ bool SimpleEditor::componentAt(float x, float y) {
 bool SimpleEditor::keyDown(SDLKey& key) {
   switch (key) {
     case SDLK_u: {
-      // TODO: Duplicate code: 59217
-      Zone* mZone = cCursor->getZone();
-      Map* mMap = cCursor->getMap();
-      mMap->notifyZoneAction(mZone); // TODO: Should this be here (immediately before the action), or when the zone is selected?
-      if (mZone != NULL) {
-        IElement* mElement = mZone->popElement();
-        if (mElement != NULL) {
-          cUndoStack.push(mElement);
-          mElement->removed();
-          mMap->zoneChanged(mZone);
-        }
+      IElement* mElement = cCursor->popElement();
+      if (mElement != NULL) {
+        cUndoStack.push(mElement);
       }
       return true;
     }
 
     case SDLK_r: {
       if (!cUndoStack.empty()) {
-        // TODO: Duplicate code: 59217
-        Zone* mZone = cCursor->getZone();
-        Map* mMap = cCursor->getMap();
-        mMap->notifyZoneAction(mZone); // TODO: Should this be here (immediately before the action), or when the zone is selected?
         IElement* mElement = cUndoStack.top();
         cUndoStack.pop();
-        mElement->added();
         cCursor->pushElement(mElement);
       }
       return true;
@@ -271,8 +258,8 @@ IElementContainer* SimpleEditor::pushMapElement(IElement* element) {
   // TODO: Need a map stack!
 }
 
-Zone* SimpleEditor::notifyDestruction(IElement* element) {
-  return cMap->removeElement(element);
+void SimpleEditor::removeElement(IElement* element) {
+  cMap->removeElement(element);
 }
 
 void SimpleEditor::elementSelected(IElementFactory* elementFactory) {

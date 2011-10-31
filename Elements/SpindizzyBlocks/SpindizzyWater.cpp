@@ -18,10 +18,7 @@
  */
 #include "SpindizzyWater.h"
 
-const unsigned int SpindizzyWater::INIT_REGISTER_BLOCKS = 0;
-const unsigned int SpindizzyWater::INIT_PROCESS_BLOCKS = 1;
-const unsigned int SpindizzyWater::INIT_REGISTER_SURFACES = 2;
-const unsigned int SpindizzyWater::INIT_USE_SURFACES = 3;
+const unsigned int SpindizzyWater::INIT_PROCESS_BLOCKS = 0;
 
 SpindizzyWater::SpindizzyWater(ISpindizzyBlockFactory* elementFactory, BlockLocation* startLocation, BlockLocation* endLocation, ITextureSet** textureSet) : ISpindizzyBlock(elementFactory) {
   cTextureSet = textureSet;
@@ -124,7 +121,7 @@ std::set<bool*> SpindizzyWater::getInputs() {
   return mNoInputs;
 }
 
-void SpindizzyWater::removed() {
+void SpindizzyWater::elementRemoved() {
   ISpindizzyBlockSet* mSurfaceProcessor = getElementSet();
   mSurfaceProcessor->unregisterSurfaceProvider(this);
 }
@@ -138,11 +135,6 @@ void SpindizzyWater::added() {
 bool SpindizzyWater::initElement(unsigned int pass, bool editing) {
   ISpindizzyBlockSet* mSurfaceProcessor = getElementSet();
   switch (pass) {
-    case INIT_REGISTER_BLOCKS: {
-      mSurfaceProcessor->registerSurfaceProvider(this);
-      return false;
-    }
-
     case INIT_PROCESS_BLOCKS: {
       std::vector<ITileSurfaceTemplate*> mTopTileSurfaces = getWaterSurfaces();
       for (unsigned int i = 0; i < mTopTileSurfaces.size(); i++) {

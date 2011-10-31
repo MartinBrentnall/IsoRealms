@@ -57,6 +57,10 @@ void SpindizzyGERALDSet::setRuntimeContext(IRuntimeContext* runtimeContext) {
   for (unsigned int i = 0; i < cCommands.size(); i++) {
     cCommandRegistry->registerCommand(cCommands[i]);
   }
+  IMap* mMap = runtimeContext->getMap();
+  for (unsigned int i = 0; i < cElementFactories.size(); i++) {
+    static_cast<SpindizzyGERALDFactory*>(cElementFactories[i])->setMap(mMap);
+  }
 }
 
 std::string SpindizzyGERALDSet::getName() {

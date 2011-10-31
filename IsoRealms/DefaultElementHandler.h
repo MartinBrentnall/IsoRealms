@@ -49,7 +49,7 @@ template<class T = IElement> class DefaultElementHandler:public IElementHandler 
     elementAdded(element);
   }
   
-  void removeElement(T* element) {
+  void removeElement(IElement* element) {
     std::vector<IVisualElement*> mVisualElements = element->getVisualElements();
     for (unsigned int i = 0; i < mVisualElements.size(); i++) {
       for (unsigned int j = 0; j < cVisualElements.size(); j++) {
@@ -80,7 +80,7 @@ template<class T = IElement> class DefaultElementHandler:public IElementHandler 
   virtual void elementAdded(T* element) {
   }
   
-  virtual void elementRemoved(T* element) {
+  virtual void elementRemoved(IElement* element) {
   }
 
   bool isRenderer() {

@@ -48,6 +48,7 @@ class SpindizzyGERALDFactory:public ISpindizzyGERALDFactory {
   ICollidableSurfaceRegistry* cCollidableSurfaceRegistry;
   ILocationAwareness* cLocationAwareness;
   IZoneContext* cZoneContext;
+  IMap* cMap;
   SpindizzyGERALD* cSampleGERALD;
   std::vector<IVisualElement*> cSampleGERALDVisuals;
   BlockLocation* cEditingLocation;
@@ -74,6 +75,7 @@ class SpindizzyGERALDFactory:public ISpindizzyGERALDFactory {
   void loadConfiguration(DOMNodeWrapper*, ICommandRegistry*);
   void save(DOMNodeWriter*);
   void stop();
+  void setMap(IMap*);
 
   /******************************\
    * Implements IElementFactory *

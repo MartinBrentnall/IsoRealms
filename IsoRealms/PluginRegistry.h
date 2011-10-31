@@ -98,13 +98,6 @@ class PluginRegistry:public IPluginRegistry {
   void pluginRemoved(IPlugin*);
 
   /**
-   * This allows all plugins to know that an editor action is being performed
-   * on the specified zone.  It will be called immediately prior to the editing
-   * action being carried out.
-   */
-  void notifyZoneAction(IZone*);
-
-  /**
    * This allows all plugins to know that initialization is being performed for
    * the specified zone.  It may be called multiple times depending on how many
    * initialization passes are required for the zone.

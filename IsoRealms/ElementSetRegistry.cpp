@@ -22,16 +22,17 @@ ElementSetRegistry::ElementSetRegistry() {
   // Nothing to do.
 }
 
-void ElementSetRegistry::registerElementSet(DOMNodeWrapper* node, CommandDirectory* commandDirectory) {
+void ElementSetRegistry::registerElementSet(DOMNodeWrapper* node, CommandDirectory* commandDirectory, IMap* map) {
   std::string mInstance = node->getAttribute("instance");
   std::string mType = node->getAttribute("type");
-  std::cout << "Setting element set connections \"" << mType << ":" << mInstance << "\"" << std::endl;
+  std::cout << "Registering element set \"" << mType << ":" << mInstance << "\"" << std::endl;
   IElementSet* mElementSet = createInstance(mType, mInstance);
   std::vector<std::string> mDirectory;
   mDirectory.push_back("ElementSet");
   mDirectory.push_back(mInstance);
   CommandRegistryProxy* mCommandRegistry = new CommandRegistryProxy(commandDirectory, mDirectory);
-  mElementSet->setEditingContext(NULL, NULL, NULL, mCommandRegistry);
+  RuntimeContext* mRuntimeContext = new RuntimeContext(map, mCommandRegistry); // TODO: Do we need the map?
+  mElementSet->setRuntimeContext(mRuntimeContext);
   mElementSet->setElementSetRegistry(this);
 }
 
@@ -145,11 +146,7 @@ void ElementSetRegistry::destroyInstance(IElementSet* elementSet) {
 
 void ElementSetRegistry::setEditingInfo(BlockLocation* location, IElementGateway* gateway, IComponentContainer* container, CommandDirectory* commandDirectory) {
   for (std::map<std::string, IElementSet*>::iterator i = cElementSets.begin(); i != cElementSets.end(); i++) {
-    std::vector<std::string> mCommandDirectory;
-    mCommandDirectory.push_back("ElementSet");
-    mCommandDirectory.push_back(i->first);
-    CommandRegistryProxy* mCommandRegistry = new CommandRegistryProxy(commandDirectory, mCommandDirectory);
-    i->second->setEditingContext(location, gateway, container, mCommandRegistry);
+    i->second->setEditingContext(location, gateway, container);
     std::vector<IElementFactory*> mElementFactories = i->second->getElementFactories();
     for (std::vector<IElementFactory*>::iterator j = mElementFactories.begin(); j != mElementFactories.end(); j++) {
       (*j)->setEditingContext(location, gateway, container);

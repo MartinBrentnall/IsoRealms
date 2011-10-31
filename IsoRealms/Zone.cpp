@@ -21,7 +21,8 @@
 Zone::Zone(BlockLocation& location, BlockLocation& size) : BlockArea(location, size) {
 }
 
-Zone::Zone(DOMNodeWrapper* node, ElementSetRegistry& elementSetRegistry, PluginRegistry& pluginRegistry) : BlockArea(node) {
+Zone::Zone(DOMNodeWrapper* node, ElementSetRegistry& elementSetRegistry, PluginRegistry& pluginRegistry, IMap* map) : BlockArea(node) {
+  pluginRegistry.zoneContextChanged(map, this);  
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
@@ -127,7 +128,9 @@ void Zone::setDirty(IElement* element) {
 IElement* Zone::popElement() {
   if (!cElements.empty()) {
     IElement* mRemovedElement = cElements.back();
+    mRemovedElement->setElementContainer(NULL);
     cElements.pop_back();
+    zoneChanged();
     return mRemovedElement;
   }
   return NULL;
@@ -136,6 +139,7 @@ IElement* Zone::popElement() {
 bool Zone::removeElement(IElement* element) {
   for (unsigned int i = 0; i < cElements.size(); i++) {
     if (cElements[i] == element) {
+      cElements[i]->setElementContainer(NULL);
       cElements.erase(cElements.begin() + i);
       for (unsigned int j = 0; j < cDirtyElements.size(); j++) {
         if (cDirtyElements[j] == element) {
@@ -253,6 +257,15 @@ bool Zone::contains(Vertex& location) {
   float mEast   = cEndLocation.x   + BLOCK_RADIUS;
   float mTop    = cEndLocation.z;
   return Collision::contains(location, mWest, mEast, mSouth, mNorth, mBottom, mTop);
+}
+
+bool Zone::contains(IElement* element) {
+  for (unsigned int i = 0; i < cElements.size(); i++) {
+    if (cElements[i] == element) {
+      return true;
+    }
+  }
+  return false;
 }
 
 std::vector<ZoneEvent*> Zone::getZoneEvents(Vertex& start, Vertex& end) {

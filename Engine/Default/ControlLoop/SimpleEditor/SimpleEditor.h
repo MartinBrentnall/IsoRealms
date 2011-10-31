@@ -178,7 +178,7 @@ class SimpleEditor:public IControlLoop,
   \******************************/
   IElementContainer* pushElement(IElement*);
   IElementContainer* pushMapElement(IElement*);
-  Zone* notifyDestruction(IElement*);
+  void removeElement(IElement*);
 
   /****************************************\
    * Implements IElementSelectionListener *

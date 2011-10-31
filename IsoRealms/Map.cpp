@@ -39,14 +39,14 @@ Map::Map(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, 
    * First pass only loads plugin instances; we need to make sure all plugins
    * are available before we start connecting them together
    */
-  std::cout << "Loading plugins..." << std::endl;
+  std::cout << "Loading plugins and element sets..." << std::endl;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Plugin") {
       cPluginRegistry.registerPlugin(mNode, &cCommandRegistry, this);
     } else if (mValueAsString == "ElementSet") {
-      cElementSetRegistry.registerElementSet(mNode, &cCommandRegistry);
+      cElementSetRegistry.registerElementSet(mNode, &cCommandRegistry, this);
     } else {
       // TODO: Throw something
     }
@@ -84,7 +84,7 @@ Map::Map(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, 
         cZoneRenderers.push_back(mZoneRenderer);
       }
     } else if (mValueAsString == "Zone") {
-      Zone* mZone = new Zone(mNode, cElementSetRegistry, cPluginRegistry);
+      Zone* mZone = new Zone(mNode, cElementSetRegistry, cPluginRegistry, this);
       addZone(mZone);
     } else if (mValueAsString == "InputConfiguration") {
       std::string mProjectConfigurationFile = System::getProjectResource(projectName, "controls.config");
@@ -209,10 +209,6 @@ int Map::getElementIndex(IElement* element) {
   return -1;
 }
 
-void Map::notifyZoneAction(Zone* zone) {
-  cPluginRegistry.notifyZoneAction(zone);
-}
-
 void Map::initMap(unsigned int pass, bool editing) {
   std::vector<IZone*> mCleanZones;
   for (unsigned int i = 0; i < cDirtyZones.size(); i++) {
@@ -271,9 +267,6 @@ void Map::initRuntime() {
   cPostLoopCommands = cPluginRegistry.getPostLoopCommands();
   cPreLoopRenderers = cPluginRegistry.getPreLoopRenderers();
   cPostLoopRenderers = cPluginRegistry.getPostLoopRenderers();
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    cElements[i]->setRuntimeContext(this);
-  }
   initMap(false);
 }
 
@@ -428,6 +421,16 @@ void Map::pushElement(IElement* element) {
 //  zoneChanged();
 }
 
+Zone* Map::getElementContainer(IElement* element) {
+  for (unsigned int i = 0; i < cZones.size(); i++) {
+    if (cZones[i]->contains(element)) {
+      return cZones[i];
+    }
+  }
+  std::cout << "Warning: Element for removal not found in any zone.  Segmentation fault may follow!" << std::endl;
+  return NULL;
+}
+
 Zone* Map::removeElement(IElement* element) {
   for (unsigned int i = 0; i < cZones.size(); i++) {
     if (cZones[i]->removeElement(element)) {
@@ -435,6 +438,7 @@ Zone* Map::removeElement(IElement* element) {
       return cZones[i];
     }
   }
+  std::cout << "Warning: Element for removal not found in any zone.  Segmentation fault may follow!" << std::endl;
   return NULL;
 }
 

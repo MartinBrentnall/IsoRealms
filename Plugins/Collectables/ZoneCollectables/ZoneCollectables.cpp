@@ -80,7 +80,7 @@ void ZoneCollectables::zoneContextChanged(IZone* zone) {
   cRuntimeZone = zone;
 }
 
-void ZoneCollectables::notifyZoneAction(IZone* zone) {
+void ZoneCollectables::zoneContextChanged(IMap* map, IZone* zone) {
   cEditingZone = zone;
 }
 

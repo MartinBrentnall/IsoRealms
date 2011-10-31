@@ -25,7 +25,7 @@ SpindizzyGERALDFactory::SpindizzyGERALDFactory(ISpindizzyGERALDSet* elementSet, 
   cZoneContext = zoneContext;
   cGERALDModelFactory = geraldModelFactory;
   BlockLocation mIdentityLocation(0, 0, 0);
-  cSampleGERALD = new SpindizzyGERALD(this, &mIdentityLocation, cGERALDModelFactory, NULL, NULL, NULL, NULL, NULL, 0.0f, NULL, NULL);
+  cSampleGERALD = new SpindizzyGERALD(this, &mIdentityLocation, cGERALDModelFactory, NULL, NULL, NULL, NULL, NULL, 0.0f, NULL, NULL, NULL);
   cSampleGERALDVisuals = cSampleGERALD->getVisualElements();
   cCamera = NULL;
 }
@@ -80,7 +80,7 @@ IElement* SpindizzyGERALDFactory::getElement(DOMNodeWrapper* node, BlockLocation
       mStartLocation.setRelative(mNode, *relative);
     }
   }
-  SpindizzyGERALD* mLoadedGERALD = new SpindizzyGERALD(this, &mStartLocation, cGERALDModelFactory, cCollectables, cCollidableSurfaceRegistry, cLocationAwareness, cZoneContext, cCamera, cFallLimit, cFallLimitScript, cFallScript);
+  SpindizzyGERALD* mLoadedGERALD = new SpindizzyGERALD(this, &mStartLocation, cGERALDModelFactory, cCollectables, cCollidableSurfaceRegistry, cLocationAwareness, cZoneContext, cCamera, cFallLimit, cFallLimitScript, cFallScript, cMap);
   cContent.push_back(mLoadedGERALD);
   registerElement(mLoadedGERALD, elementContainer);
   return mLoadedGERALD;
@@ -90,7 +90,7 @@ bool SpindizzyGERALDFactory::keyDown(SDLKey& key) {
   switch (key) {
     case SDLK_SPACE: {
       if (cContent.size() == 0) {
-        SpindizzyGERALD* mGERALD = new SpindizzyGERALD(this, cEditingLocation, cGERALDModelFactory, cCollectables, cCollidableSurfaceRegistry, cLocationAwareness, cZoneContext, cCamera, cFallLimit, cFallLimitScript, cFallScript);
+        SpindizzyGERALD* mGERALD = new SpindizzyGERALD(this, cEditingLocation, cGERALDModelFactory, cCollectables, cCollidableSurfaceRegistry, cLocationAwareness, cZoneContext, cCamera, cFallLimit, cFallLimitScript, cFallScript, cMap);
         addElement(mGERALD);
         cContent.push_back(mGERALD);
       } else {
@@ -187,4 +187,8 @@ void SpindizzyGERALDFactory::stop() {
   for (unsigned int i = 0; i < cContent.size(); i++) {
     cContent[i]->stop();
   }
+}
+
+void SpindizzyGERALDFactory::setMap(IMap* map) {
+  cMap = map;
 }

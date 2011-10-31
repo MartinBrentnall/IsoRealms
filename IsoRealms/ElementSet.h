@@ -44,7 +44,7 @@ template<class T = IElement> class ElementSet:public IElementSet {
     mHandler->addElement(element);
   }
 
-  void removeElement(T* element, IElementContainer* elementContainer) {
+  void removingElement(IElement* element, IElementContainer* elementContainer) {
     DefaultElementHandler<T>* mHandler = getElementHandler(elementContainer);
     mHandler->removeElement(element);
   }

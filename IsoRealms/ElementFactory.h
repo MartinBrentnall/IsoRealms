@@ -48,9 +48,12 @@ template<class T1 = IElementSet, class T2 = IElement> class ElementFactory:publi
     cElementSet->addElement(element, mElementContainer);
   }
   
-  void removeElement(T2* element) {
-    IElementContainer* mElementContainer = cElementGateway->notifyDestruction(element);
-    cElementSet->removeElement(element, mElementContainer);
+  void removeElement(IElement* element) {
+    cElementGateway->removeElement(element);
+  }
+  
+  void removingElement(IElement* element, IElementContainer* elementContainer) {
+    cElementSet->removingElement(element, elementContainer);
   }
 
   /******************************\
