@@ -33,7 +33,7 @@ template<class T = IElement> class DefaultElementHandler:public IElementHandler 
   std::vector<IDynamicElement*> cDynamicElementsRuntime;
 
   public:
-  void addElement(T* element) {
+  void addElement(IElement* element) {
     std::vector<IVisualElement*> mVisualElements = element->getVisualElements();
     for (unsigned int i = 0; i < mVisualElements.size(); i++) {
       cVisualElements.push_back(mVisualElements[i]);
@@ -77,7 +77,7 @@ template<class T = IElement> class DefaultElementHandler:public IElementHandler 
     elementRemoved(element);
   }
   
-  virtual void elementAdded(T* element) {
+  virtual void elementAdded(IElement* element) {
   }
   
   virtual void elementRemoved(IElement* element) {

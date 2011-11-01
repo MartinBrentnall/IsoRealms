@@ -71,6 +71,7 @@ template<class T1 = IElementSet, class T2 = IElementFactory> class Element:publi
     }
     cElementContainer = elementContainer;
     if (cElementContainer != NULL) {
+      cElementFactory->addingElement(this, cElementContainer);
       added();
     }
   }

@@ -56,7 +56,6 @@ IElement* SpindizzyBlockFactory::getElement(DOMNodeWrapper* node, BlockLocation*
   mEndLocation.y--;
   SpindizzyBlock* mLoadedBlock = createBlock(&mStartLocation, &mEndLocation, cTextureSet, cBlockProperties, mAddition);
   cContent.push_back(mLoadedBlock);
-  registerElement(mLoadedBlock, elementContainer);
   return mLoadedBlock;
 }
 

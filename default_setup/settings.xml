@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <IsoRealmsSettings>
   <Screen>
-    <Fullscreen>true</Fullscreen>
+    <Fullscreen>false</Fullscreen>
     <Size>
-      <Width>1440</Width>
-      <Height>900</Height>
+      <Width>1024</Width>
+      <Height>768</Height>
     </Size>
     <Depth>24</Depth>
   </Screen>

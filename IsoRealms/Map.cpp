@@ -99,6 +99,9 @@ Map::Map(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, 
       // TODO: Throw something
     }
   }
+  for (unsigned int i = 0; i < cElements.size(); i++) {
+    cElements[i]->setElementContainer(this);
+  }
   registerListeners();
   std::cout << "Done!" << std::endl;
 }
@@ -418,7 +421,6 @@ void Map::pushElement(IElement* element) {
   element->setElementContainer(this);
   cElements.push_back(element);
   cDirtyElements.push_back(element);
-//  zoneChanged();
 }
 
 Zone* Map::getElementContainer(IElement* element) {
@@ -484,7 +486,6 @@ void Map::elementDirty(IElement* element) {
   }
   // TODO: Does order matter?
   cDirtyElements.push_back(element);
-// TODO  zoneChanged();
 }
 
 void Map::addElementHandler(IElementHandler* elementHandler) {

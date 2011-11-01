@@ -45,7 +45,6 @@ IElement* SpindizzyEnemyFactory::getElement(DOMNodeWrapper* node, BlockLocation*
   }
   SpindizzyEnemy* mLoadedEnemy = new SpindizzyEnemy(this, &mLocation, cEnemyModelFactory);
   cContent.push_back(mLoadedEnemy);
-  registerElement(mLoadedEnemy, elementContainer);
   return mLoadedEnemy;
 }
 

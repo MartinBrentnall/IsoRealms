@@ -49,6 +49,11 @@ template<class T = IElement> class ElementSet:public IElementSet {
     mHandler->removeElement(element);
   }
   
+  void addingElement(IElement* element, IElementContainer* elementContainer) {
+    DefaultElementHandler<T>* mHandler = getElementHandler(elementContainer);
+    mHandler->addElement(element);
+  }
+  
   void setHandlerActive(IElementContainer* elementContainer, bool active) {
     if (cHandlers.find(elementContainer) != cHandlers.end()) {
       elementContainer->setHandlerActive(cHandlers[elementContainer], active);

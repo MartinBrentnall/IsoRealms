@@ -100,6 +100,8 @@ class IElementFactory {
    */
   virtual void removingElement(IElement*, IElementContainer*) = 0;
   
+  virtual void addingElement(IElement*, IElementContainer*) = 0;
+  
   virtual ~IElementFactory() {}
 };
 

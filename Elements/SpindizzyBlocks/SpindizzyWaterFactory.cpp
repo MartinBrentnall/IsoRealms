@@ -44,7 +44,6 @@ IElement* SpindizzyWaterFactory::getElement(DOMNodeWrapper* node, BlockLocation*
   mEndLocation.z++;
   SpindizzyWater* mLoadedWater = new SpindizzyWater(this, &mStartLocation, &mEndLocation, cTextureSet);
   cContent.push_back(mLoadedWater);
-  registerElement(mLoadedWater, elementContainer);
   return mLoadedWater;
 }
 

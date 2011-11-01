@@ -82,7 +82,6 @@ IElement* SpindizzyGERALDFactory::getElement(DOMNodeWrapper* node, BlockLocation
   }
   SpindizzyGERALD* mLoadedGERALD = new SpindizzyGERALD(this, &mStartLocation, cGERALDModelFactory, cCollectables, cCollidableSurfaceRegistry, cLocationAwareness, cZoneContext, cCamera, cFallLimit, cFallLimitScript, cFallScript, cMap);
   cContent.push_back(mLoadedGERALD);
-  registerElement(mLoadedGERALD, elementContainer);
   return mLoadedGERALD;
 }
 

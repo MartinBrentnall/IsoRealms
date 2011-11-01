@@ -50,7 +50,6 @@ IElement* SpindizzyJewelFactory::getElement(DOMNodeWrapper* node, BlockLocation*
   }
   SpindizzyJewel* mJewel = new SpindizzyJewel(this, mLocation, cJewelModelFactory);
   cContent.push_back(mJewel);
-  registerElement(mJewel, elementContainer);
   return mJewel;
 }
 

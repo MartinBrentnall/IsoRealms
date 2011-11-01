@@ -210,7 +210,7 @@ bool Zone::initZone(unsigned int pass, bool editing) {
     glDeleteLists(cEditingDisplayList, 1);
     cEditingDisplayList = glGenLists(1);
     glNewList(cEditingDisplayList, GL_COMPILE);
-//    renderBounds();
+    renderBounds();
     for (unsigned int i = 0; i < cElements.size(); i++) {
       cElements[i]->renderStaticEditing();
     }

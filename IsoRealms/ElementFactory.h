@@ -55,16 +55,16 @@ template<class T1 = IElementSet, class T2 = IElement> class ElementFactory:publi
   void removingElement(IElement* element, IElementContainer* elementContainer) {
     cElementSet->removingElement(element, elementContainer);
   }
+  
+  void addingElement(IElement* element, IElementContainer* elementContainer) {
+    cElementSet->addingElement(element, elementContainer);
+  }
 
   /******************************\
    * Implements IElementFactory *
   \******************************/
   T1* getElementSet() {
     return cElementSet;
-  }
-  
-  void registerElement(T2* element, IElementContainer* elementContainer) {
-    cElementSet->addElement(element, elementContainer);
   }
 };
 

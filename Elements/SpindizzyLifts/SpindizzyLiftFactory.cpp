@@ -99,7 +99,6 @@ IElement* SpindizzyLiftFactory::getElement(DOMNodeWrapper* node, BlockLocation* 
   }
   SpindizzyLift* mLoadedLift = new SpindizzyLift(this, &mStartLocation, cLiftModelFactory, cProperties, mLiftBottom, mLiftTop);
   cContent.push_back(mLoadedLift);
-  registerElement(mLoadedLift, elementContainer);
   return mLoadedLift;
 }
 
