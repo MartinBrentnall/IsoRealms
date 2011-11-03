@@ -246,17 +246,23 @@ void SpindizzyBlockSet::zoneContextChanged(IZone* zone) {
 
 void SpindizzyBlockSet::registerSurfaceProvider(ISurfaceProvider* provider) {
   cVisualProcessor->registerSurfaceProvider(provider);
-  cPhysicalProcessor->registerSurfaceProvider(provider);
+  if (!cEditing) {
+    cPhysicalProcessor->registerSurfaceProvider(provider);
+  }
 }
 
 void SpindizzyBlockSet::unregisterSurfaceProvider(ISurfaceProvider* provider) {
   cVisualProcessor->unregisterSurfaceProvider(provider);
-  cPhysicalProcessor->unregisterSurfaceProvider(provider);
+  if (!cEditing) {
+    cPhysicalProcessor->unregisterSurfaceProvider(provider);
+  }
 }
 
 void SpindizzyBlockSet::setDirty() {
   cVisualProcessor->setDirty();
-  cPhysicalProcessor->setDirty();
+  if (!cEditing) { // TODO: Is this necessary?  Does this function even get called during runtime?
+    cPhysicalProcessor->setDirty();
+  }
 }
 
 std::vector<ITileSurfaceTemplate*> SpindizzyBlockSet::getTileSurfaces(ISurfaceProvider* provider, ITileSurface::FaceDirection facing, bool visual) {

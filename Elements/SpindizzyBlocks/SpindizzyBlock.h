@@ -189,12 +189,6 @@ class SpindizzyBlock:public ISpindizzyBlock,
   TextureRotation getTileSurfaceRotation();
 
   /**
-   * Flag this block for caching with the surface processor at next init.
-   * This will also implicitly signal the element as dirty.
-   */
-  void cacheSurfaces();
-
-  /**
    * Create a new rectangular surface by using the specified section of this
    * surface.  Values are inclusive!
    * 
@@ -222,10 +216,14 @@ class SpindizzyBlock:public ISpindizzyBlock,
   \******************************/
   std::set<bool*> getInputs();
 
+  /**********************\
+   * Implements Element *
+  \**********************/
+  void removingElement();
+
   /***********************\
    * Implements IElement *
   \***********************/
-  void elementRemoved();
   void added();
   bool initElement(unsigned int, bool);
   void renderStatic();

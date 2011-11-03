@@ -121,7 +121,7 @@ std::set<bool*> SpindizzyWater::getInputs() {
   return mNoInputs;
 }
 
-void SpindizzyWater::elementRemoved() {
+void SpindizzyWater::removingElement() {
   ISpindizzyBlockSet* mSurfaceProcessor = getElementSet();
   mSurfaceProcessor->unregisterSurfaceProvider(this);
 }

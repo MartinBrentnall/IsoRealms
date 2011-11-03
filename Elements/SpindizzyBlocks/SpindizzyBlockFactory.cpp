@@ -61,7 +61,7 @@ IElement* SpindizzyBlockFactory::getElement(DOMNodeWrapper* node, BlockLocation*
 
 void SpindizzyBlockFactory::signalAllElementsDirty() {
   for (unsigned int i = 0; i < cContent.size(); i++) {
-    cContent[i]->cacheSurfaces();
+    cContent[i]->setDirty();
   }
 }
 

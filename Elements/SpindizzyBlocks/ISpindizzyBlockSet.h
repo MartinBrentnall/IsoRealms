@@ -38,7 +38,15 @@ class ISpindizzyBlockSet:public ElementSet<ISpindizzyBlock> {
   public:
   virtual void registerSurfaceProvider(ISurfaceProvider*) = 0;
   virtual void unregisterSurfaceProvider(ISurfaceProvider*) = 0;
+  
+  /**
+   * The intention of this function is not simply to set all elements of this
+   * element set to dirty, but to call upon the surface processors to set all
+   * elements within _them_ to dirty.  This is necessary because changes in an
+   * element of this set may affect the surfaces of elements from another set.
+   */
   virtual void setDirty() = 0;
+  
   virtual std::vector<ITileSurfaceTemplate*> getTileSurfaces(ISurfaceProvider*, ITileSurface::FaceDirection, bool) = 0;
   virtual std::vector<IWallSurfaceTemplate*> getWallSurfaces(ISurfaceProvider*, IWallSurface::FaceDirection, bool) = 0;
   virtual void destroyTileTemplate(ITileSurfaceTemplate*, bool) = 0;

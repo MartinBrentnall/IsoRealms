@@ -333,10 +333,6 @@ void SpindizzyBlock::render() {
   }
 }
 
-void SpindizzyBlock::cacheSurfaces() {
-  signalElementDirty();
-}
-
 std::set<bool*> SpindizzyBlock::getInputs() {
   if (cCondition != NULL) {
     return cCondition->getInputs();
@@ -345,9 +341,10 @@ std::set<bool*> SpindizzyBlock::getInputs() {
   return mNoInputs;
 }
 
-void SpindizzyBlock::elementRemoved() {
+void SpindizzyBlock::removingElement() {
   ISpindizzyBlockSet* mSpindizzyBlockSet = getElementSet();
   mSpindizzyBlockSet->unregisterSurfaceProvider(this);
+  mSpindizzyBlockSet->setDirty();
 }
 
 void SpindizzyBlock::added() {
@@ -456,6 +453,14 @@ bool SpindizzyBlock::isFlat() {
 }
 
 void SpindizzyBlock::setDirty() {
+  for (unsigned int i = 0; i < cStaticTileSurfaces.size(); i++) {
+    delete cStaticTileSurfaces[i];
+  }
+  cStaticTileSurfaces.clear();
+  for (unsigned int i = 0; i < cStaticTileSurfaces.size(); i++) {
+    delete cStaticWallSurfaces[i];
+  }
+  cStaticWallSurfaces.clear();
   signalElementDirty();
 }
 

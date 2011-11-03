@@ -61,10 +61,14 @@ class SpindizzyWater:public ISpindizzyBlock,
   \******************************/
   std::set<bool*> getInputs();
 
+  /**********************\
+   * Implements Element *
+  \**********************/
+  void removingElement();
+
   /***********************\
    * Implements IElement *
   \***********************/
-  void elementRemoved();
   void added();
   bool initElement(unsigned int, bool);
   void renderStatic();

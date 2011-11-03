@@ -55,6 +55,7 @@ int BlockSubtractorCache::getIndex(std::vector<ISurfaceProvider*>* list, ISurfac
 
 void BlockSubtractorCache::add(ISurfaceProvider* provider) {
   cCurrentZoneProviders->push_back(provider);
+  cCurrentSurfaceDataCache->clear();
 }
 
 void BlockSubtractorCache::remove(ISurfaceProvider* provider) {
@@ -62,6 +63,7 @@ void BlockSubtractorCache::remove(ISurfaceProvider* provider) {
     int mIndex = getIndex(i->second, provider);
     if (mIndex >= 0) {
       i->second->erase(i->second->begin() + mIndex);
+      cCurrentSurfaceDataCache->clear();
       // TODO: This call only works for current zone, but this remove function works regardless of zone....  hmmm...
       setDirty();
       return;
@@ -106,7 +108,6 @@ std::vector<ISurfaceProvider*> BlockSubtractorCache::getSurfaceProviders(bool pr
     }
     mReturnList.clear();
     std::cout << "Warning: Specified provider isn't cached!  Surfaces will not be calculated correctly!" << std::endl;
-    exit(1);
   }
   return mReturnList;
 }
