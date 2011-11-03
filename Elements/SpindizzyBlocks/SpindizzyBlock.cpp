@@ -248,6 +248,26 @@ ISpindizzyWallSurface* SpindizzyBlock::createSubSurface(IWallSurfaceTemplate* wa
   return new WallSurface(mX, mY, mStartHeight, mLength, mEndHeight, mTopSlope, mFaceDirection, mWallType, mTexture, mTextureTop, mTextureBottom, mFlipBottom, mCondition);
 }
 
+ISpindizzyWallSurface* SpindizzyBlock::createSampleWallSurface(int location, IWallSurface::FaceDirection facing) {
+  bool mFacesPole = facing == IWallSurface::NORTH || facing == IWallSurface::SOUTH;
+  int mSlope = getWallSlope(facing);
+  std::vector<IWallSurface*> mWallSurfaces;
+  WallType mWallType = getWallType();
+  ITexture* mTexture = getWallTexture(facing);
+  ITexture* mTextureTop = getWallTextureTop(facing);
+  ITexture* mTextureBottom = getWallTextureBottom(facing);
+  bool mFlipBottom = isWallBottomFlipped(facing);
+  int mX = mFacesPole ? cStartLocation.x : location;
+  int mY = mFacesPole ? location : cStartLocation.y;
+  int mLength = (mFacesPole ? cEndLocation.x - cStartLocation.x : cEndLocation.y - cStartLocation.y) + 1;
+  int mLowestX = mFacesPole ? (mSlope > 0 ? cStartLocation.x : cEndLocation.x) : mX;
+  int mLowestY = mFacesPole ? mY : (mSlope > 0 ? cStartLocation.y : cEndLocation.y);
+  int mBaseHeight = getBottomHeight(mX, mY);
+  int mHeight = cSteppedBottom ? (cEndLocation.z - cStartLocation.z) + getMinimumWallElevation(facing)
+                               : (getTileSurfaceHeight(mLowestX, mLowestY) + getMinimumWallElevation(facing)) - cStartLocation.z;
+  return new WallSurface(mX, mY, mBaseHeight, mLength, mHeight, mSlope, facing, mWallType, mTexture, mTextureTop, mTextureBottom, mFlipBottom, cCondition);
+}
+
 std::vector<IWallSurface*> SpindizzyBlock::getWallSurfaces(int location, IWallSurface::FaceDirection facing) {
   bool mFacesPole = facing == IWallSurface::NORTH || facing == IWallSurface::SOUTH;
   int mSlope = getWallSlope(facing);
@@ -298,6 +318,15 @@ int SpindizzyBlock::getOuterWallFaceLocation(IWallSurface::FaceDirection facing)
 std::vector<IWallSurfaceTemplate*> SpindizzyBlock::calculateWallSurfaces(const IWallSurface::FaceDirection facing, bool visual) {
   ISpindizzyBlockSet* mSpindizzyBlockSet = getElementSet();
   return mSpindizzyBlockSet->getWallSurfaces(this, facing, visual);
+}
+
+void SpindizzyBlock::createSampleSurfaces() {
+  ISpindizzyTileSurface* mTopSurface = createSubSurface(ITileSurface::UP, cEndLocation.y, cEndLocation.x, cEndLocation.y, cEndLocation.x, NULL);
+  cStaticTileSurfaces.push_back(mTopSurface);
+  cStaticWallSurfaces.push_back(createSampleWallSurface(cStartLocation.x, IWallSurface::WEST));
+  cStaticWallSurfaces.push_back(createSampleWallSurface(cStartLocation.y, IWallSurface::SOUTH));
+  cStaticWallSurfaces.push_back(createSampleWallSurface(cEndLocation.x,   IWallSurface::EAST));
+  cStaticWallSurfaces.push_back(createSampleWallSurface(cEndLocation.y,   IWallSurface::NORTH));
 }
 
 void SpindizzyBlock::renderStatic() {

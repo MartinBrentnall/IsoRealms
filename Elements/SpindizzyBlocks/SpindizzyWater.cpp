@@ -36,6 +36,10 @@ bool SpindizzyWater::isGhost() {
 }
 
 void SpindizzyWater::setDirty() {
+  for (unsigned int i = 0; i < cStaticTileSurfaces.size(); i++) {
+    delete cStaticTileSurfaces[i];
+  }
+  cStaticTileSurfaces.clear();
   signalElementDirty();
 }
 
@@ -52,8 +56,14 @@ std::vector<ITileSurface*> SpindizzyWater::getTileSurfaces(ITileSurface::FaceDir
 }
 
 void SpindizzyWater::renderStatic() {
+  ISpindizzyBlockSet* mSpindizzyBlockSet = getElementSet();
+  bool mEditing = mSpindizzyBlockSet->isEditing();
+  
   for (unsigned int i = 0; i < cStaticTileSurfaces.size(); i++) {
     cStaticTileSurfaces[i]->render();
+    if (!mEditing) {
+      delete cStaticTileSurfaces[i];
+    }
   }
 }
 
@@ -111,6 +121,11 @@ void SpindizzyWater::destroyCoverage(BlockArea* coverage) {
 
 Condition* SpindizzyWater::getCondition() {
   return NULL; // TODO: Allow dynamic surfaces
+}
+
+void SpindizzyWater::createSampleSurfaces() {
+  ISpindizzyTileSurface* mTopSurface = createSubSurface(ITileSurface::UP, cEndLocation.y, cEndLocation.x, cEndLocation.y, cEndLocation.x, NULL);
+  cStaticTileSurfaces.push_back(mTopSurface);
 }
 
 std::set<bool*> SpindizzyWater::getInputs() {

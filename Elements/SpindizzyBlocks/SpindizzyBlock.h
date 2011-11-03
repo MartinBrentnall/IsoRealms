@@ -211,6 +211,14 @@ class SpindizzyBlock:public ISpindizzyBlock,
    */
   ISpindizzyWallSurface* createSubSurface(IWallSurfaceTemplate*);
 
+  /**
+   * Create static (visual) surfaces without using the surface processor.  This
+   * is useful when we want to create a sample block for using as an icon, etc.
+   * in the editing tools.
+   */
+  void createSampleSurfaces();
+  ISpindizzyWallSurface* createSampleWallSurface(int, IWallSurface::FaceDirection);
+  
   /******************************\
    * Implements ISpindizzyBlock *
   \******************************/

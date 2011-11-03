@@ -123,6 +123,7 @@ void SpindizzyWaterFactory::renderIcon() {
   if (cSampleWater == NULL) {
     BlockLocation mIdentityBlockLocation(0, 0, 0);
     cSampleWater = new SpindizzyWater(this, &mIdentityBlockLocation, &mIdentityBlockLocation, cTextureSet);
+    cSampleWater->createSampleSurfaces();
   }
   cSampleWater->renderStatic();
 }

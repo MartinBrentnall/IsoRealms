@@ -56,6 +56,8 @@ class SpindizzyWater:public ISpindizzyBlock,
   public:
   SpindizzyWater(ISpindizzyBlockFactory*, BlockLocation*, BlockLocation*, ITextureSet**);
 
+  void createSampleSurfaces();
+  
   /******************************\
    * Implements ISpindizzyBlock *
   \******************************/

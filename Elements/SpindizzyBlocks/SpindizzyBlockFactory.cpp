@@ -202,6 +202,7 @@ void SpindizzyBlockFactory::renderIcon() {
   if (cSampleBlock == NULL) {
     BlockLocation mIdentityBlockLocation(0, 0, 0);
     cSampleBlock = createBlock(&mIdentityBlockLocation, &mIdentityBlockLocation, cTextureSet, cBlockProperties, true);
+    cSampleBlock->createSampleSurfaces();
   }
   cSampleBlock->renderStatic();
 }
