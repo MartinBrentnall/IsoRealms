@@ -33,9 +33,18 @@
 
 class PaletteConfigurationComponent:public Dialog {
   private:
+    
+  class PaletteEntry {
+    public:
+    std::string cName;
+    Colour* cColour;
+    
+    PaletteEntry(const std::string&, Colour*);
+  };
+    
+  IPalette* cParent;
   std::vector<IPaletteListener*>* cChangeListeners;
-  std::vector<Colour*> cPalette;
-  std::vector<std::string> cPaletteEntries;
+  std::vector<PaletteEntry*> cPalette;
   unsigned int cSelectedField;
   unsigned int cSelectedEntry;
 
@@ -45,7 +54,7 @@ class PaletteConfigurationComponent:public Dialog {
   void fireChangeEvent();
 
   public:
-  PaletteConfigurationComponent(IComponentContainer*, std::map<std::string, Colour*> palette, std::vector<IPaletteListener*>&);
+  PaletteConfigurationComponent(IPalette*, IComponentContainer*, std::map<std::string, Colour*> palette, std::vector<IPaletteListener*>&);
 
   /*********************\
    * Implements Dialog *

@@ -18,10 +18,10 @@
  */
 #include "PaletteConfigurationComponent.h"
 
-PaletteConfigurationComponent::PaletteConfigurationComponent(IComponentContainer* componentContainer, std::map<std::string, Colour*> palette, std::vector<IPaletteListener*>& listeners) : Dialog(componentContainer, "Palette Editor", 0.18f, 0.68f, 0.8f, 0.3f) {
+PaletteConfigurationComponent::PaletteConfigurationComponent(IPalette* parent, IComponentContainer* componentContainer, std::map<std::string, Colour*> palette, std::vector<IPaletteListener*>& listeners) : Dialog(componentContainer, "Palette Editor", 0.18f, 0.68f, 0.8f, 0.3f) {
+  cParent = parent;
   for (std::map<std::string, Colour*>::iterator i = palette.begin(); i != palette.end(); i++) {
-    cPaletteEntries.push_back(i->first);
-    cPalette.push_back(i->second);
+    cPalette.push_back(new PaletteEntry(i->first, i->second));
   }
   cChangeListeners = &listeners;
   cSelectedField = 0;
@@ -47,9 +47,9 @@ void PaletteConfigurationComponent::renderChannel(float x, float y, float width,
 
   float mAmount;
   switch (field) {
-    case 1: mAmount = cPalette[cSelectedEntry]->getRed(); break;
-    case 2: mAmount = cPalette[cSelectedEntry]->getGreen(); break;
-    case 3: mAmount = cPalette[cSelectedEntry]->getBlue(); break;
+    case 1: mAmount = cPalette[cSelectedEntry]->cColour->getRed(); break;
+    case 2: mAmount = cPalette[cSelectedEntry]->cColour->getGreen(); break;
+    case 3: mAmount = cPalette[cSelectedEntry]->cColour->getBlue(); break;
   }
   mAmount = x + width * mAmount;
   glColor3f(0.0f * mBrightness, 1.0f * mBrightness, 0.0f * mBrightness);
@@ -70,7 +70,7 @@ void PaletteConfigurationComponent::renderContent() {
   float mWidth = 0.05f * mAspectRatio;
   float mHeight = 0.05f;
   for (unsigned int i = 0; i < cPalette.size(); i++) {
-    cPalette[i]->set();
+    cPalette[i]->cColour->set();
     glBegin(GL_QUADS);
     glVertex2f(mX,          mY - mHeight);
     glVertex2f(mX + mWidth, mY - mHeight);
@@ -95,22 +95,22 @@ void PaletteConfigurationComponent::renderContent() {
   mX = getLeft() + mSpacing * mAspectRatio;
   mWidth = (getRight() - getLeft()) - mSpacing * 2.0f * mAspectRatio;
 
-  Colour mMax = *cPalette[cSelectedEntry];
-  Colour mMin = *cPalette[cSelectedEntry];
+  Colour mMax = *cPalette[cSelectedEntry]->cColour;
+  Colour mMin = *cPalette[cSelectedEntry]->cColour;
   mMax.change( 1.0,  0.0,  0.0,  0.0);
   mMin.change(-1.0,  0.0,  0.0,  0.0);
   mY -= mHeight + mSpacing;
   renderChannel(mX, mY, mWidth, mHeight, mMin, mMax, 1);
 
-  mMax = *cPalette[cSelectedEntry];
-  mMin = *cPalette[cSelectedEntry];
+  mMax = *cPalette[cSelectedEntry]->cColour;
+  mMin = *cPalette[cSelectedEntry]->cColour;
   mMax.change( 0.0,  1.0,  0.0,  0.0);
   mMin.change( 0.0, -1.0,  0.0,  0.0);
   mY -= mHeight + mSpacing;
   renderChannel(mX, mY, mWidth, mHeight, mMin, mMax, 2);
 
-  mMax = *cPalette[cSelectedEntry];
-  mMin = *cPalette[cSelectedEntry];
+  mMax = *cPalette[cSelectedEntry]->cColour;
+  mMin = *cPalette[cSelectedEntry]->cColour;
   mMax.change( 0.0,  0.0,  1.0,  0.0);
   mMin.change( 0.0,  0.0, -1.0,  0.0);
   mY -= mHeight + mSpacing;
@@ -118,7 +118,7 @@ void PaletteConfigurationComponent::renderContent() {
 }
 
 void PaletteConfigurationComponent::adjustChannel(float amount) {
-  Colour* mColourToChange = cPalette[cSelectedEntry];
+  Colour* mColourToChange = cPalette[cSelectedEntry]->cColour;
   switch (cSelectedField) {
     case 1: mColourToChange->change(amount, 0.0f, 0.0f, 0.0f); break;
     case 2: mColourToChange->change(0.0f, amount, 0.0f, 0.0f); break;
@@ -129,9 +129,7 @@ void PaletteConfigurationComponent::adjustChannel(float amount) {
 
 void PaletteConfigurationComponent::fireChangeEvent() {
   for (unsigned int i = 0; i < cChangeListeners->size(); i++) {
-    // TODO: Should not fire NULL
-    // TODO: Should not fire empty string
-    (*cChangeListeners)[i]->paletteChanged(NULL, "");
+    (*cChangeListeners)[i]->paletteChanged(cParent, cPalette[cSelectedEntry]->cName);
   }
 }
 
@@ -219,4 +217,10 @@ bool PaletteConfigurationComponent::inputContent(SDL_Event& event) {
   }
   return false;
 }
+
+PaletteConfigurationComponent::PaletteEntry::PaletteEntry(const std::string& name, Colour* colour) {
+  cName = name;
+  cColour = colour;
+}
+
 

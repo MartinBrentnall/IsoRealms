@@ -333,8 +333,10 @@ void C64SpindizzyTextureSet::setPlugin(PlugSocket* socket, IPlugin* plugin) {
   }
 }
 
-void C64SpindizzyTextureSet::paletteChanged(IPalette*, const std::string&) {
-  generateTextures();
+void C64SpindizzyTextureSet::paletteChanged(IPalette* palette, const std::string& name) {
+  if (name == cBackgroundColourName || name == cFloorColourName || name == cGridColourName || name == cWallColourName) {
+    generateTextures();
+  }
 }
 
 IPlugin* C64SpindizzyTextureSet::getPlugin(PlugSocket* socket) {

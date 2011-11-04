@@ -60,7 +60,7 @@ void UserDefinablePalette::PaletteConfigurationCommand::setComponentContainer(IC
 }
 
 void UserDefinablePalette::PaletteConfigurationCommand::execute() {
-  IHUDComponent* mComponent = new PaletteConfigurationComponent(cComponentContainer, cParent->cPalette, cParent->cChangeListeners);
+  IHUDComponent* mComponent = new PaletteConfigurationComponent(cParent, cComponentContainer, cParent->cPalette, cParent->cChangeListeners);
   cComponentContainer->addComponent(mComponent);
 }
 
