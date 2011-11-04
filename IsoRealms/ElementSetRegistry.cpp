@@ -22,7 +22,7 @@ ElementSetRegistry::ElementSetRegistry() {
   // Nothing to do.
 }
 
-void ElementSetRegistry::registerElementSet(DOMNodeWrapper* node, CommandDirectory* commandDirectory, IMap* map) {
+void ElementSetRegistry::registerElementSet(DOMNodeWrapper* node, CommandDirectory* commandDirectory, IMap* map, bool editing) {
   std::string mInstance = node->getAttribute("instance");
   std::string mType = node->getAttribute("type");
   std::cout << "Registering element set \"" << mType << ":" << mInstance << "\"" << std::endl;
@@ -31,7 +31,7 @@ void ElementSetRegistry::registerElementSet(DOMNodeWrapper* node, CommandDirecto
   mDirectory.push_back("ElementSet");
   mDirectory.push_back(mInstance);
   CommandRegistryProxy* mCommandRegistry = new CommandRegistryProxy(commandDirectory, mDirectory);
-  RuntimeContext* mRuntimeContext = new RuntimeContext(map, mCommandRegistry); // TODO: Do we need the map?
+  RuntimeContext* mRuntimeContext = new RuntimeContext(map, mCommandRegistry, editing);
   mElementSet->setRuntimeContext(mRuntimeContext);
   mElementSet->setElementSetRegistry(this);
 }

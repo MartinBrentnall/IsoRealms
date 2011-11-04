@@ -80,7 +80,7 @@ class PluginRegistry:public IPluginRegistry {
    */
   std::string getPluginType(IPlugin*);  
 
-  void registerPlugin(DOMNodeWrapper*, CommandDirectory*, IMap*);
+  void registerPlugin(DOMNodeWrapper*, CommandDirectory*, IMap*, bool);
 
   void connectPlugin(DOMNodeWrapper*);
 

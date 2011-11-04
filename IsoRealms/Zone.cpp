@@ -86,9 +86,9 @@ void Zone::restrainLocation(BlockLocation* location) {
 }
 
 void Zone::pushElement(IElement* element) {
-  element->setElementContainer(this);
   cElements.push_back(element);
   cDirtyElements.push_back(element);
+  element->setElementContainer(this);
   zoneChanged();
 }
 
@@ -112,7 +112,6 @@ void Zone::addElementHandler(IElementHandler* elementHandler) {
 void Zone::setDirty(IElement* element) {
   if (!containsElement(element)) {
     std::cout << "WARNING: Specified dirty element is not a member of this Zone!  Did you forget to set the cursor's Zone?" << std::endl;
-    std::cout << "WARNING: Zone contains " << cElements.size() << std::endl;
     return;
   }
   for (unsigned int i = 0; i < cDirtyElements.size(); i++) {
@@ -185,7 +184,7 @@ int Zone::getZoneIndex(IElement* element) {
 bool Zone::initZone(unsigned int pass, bool editing) {
   std::vector<IElement*> mCleanElements;
   for (unsigned int i = 0; i < cDirtyElements.size(); i++) {
-    if (cDirtyElements[i]->initElement(pass, editing)) {
+    if (cDirtyElements[i]->initElement(pass)) {
       mCleanElements.push_back(cDirtyElements[i]);
     }
   }
@@ -207,14 +206,16 @@ bool Zone::initZone(unsigned int pass, bool editing) {
     glEndList();
 
     // Editor-only rendering
-    glDeleteLists(cEditingDisplayList, 1);
-    cEditingDisplayList = glGenLists(1);
-    glNewList(cEditingDisplayList, GL_COMPILE);
-    renderBounds();
-    for (unsigned int i = 0; i < cElements.size(); i++) {
-      cElements[i]->renderStaticEditing();
+    if (editing) {
+      glDeleteLists(cEditingDisplayList, 1);
+      cEditingDisplayList = glGenLists(1);
+      glNewList(cEditingDisplayList, GL_COMPILE);
+      renderBounds();
+      for (unsigned int i = 0; i < cElements.size(); i++) {
+        cElements[i]->renderStaticEditing();
+      }
+      glEndList();
     }
-    glEndList();
   }
   return cDirtyElements.empty();
 }

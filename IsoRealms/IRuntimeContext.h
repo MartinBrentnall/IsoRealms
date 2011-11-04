@@ -8,6 +8,7 @@ class IRuntimeContext {
   public:
   virtual IMap* getMap() = 0;
   virtual ICommandRegistry* getCommandRegistry() = 0;
+  virtual bool isEditing() = 0;
 };
 
 #endif

@@ -147,7 +147,7 @@ void SpindizzyWater::added() {
   mSurfaceProcessor->setDirty();
 }
 
-bool SpindizzyWater::initElement(unsigned int pass, bool editing) {
+bool SpindizzyWater::initElement(unsigned int pass) {
   ISpindizzyBlockSet* mSurfaceProcessor = getElementSet();
   switch (pass) {
     case INIT_PROCESS_BLOCKS: {

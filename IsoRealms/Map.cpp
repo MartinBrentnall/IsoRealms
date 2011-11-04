@@ -44,9 +44,9 @@ Map::Map(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, 
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Plugin") {
-      cPluginRegistry.registerPlugin(mNode, &cCommandRegistry, this);
+      cPluginRegistry.registerPlugin(mNode, &cCommandRegistry, this, editing);
     } else if (mValueAsString == "ElementSet") {
-      cElementSetRegistry.registerElementSet(mNode, &cCommandRegistry, this);
+      cElementSetRegistry.registerElementSet(mNode, &cCommandRegistry, this, editing);
     } else {
       // TODO: Throw something
     }
@@ -229,7 +229,7 @@ void Map::initMap(unsigned int pass, bool editing) {
 
   std::vector<IElement*> mCleanElements;
   for (unsigned int i = 0; i < cDirtyElements.size(); i++) {
-    if (cDirtyElements[i]->initElement(pass, editing)) {
+    if (cDirtyElements[i]->initElement(pass)) {
       mCleanElements.push_back(cDirtyElements[i]);
     }
   }

@@ -106,7 +106,6 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
    * Implements IElementSet *
   \**************************/
   std::vector<IElementFactory*> getElementFactories();
-  void setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*);
   void setRuntimeContext(IRuntimeContext*);  
   void destroy(IElement*);
   void save(DOMNodeWriter*);
@@ -140,7 +139,6 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
   std::vector<IWallSurfaceTemplate*> getWallSurfaces(ISurfaceProvider*, IWallSurface::FaceDirection, bool);
   void destroyTileTemplate(ITileSurfaceTemplate*, bool);
   void destroyWallTemplate(IWallSurfaceTemplate*, bool);
-  void notifyZoneAction(Zone*);
 
   void registerRollableSurface(IRollableSurface*);
   void registerWallSurface(ICollidableWallSurface*);

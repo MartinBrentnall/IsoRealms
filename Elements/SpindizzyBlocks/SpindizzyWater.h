@@ -72,7 +72,7 @@ class SpindizzyWater:public ISpindizzyBlock,
    * Implements IElement *
   \***********************/
   void added();
-  bool initElement(unsigned int, bool);
+  bool initElement(unsigned int);
   void renderStatic();
   std::vector<IVisualElement*> getVisualElements();
   std::vector<IDynamicElement*> getDynamicElements();

@@ -39,6 +39,7 @@ std::vector<IElementFactory*> SpindizzyJewelSet::getElementFactories() {
 }
 
 void SpindizzyJewelSet::setRuntimeContext(IRuntimeContext* runtimeContext) {
+  cEditing = runtimeContext->isEditing();
   cCommandRegistry = runtimeContext->getCommandRegistry();
 }
 
@@ -105,6 +106,10 @@ void SpindizzyJewelSet::jewelCollected() {
 
 void SpindizzyJewelSet::allJewelsCollected() {
   cAllJewelsCollectedScript->execute();
+}
+
+bool SpindizzyJewelSet::isEditing() {
+  return cEditing;
 }
 
 SpindizzyJewelSet::~SpindizzyJewelSet() {

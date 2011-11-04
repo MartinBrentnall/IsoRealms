@@ -32,6 +32,7 @@ std::vector<IElementFactory*> SpindizzyLiftSet::getElementFactories() {
 }
 
 void SpindizzyLiftSet::setRuntimeContext(IRuntimeContext* runtimeContext) {
+  cEditing = runtimeContext->isEditing();
   cCommandRegistry = runtimeContext->getCommandRegistry();
   for (unsigned int i = 0; i < cCommands.size(); i++) {
     cCommandRegistry->registerCommand(cCommands[i]);
@@ -160,6 +161,10 @@ void SpindizzyLiftSet::zoneContextChanged(IZone* zone) {
 
 bool SpindizzyLiftSet::isLocked() {
   return cLocked > 0;
+}
+
+bool SpindizzyLiftSet::isEditing() {
+  return cEditing;
 }
 
 SpindizzyLiftSet::LockControlCommand::LockControlCommand(SpindizzyLiftSet* parent, bool lock) {

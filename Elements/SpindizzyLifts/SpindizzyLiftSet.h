@@ -47,6 +47,7 @@ class SpindizzyLiftSet:public ISpindizzyLiftSet,
   IZone* cZone;
   std::vector<IUserCommand*> cCommands;
   std::vector<ISimpleModelFactory*> cLiftModels;
+  bool cEditing;
 
   /**
    * Properties are applied to all lift types.
@@ -101,6 +102,7 @@ class SpindizzyLiftSet:public ISpindizzyLiftSet,
   void executeLiftMovedScript();
   void registerInterceptingSurface(IRollableSurface*);
   bool isLocked();
+  bool isEditing();
   
   /***********************************\
    * Implements IZoneContextListener *

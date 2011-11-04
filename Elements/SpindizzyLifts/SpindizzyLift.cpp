@@ -216,11 +216,11 @@ void SpindizzyLift::save(DOMNodeWriter* node, BlockLocation& relative) {
   mLiftProperties->addAttribute("bottomDelay", cBottomDelay);
 }
 
-bool SpindizzyLift::initElement(unsigned int pass, bool editing) {
+bool SpindizzyLift::initElement(unsigned int pass) {
   switch (pass) {
     case 1: {
       ISpindizzyLiftSet* mLiftSet = getElementSet();
-      if (!editing) {
+      if (!mLiftSet->isEditing()) {
         mLiftSet->registerInterceptingSurface(this);
       }
       return true;

@@ -84,8 +84,9 @@ void SpindizzyGERALD::renderStatic() {
   // Nothing to do.
 }
 
-bool SpindizzyGERALD::initElement(unsigned int pass, bool editing) {
-  if (editing) {
+bool SpindizzyGERALD::initElement(unsigned int pass) {
+  ISpindizzyGERALDSet* mGERALDSet = getElementSet();
+  if (mGERALDSet->isEditing()) {
     return true;
   }
   switch (pass) {

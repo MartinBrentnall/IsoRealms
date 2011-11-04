@@ -53,6 +53,7 @@ void SpindizzyGERALDSet::destroy(IElement* element) {
 }
 
 void SpindizzyGERALDSet::setRuntimeContext(IRuntimeContext* runtimeContext) {
+  cEditing = runtimeContext->isEditing();
   cCommandRegistry = runtimeContext->getCommandRegistry();
   for (unsigned int i = 0; i < cCommands.size(); i++) {
     cCommandRegistry->registerCommand(cCommands[i]);
@@ -141,6 +142,10 @@ void SpindizzyGERALDSet::save(DOMNodeWriter* node) {
   for (unsigned int i = 0; i < cElementFactories.size(); i++) {
     static_cast<SpindizzyGERALDFactory*>(cElementFactories[i])->save(node);
   }
+}
+
+bool SpindizzyGERALDSet::isEditing() {
+  return cEditing;
 }
 
 bool SpindizzyGERALDSet::isLocked() {

@@ -107,7 +107,7 @@ std::vector<ISurfaceProvider*> BlockSubtractorCache::getSurfaceProviders(bool pr
       }
     }
     mReturnList.clear();
-    std::cout << "Warning: Specified provider isn't cached!  Surfaces will not be calculated correctly!" << std::endl;
+    std::cout << "Warning: Provider (" << provider << ") isn't cached in (" << cCurrentZone << ")!  Surfaces will not be calculated correctly!" << std::endl;
   }
   return mReturnList;
 }

@@ -39,10 +39,10 @@ class SpindizzyJewelSet:public ISpindizzyJewelSet {
   std::vector<IElementFactory*> cElementFactories;
   ISimpleModelFactory* cJewelModelFactory;
   ICollectables* cCollectables;
-
   ICommandRegistry* cCommandRegistry;
   Script* cJewelCollectedScript;
   Script* cAllJewelsCollectedScript;
+  bool cEditing;
 
   void setModel(ISimpleModelFactory*);
 
@@ -55,6 +55,7 @@ class SpindizzyJewelSet:public ISpindizzyJewelSet {
   ICollectables* getCollectables();
   void jewelCollected();
   void allJewelsCollected();
+  bool isEditing();
 
   /**************************\
    * Implements IElementSet *
@@ -62,7 +63,6 @@ class SpindizzyJewelSet:public ISpindizzyJewelSet {
   std::vector<IElementFactory*> getElementFactories();
   void setRuntimeContext(IRuntimeContext*);
   void destroy(IElement*);
-  ~SpindizzyJewelSet();
 
   /**********************************************\
    * Implements IPluginSupport (in IElementSet) *
@@ -73,6 +73,8 @@ class SpindizzyJewelSet:public ISpindizzyJewelSet {
   IPlugin* getPlugin(PlugSocket*);
   void save(DOMNodeWriter*);
   void load(DOMNodeWrapper*);
+
+  ~SpindizzyJewelSet();  
 };
 
 #endif

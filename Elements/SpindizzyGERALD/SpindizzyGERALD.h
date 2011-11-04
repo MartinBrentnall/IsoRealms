@@ -161,7 +161,7 @@ class SpindizzyGERALD:public Element<ISpindizzyGERALDSet, ISpindizzyGERALDFactor
    * Implements IElement *
   \***********************/
   void renderStatic();
-  bool initElement(unsigned int, bool);
+  bool initElement(unsigned int);
   std::vector<IVisualElement*> getVisualElements();
   std::vector<IDynamicElement*> getDynamicElements();
   std::vector<IDynamicElement*> getDynamicElementsRuntime();

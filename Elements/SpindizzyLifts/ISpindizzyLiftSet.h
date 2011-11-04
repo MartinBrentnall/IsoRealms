@@ -33,6 +33,7 @@ class ISpindizzyLiftSet:public ElementSet<SpindizzyLift> {
   virtual void executeLiftMovedScript() = 0;
   virtual void registerInterceptingSurface(IRollableSurface*) = 0;
   virtual bool isLocked() = 0;
+  virtual bool isEditing() = 0;
 };
 
 #endif

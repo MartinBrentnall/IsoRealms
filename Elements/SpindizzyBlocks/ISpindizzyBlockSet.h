@@ -51,7 +51,6 @@ class ISpindizzyBlockSet:public ElementSet<ISpindizzyBlock> {
   virtual std::vector<IWallSurfaceTemplate*> getWallSurfaces(ISurfaceProvider*, IWallSurface::FaceDirection, bool) = 0;
   virtual void destroyTileTemplate(ITileSurfaceTemplate*, bool) = 0;
   virtual void destroyWallTemplate(IWallSurfaceTemplate*, bool) = 0;
-  virtual void notifyZoneAction(Zone*) = 0;
   virtual void registerRollableSurface(IRollableSurface*) = 0;
   virtual void registerWallSurface(ICollidableWallSurface*) = 0;
   virtual std::vector<ConditionElement*> getConditionElements() = 0;

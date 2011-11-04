@@ -48,7 +48,6 @@ class EditorCursor:public BlockLocation,
 
   bool keyDown(SDLKey&);
 
-  void selectZone();
   void restrainToZone();
 
   public:
@@ -61,6 +60,8 @@ class EditorCursor:public BlockLocation,
 
   void setElementFactory(IElementFactory*);
 
+  void selectZone();
+  
   /**
    * Forward input events directed to the cursor.
    */

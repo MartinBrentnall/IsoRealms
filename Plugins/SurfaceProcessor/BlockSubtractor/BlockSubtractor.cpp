@@ -413,7 +413,9 @@ std::vector<WallColumnPossibility*> BlockSubtractor::getPhysicalWallMasks(int x,
       mOpposingMask.erase(mOpposingMask.begin() + i);
     }
   }
-  cCache.setZone(cCurrentZone);
+  if (mZone != NULL && cUseAdjacentZones) {
+    cCache.setZone(cCurrentZone);
+  }
   return mOpposingMask;
 }
 

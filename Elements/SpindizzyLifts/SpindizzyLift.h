@@ -91,7 +91,7 @@ class SpindizzyLift:public Element<ISpindizzyLiftSet, ISpindizzyLiftFactory>,
   std::vector<IDynamicElement*> getDynamicElements();
   std::vector<IInteractiveElement*> getInteractiveElements();
   void save(DOMNodeWriter*, BlockLocation&);
-  bool initElement(unsigned int, bool);
+  bool initElement(unsigned int);
 
   /*******************************\
    * Implements IRollableSurface *

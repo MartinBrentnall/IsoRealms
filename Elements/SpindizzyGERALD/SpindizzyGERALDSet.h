@@ -45,6 +45,7 @@ class SpindizzyGERALDSet:public ISpindizzyGERALDSet {
   ICommandRegistry* cCommandRegistry;
   std::vector<IUserCommand*> cCommands;
   unsigned int cLocks;
+  bool cEditing;
 
   void setModel(ISimpleModelFactory*);
   void stop();
@@ -101,6 +102,7 @@ class SpindizzyGERALDSet:public ISpindizzyGERALDSet {
   /**********************************\
    * Implements ISpindizzyGERALDSet *
   \**********************************/
+  bool isEditing();
   bool isLocked();
 };
 

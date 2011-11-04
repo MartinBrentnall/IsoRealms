@@ -384,18 +384,20 @@ void SpindizzyBlock::added() {
 
 void SpindizzyBlock::generateWallSurfaces(IWallSurface::FaceDirection faceDirection) {
   ISpindizzyBlockSet* mSpindizzyBlockSet = getElementSet();
+  bool mEditing = mSpindizzyBlockSet->isEditing();
   
   // Physical surfaces
-  std::vector<IWallSurfaceTemplate*> mWallSurfaces = calculateWallSurfaces(faceDirection, false);
-  for (unsigned int i = 0; i < mWallSurfaces.size(); i++) {
-    ISpindizzyWallSurface* mWallSurface = createSubSurface(mWallSurfaces[i]);
-    // TODO: This should only happen in runtime
-    mSpindizzyBlockSet->registerWallSurface(mWallSurface);
-    mSpindizzyBlockSet->destroyWallTemplate(mWallSurfaces[i], false);
+  if (!mEditing) {
+    std::vector<IWallSurfaceTemplate*> mWallSurfaces = calculateWallSurfaces(faceDirection, false);
+    for (unsigned int i = 0; i < mWallSurfaces.size(); i++) {
+      ISpindizzyWallSurface* mWallSurface = createSubSurface(mWallSurfaces[i]);
+      mSpindizzyBlockSet->registerWallSurface(mWallSurface);
+      mSpindizzyBlockSet->destroyWallTemplate(mWallSurfaces[i], false);
+    }
   }
 
   // Visual surfaces
-  mWallSurfaces = calculateWallSurfaces(faceDirection, true);
+  std::vector<IWallSurfaceTemplate*> mWallSurfaces = calculateWallSurfaces(faceDirection, true);
   for (unsigned int i = 0; i < mWallSurfaces.size(); i++) {
     Condition* mCondition = mWallSurfaces[i]->getCondition();
     ISpindizzyWallSurface* mWallSurface = createSubSurface(mWallSurfaces[i]);
@@ -408,13 +410,16 @@ void SpindizzyBlock::generateWallSurfaces(IWallSurface::FaceDirection faceDirect
   }
 }
 
-bool SpindizzyBlock::initElement(unsigned int pass, bool editing) {
+bool SpindizzyBlock::initElement(unsigned int pass) {
+  ISpindizzyBlockSet* mSpindizzyBlockSet = getElementSet();
+  bool mEditing = mSpindizzyBlockSet->isEditing();
+
   switch (pass) {
     case INIT_PROCESS_BLOCKS: {
       ISpindizzyBlockSet* mBlockElementSet = getElementSet();
       
       // Physical surfaces
-      if (!editing) {
+      if (!mEditing) {
         std::vector<ITileSurfaceTemplate*> mTopTileSurfaces = calculateTileSurfaces(ITileSurface::UP, false);
         for (unsigned int i = 0; i < mTopTileSurfaces.size(); i++) {
           int mNorth = mTopTileSurfaces[i]->getNorth();

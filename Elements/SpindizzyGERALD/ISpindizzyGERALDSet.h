@@ -26,6 +26,7 @@ class SpindizzyGERALD;
 
 class ISpindizzyGERALDSet:public ElementSet<SpindizzyGERALD> {
   public:
+  virtual bool isEditing() = 0;
   virtual bool isLocked() = 0; 
 };
 

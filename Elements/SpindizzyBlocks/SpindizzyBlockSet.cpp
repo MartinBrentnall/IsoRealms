@@ -131,7 +131,9 @@ void SpindizzyBlockSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
     } else {
       ISurfaceProcessor* mPreviousSurfaceProcessor = cPhysicalProcessor;
       if (assignPlugin(implementation, &cPhysicalProcessor, *socket)) {
-        mPreviousSurfaceProcessor->reinitialise();
+        if (!cEditing) {
+          mPreviousSurfaceProcessor->reinitialise();
+        }
       }
     }
   } else if (socket->getType() == "ZoneContext") {
@@ -176,11 +178,8 @@ SpindizzyBlockHandler* SpindizzyBlockSet::createHandler(IElementContainer* eleme
   return mHandler;
 }
 
-void SpindizzyBlockSet::setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*) {
-  cEditing = true;
-}
-
 void SpindizzyBlockSet::setRuntimeContext(IRuntimeContext* runtimeContext) {
+  cEditing = runtimeContext->isEditing();
   cCommandRegistry = runtimeContext->getCommandRegistry();
   for (unsigned int i = 0; i < cSpindizzyBlockCommands.size(); i++) {
     cCommandRegistry->registerCommand(cSpindizzyBlockCommands[i]);
@@ -193,7 +192,9 @@ void SpindizzyBlockSet::destroy(IElement* element) {
 
 void SpindizzyBlockSet::initElementsComplete() {
   cVisualProcessor->initElementsComplete();
-  cPhysicalProcessor->initElementsComplete();
+  if (!cEditing) {
+    cPhysicalProcessor->initElementsComplete();
+  }
 }
 
 ISpindizzyBlockFactory* SpindizzyBlockSet::getFactory(const std::string& name) {
@@ -316,14 +317,11 @@ bool SpindizzyBlockSet::isEditing() {
   return cEditing;
 }
 
-void SpindizzyBlockSet::notifyZoneAction(Zone* zone) {
-  cVisualProcessor->notifyZoneAction(zone);
-  cPhysicalProcessor->notifyZoneAction(zone);
-}
-
 SpindizzyBlockSet::~SpindizzyBlockSet() {
   cVisualProcessor->reinitialise();
-  cPhysicalProcessor->reinitialise();
+  if (!cEditing) {
+    cPhysicalProcessor->reinitialise();
+  }
   for (unsigned int i = 0; i < cElementFactories.size(); i++) {
     delete cElementFactories[i];
   }
