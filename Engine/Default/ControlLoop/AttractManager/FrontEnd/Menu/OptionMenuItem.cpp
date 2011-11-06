@@ -16,25 +16,33 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "DigitalInputMenuItem.h"
+#include "OptionMenuItem.h"
 
-DigitalInputMenuItem::DigitalInputMenuItem(const std::string& name, DigitalInput* input) {
+OptionMenuItem::OptionMenuItem(const std::string& name, std::vector<IOption*> options) {
   cName = name;
-  cDigitalInput = input;
+  cOptions = options;
+  cSelectedOption = 0;
 }
 
-void DigitalInputMenuItem::render(int i, float fade, IFont* font, bool selected) {
+void OptionMenuItem::apply() {
+  cOptions[cSelectedOption]->apply();
+}
+
+void OptionMenuItem::render(int i, float fade, IFont* font, bool selected) {
+  std::string mOptionText = cOptions[cSelectedOption]->getOption();
   glColor4f(0.0f, 0.0f, 0.0f, fade);
-  font->print(0.008f, (-0.10f * i) - 0.008f, 0.05f, 1, cName.c_str());
+  font->print(-0.492f, (-0.10f * i) - 0.008f, 0.05f, 0, cName.c_str());
+  font->print(0.508f, (-0.10f * i) - 0.008f, 0.05f, 2, mOptionText.c_str());
   if (selected) {
     glColor4f(0.6f, 1.0f, 0.4f, fade);
   } else {
     glColor4f(1.0f, 1.0f, 1.0f, fade);
   }
-  font->print(0.0f, -0.10f * i, 0.05f, 1, cName.c_str());
+  font->print(-0.5f, -0.10f * i, 0.05f, 0, cName.c_str());
+  font->print(0.5f, -0.10f * i, 0.05f, 2, mOptionText.c_str());
 }
 
-FocusAction DigitalInputMenuItem::keyDown(SDLKey& key) {
+FocusAction OptionMenuItem::keyDown(SDLKey& key) {
   switch (key) {
     case SDLK_UP: {
       return PREVIOUS;
@@ -44,8 +52,18 @@ FocusAction DigitalInputMenuItem::keyDown(SDLKey& key) {
       return NEXT;
     }
 
+    case SDLK_LEFT: {
+      if (cSelectedOption-- == 0) {
+        cSelectedOption = cOptions.size() - 1;
+      }
+      break;
+    }
+
+    case SDLK_RIGHT:
     case SDLK_RETURN: {
-      std::cout << "TODO: Implement this!" << std::endl;
+      if (++cSelectedOption == cOptions.size()) {
+        cSelectedOption = 0;
+      }
       break;
     }
 
@@ -55,3 +73,4 @@ FocusAction DigitalInputMenuItem::keyDown(SDLKey& key) {
   }
   return NOTHING;
 }
+

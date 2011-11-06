@@ -22,6 +22,7 @@
 #include "DOMNodeWrapper.h"
 #include "InitException.h"
 #include "ParseException.h"
+#include "ScreenMode.h"
 #include "Utils.h"
 
 #include <GL/gl.h>
@@ -40,6 +41,10 @@ class ScreenConfiguration {
 
   void parseSize(DOMNodeWrapper*);
 
+  int getVideoFlags();
+  
+  void resizeScreen();
+  
   public:
 
   int convertToXPixels(float);
@@ -72,6 +77,10 @@ class ScreenConfiguration {
    * Return default GL Y coordinate for specified screen pixel row.
    */
   float getYLocation(int);
+  
+  std::vector<ScreenMode*> getAvailableModes();
+  
+  void setMode(ScreenMode*);
 };
 
 #endif

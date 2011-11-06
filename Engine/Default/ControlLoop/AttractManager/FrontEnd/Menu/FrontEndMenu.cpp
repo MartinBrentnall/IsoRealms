@@ -1,3 +1,21 @@
+/*
+ * Copyright 2009,2010,2011 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
 #include "FrontEndMenu.h"
 
 FrontEndMenu::FrontEndMenu(IFrontEndCommands* commandRegistry, IMenuStack* menuStack, DOMNodeWrapper* node, const std::string& menuName, std::vector<std::string> tree) {
@@ -8,7 +26,7 @@ FrontEndMenu::FrontEndMenu(IFrontEndCommands* commandRegistry, IMenuStack* menuS
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "MenuItem") {
+    if (mValueAsString == "Command") {
       FrontEndMenuItem* mMenuItem = new FrontEndMenuItem(commandRegistry, mNode);
       cMenuItems.push_back(mMenuItem);
     } else if (mValueAsString == "Menu") {
@@ -29,7 +47,7 @@ FrontEndMenu::FrontEndMenu(IFrontEndCommands* commandRegistry, IMenuStack* menuS
         FrontEndMenuItem* mMenuItem = new FrontEndMenuItem(mProjectName, mEnterMenuCommand);
         cMenuItems.push_back(mMenuItem);
       }
-    } else if (mValueAsString == "MenuItemList") {
+    } else if (mValueAsString == "CommandList") {
       std::string mDirForSelection = mNode->getAttribute("source");
       std::string mActualDir = System::getProgramResource(mDirForSelection);
       std::vector<std::string>* mFileList = System::getFileList(mActualDir); // TODO: Destruction
@@ -44,6 +62,24 @@ FrontEndMenu::FrontEndMenu(IFrontEndCommands* commandRegistry, IMenuStack* menuS
       std::string mFilename = format(mNode->getAttribute("name"), tree);
       std::vector<IFrontEndMenuItem*> mControlMenuItems = parseControlConfig(mFilename);
       cMenuItems.insert(cMenuItems.end(), mControlMenuItems.begin(), mControlMenuItems.end());
+    } else if (mValueAsString == "Boolean") {
+      std::string mName = mNode->getAttribute("name");
+      std::string mTrueValue = mNode->getAttribute("trueValue");
+      std::string mFalseValue = mNode->getAttribute("falseValue");
+      BooleanMenuItem* mBooleanMenuItem = new BooleanMenuItem(mName, mTrueValue, mFalseValue);
+      cMenuItems.push_back(mBooleanMenuItem);
+    } else if (mValueAsString == "Resolution") {
+      std::string mName = mNode->getAttribute("name");
+      Configuration* mConfiguration = Configuration::getInstance();
+      ScreenConfiguration* mScreenConfiguration = mConfiguration->getScreenConfiguration();
+      std::vector<ScreenMode*> mScreenModes = mScreenConfiguration->getAvailableModes();
+      std::vector<IOption*> mResolutionOptions;
+      for (unsigned int j = 0; j < mScreenModes.size(); j++) {
+        mResolutionOptions.push_back(new ResolutionOption(mScreenConfiguration, mScreenModes[j]));
+      }
+      OptionMenuItem* mOptionMenuItem = new OptionMenuItem(mName, mResolutionOptions);
+      cMenuItems.push_back(mOptionMenuItem);
+      cApplicableItems.push_back(mOptionMenuItem);
     }
   }
 }
@@ -134,4 +170,10 @@ void FrontEndMenu::render(float fade, IFont* font) {
     cMenuItems[i]->render(i, fade, font, cSelectedItem == i);
   }
   glDisable(GL_BLEND);
+}
+
+void FrontEndMenu::applyAll() {
+  for (unsigned int i = 0; i < cApplicableItems.size(); i++) {
+    cApplicableItems[i]->apply();
+  }
 }

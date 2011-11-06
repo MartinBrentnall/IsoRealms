@@ -57,18 +57,39 @@ void ScreenConfiguration::parseSize(DOMNodeWrapper *node) {
   }
 }
 
-void ScreenConfiguration::openScreen(std::string title) {
-
-  // Setup SDL-OpenGL integration
+int ScreenConfiguration::getVideoFlags() {
   const SDL_VideoInfo *mVideoInfo = SDL_GetVideoInfo();
   if (mVideoInfo == NULL) {
     throw InitException("Could not get video info: " + std::string(SDL_GetError()));
   }
   int mVideoFlags = SDL_OPENGL | SDL_HWPALETTE | SDL_RESIZABLE;
+  if (cFullScreen) {
+    mVideoFlags |= SDL_FULLSCREEN;
+  }
   mVideoFlags |= mVideoInfo->hw_available ? SDL_HWSURFACE : SDL_SWSURFACE;
   if (mVideoInfo -> blit_hw) {
     mVideoFlags |= SDL_HWACCEL;
   }
+  return mVideoFlags;
+}
+
+void ScreenConfiguration::resizeScreen() {
+  int mVideoFlags = getVideoFlags();
+  cWindow = SDL_SetVideoMode(cScreenWidth, cScreenHeight, cScreenDepth, mVideoFlags);
+  if (cWindow == NULL) {
+    throw InitException("Could not to create window: " + std::string(SDL_GetError()));
+  }
+  glViewport(0, 0, cScreenWidth, cScreenHeight);
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  gluPerspective(45.0, (GLfloat) cScreenWidth / (GLfloat) cScreenHeight, 0.1, 400.0);
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+}
+
+void ScreenConfiguration::openScreen(std::string title) {
+
+  // Setup SDL-OpenGL integration
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
   SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, cScreenDepth);
   SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 0);
@@ -77,11 +98,9 @@ void ScreenConfiguration::openScreen(std::string title) {
   SDL_GL_SetAttribute(SDL_GL_ACCUM_BLUE_SIZE, 0);
   SDL_GL_SetAttribute(SDL_GL_ACCUM_ALPHA_SIZE, 0);
 
+  resizeScreen();
+  
   // Setup SDL window
-  cWindow = SDL_SetVideoMode(cScreenWidth, cScreenHeight, cScreenDepth, mVideoFlags);
-  if (cWindow == NULL) {
-    throw InitException("Could not to create window: " + std::string(SDL_GetError()));
-  }
   SDL_WM_SetCaption(title.c_str(), title.c_str());
 
   // Setup OpenGL options
@@ -98,18 +117,6 @@ void ScreenConfiguration::openScreen(std::string title) {
   glEnable(GL_CULL_FACE);
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_BLEND);
-
-  glViewport(0, 0, cScreenWidth, cScreenHeight);
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  gluPerspective(45.0, (GLfloat) cScreenWidth / (GLfloat) cScreenHeight, 0.1, 400.0);
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
-
-  // Enable normal keyboard typing
-  if (cFullScreen) {
-    SDL_WM_ToggleFullScreen(cWindow);
-  }
 }
 
 float ScreenConfiguration::getAspectRatio() {
@@ -136,4 +143,28 @@ int ScreenConfiguration::convertToYPixels(float y) {
   return y * mHalfScreen + mHalfScreen;
 }
 
+std::vector<ScreenMode*> ScreenConfiguration::getAvailableModes() {
+  int mVideoFlags = getVideoFlags();
+  SDL_Rect** mModes = SDL_ListModes(NULL, mVideoFlags);
+  if (mModes == (SDL_Rect**) 0) { 
+    std::cout << "No modes available!" << std::endl;
+    exit(-1);
+  }
+  std::vector<ScreenMode*> mScreenModes;
+  if (mModes != (SDL_Rect**) -1) {
+    for (int i = 0; mModes[i]; i++) {
+      mScreenModes.push_back(new ScreenMode(mModes[i]->w, mModes[i]->h));
+    }
+  }
+  return mScreenModes;
+}
 
+void ScreenConfiguration::setMode(ScreenMode* screenMode) {
+  int mScreenWidth = screenMode->getWidth();
+  int mScreenHeight = screenMode->getHeight();
+  if (mScreenWidth != cScreenWidth || mScreenHeight != cScreenHeight) {
+    cScreenWidth = mScreenWidth;
+    cScreenHeight = mScreenHeight;
+    resizeScreen();
+  }
+}

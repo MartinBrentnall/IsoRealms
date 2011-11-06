@@ -69,6 +69,7 @@ add_library(IsoRealms SHARED
   Rectangle.cpp
   RuntimeContext.cpp
   ScreenConfiguration.cpp
+  ScreenMode.cpp
   Script.cpp
   SDLKeyMap.cpp
   System.cpp

@@ -18,12 +18,15 @@ include_directories(${PROJECT_SOURCE_DIR})
 
 add_library(FrontEnd_Menu MODULE 
   ArgumentedCommand.cpp
+  BooleanMenuItem.cpp
   DigitalInputMenuItem.cpp
   EditMapCommand.cpp
   EnterMenuCommand.cpp
   FrontEnd.cpp
   FrontEndMenu.cpp
   FrontEndMenuItem.cpp
+  OptionMenuItem.cpp
+  ResolutionOption.cpp
 )
 set_target_properties(FrontEnd_Menu PROPERTIES OUTPUT_NAME "FrontEnd")
 set_target_properties(FrontEnd_Menu PROPERTIES PREFIX "lib")

@@ -16,26 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef RUNTIME_CONTEXT_H
-#define RUNTIME_CONTEXT_H
+#ifndef SCREEN_MODE_H
+#define SCREEN_MODE_H
 
-#include "IRuntimeContext.h"
+#include <string>
 
-class RuntimeContext:public IRuntimeContext {
+class ScreenMode {
   private:
-  IMap* cMap;
-  ICommandRegistry* cCommandRegistry;
-  bool cEditing;
-  
-  public:
-  RuntimeContext(IMap*, ICommandRegistry*, bool);
+  unsigned int cWidth;
+  unsigned int cHeight;
 
-  /******************************\
-   * Implements IRuntimeContext *
-  \******************************/
-  IMap* getMap();
-  ICommandRegistry* getCommandRegistry();
-  bool isEditing();
+  public:
+  ScreenMode(unsigned int, unsigned int);
+
+  unsigned int getWidth();
+  unsigned int getHeight();
 };
 
 #endif

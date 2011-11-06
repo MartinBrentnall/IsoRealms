@@ -16,26 +16,35 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef RUNTIME_CONTEXT_H
-#define RUNTIME_CONTEXT_H
+#ifndef OPTION_MENU_ITEM_H
+#define OPTION_MENU_ITEM_H
 
-#include "IRuntimeContext.h"
+#include <string>
 
-class RuntimeContext:public IRuntimeContext {
+#include "IApplicableItem.h"
+#include "IFrontEndMenuItem.h"
+#include "IOption.h"
+
+class OptionMenuItem:public IFrontEndMenuItem,
+                     public IApplicableItem {
   private:
-  IMap* cMap;
-  ICommandRegistry* cCommandRegistry;
-  bool cEditing;
-  
-  public:
-  RuntimeContext(IMap*, ICommandRegistry*, bool);
+  std::string cName;
+  std::vector<IOption*> cOptions;
+  unsigned int cSelectedOption;
 
+  public:
+  OptionMenuItem(const std::string&, std::vector<IOption*>);
+  
   /******************************\
-   * Implements IRuntimeContext *
+   * Implements IApplicableItem *
   \******************************/
-  IMap* getMap();
-  ICommandRegistry* getCommandRegistry();
-  bool isEditing();
+  void apply();
+    
+  /********************************\
+   * Implements IFrontEndMenuItem *
+  \********************************/
+  void render(int, float, IFont*, bool);
+  FocusAction keyDown(SDLKey&);
 };
 
 #endif

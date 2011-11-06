@@ -110,6 +110,7 @@ bool FrontEnd::keyDown(SDLKey& key) {
           std::cout << "Warning: No exit command has been defined!" << std::endl;
         } 
       } else {
+        cActiveMenu[cActiveMenu.size() - 1]->applyAll();
         cActiveMenu.pop_back();
       }
       return true;

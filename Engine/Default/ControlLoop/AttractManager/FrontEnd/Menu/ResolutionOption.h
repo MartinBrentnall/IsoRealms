@@ -16,26 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef RUNTIME_CONTEXT_H
-#define RUNTIME_CONTEXT_H
+#ifndef RESOLUTION_OPTION_H
+#define RESOLUTION_OPTION_H
 
-#include "IRuntimeContext.h"
+#include <string>
 
-class RuntimeContext:public IRuntimeContext {
+#include <IsoRealms/ScreenConfiguration.h>
+
+#include "IOption.h"
+
+class ResolutionOption:public IOption {
   private:
-  IMap* cMap;
-  ICommandRegistry* cCommandRegistry;
-  bool cEditing;
-  
-  public:
-  RuntimeContext(IMap*, ICommandRegistry*, bool);
+  ScreenConfiguration* cScreenConfiguration;
+  ScreenMode* cScreenMode;
 
-  /******************************\
-   * Implements IRuntimeContext *
-  \******************************/
-  IMap* getMap();
-  ICommandRegistry* getCommandRegistry();
-  bool isEditing();
+  public:
+  ResolutionOption(ScreenConfiguration*, ScreenMode*);
+
+  /**********************\
+   * Implements IOption *
+  \**********************/
+  std::string getOption();
+  void apply();
 };
 
 #endif

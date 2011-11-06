@@ -67,31 +67,28 @@
     
       <FrontEnd name="Menu">
         <Menu name="Start!">
-          <MenuItemList source="Data/Projects/">
+          <CommandList source="Data/Projects/">
             <ExecuteCommand type="Push:Runtime"/>
-          </MenuItemList>
+          </CommandList>
         </Menu>
         <Menu name="Editor">
-          <MenuItem name="Create a new map">
+          <Command name="Create a new map">
             <ExecuteCommand type="Push:SimpleEditor"/>
-          </MenuItem>
+          </Command>
           <Menu name="Edit an existing map">
-            <MenuItemList source="Data/Projects/">
+            <CommandList source="Data/Projects/">
               <ExecuteCommand type="Push:SimpleEditor"/>
-            </MenuItemList>
+            </CommandList>
           </Menu>
         </Menu>
         <Menu name="Settings">
-          <Menu name="Game">
-          </Menu>
           <Menu name="Visual">
-            <MenuItem name="Resolution"/>
-            <MenuItem name="Shadows"/>
-            <MenuItem name="Colour Depth"/>
+            <Boolean name="Mode" trueValue="Full Screen" falseValue="Windowed"/>
+            <Resolution name="Resolution"/>
           </Menu>
           <Menu name="Aural">
-            <MenuItem name="Music Volume"/>
-            <MenuItem name="Sound Volume"/>
+            <Percentage name="Music Volume"/>
+            <Percentage name="Sound Volume"/>
           </Menu>
           <Menu name="Control">
             <Menu name="All Games">
@@ -102,11 +99,11 @@
             </MenuList>
           </Menu>
         </Menu>
-        <MenuItem name="High Scores"/>
-        <MenuItem name="Help"/>
-        <MenuItem name="Quit">
+        <Command name="High Scores"/>
+        <Command name="Help"/>
+        <Command name="Quit">
           <ExecuteCommand type="Pop"/>
-        </MenuItem>        
+        </Command>        
       </FrontEnd>
   
       <Layer>Background</Layer>

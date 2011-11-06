@@ -16,26 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef RUNTIME_CONTEXT_H
-#define RUNTIME_CONTEXT_H
+#ifndef I_OPTION_H
+#define I_OPTION_H
 
-#include "IRuntimeContext.h"
-
-class RuntimeContext:public IRuntimeContext {
-  private:
-  IMap* cMap;
-  ICommandRegistry* cCommandRegistry;
-  bool cEditing;
-  
+class IOption {
   public:
-  RuntimeContext(IMap*, ICommandRegistry*, bool);
-
-  /******************************\
-   * Implements IRuntimeContext *
-  \******************************/
-  IMap* getMap();
-  ICommandRegistry* getCommandRegistry();
-  bool isEditing();
+  virtual std::string getOption() = 0;
+  virtual void apply() = 0;
 };
 
 #endif
