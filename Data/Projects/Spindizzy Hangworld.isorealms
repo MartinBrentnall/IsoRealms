@@ -1671,7 +1671,7 @@
       </Element>
     </Elements>
   </Zone>
-<!--  <Zone>
+  <Zone>
     <Plugins>
       <Plugin instance="PerZone" type="TextureSetChanger">
         <TextureSet>C64RedGreen</TextureSet>
@@ -25966,5 +25966,5 @@
         <LiftProperties bottomDelay="0" downSpeed="750" topDelay="0" upSpeed="750"/>
       </Element>
     </Elements>
-  </Zone>-->
+  </Zone>
 </Map>
