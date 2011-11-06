@@ -8,9 +8,11 @@
 #include "CommandDirectory.h"
 #include "DOMNodeWrapper.h"
 #include "Script.h"
+#include "SDLKeyMap.h"
 
 class DigitalInput {
   private:
+  static SDLKeyMap cSDLKeyMap;
   bool* cInput;
   std::set<SDLKey> cActiveKeys;
   std::vector<SDLKey> cKeys;

@@ -70,6 +70,7 @@ add_library(IsoRealms SHARED
   RuntimeContext.cpp
   ScreenConfiguration.cpp
   Script.cpp
+  SDLKeyMap.cpp
   System.cpp
   Utils.cpp
   Vertex.cpp

@@ -45,6 +45,8 @@ class ScreenConfiguration {
   int convertToXPixels(float);
   int convertToYPixels(float);
 
+  ScreenConfiguration();
+  
   /**
    * Construct the screen configuration from the specified node.
    */

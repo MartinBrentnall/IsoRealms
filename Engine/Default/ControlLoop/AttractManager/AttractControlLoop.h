@@ -30,6 +30,7 @@
 #include "TerminateAttractSceneCommand.h"
 
 #include "../../IControlLoop.h"
+#include "../../IEngineArguments.h"
 
 #include <IsoRealms/CommandDirectory.h>
 #include <IsoRealms/DOMNodeWrapper.h>
@@ -68,7 +69,7 @@ class AttractControlLoop:public IControlLoop,
   std::vector<ICommand*> parseEventCommands(DOMNodeWrapper*);
 
   public:
-  AttractControlLoop(DOMNodeWrapper*);
+  AttractControlLoop(DOMNodeWrapper*, IEngineArguments*);
   bool checkActiveInput(int);
 
   /*****************************\

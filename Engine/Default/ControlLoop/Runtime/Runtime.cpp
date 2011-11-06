@@ -18,16 +18,18 @@
  */
 #include "Runtime.h"
 
-Runtime::Runtime(DOMNodeWrapper* node) {
+Runtime::Runtime(DOMNodeWrapper* node, IEngineArguments* engineArguments) {
   ICommand* mCommand = CommandManager::getCommand("Pop");
   cExitCommands.push_back(mCommand);
   
-  DOMNodeWrapper* mConfigurationRootNode = new DOMNodeWrapper("Test.isorealms");
+  std::string mMapName = engineArguments->get();
+  std::string mProjectFile = System::getProgramResource("Data/Projects/" + mMapName); // TODO: Should we hard code Data/Projects/ here?
+  DOMNodeWrapper* mConfigurationRootNode = new DOMNodeWrapper(mProjectFile);
   for (int i = 0; i < mConfigurationRootNode->getChildCount(); i++) {
     DOMNodeWrapper *mNode = mConfigurationRootNode->getChild(i);
     std::string mValue = mNode->getNodeName();
     if (mValue == "Map") {
-      cMap = new Map(mNode, NULL, NULL, "Test.isorealms", false);
+      cMap = new Map(mNode, NULL, NULL, mMapName, false);
     }
   }
   cMap->initRuntime();
@@ -70,8 +72,8 @@ void Runtime::execute(int milliseconds) {
   }
 }
 
-extern "C" IControlLoop* create(DOMNodeWrapper* node) {
-  return new Runtime(node);
+extern "C" IControlLoop* create(DOMNodeWrapper* node, IEngineArguments* engineArguments) {
+  return new Runtime(node, engineArguments);
 }
 
 extern "C" void destroy(IControlLoop* controlLoop) {

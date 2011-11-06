@@ -32,6 +32,7 @@
 
 #include "../../IFrontEnd.h"
 
+#include "ArgumentedCommand.h"
 #include "EditMapCommand.h"
 #include "FrontEndMenu.h"
 #include "IMenuStack.h"
@@ -71,6 +72,8 @@ class FrontEnd:public IFrontEnd,
    */
   IFont* cFont;
 
+  IEngineArguments* cEngineArguments;
+  
   // TODO: The following variables control...?
   /**
    * Index of the currently selected menu item.
@@ -82,7 +85,7 @@ class FrontEnd:public IFrontEnd,
   bool keyDown(SDLKey&);
   
   public:
-  FrontEnd(DOMNodeWrapper*, IFont*);
+  FrontEnd(DOMNodeWrapper*, IFont*, IEngineArguments*);
 
   /**
    * Signal the front-end to terminate.

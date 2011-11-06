@@ -23,6 +23,8 @@
 
 #include <IsoRealms/DOMNodeWrapper.h>
 
+#include "../../IEngineArguments.h"
+
 /**
  * A front-end allows the user to control the engine by executing various
  * commands on it through an interface.
@@ -74,7 +76,7 @@ class IFrontEnd {
   virtual ~IFrontEnd() {}
 };
 
-typedef IFrontEnd* createFrontEnd(DOMNodeWrapper*, IFont*);
+typedef IFrontEnd* createFrontEnd(DOMNodeWrapper*, IFont*, IEngineArguments*);
 typedef void destroyFrontEnd(IFrontEnd*);
 
 #endif

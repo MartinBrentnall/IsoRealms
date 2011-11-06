@@ -51,7 +51,7 @@ void Engine::pushControlLoop(DOMNodeWrapper* node) {
   if (mDlsymError) {
     throw InitException("Cannot load symbol: " + std::string(mDlsymError));
   }
-  IControlLoop* mControlLoop = createControlLoopFunction(node);
+  IControlLoop* mControlLoop = createControlLoopFunction(node, &cEngineArguments);
   cControlLoop.push(mControlLoop);
 }
 

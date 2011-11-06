@@ -65,9 +65,9 @@ void AttractTitle::update(int ticks) {
 void AttractTitle::render() {
   glEnable(GL_BLEND);
   glColor4f(0.0f, 0.0f, 0.0f, cFade);
-  cFont->print(0.01f, 0.59f, 0.07f, 1, "Spindizzy Dimensions");
+  cFont->print(0.01f, 0.59f, 0.07f, 1, "Iso Realms");
   glColor4f(1.0f, 1.0f, 1.0, cFade);
-  cFont->print(0.0f, 0.6f, 0.07f, 1, "Spindizzy Dimensions");
+  cFont->print(0.0f, 0.6f, 0.07f, 1, "Iso Realms");
   glDisable(GL_BLEND);
 }
 

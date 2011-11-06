@@ -17,6 +17,8 @@
 include_directories(${PROJECT_SOURCE_DIR})
 
 add_library(FrontEnd_Menu MODULE 
+  ArgumentedCommand.cpp
+  DigitalInputMenuItem.cpp
   EditMapCommand.cpp
   EnterMenuCommand.cpp
   FrontEnd.cpp

@@ -42,7 +42,7 @@ ITexture* ImageTextureSet::getTexture(const std::string& name) {
 }
 
 void ImageTextureSet::loadTexture(const std::string& filename, const std::string& id) {
-  std::string mResource = System::getResource("Images/" + filename);
+  std::string mResource = System::getProgramResource("Data/Images/" + filename);
   SDL_Surface* mSurface = IMG_Load(mResource.c_str());
   GLuint mTextureID;
   glPixelStorei(GL_UNPACK_ALIGNMENT, 4);

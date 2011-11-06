@@ -53,7 +53,7 @@ std::vector<std::string*> ElementSetEntityClass::getInstances() {
 std::vector<std::string*> ElementSetEntityClass::getImplementations() {
   // TODO: Need to filter non directories.
   // TODO: Need to make path non-platform specific.
-  std::vector<std::string>* mImplementationsList = System::getFileList("/usr/share/IsoRealms/Elements/", "*");
+  std::vector<std::string>* mImplementationsList = System::getFileList("/usr/share/IsoRealms/Elements/");
   std::vector<std::string*> mReturnList;
   for (unsigned int i = 0; i < mImplementationsList->size(); i++) {
     // TODO: This is BAD.  Memory leak here!

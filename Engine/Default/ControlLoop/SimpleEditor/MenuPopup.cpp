@@ -38,7 +38,7 @@ MenuPopup::MenuPopup(DOMNodeWrapper* node, IMenuContainer* parent, float x, floa
       addMenuItem(mPathElementName, mCommand);
     } else if (mValueAsString == "Plugins") {
       // TODO: Make this non-platform specific
-      std::vector<std::string>* mPluginTypes = System::getFileList("/usr/share/IsoRealms/Plugins/", "*");
+      std::vector<std::string>* mPluginTypes = System::getFileList("/usr/share/IsoRealms/Plugins/");
       for (unsigned int i = 0; i < mPluginTypes->size(); i++) {
         ICommand* mPluginInstancesCommand = new ChoosePluginImplementationCommand(NULL, NULL, componentContainer, pluginRegistryAccessor, (*mPluginTypes)[i]);
         addMenuItem((*mPluginTypes)[i], mPluginInstancesCommand);

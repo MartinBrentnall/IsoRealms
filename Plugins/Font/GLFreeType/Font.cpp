@@ -28,7 +28,7 @@ void Font::load(DOMNodeWrapper* node) {
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "File") {
       cFilename = mNode->getStringValue();
-      mFontLocation = System::getResource(cFilename);
+      mFontLocation = System::getProgramResource(cFilename);
     } else if (mValueAsString == "Detail") {
       cDetail = mNode->getIntegerValue();
     }

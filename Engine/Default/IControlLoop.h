@@ -23,6 +23,8 @@
 
 #include <IsoRealms/DOMNodeWrapper.h>
 
+#include "IEngineArguments.h"
+
 /**
  * This interface is to be implemented by any class wishing to act as a control
  * loop for the engine.  The control function will be called continuously on
@@ -50,7 +52,7 @@ class IControlLoop {
   virtual void execute(int) = 0;
 };
 
-typedef IControlLoop* createControlLoop(DOMNodeWrapper*);
+typedef IControlLoop* createControlLoop(DOMNodeWrapper*, IEngineArguments*);
 typedef void destroyControlLoop(IControlLoop*);
 
 #endif

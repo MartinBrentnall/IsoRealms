@@ -8,9 +8,11 @@
 #include <IsoRealms/ICommand.h>
 #include <IsoRealms/IFont.h>
 
+#include "FocusAction.h"
 #include "IFrontEndCommands.h"
+#include "IFrontEndMenuItem.h"
 
-class FrontEndMenuItem {
+class FrontEndMenuItem:public IFrontEndMenuItem {
   private:
   std::string cMenuText;
   ICommand* cCommand;
@@ -18,9 +20,12 @@ class FrontEndMenuItem {
   public:
   FrontEndMenuItem(IFrontEndCommands*, DOMNodeWrapper*);
   FrontEndMenuItem(const std::string&, ICommand*);
-    
+
+  /********************************\
+   * Implements IFrontEndMenuItem *
+  \********************************/
   void render(int, float, IFont*, bool);
-  void execute();
+  FocusAction keyDown(SDLKey&);
 };
 
 #endif

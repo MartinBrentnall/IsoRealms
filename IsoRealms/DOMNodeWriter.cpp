@@ -95,10 +95,13 @@ void DOMNodeWriter::save(std::string filename) {
   mOutputConfig->setParameter(XMLUni::fgDOMWRTFormatPrettyPrint, true); 
   mOutputConfig->setParameter(XMLUni::fgDOMWRTXercesPrettyPrint, false);
   DOMLSOutput* mDOMLSOutput = mDOMImplementationLS->createLSOutput();
-  XMLFormatTarget* mTarget = new LocalFileFormatTarget(filename.c_str());
-  mDOMLSOutput->setByteStream(mTarget);
+  LocalFileFormatTarget mTarget(filename.c_str());
+  mDOMLSOutput->setByteStream(&mTarget);
   mDOMLSSerializer->write(cDocument, mDOMLSOutput);
+  mDOMLSOutput->release();
+  mDOMLSSerializer->release();
   cDocument->release();// TODO: Probably should be somewhere else!
+  mTarget.flush();
 }
 
 bool DOMNodeWriter::empty() {

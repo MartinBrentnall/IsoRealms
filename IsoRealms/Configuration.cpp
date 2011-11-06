@@ -68,36 +68,48 @@ Configuration* Configuration::getInstance() {
   return cInstance;
 }
 
+void Configuration::parseSettings() {
+  try {
+    DOMNodeWrapper* mConfigurationRootNode = new DOMNodeWrapper(cSettingsFile);
+    for (int i = 0; i < mConfigurationRootNode->getChildCount(); i++) {
+      DOMNodeWrapper *mNode = mConfigurationRootNode->getChild(i);
+      std::string mValue = mNode->getNodeName();
+      if (mValue == "IsoRealmsSettings") {
+        parseSettings(mNode);
+      }
+    }
+  } catch (ParseException &e) {
+    throw InitException("Parsing exception occurred during initalization\n" + e.getMessage());
+  }
+}
+
+void Configuration::createSettings() {
+  DOMNodeWriter* mRootNode = new DOMNodeWriter("IsoRealmsSettings");
+  DOMNodeWriter* mScreenNode = mRootNode->addBranch("Screen");
+  DOMNodeWriter* mFullscreenNode = mScreenNode->addBranch("Fullscreen");
+  mFullscreenNode->addText("false");
+  DOMNodeWriter* mScreenSizeNode = mScreenNode->addBranch("Size");
+  DOMNodeWriter* mScreenWidthNode = mScreenSizeNode->addBranch("Width");
+  mScreenWidthNode->addText("1024");
+  DOMNodeWriter* mScreenHeightNode = mScreenSizeNode->addBranch("Height");
+  mScreenHeightNode->addText("768");
+  DOMNodeWriter* mScreenDepthNode = mScreenNode->addBranch("Depth");
+  mScreenDepthNode->addText("24");
+  mRootNode->save(cSettingsFile);
+}
+
 ScreenConfiguration* Configuration::getScreenConfiguration() {
   if (cScreenConfiguration == NULL) {
     System::checkUserDataDirectory();
-    if (System::configurationFileExists()) {
-      try {
-        DOMNodeWrapper* mConfigurationRootNode = new DOMNodeWrapper(cSettingsFile);
-        for (int i = 0; i < mConfigurationRootNode->getChildCount(); i++) {
-          DOMNodeWrapper *mNode = mConfigurationRootNode->getChild(i);
-          std::string mValue = mNode->getNodeName();
-          if (mValue == "IsoRealmsSettings") {
-            parseSettings(mNode);
-          }
-        }
-      } catch (ParseException &e) {
-        throw InitException("Parsing exception occurred during initalization\n" + e.getMessage());
-      }
-    } else {
-      DOMNodeWriter* mRootNode = new DOMNodeWriter("IsoRealmsConfiguration");
-      DOMNodeWriter* mScreenNode = mRootNode->addBranch("Screen");
-      DOMNodeWriter* mFullscreenNode = mScreenNode->addBranch("Fullscreen");
-      mFullscreenNode->addText("true");
-      DOMNodeWriter* mScreenSizeNode = mScreenNode->addBranch("Size");
-      DOMNodeWriter* mScreenWidthNode = mScreenSizeNode->addBranch("Width");
-      mScreenWidthNode->addText("1024");
-      DOMNodeWriter* mScreenHeightNode = mScreenSizeNode->addBranch("Height");
-      mScreenHeightNode->addText("768");
-      DOMNodeWriter* mScreenDepthNode = mScreenNode->addBranch("Depth");
-      mScreenDepthNode->addText("24");
-      mRootNode->save(cSettingsFile);
+    if (!System::configurationFileExists("settings.xml")) {
+      createSettings();
     }
+    parseSettings();
+  }
+  
+  if (cScreenConfiguration == NULL) {
+    std::cout << "Screen not initialised!" << std::endl;
+    exit(1);
   }
   return cScreenConfiguration;
 }

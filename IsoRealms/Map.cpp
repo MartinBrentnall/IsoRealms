@@ -35,6 +35,9 @@ Map::Map(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, 
   }
   BlockLocation mStartLocation(0, 0, 0);
 
+  std::size_t mExtensionPosition = projectName.find_last_of('.');
+  std::string mProjectName = projectName.substr(0, mExtensionPosition);
+  
   /*
    * First pass only loads plugin instances; we need to make sure all plugins
    * are available before we start connecting them together
@@ -72,6 +75,7 @@ Map::Map(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, 
     if (mValueAsString == "Elements") {
       cElements = cElementSetRegistry.loadElements(mNode, &mStartLocation, this);
       cDirtyElements = cElements;
+      std::cout << "Loaded map elements..." << std::endl;
     } else if (mValueAsString == "ElementSet") {
       cElementSetRegistry.loadConfiguration(mNode);
     } else if (mValueAsString == "Plugin") {
@@ -83,18 +87,19 @@ Map::Map(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, 
       if (!editing) {
         cZoneRenderers.push_back(mZoneRenderer);
       }
+      std::cout << "Loaded zone renderer..." << std::endl;
     } else if (mValueAsString == "Zone") {
       Zone* mZone = new Zone(mNode, cElementSetRegistry, cPluginRegistry, this);
       addZone(mZone);
+      std::cout << "Loaded zone..." << std::endl;
     } else if (mValueAsString == "InputConfiguration") {
-      std::string mProjectConfigurationFile = System::getProjectResource(projectName, "controls.config");
-      std::string mGlobalConfigurationFile = System::getResource("controls.config");
-      std::vector<DOMNodeWrapper*> mConfigNodes;
-      DOMNodeWrapper* mProjectConfigurationRoot = new DOMNodeWrapper(mProjectConfigurationFile);
-      DOMNodeWrapper* mGlobalConfigurationRoot = new DOMNodeWrapper(mGlobalConfigurationFile);
-      mConfigNodes.push_back(getConfigurationNode(mProjectConfigurationRoot));
-      mConfigNodes.push_back(getConfigurationNode(mGlobalConfigurationRoot));
-      cInputCommands.loadConfiguration(mNode, mConfigNodes, &cCommandRegistry);
+      std::string mProjectConfigurationFile = System::getUserResource("Projects/" + mProjectName + "/controls.config");
+      std::string mGlobalConfigurationFile = System::getUserResource("controls.config");
+      std::vector<std::string> mConfigFiles;
+      mConfigFiles.push_back(mProjectConfigurationFile);
+      mConfigFiles.push_back(mGlobalConfigurationFile);
+      cInputCommands.loadConfiguration(mNode, mConfigFiles, &cCommandRegistry);
+      std::cout << "Loaded input configuration..." << std::endl;
     } else {
       // TODO: Throw something
     }

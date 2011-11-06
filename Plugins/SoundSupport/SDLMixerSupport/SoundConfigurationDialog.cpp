@@ -25,8 +25,8 @@ SoundConfigurationDialog::SoundConfigurationDialog(IComponentContainer* componen
   cRemoveSoundCommand = new RemoveSoundCommand(this);
 
   cSoundRegistry = soundRegistry;
-  std::string mSoundsDirectory = System::getResource("Sounds/");
-  std::vector<std::string>* mAvailableSounds = System::getFileList(mSoundsDirectory, "*.ogg");
+  std::string mSoundsDirectory = System::getProgramResource("Sounds/");
+  std::vector<std::string>* mAvailableSounds = System::getFileList(mSoundsDirectory);
   std::vector<ISound*> mSounds = cSoundRegistry->getSounds();
   for (unsigned int i = 0; i < mAvailableSounds->size(); i++) {
     bool mUsed = false;

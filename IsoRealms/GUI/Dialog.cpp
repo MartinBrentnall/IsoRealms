@@ -29,7 +29,7 @@ Dialog::Dialog(IComponentContainer* componentContainer, const std::string& dialo
   cDragging = false;
   cFocusedComponent = NULL;
 
-  std::string mFullPath = System::getResource(dialogDescriptionFile) + ".dialog";
+  std::string mFullPath = System::getProgramResource(dialogDescriptionFile) + ".dialog";
   DOMNodeWrapper* mFileNode = new DOMNodeWrapper(mFullPath);
   for (int i = 0; i < mFileNode->getChildCount(); i++) {
     DOMNodeWrapper *mNode = mFileNode->getChild(i);

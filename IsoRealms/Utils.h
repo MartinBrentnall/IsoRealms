@@ -36,7 +36,7 @@ class Utils {
    */
   static std::string toString(float);
   
-  static std::vector<std::string> splitWords(const std::string&);
+  static std::vector<std::string> splitWords(const std::string&, char = ' ');
 };
 
 #endif

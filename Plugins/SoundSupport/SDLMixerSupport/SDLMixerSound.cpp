@@ -20,7 +20,7 @@
 
 SDLMixerSound::SDLMixerSound(const std::string& filename) {
   cName = filename;
-  std::string mResource = System::getResource("Sounds/" + cName);
+  std::string mResource = System::getProgramResource("Data/Sounds/" + cName);
   cSoundData = Mix_LoadWAV(mResource.c_str());
   if (cSoundData == NULL) {
     std::cout << "WARNING: Unable to load file: " << Mix_GetError() << std::endl;

@@ -21,10 +21,28 @@ void FrontEndMenuItem::render(int i, float fade, IFont* font, bool selected) {
   font->print(0.0f, -0.10f * i, 0.05f, 1, cMenuText.c_str());
 }
 
-void FrontEndMenuItem::execute() {
-  if (cCommand != NULL) {
-    cCommand->execute();
-  } else {
-    std::cout << "Warning: No command set for menu item " << cMenuText << std::endl;
+FocusAction FrontEndMenuItem::keyDown(SDLKey& key) {
+  switch (key) {
+    case SDLK_UP: {
+      return PREVIOUS;
+    }
+
+    case SDLK_DOWN: {
+      return NEXT;
+    }
+
+    case SDLK_RETURN: {
+      if (cCommand != NULL) {
+        cCommand->execute();
+      } else {
+        std::cout << "Warning: No command set for menu item " << cMenuText << std::endl;
+      }
+      break;
+    }
+
+    default: {
+      // Nothing to do.
+    }
   }
+  return NOTHING;
 }

@@ -27,6 +27,7 @@
 #include "DigitalInput.h"
 #include "IInteractiveElement.h"
 #include "IComponentContainer.h"
+#include "System.h"
 
 class InputCommands {
   private:
@@ -36,10 +37,14 @@ class InputCommands {
   DOMNodeWrapper* findConfiguration(std::vector<DOMNodeWrapper*>, const std::string&);
 
   public:
-  void loadConfiguration(DOMNodeWrapper*, std::vector<DOMNodeWrapper*>, CommandDirectory*);
+  InputCommands();
+  InputCommands(const std::string&);
+  void loadConfiguration(DOMNodeWrapper*, std::vector<std::string>, CommandDirectory*);
   void save(DOMNodeWriter*);
   bool* registerDigitalInput(const std::string&);
   bool input(SDL_Event&);
+  std::vector<std::string> getInputNames();
+  DigitalInput* findDigitalInput(const std::string&);
 };
 
 #endif

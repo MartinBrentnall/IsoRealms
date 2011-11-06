@@ -19,7 +19,7 @@
 
 #include "AttractControlLoop.h" 
 
-AttractControlLoop::AttractControlLoop(DOMNodeWrapper* node) {
+AttractControlLoop::AttractControlLoop(DOMNodeWrapper* node, IEngineArguments* engineArguments) {
   cFrontEndActive = false;
   int mCurrentLayer = 0;
   assignDummyPlugin(&cFont, "Font");
@@ -62,7 +62,7 @@ AttractControlLoop::AttractControlLoop(DOMNodeWrapper* node) {
       if (mDlsymError) {
         throw InitException("Cannot load symbol: " + std::string(mDlsymError));
       }
-      cFrontEnd = createFrontEndFunction(mNode, cFont);
+      cFrontEnd = createFrontEndFunction(mNode, cFont, engineArguments);
     } else if (mValueAsString == "AttractScene") {
       // TODO: Use relative path
       try {
@@ -185,8 +185,8 @@ void AttractControlLoop::execute(int milliseconds) {
   }
 }
 
-extern "C" IControlLoop* create(DOMNodeWrapper* node) {
-  return new AttractControlLoop(node);
+extern "C" IControlLoop* create(DOMNodeWrapper* node, IEngineArguments* engineArguments) {
+  return new AttractControlLoop(node, engineArguments);
 }
 
 extern "C" void destroy(IControlLoop* controlLoop) {

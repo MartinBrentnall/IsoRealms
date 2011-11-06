@@ -28,21 +28,12 @@
 #include <sys/types.h>
 #include <vector>
 
+#include "Utils.h"
+
 /**
  * This class defines Operating System dependent functionality.
  */
 class System {
-  private:
-
-  /**
-   * Test the specified string against the filter string.
-   *
-   * @param string  The string to test.
-   * @param string  The filter string.
-   * @returns       true if the test passes, otherwise false.
-   */
-  static bool passesFilter(std::string, std::string);
-
   public:
 
   /**
@@ -66,13 +57,17 @@ class System {
    */
   static std::string getUserDataDirectory();
 
+  static std::string getProgramDataDirectory();
+  
   /**
    * Convert the specified string to the format of the OS.
    *
    * @return  The string formatted for the OS.
    */
-  static std::string convertToSystemFormat(std::string);
+  static std::string convertToSystemFormat(const std::string&);
 
+  static void makeUserDataDirectory(const std::string&);
+  
   /**
    * Ensure that the user data directory exists.  If it doesn't exist, this
    * function will attempt to create it.
@@ -80,20 +75,15 @@ class System {
   static void checkUserDataDirectory();
 
   /**
-   * Check whether the configuration file exists.
-   *
-   * @returns  true if the configuration file exists, otherwise false.
-   */
-  static bool configurationFileExists();
-
-  /**
    * Check whether the data file exists at the specified location.
    *
    * @param string  Location to check for the a file.
    * @returns  true if the configuration file exists, otherwise false.
    */
-  static bool configurationFileExists(std::string);
+  static bool configurationFileExists(const std::string&);
 
+  static bool fileExists(const std::string&);
+  
   /**
    * Return the directory separator used on the current OS.
    *
@@ -127,21 +117,23 @@ class System {
    *
    * @return  The file name for the specified resource.
    */
-  static std::string getResource(std::string);
+  static std::string getProgramResource(const std::string&);
 
   /**
    * Return the project-specific file name for the specified resource.
    * 
    * @return  The project-specific file name for the specified resource.
    */
-  static std::string getProjectResource(const std::string&, const std::string&);
+  static std::string getUserProjectResource(const std::string&, const std::string&);
+  
+  static std::string getUserResource(const std::string&);
   
   /**
    * Return the file name for the specified resource.
    *
    * @return  The file name for the specified resource.
    */
-  static std::string getConfigurationResource(std::string);
+  static std::string getConfigurationResource(const std::string&);
 
   /**
    * Return a list of filenames from the specified resource.
@@ -149,16 +141,7 @@ class System {
    * @param string  The resource to list files for.
    * @return        The list of filenames.
    */
-  static std::vector<std::string>* getFileList(std::string);
-
-  /**
-   * Return a list of filenames from the specified resource.
-   *
-   * @param string  The resource to list files for.
-   * @param string  Filter on filename.
-   * @return        The list of filenames.
-   */
-  static std::vector<std::string>* getFileList(const std::string&, const std::string&);
+  static std::vector<std::string>* getFileList(const std::string&);
 };
 
 #endif

@@ -20,10 +20,14 @@
 
 int FrontEnd::MAX_IDLE_TIME = 60000;
 
-FrontEnd::FrontEnd(DOMNodeWrapper* node, IFont* font) {
+FrontEnd::FrontEnd(DOMNodeWrapper* node, IFont* font, IEngineArguments* engineArguments) {
+  cEngineArguments = engineArguments;
   cExitCommand = CommandManager::getCommand("Pop");
+  std::string mMenuName = node->getAttribute("name");
+  std::vector<std::string> mTree;
+  mTree.push_back(mMenuName);
   cFont = font;
-  FrontEndMenu* mMainMenu = new FrontEndMenu(this, this, node);
+  FrontEndMenu* mMainMenu = new FrontEndMenu(this, this, node, mMenuName, mTree);
   cActiveMenu.push_back(mMainMenu);
 }
 
@@ -43,8 +47,10 @@ ICommand* FrontEnd::parseArgumentCommand(DOMNodeWrapper* node, const std::string
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "LoadMapForEditing") {
-      return new EditMapCommand(argument);
+    if (mValueAsString == "ExecuteCommand") {
+      std::string mCommandType = mNode->getAttribute("type");
+      ICommand* mCommand = CommandManager::getCommand(mCommandType);
+      return new ArgumentedCommand(mCommand, argument, cEngineArguments);
     }
   }
   return NULL;
@@ -146,8 +152,8 @@ void FrontEnd::push(FrontEndMenu* menu) {
   cActiveMenu.push_back(menu);
 }
 
-extern "C" IFrontEnd* create(DOMNodeWrapper* node, IFont* font) {
-  return new FrontEnd(node, font);
+extern "C" IFrontEnd* create(DOMNodeWrapper* node, IFont* font, IEngineArguments* engineArguments) {
+  return new FrontEnd(node, font, engineArguments);
 }
 
 extern "C" void destroy(IFrontEnd* frontEnd) {

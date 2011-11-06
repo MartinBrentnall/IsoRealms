@@ -25,7 +25,7 @@ const std::string SimpleEditor::COMMAND_OPEN           = "Open";
 const std::string SimpleEditor::COMMAND_ELEMENT_SETS   = "ElementSets";
 const std::string SimpleEditor::COMMAND_ELEMENTS       = "Elements";
 
-SimpleEditor::SimpleEditor(DOMNodeWrapper* node) {
+SimpleEditor::SimpleEditor(DOMNodeWrapper* node, IEngineArguments* engineArguments) {
   ICommand* mCommand = CommandManager::getCommand("Pop");
   cExitCommands.push_back(mCommand);
   
@@ -36,21 +36,11 @@ SimpleEditor::SimpleEditor(DOMNodeWrapper* node) {
   BlockLocation mLocation(-7, 0, 0);
   BlockLocation mSize(0, 7, 7);
   Zone* mInitZone = new Zone(mLocation, mSize);
-  Map* mMap = new Map();
-  mMap->addZone(mInitZone);
+  std::string mMapName = engineArguments->get();
 
   // Create dialog factories
   IComponentFactory* mElementPaletteDialogFactory = new ElementsPaletteComponentFactory(this);
   cElementSetsFactory                             = new EntityClassDialogFactory(this, cElementSetEntityClass);
-  
-  // Setup map for editing
-  setMap(mMap);
-  cCursor = new EditorCursor(cMap);
-  Vertex mNormalDistance(0.0f, 0.0f, -20.0f);
-  cViewPoint.addViewPoint(0, mNormalDistance, 315.0f, -50.0f, 0.0f);
-  cViewPoint.setViewPoint(0);
-  PluginRegistry* mPluginRegistry = cMap->getPluginRegistry();
-  mPluginRegistry->addListener(this);
   
   // Register commands
   EditorCommandManager::registerCommand(COMMAND_EXIT,           new TerminateEditorCommand(cConfirmExitCommands));
@@ -94,6 +84,31 @@ SimpleEditor::SimpleEditor(DOMNodeWrapper* node) {
       addComponent(cMenuBar);
     }
   }
+
+  Map* mMap;
+  if (mMapName == "") {
+    mMap = new Map();
+    mMap->addZone(mInitZone);
+  } else {
+    std::string mProjectFile = System::getProgramResource("Data/Projects/" + mMapName); // TODO: Should we hard code Data/Projects/ here?
+    DOMNodeWrapper* mConfigurationRootNode = new DOMNodeWrapper(mProjectFile);
+    for (int i = 0; i < mConfigurationRootNode->getChildCount(); i++) {
+      DOMNodeWrapper *mNode = mConfigurationRootNode->getChild(i);
+      std::string mValue = mNode->getNodeName();
+      if (mValue == "Map") {
+        mMap = new Map(mNode, this, this, mMapName, true);
+      }
+    }
+  }  
+  setMap(mMap);
+
+  // Setup map for editing
+  cCursor = new EditorCursor(cMap);
+  Vertex mNormalDistance(0.0f, 0.0f, -20.0f);
+  cViewPoint.addViewPoint(0, mNormalDistance, 315.0f, -50.0f, 0.0f);
+  cViewPoint.setViewPoint(0);
+  PluginRegistry* mPluginRegistry = cMap->getPluginRegistry();
+  mPluginRegistry->addListener(this);  
 }
 
 std::vector<PlugSocket*> SimpleEditor::getPlugSockets() {
@@ -420,8 +435,8 @@ IHUDComponent* SimpleEditor::ElementsPaletteComponentFactory::createComponent() 
   return mComponent;
 }
 
-extern "C" IControlLoop* create(DOMNodeWrapper* node) {
-  return new SimpleEditor(node);
+extern "C" IControlLoop* create(DOMNodeWrapper* node, IEngineArguments* engineArguments) {
+  return new SimpleEditor(node, engineArguments);
 }
 
 extern "C" void destroy(IControlLoop* controlLoop) {

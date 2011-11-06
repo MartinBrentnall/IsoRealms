@@ -36,6 +36,7 @@
 #include <IsoRealms/KeyStates.h>
 #include <IsoRealms/System.h>
 
+#include "EngineArguments.h"
 #include "GenerateEngineCommand.h"
 #include "IControlLoop.h"
 #include "IControlLoopStack.h"
@@ -72,6 +73,7 @@ class Engine:public IEngine,
   std::map<std::string, IControlLoop*> cControlLoops;
   std::queue<ICommand*> cPendingCommands;  
 
+  EngineArguments cEngineArguments;
   SDL_Event cEvent;
   bool cTerminate;
   

@@ -18,6 +18,13 @@
  */
 #include "ScreenConfiguration.h"
 
+ScreenConfiguration::ScreenConfiguration() {
+  cFullScreen = false;
+  cScreenWidth = 640;
+  cScreenHeight = 480;
+  cScreenDepth = 24;
+}
+
 ScreenConfiguration::ScreenConfiguration(DOMNodeWrapper *node) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);

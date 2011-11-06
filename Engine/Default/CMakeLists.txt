@@ -20,6 +20,7 @@ include_directories(${PROJECT_SOURCE_DIR})
 
 add_library(Engine MODULE 
   Engine.cpp
+  EngineArguments.cpp
   GenerateEngineCommand.cpp
   PopControlLoopCommand.cpp
   PushControlLoopCommand.cpp

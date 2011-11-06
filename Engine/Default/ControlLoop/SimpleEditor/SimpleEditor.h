@@ -158,7 +158,7 @@ class SimpleEditor:public IControlLoop,
   };
 
   public:
-  SimpleEditor(DOMNodeWrapper*);
+  SimpleEditor(DOMNodeWrapper*, IEngineArguments*);
 
   /*****************************\
    * Implements IPluginSupport *

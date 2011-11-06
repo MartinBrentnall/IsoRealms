@@ -38,7 +38,7 @@ class Runtime:public IControlLoop {
   void keyDown(SDLKey&);
 
   public:
-  Runtime(DOMNodeWrapper*);
+  Runtime(DOMNodeWrapper*, IEngineArguments*);
 
   /***************************\
    * Implements IControlLoop *

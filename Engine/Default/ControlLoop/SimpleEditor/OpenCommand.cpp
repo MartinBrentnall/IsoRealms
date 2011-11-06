@@ -23,12 +23,14 @@ OpenCommand::OpenCommand(SimpleEditor* editor) {
 }
 
 void OpenCommand::execute() {
-  DOMNodeWrapper* mConfigurationRootNode = new DOMNodeWrapper("Test.isorealms");
+  std::string mMapName = "Spindizzy Hangworld.isorealms";
+  std::string mMapPath = System::getProgramResource("Data/Projects/" + mMapName); // TODO: Should we hard code Data/Projects/ here?
+  DOMNodeWrapper* mConfigurationRootNode = new DOMNodeWrapper(mMapPath);
   for (int i = 0; i < mConfigurationRootNode->getChildCount(); i++) {
     DOMNodeWrapper *mNode = mConfigurationRootNode->getChild(i);
     std::string mValue = mNode->getNodeName();
     if (mValue == "Map") {
-      Map* mMap = new Map(mNode, cEditor, cEditor, "Test.isorealms", true);
+      Map* mMap = new Map(mNode, cEditor, cEditor, "Spindizzy Hangworld.isorealms", true);
       cEditor->setMap(mMap);
       return;
     }

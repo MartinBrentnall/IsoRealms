@@ -71,6 +71,10 @@ class Configuration {
    */
   void parseSettings(DOMNodeWrapper*);
 
+  void parseSettings();
+  
+  void createSettings();
+  
   /**
    * Parse the engine configuration from the specified node.
    *

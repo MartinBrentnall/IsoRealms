@@ -62,7 +62,7 @@ std::vector<std::string*> PluginEntityClass::getInstances() {
 std::vector<std::string*> PluginEntityClass::getImplementations() {
   // TODO: Need to filter non directories.
   // TODO: Need to make path non-platform specific.
-  std::vector<std::string>* mImplementationsList = System::getFileList("/usr/share/IsoRealms/Plugins/" + cPluginType + "/", "*");
+  std::vector<std::string>* mImplementationsList = System::getFileList("/usr/share/IsoRealms/Plugins/" + cPluginType + "/");
   std::vector<std::string*> mReturnList;
   for (unsigned int i = 0; i < mImplementationsList->size(); i++) {
     // TODO: This is BAD.  Memory leak here!
