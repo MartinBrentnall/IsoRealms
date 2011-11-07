@@ -80,9 +80,9 @@ class Image {
    * 
    * @return The OpenGL texture ID.
    */
-  GLuint generateTexture();
+  GLuint generateTexture(bool = false, bool = false);
   
-  void generateTexture(GLuint);
+  void generateTexture(GLuint, bool = false, bool = false);
 
   // TODO: These are general drawing methods.  It might be nice to move them somewhere else.
   // TODO: It also might be nice to use "Render-To-Texture", once I learn how to do that.

@@ -28,6 +28,7 @@ class TestScreen:public IFrontEndMenu {
   bool input(SDL_Event&);
   void render(float, IFont*);
   void update(unsigned int);
+  void cancelled();
 };
 
 #endif

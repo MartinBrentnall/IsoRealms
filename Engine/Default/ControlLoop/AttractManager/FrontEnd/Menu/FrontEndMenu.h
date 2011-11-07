@@ -58,14 +58,16 @@ class FrontEndMenu:public IFrontEndMenu {
   public:
   FrontEndMenu(IFrontEndCommands*, IMenuStack*, DOMNodeWrapper*, const std::string&, std::vector<std::string>);
   FrontEndMenu(IFrontEndCommands*, DOMNodeWrapper*);
-  
+
+  void applyAll();
+
   /****************************\
    * Implements IFrontEndMenu *
   \****************************/
   bool input(SDL_Event&);
   void render(float, IFont*);
   void update(unsigned int);
-  void applyAll();
+  void cancelled();
 };
 
 #endif

@@ -186,6 +186,10 @@ void FrontEndMenu::update(unsigned int ticks) {
   // Nothing to do
 }
 
+void FrontEndMenu::cancelled() {
+  // Nothing to do
+}
+
 void FrontEndMenu::applyAll() {
   for (unsigned int i = 0; i < cApplicableItems.size(); i++) {
     cApplicableItems[i]->apply();

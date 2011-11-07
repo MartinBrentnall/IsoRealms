@@ -112,6 +112,7 @@ bool FrontEnd::keyDown(SDLKey& key) {
         } 
       } else {
         std::map<IFrontEndMenu*, std::vector<IApplicableItem*>*>::iterator i = cItemsToTest.find(cActiveMenu[cActiveMenu.size() - 1]);
+        cActiveMenu[cActiveMenu.size() - 1]->cancelled();
         bool mApplyItems = i != cItemsToTest.end();
         pop();
         if (mApplyItems) {

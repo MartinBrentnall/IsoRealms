@@ -109,7 +109,7 @@ class C64SpindizzyTextureSet:public ITextureSet,
   GLuint generateWallMixedMiddle();
   GLuint generateIceWall();
 
-  GLuint convertToTexture(Image*, const std::string&);
+  GLuint convertToTexture(Image*, const std::string&, bool = false);
 
   void generateTextures();
   void destroyTextures();

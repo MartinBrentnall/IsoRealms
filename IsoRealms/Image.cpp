@@ -53,22 +53,36 @@ void Image::setPixel(unsigned int x, unsigned int y, Colour colour) {
   }
 }
 
-GLuint Image::generateTexture() {
+GLuint Image::generateTexture(bool horizontalCap, bool verticalCap) {
   GLuint mTextureID;
   int mDepth = getDepth();
   glGenTextures(1, &mTextureID);
   glBindTexture(GL_TEXTURE_2D, mTextureID);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  if (horizontalCap) {
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  }
+  if (verticalCap) {
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+  }
+//  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
   glTexImage2D(GL_TEXTURE_2D, 0, mDepth, getWidth(), getHeight(), 0, mDepth, GL_UNSIGNED_BYTE, getData());
   return mTextureID;
 }
 
-void Image::generateTexture(GLuint textureID) {
+void Image::generateTexture(GLuint textureID, bool horizontalCap, bool verticalCap) {
   int mDepth = getDepth();
   glBindTexture(GL_TEXTURE_2D, textureID);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  if (horizontalCap) {
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  }
+  if (verticalCap) {
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+  }
+//  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
   glTexImage2D(GL_TEXTURE_2D, 0, mDepth, getWidth(), getHeight(), 0, mDepth, GL_UNSIGNED_BYTE, getData());
 }
 

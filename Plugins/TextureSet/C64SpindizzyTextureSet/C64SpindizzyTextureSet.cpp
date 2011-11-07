@@ -212,7 +212,7 @@ GLuint C64SpindizzyTextureSet::generateWallPlainCap() {
   Image* mImage = new Image(RESOLUTION, mHeight, false);
   mImage->drawSquare(&mGridColour, 0, RESOLUTION, 0, mHeight);
   mImage->drawSquare(cWallColour, GRID_WIDTH, RESOLUTION - GRID_WIDTH, GRID_WIDTH, mHeight);
-  return convertToTexture(mImage, WALL_PLAIN_CAP);
+  return convertToTexture(mImage, WALL_PLAIN_CAP, true);
 }
 
 GLuint C64SpindizzyTextureSet::generateWallMixedCap() {
@@ -222,7 +222,7 @@ GLuint C64SpindizzyTextureSet::generateWallMixedCap() {
   Image* mImage = new Image(RESOLUTION, mHeight, false);
   mImage->drawSquare(&mGridColour, 0, RESOLUTION, 0, mHeight);
   mImage->drawSquare(&mWallFloorMix, GRID_WIDTH, RESOLUTION - GRID_WIDTH, GRID_WIDTH, mHeight);
-  return convertToTexture(mImage, WALL_MIXED_CAP);
+  return convertToTexture(mImage, WALL_MIXED_CAP, true);
 }
 
 GLuint C64SpindizzyTextureSet::generateIceWall() {
@@ -233,15 +233,15 @@ GLuint C64SpindizzyTextureSet::generateIceWall() {
   return convertToTexture(mImage, WALL_ICE);
 }
 
-GLuint C64SpindizzyTextureSet::convertToTexture(Image* image, const std::string& type) {
+GLuint C64SpindizzyTextureSet::convertToTexture(Image* image, const std::string& type, bool cap) {
   std::map<std::string, GLuint>::iterator i = cTextureIDs.find(type);
   GLuint mTextureID;
   if (i == cTextureIDs.end()) {
-    mTextureID = image->generateTexture();
+    mTextureID = image->generateTexture(false, cap);
     cTextureIDs[type] = mTextureID;
   } else {
     mTextureID = i->second;
-    image->generateTexture(mTextureID);
+    image->generateTexture(mTextureID, false, cap);
   }
   delete image;
   return mTextureID;

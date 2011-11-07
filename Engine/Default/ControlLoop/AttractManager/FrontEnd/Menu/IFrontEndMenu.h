@@ -6,6 +6,7 @@ class IFrontEndMenu {
   virtual bool input(SDL_Event&) = 0;
   virtual void render(float, IFont*) = 0;
   virtual void update(unsigned int) = 0;
+  virtual void cancelled() = 0;
 };
 
 #endif

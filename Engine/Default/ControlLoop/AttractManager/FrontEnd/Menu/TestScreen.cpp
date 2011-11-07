@@ -4,7 +4,7 @@ TestScreen::TestScreen(std::vector<IApplicableItem*> applicableItems, IMenuStack
   cApplicableItems = applicableItems;
   cConfirmed = false;
   cMenuStack = menuStack;
-  cTimeOut = 10000;
+  cTimeOut = 15000;
 }
 
 bool TestScreen::keyDown(SDLKey& key) {
@@ -78,11 +78,14 @@ void TestScreen::update(unsigned int ticks) {
   cTimeOut -= ticks;
   if (cTimeOut <= 0) {
     cTimeOut = 0;
-    for (unsigned int i = 0; i < cApplicableItems.size(); i++) {
-      cApplicableItems[i]->reset();
-    }    
+    cancelled();
     cMenuStack->pop();
   }
 }
 
+void TestScreen::cancelled() {
+  for (unsigned int i = 0; i < cApplicableItems.size(); i++) {
+    cApplicableItems[i]->reset();
+  }    
+}
 
