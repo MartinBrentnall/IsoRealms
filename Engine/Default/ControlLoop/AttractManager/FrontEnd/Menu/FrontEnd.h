@@ -35,7 +35,9 @@
 #include "ArgumentedCommand.h"
 #include "EditMapCommand.h"
 #include "FrontEndMenu.h"
+#include "IFrontEndMenu.h"
 #include "IMenuStack.h"
+#include "TestScreen.h"
 
 /**
  * This attract scene displays the title logo for a limited time.
@@ -44,7 +46,7 @@ class FrontEnd:public IFrontEnd,
                public IMenuStack,
                public IFrontEndCommands {
   private:
-
+   
   // The following variables control idle timeout
   /**
    * Maximum idle time to elapse before the front-end automatically terminates.
@@ -78,7 +80,8 @@ class FrontEnd:public IFrontEnd,
   /**
    * Index of the currently selected menu item.
    */
-  std::vector<FrontEndMenu*> cActiveMenu;
+  std::vector<IFrontEndMenu*> cActiveMenu;
+  std::map<IFrontEndMenu*, std::vector<IApplicableItem*>*> cItemsToTest;
   ICommand* cExitCommand;
   bool cHasExited;
 
@@ -112,6 +115,8 @@ class FrontEnd:public IFrontEnd,
    * Implements IMenuStack *
   \*************************/
   void push(FrontEndMenu*);
+  void pop();
+  void testOnExit(FrontEndMenu*, IApplicableItem*);
 };
 
 #endif

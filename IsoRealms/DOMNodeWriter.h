@@ -21,6 +21,7 @@
 
 #include <cstdio>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <xercesc/dom/DOM.hpp>
 #include <xercesc/framework/LocalFileFormatTarget.hpp>
@@ -81,6 +82,8 @@ class DOMNodeWriter {
    */
   void addText(std::string);
 
+  void addText(int);
+  
   /**
    * Add the specified attribute of the specified name.
    * 

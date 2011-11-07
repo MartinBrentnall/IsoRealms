@@ -85,6 +85,7 @@ void FrontEnd::update(int ticks) {
       break;
     }
   }
+  cActiveMenu[cActiveMenu.size() - 1]->update(ticks);
 }
 
 void FrontEnd::render() {
@@ -110,8 +111,17 @@ bool FrontEnd::keyDown(SDLKey& key) {
           std::cout << "Warning: No exit command has been defined!" << std::endl;
         } 
       } else {
-        cActiveMenu[cActiveMenu.size() - 1]->applyAll();
-        cActiveMenu.pop_back();
+        std::map<IFrontEndMenu*, std::vector<IApplicableItem*>*>::iterator i = cItemsToTest.find(cActiveMenu[cActiveMenu.size() - 1]);
+        bool mApplyItems = i != cItemsToTest.end();
+        pop();
+        if (mApplyItems) {
+          std::vector<IApplicableItem*>* mItemsToTest = i->second;
+          for (unsigned int j = 0; j < mItemsToTest->size(); j++) {
+            (*mItemsToTest)[j]->apply();
+          }
+          TestScreen* mTestScreen = new TestScreen(*mItemsToTest, this);
+          cActiveMenu.push_back(mTestScreen);
+        }        
       }
       return true;
     }
@@ -151,6 +161,19 @@ bool FrontEnd::hasExited() {
 
 void FrontEnd::push(FrontEndMenu* menu) {
   cActiveMenu.push_back(menu);
+}
+
+void FrontEnd::pop() {
+  cActiveMenu.pop_back();  
+}
+
+void FrontEnd::testOnExit(FrontEndMenu* menu, IApplicableItem* testItem) {
+  std::vector<IApplicableItem*>* mItemsToTest = cItemsToTest[menu];
+  if (mItemsToTest == NULL) {
+    mItemsToTest = new std::vector<IApplicableItem*>();
+    cItemsToTest[menu] = mItemsToTest;
+  }
+  mItemsToTest->push_back(testItem);
 }
 
 extern "C" IFrontEnd* create(DOMNodeWrapper* node, IFont* font, IEngineArguments* engineArguments) {

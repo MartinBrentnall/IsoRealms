@@ -27,6 +27,7 @@ add_library(FrontEnd_Menu MODULE
   FrontEndMenuItem.cpp
   OptionMenuItem.cpp
   ResolutionOption.cpp
+  TestScreen.cpp
 )
 set_target_properties(FrontEnd_Menu PROPERTIES OUTPUT_NAME "FrontEnd")
 set_target_properties(FrontEnd_Menu PROPERTIES PREFIX "lib")

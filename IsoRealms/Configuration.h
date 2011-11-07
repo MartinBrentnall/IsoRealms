@@ -105,6 +105,8 @@ class Configuration {
    * @return  The game engine.
    */
   IEngine* getEngine();
+  
+  void save();
 };
 
 #endif

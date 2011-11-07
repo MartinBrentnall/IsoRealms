@@ -31,14 +31,17 @@ class OptionMenuItem:public IFrontEndMenuItem,
   std::string cName;
   std::vector<IOption*> cOptions;
   unsigned int cSelectedOption;
+  unsigned int cPreviousOption;
 
   public:
-  OptionMenuItem(const std::string&, std::vector<IOption*>);
+  OptionMenuItem(const std::string&, std::vector<IOption*>, unsigned int);
   
   /******************************\
    * Implements IApplicableItem *
   \******************************/
   void apply();
+  void reset();
+  void save();
     
   /********************************\
    * Implements IFrontEndMenuItem *

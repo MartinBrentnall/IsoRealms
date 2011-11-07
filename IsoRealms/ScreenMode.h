@@ -31,6 +31,8 @@ class ScreenMode {
 
   unsigned int getWidth();
   unsigned int getHeight();
+  
+  bool operator==(const ScreenMode&);
 };
 
 #endif

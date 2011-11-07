@@ -83,7 +83,7 @@
         </Menu>
         <Menu name="Settings">
           <Menu name="Visual">
-            <Boolean name="Mode" trueValue="Full Screen" falseValue="Windowed"/>
+            <FullScreen name="Mode" trueValue="Full Screen" falseValue="Windowed"/>
             <Resolution name="Resolution"/>
           </Menu>
           <Menu name="Aural">

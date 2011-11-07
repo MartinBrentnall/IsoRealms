@@ -22,6 +22,8 @@
 class IApplicableItem {
   public:
   virtual void apply() = 0;
+  virtual void reset() = 0;
+  virtual void save() = 0;
 };
 
 #endif

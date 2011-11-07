@@ -19,7 +19,7 @@
 #include "ScreenConfiguration.h"
 
 ScreenConfiguration::ScreenConfiguration() {
-  cFullScreen = false;
+  cFullScreen = true;
   cScreenWidth = 640;
   cScreenHeight = 480;
   cScreenDepth = 24;
@@ -159,6 +159,10 @@ std::vector<ScreenMode*> ScreenConfiguration::getAvailableModes() {
   return mScreenModes;
 }
 
+ScreenMode* ScreenConfiguration::getScreenMode() {
+  return new ScreenMode(cScreenWidth, cScreenHeight);
+}
+
 void ScreenConfiguration::setMode(ScreenMode* screenMode) {
   int mScreenWidth = screenMode->getWidth();
   int mScreenHeight = screenMode->getHeight();
@@ -167,4 +171,17 @@ void ScreenConfiguration::setMode(ScreenMode* screenMode) {
     cScreenHeight = mScreenHeight;
     resizeScreen();
   }
+}
+
+void ScreenConfiguration::save(DOMNodeWriter* node) {
+  DOMNodeWriter* mScreenNode = node->addBranch("Screen");
+  DOMNodeWriter* mFullScreenNode = mScreenNode->addBranch("Fullscreen");
+  mFullScreenNode->addText(cFullScreen ? "true" : "false");
+  DOMNodeWriter* mSizeNode = mScreenNode->addBranch("Size");
+  DOMNodeWriter* mWidthNode = mSizeNode->addBranch("Width");
+  mWidthNode->addText(cScreenWidth);
+  DOMNodeWriter* mHeightNode = mSizeNode->addBranch("Height");
+  mHeightNode->addText(cScreenHeight);
+  DOMNodeWriter* mScreenDepth = mScreenNode->addBranch("Depth");
+  mScreenDepth->addText(cScreenDepth);
 }

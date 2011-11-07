@@ -57,6 +57,8 @@ int main(int argc, char **argv) {
     std::cout << "Fatal: " << std::endl << "Something unknown was thrown" << std::endl;
     mSuccess = 1;
   }
+  Configuration* mConfiguration = Configuration::getInstance();
+  mConfiguration->save();
   XMLPlatformUtils::Terminate();
   SDL_Quit();
   return mSuccess;

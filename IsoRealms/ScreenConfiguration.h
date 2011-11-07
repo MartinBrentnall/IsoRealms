@@ -20,6 +20,7 @@
 #define SCREEN_CONFIGURATION_H
 
 #include "DOMNodeWrapper.h"
+#include "DOMNodeWriter.h"
 #include "InitException.h"
 #include "ParseException.h"
 #include "ScreenMode.h"
@@ -79,8 +80,12 @@ class ScreenConfiguration {
   float getYLocation(int);
   
   std::vector<ScreenMode*> getAvailableModes();
+
+  ScreenMode* getScreenMode();
   
   void setMode(ScreenMode*);
+  
+  void save(DOMNodeWriter*);
 };
 
 #endif

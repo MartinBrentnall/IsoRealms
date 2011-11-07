@@ -18,14 +18,24 @@
  */
 #include "OptionMenuItem.h"
 
-OptionMenuItem::OptionMenuItem(const std::string& name, std::vector<IOption*> options) {
+OptionMenuItem::OptionMenuItem(const std::string& name, std::vector<IOption*> options, unsigned int selected) {
   cName = name;
   cOptions = options;
-  cSelectedOption = 0;
+  cSelectedOption = selected;
+  cPreviousOption = selected;
 }
 
 void OptionMenuItem::apply() {
   cOptions[cSelectedOption]->apply();
+}
+
+void OptionMenuItem::reset() {
+  cSelectedOption = cPreviousOption;
+  apply();
+}
+
+void OptionMenuItem::save() {
+  cPreviousOption = cSelectedOption;
 }
 
 void OptionMenuItem::render(int i, float fade, IFont* font, bool selected) {

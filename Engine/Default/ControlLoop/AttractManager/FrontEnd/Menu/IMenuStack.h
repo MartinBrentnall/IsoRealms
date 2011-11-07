@@ -19,11 +19,15 @@
 #ifndef I_MENU_STACK_H
 #define I_MENU_STACK_H
 
+#include "IApplicableItem.h"
+
 class FrontEndMenu;
 
 class IMenuStack {
   public:
   virtual void push(FrontEndMenu*) = 0;
+  virtual void pop() = 0;
+  virtual void testOnExit(FrontEndMenu*, IApplicableItem*) = 0;
 };
 
 #endif

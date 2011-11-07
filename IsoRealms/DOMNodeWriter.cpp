@@ -50,6 +50,14 @@ void DOMNodeWriter::addText(std::string text) {
   cElement->appendChild(mText);
 }
 
+void DOMNodeWriter::addText(int text) {
+  std::stringstream mIntText;
+  mIntText << text;
+  std::string mString = mIntText.str();  
+  DOMText* mText = cDocument->createTextNode(XMLString::transcode(mString.c_str()));
+  cElement->appendChild(mText);
+}
+
 void DOMNodeWriter::addAttribute(std::string name, std::string text) {
   DOMAttr* mAttribute = cDocument->createAttribute(XMLString::transcode(name.c_str()));
   mAttribute->setValue(XMLString::transcode(text.c_str()));

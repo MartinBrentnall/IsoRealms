@@ -83,28 +83,15 @@ void Configuration::parseSettings() {
   }
 }
 
-void Configuration::createSettings() {
-  DOMNodeWriter* mRootNode = new DOMNodeWriter("IsoRealmsSettings");
-  DOMNodeWriter* mScreenNode = mRootNode->addBranch("Screen");
-  DOMNodeWriter* mFullscreenNode = mScreenNode->addBranch("Fullscreen");
-  mFullscreenNode->addText("false");
-  DOMNodeWriter* mScreenSizeNode = mScreenNode->addBranch("Size");
-  DOMNodeWriter* mScreenWidthNode = mScreenSizeNode->addBranch("Width");
-  mScreenWidthNode->addText("1024");
-  DOMNodeWriter* mScreenHeightNode = mScreenSizeNode->addBranch("Height");
-  mScreenHeightNode->addText("768");
-  DOMNodeWriter* mScreenDepthNode = mScreenNode->addBranch("Depth");
-  mScreenDepthNode->addText("24");
-  mRootNode->save(cSettingsFile);
-}
-
 ScreenConfiguration* Configuration::getScreenConfiguration() {
   if (cScreenConfiguration == NULL) {
     System::checkUserDataDirectory();
-    if (!System::configurationFileExists("settings.xml")) {
-      createSettings();
+    if (System::configurationFileExists("settings.xml")) {
+      parseSettings();
+    } else {
+      cScreenConfiguration = new ScreenConfiguration();
+      cScreenConfiguration->openScreen("Iso Realms");
     }
-    parseSettings();
   }
   
   if (cScreenConfiguration == NULL) {
@@ -129,3 +116,11 @@ IEngine* Configuration::getEngine() {
   }
   return cEngine;
 }
+
+
+void Configuration::save() {
+  DOMNodeWriter* mConfigurationNode = new DOMNodeWriter("IsoRealmsSettings");
+  cScreenConfiguration->save(mConfigurationNode);
+  mConfigurationNode->save(cSettingsFile);
+}
+

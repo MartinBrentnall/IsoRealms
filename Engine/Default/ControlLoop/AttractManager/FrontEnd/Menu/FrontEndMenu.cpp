@@ -62,7 +62,7 @@ FrontEndMenu::FrontEndMenu(IFrontEndCommands* commandRegistry, IMenuStack* menuS
       std::string mFilename = format(mNode->getAttribute("name"), tree);
       std::vector<IFrontEndMenuItem*> mControlMenuItems = parseControlConfig(mFilename);
       cMenuItems.insert(cMenuItems.end(), mControlMenuItems.begin(), mControlMenuItems.end());
-    } else if (mValueAsString == "Boolean") {
+    } else if (mValueAsString == "FullScreen") {
       std::string mName = mNode->getAttribute("name");
       std::string mTrueValue = mNode->getAttribute("trueValue");
       std::string mFalseValue = mNode->getAttribute("falseValue");
@@ -73,13 +73,23 @@ FrontEndMenu::FrontEndMenu(IFrontEndCommands* commandRegistry, IMenuStack* menuS
       Configuration* mConfiguration = Configuration::getInstance();
       ScreenConfiguration* mScreenConfiguration = mConfiguration->getScreenConfiguration();
       std::vector<ScreenMode*> mScreenModes = mScreenConfiguration->getAvailableModes();
+      ScreenMode* mCurrentScreenMode = mScreenConfiguration->getScreenMode();
       std::vector<IOption*> mResolutionOptions;
+      int mSelectedMode = -1;
       for (unsigned int j = 0; j < mScreenModes.size(); j++) {
+        if (*mCurrentScreenMode == *(mScreenModes[j])) {
+          mSelectedMode = j;
+        }
         mResolutionOptions.push_back(new ResolutionOption(mScreenConfiguration, mScreenModes[j]));
       }
-      OptionMenuItem* mOptionMenuItem = new OptionMenuItem(mName, mResolutionOptions);
+      if (mSelectedMode == -1) {
+        mResolutionOptions.push_back(new ResolutionOption(mScreenConfiguration, mCurrentScreenMode));
+        mSelectedMode = mResolutionOptions.size() - 1;
+      }
+      OptionMenuItem* mOptionMenuItem = new OptionMenuItem(mName, mResolutionOptions, mSelectedMode);
       cMenuItems.push_back(mOptionMenuItem);
       cApplicableItems.push_back(mOptionMenuItem);
+      menuStack->testOnExit(this, mOptionMenuItem);
     }
   }
 }
@@ -170,6 +180,10 @@ void FrontEndMenu::render(float fade, IFont* font) {
     cMenuItems[i]->render(i, fade, font, cSelectedItem == i);
   }
   glDisable(GL_BLEND);
+}
+
+void FrontEndMenu::update(unsigned int ticks) {
+  // Nothing to do
 }
 
 void FrontEndMenu::applyAll() {

@@ -31,3 +31,7 @@ unsigned int ScreenMode::getHeight() {
   return cHeight;
 }
 
+bool ScreenMode::operator==(const ScreenMode& screenMode) {
+  return cWidth == screenMode.cWidth && cHeight == screenMode.cHeight;
+}
+
