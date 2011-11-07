@@ -1,5 +1,5 @@
 /*
- * Copyright 2009,2010 Martin Brentnall
+ * Copyright 2011 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,18 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "ConfigureSoundsCommand.h"
+#ifndef SPINDIZZY_BLOCK_CONFIGURATION_DIALOG_H
+#define SPINDIZZY_BLOCK_CONFIGURATION_DIALOG_H
 
-ConfigureSoundsCommand::ConfigureSoundsCommand(ISoundRegistry* soundRegistry) {
-  cSoundRegistry = soundRegistry;
-}
+#include <IsoRealms/GUI/ResizableDialog.h>
+#include <IsoRealms/IComponentContainer.h>
 
-void ConfigureSoundsCommand::setComponentContainer(IComponentContainer* componentContainer) {
-  cComponentContainer = componentContainer;
-}
+class SpindizzyBlockConfigurationDialog:public ResizableDialog {
+  private:
 
-void ConfigureSoundsCommand::execute() {
-  IHUDComponent* cDialog = new SoundConfigurationDialog(cComponentContainer, cSoundRegistry);
-  cComponentContainer->addComponent(cDialog);
-}
+  public:
+  SpindizzyBlockConfigurationDialog(IComponentContainer*);
+};
 
+#endif

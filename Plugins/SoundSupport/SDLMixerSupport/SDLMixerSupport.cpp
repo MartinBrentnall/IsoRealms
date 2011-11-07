@@ -28,11 +28,6 @@ SDLMixerSupport::SDLMixerSupport() {
   } else {
     Mix_AllocateChannels(32);
   }
-  std::vector<std::string> mPath;
-  mPath.push_back("Configure");
-  mPath.push_back("Sounds");
-  cConfigureSoundsCommand = new ConfigureSoundsCommand(this);
-  cPluginCommands.push_back(new DefaultCommandInfo(mPath, cConfigureSoundsCommand));
 }
 
 std::string SDLMixerSupport::getName() {
@@ -93,12 +88,17 @@ void SDLMixerSupport::load(DOMNodeWrapper* node) {
   }
 }
 
-std::vector<ICommandInfo*> SDLMixerSupport::getCommandInfo() {
-  return cPluginCommands;
+void SDLMixerSupport::setEditingContext(IEditingContext* editingContext) {
+  std::vector<std::string> mPath;
+  mPath.push_back("Configure");
+  mPath.push_back("Sounds");
+  cComponentContainer = editingContext->getComponentContainer();
+  OpenDialogCommand* mConfigureSoundsCommand = new OpenDialogCommand(cComponentContainer, this);
+  editingContext->registerCommand(new DefaultCommandInfo(mPath, mConfigureSoundsCommand));
 }
 
-void SDLMixerSupport::setEditingContext(BlockLocation*, IComponentContainer* componentContainer) {
-  cConfigureSoundsCommand->setComponentContainer(componentContainer);
+IHUDComponent* SDLMixerSupport::createComponent() {
+  return new SoundConfigurationDialog(cComponentContainer, this);
 }
 
 extern "C" IPlugin* create() {

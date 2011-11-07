@@ -18,6 +18,7 @@ include_directories(${PROJECT_SOURCE_DIR})
 
 add_library(Elements_StateTiles MODULE
   StateTile.cpp
+  StateTileConfigurationDialog.cpp
   StateTileFactory.cpp
   StateTileSet.cpp
   StateTileStateController.cpp

@@ -20,13 +20,6 @@
 
 TextureSetPerZone::TextureSetPerZone() {
   assignDummyPlugin(&cZoneContext, "ZoneContext");
-  std::vector<std::string> mPath;
-  mPath.push_back("Choose Texture");
-  // TODO: How to identify which element set(s) are being controlled by this plugin?
-  mPath.push_back("Zone");
-  cChooseTextureSetCommand = new ChooseTextureSetCommand(this);
-  ChooseTextureSetCommandInfo* mChooseTextureSetCommandInfo = new ChooseTextureSetCommandInfo(mPath, cChooseTextureSetCommand);
-  cPluginCommands.push_back(mChooseTextureSetCommandInfo);
   cProgressBackgroundColour = 1.0f;
   cDefaultTextureSetCommand = new DefaultTextureSetCommand(this);
 }
@@ -122,13 +115,15 @@ void TextureSetPerZone::zoneContextChanged(IMap* map, IZone* zone) {
   cCurrentZone = zone;
 }
 
-std::vector<ICommandInfo*> TextureSetPerZone::getCommandInfo() {
-  return cPluginCommands;
-}
-
-void TextureSetPerZone::setEditingContext(BlockLocation* blockLocation, IComponentContainer* componentContainer) {
-  cBlockLocation = blockLocation;
-  cChooseTextureSetCommand->setComponentContainer(componentContainer);
+void TextureSetPerZone::setEditingContext(IEditingContext* editingContext) {
+  std::vector<std::string> mPath;
+  mPath.push_back("Choose Texture");
+  // TODO: How to identify which element set(s) are being controlled by this plugin?
+  mPath.push_back("Zone");
+  cComponentContainer = editingContext->getComponentContainer();
+  OpenDialogCommand* mChooseTextureSetCommand = new OpenDialogCommand(cComponentContainer, this);
+  editingContext->registerCommand(new DefaultCommandInfo(mPath, mChooseTextureSetCommand));
+  cBlockLocation = editingContext->getBlockLocation();
 }
 
 void TextureSetPerZone::saveData(DOMNodeWriter* node, IMap* map, IZone* zone) {
@@ -215,18 +210,8 @@ void TextureSetPerZone::zoneContextChanged(IZone* zone) {
   }
 }
 
-TextureSetPerZone::ChooseTextureSetCommand::ChooseTextureSetCommand(TextureSetPerZone* parent) {
-  cParent = parent;
-  cComponentContainer = NULL;
-}
-
-void TextureSetPerZone::ChooseTextureSetCommand::setComponentContainer(IComponentContainer* componentContainer) {
-  cComponentContainer = componentContainer;
-}
-
-void TextureSetPerZone::ChooseTextureSetCommand::execute() {
-  IHUDComponent* mComponent = new TextureSetChooserComponent(cComponentContainer, cParent, cParent->cTexturePalette);
-  cComponentContainer->addComponent(mComponent);
+IHUDComponent* TextureSetPerZone::createComponent() {
+  return new TextureSetChooserComponent(cComponentContainer, this, cTexturePalette);
 }
 
 extern "C" IPlugin* create() {

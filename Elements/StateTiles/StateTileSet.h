@@ -22,14 +22,20 @@
 #include <map>
 #include <vector>
 
+#include <IsoRealms/DefaultCommandInfo.h>
+#include <IsoRealms/OpenDialogCommand.h>
+
 #include "IStateTileSet.h"
+#include "StateTileConfigurationDialog.h"
 #include "StateTileStateController.h"
 #include "TargetState.h"
 
-class StateTileSet:public IStateTileSet {
+class StateTileSet:public IStateTileSet,
+                   public IComponentSource {
   private:
   std::vector<IElementFactory*> cElementFactories;
   std::map<unsigned int, TargetState*> cContactTransitions;
+  IComponentContainer* cComponentContainer;
   
   public:
   
@@ -44,11 +50,17 @@ class StateTileSet:public IStateTileSet {
   \**************************/
   std::vector<IElementFactory*> getElementFactories();
   void destroy(IElement*);
+  void setEditingContext(IEditingContext*);
 
   /*************************\
    * Implements ElementSet *
   \*************************/
   void setRuntimeContext(IRuntimeContext*);
+  
+  /*******************************\
+   * Implements IComponentSource *
+  \*******************************/
+  IHUDComponent* createComponent();
 };
 
 #endif

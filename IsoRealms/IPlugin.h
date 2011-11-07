@@ -27,8 +27,8 @@
 #include "IAddressableEntity.h"
 #include "ICommandRegistry.h"
 #include "IComponentContainer.h"
-#include "ICommandInfo.h"
 #include "IDynamicElement.h"
+#include "IEditingContext.h"
 #include "IInteractiveElement.h"
 #include "IPluginRegistry.h"
 #include "IPluginSupport.h"
@@ -42,7 +42,6 @@ class IZoneRenderer;
 class IPlugin:public IPluginSupport,
               public virtual IAddressableEntity {
   private:
-  static std::vector<ICommandInfo*> cNoCommands;
   static std::vector<IDynamicElement*> cNoDynamicElements;
   static std::vector<IVisualElement*> cNoVisualElements;
   static std::vector<IInteractiveElement*> cNoInteractiveElements;
@@ -111,18 +110,13 @@ class IPlugin:public IPluginSupport,
   /**
    * Set the editing context.
    */
-  virtual void setEditingContext(BlockLocation*, IComponentContainer*);
+  virtual void setEditingContext(IEditingContext*);
 
   /**
    * Set the runtime context.
    */
   virtual void setRuntimeContext(IRuntimeContext*);
   
-  /**
-   * Return the command info associated with this plugin.
-   */
-  virtual std::vector<ICommandInfo*> getCommandInfo();
-
   /**
    * Save the configuration of the plug-in.
    */

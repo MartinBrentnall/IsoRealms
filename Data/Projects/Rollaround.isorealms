@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<Map>
+  <ElementSet instance="RollaroundTiles" type="StateTiles">
+    <Configuration/>
+  </ElementSet>
+  <Elements/>
+  <Zone>
+    <Plugins/>
+    <Location x="-11" y="0" z="0"/>
+    <Size x="11" y="11" z="4"/>
+    <Elements/>
+  </Zone>
+</Map>

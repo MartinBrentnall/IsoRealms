@@ -35,8 +35,21 @@ void StateTileSet::destroy(IElement* element) {
   delete element;
 }
 
+void StateTileSet::setEditingContext(IEditingContext* editingContext) {
+  std::vector<std::string> mPath;
+  mPath.push_back("Configure State Tiles...");
+  mPath.push_back("Elements");
+  cComponentContainer = editingContext->getComponentContainer();
+  OpenDialogCommand* mConfigureStateTilesCommand = new OpenDialogCommand(cComponentContainer, this);
+  editingContext->registerCommand(new DefaultCommandInfo(mPath, mConfigureStateTilesCommand));
+}
+
 void StateTileSet::setRuntimeContext(IRuntimeContext* runtimeContext) {
   // TODO: Do whatever needs doing
+}
+
+IHUDComponent* StateTileSet::createComponent() {
+  return new StateTileConfigurationDialog(cComponentContainer);
 }
 
 extern "C" IElementSet* create(DOMNodeWrapper* node) {

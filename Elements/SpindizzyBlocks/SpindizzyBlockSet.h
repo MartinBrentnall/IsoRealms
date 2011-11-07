@@ -34,9 +34,11 @@
 #include "../../Plugins/ZoneContext/IZoneContext.h"
 
 #include <IsoRealms/ConditionElement.h>
+#include <IsoRealms/DefaultCommandInfo.h>
 #include <IsoRealms/ICommandRegistry.h>
 #include <IsoRealms/IElementSet.h>
 #include <IsoRealms/IPlugin.h>
+#include <IsoRealms/OpenDialogCommand.h>
 #include <IsoRealms/PlugSocket.h>
 #include <IsoRealms/PluginRegistry.h>
 
@@ -46,6 +48,7 @@
 #include "ISpindizzyBlockFactory.h"
 #include "ISpindizzyBlockSet.h"
 #include "SpindizzyBlock.h"
+#include "SpindizzyBlockConfigurationDialog.h"
 #include "SpindizzyBlockFactory.h"
 #include "SpindizzyBlockHandler.h"
 #include "SpindizzyWaterFactory.h"
@@ -53,7 +56,8 @@
 class SpindizzyBlockSet:public ISpindizzyBlockSet,
                         public IChangeableTextureSet,
                         public IHUDComponentFactory,
-                        public IZoneContextListener {
+                        public IZoneContextListener,
+                        public IComponentSource {
   private:
   class HUDClueData {
     private:
@@ -90,6 +94,7 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
   std::vector<ISimpleModel*> cBlockStateClueModels;
   HUDClue* cHUDClue;
   bool cEditing;
+  IComponentContainer* cComponentContainer;
 
   void addBlockState(const std::string&, ISimpleModel*);
   ISpindizzyBlockFactory* getFactory(const std::string&);  
@@ -108,6 +113,7 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
   std::vector<IElementFactory*> getElementFactories();
   void setRuntimeContext(IRuntimeContext*);  
   void destroy(IElement*);
+  void setEditingContext(IEditingContext*);
   void save(DOMNodeWriter*);
   void load(DOMNodeWrapper*);
   void initElementsComplete();
@@ -151,6 +157,11 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
   \************************************/
   void setTextureSet(ITextureSet*);
 
+  /*******************************\
+   * Implements IComponentSource *
+  \*******************************/
+  IHUDComponent* createComponent();
+  
   ~SpindizzyBlockSet();
 };
 

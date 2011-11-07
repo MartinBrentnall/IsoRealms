@@ -78,7 +78,7 @@ template<class T = IElement> class ElementSet:public IElementSet {
     return cElementSetRegistry->getEntityPath(this);
   }
   
-  void setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*) {}
+  void setEditingContext(IEditingContext*) {}
 };
 
 #endif

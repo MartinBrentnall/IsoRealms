@@ -20,6 +20,7 @@ add_library(Elements_SpindizzyLifts MODULE
   LiftSurfaceCollisionEvent.cpp
   SpindizzyLift.cpp
   SpindizzyLiftConfigurationComponent.cpp
+  SpindizzyLiftConfigurationDialog.cpp
   SpindizzyLiftFactory.cpp
   SpindizzyLiftHandler.cpp
   SpindizzyLiftProperties.cpp

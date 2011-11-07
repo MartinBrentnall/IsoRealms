@@ -17,7 +17,6 @@
 include_directories(${PROJECT_SOURCE_DIR})
 
 add_library(TextureSetChanger_TextureSetPerZone MODULE 
-  ChooseTextureSetCommandInfo.cpp
   TextureSetChooserComponent.cpp
   TextureSetPerZone.cpp
 )

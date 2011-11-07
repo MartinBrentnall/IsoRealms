@@ -18,7 +18,6 @@ include_directories(${PROJECT_SOURCE_DIR})
 
 add_library(Utilities_IntegerValueCommands MODULE 
   AddIntegerCommand.cpp
-  ConfigureIntegerCommands.cpp
   IntegerCommandDialog.cpp
   IntegerValueCommands.cpp
 )

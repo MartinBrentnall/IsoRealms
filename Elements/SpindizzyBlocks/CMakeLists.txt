@@ -23,6 +23,7 @@ add_library(Elements_SpindizzyBlocks MODULE
   ISpindizzyBlockFactory.cpp
   SpindizzyBlock.cpp
   SpindizzyBlockConfigurationComponent.cpp
+  SpindizzyBlockConfigurationDialog.cpp
   SpindizzyBlockFactory.cpp
   SpindizzyBlockHandler.cpp
   SpindizzyBlockProperties.cpp

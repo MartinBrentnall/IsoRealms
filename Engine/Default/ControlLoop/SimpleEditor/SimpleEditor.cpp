@@ -298,11 +298,7 @@ void SimpleEditor::elementSetChanged(IElementSet* elementSet) {
 
 void SimpleEditor::pluginInstanceAdded(PluginRegistry* pluginRegistry, std::string type, std::string instance) {
   IPlugin* mPlugin = pluginRegistry->getPlugin(type, instance);
-  mPlugin->setEditingContext(cCursor, this);
-  std::vector<ICommandInfo*> mCommandInfo = mPlugin->getCommandInfo();
-  for (unsigned int i = 0; i < mCommandInfo.size(); i++) {
-    cMenuBar->addCommand(mCommandInfo[i]);
-  }
+  mPlugin->setEditingContext(this);
 }
 
 void SimpleEditor::pluginInstanceRemoved(IPlugin* instance, std::string type) {
@@ -400,7 +396,7 @@ void SimpleEditor::setMap(Map* map) {
     cCursor = new EditorCursor(cMap);
     ElementSetRegistry* mElementSetRegistry = cMap->getElementSetRegistry();
     CommandDirectory* mCommandRegistry = cMap->getCommandRegistry();
-    mElementSetRegistry->setEditingInfo(cCursor, this, this, mCommandRegistry);
+    mElementSetRegistry->setEditingInfo(cCursor, this, this, this, mCommandRegistry);
     mElementSetRegistry->addElementRegistryListener(this);
     cElementSetEntityClass = new ElementSetEntityClass(mElementSetRegistry, this, this);
     cElementSetsFactory->setEntityClass(cElementSetEntityClass);
@@ -433,6 +429,18 @@ IHUDComponent* SimpleEditor::ElementsPaletteComponentFactory::createComponent() 
   ChooseElementsComponent* mComponent = new ChooseElementsComponent(cParent, mElementSetRegistry);
   mComponent->addElementSelectionListener(cParent);
   return mComponent;
+}
+
+void SimpleEditor::registerCommand(ICommandInfo* commandInfo) {
+  cMenuBar->addCommand(commandInfo);
+}
+
+IComponentContainer* SimpleEditor::getComponentContainer() {
+  return this;
+}
+
+BlockLocation* SimpleEditor::getBlockLocation() {
+  return cCursor;
 }
 
 extern "C" IControlLoop* create(DOMNodeWrapper* node, IEngineArguments* engineArguments) {

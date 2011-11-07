@@ -115,7 +115,7 @@ class ElementSetRegistry:public IElementSetRegistry {
 
   std::string getInstanceName(IElementSet*);
 
-  void setEditingInfo(BlockLocation*, IElementGateway*, IComponentContainer*, CommandDirectory*);
+  void setEditingInfo(BlockLocation*, IEditingContext*, IElementGateway*, IComponentContainer*, CommandDirectory*);
 
   /**
    *

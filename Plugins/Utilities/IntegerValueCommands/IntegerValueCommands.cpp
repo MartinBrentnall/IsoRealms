@@ -21,11 +21,6 @@
 IntegerValueCommands::IntegerValueCommands() {
   assignDummyPlugin(&cVariable, "IntegerValue");
   cSockets.push_back(new PlugSocket("IntegerValue"));
-  std::vector<std::string> mPath;
-  mPath.push_back("Configure");
-  mPath.push_back("Variable Commands");
-  cConfigureIntegerCommands = new ConfigureIntegerCommands(this);
-  cPluginCommands.push_back(new DefaultCommandInfo(mPath, cConfigureIntegerCommands));
 }
 
 void IntegerValueCommands::addCommand(AddIntegerCommand* command) {
@@ -67,16 +62,17 @@ void IntegerValueCommands::load(DOMNodeWrapper* node) {
   }
 }
 
-std::vector<ICommandInfo*> IntegerValueCommands::getCommandInfo() {
-  return cPluginCommands;
-}
-
 void IntegerValueCommands::setRuntimeContext(IRuntimeContext* runtimeContext) {
   cCommandRegistry = runtimeContext->getCommandRegistry();
 }
 
-void IntegerValueCommands::setEditingContext(BlockLocation*, IComponentContainer* componentContainer) {
-  cConfigureIntegerCommands->setComponentContainer(componentContainer);
+void IntegerValueCommands::setEditingContext(IEditingContext* editingContext) {
+  std::vector<std::string> mPath;
+  mPath.push_back("Configure");
+  mPath.push_back("Variable Commands");
+  cComponentContainer = editingContext->getComponentContainer();
+  OpenDialogCommand* mConfigureIntegerCommands = new OpenDialogCommand(cComponentContainer, this);
+  editingContext->registerCommand(new DefaultCommandInfo(mPath, mConfigureIntegerCommands));
 }
 
 std::vector<PlugSocket*> IntegerValueCommands::getPlugSockets() {
@@ -99,6 +95,10 @@ IPlugin* IntegerValueCommands::getPlugin(PlugSocket* socket) {
   if (socket->getType() == "IntegerValue")    {return cVariable;}
   // TODO: chuck
   return NULL;
+}
+
+IHUDComponent* IntegerValueCommands::createComponent() {
+  return new IntegerCommandsDialog(cComponentContainer, this);
 }
 
 extern "C" IPlugin* create() {

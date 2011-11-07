@@ -133,6 +133,22 @@ void Map::addZone(Zone* zone) {
   zone->addChangeListener(this);
 }
 
+void Map::removeZone(Zone* zone) {
+  for (unsigned int i = 0; i < cZones.size(); i++) {
+    if (cZones[i] == zone) {
+      cZones.erase(cZones.begin() + i);
+      for (unsigned int j = 0; j < cDirtyZones.size(); j++) {
+        if (cDirtyZones[j] == zone) {
+          cDirtyZones.erase(cDirtyZones.begin() + j);
+          break;
+        }
+      }
+      break;
+    }
+  }
+  delete zone;
+}
+
 Zone* Map::getZone(BlockLocation& location) {
   // TODO: Divide map into abstract segments using a B-tree in order to do more efficient searching
   for (unsigned int i = 0; i < cZones.size(); i++) {

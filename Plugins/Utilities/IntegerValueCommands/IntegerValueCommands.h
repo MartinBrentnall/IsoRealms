@@ -21,24 +21,25 @@
 
 #include <IsoRealms/DefaultCommandInfo.h>
 #include <IsoRealms/ICommandRegistry.h>
+#include <IsoRealms/OpenDialogCommand.h>
 
 #include "../../IntegerValue/IIntegerValue.h"
 
 #include "../IUtilities.h"
 
 #include "AddIntegerCommand.h"
-#include "ConfigureIntegerCommands.h"
 #include "IIntegerCommandRegistry.h"
+#include "IntegerCommandDialog.h"
 
 class IntegerValueCommands:public IUtilities,
-                           public IIntegerCommandRegistry {
+                           public IIntegerCommandRegistry,
+                           public IComponentSource {
   private:
   std::vector<PlugSocket*> cSockets;
   IIntegerValue* cVariable;
   ICommandRegistry* cCommandRegistry;
   std::vector<AddIntegerCommand*> cCommands;
-  ConfigureIntegerCommands* cConfigureIntegerCommands;
-  std::vector<ICommandInfo*> cPluginCommands;
+  IComponentContainer* cComponentContainer;
 
   public:
   IntegerValueCommands();
@@ -55,9 +56,8 @@ class IntegerValueCommands:public IUtilities,
   \**********************/
   void save(DOMNodeWriter*);
   void load(DOMNodeWrapper*);
-  std::vector<ICommandInfo*> getCommandInfo();
   void setRuntimeContext(IRuntimeContext*);
-  void setEditingContext(BlockLocation*, IComponentContainer*);
+  void setEditingContext(IEditingContext*);
 
   /*****************************\
    * Implements IPluginSupport *
@@ -65,6 +65,11 @@ class IntegerValueCommands:public IUtilities,
   std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
+  
+  /*******************************\
+   * Implements IComponentSource *
+  \*******************************/
+  IHUDComponent* createComponent();
 };
 
 #endif

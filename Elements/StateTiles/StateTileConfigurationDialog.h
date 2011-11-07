@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2011 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,17 +16,18 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "ChooseTextureSetCommandInfo.h"
+#ifndef STATE_TILE_CONFIGURATION_DIALOG_H
+#define STATE_TILE_CONFIGURATION_DIALOG_H
 
-ChooseTextureSetCommandInfo::ChooseTextureSetCommandInfo(std::vector<std::string> path, ICommand* command) {
-  cPath = path;
-  cCommand = command;
-}
+#include <IsoRealms/GUI/ResizableDialog.h>
+#include <IsoRealms/IComponentContainer.h>
 
-std::vector<std::string> ChooseTextureSetCommandInfo::getCommandPath() {
-  return cPath;
-}
+class StateTileConfigurationDialog:public ResizableDialog {
+  private:
+  IComponentContainer* cComponentContainer;
 
-ICommand* ChooseTextureSetCommandInfo::getCommand() {
-  return cCommand;
-}
+  public:
+  StateTileConfigurationDialog(IComponentContainer*);
+};
+
+#endif

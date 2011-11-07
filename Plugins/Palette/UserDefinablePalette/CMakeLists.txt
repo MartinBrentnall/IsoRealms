@@ -18,7 +18,6 @@ include_directories(${PROJECT_SOURCE_DIR})
 
 add_library(Palette_UserDefinablePalette MODULE 
   UserDefinablePalette.cpp
-  PaletteConfigurationCommandInfo.cpp
   PaletteConfigurationComponent.cpp
 )
 set_target_properties(Palette_UserDefinablePalette PROPERTIES OUTPUT_NAME "Module")

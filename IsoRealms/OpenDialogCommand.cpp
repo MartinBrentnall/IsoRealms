@@ -1,5 +1,5 @@
 /*
- * Copyright 2009,2010 Martin Brentnall
+ * Copyright 2011 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,29 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef CONFIGURE_INTEGER_COMMANDS_H
-#define CONFIGURE_INTEGER_COMMANDS_H
+#include "OpenDialogCommand.h"
 
-#include <IsoRealms/ICommand.h>
-#include <IsoRealms/IComponentContainer.h>
+OpenDialogCommand::OpenDialogCommand(IComponentContainer* componentContainer, IComponentSource* componentSource) {
+  cComponentContainer = componentContainer;
+  cComponentSource = componentSource;
+}
 
-#include "IIntegerCommandRegistry.h"
-#include "IntegerCommandDialog.h"
-
-class ConfigureIntegerCommands:public ICommand {
-  private:
-  IComponentContainer* cComponentContainer;
-  IIntegerCommandRegistry* cIntegerCommandRegistry;
-
-  public:
-  ConfigureIntegerCommands(IIntegerCommandRegistry*);
-
-  void setComponentContainer(IComponentContainer*);
-
-  /***********************\
-   * Implements ICommand *
-  \***********************/
-  void execute();
-};
-
-#endif
+void OpenDialogCommand::execute() {
+  IHUDComponent* mComponent = cComponentSource->createComponent();
+  cComponentContainer->addComponent(mComponent);
+}

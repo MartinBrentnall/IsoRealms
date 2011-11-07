@@ -32,6 +32,7 @@
 #include <IsoRealms/GUI/OpenDialogCommand.h>
 #include <IsoRealms/ICommandInfo.h>
 #include <IsoRealms/IComponentContainer.h>
+#include <IsoRealms/IEditingContext.h>
 #include <IsoRealms/IElementFactory.h>
 #include <IsoRealms/IElementGateway.h>
 #include <IsoRealms/IElementRegistryListener.h>
@@ -62,6 +63,7 @@ class OpenCommand;
 
 class SimpleEditor:public IControlLoop,
                    public IComponentContainer,
+                   public IEditingContext,
                    public IElementSelectionListener,
                    public IElementRegistryListener,
                    public IElementGateway,
@@ -215,7 +217,14 @@ class SimpleEditor:public IControlLoop,
    * Implements IControlLoop *
   \***************************/
   void input(SDL_Event&);
-  void execute(int);  
+  void execute(int);
+  
+  /******************************\
+   * Implements IEditingContext *
+  \******************************/
+  void registerCommand(ICommandInfo*);
+  IComponentContainer* getComponentContainer();
+  BlockLocation* getBlockLocation();
 };
 
 #endif

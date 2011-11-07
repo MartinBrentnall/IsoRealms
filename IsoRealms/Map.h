@@ -94,6 +94,8 @@ class Map:public IMap,
   Map(DOMNodeWrapper*, IPluginRegistryListener*, IElementRegistryListener*, const std::string&, bool);
 
   void addZone(Zone*);
+  
+  void removeZone(Zone*);
 
   /**
    * Test whether the specified block area overlaps with a zone in this map.

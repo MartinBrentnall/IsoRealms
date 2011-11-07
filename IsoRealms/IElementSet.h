@@ -28,6 +28,7 @@ class IElementFactory;
 #include "IAddressableEntity.h"
 #include "ICommandRegistry.h"
 #include "IComponentContainer.h"
+#include "IEditingContext.h"
 #include "IElementFactory.h"
 #include "IElementGateway.h"
 #include "IPluginSupport.h"
@@ -65,7 +66,7 @@ class IElementSet:public IPluginSupport,
    * @param BlockLocation*  The editing location within the map.
    * @param IElementGateway*  The gateway through which to push new elements.
    */
-  virtual void setEditingContext(BlockLocation*, IElementGateway*, IComponentContainer*) = 0;
+  virtual void setEditingContext(IEditingContext*) = 0;
 
   virtual void setRuntimeContext(IRuntimeContext*) = 0;
   

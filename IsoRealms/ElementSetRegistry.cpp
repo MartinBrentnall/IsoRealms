@@ -144,9 +144,9 @@ void ElementSetRegistry::destroyInstance(IElementSet* elementSet) {
   // TODO: Fire event to listeners.
 }
 
-void ElementSetRegistry::setEditingInfo(BlockLocation* location, IElementGateway* gateway, IComponentContainer* container, CommandDirectory* commandDirectory) {
+void ElementSetRegistry::setEditingInfo(BlockLocation* location, IEditingContext* editingContext, IElementGateway* gateway, IComponentContainer* container, CommandDirectory* commandDirectory) {
   for (std::map<std::string, IElementSet*>::iterator i = cElementSets.begin(); i != cElementSets.end(); i++) {
-    i->second->setEditingContext(location, gateway, container);
+    i->second->setEditingContext(editingContext);
     std::vector<IElementFactory*> mElementFactories = i->second->getElementFactories();
     for (std::vector<IElementFactory*>::iterator j = mElementFactories.begin(); j != mElementFactories.end(); j++) {
       (*j)->setEditingContext(location, gateway, container);

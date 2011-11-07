@@ -23,39 +23,26 @@
 #include <sstream>
 #include <vector>
 
+#include <IsoRealms/DefaultCommandInfo.h>
 #include <IsoRealms/ICommand.h>
 #include <IsoRealms/IHUDComponent.h>
 #include <IsoRealms/IPluginRegistry.h>
 #include <IsoRealms/Map.h>
+#include <IsoRealms/OpenDialogCommand.h>
 
 #include "../../ZoneContext/IZoneContext.h"
 #include "../../ZoneContext/IZoneContextListener.h"
 
 #include "../ITextureSetChanger.h"
 
-#include "ChooseTextureSetCommandInfo.h"
 #include "TextureSetChooserComponent.h"
 
 class TextureSetPerZone:public ITextureSetChanger,
                         public IZoneTextureSetter,
                         public IZoneContextListener,
-                        public IDynamicElement {
+                        public IDynamicElement,
+                        public IComponentSource {
   private:
-  class ChooseTextureSetCommand:public ICommand {
-    private:
-    TextureSetPerZone* cParent;
-    IComponentContainer* cComponentContainer;
-
-    public:
-    ChooseTextureSetCommand(TextureSetPerZone*);
-    void setComponentContainer(IComponentContainer*);
-
-    /***********************\
-     * Implements ICommand *
-    \***********************/
-    void execute();
-  };
-  
   class DefaultTextureSetCommand:public IDynamicElement {
     private:
     TextureSetPerZone* cParent;
@@ -73,8 +60,6 @@ class TextureSetPerZone:public ITextureSetChanger,
   IMap* cCurrentMap;
   IZone* cCurrentZone;
   BlockLocation* cBlockLocation;
-  ChooseTextureSetCommand* cChooseTextureSetCommand;
-  std::vector<ICommandInfo*> cPluginCommands;
   std::vector<IChangeableTextureSet*> cControlledObjects;
   std::vector<ITextureSet*> cTexturePalette;
   std::map<IZone*, ITextureSet*> cZoneMapping;
@@ -82,6 +67,7 @@ class TextureSetPerZone:public ITextureSetChanger,
   Colour cPreviousBackgroundColour;
   Colour cTargetBackgroundColour;
   float cProgressBackgroundColour;
+  IComponentContainer* cComponentContainer;
 
   public:
   TextureSetPerZone();
@@ -119,12 +105,16 @@ class TextureSetPerZone:public ITextureSetChanger,
   \*********************************************/
   void renderPreZone(IZone*);
   void zoneContextChanged(IMap*, IZone*);
-  std::vector<ICommandInfo*> getCommandInfo();
-  void setEditingContext(BlockLocation*, IComponentContainer*);
+  void setEditingContext(IEditingContext*);
   void saveData(DOMNodeWriter*, IMap*, IZone*);
   void loadData(DOMNodeWrapper*, IPluginRegistry*, IZone*);
   std::vector<IDynamicElement*> getPreLoopCommands();
   std::vector<IDynamicElement*> getPostLoopCommands();
+  
+  /*******************************\
+   * Implements IComponentSource *
+  \*******************************/
+  IHUDComponent* createComponent();
 };
 
 #endif

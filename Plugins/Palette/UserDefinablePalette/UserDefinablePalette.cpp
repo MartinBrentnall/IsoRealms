@@ -21,12 +21,6 @@
 Colour* UserDefinablePalette::DEFAULT_COLOUR = new Colour(1.0f, 0.0f, 1.0f, 1.0f);
 
 UserDefinablePalette::UserDefinablePalette() {
-  cPaletteConfigurationCommand = new PaletteConfigurationCommand(this);
-  std::vector<std::string> mPath;
-  mPath.push_back("Edit Palette"); // TODO: Use instance name?
-  mPath.push_back("Palettes");
-  PaletteConfigurationCommandInfo* mPaletteConfigurationCommandInfo = new PaletteConfigurationCommandInfo(mPath, cPaletteConfigurationCommand);
-  cPluginCommands.push_back(mPaletteConfigurationCommandInfo);
 }
 
 Colour* UserDefinablePalette::getColour(const std::string& entry) {
@@ -42,26 +36,18 @@ void UserDefinablePalette::removeChangeListener(IPaletteListener* listener) {
   // TODO: Remove listener!
 }
 
-void UserDefinablePalette::setEditingContext(BlockLocation* blockLocation, IComponentContainer* componentContainer) {
-  cPaletteConfigurationCommand->setComponentContainer(componentContainer);
+void UserDefinablePalette::setEditingContext(IEditingContext* editingContext) {
+  std::vector<std::string> mPath;
+  mPath.push_back("Edit Palette"); // TODO: Use instance name?
+  mPath.push_back("Palettes");
+  cComponentContainer = editingContext->getComponentContainer();
+  OpenDialogCommand* mPaletteConfigurationCommand = new OpenDialogCommand(cComponentContainer, this);
+  DefaultCommandInfo* mPaletteConfigurationCommandInfo = new DefaultCommandInfo(mPath, mPaletteConfigurationCommand);
+  editingContext->registerCommand(mPaletteConfigurationCommandInfo);
 }
 
-std::vector<ICommandInfo*> UserDefinablePalette::getCommandInfo() {
-  return cPluginCommands;
-}
-
-UserDefinablePalette::PaletteConfigurationCommand::PaletteConfigurationCommand(UserDefinablePalette* parent) {
-  cParent = parent;
-  cComponentContainer = NULL;
-}
-
-void UserDefinablePalette::PaletteConfigurationCommand::setComponentContainer(IComponentContainer* componentContainer) {
-  cComponentContainer = componentContainer;
-}
-
-void UserDefinablePalette::PaletteConfigurationCommand::execute() {
-  IHUDComponent* mComponent = new PaletteConfigurationComponent(cParent, cComponentContainer, cParent->cPalette, cParent->cChangeListeners);
-  cComponentContainer->addComponent(mComponent);
+IHUDComponent* UserDefinablePalette::createComponent() {
+  return new PaletteConfigurationComponent(this, cComponentContainer, cPalette, cChangeListeners);
 }
 
 void UserDefinablePalette::save(DOMNodeWriter* node) {
@@ -86,10 +72,6 @@ void UserDefinablePalette::load(DOMNodeWrapper* node) {
 }
 
 UserDefinablePalette::~UserDefinablePalette() {
-  delete cPaletteConfigurationCommand;
-  for (unsigned int i = 0; i < cPluginCommands.size(); i++) {
-    delete cPluginCommands[i];
-  }
   for (std::map<std::string, Colour*>::iterator i = cPalette.begin(); i != cPalette.end(); i++) {
     delete i->second;
   }

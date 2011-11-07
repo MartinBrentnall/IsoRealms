@@ -43,6 +43,15 @@ void SpindizzyLiftSet::destroy(IElement* element) {
   delete element;
 }
 
+void SpindizzyLiftSet::setEditingContext(IEditingContext* editingContext) {
+  std::vector<std::string> mPath;
+  mPath.push_back("Configure Spindizzy Lifts...");
+  mPath.push_back("Elements");
+  cComponentContainer = editingContext->getComponentContainer();
+  OpenDialogCommand* mConfigureSpindizzyLiftsCommand = new OpenDialogCommand(cComponentContainer, this);
+  editingContext->registerCommand(new DefaultCommandInfo(mPath, mConfigureSpindizzyLiftsCommand));
+}
+
 std::vector<PlugSocket*> SpindizzyLiftSet::getPlugSockets() {
   std::vector<PlugSocket*> mSockets;
   for (unsigned int i = 0; i <= cLiftModels.size(); i++) {
@@ -179,6 +188,10 @@ void SpindizzyLiftSet::LockControlCommand::execute() {
 
 std::string SpindizzyLiftSet::LockControlCommand::getCommandName() {
   return cLock ? "AddLock" : "RemoveLock";
+}
+    
+IHUDComponent* SpindizzyLiftSet::createComponent() {
+  return new SpindizzyLiftConfigurationDialog(cComponentContainer);
 }
     
 extern "C" IElementSet* create(DOMNodeWrapper* node) {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2011 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,17 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "PaletteConfigurationCommandInfo.h"
+#ifndef I_EDITING_CONTEXT_H
+#define I_EDITING_CONTEXT_H
 
-PaletteConfigurationCommandInfo::PaletteConfigurationCommandInfo(std::vector<std::string> path, ICommand* command) {
-  cPath = path;
-  cCommand = command;
-}
+#include "ICommandInfo.h"
+#include "IComponentContainer.h"
 
-std::vector<std::string> PaletteConfigurationCommandInfo::getCommandPath() {
-  return cPath;
-}
+class IEditingContext {
+  public:
+  virtual void registerCommand(ICommandInfo*) = 0;
+  virtual IComponentContainer* getComponentContainer() = 0;
+  virtual BlockLocation* getBlockLocation() = 0;
+};
 
-ICommand* PaletteConfigurationCommandInfo::getCommand() {
-  return cCommand;
-}
+#endif

@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2011 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,28 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef CHOOSE_TEXTURE_SET_COMMAND_INFO_H
-#define CHOOSE_TEXTURE_SET_COMMAND_INFO_H
+#ifndef SPINDIZZY_LIFT_CONFIGURATION_DIALOG_H
+#define SPINDIZZY_LIFT_CONFIGURATION_DIALOG_H
 
-#include <vector>
-#include <string>
+#include <IsoRealms/GUI/ResizableDialog.h>
 
-#include <IsoRealms/ICommand.h>
-#include <IsoRealms/ICommandInfo.h>
-
-class ChooseTextureSetCommandInfo:public ICommandInfo {
+class SpindizzyLiftConfigurationDialog:public ResizableDialog {
   private:
-  std::vector<std::string> cPath;
-  ICommand* cCommand;
 
   public:
-  ChooseTextureSetCommandInfo(std::vector<std::string>, ICommand*);
-
-  /****************************\
-    * Implements ICommandInfo *
-  \****************************/
-  std::vector<std::string> getCommandPath();
-  ICommand* getCommand();
+  SpindizzyLiftConfigurationDialog(IComponentContainer*);
 };
 
 #endif

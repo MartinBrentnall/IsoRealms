@@ -20,19 +20,20 @@
 #define SDL_MIXER_SUPPORT_H
 
 #include <IsoRealms/DefaultCommandInfo.h>
+#include <IsoRealms/OpenDialogCommand.h>
 
 #include "../ISoundSupport.h"
 
-#include "ConfigureSoundsCommand.h"
 #include "ISoundRegistry.h"
+#include "SoundConfigurationDialog.h"
 
 class SDLMixerSupport:public ISoundSupport,
-                      public ISoundRegistry {
+                      public ISoundRegistry,
+                      public IComponentSource {
   private:
   std::vector<ISound*> cSounds;
   std::vector<ISoundSupportListener*> cListeners;
-  ConfigureSoundsCommand* cConfigureSoundsCommand;
-  std::vector<ICommandInfo*> cPluginCommands;
+  IComponentContainer* cComponentContainer;
 
   public:
   SDLMixerSupport();
@@ -53,8 +54,7 @@ class SDLMixerSupport:public ISoundSupport,
   \**********************/
   void save(DOMNodeWriter*);
   void load(DOMNodeWrapper*);
-  std::vector<ICommandInfo*> getCommandInfo();
-  void setEditingContext(BlockLocation*, IComponentContainer*);
+  void setEditingContext(IEditingContext*);
 
   /****************************\
    * Implements ISoundSupport *
@@ -62,6 +62,11 @@ class SDLMixerSupport:public ISoundSupport,
   std::vector<ISound*> getSounds();
   void addSoundSupportListener(ISoundSupportListener*);
   void removeSoundSupportListener(ISoundSupportListener*);
+  
+  /*******************************\
+   * Implements IComponentSource *
+  \*******************************/
+  IHUDComponent* createComponent();
 };
 
 #endif

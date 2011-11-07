@@ -24,7 +24,6 @@ else(SDLMIXER_FOUND)
 endif(SDLMIXER_FOUND)
 
 add_library(SoundSupport_SDLMixerSupport MODULE 
-  ConfigureSoundsCommand.cpp
   SDLMixerSound.cpp
   SDLMixerSupport.cpp
   SoundConfigurationDialog.cpp

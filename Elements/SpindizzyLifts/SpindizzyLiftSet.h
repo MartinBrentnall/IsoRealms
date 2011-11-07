@@ -21,9 +21,11 @@
 
 #include <vector>
 
+#include <IsoRealms/DefaultCommandInfo.h>
+#include <IsoRealms/ICommandRegistry.h>
 #include <IsoRealms/IElementSet.h>
 #include <IsoRealms/PluginRegistry.h>
-#include <IsoRealms/ICommandRegistry.h>
+#include <IsoRealms/OpenDialogCommand.h>
 
 #include "../../Plugins/3DModel/ISimpleModel.h"
 #include "../../Plugins/3DModel/ISimpleModelFactory.h"
@@ -32,14 +34,17 @@
 #include "../../Plugins/ZoneContext/IZoneContextListener.h"
 
 #include "ISpindizzyLiftSet.h"
+#include "SpindizzyLiftConfigurationDialog.h"
 #include "SpindizzyLiftHandler.h"
 #include "SpindizzyLiftFactory.h"
 #include "SpindizzyLiftProperties.h"
 
 class SpindizzyLiftSet:public ISpindizzyLiftSet,
-                       public IZoneContextListener {
+                       public IZoneContextListener,
+                       public IComponentSource {
   private:
   std::vector<IElementFactory*> cElementFactories;
+  IComponentContainer* cComponentContainer;
   ICommandRegistry* cCommandRegistry;
   IZoneContext* cZoneContext;
   ICollidableSurfaceRegistry* cCollidableSurfaceRegistry;
@@ -80,6 +85,7 @@ class SpindizzyLiftSet:public ISpindizzyLiftSet,
   std::vector<IElementFactory*> getElementFactories();
   void setRuntimeContext(IRuntimeContext*);
   void destroy(IElement*);
+  void setEditingContext(IEditingContext*);
 
   /*************************\
    * Implements ElementSet *
@@ -108,6 +114,11 @@ class SpindizzyLiftSet:public ISpindizzyLiftSet,
    * Implements IZoneContextListener *
   \***********************************/
   void zoneContextChanged(IZone* zone);
+
+  /*******************************\
+   * Implements IComponentSource *
+  \*******************************/
+  IHUDComponent* createComponent();
 };
 
 #endif

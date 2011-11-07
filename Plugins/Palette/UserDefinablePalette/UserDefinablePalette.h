@@ -22,46 +22,26 @@
 #include <map>
 #include <vector>
 
+#include <IsoRealms/DefaultCommandInfo.h>
 #include <IsoRealms/ICommand.h>
 #include <IsoRealms/ICommandInfo.h>
+#include <IsoRealms/IComponentSource.h>
 #include <IsoRealms/IComponentContainer.h>
 #include <IsoRealms/IPlugin.h>
+#include <IsoRealms/OpenDialogCommand.h>
 
 #include "../IPalette.h"
 
 #include "PaletteConfigurationComponent.h"
-#include "PaletteConfigurationCommandInfo.h"
 
-class UserDefinablePalette:public IPalette {
+class UserDefinablePalette:public IPalette,
+                           public IComponentSource {
   private:
   static Colour* DEFAULT_COLOUR; // TODO: Should be const?
     
-  /**
-   * This command is executed to show the palette editor component.
-   */
-  class PaletteConfigurationCommand:public ICommand {
-    private:
-    UserDefinablePalette* cParent;
-    IComponentContainer* cComponentContainer;
-
-    public:
-    PaletteConfigurationCommand(UserDefinablePalette*);
-    void setComponentContainer(IComponentContainer*);
-
-    /***********************\
-     * Implements ICommand *
-    \***********************/
-    void execute();
-  };
-
-  std::vector<ICommandInfo*> cPluginCommands;
   std::map<std::string, Colour*> cPalette;
   std::vector<IPaletteListener*> cChangeListeners;
-
-  /**
-   * Instance of the command to show the palette editor component.
-   */
-  PaletteConfigurationCommand* cPaletteConfigurationCommand;
+  IComponentContainer* cComponentContainer;
 
   public:
   UserDefinablePalette();
@@ -76,11 +56,15 @@ class UserDefinablePalette:public IPalette {
   /**********************\
    * Implements IPlugin *
   \**********************/
-  std::vector<ICommandInfo*> getCommandInfo();
-  void setEditingContext(BlockLocation*, IComponentContainer*);
+  void setEditingContext(IEditingContext*);
   void save(DOMNodeWriter*);
   void load(DOMNodeWrapper*);
 
+  /*******************************\
+   * Implements IComponentSource *
+  \*******************************/
+  IHUDComponent* createComponent();
+  
   ~UserDefinablePalette();
 };
 

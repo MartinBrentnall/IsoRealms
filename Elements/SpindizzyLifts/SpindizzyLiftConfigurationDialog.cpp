@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2011 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,28 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef PALETTE_CONFIGURATION_COMMAND_INFO_H
-#define PALETTE_CONFIGURATION_COMMAND_INFO_H
+#include "SpindizzyLiftConfigurationDialog.h"
 
-#include <vector>
-#include <string>
-
-#include <IsoRealms/ICommand.h>
-#include <IsoRealms/ICommandInfo.h>
-
-class PaletteConfigurationCommandInfo:public ICommandInfo {
-  private:
-  std::vector<std::string> cPath;
-  ICommand* cCommand;
-
-  public:
-  PaletteConfigurationCommandInfo(std::vector<std::string>, ICommand*);
-
-  /****************************\
-    * Implements ICommandInfo *
-  \****************************/
-  std::vector<std::string> getCommandPath();
-  ICommand* getCommand();
-};
-
-#endif
+SpindizzyLiftConfigurationDialog::SpindizzyLiftConfigurationDialog(IComponentContainer* componentContainer) : ResizableDialog(componentContainer, "Spindizzy Lift Types", 0.0f, 0.0f, 0.75f, 0.75f) {
+}

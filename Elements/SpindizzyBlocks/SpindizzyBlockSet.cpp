@@ -190,6 +190,15 @@ void SpindizzyBlockSet::destroy(IElement* element) {
   delete element;
 }
 
+void SpindizzyBlockSet::setEditingContext(IEditingContext* editingContext) {
+  std::vector<std::string> mPath;
+  mPath.push_back("Configure Spindizzy Blocks...");
+  mPath.push_back("Elements");
+  cComponentContainer = editingContext->getComponentContainer();
+  OpenDialogCommand* mConfigureCommand = new OpenDialogCommand(cComponentContainer, this);
+  editingContext->registerCommand(new DefaultCommandInfo(mPath, mConfigureCommand));
+}
+
 void SpindizzyBlockSet::initElementsComplete() {
   cVisualProcessor->initElementsComplete();
   if (!cEditing) {
@@ -355,6 +364,10 @@ void SpindizzyBlockSet::HUDClueData::save(DOMNodeWriter* node) {
     node->addAttribute("z", cLocation.z);
   }
   node->addText(cName);
+}
+
+IHUDComponent* SpindizzyBlockSet::createComponent() {
+  return new SpindizzyBlockConfigurationDialog(cComponentContainer);
 }
 
 extern "C" IElementSet* create(DOMNodeWrapper* node) {

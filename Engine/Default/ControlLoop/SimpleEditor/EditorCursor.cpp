@@ -150,6 +150,14 @@ bool EditorCursor::keyDown(SDLKey& key) {
       }
       break;
     }
+    
+    case SDLK_DELETE: {
+      if (cEditZonePointer == NULL) {
+        Zone* mZoneToDelete = cEditMapPointer->getZone(*this);
+        // TODO: Ask for confirmation
+        cEditMapPointer->removeZone(mZoneToDelete);
+      }
+    }
 
     default: {
       return false;

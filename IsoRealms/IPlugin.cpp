@@ -21,7 +21,6 @@
 std::vector<IDynamicElement*> IPlugin::cNoDynamicElements;
 std::vector<IVisualElement*> IPlugin::cNoVisualElements;
 std::vector<IInteractiveElement*> IPlugin::cNoInteractiveElements;
-std::vector<ICommandInfo*> IPlugin::cNoCommands;
 
 void IPlugin::notifyZoneAction(IZone*) {
   // Nothing to do.
@@ -59,16 +58,12 @@ void IPlugin::zoneContextChanged(IMap*, IZone*) {
   // Nothing to do.
 }
 
-void IPlugin::setEditingContext(BlockLocation*, IComponentContainer*) {
+void IPlugin::setEditingContext(IEditingContext*) {
   // Nothing to do.
 }
 
 void IPlugin::setRuntimeContext(IRuntimeContext*) {
   // Nothing to do.
-}
-
-std::vector<ICommandInfo*> IPlugin::getCommandInfo() {
-  return cNoCommands;
 }
 
 void IPlugin::save(DOMNodeWriter*) {
