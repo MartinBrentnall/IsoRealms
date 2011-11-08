@@ -20,7 +20,6 @@
 
 SpindizzyCraftBallModelFactory::SpindizzyCraftBallModelFactory() {
   assignDummyPlugin(&cCamera, "Camera");
-  cCameraSocket.push_back(new PlugSocket("Camera"));
 }
 
 ISimpleModel* SpindizzyCraftBallModelFactory::createModel(Vertex* location, float scale) {
@@ -29,10 +28,6 @@ ISimpleModel* SpindizzyCraftBallModelFactory::createModel(Vertex* location, floa
 
 void SpindizzyCraftBallModelFactory::destroyModel(ISimpleModel* ballModel) {
   delete ballModel;
-}
-
-std::vector<PlugSocket*> SpindizzyCraftBallModelFactory::getPlugSockets() {
-  return cCameraSocket;
 }
 
 void SpindizzyCraftBallModelFactory::setPlugin(PlugSocket* socket, IPlugin* plugin) {

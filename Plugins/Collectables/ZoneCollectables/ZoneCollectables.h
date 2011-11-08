@@ -45,7 +45,6 @@ class ZoneCollectables:public ICollectables,
   IZone* cEditingZone;
   IZone* cRuntimeZone;
   IMap* cMap;
-  std::vector<PlugSocket*> cZoneContextSocket;
   std::map<IZone*, std::vector<ICollectable*>*> cCollectables;
   unsigned int cCollectablesCount;
   unsigned int cCollectedCount;
@@ -81,8 +80,6 @@ class ZoneCollectables:public ICollectables,
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/
-  std::string getName();
-  std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
 

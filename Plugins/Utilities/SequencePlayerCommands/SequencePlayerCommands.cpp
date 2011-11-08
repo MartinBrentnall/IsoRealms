@@ -20,15 +20,10 @@
 
 SequencePlayerCommands::SequencePlayerCommands() {
   assignDummyPlugin(&cPlayer, "SequencePlayer");
-  cPlayerSocket.push_back(new PlugSocket("SequencePlayer"));
   cPlayerCommands.push_back(new PlayCommand(this));
   cPlayerCommands.push_back(new RewindCommand(this));
   cPlayerCommands.push_back(new PauseCommand(this));
   cPlayerCommands.push_back(new UnpauseCommand(this));
-}
-
-std::vector<PlugSocket*> SequencePlayerCommands::getPlugSockets() {
-  return cPlayerSocket;
 }
 
 IPlugin* SequencePlayerCommands::getPlugin(PlugSocket* socket) {

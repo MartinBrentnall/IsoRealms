@@ -20,16 +20,11 @@
 
 ZoneContextRenderer::ZoneContextRenderer() {
   assignDummyPlugin(&cZoneContext, "ZoneContext");
-  cSockets.push_back(new PlugSocket("ZoneContext"));
 }
 
 IZoneRenderer* ZoneContextRenderer::getZoneRenderer(const std::string& name) {
   if (name == "zone") {return this;}
   return NULL;
-}
-
-std::vector<PlugSocket*> ZoneContextRenderer::getPlugSockets() {
-  return cSockets;
 }
 
 void ZoneContextRenderer::setPlugin(PlugSocket* socket, IPlugin* plugin) {

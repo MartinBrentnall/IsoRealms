@@ -24,11 +24,6 @@ ExploredZones::ExploredZones() {
   assignDummyPlugin(&cObjectives, "Objectives");
   assignDummyPlugin(&cToGoStringProcessor, "StringProcessor");
   assignDummyPlugin(&cFlaggedZones, "FlaggedZones");
-  cSockets.push_back(new PlugSocket("3DModel"));
-  cSockets.push_back(new PlugSocket("ZoneContext"));
-  cSockets.push_back(new PlugSocket("Objectives"));
-  cSockets.push_back(new PlugSocket("StringProcessor"));
-  cSockets.push_back(new PlugSocket("FlaggedZones"));
   cZoneCount = 0;
   cExploredZoneRenderer = new ExploredZoneRenderer(this);
   cMapOverviewRenderer = new MapOverviewRenderer(this);
@@ -76,10 +71,6 @@ IZoneRenderer* ExploredZones::getZoneRenderer(const std::string& name) {
   if (name == "explored")    {return cExploredZoneRenderer;}
   if (name == "mapOverview") {return cMapOverviewRenderer;}
   return NULL;
-}
-
-std::vector<PlugSocket*> ExploredZones::getPlugSockets() {
-  return cSockets;
 }
 
 void ExploredZones::setPlugin(PlugSocket* socket, IPlugin* plugin) {

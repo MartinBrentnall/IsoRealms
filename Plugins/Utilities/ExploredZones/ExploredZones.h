@@ -51,7 +51,6 @@ class ExploredZones:public IUtilities,
   std::string cToGoString;
   std::map<IZone*, ISimpleModel*> cExploredZones;
   unsigned int cZoneCount;
-  std::vector<PlugSocket*> cSockets;
   Script* cAllZonesExploredScript;
   Script* cZoneExploredScript;
   IZoneRenderer* cExploredZoneRenderer;
@@ -106,7 +105,6 @@ class ExploredZones:public IUtilities,
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/
-  std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*); 
   

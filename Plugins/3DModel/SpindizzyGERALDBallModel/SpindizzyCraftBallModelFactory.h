@@ -28,7 +28,6 @@
 
 class SpindizzyCraftBallModelFactory:public ISimpleModelFactory {
   private:
-  std::vector<PlugSocket*> cCameraSocket;
   ICamera* cCamera;
 
   public:
@@ -43,7 +42,6 @@ class SpindizzyCraftBallModelFactory:public ISimpleModelFactory {
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/
-  std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
 };

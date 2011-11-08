@@ -54,8 +54,6 @@ class C64SpindizzySpriteSet:public ITextureSet,
   static const std::string LIFT_DIAMOND_ONE;
   static const std::string LIFT_DIAMOND_NONE;
 
-  std::vector<PlugSocket*> cPlugSockets;
-
   /** Fully transparent constant. */
   Colour* TRANSPARENT;
 
@@ -169,7 +167,6 @@ class C64SpindizzySpriteSet:public ITextureSet,
   /******************************************\
    * Implements IPluginSupport (in IPlugin) *
   \******************************************/
-  std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
   

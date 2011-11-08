@@ -20,11 +20,6 @@
 
 SoundCommandSupport::SoundCommandSupport() {
   assignDummyPlugin(&cSoundSupport, "SoundSupport");
-  cSockets.push_back(new PlugSocket("SoundSupport"));
-}
-
-std::vector<PlugSocket*> SoundCommandSupport::getPlugSockets() {
-  return cSockets;
 }
 
 void SoundCommandSupport::setPlugin(PlugSocket* socket, IPlugin* plugin) {

@@ -65,8 +65,6 @@ class C64SpindizzyTextureSet:public ITextureSet,
   static const std::string WALL_PLAIN_CAP;
   static const std::string WALL_PLAIN_MIDDLE;
 
-  std::vector<PlugSocket*> cPlugSockets;
-
   std::map<std::string, C64SpindizzyTexture*> cTextures; 
   PlainColourTexture* cBackgroundTexture;
   std::map<std::string, GLuint> cTextureIDs;
@@ -132,7 +130,6 @@ class C64SpindizzyTextureSet:public ITextureSet,
   /******************************************\
    * Implements IPluginSupport (in IPlugin) *
   \******************************************/
-  std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
 

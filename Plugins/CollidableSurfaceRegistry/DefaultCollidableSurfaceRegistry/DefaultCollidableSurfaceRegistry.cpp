@@ -2,7 +2,6 @@
 
 DefaultCollidableSurfaceRegistry::DefaultCollidableSurfaceRegistry() {
   assignDummyPlugin(&cZoneContext, "ZoneContext");
-  cZoneContextSocket.push_back(new PlugSocket("ZoneContext"));
 }
 
 void DefaultCollidableSurfaceRegistry::registerRollableSurface(IRollableSurface* rollableSurface, bool intercepting) {
@@ -87,10 +86,6 @@ void DefaultCollidableSurfaceRegistry::initPlugin(IZone* zone, unsigned int pass
 
 void DefaultCollidableSurfaceRegistry::zoneContextChanged(IZone* zone) {
   cRuntimeZone = zone;
-}
-
-std::vector<PlugSocket*> DefaultCollidableSurfaceRegistry::getPlugSockets() {
-  return cZoneContextSocket;
 }
 
 void DefaultCollidableSurfaceRegistry::setPlugin(PlugSocket* socket, IPlugin* plugin) {

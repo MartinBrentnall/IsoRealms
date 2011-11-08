@@ -27,7 +27,6 @@ class DefaultZoneContext:public IZoneContext {
   private:
   std::vector<IZoneContextListener*> cListeners;
   IZone* cContext;
-  std::vector<PlugSocket*> cLocationAwarenessSocket;
   ILocationAwareness* cLocationAwareness;
   Vertex cLocation;
 
@@ -37,7 +36,6 @@ class DefaultZoneContext:public IZoneContext {
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/
-  std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
 

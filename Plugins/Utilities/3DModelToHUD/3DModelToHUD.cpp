@@ -22,9 +22,6 @@ ModelToHUD::ModelToHUD() {
   assignDummyPlugin(&cModelFactory, "3DModel");
   assignDummyPlugin(&cCamera, "Camera");
   assignDummyPlugin(&cHUD, "HUD");
-  cSockets.push_back(new PlugSocket("3DModel"));
-  cSockets.push_back(new PlugSocket("Camera"));
-  cSockets.push_back(new PlugSocket("HUD"));
   cModel = cModelFactory->createModel(&cModelLocation);
 }
 
@@ -45,10 +42,6 @@ void ModelToHUD::save(DOMNodeWriter* node) {
   mLocationNode->addAttribute("x", cModelLocation.x);
   mLocationNode->addAttribute("y", cModelLocation.y);
   mLocationNode->addAttribute("z", cModelLocation.z);
-}
-
-std::vector<PlugSocket*> ModelToHUD::getPlugSockets() {
-  return cSockets;
 }
 
 void ModelToHUD::setPlugin(PlugSocket* socket, IPlugin* plugin) {

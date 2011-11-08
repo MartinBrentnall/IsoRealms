@@ -32,12 +32,12 @@ class IPlugin;
 
 class IPluginSupport {
   private:
-  static std::vector<PlugSocket*> cNoSockets;
-
   virtual IPlugin* getPlugin(PlugSocket*);
 
   void throwPluginSupportException(PlugSocket*);
 
+  std::vector<PlugSocket*> cSockets;
+  
   protected:
 
   /**
@@ -77,12 +77,13 @@ class IPluginSupport {
     return true;
   }
 
-  template<class T> void assignDummyPlugin(T** dest, const std::string& type) {
+  template<class T> void assignDummyPlugin(T** dest, const std::string& type, const std::string& id = "") {
     *dest = dynamic_cast<T*>(DummyPluginRegistry::getDummyPlugin(type));
     if (*dest == NULL) {
       // TODO: Throw wobbly
       std::cout << "WARNING: Setting dummy plugin failed for type \"" << type << "\"!" << std::endl;
     }
+    cSockets.push_back(new PlugSocket(type, id));    
   }
 
   public:
@@ -95,7 +96,9 @@ class IPluginSupport {
    * 
    * @returns  The plug-ins supported.
    */
-  virtual std::vector<PlugSocket*> getPlugSockets();
+  virtual std::vector<PlugSocket*> getPlugSockets() {
+    return cSockets;
+  }
 
   /**
    * Set the implementation instance of a specified supported plugin.

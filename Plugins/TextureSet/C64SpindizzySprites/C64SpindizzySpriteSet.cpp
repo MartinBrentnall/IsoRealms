@@ -29,7 +29,6 @@ const std::string C64SpindizzySpriteSet::LIFT_DIAMOND_ONE  = "LiftDiamondOne";
 const std::string C64SpindizzySpriteSet::LIFT_DIAMOND_NONE = "LiftDiamondEmpty";
 
 C64SpindizzySpriteSet::C64SpindizzySpriteSet() {
-  cPlugSockets.push_back(new PlugSocket("Palette"));
   assignDummyPlugin(&cPalette, "Palette");
 
   TRANSPARENT = new Colour(0.0, 0.0, 0.0, 0.0);
@@ -231,10 +230,6 @@ void C64SpindizzySpriteSet::destroyTextures() {
   cTextureIDs.clear();
 }
 
-std::vector<PlugSocket*> C64SpindizzySpriteSet::getPlugSockets() {
-  return cPlugSockets;
-}
-
 void C64SpindizzySpriteSet::setPlugin(PlugSocket* socket, IPlugin* plugin) {
   if (socket->getType() == "Palette") {
     IPalette* mPreviousPalette = cPalette;
@@ -297,9 +292,6 @@ void C64SpindizzySpriteSet::save(DOMNodeWriter* node) {
 
 C64SpindizzySpriteSet::~C64SpindizzySpriteSet() {
   delete TRANSPARENT;
-  for (unsigned int i = 0; i < cPlugSockets.size(); i++) {
-    delete cPlugSockets[i];
-  }
   destroyTextures();
 }
 

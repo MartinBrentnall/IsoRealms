@@ -20,7 +20,6 @@
 
 IntegerValueCommands::IntegerValueCommands() {
   assignDummyPlugin(&cVariable, "IntegerValue");
-  cSockets.push_back(new PlugSocket("IntegerValue"));
 }
 
 void IntegerValueCommands::addCommand(AddIntegerCommand* command) {
@@ -73,10 +72,6 @@ void IntegerValueCommands::setEditingContext(IEditingContext* editingContext) {
   cComponentContainer = editingContext->getComponentContainer();
   OpenDialogCommand* mConfigureIntegerCommands = new OpenDialogCommand(cComponentContainer, this);
   editingContext->registerCommand(new DefaultCommandInfo(mPath, mConfigureIntegerCommands));
-}
-
-std::vector<PlugSocket*> IntegerValueCommands::getPlugSockets() {
-  return cSockets;
 }
 
 void IntegerValueCommands::setPlugin(PlugSocket* socket, IPlugin* plugin) {

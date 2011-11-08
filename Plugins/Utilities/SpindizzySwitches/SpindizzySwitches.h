@@ -74,7 +74,6 @@ class SpindizzySwitches:public IUtilities,
   };
 
   ICommandRegistry* cCommandRegistry;
-  std::vector<PlugSocket*> cSockets;
   IHUD* cHUD;
   ICamera* cCamera;
   HUDComponent cHUDSwitchA;
@@ -103,7 +102,6 @@ class SpindizzySwitches:public IUtilities,
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/
-  std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
 

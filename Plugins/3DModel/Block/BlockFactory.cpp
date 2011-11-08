@@ -22,8 +22,6 @@ BlockFactory::BlockFactory() {
   assignDummyPlugin(&cDummyTextureSet, "TextureSet");
   cTextureSet = cDummyTextureSet;
   cTextureSetController = NULL;
-  cSockets.push_back(new PlugSocket("TextureSet"));
-  cSockets.push_back(new PlugSocket("TextureSetChanger"));
   cProperties = new BlockProperties(&cTextureSet);
 }
 
@@ -33,10 +31,6 @@ ISimpleModel* BlockFactory::createModel(Vertex* location, float scale) {
 
 void BlockFactory::destroyModel(ISimpleModel* block) {
   delete block;
-}
-
-std::vector<PlugSocket*> BlockFactory::getPlugSockets() {
-  return cSockets;
 }
 
 void BlockFactory::setPlugin(PlugSocket* socket, IPlugin* plugin) {

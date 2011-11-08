@@ -32,7 +32,6 @@
 class SoundCommandSupport:public IUtilities,
                           public ISoundSupportListener {
   private:
-  std::vector<PlugSocket*> cSockets;
   ICommandRegistry* cCommandRegistry;
   ISoundSupport* cSoundSupport;
   std::map<ISound*, PlaySoundCommand*> cCommands;
@@ -51,7 +50,6 @@ class SoundCommandSupport:public IUtilities,
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/
-  std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
 };

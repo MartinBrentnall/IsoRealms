@@ -37,7 +37,6 @@ class DefaultCollidableSurfaceRegistry:public ICollidableSurfaceRegistry,
   private:
   std::map<IZone*, SurfaceCache*> cZoneSurfaceCaches;
   std::map<IZone*, std::vector<IZone*> > cAdjacentZones;
-  std::vector<PlugSocket*> cZoneContextSocket;
   IZoneContext* cZoneContext;
   IZone* cEditingZone;
   IZone* cRuntimeZone;
@@ -69,7 +68,6 @@ class DefaultCollidableSurfaceRegistry:public ICollidableSurfaceRegistry,
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/
-  std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
 };

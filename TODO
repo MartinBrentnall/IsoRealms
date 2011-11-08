@@ -26,8 +26,35 @@ Font Issues:
 
 Refactor Utilities to be a separate entity class.
 
-Surface Collisions:
- - Register wall surfaces
-
 Build Process:
  - Modify headers to use non-relative include paths for Global / Plugins stuff.
+
+Spindizzy Block Types Dialog:
+ - List Box "Defined Types"
+ - Text Field "Name"
+ - Number Field "Friction"
+ - Number Field "Grip"
+ - Number Field "Bounce"
+ - Checkbox Field "Respawn Allowed"
+ - Script Field "Impact"
+ - Script Field "Contact"
+ - For each tile face (top, bottom)
+   - Combo Box Field "Rotation" (Straight, Left, Right, Reversed)
+   - Texture Field "Surface"
+   - Texture Field "Split Surface" (Optional)
+ - For each wall face (north, south, east, west)
+   - Combo Box Field "Pattern Type" (Tiled, Capped)
+   - Texture Field "Surface"
+   - Texture Field "Top Cap"
+   - Texture Field "Bottom Cap"
+ - Button "Close"
+ - Button "Apply"
+ - Button "Add"
+ - Button "Delete"
+
+Spindizzy Block States Dialog:
+ - List Box "Defined States"
+ - Text Field "Name"
+ - 3D Model Selector "Clue Icon"
+ - Coordinate "Clue Icon Offset"
+

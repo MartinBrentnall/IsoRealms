@@ -12,7 +12,6 @@ class HUDRoundedRectangleFactory:public IUtilities,
                                  public IHUDComponentFactory {
   private:
   std::vector<HUDRoundedRectangle*> cRoundedRectangles;
-  std::vector<PlugSocket*> cSockets;
   IHUD* cHUD;
 
   public:
@@ -21,7 +20,6 @@ class HUDRoundedRectangleFactory:public IUtilities,
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/
-  std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
 

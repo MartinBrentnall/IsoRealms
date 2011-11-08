@@ -23,21 +23,9 @@ ZoneCollectables::ZoneCollectables() {
   assignDummyPlugin(&cObjectives, "Objectives");
   assignDummyPlugin(&cZoneContext, "ZoneContext");
   assignDummyPlugin(&cCountStringProcessor, "StringProcessor");
-  cZoneContextSocket.push_back(new PlugSocket("FlaggedZones"));
-  cZoneContextSocket.push_back(new PlugSocket("Objectives"));
-  cZoneContextSocket.push_back(new PlugSocket("ZoneContext"));
-  cZoneContextSocket.push_back(new PlugSocket("StringProcessor"));
   cCollectablesCount = 0;
   cCollectedCount = 0;
   cCollectedCountString = "0";
-}
-
-std::string ZoneCollectables::getName() {
-  return "Zone Collectables";
-}
-
-std::vector<PlugSocket*> ZoneCollectables::getPlugSockets() {
-  return cZoneContextSocket;
 }
 
 void ZoneCollectables::setPlugin(PlugSocket* socket, IPlugin* plugin) {

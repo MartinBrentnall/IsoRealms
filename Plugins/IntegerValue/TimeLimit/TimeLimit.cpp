@@ -21,8 +21,6 @@
 TimeLimit::TimeLimit() {
   assignDummyPlugin(&cIntegerValue, "IntegerValue");
   assignDummyPlugin(&cStringProcessor, "StringProcessor");
-  cSockets.push_back(new PlugSocket("IntegerValue"));
-  cSockets.push_back(new PlugSocket("StringProcessor"));
   cMilliseconds = 180000;
   cMaximumMilliseconds = 180000;
   cValuePerSecond = 100;
@@ -84,10 +82,6 @@ void TimeLimit::update(int milliseconds) {
     mStringStream << mMinutes << ":" << std::setfill('0') << std::setw(2) << mSeconds << "." << std::setw(1) << mMilliseconds;
     cText = mStringStream.str();
   }
-}
-
-std::vector<PlugSocket*> TimeLimit::getPlugSockets() {
-  return cSockets;
 }
 
 void TimeLimit::setPlugin(PlugSocket* socket, IPlugin* plugin) {

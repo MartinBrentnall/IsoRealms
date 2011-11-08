@@ -21,11 +21,9 @@
 SpindizzyJewelSet::SpindizzyJewelSet() {
   cJewelCollectedScript = Script::getDummy();
   cAllJewelsCollectedScript = Script::getDummy();
-  assignDummyPlugin(&cJewelModelFactory, "3DModel");
+  assignDummyPlugin(&cJewelModelFactory, "3DModel");// TODO: Change to Factory
   assignDummyPlugin(&cCollectables, "Collectables");
   cElementFactories.push_back(new SpindizzyJewelFactory(this, cJewelModelFactory));
-  cJewelSockets.push_back(new PlugSocket("3DModel"));// TODO: Change to Factory
-  cJewelSockets.push_back(new PlugSocket("Collectables"));
 }
 
 void SpindizzyJewelSet::setModel(ISimpleModelFactory* modelFactory) {
@@ -45,14 +43,6 @@ void SpindizzyJewelSet::setRuntimeContext(IRuntimeContext* runtimeContext) {
 
 void SpindizzyJewelSet::destroy(IElement* jewel) {
   delete jewel;
-}
-
-std::string SpindizzyJewelSet::getName() {
-  return "Spindizzy Jewel";
-}
-
-std::vector<PlugSocket*> SpindizzyJewelSet::getPlugSockets() {
-  return cJewelSockets;
 }
 
 void SpindizzyJewelSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {

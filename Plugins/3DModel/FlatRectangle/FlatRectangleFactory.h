@@ -29,7 +29,6 @@
 
 class FlatRectangleFactory:public ISimpleModelFactory {
   private:
-  std::vector<PlugSocket*> cTextureSetSocket;
   ITextureSet* cTextureSet;
   ITexture* cTexture;
   std::string cTextureName;
@@ -50,7 +49,6 @@ class FlatRectangleFactory:public ISimpleModelFactory {
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/
-  std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
 

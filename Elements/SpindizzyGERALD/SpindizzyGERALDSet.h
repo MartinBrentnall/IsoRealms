@@ -94,8 +94,6 @@ class SpindizzyGERALDSet:public ISpindizzyGERALDSet {
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/
-  std::string getName();
-  std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
 

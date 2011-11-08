@@ -2,11 +2,6 @@
 
 HUDRoundedRectangleFactory::HUDRoundedRectangleFactory() {
   assignDummyPlugin(&cHUD, "HUD");
-  cSockets.push_back(new PlugSocket("HUD"));
-}
-
-std::vector<PlugSocket*> HUDRoundedRectangleFactory::getPlugSockets() {
-  return cSockets;
 }
 
 void HUDRoundedRectangleFactory::setPlugin(PlugSocket* socket, IPlugin* plugin) {

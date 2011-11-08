@@ -31,7 +31,6 @@
 class BlockFactory:public ISimpleModelFactory,
                    public IChangeableTextureSet {
   private:
-  std::vector<PlugSocket*> cSockets;
   ITextureSetChanger* cTextureSetController;
   ITextureSet* cDummyTextureSet;
   ITextureSet* cTextureSet;
@@ -50,7 +49,6 @@ class BlockFactory:public ISimpleModelFactory,
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/
-  std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
 

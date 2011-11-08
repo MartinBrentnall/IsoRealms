@@ -20,11 +20,6 @@
 
 DefaultZoneContext::DefaultZoneContext() {
   assignDummyPlugin(&cLocationAwareness, "LocationAwareness");
-  cLocationAwarenessSocket.push_back(new PlugSocket("LocationAwareness"));
-}
-
-std::vector<PlugSocket*> DefaultZoneContext::getPlugSockets() {
-  return cLocationAwarenessSocket;
 }
 
 void DefaultZoneContext::setPlugin(PlugSocket* socket, IPlugin* plugin) {

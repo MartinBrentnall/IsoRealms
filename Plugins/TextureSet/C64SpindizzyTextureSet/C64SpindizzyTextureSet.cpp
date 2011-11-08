@@ -248,7 +248,6 @@ GLuint C64SpindizzyTextureSet::convertToTexture(Image* image, const std::string&
 }
 
 C64SpindizzyTextureSet::C64SpindizzyTextureSet() {
-  cPlugSockets.push_back(new PlugSocket("Palette"));
   assignDummyPlugin(&cPalette, "Palette");
 
   cTextures[SWITCH_CIRCLE_BOTH]  = new C64SpindizzyTexture();
@@ -316,10 +315,6 @@ void C64SpindizzyTextureSet::destroyTextures() {
   cTextureIDs.clear();
 }
 
-std::vector<PlugSocket*> C64SpindizzyTextureSet::getPlugSockets() {
-  return cPlugSockets;
-}
-
 void C64SpindizzyTextureSet::setPlugin(PlugSocket* socket, IPlugin* plugin) {
   if (socket->getType() == "Palette") {
     IPalette* mPreviousPalette = cPalette;
@@ -354,9 +349,6 @@ ITexture* C64SpindizzyTextureSet::getTexture(const std::string& name) {
 }
 
 C64SpindizzyTextureSet::~C64SpindizzyTextureSet() {
-  for (unsigned int i = 0; i < cPlugSockets.size(); i++) {
-    delete cPlugSockets[i];
-  }
   destroyTextures();
 }
 

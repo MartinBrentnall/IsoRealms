@@ -21,8 +21,6 @@
 StringToHUD::StringToHUD() {
   assignDummyPlugin(&cHUD, "HUD");
   assignDummyPlugin(&cFont, "Font");
-  cSockets.push_back(new PlugSocket("HUD"));
-  cSockets.push_back(new PlugSocket("Font"));
 }
 
 void StringToHUD::registerString(std::string* text) {
@@ -36,10 +34,6 @@ void StringToHUD::load(DOMNodeWrapper* node) {
     std::string mValueAsString = mNode->getNodeName();
     // TODO: Implement this
   }
-}
-
-std::vector<PlugSocket*> StringToHUD::getPlugSockets() {
-  return cSockets;
 }
 
 void StringToHUD::setPlugin(PlugSocket* socket, IPlugin* plugin) {

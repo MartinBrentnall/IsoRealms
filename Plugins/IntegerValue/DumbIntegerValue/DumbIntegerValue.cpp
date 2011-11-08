@@ -20,7 +20,6 @@
 
 DumbIntegerValue::DumbIntegerValue() {
   assignDummyPlugin(&cStringProcessor, "StringProcessor");
-  cSockets.push_back(new PlugSocket("StringProcessor"));
   cValue = 0;
 }
 
@@ -47,10 +46,6 @@ void DumbIntegerValue::removeIntegerValueListener(IIntegerValueListener* listene
       return;
     }
   }
-}
-
-std::vector<PlugSocket*> DumbIntegerValue::getPlugSockets() {
-  return cSockets;
 }
 
 void DumbIntegerValue::setPlugin(PlugSocket* socket, IPlugin* plugin) {

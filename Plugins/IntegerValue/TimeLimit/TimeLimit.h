@@ -39,7 +39,6 @@ class TimeLimit:public IIntegerValue,
   IIntegerValue* cIntegerValue;
   IStringProcessor* cStringProcessor;
   std::vector<IUserCommand*> cTimeOutCommands;
-  std::vector<PlugSocket*> cSockets;
   unsigned int cLocks;
   std::vector<IUserCommand*> cCommands;
   std::string cText;
@@ -83,7 +82,6 @@ class TimeLimit:public IIntegerValue,
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/
-  std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
 };

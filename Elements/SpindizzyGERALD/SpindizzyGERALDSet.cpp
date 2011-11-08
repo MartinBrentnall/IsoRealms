@@ -64,21 +64,6 @@ void SpindizzyGERALDSet::setRuntimeContext(IRuntimeContext* runtimeContext) {
   }
 }
 
-std::string SpindizzyGERALDSet::getName() {
-  return "GERALD";
-}
-
-std::vector<PlugSocket*> SpindizzyGERALDSet::getPlugSockets() {
-  std::vector<PlugSocket*> mSockets;
-  mSockets.push_back(new PlugSocket("3DModel", ""));
-  mSockets.push_back(new PlugSocket("Camera", ""));
-  // TODO: Support for multiple collectables.
-  mSockets.push_back(new PlugSocket("Collectables", ""));
-  mSockets.push_back(new PlugSocket("LocationAwareness", ""));
-  mSockets.push_back(new PlugSocket("ZoneContext", ""));
-  return mSockets;
-}
-
 void SpindizzyGERALDSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
   if (socket->getType() == "3DModel") {
     if (assignPlugin(implementation, &cGERALDModelFactory, *socket)) {

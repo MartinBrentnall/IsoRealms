@@ -67,8 +67,6 @@ class SpindizzyJewelSet:public ISpindizzyJewelSet {
   /**********************************************\
    * Implements IPluginSupport (in IElementSet) *
   \**********************************************/
-  std::string getName();
-  std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
   void save(DOMNodeWriter*);

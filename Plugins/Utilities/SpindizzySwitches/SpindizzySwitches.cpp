@@ -25,13 +25,8 @@ SpindizzySwitches::SpindizzySwitches() {
   cResetCommand = new ResetCommand(this);
   assignDummyPlugin(&cHUD, "HUD");
   assignDummyPlugin(&cCamera, "Camera");
-  cSockets.push_back(new PlugSocket("HUD"));
   cHUDSwitchA.setCamera(cCamera);
   cHUDSwitchB.setCamera(cCamera);
-}
-
-std::vector<PlugSocket*> SpindizzySwitches::getPlugSockets() {
-  return cSockets;
 }
 
 void SpindizzySwitches::setPlugin(PlugSocket* socket, IPlugin* plugin) {

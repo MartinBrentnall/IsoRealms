@@ -28,7 +28,6 @@ class DumbIntegerValue:public IIntegerValue {
   std::vector<IIntegerValueListener*> cListeners;
   int cValue;
   IStringProcessor* cStringProcessor;
-  std::vector<PlugSocket*> cSockets;
   std::string cText;
 
   public:
@@ -44,7 +43,6 @@ class DumbIntegerValue:public IIntegerValue {
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/
-  std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
 };

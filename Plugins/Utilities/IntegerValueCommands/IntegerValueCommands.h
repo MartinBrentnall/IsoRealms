@@ -35,7 +35,6 @@ class IntegerValueCommands:public IUtilities,
                            public IIntegerCommandRegistry,
                            public IComponentSource {
   private:
-  std::vector<PlugSocket*> cSockets;
   IIntegerValue* cVariable;
   ICommandRegistry* cCommandRegistry;
   std::vector<AddIntegerCommand*> cCommands;
@@ -62,7 +61,6 @@ class IntegerValueCommands:public IUtilities,
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/
-  std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
   

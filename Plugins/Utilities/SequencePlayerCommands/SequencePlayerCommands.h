@@ -36,11 +36,6 @@ class SequencePlayerCommands:public IUtilities {
   std::vector<IUserCommand*> cPlayerCommands;
 
   /**
-   * The socket to which the Player plugin can connect.
-   */   
-  std::vector<PlugSocket*> cPlayerSocket;
-  
-  /**
    * The player instance whose functions to wrap.
    */
   ISequencePlayer* cPlayer;
@@ -119,7 +114,6 @@ class SequencePlayerCommands:public IUtilities {
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/
-  std::vector<PlugSocket*> getPlugSockets();
   IPlugin* getPlugin(PlugSocket*);
   void setPlugin(PlugSocket*, IPlugin*);
 

@@ -31,7 +31,6 @@ class ZoneContextRenderer:public IUtilities,
                           public IZoneContextListener,
                           public IZoneRenderer {
   private:
-  std::vector<PlugSocket*> cSockets;
   IZoneContext* cZoneContext;
   IZone* cZone;  
   
@@ -46,7 +45,6 @@ class ZoneContextRenderer:public IUtilities,
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/
-  std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*); 
   

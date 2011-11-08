@@ -30,7 +30,6 @@ class StringToHUD:public IStringProcessor,
                   public IHUDComponentFactory,
                   public IHUDGameComponent {
   private:
-  std::vector<PlugSocket*> cSockets;
   std::string* cText;
   IFont* cFont;
   IHUD* cHUD;
@@ -51,7 +50,6 @@ class StringToHUD:public IStringProcessor,
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/
-  std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
 

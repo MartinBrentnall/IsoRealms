@@ -31,7 +31,6 @@ class ModelToHUD:public IUtilities,
                  public IHUDComponentFactory,
                  public IHUDGameComponent {
   private:
-  std::vector<PlugSocket*> cSockets;
   Vertex cModelLocation;
   ICamera* cCamera;
   ISimpleModelFactory* cModelFactory;
@@ -50,7 +49,6 @@ class ModelToHUD:public IUtilities,
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/
-  std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
 

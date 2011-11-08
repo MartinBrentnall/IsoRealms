@@ -20,7 +20,6 @@
 
 FlatRectangleFactory::FlatRectangleFactory() {
   assignDummyPlugin(&cTextureSet, "TextureSet");
-  cTextureSetSocket.push_back(new PlugSocket("TextureSet"));
   cSize = 1.0f;
   cFlip = false;
   cTextureName = "";
@@ -33,10 +32,6 @@ ISimpleModel* FlatRectangleFactory::createModel(Vertex* location, float scale) {
 
 void FlatRectangleFactory::destroyModel(ISimpleModel* flatRectangle) {
   delete flatRectangle;
-}
-
-std::vector<PlugSocket*> FlatRectangleFactory::getPlugSockets() {
-  return cTextureSetSocket;
 }
 
 void FlatRectangleFactory::setPlugin(PlugSocket* socket, IPlugin* plugin) {
