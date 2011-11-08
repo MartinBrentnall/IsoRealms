@@ -42,7 +42,7 @@ class ToggleSwitches:public IUtilities {
      * Implements IUserCommand *
     \***************************/
     void execute();
-    std::string getCommandName();
+    std::string getName();
     void save(DOMNodeWriter*);
   };
   
@@ -58,11 +58,11 @@ class ToggleSwitches:public IUtilities {
      * Implements IUserCommand *
     \***************************/
     void execute();
-    std::string getCommandName();
+    std::string getName();
     void save(DOMNodeWriter*);
   };
 
-  ICommandRegistry* cCommandRegistry;
+  IRuntimeContext* cRuntimeContext;
   std::vector<PlugSocket*> cCommandRegistrySocket;
   std::vector<IToggleSwitchCommand*> cSwitchCommands;
   

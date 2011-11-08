@@ -37,8 +37,7 @@ std::vector<IElementFactory*> SpindizzyJewelSet::getElementFactories() {
 }
 
 void SpindizzyJewelSet::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  cEditing = runtimeContext->isEditing();
-  cCommandRegistry = runtimeContext->getCommandRegistry();
+  cRuntimeContext = runtimeContext;
 }
 
 void SpindizzyJewelSet::destroy(IElement* jewel) {
@@ -77,9 +76,9 @@ void SpindizzyJewelSet::load(DOMNodeWrapper* node) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "JewelCollectedScript") {
-      cJewelCollectedScript = cCommandRegistry->getScript(mNode);
+      cJewelCollectedScript = cRuntimeContext->getScript(mNode);
     } else if (mValueAsString == "AllJewelsCollectedScript") {
-      cAllJewelsCollectedScript = cCommandRegistry->getScript(mNode);
+      cAllJewelsCollectedScript = cRuntimeContext->getScript(mNode);
     } else {
       // TODO: Throw something!
     }
@@ -99,7 +98,7 @@ void SpindizzyJewelSet::allJewelsCollected() {
 }
 
 bool SpindizzyJewelSet::isEditing() {
-  return cEditing;
+  return cRuntimeContext->isEditing();
 }
 
 SpindizzyJewelSet::~SpindizzyJewelSet() {

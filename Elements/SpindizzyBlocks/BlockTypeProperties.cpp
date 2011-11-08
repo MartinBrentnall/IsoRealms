@@ -29,7 +29,7 @@ BlockTypeProperties::BlockTypeProperties() {
   cWallType = TILED;
 }
 
-void BlockTypeProperties::configure(DOMNodeWrapper* node, ICommandRegistry* commandRegistry, ITextureSet** textureSet) {
+void BlockTypeProperties::configure(DOMNodeWrapper* node, IRuntimeContext* runtimeContext, ITextureSet** textureSet) {
   cTextureSet = textureSet;
   cSurfaceFriction = node->getFloatAttribute("friction");
   cSurfaceGrip = node->getFloatAttribute("grip");
@@ -42,9 +42,9 @@ void BlockTypeProperties::configure(DOMNodeWrapper* node, ICommandRegistry* comm
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "ContactScript") {
-      cContactScript = commandRegistry->getScript(mNode);
+      cContactScript = runtimeContext->getScript(mNode);
     } else if (mValueAsString == "ImpactScript") {
-      cImpactScript = commandRegistry->getScript(mNode);
+      cImpactScript = runtimeContext->getScript(mNode);
     } else if (mValueAsString == "Texture") {
       std::string mApplyTo = mNode->getAttribute("type");
       std::string mTextureName = mNode->getAttribute("name");

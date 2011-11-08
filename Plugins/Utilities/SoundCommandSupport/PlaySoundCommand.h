@@ -33,7 +33,7 @@ class PlaySoundCommand:public IUserCommand {
   /***************************\
    * Implements IUserCommand *
   \***************************/
-  std::string getCommandName();
+  std::string getName();
   void execute();
 };
 

@@ -19,14 +19,19 @@
 #ifndef I_RUNTIME_CONTEXT_H
 #define I_RUNTIME_CONTEXT_H
 
+#include "DOMNodeWrapper.h"
 #include "ICommandRegistry.h"
 #include "IMap.h"
+#include "Script.h"
 
 class IRuntimeContext {
   public:
   virtual IMap* getMap() = 0;
-  virtual ICommandRegistry* getCommandRegistry() = 0;
   virtual bool isEditing() = 0;
+  virtual std::string getLocation(IUserCommand*) = 0; // TODO: What's this for?  Is it used?
+  virtual void add(IUserCommand*) = 0;
+  virtual void remove(IUserCommand*) = 0;
+  virtual Script* getScript(DOMNodeWrapper*) = 0;
 };
 
 #endif

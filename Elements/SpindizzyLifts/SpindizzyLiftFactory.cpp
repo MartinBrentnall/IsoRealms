@@ -71,7 +71,7 @@ void SpindizzyLiftFactory::LiftCommand::execute() {
   cParent->cState = cTargetState;
 }
 
-std::string SpindizzyLiftFactory::LiftCommand::getCommandName() {
+std::string SpindizzyLiftFactory::LiftCommand::getName() {
   return (cTargetState ? std::string("Enable") : std::string("Disable")) + " Lifts " + cParent->cLiftTypeName;
 }
 

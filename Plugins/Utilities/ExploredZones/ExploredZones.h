@@ -45,7 +45,7 @@ class ExploredZones:public IUtilities,
   private:
   IZoneContext* cZoneContext;
   IZone* cZone;
-  ICommandRegistry* cCommandRegistry;
+  IRuntimeContext* cRuntimeContext;
   IObjectives* cObjectives;
   IStringProcessor* cToGoStringProcessor;
   std::string cToGoString;

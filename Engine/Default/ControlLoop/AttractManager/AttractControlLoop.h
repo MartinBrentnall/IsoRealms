@@ -32,15 +32,17 @@
 #include "../../IControlLoop.h"
 #include "../../IEngineArguments.h"
 
-#include <IsoRealms/CommandDirectory.h>
+#include <IsoRealms/CommandProxy.h>
 #include <IsoRealms/DOMNodeWrapper.h>
 #include <IsoRealms/Hacks.h>
 #include <IsoRealms/ICommand.h>
 #include <IsoRealms/IFont.h>
 #include <IsoRealms/InitException.h>
 #include <IsoRealms/IPluginSupport.h>
+#include <IsoRealms/IUserCommand.h>
 #include <IsoRealms/PluginRegistry.h>
 #include <IsoRealms/PlugSocket.h>
+#include <IsoRealms/Registry.h>
 #include <IsoRealms/System.h>
 
 class AttractControlLoop:public IControlLoop,
@@ -51,7 +53,7 @@ class AttractControlLoop:public IControlLoop,
   std::vector<ICommand*> cFrontEndEndCommands; // TODO: Implement
   std::map<std::string, IAttract*> cAttractServices;
   AttractSceneManager cAttractSceneManager;
-  CommandDirectory cCommandRegistry;
+  Registry<IUserCommand, CommandProxy> cCommandRegistry;
   std::vector<ICommand*> cInitCommands;
   IFrontEnd* cFrontEnd;
   PluginRegistry cPluginRegistry;

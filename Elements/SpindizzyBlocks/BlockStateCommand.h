@@ -37,7 +37,7 @@ class BlockStateCommand:public IUserCommand {
    * Implements IUserCommand *
   \***************************/
   void execute();
-  std::string getCommandName();
+  std::string getName();
 };
 
 #endif

@@ -19,23 +19,30 @@
 #ifndef RUNTIME_CONTEXT_H
 #define RUNTIME_CONTEXT_H
 
+#include "CommandProxy.h"
 #include "IRuntimeContext.h"
+#include "IScriptSource.h"
+#include "RegistryProxy.h"
 
 class RuntimeContext:public IRuntimeContext {
   private:
   IMap* cMap;
-  ICommandRegistry* cCommandRegistry;
+  RegistryProxy<IUserCommand, CommandProxy>* cCommandGateway;
   bool cEditing;
+  IScriptSource* cScriptSource;
   
   public:
-  RuntimeContext(IMap*, ICommandRegistry*, bool);
+  RuntimeContext(IMap*, RegistryProxy<IUserCommand, CommandProxy>*, bool, IScriptSource*);
 
   /******************************\
    * Implements IRuntimeContext *
   \******************************/
   IMap* getMap();
-  ICommandRegistry* getCommandRegistry();
   bool isEditing();
+  std::string getLocation(IUserCommand*); // TODO: What's this for?  Is it used?
+  void add(IUserCommand*);
+  void remove(IUserCommand*);
+  Script* getScript(DOMNodeWrapper*);
 };
 
 #endif

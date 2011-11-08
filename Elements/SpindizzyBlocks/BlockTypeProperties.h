@@ -65,7 +65,7 @@ class BlockTypeProperties {
   public:
   BlockTypeProperties();
   
-  void configure(DOMNodeWrapper*, ICommandRegistry*, ITextureSet**);
+  void configure(DOMNodeWrapper*, IRuntimeContext*, ITextureSet**);
   
   void executeContactScript();
   void executeImpactScript();

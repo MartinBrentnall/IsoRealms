@@ -24,7 +24,7 @@ std::vector<Script*> RandomCommand::getScripts(DOMNodeWrapper* node) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "PossibleScript") {
-      mScripts.push_back(cCommandRegistry->getScript(mNode));
+      mScripts.push_back(cRuntimeContext->getScript(mNode));
     } else {
       // TODO: Throw
     }
@@ -41,7 +41,7 @@ void RandomCommand::load(DOMNodeWrapper* node) {
       std::vector<Script*> mScripts = getScripts(mNode);
       ARandomCommand* mRandomCommand = new ARandomCommand(mCommandName, mScripts);
       cRandomCommands.push_back(mRandomCommand);
-      cCommandRegistry->registerCommand(mRandomCommand);
+      cRuntimeContext->add(mRandomCommand);
     } else {
       // TODO: Throw
     }
@@ -53,7 +53,7 @@ void RandomCommand::save(DOMNodeWriter* node) {
 }
 
 void RandomCommand::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  cCommandRegistry = runtimeContext->getCommandRegistry();
+  cRuntimeContext = runtimeContext;
 }
 
 RandomCommand::ARandomCommand::ARandomCommand(const std::string& name, std::vector<Script*> scripts) {
@@ -67,7 +67,7 @@ void RandomCommand::ARandomCommand::execute() {
   }
 }
 
-std::string RandomCommand::ARandomCommand::getCommandName() {
+std::string RandomCommand::ARandomCommand::getName() {
   return "Random " + cName;
 }
 

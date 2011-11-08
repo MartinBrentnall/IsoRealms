@@ -211,9 +211,9 @@ void ExploredZones::load(DOMNodeWrapper* node) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "ZoneExploredScript") {
-      cZoneExploredScript = cCommandRegistry->getScript(mNode);
+      cZoneExploredScript = cRuntimeContext->getScript(mNode);
     } else if (mValueAsString == "AllZonesExploredScript") {
-      cAllZonesExploredScript = cCommandRegistry->getScript(mNode);
+      cAllZonesExploredScript = cRuntimeContext->getScript(mNode);
     } else {
       // TODO: Throw something!
     }
@@ -221,7 +221,7 @@ void ExploredZones::load(DOMNodeWrapper* node) {
 }
 
 void ExploredZones::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  cCommandRegistry = runtimeContext->getCommandRegistry();
+  cRuntimeContext = runtimeContext;
 }
 
 bool ExploredZones::isMet() {

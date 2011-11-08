@@ -141,14 +141,14 @@ void SpindizzyGERALDFactory::renderIcon() {
   }
 }
 
-void SpindizzyGERALDFactory::loadConfiguration(DOMNodeWrapper* node, ICommandRegistry* commandRegistry) {
+void SpindizzyGERALDFactory::loadConfiguration(DOMNodeWrapper* node, IRuntimeContext* runtimeContext) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "FallLimit") {
-      loadFallLimitConfiguration(mNode, commandRegistry);
+      loadFallLimitConfiguration(mNode, runtimeContext);
     } else if (mValueAsString == "Respawn") {
-      loadRespawnConfiguration(mNode, commandRegistry);
+      loadRespawnConfiguration(mNode, runtimeContext);
     }
   }
 }
@@ -161,23 +161,23 @@ void SpindizzyGERALDFactory::save(DOMNodeWriter* node) {
   cFallScript->save(mRespawnNode, "Script");
 }
 
-void SpindizzyGERALDFactory::loadFallLimitConfiguration(DOMNodeWrapper* node, ICommandRegistry* commandRegistry) {
+void SpindizzyGERALDFactory::loadFallLimitConfiguration(DOMNodeWrapper* node, IRuntimeContext* runtimeContext) {
   cFallLimit = node->getFloatAttribute("height");
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Script") {
-      cFallLimitScript = commandRegistry->getScript(mNode);
+      cFallLimitScript = runtimeContext->getScript(mNode);
     }
   }
 }
 
-void SpindizzyGERALDFactory::loadRespawnConfiguration(DOMNodeWrapper* node, ICommandRegistry* commandRegistry) {
+void SpindizzyGERALDFactory::loadRespawnConfiguration(DOMNodeWrapper* node, IRuntimeContext* runtimeContext) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Script") {
-      cFallScript = commandRegistry->getScript(mNode);
+      cFallScript = runtimeContext->getScript(mNode);
     }
   }
 }

@@ -26,9 +26,9 @@ void ToggleSwitches::createSwitchCommand(DOMNodeWrapper* node) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "On") {
-      mOnScript = cCommandRegistry->getScript(mNode);
+      mOnScript = cRuntimeContext->getScript(mNode);
     } else if (mValueAsString == "Off") {
-      mOffScript = cCommandRegistry->getScript(mNode);
+      mOffScript = cRuntimeContext->getScript(mNode);
     }
   }
   ToggleSwitch* mSwitch = new ToggleSwitch(mOnScript, mOffScript);
@@ -36,8 +36,8 @@ void ToggleSwitches::createSwitchCommand(DOMNodeWrapper* node) {
   RefreshCommand* mRefreshCommand = new RefreshCommand(mSwitch, mCommandName);
   cSwitchCommands.push_back(mToggleCommand);
   cSwitchCommands.push_back(mRefreshCommand);
-  cCommandRegistry->registerCommand(mToggleCommand);
-  cCommandRegistry->registerCommand(mRefreshCommand);
+  cRuntimeContext->add(mToggleCommand);
+  cRuntimeContext->add(mRefreshCommand);
 }
 
 void ToggleSwitches::load(DOMNodeWrapper* node) {
@@ -59,7 +59,7 @@ void ToggleSwitches::save(DOMNodeWriter* node) {
 }
 
 void ToggleSwitches::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  cCommandRegistry = runtimeContext->getCommandRegistry();
+  cRuntimeContext = runtimeContext;
 }
 
 ToggleSwitches::ToggleCommand::ToggleCommand(ToggleSwitch* aSwitch, const std::string& name) {
@@ -71,7 +71,7 @@ void ToggleSwitches::ToggleCommand::execute() {
   cSwitch->toggle();
 }
 
-std::string ToggleSwitches::ToggleCommand::getCommandName() {
+std::string ToggleSwitches::ToggleCommand::getName() {
   return "Toggle " + cName;
 }
 
@@ -90,7 +90,7 @@ void ToggleSwitches::RefreshCommand::execute() {
   cSwitch->refresh();
 }
 
-std::string ToggleSwitches::RefreshCommand::getCommandName() {
+std::string ToggleSwitches::RefreshCommand::getName() {
   return "Refresh " + cName;
 }
 

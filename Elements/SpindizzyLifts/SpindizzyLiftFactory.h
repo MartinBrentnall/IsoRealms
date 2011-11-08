@@ -69,7 +69,7 @@ class SpindizzyLiftFactory:public ISpindizzyLiftFactory {
      * Implements IUserCommand *
     \***************************/
     void execute();
-    std::string getCommandName();
+    std::string getName();
   };
   
   public:

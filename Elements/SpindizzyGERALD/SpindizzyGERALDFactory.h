@@ -60,8 +60,8 @@ class SpindizzyGERALDFactory:public ISpindizzyGERALDFactory {
 
   bool keyDown(SDLKey&);
 
-  void loadFallLimitConfiguration(DOMNodeWrapper*, ICommandRegistry*);
-  void loadRespawnConfiguration(DOMNodeWrapper*, ICommandRegistry*);
+  void loadFallLimitConfiguration(DOMNodeWrapper*, IRuntimeContext*);
+  void loadRespawnConfiguration(DOMNodeWrapper*, IRuntimeContext*);
 
   public:
   SpindizzyGERALDFactory(ISpindizzyGERALDSet*, ISimpleModelFactory*, ILocationAwareness*, IZoneContext*);
@@ -72,7 +72,7 @@ class SpindizzyGERALDFactory:public ISpindizzyGERALDFactory {
   void setCollidableSurfaceRegistry(ICollidableSurfaceRegistry*);
   void setLocationAwareness(ILocationAwareness*);
   void setZoneContext(IZoneContext*);
-  void loadConfiguration(DOMNodeWrapper*, ICommandRegistry*);
+  void loadConfiguration(DOMNodeWrapper*, IRuntimeContext*);
   void save(DOMNodeWriter*);
   void stop();
   void setMap(IMap*);

@@ -35,7 +35,6 @@
 
 #include <IsoRealms/ConditionElement.h>
 #include <IsoRealms/DefaultCommandInfo.h>
-#include <IsoRealms/ICommandRegistry.h>
 #include <IsoRealms/IElementSet.h>
 #include <IsoRealms/IPlugin.h>
 #include <IsoRealms/OpenDialogCommand.h>
@@ -80,7 +79,7 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
   std::vector<IElementFactory*> cElementFactories;
   std::vector<IUserCommand*> cSpindizzyBlockCommands;
   std::vector<HUDClueData*> cHUDClueData;
-  ICommandRegistry* cCommandRegistry;
+  IRuntimeContext* cRuntimeContext;
   ICamera* cCamera;
   IHUD* cHUD;
   ITextureSet* cTextureSet;

@@ -42,7 +42,7 @@ class StateTileFactory:public IStateTileFactory {
     
     ToggleState(StateTileFactory*, unsigned int, unsigned int);
     void execute();
-    std::string getCommandName();
+    std::string getName();
   };
   
   std::vector<ToggleState*> cCommands;

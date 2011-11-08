@@ -84,7 +84,7 @@ void SpindizzySwitches::addSwitch(const std::string& name, bool primary) {
   Switch* mSwitch = new Switch(name);
   SwitchCommand* mSwitchCommand = new SwitchCommand(this, mSwitch, primary);
   cSwitchCommands.push_back(mSwitchCommand);
-  cCommandRegistry->registerCommand(mSwitchCommand);
+  cRuntimeContext->add(mSwitchCommand);
 }
 
 SpindizzySwitches::ResetCommand::ResetCommand(SpindizzySwitches* parent) {
@@ -110,7 +110,7 @@ void SpindizzySwitches::ResetCommand::execute() {
   cParent->updateHUD();
 }
 
-std::string SpindizzySwitches::ResetCommand::getCommandName() {
+std::string SpindizzySwitches::ResetCommand::getName() {
   return "Reset Spindizzy Switches";
 }
 
@@ -135,9 +135,9 @@ SpindizzySwitches::SwitchCommand::SwitchCommand(SpindizzySwitches* parent, DOMNo
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "On") {
-      mOnScript = cParent->cCommandRegistry->getScript(mNode);
+      mOnScript = cParent->cRuntimeContext->getScript(mNode);
     } else if (mValueAsString == "Off") {
-      mOffScript = cParent->cCommandRegistry->getScript(mNode);
+      mOffScript = cParent->cRuntimeContext->getScript(mNode);
     } else {
       // TODO: Throw
     }
@@ -185,7 +185,7 @@ void SpindizzySwitches::updateHUD() {
   cHUDSwitchB.setModel(cActiveSwitchB != NULL ? cActiveSwitchB->getModel() : NULL);
 }
 
-std::string SpindizzySwitches::SwitchCommand::getCommandName() {
+std::string SpindizzySwitches::SwitchCommand::getName() {
   return "Activate switch " + cSwitch->getName();
 }
 
@@ -196,9 +196,9 @@ void SpindizzySwitches::load(DOMNodeWrapper* node) {
     if (mValueAsString == "Switch") {
       SwitchCommand* mSwitchCommand = new SwitchCommand(this, mNode);
       cSwitchCommands.push_back(mSwitchCommand);
-      cCommandRegistry->registerCommand(mSwitchCommand);
+      cRuntimeContext->add(mSwitchCommand);
     } else if (mValueAsString == "ResetSwitch") {
-      cResetCommand->setScript(cCommandRegistry->getScript(mNode));
+      cResetCommand->setScript(cRuntimeContext->getScript(mNode));
     } else {
       // TODO: Throw
     }
@@ -210,8 +210,8 @@ void SpindizzySwitches::save(DOMNodeWriter* node) {
 }
 
 void SpindizzySwitches::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  cCommandRegistry = runtimeContext->getCommandRegistry();
-  cCommandRegistry->registerCommand(cResetCommand);
+  cRuntimeContext = runtimeContext;
+  cRuntimeContext->add(cResetCommand);
 }
 
 IHUDGameComponent* SpindizzySwitches::getHUDComponent(const std::string& component) {

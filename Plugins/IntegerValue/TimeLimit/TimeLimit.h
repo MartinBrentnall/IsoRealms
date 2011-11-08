@@ -35,7 +35,7 @@ class TimeLimit:public IIntegerValue,
   int cMilliseconds;
   int cMaximumMilliseconds;
   int cValuePerSecond;
-  ICommandRegistry* cCommandRegistry;
+  IRuntimeContext* cRuntimeContext;
   IIntegerValue* cIntegerValue;
   IStringProcessor* cStringProcessor;
   std::vector<IUserCommand*> cTimeOutCommands;
@@ -55,7 +55,7 @@ class TimeLimit:public IIntegerValue,
      * Implements IUserCommand *
     \***************************/
     void execute();
-    std::string getCommandName();
+    std::string getName();
   };
   
   public:

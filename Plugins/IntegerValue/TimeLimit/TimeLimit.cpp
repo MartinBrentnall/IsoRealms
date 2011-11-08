@@ -43,9 +43,9 @@ IIntegerValue& TimeLimit::operator+=(const int& value) {
 }
 
 void TimeLimit::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  cCommandRegistry = runtimeContext->getCommandRegistry();
+  cRuntimeContext = runtimeContext;
   for (unsigned int i = 0; i < cCommands.size(); i++) {
-    cCommandRegistry->registerCommand(cCommands[i]);
+    cRuntimeContext->add(cCommands[i]);
   }
 }
 
@@ -109,7 +109,7 @@ void TimeLimit::LockControlCommand::execute() {
   cParent->cLocks += cLock ? 1 : -1;
 }
 
-std::string TimeLimit::LockControlCommand::getCommandName() {
+std::string TimeLimit::LockControlCommand::getName() {
   return cLock ? "AddLock" : "RemoveLock";
 }
 

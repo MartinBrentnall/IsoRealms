@@ -20,10 +20,8 @@ add_library(IsoRealms SHARED
   Colour.cpp
   Collision.cpp
   CollisionVertex.cpp
-  CommandDirectory.cpp
   CommandManager.cpp
   CommandProxy.cpp
-  CommandRegistryProxy.cpp
   Condition.cpp
   ConditionElement.cpp
   Configuration.cpp
@@ -68,6 +66,8 @@ add_library(IsoRealms SHARED
   PluginRegistry.cpp
   PluginSupportException.cpp
   Rectangle.cpp
+  Registry.cpp
+  RegistryProxy.cpp
   RuntimeContext.cpp
   ScreenConfiguration.cpp
   ScreenMode.cpp

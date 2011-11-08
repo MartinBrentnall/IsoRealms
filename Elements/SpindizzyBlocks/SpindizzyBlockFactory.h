@@ -67,7 +67,7 @@ class SpindizzyBlockFactory:public ISpindizzyBlockFactory,
    * 
    * @param ITextureSet*  A texture set to use for texturing blocks.
    */
-  SpindizzyBlockFactory(std::string, ITextureSet**, ISpindizzyBlockSet*, DOMNodeWrapper*, ICommandRegistry*);
+  SpindizzyBlockFactory(std::string, ITextureSet**, ISpindizzyBlockSet*, DOMNodeWrapper*, IRuntimeContext*);
 
   /**
    * Create a new usable block according to the specified parameters.

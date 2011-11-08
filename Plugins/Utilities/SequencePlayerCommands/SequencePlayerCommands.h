@@ -54,7 +54,7 @@ class SequencePlayerCommands:public IUtilities {
      * Implements IUserCommand *
     \***************************/
     void execute();
-    std::string getCommandName();
+    std::string getName();
   };
   
   /**
@@ -71,7 +71,7 @@ class SequencePlayerCommands:public IUtilities {
      * Implements IUserCommand *
     \***************************/
     void execute();
-    std::string getCommandName();
+    std::string getName();
   };
   
   /**
@@ -88,7 +88,7 @@ class SequencePlayerCommands:public IUtilities {
      * Implements IUserCommand *
     \***************************/
     void execute();
-    std::string getCommandName();
+    std::string getName();
   };
   
   /**
@@ -105,7 +105,7 @@ class SequencePlayerCommands:public IUtilities {
      * Implements IUserCommand *
     \***************************/
     void execute();
-    std::string getCommandName();
+    std::string getName();
   };
   
   public:

@@ -21,7 +21,6 @@
 
 #include <vector>
 
-#include <IsoRealms/ICommandRegistry.h>
 #include <IsoRealms/IElementSet.h>
 #include <IsoRealms/IPluginSupport.h>
 #include <IsoRealms/PluginRegistry.h>
@@ -39,10 +38,9 @@ class SpindizzyJewelSet:public ISpindizzyJewelSet {
   std::vector<IElementFactory*> cElementFactories;
   ISimpleModelFactory* cJewelModelFactory;
   ICollectables* cCollectables;
-  ICommandRegistry* cCommandRegistry;
+  IRuntimeContext* cRuntimeContext;
   Script* cJewelCollectedScript;
   Script* cAllJewelsCollectedScript;
-  bool cEditing;
 
   void setModel(ISimpleModelFactory*);
 

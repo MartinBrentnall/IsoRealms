@@ -24,9 +24,8 @@
 #include <map>
 #include <string>
 
+#include "CommandProxy.h"
 #include "Hacks.h"
-#include "CommandDirectory.h"
-#include "CommandRegistryProxy.h"
 #include "DOMNodeWriter.h"
 #include "DefaultZoneRenderer.h"
 #include "IPlugin.h"
@@ -35,6 +34,7 @@
 #include "IMap.h"
 #include "InitException.h"
 #include "IZone.h"
+#include "Registry.h"
 #include "RuntimeContext.h"
 #include "System.h"
 #include "ZoneRendererProxy.h"
@@ -80,7 +80,7 @@ class PluginRegistry:public IPluginRegistry {
    */
   std::string getPluginType(IPlugin*);  
 
-  void registerPlugin(DOMNodeWrapper*, CommandDirectory*, IMap*, bool);
+  void registerPlugin(DOMNodeWrapper*, Registry<IUserCommand, CommandProxy>*, IMap*, bool, IScriptSource*);
 
   void connectPlugin(DOMNodeWrapper*);
 
@@ -183,7 +183,7 @@ class PluginRegistry:public IPluginRegistry {
 
   std::vector<IInteractiveElement*> getInteractiveElements();
 
-  IZoneRenderer* getZoneRenderer(DOMNodeWrapper*, CommandDirectory*);
+  IZoneRenderer* getZoneRenderer(DOMNodeWrapper*, Registry<IUserCommand, CommandProxy>*);
   
   /******************************\
    * Implements IPluginRegistry *

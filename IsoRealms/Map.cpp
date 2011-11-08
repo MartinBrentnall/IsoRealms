@@ -47,9 +47,9 @@ Map::Map(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, 
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Plugin") {
-      cPluginRegistry.registerPlugin(mNode, &cCommandRegistry, this, editing);
+      cPluginRegistry.registerPlugin(mNode, &cCommandRegistry, this, editing, this);
     } else if (mValueAsString == "ElementSet") {
-      cElementSetRegistry.registerElementSet(mNode, &cCommandRegistry, this, editing);
+      cElementSetRegistry.registerElementSet(mNode, &cCommandRegistry, this, editing, this);
     } else {
       // TODO: Throw something
     }
@@ -98,7 +98,7 @@ Map::Map(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, 
       std::vector<std::string> mConfigFiles;
       mConfigFiles.push_back(mProjectConfigurationFile);
       mConfigFiles.push_back(mGlobalConfigurationFile);
-      cInputCommands.loadConfiguration(mNode, mConfigFiles, &cCommandRegistry);
+      cInputCommands.loadConfiguration(mNode, mConfigFiles, this);
       std::cout << "Loaded input configuration..." << std::endl;
     } else {
       // TODO: Throw something
@@ -473,10 +473,6 @@ PluginRegistry* Map::getPluginRegistry() {
   return &cPluginRegistry;
 }
 
-CommandDirectory* Map::getCommandRegistry() {
-  return &cCommandRegistry;
-}
-
 void Map::pluginInstanceAdded(PluginRegistry* registry, std::string, std::string) {
   // Nothing to do.
 }
@@ -515,6 +511,22 @@ void Map::addElementHandler(IElementHandler* elementHandler) {
 
 void Map::setHandlerActive(IElementHandler*, bool) {
   // TODO: Implement this
+}
+
+Script* Map::getScript(DOMNodeWrapper* node) {
+  std::vector<IUserCommand*> mCommands;
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "Command") {
+      std::string mCommandName = mNode->getStringValue();
+      IUserCommand* mCommand = cCommandRegistry.get(mCommandName);
+      mCommands.push_back(mCommand);
+    } else {
+      // TODO: Throw
+    }
+  }
+  return new Script(mCommands, &cCommandRegistry);
 }
 
 Map::~Map() {

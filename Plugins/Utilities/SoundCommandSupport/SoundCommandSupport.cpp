@@ -28,14 +28,14 @@ void SoundCommandSupport::setPlugin(PlugSocket* socket, IPlugin* plugin) {
     if (assignPlugin(plugin, &cSoundSupport, *socket)) {
       mPreviousSoundSupport->removeSoundSupportListener(this);
       for (std::map<ISound*, PlaySoundCommand*>::iterator i = cCommands.begin(); i != cCommands.end(); i++) {
-        cCommandRegistry->unregisterCommand(i->second);
+        cRuntimeContext->remove(i->second);
       }
       cCommands.clear();
       std::vector<ISound*> mSounds = cSoundSupport->getSounds();
       for (unsigned int i = 0; i < mSounds.size(); i++) {
         PlaySoundCommand* mPlaySoundCommand = new PlaySoundCommand(mSounds[i]);
         cCommands[mSounds[i]] = mPlaySoundCommand;
-        cCommandRegistry->registerCommand(mPlaySoundCommand);
+        cRuntimeContext->add(mPlaySoundCommand);
       }
       cSoundSupport->addSoundSupportListener(this);
     }
@@ -53,7 +53,7 @@ IPlugin* SoundCommandSupport::getPlugin(PlugSocket* socket) {
 void SoundCommandSupport::soundAdded(ISound* sound) {
   PlaySoundCommand* mPlaySoundCommand = new PlaySoundCommand(sound);
   cCommands[sound] = mPlaySoundCommand;
-  cCommandRegistry->registerCommand(mPlaySoundCommand);
+  cRuntimeContext->add(mPlaySoundCommand);
 }
 
 void SoundCommandSupport::soundRemoved(ISound* sound) {
@@ -61,7 +61,7 @@ void SoundCommandSupport::soundRemoved(ISound* sound) {
 }
 
 void SoundCommandSupport::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  cCommandRegistry = runtimeContext->getCommandRegistry();
+  cRuntimeContext = runtimeContext;
 }
 
 extern "C" IPlugin* create() {

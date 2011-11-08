@@ -40,7 +40,7 @@ void CommandTrigger::unregisterObjective(IObjective* objective) {
 }
 
 void CommandTrigger::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  cCommandRegistry = runtimeContext->getCommandRegistry();
+  cRuntimeContext = runtimeContext;
 }
 
 extern "C" IPlugin* create() {

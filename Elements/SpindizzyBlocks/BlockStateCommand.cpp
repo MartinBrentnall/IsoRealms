@@ -30,7 +30,7 @@ void BlockStateCommand::execute() {
   cParent->updateClue();
 }
 
-std::string BlockStateCommand::getCommandName() {
+std::string BlockStateCommand::getName() {
   return (cValue ? std::string("Set") : std::string("Unset")) + " Block Flag " + cName;
 }
 

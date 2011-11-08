@@ -36,9 +36,9 @@ std::vector<IElementFactory*> SpindizzyEnemySet::getElementFactories() {
 }
 
 void SpindizzyEnemySet::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  cCommandRegistry = runtimeContext->getCommandRegistry();
+  cRuntimeContext = runtimeContext;
   for (unsigned int i = 0; i < cCommands.size(); i++) {
-    cCommandRegistry->registerCommand(cCommands[i]);
+    cRuntimeContext->add(cCommands[i]);
   }
 }
 
@@ -149,7 +149,7 @@ void SpindizzyEnemySet::LockControlCommand::execute() {
   cParent->cLocks += cLock ? 1 : -1;
 }
 
-std::string SpindizzyEnemySet::LockControlCommand::getCommandName() {
+std::string SpindizzyEnemySet::LockControlCommand::getName() {
   return cLock ? "AddLock" : "RemoveLock";
 }
     

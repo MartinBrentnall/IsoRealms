@@ -22,7 +22,7 @@ ElementSetRegistry::ElementSetRegistry() {
   // Nothing to do.
 }
 
-void ElementSetRegistry::registerElementSet(DOMNodeWrapper* node, CommandDirectory* commandDirectory, IMap* map, bool editing) {
+void ElementSetRegistry::registerElementSet(DOMNodeWrapper* node, Registry<IUserCommand, CommandProxy>* commandDirectory, IMap* map, bool editing, IScriptSource* scriptSource) {
   std::string mInstance = node->getAttribute("instance");
   std::string mType = node->getAttribute("type");
   std::cout << "Registering element set \"" << mType << ":" << mInstance << "\"" << std::endl;
@@ -30,8 +30,8 @@ void ElementSetRegistry::registerElementSet(DOMNodeWrapper* node, CommandDirecto
   std::vector<std::string> mDirectory;
   mDirectory.push_back("ElementSet");
   mDirectory.push_back(mInstance);
-  CommandRegistryProxy* mCommandRegistry = new CommandRegistryProxy(commandDirectory, mDirectory);
-  RuntimeContext* mRuntimeContext = new RuntimeContext(map, mCommandRegistry, editing);
+  RegistryProxy<IUserCommand, CommandProxy>* mCommandGateway = new RegistryProxy<IUserCommand, CommandProxy>(commandDirectory, mDirectory);
+  RuntimeContext* mRuntimeContext = new RuntimeContext(map, mCommandGateway, editing, scriptSource);
   mElementSet->setRuntimeContext(mRuntimeContext);
   mElementSet->setElementSetRegistry(this);
 }
@@ -144,7 +144,7 @@ void ElementSetRegistry::destroyInstance(IElementSet* elementSet) {
   // TODO: Fire event to listeners.
 }
 
-void ElementSetRegistry::setEditingInfo(BlockLocation* location, IEditingContext* editingContext, IElementGateway* gateway, IComponentContainer* container, CommandDirectory* commandDirectory) {
+void ElementSetRegistry::setEditingInfo(BlockLocation* location, IEditingContext* editingContext, IElementGateway* gateway, IComponentContainer* container) {
   for (std::map<std::string, IElementSet*>::iterator i = cElementSets.begin(); i != cElementSets.end(); i++) {
     i->second->setEditingContext(editingContext);
     std::vector<IElementFactory*> mElementFactories = i->second->getElementFactories();

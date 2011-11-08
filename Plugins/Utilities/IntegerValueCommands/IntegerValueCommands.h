@@ -36,7 +36,7 @@ class IntegerValueCommands:public IUtilities,
                            public IComponentSource {
   private:
   IIntegerValue* cVariable;
-  ICommandRegistry* cCommandRegistry;
+  IRuntimeContext* cRuntimeContext;
   std::vector<AddIntegerCommand*> cCommands;
   IComponentContainer* cComponentContainer;
 

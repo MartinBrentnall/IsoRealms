@@ -18,14 +18,14 @@
  */
 #include "SpindizzyBlockFactory.h"
 
-SpindizzyBlockFactory::SpindizzyBlockFactory(std::string name, ITextureSet** textureSet, ISpindizzyBlockSet* elementSet, DOMNodeWrapper* node, ICommandRegistry* commandRegistry) : ISpindizzyBlockFactory(elementSet) {
+SpindizzyBlockFactory::SpindizzyBlockFactory(std::string name, ITextureSet** textureSet, ISpindizzyBlockSet* elementSet, DOMNodeWrapper* node, IRuntimeContext* runtimeContext) : ISpindizzyBlockFactory(elementSet) {
   cFactoryName = name;
   cConfigurationComponent = NULL;
   cStartBlockLocation = NULL;
   cBlockProperties = new SpindizzyBlockProperties();
   cSampleBlock = NULL;
   cTextureSet = textureSet;
-  cBlockTypeProperties.configure(node, commandRegistry, textureSet);
+  cBlockTypeProperties.configure(node, runtimeContext, textureSet);
 }
 
 IElement* SpindizzyBlockFactory::getElement(DOMNodeWrapper* node, BlockLocation* zoneLocation, IElementContainer* elementContainer) {

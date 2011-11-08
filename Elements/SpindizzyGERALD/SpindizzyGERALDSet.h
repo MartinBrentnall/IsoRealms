@@ -42,10 +42,9 @@ class SpindizzyGERALDSet:public ISpindizzyGERALDSet {
   ICollidableSurfaceRegistry* cCollidableSurfaceRegistry;
   ILocationAwareness* cLocationAwareness;
   IZoneContext* cZoneContext;
-  ICommandRegistry* cCommandRegistry;
+  IRuntimeContext* cRuntimeContext;
   std::vector<IUserCommand*> cCommands;
   unsigned int cLocks;
-  bool cEditing;
 
   void setModel(ISimpleModelFactory*);
   void stop();
@@ -62,7 +61,7 @@ class SpindizzyGERALDSet:public ISpindizzyGERALDSet {
      * Implements IUserCommand *
     \***************************/
     void execute();
-    std::string getCommandName();
+    std::string getName();
   };
   
   class StopCommand:public IUserCommand {
@@ -76,7 +75,7 @@ class SpindizzyGERALDSet:public ISpindizzyGERALDSet {
      * Implements IUserCommand *
     \***************************/
     void execute();
-    std::string getCommandName();
+    std::string getName();
   };
   
   public:

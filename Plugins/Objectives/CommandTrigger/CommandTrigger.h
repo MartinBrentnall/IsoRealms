@@ -29,7 +29,7 @@
 class CommandTrigger:public IObjectives {
   private:
   std::set<IObjective*> cObjectives;
-  ICommandRegistry* cCommandRegistry;
+  IRuntimeContext* cRuntimeContext;
   Script* cObjectivesMetScript;
 
   public:

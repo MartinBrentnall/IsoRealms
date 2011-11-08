@@ -24,13 +24,14 @@
 #include <vector>
 
 #include "BlockLocation.h"
-#include "CommandDirectory.h"
-#include "CommandRegistryProxy.h"
 #include "IElementRegistryListener.h"
 #include "IElementSet.h"
 #include "IElementSetRegistry.h"
 #include "InitException.h"
+#include "IScriptSource.h"
 #include "PluginRegistry.h"
+#include "Registry.h"
+#include "RegistryProxy.h"
 #include "System.h"
 
 class ElementSetRegistry:public IElementSetRegistry {
@@ -70,7 +71,7 @@ class ElementSetRegistry:public IElementSetRegistry {
   public:
   ElementSetRegistry();
 
-  void registerElementSet(DOMNodeWrapper*, CommandDirectory*, IMap*, bool);
+  void registerElementSet(DOMNodeWrapper*, Registry<IUserCommand, CommandProxy>*, IMap*, bool, IScriptSource*);
   void connectPlugin(PluginRegistry*, DOMNodeWrapper*);
   void loadConfiguration(DOMNodeWrapper*);
 
@@ -115,7 +116,7 @@ class ElementSetRegistry:public IElementSetRegistry {
 
   std::string getInstanceName(IElementSet*);
 
-  void setEditingInfo(BlockLocation*, IEditingContext*, IElementGateway*, IComponentContainer*, CommandDirectory*);
+  void setEditingInfo(BlockLocation*, IEditingContext*, IElementGateway*, IComponentContainer*);
 
   /**
    *

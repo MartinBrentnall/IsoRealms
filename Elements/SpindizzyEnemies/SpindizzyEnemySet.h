@@ -40,7 +40,7 @@ class SpindizzyEnemySet:public ISpindizzyEnemySet,
   IZoneContext* cZoneContext;
   IZone* cZone;
   unsigned int cLocks;
-  ICommandRegistry* cCommandRegistry;
+  IRuntimeContext* cRuntimeContext;
   std::vector<IUserCommand*> cCommands;
 
   void setModel(ISimpleModelFactory*);
@@ -57,7 +57,7 @@ class SpindizzyEnemySet:public ISpindizzyEnemySet,
      * Implements IUserCommand *
     \***************************/
     void execute();
-    std::string getCommandName();
+    std::string getName();
   };
   
   public:

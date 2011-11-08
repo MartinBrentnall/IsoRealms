@@ -29,11 +29,11 @@ class Script;
 
 class ICommandRegistry {
   public:
-  virtual void selectCommands(ICommandSelectionListener*) = 0;
-  virtual Script* getScript(DOMNodeWrapper*) = 0;
+//  virtual void selectCommands(ICommandSelectionListener*) = 0;
+//  virtual Script* getScript(DOMNodeWrapper*) = 0;
   virtual std::string getLocation(IUserCommand*) = 0;
-  virtual void registerCommand(IUserCommand*) = 0;
-  virtual void unregisterCommand(IUserCommand*) = 0;
+  virtual void add(IUserCommand*) = 0;
+  virtual void remove(IUserCommand*) = 0;
 };
 
 #endif

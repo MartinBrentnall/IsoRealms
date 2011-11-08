@@ -50,7 +50,7 @@ class SpindizzyCamera:public ICamera,
      * Implements IUserCommand *
     \***************************/
     void execute();
-    std::string getCommandName();
+    std::string getName();
   };
   
   class RelativeCommand:public IUserCommand {
@@ -66,7 +66,7 @@ class SpindizzyCamera:public ICamera,
      * Implements IUserCommand *
     \***************************/
     void execute();
-    std::string getCommandName();
+    std::string getName();
   };
   
   class SetLocationCommand:public IUserCommand {
@@ -85,13 +85,13 @@ class SpindizzyCamera:public ICamera,
      * Implements IUserCommand *
     \***************************/
     void execute();
-    std::string getCommandName();
+    std::string getName();
   };
     
   std::vector<IUserCommand*> cCameraCommands;
   std::vector<SetLocationCommand*> cModes;
   
-  ICommandRegistry* cCommandRegistry;
+  IRuntimeContext* cRuntimeContext;
   std::vector<ILocationAwareness*> cLocationAwareness;
   int cSelectedLocation;
   ISequencePlayer* cSequencePlayer;

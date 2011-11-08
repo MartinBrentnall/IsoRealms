@@ -24,11 +24,11 @@ IntegerValueCommands::IntegerValueCommands() {
 
 void IntegerValueCommands::addCommand(AddIntegerCommand* command) {
   cCommands.push_back(command);
-  cCommandRegistry->registerCommand(command);
+  cRuntimeContext->add(command);
 }
 
 void IntegerValueCommands::removeCommand(AddIntegerCommand* command) {
-  cCommandRegistry->registerCommand(command);
+  cRuntimeContext->add(command);
   for (unsigned int i = 0; i < cCommands.size(); i++) {
     if (cCommands[i] == command) {
       cCommands.erase(cCommands.end() + i);
@@ -62,7 +62,7 @@ void IntegerValueCommands::load(DOMNodeWrapper* node) {
 }
 
 void IntegerValueCommands::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  cCommandRegistry = runtimeContext->getCommandRegistry();
+  cRuntimeContext = runtimeContext;
 }
 
 void IntegerValueCommands::setEditingContext(IEditingContext* editingContext) {

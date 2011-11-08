@@ -34,7 +34,7 @@ void AddIntegerCommand::setVariable(IIntegerValue* variable) {
   cVariable = variable;
 }
 
-std::string AddIntegerCommand::getCommandName() {
+std::string AddIntegerCommand::getName() {
   return cName;
 }
 

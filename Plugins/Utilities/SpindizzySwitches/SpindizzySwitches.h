@@ -50,7 +50,7 @@ class SpindizzySwitches:public IUtilities,
      * Implements IUserCommand *
     \***************************/
     void execute();
-    std::string getCommandName();
+    std::string getName();
   };
 
   class SwitchCommand:public IUserCommand {
@@ -70,10 +70,10 @@ class SpindizzySwitches:public IUtilities,
      * Implements IUserCommand *
     \***************************/
     void execute();
-    std::string getCommandName();
+    std::string getName();
   };
 
-  ICommandRegistry* cCommandRegistry;
+  IRuntimeContext* cRuntimeContext;
   IHUD* cHUD;
   ICamera* cCamera;
   HUDComponent cHUDSwitchA;

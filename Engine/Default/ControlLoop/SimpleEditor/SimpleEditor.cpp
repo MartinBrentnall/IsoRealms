@@ -60,7 +60,7 @@ SimpleEditor::SimpleEditor(DOMNodeWrapper* node, IEngineArguments* engineArgumen
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Plugin") {
       // TODO: Deallocate plugins on destruction of the attract control loop
-      cPluginRegistry.registerPlugin(mNode, &cCommandRegistry, NULL, false);
+      cPluginRegistry.registerPlugin(mNode, &cCommandRegistry, NULL, false, NULL);
     }
   }
   
@@ -395,8 +395,7 @@ void SimpleEditor::setMap(Map* map) {
   if (cMap != NULL) {
     cCursor = new EditorCursor(cMap);
     ElementSetRegistry* mElementSetRegistry = cMap->getElementSetRegistry();
-    CommandDirectory* mCommandRegistry = cMap->getCommandRegistry();
-    mElementSetRegistry->setEditingInfo(cCursor, this, this, this, mCommandRegistry);
+    mElementSetRegistry->setEditingInfo(cCursor, this, this, this);
     mElementSetRegistry->addElementRegistryListener(this);
     cElementSetEntityClass = new ElementSetEntityClass(mElementSetRegistry, this, this);
     cElementSetsFactory->setEntityClass(cElementSetEntityClass);

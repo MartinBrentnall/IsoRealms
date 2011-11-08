@@ -166,9 +166,9 @@ void SpindizzyCamera::render() {
 }
 
 void SpindizzyCamera::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  cCommandRegistry = runtimeContext->getCommandRegistry();
+  cRuntimeContext = runtimeContext;
   for (unsigned int i = 0; i < cCameraCommands.size(); i++) {
-    cCommandRegistry->registerCommand(cCameraCommands[i]);
+    cRuntimeContext->add(cCameraCommands[i]);
   }
 }
 
@@ -185,7 +185,7 @@ void SpindizzyCamera::load(DOMNodeWrapper* node) {
       SetLocationCommand* mSetLocationCommand = new SetLocationCommand(this, mModeName, mTrack, mXOffset, mYOffset, mZOffset);
       cCameraCommands.push_back(mSetLocationCommand);
       cModes.push_back(mSetLocationCommand);
-      cCommandRegistry->registerCommand(mSetLocationCommand);
+      cRuntimeContext->add(mSetLocationCommand);
       mSetLocationCommand->execute(); // TODO: Should be configurable instead of just setting the last mode like this line does
     }
   }
@@ -232,7 +232,7 @@ void SpindizzyCamera::RelativeCommand::execute() {
   cParent->changeAngleRelative(cAmount);
 }
 
-std::string SpindizzyCamera::RelativeCommand::getCommandName() {
+std::string SpindizzyCamera::RelativeCommand::getName() {
   return cCommandName;
 }
 
@@ -246,7 +246,7 @@ void SpindizzyCamera::AbsoluteCommand::execute() {
   cParent->changeAngle(cDestination);
 }
 
-std::string SpindizzyCamera::AbsoluteCommand::getCommandName() {
+std::string SpindizzyCamera::AbsoluteCommand::getName() {
   return cCommandName;
 }
 
@@ -279,7 +279,7 @@ void SpindizzyCamera::SetLocationCommand::save(DOMNodeWriter* node) {
   }
 }
 
-std::string SpindizzyCamera::SetLocationCommand::getCommandName() {
+std::string SpindizzyCamera::SetLocationCommand::getName() {
   return "SetMode " + cModeName;
 }
 

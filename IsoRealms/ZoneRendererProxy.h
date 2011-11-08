@@ -21,8 +21,10 @@
 
 #include <string>
 
+#include "CommandProxy.h"
 #include "ICommandRegistry.h"
 #include "IZoneRenderer.h"
+#include "RegistryProxy.h"
 
 class ZoneRendererProxy:public IZoneRenderer {
   private:
@@ -44,11 +46,11 @@ class ZoneRendererProxy:public IZoneRenderer {
      * Implements IUserCommand *
     \***************************/
     void execute();
-    std::string getCommandName();
+    std::string getName();
   };
   
   public:
-  ZoneRendererProxy(IZoneRenderer*, bool, ICommandRegistry*, const std::string&, const std::string&, const std::string&);
+  ZoneRendererProxy(IZoneRenderer*, bool, RegistryProxy<IUserCommand, CommandProxy>*, const std::string&, const std::string&, const std::string&);
 
   void save(DOMNodeWriter*);
   

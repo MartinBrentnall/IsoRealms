@@ -31,7 +31,7 @@ AttractControlLoop::AttractControlLoop(DOMNodeWrapper* node, IEngineArguments* e
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Plugin") {
       // TODO: Deallocate plugins on destruction of the attract control loop
-      cPluginRegistry.registerPlugin(mNode, &cCommandRegistry, NULL, false);
+      cPluginRegistry.registerPlugin(mNode, &cCommandRegistry, NULL, false, NULL);
     }
   }
   

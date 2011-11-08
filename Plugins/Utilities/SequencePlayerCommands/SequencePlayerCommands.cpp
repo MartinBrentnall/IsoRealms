@@ -41,9 +41,8 @@ void SequencePlayerCommands::setPlugin(PlugSocket* socket, IPlugin* plugin) {
 }
 
 void SequencePlayerCommands::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  ICommandRegistry* mCommandRegistry = runtimeContext->getCommandRegistry();
   for (unsigned int i = 0; i < cPlayerCommands.size(); i++) {
-    mCommandRegistry->registerCommand(cPlayerCommands[i]);
+    runtimeContext->add(cPlayerCommands[i]);
   }
 }
 
@@ -55,7 +54,7 @@ void SequencePlayerCommands::PlayCommand::execute() {
   cParent->cPlayer->play();
 }
 
-std::string SequencePlayerCommands::PlayCommand::getCommandName() {
+std::string SequencePlayerCommands::PlayCommand::getName() {
   return "Play";
 }
 
@@ -67,7 +66,7 @@ void SequencePlayerCommands::RewindCommand::execute() {
   cParent->cPlayer->rewind();
 }
 
-std::string SequencePlayerCommands::RewindCommand::getCommandName() {
+std::string SequencePlayerCommands::RewindCommand::getName() {
   return "Rewind";
 }
 
@@ -79,7 +78,7 @@ void SequencePlayerCommands::PauseCommand::execute() {
   cParent->cPlayer->pause();
 }
 
-std::string SequencePlayerCommands::PauseCommand::getCommandName() {
+std::string SequencePlayerCommands::PauseCommand::getName() {
   return "Pause";
 }
 
@@ -91,7 +90,7 @@ void SequencePlayerCommands::UnpauseCommand::execute() {
   cParent->cPlayer->unpause();
 }
 
-std::string SequencePlayerCommands::UnpauseCommand::getCommandName() {
+std::string SequencePlayerCommands::UnpauseCommand::getName() {
   return "Unpause";
 }
 

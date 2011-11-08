@@ -39,10 +39,10 @@ class RandomCommand:public IUtilities {
      * Implements IUserCommand *
     \***************************/
     void execute();
-    std::string getCommandName();
+    std::string getName();
   };
     
-  ICommandRegistry* cCommandRegistry;
+  IRuntimeContext* cRuntimeContext;
   std::vector<PlugSocket*> cCommandRegistrySocket;
   std::vector<IUserCommand*> cRandomCommands;
   

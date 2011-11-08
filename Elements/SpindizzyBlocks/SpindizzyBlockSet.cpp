@@ -30,7 +30,6 @@ SpindizzyBlockSet::SpindizzyBlockSet() {
   assignDummyPlugin(&cCollidableSurfaceRegistry, "CollidableSurfaceRegistry");
   assignDummyPlugin(&cZoneContext, "ZoneContext");
   cHUDClue = new HUDClue(cCamera);
-  cEditing = false;
 }
 
 void SpindizzyBlockSet::addBlockState(const std::string& name, ISimpleModel* model) {
@@ -41,8 +40,8 @@ void SpindizzyBlockSet::addBlockState(const std::string& name, ISimpleModel* mod
   IUserCommand* mStateOffCommand = new BlockStateCommand(this, name, mState, false);
   cSpindizzyBlockCommands.push_back(mStateOnCommand);
   cSpindizzyBlockCommands.push_back(mStateOffCommand);
-  cCommandRegistry->registerCommand(mStateOnCommand);
-  cCommandRegistry->registerCommand(mStateOffCommand);
+  cRuntimeContext->add(mStateOnCommand);
+  cRuntimeContext->add(mStateOffCommand);
 }
 
 std::vector<PlugSocket*> SpindizzyBlockSet::getPlugSockets() {
@@ -131,7 +130,7 @@ void SpindizzyBlockSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
     } else {
       ISurfaceProcessor* mPreviousSurfaceProcessor = cPhysicalProcessor;
       if (assignPlugin(implementation, &cPhysicalProcessor, *socket)) {
-        if (!cEditing) {
+        if (!cRuntimeContext->isEditing()) {
           mPreviousSurfaceProcessor->reinitialise();
         }
       }
@@ -179,10 +178,9 @@ SpindizzyBlockHandler* SpindizzyBlockSet::createHandler(IElementContainer* eleme
 }
 
 void SpindizzyBlockSet::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  cEditing = runtimeContext->isEditing();
-  cCommandRegistry = runtimeContext->getCommandRegistry();
+  cRuntimeContext = runtimeContext;
   for (unsigned int i = 0; i < cSpindizzyBlockCommands.size(); i++) {
-    cCommandRegistry->registerCommand(cSpindizzyBlockCommands[i]);
+    cRuntimeContext->add(cSpindizzyBlockCommands[i]);
   }
 }
 
@@ -201,7 +199,7 @@ void SpindizzyBlockSet::setEditingContext(IEditingContext* editingContext) {
 
 void SpindizzyBlockSet::initElementsComplete() {
   cVisualProcessor->initElementsComplete();
-  if (!cEditing) {
+  if (!cRuntimeContext->isEditing()) {
     cPhysicalProcessor->initElementsComplete();
   }
 }
@@ -229,7 +227,7 @@ void SpindizzyBlockSet::load(DOMNodeWrapper* node) {
     } else if (mValueAsString == "BlockType") {
       std::string mBlockTypeName = mNode->getAttribute("name");
       // TODO: Pass the textures into the factory
-      ISpindizzyBlockFactory* mFactory = new SpindizzyBlockFactory(mBlockTypeName, &cTextureSet, this, mNode, cCommandRegistry);
+      ISpindizzyBlockFactory* mFactory = new SpindizzyBlockFactory(mBlockTypeName, &cTextureSet, this, mNode, cRuntimeContext);
       cElementFactories.push_back(mFactory);
     }
   }
@@ -256,21 +254,21 @@ void SpindizzyBlockSet::zoneContextChanged(IZone* zone) {
 
 void SpindizzyBlockSet::registerSurfaceProvider(ISurfaceProvider* provider) {
   cVisualProcessor->registerSurfaceProvider(provider);
-  if (!cEditing) {
+  if (!cRuntimeContext->isEditing()) {
     cPhysicalProcessor->registerSurfaceProvider(provider);
   }
 }
 
 void SpindizzyBlockSet::unregisterSurfaceProvider(ISurfaceProvider* provider) {
   cVisualProcessor->unregisterSurfaceProvider(provider);
-  if (!cEditing) {
+  if (!cRuntimeContext->isEditing()) {
     cPhysicalProcessor->unregisterSurfaceProvider(provider);
   }
 }
 
 void SpindizzyBlockSet::setDirty() {
   cVisualProcessor->setDirty();
-  if (!cEditing) { // TODO: Is this necessary?  Does this function even get called during runtime?
+  if (!cRuntimeContext->isEditing()) { // TODO: Is this necessary?  Does this function even get called during runtime?
     cPhysicalProcessor->setDirty();
   }
 }
@@ -323,12 +321,12 @@ void SpindizzyBlockSet::updateClue() {
 }
 
 bool SpindizzyBlockSet::isEditing() {
-  return cEditing;
+  return cRuntimeContext->isEditing();
 }
 
 SpindizzyBlockSet::~SpindizzyBlockSet() {
   cVisualProcessor->reinitialise();
-  if (!cEditing) {
+  if (!cRuntimeContext->isEditing()) {
     cPhysicalProcessor->reinitialise();
   }
   for (unsigned int i = 0; i < cElementFactories.size(); i++) {

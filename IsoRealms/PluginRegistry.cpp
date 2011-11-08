@@ -20,7 +20,7 @@
 
 DefaultZoneRenderer PluginRegistry::DEFAULT_ZONE_RENDERER;
 
-void PluginRegistry::registerPlugin(DOMNodeWrapper* node, CommandDirectory* directory, IMap* map, bool editing) {
+void PluginRegistry::registerPlugin(DOMNodeWrapper* node, Registry<IUserCommand, CommandProxy>* directory, IMap* map, bool editing, IScriptSource* scriptSource) {
   std::string mImplementation = node->getAttribute("implementation");
   std::string mInstance = node->getAttribute("instance");
   std::string mType = node->getAttribute("type");
@@ -31,8 +31,8 @@ void PluginRegistry::registerPlugin(DOMNodeWrapper* node, CommandDirectory* dire
   mDirectory.push_back(mType);
   mDirectory.push_back(mInstance);
   IPlugin* mPlugin = getPlugin(mType, mInstance);  
-  CommandRegistryProxy* mCommandRegistryProxy = new CommandRegistryProxy(directory, mDirectory);
-  RuntimeContext* mRuntimeContext = new RuntimeContext(map, mCommandRegistryProxy, editing);
+  RegistryProxy<IUserCommand, CommandProxy>* mCommandGateway = new RegistryProxy<IUserCommand, CommandProxy>(directory, mDirectory);
+  RuntimeContext* mRuntimeContext = new RuntimeContext(map, mCommandGateway, editing, scriptSource);
   mPlugin->setRuntimeContext(mRuntimeContext);
   mPlugin->setPluginRegistry(this);
 }
@@ -250,7 +250,7 @@ std::string PluginRegistry::getPluginType(IPlugin* instance) {
   return "";
 }
 
-IZoneRenderer* PluginRegistry::getZoneRenderer(DOMNodeWrapper* node, CommandDirectory* commandRegistry) {
+IZoneRenderer* PluginRegistry::getZoneRenderer(DOMNodeWrapper* node, Registry<IUserCommand, CommandProxy>* commandRegistry) {
   std::string mType = node->getAttribute("type");
   if (mType == "") {
     return &DEFAULT_ZONE_RENDERER;
@@ -263,8 +263,8 @@ IZoneRenderer* PluginRegistry::getZoneRenderer(DOMNodeWrapper* node, CommandDire
   mDirectory.push_back("ZoneRenderer");
   mDirectory.push_back(mType);
   mDirectory.push_back(mInstance);
-  CommandRegistryProxy* mCommandRegistry = new CommandRegistryProxy(commandRegistry, mDirectory);
-  ZoneRendererProxy* mZoneRendererProxy = new ZoneRendererProxy(mPlugin->getZoneRenderer(mRenderer), mActive, mCommandRegistry, mRenderer, mType, mInstance);
+  RegistryProxy<IUserCommand, CommandProxy>* mCommandGateway = new RegistryProxy<IUserCommand, CommandProxy>(commandRegistry, mDirectory);
+  ZoneRendererProxy* mZoneRendererProxy = new ZoneRendererProxy(mPlugin->getZoneRenderer(mRenderer), mActive, mCommandGateway, mRenderer, mType, mInstance);
   cZoneRendererProxies.push_back(mZoneRendererProxy);
   return mZoneRendererProxy;
 }

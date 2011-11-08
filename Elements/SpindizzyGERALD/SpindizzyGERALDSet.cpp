@@ -53,10 +53,9 @@ void SpindizzyGERALDSet::destroy(IElement* element) {
 }
 
 void SpindizzyGERALDSet::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  cEditing = runtimeContext->isEditing();
-  cCommandRegistry = runtimeContext->getCommandRegistry();
+  cRuntimeContext = runtimeContext;
   for (unsigned int i = 0; i < cCommands.size(); i++) {
-    cCommandRegistry->registerCommand(cCommands[i]);
+    cRuntimeContext->add(cCommands[i]);
   }
   IMap* mMap = runtimeContext->getMap();
   for (unsigned int i = 0; i < cElementFactories.size(); i++) {
@@ -119,7 +118,7 @@ IPlugin* SpindizzyGERALDSet::getPlugin(PlugSocket* socket) {
 
 void SpindizzyGERALDSet::load(DOMNodeWrapper* node) {
   for (unsigned int i = 0; i < cElementFactories.size(); i++) {
-    static_cast<SpindizzyGERALDFactory*>(cElementFactories[i])->loadConfiguration(node, cCommandRegistry);
+    static_cast<SpindizzyGERALDFactory*>(cElementFactories[i])->loadConfiguration(node, cRuntimeContext);
   }
 }
 
@@ -130,7 +129,7 @@ void SpindizzyGERALDSet::save(DOMNodeWriter* node) {
 }
 
 bool SpindizzyGERALDSet::isEditing() {
-  return cEditing;
+  return cRuntimeContext->isEditing();
 }
 
 bool SpindizzyGERALDSet::isLocked() {
@@ -146,7 +145,7 @@ void SpindizzyGERALDSet::LockControlCommand::execute() {
   cParent->cLocks += cLock ? 1 : -1;
 }
 
-std::string SpindizzyGERALDSet::LockControlCommand::getCommandName() {
+std::string SpindizzyGERALDSet::LockControlCommand::getName() {
   return cLock ? "AddLock" : "RemoveLock";
 }
 
@@ -158,7 +157,7 @@ void SpindizzyGERALDSet::StopCommand::execute() {
   cParent->stop();
 }
 
-std::string SpindizzyGERALDSet::StopCommand::getCommandName() {
+std::string SpindizzyGERALDSet::StopCommand::getName() {
   return "Stop";
 }
 

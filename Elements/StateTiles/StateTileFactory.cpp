@@ -49,7 +49,7 @@ void StateTileFactory::ToggleState::execute() {
   mStateController->toggleStates(cOnState, cOffState);
 }
 
-std::string StateTileFactory::ToggleState::getCommandName() {
+std::string StateTileFactory::ToggleState::getName() {
   return ""; // TODO: Implement this
 }
 

@@ -34,7 +34,7 @@ class PlayerWithScripts:public ISequencePlayer,
                         public IDynamicElement {
   private:
   
-  ICommandRegistry* cCommandRegistry;
+  IRuntimeContext* cRuntimeContext;
     
   // Definition
   /**

@@ -22,7 +22,7 @@ PlaySoundCommand::PlaySoundCommand(ISound* sound) {
   cSound = sound;
 }
 
-std::string PlaySoundCommand::getCommandName() {
+std::string PlaySoundCommand::getName() {
   return "Play " + cSound->getName();
 }
 

@@ -32,10 +32,9 @@ std::vector<IElementFactory*> SpindizzyLiftSet::getElementFactories() {
 }
 
 void SpindizzyLiftSet::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  cEditing = runtimeContext->isEditing();
-  cCommandRegistry = runtimeContext->getCommandRegistry();
+  cRuntimeContext = runtimeContext;
   for (unsigned int i = 0; i < cCommands.size(); i++) {
-    cCommandRegistry->registerCommand(cCommands[i]);
+    cRuntimeContext->add(cCommands[i]);
   }
 }
 
@@ -129,7 +128,7 @@ void SpindizzyLiftSet::load(DOMNodeWrapper* node) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "LiftMovedScript") {
-      cLiftMovedScript = cCommandRegistry->getScript(mNode);
+      cLiftMovedScript = cRuntimeContext->getScript(mNode);
     } else if (mValueAsString == "LiftType") {
       std::string mLiftTypeName = mNode->getAttribute("name");
       unsigned int mModelID = mNode->getIntegerAttribute("model");
@@ -139,7 +138,7 @@ void SpindizzyLiftSet::load(DOMNodeWrapper* node) {
       std::vector<IUserCommand*> mLiftCommands = mLiftFactory->getLiftCommands();
       for (unsigned int j = 0; j < mLiftCommands.size(); j++) {
         cCommands.push_back(mLiftCommands[j]);
-        cCommandRegistry->registerCommand(mLiftCommands[j]);
+        cRuntimeContext->add(mLiftCommands[j]);
       }
     } else {
       // TODO: Throw something!
@@ -173,7 +172,7 @@ bool SpindizzyLiftSet::isLocked() {
 }
 
 bool SpindizzyLiftSet::isEditing() {
-  return cEditing;
+  return cRuntimeContext->isEditing();
 }
 
 SpindizzyLiftSet::LockControlCommand::LockControlCommand(SpindizzyLiftSet* parent, bool lock) {
@@ -186,7 +185,7 @@ void SpindizzyLiftSet::LockControlCommand::execute() {
   cParent->cLocked += cLock ? 1 : -1;
 }
 
-std::string SpindizzyLiftSet::LockControlCommand::getCommandName() {
+std::string SpindizzyLiftSet::LockControlCommand::getName() {
   return cLock ? "AddLock" : "RemoveLock";
 }
     

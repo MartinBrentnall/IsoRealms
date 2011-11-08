@@ -45,14 +45,13 @@ class SpindizzyLiftSet:public ISpindizzyLiftSet,
   private:
   std::vector<IElementFactory*> cElementFactories;
   IComponentContainer* cComponentContainer;
-  ICommandRegistry* cCommandRegistry;
+  IRuntimeContext* cRuntimeContext;
   IZoneContext* cZoneContext;
   ICollidableSurfaceRegistry* cCollidableSurfaceRegistry;
   Script* cLiftMovedScript;
   IZone* cZone;
   std::vector<IUserCommand*> cCommands;
   std::vector<ISimpleModelFactory*> cLiftModels;
-  bool cEditing;
 
   /**
    * Properties are applied to all lift types.
@@ -73,7 +72,7 @@ class SpindizzyLiftSet:public ISpindizzyLiftSet,
      * Implements IUserCommand *
     \***************************/
     void execute();
-    std::string getCommandName();
+    std::string getName();
   };
   
   public:

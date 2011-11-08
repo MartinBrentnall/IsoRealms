@@ -30,7 +30,9 @@
 #include "IMap.h"
 #include "InputCommands.h"
 #include "IPluginRegistryListener.h"
+#include "IScriptSource.h"
 #include "PluginRegistry.h"
+#include "Registry.h"
 #include "Zone.h"
 
 /**
@@ -39,11 +41,12 @@
 class Map:public IMap,
           public IZoneChangeListener,
           public IPluginRegistryListener,
-          public IElementContainer {
+          public IElementContainer,
+          public IScriptSource {
   private:
   PluginRegistry cPluginRegistry;
   ElementSetRegistry cElementSetRegistry;
-  CommandDirectory cCommandRegistry;
+  Registry<IUserCommand, CommandProxy> cCommandRegistry;
   InputCommands cInputCommands;
   
   /**
@@ -157,8 +160,6 @@ class Map:public IMap,
 
   PluginRegistry* getPluginRegistry();
   
-  CommandDirectory* getCommandRegistry();
-  
   /**
    * Remove the specified element from anywhere in the map.  This function
    * will be pretty slow, especially on large maps.
@@ -198,6 +199,11 @@ class Map:public IMap,
   void addElementHandler(IElementHandler*);
   void setHandlerActive(IElementHandler*, bool);
 
+  /****************************\
+   * Implements IScriptSource *
+  \****************************/
+  Script* getScript(DOMNodeWrapper*);
+  
   ~Map();
 };
 

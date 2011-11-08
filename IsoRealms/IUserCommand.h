@@ -25,7 +25,7 @@
 
 class IUserCommand:public ICommand {
   public:
-  virtual std::string getCommandName() = 0;
+  virtual std::string getName() = 0;
 };
 
 #endif

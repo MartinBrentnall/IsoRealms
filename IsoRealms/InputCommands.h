@@ -23,10 +23,10 @@
 #include <vector>
 
 #include "BlockLocation.h"
-#include "CommandDirectory.h"
 #include "DigitalInput.h"
 #include "IInteractiveElement.h"
 #include "IComponentContainer.h"
+#include "IScriptSource.h"
 #include "System.h"
 
 class InputCommands {
@@ -39,7 +39,7 @@ class InputCommands {
   public:
   InputCommands();
   InputCommands(const std::string&);
-  void loadConfiguration(DOMNodeWrapper*, std::vector<std::string>, CommandDirectory*);
+  void loadConfiguration(DOMNodeWrapper*, std::vector<std::string>, IScriptSource*);
   void save(DOMNodeWriter*);
   bool* registerDigitalInput(const std::string&);
   bool input(SDL_Event&);

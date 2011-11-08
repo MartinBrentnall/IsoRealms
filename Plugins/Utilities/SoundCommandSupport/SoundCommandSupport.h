@@ -32,7 +32,7 @@
 class SoundCommandSupport:public IUtilities,
                           public ISoundSupportListener {
   private:
-  ICommandRegistry* cCommandRegistry;
+  IRuntimeContext* cRuntimeContext;
   ISoundSupport* cSoundSupport;
   std::map<ISound*, PlaySoundCommand*> cCommands;
 

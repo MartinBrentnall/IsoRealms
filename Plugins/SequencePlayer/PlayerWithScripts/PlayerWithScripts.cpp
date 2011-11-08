@@ -77,7 +77,7 @@ void PlayerWithScripts::update(int milliseconds) {
 }
 
 void PlayerWithScripts::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  cCommandRegistry = runtimeContext->getCommandRegistry();
+  cRuntimeContext = runtimeContext;
 }
 
 void PlayerWithScripts::load(DOMNodeWrapper* node) {
@@ -86,13 +86,13 @@ void PlayerWithScripts::load(DOMNodeWrapper* node) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "LeftStartScript") {
-      cLeftStartScript = cCommandRegistry->getScript(mNode);
+      cLeftStartScript = cRuntimeContext->getScript(mNode);
     } else if (mValueAsString == "LeftEndScript") {
-      cLeftEndScript = cCommandRegistry->getScript(mNode);
+      cLeftEndScript = cRuntimeContext->getScript(mNode);
     } else if (mValueAsString == "ReachedStartScript") {
-      cReachedStartScript = cCommandRegistry->getScript(mNode);
+      cReachedStartScript = cRuntimeContext->getScript(mNode);
     } else if (mValueAsString == "ReachedEndScript") {
-      cReachedEndScript = cCommandRegistry->getScript(mNode);
+      cReachedEndScript = cRuntimeContext->getScript(mNode);
     }
   }
 }

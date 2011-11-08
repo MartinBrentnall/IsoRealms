@@ -26,6 +26,7 @@
 #include "../../IControlLoop.h"
 
 #include <IsoRealms/CommandManager.h>
+#include <IsoRealms/CommandProxy.h>
 #include <IsoRealms/Configuration.h>
 #include <IsoRealms/DOMNodeWrapper.h>
 #include <IsoRealms/ElementSetRegistry.h>
@@ -40,8 +41,10 @@
 #include <IsoRealms/IHUDComponent.h>
 #include <IsoRealms/IPluginRegistryListener.h>
 #include <IsoRealms/IPluginSupport.h>
+#include <IsoRealms/IUserCommand.h>
 #include <IsoRealms/Map.h>
 #include <IsoRealms/PlugSocket.h>
+#include <IsoRealms/Registry.h>
 #include <IsoRealms/ScreenConfiguration.h>
 
 class OpenCommand;
@@ -86,7 +89,7 @@ class SimpleEditor:public IControlLoop,
   Camera cViewPoint;
   ElementSetEntityClass* cElementSetEntityClass;
   EditorCursor* cCursor;
-  CommandDirectory cCommandRegistry;
+  Registry<IUserCommand, CommandProxy> cCommandRegistry;
   PluginRegistry cPluginRegistry;
   std::vector<PlugSocket*> cFontSocket;
   IFont* cFont;

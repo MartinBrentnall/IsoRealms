@@ -18,21 +18,34 @@
  */
 #include "RuntimeContext.h"
 
-RuntimeContext::RuntimeContext(IMap* map, ICommandRegistry* commandRegistry, bool editing) {
+RuntimeContext::RuntimeContext(IMap* map, RegistryProxy<IUserCommand, CommandProxy>* commandGateway, bool editing, IScriptSource* scriptSource) {
   cMap = map;
-  cCommandRegistry = commandRegistry;
+  cCommandGateway = commandGateway;
   cEditing = editing;
+  cScriptSource = scriptSource;
 }
 
 IMap* RuntimeContext::getMap() {
   return cMap;
 }
 
-ICommandRegistry* RuntimeContext::getCommandRegistry() {
-  return cCommandRegistry;
-}
-
 bool RuntimeContext::isEditing() {
   return cEditing;
+}
+
+std::string RuntimeContext::getLocation(IUserCommand* command) {
+  return cCommandGateway->getLocation(command);
+}
+
+void RuntimeContext::add(IUserCommand* command) {
+  cCommandGateway->add(command);
+}
+
+void RuntimeContext::remove(IUserCommand* command) {
+  cCommandGateway->remove(command);
+}
+
+Script* RuntimeContext::getScript(DOMNodeWrapper* node) {
+  return cScriptSource->getScript(node);
 }
 

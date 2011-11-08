@@ -31,13 +31,13 @@ class CommandProxy:public IUserCommand {
   public:
   CommandProxy();
     
-  void setUserCommand(IUserCommand*);
+  void setImplementation(IUserCommand*);
     
   /***************************\
    * Implements IUserCommand *
   \***************************/
   void execute();
-  std::string getCommandName();
+  std::string getName();
 };
 
 #endif
