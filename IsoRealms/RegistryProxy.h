@@ -26,8 +26,8 @@ template<class T1, class T2 = T1> class RegistryProxy {
     return cRegistration->getLocation(t);
   }
   
-  void add(T1* t) {
-    cRegistration->add(t);
+  void add(T1* t, const std::string& name) {
+    cRegistration->add(t, name);
   }
   
   void remove(T1* t) {

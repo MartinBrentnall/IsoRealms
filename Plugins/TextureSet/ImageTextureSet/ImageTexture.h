@@ -33,7 +33,7 @@ class ImageTexture:public ITexture {
   \***********************/
   void set();
   void texCoord2f(float, float);
-  Colour* getColour(float, float);
+  IColour* getColour(float, float);
   
   ~ImageTexture();
 };

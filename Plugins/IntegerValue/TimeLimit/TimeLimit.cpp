@@ -19,19 +19,15 @@
 #include "TimeLimit.h"
 
 TimeLimit::TimeLimit(IRuntimeContext* runtimeContext) {
+  cRuntimeContext = runtimeContext;
   assignDummyPlugin(&cIntegerValue, "IntegerValue");
   assignDummyPlugin(&cStringProcessor, "StringProcessor");
   cMilliseconds = 180000;
   cMaximumMilliseconds = 180000;
   cValuePerSecond = 100;
   cLocks = 0;
-  // TODO: Is the cCommands vector necessary?
-  cCommands.push_back(new LockControlCommand(this, true));
-  cCommands.push_back(new LockControlCommand(this, false));
-  cRuntimeContext = runtimeContext;
-  for (unsigned int i = 0; i < cCommands.size(); i++) {
-    cRuntimeContext->add(cCommands[i]);
-  }
+  cRuntimeContext->add(new LockControlCommand(this, true), "AddLock");
+  cRuntimeContext->add(new LockControlCommand(this, false), "RemoveLock");
 }
 
 IIntegerValue& TimeLimit::operator+=(const int& value) {
@@ -105,10 +101,6 @@ TimeLimit::LockControlCommand::LockControlCommand(TimeLimit* parent, bool lock) 
 
 void TimeLimit::LockControlCommand::execute() {
   cParent->cLocks += cLock ? 1 : -1;
-}
-
-std::string TimeLimit::LockControlCommand::getName() {
-  return cLock ? "AddLock" : "RemoveLock";
 }
 
 extern "C" IPlugin* create(IRuntimeContext* runtimeContext) {

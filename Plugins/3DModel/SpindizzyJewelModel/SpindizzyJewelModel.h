@@ -41,7 +41,9 @@ class SpindizzyJewelModel:public ISimpleModel {
   /**
    * Current colour of the jewel.
    */
-  Colour cCurrentColour;
+  float cRed;
+  float cGreen;
+  float cBlue;
 
   /** 
    * Points to the colour channel that is being adjusted by the update process.

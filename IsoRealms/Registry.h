@@ -27,7 +27,7 @@ template<class T1, class T2 = T1> class Registry {
   std::string getLocation(T1* t) {
     for (typename std::map<std::string, T2*>::iterator i = cObjects.begin(); i != cObjects.end(); i++) {
       if (i->second == t) {
-        return t->getName();
+        return i->first;
       }
     }
     for (typename std::map<std::string, Registry<T1, T2>*>::iterator i = cSubDirectories.begin(); i != cSubDirectories.end(); i++) {
@@ -61,18 +61,16 @@ template<class T1, class T2 = T1> class Registry {
     return mDir->getProxy(path);
   }
 
-  void add(T1* t) {
+  void add(T1* t, const std::string& name) {
     // TODO: Check if name already in use.
-    std::string mName = t->getName();
-    T2* mProxy = getProxy(mName);
+    T2* mProxy = getProxy(name);
     mProxy->setImplementation(t);
   }
   
   void remove(T1* t) {
-    // TODO: Check if name already in use.
-    std::string mName = t->getName();
-    T2* mProxy = getProxy(mName);
-    mProxy->setImplementation(NULL);
+    // TODO: Remove the thing
+/*    T2* mProxy = getProxy(t);
+    mProxy->setImplementation(NULL);*/
   }
 };
 

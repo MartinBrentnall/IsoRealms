@@ -25,7 +25,6 @@
 #include "BlockLocation.h"
 #include "DOMNodeWriter.h"
 #include "IAddressableEntity.h"
-#include "ICommandRegistry.h"
 #include "IComponentContainer.h"
 #include "IDynamicElement.h"
 #include "IEditingContext.h"

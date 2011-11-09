@@ -20,13 +20,10 @@
 
 SequencePlayerCommands::SequencePlayerCommands(IRuntimeContext* runtimeContext) {
   assignDummyPlugin(&cPlayer, "SequencePlayer");
-  cPlayerCommands.push_back(new PlayCommand(this));
-  cPlayerCommands.push_back(new RewindCommand(this));
-  cPlayerCommands.push_back(new PauseCommand(this));
-  cPlayerCommands.push_back(new UnpauseCommand(this));
-  for (unsigned int i = 0; i < cPlayerCommands.size(); i++) {
-    runtimeContext->add(cPlayerCommands[i]);
-  }
+  runtimeContext->add(new PlayCommand(this),    "Play");
+  runtimeContext->add(new RewindCommand(this),  "Rewind");
+  runtimeContext->add(new PauseCommand(this),   "Pause");
+  runtimeContext->add(new UnpauseCommand(this), "Unpause");
 }
 
 IPlugin* SequencePlayerCommands::getPlugin(PlugSocket* socket) {
@@ -51,20 +48,12 @@ void SequencePlayerCommands::PlayCommand::execute() {
   cParent->cPlayer->play();
 }
 
-std::string SequencePlayerCommands::PlayCommand::getName() {
-  return "Play";
-}
-
 SequencePlayerCommands::RewindCommand::RewindCommand(SequencePlayerCommands* parent) {
   cParent = parent;
 }
 
 void SequencePlayerCommands::RewindCommand::execute() {
   cParent->cPlayer->rewind();
-}
-
-std::string SequencePlayerCommands::RewindCommand::getName() {
-  return "Rewind";
 }
 
 SequencePlayerCommands::PauseCommand::PauseCommand(SequencePlayerCommands* parent) {
@@ -75,20 +64,12 @@ void SequencePlayerCommands::PauseCommand::execute() {
   cParent->cPlayer->pause();
 }
 
-std::string SequencePlayerCommands::PauseCommand::getName() {
-  return "Pause";
-}
-
 SequencePlayerCommands::UnpauseCommand::UnpauseCommand(SequencePlayerCommands* parent) {
   cParent = parent;
 }
 
 void SequencePlayerCommands::UnpauseCommand::execute() {
   cParent->cPlayer->unpause();
-}
-
-std::string SequencePlayerCommands::UnpauseCommand::getName() {
-  return "Unpause";
 }
 
 extern "C" IPlugin* create(IRuntimeContext* runtimeContext) {

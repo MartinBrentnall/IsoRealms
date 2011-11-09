@@ -34,7 +34,7 @@ class ImageTextureProxy:public ITexture {
   \***********************/
   void set();
   void texCoord2f(float, float);
-  Colour* getColour(float, float);
+  IColour* getColour(float, float);
   void save(DOMNodeWriter*, const std::string&);
   
   ~ImageTextureProxy();

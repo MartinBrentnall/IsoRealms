@@ -22,6 +22,8 @@ TextureSetPerZone::TextureSetPerZone() {
   assignDummyPlugin(&cZoneContext, "ZoneContext");
   cProgressBackgroundColour = 1.0f;
   cDefaultTextureSetCommand = new DefaultTextureSetCommand(this);
+  cPreviousBackgroundColour = new Colour(0.0f, 0.0f, 0.0f);
+  cTargetBackgroundColour = new Colour(0.0f, 0.0f, 0.0f);
 }
 
 void TextureSetPerZone::setTextureSet(ITextureSet* textureSet) {
@@ -185,9 +187,9 @@ void TextureSetPerZone::update(int ticks) {
     if (cProgressBackgroundColour > 1.0f) {
       cProgressBackgroundColour = 1.0f;
     }
-    float mRed   = cPreviousBackgroundColour.getRed()   + (cTargetBackgroundColour.getRed()   - cPreviousBackgroundColour.getRed())   * cProgressBackgroundColour;
-    float mGreen = cPreviousBackgroundColour.getGreen() + (cTargetBackgroundColour.getGreen() - cPreviousBackgroundColour.getGreen()) * cProgressBackgroundColour;
-    float mBlue  = cPreviousBackgroundColour.getBlue()  + (cTargetBackgroundColour.getBlue()  - cPreviousBackgroundColour.getBlue())  * cProgressBackgroundColour;
+    float mRed   = cPreviousBackgroundColour->getRed()   + (cTargetBackgroundColour->getRed()   - cPreviousBackgroundColour->getRed())   * cProgressBackgroundColour;
+    float mGreen = cPreviousBackgroundColour->getGreen() + (cTargetBackgroundColour->getGreen() - cPreviousBackgroundColour->getGreen()) * cProgressBackgroundColour;
+    float mBlue  = cPreviousBackgroundColour->getBlue()  + (cTargetBackgroundColour->getBlue()  - cPreviousBackgroundColour->getBlue())  * cProgressBackgroundColour;
     float mFogColour[4] = {mRed, mGreen, mBlue, 0.0f};
     glFogfv(GL_FOG_COLOR, mFogColour);
     glClearColor(mRed, mGreen, mBlue, 0.0f);
@@ -199,13 +201,16 @@ void TextureSetPerZone::zoneContextChanged(IZone* zone) {
   if (i != cZoneMapping.end()) {
     cCurrentZone = zone;
     ITexture* mBackgroundTexture = i->second->getTexture("Background");
-    cPreviousBackgroundColour.set(
-        cPreviousBackgroundColour.getRed()   + (cTargetBackgroundColour.getRed()   - cPreviousBackgroundColour.getRed())   * cProgressBackgroundColour,
-        cPreviousBackgroundColour.getGreen() + (cTargetBackgroundColour.getGreen() - cPreviousBackgroundColour.getGreen()) * cProgressBackgroundColour,
-        cPreviousBackgroundColour.getBlue()  + (cTargetBackgroundColour.getBlue()  - cPreviousBackgroundColour.getBlue())  * cProgressBackgroundColour,
+    Colour* mNewPreviousBackgroundColour = new Colour(
+        cPreviousBackgroundColour->getRed()   + (cTargetBackgroundColour->getRed()   - cPreviousBackgroundColour->getRed())   * cProgressBackgroundColour,
+        cPreviousBackgroundColour->getGreen() + (cTargetBackgroundColour->getGreen() - cPreviousBackgroundColour->getGreen()) * cProgressBackgroundColour,
+        cPreviousBackgroundColour->getBlue()  + (cTargetBackgroundColour->getBlue()  - cPreviousBackgroundColour->getBlue())  * cProgressBackgroundColour,
         0.0f
     );
-    cTargetBackgroundColour = *mBackgroundTexture->getColour(0.0f, 0.0f);
+    delete cPreviousBackgroundColour;
+    delete cTargetBackgroundColour;
+    cPreviousBackgroundColour = mNewPreviousBackgroundColour;
+    cTargetBackgroundColour = new Colour(*mBackgroundTexture->getColour(0.0f, 0.0f));
     cProgressBackgroundColour = 0.0f;
   }
 }

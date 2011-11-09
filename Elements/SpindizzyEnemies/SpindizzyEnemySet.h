@@ -41,11 +41,10 @@ class SpindizzyEnemySet:public ISpindizzyEnemySet,
   IZone* cZone;
   unsigned int cLocks;
   IRuntimeContext* cRuntimeContext;
-  std::vector<IUserCommand*> cCommands;
 
   void setModel(ISimpleModelFactory*);
 
-  class LockControlCommand:public IUserCommand {
+  class LockControlCommand:public ICommand {
     private:
     SpindizzyEnemySet* cParent;
     bool cLock;
@@ -53,15 +52,14 @@ class SpindizzyEnemySet:public ISpindizzyEnemySet,
     public:
     LockControlCommand(SpindizzyEnemySet*, bool);
     
-    /***************************\
-     * Implements IUserCommand *
-    \***************************/
+    /***********************\
+     * Implements ICommand *
+    \***********************/
     void execute();
-    std::string getName();
   };
   
   public:
-  SpindizzyEnemySet();
+  SpindizzyEnemySet(IRuntimeContext*);
 
   /**************************\
    * Implements IElementSet *
@@ -78,7 +76,6 @@ class SpindizzyEnemySet:public ISpindizzyEnemySet,
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/
-  std::string getName();
   std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);

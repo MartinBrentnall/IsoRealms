@@ -26,7 +26,7 @@
 #include <IsoRealms/IComponentContainer.h>
 #include <IsoRealms/IElementGateway.h>
 #include <IsoRealms/IsoRealmsConstants.h>
-#include <IsoRealms/IUserCommand.h>
+#include <IsoRealms/ICommand.h>
 #include <IsoRealms/IVisualElement.h>
 
 #include "../../Plugins/3DModel/ISimpleModel.h"
@@ -51,13 +51,12 @@ class SpindizzyLiftFactory:public ISpindizzyLiftFactory {
   IComponentContainer* cComponentContainer;
   int* cFirstRange;
   bool cState;
-  std::vector<IUserCommand*> cLiftCommands;
 
   bool keyDown(SDLKey&);
 
   void renderArrowLines();
 
-  class LiftCommand:public IUserCommand {
+  class LiftCommand:public ICommand {
     private:
     SpindizzyLiftFactory* cParent;
     bool cTargetState;
@@ -65,18 +64,17 @@ class SpindizzyLiftFactory:public ISpindizzyLiftFactory {
     public:
     LiftCommand(SpindizzyLiftFactory*, bool);
       
-    /***************************\
-     * Implements IUserCommand *
-    \***************************/
+    /***********************\
+     * Implements ICommand *
+    \***********************/
     void execute();
-    std::string getName();
   };
   
   public:
-  SpindizzyLiftFactory(ISpindizzyLiftSet*, ISimpleModelFactory*, SpindizzyLiftProperties*, bool, const std::string& liftTypeName);
+  SpindizzyLiftFactory(ISpindizzyLiftSet*, ISimpleModelFactory*, SpindizzyLiftProperties*, bool, const std::string& liftTypeName, IRuntimeContext*);
 
   void setLiftModelFactory(ISimpleModelFactory*);
-  std::vector<IUserCommand*> getLiftCommands();  
+  std::vector<ICommand*> getLiftCommands();  
   
   void save(DOMNodeWriter*, std::vector<ISimpleModelFactory*>);
   

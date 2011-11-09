@@ -3,6 +3,7 @@
 
 #include <GL/gl.h>
 
+#include <IsoRealms/Colour.h>
 #include <IsoRealms/Configuration.h>
 #include <IsoRealms/Image.h>
 

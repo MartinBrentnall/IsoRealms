@@ -23,13 +23,8 @@ IntegerValueCommands::IntegerValueCommands(IRuntimeContext* runtimeContext) {
   cRuntimeContext = runtimeContext;
 }
 
-void IntegerValueCommands::addCommand(AddIntegerCommand* command) {
-  cCommands.push_back(command);
-  cRuntimeContext->add(command);
-}
-
 void IntegerValueCommands::removeCommand(AddIntegerCommand* command) {
-  cRuntimeContext->add(command);
+  cRuntimeContext->remove(command);
   for (unsigned int i = 0; i < cCommands.size(); i++) {
     if (cCommands[i] == command) {
       cCommands.erase(cCommands.end() + i);
@@ -57,7 +52,9 @@ void IntegerValueCommands::load(DOMNodeWrapper* node) {
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Command") {
       AddIntegerCommand* mCommand = new AddIntegerCommand(mNode, cVariable);
-      addCommand(mCommand);
+      std::string mName = node->getAttribute("name");
+      cCommands.push_back(mCommand);
+      cRuntimeContext->add(mCommand, mName);
     }
   }
 }

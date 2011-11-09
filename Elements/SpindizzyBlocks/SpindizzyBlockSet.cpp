@@ -18,7 +18,8 @@
  */
 #include "SpindizzyBlockSet.h"
 
-SpindizzyBlockSet::SpindizzyBlockSet() {
+SpindizzyBlockSet::SpindizzyBlockSet(IRuntimeContext* runtimeContext) {
+  cRuntimeContext = runtimeContext;
   cElementFactories.push_back(new SpindizzyWaterFactory(&cTextureSet, this));
   assignDummyPlugin(&cDummyTextureSet, "TextureSet");
   cTextureSet = cDummyTextureSet;
@@ -36,12 +37,12 @@ void SpindizzyBlockSet::addBlockState(const std::string& name, ISimpleModel* mod
   bool* mState = new bool(false);
   cBlockStates.push_back(new ConditionElement(name, mState));
   cBlockStateClueModels.push_back(model);
-  IUserCommand* mStateOnCommand = new BlockStateCommand(this, name, mState, true);
-  IUserCommand* mStateOffCommand = new BlockStateCommand(this, name, mState, false);
+  ICommand* mStateOnCommand = new BlockStateCommand(this, mState, true);
+  ICommand* mStateOffCommand = new BlockStateCommand(this, mState, false);
   cSpindizzyBlockCommands.push_back(mStateOnCommand);
   cSpindizzyBlockCommands.push_back(mStateOffCommand);
-  cRuntimeContext->add(mStateOnCommand);
-  cRuntimeContext->add(mStateOffCommand);
+  cRuntimeContext->add(mStateOnCommand, "Set Block Flag " + name);
+  cRuntimeContext->add(mStateOffCommand, "Unset Block Flag " + name);
 }
 
 std::vector<PlugSocket*> SpindizzyBlockSet::getPlugSockets() {
@@ -175,13 +176,6 @@ SpindizzyBlockHandler* SpindizzyBlockSet::createHandler(IElementContainer* eleme
   SpindizzyBlockHandler* mHandler = new SpindizzyBlockHandler();
   cElementHandlers[elementContainer] = mHandler;
   return mHandler;
-}
-
-void SpindizzyBlockSet::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  cRuntimeContext = runtimeContext;
-  for (unsigned int i = 0; i < cSpindizzyBlockCommands.size(); i++) {
-    cRuntimeContext->add(cSpindizzyBlockCommands[i]);
-  }
 }
 
 void SpindizzyBlockSet::destroy(IElement* element) {
@@ -368,8 +362,8 @@ IHUDComponent* SpindizzyBlockSet::createComponent() {
   return new SpindizzyBlockConfigurationDialog(cComponentContainer);
 }
 
-extern "C" IElementSet* create(DOMNodeWrapper* node) {
-  return new SpindizzyBlockSet();
+extern "C" IElementSet* create(IRuntimeContext* runtimeContext) {
+  return new SpindizzyBlockSet(runtimeContext);
 }
 
 extern "C" void destroy(IElementSet* elementSet) {

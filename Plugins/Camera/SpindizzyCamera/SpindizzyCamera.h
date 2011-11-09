@@ -37,39 +37,37 @@ class SpindizzyCamera:public ICamera,
                       public ISequence {
   private:
   
-  class AbsoluteCommand:public IUserCommand {
+  class AbsoluteCommand:public ICommand {
     private:
     SpindizzyCamera* cParent;
     std::string cCommandName;
     float cDestination;
     
     public:
-    AbsoluteCommand(SpindizzyCamera*, const std::string&, float);
+    AbsoluteCommand(SpindizzyCamera*, float);
 
     /***************************\
-     * Implements IUserCommand *
+     * Implements ICommand *
     \***************************/
     void execute();
-    std::string getName();
   };
   
-  class RelativeCommand:public IUserCommand {
+  class RelativeCommand:public ICommand {
     private:
     SpindizzyCamera* cParent;
     std::string cCommandName;
     float cAmount;
     
     public:
-    RelativeCommand(SpindizzyCamera*, const std::string&, float);
+    RelativeCommand(SpindizzyCamera*, float);
     
     /***************************\
-     * Implements IUserCommand *
+     * Implements ICommand *
     \***************************/
     void execute();
-    std::string getName();
   };
   
-  class SetLocationCommand:public IUserCommand {
+  class SetLocationCommand:public ICommand {
     private:
     SpindizzyCamera* cParent;
     std::string cModeName;
@@ -82,13 +80,11 @@ class SpindizzyCamera:public ICamera,
     void save(DOMNodeWriter*);
     
     /***************************\
-     * Implements IUserCommand *
+     * Implements ICommand *
     \***************************/
     void execute();
-    std::string getName();
   };
     
-  std::vector<IUserCommand*> cCameraCommands;
   std::vector<SetLocationCommand*> cModes;
   
   IRuntimeContext* cRuntimeContext;

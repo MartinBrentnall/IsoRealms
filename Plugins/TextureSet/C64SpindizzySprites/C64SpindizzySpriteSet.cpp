@@ -28,8 +28,12 @@ const std::string C64SpindizzySpriteSet::LIFT_DIAMOND_BOTH = "LiftDiamondFilled"
 const std::string C64SpindizzySpriteSet::LIFT_DIAMOND_ONE  = "LiftDiamondOne";
 const std::string C64SpindizzySpriteSet::LIFT_DIAMOND_NONE = "LiftDiamondEmpty";
 
-C64SpindizzySpriteSet::C64SpindizzySpriteSet() {
-  assignDummyPlugin(&cPalette, "Palette");
+C64SpindizzySpriteSet::C64SpindizzySpriteSet(IRuntimeContext* runtimeContext) {
+  cRuntimeContext = runtimeContext;
+  cColour1 = new Colour(1.0f, 1.0f, 1.0f);
+  cColour2 = new Colour(0.7f, 0.7f, 0.7f);
+  cColour3 = new Colour(0.3f, 0.3f, 0.3f);
+  cOutlineColour = new Colour(0.0f, 0.0f, 0.0f);
 
   TRANSPARENT = new Colour(0.0, 0.0, 0.0, 0.0);
 
@@ -47,7 +51,7 @@ C64SpindizzySpriteSet::C64SpindizzySpriteSet() {
 }
 
 /* Generation functions */
-Image* C64SpindizzySpriteSet::makePlainImage(Colour* colour) {
+Image* C64SpindizzySpriteSet::makePlainImage(IColour* colour) {
   Image* mImage = new Image(RESOLUTION, RESOLUTION, false);
   mImage->drawSquare(colour, 0, RESOLUTION, 0, RESOLUTION);
   return mImage;
@@ -204,11 +208,6 @@ GLuint C64SpindizzySpriteSet::convertToTexture(Image* image, const std::string& 
 }
 
 void C64SpindizzySpriteSet::generateTextures() {
-  cColour1 = cPalette->getColour(cColour1Name);
-  cColour2 = cPalette->getColour(cColour2Name);
-  cColour3 = cPalette->getColour(cColour3Name);
-  cOutlineColour = cPalette->getColour(cOutlineColourName);
-  
   cTextures[LIFT_CIRCLE_ONE]->setTexture(generateLiftCircleHalf());
   cTextures[LIFT_CIRCLE_NONE]->setTexture(generateLiftCircle());
   cTextures[LIFT_CIRCLE_BOTH]->setTexture(generateLiftCircleBoth());
@@ -230,27 +229,8 @@ void C64SpindizzySpriteSet::destroyTextures() {
   cTextureIDs.clear();
 }
 
-void C64SpindizzySpriteSet::setPlugin(PlugSocket* socket, IPlugin* plugin) {
-  if (socket->getType() == "Palette") {
-    IPalette* mPreviousPalette = cPalette;
-    if (assignPlugin(plugin, &cPalette, *socket)) {
-      mPreviousPalette->removeChangeListener(this);
-      cPalette->addChangeListener(this);
-      generateTextures();
-    }
-  } else {
-    // TODO: Throw something
-  }
-}
-
 void C64SpindizzySpriteSet::paletteChanged(IPalette*, const std::string&) {
   generateTextures();
-}
-
-IPlugin* C64SpindizzySpriteSet::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "Palette") {return cPalette;}
-  // TODO: Throw something
-  return NULL;
 }
 
 ITexture* C64SpindizzySpriteSet::getTexture(const std::string& name) {
@@ -263,13 +243,13 @@ void C64SpindizzySpriteSet::load(DOMNodeWrapper* node) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Colour1") {
-      cColour1Name = mNode->getAttribute("name");
+      cColour1 = cRuntimeContext->getColour(mNode);
     } else if (mValueAsString == "Colour2") {
-      cColour2Name = mNode->getAttribute("name");
+      cColour2 = cRuntimeContext->getColour(mNode);
     } else if (mValueAsString == "Colour3") {
-      cColour3Name = mNode->getAttribute("name");
+      cColour3 = cRuntimeContext->getColour(mNode);
     } else if (mValueAsString == "Outline") {
-      cOutlineColourName = mNode->getAttribute("name");
+      cOutlineColour = cRuntimeContext->getColour(mNode);
     } else {
       // TODO: Throw something!
     }
@@ -277,17 +257,11 @@ void C64SpindizzySpriteSet::load(DOMNodeWrapper* node) {
   generateTextures();
 }
 
-void C64SpindizzySpriteSet::saveColour(DOMNodeWriter* node, const std::string& type, const std::string& name) {
-  DOMNodeWriter* mColourNode = node->addBranch(type);
-  mColourNode->addAttribute("type", "Palette");
-  mColourNode->addAttribute("name", name);
-}
-
 void C64SpindizzySpriteSet::save(DOMNodeWriter* node) {
-  saveColour(node, "Colour1", cColour1Name);
-  saveColour(node, "Colour2", cColour2Name);
-  saveColour(node, "Colour3", cColour3Name);
-  saveColour(node, "Outline", cOutlineColourName);
+  cColour1->save(node, "Colour1");
+  cColour2->save(node, "Colour2");
+  cColour3->save(node, "Colour3");
+  cOutlineColour->save(node, "Outline");
 }
 
 C64SpindizzySpriteSet::~C64SpindizzySpriteSet() {
@@ -295,8 +269,8 @@ C64SpindizzySpriteSet::~C64SpindizzySpriteSet() {
   destroyTextures();
 }
 
-extern "C" IPlugin* create() {
-  return new C64SpindizzySpriteSet();
+extern "C" IPlugin* create(IRuntimeContext* runtimeContext) {
+  return new C64SpindizzySpriteSet(runtimeContext);
 }
 
 extern "C" void destroy(IPlugin* textureSet) {

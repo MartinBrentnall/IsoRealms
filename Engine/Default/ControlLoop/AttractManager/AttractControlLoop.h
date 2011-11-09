@@ -39,7 +39,7 @@
 #include <IsoRealms/IFont.h>
 #include <IsoRealms/InitException.h>
 #include <IsoRealms/IPluginSupport.h>
-#include <IsoRealms/IUserCommand.h>
+#include <IsoRealms/ICommand.h>
 #include <IsoRealms/PluginRegistry.h>
 #include <IsoRealms/PlugSocket.h>
 #include <IsoRealms/Registry.h>
@@ -53,7 +53,8 @@ class AttractControlLoop:public IControlLoop,
   std::vector<ICommand*> cFrontEndEndCommands; // TODO: Implement
   std::map<std::string, IAttract*> cAttractServices;
   AttractSceneManager cAttractSceneManager;
-  Registry<IUserCommand, CommandProxy> cCommandRegistry;
+  Registry<ICommand, CommandProxy> cCommandRegistry;
+  Registry<IColour, ColourProxy> cColourRegistry;
   std::vector<ICommand*> cInitCommands;
   IFrontEnd* cFrontEnd;
   PluginRegistry cPluginRegistry;

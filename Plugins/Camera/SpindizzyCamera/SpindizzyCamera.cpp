@@ -19,6 +19,7 @@
 #include "SpindizzyCamera.h"
 
 SpindizzyCamera::SpindizzyCamera(IRuntimeContext* runtimeContext) {
+  cRuntimeContext = runtimeContext;
   assignDummyPlugin(&cSequencePlayer, "SequencePlayer");
   cTargetAngle = -45.0f;
   cPreviousAngle = -45.0f;
@@ -31,16 +32,11 @@ SpindizzyCamera::SpindizzyCamera(IRuntimeContext* runtimeContext) {
   cMinZ = INT_MAX;
   cMaxZ = INT_MIN;
   
-  cCameraCommands.push_back(new AbsoluteCommand(this, "Reset",      -45.0f));
-  cCameraCommands.push_back(new RelativeCommand(this, "RotateLeft", -90.0f));
-  cCameraCommands.push_back(new RelativeCommand(this, "RotateRight", 90.0f));
-  cCameraCommands.push_back(new RelativeCommand(this, "Rotate180",   180.0f));
+  cRuntimeContext->add(new AbsoluteCommand(this, -45.0f),  "Reset");
+  cRuntimeContext->add(new RelativeCommand(this, -90.0f),  "RotateLeft");
+  cRuntimeContext->add(new RelativeCommand(this,  90.0f),  "RotateRight");
+  cRuntimeContext->add(new RelativeCommand(this,  180.0f), "Rotate180");
   cSelectedLocation = 0;
-
-  cRuntimeContext = runtimeContext;
-  for (unsigned int i = 0; i < cCameraCommands.size(); i++) {
-    cRuntimeContext->add(cCameraCommands[i]);
-  }
 }
 
 std::vector<PlugSocket*> SpindizzyCamera::getPlugSockets() {
@@ -181,9 +177,8 @@ void SpindizzyCamera::load(DOMNodeWrapper* node) {
       float mYOffset = mNode->getFloatAttribute("yOffset");
       float mZOffset = mNode->getFloatAttribute("zOffset");
       SetLocationCommand* mSetLocationCommand = new SetLocationCommand(this, mModeName, mTrack, mXOffset, mYOffset, mZOffset);
-      cCameraCommands.push_back(mSetLocationCommand);
       cModes.push_back(mSetLocationCommand);
-      cRuntimeContext->add(mSetLocationCommand);
+      cRuntimeContext->add(mSetLocationCommand, "SetMode " + mModeName);
       mSetLocationCommand->execute(); // TODO: Should be configurable instead of just setting the last mode like this line does
     }
   }
@@ -220,8 +215,7 @@ void SpindizzyCamera::changeAngleRelative(float amount) {
   changeAngle(cTargetAngle + amount);
 }
 
-SpindizzyCamera::RelativeCommand::RelativeCommand(SpindizzyCamera* parent, const std::string& commandName, float amount) {
-  cCommandName = commandName;
+SpindizzyCamera::RelativeCommand::RelativeCommand(SpindizzyCamera* parent, float amount) {
   cParent = parent;
   cAmount = amount;
 }
@@ -230,22 +224,13 @@ void SpindizzyCamera::RelativeCommand::execute() {
   cParent->changeAngleRelative(cAmount);
 }
 
-std::string SpindizzyCamera::RelativeCommand::getName() {
-  return cCommandName;
-}
-
-SpindizzyCamera::AbsoluteCommand::AbsoluteCommand(SpindizzyCamera* parent, const std::string& commandName, float destination) {
-  cCommandName = commandName;
+SpindizzyCamera::AbsoluteCommand::AbsoluteCommand(SpindizzyCamera* parent, float destination) {
   cParent = parent;
   cDestination = destination;
 }
 
 void SpindizzyCamera::AbsoluteCommand::execute() {
   cParent->changeAngle(cDestination);
-}
-
-std::string SpindizzyCamera::AbsoluteCommand::getName() {
-  return cCommandName;
 }
 
 SpindizzyCamera::SetLocationCommand::SetLocationCommand(SpindizzyCamera* parent, const std::string& modeName, int targetLocation, float xOffset, float yOffset, float zOffset) {
@@ -275,10 +260,6 @@ void SpindizzyCamera::SetLocationCommand::save(DOMNodeWriter* node) {
   if (cOffset.z != 0.0f) {
     mNode->addAttribute("zOffset", cOffset.z);
   }
-}
-
-std::string SpindizzyCamera::SetLocationCommand::getName() {
-  return "SetMode " + cModeName;
 }
 
 extern "C" IPlugin* create(IRuntimeContext* runtimeContext) {

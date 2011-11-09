@@ -19,8 +19,6 @@
 #ifndef SOUND_COMMAND_SUPPORT_H
 #define SOUND_COMMAND_SUPPORT_H
 
-#include <IsoRealms/ICommandRegistry.h>
-
 #include "../../SoundSupport/ISound.h"
 #include "../../SoundSupport/ISoundSupport.h"
 #include "../../SoundSupport/ISoundSupportListener.h"

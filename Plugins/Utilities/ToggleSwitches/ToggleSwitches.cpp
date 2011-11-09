@@ -40,8 +40,8 @@ void ToggleSwitches::createSwitchCommand(DOMNodeWrapper* node) {
   RefreshCommand* mRefreshCommand = new RefreshCommand(mSwitch, mCommandName);
   cSwitchCommands.push_back(mToggleCommand);
   cSwitchCommands.push_back(mRefreshCommand);
-  cRuntimeContext->add(mToggleCommand);
-  cRuntimeContext->add(mRefreshCommand);
+  cRuntimeContext->add(mToggleCommand, "Toggle " + mCommandName);
+  cRuntimeContext->add(mRefreshCommand, "Refresh " + mCommandName);
 }
 
 void ToggleSwitches::load(DOMNodeWrapper* node) {
@@ -71,10 +71,6 @@ void ToggleSwitches::ToggleCommand::execute() {
   cSwitch->toggle();
 }
 
-std::string ToggleSwitches::ToggleCommand::getName() {
-  return "Toggle " + cName;
-}
-
 void ToggleSwitches::ToggleCommand::save(DOMNodeWriter* node) {
   DOMNodeWriter* mSwitchNode = node->addBranch("Switch");
   mSwitchNode->addAttribute("name", cName);
@@ -88,10 +84,6 @@ ToggleSwitches::RefreshCommand::RefreshCommand(ToggleSwitch* aSwitch, const std:
 
 void ToggleSwitches::RefreshCommand::execute() {
   cSwitch->refresh();
-}
-
-std::string ToggleSwitches::RefreshCommand::getName() {
-  return "Refresh " + cName;
 }
 
 void ToggleSwitches::RefreshCommand::save(DOMNodeWriter* node) {

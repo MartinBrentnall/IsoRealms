@@ -57,15 +57,15 @@ void SpindizzyCraftBallModel::render() {
 // TODO: Nasty stuff below here.  Clean up!
 GLuint SpindizzyCraftBallModel::generateTextureBall() {
   Image* mImage = new Image(64, 64, true);
-  Colour mTransparent(0.0f, 0.0f, 0.0f, 0.0f);
-  Colour mBlack(0.0f, 0.0f, 0.0f, 1.0f);
-  Colour mMagenta(0.7f, 0.0f, 1.0f, 1.0f);
-  Colour mYellow(1.0f, 1.0f, 0.0f, 1.0f);
-  mImage->drawSquare(&mTransparent, 0, mImage->getWidth(), 0, mImage->getHeight());
-  mImage->drawCircle(&mBlack, mImage->getWidth() / 2);
-  mImage->drawCircle(&mMagenta, int(mImage->getWidth() / 2.3f));
-  mImage->drawCircle(&mYellow, int(mImage->getWidth() / 3.5f));
-  mImage->drawOffsetCircle(&mMagenta, int(mImage->getWidth() / 3.0f));
+  IColour* mTransparent = new Colour(0.0f, 0.0f, 0.0f, 0.0f);
+  IColour* mBlack = new Colour(0.0f, 0.0f, 0.0f, 1.0f);
+  IColour* mMagenta = new Colour(0.7f, 0.0f, 1.0f, 1.0f);
+  IColour* mYellow = new Colour(1.0f, 1.0f, 0.0f, 1.0f);
+  mImage->drawSquare(mTransparent, 0, mImage->getWidth(), 0, mImage->getHeight());
+  mImage->drawCircle(mBlack, mImage->getWidth() / 2);
+  mImage->drawCircle(mMagenta, int(mImage->getWidth() / 2.3f));
+  mImage->drawCircle(mYellow, int(mImage->getWidth() / 3.5f));
+  mImage->drawOffsetCircle(mMagenta, int(mImage->getWidth() / 3.0f));
   GLuint mTextureID = mImage->generateTexture();
   delete mImage;
   return mTextureID;

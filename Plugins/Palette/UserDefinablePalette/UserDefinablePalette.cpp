@@ -48,7 +48,7 @@ void UserDefinablePalette::setEditingContext(IEditingContext* editingContext) {
 }
 
 IHUDComponent* UserDefinablePalette::createComponent() {
-  return new PaletteConfigurationComponent(this, cComponentContainer, cPalette, cChangeListeners);
+  return new PaletteConfigurationComponent(cComponentContainer, cPalette, cChangeListeners);
 }
 
 void UserDefinablePalette::save(DOMNodeWriter* node) {
@@ -66,6 +66,7 @@ void UserDefinablePalette::load(DOMNodeWrapper* node) {
     if (mValueAsString == "Colour") {
       std::string mColourName = mNode->getAttribute("name");
       cPalette[mColourName] = new Colour(mNode);
+      cRuntimeContext->add(cPalette[mColourName], mColourName);
     } else {
       // TODO: Throw something!
     }

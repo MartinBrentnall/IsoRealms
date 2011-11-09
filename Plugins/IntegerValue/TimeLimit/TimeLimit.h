@@ -22,7 +22,6 @@
 #include <iomanip>
 #include <sstream>
 
-#include <IsoRealms/ICommandRegistry.h>
 #include <IsoRealms/IDynamicElement.h>
 
 #include "../../StringProcessor/IStringProcessor.h"
@@ -38,12 +37,12 @@ class TimeLimit:public IIntegerValue,
   IRuntimeContext* cRuntimeContext;
   IIntegerValue* cIntegerValue;
   IStringProcessor* cStringProcessor;
-  std::vector<IUserCommand*> cTimeOutCommands;
+  std::vector<ICommand*> cTimeOutCommands;
   unsigned int cLocks;
-  std::vector<IUserCommand*> cCommands;
+  std::vector<ICommand*> cCommands;
   std::string cText;
 
-  class LockControlCommand:public IUserCommand {
+  class LockControlCommand:public ICommand {
     private:
     TimeLimit* cParent;
     bool cLock;
@@ -52,10 +51,9 @@ class TimeLimit:public IIntegerValue,
     LockControlCommand(TimeLimit*, bool);
     
     /***************************\
-     * Implements IUserCommand *
+     * Implements ICommand *
     \***************************/
     void execute();
-    std::string getName();
   };
   
   public:

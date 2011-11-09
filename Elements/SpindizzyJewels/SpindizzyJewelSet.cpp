@@ -18,7 +18,8 @@
  */
 #include "SpindizzyJewelSet.h"
 
-SpindizzyJewelSet::SpindizzyJewelSet() {
+SpindizzyJewelSet::SpindizzyJewelSet(IRuntimeContext* runtimeContext) {
+  cRuntimeContext = runtimeContext;
   cJewelCollectedScript = Script::getDummy();
   cAllJewelsCollectedScript = Script::getDummy();
   assignDummyPlugin(&cJewelModelFactory, "3DModel");// TODO: Change to Factory
@@ -107,8 +108,8 @@ SpindizzyJewelSet::~SpindizzyJewelSet() {
   }
 }
 
-extern "C" IElementSet* create(DOMNodeWrapper* node) {
-  return new SpindizzyJewelSet();
+extern "C" IElementSet* create(IRuntimeContext* runtimeContext) {
+  return new SpindizzyJewelSet(runtimeContext);
 }
 
 extern "C" void destroy(IElementSet* elementSet) {

@@ -144,7 +144,7 @@ void SpindizzyWaterFactory::save(DOMNodeWriter*) {
   // Nothing to do.
 }
 
-void SpindizzyWaterFactory::configureBlock(DOMNodeWrapper*, ICommandRegistry*) {
+void SpindizzyWaterFactory::configureBlock(DOMNodeWrapper*) {
   // Nothing to do.
 }
 

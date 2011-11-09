@@ -19,7 +19,10 @@
 #ifndef RUNTIME_CONTEXT_H
 #define RUNTIME_CONTEXT_H
 
+#include "ColourProxy.h"
 #include "CommandProxy.h"
+#include "IColour.h"
+#include "IColourSource.h"
 #include "IRuntimeContext.h"
 #include "IScriptSource.h"
 #include "RegistryProxy.h"
@@ -27,22 +30,26 @@
 class RuntimeContext:public IRuntimeContext {
   private:
   IMap* cMap;
-  RegistryProxy<IUserCommand, CommandProxy>* cCommandGateway;
+  RegistryProxy<ICommand, CommandProxy>* cCommandGateway;
+  RegistryProxy<IColour, ColourProxy>* cColourGateway;
   bool cEditing;
   IScriptSource* cScriptSource;
+  IColourSource* cColourSource;
   
   public:
-  RuntimeContext(IMap*, RegistryProxy<IUserCommand, CommandProxy>*, bool, IScriptSource*);
+  RuntimeContext(IMap*, RegistryProxy<ICommand, CommandProxy>*, RegistryProxy<IColour, ColourProxy>*, bool, IScriptSource*, IColourSource*);
 
   /******************************\
    * Implements IRuntimeContext *
   \******************************/
   IMap* getMap();
   bool isEditing();
-  std::string getLocation(IUserCommand*); // TODO: What's this for?  Is it used?
-  void add(IUserCommand*);
-  void remove(IUserCommand*);
+  std::string getLocation(ICommand*); // TODO: What's this for?  Is it used?
+  void add(ICommand*, const std::string&);
+  void add(IColour*, const std::string&);
+  void remove(ICommand*);
   Script* getScript(DOMNodeWrapper*);
+  IColour* getColour(DOMNodeWrapper*);
 };
 
 #endif

@@ -20,7 +20,6 @@
 #define BLOCK_TYPE_PROPERTIES_H
 
 #include <IsoRealms/DOMNodeWrapper.h>
-#include <IsoRealms/ICommandRegistry.h>
 #include <IsoRealms/Script.h>
 
 #include "../../Plugins/TextureSet/ITexture.h"

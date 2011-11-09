@@ -29,7 +29,8 @@ std::string ElementSetEntityClass::getEntityClassName() {
 }
 
 void ElementSetEntityClass::instantiate(std::string& type, std::string& name) {
-  cElementSetRegistry->createInstance(type, name);
+  // TODO: MUST SET RUNTIME CONTEXT!
+  cElementSetRegistry->createInstance(type, name, NULL);
 }
 
 void ElementSetEntityClass::remove(std::string& name) {

@@ -28,7 +28,7 @@ SpindizzySwitches::SpindizzySwitches(IRuntimeContext* runtimeContext) {
   cHUDSwitchA.setCamera(cCamera);
   cHUDSwitchB.setCamera(cCamera);
   cRuntimeContext = runtimeContext;
-  cRuntimeContext->add(cResetCommand);
+  cRuntimeContext->add(cResetCommand, "Reset Spindizzy Switches");
 }
 
 void SpindizzySwitches::setPlugin(PlugSocket* socket, IPlugin* plugin) {
@@ -86,7 +86,7 @@ void SpindizzySwitches::addSwitch(const std::string& name, bool primary) {
   Switch* mSwitch = new Switch(name);
   SwitchCommand* mSwitchCommand = new SwitchCommand(this, mSwitch, primary);
   cSwitchCommands.push_back(mSwitchCommand);
-  cRuntimeContext->add(mSwitchCommand);
+  cRuntimeContext->add(mSwitchCommand, "Activate switch " + name);
 }
 
 SpindizzySwitches::ResetCommand::ResetCommand(SpindizzySwitches* parent) {
@@ -110,10 +110,6 @@ void SpindizzySwitches::ResetCommand::execute() {
     cResetScript->execute();
   }
   cParent->updateHUD();
-}
-
-std::string SpindizzySwitches::ResetCommand::getName() {
-  return "Reset Spindizzy Switches";
 }
 
 SpindizzySwitches::SwitchCommand::SwitchCommand(SpindizzySwitches* parent, Switch* aSwitch, bool primary) {
@@ -187,10 +183,6 @@ void SpindizzySwitches::updateHUD() {
   cHUDSwitchB.setModel(cActiveSwitchB != NULL ? cActiveSwitchB->getModel() : NULL);
 }
 
-std::string SpindizzySwitches::SwitchCommand::getName() {
-  return "Activate switch " + cSwitch->getName();
-}
-
 void SpindizzySwitches::load(DOMNodeWrapper* node) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
@@ -198,7 +190,8 @@ void SpindizzySwitches::load(DOMNodeWrapper* node) {
     if (mValueAsString == "Switch") {
       SwitchCommand* mSwitchCommand = new SwitchCommand(this, mNode);
       cSwitchCommands.push_back(mSwitchCommand);
-      cRuntimeContext->add(mSwitchCommand);
+      std::string mSwitchName = mNode->getAttribute("name");
+      cRuntimeContext->add(mSwitchCommand, "Activate switch " + mSwitchName);
     } else if (mValueAsString == "ResetSwitch") {
       cResetCommand->setScript(cRuntimeContext->getScript(mNode));
     } else {

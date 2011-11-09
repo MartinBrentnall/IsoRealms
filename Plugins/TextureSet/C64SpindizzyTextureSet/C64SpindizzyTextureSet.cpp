@@ -38,8 +38,40 @@ const std::string C64SpindizzyTextureSet::WALL_MIXED_MIDDLE    = "WallMixedMiddl
 const std::string C64SpindizzyTextureSet::WALL_PLAIN_CAP       = "WallPlainCap";
 const std::string C64SpindizzyTextureSet::WALL_PLAIN_MIDDLE    = "WallPlainMiddle";
 
+C64SpindizzyTextureSet::C64SpindizzyTextureSet(IRuntimeContext* runtimeContext) {
+  cRuntimeContext = runtimeContext;
+  cFloorColour = new Colour(1.0f, 1.0f, 1.0f);
+  cWallColour = new Colour(0.7f, 0.7f, 0.7f);
+  cGridColour = new Colour(0.3f, 0.3f, 0.3f);
+  cBackgroundColour = new Colour(0.0f, 0.0f, 0.0f);
+  
+  cTextures[SWITCH_CIRCLE_BOTH]  = new C64SpindizzyTexture();
+  cTextures[SWITCH_CIRCLE_ONE]   = new C64SpindizzyTexture();
+  cTextures[SWITCH_CIRCLE_NONE]  = new C64SpindizzyTexture();
+  cTextures[SWITCH_SQUARE_BOTH]  = new C64SpindizzyTexture();
+  cTextures[SWITCH_SQUARE_ONE]   = new C64SpindizzyTexture();
+  cTextures[SWITCH_SQUARE_NONE]  = new C64SpindizzyTexture();
+  cTextures[SWITCH_DIAMOND_NONE] = new C64SpindizzyTexture();
+  cTextures[SWITCH_DIAMOND_ONE]  = new C64SpindizzyTexture();
+  cTextures[SWITCH_DIAMOND_BOTH] = new C64SpindizzyTexture();
+  cTextures[ARROW]               = new C64SpindizzyTexture();
+  cTextures[TRAMPOLINE]          = new C64SpindizzyTexture();
+  cTextures[ICE_WATER]           = new C64SpindizzyTexture();
+  cTextures[PLAIN]               = new C64SpindizzyTexture();
+  cTextures[PLAIN_SPLIT]         = new C64SpindizzyTexture();
+  cTextures[WALL_MIXED_CAP]      = new C64SpindizzyTexture();
+  cTextures[WALL_MIXED_MIDDLE]   = new C64SpindizzyTexture();
+  cTextures[WALL_PLAIN_CAP]      = new C64SpindizzyTexture();
+  cTextures[WALL_PLAIN_MIDDLE]   = new C64SpindizzyTexture();
+  cTextures[WALL_ICE]            = new C64SpindizzyTexture();
+  
+  cBackgroundTexture = new PlainColourTexture();
+
+  generateTextures();
+}
+
 /* Generation functions */
-Image* C64SpindizzyTextureSet::makePlainImage(Colour* colour) {
+Image* C64SpindizzyTextureSet::makePlainImage(IColour* colour) {
   Image* mImage = new Image(RESOLUTION, RESOLUTION, false);
   mImage->drawSquare(colour, 0, RESOLUTION, 0, RESOLUTION);
   return mImage;
@@ -188,7 +220,7 @@ GLuint C64SpindizzyTextureSet::generateArrow() {
 }
 
 GLuint C64SpindizzyTextureSet::generateWallPlainMiddle() {
-  Colour mGridColour = cGridColour->brightness(0.70);
+  Colour mGridColour(cGridColour, 0.70f);
   int mHeight = RESOLUTION / 2;
   Image* mImage = new Image(RESOLUTION, mHeight, false);
   mImage->drawSquare(&mGridColour, 0, RESOLUTION, 0, mHeight);
@@ -197,8 +229,8 @@ GLuint C64SpindizzyTextureSet::generateWallPlainMiddle() {
 }
 
 GLuint C64SpindizzyTextureSet::generateWallMixedMiddle() {
-  Colour mGridColour = cGridColour->brightness(0.85);
-  Colour mWallFloorMix(*cFloorColour, *(cWallColour));
+  Colour mGridColour(cGridColour, 0.85f);
+  Colour mWallFloorMix(cFloorColour, cWallColour);
   int mHeight = RESOLUTION / 2;
   Image* mImage = new Image(RESOLUTION, mHeight, false);
   mImage->drawSquare(&mGridColour, 0, RESOLUTION, 0, mHeight);
@@ -207,7 +239,7 @@ GLuint C64SpindizzyTextureSet::generateWallMixedMiddle() {
 }
 
 GLuint C64SpindizzyTextureSet::generateWallPlainCap() {
-  Colour mGridColour = cGridColour->brightness(0.70);
+  Colour mGridColour(cGridColour, 0.70f);
   int mHeight = RESOLUTION / 4;
   Image* mImage = new Image(RESOLUTION, mHeight, false);
   mImage->drawSquare(&mGridColour, 0, RESOLUTION, 0, mHeight);
@@ -216,8 +248,8 @@ GLuint C64SpindizzyTextureSet::generateWallPlainCap() {
 }
 
 GLuint C64SpindizzyTextureSet::generateWallMixedCap() {
-  Colour mGridColour = cGridColour->brightness(0.85);
-  Colour mWallFloorMix(*cFloorColour, *(cWallColour));
+  Colour mGridColour(cGridColour, 0.85f);
+  Colour mWallFloorMix(cFloorColour, cWallColour);
   int mHeight = RESOLUTION / 4;
   Image* mImage = new Image(RESOLUTION, mHeight, false);
   mImage->drawSquare(&mGridColour, 0, RESOLUTION, 0, mHeight);
@@ -247,39 +279,8 @@ GLuint C64SpindizzyTextureSet::convertToTexture(Image* image, const std::string&
   return mTextureID;
 }
 
-C64SpindizzyTextureSet::C64SpindizzyTextureSet() {
-  assignDummyPlugin(&cPalette, "Palette");
-
-  cTextures[SWITCH_CIRCLE_BOTH]  = new C64SpindizzyTexture();
-  cTextures[SWITCH_CIRCLE_ONE]   = new C64SpindizzyTexture();
-  cTextures[SWITCH_CIRCLE_NONE]  = new C64SpindizzyTexture();
-  cTextures[SWITCH_SQUARE_BOTH]  = new C64SpindizzyTexture();
-  cTextures[SWITCH_SQUARE_ONE]   = new C64SpindizzyTexture();
-  cTextures[SWITCH_SQUARE_NONE]  = new C64SpindizzyTexture();
-  cTextures[SWITCH_DIAMOND_NONE] = new C64SpindizzyTexture();
-  cTextures[SWITCH_DIAMOND_ONE]  = new C64SpindizzyTexture();
-  cTextures[SWITCH_DIAMOND_BOTH] = new C64SpindizzyTexture();
-  cTextures[ARROW]               = new C64SpindizzyTexture();
-  cTextures[TRAMPOLINE]          = new C64SpindizzyTexture();
-  cTextures[ICE_WATER]           = new C64SpindizzyTexture();
-  cTextures[PLAIN]               = new C64SpindizzyTexture();
-  cTextures[PLAIN_SPLIT]         = new C64SpindizzyTexture();
-  cTextures[WALL_MIXED_CAP]      = new C64SpindizzyTexture();
-  cTextures[WALL_MIXED_MIDDLE]   = new C64SpindizzyTexture();
-  cTextures[WALL_PLAIN_CAP]      = new C64SpindizzyTexture();
-  cTextures[WALL_PLAIN_MIDDLE]   = new C64SpindizzyTexture();
-  cTextures[WALL_ICE]            = new C64SpindizzyTexture();
-  
-  cBackgroundTexture = new PlainColourTexture();
-
-  generateTextures();
-}
-
 void C64SpindizzyTextureSet::generateTextures() {
-  cFloorColour      = cPalette->getColour(cFloorColourName);
-  cWallColour       = cPalette->getColour(cWallColourName);
-  cGridColour       = cPalette->getColour(cGridColourName);
-  cBackgroundColour = cPalette->getColour(cBackgroundColourName);
+  
   // TODO: Clean-up old ones
   cTextures[SWITCH_CIRCLE_BOTH]->setTexture(generateSwitchCircleBoth());
   cTextures[SWITCH_CIRCLE_ONE]->setTexture(generateSwitchCircleHalf());
@@ -315,29 +316,10 @@ void C64SpindizzyTextureSet::destroyTextures() {
   cTextureIDs.clear();
 }
 
-void C64SpindizzyTextureSet::setPlugin(PlugSocket* socket, IPlugin* plugin) {
-  if (socket->getType() == "Palette") {
-    IPalette* mPreviousPalette = cPalette;
-    if (assignPlugin(plugin, &cPalette, *socket)) {
-      mPreviousPalette->removeChangeListener(this);
-      cPalette->addChangeListener(this);
-      generateTextures();
-    }
-  } else {
-    // TODO: Throw something
-  }
-}
-
 void C64SpindizzyTextureSet::paletteChanged(IPalette* palette, const std::string& name) {
-  if (name == cBackgroundColourName || name == cFloorColourName || name == cGridColourName || name == cWallColourName) {
+//  if (name == cBackgroundColourName || name == cFloorColourName || name == cGridColourName || name == cWallColourName) {
     generateTextures();
-  }
-}
-
-IPlugin* C64SpindizzyTextureSet::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "Palette") {return cPalette;}
-  // TODO: Throw something
-  return NULL;
+//  }
 }
 
 ITexture* C64SpindizzyTextureSet::getTexture(const std::string& name) {
@@ -357,13 +339,13 @@ void C64SpindizzyTextureSet::load(DOMNodeWrapper* node) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Floor") {
-      cFloorColourName = mNode->getAttribute("name");
+      cFloorColour = cRuntimeContext->getColour(mNode);
     } else if (mValueAsString == "Wall") {
-      cWallColourName = mNode->getAttribute("name");
+      cWallColour = cRuntimeContext->getColour(mNode);
     } else if (mValueAsString == "Grid") {
-      cGridColourName = mNode->getAttribute("name");
+      cGridColour = cRuntimeContext->getColour(mNode);
     } else if (mValueAsString == "Extra") {
-      cBackgroundColourName = mNode->getAttribute("name");
+      cBackgroundColour = cRuntimeContext->getColour(mNode);
     } else {
       // TODO: Throw something!
     }
@@ -371,21 +353,15 @@ void C64SpindizzyTextureSet::load(DOMNodeWrapper* node) {
   generateTextures();
 }
 
-void C64SpindizzyTextureSet::saveColour(DOMNodeWriter* node, const std::string& type, const std::string& name) {
-  DOMNodeWriter* mColourNode = node->addBranch(type);
-  mColourNode->addAttribute("type", "Palette");
-  mColourNode->addAttribute("name", name);
-}
-
 void C64SpindizzyTextureSet::save(DOMNodeWriter* node) {
-  saveColour(node, "Floor", cFloorColourName);
-  saveColour(node, "Wall", cWallColourName);
-  saveColour(node, "Grid", cGridColourName);
-  saveColour(node, "Extra", cBackgroundColourName);
+  cFloorColour->save(node, "Floor");
+  cWallColour->save(node, "Wall");
+  cGridColour->save(node, "Grid");
+  cBackgroundColour->save(node, "Extra");
 }
 
-extern "C" IPlugin* create() {
-  return new C64SpindizzyTextureSet();
+extern "C" IPlugin* create(IRuntimeContext* runtimeContext) {
+  return new C64SpindizzyTextureSet(runtimeContext);
 }
 
 extern "C" void destroy(IPlugin* textureSet) {

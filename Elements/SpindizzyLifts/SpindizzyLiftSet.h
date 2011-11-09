@@ -22,7 +22,6 @@
 #include <vector>
 
 #include <IsoRealms/DefaultCommandInfo.h>
-#include <IsoRealms/ICommandRegistry.h>
 #include <IsoRealms/IElementSet.h>
 #include <IsoRealms/PluginRegistry.h>
 #include <IsoRealms/OpenDialogCommand.h>
@@ -50,7 +49,6 @@ class SpindizzyLiftSet:public ISpindizzyLiftSet,
   ICollidableSurfaceRegistry* cCollidableSurfaceRegistry;
   Script* cLiftMovedScript;
   IZone* cZone;
-  std::vector<IUserCommand*> cCommands;
   std::vector<ISimpleModelFactory*> cLiftModels;
 
   /**
@@ -60,7 +58,7 @@ class SpindizzyLiftSet:public ISpindizzyLiftSet,
   
   unsigned int cLocked;
 
-  class LockControlCommand:public IUserCommand {
+  class LockControlCommand:public ICommand {
     private:
     SpindizzyLiftSet* cParent;
     bool cLock;
@@ -68,21 +66,19 @@ class SpindizzyLiftSet:public ISpindizzyLiftSet,
     public:
     LockControlCommand(SpindizzyLiftSet*, bool);
     
-    /***************************\
-     * Implements IUserCommand *
-    \***************************/
+    /***********************\
+     * Implements ICommand *
+    \***********************/
     void execute();
-    std::string getName();
   };
   
   public:
-  SpindizzyLiftSet();
+  SpindizzyLiftSet(IRuntimeContext*);
 
   /**************************\
    * Implements IElementSet *
   \**************************/
   std::vector<IElementFactory*> getElementFactories();
-  void setRuntimeContext(IRuntimeContext*);
   void destroy(IElement*);
   void setEditingContext(IEditingContext*);
 

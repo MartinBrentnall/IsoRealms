@@ -18,12 +18,12 @@
  */
 #include "ZoneRendererProxy.h"
 
-ZoneRendererProxy::ZoneRendererProxy(IZoneRenderer* zoneRenderer, bool active, RegistryProxy<IUserCommand, CommandProxy>* commandRegistry, const std::string& rendererName, const std::string& type, const std::string& instance) {
+ZoneRendererProxy::ZoneRendererProxy(IZoneRenderer* zoneRenderer, bool active, RegistryProxy<ICommand, CommandProxy>* commandRegistry, const std::string& rendererName, const std::string& type, const std::string& instance) {
   cZoneRenderer = zoneRenderer;
   cActive = active;
   cName = rendererName;
-  commandRegistry->add(new RendererActivationCommand(this, true));
-  commandRegistry->add(new RendererActivationCommand(this, false));
+  commandRegistry->add(new RendererActivationCommand(this, true), cName + "_Activate");
+  commandRegistry->add(new RendererActivationCommand(this, false), cName + "_Deactivate");
   cType = type;
   cInstance = instance;
 }
@@ -61,8 +61,4 @@ ZoneRendererProxy::RendererActivationCommand::RendererActivationCommand(ZoneRend
 
 void ZoneRendererProxy::RendererActivationCommand::execute() {
   cParent->cActive = cActivate;
-}
-
-std::string ZoneRendererProxy::RendererActivationCommand::getName() {
-  return cParent->cName + (cActivate ? "_Activate" : "_Deactivate");
 }

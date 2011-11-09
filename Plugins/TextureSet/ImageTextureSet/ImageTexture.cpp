@@ -30,7 +30,7 @@ void ImageTexture::texCoord2f(float x, float y) {
   glTexCoord2f(x, y);
 }
 
-Colour* ImageTexture::getColour(float x, float y) {
+IColour* ImageTexture::getColour(float x, float y) {
   std::cout << "WARNING: Colour not supported here yet!" << std::endl;
   return NULL;
 }

@@ -29,7 +29,7 @@
 #include <IsoRealms/Element.h>
 #include <IsoRealms/IMap.h>
 #include <IsoRealms/IsoRealmsConstants.h>
-#include <IsoRealms/IUserCommand.h>
+#include <IsoRealms/ICommand.h>
 #include <IsoRealms/IVisualElement.h>
 #include <IsoRealms/KeyStates.h>
 #include <IsoRealms/MiscFunctions.h>

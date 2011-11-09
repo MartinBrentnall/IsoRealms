@@ -23,7 +23,6 @@
 
 class IIntegerCommandRegistry {
   public:
-  virtual void addCommand(AddIntegerCommand*) = 0;
   virtual void removeCommand(AddIntegerCommand*) = 0;
   virtual std::vector<AddIntegerCommand*> getCommands() = 0;
 };

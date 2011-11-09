@@ -26,7 +26,6 @@ class IElementFactory;
 #include "BlockLocation.h"
 #include "DOMNodeWriter.h"
 #include "IAddressableEntity.h"
-#include "ICommandRegistry.h"
 #include "IComponentContainer.h"
 #include "IEditingContext.h"
 #include "IElementFactory.h"
@@ -68,8 +67,6 @@ class IElementSet:public IPluginSupport,
    */
   virtual void setEditingContext(IEditingContext*) = 0;
 
-  virtual void setRuntimeContext(IRuntimeContext*) = 0;
-  
   /**
    * Destroy the element.  Make sure you've removed the element from your map
    * before calling this!  You should only call this function with an element
@@ -98,7 +95,7 @@ class IElementSet:public IPluginSupport,
   virtual ~IElementSet() {}
 };
 
-typedef IElementSet* createElementSet(DOMNodeWrapper*);
+typedef IElementSet* createElementSet(IRuntimeContext*);
 typedef void destroyElementSet(IElementSet*);
 
 #endif

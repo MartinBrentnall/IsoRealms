@@ -22,11 +22,10 @@
 #include <string>
 #include <vector>
 
-#include "../../3DModel/ISimpleModel.h"
-
 #include <IsoRealms/DOMNodeWrapper.h>
-#include <IsoRealms/IUserCommand.h>
 #include <IsoRealms/Script.h>
+
+#include "../../3DModel/ISimpleModel.h"
 
 class Switch {
   private:

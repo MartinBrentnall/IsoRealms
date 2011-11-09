@@ -35,7 +35,7 @@ void ImageTextureProxy::texCoord2f(float x, float y) {
   }
 }
 
-Colour* ImageTextureProxy::getColour(float x, float y) {
+IColour* ImageTextureProxy::getColour(float x, float y) {
   if (cTexture != NULL) {
     return cTexture->getColour(x, y);
   }

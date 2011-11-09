@@ -64,8 +64,8 @@ class TextureSetPerZone:public ITextureSetChanger,
   std::vector<ITextureSet*> cTexturePalette;
   std::map<IZone*, ITextureSet*> cZoneMapping;
   IZoneContext* cZoneContext;
-  Colour cPreviousBackgroundColour;
-  Colour cTargetBackgroundColour;
+  Colour* cPreviousBackgroundColour;
+  Colour* cTargetBackgroundColour;
   float cProgressBackgroundColour;
   IComponentContainer* cComponentContainer;
 

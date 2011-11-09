@@ -43,13 +43,13 @@ class SpindizzyGERALDSet:public ISpindizzyGERALDSet {
   ILocationAwareness* cLocationAwareness;
   IZoneContext* cZoneContext;
   IRuntimeContext* cRuntimeContext;
-  std::vector<IUserCommand*> cCommands;
+  std::vector<ICommand*> cCommands;
   unsigned int cLocks;
 
   void setModel(ISimpleModelFactory*);
   void stop();
 
-  class LockControlCommand:public IUserCommand {
+  class LockControlCommand:public ICommand {
     private:
     SpindizzyGERALDSet* cParent;
     bool cLock;
@@ -57,35 +57,32 @@ class SpindizzyGERALDSet:public ISpindizzyGERALDSet {
     public:
     LockControlCommand(SpindizzyGERALDSet*, bool);
     
-    /***************************\
-     * Implements IUserCommand *
-    \***************************/
+    /***********************\
+     * Implements ICommand *
+    \***********************/
     void execute();
-    std::string getName();
   };
   
-  class StopCommand:public IUserCommand {
+  class StopCommand:public ICommand {
     private:
     SpindizzyGERALDSet* cParent;
     
     public:
     StopCommand(SpindizzyGERALDSet*);
     
-    /***************************\
-     * Implements IUserCommand *
-    \***************************/
+    /***********************\
+     * Implements ICommand *
+    \***********************/
     void execute();
-    std::string getName();
   };
   
   public:
-  SpindizzyGERALDSet();
+  SpindizzyGERALDSet(IRuntimeContext*);
 
   /**************************\
    * Implements IElementSet *
   \**************************/
   std::vector<IElementFactory*> getElementFactories();
-  void setRuntimeContext(IRuntimeContext*);
   void destroy(IElement*);
   void save(DOMNodeWriter*);
   void load(DOMNodeWrapper*);

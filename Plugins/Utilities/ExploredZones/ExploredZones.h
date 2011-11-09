@@ -24,7 +24,6 @@
 #include <vector>
 
 #include <IsoRealms/BlockArea.h>
-#include <IsoRealms/ICommandRegistry.h>
 #include <IsoRealms/IPluginRegistry.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 #include <IsoRealms/IZoneRenderer.h>

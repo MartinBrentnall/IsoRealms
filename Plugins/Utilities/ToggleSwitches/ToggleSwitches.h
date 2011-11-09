@@ -21,8 +21,6 @@
 
 #include <vector>
 
-#include <IsoRealms/ICommandRegistry.h>
-
 #include "../IUtilities.h"
 
 #include "IToggleSwitchCommand.h"
@@ -38,11 +36,10 @@ class ToggleSwitches:public IUtilities {
     public:
     ToggleCommand(ToggleSwitch*, const std::string&);
     
-    /***************************\
-     * Implements IUserCommand *
-    \***************************/
+    /***********************\
+     * Implements ICommand *
+    \***********************/
     void execute();
-    std::string getName();
     void save(DOMNodeWriter*);
   };
   
@@ -54,11 +51,10 @@ class ToggleSwitches:public IUtilities {
     public:
     RefreshCommand(ToggleSwitch*, const std::string&);
     
-    /***************************\
-     * Implements IUserCommand *
-    \***************************/
+    /***********************\
+     * Implements ICommand *
+    \***********************/
     void execute();
-    std::string getName();
     void save(DOMNodeWriter*);
   };
 

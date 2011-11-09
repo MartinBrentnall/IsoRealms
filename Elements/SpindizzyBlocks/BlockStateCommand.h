@@ -19,25 +19,23 @@
 #ifndef BLOCK_STATE_COMMAND_H
 #define BLOCK_STATE_COMMAND_H
 
-#include <IsoRealms/IUserCommand.h>
+#include <IsoRealms/ICommand.h>
 
 #include "ISpindizzyBlockSet.h"
 
-class BlockStateCommand:public IUserCommand {
+class BlockStateCommand:public ICommand {
   private:
   ISpindizzyBlockSet* cParent;
-  std::string cName;
   bool* cState;
   bool cValue;
 
   public:
-  BlockStateCommand(ISpindizzyBlockSet*, const std::string&, bool*, bool);
+  BlockStateCommand(ISpindizzyBlockSet*, bool*, bool);
 
-  /***************************\
-   * Implements IUserCommand *
-  \***************************/
+  /**********************\
+   * Implements Iommand *
+  \**********************/
   void execute();
-  std::string getName();
 };
 
 #endif

@@ -18,11 +18,12 @@
  */
 #include "SpindizzyEnemySet.h"
 
-SpindizzyEnemySet::SpindizzyEnemySet() {
+SpindizzyEnemySet::SpindizzyEnemySet(IRuntimeContext* runtimeContext) {
+  cRuntimeContext = runtimeContext;
   assignDummyPlugin(&cZoneContext, "ZoneContext");
-  cCommands.push_back(new LockControlCommand(this, true));
-  cCommands.push_back(new LockControlCommand(this, false));
   cLocks = 0;
+  cRuntimeContext->add(new LockControlCommand(this, true), "AddLock");
+  cRuntimeContext->add(new LockControlCommand(this, false), "RemoveLock");
 }
 
 void SpindizzyEnemySet::setModel(ISimpleModelFactory* modelFactory) {
@@ -35,19 +36,8 @@ std::vector<IElementFactory*> SpindizzyEnemySet::getElementFactories() {
   return cElementFactories;
 }
 
-void SpindizzyEnemySet::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  cRuntimeContext = runtimeContext;
-  for (unsigned int i = 0; i < cCommands.size(); i++) {
-    cRuntimeContext->add(cCommands[i]);
-  }
-}
-
 void SpindizzyEnemySet::destroy(IElement* element) {
   delete element;
-}
-
-std::string SpindizzyEnemySet::getName() {
-  return "Enemies";
 }
 
 std::vector<PlugSocket*> SpindizzyEnemySet::getPlugSockets() {
@@ -149,12 +139,8 @@ void SpindizzyEnemySet::LockControlCommand::execute() {
   cParent->cLocks += cLock ? 1 : -1;
 }
 
-std::string SpindizzyEnemySet::LockControlCommand::getName() {
-  return cLock ? "AddLock" : "RemoveLock";
-}
-    
-extern "C" IElementSet* create(DOMNodeWrapper* node) {
-  return new SpindizzyEnemySet();
+extern "C" IElementSet* create(IRuntimeContext* runtimeContext) {
+  return new SpindizzyEnemySet(runtimeContext);
 }
 
 extern "C" void destroy(IElementSet* elementSet) {

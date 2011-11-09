@@ -18,8 +18,7 @@
  */
 #include "PaletteConfigurationComponent.h"
 
-PaletteConfigurationComponent::PaletteConfigurationComponent(IPalette* parent, IComponentContainer* componentContainer, std::map<std::string, Colour*> palette, std::vector<IPaletteListener*>& listeners) : Dialog(componentContainer, "Palette Editor", 0.18f, 0.68f, 0.8f, 0.3f) {
-  cParent = parent;
+PaletteConfigurationComponent::PaletteConfigurationComponent(IComponentContainer* componentContainer, std::map<std::string, Colour*> palette, std::vector<IPaletteListener*>& listeners) : Dialog(componentContainer, "Palette Editor", 0.18f, 0.68f, 0.8f, 0.3f) {
   for (std::map<std::string, Colour*>::iterator i = palette.begin(); i != palette.end(); i++) {
     cPalette.push_back(new PaletteEntry(i->first, i->second));
   }
@@ -129,7 +128,7 @@ void PaletteConfigurationComponent::adjustChannel(float amount) {
 
 void PaletteConfigurationComponent::fireChangeEvent() {
   for (unsigned int i = 0; i < cChangeListeners->size(); i++) {
-    (*cChangeListeners)[i]->paletteChanged(cParent, cPalette[cSelectedEntry]->cName);
+    (*cChangeListeners)[i]->paletteChanged(NULL, cPalette[cSelectedEntry]->cName);
   }
 }
 

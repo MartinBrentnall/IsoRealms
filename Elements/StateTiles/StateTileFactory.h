@@ -23,7 +23,7 @@
 #include <vector>
 
 #include <IsoRealms/IElementFactory.h>
-#include <IsoRealms/IUserCommand.h>
+#include <IsoRealms/ICommand.h>
 #include <IsoRealms/IZone.h>
 #include <IsoRealms/Script.h>
 
@@ -32,7 +32,7 @@
 class StateTileFactory:public IStateTileFactory {
   private:
     
-  class ToggleState:public IUserCommand {
+  class ToggleState:public ICommand {
     private:
     StateTileFactory* cParent;
 
@@ -42,7 +42,6 @@ class StateTileFactory:public IStateTileFactory {
     
     ToggleState(StateTileFactory*, unsigned int, unsigned int);
     void execute();
-    std::string getName();
   };
   
   std::vector<ToggleState*> cCommands;

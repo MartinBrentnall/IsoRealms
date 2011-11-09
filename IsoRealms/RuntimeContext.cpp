@@ -18,11 +18,13 @@
  */
 #include "RuntimeContext.h"
 
-RuntimeContext::RuntimeContext(IMap* map, RegistryProxy<IUserCommand, CommandProxy>* commandGateway, bool editing, IScriptSource* scriptSource) {
+RuntimeContext::RuntimeContext(IMap* map, RegistryProxy<ICommand, CommandProxy>* commandGateway, RegistryProxy<IColour, ColourProxy>* colourGateway, bool editing, IScriptSource* scriptSource, IColourSource* colourSource) {
   cMap = map;
   cCommandGateway = commandGateway;
+  cColourGateway = colourGateway;
   cEditing = editing;
   cScriptSource = scriptSource;
+  cColourSource = colourSource;
 }
 
 IMap* RuntimeContext::getMap() {
@@ -33,15 +35,19 @@ bool RuntimeContext::isEditing() {
   return cEditing;
 }
 
-std::string RuntimeContext::getLocation(IUserCommand* command) {
+std::string RuntimeContext::getLocation(ICommand* command) {
   return cCommandGateway->getLocation(command);
 }
 
-void RuntimeContext::add(IUserCommand* command) {
-  cCommandGateway->add(command);
+void RuntimeContext::add(ICommand* command, const std::string& name) {
+  cCommandGateway->add(command, name);
 }
 
-void RuntimeContext::remove(IUserCommand* command) {
+void RuntimeContext::add(IColour* colour, const std::string& name) {
+  cColourGateway->add(colour, name);
+}
+
+void RuntimeContext::remove(ICommand* command) {
   cCommandGateway->remove(command);
 }
 
@@ -49,3 +55,6 @@ Script* RuntimeContext::getScript(DOMNodeWrapper* node) {
   return cScriptSource->getScript(node);
 }
 
+IColour* RuntimeContext::getColour(DOMNodeWrapper* node) {
+  return cColourSource->getColour(node);
+}

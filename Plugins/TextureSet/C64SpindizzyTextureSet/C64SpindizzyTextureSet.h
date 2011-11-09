@@ -23,14 +23,13 @@
 #include <map>
 
 #include <IsoRealms/DummyPlugin.h>
+#include <IsoRealms/IColour.h>
 #include <IsoRealms/ICommandInfo.h>
 #include <IsoRealms/Image.h>
+#include <IsoRealms/IPaletteListener.h>
 #include <IsoRealms/IPlugin.h>
 #include <IsoRealms/PluginRegistry.h>
 #include <IsoRealms/PlugSocket.h>
-
-#include "../../Palette/IPalette.h"
-#include "../../Palette/IPaletteListener.h"
 
 #include "../ITextureSet.h"
 #include "../ITexture.h"
@@ -65,24 +64,20 @@ class C64SpindizzyTextureSet:public ITextureSet,
   static const std::string WALL_PLAIN_CAP;
   static const std::string WALL_PLAIN_MIDDLE;
 
+  IRuntimeContext* cRuntimeContext;  
   std::map<std::string, C64SpindizzyTexture*> cTextures; 
   PlainColourTexture* cBackgroundTexture;
   std::map<std::string, GLuint> cTextureIDs;
 
-  IPalette* cPalette;
-  std::string cFloorColourName;
-  std::string cWallColourName;
-  std::string cGridColourName;
-  std::string cBackgroundColourName;
-  Colour* cFloorColour;
-  Colour* cWallColour;
-  Colour* cGridColour;
-  Colour* cBackgroundColour;
+  IColour* cFloorColour;
+  IColour* cWallColour;
+  IColour* cGridColour;
+  IColour* cBackgroundColour;
 
   /*
    * The follow functions create template images that can be drawn on.
    */
-  Image* makePlainImage(Colour*);
+  Image* makePlainImage(IColour*);
   Image* makeTileImage();
   Image* makeSwitchSquareImage();
   Image* makeSwitchDiamondImage();
@@ -111,11 +106,9 @@ class C64SpindizzyTextureSet:public ITextureSet,
 
   void generateTextures();
   void destroyTextures();
-  
-  void saveColour(DOMNodeWriter*, const std::string&, const std::string&);
 
   public:
-  C64SpindizzyTextureSet();
+  C64SpindizzyTextureSet(IRuntimeContext*);
 
   /***********************************\
    * Implements ISpindizzyTextureSet *
@@ -126,12 +119,6 @@ class C64SpindizzyTextureSet:public ITextureSet,
    * Implements IPaletteListener *
   \*******************************/
   void paletteChanged(IPalette*, const std::string&);
-
-  /******************************************\
-   * Implements IPluginSupport (in IPlugin) *
-  \******************************************/
-  void setPlugin(PlugSocket*, IPlugin*);
-  IPlugin* getPlugin(PlugSocket*);
 
   void load(DOMNodeWrapper*);
   void save(DOMNodeWriter*);

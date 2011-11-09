@@ -27,7 +27,7 @@ Script* Script::getDummy() {
 Script::Script() {
 }
 
-Script::Script(std::vector<IUserCommand*> commands, Registry<IUserCommand, CommandProxy>* commandRegistry) {
+Script::Script(std::vector<ICommand*> commands, Registry<ICommand, CommandProxy>* commandRegistry) {
   cCommandRegistry = commandRegistry;
   cCommands = commands;
 }

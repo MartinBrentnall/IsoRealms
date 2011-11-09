@@ -25,19 +25,19 @@
 
 class PlainColourTexture:public ITexture {
   private:
-  Colour* cColour;
+  IColour* cColour;
 
   public:
   PlainColourTexture();
   
-  void setTexture(Colour* colour);
+  void setTexture(IColour* colour);
 
   /***********************\
    * Implements ITexture *
   \***********************/
   void set();
   void texCoord2f(float, float);
-  Colour* getColour(float, float);
+  IColour* getColour(float, float);
 };
 
 #endif

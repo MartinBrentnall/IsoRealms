@@ -18,24 +18,18 @@
  */
 #include "SpindizzyLiftSet.h"
 
-SpindizzyLiftSet::SpindizzyLiftSet() {
+SpindizzyLiftSet::SpindizzyLiftSet(IRuntimeContext* runtimeContext) {
+  cRuntimeContext = runtimeContext;
   cLiftMovedScript = Script::getDummy();
   assignDummyPlugin(&cZoneContext, "ZoneContext");
   assignDummyPlugin(&cCollidableSurfaceRegistry, "CollidableSurfaceRegistry");
   cLocked = 0;
-  cCommands.push_back(new LockControlCommand(this, true));
-  cCommands.push_back(new LockControlCommand(this, false));
+  cRuntimeContext->add(new LockControlCommand(this, true), "AddLock");
+  cRuntimeContext->add(new LockControlCommand(this, false), "RemoveLock");
 }
 
 std::vector<IElementFactory*> SpindizzyLiftSet::getElementFactories() {
   return cElementFactories;
-}
-
-void SpindizzyLiftSet::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  cRuntimeContext = runtimeContext;
-  for (unsigned int i = 0; i < cCommands.size(); i++) {
-    cRuntimeContext->add(cCommands[i]);
-  }
 }
 
 void SpindizzyLiftSet::destroy(IElement* element) {
@@ -133,13 +127,8 @@ void SpindizzyLiftSet::load(DOMNodeWrapper* node) {
       std::string mLiftTypeName = mNode->getAttribute("name");
       unsigned int mModelID = mNode->getIntegerAttribute("model");
       bool mActive = mNode->getBooleanAttribute("active");
-      SpindizzyLiftFactory* mLiftFactory = new SpindizzyLiftFactory(this, cLiftModels[mModelID], &cSpindizzyLiftProperties, mActive, mLiftTypeName);
+      SpindizzyLiftFactory* mLiftFactory = new SpindizzyLiftFactory(this, cLiftModels[mModelID], &cSpindizzyLiftProperties, mActive, mLiftTypeName, cRuntimeContext);
       cElementFactories.push_back(mLiftFactory);
-      std::vector<IUserCommand*> mLiftCommands = mLiftFactory->getLiftCommands();
-      for (unsigned int j = 0; j < mLiftCommands.size(); j++) {
-        cCommands.push_back(mLiftCommands[j]);
-        cRuntimeContext->add(mLiftCommands[j]);
-      }
     } else {
       // TODO: Throw something!
     }
@@ -185,16 +174,12 @@ void SpindizzyLiftSet::LockControlCommand::execute() {
   cParent->cLocked += cLock ? 1 : -1;
 }
 
-std::string SpindizzyLiftSet::LockControlCommand::getName() {
-  return cLock ? "AddLock" : "RemoveLock";
-}
-    
 IHUDComponent* SpindizzyLiftSet::createComponent() {
   return new SpindizzyLiftConfigurationDialog(cComponentContainer);
 }
     
-extern "C" IElementSet* create(DOMNodeWrapper* node) {
-  return new SpindizzyLiftSet();
+extern "C" IElementSet* create(IRuntimeContext* runtimeContext) {
+  return new SpindizzyLiftSet(runtimeContext);
 }
 
 extern "C" void destroy(IElementSet* elementSet) {

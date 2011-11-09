@@ -33,7 +33,7 @@ class SequencePlayerCommands:public IUtilities {
   /**
    * The wrapped player functions.
    */
-  std::vector<IUserCommand*> cPlayerCommands;
+  std::vector<ICommand*> cPlayerCommands;
 
   /**
    * The player instance whose functions to wrap.
@@ -43,69 +43,65 @@ class SequencePlayerCommands:public IUtilities {
   /**
    * Wraps the Player play() function in a user command.
    */
-  class PlayCommand:public IUserCommand {
+  class PlayCommand:public ICommand {
     private:
     SequencePlayerCommands* cParent;
     
     public:
     PlayCommand(SequencePlayerCommands*);
     
-    /***************************\
-     * Implements IUserCommand *
-    \***************************/
+    /***********************\
+     * Implements ICommand *
+    \***********************/
     void execute();
-    std::string getName();
   };
   
   /**
    * Wraps the Player rewind() function in a user command.
    */
-  class RewindCommand:public IUserCommand {
+  class RewindCommand:public ICommand {
     private:
     SequencePlayerCommands* cParent;
     
     public:
     RewindCommand(SequencePlayerCommands*);
     
-    /***************************\
-     * Implements IUserCommand *
-    \***************************/
+    /***********************\
+     * Implements ICommand *
+    \***********************/
     void execute();
-    std::string getName();
   };
   
   /**
    * Wraps the Player pause() function in a user command.
    */
-  class PauseCommand:public IUserCommand {
+  class PauseCommand:public ICommand {
     private:
     SequencePlayerCommands* cParent;
     
     public:
     PauseCommand(SequencePlayerCommands*);
     
-    /***************************\
-     * Implements IUserCommand *
-    \***************************/
+    /***********************\
+     * Implements ICommand *
+    \***********************/
     void execute();
-    std::string getName();
   };
   
   /**
    * Wraps the Player unpause() function in a user command.
    */
-  class UnpauseCommand:public IUserCommand {
+  class UnpauseCommand:public ICommand {
     private:
     SequencePlayerCommands* cParent;
     
     public:
     UnpauseCommand(SequencePlayerCommands*);
     
-    /***************************\
-     * Implements IUserCommand *
-    \***************************/
+    /***********************\
+     * Implements ICommand *
+    \***********************/
     void execute();
-    std::string getName();
   };
   
   public:

@@ -23,20 +23,19 @@
 
 #include "CommandProxy.h"
 #include "DOMNodeWriter.h"
-#include "IUserCommand.h"
 #include "Registry.h"
 
 class Script {
   private:
   static Script DUMMY;
 
-  Registry<IUserCommand, CommandProxy>* cCommandRegistry;
-  std::vector<IUserCommand*> cCommands;
+  Registry<ICommand, CommandProxy>* cCommandRegistry;
+  std::vector<ICommand*> cCommands;
 
   Script();
   
   public:
-  Script(std::vector<IUserCommand*>, Registry<IUserCommand, CommandProxy>*);
+  Script(std::vector<ICommand*>, Registry<ICommand, CommandProxy>*);
     
   void save(DOMNodeWriter*, const std::string&);
   void execute();

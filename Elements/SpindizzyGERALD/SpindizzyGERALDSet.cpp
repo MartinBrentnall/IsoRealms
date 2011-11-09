@@ -18,7 +18,8 @@
  */
 #include "SpindizzyGERALDSet.h"
 
-SpindizzyGERALDSet::SpindizzyGERALDSet() {
+SpindizzyGERALDSet::SpindizzyGERALDSet(IRuntimeContext* runtimeContext) {
+  cRuntimeContext = runtimeContext;
   assignDummyPlugin(&cGERALDModelFactory, "3DModel");
   assignDummyPlugin(&cCollectables, "Collectables");
   assignDummyPlugin(&cCollidableSurfaceRegistry, "CollidableSurfaceRegistry");
@@ -26,9 +27,13 @@ SpindizzyGERALDSet::SpindizzyGERALDSet() {
   cCamera = NULL;
   cZoneContext = NULL;
   cElementFactories.push_back(new SpindizzyGERALDFactory(this, cGERALDModelFactory, cLocationAwareness, cZoneContext));
-  cCommands.push_back(new LockControlCommand(this, true));
-  cCommands.push_back(new LockControlCommand(this, false));
-  cCommands.push_back(new StopCommand(this));
+  cRuntimeContext->add(new LockControlCommand(this, true), "AddLock");
+  cRuntimeContext->add(new LockControlCommand(this, false), "RemoveLock");
+  cRuntimeContext->add(new StopCommand(this), "Stop");
+  IMap* mMap = runtimeContext->getMap();
+  for (unsigned int i = 0; i < cElementFactories.size(); i++) {
+    static_cast<SpindizzyGERALDFactory*>(cElementFactories[i])->setMap(mMap);
+  }
   cLocks = 0;
 }
 
@@ -50,17 +55,6 @@ std::vector<IElementFactory*> SpindizzyGERALDSet::getElementFactories() {
 
 void SpindizzyGERALDSet::destroy(IElement* element) {
   delete element;
-}
-
-void SpindizzyGERALDSet::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  cRuntimeContext = runtimeContext;
-  for (unsigned int i = 0; i < cCommands.size(); i++) {
-    cRuntimeContext->add(cCommands[i]);
-  }
-  IMap* mMap = runtimeContext->getMap();
-  for (unsigned int i = 0; i < cElementFactories.size(); i++) {
-    static_cast<SpindizzyGERALDFactory*>(cElementFactories[i])->setMap(mMap);
-  }
 }
 
 void SpindizzyGERALDSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
@@ -145,10 +139,6 @@ void SpindizzyGERALDSet::LockControlCommand::execute() {
   cParent->cLocks += cLock ? 1 : -1;
 }
 
-std::string SpindizzyGERALDSet::LockControlCommand::getName() {
-  return cLock ? "AddLock" : "RemoveLock";
-}
-
 SpindizzyGERALDSet::StopCommand::StopCommand(SpindizzyGERALDSet* parent) {
   cParent = parent;  
 }
@@ -157,12 +147,8 @@ void SpindizzyGERALDSet::StopCommand::execute() {
   cParent->stop();
 }
 
-std::string SpindizzyGERALDSet::StopCommand::getName() {
-  return "Stop";
-}
-
-extern "C" IElementSet* create(DOMNodeWrapper* node) {
-  return new SpindizzyGERALDSet();
+extern "C" IElementSet* create(IRuntimeContext* runtimeContext) {
+  return new SpindizzyGERALDSet(runtimeContext);
 }
 
 extern "C" void destroy(IElementSet* elementSet) {

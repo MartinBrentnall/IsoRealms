@@ -19,8 +19,8 @@
 #include "SoundCommandSupport.h"
 
 SoundCommandSupport::SoundCommandSupport(IRuntimeContext* runtimeContext) {
-  assignDummyPlugin(&cSoundSupport, "SoundSupport");
   cRuntimeContext = runtimeContext;
+  assignDummyPlugin(&cSoundSupport, "SoundSupport");
 }
 
 void SoundCommandSupport::setPlugin(PlugSocket* socket, IPlugin* plugin) {
@@ -36,7 +36,7 @@ void SoundCommandSupport::setPlugin(PlugSocket* socket, IPlugin* plugin) {
       for (unsigned int i = 0; i < mSounds.size(); i++) {
         PlaySoundCommand* mPlaySoundCommand = new PlaySoundCommand(mSounds[i]);
         cCommands[mSounds[i]] = mPlaySoundCommand;
-        cRuntimeContext->add(mPlaySoundCommand);
+        cRuntimeContext->add(mPlaySoundCommand, "Play " + mSounds[i]->getName());
       }
       cSoundSupport->addSoundSupportListener(this);
     }
@@ -54,7 +54,7 @@ IPlugin* SoundCommandSupport::getPlugin(PlugSocket* socket) {
 void SoundCommandSupport::soundAdded(ISound* sound) {
   PlaySoundCommand* mPlaySoundCommand = new PlaySoundCommand(sound);
   cCommands[sound] = mPlaySoundCommand;
-  cRuntimeContext->add(mPlaySoundCommand);
+  cRuntimeContext->add(mPlaySoundCommand, "Play " + sound->getName());
 }
 
 void SoundCommandSupport::soundRemoved(ISound* sound) {

@@ -22,7 +22,7 @@ CommandProxy::CommandProxy() {
   cCommand = NULL;
 }
 
-void CommandProxy::setImplementation(IUserCommand* command) {
+void CommandProxy::setImplementation(ICommand* command) {
   cCommand = command;
 }
 
@@ -32,13 +32,4 @@ void CommandProxy::execute() {
   } else {
     std::cout << "Warning: No implementation set for proxy command" << std::endl;
   }
-}
-
-std::string CommandProxy::getName() {
-  if (cCommand != NULL) {
-    return cCommand->getName();
-  } else {
-    std::cout << "Warning: No implementation set for proxy command" << std::endl;
-  }
-  return "<UNKNOWN>";
 }

@@ -22,7 +22,6 @@
 #include <string>
 
 #include "CommandProxy.h"
-#include "ICommandRegistry.h"
 #include "IZoneRenderer.h"
 #include "RegistryProxy.h"
 
@@ -34,7 +33,7 @@ class ZoneRendererProxy:public IZoneRenderer {
   std::string cInstance;
   std::string cType;
   
-  class RendererActivationCommand:public IUserCommand {
+  class RendererActivationCommand:public ICommand {
     private:
     ZoneRendererProxy* cParent;
     bool cActivate;
@@ -42,15 +41,14 @@ class ZoneRendererProxy:public IZoneRenderer {
     public:
     RendererActivationCommand(ZoneRendererProxy*, bool);
     
-    /***************************\
-     * Implements IUserCommand *
-    \***************************/
+    /***********************\
+     * Implements ICommand *
+    \***********************/
     void execute();
-    std::string getName();
   };
   
   public:
-  ZoneRendererProxy(IZoneRenderer*, bool, RegistryProxy<IUserCommand, CommandProxy>*, const std::string&, const std::string&, const std::string&);
+  ZoneRendererProxy(IZoneRenderer*, bool, RegistryProxy<ICommand, CommandProxy>*, const std::string&, const std::string&, const std::string&);
 
   void save(DOMNodeWriter*);
   

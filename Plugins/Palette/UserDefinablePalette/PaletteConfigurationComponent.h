@@ -26,10 +26,9 @@
 #include <IsoRealms/Configuration.h>
 #include <IsoRealms/GUI/Dialog.h>
 #include <IsoRealms/IComponentContainer.h>
+#include <IsoRealms/IPalette.h>
+#include <IsoRealms/IPaletteListener.h>
 #include <IsoRealms/ScreenConfiguration.h>
-
-#include "../IPalette.h"
-#include "../IPaletteListener.h"
 
 class PaletteConfigurationComponent:public Dialog {
   private:
@@ -54,7 +53,7 @@ class PaletteConfigurationComponent:public Dialog {
   void fireChangeEvent();
 
   public:
-  PaletteConfigurationComponent(IPalette*, IComponentContainer*, std::map<std::string, Colour*> palette, std::vector<IPaletteListener*>&);
+  PaletteConfigurationComponent(IComponentContainer*, std::map<std::string, Colour*> palette, std::vector<IPaletteListener*>&);
 
   /*********************\
    * Implements Dialog *

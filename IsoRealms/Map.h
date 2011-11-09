@@ -22,10 +22,13 @@
 #include <vector>
 
 #include "BlockArea.h"
+#include "Colour.h"
+#include "ColourProxy.h"
 #include "DefaultZoneRenderer.h"
 #include "DOMNodeWrapper.h"
 #include "DOMNodeWriter.h"
 #include "ElementSetRegistry.h"
+#include "IColourSource.h"
 #include "IElementHandler.h"
 #include "IMap.h"
 #include "InputCommands.h"
@@ -42,11 +45,13 @@ class Map:public IMap,
           public IZoneChangeListener,
           public IPluginRegistryListener,
           public IElementContainer,
-          public IScriptSource {
+          public IScriptSource,
+          public IColourSource {
   private:
   PluginRegistry cPluginRegistry;
   ElementSetRegistry cElementSetRegistry;
-  Registry<IUserCommand, CommandProxy> cCommandRegistry;
+  Registry<ICommand, CommandProxy> cCommandRegistry;
+  Registry<IColour, ColourProxy> cColourRegistry;
   InputCommands cInputCommands;
   
   /**
@@ -203,6 +208,11 @@ class Map:public IMap,
    * Implements IScriptSource *
   \****************************/
   Script* getScript(DOMNodeWrapper*);
+  
+  /****************************\
+   * Implements IColourSource *
+  \****************************/
+  IColour* getColour(DOMNodeWrapper*);
   
   ~Map();
 };

@@ -21,8 +21,7 @@
 
 #include <map>
 
-#include <IsoRealms/ICommandRegistry.h>
-#include <IsoRealms/IUserCommand.h>
+#include <IsoRealms/ICommand.h>
 
 #include "../../3DModel/ISimpleModelFactory.h"
 #include "../../Camera/ICamera.h"
@@ -37,7 +36,7 @@
 class SpindizzySwitches:public IUtilities,
                         public IHUDComponentFactory {
   private:
-  class ResetCommand:public IUserCommand {
+  class ResetCommand:public ICommand {
     private:
     SpindizzySwitches* cParent;
     Script* cResetScript;
@@ -46,14 +45,13 @@ class SpindizzySwitches:public IUtilities,
     ResetCommand(SpindizzySwitches*);
     void setScript(Script*);
 
-    /***************************\
-     * Implements IUserCommand *
-    \***************************/
+    /***********************\
+     * Implements ICommand *
+    \***********************/
     void execute();
-    std::string getName();
   };
 
-  class SwitchCommand:public IUserCommand {
+  class SwitchCommand:public ICommand {
     private:
     SpindizzySwitches* cParent;
     ISimpleModel* cHUDModel;
@@ -66,11 +64,10 @@ class SpindizzySwitches:public IUtilities,
     void deactivate();
     ISimpleModel* getModel();
 
-    /***************************\
-     * Implements IUserCommand *
-    \***************************/
+    /***********************\
+     * Implements ICommand *
+    \***********************/
     void execute();
-    std::string getName();
   };
 
   IRuntimeContext* cRuntimeContext;

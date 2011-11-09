@@ -19,21 +19,20 @@
 #ifndef PLAY_SOUND_COMMAND_H
 #define PLAY_SOUND_COMMAND_H
 
-#include <IsoRealms/IUserCommand.h>
+#include <IsoRealms/ICommand.h>
 
 #include "../../SoundSupport/ISound.h"
 
-class PlaySoundCommand:public IUserCommand {
+class PlaySoundCommand:public ICommand {
   private:
   ISound* cSound;
 
   public:
   PlaySoundCommand(ISound*);
 
-  /***************************\
-   * Implements IUserCommand *
-  \***************************/
-  std::string getName();
+  /***********************\
+   * Implements ICommand *
+  \***********************/
   void execute();
 };
 

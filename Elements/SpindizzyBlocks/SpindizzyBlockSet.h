@@ -77,7 +77,7 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
     
   std::map<IElementContainer*, SpindizzyBlockHandler*> cElementHandlers;
   std::vector<IElementFactory*> cElementFactories;
-  std::vector<IUserCommand*> cSpindizzyBlockCommands;
+  std::vector<ICommand*> cSpindizzyBlockCommands;
   std::vector<HUDClueData*> cHUDClueData;
   IRuntimeContext* cRuntimeContext;
   ICamera* cCamera;
@@ -99,7 +99,7 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
   ISpindizzyBlockFactory* getFactory(const std::string&);  
   
   public:
-  SpindizzyBlockSet();
+  SpindizzyBlockSet(IRuntimeContext*);
 
   /*************************\
    * Implements ElementSet *
@@ -110,7 +110,6 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
    * Implements IElementSet *
   \**************************/
   std::vector<IElementFactory*> getElementFactories();
-  void setRuntimeContext(IRuntimeContext*);  
   void destroy(IElement*);
   void setEditingContext(IEditingContext*);
   void save(DOMNodeWriter*);

@@ -20,7 +20,7 @@
 
 DefaultZoneRenderer PluginRegistry::DEFAULT_ZONE_RENDERER;
 
-void PluginRegistry::registerPlugin(DOMNodeWrapper* node, Registry<IUserCommand, CommandProxy>* directory, IMap* map, bool editing, IScriptSource* scriptSource) {
+void PluginRegistry::registerPlugin(DOMNodeWrapper* node, Registry<ICommand, CommandProxy>* directory, Registry<IColour, ColourProxy>* colourRegistry, IMap* map, bool editing, IScriptSource* scriptSource, IColourSource* colourSource) {
   std::string mImplementation = node->getAttribute("implementation");
   std::string mInstance = node->getAttribute("instance");
   std::string mType = node->getAttribute("type");
@@ -28,8 +28,9 @@ void PluginRegistry::registerPlugin(DOMNodeWrapper* node, Registry<IUserCommand,
   mDirectory.push_back("Plugin");
   mDirectory.push_back(mType);
   mDirectory.push_back(mInstance);
-  RegistryProxy<IUserCommand, CommandProxy>* mCommandGateway = new RegistryProxy<IUserCommand, CommandProxy>(directory, mDirectory);
-  RuntimeContext* mRuntimeContext = new RuntimeContext(map, mCommandGateway, editing, scriptSource);
+  RegistryProxy<ICommand, CommandProxy>* mCommandGateway = new RegistryProxy<ICommand, CommandProxy>(directory, mDirectory);
+  RegistryProxy<IColour, ColourProxy>* mColourGateway = new RegistryProxy<IColour, ColourProxy>(colourRegistry, mDirectory);
+  RuntimeContext* mRuntimeContext = new RuntimeContext(map, mCommandGateway, mColourGateway, editing, scriptSource, colourSource);
   std::cout << "Loading plugin \"" << mType << ":" << mImplementation << "\"" << std::endl;
   loadPlugin(mType, mImplementation, mInstance, mRuntimeContext);
   IPlugin* mPlugin = getPlugin(mType, mInstance);  
@@ -249,7 +250,7 @@ std::string PluginRegistry::getPluginType(IPlugin* instance) {
   return "";
 }
 
-IZoneRenderer* PluginRegistry::getZoneRenderer(DOMNodeWrapper* node, Registry<IUserCommand, CommandProxy>* commandRegistry) {
+IZoneRenderer* PluginRegistry::getZoneRenderer(DOMNodeWrapper* node, Registry<ICommand, CommandProxy>* commandRegistry) {
   std::string mType = node->getAttribute("type");
   if (mType == "") {
     return &DEFAULT_ZONE_RENDERER;
@@ -262,7 +263,7 @@ IZoneRenderer* PluginRegistry::getZoneRenderer(DOMNodeWrapper* node, Registry<IU
   mDirectory.push_back("ZoneRenderer");
   mDirectory.push_back(mType);
   mDirectory.push_back(mInstance);
-  RegistryProxy<IUserCommand, CommandProxy>* mCommandGateway = new RegistryProxy<IUserCommand, CommandProxy>(commandRegistry, mDirectory);
+  RegistryProxy<ICommand, CommandProxy>* mCommandGateway = new RegistryProxy<ICommand, CommandProxy>(commandRegistry, mDirectory);
   ZoneRendererProxy* mZoneRendererProxy = new ZoneRendererProxy(mPlugin->getZoneRenderer(mRenderer), mActive, mCommandGateway, mRenderer, mType, mInstance);
   cZoneRendererProxies.push_back(mZoneRendererProxy);
   return mZoneRendererProxy;

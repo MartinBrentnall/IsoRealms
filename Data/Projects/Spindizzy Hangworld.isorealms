@@ -453,156 +453,139 @@
     <Configuration/>
   </Plugin>
   <Plugin implementation="C64SpindizzySprites" instance="C64Sprites" type="TextureSet">
-    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
-      <Colour1 type="Palette" name="Purple"/>
-      <Colour2 type="Palette" name="Yellow"/>
-      <Colour3 type="Palette" name="Pink"/>
-      <Outline type="Palette" name="Black"/>
+      <Colour1 type="Palette" name="Plugin/Palette/C64Palette/Purple"/>
+      <Colour2 type="Palette" name="Plugin/Palette/C64Palette/Yellow"/>
+      <Colour3 type="Palette" name="Plugin/Palette/C64Palette/Pink"/>
+      <Outline type="Palette" name="Plugin/Palette/C64Palette/Black"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="C64SpindizzySprites" instance="C64HUDSprites" type="TextureSet">
-    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
-      <Colour1 type="Palette" name="Cyan"/>
-      <Colour2 type="Palette" name="Orange"/>
-      <Colour3 type="Palette" name="Pink"/>
-      <Outline type="Palette" name="Black"/>
+      <Colour1 type="Palette" name="Plugin/Palette/C64Palette/Cyan"/>
+      <Colour2 type="Palette" name="Plugin/Palette/C64Palette/Orange"/>
+      <Colour3 type="Palette" name="Plugin/Palette/C64Palette/Pink"/>
+      <Outline type="Palette" name="Plugin/Palette/C64Palette/Black"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="C64SpindizzyTextureSet" instance="C64Blue" type="TextureSet">
-    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
-      <Floor type="Palette" name="LightBlue"/>
-      <Wall type="Palette" name="Black"/>
-      <Grid type="Palette" name="White"/>
-      <Extra type="Palette" name="Blue"/>
+      <Floor type="Palette" name="Plugin/Palette/C64Palette/LightBlue"/>
+      <Wall type="Palette" name="Plugin/Palette/C64Palette/Black"/>
+      <Grid type="Palette" name="Plugin/Palette/C64Palette/White"/>
+      <Extra type="Palette" name="Plugin/Palette/C64Palette/Blue"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="C64SpindizzyTextureSet" instance="C64BlueRed" type="TextureSet">
-    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
-      <Floor type="Palette" name="LightBlue"/>
-      <Wall type="Palette" name="Red"/>
-      <Grid type="Palette" name="Yellow"/>
-      <Extra type="Palette" name="Black"/>
+      <Floor type="Palette" name="Plugin/Palette/C64Palette/LightBlue"/>
+      <Wall type="Palette" name="Plugin/Palette/C64Palette/Red"/>
+      <Grid type="Palette" name="Plugin/Palette/C64Palette/Yellow"/>
+      <Extra type="Palette" name="Plugin/Palette/C64Palette/Black"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="C64SpindizzyTextureSet" instance="C64BlueYellow" type="TextureSet">
-    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
-      <Floor type="Palette" name="Blue"/>
-      <Wall type="Palette" name="Orange"/>
-      <Grid type="Palette" name="White"/>
-      <Extra type="Palette" name="Yellow"/>
+      <Floor type="Palette" name="Plugin/Palette/C64Palette/Blue"/>
+      <Wall type="Palette" name="Plugin/Palette/C64Palette/Orange"/>
+      <Grid type="Palette" name="Plugin/Palette/C64Palette/White"/>
+      <Extra type="Palette" name="Plugin/Palette/C64Palette/Yellow"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="C64SpindizzyTextureSet" instance="C64Chocolate" type="TextureSet">
-    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
-      <Floor type="Palette" name="Purple"/>
-      <Wall type="Palette" name="Brown"/>
-      <Grid type="Palette" name="Black"/>
-      <Extra type="Palette" name="Yellow"/>
+      <Floor type="Palette" name="Plugin/Palette/C64Palette/Purple"/>
+      <Wall type="Palette" name="Plugin/Palette/C64Palette/Brown"/>
+      <Grid type="Palette" name="Plugin/Palette/C64Palette/Black"/>
+      <Extra type="Palette" name="Plugin/Palette/C64Palette/Yellow"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="C64SpindizzyTextureSet" instance="C64Dark" type="TextureSet">
-    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
-      <Floor type="Palette" name="Black"/>
-      <Wall type="Palette" name="Red"/>
-      <Grid type="Palette" name="Yellow"/>
-      <Extra type="Palette" name="Black"/>
+      <Floor type="Palette" name="Plugin/Palette/C64Palette/Black"/>
+      <Wall type="Palette" name="Plugin/Palette/C64Palette/Red"/>
+      <Grid type="Palette" name="Plugin/Palette/C64Palette/Yellow"/>
+      <Extra type="Palette" name="Plugin/Palette/C64Palette/Black"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="C64SpindizzyTextureSet" instance="C64Green" type="TextureSet">
-    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
-      <Floor type="Palette" name="Green"/>
-      <Wall type="Palette" name="Yellow"/>
-      <Grid type="Palette" name="Blue"/>
-      <Extra type="Palette" name="Black"/>
+      <Floor type="Palette" name="Plugin/Palette/C64Palette/Green"/>
+      <Wall type="Palette" name="Plugin/Palette/C64Palette/Yellow"/>
+      <Grid type="Palette" name="Plugin/Palette/C64Palette/Blue"/>
+      <Extra type="Palette" name="Plugin/Palette/C64Palette/Black"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="C64SpindizzyTextureSet" instance="C64GreenRed" type="TextureSet">
-    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
-      <Floor type="Palette" name="Green"/>
-      <Wall type="Palette" name="Red"/>
-      <Grid type="Palette" name="White"/>
-      <Extra type="Palette" name="Black"/>
+      <Floor type="Palette" name="Plugin/Palette/C64Palette/Green"/>
+      <Wall type="Palette" name="Plugin/Palette/C64Palette/Red"/>
+      <Grid type="Palette" name="Plugin/Palette/C64Palette/White"/>
+      <Extra type="Palette" name="Plugin/Palette/C64Palette/Black"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="C64SpindizzyTextureSet" instance="C64Grey" type="TextureSet">
-    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
-      <Floor type="Palette" name="White"/>
-      <Wall type="Palette" name="DarkGray"/>
-      <Grid type="Palette" name="LightGray"/>
-      <Extra type="Palette" name="Black"/>
+      <Floor type="Palette" name="Plugin/Palette/C64Palette/White"/>
+      <Wall type="Palette" name="Plugin/Palette/C64Palette/DarkGray"/>
+      <Grid type="Palette" name="Plugin/Palette/C64Palette/LightGray"/>
+      <Extra type="Palette" name="Plugin/Palette/C64Palette/Black"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="C64SpindizzyTextureSet" instance="C64GreyForWater" type="TextureSet">
-    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
-      <Floor type="Palette" name="White"/>
-      <Wall type="Palette" name="DarkGray"/>
-      <Grid type="Palette" name="Blue"/>
-      <Extra type="Palette" name="Black"/>
+      <Floor type="Palette" name="Plugin/Palette/C64Palette/White"/>
+      <Wall type="Palette" name="Plugin/Palette/C64Palette/DarkGray"/>
+      <Grid type="Palette" name="Plugin/Palette/C64Palette/Blue"/>
+      <Extra type="Palette" name="Plugin/Palette/C64Palette/Black"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="C64SpindizzyTextureSet" instance="C64LightGreen" type="TextureSet">
-    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
-      <Floor type="Palette" name="LightGreen"/>
-      <Wall type="Palette" name="Pink"/>
-      <Grid type="Palette" name="Blue"/>
-      <Extra type="Palette" name="Black"/>
+      <Floor type="Palette" name="Plugin/Palette/C64Palette/LightGreen"/>
+      <Wall type="Palette" name="Plugin/Palette/C64Palette/Pink"/>
+      <Grid type="Palette" name="Plugin/Palette/C64Palette/Blue"/>
+      <Extra type="Palette" name="Plugin/Palette/C64Palette/Black"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="C64SpindizzyTextureSet" instance="C64Pink" type="TextureSet">
-    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
-      <Floor type="Palette" name="Pink"/>
-      <Wall type="Palette" name="LightGreen"/>
-      <Grid type="Palette" name="Blue"/>
-      <Extra type="Palette" name="Black"/>
+      <Floor type="Palette" name="Plugin/Palette/C64Palette/Pink"/>
+      <Wall type="Palette" name="Plugin/Palette/C64Palette/LightGreen"/>
+      <Grid type="Palette" name="Plugin/Palette/C64Palette/Blue"/>
+      <Extra type="Palette" name="Plugin/Palette/C64Palette/Black"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="C64SpindizzyTextureSet" instance="C64RedGreen" type="TextureSet">
-    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
-      <Floor type="Palette" name="Red"/>
-      <Wall type="Palette" name="Green"/>
-      <Grid type="Palette" name="White"/>
-      <Extra type="Palette" name="MediumGray"/>
+      <Floor type="Palette" name="Plugin/Palette/C64Palette/Red"/>
+      <Wall type="Palette" name="Plugin/Palette/C64Palette/Green"/>
+      <Grid type="Palette" name="Plugin/Palette/C64Palette/White"/>
+      <Extra type="Palette" name="Plugin/Palette/C64Palette/MediumGray"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="C64SpindizzyTextureSet" instance="C64RedPurple" type="TextureSet">
-    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
-      <Floor type="Palette" name="Red"/>
-      <Wall type="Palette" name="Purple"/>
-      <Grid type="Palette" name="White"/>
-      <Extra type="Palette" name="Blue"/>
+      <Floor type="Palette" name="Plugin/Palette/C64Palette/Red"/>
+      <Wall type="Palette" name="Plugin/Palette/C64Palette/Purple"/>
+      <Grid type="Palette" name="Plugin/Palette/C64Palette/White"/>
+      <Extra type="Palette" name="Plugin/Palette/C64Palette/Blue"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="C64SpindizzyTextureSet" instance="C64Yellow" type="TextureSet">
-    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
-      <Floor type="Palette" name="Yellow"/>
-      <Wall type="Palette" name="Orange"/>
-      <Grid type="Palette" name="Blue"/>
-      <Extra type="Palette" name="Black"/>
+      <Floor type="Palette" name="Plugin/Palette/C64Palette/Yellow"/>
+      <Wall type="Palette" name="Plugin/Palette/C64Palette/Orange"/>
+      <Grid type="Palette" name="Plugin/Palette/C64Palette/Blue"/>
+      <Extra type="Palette" name="Plugin/Palette/C64Palette/Black"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="C64SpindizzyTextureSet" instance="C64YellowPurple" type="TextureSet">
-    <UsePlugin implementation="Palette" instance="C64Palette" socketid=""/>
     <Configuration>
-      <Floor type="Palette" name="Yellow"/>
-      <Wall type="Palette" name="Purple"/>
-      <Grid type="Palette" name="Blue"/>
-      <Extra type="Palette" name="MediumGray"/>
+      <Floor type="Palette" name="Plugin/Palette/C64Palette/Yellow"/>
+      <Wall type="Palette" name="Plugin/Palette/C64Palette/Purple"/>
+      <Grid type="Palette" name="Plugin/Palette/C64Palette/Blue"/>
+      <Extra type="Palette" name="Plugin/Palette/C64Palette/MediumGray"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="ImageTextureSet" instance="HUDIcons" type="TextureSet">

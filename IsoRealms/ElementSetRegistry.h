@@ -71,7 +71,7 @@ class ElementSetRegistry:public IElementSetRegistry {
   public:
   ElementSetRegistry();
 
-  void registerElementSet(DOMNodeWrapper*, Registry<IUserCommand, CommandProxy>*, IMap*, bool, IScriptSource*);
+  void registerElementSet(DOMNodeWrapper*, Registry<ICommand, CommandProxy>*, Registry<IColour, ColourProxy>*, IMap*, bool, IScriptSource*, IColourSource*);
   void connectPlugin(PluginRegistry*, DOMNodeWrapper*);
   void loadConfiguration(DOMNodeWrapper*);
 
@@ -88,7 +88,7 @@ class ElementSetRegistry:public IElementSetRegistry {
    * @param string  Instance name to assign to the new element set.
    * @return  The new element set instance.
    */
-  IElementSet* createInstance(std::string, std::string);
+  IElementSet* createInstance(std::string, std::string, IRuntimeContext*);
 
   /**
    * Remove the specified element set instance from the registry.

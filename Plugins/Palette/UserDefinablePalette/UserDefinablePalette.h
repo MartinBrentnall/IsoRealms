@@ -27,14 +27,13 @@
 #include <IsoRealms/ICommandInfo.h>
 #include <IsoRealms/IComponentSource.h>
 #include <IsoRealms/IComponentContainer.h>
+#include <IsoRealms/IPalette.h>
 #include <IsoRealms/IPlugin.h>
 #include <IsoRealms/OpenDialogCommand.h>
 
-#include "../IPalette.h"
-
 #include "PaletteConfigurationComponent.h"
 
-class UserDefinablePalette:public IPalette,
+class UserDefinablePalette:public IPlugin,
                            public IComponentSource {
   private:
   static Colour* DEFAULT_COLOUR; // TODO: Should be const?

@@ -80,7 +80,7 @@ class PluginRegistry:public IPluginRegistry {
    */
   std::string getPluginType(IPlugin*);  
 
-  void registerPlugin(DOMNodeWrapper*, Registry<IUserCommand, CommandProxy>*, IMap*, bool, IScriptSource*);
+  void registerPlugin(DOMNodeWrapper*, Registry<ICommand, CommandProxy>*, Registry<IColour, ColourProxy>*, IMap*, bool, IScriptSource*, IColourSource*);
 
   void connectPlugin(DOMNodeWrapper*);
 
@@ -183,7 +183,7 @@ class PluginRegistry:public IPluginRegistry {
 
   std::vector<IInteractiveElement*> getInteractiveElements();
 
-  IZoneRenderer* getZoneRenderer(DOMNodeWrapper*, Registry<IUserCommand, CommandProxy>*);
+  IZoneRenderer* getZoneRenderer(DOMNodeWrapper*, Registry<ICommand, CommandProxy>*);
   
   /******************************\
    * Implements IPluginRegistry *

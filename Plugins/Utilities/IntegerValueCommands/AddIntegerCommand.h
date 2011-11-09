@@ -21,11 +21,11 @@
 
 #include <string>
 
-#include <IsoRealms/IUserCommand.h>
+#include <IsoRealms/ICommand.h>
 
 #include "../../IntegerValue/IIntegerValue.h"
 
-class AddIntegerCommand:public IUserCommand {
+class AddIntegerCommand:public ICommand {
   private:
   std::string cName;
   IIntegerValue* cVariable;
@@ -38,10 +38,9 @@ class AddIntegerCommand:public IUserCommand {
   void setVariable(IIntegerValue*);
   void save(DOMNodeWriter*);
 
-  /***************************\
-   * Implements IUserCommand *
-  \***************************/
-  std::string getName();
+  /***********************\
+   * Implements ICommand *
+  \***********************/
   void execute();
 };
 

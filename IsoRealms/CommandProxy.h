@@ -22,22 +22,21 @@
 #include <iostream>
 #include <vector>
 
-#include "IUserCommand.h"
+#include "ICommand.h"
 
-class CommandProxy:public IUserCommand {
+class CommandProxy:public ICommand {
   private:
-  IUserCommand* cCommand;
+  ICommand* cCommand;
 
   public:
   CommandProxy();
     
-  void setImplementation(IUserCommand*);
+  void setImplementation(ICommand*);
     
   /***************************\
    * Implements IUserCommand *
   \***************************/
   void execute();
-  std::string getName();
 };
 
 #endif

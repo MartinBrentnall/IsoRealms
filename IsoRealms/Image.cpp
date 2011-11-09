@@ -41,15 +41,15 @@ GLubyte* Image::getData() {
   return cData;
 }
 
-void Image::setPixel(unsigned int x, unsigned int y, Colour colour) {
+void Image::setPixel(unsigned int x, unsigned int y, const IColour* colour) {
   if (x < 0 || x >= cWidth || y < 0 || y >= cHeight) {
     return;
   }
-  cData[((y * cWidth + x) * cDepth) + 0] = colour.getAsInt(Colour::RED);
-  cData[((y * cWidth + x) * cDepth) + 1] = colour.getAsInt(Colour::GREEN);
-  cData[((y * cWidth + x) * cDepth) + 2] = colour.getAsInt(Colour::BLUE);
+  cData[((y * cWidth + x) * cDepth) + 0] = colour->getIntRed();
+  cData[((y * cWidth + x) * cDepth) + 1] = colour->getIntGreen();
+  cData[((y * cWidth + x) * cDepth) + 2] = colour->getIntBlue();
   if (cDepth == 4) {
-    cData[((y * cWidth + x) * cDepth) + 3] = colour.getAsInt(Colour::ALPHA);
+    cData[((y * cWidth + x) * cDepth) + 3] = colour->getIntAlpha();
   }
 }
 
@@ -86,15 +86,15 @@ void Image::generateTexture(GLuint textureID, bool horizontalCap, bool verticalC
   glTexImage2D(GL_TEXTURE_2D, 0, mDepth, getWidth(), getHeight(), 0, mDepth, GL_UNSIGNED_BYTE, getData());
 }
 
-void Image::drawSquare(const Colour* colour, unsigned int startX, unsigned int endX, unsigned int startY, unsigned int endY) {
+void Image::drawSquare(const IColour* colour, unsigned int startX, unsigned int endX, unsigned int startY, unsigned int endY) {
   for (unsigned int y = startY; y < endY; y++) {
     for (unsigned int x = startX; x < endX; x++) {
-      setPixel(x, y, *colour);
+      setPixel(x, y, colour);
     }
   }
 }
 
-void Image::drawCircle(const Colour* colour, int size) {
+void Image::drawCircle(const IColour* colour, int size) {
   int mCenterX = (int) (cWidth * 0.5);
   int mCenterY = (int) (cHeight * 0.5);
   for (unsigned int y = 0; y < cHeight; y++) {
@@ -103,26 +103,26 @@ void Image::drawCircle(const Colour* colour, int size) {
       int mYDiff = y - mCenterY;
       int mDistance = (int) sqrt(mXDiff * mXDiff + mYDiff * mYDiff);
       if (mDistance < size) {
-        setPixel(x, y, *colour);
+        setPixel(x, y, colour);
       }
     }
   }
 }
 
-void Image::drawCircle(float centerX, float centerY, const Colour* colour, int size) {
+void Image::drawCircle(float centerX, float centerY, const IColour* colour, int size) {
   for (unsigned int y = 0; y < cHeight; y++) {
     for (unsigned int x = 0; x < cWidth; x++) {
       int mXDiff = x - centerX;
       int mYDiff = y - centerY;
       int mDistance = (int) sqrt(mXDiff * mXDiff + mYDiff * mYDiff);
       if (mDistance < size) {
-        setPixel(x, y, *colour);
+        setPixel(x, y, colour);
       }
     }
   }
 }
 
-void Image::drawOffsetCircle(const Colour* colour, int size) {
+void Image::drawOffsetCircle(const IColour* colour, int size) {
   int mCenterX = (int) (cWidth * 0.57);
   int mCenterY = (int) (cHeight * 0.57);
   for (unsigned int y = 0; y < cHeight; y++) {
@@ -131,13 +131,13 @@ void Image::drawOffsetCircle(const Colour* colour, int size) {
       int mYDiff = y - mCenterY;
       int mDistance = (int) sqrt(mXDiff * mXDiff + mYDiff * mYDiff);
       if (mDistance < size) {
-        setPixel(x, y, *colour);
+        setPixel(x, y, colour);
       }
     }
   }
 }
 
-void Image::drawSemiCircle(const Colour* colour, int size) {
+void Image::drawSemiCircle(const IColour* colour, int size) {
   int mCenterX = (int) (cWidth * 0.5);
   int mCenterY = (int) (cHeight * 0.5);
   for (unsigned int y = 0; y < cHeight; y++) {
@@ -146,13 +146,13 @@ void Image::drawSemiCircle(const Colour* colour, int size) {
       int mYDiff = y - mCenterY;
       int mDistance = (int) sqrt(mXDiff * mXDiff + mYDiff * mYDiff);
       if (mDistance < size) {
-        setPixel(x, y, *colour);
+        setPixel(x, y, colour);
       }
     }
   }
 }
 
-void Image::drawQuarterCircle(const Colour* colour, int size, int quarter) {
+void Image::drawQuarterCircle(const IColour* colour, int size, int quarter) {
   int mCenterX = (int) (cWidth * 0.5);
   int mCenterY = (int) (cHeight * 0.5);
   unsigned int mXStart = quarter == 0 || quarter == 1 ? 0        : mCenterX;
@@ -165,13 +165,13 @@ void Image::drawQuarterCircle(const Colour* colour, int size, int quarter) {
       int mYDiff = y - mCenterY;
       int mDistance = (int) sqrt(mXDiff * mXDiff + mYDiff * mYDiff);
       if (mDistance < size) {
-        setPixel(x, y, *colour);
+        setPixel(x, y, colour);
       }
     }
   }
 }
 
-void Image::fillFlatTB2DTr(const Colour* colour, unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2, unsigned int x3, unsigned int y3) {
+void Image::fillFlatTB2DTr(const IColour* colour, unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2, unsigned int x3, unsigned int y3) {
   float leftEdgeInvSlopeYvX;
   float rightEdgeInvSlopeYvX;  /* inverse of j-versus-i slope for left and right edges */
 
@@ -220,7 +220,7 @@ void Image::fillFlatTB2DTr(const Colour* colour, unsigned int x1, unsigned int y
   for (unsigned int y = y3; y <= y1; y++) {
     for (unsigned int x = i_xStart; x <= i_xEnd; x++) {
       if (x >= 0 && x < cWidth && y >= 0 && y < cHeight) {
-        setPixel(x, y, *colour);
+        setPixel(x, y, colour);
       }
     }
     xStart += leftEdgeInvSlopeYvX;
@@ -230,7 +230,7 @@ void Image::fillFlatTB2DTr(const Colour* colour, unsigned int x1, unsigned int y
   }
 }
 
-void Image::drawTriangle(const Colour* colour, int x1, int y1, int x2, int y2, int x3, int y3) {
+void Image::drawTriangle(const IColour* colour, int x1, int y1, int x2, int y2, int x3, int y3) {
   // Check if all vertices are on vertical or horizontal line.
   if ((x1 == x2 && x2 == x3) || (y1 == y2 && y2 == y3)) {
     return;
@@ -276,33 +276,33 @@ void Image::drawTriangle(const Colour* colour, int x1, int y1, int x2, int y2, i
   }
 }
 
-void Image::drawDiamond(const Colour* colour, int size) {
+void Image::drawDiamond(const IColour* colour, int size) {
   int mHalfSquare = (int) (cWidth * 0.5);
   drawTriangle(colour, mHalfSquare, size, size, mHalfSquare, mHalfSquare, cWidth - size);
   drawTriangle(colour, mHalfSquare, cWidth - size, cWidth - size, mHalfSquare, mHalfSquare, size);
 }
 
-void Image::drawHalfDiamond(const Colour* colour, int size) {
+void Image::drawHalfDiamond(const IColour* colour, int size) {
   size = -(size - (cWidth / 4) * 2);
   for (unsigned int y = 0; y < cHeight; y++) {
     int start = abs(y - cHeight / 2) + size;
     int end = start + ((cWidth / 2 - start) * 2);
     for (int x = start; x < end; x++) {
       if (x > cWidth * 0.29 && y < cWidth * 0.70 && x > y - cWidth * 0.15) {
-        setPixel(x, y, *colour);
+        setPixel(x, y, colour);
       }
     }
   }
 }
 
-void Image::drawHalfDiamond2(const Colour* colour, int size) {
+void Image::drawHalfDiamond2(const IColour* colour, int size) {
   size = -(size - (cWidth / 4) * 2);
   for (unsigned int y = 0; y < cHeight; y++) {
     unsigned int start = abs(y - cHeight / 2) + size;
     unsigned int end = start + ((cWidth / 2 - start) * 2);
     for (unsigned int x = start; x < end; x++) {
       if (x > cWidth * 0.25 && y < cWidth * 0.74 && x > y - cWidth * 0.15) {
-        setPixel(x, y, *colour);
+        setPixel(x, y, colour);
       }
     }
   }

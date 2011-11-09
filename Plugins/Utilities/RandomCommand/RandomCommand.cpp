@@ -45,7 +45,7 @@ void RandomCommand::load(DOMNodeWrapper* node) {
       std::vector<Script*> mScripts = getScripts(mNode);
       ARandomCommand* mRandomCommand = new ARandomCommand(mCommandName, mScripts);
       cRandomCommands.push_back(mRandomCommand);
-      cRuntimeContext->add(mRandomCommand);
+      cRuntimeContext->add(mRandomCommand, "Random " + mCommandName);
     } else {
       // TODO: Throw
     }
@@ -65,10 +65,6 @@ void RandomCommand::ARandomCommand::execute() {
   if (!cScripts.empty()) {
     cScripts[rand() % cScripts.size()]->execute(); 
   }
-}
-
-std::string RandomCommand::ARandomCommand::getName() {
-  return "Random " + cName;
 }
 
 extern "C" IPlugin* create(IRuntimeContext* runtimeContext) {

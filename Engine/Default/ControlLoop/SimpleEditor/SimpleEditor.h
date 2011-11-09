@@ -41,7 +41,7 @@
 #include <IsoRealms/IHUDComponent.h>
 #include <IsoRealms/IPluginRegistryListener.h>
 #include <IsoRealms/IPluginSupport.h>
-#include <IsoRealms/IUserCommand.h>
+#include <IsoRealms/ICommand.h>
 #include <IsoRealms/Map.h>
 #include <IsoRealms/PlugSocket.h>
 #include <IsoRealms/Registry.h>
@@ -89,7 +89,8 @@ class SimpleEditor:public IControlLoop,
   Camera cViewPoint;
   ElementSetEntityClass* cElementSetEntityClass;
   EditorCursor* cCursor;
-  Registry<IUserCommand, CommandProxy> cCommandRegistry;
+  Registry<ICommand, CommandProxy> cCommandRegistry;
+  Registry<IColour, ColourProxy> cColourRegistry;
   PluginRegistry cPluginRegistry;
   std::vector<PlugSocket*> cFontSocket;
   IFont* cFont;

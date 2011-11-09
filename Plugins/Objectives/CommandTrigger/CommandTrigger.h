@@ -21,7 +21,6 @@
 
 #include <set>
 
-#include <IsoRealms/ICommandRegistry.h>
 #include <IsoRealms/Script.h>
 
 #include "../IObjectives.h"

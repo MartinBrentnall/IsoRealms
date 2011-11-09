@@ -47,9 +47,9 @@ Map::Map(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, 
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Plugin") {
-      cPluginRegistry.registerPlugin(mNode, &cCommandRegistry, this, editing, this);
+      cPluginRegistry.registerPlugin(mNode, &cCommandRegistry, &cColourRegistry, this, editing, this, this);
     } else if (mValueAsString == "ElementSet") {
-      cElementSetRegistry.registerElementSet(mNode, &cCommandRegistry, this, editing, this);
+      cElementSetRegistry.registerElementSet(mNode, &cCommandRegistry, &cColourRegistry, this, editing, this, this);
     } else {
       // TODO: Throw something
     }
@@ -514,19 +514,31 @@ void Map::setHandlerActive(IElementHandler*, bool) {
 }
 
 Script* Map::getScript(DOMNodeWrapper* node) {
-  std::vector<IUserCommand*> mCommands;
+  std::vector<ICommand*> mCommands;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Command") {
       std::string mCommandName = mNode->getStringValue();
-      IUserCommand* mCommand = cCommandRegistry.get(mCommandName);
+      ICommand* mCommand = cCommandRegistry.get(mCommandName);
       mCommands.push_back(mCommand);
     } else {
       // TODO: Throw
     }
   }
   return new Script(mCommands, &cCommandRegistry);
+}
+
+IColour* Map::getColour(DOMNodeWrapper* node) {
+  std::string mType = node->getAttribute("type");
+  if (mType == "Palette") {
+    std::string mColourPath = node->getAttribute("name");
+    return cColourRegistry.get(mColourPath);
+  } else if (mType == "Absolute") {
+    return new Colour(node);
+  }
+  // TODO: Throw
+  return NULL;
 }
 
 Map::~Map() {

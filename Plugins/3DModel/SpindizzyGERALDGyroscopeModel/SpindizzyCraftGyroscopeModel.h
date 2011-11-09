@@ -24,6 +24,7 @@
 #include <GL/gl.h>
 #include <map>
 
+#include <IsoRealms/Colour.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 #include <IsoRealms/Image.h>
 #include <IsoRealms/Vertex.h>

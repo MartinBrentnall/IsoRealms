@@ -24,12 +24,13 @@
 
 #include "DOMNodeWrapper.h"
 #include "DOMNodeWriter.h"
+#include "IColour.h"
 #include "IllegalStateException.h"
 #include "MiscFunctions.h"
 #include "Utils.h"
 
-class Colour {
-  public:
+class Colour:public IColour {
+  private:
 
   /** Red intensity. */
   float cRed;
@@ -44,21 +45,13 @@ class Colour {
   float cAlpha;  
 
   public:
-  enum Channel {
-    RED,
-    GREEN,
-    BLUE,
-    ALPHA
-  };
-
-  /**************************************************************************\
-   * Constructors                                                           *
-  \**************************************************************************/
   /**
    * Construct opaque black.
    */
   Colour();
-
+  
+  Colour(const IColour&);
+  
   Colour(DOMNodeWrapper*);
 
   /**
@@ -86,16 +79,16 @@ class Colour {
    * @param Colour  First colour.
    * @param Colour  Second colour.
    */
-  Colour(Colour, Colour);
+  Colour(IColour*, IColour*);
 
   /**
-   * Returns a colour of the specified relative intensity to this colour.
+   * Create a colour of the specified relative intensity to the specified colour.
    * For example, 0.5 returns a colour of half the brightness of this, and
    * 2.0 returns a colour of double the brightness of this.
    *
    * @param float  The intensity of the new Colour.
    */
-  Colour brightness(float);
+  Colour(IColour*, float);
 
   /**************************************************************************\
    * Colour modifiers                                                       *
@@ -136,53 +129,21 @@ class Colour {
    */
   void setBackground();
 
-  /**************************************************************************\
-   * Colour channel access                                                  *
-  \**************************************************************************/
-  /**
-   * TODO: Replace with [] operator?
-   * Returns the cRed intensity of this colour.
-   *
-   * @returns  The cRed intensity of this colour.
-   */
-  float getRed();
-
-  /**
-   * Returns the green intensity of this colour.
-   *
-   * @returns  The green intensity of this colour.
-   */
-  float getGreen();
-
-  /**
-   * Returns the blue intensity of this colour.
-   *
-   * @returns  The blue intensity of this colour.
-   */
-  float getBlue();
-
-  /**
-   * Returns the alpha intensity of this colour.
-   *
-   * @returns  The alpha intensity of this colour.
-   */
-  float getAlpha();
-
-  /**
-   * Get the colour of the specified channel as an 8-bit integer (from 0 to 255).
-   *
-   * @param int  The channel to return.
-   * @returns    The intensity of the specified channel.
-   */
-  int getAsInt(Channel);
-
-  /**************************************************************************\
-   * Marshalling                                                            *
-  \**************************************************************************/
   void save(DOMNodeWriter*);
 
+  /**********************\
+   * Implements IColour *
+  \**********************/
+  float getRed() const;
+  float getGreen() const;
+  float getBlue() const;
+  float getAlpha() const;
+  int getIntRed() const;
+  int getIntGreen() const;
+  int getIntBlue() const;
+  int getIntAlpha() const;
+  void save(DOMNodeWriter*, const std::string&);
   
-
   void debug();
 };
 

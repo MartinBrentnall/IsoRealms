@@ -23,7 +23,7 @@
 #include <cstdlib>
 #include <GL/gl.h>
 
-#include "Colour.h"
+#include "IColour.h"
 
 /**
  * An Image can represent an image with or without transparency (alpha channel).
@@ -71,7 +71,7 @@ class Image {
    * TODO: Throw outside bounds exception?
    * Set the pixel at the specified location to the specified colour.
    */
-  void setPixel(unsigned int, unsigned int, Colour);
+  void setPixel(unsigned int, unsigned int, const IColour*);
 
   /**
    * Generate an OpenGL texture from this image.  The image can be deleted
@@ -86,17 +86,17 @@ class Image {
 
   // TODO: These are general drawing methods.  It might be nice to move them somewhere else.
   // TODO: It also might be nice to use "Render-To-Texture", once I learn how to do that.
-  void fillFlatTB2DTr(const Colour* colour, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int);
-  void drawSquare(const Colour* colour, unsigned int, unsigned int, unsigned int, unsigned int);
-  void drawTriangle(const Colour* colour, int x1, int y1, int x2, int y2, int x3, int y3);  
-  void drawDiamond(const Colour* colour, int size); // TODO: Draw anywhere instead of just middle
-  void drawHalfDiamond(const Colour* colour, int size); // TODO: Draw anywhere instead of just middle
-  void drawHalfDiamond2(const Colour* colour, int size); // TODO: Draw anywhere instead of just middle
-  void drawCircle(const Colour* colour, int size); // TODO: Draw anywhere instead of just middle
-  void drawCircle(float, float, const Colour*, int);
-  void drawSemiCircle(const Colour* colour, int size); // TODO: Replace with drawArc() or drawPie();
-  void drawQuarterCircle(const Colour* colour, int size, int quarter); // TODO: Replace with drawArc() or drawPie();
-  void drawOffsetCircle(const Colour* colour, int size); // TODO: Draw anywhere instead of just middle
+  void fillFlatTB2DTr(const IColour* colour, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int);
+  void drawSquare(const IColour* colour, unsigned int, unsigned int, unsigned int, unsigned int);
+  void drawTriangle(const IColour* colour, int x1, int y1, int x2, int y2, int x3, int y3);  
+  void drawDiamond(const IColour* colour, int size); // TODO: Draw anywhere instead of just middle
+  void drawHalfDiamond(const IColour* colour, int size); // TODO: Draw anywhere instead of just middle
+  void drawHalfDiamond2(const IColour* colour, int size); // TODO: Draw anywhere instead of just middle
+  void drawCircle(const IColour* colour, int size); // TODO: Draw anywhere instead of just middle
+  void drawCircle(float, float, const IColour*, int);
+  void drawSemiCircle(const IColour* colour, int size); // TODO: Replace with drawArc() or drawPie();
+  void drawQuarterCircle(const IColour* colour, int size, int quarter); // TODO: Replace with drawArc() or drawPie();
+  void drawOffsetCircle(const IColour* colour, int size); // TODO: Draw anywhere instead of just middle
 
   ~Image();
 };

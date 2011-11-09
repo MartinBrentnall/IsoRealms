@@ -19,21 +19,13 @@
 #ifndef I_PALETTE_H
 #define I_PALETTE_H
 
-#include <IsoRealms/Colour.h>
-#include <IsoRealms/IPlugin.h>
+#include "Colour.h"
 
 class IPaletteListener;
 
-class IPalette:public virtual IPlugin {
+class IPalette {
   public:
   
-  /**
-   * Retrieve the specified colour.
-   * 
-   * @returns The specified colour.
-   */
-  virtual Colour* getColour(const std::string&) = 0;
-
   /**
    * Add a listener to be notified of changes to this palette.
    * 

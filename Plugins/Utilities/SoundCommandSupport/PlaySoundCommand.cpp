@@ -22,10 +22,6 @@ PlaySoundCommand::PlaySoundCommand(ISound* sound) {
   cSound = sound;
 }
 
-std::string PlaySoundCommand::getName() {
-  return "Play " + cSound->getName();
-}
-
 void PlaySoundCommand::execute() {
   cSound->play();
 }

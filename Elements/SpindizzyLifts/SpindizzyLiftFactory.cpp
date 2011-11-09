@@ -18,7 +18,7 @@
  */
 #include "SpindizzyLiftFactory.h"
 
-SpindizzyLiftFactory::SpindizzyLiftFactory(ISpindizzyLiftSet* elementSet, ISimpleModelFactory* liftModelFactory, SpindizzyLiftProperties* properties, bool active, const std::string& liftTypeName) : ISpindizzyLiftFactory(elementSet) {
+SpindizzyLiftFactory::SpindizzyLiftFactory(ISpindizzyLiftSet* elementSet, ISimpleModelFactory* liftModelFactory, SpindizzyLiftProperties* properties, bool active, const std::string& liftTypeName, IRuntimeContext* runtimeContext) : ISpindizzyLiftFactory(elementSet) {
   cLiftTypeName = liftTypeName;
   cProperties = properties;
   cLiftModelFactory = liftModelFactory;
@@ -29,8 +29,8 @@ SpindizzyLiftFactory::SpindizzyLiftFactory(ISpindizzyLiftSet* elementSet, ISimpl
   cSampleVisualElements = cSampleLift->getVisualElements();
   cConfigurationComponent = NULL;
   cState = active;
-  cLiftCommands.push_back(new LiftCommand(this, false));
-  cLiftCommands.push_back(new LiftCommand(this, true));
+  runtimeContext->add(new LiftCommand(this, false), "Enable Lifts " + cLiftTypeName);
+  runtimeContext->add(new LiftCommand(this, true), "Disable Lifts " + cLiftTypeName);
 }
 
 std::string SpindizzyLiftFactory::getName() {
@@ -39,10 +39,6 @@ std::string SpindizzyLiftFactory::getName() {
 
 bool SpindizzyLiftFactory::isActive() {
   return cState;
-}
-
-std::vector<IUserCommand*> SpindizzyLiftFactory::getLiftCommands() {
-  return cLiftCommands;
 }
 
 void SpindizzyLiftFactory::save(DOMNodeWriter* node, std::vector<ISimpleModelFactory*> liftModels) {
@@ -69,10 +65,6 @@ SpindizzyLiftFactory::LiftCommand::LiftCommand(SpindizzyLiftFactory* parent, boo
 void SpindizzyLiftFactory::LiftCommand::execute() {
   std::cout << "State set to: " << cTargetState << std::endl;
   cParent->cState = cTargetState;
-}
-
-std::string SpindizzyLiftFactory::LiftCommand::getName() {
-  return (cTargetState ? std::string("Enable") : std::string("Disable")) + " Lifts " + cParent->cLiftTypeName;
 }
 
 IElement* SpindizzyLiftFactory::getElement(DOMNodeWrapper* node, BlockLocation* relative, IElementContainer* elementContainer) {

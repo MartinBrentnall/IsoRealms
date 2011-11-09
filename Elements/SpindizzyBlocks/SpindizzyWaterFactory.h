@@ -48,7 +48,7 @@ class SpindizzyWaterFactory:public ISpindizzyBlockFactory {
   void unregisterSurfaces(ISurfaceProcessor*);
   BlockTypeProperties* getBlockTypeProperties();
   void save(DOMNodeWriter*);
-  void configureBlock(DOMNodeWrapper*, ICommandRegistry*);
+  void configureBlock(DOMNodeWrapper*);
   ITexture** getSurfaceTexture();
   ITexture** getSplitNETexture();
   ITexture** getSplitNWTexture();

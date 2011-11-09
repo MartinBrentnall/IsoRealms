@@ -19,15 +19,14 @@
 #ifndef RANDOM_COMMAND_H
 #define RANDOM_COMMAND_H
 
-#include <IsoRealms/ICommandRegistry.h>
-#include <IsoRealms/IUserCommand.h>
+#include <IsoRealms/ICommand.h>
 #include <IsoRealms/Script.h>
 
 #include "../IUtilities.h"
 
 class RandomCommand:public IUtilities {
   private:
-  class ARandomCommand:public IUserCommand {
+  class ARandomCommand:public ICommand {
     private:
     std::string cName;
     std::vector<Script*> cScripts;
@@ -35,16 +34,15 @@ class RandomCommand:public IUtilities {
     public:
     ARandomCommand(const std::string&, std::vector<Script*>);
     
-    /***************************\
-     * Implements IUserCommand *
-    \***************************/
+    /***********************\
+     * Implements ICommand *
+    \***********************/
     void execute();
-    std::string getName();
   };
     
   IRuntimeContext* cRuntimeContext;
   std::vector<PlugSocket*> cCommandRegistrySocket;
-  std::vector<IUserCommand*> cRandomCommands;
+  std::vector<ICommand*> cRandomCommands;
   
   std::vector<Script*> getScripts(DOMNodeWrapper*);
   

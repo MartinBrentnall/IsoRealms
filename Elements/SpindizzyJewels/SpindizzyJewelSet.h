@@ -45,7 +45,7 @@ class SpindizzyJewelSet:public ISpindizzyJewelSet {
   void setModel(ISimpleModelFactory*);
 
   public:
-  SpindizzyJewelSet();
+  SpindizzyJewelSet(IRuntimeContext*);
 
   /**********************\
    * ISpindizzyJewelSet *

@@ -17,9 +17,3 @@
 add_subdirectory(UserDefinablePalette)
 
 include_directories(${PROJECT_SOURCE_DIR})
-
-add_library(DummyPalette MODULE 
-  DummyPalette.cpp
-)
-set_target_properties(DummyPalette PROPERTIES OUTPUT_NAME "Dummy")
-set_target_properties(DummyPalette PROPERTIES PREFIX "lib")

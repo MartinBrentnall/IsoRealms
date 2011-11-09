@@ -21,7 +21,7 @@
 PlainColourTexture::PlainColourTexture() {
 }
 
-void PlainColourTexture::setTexture(Colour* colour) {
+void PlainColourTexture::setTexture(IColour* colour) {
   cColour = colour;
 }
 
@@ -33,6 +33,6 @@ void PlainColourTexture::texCoord2f(float, float) {
   // Nothing to do
 }
 
-Colour* PlainColourTexture::getColour(float, float) {
+IColour* PlainColourTexture::getColour(float, float) {
   return cColour;
 }

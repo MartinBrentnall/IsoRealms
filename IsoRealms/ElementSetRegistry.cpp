@@ -22,17 +22,17 @@ ElementSetRegistry::ElementSetRegistry() {
   // Nothing to do.
 }
 
-void ElementSetRegistry::registerElementSet(DOMNodeWrapper* node, Registry<IUserCommand, CommandProxy>* commandDirectory, IMap* map, bool editing, IScriptSource* scriptSource) {
+void ElementSetRegistry::registerElementSet(DOMNodeWrapper* node, Registry<ICommand, CommandProxy>* commandRegistry, Registry<IColour, ColourProxy>* colourRegistry, IMap* map, bool editing, IScriptSource* scriptSource, IColourSource* colourSource) {
   std::string mInstance = node->getAttribute("instance");
   std::string mType = node->getAttribute("type");
   std::cout << "Registering element set \"" << mType << ":" << mInstance << "\"" << std::endl;
-  IElementSet* mElementSet = createInstance(mType, mInstance);
   std::vector<std::string> mDirectory;
   mDirectory.push_back("ElementSet");
   mDirectory.push_back(mInstance);
-  RegistryProxy<IUserCommand, CommandProxy>* mCommandGateway = new RegistryProxy<IUserCommand, CommandProxy>(commandDirectory, mDirectory);
-  RuntimeContext* mRuntimeContext = new RuntimeContext(map, mCommandGateway, editing, scriptSource);
-  mElementSet->setRuntimeContext(mRuntimeContext);
+  RegistryProxy<ICommand, CommandProxy>* mCommandGateway = new RegistryProxy<ICommand, CommandProxy>(commandRegistry, mDirectory);
+  RegistryProxy<IColour, ColourProxy>* mColourGateway = new RegistryProxy<IColour, ColourProxy>(colourRegistry, mDirectory);
+  RuntimeContext* mRuntimeContext = new RuntimeContext(map, mCommandGateway, mColourGateway, editing, scriptSource, colourSource);
+  IElementSet* mElementSet = createInstance(mType, mInstance, mRuntimeContext);
   mElementSet->setElementSetRegistry(this);
 }
 
@@ -93,7 +93,7 @@ std::vector<IElement*> ElementSetRegistry::loadElements(DOMNodeWrapper* node, Bl
   return mElements;
 }
 
-IElementSet* ElementSetRegistry::createInstance(std::string implementation, std::string instanceName) {
+IElementSet* ElementSetRegistry::createInstance(std::string implementation, std::string instanceName, IRuntimeContext* runtimeContext) {
   if (exists(instanceName)) {
     // TODO: throw exception.
     std::cout << "ElementRegistryThingy exists." << std::endl;
@@ -115,7 +115,7 @@ IElementSet* ElementSetRegistry::createInstance(std::string implementation, std:
   if (mDlsymError) {
     throw InitException("Cannot load symbol: " + std::string(mDlsymError));
   }
-  cElementSets[instanceName] = createElementSetFunction(NULL);
+  cElementSets[instanceName] = createElementSetFunction(runtimeContext);
   cElementSetTypes[instanceName] = implementation;
   cDestroyFunctions[instanceName] = destroyElementSetFunction;
   cSOHandles[instanceName] = mElementSO;

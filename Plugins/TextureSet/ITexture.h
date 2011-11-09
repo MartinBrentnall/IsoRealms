@@ -25,7 +25,7 @@ class ITexture {
   public:
   virtual void set() = 0;
   virtual void texCoord2f(float, float) = 0;
-  virtual Colour* getColour(float, float) = 0;
+  virtual IColour* getColour(float, float) = 0;
   virtual ~ITexture() {}
 };
 

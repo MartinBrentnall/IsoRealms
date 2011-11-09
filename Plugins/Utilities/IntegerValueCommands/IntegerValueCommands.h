@@ -20,7 +20,6 @@
 #define INTEGER_VALUE_COMMANDS_H
 
 #include <IsoRealms/DefaultCommandInfo.h>
-#include <IsoRealms/ICommandRegistry.h>
 #include <IsoRealms/OpenDialogCommand.h>
 
 #include "../../IntegerValue/IIntegerValue.h"
@@ -46,7 +45,6 @@ class IntegerValueCommands:public IUtilities,
   /**************************************\
    * Implements IIntegerCommandRegistry *
   \**************************************/
-  void addCommand(AddIntegerCommand*);
   void removeCommand(AddIntegerCommand*);
   std::vector<AddIntegerCommand*> getCommands();
 

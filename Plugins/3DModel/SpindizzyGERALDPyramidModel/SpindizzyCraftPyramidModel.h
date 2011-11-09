@@ -22,6 +22,7 @@
 #include <GL/gl.h>
 #include <map>
 
+#include <IsoRealms/Colour.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 #include <IsoRealms/Image.h>
 #include <IsoRealms/Vertex.h>
@@ -47,9 +48,9 @@ class SpindizzyCraftPyramidModel:public ISimpleModel {
   public:
   SpindizzyCraftPyramidModel(Vertex*);
 
-  /**************************************************************************\
-   * Implemented methods of ILogicRequirements.h (in ISimpleModel.h)        *
-  \**************************************************************************/
+  /***************************\
+   * Implements ISimpleModel *
+  \***************************/
   void update(int milliseconds);
   void render();
 

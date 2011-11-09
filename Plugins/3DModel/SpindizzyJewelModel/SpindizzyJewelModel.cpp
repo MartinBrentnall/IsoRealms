@@ -26,13 +26,13 @@ SpindizzyJewelModel::SpindizzyJewelModel(Vertex* location, float scale) {
   cLocation = location;
   cScale = scale;
   long int mRandomNumber = random();
-  cColourChannel = mRandomNumber % 3 == 0 ? &cCurrentColour.cRed 
-                : (mRandomNumber % 3 == 1 ? &cCurrentColour.cGreen
-                                          : &cCurrentColour.cBlue);
+  cColourChannel = mRandomNumber % 3 == 0 ? &cRed 
+                : (mRandomNumber % 3 == 1 ? &cGreen
+                                          : &cBlue);
   cColourUp = mRandomNumber % 2 == 1 ? true : false;
-  cCurrentColour.cRed   = cColourChannel == &cCurrentColour.cRed   ? (mRandomNumber % 1000) / 1000.0f : 0.0f;
-  cCurrentColour.cGreen = cColourChannel == &cCurrentColour.cGreen ? (mRandomNumber % 1000) / 1000.0f : 0.0f;
-  cCurrentColour.cBlue  = cColourChannel == &cCurrentColour.cBlue  ? (mRandomNumber % 1000) / 1000.0f : 0.0f;
+  cRed   = cColourChannel == &cRed   ? (mRandomNumber % 1000) / 1000.0f : 0.0f;
+  cGreen = cColourChannel == &cGreen ? (mRandomNumber % 1000) / 1000.0f : 0.0f;
+  cBlue  = cColourChannel == &cBlue  ? (mRandomNumber % 1000) / 1000.0f : 0.0f;
 
   if (cReferenceCount == 0) {
     float mRadius = IsoRealmsConstants::BLOCK_RADIUS;
@@ -83,9 +83,9 @@ void SpindizzyJewelModel::update(int milliseconds) {
   if (*cColourChannel >= 1.0 || *cColourChannel <= 0.0) {
     cColourUp = !cColourUp;
     *cColourChannel = *cColourChannel >= 1.0 ? 1.0 : 0.0;
-    cColourChannel = (cColourChannel == &cCurrentColour.cRed     ? &cCurrentColour.cGreen
-                   : (cColourChannel == &cCurrentColour.cGreen   ? &cCurrentColour.cBlue
-                   /* cColourChannel == *cCurrentColour.cBlue */ : &cCurrentColour.cRed));
+    cColourChannel = (cColourChannel == &cRed     ? &cGreen
+                   : (cColourChannel == &cGreen   ? &cBlue
+                   /* cColourChannel == *cBlue */ : &cRed));
   }
 }
 
@@ -95,7 +95,7 @@ void SpindizzyJewelModel::render() {
   glScalef(cScale, cScale, cScale);
   glBindTexture(GL_TEXTURE_2D, 0);
   glCallList(cFrameDisplayList);
-  glColor3f(cCurrentColour.cRed, cCurrentColour.cGreen, cCurrentColour.cBlue);
+  glColor3f(cRed, cGreen, cBlue);
   glCallList(cPanelDisplayList);
   glColor3f(1.0, 1.0, 1.0);
   glPopMatrix();
