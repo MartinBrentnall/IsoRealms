@@ -24,16 +24,15 @@ void PluginRegistry::registerPlugin(DOMNodeWrapper* node, Registry<IUserCommand,
   std::string mImplementation = node->getAttribute("implementation");
   std::string mInstance = node->getAttribute("instance");
   std::string mType = node->getAttribute("type");
-  std::cout << "Loading plugin \"" << mType << ":" << mImplementation << "\"" << std::endl;
-  loadPlugin(mType, mImplementation, mInstance);
   std::vector<std::string> mDirectory;
   mDirectory.push_back("Plugin");
   mDirectory.push_back(mType);
   mDirectory.push_back(mInstance);
-  IPlugin* mPlugin = getPlugin(mType, mInstance);  
   RegistryProxy<IUserCommand, CommandProxy>* mCommandGateway = new RegistryProxy<IUserCommand, CommandProxy>(directory, mDirectory);
   RuntimeContext* mRuntimeContext = new RuntimeContext(map, mCommandGateway, editing, scriptSource);
-  mPlugin->setRuntimeContext(mRuntimeContext);
+  std::cout << "Loading plugin \"" << mType << ":" << mImplementation << "\"" << std::endl;
+  loadPlugin(mType, mImplementation, mInstance, mRuntimeContext);
+  IPlugin* mPlugin = getPlugin(mType, mInstance);  
   mPlugin->setPluginRegistry(this);
 }
 
@@ -75,7 +74,7 @@ void PluginRegistry::setPlugin(IPluginSupport* entity, DOMNodeWrapper* node) {
   entity->setPlugin(mPlugSocket, mPlugin);
 }
 
-void PluginRegistry::loadPlugin(std::string& type, std::string& implementation, std::string& instanceName) {
+void PluginRegistry::loadPlugin(std::string& type, std::string& implementation, std::string& instanceName, IRuntimeContext* runtimeContext) {
   // TODO: Test if it exists already!
   std::string mPluginLocation = System::getConfigurationResource("Plugins/" + type + "/" + implementation + "/libModule");
   void* mPluginSO = dlopen(mPluginLocation.c_str(), RTLD_LAZY | RTLD_GLOBAL);
@@ -92,7 +91,7 @@ void PluginRegistry::loadPlugin(std::string& type, std::string& implementation, 
   if (mDlsymError) {
     throw InitException("Cannot load symbol: " + std::string(mDlsymError));
   }
-  cPluginInstances[type][instanceName] = createPluginFunction(NULL);
+  cPluginInstances[type][instanceName] = createPluginFunction(runtimeContext);
   cDestroyFunctions[cPluginInstances[type][instanceName]] = destroyPluginFunction;
   cImplementationNames[cPluginInstances[type][instanceName]] = implementation;
   cSOHandles[type][implementation] = mPluginSO;

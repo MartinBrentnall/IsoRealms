@@ -26,6 +26,7 @@
 #include "DOMNodeWrapper.h"
 #include "Hacks.h"
 #include "InitException.h"
+#include "IRuntimeContext.h"
 #include "System.h"
 
 class IPlugin;
@@ -39,7 +40,7 @@ class DummyPluginRegistry {
   static bool isDummyPlugin(IPlugin*);  
 };
 
-typedef IPlugin* createPlugin(DOMNodeWrapper*);
+typedef IPlugin* createPlugin(IRuntimeContext*);
 typedef void destroyPlugin(IPlugin*);
 
 #endif

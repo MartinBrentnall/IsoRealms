@@ -1,7 +1,8 @@
 #include "DefaultCollidableSurfaceRegistry.h"
 
-DefaultCollidableSurfaceRegistry::DefaultCollidableSurfaceRegistry() {
+DefaultCollidableSurfaceRegistry::DefaultCollidableSurfaceRegistry(IRuntimeContext* runtimeContext) {
   assignDummyPlugin(&cZoneContext, "ZoneContext");
+  cMap = runtimeContext->getMap();
 }
 
 void DefaultCollidableSurfaceRegistry::registerRollableSurface(IRollableSurface* rollableSurface, bool intercepting) {
@@ -63,10 +64,6 @@ ICollisionData* DefaultCollidableSurfaceRegistry::getNextEvent(Vertex& start, Ve
   return NULL;
 }
 
-void DefaultCollidableSurfaceRegistry::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  cMap = runtimeContext->getMap();
-}
-
 IRollableSurface* DefaultCollidableSurfaceRegistry::getSurfaceAt(Vertex& location) {
   std::map<IZone*, SurfaceCache*>::iterator i = cZoneSurfaceCaches.find(cRuntimeZone);
   if (i != cZoneSurfaceCaches.end()) {
@@ -108,8 +105,8 @@ IPlugin* DefaultCollidableSurfaceRegistry::getPlugin(PlugSocket* socket) {
   return NULL;
 }
 
-extern "C" IPlugin* create() {
-  return new DefaultCollidableSurfaceRegistry();
+extern "C" IPlugin* create(IRuntimeContext* runtimeContext) {
+  return new DefaultCollidableSurfaceRegistry(runtimeContext);
 }
 
 extern "C" void destroy(IPlugin* plugin) {

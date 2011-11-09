@@ -39,12 +39,13 @@ class UserDefinablePalette:public IPalette,
   private:
   static Colour* DEFAULT_COLOUR; // TODO: Should be const?
     
+  IRuntimeContext* cRuntimeContext;
   std::map<std::string, Colour*> cPalette;
   std::vector<IPaletteListener*> cChangeListeners;
   IComponentContainer* cComponentContainer;
 
   public:
-  UserDefinablePalette();
+  UserDefinablePalette(IRuntimeContext*);
 
   /***********************\
    * Implements IPalette *

@@ -91,7 +91,7 @@ class ExploredZones:public IUtilities,
   void updateToGoString();
   
   public:
-  ExploredZones();
+  ExploredZones(IRuntimeContext*);
   
   /**********************\
    * Implements IPlugin *
@@ -100,7 +100,6 @@ class ExploredZones:public IUtilities,
   IZoneRenderer* getZoneRenderer(const std::string&);
   void save(DOMNodeWriter*);
   void load(DOMNodeWrapper*);
-  void setRuntimeContext(IRuntimeContext*);
   
   /*****************************\
    * Implements IPluginSupport *

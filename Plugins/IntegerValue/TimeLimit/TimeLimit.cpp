@@ -18,15 +18,20 @@
  */
 #include "TimeLimit.h"
 
-TimeLimit::TimeLimit() {
+TimeLimit::TimeLimit(IRuntimeContext* runtimeContext) {
   assignDummyPlugin(&cIntegerValue, "IntegerValue");
   assignDummyPlugin(&cStringProcessor, "StringProcessor");
   cMilliseconds = 180000;
   cMaximumMilliseconds = 180000;
   cValuePerSecond = 100;
   cLocks = 0;
+  // TODO: Is the cCommands vector necessary?
   cCommands.push_back(new LockControlCommand(this, true));
   cCommands.push_back(new LockControlCommand(this, false));
+  cRuntimeContext = runtimeContext;
+  for (unsigned int i = 0; i < cCommands.size(); i++) {
+    cRuntimeContext->add(cCommands[i]);
+  }
 }
 
 IIntegerValue& TimeLimit::operator+=(const int& value) {
@@ -40,13 +45,6 @@ IIntegerValue& TimeLimit::operator+=(const int& value) {
     cMilliseconds = 0;
   }
   return *this;
-}
-
-void TimeLimit::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  cRuntimeContext = runtimeContext;
-  for (unsigned int i = 0; i < cCommands.size(); i++) {
-    cRuntimeContext->add(cCommands[i]);
-  }
 }
 
 void TimeLimit::addIntegerValueListener(IIntegerValueListener*) {
@@ -113,8 +111,8 @@ std::string TimeLimit::LockControlCommand::getName() {
   return cLock ? "AddLock" : "RemoveLock";
 }
 
-extern "C" IPlugin* create() {
-  return new TimeLimit();
+extern "C" IPlugin* create(IRuntimeContext* runtimeContext) {
+  return new TimeLimit(runtimeContext);
 }
 
 extern "C" void destroy(IPlugin* plugin) {

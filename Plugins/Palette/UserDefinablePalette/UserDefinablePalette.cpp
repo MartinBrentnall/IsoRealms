@@ -20,7 +20,8 @@
 
 Colour* UserDefinablePalette::DEFAULT_COLOUR = new Colour(1.0f, 0.0f, 1.0f, 1.0f);
 
-UserDefinablePalette::UserDefinablePalette() {
+UserDefinablePalette::UserDefinablePalette(IRuntimeContext* runtimeContext) {
+  cRuntimeContext = runtimeContext;
 }
 
 Colour* UserDefinablePalette::getColour(const std::string& entry) {
@@ -77,8 +78,8 @@ UserDefinablePalette::~UserDefinablePalette() {
   }
 }
 
-extern "C" IPlugin* create() {
-  return new UserDefinablePalette();
+extern "C" IPlugin* create(IRuntimeContext* runtimeContext) {
+  return new UserDefinablePalette(runtimeContext);
 }
 
 extern "C" void destroy(IPlugin* palette) {

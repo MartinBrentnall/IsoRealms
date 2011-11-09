@@ -109,15 +109,13 @@ class SequencePlayerCommands:public IUtilities {
   };
   
   public:
-  SequencePlayerCommands();
+  SequencePlayerCommands(IRuntimeContext*);
   
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/
   IPlugin* getPlugin(PlugSocket*);
   void setPlugin(PlugSocket*, IPlugin*);
-
-  void setRuntimeContext(IRuntimeContext*);
 };
 
 #endif

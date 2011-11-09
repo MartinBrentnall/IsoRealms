@@ -59,7 +59,7 @@ class TimeLimit:public IIntegerValue,
   };
   
   public:
-  TimeLimit();
+  TimeLimit(IRuntimeContext*);
 
   /****************************\
    * Implements IIntegerValue *
@@ -72,7 +72,6 @@ class TimeLimit:public IIntegerValue,
    * Implements IPlugin *
   \**********************/
   std::vector<IDynamicElement*> getPreLoopCommands();
-  void setRuntimeContext(IRuntimeContext*);
 
   /******************************\
    * Implements IDynamicElement *

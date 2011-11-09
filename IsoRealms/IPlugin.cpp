@@ -62,10 +62,6 @@ void IPlugin::setEditingContext(IEditingContext*) {
   // Nothing to do.
 }
 
-void IPlugin::setRuntimeContext(IRuntimeContext*) {
-  // Nothing to do.
-}
-
 void IPlugin::save(DOMNodeWriter*) {
   // Nothing to do.
 }

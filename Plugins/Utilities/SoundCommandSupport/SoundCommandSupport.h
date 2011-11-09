@@ -37,15 +37,13 @@ class SoundCommandSupport:public IUtilities,
   std::map<ISound*, PlaySoundCommand*> cCommands;
 
   public:
-  SoundCommandSupport();
+  SoundCommandSupport(IRuntimeContext*);
 
   /************************************\
    * Implements ISoundSupportListener *
   \************************************/
   void soundAdded(ISound*);
   void soundRemoved(ISound*);
-
-  void setRuntimeContext(IRuntimeContext*);
 
   /*****************************\
    * Implements IPluginSupport *

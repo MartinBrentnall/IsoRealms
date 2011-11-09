@@ -18,8 +18,9 @@
  */
 #include "SoundCommandSupport.h"
 
-SoundCommandSupport::SoundCommandSupport() {
+SoundCommandSupport::SoundCommandSupport(IRuntimeContext* runtimeContext) {
   assignDummyPlugin(&cSoundSupport, "SoundSupport");
+  cRuntimeContext = runtimeContext;
 }
 
 void SoundCommandSupport::setPlugin(PlugSocket* socket, IPlugin* plugin) {
@@ -60,12 +61,8 @@ void SoundCommandSupport::soundRemoved(ISound* sound) {
   cCommands.erase(sound);
 }
 
-void SoundCommandSupport::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  cRuntimeContext = runtimeContext;
-}
-
-extern "C" IPlugin* create() {
-  return new SoundCommandSupport();
+extern "C" IPlugin* create(IRuntimeContext* runtimeContext) {
+  return new SoundCommandSupport(runtimeContext);
 }
 
 extern "C" void destroy(IPlugin* plugin) {

@@ -97,7 +97,7 @@ class PlayerWithScripts:public ISequencePlayer,
    * Constructor.  Sets a default length of one second.  The player is rewound
    * to 0.0 and does not begin playback until the play() function is invoked.
    */
-  PlayerWithScripts();
+  PlayerWithScripts(IRuntimeContext*);
   
   /**********************\
    * Implements IPlayer *
@@ -119,7 +119,6 @@ class PlayerWithScripts:public ISequencePlayer,
   \**********************/
   void load(DOMNodeWrapper* node);
   void save(DOMNodeWriter* node);
-  void setRuntimeContext(IRuntimeContext*);
   std::vector<IDynamicElement*> getPreLoopCommands();
 };
 

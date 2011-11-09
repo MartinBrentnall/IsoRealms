@@ -128,7 +128,7 @@ class PluginRegistry:public IPluginRegistry {
    * @param string&  The logic implementation.
    * @param string&  The name to assign to this instance.
    */
-  void loadPlugin(std::string&, std::string&, std::string&);
+  void loadPlugin(std::string&, std::string&, std::string&, IRuntimeContext*);
 
   /**
    * Remove the specified plugin instance.  All listeners will be notified of

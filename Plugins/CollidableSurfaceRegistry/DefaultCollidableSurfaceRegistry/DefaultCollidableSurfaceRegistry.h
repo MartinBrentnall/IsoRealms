@@ -43,7 +43,7 @@ class DefaultCollidableSurfaceRegistry:public ICollidableSurfaceRegistry,
   IMap* cMap;
 
   public:
-  DefaultCollidableSurfaceRegistry();
+  DefaultCollidableSurfaceRegistry(IRuntimeContext*);
 
   /*****************************************\
    * Implements ICollidableSurfaceRegistry *
@@ -63,7 +63,6 @@ class DefaultCollidableSurfaceRegistry:public ICollidableSurfaceRegistry,
   \**********************/
   void zoneContextChanged(IMap*, IZone*);
   void initPlugin(IZone*, unsigned int);
-  void setRuntimeContext(IRuntimeContext*);
 
   /*****************************\
    * Implements IPluginSupport *

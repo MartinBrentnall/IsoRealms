@@ -18,7 +18,7 @@
  */
 #include "PlayerWithScripts.h"
 
-PlayerWithScripts::PlayerWithScripts() {
+PlayerWithScripts::PlayerWithScripts(IRuntimeContext* runtimeContext) {
   cPaused = false;
   cForward = false;
   cLength = 1000;
@@ -27,6 +27,7 @@ PlayerWithScripts::PlayerWithScripts() {
   cLeftEndScript = Script::getDummy();
   cReachedEndScript = Script::getDummy();
   cReachedStartScript = Script::getDummy();
+  cRuntimeContext = runtimeContext;
 }
 
 void PlayerWithScripts::addSequence(ISequence* sequence) {
@@ -76,10 +77,6 @@ void PlayerWithScripts::update(int milliseconds) {
   }
 }
 
-void PlayerWithScripts::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  cRuntimeContext = runtimeContext;
-}
-
 void PlayerWithScripts::load(DOMNodeWrapper* node) {
   cLength = node->getIntegerAttribute("length");
   for (int i = 0; i < node->getChildCount(); i++) {
@@ -111,8 +108,8 @@ std::vector<IDynamicElement*> PlayerWithScripts::getPreLoopCommands() {
   return mPlayerUpdater;
 }
 
-extern "C" IPlugin* create() {
-  return new PlayerWithScripts();
+extern "C" IPlugin* create(IRuntimeContext* runtimeContext) {
+  return new PlayerWithScripts(runtimeContext);
 }
 
 extern "C" void destroy(IPlugin* plugin) {

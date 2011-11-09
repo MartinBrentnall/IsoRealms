@@ -30,7 +30,7 @@ std::string PluginEntityClass::getEntityClassName() {
 
 void PluginEntityClass::instantiate(std::string& type, std::string& instanceName) {
   PluginRegistry* mPluginRegistry = cPluginRegistryAccessor->getPluginRegistry();
-  mPluginRegistry->loadPlugin(cPluginType, type, instanceName);
+  mPluginRegistry->loadPlugin(cPluginType, type, instanceName, NULL); // TODO: The Runtime Context MUST BE SET!  MUST *NOT* BE NULL
 }
 
 void PluginEntityClass::remove(std::string& name) {

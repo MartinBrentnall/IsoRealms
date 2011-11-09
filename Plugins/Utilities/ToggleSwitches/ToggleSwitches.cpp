@@ -18,6 +18,10 @@
  */
 #include "ToggleSwitches.h"
 
+ToggleSwitches::ToggleSwitches(IRuntimeContext* runtimeContext) {
+  cRuntimeContext = runtimeContext;
+}
+
 void ToggleSwitches::createSwitchCommand(DOMNodeWrapper* node) {
   Script* mOnScript = Script::getDummy();
   Script* mOffScript = Script::getDummy();
@@ -58,10 +62,6 @@ void ToggleSwitches::save(DOMNodeWriter* node) {
   }
 }
 
-void ToggleSwitches::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  cRuntimeContext = runtimeContext;
-}
-
 ToggleSwitches::ToggleCommand::ToggleCommand(ToggleSwitch* aSwitch, const std::string& name) {
   cSwitch = aSwitch;
   cName = name;
@@ -98,8 +98,8 @@ void ToggleSwitches::RefreshCommand::save(DOMNodeWriter* node) {
   // Nothing to do.
 }
 
-extern "C" IPlugin* create() {
-  return new ToggleSwitches();
+extern "C" IPlugin* create(IRuntimeContext* runtimeContext) {
+  return new ToggleSwitches(runtimeContext);
 }
 
 extern "C" void destroy(IPlugin* plugin) {

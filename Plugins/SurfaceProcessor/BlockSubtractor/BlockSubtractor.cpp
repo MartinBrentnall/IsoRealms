@@ -18,9 +18,11 @@
  */
 #include "BlockSubtractor.h"
 
-BlockSubtractor::BlockSubtractor() {
+BlockSubtractor::BlockSubtractor(IRuntimeContext* runtimeContext) {
   cRemoveHiddenSurfaces = false;
   cUseAdjacentZones = false;
+  cCurrentMap = runtimeContext->getMap();
+  cCache.setMap(cCurrentMap);
 }
 
 void BlockSubtractor::zoneContextChanged(IMap* map, IZone* zone) {
@@ -31,11 +33,6 @@ void BlockSubtractor::zoneContextChanged(IMap* map, IZone* zone) {
 void BlockSubtractor::initPlugin(IZone* zone, unsigned int pass) {
   cCache.setZone(zone);
   cCurrentZone = zone;
-}
-
-void BlockSubtractor::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  cCurrentMap = runtimeContext->getMap();
-  cCache.setMap(cCurrentMap);
 }
 
 void BlockSubtractor::load(DOMNodeWrapper* node) {
@@ -586,8 +583,8 @@ void BlockSubtractor::initElementsComplete() {
 //  cCache.clear();
 }
 
-extern "C" IPlugin* create() {
-  return new BlockSubtractor();
+extern "C" IPlugin* create(IRuntimeContext* runtimeContext) {
+  return new BlockSubtractor(runtimeContext);
 }
 
 extern "C" void destroy(IPlugin* blockSubtractor) {

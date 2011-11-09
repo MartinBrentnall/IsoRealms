@@ -18,7 +18,7 @@
  */
 #include "ExploredZones.h"
 
-ExploredZones::ExploredZones() {
+ExploredZones::ExploredZones(IRuntimeContext* runtimeContext) {
   assignDummyPlugin(&cFlagModel, "3DModel");
   assignDummyPlugin(&cZoneContext, "ZoneContext");
   assignDummyPlugin(&cObjectives, "Objectives");
@@ -29,6 +29,7 @@ ExploredZones::ExploredZones() {
   cMapOverviewRenderer = new MapOverviewRenderer(this);
   cZoneExploredScript = Script::getDummy();
   cAllZonesExploredScript = Script::getDummy();
+  cRuntimeContext = runtimeContext;
 }
 
 void ExploredZones::initPlugin(IZone* zone, unsigned int pass) {
@@ -220,16 +221,12 @@ void ExploredZones::load(DOMNodeWrapper* node) {
   }
 }
 
-void ExploredZones::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  cRuntimeContext = runtimeContext;
-}
-
 bool ExploredZones::isMet() {
   return cExploredZones.size() == cZoneCount;
 }
 
-extern "C" IPlugin* create() {
-  return new ExploredZones();
+extern "C" IPlugin* create(IRuntimeContext* runtimeContext) {
+  return new ExploredZones(runtimeContext);
 }
 
 extern "C" void destroy(IPlugin* plugin) {

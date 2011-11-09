@@ -90,7 +90,7 @@ class SpindizzySwitches:public IUtilities,
   void updateHUD();
   
   public:
-  SpindizzySwitches();
+  SpindizzySwitches(IRuntimeContext*);
 
   void addSwitch(const std::string&, bool);
 
@@ -110,7 +110,6 @@ class SpindizzySwitches:public IUtilities,
   \**********************/
   void load(DOMNodeWrapper*);
   void save(DOMNodeWriter*);
-  void setRuntimeContext(IRuntimeContext*);
 };
 
 #endif

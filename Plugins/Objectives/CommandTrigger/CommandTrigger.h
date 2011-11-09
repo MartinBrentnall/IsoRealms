@@ -33,7 +33,7 @@ class CommandTrigger:public IObjectives {
   Script* cObjectivesMetScript;
 
   public:
-  CommandTrigger();
+  CommandTrigger(IRuntimeContext*);
     
   /**************************\
    * Implements IObjectives *
@@ -41,8 +41,6 @@ class CommandTrigger:public IObjectives {
   void check();
   void registerObjective(IObjective*);
   void unregisterObjective(IObjective*);
-
-  void setRuntimeContext(IRuntimeContext*);
 };
 
 #endif

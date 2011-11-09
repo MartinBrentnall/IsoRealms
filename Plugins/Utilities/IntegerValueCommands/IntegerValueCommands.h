@@ -41,7 +41,7 @@ class IntegerValueCommands:public IUtilities,
   IComponentContainer* cComponentContainer;
 
   public:
-  IntegerValueCommands();
+  IntegerValueCommands(IRuntimeContext*);
 
   /**************************************\
    * Implements IIntegerCommandRegistry *
@@ -55,7 +55,6 @@ class IntegerValueCommands:public IUtilities,
   \**********************/
   void save(DOMNodeWriter*);
   void load(DOMNodeWrapper*);
-  void setRuntimeContext(IRuntimeContext*);
   void setEditingContext(IEditingContext*);
 
   /*****************************\

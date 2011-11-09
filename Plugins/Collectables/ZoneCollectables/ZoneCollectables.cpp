@@ -18,7 +18,7 @@
  */
 #include "ZoneCollectables.h"
 
-ZoneCollectables::ZoneCollectables() {
+ZoneCollectables::ZoneCollectables(IRuntimeContext* runtimeContext) {
   assignDummyPlugin(&cFlaggedZones, "FlaggedZones");
   assignDummyPlugin(&cObjectives, "Objectives");
   assignDummyPlugin(&cZoneContext, "ZoneContext");
@@ -26,6 +26,7 @@ ZoneCollectables::ZoneCollectables() {
   cCollectablesCount = 0;
   cCollectedCount = 0;
   cCollectedCountString = "0";
+  cMap = runtimeContext->getMap();
 }
 
 void ZoneCollectables::setPlugin(PlugSocket* socket, IPlugin* plugin) {
@@ -115,10 +116,6 @@ void ZoneCollectables::collect(ICollector* collector, Vertex& start, Vertex& end
   }
 }
 
-void ZoneCollectables::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  cMap = runtimeContext->getMap();
-}
-
 void ZoneCollectables::reinitialise() {
   for (std::map<IZone*, std::vector<ICollectable*>*>::iterator i = cCollectables.begin(); i != cCollectables.end(); ++i) {
     for (unsigned int j = 0; j < i->second->size(); j++) {
@@ -138,8 +135,8 @@ bool ZoneCollectables::isZoneFlagged(IZone* zone) {
   return i != cCollectables.end() && i->second->size() > 0;
 }
 
-extern "C" IPlugin* create() {
-  return new ZoneCollectables();
+extern "C" IPlugin* create(IRuntimeContext* runtimeContext) {
+  return new ZoneCollectables(runtimeContext);
 }
 
 extern "C" void destroy(IPlugin* plugin) {

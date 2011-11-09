@@ -113,11 +113,6 @@ class IPlugin:public IPluginSupport,
   virtual void setEditingContext(IEditingContext*);
 
   /**
-   * Set the runtime context.
-   */
-  virtual void setRuntimeContext(IRuntimeContext*);
-  
-  /**
    * Save the configuration of the plug-in.
    */
   virtual void save(DOMNodeWriter*);
@@ -158,7 +153,7 @@ class IPlugin:public IPluginSupport,
   virtual ~IPlugin() {}
 };
 
-typedef IPlugin* createPlugin(DOMNodeWrapper*);
+typedef IPlugin* createPlugin(IRuntimeContext*);
 typedef void destroyPlugin(IPlugin*);
 
 #endif

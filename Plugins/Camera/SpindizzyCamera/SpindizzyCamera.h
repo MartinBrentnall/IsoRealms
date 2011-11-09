@@ -115,7 +115,7 @@ class SpindizzyCamera:public ICamera,
   int cMaxZ;
 
   public:
-  SpindizzyCamera();
+  SpindizzyCamera(IRuntimeContext*);
 
   /*****************************\
    * Implements IPluginSupport *
@@ -130,7 +130,6 @@ class SpindizzyCamera:public ICamera,
   std::vector<IVisualElement*> getPreLoopRenderers();
   std::vector<IDynamicElement*> getPreLoopCommands();
   void initPlugin(IZone*, unsigned int);
-  void setRuntimeContext(IRuntimeContext*);
   void load(DOMNodeWrapper*);
   void save(DOMNodeWriter*);
   

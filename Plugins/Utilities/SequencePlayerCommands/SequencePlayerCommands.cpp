@@ -18,12 +18,15 @@
  */
 #include "SequencePlayerCommands.h"
 
-SequencePlayerCommands::SequencePlayerCommands() {
+SequencePlayerCommands::SequencePlayerCommands(IRuntimeContext* runtimeContext) {
   assignDummyPlugin(&cPlayer, "SequencePlayer");
   cPlayerCommands.push_back(new PlayCommand(this));
   cPlayerCommands.push_back(new RewindCommand(this));
   cPlayerCommands.push_back(new PauseCommand(this));
   cPlayerCommands.push_back(new UnpauseCommand(this));
+  for (unsigned int i = 0; i < cPlayerCommands.size(); i++) {
+    runtimeContext->add(cPlayerCommands[i]);
+  }
 }
 
 IPlugin* SequencePlayerCommands::getPlugin(PlugSocket* socket) {
@@ -37,12 +40,6 @@ void SequencePlayerCommands::setPlugin(PlugSocket* socket, IPlugin* plugin) {
     assignPlugin(plugin, &cPlayer, *socket);
   } else {
     // TODO: Throw
-  }
-}
-
-void SequencePlayerCommands::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  for (unsigned int i = 0; i < cPlayerCommands.size(); i++) {
-    runtimeContext->add(cPlayerCommands[i]);
   }
 }
 
@@ -94,8 +91,8 @@ std::string SequencePlayerCommands::UnpauseCommand::getName() {
   return "Unpause";
 }
 
-extern "C" IPlugin* create() {
-  return new SequencePlayerCommands();
+extern "C" IPlugin* create(IRuntimeContext* runtimeContext) {
+  return new SequencePlayerCommands(runtimeContext);
 }
 
 extern "C" void destroy(IPlugin* plugin) {

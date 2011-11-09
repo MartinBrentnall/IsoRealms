@@ -18,7 +18,7 @@
  */
 #include "SpindizzySwitches.h"
 
-SpindizzySwitches::SpindizzySwitches() {
+SpindizzySwitches::SpindizzySwitches(IRuntimeContext* runtimeContext) {
   cActiveSwitchA = NULL;
   cActiveSwitchB = NULL;
   cNextSwitch = &cActiveSwitchA;
@@ -27,6 +27,8 @@ SpindizzySwitches::SpindizzySwitches() {
   assignDummyPlugin(&cCamera, "Camera");
   cHUDSwitchA.setCamera(cCamera);
   cHUDSwitchB.setCamera(cCamera);
+  cRuntimeContext = runtimeContext;
+  cRuntimeContext->add(cResetCommand);
 }
 
 void SpindizzySwitches::setPlugin(PlugSocket* socket, IPlugin* plugin) {
@@ -209,11 +211,6 @@ void SpindizzySwitches::save(DOMNodeWriter* node) {
   // TODO: Implement this
 }
 
-void SpindizzySwitches::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  cRuntimeContext = runtimeContext;
-  cRuntimeContext->add(cResetCommand);
-}
-
 IHUDGameComponent* SpindizzySwitches::getHUDComponent(const std::string& component) {
   if      (component == "ActiveSwitchA") {return &cHUDSwitchA;}
   else if (component == "ActiveSwitchB") {return &cHUDSwitchB;}
@@ -222,8 +219,8 @@ IHUDGameComponent* SpindizzySwitches::getHUDComponent(const std::string& compone
   return NULL;
 }
 
-extern "C" IPlugin* create() {
-  return new SpindizzySwitches();
+extern "C" IPlugin* create(IRuntimeContext* runtimeContext) {
+  return new SpindizzySwitches(runtimeContext);
 }
 
 extern "C" void destroy(IPlugin* plugin) {

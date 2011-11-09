@@ -18,7 +18,7 @@
  */
 #include "SpindizzyCamera.h"
 
-SpindizzyCamera::SpindizzyCamera() {
+SpindizzyCamera::SpindizzyCamera(IRuntimeContext* runtimeContext) {
   assignDummyPlugin(&cSequencePlayer, "SequencePlayer");
   cTargetAngle = -45.0f;
   cPreviousAngle = -45.0f;
@@ -36,6 +36,11 @@ SpindizzyCamera::SpindizzyCamera() {
   cCameraCommands.push_back(new RelativeCommand(this, "RotateRight", 90.0f));
   cCameraCommands.push_back(new RelativeCommand(this, "Rotate180",   180.0f));
   cSelectedLocation = 0;
+
+  cRuntimeContext = runtimeContext;
+  for (unsigned int i = 0; i < cCameraCommands.size(); i++) {
+    cRuntimeContext->add(cCameraCommands[i]);
+  }
 }
 
 std::vector<PlugSocket*> SpindizzyCamera::getPlugSockets() {
@@ -165,13 +170,6 @@ void SpindizzyCamera::render() {
   glTranslatef(mXLocation, mYLocation, mZLocation);
 }
 
-void SpindizzyCamera::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  cRuntimeContext = runtimeContext;
-  for (unsigned int i = 0; i < cCameraCommands.size(); i++) {
-    cRuntimeContext->add(cCameraCommands[i]);
-  }
-}
-
 void SpindizzyCamera::load(DOMNodeWrapper* node) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
@@ -283,8 +281,8 @@ std::string SpindizzyCamera::SetLocationCommand::getName() {
   return "SetMode " + cModeName;
 }
 
-extern "C" IPlugin* create() {
-  return new SpindizzyCamera();
+extern "C" IPlugin* create(IRuntimeContext* runtimeContext) {
+  return new SpindizzyCamera(runtimeContext);
 }
 
 extern "C" void destroy(IPlugin* plugin) {

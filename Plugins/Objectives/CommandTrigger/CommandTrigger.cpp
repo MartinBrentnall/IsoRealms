@@ -18,8 +18,9 @@
  */
 #include "CommandTrigger.h"
 
-CommandTrigger::CommandTrigger() {
+CommandTrigger::CommandTrigger(IRuntimeContext* runtimeContext) {
   cObjectivesMetScript = Script::getDummy();
+  cRuntimeContext = runtimeContext;
 }
 
 void CommandTrigger::check() {
@@ -39,12 +40,8 @@ void CommandTrigger::unregisterObjective(IObjective* objective) {
   cObjectives.erase(objective);
 }
 
-void CommandTrigger::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  cRuntimeContext = runtimeContext;
-}
-
-extern "C" IPlugin* create() {
-  return new CommandTrigger();
+extern "C" IPlugin* create(IRuntimeContext* runtimeContext) {
+  return new CommandTrigger(runtimeContext);
 }
 
 extern "C" void destroy(IPlugin* plugin) {

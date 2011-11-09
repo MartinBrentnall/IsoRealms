@@ -18,6 +18,10 @@
  */
 #include "RandomCommand.h"
 
+RandomCommand::RandomCommand(IRuntimeContext* runtimeContext) {
+  cRuntimeContext = runtimeContext;
+}
+
 std::vector<Script*> RandomCommand::getScripts(DOMNodeWrapper* node) {
   std::vector<Script*> mScripts;
   for (int i = 0; i < node->getChildCount(); i++) {
@@ -52,10 +56,6 @@ void RandomCommand::save(DOMNodeWriter* node) {
   // TODO: Implement this
 }
 
-void RandomCommand::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  cRuntimeContext = runtimeContext;
-}
-
 RandomCommand::ARandomCommand::ARandomCommand(const std::string& name, std::vector<Script*> scripts) {
   cName = name;
   cScripts = scripts;
@@ -71,8 +71,8 @@ std::string RandomCommand::ARandomCommand::getName() {
   return "Random " + cName;
 }
 
-extern "C" IPlugin* create() {
-  return new RandomCommand();
+extern "C" IPlugin* create(IRuntimeContext* runtimeContext) {
+  return new RandomCommand(runtimeContext);
 }
 
 extern "C" void destroy(IPlugin* plugin) {

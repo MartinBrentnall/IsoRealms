@@ -49,13 +49,13 @@ class RandomCommand:public IUtilities {
   std::vector<Script*> getScripts(DOMNodeWrapper*);
   
   public:
+  RandomCommand(IRuntimeContext*);
   
   /**********************\
    * Implements IPlugin *
   \**********************/
   void load(DOMNodeWrapper*);
   void save(DOMNodeWriter*);
-  void setRuntimeContext(IRuntimeContext*);
 };
 
 #endif

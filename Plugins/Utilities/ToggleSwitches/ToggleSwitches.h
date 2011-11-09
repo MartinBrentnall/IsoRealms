@@ -69,13 +69,13 @@ class ToggleSwitches:public IUtilities {
   void createSwitchCommand(DOMNodeWrapper*);
 
   public:
+  ToggleSwitches(IRuntimeContext*);
 
   /**********************\
    * Implements IPlugin *
   \**********************/
   void load(DOMNodeWrapper*);
   void save(DOMNodeWriter*);
-  void setRuntimeContext(IRuntimeContext*);
 };
 
 #endif

@@ -53,7 +53,7 @@ class ZoneCollectables:public ICollectables,
   void collect(ICollector*, Vertex&, Vertex&, IZone*);
   
   public:
-  ZoneCollectables();
+  ZoneCollectables(IRuntimeContext*);
 
   /***********************************\
    * Implements IZoneContextListener *
@@ -75,7 +75,6 @@ class ZoneCollectables:public ICollectables,
   \**********************/
   void zoneContextChanged(IMap*, IZone*);
   void initPlugin(IZone*, unsigned int);
-  void setRuntimeContext(IRuntimeContext*);
 
   /*****************************\
    * Implements IPluginSupport *

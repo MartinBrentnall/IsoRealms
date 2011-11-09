@@ -153,7 +153,7 @@ class BlockSubtractor:public ISurfaceProcessor {
   bool safeEquals(Condition* a, Condition* b);
 
   public:
-  BlockSubtractor();
+  BlockSubtractor(IRuntimeContext*);
 
   /********************************\
    * Implements ISurfaceProcessor *
@@ -173,7 +173,6 @@ class BlockSubtractor:public ISurfaceProcessor {
   \**********************/
   void zoneContextChanged(IMap*, IZone*);
   void initPlugin(IZone*, unsigned int);
-  void setRuntimeContext(IRuntimeContext*);
   void load(DOMNodeWrapper*);
   void save(DOMNodeWriter*);
 };

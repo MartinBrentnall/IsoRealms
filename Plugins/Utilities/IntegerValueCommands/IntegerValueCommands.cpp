@@ -18,8 +18,9 @@
  */
 #include "IntegerValueCommands.h"
 
-IntegerValueCommands::IntegerValueCommands() {
+IntegerValueCommands::IntegerValueCommands(IRuntimeContext* runtimeContext) {
   assignDummyPlugin(&cVariable, "IntegerValue");
+  cRuntimeContext = runtimeContext;
 }
 
 void IntegerValueCommands::addCommand(AddIntegerCommand* command) {
@@ -61,10 +62,6 @@ void IntegerValueCommands::load(DOMNodeWrapper* node) {
   }
 }
 
-void IntegerValueCommands::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  cRuntimeContext = runtimeContext;
-}
-
 void IntegerValueCommands::setEditingContext(IEditingContext* editingContext) {
   std::vector<std::string> mPath;
   mPath.push_back("Configure");
@@ -96,8 +93,8 @@ IHUDComponent* IntegerValueCommands::createComponent() {
   return new IntegerCommandsDialog(cComponentContainer, this);
 }
 
-extern "C" IPlugin* create() {
-  return new IntegerValueCommands();
+extern "C" IPlugin* create(IRuntimeContext* runtimeContext) {
+  return new IntegerValueCommands(runtimeContext);
 }
 
 extern "C" void destroy(IPlugin* plugin) {
