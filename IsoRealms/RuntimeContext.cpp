@@ -18,13 +18,15 @@
  */
 #include "RuntimeContext.h"
 
-RuntimeContext::RuntimeContext(IMap* map, RegistryProxy<ICommand, CommandProxy>* commandGateway, RegistryProxy<IColour, ColourProxy>* colourGateway, bool editing, IScriptSource* scriptSource, IColourSource* colourSource) {
+RuntimeContext::RuntimeContext(IMap* map, RegistryProxy<ICommand, CommandProxy>* commandGateway, RegistryProxy<IColour, ColourProxy>* colourGateway, RegistryProxy<ITexture, TextureProxy>* textureGateway, bool editing, IScriptSource* scriptSource, IColourSource* colourSource, ITextureSource* textureSource) {
   cMap = map;
   cCommandGateway = commandGateway;
   cColourGateway = colourGateway;
+  cTextureGateway = textureGateway;
   cEditing = editing;
   cScriptSource = scriptSource;
   cColourSource = colourSource;
+  cTextureSource = textureSource;
 }
 
 IMap* RuntimeContext::getMap() {
@@ -47,6 +49,10 @@ void RuntimeContext::add(IColour* colour, const std::string& name) {
   cColourGateway->add(colour, name);
 }
 
+void RuntimeContext::add(ITexture* texture, const std::string& name) {
+  cTextureGateway->add(texture, name);
+}
+
 void RuntimeContext::remove(ICommand* command) {
   cCommandGateway->remove(command);
 }
@@ -57,4 +63,8 @@ Script* RuntimeContext::getScript(DOMNodeWrapper* node) {
 
 IColour* RuntimeContext::getColour(DOMNodeWrapper* node) {
   return cColourSource->getColour(node);
+}
+
+ITexture* RuntimeContext::getTexture(DOMNodeWrapper* node) {
+  return cTextureSource->getTexture(node);
 }

@@ -19,7 +19,7 @@
 #ifndef IMAGE_TEXTURE_PROXY_H
 #define IMAGE_TEXTURE_PROXY_H
 
-#include "../ITexture.h"
+#include <IsoRealms/ITexture.h>
 
 class ImageTextureProxy:public ITexture {
   private:

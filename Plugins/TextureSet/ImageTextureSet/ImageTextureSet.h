@@ -24,20 +24,21 @@
 #include <SDL_image.h>
 #include <string>
 
-#include "../ITextureSet.h"
+#include <IsoRealms/IPlugin.h>
 
 #include "ImageTexture.h"
 #include "ImageTextureProxy.h"
 
-class ImageTextureSet:public ITextureSet {
+class ImageTextureSet:public IPlugin {
   private:
+  IRuntimeContext* cRuntimeContext;
   std::map<std::string, ImageTextureProxy*> cTextures;
   
   void loadTexture(const std::string&, const std::string&);
   ImageTextureProxy* getTextureProxy(const std::string&);
   
   public:
-  ImageTextureSet();
+  ImageTextureSet(IRuntimeContext*);
   
   /**************************\
    * Implements ITextureSet *

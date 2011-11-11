@@ -1,370 +1,332 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <Map>
   <Plugin implementation="Block" instance="Compass" type="3DModel">
-    <UsePlugin implementation="TextureSetChanger" instance="PerZone"/>
     <Configuration>
-      <TopSurfaceTexture>ArrowEast</TopSurfaceTexture>
-      <BottomSurfaceTexture>Plain</BottomSurfaceTexture>
-      <NorthSurfaceTextureTop>WallPlainCap</NorthSurfaceTextureTop>
-      <SouthSurfaceTextureTop>WallPlainCap</SouthSurfaceTextureTop>
-      <WestSurfaceTextureTop>WallMixedCap</WestSurfaceTextureTop>
-      <EastSurfaceTextureTop>WallMixedCap</EastSurfaceTextureTop>
-      <NorthSurfaceTextureBottom>WallPlainCap</NorthSurfaceTextureBottom>
-      <SouthSurfaceTextureBottom>WallPlainCap</SouthSurfaceTextureBottom>
-      <WestSurfaceTextureBottom>WallMixedCap</WestSurfaceTextureBottom>
-      <EastSurfaceTextureBottom>WallMixedCap</EastSurfaceTextureBottom>
+      <TopSurfaceTexture name="Plugin/TextureSet/C64Blue/Arrow"/>
+      <BottomSurfaceTexture name="Plugin/TextureSet/C64Blue/Plain"/>
+      <NorthSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <SouthSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <WestSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <EastSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <NorthSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <SouthSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <WestSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <EastSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="Block" instance="ClueDiamondLeft" type="3DModel">
-    <UsePlugin implementation="TextureSetChanger" instance="PerZone"/>
     <Configuration>
-      <TopSurfaceTexture>SwitchDiamonOne</TopSurfaceTexture>
-      <BottomSurfaceTexture>Plain</BottomSurfaceTexture>
-      <NorthSurfaceTextureTop>WallPlainCap</NorthSurfaceTextureTop>
-      <SouthSurfaceTextureTop>WallPlainCap</SouthSurfaceTextureTop>
-      <WestSurfaceTextureTop>WallMixedCap</WestSurfaceTextureTop>
-      <EastSurfaceTextureTop>WallMixedCap</EastSurfaceTextureTop>
-      <NorthSurfaceTextureBottom>WallPlainCap</NorthSurfaceTextureBottom>
-      <SouthSurfaceTextureBottom>WallPlainCap</SouthSurfaceTextureBottom>
-      <WestSurfaceTextureBottom>WallMixedCap</WestSurfaceTextureBottom>
-      <EastSurfaceTextureBottom>WallMixedCap</EastSurfaceTextureBottom>
+      <TopSurfaceTexture name="Plugin/TextureSet/C64Blue/SwitchDiamonOne"/>
+      <BottomSurfaceTexture name="Plugin/TextureSet/C64Blue/Plain"/>
+      <NorthSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <SouthSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <WestSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <EastSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <NorthSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <SouthSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <WestSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <EastSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="Block" instance="ClueDiamondRight" type="3DModel">
-    <UsePlugin implementation="TextureSetChanger" instance="PerZone"/>
     <Configuration>
-      <TopSurfaceTexture>SwitchDiamondOne</TopSurfaceTexture>
-      <BottomSurfaceTexture>Plain</BottomSurfaceTexture>
-      <NorthSurfaceTextureTop>WallPlainCap</NorthSurfaceTextureTop>
-      <SouthSurfaceTextureTop>WallPlainCap</SouthSurfaceTextureTop>
-      <WestSurfaceTextureTop>WallMixedCap</WestSurfaceTextureTop>
-      <EastSurfaceTextureTop>WallMixedCap</EastSurfaceTextureTop>
-      <NorthSurfaceTextureBottom>WallPlainCap</NorthSurfaceTextureBottom>
-      <SouthSurfaceTextureBottom>WallPlainCap</SouthSurfaceTextureBottom>
-      <WestSurfaceTextureBottom>WallMixedCap</WestSurfaceTextureBottom>
-      <EastSurfaceTextureBottom>WallMixedCap</EastSurfaceTextureBottom>
+      <TopSurfaceTexture name="Plugin/TextureSet/C64Blue/SwitchDiamondOne"/>
+      <BottomSurfaceTexture name="Plugin/TextureSet/C64Blue/Plain"/>
+      <NorthSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <SouthSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <WestSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <EastSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <NorthSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <SouthSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <WestSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <EastSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="Block" instance="ClueDiamondFilled" type="3DModel">
-    <UsePlugin implementation="TextureSetChanger" instance="PerZone"/>
     <Configuration>
-      <TopSurfaceTexture>SwitchDiamondFilled</TopSurfaceTexture>
-      <BottomSurfaceTexture>Plain</BottomSurfaceTexture>
-      <NorthSurfaceTextureTop>WallPlainCap</NorthSurfaceTextureTop>
-      <SouthSurfaceTextureTop>WallPlainCap</SouthSurfaceTextureTop>
-      <WestSurfaceTextureTop>WallMixedCap</WestSurfaceTextureTop>
-      <EastSurfaceTextureTop>WallMixedCap</EastSurfaceTextureTop>
-      <NorthSurfaceTextureBottom>WallPlainCap</NorthSurfaceTextureBottom>
-      <SouthSurfaceTextureBottom>WallPlainCap</SouthSurfaceTextureBottom>
-      <WestSurfaceTextureBottom>WallMixedCap</WestSurfaceTextureBottom>
-      <EastSurfaceTextureBottom>WallMixedCap</EastSurfaceTextureBottom>
+      <TopSurfaceTexture name="Plugin/TextureSet/C64Blue/SwitchDiamondFilled"/>
+      <BottomSurfaceTexture name="Plugin/TextureSet/C64Blue/Plain"/>
+      <NorthSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <SouthSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <WestSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <EastSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <NorthSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <SouthSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <WestSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <EastSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="Block" instance="ClueSquareEmpty" type="3DModel">
-    <UsePlugin implementation="TextureSetChanger" instance="PerZone"/>
     <Configuration>
-      <TopSurfaceTexture>SwitchSquareEmpty</TopSurfaceTexture>
-      <BottomSurfaceTexture>Plain</BottomSurfaceTexture>
-      <NorthSurfaceTextureTop>WallPlainCap</NorthSurfaceTextureTop>
-      <SouthSurfaceTextureTop>WallPlainCap</SouthSurfaceTextureTop>
-      <WestSurfaceTextureTop>WallMixedCap</WestSurfaceTextureTop>
-      <EastSurfaceTextureTop>WallMixedCap</EastSurfaceTextureTop>
-      <NorthSurfaceTextureBottom>WallPlainCap</NorthSurfaceTextureBottom>
-      <SouthSurfaceTextureBottom>WallPlainCap</SouthSurfaceTextureBottom>
-      <WestSurfaceTextureBottom>WallMixedCap</WestSurfaceTextureBottom>
-      <EastSurfaceTextureBottom>WallMixedCap</EastSurfaceTextureBottom>
+      <TopSurfaceTexture name="Plugin/TextureSet/C64Blue/SwitchSquareEmpty"/>
+      <BottomSurfaceTexture name="Plugin/TextureSet/C64Blue/Plain"/>
+      <NorthSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <SouthSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <WestSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <EastSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <NorthSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <SouthSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <WestSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <EastSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="Block" instance="ClueSquareLeft" type="3DModel">
-    <UsePlugin implementation="TextureSetChanger" instance="PerZone"/>
     <Configuration>
-      <TopSurfaceTexture>SwitchSquareOne</TopSurfaceTexture>
-      <BottomSurfaceTexture>Plain</BottomSurfaceTexture>
-      <NorthSurfaceTextureTop>WallPlainCap</NorthSurfaceTextureTop>
-      <SouthSurfaceTextureTop>WallPlainCap</SouthSurfaceTextureTop>
-      <WestSurfaceTextureTop>WallMixedCap</WestSurfaceTextureTop>
-      <EastSurfaceTextureTop>WallMixedCap</EastSurfaceTextureTop>
-      <NorthSurfaceTextureBottom>WallPlainCap</NorthSurfaceTextureBottom>
-      <SouthSurfaceTextureBottom>WallPlainCap</SouthSurfaceTextureBottom>
-      <WestSurfaceTextureBottom>WallMixedCap</WestSurfaceTextureBottom>
-      <EastSurfaceTextureBottom>WallMixedCap</EastSurfaceTextureBottom>
+      <TopSurfaceTexture name="Plugin/TextureSet/C64Blue/SwitchSquareOne"/>
+      <BottomSurfaceTexture name="Plugin/TextureSet/C64Blue/Plain"/>
+      <NorthSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <SouthSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <WestSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <EastSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <NorthSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <SouthSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <WestSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <EastSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="Block" instance="ClueSquareRight" type="3DModel">
-    <UsePlugin implementation="TextureSetChanger" instance="PerZone"/>
     <Configuration>
-      <TopSurfaceTexture>SwitchSquareOne</TopSurfaceTexture>
-      <BottomSurfaceTexture>Plain</BottomSurfaceTexture>
-      <NorthSurfaceTextureTop>WallPlainCap</NorthSurfaceTextureTop>
-      <SouthSurfaceTextureTop>WallPlainCap</SouthSurfaceTextureTop>
-      <WestSurfaceTextureTop>WallMixedCap</WestSurfaceTextureTop>
-      <EastSurfaceTextureTop>WallMixedCap</EastSurfaceTextureTop>
-      <NorthSurfaceTextureBottom>WallPlainCap</NorthSurfaceTextureBottom>
-      <SouthSurfaceTextureBottom>WallPlainCap</SouthSurfaceTextureBottom>
-      <WestSurfaceTextureBottom>WallMixedCap</WestSurfaceTextureBottom>
-      <EastSurfaceTextureBottom>WallMixedCap</EastSurfaceTextureBottom>
+      <TopSurfaceTexture name="Plugin/TextureSet/C64Blue/SwitchSquareOne"/>
+      <BottomSurfaceTexture name="Plugin/TextureSet/C64Blue/Plain"/>
+      <NorthSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <SouthSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <WestSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <EastSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <NorthSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <SouthSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <WestSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <EastSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="Block" instance="ClueSquareFilled" type="3DModel">
-    <UsePlugin implementation="TextureSetChanger" instance="PerZone"/>
     <Configuration>
-      <TopSurfaceTexture>SwitchSquareFilled</TopSurfaceTexture>
-      <BottomSurfaceTexture>Plain</BottomSurfaceTexture>
-      <NorthSurfaceTextureTop>WallPlainCap</NorthSurfaceTextureTop>
-      <SouthSurfaceTextureTop>WallPlainCap</SouthSurfaceTextureTop>
-      <WestSurfaceTextureTop>WallMixedCap</WestSurfaceTextureTop>
-      <EastSurfaceTextureTop>WallMixedCap</EastSurfaceTextureTop>
-      <NorthSurfaceTextureBottom>WallPlainCap</NorthSurfaceTextureBottom>
-      <SouthSurfaceTextureBottom>WallPlainCap</SouthSurfaceTextureBottom>
-      <WestSurfaceTextureBottom>WallMixedCap</WestSurfaceTextureBottom>
-      <EastSurfaceTextureBottom>WallMixedCap</EastSurfaceTextureBottom>
+      <TopSurfaceTexture name="Plugin/TextureSet/C64Blue/SwitchSquareFilled"/>
+      <BottomSurfaceTexture name="Plugin/TextureSet/C64Blue/Plain"/>
+      <NorthSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <SouthSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <WestSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <EastSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <NorthSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <SouthSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <WestSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <EastSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="Block" instance="ClueCircleEmpty" type="3DModel">
-    <UsePlugin implementation="TextureSetChanger" instance="PerZone"/>
     <Configuration>
-      <TopSurfaceTexture>SwitchCircleEmpty</TopSurfaceTexture>
-      <BottomSurfaceTexture>Plain</BottomSurfaceTexture>
-      <NorthSurfaceTextureTop>WallPlainCap</NorthSurfaceTextureTop>
-      <SouthSurfaceTextureTop>WallPlainCap</SouthSurfaceTextureTop>
-      <WestSurfaceTextureTop>WallMixedCap</WestSurfaceTextureTop>
-      <EastSurfaceTextureTop>WallMixedCap</EastSurfaceTextureTop>
-      <NorthSurfaceTextureBottom>WallPlainCap</NorthSurfaceTextureBottom>
-      <SouthSurfaceTextureBottom>WallPlainCap</SouthSurfaceTextureBottom>
-      <WestSurfaceTextureBottom>WallMixedCap</WestSurfaceTextureBottom>
-      <EastSurfaceTextureBottom>WallMixedCap</EastSurfaceTextureBottom>
+      <TopSurfaceTexture name="Plugin/TextureSet/C64Blue/SwitchCircleEmpty"/>
+      <BottomSurfaceTexture name="Plugin/TextureSet/C64Blue/Plain"/>
+      <NorthSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <SouthSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <WestSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <EastSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <NorthSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <SouthSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <WestSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <EastSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="Block" instance="ClueCircleLeft" type="3DModel">
-    <UsePlugin implementation="TextureSetChanger" instance="PerZone"/>
     <Configuration>
-      <TopSurfaceTexture>SwitchCircleOne</TopSurfaceTexture>
-      <BottomSurfaceTexture>Plain</BottomSurfaceTexture>
-      <NorthSurfaceTextureTop>WallPlainCap</NorthSurfaceTextureTop>
-      <SouthSurfaceTextureTop>WallPlainCap</SouthSurfaceTextureTop>
-      <WestSurfaceTextureTop>WallMixedCap</WestSurfaceTextureTop>
-      <EastSurfaceTextureTop>WallMixedCap</EastSurfaceTextureTop>
-      <NorthSurfaceTextureBottom>WallPlainCap</NorthSurfaceTextureBottom>
-      <SouthSurfaceTextureBottom>WallPlainCap</SouthSurfaceTextureBottom>
-      <WestSurfaceTextureBottom>WallMixedCap</WestSurfaceTextureBottom>
-      <EastSurfaceTextureBottom>WallMixedCap</EastSurfaceTextureBottom>
+      <TopSurfaceTexture name="Plugin/TextureSet/C64Blue/SwitchCircleOne"/>
+      <BottomSurfaceTexture name="Plugin/TextureSet/C64Blue/Plain"/>
+      <NorthSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <SouthSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <WestSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <EastSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <NorthSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <SouthSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <WestSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <EastSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="Block" instance="ClueCircleRight" type="3DModel">
-    <UsePlugin implementation="TextureSetChanger" instance="PerZone"/>
     <Configuration>
-      <TopSurfaceTexture>SwitchCircleOne</TopSurfaceTexture>
-      <BottomSurfaceTexture>Plain</BottomSurfaceTexture>
-      <NorthSurfaceTextureTop>WallPlainCap</NorthSurfaceTextureTop>
-      <SouthSurfaceTextureTop>WallPlainCap</SouthSurfaceTextureTop>
-      <WestSurfaceTextureTop>WallMixedCap</WestSurfaceTextureTop>
-      <EastSurfaceTextureTop>WallMixedCap</EastSurfaceTextureTop>
-      <NorthSurfaceTextureBottom>WallPlainCap</NorthSurfaceTextureBottom>
-      <SouthSurfaceTextureBottom>WallPlainCap</SouthSurfaceTextureBottom>
-      <WestSurfaceTextureBottom>WallMixedCap</WestSurfaceTextureBottom>
-      <EastSurfaceTextureBottom>WallMixedCap</EastSurfaceTextureBottom>
+      <TopSurfaceTexture name="Plugin/TextureSet/C64Blue/SwitchCircleOne"/>
+      <BottomSurfaceTexture name="Plugin/TextureSet/C64Blue/Plain"/>
+      <NorthSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <SouthSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <WestSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <EastSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <NorthSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <SouthSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <WestSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <EastSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="Block" instance="ClueCircleFilled" type="3DModel">
-    <UsePlugin implementation="TextureSetChanger" instance="PerZone"/>
     <Configuration>
-      <TopSurfaceTexture>SwitchCircleFilled</TopSurfaceTexture>
-      <BottomSurfaceTexture>Plain</BottomSurfaceTexture>
-      <NorthSurfaceTextureTop>WallPlainCap</NorthSurfaceTextureTop>
-      <SouthSurfaceTextureTop>WallPlainCap</SouthSurfaceTextureTop>
-      <WestSurfaceTextureTop>WallMixedCap</WestSurfaceTextureTop>
-      <EastSurfaceTextureTop>WallMixedCap</EastSurfaceTextureTop>
-      <NorthSurfaceTextureBottom>WallPlainCap</NorthSurfaceTextureBottom>
-      <SouthSurfaceTextureBottom>WallPlainCap</SouthSurfaceTextureBottom>
-      <WestSurfaceTextureBottom>WallMixedCap</WestSurfaceTextureBottom>
-      <EastSurfaceTextureBottom>WallMixedCap</EastSurfaceTextureBottom>
+      <TopSurfaceTexture name="Plugin/TextureSet/C64Blue/SwitchCircleFilled"/>
+      <BottomSurfaceTexture name="Plugin/TextureSet/C64Blue/Plain"/>
+      <NorthSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <SouthSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <WestSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <EastSurfaceTextureTop name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <NorthSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <SouthSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+      <WestSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+      <EastSurfaceTextureBottom name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="HUDIconMap" type="3DModel">
-    <UsePlugin implementation="TextureSet" instance="HUDIcons"/>
     <Configuration>
-      <Texture>Map</Texture>
+      <Texture name="Plugin/TextureSet/HUDIcons/Map"/>
       <Size>1.0</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="HUDIconScore" type="3DModel">
-    <UsePlugin implementation="TextureSet" instance="HUDIcons"/>
     <Configuration>
-      <Texture>Score</Texture>
+      <Texture name="Plugin/TextureSet/HUDIcons/Score"/>
       <Size>1.0</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="HUDIconTime" type="3DModel">
-    <UsePlugin implementation="TextureSet" instance="HUDIcons"/>
     <Configuration>
-      <Texture>Time</Texture>
+      <Texture name="Plugin/TextureSet/HUDIcons/Time"/>
       <Size>1.0</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="LiftDiamondEmpty" type="3DModel">
-    <UsePlugin implementation="TextureSet" instance="C64Sprites"/>
     <Configuration>
-      <Texture>LiftDiamondEmpty</Texture>
+      <Texture name="Plugin/TextureSet/C64Sprites/LiftDiamondEmpty"/>
       <Size>1.45</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="LiftDiamondLeft" type="3DModel">
-    <UsePlugin implementation="TextureSet" instance="C64Sprites"/>
     <Configuration>
-      <Texture>LiftDiamondOne</Texture>
+      <Texture name="Plugin/TextureSet/C64Sprites/LiftDiamondOne"/>
       <Rotate>Reverse</Rotate>
       <Size>1.45</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="LiftDiamondRight" type="3DModel">
-    <UsePlugin implementation="TextureSet" instance="C64Sprites"/>
     <Configuration>
-      <Texture>LiftDiamondOne</Texture>
+      <Texture name="Plugin/TextureSet/C64Sprites/LiftDiamondOne"/>
       <Size>1.45</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="LiftDiamondFilled" type="3DModel">
-    <UsePlugin implementation="TextureSet" instance="C64Sprites"/>
     <Configuration>
-      <Texture>LiftDiamondFilled</Texture>
+      <Texture name="Plugin/TextureSet/C64Sprites/LiftDiamondFilled"/>
       <Size>1.45</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="LiftSquareEmpty" type="3DModel">
-    <UsePlugin implementation="TextureSet" instance="C64Sprites"/>
     <Configuration>
-      <Texture>LiftSquareEmpty</Texture>
+      <Texture name="Plugin/TextureSet/C64Sprites/LiftSquareEmpty"/>
       <Size>1.45</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="LiftSquareLeft" type="3DModel">
-    <UsePlugin implementation="TextureSet" instance="C64Sprites"/>
     <Configuration>
-      <Texture>LiftSquareOne</Texture>
+      <Texture name="Plugin/TextureSet/C64Sprites/LiftSquareOne"/>
       <Size>1.45</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="LiftSquareRight" type="3DModel">
-    <UsePlugin implementation="TextureSet" instance="C64Sprites"/>
     <Configuration>
-      <Texture>LiftSquareOne</Texture>
+      <Texture name="Plugin/TextureSet/C64Sprites/LiftSquareOne"/>
       <Rotate>Reverse</Rotate>
       <Size>1.45</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="LiftSquareFilled" type="3DModel">
-    <UsePlugin implementation="TextureSet" instance="C64Sprites"/>
     <Configuration>
-      <Texture>LiftSquareFilled</Texture>
+      <Texture name="Plugin/TextureSet/C64Sprites/LiftSquareFilled"/>
       <Size>1.45</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="LiftCircleEmpty" type="3DModel">
-    <UsePlugin implementation="TextureSet" instance="C64Sprites"/>
     <Configuration>
-      <Texture>LiftCircleEmpty</Texture>
+      <Texture name="Plugin/TextureSet/C64Sprites/LiftCircleEmpty"/>
       <Size>1.45</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="LiftCircleLeft" type="3DModel">
-    <UsePlugin implementation="TextureSet" instance="C64Sprites"/>
     <Configuration>
-      <Texture>LiftCircleOne</Texture>
+      <Texture name="Plugin/TextureSet/C64Sprites/LiftCircleOne"/>
       <Rotate>Reverse</Rotate>
       <Size>1.45</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="LiftCircleRight" type="3DModel">
-    <UsePlugin implementation="TextureSet" instance="C64Sprites"/>
     <Configuration>
-      <Texture>LiftCircleOne</Texture>
+      <Texture name="Plugin/TextureSet/C64Sprites/LiftCircleOne"/>
       <Size>1.45</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="LiftCircleFilled" type="3DModel">
-    <UsePlugin implementation="TextureSet" instance="C64Sprites"/>
     <Configuration>
-      <Texture>LiftCircleFilled</Texture>
+      <Texture name="Plugin/TextureSet/C64Sprites/LiftCircleFilled"/>
       <Size>1.45</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="HUDDiamondLeft" type="3DModel">
-    <UsePlugin implementation="TextureSet" instance="C64HUDSprites"/>
     <Configuration>
-      <Texture>LiftDiamondOne</Texture>
+      <Texture name="Plugin/TextureSet/C64HUDSprites/LiftDiamondOne"/>
       <Rotate>Reverse</Rotate>
       <Size>1.0</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="HUDDiamondRight" type="3DModel">
-    <UsePlugin implementation="TextureSet" instance="C64HUDSprites"/>
     <Configuration>
-      <Texture>LiftDiamondOne</Texture>
+      <Texture name="Plugin/TextureSet/C64HUDSprites/LiftDiamondOne"/>
       <Size>1.0</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="HUDDiamondFilled" type="3DModel">
-    <UsePlugin implementation="TextureSet" instance="C64HUDSprites"/>
     <Configuration>
-      <Texture>LiftDiamondFilled</Texture>
+      <Texture name="Plugin/TextureSet/C64HUDSprites/LiftDiamondFilled"/>
       <Size>1.0</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="HUDSquareEmpty" type="3DModel">
-    <UsePlugin implementation="TextureSet" instance="C64HUDSprites"/>
     <Configuration>
-      <Texture>LiftSquareEmpty</Texture>
+      <Texture name="Plugin/TextureSet/C64HUDSprites/LiftSquareEmpty"/>
       <Size>1.0</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="HUDSquareLeft" type="3DModel">
-    <UsePlugin implementation="TextureSet" instance="C64HUDSprites"/>
     <Configuration>
-      <Texture>LiftSquareOne</Texture>
+      <Texture name="Plugin/TextureSet/C64HUDSprites/LiftSquareOne"/>
       <Size>1.0</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="HUDSquareRight" type="3DModel">
-    <UsePlugin implementation="TextureSet" instance="C64HUDSprites"/>
     <Configuration>
-      <Texture>LiftSquareOne</Texture>
+      <Texture name="Plugin/TextureSet/C64HUDSprites/LiftSquareOne"/>
       <Rotate>Reverse</Rotate>
       <Size>1.0</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="HUDSquareFilled" type="3DModel">
-    <UsePlugin implementation="TextureSet" instance="C64HUDSprites"/>
     <Configuration>
-      <Texture>LiftSquareFilled</Texture>
+      <Texture name="Plugin/TextureSet/C64HUDSprites/LiftSquareFilled"/>
       <Size>1.0</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="HUDCircleEmpty" type="3DModel">
-    <UsePlugin implementation="TextureSet" instance="C64HUDSprites"/>
     <Configuration>
-      <Texture>LiftCircleEmpty</Texture>
+      <Texture name="Plugin/TextureSet/C64HUDSprites/LiftCircleEmpty"/>
       <Size>1.0</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="HUDCircleLeft" type="3DModel">
-    <UsePlugin implementation="TextureSet" instance="C64HUDSprites"/>
     <Configuration>
-      <Texture>LiftCircleOne</Texture>
+      <Texture name="Plugin/TextureSet/C64HUDSprites/LiftCircleOne"/>
       <Rotate>Reverse</Rotate>
       <Size>1.0</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="HUDCircleRight" type="3DModel">
-    <UsePlugin implementation="TextureSet" instance="C64HUDSprites"/>
     <Configuration>
-      <Texture>LiftCircleOne</Texture>
+      <Texture name="Plugin/TextureSet/C64HUDSprites/LiftCircleOne"/>
       <Size>1.0</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="HUDCircleFilled" type="3DModel">
-    <UsePlugin implementation="TextureSet" instance="C64HUDSprites"/>
     <Configuration>
-      <Texture>LiftCircleFilled</Texture>
+      <Texture name="Plugin/TextureSet/C64HUDSprites/LiftCircleFilled"/>
       <Size>1.0</Size>
     </Configuration>
   </Plugin>  
@@ -597,21 +559,6 @@
   </Plugin>
   <Plugin implementation="TextureSetPerZone" instance="PerZone" type="TextureSetChanger">
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext"/>
-    <UsePlugin implementation="TextureSet" instance="C64Blue" socketid="0"/>
-    <UsePlugin implementation="TextureSet" instance="C64RedPurple" socketid="1"/>
-    <UsePlugin implementation="TextureSet" instance="C64RedGreen" socketid="2"/>
-    <UsePlugin implementation="TextureSet" instance="C64Dark" socketid="3"/>
-    <UsePlugin implementation="TextureSet" instance="C64BlueYellow" socketid="4"/>
-    <UsePlugin implementation="TextureSet" instance="C64BlueRed" socketid="5"/>
-    <UsePlugin implementation="TextureSet" instance="C64Grey" socketid="6"/>
-    <UsePlugin implementation="TextureSet" instance="C64GreyForWater" socketid="7"/>
-    <UsePlugin implementation="TextureSet" instance="C64Yellow" socketid="8"/>
-    <UsePlugin implementation="TextureSet" instance="C64Green" socketid="9"/>
-    <UsePlugin implementation="TextureSet" instance="C64LightGreen" socketid="10"/>
-    <UsePlugin implementation="TextureSet" instance="C64GreenRed" socketid="11"/>
-    <UsePlugin implementation="TextureSet" instance="C64YellowPurple" socketid="12"/>
-    <UsePlugin implementation="TextureSet" instance="C64Chocolate" socketid="13"/>
-    <UsePlugin implementation="TextureSet" instance="C64Pink" socketid="14"/>
     <Configuration/>
   </Plugin>
   <Plugin implementation="DefaultHUD" instance="SpindizzyHUD" type="HUD">
@@ -1001,7 +948,6 @@
     <UsePlugin implementation="Camera" instance="CraftCamera"/>
     <UsePlugin implementation="CollidableSurfaceRegistry" instance="SpindizzySurfaces"/>
     <UsePlugin implementation="HUD" instance="SpindizzyHUD" socketid=""/>
-    <UsePlugin implementation="TextureSetChanger" instance="PerZone"/>
     <UsePlugin implementation="SurfaceProcessor" instance="VisualProcessor" socketid="Visual"/>
     <UsePlugin implementation="SurfaceProcessor" instance="PhysicalProcessor" socketid="Physical"/>
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext" socketid=""/>
@@ -1018,323 +964,324 @@
       <State hudModel="9" z="0.3">SwitchCircleRight</State>
       <State hudModel="10" z="0.3">SwitchCircleBoth</State>
       <BlockType name="Ice" friction="0.0" grip="0.0" bounce="0.0" respawnAllowed="false">
-        <Texture type="Surface" name="IceWater"/>
-        <Texture type="WallWest" name="WallIce"/>
-        <Texture type="WallEast" name="WallIce"/>
-        <Texture type="WallSouth" name="WallIce"/>
-        <Texture type="WallNorth" name="WallIce"/>
+        <Texture type="Surface" name="Plugin/TextureSet/C64Blue/IceWater"/>
+        <Texture type="WallWest" name="Plugin/TextureSet/C64Blue/WallIce"/>
+        <Texture type="WallEast" name="Plugin/TextureSet/C64Blue/WallIce"/>
+        <Texture type="WallSouth" name="Plugin/TextureSet/C64Blue/WallIce"/>
+        <Texture type="WallNorth" name="Plugin/TextureSet/C64Blue/WallIce"/>
       </BlockType>
       <BlockType name="Trampoline" friction="0.0" grip="1.0" bounce="1.0" respawnAllowed="false" wallType="capped">
         <ImpactScript>
           <Command>Plugin/Utilities/SoundCommandWrapper/Play Trampoline.ogg</Command>
         </ImpactScript>
-        <Texture type="Surface" name="Trampoline"/>
-        <Texture type="WallWest" name="WallMixedMiddle"/>
-        <Texture type="WallWestTop" name="WallMixedCap"/>
-        <Texture type="WallWestBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallEast" name="WallMixedMiddle"/>
-        <Texture type="WallEastTop" name="WallMixedCap"/>
-        <Texture type="WallEastBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallSouth" name="WallPlainMiddle"/>
-        <Texture type="WallSouthTop" name="WallPlainCap"/>
-        <Texture type="WallSouthBottom" name="WallPlainCap" flip="true"/>
-        <Texture type="WallNorth" name="WallPlainMiddle"/>
-        <Texture type="WallNorthTop" name="WallPlainCap"/>
-        <Texture type="WallNorthBottom" name="WallPlainCap" flip="true"/>
+        <Texture type="Surface" name="Plugin/TextureSet/C64Blue/Trampoline"/>
+        <Texture type="WallWest" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallWestTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallWestBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallEast" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallEastTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallEastBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallSouth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallSouthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallSouthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
+        <Texture type="WallNorth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallNorthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallNorthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
       </BlockType>
       <BlockType name="Plain" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
-        <Texture type="Surface" name="Plain"/>
-        <Texture type="NESplitSurface" name="PlainSplit"/>
-        <Texture type="NWSplitSurface" name="PlainSplit"/>
-        <Texture type="WallWest" name="WallMixedMiddle"/>
-        <Texture type="WallWestTop" name="WallMixedCap"/>
-        <Texture type="WallWestBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallEast" name="WallMixedMiddle"/>
-        <Texture type="WallEastTop" name="WallMixedCap"/>
-        <Texture type="WallEastBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallSouth" name="WallPlainMiddle"/>
-        <Texture type="WallSouthTop" name="WallPlainCap"/>
-        <Texture type="WallSouthBottom" name="WallPlainCap" flip="true"/>
-        <Texture type="WallNorth" name="WallPlainMiddle"/>
-        <Texture type="WallNorthTop" name="WallPlainCap"/>
-        <Texture type="WallNorthBottom" name="WallPlainCap" flip="true"/>
+        <Texture type="Surface" name="Plugin/TextureSet/C64Blue/Plain"/>
+        <Texture type="NESplitSurface" name="Plugin/TextureSet/C64Blue/PlainSplit"/>
+        <Texture type="NWSplitSurface" name="Plugin/TextureSet/C64Blue/PlainSplit"/>
+        <Texture type="WallWest" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallWestTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallWestBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallEast" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallEastTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallEastBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallSouth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallSouthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallSouthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
+        <Texture type="WallNorth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallNorthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallNorthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
       </BlockType>
       <BlockType name="ArrowWest" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
-        <Texture type="Surface" name="Arrow" rotate="Reverse"/>
-        <Texture type="WallWest" name="WallMixedMiddle"/>
-        <Texture type="WallWestTop" name="WallMixedCap"/>
-        <Texture type="WallWestBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallEast" name="WallMixedMiddle"/>
-        <Texture type="WallEastTop" name="WallMixedCap"/>
-        <Texture type="WallEastBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallSouth" name="WallPlainMiddle"/>
-        <Texture type="WallSouthTop" name="WallPlainCap"/>
-        <Texture type="WallSouthBottom" name="WallPlainCap" flip="true"/>
-        <Texture type="WallNorth" name="WallPlainMiddle"/>
-        <Texture type="WallNorthTop" name="WallPlainCap"/>
-        <Texture type="WallNorthBottom" name="WallPlainCap" flip="true"/>
+        <Texture type="Surface" name="Plugin/TextureSet/C64Blue/Arrow" rotate="Reverse"/>
+        <Texture type="WallWest" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallWestTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallWestBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallEast" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallEastTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallEastBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallSouth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallSouthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallSouthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
+        <Texture type="WallNorth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallNorthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallNorthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
       </BlockType>
       <BlockType name="ArrowEast" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
-        <Texture type="Surface" name="Arrow"/>
-        <Texture type="WallWest" name="WallMixedMiddle"/>
-        <Texture type="WallWestTop" name="WallMixedCap"/>
-        <Texture type="WallWestBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallEast" name="WallMixedMiddle"/>
-        <Texture type="WallEastTop" name="WallMixedCap"/>
-        <Texture type="WallEastBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallSouth" name="WallPlainMiddle"/>
-        <Texture type="WallSouthTop" name="WallPlainCap"/>
-        <Texture type="WallSouthBottom" name="WallPlainCap" flip="true"/>
-        <Texture type="WallNorth" name="WallPlainMiddle"/>
-        <Texture type="WallNorthTop" name="WallPlainCap"/>
-        <Texture type="WallNorthBottom" name="WallPlainCap" flip="true"/>
+        <Texture type="Surface" name="Plugin/TextureSet/C64Blue/Arrow"/>
+        <Texture type="WallWest" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallWestTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallWestBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallEast" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallEastTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallEastBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallSouth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallSouthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallSouthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
+        <Texture type="WallNorth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallNorthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallNorthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
       </BlockType>
       <BlockType name="ArrowNorth" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
-        <Texture type="Surface" name="Arrow" rotate="Left"/>
-        <Texture type="WallWest" name="WallMixedMiddle"/>
-        <Texture type="WallWestTop" name="WallMixedCap"/>
-        <Texture type="WallWestBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallEast" name="WallMixedMiddle"/>
-        <Texture type="WallEastTop" name="WallMixedCap"/>
-        <Texture type="WallEastBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallSouth" name="WallPlainMiddle"/>
-        <Texture type="WallSouthTop" name="WallPlainCap"/>
-        <Texture type="WallSouthBottom" name="WallPlainCap" flip="true"/>
-        <Texture type="WallNorth" name="WallPlainMiddle"/>
-        <Texture type="WallNorthTop" name="WallPlainCap"/>
-        <Texture type="WallNorthBottom" name="WallPlainCap" flip="true"/>
+        <Texture type="Surface" name="Plugin/TextureSet/C64Blue/Arrow" rotate="Left"/>
+        <Texture type="WallWest" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallWestTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallWestBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallEast" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallEastTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallEastBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallSouth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallSouthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallSouthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
+        <Texture type="WallNorth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallNorthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallNorthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
       </BlockType>
       <BlockType name="ArrowSouth" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
-        <Texture type="Surface" name="Arrow" rotate="Right"/>
-        <Texture type="WallWest" name="WallMixedMiddle"/>
-        <Texture type="WallWestTop" name="WallMixedCap"/>
-        <Texture type="WallWestBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallEast" name="WallMixedMiddle"/>
-        <Texture type="WallEastTop" name="WallMixedCap"/>
-        <Texture type="WallEastBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallSouth" name="WallPlainMiddle"/>
-        <Texture type="WallSouthTop" name="WallPlainCap"/>
-        <Texture type="WallSouthBottom" name="WallPlainCap" flip="true"/>
-        <Texture type="WallNorth" name="WallPlainMiddle"/>
-        <Texture type="WallNorthTop" name="WallPlainCap"/>
-        <Texture type="WallNorthBottom" name="WallPlainCap" flip="true"/>
+        <Texture type="Surface" name="Plugin/TextureSet/C64Blue/Arrow" rotate="Right"/>
+        <Texture type="WallWest" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallWestTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallWestBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallEast" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallEastTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallEastBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallSouth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallSouthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallSouthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
+        <Texture type="WallNorth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallNorthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallNorthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
       </BlockType>
       <BlockType name="SwitchDiamondNone" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
         <ContactScript>
           <Command>Plugin/Utilities/SpindizzySwitches/Reset Spindizzy Switches</Command>
         </ContactScript>
-        <Texture type="Surface" name="SwitchDiamondFilled"/>
-        <Texture type="WallWest" name="WallMixedMiddle"/>
-        <Texture type="WallWestTop" name="WallMixedCap"/>
-        <Texture type="WallWestBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallEast" name="WallMixedMiddle"/>
-        <Texture type="WallEastTop" name="WallMixedCap"/>
-        <Texture type="WallEastBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallSouth" name="WallPlainMiddle"/>
-        <Texture type="WallSouthTop" name="WallPlainCap"/>
-        <Texture type="WallSouthBottom" name="WallPlainCap" flip="true"/>
-        <Texture type="WallNorth" name="WallPlainMiddle"/>
-        <Texture type="WallNorthTop" name="WallPlainCap"/>
-        <Texture type="WallNorthBottom" name="WallPlainCap" flip="true"/>
+        <Texture type="Surface" name="Plugin/TextureSet/C64Blue/SwitchDiamondFilled"/>
+        <Texture type="WallWest" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallWestTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallWestBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallEast" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallEastTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallEastBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallSouth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallSouthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallSouthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
+        <Texture type="WallNorth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallNorthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallNorthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
       </BlockType>
       <BlockType name="SwitchDiamondLeft" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
         <ContactScript>
           <Command>Plugin/Utilities/SpindizzySwitches/Activate switch LeftDiamondSwitch</Command>
         </ContactScript>
-        <Texture type="Surface" name="SwitchDiamondOne" rotate="Reverse"/>
-        <Texture type="WallWest" name="WallMixedMiddle"/>
-        <Texture type="WallWestTop" name="WallMixedCap"/>
-        <Texture type="WallWestBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallEast" name="WallMixedMiddle"/>
-        <Texture type="WallEastTop" name="WallMixedCap"/>
-        <Texture type="WallEastBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallSouth" name="WallPlainMiddle"/>
-        <Texture type="WallSouthTop" name="WallPlainCap"/>
-        <Texture type="WallSouthBottom" name="WallPlainCap" flip="true"/>
-        <Texture type="WallNorth" name="WallPlainMiddle"/>
-        <Texture type="WallNorthTop" name="WallPlainCap"/>
-        <Texture type="WallNorthBottom" name="WallPlainCap" flip="true"/>
+        <Texture type="Surface" name="Plugin/TextureSet/C64Blue/SwitchDiamondOne" rotate="Reverse"/>
+        <Texture type="WallWest" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallWestTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallWestBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallEast" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallEastTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallEastBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallSouth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallSouthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallSouthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
+        <Texture type="WallNorth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallNorthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallNorthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
       </BlockType>
       <BlockType name="SwitchDiamondRight" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
         <ContactScript>
           <Command>Plugin/Utilities/SpindizzySwitches/Activate switch RightDiamondSwitch</Command>
         </ContactScript>
-        <Texture type="Surface" name="SwitchDiamondOne"/>
-        <Texture type="WallWest" name="WallMixedMiddle"/>
-        <Texture type="WallWestTop" name="WallMixedCap"/>
-        <Texture type="WallWestBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallEast" name="WallMixedMiddle"/>
-        <Texture type="WallEastTop" name="WallMixedCap"/>
-        <Texture type="WallEastBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallSouth" name="WallPlainMiddle"/>
-        <Texture type="WallSouthTop" name="WallPlainCap"/>
-        <Texture type="WallSouthBottom" name="WallPlainCap" flip="true"/>
-        <Texture type="WallNorth" name="WallPlainMiddle"/>
-        <Texture type="WallNorthTop" name="WallPlainCap"/>
-        <Texture type="WallNorthBottom" name="WallPlainCap" flip="true"/>
+        <Texture type="Surface" name="Plugin/TextureSet/C64Blue/SwitchDiamondOne"/>
+        <Texture type="WallWest" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallWestTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallWestBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallEast" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallEastTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallEastBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallSouth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallSouthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallSouthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
+        <Texture type="WallNorth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallNorthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallNorthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
       </BlockType>
       <BlockType name="SwitchDiamondBoth" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
         <ContactScript>
           <Command>Plugin/Utilities/SpindizzySwitches/Activate switch FilledDiamondSwitch</Command>
         </ContactScript>
-        <Texture type="Surface" name="SwitchDiamondEmpty"/>
-        <Texture type="WallWest" name="WallMixedMiddle"/>
-        <Texture type="WallWestTop" name="WallMixedCap"/>
-        <Texture type="WallWestBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallEast" name="WallMixedMiddle"/>
-        <Texture type="WallEastTop" name="WallMixedCap"/>
-        <Texture type="WallEastBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallSouth" name="WallPlainMiddle"/>
-        <Texture type="WallSouthTop" name="WallPlainCap"/>
-        <Texture type="WallSouthBottom" name="WallPlainCap" flip="true"/>
-        <Texture type="WallNorth" name="WallPlainMiddle"/>
-        <Texture type="WallNorthTop" name="WallPlainCap"/>
-        <Texture type="WallNorthBottom" name="WallPlainCap" flip="true"/>
+        <Texture type="Surface" name="Plugin/TextureSet/C64Blue/SwitchDiamondEmpty"/>
+        <Texture type="WallWest" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallWestTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallWestBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallEast" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallEastTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallEastBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallSouth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallSouthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallSouthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
+        <Texture type="WallNorth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallNorthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallNorthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
       </BlockType>
       <BlockType name="SwitchSquareNone" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
         <ContactScript>
           <Command>Plugin/Utilities/SpindizzySwitches/Activate switch EmptySquareSwitch</Command>
         </ContactScript>
-        <Texture type="Surface" name="SwitchSquareEmpty"/>
-        <Texture type="WallWest" name="WallMixedMiddle"/>
-        <Texture type="WallWestTop" name="WallMixedCap"/>
-        <Texture type="WallWestBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallEast" name="WallMixedMiddle"/>
-        <Texture type="WallEastTop" name="WallMixedCap"/>
-        <Texture type="WallEastBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallSouth" name="WallPlainMiddle"/>
-        <Texture type="WallSouthTop" name="WallPlainCap"/>
-        <Texture type="WallSouthBottom" name="WallPlainCap" flip="true"/>
-        <Texture type="WallNorth" name="WallPlainMiddle"/>
-        <Texture type="WallNorthTop" name="WallPlainCap"/>
-        <Texture type="WallNorthBottom" name="WallPlainCap" flip="true"/>
+        <Texture type="Surface" name="Plugin/TextureSet/C64Blue/SwitchSquareEmpty"/>
+        <Texture type="WallWest" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallWestTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallWestBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallEast" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallEastTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallEastBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallSouth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallSouthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallSouthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
+        <Texture type="WallNorth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallNorthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallNorthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
       </BlockType>
       <BlockType name="SwitchSquareLeft" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
         <ContactScript>
           <Command>Plugin/Utilities/SpindizzySwitches/Activate switch LeftSquareSwitch</Command>
         </ContactScript>
-        <Texture type="Surface" name="SwitchSquareOne" rotate="Reverse"/>
-        <Texture type="WallWest" name="WallMixedMiddle"/>
-        <Texture type="WallWestTop" name="WallMixedCap"/>
-        <Texture type="WallWestBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallEast" name="WallMixedMiddle"/>
-        <Texture type="WallEastTop" name="WallMixedCap"/>
-        <Texture type="WallEastBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallSouth" name="WallPlainMiddle"/>
-        <Texture type="WallSouthTop" name="WallPlainCap"/>
-        <Texture type="WallSouthBottom" name="WallPlainCap" flip="true"/>
-        <Texture type="WallNorth" name="WallPlainMiddle"/>
-        <Texture type="WallNorthTop" name="WallPlainCap"/>
-        <Texture type="WallNorthBottom" name="WallPlainCap" flip="true"/>
+        <Texture type="Surface" name="Plugin/TextureSet/C64Blue/SwitchSquareOne" rotate="Reverse"/>
+        <Texture type="WallWest" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallWestTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallWestBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallEast" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallEastTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallEastBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallSouth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallSouthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallSouthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
+        <Texture type="WallNorth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallNorthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallNorthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
       </BlockType>
       <BlockType name="SwitchSquareRight" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
         <ContactScript>
           <Command>Plugin/Utilities/SpindizzySwitches/Activate switch RightSquareSwitch</Command>
         </ContactScript>
-        <Texture type="Surface" name="SwitchSquareOne"/>
-        <Texture type="WallWest" name="WallMixedMiddle"/>
-        <Texture type="WallWestTop" name="WallMixedCap"/>
-        <Texture type="WallWestBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallEast" name="WallMixedMiddle"/>
-        <Texture type="WallEastTop" name="WallMixedCap"/>
-        <Texture type="WallEastBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallSouth" name="WallPlainMiddle"/>
-        <Texture type="WallSouthTop" name="WallPlainCap"/>
-        <Texture type="WallSouthBottom" name="WallPlainCap" flip="true"/>
-        <Texture type="WallNorth" name="WallPlainMiddle"/>
-        <Texture type="WallNorthTop" name="WallPlainCap"/>
-        <Texture type="WallNorthBottom" name="WallPlainCap" flip="true"/>
+        <Texture type="Surface" name="Plugin/TextureSet/C64Blue/SwitchSquareOne"/>
+        <Texture type="WallWest" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallWestTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallWestBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallEast" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallEastTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallEastBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallSouth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallSouthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallSouthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
+        <Texture type="WallNorth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallNorthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallNorthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
       </BlockType>
       <BlockType name="SwitchSquareBoth" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
         <ContactScript>
           <Command>Plugin/Utilities/SpindizzySwitches/Activate switch FilledSquareSwitch</Command>
         </ContactScript>
-        <Texture type="Surface" name="SwitchSquareFilled"/>
-        <Texture type="WallWest" name="WallMixedMiddle"/>
-        <Texture type="WallWestTop" name="WallMixedCap"/>
-        <Texture type="WallWestBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallEast" name="WallMixedMiddle"/>
-        <Texture type="WallEastTop" name="WallMixedCap"/>
-        <Texture type="WallEastBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallSouth" name="WallPlainMiddle"/>
-        <Texture type="WallSouthTop" name="WallPlainCap"/>
-        <Texture type="WallSouthBottom" name="WallPlainCap" flip="true"/>
-        <Texture type="WallNorth" name="WallPlainMiddle"/>
-        <Texture type="WallNorthTop" name="WallPlainCap"/>
-        <Texture type="WallNorthBottom" name="WallPlainCap" flip="true"/>
+        <Texture type="Surface" name="Plugin/TextureSet/C64Blue/SwitchSquareFilled"/>
+        <Texture type="WallWest" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallWestTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallWestBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallEast" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallEastTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallEastBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallSouth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallSouthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallSouthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
+        <Texture type="WallNorth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallNorthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallNorthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
       </BlockType>
       <BlockType name="SwitchCircleNone" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
         <ContactScript>
           <Command>Plugin/Utilities/SpindizzySwitches/Activate switch EmptyCircleSwitch</Command>
         </ContactScript>
-        <Texture type="Surface" name="SwitchCircleEmpty"/>
-        <Texture type="WallWest" name="WallMixedMiddle"/>
-        <Texture type="WallWestTop" name="WallMixedCap"/>
-        <Texture type="WallWestBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallEast" name="WallMixedMiddle"/>
-        <Texture type="WallEastTop" name="WallMixedCap"/>
-        <Texture type="WallEastBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallSouth" name="WallPlainMiddle"/>
-        <Texture type="WallSouthTop" name="WallPlainCap"/>
-        <Texture type="WallSouthBottom" name="WallPlainCap" flip="true"/>
-        <Texture type="WallNorth" name="WallPlainMiddle"/>
-        <Texture type="WallNorthTop" name="WallPlainCap"/>
-        <Texture type="WallNorthBottom" name="WallPlainCap" flip="true"/>
+        <Texture type="Surface" name="Plugin/TextureSet/C64Blue/SwitchCircleEmpty"/>
+        <Texture type="WallWest" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallWestTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallWestBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallEast" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallEastTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallEastBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallSouth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallSouthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallSouthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
+        <Texture type="WallNorth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallNorthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallNorthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
       </BlockType>
       <BlockType name="SwitchCircleLeft" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
         <ContactScript>
           <Command>Plugin/Utilities/SpindizzySwitches/Activate switch LeftCircleSwitch</Command>
         </ContactScript>
-        <Texture type="Surface" name="SwitchCircleOne"/>
-        <Texture type="WallWest" name="WallMixedMiddle"/>
-        <Texture type="WallWestTop" name="WallMixedCap"/>
-        <Texture type="WallWestBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallEast" name="WallMixedMiddle"/>
-        <Texture type="WallEastTop" name="WallMixedCap"/>
-        <Texture type="WallEastBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallSouth" name="WallPlainMiddle"/>
-        <Texture type="WallSouthTop" name="WallPlainCap"/>
-        <Texture type="WallSouthBottom" name="WallPlainCap" flip="true"/>
-        <Texture type="WallNorth" name="WallPlainMiddle"/>
-        <Texture type="WallNorthTop" name="WallPlainCap"/>
-        <Texture type="WallNorthBottom" name="WallPlainCap" flip="true"/>
+        <Texture type="Surface" name="Plugin/TextureSet/C64Blue/SwitchCircleOne"/>
+        <Texture type="WallWest" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallWestTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallWestBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallEast" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallEastTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallEastBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallSouth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallSouthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallSouthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
+        <Texture type="WallNorth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallNorthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallNorthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
       </BlockType>
       <BlockType name="SwitchCircleRight" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
         <ContactScript>
           <Command>Plugin/Utilities/SpindizzySwitches/Activate switch RightCircleSwitch</Command>
         </ContactScript>
-        <Texture type="Surface" name="SwitchCircleOne" rotate="Reverse"/>
-        <Texture type="WallWest" name="WallMixedMiddle"/>
-        <Texture type="WallWestTop" name="WallMixedCap"/>
-        <Texture type="WallWestBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallEast" name="WallMixedMiddle"/>
-        <Texture type="WallEastTop" name="WallMixedCap"/>
-        <Texture type="WallEastBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallSouth" name="WallPlainMiddle"/>
-        <Texture type="WallSouthTop" name="WallPlainCap"/>
-        <Texture type="WallSouthBottom" name="WallPlainCap" flip="true"/>
-        <Texture type="WallNorth" name="WallPlainMiddle"/>
-        <Texture type="WallNorthTop" name="WallPlainCap"/>
-        <Texture type="WallNorthBottom" name="WallPlainCap" flip="true"/>
+        <Texture type="Surface" name="Plugin/TextureSet/C64Blue/SwitchCircleOne" rotate="Reverse"/>
+        <Texture type="WallWest" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallWestTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallWestBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallEast" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallEastTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallEastBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallSouth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallSouthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallSouthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
+        <Texture type="WallNorth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallNorthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallNorthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
       </BlockType>
       <BlockType name="SwitchCircleBoth" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
         <ContactScript>
           <Command>Plugin/Utilities/SpindizzySwitches/Activate switch FilledCircleSwitch</Command>
         </ContactScript>
-        <Texture type="Surface" name="SwitchCircleFilled"/>
-        <Texture type="WallWest" name="WallMixedMiddle"/>
-        <Texture type="WallWestTop" name="WallMixedCap"/>
-        <Texture type="WallWestBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallEast" name="WallMixedMiddle"/>
-        <Texture type="WallEastTop" name="WallMixedCap"/>
-        <Texture type="WallEastBottom" name="WallMixedCap" flip="true"/>
-        <Texture type="WallSouth" name="WallPlainMiddle"/>
-        <Texture type="WallSouthTop" name="WallPlainCap"/>
-        <Texture type="WallSouthBottom" name="WallPlainCap" flip="true"/>
-        <Texture type="WallNorth" name="WallPlainMiddle"/>
-        <Texture type="WallNorthTop" name="WallPlainCap"/>
-        <Texture type="WallNorthBottom" name="WallPlainCap" flip="true"/>
+        <Texture type="Surface" name="Plugin/TextureSet/C64Blue/SwitchCircleFilled"/>
+        <Texture type="WallWest" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallWestTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallWestBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallEast" name="Plugin/TextureSet/C64Blue/WallMixedMiddle"/>
+        <Texture type="WallEastTop" name="Plugin/TextureSet/C64Blue/WallMixedCap"/>
+        <Texture type="WallEastBottom" name="Plugin/TextureSet/C64Blue/WallMixedCap" flip="true"/>
+        <Texture type="WallSouth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallSouthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallSouthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
+        <Texture type="WallNorth" name="Plugin/TextureSet/C64Blue/WallPlainMiddle"/>
+        <Texture type="WallNorthTop" name="Plugin/TextureSet/C64Blue/WallPlainCap"/>
+        <Texture type="WallNorthBottom" name="Plugin/TextureSet/C64Blue/WallPlainCap" flip="true"/>
       </BlockType>
+      <WaterType name="Plugin/TextureSet/C64Blue/IceWater"/>        
     </Configuration>
   </ElementSet>
   <ElementSet instance="Enemies" type="SpindizzyEnemies">

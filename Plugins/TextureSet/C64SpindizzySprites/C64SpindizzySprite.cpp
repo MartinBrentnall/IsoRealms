@@ -33,8 +33,12 @@ void C64SpindizzySprite::texCoord2f(float x, float y) {
   glTexCoord2f( x,  y);
 }
 
-Colour* C64SpindizzySprite::getColour(float, float) {
+IColour* C64SpindizzySprite::getColour(float, float) {
   std::cout << "WARNING: Colour not supported here yet!" << std::endl;
   return NULL;
+}
+
+void C64SpindizzySprite::save(DOMNodeWriter*, const std::string&) {
+  // TODO: Implement this
 }
 

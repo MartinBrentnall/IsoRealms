@@ -65,6 +65,10 @@ C64SpindizzyTextureSet::C64SpindizzyTextureSet(IRuntimeContext* runtimeContext) 
   cTextures[WALL_PLAIN_MIDDLE]   = new C64SpindizzyTexture();
   cTextures[WALL_ICE]            = new C64SpindizzyTexture();
   
+  for (std::map<std::string, C64SpindizzyTexture*>::iterator i = cTextures.begin(); i != cTextures.end(); i++) {
+    cRuntimeContext->add(i->second, i->first);
+  }
+  
   cBackgroundTexture = new PlainColourTexture();
 
   generateTextures();
@@ -320,14 +324,6 @@ void C64SpindizzyTextureSet::paletteChanged(IPalette* palette, const std::string
 //  if (name == cBackgroundColourName || name == cFloorColourName || name == cGridColourName || name == cWallColourName) {
     generateTextures();
 //  }
-}
-
-ITexture* C64SpindizzyTextureSet::getTexture(const std::string& name) {
-  if (name == "Background") {
-    return cBackgroundTexture;
-  }
-  std::map<std::string, C64SpindizzyTexture*>::iterator i = cTextures.find(name);
-  return i != cTextures.end() ? i->second : cTextures.begin()->second;
 }
 
 C64SpindizzyTextureSet::~C64SpindizzyTextureSet() {

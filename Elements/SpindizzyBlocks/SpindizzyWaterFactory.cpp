@@ -18,10 +18,10 @@
  */
 #include "SpindizzyWaterFactory.h"
 
-SpindizzyWaterFactory::SpindizzyWaterFactory(ITextureSet** textureSet, ISpindizzyBlockSet* elementSet) : ISpindizzyBlockFactory(elementSet) {
+SpindizzyWaterFactory::SpindizzyWaterFactory(ISpindizzyBlockSet* elementSet, ITexture* texture) : ISpindizzyBlockFactory(elementSet) {
+  cTexture = texture;
   cStartWaterLocation = NULL;
   cSampleWater = NULL;
-  cTextureSet = textureSet;
 }
 
 void SpindizzyWaterFactory::configureElement() {
@@ -42,7 +42,7 @@ IElement* SpindizzyWaterFactory::getElement(DOMNodeWrapper* node, BlockLocation*
     }
   }
   mEndLocation.z++;
-  SpindizzyWater* mLoadedWater = new SpindizzyWater(this, &mStartLocation, &mEndLocation, cTextureSet);
+  SpindizzyWater* mLoadedWater = new SpindizzyWater(this, &mStartLocation, &mEndLocation, cTexture);
   cContent.push_back(mLoadedWater);
   return mLoadedWater;
 }
@@ -69,7 +69,7 @@ bool SpindizzyWaterFactory::keyDown(SDLKey& key) {
       if (cStartWaterLocation == NULL) {
         cStartWaterLocation = new BlockLocation(*cEditingLocation);
       } else {
-        SpindizzyWater* mNewBlock = new SpindizzyWater(this, cStartWaterLocation, cEditingLocation, cTextureSet);
+        SpindizzyWater* mNewBlock = new SpindizzyWater(this, cStartWaterLocation, cEditingLocation, cTexture);
         cContent.push_back(mNewBlock);
         addElement(mNewBlock);
         delete cStartWaterLocation;
@@ -122,7 +122,7 @@ void SpindizzyWaterFactory::renderIcon() {
   glColor3f(1.0f, 1.0f, 1.0f);
   if (cSampleWater == NULL) {
     BlockLocation mIdentityBlockLocation(0, 0, 0);
-    cSampleWater = new SpindizzyWater(this, &mIdentityBlockLocation, &mIdentityBlockLocation, cTextureSet);
+    cSampleWater = new SpindizzyWater(this, &mIdentityBlockLocation, &mIdentityBlockLocation, cTexture);
     cSampleWater->createSampleSurfaces();
   }
   cSampleWater->renderStatic();
@@ -146,34 +146,6 @@ void SpindizzyWaterFactory::save(DOMNodeWriter*) {
 
 void SpindizzyWaterFactory::configureBlock(DOMNodeWrapper*) {
   // Nothing to do.
-}
-
-ITexture** SpindizzyWaterFactory::getSurfaceTexture() {
-  return NULL; // TODO: Implement this
-}
-
-ITexture** SpindizzyWaterFactory::getSplitNETexture() {
-  return NULL; // TODO: Implement this
-}
-
-ITexture** SpindizzyWaterFactory::getSplitNWTexture() {
-  return NULL; // TODO: Implement this
-}
-
-ITexture** SpindizzyWaterFactory::getWestWallTexture() {
-  return NULL; // TODO: Implement this
-}
-
-ITexture** SpindizzyWaterFactory::getEastWallTexture() {
-  return NULL; // TODO: Implement this
-}
-
-ITexture** SpindizzyWaterFactory::getSouthWallTexture() {
-  return NULL; // TODO: Implement this
-}
-
-ITexture** SpindizzyWaterFactory::getNorthWallTexture() {
-  return NULL; // TODO: Implement this
 }
 
 SpindizzyWaterFactory::~SpindizzyWaterFactory() {

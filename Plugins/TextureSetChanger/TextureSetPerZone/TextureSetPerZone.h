@@ -33,12 +33,9 @@
 #include "../../ZoneContext/IZoneContext.h"
 #include "../../ZoneContext/IZoneContextListener.h"
 
-#include "../ITextureSetChanger.h"
-
 #include "TextureSetChooserComponent.h"
 
-class TextureSetPerZone:public ITextureSetChanger,
-                        public IZoneTextureSetter,
+class TextureSetPerZone:public IPlugin,
                         public IZoneContextListener,
                         public IDynamicElement,
                         public IComponentSource {
@@ -60,9 +57,6 @@ class TextureSetPerZone:public ITextureSetChanger,
   IMap* cCurrentMap;
   IZone* cCurrentZone;
   BlockLocation* cBlockLocation;
-  std::vector<IChangeableTextureSet*> cControlledObjects;
-  std::vector<ITextureSet*> cTexturePalette;
-  std::map<IZone*, ITextureSet*> cZoneMapping;
   IZoneContext* cZoneContext;
   Colour* cPreviousBackgroundColour;
   Colour* cTargetBackgroundColour;
@@ -71,11 +65,6 @@ class TextureSetPerZone:public ITextureSetChanger,
 
   public:
   TextureSetPerZone();
-
-  /*********************************\
-   * Implements IZoneTextureSetter *
-  \*********************************/
-  void setTextureSet(ITextureSet*);
 
   /***********************************\
    * Implements IZoneContextListener *
@@ -87,16 +76,9 @@ class TextureSetPerZone:public ITextureSetChanger,
   \******************************/
   void update(int);
 
-  /*********************************\
-   * Implements ITextureSetChanger *
-  \*********************************/
-  void addControlObject(IChangeableTextureSet*);
-  void removeControlObject(IChangeableTextureSet*);
-
   /******************************************\
    * Implements IPluginSupport (in IPlugin) *
   \******************************************/
-  std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
 

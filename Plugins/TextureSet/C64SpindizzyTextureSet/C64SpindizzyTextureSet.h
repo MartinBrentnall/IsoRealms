@@ -22,22 +22,21 @@
 #include <cmath>
 #include <map>
 
+#include <IsoRealms/Colour.h>
 #include <IsoRealms/DummyPlugin.h>
 #include <IsoRealms/IColour.h>
 #include <IsoRealms/ICommandInfo.h>
 #include <IsoRealms/Image.h>
 #include <IsoRealms/IPaletteListener.h>
 #include <IsoRealms/IPlugin.h>
+#include <IsoRealms/ITexture.h>
 #include <IsoRealms/PluginRegistry.h>
 #include <IsoRealms/PlugSocket.h>
-
-#include "../ITextureSet.h"
-#include "../ITexture.h"
 
 #include "C64SpindizzyTexture.h"
 #include "PlainColourTexture.h"
 
-class C64SpindizzyTextureSet:public ITextureSet,
+class C64SpindizzyTextureSet:public IPlugin,
                              public IPaletteListener {
   private:
   static const int RESOLUTION = 128;
@@ -109,11 +108,6 @@ class C64SpindizzyTextureSet:public ITextureSet,
 
   public:
   C64SpindizzyTextureSet(IRuntimeContext*);
-
-  /***********************************\
-   * Implements ISpindizzyTextureSet *
-  \***********************************/
-  ITexture* getTexture(const std::string&);
 
   /*******************************\
    * Implements IPaletteListener *

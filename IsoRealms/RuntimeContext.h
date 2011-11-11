@@ -25,19 +25,23 @@
 #include "IColourSource.h"
 #include "IRuntimeContext.h"
 #include "IScriptSource.h"
+#include "ITextureSource.h"
 #include "RegistryProxy.h"
+#include "TextureProxy.h"
 
 class RuntimeContext:public IRuntimeContext {
   private:
   IMap* cMap;
   RegistryProxy<ICommand, CommandProxy>* cCommandGateway;
   RegistryProxy<IColour, ColourProxy>* cColourGateway;
+  RegistryProxy<ITexture, TextureProxy>* cTextureGateway;
   bool cEditing;
   IScriptSource* cScriptSource;
   IColourSource* cColourSource;
+  ITextureSource* cTextureSource;
   
   public:
-  RuntimeContext(IMap*, RegistryProxy<ICommand, CommandProxy>*, RegistryProxy<IColour, ColourProxy>*, bool, IScriptSource*, IColourSource*);
+  RuntimeContext(IMap*, RegistryProxy<ICommand, CommandProxy>*, RegistryProxy<IColour, ColourProxy>*, RegistryProxy<ITexture, TextureProxy>*, bool, IScriptSource*, IColourSource*, ITextureSource*);
 
   /******************************\
    * Implements IRuntimeContext *
@@ -47,9 +51,11 @@ class RuntimeContext:public IRuntimeContext {
   std::string getLocation(ICommand*); // TODO: What's this for?  Is it used?
   void add(ICommand*, const std::string&);
   void add(IColour*, const std::string&);
+  void add(ITexture*, const std::string&);
   void remove(ICommand*);
   Script* getScript(DOMNodeWrapper*);
   IColour* getColour(DOMNodeWrapper*);
+  ITexture* getTexture(DOMNodeWrapper*);
 };
 
 #endif

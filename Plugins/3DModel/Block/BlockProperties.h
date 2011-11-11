@@ -21,26 +21,23 @@
 
 #include <string>
 
-#include "../../TextureSet/ITextureSet.h"
+#include <IsoRealms/ITexture.h>
 
 // TODO: This class is not required during gameplay
 class BlockProperties {
   private:
-  ITextureSet** cTextureSet;
-  std::string cTopSurfaceTexture;
-  std::string cBottomSurfaceTexture;
-  std::string cWestSurfaceTextureTop;
-  std::string cEastSurfaceTextureTop;
-  std::string cSouthSurfaceTextureTop;
-  std::string cNorthSurfaceTextureTop;
-  std::string cWestSurfaceTextureBottom;
-  std::string cEastSurfaceTextureBottom;
-  std::string cSouthSurfaceTextureBottom;
-  std::string cNorthSurfaceTextureBottom;
+  ITexture* cTopSurfaceTexture;
+  ITexture* cBottomSurfaceTexture;
+  ITexture* cWestSurfaceTextureTop;
+  ITexture* cEastSurfaceTextureTop;
+  ITexture* cSouthSurfaceTextureTop;
+  ITexture* cNorthSurfaceTextureTop;
+  ITexture* cWestSurfaceTextureBottom;
+  ITexture* cEastSurfaceTextureBottom;
+  ITexture* cSouthSurfaceTextureBottom;
+  ITexture* cNorthSurfaceTextureBottom;
   
   public:
-  BlockProperties(ITextureSet**);
-    
   ITexture* getTopSurfaceTexture();
   ITexture* getBottomSurfaceTexture();
   ITexture* getNorthSurfaceTextureTop();
@@ -52,18 +49,17 @@ class BlockProperties {
   ITexture* getSouthSurfaceTextureBottom();
   ITexture* getWestSurfaceTextureBottom();
   
-  void setTopSurfaceTexture(const std::string&);
-  void setBottomSurfaceTexture(const std::string&);
-  void setNorthSurfaceTextureTop(const std::string&);
-  void setEastSurfaceTextureTop(const std::string&);
-  void setSouthSurfaceTextureTop(const std::string&);
-  void setWestSurfaceTextureTop(const std::string&);
-  void setNorthSurfaceTextureBottom(const std::string&);
-  void setEastSurfaceTextureBottom(const std::string&);
-  void setSouthSurfaceTextureBottom(const std::string&);
-  void setWestSurfaceTextureBottom(const std::string&);
+  void setTopSurfaceTexture(ITexture*);
+  void setBottomSurfaceTexture(ITexture*);
+  void setNorthSurfaceTextureTop(ITexture*);
+  void setEastSurfaceTextureTop(ITexture*);
+  void setSouthSurfaceTextureTop(ITexture*);
+  void setWestSurfaceTextureTop(ITexture*);
+  void setNorthSurfaceTextureBottom(ITexture*);
+  void setEastSurfaceTextureBottom(ITexture*);
+  void setSouthSurfaceTextureBottom(ITexture*);
+  void setWestSurfaceTextureBottom(ITexture*);
 
-  void saveProperty(DOMNodeWriter*, const std::string&, const std::string&);
   void save(DOMNodeWriter*);
 };
 

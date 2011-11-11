@@ -22,7 +22,8 @@
 #include <iostream>
 #include <GL/gl.h>
 
-#include "../ITexture.h"
+#include <IsoRealms/IColour.h>
+#include <IsoRealms/ITexture.h>
 
 class C64SpindizzyTexture:public ITexture {
   private:
@@ -38,7 +39,8 @@ class C64SpindizzyTexture:public ITexture {
   \***********************/
   void set();
   void texCoord2f(float, float);
-  Colour* getColour(float, float);
+  IColour* getColour(float, float);
+  void save(DOMNodeWriter*, const std::string&);
 };
 
 #endif

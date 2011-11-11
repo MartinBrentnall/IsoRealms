@@ -18,7 +18,7 @@
  */
 #include "FlatRectangle.h"
 
-FlatRectangle::FlatRectangle(Vertex* location, ITexture** texture, float* size, bool flip) {
+FlatRectangle::FlatRectangle(Vertex* location, ITexture* texture, float* size, bool flip) {
   cLocation = location;
   cTexture = texture;
   cSize = size;
@@ -32,17 +32,17 @@ void FlatRectangle::update(int milliseconds) {
 void FlatRectangle::render() {
   glPushMatrix();
   glTranslatef(cLocation->x, cLocation->y, (cLocation->z + 0.05f) * IsoRealmsConstants::BLOCK_HEIGHT);
-  (*cTexture)->set();
+  cTexture->set();
   glAlphaFunc(GL_GREATER, 0.1f);
   glEnable(GL_ALPHA_TEST);
   glDisable(GL_CULL_FACE);
   glBegin(GL_QUADS);
   float mRadius = IsoRealmsConstants::BLOCK_RADIUS * *cSize;
   float mTextureCoord = cFlip ? -1.0f : 1.0f;
-  (*cTexture)->texCoord2f(mTextureCoord, mTextureCoord); glVertex3f( mRadius, -mRadius, 0.0f);
-  (*cTexture)->texCoord2f(mTextureCoord, 0.0f);          glVertex3f( mRadius,  mRadius, 0.0f);
-  (*cTexture)->texCoord2f(0.0f,          0.0f);          glVertex3f(-mRadius,  mRadius, 0.0f);
-  (*cTexture)->texCoord2f(0.0f,          mTextureCoord); glVertex3f(-mRadius, -mRadius, 0.0f);
+  cTexture->texCoord2f(mTextureCoord, mTextureCoord); glVertex3f( mRadius, -mRadius, 0.0f);
+  cTexture->texCoord2f(mTextureCoord, 0.0f);          glVertex3f( mRadius,  mRadius, 0.0f);
+  cTexture->texCoord2f(0.0f,          0.0f);          glVertex3f(-mRadius,  mRadius, 0.0f);
+  cTexture->texCoord2f(0.0f,          mTextureCoord); glVertex3f(-mRadius, -mRadius, 0.0f);
   glEnd();
   glEnable(GL_CULL_FACE);
   glDisable(GL_ALPHA_TEST);

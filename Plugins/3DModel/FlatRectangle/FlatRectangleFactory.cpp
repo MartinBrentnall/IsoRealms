@@ -18,46 +18,22 @@
  */
 #include "FlatRectangleFactory.h"
 
-FlatRectangleFactory::FlatRectangleFactory() {
-  assignDummyPlugin(&cTextureSet, "TextureSet");
+FlatRectangleFactory::FlatRectangleFactory(IRuntimeContext* runtimeContext) {
+  cRuntimeContext = runtimeContext;
   cSize = 1.0f;
   cFlip = false;
-  cTextureName = "";
-  updateTexture();
 }
 
 ISimpleModel* FlatRectangleFactory::createModel(Vertex* location, float scale) {
-  return new FlatRectangle(location, &cTexture, &cSize, cFlip);
+  return new FlatRectangle(location, cTexture, &cSize, cFlip);
 }
 
 void FlatRectangleFactory::destroyModel(ISimpleModel* flatRectangle) {
   delete flatRectangle;
 }
 
-void FlatRectangleFactory::setPlugin(PlugSocket* socket, IPlugin* plugin) {
-  if (socket->getType() == "TextureSet") {
-    assignPlugin(plugin, &cTextureSet, *socket);
-    updateTexture();
-  } else {
-    // TODO: Throw
-  }
-}
-
-IPlugin* FlatRectangleFactory::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "TextureSet") {return cTextureSet;}
-  // TODO: Throw
-  return NULL;
-}
-
-void FlatRectangleFactory::updateTexture() {
-  cTexture = cTextureSet->getTexture(cTextureName);
-}
-
 void FlatRectangleFactory::save(DOMNodeWriter* node) {
-  if (cTextureName != "") {
-    DOMNodeWriter* mTextureNode = node->addBranch("Texture");
-    mTextureNode->addText(cTextureName);
-  }
+  cTexture->save(node, "Texture");
   if (cSize != 1.0f) {
     DOMNodeWriter* mSizeNode = node->addBranch("Size");
     std::stringstream mSizeString;
@@ -71,8 +47,7 @@ void FlatRectangleFactory::load(DOMNodeWrapper* node) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Texture") {
-      cTextureName = mNode->getStringValue();
-      updateTexture();
+      cTexture = cRuntimeContext->getTexture(mNode);
     } else if (mValueAsString == "Size") {
       cSize = mNode->getFloatValue();
     } else if (mValueAsString == "Rotate") {
@@ -82,8 +57,8 @@ void FlatRectangleFactory::load(DOMNodeWrapper* node) {
   }
 }
 
-extern "C" IPlugin* create() {
-  return new FlatRectangleFactory();
+extern "C" IPlugin* create(IRuntimeContext* runtimeContext) {
+  return new FlatRectangleFactory(runtimeContext);
 }
 
 extern "C" void destroy(IPlugin* plugin) {

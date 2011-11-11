@@ -21,8 +21,6 @@
 
 #include <iostream>
 
-#include "../../Plugins/TextureSet/ITextureSet.h"
-
 #include <IsoRealms/IElementFactory.h>
 
 #include "ISpindizzyBlockFactory.h"
@@ -30,8 +28,8 @@
 
 class SpindizzyWaterFactory:public ISpindizzyBlockFactory {
   private:
+  ITexture* cTexture;
   std::vector<SpindizzyWater*> cContent;
-  ITextureSet** cTextureSet;
   BlockLocation* cEditingLocation;
   BlockLocation* cStartWaterLocation;
   SpindizzyWater* cSampleWater;
@@ -39,7 +37,7 @@ class SpindizzyWaterFactory:public ISpindizzyBlockFactory {
   bool keyDown(SDLKey& key);
 
   public:
-  SpindizzyWaterFactory(ITextureSet**, ISpindizzyBlockSet*);
+  SpindizzyWaterFactory(ISpindizzyBlockSet*, ITexture*);
 
   /*************************************\
    * Implements ISpindizzyBlockFactory *
@@ -49,13 +47,6 @@ class SpindizzyWaterFactory:public ISpindizzyBlockFactory {
   BlockTypeProperties* getBlockTypeProperties();
   void save(DOMNodeWriter*);
   void configureBlock(DOMNodeWrapper*);
-  ITexture** getSurfaceTexture();
-  ITexture** getSplitNETexture();
-  ITexture** getSplitNWTexture();
-  ITexture** getWestWallTexture();
-  ITexture** getEastWallTexture();
-  ITexture** getSouthWallTexture();
-  ITexture** getNorthWallTexture();
 
   /******************************\
    * Implements IElementFactory *

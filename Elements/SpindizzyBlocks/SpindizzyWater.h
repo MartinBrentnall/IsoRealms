@@ -20,12 +20,11 @@
 #define SPINDIZZY_WATER_H
 
 #include <IsoRealms/Condition.h>
+#include <IsoRealms/ITexture.h>
 
 #include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
 #include "../../Plugins/SurfaceProcessor/ISurfaceProvider.h"
 #include "../../Plugins/SurfaceProcessor/IWallSurface.h"
-#include "../../Plugins/TextureSet/ITexture.h"
-#include "../../Plugins/TextureSet/ITextureSet.h"
 
 #include "ISpindizzyBlock.h"
 #include "ISpindizzyBlockFactory.h"
@@ -40,10 +39,10 @@ class SpindizzyWater:public ISpindizzyBlock,
   // TODO: Need to define an "initialisation scheme" somewhere
   static const unsigned int INIT_PROCESS_BLOCKS;
 
-  ITextureSet** cTextureSet;
   BlockLocation cStartLocation;
   BlockLocation cEndLocation;
   Condition* cCondition;
+  ITexture* cTexture;
   
   std::vector<ISpindizzyTileSurface*> cStaticTileSurfaces;
   std::vector<ISpindizzyTileSurface*> cDynamicTileSurfaces;
@@ -54,7 +53,7 @@ class SpindizzyWater:public ISpindizzyBlock,
   std::vector<ITileSurfaceTemplate*> getWaterSurfaces();
 
   public:
-  SpindizzyWater(ISpindizzyBlockFactory*, BlockLocation*, BlockLocation*, ITextureSet**);
+  SpindizzyWater(ISpindizzyBlockFactory*, BlockLocation*, BlockLocation*, ITexture*);
 
   void createSampleSurfaces();
   

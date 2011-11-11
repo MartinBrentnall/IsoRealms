@@ -18,13 +18,12 @@
  */
 #include "TextureSetChooserComponent.h"
 
-TextureSetChooserComponent::TextureSetChooserComponent(IComponentContainer* componentContainer, IZoneTextureSetter* zoneTextureSetter, std::vector<ITextureSet*> texturePalette) : ResizableDialog(componentContainer, "Choose Texture Set", 0.18f, 0.68f, 0.8f, 0.3f) {
-  cZoneTextureSetter = zoneTextureSetter;
+TextureSetChooserComponent::TextureSetChooserComponent(IComponentContainer* componentContainer) : ResizableDialog(componentContainer, "Choose Texture Set", 0.18f, 0.68f, 0.8f, 0.3f) {
   WrappingGridComponent* mWrappingComponent = new WrappingGridComponent();
-  for (unsigned int i = 0; i < texturePalette.size(); i++) {
-    ISizedComponent* mTextureIcon = new TextureIcon(this, texturePalette[i]);
-    mWrappingComponent->addComponent(mTextureIcon);
-  }
+//   for (unsigned int i = 0; i < texturePalette.size(); i++) {
+//     ISizedComponent* mTextureIcon = new TextureIcon(this, texturePalette[i]);
+//     mWrappingComponent->addComponent(mTextureIcon);
+//   }
 
   EdgeRelation* mInsideDialog = new EdgeRelation(this, EdgeRelation::INSIDE);
   IComponentBoundsCalculator* mWrappingComponentLayout = new ComponentEdgeLayout(mInsideDialog, mInsideDialog, mInsideDialog, mInsideDialog, NULL);
@@ -32,9 +31,8 @@ TextureSetChooserComponent::TextureSetChooserComponent(IComponentContainer* comp
   addComponent(mWrappingComponent);
 }
 
-TextureSetChooserComponent::TextureIcon::TextureIcon(TextureSetChooserComponent* parent, ITextureSet* textureSet) {
+TextureSetChooserComponent::TextureIcon::TextureIcon(TextureSetChooserComponent* parent) {
   cParent = parent;
-  cTextureSet = textureSet;
 }
 
 float TextureSetChooserComponent::TextureIcon::getWidth() {
@@ -75,50 +73,51 @@ void TextureSetChooserComponent::TextureIcon::render() {
   glRotatef(-45.0f, 0.0f, 0.0f, 1.0f); // TODO: Must get this right; check with how the editor is doing it!
   glColor3f(1.0f, 1.0f, 1.0f);
 
-  ITexture* mTexture = cTextureSet->getTexture("SwitchDiamondFilled");
-  mTexture->set();
-  glBegin(GL_QUADS);
-  mTexture->texCoord2f(1.0f, 1.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
-  mTexture->texCoord2f(0.0f, 1.0f);  glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
-  mTexture->texCoord2f(0.0f, 0.0f);  glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
-  mTexture->texCoord2f(1.0f, 0.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
-  glEnd();
-
-  mTexture = cTextureSet->getTexture("WallSouth");
-  mTexture->set();
-  glBegin(GL_QUADS);
-  mTexture->texCoord2f(1.0f, 1.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
-  mTexture->texCoord2f(0.0f, 1.0f);  glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
-  mTexture->texCoord2f(0.0f, 0.0f);  glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
-  mTexture->texCoord2f(1.0f, 0.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
-  glEnd();
-
-  mTexture = cTextureSet->getTexture("WallNorth");
-  mTexture->set();
-  glBegin(GL_QUADS);
-  mTexture->texCoord2f(1.0f, 0.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
-  mTexture->texCoord2f(0.0f, 0.0f);  glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
-  mTexture->texCoord2f(0.0f, 1.0f);  glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
-  mTexture->texCoord2f(1.0f, 1.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
-  glEnd();
-
-  mTexture = cTextureSet->getTexture("WallEast");
-  mTexture->set();
-  glBegin(GL_QUADS);
-  mTexture->texCoord2f(1.0f, 0.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
-  mTexture->texCoord2f(0.0f, 0.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
-  mTexture->texCoord2f(0.0f, 1.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
-  mTexture->texCoord2f(1.0f, 1.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
-  glEnd();
-
-  mTexture = cTextureSet->getTexture("WallWest");
-  mTexture->set();
-  glBegin(GL_QUADS);
-  mTexture->texCoord2f(1.0f, 1.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
-  mTexture->texCoord2f(0.0f, 1.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
-  mTexture->texCoord2f(0.0f, 0.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
-  mTexture->texCoord2f(1.0f, 0.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
-  glEnd();
+  // TODO: Some visual representation
+//   ITexture* mTexture = cTextureSet->getTexture("SwitchDiamondFilled");
+//   mTexture->set();
+//   glBegin(GL_QUADS);
+//   mTexture->texCoord2f(1.0f, 1.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+//   mTexture->texCoord2f(0.0f, 1.0f);  glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+//   mTexture->texCoord2f(0.0f, 0.0f);  glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+//   mTexture->texCoord2f(1.0f, 0.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+//   glEnd();
+// 
+//   mTexture = cTextureSet->getTexture("WallSouth");
+//   mTexture->set();
+//   glBegin(GL_QUADS);
+//   mTexture->texCoord2f(1.0f, 1.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+//   mTexture->texCoord2f(0.0f, 1.0f);  glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+//   mTexture->texCoord2f(0.0f, 0.0f);  glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+//   mTexture->texCoord2f(1.0f, 0.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+//   glEnd();
+// 
+//   mTexture = cTextureSet->getTexture("WallNorth");
+//   mTexture->set();
+//   glBegin(GL_QUADS);
+//   mTexture->texCoord2f(1.0f, 0.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+//   mTexture->texCoord2f(0.0f, 0.0f);  glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+//   mTexture->texCoord2f(0.0f, 1.0f);  glVertex3f(-IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+//   mTexture->texCoord2f(1.0f, 1.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+//   glEnd();
+// 
+//   mTexture = cTextureSet->getTexture("WallEast");
+//   mTexture->set();
+//   glBegin(GL_QUADS);
+//   mTexture->texCoord2f(1.0f, 0.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+//   mTexture->texCoord2f(0.0f, 0.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+//   mTexture->texCoord2f(0.0f, 1.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+//   mTexture->texCoord2f(1.0f, 1.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+//   glEnd();
+// 
+//   mTexture = cTextureSet->getTexture("WallWest");
+//   mTexture->set();
+//   glBegin(GL_QUADS);
+//   mTexture->texCoord2f(1.0f, 1.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+//   mTexture->texCoord2f(0.0f, 1.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+//   mTexture->texCoord2f(0.0f, 0.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS, -IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+//   mTexture->texCoord2f(1.0f, 0.0f);  glVertex3f( IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_RADIUS,  IsoRealmsConstants::BLOCK_HEIGHT / 2.0);
+//   glEnd();
 
   glPopMatrix();
 }
@@ -133,7 +132,6 @@ bool TextureSetChooserComponent::TextureIcon::mouseButtonDown(SDL_Event& event) 
   float mX = mScreen->getXLocation(event.button.x);
   float mY = mScreen->getYLocation(event.button.y);
   if (contains(mX, mY)) {
-    cParent->cZoneTextureSetter->setTextureSet(cTextureSet);
     cParent->relinquishFocus();
     return true;
   }

@@ -21,36 +21,27 @@
 
 #include <IsoRealms/PlugSocket.h>
 
-#include "../../TextureSet/ITextureSet.h"
-
 #include "../ISimpleModelFactory.h"
 
 #include "FlatRectangle.h"
 
 class FlatRectangleFactory:public ISimpleModelFactory {
   private:
-  ITextureSet* cTextureSet;
+  IRuntimeContext* cRuntimeContext;
   ITexture* cTexture;
-  std::string cTextureName;
   float cSize;
   bool cFlip;
 
   void updateTexture();
   
   public:
-  FlatRectangleFactory();
+  FlatRectangleFactory(IRuntimeContext*);
 
   /**********************************\
    * Implements ISimpleModelFactory *
   \**********************************/
   ISimpleModel* createModel(Vertex*, float);
   void destroyModel(ISimpleModel*);
-
-  /*****************************\
-   * Implements IPluginSupport *
-  \*****************************/
-  void setPlugin(PlugSocket*, IPlugin*);
-  IPlugin* getPlugin(PlugSocket*);
 
   /**********************\
    * Implements IPlugin *

@@ -55,6 +55,7 @@ class AttractControlLoop:public IControlLoop,
   AttractSceneManager cAttractSceneManager;
   Registry<ICommand, CommandProxy> cCommandRegistry;
   Registry<IColour, ColourProxy> cColourRegistry;
+  Registry<ITexture, TextureProxy> cTextureRegistry;
   std::vector<ICommand*> cInitCommands;
   IFrontEnd* cFrontEnd;
   PluginRegistry cPluginRegistry;

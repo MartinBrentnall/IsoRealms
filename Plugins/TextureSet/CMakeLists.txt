@@ -19,9 +19,3 @@ add_subdirectory(C64SpindizzySprites)
 add_subdirectory(ImageTextureSet)
 
 include_directories(${PROJECT_SOURCE_DIR})
-
-add_library(DummyTextureSet MODULE 
-  DummyTextureSet.cpp
-)
-set_target_properties(DummyTextureSet PROPERTIES OUTPUT_NAME "Dummy")
-set_target_properties(DummyTextureSet PROPERTIES PREFIX "lib")

@@ -36,3 +36,8 @@ void PlainColourTexture::texCoord2f(float, float) {
 IColour* PlainColourTexture::getColour(float, float) {
   return cColour;
 }
+
+void PlainColourTexture::save(DOMNodeWriter*, const std::string&) {
+  // TODO: Implement this
+}
+

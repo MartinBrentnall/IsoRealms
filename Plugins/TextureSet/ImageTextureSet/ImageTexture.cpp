@@ -35,6 +35,10 @@ IColour* ImageTexture::getColour(float x, float y) {
   return NULL;
 }
 
+void ImageTexture::save(DOMNodeWriter*, const std::string&) {
+  // TODO: Implement this
+}
+
 ImageTexture::~ImageTexture() {
   glDeleteTextures(1, &cTextureID);
 }

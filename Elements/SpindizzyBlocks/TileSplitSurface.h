@@ -26,10 +26,10 @@
 #include <IsoRealms/Collision.h>
 #include <IsoRealms/Condition.h>
 #include <IsoRealms/IsoRealmsConstants.h>
+#include <IsoRealms/ITexture.h>
+#include <IsoRealms/MiscFunctions.h>
 
 #include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
-#include "../../Plugins/TextureSet/ITexture.h"
-#include "../../Plugins/TextureSet/ITextureSet.h"
 
 #include "BlockTypeProperties.h"
 #include "ISpindizzyTileSurface.h"

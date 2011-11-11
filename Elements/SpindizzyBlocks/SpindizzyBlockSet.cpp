@@ -20,10 +20,6 @@
 
 SpindizzyBlockSet::SpindizzyBlockSet(IRuntimeContext* runtimeContext) {
   cRuntimeContext = runtimeContext;
-  cElementFactories.push_back(new SpindizzyWaterFactory(&cTextureSet, this));
-  assignDummyPlugin(&cDummyTextureSet, "TextureSet");
-  cTextureSet = cDummyTextureSet;
-  cTextureSetController = NULL;
   assignDummyPlugin(&cCamera, "Camera");
   assignDummyPlugin(&cHUD, "HUD");
   assignDummyPlugin(&cPhysicalProcessor, "SurfaceProcessor");
@@ -52,14 +48,6 @@ std::vector<PlugSocket*> SpindizzyBlockSet::getPlugSockets() {
     mSocketID << i;
     mSockets.push_back(new PlugSocket("3DModel", mSocketID.str()));
   }
-  if (cTextureSetController == NULL) {
-    if (cTextureSet == cDummyTextureSet) {
-      mSockets.push_back(new PlugSocket("TextureSetChanger"));
-    }
-    mSockets.push_back(new PlugSocket("TextureSet"));
-  } else {
-    mSockets.push_back(new PlugSocket("TextureSetChanger"));
-  }
   mSockets.push_back(new PlugSocket("Camera"));
   mSockets.push_back(new PlugSocket("HUD"));
   mSockets.push_back(new PlugSocket("SurfaceProcessor", "Visual"));
@@ -68,10 +56,6 @@ std::vector<PlugSocket*> SpindizzyBlockSet::getPlugSockets() {
   mSockets.push_back(new PlugSocket("CollidableSurfaceRegistry"));
   mSockets.push_back(new PlugSocket("ZoneContext"));
   return mSockets;
-}
-
-void SpindizzyBlockSet::setTextureSet(ITextureSet* textureSet) {
-  cTextureSet = textureSet != NULL ? textureSet : cDummyTextureSet;
 }
 
 //      ISimpleModel* mNewModel = ->createModel(&cClueModelLocation);
@@ -100,27 +84,11 @@ void SpindizzyBlockSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
     cHUDClue->setCamera(cCamera);
   } else if (socket->getType() == "CollidableSurfaceRegistry") {
     assignPlugin(implementation, &cCollidableSurfaceRegistry, *socket);
-  } else if (socket->getType() == "TextureSet") {
-    if (assignPlugin(implementation, &cTextureSet, *socket)) {
-      for (unsigned int i = 0; i < cElementFactories.size(); i++) {
-        static_cast<ISpindizzyBlockFactory*>(cElementFactories[i])->signalAllElementsDirty();
-      }
-    }
   } else if (socket->getType() == "HUD") {
     IHUD* mPreviousHUD = cHUD;
     if (assignPlugin(implementation, &cHUD, *socket)) {
       mPreviousHUD->unregisterHUDComponentFactory(this);
       cHUD->registerHUDComponentFactory(this);
-    }
-  } else if (socket->getType() == "TextureSetChanger") {
-    ITextureSetChanger* mPreviousController = cTextureSetController;
-    if (assignPlugin(implementation, &cTextureSetController, *socket, false)) {
-      if (mPreviousController != NULL) {
-        cTextureSetController->removeControlObject(this);
-      }
-      if (cTextureSetController != NULL) {
-        cTextureSetController->addControlObject(this);
-      }
     }
   } else if (socket->getType() == "SurfaceProcessor") {
     if (socket->getID() == "Visual") {
@@ -161,8 +129,6 @@ IPlugin* SpindizzyBlockSet::getPlugin(PlugSocket* socket) {
   if (socket->getType() == "CollidableSurfaceRegistry") {return cCollidableSurfaceRegistry;}
   if (socket->getType() == "HUD")                       {return cHUD;}
   if (socket->getType() == "SurfaceProcessor")          {return socket->getID() == "Visual" ? cVisualProcessor : cPhysicalProcessor;}
-  if (socket->getType() == "TextureSet")                {return cTextureSet;}
-  if (socket->getType() == "TextureSetChanger")         {return cTextureSetController;}
   if (socket->getType() == "ZoneContext")               {return cZoneContext;}
   // TODO: Throw wobbly!
   return NULL;
@@ -221,7 +187,11 @@ void SpindizzyBlockSet::load(DOMNodeWrapper* node) {
     } else if (mValueAsString == "BlockType") {
       std::string mBlockTypeName = mNode->getAttribute("name");
       // TODO: Pass the textures into the factory
-      ISpindizzyBlockFactory* mFactory = new SpindizzyBlockFactory(mBlockTypeName, &cTextureSet, this, mNode, cRuntimeContext);
+      ISpindizzyBlockFactory* mFactory = new SpindizzyBlockFactory(mBlockTypeName, this, mNode, cRuntimeContext);
+      cElementFactories.push_back(mFactory);
+    } else if (mValueAsString == "WaterType") {
+      ITexture* mWaterTexture = cRuntimeContext->getTexture(mNode);
+      ISpindizzyBlockFactory* mFactory = new SpindizzyWaterFactory(this, mWaterTexture);
       cElementFactories.push_back(mFactory);
     }
   }

@@ -20,21 +20,20 @@
 #define FLAT_RECTANGLE_H
 
 #include <IsoRealms/IsoRealmsConstants.h>
+#include <IsoRealms/ITexture.h>
 #include <IsoRealms/Vertex.h>
-
-#include "../../TextureSet/ITexture.h"
 
 #include "../ISimpleModel.h"
 
 class FlatRectangle:public ISimpleModel {
   private:
   Vertex* cLocation;
-  ITexture** cTexture;
+  ITexture* cTexture;
   float* cSize;
   bool cFlip;
   
   public:
-  FlatRectangle(Vertex*, ITexture**, float*, bool);
+  FlatRectangle(Vertex*, ITexture*, float*, bool);
 
   /*********************\
    * Implements IModel *

@@ -71,7 +71,7 @@ class ElementSetRegistry:public IElementSetRegistry {
   public:
   ElementSetRegistry();
 
-  void registerElementSet(DOMNodeWrapper*, Registry<ICommand, CommandProxy>*, Registry<IColour, ColourProxy>*, IMap*, bool, IScriptSource*, IColourSource*);
+  void registerElementSet(DOMNodeWrapper*, Registry<ICommand, CommandProxy>*, Registry<IColour, ColourProxy>*, Registry<ITexture, TextureProxy>*, IMap*, bool, IScriptSource*, IColourSource*, ITextureSource*);
   void connectPlugin(PluginRegistry*, DOMNodeWrapper*);
   void loadConfiguration(DOMNodeWrapper*);
 

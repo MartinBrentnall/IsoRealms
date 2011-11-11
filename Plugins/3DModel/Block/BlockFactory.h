@@ -21,24 +21,18 @@
 
 #include <IsoRealms/PlugSocket.h>
 
-#include "../../TextureSetChanger/ITextureSetChanger.h"
-
 #include "../ISimpleModelFactory.h"
 
 #include "Block.h"
 #include "BlockProperties.h"
 
-class BlockFactory:public ISimpleModelFactory,
-                   public IChangeableTextureSet {
+class BlockFactory:public ISimpleModelFactory {
   private:
-  ITextureSetChanger* cTextureSetController;
-  ITextureSet* cDummyTextureSet;
-  ITextureSet* cTextureSet;
-  ITexture* cTexture;
+  IRuntimeContext* cRuntimeContext;
   BlockProperties* cProperties;
 
   public:
-  BlockFactory();
+  BlockFactory(IRuntimeContext*);
 
   /**********************************\
    * Implements ISimpleModelFactory *
@@ -46,22 +40,11 @@ class BlockFactory:public ISimpleModelFactory,
   ISimpleModel* createModel(Vertex*, float);
   void destroyModel(ISimpleModel*);
 
-  /*****************************\
-   * Implements IPluginSupport *
-  \*****************************/
-  void setPlugin(PlugSocket*, IPlugin*);
-  IPlugin* getPlugin(PlugSocket*);
-
   /**********************\
    * Implements IPlugin *
   \**********************/
   void save(DOMNodeWriter*);
   void load(DOMNodeWrapper*);
-
-  /************************************\
-   * Implements IChangeableTextureSet *
-  \************************************/
-  void setTextureSet(ITextureSet*);
 };
 
 #endif

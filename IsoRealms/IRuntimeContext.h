@@ -22,6 +22,7 @@
 #include "DOMNodeWrapper.h"
 #include "IColour.h"
 #include "IMap.h"
+#include "ITexture.h"
 #include "Script.h"
 
 class IRuntimeContext {
@@ -31,9 +32,11 @@ class IRuntimeContext {
   virtual std::string getLocation(ICommand*) = 0; // TODO: What's this for?  Is it used?
   virtual void add(ICommand*, const std::string&) = 0;
   virtual void add(IColour*, const std::string&) = 0;
+  virtual void add(ITexture*, const std::string&) = 0;
   virtual void remove(ICommand*) = 0;
   virtual Script* getScript(DOMNodeWrapper*) = 0;
   virtual IColour* getColour(DOMNodeWrapper*) = 0;
+  virtual ITexture* getTexture(DOMNodeWrapper*) = 0;
 };
 
 #endif

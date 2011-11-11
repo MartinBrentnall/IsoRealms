@@ -47,9 +47,9 @@ Map::Map(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, 
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Plugin") {
-      cPluginRegistry.registerPlugin(mNode, &cCommandRegistry, &cColourRegistry, this, editing, this, this);
+      cPluginRegistry.registerPlugin(mNode, &cCommandRegistry, &cColourRegistry, &cTextureRegistry, this, editing, this, this, this);
     } else if (mValueAsString == "ElementSet") {
-      cElementSetRegistry.registerElementSet(mNode, &cCommandRegistry, &cColourRegistry, this, editing, this, this);
+      cElementSetRegistry.registerElementSet(mNode, &cCommandRegistry, &cColourRegistry, &cTextureRegistry, this, editing, this, this, this);
     } else {
       // TODO: Throw something
     }
@@ -539,6 +539,11 @@ IColour* Map::getColour(DOMNodeWrapper* node) {
   }
   // TODO: Throw
   return NULL;
+}
+
+ITexture* Map::getTexture(DOMNodeWrapper* node) {
+  std::string mTexturePath = node->getAttribute("name");
+  return cTextureRegistry.get(mTexturePath);
 }
 
 Map::~Map() {

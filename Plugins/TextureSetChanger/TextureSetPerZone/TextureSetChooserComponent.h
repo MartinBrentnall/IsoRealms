@@ -28,23 +28,17 @@
 #include <IsoRealms/GUI/WrappingGridComponent.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 
-#include "../../TextureSet/ITextureSet.h"
-
-#include "IZoneTextureSetter.h"
-
 class TextureSetChooserComponent:public ResizableDialog {
   private:
-  IZoneTextureSetter* cZoneTextureSetter;
 
   class TextureIcon:public ISizedComponent {
     private:
     TextureSetChooserComponent* cParent;
-    ITextureSet* cTextureSet;
 
     bool mouseButtonDown(SDL_Event&);
 
     public:
-    TextureIcon(TextureSetChooserComponent*, ITextureSet*);
+    TextureIcon(TextureSetChooserComponent*);
 
     /******************************\
      * Implements ISizedComponent *
@@ -57,7 +51,7 @@ class TextureSetChooserComponent:public ResizableDialog {
   };
 
   public:
-  TextureSetChooserComponent(IComponentContainer*, IZoneTextureSetter*, std::vector<ITextureSet*>);
+  TextureSetChooserComponent(IComponentContainer*);
 
   /******************************\
    * Implements ResizableDialog *

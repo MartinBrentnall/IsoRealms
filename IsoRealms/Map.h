@@ -34,8 +34,11 @@
 #include "InputCommands.h"
 #include "IPluginRegistryListener.h"
 #include "IScriptSource.h"
+#include "ITexture.h"
+#include "ITextureSource.h"
 #include "PluginRegistry.h"
 #include "Registry.h"
+#include "TextureProxy.h"
 #include "Zone.h"
 
 /**
@@ -46,12 +49,14 @@ class Map:public IMap,
           public IPluginRegistryListener,
           public IElementContainer,
           public IScriptSource,
-          public IColourSource {
+          public IColourSource,
+          public ITextureSource {
   private:
   PluginRegistry cPluginRegistry;
   ElementSetRegistry cElementSetRegistry;
   Registry<ICommand, CommandProxy> cCommandRegistry;
   Registry<IColour, ColourProxy> cColourRegistry;
+  Registry<ITexture, TextureProxy> cTextureRegistry;
   InputCommands cInputCommands;
   
   /**
@@ -213,6 +218,11 @@ class Map:public IMap,
    * Implements IColourSource *
   \****************************/
   IColour* getColour(DOMNodeWrapper*);
+  
+  /*****************************\
+   * Implements ITextureSource *
+  \*****************************/
+  ITexture* getTexture(DOMNodeWrapper*);
   
   ~Map();
 };

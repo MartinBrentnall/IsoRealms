@@ -22,20 +22,19 @@
 #include <cmath>
 #include <map>
 
+#include <IsoRealms/Colour.h>
 #include <IsoRealms/DummyPlugin.h>
 #include <IsoRealms/ICommandInfo.h>
 #include <IsoRealms/Image.h>
 #include <IsoRealms/IPaletteListener.h>
 #include <IsoRealms/IPlugin.h>
+#include <IsoRealms/ITexture.h>
 #include <IsoRealms/PluginRegistry.h>
 #include <IsoRealms/PlugSocket.h>
 
-#include "../ITexture.h"
-#include "../ITextureSet.h"
-
 #include "C64SpindizzySprite.h"
 
-class C64SpindizzySpriteSet:public ITextureSet,
+class C64SpindizzySpriteSet:public IPlugin,
                             public IPaletteListener {
   private:
   static const int RESOLUTION = 128;

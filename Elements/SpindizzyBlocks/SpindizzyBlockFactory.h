@@ -30,8 +30,6 @@
 #include <IsoRealms/IElementSet.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 
-#include "../../Plugins/TextureSet/ITextureSet.h"
-
 class SpindizzyBlockConfigurationComponent;
 
 #include "ISpindizzyBlockFactory.h"
@@ -47,7 +45,6 @@ class SpindizzyBlockFactory:public ISpindizzyBlockFactory,
   std::vector<SpindizzyBlock*> cContent;
   SpindizzyBlockConfigurationComponent* cConfigurationComponent;
   IComponentContainer* cComponentContainer;
-  ITextureSet** cTextureSet;
   SpindizzyBlockProperties* cBlockProperties;
   BlockLocation* cStartBlockLocation;
   BlockLocation* cEditingLocation;
@@ -64,22 +61,19 @@ class SpindizzyBlockFactory:public ISpindizzyBlockFactory,
    * Construct a new block factory of the specified type.  A pointer to comman
    * block properties can be passed for editing and generation of blocks based
    * on the specified type.
-   * 
-   * @param ITextureSet*  A texture set to use for texturing blocks.
    */
-  SpindizzyBlockFactory(std::string, ITextureSet**, ISpindizzyBlockSet*, DOMNodeWrapper*, IRuntimeContext*);
+  SpindizzyBlockFactory(std::string, ISpindizzyBlockSet*, DOMNodeWrapper*, IRuntimeContext*);
 
   /**
    * Create a new usable block according to the specified parameters.
    * 
    * @param BlockLocation*  Start location of the block.
    * @param BlockLocation*  End location of the block.
-   * @param ITextureSet*  Textures to use for the block.
    * @param SpindizzyBlockProperties*  Properties to apply to the block.
    * @param bool  true to create an addition, false to create a subtraction.
    * @returns  The new usable block.
    */
-  SpindizzyBlock* createBlock(BlockLocation*, BlockLocation*, ITextureSet**, SpindizzyBlockProperties*, bool);
+  SpindizzyBlock* createBlock(BlockLocation*, BlockLocation*, SpindizzyBlockProperties*, bool);
   
   /*************************************\
    * Implements ISpindizzyBlockFactory *

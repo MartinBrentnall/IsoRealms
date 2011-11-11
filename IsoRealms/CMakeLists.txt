@@ -75,6 +75,7 @@ add_library(IsoRealms SHARED
   Script.cpp
   SDLKeyMap.cpp
   System.cpp
+  TextureProxy.cpp
   Utils.cpp
   Vertex.cpp
   Zone.cpp

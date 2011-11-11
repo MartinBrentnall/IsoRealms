@@ -25,14 +25,13 @@
 #include <IsoRealms/BlockLocation.h>
 #include <IsoRealms/Condition.h>
 #include <IsoRealms/DOMNodeWrapper.h>
+#include <IsoRealms/ITexture.h>
 #include <IsoRealms/IVisualElement.h>
 #include <IsoRealms/MiscFunctions.h>
 
 #include "../../Plugins/SurfaceProcessor/ITileSurface.h"
 #include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
 #include "../../Plugins/SurfaceProcessor/ISurfaceProvider.h"
-#include "../../Plugins/TextureSet/ITexture.h"
-#include "../../Plugins/TextureSet/ITextureSet.h"
 
 #include "ISpindizzyBlock.h"
 #include "ISpindizzyBlockSet.h"
@@ -157,12 +156,6 @@ class SpindizzyBlock:public ISpindizzyBlock,
   int getTileSurfaceHeight(int, int);
 
   protected:
-
-  /**
-   * The texture set is represented by a pointer to a pointer to the actual
-   * texture set.  This allows us to quickly change the texture set externally.
-   */
-  ITextureSet** cTextureSet;
 
   /**
    * Determine if the surface of this block is split.

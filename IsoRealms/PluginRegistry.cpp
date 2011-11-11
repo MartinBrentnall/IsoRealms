@@ -20,7 +20,7 @@
 
 DefaultZoneRenderer PluginRegistry::DEFAULT_ZONE_RENDERER;
 
-void PluginRegistry::registerPlugin(DOMNodeWrapper* node, Registry<ICommand, CommandProxy>* directory, Registry<IColour, ColourProxy>* colourRegistry, IMap* map, bool editing, IScriptSource* scriptSource, IColourSource* colourSource) {
+void PluginRegistry::registerPlugin(DOMNodeWrapper* node, Registry<ICommand, CommandProxy>* directory, Registry<IColour, ColourProxy>* colourRegistry, Registry<ITexture, TextureProxy>* textureRegistry, IMap* map, bool editing, IScriptSource* scriptSource, IColourSource* colourSource, ITextureSource* textureSource) {
   std::string mImplementation = node->getAttribute("implementation");
   std::string mInstance = node->getAttribute("instance");
   std::string mType = node->getAttribute("type");
@@ -30,7 +30,8 @@ void PluginRegistry::registerPlugin(DOMNodeWrapper* node, Registry<ICommand, Com
   mDirectory.push_back(mInstance);
   RegistryProxy<ICommand, CommandProxy>* mCommandGateway = new RegistryProxy<ICommand, CommandProxy>(directory, mDirectory);
   RegistryProxy<IColour, ColourProxy>* mColourGateway = new RegistryProxy<IColour, ColourProxy>(colourRegistry, mDirectory);
-  RuntimeContext* mRuntimeContext = new RuntimeContext(map, mCommandGateway, mColourGateway, editing, scriptSource, colourSource);
+  RegistryProxy<ITexture, TextureProxy>* mTextureGateway = new RegistryProxy<ITexture, TextureProxy>(textureRegistry, mDirectory);
+  RuntimeContext* mRuntimeContext = new RuntimeContext(map, mCommandGateway, mColourGateway, mTextureGateway, editing, scriptSource, colourSource, textureSource);
   std::cout << "Loading plugin \"" << mType << ":" << mImplementation << "\"" << std::endl;
   loadPlugin(mType, mImplementation, mInstance, mRuntimeContext);
   IPlugin* mPlugin = getPlugin(mType, mInstance);  

@@ -17,9 +17,3 @@
 add_subdirectory(TextureSetPerZone)
 
 include_directories(${PROJECT_SOURCE_DIR})
-
-add_library(DummyTextureSetChanger MODULE 
-  DummyTextureSetChanger.cpp
-)
-set_target_properties(DummyTextureSetChanger PROPERTIES OUTPUT_NAME "Dummy")
-set_target_properties(DummyTextureSetChanger PROPERTIES PREFIX "lib")

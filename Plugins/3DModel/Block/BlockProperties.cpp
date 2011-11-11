@@ -18,106 +18,95 @@
  */
 #include "BlockProperties.h"
 
-BlockProperties::BlockProperties(ITextureSet** textureSet) {
-  cTextureSet = textureSet;
-}
-
 ITexture* BlockProperties::getTopSurfaceTexture() {
-  return (*cTextureSet)->getTexture(cTopSurfaceTexture);
+  return cTopSurfaceTexture;
 }
 
 ITexture* BlockProperties::getBottomSurfaceTexture() {
-  return (*cTextureSet)->getTexture(cBottomSurfaceTexture);
+  return cBottomSurfaceTexture;
 }
 
 ITexture* BlockProperties::getNorthSurfaceTextureTop() {
-  return (*cTextureSet)->getTexture(cNorthSurfaceTextureTop);
+  return cNorthSurfaceTextureTop;
 }
 
 ITexture* BlockProperties::getEastSurfaceTextureTop() {
-  return (*cTextureSet)->getTexture(cEastSurfaceTextureTop);
+  return cEastSurfaceTextureTop;
 }
 
 ITexture* BlockProperties::getSouthSurfaceTextureTop() {
-  return (*cTextureSet)->getTexture(cSouthSurfaceTextureTop);
+  return cSouthSurfaceTextureTop;
 }
 
 ITexture* BlockProperties::getWestSurfaceTextureTop() {
-  return (*cTextureSet)->getTexture(cWestSurfaceTextureTop);
+  return cWestSurfaceTextureTop;
 }
 
 ITexture* BlockProperties::getNorthSurfaceTextureBottom() {
-  return (*cTextureSet)->getTexture(cNorthSurfaceTextureBottom);
+  return cNorthSurfaceTextureBottom;
 }
 
 ITexture* BlockProperties::getEastSurfaceTextureBottom() {
-  return (*cTextureSet)->getTexture(cEastSurfaceTextureBottom);
+  return cEastSurfaceTextureBottom;
 }
 
 ITexture* BlockProperties::getSouthSurfaceTextureBottom() {
-  return (*cTextureSet)->getTexture(cSouthSurfaceTextureBottom);
+  return cSouthSurfaceTextureBottom;
 }
 
 ITexture* BlockProperties::getWestSurfaceTextureBottom() {
-  return (*cTextureSet)->getTexture(cWestSurfaceTextureBottom);
+  return cWestSurfaceTextureBottom;
 }
 
-void BlockProperties::setTopSurfaceTexture(const std::string& name) {
-  cTopSurfaceTexture = name;
+void BlockProperties::setTopSurfaceTexture(ITexture* texture) {
+  cTopSurfaceTexture = texture;
 }
 
-void BlockProperties::setBottomSurfaceTexture(const std::string& name) {
-  cBottomSurfaceTexture = name;
+void BlockProperties::setBottomSurfaceTexture(ITexture* texture) {
+  cBottomSurfaceTexture = texture;
 }
 
-void BlockProperties::setNorthSurfaceTextureTop(const std::string& name) {
-  cNorthSurfaceTextureTop = name;
+void BlockProperties::setNorthSurfaceTextureTop(ITexture* texture) {
+  cNorthSurfaceTextureTop = texture;
 }
 
-void BlockProperties::setEastSurfaceTextureTop(const std::string& name) {
-  cEastSurfaceTextureTop = name;
+void BlockProperties::setEastSurfaceTextureTop(ITexture* texture) {
+  cEastSurfaceTextureTop = texture;
 }
 
-void BlockProperties::setSouthSurfaceTextureTop(const std::string& name) {
-  cSouthSurfaceTextureTop = name;
+void BlockProperties::setSouthSurfaceTextureTop(ITexture* texture) {
+  cSouthSurfaceTextureTop = texture;
 }
 
-void BlockProperties::setWestSurfaceTextureTop(const std::string& name) {
-  cWestSurfaceTextureTop = name;
+void BlockProperties::setWestSurfaceTextureTop(ITexture* texture) {
+  cWestSurfaceTextureTop = texture;
 }
 
-void BlockProperties::setNorthSurfaceTextureBottom(const std::string& name) {
-  cNorthSurfaceTextureBottom = name;
+void BlockProperties::setNorthSurfaceTextureBottom(ITexture* texture) {
+  cNorthSurfaceTextureBottom = texture;
 }
 
-void BlockProperties::setEastSurfaceTextureBottom(const std::string& name) {
-  cEastSurfaceTextureBottom = name;
+void BlockProperties::setEastSurfaceTextureBottom(ITexture* texture) {
+  cEastSurfaceTextureBottom = texture;
 }
 
-void BlockProperties::setSouthSurfaceTextureBottom(const std::string& name) {
-  cSouthSurfaceTextureBottom = name;
+void BlockProperties::setSouthSurfaceTextureBottom(ITexture* texture) {
+  cSouthSurfaceTextureBottom = texture;
 }
 
-void BlockProperties::setWestSurfaceTextureBottom(const std::string& name) {
-  cWestSurfaceTextureBottom = name;
-}
-
-void BlockProperties::saveProperty(DOMNodeWriter* node, const std::string& name, const std::string& texture) {
-  if (texture != "") {
-    DOMNodeWriter* mNode = node->addBranch(name); // TODO: Dealloc
-    mNode->addText(texture);
-  }
+void BlockProperties::setWestSurfaceTextureBottom(ITexture* texture) {
+  cWestSurfaceTextureBottom = texture;
 }
 
 void BlockProperties::save(DOMNodeWriter* node) {
-  saveProperty(node, "TopSurfaceTexture",         cTopSurfaceTexture);
-  saveProperty(node, "BottomSurfaceTexture",      cBottomSurfaceTexture);
-  saveProperty(node, "NorthSurfaceTextureTop",    cNorthSurfaceTextureTop);
-  saveProperty(node, "EastSurfaceTextureTop",     cEastSurfaceTextureTop);
-  saveProperty(node, "SouthSurfaceTextureTop",    cSouthSurfaceTextureTop);
-  saveProperty(node, "WestSurfaceTextureTop",     cWestSurfaceTextureTop);
-  saveProperty(node, "NorthSurfaceTextureBottom", cNorthSurfaceTextureBottom);
-  saveProperty(node, "EastSurfaceTextureBottom",  cEastSurfaceTextureBottom);
-  saveProperty(node, "SouthSurfaceTextureBottom", cSouthSurfaceTextureBottom);
-  saveProperty(node, "WestSurfaceTextureBottom",  cWestSurfaceTextureBottom);
+  cTopSurfaceTexture->save(node, "TopSurfaceTexture");
+  cBottomSurfaceTexture->save(node, "BottomSurfaceTexture");
+  cNorthSurfaceTextureTop->save(node, "NorthSurfaceTextureTop");
+  cEastSurfaceTextureTop->save(node, "EastSurfaceTextureTop");
+  cSouthSurfaceTextureTop->save(node, "SouthSurfaceTextureTop");
+  cWestSurfaceTextureTop->save(node, "WestSurfaceTextureTop");
+  cNorthSurfaceTextureBottom->save(node, "NorthSurfaceTextureBottom");
+  cEastSurfaceTextureBottom->save(node, "EastSurfaceTextureBottom");
+  cSouthSurfaceTextureBottom->save(node, "SouthSurfaceTextureBottom");
+  cWestSurfaceTextureBottom->save(node, "WestSurfaceTextureBottom");
 }

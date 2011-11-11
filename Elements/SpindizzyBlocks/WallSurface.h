@@ -25,9 +25,8 @@
 #include <IsoRealms/Collision.h>
 #include <IsoRealms/Condition.h>
 #include <IsoRealms/IsoRealmsConstants.h>
+#include <IsoRealms/ITexture.h>
 
-#include "../../Plugins/TextureSet/ITexture.h"
-#include "../../Plugins/TextureSet/ITextureSet.h"
 #include "../../Plugins/SurfaceProcessor/IWallEdge.h"
 
 #include "ISpindizzyWallSurface.h"

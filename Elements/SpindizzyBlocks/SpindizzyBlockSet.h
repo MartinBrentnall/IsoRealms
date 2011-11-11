@@ -28,9 +28,6 @@
 #include "../../Plugins/CollidableSurfaceRegistry/ICollidableSurfaceRegistry.h"
 #include "../../Plugins/HUD/IHUD.h"
 #include "../../Plugins/SurfaceProcessor/ISurfaceProcessor.h"
-#include "../../Plugins/TextureSet/ITextureSet.h"
-#include "../../Plugins/TextureSetChanger/ITextureSetChanger.h"
-#include "../../Plugins/TextureSetChanger/IChangeableTextureSet.h"
 #include "../../Plugins/ZoneContext/IZoneContext.h"
 
 #include <IsoRealms/ConditionElement.h>
@@ -53,7 +50,6 @@
 #include "SpindizzyWaterFactory.h"
 
 class SpindizzyBlockSet:public ISpindizzyBlockSet,
-                        public IChangeableTextureSet,
                         public IHUDComponentFactory,
                         public IZoneContextListener,
                         public IComponentSource {
@@ -82,9 +78,6 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
   IRuntimeContext* cRuntimeContext;
   ICamera* cCamera;
   IHUD* cHUD;
-  ITextureSet* cTextureSet;
-  ITextureSet* cDummyTextureSet;
-  ITextureSetChanger* cTextureSetController;
   ISurfaceProcessor* cPhysicalProcessor;
   ISurfaceProcessor* cVisualProcessor;
   ICollidableSurfaceRegistry* cCollidableSurfaceRegistry;
@@ -149,11 +142,6 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
   std::vector<ConditionElement*> getConditionElements();
   void updateClue();
   bool isEditing();
-
-  /************************************\
-   * Implements IChangeableTextureSet *
-  \************************************/
-  void setTextureSet(ITextureSet*);
 
   /*******************************\
    * Implements IComponentSource *

@@ -18,7 +18,8 @@
  */
 #include "ImageTextureSet.h"
 
-ImageTextureSet::ImageTextureSet() {
+ImageTextureSet::ImageTextureSet(IRuntimeContext* runtimeContext) {
+  cRuntimeContext = runtimeContext;
   // TODO: Should only init once!
   int mFlags = IMG_INIT_JPG | IMG_INIT_PNG | IMG_INIT_TIF;
   int mInit = IMG_Init(mFlags);
@@ -33,6 +34,7 @@ ImageTextureProxy* ImageTextureSet::getTextureProxy(const std::string& name) {
   if (mTexture == NULL) {
     mTexture = new ImageTextureProxy();
     cTextures[name] = mTexture;
+    cRuntimeContext->add(mTexture, name);
   }
   return mTexture;
 }
@@ -88,8 +90,8 @@ ImageTextureSet::~ImageTextureSet() {
   IMG_Quit();
 }
 
-extern "C" IPlugin* create() {
-  return new ImageTextureSet();
+extern "C" IPlugin* create(IRuntimeContext* runtimeContext) {
+  return new ImageTextureSet(runtimeContext);
 }
 
 extern "C" void destroy(IPlugin* textureSet) {

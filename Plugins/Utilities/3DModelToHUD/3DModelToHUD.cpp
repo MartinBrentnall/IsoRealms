@@ -35,6 +35,7 @@ void ModelToHUD::load(DOMNodeWrapper* node) {
       cModelLocation.z = mNode->getFloatAttribute("z");
     }
   }
+  cModel = cModelFactory->createModel(&cModelLocation);
 }
 
 void ModelToHUD::save(DOMNodeWriter* node) {
@@ -49,7 +50,6 @@ void ModelToHUD::setPlugin(PlugSocket* socket, IPlugin* plugin) {
     ISimpleModelFactory* mPreviousModelFactory = cModelFactory;
     if (assignPlugin(plugin, &cModelFactory, *socket)) {
       mPreviousModelFactory->destroyModel(cModel);
-      cModel = cModelFactory->createModel(&cModelLocation);
     }
   } else if (socket->getType() == "Camera") {
     assignPlugin(plugin, &cCamera, *socket);

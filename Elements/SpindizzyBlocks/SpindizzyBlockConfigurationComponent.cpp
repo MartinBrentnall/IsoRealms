@@ -18,10 +18,9 @@
  */
 #include "SpindizzyBlockConfigurationComponent.h"
 
-SpindizzyBlockConfigurationComponent::SpindizzyBlockConfigurationComponent(IComponentContainer* componentContainer, SpindizzyBlockFactory* blockFactory, SpindizzyBlockProperties* blockProperties, ITextureSet** textureSet, IComponentCloseListener* listener) : Dialog(componentContainer, "Block Editor", 0.0f, 0.0f, 0.25f, 0.5f) {
+SpindizzyBlockConfigurationComponent::SpindizzyBlockConfigurationComponent(IComponentContainer* componentContainer, SpindizzyBlockFactory* blockFactory, SpindizzyBlockProperties* blockProperties, IComponentCloseListener* listener) : Dialog(componentContainer, "Block Editor", 0.0f, 0.0f, 0.25f, 0.5f) {
   cBlockProperties = blockProperties;
   cBlockFactory = blockFactory;
-  cTextureSet = textureSet;
   addCloseListener(listener);
   cSampleBlock = NULL;
   updateSampleBlock();
@@ -32,7 +31,7 @@ void SpindizzyBlockConfigurationComponent::updateSampleBlock() {
     delete cSampleBlock;
   }
   BlockLocation mIdentityLocation(0, 0, 0);
-  cSampleBlock = cBlockFactory->createBlock(&mIdentityLocation, &mIdentityLocation, cTextureSet, cBlockProperties, true);
+  cSampleBlock = cBlockFactory->createBlock(&mIdentityLocation, &mIdentityLocation, cBlockProperties, true);
 }
 
 void SpindizzyBlockConfigurationComponent::updateContent(int milliseconds) {

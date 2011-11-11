@@ -18,11 +18,9 @@
  */
 #include "BlockFactory.h"
 
-BlockFactory::BlockFactory() {
-  assignDummyPlugin(&cDummyTextureSet, "TextureSet");
-  cTextureSet = cDummyTextureSet;
-  cTextureSetController = NULL;
-  cProperties = new BlockProperties(&cTextureSet);
+BlockFactory::BlockFactory(IRuntimeContext* runtimeContext) {
+  cRuntimeContext = runtimeContext;
+  cProperties = new BlockProperties();
 }
 
 ISimpleModel* BlockFactory::createModel(Vertex* location, float scale) {
@@ -33,30 +31,6 @@ void BlockFactory::destroyModel(ISimpleModel* block) {
   delete block;
 }
 
-void BlockFactory::setPlugin(PlugSocket* socket, IPlugin* plugin) {
-  if (socket->getType() == "TextureSet") {
-    assignPlugin(plugin, &cTextureSet, *socket);
-  } else if (socket->getType() == "TextureSetChanger") {
-    ITextureSetChanger* mPreviousController = cTextureSetController;
-    if (assignPlugin(plugin, &cTextureSetController, *socket, false)) {
-      if (mPreviousController != NULL) {
-        cTextureSetController->removeControlObject(this);
-      }
-      if (cTextureSetController != NULL) {
-        cTextureSetController->addControlObject(this);
-      }
-    }
-  } else {
-    // TODO: Throw
-  }
-}
-
-IPlugin* BlockFactory::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "TextureSet") {return cTextureSet;}
-  // TODO: Throw
-  return NULL;
-}
-
 void BlockFactory::save(DOMNodeWriter* node) {
   cProperties->save(node);
 }
@@ -65,36 +39,33 @@ void BlockFactory::load(DOMNodeWrapper* node) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
+    ITexture* mTexture = cRuntimeContext->getTexture(mNode);
     if (mValueAsString == "TopSurfaceTexture") {
-      cProperties->setTopSurfaceTexture(mNode->getStringValue());
+      cProperties->setTopSurfaceTexture(mTexture);
     } else if (mValueAsString == "BottomSurfaceTexture") {
-      cProperties->setBottomSurfaceTexture(mNode->getStringValue());
+      cProperties->setBottomSurfaceTexture(mTexture);
     } else if (mValueAsString == "NorthSurfaceTextureTop") {
-      cProperties->setNorthSurfaceTextureTop(mNode->getStringValue());
+      cProperties->setNorthSurfaceTextureTop(mTexture);
     } else if (mValueAsString == "EastSurfaceTextureTop") {
-      cProperties->setEastSurfaceTextureTop(mNode->getStringValue());
+      cProperties->setEastSurfaceTextureTop(mTexture);
     } else if (mValueAsString == "SouthSurfaceTextureTop") {
-      cProperties->setSouthSurfaceTextureTop(mNode->getStringValue());
+      cProperties->setSouthSurfaceTextureTop(mTexture);
     } else if (mValueAsString == "WestSurfaceTextureTop") {
-      cProperties->setWestSurfaceTextureTop(mNode->getStringValue());
+      cProperties->setWestSurfaceTextureTop(mTexture);
     } else if (mValueAsString == "NorthSurfaceTextureBottom") {
-      cProperties->setNorthSurfaceTextureBottom(mNode->getStringValue());
+      cProperties->setNorthSurfaceTextureBottom(mTexture);
     } else if (mValueAsString == "EastSurfaceTextureBottom") {
-      cProperties->setEastSurfaceTextureBottom(mNode->getStringValue());
+      cProperties->setEastSurfaceTextureBottom(mTexture);
     } else if (mValueAsString == "SouthSurfaceTextureBottom") {
-      cProperties->setSouthSurfaceTextureBottom(mNode->getStringValue());
+      cProperties->setSouthSurfaceTextureBottom(mTexture);
     } else if (mValueAsString == "WestSurfaceTextureBottom") {
-      cProperties->setWestSurfaceTextureBottom(mNode->getStringValue());
+      cProperties->setWestSurfaceTextureBottom(mTexture);
     }
   }
 }
 
-void BlockFactory::setTextureSet(ITextureSet* textureSet) {
-  cTextureSet = textureSet != NULL ? textureSet : cDummyTextureSet;
-}
-
-extern "C" IPlugin* create() {
-  return new BlockFactory();
+extern "C" IPlugin* create(IRuntimeContext* runtimeContext) {
+  return new BlockFactory(runtimeContext);
 }
 
 extern "C" void destroy(IPlugin* plugin) {

@@ -47,6 +47,10 @@ C64SpindizzySpriteSet::C64SpindizzySpriteSet(IRuntimeContext* runtimeContext) {
   cTextures[LIFT_DIAMOND_NONE] = new C64SpindizzySprite();
   cTextures[LIFT_DIAMOND_BOTH] = new C64SpindizzySprite();
   
+  for (std::map<std::string, C64SpindizzySprite*>::iterator i = cTextures.begin(); i != cTextures.end(); i++) {
+    cRuntimeContext->add(i->second, i->first);
+  }
+  
   generateTextures();
 }
 

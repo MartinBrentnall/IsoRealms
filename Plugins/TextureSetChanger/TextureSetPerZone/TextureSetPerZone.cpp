@@ -26,60 +26,8 @@ TextureSetPerZone::TextureSetPerZone() {
   cTargetBackgroundColour = new Colour(0.0f, 0.0f, 0.0f);
 }
 
-void TextureSetPerZone::setTextureSet(ITextureSet* textureSet) {
-  IZone* mZone = cCurrentMap->getZone(*cBlockLocation);
-  if (mZone != NULL) {
-    if (textureSet != NULL) {
-      cZoneMapping[mZone] = textureSet;
-    } else {
-      cZoneMapping.erase(mZone);
-    }
-    cCurrentMap->zoneChanged(mZone);
-  }
-}
-
-void TextureSetPerZone::addControlObject(IChangeableTextureSet* objectToControl) {
-  cControlledObjects.push_back(objectToControl);
-}
-
-void TextureSetPerZone::removeControlObject(IChangeableTextureSet* objectToControl) {
-  // TODO: ERASE
-}
-
-std::vector<PlugSocket*> TextureSetPerZone::getPlugSockets() {
-  std::vector<PlugSocket*> mSockets;
-  // TODO: Should not construct plug sockets on-the-fly.
-  for (unsigned int i = 0; i <= cTexturePalette.size(); i++) {
-    std::ostringstream mSocketID;
-    mSocketID << i;
-    PlugSocket* mPlugSocket = new PlugSocket("TextureSet", mSocketID.str());
-    mSockets.push_back(mPlugSocket);
-  }
-  mSockets.push_back(new PlugSocket("ZoneContext"));
-  return mSockets;
-}
-
 void TextureSetPerZone::setPlugin(PlugSocket* plugSocket, IPlugin* plugin) {
-  if (plugSocket->getType() == "TextureSet") {
-    std::string mSocketID = plugSocket->getID();
-    std::stringstream mInputString(mSocketID);
-    unsigned int mIndex;
-    mInputString >> mIndex;
-    if (plugin != NULL) {
-      ITextureSet* mTextureSet = dynamic_cast<ITextureSet*>(plugin);
-      if (mTextureSet != NULL) {
-        if (mIndex == cTexturePalette.size()) {
-          cTexturePalette.push_back(mTextureSet);
-        } else {
-          cTexturePalette[mIndex] = mTextureSet;
-        }
-      } else {
-        std::cout << "Warning: dynamic_cast failed for ITextureSet" << std::endl;
-      }
-    } else if (mIndex != cTexturePalette.size()) {
-      cTexturePalette.erase(cTexturePalette.begin() + mIndex);
-    }
-  } else if (plugSocket->getType() == "ZoneContext") {
+  if (plugSocket->getType() == "ZoneContext") {
     IZoneContext* mPreviousZoneContext = cZoneContext;
     if (assignPlugin(plugin, &cZoneContext, *plugSocket)) {
       mPreviousZoneContext->removeZoneContextListener(this);
@@ -89,15 +37,7 @@ void TextureSetPerZone::setPlugin(PlugSocket* plugSocket, IPlugin* plugin) {
 }
 
 IPlugin* TextureSetPerZone::getPlugin(PlugSocket* plugSocket) {
-  if (plugSocket->getType() == "TextureSet") {
-    std::string mSocketID = plugSocket->getID();
-    std::stringstream mInputString(mSocketID);
-    unsigned int mIndex;
-    mInputString >> mIndex;
-    if (mIndex < cTexturePalette.size()) {
-      return cTexturePalette[mIndex]; 
-    }
-  } else if (plugSocket->getType() == "ZoneContext") {
+  if (plugSocket->getType() == "ZoneContext") {
     return cZoneContext;
   } else {
     // TODO: Chuck something
@@ -106,10 +46,11 @@ IPlugin* TextureSetPerZone::getPlugin(PlugSocket* plugSocket) {
 }
 
 void TextureSetPerZone::renderPreZone(IZone* zone) {
-  std::map<IZone*, ITextureSet*>::iterator mIterator = cZoneMapping.find(zone);
+  // TODO: Change the textures
+/*  std::map<IZone*, ITextureSet*>::iterator mIterator = cZoneMapping.find(zone);
   for (unsigned int i = 0; i < cControlledObjects.size(); i++) {
     cControlledObjects[i]->setTextureSet(mIterator != cZoneMapping.end() ? mIterator->second : NULL);
-  }
+  }*/
 }
 
 void TextureSetPerZone::zoneContextChanged(IMap* map, IZone* zone) {
@@ -129,18 +70,20 @@ void TextureSetPerZone::setEditingContext(IEditingContext* editingContext) {
 }
 
 void TextureSetPerZone::saveData(DOMNodeWriter* node, IMap* map, IZone* zone) {
-  std::map<IZone*, ITextureSet*>::iterator mIterator = cZoneMapping.find(zone);
+  // TODO: Implement this
+/*  std::map<IZone*, ITextureSet*>::iterator mIterator = cZoneMapping.find(zone);
   if (mIterator != cZoneMapping.end()) {
     ITextureSet* mTextureSet = mIterator->second;
     DOMNodeWriter* mTextureSetNode = node->addBranch("TextureSet");
     IPluginRegistry* mPluginRegistry = map->getPluginRegistry();
     std::string mTextureSetName = mPluginRegistry->getInstanceName("TextureSet", mTextureSet);
     mTextureSetNode->addText(mTextureSetName);
-  }
+  }*/
 }
 
 void TextureSetPerZone::loadData(DOMNodeWrapper* node, IPluginRegistry* pluginRegistry, IZone* zone) {
-  for (int i = 0; i < node->getChildCount(); i++) {
+  // TODO: Implement this
+/*  for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "TextureSet") {
@@ -158,7 +101,7 @@ void TextureSetPerZone::loadData(DOMNodeWrapper* node, IPluginRegistry* pluginRe
         std::cout << "Warning: Texture set \"" << mTextureSetName << "\" specified for zone is undefined!" << std::endl;
       }
     }
-  }
+  }*/
 }
 
 std::vector<IDynamicElement*> TextureSetPerZone::getPreLoopCommands() {
@@ -197,7 +140,7 @@ void TextureSetPerZone::update(int ticks) {
 }
 
 void TextureSetPerZone::zoneContextChanged(IZone* zone) {
-  std::map<IZone*, ITextureSet*>::iterator i = cZoneMapping.find(zone);
+/*  std::map<IZone*, ITextureSet*>::iterator i = cZoneMapping.find(zone);
   if (i != cZoneMapping.end()) {
     cCurrentZone = zone;
     ITexture* mBackgroundTexture = i->second->getTexture("Background");
@@ -212,11 +155,11 @@ void TextureSetPerZone::zoneContextChanged(IZone* zone) {
     cPreviousBackgroundColour = mNewPreviousBackgroundColour;
     cTargetBackgroundColour = new Colour(*mBackgroundTexture->getColour(0.0f, 0.0f));
     cProgressBackgroundColour = 0.0f;
-  }
+  }*/
 }
 
 IHUDComponent* TextureSetPerZone::createComponent() {
-  return new TextureSetChooserComponent(cComponentContainer, this, cTexturePalette);
+  return new TextureSetChooserComponent(cComponentContainer);
 }
 
 extern "C" IPlugin* create() {

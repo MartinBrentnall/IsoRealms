@@ -20,10 +20,9 @@
 #define BLOCK_TYPE_PROPERTIES_H
 
 #include <IsoRealms/DOMNodeWrapper.h>
+#include <IsoRealms/IRuntimeContext.h>
+#include <IsoRealms/ITexture.h>
 #include <IsoRealms/Script.h>
-
-#include "../../Plugins/TextureSet/ITexture.h"
-#include "../../Plugins/TextureSet/ITextureSet.h"
 
 #include "TextureRotation.h"
 #include "WallType.h"
@@ -36,22 +35,21 @@ class BlockTypeProperties {
   float cSurfaceGrip;
   float cSurfaceBounce;
   bool cRespawnAllowed;
-  ITextureSet** cTextureSet;
-  std::string cSurfaceTexture;
-  std::string cSurfaceSplitNETexture;
-  std::string cSurfaceSplitNWTexture;
-  std::string cWestWallTexture;
-  std::string cEastWallTexture;
-  std::string cSouthWallTexture;
-  std::string cNorthWallTexture;
-  std::string cWestWallTextureTop;
-  std::string cEastWallTextureTop;
-  std::string cSouthWallTextureTop;
-  std::string cNorthWallTextureTop;
-  std::string cWestWallTextureBottom;
-  std::string cEastWallTextureBottom;
-  std::string cSouthWallTextureBottom;
-  std::string cNorthWallTextureBottom;
+  ITexture* cSurfaceTexture;
+  ITexture* cSurfaceSplitNETexture;
+  ITexture* cSurfaceSplitNWTexture;
+  ITexture* cWestWallTexture;
+  ITexture* cEastWallTexture;
+  ITexture* cSouthWallTexture;
+  ITexture* cNorthWallTexture;
+  ITexture* cWestWallTextureTop;
+  ITexture* cEastWallTextureTop;
+  ITexture* cSouthWallTextureTop;
+  ITexture* cNorthWallTextureTop;
+  ITexture* cWestWallTextureBottom;
+  ITexture* cEastWallTextureBottom;
+  ITexture* cSouthWallTextureBottom;
+  ITexture* cNorthWallTextureBottom;
   bool cWestBottomFlip;
   bool cEastBottomFlip;
   bool cSouthBottomFlip;
@@ -59,12 +57,10 @@ class BlockTypeProperties {
   TextureRotation cSurfaceRotation;
   WallType cWallType;
   
-  void saveTexture(DOMNodeWriter*, const std::string&, const std::string&);
-
   public:
   BlockTypeProperties();
   
-  void configure(DOMNodeWrapper*, IRuntimeContext*, ITextureSet**);
+  void configure(DOMNodeWrapper*, IRuntimeContext*);
   
   void executeContactScript();
   void executeImpactScript();

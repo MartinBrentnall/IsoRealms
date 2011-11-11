@@ -16,25 +16,18 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_TEXTURE_SET_H
-#define I_TEXTURE_SET_H
+#ifndef I_TEXTURE_H
+#define I_TEXTURE_H
 
-#include <IsoRealms/IPlugin.h>
+#include "IColour.h"
 
-#include "ITexture.h"
-
-class ITextureSet:public virtual IPlugin {
+class ITexture {
   public:
-
-  /**
-   * Return the texture of the specified name.
-   * 
-   * @param std::string&  The texture name.
-   * @returns  The texture.
-   */
-  virtual ITexture* getTexture(const std::string&) = 0;
-
-  virtual ~ITextureSet() {}
+  virtual void set() = 0;
+  virtual void texCoord2f(float, float) = 0;
+  virtual IColour* getColour(float, float) = 0;
+  virtual void save(DOMNodeWriter*, const std::string&) = 0;
+  virtual ~ITexture() {}
 };
 
 #endif
