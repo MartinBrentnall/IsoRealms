@@ -34,6 +34,8 @@
 #include "../../ZoneContext/IZoneContextListener.h"
 
 #include "TextureSetChooserComponent.h"
+#include "Theme.h"
+#include "ThemeTexture.h"
 
 class TextureSetPerZone:public IPlugin,
                         public IZoneContextListener,
@@ -53,6 +55,10 @@ class TextureSetPerZone:public IPlugin,
     void update(int);
   };
 
+  IRuntimeContext* cRuntimeContext;
+  std::map<IZone*, Theme*> cZoneThemes;
+  std::map<std::string, Theme*> cThemes;
+  std::map<std::string, ThemeTexture*> cTextures;
   DefaultTextureSetCommand* cDefaultTextureSetCommand;
   IMap* cCurrentMap;
   IZone* cCurrentZone;
@@ -63,8 +69,11 @@ class TextureSetPerZone:public IPlugin,
   float cProgressBackgroundColour;
   IComponentContainer* cComponentContainer;
 
+  ThemeTexture* getThemeTexture(const std::string&);
+  void loadTheme(DOMNodeWrapper*, Theme*);
+  
   public:
-  TextureSetPerZone();
+  TextureSetPerZone(IRuntimeContext*);
 
   /***********************************\
    * Implements IZoneContextListener *
@@ -90,6 +99,8 @@ class TextureSetPerZone:public IPlugin,
   void setEditingContext(IEditingContext*);
   void saveData(DOMNodeWriter*, IMap*, IZone*);
   void loadData(DOMNodeWrapper*, IPluginRegistry*, IZone*);
+  void save(DOMNodeWriter*);
+  void load(DOMNodeWrapper*);
   std::vector<IDynamicElement*> getPreLoopCommands();
   std::vector<IDynamicElement*> getPostLoopCommands();
   

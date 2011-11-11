@@ -18,7 +18,8 @@
  */
 #include "TextureSetPerZone.h"
 
-TextureSetPerZone::TextureSetPerZone() {
+TextureSetPerZone::TextureSetPerZone(IRuntimeContext* runtimeContext) {
+  cRuntimeContext = runtimeContext;
   assignDummyPlugin(&cZoneContext, "ZoneContext");
   cProgressBackgroundColour = 1.0f;
   cDefaultTextureSetCommand = new DefaultTextureSetCommand(this);
@@ -47,10 +48,8 @@ IPlugin* TextureSetPerZone::getPlugin(PlugSocket* plugSocket) {
 
 void TextureSetPerZone::renderPreZone(IZone* zone) {
   // TODO: Change the textures
-/*  std::map<IZone*, ITextureSet*>::iterator mIterator = cZoneMapping.find(zone);
-  for (unsigned int i = 0; i < cControlledObjects.size(); i++) {
-    cControlledObjects[i]->setTextureSet(mIterator != cZoneMapping.end() ? mIterator->second : NULL);
-  }*/
+  std::map<IZone*, Theme*>::iterator i = cZoneThemes.find(zone);
+  i->second->set();
 }
 
 void TextureSetPerZone::zoneContextChanged(IMap* map, IZone* zone) {
@@ -83,25 +82,52 @@ void TextureSetPerZone::saveData(DOMNodeWriter* node, IMap* map, IZone* zone) {
 
 void TextureSetPerZone::loadData(DOMNodeWrapper* node, IPluginRegistry* pluginRegistry, IZone* zone) {
   // TODO: Implement this
-/*  for (int i = 0; i < node->getChildCount(); i++) {
+  for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "TextureSet") {
-      std::string mTextureSetName = mNode->getStringValue();
-      std::string mPluginType("TextureSet");
-      IPlugin* mPlugin = pluginRegistry->getPlugin(mPluginType, mTextureSetName);
-      if (mPlugin != NULL) {
-        ITextureSet* mTextureSet = dynamic_cast<ITextureSet*>(mPlugin);
-        if (mTextureSet != NULL) {
-          cZoneMapping[zone] = mTextureSet;
-        } else {
-          std::cout << "Warning: dynamic_cast for \"" << mTextureSetName << "\" failed!" << std::endl;
-        }
-      } else {
-        std::cout << "Warning: Texture set \"" << mTextureSetName << "\" specified for zone is undefined!" << std::endl;
-      }
+      std::string mThemeName = mNode->getStringValue();
+      Theme* mTheme = cThemes[mThemeName]; // TODO: Error if the theme doesn't exist
+      cZoneThemes[zone] = mTheme;
     }
-  }*/
+  }
+}
+
+void TextureSetPerZone::save(DOMNodeWriter* node) {
+}
+
+ThemeTexture* TextureSetPerZone::getThemeTexture(const std::string& type) {
+  if (cTextures.find(type) == cTextures.end()) {
+    cTextures[type] = new ThemeTexture();
+    cRuntimeContext->add(cTextures[type], type);
+  }
+  return cTextures[type];
+}
+
+void TextureSetPerZone::loadTheme(DOMNodeWrapper* node, Theme* theme) {
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "Texture") {
+      std::string mType = mNode->getAttribute("type");
+      ITexture* mTexture = cRuntimeContext->getTexture(mNode);
+      ThemeTexture* mThemeTexture = getThemeTexture(mType);
+      theme->registerElement(mThemeTexture, mTexture);
+    }
+  }      
+}
+
+void TextureSetPerZone::load(DOMNodeWrapper* node) {
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "Theme") {
+      std::string mThemeName = mNode->getAttribute("name");
+      Theme* mTheme = new Theme();
+      loadTheme(mNode, mTheme);
+      cThemes[mThemeName] = mTheme;
+    }
+  }
 }
 
 std::vector<IDynamicElement*> TextureSetPerZone::getPreLoopCommands() {
@@ -162,8 +188,8 @@ IHUDComponent* TextureSetPerZone::createComponent() {
   return new TextureSetChooserComponent(cComponentContainer);
 }
 
-extern "C" IPlugin* create() {
-  return new TextureSetPerZone();
+extern "C" IPlugin* create(IRuntimeContext* runtimeContext) {
+  return new TextureSetPerZone(runtimeContext);
 }
 
 extern "C" void destroy(IPlugin* textureSetPerZone) {
