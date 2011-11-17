@@ -18,21 +18,13 @@
  */
 #include "SpindizzyJewel.h"
 
-SpindizzyJewel::SpindizzyJewel(BaseSpindizzyJewelFactory* elementFactory, BlockLocation* location, ISimpleModelFactory* jewelModelFactory) : Element<ISpindizzyJewelSet, BaseSpindizzyJewelFactory>(elementFactory) {
+SpindizzyJewel::SpindizzyJewel(BaseSpindizzyJewelFactory* elementFactory, BlockLocation* location, const std::string& modelPath, IRuntimeContext* runtimeContext) : Element<ISpindizzyJewelSet, BaseSpindizzyJewelFactory>(elementFactory) {
   cLocation = BlockLocation(*location);
   cVertexLocation.x = cLocation.x;
   cVertexLocation.y = cLocation.y;
   cVertexLocation.z = cLocation.z;
-  cModel = jewelModelFactory->createModel(&cVertexLocation);
+  cModel = runtimeContext->getModel(modelPath, &cVertexLocation);
   cCollected = false;
-}
-
-void SpindizzyJewel::setModel(ISimpleModelFactory* modelFactory) {
-  cModel = modelFactory->createModel(&cVertexLocation);;
-}
-
-ISimpleModel* SpindizzyJewel::getModel() {
-  return cModel;
 }
 
 void SpindizzyJewel::renderStatic() {
@@ -86,8 +78,8 @@ bool SpindizzyJewel::initElement(unsigned int) {
 
 void SpindizzyJewel::collect() {
   cCollected = true;
-  ISpindizzyJewelSet* mSpindizzyJewelSet = getElementSet();
-  mSpindizzyJewelSet->jewelCollected();
+  BaseSpindizzyJewelFactory* mSpindizzyJewelFactory = getElementFactory();
+  mSpindizzyJewelFactory->jewelCollected();
 }
 
 bool SpindizzyJewel::isCollected(Vertex& start, Vertex& end) {

@@ -21,8 +21,6 @@
 
 #include <cmath>
 
-#include "../../Plugins/3DModel/ISimpleModelFactory.h"
-
 #include <IsoRealms/BlockLocation.h>
 #include <IsoRealms/IComponentContainer.h>
 #include <IsoRealms/IDynamicElement.h>
@@ -38,21 +36,26 @@
 class SpindizzyJewelFactory:public BaseSpindizzyJewelFactory,
                             public IsoRealmsConstants {
   private:
+  IRuntimeContext* cRuntimeContext;
+  std::string cName;
+  std::string cModelPath;
   std::vector<SpindizzyJewel*> cContent;
-  ISimpleModelFactory* cJewelModelFactory;
   ICollectables* cCollectables;
   SpindizzyJewel* cSampleJewel;
   std::vector<IDynamicElement*> cSampleJewelDynamics;
   std::vector<IVisualElement*> cSampleJewelVisuals;
   BlockLocation* cEditingLocation;
+  Script* cJewelCollectedScript;
+  Script* cAllJewelsCollectedScript;
 
   bool keyDown(SDLKey&);
 
   public:
-  SpindizzyJewelFactory(ISpindizzyJewelSet*, ISimpleModelFactory*);
+  SpindizzyJewelFactory(ISpindizzyJewelSet*, DOMNodeWrapper*, IRuntimeContext*);
 
-  void setModel(ISimpleModelFactory*);
-
+  void jewelCollected();
+  void allJewelsCollected();
+  
   /******************************\
    * Implements IElementFactory *
   \******************************/

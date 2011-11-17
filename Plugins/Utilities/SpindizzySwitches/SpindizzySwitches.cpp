@@ -32,25 +32,7 @@ SpindizzySwitches::SpindizzySwitches(IRuntimeContext* runtimeContext) {
 }
 
 void SpindizzySwitches::setPlugin(PlugSocket* socket, IPlugin* plugin) {
-  if (socket->getType() == "3DModel") {
-    std::string mSocketID = socket->getID();
-    std::stringstream mInputString(mSocketID);
-    unsigned int mIndex;
-    mInputString >> mIndex;
-    // TODO: Elements using the model should be notified of model change.
-    if (plugin != NULL) {
-      ISimpleModelFactory* mModelFactory = NULL;
-      assignPlugin(plugin, &mModelFactory, *socket);
-      // TODO: Throw if index is out of bounds.
-      if (mIndex == cHUDModels.size()) {
-        cHUDModels.push_back(mModelFactory);
-      } else {
-        cHUDModels[mIndex] = mModelFactory;
-      }
-    } else if (mIndex != cHUDModels.size()) {
-      cHUDModels.erase(cHUDModels.begin() + mIndex);
-    }
-  } else if (socket->getType() == "HUD") {
+  if (socket->getType() == "HUD") {
     IHUD* mPreviousHUD = cHUD;
     if (assignPlugin(plugin, &cHUD, *socket)) {
       mPreviousHUD->unregisterHUDComponentFactory(this);
@@ -67,16 +49,8 @@ void SpindizzySwitches::setPlugin(PlugSocket* socket, IPlugin* plugin) {
 }
 
 IPlugin* SpindizzySwitches::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "3DModel") {
-    std::string mSocketID = socket->getID();
-    std::stringstream mInputString(mSocketID);
-    unsigned int mIndex;
-    mInputString >> mIndex;
-    if (mIndex < cHUDModels.size()) {
-      return cHUDModels[mIndex]; 
-    }
-  }
   if (socket->getType() == "HUD") {return cHUD;}
+  if (socket->getType() == "Camera") {return cCamera;}
   // TODO: Throw
   return NULL;
 }
@@ -123,10 +97,8 @@ SpindizzySwitches::SwitchCommand::SwitchCommand(SpindizzySwitches* parent, DOMNo
   std::string mSwitchName = node->getAttribute("name");
   std::string mSwitchType = node->getAttribute("type");
   // TODO: What if this isn't specified?
-  int mHUDModelIndex = node->getIntegerAttribute("HUDModel");
   cPrimary = mSwitchType == "primary";
   cSwitch = NULL;
-  cHUDModel = cParent->cHUDModels[mHUDModelIndex]->createModel(&(cParent->cDefaultVertex));
   Script* mOnScript = Script::getDummy();
   Script* mOffScript = Script::getDummy();
   for (int i = 0; i < node->getChildCount(); i++) {
@@ -136,6 +108,9 @@ SpindizzySwitches::SwitchCommand::SwitchCommand(SpindizzySwitches* parent, DOMNo
       mOnScript = cParent->cRuntimeContext->getScript(mNode);
     } else if (mValueAsString == "Off") {
       mOffScript = cParent->cRuntimeContext->getScript(mNode);
+    } else if (mValueAsString == "ActiveModel") {
+      Vertex* mVertex = new Vertex();
+      cHUDModel = cParent->cRuntimeContext->getModel(mNode, mVertex);
     } else {
       // TODO: Throw
     }
@@ -147,7 +122,7 @@ void SpindizzySwitches::SwitchCommand::deactivate() {
   cSwitch->switchOff();
 }
 
-ISimpleModel* SpindizzySwitches::SwitchCommand::getModel() {
+I3DModel* SpindizzySwitches::SwitchCommand::getModel() {
   return cHUDModel;
 }
 

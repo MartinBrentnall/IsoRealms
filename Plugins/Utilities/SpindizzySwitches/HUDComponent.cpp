@@ -23,7 +23,7 @@ HUDComponent::HUDComponent() {
   cCamera = NULL;
 }
 
-void HUDComponent::setModel(ISimpleModel* model) {
+void HUDComponent::setModel(I3DModel* model) {
   cModel = model;
 }
 

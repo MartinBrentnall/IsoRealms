@@ -23,7 +23,7 @@ HUDClue::HUDClue(ICamera* camera) {
   cCamera = camera;
 }
 
-void HUDClue::setModel(ISimpleModel* model) {
+void HUDClue::setModel(I3DModel* model) {
   cClueModel = model;
 }
 

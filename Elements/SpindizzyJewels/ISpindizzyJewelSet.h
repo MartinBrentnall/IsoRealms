@@ -27,8 +27,6 @@
 class ISpindizzyJewelSet:public ElementSet<IElement> {
   public:
   virtual ICollectables* getCollectables() = 0;
-  virtual void jewelCollected() = 0;
-  virtual void allJewelsCollected() = 0;
   virtual bool isEditing() = 0;
 };
 

@@ -26,13 +26,12 @@
 #include <IsoRealms/BlockLocation.h>
 #include <IsoRealms/Collision.h>
 #include <IsoRealms/Element.h>
+#include <IsoRealms/I3DModel.h>
 #include <IsoRealms/IDynamicElement.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 #include <IsoRealms/IVisualElement.h>
 
 #include "../../Plugins/CollidableSurfaceRegistry/IRollableSurface.h"
-#include "../../Plugins/3DModel/ISimpleModel.h"
-#include "../../Plugins/3DModel/ISimpleModelFactory.h"
 
 #include "ISpindizzyLiftFactory.h"
 #include "ISpindizzyLiftSet.h"
@@ -54,7 +53,7 @@ class SpindizzyLift:public Element<ISpindizzyLiftSet, ISpindizzyLiftFactory>,
     
   // Definition values
   BlockLocation cLocation;
-  ISimpleModel* cLiftModel;
+  I3DModel* cLiftModel;
   int cBottom;
   int cTop;
   unsigned int cTopDelay;
@@ -75,9 +74,7 @@ class SpindizzyLift:public Element<ISpindizzyLiftSet, ISpindizzyLiftFactory>,
   Vertex* getBoundaryCrossingPoint(Vertex&, Vertex&, float*, float);
   
   public:
-  SpindizzyLift(ISpindizzyLiftFactory*, BlockLocation*, ISimpleModelFactory*, SpindizzyLiftProperties*, int, int);
-
-  void setModel(ISimpleModelFactory*, ISimpleModelFactory*);
+  SpindizzyLift(ISpindizzyLiftFactory*, BlockLocation*, const std::string&, SpindizzyLiftProperties*, int, int, IRuntimeContext*);
 
   LiftValues getZLocationAfter(int);
   void reset();

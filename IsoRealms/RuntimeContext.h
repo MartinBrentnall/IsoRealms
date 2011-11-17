@@ -21,11 +21,15 @@
 
 #include "ColourProxy.h"
 #include "CommandProxy.h"
+#include "I3DModel.h"
+#include "I3DModelFactory.h"
+#include "I3DModelSource.h"
 #include "IColour.h"
 #include "IColourSource.h"
 #include "IRuntimeContext.h"
 #include "IScriptSource.h"
 #include "ITextureSource.h"
+#include "ModelFactoryProxy.h"
 #include "RegistryProxy.h"
 #include "TextureProxy.h"
 
@@ -35,13 +39,15 @@ class RuntimeContext:public IRuntimeContext {
   RegistryProxy<ICommand, CommandProxy>* cCommandGateway;
   RegistryProxy<IColour, ColourProxy>* cColourGateway;
   RegistryProxy<ITexture, TextureProxy>* cTextureGateway;
+  RegistryProxy<I3DModelFactory, ModelFactoryProxy>* c3DModelGateway;
   bool cEditing;
   IScriptSource* cScriptSource;
   IColourSource* cColourSource;
   ITextureSource* cTextureSource;
+  I3DModelSource* c3DModelSource;
   
   public:
-  RuntimeContext(IMap*, RegistryProxy<ICommand, CommandProxy>*, RegistryProxy<IColour, ColourProxy>*, RegistryProxy<ITexture, TextureProxy>*, bool, IScriptSource*, IColourSource*, ITextureSource*);
+  RuntimeContext(IMap*, RegistryProxy<ICommand, CommandProxy>*, RegistryProxy<IColour, ColourProxy>*, RegistryProxy<ITexture, TextureProxy>*, RegistryProxy<I3DModelFactory, ModelFactoryProxy>*, bool, IScriptSource*, IColourSource*, ITextureSource*, I3DModelSource*);
 
   /******************************\
    * Implements IRuntimeContext *
@@ -52,10 +58,13 @@ class RuntimeContext:public IRuntimeContext {
   void add(ICommand*, const std::string&);
   void add(IColour*, const std::string&);
   void add(ITexture*, const std::string&);
+  void add(I3DModelFactory*, const std::string&);
   void remove(ICommand*);
   Script* getScript(DOMNodeWrapper*);
   IColour* getColour(DOMNodeWrapper*);
   ITexture* getTexture(DOMNodeWrapper*);
+  I3DModel* getModel(DOMNodeWrapper*, Vertex*);
+  I3DModel* getModel(const std::string&, Vertex*);
 };
 
 #endif

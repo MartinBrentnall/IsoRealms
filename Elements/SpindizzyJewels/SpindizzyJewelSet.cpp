@@ -20,25 +20,11 @@
 
 SpindizzyJewelSet::SpindizzyJewelSet(IRuntimeContext* runtimeContext) {
   cRuntimeContext = runtimeContext;
-  cJewelCollectedScript = Script::getDummy();
-  cAllJewelsCollectedScript = Script::getDummy();
-  assignDummyPlugin(&cJewelModelFactory, "3DModel");// TODO: Change to Factory
   assignDummyPlugin(&cCollectables, "Collectables");
-  cElementFactories.push_back(new SpindizzyJewelFactory(this, cJewelModelFactory));
-}
-
-void SpindizzyJewelSet::setModel(ISimpleModelFactory* modelFactory) {
-  for (unsigned int i = 0; i < cElementFactories.size(); i++) {
-    ((SpindizzyJewelFactory*) cElementFactories[i])->setModel(modelFactory);
-  }
 }
 
 std::vector<IElementFactory*> SpindizzyJewelSet::getElementFactories() {
   return cElementFactories;
-}
-
-void SpindizzyJewelSet::setRuntimeContext(IRuntimeContext* runtimeContext) {
-  cRuntimeContext = runtimeContext;
 }
 
 void SpindizzyJewelSet::destroy(IElement* jewel) {
@@ -46,11 +32,7 @@ void SpindizzyJewelSet::destroy(IElement* jewel) {
 }
 
 void SpindizzyJewelSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
-  if (socket->getType() == "3DModel") {
-    if (assignPlugin(implementation, &cJewelModelFactory, *socket)) {
-      setModel(cJewelModelFactory);
-    }
-  } else if (socket->getType() == "Collectables") {
+  if (socket->getType() == "Collectables") {
     ICollectables* mPreviousCollectables = cCollectables;
     if (assignPlugin(implementation, &cCollectables, *socket)) {
       mPreviousCollectables->reinitialise();
@@ -61,41 +43,23 @@ void SpindizzyJewelSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
 }
 
 IPlugin* SpindizzyJewelSet::getPlugin(PlugSocket* socket) {
-  if      (socket->getType() == "3DModel")         {return cJewelModelFactory;}
-  else if (socket->getType() == "Collectables")    {return cCollectables;}
+  if (socket->getType() == "Collectables")    {return cCollectables;}
   // TODO: Throw wobbly!
   return NULL;
-}
-
-void SpindizzyJewelSet::save(DOMNodeWriter* node) {
-  cJewelCollectedScript->save(node, "JewelCollectedScript");
-  cAllJewelsCollectedScript->save(node, "AllJewelsCollectedScript");
 }
 
 void SpindizzyJewelSet::load(DOMNodeWrapper* node) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "JewelCollectedScript") {
-      cJewelCollectedScript = cRuntimeContext->getScript(mNode);
-    } else if (mValueAsString == "AllJewelsCollectedScript") {
-      cAllJewelsCollectedScript = cRuntimeContext->getScript(mNode);
-    } else {
-      // TODO: Throw something!
+    if (mValueAsString == "Type") {
+      cElementFactories.push_back(new SpindizzyJewelFactory(this, mNode, cRuntimeContext));
     }
   }
 }
 
 ICollectables* SpindizzyJewelSet::getCollectables() {
   return cCollectables;
-}
-
-void SpindizzyJewelSet::jewelCollected() {
-  cJewelCollectedScript->execute();
-}
-
-void SpindizzyJewelSet::allJewelsCollected() {
-  cAllJewelsCollectedScript->execute();
 }
 
 bool SpindizzyJewelSet::isEditing() {

@@ -19,25 +19,26 @@
 #ifndef SPINDIZZY_CRAFT_BALL_MODEL_FACTORY_H
 #define SPINDIZZY_CRAFT_BALL_MODEL_FACTORY_H
 
-#include "../../Camera/ICamera.h"
+#include <IsoRealms/I3DModelFactory.h>
+#include <IsoRealms/I3DModel.h>
 
-#include "../ISimpleModelFactory.h"
-#include "../ISimpleModel.h"
+#include "../../Camera/ICamera.h"
 
 #include "SpindizzyCraftBallModel.h"
 
-class SpindizzyCraftBallModelFactory:public ISimpleModelFactory {
+class SpindizzyCraftBallModelFactory:public IPlugin,
+                                     public I3DModelFactory {
   private:
   ICamera* cCamera;
 
   public:
-  SpindizzyCraftBallModelFactory();
+  SpindizzyCraftBallModelFactory(IRuntimeContext*);
 
-  /**********************************\
-   * Implements ISimpleModelFactory *
-  \**********************************/
-  ISimpleModel* createModel(Vertex*, float);
-  void destroyModel(ISimpleModel*);
+  /******************************\
+   * Implements I3DModelFactory *
+  \******************************/
+  I3DModel* createModel(Vertex*, float);
+  void destroyModel(I3DModel*);
 
   /*****************************\
    * Implements IPluginSupport *

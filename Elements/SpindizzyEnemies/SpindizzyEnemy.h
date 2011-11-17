@@ -21,12 +21,11 @@
 
 #include <IsoRealms/BlockLocation.h>
 #include <IsoRealms/Element.h>
+#include <IsoRealms/I3DModel.h>
+#include <IsoRealms/IRuntimeContext.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 #include <IsoRealms/IVisualElement.h>
 #include <IsoRealms/Vertex.h>
-
-#include "../../Plugins/3DModel/ISimpleModel.h"
-#include "../../Plugins/3DModel/ISimpleModelFactory.h"
 
 class SpindizzyEnemy:public Element<>, 
                      public IVisualElement {
@@ -34,13 +33,11 @@ class SpindizzyEnemy:public Element<>,
   IElementFactory* cElementFactory;
   BlockLocation cStartLocation;
   Vertex* cCurrentLocation;
-  ISimpleModel* cEnemyModel;
+  I3DModel* cEnemyModel;
 
   public:
-  SpindizzyEnemy(IElementFactory*, BlockLocation*, ISimpleModelFactory*);
+  SpindizzyEnemy(IElementFactory*, BlockLocation*, const std::string&, IRuntimeContext*);
   SpindizzyEnemy(IElementFactory*, DOMNodeWrapper*, BlockLocation*);
-
-  void setModel(ISimpleModelFactory*);
 
   void reset();
   

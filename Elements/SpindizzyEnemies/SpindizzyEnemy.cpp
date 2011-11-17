@@ -18,15 +18,10 @@
  */
 #include "SpindizzyEnemy.h"
 
-SpindizzyEnemy::SpindizzyEnemy(IElementFactory* elementFactory, BlockLocation* startLocation, ISimpleModelFactory* enemyModelFactory) : Element<>(elementFactory) {
+SpindizzyEnemy::SpindizzyEnemy(IElementFactory* elementFactory, BlockLocation* startLocation, const std::string& modelPath, IRuntimeContext* runtimeContext) : Element<>(elementFactory) {
   cStartLocation = BlockLocation(*startLocation);
   cCurrentLocation = new Vertex(cStartLocation.x, cStartLocation.y, cStartLocation.z);
-  cEnemyModel = enemyModelFactory->createModel(cCurrentLocation);
-}
-
-void SpindizzyEnemy::setModel(ISimpleModelFactory* enemyModelFactory) {
-  // TODO: Where's the model clean-up done!?
-  cEnemyModel = enemyModelFactory->createModel(cCurrentLocation);
+  cEnemyModel = runtimeContext->getModel(modelPath, cCurrentLocation);
 }
 
 void SpindizzyEnemy::renderStatic() {
@@ -55,7 +50,9 @@ std::vector<IInteractiveElement*> SpindizzyEnemy::getInteractiveElements() {
 
 void SpindizzyEnemy::render() {
   glPushMatrix();
+  std::cout << "Rendering Enemy 1" << std::endl;
   cEnemyModel->render();
+  std::cout << "Rendering Enemy 2" << std::endl;
   glPopMatrix();
 }
 

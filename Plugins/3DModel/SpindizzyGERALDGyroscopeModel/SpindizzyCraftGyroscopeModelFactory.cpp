@@ -18,20 +18,20 @@
  */
 #include "SpindizzyCraftGyroscopeModelFactory.h"
 
-ISimpleModel* SpindizzyCraftGyroscopeModelFactory::createModel(Vertex* location, float scale) {
+SpindizzyCraftGyroscopeModelFactory::SpindizzyCraftGyroscopeModelFactory(IRuntimeContext* runtimeContext) {
+  runtimeContext->add(this, "Gyroscope");
+}
+
+I3DModel* SpindizzyCraftGyroscopeModelFactory::createModel(Vertex* location, float scale) {
   return new SpindizzyCraftGyroscopeModel(location);
 }
 
-void SpindizzyCraftGyroscopeModelFactory::destroyModel(ISimpleModel* gyroscopeModel) {
+void SpindizzyCraftGyroscopeModelFactory::destroyModel(I3DModel* gyroscopeModel) {
   delete gyroscopeModel;
 }
 
-std::string SpindizzyCraftGyroscopeModelFactory::getName() {
-  return "Spindizzy Craft Gyroscope Model";
-}
-
-extern "C" IPlugin* create() {
-  return new SpindizzyCraftGyroscopeModelFactory();
+extern "C" IPlugin* create(IRuntimeContext* runtimeContext) {
+  return new SpindizzyCraftGyroscopeModelFactory(runtimeContext);
 }
 
 extern "C" void destroy(IPlugin* gyroscopeModel) {

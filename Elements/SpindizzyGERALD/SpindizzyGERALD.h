@@ -27,6 +27,7 @@
 
 #include <IsoRealms/BlockLocation.h>
 #include <IsoRealms/Element.h>
+#include <IsoRealms/I3DModel.h>
 #include <IsoRealms/IMap.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 #include <IsoRealms/ICommand.h>
@@ -36,8 +37,6 @@
 #include <IsoRealms/Script.h>
 #include <IsoRealms/Vertex.h>
 
-#include "../../Plugins/3DModel/ISimpleModel.h"
-#include "../../Plugins/3DModel/ISimpleModelFactory.h"
 #include "../../Plugins/Camera/ICamera.h"
 #include "../../Plugins/Collectables/ICollectables.h"
 #include "../../Plugins/CollidableSurfaceRegistry/ICollidableSurfaceRegistry.h"
@@ -83,7 +82,7 @@ class SpindizzyGERALD:public Element<ISpindizzyGERALDSet, ISpindizzyGERALDFactor
   Vertex cMomentum;
   
   // Supported plugins
-  ISimpleModel* cGERALDModel;
+  I3DModel* cGERALDModel;
   ICamera* cCamera;
   ICollectables* cCollectables;
   ICollidableSurfaceRegistry* cCollidableSurfaceRegistry;
@@ -140,13 +139,12 @@ class SpindizzyGERALD:public Element<ISpindizzyGERALDSet, ISpindizzyGERALDFactor
   void discoverZone(ICollidableWallSurface*);
 
   public:
-  SpindizzyGERALD(ISpindizzyGERALDFactory*, BlockLocation*, ISimpleModelFactory*, ICollectables*, ICollidableSurfaceRegistry*, ILocationAwareness*, IZoneContext*, ICamera*, float, Script*, Script*, IMap*);
+  SpindizzyGERALD(ISpindizzyGERALDFactory*, BlockLocation*, const std::string& modelPath, ICollectables*, ICollidableSurfaceRegistry*, ILocationAwareness*, IZoneContext*, ICamera*, float, Script*, Script*, IMap*, IRuntimeContext*);
 
   void checkCurrentZoneEvents(Vertex&, Vertex&);
   void checkMapZoneEvents(IZone*, Vertex&, Vertex&);
 
   void setCamera(ICamera*);
-  void setModel(ISimpleModelFactory*);
   void setCollectables(ICollectables*);
   void setZoneContext(IZoneContext*);
 

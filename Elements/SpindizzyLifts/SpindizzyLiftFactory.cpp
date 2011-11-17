@@ -18,17 +18,18 @@
  */
 #include "SpindizzyLiftFactory.h"
 
-SpindizzyLiftFactory::SpindizzyLiftFactory(ISpindizzyLiftSet* elementSet, ISimpleModelFactory* liftModelFactory, SpindizzyLiftProperties* properties, bool active, const std::string& liftTypeName, IRuntimeContext* runtimeContext) : ISpindizzyLiftFactory(elementSet) {
-  cLiftTypeName = liftTypeName;
+SpindizzyLiftFactory::SpindizzyLiftFactory(ISpindizzyLiftSet* elementSet, DOMNodeWrapper* node, SpindizzyLiftProperties* properties, IRuntimeContext* runtimeContext) : ISpindizzyLiftFactory(elementSet) {
+  cRuntimeContext = runtimeContext;
+  cLiftTypeName = node->getAttribute("name");
+  cModelPath = node->getAttribute("model");
+  cState = node->getBooleanAttribute("active");
   cProperties = properties;
-  cLiftModelFactory = liftModelFactory;
   cInsertLocation = NULL;
   cFirstRange = NULL;
   BlockLocation mIdentityLocation(0, 0, 0);
-  cSampleLift = new SpindizzyLift(this, &mIdentityLocation, liftModelFactory, properties, 0, 0);
+  cSampleLift = new SpindizzyLift(this, &mIdentityLocation, cModelPath, properties, 0, 0, cRuntimeContext);
   cSampleVisualElements = cSampleLift->getVisualElements();
   cConfigurationComponent = NULL;
-  cState = active;
   runtimeContext->add(new LiftCommand(this, false), "Enable Lifts " + cLiftTypeName);
   runtimeContext->add(new LiftCommand(this, true), "Disable Lifts " + cLiftTypeName);
 }
@@ -41,20 +42,13 @@ bool SpindizzyLiftFactory::isActive() {
   return cState;
 }
 
-void SpindizzyLiftFactory::save(DOMNodeWriter* node, std::vector<ISimpleModelFactory*> liftModels) {
-  int mModelIndex = -1;
-  for (unsigned int i = 0; i < liftModels.size(); i++) {
-    if (liftModels[i] == cLiftModelFactory) {
-      mModelIndex = i;
-      break;
-    }
-  }
+void SpindizzyLiftFactory::save(DOMNodeWriter* node) {
   DOMNodeWriter* mLiftTypeNode = node->addBranch("LiftType");
   mLiftTypeNode->addAttribute("name", cLiftTypeName);
   if (cState) {
     mLiftTypeNode->addAttribute("active", "true");
   }
-  mLiftTypeNode->addAttribute("model", mModelIndex);
+// TODO mLiftTypeNode->addAttribute("model", mModelIndex);
 }
 
 SpindizzyLiftFactory::LiftCommand::LiftCommand(SpindizzyLiftFactory* parent, bool targetState) {
@@ -89,7 +83,7 @@ IElement* SpindizzyLiftFactory::getElement(DOMNodeWrapper* node, BlockLocation* 
     exit(1);
     // TODO: Throw something
   }
-  SpindizzyLift* mLoadedLift = new SpindizzyLift(this, &mStartLocation, cLiftModelFactory, cProperties, mLiftBottom, mLiftTop);
+  SpindizzyLift* mLoadedLift = new SpindizzyLift(this, &mStartLocation, cModelPath, cProperties, mLiftBottom, mLiftTop, cRuntimeContext);
   cContent.push_back(mLoadedLift);
   return mLoadedLift;
 }
@@ -104,7 +98,7 @@ bool SpindizzyLiftFactory::keyDown(SDLKey& key) {
       } else {
         int mTopRange = *cFirstRange > cEditingLocation->z ? *cFirstRange : cEditingLocation->z;
         int mBottomRange = *cFirstRange > cEditingLocation->z ? cEditingLocation->z : *cFirstRange;
-        SpindizzyLift* mLiftElement = new SpindizzyLift(this, cInsertLocation, cLiftModelFactory, cProperties, mBottomRange, mTopRange);
+        SpindizzyLift* mLiftElement = new SpindizzyLift(this, cInsertLocation, cModelPath, cProperties, mBottomRange, mTopRange, cRuntimeContext);
         addElement(mLiftElement);
         cContent.push_back(mLiftElement);
         delete cInsertLocation;
@@ -120,14 +114,6 @@ bool SpindizzyLiftFactory::keyDown(SDLKey& key) {
     }
   }
   return false;
-}
-
-void SpindizzyLiftFactory::setLiftModelFactory(ISimpleModelFactory* liftModelFactory) {
-  cSampleLift->setModel(cLiftModelFactory, liftModelFactory);
-  for (unsigned int i = 0; i < cContent.size(); i++) {
-    cContent[i]->setModel(cLiftModelFactory, liftModelFactory);
-  }
-  cLiftModelFactory = liftModelFactory;
 }
 
 void SpindizzyLiftFactory::configureElement() {

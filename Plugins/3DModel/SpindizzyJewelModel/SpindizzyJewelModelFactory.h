@@ -19,23 +19,21 @@
 #ifndef SPINDIZZY_JEWEL_MODEL_FACTORY_H
 #define SPINDIZZY_JEWEL_MODEL_FACTORY_H
 
-#include "../ISimpleModelFactory.h"
+#include <IsoRealms/I3DModelFactory.h>
+#include <IsoRealms/IPlugin.h>
 
 #include "SpindizzyJewelModel.h"
 
-class SpindizzyJewelModelFactory:public ISimpleModelFactory {
+class SpindizzyJewelModelFactory:public IPlugin,
+                                 public I3DModelFactory {
   public:
+  SpindizzyJewelModelFactory(IRuntimeContext*);
 
-  /***************************\
-   * Implements ISimpleModel *
-  \***************************/
-  ISimpleModel* createModel(Vertex*, float);
-  void destroyModel(ISimpleModel*);
-
-  /******************************************\
-   * Implements IPluginSupport (in IPlugin) *
-  \******************************************/
-  std::string getName();
+  /***********************\
+   * Implements I3DModel *
+  \***********************/
+  I3DModel* createModel(Vertex*, float);
+  void destroyModel(I3DModel*);
 };
 
 #endif

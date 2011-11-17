@@ -23,14 +23,13 @@
 #include <vector>
 
 #include <IsoRealms/DOMNodeWrapper.h>
+#include <IsoRealms/I3DModel.h>
 #include <IsoRealms/Script.h>
-
-#include "../../3DModel/ISimpleModel.h"
 
 class Switch {
   private:
   std::string cName;
-  ISimpleModel* cHUDRepresentation;
+  I3DModel* cHUDRepresentation;
   Script* cOnScript;
   Script* cOffScript;
 

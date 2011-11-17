@@ -31,8 +31,6 @@
 #include "../../Plugins/Camera/ICamera.h"
 #include "../../Plugins/Collectables/ICollectables.h"
 #include "../../Plugins/CollidableSurfaceRegistry/ICollidableSurfaceRegistry.h"
-#include "../../Plugins/3DModel/ISimpleModel.h"
-#include "../../Plugins/3DModel/ISimpleModelFactory.h"
 #include "../../Plugins/ZoneContext/IZoneContext.h"
 
 #include "ISpindizzyGERALDFactory.h"
@@ -41,8 +39,10 @@
 
 class SpindizzyGERALDFactory:public ISpindizzyGERALDFactory {
   private:
+  IRuntimeContext* cRuntimeContext;
+  std::string cName;
   std::vector<SpindizzyGERALD*> cContent;
-  ISimpleModelFactory* cGERALDModelFactory;
+  std::string cModelPath;
   ICamera* cCamera;
   ICollectables* cCollectables;
   ICollidableSurfaceRegistry* cCollidableSurfaceRegistry;
@@ -64,9 +64,8 @@ class SpindizzyGERALDFactory:public ISpindizzyGERALDFactory {
   void loadRespawnConfiguration(DOMNodeWrapper*, IRuntimeContext*);
 
   public:
-  SpindizzyGERALDFactory(ISpindizzyGERALDSet*, ISimpleModelFactory*, ILocationAwareness*, IZoneContext*);
+  SpindizzyGERALDFactory(ISpindizzyGERALDSet*, ILocationAwareness*, IZoneContext*, ICollidableSurfaceRegistry*, ICollectables*, ICamera*, DOMNodeWrapper*, IRuntimeContext*);
 
-  void setModel(ISimpleModelFactory*);
   void setCamera(ICamera*);
   void setCollectables(ICollectables*);
   void setCollidableSurfaceRegistry(ICollidableSurfaceRegistry*);
@@ -75,13 +74,12 @@ class SpindizzyGERALDFactory:public ISpindizzyGERALDFactory {
   void loadConfiguration(DOMNodeWrapper*, IRuntimeContext*);
   void save(DOMNodeWriter*);
   void stop();
-  void setMap(IMap*);
 
   /******************************\
    * Implements IElementFactory *
   \******************************/
-  std::string getName();
   IElement* getElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*);
+  std::string getName();
   bool input(SDL_Event&);
   void configureElement();
   void setEditingContext(BlockLocation*, IComponentContainer*);

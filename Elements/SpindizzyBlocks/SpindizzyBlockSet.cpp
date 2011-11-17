@@ -5,7 +5,7 @@
  *
  * Iso-Realms is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
+ * the Free Software Foundation, either VERSION 3 of the License, or
  * (at your option) any later version.
  *
  * Iso-Realms is distributed in the hope that it will be useful,
@@ -29,25 +29,8 @@ SpindizzyBlockSet::SpindizzyBlockSet(IRuntimeContext* runtimeContext) {
   cHUDClue = new HUDClue(cCamera);
 }
 
-void SpindizzyBlockSet::addBlockState(const std::string& name, ISimpleModel* model) {
-  bool* mState = new bool(false);
-  cBlockStates.push_back(new ConditionElement(name, mState));
-  cBlockStateClueModels.push_back(model);
-  ICommand* mStateOnCommand = new BlockStateCommand(this, mState, true);
-  ICommand* mStateOffCommand = new BlockStateCommand(this, mState, false);
-  cSpindizzyBlockCommands.push_back(mStateOnCommand);
-  cSpindizzyBlockCommands.push_back(mStateOffCommand);
-  cRuntimeContext->add(mStateOnCommand, "Set Block Flag " + name);
-  cRuntimeContext->add(mStateOffCommand, "Unset Block Flag " + name);
-}
-
 std::vector<PlugSocket*> SpindizzyBlockSet::getPlugSockets() {
   std::vector<PlugSocket*> mSockets;
-  for (unsigned int i = 0; i <= cHUDClueData.size(); i++) {
-    std::ostringstream mSocketID;
-    mSocketID << i;
-    mSockets.push_back(new PlugSocket("3DModel", mSocketID.str()));
-  }
   mSockets.push_back(new PlugSocket("Camera"));
   mSockets.push_back(new PlugSocket("HUD"));
   mSockets.push_back(new PlugSocket("SurfaceProcessor", "Visual"));
@@ -58,28 +41,9 @@ std::vector<PlugSocket*> SpindizzyBlockSet::getPlugSockets() {
   return mSockets;
 }
 
-//      ISimpleModel* mNewModel = ->createModel(&cClueModelLocation);
+//      I3DModel* mNewModel = ->createModel(&cClueModelLocation);
 void SpindizzyBlockSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
-  if (socket->getType() == "3DModel") {
-    std::string mSocketID = socket->getID();
-    std::stringstream mInputString(mSocketID);
-    unsigned int mIndex;
-    mInputString >> mIndex;
-    ISimpleModelFactory* mNewModelFactory = NULL;
-    if (implementation != NULL) {
-      assignPlugin(implementation, &mNewModelFactory, *socket);
-      HUDClueData* mNewHUDClueData = new HUDClueData(mNewModelFactory);
-      if (mIndex == cHUDClueData.size()) {
-        cHUDClueData.push_back(mNewHUDClueData);
-      } else {
-        // TODO: Is this correct?   delete cHUDClueData[mIndex];
-        cHUDClueData[mIndex] = mNewHUDClueData;
-      }
-    } else { // TODO: Range check?
-      // TODO: Is this correct?   delete cHUDClueData[mIndex];
-      cHUDClueData.erase(cHUDClueData.begin() + mIndex);
-    }
-  } else if (socket->getType() == "Camera") {
+  if (socket->getType() == "Camera") {
     assignPlugin(implementation, &cCamera, *socket);
     cHUDClue->setCamera(cCamera);
   } else if (socket->getType() == "CollidableSurfaceRegistry") {
@@ -116,15 +80,6 @@ void SpindizzyBlockSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
 }
 
 IPlugin* SpindizzyBlockSet::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "3DModel") {
-    std::string mSocketID = socket->getID();
-    std::stringstream mInputString(mSocketID);
-    unsigned int mIndex;
-    mInputString >> mIndex;
-    if (mIndex < cHUDClueData.size()) {
-      return cHUDClueData[mIndex]->getFactory(); 
-    }
-  }
   if (socket->getType() == "Camera")                    {return cCamera;}
   if (socket->getType() == "CollidableSurfaceRegistry") {return cCollidableSurfaceRegistry;}
   if (socket->getType() == "HUD")                       {return cHUD;}
@@ -180,10 +135,7 @@ void SpindizzyBlockSet::load(DOMNodeWrapper* node) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "State") {
-      std::string mStateName = mNode->getStringValue();
-      int mClue = mNode->getIntegerAttribute("hudModel");
-      ISimpleModel* mClueModel = cHUDClueData[mClue]->initClueData(mNode, mStateName);
-      addBlockState(mStateName, mClueModel);
+      cBlockStateData.push_back(new BlockStateData(mNode, cRuntimeContext, this));
     } else if (mValueAsString == "BlockType") {
       std::string mBlockTypeName = mNode->getAttribute("name");
       // TODO: Pass the textures into the factory
@@ -198,10 +150,8 @@ void SpindizzyBlockSet::load(DOMNodeWrapper* node) {
 }
 
 void SpindizzyBlockSet::save(DOMNodeWriter* node) {
-  for (unsigned int i = 0; i < cHUDClueData.size(); i++) {
-    DOMNodeWriter* mStateNode = node->addBranch("State");
-    cHUDClueData[i]->save(mStateNode);
-    mStateNode->addAttribute("hudModel", i);
+  for (unsigned int i = 0; i < cBlockStateData.size(); i++) {
+    cBlockStateData[i]->save(node);
   }
   for (unsigned int i = 0; i < cElementFactories.size(); i++) {
     static_cast<ISpindizzyBlockFactory*>(cElementFactories[i])->save(node);
@@ -249,6 +199,14 @@ void SpindizzyBlockSet::destroyWallTemplate(IWallSurfaceTemplate* wallTemplate, 
   (visual ? cVisualProcessor : cPhysicalProcessor)->destroyWallTemplate(wallTemplate);
 }
 
+std::vector<ConditionElement*> SpindizzyBlockSet::getConditionElements() {
+  std::vector<ConditionElement*> mConditionElements;
+  for (unsigned int i = 0; i < cBlockStateData.size(); i++) {
+    mConditionElements.push_back(cBlockStateData[i]->getConditionElement());
+  }
+  return mConditionElements;
+}
+
 void SpindizzyBlockSet::destroyTileTemplate(ITileSurfaceTemplate* tileTemplate, bool visual) {
   (visual ? cVisualProcessor : cPhysicalProcessor)->destroyTileTemplate(tileTemplate);
 }
@@ -261,19 +219,15 @@ void SpindizzyBlockSet::registerWallSurface(ICollidableWallSurface* wallSurface)
   cCollidableSurfaceRegistry->registerWallSurface(wallSurface);
 }
 
-std::vector<ConditionElement*> SpindizzyBlockSet::getConditionElements() {
-  return cBlockStates;
-}
-
 void SpindizzyBlockSet::updateClue() {
   SpindizzyBlockHandler* mElementHandler = cElementHandlers[dynamic_cast<IElementContainer*>(cZoneContext->getZoneContext())];
   if (mElementHandler != NULL) {
     std::set<bool*> mInputs = mElementHandler->getInputs();
     for (std::set<bool*>::iterator i = mInputs.begin(); i != mInputs.end(); i++) {
       if (!(**i)) {
-        for (unsigned int j = 0; j < cBlockStates.size(); j++) {
-          if (cBlockStates[j]->getInputAddress() == (*i)) {
-            ISimpleModel* mClueModel = cBlockStateClueModels[j];
+        for (unsigned int j = 0; j < cBlockStateData.size(); j++) {
+          if (cBlockStateData[j]->getInputAddress() == (*i)) {
+            I3DModel* mClueModel = cBlockStateData[j]->getModel();
             cHUDClue->setModel(mClueModel);
             return;
           }
@@ -298,34 +252,45 @@ SpindizzyBlockSet::~SpindizzyBlockSet() {
   }
 }
 
-SpindizzyBlockSet::HUDClueData::HUDClueData(ISimpleModelFactory* factory) {
-  cFactory = factory;
-  cModel = cFactory->createModel(&cLocation);
-}
-    
-ISimpleModel* SpindizzyBlockSet::HUDClueData::initClueData(DOMNodeWrapper* node, const std::string& name) {
-  cName = name;
-  cLocation.x = node->getFloatAttribute("x");
-  cLocation.y = node->getFloatAttribute("y");
-  cLocation.z = node->getFloatAttribute("z");
-  return cModel;
-}
-    
-ISimpleModelFactory* SpindizzyBlockSet::HUDClueData::getFactory() {
-  return cFactory;
+SpindizzyBlockSet::BlockStateData::BlockStateData(DOMNodeWrapper* node, IRuntimeContext* runtimeContext, SpindizzyBlockSet* parent) {
+  cName = node->getStringValue();
+  cClueModelLocation.x = node->getFloatAttribute("x");
+  cClueModelLocation.y = node->getFloatAttribute("y");
+  cClueModelLocation.z = node->getFloatAttribute("z");
+  cClueModel = runtimeContext->getModel(node, &cClueModelLocation);
+  bool* mState = new bool(false);
+  cState = new ConditionElement(cName, mState);
+// TODO  runtimeContext->add(cState);
+  runtimeContext->add(new BlockStateCommand(parent, mState, true), "Set Block Flag " + cName);
+  runtimeContext->add(new BlockStateCommand(parent, mState, false), "Unset Block Flag " + cName);
 }
 
-void SpindizzyBlockSet::HUDClueData::save(DOMNodeWriter* node) {
-  if (cLocation.x != 0.0f) {
-    node->addAttribute("x", cLocation.x);
+bool* SpindizzyBlockSet::BlockStateData::getInputAddress() {
+  return cState->getInputAddress();
+}
+
+I3DModel* SpindizzyBlockSet::BlockStateData::getModel() {
+  return cClueModel;
+}
+
+ConditionElement* SpindizzyBlockSet::BlockStateData::getConditionElement() {
+  return cState;
+}
+
+void SpindizzyBlockSet::BlockStateData::save(DOMNodeWriter* node) {
+  DOMNodeWriter* mStateNode = node->addBranch("State");
+// TODO: Implement this
+//  cClueModel->save(mNode)
+  if (cClueModelLocation.x != 0.0f) {
+    mStateNode->addAttribute("x", cClueModelLocation.x);
   }
-  if (cLocation.y != 0.0f) {
-    node->addAttribute("y", cLocation.y);
+  if (cClueModelLocation.y != 0.0f) {
+    mStateNode->addAttribute("y", cClueModelLocation.y);
   }
-  if (cLocation.z != 0.0f) {
-    node->addAttribute("z", cLocation.z);
+  if (cClueModelLocation.z != 0.0f) {
+    mStateNode->addAttribute("z", cClueModelLocation.z);
   }
-  node->addText(cName);
+  mStateNode->addText(cName);
 }
 
 IHUDComponent* SpindizzyBlockSet::createComponent() {

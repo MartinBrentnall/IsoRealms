@@ -23,7 +23,6 @@
 #include <string>
 #include <vector>
 
-#include "../../Plugins/3DModel/ISimpleModelFactory.h"
 #include "../../Plugins/Camera/ICamera.h"
 #include "../../Plugins/CollidableSurfaceRegistry/ICollidableSurfaceRegistry.h"
 #include "../../Plugins/HUD/IHUD.h"
@@ -32,6 +31,7 @@
 
 #include <IsoRealms/ConditionElement.h>
 #include <IsoRealms/DefaultCommandInfo.h>
+#include <IsoRealms/I3DModelFactory.h>
 #include <IsoRealms/IElementSet.h>
 #include <IsoRealms/IPlugin.h>
 #include <IsoRealms/OpenDialogCommand.h>
@@ -54,27 +54,25 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
                         public IZoneContextListener,
                         public IComponentSource {
   private:
-  class HUDClueData {
+  class BlockStateData {
     private:
     std::string cName;
-    Vertex cLocation;
-    ISimpleModelFactory* cFactory;
-    ISimpleModel* cModel;
+    Vertex cClueModelLocation;
+    I3DModel* cClueModel;
+    ConditionElement* cState;
     
     public:
-    HUDClueData(ISimpleModelFactory*); 
-    
-    ISimpleModel* initClueData(DOMNodeWrapper*, const std::string&);
-    
-    ISimpleModelFactory* getFactory();
+    BlockStateData(DOMNodeWrapper*, IRuntimeContext*, SpindizzyBlockSet*);
+    bool* getInputAddress();
+    I3DModel* getModel();
+    ConditionElement* getConditionElement();
     
     void save(DOMNodeWriter*);
   };
     
   std::map<IElementContainer*, SpindizzyBlockHandler*> cElementHandlers;
   std::vector<IElementFactory*> cElementFactories;
-  std::vector<ICommand*> cSpindizzyBlockCommands;
-  std::vector<HUDClueData*> cHUDClueData;
+  std::vector<BlockStateData*> cBlockStateData;
   IRuntimeContext* cRuntimeContext;
   ICamera* cCamera;
   IHUD* cHUD;
@@ -82,13 +80,11 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
   ISurfaceProcessor* cVisualProcessor;
   ICollidableSurfaceRegistry* cCollidableSurfaceRegistry;
   IZoneContext* cZoneContext;
-  std::vector<ConditionElement*> cBlockStates;
-  std::vector<ISimpleModel*> cBlockStateClueModels;
   HUDClue* cHUDClue;
   bool cEditing;
   IComponentContainer* cComponentContainer;
 
-  void addBlockState(const std::string&, ISimpleModel*);
+  void addBlockState(const std::string&, I3DModel*);
   ISpindizzyBlockFactory* getFactory(const std::string&);  
   
   public:
@@ -136,10 +132,10 @@ class SpindizzyBlockSet:public ISpindizzyBlockSet,
   std::vector<IWallSurfaceTemplate*> getWallSurfaces(ISurfaceProvider*, IWallSurface::FaceDirection, bool);
   void destroyTileTemplate(ITileSurfaceTemplate*, bool);
   void destroyWallTemplate(IWallSurfaceTemplate*, bool);
+  std::vector<ConditionElement*> getConditionElements();
 
   void registerRollableSurface(IRollableSurface*);
   void registerWallSurface(ICollidableWallSurface*);
-  std::vector<ConditionElement*> getConditionElements();
   void updateClue();
   bool isEditing();
 

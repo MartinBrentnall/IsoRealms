@@ -20,14 +20,15 @@
 
 BlockFactory::BlockFactory(IRuntimeContext* runtimeContext) {
   cRuntimeContext = runtimeContext;
+  cRuntimeContext->add(this, "Block");
   cProperties = new BlockProperties();
 }
 
-ISimpleModel* BlockFactory::createModel(Vertex* location, float scale) {
+I3DModel* BlockFactory::createModel(Vertex* location, float scale) {
   return new Block(location, cProperties);
 }
 
-void BlockFactory::destroyModel(ISimpleModel* block) {
+void BlockFactory::destroyModel(I3DModel* block) {
   delete block;
 }
 

@@ -26,6 +26,7 @@
 #include <IsoRealms/BlockLocation.h>
 #include <IsoRealms/Collision.h>
 #include <IsoRealms/Element.h>
+#include <IsoRealms/I3DModel.h>
 #include <IsoRealms/IDynamicElement.h>
 #include <IsoRealms/IElementFactory.h>
 #include <IsoRealms/IsoRealmsConstants.h>
@@ -33,8 +34,6 @@
 #include <IsoRealms/Vertex.h>
 
 #include "../../Plugins/Collectables/ICollectable.h"
-#include "../../Plugins/3DModel/ISimpleModel.h"
-#include "../../Plugins/3DModel/ISimpleModelFactory.h"
 
 #include "BaseSpindizzyJewelFactory.h"
 #include "ISpindizzyJewelSet.h"
@@ -44,23 +43,21 @@ class SpindizzyJewel:public Element<ISpindizzyJewelSet, BaseSpindizzyJewelFactor
                      public IDynamicElement,
                      public IVisualElement {
   private:
-  ISimpleModel* cModel;
-  bool cCollected;
 
-  /**
-   * Location of the jewel.
-   */
+  I3DModel* cModel;
+    
+  // Definition data
   BlockLocation cLocation;
+
+  // Runtime data
+  bool cCollected;
   Vertex cVertexLocation;
 
   void collect();
 
   public:
-  SpindizzyJewel(BaseSpindizzyJewelFactory*, BlockLocation*, ISimpleModelFactory*);
+  SpindizzyJewel(BaseSpindizzyJewelFactory*, BlockLocation*, const std::string&, IRuntimeContext*);
   
-  void setModel(ISimpleModelFactory*);
-  ISimpleModel* getModel();
-
   /***************************\
    * Implements ICollectable *
   \***************************/

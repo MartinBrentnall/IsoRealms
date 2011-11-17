@@ -19,24 +19,22 @@
 #ifndef SPINDIZZY_CRAFT_GYROSCOPE_MODEL_FACTORY_H
 #define SPINDIZZY_CRAFT_GYROSCOPE_MODEL_FACTORY_H
 
-#include "../ISimpleModelFactory.h"
-#include "../ISimpleModel.h"
+#include <IsoRealms/I3DModelFactory.h>
+#include <IsoRealms/I3DModel.h>
+#include <IsoRealms/IPlugin.h>
 
 #include "SpindizzyCraftGyroscopeModel.h"
 
-class SpindizzyCraftGyroscopeModelFactory:public ISimpleModelFactory {
+class SpindizzyCraftGyroscopeModelFactory:public IPlugin,
+                                          public I3DModelFactory {
   public:
+  SpindizzyCraftGyroscopeModelFactory(IRuntimeContext*);
 
-  /************************************\
-   * Implements ISimpleModelFactory.h *
-  \************************************/
-  ISimpleModel* createModel(Vertex*, float);
-  void destroyModel(ISimpleModel*);
-
-  /*****************************\
-   * Implements IPluginSupport *
-  \*****************************/
-  std::string getName();
+  /********************************\
+   * Implements I3DModelFactory.h *
+  \********************************/
+  I3DModel* createModel(Vertex*, float);
+  void destroyModel(I3DModel*);
 };
 
 #endif

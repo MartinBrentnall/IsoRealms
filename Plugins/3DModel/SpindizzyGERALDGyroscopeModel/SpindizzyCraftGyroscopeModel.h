@@ -25,13 +25,12 @@
 #include <map>
 
 #include <IsoRealms/Colour.h>
+#include <IsoRealms/I3DModel.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 #include <IsoRealms/Image.h>
 #include <IsoRealms/Vertex.h>
 
-#include "../ISimpleModel.h"
-
-class SpindizzyCraftGyroscopeModel:public ISimpleModel {
+class SpindizzyCraftGyroscopeModel:public I3DModel {
   private:
   Vertex* cLocation;
 

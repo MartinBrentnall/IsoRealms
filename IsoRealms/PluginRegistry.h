@@ -80,7 +80,7 @@ class PluginRegistry:public IPluginRegistry {
    */
   std::string getPluginType(IPlugin*);  
 
-  void registerPlugin(DOMNodeWrapper*, Registry<ICommand, CommandProxy>*, Registry<IColour, ColourProxy>*, Registry<ITexture, TextureProxy>*, IMap*, bool, IScriptSource*, IColourSource*, ITextureSource*);
+  void registerPlugin(DOMNodeWrapper*, Registry<ICommand, CommandProxy>*, Registry<IColour, ColourProxy>*, Registry<ITexture, TextureProxy>*, Registry<I3DModelFactory, ModelFactoryProxy>*, IMap*, bool, IScriptSource*, IColourSource*, ITextureSource*, I3DModelSource*);
 
   void connectPlugin(DOMNodeWrapper*);
 

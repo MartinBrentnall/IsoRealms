@@ -26,7 +26,6 @@
 #include <IsoRealms/PluginRegistry.h>
 #include <IsoRealms/Script.h>
 
-#include "../../Plugins/3DModel/ISimpleModelFactory.h"
 #include "../../Plugins/Collectables/ICollectables.h"
 
 #include "ISpindizzyJewelSet.h"
@@ -36,13 +35,8 @@ class SpindizzyJewelSet:public ISpindizzyJewelSet {
   private:
   std::vector<PlugSocket*> cJewelSockets;
   std::vector<IElementFactory*> cElementFactories;
-  ISimpleModelFactory* cJewelModelFactory;
   ICollectables* cCollectables;
   IRuntimeContext* cRuntimeContext;
-  Script* cJewelCollectedScript;
-  Script* cAllJewelsCollectedScript;
-
-  void setModel(ISimpleModelFactory*);
 
   public:
   SpindizzyJewelSet(IRuntimeContext*);
@@ -51,15 +45,12 @@ class SpindizzyJewelSet:public ISpindizzyJewelSet {
    * ISpindizzyJewelSet *
   \**********************/
   ICollectables* getCollectables();
-  void jewelCollected();
-  void allJewelsCollected();
   bool isEditing();
 
   /**************************\
    * Implements IElementSet *
   \**************************/
   std::vector<IElementFactory*> getElementFactories();
-  void setRuntimeContext(IRuntimeContext*);
   void destroy(IElement*);
 
   /**********************************************\
@@ -67,7 +58,6 @@ class SpindizzyJewelSet:public ISpindizzyJewelSet {
   \**********************************************/
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
-  void save(DOMNodeWriter*);
   void load(DOMNodeWrapper*);
 
   ~SpindizzyJewelSet();  

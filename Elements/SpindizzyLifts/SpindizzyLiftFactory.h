@@ -29,9 +29,6 @@
 #include <IsoRealms/ICommand.h>
 #include <IsoRealms/IVisualElement.h>
 
-#include "../../Plugins/3DModel/ISimpleModel.h"
-#include "../../Plugins/3DModel/ISimpleModelFactory.h"
-
 #include "ISpindizzyLiftFactory.h"
 #include "SpindizzyLift.h"
 #include "SpindizzyLiftConfigurationComponent.h"
@@ -39,9 +36,10 @@
 
 class SpindizzyLiftFactory:public ISpindizzyLiftFactory {
   private:
+  IRuntimeContext* cRuntimeContext;
   std::string cLiftTypeName;
   std::vector<SpindizzyLift*> cContent;
-  ISimpleModelFactory* cLiftModelFactory;
+  std::string cModelPath;
   SpindizzyLift* cSampleLift;
   std::vector<IVisualElement*> cSampleVisualElements;
   BlockLocation* cEditingLocation;
@@ -71,12 +69,11 @@ class SpindizzyLiftFactory:public ISpindizzyLiftFactory {
   };
   
   public:
-  SpindizzyLiftFactory(ISpindizzyLiftSet*, ISimpleModelFactory*, SpindizzyLiftProperties*, bool, const std::string& liftTypeName, IRuntimeContext*);
+  SpindizzyLiftFactory(ISpindizzyLiftSet*, DOMNodeWrapper*, SpindizzyLiftProperties*, IRuntimeContext*);
 
-  void setLiftModelFactory(ISimpleModelFactory*);
   std::vector<ICommand*> getLiftCommands();  
   
-  void save(DOMNodeWriter*, std::vector<ISimpleModelFactory*>);
+  void save(DOMNodeWriter*);
   
   /************************************\
    * Implements ISpindizzyLiftFactory *

@@ -22,19 +22,20 @@
 #include <iostream>
 #include <GL/gl.h>
 
-#include "../../Plugins/3DModel/ISimpleModel.h"
+#include <IsoRealms/I3DModel.h>
+
 #include "../../Plugins/Camera/ICamera.h"
 #include "../../Plugins/HUD/IHUDGameComponent.h"
 
 class HUDClue:public IHUDGameComponent {
   private:
-  ISimpleModel* cClueModel;
+  I3DModel* cClueModel;
   ICamera* cCamera;
 
   public:
   HUDClue(ICamera*);
     
-  void setModel(ISimpleModel*);
+  void setModel(I3DModel*);
   void setCamera(ICamera*);  
   
   /********************************\

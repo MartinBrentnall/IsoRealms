@@ -26,8 +26,6 @@
 #include <IsoRealms/PluginRegistry.h>
 #include <IsoRealms/OpenDialogCommand.h>
 
-#include "../../Plugins/3DModel/ISimpleModel.h"
-#include "../../Plugins/3DModel/ISimpleModelFactory.h"
 #include "../../Plugins/CollidableSurfaceRegistry/ICollidableSurfaceRegistry.h"
 #include "../../Plugins/ZoneContext/IZoneContext.h"
 #include "../../Plugins/ZoneContext/IZoneContextListener.h"
@@ -49,7 +47,6 @@ class SpindizzyLiftSet:public ISpindizzyLiftSet,
   ICollidableSurfaceRegistry* cCollidableSurfaceRegistry;
   Script* cLiftMovedScript;
   IZone* cZone;
-  std::vector<ISimpleModelFactory*> cLiftModels;
 
   /**
    * Properties are applied to all lift types.
@@ -90,7 +87,6 @@ class SpindizzyLiftSet:public ISpindizzyLiftSet,
   /**********************************************\
    * Implements IPluginSupport (in IElementSet) *
   \**********************************************/
-  std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
   void save(DOMNodeWriter*);

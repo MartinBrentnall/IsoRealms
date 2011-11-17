@@ -26,7 +26,7 @@ const unsigned int SpindizzyGERALD::INIT_REGISTER_SURFACES = 2;
 const unsigned int SpindizzyGERALD::INIT_USE_SURFACES = 3;
 const unsigned int SpindizzyGERALD::BOUNCE_CONTROL_TIME = 40;
 
-SpindizzyGERALD::SpindizzyGERALD(ISpindizzyGERALDFactory* elementFactory, BlockLocation* startLocation, ISimpleModelFactory* geraldModelFactory, ICollectables* collectables, ICollidableSurfaceRegistry* collidableSurfaceRegistry, ILocationAwareness* locationAwareness, IZoneContext* zoneContext, ICamera* camera, float fallLimit, Script* fallLimitScript, Script* respawnScript, IMap* map) : Element<ISpindizzyGERALDSet, ISpindizzyGERALDFactory>(elementFactory) {
+SpindizzyGERALD::SpindizzyGERALD(ISpindizzyGERALDFactory* elementFactory, BlockLocation* startLocation, std::string const& modelPath, ICollectables* collectables, ICollidableSurfaceRegistry* collidableSurfaceRegistry, ILocationAwareness* locationAwareness, IZoneContext* zoneContext, ICamera* camera, float fallLimit, Script* fallLimitScript, Script* respawnScript, IMap* map, IRuntimeContext* runtimeContext) : Element<ISpindizzyGERALDSet, ISpindizzyGERALDFactory>(elementFactory) {
   cStartLocation = BlockLocation(*startLocation);
   cLocation.x = cStartLocation.x + IsoRealmsConstants::BLOCK_RADIUS;
   cLocation.y = cStartLocation.y + IsoRealmsConstants::BLOCK_RADIUS;
@@ -34,14 +34,14 @@ SpindizzyGERALD::SpindizzyGERALD(ISpindizzyGERALDFactory* elementFactory, BlockL
   if (locationAwareness != NULL) {
     locationAwareness->setLocation(&cLocation);
   }
-  cGERALDModel = geraldModelFactory->createModel(&cLocation);
+  cGERALDModel = runtimeContext->getModel(modelPath, &cLocation);
   cCamera = camera;
   cRespawning = false;
   cCollectables = collectables;
   cCollidableSurfaceRegistry = collidableSurfaceRegistry;
   cZoneContext = zoneContext;
   cZone = NULL;
-  cMap = NULL;
+  cMap = map;
   cFallScript = respawnScript;
   cFallLimitScript = fallLimitScript;
   cFallLimit = fallLimit;
@@ -49,19 +49,14 @@ SpindizzyGERALD::SpindizzyGERALD(ISpindizzyGERALDFactory* elementFactory, BlockL
   cLockSouth = NULL;
   cLockEast = NULL;
   cLockWest = NULL;
-  cMap = map;
-  if (map != NULL) {
-    cMovingNorth = map->registerDigitalInput("Move North");
-    cMovingEast  = map->registerDigitalInput("Move East");
-    cMovingSouth = map->registerDigitalInput("Move South");
-    cMovingWest  = map->registerDigitalInput("Move West");
-    cThrust      = map->registerDigitalInput("Thrust");
+  if (cMap != NULL) {
+    cMovingNorth = cMap->registerDigitalInput("Move North");
+    cMovingEast  = cMap->registerDigitalInput("Move East");
+    cMovingSouth = cMap->registerDigitalInput("Move South");
+    cMovingWest  = cMap->registerDigitalInput("Move West");
+    cThrust      = cMap->registerDigitalInput("Thrust");
   }
   cMapBottom = -20.0f; // TODO: Do this for real!
-}
-
-void SpindizzyGERALD::setModel(ISimpleModelFactory* geraldModelFactory) {
-  cGERALDModel = geraldModelFactory->createModel(&cLocation);
 }
 
 void SpindizzyGERALD::setCamera(ICamera* camera) {

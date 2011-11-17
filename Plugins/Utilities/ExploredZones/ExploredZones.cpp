@@ -19,7 +19,6 @@
 #include "ExploredZones.h"
 
 ExploredZones::ExploredZones(IRuntimeContext* runtimeContext) {
-  assignDummyPlugin(&cFlagModel, "3DModel");
   assignDummyPlugin(&cZoneContext, "ZoneContext");
   assignDummyPlugin(&cObjectives, "Objectives");
   assignDummyPlugin(&cToGoStringProcessor, "StringProcessor");
@@ -49,10 +48,10 @@ void ExploredZones::zoneContextChanged(IZone* zone) {
     float mX = mBlockArea->getWest() + (mXDifference / 2.0f);
     float mY = mBlockArea->getSouth() + (mYDifference / 2.0f);
     float mZ = (mBlockArea->getBottom() + (mZDifference / 2.0f) - 1.0f) * IsoRealmsConstants::BLOCK_HEIGHT;
-    float mScale = std::min(mXDifference, std::min(mYDifference, mZDifference)) + 1;
+//    float mScale = std::min(mXDifference, std::min(mYDifference, mZDifference)) + 1;
     
     Vertex* mLocation = new Vertex(mX, mY, mZ);
-    cExploredZones[zone] = cFlagModel->createModel(mLocation, mScale);
+    cExploredZones[zone] = cRuntimeContext->getModel(cModelPath, mLocation); // TODO: Scale
     cZoneExploredScript->execute();
     updateToGoString();
     cObjectives->check();
@@ -87,8 +86,6 @@ void ExploredZones::setPlugin(PlugSocket* socket, IPlugin* plugin) {
       mPreviousZoneContext->removeZoneContextListener(this);
       cZoneContext->addZoneContextListener(this);
     }
-  } else if (socket->getType() == "3DModel") {
-    assignPlugin(plugin, &cFlagModel, *socket);
   } else if (socket->getType() == "FlaggedZones") {
     assignPlugin(plugin, &cFlaggedZones, *socket);
   } else if (socket->getType() == "StringProcessor") {
@@ -102,7 +99,6 @@ void ExploredZones::setPlugin(PlugSocket* socket, IPlugin* plugin) {
 IPlugin* ExploredZones::getPlugin(PlugSocket* socket) {
   if (socket->getType() == "Objectives")      {return cObjectives;}
   if (socket->getType() == "ZoneContext")     {return cZoneContext;}
-  if (socket->getType() == "3DModel")         {return cFlagModel;}
   if (socket->getType() == "FlaggedZones")    {return cFlaggedZones;}
   if (socket->getType() == "StringProcessor") {return cToGoStringProcessor;}
   return NULL;
@@ -113,23 +109,23 @@ ExploredZones::ExploredZoneRenderer::ExploredZoneRenderer(ExploredZones* parent)
 }
 
 void ExploredZones::ExploredZoneRenderer::render(std::vector<IZone*>& zones, IPluginRegistry& pluginRegistry) {
-  for (std::map<IZone*, ISimpleModel*>::iterator i = cParent->cExploredZones.begin(); i != cParent->cExploredZones.end(); ++i) {
+  for (std::map<IZone*, I3DModel*>::iterator i = cParent->cExploredZones.begin(); i != cParent->cExploredZones.end(); ++i) {
     i->first->renderStatic();
   }
-  for (std::map<IZone*, ISimpleModel*>::iterator i = cParent->cExploredZones.begin(); i != cParent->cExploredZones.end(); ++i) {
+  for (std::map<IZone*, I3DModel*>::iterator i = cParent->cExploredZones.begin(); i != cParent->cExploredZones.end(); ++i) {
     pluginRegistry.renderPreZone(i->first);
     i->first->renderDynamic();
   }
 }
 
 void ExploredZones::ExploredZoneRenderer::update(std::vector<IZone*>& zones, unsigned int milliseconds) {
-  for (std::map<IZone*, ISimpleModel*>::iterator i = cParent->cExploredZones.begin(); i != cParent->cExploredZones.end(); ++i) {
+  for (std::map<IZone*, I3DModel*>::iterator i = cParent->cExploredZones.begin(); i != cParent->cExploredZones.end(); ++i) {
     i->first->update(milliseconds);
   }
 }
 
 void ExploredZones::ExploredZoneRenderer::updateRuntime(std::vector<IZone*>& zones, unsigned int milliseconds) {
-  for (std::map<IZone*, ISimpleModel*>::iterator i = cParent->cExploredZones.begin(); i != cParent->cExploredZones.end(); ++i) {
+  for (std::map<IZone*, I3DModel*>::iterator i = cParent->cExploredZones.begin(); i != cParent->cExploredZones.end(); ++i) {
     i->first->updateRuntime(milliseconds);
   }
 }
@@ -143,7 +139,7 @@ void ExploredZones::MapOverviewRenderer::render(std::vector<IZone*>& zones, IPlu
     pluginRegistry.renderPreZone(zones[i]);
     glBindTexture(GL_TEXTURE_2D, 0);
     glLineWidth(2.0);
-    std::map<IZone*, ISimpleModel*>::iterator j = cParent->cExploredZones.find(zones[i]);
+    std::map<IZone*, I3DModel*>::iterator j = cParent->cExploredZones.find(zones[i]);
     if (j != cParent->cExploredZones.end()) {
       if (cParent->cFlaggedZones->isZoneFlagged(zones[i])) {
         j->second->render();
@@ -186,7 +182,7 @@ void ExploredZones::MapOverviewRenderer::render(std::vector<IZone*>& zones, IPlu
 
 void ExploredZones::MapOverviewRenderer::update(std::vector<IZone*>& zones, unsigned int milliseconds) {
   for (unsigned int i = 0; i < zones.size(); i++) {
-    std::map<IZone*, ISimpleModel*>::iterator j = cParent->cExploredZones.find(zones[i]);
+    std::map<IZone*, I3DModel*>::iterator j = cParent->cExploredZones.find(zones[i]);
     if (j != cParent->cExploredZones.end() && cParent->cFlaggedZones->isZoneFlagged(zones[i])) {
       j->second->update(milliseconds);
     }
@@ -195,7 +191,7 @@ void ExploredZones::MapOverviewRenderer::update(std::vector<IZone*>& zones, unsi
 
 void ExploredZones::MapOverviewRenderer::updateRuntime(std::vector<IZone*>& zones, unsigned int milliseconds) {
   for (unsigned int i = 0; i < zones.size(); i++) {
-    std::map<IZone*, ISimpleModel*>::iterator j = cParent->cExploredZones.find(zones[i]);
+    std::map<IZone*, I3DModel*>::iterator j = cParent->cExploredZones.find(zones[i]);
     if (j != cParent->cExploredZones.end() && cParent->cFlaggedZones->isZoneFlagged(zones[i])) {
       j->second->update(milliseconds);
     }
@@ -215,6 +211,8 @@ void ExploredZones::load(DOMNodeWrapper* node) {
       cZoneExploredScript = cRuntimeContext->getScript(mNode);
     } else if (mValueAsString == "AllZonesExploredScript") {
       cAllZonesExploredScript = cRuntimeContext->getScript(mNode);
+    } else if (mValueAsString == "ZoneFlag") {
+      cModelPath = mNode->getAttribute("name");
     } else {
       // TODO: Throw something!
     }

@@ -20,15 +20,16 @@
 
 FlatRectangleFactory::FlatRectangleFactory(IRuntimeContext* runtimeContext) {
   cRuntimeContext = runtimeContext;
+  cRuntimeContext->add(this, "Rectangle");
   cSize = 1.0f;
   cFlip = false;
 }
 
-ISimpleModel* FlatRectangleFactory::createModel(Vertex* location, float scale) {
+I3DModel* FlatRectangleFactory::createModel(Vertex* location, float scale) {
   return new FlatRectangle(location, cTexture, &cSize, cFlip);
 }
 
-void FlatRectangleFactory::destroyModel(ISimpleModel* flatRectangle) {
+void FlatRectangleFactory::destroyModel(I3DModel* flatRectangle) {
   delete flatRectangle;
 }
 

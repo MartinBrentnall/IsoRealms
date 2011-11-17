@@ -23,13 +23,12 @@
 #include <map>
 
 #include <IsoRealms/Colour.h>
+#include <IsoRealms/I3DModel.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 #include <IsoRealms/Image.h>
 #include <IsoRealms/Vertex.h>
 
-#include "../ISimpleModel.h"
-
-class SpindizzyCraftPyramidModel:public ISimpleModel {
+class SpindizzyCraftPyramidModel:public I3DModel {
   private:
   Vertex* cLocation;
 
@@ -48,9 +47,9 @@ class SpindizzyCraftPyramidModel:public ISimpleModel {
   public:
   SpindizzyCraftPyramidModel(Vertex*);
 
-  /***************************\
-   * Implements ISimpleModel *
-  \***************************/
+  /***********************\
+   * Implements I3DModel *
+  \***********************/
   void update(int milliseconds);
   void render();
 

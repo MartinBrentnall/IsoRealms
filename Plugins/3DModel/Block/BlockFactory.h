@@ -19,14 +19,15 @@
 #ifndef FLAT_RECTANGLE_FACTORY_H
 #define FLAT_RECTANGLE_FACTORY_H
 
+#include <IsoRealms/I3DModelFactory.h>
+#include <IsoRealms/IPlugin.h>
 #include <IsoRealms/PlugSocket.h>
-
-#include "../ISimpleModelFactory.h"
 
 #include "Block.h"
 #include "BlockProperties.h"
 
-class BlockFactory:public ISimpleModelFactory {
+class BlockFactory:public IPlugin,
+                   public I3DModelFactory {
   private:
   IRuntimeContext* cRuntimeContext;
   BlockProperties* cProperties;
@@ -34,11 +35,11 @@ class BlockFactory:public ISimpleModelFactory {
   public:
   BlockFactory(IRuntimeContext*);
 
-  /**********************************\
-   * Implements ISimpleModelFactory *
-  \**********************************/
-  ISimpleModel* createModel(Vertex*, float);
-  void destroyModel(ISimpleModel*);
+  /******************************\
+   * Implements I3DModelFactory *
+  \******************************/
+  I3DModel* createModel(Vertex*, float);
+  void destroyModel(I3DModel*);
 
   /**********************\
    * Implements IPlugin *

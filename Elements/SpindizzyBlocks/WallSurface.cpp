@@ -117,10 +117,10 @@ void WallSurface::render() {
       case CAPPED: {
         if (cFacing == EAST || cFacing == SOUTH) {
           if (mHighEndSlopeZ - mFromZ > 0.0f || mHighStartSlopeZ - mFromZ > 0.0f) {
-            cTexture->texCoord2f(cX,           cZ                     + 0.25f); glVertex3f(mFromX, mFromY, mFromZ + mEdgeWidth);
-            cTexture->texCoord2f(cX + cLength, cZ                     + 0.25f); glVertex3f(mToX,   mToY,   mFromZ + mEdgeWidth);
-            cTexture->texCoord2f(cX + cLength, mHighEndSlopeTexture   - 0.25f); glVertex3f(mToX,   mToY,   mHighEndSlopeZ - mEdgeWidth);
-            cTexture->texCoord2f(cX,           mHighStartSlopeTexture - 0.25f); glVertex3f(mFromX, mFromY, mHighStartSlopeZ - mEdgeWidth);
+            cTexture->texCoord2f(cX,           cZ  + 1.0f);             glVertex3f(mFromX, mFromY, mFromZ + mEdgeWidth);
+            cTexture->texCoord2f(cX + cLength, cZ  + 1.0f);             glVertex3f(mToX,   mToY,   mFromZ + mEdgeWidth);
+            cTexture->texCoord2f(cX + cLength, mHighEndSlopeTexture);   glVertex3f(mToX,   mToY,   mHighEndSlopeZ - mEdgeWidth);
+            cTexture->texCoord2f(cX,           mHighStartSlopeTexture); glVertex3f(mFromX, mFromY, mHighStartSlopeZ - mEdgeWidth);
           }
           glEnd();
           cTextureBottom->set();
@@ -151,10 +151,10 @@ void WallSurface::render() {
           cTexture->texCoord2f(cX,           1.00); glVertex3f(mFromX, mFromY, mHighStartSlopeZ);*/
         } else {
           if (mHighEndSlopeZ - mFromZ > 0.0f || mHighStartSlopeZ - mFromZ > 0.0f) {
-            cTexture->texCoord2f(cX,           mHighStartSlopeTexture - 0.25f); glVertex3f(mFromX, mFromY, mHighStartSlopeZ - mEdgeWidth);
-            cTexture->texCoord2f(cX + cLength, mHighEndSlopeTexture   - 0.25f); glVertex3f(mToX,   mToY,   mHighEndSlopeZ - mEdgeWidth);
-            cTexture->texCoord2f(cX + cLength, cZ                     + 0.25f); glVertex3f(mToX,   mToY,   mFromZ + mEdgeWidth);
-            cTexture->texCoord2f(cX,           cZ                     + 0.25f); glVertex3f(mFromX, mFromY, mFromZ + mEdgeWidth);
+            cTexture->texCoord2f(cX,           mHighStartSlopeTexture); glVertex3f(mFromX, mFromY, mHighStartSlopeZ - mEdgeWidth);
+            cTexture->texCoord2f(cX + cLength, mHighEndSlopeTexture);   glVertex3f(mToX,   mToY,   mHighEndSlopeZ - mEdgeWidth);
+            cTexture->texCoord2f(cX + cLength, cZ  + 1.0f);             glVertex3f(mToX,   mToY,   mFromZ + mEdgeWidth);
+            cTexture->texCoord2f(cX,           cZ  + 1.0f);             glVertex3f(mFromX, mFromY, mFromZ + mEdgeWidth);
           }
           glEnd();
           cTextureBottom->set();

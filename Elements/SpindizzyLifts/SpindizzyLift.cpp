@@ -18,7 +18,7 @@
  */
 #include "SpindizzyLift.h"
 
-SpindizzyLift::SpindizzyLift(ISpindizzyLiftFactory* elementFactory, BlockLocation* location, ISimpleModelFactory* liftModelFactory, SpindizzyLiftProperties* properties, int bottom, int top) : Element<ISpindizzyLiftSet, ISpindizzyLiftFactory>(elementFactory) {
+SpindizzyLift::SpindizzyLift(ISpindizzyLiftFactory* elementFactory, BlockLocation* location, const std::string& modelPath, SpindizzyLiftProperties* properties, int bottom, int top, IRuntimeContext* runtimeContext) : Element<ISpindizzyLiftSet, ISpindizzyLiftFactory>(elementFactory) {
   cTopDelay    = properties->getTopDelay();
   cBottomDelay = properties->getBottomDelay();
   cUpSpeed     = properties->getUpSpeed();
@@ -29,13 +29,8 @@ SpindizzyLift::SpindizzyLift(ISpindizzyLiftFactory* elementFactory, BlockLocatio
   cLiftValues.cLocation.x = cLocation.x;
   cLiftValues.cLocation.y = cLocation.y;
   cLiftValues.cLocation.z = cLocation.z;
-  cLiftModel   = liftModelFactory->createModel(&cLiftValues.cLocation);
+  cLiftModel   = runtimeContext->getModel(modelPath, &cLiftValues.cLocation);
   reset();
-}
-
-void SpindizzyLift::setModel(ISimpleModelFactory* oldFactory, ISimpleModelFactory* newFactory) {
-  oldFactory->destroyModel(cLiftModel);
-  cLiftModel = newFactory->createModel(&cLiftValues.cLocation);
 }
 
 void SpindizzyLift::renderStatic() {

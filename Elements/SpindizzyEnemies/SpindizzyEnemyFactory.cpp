@@ -18,20 +18,13 @@
  */
 #include "SpindizzyEnemyFactory.h"
 
-SpindizzyEnemyFactory::SpindizzyEnemyFactory(ISpindizzyEnemySet* elementSet, ISimpleModelFactory* enemyModelFactory, const std::string& type) : ElementFactory<ISpindizzyEnemySet, SpindizzyEnemy>(elementSet) {
+SpindizzyEnemyFactory::SpindizzyEnemyFactory(ISpindizzyEnemySet* elementSet, const std::string& modelPath, const std::string& type, IRuntimeContext* runtimeContext) : ElementFactory<ISpindizzyEnemySet, SpindizzyEnemy>(elementSet) {
+  cRuntimeContext = runtimeContext;
   cType = type;
-  cEnemyModelFactory = enemyModelFactory;
+  cModelPath = modelPath;
   BlockLocation mIdentityLocation(0, 0, 0);
-  cSampleEnemy = new SpindizzyEnemy(this, &mIdentityLocation, cEnemyModelFactory);
+  cSampleEnemy = new SpindizzyEnemy(this, &mIdentityLocation, cModelPath, cRuntimeContext);
   cSampleEnemyVisuals = cSampleEnemy->getVisualElements();
-}
-
-void SpindizzyEnemyFactory::setModel(ISimpleModelFactory* modelFactory) {
-  cEnemyModelFactory = modelFactory;
-  cSampleEnemy->setModel(cEnemyModelFactory);
-  for (unsigned int i = 0; i < cContent.size(); i++) {
-    cContent[i]->setModel(cEnemyModelFactory);
-  }
 }
 
 IElement* SpindizzyEnemyFactory::getElement(DOMNodeWrapper* node, BlockLocation* relative, IElementContainer* elementContainer) {
@@ -43,7 +36,7 @@ IElement* SpindizzyEnemyFactory::getElement(DOMNodeWrapper* node, BlockLocation*
       mLocation.setRelative(mNode, *relative);
     }
   }
-  SpindizzyEnemy* mLoadedEnemy = new SpindizzyEnemy(this, &mLocation, cEnemyModelFactory);
+  SpindizzyEnemy* mLoadedEnemy = new SpindizzyEnemy(this, &mLocation, cModelPath, cRuntimeContext);
   cContent.push_back(mLoadedEnemy);
   return mLoadedEnemy;
 }
@@ -51,7 +44,7 @@ IElement* SpindizzyEnemyFactory::getElement(DOMNodeWrapper* node, BlockLocation*
 bool SpindizzyEnemyFactory::keyDown(SDLKey& key) {
   switch (key) {
     case SDLK_SPACE: {
-      SpindizzyEnemy* mEnemy = new SpindizzyEnemy(this, cEditingLocation, cEnemyModelFactory);
+      SpindizzyEnemy* mEnemy = new SpindizzyEnemy(this, cEditingLocation, cModelPath, cRuntimeContext);
       addElement(mEnemy);
       cContent.push_back(mEnemy);
       return true;

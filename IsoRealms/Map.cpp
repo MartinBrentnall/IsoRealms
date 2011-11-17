@@ -47,9 +47,9 @@ Map::Map(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, 
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Plugin") {
-      cPluginRegistry.registerPlugin(mNode, &cCommandRegistry, &cColourRegistry, &cTextureRegistry, this, editing, this, this, this);
+      cPluginRegistry.registerPlugin(mNode, &cCommandRegistry, &cColourRegistry, &cTextureRegistry, &c3DModelRegistry, this, editing, this, this, this, this);
     } else if (mValueAsString == "ElementSet") {
-      cElementSetRegistry.registerElementSet(mNode, &cCommandRegistry, &cColourRegistry, &cTextureRegistry, this, editing, this, this, this);
+      cElementSetRegistry.registerElementSet(mNode, &cCommandRegistry, &cColourRegistry, &cTextureRegistry, &c3DModelRegistry, this, editing, this, this, this, this);
     } else {
       // TODO: Throw something
     }
@@ -544,6 +544,16 @@ IColour* Map::getColour(DOMNodeWrapper* node) {
 ITexture* Map::getTexture(DOMNodeWrapper* node) {
   std::string mTexturePath = node->getAttribute("name");
   return cTextureRegistry.get(mTexturePath);
+}
+
+I3DModel* Map::getModel(DOMNodeWrapper* node, Vertex* location) {
+  std::string mModelPath = node->getAttribute("name");
+  return getModel(mModelPath, location);
+}
+
+I3DModel* Map::getModel(const std::string& path, Vertex* location) {
+  I3DModelFactory* mModelFactory = c3DModelRegistry.get(path);
+  return mModelFactory->createModel(location);
 }
 
 Map::~Map() {

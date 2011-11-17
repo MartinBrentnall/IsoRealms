@@ -23,7 +23,6 @@
 
 #include <IsoRealms/ICommand.h>
 
-#include "../../3DModel/ISimpleModelFactory.h"
 #include "../../Camera/ICamera.h"
 #include "../../HUD/IHUD.h"
 #include "../../HUD/IHUDComponentFactory.h"
@@ -54,7 +53,7 @@ class SpindizzySwitches:public IUtilities,
   class SwitchCommand:public ICommand {
     private:
     SpindizzySwitches* cParent;
-    ISimpleModel* cHUDModel;
+    I3DModel* cHUDModel;
     Switch* cSwitch;
     bool cPrimary;
 
@@ -62,7 +61,7 @@ class SpindizzySwitches:public IUtilities,
     SwitchCommand(SpindizzySwitches*, Switch*, bool);
     SwitchCommand(SpindizzySwitches*, DOMNodeWrapper*);
     void deactivate();
-    ISimpleModel* getModel();
+    I3DModel* getModel();
 
     /***********************\
      * Implements ICommand *
@@ -76,7 +75,7 @@ class SpindizzySwitches:public IUtilities,
   HUDComponent cHUDSwitchA;
   HUDComponent cHUDSwitchB;
   Vertex cDefaultVertex;
-  std::vector<ISimpleModelFactory*> cHUDModels;
+  std::vector<std::string> cModelPaths;
   std::vector<SwitchCommand*> cSwitchCommands;
   std::vector<PlugSocket*> cCommandRegistrySocket;
   ResetCommand* cResetCommand;

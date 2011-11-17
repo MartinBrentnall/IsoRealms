@@ -24,6 +24,7 @@
 #include <map>
 
 #include <IsoRealms/Colour.h>
+#include <IsoRealms/I3DModel.h>
 #include <IsoRealms/IColour.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 #include <IsoRealms/Image.h>
@@ -31,9 +32,7 @@
 
 #include "../../Camera/ICamera.h"
 
-#include "../ISimpleModel.h"
-
-class SpindizzyCraftBallModel:public ISimpleModel {
+class SpindizzyCraftBallModel:public I3DModel {
   private:
   ICamera* cCamera;
   Vertex* cLocation;
@@ -50,9 +49,9 @@ class SpindizzyCraftBallModel:public ISimpleModel {
   public:
   SpindizzyCraftBallModel(Vertex*, ICamera*);
 
-  /*********************\
-   * Implements IModel *
-  \*********************/
+  /***********************\
+   * Implements I3DModel *
+  \***********************/
   void update(int milliseconds);
   void render();
 

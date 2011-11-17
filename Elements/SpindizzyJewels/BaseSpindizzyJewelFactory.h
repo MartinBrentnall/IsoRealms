@@ -26,6 +26,9 @@
 class BaseSpindizzyJewelFactory:public ElementFactory<ISpindizzyJewelSet> {
   public:
   BaseSpindizzyJewelFactory(ISpindizzyJewelSet* elementSet) : ElementFactory<ISpindizzyJewelSet>(elementSet) {}
+
+  virtual void jewelCollected() = 0;
+  virtual void allJewelsCollected() = 0;
 };
 
 #endif

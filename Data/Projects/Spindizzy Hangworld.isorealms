@@ -944,12 +944,12 @@
   <Plugin implementation="CommandTrigger" instance="SpindizzyEndingTrigger" type="Objectives">
   </Plugin>
   <Plugin implementation="ExploredZones" instance="ExploredZones" type="Utilities">
-    <UsePlugin implementation="3DModel" instance="C64JewelModel"/>
     <UsePlugin implementation="FlaggedZones" instance="JewelsToCollectFlags"/>
     <UsePlugin implementation="Objectives" instance="SpindizzyEndingTrigger"/>
     <UsePlugin implementation="StringProcessor" instance="ZonesToExploreDisplay"/>
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext" socketid=""/>
     <Configuration>
+      <ZoneFlag name="Plugin/3DModel/C64JewelModel/Jewel"/>
       <ZoneExploredScript>
         <Command>Plugin/Utilities/TimerCommands/IncreaseTimeForZone</Command>
         <Command>Plugin/Utilities/ScoreCommands/IncreaseScoreForZone</Command>
@@ -957,10 +957,10 @@
     </Configuration>
   </Plugin>
   <Plugin implementation="3DModelToHUD" instance="Compass" type="Utilities">
-    <UsePlugin implementation="3DModel" instance="Compass" socketid=""/>
     <UsePlugin implementation="Camera" instance="CraftCamera" socketid=""/>
     <UsePlugin implementation="HUD" instance="SpindizzyHUD" socketid=""/>
     <Configuration>
+      <Model name="Plugin/3DModel/Compass/Block"/>
       <Location x="0.0" y="0.0" z="0.3"/>
     </Configuration>
   </Plugin>
@@ -969,10 +969,10 @@
     <Configuration/>
   </Plugin>
   <Plugin implementation="3DModelToHUD" instance="JewelIcon" type="Utilities">
-    <UsePlugin implementation="3DModel" instance="C64JewelModel" socketid=""/>
     <UsePlugin implementation="Camera" instance="CraftCamera" socketid=""/>
     <UsePlugin implementation="HUD" instance="SpindizzyHUD" socketid=""/>
     <Configuration>
+      <Model name="Plugin/3DModel/C64JewelModel/Jewel"/>
       <Location x="0.0" y="0.0" z="-0.6"/>
     </Configuration>
   </Plugin>
@@ -980,20 +980,21 @@
     <UsePlugin implementation="3DModel" instance="HUDIconMap" socketid=""/>
     <UsePlugin implementation="HUD" instance="SpindizzyHUD" socketid=""/>
     <Configuration>
+      <Model name="Plugin/3DModel/HUDIconMap/Rectangle"/>
       <Location x="0.0" y="0.0" z="0.0"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="3DModelToHUD" instance="ScoreIcon" type="Utilities">
-    <UsePlugin implementation="3DModel" instance="HUDIconScore" socketid=""/>
     <UsePlugin implementation="HUD" instance="SpindizzyHUD" socketid=""/>
     <Configuration>
+      <Model name="Plugin/3DModel/HUDIconScore/Rectangle"/>
       <Location x="0.0" y="0.0" z="0.0"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="3DModelToHUD" instance="TimeIcon" type="Utilities">
-    <UsePlugin implementation="3DModel" instance="HUDIconTime" socketid=""/>
     <UsePlugin implementation="HUD" instance="SpindizzyHUD" socketid=""/>
     <Configuration>
+      <Model name="Plugin/3DModel/HUDIconTime/Rectangle"/>
       <Location x="0.0" y="0.0" z="0.0"/>
     </Configuration>
   </Plugin>
@@ -1017,24 +1018,14 @@
     <Configuration/>
   </Plugin>
   <Plugin implementation="SpindizzySwitches" instance="SpindizzySwitches" type="Utilities">
-    <UsePlugin implementation="3DModel" instance="HUDDiamondLeft" socketid="0"/>
-    <UsePlugin implementation="3DModel" instance="HUDDiamondRight" socketid="1"/>
-    <UsePlugin implementation="3DModel" instance="HUDDiamondFilled" socketid="2"/>
-    <UsePlugin implementation="3DModel" instance="HUDSquareEmpty" socketid="3"/>
-    <UsePlugin implementation="3DModel" instance="HUDSquareLeft" socketid="4"/>
-    <UsePlugin implementation="3DModel" instance="HUDSquareRight" socketid="5"/>
-    <UsePlugin implementation="3DModel" instance="HUDSquareFilled" socketid="6"/>
-    <UsePlugin implementation="3DModel" instance="HUDCircleEmpty" socketid="7"/>
-    <UsePlugin implementation="3DModel" instance="HUDCircleLeft" socketid="8"/>
-    <UsePlugin implementation="3DModel" instance="HUDCircleRight" socketid="9"/>
-    <UsePlugin implementation="3DModel" instance="HUDCircleFilled" socketid="10"/>
     <UsePlugin implementation="Camera" instance="CraftCamera" socketid=""/>
     <UsePlugin implementation="HUD" instance="SpindizzyHUD" socketid=""/>
     <Configuration>
       <ResetSwitch>
         <Command>Plugin/Utilities/SoundCommandWrapper/Play Diamond None.ogg</Command>
       </ResetSwitch>
-      <Switch name="FilledDiamondSwitch" type="primary" HUDModel="2">
+      <Switch name="FilledDiamondSwitch" type="primary">
+        <ActiveModel name="Plugin/3DModel/HUDDiamondFilled/Rectangle"/>
         <On>
           <Command>Plugin/Utilities/SoundCommandWrapper/Play Diamond Both.ogg</Command>
           <Command>ElementSet/Lifts/Enable Lifts DiamondFilled</Command>
@@ -1045,7 +1036,8 @@
           <Command>ElementSet/Blocks/Unset Block Flag SwitchDiamondBoth</Command>
         </Off>
       </Switch>
-      <Switch name="LeftDiamondSwitch" type="primary" HUDModel="0">
+      <Switch name="LeftDiamondSwitch" type="primary">
+        <ActiveModel name="Plugin/3DModel/HUDDiamondLeft/Rectangle"/>
         <On>
           <Command>Plugin/Utilities/SoundCommandWrapper/Play Diamond Left.ogg</Command>
           <Command>ElementSet/Lifts/Enable Lifts DiamondLeft</Command>
@@ -1056,7 +1048,8 @@
           <Command>ElementSet/Blocks/Unset Block Flag SwitchDiamondLeft</Command>
         </Off>
       </Switch>
-      <Switch name="RightDiamondSwitch" type="primary" HUDModel="1">
+      <Switch name="RightDiamondSwitch" type="primary">
+        <ActiveModel name="Plugin/3DModel/HUDDiamondRight/Rectangle"/>
         <On>
           <Command>Plugin/Utilities/SoundCommandWrapper/Play Diamond Right.ogg</Command>
           <Command>ElementSet/Lifts/Enable Lifts DiamondRight</Command>
@@ -1067,7 +1060,8 @@
           <Command>ElementSet/Blocks/Unset Block Flag SwitchDiamondRight</Command>
         </Off>
       </Switch>
-      <Switch name="FilledSquareSwitch" type="primary" HUDModel="6">
+      <Switch name="FilledSquareSwitch" type="primary">
+        <ActiveModel name="Plugin/3DModel/HUDSquareFilled/Rectangle"/>
         <On>
           <Command>Plugin/Utilities/SoundCommandWrapper/Play Square Both.ogg</Command>
           <Command>ElementSet/Lifts/Enable Lifts SquareFilled</Command>
@@ -1078,7 +1072,8 @@
           <Command>ElementSet/Blocks/Unset Block Flag SwitchSquareBoth</Command>
         </Off>
       </Switch>
-      <Switch name="LeftSquareSwitch" type="primary" HUDModel="4">
+      <Switch name="LeftSquareSwitch" type="primary">
+        <ActiveModel name="Plugin/3DModel/HUDSquareLeft/Rectangle"/>
         <On>
           <Command>Plugin/Utilities/SoundCommandWrapper/Play Square Left.ogg</Command>
           <Command>ElementSet/Lifts/Enable Lifts SquareLeft</Command>
@@ -1089,7 +1084,8 @@
           <Command>ElementSet/Blocks/Unset Block Flag SwitchSquareLeft</Command>
         </Off>
       </Switch>
-      <Switch name="RightSquareSwitch" type="primary" HUDModel="5">
+      <Switch name="RightSquareSwitch" type="primary">
+        <ActiveModel name="Plugin/3DModel/HUDSquareRight/Rectangle"/>
         <On>
           <Command>Plugin/Utilities/SoundCommandWrapper/Play Square Right.ogg</Command>
           <Command>ElementSet/Lifts/Enable Lifts SquareRight</Command>
@@ -1100,7 +1096,8 @@
           <Command>ElementSet/Blocks/Unset Block Flag SwitchSquareRight</Command>
         </Off>
       </Switch>
-      <Switch name="EmptySquareSwitch" type="primary" HUDModel="3">
+      <Switch name="EmptySquareSwitch" type="primary">
+        <ActiveModel name="Plugin/3DModel/HUDSquareEmpty/Rectangle"/>
         <On>
           <Command>Plugin/Utilities/SoundCommandWrapper/Play Square None.ogg</Command>
           <Command>ElementSet/Lifts/Enable Lifts SquareEmpty</Command>
@@ -1111,7 +1108,8 @@
           <Command>ElementSet/Blocks/Unset Block Flag SwitchSquareNone</Command>
         </Off>
       </Switch>
-      <Switch name="FilledCircleSwitch" type="secondary" HUDModel="10">
+      <Switch name="FilledCircleSwitch" type="secondary">
+        <ActiveModel name="Plugin/3DModel/HUDCircleFilled/Rectangle"/>
         <On>
           <Command>Plugin/Utilities/SoundCommandWrapper/Play Circle Both.ogg</Command>
           <Command>ElementSet/Lifts/Enable Lifts CircleFilled</Command>
@@ -1122,7 +1120,8 @@
           <Command>ElementSet/Blocks/Unset Block Flag SwitchCircleBoth</Command>
         </Off>
       </Switch>
-      <Switch name="LeftCircleSwitch" type="secondary" HUDModel="8">
+      <Switch name="LeftCircleSwitch" type="secondary">
+        <ActiveModel name="Plugin/3DModel/HUDCircleLeft/Rectangle"/>
         <On>
           <Command>Plugin/Utilities/SoundCommandWrapper/Play Circle Left.ogg</Command>
           <Command>ElementSet/Lifts/Enable Lifts CircleLeft</Command>
@@ -1133,7 +1132,8 @@
           <Command>ElementSet/Blocks/Unset Block Flag SwitchCircleLeft</Command>
         </Off>
       </Switch>
-      <Switch name="RightCircleSwitch" type="secondary" HUDModel="9">
+      <Switch name="RightCircleSwitch" type="secondary">
+        <ActiveModel name="Plugin/3DModel/HUDCircleRight/Rectangle"/>
         <On>
           <Command>Plugin/Utilities/SoundCommandWrapper/Play Circle Right.ogg</Command>
           <Command>ElementSet/Lifts/Enable Lifts CircleRight</Command>
@@ -1144,7 +1144,8 @@
           <Command>ElementSet/Blocks/Unset Block Flag SwitchCircleRight</Command>
         </Off>
       </Switch>
-      <Switch name="EmptyCircleSwitch" type="secondary" HUDModel="7">
+      <Switch name="EmptyCircleSwitch" type="secondary">
+        <ActiveModel name="Plugin/3DModel/HUDCircleEmpty/Rectangle"/>
         <On>
           <Command>Plugin/Utilities/SoundCommandWrapper/Play Circle None.ogg</Command>
           <Command>ElementSet/Lifts/Enable Lifts CircleEmpty</Command>
@@ -1250,17 +1251,6 @@
     <Configuration/>
   </Plugin>
   <ElementSet instance="Blocks" type="SpindizzyBlocks">
-    <UsePlugin implementation="3DModel" instance="ClueDiamondLeft" socketid="0"/>
-    <UsePlugin implementation="3DModel" instance="ClueDiamondRight" socketid="1"/>
-    <UsePlugin implementation="3DModel" instance="ClueDiamondFilled" socketid="2"/>
-    <UsePlugin implementation="3DModel" instance="ClueSquareEmpty" socketid="3"/>
-    <UsePlugin implementation="3DModel" instance="ClueSquareLeft" socketid="4"/>
-    <UsePlugin implementation="3DModel" instance="ClueSquareRight" socketid="5"/>
-    <UsePlugin implementation="3DModel" instance="ClueSquareFilled" socketid="6"/>
-    <UsePlugin implementation="3DModel" instance="ClueCircleEmpty" socketid="7"/>
-    <UsePlugin implementation="3DModel" instance="ClueCircleLeft" socketid="8"/>
-    <UsePlugin implementation="3DModel" instance="ClueCircleRight" socketid="9"/>
-    <UsePlugin implementation="3DModel" instance="ClueCircleFilled" socketid="10"/>
     <UsePlugin implementation="Camera" instance="CraftCamera"/>
     <UsePlugin implementation="CollidableSurfaceRegistry" instance="SpindizzySurfaces"/>
     <UsePlugin implementation="HUD" instance="SpindizzyHUD" socketid=""/>
@@ -1268,17 +1258,17 @@
     <UsePlugin implementation="SurfaceProcessor" instance="PhysicalProcessor" socketid="Physical"/>
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext" socketid=""/>
     <Configuration>
-      <State hudModel="0" z="0.3">SwitchDiamondLeft</State>
-      <State hudModel="1" z="0.3">SwitchDiamondRight</State>
-      <State hudModel="2" z="0.3">SwitchDiamondBoth</State>
-      <State hudModel="3" z="0.3">SwitchSquareNone</State>
-      <State hudModel="4" z="0.3">SwitchSquareLeft</State>
-      <State hudModel="5" z="0.3">SwitchSquareRight</State>
-      <State hudModel="6" z="0.3">SwitchSquareBoth</State>
-      <State hudModel="7" z="0.3">SwitchCircleNone</State>
-      <State hudModel="8" z="0.3">SwitchCircleLeft</State>
-      <State hudModel="9" z="0.3">SwitchCircleRight</State>
-      <State hudModel="10" z="0.3">SwitchCircleBoth</State>
+      <State name="Plugin/3DModel/ClueDiamondLeft/Rectangle" z="0.3">SwitchDiamondLeft</State>
+      <State name="Plugin/3DModel/ClueDiamondRight/Rectangle" z="0.3">SwitchDiamondRight</State>
+      <State name="Plugin/3DModel/ClueDiamondFilled/Rectangle" z="0.3">SwitchDiamondBoth</State>
+      <State name="Plugin/3DModel/ClueSquareEmpty/Rectangle" z="0.3">SwitchSquareNone</State>
+      <State name="Plugin/3DModel/ClueSquareLeft/Rectangle" z="0.3">SwitchSquareLeft</State>
+      <State name="Plugin/3DModel/ClueSquareRight/Rectangle" z="0.3">SwitchSquareRight</State>
+      <State name="Plugin/3DModel/ClueSquareFilled/Rectangle" z="0.3">SwitchSquareBoth</State>
+      <State name="Plugin/3DModel/ClueSquareEmpty/Rectangle" z="0.3">SwitchCircleNone</State>
+      <State name="Plugin/3DModel/ClueCircleLeft/Rectangle" z="0.3">SwitchCircleLeft</State>
+      <State name="Plugin/3DModel/ClueCircleRight/Rectangle" z="0.3">SwitchCircleRight</State>
+      <State name="Plugin/3DModel/ClueCircleFilled/Rectangle" z="0.3">SwitchCircleBoth</State>
       <BlockType name="Ice" friction="0.0" grip="0.0" bounce="0.0" respawnAllowed="false">
         <Texture type="Surface" name="Plugin/TextureSetChanger/PerZone/IceWater"/>
         <Texture type="WallWest" name="Plugin/TextureSetChanger/PerZone/WallIce"/>
@@ -1601,74 +1591,65 @@
     </Configuration>
   </ElementSet>
   <ElementSet instance="Enemies" type="SpindizzyEnemies">
-    <UsePlugin implementation="3DModel" instance="Ball" socketid="0"/>
-    <UsePlugin implementation="3DModel" instance="Gyroscope" socketid="1"/>
-    <UsePlugin implementation="3DModel" instance="Pyramid" socketid="2"/>
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext" socketid=""/>
-    <Configuration/>
+    <Configuration>
+      <Type type="Ball" model="Plugin/3DModel/Ball/Ball"/>
+      <Type type="Gyroscope" model="Plugin/3DModel/Gyroscope/Gyroscope"/>
+      <Type type="Pyramid" model="Plugin/3DModel/Pyramid/Pyramid"/>
+    </Configuration>
   </ElementSet>
   <ElementSet instance="Jewels" type="SpindizzyJewels">
-    <UsePlugin implementation="3DModel" instance="C64JewelModel"/>
     <UsePlugin implementation="Collectables" instance="Jewels"/>
     <Configuration>
-      <JewelCollectedScript>
-        <Command>Plugin/Utilities/SoundCommandWrapper/Play Jewel.ogg</Command>
-        <Command>Plugin/Utilities/TimerCommands/IncreaseTimeForJewel</Command>
-        <Command>Plugin/Utilities/ScoreCommands/IncreaseScoreForJewel</Command>
-      </JewelCollectedScript>
+      <Type name="Jewel" model="Plugin/3DModel/C64JewelModel/Jewel">
+        <JewelCollectedScript>
+          <Command>Plugin/Utilities/SoundCommandWrapper/Play Jewel.ogg</Command>
+          <Command>Plugin/Utilities/TimerCommands/IncreaseTimeForJewel</Command>
+          <Command>Plugin/Utilities/ScoreCommands/IncreaseScoreForJewel</Command>
+        </JewelCollectedScript>
+      </Type>
     </Configuration>
   </ElementSet>
   <ElementSet instance="Lifts" type="SpindizzyLifts">
     <UsePlugin implementation="CollidableSurfaceRegistry" instance="SpindizzySurfaces"/>
-    <UsePlugin implementation="3DModel" instance="LiftDiamondEmpty" socketid="0"/>
-    <UsePlugin implementation="3DModel" instance="LiftDiamondLeft" socketid="1"/>
-    <UsePlugin implementation="3DModel" instance="LiftDiamondRight" socketid="2"/>
-    <UsePlugin implementation="3DModel" instance="LiftDiamondFilled" socketid="3"/>
-    <UsePlugin implementation="3DModel" instance="LiftSquareEmpty" socketid="4"/>
-    <UsePlugin implementation="3DModel" instance="LiftSquareLeft" socketid="5"/>
-    <UsePlugin implementation="3DModel" instance="LiftSquareRight" socketid="6"/>
-    <UsePlugin implementation="3DModel" instance="LiftSquareFilled" socketid="7"/>
-    <UsePlugin implementation="3DModel" instance="LiftCircleEmpty" socketid="8"/>
-    <UsePlugin implementation="3DModel" instance="LiftCircleLeft" socketid="9"/>
-    <UsePlugin implementation="3DModel" instance="LiftCircleRight" socketid="10"/>
-    <UsePlugin implementation="3DModel" instance="LiftCircleFilled" socketid="11"/>
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext" socketid=""/>
     <Configuration>
       <LiftMovedScript>
         <Command>Plugin/Utilities/PlayLiftClick/Random LiftClick</Command>
       </LiftMovedScript>
-      <LiftType name="DiamondEmpty" model="0" active="true"/>
-      <LiftType name="DiamondLeft" model="1"/>
-      <LiftType name="DiamondRight" model="2"/>
-      <LiftType name="DiamondFilled" model="3"/>
-      <LiftType name="SquareEmpty" model="4"/>
-      <LiftType name="SquareLeft" model="5"/>
-      <LiftType name="SquareRight" model="6"/>
-      <LiftType name="SquareFilled" model="7"/>
-      <LiftType name="CircleEmpty" model="8"/>
-      <LiftType name="CircleLeft" model="9"/>
-      <LiftType name="CircleRight" model="10"/>
-      <LiftType name="CircleFilled" model="11"/>
+      <LiftType name="DiamondEmpty" active="true" model="Plugin/3DModel/LiftDiamondEmpty/Rectangle"/>
+      <LiftType name="DiamondLeft" model="Plugin/3DModel/LiftDiamondLeft/Rectangle"/>
+      <LiftType name="DiamondRight" model="Plugin/3DModel/LiftDiamondRight/Rectangle"/>
+      <LiftType name="DiamondFilled" model="Plugin/3DModel/LiftDiamondFilled/Rectangle"/>
+      <LiftType name="SquareEmpty" model="Plugin/3DModel/LiftSquareEmpty/Rectangle"/>
+      <LiftType name="SquareLeft" model="Plugin/3DModel/LiftSquareLeft/Rectangle"/>
+      <LiftType name="SquareRight" model="Plugin/3DModel/LiftSquareRight/Rectangle"/>
+      <LiftType name="SquareFilled" model="Plugin/3DModel/LiftSquareFilled/Rectangle"/>
+      <LiftType name="CircleEmpty" model="Plugin/3DModel/LiftCircleEmpty/Rectangle"/>
+      <LiftType name="CircleLeft" model="Plugin/3DModel/LiftCircleLeft/Rectangle"/>
+      <LiftType name="CircleRight" model="Plugin/3DModel/LiftCircleRight/Rectangle"/>
+      <LiftType name="CircleFilled" model="Plugin/3DModel/LiftCircleFilled/Rectangle"/>
     </Configuration>
   </ElementSet>
   <ElementSet instance="Player" type="SpindizzyGERALD">
-    <UsePlugin implementation="3DModel" instance="Pyramid"/>
     <UsePlugin implementation="Camera" instance="CraftCamera"/>
     <UsePlugin implementation="Collectables" instance="Jewels"/>
     <UsePlugin implementation="CollidableSurfaceRegistry" instance="SpindizzySurfaces"/>
     <UsePlugin implementation="LocationAwareness" instance="PlayerLocation"/>
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext"/>
     <Configuration>
-      <FallLimit height="2.75">
-        <Script>
-          <Command>Plugin/Utilities/SoundCommandWrapper/Play Impact Hard.ogg</Command>
-        </Script>
-      </FallLimit>
-      <Respawn>
-        <Script>
-          <Command>Plugin/Utilities/TimerCommands/DecreaseTimeForRespawn</Command>
-        </Script>
-      </Respawn>
+      <Type type="Player" model="Plugin/3DModel/Pyramid/Pyramid">
+        <FallLimit height="2.75">
+          <Script>
+            <Command>Plugin/Utilities/SoundCommandWrapper/Play Impact Hard.ogg</Command>
+          </Script>
+        </FallLimit>
+        <Respawn>
+          <Script>
+            <Command>Plugin/Utilities/TimerCommands/DecreaseTimeForRespawn</Command>
+          </Script>
+        </Respawn>
+      </Type>
     </Configuration>
   </ElementSet>
   <ZoneRenderer type="Utilities" instance="ExploredZones" renderer="mapOverview" active="false"/>
@@ -1812,7 +1793,7 @@
     </DigitalInput>
   </InputConfiguration>
   <Elements>
-    <Element set="Player" type="">
+    <Element set="Player" type="Player">
       <Location x="-4" y="3" z="0"/> <!-- Game Start -->
 <!--      <Location x="-23" y="163" z="7"/>--> <!-- Big Jump -->
 <!--      <Location x="137" y="163" z="7"/>--> <!-- Moon -->
@@ -1879,10 +1860,10 @@
         <Location x="3" y="1" z="-1"/>
         <Size x="2" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="1" y="1" z="0"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="0" y="7" z="1"/>
       </Element>
     </Elements>
@@ -1912,7 +1893,7 @@
         <Location x="7" y="3" z="-1"/>
         <Size x="1" y="2" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="6" y="4" z="0"/>
       </Element>
     </Elements>
@@ -2021,7 +2002,7 @@
         <Location x="0" y="3" z="-1"/>
         <Size x="1" y="2" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="0" y="3" z="5"/>
       </Element>
     </Elements>
@@ -2176,7 +2157,7 @@
         <Size x="1" y="1" z="1"/>
         <Slope NorthSouth="-1" WestEast="0"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="0" y="7" z="7"/>
       </Element>
     </Elements>
@@ -2238,7 +2219,7 @@
         <Location x="1" y="4" z="-1"/>
         <Size x="2" y="1" z="2"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="7" y="7" z="0"/>
       </Element>
     </Elements>
@@ -2402,7 +2383,7 @@
         <Location x="4" y="3" z="-1"/>
         <Size x="3" y="1" z="2"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="1" y="3" z="0"/>
       </Element>
     </Elements>
@@ -2487,7 +2468,7 @@
         <Location x="1" y="6" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="1" y="6" z="0"/>
       </Element>
     </Elements>
@@ -2695,7 +2676,7 @@
         <Size x="1" y="1" z="1"/>
         <Split Direction="East" NorthEast="1" NorthWest="0" SouthEast="0" SouthWest="0"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="6" y="6" z="4"/>
       </Element>
     </Elements>
@@ -3027,10 +3008,10 @@
         <Size x="1" y="1" z="1"/>
         <Split Direction="East" NorthEast="1" NorthWest="1" SouthEast="1" SouthWest="0"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="0" y="6" z="4"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="0" y="0" z="4"/>
       </Element>
     </Elements>
@@ -3094,13 +3075,13 @@
         <Location x="4" y="5" z="5"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="6" y="2" z="5"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="2" y="2" z="5"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="4" z="6"/>
       </Element>
     </Elements>
@@ -3187,10 +3168,10 @@
         <Location x="7" y="2" z="3"/>
         <Size x="1" y="2" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="7" y="3" z="4"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="7" y="2" z="4"/>
       </Element>
     </Elements>
@@ -3325,7 +3306,7 @@
         <Location x="4" y="7" z="4"/>
         <Size x="2" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="2" z="6"/>
       </Element>
     </Elements>
@@ -3804,7 +3785,7 @@
         <Location x="3" y="1" z="-1"/>
         <Size x="2" y="2" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="1" z="0"/>
       </Element>
     </Elements>
@@ -4004,7 +3985,7 @@
         <Size x="1" y="1" z="5"/>
         <Slope NorthSouth="1" WestEast="0"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="6" z="4"/>
       </Element>
     </Elements>
@@ -4542,7 +4523,7 @@
         <Size x="1" y="1" z="1"/>
         <Slope NorthSouth="0" WestEast="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="7" y="3" z="6"/>
       </Element>
     </Elements>
@@ -4599,7 +4580,7 @@
         <Size x="1" y="3" z="1"/>
         <Slope NorthSouth="-1" WestEast="0"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="2" y="7" z="3"/>
       </Element>
     </Elements>
@@ -4646,10 +4627,10 @@
         <Location x="3" y="3" z="-1"/>
         <Size x="2" y="2" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="3" z="0"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="4" z="0"/>
       </Element>
     </Elements>
@@ -4735,7 +4716,7 @@
         <Size x="1" y="1" z="1"/>
         <Slope NorthSouth="1" WestEast="0"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="6" y="1" z="1"/>
       </Element>
     </Elements>
@@ -4857,7 +4838,7 @@
         <Location x="6" y="7" z="-1"/>
         <Size x="1" y="1" z="2"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="6" y="7" z="1"/>
       </Element>
     </Elements>
@@ -5144,7 +5125,7 @@
         <Size x="1" y="1" z="1"/>
         <Slope NorthSouth="1" WestEast="0"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="1" z="7"/>
       </Element>
     </Elements>
@@ -5390,7 +5371,7 @@
         <Location x="1" y="0" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="2" y="3" z="4"/>
       </Element>
     </Elements>
@@ -5644,7 +5625,7 @@
         <Location x="1" y="6" z="6"/>
         <Size x="1" y="2" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="1" y="1" z="7"/>
       </Element>
     </Elements>
@@ -5761,10 +5742,10 @@
         <Location x="2" y="0" z="6"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="7" y="3" z="3"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="2" y="0" z="7"/>
       </Element>
     </Elements>
@@ -5872,7 +5853,7 @@
         <Location x="3" y="2" z="6"/>
         <Size x="2" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="5" y="3" z="7"/>
       </Element>
     </Elements>
@@ -5903,7 +5884,7 @@
         <Size x="1" y="1" z="2"/>
         <Slope NorthSouth="0" WestEast="2"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="0" z="3"/>
       </Element>
     </Elements>
@@ -6067,7 +6048,7 @@
         <Size x="1" y="1" z="6"/>
         <Split Direction="East" NorthEast="0" NorthWest="0" SouthEast="1" SouthWest="0"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="1" y="2" z="5"/>
       </Element>
     </Elements>
@@ -6090,7 +6071,7 @@
         <Location x="4" y="0" z="2"/>
         <Size x="1" y="6" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="2" z="3"/>
       </Element>
     </Elements>
@@ -6163,7 +6144,7 @@
         <Location x="4" y="6" z="2"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="6" z="3"/>
       </Element>
     </Elements>
@@ -6225,7 +6206,7 @@
         <Location x="4" y="6" z="-1"/>
         <Size x="1" y="1" z="4"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="6" z="3"/>
       </Element>
     </Elements>
@@ -6265,7 +6246,7 @@
         <Size x="1" y="1" z="1"/>
         <Slope NorthSouth="1" WestEast="0"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="1" z="1"/>
       </Element>
     </Elements>
@@ -6296,7 +6277,7 @@
         <Size x="2" y="1" z="2"/>
         <Slope NorthSouth="0" WestEast="-1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="3" z="2"/>
       </Element>
     </Elements>
@@ -6358,13 +6339,13 @@
         <Location x="0" y="7" z="0"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Enemies" type="1">
+      <Element set="Enemies" type="Gyroscope">
         <Location x="7" y="7" z="1"/>
       </Element>
-      <Element set="Enemies" type="0">
+      <Element set="Enemies" type="Ball">
         <Location x="3" y="1" z="0"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="6" y="1" z="0"/>
       </Element>
     </Elements>
@@ -6424,7 +6405,7 @@
           <Element name="SwitchSquareBoth"/>
         </Condition>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="5" y="3" z="7"/>
       </Element>
       <Element set="Lifts" type="DiamondEmpty">
@@ -6524,7 +6505,7 @@
         <Location x="6" y="1" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="4" z="6"/>
       </Element>
       <Element set="Lifts" type="DiamondLeft">
@@ -6559,7 +6540,7 @@
         <Location x="3" y="2" z="4"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="2" z="5"/>
       </Element>
       <Element set="Lifts" type="CircleFilled">
@@ -6715,16 +6696,16 @@
         <Size x="1" y="1" z="1"/>
         <Split Direction="East" NorthEast="1" NorthWest="0" SouthEast="0" SouthWest="0"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="3" z="3"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="3" z="3"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="4" z="3"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="4" z="3"/>
       </Element>
     </Elements>
@@ -6746,7 +6727,7 @@
         <Location x="7" y="0" z="-1"/>
         <Size x="1" y="8" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="6" y="5" z="3"/>
       </Element>
     </Elements>
@@ -6970,7 +6951,7 @@
         <Location x="6" y="0" z="-1"/>
         <Size x="1" y="1" z="4"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="6" y="0" z="3"/>
       </Element>
     </Elements>
@@ -7010,7 +6991,7 @@
         <Size x="1" y="1" z="8"/>
         <Slope NorthSouth="0" WestEast="-1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="6" y="2" z="7"/>
       </Element>
     </Elements>
@@ -7151,7 +7132,7 @@
         <Location x="7" y="2" z="6"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="0" y="0" z="7"/>
       </Element>
     </Elements>
@@ -7205,7 +7186,7 @@
         <Location x="0" y="7" z="6"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="0" y="0" z="7"/>
       </Element>
     </Elements>
@@ -7516,7 +7497,7 @@
         <Location x="1" y="6" z="6"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="1" y="6" z="7"/>
       </Element>
       <Element set="Blocks" type="ArrowEast">
@@ -7586,7 +7567,7 @@
         <Location x="7" y="1" z="4"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="7" y="1" z="5"/>
       </Element>
     </Elements>
@@ -7639,7 +7620,7 @@
         <Location x="2" y="1" z="6"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="6" z="7"/>
       </Element>
     </Elements>
@@ -7689,10 +7670,10 @@
         <Size x="2" y="1" z="1"/>
         <Slope NorthSouth="1" WestEast="0"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="1" z="7"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="6" z="7"/>
       </Element>
     </Elements>
@@ -7728,10 +7709,10 @@
         <Size x="2" y="1" z="1"/>
         <Slope NorthSouth="-1" WestEast="0"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="5" y="4" z="7"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="2" y="4" z="7"/>
       </Element>
     </Elements>
@@ -7765,7 +7746,7 @@
         <Location x="7" y="3" z="-1"/>
         <Size x="1" y="2" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="1" z="7"/>
       </Element>
     </Elements>
@@ -7827,7 +7808,7 @@
         <Location x="4" y="4" z="1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="4" z="2"/>
       </Element>
     </Elements>
@@ -8023,7 +8004,7 @@
         <Size x="1" y="1" z="1"/>
         <Split Direction="East" NorthEast="0" NorthWest="0" SouthEast="1" SouthWest="0"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="6" y="4" z="1"/>
       </Element>
     </Elements>
@@ -8106,7 +8087,7 @@
         <Size x="1" y="1" z="1"/>
         <Split Direction="East" NorthEast="0" NorthWest="0" SouthEast="0" SouthWest="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="0" y="0" z="0"/>
       </Element>
     </Elements>
@@ -8262,7 +8243,7 @@
         <Size x="1" y="1" z="1"/>
         <Split Direction="West" NorthEast="0" NorthWest="0" SouthEast="1" SouthWest="0"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="7" y="0" z="0"/>
       </Element>
     </Elements>
@@ -8345,7 +8326,7 @@
         <Size x="1" y="1" z="1"/>
         <Split Direction="East" NorthEast="1" NorthWest="0" SouthEast="0" SouthWest="0"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="7" y="7" z="0"/>
       </Element>
     </Elements>
@@ -8428,7 +8409,7 @@
         <Size x="1" y="1" z="1"/>
         <Split Direction="West" NorthEast="0" NorthWest="1" SouthEast="0" SouthWest="0"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="0" y="7" z="0"/>
       </Element>
     </Elements>
@@ -8520,7 +8501,7 @@
         <Location x="7" y="7" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="0" z="0"/>
       </Element>
     </Elements>
@@ -8568,10 +8549,10 @@
         <Location x="0" y="0" z="-1"/>
         <Size x="1" y="2" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="0" y="4" z="0"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="7" y="2" z="0"/>
       </Element>
     </Elements>
@@ -8613,7 +8594,7 @@
         <Location x="3" y="0" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="2" z="0"/>
       </Element>
     </Elements>
@@ -8684,7 +8665,7 @@
         <Location x="0" y="3" z="-1"/>
         <Size x="1" y="1" z="8"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="0" y="3" z="7"/>
       </Element>
     </Elements>
@@ -8714,7 +8695,7 @@
         <Location x="6" y="3" z="-1"/>
         <Size x="2" y="3" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="7" y="3" z="0"/>
       </Element>
     </Elements>
@@ -8770,7 +8751,7 @@
         <Location x="0" y="6" z="4"/>
         <Size x="2" y="2" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="0" y="7" z="5"/>
       </Element>
       <Element set="Blocks" type="Plain">
@@ -8847,7 +8828,7 @@
         <Location x="1" y="2" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="2" y="3" z="0"/>
       </Element>
     </Elements>
@@ -8898,7 +8879,7 @@
         <Location x="6" y="2" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="6" y="2" z="0"/>
       </Element>
     </Elements>
@@ -8994,7 +8975,7 @@
         <Location x="6" y="0" z="2"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="0" y="7" z="0"/>
       </Element>
     </Elements>
@@ -9473,7 +9454,7 @@
         <Size x="4" y="1" z="1"/>
         <Slope NorthSouth="0" Stepped="1" WestEast="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="1" y="3" z="7"/>
       </Element>
     </Elements>
@@ -10358,10 +10339,10 @@
         <Location x="4" y="6" z="2"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="1" y="2" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="2" z="4"/>
       </Element>
     </Elements>
@@ -10489,7 +10470,7 @@
         <Location x="2" y="0" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="2" y="0" z="0"/>
       </Element>
     </Elements>
@@ -10625,7 +10606,7 @@
           <Element name="SwitchDiamondBoth"/>
         </Condition>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="2" z="2"/>
       </Element>
     </Elements>
@@ -10671,7 +10652,7 @@
         <Location x="3" y="3" z="3"/>
         <Size x="3" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="3" z="7"/>
       </Element>
       <Element set="Blocks" type="Plain">
@@ -10802,7 +10783,7 @@
         <Location x="4" y="3" z="0"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="2" z="1"/>
       </Element>
       <Element set="Lifts" type="SquareEmpty">
@@ -10914,7 +10895,7 @@
         <Location x="0" y="4" z="6"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="4" z="7"/>
       </Element>
     </Elements>
@@ -10967,7 +10948,7 @@
         <Location x="6" y="4" z="6"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="1" y="4" z="2"/>
       </Element>
       <Element set="Lifts" type="DiamondEmpty">
@@ -11036,7 +11017,7 @@
         <LiftMovement bottom="0" top="3"/>
         <LiftProperties bottomDelay="0" downSpeed="750" topDelay="0" upSpeed="750"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="3" z="6"/>
       </Element>
     </Elements>
@@ -11191,7 +11172,7 @@
         <Size x="1" y="1" z="1"/>
         <Slope NorthSouth="-2" WestEast="0"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="2" y="2" z="7"/>
       </Element>
     </Elements>
@@ -11239,7 +11220,7 @@
         <Location x="4" y="7" z="6"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="6" z="7"/>
       </Element>
       <Element set="Blocks" type="Trampoline">
@@ -11350,7 +11331,7 @@
         <Location x="2" y="2" z="1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="3" z="0"/>
       </Element>
     </Elements>
@@ -11522,7 +11503,7 @@
         <Location x="3" y="3" z="0"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="2" y="5" z="0"/>
       </Element>
     </Elements>
@@ -11638,7 +11619,7 @@
         <Size x="1" y="1" z="5"/>
         <Split Direction="East" NorthEast="1" NorthWest="1" SouthEast="1" SouthWest="0"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="5" y="7" z="5"/>
       </Element>
     </Elements>
@@ -11754,7 +11735,7 @@
         <Location x="7" y="6" z="1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="5" y="6" z="0"/>
       </Element>
     </Elements>
@@ -11870,7 +11851,7 @@
         <Location x="7" y="7" z="2"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="0" y="6" z="3"/>
       </Element>
       <Element set="Lifts" type="DiamondEmpty">
@@ -11917,7 +11898,7 @@
         <Location x="4" y="2" z="-1"/>
         <Size x="1" y="3" z="4"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="0" y="3" z="3"/>
       </Element>
     </Elements>
@@ -11947,7 +11928,7 @@
         <Location x="0" y="7" z="2"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="0" y="3" z="3"/>
       </Element>
     </Elements>
@@ -11997,7 +11978,7 @@
         <Location x="7" y="6" z="2"/>
         <Size x="1" y="2" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="0" y="5" z="3"/>
       </Element>
     </Elements>
@@ -12027,7 +12008,7 @@
         <Location x="0" y="7" z="2"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="0" y="0" z="3"/>
       </Element>
     </Elements>
@@ -12057,7 +12038,7 @@
         <Location x="7" y="2" z="-1"/>
         <Size x="1" y="3" z="4"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="7" y="4" z="3"/>
       </Element>
     </Elements>
@@ -12103,7 +12084,7 @@
         <Location x="7" y="7" z="2"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="0" y="6" z="3"/>
       </Element>
     </Elements>
@@ -12141,7 +12122,7 @@
         <Location x="1" y="2" z="3"/>
         <Size x="6" y="2" z="-4"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="0" y="2" z="3"/>
       </Element>
     </Elements>
@@ -12379,7 +12360,7 @@
         <Location x="0" y="0" z="-1"/>
         <Size x="8" y="8" z="1"/>
       </Element>
-      <Element set="Enemies" type="1">
+      <Element set="Enemies" type="Gyroscope">
         <Location x="2" y="2" z="0"/>
       </Element>
     </Elements>
@@ -12397,7 +12378,7 @@
         <Location x="0" y="0" z="-1"/>
         <Size x="8" y="8" z="1"/>
       </Element>
-      <Element set="Enemies" type="1">
+      <Element set="Enemies" type="Gyroscope">
         <Location x="4" y="5" z="0"/>
       </Element>
     </Elements>
@@ -12415,7 +12396,7 @@
         <Location x="0" y="0" z="-1"/>
         <Size x="8" y="8" z="1"/>
       </Element>
-      <Element set="Enemies" type="0">
+      <Element set="Enemies" type="Ball">
         <Location x="2" y="7" z="0"/>
       </Element>
     </Elements>
@@ -12441,7 +12422,7 @@
         <Location x="3" y="3" z="-1"/>
         <Size x="2" y="2" z="8"/>
       </Element>
-      <Element set="Enemies" type="1">
+      <Element set="Enemies" type="Gyroscope">
         <Location x="2" y="3" z="0"/>
       </Element>
     </Elements>
@@ -12576,10 +12557,10 @@
         <Size x="1" y="1" z="1"/>
         <Split Direction="West" NorthEast="0" NorthWest="1" SouthEast="0" SouthWest="0"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="2" y="5" z="1"/>
       </Element>
-      <Element set="Enemies" type="1">
+      <Element set="Enemies" type="Gyroscope">
         <Location x="2" y="5" z="1"/>
       </Element>
     </Elements>
@@ -12689,7 +12670,7 @@
         <Location x="3" y="2" z="-1"/>
         <Size x="2" y="2" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="3" z="0"/>
       </Element>
     </Elements>
@@ -13431,7 +13412,7 @@
         <Location x="5" y="3" z="0"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="2" z="3"/>
       </Element>
       <Element set="Lifts" type="SquareEmpty">
@@ -13700,7 +13681,7 @@
         <Location x="7" y="1" z="-1"/>
         <Size x="1" y="1" z="4"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="1" y="2" z="3"/>
       </Element>
       <Element set="Lifts" type="DiamondFilled">
@@ -13740,10 +13721,10 @@
         <Location x="2" y="1" z="-1"/>
         <Size x="1" y="1" z="5"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="1" z="3"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="4" z="3"/>
       </Element>
     </Elements>
@@ -13848,7 +13829,7 @@
         <Location x="5" y="0" z="1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="6" y="2" z="6"/>
       </Element>
     </Elements>
@@ -13886,10 +13867,10 @@
         <Location x="3" y="3" z="-1"/>
         <Size x="4" y="1" z="7"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="7" y="4" z="7"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="6" y="4" z="0"/>
       </Element>
       <Element set="Blocks" type="Plain">
@@ -14057,7 +14038,7 @@
         <Location x="1" y="1" z="-1"/>
         <Size x="1" y="4" z="2"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="1" y="4" z="1"/>
       </Element>
     </Elements>
@@ -14130,7 +14111,7 @@
         <Location x="4" y="6" z="1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="6" z="2"/>
       </Element>
     </Elements>
@@ -14190,7 +14171,7 @@
         <Size x="1" y="1" z="3"/>
         <Slope NorthSouth="0" WestEast="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="6" y="7" z="7"/>
       </Element>
     </Elements>
@@ -14321,7 +14302,7 @@
         <Location x="1" y="0" z="1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="6" y="6" z="1"/>
       </Element>
     </Elements>
@@ -14376,7 +14357,7 @@
         <Location x="6" y="6" z="-1"/>
         <Size x="1" y="1" z="2"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="6" y="6" z="1"/>
       </Element>
     </Elements>
@@ -14752,7 +14733,7 @@
         <Size x="1" y="4" z="1"/>
         <Slope NorthSouth="0" WestEast="-1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="1" y="2" z="0"/>
       </Element>
       <Element set="Lifts" type="SquareEmpty">
@@ -14832,7 +14813,7 @@
         <Location x="3" y="3" z="-1"/>
         <Size x="1" y="1" z="4"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="5" y="5" z="6"/>
       </Element>
     </Elements>
@@ -15012,7 +14993,7 @@
         <Location x="2" y="6" z="2"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="2" y="2" z="0"/>
       </Element>
     </Elements>
@@ -15101,7 +15082,7 @@
         <Location x="2" y="6" z="2"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="7" y="0" z="7"/>
       </Element>
     </Elements>
@@ -15178,7 +15159,7 @@
         <Location x="6" y="6" z="4"/>
         <Size x="2" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="5" y="6" z="5"/>
       </Element>
       <Element set="Blocks" type="Plain">
@@ -15266,7 +15247,7 @@
         <Size x="1" y="1" z="1"/>
         <Split Direction="East" NorthEast="0" NorthWest="1" SouthEast="0" SouthWest="0"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="0" y="0" z="7"/>
       </Element>
     </Elements>
@@ -15301,7 +15282,7 @@
         <Location x="2" y="4" z="4"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="2" y="5" z="5"/>
       </Element>
     </Elements>
@@ -15373,7 +15354,7 @@
         <Location x="4" y="3" z="0"/>
         <Size x="1" y="2" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="1" y="5" z="6"/>
       </Element>
     </Elements>
@@ -15418,7 +15399,7 @@
         <Location x="0" y="0" z="5"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="0" y="2" z="6"/>
       </Element>
     </Elements>
@@ -15459,7 +15440,7 @@
         <Location x="0" y="4" z="5"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="0" y="4" z="6"/>
       </Element>
     </Elements>
@@ -15489,7 +15470,7 @@
         <Location x="1" y="7" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="1" y="7" z="0"/>
       </Element>
       <Element set="Blocks" type="ArrowWest">
@@ -15500,7 +15481,7 @@
         <Location x="6" y="1" z="0"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="5" y="1" z="0"/>
       </Element>
     </Elements>
@@ -15572,7 +15553,7 @@
         <Location x="4" y="3" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="6" y="3" z="2"/>
       </Element>
     </Elements>
@@ -15638,7 +15619,7 @@
         <Location x="5" y="1" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="1" y="6" z="3"/>
       </Element>
       <Element set="Lifts" type="SquareEmpty">
@@ -15785,7 +15766,7 @@
         <Location x="4" y="7" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="2" y="7" z="4"/>
       </Element>
     </Elements>
@@ -15871,7 +15852,7 @@
         <Location x="4" y="3" z="-1"/>
         <Size x="1" y="1" z="5"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="3" z="6"/>
       </Element>
       <Element set="Lifts" type="DiamondEmpty">
@@ -15948,7 +15929,7 @@
         <Location x="4" y="3" z="-1"/>
         <Size x="1" y="1" z="3"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="5" z="7"/>
       </Element>
       <Element set="Lifts" type="SquareEmpty">
@@ -16015,7 +15996,7 @@
         <Size x="1" y="1" z="1"/>
         <Split Direction="West" NorthEast="1" NorthWest="1" SouthEast="1" SouthWest="0"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="3" z="4"/>
       </Element>
     </Elements>
@@ -16063,7 +16044,7 @@
         <Location x="1" y="3" z="2"/>
         <Size x="2" y="1" z="-2"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="2" y="3" z="3"/>
       </Element>
     </Elements>
@@ -16233,13 +16214,13 @@
         <Size x="1" y="1" z="1"/>
         <Split Direction="West" NorthEast="1" NorthWest="0" SouthEast="1" SouthWest="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="6" y="1" z="7"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="6" y="6" z="7"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="1" y="6" z="7"/>
       </Element>
       <Element set="Blocks" type="SwitchSquareBoth">
@@ -16351,7 +16332,7 @@
         <Size x="1" y="1" z="1"/>
         <Slope NorthSouth="0" WestEast="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="4" z="0"/>
       </Element>
     </Elements>
@@ -16534,7 +16515,7 @@
         <Location x="1" y="6" z="2"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="5" y="6" z="4"/>
       </Element>
     </Elements>
@@ -16592,7 +16573,7 @@
         <Location x="3" y="3" z="-1"/>
         <Size x="2" y="2" z="2"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="5" y="2" z="7"/>
       </Element>
     </Elements>
@@ -16746,7 +16727,7 @@
         <Location x="7" y="4" z="6"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Enemies" type="0">
+      <Element set="Enemies" type="Ball">
         <Location x="3" y="0" z="0"/>
       </Element>
     </Elements>
@@ -16800,7 +16781,7 @@
         <Location x="3" y="4" z="7"/>
         <Size x="1" y="1" z="-3"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="2" z="4"/>
       </Element>
     </Elements>
@@ -17007,7 +16988,7 @@
         <Location x="5" y="3" z="0"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="5" y="3" z="1"/>
       </Element>
       <Element set="Lifts" type="DiamondEmpty">
@@ -17054,7 +17035,7 @@
         <Location x="4" y="6" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="6" z="0"/>
       </Element>
       <Element set="Blocks" type="ArrowEast">
@@ -17234,7 +17215,7 @@
         <Location x="3" y="6" z="2"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="6" z="3"/>
       </Element>
     </Elements>
@@ -17575,7 +17556,7 @@
         <Location x="1" y="7" z="-1"/>
         <Size x="1" y="1" z="2"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="6" z="2"/>
       </Element>
     </Elements>
@@ -17642,7 +17623,7 @@
         <Location x="4" y="3" z="5"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="2" z="3"/>
       </Element>
     </Elements>
@@ -17704,7 +17685,7 @@
         <Location x="4" y="6" z="6"/>
         <Size x="1" y="2" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="5" y="3" z="7"/>
       </Element>
     </Elements>
@@ -17750,7 +17731,7 @@
           <Element name="SwitchCircleLeft"/>
         </Condition>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="2" z="3"/>
       </Element>
     </Elements>
@@ -17808,7 +17789,7 @@
           <Element name="SwitchCircleLeft"/>
         </Condition>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="3" z="3"/>
       </Element>
     </Elements>
@@ -17858,7 +17839,7 @@
         <Location x="4" y="0" z="6"/>
         <Size x="1" y="4" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="5" z="7"/>
       </Element>
     </Elements>
@@ -17977,7 +17958,7 @@
           <Element name="SwitchCircleLeft"/>
         </Condition>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="7" y="0" z="7"/>
       </Element>
     </Elements>
@@ -18029,7 +18010,7 @@
           <Element name="SwitchCircleNone"/>
         </Condition>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="5" z="4"/>
       </Element>
     </Elements>
@@ -18105,7 +18086,7 @@
         <LiftMovement bottom="0" top="6"/>
         <LiftProperties bottomDelay="1500" downSpeed="750" topDelay="1500" upSpeed="750"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="2" z="6"/>
       </Element>
     </Elements>
@@ -18447,7 +18428,7 @@
           <Element name="SwitchCircleNone"/>
         </Condition>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="5" y="4" z="0"/>
       </Element>
     </Elements>
@@ -18505,7 +18486,7 @@
           <Element name="SwitchSquareNone"/>
         </Condition>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="6" y="0" z="0"/>
       </Element>
     </Elements>
@@ -18584,7 +18565,7 @@
           </Condition>
         </Condition>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="0" z="0"/>
       </Element>
     </Elements>
@@ -18650,7 +18631,7 @@
           <Element name="SwitchCircleBoth"/>
         </Condition>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="0" z="0"/>
       </Element>
     </Elements>
@@ -18743,10 +18724,10 @@
         <Location x="2" y="0" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="2" y="0" z="0"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="1" y="4" z="0"/>
       </Element>
     </Elements>
@@ -18860,10 +18841,10 @@
         <Location x="3" y="4" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="4" z="0"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="4" z="1"/>
       </Element>
     </Elements>
@@ -19024,7 +19005,7 @@
         <Location x="1" y="0" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="1" y="0" z="0"/>
       </Element>
     </Elements>
@@ -19062,7 +19043,7 @@
         <Location x="7" y="1" z="-1"/>
         <Size x="1" y="2" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="4" z="0"/>
       </Element>
     </Elements>
@@ -19112,7 +19093,7 @@
         <Location x="1" y="6" z="2"/>
         <Size x="1" y="1" z="-2"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="1" y="6" z="0"/>
       </Element>
     </Elements>
@@ -19182,7 +19163,7 @@
           <Element name="SwitchDiamondLeft" negated="true"/>
         </Condition>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="3" z="0"/>
       </Element>
     </Elements>
@@ -19376,10 +19357,10 @@
         <Location x="7" y="6" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="4" z="4"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="7" z="7"/>
       </Element>
     </Elements>
@@ -19626,7 +19607,7 @@
         <Location x="7" y="2" z="1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="6" y="3" z="0"/>
       </Element>
     </Elements>
@@ -19754,10 +19735,10 @@
         <Location x="3" y="1" z="0"/>
         <Size x="0" y="0" z="-1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="5" y="5" z="0"/>
       </Element>
-      <Element set="Enemies" type="0">
+      <Element set="Enemies" type="Ball">
         <Location x="4" y="4" z="0"/>
       </Element>
     </Elements>
@@ -19862,7 +19843,7 @@
         <Location x="4" y="7" z="-1"/>
         <Size x="2" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="2" z="2"/>
       </Element>
     </Elements>
@@ -19959,7 +19940,7 @@
         <Location x="0" y="7" z="6"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="0" y="6" z="0"/>
       </Element>
     </Elements>
@@ -20057,7 +20038,7 @@
         <Size x="1" y="1" z="1"/>
         <Split Direction="West" NorthEast="0" NorthWest="1" SouthEast="1" SouthWest="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="6" y="6" z="0"/>
       </Element>
     </Elements>
@@ -20160,7 +20141,7 @@
         <Size x="1" y="1" z="1"/>
         <Split Direction="West" NorthEast="2" NorthWest="2" SouthEast="2" SouthWest="0"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="2" y="1" z="0"/>
       </Element>
     </Elements>
@@ -20258,7 +20239,7 @@
         <Size x="1" y="1" z="5"/>
         <Slope NorthSouth="-1" WestEast="0"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="5" y="1" z="0"/>
       </Element>
       <Element set="Lifts" type="SquareEmpty">
@@ -20372,7 +20353,7 @@
           <Element name="SwitchCircleBoth"/>
         </Condition>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="6" y="1" z="6"/>
       </Element>
     </Elements>
@@ -20473,7 +20454,7 @@
         <Location x="2" y="3" z="-1"/>
         <Size x="2" y="1" z="5"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="2" y="3" z="4"/>
       </Element>
     </Elements>
@@ -20569,7 +20550,7 @@
         <Location x="4" y="4" z="3"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="4" z="4"/>
       </Element>
     </Elements>
@@ -20787,7 +20768,7 @@
         <Location x="3" y="0" z="1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="0" z="2"/>
       </Element>
     </Elements>
@@ -20998,7 +20979,7 @@
         <Location x="7" y="7" z="1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="6" y="6" z="0"/>
       </Element>
       <Element set="Blocks" type="Plain">
@@ -21099,7 +21080,7 @@
         <Location x="0" y="7" z="6"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="0" y="7" z="7"/>
       </Element>
       <Element set="Blocks" type="ArrowNorth">
@@ -21418,7 +21399,7 @@
           <Element name="SwitchCircleNone"/>
         </Condition>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="2" y="1" z="7"/>
       </Element>
     </Elements>
@@ -21651,7 +21632,7 @@
           <Element name="SwitchDiamondLeft"/>
         </Condition>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="2" y="2" z="0"/>
       </Element>
     </Elements>
@@ -21772,7 +21753,7 @@
           <Element name="SwitchDiamondLeft"/>
         </Condition>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="3" z="0"/>
       </Element>
     </Elements>
@@ -21882,7 +21863,7 @@
         <Location x="6" y="7" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="4" z="0"/>
       </Element>
     </Elements>
@@ -22033,7 +22014,7 @@
         <Size x="6" y="1" z="3"/>
         <Slope NorthSouth="-1" WestEast="0"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="7" y="4" z="0"/>
       </Element>
       <Element set="Blocks" type="SwitchDiamondLeft">
@@ -22188,7 +22169,7 @@
           <Element name="SwitchCircleNone"/>
         </Condition>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="6" y="1" z="0"/>
       </Element>
     </Elements>
@@ -22258,7 +22239,7 @@
           <Element name="SwitchSquareNone"/>
         </Condition>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="2" y="4" z="5"/>
       </Element>
     </Elements>
@@ -22323,7 +22304,7 @@
           <Element name="SwitchCircleNone"/>
         </Condition>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="5" z="7"/>
       </Element>
       <Element set="Lifts" type="DiamondEmpty">
@@ -22686,7 +22667,7 @@
         <Size x="1" y="1" z="1"/>
         <Slope NorthSouth="0" WestEast="-2"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="6" z="0"/>
       </Element>
     </Elements>
@@ -22772,7 +22753,7 @@
           <Element name="SwitchCircleBoth"/>
         </Condition>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="2" y="2" z="2"/>
       </Element>
     </Elements>
@@ -22846,7 +22827,7 @@
         <Location x="5" y="5" z="-1"/>
         <Size x="1" y="1" z="2"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="5" y="4" z="0"/>
       </Element>
     </Elements>
@@ -22913,7 +22894,7 @@
         <Location x="5" y="5" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="6" y="6" z="0"/>
       </Element>
     </Elements>
@@ -22974,7 +22955,7 @@
           <Element name="SwitchCircleNone"/>
         </Condition>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="2" z="7"/>
       </Element>
       <Element set="Lifts" type="SquareEmpty">
@@ -23019,7 +23000,7 @@
         <Size x="1" y="1" z="3"/>
         <Slope NorthSouth="1" WestEast="0"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="0" y="5" z="2"/>
       </Element>
     </Elements>
@@ -23103,7 +23084,7 @@
           <Element name="SwitchCircleNone"/>
         </Condition>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="3" z="0"/>
       </Element>
     </Elements>
@@ -23141,7 +23122,7 @@
         <Location x="3" y="3" z="-1"/>
         <Size x="1" y="2" z="3"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="4" z="0"/>
       </Element>
     </Elements>
@@ -23392,10 +23373,10 @@
         <Size x="1" y="1" z="1"/>
         <Split Direction="East" NorthEast="0" NorthWest="0" SouthEast="1" SouthWest="0"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="4" z="0"/>
       </Element>
-      <Element set="Enemies" type="1">
+      <Element set="Enemies" type="Gyroscope">
         <Location x="0" y="7" z="6"/>
       </Element>
     </Elements>
@@ -23436,7 +23417,7 @@
         <Size x="2" y="4" z="1"/>
         <Slope NorthSouth="0" Stepped="1" WestEast="-1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="4" z="0"/>
       </Element>
     </Elements>
@@ -23514,10 +23495,10 @@
         <Location x="3" y="5" z="5"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="5" z="0"/>
       </Element>
-      <Element set="Enemies" type="0">
+      <Element set="Enemies" type="Ball">
         <Location x="4" y="3" z="6"/>
       </Element>
     </Elements>
@@ -23559,7 +23540,7 @@
         <Size x="1" y="2" z="4"/>
         <Slope NorthSouth="0" WestEast="-1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="3" z="3"/>
       </Element>
     </Elements>
@@ -23674,7 +23655,7 @@
         <Location x="1" y="4" z="-1"/>
         <Size x="1" y="1" z="5"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="1" y="4" z="4"/>
       </Element>
     </Elements>
@@ -23706,7 +23687,7 @@
         <Location x="6" y="7" z="-1"/>
         <Size x="2" y="1" z="7"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="5" y="2" z="6"/>
       </Element>
     </Elements>
@@ -23823,7 +23804,7 @@
         <Size x="1" y="1" z="7"/>
         <Split Direction="West" NorthEast="0" NorthWest="0" SouthEast="0" SouthWest="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="6" y="3" z="0"/>
       </Element>
     </Elements>
@@ -24190,7 +24171,7 @@
         <Location x="6" y="4" z="0"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="6" y="3" z="1"/>
       </Element>
       <Element set="Lifts" type="SquareFilled">
@@ -24261,7 +24242,7 @@
         <Location x="3" y="3" z="-1"/>
         <Size x="1" y="1" z="5"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="3" z="1"/>
       </Element>
     </Elements>
@@ -24303,7 +24284,7 @@
         <Location x="6" y="1" z="3"/>
         <Size x="2" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="1" z="4"/>
       </Element>
     </Elements>
@@ -24404,7 +24385,7 @@
         <Location x="0" y="1" z="2"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="2" y="1" z="4"/>
       </Element>
     </Elements>
@@ -24442,7 +24423,7 @@
         <Location x="0" y="1" z="2"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Enemies" type="0">
+      <Element set="Enemies" type="Ball">
         <Location x="2" y="4" z="0"/>
       </Element>
     </Elements>
@@ -24481,7 +24462,7 @@
         <Location x="0" y="4" z="-1"/>
         <Size x="2" y="2" z="3"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="3" y="6" z="5"/>
       </Element>
       <Element set="Lifts" type="DiamondEmpty">
@@ -24583,7 +24564,7 @@
           <Element name="SwitchSquareLeft"/>
         </Condition>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="4" y="5" z="7"/>
       </Element>
     </Elements>
@@ -24629,10 +24610,10 @@
         <Location x="5" y="5" z="-1"/>
         <Size x="2" y="1" z="2"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="6" y="5" z="1"/>
       </Element>
-      <Element set="Enemies" type="1">
+      <Element set="Enemies" type="Gyroscope">
         <Location x="6" y="5" z="1"/>
       </Element>
     </Elements>
@@ -24885,7 +24866,7 @@
           <Element name="SwitchCircleBoth"/>
         </Condition>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="6" y="1" z="7"/>
       </Element>
     </Elements>
@@ -24971,7 +24952,7 @@
         <Location x="2" y="0" z="6"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="6" y="5" z="4"/>
       </Element>
     </Elements>
@@ -25120,7 +25101,7 @@
         <Location x="3" y="6" z="3"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="5" y="1" z="4"/>
       </Element>
     </Elements>
@@ -25442,7 +25423,7 @@
         <Location x="6" y="7" z="-1"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="1" y="3" z="4"/>
       </Element>
     </Elements>
@@ -25557,7 +25538,7 @@
         <Location x="6" y="5" z="2"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="6" y="5" z="3"/>
       </Element>
     </Elements>
@@ -25609,7 +25590,7 @@
         <Location x="6" y="1" z="2"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="6" y="1" z="3"/>
       </Element>
     </Elements>
@@ -25845,7 +25826,7 @@
         <Location x="6" y="0" z="0"/>
         <Size x="1" y="1" z="1"/>
       </Element>
-      <Element set="Jewels" type="">
+      <Element set="Jewels" type="Jewel">
         <Location x="1" y="6" z="1"/>
       </Element>
       <Element set="Blocks" type="Water">

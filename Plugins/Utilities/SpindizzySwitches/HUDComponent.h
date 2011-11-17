@@ -19,18 +19,19 @@
 #ifndef HUD_COMPONENT_H
 #define HUD_COMPONENT_H
 
-#include "../../3DModel/ISimpleModel.h"
+#include <IsoRealms/I3DModel.h>
+
 #include "../../Camera/ICamera.h"
 #include "../../HUD/IHUDGameComponent.h"
 
 class HUDComponent:public IHUDGameComponent {
   private:
-  ISimpleModel* cModel;
+  I3DModel* cModel;
   ICamera* cCamera;
   
   public:
   HUDComponent();
-  void setModel(ISimpleModel*);
+  void setModel(I3DModel*);
   void setCamera(ICamera*);
   
   /********************************\

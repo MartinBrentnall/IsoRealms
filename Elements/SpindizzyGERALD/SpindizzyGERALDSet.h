@@ -23,7 +23,6 @@
 
 #include <IsoRealms/PluginRegistry.h>
 
-#include "../../Plugins/3DModel/ISimpleModelFactory.h"
 #include "../../Plugins/Camera/ICamera.h"
 #include "../../Plugins/Collectables/ICollectables.h"
 #include "../../Plugins/CollidableSurfaceRegistry/ICollidableSurfaceRegistry.h"
@@ -36,7 +35,6 @@
 class SpindizzyGERALDSet:public ISpindizzyGERALDSet {
   private:
   std::vector<IElementFactory*> cElementFactories;
-  ISimpleModelFactory* cGERALDModelFactory;
   ICamera* cCamera;
   ICollectables* cCollectables;
   ICollidableSurfaceRegistry* cCollidableSurfaceRegistry;
@@ -46,7 +44,6 @@ class SpindizzyGERALDSet:public ISpindizzyGERALDSet {
   std::vector<ICommand*> cCommands;
   unsigned int cLocks;
 
-  void setModel(ISimpleModelFactory*);
   void stop();
 
   class LockControlCommand:public ICommand {

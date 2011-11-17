@@ -92,6 +92,7 @@ class SimpleEditor:public IControlLoop,
   Registry<ICommand, CommandProxy> cCommandRegistry;
   Registry<IColour, ColourProxy> cColourRegistry;
   Registry<ITexture, TextureProxy> cTextureRegistry;
+  Registry<I3DModelFactory, ModelFactoryProxy> c3DModelRegistry;
   PluginRegistry cPluginRegistry;
   std::vector<PlugSocket*> cFontSocket;
   IFont* cFont;

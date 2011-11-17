@@ -61,6 +61,7 @@ add_library(IsoRealms SHARED
   KeyStates.cpp
   Map.cpp
   MiscFunctions.cpp
+  ModelFactoryProxy.cpp
   OpenDialogCommand.cpp
   ParseException.cpp
   PlugSocket.cpp

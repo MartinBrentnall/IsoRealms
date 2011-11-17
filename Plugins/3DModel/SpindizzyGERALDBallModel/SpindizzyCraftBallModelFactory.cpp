@@ -18,15 +18,16 @@
  */
 #include "SpindizzyCraftBallModelFactory.h"
 
-SpindizzyCraftBallModelFactory::SpindizzyCraftBallModelFactory() {
+SpindizzyCraftBallModelFactory::SpindizzyCraftBallModelFactory(IRuntimeContext* runtimeContext) {
+  runtimeContext->add(this, "Ball");
   assignDummyPlugin(&cCamera, "Camera");
 }
 
-ISimpleModel* SpindizzyCraftBallModelFactory::createModel(Vertex* location, float scale) {
+I3DModel* SpindizzyCraftBallModelFactory::createModel(Vertex* location, float scale) {
   return new SpindizzyCraftBallModel(location, cCamera);
 }
 
-void SpindizzyCraftBallModelFactory::destroyModel(ISimpleModel* ballModel) {
+void SpindizzyCraftBallModelFactory::destroyModel(I3DModel* ballModel) {
   delete ballModel;
 }
 
@@ -44,8 +45,8 @@ IPlugin* SpindizzyCraftBallModelFactory::getPlugin(PlugSocket* socket) {
   return NULL;
 }
 
-extern "C" IPlugin* create() {
-  return new SpindizzyCraftBallModelFactory();
+extern "C" IPlugin* create(IRuntimeContext* runtimeContext) {
+  return new SpindizzyCraftBallModelFactory(runtimeContext);
 }
 
 extern "C" void destroy(IPlugin* ballModel) {

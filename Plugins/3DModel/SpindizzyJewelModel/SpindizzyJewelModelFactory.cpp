@@ -18,20 +18,20 @@
  */
 #include "SpindizzyJewelModelFactory.h"
 
-ISimpleModel* SpindizzyJewelModelFactory::createModel(Vertex* vertex, float scale) {
+SpindizzyJewelModelFactory::SpindizzyJewelModelFactory(IRuntimeContext* runtimeContext) {
+  runtimeContext->add(this, "Jewel");
+}
+
+I3DModel* SpindizzyJewelModelFactory::createModel(Vertex* vertex, float scale) {
   return new SpindizzyJewelModel(vertex, scale);
 }
 
-void SpindizzyJewelModelFactory::destroyModel(ISimpleModel* jewelModel) {
+void SpindizzyJewelModelFactory::destroyModel(I3DModel* jewelModel) {
   delete jewelModel;
 }
 
-std::string SpindizzyJewelModelFactory::getName() {
-  return "Spindizzy Jewel Model";
-}
-
-extern "C" IPlugin* create() {
-  return new SpindizzyJewelModelFactory();
+extern "C" IPlugin* create(IRuntimeContext* runtimeContext) {
+  return new SpindizzyJewelModelFactory(runtimeContext);
 }
 
 extern "C" void destroy(IPlugin* jewelModelFactory) {

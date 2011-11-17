@@ -19,9 +19,9 @@
 #ifndef MODEL_TO_HUD
 #define MODEL_TO_HUD
 
+#include <IsoRealms/I3DModelFactory.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 
-#include "../../3DModel/ISimpleModelFactory.h"
 #include "../../Camera/ICamera.h"
 #include "../../HUD/IHUD.h"
 
@@ -31,14 +31,14 @@ class ModelToHUD:public IUtilities,
                  public IHUDComponentFactory,
                  public IHUDGameComponent {
   private:
+  IRuntimeContext* cRuntimeContext;
   Vertex cModelLocation;
   ICamera* cCamera;
-  ISimpleModelFactory* cModelFactory;
-  ISimpleModel* cModel;
+  I3DModel* cModel;
   IHUD* cHUD;
 
   public:
-  ModelToHUD();
+  ModelToHUD(IRuntimeContext*);
     
   /**********************\
    * Implements IPlugin *

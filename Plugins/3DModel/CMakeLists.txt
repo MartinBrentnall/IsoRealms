@@ -22,10 +22,3 @@ add_subdirectory(SpindizzyJewelModel)
 add_subdirectory(FlatRectangle)
 
 include_directories(${PROJECT_SOURCE_DIR})
-
-add_library(3DModelDummy MODULE 
-  DummyModel.cpp
-  DummyModelFactory.cpp
-)
-set_target_properties(3DModelDummy PROPERTIES OUTPUT_NAME "Dummy")
-set_target_properties(3DModelDummy PROPERTIES PREFIX "lib")

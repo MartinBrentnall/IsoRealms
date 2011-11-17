@@ -28,6 +28,7 @@
 #include "DOMNodeWrapper.h"
 #include "DOMNodeWriter.h"
 #include "ElementSetRegistry.h"
+#include "I3DModelSource.h"
 #include "IColourSource.h"
 #include "IElementHandler.h"
 #include "IMap.h"
@@ -50,13 +51,15 @@ class Map:public IMap,
           public IElementContainer,
           public IScriptSource,
           public IColourSource,
-          public ITextureSource {
+          public ITextureSource,
+          public I3DModelSource {
   private:
   PluginRegistry cPluginRegistry;
   ElementSetRegistry cElementSetRegistry;
   Registry<ICommand, CommandProxy> cCommandRegistry;
   Registry<IColour, ColourProxy> cColourRegistry;
   Registry<ITexture, TextureProxy> cTextureRegistry;
+  Registry<I3DModelFactory, ModelFactoryProxy> c3DModelRegistry;
   InputCommands cInputCommands;
   
   /**
@@ -223,6 +226,12 @@ class Map:public IMap,
    * Implements ITextureSource *
   \*****************************/
   ITexture* getTexture(DOMNodeWrapper*);
+  
+  /*****************************\
+   * Implements I3DModelSource *
+  \*****************************/
+  I3DModel* getModel(DOMNodeWrapper*, Vertex*);
+  I3DModel* getModel(const std::string&, Vertex*);
   
   ~Map();
 };

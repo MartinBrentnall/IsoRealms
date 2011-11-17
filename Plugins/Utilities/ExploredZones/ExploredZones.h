@@ -31,7 +31,6 @@
 
 #include "../IUtilities.h"
 
-#include "../../3DModel/ISimpleModelFactory.h"
 #include "../../FlaggedZones/IFlaggedZones.h"
 #include "../../Objectives/IObjectives.h"
 #include "../../StringProcessor/IStringProcessor.h"
@@ -48,13 +47,13 @@ class ExploredZones:public IUtilities,
   IObjectives* cObjectives;
   IStringProcessor* cToGoStringProcessor;
   std::string cToGoString;
-  std::map<IZone*, ISimpleModel*> cExploredZones;
+  std::map<IZone*, I3DModel*> cExploredZones;
   unsigned int cZoneCount;
   Script* cAllZonesExploredScript;
   Script* cZoneExploredScript;
   IZoneRenderer* cExploredZoneRenderer;
   IZoneRenderer* cMapOverviewRenderer;
-  ISimpleModelFactory* cFlagModel;
+  std::string cModelPath;
   IFlaggedZones* cFlaggedZones;
   
   class ExploredZoneRenderer:public IZoneRenderer {

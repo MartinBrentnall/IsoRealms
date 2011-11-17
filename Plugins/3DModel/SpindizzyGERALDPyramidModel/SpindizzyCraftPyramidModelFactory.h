@@ -19,24 +19,22 @@
 #ifndef SPINDIZZY_CRAFT_PYRAMID_MODEL_FACTORY_H
 #define SPINDIZZY_CRAFT_PYRAMID_MODEL_FACTORY_H
 
-#include "../ISimpleModelFactory.h"
-#include "../ISimpleModel.h"
+#include <IsoRealms/I3DModel.h>
+#include <IsoRealms/I3DModelFactory.h>
+#include <IsoRealms/IPlugin.h>
 
 #include "SpindizzyCraftPyramidModel.h"
 
-class SpindizzyCraftPyramidModelFactory:public ISimpleModelFactory {
+class SpindizzyCraftPyramidModelFactory:public I3DModelFactory,
+                                        public IPlugin {
   public:
+  SpindizzyCraftPyramidModelFactory(IRuntimeContext*);
 
-  /************************************\
-   * Implements ISimpleModelFactory.h *
-  \************************************/
-  ISimpleModel* createModel(Vertex*, float);
-  void destroyModel(ISimpleModel*);
-
-  /*****************************\
-   * Implements IPluginSupport *
-  \*****************************/
-  std::string getName();
+  /********************************\
+   * Implements I3DModelFactory.h *
+  \********************************/
+  I3DModel* createModel(Vertex*, float);
+  void destroyModel(I3DModel*);
 };
 
 #endif

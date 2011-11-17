@@ -18,11 +18,11 @@
  */
 #include "3DModelToHUD.h"
 
-ModelToHUD::ModelToHUD() {
-  assignDummyPlugin(&cModelFactory, "3DModel");
+ModelToHUD::ModelToHUD(IRuntimeContext* runtimeContext) {
+  cRuntimeContext = runtimeContext;
   assignDummyPlugin(&cCamera, "Camera");
   assignDummyPlugin(&cHUD, "HUD");
-  cModel = cModelFactory->createModel(&cModelLocation);
+// TODO: Dummy model  cModel = cModelFactory->createModel(&cModelLocation);
 }
 
 void ModelToHUD::load(DOMNodeWrapper* node) {
@@ -33,9 +33,10 @@ void ModelToHUD::load(DOMNodeWrapper* node) {
       cModelLocation.x = mNode->getFloatAttribute("x");
       cModelLocation.y = mNode->getFloatAttribute("y");
       cModelLocation.z = mNode->getFloatAttribute("z");
+    } else if (mValueAsString == "Model") {
+      cModel = cRuntimeContext->getModel(mNode, &cModelLocation);
     }
   }
-  cModel = cModelFactory->createModel(&cModelLocation);
 }
 
 void ModelToHUD::save(DOMNodeWriter* node) {
@@ -46,12 +47,7 @@ void ModelToHUD::save(DOMNodeWriter* node) {
 }
 
 void ModelToHUD::setPlugin(PlugSocket* socket, IPlugin* plugin) {
-  if (socket->getType() == "3DModel") {
-    ISimpleModelFactory* mPreviousModelFactory = cModelFactory;
-    if (assignPlugin(plugin, &cModelFactory, *socket)) {
-      mPreviousModelFactory->destroyModel(cModel);
-    }
-  } else if (socket->getType() == "Camera") {
+  if (socket->getType() == "Camera") {
     assignPlugin(plugin, &cCamera, *socket);
   } else if (socket->getType() == "HUD") {
     IHUD* mPreviousHUD = cHUD;
@@ -65,7 +61,6 @@ void ModelToHUD::setPlugin(PlugSocket* socket, IPlugin* plugin) {
 }
 
 IPlugin* ModelToHUD::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "3DModel") {return cModelFactory;}
   if (socket->getType() == "Camera")  {return cCamera;}
   if (socket->getType() == "HUD")     {return cHUD;}
   // TODO: Throw
@@ -95,8 +90,8 @@ float ModelToHUD::getAspectRatio() {
   return 1.0f;
 }
 
-extern "C" IPlugin* create() {
-  return new ModelToHUD();
+extern "C" IPlugin* create(IRuntimeContext* runtimeContext) {
+  return new ModelToHUD(runtimeContext);
 }
 
 extern "C" void destroy(IPlugin* plugin) {

@@ -16,14 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_SIMPLE_MODEL_FACTORY_H
-#define I_SIMPLE_MODEL_FACTORY_H
+#ifndef I_3D_MODEL_FACTORY_H
+#define I_3D_MODEL_FACTORY_H
 
-#include <IsoRealms/Vertex.h>
+#include "Vertex.h"
 
-#include "ISimpleModel.h"
+#include "I3DModel.h"
 
-class ISimpleModelFactory:public virtual IPlugin {
+class I3DModelFactory {
   public:
 
   /**
@@ -33,7 +33,7 @@ class ISimpleModelFactory:public virtual IPlugin {
    * 
    * @returns A new model instance.
    */
-  virtual ISimpleModel* createModel(Vertex*, float = 1.0f) = 0;
+  virtual I3DModel* createModel(Vertex*, float = 1.0f) = 0;
 
   /**
    * When a model is no longer required by an entity (e.g. it was changed to a
@@ -43,14 +43,14 @@ class ISimpleModelFactory:public virtual IPlugin {
    * 
    * @param ISimpleModel*  The model to destroy.
    */
-  virtual void destroyModel(ISimpleModel*) = 0;
+  virtual void destroyModel(I3DModel*) = 0;
 
   /**
    * The destructor cleans up resources used by the model factory.  It should
    * be assumed that destroyModel() has been called for all instances created
    * by this factory.  Hence, instance clean-up is not necessary here.
    */
-  virtual ~ISimpleModelFactory() {}
+  virtual ~I3DModelFactory() {}
 };
 
 #endif

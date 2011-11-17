@@ -24,12 +24,11 @@
 #include <GL/gl.h>
 
 #include <IsoRealms/Colour.h>
+#include <IsoRealms/I3DModel.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 #include <IsoRealms/Vertex.h>
 
-#include "../ISimpleModel.h"
-
-class SpindizzyJewelModel:public ISimpleModel {
+class SpindizzyJewelModel:public I3DModel {
   private:
   static unsigned int cReferenceCount;
   static GLuint cPanelDisplayList;
@@ -91,9 +90,9 @@ class SpindizzyJewelModel:public ISimpleModel {
   public:
   SpindizzyJewelModel(Vertex*, float);
 
-  /***************************\
-   * Implements ISimpleModel *
-  \***************************/
+  /***********************\
+   * Implements I3DModel *
+  \***********************/
   void update(int);
   void render();
 

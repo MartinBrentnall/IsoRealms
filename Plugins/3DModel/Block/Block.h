@@ -19,14 +19,13 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 
+#include <IsoRealms/I3DModel.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 #include <IsoRealms/Vertex.h>
 
-#include "../ISimpleModel.h"
-
 #include "BlockProperties.h"
 
-class Block:public ISimpleModel {
+class Block:public I3DModel {
   private:
   Vertex* cLocation;
   BlockProperties* cProperties;

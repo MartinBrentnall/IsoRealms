@@ -19,11 +19,16 @@
 #ifndef I_RUNTIME_CONTEXT_H
 #define I_RUNTIME_CONTEXT_H
 
+#include <string>
+
 #include "DOMNodeWrapper.h"
+#include "I3DModel.h"
+#include "I3DModelFactory.h"
 #include "IColour.h"
 #include "IMap.h"
 #include "ITexture.h"
 #include "Script.h"
+#include "Vertex.h"
 
 class IRuntimeContext {
   public:
@@ -33,10 +38,13 @@ class IRuntimeContext {
   virtual void add(ICommand*, const std::string&) = 0;
   virtual void add(IColour*, const std::string&) = 0;
   virtual void add(ITexture*, const std::string&) = 0;
+  virtual void add(I3DModelFactory*, const std::string&) = 0;
   virtual void remove(ICommand*) = 0;
   virtual Script* getScript(DOMNodeWrapper*) = 0;
   virtual IColour* getColour(DOMNodeWrapper*) = 0;
   virtual ITexture* getTexture(DOMNodeWrapper*) = 0;
+  virtual I3DModel* getModel(DOMNodeWrapper*, Vertex*) = 0;
+  virtual I3DModel* getModel(const std::string&, Vertex*) = 0;
 };
 
 #endif

@@ -200,7 +200,7 @@ bool Zone::initZone(unsigned int pass, bool editing) {
     glDeleteLists(cDisplayList, 1);
     cDisplayList = glGenLists(1);
     glNewList(cDisplayList, GL_COMPILE);
-    for (unsigned int i = 0; i < cElements.size(); i++) {
+    for (int i = cElements.size() - 1; i >= 0; i--) {
       cElements[i]->renderStatic();
     }
     glEndList();

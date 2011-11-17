@@ -28,17 +28,16 @@
 #include <IsoRealms/IElementGateway.h>
 #include <IsoRealms/IVisualElement.h>
 
-#include "../../Plugins/3DModel/ISimpleModelFactory.h"
-
 #include "ISpindizzyEnemySet.h"
 #include "SpindizzyEnemy.h"
 
 class SpindizzyEnemyFactory:public ElementFactory<ISpindizzyEnemySet, SpindizzyEnemy> {
   private:
+  IRuntimeContext* cRuntimeContext;
   std::string cType;
+  std::string cModelPath;
   IElementSet* cElementSet;
   std::vector<SpindizzyEnemy*> cContent;
-  ISimpleModelFactory* cEnemyModelFactory;
   SpindizzyEnemy* cSampleEnemy;
   std::vector<IVisualElement*> cSampleEnemyVisuals;
   BlockLocation* cEditingLocation;
@@ -46,9 +45,7 @@ class SpindizzyEnemyFactory:public ElementFactory<ISpindizzyEnemySet, SpindizzyE
   bool keyDown(SDLKey&);
 
   public:
-  SpindizzyEnemyFactory(ISpindizzyEnemySet*, ISimpleModelFactory*, const std::string&);
-
-  void setModel(ISimpleModelFactory*);
+  SpindizzyEnemyFactory(ISpindizzyEnemySet*, const std::string&, const std::string&, IRuntimeContext*);
 
   /******************************\
    * Implements IElementFactory *

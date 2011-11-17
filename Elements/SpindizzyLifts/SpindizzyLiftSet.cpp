@@ -45,39 +45,8 @@ void SpindizzyLiftSet::setEditingContext(IEditingContext* editingContext) {
   editingContext->registerCommand(new DefaultCommandInfo(mPath, mConfigureSpindizzyLiftsCommand));
 }
 
-std::vector<PlugSocket*> SpindizzyLiftSet::getPlugSockets() {
-  std::vector<PlugSocket*> mSockets;
-  for (unsigned int i = 0; i <= cLiftModels.size(); i++) {
-    std::ostringstream mSocketID;
-    mSocketID << i;
-    PlugSocket* mPlugSocket = new PlugSocket("3DModel", mSocketID.str());
-    mSockets.push_back(mPlugSocket);
-  }
-  mSockets.push_back(new PlugSocket("ZoneContext"));
-  mSockets.push_back(new PlugSocket("CollidableSurfaceRegistry"));
-  return mSockets;
-}
-
 void SpindizzyLiftSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
-  if (socket->getType() == "3DModel") {
-    std::string mSocketID = socket->getID();
-    std::stringstream mInputString(mSocketID);
-    unsigned int mIndex;
-    mInputString >> mIndex;
-    // TODO: Elements using the model should be notified of model change.
-    if (implementation != NULL) {
-      ISimpleModelFactory* mModelFactory = NULL;
-      assignPlugin(implementation, &mModelFactory, *socket);
-      // TODO: Throw if index is out of bounds.
-      if (mIndex == cLiftModels.size()) {
-        cLiftModels.push_back(mModelFactory);
-      } else {
-        cLiftModels[mIndex] = mModelFactory;
-      }
-    } else if (mIndex != cLiftModels.size()) {
-      cLiftModels.erase(cLiftModels.begin() + mIndex);
-    }
-  } else if (socket->getType() == "ZoneContext") {
+  if (socket->getType() == "ZoneContext") {
     IZoneContext* mPreviousZoneContext = cZoneContext;
     if (assignPlugin(implementation, &cZoneContext, *socket)) {
       mPreviousZoneContext->removeZoneContextListener(this);
@@ -91,15 +60,6 @@ void SpindizzyLiftSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
 }
 
 IPlugin* SpindizzyLiftSet::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "3DModel") {
-    std::string mSocketID = socket->getID();
-    std::stringstream mInputString(mSocketID);
-    unsigned int mIndex;
-    mInputString >> mIndex;
-    if (mIndex < cLiftModels.size()) {
-      return cLiftModels[mIndex]; 
-    }
-  }
   if (socket->getType() == "ZoneContext")               {return cZoneContext;}
   if (socket->getType() == "CollidableSurfaceRegistry") {return cCollidableSurfaceRegistry;}
   // TODO: Throw wobbly!
@@ -113,7 +73,7 @@ DefaultElementHandler<SpindizzyLift>* SpindizzyLiftSet::createHandler(IElementCo
 void SpindizzyLiftSet::save(DOMNodeWriter* node) {
   cLiftMovedScript->save(node, "LiftMovedScript");
   for (unsigned int i = 0; i < cElementFactories.size(); i++) {
-    static_cast<SpindizzyLiftFactory*>(cElementFactories[i])->save(node, cLiftModels);
+    static_cast<SpindizzyLiftFactory*>(cElementFactories[i])->save(node);
   }
 }
 
@@ -124,10 +84,7 @@ void SpindizzyLiftSet::load(DOMNodeWrapper* node) {
     if (mValueAsString == "LiftMovedScript") {
       cLiftMovedScript = cRuntimeContext->getScript(mNode);
     } else if (mValueAsString == "LiftType") {
-      std::string mLiftTypeName = mNode->getAttribute("name");
-      unsigned int mModelID = mNode->getIntegerAttribute("model");
-      bool mActive = mNode->getBooleanAttribute("active");
-      SpindizzyLiftFactory* mLiftFactory = new SpindizzyLiftFactory(this, cLiftModels[mModelID], &cSpindizzyLiftProperties, mActive, mLiftTypeName, cRuntimeContext);
+      SpindizzyLiftFactory* mLiftFactory = new SpindizzyLiftFactory(this, mNode, &cSpindizzyLiftProperties, cRuntimeContext);
       cElementFactories.push_back(mLiftFactory);
     } else {
       // TODO: Throw something!

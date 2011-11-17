@@ -18,20 +18,20 @@
  */
 #include "SpindizzyCraftPyramidModelFactory.h"
 
-ISimpleModel* SpindizzyCraftPyramidModelFactory::createModel(Vertex* vertex, float scale) {
+SpindizzyCraftPyramidModelFactory::SpindizzyCraftPyramidModelFactory(IRuntimeContext* runtimeContext) {
+  runtimeContext->add(this, "Pyramid");
+}
+
+I3DModel* SpindizzyCraftPyramidModelFactory::createModel(Vertex* vertex, float scale) {
   return new SpindizzyCraftPyramidModel(vertex);
 }
 
-void SpindizzyCraftPyramidModelFactory::destroyModel(ISimpleModel* pyramidModel) {
+void SpindizzyCraftPyramidModelFactory::destroyModel(I3DModel* pyramidModel) {
   delete pyramidModel;
 }
 
-std::string SpindizzyCraftPyramidModelFactory::getName() {
-  return "Spindizzy Craft Pyramid Model";
-}
-
-extern "C" IPlugin* create() {
-  return new SpindizzyCraftPyramidModelFactory();
+extern "C" IPlugin* create(IRuntimeContext* runtimeContext) {
+  return new SpindizzyCraftPyramidModelFactory(runtimeContext);
 }
 
 extern "C" void destroy(IPlugin* pyramidModel) {

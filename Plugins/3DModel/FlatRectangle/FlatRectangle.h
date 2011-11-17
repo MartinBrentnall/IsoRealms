@@ -19,13 +19,12 @@
 #ifndef FLAT_RECTANGLE_H
 #define FLAT_RECTANGLE_H
 
+#include <IsoRealms/I3DModel.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 #include <IsoRealms/ITexture.h>
 #include <IsoRealms/Vertex.h>
 
-#include "../ISimpleModel.h"
-
-class FlatRectangle:public ISimpleModel {
+class FlatRectangle:public I3DModel {
   private:
   Vertex* cLocation;
   ITexture* cTexture;

@@ -20,27 +20,15 @@
 
 SpindizzyGERALDSet::SpindizzyGERALDSet(IRuntimeContext* runtimeContext) {
   cRuntimeContext = runtimeContext;
-  assignDummyPlugin(&cGERALDModelFactory, "3DModel");
   assignDummyPlugin(&cCollectables, "Collectables");
   assignDummyPlugin(&cCollidableSurfaceRegistry, "CollidableSurfaceRegistry");
   assignDummyPlugin(&cLocationAwareness, "LocationAwareness");
   cCamera = NULL;
   cZoneContext = NULL;
-  cElementFactories.push_back(new SpindizzyGERALDFactory(this, cGERALDModelFactory, cLocationAwareness, cZoneContext));
   cRuntimeContext->add(new LockControlCommand(this, true), "AddLock");
   cRuntimeContext->add(new LockControlCommand(this, false), "RemoveLock");
   cRuntimeContext->add(new StopCommand(this), "Stop");
-  IMap* mMap = runtimeContext->getMap();
-  for (unsigned int i = 0; i < cElementFactories.size(); i++) {
-    static_cast<SpindizzyGERALDFactory*>(cElementFactories[i])->setMap(mMap);
-  }
   cLocks = 0;
-}
-
-void SpindizzyGERALDSet::setModel(ISimpleModelFactory* modelFactory) {
-  for (unsigned int i = 0; i < cElementFactories.size(); i++) {
-    static_cast<SpindizzyGERALDFactory*>(cElementFactories[i])->setModel(modelFactory);
-  }
 }
 
 void SpindizzyGERALDSet::stop() {
@@ -58,11 +46,7 @@ void SpindizzyGERALDSet::destroy(IElement* element) {
 }
 
 void SpindizzyGERALDSet::setPlugin(PlugSocket* socket, IPlugin* implementation) {
-  if (socket->getType() == "3DModel") {
-    if (assignPlugin(implementation, &cGERALDModelFactory, *socket)) {
-      setModel(cGERALDModelFactory);
-    }
-  } else if (socket->getType() == "Camera") {
+  if (socket->getType() == "Camera") {
     if (assignPlugin(implementation, &cCamera, *socket, false)) {
       for (unsigned int i = 0; i < cElementFactories.size(); i++) {
         static_cast<SpindizzyGERALDFactory*>(cElementFactories[i])->setCamera(cCamera);
@@ -100,7 +84,6 @@ void SpindizzyGERALDSet::setPlugin(PlugSocket* socket, IPlugin* implementation) 
 }
 
 IPlugin* SpindizzyGERALDSet::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "3DModel")                   {return cGERALDModelFactory;}
   if (socket->getType() == "Camera")                    {return cCamera;}
   if (socket->getType() == "Collectables")              {return cCollectables;}
   if (socket->getType() == "CollidableSurfaceRegistry") {return cCollidableSurfaceRegistry;}
@@ -111,8 +94,12 @@ IPlugin* SpindizzyGERALDSet::getPlugin(PlugSocket* socket) {
 }
 
 void SpindizzyGERALDSet::load(DOMNodeWrapper* node) {
-  for (unsigned int i = 0; i < cElementFactories.size(); i++) {
-    static_cast<SpindizzyGERALDFactory*>(cElementFactories[i])->loadConfiguration(node, cRuntimeContext);
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "Type") {
+      cElementFactories.push_back(new SpindizzyGERALDFactory(this, cLocationAwareness, cZoneContext, cCollidableSurfaceRegistry, cCollectables, cCamera, mNode, cRuntimeContext));
+    }
   }
 }
 

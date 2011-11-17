@@ -18,24 +18,29 @@
  */
 #include "SpindizzyJewelFactory.h"
 
-SpindizzyJewelFactory::SpindizzyJewelFactory(ISpindizzyJewelSet* elementSet, ISimpleModelFactory* jewelModelFactory) : BaseSpindizzyJewelFactory(elementSet) {
-  cJewelModelFactory = jewelModelFactory;
+SpindizzyJewelFactory::SpindizzyJewelFactory(ISpindizzyJewelSet* elementSet, DOMNodeWrapper* node, IRuntimeContext* runtimeContext) : BaseSpindizzyJewelFactory(elementSet) {
+  cRuntimeContext = runtimeContext;
+  cName = node->getAttribute("name");
+  cModelPath = node->getAttribute("model");
   BlockLocation mIdentityLocation(0, 0, 0);
-  cSampleJewel = new SpindizzyJewel(this, &mIdentityLocation, cJewelModelFactory);
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "JewelCollectedScript") {
+      cJewelCollectedScript = cRuntimeContext->getScript(mNode);
+    } else if (mValueAsString == "AllJewelsCollectedScript") {
+      cAllJewelsCollectedScript = cRuntimeContext->getScript(mNode);
+    } else {
+      // TODO: Throw something!
+    }
+  }
+  cSampleJewel = new SpindizzyJewel(this, &mIdentityLocation, cModelPath, cRuntimeContext);
   cSampleJewelDynamics = cSampleJewel->getDynamicElements();
   cSampleJewelVisuals = cSampleJewel->getVisualElements();
 }
 
 std::string SpindizzyJewelFactory::getName() {
-  return "";
-}
-
-void SpindizzyJewelFactory::setModel(ISimpleModelFactory* modelFactory) {
-  cJewelModelFactory = modelFactory;
-  cSampleJewel->setModel(cJewelModelFactory);
-  for (unsigned int i = 0; i < cContent.size(); i++) {
-    cContent[i]->setModel(cJewelModelFactory);
-  }
+  return cName;
 }
 
 IElement* SpindizzyJewelFactory::getElement(DOMNodeWrapper* node, BlockLocation* relative, IElementContainer* elementContainer) {
@@ -48,7 +53,7 @@ IElement* SpindizzyJewelFactory::getElement(DOMNodeWrapper* node, BlockLocation*
       mLocation->setRelative(mNode, *relative);
     }
   }
-  SpindizzyJewel* mJewel = new SpindizzyJewel(this, mLocation, cJewelModelFactory);
+  SpindizzyJewel* mJewel = new SpindizzyJewel(this, mLocation, cModelPath, cRuntimeContext);
   cContent.push_back(mJewel);
   return mJewel;
 }
@@ -56,7 +61,7 @@ IElement* SpindizzyJewelFactory::getElement(DOMNodeWrapper* node, BlockLocation*
 bool SpindizzyJewelFactory::keyDown(SDLKey& key) {
   switch (key) {
     case SDLK_SPACE: {
-      SpindizzyJewel* mJewel = new SpindizzyJewel(this, cEditingLocation, cJewelModelFactory);
+      SpindizzyJewel* mJewel = new SpindizzyJewel(this, cEditingLocation, cModelPath, cRuntimeContext);
       addElement(mJewel);
       cContent.push_back(mJewel);
       return true;
@@ -89,19 +94,6 @@ void SpindizzyJewelFactory::setEditingContext(BlockLocation* editingLocation, IC
 void SpindizzyJewelFactory::renderEditingPreview() {
 }
 
-// TODO: Make this part of the IElementFactory interface!
-// void SpindizzyJewelFactory::updateIcon(int milliseconds) {
-//   float mColourChange = ticks * 0.0015;
-//   *cColourChannel += cColourUp ? mColourChange : -mColourChange;
-//   if (*cColourChannel >= 1.0 || *cColourChannel <= 0.0) {
-//     cColourUp = !cColourUp;
-//     *cColourChannel = *cColourChannel >= 1.0 ? 1.0 : 0.0;
-//     cColourChannel = (cColourChannel == &cCurrentColour.cRed     ? &cCurrentColour.cGreen
-//                    : (cColourChannel == &cCurrentColour.cGreen   ? &cCurrentColour.cBlue
-//                    /* cColourChannel == *cCurrentColour.cBlue */ : &cCurrentColour.cRed));
-//   }
-// }
-
 void SpindizzyJewelFactory::updateIcon(int milliseconds) {
   for (unsigned int i = 0; i < cSampleJewelDynamics.size(); i++) {
     cSampleJewelDynamics[i]->update(milliseconds);
@@ -121,45 +113,28 @@ void SpindizzyJewelFactory::renderIcon() {
   for (unsigned int i = 0; i < cSampleJewelVisuals.size(); i++) {
     cSampleJewelVisuals[i]->render();
   }
-/*  float mRadius = 1.0f;
-  float mLineWidth = 0.05;
-  Vertex mBottom(0.0,      0.0,     -0.7f);
-  Vertex mTop(   0.0,      0.0,      0.7f);
-  Vertex mNorth( 0.0,      mRadius,  0.0f);
-  Vertex mEast(  mRadius,  0.0,      0.0f);
-  Vertex mSouth( 0.0,     -mRadius,  0.0f);
-  Vertex mWest( -mRadius,  0.0,      0.0f);
-  glColor3f(1.0f, 0.0f, 0.5f);
-  glPushMatrix();
-  glBindTexture(GL_TEXTURE_2D, 0);
-  glBegin(GL_TRIANGLES);
-  renderInnerTriangle(mBottom, mNorth, mEast, mLineWidth);
-  renderInnerTriangle(mBottom, mEast, mSouth, mLineWidth);
-  renderInnerTriangle(mBottom, mSouth, mWest, mLineWidth);
-  renderInnerTriangle(mBottom, mWest, mNorth, mLineWidth);
-  renderInnerTriangle(mTop, mNorth, mWest, mLineWidth);
-  renderInnerTriangle(mTop, mWest, mSouth, mLineWidth);
-  renderInnerTriangle(mTop, mSouth, mEast, mLineWidth);
-  renderInnerTriangle(mTop, mEast, mNorth, mLineWidth);
-  glEnd();
-  glColor3f(1.0, 1.0, 0.4);
-  glBegin(GL_TRIANGLES);
-  renderOuterTriangle(mBottom, mNorth, mEast, mLineWidth);
-  renderOuterTriangle(mBottom, mEast, mSouth, mLineWidth);
-  renderOuterTriangle(mBottom, mSouth, mWest, mLineWidth);
-  renderOuterTriangle(mBottom, mWest, mNorth, mLineWidth);
-  renderOuterTriangle(mTop, mNorth, mWest, mLineWidth);
-  renderOuterTriangle(mTop, mWest, mSouth, mLineWidth);
-  renderOuterTriangle(mTop, mSouth, mEast, mLineWidth);
-  renderOuterTriangle(mTop, mEast, mNorth, mLineWidth);
-  glEnd();*/
 }
+
+void SpindizzyJewelFactory::jewelCollected() {
+  cJewelCollectedScript->execute();
+}
+
+void SpindizzyJewelFactory::allJewelsCollected() {
+  cAllJewelsCollectedScript->execute();
+}
+
+/* TODO: Save this type
+void SpindizzyJewelFactory::save(DOMNodeWriter* node) {
+  cJewelCollectedScript->save(node, "JewelCollectedScript");
+  cAllJewelsCollectedScript->save(node, "AllJewelsCollectedScript");
+}
+*/
 
 SpindizzyJewelFactory::~SpindizzyJewelFactory() {
   delete cSampleJewel;
   for (unsigned int i = 0; i < cContent.size(); i++) {
-    ISimpleModel* mJewelModelInstance = cContent[i]->getModel();
-    cJewelModelFactory->destroyModel(mJewelModelInstance);
+//    ISimpleModel* mJewelModelInstance = cContent[i]->getModel();
+// TODO: Destroy the model    cJewelModelFactory->destroyModel(mJewelModelInstance);
     removeElement(cContent[i]);
     delete cContent[i];
   }

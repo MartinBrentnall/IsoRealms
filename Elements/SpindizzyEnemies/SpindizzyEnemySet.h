@@ -24,7 +24,6 @@
 #include <IsoRealms/IElementSet.h>
 #include <IsoRealms/PluginRegistry.h>
 
-#include "../../Plugins/3DModel/ISimpleModelFactory.h"
 #include "../../Plugins/ZoneContext/IZoneContext.h"
 #include "../../Plugins/ZoneContext/IZoneContextListener.h"
 
@@ -36,13 +35,10 @@ class SpindizzyEnemySet:public ISpindizzyEnemySet,
                         public IZoneContextListener {
   private:
   std::vector<IElementFactory*> cElementFactories;
-  std::vector<ISimpleModelFactory*> cEnemyModelFactories;
   IZoneContext* cZoneContext;
   IZone* cZone;
   unsigned int cLocks;
   IRuntimeContext* cRuntimeContext;
-
-  void setModel(ISimpleModelFactory*);
 
   class LockControlCommand:public ICommand {
     private:
@@ -66,6 +62,8 @@ class SpindizzyEnemySet:public ISpindizzyEnemySet,
   \**************************/
   std::vector<IElementFactory*> getElementFactories();
   void destroy(IElement*);
+  void save(DOMNodeWriter*);
+  void load(DOMNodeWrapper*);
 
   /*************************\
    * Implements ElementSet *
@@ -76,10 +74,8 @@ class SpindizzyEnemySet:public ISpindizzyEnemySet,
   /*****************************\
    * Implements IPluginSupport *
   \*****************************/
-  std::vector<PlugSocket*> getPlugSockets();
   void setPlugin(PlugSocket*, IPlugin*);
   IPlugin* getPlugin(PlugSocket*);
-  void save(DOMNodeWriter*);
 
   /*********************************\
    * Implements ISpindizzyEnemySet *
