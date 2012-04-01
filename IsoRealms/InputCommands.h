@@ -26,7 +26,7 @@
 #include "DigitalInput.h"
 #include "IInteractiveElement.h"
 #include "IComponentContainer.h"
-#include "IScriptSource.h"
+#include "IResources.h"
 #include "System.h"
 
 class InputCommands {
@@ -39,7 +39,7 @@ class InputCommands {
   public:
   InputCommands();
   InputCommands(const std::string&);
-  void loadConfiguration(DOMNodeWrapper*, std::vector<std::string>, IScriptSource*);
+  void loadConfiguration(DOMNodeWrapper*, std::vector<std::string>, IResources*);
   void save(DOMNodeWriter*);
   bool* registerDigitalInput(const std::string&);
   bool input(SDL_Event&);

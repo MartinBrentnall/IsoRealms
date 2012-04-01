@@ -48,7 +48,7 @@ class SpindizzyGERALDFactory:public ISpindizzyGERALDFactory {
   ICollidableSurfaceRegistry* cCollidableSurfaceRegistry;
   ILocationAwareness* cLocationAwareness;
   IZoneContext* cZoneContext;
-  IMap* cMap;
+  IProject* cProject;
   SpindizzyGERALD* cSampleGERALD;
   std::vector<IVisualElement*> cSampleGERALDVisuals;
   BlockLocation* cEditingLocation;

@@ -25,7 +25,7 @@
 #include <IsoRealms/CommandManager.h>
 #include <IsoRealms/DOMNodeWrapper.h>
 #include <IsoRealms/ICommand.h>
-#include <IsoRealms/Map.h>
+#include <IsoRealms/Project.h>
 
 #include "../../IControlLoop.h"
 
@@ -33,7 +33,7 @@ class Runtime:public IControlLoop {
   private:
   bool cRunExitCommands;
   std::vector<ICommand*> cExitCommands;
-  Map* cMap;
+  Project* cProject;
 
   void keyDown(SDLKey&);
 

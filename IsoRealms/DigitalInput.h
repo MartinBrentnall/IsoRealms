@@ -6,7 +6,7 @@
 #include <SDL/SDL.h>
 
 #include "DOMNodeWrapper.h"
-#include "IScriptSource.h"
+#include "IResources.h"
 #include "Script.h"
 #include "SDLKeyMap.h"
 
@@ -26,7 +26,7 @@ class DigitalInput {
   
   public:
   DigitalInput();
-  void setup(DOMNodeWrapper*, IScriptSource*);
+  void setup(DOMNodeWrapper*, IResources*);
   void configure(DOMNodeWrapper*);
   bool input(SDL_Event&);
   bool* getDigitalInput();

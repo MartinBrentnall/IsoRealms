@@ -23,7 +23,7 @@
 #include <sstream>
 #include <vector>
 
-#include <IsoRealms/IMap.h>
+#include <IsoRealms/IProject.h>
 #include <IsoRealms/IZone.h>
 
 #include "../../FlaggedZones/IFlaggedZones.h"
@@ -44,7 +44,7 @@ class ZoneCollectables:public ICollectables,
   IFlaggedZones* cFlaggedZones;
   IZone* cEditingZone;
   IZone* cRuntimeZone;
-  IMap* cMap;
+  IProject* cProject;
   std::map<IZone*, std::vector<ICollectable*>*> cCollectables;
   unsigned int cCollectablesCount;
   unsigned int cCollectedCount;

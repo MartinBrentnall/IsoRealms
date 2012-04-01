@@ -29,7 +29,7 @@ SimpleEditor::SimpleEditor(DOMNodeWrapper* node, IEngineArguments* engineArgumen
   ICommand* mCommand = CommandManager::getCommand("Pop");
   cExitCommands.push_back(mCommand);
   
-  cMap = NULL;
+  cProject = NULL;
   cRunExitCommands = false;
   cConfirmExitCommands = false;
   cEditorFocus = true;
@@ -60,7 +60,7 @@ SimpleEditor::SimpleEditor(DOMNodeWrapper* node, IEngineArguments* engineArgumen
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Plugin") {
       // TODO: Deallocate plugins on destruction of the attract control loop
-      cPluginRegistry.registerPlugin(mNode, &cCommandRegistry, &cColourRegistry, &cTextureRegistry, &c3DModelRegistry, NULL, false, NULL, NULL, NULL, NULL);
+      cPluginRegistry.registerPlugin(mNode, NULL);
     }
   }
   
@@ -85,30 +85,29 @@ SimpleEditor::SimpleEditor(DOMNodeWrapper* node, IEngineArguments* engineArgumen
     }
   }
 
-  Map* mMap;
+  IProject* mProject;
   if (mMapName == "") {
-    mMap = new Map();
-    mMap->addZone(mInitZone);
+    mProject = new Project();
+    mProject->addZone(mInitZone);
   } else {
     std::string mProjectFile = System::getProgramResource("Data/Projects/" + mMapName); // TODO: Should we hard code Data/Projects/ here?
     DOMNodeWrapper* mConfigurationRootNode = new DOMNodeWrapper(mProjectFile);
     for (int i = 0; i < mConfigurationRootNode->getChildCount(); i++) {
       DOMNodeWrapper *mNode = mConfigurationRootNode->getChild(i);
       std::string mValue = mNode->getNodeName();
-      if (mValue == "Map") {
-        mMap = new Map(mNode, this, this, mMapName, true);
+      if (mValue == "Project") {
+        mProject = new Project(mNode, this, this, mMapName, true);
       }
     }
   }  
-  setMap(mMap);
+  setProject(mProject);
 
   // Setup map for editing
-  cCursor = new EditorCursor(cMap);
+  cCursor = new EditorCursor(cProject);
   Vertex mNormalDistance(0.0f, 0.0f, -20.0f);
   cViewPoint.addViewPoint(0, mNormalDistance, 315.0f, -50.0f, 0.0f);
   cViewPoint.setViewPoint(0);
-  PluginRegistry* mPluginRegistry = cMap->getPluginRegistry();
-  mPluginRegistry->addListener(this);  
+  cProject->addPluginRegistryListener(this);  
 }
 
 std::vector<PlugSocket*> SimpleEditor::getPlugSockets() {
@@ -274,7 +273,7 @@ IElementContainer* SimpleEditor::pushMapElement(IElement* element) {
 }
 
 void SimpleEditor::removeElement(IElement* element) {
-  cMap->removeElement(element);
+  cProject->removeElement(element);
 }
 
 void SimpleEditor::elementSelected(IElementFactory* elementFactory) {
@@ -309,7 +308,7 @@ void SimpleEditor::execute(int milliseconds) {
   for (unsigned int i = 0; i < cHUDComponents.size(); i++) {
     cHUDComponents[i]->update(milliseconds);
   }
-  cMap->update(milliseconds);
+  cProject->update(milliseconds);
   if (cRunExitCommands) {
     for (unsigned int i = 0; i < cExitCommands.size(); i++) {
       cExitCommands[i]->execute();
@@ -319,8 +318,8 @@ void SimpleEditor::execute(int milliseconds) {
     glBindTexture(GL_TEXTURE_2D, 0);
     cViewPoint.place();
     cCursor->moveToCamera();
-    cMap->render();
-    cMap->renderEditing();
+    cProject->render();
+    cProject->renderEditing();
     cCursor->render();
   
     // Render UI components
@@ -379,22 +378,22 @@ void SimpleEditor::clearUndoStack() {
 }
 
 void SimpleEditor::saveCurrentMap() {
-  cMap->save();
+  cProject->save();
 }
 
-void SimpleEditor::setMap(Map* map) {
-  if (cMap != NULL) {
+void SimpleEditor::setProject(IProject* project) {
+  if (cProject != NULL) {
     clearUndoStack();
-    delete cMap;
+    delete cProject;
     delete cCursor;
     delete cElementSetEntityClass;
     cElementSetEntityClass = NULL;
     cCursor = NULL;
   }
-  cMap = map;
-  if (cMap != NULL) {
-    cCursor = new EditorCursor(cMap);
-    ElementSetRegistry* mElementSetRegistry = cMap->getElementSetRegistry();
+  cProject = project;
+  if (cProject != NULL) {
+    cCursor = new EditorCursor(cProject);
+    ElementSetRegistry* mElementSetRegistry = cProject->getElementSetRegistry();
     mElementSetRegistry->setEditingInfo(cCursor, this, this, this);
     mElementSetRegistry->addElementRegistryListener(this);
     cElementSetEntityClass = new ElementSetEntityClass(mElementSetRegistry, this, this);
@@ -403,7 +402,7 @@ void SimpleEditor::setMap(Map* map) {
 }
 
 PluginRegistry* SimpleEditor::getPluginRegistry() {
-  return cMap->getPluginRegistry();
+  return cProject->getPluginRegistry();
 }
 
 SimpleEditor::EntityClassDialogFactory::EntityClassDialogFactory(SimpleEditor* parent, IEntityClass* entityClass) {
@@ -424,7 +423,7 @@ SimpleEditor::ElementsPaletteComponentFactory::ElementsPaletteComponentFactory(S
 }
 
 IHUDComponent* SimpleEditor::ElementsPaletteComponentFactory::createComponent() {
-  ElementSetRegistry* mElementSetRegistry = cParent->cMap->getElementSetRegistry();
+  ElementSetRegistry* mElementSetRegistry = cParent->cProject->getElementSetRegistry();
   ChooseElementsComponent* mComponent = new ChooseElementsComponent(cParent, mElementSetRegistry);
   mComponent->addElementSelectionListener(cParent);
   return mComponent;

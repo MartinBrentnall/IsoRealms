@@ -22,18 +22,14 @@ ElementSetRegistry::ElementSetRegistry() {
   // Nothing to do.
 }
 
-void ElementSetRegistry::registerElementSet(DOMNodeWrapper* node, Registry<ICommand, CommandProxy>* commandRegistry, Registry<IColour, ColourProxy>* colourRegistry, Registry<ITexture, TextureProxy>* textureRegistry, Registry<I3DModelFactory, ModelFactoryProxy>* modelRegistry, IMap* map, bool editing, IScriptSource* scriptSource, IColourSource* colourSource, ITextureSource* textureSource, I3DModelSource* modelSource) {
+void ElementSetRegistry::registerElementSet(DOMNodeWrapper* node, IResources* resources) {
   std::string mInstance = node->getAttribute("instance");
   std::string mType = node->getAttribute("type");
   std::cout << "Registering element set \"" << mType << ":" << mInstance << "\"" << std::endl;
   std::vector<std::string> mDirectory;
   mDirectory.push_back("ElementSet");
   mDirectory.push_back(mInstance);
-  RegistryProxy<ICommand, CommandProxy>* mCommandGateway = new RegistryProxy<ICommand, CommandProxy>(commandRegistry, mDirectory);
-  RegistryProxy<IColour, ColourProxy>* mColourGateway = new RegistryProxy<IColour, ColourProxy>(colourRegistry, mDirectory);
-  RegistryProxy<ITexture, TextureProxy>* mTextureGateway = new RegistryProxy<ITexture, TextureProxy>(textureRegistry, mDirectory);
-  RegistryProxy<I3DModelFactory, ModelFactoryProxy>* m3DModelGateway = new RegistryProxy<I3DModelFactory, ModelFactoryProxy>(modelRegistry, mDirectory);
-  RuntimeContext* mRuntimeContext = new RuntimeContext(map, mCommandGateway, mColourGateway, mTextureGateway, m3DModelGateway, editing, scriptSource, colourSource, textureSource, modelSource);
+  RuntimeContext* mRuntimeContext = new RuntimeContext(resources, mDirectory);
   IElementSet* mElementSet = createInstance(mType, mInstance, mRuntimeContext);
   mElementSet->setElementSetRegistry(this);
 }

@@ -28,11 +28,12 @@
 #include "Hacks.h"
 #include "DOMNodeWriter.h"
 #include "DefaultZoneRenderer.h"
+#include "IMap.h"
+#include "InitException.h"
 #include "IPlugin.h"
 #include "IPluginRegistry.h"
 #include "IPluginRegistryListener.h"
-#include "IMap.h"
-#include "InitException.h"
+#include "IResources.h"
 #include "IZone.h"
 #include "Registry.h"
 #include "RuntimeContext.h"
@@ -80,7 +81,7 @@ class PluginRegistry:public IPluginRegistry {
    */
   std::string getPluginType(IPlugin*);  
 
-  void registerPlugin(DOMNodeWrapper*, Registry<ICommand, CommandProxy>*, Registry<IColour, ColourProxy>*, Registry<ITexture, TextureProxy>*, Registry<I3DModelFactory, ModelFactoryProxy>*, IMap*, bool, IScriptSource*, IColourSource*, ITextureSource*, I3DModelSource*);
+  void registerPlugin(DOMNodeWrapper*, IResources*);
 
   void connectPlugin(DOMNodeWrapper*);
 

@@ -26,7 +26,7 @@ const unsigned int SpindizzyGERALD::INIT_REGISTER_SURFACES = 2;
 const unsigned int SpindizzyGERALD::INIT_USE_SURFACES = 3;
 const unsigned int SpindizzyGERALD::BOUNCE_CONTROL_TIME = 40;
 
-SpindizzyGERALD::SpindizzyGERALD(ISpindizzyGERALDFactory* elementFactory, BlockLocation* startLocation, std::string const& modelPath, ICollectables* collectables, ICollidableSurfaceRegistry* collidableSurfaceRegistry, ILocationAwareness* locationAwareness, IZoneContext* zoneContext, ICamera* camera, float fallLimit, Script* fallLimitScript, Script* respawnScript, IMap* map, IRuntimeContext* runtimeContext) : Element<ISpindizzyGERALDSet, ISpindizzyGERALDFactory>(elementFactory) {
+SpindizzyGERALD::SpindizzyGERALD(ISpindizzyGERALDFactory* elementFactory, BlockLocation* startLocation, std::string const& modelPath, ICollectables* collectables, ICollidableSurfaceRegistry* collidableSurfaceRegistry, ILocationAwareness* locationAwareness, IZoneContext* zoneContext, ICamera* camera, float fallLimit, Script* fallLimitScript, Script* respawnScript, IProject* project, IRuntimeContext* runtimeContext) : Element<ISpindizzyGERALDSet, ISpindizzyGERALDFactory>(elementFactory) {
   cStartLocation = BlockLocation(*startLocation);
   cLocation.x = cStartLocation.x + IsoRealmsConstants::BLOCK_RADIUS;
   cLocation.y = cStartLocation.y + IsoRealmsConstants::BLOCK_RADIUS;
@@ -41,7 +41,7 @@ SpindizzyGERALD::SpindizzyGERALD(ISpindizzyGERALDFactory* elementFactory, BlockL
   cCollidableSurfaceRegistry = collidableSurfaceRegistry;
   cZoneContext = zoneContext;
   cZone = NULL;
-  cMap = map;
+  cProject = project;
   cFallScript = respawnScript;
   cFallLimitScript = fallLimitScript;
   cFallLimit = fallLimit;
@@ -49,12 +49,12 @@ SpindizzyGERALD::SpindizzyGERALD(ISpindizzyGERALDFactory* elementFactory, BlockL
   cLockSouth = NULL;
   cLockEast = NULL;
   cLockWest = NULL;
-  if (cMap != NULL) {
-    cMovingNorth = cMap->registerDigitalInput("Move North");
-    cMovingEast  = cMap->registerDigitalInput("Move East");
-    cMovingSouth = cMap->registerDigitalInput("Move South");
-    cMovingWest  = cMap->registerDigitalInput("Move West");
-    cThrust      = cMap->registerDigitalInput("Thrust");
+  if (cProject != NULL) {
+    cMovingNorth = cProject->registerDigitalInput("Move North");
+    cMovingEast  = cProject->registerDigitalInput("Move East");
+    cMovingSouth = cProject->registerDigitalInput("Move South");
+    cMovingWest  = cProject->registerDigitalInput("Move West");
+    cThrust      = cProject->registerDigitalInput("Thrust");
   }
   cMapBottom = -20.0f; // TODO: Do this for real!
 }
@@ -86,8 +86,8 @@ bool SpindizzyGERALD::initElement(unsigned int pass) {
   }
   switch (pass) {
     case INIT_REGISTER_BLOCKS: {
-      if (cZoneContext != NULL && cMap != NULL) {
-        cZone = cMap->getZone(cLocation);
+      if (cZoneContext != NULL && cProject != NULL) {
+        cZone = cProject->getZone(cLocation);
         cZoneContext->setZoneContext(cZone);
       }
       return false;
@@ -145,7 +145,7 @@ void SpindizzyGERALD::checkCurrentZoneEvents(Vertex& start, Vertex& end) {
 }
 
 void SpindizzyGERALD::checkMapZoneEvents(IZone* previousZone, Vertex& start, Vertex& end) {
-  std::vector<ZoneEvent*> mZoneEvents = cMap->getZoneEvents(start, end);
+  std::vector<ZoneEvent*> mZoneEvents = cProject->getZoneEvents(start, end);
   for (unsigned int i = 0; i < mZoneEvents.size(); i++) {
     if (mZoneEvents[i]->getZone() != previousZone) {
       switch (mZoneEvents[i]->getType()) {
@@ -379,7 +379,7 @@ void SpindizzyGERALD::updateRespawnData() {
 
 void SpindizzyGERALD::discoverZone(ICollidableWallSurface* wallSurface) {
   Vertex* mLocation = wallSurface->getLocation();
-  IZone* mWallZone = cMap->getZone(*mLocation);
+  IZone* mWallZone = cProject->getZone(*mLocation);
   delete mLocation; // TODO: Should this be done here?
   if (cZone != mWallZone) {
     cZoneContext->setZoneContext(mWallZone);
@@ -516,7 +516,7 @@ void SpindizzyGERALD::respawn() {
   cLocation.y = mRespawnData->cY;
   cCurrentSurface = mRespawnData->cSurface;
   cLocation.z = cCurrentSurface->getHeightAt(cLocation.x, cLocation.y);
-  cZone = cMap->getZone(cLocation);
+  cZone = cProject->getZone(cLocation);
   cZoneContext->setZoneContext(cZone);
   cMomentum.x = 0.0f;
   cMomentum.y = 0.0f;

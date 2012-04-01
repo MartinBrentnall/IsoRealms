@@ -36,9 +36,9 @@ void ZoneRendererProxy::save(DOMNodeWriter* node) {
   mZoneRendererBranch->addAttribute("active", cActive ? "true" : "false");
 }
 
-void ZoneRendererProxy::render(std::vector<IZone*>& zones, IPluginRegistry& pluginRegistry) {
+void ZoneRendererProxy::render(std::vector<IZone*>& zones, IProject* project) {
   if (cActive) {
-    cZoneRenderer->render(zones, pluginRegistry);
+    cZoneRenderer->render(zones, project);
   }
 }
 

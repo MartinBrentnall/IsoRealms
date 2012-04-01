@@ -29,9 +29,9 @@ void OpenCommand::execute() {
   for (int i = 0; i < mConfigurationRootNode->getChildCount(); i++) {
     DOMNodeWrapper *mNode = mConfigurationRootNode->getChild(i);
     std::string mValue = mNode->getNodeName();
-    if (mValue == "Map") {
-      Map* mMap = new Map(mNode, cEditor, cEditor, "Spindizzy Hangworld.isorealms", true);
-      cEditor->setMap(mMap);
+    if (mValue == "Project") {
+      IProject* mProject = new Project(mNode, cEditor, cEditor, "Spindizzy Hangworld.isorealms", true);
+      cEditor->setProject(mProject);
       return;
     }
   }

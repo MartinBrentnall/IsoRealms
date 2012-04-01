@@ -29,6 +29,7 @@
 #include <IsoRealms/Element.h>
 #include <IsoRealms/I3DModel.h>
 #include <IsoRealms/IMap.h>
+#include <IsoRealms/IProject.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 #include <IsoRealms/ICommand.h>
 #include <IsoRealms/IVisualElement.h>
@@ -66,7 +67,7 @@ class SpindizzyGERALD:public Element<ISpindizzyGERALDSet, ISpindizzyGERALDFactor
     int cY;
   };
 
-  IMap* cMap;
+  IProject* cProject;
   IZone* cZone;
 
   // User inputs
@@ -139,7 +140,7 @@ class SpindizzyGERALD:public Element<ISpindizzyGERALDSet, ISpindizzyGERALDFactor
   void discoverZone(ICollidableWallSurface*);
 
   public:
-  SpindizzyGERALD(ISpindizzyGERALDFactory*, BlockLocation*, const std::string& modelPath, ICollectables*, ICollidableSurfaceRegistry*, ILocationAwareness*, IZoneContext*, ICamera*, float, Script*, Script*, IMap*, IRuntimeContext*);
+  SpindizzyGERALD(ISpindizzyGERALDFactory*, BlockLocation*, const std::string& modelPath, ICollectables*, ICollidableSurfaceRegistry*, ILocationAwareness*, IZoneContext*, ICamera*, float, Script*, Script*, IProject*, IRuntimeContext*);
 
   void checkCurrentZoneEvents(Vertex&, Vertex&);
   void checkMapZoneEvents(IZone*, Vertex&, Vertex&);

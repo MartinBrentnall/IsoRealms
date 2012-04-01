@@ -28,15 +28,12 @@
 #include "DOMNodeWrapper.h"
 #include "DOMNodeWriter.h"
 #include "ElementSetRegistry.h"
-#include "I3DModelSource.h"
-#include "IColourSource.h"
 #include "IElementHandler.h"
 #include "IMap.h"
 #include "InputCommands.h"
 #include "IPluginRegistryListener.h"
-#include "IScriptSource.h"
+#include "IProject.h"
 #include "ITexture.h"
-#include "ITextureSource.h"
 #include "PluginRegistry.h"
 #include "Registry.h"
 #include "TextureProxy.h"
@@ -47,21 +44,14 @@
  */
 class Map:public IMap,
           public IZoneChangeListener,
-          public IPluginRegistryListener,
-          public IElementContainer,
-          public IScriptSource,
-          public IColourSource,
-          public ITextureSource,
-          public I3DModelSource {
+          public IElementContainer {
   private:
-  PluginRegistry cPluginRegistry;
-  ElementSetRegistry cElementSetRegistry;
-  Registry<ICommand, CommandProxy> cCommandRegistry;
-  Registry<IColour, ColourProxy> cColourRegistry;
-  Registry<ITexture, TextureProxy> cTextureRegistry;
-  Registry<I3DModelFactory, ModelFactoryProxy> c3DModelRegistry;
-  InputCommands cInputCommands;
   
+  /**
+   * The project to which this map belongs
+   */
+  IProject* cProject;
+    
   /**
    * These elements are not confined to one specific zone.
    */
@@ -87,17 +77,6 @@ class Map:public IMap,
    */
   std::vector<IZone*> cDirtyZones;
 
-  std::vector<IDynamicElement*> cPreLoopCommands;
-  std::vector<IDynamicElement*> cPostLoopCommands;
-  std::vector<IVisualElement*> cPreLoopRenderers;
-  std::vector<IVisualElement*> cPostLoopRenderers;
-  std::vector<IInteractiveElement*> cInteractivePlugins;
-
-  /**
-   * Register listeners on registries.
-   */
-  void registerListeners();
-
   int getZoneIndex(IZone*);
   int getElementIndex(IElement*);
 
@@ -107,7 +86,7 @@ class Map:public IMap,
 
   public:
   Map();
-  Map(DOMNodeWrapper*, IPluginRegistryListener*, IElementRegistryListener*, const std::string&, bool);
+  Map(DOMNodeWrapper*, bool, IProject*);
 
   void addZone(Zone*);
   
@@ -165,14 +144,10 @@ class Map:public IMap,
   /**
    *
    */
-  void save();
+  void save(DOMNodeWriter*);
 
   void pushElement(IElement*);
 
-  ElementSetRegistry* getElementSetRegistry();
-
-  PluginRegistry* getPluginRegistry();
-  
   /**
    * Remove the specified element from anywhere in the map.  This function
    * will be pretty slow, especially on large maps.
@@ -191,14 +166,7 @@ class Map:public IMap,
   Zone* getZone(BlockLocation&);
   IZone* getZone(Vertex&);
   std::vector<ZoneEvent*> getZoneEvents(Vertex&, Vertex&);
-  bool* registerDigitalInput(const std::string&);
   std::vector<IZone*> getAdjacentZones(IZone*);
-
-  /**************************************\
-   * Implements IPluginRegistryListener *
-  \**************************************/
-  void pluginInstanceAdded(PluginRegistry*, std::string, std::string);
-  void pluginInstanceRemoved(IPlugin*, std::string);
 
   /**********************************\
    * Implements IZoneChangeListener *
@@ -211,27 +179,6 @@ class Map:public IMap,
   void elementDirty(IElement*);
   void addElementHandler(IElementHandler*);
   void setHandlerActive(IElementHandler*, bool);
-
-  /****************************\
-   * Implements IScriptSource *
-  \****************************/
-  Script* getScript(DOMNodeWrapper*);
-  
-  /****************************\
-   * Implements IColourSource *
-  \****************************/
-  IColour* getColour(DOMNodeWrapper*);
-  
-  /*****************************\
-   * Implements ITextureSource *
-  \*****************************/
-  ITexture* getTexture(DOMNodeWrapper*);
-  
-  /*****************************\
-   * Implements I3DModelSource *
-  \*****************************/
-  I3DModel* getModel(DOMNodeWrapper*, Vertex*);
-  I3DModel* getModel(const std::string&, Vertex*);
   
   ~Map();
 };

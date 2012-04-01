@@ -67,7 +67,7 @@ DOMNodeWrapper* InputCommands::findConfiguration(std::vector<DOMNodeWrapper*> no
   return NULL;
 }
 
-void InputCommands::loadConfiguration(DOMNodeWrapper* node, std::vector<std::string> configurationFiles, IScriptSource* scriptSource) {
+void InputCommands::loadConfiguration(DOMNodeWrapper* node, std::vector<std::string> configurationFiles, IResources* resources) {
   std::vector<DOMNodeWrapper*> mConfigurationNodes;
   for (unsigned int i = 0; i < configurationFiles.size(); i++) {
     if (!System::fileExists(configurationFiles[i])) {
@@ -88,7 +88,7 @@ void InputCommands::loadConfiguration(DOMNodeWrapper* node, std::vector<std::str
       if (mConfigurationNode == NULL) {
         mConfigurationNode = mNode;
       }
-      mDigitalInput->setup(mNode, scriptSource);
+      mDigitalInput->setup(mNode, resources);
       mDigitalInput->configure(mConfigurationNode);
     } else {
       // TODO: Throw

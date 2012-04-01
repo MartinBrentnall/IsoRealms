@@ -20,7 +20,7 @@
 
 SpindizzyGERALDFactory::SpindizzyGERALDFactory(ISpindizzyGERALDSet* elementSet, ILocationAwareness* locationAwareness, IZoneContext* zoneContext, ICollidableSurfaceRegistry* collidableSurfaceRegistry, ICollectables* collectables, ICamera* camera, DOMNodeWrapper* node, IRuntimeContext* runtimeContext) : ISpindizzyGERALDFactory(elementSet) {
   cRuntimeContext = runtimeContext;
-  cMap = cRuntimeContext->getMap();
+  cProject = cRuntimeContext->getProject();
   cFallScript = Script::getDummy();
   cFallLimitScript = Script::getDummy();
   cLocationAwareness = locationAwareness;
@@ -87,7 +87,7 @@ IElement* SpindizzyGERALDFactory::getElement(DOMNodeWrapper* node, BlockLocation
       mStartLocation.setRelative(mNode, *relative);
     }
   }
-  SpindizzyGERALD* mLoadedGERALD = new SpindizzyGERALD(this, &mStartLocation, cModelPath, cCollectables, cCollidableSurfaceRegistry, cLocationAwareness, cZoneContext, cCamera, cFallLimit, cFallLimitScript, cFallScript, cMap, cRuntimeContext);
+  SpindizzyGERALD* mLoadedGERALD = new SpindizzyGERALD(this, &mStartLocation, cModelPath, cCollectables, cCollidableSurfaceRegistry, cLocationAwareness, cZoneContext, cCamera, cFallLimit, cFallLimitScript, cFallScript, cProject, cRuntimeContext);
   cContent.push_back(mLoadedGERALD);
   return mLoadedGERALD;
 }
@@ -96,7 +96,7 @@ bool SpindizzyGERALDFactory::keyDown(SDLKey& key) {
   switch (key) {
     case SDLK_SPACE: {
       if (cContent.size() == 0) {
-        SpindizzyGERALD* mGERALD = new SpindizzyGERALD(this, cEditingLocation, cModelPath, cCollectables, cCollidableSurfaceRegistry, cLocationAwareness, cZoneContext, cCamera, cFallLimit, cFallLimitScript, cFallScript, cMap, cRuntimeContext);
+        SpindizzyGERALD* mGERALD = new SpindizzyGERALD(this, cEditingLocation, cModelPath, cCollectables, cCollidableSurfaceRegistry, cLocationAwareness, cZoneContext, cCamera, cFallLimit, cFallLimitScript, cFallScript, cProject, cRuntimeContext);
         addElement(mGERALD);
         cContent.push_back(mGERALD);
       } else {

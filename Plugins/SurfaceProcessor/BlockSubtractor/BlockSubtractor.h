@@ -23,6 +23,7 @@
 #include <vector>
 
 #include <IsoRealms/BlockArea.h>
+#include <IsoRealms/IProject.h>
 #include <IsoRealms/IZone.h>
 
 #include "../ISurfaceProcessor.h"
@@ -44,7 +45,7 @@
 class BlockSubtractor:public ISurfaceProcessor {
   private:
  
-  IMap* cCurrentMap;
+  IProject* cCurrentProject;
   IZone* cCurrentZone;
   BlockSubtractorCache cCache;
   std::map<IZone*, SurfaceDataCache*> cSurfaceDataCaches;

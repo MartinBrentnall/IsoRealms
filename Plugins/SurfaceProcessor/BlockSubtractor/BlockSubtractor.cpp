@@ -21,8 +21,8 @@
 BlockSubtractor::BlockSubtractor(IRuntimeContext* runtimeContext) {
   cRemoveHiddenSurfaces = false;
   cUseAdjacentZones = false;
-  cCurrentMap = runtimeContext->getMap();
-  cCache.setMap(cCurrentMap);
+  cCurrentProject = runtimeContext->getProject();
+  cCache.setProject(cCurrentProject);
 }
 
 void BlockSubtractor::zoneContextChanged(IMap* map, IZone* zone) {
@@ -368,7 +368,7 @@ IWallSurface::FaceDirection BlockSubtractor::getOppositeOf(IWallSurface::FaceDir
 
 std::vector<WallColumnPossibility*> BlockSubtractor::getPhysicalWallMasks(int x, int y, IWallSurface::FaceDirection facing) {
   Vertex mVertex(x, y, 0); // TODO: Should not be fixed at zero height.  Also, we should be able to create a wall mask from multiple adjacent zones.
-  IZone* mZone = cCurrentMap->getZone(mVertex);
+  IZone* mZone = cCurrentProject->getZone(mVertex);
   if (mZone != NULL && cUseAdjacentZones) {
     cCache.setZone(mZone);
   }

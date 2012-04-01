@@ -25,14 +25,15 @@
 #include "I3DModel.h"
 #include "I3DModelFactory.h"
 #include "IColour.h"
-#include "IMap.h"
 #include "ITexture.h"
 #include "Script.h"
 #include "Vertex.h"
 
+class IProject;
+
 class IRuntimeContext {
   public:
-  virtual IMap* getMap() = 0;
+  virtual IProject* getProject() = 0;
   virtual bool isEditing() = 0;
   virtual std::string getLocation(ICommand*) = 0; // TODO: What's this for?  Is it used?
   virtual void add(ICommand*, const std::string&) = 0;

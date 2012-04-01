@@ -8,12 +8,12 @@ DigitalInput::DigitalInput() {
   *cInput = false;
 }
 
-void DigitalInput::setup(DOMNodeWrapper* node, IScriptSource* scriptSource) {
+void DigitalInput::setup(DOMNodeWrapper* node, IResources* resources) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "OnStart") {
-      cActivatedScript = scriptSource->getScript(mNode);
+      cActivatedScript = resources->getScript(mNode);
     }
   }
 }

@@ -21,7 +21,7 @@
 
 #include <vector>
 
-#include "IPluginRegistry.h"
+#include "IProject.h"
 #include "IZone.h"
 
 class IZoneRenderer {
@@ -30,7 +30,7 @@ class IZoneRenderer {
   /**
    * TODO: Interface should NOT expose whole zone!
    */
-  virtual void render(std::vector<IZone*>&, IPluginRegistry&) = 0;
+  virtual void render(std::vector<IZone*>&, IProject*) = 0;
   virtual void update(std::vector<IZone*>&, unsigned int) = 0;
   virtual void updateRuntime(std::vector<IZone*>&, unsigned int) = 0;
 };

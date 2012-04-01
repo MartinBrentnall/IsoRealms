@@ -28,7 +28,7 @@
 #include "IElementSet.h"
 #include "IElementSetRegistry.h"
 #include "InitException.h"
-#include "IScriptSource.h"
+#include "IResources.h"
 #include "PluginRegistry.h"
 #include "Registry.h"
 #include "RegistryProxy.h"
@@ -71,7 +71,7 @@ class ElementSetRegistry:public IElementSetRegistry {
   public:
   ElementSetRegistry();
 
-  void registerElementSet(DOMNodeWrapper*, Registry<ICommand, CommandProxy>*, Registry<IColour, ColourProxy>*, Registry<ITexture, TextureProxy>*, Registry<I3DModelFactory, ModelFactoryProxy>*, IMap*, bool, IScriptSource*, IColourSource*, ITextureSource*, I3DModelSource*);
+  void registerElementSet(DOMNodeWrapper*, IResources*);
   void connectPlugin(PluginRegistry*, DOMNodeWrapper*);
   void loadConfiguration(DOMNodeWrapper*);
 

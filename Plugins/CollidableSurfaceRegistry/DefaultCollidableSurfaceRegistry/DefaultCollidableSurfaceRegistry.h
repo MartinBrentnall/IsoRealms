@@ -22,7 +22,7 @@
 #include <map>
 #include <vector>
 
-#include <IsoRealms/IMap.h>
+#include <IsoRealms/IProject.h>
 #include <IsoRealms/IZone.h>
 
 #include "../../ZoneContext/IZoneContext.h"
@@ -40,7 +40,7 @@ class DefaultCollidableSurfaceRegistry:public ICollidableSurfaceRegistry,
   IZoneContext* cZoneContext;
   IZone* cEditingZone;
   IZone* cRuntimeZone;
-  IMap* cMap;
+  IProject* cProject;
 
   public:
   DefaultCollidableSurfaceRegistry(IRuntimeContext*);

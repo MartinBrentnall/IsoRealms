@@ -67,6 +67,7 @@ add_library(IsoRealms SHARED
   PlugSocket.cpp
   PluginRegistry.cpp
   PluginSupportException.cpp
+  Project.cpp
   Rectangle.cpp
   Registry.cpp
   RegistryProxy.cpp

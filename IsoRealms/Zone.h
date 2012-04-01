@@ -34,6 +34,7 @@
 #include "IElement.h"
 #include "IElementContainer.h"
 #include "IElementHandler.h"
+#include "IProject.h"
 #include "IsoRealmsConstants.h"
 #include "IZone.h"
 #include "IZoneChangeListener.h"
@@ -69,7 +70,7 @@ class Zone:public BlockArea,
 
   public:
   Zone(BlockLocation&, BlockLocation&);
-  Zone(DOMNodeWrapper*, ElementSetRegistry&, PluginRegistry&, IMap*);
+  Zone(DOMNodeWrapper*, IProject*, IMap*);
 
   /**
    * TODO: Write more about this.
@@ -85,7 +86,7 @@ class Zone:public BlockArea,
 
   void renderEditing();
 
-  void save(ElementSetRegistry*, DOMNodeWriter*);
+  void save(IProject*, DOMNodeWriter*);
 
   void pushElement(IElement*);
   void setDirty(IElement*);

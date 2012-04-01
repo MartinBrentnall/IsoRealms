@@ -19,87 +19,34 @@
 #include "Map.h"
 
 Map::Map() {
-  registerListeners();
   cZoneRenderers.push_back(new DefaultZoneRenderer());
 }
 
-Map::Map(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, IElementRegistryListener* elementRegistryListener, const std::string& projectName, bool editing) {
+Map::Map(DOMNodeWrapper* node, bool editing, IProject* project) {
+  cProject = project;
   if (editing) {
     cZoneRenderers.push_back(new DefaultZoneRenderer());
   }
-  if (pluginRegistryListener != NULL) {
-    cPluginRegistry.addListener(pluginRegistryListener);
-  }
-  if (elementRegistryListener != NULL) {
-    cElementSetRegistry.addElementRegistryListener(elementRegistryListener);
-  }
   BlockLocation mStartLocation(0, 0, 0);
 
-  std::size_t mExtensionPosition = projectName.find_last_of('.');
-  std::string mProjectName = projectName.substr(0, mExtensionPosition);
-  
-  /*
-   * First pass only loads plugin instances; we need to make sure all plugins
-   * are available before we start connecting them together
-   */
-  std::cout << "Loading plugins and element sets..." << std::endl;
-  for (int i = 0; i < node->getChildCount(); i++) {
-    DOMNodeWrapper *mNode = node->getChild(i);
-    std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "Plugin") {
-      cPluginRegistry.registerPlugin(mNode, &cCommandRegistry, &cColourRegistry, &cTextureRegistry, &c3DModelRegistry, this, editing, this, this, this, this);
-    } else if (mValueAsString == "ElementSet") {
-      cElementSetRegistry.registerElementSet(mNode, &cCommandRegistry, &cColourRegistry, &cTextureRegistry, &c3DModelRegistry, this, editing, this, this, this, this);
-    } else {
-      // TODO: Throw something
-    }
-  }
-
-  std::cout << "Connecting plugins..." << std::endl;
-  for (int i = 0; i < node->getChildCount(); i++) {
-    DOMNodeWrapper *mNode = node->getChild(i);
-    std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "Plugin") {
-      cPluginRegistry.connectPlugin(mNode);
-    } else if (mValueAsString == "ElementSet") {
-      cElementSetRegistry.connectPlugin(&cPluginRegistry, mNode);
-    } else {
-      // TODO: Throw something
-    }
-  }
-  
-  std::cout << "Loading plugin configurations..." << std::endl;
+  std::cout << "Loading elements and zones..." << std::endl;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Elements") {
-      cElements = cElementSetRegistry.loadElements(mNode, &mStartLocation, this);
+      cElements = project->loadElements(mNode, &mStartLocation, this);
       cDirtyElements = cElements;
       std::cout << "Loaded map elements..." << std::endl;
-    } else if (mValueAsString == "ElementSet") {
-      cElementSetRegistry.loadConfiguration(mNode);
-    } else if (mValueAsString == "Plugin") {
-      cPluginRegistry.loadConfiguration(mNode);
-    } else if (mValueAsString == "Plugin") {
-      cElementSetRegistry.loadConfiguration(mNode);
     } else if (mValueAsString == "ZoneRenderer") {
-      IZoneRenderer* mZoneRenderer = cPluginRegistry.getZoneRenderer(mNode, &cCommandRegistry);
+      IZoneRenderer* mZoneRenderer = project->getZoneRenderer(mNode);
       if (!editing) {
         cZoneRenderers.push_back(mZoneRenderer);
       }
       std::cout << "Loaded zone renderer..." << std::endl;
     } else if (mValueAsString == "Zone") {
-      Zone* mZone = new Zone(mNode, cElementSetRegistry, cPluginRegistry, this);
+      Zone* mZone = new Zone(mNode, project, this);
       addZone(mZone);
       std::cout << "Loaded zone..." << std::endl;
-    } else if (mValueAsString == "InputConfiguration") {
-      std::string mProjectConfigurationFile = System::getUserResource("Projects/" + mProjectName + "/controls.config");
-      std::string mGlobalConfigurationFile = System::getUserResource("controls.config");
-      std::vector<std::string> mConfigFiles;
-      mConfigFiles.push_back(mProjectConfigurationFile);
-      mConfigFiles.push_back(mGlobalConfigurationFile);
-      cInputCommands.loadConfiguration(mNode, mConfigFiles, this);
-      std::cout << "Loaded input configuration..." << std::endl;
     } else {
       // TODO: Throw something
     }
@@ -107,7 +54,6 @@ Map::Map(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, 
   for (unsigned int i = 0; i < cElements.size(); i++) {
     cElements[i]->setElementContainer(this);
   }
-  registerListeners();
   std::cout << "Done!" << std::endl;
 }
 
@@ -120,11 +66,6 @@ DOMNodeWrapper* Map::getConfigurationNode(DOMNodeWrapper* node) {
     }
   }
   return NULL;
-}
-
-void Map::registerListeners() {
-  cPluginRegistry.addListener(this);
-//  cElementSetRegistry.addElementRegistryListener(this);
 }
 
 void Map::addZone(Zone* zone) {
@@ -190,10 +131,6 @@ std::vector<ZoneEvent*> Map::getZoneEvents(Vertex& start, Vertex& end) {
   return mAllZoneEvents;
 }
 
-bool* Map::registerDigitalInput(const std::string& name) {
-  return cInputCommands.registerDigitalInput(name);
-}
-
 std::vector<IZone*> Map::getAdjacentZones(IZone* zone) {
   std::vector<IZone*> mAdjacentZones;
   for (unsigned int i = 0; i < cZones.size(); i++) {
@@ -236,8 +173,8 @@ int Map::getElementIndex(IElement* element) {
 void Map::initMap(unsigned int pass, bool editing) {
   std::vector<IZone*> mCleanZones;
   for (unsigned int i = 0; i < cDirtyZones.size(); i++) {
-    cPluginRegistry.initPlugins(cDirtyZones[i], pass);
-    cPluginRegistry.renderPreZone(cDirtyZones[i]);
+    cProject->initPlugins(cDirtyZones[i], pass);
+    cProject->renderPreZone(cDirtyZones[i]);
     if (cDirtyZones[i]->initZone(pass, editing)) {
       mCleanZones.push_back(cDirtyZones[i]);
     }
@@ -280,27 +217,18 @@ void Map::initMap(unsigned int pass, bool editing) {
     }
     glEndList();
     
-    cElementSetRegistry.initElementsComplete();
+    cProject->initElementsComplete();
   }
   std::cout << "Init map done!" << std::endl;
 }
 
 void Map::initRuntime() {
-  cInteractivePlugins = cPluginRegistry.getInteractiveElements();
-  cPreLoopCommands = cPluginRegistry.getPreLoopCommands();
-  cPostLoopCommands = cPluginRegistry.getPostLoopCommands();
-  cPreLoopRenderers = cPluginRegistry.getPreLoopRenderers();
-  cPostLoopRenderers = cPluginRegistry.getPostLoopRenderers();
   initMap(false);
 }
 
 void Map::input(SDL_Event& event) {
-  cInputCommands.input(event);
   for (unsigned int i = 0; i < cZones.size(); i++) {
     cZones[i]->input(event);
-  }
-  for (unsigned int i = 0; i < cInteractivePlugins.size(); i++) {
-    cInteractivePlugins[i]->input(event);
   }
   for (unsigned int i = 0; i < cElements.size(); i++) {
     std::vector<IInteractiveElement*> mInteractiveElements = cElements[i]->getInteractiveElements();
@@ -359,9 +287,8 @@ void Map::render() {
     mZones.push_back(cZones[i]);
   }
   // TODO: End.
-
   for (unsigned int i = 0; i < cZoneRenderers.size(); i++) {
-    cZoneRenderers[i]->render(mZones, cPluginRegistry);
+    cZoneRenderers[i]->render(mZones, cProject);
   }
   glCallList(cDisplayList);
   for (unsigned int i = 0; i < cElementHandlers.size(); i++) {
@@ -376,30 +303,6 @@ void Map::renderEditing() {
   glCallList(cEditingDisplayList);
 }
 
-void Map::executePreLoopCommands(int ticks) {
-  for (unsigned int i = 0; i < cPreLoopCommands.size(); i++) {
-    cPreLoopCommands[i]->update(ticks);
-  }
-}
-
-void Map::executePostLoopCommands(int ticks) {
-  for (unsigned int i = 0; i < cPostLoopCommands.size(); i++) {
-    cPostLoopCommands[i]->update(ticks);
-  }
-}
-
-void Map::executePreLoopRenderers() {
-  for (unsigned int i = 0; i < cPreLoopRenderers.size(); i++) {
-    cPreLoopRenderers[i]->render();
-  }
-}
-
-void Map::executePostLoopRenderers() {
-  for (unsigned int i = 0; i < cPostLoopRenderers.size(); i++) {
-    cPostLoopRenderers[i]->render();
-  }
-}
-
 void Map::zoneChanged(IZone* zone) {
   // TODO: More efficient way of checking if the zone is already dirty
   for (unsigned int i = 0; i < cDirtyZones.size(); i++) {
@@ -410,15 +313,13 @@ void Map::zoneChanged(IZone* zone) {
   cDirtyZones.push_back(zone);
 }
 
-void Map::save() {
-  DOMNodeWriter* mMapNode = new DOMNodeWriter("Map");
-  cPluginRegistry.save(mMapNode);
-  cElementSetRegistry.save(&cPluginRegistry, mMapNode);
+void Map::save(DOMNodeWriter* node) {
+  DOMNodeWriter* mMapNode = node->addBranch("Map");
   DOMNodeWriter* mElementsNode = mMapNode->addBranch("Elements");
   BlockLocation mStartLocation(0, 0, 0);
   for (unsigned int i = 0; i < cElements.size(); i++) {
     IElementSet* mElementSet = cElements[i]->getElementSet();
-    std::string mElementSetName = cElementSetRegistry.getInstanceName(mElementSet);
+    std::string mElementSetName = cProject->getInstanceName(mElementSet);
     DOMNodeWriter* mElementNode = mElementsNode->addBranch("Element");
     mElementNode->addAttribute("set", mElementSetName);
 
@@ -428,12 +329,11 @@ void Map::save() {
     mElementNode->addAttribute("type", mElementTypeName);
     cElements[i]->save(mElementNode, mStartLocation);
   }
-  cPluginRegistry.saveZoneRenderers(mMapNode);
   for (unsigned int i = 0; i < cZones.size(); i++) {
     DOMNodeWriter* mZoneNode = mMapNode->addBranch("Zone");
     DOMNodeWriter* mPluginsNode = mZoneNode->addBranch("Plugins");
-    cPluginRegistry.saveData(mPluginsNode, this, cZones[i]);
-    cZones[i]->save(&cElementSetRegistry, mZoneNode);
+    cProject->savePluginData(mPluginsNode, this, cZones[i]);
+    cZones[i]->save(cProject, mZoneNode);
   }
   mMapNode->save("Test.isorealms");
 }
@@ -463,22 +363,6 @@ Zone* Map::removeElement(IElement* element) {
   }
   std::cout << "Warning: Element for removal not found in any zone.  Segmentation fault may follow!" << std::endl;
   return NULL;
-}
-
-ElementSetRegistry* Map::getElementSetRegistry() {
-  return &cElementSetRegistry;
-}
-
-PluginRegistry* Map::getPluginRegistry() {
-  return &cPluginRegistry;
-}
-
-void Map::pluginInstanceAdded(PluginRegistry* registry, std::string, std::string) {
-  // Nothing to do.
-}
-
-void Map::pluginInstanceRemoved(IPlugin* instance, std::string type) {
-  cElementSetRegistry.pluginRemoved(instance);
 }
 
 bool Map::containsElement(IElement* element) {
@@ -511,49 +395,6 @@ void Map::addElementHandler(IElementHandler* elementHandler) {
 
 void Map::setHandlerActive(IElementHandler*, bool) {
   // TODO: Implement this
-}
-
-Script* Map::getScript(DOMNodeWrapper* node) {
-  std::vector<ICommand*> mCommands;
-  for (int i = 0; i < node->getChildCount(); i++) {
-    DOMNodeWrapper *mNode = node->getChild(i);
-    std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "Command") {
-      std::string mCommandName = mNode->getStringValue();
-      ICommand* mCommand = cCommandRegistry.get(mCommandName);
-      mCommands.push_back(mCommand);
-    } else {
-      // TODO: Throw
-    }
-  }
-  return new Script(mCommands, &cCommandRegistry);
-}
-
-IColour* Map::getColour(DOMNodeWrapper* node) {
-  std::string mType = node->getAttribute("type");
-  if (mType == "Palette") {
-    std::string mColourPath = node->getAttribute("name");
-    return cColourRegistry.get(mColourPath);
-  } else if (mType == "Absolute") {
-    return new Colour(node);
-  }
-  // TODO: Throw
-  return NULL;
-}
-
-ITexture* Map::getTexture(DOMNodeWrapper* node) {
-  std::string mTexturePath = node->getAttribute("name");
-  return cTextureRegistry.get(mTexturePath);
-}
-
-I3DModel* Map::getModel(DOMNodeWrapper* node, Vertex* location) {
-  std::string mModelPath = node->getAttribute("name");
-  return getModel(mModelPath, location);
-}
-
-I3DModel* Map::getModel(const std::string& path, Vertex* location) {
-  I3DModelFactory* mModelFactory = c3DModelRegistry.get(path);
-  return mModelFactory->createModel(location);
 }
 
 Map::~Map() {

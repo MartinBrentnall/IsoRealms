@@ -45,10 +45,10 @@ IPlugin* ZoneContextRenderer::getPlugin(PlugSocket* socket) {
   return NULL;
 }
 
-void ZoneContextRenderer::render(std::vector<IZone*>& zones, IPluginRegistry& pluginRegistry) {
+void ZoneContextRenderer::render(std::vector<IZone*>& zones, IProject* project) {
   if (cZone != NULL) {
     cZone->renderStatic();
-    pluginRegistry.renderPreZone(cZone);
+    project->renderPreZone(cZone);
     cZone->renderDynamic();
   }
 }

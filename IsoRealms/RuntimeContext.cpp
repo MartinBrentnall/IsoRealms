@@ -18,67 +18,62 @@
  */
 #include "RuntimeContext.h"
 
-RuntimeContext::RuntimeContext(IMap* map, RegistryProxy<ICommand, CommandProxy>* commandGateway, RegistryProxy<IColour, ColourProxy>* colourGateway, RegistryProxy<ITexture, TextureProxy>* textureGateway, RegistryProxy<I3DModelFactory, ModelFactoryProxy>* modelGateway, bool editing, IScriptSource* scriptSource, IColourSource* colourSource, ITextureSource* textureSource, I3DModelSource* modelSource) {
-  cMap = map;
-  cCommandGateway = commandGateway;
-  cColourGateway = colourGateway;
-  cTextureGateway = textureGateway;
-  c3DModelGateway = modelGateway;
-  cEditing = editing;
-  cScriptSource = scriptSource;
-  cColourSource = colourSource;
-  cTextureSource = textureSource;
-  c3DModelSource = modelSource;
+RuntimeContext::RuntimeContext(IResources* resources, std::vector<std::string> entityPath) {
+  cResources = resources;
+  cEntityPath = entityPath;
 }
 
-IMap* RuntimeContext::getMap() {
-  return cMap;
+IProject* RuntimeContext::getProject() {
+  return cResources->getProject();
 }
 
 bool RuntimeContext::isEditing() {
-  return cEditing;
+  return cResources->isEditing();
 }
 
 std::string RuntimeContext::getLocation(ICommand* command) {
-  return cCommandGateway->getLocation(command);
+  std::cout << "TODO: Implement \"getLocation()\" for command resources" << std::endl;
+//  return getDirectory(cScriptRegistry, cEntityPath)->getLocation(command);
+  return "";
 }
 
 void RuntimeContext::add(ICommand* command, const std::string& name) {
-  cCommandGateway->add(command, name);
+  cResources->add(command, cEntityPath, name);
 }
 
 void RuntimeContext::add(IColour* colour, const std::string& name) {
-  cColourGateway->add(colour, name);
+  cResources->add(colour, cEntityPath, name);
 }
 
 void RuntimeContext::add(ITexture* texture, const std::string& name) {
-  cTextureGateway->add(texture, name);
+  cResources->add(texture, cEntityPath, name);
 }
 
 void RuntimeContext::add(I3DModelFactory* modelFactory, const std::string& name) {
-  c3DModelGateway->add(modelFactory, name);
+  cResources->add(modelFactory, cEntityPath, name);
 }
 
 void RuntimeContext::remove(ICommand* command) {
-  cCommandGateway->remove(command);
+  std::cout << "TODO: Implement \"remove()\" for command resources" << std::endl;
+  // getDirectory(cScriptRegistry, cEntityPath)->remove(command);
 }
 
 Script* RuntimeContext::getScript(DOMNodeWrapper* node) {
-  return cScriptSource->getScript(node);
+  return cResources->getScript(node);
 }
 
 IColour* RuntimeContext::getColour(DOMNodeWrapper* node) {
-  return cColourSource->getColour(node);
+  return cResources->getColour(node);
 }
 
 ITexture* RuntimeContext::getTexture(DOMNodeWrapper* node) {
-  return cTextureSource->getTexture(node);
+  return cResources->getTexture(node);
 }
 
 I3DModel* RuntimeContext::getModel(DOMNodeWrapper* node, Vertex* location) {
-  return c3DModelSource->getModel(node, location);
+  return cResources->getModel(node, location);
 }
 
 I3DModel* RuntimeContext::getModel(const std::string& name, Vertex* location) {
-  return c3DModelSource->getModel(name, location);
+  return cResources->getModel(name, location);
 }

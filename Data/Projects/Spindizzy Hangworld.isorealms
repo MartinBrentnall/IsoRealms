@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<Map>
+<Project>
   <Plugin implementation="Block" instance="Compass" type="3DModel">
     <Configuration>
       <TopSurfaceTexture name="Plugin/TextureSetChanger/PerZone/Arrow"/>
@@ -1652,10 +1652,6 @@
       </Type>
     </Configuration>
   </ElementSet>
-  <ZoneRenderer type="Utilities" instance="ExploredZones" renderer="mapOverview" active="false"/>
-  <ZoneRenderer type="Utilities" instance="ExploredZones" renderer="explored" active="true"/>
-  <ZoneRenderer type="Utilities" instance="ZoneContextRenderer" renderer="zone" active="false"/>
-<!--  <ZoneRenderer/>-->
   <InputConfiguration>
     <DigitalInput name="Move North">
       <Mapping type="keyDown" value="ArrowUp"/>
@@ -1792,6 +1788,11 @@
       </OnStart>
     </DigitalInput>
   </InputConfiguration>
+  <Map>
+  <ZoneRenderer type="Utilities" instance="ExploredZones" renderer="mapOverview" active="false"/>
+  <ZoneRenderer type="Utilities" instance="ExploredZones" renderer="explored" active="true"/>
+  <ZoneRenderer type="Utilities" instance="ZoneContextRenderer" renderer="zone" active="false"/>
+<!--  <ZoneRenderer/>-->
   <Elements>
     <Element set="Player" type="Player">
       <Location x="-4" y="3" z="0"/> <!-- Game Start -->
@@ -26194,4 +26195,5 @@
       </Element>
     </Elements>
   </Zone>
-</Map>
+  </Map>
+</Project>

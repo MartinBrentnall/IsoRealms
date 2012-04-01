@@ -85,7 +85,7 @@ class SimpleEditor:public IControlLoop,
   static const std::string COMMAND_ELEMENTS;
   static const std::string COMMAND_ZONE_RENDERERS;
   
-  Map* cMap;
+  IProject* cProject;
   Camera cViewPoint;
   ElementSetEntityClass* cElementSetEntityClass;
   EditorCursor* cCursor;
@@ -179,7 +179,7 @@ class SimpleEditor:public IControlLoop,
    * Implements IElementGateway *
   \******************************/
   void saveCurrentMap();
-  void setMap(Map*); // TODO: Not an interface yet.
+  void setProject(IProject*); // TODO: Not an interface yet.
 
   /******************************\
    * Implements IElementGateway *

@@ -21,6 +21,7 @@
 
 #include <IsoRealms/ElementSet.h>
 #include <IsoRealms/IElement.h>
+#include <IsoRealms/IZone.h>
 
 class SpindizzyEnemy;
 

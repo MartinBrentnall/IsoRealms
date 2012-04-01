@@ -20,7 +20,8 @@
 #define OPEN_COMMAND_H
 
 #include <IsoRealms/ICommand.h>
-#include <IsoRealms/Map.h>
+#include <IsoRealms/IProject.h>
+#include <IsoRealms/Project.h>
 
 class SimpleEditor;
 

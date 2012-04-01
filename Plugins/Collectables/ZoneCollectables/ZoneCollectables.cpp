@@ -26,7 +26,7 @@ ZoneCollectables::ZoneCollectables(IRuntimeContext* runtimeContext) {
   cCollectablesCount = 0;
   cCollectedCount = 0;
   cCollectedCountString = "0";
-  cMap = runtimeContext->getMap();
+  cProject = runtimeContext->getProject();
 }
 
 void ZoneCollectables::setPlugin(PlugSocket* socket, IPlugin* plugin) {
@@ -107,7 +107,7 @@ void ZoneCollectables::collect(ICollector* collector, Vertex& start, Vertex& end
   if (cRuntimeZone != NULL) {
     collect(collector, start, end, cRuntimeZone);
   }
-  std::vector<ZoneEvent*> mZoneEvents = cMap->getZoneEvents(start, end);
+  std::vector<ZoneEvent*> mZoneEvents = cProject->getZoneEvents(start, end);
   for (unsigned int i = 0; i < mZoneEvents.size(); i++) {
     if (mZoneEvents[i]->getType() == ZoneEvent::ENTERED) {
       IZone* mEnteredZone = mZoneEvents[i]->getZone();

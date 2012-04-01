@@ -40,8 +40,8 @@ void BlockSubtractorCache::setZone(IZone* zone) {
   cZoneYOffset = mZoneArea->getSouth();
 }
 
-void BlockSubtractorCache::setMap(IMap* map) {
-  cCurrentMap = map;
+void BlockSubtractorCache::setProject(IProject* project) {
+  cCurrentProject = project;
 }
 
 int BlockSubtractorCache::getIndex(std::vector<ISurfaceProvider*>* list, ISurfaceProvider* provider) {

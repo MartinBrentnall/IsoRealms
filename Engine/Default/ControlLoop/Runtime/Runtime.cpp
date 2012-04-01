@@ -28,11 +28,11 @@ Runtime::Runtime(DOMNodeWrapper* node, IEngineArguments* engineArguments) {
   for (int i = 0; i < mConfigurationRootNode->getChildCount(); i++) {
     DOMNodeWrapper *mNode = mConfigurationRootNode->getChild(i);
     std::string mValue = mNode->getNodeName();
-    if (mValue == "Map") {
-      cMap = new Map(mNode, NULL, NULL, mMapName, false);
+    if (mValue == "Project") {
+      cProject = new Project(mNode, NULL, NULL, mMapName, false);
     }
   }
-  cMap->initRuntime();
+  cProject->initRuntime();
   cRunExitCommands = false;
 }
 
@@ -49,7 +49,7 @@ void Runtime::keyDown(SDLKey& key) {
 }
 
 void Runtime::input(SDL_Event& event) {
-  cMap->input(event);
+  cProject->input(event);
   switch (event.type) {
     case SDL_KEYDOWN: {
       keyDown(event.key.keysym.sym);
@@ -59,12 +59,12 @@ void Runtime::input(SDL_Event& event) {
 
 // TODO: Should be unsigned int
 void Runtime::execute(int milliseconds) {
-  cMap->executePreLoopCommands(milliseconds);
-  cMap->updateRuntime(milliseconds);
-  cMap->executePostLoopCommands(milliseconds);
-  cMap->executePreLoopRenderers();
-  cMap->render();
-  cMap->executePostLoopRenderers();
+  cProject->executePreLoopCommands(milliseconds);
+  cProject->updateRuntime(milliseconds);
+  cProject->executePostLoopCommands(milliseconds);
+  cProject->executePreLoopRenderers();
+  cProject->render();
+  cProject->executePostLoopRenderers();
   if (cRunExitCommands) {
     for (unsigned int i = 0; i < cExitCommands.size(); i++) {
       cExitCommands[i]->execute();

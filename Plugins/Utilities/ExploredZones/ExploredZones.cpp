@@ -108,12 +108,12 @@ ExploredZones::ExploredZoneRenderer::ExploredZoneRenderer(ExploredZones* parent)
   cParent = parent;
 }
 
-void ExploredZones::ExploredZoneRenderer::render(std::vector<IZone*>& zones, IPluginRegistry& pluginRegistry) {
+void ExploredZones::ExploredZoneRenderer::render(std::vector<IZone*>& zones, IProject* project) {
   for (std::map<IZone*, I3DModel*>::iterator i = cParent->cExploredZones.begin(); i != cParent->cExploredZones.end(); ++i) {
     i->first->renderStatic();
   }
   for (std::map<IZone*, I3DModel*>::iterator i = cParent->cExploredZones.begin(); i != cParent->cExploredZones.end(); ++i) {
-    pluginRegistry.renderPreZone(i->first);
+    project->renderPreZone(i->first);
     i->first->renderDynamic();
   }
 }
@@ -134,9 +134,9 @@ ExploredZones::MapOverviewRenderer::MapOverviewRenderer(ExploredZones* parent) {
   cParent = parent;
 }
 
-void ExploredZones::MapOverviewRenderer::render(std::vector<IZone*>& zones, IPluginRegistry& pluginRegistry) {
+void ExploredZones::MapOverviewRenderer::render(std::vector<IZone*>& zones, IProject* project) {
   for (unsigned int i = 0; i < zones.size(); i++) {
-    pluginRegistry.renderPreZone(zones[i]);
+    project->renderPreZone(zones[i]);
     glBindTexture(GL_TEXTURE_2D, 0);
     glLineWidth(2.0);
     std::map<IZone*, I3DModel*>::iterator j = cParent->cExploredZones.find(zones[i]);

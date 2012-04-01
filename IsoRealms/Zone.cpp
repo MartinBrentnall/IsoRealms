@@ -21,16 +21,16 @@
 Zone::Zone(BlockLocation& location, BlockLocation& size) : BlockArea(location, size) {
 }
 
-Zone::Zone(DOMNodeWrapper* node, ElementSetRegistry& elementSetRegistry, PluginRegistry& pluginRegistry, IMap* map) : BlockArea(node) {
-  pluginRegistry.zoneContextChanged(map, this);  
+Zone::Zone(DOMNodeWrapper* node, IProject* project, IMap* map) : BlockArea(node) {
+  project->zoneContextChanged(map, this);  
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Elements") {
-      cElements = elementSetRegistry.loadElements(mNode, &cStartLocation, this);
+      cElements = project->loadElements(mNode, &cStartLocation, this);
       cDirtyElements = cElements;
     } else if (mValueAsString == "Plugins") {
-      pluginRegistry.loadPluginData(mNode, this);
+      project->loadPluginData(mNode, this);
     }
   }
   for (unsigned int i = 0; i < cElements.size(); i++) {
@@ -305,7 +305,7 @@ bool Zone::contains(BlockLocation& location) {
   return BlockArea::contains(location);
 }
 
-void Zone::save(ElementSetRegistry* elementSetRegistry, DOMNodeWriter* node) {
+void Zone::save(IProject* project, DOMNodeWriter* node) {
   DOMNodeWriter* mLocationNode = node->addBranch("Location");
   cStartLocation.save(mLocationNode);
   DOMNodeWriter* mSizeNode = node->addBranch("Size");
@@ -313,7 +313,7 @@ void Zone::save(ElementSetRegistry* elementSetRegistry, DOMNodeWriter* node) {
   DOMNodeWriter* mElementsNode = node->addBranch("Elements");
   for (unsigned int i = 0; i < cElements.size(); i++) {
     IElementSet* mElementSet = cElements[i]->getElementSet();
-    std::string mElementSetName = elementSetRegistry->getInstanceName(mElementSet);
+    std::string mElementSetName = project->getInstanceName(mElementSet);
     DOMNodeWriter* mElementNode = mElementsNode->addBranch("Element");
     mElementNode->addAttribute("set", mElementSetName);
 

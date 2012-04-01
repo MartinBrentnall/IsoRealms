@@ -23,36 +23,25 @@
 #include "CommandProxy.h"
 #include "I3DModel.h"
 #include "I3DModelFactory.h"
-#include "I3DModelSource.h"
 #include "IColour.h"
-#include "IColourSource.h"
+#include "IResources.h"
 #include "IRuntimeContext.h"
-#include "IScriptSource.h"
-#include "ITextureSource.h"
 #include "ModelFactoryProxy.h"
 #include "RegistryProxy.h"
 #include "TextureProxy.h"
 
 class RuntimeContext:public IRuntimeContext {
   private:
-  IMap* cMap;
-  RegistryProxy<ICommand, CommandProxy>* cCommandGateway;
-  RegistryProxy<IColour, ColourProxy>* cColourGateway;
-  RegistryProxy<ITexture, TextureProxy>* cTextureGateway;
-  RegistryProxy<I3DModelFactory, ModelFactoryProxy>* c3DModelGateway;
-  bool cEditing;
-  IScriptSource* cScriptSource;
-  IColourSource* cColourSource;
-  ITextureSource* cTextureSource;
-  I3DModelSource* c3DModelSource;
+  IResources* cResources;
+  std::vector<std::string> cEntityPath;
   
   public:
-  RuntimeContext(IMap*, RegistryProxy<ICommand, CommandProxy>*, RegistryProxy<IColour, ColourProxy>*, RegistryProxy<ITexture, TextureProxy>*, RegistryProxy<I3DModelFactory, ModelFactoryProxy>*, bool, IScriptSource*, IColourSource*, ITextureSource*, I3DModelSource*);
+  RuntimeContext(IResources*, std::vector<std::string>);
 
   /******************************\
    * Implements IRuntimeContext *
   \******************************/
-  IMap* getMap();
+  IProject* getProject();
   bool isEditing();
   std::string getLocation(ICommand*); // TODO: What's this for?  Is it used?
   void add(ICommand*, const std::string&);
