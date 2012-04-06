@@ -22,7 +22,7 @@
 #include <iostream>
 #include <map>
 #include <vector>
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <SDL/SDL.h>
 
 #include <IsoRealms/CommandManager.h>

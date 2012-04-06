@@ -19,7 +19,7 @@
 #ifndef SPINDIZZY_CAMERA_H
 #define SPINDIZZY_CAMERA_H
 
-#include <GL/glu.h>
+#include <GL/glew.h>
 
 #include <IsoRealms/Configuration.h>
 #include <IsoRealms/IsoRealmsConstants.h>

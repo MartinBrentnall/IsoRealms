@@ -21,7 +21,7 @@
 
 #include <cmath>
 #include <cstdlib>
-#include <GL/gl.h>
+#include <GL/glew.h>
 
 #include <IsoRealms/BlockLocation.h>
 #include <IsoRealms/Collision.h>

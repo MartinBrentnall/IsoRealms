@@ -19,30 +19,26 @@
 #ifndef SPINDIZZY_CRAFT_PYRAMID_MODEL_H
 #define SPINDIZZY_CRAFT_PYRAMID_MODEL_H
 
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <map>
 
 #include <IsoRealms/Colour.h>
 #include <IsoRealms/I3DModel.h>
 #include <IsoRealms/IsoRealmsConstants.h>
-#include <IsoRealms/Image.h>
+#include <IsoRealms/Texture.h>
 #include <IsoRealms/Vertex.h>
 
 class SpindizzyCraftPyramidModel:public I3DModel {
   private:
   Vertex* cLocation;
 
-  enum TextureID {
-    TEXTURE_TOP,
-    TEXTURE_SIDE
-  };
-
   static unsigned int cInstanceCount;
-  static std::map<TextureID, GLuint> cTextures;
+  static const float OUTLINE;
+  static Texture* cTextureTop;
+  static Texture* cTextureSide;
 
-  GLuint convertToTexture(Image*);
-  GLuint generateTextureTop();
-  GLuint generateTextureSide();
+  void generateTextureTop();
+  void generateTextureSide();
 
   public:
   SpindizzyCraftPyramidModel(Vertex*);

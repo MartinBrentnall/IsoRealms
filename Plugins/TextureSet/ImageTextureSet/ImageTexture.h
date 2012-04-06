@@ -19,7 +19,7 @@
 #ifndef IMAGE_TEXTURE_H
 #define IMAGE_TEXTURE_H
 
-#include <GL/gl.h>
+#include <GL/glew.h>
 
 #include <IsoRealms/ITexture.h>
 
@@ -34,8 +34,6 @@ class ImageTexture:public ITexture {
    * Implements ITexture *
   \***********************/
   void set();
-  void texCoord2f(float, float);
-  IColour* getColour(float, float);
   void save(DOMNodeWriter*, const std::string&);
   
   ~ImageTexture();

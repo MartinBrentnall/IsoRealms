@@ -19,7 +19,7 @@
 #ifndef MENU_POPUP_H
 #define MENU_POPUP_H
 
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <SDL/SDL.h>
 #include <map>
 #include <vector>

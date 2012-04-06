@@ -19,7 +19,7 @@
 #ifndef SPINDIZZY_BLOCK_PROPERTIES_H
 #define SPINDIZZY_BLOCK_PROPERTIES_H
 
-#include <GL/gl.h>
+#include <GL/glew.h>
 
 #include <IsoRealms/Condition.h>
 #include <IsoRealms/ConditionElement.h>

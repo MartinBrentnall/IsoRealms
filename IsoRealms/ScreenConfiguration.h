@@ -26,8 +26,7 @@
 #include "ScreenMode.h"
 #include "Utils.h"
 
-#include <GL/gl.h>
-#include <GL/glu.h>
+#include <GL/glew.h>
 #include <SDL/SDL.h>
 #include <iostream>
 #include <string>

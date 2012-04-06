@@ -16,29 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "C64SpindizzyTexture.h"
+#ifndef TEXTURE_H
+#define TEXTURE_H
 
-C64SpindizzyTexture::C64SpindizzyTexture() {
-}
+#include <GL/glew.h>
 
-void C64SpindizzyTexture::setTexture(GLuint textureID) {
-  cTextureID = textureID;
-}
+#include "ITexture.h"
 
-void C64SpindizzyTexture::set() {
-  glBindTexture(GL_TEXTURE_2D, cTextureID);
-}
+class Texture:public ITexture {
+  private:
+  GLuint cTexture;
+  GLuint cFrameBuffer;
 
-void C64SpindizzyTexture::texCoord2f(float x, float y) {
-  glTexCoord2f(x,  y);
-}
+  public:
+  Texture(bool = false);
 
-IColour* C64SpindizzyTexture::getColour(float, float) {
-  std::cout << "WARNING: Colour not supported here yet!" << std::endl;
-  return NULL;
-}
+  void setRenderTarget();
 
-void C64SpindizzyTexture::save(DOMNodeWriter*, const std::string&) {
-  // TODO: Implement this
-}
+  /***********************\
+   * Implements ITexture *
+  \***********************/
+  void set();
+  void save(DOMNodeWriter*, const std::string&);
+};
 
+#endif

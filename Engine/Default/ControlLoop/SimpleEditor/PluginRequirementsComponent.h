@@ -19,7 +19,7 @@
 #ifndef PLUGIN_REQUIREMENTS_COMPONENT_H
 #define PLUGIN_REQUIREMENTS_COMPONENT_H
 
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <SDL/SDL.h>
 #include <vector>
 #include <string>

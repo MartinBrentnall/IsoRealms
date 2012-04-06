@@ -21,7 +21,7 @@
 
 #include <iostream>
 #include <vector>
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <SDL/SDL.h>
 
 #include "../../IAttract.h"
@@ -32,6 +32,12 @@
 class AttractDemo:public IAttract {
   private:
   float cRotation;
+  
+  float cAngle;
+  GLuint cTexture;
+  GLuint cFrameBuffer;
+
+  void drawBox();
 
   public:
 

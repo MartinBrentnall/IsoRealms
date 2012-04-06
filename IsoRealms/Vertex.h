@@ -19,7 +19,7 @@
 #ifndef VERTEX_H
 #define VERTEX_H
 
-#include <GL/gl.h>
+#include <GL/glew.h>
 
 #include <iostream>
 

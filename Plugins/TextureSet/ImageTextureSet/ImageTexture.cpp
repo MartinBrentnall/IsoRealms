@@ -26,15 +26,6 @@ void ImageTexture::set() {
   glBindTexture(GL_TEXTURE_2D, cTextureID);
 }
 
-void ImageTexture::texCoord2f(float x, float y) {
-  glTexCoord2f(x, y);
-}
-
-IColour* ImageTexture::getColour(float x, float y) {
-  std::cout << "WARNING: Colour not supported here yet!" << std::endl;
-  return NULL;
-}
-
 void ImageTexture::save(DOMNodeWriter*, const std::string&) {
   // TODO: Implement this
 }

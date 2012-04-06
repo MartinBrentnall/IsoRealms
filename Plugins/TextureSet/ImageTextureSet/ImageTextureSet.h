@@ -19,7 +19,7 @@
 #ifndef IMAGE_TEXTURE_SET_H
 #define IMAGE_TEXTURE_SET_H
 
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <map>
 #include <SDL_image.h>
 #include <string>

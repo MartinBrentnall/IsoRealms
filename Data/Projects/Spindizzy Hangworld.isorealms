@@ -214,51 +214,51 @@
   <Plugin implementation="FlatRectangle" instance="LiftSquareEmpty" type="3DModel">
     <Configuration>
       <Texture name="Plugin/TextureSet/C64Sprites/LiftSquareEmpty"/>
-      <Size>1.45</Size>
+      <Size>1.0</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="LiftSquareLeft" type="3DModel">
     <Configuration>
       <Texture name="Plugin/TextureSet/C64Sprites/LiftSquareOne"/>
-      <Size>1.45</Size>
+      <Size>1.0</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="LiftSquareRight" type="3DModel">
     <Configuration>
       <Texture name="Plugin/TextureSet/C64Sprites/LiftSquareOne"/>
       <Rotate>Reverse</Rotate>
-      <Size>1.45</Size>
+      <Size>1.0</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="LiftSquareFilled" type="3DModel">
     <Configuration>
       <Texture name="Plugin/TextureSet/C64Sprites/LiftSquareFilled"/>
-      <Size>1.45</Size>
+      <Size>1.0</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="LiftCircleEmpty" type="3DModel">
     <Configuration>
       <Texture name="Plugin/TextureSet/C64Sprites/LiftCircleEmpty"/>
-      <Size>1.45</Size>
+      <Size>1.3</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="LiftCircleLeft" type="3DModel">
     <Configuration>
       <Texture name="Plugin/TextureSet/C64Sprites/LiftCircleOne"/>
       <Rotate>Reverse</Rotate>
-      <Size>1.45</Size>
+      <Size>1.3</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="LiftCircleRight" type="3DModel">
     <Configuration>
       <Texture name="Plugin/TextureSet/C64Sprites/LiftCircleOne"/>
-      <Size>1.45</Size>
+      <Size>1.3</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="LiftCircleFilled" type="3DModel">
     <Configuration>
       <Texture name="Plugin/TextureSet/C64Sprites/LiftCircleFilled"/>
-      <Size>1.45</Size>
+      <Size>1.3</Size>
     </Configuration>
   </Plugin>
   <Plugin implementation="FlatRectangle" instance="HUDDiamondLeft" type="3DModel">
@@ -1312,36 +1312,6 @@
         <Texture type="WallNorthBottom" name="Plugin/TextureSetChanger/PerZone/WallPlainCap" flip="true"/>
       </BlockType>
       <BlockType name="ArrowWest" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
-        <Texture type="Surface" name="Plugin/TextureSetChanger/PerZone/Arrow" rotate="Reverse"/>
-        <Texture type="WallWest" name="Plugin/TextureSetChanger/PerZone/WallMixedMiddle"/>
-        <Texture type="WallWestTop" name="Plugin/TextureSetChanger/PerZone/WallMixedCap"/>
-        <Texture type="WallWestBottom" name="Plugin/TextureSetChanger/PerZone/WallMixedCap" flip="true"/>
-        <Texture type="WallEast" name="Plugin/TextureSetChanger/PerZone/WallMixedMiddle"/>
-        <Texture type="WallEastTop" name="Plugin/TextureSetChanger/PerZone/WallMixedCap"/>
-        <Texture type="WallEastBottom" name="Plugin/TextureSetChanger/PerZone/WallMixedCap" flip="true"/>
-        <Texture type="WallSouth" name="Plugin/TextureSetChanger/PerZone/WallPlainMiddle"/>
-        <Texture type="WallSouthTop" name="Plugin/TextureSetChanger/PerZone/WallPlainCap"/>
-        <Texture type="WallSouthBottom" name="Plugin/TextureSetChanger/PerZone/WallPlainCap" flip="true"/>
-        <Texture type="WallNorth" name="Plugin/TextureSetChanger/PerZone/WallPlainMiddle"/>
-        <Texture type="WallNorthTop" name="Plugin/TextureSetChanger/PerZone/WallPlainCap"/>
-        <Texture type="WallNorthBottom" name="Plugin/TextureSetChanger/PerZone/WallPlainCap" flip="true"/>
-      </BlockType>
-      <BlockType name="ArrowEast" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
-        <Texture type="Surface" name="Plugin/TextureSetChanger/PerZone/Arrow"/>
-        <Texture type="WallWest" name="Plugin/TextureSetChanger/PerZone/WallMixedMiddle"/>
-        <Texture type="WallWestTop" name="Plugin/TextureSetChanger/PerZone/WallMixedCap"/>
-        <Texture type="WallWestBottom" name="Plugin/TextureSetChanger/PerZone/WallMixedCap" flip="true"/>
-        <Texture type="WallEast" name="Plugin/TextureSetChanger/PerZone/WallMixedMiddle"/>
-        <Texture type="WallEastTop" name="Plugin/TextureSetChanger/PerZone/WallMixedCap"/>
-        <Texture type="WallEastBottom" name="Plugin/TextureSetChanger/PerZone/WallMixedCap" flip="true"/>
-        <Texture type="WallSouth" name="Plugin/TextureSetChanger/PerZone/WallPlainMiddle"/>
-        <Texture type="WallSouthTop" name="Plugin/TextureSetChanger/PerZone/WallPlainCap"/>
-        <Texture type="WallSouthBottom" name="Plugin/TextureSetChanger/PerZone/WallPlainCap" flip="true"/>
-        <Texture type="WallNorth" name="Plugin/TextureSetChanger/PerZone/WallPlainMiddle"/>
-        <Texture type="WallNorthTop" name="Plugin/TextureSetChanger/PerZone/WallPlainCap"/>
-        <Texture type="WallNorthBottom" name="Plugin/TextureSetChanger/PerZone/WallPlainCap" flip="true"/>
-      </BlockType>
-      <BlockType name="ArrowNorth" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
         <Texture type="Surface" name="Plugin/TextureSetChanger/PerZone/Arrow" rotate="Left"/>
         <Texture type="WallWest" name="Plugin/TextureSetChanger/PerZone/WallMixedMiddle"/>
         <Texture type="WallWestTop" name="Plugin/TextureSetChanger/PerZone/WallMixedCap"/>
@@ -1356,8 +1326,38 @@
         <Texture type="WallNorthTop" name="Plugin/TextureSetChanger/PerZone/WallPlainCap"/>
         <Texture type="WallNorthBottom" name="Plugin/TextureSetChanger/PerZone/WallPlainCap" flip="true"/>
       </BlockType>
-      <BlockType name="ArrowSouth" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
+      <BlockType name="ArrowEast" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
         <Texture type="Surface" name="Plugin/TextureSetChanger/PerZone/Arrow" rotate="Right"/>
+        <Texture type="WallWest" name="Plugin/TextureSetChanger/PerZone/WallMixedMiddle"/>
+        <Texture type="WallWestTop" name="Plugin/TextureSetChanger/PerZone/WallMixedCap"/>
+        <Texture type="WallWestBottom" name="Plugin/TextureSetChanger/PerZone/WallMixedCap" flip="true"/>
+        <Texture type="WallEast" name="Plugin/TextureSetChanger/PerZone/WallMixedMiddle"/>
+        <Texture type="WallEastTop" name="Plugin/TextureSetChanger/PerZone/WallMixedCap"/>
+        <Texture type="WallEastBottom" name="Plugin/TextureSetChanger/PerZone/WallMixedCap" flip="true"/>
+        <Texture type="WallSouth" name="Plugin/TextureSetChanger/PerZone/WallPlainMiddle"/>
+        <Texture type="WallSouthTop" name="Plugin/TextureSetChanger/PerZone/WallPlainCap"/>
+        <Texture type="WallSouthBottom" name="Plugin/TextureSetChanger/PerZone/WallPlainCap" flip="true"/>
+        <Texture type="WallNorth" name="Plugin/TextureSetChanger/PerZone/WallPlainMiddle"/>
+        <Texture type="WallNorthTop" name="Plugin/TextureSetChanger/PerZone/WallPlainCap"/>
+        <Texture type="WallNorthBottom" name="Plugin/TextureSetChanger/PerZone/WallPlainCap" flip="true"/>
+      </BlockType>
+      <BlockType name="ArrowNorth" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
+        <Texture type="Surface" name="Plugin/TextureSetChanger/PerZone/Arrow" rotate="Reverse"/>
+        <Texture type="WallWest" name="Plugin/TextureSetChanger/PerZone/WallMixedMiddle"/>
+        <Texture type="WallWestTop" name="Plugin/TextureSetChanger/PerZone/WallMixedCap"/>
+        <Texture type="WallWestBottom" name="Plugin/TextureSetChanger/PerZone/WallMixedCap" flip="true"/>
+        <Texture type="WallEast" name="Plugin/TextureSetChanger/PerZone/WallMixedMiddle"/>
+        <Texture type="WallEastTop" name="Plugin/TextureSetChanger/PerZone/WallMixedCap"/>
+        <Texture type="WallEastBottom" name="Plugin/TextureSetChanger/PerZone/WallMixedCap" flip="true"/>
+        <Texture type="WallSouth" name="Plugin/TextureSetChanger/PerZone/WallPlainMiddle"/>
+        <Texture type="WallSouthTop" name="Plugin/TextureSetChanger/PerZone/WallPlainCap"/>
+        <Texture type="WallSouthBottom" name="Plugin/TextureSetChanger/PerZone/WallPlainCap" flip="true"/>
+        <Texture type="WallNorth" name="Plugin/TextureSetChanger/PerZone/WallPlainMiddle"/>
+        <Texture type="WallNorthTop" name="Plugin/TextureSetChanger/PerZone/WallPlainCap"/>
+        <Texture type="WallNorthBottom" name="Plugin/TextureSetChanger/PerZone/WallPlainCap" flip="true"/>
+      </BlockType>
+      <BlockType name="ArrowSouth" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
+        <Texture type="Surface" name="Plugin/TextureSetChanger/PerZone/Arrow"/>
         <Texture type="WallWest" name="Plugin/TextureSetChanger/PerZone/WallMixedMiddle"/>
         <Texture type="WallWestTop" name="Plugin/TextureSetChanger/PerZone/WallMixedCap"/>
         <Texture type="WallWestBottom" name="Plugin/TextureSetChanger/PerZone/WallMixedCap" flip="true"/>

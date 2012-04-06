@@ -81,10 +81,10 @@ float TileSurface::getSouthTextureCoord() {
 
 void TileSurface::coord(float x, float y) {
   switch (cRotation) {
-    case STRAIGHT: cTexture->texCoord2f( x,  y); break;
-    case RIGHT:    cTexture->texCoord2f( y,  x); break;
-    case REVERSE:  cTexture->texCoord2f(-x, -y); break;
-    case LEFT:     cTexture->texCoord2f(-y, -x); break;
+    case STRAIGHT: glTexCoord2f( x,  y); break;
+    case RIGHT:    glTexCoord2f( y,  x); break;
+    case REVERSE:  glTexCoord2f(-x, -y); break;
+    case LEFT:     glTexCoord2f(-y, -x); break;
   }
 }
 

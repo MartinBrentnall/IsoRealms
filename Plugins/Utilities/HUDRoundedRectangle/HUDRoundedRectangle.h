@@ -1,18 +1,20 @@
 #ifndef HUD_ROUNDED_RECTANGLE_H
 #define HUD_ROUNDED_RECTANGLE_H
 
-#include <GL/gl.h>
+#include <cmath>
+#include <GL/glew.h>
 
 #include <IsoRealms/Colour.h>
 #include <IsoRealms/Configuration.h>
-#include <IsoRealms/Image.h>
+#include <IsoRealms/Texture.h>
 
 #include "../../HUD/IHUDGameComponent.h"
 
 class HUDRoundedRectangle:public IHUDGameComponent {
   private:
-  static GLuint cCornerTexture;
+  static Texture* cCornerTexture;
   static unsigned int cInstanceCount;
+  static const float CIRCLE_RESOLUTION;
 
   float cCornerSize;
 

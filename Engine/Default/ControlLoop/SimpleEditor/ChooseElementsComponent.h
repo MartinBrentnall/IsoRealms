@@ -20,7 +20,7 @@
 #define CHOOSE_ELEMENTS_COMPONENT_H
 
 #include <iostream>
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <SDL/SDL.h>
 
 #include <IsoRealms/Configuration.h>

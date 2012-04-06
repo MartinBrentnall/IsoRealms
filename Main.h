@@ -22,6 +22,7 @@
 #include <iostream>
 #include <vector>
 #include <xercesc/util/PlatformUtils.hpp>
+#include <GL/glew.h>
 #include <SDL/SDL.h>
 
 #include <IsoRealms/Configuration.h>

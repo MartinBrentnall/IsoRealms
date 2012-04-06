@@ -19,7 +19,7 @@
 #ifndef MENU_ITEM_H
 #define MENU_ITEM_H
 
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <SDL/SDL.h>
 #include <string>
 

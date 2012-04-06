@@ -1,15 +1,39 @@
 #include "HUDRoundedRectangle.h"
 
-GLuint HUDRoundedRectangle::cCornerTexture = 0;
+Texture* HUDRoundedRectangle::cCornerTexture = NULL;
 unsigned int HUDRoundedRectangle::cInstanceCount = 0;
+const float HUDRoundedRectangle::CIRCLE_RESOLUTION = 5.0f * (M_PI / 180.0);
 
 HUDRoundedRectangle::HUDRoundedRectangle() {
   if (cInstanceCount++ == 0) {
-    Image* mImage = new Image(64, 64, true);
-    mImage->drawSquare(new Colour(1.0f, 1.0f, 1.0f, 0.0f), 0, 64, 0, 64);
-    mImage->drawCircle(64, 64, new Colour(1.0f, 1.0f, 1.0f, 1.0f), 64);
-    cCornerTexture = mImage->generateTexture();
-    delete mImage;
+    glPushAttrib(GL_TRANSFORM_BIT);
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glPopAttrib();
+
+    cCornerTexture = new Texture();
+    cCornerTexture->setRenderTarget();
+    
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex2f(1.0f, 1.0f);
+    float mStartAngle = 0.0f * (M_PI / 180.0f);
+    float mEndAngle = 360.0f * (M_PI / 180.0f);
+    float mRadius = 2.0f;
+    for (float angle = mEndAngle; angle >= mStartAngle; angle -= CIRCLE_RESOLUTION) {
+      glVertex2f(1.0f + sin(angle) * mRadius, 1.0f + cos(angle) * mRadius);
+    }
+    glEnd();
+
+    glPushAttrib(GL_TRANSFORM_BIT);
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glPopAttrib();
+
+    glViewport(0, 0, 1024, 768);
+    glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+    glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0);
   }
   cCornerSize = 0.02f;
 }
@@ -38,7 +62,7 @@ void HUDRoundedRectangle::render(float xZoom, float yZoom) {
   float mYStartCorner = -1.0f + mYCornerSize;
   float mXEndCorner = 1.0f - mXCornerSize / mScreenAspectRatio;
   float mYEndCorner = 1.0f - mYCornerSize;
-  glBindTexture(GL_TEXTURE_2D, cCornerTexture);
+  cCornerTexture->set();
   glEnable(GL_BLEND);
   glColor4f(0.2f, 0.2f, 0.2f, 0.5f);
   glBegin(GL_QUADS);

@@ -20,7 +20,7 @@
 #define HUD_CLUE_H
 
 #include <iostream>
-#include <GL/gl.h>
+#include <GL/glew.h>
 
 #include <IsoRealms/I3DModel.h>
 

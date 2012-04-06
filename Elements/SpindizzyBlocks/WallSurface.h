@@ -20,7 +20,7 @@
 #define WALL_SURFACE_H
 
 #include <iostream>
-#include <GL/gl.h>
+#include <GL/glew.h>
 
 #include <IsoRealms/Collision.h>
 #include <IsoRealms/Condition.h>

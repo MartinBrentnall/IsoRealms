@@ -20,7 +20,7 @@
 #define ROLLABLE_SPLIT_SURFACE_H
 
 #include <cmath>
-#include <GL/gl.h>
+#include <GL/glew.h>
 
 #include <IsoRealms/BlockLocation.h>
 #include <IsoRealms/Collision.h>

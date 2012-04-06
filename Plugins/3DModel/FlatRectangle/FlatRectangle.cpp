@@ -39,10 +39,10 @@ void FlatRectangle::render() {
   glBegin(GL_QUADS);
   float mRadius = IsoRealmsConstants::BLOCK_RADIUS * *cSize;
   float mTextureCoord = cFlip ? -1.0f : 1.0f;
-  cTexture->texCoord2f(mTextureCoord, mTextureCoord); glVertex3f( mRadius, -mRadius, 0.0f);
-  cTexture->texCoord2f(mTextureCoord, 0.0f);          glVertex3f( mRadius,  mRadius, 0.0f);
-  cTexture->texCoord2f(0.0f,          0.0f);          glVertex3f(-mRadius,  mRadius, 0.0f);
-  cTexture->texCoord2f(0.0f,          mTextureCoord); glVertex3f(-mRadius, -mRadius, 0.0f);
+  glTexCoord2f(mTextureCoord, mTextureCoord); glVertex3f( mRadius, -mRadius, 0.0f);
+  glTexCoord2f(mTextureCoord, 0.0f);          glVertex3f( mRadius,  mRadius, 0.0f);
+  glTexCoord2f(0.0f,          0.0f);          glVertex3f(-mRadius,  mRadius, 0.0f);
+  glTexCoord2f(0.0f,          mTextureCoord); glVertex3f(-mRadius, -mRadius, 0.0f);
   glEnd();
   glEnable(GL_CULL_FACE);
   glDisable(GL_ALPHA_TEST);

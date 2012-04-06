@@ -19,7 +19,7 @@
 #ifndef EDITOR_CURSOR_H
 #define EDITOR_CURSOR_H
 
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <SDL/SDL.h>
 #include <iostream>
 

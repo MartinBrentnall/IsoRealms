@@ -41,6 +41,11 @@ int main(int argc, char **argv) {
     KeyStates::init();
     Configuration* mGlobalConfiguration = Configuration::getInstance();
     mGlobalConfiguration->getScreenConfiguration();
+    GLenum err = glewInit();
+    if (GLEW_OK != err) {
+      std::cout << "Error: " << glewGetErrorString(err) << std::endl;
+    }
+    std::cout << "Using GLEW " << glewGetString(GLEW_VERSION) << std::endl;
     IEngine* mEngine = mGlobalConfiguration->getEngine();
     mEngine->run();
   } catch (InitException &e) {

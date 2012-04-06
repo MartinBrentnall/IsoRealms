@@ -20,7 +20,7 @@
 #define ZONE_H
 
 #include <cmath>
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <iomanip>
 #include <set>
 

@@ -19,7 +19,7 @@
 #ifndef CHOOSE_ELEMENTS_COMPONENT_ROW_H
 #define CHOOSE_ELEMENTS_COMPONENT_ROW_H
 
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <SDL/SDL.h>
 
 #include <IsoRealms/ICommand.h>

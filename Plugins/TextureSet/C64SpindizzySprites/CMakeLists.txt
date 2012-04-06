@@ -17,7 +17,6 @@
 include_directories(${PROJECT_SOURCE_DIR})
 
 add_library(TextureSet_C64SpindizzySprites MODULE 
-  C64SpindizzySprite.cpp
   C64SpindizzySpriteSet.cpp
 )
 set_target_properties(TextureSet_C64SpindizzySprites PROPERTIES OUTPUT_NAME "Module")

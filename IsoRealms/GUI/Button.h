@@ -19,7 +19,7 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <SDL/SDL.h>
 #include <string>
 

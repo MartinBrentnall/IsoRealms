@@ -18,14 +18,34 @@
  */
 #include "SpindizzyCraftPyramidModel.h"
 
-std::map<SpindizzyCraftPyramidModel::TextureID, GLuint> SpindizzyCraftPyramidModel::cTextures = std::map<SpindizzyCraftPyramidModel::TextureID, GLuint>();
+Texture* SpindizzyCraftPyramidModel::cTextureTop = NULL;
+Texture* SpindizzyCraftPyramidModel::cTextureSide = NULL;
 unsigned int SpindizzyCraftPyramidModel::cInstanceCount = 0;
+const float SpindizzyCraftPyramidModel::OUTLINE = 0.82f;
 
 SpindizzyCraftPyramidModel::SpindizzyCraftPyramidModel(Vertex* location) {
   cLocation = location;
-  if (cTextures.empty()) {
-    cTextures[TEXTURE_TOP] = generateTextureTop();
-    cTextures[TEXTURE_SIDE] = generateTextureSide();
+  if (cTextureTop == NULL) {
+    cTextureTop = new Texture();
+    cTextureSide = new Texture();
+    
+    glPushAttrib(GL_TRANSFORM_BIT);
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glPopAttrib();
+
+    cTextureTop->setRenderTarget();  generateTextureTop();
+    cTextureSide->setRenderTarget(); generateTextureSide();
+    
+    glPushAttrib(GL_TRANSFORM_BIT);
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glPopAttrib();
+
+    glViewport(0, 0, 1024, 768);
+    glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+    glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0);
   }
   cInstanceCount++;
 }
@@ -55,26 +75,26 @@ void SpindizzyCraftPyramidModel::render() {
   glColor3f(1.0, 1.0, 1.0);
   glEnd();
 
-  glBindTexture(GL_TEXTURE_2D, cTextures[TEXTURE_SIDE]);
+  cTextureSide->set();
   glBegin(GL_TRIANGLES);
   glTexCoord2f(0.0, 0.0); glVertex3f(0.0 + mTopWidth,  0.0 - mTopWidth,  0.0 + mTopHeight);
   glTexCoord2f(1.0, 0.0); glVertex3f(0.0 - mTopWidth,  0.0 - mTopWidth,  0.0 + mTopHeight);
-  glTexCoord2f(0.5, 0.5); glVertex3f(0.0,              0.0,              0.0 + mBaseHeight);
+  glTexCoord2f(0.5, 1.0); glVertex3f(0.0,              0.0,              0.0 + mBaseHeight);
 
   glTexCoord2f(0.0, 0.0); glVertex3f(0.0 + mTopWidth,  0.0 + mTopWidth, 0.0 + mTopHeight);
   glTexCoord2f(1.0, 0.0); glVertex3f(0.0 - mTopWidth,  0.0 + mTopWidth, 0.0 + mTopHeight);
-  glTexCoord2f(0.5, 0.5); glVertex3f(0.0,              0.0,             0.0 + mBaseHeight);
+  glTexCoord2f(0.5, 1.0); glVertex3f(0.0,              0.0,             0.0 + mBaseHeight);
 
   glTexCoord2f(0.0, 0.0); glVertex3f(0.0 + mTopWidth,  0.0 + mTopWidth, 0.0 + mTopHeight);
   glTexCoord2f(1.0, 0.0); glVertex3f(0.0 + mTopWidth,  0.0 - mTopWidth, 0.0 + mTopHeight);
-  glTexCoord2f(0.5, 0.5); glVertex3f(0.0,              0.0,             0.0 + mBaseHeight);
+  glTexCoord2f(0.5, 1.0); glVertex3f(0.0,              0.0,             0.0 + mBaseHeight);
 
   glTexCoord2f(0.0, 0.0); glVertex3f(0.0 - mTopWidth,  0.0 + mTopWidth, 0.0 + mTopHeight);
   glTexCoord2f(1.0, 0.0); glVertex3f(0.0 - mTopWidth,  0.0 - mTopWidth, 0.0 + mTopHeight);
-  glTexCoord2f(0.5, 0.5); glVertex3f(0.0,              0.0,             0.0 + mBaseHeight);
+  glTexCoord2f(0.5, 1.0); glVertex3f(0.0,              0.0,             0.0 + mBaseHeight);
   glEnd();
 
-  glBindTexture(GL_TEXTURE_2D, cTextures[TEXTURE_TOP]);
+  cTextureTop->set();
   glBegin(GL_QUADS);
   glTexCoord2f(1.0, 1.0); glVertex3f(0.0 + mTopWidth, 0.0 + mTopWidth, 0.0 + mTopHeight);
   glTexCoord2f(0.0, 1.0); glVertex3f(0.0 - mTopWidth, 0.0 + mTopWidth, 0.0 + mTopHeight);
@@ -86,39 +106,35 @@ void SpindizzyCraftPyramidModel::render() {
 }
 
 // TODO: Nasty stuff below here.  Clean up!
-GLuint SpindizzyCraftPyramidModel::convertToTexture(Image* image) {
-  GLuint mTextureID = image->generateTexture();
-  delete image;
-  return mTextureID;
-}
-
-GLuint SpindizzyCraftPyramidModel::generateTextureTop() {
-  Image* mImage = new Image(64, 64, false);
-  int mEdgeWidth = mImage->getWidth() / 12;
-  Colour mEdge(0.0, 0.0, 0.0);
+void SpindizzyCraftPyramidModel::generateTextureTop() {
   Colour mTop(0.0, 1.0, 1.0);
-  mImage->drawSquare(&mEdge, 0, mImage->getWidth(), 0, mImage->getHeight());
-  mImage->drawSquare(&mTop, mEdgeWidth, mImage->getWidth() - mEdgeWidth, mEdgeWidth, mImage->getHeight() - mEdgeWidth);
-  return convertToTexture(mImage);
+  glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+  glClear(GL_COLOR_BUFFER_BIT);
+  glBegin(GL_QUADS);
+  mTop.set();
+  glVertex2f(-OUTLINE, -OUTLINE);
+  glVertex2f( OUTLINE, -OUTLINE);
+  glVertex2f( OUTLINE,  OUTLINE);
+  glVertex2f(-OUTLINE,  OUTLINE);
+  glEnd();
 }
 
-GLuint SpindizzyCraftPyramidModel::generateTextureSide() {
-  Image* mImage = new Image(64, 64, false);
-  int mEdgeWidth = mImage->getWidth() / 12;
-  Colour mEdge(0.0, 0.0, 0.0);
+void SpindizzyCraftPyramidModel::generateTextureSide() {
   Colour mSide(0.7, 0.0, 1.0);
-  mImage->drawSquare(&mEdge, 0, mImage->getWidth(), 0, mImage->getHeight());
-
-  // TODO: 'magic' numbers 5 and 30 should be calculated from image size
-  mImage->drawTriangle(&mSide, mEdgeWidth + 5, mEdgeWidth, mImage->getWidth() - (mEdgeWidth + 5), mEdgeWidth, mImage->getWidth() / 2, mImage->getHeight() - (mEdgeWidth + 32));
-  return convertToTexture(mImage);
+  glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+  glClear(GL_COLOR_BUFFER_BIT);
+  glBegin(GL_TRIANGLES);
+  mSide.set();
+  // TODO: 'magic' numbers 0.74f and 0.62f should be calculated properly
+  glVertex2f(-0.74, -OUTLINE);
+  glVertex2f( 0.74, -OUTLINE);
+  glVertex2f( 0.0f,  0.62f);
+  glEnd();
 }
 
 SpindizzyCraftPyramidModel::~SpindizzyCraftPyramidModel() {
   if (!(--cInstanceCount)) {
-    for (std::map<TextureID, GLuint>::iterator i = cTextures.begin(); i != cTextures.end(); i++) {
-      glDeleteTextures(1, &(i->second));
-    }
+    // TODO: Delete textures!
   }
 }
 

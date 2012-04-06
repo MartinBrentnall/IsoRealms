@@ -53,21 +53,21 @@ void TileSplitSurface::render() {
     cTexture->set();
     glBegin(GL_TRIANGLES);
     if (cSplitDirection) {
-      cTexture->texCoord2f(1.0f, 1.0f); glVertex3f(mWest, mNorth, mNorthWest);
-      cTexture->texCoord2f(0.0f, 1.0f); glVertex3f(mWest, mSouth, mSouthWest);
-      cTexture->texCoord2f(1.0f, 0.0f); glVertex3f(mEast, mNorth, mNorthEast);
+      glTexCoord2f(1.0f, 1.0f); glVertex3f(mWest, mNorth, mNorthWest);
+      glTexCoord2f(0.0f, 1.0f); glVertex3f(mWest, mSouth, mSouthWest);
+      glTexCoord2f(1.0f, 0.0f); glVertex3f(mEast, mNorth, mNorthEast);
 
-      cTexture->texCoord2f(0.0f, 1.0f); glVertex3f(mWest, mSouth, mSouthWest);
-      cTexture->texCoord2f(0.0f, 0.0f); glVertex3f(mEast, mSouth, mSouthEast);
-      cTexture->texCoord2f(1.0f, 0.0f); glVertex3f(mEast, mNorth, mNorthEast);
+      glTexCoord2f(0.0f, 1.0f); glVertex3f(mWest, mSouth, mSouthWest);
+      glTexCoord2f(0.0f, 0.0f); glVertex3f(mEast, mSouth, mSouthEast);
+      glTexCoord2f(1.0f, 0.0f); glVertex3f(mEast, mNorth, mNorthEast);
     } else {
-      cTexture->texCoord2f(0.0f, 1.0f); glVertex3f(mWest, mNorth, mNorthWest);
-      cTexture->texCoord2f(1.0f, 0.0f); glVertex3f(mEast, mSouth, mSouthEast);
-      cTexture->texCoord2f(1.0f, 1.0f); glVertex3f(mEast, mNorth, mNorthEast);
+      glTexCoord2f(0.0f, 1.0f); glVertex3f(mWest, mNorth, mNorthWest);
+      glTexCoord2f(1.0f, 0.0f); glVertex3f(mEast, mSouth, mSouthEast);
+      glTexCoord2f(1.0f, 1.0f); glVertex3f(mEast, mNorth, mNorthEast);
 
-      cTexture->texCoord2f(0.0f, 1.0f); glVertex3f(mWest, mNorth, mNorthWest);
-      cTexture->texCoord2f(0.0f, 0.0f); glVertex3f(mWest, mSouth, mSouthWest);
-      cTexture->texCoord2f(1.0f, 0.0f); glVertex3f(mEast, mSouth, mSouthEast);
+      glTexCoord2f(0.0f, 1.0f); glVertex3f(mWest, mNorth, mNorthWest);
+      glTexCoord2f(0.0f, 0.0f); glVertex3f(mWest, mSouth, mSouthWest);
+      glTexCoord2f(1.0f, 0.0f); glVertex3f(mEast, mSouth, mSouthEast);
     }
     glColor3f(1.0f, 1.0f, 1.0f);
     glEnd();

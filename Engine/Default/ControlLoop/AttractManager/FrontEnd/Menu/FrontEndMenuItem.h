@@ -19,7 +19,7 @@
 #ifndef FRONT_END_MENU_ITEM_H
 #define FRONT_END_MENU_ITEM_H
 
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <string>
 
 #include <IsoRealms/DOMNodeWrapper.h>

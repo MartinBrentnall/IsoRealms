@@ -41,6 +41,8 @@ class IColour {
   virtual int getIntGreen() const = 0;
   virtual int getIntBlue() const = 0;
   virtual int getIntAlpha() const = 0;
+  virtual float luminance() = 0;
+  virtual void set() = 0;
 };
 
 #endif

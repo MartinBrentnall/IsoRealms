@@ -19,7 +19,7 @@
 #ifndef LIST_BOX_H
 #define LIST_BOX_H
 
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <string>
 #include <vector>
 

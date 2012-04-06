@@ -19,7 +19,7 @@
 #ifndef SPINDIZZY_LIFT_FACTORY_H
 #define SPINDIZZY_LIFT_FACTORY_H
 
-#include <GL/gl.h>
+#include <GL/glew.h>
 
 #include <IsoRealms/BlockLocation.h>
 #include <IsoRealms/ElementFactory.h>

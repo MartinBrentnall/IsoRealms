@@ -25,18 +25,37 @@
 #include <IsoRealms/Colour.h>
 #include <IsoRealms/DummyPlugin.h>
 #include <IsoRealms/ICommandInfo.h>
-#include <IsoRealms/Image.h>
 #include <IsoRealms/IPaletteListener.h>
 #include <IsoRealms/IPlugin.h>
 #include <IsoRealms/ITexture.h>
 #include <IsoRealms/PluginRegistry.h>
 #include <IsoRealms/PlugSocket.h>
-
-#include "C64SpindizzySprite.h"
+#include <IsoRealms/Texture.h>
 
 class C64SpindizzySpriteSet:public IPlugin,
                             public IPaletteListener {
   private:
+  static const float CIRCLE_RESOLUTION;
+  static const float CIRCLE_OUTLINE_OUTER;
+  static const float CIRCLE_OUTLINE_INNER;
+  static const float CIRCLE_COLOUR_OUTER;
+  static const float CIRCLE_COLOUR_INNER;
+  static const float SQUARE_OUTLINE_OUTER;
+  static const float SQUARE_OUTLINE_INNER;
+  static const float SQUARE_COLOUR_OUTER;
+  static const float SQUARE_COLOUR_INNER;
+  static const float SQUARE_TRIANGLE_OUTER;
+  static const float SQUARE_TRIANGLE_INNER;
+  static const float DIAMOND_OUTLINE_OUTER;
+  static const float DIAMOND_OUTLINE_INNER;
+  static const float DIAMOND_COLOUR_OUTER;
+  static const float DIAMOND_COLOUR_INNER;
+  static const float DIAMOND_SQUARE_OUTLINE_OUTER;
+  static const float DIAMOND_SQUARE_OUTLINE_INNER;
+  static const float DIAMOND_SQUARE_COLOUR_OUTER;
+  static const float DIAMOND_SQUARE_COLOUR_INNER;
+
+  
   static const int RESOLUTION = 128;
   static const int GRID_WIDTH = RESOLUTION / 16;
   static const int EDGE_WIDTH = RESOLUTION / 8;
@@ -56,7 +75,7 @@ class C64SpindizzySpriteSet:public IPlugin,
   
   IRuntimeContext* cRuntimeContext;
 
-  std::map<std::string, C64SpindizzySprite*> cTextures; 
+  std::map<std::string, Texture*> cTextures; 
   std::map<std::string, GLuint> cTextureIDs;
 
   IColour* cColour1;
@@ -67,77 +86,80 @@ class C64SpindizzySpriteSet:public IPlugin,
   /*
    * The follow functions create template images that can be drawn on.
    */
-  Image* makeTransparent();
-  Image* makePlainImage(IColour*);
-  Image* makeTileImage();
-  Image* makeLiftSquareImage();
-  Image* makeLiftSquareHalfImage();
-  Image* makeLiftCircleImage();
+  void clear(IColour*);
+  void makeLiftSquareImage();
+  void makeLiftSquareHalfImage();
 
+  void renderCircle(float, IColour*);
+  void renderCircle(float, float, IColour*);
+  void renderSquare(float, float, IColour*);
+  void renderSquareHalf(float, float, IColour*);
+  void renderDiamond(float, float, IColour*);
+  void renderDiamondHalf(float, float, IColour*);
+  void renderDiamondEdges(float, float, IColour*);
+  
   /**
    * Draw the plain square lift texture to the specified image.
    *
    * @param Image&  The image to draw on.
    */
-  GLuint generateLiftSquare();
+  void renderLiftSquare();
 
   /**
    * Draw the non-symmetrical square lift texture to the specified image.
    *
    * @param Image&  The image to draw on.
    */
-  GLuint generateLiftSquareHalf();
+  void renderLiftSquareHalf();
 
   /**
    * Draw the full square lift texture to the specified image.
    *
    * @param Image&  The image to draw on.
    */
-  GLuint generateLiftSquareBoth();
+  void renderLiftSquareBoth();
 
   /**
    * Draw the plain diamond lift texture to the specified image.
    *
    * @param Image&  The image to draw on.
    */
-  GLuint generateLiftDiamond();
+  void renderLiftDiamond();
 
   /**
    * Draw the non-symmetrical diamond lift texture to the specified image.
    *
    * @param Image&  The image to draw on.
    */
-  GLuint generateLiftDiamondHalf();
+  void renderLiftDiamondHalf();
 
   /**
    * Draw the full diamond lift texture to the specified image.
    *
    * @param Image&  The image to draw on.
    */
-  GLuint generateLiftDiamondBoth();
+  void renderLiftDiamondBoth();
 
   /**
    * Draw the plain circle lift texture to the specified image.
    *
    * @param Image&  The image to draw on.
    */
-  GLuint generateLiftCircle();
+  void renderLiftCircle();
 
   /**
    * Draw the non-symmetrical circle lift texture to the specified image.
    *
    * @param Image&  The image to draw on.
    */
-  GLuint generateLiftCircleHalf();
+  void renderLiftCircleHalf();
 
   /**
    * Draw the full circle lift texture to the specified image.
    *
    * @param Image&  The image to draw on.
    */
-  GLuint generateLiftCircleBoth();
-
-  GLuint convertToTexture(Image*, const std::string&);
+  void renderLiftCircleBoth();
 
   void generateTextures();
   void destroyTextures();

@@ -27,8 +27,7 @@
 #include <freetype/fttrigon.h>
 
 // OpenGL Headers.
-#include <GL/gl.h>
-#include <GL/glu.h>
+#include <GL/glew.h>
 
 // Some STL headers.
 #include <vector>

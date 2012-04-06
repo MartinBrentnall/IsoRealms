@@ -21,7 +21,7 @@
 
 #include <cfloat>
 #include <cmath>
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <SDL/SDL.h>
 #include <vector>
 

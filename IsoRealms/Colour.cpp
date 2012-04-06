@@ -122,6 +122,10 @@ float Colour::getAlpha() const {
   return cAlpha;
 }
 
+float Colour::luminance() {
+  return cRed * 0.2126f + cGreen * 0.7152 + cBlue * 0.0722;
+}
+
 void Colour::debug() {
   std::cout << "  " << cRed << " " << cGreen << " " << cBlue << std::endl;
 }

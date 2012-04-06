@@ -18,13 +18,15 @@
  */
 #include "SpindizzyCraftGyroscopeModel.h"
 
-std::map<SpindizzyCraftGyroscopeModel::TextureID, GLuint> SpindizzyCraftGyroscopeModel::cTextures = std::map<SpindizzyCraftGyroscopeModel::TextureID, GLuint>();
+Texture* SpindizzyCraftGyroscopeModel::cTexture = NULL;
 unsigned int SpindizzyCraftGyroscopeModel::cInstanceCount = 0;
+const float SpindizzyCraftGyroscopeModel::CIRCLE_RESOLUTION = 5.0f * (M_PI / 180.0);
 
 SpindizzyCraftGyroscopeModel::SpindizzyCraftGyroscopeModel(Vertex* location) {
   cLocation = location;
-  if (cTextures.empty()) {
-    cTextures[TEXTURE_DISC] = generateTextureDisc();
+  if (cTexture == NULL) {
+    cTexture = new Texture();
+    generateTextureDisc();
   }
   cInstanceCount++;
 }
@@ -41,7 +43,7 @@ void SpindizzyCraftGyroscopeModel::render() {
   float mBaseHeight = IsoRealmsConstants::BLOCK_HEIGHT * 0.9;
   float mTopHeight = IsoRealmsConstants::BLOCK_HEIGHT * 1.80;
 
-  glBindTexture(GL_TEXTURE_2D, cTextures[TEXTURE_DISC]);
+  cTexture->set();
   glDisable(GL_CULL_FACE);
   glBegin(GL_TRIANGLES);
   glTexCoord2f(1.0, 0.5);
@@ -74,28 +76,62 @@ void SpindizzyCraftGyroscopeModel::render() {
 }
 
 // TODO: Nasty stuff below here.  Clean up!
-GLuint SpindizzyCraftGyroscopeModel::generateTextureDisc() {
-  Image* mImage = new Image(64, 64, true);
-  Colour mTransparent(0.0, 0.0, 0.0, 0.0);
+void SpindizzyCraftGyroscopeModel::renderCircle(float radius, float startAngle, float endAngle, IColour* colour) {
+  glBegin(GL_TRIANGLE_FAN);
+  colour->set();
+  glVertex2f(0.0f, 0.0f);
+  float mStartAngle = startAngle * (M_PI / 180.0f);
+  float mEndAngle = endAngle * (M_PI / 180.0f);
+  for (float angle = mEndAngle; angle >= mStartAngle; angle -= CIRCLE_RESOLUTION) {
+    glVertex2f(sin(angle) * radius, cos(angle) * radius);
+  }
+  glEnd();
+}
+
+void SpindizzyCraftGyroscopeModel::renderCircle(float outerRadius, float innerRadius, IColour* colour) {
+  glBegin(GL_TRIANGLE_STRIP);
+  colour->set();
+  float mStartAngle = 0.0f * (M_PI / 180.0f);
+  float mEndAngle = 360.0f * (M_PI / 180.0f);
+  for (float angle = mEndAngle; angle >= mStartAngle; angle -= CIRCLE_RESOLUTION) {
+    glVertex2f(sin(angle) * innerRadius, cos(angle) * innerRadius);
+    glVertex2f(sin(angle) * outerRadius, cos(angle) * outerRadius);
+  }
+  glEnd();
+}
+
+void SpindizzyCraftGyroscopeModel::generateTextureDisc() {
+  glPushAttrib(GL_TRANSFORM_BIT);
+  glMatrixMode(GL_PROJECTION);
+  glPushMatrix();
+  glLoadIdentity();
+  glPopAttrib();
+
+  cTexture->setRenderTarget();
+  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+  glClear(GL_COLOR_BUFFER_BIT);
   Colour mBlack(0.0, 0.0, 0.0, 1.0);
   Colour mMagenta(0.7, 0.0, 1.0, 1.0);
   Colour mCyan(0.0, 1.0, 1.0, 1.0);
   Colour mYellow(1.0, 1.0, 0.0, 1.0);
-  mImage->drawSquare(&mTransparent, 0, mImage->getWidth(), 0, mImage->getHeight());
-  mImage->drawCircle(&mBlack, mImage->getWidth() / 2);
-  mImage->drawCircle(&mTransparent, int(mImage->getWidth() / 2.3));
-  mImage->drawQuarterCircle(&mCyan, int(mImage->getWidth() / 2.3), 1);
-  mImage->drawQuarterCircle(&mMagenta, int(mImage->getWidth() / 2.3), 2);
-  mImage->drawQuarterCircle(&mYellow, int(mImage->getWidth() / 2.3), 3);
-  GLuint mTextureID = mImage->generateTexture();
-  delete mImage;
-  return mTextureID;
+
+  renderCircle(1.0f, 0.88f, &mBlack);
+  renderCircle(0.88f, 0.0f, 90.0f, &mCyan);
+  renderCircle(0.88f, 90.0f, 180.0f, &mMagenta);
+  renderCircle(0.88f, 180.0f, 270.0f, &mYellow);
+    
+  glPushAttrib(GL_TRANSFORM_BIT);
+  glMatrixMode(GL_PROJECTION);
+  glPopMatrix();
+  glPopAttrib();
+
+  glViewport(0, 0, 1024, 768);
+  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+  glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0);
 }
 
 SpindizzyCraftGyroscopeModel::~SpindizzyCraftGyroscopeModel() {
   if (!(--cInstanceCount)) {
-    for (std::map<TextureID, GLuint>::iterator i = cTextures.begin(); i != cTextures.end(); i++) {
-      glDeleteTextures(1, &(i->second));
-    }
+    // TODO: Clean up texture!
   }
 }

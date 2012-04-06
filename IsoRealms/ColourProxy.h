@@ -22,6 +22,8 @@ class ColourProxy:public IColour {
   int getIntGreen() const;
   int getIntBlue() const;
   int getIntAlpha() const;
+  float luminance();
+  void set();
   void save(DOMNodeWriter*, const std::string&);
 };
 

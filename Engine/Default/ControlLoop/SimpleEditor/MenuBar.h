@@ -19,7 +19,7 @@
 #ifndef MENU_BAR_H
 #define MENU_BAR_H
 
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <SDL/SDL.h>
 #include <cctype>
 #include <map>

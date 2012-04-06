@@ -19,7 +19,7 @@
 #ifndef TEXT_FIELD_COMPONENT_H
 #define TEXT_FIELD_COMPONENT_H
 
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <iostream>
 #include <SDL/SDL.h>
 #include <string>

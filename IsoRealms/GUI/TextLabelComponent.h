@@ -19,7 +19,7 @@
 #ifndef TEXT_LABEL_COMPONENT_H
 #define TEXT_LABEL_COMPONENT_H
 
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <string>
 
 #include "../IFont.h"

@@ -19,7 +19,7 @@
 #ifndef RESIZABLE_DIALOG_H
 #define RESIZABLE_DIALOG_H
 
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <SDL/SDL.h>
 #include <string>
 

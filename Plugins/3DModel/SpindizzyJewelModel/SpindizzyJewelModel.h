@@ -21,7 +21,7 @@
 
 #include <cmath>
 #include <cstdlib>
-#include <GL/gl.h>
+#include <GL/glew.h>
 
 #include <IsoRealms/Colour.h>
 #include <IsoRealms/I3DModel.h>

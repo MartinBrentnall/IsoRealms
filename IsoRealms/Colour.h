@@ -19,7 +19,7 @@
 #ifndef COLOUR_H
 #define COLOUR_H
 
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <iostream>
 
 #include "DOMNodeWrapper.h"
@@ -142,6 +142,7 @@ class Colour:public IColour {
   int getIntGreen() const;
   int getIntBlue() const;
   int getIntAlpha() const;
+  float luminance();
   void save(DOMNodeWriter*, const std::string&);
   
   void debug();

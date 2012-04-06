@@ -26,22 +26,30 @@
 #include <IsoRealms/DummyPlugin.h>
 #include <IsoRealms/IColour.h>
 #include <IsoRealms/ICommandInfo.h>
-#include <IsoRealms/Image.h>
 #include <IsoRealms/IPaletteListener.h>
 #include <IsoRealms/IPlugin.h>
 #include <IsoRealms/ITexture.h>
 #include <IsoRealms/PluginRegistry.h>
 #include <IsoRealms/PlugSocket.h>
+#include <IsoRealms/Texture.h>
 
-#include "C64SpindizzyTexture.h"
 #include "PlainColourTexture.h"
 
 class C64SpindizzyTextureSet:public IPlugin,
                              public IPaletteListener {
   private:
-  static const int RESOLUTION = 128;
-  static const int GRID_WIDTH = RESOLUTION / 16;
-  static const int EDGE_WIDTH = RESOLUTION / 8;
+  static const float TILE_SIZE;
+  static const float SWITCH_SQUARE_OUTER;
+  static const float SWITCH_SQUARE_INNER;
+  static const float SWITCH_SQUARE_TRIANGLE_INNER;
+  static const float SWITCH_DIAMOND_OUTER;
+  static const float SWITCH_DIAMOND_INNER;
+  static const float SWITCH_CIRCLE_OUTER;
+  static const float SWITCH_CIRCLE_INNER;
+  static const float ICE_EDGE_WIDTH;
+  static const float ARROW_SIZE;
+  static const float ARROW_LINE_WIDTH;
+  static const float CIRCLE_RESOLUTION;
 
   static const std::string PLAIN;
   static const std::string PLAIN_SPLIT;
@@ -64,7 +72,7 @@ class C64SpindizzyTextureSet:public IPlugin,
   static const std::string WALL_PLAIN_MIDDLE;
 
   IRuntimeContext* cRuntimeContext;  
-  std::map<std::string, C64SpindizzyTexture*> cTextures; 
+  std::map<std::string, Texture*> cTextures; 
   PlainColourTexture* cBackgroundTexture;
   std::map<std::string, GLuint> cTextureIDs;
 
@@ -73,35 +81,33 @@ class C64SpindizzyTextureSet:public IPlugin,
   IColour* cGridColour;
   IColour* cBackgroundColour;
 
-  /*
-   * The follow functions create template images that can be drawn on.
-   */
-  Image* makePlainImage(IColour*);
-  Image* makeTileImage();
-  Image* makeSwitchSquareImage();
-  Image* makeSwitchDiamondImage();
-
-  GLuint generatePlain();
-  GLuint generateSplitPlain();
-  GLuint generateIce();
-  GLuint generateTrampoline();
-  GLuint generateSwitchSquare();
-  GLuint generateSwitchSquareHalf();
-  GLuint generateSwitchSquareBoth();
-  GLuint generateSwitchDiamond();
-  GLuint generateSwitchDiamondHalf();
-  GLuint generateSwitchDiamondBoth();
-  GLuint generateSwitchCircle();
-  GLuint generateSwitchCircleHalf();
-  GLuint generateSwitchCircleBoth();
-  GLuint generateArrow();
-  GLuint generateWallPlainCap();
-  GLuint generateWallPlainMiddle();
-  GLuint generateWallMixedCap();
-  GLuint generateWallMixedMiddle();
-  GLuint generateIceWall();
-
-  GLuint convertToTexture(Image*, const std::string&, bool = false);
+  float getGridWallLuminanceAdjustment();
+  
+  void clear(IColour*);
+  void renderSquare(float, IColour*);
+  void renderDiamond(float, IColour*);
+  void renderCircle(float, IColour*);
+  void renderRectangle(float, float, float, float, IColour*);
+  void renderTile(IColour*);
+  void renderIce();
+  void renderPlain();
+  void renderSplitPlain();
+  void renderTrampoline();
+  void renderSwitchSquare();
+  void renderSwitchSquareHalf();
+  void renderSwitchSquareBoth();
+  void renderSwitchDiamond();
+  void renderSwitchDiamondHalf();
+  void renderSwitchDiamondBoth();
+  void renderSwitchCircle();
+  void renderSwitchCircleBoth();
+  void renderSwitchCircleHalf();
+  void renderArrow();
+  void renderWallPlainMiddle();
+  void renderWallMixedMiddle();
+  void renderWallPlainCap();
+  void renderWallMixedCap();
+  void renderIceWall();
 
   void generateTextures();
   void destroyTextures();
@@ -121,4 +127,3 @@ class C64SpindizzyTextureSet:public IPlugin,
 };
 
 #endif
-

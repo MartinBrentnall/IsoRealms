@@ -54,7 +54,6 @@ add_library(IsoRealms SHARED
   IPlugin.cpp
   IPluginSupport.cpp
   IllegalStateException.cpp
-  Image.cpp
   InputCommands.cpp
   InitException.cpp
   IsoRealmsConstants.cpp
@@ -77,6 +76,7 @@ add_library(IsoRealms SHARED
   Script.cpp
   SDLKeyMap.cpp
   System.cpp
+  Texture.cpp
   TextureProxy.cpp
   Utils.cpp
   Vertex.cpp

@@ -19,7 +19,7 @@
 #ifndef SPINDIZZY_BLOCK_FACTORY_H
 #define SPINDIZZY_BLOCK_FACTORY_H
 
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <SDL/SDL.h>
 
 #include <IsoRealms/GUI/IComponentCloseListener.h>

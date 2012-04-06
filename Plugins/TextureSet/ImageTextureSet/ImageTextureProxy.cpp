@@ -29,19 +29,6 @@ void ImageTextureProxy::set() {
   }
 }
 
-void ImageTextureProxy::texCoord2f(float x, float y) {
-  if (cTexture != NULL) {
-    cTexture->texCoord2f(x, y);
-  }
-}
-
-IColour* ImageTextureProxy::getColour(float x, float y) {
-  if (cTexture != NULL) {
-    return cTexture->getColour(x, y);
-  }
-  return NULL;
-}
-
 void ImageTextureProxy::save(DOMNodeWriter* node, const std::string& id) {
   if (cTexture != NULL) {
     DOMNodeWriter* mTextureNode = node->addBranch("Texture");

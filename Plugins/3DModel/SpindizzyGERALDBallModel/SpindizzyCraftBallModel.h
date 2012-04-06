@@ -20,31 +20,30 @@
 #define SPINDIZZY_CRAFT_BALL_MODEL_H
 
 #include <cmath>
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <map>
 
 #include <IsoRealms/Colour.h>
 #include <IsoRealms/I3DModel.h>
 #include <IsoRealms/IColour.h>
 #include <IsoRealms/IsoRealmsConstants.h>
-#include <IsoRealms/Image.h>
+#include <IsoRealms/Texture.h>
 #include <IsoRealms/Vertex.h>
 
 #include "../../Camera/ICamera.h"
 
 class SpindizzyCraftBallModel:public I3DModel {
   private:
+  static const float CIRCLE_RESOLUTION;
+
   ICamera* cCamera;
   Vertex* cLocation;
 
-  enum TextureID {
-    TEXTURE_BALL
-  };
-
   static unsigned int cInstanceCount;
-  static std::map<TextureID, GLuint> cTextures;
+  static Texture* cTexture;
 
-  GLuint generateTextureBall();
+  void generateTextureBall();
+  void renderCircle(float, IColour*);
 
   public:
   SpindizzyCraftBallModel(Vertex*, ICamera*);

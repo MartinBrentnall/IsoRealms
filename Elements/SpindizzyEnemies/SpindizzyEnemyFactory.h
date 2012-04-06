@@ -19,7 +19,7 @@
 #ifndef SPINDIZZY_ENEMY_FACTORY_H
 #define SPINDIZZY_ENEMY_FACTORY_H
 
-#include <GL/gl.h>
+#include <GL/glew.h>
 
 #include <IsoRealms/BlockLocation.h>
 #include <IsoRealms/ElementFactory.h>

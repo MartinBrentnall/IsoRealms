@@ -18,6 +18,27 @@
  */
 #include "C64SpindizzySpriteSet.h"
 
+const float C64SpindizzySpriteSet::CIRCLE_RESOLUTION            = 5.0f * (M_PI / 180.0);
+const float C64SpindizzySpriteSet::CIRCLE_OUTLINE_OUTER         = 1.0f;
+const float C64SpindizzySpriteSet::CIRCLE_OUTLINE_INNER         = 0.6f;
+const float C64SpindizzySpriteSet::CIRCLE_COLOUR_OUTER          = 0.9f;
+const float C64SpindizzySpriteSet::CIRCLE_COLOUR_INNER          = 0.7f;
+const float C64SpindizzySpriteSet::SQUARE_OUTLINE_OUTER         = 1.0f;
+const float C64SpindizzySpriteSet::SQUARE_OUTLINE_INNER         = 0.51f;
+const float C64SpindizzySpriteSet::SQUARE_COLOUR_OUTER          = 0.87f;
+const float C64SpindizzySpriteSet::SQUARE_COLOUR_INNER          = 0.64f;
+const float C64SpindizzySpriteSet::SQUARE_TRIANGLE_OUTER        = 0.2f;
+const float C64SpindizzySpriteSet::SQUARE_TRIANGLE_INNER        = 0.0f;
+const float C64SpindizzySpriteSet::DIAMOND_OUTLINE_OUTER        = 1.0f;
+const float C64SpindizzySpriteSet::DIAMOND_OUTLINE_INNER        = 0.6f;
+const float C64SpindizzySpriteSet::DIAMOND_COLOUR_OUTER         = 0.9f;
+const float C64SpindizzySpriteSet::DIAMOND_COLOUR_INNER         = 0.7f;
+const float C64SpindizzySpriteSet::DIAMOND_SQUARE_OUTLINE_OUTER = 0.70f;
+const float C64SpindizzySpriteSet::DIAMOND_SQUARE_OUTLINE_INNER = 0.40f;
+const float C64SpindizzySpriteSet::DIAMOND_SQUARE_COLOUR_OUTER  = 0.62f;
+const float C64SpindizzySpriteSet::DIAMOND_SQUARE_COLOUR_INNER  = 0.48f;
+
+
 const std::string C64SpindizzySpriteSet::LIFT_CIRCLE_BOTH  = "LiftCircleFilled";
 const std::string C64SpindizzySpriteSet::LIFT_CIRCLE_ONE   = "LiftCircleOne";
 const std::string C64SpindizzySpriteSet::LIFT_CIRCLE_NONE  = "LiftCircleEmpty";
@@ -37,194 +58,245 @@ C64SpindizzySpriteSet::C64SpindizzySpriteSet(IRuntimeContext* runtimeContext) {
 
   TRANSPARENT = new Colour(0.0, 0.0, 0.0, 0.0);
 
-  cTextures[LIFT_CIRCLE_ONE]   = new C64SpindizzySprite();
-  cTextures[LIFT_CIRCLE_NONE]  = new C64SpindizzySprite();
-  cTextures[LIFT_CIRCLE_BOTH]  = new C64SpindizzySprite();
-  cTextures[LIFT_SQUARE_ONE]   = new C64SpindizzySprite();
-  cTextures[LIFT_SQUARE_NONE]  = new C64SpindizzySprite();
-  cTextures[LIFT_SQUARE_BOTH]  = new C64SpindizzySprite();
-  cTextures[LIFT_DIAMOND_ONE]  = new C64SpindizzySprite();
-  cTextures[LIFT_DIAMOND_NONE] = new C64SpindizzySprite();
-  cTextures[LIFT_DIAMOND_BOTH] = new C64SpindizzySprite();
+  cTextures[LIFT_CIRCLE_ONE]   = new Texture();
+  cTextures[LIFT_CIRCLE_NONE]  = new Texture();
+  cTextures[LIFT_CIRCLE_BOTH]  = new Texture();
+  cTextures[LIFT_SQUARE_ONE]   = new Texture();
+  cTextures[LIFT_SQUARE_NONE]  = new Texture();
+  cTextures[LIFT_SQUARE_BOTH]  = new Texture();
+  cTextures[LIFT_DIAMOND_ONE]  = new Texture();
+  cTextures[LIFT_DIAMOND_NONE] = new Texture();
+  cTextures[LIFT_DIAMOND_BOTH] = new Texture();
   
-  for (std::map<std::string, C64SpindizzySprite*>::iterator i = cTextures.begin(); i != cTextures.end(); i++) {
+  for (std::map<std::string, Texture*>::iterator i = cTextures.begin(); i != cTextures.end(); i++) {
     cRuntimeContext->add(i->second, i->first);
   }
-  
   generateTextures();
 }
 
 /* Generation functions */
-Image* C64SpindizzySpriteSet::makePlainImage(IColour* colour) {
-  Image* mImage = new Image(RESOLUTION, RESOLUTION, false);
-  mImage->drawSquare(colour, 0, RESOLUTION, 0, RESOLUTION);
-  return mImage;
+void C64SpindizzySpriteSet::clear(IColour* colour) {
+  glClearColor(colour->getRed(), colour->getGreen(), colour->getBlue(), colour->getAlpha());
+  glClear(GL_COLOR_BUFFER_BIT);
 }
 
-Image* C64SpindizzySpriteSet::makeTileImage() {
-  Image* mImage = makePlainImage(cOutlineColour);
-  mImage->drawSquare(cColour1, GRID_WIDTH, RESOLUTION - GRID_WIDTH, GRID_WIDTH, RESOLUTION - GRID_WIDTH);
-  return mImage;
-}
-
-Image* C64SpindizzySpriteSet::makeTransparent() {
-  Image* mImage = new Image(RESOLUTION, RESOLUTION, true);
-  mImage->drawSquare(TRANSPARENT, 0, RESOLUTION, 0, RESOLUTION);
-  return mImage;
-}
-
-Image* C64SpindizzySpriteSet::makeLiftSquareImage() {
-  Image* mImage = makeTransparent();
-  int mSquareOuterEdge = (int) (mImage->getWidth() * 0.16);
-  int mSquareOuterFill = (int) (mImage->getWidth() * 0.20);
-  int mSquareInnerFill = (int) (mImage->getWidth() * 0.30);
-  int mSquareInnerEdge = (int) (mImage->getWidth() * 0.34);
-
-  mImage->drawSquare(cOutlineColour, mSquareOuterEdge, RESOLUTION - mSquareOuterEdge, mSquareOuterEdge, RESOLUTION - mSquareOuterEdge);
-  mImage->drawSquare(cColour2,       mSquareOuterFill, RESOLUTION - mSquareOuterFill, mSquareOuterFill, RESOLUTION - mSquareOuterFill);
-  mImage->drawSquare(cOutlineColour, mSquareInnerFill, RESOLUTION - mSquareInnerFill, mSquareInnerFill, RESOLUTION - mSquareInnerFill);
-  mImage->drawSquare(TRANSPARENT,    mSquareInnerEdge, RESOLUTION - mSquareInnerEdge, mSquareInnerEdge, RESOLUTION - mSquareInnerEdge);
-  return mImage;
-}
-
-GLuint C64SpindizzySpriteSet::generateLiftSquare() {
-  Image* mImage = makeLiftSquareImage();
-  return convertToTexture(mImage, LIFT_SQUARE_NONE);
-}
-
-Image* C64SpindizzySpriteSet::makeLiftSquareHalfImage() {
-  Image* mImage = makeLiftSquareImage();
-  mImage->drawTriangle(cOutlineColour, int(EDGE_WIDTH * 2.4), int(RESOLUTION - EDGE_WIDTH * 2.4), int(RESOLUTION * 0.56), int(RESOLUTION - EDGE_WIDTH * 2.4), int(EDGE_WIDTH * 2.4), int(RESOLUTION * 0.44));
-  mImage->drawTriangle(cColour1,       int(EDGE_WIDTH * 2.4), int(RESOLUTION - EDGE_WIDTH * 2.4), int(RESOLUTION * 0.5),  int(RESOLUTION - EDGE_WIDTH * 2.4), int(EDGE_WIDTH * 2.4), int(RESOLUTION * 0.5));
-  return mImage;
-}
-
-GLuint C64SpindizzySpriteSet::generateLiftSquareHalf() {
-  Image* mImage = makeLiftSquareHalfImage();
-  return convertToTexture(mImage, LIFT_SQUARE_ONE);
-}
-
-GLuint C64SpindizzySpriteSet::generateLiftSquareBoth() {
-  Image* mImage = makeLiftSquareHalfImage();
-  mImage->drawTriangle(cOutlineColour, int(RESOLUTION - EDGE_WIDTH * 2.4), int(EDGE_WIDTH * 2.4), int(RESOLUTION * 0.44), int(EDGE_WIDTH * 2.4), int(RESOLUTION - EDGE_WIDTH * 2.4), int(RESOLUTION * 0.56));
-  mImage->drawTriangle(cColour1,       int(RESOLUTION - EDGE_WIDTH * 2.4), int(EDGE_WIDTH * 2.4), int(RESOLUTION * 0.5),  int(EDGE_WIDTH * 2.4), int(RESOLUTION - EDGE_WIDTH * 2.4), int(RESOLUTION * 0.5));
-  return convertToTexture(mImage, LIFT_SQUARE_BOTH);
-}
-
-GLuint C64SpindizzySpriteSet::generateLiftDiamondBoth() {
-  Image* mImage = makeTransparent();
-  int mSquareOuterEdge = int(mImage->getWidth() * 0.16);
-  int mSquareOuterFill = int(mImage->getWidth() * 0.20);
-  int mSquareInnerFill = int(mImage->getWidth() * 0.26);
-  int mSquareInnerEdge = int(mImage->getWidth() * 0.30);
-
-  mImage->drawSquare(cOutlineColour,  mSquareOuterEdge, RESOLUTION - mSquareOuterEdge, mSquareOuterEdge, RESOLUTION - mSquareOuterEdge);
-  mImage->drawSquare(cColour1,        mSquareOuterFill, RESOLUTION - mSquareOuterFill, mSquareOuterFill, RESOLUTION - mSquareOuterFill);
-  mImage->drawSquare(cOutlineColour,  mSquareInnerFill, RESOLUTION - mSquareInnerFill, mSquareInnerFill, RESOLUTION - mSquareInnerFill);
-  mImage->drawSquare(TRANSPARENT,     mSquareInnerEdge, RESOLUTION - mSquareInnerEdge, mSquareInnerEdge, RESOLUTION - mSquareInnerEdge);
-  mImage->drawDiamond(cOutlineColour, mImage->getWidth());
-  mImage->drawDiamond(cColour2,       int(mImage->getWidth() * 0.94));
-  mImage->drawDiamond(cOutlineColour, int(mImage->getWidth() * 0.84));
-  mImage->drawDiamond(TRANSPARENT,    int(mImage->getWidth() * 0.78));
-  return convertToTexture(mImage, LIFT_DIAMOND_BOTH);
-}
-
-GLuint C64SpindizzySpriteSet::generateLiftDiamondHalf() {
-  Image* mImage = makeTransparent();
-  int mSquareOuterEdge = int(mImage->getWidth() * 0.16);
-  int mSquareOuterFill = int(mImage->getWidth() * 0.20);
-  int mSquareInnerFill = int(mImage->getWidth() * 0.26);
-  int mSquareInnerEdge = int(mImage->getWidth() * 0.30);
-
-  mImage->drawDiamond(cOutlineColour,      mImage->getWidth());
-  mImage->drawDiamond(cColour2,            int(mImage->getWidth() * 0.94));
-  mImage->drawDiamond(cOutlineColour,      int(mImage->getWidth() * 0.84));
-  mImage->drawDiamond(TRANSPARENT,         int(mImage->getWidth() * 0.78));
-  mImage->drawSquare(cOutlineColour,       mSquareOuterEdge, RESOLUTION - mSquareOuterEdge, mSquareOuterEdge, RESOLUTION - mSquareOuterEdge);
-  mImage->drawSquare(cColour1,             mSquareOuterFill, RESOLUTION - mSquareOuterFill, mSquareOuterFill, RESOLUTION - mSquareOuterFill);
-  mImage->drawSquare(cOutlineColour,       mSquareInnerFill, RESOLUTION - mSquareInnerFill, mSquareInnerFill, RESOLUTION - mSquareInnerFill);
-  mImage->drawSquare(TRANSPARENT,          mSquareInnerEdge, RESOLUTION - mSquareInnerEdge, mSquareInnerEdge, RESOLUTION - mSquareInnerEdge);
-  mImage->drawHalfDiamond2(cOutlineColour, int(mImage->getWidth() * 0.50));
-  mImage->drawHalfDiamond( cColour2,       int(mImage->getWidth() * 0.44));
-  mImage->drawHalfDiamond( cOutlineColour, int(mImage->getWidth() * 0.34));
-  mImage->drawHalfDiamond( TRANSPARENT,    int(mImage->getWidth() * 0.28));
-  return convertToTexture(mImage, LIFT_DIAMOND_ONE);
-}
-
-GLuint C64SpindizzySpriteSet::generateLiftDiamond() {
-  Image* mImage = makeTransparent();
-  int mSquareOuterEdge = int(mImage->getWidth() * 0.16);
-  int mSquareOuterFill = int(mImage->getWidth() * 0.20);
-  int mSquareInnerFill = int(mImage->getWidth() * 0.26);
-  int mSquareInnerEdge = int(mImage->getWidth() * 0.30);
-
-  mImage->drawDiamond(cOutlineColour, mImage->getWidth());
-  mImage->drawDiamond(cColour2,       int(mImage->getWidth() * 0.94));
-  mImage->drawDiamond(cOutlineColour, int(mImage->getWidth() * 0.84));
-  mImage->drawDiamond(TRANSPARENT,    int(mImage->getWidth() * 0.78));
-  mImage->drawSquare(cOutlineColour,  mSquareOuterEdge, RESOLUTION - mSquareOuterEdge, mSquareOuterEdge, RESOLUTION - mSquareOuterEdge);
-  mImage->drawSquare(cColour1,        mSquareOuterFill, RESOLUTION - mSquareOuterFill, mSquareOuterFill, RESOLUTION - mSquareOuterFill);
-  mImage->drawSquare(cOutlineColour,  mSquareInnerFill, RESOLUTION - mSquareInnerFill, mSquareInnerFill, RESOLUTION - mSquareInnerFill);
-  mImage->drawSquare(TRANSPARENT,     mSquareInnerEdge, RESOLUTION - mSquareInnerEdge, mSquareInnerEdge, RESOLUTION - mSquareInnerEdge);
-  return convertToTexture(mImage, LIFT_DIAMOND_NONE);
-}
-
-Image* C64SpindizzySpriteSet::makeLiftCircleImage() {
-  Image* mImage = makeTransparent();
-  mImage->drawCircle(cOutlineColour, int(mImage->getWidth() * 0.9 * 0.5));
-  mImage->drawCircle(cColour1,       int(mImage->getWidth() * 0.9 * 0.46));
-  mImage->drawCircle(cOutlineColour, int(mImage->getWidth() * 0.9 * 0.34));
-  mImage->drawCircle(TRANSPARENT,    int(mImage->getWidth() * 0.9 * 0.30));
-  return mImage;
-}
-
-GLuint C64SpindizzySpriteSet::generateLiftCircle() {
-  Image* mImage = makeLiftCircleImage();
-  return convertToTexture(mImage, LIFT_CIRCLE_NONE);
-}
-
-GLuint C64SpindizzySpriteSet::generateLiftCircleHalf() {
-  Image* mImage = makeLiftCircleImage();
-  mImage->drawSemiCircle(cColour2, int(mImage->getWidth() * 0.9 * 0.34));
-  return convertToTexture(mImage, LIFT_CIRCLE_ONE);
-}
-
-GLuint C64SpindizzySpriteSet::generateLiftCircleBoth() {
-  Image* mImage = makeTransparent();
-  mImage->drawCircle(cOutlineColour, int(mImage->getWidth() * 0.9 * 0.5));
-  mImage->drawCircle(cColour1,      int(mImage->getWidth() * 0.9 * 0.46));
-  mImage->drawCircle(cColour2,       int(mImage->getWidth() * 0.9 * 0.34));
-  return convertToTexture(mImage, LIFT_CIRCLE_BOTH);
-}
-
-GLuint C64SpindizzySpriteSet::convertToTexture(Image* image, const std::string& type) {
-  std::map<std::string, GLuint>::iterator i = cTextureIDs.find(type);
-  GLuint mTextureID;
-  if (i == cTextureIDs.end()) {
-    mTextureID = image->generateTexture();
-    cTextureIDs[type] = mTextureID;
-  } else {
-    mTextureID = i->second;
-    image->generateTexture(mTextureID);
+void C64SpindizzySpriteSet::renderCircle(float radius, IColour* colour) {
+  glBegin(GL_TRIANGLE_FAN);
+  colour->set();
+  glVertex2f(0.0f, 0.0f);
+  float mStartAngle = 0.0f * (M_PI / 180.0f);
+  float mEndAngle = 360.0f * (M_PI / 180.0f);
+  for (float angle = mEndAngle; angle >= mStartAngle; angle -= CIRCLE_RESOLUTION) {
+    glVertex2f(sin(angle) * radius, cos(angle) * radius);
   }
-  delete image;
-  return mTextureID;
+  glEnd();
+}
+
+void C64SpindizzySpriteSet::renderCircle(float outerRadius, float innerRadius, IColour* colour) {
+  glBegin(GL_TRIANGLE_STRIP);
+  colour->set();
+  float mStartAngle = 0.0f * (M_PI / 180.0f);
+  float mEndAngle = 360.0f * (M_PI / 180.0f);
+  for (float angle = mEndAngle; angle >= mStartAngle; angle -= CIRCLE_RESOLUTION) {
+    glVertex2f(sin(angle) * innerRadius, cos(angle) * innerRadius);
+    glVertex2f(sin(angle) * outerRadius, cos(angle) * outerRadius);
+  }
+  glEnd();
+}
+
+void C64SpindizzySpriteSet::renderSquare(float outer, float inner, IColour* colour) {
+  colour->set();
+  glBegin(GL_TRIANGLE_STRIP);
+  glVertex2f(-outer, -outer);
+  glVertex2f(-inner, -inner);
+  glVertex2f(-outer,  outer);
+  glVertex2f(-inner,  inner);
+  glVertex2f( outer,  outer);
+  glVertex2f( inner,  inner);
+  glVertex2f( outer, -outer);
+  glVertex2f( inner, -inner);
+  glVertex2f(-outer, -outer);
+  glVertex2f(-inner, -inner);
+  glEnd();
+}
+
+void C64SpindizzySpriteSet::renderSquareHalf(float outer, float inner, IColour* colour) {
+  colour->set();
+  glBegin(GL_TRIANGLE_STRIP);
+  glVertex2f(-outer, -outer);
+  glVertex2f(-inner, -inner);
+  glVertex2f(-outer,  outer);
+  glVertex2f(-inner,  inner);
+  glVertex2f( outer,  outer);
+  glVertex2f( inner,  inner);
+/*  glVertex2f( outer, -outer);
+  glVertex2f( inner, -inner);
+  glVertex2f(-outer, -outer);
+  glVertex2f(-inner, -inner);*/
+  glEnd();
+}
+
+void C64SpindizzySpriteSet::renderDiamond(float outer, float inner, IColour* colour) {
+  colour->set();
+  glBegin(GL_TRIANGLE_STRIP);
+  glVertex2f(-inner,  0.0f);
+  glVertex2f(-outer,  0.0f);
+  glVertex2f(0.0f,   -inner);
+  glVertex2f(0.0f,   -outer);
+  glVertex2f( inner,  0.0f);
+  glVertex2f( outer,  0.0f);
+  glVertex2f(0.0f,    inner);
+  glVertex2f(0.0f,    outer);
+  glVertex2f(-inner,  0.0f);
+  glVertex2f(-outer,  0.0f);
+  glEnd();
+}
+
+void C64SpindizzySpriteSet::renderDiamondHalf(float outer, float inner, IColour* colour) {
+  colour->set();
+  glBegin(GL_TRIANGLE_STRIP);
+  glVertex2f(-inner,  0.0f);
+  glVertex2f(-outer,  0.0f);
+  glVertex2f(0.0f,   -inner);
+  glVertex2f(0.0f,   -outer);
+  glVertex2f( inner,  0.0f);
+  glVertex2f( outer,  0.0f);
+  glVertex2f(0.0f,    inner);
+  glVertex2f(0.0f,    outer);
+  glEnd();
+}
+
+void C64SpindizzySpriteSet::renderDiamondEdges(float outer, float edge, IColour* colour) {
+  colour->set();
+  glBegin(GL_TRIANGLES);
+  glVertex2f(-outer,         0.0f);
+  glVertex2f(-edge,         -outer + edge);
+  glVertex2f(-edge,          outer - edge);
+  glVertex2f( 0.0f,         -outer);
+  glVertex2f( outer - edge, -edge);
+  glVertex2f(-outer + edge, -edge);
+  glVertex2f( outer,         0.0f);
+  glVertex2f( edge,          outer - edge);
+  glVertex2f( edge,         -outer + edge);
+  glVertex2f( 0.0f,          outer);
+  glVertex2f(-outer + edge,  edge);
+  glVertex2f( outer - edge,  edge);
+  glEnd();
+}
+
+void C64SpindizzySpriteSet::renderLiftSquare() {
+  clear(TRANSPARENT);
+  renderSquare(SQUARE_OUTLINE_OUTER, SQUARE_OUTLINE_INNER, cOutlineColour);
+  renderSquare(SQUARE_COLOUR_OUTER, SQUARE_COLOUR_INNER, cColour2);
+}
+
+void C64SpindizzySpriteSet::renderLiftSquareHalf() {
+  renderLiftSquare();
+  glBegin(GL_TRIANGLES);
+  cOutlineColour->set();
+  glVertex2f(-SQUARE_COLOUR_INNER,    SQUARE_COLOUR_INNER);
+  glVertex2f(-SQUARE_COLOUR_INNER,    SQUARE_TRIANGLE_INNER);
+  glVertex2f(-SQUARE_TRIANGLE_INNER,  SQUARE_COLOUR_INNER);
+  cColour1->set();
+  glVertex2f(-SQUARE_COLOUR_INNER,    SQUARE_COLOUR_INNER);
+  glVertex2f(-SQUARE_COLOUR_INNER,    SQUARE_TRIANGLE_OUTER);
+  glVertex2f(-SQUARE_TRIANGLE_OUTER,  SQUARE_COLOUR_INNER);
+  glEnd();
+}
+
+void C64SpindizzySpriteSet::renderLiftSquareBoth() {
+  renderLiftSquareHalf();
+  glBegin(GL_TRIANGLES);
+  cOutlineColour->set();
+  glVertex2f(SQUARE_COLOUR_INNER,   -SQUARE_COLOUR_INNER);
+  glVertex2f(SQUARE_COLOUR_INNER,   -SQUARE_TRIANGLE_INNER);
+  glVertex2f(SQUARE_TRIANGLE_INNER, -SQUARE_COLOUR_INNER);
+  cColour1->set();
+  glVertex2f(SQUARE_COLOUR_INNER,   -SQUARE_COLOUR_INNER);
+  glVertex2f(SQUARE_COLOUR_INNER,   -SQUARE_TRIANGLE_OUTER);
+  glVertex2f(SQUARE_TRIANGLE_OUTER, -SQUARE_COLOUR_INNER);
+  glEnd();
+}
+
+void C64SpindizzySpriteSet::renderLiftDiamondBoth() {
+  clear(TRANSPARENT);
+  renderSquare(DIAMOND_SQUARE_OUTLINE_OUTER, DIAMOND_SQUARE_OUTLINE_INNER, cOutlineColour);
+  renderSquare(DIAMOND_SQUARE_COLOUR_OUTER,  DIAMOND_SQUARE_COLOUR_INNER,  cColour1);
+  renderDiamond(DIAMOND_OUTLINE_OUTER,       DIAMOND_OUTLINE_INNER,        cOutlineColour);
+  renderDiamond(DIAMOND_COLOUR_OUTER,        DIAMOND_COLOUR_INNER,         cColour2);
+}
+
+void C64SpindizzySpriteSet::renderLiftDiamondHalf() {
+  renderLiftDiamond();
+  renderDiamondHalf(DIAMOND_OUTLINE_OUTER,       DIAMOND_OUTLINE_INNER,        cOutlineColour);
+  renderDiamondHalf(DIAMOND_COLOUR_OUTER,        DIAMOND_COLOUR_INNER,         cColour2);
+  renderSquareHalf(DIAMOND_SQUARE_OUTLINE_OUTER, DIAMOND_SQUARE_OUTLINE_INNER, cOutlineColour);
+  renderSquareHalf(DIAMOND_SQUARE_COLOUR_OUTER,  DIAMOND_SQUARE_COLOUR_INNER,  cColour1);
+}
+
+void C64SpindizzySpriteSet::renderLiftDiamond() {
+  clear(TRANSPARENT);
+  renderDiamondEdges(DIAMOND_OUTLINE_OUTER,  DIAMOND_SQUARE_COLOUR_OUTER,  cOutlineColour);
+  renderDiamondEdges(DIAMOND_COLOUR_OUTER,   DIAMOND_SQUARE_COLOUR_OUTER,  cColour2);
+  renderSquare(DIAMOND_SQUARE_OUTLINE_OUTER, DIAMOND_SQUARE_OUTLINE_INNER, cOutlineColour);
+  renderSquare(DIAMOND_SQUARE_COLOUR_OUTER,  DIAMOND_SQUARE_COLOUR_INNER,  cColour1);
+}
+
+void C64SpindizzySpriteSet::renderLiftCircle() {
+  clear(TRANSPARENT);
+  renderCircle(CIRCLE_OUTLINE_OUTER, CIRCLE_OUTLINE_INNER, cOutlineColour);
+  renderCircle(CIRCLE_COLOUR_OUTER, CIRCLE_COLOUR_INNER, cColour1);
+}
+
+void C64SpindizzySpriteSet::renderLiftCircleHalf() {
+  renderLiftCircle();
+  glBegin(GL_TRIANGLE_FAN);
+  cColour2->set();
+  glVertex2f(0.0f, 0.0f);
+  float mStartAngle = 45.0f * (M_PI / 180.0f);
+  float mEndAngle = 225.0f * (M_PI / 180.0f);
+  for (float angle = mEndAngle; angle >= mStartAngle; angle -= CIRCLE_RESOLUTION) {
+    glVertex2f(sin(angle) * CIRCLE_COLOUR_INNER, cos(angle) * CIRCLE_COLOUR_INNER);
+  }
+  glEnd();
+}
+
+void C64SpindizzySpriteSet::renderLiftCircleBoth() {
+  clear(TRANSPARENT);
+  renderCircle(CIRCLE_OUTLINE_OUTER, cOutlineColour);
+  renderCircle(CIRCLE_COLOUR_OUTER, cColour1);
+  renderCircle(CIRCLE_COLOUR_INNER, cColour2);
 }
 
 void C64SpindizzySpriteSet::generateTextures() {
-  cTextures[LIFT_CIRCLE_ONE]->setTexture(generateLiftCircleHalf());
-  cTextures[LIFT_CIRCLE_NONE]->setTexture(generateLiftCircle());
-  cTextures[LIFT_CIRCLE_BOTH]->setTexture(generateLiftCircleBoth());
-  cTextures[LIFT_SQUARE_ONE]->setTexture(generateLiftSquareHalf());
-  cTextures[LIFT_SQUARE_NONE]->setTexture(generateLiftSquare());
-  cTextures[LIFT_SQUARE_BOTH]->setTexture(generateLiftSquareBoth());
-  cTextures[LIFT_DIAMOND_ONE]->setTexture(generateLiftDiamondHalf());
-  cTextures[LIFT_DIAMOND_NONE]->setTexture(generateLiftDiamond());
-  cTextures[LIFT_DIAMOND_BOTH]->setTexture(generateLiftDiamondBoth());
+  glPushAttrib(GL_TRANSFORM_BIT);
+  glMatrixMode(GL_PROJECTION);
+  glPushMatrix();
+  glLoadIdentity();
+  glPopAttrib();
+
+  cTextures[LIFT_CIRCLE_ONE]->setRenderTarget();   renderLiftCircleHalf();
+  cTextures[LIFT_CIRCLE_NONE]->setRenderTarget();  renderLiftCircle();
+  cTextures[LIFT_CIRCLE_BOTH]->setRenderTarget();  renderLiftCircleBoth();
+  cTextures[LIFT_SQUARE_ONE]->setRenderTarget();   renderLiftSquareHalf();
+  cTextures[LIFT_SQUARE_NONE]->setRenderTarget();  renderLiftSquare();
+  cTextures[LIFT_SQUARE_BOTH]->setRenderTarget();  renderLiftSquareBoth();
+  cTextures[LIFT_DIAMOND_ONE]->setRenderTarget();  renderLiftDiamondHalf();
+  cTextures[LIFT_DIAMOND_NONE]->setRenderTarget(); renderLiftDiamond();
+  cTextures[LIFT_DIAMOND_BOTH]->setRenderTarget(); renderLiftDiamondBoth();
+
+  glPushAttrib(GL_TRANSFORM_BIT);
+  glMatrixMode(GL_PROJECTION);
+  glPopMatrix();
+  glPopAttrib();
+
+  glViewport(0, 0, 1024, 768);
+  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+  glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0);
 }
 
 void C64SpindizzySpriteSet::destroyTextures() {
-  for (std::map<std::string, C64SpindizzySprite*>::iterator i = cTextures.begin(); i != cTextures.end(); i++) {
+  for (std::map<std::string, Texture*>::iterator i = cTextures.begin(); i != cTextures.end(); i++) {
     delete i->second;
   }
   for (std::map<std::string, GLuint>::iterator i = cTextureIDs.begin(); i != cTextureIDs.end(); i++) {
@@ -238,7 +310,7 @@ void C64SpindizzySpriteSet::paletteChanged(IPalette*, const std::string&) {
 }
 
 ITexture* C64SpindizzySpriteSet::getTexture(const std::string& name) {
-  std::map<std::string, C64SpindizzySprite*>::iterator i = cTextures.find(name);
+  std::map<std::string, Texture*>::iterator i = cTextures.find(name);
   return i != cTextures.end() ? i->second : cTextures.begin()->second;
 }
 

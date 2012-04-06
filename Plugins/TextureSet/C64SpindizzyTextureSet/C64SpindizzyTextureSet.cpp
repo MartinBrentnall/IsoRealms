@@ -18,6 +18,21 @@
  */
 #include "C64SpindizzyTextureSet.h"
 
+const float C64SpindizzyTextureSet::TILE_SIZE                    = 0.88f;
+const float C64SpindizzyTextureSet::SWITCH_SQUARE_OUTER          = 0.63f;
+const float C64SpindizzyTextureSet::SWITCH_SQUARE_INNER          = 0.44f;
+const float C64SpindizzyTextureSet::SWITCH_SQUARE_TRIANGLE_INNER = 0.0f;
+
+const float C64SpindizzyTextureSet::SWITCH_DIAMOND_OUTER         = 0.66f;
+const float C64SpindizzyTextureSet::SWITCH_DIAMOND_INNER         = 0.41f;
+
+const float C64SpindizzyTextureSet::SWITCH_CIRCLE_OUTER          = 0.7f;
+const float C64SpindizzyTextureSet::SWITCH_CIRCLE_INNER          = 0.52f;
+const float C64SpindizzyTextureSet::ICE_EDGE_WIDTH               = 0.9f;
+const float C64SpindizzyTextureSet::ARROW_SIZE                   = 0.66f;
+const float C64SpindizzyTextureSet::ARROW_LINE_WIDTH             = 0.25f;
+const float C64SpindizzyTextureSet::CIRCLE_RESOLUTION            = 5.0f * (M_PI / 180.0);
+
 const std::string C64SpindizzyTextureSet::PLAIN                = "Plain";
 const std::string C64SpindizzyTextureSet::PLAIN_SPLIT          = "PlainSplit";
 const std::string C64SpindizzyTextureSet::ICE_WATER            = "IceWater";
@@ -45,27 +60,27 @@ C64SpindizzyTextureSet::C64SpindizzyTextureSet(IRuntimeContext* runtimeContext) 
   cGridColour = new Colour(0.3f, 0.3f, 0.3f);
   cBackgroundColour = new Colour(0.0f, 0.0f, 0.0f);
   
-  cTextures[SWITCH_CIRCLE_BOTH]  = new C64SpindizzyTexture();
-  cTextures[SWITCH_CIRCLE_ONE]   = new C64SpindizzyTexture();
-  cTextures[SWITCH_CIRCLE_NONE]  = new C64SpindizzyTexture();
-  cTextures[SWITCH_SQUARE_BOTH]  = new C64SpindizzyTexture();
-  cTextures[SWITCH_SQUARE_ONE]   = new C64SpindizzyTexture();
-  cTextures[SWITCH_SQUARE_NONE]  = new C64SpindizzyTexture();
-  cTextures[SWITCH_DIAMOND_NONE] = new C64SpindizzyTexture();
-  cTextures[SWITCH_DIAMOND_ONE]  = new C64SpindizzyTexture();
-  cTextures[SWITCH_DIAMOND_BOTH] = new C64SpindizzyTexture();
-  cTextures[ARROW]               = new C64SpindizzyTexture();
-  cTextures[TRAMPOLINE]          = new C64SpindizzyTexture();
-  cTextures[ICE_WATER]           = new C64SpindizzyTexture();
-  cTextures[PLAIN]               = new C64SpindizzyTexture();
-  cTextures[PLAIN_SPLIT]         = new C64SpindizzyTexture();
-  cTextures[WALL_MIXED_CAP]      = new C64SpindizzyTexture();
-  cTextures[WALL_MIXED_MIDDLE]   = new C64SpindizzyTexture();
-  cTextures[WALL_PLAIN_CAP]      = new C64SpindizzyTexture();
-  cTextures[WALL_PLAIN_MIDDLE]   = new C64SpindizzyTexture();
-  cTextures[WALL_ICE]            = new C64SpindizzyTexture();
+  cTextures[SWITCH_CIRCLE_BOTH]  = new Texture();
+  cTextures[SWITCH_CIRCLE_ONE]   = new Texture();
+  cTextures[SWITCH_CIRCLE_NONE]  = new Texture();
+  cTextures[SWITCH_SQUARE_BOTH]  = new Texture();
+  cTextures[SWITCH_SQUARE_ONE]   = new Texture();
+  cTextures[SWITCH_SQUARE_NONE]  = new Texture();
+  cTextures[SWITCH_DIAMOND_NONE] = new Texture();
+  cTextures[SWITCH_DIAMOND_ONE]  = new Texture();
+  cTextures[SWITCH_DIAMOND_BOTH] = new Texture();
+  cTextures[ARROW]               = new Texture();
+  cTextures[TRAMPOLINE]          = new Texture();
+  cTextures[ICE_WATER]           = new Texture();
+  cTextures[PLAIN]               = new Texture();
+  cTextures[PLAIN_SPLIT]         = new Texture();
+  cTextures[WALL_MIXED_CAP]      = new Texture(true);
+  cTextures[WALL_MIXED_MIDDLE]   = new Texture();
+  cTextures[WALL_PLAIN_CAP]      = new Texture(true);
+  cTextures[WALL_PLAIN_MIDDLE]   = new Texture();
+  cTextures[WALL_ICE]            = new Texture();
   
-  for (std::map<std::string, C64SpindizzyTexture*>::iterator i = cTextures.begin(); i != cTextures.end(); i++) {
+  for (std::map<std::string, Texture*>::iterator i = cTextures.begin(); i != cTextures.end(); i++) {
     cRuntimeContext->add(i->second, i->first);
   }
   
@@ -74,243 +89,255 @@ C64SpindizzyTextureSet::C64SpindizzyTextureSet(IRuntimeContext* runtimeContext) 
   generateTextures();
 }
 
-/* Generation functions */
-Image* C64SpindizzyTextureSet::makePlainImage(IColour* colour) {
-  Image* mImage = new Image(RESOLUTION, RESOLUTION, false);
-  mImage->drawSquare(colour, 0, RESOLUTION, 0, RESOLUTION);
-  return mImage;
+float C64SpindizzyTextureSet::getGridWallLuminanceAdjustment() {
+  float mFloorLuminance = cFloorColour->luminance();
+  float mWallLuminance = cWallColour->luminance();
+  float mAdjustment = mWallLuminance / mFloorLuminance;
+  return max(0.7f, min(mAdjustment, 1.3f)) - 1.0f;
 }
 
-Image* C64SpindizzyTextureSet::makeTileImage() {
-  Image* mImage = makePlainImage(cGridColour);
-  mImage->drawSquare(cFloorColour, GRID_WIDTH, RESOLUTION - GRID_WIDTH, GRID_WIDTH, RESOLUTION - GRID_WIDTH);
-  return mImage;
+void C64SpindizzyTextureSet::clear(IColour* colour) {
+  glClearColor(colour->getRed(), colour->getGreen(), colour->getBlue(), colour->getAlpha());
+  glClear(GL_COLOR_BUFFER_BIT);
 }
 
-GLuint C64SpindizzyTextureSet::generateIce() {
-  Image* mImage = makePlainImage(cGridColour);
-  return convertToTexture(mImage, ICE_WATER);
+void C64SpindizzyTextureSet::renderSquare(float size, IColour* colour) {
+  glBegin(GL_QUADS);
+  colour->set();
+  glVertex2f(-size, -size);
+  glVertex2f( size, -size);
+  glVertex2f( size,  size);
+  glVertex2f(-size,  size);
+  glEnd();
 }
 
-GLuint C64SpindizzyTextureSet::generatePlain() {
-  Image* mImage = makeTileImage();
-  return convertToTexture(mImage, PLAIN);
+void C64SpindizzyTextureSet::renderDiamond(float size, IColour* colour) {
+  glBegin(GL_QUADS);
+  colour->set();
+  glVertex2f(-size,  0.0f);
+  glVertex2f( 0.0f, -size);
+  glVertex2f( size,  0.0f);
+  glVertex2f( 0.0f,  size);
+  glEnd();
 }
 
-GLuint C64SpindizzyTextureSet::generateSplitPlain() {
-  Image* mImage = makePlainImage(cGridColour);
-  mImage->drawTriangle(cFloorColour, GRID_WIDTH, GRID_WIDTH, RESOLUTION - (GRID_WIDTH * 2), GRID_WIDTH, GRID_WIDTH, RESOLUTION - (GRID_WIDTH * 2));
-  mImage->drawTriangle(cFloorColour, RESOLUTION - GRID_WIDTH, RESOLUTION - GRID_WIDTH, RESOLUTION - GRID_WIDTH, GRID_WIDTH * 2, GRID_WIDTH * 2, RESOLUTION - GRID_WIDTH);
-  return convertToTexture(mImage, PLAIN_SPLIT);
-}
-
-GLuint C64SpindizzyTextureSet::generateTrampoline() {
-  Image* mImage = makePlainImage(cGridColour);
-  mImage->drawSquare(cBackgroundColour, GRID_WIDTH, RESOLUTION - GRID_WIDTH, GRID_WIDTH, RESOLUTION - GRID_WIDTH);
-  mImage->drawSquare(cWallColour, GRID_WIDTH * 2, RESOLUTION - GRID_WIDTH * 2, GRID_WIDTH * 2, RESOLUTION - GRID_WIDTH * 2);
-  return convertToTexture(mImage, TRAMPOLINE);
-}
-
-Image* C64SpindizzyTextureSet::makeSwitchSquareImage() {
-  Image* mImage = makeTileImage();
-  int mOuterSquare = (int) (RESOLUTION * 0.2);
-  int mInnerSquare = (int) (RESOLUTION * 0.3);
-  mImage->drawSquare(cWallColour, mOuterSquare, RESOLUTION - mOuterSquare, mOuterSquare, RESOLUTION - mOuterSquare);
-  mImage->drawSquare(cFloorColour, mInnerSquare, RESOLUTION - mInnerSquare, mInnerSquare, RESOLUTION - mInnerSquare);
-  return mImage;
-}
-
-GLuint C64SpindizzyTextureSet::generateSwitchSquare() {
-  Image* mImage = makeSwitchSquareImage();
-  return convertToTexture(mImage, SWITCH_SQUARE_NONE);
-}
-
-GLuint C64SpindizzyTextureSet::generateSwitchSquareHalf() {
-  Image* mImage = makeSwitchSquareImage();
-  int mInnerSquare = (int) (RESOLUTION * 0.3);
-  int mHalfSquare = (int) (RESOLUTION * 0.5);
-  mImage->drawTriangle(cGridColour, RESOLUTION - mInnerSquare, mInnerSquare
-                                                 , RESOLUTION - mInnerSquare, mHalfSquare
-                                                 , mHalfSquare, mInnerSquare);
-  return convertToTexture(mImage, SWITCH_SQUARE_ONE);
-}
-
-GLuint C64SpindizzyTextureSet::generateSwitchSquareBoth() {
-  Image* mImage = makeSwitchSquareImage();
-  int mInnerSquare = (int) (RESOLUTION * 0.3);
-  int mHalfSquare = (int) (RESOLUTION * 0.5);
-  mImage->drawTriangle(cGridColour, mInnerSquare, RESOLUTION - mInnerSquare
-                                                 , mInnerSquare, mHalfSquare
-                                                 , mHalfSquare, RESOLUTION - mInnerSquare);
-  mImage->drawTriangle(cGridColour, RESOLUTION - mInnerSquare, mInnerSquare
-                                                 , RESOLUTION - mInnerSquare, mHalfSquare
-                                                 , mHalfSquare, mInnerSquare);
-  return convertToTexture(mImage, SWITCH_SQUARE_BOTH);
-}
-
-Image* C64SpindizzyTextureSet::makeSwitchDiamondImage() {
-  Image* mImage = makeTileImage();
-  int mOuterSquare = (int) (RESOLUTION * 0.175);
-  int mInnerSquare = (int) (RESOLUTION * 0.3);
-  mImage->drawSquare(cWallColour, mOuterSquare, RESOLUTION - mOuterSquare, mOuterSquare, RESOLUTION - mOuterSquare);
-  mImage->drawSquare(cFloorColour, mInnerSquare, RESOLUTION - mInnerSquare, mInnerSquare, RESOLUTION - mInnerSquare);
-  mImage->drawDiamond(cGridColour, mOuterSquare);
-  mImage->drawDiamond(cFloorColour, mInnerSquare);
-  return mImage;
-}
-
-GLuint C64SpindizzyTextureSet::generateSwitchDiamond() {
-  Image* mImage = makeSwitchDiamondImage();
-  return convertToTexture(mImage, SWITCH_DIAMOND_NONE);
-}
-
-
-GLuint C64SpindizzyTextureSet::generateSwitchDiamondHalf() {
-  Image* mImage = makeSwitchDiamondImage();
-  int mOuterSquare = (int) (RESOLUTION * 0.175);
-  int mInnerSquare = (int) (RESOLUTION * 0.3);
-  mImage->drawSquare(cWallColour, mOuterSquare, mInnerSquare, mOuterSquare, RESOLUTION - mOuterSquare);
-  mImage->drawSquare(cWallColour, mOuterSquare, RESOLUTION - mOuterSquare, RESOLUTION - mInnerSquare, RESOLUTION - mOuterSquare);
-  return convertToTexture(mImage, SWITCH_DIAMOND_ONE);
-}
-
-GLuint C64SpindizzyTextureSet::generateSwitchDiamondBoth() {
-  Image* mImage = makeSwitchDiamondImage();
-  int mOuterSquare = (int) (RESOLUTION * 0.175);
-  int mInnerSquare = (int) (RESOLUTION * 0.3);
-  mImage->drawSquare(cWallColour, mOuterSquare, RESOLUTION - mOuterSquare, mOuterSquare, mInnerSquare);
-  mImage->drawSquare(cWallColour, RESOLUTION - mInnerSquare, RESOLUTION - mOuterSquare, mOuterSquare, RESOLUTION - mOuterSquare);
-  mImage->drawSquare(cWallColour, mOuterSquare, mInnerSquare, mOuterSquare, RESOLUTION - mOuterSquare);
-  mImage->drawSquare(cWallColour, mOuterSquare, RESOLUTION - mOuterSquare, RESOLUTION - mInnerSquare, RESOLUTION - mOuterSquare);
-  return convertToTexture(mImage, SWITCH_DIAMOND_BOTH);
-}
-
-GLuint C64SpindizzyTextureSet::generateSwitchCircle() {
-  Image* mImage = makeTileImage();
-  int mOuterCircle = (int) (RESOLUTION * 0.33);
-  int mInnerCircle = (int) (RESOLUTION * 0.24);
-  mImage->drawCircle(cGridColour, mOuterCircle);
-  mImage->drawCircle(cFloorColour, mInnerCircle);
-  return convertToTexture(mImage, SWITCH_CIRCLE_NONE);
-}
-
-GLuint C64SpindizzyTextureSet::generateSwitchCircleBoth() {
-  Image* mImage = makeTileImage();
-  int mOuterCircle = (int) (RESOLUTION * 0.33);
-  int mInnerCircle = (int) (RESOLUTION * 0.24);
-  mImage->drawCircle(cGridColour, mOuterCircle);
-  mImage->drawCircle(cWallColour, mInnerCircle);
-  return convertToTexture(mImage, SWITCH_CIRCLE_BOTH);
-}
-
-GLuint C64SpindizzyTextureSet::generateSwitchCircleHalf() {
-  Image* mImage = makeTileImage();
-  int mOuterCircle = (int) (RESOLUTION * 0.33);
-  int mInnerCircle = (int) (RESOLUTION * 0.24);
-  mImage->drawCircle(cGridColour, mOuterCircle);
-  mImage->drawCircle(cWallColour, mInnerCircle);
-  mImage->drawSemiCircle(cFloorColour, mInnerCircle);
-  return convertToTexture(mImage, SWITCH_CIRCLE_ONE);
-}
-
-GLuint C64SpindizzyTextureSet::generateArrow() {
-  Image* mImage = makeTileImage();
-  int mInnerPoint = (int) (RESOLUTION * 0.40);
-  int mOuterPoint = (int) (RESOLUTION * 0.15);
-  int mHalfSquare = (int) (RESOLUTION * 0.5);
-  mImage->drawSquare(cWallColour, mOuterPoint, mHalfSquare, mInnerPoint, RESOLUTION - mInnerPoint);
-  mImage->drawTriangle(cWallColour, mHalfSquare, mOuterPoint, RESOLUTION - mOuterPoint, mHalfSquare, mHalfSquare, RESOLUTION - mOuterPoint);
-  return convertToTexture(mImage, ARROW);
-}
-
-GLuint C64SpindizzyTextureSet::generateWallPlainMiddle() {
-  Colour mGridColour(cGridColour, 0.70f);
-  int mHeight = RESOLUTION / 2;
-  Image* mImage = new Image(RESOLUTION, mHeight, false);
-  mImage->drawSquare(&mGridColour, 0, RESOLUTION, 0, mHeight);
-  mImage->drawSquare(cWallColour, GRID_WIDTH, RESOLUTION - GRID_WIDTH, 0, mHeight);
-  return convertToTexture(mImage, WALL_PLAIN_MIDDLE);
-}
-
-GLuint C64SpindizzyTextureSet::generateWallMixedMiddle() {
-  Colour mGridColour(cGridColour, 0.85f);
-  Colour mWallFloorMix(cFloorColour, cWallColour);
-  int mHeight = RESOLUTION / 2;
-  Image* mImage = new Image(RESOLUTION, mHeight, false);
-  mImage->drawSquare(&mGridColour, 0, RESOLUTION, 0, mHeight);
-  mImage->drawSquare(&mWallFloorMix, GRID_WIDTH, RESOLUTION - GRID_WIDTH, 0, mHeight);
-  return convertToTexture(mImage, WALL_MIXED_MIDDLE);
-}
-
-GLuint C64SpindizzyTextureSet::generateWallPlainCap() {
-  Colour mGridColour(cGridColour, 0.70f);
-  int mHeight = RESOLUTION / 4;
-  Image* mImage = new Image(RESOLUTION, mHeight, false);
-  mImage->drawSquare(&mGridColour, 0, RESOLUTION, 0, mHeight);
-  mImage->drawSquare(cWallColour, GRID_WIDTH, RESOLUTION - GRID_WIDTH, GRID_WIDTH, mHeight);
-  return convertToTexture(mImage, WALL_PLAIN_CAP, true);
-}
-
-GLuint C64SpindizzyTextureSet::generateWallMixedCap() {
-  Colour mGridColour(cGridColour, 0.85f);
-  Colour mWallFloorMix(cFloorColour, cWallColour);
-  int mHeight = RESOLUTION / 4;
-  Image* mImage = new Image(RESOLUTION, mHeight, false);
-  mImage->drawSquare(&mGridColour, 0, RESOLUTION, 0, mHeight);
-  mImage->drawSquare(&mWallFloorMix, GRID_WIDTH, RESOLUTION - GRID_WIDTH, GRID_WIDTH, mHeight);
-  return convertToTexture(mImage, WALL_MIXED_CAP, true);
-}
-
-GLuint C64SpindizzyTextureSet::generateIceWall() {
-  Image* mImage = makePlainImage(cGridColour);
-  int mIceWidth = (int) (RESOLUTION * 0.1);
-  mImage->drawTriangle(cBackgroundColour, 0, RESOLUTION, RESOLUTION, RESOLUTION, mIceWidth, RESOLUTION - mIceWidth);
-  mImage->drawTriangle(cBackgroundColour, mIceWidth, RESOLUTION - mIceWidth, RESOLUTION, RESOLUTION, RESOLUTION - mIceWidth, RESOLUTION - mIceWidth);
-  return convertToTexture(mImage, WALL_ICE);
-}
-
-GLuint C64SpindizzyTextureSet::convertToTexture(Image* image, const std::string& type, bool cap) {
-  std::map<std::string, GLuint>::iterator i = cTextureIDs.find(type);
-  GLuint mTextureID;
-  if (i == cTextureIDs.end()) {
-    mTextureID = image->generateTexture(false, cap);
-    cTextureIDs[type] = mTextureID;
-  } else {
-    mTextureID = i->second;
-    image->generateTexture(mTextureID, false, cap);
+void C64SpindizzyTextureSet::renderCircle(float radius, IColour* colour) {
+  glBegin(GL_TRIANGLE_FAN);
+  colour->set();
+  glVertex2f(0.0f, 0.0f);
+  float mStartAngle = 0.0f * (M_PI / 180.0f);
+  float mEndAngle = 360.0f * (M_PI / 180.0f);
+  for (float angle = mEndAngle; angle >= mStartAngle; angle -= CIRCLE_RESOLUTION) {
+    glVertex2f(sin(angle) * radius, cos(angle) * radius);
   }
-  delete image;
-  return mTextureID;
+  glEnd();
+}
+
+void C64SpindizzyTextureSet::renderRectangle(float xs, float ys, float xe, float ye, IColour* colour) {
+  colour->set();
+  glBegin(GL_QUADS);
+  glVertex2f(xe, ys);
+  glVertex2f(xe, ye);
+  glVertex2f(xs, ye);
+  glVertex2f(xs, ys);
+  glEnd();
+}
+
+void C64SpindizzyTextureSet::renderTile(IColour* colour) {
+  clear(cGridColour);
+  renderSquare(TILE_SIZE, colour);
+}
+
+void C64SpindizzyTextureSet::renderIce() {
+  return clear(cGridColour);
+}
+
+void C64SpindizzyTextureSet::renderPlain() {
+  renderTile(cFloorColour);
+}
+
+void C64SpindizzyTextureSet::renderSplitPlain() {
+  clear(cGridColour);
+  glBegin(GL_TRIANGLES);
+  float mInnerTileSize = TILE_SIZE - (1.0f - TILE_SIZE);
+  glVertex2f(-TILE_SIZE,      -TILE_SIZE);
+  glVertex2f( mInnerTileSize, -TILE_SIZE);
+  glVertex2f(-TILE_SIZE,       mInnerTileSize);
+  glVertex2f( TILE_SIZE,       TILE_SIZE);
+  glVertex2f(-mInnerTileSize,  TILE_SIZE);
+  glVertex2f( TILE_SIZE,      -mInnerTileSize);
+  glEnd();
+}
+
+void C64SpindizzyTextureSet::renderTrampoline() {
+  renderTile(cBackgroundColour);
+  renderSquare(TILE_SIZE - (1.0f - TILE_SIZE), cWallColour);
+}
+
+void C64SpindizzyTextureSet::renderSwitchSquare() {
+  renderTile(cFloorColour);
+  renderSquare(SWITCH_SQUARE_OUTER, cWallColour);
+  renderSquare(SWITCH_SQUARE_INNER, cFloorColour);
+}
+
+void C64SpindizzyTextureSet::renderSwitchSquareHalf() {
+  renderSwitchSquare();
+  glBegin(GL_TRIANGLES);
+  cGridColour->set();
+  glVertex2f(SWITCH_SQUARE_INNER,          -SWITCH_SQUARE_INNER);
+  glVertex2f(SWITCH_SQUARE_INNER,          -SWITCH_SQUARE_TRIANGLE_INNER);
+  glVertex2f(SWITCH_SQUARE_TRIANGLE_INNER, -SWITCH_SQUARE_INNER);
+  glEnd();
+}
+
+void C64SpindizzyTextureSet::renderSwitchSquareBoth() {
+  renderSwitchSquareHalf();
+  glBegin(GL_TRIANGLES);
+  cGridColour->set();
+  glVertex2f(-SWITCH_SQUARE_INNER,          SWITCH_SQUARE_INNER);
+  glVertex2f(-SWITCH_SQUARE_INNER,          SWITCH_SQUARE_TRIANGLE_INNER);
+  glVertex2f(-SWITCH_SQUARE_TRIANGLE_INNER, SWITCH_SQUARE_INNER);
+  glEnd();
+}
+
+void C64SpindizzyTextureSet::renderSwitchDiamond() {
+  renderTile(cFloorColour);
+  renderSquare(SWITCH_DIAMOND_OUTER, cWallColour);
+  renderSquare(SWITCH_DIAMOND_INNER, cFloorColour);
+  renderDiamond(SWITCH_DIAMOND_OUTER, cGridColour);
+  renderDiamond(SWITCH_DIAMOND_INNER, cFloorColour);
+}
+
+void C64SpindizzyTextureSet::renderSwitchDiamondHalf() {
+  renderSwitchDiamond();
+  renderRectangle( SWITCH_DIAMOND_INNER, -SWITCH_DIAMOND_OUTER, SWITCH_DIAMOND_OUTER,  SWITCH_DIAMOND_OUTER, cWallColour);
+  renderRectangle(-SWITCH_DIAMOND_OUTER, -SWITCH_DIAMOND_OUTER,  SWITCH_DIAMOND_OUTER, -SWITCH_DIAMOND_INNER, cWallColour);
+}
+
+void C64SpindizzyTextureSet::renderSwitchDiamondBoth() {
+  renderSwitchDiamondHalf();
+  renderRectangle(-SWITCH_DIAMOND_OUTER, -SWITCH_DIAMOND_OUTER, -SWITCH_DIAMOND_INNER,  SWITCH_DIAMOND_OUTER, cWallColour);
+  renderRectangle(-SWITCH_DIAMOND_OUTER,  SWITCH_DIAMOND_INNER, SWITCH_DIAMOND_OUTER,  SWITCH_DIAMOND_OUTER, cWallColour);
+}
+
+void C64SpindizzyTextureSet::renderSwitchCircle() {
+  renderTile(cFloorColour);
+  renderCircle(SWITCH_CIRCLE_OUTER, cGridColour);
+  renderCircle(SWITCH_CIRCLE_INNER, cFloorColour);
+}
+
+void C64SpindizzyTextureSet::renderSwitchCircleBoth() {
+  renderTile(cFloorColour);
+  renderCircle(SWITCH_CIRCLE_OUTER, cGridColour);
+  renderCircle(SWITCH_CIRCLE_INNER, cWallColour);
+}
+
+void C64SpindizzyTextureSet::renderSwitchCircleHalf() {
+  renderSwitchCircle();
+  glBegin(GL_TRIANGLE_FAN);
+  cWallColour->set();
+  glVertex2f(0.0f, 0.0f);
+  float mStartAngle = 45.0f * (M_PI / 180.0f);
+  float mEndAngle = 225.0f * (M_PI / 180.0f);
+  for (float angle = mEndAngle; angle >= mStartAngle; angle -= CIRCLE_RESOLUTION) {
+    glVertex2f(sin(angle) * SWITCH_CIRCLE_INNER, cos(angle) * SWITCH_CIRCLE_INNER);
+  }
+  glEnd();
+}
+
+void C64SpindizzyTextureSet::renderArrow() {
+  renderTile(cFloorColour);
+  renderRectangle(-ARROW_LINE_WIDTH, -ARROW_SIZE, ARROW_LINE_WIDTH, 0.0f, cWallColour);
+  glBegin(GL_TRIANGLES);
+  cWallColour->set();
+  glVertex2f(-ARROW_SIZE, 0.0f);
+  glVertex2f( ARROW_SIZE, 0.0f);
+  glVertex2f( 0.0f,       ARROW_SIZE);
+  glEnd();
+}
+
+void C64SpindizzyTextureSet::renderWallPlainMiddle() {
+  Colour mGridColour(cGridColour, 1.0f + getGridWallLuminanceAdjustment());
+  clear(&mGridColour);
+  renderRectangle(-TILE_SIZE, -1.0f, TILE_SIZE, 1.0f, cWallColour);
+}
+
+void C64SpindizzyTextureSet::renderWallMixedMiddle() {
+  Colour mGridColour(cGridColour, 1.0f + getGridWallLuminanceAdjustment() / 2.0f);
+  Colour mWallFloorMix(cFloorColour, cWallColour);
+  clear(&mGridColour);
+  renderRectangle(-TILE_SIZE, -1.0f, TILE_SIZE, 1.0f, &mWallFloorMix);
+}
+
+void C64SpindizzyTextureSet::renderWallPlainCap() {
+  Colour mGridColour(cGridColour, 1.0f + getGridWallLuminanceAdjustment());
+  Colour mWallFloorMix(cFloorColour, cWallColour);
+  clear(&mGridColour);
+  renderRectangle(-TILE_SIZE, -TILE_SIZE / 2.0f, TILE_SIZE, 1.0f, cWallColour);
+}
+
+void C64SpindizzyTextureSet::renderWallMixedCap() {
+  Colour mGridColour(cGridColour, 1.0f + getGridWallLuminanceAdjustment() / 2.0f);
+  Colour mWallFloorMix(cFloorColour, cWallColour);
+  clear(&mGridColour);
+  renderRectangle(-TILE_SIZE, -TILE_SIZE / 2.0f, TILE_SIZE, 1.0f, &mWallFloorMix);
+}
+
+void C64SpindizzyTextureSet::renderIceWall() {
+  clear(cGridColour);
+  glBegin(GL_QUADS);
+  cBackgroundColour->set();
+  glVertex2f(-1.0f,           1.0f);
+  glVertex2f(-ICE_EDGE_WIDTH, ICE_EDGE_WIDTH - (1.0f - ICE_EDGE_WIDTH));
+  glVertex2f( ICE_EDGE_WIDTH, ICE_EDGE_WIDTH - (1.0f - ICE_EDGE_WIDTH));
+  glVertex2f( 1.0f,           1.0f);
+  glEnd();
 }
 
 void C64SpindizzyTextureSet::generateTextures() {
-  
-  // TODO: Clean-up old ones
-  cTextures[SWITCH_CIRCLE_BOTH]->setTexture(generateSwitchCircleBoth());
-  cTextures[SWITCH_CIRCLE_ONE]->setTexture(generateSwitchCircleHalf());
-  cTextures[SWITCH_CIRCLE_NONE]->setTexture(generateSwitchCircle());
-  cTextures[SWITCH_SQUARE_BOTH]->setTexture(generateSwitchSquareBoth());
-  cTextures[SWITCH_SQUARE_ONE]->setTexture(generateSwitchSquareHalf());
-  cTextures[SWITCH_SQUARE_NONE]->setTexture(generateSwitchSquare());
-  cTextures[SWITCH_DIAMOND_BOTH]->setTexture(generateSwitchDiamondBoth());
-  cTextures[SWITCH_DIAMOND_ONE]->setTexture(generateSwitchDiamondHalf());
-  cTextures[SWITCH_DIAMOND_NONE]->setTexture(generateSwitchDiamond());
-  cTextures[ARROW]->setTexture(generateArrow());
-  cTextures[TRAMPOLINE]->setTexture(generateTrampoline());
-  cTextures[ICE_WATER]->setTexture(generateIce());
-  cTextures[PLAIN]->setTexture(generatePlain());
-  cTextures[PLAIN_SPLIT]->setTexture(generateSplitPlain());
-  cTextures[WALL_MIXED_CAP]->setTexture(generateWallMixedCap());
-  cTextures[WALL_MIXED_MIDDLE]->setTexture(generateWallMixedMiddle());
-  cTextures[WALL_PLAIN_CAP]->setTexture(generateWallPlainCap());
-  cTextures[WALL_PLAIN_MIDDLE]->setTexture(generateWallPlainMiddle());
-  cTextures[WALL_ICE]->setTexture(generateIceWall());
+//   GLuint mFramebufferObject;
+//   glGenFramebuffersEXT(1, &mFramebufferObject);
+//   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, mFramebufferObject);
+
+  glPushAttrib(GL_TRANSFORM_BIT);
+  glMatrixMode(GL_PROJECTION);
+  glPushMatrix();
+  glLoadIdentity();
+  glPopAttrib();
+
+  cTextures[SWITCH_CIRCLE_BOTH]->setRenderTarget();  renderSwitchCircleBoth();
+  cTextures[SWITCH_CIRCLE_ONE]->setRenderTarget();   renderSwitchCircleHalf();
+  cTextures[SWITCH_CIRCLE_NONE]->setRenderTarget();  renderSwitchCircle();
+  cTextures[SWITCH_SQUARE_BOTH]->setRenderTarget();  renderSwitchSquareBoth();
+  cTextures[SWITCH_SQUARE_ONE]->setRenderTarget();   renderSwitchSquareHalf();
+  cTextures[SWITCH_SQUARE_NONE]->setRenderTarget();  renderSwitchSquare();
+  cTextures[SWITCH_DIAMOND_BOTH]->setRenderTarget(); renderSwitchDiamondBoth();
+  cTextures[SWITCH_DIAMOND_ONE]->setRenderTarget();  renderSwitchDiamondHalf();
+  cTextures[SWITCH_DIAMOND_NONE]->setRenderTarget(); renderSwitchDiamond();
+  cTextures[ARROW]->setRenderTarget();               renderArrow();
+  cTextures[TRAMPOLINE]->setRenderTarget();          renderTrampoline();
+  cTextures[ICE_WATER]->setRenderTarget();           renderIce();
+  cTextures[PLAIN]->setRenderTarget();               renderPlain();
+  cTextures[PLAIN_SPLIT]->setRenderTarget();         renderSplitPlain();
+  cTextures[WALL_MIXED_CAP]->setRenderTarget();      renderWallMixedCap();
+  cTextures[WALL_MIXED_MIDDLE]->setRenderTarget();   renderWallMixedMiddle();
+  cTextures[WALL_PLAIN_CAP]->setRenderTarget();      renderWallPlainCap();
+  cTextures[WALL_PLAIN_MIDDLE]->setRenderTarget();   renderWallPlainMiddle();
+  cTextures[WALL_ICE]->setRenderTarget();            renderIceWall();
+
+  glPushAttrib(GL_TRANSFORM_BIT);
+  glMatrixMode(GL_PROJECTION);
+  glPopMatrix();
+  glPopAttrib();
 
   cBackgroundTexture->setTexture(cBackgroundColour);
+  glViewport(0, 0, 1024, 768);
+  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+  glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0);
 }
 
 void C64SpindizzyTextureSet::destroyTextures() {
-  for (std::map<std::string, C64SpindizzyTexture*>::iterator i = cTextures.begin(); i != cTextures.end(); i++) {
+  for (std::map<std::string, Texture*>::iterator i = cTextures.begin(); i != cTextures.end(); i++) {
     delete i->second;
   }
   delete cBackgroundTexture;
@@ -320,8 +347,8 @@ void C64SpindizzyTextureSet::destroyTextures() {
   cTextureIDs.clear();
 }
 
-void C64SpindizzyTextureSet::paletteChanged(IPalette* palette, const std::string& name) {
-//  if (name == cBackgroundColourName || name == cFloorColourName || name == cGridColourName || name == cWallColourName) {
+void C64SpindizzyTextureSet::paletteChanged(IPalette*, const std::string&) {
+//  if (colour == cBackgroundColour || colour == cFloorColour || colour == cGridColour || colour == cWallColour) {
     generateTextures();
 //  }
 }

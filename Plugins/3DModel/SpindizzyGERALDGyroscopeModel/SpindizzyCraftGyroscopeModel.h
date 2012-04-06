@@ -21,27 +21,26 @@
 
 #include <cmath>
 #include <iostream>
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <map>
 
 #include <IsoRealms/Colour.h>
 #include <IsoRealms/I3DModel.h>
 #include <IsoRealms/IsoRealmsConstants.h>
-#include <IsoRealms/Image.h>
+#include <IsoRealms/Texture.h>
 #include <IsoRealms/Vertex.h>
 
 class SpindizzyCraftGyroscopeModel:public I3DModel {
   private:
   Vertex* cLocation;
 
-  enum TextureID {
-    TEXTURE_DISC
-  };
-
+  static const float CIRCLE_RESOLUTION;
   static unsigned int cInstanceCount;
-  static std::map<TextureID, GLuint> cTextures;
+  static Texture* cTexture;
 
-  GLuint generateTextureDisc();
+  void generateTextureDisc();
+  void renderCircle(float, float, float, IColour*);
+  void renderCircle(float, float, IColour*);
 
   public:
   SpindizzyCraftGyroscopeModel(Vertex*);

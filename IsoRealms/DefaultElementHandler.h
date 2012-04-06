@@ -19,7 +19,7 @@
 #ifndef DEFAULT_ELEMENT_HANDLER_H
 #define DEFAULT_ELEMENT_HANDLER_H
 
-#include <GL/gl.h>
+#include <GL/glew.h>
 
 #include "IDynamicElement.h"
 #include "IElement.h"

@@ -17,7 +17,6 @@
 include_directories(${PROJECT_SOURCE_DIR})
 
 add_library(TextureSet_C64SpindizzyTextureSet MODULE 
-  C64SpindizzyTexture.cpp
   C64SpindizzyTextureSet.cpp
   PlainColourTexture.cpp
 )

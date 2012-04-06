@@ -14,8 +14,6 @@ class ThemeTexture:public ITexture {
    * Implements ITexture *
   \***********************/
   void set();
-  void texCoord2f(float, float);
-  IColour* getColour(float, float);
   void save(DOMNodeWriter*, const std::string&);
 };
 

@@ -24,8 +24,6 @@
 class ITexture {
   public:
   virtual void set() = 0;
-  virtual void texCoord2f(float, float) = 0;
-  virtual IColour* getColour(float, float) = 0;
   virtual void save(DOMNodeWriter*, const std::string&) = 0;
   virtual ~ITexture() {}
 };

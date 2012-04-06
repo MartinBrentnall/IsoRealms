@@ -36,6 +36,14 @@ int ColourProxy::getIntAlpha() const {
   return cColour->getIntAlpha();
 }
 
+float ColourProxy::luminance() {
+  return cColour->luminance();
+}
+
+void ColourProxy::set() {
+  cColour->set();
+}
+
 void ColourProxy::save(DOMNodeWriter* node, const std::string& name) {
   cColour->save(node, name);
 }

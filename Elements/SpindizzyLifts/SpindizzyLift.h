@@ -20,7 +20,7 @@
 #define SPINDIZZY_LIFT_H
 
 #include <cmath>
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <iomanip>
 
 #include <IsoRealms/BlockLocation.h>

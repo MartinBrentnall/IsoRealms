@@ -19,7 +19,7 @@
 #ifndef DIALOG_H
 #define DIALOG_H
 
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <map>
 #include <SDL/SDL.h>
 #include <vector>
