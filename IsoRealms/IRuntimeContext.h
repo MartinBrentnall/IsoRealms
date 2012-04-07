@@ -19,12 +19,16 @@
 #ifndef I_RUNTIME_CONTEXT_H
 #define I_RUNTIME_CONTEXT_H
 
+#include <luabind/luabind.hpp>
 #include <string>
 
+#include "Configuration.h"
 #include "DOMNodeWrapper.h"
 #include "I3DModel.h"
 #include "I3DModelFactory.h"
 #include "IColour.h"
+#include "IInteger.h"
+#include "ILuaScript.h"
 #include "ITexture.h"
 #include "Script.h"
 #include "Vertex.h"
@@ -40,7 +44,10 @@ class IRuntimeContext {
   virtual void add(IColour*, const std::string&) = 0;
   virtual void add(ITexture*, const std::string&) = 0;
   virtual void add(I3DModelFactory*, const std::string&) = 0;
+  virtual void add(ISound*, const std::string&) = 0;
+  virtual void add(IInteger*, const std::string&) = 0;
   virtual void remove(ICommand*) = 0;
+  virtual ILuaScript* getLuaScript(const std::string&) = 0;
   virtual Script* getScript(DOMNodeWrapper*) = 0;
   virtual IColour* getColour(DOMNodeWrapper*) = 0;
   virtual ITexture* getTexture(DOMNodeWrapper*) = 0;

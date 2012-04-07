@@ -20,35 +20,20 @@
 
 TimeLimit::TimeLimit(IRuntimeContext* runtimeContext) {
   cRuntimeContext = runtimeContext;
-  assignDummyPlugin(&cIntegerValue, "IntegerValue");
+  cRuntimeContext->add(this, "Value");
   assignDummyPlugin(&cStringProcessor, "StringProcessor");
   cMilliseconds = 180000;
-  cMaximumMilliseconds = 180000;
-  cValuePerSecond = 100;
   cLocks = 0;
   cRuntimeContext->add(new LockControlCommand(this, true), "AddLock");
   cRuntimeContext->add(new LockControlCommand(this, false), "RemoveLock");
 }
 
-IIntegerValue& TimeLimit::operator+=(const int& value) {
-  cMilliseconds += value;
-  if (cMilliseconds > cMaximumMilliseconds) {
-    int mExcessMilliseconds = cMilliseconds - cMaximumMilliseconds;
-    int mExcessValue = (mExcessMilliseconds * 0.001f) * cValuePerSecond;
-    (*cIntegerValue) += mExcessValue;
-    cMilliseconds = cMaximumMilliseconds;
-  } else if (cMilliseconds < 0) {
-    cMilliseconds = 0;
-  }
-  return *this;
+void TimeLimit::setValue(int value) {
+  cMilliseconds = value;  
 }
 
-void TimeLimit::addIntegerValueListener(IIntegerValueListener*) {
-  // Nothing to do.  Listeners not supported.
-}
-
-void TimeLimit::removeIntegerValueListener(IIntegerValueListener*) {
-  // Nothing to do.  Listeners not supported.
+int TimeLimit::getValue() {
+  return cMilliseconds;
 }
 
 std::vector<IDynamicElement*> TimeLimit::getPreLoopCommands() {
@@ -79,16 +64,13 @@ void TimeLimit::update(int milliseconds) {
 }
 
 void TimeLimit::setPlugin(PlugSocket* socket, IPlugin* plugin) {
-  if (socket->getType() == "IntegerValue") {
-    assignPlugin(plugin, &cIntegerValue, *socket);
-  } else if (socket->getType() == "StringProcessor") {
+  if (socket->getType() == "StringProcessor") {
     assignPlugin(plugin, &cStringProcessor, *socket);
     cStringProcessor->registerString(&cText);
   }
 }
 
 IPlugin* TimeLimit::getPlugin(PlugSocket* socket) {
-  if (socket->getType() == "IntegerValue")    {return cIntegerValue;}
   if (socket->getType() == "StringProcessor") {return cStringProcessor;}
   // TODO: Throw
   return NULL;

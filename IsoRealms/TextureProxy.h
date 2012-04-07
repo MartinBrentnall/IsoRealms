@@ -3,7 +3,6 @@
 
 #include <GL/glew.h>
 
-#include "Colour.h"
 #include "ITexture.h"
 
 class TextureProxy:public ITexture {

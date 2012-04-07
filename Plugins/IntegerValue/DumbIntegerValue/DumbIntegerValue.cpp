@@ -18,34 +18,18 @@
  */
 #include "DumbIntegerValue.h"
 
-DumbIntegerValue::DumbIntegerValue() {
+DumbIntegerValue::DumbIntegerValue(IRuntimeContext* runtimeContext) {
+  runtimeContext->add(this, "Value");
   assignDummyPlugin(&cStringProcessor, "StringProcessor");
   cValue = 0;
 }
 
-IIntegerValue& DumbIntegerValue::operator+=(const int& value) {
-  cValue += value;
-  for (unsigned int i = 0; i < cListeners.size(); i++) {
-    cListeners[i]->valueChanged(cValue);
-  }
-  std::stringstream mStringStream;
-  mStringStream << cValue;
-  cText = mStringStream.str();
-  std::cout << "Added " << value << " to score!" << std::endl;
-  return *this;
+void DumbIntegerValue::setValue(int value) {
+  cValue = value;
 }
 
-void DumbIntegerValue::addIntegerValueListener(IIntegerValueListener* listener) {
-  cListeners.push_back(listener);
-}
-
-void DumbIntegerValue::removeIntegerValueListener(IIntegerValueListener* listener) {
-  for (unsigned int i = 0; i < cListeners.size(); i++) {
-    if (cListeners[i] == listener) {
-      cListeners.erase(cListeners.begin() + i);
-      return;
-    }
-  }
+int DumbIntegerValue::getValue() {
+  return cValue;
 }
 
 void DumbIntegerValue::setPlugin(PlugSocket* socket, IPlugin* plugin) {
@@ -61,8 +45,8 @@ IPlugin* DumbIntegerValue::getPlugin(PlugSocket* socket) {
   return NULL;
 }
 
-extern "C" IPlugin* create() {
-  return new DumbIntegerValue();
+extern "C" IPlugin* create(IRuntimeContext* runtimeContext) {
+  return new DumbIntegerValue(runtimeContext);
 }
 
 extern "C" void destroy(IPlugin* plugin) {

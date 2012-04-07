@@ -19,6 +19,12 @@
 #include "Main.h"
 
 int main(int argc, char **argv) {
+/*
+    module(L)
+    [
+        def("greet", &greet)
+    ];*/
+
   // Initialise SDL
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK) < 0) {
     std::cout << "ERROR: " << std::endl << SDL_GetError() << std::endl;

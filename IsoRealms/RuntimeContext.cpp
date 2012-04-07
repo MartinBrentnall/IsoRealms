@@ -53,9 +53,21 @@ void RuntimeContext::add(I3DModelFactory* modelFactory, const std::string& name)
   cResources->add(modelFactory, cEntityPath, name);
 }
 
+void RuntimeContext::add(ISound* sound, const std::string& name) {
+  cResources->add(sound, cEntityPath, name);
+}
+
+void RuntimeContext::add(IInteger* value, const std::string& name) {
+  cResources->add(value, cEntityPath, name);
+}
+
 void RuntimeContext::remove(ICommand* command) {
   std::cout << "TODO: Implement \"remove()\" for command resources" << std::endl;
   // getDirectory(cScriptRegistry, cEntityPath)->remove(command);
+}
+
+ILuaScript* RuntimeContext::getLuaScript(const std::string& name) {
+  return cResources->getLuaScript(name);
 }
 
 Script* RuntimeContext::getScript(DOMNodeWrapper* node) {
@@ -76,4 +88,8 @@ I3DModel* RuntimeContext::getModel(DOMNodeWrapper* node, Vertex* location) {
 
 I3DModel* RuntimeContext::getModel(const std::string& name, Vertex* location) {
   return cResources->getModel(name, location);
+}
+
+ISound* RuntimeContext::getSound(DOMNodeWrapper* node) {
+  return cResources->getSound(node);
 }

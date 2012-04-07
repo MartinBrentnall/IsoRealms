@@ -25,6 +25,13 @@ std::string Utils::toString(int number) {
   return mString;
 }
 
+std::string Utils::toString(unsigned int number) {
+  std::stringstream mStringStream;
+  mStringStream << number;
+  std::string mString = mStringStream.str();
+  return mString;
+}
+
 std::string Utils::toString(float number) {
   std::stringstream mStringStream;
   mStringStream << number;

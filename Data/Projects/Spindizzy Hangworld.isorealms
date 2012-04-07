@@ -1,5 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <Project>
+<!--      <Command name="IncreaseTimeForZone" value="8000"/>
+      <Command name="IncreaseScoreForZone" value="400"/>-->
+  <Script name="jewelCollected">
+    <Argument type="Sound" instance="Plugin/SoundSupport/SpindizzySounds/Jewel.ogg" name="sound"/>
+    <Argument type="Integer" instance="Plugin/IntegerValue/SpindizzyScore/Value" name="score"/>
+    <Argument type="Integer" instance="Plugin/IntegerValue/SpindizzyTimeLimit/Value" name="time"/>
+    <Code>  sound:play()
+  score = score + 600
+  time = time + 12000
+  if time > 180000 then
+    local excess = time - 180000
+    local extraScore = excess / 10
+    score = score + extraScore
+    time = 180000
+  end</Code>
+  </Script>
+  <Script name="exploded">
+    <Argument type="Sound" instance="Plugin/SoundSupport/SpindizzySounds/Impact Hard.ogg" name="sound"/>
+    <Code>  sound:play()</Code>
+  </Script>
+  <Script name="respawn">
+    <Argument type="Integer" instance="Plugin/IntegerValue/SpindizzyTimeLimit/Value" name="time"/>
+    <Code>  time = time - 10000
+  if time &lt; 0 then
+    time = 0
+  end</Code>
+  </Script>
   <Plugin implementation="Block" instance="Compass" type="3DModel">
     <Configuration>
       <TopSurfaceTexture name="Plugin/TextureSetChanger/PerZone/Arrow"/>
@@ -1013,10 +1040,6 @@
       </Command>
     </Configuration>
   </Plugin>
-  <Plugin implementation="SoundCommandSupport" instance="SoundCommandWrapper" type="Utilities">
-    <UsePlugin implementation="SoundSupport" instance="SpindizzySounds" socketid=""/>
-    <Configuration/>
-  </Plugin>
   <Plugin implementation="SpindizzySwitches" instance="SpindizzySwitches" type="Utilities">
     <UsePlugin implementation="Camera" instance="CraftCamera" socketid=""/>
     <UsePlugin implementation="HUD" instance="SpindizzyHUD" socketid=""/>
@@ -1189,21 +1212,6 @@
   <Plugin implementation="DefaultZoneContext" instance="PlayerZoneContext" type="ZoneContext">
     <UsePlugin implementation="LocationAwareness" instance="CurrentZoneLocation"/>
     <Configuration/>
-  </Plugin>
-  <Plugin implementation="IntegerValueCommands" instance="TimerCommands" type="Utilities">
-    <UsePlugin implementation="IntegerValue" instance="SpindizzyTimeLimit" socketid=""/>
-    <Configuration>
-      <Command name="IncreaseTimeForJewel" value="12000"/>
-      <Command name="IncreaseTimeForZone" value="8000"/>
-      <Command name="DecreaseTimeForRespawn" value="-10000"/>
-    </Configuration>
-  </Plugin>
-  <Plugin implementation="IntegerValueCommands" instance="ScoreCommands" type="Utilities">
-    <UsePlugin implementation="IntegerValue" instance="SpindizzyScore" socketid=""/>
-    <Configuration>
-      <Command name="IncreaseScoreForJewel" value="600"/>
-      <Command name="IncreaseScoreForZone" value="400"/>
-    </Configuration>
   </Plugin>
   <Plugin implementation="PlayerWithScripts" instance="CameraMapOverviewAnimator" type="SequencePlayer">
     <Configuration length="500">
@@ -1602,11 +1610,7 @@
     <UsePlugin implementation="Collectables" instance="Jewels"/>
     <Configuration>
       <Type name="Jewel" model="Plugin/3DModel/C64JewelModel/Jewel">
-        <JewelCollectedScript>
-          <Command>Plugin/Utilities/SoundCommandWrapper/Play Jewel.ogg</Command>
-          <Command>Plugin/Utilities/TimerCommands/IncreaseTimeForJewel</Command>
-          <Command>Plugin/Utilities/ScoreCommands/IncreaseScoreForJewel</Command>
-        </JewelCollectedScript>
+        <JewelCollectedScript>jewelCollected</JewelCollectedScript>
       </Type>
     </Configuration>
   </ElementSet>
@@ -1639,16 +1643,8 @@
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext"/>
     <Configuration>
       <Type type="Player" model="Plugin/3DModel/Pyramid/Pyramid">
-        <FallLimit height="2.75">
-          <Script>
-            <Command>Plugin/Utilities/SoundCommandWrapper/Play Impact Hard.ogg</Command>
-          </Script>
-        </FallLimit>
-        <Respawn>
-          <Script>
-            <Command>Plugin/Utilities/TimerCommands/DecreaseTimeForRespawn</Command>
-          </Script>
-        </Respawn>
+        <FallLimitScript height="2.75">exploded</FallLimitScript>
+        <RespawnScript>respawn</RespawnScript>
       </Type>
     </Configuration>
   </ElementSet>

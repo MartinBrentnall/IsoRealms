@@ -16,18 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_INTEGER_VALUE_H
-#define I_INTEGER_VALUE_H
+#ifndef I_SOUND_H
+#define I_SOUND_H
 
-#include <IsoRealms/IPlugin.h>
+#include <string>
 
-#include "IIntegerValueListener.h"
-
-class IIntegerValue:public virtual IPlugin {
+class ISound {
   public:
-  virtual IIntegerValue& operator+=(const int&) = 0;
-  virtual void addIntegerValueListener(IIntegerValueListener*) = 0;
-  virtual void removeIntegerValueListener(IIntegerValueListener*) = 0;
+  virtual std::string getName() = 0;
+  virtual void play() = 0;
 };
 
 #endif

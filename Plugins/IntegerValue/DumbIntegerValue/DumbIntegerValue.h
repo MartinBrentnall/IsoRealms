@@ -19,26 +19,25 @@
 #ifndef DUMB_INTEGER_VALUE_H
 #define DUMB_INTEGER_VALUE_H
 
+#include <IsoRealms/IInteger.h>
+
 #include "../../StringProcessor/IStringProcessor.h"
 
-#include "../IIntegerValue.h"
-
-class DumbIntegerValue:public IIntegerValue {
+class DumbIntegerValue:public IPlugin,
+                       public IInteger {
   private:
-  std::vector<IIntegerValueListener*> cListeners;
   int cValue;
   IStringProcessor* cStringProcessor;
   std::string cText;
 
   public:
-  DumbIntegerValue();
+  DumbIntegerValue(IRuntimeContext*);
 
   /****************************\
    * Implements IIntegerValue *
   \****************************/
-  IIntegerValue& operator+=(const int&);
-  void addIntegerValueListener(IIntegerValueListener*);
-  void removeIntegerValueListener(IIntegerValueListener*);
+  void setValue(int);
+  int getValue();
 
   /*****************************\
    * Implements IPluginSupport *

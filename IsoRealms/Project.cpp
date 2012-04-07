@@ -29,6 +29,8 @@ Project::Project(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryLi
       cPluginRegistry.registerPlugin(mNode, this);
     } else if (mValueAsString == "ElementSet") {
       cElementSetRegistry.registerElementSet(mNode, this);
+    } else if (mValueAsString == "Script") {
+      loadScript(mNode);
     } else {
       // TODO: Throw something
     }
@@ -72,12 +74,44 @@ Project::Project(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryLi
   registerListeners();
 }
 
+void Project::loadScript(DOMNodeWrapper* node) {
+  std::string mFunctionName = node->getAttribute("name");
+  LuaScript* mLuaScript = new LuaScript(mFunctionName);
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "Argument") {
+      std::string mType = mNode->getAttribute("type");
+      std::string mArgumentName = mNode->getAttribute("name");
+      if (mType == "Sound") {
+        ISound* mSound = getSound(mNode);
+        ILuaFunctionArgument* mArgument = new LuaArgument<ISound>(mArgumentName, mSound);
+        mLuaScript->addArgument(mArgument);
+      } else if (mType == "Integer") {
+        std::string mPath = mNode->getAttribute("instance");
+        IInteger* mInteger = getInteger(mPath);
+        ILuaFunctionArgument* mArgument = new LuaIntegerArgument(mArgumentName, mInteger);
+        mLuaScript->addArgument(mArgument);
+      }
+    } else if (mValueAsString == "Code") {
+      std::string mCode = mNode->getStringValue();
+      mLuaScript->setCode(mCode);
+    }
+  }
+  mLuaScript->registerScript();
+  cScriptRegistry.add(mLuaScript, mFunctionName);
+}
+
 IProject* Project::getProject() {
   return this;
 }
 
 bool Project::isEditing() {
   return cEditing;
+}
+
+ILuaScript* Project::getLuaScript(const std::string& name) {
+  return cScriptRegistry.get(name);
 }
 
 Script* Project::getScript(DOMNodeWrapper* node) {
@@ -123,6 +157,15 @@ I3DModel* Project::getModel(const std::string& path, Vertex* location) {
   return mModelFactory->createModel(location);
 }
 
+ISound* Project::getSound(DOMNodeWrapper* node) {
+  std::string mSoundPath = node->getAttribute("instance");
+  return cSoundRegistry.get(mSoundPath);
+}
+
+IInteger* Project::getInteger(const std::string& path) {
+  return cIntegerRegistry.get(path);
+}
+
 template <class T> T* Project::getDirectory(T* root, std::vector<std::string> location) {
   T* mCurrent = root;
   for (unsigned int i = 0; i < location.size(); i++) {
@@ -150,6 +193,16 @@ void Project::add(ITexture* texture, std::vector<std::string> path, std::string 
 void Project::add(I3DModelFactory* modelFactory, std::vector<std::string> path, std::string name) {
   Registry<I3DModelFactory, ModelFactoryProxy>* mDirectory = getDirectory(&c3DModelRegistry, path);
   mDirectory->add(modelFactory, name);
+}
+
+void Project::add(ISound* sound, std::vector<std::string> path, std::string name) {
+  Registry<ISound, SoundProxy>* mDirectory = getDirectory(&cSoundRegistry, path);
+  mDirectory->add(sound, name);
+}
+
+void Project::add(IInteger* value, std::vector<std::string> path, std::string name) {
+  Registry<IInteger, IntegerProxy>* mDirectory = getDirectory(&cIntegerRegistry, path);
+  mDirectory->add(value, name);
 }
 
 void Project::registerListeners() {

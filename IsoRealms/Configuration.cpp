@@ -21,6 +21,21 @@
 Configuration* Configuration::cInstance = NULL;
 
 Configuration::Configuration(std::string filename, std::string engineFileName) {
+  cLuaState = luaL_newstate();
+  luabind::open(cLuaState);
+  luaL_openlibs(cLuaState);
+  
+  luabind::module(cLuaState) [
+    luabind::class_<ISound>("Sound")
+       .def("play", &ISound::play) 
+  ];
+  
+  luabind::module(cLuaState) [
+    luabind::class_<IInteger>("Integer")
+       .def("setValue", &IInteger::setValue)
+       .def("getValue", &IInteger::getValue)
+  ];
+      
   cConfigurationFile = engineFileName;
   cSettingsFile = filename;
   cScreenConfiguration = NULL;
@@ -117,6 +132,17 @@ IEngine* Configuration::getEngine() {
   return cEngine;
 }
 
+void Configuration::registerScript(const std::string& script) {
+  luaL_dostring(cLuaState, script.c_str());
+}
+
+void Configuration::executeScript(const std::string& script, std::vector<ILuaFunctionArgument*> arguments) {
+  for (unsigned int i = 0; i < arguments.size(); i++) {
+    std::string mArgFunction = script + "_arg" + Utils::toString(i);
+    arguments[i]->setArgument(cLuaState, mArgFunction);
+  }
+  luabind::call_function<void>(cLuaState, script.c_str());
+}
 
 void Configuration::save() {
   DOMNodeWriter* mConfigurationNode = new DOMNodeWriter("IsoRealmsSettings");

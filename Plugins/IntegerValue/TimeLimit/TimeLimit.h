@@ -23,23 +23,19 @@
 #include <sstream>
 
 #include <IsoRealms/IDynamicElement.h>
+#include <IsoRealms/IInteger.h>
 
 #include "../../StringProcessor/IStringProcessor.h"
 
-#include "../IIntegerValue.h"
-
-class TimeLimit:public IIntegerValue,
+class TimeLimit:public IPlugin,
+                public IInteger,
                 public IDynamicElement {
   private:
   int cMilliseconds;
-  int cMaximumMilliseconds;
-  int cValuePerSecond;
   IRuntimeContext* cRuntimeContext;
-  IIntegerValue* cIntegerValue;
   IStringProcessor* cStringProcessor;
   std::vector<ICommand*> cTimeOutCommands;
   unsigned int cLocks;
-  std::vector<ICommand*> cCommands;
   std::string cText;
 
   class LockControlCommand:public ICommand {
@@ -62,9 +58,8 @@ class TimeLimit:public IIntegerValue,
   /****************************\
    * Implements IIntegerValue *
   \****************************/
-  IIntegerValue& operator+=(const int&);
-  void addIntegerValueListener(IIntegerValueListener*);
-  void removeIntegerValueListener(IIntegerValueListener*);
+  void setValue(int);
+  int getValue();
 
   /**********************\
    * Implements IPlugin *

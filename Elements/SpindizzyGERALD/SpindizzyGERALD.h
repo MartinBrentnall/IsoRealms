@@ -100,8 +100,8 @@ class SpindizzyGERALD:public Element<ISpindizzyGERALDSet, ISpindizzyGERALDFactor
   float cFallLimit;
 
   // Event scripts
-  Script* cFallScript;
-  Script* cFallLimitScript;
+  ILuaScript* cFallScript;
+  ILuaScript* cFallLimitScript;
 
   // Physics
   bool cJumpedFromRamp;
@@ -140,7 +140,7 @@ class SpindizzyGERALD:public Element<ISpindizzyGERALDSet, ISpindizzyGERALDFactor
   void discoverZone(ICollidableWallSurface*);
 
   public:
-  SpindizzyGERALD(ISpindizzyGERALDFactory*, BlockLocation*, const std::string& modelPath, ICollectables*, ICollidableSurfaceRegistry*, ILocationAwareness*, IZoneContext*, ICamera*, float, Script*, Script*, IProject*, IRuntimeContext*);
+  SpindizzyGERALD(ISpindizzyGERALDFactory*, BlockLocation*, const std::string& modelPath, ICollectables*, ICollidableSurfaceRegistry*, ILocationAwareness*, IZoneContext*, ICamera*, float, ILuaScript*, ILuaScript*, IProject*, IRuntimeContext*);
 
   void checkCurrentZoneEvents(Vertex&, Vertex&);
   void checkMapZoneEvents(IZone*, Vertex&, Vertex&);

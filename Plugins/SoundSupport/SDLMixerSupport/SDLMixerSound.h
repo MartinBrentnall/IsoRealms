@@ -23,8 +23,7 @@
 #include <SDL/SDL_mixer.h>
 
 #include <IsoRealms/System.h>
-
-#include "../ISound.h"
+#include <IsoRealms/ISound.h>
 
 class SDLMixerSound:public ISound {
   private:
@@ -34,10 +33,11 @@ class SDLMixerSound:public ISound {
   public:
   SDLMixerSound(const std::string&);
 
+  std::string getName();
+
   /*********************\
    * Implements ISound *
   \*********************/
-  std::string& getName();
   void play();
 };
 

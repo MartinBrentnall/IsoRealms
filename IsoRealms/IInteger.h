@@ -16,20 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef INTEGER_COMMANDS_DIALOG_H
-#define INTEGER_COMMANDS_DIALOG_H
+#ifndef I_INTEGER_H
+#define I_INTEGER_H
 
-#include <IsoRealms/IComponentContainer.h>
-#include <IsoRealms/GUI/ResizableDialog.h>
-
-#include "IIntegerCommandRegistry.h"
-
-class IntegerCommandsDialog:public ResizableDialog {
-  private:
-  IIntegerCommandRegistry* cCommandRegistry;
-
+class IInteger {
   public:
-  IntegerCommandsDialog(IComponentContainer*, IIntegerCommandRegistry*);
+  virtual void setValue(int) = 0;
+  virtual int getValue() = 0;
 };
 
 #endif

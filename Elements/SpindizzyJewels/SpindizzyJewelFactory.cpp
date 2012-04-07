@@ -27,9 +27,9 @@ SpindizzyJewelFactory::SpindizzyJewelFactory(ISpindizzyJewelSet* elementSet, DOM
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "JewelCollectedScript") {
-      cJewelCollectedScript = cRuntimeContext->getScript(mNode);
+      cJewelCollectedScript = cRuntimeContext->getLuaScript(mNode->getStringValue());
     } else if (mValueAsString == "AllJewelsCollectedScript") {
-      cAllJewelsCollectedScript = cRuntimeContext->getScript(mNode);
+      cAllJewelsCollectedScript = cRuntimeContext->getLuaScript(mNode->getStringValue());
     } else {
       // TODO: Throw something!
     }

@@ -19,24 +19,24 @@
 #ifndef SDL_MIXER_SUPPORT_H
 #define SDL_MIXER_SUPPORT_H
 
+#include <luabind/luabind.hpp>
+
 #include <IsoRealms/DefaultCommandInfo.h>
 #include <IsoRealms/OpenDialogCommand.h>
-
-#include "../ISoundSupport.h"
 
 #include "ISoundRegistry.h"
 #include "SoundConfigurationDialog.h"
 
-class SDLMixerSupport:public ISoundSupport,
+class SDLMixerSupport:public IPlugin,
                       public ISoundRegistry,
                       public IComponentSource {
   private:
+  IRuntimeContext* cRuntimeContext;
   std::vector<ISound*> cSounds;
-  std::vector<ISoundSupportListener*> cListeners;
   IComponentContainer* cComponentContainer;
 
   public:
-  SDLMixerSupport();
+  SDLMixerSupport(IRuntimeContext*);
 
   /*****************************\
    * Ipmlements ISoundRegistry *
@@ -48,7 +48,7 @@ class SDLMixerSupport:public ISoundSupport,
    * Implements IPluginSupport *
   \*****************************/
   std::string getName();
-
+  
   /**********************\
    * Implements IPlugin *
   \**********************/
@@ -60,13 +60,13 @@ class SDLMixerSupport:public ISoundSupport,
    * Implements ISoundSupport *
   \****************************/
   std::vector<ISound*> getSounds();
-  void addSoundSupportListener(ISoundSupportListener*);
-  void removeSoundSupportListener(ISoundSupportListener*);
   
   /*******************************\
    * Implements IComponentSource *
   \*******************************/
   IHUDComponent* createComponent();
+  
+  void playSound();
 };
 
 #endif

@@ -17,9 +17,3 @@
 add_subdirectory(SDLMixerSupport)
 
 include_directories(${PROJECT_SOURCE_DIR})
-
-add_library(SoundSupportDummy MODULE 
-  DummySoundSupport.cpp
-)
-set_target_properties(SoundSupportDummy PROPERTIES OUTPUT_NAME "Dummy")
-set_target_properties(SoundSupportDummy PROPERTIES PREFIX "lib")

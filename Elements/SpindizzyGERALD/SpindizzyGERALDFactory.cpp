@@ -21,8 +21,8 @@
 SpindizzyGERALDFactory::SpindizzyGERALDFactory(ISpindizzyGERALDSet* elementSet, ILocationAwareness* locationAwareness, IZoneContext* zoneContext, ICollidableSurfaceRegistry* collidableSurfaceRegistry, ICollectables* collectables, ICamera* camera, DOMNodeWrapper* node, IRuntimeContext* runtimeContext) : ISpindizzyGERALDFactory(elementSet) {
   cRuntimeContext = runtimeContext;
   cProject = cRuntimeContext->getProject();
-  cFallScript = Script::getDummy();
-  cFallLimitScript = Script::getDummy();
+  cFallScript = NULL;
+  cFallLimitScript = NULL;
   cLocationAwareness = locationAwareness;
   cZoneContext = zoneContext;
   cCollidableSurfaceRegistry = collidableSurfaceRegistry;
@@ -37,9 +37,9 @@ SpindizzyGERALDFactory::SpindizzyGERALDFactory(ISpindizzyGERALDSet* elementSet, 
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "FallLimit") {
+    if (mValueAsString == "FallLimitScript") {
       loadFallLimitConfiguration(mNode, runtimeContext);
-    } else if (mValueAsString == "Respawn") {
+    } else if (mValueAsString == "RespawnScript") {
       loadRespawnConfiguration(mNode, runtimeContext);
     }
   }
@@ -149,32 +149,20 @@ void SpindizzyGERALDFactory::renderIcon() {
 }
 
 void SpindizzyGERALDFactory::save(DOMNodeWriter* node) {
-  DOMNodeWriter* mFallLimitNode = node->addBranch("FallLimit");
+  DOMNodeWriter* mFallLimitNode = node->addBranch("FallLimitScript");
   mFallLimitNode->addAttribute("height", cFallLimit);
-  cFallLimitScript->save(mFallLimitNode, "Script");
+//  cFallLimitScript->save(mFallLimitNode, "Script");
   DOMNodeWriter* mRespawnNode = node->addBranch("Respawn");
-  cFallScript->save(mRespawnNode, "Script");
+//  cFallScript->save(mRespawnNode, "Script");
 }
 
 void SpindizzyGERALDFactory::loadFallLimitConfiguration(DOMNodeWrapper* node, IRuntimeContext* runtimeContext) {
   cFallLimit = node->getFloatAttribute("height");
-  for (int i = 0; i < node->getChildCount(); i++) {
-    DOMNodeWrapper *mNode = node->getChild(i);
-    std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "Script") {
-      cFallLimitScript = runtimeContext->getScript(mNode);
-    }
-  }
+  cFallLimitScript = runtimeContext->getLuaScript(node->getStringValue());
 }
 
 void SpindizzyGERALDFactory::loadRespawnConfiguration(DOMNodeWrapper* node, IRuntimeContext* runtimeContext) {
-  for (int i = 0; i < node->getChildCount(); i++) {
-    DOMNodeWrapper *mNode = node->getChild(i);
-    std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "Script") {
-      cFallScript = runtimeContext->getScript(mNode);
-    }
-  }
+  cFallScript = runtimeContext->getLuaScript(node->getStringValue());
 }
 
 void SpindizzyGERALDFactory::stop() {

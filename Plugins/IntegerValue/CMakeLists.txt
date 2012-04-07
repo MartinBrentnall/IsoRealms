@@ -18,9 +18,3 @@ add_subdirectory(DumbIntegerValue)
 add_subdirectory(TimeLimit)
 
 include_directories(${PROJECT_SOURCE_DIR})
-
-add_library(IntegerValueDummy MODULE 
-  DummyIntegerValue.cpp
-)
-set_target_properties(IntegerValueDummy PROPERTIES OUTPUT_NAME "Dummy")
-set_target_properties(IntegerValueDummy PROPERTIES PREFIX "lib")

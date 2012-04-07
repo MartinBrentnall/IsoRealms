@@ -27,7 +27,7 @@ SDLMixerSound::SDLMixerSound(const std::string& filename) {
   }
 }
 
-std::string& SDLMixerSound::getName() {
+std::string SDLMixerSound::getName() {
   return cName;
 }
 

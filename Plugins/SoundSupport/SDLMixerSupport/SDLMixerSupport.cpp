@@ -18,7 +18,8 @@
  */
 #include "SDLMixerSupport.h"
 
-SDLMixerSupport::SDLMixerSupport() {
+SDLMixerSupport::SDLMixerSupport(IRuntimeContext* runtimeContext) {
+  cRuntimeContext = runtimeContext;
   int mAudioRate = 44100;
   Uint16 mAudioFormat = AUDIO_S16SYS;
   int mAudioChannels = 2;
@@ -40,31 +41,14 @@ std::vector<ISound*> SDLMixerSupport::getSounds() {
 
 void SDLMixerSupport::addSound(ISound* sound) {
   cSounds.push_back(sound);
-  for (unsigned int i = 0; i < cListeners.size(); i++) {
-    cListeners[i]->soundAdded(sound);
-  }
+  cRuntimeContext->add(sound, sound->getName());
 }
 
 void SDLMixerSupport::removeSound(ISound* sound) {
   for (unsigned int i = 0; i < cSounds.size(); i++) {
     if (sound == cSounds[i]) {
       cSounds.erase(cSounds.begin() + i);
-      for (unsigned int j = 0; j < cListeners.size(); j++) {
-        cListeners[j]->soundRemoved(sound);
-      }
       delete sound;
-    }
-  }
-}
-
-void SDLMixerSupport::addSoundSupportListener(ISoundSupportListener* listener) {
-  cListeners.push_back(listener);
-}
-
-void SDLMixerSupport::removeSoundSupportListener(ISoundSupportListener* listener) {
-  for (unsigned int i = 0; i < cListeners.size(); i++) {
-    if (cListeners[i] == listener) {
-      cListeners.erase(cListeners.begin() + i);
     }
   }
 }
@@ -101,8 +85,12 @@ IHUDComponent* SDLMixerSupport::createComponent() {
   return new SoundConfigurationDialog(cComponentContainer, this);
 }
 
-extern "C" IPlugin* create() {
-  return new SDLMixerSupport();
+void SDLMixerSupport::playSound() {
+  cSounds[0]->play();
+}
+
+extern "C" IPlugin* create(IRuntimeContext* runtimeContext) {
+  return new SDLMixerSupport(runtimeContext);
 }
 
 extern "C" void destroy(IPlugin* plugin) {

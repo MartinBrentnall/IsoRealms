@@ -30,6 +30,7 @@ class Utils {
    * Convert the specified integer value to a string.
    */
   static std::string toString(int);
+  static std::string toString(unsigned int);
 
   /**
    * Convert the specified float value to a string.

@@ -16,11 +16,9 @@
 # along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
 add_subdirectory(3DModelToHUD)
 add_subdirectory(ExploredZones)
-add_subdirectory(IntegerValueCommands)
 add_subdirectory(HUDRoundedRectangle)
 add_subdirectory(RandomCommand)
 add_subdirectory(SequencePlayerCommands)
-add_subdirectory(SoundCommandSupport)
 add_subdirectory(SpindizzySwitches)
 add_subdirectory(ToggleSwitches)
 add_subdirectory(ZoneContextRenderer)

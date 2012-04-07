@@ -54,10 +54,14 @@ add_library(IsoRealms SHARED
   IPlugin.cpp
   IPluginSupport.cpp
   IllegalStateException.cpp
-  InputCommands.cpp
   InitException.cpp
+  InputCommands.cpp
+  IntegerProxy.cpp
   IsoRealmsConstants.cpp
   KeyStates.cpp
+  LuaIntegerArgument.cpp
+  LuaScript.cpp
+  LuaScriptProxy.cpp
   Map.cpp
   MiscFunctions.cpp
   ModelFactoryProxy.cpp
@@ -75,6 +79,7 @@ add_library(IsoRealms SHARED
   ScreenMode.cpp
   Script.cpp
   SDLKeyMap.cpp
+  SoundProxy.cpp
   System.cpp
   Texture.cpp
   TextureProxy.cpp

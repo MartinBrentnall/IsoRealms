@@ -26,7 +26,7 @@ const unsigned int SpindizzyGERALD::INIT_REGISTER_SURFACES = 2;
 const unsigned int SpindizzyGERALD::INIT_USE_SURFACES = 3;
 const unsigned int SpindizzyGERALD::BOUNCE_CONTROL_TIME = 40;
 
-SpindizzyGERALD::SpindizzyGERALD(ISpindizzyGERALDFactory* elementFactory, BlockLocation* startLocation, std::string const& modelPath, ICollectables* collectables, ICollidableSurfaceRegistry* collidableSurfaceRegistry, ILocationAwareness* locationAwareness, IZoneContext* zoneContext, ICamera* camera, float fallLimit, Script* fallLimitScript, Script* respawnScript, IProject* project, IRuntimeContext* runtimeContext) : Element<ISpindizzyGERALDSet, ISpindizzyGERALDFactory>(elementFactory) {
+SpindizzyGERALD::SpindizzyGERALD(ISpindizzyGERALDFactory* elementFactory, BlockLocation* startLocation, std::string const& modelPath, ICollectables* collectables, ICollidableSurfaceRegistry* collidableSurfaceRegistry, ILocationAwareness* locationAwareness, IZoneContext* zoneContext, ICamera* camera, float fallLimit, ILuaScript* fallLimitScript, ILuaScript* respawnScript, IProject* project, IRuntimeContext* runtimeContext) : Element<ISpindizzyGERALDSet, ISpindizzyGERALDFactory>(elementFactory) {
   cStartLocation = BlockLocation(*startLocation);
   cLocation.x = cStartLocation.x + IsoRealmsConstants::BLOCK_RADIUS;
   cLocation.y = cStartLocation.y + IsoRealmsConstants::BLOCK_RADIUS;
@@ -527,6 +527,7 @@ void SpindizzyGERALD::respawn() {
 
 void SpindizzyGERALD::checkFall() {
   if (cLocation.z < cMapBottom) {
+    std::cout << "Fell out of bottom!" << std::endl;
     cFallScript->execute();
     destroy();
   }

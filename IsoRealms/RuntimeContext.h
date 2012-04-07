@@ -48,12 +48,16 @@ class RuntimeContext:public IRuntimeContext {
   void add(IColour*, const std::string&);
   void add(ITexture*, const std::string&);
   void add(I3DModelFactory*, const std::string&);
+  void add(ISound*, const std::string&);
+  void add(IInteger*, const std::string&);
   void remove(ICommand*);
+  ILuaScript* getLuaScript(const std::string&);
   Script* getScript(DOMNodeWrapper*);
   IColour* getColour(DOMNodeWrapper*);
   ITexture* getTexture(DOMNodeWrapper*);
   I3DModel* getModel(DOMNodeWrapper*, Vertex*);
   I3DModel* getModel(const std::string&, Vertex*);
+  ISound* getSound(DOMNodeWrapper*);
 };
 
 #endif

@@ -12,15 +12,25 @@
 #include "IColour.h"
 #include "ICommand.h"
 #include "IElementRegistryListener.h"
+#include "IInteger.h"
+#include "ILuaFunctionArgument.h"
+#include "ILuaScript.h"
 #include "InputCommands.h"
+#include "IntegerProxy.h"
 #include "IPluginRegistryListener.h"
 #include "IProject.h"
 #include "IResources.h"
+#include "ISound.h"
 #include "ITexture.h"
+#include "LuaArgument.h"
+#include "LuaIntegerArgument.h"
+#include "LuaScript.h"
+#include "LuaScriptProxy.h"
 #include "Map.h"
 #include "ModelFactoryProxy.h"
 #include "PluginRegistry.h"
 #include "Registry.h"
+#include "SoundProxy.h"
 #include "TextureProxy.h"
 
 class Project:public IProject,
@@ -31,10 +41,13 @@ class Project:public IProject,
   Map* cMap;
   PluginRegistry cPluginRegistry;
   ElementSetRegistry cElementSetRegistry;
+  Registry<ILuaScript, LuaScriptProxy> cScriptRegistry;
   Registry<ICommand, CommandProxy> cCommandRegistry;
   Registry<IColour, ColourProxy> cColourRegistry;
   Registry<ITexture, TextureProxy> cTextureRegistry;
   Registry<I3DModelFactory, ModelFactoryProxy> c3DModelRegistry;
+  Registry<ISound, SoundProxy> cSoundRegistry;
+  Registry<IInteger, IntegerProxy> cIntegerRegistry;
   InputCommands cInputCommands;
 
   std::vector<IDynamicElement*> cPreLoopCommands;
@@ -50,6 +63,8 @@ class Project:public IProject,
   
   template <class T> T* getDirectory(T*, std::vector<std::string>);
 
+  void loadScript(DOMNodeWrapper*);
+  
   public:
   Project();
   Project(DOMNodeWrapper*, IPluginRegistryListener*, IElementRegistryListener*, const std::string&, bool);
@@ -74,12 +89,17 @@ class Project:public IProject,
   I3DModel* getModel(DOMNodeWrapper*, Vertex*);
   I3DModel* getModel(const std::string&, Vertex*);  
   IColour* getColour(DOMNodeWrapper*);
+  ILuaScript* getLuaScript(const std::string&);
   Script* getScript(DOMNodeWrapper*);
   ITexture* getTexture(DOMNodeWrapper*);
+  ISound* getSound(DOMNodeWrapper*);
+  IInteger* getInteger(const std::string&);
   void add(ICommand*, std::vector<std::string>, std::string);
   void add(IColour*, std::vector<std::string>, std::string);
   void add(ITexture*, std::vector<std::string>, std::string);
   void add(I3DModelFactory*, std::vector<std::string>, std::string);
+  void add(ISound*, std::vector<std::string>, std::string);
+  void add(IInteger*, std::vector<std::string>, std::string);
 
   /**************************************\
    * Implements IPluginRegistryListener *

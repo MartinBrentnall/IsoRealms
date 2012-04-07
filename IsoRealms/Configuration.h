@@ -19,6 +19,11 @@
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 
+extern "C" {
+  #include "lua.h"
+  #include "lualib.h"
+}
+#include <luabind/luabind.hpp>
 #include <dlfcn.h>
 #include <fstream>
 #include <iostream>
@@ -28,7 +33,10 @@
 #include "DOMNodeWriter.h"
 #include "Hacks.h"
 #include "IEngine.h"
+#include "IInteger.h"
+#include "ILuaFunctionArgument.h"
 #include "InitException.h"
+#include "ISound.h"
 #include "ParseException.h"
 #include "ScreenConfiguration.h"
 #include "System.h"
@@ -52,6 +60,7 @@ class Configuration {
    */
 //  SwitchLogic* cSwitchLogic;
   ScreenConfiguration* cScreenConfiguration;
+  lua_State *cLuaState;
   IEngine* cEngine;
 
   /**
@@ -105,6 +114,10 @@ class Configuration {
    * @return  The game engine.
    */
   IEngine* getEngine();
+
+  void registerScript(const std::string&);
+  
+  void executeScript(const std::string&, std::vector<ILuaFunctionArgument*>);
   
   void save();
 };
