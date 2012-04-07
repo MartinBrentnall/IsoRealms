@@ -17,7 +17,6 @@
 add_subdirectory(3DModelToHUD)
 add_subdirectory(ExploredZones)
 add_subdirectory(HUDRoundedRectangle)
-add_subdirectory(RandomCommand)
 add_subdirectory(SequencePlayerCommands)
 add_subdirectory(SpindizzySwitches)
 add_subdirectory(ToggleSwitches)

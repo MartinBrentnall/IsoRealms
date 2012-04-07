@@ -24,10 +24,10 @@
 #include <vector>
 
 #include <IsoRealms/BlockArea.h>
+#include <IsoRealms/ILuaScript.h>
 #include <IsoRealms/IPluginRegistry.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 #include <IsoRealms/IZoneRenderer.h>
-#include <IsoRealms/Script.h>
 
 #include "../IUtilities.h"
 
@@ -49,8 +49,8 @@ class ExploredZones:public IUtilities,
   std::string cToGoString;
   std::map<IZone*, I3DModel*> cExploredZones;
   unsigned int cZoneCount;
-  Script* cAllZonesExploredScript;
-  Script* cZoneExploredScript;
+  ILuaScript* cAllZonesExploredScript;
+  ILuaScript* cZoneExploredScript;
   IZoneRenderer* cExploredZoneRenderer;
   IZoneRenderer* cMapOverviewRenderer;
   std::string cModelPath;

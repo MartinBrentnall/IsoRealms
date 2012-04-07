@@ -11,5 +11,7 @@ void LuaScriptProxy::setImplementation(ILuaScript* script) {
 void LuaScriptProxy::execute() {
   if (cScript != NULL) {
     cScript->execute();
+  } else {
+    std::cout << "WARNING: Script not set!" << std::endl;
   }
 }

@@ -20,7 +20,7 @@
 
 SpindizzyLiftSet::SpindizzyLiftSet(IRuntimeContext* runtimeContext) {
   cRuntimeContext = runtimeContext;
-  cLiftMovedScript = Script::getDummy();
+  cLiftMovedScript = NULL;
   assignDummyPlugin(&cZoneContext, "ZoneContext");
   assignDummyPlugin(&cCollidableSurfaceRegistry, "CollidableSurfaceRegistry");
   cLocked = 0;
@@ -71,7 +71,7 @@ DefaultElementHandler<SpindizzyLift>* SpindizzyLiftSet::createHandler(IElementCo
 }
 
 void SpindizzyLiftSet::save(DOMNodeWriter* node) {
-  cLiftMovedScript->save(node, "LiftMovedScript");
+// TODO  cLiftMovedScript->save(node, "LiftMovedScript");
   for (unsigned int i = 0; i < cElementFactories.size(); i++) {
     static_cast<SpindizzyLiftFactory*>(cElementFactories[i])->save(node);
   }
@@ -82,7 +82,7 @@ void SpindizzyLiftSet::load(DOMNodeWrapper* node) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "LiftMovedScript") {
-      cLiftMovedScript = cRuntimeContext->getScript(mNode);
+      cLiftMovedScript = cRuntimeContext->getLuaScript(mNode->getStringValue());
     } else if (mValueAsString == "LiftType") {
       SpindizzyLiftFactory* mLiftFactory = new SpindizzyLiftFactory(this, mNode, &cSpindizzyLiftProperties, cRuntimeContext);
       cElementFactories.push_back(mLiftFactory);

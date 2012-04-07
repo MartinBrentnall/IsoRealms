@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <Project>
-<!--      <Command name="IncreaseTimeForZone" value="8000"/>
-      <Command name="IncreaseScoreForZone" value="400"/>-->
   <Script name="jewelCollected">
     <Argument type="Sound" instance="Plugin/SoundSupport/SpindizzySounds/Jewel.ogg" name="sound"/>
     <Argument type="Integer" instance="Plugin/IntegerValue/SpindizzyScore/Value" name="score"/>
@@ -25,6 +23,31 @@
     <Code>  time = time - 10000
   if time &lt; 0 then
     time = 0
+  end</Code>
+  </Script>
+  <Script name="randomClick">
+    <Argument type="Sound" instance="Plugin/SoundSupport/SpindizzySounds/Lift Click 1.ogg" name="click1"/>
+    <Argument type="Sound" instance="Plugin/SoundSupport/SpindizzySounds/Lift Click 2.ogg" name="click2"/>
+    <Argument type="Sound" instance="Plugin/SoundSupport/SpindizzySounds/Lift Click 3.ogg" name="click3"/>
+    <Code>  local val = math.random(0,2)
+  if val == 0 then
+    click1:play()
+  elseif val == 1 then
+    click2:play()
+  elseif val == 2 then
+    click3:play()
+  end</Code>
+  </Script>
+  <Script name="zoneExplored">
+    <Argument type="Integer" instance="Plugin/IntegerValue/SpindizzyScore/Value" name="score"/>
+    <Argument type="Integer" instance="Plugin/IntegerValue/SpindizzyTimeLimit/Value" name="time"/>
+    <Code>  score = score + 400
+  time = time + 8000
+  if time > 180000 then
+    local excess = time - 180000
+    local extraScore = excess / 10
+    score = score + extraScore
+    time = 180000
   end</Code>
   </Script>
   <Plugin implementation="Block" instance="Compass" type="3DModel">
@@ -977,10 +1000,7 @@
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext" socketid=""/>
     <Configuration>
       <ZoneFlag name="Plugin/3DModel/C64JewelModel/Jewel"/>
-      <ZoneExploredScript>
-        <Command>Plugin/Utilities/TimerCommands/IncreaseTimeForZone</Command>
-        <Command>Plugin/Utilities/ScoreCommands/IncreaseScoreForZone</Command>
-      </ZoneExploredScript>
+      <ZoneExploredScript>zoneExplored</ZoneExploredScript>
     </Configuration>
   </Plugin>
   <Plugin implementation="3DModelToHUD" instance="Compass" type="Utilities">
@@ -1023,21 +1043,6 @@
     <Configuration>
       <Model name="Plugin/3DModel/HUDIconTime/Rectangle"/>
       <Location x="0.0" y="0.0" z="0.0"/>
-    </Configuration>
-  </Plugin>
-  <Plugin implementation="RandomCommand" instance="PlayLiftClick" type="Utilities">
-    <Configuration>
-      <Command name="LiftClick">
-        <PossibleScript>
-          <Command>Plugin/Utilities/SoundCommandWrapper/Play Lift Click 1.ogg</Command>
-        </PossibleScript>
-        <PossibleScript>
-          <Command>Plugin/Utilities/SoundCommandWrapper/Play Lift Click 2.ogg</Command>
-        </PossibleScript>
-        <PossibleScript>
-          <Command>Plugin/Utilities/SoundCommandWrapper/Play Lift Click 3.ogg</Command>
-        </PossibleScript>
-      </Command>
     </Configuration>
   </Plugin>
   <Plugin implementation="SpindizzySwitches" instance="SpindizzySwitches" type="Utilities">
@@ -1618,9 +1623,7 @@
     <UsePlugin implementation="CollidableSurfaceRegistry" instance="SpindizzySurfaces"/>
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext" socketid=""/>
     <Configuration>
-      <LiftMovedScript>
-        <Command>Plugin/Utilities/PlayLiftClick/Random LiftClick</Command>
-      </LiftMovedScript>
+      <LiftMovedScript>randomClick</LiftMovedScript>
       <LiftType name="DiamondEmpty" active="true" model="Plugin/3DModel/LiftDiamondEmpty/Rectangle"/>
       <LiftType name="DiamondLeft" model="Plugin/3DModel/LiftDiamondLeft/Rectangle"/>
       <LiftType name="DiamondRight" model="Plugin/3DModel/LiftDiamondRight/Rectangle"/>

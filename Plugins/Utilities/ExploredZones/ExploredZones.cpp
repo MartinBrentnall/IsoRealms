@@ -26,8 +26,8 @@ ExploredZones::ExploredZones(IRuntimeContext* runtimeContext) {
   cZoneCount = 0;
   cExploredZoneRenderer = new ExploredZoneRenderer(this);
   cMapOverviewRenderer = new MapOverviewRenderer(this);
-  cZoneExploredScript = Script::getDummy();
-  cAllZonesExploredScript = Script::getDummy();
+  cZoneExploredScript = NULL;
+  cAllZonesExploredScript = NULL;
   cRuntimeContext = runtimeContext;
 }
 
@@ -199,8 +199,8 @@ void ExploredZones::MapOverviewRenderer::updateRuntime(std::vector<IZone*>& zone
 }
 
 void ExploredZones::save(DOMNodeWriter* node) {
-  cZoneExploredScript->save(node, "ZoneExploredScript");
-  cAllZonesExploredScript->save(node, "AllZonesExploredScript");
+/*TODO  cZoneExploredScript->save(node, "ZoneExploredScript");
+  cAllZonesExploredScript->save(node, "AllZonesExploredScript");*/
 }
 
 void ExploredZones::load(DOMNodeWrapper* node) {
@@ -208,9 +208,9 @@ void ExploredZones::load(DOMNodeWrapper* node) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "ZoneExploredScript") {
-      cZoneExploredScript = cRuntimeContext->getScript(mNode);
+      cZoneExploredScript = cRuntimeContext->getLuaScript(mNode->getStringValue());
     } else if (mValueAsString == "AllZonesExploredScript") {
-      cAllZonesExploredScript = cRuntimeContext->getScript(mNode);
+      cAllZonesExploredScript = cRuntimeContext->getLuaScript(mNode->getStringValue());
     } else if (mValueAsString == "ZoneFlag") {
       cModelPath = mNode->getAttribute("name");
     } else {

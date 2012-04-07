@@ -45,7 +45,7 @@ class SpindizzyLiftSet:public ISpindizzyLiftSet,
   IRuntimeContext* cRuntimeContext;
   IZoneContext* cZoneContext;
   ICollidableSurfaceRegistry* cCollidableSurfaceRegistry;
-  Script* cLiftMovedScript;
+  ILuaScript* cLiftMovedScript;
   IZone* cZone;
 
   /**
