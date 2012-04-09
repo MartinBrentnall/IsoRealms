@@ -21,25 +21,14 @@
 Configuration* Configuration::cInstance = NULL;
 
 Configuration::Configuration(std::string filename, std::string engineFileName) {
-  cLuaState = luaL_newstate();
-  luabind::open(cLuaState);
-  luaL_openlibs(cLuaState);
-  
-  luabind::module(cLuaState) [
-    luabind::class_<ISound>("Sound")
-       .def("play", &ISound::play) 
-  ];
-  
-  luabind::module(cLuaState) [
-    luabind::class_<IInteger>("Integer")
-       .def("setValue", &IInteger::setValue)
-       .def("getValue", &IInteger::getValue)
-  ];
-      
   cConfigurationFile = engineFileName;
   cSettingsFile = filename;
   cScreenConfiguration = NULL;
   cEngine = NULL;
+}
+
+void Configuration::setLuaSupport(ILuaSupport* luaSupport) {
+  cLuaSupport = luaSupport;
 }
 
 void Configuration::parseSettings(DOMNodeWrapper *node) {
@@ -133,15 +122,19 @@ IEngine* Configuration::getEngine() {
 }
 
 void Configuration::registerScript(const std::string& script) {
-  luaL_dostring(cLuaState, script.c_str());
+  cLuaSupport->registerScript(script);
 }
 
 void Configuration::executeScript(const std::string& script, std::vector<ILuaFunctionArgument*> arguments) {
-  for (unsigned int i = 0; i < arguments.size(); i++) {
-    std::string mArgFunction = script + "_arg" + Utils::toString(i);
-    arguments[i]->setArgument(cLuaState, mArgFunction);
-  }
-  luabind::call_function<void>(cLuaState, script.c_str());
+  cLuaSupport->executeScript(script, arguments);
+}
+
+ILuaFunctionArgument* Configuration::createArgument(const std::string& name, ISound* sound) {
+  return cLuaSupport->createArgument(name, sound);
+}
+
+ILuaFunctionArgument* Configuration::createArgument(const std::string& name, IInteger* value) {
+  return cLuaSupport->createArgument(name, value);
 }
 
 void Configuration::save() {

@@ -19,11 +19,6 @@
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 
-extern "C" {
-  #include "lua.h"
-  #include "lualib.h"
-}
-#include <luabind/luabind.hpp>
 #include <dlfcn.h>
 #include <fstream>
 #include <iostream>
@@ -33,10 +28,9 @@ extern "C" {
 #include "DOMNodeWriter.h"
 #include "Hacks.h"
 #include "IEngine.h"
-#include "IInteger.h"
 #include "ILuaFunctionArgument.h"
+#include "ILuaSupport.h"
 #include "InitException.h"
-#include "ISound.h"
 #include "ParseException.h"
 #include "ScreenConfiguration.h"
 #include "System.h"
@@ -47,6 +41,7 @@ extern "C" {
  */
 class Configuration {
   private:
+  ILuaSupport* cLuaSupport;
   std::string cConfigurationFile;
   std::string cSettingsFile;
 
@@ -60,7 +55,6 @@ class Configuration {
    */
 //  SwitchLogic* cSwitchLogic;
   ScreenConfiguration* cScreenConfiguration;
-  lua_State *cLuaState;
   IEngine* cEngine;
 
   /**
@@ -93,7 +87,7 @@ class Configuration {
   void parseConfiguration(DOMNodeWrapper*);
 
   public:
-
+    
   /**
    * Get the singleton instance of the Configuration.
    *
@@ -101,6 +95,8 @@ class Configuration {
    */
   static Configuration* getInstance();
 
+  void setLuaSupport(ILuaSupport*);
+  
   /**
    * Get the screen configuration.
    *
@@ -118,6 +114,10 @@ class Configuration {
   void registerScript(const std::string&);
   
   void executeScript(const std::string&, std::vector<ILuaFunctionArgument*>);
+
+  ILuaFunctionArgument* createArgument(const std::string&, ISound*);
+  
+  ILuaFunctionArgument* createArgument(const std::string&, IInteger*);
   
   void save();
 };

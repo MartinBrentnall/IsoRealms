@@ -19,7 +19,6 @@
 #ifndef I_RUNTIME_CONTEXT_H
 #define I_RUNTIME_CONTEXT_H
 
-#include <luabind/luabind.hpp>
 #include <string>
 
 #include "Configuration.h"
@@ -29,6 +28,7 @@
 #include "IColour.h"
 #include "IInteger.h"
 #include "ILuaScript.h"
+#include "ISound.h"
 #include "ITexture.h"
 #include "Script.h"
 #include "Vertex.h"

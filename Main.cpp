@@ -46,6 +46,7 @@ int main(int argc, char **argv) {
   try {
     KeyStates::init();
     Configuration* mGlobalConfiguration = Configuration::getInstance();
+    mGlobalConfiguration->setLuaSupport(new LuaSupport());
     mGlobalConfiguration->getScreenConfiguration();
     GLenum err = glewInit();
     if (GLEW_OK != err) {

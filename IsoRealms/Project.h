@@ -5,6 +5,7 @@
 
 #include "ColourProxy.h"
 #include "CommandProxy.h"
+#include "Configuration.h"
 #include "DOMNodeWrapper.h"
 #include "ElementSetRegistry.h"
 #include "I3DModel.h"
@@ -22,8 +23,6 @@
 #include "IResources.h"
 #include "ISound.h"
 #include "ITexture.h"
-#include "LuaArgument.h"
-#include "LuaIntegerArgument.h"
 #include "LuaScript.h"
 #include "LuaScriptProxy.h"
 #include "Map.h"

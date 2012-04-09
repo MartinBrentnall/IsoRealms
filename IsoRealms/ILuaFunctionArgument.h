@@ -1,8 +1,9 @@
 #ifndef I_LUA_FUNCTION_ARGUMENT_H
 #define I_LUA_FUNCTION_ARGUMENT_H
 
-#include <luabind/luabind.hpp>
 #include <string>
+
+class lua_State;
 
 class ILuaFunctionArgument {
   public:

@@ -28,6 +28,7 @@
 #include <IsoRealms/Configuration.h>
 #include <IsoRealms/InitException.h>
 #include <IsoRealms/KeyStates.h>
+#include <IsoRealms/LuaSupport.h>
 #include <IsoRealms/PluginSupportException.h>
 
 #endif

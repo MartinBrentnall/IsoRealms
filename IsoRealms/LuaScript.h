@@ -1,7 +1,6 @@
 #ifndef LUA_SCRIPT_H
 #define LUA_SCRIPT_H
 
-#include <luabind/luabind.hpp>
 #include <iostream>
 #include <string>
 #include <vector>

@@ -76,6 +76,7 @@ Project::Project(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryLi
 
 void Project::loadScript(DOMNodeWrapper* node) {
   std::string mFunctionName = node->getAttribute("name");
+  Configuration* mConfiguration = Configuration::getInstance();
   LuaScript* mLuaScript = new LuaScript(mFunctionName);
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
@@ -85,12 +86,12 @@ void Project::loadScript(DOMNodeWrapper* node) {
       std::string mArgumentName = mNode->getAttribute("name");
       if (mType == "Sound") {
         ISound* mSound = getSound(mNode);
-        ILuaFunctionArgument* mArgument = new LuaArgument<ISound>(mArgumentName, mSound);
+        ILuaFunctionArgument* mArgument = mConfiguration->createArgument(mArgumentName, mSound);
         mLuaScript->addArgument(mArgument);
       } else if (mType == "Integer") {
         std::string mPath = mNode->getAttribute("instance");
         IInteger* mInteger = getInteger(mPath);
-        ILuaFunctionArgument* mArgument = new LuaIntegerArgument(mArgumentName, mInteger);
+        ILuaFunctionArgument* mArgument = mConfiguration->createArgument(mArgumentName, mInteger);
         mLuaScript->addArgument(mArgument);
       }
     } else if (mValueAsString == "Code") {

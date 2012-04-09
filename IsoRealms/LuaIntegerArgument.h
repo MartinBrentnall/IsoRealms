@@ -1,6 +1,7 @@
 #ifndef LUA_INTEGER_ARGUMENT_H
 #define LUA_INTEGER_ARGUMENT_H
 
+#include <luabind/luabind.hpp>
 #include <string>
 
 #include "IInteger.h"

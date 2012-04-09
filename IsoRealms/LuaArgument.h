@@ -6,6 +6,7 @@
 #include <string>
 
 #include "ILuaFunctionArgument.h"
+#include "Utils.h"
 
 template <class T> class LuaArgument:public ILuaFunctionArgument {
   private:
