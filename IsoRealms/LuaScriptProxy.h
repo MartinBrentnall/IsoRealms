@@ -18,6 +18,8 @@ class LuaScriptProxy:public ILuaScript {
    * Implements ILuaScript *
   \*************************/
   void execute();
+  void execute(std::vector<ILuaFunctionArgument*>);
+  std::vector<ILuaFunctionArgument*> readArguments(DOMNodeWrapper*, IResources*);
 };
 
 #endif

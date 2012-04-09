@@ -27,7 +27,7 @@
 #include "I3DModelFactory.h"
 #include "IColour.h"
 #include "IInteger.h"
-#include "ILuaScript.h"
+#include "IScript.h"
 #include "ISound.h"
 #include "ITexture.h"
 #include "Script.h"
@@ -47,7 +47,7 @@ class IRuntimeContext {
   virtual void add(ISound*, const std::string&) = 0;
   virtual void add(IInteger*, const std::string&) = 0;
   virtual void remove(ICommand*) = 0;
-  virtual ILuaScript* getLuaScript(const std::string&) = 0;
+  virtual IScript* getLuaScript(DOMNodeWrapper*) = 0;
   virtual Script* getScript(DOMNodeWrapper*) = 0;
   virtual IColour* getColour(DOMNodeWrapper*) = 0;
   virtual ITexture* getTexture(DOMNodeWrapper*) = 0;

@@ -25,6 +25,7 @@
 #include "ITexture.h"
 #include "LuaScript.h"
 #include "LuaScriptProxy.h"
+#include "LuaScriptWithArgs.h"
 #include "Map.h"
 #include "ModelFactoryProxy.h"
 #include "PluginRegistry.h"
@@ -88,10 +89,11 @@ class Project:public IProject,
   I3DModel* getModel(DOMNodeWrapper*, Vertex*);
   I3DModel* getModel(const std::string&, Vertex*);  
   IColour* getColour(DOMNodeWrapper*);
-  ILuaScript* getLuaScript(const std::string&);
+  IScript* getLuaScript(DOMNodeWrapper*);
   Script* getScript(DOMNodeWrapper*);
   ITexture* getTexture(DOMNodeWrapper*);
   ISound* getSound(DOMNodeWrapper*);
+  ILuaFunctionArgument* getArgument(DOMNodeWrapper*);
   IInteger* getInteger(const std::string&);
   void add(ICommand*, std::vector<std::string>, std::string);
   void add(IColour*, std::vector<std::string>, std::string);

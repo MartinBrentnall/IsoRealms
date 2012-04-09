@@ -57,6 +57,7 @@ void AttractDemo::update(int ticks) {
 void AttractDemo::drawBox() {
   glBegin(GL_QUADS);
   // Front Face
+  glColor3f(1.0f, 1.0f, 1.0f);
   glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);  // Bottom Left Of The Texture and Quad
   glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);  // Bottom Right Of The Texture and Quad
   glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f,  1.0f);  // Top Right Of The Texture and Quad
@@ -67,6 +68,7 @@ void AttractDemo::drawBox() {
   glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);  // Top Left Of The Texture and Quad
   glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f, -1.0f);  // Bottom Left Of The Texture and Quad
   // Top Face
+  glColor3f(0.8f, 0.8f, 0.8f);
   glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);  // Top Left Of The Texture and Quad
   glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f,  1.0f,  1.0f);  // Bottom Left Of The Texture and Quad
   glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f,  1.0f,  1.0f);  // Bottom Right Of The Texture and Quad
@@ -77,6 +79,7 @@ void AttractDemo::drawBox() {
   glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);  // Bottom Left Of The Texture and Quad
   glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);  // Bottom Right Of The Texture and Quad
   // Right face
+  glColor3f(0.6f, 0.6f, 0.6f);
   glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f, -1.0f, -1.0f);  // Bottom Right Of The Texture and Quad
   glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);  // Top Right Of The Texture and Quad
   glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f,  1.0f,  1.0f);  // Top Left Of The Texture and Quad
@@ -94,7 +97,7 @@ void AttractDemo::render() {
   glViewport (0, 0, 512, 512);
   glBindTexture(GL_TEXTURE_2D, 0);
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, cFrameBuffer);
-  glClearColor (1.0f, 0.0f, 0.0f, 0.5f);
+  glClearColor (0.0f, 0.0f, 1.0f, 0.5f);
   glClear(GL_COLOR_BUFFER_BIT);
   glLoadIdentity();
   glTranslatef(0.0f, 0.0f, -6.0f);

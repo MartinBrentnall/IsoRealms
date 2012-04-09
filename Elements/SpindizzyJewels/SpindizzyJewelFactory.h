@@ -20,13 +20,12 @@
 #define SPINDIZZY_JEWEL_FACTORY_H
 
 #include <cmath>
-#include <luabind/luabind.hpp>
 
 #include <IsoRealms/BlockLocation.h>
 #include <IsoRealms/IComponentContainer.h>
 #include <IsoRealms/IDynamicElement.h>
 #include <IsoRealms/IElementGateway.h>
-#include <IsoRealms/ILuaScript.h>
+#include <IsoRealms/IScript.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 #include <IsoRealms/IVisualElement.h>
 #include <IsoRealms/Vertex.h>
@@ -47,8 +46,8 @@ class SpindizzyJewelFactory:public BaseSpindizzyJewelFactory,
   std::vector<IDynamicElement*> cSampleJewelDynamics;
   std::vector<IVisualElement*> cSampleJewelVisuals;
   BlockLocation* cEditingLocation;
-  ILuaScript* cJewelCollectedScript;
-  ILuaScript* cAllJewelsCollectedScript;
+  IScript* cJewelCollectedScript;
+  IScript* cAllJewelsCollectedScript;
 
   bool keyDown(SDLKey&);
 

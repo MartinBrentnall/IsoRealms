@@ -19,8 +19,8 @@
 #include "BlockTypeProperties.h"
 
 BlockTypeProperties::BlockTypeProperties() {
-  cContactScript = Script::getDummy();
-  cImpactScript = Script::getDummy();
+  cContactScript = NULL;
+  cImpactScript = NULL;
   cSurfaceFriction = 0.001f;
   cSurfaceGrip = 1.0f;
   cSurfaceBounce = 0.0f;
@@ -41,9 +41,9 @@ void BlockTypeProperties::configure(DOMNodeWrapper* node, IRuntimeContext* runti
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "ContactScript") {
-      cContactScript = runtimeContext->getScript(mNode);
+      cContactScript = runtimeContext->getLuaScript(mNode);
     } else if (mValueAsString == "ImpactScript") {
-      cImpactScript = runtimeContext->getScript(mNode);
+      cImpactScript = runtimeContext->getLuaScript(mNode);
     } else if (mValueAsString == "Texture") {
       std::string mApplyTo = mNode->getAttribute("type");
       ITexture* mTexture = runtimeContext->getTexture(mNode);
@@ -100,11 +100,15 @@ void BlockTypeProperties::configure(DOMNodeWrapper* node, IRuntimeContext* runti
 }
 
 void BlockTypeProperties::executeContactScript() {
-  cContactScript->execute();
+  if (cContactScript != NULL) {
+    cContactScript->execute();
+  }
 }
 
 void BlockTypeProperties::executeImpactScript() {
-  cImpactScript->execute();
+  if (cImpactScript != NULL) {
+    cImpactScript->execute();
+  }
 }
 
 float BlockTypeProperties::getSurfaceFriction() {
@@ -212,8 +216,8 @@ void BlockTypeProperties::save(DOMNodeWriter* node) {
   node->addAttribute("grip", cSurfaceGrip);
   node->addAttribute("bounce", cSurfaceBounce);
   node->addAttribute("respawnAllowed", cRespawnAllowed ? "true" : "false");
-  cImpactScript->save(node, "ImpactScript");
-  cContactScript->save(node, "ContactScript");
+/*  cImpactScript->save(node, "ImpactScript");
+  cContactScript->save(node, "ContactScript");*/
   cSurfaceTexture->save(node, "Surface");
   cSurfaceSplitNETexture->save(node, "NESplitSurface");
   cSurfaceSplitNWTexture->save(node, "NWSplitSurface");

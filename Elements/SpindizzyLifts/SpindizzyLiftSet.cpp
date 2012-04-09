@@ -82,7 +82,7 @@ void SpindizzyLiftSet::load(DOMNodeWrapper* node) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "LiftMovedScript") {
-      cLiftMovedScript = cRuntimeContext->getLuaScript(mNode->getStringValue());
+      cLiftMovedScript = cRuntimeContext->getLuaScript(mNode);
     } else if (mValueAsString == "LiftType") {
       SpindizzyLiftFactory* mLiftFactory = new SpindizzyLiftFactory(this, mNode, &cSpindizzyLiftProperties, cRuntimeContext);
       cElementFactories.push_back(mLiftFactory);

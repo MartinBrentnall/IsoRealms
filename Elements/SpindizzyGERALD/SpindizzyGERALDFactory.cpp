@@ -152,17 +152,17 @@ void SpindizzyGERALDFactory::save(DOMNodeWriter* node) {
   DOMNodeWriter* mFallLimitNode = node->addBranch("FallLimitScript");
   mFallLimitNode->addAttribute("height", cFallLimit);
 //  cFallLimitScript->save(mFallLimitNode, "Script");
-  DOMNodeWriter* mRespawnNode = node->addBranch("Respawn");
+//  DOMNodeWriter* mRespawnNode = node->addBranch("Respawn");
 //  cFallScript->save(mRespawnNode, "Script");
 }
 
 void SpindizzyGERALDFactory::loadFallLimitConfiguration(DOMNodeWrapper* node, IRuntimeContext* runtimeContext) {
   cFallLimit = node->getFloatAttribute("height");
-  cFallLimitScript = runtimeContext->getLuaScript(node->getStringValue());
+  cFallLimitScript = runtimeContext->getLuaScript(node);
 }
 
 void SpindizzyGERALDFactory::loadRespawnConfiguration(DOMNodeWrapper* node, IRuntimeContext* runtimeContext) {
-  cFallScript = runtimeContext->getLuaScript(node->getStringValue());
+  cFallScript = runtimeContext->getLuaScript(node);
 }
 
 void SpindizzyGERALDFactory::stop() {

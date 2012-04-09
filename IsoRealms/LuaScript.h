@@ -8,12 +8,15 @@
 #include "Configuration.h"
 #include "ILuaScript.h"
 #include "ILuaFunctionArgument.h"
+#include "IResources.h"
 
 class LuaScript:public ILuaScript {
   private:
   std::string cName;
   std::vector<ILuaFunctionArgument*> cArguments;
   std::string cCode;
+
+  unsigned int getArgumentIndex(const std::string& name);
 
   public:
   LuaScript(const std::string&);
@@ -25,6 +28,8 @@ class LuaScript:public ILuaScript {
    * Implements ILuaScript *
   \*************************/
   void execute();
+  void execute(std::vector<ILuaFunctionArgument*>);
+  std::vector<ILuaFunctionArgument*> readArguments(DOMNodeWrapper*, IResources*);
 };
 
 #endif

@@ -208,9 +208,9 @@ void ExploredZones::load(DOMNodeWrapper* node) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "ZoneExploredScript") {
-      cZoneExploredScript = cRuntimeContext->getLuaScript(mNode->getStringValue());
+      cZoneExploredScript = cRuntimeContext->getLuaScript(mNode);
     } else if (mValueAsString == "AllZonesExploredScript") {
-      cAllZonesExploredScript = cRuntimeContext->getLuaScript(mNode->getStringValue());
+      cAllZonesExploredScript = cRuntimeContext->getLuaScript(mNode);
     } else if (mValueAsString == "ZoneFlag") {
       cModelPath = mNode->getAttribute("name");
     } else {

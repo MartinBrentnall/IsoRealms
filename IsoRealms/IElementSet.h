@@ -97,5 +97,6 @@ class IElementSet:public IPluginSupport,
 
 typedef IElementSet* createElementSet(IRuntimeContext*);
 typedef void destroyElementSet(IElementSet*);
+typedef void initLua();
 
 #endif

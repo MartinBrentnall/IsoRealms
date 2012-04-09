@@ -66,7 +66,7 @@ void RuntimeContext::remove(ICommand* command) {
   // getDirectory(cScriptRegistry, cEntityPath)->remove(command);
 }
 
-ILuaScript* RuntimeContext::getLuaScript(const std::string& name) {
+IScript* RuntimeContext::getLuaScript(DOMNodeWrapper* name) {
   return cResources->getLuaScript(name);
 }
 

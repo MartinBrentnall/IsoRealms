@@ -108,10 +108,14 @@ IElementSet* ElementSetRegistry::createInstance(std::string implementation, std:
   if (mDlsymError) {
     throw InitException("Cannot load symbol: " + std::string(mDlsymError));
   }
+  initLua* initLuaFunction = cast_voidptr_to_funcptr<initLua*>(dlsym(mElementSO, "initLua"));
   destroyElementSet* destroyElementSetFunction = cast_voidptr_to_funcptr<destroyElementSet*>(dlsym(mElementSO, "destroy"));
   mDlsymError = dlerror();
   if (mDlsymError) {
     throw InitException("Cannot load symbol: " + std::string(mDlsymError));
+  }
+  if (initLuaFunction != NULL) {
+    initLuaFunction();
   }
   cElementSets[instanceName] = createElementSetFunction(runtimeContext);
   cElementSetTypes[instanceName] = implementation;

@@ -22,15 +22,15 @@
 #include <IsoRealms/DOMNodeWrapper.h>
 #include <IsoRealms/IRuntimeContext.h>
 #include <IsoRealms/ITexture.h>
-#include <IsoRealms/Script.h>
+#include <IsoRealms/IScript.h>
 
 #include "TextureRotation.h"
 #include "WallType.h"
 
 class BlockTypeProperties {
   private:
-  Script* cContactScript;
-  Script* cImpactScript;
+  IScript* cContactScript;
+  IScript* cImpactScript;
   float cSurfaceFriction;
   float cSurfaceGrip;
   float cSurfaceBounce;

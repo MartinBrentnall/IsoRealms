@@ -62,6 +62,7 @@ add_library(IsoRealms SHARED
   LuaIntegerArgument.cpp
   LuaScript.cpp
   LuaScriptProxy.cpp
+  LuaScriptWithArgs.cpp
   LuaSupport.cpp
   Map.cpp
   MiscFunctions.cpp

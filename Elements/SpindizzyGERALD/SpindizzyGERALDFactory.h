@@ -25,7 +25,7 @@
 #include <IsoRealms/ElementFactory.h>
 #include <IsoRealms/IComponentContainer.h>
 #include <IsoRealms/IElementGateway.h>
-#include <IsoRealms/ILuaScript.h>
+#include <IsoRealms/IScript.h>
 #include <IsoRealms/IVisualElement.h>
 
 #include "../../Plugins/LocationAwareness/ILocationAwareness.h"
@@ -54,8 +54,8 @@ class SpindizzyGERALDFactory:public ISpindizzyGERALDFactory {
   std::vector<IVisualElement*> cSampleGERALDVisuals;
   BlockLocation* cEditingLocation;
   float cFallLimit;
-  ILuaScript* cFallScript;
-  ILuaScript* cFallLimitScript;
+  IScript* cFallScript;
+  IScript* cFallLimitScript;
 
   IElement* getElement();
 

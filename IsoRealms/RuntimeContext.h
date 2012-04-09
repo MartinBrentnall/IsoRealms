@@ -51,7 +51,7 @@ class RuntimeContext:public IRuntimeContext {
   void add(ISound*, const std::string&);
   void add(IInteger*, const std::string&);
   void remove(ICommand*);
-  ILuaScript* getLuaScript(const std::string&);
+  IScript* getLuaScript(DOMNodeWrapper*);
   Script* getScript(DOMNodeWrapper*);
   IColour* getColour(DOMNodeWrapper*);
   ITexture* getTexture(DOMNodeWrapper*);

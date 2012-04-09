@@ -76,24 +76,13 @@ Project::Project(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryLi
 
 void Project::loadScript(DOMNodeWrapper* node) {
   std::string mFunctionName = node->getAttribute("name");
-  Configuration* mConfiguration = Configuration::getInstance();
   LuaScript* mLuaScript = new LuaScript(mFunctionName);
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Argument") {
-      std::string mType = mNode->getAttribute("type");
-      std::string mArgumentName = mNode->getAttribute("name");
-      if (mType == "Sound") {
-        ISound* mSound = getSound(mNode);
-        ILuaFunctionArgument* mArgument = mConfiguration->createArgument(mArgumentName, mSound);
-        mLuaScript->addArgument(mArgument);
-      } else if (mType == "Integer") {
-        std::string mPath = mNode->getAttribute("instance");
-        IInteger* mInteger = getInteger(mPath);
-        ILuaFunctionArgument* mArgument = mConfiguration->createArgument(mArgumentName, mInteger);
-        mLuaScript->addArgument(mArgument);
-      }
+      ILuaFunctionArgument* mArgument = getArgument(mNode);
+      mLuaScript->addArgument(mArgument);
     } else if (mValueAsString == "Code") {
       std::string mCode = mNode->getStringValue();
       mLuaScript->setCode(mCode);
@@ -101,6 +90,22 @@ void Project::loadScript(DOMNodeWrapper* node) {
   }
   mLuaScript->registerScript();
   cScriptRegistry.add(mLuaScript, mFunctionName);
+}
+
+ILuaFunctionArgument* Project::getArgument(DOMNodeWrapper* node) {
+  Configuration* mConfiguration = Configuration::getInstance();
+  std::string mType = node->getAttribute("type");
+  std::string mArgumentName = node->getAttribute("name");
+  if (mType == "Sound") {
+    ISound* mSound = getSound(node);
+    return mConfiguration->createArgument(mArgumentName, mSound);
+  } else if (mType == "Integer") {
+    std::string mPath = node->getAttribute("instance");
+    IInteger* mInteger = getInteger(mPath);
+    return mConfiguration->createArgument(mArgumentName, mInteger);
+  }
+  std::cout << "WARNING: Unknown argument type \"" << mType << "\"" << std::endl;
+  exit(0);
 }
 
 IProject* Project::getProject() {
@@ -111,8 +116,10 @@ bool Project::isEditing() {
   return cEditing;
 }
 
-ILuaScript* Project::getLuaScript(const std::string& name) {
-  return cScriptRegistry.get(name);
+IScript* Project::getLuaScript(DOMNodeWrapper* node) {
+  std::string mScriptName = node->getAttribute("name");
+  ILuaScript* mScript = cScriptRegistry.get(mScriptName);
+  return new LuaScriptWithArgs(mScript, node, this);
 }
 
 Script* Project::getScript(DOMNodeWrapper* node) {

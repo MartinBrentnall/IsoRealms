@@ -14,9 +14,10 @@
     time = 180000
   end</Code>
   </Script>
-  <Script name="exploded">
-    <Argument type="Sound" instance="Plugin/SoundSupport/SpindizzySounds/Impact Hard.ogg" name="sound"/>
-    <Code>  sound:play()</Code>
+  <Script name="playSound">
+    <Argument type="Sound" name="sound"/>
+    <Code>  sound:play()
+  print ("Played sound!")</Code>
   </Script>
   <Script name="respawn">
     <Argument type="Integer" instance="Plugin/IntegerValue/SpindizzyTimeLimit/Value" name="time"/>
@@ -49,6 +50,55 @@
     score = score + extraScore
     time = 180000
   end</Code>
+  </Script>
+  <Script name="resetSwitch">
+    <Argument type="Sound" instance="Plugin/SoundSupport/SpindizzySounds/" name="sound"/>
+    <Code>  if activeLiftA ~= nil then
+    print ("state A disabled!")
+    sound:play()
+    activeLiftA:stop()
+    blockStateA:disable()
+    hudClueA:setModel(nil)
+    activeLiftA = nil
+  end
+  if activeLiftB ~= nil then
+    print ("state B disabled!")
+    activeLiftB:stop()
+    blockStateB:disable()
+    hudClueB:setModel(nil)
+    activeLiftB = nil
+  end</Code>
+  </Script>
+  <Script name="setPrimarySwitch">
+<!--    <Argument type="Custom/LiftType" name="lift"/>
+    <Argument type="Custom/BlockState" name="blockState"/>
+    <Argument type="3DModel" name="clueModel"/>-->
+    <Argument type="Sound" name="sound"/>
+    <Code>  if activeLiftA ~= lift or activeLiftB ~= nil then
+    print ("primary switch")
+    sound:play()
+    if activeLiftA ~= nil then
+      activeLiftA:stop()
+      blockStateA:disable()
+    end
+    if activeLiftB ~= nil then
+      activeLiftB:stop()
+      blockStateB:disable()
+      hudClueB:setModel(nil)
+      activeLiftB = nil
+    end
+    lift:start()
+    blockState:activate()
+    hudClueA:setModel(clueModel)
+    activeLiftA = lift
+  end</Code>
+  </Script>
+  <Script name="setSecondarySwitch">
+<!--    <Argument type="Custom/LiftType" name="lift"/>
+    <Argument type="Custom/BlockState" name="blockState"/>
+    <Argument type="3DModel" name="clueModel"/>-->
+    <Argument type="Sound" name="sound"/>
+    <Code>  print ("secondary switch")</Code>
   </Script>
   <Plugin implementation="Block" instance="Compass" type="3DModel">
     <Configuration>
@@ -1000,7 +1050,7 @@
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext" socketid=""/>
     <Configuration>
       <ZoneFlag name="Plugin/3DModel/C64JewelModel/Jewel"/>
-      <ZoneExploredScript>zoneExplored</ZoneExploredScript>
+      <ZoneExploredScript name="zoneExplored"/>
     </Configuration>
   </Plugin>
   <Plugin implementation="3DModelToHUD" instance="Compass" type="Utilities">
@@ -1290,8 +1340,8 @@
         <Texture type="WallNorth" name="Plugin/TextureSetChanger/PerZone/WallIce"/>
       </BlockType>
       <BlockType name="Trampoline" friction="0.0" grip="1.0" bounce="1.0" respawnAllowed="false" wallType="capped">
-        <ImpactScript>
-          <Command>Plugin/Utilities/SoundCommandWrapper/Play Trampoline.ogg</Command>
+        <ImpactScript name="playSound">
+          <Argument type="Sound" name="sound" instance="Plugin/SoundSupport/SpindizzySounds/Trampoline.ogg"/>
         </ImpactScript>
         <Texture type="Surface" name="Plugin/TextureSetChanger/PerZone/Trampoline"/>
         <Texture type="WallWest" name="Plugin/TextureSetChanger/PerZone/WallMixedMiddle"/>
@@ -1385,9 +1435,7 @@
         <Texture type="WallNorthBottom" name="Plugin/TextureSetChanger/PerZone/WallPlainCap" flip="true"/>
       </BlockType>
       <BlockType name="SwitchDiamondNone" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
-        <ContactScript>
-          <Command>Plugin/Utilities/SpindizzySwitches/Reset Spindizzy Switches</Command>
-        </ContactScript>
+        <ContactScript name="resetSwitch"/>
         <Texture type="Surface" name="Plugin/TextureSetChanger/PerZone/SwitchDiamondFilled"/>
         <Texture type="WallWest" name="Plugin/TextureSetChanger/PerZone/WallMixedMiddle"/>
         <Texture type="WallWestTop" name="Plugin/TextureSetChanger/PerZone/WallMixedCap"/>
@@ -1403,9 +1451,7 @@
         <Texture type="WallNorthBottom" name="Plugin/TextureSetChanger/PerZone/WallPlainCap" flip="true"/>
       </BlockType>
       <BlockType name="SwitchDiamondLeft" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
-        <ContactScript>
-          <Command>Plugin/Utilities/SpindizzySwitches/Activate switch LeftDiamondSwitch</Command>
-        </ContactScript>
+        <ContactScript name="setPrimarySwitch"/>
         <Texture type="Surface" name="Plugin/TextureSetChanger/PerZone/SwitchDiamondOne" rotate="Reverse"/>
         <Texture type="WallWest" name="Plugin/TextureSetChanger/PerZone/WallMixedMiddle"/>
         <Texture type="WallWestTop" name="Plugin/TextureSetChanger/PerZone/WallMixedCap"/>
@@ -1421,9 +1467,7 @@
         <Texture type="WallNorthBottom" name="Plugin/TextureSetChanger/PerZone/WallPlainCap" flip="true"/>
       </BlockType>
       <BlockType name="SwitchDiamondRight" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
-        <ContactScript>
-          <Command>Plugin/Utilities/SpindizzySwitches/Activate switch RightDiamondSwitch</Command>
-        </ContactScript>
+        <ContactScript name="setPrimarySwitch"/>
         <Texture type="Surface" name="Plugin/TextureSetChanger/PerZone/SwitchDiamondOne"/>
         <Texture type="WallWest" name="Plugin/TextureSetChanger/PerZone/WallMixedMiddle"/>
         <Texture type="WallWestTop" name="Plugin/TextureSetChanger/PerZone/WallMixedCap"/>
@@ -1439,9 +1483,7 @@
         <Texture type="WallNorthBottom" name="Plugin/TextureSetChanger/PerZone/WallPlainCap" flip="true"/>
       </BlockType>
       <BlockType name="SwitchDiamondBoth" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
-        <ContactScript>
-          <Command>Plugin/Utilities/SpindizzySwitches/Activate switch FilledDiamondSwitch</Command>
-        </ContactScript>
+        <ContactScript name="setPrimarySwitch"/>
         <Texture type="Surface" name="Plugin/TextureSetChanger/PerZone/SwitchDiamondEmpty"/>
         <Texture type="WallWest" name="Plugin/TextureSetChanger/PerZone/WallMixedMiddle"/>
         <Texture type="WallWestTop" name="Plugin/TextureSetChanger/PerZone/WallMixedCap"/>
@@ -1457,9 +1499,7 @@
         <Texture type="WallNorthBottom" name="Plugin/TextureSetChanger/PerZone/WallPlainCap" flip="true"/>
       </BlockType>
       <BlockType name="SwitchSquareNone" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
-        <ContactScript>
-          <Command>Plugin/Utilities/SpindizzySwitches/Activate switch EmptySquareSwitch</Command>
-        </ContactScript>
+        <ContactScript name="setPrimarySwitch"/>
         <Texture type="Surface" name="Plugin/TextureSetChanger/PerZone/SwitchSquareEmpty"/>
         <Texture type="WallWest" name="Plugin/TextureSetChanger/PerZone/WallMixedMiddle"/>
         <Texture type="WallWestTop" name="Plugin/TextureSetChanger/PerZone/WallMixedCap"/>
@@ -1475,9 +1515,7 @@
         <Texture type="WallNorthBottom" name="Plugin/TextureSetChanger/PerZone/WallPlainCap" flip="true"/>
       </BlockType>
       <BlockType name="SwitchSquareLeft" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
-        <ContactScript>
-          <Command>Plugin/Utilities/SpindizzySwitches/Activate switch LeftSquareSwitch</Command>
-        </ContactScript>
+        <ContactScript name="setPrimarySwitch"/>
         <Texture type="Surface" name="Plugin/TextureSetChanger/PerZone/SwitchSquareOne" rotate="Reverse"/>
         <Texture type="WallWest" name="Plugin/TextureSetChanger/PerZone/WallMixedMiddle"/>
         <Texture type="WallWestTop" name="Plugin/TextureSetChanger/PerZone/WallMixedCap"/>
@@ -1493,9 +1531,7 @@
         <Texture type="WallNorthBottom" name="Plugin/TextureSetChanger/PerZone/WallPlainCap" flip="true"/>
       </BlockType>
       <BlockType name="SwitchSquareRight" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
-        <ContactScript>
-          <Command>Plugin/Utilities/SpindizzySwitches/Activate switch RightSquareSwitch</Command>
-        </ContactScript>
+        <ContactScript name="setPrimarySwitch"/>
         <Texture type="Surface" name="Plugin/TextureSetChanger/PerZone/SwitchSquareOne"/>
         <Texture type="WallWest" name="Plugin/TextureSetChanger/PerZone/WallMixedMiddle"/>
         <Texture type="WallWestTop" name="Plugin/TextureSetChanger/PerZone/WallMixedCap"/>
@@ -1511,9 +1547,7 @@
         <Texture type="WallNorthBottom" name="Plugin/TextureSetChanger/PerZone/WallPlainCap" flip="true"/>
       </BlockType>
       <BlockType name="SwitchSquareBoth" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
-        <ContactScript>
-          <Command>Plugin/Utilities/SpindizzySwitches/Activate switch FilledSquareSwitch</Command>
-        </ContactScript>
+        <ContactScript name="setPrimarySwitch"/>
         <Texture type="Surface" name="Plugin/TextureSetChanger/PerZone/SwitchSquareFilled"/>
         <Texture type="WallWest" name="Plugin/TextureSetChanger/PerZone/WallMixedMiddle"/>
         <Texture type="WallWestTop" name="Plugin/TextureSetChanger/PerZone/WallMixedCap"/>
@@ -1529,9 +1563,7 @@
         <Texture type="WallNorthBottom" name="Plugin/TextureSetChanger/PerZone/WallPlainCap" flip="true"/>
       </BlockType>
       <BlockType name="SwitchCircleNone" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
-        <ContactScript>
-          <Command>Plugin/Utilities/SpindizzySwitches/Activate switch EmptyCircleSwitch</Command>
-        </ContactScript>
+        <ContactScript name="setSecondarySwitch"/>
         <Texture type="Surface" name="Plugin/TextureSetChanger/PerZone/SwitchCircleEmpty"/>
         <Texture type="WallWest" name="Plugin/TextureSetChanger/PerZone/WallMixedMiddle"/>
         <Texture type="WallWestTop" name="Plugin/TextureSetChanger/PerZone/WallMixedCap"/>
@@ -1547,9 +1579,7 @@
         <Texture type="WallNorthBottom" name="Plugin/TextureSetChanger/PerZone/WallPlainCap" flip="true"/>
       </BlockType>
       <BlockType name="SwitchCircleLeft" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
-        <ContactScript>
-          <Command>Plugin/Utilities/SpindizzySwitches/Activate switch LeftCircleSwitch</Command>
-        </ContactScript>
+        <ContactScript name="setSecondarySwitch"/>
         <Texture type="Surface" name="Plugin/TextureSetChanger/PerZone/SwitchCircleOne"/>
         <Texture type="WallWest" name="Plugin/TextureSetChanger/PerZone/WallMixedMiddle"/>
         <Texture type="WallWestTop" name="Plugin/TextureSetChanger/PerZone/WallMixedCap"/>
@@ -1565,9 +1595,7 @@
         <Texture type="WallNorthBottom" name="Plugin/TextureSetChanger/PerZone/WallPlainCap" flip="true"/>
       </BlockType>
       <BlockType name="SwitchCircleRight" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
-        <ContactScript>
-          <Command>Plugin/Utilities/SpindizzySwitches/Activate switch RightCircleSwitch</Command>
-        </ContactScript>
+        <ContactScript name="setSecondarySwitch"/>
         <Texture type="Surface" name="Plugin/TextureSetChanger/PerZone/SwitchCircleOne" rotate="Reverse"/>
         <Texture type="WallWest" name="Plugin/TextureSetChanger/PerZone/WallMixedMiddle"/>
         <Texture type="WallWestTop" name="Plugin/TextureSetChanger/PerZone/WallMixedCap"/>
@@ -1583,9 +1611,7 @@
         <Texture type="WallNorthBottom" name="Plugin/TextureSetChanger/PerZone/WallPlainCap" flip="true"/>
       </BlockType>
       <BlockType name="SwitchCircleBoth" friction="0.001" grip="1.0" bounce="0.0" respawnAllowed="true" wallType="capped">
-        <ContactScript>
-          <Command>Plugin/Utilities/SpindizzySwitches/Activate switch FilledCircleSwitch</Command>
-        </ContactScript>
+        <ContactScript name="setSecondarySwitch"/>
         <Texture type="Surface" name="Plugin/TextureSetChanger/PerZone/SwitchCircleFilled"/>
         <Texture type="WallWest" name="Plugin/TextureSetChanger/PerZone/WallMixedMiddle"/>
         <Texture type="WallWestTop" name="Plugin/TextureSetChanger/PerZone/WallMixedCap"/>
@@ -1615,7 +1641,7 @@
     <UsePlugin implementation="Collectables" instance="Jewels"/>
     <Configuration>
       <Type name="Jewel" model="Plugin/3DModel/C64JewelModel/Jewel">
-        <JewelCollectedScript>jewelCollected</JewelCollectedScript>
+        <JewelCollectedScript name="jewelCollected"/>
       </Type>
     </Configuration>
   </ElementSet>
@@ -1623,7 +1649,7 @@
     <UsePlugin implementation="CollidableSurfaceRegistry" instance="SpindizzySurfaces"/>
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext" socketid=""/>
     <Configuration>
-      <LiftMovedScript>randomClick</LiftMovedScript>
+      <LiftMovedScript name="randomClick"/>
       <LiftType name="DiamondEmpty" active="true" model="Plugin/3DModel/LiftDiamondEmpty/Rectangle"/>
       <LiftType name="DiamondLeft" model="Plugin/3DModel/LiftDiamondLeft/Rectangle"/>
       <LiftType name="DiamondRight" model="Plugin/3DModel/LiftDiamondRight/Rectangle"/>
@@ -1646,8 +1672,10 @@
     <UsePlugin implementation="ZoneContext" instance="PlayerZoneContext"/>
     <Configuration>
       <Type type="Player" model="Plugin/3DModel/Pyramid/Pyramid">
-        <FallLimitScript height="2.75">exploded</FallLimitScript>
-        <RespawnScript>respawn</RespawnScript>
+        <FallLimitScript height="2.75" name="playSound">
+          <Argument type="Sound" name="sound" instance="Plugin/SoundSupport/SpindizzySounds/Impact Hard.ogg"/>
+        </FallLimitScript>
+        <RespawnScript name="respawn"/>
       </Type>
     </Configuration>
   </ElementSet>
