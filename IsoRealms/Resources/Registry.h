@@ -51,7 +51,8 @@ template<class T1> class Registry {
       path = path.substr(mDirectorySeparator + 1, path.length());
       mDirectorySeparator = path.find("/");
     }
-    return mDir->cObjects.find(path)->second;
+    typename std::map<std::string, T1*>::iterator i = mDir->cObjects.find(path);
+    return i != mDir->cObjects.end() ? i->second : NULL;
   }
 
   void add(T1* t, const std::string& name) {

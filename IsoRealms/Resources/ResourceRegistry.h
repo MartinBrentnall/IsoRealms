@@ -75,6 +75,7 @@ template<class T> class ResourceRegistry:public IResourceInstanceListener<T> {
   
   T* get(const std::string& path) {
     T* mResource = cResources.get(path);
+    cResources.debug();
     if (mResource == NULL) {
       mResource = getSpecialResource(path);
       if (mResource == NULL) {

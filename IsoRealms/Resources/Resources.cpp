@@ -99,6 +99,9 @@ bool Resources::isEditing() {
 IScript* Resources::getLuaScript(DOMNodeWrapper* node, IArgumentGenerator* localArgs) {
   std::string mScriptName = node->getAttribute("name");
   ILuaScript* mScript = cScriptRegistry.find(mScriptName)->second;
+  if (mScript == NULL) {
+    std::cout << "WARNING: Script \"" << mScriptName << "\" is NULL!" << std::endl;
+  }
   return new LuaScriptWithArgs(mScript, node, this, localArgs);
 }
 

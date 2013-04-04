@@ -87,6 +87,7 @@ void LuaSupport::setGlobalVariable(IArgumentDefinition* argument) {
 void LuaSupport::executeScript(const std::string& function, std::vector<ILuaFunctionArgument*> arguments) {
   for (unsigned int i = 0; i < arguments.size(); i++) {
     std::string mArgFunction = function + "_arg" + Utils::toString(i);
+    std::cout << "Setting argument " << i << "..." << std::endl;
     arguments[i]->setArgument(cLuaState, mArgFunction);
   }
   luabind::call_function<void>(cLuaState, function.c_str());
