@@ -57,12 +57,16 @@ else(XERCESC_FOUND)
   message(STATUS "XercesC not found.")
 endif(XERCESC_FOUND)
 
-add_subdirectory(Elements)
-add_subdirectory(Engine)
 add_subdirectory(IsoRealms)
-add_subdirectory(Plugins)
+add_subdirectory(Modules)
 
 include_directories(${PROJECT_SOURCE_DIR})
 
-add_executable(IsoRealms.bin Main.cpp)
+add_executable(IsoRealms.bin 
+  Engine.cpp
+  EngineArguments.cpp
+  Main.cpp
+  Runtime.cpp
+  TerminateEngineCommand.cpp
+)
 target_link_libraries(IsoRealms.bin ${SDL_LIBRARY} ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY} ${GLEW_LIBRARY} ${LUABIND_LIBRARY} ${XERCESC_LIBRARY} IsoRealms)
