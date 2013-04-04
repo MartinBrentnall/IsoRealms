@@ -24,35 +24,30 @@
 #include <map>
 #include <string>
 
-#include "CommandProxy.h"
+#include "Persistence/DOMNodeWriter.h"
 #include "Hacks.h"
-#include "DOMNodeWriter.h"
-#include "DefaultZoneRenderer.h"
 #include "IMap.h"
 #include "InitException.h"
 #include "IPlugin.h"
 #include "IPluginRegistry.h"
-#include "IPluginRegistryListener.h"
-#include "IResources.h"
 #include "IZone.h"
-#include "Registry.h"
-#include "RuntimeContext.h"
+#include "Resources/IResources.h"
+#include "Resources/Registry.h"
+#include "Resources/RuntimeContext.h"
+#include "Resources/ZoneHandler/DefaultZoneHandler.h"
 #include "System.h"
-#include "ZoneRendererProxy.h"
 
 class Zone;
 
 class PluginRegistry:public IPluginRegistry {
   private:
   // TODO: Change to const?
-  static DefaultZoneRenderer DEFAULT_ZONE_RENDERER;
+  static DefaultZoneHandler DEFAULT_ZONE_RENDERER;
     
-  std::vector<IPluginRegistryListener*> cListeners;
-
   /**
    * Mapping of type to instance map; instance name to plug-in instances.
    */
-  std::map<std::string, std::map<std::string, IPlugin*> > cPluginInstances;
+  std::map<std::string, IPlugin*> cPluginInstances;
   std::map<IPlugin*, std::string> cImplementationNames;
 
   /**
@@ -60,11 +55,6 @@ class PluginRegistry:public IPluginRegistry {
    */
   std::map<std::string, std::map<std::string, void*> > cSOHandles;
 
-  /**
-   * We keep these so we can save them and (TODO) destroy them.
-   */
-  std::vector<ZoneRendererProxy*> cZoneRendererProxies;
-  
   /**
    * Each plug-in maps to the corresponding destroy function found in it's
    * library.
@@ -82,21 +72,6 @@ class PluginRegistry:public IPluginRegistry {
   std::string getPluginType(IPlugin*);  
 
   void registerPlugin(DOMNodeWrapper*, IResources*);
-
-  void connectPlugin(DOMNodeWrapper*);
-
-  void loadConfiguration(DOMNodeWrapper*);
-
-  void setPlugin(IPluginSupport*, DOMNodeWrapper*);
-
-  /**
-   * Called when a plug-in is removed.  The plug-in registry will check the
-   * plug-ins to see which plug-ins may be using it, and will set reset any
-   * such connections to NULL (typically the dummy plugin).
-   * 
-   * @param IPlugin*  The plugin instance to be removed.
-   */
-  void pluginRemoved(IPlugin*);
 
   /**
    * This allows all plugins to know that initialization is being performed for
@@ -126,11 +101,11 @@ class PluginRegistry:public IPluginRegistry {
    * Load a logic module.
    * 
    * @param string&  The logic type.
-   * @param string&  The logic implementation.
-   * @param string&  The name to assign to this instance.
    */
-  void loadPlugin(std::string&, std::string&, std::string&, IRuntimeContext*);
+  void loadPlugin(std::string&, IRuntimeContext*);
 
+  void setEditingContext(IEditingContext*, IResourceManager*);
+  
   /**
    * Remove the specified plugin instance.  All listeners will be notified of
    * the removal to give them an opportunity to relinquish use of the plugin
@@ -142,28 +117,13 @@ class PluginRegistry:public IPluginRegistry {
   void removePlugin(IPlugin*);
 
   /**
-   * Return instance names for the specified logic type.
+   * Return instance names.
    * 
-   * @param string@  The logic type.
-   * @returns  Instance names loaded for the logic type.
+   * @returns  Instance names.
    */
-  std::vector<std::string> getInstances(std::string&);
+  std::vector<std::string> getInstances();
 
-  /**
-   * Add a listener to listen for logic instance changes.
-   * 
-   * @param IPluginRegistryListener*  The listener to add.
-   */
-  void addListener(IPluginRegistryListener*);
-
-  /**
-   * Remove a listener.
-   * 
-   * @param IPluginRegistryListener*  The listener to remove.
-   */
-  void removeListener(IPluginRegistryListener*);
-
-  void save(DOMNodeWriter*);
+  void save(DOMNodeWriter*, IResourceLocator*);
 
   void loadPluginData(DOMNodeWrapper*, IZone*);
 
@@ -172,25 +132,17 @@ class PluginRegistry:public IPluginRegistry {
    */
   void saveData(DOMNodeWriter*, IMap*, IZone*);
   
-  void saveZoneRenderers(DOMNodeWriter*);
-
-  std::vector<IDynamicElement*> getPreLoopCommands();
-
   std::vector<IDynamicElement*> getPostLoopCommands();
-
-  std::vector<IVisualElement*> getPreLoopRenderers();
   
   std::vector<IVisualElement*> getPostLoopRenderers();
 
   std::vector<IInteractiveElement*> getInteractiveElements();
 
-  IZoneRenderer* getZoneRenderer(DOMNodeWrapper*, Registry<ICommand, CommandProxy>*);
-  
   /******************************\
    * Implements IPluginRegistry *
   \******************************/
-  IPlugin* getPlugin(std::string&, std::string&);
-  std::string getInstanceName(std::string, IPlugin*);
+  IPlugin* getPlugin(std::string&);
+  std::string getInstanceName(IPlugin*);
   std::string getEntityPath(IPlugin*);
 
   ~PluginRegistry();

@@ -19,34 +19,43 @@
 #ifndef TEXT_FIELD_COMPONENT_H
 #define TEXT_FIELD_COMPONENT_H
 
+#include <cfloat>
 #include <GL/glew.h>
 #include <iostream>
 #include <SDL/SDL.h>
 #include <string>
 
-#include "../IFont.h"
-#include "../IllegalStateException.h"
+#include <IsoRealms/Configuration.h>
+#include <IsoRealms/IllegalStateException.h>
+#include <IsoRealms/IStringListener.h>
+#include <IsoRealms/Resources/Font/IFont.h>
 
 #include "ISizedComponent.h"
 #include "LookAndFeel.h"
 
 class TextFieldComponent:public ISizedComponent {
   private:
-  static const unsigned int BLINK_DELAY = 100;
+  static const unsigned int BLINK_DELAY = 300;
 
+  std::vector<IStringListener*> cListeners;
   static int cDelayUntilBlinkChange;
   static bool cBlinkShowing;
 
   unsigned int cCaret;
+  bool cUpdating;
+  bool cHasFocus;
   std::string cInput;
 
   bool keyDown(SDLKey&, SDLMod&);
+  bool mouseButtonDown(SDL_Event&);
+  void fireChange();
 
   public:
   TextFieldComponent(std::string = "");
 
   void setText(std::string);
   std::string getText();
+  void addStringListener(IStringListener*);
 
   /***************************************\
    * Implements IComponentSizeCalculator *
@@ -57,9 +66,11 @@ class TextFieldComponent:public ISizedComponent {
   /****************************\
    * Implements IHUDComponent *
   \****************************/
-  void update(int);
+  void update(unsigned int);
   void render();
   bool input(SDL_Event&);
+  virtual void gainedFocus();
+  virtual void lostFocus();
 };
 
 #endif

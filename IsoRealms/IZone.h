@@ -22,10 +22,11 @@
 #include <vector>
 
 #include "BlockArea.h"
-#include "Vertex.h"
+#include "Resources/ElementType/IElementGroup.h"
+#include "Resources/Vertex/Vertex.h"
 #include "ZoneEvent.h"
 
-class IZone {
+class IZone:public IElementContainer {
   public:
 
   virtual bool contains(Vertex&) = 0;
@@ -45,6 +46,13 @@ class IZone {
   virtual void renderDynamic() = 0;
   virtual void update(unsigned int) = 0;
   virtual void updateRuntime(unsigned int) = 0;
+
+  virtual int getZoneEast() = 0;
+  virtual int getZoneWest() = 0;
+  virtual int getZoneNorth() = 0;
+  virtual int getZoneSouth() = 0;
+  virtual int getZoneTop() = 0;
+  virtual int getZoneBottom() = 0;  
 };
 
 #endif

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+
+<Component>
+  <Label name="iconSizeLabel" align="top left">Icon Size:</Label>
+  <Slider name="iconSizeSlider" align="top" left="rightOf iconSizeLabel"/>
+  <WrappingGrid name="icons" top="below iconSizeLabel">
+    <PopupMenu name="resourcesMenu">
+      <Menu name="createResource" text="Create"/>
+      <MenuItem name="removeResource" text="Remove..."/>
+      <MenuItem name="editResource" text="Edit..."/>
+    </PopupMenu>
+  </WrappingGrid>
+</Component>

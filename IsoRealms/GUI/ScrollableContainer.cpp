@@ -22,10 +22,26 @@ ScrollableContainer::ScrollableContainer() {
   mouseButtonUp();
   cScrollHorizontal = 0.0f;
   cScrollVertical = 0.0f;
+  cFocusedComponent = NULL;
+}
+
+void ScrollableContainer::addComponent(const std::string& name, ISizedComponent* component) {
+  setRootComponent(component);
+}
+
+void ScrollableContainer::removeComponent(ISizedComponent* component) {
+  // TODO: Implement this
 }
 
 void ScrollableContainer::setRootComponent(ISizedComponent* component) {
   IComponentBoundsCalculator* mBoundsCalculator = new RootComponentLayout(this, component);
+  component->setBoundsCalculator(mBoundsCalculator);
+  cComponents.push_back(component);
+  cFocusedComponent = NULL;
+}
+
+void ScrollableContainer::setRootComponent(AbstractVerticalComponent* component) {
+  IComponentBoundsCalculator* mBoundsCalculator = new ControlledWidthLayout(this, component);
   component->setBoundsCalculator(mBoundsCalculator);
   cComponents.push_back(component);
   cFocusedComponent = NULL;
@@ -163,6 +179,7 @@ bool ScrollableContainer::mouseMotion(SDL_Event& event) {
   } else if (cScrollVerticalActive) {
     float mY = mScreen->getYLocation(event.motion.yrel) - 1.0f;
     cScrollVertical -= mY;
+    std::cout << "Scrollbar moved to " << cScrollVertical << std::endl;
     return true;
   }
   return false;
@@ -175,18 +192,20 @@ bool ScrollableContainer::input(SDL_Event& event) {
       if (mouseButtonDown(event)) {
         return true;
       }
+      break;
     }
 
     case SDL_MOUSEMOTION: {
       if (mouseMotion(event)) {
         return true;
       }
+      break;
     }
   }
   return cFocusedComponent != NULL ? cFocusedComponent->input(event) : false;
 }
 
-void ScrollableContainer::update(int ticks) {
+void ScrollableContainer::update(unsigned int ticks) {
   float mAmount = 0.0005f * ticks;
   switch (cScrollDirection) {
     case SCROLL_UP: cScrollVertical -= mAmount; break;
@@ -219,6 +238,9 @@ void ScrollableContainer::update(int ticks) {
     if (mViewRight > mContentRight) {
       cScrollHorizontal -= mContentRight - mViewRight;
     }
+  }
+  for (unsigned int i = 0; i < cComponents.size(); i++) {
+    cComponents[i]->update(ticks);
   }
 }
 
@@ -289,7 +311,7 @@ float ScrollableContainer::getContentLeft() {
 }
 
 float ScrollableContainer::getContentRight() {
-  float mMostRight = -200.0f; // TODO: Largest negative float?
+  float mMostRight = -FLT_MAX;
   for (unsigned int i = 0; i < cComponents.size(); i++) {
     float mComponentRight = cComponents[i]->getRight();
     if (mComponentRight > mMostRight) {
@@ -300,7 +322,7 @@ float ScrollableContainer::getContentRight() {
 }
 
 float ScrollableContainer::getContentTop() {
-  float mMostTop = -200.0f; // TODO: Largest negative float?
+  float mMostTop = -FLT_MAX;
   for (unsigned int i = 0; i < cComponents.size(); i++) {
     float mComponentTop = cComponents[i]->getTop();
     if (mComponentTop > mMostTop) {
@@ -530,12 +552,14 @@ void ScrollableContainer::render() {
   int mBottomPixels = mScreen->convertToYPixels(mViewBottom);
 
   int mOldValues[4];
+  glEnable(GL_SCISSOR_TEST);
   glGetIntegerv(GL_SCISSOR_BOX, mOldValues);
   glScissor(mLeftPixels + 1, mBottomPixels + 1, (mRightPixels - mLeftPixels) - 1, (mTopPixels - mBottomPixels) - 1);
   for (unsigned int i = 0; i < cComponents.size(); i++) {
     cComponents[i]->render();
   }
   glScissor(mOldValues[0], mOldValues[1], mOldValues[2], mOldValues[3]);
+  glDisable(GL_SCISSOR_TEST);
 }
 
 ScrollableContainer::RootComponentLayout::RootComponentLayout(ScrollableContainer* parent, IComponentSizeCalculator* sizeCalculator) {
@@ -559,3 +583,36 @@ float ScrollableContainer::RootComponentLayout::getRight() {
   return getLeft() + cComponentSizeCalculator->getWidth();
 }
 
+ScrollableContainer::ControlledWidthLayout::ControlledWidthLayout(ScrollableContainer* parent, IComponentHeightCalculator* heightCalculator) {
+  cParent = parent;
+  cComponentHeightCalculator = heightCalculator;
+  cObtainingRight = false;
+}
+  
+float ScrollableContainer::ControlledWidthLayout::getLeft() {
+  return cParent->getLeft();
+}
+
+float ScrollableContainer::ControlledWidthLayout::getRight() {
+  /*
+   * If this function is called twice, it means that its height depends
+   * on the width.  In this case, we can safely return the width without
+   * regard for the scrollbar, because this height will be correct if
+   * the scrollbar isn't needed anyway.
+   */
+  if (!cObtainingRight) {
+    cObtainingRight = true;
+    float mRight = cParent->getViewRight();
+    cObtainingRight = false;
+    return mRight;
+  }
+  return cParent->getRight();
+}
+
+float ScrollableContainer::ControlledWidthLayout::getTop() {
+  return cParent->getTop() + cParent->cScrollVertical;
+}
+
+float ScrollableContainer::ControlledWidthLayout::getBottom() {
+  return getTop() - cComponentHeightCalculator->getHeight();
+}

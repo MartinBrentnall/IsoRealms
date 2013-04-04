@@ -73,6 +73,10 @@ int ScreenConfiguration::getVideoFlags() {
   return mVideoFlags;
 }
 
+void ScreenConfiguration::setViewPort() {
+  glViewport(0, 0, cScreenWidth, cScreenHeight);
+}
+
 void ScreenConfiguration::resizeScreen() {
   int mVideoFlags = getVideoFlags();
   cWindow = SDL_SetVideoMode(cScreenWidth, cScreenHeight, cScreenDepth, mVideoFlags);
@@ -82,7 +86,7 @@ void ScreenConfiguration::resizeScreen() {
   glViewport(0, 0, cScreenWidth, cScreenHeight);
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  gluPerspective(45.0, (GLfloat) cScreenWidth / (GLfloat) cScreenHeight, 0.1, 400.0);
+  gluPerspective(45.0, (GLfloat) cScreenWidth / (GLfloat) cScreenHeight, 0.3, 800.0);
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
 }

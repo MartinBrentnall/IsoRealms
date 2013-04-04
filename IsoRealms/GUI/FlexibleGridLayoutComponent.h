@@ -75,7 +75,7 @@ class FlexibleGridLayoutComponent:public ISizedComponent {
   \******************************/
   float getWidth();
   float getHeight();
-  void update(int);
+  void update(unsigned int);
   void render();
   bool input(SDL_Event&);
 };

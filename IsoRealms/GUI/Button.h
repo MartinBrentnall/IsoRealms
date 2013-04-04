@@ -23,11 +23,11 @@
 #include <SDL/SDL.h>
 #include <string>
 
-#include "../Configuration.h"
-#include "../ICommand.h"
-#include "../IFont.h"
-#include "../IllegalStateException.h"
-#include "../ScreenConfiguration.h"
+#include <IsoRealms/Configuration.h>
+#include <IsoRealms/ICommand.h>
+#include <IsoRealms/IllegalStateException.h>
+#include <IsoRealms/Resources/Font/IFont.h>
+#include <IsoRealms/ScreenConfiguration.h>
 
 #include "AbstractRectangularComponent.h"
 #include "ISizedComponent.h"
@@ -66,7 +66,7 @@ class Button:public ISizedComponent,
   /****************************\
    * Implements IHUDComponent *
   \****************************/
-  void update(int);
+  void update(unsigned int);
   void render();
   bool input(SDL_Event&);
 };

@@ -22,7 +22,7 @@
 #include <GL/glew.h>
 #include <string>
 
-#include "../IFont.h"
+#include <IsoRealms/Resources/Font/IFont.h>
 
 #include "ISizedComponent.h"
 #include "LookAndFeel.h"
@@ -43,7 +43,7 @@ class TextLabelComponent:public ISizedComponent {
   /****************************\
    * Implements IHUDComponent *
   \****************************/
-  void update(int);
+  void update(unsigned int);
   void render();
   bool input(SDL_Event&);
   bool contains(float, float);

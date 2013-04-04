@@ -28,15 +28,8 @@ BlockArea::BlockArea(BlockLocation& start, BlockLocation& end) {
 }
 
 BlockArea::BlockArea(DOMNodeWrapper* node) {
-  for (int i = 0; i < node->getChildCount(); i++) {
-    DOMNodeWrapper *mNode = node->getChild(i);
-    std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "Location") {
-      cStartLocation.set(mNode);
-    } else if (mValueAsString == "Size") {
-      cEndLocation.set(mNode);
-    }
-  }
+  cStartLocation.set(node);
+  cEndLocation.set(node, "width", "length", "height");
   cEndLocation.x += cStartLocation.x;
   cEndLocation.y += cStartLocation.y;
   cEndLocation.z += cStartLocation.z;

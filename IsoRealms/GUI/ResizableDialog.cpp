@@ -24,11 +24,11 @@ ResizableDialog::ResizableDialog(IComponentContainer* componentContainer, const 
   cResizing = false;
 }
 
-ResizableDialog::ResizableDialog(IComponentContainer* componentContainer, const std::string& dialogDescriptionFile) : Dialog(componentContainer, dialogDescriptionFile) {
+ResizableDialog::ResizableDialog(IComponentContainer* componentContainer, const std::string& dialogDescriptionFile, IResourceAccessor* resourceAccessor) : Dialog(componentContainer, dialogDescriptionFile, resourceAccessor) {
   cResizing = false;
 }
 
-void ResizableDialog::renderContent() {
+void ResizableDialog::renderDialogContent() {
   float mRight = getRight();
   float mBottom = getBottom();
   Configuration* mConfiguration = Configuration::getInstance();
@@ -49,7 +49,7 @@ void ResizableDialog::renderContent() {
   renderResizableDialogContent();
 }
 
-void ResizableDialog::updateContent(int ticks) {
+void ResizableDialog::updateDialogContent(int ticks) {
   updateResizableDialogContent(ticks);
 }
 
@@ -84,20 +84,29 @@ bool ResizableDialog::mouseMotion(SDL_Event& event) {
   return false;
 }
 
-bool ResizableDialog::inputContent(SDL_Event& event) {
+bool ResizableDialog::inputDialogContent(SDL_Event& event) {
   switch (event.type) {
     case SDL_MOUSEBUTTONDOWN: {
-      return mouseButtonDown(event);
+      if (mouseButtonDown(event)) {
+	return true;
+      }
+      break;
     }
 
     case SDL_MOUSEBUTTONUP: {
       bool cWasResizing = cResizing;
       cResizing = false;
-      return cWasResizing;
+      if (cWasResizing) {
+	return true;
+      }
+      break;
     }
 
     case SDL_MOUSEMOTION: {
-      return mouseMotion(event);
+      if (mouseMotion(event)) {
+	return true;
+      }
+      break;
     }
 
     default: {

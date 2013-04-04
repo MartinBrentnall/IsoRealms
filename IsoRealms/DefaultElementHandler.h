@@ -22,9 +22,9 @@
 #include <GL/glew.h>
 
 #include "IDynamicElement.h"
-#include "IElement.h"
-#include "IElementHandler.h"
 #include "IVisualElement.h"
+#include "Resources/ElementType/IElement.h"
+#include "Resources/ElementType/IElementHandler.h"
 
 template<class T = IElement> class DefaultElementHandler:public IElementHandler {
   protected:

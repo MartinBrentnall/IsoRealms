@@ -32,16 +32,16 @@ void BlockLocation::set(int xPos, int yPos, int zPos) {
   z = zPos;
 }
 
-void BlockLocation::set(DOMNodeWrapper* node) {
-  x = node->getIntegerAttribute("x");
-  y = node->getIntegerAttribute("y");
-  z = node->getIntegerAttribute("z");
+void BlockLocation::set(DOMNodeWrapper* node, const std::string& xName, const std::string& yName, const std::string& zName) {
+  x = node->getIntegerAttribute(xName);
+  y = node->getIntegerAttribute(yName);
+  z = node->getIntegerAttribute(zName);
 }
 
-void BlockLocation::setRelative(DOMNodeWrapper* node, BlockLocation& relative) {
-  x = node->getIntegerAttribute("x") + relative.x;
-  y = node->getIntegerAttribute("y") + relative.y;
-  z = node->getIntegerAttribute("z") + relative.z;
+void BlockLocation::setRelative(DOMNodeWrapper* node, BlockLocation& relative, const std::string& xName, const std::string& yName, const std::string& zName) {
+  x = node->getIntegerAttribute(xName) + relative.x;
+  y = node->getIntegerAttribute(yName) + relative.y;
+  z = node->getIntegerAttribute(zName) + relative.z;
 }
 
 void BlockLocation::set(BlockLocation destination) {
@@ -54,13 +54,13 @@ bool BlockLocation::operator==(BlockLocation& point) {
   return x == point.x && y == point.y && z == point.z;
 }
 
-void BlockLocation::save(DOMNodeWriter* node) {
+void BlockLocation::save(DOMNodeWriter* node, const std::string& xName, const std::string& yName, const std::string& zName) {
   std::string mXString = Utils::toString(x);
   std::string mYString = Utils::toString(y);
   std::string mZString = Utils::toString(z);
-  node->addAttribute("x", mXString);
-  node->addAttribute("y", mYString);
-  node->addAttribute("z", mZString);
+  node->addAttribute(xName, mXString);
+  node->addAttribute(yName, mYString);
+  node->addAttribute(zName, mZString);
 }
 
 void BlockLocation::saveRelative(DOMNodeWriter* node, BlockLocation& relative, const std::string& xName, const std::string& yName, const std::string& zName) {

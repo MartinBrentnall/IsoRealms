@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+
+<Dialog title="Textures and Colours">
+  <TabbedContainer name="tabbedContainer">
+    <Tab name="colourTab" text="Colours">
+      <ScrollableContainer name="colourSelector"/>
+    </Tab>
+    <Tab name="paletteTab" text="Palette">
+      <Container name="colourPalette"/>
+    </Tab>
+    <Tab name="textureTab" text="Textures">
+      <Container name="textureBrowser"/>
+    </Tab>
+  </TabbedContainer>
+</Dialog>

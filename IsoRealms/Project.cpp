@@ -1,229 +1,76 @@
 #include "Project.h"
 
 Project::Project() {
-  cEditing = true;
-  cMap = new Map();
+  cResources.setEditing(true);
+  cResources.setProject(this);
+  cMap = new Map(this);
+  cCamera = NULL;
 }
 
-Project::Project(DOMNodeWrapper* node, IPluginRegistryListener* pluginRegistryListener, IElementRegistryListener* elementRegistryListener, const std::string& projectName, bool editing) {
-  cEditing = editing;
+Project::Project(DOMNodeWrapper* node, const std::string& projectName, IEditingContext* editingContext) {
+  cResources.setEditing(editingContext != NULL);
+  cResources.setProject(this);
   cMap = NULL;
-  if (pluginRegistryListener != NULL) {
-    cPluginRegistry.addListener(pluginRegistryListener);
-  }
-  if (elementRegistryListener != NULL) {
-    cElementSetRegistry.addElementRegistryListener(elementRegistryListener);
-  }
+  cCamera = NULL;
+  cInitScript = NULL;
   std::size_t mExtensionPosition = projectName.find_last_of('.');
   std::string mProjectName = projectName.substr(0, mExtensionPosition);
 
+  std::map<std::string, std::string> mDefaultElementGroups;
+  
   /*
    * First pass only loads plugin instances; we need to make sure all plugins
    * are available before we start connecting them together
    */
-  std::cout << "Loading modules..." << std::endl;
+  std::cout << "Loading modules and Creating resources..." << std::endl;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Plugin") {
-      cPluginRegistry.registerPlugin(mNode, this);
-    } else if (mValueAsString == "ElementSet") {
-      cElementSetRegistry.registerElementSet(mNode, this);
+      cPluginRegistry.registerPlugin(mNode, &cResources);
     } else if (mValueAsString == "Script") {
-      loadScript(mNode);
+      cResources.loadScript(mNode);
+    } else if (mValueAsString == "GlobalVariable") {
+      cResources.registerGlobalVariable(mNode);
+    } else if (mValueAsString == "DefaultElementGroup") {
+      cResources.registerDefaultElementGroup(mNode);
     } else {
       // TODO: Throw something
     }
   }
-
-  std::cout << "Connecting modules..." << std::endl;
-  for (int i = 0; i < node->getChildCount(); i++) {
-    DOMNodeWrapper *mNode = node->getChild(i);
-    std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "Plugin") {
-      cPluginRegistry.connectPlugin(mNode);
-    } else if (mValueAsString == "ElementSet") {
-      cElementSetRegistry.connectPlugin(&cPluginRegistry, mNode);
-    } else {
-      // TODO: Throw something
-    }
-  }
+  cResources.initialise();
   
-  std::cout << "Configuring modules..." << std::endl;
+  std::cout << "Configuring modules (old method)..." << std::endl;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "ElementSet") {
-      cElementSetRegistry.loadConfiguration(mNode);
-    } else if (mValueAsString == "Plugin") {
-      cPluginRegistry.loadConfiguration(mNode);
+    if (mValueAsString == "Configuration") {
+      std::string mCameraPath = mNode->getAttribute("camera");
+      cCamera = cResources.getCamera(mCameraPath);
+      if (cCamera == NULL) {
+	std::cout << "Project does not have a camera and cannot be run" << std::endl;
+	exit(1);
+      }
     } else if (mValueAsString == "InputConfiguration") {
-      std::string mProjectConfigurationFile = System::getUserResource("Projects/" + mProjectName + "/controls.config");
-      std::string mGlobalConfigurationFile = System::getUserResource("controls.config");
+      std::string mProjectConfigurationFile = mProjectName + "/controls.config";
+      std::string mGlobalConfigurationFile = "controls.config";
       std::vector<std::string> mConfigFiles;
       mConfigFiles.push_back(mProjectConfigurationFile);
       mConfigFiles.push_back(mGlobalConfigurationFile);
-      cInputCommands.loadConfiguration(mNode, mConfigFiles, this);
-      std::cout << "Loaded input configuration..." << std::endl;
+      cInputCommands.loadConfiguration(mNode, mConfigFiles, &cResources);
+    } else if (mValueAsString == "InitScript") {
+      cInitScript = cResources.getLuaScript(mNode, NULL);
     } else if (mValueAsString == "Map") {
-      cMap = new Map(mNode, editing, this);
+      cMap = new Map(mNode, editingContext != NULL, this, &cResources);
     } else {
       // TODO: Throw something
     }
   }
-  registerListeners();
-}
-
-void Project::loadScript(DOMNodeWrapper* node) {
-  std::string mFunctionName = node->getAttribute("name");
-  LuaScript* mLuaScript = new LuaScript(mFunctionName);
-  for (int i = 0; i < node->getChildCount(); i++) {
-    DOMNodeWrapper *mNode = node->getChild(i);
-    std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "Argument") {
-      ILuaFunctionArgument* mArgument = getArgument(mNode);
-      mLuaScript->addArgument(mArgument);
-    } else if (mValueAsString == "Code") {
-      std::string mCode = mNode->getStringValue();
-      mLuaScript->setCode(mCode);
-    }
+  cDynamicElements = cResources.getDynamicElements();
+  if (cInitScript != NULL) {
+    cInitScript->execute();
   }
-  mLuaScript->registerScript();
-  cScriptRegistry.add(mLuaScript, mFunctionName);
-}
-
-ILuaFunctionArgument* Project::getArgument(DOMNodeWrapper* node) {
-  Configuration* mConfiguration = Configuration::getInstance();
-  std::string mType = node->getAttribute("type");
-  std::string mArgumentName = node->getAttribute("name");
-  if (mType == "Sound") {
-    ISound* mSound = getSound(node);
-    return mConfiguration->createArgument(mArgumentName, mSound);
-  } else if (mType == "Integer") {
-    std::string mPath = node->getAttribute("instance");
-    IInteger* mInteger = getInteger(mPath);
-    return mConfiguration->createArgument(mArgumentName, mInteger);
-  }
-  std::cout << "WARNING: Unknown argument type \"" << mType << "\"" << std::endl;
-  exit(0);
-}
-
-IProject* Project::getProject() {
-  return this;
-}
-
-bool Project::isEditing() {
-  return cEditing;
-}
-
-IScript* Project::getLuaScript(DOMNodeWrapper* node) {
-  std::string mScriptName = node->getAttribute("name");
-  ILuaScript* mScript = cScriptRegistry.get(mScriptName);
-  return new LuaScriptWithArgs(mScript, node, this);
-}
-
-Script* Project::getScript(DOMNodeWrapper* node) {
-  std::vector<ICommand*> mCommands;
-  for (int i = 0; i < node->getChildCount(); i++) {
-    DOMNodeWrapper *mNode = node->getChild(i);
-    std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "Command") {
-      std::string mCommandName = mNode->getStringValue();
-      ICommand* mCommand = cCommandRegistry.get(mCommandName);
-      mCommands.push_back(mCommand);
-    } else {
-      // TODO: Throw
-    }
-  }
-  return new Script(mCommands, &cCommandRegistry);
-}
-
-IColour* Project::getColour(DOMNodeWrapper* node) {
-  std::string mType = node->getAttribute("type");
-  if (mType == "Palette") {
-    std::string mColourPath = node->getAttribute("name");
-    return cColourRegistry.get(mColourPath);
-  } else if (mType == "Absolute") {
-    return new Colour(node);
-  }
-  // TODO: Throw
-  return NULL;
-}
-
-ITexture* Project::getTexture(DOMNodeWrapper* node) {
-  std::string mTexturePath = node->getAttribute("name");
-  return cTextureRegistry.get(mTexturePath);
-}
-
-I3DModel* Project::getModel(DOMNodeWrapper* node, Vertex* location) {
-  std::string mModelPath = node->getAttribute("name");
-  return getModel(mModelPath, location);
-}
-
-I3DModel* Project::getModel(const std::string& path, Vertex* location) {
-  I3DModelFactory* mModelFactory = c3DModelRegistry.get(path);
-  return mModelFactory->createModel(location);
-}
-
-ISound* Project::getSound(DOMNodeWrapper* node) {
-  std::string mSoundPath = node->getAttribute("instance");
-  return cSoundRegistry.get(mSoundPath);
-}
-
-IInteger* Project::getInteger(const std::string& path) {
-  return cIntegerRegistry.get(path);
-}
-
-template <class T> T* Project::getDirectory(T* root, std::vector<std::string> location) {
-  T* mCurrent = root;
-  for (unsigned int i = 0; i < location.size(); i++) {
-    T* mSubDirectory = mCurrent->getSubDirectory(location[i]);
-    mCurrent = mSubDirectory != NULL ? mSubDirectory : mCurrent->createSubDirectory(location[i]);
-  }
-  return mCurrent;
-}
-    
-void Project::add(ICommand* command, std::vector<std::string> path, std::string name) {
-  Registry<ICommand, CommandProxy>* mDirectory = getDirectory(&cCommandRegistry, path);
-  mDirectory->add(command, name);
-}
-
-void Project::add(IColour* colour, std::vector<std::string> path, std::string name) {
-  Registry<IColour, ColourProxy>* mDirectory = getDirectory(&cColourRegistry, path);
-  mDirectory->add(colour, name);
-}
-
-void Project::add(ITexture* texture, std::vector<std::string> path, std::string name) {
-  Registry<ITexture, TextureProxy>* mDirectory = getDirectory(&cTextureRegistry, path);
-  mDirectory->add(texture, name);
-}
-
-void Project::add(I3DModelFactory* modelFactory, std::vector<std::string> path, std::string name) {
-  Registry<I3DModelFactory, ModelFactoryProxy>* mDirectory = getDirectory(&c3DModelRegistry, path);
-  mDirectory->add(modelFactory, name);
-}
-
-void Project::add(ISound* sound, std::vector<std::string> path, std::string name) {
-  Registry<ISound, SoundProxy>* mDirectory = getDirectory(&cSoundRegistry, path);
-  mDirectory->add(sound, name);
-}
-
-void Project::add(IInteger* value, std::vector<std::string> path, std::string name) {
-  Registry<IInteger, IntegerProxy>* mDirectory = getDirectory(&cIntegerRegistry, path);
-  mDirectory->add(value, name);
-}
-
-void Project::registerListeners() {
-  cPluginRegistry.addListener(this);
-//  cElementSetRegistry.addElementRegistryListener(this);
-}
-
-void Project::pluginInstanceRemoved(IPlugin* instance, std::string type) {
-  cElementSetRegistry.pluginRemoved(instance);
-}
-
-void Project::pluginInstanceAdded(PluginRegistry* registry, std::string, std::string) {
-  // Nothing to do.
+  std::cout << "Loaded Project!" << std::endl;
 }
 
 bool* Project::registerDigitalInput(const std::string& name) {
@@ -244,18 +91,18 @@ void Project::update(unsigned int ticks) {
 
 void Project::updateRuntime(unsigned int ticks) {
   cMap->updateRuntime(ticks);
+  for (unsigned int i = 0; i < cDynamicElements.size(); i++) {
+    cDynamicElements[i]->update(ticks);
+  }
 }
 
 void Project::initPlugins(IZone* zone, unsigned int pass) {
   cPluginRegistry.initPlugins(zone, pass);
+  cResources.initResources(zone, pass);
 }
 
 void Project::renderPreZone(IZone* zone) {
   cPluginRegistry.renderPreZone(zone);
-}
-
-void Project::initElementsComplete() {
-  cElementSetRegistry.initElementsComplete();
 }
 
 void Project::input(SDL_Event& event) {
@@ -267,8 +114,8 @@ void Project::input(SDL_Event& event) {
 }
 
 void Project::executePreLoopCommands(int ticks) {
-  for (unsigned int i = 0; i < cPreLoopCommands.size(); i++) {
-    cPreLoopCommands[i]->update(ticks);
+  if (cCamera != NULL) {
+    cCamera->update(ticks);
   }
 }
 
@@ -279,8 +126,8 @@ void Project::executePostLoopCommands(int ticks) {
 }
 
 void Project::executePreLoopRenderers() {
-  for (unsigned int i = 0; i < cPreLoopRenderers.size(); i++) {
-    cPreLoopRenderers[i]->render();
+  if (cCamera != NULL) {
+    cCamera->render();
   }
 }
 
@@ -292,31 +139,18 @@ void Project::executePostLoopRenderers() {
 
 void Project::initRuntime() {
   cInteractivePlugins = cPluginRegistry.getInteractiveElements();
-  cPreLoopCommands = cPluginRegistry.getPreLoopCommands();
   cPostLoopCommands = cPluginRegistry.getPostLoopCommands();
-  cPreLoopRenderers = cPluginRegistry.getPreLoopRenderers();
   cPostLoopRenderers = cPluginRegistry.getPostLoopRenderers();
   cMap->initRuntime();
 }
 
 void Project::zoneContextChanged(IMap* map, IZone* zone) {
   cPluginRegistry.zoneContextChanged(map, zone);
+  cResources.zoneContextChanged(map, zone);
 }
 
 void Project::loadPluginData(DOMNodeWrapper* node, IZone* zone) {
   cPluginRegistry.loadPluginData(node, zone);
-}
-
-std::vector<IElement*> Project::loadElements(DOMNodeWrapper* node, BlockLocation* location, IElementContainer* container) {
-  return cElementSetRegistry.loadElements(node, location, container);
-}
-
-IZoneRenderer* Project::getZoneRenderer(DOMNodeWrapper* node) {
-  return cPluginRegistry.getZoneRenderer(node, &cCommandRegistry);
-}
-
-std::string Project::getInstanceName(IElementSet* elementSet) {
-  return cElementSetRegistry.getInstanceName(elementSet);
 }
 
 void Project::savePluginData(DOMNodeWriter* node, IMap* map, IZone* zone) {
@@ -329,10 +163,21 @@ std::vector<IZone*> Project::getAdjacentZones(IZone* zone) {
 
 void Project::save() {
   DOMNodeWriter* mProjectNode = new DOMNodeWriter("Project");
-  cPluginRegistry.save(mProjectNode);
-  cElementSetRegistry.save(&cPluginRegistry, mProjectNode);
-  cPluginRegistry.saveZoneRenderers(mProjectNode);
-  cMap->save(mProjectNode);
+  DOMNodeWriter* mConfigurationBranch = mProjectNode->addBranch("Configuration");
+  if (cCamera != NULL) {
+    std::string mCameraPath = cResources.getPath(cCamera);
+    mConfigurationBranch->addAttribute("camera", mCameraPath);
+  }
+  cResources.saveScripts(mProjectNode);
+  DOMNodeWriter* mInputConfigurationNode = mProjectNode->addBranch("InputConfiguration");
+  cPluginRegistry.save(mProjectNode, &cResources);
+  cInputCommands.saveConfiguration(mInputConfigurationNode, &cResources);
+  cResources.saveDefaultElementGroups(mProjectNode);
+  DOMNodeWriter* mInitScriptNode = mProjectNode->addBranch("InitScript");
+  cResources.saveGlobalVariables(mProjectNode);
+  cInitScript->save(mInitScriptNode, &cResources);
+  cMap->save(mProjectNode, &cResources);
+  mProjectNode->save("Test.isorealms");
 }
 
 IZone* Project::getZone(Vertex& location) {
@@ -363,14 +208,57 @@ Map* Project::getMap() {
   return cMap;
 }
 
-void Project::addPluginRegistryListener(IPluginRegistryListener* listener) {
-  cPluginRegistry.addListener(listener);
-}
-
 PluginRegistry* Project::getPluginRegistry() {
   return &cPluginRegistry;
 }
 
-ElementSetRegistry* Project::getElementSetRegistry() {
-  return &cElementSetRegistry;
+IResourceManager* Project::getResourceManager() {
+  return &cResources;
 }
+
+void Project::staticChanged() {
+  cMap->staticChanged();
+}
+
+void Project::setZoneHandler(IZoneHandler* zoneHandler) {
+  cMap->setZoneHandler(zoneHandler);
+}
+
+float Project::getEast() {
+  return cMap->getEast();
+}
+
+float Project::getWest() {
+  return cMap->getWest();
+}
+
+float Project::getNorth() {
+  return cMap->getNorth();
+}
+
+float Project::getSouth() {
+  return cMap->getSouth();
+}
+
+float Project::getTop() {
+  return cMap->getTop();
+}
+
+float Project::getBottom() {
+  return cMap->getBottom();
+}
+
+float Project::getAspectRatio() {
+  Configuration* mConfiguration = Configuration::getInstance();
+  ScreenConfiguration* mScreenConfiguration = mConfiguration->getScreenConfiguration();
+  return mScreenConfiguration->getAspectRatio();
+}
+
+int Project::getZoneCount() {
+  return cMap->getZoneCount();
+}
+
+void Project::setEditingContext(IEditingContext* editingContext) {
+  cPluginRegistry.setEditingContext(editingContext, &cResources);
+}
+

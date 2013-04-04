@@ -19,15 +19,23 @@
 #ifndef WRAPPING_GRID_COMPONENT_H
 #define WRAPPING_GRID_COMPONENT_H
 
+#include <GL/glew.h>
+#include <GL/gl.h>
 #include <vector>
 
 #include "AbstractRectangularComponent.h"
+#include "../Configuration.h"
+#include "IComponentHolder.h"
 #include "IComponentBoundsCalculator.h"
 #include "ISizedComponent.h"
+#include "AbstractVerticalComponent.h"
 
-class WrappingGridComponent:public AbstractRectangularComponent {
+class WrappingGridComponent:public AbstractVerticalComponent,
+                            public IComponentHolder {
   private:
   std::vector<ISizedComponent*> cComponents;
+  float cCellPaddingX;
+  float cCellPaddingY;
 
   class CellLayout:public IComponentBoundsCalculator {
     private:
@@ -47,19 +55,26 @@ class WrappingGridComponent:public AbstractRectangularComponent {
   };
 
   unsigned int getRow(ISizedComponent*);
-  float getHeight();
 
   public:
-  WrappingGridComponent();
+  WrappingGridComponent(float);
+  void setPadding(float);
 
-  void addComponent(ISizedComponent* component);
+  void addComponent(const std::string&, ISizedComponent* component);
+  void removeComponent(ISizedComponent* component);
 
   /*******************************************\
    * Implements AbstractRectangularComponent *
   \*******************************************/
-  void update(int);
+  void update(unsigned int);
   void render();
   bool input(SDL_Event&);
+  
+  /****************************************\
+   * Implements IWidthControlledComponent *
+  \****************************************/
+  float getHeight();
+  float getWidth();
 };
 
 #endif

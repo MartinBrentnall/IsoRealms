@@ -23,7 +23,7 @@
 
 #include "BlockArea.h"
 #include "CollisionVertex.h"
-#include "Vertex.h"
+#include "Resources/Vertex/Vertex.h"
 
 class Collision {
   public:

@@ -25,8 +25,8 @@
 #include <vector>
 
 #include "ConditionElement.h"
-#include "DOMNodeWrapper.h"
-#include "DOMNodeWriter.h"
+#include "Persistence/DOMNodeWrapper.h"
+#include "Persistence/DOMNodeWriter.h"
 
 class Condition {
   private:

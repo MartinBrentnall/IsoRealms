@@ -86,7 +86,7 @@ float FlexibleGridLayoutComponent::getColumnWidth(unsigned int column) {
   return mLargestWidth;
 }
 
-void FlexibleGridLayoutComponent::update(int ticks) {
+void FlexibleGridLayoutComponent::update(unsigned int ticks) {
   // Nothing to do
 }
 

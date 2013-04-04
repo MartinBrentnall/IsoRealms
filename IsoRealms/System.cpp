@@ -114,7 +114,7 @@ std::string System::getConfigurationResource(const std::string& filename) {
   return getProgramDataDirectory() + convertToSystemFormat(filename) + ".so";
 }
 
-std::vector<std::string>* System::getFileList(const std::string& filename) {
+std::vector<std::string>* System::getFileList(const std::string& filename, bool files) {
   std::vector<std::string>* mList = new std::vector<std::string>();
   DIR *dp;
   struct dirent *dirp;
@@ -122,9 +122,17 @@ std::vector<std::string>* System::getFileList(const std::string& filename) {
     std::cout << "Error(" << errno << ") opening " << filename << std::endl;
   }
 
+  struct stat mFileInfo;
   while ((dirp = readdir(dp)) != NULL) {
-    if (dirp->d_name[0] != '.') {
-      mList->push_back(std::string(dirp->d_name));
+    if (dirp->d_name[0] != '.' && dirp->d_type) {
+      std::string mFullPath = filename + dirp->d_name;
+      if (lstat(mFullPath.c_str(), &mFileInfo) < 0) {
+	perror(mFullPath.c_str());
+      } else {
+	if (S_ISDIR(mFileInfo.st_mode) != files) {
+          mList->push_back(std::string(dirp->d_name));
+	}
+      }
     }
   }
   closedir(dp);

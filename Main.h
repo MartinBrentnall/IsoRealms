@@ -22,13 +22,15 @@
 #include <iostream>
 #include <vector>
 #include <xercesc/util/PlatformUtils.hpp>
+#include <xercesc/util/IOException.hpp>
 #include <GL/glew.h>
 #include <SDL/SDL.h>
 
 #include <IsoRealms/Configuration.h>
 #include <IsoRealms/InitException.h>
-#include <IsoRealms/KeyStates.h>
-#include <IsoRealms/LuaSupport.h>
-#include <IsoRealms/PluginSupportException.h>
+#include <IsoRealms/Input/KeyStates.h>
+#include <IsoRealms/LuaSupport/LuaSupport.h>
+
+#include "Engine.h"
 
 #endif

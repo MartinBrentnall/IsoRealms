@@ -30,7 +30,7 @@ class IHUDComponent {
 //   static IFont* getFont();
   virtual ~IHUDComponent() {}
 
-  virtual void update(int) = 0;
+  virtual void update(unsigned int) = 0;
   virtual void render() = 0;
   virtual bool input(SDL_Event&) = 0;
   virtual bool contains(float, float) = 0;

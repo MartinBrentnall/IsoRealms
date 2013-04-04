@@ -3,71 +3,39 @@
 
 #include <string>
 
-#include "ColourProxy.h"
-#include "CommandProxy.h"
 #include "Configuration.h"
-#include "DOMNodeWrapper.h"
-#include "ElementSetRegistry.h"
-#include "I3DModel.h"
-#include "I3DModelFactory.h"
-#include "IColour.h"
+#include "Persistence/DOMNodeWrapper.h"
+#include "LuaSupport/IArgumentSource.h"
 #include "ICommand.h"
-#include "IElementRegistryListener.h"
-#include "IInteger.h"
-#include "ILuaFunctionArgument.h"
-#include "ILuaScript.h"
-#include "InputCommands.h"
-#include "IntegerProxy.h"
-#include "IPluginRegistryListener.h"
+#include "LuaSupport/ILuaFunctionArgument.h"
+#include "LuaSupport/ILuaScript.h"
+#include "Input/InputCommands.h"
 #include "IProject.h"
-#include "IResources.h"
-#include "ISound.h"
-#include "ITexture.h"
-#include "LuaScript.h"
-#include "LuaScriptProxy.h"
-#include "LuaScriptWithArgs.h"
+#include "LuaSupport/LuaScript.h"
+#include "LuaSupport/LuaScriptWithArgs.h"
 #include "Map.h"
-#include "ModelFactoryProxy.h"
 #include "PluginRegistry.h"
-#include "Registry.h"
-#include "SoundProxy.h"
-#include "TextureProxy.h"
+#include "Resources/IResources.h"
+#include "Resources/Resources.h"
 
-class Project:public IProject,
-              public IResources,
-              public IPluginRegistryListener {
+class Project:public IProject {
   private:
-  bool cEditing;
   Map* cMap;
   PluginRegistry cPluginRegistry;
-  ElementSetRegistry cElementSetRegistry;
-  Registry<ILuaScript, LuaScriptProxy> cScriptRegistry;
-  Registry<ICommand, CommandProxy> cCommandRegistry;
-  Registry<IColour, ColourProxy> cColourRegistry;
-  Registry<ITexture, TextureProxy> cTextureRegistry;
-  Registry<I3DModelFactory, ModelFactoryProxy> c3DModelRegistry;
-  Registry<ISound, SoundProxy> cSoundRegistry;
-  Registry<IInteger, IntegerProxy> cIntegerRegistry;
+  Resources cResources;
+  ICamera* cCamera;
+  IScript* cInitScript;
+  
   InputCommands cInputCommands;
 
-  std::vector<IDynamicElement*> cPreLoopCommands;
+  std::vector<IDynamicElement*> cDynamicElements;
   std::vector<IDynamicElement*> cPostLoopCommands;
-  std::vector<IVisualElement*> cPreLoopRenderers;
   std::vector<IVisualElement*> cPostLoopRenderers;
   std::vector<IInteractiveElement*> cInteractivePlugins;
   
-  /**
-   * Register listeners on registries.
-   */
-  void registerListeners();
-  
-  template <class T> T* getDirectory(T*, std::vector<std::string>);
-
-  void loadScript(DOMNodeWrapper*);
-  
   public:
   Project();
-  Project(DOMNodeWrapper*, IPluginRegistryListener*, IElementRegistryListener*, const std::string&, bool);
+  Project(DOMNodeWrapper*, const std::string&, IEditingContext*);
 
   void initRuntime();
   void input(SDL_Event&);
@@ -80,44 +48,13 @@ class Project:public IProject,
   void executePostLoopCommands(int);
   void executePreLoopRenderers();
   void executePostLoopRenderers();
-  
-  /*************************\
-   * Implements IResources *
-  \*************************/
-  IProject* getProject();
-  bool isEditing();
-  I3DModel* getModel(DOMNodeWrapper*, Vertex*);
-  I3DModel* getModel(const std::string&, Vertex*);  
-  IColour* getColour(DOMNodeWrapper*);
-  IScript* getLuaScript(DOMNodeWrapper*);
-  Script* getScript(DOMNodeWrapper*);
-  ITexture* getTexture(DOMNodeWrapper*);
-  ISound* getSound(DOMNodeWrapper*);
-  ILuaFunctionArgument* getArgument(DOMNodeWrapper*);
-  IInteger* getInteger(const std::string&);
-  void add(ICommand*, std::vector<std::string>, std::string);
-  void add(IColour*, std::vector<std::string>, std::string);
-  void add(ITexture*, std::vector<std::string>, std::string);
-  void add(I3DModelFactory*, std::vector<std::string>, std::string);
-  void add(ISound*, std::vector<std::string>, std::string);
-  void add(IInteger*, std::vector<std::string>, std::string);
-
-  /**************************************\
-   * Implements IPluginRegistryListener *
-  \**************************************/
-  void pluginInstanceAdded(PluginRegistry*, std::string, std::string);
-  void pluginInstanceRemoved(IPlugin*, std::string);
 
                 // TODO: Some interface?
   bool* registerDigitalInput(const std::string&);
   void initPlugins(IZone*, unsigned int);
   void renderPreZone(IZone*);
-  void initElementsComplete();
   void zoneContextChanged(IMap*, IZone*);
   void loadPluginData(DOMNodeWrapper*, IZone*);
-  std::vector<IElement*> loadElements(DOMNodeWrapper*, BlockLocation*, IElementContainer*);
-  IZoneRenderer* getZoneRenderer(DOMNodeWrapper*);
-  std::string getInstanceName(IElementSet*);
   void savePluginData(DOMNodeWriter*, IMap*, IZone*);
   
   std::vector<IZone*> getAdjacentZones(IZone*);
@@ -133,9 +70,20 @@ class Project:public IProject,
   void removeElement(IElement*);
   Zone* getZone(BlockLocation&);
   Map* getMap();
-  void addPluginRegistryListener(IPluginRegistryListener*);
   PluginRegistry* getPluginRegistry();
-  ElementSetRegistry* getElementSetRegistry();
+  IResourceManager* getResourceManager();
+  void staticChanged();
+  
+  void setZoneHandler(IZoneHandler*);
+  float getEast();
+  float getWest();
+  float getNorth();
+  float getSouth();
+  float getTop();
+  float getBottom();
+  float getAspectRatio();
+  int getZoneCount();
+  void setEditingContext(IEditingContext*);
 };
 
 #endif

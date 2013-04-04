@@ -37,6 +37,9 @@ class IRectangularComponent:public IHUDComponent,
     BOTTOM,
     RIGHT
   };
+  
+  virtual void gainedFocus() = 0;
+  virtual void lostFocus() = 0;
 };
 
 #endif

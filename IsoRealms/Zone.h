@@ -28,16 +28,16 @@
 #include "BlockLocation.h"
 #include "Collision.h"
 #include "CollisionVertex.h"
-#include "DOMNodeWrapper.h"
-#include "DOMNodeWriter.h"
-#include "ElementSetRegistry.h"
-#include "IElement.h"
-#include "IElementContainer.h"
-#include "IElementHandler.h"
+#include "Persistence/DOMNodeWrapper.h"
+#include "Persistence/DOMNodeWriter.h"
 #include "IProject.h"
 #include "IsoRealmsConstants.h"
 #include "IZone.h"
 #include "IZoneChangeListener.h"
+#include "Resources/ElementType/ElementHandler.h"
+#include "Resources/ElementType/IElement.h"
+#include "Resources/ElementType/IElementHandler.h"
+#include "Resources/IResources.h"
 
 /**
  * When performing collision and contains tests and edge cases show up, zones
@@ -47,22 +47,16 @@
  *  - On west/east faces, West zone is preferred over east.
  *  - On bottom/top faces, bottom zone preferred over top.
  */
-class Zone:public BlockArea, 
-           public IElementContainer,
+class Zone:public BlockArea,
            public IsoRealmsConstants,
            public IZone {
   private:
-  GLuint cDisplayList;
-  GLuint cEditingDisplayList;
-  std::vector<IElement*> cElements;
-  std::vector<IElementHandler*> cElementHandlers;
-  std::vector<IElement*> cDirtyElements;
+  ElementHandler cElementHandler;
+  
   std::vector<IZoneChangeListener*> cChangeListeners;
 
 
   void renderBounds();
-
-  int getZoneIndex(IElement*);
 
   void zoneChanged();
 
@@ -70,7 +64,7 @@ class Zone:public BlockArea,
 
   public:
   Zone(BlockLocation&, BlockLocation&);
-  Zone(DOMNodeWrapper*, IProject*, IMap*);
+  Zone(DOMNodeWrapper*, IProject*, IResources*, IMap*);
 
   /**
    * TODO: Write more about this.
@@ -86,7 +80,7 @@ class Zone:public BlockArea,
 
   void renderEditing();
 
-  void save(IProject*, DOMNodeWriter*);
+  void save(DOMNodeWriter*, IResourceLocator*);
 
   void pushElement(IElement*);
   void setDirty(IElement*);
@@ -101,7 +95,7 @@ class Zone:public BlockArea,
    * @returns true if one or more instances of the specified element were
    *          removed, otherwise false.
    */
-  bool removeElement(IElement*);
+  void removeElement(IElement*);
 
   /**
    * Add a listener to be notified when elements are added or removed from the
@@ -125,6 +119,10 @@ class Zone:public BlockArea,
 
   bool contains(IElement*);
   
+  void addElement(IElement*);
+  
+  void staticChanged();
+  
   /********************\
    * Implements IZone *
   \********************/
@@ -135,13 +133,13 @@ class Zone:public BlockArea,
   void updateRuntime(unsigned int);
   void renderStatic();
   void renderDynamic();
-
-  /********************************\
-   * Implements IElementContainer *
-  \********************************/
-  void elementDirty(IElement*);
-  void addElementHandler(IElementHandler*);
-  void setHandlerActive(IElementHandler*, bool);
+  
+  int getZoneEast(); 
+  int getZoneWest();
+  int getZoneNorth();
+  int getZoneSouth();
+  int getZoneTop();
+  int getZoneBottom();
 };
 
 #endif

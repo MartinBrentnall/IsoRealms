@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+
+<Component>
+  <FlexibleGrid name="grid" align="top left" rows="8" columns="2">
+    <Cell row="8" column="1">
+      <Label>Red:</Label>
+    </Cell>
+    <Cell row="7" column="1">
+      <Label>Green:</Label>
+    </Cell>
+    <Cell row="6" column="1">
+      <Label>Blue:</Label>
+    </Cell>
+    <Cell row="5" column="1">
+      <Label>Hue:</Label>
+    </Cell>
+    <Cell row="4" column="1">
+      <Label>Saturation:</Label>
+    </Cell>
+    <Cell row="3" column="1">
+      <Label>Lightness:</Label>
+    </Cell>
+    <Cell row="2" column="1">
+      <Label>Alpha:</Label>
+    </Cell>
+    <Cell row="1" column="1">
+      <Label>Preview:</Label>
+    </Cell>
+    <Cell row="8" column="2">
+      <Slider name="redValue"/>
+    </Cell>
+    <Cell row="7" column="2">
+      <Slider name="greenValue"/>
+    </Cell>
+    <Cell row="6" column="2">
+      <Slider name="blueValue"/>
+    </Cell>
+    <Cell row="5" column="2">
+      <Slider name="hueValue"/>
+    </Cell>
+    <Cell row="4" column="2">
+      <Slider name="saturationValue"/>
+    </Cell>
+    <Cell row="3" column="2">
+      <Slider name="lightnessValue"/>
+    </Cell>
+    <Cell row="2" column="2">
+      <Slider name="alphaValue"/>
+    </Cell>
+    <Cell row="1" column="2">
+      <Panel name="previewPanel"/>
+    </Cell>
+    <Cell row="8" column="3">
+      <TextField name="redValueInput"/>
+    </Cell>
+    <Cell row="7" column="3">
+      <TextField name="greenValueInput"/>
+    </Cell>
+    <Cell row="6" column="3">
+      <TextField name="blueValueInput"/>
+    </Cell>
+    <Cell row="5" column="3">
+      <TextField name="hueValueInput"/>
+    </Cell>
+    <Cell row="4" column="3">
+      <TextField name="saturationValueInput"/>
+    </Cell>
+    <Cell row="3" column="3">
+      <TextField name="lightnessValueInput"/>
+    </Cell>
+    <Cell row="2" column="3">
+      <TextField name="alphaValueInput"/>
+    </Cell>
+    <Cell row="1" column="3">
+      <Label> </Label>
+    </Cell>
+  </FlexibleGrid>
+</Component>

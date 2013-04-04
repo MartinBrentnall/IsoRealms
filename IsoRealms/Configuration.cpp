@@ -20,8 +20,7 @@
 
 Configuration* Configuration::cInstance = NULL;
 
-Configuration::Configuration(std::string filename, std::string engineFileName) {
-  cConfigurationFile = engineFileName;
+Configuration::Configuration(std::string filename) {
   cSettingsFile = filename;
   cScreenConfiguration = NULL;
   cEngine = NULL;
@@ -42,32 +41,10 @@ void Configuration::parseSettings(DOMNodeWrapper *node) {
   }
 }
 
-void Configuration::parseConfiguration(DOMNodeWrapper *node) {
-  for (int i = 0; i < node->getChildCount(); i++) {
-    DOMNodeWrapper *mNode = node->getChild(i);
-    std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "Engine") {
-      std::string mEngineName = mNode->getAttribute("name");
-      std::string mEngineLocation = System::getConfigurationResource("Engine/" + mEngineName + "/libEngine");
-      void* mEngineSO = dlopen(mEngineLocation.c_str(), RTLD_LAZY);
-      if (!mEngineSO) {
-        throw InitException("Cannot load library: " + std::string(dlerror()));
-      }
-      createEngine* createEngineFunction = cast_voidptr_to_funcptr<createEngine*>(dlsym(mEngineSO, "create"));
-      const char* mDlsymError = dlerror();
-      if (mDlsymError) {
-        throw InitException("Cannot load symbol: " + std::string(mDlsymError));
-      }
-      cEngine = createEngineFunction(mNode);
-    }
-  }
-}
-
 Configuration* Configuration::getInstance() {
   if (cInstance == NULL) {
     std::string mSettingsFileLocation = System::getSettingsFileLocation();
-    std::string mConfigurationFileLocation = System::getConfigurationFileLocation();
-    cInstance = new Configuration(mSettingsFileLocation, mConfigurationFileLocation);
+    cInstance = new Configuration(mSettingsFileLocation);
   }
   return cInstance;
 }
@@ -105,36 +82,32 @@ ScreenConfiguration* Configuration::getScreenConfiguration() {
   return cScreenConfiguration;
 }
 
-IEngine* Configuration::getEngine() {
-  try {
-    DOMNodeWrapper* mConfigurationRootNode = new DOMNodeWrapper(cConfigurationFile);
-    for (int i = 0; i < mConfigurationRootNode->getChildCount(); i++) {
-      DOMNodeWrapper *mNode = mConfigurationRootNode->getChild(i);
-      std::string mValue = mNode->getNodeName();
-      if (mValue == "IsoRealmsConfiguration") {
-        parseConfiguration(mNode);
-      }
-    }
-  } catch (ParseException &e) {
-    throw InitException("Parsing exception occurred during initalization\n" + e.getMessage());
-  }
-  return cEngine;
+void Configuration::setViewPort() {
+  cScreenConfiguration->setViewPort();
 }
 
 void Configuration::registerScript(const std::string& script) {
   cLuaSupport->registerScript(script);
 }
 
+void Configuration::setGlobalVariable(IArgumentDefinition* argument) {
+  cLuaSupport->setGlobalVariable(argument);
+}
+
 void Configuration::executeScript(const std::string& script, std::vector<ILuaFunctionArgument*> arguments) {
   cLuaSupport->executeScript(script, arguments);
 }
 
-ILuaFunctionArgument* Configuration::createArgument(const std::string& name, ISound* sound) {
-  return cLuaSupport->createArgument(name, sound);
+IArgumentDefinition* Configuration::createArgumentDefinition(DOMNodeWrapper* node, IResourceAccessor* resources) {
+  return cLuaSupport->createArgumentDefinition(node, resources);
 }
 
-ILuaFunctionArgument* Configuration::createArgument(const std::string& name, IInteger* value) {
-  return cLuaSupport->createArgument(name, value);
+IArgumentSource* Configuration::createArgument(DOMNodeWrapper* node, IResourceAccessor* resources) {
+  return cLuaSupport->createArgument(node, resources);
+}
+
+void Configuration::enableLuaSupport(InitLuaFunction* initLuaFunction, IRuntimeContext* runtimeContext) {
+  cLuaSupport->enableLuaSupport(initLuaFunction, runtimeContext);
 }
 
 void Configuration::save() {

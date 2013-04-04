@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+
+<Component>
+  <EvenGrid name="grid" rows="1" columns="2">
+    <Cell row="1" column="1">
+      <ListBox name="listFolders"/>
+    </Cell>
+    <Cell row="1" column="2">
+      <ListBox name="listFiles"/>
+    </Cell>
+  </EvenGrid>
+</Component>

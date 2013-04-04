@@ -18,43 +18,43 @@
  */
 #include "Map.h"
 
-Map::Map() {
-  cZoneRenderers.push_back(new DefaultZoneRenderer());
+Map::Map(IProject* project) {
+  cProject = project;
+  cZoneHandlers.push_back(new DefaultZoneHandler());
 }
 
-Map::Map(DOMNodeWrapper* node, bool editing, IProject* project) {
+Map::Map(DOMNodeWrapper* node, bool editing, IProject* project, IResources* resources) {
   cProject = project;
   if (editing) {
-    cZoneRenderers.push_back(new DefaultZoneRenderer());
+    cZoneHandlers.push_back(new DefaultZoneHandler());
   }
   BlockLocation mStartLocation(0, 0, 0);
 
-  std::cout << "Loading elements and zones..." << std::endl;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "Elements") {
-      cElements = project->loadElements(mNode, &mStartLocation, this);
-      cDirtyElements = cElements;
-      std::cout << "Loaded map elements..." << std::endl;
-    } else if (mValueAsString == "ZoneRenderer") {
-      IZoneRenderer* mZoneRenderer = project->getZoneRenderer(mNode);
+    if (mValueAsString == "Element") {
+      resources->loadElement(mNode, &mStartLocation, this);
+    } else if (mValueAsString == "ZoneHandler") {
+      std::string mZoneHandlerName = mNode->getAttribute("value");
+      IZoneHandler* mZoneRenderer = resources->getZoneHandler(mZoneHandlerName);
       if (!editing) {
-        cZoneRenderers.push_back(mZoneRenderer);
+        cZoneHandlers.push_back(mZoneRenderer);
+      } else {
+        cZoneHandlersPersisted.push_back(mZoneRenderer);
       }
-      std::cout << "Loaded zone renderer..." << std::endl;
     } else if (mValueAsString == "Zone") {
-      Zone* mZone = new Zone(mNode, project, this);
+      Zone* mZone = new Zone(mNode, project, resources, this);
       addZone(mZone);
-      std::cout << "Loaded zone..." << std::endl;
     } else {
       // TODO: Throw something
     }
   }
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    cElements[i]->setElementContainer(this);
-  }
-  std::cout << "Done!" << std::endl;
+  cElementHandler.setAllDirty();
+}
+
+void Map::addElement(IElement* element) {
+  cElementHandler.addElement(element);
 }
 
 DOMNodeWrapper* Map::getConfigurationNode(DOMNodeWrapper* node) {
@@ -160,16 +160,6 @@ int Map::getZoneIndex(IZone* zone) {
   return -1;
 }
 
-int Map::getElementIndex(IElement* element) {
-  for (unsigned int i = 0; i < cDirtyElements.size(); i++) {
-    if (cDirtyElements[i] == element) {
-      return i;
-    }
-  }
-  // TODO: Throw exception
-  return -1;
-}
-
 void Map::initMap(unsigned int pass, bool editing) {
   std::vector<IZone*> mCleanZones;
   for (unsigned int i = 0; i < cDirtyZones.size(); i++) {
@@ -184,42 +174,8 @@ void Map::initMap(unsigned int pass, bool editing) {
     int mIndexToRemove = getZoneIndex(mCleanZones[i]);
     cDirtyZones.erase(cDirtyZones.begin() + mIndexToRemove);
   }
-
-  std::vector<IElement*> mCleanElements;
-  for (unsigned int i = 0; i < cDirtyElements.size(); i++) {
-    if (cDirtyElements[i]->initElement(pass)) {
-      mCleanElements.push_back(cDirtyElements[i]);
-    }
-  }
-
-  for (unsigned int i = 0; i < mCleanElements.size(); i++) {
-    int mIndexToRemove = getElementIndex(mCleanElements[i]);
-    cDirtyElements.erase(cDirtyElements.begin() + mIndexToRemove);
-  }
-
-  if (cDirtyElements.empty()) {
-
-    // Game rendering
-    glDeleteLists(cDisplayList, 1);
-    cDisplayList = glGenLists(1);
-    glNewList(cDisplayList, GL_COMPILE);
-    for (unsigned int i = 0; i < cElements.size(); i++) {
-      cElements[i]->renderStatic();
-    }
-    glEndList();
-
-    // Editor-only rendering
-    glDeleteLists(cEditingDisplayList, 1);
-    cEditingDisplayList = glGenLists(1);
-    glNewList(cEditingDisplayList, GL_COMPILE);
-    for (unsigned int i = 0; i < cElements.size(); i++) {
-      cElements[i]->renderStaticEditing();
-    }
-    glEndList();
-    
-    cProject->initElementsComplete();
-  }
-  std::cout << "Init map done!" << std::endl;
+  
+  cElementHandler.init(pass, editing);
 }
 
 void Map::initRuntime() {
@@ -230,17 +186,12 @@ void Map::input(SDL_Event& event) {
   for (unsigned int i = 0; i < cZones.size(); i++) {
     cZones[i]->input(event);
   }
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    std::vector<IInteractiveElement*> mInteractiveElements = cElements[i]->getInteractiveElements();
-    for (unsigned int j = 0; j < mInteractiveElements.size(); j++) {
-      mInteractiveElements[j]->input(event);
-    }
-  }
+//  cElementHandler.input(event);
 }
 
 void Map::initMap(bool editing) {
   unsigned int mInitPass = 0;
-  while (!cDirtyZones.empty() || !cDirtyElements.empty()) {
+  while (!cDirtyZones.empty() || cElementHandler.isDirty()) {
     initMap(mInitPass, editing);
     mInitPass++;
   }
@@ -255,12 +206,10 @@ void Map::update(int milliseconds) {
   }
   // TODO: End.
 
-  for (unsigned int i = 0; i < cZoneRenderers.size(); i++) {
-    cZoneRenderers[i]->update(mZones, milliseconds);
+  for (unsigned int i = 0; i < cZoneHandlers.size(); i++) {
+    cZoneHandlers[i]->update(mZones, milliseconds);
   }
-  for (unsigned int i = 0; i < cElementHandlers.size(); i++) {
-    cElementHandlers[i]->update(milliseconds);
-  }
+  cElementHandler.update(milliseconds);
 }
 
 void Map::updateRuntime(int milliseconds) {
@@ -271,12 +220,10 @@ void Map::updateRuntime(int milliseconds) {
   }
   // TODO: End.
   
-  for (unsigned int i = 0; i < cZoneRenderers.size(); i++) {
-    cZoneRenderers[i]->updateRuntime(mZones, milliseconds);
+  for (unsigned int i = 0; i < cZoneHandlers.size(); i++) {
+    cZoneHandlers[i]->updateRuntime(mZones, milliseconds);
   }
-  for (unsigned int i = 0; i < cElementHandlers.size(); i++) {
-    cElementHandlers[i]->updateRuntime(milliseconds);
-  }
+  cElementHandler.updateRuntime(milliseconds);
 }
 
 void Map::render() {
@@ -287,20 +234,15 @@ void Map::render() {
     mZones.push_back(cZones[i]);
   }
   // TODO: End.
-  for (unsigned int i = 0; i < cZoneRenderers.size(); i++) {
-    cZoneRenderers[i]->render(mZones, cProject);
+  for (unsigned int i = 0; i < cZoneHandlers.size(); i++) {
+    cZoneHandlers[i]->render(mZones, cProject);
   }
-  glCallList(cDisplayList);
-  for (unsigned int i = 0; i < cElementHandlers.size(); i++) {
-    cElementHandlers[i]->render();
-  }
+  cElementHandler.renderStatic();
+  cElementHandler.renderDynamic();
 }
 
 void Map::renderEditing() {
-  for (unsigned int i = 0; i < cZones.size(); i++) {
-    cZones[i]->renderEditing();
-  }
-  glCallList(cEditingDisplayList);
+  cElementHandler.renderEditing();
 }
 
 void Map::zoneChanged(IZone* zone) {
@@ -313,35 +255,25 @@ void Map::zoneChanged(IZone* zone) {
   cDirtyZones.push_back(zone);
 }
 
-void Map::save(DOMNodeWriter* node) {
+void Map::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   DOMNodeWriter* mMapNode = node->addBranch("Map");
-  DOMNodeWriter* mElementsNode = mMapNode->addBranch("Elements");
-  BlockLocation mStartLocation(0, 0, 0);
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    IElementSet* mElementSet = cElements[i]->getElementSet();
-    std::string mElementSetName = cProject->getInstanceName(mElementSet);
-    DOMNodeWriter* mElementNode = mElementsNode->addBranch("Element");
-    mElementNode->addAttribute("set", mElementSetName);
-
-    // TODO: Enable this! (you'll need to implement some functions)
-    IElementFactory* mElementFactory = cElements[i]->getElementFactory();
-    std::string mElementTypeName = mElementFactory->getName();
-    mElementNode->addAttribute("type", mElementTypeName);
-    cElements[i]->save(mElementNode, mStartLocation);
+  for (unsigned int i = 0; i < cZoneHandlersPersisted.size(); i++) {
+    DOMNodeWriter* mZoneHandlerNode = mMapNode->addBranch("ZoneHandler");
+    std::string mZoneHandlerPath = resourceLocator->getPath(cZoneHandlersPersisted[i]);
+    mZoneHandlerNode->addAttribute("value", mZoneHandlerPath);
   }
+  BlockLocation mStartLocation(0, 0, 0);
+  cElementHandler.save(mMapNode, resourceLocator, mStartLocation);
   for (unsigned int i = 0; i < cZones.size(); i++) {
     DOMNodeWriter* mZoneNode = mMapNode->addBranch("Zone");
     DOMNodeWriter* mPluginsNode = mZoneNode->addBranch("Plugins");
     cProject->savePluginData(mPluginsNode, this, cZones[i]);
-    cZones[i]->save(cProject, mZoneNode);
+    cZones[i]->save(mZoneNode, resourceLocator);
   }
-  mMapNode->save("Test.isorealms");
 }
 
 void Map::pushElement(IElement* element) {
-  element->setElementContainer(this);
-  cElements.push_back(element);
-  cDirtyElements.push_back(element);
+  cElementHandler.addElement(element);
 }
 
 Zone* Map::getElementContainer(IElement* element) {
@@ -354,47 +286,82 @@ Zone* Map::getElementContainer(IElement* element) {
   return NULL;
 }
 
-Zone* Map::removeElement(IElement* element) {
+void Map::setZoneHandler(IZoneHandler* zoneHandler) {
+  cZoneHandlers.clear();
+  cZoneHandlers.push_back(zoneHandler);
+}
+
+void Map::staticChanged() {
   for (unsigned int i = 0; i < cZones.size(); i++) {
-    if (cZones[i]->removeElement(element)) {
-      zoneChanged(cZones[i]);
-      return cZones[i];
-    }
+    cZones[i]->staticChanged();
   }
-  std::cout << "Warning: Element for removal not found in any zone.  Segmentation fault may follow!" << std::endl;
-  return NULL;
+}
+
+void Map::removeElement(IElement* element) {
+//   for (unsigned int i = 0; i < cZones.size(); i++) {
+//     if (cZones[i]->removeElement(element)) {
+//       zoneChanged(cZones[i]);
+//       return cZones[i];
+//     }
+//   }
+//   std::cout << "Warning: Element for removal not found in any zone.  Segmentation fault may follow!" << std::endl;
+//   return NULL;
 }
 
 bool Map::containsElement(IElement* element) {
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    if (element == cElements[i]) {
-      return true;
-    }
-  }
-  return false;
+  return cElementHandler.contains(element);
 }
 
-void Map::elementDirty(IElement* element) {
-  if (!containsElement(element)) {
-    std::cout << "WARNING: Specified dirty element is not a member of this Map!" << std::endl;
-    std::cout << "WARNING: Map contains " << cElements.size() << std::endl;
-    return;
+float Map::getEast() {
+  int mValue = INT_MIN;
+  for (unsigned int i = 0; i < cZones.size(); i++) {
+    mValue = std::max(cZones[i]->getEast(), mValue);
   }
-  for (unsigned int i = 0; i < cDirtyElements.size(); i++) {
-    if (cDirtyElements[i] == element) {
-      return;
-    }
-  }
-  // TODO: Does order matter?
-  cDirtyElements.push_back(element);
+  return mValue;
 }
 
-void Map::addElementHandler(IElementHandler* elementHandler) {
-  cElementHandlers.push_back(elementHandler);
+float Map::getWest() {
+  int mValue = INT_MAX;
+  for (unsigned int i = 0; i < cZones.size(); i++) {
+    mValue = std::min(cZones[i]->getWest(), mValue);
+  }
+  return mValue;
 }
 
-void Map::setHandlerActive(IElementHandler*, bool) {
-  // TODO: Implement this
+float Map::getNorth() {
+  int mValue = INT_MIN;
+  for (unsigned int i = 0; i < cZones.size(); i++) {
+    mValue = std::max(cZones[i]->getNorth(), mValue);
+  }
+  return mValue;
+}
+
+float Map::getSouth() {
+  int mValue = INT_MAX;
+  for (unsigned int i = 0; i < cZones.size(); i++) {
+    mValue = std::min(cZones[i]->getSouth(), mValue);
+  }
+  return mValue;
+}
+
+float Map::getTop() {
+  int mValue = INT_MIN;
+  for (unsigned int i = 0; i < cZones.size(); i++) {
+    mValue = std::max(cZones[i]->getTop(), mValue);
+  }
+  return mValue;
+}
+
+float Map::getBottom() {
+  int mValue = INT_MAX;
+  for (unsigned int i = 0; i < cZones.size(); i++) {
+    mValue = std::min(cZones[i]->getBottom(), mValue);
+  }
+  return mValue;
+}
+
+int Map::getZoneCount() {
+  return cZones.size();
 }
 
 Map::~Map() {

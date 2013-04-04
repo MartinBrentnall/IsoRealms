@@ -23,27 +23,35 @@
 #include <string>
 #include <vector>
 
+#include "../Configuration.h"
+#include "../MultipleClickDetector.h"
+#include "IListBoxListener.h"
 #include "ISizedComponent.h"
 #include "LookAndFeel.h"
 
 class ListBox:public ISizedComponent {
   private:
+  MultipleClickDetector cMultipleClickDetector;
   unsigned int cSelectedItem;
   std::vector<std::string> cItems;
+  std::vector<IListBoxListener*> cListeners;
 
   bool keyDown(SDLKey&);
+  bool mouseButtonPressed(SDL_Event&);
 
   public:
   ListBox();
 
   std::string& getSelectedItem();
   void addItem(const std::string&);
+  void addListener(IListBoxListener*);
   void removeItem(const std::string&);
+  void clear();
 
   /******************************\
    * Implements ISizedComponent *
   \******************************/
-  void update(int);
+  void update(unsigned int);
   void render();
   bool input(SDL_Event&);
   float getWidth();

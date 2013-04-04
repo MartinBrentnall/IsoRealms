@@ -23,7 +23,7 @@
 #include <string>
 
 #include "BlockLocation.h"
-#include "DOMNodeWrapper.h"
+#include "Persistence/DOMNodeWrapper.h"
 
 /**
  *

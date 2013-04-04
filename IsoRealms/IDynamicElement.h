@@ -23,7 +23,7 @@ class IDynamicElement {
   public:
   virtual ~IDynamicElement() {}
 
-  virtual void update(int) = 0;
+  virtual void update(unsigned int) = 0;
 };
 
 #endif

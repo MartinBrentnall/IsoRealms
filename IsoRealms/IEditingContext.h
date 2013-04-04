@@ -19,14 +19,18 @@
 #ifndef I_EDITING_CONTEXT_H
 #define I_EDITING_CONTEXT_H
 
+#include "BlockLocation.h"
 #include "ICommandInfo.h"
 #include "IComponentContainer.h"
+#include "Resources/IResourceSelector.h"
 
 class IEditingContext {
   public:
   virtual void registerCommand(ICommandInfo*) = 0;
   virtual IComponentContainer* getComponentContainer() = 0;
   virtual BlockLocation* getBlockLocation() = 0;
+  virtual IResourceSelector* getResourceSelector() = 0;
+  virtual void staticChanged() = 0;
 };
 
 #endif

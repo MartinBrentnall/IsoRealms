@@ -14,83 +14,93 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+include_directories(${PROJECT_SOURCE_DIR})
+
 add_library(IsoRealms SHARED
   BlockArea.cpp
   BlockLocation.cpp
-  Colour.cpp
-  ColourProxy.cpp
   Collision.cpp
   CollisionVertex.cpp
   CommandManager.cpp
-  CommandProxy.cpp
   Condition.cpp
   ConditionElement.cpp
   Configuration.cpp
-  DOMNodeWrapper.cpp
-  DOMNodeWriter.cpp
   DefaultCommandInfo.cpp
-  DefaultZoneRenderer.cpp
-  DigitalInput.cpp
-  DummyPlugin.cpp
-  DummyPluginRegistry.cpp
-  ElementSetRegistry.cpp
   GUI/AbstractRectangularComponent.cpp
   GUI/Button.cpp
   GUI/CloseDialogCommand.cpp
   GUI/ComponentEdgeLayout.cpp
+  GUI/Container.cpp
   GUI/Dialog.cpp
+  GUI/Dialogs/ComponentColourSelector.cpp
+  GUI/Dialogs/ComponentFileSelector.cpp
   GUI/EdgeRelation.cpp
   GUI/FlexibleGridLayoutComponent.cpp
   GUI/GridLayoutComponent.cpp
   GUI/ListBox.cpp
   GUI/LookAndFeel.cpp
+  GUI/MenuBar.cpp
+  GUI/MenuItem.cpp
+  GUI/MenuPopup.cpp
+  GUI/PanelComponent.cpp
+  GUI/PopupMenuCommand.cpp
+  GUI/RectangularComponent.cpp
   GUI/RectangleBoundsCalculator.cpp
   GUI/ResizableDialog.cpp
+  GUI/SelectableComponent.cpp
   GUI/ScrollableContainer.cpp
+  GUI/SliderComponent.cpp
+  GUI/TabbedContainer.cpp
   GUI/TextFieldComponent.cpp
   GUI/TextLabelComponent.cpp
   GUI/WrappingGridComponent.cpp
   IHUDComponent.cpp
   IPlugin.cpp
-  IPluginSupport.cpp
   IllegalStateException.cpp
   InitException.cpp
-  InputCommands.cpp
-  IntegerProxy.cpp
+  Input/DigitalInput.cpp
+  Input/InputCommands.cpp
+  Input/KeyStates.cpp
+  Input/SDLKeyMap.cpp
   IsoRealmsConstants.cpp
-  KeyStates.cpp
-  LuaIntegerArgument.cpp
-  LuaScript.cpp
-  LuaScriptProxy.cpp
-  LuaScriptWithArgs.cpp
-  LuaSupport.cpp
+  LuaSupport/LuaGlobalVariable.cpp
+  LuaSupport/LuaScript.cpp
+  LuaSupport/LuaScriptWithArgs.cpp
+  LuaSupport/LuaSupport.cpp
   Map.cpp
   MiscFunctions.cpp
-  ModelFactoryProxy.cpp
+  MultipleClickDetector.cpp
   OpenDialogCommand.cpp
-  ParseException.cpp
-  PlugSocket.cpp
+  Persistence/DOMNodeWrapper.cpp
+  Persistence/DOMNodeWriter.cpp
+  Persistence/ParseException.cpp
   PluginRegistry.cpp
-  PluginSupportException.cpp
   Project.cpp
   Rectangle.cpp
-  Registry.cpp
-  RegistryProxy.cpp
-  RuntimeContext.cpp
+  Resources/Colour/Colour.cpp
+  Resources/Colour/ColourRegistry.cpp
+  Resources/Camera/DummyCamera.cpp
+  Resources/ElementType/ElementHandler.cpp
+  Resources/Float/Float.cpp
+  Resources/Font/DummyFont.cpp
+  Resources/Integer/Integer.cpp
+  Resources/Integer/IntegerRegistry.cpp
+  Resources/ResourceInitialiser.cpp
+  Resources/Resources.cpp
+  Resources/RuntimeContext.cpp
+  Resources/Sound/DummySound.cpp
+  Resources/String/IntegerToString.cpp
+  Resources/String/StringRegistry.cpp
+  Resources/Texture/Texture.cpp
+  Resources/Texture/TextureRegistry.cpp
+  Resources/Vertex/Vertex.cpp
+  Resources/ZoneHandler/DefaultZoneHandler.cpp
+  Resources/ZoneHandler/ZoneHandlerRegistry.cpp
   ScreenConfiguration.cpp
   ScreenMode.cpp
-  Script.cpp
-  SDLKeyMap.cpp
-  SoundProxy.cpp
   System.cpp
-  Texture.cpp
-  TextureProxy.cpp
   Utils.cpp
-  Vertex.cpp
   Zone.cpp
   ZoneBrush.cpp
   ZoneEvent.cpp 
-  ZoneRendererProxy.cpp
 )
-
-

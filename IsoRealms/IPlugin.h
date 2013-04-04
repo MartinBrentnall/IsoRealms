@@ -23,23 +23,21 @@
 #include <vector>
 
 #include "BlockLocation.h"
-#include "DOMNodeWriter.h"
-#include "IAddressableEntity.h"
 #include "IComponentContainer.h"
 #include "IDynamicElement.h"
 #include "IEditingContext.h"
 #include "IInteractiveElement.h"
 #include "IPluginRegistry.h"
-#include "IPluginSupport.h"
-#include "IRuntimeContext.h"
 #include "IVisualElement.h"
 #include "IZone.h"
+#include "Persistence/DOMNodeWriter.h"
+#include "Resources/IResourceManager.h"
+#include "Resources/IRuntimeContext.h"
 
 class IMap;
-class IZoneRenderer;
+class IZoneHandler;
 
-class IPlugin:public IPluginSupport,
-              public virtual IAddressableEntity {
+class IPlugin {
   private:
   static std::vector<IDynamicElement*> cNoDynamicElements;
   static std::vector<IVisualElement*> cNoVisualElements;
@@ -65,15 +63,6 @@ class IPlugin:public IPluginSupport,
 
   /**
    * Retrieve commands to execute from this plugin before entering a game loop.
-   * This function is useful for plugins that perform tasks such as camera
-   * positioning and background rendering.
-   * 
-   * @returns  Commands to execute before entering game loop.
-   */
-  virtual std::vector<IDynamicElement*> getPreLoopCommands();
-
-  /**
-   * Retrieve commands to execute from this plugin before entering a game loop.
    * This function is useful for plugins that perform tasks such as foreground
    * rendering (e.g. score display, etc.)
    * 
@@ -81,8 +70,6 @@ class IPlugin:public IPluginSupport,
    */
   virtual std::vector<IDynamicElement*> getPostLoopCommands();
 
-  virtual std::vector<IVisualElement*> getPreLoopRenderers();
-  
   /**
    * TODO
    */
@@ -109,12 +96,12 @@ class IPlugin:public IPluginSupport,
   /**
    * Set the editing context.
    */
-  virtual void setEditingContext(IEditingContext*);
+  virtual void setEditingContext(IEditingContext*, IResourceManager*);
 
   /**
    * Save the configuration of the plug-in.
    */
-  virtual void save(DOMNodeWriter*);
+  virtual void save(DOMNodeWriter*, IResourceLocator*);
 
   /**
    * Write plugin data for the specified zone.
@@ -122,28 +109,25 @@ class IPlugin:public IPluginSupport,
   virtual void saveData(DOMNodeWriter*, IMap*, IZone*);
 
   /**
-   * Load the configuration of the plug-in.
+   * Create resources for the plugin
    */
-  virtual void load(DOMNodeWrapper*);
-
+  virtual void createResources(DOMNodeWrapper*, IRuntimeContext*);
+  
   /**
    * Load plugin data for the specified zone.
    */
   virtual void loadData(DOMNodeWrapper*, IPluginRegistry*, IZone*);
-
+  
+  virtual void initZone(IZone*);
+  
   /**
    * Retrieve the zone renderer of the specified name.
    */
-  virtual IZoneRenderer* getZoneRenderer(const std::string&);
+  virtual IZoneHandler* getZoneRenderer(const std::string&);
   
   // TODO: I'm not sure I like this being here
   void setPluginRegistry(IPluginRegistry*);
 
-  /*********************************\
-   * Implements IAddressableEntity *
-  \*********************************/
-  std::string getEntityAddress();
-    
   /**
    * The plug-in should clean up any resources that it allocated itself.  It
    * can be assumed that resources created by the plug-in are no longer in use
@@ -152,7 +136,7 @@ class IPlugin:public IPluginSupport,
   virtual ~IPlugin() {}
 };
 
-typedef IPlugin* createPlugin(IRuntimeContext*);
+typedef IPlugin* createPlugin();
 typedef void destroyPlugin(IPlugin*);
 
 #endif

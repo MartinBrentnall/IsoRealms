@@ -31,7 +31,7 @@ void TextLabelComponent::render() {
   mFont->print(mLeft + 0.01f, mBottom + 0.01f, mFontSize, 0, cLabel.c_str());
 }
 
-void TextLabelComponent::update(int milliseconds) {
+void TextLabelComponent::update(unsigned int milliseconds) {
 }
 
 bool TextLabelComponent::input(SDL_Event& event) {

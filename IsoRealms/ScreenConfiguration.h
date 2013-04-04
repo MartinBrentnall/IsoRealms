@@ -19,10 +19,11 @@
 #ifndef SCREEN_CONFIGURATION_H
 #define SCREEN_CONFIGURATION_H
 
-#include "DOMNodeWrapper.h"
-#include "DOMNodeWriter.h"
+#include "Persistence/DOMNodeWrapper.h"
+#include "Persistence/DOMNodeWriter.h"
+#include "Persistence/ParseException.h"
+
 #include "InitException.h"
-#include "ParseException.h"
 #include "ScreenMode.h"
 #include "Utils.h"
 
@@ -77,6 +78,8 @@ class ScreenConfiguration {
    * Return default GL Y coordinate for specified screen pixel row.
    */
   float getYLocation(int);
+  
+  void setViewPort();
   
   std::vector<ScreenMode*> getAvailableModes();
 

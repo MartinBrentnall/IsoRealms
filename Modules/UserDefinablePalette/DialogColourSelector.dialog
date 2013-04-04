@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+
+<Dialog title="Fixed Colour Properties">
+  <Button name="okButton" text="OK" align="bottom right"/>
+  <Button name="cancelButton" text="Cancel" align="bottom" right="leftof okButton"/>
+  <Button name="undoButton" text="Undo" align="bottom" right="leftof cancelButton"/>
+  <ScrollableContainer name="colourSelector" bottom="above okButton"/>
+</Dialog>

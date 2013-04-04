@@ -22,7 +22,7 @@
 #include <iostream>
 #include <string>
 
-#include "DOMNodeWriter.h"
+#include "Persistence/DOMNodeWriter.h"
 
 class ConditionElement {
   private:

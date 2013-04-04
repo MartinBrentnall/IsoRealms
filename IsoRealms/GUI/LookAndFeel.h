@@ -21,7 +21,7 @@
 
 #include <iostream>
 
-#include "../IFont.h"
+#include <IsoRealms/Resources/Font/IFont.h>
 
 class LookAndFeel {
   private:

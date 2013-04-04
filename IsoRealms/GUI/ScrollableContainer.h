@@ -29,12 +29,16 @@
 #include "../ScreenConfiguration.h"
 
 #include "AbstractRectangularComponent.h"
+#include "AbstractVerticalComponent.h"
 #include "IComponentBoundsCalculator.h"
+#include "IComponentHeightCalculator.h"
+#include "IComponentHolder.h"
 #include "IComponentSizeCalculator.h"
 #include "ISizedComponent.h"
 #include "IRectangularComponent.h"
 
-class ScrollableContainer:public AbstractRectangularComponent {
+class ScrollableContainer:public AbstractRectangularComponent,
+                          public IComponentHolder {
   private:
   enum ScrollDirection {
     SCROLL_NONE,
@@ -58,6 +62,24 @@ class ScrollableContainer:public AbstractRectangularComponent {
   
     public:
     RootComponentLayout(ScrollableContainer*, IComponentSizeCalculator*);
+  
+    /*****************************************\
+    * Implements IComponentBoundsCalculator *
+    \*****************************************/
+    float getLeft();
+    float getRight();
+    float getTop();
+    float getBottom();
+  };
+
+  class ControlledWidthLayout:public IComponentBoundsCalculator {
+    private:
+    ScrollableContainer* cParent;
+    IComponentHeightCalculator* cComponentHeightCalculator;
+    bool cObtainingRight;
+  
+    public:
+    ControlledWidthLayout(ScrollableContainer*, IComponentHeightCalculator*);
   
     /*****************************************\
     * Implements IComponentBoundsCalculator *
@@ -95,12 +117,15 @@ class ScrollableContainer:public AbstractRectangularComponent {
 
   public:
   ScrollableContainer();
+  void addComponent(const std::string&, ISizedComponent*);
+  void removeComponent(ISizedComponent*);
   void setRootComponent(ISizedComponent*);
+  void setRootComponent(AbstractVerticalComponent*);
 
   /*******************************************\
    * Implements AbstractRectangularComponent *
   \*******************************************/
-  void update(int);
+  void update(unsigned int);
   void render();
   bool input(SDL_Event&);
 };

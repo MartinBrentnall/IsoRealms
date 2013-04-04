@@ -21,8 +21,8 @@
 
 #include <string>
 
-#include "DOMNodeWrapper.h"
-#include "DOMNodeWriter.h"
+#include "Persistence/DOMNodeWrapper.h"
+#include "Persistence/DOMNodeWriter.h"
 #include "Utils.h"
 
 /**
@@ -72,9 +72,9 @@ class BlockLocation {
    */
   void set(BlockLocation);
 
-  void set(DOMNodeWrapper*);
+  void set(DOMNodeWrapper*, const std::string& = "x", const std::string& = "y", const std::string& = "z");
 
-  void setRelative(DOMNodeWrapper*, BlockLocation&);
+  void setRelative(DOMNodeWrapper*, BlockLocation&, const std::string& = "x", const std::string& = "y", const std::string& = "z");
 
   /**
    * Set the location of this point.
@@ -85,7 +85,7 @@ class BlockLocation {
    */
   void set(int, int, int);
 
-  void save(DOMNodeWriter*);
+  void save(DOMNodeWriter*, const std::string& = "x", const std::string& = "y", const std::string& = "z");
 
   void saveRelative(DOMNodeWriter*, BlockLocation&, const std::string& = "x", const std::string& = "y", const std::string& = "z");
 

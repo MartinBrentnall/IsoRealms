@@ -41,7 +41,7 @@ void Button::setCommand(ICommand* command) {
   cCommand = command;
 }
 
-void Button::update(int milliseconds) {
+void Button::update(unsigned int milliseconds) {
 }
 
 void Button::render() {

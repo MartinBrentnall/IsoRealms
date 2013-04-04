@@ -31,15 +31,14 @@ class IPluginRegistry {
    * Retrieve a logic factory instance of the specified type and name.
    * 
    * @param string&  The logic type.
-   * @param string&  The logic instance name.
    * @returns  The instance of the logic.
    */
-  virtual IPlugin* getPlugin(std::string&, std::string&) = 0;
+  virtual IPlugin* getPlugin(std::string&) = 0;
 
   /**
    * Retrieve the plug-in instance name TODO
    */
-  virtual std::string getInstanceName(std::string, IPlugin*) = 0;
+  virtual std::string getInstanceName(IPlugin*) = 0;
   
   /**
    * Get the path of the specified plugin TODO

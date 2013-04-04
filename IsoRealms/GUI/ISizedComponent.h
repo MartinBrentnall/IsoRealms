@@ -26,6 +26,9 @@ class ISizedComponent:public AbstractRectangularComponent,
                       public IComponentSizeCalculator {
   public:
   virtual ~ISizedComponent() {}
+  
+  virtual void gainedFocus() {};
+  virtual void lostFocus() {};  
 };
 
 #endif

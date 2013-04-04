@@ -24,7 +24,7 @@
 class IZone;
 
 #include "CollisionVertex.h"
-#include "Vertex.h"
+#include "Resources/Vertex/Vertex.h"
 
 class ZoneEvent {
   public:

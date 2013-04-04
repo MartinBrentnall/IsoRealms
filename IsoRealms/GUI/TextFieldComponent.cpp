@@ -24,6 +24,8 @@ bool TextFieldComponent::cBlinkShowing = true;
 TextFieldComponent::TextFieldComponent(std::string initialText) {
   cInput = initialText;
   cCaret = 0;
+  cUpdating = false;
+  cHasFocus = false;
 }
 
 void TextFieldComponent::render() {
@@ -33,6 +35,7 @@ void TextFieldComponent::render() {
   float mTop = getTop();
   IFont* mFont = LookAndFeel::getDefaultFont();
   float mFontSize = LookAndFeel::getDefaultFontSize();
+  glColor3f(1.0f, 1.0f, 1.0f);
   mFont->print(mLeft + 0.01f, mBottom + 0.01f, mFontSize, 0, cInput.c_str());
 
   glBindTexture(GL_TEXTURE_2D, 0);
@@ -44,7 +47,7 @@ void TextFieldComponent::render() {
   glVertex2f(mRight, mTop);
   glEnd();
 
-  if (cBlinkShowing) {
+  if (cHasFocus && cBlinkShowing) {
     float mCaretOffset = mFont->getWidth(mFontSize, cInput.substr(0, cCaret).c_str());
     glColor3f(1.0f, 1.0f, 1.0f);
     glBegin(GL_LINES);
@@ -54,11 +57,13 @@ void TextFieldComponent::render() {
   }
 }
 
-void TextFieldComponent::update(int milliseconds) {
-  cDelayUntilBlinkChange -= milliseconds;
-  if (cDelayUntilBlinkChange <= 0) {
-    cDelayUntilBlinkChange += BLINK_DELAY;
-    cBlinkShowing = !cBlinkShowing;
+void TextFieldComponent::update(unsigned int milliseconds) {
+  if (cHasFocus) {
+    cDelayUntilBlinkChange -= milliseconds;
+    if (cDelayUntilBlinkChange <= 0) {
+      cDelayUntilBlinkChange += BLINK_DELAY;
+      cBlinkShowing = !cBlinkShowing;
+    }
   }
 }
 
@@ -67,9 +72,20 @@ bool TextFieldComponent::input(SDL_Event& event) {
     case SDL_KEYDOWN: {
       return keyDown(event.key.keysym.sym, event.key.keysym.mod);
     }
+    
+    case SDL_MOUSEBUTTONDOWN: {
+      return mouseButtonDown(event);
+    }      
   }
-  // TODO: Mouse press to change caret position
   return false;
+}
+
+void TextFieldComponent::gainedFocus() {
+  cHasFocus = true;
+}
+
+void TextFieldComponent::lostFocus() {
+  cHasFocus = false;
 }
 
 bool TextFieldComponent::keyDown(SDLKey& key, SDLMod& mod) {
@@ -103,6 +119,7 @@ bool TextFieldComponent::keyDown(SDLKey& key, SDLMod& mod) {
       if (cCaret > 0) {
         cInput = cInput.substr(0, cCaret - 1) + cInput.substr(cCaret);
         cCaret--;
+	fireChange();
       }
       return true;
     }
@@ -110,6 +127,7 @@ bool TextFieldComponent::keyDown(SDLKey& key, SDLMod& mod) {
     case SDLK_DELETE: {
       if (cCaret < cInput.length()) {
         cInput = cInput.substr(0, cCaret) + cInput.substr(cCaret + 1);
+	fireChange();
       }
       return true;
     }
@@ -122,6 +140,7 @@ bool TextFieldComponent::keyDown(SDLKey& key, SDLMod& mod) {
           cInput = cInput.substr(0, cCaret) + (char) key + cInput.substr(cCaret);
         }
         cCaret++;
+        fireChange();
       }
       return true;
     }
@@ -129,12 +148,56 @@ bool TextFieldComponent::keyDown(SDLKey& key, SDLMod& mod) {
   return false;
 }
 
+bool TextFieldComponent::mouseButtonDown(SDL_Event& event) {
+  Configuration* mConfiguration = Configuration::getInstance();
+  ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
+  float mX = mScreen->getXLocation(event.button.x);
+  float mY = mScreen->getYLocation(event.button.y);
+  if (contains(mX, mY)) {
+    float mLeft = getLeft() + 0.01f;
+    IFont* mFont = LookAndFeel::getDefaultFont();
+    float mFontSize = LookAndFeel::getDefaultFontSize();
+    float mDifference = FLT_MAX;
+    for (unsigned int i = 0; i <= cInput.length(); i++) {
+      float mPosition = mLeft + mFont->getWidth(mFontSize, cInput.substr(0, i).c_str());
+      float mNewDifference = mX - mPosition;
+      if (mNewDifference < 0.0f) {
+	mNewDifference = -mNewDifference;
+      }
+      std::cout << "Position " << i << ": " << mPosition << "        Difference: " << mNewDifference << std::endl;
+      if (mNewDifference > mDifference) {
+	cCaret = mNewDifference > mDifference ? i - 1: i - 2;
+	return true;
+      }
+      mDifference = mNewDifference;
+    }
+    cCaret = cInput.length();
+    return true;
+  }
+  return false;
+}
+
+void TextFieldComponent::fireChange() {
+  cUpdating = true;
+  for (unsigned int i = 0; i < cListeners.size(); i++) {
+    cListeners[i]->valueChanged(cInput);
+  }
+  cUpdating = false;
+}
+
 void TextFieldComponent::setText(std::string text) {
-  cInput = text;
+  if (!cUpdating) {
+    cInput = text;
+//    fireChange();
+  } 
 }
 
 std::string TextFieldComponent::getText() {
   return cInput;
+}
+
+void TextFieldComponent::addStringListener(IStringListener* listener) {
+  cListeners.push_back(listener);
 }
 
 float TextFieldComponent::getWidth() {

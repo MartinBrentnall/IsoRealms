@@ -50,6 +50,14 @@ bool AbstractRectangularComponent::contains(float x, float y) {
   return x >= getLeft() && x <= getRight() && y >= getBottom() && y <= getTop();
 }
 
+void AbstractRectangularComponent::gainedFocus() {
+  // Nothing to do
+}
+
+void AbstractRectangularComponent::lostFocus() {
+  // Nothing to do
+}
+
 AbstractRectangularComponent::~AbstractRectangularComponent() {
   delete cComponentBoundsCalculator;
 }

@@ -23,9 +23,9 @@
 #include <SDL/SDL.h>
 #include <string>
 
-#include "../Configuration.h"
-#include "../IFont.h"
-#include "../ScreenConfiguration.h"
+#include <IsoRealms/Configuration.h>
+#include <IsoRealms/Resources/Font/IFont.h>
+#include <IsoRealms/ScreenConfiguration.h>
 
 #include "Dialog.h"
 
@@ -39,7 +39,7 @@ class ResizableDialog:public Dialog {
   bool mouseMotion(SDL_Event&);
 
   public:
-  ResizableDialog(IComponentContainer*, const std::string&);
+  ResizableDialog(IComponentContainer*, const std::string&, IResourceAccessor*);
   ResizableDialog(IComponentContainer*, const std::string&, float, float, float, float);
 
   virtual void renderResizableDialogContent() {}
@@ -49,9 +49,9 @@ class ResizableDialog:public Dialog {
   /************************\
    * Implements Rectangle *
   \************************/
-  void renderContent();
-  void updateContent(int);
-  bool inputContent(SDL_Event&);
+  void renderDialogContent();
+  void updateDialogContent(int);
+  bool inputDialogContent(SDL_Event&);
 };
 
 #endif

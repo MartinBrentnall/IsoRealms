@@ -22,7 +22,7 @@
 #include <vector>
 
 #include "BlockLocation.h"
-#include "Vertex.h"
+#include "Resources/Vertex/Vertex.h"
 #include "IPluginRegistry.h"
 #include "IZone.h"
 #include "ZoneEvent.h"

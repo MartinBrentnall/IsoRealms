@@ -1,0 +1,81 @@
+/*
+ * Copyright 2009,2010 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#ifndef ELEMENT_H
+#define ELEMENT_H
+
+#include <IsoRealms/IPlugin.h>
+
+#include "ElementSet.h"
+#include "IElement.h"
+#include "IElementType.h"
+
+/**
+ * 
+ */
+template<class T1 = IPlugin, class T2 = IElementType> class Element:public IElement {
+  private:
+
+  /**
+   * TODO:
+   */
+  T2* cElementType;
+
+  public:
+  Element(T2* elementType) {
+    cElementType = elementType;
+  }
+
+  /***********************\
+   * Implements IElement *
+  \***********************/
+  T1* getElementSet() {
+    return cElementType->getElementSet();
+  }
+
+  T2* getElementType() {
+    return cElementType;
+  }
+  
+  std::vector<IDynamicElement*> getDynamicElements() {
+    std::vector<IDynamicElement*> mEmptyVector;
+    return mEmptyVector;
+  }
+
+  std::vector<IDynamicElement*> getDynamicElementsRuntime() {
+    std::vector<IDynamicElement*> mEmptyVector;
+    return mEmptyVector;
+  }
+
+  std::vector<IInteractiveElement*> getInteractiveElements() {
+    std::vector<IInteractiveElement*> mEmptyVector;
+    return mEmptyVector;
+  }
+
+  void save(DOMNodeWriter*, BlockLocation&) {}
+  bool initElement(unsigned int) {return true;}
+  
+  virtual void removingElement() {};
+
+  virtual void added() {}
+  virtual void renderStaticEditing() {}
+
+  ~Element() {}
+};
+
+#endif

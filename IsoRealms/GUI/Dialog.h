@@ -38,36 +38,22 @@
 #include "GridLayoutComponent.h"
 #include "IComponentBoundsCalculator.h"
 #include "IComponentCloseListener.h"
-#include "IRectangularComponent.h"
 #include "ITextComponent.h"
 #include "ListBox.h"
 #include "LookAndFeel.h"
+#include "RectangularComponent.h"
 #include "ScrollableContainer.h"
+#include "TabbedContainer.h"
 #include "TextLabelComponent.h"
 #include "TextFieldComponent.h"
 
-class Dialog:public IRectangularComponent {
+class Dialog : public RectangularComponent {
   private:
   static const float TITLE_BAR_HEIGHT;
 
-  std::map<std::string, ISizedComponent*> cSizedComponents;
-  std::map<std::string, Button*> cCommandableComponents;
-  std::map<std::string, ListBox*> cListBoxComponents;
-  // TODO: Should use interface to support other components; e.g. ListBoxes
-  std::map<std::string, TextFieldComponent*> cStringValueComponents;
-  std::string cTitle;
   std::vector<IComponentCloseListener*> cCloseListeners;
-  std::vector<IHUDComponent*> cChildren;
-  IHUDComponent* cFocusedComponent;
-
-  void loadDialog(DOMNodeWrapper*, IRectangle*, float);
-  void setComponentText(DOMNodeWrapper*, ITextComponent*);
-  IComponentBoundsCalculator* getBoundsCalculator(DOMNodeWrapper*, IRectangle*, float, ISizedComponent*);
-  ISizedComponent* loadSizedComponent(DOMNodeWrapper*);
-  void loadFlexibleGridCells(DOMNodeWrapper*, FlexibleGridLayoutComponent*);
-  void loadEvenGridCells(DOMNodeWrapper*, GridLayoutComponent*);
-
-  void testFocusChange(SDL_Event& event);
+//  RectangularComponent* cLoadedComponent;
+  std::string cTitle;
 
   protected:
   float cX;
@@ -78,11 +64,12 @@ class Dialog:public IRectangularComponent {
   IComponentContainer* cComponentContainer;
 
   public:
-  Dialog(IComponentContainer*, const std::string&);
+  Dialog(IComponentContainer*, const std::string&, IResourceAccessor*);
   Dialog(IComponentContainer*, const std::string&, float, float, float, float);
 
   void translate(float, float);
   void resize(float, float);
+  void setSize(float, float, float, float);
 
   bool mouseButtonDown(SDL_Event&);
   bool mouseMotion(SDL_Event&);
@@ -100,24 +87,18 @@ class Dialog:public IRectangularComponent {
 
   void addCloseListener(IComponentCloseListener*);
 
-  void addComponent(IHUDComponent*);
-  void setFocusedComponent(IHUDComponent*);
-  void setComponentAction(const std::string&, ICommand*);
-  ListBox* getListBox(const std::string&);
-  std::string getStringValue(const std::string&);
-
-  virtual void renderContent() = 0;
-  virtual void updateContent(int) = 0;
-  virtual bool inputContent(SDL_Event&) = 0;
-
   /****************************\
    * Implements IHUDComponent *
   \****************************/
-  void update(int);
-  void render();
-  bool input(SDL_Event&);
+  void updateContent(int);
+  void renderContent();
+  bool inputContent(SDL_Event&);
   virtual bool contains(float, float);
 
+  virtual void renderDialogContent() {};
+  virtual void updateDialogContent(int) {};
+  virtual bool inputDialogContent(SDL_Event&) {return false;};
+  
   /***************************************************\
    * Implements IRectangle (in IRectangularComponent *
   \***************************************************/

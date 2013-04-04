@@ -24,14 +24,15 @@
 #include <iostream>
 #include <string>
 
-#include "DOMNodeWrapper.h"
-#include "DOMNodeWriter.h"
-#include "Hacks.h"
+#include "Persistence/DOMNodeWrapper.h"
+#include "Persistence/DOMNodeWriter.h"
+#include "Persistence/ParseException.h"
 #include "IEngine.h"
-#include "ILuaFunctionArgument.h"
-#include "ILuaSupport.h"
+#include "LuaSupport/ILuaFunctionArgument.h"
+#include "LuaSupport/ILuaModule.h"
+#include "LuaSupport/ILuaSupport.h"
 #include "InitException.h"
-#include "ParseException.h"
+#include "Resources/IRuntimeContext.h"
 #include "ScreenConfiguration.h"
 #include "System.h"
 
@@ -65,7 +66,7 @@ class Configuration {
    * @param string  Name of the file from which to load the engine
    *                configuration.
    */
-  Configuration(std::string, std::string);
+  Configuration(std::string);
 
   /**
    * Parse the user settings from the specified node.
@@ -78,14 +79,6 @@ class Configuration {
   
   void createSettings();
   
-  /**
-   * Parse the engine configuration from the specified node.
-   *
-   * @param  DOMNodeWrapper*  The node from which to parse the engine
-   *                          configuration.
-   */
-  void parseConfiguration(DOMNodeWrapper*);
-
   public:
     
   /**
@@ -104,21 +97,20 @@ class Configuration {
    */
   ScreenConfiguration* getScreenConfiguration();
 
-  /**
-   * Get the game engine.
-   *
-   * @return  The game engine.
-   */
-  IEngine* getEngine();
-
+  void setViewPort();
+  
   void registerScript(const std::string&);
+  
+  void setGlobalVariable(IArgumentDefinition*);
   
   void executeScript(const std::string&, std::vector<ILuaFunctionArgument*>);
 
-  ILuaFunctionArgument* createArgument(const std::string&, ISound*);
+  IArgumentDefinition* createArgumentDefinition(DOMNodeWrapper*, IResourceAccessor*);
   
-  ILuaFunctionArgument* createArgument(const std::string&, IInteger*);
+  IArgumentSource* createArgument(DOMNodeWrapper*, IResourceAccessor*);
   
+  void enableLuaSupport(InitLuaFunction*, IRuntimeContext*);
+
   void save();
 };
 

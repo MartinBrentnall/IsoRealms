@@ -22,21 +22,14 @@
 #include <vector>
 
 #include "BlockArea.h"
-#include "Colour.h"
-#include "ColourProxy.h"
-#include "DefaultZoneRenderer.h"
-#include "DOMNodeWrapper.h"
-#include "DOMNodeWriter.h"
-#include "ElementSetRegistry.h"
-#include "IElementHandler.h"
+#include "Persistence/DOMNodeWrapper.h"
+#include "Persistence/DOMNodeWriter.h"
 #include "IMap.h"
-#include "InputCommands.h"
-#include "IPluginRegistryListener.h"
+#include "Input/InputCommands.h"
 #include "IProject.h"
-#include "ITexture.h"
+#include "Resources/ElementType/IElementHandler.h"
+#include "Resources/IResources.h"
 #include "PluginRegistry.h"
-#include "Registry.h"
-#include "TextureProxy.h"
 #include "Zone.h"
 
 /**
@@ -44,7 +37,7 @@
  */
 class Map:public IMap,
           public IZoneChangeListener,
-          public IElementContainer {
+	  public IElementContainer {
   private:
   
   /**
@@ -55,11 +48,7 @@ class Map:public IMap,
   /**
    * These elements are not confined to one specific zone.
    */
-  std::vector<IElement*> cElements;
-  std::vector<IElementHandler*> cElementHandlers;
-  std::vector<IElement*> cDirtyElements;
-  GLuint cDisplayList;
-  GLuint cEditingDisplayList;
+  ElementHandler cElementHandler;
 
   /**
    * The zones in the map.
@@ -69,7 +58,8 @@ class Map:public IMap,
   /**
    * Used for updating and rendering the map.  These are not used for saving.
    */
-  std::vector<IZoneRenderer*> cZoneRenderers;
+  std::vector<IZoneHandler*> cZoneHandlers;
+  std::vector<IZoneHandler*> cZoneHandlersPersisted;
 
   /**
    * A list of zones to be reinitialized at the next update.  This list is
@@ -78,15 +68,14 @@ class Map:public IMap,
   std::vector<IZone*> cDirtyZones;
 
   int getZoneIndex(IZone*);
-  int getElementIndex(IElement*);
 
   bool containsElement(IElement*);
 
   DOMNodeWrapper* getConfigurationNode(DOMNodeWrapper*);
 
   public:
-  Map();
-  Map(DOMNodeWrapper*, bool, IProject*);
+  Map(IProject*);
+  Map(DOMNodeWrapper*, bool, IProject*, IResources*);
 
   void addZone(Zone*);
   
@@ -144,21 +133,28 @@ class Map:public IMap,
   /**
    *
    */
-  void save(DOMNodeWriter*);
+  void save(DOMNodeWriter*, IResourceLocator*);
 
   void pushElement(IElement*);
 
+  void addElement(IElement*);
+  
   /**
+   * TODO: This is probably wrong now.
    * Remove the specified element from anywhere in the map.  This function
    * will be pretty slow, especially on large maps.
    * 
    * @param IElement*  The element to remove.
    * @returns The zone from which the element was removed, or NULL if the
    *          element wasn't found.
-   */
-  Zone* removeElement(IElement*);
+   */  
+  void removeElement(IElement*);
 
   Zone* getElementContainer(IElement*);
+
+  void setZoneHandler(IZoneHandler*);
+  
+  void staticChanged();
   
   /*******************\
    * Implements IMap *
@@ -173,12 +169,13 @@ class Map:public IMap,
   \**********************************/
   void zoneChanged(IZone*);
 
-  /********************************\
-   * Implements IElementContainer *
-  \********************************/
-  void elementDirty(IElement*);
-  void addElementHandler(IElementHandler*);
-  void setHandlerActive(IElementHandler*, bool);
+  float getEast();
+  float getWest();
+  float getNorth();
+  float getSouth();
+  float getTop();
+  float getBottom();
+  int getZoneCount();
   
   ~Map();
 };

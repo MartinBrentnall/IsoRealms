@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<Project>
+  <Configuration camera="Editor/Camera"/>
+  <Plugin name="GLFreeType">
+    <Resources>
+      <Font name="EditorFont" file="Data/Fonts/EditorFont.ttf" detail="64"/>
+    </Resources>
+  </Plugin>
+  <Plugin name="Editor">
+    <Resources>
+      <Font name="GLFreeType/EditorFont"/>
+      <MenuBar>
+        <Menu text="^File">
+          <MenuItem text="^New..."/>
+          <MenuItem text="^Open...">
+           <ExecuteEditorCommand type="Open"/>
+          </MenuItem>
+          <MenuItem text="^Save">
+            <ExecuteEditorCommand type="Save"/>
+          </MenuItem>
+          <MenuItem text="Save ^As...">
+            <ExecuteEditorCommand type="SaveAs"/>
+          </MenuItem>          
+           <MenuItem text="^Quit">
+            <ExecuteEditorCommand type="Exit"/>
+          </MenuItem>
+        </Menu>
+        <Menu text="^Edit">
+          <MenuItem text="^Pop Stack"/>
+          <MenuItem text="P^ush Stack"/>
+        </Menu>
+        <Menu text="^Project">
+          <MenuItem text="^Modules">
+            <ExecuteEditorCommand type="Modules"/>
+          </MenuItem>
+          <MenuItem text="^Resource Browser">
+            <ExecuteEditorCommand type="ResourceBrowser"/>
+          </MenuItem>
+        </Menu>
+      </MenuBar>
+    </Resources>
+  </Plugin>
+  <Map>
+    <Element type="Editor/Editor"/>
+  </Map>
+</Project>

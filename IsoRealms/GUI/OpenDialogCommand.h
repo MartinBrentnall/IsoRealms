@@ -19,6 +19,8 @@
 #ifndef OPEN_DIALOG_COMMAND_H
 #define OPEN_DIALOG_COMMAND_H
 
+#include "../IComponentContainer.h" // TODO: Should not include from parent?
+
 template<class T> class OpenDialogCommand:public ICommand {
   private:
   IComponentContainer* cComponentContainer;

@@ -30,16 +30,8 @@ void IPlugin::initPlugin(IZone*, unsigned int) {
   // Nothing to do.
 }
 
-std::vector<IDynamicElement*> IPlugin::getPreLoopCommands() {
-  return cNoDynamicElements;
-}
-
 std::vector<IDynamicElement*> IPlugin::getPostLoopCommands() {
   return cNoDynamicElements;
-}
-
-std::vector<IVisualElement*> IPlugin::getPreLoopRenderers() {
-  return cNoVisualElements;
 }
 
 std::vector<IVisualElement*> IPlugin::getPostLoopRenderers() {
@@ -58,11 +50,11 @@ void IPlugin::zoneContextChanged(IMap*, IZone*) {
   // Nothing to do.
 }
 
-void IPlugin::setEditingContext(IEditingContext*) {
+void IPlugin::setEditingContext(IEditingContext*, IResourceManager*) {
   // Nothing to do.
 }
 
-void IPlugin::save(DOMNodeWriter*) {
+void IPlugin::save(DOMNodeWriter*, IResourceLocator*) {
   // Nothing to do.
 }
 
@@ -70,7 +62,7 @@ void IPlugin::saveData(DOMNodeWriter*, IMap*, IZone*) {
   // Nothing to do.
 }
 
-void IPlugin::load(DOMNodeWrapper*) {
+void IPlugin::createResources(DOMNodeWrapper*, IRuntimeContext*) {
   // Nothing to do.
 }
 
@@ -78,15 +70,15 @@ void IPlugin::loadData(DOMNodeWrapper*, IPluginRegistry*, IZone*) {
   // Nothing to do.
 }
 
+void IPlugin::initZone(IZone* zone) {
+  // Nothing to do
+}
+
 void IPlugin::setPluginRegistry(IPluginRegistry* pluginRegistry) {
   cPluginRegistry = pluginRegistry;
 }
 
-std::string IPlugin::getEntityAddress() {
-  return cPluginRegistry->getEntityPath(this);
-}
-
-IZoneRenderer* IPlugin::getZoneRenderer(const std::string& name) {
+IZoneHandler* IPlugin::getZoneRenderer(const std::string& name) {
   return NULL;
 }
 

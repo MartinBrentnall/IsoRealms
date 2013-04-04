@@ -22,8 +22,10 @@
 #include <dirent.h>
 #include <errno.h>
 #include <iostream>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string>
+#include <sys/param.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <vector>
@@ -141,7 +143,7 @@ class System {
    * @param string  The resource to list files for.
    * @return        The list of filenames.
    */
-  static std::vector<std::string>* getFileList(const std::string&);
+  static std::vector<std::string>* getFileList(const std::string&, bool = true);
 };
 
 #endif

@@ -21,21 +21,31 @@
 Zone::Zone(BlockLocation& location, BlockLocation& size) : BlockArea(location, size) {
 }
 
-Zone::Zone(DOMNodeWrapper* node, IProject* project, IMap* map) : BlockArea(node) {
+Zone::Zone(DOMNodeWrapper* node, IProject* project, IResources* resources, IMap* map) : BlockArea(node) {
   project->zoneContextChanged(map, this);  
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "Elements") {
-      cElements = project->loadElements(mNode, &cStartLocation, this);
-      cDirtyElements = cElements;
+    if (mValueAsString == "Element") {
+      resources->loadElement(mNode, &cStartLocation, this);
     } else if (mValueAsString == "Plugins") {
       project->loadPluginData(mNode, this);
     }
   }
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    cElements[i]->setElementContainer(this);
-  }
+  resources->loadDefaultElementGroups(this);
+  cElementHandler.setAllDirty();
+}
+
+void Zone::addElement(IElement* element) {
+  cElementHandler.addElement(element);
+}
+
+void Zone::staticChanged() {
+  cElementHandler.staticChanged();
+}
+
+void Zone::removeElement(IElement* element) {
+  // TODO: Implement this
 }
 
 void Zone::renderBounds() {
@@ -86,71 +96,45 @@ void Zone::restrainLocation(BlockLocation* location) {
 }
 
 void Zone::pushElement(IElement* element) {
-  cElements.push_back(element);
-  cDirtyElements.push_back(element);
-  element->setElementContainer(this);
+  cElementHandler.addElement(element);
   zoneChanged();
 }
 
 bool Zone::containsElement(IElement* element) {
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    if (element == cElements[i]) {
-      return true;
-    }
-  }
-  return false;
-}
-
-void Zone::elementDirty(IElement* element) {
-  setDirty(element);
-}
-
-void Zone::addElementHandler(IElementHandler* elementHandler) {
-  cElementHandlers.push_back(elementHandler);
+  return cElementHandler.contains(element);
 }
 
 void Zone::setDirty(IElement* element) {
-  if (!containsElement(element)) {
-    std::cout << "WARNING: Specified dirty element is not a member of this Zone!  Did you forget to set the cursor's Zone?" << std::endl;
-    return;
-  }
-  for (unsigned int i = 0; i < cDirtyElements.size(); i++) {
-    if (cDirtyElements[i] == element) {
-      return;
-    }
-  }
-  // TODO: Does order matter?
-  cDirtyElements.push_back(element);
+  cElementHandler.setDirty(element);
   zoneChanged();
 }
 
 IElement* Zone::popElement() {
-  if (!cElements.empty()) {
-    IElement* mRemovedElement = cElements.back();
-    mRemovedElement->setElementContainer(NULL);
-    cElements.pop_back();
-    zoneChanged();
-    return mRemovedElement;
-  }
+  // TODO: Implement this
+//   if (!cElements.empty()) {
+//     IElement* mRemovedElement = cElements.back();
+//     cElements.pop_back();
+//     zoneChanged();
+//     return mRemovedElement;
+//   }
   return NULL;
 }
 
-bool Zone::removeElement(IElement* element) {
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    if (cElements[i] == element) {
-      cElements[i]->setElementContainer(NULL);
-      cElements.erase(cElements.begin() + i);
-      for (unsigned int j = 0; j < cDirtyElements.size(); j++) {
-        if (cDirtyElements[j] == element) {
-          cDirtyElements.erase(cDirtyElements.begin() + j);
-          return true;
-        }
-      }
-      return true;
-    }
-  }
-  return false;
-}
+// bool Zone::removeElement(IElement* element) {
+//   for (unsigned int i = 0; i < cElements.size(); i++) {
+//     if (cElements[i] == element) {
+//       cElements.erase(cElements.begin() + i);
+//       for (unsigned int j = 0; j < cDirtyElements.size(); j++) {
+//         if (cDirtyElements[j] == element) {
+//           cDirtyElements.erase(cDirtyElements.begin() + j);
+//           return true;
+//         }
+//       }
+//       return true;
+//     }
+//   }
+//   return false;
+// }
 
 void Zone::zoneChanged() {
   for (unsigned int i = 0; i < cChangeListeners.size(); i++) {
@@ -159,65 +143,15 @@ void Zone::zoneChanged() {
 }
 
 void Zone::update(unsigned int milliseconds) {
-  for (unsigned int i = 0; i < cElementHandlers.size(); i++) {
-    cElementHandlers[i]->update(milliseconds);
-  }
+  cElementHandler.update(milliseconds);
 }
 
 void Zone::updateRuntime(unsigned int milliseconds) {
-  update(milliseconds);
-  for (unsigned int i = 0; i < cElementHandlers.size(); i++) {
-    cElementHandlers[i]->updateRuntime(milliseconds);
-  }
-}
-
-int Zone::getZoneIndex(IElement* element) {
-  for (unsigned int i = 0; i < cDirtyElements.size(); i++) {
-    if (cDirtyElements[i] == element) {
-      return i;
-    }
-  }
-  // TODO: Throw exception
-  return -1;
+  cElementHandler.updateRuntime(milliseconds);
 }
 
 bool Zone::initZone(unsigned int pass, bool editing) {
-  std::vector<IElement*> mCleanElements;
-  for (unsigned int i = 0; i < cDirtyElements.size(); i++) {
-    if (cDirtyElements[i]->initElement(pass)) {
-      mCleanElements.push_back(cDirtyElements[i]);
-    }
-  }
-  
-  for (unsigned int i = 0; i < mCleanElements.size(); i++) {
-    int mIndexToRemove = getZoneIndex(mCleanElements[i]);
-    cDirtyElements.erase(cDirtyElements.begin() + mIndexToRemove);
-  }
-  
-  if (cDirtyElements.empty()) {
-
-    // Game rendering
-    glDeleteLists(cDisplayList, 1);
-    cDisplayList = glGenLists(1);
-    glNewList(cDisplayList, GL_COMPILE);
-    for (int i = cElements.size() - 1; i >= 0; i--) {
-      cElements[i]->renderStatic();
-    }
-    glEndList();
-
-    // Editor-only rendering
-    if (editing) {
-      glDeleteLists(cEditingDisplayList, 1);
-      cEditingDisplayList = glGenLists(1);
-      glNewList(cEditingDisplayList, GL_COMPILE);
-      renderBounds();
-      for (unsigned int i = 0; i < cElements.size(); i++) {
-        cElements[i]->renderStaticEditing();
-      }
-      glEndList();
-    }
-  }
-  return cDirtyElements.empty();
+  return cElementHandler.init(pass, editing);
 }
 
 void Zone::input(SDL_Event& event) {
@@ -225,22 +159,20 @@ void Zone::input(SDL_Event& event) {
 }
 
 void Zone::renderEditing() {
-  glCallList(cEditingDisplayList);
+  cElementHandler.renderEditing();
 }
 
 void Zone::renderStatic() {
-  glCallList(cDisplayList);
+  cElementHandler.renderStatic();
 }
 
 void Zone::renderDynamic() {
-  for (unsigned int i = 0; i < cElementHandlers.size(); i++) {
-    cElementHandlers[i]->render();
-  }
+  cElementHandler.renderDynamic();
 }
 
-void Zone::setHandlerActive(IElementHandler*, bool) {
-  // TODO: Implement this
-}
+// void Zone::setHandlerActive(IElementHandler*, bool) {
+//   // TODO: Implement this
+// }
 
 void Zone::addChangeListener(IZoneChangeListener* listener) {
   cChangeListeners.push_back(listener);
@@ -261,12 +193,7 @@ bool Zone::contains(Vertex& location) {
 }
 
 bool Zone::contains(IElement* element) {
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    if (cElements[i] == element) {
-      return true;
-    }
-  }
-  return false;
+  return cElementHandler.contains(element);
 }
 
 std::vector<ZoneEvent*> Zone::getZoneEvents(Vertex& start, Vertex& end) {
@@ -305,24 +232,34 @@ bool Zone::contains(BlockLocation& location) {
   return BlockArea::contains(location);
 }
 
-void Zone::save(IProject* project, DOMNodeWriter* node) {
-  DOMNodeWriter* mLocationNode = node->addBranch("Location");
-  cStartLocation.save(mLocationNode);
-  DOMNodeWriter* mSizeNode = node->addBranch("Size");
-  cEndLocation.saveRelative(mSizeNode, cStartLocation);
-  DOMNodeWriter* mElementsNode = node->addBranch("Elements");
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    IElementSet* mElementSet = cElements[i]->getElementSet();
-    std::string mElementSetName = project->getInstanceName(mElementSet);
-    DOMNodeWriter* mElementNode = mElementsNode->addBranch("Element");
-    mElementNode->addAttribute("set", mElementSetName);
+int Zone::getZoneEast() {
+  return getEast();
+}
 
-    // TODO: Enable this! (you'll need to implement some functions)
-    IElementFactory* mElementFactory = cElements[i]->getElementFactory();
-    std::string mElementTypeName = mElementFactory->getName();
-    mElementNode->addAttribute("type", mElementTypeName);
-    cElements[i]->save(mElementNode, cStartLocation);
-  }
+int Zone::getZoneWest() {
+  return getWest();
+}
+
+int Zone::getZoneNorth() {
+  return getNorth();
+}
+
+int Zone::getZoneSouth() {
+  return getSouth();
+}
+
+int Zone::getZoneTop() {
+  return getTop();
+}
+
+int Zone::getZoneBottom() {
+  return getBottom();
+}
+
+void Zone::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+  cStartLocation.save(node);
+  cEndLocation.saveRelative(node, cStartLocation, "width", "length", "height");
+  cElementHandler.save(node, resourceLocator, cStartLocation);
 }
 
 

@@ -2,25 +2,22 @@
 #define I_PROJECT_H
 
 #include "BlockLocation.h"
-#include "DOMNodeWrapper.h"
-#include "IElement.h"
-#include "IElementContainer.h"
-#include "IElementSet.h"
-#include "IPluginRegistryListener.h"
+#include "Persistence/DOMNodeWrapper.h"
+#include "IEditingContext.h"
+#include <IsoRealms/Resources/ElementType/IElement.h>
 #include "IZone.h"
 
 class ElementSetRegistry;
-class IZoneRenderer;
+class IResourceManager;
+class IZoneHandler;
 class Map;
+class PluginRegistry;
+class Zone;
 
 class IProject {
   public:
-  virtual std::vector<IElement*> loadElements(DOMNodeWrapper*, BlockLocation*, IElementContainer*) = 0;
-  virtual IZoneRenderer* getZoneRenderer(DOMNodeWrapper*) = 0;
   virtual void initPlugins(IZone*, unsigned int) = 0;
   virtual void renderPreZone(IZone*) = 0;
-  virtual void initElementsComplete() = 0;
-  virtual std::string getInstanceName(IElementSet*) = 0;
   virtual void savePluginData(DOMNodeWriter*, IMap*, IZone*) = 0;
 
   virtual bool* registerDigitalInput(const std::string&) = 0;
@@ -46,10 +43,25 @@ class IProject {
   virtual void renderEditing() = 0;
   virtual Zone* getZone(BlockLocation&) = 0;
   virtual Map* getMap() = 0;
-  virtual void addPluginRegistryListener(IPluginRegistryListener*) = 0;
   virtual void save() = 0;
   virtual PluginRegistry* getPluginRegistry() = 0;
-  virtual ElementSetRegistry* getElementSetRegistry() = 0;
+  virtual IResourceManager* getResourceManager() = 0;
+  
+  virtual void setEditingContext(IEditingContext*) = 0;
+  virtual void staticChanged() = 0;
+  
+  /*************\
+   * Lua API's *
+  \*************/
+  virtual void setZoneHandler(IZoneHandler*) = 0;
+  virtual float getEast() = 0;
+  virtual float getWest() = 0;
+  virtual float getNorth() = 0;
+  virtual float getSouth() = 0;
+  virtual float getTop() = 0;
+  virtual float getBottom() = 0;
+  virtual float getAspectRatio() = 0;
+  virtual int getZoneCount() = 0;
 };
 
 #endif

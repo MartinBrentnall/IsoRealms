@@ -31,6 +31,10 @@ void ListBox::addItem(const std::string& item) {
   cItems.push_back(item);
 }
 
+void ListBox::addListener(IListBoxListener* listener) {
+  cListeners.push_back(listener);
+}
+
 void ListBox::removeItem(const std::string& item) {
   for (unsigned int i = 0; i < cItems.size(); i++) {
     if (cItems[i] == item) {
@@ -38,6 +42,11 @@ void ListBox::removeItem(const std::string& item) {
       return;
     }
   }
+}
+
+void ListBox::clear() {
+  cItems.clear();
+  cSelectedItem = 0;
 }
 
 void ListBox::render() {
@@ -56,7 +65,8 @@ void ListBox::render() {
   }
 }
 
-void ListBox::update(int milliseconds) {
+void ListBox::update(unsigned int milliseconds) {
+  cMultipleClickDetector.update(milliseconds);
 }
 
 float ListBox::getWidth() {
@@ -92,6 +102,12 @@ bool ListBox::keyDown(SDLKey& key) {
       }
       return true;
     }
+    
+    case SDLK_RETURN: {
+      for (unsigned int i = 0; i < cListeners.size(); i++) {
+	cListeners[i]->assertSelection(this, cItems[cSelectedItem]);
+      }
+    }
 
     default: {
       return true;
@@ -100,13 +116,42 @@ bool ListBox::keyDown(SDLKey& key) {
   return true;
 }
 
+bool ListBox::mouseButtonPressed(SDL_Event& event) {
+  Configuration* mConfiguration = Configuration::getInstance();
+  ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
+  float mX = mScreen->getXLocation(event.button.x);
+  float mY = mScreen->getYLocation(event.button.y);
+  if (contains(mX, mY)) {
+    cMultipleClickDetector.input(event);
+    float mLine = getTop() - 0.05f;
+    if (event.button.button == SDL_BUTTON_LEFT) {
+      for (unsigned int i = 0; i < cItems.size(); i++) {
+	if (mY > mLine && mY < mLine + 0.05f) {
+	  cSelectedItem = i;
+	  if (cMultipleClickDetector.getClicks() == MultipleClickDetector::DOUBLE_CLICK) {
+	    for (unsigned int i = 0; i < cListeners.size(); i++) {
+	      cListeners[i]->assertSelection(this, cItems[cSelectedItem]);
+	    }
+	  }
+	  break;
+	}
+	mLine -= 0.05f;
+      }
+    }
+    return true;
+  }
+  return false;
+}
+
 bool ListBox::input(SDL_Event& event) {
   switch (event.type) {
     case SDL_KEYDOWN: {
       return keyDown(event.key.keysym.sym);
     }
 
-    // TODO: Support mouse selection
+    case SDL_MOUSEBUTTONDOWN: {
+      return mouseButtonPressed(event);
+    }
   }
   return false;
 }

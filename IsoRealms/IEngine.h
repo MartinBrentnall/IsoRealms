@@ -19,7 +19,7 @@
 #ifndef I_ENGINE_H
 #define I_ENGINE_H
 
-#include "DOMNodeWrapper.h"
+#include "Persistence/DOMNodeWrapper.h"
 
 class IEngine {
   public:
