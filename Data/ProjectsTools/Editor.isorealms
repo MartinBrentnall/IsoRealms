@@ -1,14 +1,67 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <Project>
   <Configuration camera="Editor/Camera"/>
+  <Plugin name="FlatRectangle">
+    <Resources>
+      <ModelType name="Icon3DModels" size="1.000000" texture="ImageTextureSet/Icon3DModels"/>
+      <ModelType name="IconCameras" size="1.000000" texture="ImageTextureSet/IconCameras"/>
+      <ModelType name="IconCollectables" size="1.000000" texture="ImageTextureSet/IconCollectables"/>
+      <ModelType name="IconCustomTypes" size="1.000000" texture="ImageTextureSet/IconCustomTypes"/>
+      <ModelType name="IconElementTypes" size="1.000000" texture="ImageTextureSet/IconElementTypes"/>
+      <ModelType name="IconFonts" size="1.000000" texture="ImageTextureSet/IconFonts"/>
+      <ModelType name="IconHUDComponents" size="1.000000" texture="ImageTextureSet/IconHUDComponents"/>
+      <ModelType name="IconPrimitives" size="1.000000" texture="ImageTextureSet/IconPrimitives"/>
+      <ModelType name="IconScripts" size="1.000000" texture="ImageTextureSet/IconScripts"/>
+      <ModelType name="IconSounds" size="1.000000" texture="ImageTextureSet/IconSounds"/>
+      <ModelType name="IconSurfaceProcessors" size="1.000000" texture="ImageTextureSet/IconSurfaceProcessors"/>
+      <ModelType name="IconSurfaceRegistries" size="1.000000" texture="ImageTextureSet/IconSurfaceRegistries"/>
+      <ModelType name="IconTextures" size="1.000000" texture="ImageTextureSet/IconTextures"/>
+      <ModelType name="IconVertices" size="1.000000" texture="ImageTextureSet/IconVertices"/>
+      <ModelType name="IconZoneHandlers" size="1.000000" texture="ImageTextureSet/IconZoneHandlers"/>
+    </Resources>
+  </Plugin>
   <Plugin name="GLFreeType">
     <Resources>
       <Font name="EditorFont" file="Data/Fonts/EditorFont.ttf" detail="64"/>
     </Resources>
   </Plugin>
+  <Plugin name="ImageTextureSet">
+    <Resources>
+      <Texture file="Icon3DModels.png" id="Icon3DModels"/>
+      <Texture file="IconCameras.png" id="IconCameras"/>
+      <Texture file="IconCollectables.png" id="IconCollectables"/>
+      <Texture file="IconCustomTypes.png" id="IconCustomTypes"/>
+      <Texture file="IconElementTypes.png" id="IconElementTypes"/>
+      <Texture file="IconFonts.png" id="IconFonts"/>
+      <Texture file="IconHUDComponents.png" id="IconHUDComponents"/>
+      <Texture file="IconPrimitives.png" id="IconPrimitives"/>
+      <Texture file="IconScripts.png" id="IconScripts"/>
+      <Texture file="IconSounds.png" id="IconSounds"/>
+      <Texture file="IconSurfaceProcessors.png" id="IconSurfaceProcessors"/>
+      <Texture file="IconSurfaceRegistries.png" id="IconSurfaceRegistries"/>
+      <Texture file="IconTextures.png" id="IconTextures"/>
+      <Texture file="IconVertices.png" id="IconVertices"/>
+      <Texture file="IconZoneHandlers.png" id="IconZoneHandlers"/>
+    </Resources>
+  </Plugin>
   <Plugin name="Editor">
     <Resources>
       <Font name="GLFreeType/EditorFont"/>
+      <ResourcesIcon icon="Icon3DModels" iconModel="FlatRectangle/Icon3DModels"/>
+      <ResourcesIcon icon="IconCameras" iconModel="FlatRectangle/IconCameras"/>
+      <ResourcesIcon icon="IconCollectables" iconModel="FlatRectangle/IconCollectables"/>
+      <ResourcesIcon icon="IconCustomTypes" iconModel="FlatRectangle/IconCustomTypes"/>
+      <ResourcesIcon icon="IconElementTypes" iconModel="FlatRectangle/IconElementTypes"/>
+      <ResourcesIcon icon="IconFonts" iconModel="FlatRectangle/IconFonts"/>
+      <ResourcesIcon icon="IconHUDComponents" iconModel="FlatRectangle/IconHUDComponents"/>
+      <ResourcesIcon icon="IconPrimitives" iconModel="FlatRectangle/IconPrimitives"/>
+      <ResourcesIcon icon="IconScripts" iconModel="FlatRectangle/IconScripts"/>
+      <ResourcesIcon icon="IconSounds" iconModel="FlatRectangle/IconSounds"/>
+      <ResourcesIcon icon="IconSurfaceProcessors" iconModel="FlatRectangle/IconSurfaceProcessors"/>
+      <ResourcesIcon icon="IconSurfaceRegistries" iconModel="FlatRectangle/IconSurfaceRegistries"/>
+      <ResourcesIcon icon="IconTextures" iconModel="FlatRectangle/IconTextures"/>
+      <ResourcesIcon icon="IconVertices" iconModel="FlatRectangle/IconVertices"/>
+      <ResourcesIcon icon="IconZoneHandlers" iconModel="FlatRectangle/IconZoneHandlers"/>
       <MenuBar>
         <Menu text="^File">
           <MenuItem text="^New..."/>

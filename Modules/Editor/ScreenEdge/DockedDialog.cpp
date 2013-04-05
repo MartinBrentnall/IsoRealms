@@ -1,7 +1,8 @@
 #include "DockedDialog.h"
 
-DockedDialog::DockedDialog(Dialog* dialog) {
+DockedDialog::DockedDialog(Dialog* dialog, AbstractRectangularComponent* icon) {
   cDialog = dialog;
+  cIcon = icon;
 }
 
 bool DockedDialog::input(SDL_Event& event) {
@@ -10,10 +11,15 @@ bool DockedDialog::input(SDL_Event& event) {
 
 void DockedDialog::update(unsigned int milliseconds) {
   cDialog->update(milliseconds);
+  cIcon->update(milliseconds);
 }
 
 void DockedDialog::render() {
   cDialog->render();
+}
+
+void DockedDialog::renderIcon() {
+  cIcon->render();
 }
 
 bool DockedDialog::contains(float x, float y) {

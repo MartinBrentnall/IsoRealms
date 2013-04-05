@@ -16,15 +16,6 @@ float ScreenEdgeRight::getTabX(DockedDialog* dockedDialog) {
 void ScreenEdgeRight::renderTab(DockedDialog* dockedDialog, float x, float y) {
   float mEndY = y - getTabHeight(dockedDialog);
   float mEndX = x + getTabWidth(dockedDialog);
-  glPushAttrib(GL_TRANSFORM_BIT);
-  glMatrixMode(GL_PROJECTION);
-  glPushMatrix();
-  glLoadIdentity();
-  glPopAttrib();
-  glDisable(GL_DEPTH_TEST);
-
-  glBindTexture(GL_TEXTURE_2D, 0);
-  glLoadIdentity();
   
   glEnable(GL_BLEND);
   glBegin(GL_QUADS);
@@ -43,12 +34,4 @@ void ScreenEdgeRight::renderTab(DockedDialog* dockedDialog, float x, float y) {
   glVertex2f(mEndX, mEndY);
   glVertex2f(mEndX, y);    
   glEnd();
-  
-  glLoadIdentity();  
-  glEnable(GL_DEPTH_TEST);
-
-  glPushAttrib(GL_TRANSFORM_BIT);
-  glMatrixMode(GL_PROJECTION);
-  glPopMatrix();
-  glPopAttrib();  
 }

@@ -28,7 +28,7 @@ bool ScreenEdgeManager::contains(float x, float y) {
       || cScreenEdgeTop.contains(x, y);
 }
 
-void ScreenEdgeManager::add(Dialog* resizableDialog) {
-  cScreenEdgeRight.add(resizableDialog);
+void ScreenEdgeManager::add(Dialog* resizableDialog, AbstractRectangularComponent* icon) {
+  cScreenEdgeRight.add(resizableDialog, icon);
 }
 

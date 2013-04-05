@@ -28,6 +28,7 @@
 #include <IsoRealms/Persistence/DOMNodeWrapper.h>
 #include <IsoRealms/GUI/ComponentCustomType.h>
 #include <IsoRealms/GUI/Dialogs/ComponentColourSelector.h>
+#include <IsoRealms/GUI/GUIIcon.h>
 #include <IsoRealms/GUI/MenuBar.h>
 #include <IsoRealms/GUI/OpenDialogCommand.h>
 #include <IsoRealms/ICommandInfo.h>
@@ -88,6 +89,7 @@ class SimpleEditor:public IPlugin,
   
   IProject* cProject;
   std::map<std::string, ICommand*> cEditorCommands;
+  std::map<std::string, GUIIcon*> cResourceIcons;
   std::vector<IProjectManagerListener*> cProjectManagerListeners;
   ScreenEdgeManager cScreenEdgeManager;
   Camera cViewPoint;

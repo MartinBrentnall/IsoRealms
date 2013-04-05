@@ -19,6 +19,20 @@ class ScreenEdge {
   DockedDialog* cExpandedDialog;
   float cAnimation;
 
+  class TabIconLayout:public IComponentBoundsCalculator {
+    private:
+    ScreenEdge* cParent;
+    DockedDialog* cDialog;
+    
+    public:
+    TabIconLayout(ScreenEdge*, DockedDialog*);
+    
+    float getTop();
+    float getBottom();
+    float getLeft();
+    float getRight();
+  };  
+
   virtual float getTabX(DockedDialog*) = 0;
   virtual float getTabY(DockedDialog*) = 0;
   virtual float getTabWidth(DockedDialog*) = 0;
@@ -34,7 +48,7 @@ class ScreenEdge {
   void render();
   bool input(SDL_Event&);
   bool contains(float, float);
-  void add(Dialog*);
+  void add(Dialog*, AbstractRectangularComponent*);
 };
 
 #endif

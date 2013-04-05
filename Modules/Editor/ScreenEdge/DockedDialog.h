@@ -7,13 +7,15 @@
 class DockedDialog:public IHUDComponent {
   private:
   Dialog* cDialog;
+  AbstractRectangularComponent* cIcon;
   
   public:
-  DockedDialog(Dialog*);
+  DockedDialog(Dialog*, AbstractRectangularComponent*);
     
   bool input(SDL_Event&);
   void update(unsigned int);
   void render();
+  void renderIcon();
   bool contains(float, float);
   float getHeight();   
   float getWidth();

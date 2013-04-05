@@ -38,9 +38,27 @@ void ScreenEdge::render() {
     cExpandedDialog->render();
   }
   for (unsigned int i = 0; i < cDockedDialogs.size(); i++) {
+    glPushAttrib(GL_TRANSFORM_BIT);
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glPopAttrib();
+    glDisable(GL_DEPTH_TEST);
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glLoadIdentity();
     float mX = getTabX(cDockedDialogs[i]);
     float mY = getTabY(cDockedDialogs[i]);
     renderTab(cDockedDialogs[i], mX, mY);
+    cDockedDialogs[i]->renderIcon();
+  
+    glLoadIdentity();  
+    glEnable(GL_DEPTH_TEST);
+
+    glPushAttrib(GL_TRANSFORM_BIT);
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glPopAttrib();  
   }
 }
 
@@ -100,6 +118,31 @@ bool ScreenEdge::contains(float x, float y) {
   return false;
 }
 
-void ScreenEdge::add(Dialog* dialog) {
-  cDockedDialogs.push_back(new DockedDialog(dialog));
+void ScreenEdge::add(Dialog* dialog, AbstractRectangularComponent* icon) {
+  DockedDialog* mDockedDialog = new DockedDialog(dialog, icon);
+  cDockedDialogs.push_back(mDockedDialog);
+  IComponentBoundsCalculator* mIconLayout = new TabIconLayout(this, mDockedDialog);
+  icon->setBoundsCalculator(mIconLayout);
 }
+
+ScreenEdge::TabIconLayout::TabIconLayout(ScreenEdge* parent, DockedDialog* dialog) {
+  cParent = parent;
+  cDialog = dialog;
+}
+    
+float ScreenEdge::TabIconLayout::getTop() {
+  return cParent->getTabY(cDialog);
+}
+
+float ScreenEdge::TabIconLayout::getBottom() {
+  return getTop() - cParent->getTabHeight(cDialog);
+}
+
+float ScreenEdge::TabIconLayout::getLeft() {
+  return cParent->getTabX(cDialog);
+}
+
+float ScreenEdge::TabIconLayout::getRight() {
+  return getLeft() + cParent->getTabWidth(cDialog);
+}
+

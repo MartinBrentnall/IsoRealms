@@ -37,6 +37,7 @@ add_library(IsoRealms SHARED
   GUI/EdgeRelation.cpp
   GUI/FlexibleGridLayoutComponent.cpp
   GUI/GridLayoutComponent.cpp
+  GUI/GUIIcon.cpp
   GUI/ListBox.cpp
   GUI/LookAndFeel.cpp
   GUI/MenuBar.cpp

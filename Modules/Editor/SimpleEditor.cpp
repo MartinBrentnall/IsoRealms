@@ -73,15 +73,6 @@ void SimpleEditor::createResources(DOMNodeWrapper* node, IRuntimeContext* runtim
 
 void SimpleEditor::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
   IResourceManager* mProjectResources = cProject->getResourceManager();
-  cDockableTextureManager = new DialogTextureManager(this, resources, mProjectResources, this, mProjectResources);
-  cDockableElementTypeManager = new DialogElementTypeManager(this, resources, mProjectResources, this, mProjectResources);
-  cDockableSoundManager       = new DialogSoundManager(this, resources, mProjectResources, this, mProjectResources);
-  cDockableFontManager        = new DialogFontManager(this, resources, mProjectResources, this, mProjectResources);
-  cScreenEdgeManager.add(cDockableTextureManager);
-  cScreenEdgeManager.add(cDockableElementTypeManager);
-  cScreenEdgeManager.add(cDockableSoundManager);
-  cScreenEdgeManager.add(cDockableFontManager);
-  addComponent(&cScreenEdgeManager);
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
@@ -92,8 +83,35 @@ void SimpleEditor::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* r
     } else if (mValueAsString == "MenuBar") {
       cMenuBar = new MenuBar(this, mNode, this);
       addComponent(cMenuBar);
+    } else if (mValueAsString == "ResourcesIcon") {
+      std::string mIconName = mNode->getAttribute("icon");
+      std::string mIconModel = mNode->getAttribute("iconModel");
+      I3DModelFactory* mModelType = resources->getModelType(mIconModel);
+      Vertex* mVertex = new Vertex();
+      I3DModel* mModelInstance = mModelType->createModel(mVertex, 1.0f);
+      std::cout << "=================================================> " << mIconName << std::endl;
+      cResourceIcons[mIconName] = new GUIIcon(mModelInstance);
     }
   }
+  cDockableTextureManager     = new DialogTextureManager(    this, resources, mProjectResources, this, mProjectResources);
+  cDockableElementTypeManager = new DialogElementTypeManager(this, resources, mProjectResources, this, mProjectResources);
+  cDockableSoundManager       = new DialogSoundManager(      this, resources, mProjectResources, this, mProjectResources);
+  cDockableFontManager        = new DialogFontManager(       this, resources, mProjectResources, this, mProjectResources);
+  cScreenEdgeManager.add(cDockableTextureManager,     cResourceIcons["IconTextures"]);
+  cScreenEdgeManager.add(cDockableElementTypeManager, cResourceIcons["IconElementTypes"]);
+  cScreenEdgeManager.add(cDockableSoundManager,       cResourceIcons["IconSounds"]);
+  cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconFonts"]);
+//   cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconScripts"]);
+//   cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconPrimitives"]);
+//   cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconSurfaceProcessors"]);
+//   cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconCustomTypes"]);
+//   cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconHUDComponents"]);
+//   cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconZoneHandlers"]);
+//   cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconVertices"]);
+//   cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["Icon3DModels"]);
+//   cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconCameras"]);
+//   cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconCollectables"]);
+  addComponent(&cScreenEdgeManager);
 }
 
 bool SimpleEditor::componentAt(float x, float y) {
