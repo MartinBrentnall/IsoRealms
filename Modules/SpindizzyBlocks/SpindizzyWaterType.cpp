@@ -32,6 +32,10 @@ void SpindizzyWaterType::configureElement() {
   // Nothing to do.
 }
 
+IElement* SpindizzyWaterType::getElement() {
+  return NULL;
+}
+
 IElement* SpindizzyWaterType::getElement(DOMNodeWrapper* node, BlockLocation* zoneLocation, IElementContainer* container) {
   BlockLocation mStartLocation;
   BlockLocation mEndLocation;
@@ -126,7 +130,7 @@ void SpindizzyWaterType::renderIcon() {
   cSampleWater->renderStatic();
 }
 
-void SpindizzyWaterType::updateIcon(int) {
+void SpindizzyWaterType::updateIcon(unsigned int) {
   // Nothing to do.
 }
 

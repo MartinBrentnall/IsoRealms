@@ -19,6 +19,8 @@
 #ifndef OPTION_MENU_ITEM_H
 #define OPTION_MENU_ITEM_H
 
+#include <GL/glew.h>
+#include <GL/gl.h>
 #include <string>
 #include <vector>
 

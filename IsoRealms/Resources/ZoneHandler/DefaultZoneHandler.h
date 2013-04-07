@@ -27,7 +27,7 @@ class DefaultZoneHandler:public IZoneHandler {
    * Implements IZoneRenderer *
   \****************************/
   void render(std::vector<IZone*>&, IProject*);
-  void update(std::vector<IZone*>&, unsigned int);
+  void updateEditing(std::vector<IZone*>&, unsigned int);
   void updateRuntime(std::vector<IZone*>&, unsigned int);
 
   void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);

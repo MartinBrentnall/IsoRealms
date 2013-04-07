@@ -32,23 +32,7 @@ void SpindizzyEnemy::reset() {
   // TODO: Implement this
 }
 
-std::vector<IVisualElement*> SpindizzyEnemy::getVisualElements() {
-  std::vector<IVisualElement*> mVisualElements;
-  mVisualElements.push_back(this);
-  return mVisualElements;
-}
-
-std::vector<IDynamicElement*> SpindizzyEnemy::getDynamicElements() {
-  std::vector<IDynamicElement*> mDynamicElements;
-  return mDynamicElements;
-}
-
-std::vector<IInteractiveElement*> SpindizzyEnemy::getInteractiveElements() {
-  std::vector<IInteractiveElement*> mInteractiveElements;
-  return mInteractiveElements;
-}
-
-void SpindizzyEnemy::render() {
+void SpindizzyEnemy::renderRuntime() {
   glPushMatrix();
   cEnemyModel->render();
   glPopMatrix();

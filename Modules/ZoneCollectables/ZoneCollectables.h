@@ -23,11 +23,11 @@
 #include <sstream>
 #include <vector>
 
+#include <IsoRealms/IMap.h>
+#include <IsoRealms/IZone.h>
 #include <IsoRealms/LuaSupport/ArgumentSourceLocal.h>
 #include <IsoRealms/LuaSupport/ArgumentValue.h>
 #include <IsoRealms/LuaSupport/IArgumentGenerator.h>
-#include <IsoRealms/IProject.h>
-#include <IsoRealms/IZone.h>
 #include <IsoRealms/Resources/Collectables/ICollectables.h>
 #include <IsoRealms/Resources/Integer/Integer.h>
 #include <IsoRealms/SingleResourceTypeModule.h>
@@ -38,7 +38,7 @@ class ZoneCollectables:public ICollectables,
                        public IArgumentGenerator,
 		       public IArgumentLocator {
   private:
-  IProject* cProject;
+  IMap* cMap;
   IZoneCollectables* cModule;
   IScript* cCollectedScript;
   ArgumentValue<IInteger> cArgumentZoneRemaining;

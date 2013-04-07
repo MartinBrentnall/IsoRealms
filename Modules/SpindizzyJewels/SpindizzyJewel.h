@@ -38,9 +38,7 @@
 #include "ISpindizzyJewelSet.h"
 
 class SpindizzyJewel:public Element<ISpindizzyJewelSet, BaseSpindizzyJewelType>,
-                     public ICollectable,
-                     public IDynamicElement,
-                     public IVisualElement {
+                     public ICollectable {
   private:
 
   I3DModel* cModel;
@@ -68,21 +66,9 @@ class SpindizzyJewel:public Element<ISpindizzyJewelSet, BaseSpindizzyJewelType>,
   \***********************/
   bool initElement(unsigned int);
   void renderStatic();
-  std::vector<IVisualElement*> getVisualElements();
-  std::vector<IDynamicElement*> getDynamicElements();
-  std::vector<IDynamicElement*> getDynamicElementsRuntime();
-  std::vector<IInteractiveElement*> getInteractiveElements();
+  void renderRuntime();
+  void updateRuntime(unsigned int);
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
-
-  /******************************\
-   * Implements IDynamicElement *
-  \******************************/
-  void update(unsigned int);
-
-  /*****************************\
-   * Implements IVisualElement *
-  \*****************************/
-  void render();
 };
 
 #endif

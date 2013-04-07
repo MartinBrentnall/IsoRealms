@@ -31,40 +31,17 @@ void SpindizzyJewel::renderStatic() {
   // Nothing to do.
 }
 
-std::vector<IVisualElement*> SpindizzyJewel::getVisualElements() {
-  std::vector<IVisualElement*> mVisualElements;
-  mVisualElements.push_back(this);
-  return mVisualElements;
-}
-
-std::vector<IDynamicElement*> SpindizzyJewel::getDynamicElements() {
-  std::vector<IDynamicElement*> mDynamicElements;
-  mDynamicElements.push_back(this);
-  return mDynamicElements;
-}
-
-std::vector<IDynamicElement*> SpindizzyJewel::getDynamicElementsRuntime() {
-  std::vector<IDynamicElement*> mDynamicElements;
-  mDynamicElements.push_back(this);
-  return mDynamicElements;
-}
-
-std::vector<IInteractiveElement*> SpindizzyJewel::getInteractiveElements() {
-  std::vector<IInteractiveElement*> mInteractiveElements;
-  return mInteractiveElements;
-}
-
 void SpindizzyJewel::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& location) {
   cLocation.saveRelative(node, location);  
 }
 
-void SpindizzyJewel::update(unsigned int milliseconds) {
+void SpindizzyJewel::updateRuntime(unsigned int milliseconds) {
   if (!cCollected) {
     cModel->update(milliseconds);
   }
 }
 
-void SpindizzyJewel::render() {
+void SpindizzyJewel::renderRuntime() {
   if (!cCollected) {
     glPushMatrix();
     cModel->render();

@@ -25,9 +25,10 @@
 #include "Resources/Vertex/Vertex.h"
 #include "IPluginRegistry.h"
 #include "IZone.h"
+#include "Zone.h"
 #include "ZoneEvent.h"
 
-class IMap {
+class IMap:public IResource {
   public:
 
   virtual IZone* getZone(BlockLocation&) = 0;
@@ -53,6 +54,31 @@ class IMap {
   virtual void zoneChanged(IZone*) = 0;
 
   virtual std::vector<IZone*> getAdjacentZones(IZone*) = 0;
+
+  virtual void addZone(Zone*) = 0;
+  
+  virtual void removeZone(Zone*) = 0;
+
+  /**
+   * Test whether the specified block area overlaps with a zone in this map.
+   *
+   * @param BlockArea&  The block area to test.
+   * @returns  True if it overlaps, otherwise false.
+   */
+  virtual bool overlaps(BlockArea&) = 0;
+
+  /*************\
+   * Lua API's *
+  \*************/
+  virtual void setZoneHandler(IZoneHandler*) = 0;
+  virtual float getEast() = 0;
+  virtual float getWest() = 0;
+  virtual float getNorth() = 0;
+  virtual float getSouth() = 0;
+  virtual float getTop() = 0;
+  virtual float getBottom() = 0;
+  virtual float getAspectRatio() = 0;
+  virtual int getZoneCount() = 0;  
 };
 
 #endif

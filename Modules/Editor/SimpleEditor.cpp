@@ -33,9 +33,6 @@ void SimpleEditor::createResources(DOMNodeWrapper* node, IRuntimeContext* runtim
   cRunExitCommands = false;
   cConfirmExitCommands = false;
   cEditorFocus = true;
-  BlockLocation mLocation(-7, 0, 0);
-  BlockLocation mSize(0, 7, 7);
-  Zone* mInitZone = new Zone(mLocation, mSize);
 
   // Register commands
   cEditorCommands[COMMAND_EXIT]    = new TerminateEditorCommand(cConfirmExitCommands);
@@ -48,7 +45,7 @@ void SimpleEditor::createResources(DOMNodeWrapper* node, IRuntimeContext* runtim
   IProject* mProject;
 //  if (mMapName == "") {
     mProject = new Project();
-    mProject->addZone(mInitZone);
+//     mProject->addZone(mInitZone);
 //   } else {
 //     std::string mProjectFile = System::getProgramResource("Data/Projects/" + mMapName); // TODO: Should we hard code Data/Projects/ here?
 //     DOMNodeWrapper* mConfigurationRootNode = new DOMNodeWrapper(mProjectFile);
@@ -63,7 +60,7 @@ void SimpleEditor::createResources(DOMNodeWrapper* node, IRuntimeContext* runtim
   cProject = mProject;
 
   // Setup map for editing
-  cCursor = new EditorCursor(cProject);
+  cCursor = NULL;
   Vertex mNormalDistance(0.0f, 0.0f, -20.0f);
   cViewPoint.addViewPoint(0, mNormalDistance, 315.0f, -50.0f, 0.0f);
   cViewPoint.setViewPoint(0);
@@ -101,16 +98,16 @@ void SimpleEditor::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* r
   cScreenEdgeManager.add(cDockableElementTypeManager, cResourceIcons["IconElementTypes"]);
   cScreenEdgeManager.add(cDockableSoundManager,       cResourceIcons["IconSounds"]);
   cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconFonts"]);
-//   cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconScripts"]);
-//   cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconPrimitives"]);
-//   cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconSurfaceProcessors"]);
-//   cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconCustomTypes"]);
-//   cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconHUDComponents"]);
-//   cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconZoneHandlers"]);
-//   cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconVertices"]);
-//   cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["Icon3DModels"]);
-//   cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconCameras"]);
-//   cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconCollectables"]);
+  cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconScripts"]);
+  cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconPrimitives"]);
+  cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconSurfaceProcessors"]);
+  cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconCustomTypes"]);
+  cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconHUDComponents"]);
+  cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconZoneHandlers"]);
+  cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconVertices"]);
+  cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["Icon3DModels"]);
+  cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconCameras"]);
+  cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconCollectables"]);
   addComponent(&cScreenEdgeManager);
 }
 
@@ -126,10 +123,10 @@ bool SimpleEditor::componentAt(float x, float y) {
 bool SimpleEditor::keyDown(SDLKey& key) {
   switch (key) {
     case SDLK_u: {
-      IElement* mElement = cCursor->popElement();
-      if (mElement != NULL) {
-        cUndoStack.push(mElement);
-      }
+//       IElement* mElement = cCursor->popElement();
+//       if (mElement != NULL) {
+//         cUndoStack.push(mElement);
+//       }
       return true;
     }
 
@@ -149,9 +146,9 @@ bool SimpleEditor::keyDown(SDLKey& key) {
 }
 
 bool SimpleEditor::editorInput(SDL_Event& event) {
-  if (cCursor->input(event)) {
-    return true;
-  }
+//   if (cCursor->input(event)) {
+//     return true;
+//   }
 
   switch (event.type) {
     case SDL_MOUSEBUTTONDOWN: {
@@ -197,7 +194,7 @@ void SimpleEditor::testFocusChange(SDL_Event& event) {
   }
 }
 
-bool SimpleEditor::input(SDL_Event& event) {
+void SimpleEditor::input(SDL_Event& event) {
   testFocusChange(event);
   bool mEventConsumed = false;
   if (cConfirmExitCommands) {
@@ -240,11 +237,10 @@ bool SimpleEditor::input(SDL_Event& event) {
   if (!mEventConsumed) {
     for (int i = cHUDComponents.size() - 1; i >= 0; i--) {
       if (cHUDComponents[i]->input(event)) {
-        return false;
+        return;
       }
     }
   }
-  return false;
 }
 
 // IElementContainer* SimpleEditor::pushElement(IElement* element) {
@@ -262,40 +258,7 @@ bool SimpleEditor::input(SDL_Event& event) {
 // }
 // 
 void SimpleEditor::elementSelected(IElementType* elementType) {
-  cCursor->setElementType(elementType);
-}
-
-void SimpleEditor::render() {
-  cCursor->moveToCamera();
-  cProject->render();
-  cProject->renderEditing();
-  cCursor->render();
-  
-  // Render UI components
-  for (unsigned int i = 0; i < cHUDComponents.size(); i++) {
-    cHUDComponents[i]->render();
-  }
-  if (cConfirmExitCommands) {
-    glColor3f(0.0f, 0.0f, 0.0f);
-    cFont->print(0.004f, -0.004f, 0.03f, 1, "Are you sure you want to quit?");
-    glColor3f(1.0f, 1.0f, 1.0f);
-    cFont->print(0.0f, 0.0f, 0.03f, 1, "Are you sure you want to quit?");
-  }
-}
-
-void SimpleEditor::update(unsigned int milliseconds) {
-  for (unsigned int i = 0; i < cHUDComponents.size(); i++) {
-    cHUDComponents[i]->update(milliseconds);
-  }
-  cProject->update(milliseconds);
-  if (cRunExitCommands) {
-    for (unsigned int i = 0; i < cExitCommands.size(); i++) {
-      cExitCommands[i]->execute();
-    }
-    cRunExitCommands = false;
-  } else {
-    glBindTexture(GL_TEXTURE_2D, 0);
-  }
+//  cCursor->setElementType(elementType);
 }
 
 int SimpleEditor::getComponentIndex(IHUDComponent* component) {
@@ -348,12 +311,14 @@ void SimpleEditor::setProject(IProject* project) {
   if (cProject != NULL) {
     clearUndoStack();
     delete cProject;
-    delete cCursor;
-    cCursor = NULL;
+    if (cCursor == NULL) {
+      delete cCursor;
+      cCursor = NULL;
+    }
   }
   cProject = project;
   if (cProject != NULL) {
-    cCursor = new EditorCursor(cProject);
+//    cCursor = new EditorCursor(NULL);
   /* TODO: What did this do?    ElementSetRegistry* mElementSetRegistry = cProject->getElementSetRegistry();
 //     mElementSetRegistry->setEditingInfo(cCursor, this, this, this);
 //     mElementSetRegistry->addElementRegistryListener(this);
@@ -386,6 +351,10 @@ IPlugin* SimpleEditor::getElementSet() {
   return this;
 }
 
+IElement* SimpleEditor::getElement() {
+  return this;
+}
+
 IElement* SimpleEditor::getElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*) {
   return this;
 }
@@ -406,7 +375,7 @@ void SimpleEditor::renderIcon() {
   // Not editable.  Nothing to do
 }
 
-void SimpleEditor::updateIcon(int) {
+void SimpleEditor::updateIcon(unsigned int) {
   // Not editable.  Nothing to do
 }
 
@@ -416,6 +385,70 @@ void SimpleEditor::destroy(IElement* element) {
 
 IElementHandler* SimpleEditor::getElementHandler() {
   return NULL;
+}
+
+void SimpleEditor::renderRuntime() {
+  if (cCursor != NULL) {
+    cCursor->moveToCamera();
+  }
+  cProject->renderEditing();
+  if (cCursor != NULL) {
+    cCursor->render();
+  }
+  
+  // Render UI components
+  for (unsigned int i = 0; i < cHUDComponents.size(); i++) {
+    cHUDComponents[i]->render();
+  }
+  if (cConfirmExitCommands) {
+    glColor3f(0.0f, 0.0f, 0.0f);
+    cFont->print(0.004f, -0.004f, 0.03f, 1, "Are you sure you want to quit?");
+    glColor3f(1.0f, 1.0f, 1.0f);
+    cFont->print(0.0f, 0.0f, 0.03f, 1, "Are you sure you want to quit?");
+  }
+}
+
+void SimpleEditor::renderEditing() {
+  // Nothing to do
+}
+
+void SimpleEditor::updateRuntime(unsigned int milliseconds) {
+  for (unsigned int i = 0; i < cHUDComponents.size(); i++) {
+    cHUDComponents[i]->update(milliseconds);
+  }
+  cProject->update(milliseconds);
+  if (cRunExitCommands) {
+    for (unsigned int i = 0; i < cExitCommands.size(); i++) {
+      cExitCommands[i]->execute();
+    }
+    cRunExitCommands = false;
+  } else {
+    glBindTexture(GL_TEXTURE_2D, 0);
+  }
+}
+
+void SimpleEditor::updateEditing(unsigned int milliseconds) {
+  // Nothing to do
+}
+
+bool SimpleEditor::isVisualRuntime() {
+  return true;
+}
+
+bool SimpleEditor::isVisualEditing() {
+  return false;
+}
+
+bool SimpleEditor::isDynamicRuntime() {
+  return true;
+}
+
+bool SimpleEditor::isDynamicEditing() {
+  return false;
+}
+
+bool SimpleEditor::isInteractive() {
+  return true;
 }
 
 IElementType* SimpleEditor::getElementType() {
@@ -428,34 +461,6 @@ bool SimpleEditor::initElement(unsigned int) {
 
 void SimpleEditor::renderStatic() {
   // Nothing to do
-}
-
-void SimpleEditor::renderStaticEditing() {
-  // Nothing to do
-}
-
-std::vector<IVisualElement*> SimpleEditor::getVisualElements() {
-  std::vector<IVisualElement*> mVisualElements;
-  mVisualElements.push_back(this);
-  return mVisualElements;
-}
-
-std::vector<IDynamicElement*> SimpleEditor::getDynamicElements() {
-  std::vector<IDynamicElement*> mDynamicElements;
-  mDynamicElements.push_back(this);
-  return mDynamicElements;
-}
-
-std::vector<IDynamicElement*> SimpleEditor::getDynamicElementsRuntime() {
-  std::vector<IDynamicElement*> mDynamicElements;
-  mDynamicElements.push_back(this);
-  return mDynamicElements;
-}
-
-std::vector<IInteractiveElement*> SimpleEditor::getInteractiveElements() {
-  std::vector<IInteractiveElement*> mInteractiveElements;
-  mInteractiveElements.push_back(this);
-  return mInteractiveElements;
 }
 
 void SimpleEditor::save(DOMNodeWriter*, IResourceLocator*, BlockLocation&) {
@@ -476,6 +481,10 @@ ICommand* SimpleEditor::getCommand(const std::string& name) {
 
 IResourceSelector* SimpleEditor::getResourceSelector() {
   return this;
+}
+
+ICamera* SimpleEditor::getCamera() {
+  return &cViewPoint;
 }
 
 void SimpleEditor::addResourceSelectionListener(IResourceSelectionListener<IColour>* listener) {

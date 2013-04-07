@@ -19,6 +19,7 @@
 #ifndef I_ELEMENT_H
 #define I_ELEMENT_H
 
+#include <SDL/SDL.h>
 #include <vector>
 
 class IElementType;
@@ -26,10 +27,8 @@ class IElementSet;
 class IMap;
 
 #include <IsoRealms/BlockLocation.h>
-#include <IsoRealms/IDynamicElement.h>
-#include <IsoRealms/IInteractiveElement.h>
-#include <IsoRealms/IVisualElement.h>
 #include <IsoRealms/Persistence/DOMNodeWriter.h>
+#include <IsoRealms/Resources/IResource.h>
 #include <IsoRealms/Resources/IResourceLocator.h>
 
 #include "IElementHandler.h"
@@ -65,31 +64,34 @@ class IElement {
   virtual bool initElement(unsigned int) = 0;
 
   virtual void renderStatic() = 0;
+  
+  virtual void renderRuntime() = 0;
+  
+  virtual void renderEditing() = 0;
+  
+  virtual void updateRuntime(unsigned int) = 0;
+  
+  virtual void updateEditing(unsigned int) = 0;
+  
+  virtual void input(SDL_Event&) = 0;
 
-  /**
-   * This function can be called by editing tools to render things that should
-   * only be shown to help with editing and not during the game.
-   */
-  virtual void renderStaticEditing() = 0;
+  virtual bool isVisualRuntime() = 0;
+  
+  virtual bool isVisualEditing() = 0;
 
-  /**
-   * Retrieve a list of interfaces through which this element is represented
-   * visually.
-   */
-  virtual std::vector<IVisualElement*> getVisualElements() = 0;
+  virtual bool isDynamicRuntime() = 0;
 
-  /**
-   * Retrieve a list of interfaces through which this element can be updated.
-   */
-  virtual std::vector<IDynamicElement*> getDynamicElements() = 0;
+  virtual bool isDynamicEditing() = 0;
 
-  virtual std::vector<IDynamicElement*> getDynamicElementsRuntime() = 0;
-
-  virtual std::vector<IInteractiveElement*> getInteractiveElements() = 0;
+  virtual bool isInteractive() = 0;
 
   virtual void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&) = 0;
 
   virtual void setDirty() = 0;
+
+  virtual void initRuntime() {}
+  
+  virtual void staticChanged() {}
   
   virtual ~IElement() {}
 };

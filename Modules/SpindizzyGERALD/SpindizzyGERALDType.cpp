@@ -19,7 +19,6 @@
 #include "SpindizzyGERALDType.h"
 
 SpindizzyGERALDType::SpindizzyGERALDType(ISpindizzyGERALDSet* elementSet, IRuntimeContext* runtimeContext) : ISpindizzyGERALDType(elementSet) {
-  cProject = runtimeContext->getProject();
   cRespawnScript = NULL;
   cFallImpactScript = NULL;
   cZoneEnteredScript = NULL;
@@ -27,16 +26,22 @@ SpindizzyGERALDType::SpindizzyGERALDType(ISpindizzyGERALDSet* elementSet, IRunti
 }
 
 SpindizzyGERALD* SpindizzyGERALDType::createInstance(const std::string& name) {
-  SpindizzyGERALD* mNamedInstance = new SpindizzyGERALD(this, cProject);
+  SpindizzyGERALD* mNamedInstance = new SpindizzyGERALD(this, &cMap, cResources);
   cNamedInstances[name] = mNamedInstance;
   return mNamedInstance;
-}
+} 
 
 void SpindizzyGERALDType::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor) {
+  std::string mMapPath = node->getAttribute("map");
   std::string mModelPath = node->getAttribute("model");
   std::string mSurfaceRegistryPath = node->getAttribute("surfaceRegistry");
   std::string mCollectablesRegistryPath = node->getAttribute("collectablesRegistry");
   std::string mCameraPath = node->getAttribute("camera");
+  cResources = resourceAccessor;
+  for (std::map<std::string, SpindizzyGERALD*>::iterator i = cNamedInstances.begin(); i != cNamedInstances.end(); i++) {
+    i->second->setResources(cResources);
+  }
+  cMap = resourceAccessor->getMap(mMapPath);
   cCollidableSurfaceRegistry = resourceAccessor->getSurfaceRegistry(mSurfaceRegistryPath);
   cCollectables = resourceAccessor->getCollectablesRegistry(mCollectablesRegistryPath);
   cModelType = resourceAccessor->getModelType(mModelPath);
@@ -55,14 +60,13 @@ void SpindizzyGERALDType::initialiseResource(DOMNodeWrapper* node, IResourceAcce
     }
   }
   BlockLocation mIdentityLocation(0, 0, 0);
-  cSampleGERALD = new SpindizzyGERALD(this, &mIdentityLocation, NULL);
-  cSampleGERALDVisuals = cSampleGERALD->getVisualElements();
+  cSampleGERALD = new SpindizzyGERALD(this, NULL, NULL, &mIdentityLocation);
 }
 
 IElement* SpindizzyGERALDType::getElement(DOMNodeWrapper* node, BlockLocation* relative, IElementContainer* container) {
   std::string mInstance = node->getAttribute("instance");
-  if (mInstance == "") {  
-    SpindizzyGERALD* mLoadedGERALD = new SpindizzyGERALD(this, cProject, node);
+  if (mInstance == "") {
+    SpindizzyGERALD* mLoadedGERALD = new SpindizzyGERALD(this, &cMap, cResources, node);
     cContent.push_back(mLoadedGERALD);
     return mLoadedGERALD;
   }
@@ -78,7 +82,7 @@ bool SpindizzyGERALDType::keyDown(SDLKey& key) {
   switch (key) {
     case SDLK_SPACE: {
       if (cContent.size() == 0) {
-        SpindizzyGERALD* mGERALD = new SpindizzyGERALD(this, cEditingLocation, cProject);
+        SpindizzyGERALD* mGERALD = new SpindizzyGERALD(this, &cMap, cResources, cEditingLocation);
         addElement(mGERALD);
         cContent.push_back(mGERALD);
       } else {
@@ -115,7 +119,7 @@ void SpindizzyGERALDType::renderEditingPreview() {
   // Nothing to do
 }
 
-void SpindizzyGERALDType::updateIcon(int milliseconds) {
+void SpindizzyGERALDType::updateIcon(unsigned int milliseconds) {
   // Nothing to do
 }
 
@@ -125,20 +129,9 @@ void SpindizzyGERALDType::renderIcon() {
   glRotatef(45.0f, 0.0f, 0.0f, 1.0f);
   glScalef(2.0f, 2.0f, 2.0f);
   cSampleGERALD->renderStatic();
-  for (unsigned int i = 0; i < cSampleGERALDVisuals.size(); i++) {
-    cSampleGERALDVisuals[i]->render();
+  if (cSampleGERALD->isVisualRuntime()) {
+    cSampleGERALD->renderRuntime();
   }
-}
-
-void SpindizzyGERALDType::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
-  node->addAttribute("model", resourceLocator->getPath(cModelType));
-  node->addAttribute("surfaceRegistry", resourceLocator->getPath(cCollidableSurfaceRegistry));
-  node->addAttribute("collectablesRegistry", resourceLocator->getPath(cCollectables));
-  node->addAttribute("camera", resourceLocator->getPath(cCamera));
-  resourceLocator->saveScript(node, "RespawnScript", cRespawnScript);
-  resourceLocator->saveScript(node, "FallImpactScript", cFallImpactScript);
-  resourceLocator->saveScript(node, "ZoneEnteredScript", cZoneEnteredScript);
-  resourceLocator->saveScript(node, "ZoneExitedScript", cZoneExitedScript);
 }
 
 void SpindizzyGERALDType::saveInstances(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
@@ -152,6 +145,17 @@ void SpindizzyGERALDType::saveInstances(DOMNodeWriter* node, IResourceLocator* r
     mInstanceNode->addAttribute("name", mInstanceName);
     i->second->saveInstance(mInstanceNode, resourceLocator, mBlockLocation);
   }
+} 
+
+void SpindizzyGERALDType::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+  node->addAttribute("model", resourceLocator->getPath(cModelType));
+  node->addAttribute("surfaceRegistry", resourceLocator->getPath(cCollidableSurfaceRegistry));
+  node->addAttribute("collectablesRegistry", resourceLocator->getPath(cCollectables));
+  node->addAttribute("camera", resourceLocator->getPath(cCamera));
+  resourceLocator->saveScript(node, "RespawnScript", cRespawnScript);
+  resourceLocator->saveScript(node, "FallImpactScript", cFallImpactScript);
+  resourceLocator->saveScript(node, "ZoneEnteredScript", cZoneEnteredScript);
+  resourceLocator->saveScript(node, "ZoneExitedScript", cZoneExitedScript);
 }
 
 void SpindizzyGERALDType::stop() {

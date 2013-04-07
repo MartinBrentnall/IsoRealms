@@ -1,7 +1,7 @@
 #include "DefaultCollidableSurfaceRegistry.h"
 
 void DefaultCollidableSurfaceRegistry::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
-  cProject = resources->getProject();
+  cMap = resources->getMap(node->getAttribute("map"));
 }
 
 void DefaultCollidableSurfaceRegistry::registerRollableSurface(IRollableSurface* rollableSurface, bool intercepting) {
@@ -46,7 +46,7 @@ ICollisionData* DefaultCollidableSurfaceRegistry::getNextEvent(Vertex& start, Ve
     return mFirstEvent;
   }
   if (currentSurface == NULL) {
-    std::vector<ZoneEvent*> mZoneEvents = cProject->getZoneEvents(start, end);
+    std::vector<ZoneEvent*> mZoneEvents = cMap->getZoneEvents(start, end);
     for (unsigned int i = 0; i < mZoneEvents.size(); i++) {
       if (mZoneEvents[i]->getType() == ZoneEvent::ENTERED) {
         IZone* mEnteredZone = mZoneEvents[i]->getZone();
@@ -73,7 +73,7 @@ IRollableSurface* DefaultCollidableSurfaceRegistry::getSurfaceAt(Vertex& locatio
 
 void DefaultCollidableSurfaceRegistry::initPlugin(IZone* zone, unsigned int pass) {
   cEditingZone = zone;
-  cAdjacentZones[cEditingZone] = cProject->getAdjacentZones(zone);
+  cAdjacentZones[cEditingZone] = cMap->getAdjacentZones(zone);
 }
 
 void DefaultCollidableSurfaceRegistry::zoneContextChanged(IMap* map, IZone* zone) {

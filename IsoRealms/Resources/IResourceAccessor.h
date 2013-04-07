@@ -36,6 +36,7 @@ class IResourceAccessor {
   public:
   virtual bool isEditing() = 0;
   
+  virtual bool* getDigitalInput(const std::string&) = 0;
   virtual I3DModel* getModel(const std::string&, Vertex*, float = 1.0f) = 0;
   virtual I3DModelFactory* getModelType(const std::string&) = 0;
   virtual ICamera* getCamera(const std::string&) = 0;
@@ -47,7 +48,7 @@ class IResourceAccessor {
   virtual IFont* getFont(const std::string&) = 0;
   virtual IHUDComponentFactory* getHUDComponentType(const std::string&) = 0;
   virtual IInteger* getInteger(const std::string&) = 0;
-  virtual IProject* getProject() = 0;
+  virtual IMap* getMap(const std::string&) = 0;
   virtual ISound* getSound(const std::string&) = 0;
   virtual IString* getString(const std::string&) = 0;
   virtual ISurfaceProcessor* getSurfaceProcessor(const std::string&) = 0;
@@ -56,6 +57,7 @@ class IResourceAccessor {
   virtual IZoneHandler* getZoneHandler(const std::string&) = 0;
   
   virtual void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*) = 0;
+  virtual void loadDefaultElementGroups(IElementContainer*) = 0;
   virtual IScript* getLuaScript(DOMNodeWrapper*, IArgumentGenerator* = NULL) = 0;
   virtual IArgumentDefinition* getArgumentDefinition(DOMNodeWrapper*) = 0;
   virtual IArgumentDefinition* getRegisteredArgumentDefinition(DOMNodeWrapper*) = 0;

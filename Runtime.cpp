@@ -23,7 +23,7 @@ Runtime::Runtime(DOMNodeWrapper* node, const std::string& projectName) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValue = mNode->getNodeName();
     if (mValue == "Project") {
-      cProject = new Project(mNode, projectName, NULL);
+      cProject = new Project(mNode, projectName, NULL, NULL);
     }
   }
   cProject->initRuntime();
@@ -55,12 +55,7 @@ void Runtime::input(SDL_Event& event) {
   }
 }
 
-// TODO: Should be unsigned int
-void Runtime::execute(int milliseconds) {
-  cProject->executePreLoopCommands(milliseconds);
+void Runtime::execute(unsigned int milliseconds) {
   cProject->updateRuntime(milliseconds);
-  cProject->executePostLoopCommands(milliseconds);
-  cProject->executePreLoopRenderers();
-  cProject->render();
-  cProject->executePostLoopRenderers();
+  cProject->renderRuntime();
 }

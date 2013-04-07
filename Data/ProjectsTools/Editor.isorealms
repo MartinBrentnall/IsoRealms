@@ -93,7 +93,5 @@
       </MenuBar>
     </Resources>
   </Plugin>
-  <Map>
-    <Element type="Editor/Editor"/>
-  </Map>
+  <Layer type="Editor/Editor"/>
 </Project>

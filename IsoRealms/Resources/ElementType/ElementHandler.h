@@ -15,11 +15,11 @@ class ElementHandler {
   GLuint cDisplayList;
   GLuint cEditingDisplayList;
   std::vector<IElement*> cElements;
+  std::vector<IElement*> cDynamicElementsRuntime;
+  std::vector<IElement*> cDynamicElementsEditing;
+  std::vector<IElement*> cVisualElementsRuntime;
+  std::vector<IElement*> cVisualElementsEditing;
   std::vector<IElement*> cDirtyElements;
-  
-  std::vector<IVisualElement*> cVisualElements;
-  std::vector<IDynamicElement*> cDynamicElements;
-  std::vector<IDynamicElement*> cDynamicElementsRuntime;
   
   int getIndex(IElement*);
   
@@ -34,14 +34,13 @@ class ElementHandler {
   bool contains(IElement*);
   void setDirty(IElement*);
   bool isDirty();
-  void update(unsigned int);
+  void updateEditing(unsigned int);
   void updateRuntime(unsigned int);
   bool init(unsigned int, bool);
   void renderStatic();
-  void renderDynamic();
+  void renderRuntime();
   void renderEditing();
   void staticChanged();
-  
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
 };
 

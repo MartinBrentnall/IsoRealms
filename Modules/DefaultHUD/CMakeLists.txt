@@ -18,6 +18,7 @@ include_directories(${PROJECT_SOURCE_DIR})
 
 add_library(HUD_DefaultHUD MODULE 
   DefaultHUD.cpp
+  DefaultHUDModule.cpp
   HUDComponentPosition.cpp
   HUDComponentProxy.cpp
   HUDComponentRelation.cpp

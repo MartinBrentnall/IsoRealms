@@ -12,43 +12,15 @@ void DynamicElementGroup::removeElement(IElement* element) {
 // TODO  cElementHandler.removeElement(element):
 }
 
-void DynamicElementGroup::update(unsigned int ticks) {
-  if (cActive) {
-    if (cVisibility < 1.0f) {
-      cVisibility += ticks / 500.0f;
-      if (cVisibility > 1.0f) {
-        cVisibility = 1.0f;
-      }
-    }
-    cElementHandler.update(ticks);
-  } else if (cVisibility > 0.0f) {
-    cVisibility -= ticks / 500.0f;
-    if (cVisibility < 0.0f) {
-      cVisibility = 0.0f;
-    }
-  }
-}
-
-void DynamicElementGroup::render() {
-  if (cVisibility > 0.0f) {
-    if (cVisibility < 1.0f) {
-      glEnable(GL_BLEND);
-      glColor4f(1.0f, 1.0f, 1.0f, cVisibility);
-    }
-    cElementHandler.renderStatic();
-    cElementHandler.renderDynamic();
-    if (cVisibility < 1.0f) {
-      glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-    }
-  }
-}
-
 IPlugin* DynamicElementGroup::getElementSet() {
   return NULL;
 }
 
 IElementType* DynamicElementGroup::getElementType() {
   return NULL;
+}
+
+void DynamicElementGroup::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
 }
 
 bool DynamicElementGroup::initElement(unsigned int pass) {
@@ -58,36 +30,8 @@ bool DynamicElementGroup::initElement(unsigned int pass) {
 void DynamicElementGroup::renderStatic() {
 }
 
-void DynamicElementGroup::renderStaticEditing() {
-}
-
-bool DynamicElementGroup::input(SDL_Event& event) {
+void DynamicElementGroup::input(SDL_Event& event) {
   // TODO: Implement this
-  return false;
-}
-
-std::vector<IVisualElement*> DynamicElementGroup::getVisualElements() {
-  std::vector<IVisualElement*> mVisualElements;
-  mVisualElements.push_back(this);
-  return mVisualElements;
-}
-
-std::vector<IDynamicElement*> DynamicElementGroup::getDynamicElements() {
-  std::vector<IDynamicElement*> mDynamicElements;
-//  mDynamicElements.push_back(this);
-  return mDynamicElements;
-}
-
-std::vector<IDynamicElement*> DynamicElementGroup::getDynamicElementsRuntime() {
-  std::vector<IDynamicElement*> mDynamicElements;
-  mDynamicElements.push_back(this);
-  return mDynamicElements;
-}
-
-std::vector<IInteractiveElement*> DynamicElementGroup::getInteractiveElements() {
-  std::vector<IInteractiveElement*> mInteractiveElements;
-  mInteractiveElements.push_back(this);
-  return mInteractiveElements;
 }
 
 void DynamicElementGroup::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& location) {
@@ -96,4 +40,64 @@ void DynamicElementGroup::save(DOMNodeWriter* node, IResourceLocator* resourceLo
 
 void DynamicElementGroup::setDirty() {
   cElementHandler.setAllDirty();
+}
+
+void DynamicElementGroup::renderRuntime() {
+  if (cVisibility > 0.0f) {
+    if (cVisibility < 1.0f) {
+      glEnable(GL_BLEND);
+      glColor4f(1.0f, 1.0f, 1.0f, cVisibility);
+    }
+    cElementHandler.renderStatic();
+    cElementHandler.renderRuntime();
+    if (cVisibility < 1.0f) {
+      glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    }
+  }
+}
+
+void DynamicElementGroup::renderEditing() {
+  cElementHandler.renderStatic();
+  cElementHandler.renderEditing();
+}
+
+void DynamicElementGroup::updateRuntime(unsigned int milliseconds) {
+  if (cActive) {
+    if (cVisibility < 1.0f) {
+      cVisibility += milliseconds / 500.0f;
+      if (cVisibility > 1.0f) {
+        cVisibility = 1.0f;
+      }
+    }
+    cElementHandler.updateRuntime(milliseconds);
+  } else if (cVisibility > 0.0f) {
+    cVisibility -= milliseconds / 500.0f;
+    if (cVisibility < 0.0f) {
+      cVisibility = 0.0f;
+    }
+  }
+}
+
+void DynamicElementGroup::updateEditing(unsigned int milliseconds) {
+  cElementHandler.updateEditing(milliseconds);
+}
+
+bool DynamicElementGroup::isVisualRuntime() {
+  return true;
+}
+
+bool DynamicElementGroup::isVisualEditing() {
+  return true;
+}
+
+bool DynamicElementGroup::isDynamicRuntime() {
+  return true;
+}
+
+bool DynamicElementGroup::isDynamicEditing() {
+  return true;
+}
+
+bool DynamicElementGroup::isInteractive() {
+  return true;
 }

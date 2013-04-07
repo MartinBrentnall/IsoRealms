@@ -3,7 +3,7 @@
 
 #include <IsoRealms/Persistence/DOMNodeWrapper.h>
 
-#include "IResourceAccessor.h"
+class IResourceAccessor;
 
 class IResource {
   public:

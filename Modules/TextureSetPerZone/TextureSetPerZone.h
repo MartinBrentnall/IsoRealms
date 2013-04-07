@@ -28,9 +28,11 @@
 #include <IsoRealms/IHUDComponent.h>
 #include <IsoRealms/IPluginRegistry.h>
 #include <IsoRealms/IZoneContextListener.h>
+#include <IsoRealms/LuaSupport/ArgumentSourceCustom.h>
 #include <IsoRealms/Map.h>
 #include <IsoRealms/OpenDialogCommand.h>
 
+#include "BackgroundChanger.h"
 #include "IThemeSource.h"
 #include "TextureSetChooserComponent.h"
 #include "Theme.h"
@@ -65,6 +67,8 @@ class TextureSetPerZone:public IPlugin,
   std::map<IZone*, Theme*> cZoneThemes;
   std::map<std::string, Theme*> cThemes;
   std::map<std::string, ThemeTexture*> cTextures;
+  std::map<std::string, ThemeColour*> cColours;
+  std::map<std::string, BackgroundChanger*> cNamedInstances;
   DefaultTextureSetCommand* cDefaultTextureSetCommand;
   IMap* cCurrentMap;
   IZone* cCurrentZone;
@@ -72,6 +76,7 @@ class TextureSetPerZone:public IPlugin,
   IComponentContainer* cComponentContainer;
 
   void createThemeTexture(const std::string&, IRuntimeContext*);
+  void createThemeColour(const std::string&, IRuntimeContext*);
   void loadTheme(DOMNodeWrapper*, Theme*);
   void createActualResources(DOMNodeWrapper*, IRuntimeContext*);
   
@@ -81,9 +86,16 @@ class TextureSetPerZone:public IPlugin,
   void createResources(DOMNodeWrapper*, IRuntimeContext*);
 
   ThemeTexture* getThemeTexture(const std::string&);
+  ThemeColour* getThemeColour(const std::string&);
   std::string getThemeElement(ThemeTexture*);
+  std::string getThemeElement(ThemeColour*);
   std::string getThemeName(Theme*);
 
+  /*************\
+   * Lua API's *
+  \*************/
+  IColour* getColour(IZone*, ThemeColour*);
+  
   /***********************************\
    * Implements IZoneContextListener *
   \***********************************/
@@ -98,8 +110,6 @@ class TextureSetPerZone:public IPlugin,
   void saveData(DOMNodeWriter*, IMap*, IZone*);
   void loadData(DOMNodeWrapper*, IPluginRegistry*, IZone*);
   void save(DOMNodeWriter*, IResourceLocator*);
-  std::vector<IDynamicElement*> getPreLoopCommands();
-  std::vector<IDynamicElement*> getPostLoopCommands();
   
   /*******************************\
    * Implements IComponentSource *
@@ -116,7 +126,7 @@ class TextureSetPerZone:public IPlugin,
   bool input(SDL_Event&);
   void renderEditingPreview();
   void renderIcon();
-  void updateIcon(int);
+  void updateIcon(unsigned int);
   void destroy(IElement*);
   IElementHandler* getElementHandler();
   void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);

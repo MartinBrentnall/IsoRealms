@@ -25,6 +25,7 @@ class IElement;
 
 #include <IsoRealms/BlockLocation.h>
 #include <IsoRealms/IComponentContainer.h>
+#include <IsoRealms/IResourceSource.h>
 #include <IsoRealms/Persistence/DOMNodeWrapper.h>
 #include <IsoRealms/Resources/IResource.h>
 
@@ -39,10 +40,11 @@ class IPlugin;
 class IElementType:public IResource {
   public:
   virtual IPlugin* getElementSet() = 0;
-
+    
   // Runtime and parsing functions.
+  
   /**
-   * Parse an element from a DOM node.
+   * Parse an element immediately from a DOM node.
    *
    * @param DOMNodeWrapper*  The node to parse from.
    * @returns  The parsed element.
@@ -60,7 +62,7 @@ class IElementType:public IResource {
   /**
    * Enable user input for configuring the type.
    */
-  virtual bool input(SDL_Event&) = 0;
+//  virtual bool input(SDL_Event&) = 0;
 
   /**
    * Render a preview representation of the element to be created by this
@@ -81,7 +83,7 @@ class IElementType:public IResource {
    * 
    * @param int  Time passed in milliseconds since last update.
    */
-  virtual void updateIcon(int) = 0;
+  virtual void updateIcon(unsigned int) = 0;
 
   /**
    * Destroy the element.  Make sure you've removed the element from your map

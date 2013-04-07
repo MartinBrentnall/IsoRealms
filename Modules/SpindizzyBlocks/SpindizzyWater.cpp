@@ -66,26 +66,10 @@ void SpindizzyWater::renderStatic() {
   }
 }
 
-void SpindizzyWater::render() {
+void SpindizzyWater::renderRuntime() {
   for (unsigned int i = 0; i < cDynamicTileSurfaces.size(); i++) {
     cDynamicTileSurfaces[i]->render();
   }
-}
-
-std::vector<IVisualElement*> SpindizzyWater::getVisualElements() {
-  std::vector<IVisualElement*> mVisualElements;
-  mVisualElements.push_back(this);
-  return mVisualElements;
-}
-
-std::vector<IDynamicElement*> SpindizzyWater::getDynamicElements() {
-  std::vector<IDynamicElement*> mDynamicElements;
-  return mDynamicElements;
-}
-
-std::vector<IInteractiveElement*> SpindizzyWater::getInteractiveElements() {
-  std::vector<IInteractiveElement*> mInteractiveElements;
-  return mInteractiveElements;
 }
 
 ISpindizzyTileSurface* SpindizzyWater::createSubSurface(ITileSurface::FaceDirection facing, int north, int east, int south, int west, Condition* condition) {

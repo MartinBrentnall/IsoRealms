@@ -40,8 +40,6 @@ class SpindizzyJewelType:public BaseSpindizzyJewelType,
   std::vector<SpindizzyJewel*> cContent;
   ICollectables* cCollectables;
   SpindizzyJewel* cSampleJewel;
-  std::vector<IDynamicElement*> cSampleJewelDynamics;
-  std::vector<IVisualElement*> cSampleJewelVisuals;
   BlockLocation* cEditingLocation;
   IScript* cJewelCollectedScript;
   IScript* cAllJewelsCollectedScript;
@@ -71,7 +69,7 @@ class SpindizzyJewelType:public BaseSpindizzyJewelType,
   void setEditingContext(BlockLocation*, IComponentContainer*);
   void renderEditingPreview();
   bool input(SDL_Event&);
-  void updateIcon(int milliseconds);
+  void updateIcon(unsigned int milliseconds);
   void renderIcon();
   void setDirty(IElement*);
   void destroy(IElement*);

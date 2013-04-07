@@ -18,28 +18,12 @@
  */
 #include "IPlugin.h"
 
-std::vector<IDynamicElement*> IPlugin::cNoDynamicElements;
-std::vector<IVisualElement*> IPlugin::cNoVisualElements;
-std::vector<IInteractiveElement*> IPlugin::cNoInteractiveElements;
-
 void IPlugin::notifyZoneAction(IZone*) {
   // Nothing to do.
 }
 
 void IPlugin::initPlugin(IZone*, unsigned int) {
   // Nothing to do.
-}
-
-std::vector<IDynamicElement*> IPlugin::getPostLoopCommands() {
-  return cNoDynamicElements;
-}
-
-std::vector<IVisualElement*> IPlugin::getPostLoopRenderers() {
-  return cNoVisualElements;
-}
-
-std::vector<IInteractiveElement*> IPlugin::getInteractiveElements() {
-  return cNoInteractiveElements;
 }
 
 void IPlugin::renderPreZone(IZone*) {
@@ -59,10 +43,6 @@ void IPlugin::save(DOMNodeWriter*, IResourceLocator*) {
 }
 
 void IPlugin::saveData(DOMNodeWriter*, IMap*, IZone*) {
-  // Nothing to do.
-}
-
-void IPlugin::createResources(DOMNodeWrapper*, IRuntimeContext*) {
   // Nothing to do.
 }
 

@@ -45,7 +45,7 @@
 class BlockSubtractor:public ISurfaceProcessor {
   private:
  
-  IProject* cCurrentProject;
+  IMap* cMap;
   IZone* cCurrentZone;
   BlockSubtractorCache cCache;
   std::map<IZone*, SurfaceDataCache*> cSurfaceDataCaches;

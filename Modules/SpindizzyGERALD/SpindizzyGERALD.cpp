@@ -26,41 +26,35 @@ const unsigned int SpindizzyGERALD::INIT_REGISTER_SURFACES = 2;
 const unsigned int SpindizzyGERALD::INIT_USE_SURFACES = 3;
 const unsigned int SpindizzyGERALD::BOUNCE_CONTROL_TIME = 40;
 
-SpindizzyGERALD::SpindizzyGERALD(ISpindizzyGERALDType* elementType, IProject* project, DOMNodeWrapper* node) : Element<ISpindizzyGERALDSet, ISpindizzyGERALDType>(elementType) {
+SpindizzyGERALD::SpindizzyGERALD(ISpindizzyGERALDType* elementType, IMap** map, IResourceAccessor* resources, DOMNodeWrapper* node) : Element<ISpindizzyGERALDSet, ISpindizzyGERALDType>(elementType) {
   cLocation = new Vertex();
   readData(node);
-  initInstance(project);
+  initInstance(map, resources);
 }
 
-SpindizzyGERALD::SpindizzyGERALD(ISpindizzyGERALDType* elementType, BlockLocation* startLocation, IProject* project) : Element<ISpindizzyGERALDSet, ISpindizzyGERALDType>(elementType) {
+SpindizzyGERALD::SpindizzyGERALD(ISpindizzyGERALDType* elementType, IMap** map, IResourceAccessor* resources, BlockLocation* startLocation) : Element<ISpindizzyGERALDSet, ISpindizzyGERALDType>(elementType) {
   cStartLocation = BlockLocation(*startLocation);
   cLocation = new Vertex();
   cLocation->x = cStartLocation.x + IsoRealmsConstants::BLOCK_RADIUS;
   cLocation->y = cStartLocation.y + IsoRealmsConstants::BLOCK_RADIUS;
   cLocation->z = cStartLocation.z;
   cGERALDModel = elementType->createModel(cLocation);
-  initInstance(project);
+  initInstance(map, resources);
 }
 
-SpindizzyGERALD::SpindizzyGERALD(ISpindizzyGERALDType* elementType, IProject* project) : Element<ISpindizzyGERALDSet, ISpindizzyGERALDType>(elementType) {
+SpindizzyGERALD::SpindizzyGERALD(ISpindizzyGERALDType* elementType, IMap** map, IResourceAccessor* resources) : Element<ISpindizzyGERALDSet, ISpindizzyGERALDType>(elementType) {
   cLocation = new Vertex();
-  initInstance(project);
+  initInstance(map, resources);
 }
 
-void SpindizzyGERALD::initInstance(IProject* project) {
-  cProject = project;
+void SpindizzyGERALD::initInstance(IMap** map, IResourceAccessor* resources) {
+  cMap = map;
   cRespawning = false;
   cLockNorth = NULL;
   cLockSouth = NULL;
   cLockEast = NULL;
   cLockWest = NULL;
-  if (cProject != NULL) {
-    cPressedForward  = cProject->registerDigitalInput("Move North");
-    cPressedRight    = cProject->registerDigitalInput("Move East");
-    cPressedBackward = cProject->registerDigitalInput("Move South");
-    cPressedLeft     = cProject->registerDigitalInput("Move West");
-    cThrust          = cProject->registerDigitalInput("Thrust");
-  }
+  setResources(resources);
   cMapBottom = -20.0f; // TODO: Do this for real!
   cZone = NULL;
 }
@@ -81,8 +75,8 @@ bool SpindizzyGERALD::initElement(unsigned int pass) {
   ISpindizzyGERALDType* mGERALDType = getElementType();
   switch (pass) {
     case INIT_REGISTER_BLOCKS: {
-      if (cProject != NULL) {
-        cZone = cProject->getZone(*cLocation);
+      if (cMap != NULL) {
+        cZone = (*cMap)->getZone(*cLocation);
         mGERALDType->executeZoneEnteredScript(cZone);
       }
       return false;
@@ -101,23 +95,6 @@ bool SpindizzyGERALD::initElement(unsigned int pass) {
       return false;
     }
   }
-}
-
-std::vector<IVisualElement*> SpindizzyGERALD::getVisualElements() {
-  std::vector<IVisualElement*> mVisualElements;
-  mVisualElements.push_back(this);
-  return mVisualElements;
-}
-
-std::vector<IDynamicElement*> SpindizzyGERALD::getDynamicElements() {
-  std::vector<IDynamicElement*> mDynamicElements;
-  return mDynamicElements;
-}
-
-std::vector<IDynamicElement*> SpindizzyGERALD::getDynamicElementsRuntime() {
-  std::vector<IDynamicElement*> mDynamicElements;
-  mDynamicElements.push_back(this);
-  return mDynamicElements;
 }
 
 void SpindizzyGERALD::checkCurrentZoneEvents(Vertex& start, Vertex& end) {
@@ -145,7 +122,7 @@ Vertex* SpindizzyGERALD::getLocation() {
 }
 
 void SpindizzyGERALD::checkMapZoneEvents(IZone* previousZone, Vertex& start, Vertex& end) {
-  std::vector<ZoneEvent*> mZoneEvents = cProject->getZoneEvents(start, end);
+  std::vector<ZoneEvent*> mZoneEvents = (*cMap)->getZoneEvents(start, end);
   for (unsigned int i = 0; i < mZoneEvents.size(); i++) {
     if (mZoneEvents[i]->getZone() != previousZone) {
       switch (mZoneEvents[i]->getType()) {
@@ -390,7 +367,7 @@ void SpindizzyGERALD::updateRespawnData() {
 
 void SpindizzyGERALD::discoverZone(ICollidableWallSurface* wallSurface) {
   Vertex* mLocation = wallSurface->getLocation();
-  IZone* mWallZone = cProject->getZone(*mLocation);
+  IZone* mWallZone = (*cMap)->getZone(*mLocation);
   delete mLocation; // TODO: Should this be done here?
   if (cZone != mWallZone) {
     ISpindizzyGERALDType* mGERALDType = getElementType();
@@ -531,7 +508,7 @@ void SpindizzyGERALD::respawn() {
   cLocation->y = mRespawnData->cY;
   cCurrentSurface = mRespawnData->cSurface;
   cLocation->z = cCurrentSurface->getHeightAt(cLocation->x, cLocation->y);
-  cZone = cProject->getZone(*cLocation);
+  cZone = (*cMap)->getZone(*cLocation);
   ISpindizzyGERALDType* mGERALDType = getElementType();
   mGERALDType->executeZoneEnteredScript(cZone);
   mGERALDType->executeRespawnScript();
@@ -639,7 +616,7 @@ void SpindizzyGERALD::updateDead(unsigned int ticks) {
   }
 }
 
-void SpindizzyGERALD::update(unsigned int ticks) {
+void SpindizzyGERALD::updateRuntime(unsigned int ticks) {
   if (cRespawning) {
     updateDead(ticks);
   } else {
@@ -650,8 +627,11 @@ void SpindizzyGERALD::update(unsigned int ticks) {
   }
 }
 
+void SpindizzyGERALD::updateEditing(unsigned int milliseconds) {
+  // Nothing to do
+}
+
 void SpindizzyGERALD::stop() {
-  std::cout << "Brake called!" << std::endl;
   if (cCurrentSurface != NULL && cCurrentSurface->getSurfaceFriction() > 0.0f) {
     cMomentum.x = 0.0f;
     cMomentum.y = 0.0f;
@@ -659,7 +639,7 @@ void SpindizzyGERALD::stop() {
   }
 }
 
-void SpindizzyGERALD::render() {
+void SpindizzyGERALD::renderRuntime() {
   if (!cRespawning) {
     glPushMatrix();
     cGERALDModel->render();
@@ -667,12 +647,22 @@ void SpindizzyGERALD::render() {
   }
 }
 
-void SpindizzyGERALD::saveInstance(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& relative) {
-  cStartLocation.saveRelative(node, relative);  
-}
-
 void SpindizzyGERALD::setDirty() {
   // Nothing to do
+}
+
+void SpindizzyGERALD::saveInstance(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& relative) {
+  cStartLocation.saveRelative(node, relative);
+}
+
+void SpindizzyGERALD::setResources(IResourceAccessor* resources) {
+  if (resources != NULL) {
+    cPressedForward  = resources->getDigitalInput("Move North");
+    cPressedRight    = resources->getDigitalInput("Move East");
+    cPressedBackward = resources->getDigitalInput("Move South");
+    cPressedLeft     = resources->getDigitalInput("Move West");
+    cThrust          = resources->getDigitalInput("Thrust");
+  }
 }
 
 void SpindizzyGERALD::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& relative) {

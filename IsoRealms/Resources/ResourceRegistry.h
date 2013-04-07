@@ -34,9 +34,14 @@ template<class T> class ResourceRegistry:public IResourceInstanceListener<T> {
     return mCurrent;
   }
     
+  virtual T* wrapResource(T* resource) {
+    return resource;
+  }
+  
   void add(T* resource, std::vector<std::string> path, const std::string& name) {
     Registry<T>* mDirectory = getDirectory(&cResources, path);
-    mDirectory->add(resource, name);
+    T* mWrappedResource = wrapResource(resource);
+    mDirectory->add(mWrappedResource, name);
     for (unsigned int i = 0; i < cListeners.size(); i++) {
       cListeners[i]->resourceAdded(resource);
     }
@@ -75,11 +80,14 @@ template<class T> class ResourceRegistry:public IResourceInstanceListener<T> {
   
   T* get(const std::string& path) {
     T* mResource = cResources.get(path);
-    cResources.debug();
     if (mResource == NULL) {
       mResource = getSpecialResource(path);
       if (mResource == NULL) {
         mResource = getDummyResource();
+	if (mResource == NULL) {
+	  std::cout << "WARNING: Program retrieved NULL resource and may crash.  DEBUG info for this registry follows:" << std::endl;
+	  debug();
+	}
       }
     }
     return mResource;
@@ -132,9 +140,18 @@ template<class T> class ResourceRegistry:public IResourceInstanceListener<T> {
     return "";
   }
   
+  virtual T* unwrapResource(T* resource) {
+    return resource;
+  }
+  
   std::string getLocation(T* resource) {
+//    resource = unwrapResource(resource);
     std::string mLocation = cResources.getLocation(resource);
     return mLocation != "" ? mLocation : getSpecialLocation(resource);
+  }
+  
+  void debug() {
+    cResources.debug();
   }
 };
 

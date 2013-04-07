@@ -13,12 +13,27 @@ Resources::Resources() {
   cSoundRegistry.setDummyResource(new DummySound());
 }
 
-void Resources::setProject(IProject* project) {
-  cProject = project;
+void Resources::loadInputConfiguration(DOMNodeWrapper* node, std::vector<std::string> configFile) {
+  cInputCommands.loadConfiguration(node, configFile, this);
 }
 
-void Resources::setEditing(bool editing) {
+void Resources::input(SDL_Event& event) {
+  cInputCommands.input(event);
+}
+
+void Resources::saveInputConfiguration(DOMNodeWriter* node) {
+  cInputCommands.saveConfiguration(node, this);
+}
+    
+void Resources::setEditing(bool editing, IProject* project, ICamera* camera) {
   cEditing = editing;
+  std::vector<std::string> mRoot;
+  cMapType = new MapType(editing, project, this);
+  cElementTypeRegistry.add(cMapType, mRoot, "Map");
+  add(new ArgumentDefinitionType<IMap>(), mRoot, "Map");
+  if (camera != NULL) {
+    cCameras.setEditingCamera(camera);
+  }
 }
 
 void Resources::loadScript(DOMNodeWrapper* node) {
@@ -64,6 +79,18 @@ void Resources::registerDefaultElementGroup(DOMNodeWrapper* node) {
   cDefaultElementGroups[mElementType] = mElementGroup;
 }
 
+void Resources::loadInstances(DOMNodeWrapper* node) {
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "Map") {
+      std::vector<std::string> mPath;
+      RuntimeContext* mRuntimeContext = new RuntimeContext(this, mPath);
+      cMapType->loadInstance(mNode, mRuntimeContext);
+    }
+  }
+}
+
 void Resources::initialise() {
   for (unsigned int i = 0; i < cResourcesToInitialise.size(); i++) {
     cResourcesToInitialise[i]->initialiseResource(this);
@@ -88,10 +115,6 @@ void Resources::initResources(IZone* zone, unsigned int pass) { // TODO: THIS IS
   }
 }
   
-IProject* Resources::getProject() {
-  return cProject;
-}
-
 bool Resources::isEditing() {
   return cEditing;
 }
@@ -105,6 +128,9 @@ IScript* Resources::getLuaScript(DOMNodeWrapper* node, IArgumentGenerator* local
   return new LuaScriptWithArgs(mScript, node, this, localArgs);
 }
 
+bool* Resources::getDigitalInput(const std::string& name) {
+  return cInputCommands.registerDigitalInput(name);
+}
 
 I3DModel* Resources::getModel(const std::string& path, Vertex* location, float scale) {
   if (path[0] == ':') {
@@ -169,6 +195,7 @@ IFloat* Resources::getFloat(const std::string& path)                            
 IFont* Resources::getFont(const std::string& path)                                 {return cFontRegistry.get(path);}
 IHUDComponentFactory* Resources::getHUDComponentType(const std::string& path)      {return cHUDComponentRegistry.get(path);}
 IInteger* Resources::getInteger(const std::string& path)                           {return cIntegerRegistry.get(path);}
+IMap* Resources::getMap(const std::string& path)                                   {return cMaps.get(path);}
 ISound* Resources::getSound(const std::string& path)                               {return cSoundRegistry.get(path);}
 IString* Resources::getString(const std::string& path)                             {return cStrings.get(path);}
 ISurfaceProcessor* Resources::getSurfaceProcessor(const std::string& path)         {return cSurfaceProcessors.get(path);}
@@ -280,24 +307,25 @@ void Resources::add(IResource* resource, DOMNodeWrapper* node) {
 
 void Resources::add(I3DModel* model,                                 std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {c3DModelRegistry.add(model, path, name);                          addResourceToInitialise(model, node);}
 void Resources::add(I3DModelFactory* modelType,                      std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {c3DModelFactoryRegistry.add(modelType, path, name);               addResourceToInitialise(modelType, node);}
+void Resources::add(IArgumentDefinitionType* argumentDefinitionType, std::vector<std::string> path, const std::string& name                      ) {cArgumentDefinitionTypes.add(argumentDefinitionType, path, name);}
 void Resources::add(IBoolean* value,                                 std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cBooleanRegistry.add(value, path, name);                          addResourceToInitialise(value, node);}
 void Resources::add(ICamera* camera,                                 std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cCameras.add(camera, path, name);                                 addResourceToInitialise(camera, node);}
 void Resources::add(ICollectables* collectables,                     std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cCollectablesRegistry.add(collectables, path, name);              addResourceToInitialise(collectables, node);}
 void Resources::add(ICollidableSurfaceRegistry* surfaceRegistry,     std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cSurfaceRegistries.add(surfaceRegistry, path, name);              addResourceToInitialise(surfaceRegistry, node);}
 void Resources::add(IColour* colour,                                 std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cColourRegistry.add(colour, path, name);                          addResourceToInitialise(colour, node);}
+void Resources::add(IComponentCustomType* type,                      std::vector<std::string> path, const std::string& name                      ) {cComponentCustomTypes.add(type, path, name);}
+void Resources::add(IElementGroupType* type,                         std::vector<std::string> path, const std::string& name                      ) {cElementGroupTypeRegistry.add(type, path, name);}
 void Resources::add(IElementType* type,                              std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cElementTypeRegistry.add(type, path, name);                       addResourceToInitialise(type, node);}
 void Resources::add(IFont* font,                                     std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cFontRegistry.add(font, path, name);                              addResourceToInitialise(font, node);}
 void Resources::add(IHUDComponentFactory* type,                      std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cHUDComponentRegistry.add(type, path, name);                      addResourceToInitialise(type, node);}
 void Resources::add(IInteger* value,                                 std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cIntegerRegistry.add(value, path, name);                          addResourceToInitialise(value, node);}
+void Resources::add(IMap* map,                                       std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cMaps.add(map, path, name);                                       addResourceToInitialise(map, node);}
 void Resources::add(ISound* sound,                                   std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cSoundRegistry.add(sound, path, name);                            addResourceToInitialise(sound, node);}
 void Resources::add(IString* string,                                 std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cStrings.add(string, path, name);                                 addResourceToInitialise(string, node);}
 void Resources::add(ISurfaceProcessor* surfaceProcessor,             std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cSurfaceProcessors.add(surfaceProcessor, path, name);             addResourceToInitialise(surfaceProcessor, node); cZoneContextListeners.push_back(surfaceProcessor);} // TODO: Shouldn't be done here
 void Resources::add(ITexture* texture,                               std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cTextureRegistry.add(texture, path, name);                        addResourceToInitialise(texture, node);}
 void Resources::add(IVertex* location,                               std::vector<std::string> path, const std::string& name                      ) {cLocations.add(location, path, name);}
 void Resources::add(IZoneHandler* zoneHandler,                       std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cZoneHandlers.add(zoneHandler, path, name);                       addResourceToInitialise(zoneHandler, node);}
-void Resources::add(IElementGroupType* type,                         std::vector<std::string> path, const std::string& name                      ) {cElementGroupTypeRegistry.add(type, path, name);}
-void Resources::add(IArgumentDefinitionType* argumentDefinitionType, std::vector<std::string> path, const std::string& name                      ) {cArgumentDefinitionTypes.add(argumentDefinitionType, path, name);}
-void Resources::add(IComponentCustomType* type,                      std::vector<std::string> path, const std::string& name                      ) {cComponentCustomTypes.add(type, path, name);}
 
 void Resources::addResourceToInitialise(IResource* resource, DOMNodeWrapper* node) {
   if (node != NULL) {
@@ -374,7 +402,7 @@ std::string Resources::getPath(IFloat* afloat)                              {ret
 std::string Resources::getPath(IFont* font)                                 {return cFontRegistry.getLocation(font);}
 std::string Resources::getPath(IHUDComponentFactory* componentType)         {return cHUDComponentRegistry.getLocation(componentType);}
 std::string Resources::getPath(IInteger* integer)                           {return cIntegerRegistry.getLocation(integer);}
-std::string Resources::getPath(IProject* project)                           {return "";}
+std::string Resources::getPath(IMap* map)                                   {return cMaps.getLocation(map);}
 std::string Resources::getPath(ISound* sound)                               {return cSoundRegistry.getLocation(sound);}
 std::string Resources::getPath(IString* string)                             {return cStrings.getLocation(string);}
 std::string Resources::getPath(ISurfaceProcessor* surfaceProcessor)         {return cSurfaceProcessors.getLocation(surfaceProcessor);}

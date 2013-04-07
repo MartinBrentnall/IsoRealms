@@ -1,26 +1,24 @@
 #ifndef RESOURCES_H
 #define RESOURCES_H
 
+#include <IsoRealms/Input/InputCommands.h>
 #include <IsoRealms/IZoneContextListener.h>
+#include <IsoRealms/LuaSupport/ArgumentDefinitionType.h>
 #include <IsoRealms/LuaSupport/IArgumentGenerator.h>
 #include <IsoRealms/LuaSupport/IArgumentDefinitionType.h>
 #include <IsoRealms/LuaSupport/LuaGlobalVariable.h>
 #include <IsoRealms/LuaSupport/ILuaScript.h>
 #include <IsoRealms/LuaSupport/LuaScript.h>
 #include <IsoRealms/LuaSupport/LuaScriptWithArgs.h>
-#include <IsoRealms/Resources/Camera/DummyCamera.h>
-#include <IsoRealms/Resources/Colour/Colour.h>
-#include <IsoRealms/Resources/Colour/ColourRegistry.h>
-#include <IsoRealms/Resources/Font/DummyFont.h>
-#include <IsoRealms/Resources/HUDComponents/IHUDComponentFactory.h>
-#include <IsoRealms/Resources/Integer/IntegerRegistry.h>
-#include <IsoRealms/Resources/Sound/DummySound.h>
-#include <IsoRealms/Resources/String/StringRegistry.h>
-#include <IsoRealms/Resources/SurfaceProcessor/ISurfaceProcessor.h>
-#include <IsoRealms/Resources/Texture/Texture.h>
-#include <IsoRealms/Resources/ZoneHandler/IZoneHandler.h>
-#include <IsoRealms/Resources/ZoneHandler/ZoneHandlerRegistry.h>
+#include <IsoRealms/MapType.h>
 
+#include "Camera/CameraRegistry.h"
+#include "Camera/DummyCamera.h"
+#include "Colour/Colour.h"
+#include "Colour/ColourRegistry.h"
+#include "Font/DummyFont.h"
+#include "HUDComponents/IHUDComponentFactory.h"
+#include "Integer/IntegerRegistry.h"
 #include "IResourceInstanceListener.h"
 #include "IResourceListener.h"
 #include "IResourceManager.h"
@@ -28,13 +26,19 @@
 #include "IResourceUseListener.h"
 #include "ResourceInitialiser.h"
 #include "ResourceRegistry.h"
+#include "Sound/DummySound.h"
+#include "String/StringRegistry.h"
+#include "SurfaceProcessor/ISurfaceProcessor.h"
+#include "Texture/Texture.h"
+#include "ZoneHandler/IZoneHandler.h"
+#include "ZoneHandler/ZoneHandlerRegistry.h"
 
 class Resources:public IResources,
                 public IResourceManager,
                 public IArgumentGenerator {
   private:
   bool cEditing;
-  IProject* cProject;
+  MapType* cMapType;
 
   std::vector<ResourceInitialiser*> cResourcesToInitialise;
   std::vector<IZoneContextListener*> cZoneContextListeners;
@@ -44,12 +48,13 @@ class Resources:public IResources,
   std::map<std::string, std::vector<I3DModel*> > cInstantiatedModels;
   
   std::map<std::string, ILuaScript*> cScriptRegistry;
+  InputCommands cInputCommands;
   ResourceRegistry<I3DModel> c3DModelRegistry;
   ResourceRegistry<I3DModelFactory> c3DModelFactoryRegistry;
   ResourceRegistry<IArgumentDefinitionType> cArgumentDefinitionTypes;
   ResourceRegistry<IArgumentSource> cArgumentValues;
   ResourceRegistry<IBoolean> cBooleanRegistry;
-  ResourceRegistry<ICamera> cCameras;
+  CameraRegistry cCameras;
   ResourceRegistry<ICollidableSurfaceRegistry> cSurfaceRegistries;
   ResourceRegistry<ICollectables> cCollectablesRegistry;
   ColourRegistry cColourRegistry;
@@ -60,6 +65,7 @@ class Resources:public IResources,
   ResourceRegistry<IFont> cFontRegistry;
   ResourceRegistry<IHUDComponentFactory> cHUDComponentRegistry;
   IntegerRegistry cIntegerRegistry;
+  ResourceRegistry<IMap> cMaps;
   ResourceRegistry<ISound> cSoundRegistry;
   StringRegistry cStrings;
   ResourceRegistry<ISurfaceProcessor> cSurfaceProcessors;
@@ -80,8 +86,11 @@ class Resources:public IResources,
   public:
   Resources();
   
-  void setEditing(bool);
-  void setProject(IProject*);
+  void loadInputConfiguration(DOMNodeWrapper*, std::vector<std::string>);
+  void input(SDL_Event&);
+  void saveInputConfiguration(DOMNodeWriter*);
+    
+  void setEditing(bool, IProject*, ICamera*);
     
   void loadScript(DOMNodeWrapper*);
   void saveScripts(DOMNodeWriter*);
@@ -89,6 +98,7 @@ class Resources:public IResources,
   void saveGlobalVariables(DOMNodeWriter*);
   void registerGlobalVariable(DOMNodeWrapper*);
   void registerDefaultElementGroup(DOMNodeWrapper*);
+  void loadInstances(DOMNodeWrapper*);
 
   void initialise();
   std::vector<IDynamicElement*> getDynamicElements();
@@ -100,26 +110,29 @@ class Resources:public IResources,
    * Implements IResources *
   \*************************/
   void add(IResource*, DOMNodeWrapper*);
-  void add(IColour*,                    std::vector<std::string>, const std::string&, DOMNodeWrapper*);
-  void add(ITexture*,                   std::vector<std::string>, const std::string&, DOMNodeWrapper*);
+  
   void add(I3DModel*,                   std::vector<std::string>, const std::string&, DOMNodeWrapper*);
   void add(I3DModelFactory*,            std::vector<std::string>, const std::string&, DOMNodeWrapper*);
-  void add(ISound*,                     std::vector<std::string>, const std::string&, DOMNodeWrapper*);
-  void add(IInteger*,                   std::vector<std::string>, const std::string&, DOMNodeWrapper*);
+  void add(IArgumentDefinitionType*,    std::vector<std::string>, const std::string&);
   void add(IBoolean*,                   std::vector<std::string>, const std::string&, DOMNodeWrapper*);
+  void add(ICamera*,                    std::vector<std::string>, const std::string&, DOMNodeWrapper*);
+  void add(ICollectables*,              std::vector<std::string>, const std::string&, DOMNodeWrapper*);
+  void add(ICollidableSurfaceRegistry*, std::vector<std::string>, const std::string&, DOMNodeWrapper*);
+  void add(IColour*,                    std::vector<std::string>, const std::string&, DOMNodeWrapper*);
+  void add(IComponentCustomType*,       std::vector<std::string>, const std::string&);
+  void add(IElementGroupType*,          std::vector<std::string>, const std::string&);
   void add(IElementType*,               std::vector<std::string>, const std::string&, DOMNodeWrapper*);
   void add(IFont*,                      std::vector<std::string>, const std::string&, DOMNodeWrapper*);
   void add(IHUDComponentFactory*,       std::vector<std::string>, const std::string&, DOMNodeWrapper*);
-  void add(ISurfaceProcessor*,          std::vector<std::string>, const std::string&, DOMNodeWrapper*);
-  void add(ICollidableSurfaceRegistry*, std::vector<std::string>, const std::string&, DOMNodeWrapper*);
-  void add(ICollectables*,              std::vector<std::string>, const std::string&, DOMNodeWrapper*);
-  void add(IVertex*,                    std::vector<std::string>, const std::string&);
-  void add(ICamera*,                    std::vector<std::string>, const std::string&, DOMNodeWrapper*);
+  void add(IInteger*,                   std::vector<std::string>, const std::string&, DOMNodeWrapper*);
+  void add(IMap*,                       std::vector<std::string>, const std::string&, DOMNodeWrapper*);
+  void add(ISound*,                     std::vector<std::string>, const std::string&, DOMNodeWrapper*);
   void add(IString*,                    std::vector<std::string>, const std::string&, DOMNodeWrapper*);
+  void add(ISurfaceProcessor*,          std::vector<std::string>, const std::string&, DOMNodeWrapper*);
+  void add(ITexture*,                   std::vector<std::string>, const std::string&, DOMNodeWrapper*);
+  void add(IVertex*,                    std::vector<std::string>, const std::string&);
   void add(IZoneHandler*,               std::vector<std::string>, const std::string&, DOMNodeWrapper*);
-  void add(IElementGroupType*,          std::vector<std::string>, const std::string&);
-  void add(IArgumentDefinitionType*,    std::vector<std::string>, const std::string&);
-  void add(IComponentCustomType*,       std::vector<std::string>, const std::string&);
+  
   void registerArgument(const std::string&, IArgumentSource* source, std::vector<std::string>, const std::string&);  
   void addDynamicElement(IDynamicElement*);
   
@@ -148,10 +161,10 @@ class Resources:public IResources,
   /********************************\
    * Implements IResourceAccessor *
   \********************************/
-  IProject* getProject();
   bool isEditing();
   I3DModel* getModelInstance(const std::string&);
   
+  bool* getDigitalInput(const std::string&);
   I3DModel* getModel(const std::string&, Vertex*, float = 1.0f);
   I3DModelFactory* getModelType(const std::string&);
   ICamera* getCamera(const std::string&);
@@ -163,6 +176,7 @@ class Resources:public IResources,
   IFont* getFont(const std::string&);
   IHUDComponentFactory* getHUDComponentType(const std::string&);
   IInteger* getInteger(const std::string&);
+  IMap* getMap(const std::string&);
   ISound* getSound(const std::string&);
   IString* getString(const std::string&);
   ISurfaceProcessor* getSurfaceProcessor(const std::string&);
@@ -179,29 +193,30 @@ class Resources:public IResources,
   /*******************************\
    * Implements IResourceLocator *
   \*******************************/
-  std::string getPath(IHUDComponentFactory*);
-  std::string getPath(IColour*);
-  std::string getPath(IFont*);
-  std::string getPath(ICamera*);
-  std::string getPath(IInteger*);
-  std::string getPath(ISound*);
+  std::string getPath(IArgumentSource*);
   std::string getPath(I3DModel*);
   std::string getPath(I3DModelFactory*);
-  std::string getPath(IZoneHandler*);
   std::string getPath(IBoolean*);
-  std::string getPath(IFloat*);
-  std::string getPath(IProject*);
-  std::string getPath(IVertex*);
-  std::string getPath(ITexture*);
-  std::string getPath(IString*);
-  std::string getPath(IElementType*);
-  std::string getPath(IElementGroupType*);
-  std::string getPath(ISurfaceProcessor*);
-  std::string getPath(ICollidableSurfaceRegistry*);
+  std::string getPath(ICamera*);
   std::string getPath(ICollectables*);
-  std::string getPath(IArgumentSource*);
+  std::string getPath(ICollidableSurfaceRegistry*);
+  std::string getPath(IColour*);
+  std::string getPath(IElementGroupType*);
+  std::string getPath(IElementType*);
+  std::string getPath(IFloat*);
+  std::string getPath(IFont*);
+  std::string getPath(IHUDComponentFactory*);
+  std::string getPath(IInteger*);
+  std::string getPath(IMap*);
+  std::string getPath(ISound*);
+  std::string getPath(IString*);
+  std::string getPath(ISurfaceProcessor*);
+  std::string getPath(ITexture*);
+  std::string getPath(IVertex*);
+  std::string getPath(IZoneHandler*);
+
   void saveScript(DOMNodeWriter*, const std::string&, IScript*);
-  bool isImplicit(IElement*);
+  bool isImplicit(IElement*);  
   
   /******************************\
    * Implements ResourceManager *

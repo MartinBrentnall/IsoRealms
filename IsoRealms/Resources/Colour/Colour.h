@@ -22,10 +22,12 @@
 #include <GL/glew.h>
 #include <iostream>
 
-#include "../../Persistence/DOMNodeWrapper.h"
-#include "../../Persistence/DOMNodeWriter.h"
-#include "../../MiscFunctions.h"
-#include "../../Utils.h"
+#include <IsoRealms/MiscFunctions.h>
+#include <IsoRealms/Persistence/DOMNodeWrapper.h>
+#include <IsoRealms/Persistence/DOMNodeWriter.h>
+#include <IsoRealms/Resources/IResourceAccessor.h>
+#include <IsoRealms/Resources/IResourceLocator.h>
+#include <IsoRealms/Utils.h>
 
 #include "IColour.h"
 

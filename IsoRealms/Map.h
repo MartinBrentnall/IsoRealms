@@ -37,9 +37,12 @@
  */
 class Map:public IMap,
           public IZoneChangeListener,
-	  public IElementContainer {
+	  public IElementContainer,
+	  public IElement {
   private:
-  
+  bool cEditing;
+  ICamera* cCamera;
+
   /**
    * The project to which this map belongs
    */
@@ -75,8 +78,11 @@ class Map:public IMap,
 
   public:
   Map(IProject*);
-  Map(DOMNodeWrapper*, bool, IProject*, IResources*);
+  Map(bool, IProject*, IResourceAccessor*);
+  Map(DOMNodeWrapper*, bool, IProject*, IResourceAccessor*);
 
+  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  
   void addZone(Zone*);
   
   void removeZone(Zone*);
@@ -99,42 +105,6 @@ class Map:public IMap,
    */
   void initMap(bool);
 
-  /**
-   * Initialise the map for runtime.  TODO
-   */
-  void initRuntime();
-
-  /**
-   * Update the map.
-   */
-  void update(int);
-  void updateRuntime(int);
-
-  /**
-   * Render the map.
-   */
-  void render();
-
-  void renderEditing();
-
-  /**
-   * Pass input to interactive elements and plugins.
-   */
-  void input(SDL_Event&);
-
-  void executePreLoopCommands(int);
-
-  void executePostLoopCommands(int);
-  
-  void executePreLoopRenderers();
-  
-  void executePostLoopRenderers();  
-
-  /**
-   *
-   */
-  void save(DOMNodeWriter*, IResourceLocator*);
-
   void pushElement(IElement*);
 
   void addElement(IElement*);
@@ -153,8 +123,6 @@ class Map:public IMap,
   Zone* getElementContainer(IElement*);
 
   void setZoneHandler(IZoneHandler*);
-  
-  void staticChanged();
   
   /*******************\
    * Implements IMap *
@@ -175,7 +143,30 @@ class Map:public IMap,
   float getSouth();
   float getTop();
   float getBottom();
+  float getAspectRatio();
   int getZoneCount();
+
+  /***********************\
+   * Implements IElement *
+  \***********************/
+  IPlugin* getElementSet();
+  IElementType* getElementType();
+  bool initElement(unsigned int);
+  void renderStatic();
+  void renderRuntime();
+  void renderEditing();
+  void updateRuntime(unsigned int);
+  void updateEditing(unsigned int);
+  void input(SDL_Event&);
+  bool isVisualRuntime();
+  bool isVisualEditing();
+  bool isDynamicRuntime();
+  bool isDynamicEditing();
+  bool isInteractive();
+  void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
+  void setDirty();
+  void initRuntime();
+  void staticChanged();
   
   ~Map();
 };

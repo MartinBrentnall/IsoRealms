@@ -24,12 +24,12 @@ void MappedZoneHandler::render(std::vector<IZone*>& zones, IProject* project) {
   }
 }
 
-void MappedZoneHandler::update(std::vector<IZone*>& zones, unsigned int ticks) {
+void MappedZoneHandler::updateEditing(std::vector<IZone*>& zones, unsigned int ticks) {
   for (std::map<IZone*, std::set<IZoneHandler*> >::iterator i = cMappedHandlers.begin(); i != cMappedHandlers.end(); i++) {
     for (std::set<IZoneHandler*>::iterator j = i->second.begin(); j != i->second.end(); j++) {
       std::vector<IZone*> mZone;
       mZone.push_back(i->first);
-      (*j)->update(mZone, ticks);
+      (*j)->updateEditing(mZone, ticks);
     }
   }
 }

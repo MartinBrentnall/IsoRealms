@@ -132,12 +132,6 @@ class PluginRegistry:public IPluginRegistry {
    */
   void saveData(DOMNodeWriter*, IMap*, IZone*);
   
-  std::vector<IDynamicElement*> getPostLoopCommands();
-  
-  std::vector<IVisualElement*> getPostLoopRenderers();
-
-  std::vector<IInteractiveElement*> getInteractiveElements();
-
   /******************************\
    * Implements IPluginRegistry *
   \******************************/

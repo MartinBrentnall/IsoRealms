@@ -18,14 +18,13 @@
  */
 #include "EditorCursor.h"
 
-EditorCursor::EditorCursor(IProject* project) {
-  cProject = project;
-  cEditMapPointer = cProject->getMap();
+EditorCursor::EditorCursor(Map* map) {
+  cEditMapPointer = map;
   cZoneBrush = new ZoneBrush(cEditMapPointer, this);
   cElementBrush = NULL;
   set(0, 0, 0);
   selectZone();
-  cEditZonePointer = cProject->getZone(*this);
+  cEditZonePointer = cEditMapPointer->getZone(*this);
   cEditZonePointer->restrainLocation(this);
 }
 
@@ -63,8 +62,8 @@ void EditorCursor::render() {
 }
 
 void EditorCursor::selectZone() {
-  cEditZonePointer = cProject->getZone(*this);
-  cProject->zoneContextChanged(cEditMapPointer, cEditZonePointer);
+  cEditZonePointer = cEditMapPointer->getZone(*this);
+//  cEditMapPointer->zoneContextChanged(cEditMapPointer, cEditZonePointer);
 }
 
 void EditorCursor::setElementType(IElementType* elementType) {
@@ -76,10 +75,10 @@ bool EditorCursor::input(SDL_Event& event) {
     if (cZoneBrush->input(event)) {
       return true;
     }
-  } else if (cElementBrush != NULL) {
-    if (cElementBrush->input(event)) {
-      return true;
-    }
+//   } else if (cElementBrush != NULL) {
+//     if (cElementBrush->input(event)) {
+//       return true;
+//     }
   }
 
   switch (event.type) {
@@ -153,9 +152,9 @@ bool EditorCursor::keyDown(SDLKey& key) {
     
     case SDLK_DELETE: {
       if (cEditZonePointer == NULL) {
-        Zone* mZoneToDelete = cProject->getZone(*this);
+        Zone* mZoneToDelete = cEditMapPointer->getZone(*this);
         // TODO: Ask for confirmation
-        cProject->removeZone(mZoneToDelete);
+        cEditMapPointer->removeZone(mZoneToDelete);
       }
     }
 

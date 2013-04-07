@@ -34,7 +34,7 @@ void ZoneOutlineRenderer::render(std::vector<IZone*>& zones, IProject* project) 
   }
 }
 
-void ZoneOutlineRenderer::update(std::vector<IZone*>& zones, unsigned int ticks) {
+void ZoneOutlineRenderer::updateEditing(std::vector<IZone*>& zones, unsigned int ticks) {
   // Nothing to do
 }
 

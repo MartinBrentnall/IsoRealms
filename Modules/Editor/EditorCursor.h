@@ -37,7 +37,6 @@ class EditorCursor:public BlockLocation,
                    public IsoRealmsConstants {
   private:
 //  Zone** cEditZonePointer;
-  IProject* cProject;
   Zone* cEditZonePointer;
   Map* cEditMapPointer;
   IElementType* cElementBrush;
@@ -52,7 +51,7 @@ class EditorCursor:public BlockLocation,
   void restrainToZone();
 
   public:
-  EditorCursor(IProject*);
+  EditorCursor(Map*);
 
   /**
    * Render the zone cursor at its current location

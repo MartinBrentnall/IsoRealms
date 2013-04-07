@@ -89,7 +89,5 @@
       </FrontEndStart>
     </Resources>
   </Plugin>
-  <Map>
-    <Element type="Menu/Menu"/> -->
-  </Map>
+  <Layer type="Menu/Menu"/>
 </Project>

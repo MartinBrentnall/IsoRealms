@@ -43,8 +43,8 @@ class IZone:public IElementContainer {
    */ 
   virtual bool initZone(unsigned int, bool) = 0;
   virtual void renderStatic() = 0;
-  virtual void renderDynamic() = 0;
-  virtual void update(unsigned int) = 0;
+  virtual void renderRuntime() = 0;
+  virtual void updateEditing(unsigned int) = 0;
   virtual void updateRuntime(unsigned int) = 0;
 
   virtual int getZoneEast() = 0;

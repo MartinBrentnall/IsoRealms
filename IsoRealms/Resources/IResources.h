@@ -18,34 +18,31 @@
 
 class IResources:public IResourceAccessor {
   public:
-  virtual void add(IResource*, DOMNodeWrapper*) = 0;
-  virtual void add(IColour*,                    std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
-  virtual void add(ITexture*,                   std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
   virtual void add(I3DModel*,                   std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
   virtual void add(I3DModelFactory*,            std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
-  virtual void add(ISound*,                     std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
-  virtual void add(IInteger*,                   std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
+  virtual void add(IArgumentDefinitionType*,    std::vector<std::string>, const std::string&) = 0;
   virtual void add(IBoolean*,                   std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
+  virtual void add(ICamera*,                    std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
+  virtual void add(ICollectables*,              std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
+  virtual void add(ICollidableSurfaceRegistry*, std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
+  virtual void add(IColour*,                    std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
+  virtual void add(IComponentCustomType*,       std::vector<std::string>, const std::string&) = 0;
+  virtual void add(IElementGroupType*,          std::vector<std::string>, const std::string&) = 0;
   virtual void add(IElementType*,               std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
   virtual void add(IFont*,                      std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
   virtual void add(IHUDComponentFactory*,       std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
-  virtual void add(ISurfaceProcessor*,          std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
-  virtual void add(ICollidableSurfaceRegistry*, std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
-  virtual void add(ICollectables*,              std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
-  virtual void add(IVertex*,                    std::vector<std::string>, const std::string&) = 0;
-  virtual void add(ICamera*,                    std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
+  virtual void add(IInteger*,                   std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
+  virtual void add(IMap*,                       std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
+  virtual void add(IResource*,                                                                DOMNodeWrapper*) = 0;
+  virtual void add(ISound*,                     std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
   virtual void add(IString*,                    std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
+  virtual void add(ISurfaceProcessor*,          std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
+  virtual void add(ITexture*,                   std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
+  virtual void add(IVertex*,                    std::vector<std::string>, const std::string&) = 0;
   virtual void add(IZoneHandler*,               std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
-  virtual void add(IElementGroupType*,          std::vector<std::string>, const std::string&) = 0;
-  virtual void add(IArgumentDefinitionType*,    std::vector<std::string>, const std::string&) = 0;
-  virtual void add(IComponentCustomType*,       std::vector<std::string>, const std::string&) = 0;
   
   virtual void registerArgument(const std::string&, IArgumentSource* source, std::vector<std::string>, const std::string&) = 0;
   virtual void addDynamicElement(IDynamicElement*) = 0;
-  
-  // TODO: This should be separate; used only by Map and Zone
-  virtual void loadDefaultElementGroups(IElementContainer*) = 0;
-  virtual void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*) = 0;
   
   virtual void addListener(IResourceUseListener<I3DModelFactory>*) = 0;
   virtual void addListener(IResourceUseListener<IBoolean>*) = 0;       

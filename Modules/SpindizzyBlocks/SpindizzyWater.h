@@ -32,8 +32,7 @@
 #include "WallSurface.h"
 
 class SpindizzyWater:public ISpindizzyBlock,
-                     public ISurfaceProvider,
-                     public IVisualElement {
+                     public ISurfaceProvider {
   private:
   // TODO: Need to define an "initialisation scheme" somewhere
   static const unsigned int INIT_PROCESS_BLOCKS;
@@ -66,15 +65,8 @@ class SpindizzyWater:public ISpindizzyBlock,
   \***********************/
   bool initElement(unsigned int);
   void renderStatic();
-  std::vector<IVisualElement*> getVisualElements();
-  std::vector<IDynamicElement*> getDynamicElements();
-  std::vector<IInteractiveElement*> getInteractiveElements();
+  void renderRuntime();
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
-
-  /*****************************\
-   * Implements IVisualElement *
-  \*****************************/
-  void render();
 
   /*******************************\
    * Implements ISurfaceProvider *

@@ -3,6 +3,8 @@
 
 #include <IsoRealms/BlockLocation.h>
 #include <IsoRealms/Resources/3DModel/I3DModelFactory.h>
+#include <IsoRealms/Resources/ElementType/IElementContainer.h>
+#include <IsoRealms/Resources/IResourceAccessor.h>
 
 #include "ElementModel.h"
 

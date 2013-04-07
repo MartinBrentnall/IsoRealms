@@ -1,6 +1,6 @@
 #include "DialogAudioFileSelector.h"
 
-DialogAudioFileSelector::DialogAudioFileSelector(IComponentContainer* container, IResourceAccessor* resources, IConfirmationListener* confirmationListener) : ResizableDialog(container, "Plugins/SDLMixerSupport/DialogAudioFileSelector", resources) {
+DialogAudioFileSelector::DialogAudioFileSelector(IComponentContainer* container, IResourceAccessor* resources, IConfirmationListener* confirmationListener) : ResizableDialog(container, "Modules/SDLMixerSupport/DialogAudioFileSelector", resources) {
   cFileSelector = new ComponentFileSelector(resources, "Data/Sounds", this);
   cConfirmationListener = confirmationListener;
   addComponent("fileSelector", cFileSelector);

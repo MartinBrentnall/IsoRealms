@@ -1,6 +1,6 @@
 #include "DialogSpindizzySprites.h"
 
-DialogSpindizzySprites::DialogSpindizzySprites(IComponentContainer* container, C64SpindizzySpriteSet* textureSet, IResourceAccessor* resources, IResourceSelector* resourceSelector, IConfirmationListener* confirmationListener) : ResizableDialog(container, "Plugins/C64SpindizzySprites/DialogSpindizzySprites", resources) {
+DialogSpindizzySprites::DialogSpindizzySprites(IComponentContainer* container, C64SpindizzySpriteSet* textureSet, IResourceAccessor* resources, IResourceSelector* resourceSelector, IConfirmationListener* confirmationListener) : ResizableDialog(container, "Modules/C64SpindizzySprites/DialogSpindizzySprites", resources) {
   cSprites = textureSet;
   cResourceSelector = resourceSelector;
   cConfirmationListener = confirmationListener;

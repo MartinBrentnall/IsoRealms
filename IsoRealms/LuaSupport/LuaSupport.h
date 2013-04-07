@@ -28,13 +28,13 @@ extern "C" {
 class LuaSupport:public ILuaSupport {
   private:
   static const std::string TYPE_BOOLEAN;
+  static const std::string TYPE_COLOUR;
   static const std::string TYPE_SOUND;
   static const std::string TYPE_INTEGER;
   static const std::string TYPE_FLOAT;
   static const std::string TYPE_MODEL;
   static const std::string TYPE_ZONE_HANDLER;
   static const std::string TYPE_ZONE;
-  static const std::string TYPE_PROJECT;
   static const std::string TYPE_VERTEX;
     
   lua_State* cLuaState;

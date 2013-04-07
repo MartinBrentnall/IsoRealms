@@ -58,7 +58,7 @@ void SpindizzyLift::renderEditingArrow() {
   glEnd();
 }
 
-void SpindizzyLift::renderStaticEditing() {
+void SpindizzyLift::renderEditing() {
   glBindTexture(GL_TEXTURE_2D, 0);
   glColor3f(1.0, 1.0, 0.0);
   glLineWidth(3.0);
@@ -72,23 +72,6 @@ void SpindizzyLift::renderStaticEditing() {
   glColor3f(1.0, 1.0, 1.0);
   glLineWidth(1.0);
   glPopMatrix();
-}
-
-std::vector<IVisualElement*> SpindizzyLift::getVisualElements() {
-  std::vector<IVisualElement*> mVisualElements;
-  mVisualElements.push_back(this);
-  return mVisualElements;
-}
-
-std::vector<IDynamicElement*> SpindizzyLift::getDynamicElements() {
-  std::vector<IDynamicElement*> mDynamicElements;
-  mDynamicElements.push_back(this);
-  return mDynamicElements;
-}
-
-std::vector<IInteractiveElement*> SpindizzyLift::getInteractiveElements() {
-  std::vector<IInteractiveElement*> mInteractiveElements;
-  return mInteractiveElements;
 }
 
 void SpindizzyLift::executeLiftMovedScript() {
@@ -176,11 +159,15 @@ SpindizzyLift::LiftValues SpindizzyLift::getZLocationAfter(int milliseconds) {
   return mLift;
 }
 
-void SpindizzyLift::update(unsigned int milliseconds) {
+void SpindizzyLift::updateRuntime(unsigned int milliseconds) {
   ISpindizzyLiftType* mLiftType = getElementType();
   if (mLiftType->isActive()) {
     cLiftValues = getZLocationAfter(milliseconds);
   }
+}
+
+void SpindizzyLift::updateEditing(unsigned int milliseconds) {
+  // Do not move the lift
 }
 
 void SpindizzyLift::reset() {
@@ -194,7 +181,7 @@ void SpindizzyLift::reset() {
   }
 }
 
-void SpindizzyLift::render() {
+void SpindizzyLift::renderRuntime() {
   cLiftModel->render();
 }
 

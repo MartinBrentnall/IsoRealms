@@ -1,6 +1,6 @@
 #include "DialogColourSelector.h"
 
-DialogColourSelector::DialogColourSelector(IComponentContainer* container, Colour* colour, IResourceAccessor* resources, IConfirmationListener* confirmationListener) : ResizableDialog(container, "Plugins/UserDefinablePalette/DialogColourSelector", resources) {
+DialogColourSelector::DialogColourSelector(IComponentContainer* container, Colour* colour, IResourceAccessor* resources, IConfirmationListener* confirmationListener) : ResizableDialog(container, "Modules/UserDefinablePalette/DialogColourSelector", resources) {
   cColourSelector = new ComponentColourSelector(colour, resources);
   cColour = colour;
   cRed = colour->getRed();

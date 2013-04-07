@@ -32,7 +32,7 @@ class IZoneHandler:public IResource {
    * TODO: Interface should NOT expose whole zone!
    */
   virtual void render(std::vector<IZone*>&, IProject*) = 0;
-  virtual void update(std::vector<IZone*>&, unsigned int) = 0;
+  virtual void updateEditing(std::vector<IZone*>&, unsigned int) = 0;
   virtual void updateRuntime(std::vector<IZone*>&, unsigned int) = 0;
 };
 

@@ -27,7 +27,7 @@ ZoneCollectables::ZoneCollectables(IZoneCollectables* module) {
 }
 
 void ZoneCollectables::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
-  cProject = resources->getProject();
+  cMap = resources->getMap(node->getAttribute("map"));
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
@@ -85,11 +85,11 @@ void ZoneCollectables::collect(ICollector* collector, Vertex& start, Vertex& end
 }
 
 void ZoneCollectables::collect(ICollector* collector, Vertex& start, Vertex& end) {
-  IZone* mZone = cProject->getZone(start);
+  IZone* mZone = cMap->getZone(start);
   if (mZone != NULL) {
     collect(collector, start, end, mZone);
   }
-  std::vector<ZoneEvent*> mZoneEvents = cProject->getZoneEvents(start, end);
+  std::vector<ZoneEvent*> mZoneEvents = cMap->getZoneEvents(start, end);
   for (unsigned int i = 0; i < mZoneEvents.size(); i++) {
     if (mZoneEvents[i]->getType() == ZoneEvent::ENTERED) {
       IZone* mEnteredZone = mZoneEvents[i]->getZone();

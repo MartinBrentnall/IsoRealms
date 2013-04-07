@@ -27,8 +27,7 @@
 #include <IsoRealms/Resources/IRuntimeContext.h>
 #include <IsoRealms/Resources/Vertex/Vertex.h>
 
-class SpindizzyEnemy:public Element<>, 
-                     public IVisualElement {
+class SpindizzyEnemy:public Element<> {
   private:
   IElementType* cElementType;
   BlockLocation cStartLocation;
@@ -45,16 +44,9 @@ class SpindizzyEnemy:public Element<>,
    * Implements IElement *
   \***********************/
   void renderStatic();
-  std::vector<IVisualElement*> getVisualElements();
-  std::vector<IDynamicElement*> getDynamicElements();
-  std::vector<IInteractiveElement*> getInteractiveElements();
+  void renderRuntime();
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
   void setDirty();
-
-  /*****************************\
-   * Implements IVisualElement *
-  \*****************************/
-  void render();
 };
 
 #endif

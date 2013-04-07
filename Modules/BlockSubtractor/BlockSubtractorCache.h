@@ -23,7 +23,7 @@
 #include <stdlib.h>
 #include <vector>
 
-#include <IsoRealms/IProject.h>
+#include <IsoRealms/IMap.h>
 #include <IsoRealms/IZone.h>
 #include <IsoRealms/Resources/SurfaceProcessor/ISurfaceProvider.h>
 
@@ -35,8 +35,8 @@ class BlockSubtractorCache {
   int cZoneYOffset;
   std::vector<ISurfaceProvider*>* cCurrentZoneProviders;
   SurfaceDataCache* cCurrentSurfaceDataCache;
+  IMap* cMap;
   IZone* cCurrentZone;
-  IProject* cCurrentProject;
   std::map<IZone*, std::vector<ISurfaceProvider*>*> cOrderedSurfaceProvidersByZone;
   std::map<IZone*, SurfaceDataCache*> cSurfaceDataCaches;
 
@@ -45,7 +45,7 @@ class BlockSubtractorCache {
   public:
   BlockSubtractorCache();
   void setZone(IZone*);
-  void setProject(IProject*);
+  void setMap(IMap*);
   void add(ISurfaceProvider*);
   void remove(ISurfaceProvider*);
   void setDirty();

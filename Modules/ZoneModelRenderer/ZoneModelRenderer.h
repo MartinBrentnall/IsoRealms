@@ -5,6 +5,7 @@
 
 #include <IsoRealms/IsoRealmsConstants.h>
 #include <IsoRealms/Resources/3DModel/I3DModelFactory.h>
+#include <IsoRealms/Resources/IResourceAccessor.h>
 #include <IsoRealms/Resources/ZoneHandler/IZoneHandler.h>
 
 class ZoneModelRenderer:public IZoneHandler {
@@ -20,7 +21,7 @@ class ZoneModelRenderer:public IZoneHandler {
    * Implement IZoneHandler *
   \**************************/
   void render(std::vector<IZone*>&, IProject*);
-  void update(std::vector<IZone*>&, unsigned int);
+  void updateEditing(std::vector<IZone*>&, unsigned int);
   void updateRuntime(std::vector<IZone*>&, unsigned int);
 
   void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);

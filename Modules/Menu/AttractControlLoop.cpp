@@ -112,32 +112,84 @@ bool AttractControlLoop::checkActiveInput(int type) {
   return false;
 }
 
-bool AttractControlLoop::input(SDL_Event& event) {
-  if (cRunningProject != NULL) {
-    cRunningProject->input(event);
-  } else {
-    if (!cFrontEndActive && checkActiveInput(event.type)) {
-      cFrontEndActive = true;
-      cFrontEnd->setActive(true);
-      for (unsigned int i = 0; i < cFrontEndStartCommands.size(); i++) {
-	cFrontEndStartCommands[i]->execute();
-      }
-      
-      for (std::map<std::string, IAttract*>::iterator i = cAttractServices.begin(); i != cAttractServices.end(); i++) {
-	i->second->frontEndActive(true);
-      }          
-    } else {
-      cFrontEnd->input(event);
-    }
-  }
+IPlugin* AttractControlLoop::getElementSet() {
+  return this;
+}
+
+IElement* AttractControlLoop::getElement() {
+  return this;
+}
+
+IElement* AttractControlLoop::getElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*) {
+  return this;
+}
+
+void AttractControlLoop::setEditingContext(BlockLocation*, IComponentContainer*) {
+  // Not editable.  Nothing to do
+}
+
+void AttractControlLoop::configureElement() {
+  // Not editable.  Nothing to do
+}
+
+void AttractControlLoop::renderEditingPreview() {
+  // Not editable.  Nothing to do
+}
+
+void AttractControlLoop::renderIcon() {
+  // Not editable.  Nothing to do
+}
+
+void AttractControlLoop::updateIcon(unsigned int) {
+  // Not editable.  Nothing to do
+}
+
+void AttractControlLoop::destroy(IElement* element) {
+  // Front-end will not self terminate
+}
+
+IElementHandler* AttractControlLoop::getElementHandler() {
+  return NULL;
+}
+
+IElementType* AttractControlLoop::getElementType() {
+  return this;
+}
+
+bool AttractControlLoop::initElement(unsigned int) {
   return true;
 }
 
-void AttractControlLoop::update(unsigned int milliseconds) {
+void AttractControlLoop::renderStatic() {
+  // Nothing to do
+}
+
+void AttractControlLoop::save(DOMNodeWriter*, IResourceLocator*, BlockLocation&) {
+  // Not editable.  Nothing to do
+}
+
+void AttractControlLoop::setDirty() {
+  // Nothing to do
+}
+
+void AttractControlLoop::renderRuntime() {
   if (cRunningProject != NULL) {
-    cRunningProject->executePreLoopCommands(milliseconds);
+    cRunningProject->renderRuntime();
+  } else {
+    cAttractSceneManager.render();
+    if (cFrontEndActive) {
+      cFrontEnd->render();
+    }
+  }
+}
+
+void AttractControlLoop::renderEditing() {
+  // Nothing to do
+}
+
+void AttractControlLoop::updateRuntime(unsigned int milliseconds) {
+  if (cRunningProject != NULL) {
     cRunningProject->updateRuntime(milliseconds);
-    cRunningProject->executePostLoopCommands(milliseconds);
   } else {
     cAttractSceneManager.update(milliseconds);
     if (cFrontEndActive) {
@@ -164,101 +216,48 @@ void AttractControlLoop::update(unsigned int milliseconds) {
   }
 }
 
-void AttractControlLoop::render() {
+void AttractControlLoop::updateEditing(unsigned int) {
+  // Nothing to do
+}
+
+void AttractControlLoop::input(SDL_Event& event) {
   if (cRunningProject != NULL) {
-    cRunningProject->executePreLoopRenderers();
-    cRunningProject->render();
-    cRunningProject->executePostLoopRenderers();
+    cRunningProject->input(event);
   } else {
-    cAttractSceneManager.render();
-    if (cFrontEndActive) {
-      cFrontEnd->render();
+    if (!cFrontEndActive && checkActiveInput(event.type)) {
+      cFrontEndActive = true;
+      cFrontEnd->setActive(true);
+      for (unsigned int i = 0; i < cFrontEndStartCommands.size(); i++) {
+	cFrontEndStartCommands[i]->execute();
+      }
+      
+      for (std::map<std::string, IAttract*>::iterator i = cAttractServices.begin(); i != cAttractServices.end(); i++) {
+	i->second->frontEndActive(true);
+      }          
+    } else {
+      cFrontEnd->input(event);
     }
   }
 }
 
-IPlugin* AttractControlLoop::getElementSet() {
-  return this;
-}
-
-IElement* AttractControlLoop::getElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*) {
-  return this;
-}
-
-void AttractControlLoop::setEditingContext(BlockLocation*, IComponentContainer*) {
-  // Not editable.  Nothing to do
-}
-
-void AttractControlLoop::configureElement() {
-  // Not editable.  Nothing to do
-}
-
-void AttractControlLoop::renderEditingPreview() {
-  // Not editable.  Nothing to do
-}
-
-void AttractControlLoop::renderIcon() {
-  // Not editable.  Nothing to do
-}
-
-void AttractControlLoop::updateIcon(int) {
-  // Not editable.  Nothing to do
-}
-
-void AttractControlLoop::destroy(IElement* element) {
-  // Front-end will not self terminate
-}
-
-IElementHandler* AttractControlLoop::getElementHandler() {
-  return NULL;
-}
-
-IElementType* AttractControlLoop::getElementType() {
-  return this;
-}
-
-bool AttractControlLoop::initElement(unsigned int) {
+bool AttractControlLoop::isVisualRuntime() {
   return true;
 }
 
-void AttractControlLoop::renderStatic() {
-  // Nothing to do
+bool AttractControlLoop::isVisualEditing() {
+  return false;
 }
 
-void AttractControlLoop::renderStaticEditing() {
-  // Nothing to do
+bool AttractControlLoop::isDynamicRuntime() {
+  return true;
 }
 
-std::vector<IVisualElement*> AttractControlLoop::getVisualElements() {
-  std::vector<IVisualElement*> mVisualElements;
-  mVisualElements.push_back(this);
-  return mVisualElements;
+bool AttractControlLoop::isDynamicEditing() {
+  return false;
 }
 
-std::vector<IDynamicElement*> AttractControlLoop::getDynamicElements() {
-  std::vector<IDynamicElement*> mDynamicElements;
-  mDynamicElements.push_back(this);
-  return mDynamicElements;
-}
-
-std::vector<IDynamicElement*> AttractControlLoop::getDynamicElementsRuntime() {
-  std::vector<IDynamicElement*> mDynamicElements;
-  mDynamicElements.push_back(this);
-  return mDynamicElements;
-}
-
-std::vector<IInteractiveElement*> AttractControlLoop::getInteractiveElements() {
-  std::vector<IInteractiveElement*> mInteractiveElements;
-  mInteractiveElements.push_back(this);
-  return mInteractiveElements;
-}
-
-void AttractControlLoop::save(DOMNodeWriter*, IResourceLocator*, BlockLocation&) {
-  // Not editable.  Nothing to do
-}
-
-void AttractControlLoop::setDirty() {
-  // Nothing to do
+bool AttractControlLoop::isInteractive() {
+  return true;
 }
 
 void AttractControlLoop::startProject(const std::string& project) {
@@ -268,7 +267,7 @@ void AttractControlLoop::startProject(const std::string& project) {
     DOMNodeWrapper *mNode = mProjectNode->getChild(i);
     std::string mValue = mNode->getNodeName();
     if (mValue == "Project") {
-      cRunningProject = new Project(mNode, project, NULL);
+      cRunningProject = new Project(mNode, project, NULL, NULL);
       cRunningProject->initRuntime();
       break;
     }

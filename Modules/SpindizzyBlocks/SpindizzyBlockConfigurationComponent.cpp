@@ -68,10 +68,7 @@ void SpindizzyBlockConfigurationComponent::renderContent() {
   glRotatef(-45.0f, 0.0f, 0.0f, 1.0f); // TODO: Must get this right; check with how the editor is doing it!
   glColor3f(1.0f, 1.0f, 1.0f);
   cSampleBlock->renderStatic();
-  std::vector<IVisualElement*> mVisualElements = cSampleBlock->getVisualElements();
-  for (unsigned int i = 0; i < mVisualElements.size(); i++) {
-    mVisualElements[i]->render();
-  }
+  cSampleBlock->renderRuntime();
   cBlockProperties->renderConfiguration();
   glPopMatrix();
 }

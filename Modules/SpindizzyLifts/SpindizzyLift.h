@@ -38,9 +38,7 @@
 #include "SpindizzyLiftProperties.h"
 
 class SpindizzyLift:public Element<ISpindizzyLiftSet, ISpindizzyLiftType>,
-                           IDynamicElement,
-                           IRollableSurface,
-                           IVisualElement {
+                           IRollableSurface {
   private:
   
   enum LiftState {
@@ -82,10 +80,10 @@ class SpindizzyLift:public Element<ISpindizzyLiftSet, ISpindizzyLiftType>,
    * Implements IElement *
   \***********************/
   void renderStatic();
-  void renderStaticEditing();
-  std::vector<IVisualElement*> getVisualElements();
-  std::vector<IDynamicElement*> getDynamicElements();
-  std::vector<IInteractiveElement*> getInteractiveElements();
+  void renderEditing();
+  void renderRuntime();
+  void updateRuntime(unsigned int);
+  void updateEditing(unsigned int);
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
   bool initElement(unsigned int);
   void setDirty();
@@ -107,16 +105,6 @@ class SpindizzyLift:public Element<ISpindizzyLiftSet, ISpindizzyLiftType>,
   IRollableSurface::RespawnPossibility getRespawnPossibility();
   bool isRespawnPossibleNow();
   void getRestingLocation(Vertex&);
-
-  /******************************\
-   * Implements IDynamicElement *
-  \******************************/
-  void update(unsigned int);
-
-  /*****************************\
-   * Implements IVisualElement *
-  \*****************************/
-  void render();
 };
 
 #endif

@@ -1,6 +1,6 @@
 #include "DialogImageTextureSelector.h"
 
-DialogImageTextureSelector::DialogImageTextureSelector(IComponentContainer* container, IResourceAccessor* resources, IConfirmationListener* confirmationListener) : ResizableDialog(container, "Plugins/ImageTextureSet/DialogImageTextureSelector", resources) {
+DialogImageTextureSelector::DialogImageTextureSelector(IComponentContainer* container, IResourceAccessor* resources, IConfirmationListener* confirmationListener) : ResizableDialog(container, "Modules/ImageTextureSet/DialogImageTextureSelector", resources) {
   cFileSelector = new ComponentFileSelector(resources, "Data/Images", this);
   cConfirmationListener = confirmationListener;
   addComponent("fileSelector", cFileSelector);

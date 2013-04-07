@@ -33,30 +33,30 @@ class RuntimeContext:public IRuntimeContext {
   /******************************\
    * Implements IRuntimeContext *
   \******************************/
-  IProject* getProject();
   std::string getModule();
   bool isEditing();
-  void add(IResource*,                                      DOMNodeWrapper*);
-  void add(IColour*,                    const std::string&, DOMNodeWrapper*);
-  void add(ITexture*,                   const std::string&, DOMNodeWrapper*);
   void add(I3DModel*,                   const std::string&, DOMNodeWrapper*);
   void add(I3DModelFactory*,            const std::string&, DOMNodeWrapper*);
-  void add(ISound*,                     const std::string&, DOMNodeWrapper*);
-  void add(IInteger*,                   const std::string&, DOMNodeWrapper*);
+  void add(IArgumentDefinitionType*,    const std::string&);
   void add(IBoolean*,                   const std::string&, DOMNodeWrapper*);
+  void add(ICamera*,                    const std::string&, DOMNodeWrapper*);
+  void add(ICollectables*,              const std::string&, DOMNodeWrapper*);
+  void add(ICollidableSurfaceRegistry*, const std::string&, DOMNodeWrapper*);
+  void add(IColour*,                    const std::string&, DOMNodeWrapper*);
+  void add(IComponentCustomType*,       const std::string&);
+  void add(IElementGroupType*,          const std::string&);
   void add(IElementType*,               const std::string&, DOMNodeWrapper*);
   void add(IFont*,                      const std::string&, DOMNodeWrapper*);
   void add(IHUDComponentFactory*,       const std::string&, DOMNodeWrapper*);
-  void add(ISurfaceProcessor*,          const std::string&, DOMNodeWrapper*);
-  void add(ICollidableSurfaceRegistry*, const std::string&, DOMNodeWrapper*);
-  void add(ICollectables*,              const std::string&, DOMNodeWrapper*);
-  void add(IVertex*,                    const std::string&);
-  void add(ICamera*,                    const std::string&, DOMNodeWrapper*);
+  void add(IInteger*,                   const std::string&, DOMNodeWrapper*);
+  void add(IMap*,                       const std::string&, DOMNodeWrapper*);
+  void add(IResource*,                                      DOMNodeWrapper*);
+  void add(ISound*,                     const std::string&, DOMNodeWrapper*);
   void add(IString*,                    const std::string&, DOMNodeWrapper*);
+  void add(ISurfaceProcessor*,          const std::string&, DOMNodeWrapper*);
+  void add(ITexture*,                   const std::string&, DOMNodeWrapper*);
+  void add(IVertex*,                    const std::string&);
   void add(IZoneHandler*,               const std::string&, DOMNodeWrapper*);
-  void add(IElementGroupType*,          const std::string&);
-  void add(IArgumentDefinitionType*,    const std::string&);
-  void add(IComponentCustomType*,       const std::string&);
   
   void registerArgument(const std::string&, const std::string&, IArgumentSource*);
   void addDynamicElement(IDynamicElement*);

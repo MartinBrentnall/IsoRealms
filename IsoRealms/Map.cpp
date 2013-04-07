@@ -20,16 +20,32 @@
 
 Map::Map(IProject* project) {
   cProject = project;
+  cCamera = NULL;
   cZoneHandlers.push_back(new DefaultZoneHandler());
 }
 
-Map::Map(DOMNodeWrapper* node, bool editing, IProject* project, IResources* resources) {
+Map::Map(bool editing, IProject* project, IResourceAccessor* resources) {
   cProject = project;
   if (editing) {
     cZoneHandlers.push_back(new DefaultZoneHandler());
   }
-  BlockLocation mStartLocation(0, 0, 0);
+  cEditing = editing;
+}
 
+Map::Map(DOMNodeWrapper* node, bool editing, IProject* project, IResourceAccessor* resources) {
+  cProject = project;
+  if (editing) {
+    cZoneHandlers.push_back(new DefaultZoneHandler());
+  }
+  cEditing = editing;
+  initialiseResource(node, resources);
+}
+
+void Map::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+  BlockLocation mStartLocation(0, 0, 0);
+  std::string mCameraPath = node->getAttribute("camera");
+  cCamera = resources->getCamera(mCameraPath);
+  
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
@@ -38,13 +54,13 @@ Map::Map(DOMNodeWrapper* node, bool editing, IProject* project, IResources* reso
     } else if (mValueAsString == "ZoneHandler") {
       std::string mZoneHandlerName = mNode->getAttribute("value");
       IZoneHandler* mZoneRenderer = resources->getZoneHandler(mZoneHandlerName);
-      if (!editing) {
+      if (!cEditing) {
         cZoneHandlers.push_back(mZoneRenderer);
       } else {
         cZoneHandlersPersisted.push_back(mZoneRenderer);
       }
     } else if (mValueAsString == "Zone") {
-      Zone* mZone = new Zone(mNode, project, resources, this);
+      Zone* mZone = new Zone(mNode, cProject, resources, this);
       addZone(mZone);
     } else {
       // TODO: Throw something
@@ -197,54 +213,6 @@ void Map::initMap(bool editing) {
   }
 }
 
-void Map::update(int milliseconds) {
-  initMap(true);
-  // TODO: Need a more permanent solution for better performance.
-  std::vector<IZone*> mZones;
-  for (unsigned int i = 0; i < cZones.size(); i++) {
-    mZones.push_back(cZones[i]);
-  }
-  // TODO: End.
-
-  for (unsigned int i = 0; i < cZoneHandlers.size(); i++) {
-    cZoneHandlers[i]->update(mZones, milliseconds);
-  }
-  cElementHandler.update(milliseconds);
-}
-
-void Map::updateRuntime(int milliseconds) {
-  // TODO: Need a more permanent solution for better performance.
-  std::vector<IZone*> mZones;
-  for (unsigned int i = 0; i < cZones.size(); i++) {
-    mZones.push_back(cZones[i]);
-  }
-  // TODO: End.
-  
-  for (unsigned int i = 0; i < cZoneHandlers.size(); i++) {
-    cZoneHandlers[i]->updateRuntime(mZones, milliseconds);
-  }
-  cElementHandler.updateRuntime(milliseconds);
-}
-
-void Map::render() {
-  glColor3f(1.0f, 1.0f, 1.0f);
-  // TODO: Need a more permanent solution for better performance.
-  std::vector<IZone*> mZones;
-  for (unsigned int i = 0; i < cZones.size(); i++) {
-    mZones.push_back(cZones[i]);
-  }
-  // TODO: End.
-  for (unsigned int i = 0; i < cZoneHandlers.size(); i++) {
-    cZoneHandlers[i]->render(mZones, cProject);
-  }
-  cElementHandler.renderStatic();
-  cElementHandler.renderDynamic();
-}
-
-void Map::renderEditing() {
-  cElementHandler.renderEditing();
-}
-
 void Map::zoneChanged(IZone* zone) {
   // TODO: More efficient way of checking if the zone is already dirty
   for (unsigned int i = 0; i < cDirtyZones.size(); i++) {
@@ -255,7 +223,7 @@ void Map::zoneChanged(IZone* zone) {
   cDirtyZones.push_back(zone);
 }
 
-void Map::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+void Map::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& location) {
   DOMNodeWriter* mMapNode = node->addBranch("Map");
   for (unsigned int i = 0; i < cZoneHandlersPersisted.size(); i++) {
     DOMNodeWriter* mZoneHandlerNode = mMapNode->addBranch("ZoneHandler");
@@ -360,8 +328,115 @@ float Map::getBottom() {
   return mValue;
 }
 
+float Map::getAspectRatio() {
+  Configuration* mConfiguration = Configuration::getInstance();
+  ScreenConfiguration* mScreenConfiguration = mConfiguration->getScreenConfiguration();
+  return mScreenConfiguration->getAspectRatio();
+}
+
 int Map::getZoneCount() {
   return cZones.size();
+}
+
+IPlugin* Map::getElementSet() {
+  return NULL;
+}
+
+IElementType* Map::getElementType() {
+  return NULL;
+}
+
+bool Map::initElement(unsigned int pass) {
+  initMap(false);
+  return true;
+}
+
+bool Map::isDynamicEditing() {
+  return true;
+}
+
+bool Map::isDynamicRuntime() {
+  return true;
+}
+
+bool Map::isInteractive() {
+  return true;
+}
+
+bool Map::isVisualEditing() {
+  return true;
+}
+
+bool Map::isVisualRuntime() {
+  return true;
+}
+
+void Map::updateEditing(unsigned int milliseconds) {
+  initMap(true);
+  // TODO: Need a more permanent solution for better performance.
+  std::vector<IZone*> mZones;
+  for (unsigned int i = 0; i < cZones.size(); i++) {
+    mZones.push_back(cZones[i]);
+  }
+  // TODO: End.
+
+  for (unsigned int i = 0; i < cZoneHandlers.size(); i++) {
+    cZoneHandlers[i]->updateEditing(mZones, milliseconds);
+  }
+  cElementHandler.updateEditing(milliseconds);
+}
+
+void Map::updateRuntime(unsigned int milliseconds) {
+  cCamera->update(milliseconds);
+  // TODO: Need a more permanent solution for better performance.
+  std::vector<IZone*> mZones;
+  for (unsigned int i = 0; i < cZones.size(); i++) {
+    mZones.push_back(cZones[i]);
+  }
+  // TODO: End.
+  
+  for (unsigned int i = 0; i < cZoneHandlers.size(); i++) {
+    cZoneHandlers[i]->updateRuntime(mZones, milliseconds);
+  }
+  cElementHandler.updateRuntime(milliseconds);
+}
+
+void Map::renderStatic() {
+  cElementHandler.renderStatic();
+}
+
+void Map::renderRuntime() {
+  cCamera->render();
+  glColor3f(1.0f, 1.0f, 1.0f);
+  // TODO: Need a more permanent solution for better performance.
+  std::vector<IZone*> mZones;
+  for (unsigned int i = 0; i < cZones.size(); i++) {
+    mZones.push_back(cZones[i]);
+  }
+  // TODO: End.
+  for (unsigned int i = 0; i < cZoneHandlers.size(); i++) {
+    cZoneHandlers[i]->render(mZones, cProject);
+  }
+  cElementHandler.renderRuntime();
+}
+
+void Map::renderEditing() {
+  cCamera->render();
+  glColor3f(1.0f, 1.0f, 1.0f);
+  // TODO: Need a more permanent solution for better performance.
+  std::vector<IZone*> mZones;
+  for (unsigned int i = 0; i < cZones.size(); i++) {
+    mZones.push_back(cZones[i]);
+  }
+  // TODO: End.
+  for (unsigned int i = 0; i < cZoneHandlers.size(); i++) {
+    cZoneHandlers[i]->render(mZones, cProject);
+  }
+  cElementHandler.renderEditing();
+}
+
+void Map::setDirty() {
+  // TODO: Implement this
 }
 
 Map::~Map() {

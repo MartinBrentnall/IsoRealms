@@ -21,7 +21,7 @@
 Zone::Zone(BlockLocation& location, BlockLocation& size) : BlockArea(location, size) {
 }
 
-Zone::Zone(DOMNodeWrapper* node, IProject* project, IResources* resources, IMap* map) : BlockArea(node) {
+Zone::Zone(DOMNodeWrapper* node, IProject* project, IResourceAccessor* resources, IMap* map) : BlockArea(node) {
   project->zoneContextChanged(map, this);  
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
@@ -142,8 +142,8 @@ void Zone::zoneChanged() {
   }
 }
 
-void Zone::update(unsigned int milliseconds) {
-  cElementHandler.update(milliseconds);
+void Zone::updateEditing(unsigned int milliseconds) {
+  cElementHandler.updateEditing(milliseconds);
 }
 
 void Zone::updateRuntime(unsigned int milliseconds) {
@@ -166,8 +166,8 @@ void Zone::renderStatic() {
   cElementHandler.renderStatic();
 }
 
-void Zone::renderDynamic() {
-  cElementHandler.renderDynamic();
+void Zone::renderRuntime() {
+  cElementHandler.renderRuntime();
 }
 
 // void Zone::setHandlerActive(IElementHandler*, bool) {

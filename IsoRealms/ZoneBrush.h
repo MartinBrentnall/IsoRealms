@@ -29,7 +29,7 @@
 
 class ZoneBrush:public IsoRealmsConstants {
   private:
-  Map* cEditMapPointer;
+  IMap* cEditMapPointer;
   BlockLocation* cEditorCursor;
   BlockLocation* cStartDrawing;
 
@@ -44,7 +44,7 @@ class ZoneBrush:public IsoRealmsConstants {
    * @param Map*  The map that this brush will draw in.
    * @param BlockLocation*  The location of the brush.
    */
-  ZoneBrush(Map*, BlockLocation*);
+  ZoneBrush(IMap*, BlockLocation*);
 
   bool input(SDL_Event&);
   void render();

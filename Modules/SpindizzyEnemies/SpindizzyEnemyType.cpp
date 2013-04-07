@@ -26,7 +26,6 @@ void SpindizzyEnemyType::initialiseResource(DOMNodeWrapper* node, IResourceAcces
   cModelType = resourceAccessor->getModelType(mModelPath);
   BlockLocation mIdentityLocation(0, 0, 0);
   cSampleEnemy = new SpindizzyEnemy(this, &mIdentityLocation, cModelType);
-  cSampleEnemyVisuals = cSampleEnemy->getVisualElements();
 }
 
 void SpindizzyEnemyType::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
@@ -85,7 +84,7 @@ void SpindizzyEnemyType::renderEditingPreview() {
   // Nothing to do
 }
 
-void SpindizzyEnemyType::updateIcon(int milliseconds) {
+void SpindizzyEnemyType::updateIcon(unsigned int milliseconds) {
   // Nothing to do
 }
 
@@ -95,8 +94,8 @@ void SpindizzyEnemyType::renderIcon() {
   glRotatef(45.0f, 0.0f, 0.0f, 1.0f);
   glScalef(2.0f, 2.0f, 2.0f);
   cSampleEnemy->renderStatic();
-  for (unsigned int i = 0; i < cSampleEnemyVisuals.size(); i++) {
-    cSampleEnemyVisuals[i]->render();
+  if (cSampleEnemy->isVisualRuntime()) {
+    cSampleEnemy->renderRuntime();
   }
 }
 

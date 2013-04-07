@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include <IsoRealms/LuaSupport/ArgumentDefinition.h>
 #include <IsoRealms/Resources/Integer/IInteger.h>
 #include <IsoRealms/Resources/Sound/ISound.h>
 

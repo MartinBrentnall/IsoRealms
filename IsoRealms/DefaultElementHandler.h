@@ -28,52 +28,42 @@
 
 template<class T = IElement> class DefaultElementHandler:public IElementHandler {
   protected:
-  std::vector<IVisualElement*> cVisualElements;
-  std::vector<IDynamicElement*> cDynamicElements;
-  std::vector<IDynamicElement*> cDynamicElementsRuntime;
+  std::vector<IElement*> cVisualElementsEditor;
+  std::vector<IElement*> cVisualElementsRuntime;
+  std::vector<IElement*> cDynamicElementsEditor;
+  std::vector<IElement*> cDynamicElementsRuntime;
 
   public:
   void addElement(IElement* element) {
-    std::vector<IVisualElement*> mVisualElements = element->getVisualElements();
-    for (unsigned int i = 0; i < mVisualElements.size(); i++) {
-      cVisualElements.push_back(mVisualElements[i]);
+    if (element->isVisualRuntime()) {
+      cVisualElementsRuntime.push_back(element);
     }
-    std::vector<IDynamicElement*> mDynamicElements = element->getDynamicElements();
-    for (unsigned int i = 0; i < mDynamicElements.size(); i++) {
-      cDynamicElements.push_back(mDynamicElements[i]);
+    if (element->isVisualEditing()) {
+      cVisualElementsEditor.push_back(element);
     }
-    std::vector<IDynamicElement*> mDynamicElementsRuntime = element->getDynamicElementsRuntime();
-    for (unsigned int i = 0; i < mDynamicElementsRuntime.size(); i++) {
-      cDynamicElementsRuntime.push_back(mDynamicElementsRuntime[i]);
+    if (element->isDynamicEditing()) {
+      cDynamicElementsEditor.push_back(element);
+    }
+    if (element->isDynamicRuntime()) {
+      cDynamicElementsRuntime.push_back(element);
     }
     elementAdded(element);
   }
   
+  void eraseElement(std::vector<IElement*>& vector, IElement* element) {
+    for (unsigned int i = 0; i < vector.size(); i++) {
+      if (vector[i] == element) {
+	vector.erase(vector.begin() + i);
+	return;
+      }
+    }
+  }
+  
   void removeElement(IElement* element) {
-    std::vector<IVisualElement*> mVisualElements = element->getVisualElements();
-    for (unsigned int i = 0; i < mVisualElements.size(); i++) {
-      for (unsigned int j = 0; j < cVisualElements.size(); j++) {
-        if (mVisualElements[i] == cVisualElements[j]) {
-          cVisualElements.erase(cVisualElements.begin() + j);
-        }
-      }
-    }
-    std::vector<IDynamicElement*> mDynamicElements = element->getDynamicElements();
-    for (unsigned int i = 0; i < mDynamicElements.size(); i++) {
-      for (unsigned int j = 0; j < cDynamicElements.size(); j++) {
-        if (mDynamicElements[i] == cDynamicElements[j]) {
-          cDynamicElements.erase(cDynamicElements.begin() + j);
-        }
-      }
-    }
-    std::vector<IDynamicElement*> mDynamicElementsRuntime = element->getDynamicElementsRuntime();
-    for (unsigned int i = 0; i < mDynamicElementsRuntime.size(); i++) {
-      for (unsigned int j = 0; j < cDynamicElementsRuntime.size(); j++) {
-        if (mDynamicElementsRuntime[i] == cDynamicElementsRuntime[j]) {
-          cDynamicElementsRuntime.erase(cDynamicElementsRuntime.begin() + j);
-        }
-      }
-    }
+    eraseElement(cVisualElementsEditor, element);
+    eraseElement(cVisualElementsRuntime, element);
+    eraseElement(cDynamicElementsEditor, element);
+    eraseElement(cDynamicElementsRuntime, element);
     elementRemoved(element);
   }
   
@@ -84,30 +74,30 @@ template<class T = IElement> class DefaultElementHandler:public IElementHandler 
   }
 
   bool isRenderer() {
-    return !cVisualElements.empty();
+    return !cVisualElementsRuntime.empty();
   }
   
   virtual void render() {
     // NOTE: Enable this line to see which surfaces are dynamic!
 /*    glColor3f(0.3f, 0.3f, 0.3f);*/
-    for (unsigned int i = 0; i < cVisualElements.size(); i++) {
-      cVisualElements[i]->render();
+    for (unsigned int i = 0; i < cVisualElementsRuntime.size(); i++) {
+      cVisualElementsRuntime[i]->renderRuntime();
     }
   }
   
   bool isUpdater() {
-    return !cDynamicElements.empty();
+    return !cDynamicElementsRuntime.empty();
   }
   
   virtual void update(int ticks) {
-    for (unsigned int i = 0; i < cDynamicElements.size(); i++) {
-      cDynamicElements[i]->update(ticks);
+    for (unsigned int i = 0; i < cDynamicElementsEditor.size(); i++) {
+      cDynamicElementsEditor[i]->updateEditing(ticks);
     }
   }
   
   virtual void updateRuntime(int ticks) {
     for (unsigned int i = 0; i < cDynamicElementsRuntime.size(); i++) {
-      cDynamicElementsRuntime[i]->update(ticks);
+      cDynamicElementsRuntime[i]->updateRuntime(ticks);
     }
   }
 };

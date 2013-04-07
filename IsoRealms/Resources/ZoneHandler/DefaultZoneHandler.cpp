@@ -7,13 +7,13 @@ void DefaultZoneHandler::render(std::vector<IZone*>& zones, IProject* project) {
   }
   for (unsigned int i = 0; i < zones.size(); i++) {
     project->renderPreZone(zones[i]);
-    zones[i]->renderDynamic();
+    zones[i]->renderRuntime();
   }
 }
 
-void DefaultZoneHandler::update(std::vector<IZone*>& zones, unsigned int milliseconds) {
+void DefaultZoneHandler::updateEditing(std::vector<IZone*>& zones, unsigned int milliseconds) {
   for (unsigned int i = 0; i < zones.size(); i++) {
-    zones[i]->update(milliseconds);
+    zones[i]->updateEditing(milliseconds);
   }
 }
 

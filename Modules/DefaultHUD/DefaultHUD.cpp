@@ -18,35 +18,8 @@
  */
 #include "DefaultHUD.h"
 
-void DefaultHUD::createResources(DOMNodeWrapper* node, IRuntimeContext* runtimeContext) {
-  runtimeContext->add(this, node);
-}
-
-HUDComponentProxy* DefaultHUD::getComponentProxy(const std::string& name) {
-  std::map<std::string, HUDComponentProxy*>::iterator i = cComponentsByName.find(name);
-  if (i != cComponentsByName.end()) {
-    return i->second;
-  }
-  HUDComponentProxy* mProxy = new HUDComponentProxy();
-  cComponentsByName[name] = mProxy;
-  return mProxy;
-}
-
-IHUDComponentRelation* DefaultHUD::getRelation(const std::string& description, const std::string& edge) {
-  if (description == "") {
-    return NULL;
-  }
-  std::vector<std::string> mRelationWords = Utils::splitWords(description);
-  if (mRelationWords.size() == 2) {
-    return new HUDComponentRelation(getComponentProxy(mRelationWords[1]), mRelationWords[0], edge);
-  }
-  if (mRelationWords.size() == 1) {
-    return new ScreenRelation(atof(mRelationWords[0].c_str()));
-  }
-  return NULL;
-}
-
-void DefaultHUD::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+DefaultHUD::DefaultHUD(DOMNodeWrapper* node, IResourceAccessor* resources, IDefaultHUDType* elementType) {
+  cElementType = elementType;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
@@ -77,6 +50,30 @@ void DefaultHUD::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* res
   }
 }
 
+HUDComponentProxy* DefaultHUD::getComponentProxy(const std::string& name) {
+  std::map<std::string, HUDComponentProxy*>::iterator i = cComponentsByName.find(name);
+  if (i != cComponentsByName.end()) {
+    return i->second;
+  }
+  HUDComponentProxy* mProxy = new HUDComponentProxy();
+  cComponentsByName[name] = mProxy;
+  return mProxy;
+}
+
+IHUDComponentRelation* DefaultHUD::getRelation(const std::string& description, const std::string& edge) {
+  if (description == "") {
+    return NULL;
+  }
+  std::vector<std::string> mRelationWords = Utils::splitWords(description);
+  if (mRelationWords.size() == 2) {
+    return new HUDComponentRelation(getComponentProxy(mRelationWords[1]), mRelationWords[0], edge);
+  }
+  if (mRelationWords.size() == 1) {
+    return new ScreenRelation(atof(mRelationWords[0].c_str()));
+  }
+  return NULL;
+}
+
 std::string DefaultHUD::getSource(HUDComponentPosition* component) {
   for (std::map<std::string, HUDComponentProxy*>::iterator i = cComponentsByName.begin(); i != cComponentsByName.end(); i++) {
     if (i->second->isComponent(component)) {
@@ -86,22 +83,24 @@ std::string DefaultHUD::getSource(HUDComponentPosition* component) {
   return "";
 }
 
-void DefaultHUD::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
-  for (unsigned int i = 0; i < cComponents.size(); i++) {
-    DOMNodeWriter* mComponentNode = node->addBranch("Component");
-    std::string mSource = getSource(cComponents[i]);
-    mComponentNode->addAttribute("source", mSource);
-    cComponents[i]->save(mComponentNode, this);
-  }
+IPlugin* DefaultHUD::getElementSet() {
+  return NULL;
 }
 
-void DefaultHUD::update(unsigned int milliseconds) {
-  for (unsigned int i = 0; i < cComponents.size(); i++) {
-    cComponents[i]->update(milliseconds);
-  }
+IElementType* DefaultHUD::getElementType() {
+  return cElementType;
 }
 
-void DefaultHUD::render() {
+bool DefaultHUD::initElement(unsigned int) {
+  return true;
+  // Nothing to do
+}
+
+void DefaultHUD::renderStatic() {
+  // Nothing to do
+}
+
+void DefaultHUD::renderRuntime() {
   Configuration* mConfiguration = Configuration::getInstance();
   ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
   float mAspectRatio = mScreen->getAspectRatio();
@@ -128,22 +127,52 @@ void DefaultHUD::render() {
   glPopAttrib();
 }
 
-std::vector<IDynamicElement*> DefaultHUD::getPostLoopCommands() {
-  std::vector<IDynamicElement*> mThis;
-  mThis.push_back(this);
-  return mThis;
+void DefaultHUD::renderEditing() {
+  // TODO:
 }
 
-std::vector<IVisualElement*> DefaultHUD::getPostLoopRenderers() {
-  std::vector<IVisualElement*> mThis;
-  mThis.push_back(this);
-  return mThis;
+void DefaultHUD::updateRuntime(unsigned int milliseconds) {
+  for (unsigned int i = 0; i < cComponents.size(); i++) {
+    cComponents[i]->update(milliseconds);
+  }
 }
 
-extern "C" IPlugin* create() {
-  return new DefaultHUD();
+void DefaultHUD::updateEditing(unsigned int milliseconds) {
+  // TODO
 }
 
-extern "C" void destroy(IPlugin* plugin) {
-  delete plugin;
+void DefaultHUD::input(SDL_Event& event) {
+  // Nothing to do
+}
+
+bool DefaultHUD::isVisualRuntime() {
+  return true;
+}
+
+bool DefaultHUD::isVisualEditing() {
+  return false;
+}
+
+bool DefaultHUD::isDynamicRuntime() {
+  return true;
+}
+
+bool DefaultHUD::isDynamicEditing() {
+  return false;
+}
+
+bool DefaultHUD::isInteractive() {
+  return false;
+}
+
+void DefaultHUD::save(DOMNodeWriter* node, IResourceLocator* resources, BlockLocation& location) {
+  for (unsigned int i = 0; i < cComponents.size(); i++) {
+    DOMNodeWriter* mComponentNode = node->addBranch("Component");
+    std::string mSource = getSource(cComponents[i]);
+    mComponentNode->addAttribute("source", mSource);
+    cComponents[i]->save(mComponentNode, this);
+  }
+}
+
+void DefaultHUD::setDirty() {
 }

@@ -84,13 +84,14 @@ class SpindizzyBlockType:public ISpindizzyBlockType,
    * Implements IElementType *
   \***************************/
   void configureElement();
+  IElement* getElement();
   IElement* getElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*);
   IElementHandler* getElementHandler();
   void setEditingContext(BlockLocation*, IComponentContainer*);
   bool input(SDL_Event&);
   void renderEditingPreview();
   void renderIcon();
-  void updateIcon(int);
+  void updateIcon(unsigned int);
   std::string getName();
   void destroy(IElement*);
   void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);

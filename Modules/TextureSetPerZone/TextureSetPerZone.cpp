@@ -23,6 +23,8 @@ TextureSetPerZone::TextureSetPerZone() {
 }
 
 void TextureSetPerZone::createResources(DOMNodeWrapper* node, IRuntimeContext* runtimeContext) {
+  IArgumentSource* mArgumentSource = new ArgumentSourceCustom<TextureSetPerZone>(this);
+  runtimeContext->registerArgument("ThemedZones", "ThemedZones", mArgumentSource);
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
@@ -30,12 +32,19 @@ void TextureSetPerZone::createResources(DOMNodeWrapper* node, IRuntimeContext* r
       std::string mThemeName = mNode->getAttribute("name");
       Theme* mTheme = new Theme(this);
       runtimeContext->add(mTheme, mNode);
-      runtimeContext->addListener(mTheme);
+      runtimeContext->addListener(static_cast<IResourceUseListener<ITexture>*>(mTheme));
+      runtimeContext->addListener(static_cast<IResourceUseListener<IColour>*>(mTheme));
       cThemes[mThemeName] = mTheme;
       createActualResources(mNode, runtimeContext);
+    } else if (mValueAsString == "Instance") {
+      std::string mInstanceName = mNode->getAttribute("name");
+      BackgroundChanger* mBackground = new BackgroundChanger(this);
+      cNamedInstances[mInstanceName] = mBackground;
+      IArgumentSource* mArgumentSource = new ArgumentSourceCustom<BackgroundChanger>(mBackground);
+      runtimeContext->registerArgument("ColouredBackground", mInstanceName, mArgumentSource);
     }
   }
-  runtimeContext->add(this, "BackgroundChanger", NULL);
+  runtimeContext->add(this, "Background", NULL);
 }
 
 void TextureSetPerZone::createActualResources(DOMNodeWrapper* node, IRuntimeContext* runtimeContext) {
@@ -45,6 +54,9 @@ void TextureSetPerZone::createActualResources(DOMNodeWrapper* node, IRuntimeCont
     if (mValueAsString == "Texture") {
       std::string mTextureName = mNode->getAttribute("type");
       createThemeTexture(mTextureName, runtimeContext);
+    } else if (mValueAsString == "Colour") {
+      std::string mColourName = mNode->getAttribute("type");
+      createThemeColour(mColourName, runtimeContext);
     }
   }
 }
@@ -80,6 +92,14 @@ std::string TextureSetPerZone::getThemeName(Theme* theme) {
   // TODO: Throw
   std::cout << "WARNING: Theme name could not be found" << std::endl;
   exit(1);
+}
+
+IColour* TextureSetPerZone::getColour(IZone* zone, ThemeColour* themeColour) {
+  std::map<IZone*, Theme*>::iterator i = cZoneThemes.find(zone);
+  if (i != cZoneThemes.end()) {
+    return i->second->getColour(themeColour);
+  }
+  return NULL;
 }
 
 void TextureSetPerZone::saveData(DOMNodeWriter* node, IMap* map, IZone* zone) {
@@ -119,8 +139,21 @@ void TextureSetPerZone::createThemeTexture(const std::string& type, IRuntimeCont
   }
 }
 
+void TextureSetPerZone::createThemeColour(const std::string& type, IRuntimeContext* runtimeContext) {
+  if (cColours.find(type) == cColours.end()) {
+    cColours[type] = new ThemeColour();
+    IArgumentSource* mArgumentSource = new ArgumentSourceCustom<ThemeColour>(cColours[type]);
+    runtimeContext->add(cColours[type], type);
+    runtimeContext->registerArgument("ThemeColour", type, mArgumentSource);
+  }
+}
+
 ThemeTexture* TextureSetPerZone::getThemeTexture(const std::string& type) {
   return cTextures[type];
+}
+
+ThemeColour* TextureSetPerZone::getThemeColour(const std::string& type) {
+  return cColours[type];
 }
 
 std::string TextureSetPerZone::getThemeElement(ThemeTexture* themeTexture) {
@@ -134,10 +167,15 @@ std::string TextureSetPerZone::getThemeElement(ThemeTexture* themeTexture) {
   exit(1);
 }
 
-std::vector<IDynamicElement*> TextureSetPerZone::getPostLoopCommands() {
-  std::vector<IDynamicElement*> mZoneTextureSetter;
-  mZoneTextureSetter.push_back(cDefaultTextureSetCommand);
-  return mZoneTextureSetter;
+std::string TextureSetPerZone::getThemeElement(ThemeColour* themeColour) {
+  for (std::map<std::string, ThemeColour*>::iterator i = cColours.begin(); i != cColours.end(); i++) {
+    if (i->second == themeColour) {
+      return i->first;
+    }
+  }
+  // TODO: Throw
+  std::cout << "WARNING: Theme element not found" << std::endl;
+  exit(1);
 }
 
 TextureSetPerZone::DefaultTextureSetCommand::DefaultTextureSetCommand(TextureSetPerZone* parent) {
@@ -175,9 +213,13 @@ IPlugin* TextureSetPerZone::getElementSet() {
   return this;
 }
 
-IElement* TextureSetPerZone::getElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*) {
-  // TODO: Implement this
-  return NULL;
+IElement* TextureSetPerZone::getElement(DOMNodeWrapper* node, BlockLocation* location, IElementContainer* container) {
+  std::string mInstance = node->getAttribute("instance");
+  if (mInstance != "") {
+    return cNamedInstances[mInstance];
+  } else {
+    return new BackgroundChanger(this);
+  }
 }
 
 void TextureSetPerZone::setEditingContext(IEditingContext* editingContext, IResourceManager* resourceManager) {
@@ -202,7 +244,7 @@ void TextureSetPerZone::renderIcon() {
   // TODO: Implement this
 }
 
-void TextureSetPerZone::updateIcon(int) {
+void TextureSetPerZone::updateIcon(unsigned int) {
   // TODO: Implement this
 }
 

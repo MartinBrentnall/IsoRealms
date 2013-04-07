@@ -37,7 +37,7 @@ class DefaultCollidableSurfaceRegistry:public ICollidableSurfaceRegistry,
   std::map<IZone*, std::vector<IZone*> > cAdjacentZones;
   IZone* cEditingZone;
   IZone* cRuntimeZone;
-  IProject* cProject;
+  IMap* cMap;
 
   public:
   void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);

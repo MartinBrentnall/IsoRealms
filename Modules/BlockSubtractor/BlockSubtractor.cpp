@@ -34,8 +34,8 @@ void BlockSubtractor::initPlugin(IZone* zone, unsigned int pass) {
 }
 
 void BlockSubtractor::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
-  cCurrentProject = resources->getProject();
-  cCache.setProject(cCurrentProject);
+  cMap = resources->getMap(node->getAttribute("map"));
+  cCache.setMap(cMap);
   cRemoveHiddenSurfaces = node->getBooleanAttribute("removeHiddenSurfaces");
   cUseAdjacentZones = node->getBooleanAttribute("useAdjacentZones");
 }
@@ -357,7 +357,7 @@ IWallSurface::FaceDirection BlockSubtractor::getOppositeOf(IWallSurface::FaceDir
 
 std::vector<WallColumnPossibility*> BlockSubtractor::getPhysicalWallMasks(int x, int y, IWallSurface::FaceDirection facing) {
   Vertex mVertex(x, y, 0); // TODO: Should not be fixed at zero height.  Also, we should be able to create a wall mask from multiple adjacent zones.
-  IZone* mZone = cCurrentProject->getZone(mVertex);
+  IZone* mZone = cMap->getZone(mVertex);
   if (mZone != NULL && cUseAdjacentZones) {
     cCache.setZone(mZone);
   }

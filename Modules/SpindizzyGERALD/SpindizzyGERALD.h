@@ -44,9 +44,7 @@
 
 class SpindizzyGERALD:public Element<ISpindizzyGERALDSet, ISpindizzyGERALDType>, 
                       public ICollector,
-                      public IDynamicElement,
-                      public IVisualElement,
-                      public IResource {
+		      public IResource {
   private:
   static const float CRAFT_ACCELERATION;
   static const float GRAVITY_STRENGTH;
@@ -63,7 +61,7 @@ class SpindizzyGERALD:public Element<ISpindizzyGERALDSet, ISpindizzyGERALDType>,
     int cY;
   };
 
-  IProject* cProject;
+  IMap** cMap;
   IZone* cZone;
 
   // User inputs
@@ -109,7 +107,7 @@ class SpindizzyGERALD:public Element<ISpindizzyGERALDSet, ISpindizzyGERALDType>,
   ICollidableWallSurface* cLockWest;
 
   void readData(DOMNodeWrapper*);
-  void initInstance(IProject*);
+  void initInstance(IMap**, IResourceAccessor*);
   bool isMovingNorth();
   bool isMovingEast();
   bool isMovingSouth();
@@ -131,15 +129,20 @@ class SpindizzyGERALD:public Element<ISpindizzyGERALDSet, ISpindizzyGERALDType>,
   void discoverZone(ICollidableWallSurface*);
 
   public:
-  SpindizzyGERALD(ISpindizzyGERALDType*, IProject*, DOMNodeWrapper*);
-  SpindizzyGERALD(ISpindizzyGERALDType*, BlockLocation*, IProject*);
-  SpindizzyGERALD(ISpindizzyGERALDType*, IProject*);
+  SpindizzyGERALD(ISpindizzyGERALDType*, IMap**, IResourceAccessor*, DOMNodeWrapper*);
+  SpindizzyGERALD(ISpindizzyGERALDType*, IMap**, IResourceAccessor*, BlockLocation*);
+  SpindizzyGERALD(ISpindizzyGERALDType*, IMap**, IResourceAccessor*);
 
   void checkCurrentZoneEvents(Vertex&, Vertex&);
   void checkMapZoneEvents(IZone*, Vertex&, Vertex&);
-
+  void saveInstance(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
+  void setResources(IResourceAccessor*);
+  
   Vertex* getLocation();
   
+  /*************\
+   * Lua API's *
+  \*************/
   void destroy();
   void stop();
 
@@ -152,23 +155,12 @@ class SpindizzyGERALD:public Element<ISpindizzyGERALDSet, ISpindizzyGERALDType>,
    * Implements IElement *
   \***********************/
   void renderStatic();
+  void renderRuntime();
+  void updateRuntime(unsigned int);
+  void updateEditing(unsigned int);
   bool initElement(unsigned int);
-  std::vector<IVisualElement*> getVisualElements();
-  std::vector<IDynamicElement*> getDynamicElements();
-  std::vector<IDynamicElement*> getDynamicElementsRuntime();
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
-  void saveInstance(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
   void setDirty();
-
-  /********************************\
-   * Implementeds IDynamicElement *
-  \********************************/
-  void update(unsigned int);
-
-  /*******************************\
-   * Implementeds IVisualElement *
-  \*******************************/
-  void render();
   
   /************************\
    * Implements IResource *

@@ -40,7 +40,6 @@ class SpindizzyLiftType:public ISpindizzyLiftType {
   std::vector<SpindizzyLift*> cContent;
   I3DModelFactory* cModelType;
   SpindizzyLift* cSampleLift;
-  std::vector<IVisualElement*> cSampleVisualElements;
   BlockLocation* cEditingLocation;
   BlockLocation* cInsertLocation;
   SpindizzyLiftConfigurationComponent* cConfigurationComponent;
@@ -81,7 +80,7 @@ class SpindizzyLiftType:public ISpindizzyLiftType {
   void setEditingContext(BlockLocation*, IComponentContainer*);
   void renderEditingPreview();
   void renderIcon();
-  void updateIcon(int);
+  void updateIcon(unsigned int);
   void destroy(IElement*);
 };
 

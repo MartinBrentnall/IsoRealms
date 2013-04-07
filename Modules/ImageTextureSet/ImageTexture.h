@@ -23,6 +23,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 
+#include <IsoRealms/Persistence/DOMNodeWriter.h>
 #include <IsoRealms/Resources/Texture/ITexture.h>
 #include <IsoRealms/System.h>
 

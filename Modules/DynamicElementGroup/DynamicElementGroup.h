@@ -1,15 +1,14 @@
 #ifndef DYNAMIC_ELEMENT_GROUP_H
 #define DYNAMIC_ELEMENT_GROUP_H
 
+#include <GL/glew.h>
 #include <GL/gl.h>
 
 #include <IsoRealms/Resources/ElementType/ElementHandler.h>
 #include <IsoRealms/Resources/ElementType/IElementGroup.h>
+#include <IsoRealms/Resources/IResourceAccessor.h>
 
-class DynamicElementGroup:public IElementGroup,
-                          public IInteractiveElement,
-			  public IDynamicElement,
-			  public IVisualElement {
+class DynamicElementGroup:public IElementGroup {
   private:
   ElementHandler cElementHandler;
   bool cActive;
@@ -19,21 +18,25 @@ class DynamicElementGroup:public IElementGroup,
   void setActive(bool);
   void addElement(IElement*);
   void removeElement(IElement*);
-  void update(unsigned int);
-  void render();
-  bool input(SDL_Event&);
   
   IPlugin* getElementSet();
   IElementType* getElementType();
+  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
   bool initElement(unsigned int);
   void renderStatic();
-  void renderStaticEditing();
-  std::vector<IVisualElement*> getVisualElements();
-  std::vector<IDynamicElement*> getDynamicElements();
-  std::vector<IDynamicElement*> getDynamicElementsRuntime();
-  std::vector<IInteractiveElement*> getInteractiveElements();
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
   void setDirty();
+
+  void renderRuntime();
+  void renderEditing();
+  void updateRuntime(unsigned int);
+  void updateEditing(unsigned int);
+  void input(SDL_Event&);
+  bool isVisualRuntime();
+  bool isVisualEditing();
+  bool isDynamicRuntime();
+  bool isDynamicEditing();
+  bool isInteractive();  
 };
 
 #endif

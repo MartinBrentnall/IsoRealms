@@ -28,6 +28,7 @@
 #include "IEditingContext.h"
 #include "IInteractiveElement.h"
 #include "IPluginRegistry.h"
+#include "IResourceSource.h"
 #include "IVisualElement.h"
 #include "IZone.h"
 #include "Persistence/DOMNodeWriter.h"
@@ -37,12 +38,8 @@
 class IMap;
 class IZoneHandler;
 
-class IPlugin {
+class IPlugin:public IResourceSource {
   private:
-  static std::vector<IDynamicElement*> cNoDynamicElements;
-  static std::vector<IVisualElement*> cNoVisualElements;
-  static std::vector<IInteractiveElement*> cNoInteractiveElements;
-
   IPluginRegistry* cPluginRegistry;
   
   public:
@@ -60,25 +57,6 @@ class IPlugin {
    * initialization passes are required for the zone.
    */
   virtual void initPlugin(IZone*, unsigned int);
-
-  /**
-   * Retrieve commands to execute from this plugin before entering a game loop.
-   * This function is useful for plugins that perform tasks such as foreground
-   * rendering (e.g. score display, etc.)
-   * 
-   * @returns  Commands to execute before entering game loop.
-   */
-  virtual std::vector<IDynamicElement*> getPostLoopCommands();
-
-  /**
-   * TODO
-   */
-  virtual std::vector<IVisualElement*> getPostLoopRenderers();
-  
-  /**
-   * TODO
-   */
-  virtual std::vector<IInteractiveElement*> getInteractiveElements();
 
   /**
    * This function is called immediately before the content of the specified
@@ -108,11 +86,6 @@ class IPlugin {
    */
   virtual void saveData(DOMNodeWriter*, IMap*, IZone*);
 
-  /**
-   * Create resources for the plugin
-   */
-  virtual void createResources(DOMNodeWrapper*, IRuntimeContext*);
-  
   /**
    * Load plugin data for the specified zone.
    */

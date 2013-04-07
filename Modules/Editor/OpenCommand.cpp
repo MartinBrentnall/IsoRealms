@@ -30,7 +30,7 @@ void OpenCommand::execute() {
     DOMNodeWrapper *mNode = mConfigurationRootNode->getChild(i);
     std::string mValue = mNode->getNodeName();
     if (mValue == "Project") {
-      IProject* mProject = new Project(mNode, mMapName, cEditor);
+      IProject* mProject = new Project(mNode, mMapName, cEditor, cEditor->getCamera());
       cEditor->setProject(mProject);
       return;
     }

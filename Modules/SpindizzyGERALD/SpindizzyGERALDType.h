@@ -21,18 +21,19 @@
 
 #include <GL/glew.h>
 
-#include <IsoRealms/LuaSupport/ArgumentSourceLocal.h>
-#include <IsoRealms/LuaSupport/IArgumentGenerator.h>
-#include <IsoRealms/LuaSupport/ArgumentValue.h>
 #include <IsoRealms/BlockLocation.h>
+#include <IsoRealms/IComponentContainer.h>
+#include <IsoRealms/IScript.h>
+#include <IsoRealms/IVisualElement.h>
+#include <IsoRealms/LuaSupport/ArgumentSourceCustom.h>
+#include <IsoRealms/LuaSupport/ArgumentSourceLocal.h>
+#include <IsoRealms/LuaSupport/ArgumentValue.h>
+#include <IsoRealms/LuaSupport/IArgumentGenerator.h>
 #include <IsoRealms/Resources/Collectables/ICollectables.h>
 #include <IsoRealms/Resources/ElementType/ElementType.h>
 #include <IsoRealms/Resources/Camera/ICamera.h>
 #include <IsoRealms/Resources/Float/Float.h>
 #include <IsoRealms/Resources/SurfaceRegistry/ICollidableSurfaceRegistry.h>
-#include <IsoRealms/IComponentContainer.h>
-#include <IsoRealms/IScript.h>
-#include <IsoRealms/IVisualElement.h>
 
 #include "ISpindizzyGERALDSet.h"
 #include "ISpindizzyGERALDType.h"
@@ -42,16 +43,16 @@ class SpindizzyGERALDType:public ISpindizzyGERALDType,
                           public IArgumentGenerator,
 			  public IArgumentLocator {
   private:
-  std::map<std::string, SpindizzyGERALD*> cNamedInstances;
   std::string cName;
+  std::map<std::string, SpindizzyGERALD*> cNamedInstances;
   std::vector<SpindizzyGERALD*> cContent;
+  IResourceAccessor* cResources;
   I3DModelFactory* cModelType;
   ICamera* cCamera;
   ICollectables* cCollectables;
   ICollidableSurfaceRegistry* cCollidableSurfaceRegistry;
-  IProject* cProject;
+  IMap* cMap;
   SpindizzyGERALD* cSampleGERALD;
-  std::vector<IVisualElement*> cSampleGERALDVisuals;
   BlockLocation* cEditingLocation;
   IScript* cRespawnScript;
   IScript* cFallImpactScript;
@@ -62,23 +63,27 @@ class SpindizzyGERALDType:public ISpindizzyGERALDType,
   ArgumentValue<IFloat> cArgumentFallDistance;
   ArgumentValue<SpindizzyGERALD> cArgumentCraft;
   
-  IElement* getElement();
-
   bool keyDown(SDLKey&);
 
   public:
   SpindizzyGERALDType(ISpindizzyGERALDSet*, IRuntimeContext*);
+  
+  SpindizzyGERALD* createInstance(const std::string&);
+  std::string getInstanceName(SpindizzyGERALD*);
 
-  void save(DOMNodeWriter*, IResourceLocator*);
   void saveInstances(DOMNodeWriter*, IResourceLocator*);
+  void save(DOMNodeWriter*, IResourceLocator*);
   void stop();
 
-  SpindizzyGERALD* createInstance(const std::string&);
-  
   /************************\
    * Implements IResource *
   \************************/
   void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  
+  /******************************\
+   * Implements IResourceSource *
+  \******************************/
+  void createResources(DOMNodeWrapper*, IRuntimeContext*);
   
   /***************************\
    * Implements IElementType *
@@ -89,7 +94,7 @@ class SpindizzyGERALDType:public ISpindizzyGERALDType,
   void configureElement();
   void setEditingContext(BlockLocation*, IComponentContainer*);
   void renderEditingPreview();
-  void updateIcon(int);
+  void updateIcon(unsigned int);
   void renderIcon();
   void destroy(IElement*);
   
@@ -111,7 +116,6 @@ class SpindizzyGERALDType:public ISpindizzyGERALDType,
   void executeFallImpactScript(float, SpindizzyGERALD*);
   void executeZoneEnteredScript(IZone*);
   void executeZoneExitedScript(IZone*);
-  std::string getInstanceName(SpindizzyGERALD*);
 };
 
 #endif

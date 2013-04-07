@@ -64,7 +64,7 @@ class Zone:public BlockArea,
 
   public:
   Zone(BlockLocation&, BlockLocation&);
-  Zone(DOMNodeWrapper*, IProject*, IResources*, IMap*);
+  Zone(DOMNodeWrapper*, IProject*, IResourceAccessor*, IMap*);
 
   /**
    * TODO: Write more about this.
@@ -77,8 +77,6 @@ class Zone:public BlockArea,
   void restrainLocation(BlockLocation*);
  
   void input(SDL_Event&);
-
-  void renderEditing();
 
   void save(DOMNodeWriter*, IResourceLocator*);
 
@@ -129,10 +127,11 @@ class Zone:public BlockArea,
   bool contains(Vertex&);
   std::vector<ZoneEvent*> getZoneEvents(Vertex&, Vertex&);
   BlockArea* getZoneArea();
-  void update(unsigned int);
+  void updateEditing(unsigned int);
   void updateRuntime(unsigned int);
   void renderStatic();
-  void renderDynamic();
+  void renderEditing();
+  void renderRuntime();
   
   int getZoneEast(); 
   int getZoneWest();

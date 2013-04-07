@@ -44,8 +44,7 @@
  * TODO: Refactor dynamic_casts into static_casts.
  */
 class SpindizzyBlock:public ISpindizzyBlock,
-                     public ISurfaceProvider,
-                     public IVisualElement {
+                     public ISurfaceProvider {
   private:
   enum SplitType {
     NORTH_SOUTH,
@@ -221,15 +220,8 @@ class SpindizzyBlock:public ISpindizzyBlock,
   \***********************/
   bool initElement(unsigned int);
   void renderStatic();
-  std::vector<IVisualElement*> getVisualElements();
-  std::vector<IDynamicElement*> getDynamicElements();
-  std::vector<IInteractiveElement*> getInteractiveElements();
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
-
-  /*****************************\
-   * Implements IVisualElement *
-  \*****************************/
-  void render();
+  void renderRuntime();
 
   /*******************************\
    * Implements ISurfaceProvider *

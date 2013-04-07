@@ -44,10 +44,7 @@
 class AttractControlLoop:public IPlugin,
                          public IElementType,
                          public IElement,
-                         public IDynamicElement,
-                         public IVisualElement,
-                         public IInteractiveElement,
-			 public IController {
+                         public IController {
   private:
   std::map<IAttract*, std::vector<ICommand*> > cSceneEndCommands;
   std::vector<ICommand*> cFrontEndStartCommands; // TODO: Implement
@@ -78,22 +75,16 @@ class AttractControlLoop:public IPlugin,
   void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
   
   /***************************\
-   * Implements IControlLoop *
-  \***************************/
-  void render();
-  void update(unsigned int);
-  
-  /***************************\
    * Implements IElementType *
   \***************************/
   IPlugin* getElementSet();
+  IElement* getElement();
   IElement* getElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*);
   void setEditingContext(BlockLocation*, IComponentContainer*);
   void configureElement();
-  bool input(SDL_Event&);
   void renderEditingPreview();
   void renderIcon();
-  void updateIcon(int);
+  void updateIcon(unsigned int);
   void destroy(IElement*);
   IElementHandler* getElementHandler();
   
@@ -104,12 +95,19 @@ class AttractControlLoop:public IPlugin,
   bool initElement(unsigned int);
   void renderStatic();
   void renderStaticEditing();
-  std::vector<IVisualElement*> getVisualElements();
-  std::vector<IDynamicElement*> getDynamicElements();
-  std::vector<IDynamicElement*> getDynamicElementsRuntime();
-  std::vector<IInteractiveElement*> getInteractiveElements();
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
   void setDirty();
+  
+  void renderRuntime();
+  void renderEditing();
+  void updateRuntime(unsigned int);
+  void updateEditing(unsigned int);
+  void input(SDL_Event&);
+  bool isVisualRuntime();
+  bool isVisualEditing();
+  bool isDynamicRuntime();
+  bool isDynamicEditing();
+  bool isInteractive();  
   
   /**************************\
    * Implements IController *

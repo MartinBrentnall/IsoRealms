@@ -41,8 +41,6 @@ void SpindizzyJewelType::initialiseResource(DOMNodeWrapper* node, IResourceAcces
     }
   }
   cSampleJewel = new SpindizzyJewel(this, &mIdentityLocation, cModelType);
-  cSampleJewelDynamics = cSampleJewel->getDynamicElements();
-  cSampleJewelVisuals = cSampleJewel->getVisualElements();
 }
 
 void SpindizzyJewelType::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
@@ -107,9 +105,9 @@ void SpindizzyJewelType::setEditingContext(BlockLocation* editingLocation, IComp
 void SpindizzyJewelType::renderEditingPreview() {
 }
 
-void SpindizzyJewelType::updateIcon(int milliseconds) {
-  for (unsigned int i = 0; i < cSampleJewelDynamics.size(); i++) {
-    cSampleJewelDynamics[i]->update(milliseconds);
+void SpindizzyJewelType::updateIcon(unsigned int milliseconds) {
+  if (cSampleJewel->isDynamicRuntime()) {
+    cSampleJewel->updateRuntime(milliseconds);
   }
 }
 
@@ -123,8 +121,8 @@ void SpindizzyJewelType::renderIcon() {
   glRotatef(45.0f, 0.0f, 0.0f, 1.0f);
   glScalef(2.0f, 2.0f, 2.0f);
   cSampleJewel->renderStatic();
-  for (unsigned int i = 0; i < cSampleJewelVisuals.size(); i++) {
-    cSampleJewelVisuals[i]->render();
+  if (cSampleJewel->isVisualRuntime()) {
+    cSampleJewel->renderRuntime();
   }
 }
 

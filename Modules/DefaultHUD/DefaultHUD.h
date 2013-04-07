@@ -27,6 +27,7 @@
 #include <IsoRealms/IDynamicElement.h>
 #include <IsoRealms/IPlugin.h>
 #include <IsoRealms/IVisualElement.h>
+#include <IsoRealms/Resources/ElementType/Element.h>
 #include <IsoRealms/Resources/HUDComponents/IHUDComponentFactory.h>
 #include <IsoRealms/Utils.h>
 
@@ -34,14 +35,13 @@
 #include "HUDComponentPosition.h"
 #include "HUDComponentRelation.h"
 #include "IComponentSources.h"
+#include "IDefaultHUDType.h"
 #include "ScreenRelation.h"
 
-class DefaultHUD:public IPlugin,
-                 public IDynamicElement,
-                 public IVisualElement,
-                 public IComponentSources,
-                 public IResource {
+class DefaultHUD:public IComponentSources,
+                 public IElement {
   private:
+  IDefaultHUDType* cElementType;
   std::vector<HUDComponentPosition*> cComponents;
   std::map<std::string, HUDComponentProxy*> cComponentsByName;
   
@@ -49,6 +49,7 @@ class DefaultHUD:public IPlugin,
   HUDComponentProxy* getComponentProxy(const std::string&);
   
   public:
+  DefaultHUD(DOMNodeWrapper*, IResourceAccessor*, IDefaultHUDType*);
   
   /******************************\
    * Implements IDynamicElement *
@@ -63,17 +64,31 @@ class DefaultHUD:public IPlugin,
   /**********************\
    * Implements IPlugin *
   \**********************/
-  void createResources(DOMNodeWrapper*, IRuntimeContext*);
-  void save(DOMNodeWriter*, IResourceLocator*);
-  std::vector<IDynamicElement*> getPostLoopCommands();
-  std::vector<IVisualElement*> getPostLoopRenderers();
-
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
   
   /********************************\
    * Implements IComponentSources *
   \********************************/
   std::string getSource(HUDComponentPosition* component);
+
+  /***********************\
+   * Implements IElement *
+  \***********************/
+  IPlugin* getElementSet();
+  IElementType* getElementType();
+  bool initElement(unsigned int);
+  void renderStatic();
+  void renderRuntime();
+  void renderEditing();
+  void updateRuntime(unsigned int);
+  void updateEditing(unsigned int);
+  void input(SDL_Event&);
+  bool isVisualRuntime();
+  bool isVisualEditing();
+  bool isDynamicRuntime();
+  bool isDynamicEditing();
+  bool isInteractive();
+  void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
+  void setDirty();
 };
 
 #endif

@@ -1,6 +1,6 @@
 #include "DialogSpindizzyTextureSet.h"
 
-DialogSpindizzyTextureSet::DialogSpindizzyTextureSet(IComponentContainer* container, C64SpindizzyTextureSet* textureSet, IResourceAccessor* resources, IResourceSelector* resourceSelector, IConfirmationListener* confirmationListener) : ResizableDialog(container, "Plugins/C64SpindizzyTextureSet/DialogSpindizzyTextureSet", resources) {
+DialogSpindizzyTextureSet::DialogSpindizzyTextureSet(IComponentContainer* container, C64SpindizzyTextureSet* textureSet, IResourceAccessor* resources, IResourceSelector* resourceSelector, IConfirmationListener* confirmationListener) : ResizableDialog(container, "Modules/C64SpindizzyTextureSet/DialogSpindizzyTextureSet", resources) {
   cTextureSet = textureSet;
   cResourceSelector = resourceSelector;
   cConfirmationListener = confirmationListener;

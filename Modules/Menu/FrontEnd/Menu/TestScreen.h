@@ -1,6 +1,8 @@
 #ifndef TEST_SCREEN_H
 #define TEST_SCREEN_H
 
+#include <GL/glew.h>
+#include <GL/gl.h>
 #include <SDL/SDL.h>
 #include <sstream>
 #include <vector>

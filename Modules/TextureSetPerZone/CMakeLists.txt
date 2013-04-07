@@ -21,6 +21,8 @@ add_library(TextureSetChanger_TextureSetPerZone MODULE
   TextureSetChooserComponent.cpp
   TextureSetPerZone.cpp
   Theme.cpp
+  ThemeColour.cpp
+  ThemeLuaSupport.cpp
   ThemeTexture.cpp
 )
 set_target_properties(TextureSetChanger_TextureSetPerZone PROPERTIES OUTPUT_NAME "Module")

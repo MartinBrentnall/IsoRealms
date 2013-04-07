@@ -3,31 +3,31 @@
 
 #include <string>
 
-class IHUDComponentFactory;
-class IColour;
-class IFont;
-class ICamera;
-class ICollectables;
-class IInteger;
-class ISound;
+class DOMNodeWriter;
 class I3DModel;
 class I3DModelFactory;
-class IZoneHandler;
-class IZone;
-class IFloat;
-class IBoolean;
-class IProject;
-class IVertex;
-class ITexture;
-class IString;
-class IElementType;
-class IElementGroupType;
-class ISurfaceProcessor;
-class ICollidableSurfaceRegistry;
 class IArgumentSource;
-class IScript;
-class DOMNodeWriter;
+class IBoolean;
+class ICamera;
+class ICollectables;
+class ICollidableSurfaceRegistry;
+class IColour;
 class IElement;
+class IElementGroupType;
+class IElementType;
+class IFloat;
+class IFont;
+class IHUDComponentFactory;
+class IInteger;
+class IMap;
+class IScript;
+class ISound;
+class IString;
+class ISurfaceProcessor;
+class ITexture;
+class IVertex;
+class IZone;
+class IZoneHandler;
 
 class IResourceLocator {
   public:
@@ -45,7 +45,7 @@ class IResourceLocator {
   virtual std::string getPath(IFont*) = 0;
   virtual std::string getPath(IHUDComponentFactory*) = 0;
   virtual std::string getPath(IInteger*) = 0;
-  virtual std::string getPath(IProject*) = 0;
+  virtual std::string getPath(IMap*) = 0;
   virtual std::string getPath(ISound*) = 0;
   virtual std::string getPath(IString*) = 0;
   virtual std::string getPath(ISurfaceProcessor*) = 0;

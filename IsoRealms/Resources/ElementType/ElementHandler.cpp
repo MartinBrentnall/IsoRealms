@@ -6,17 +6,17 @@ ElementHandler::ElementHandler() {
 
 void ElementHandler::addElement(IElement* element) {
   cElements.push_back(element);
-  std::vector<IDynamicElement*> mDynamicElements = element->getDynamicElements();
-  std::vector<IVisualElement*> mVisualElements = element->getVisualElements();
-  std::vector<IDynamicElement*> mDynamicElementsRuntime = element->getDynamicElementsRuntime();
-  for (unsigned int i = 0; i < mDynamicElements.size(); i++) {
-    cDynamicElements.push_back(mDynamicElements[i]);
+  if (element->isDynamicRuntime()) {
+    cDynamicElementsRuntime.push_back(element);
   }
-  for (unsigned int i = 0; i < mVisualElements.size(); i++) {
-    cVisualElements.push_back(mVisualElements[i]);
+  if (element->isDynamicEditing()) {
+    cDynamicElementsEditing.push_back(element);
   }
-  for (unsigned int i = 0; i < mDynamicElementsRuntime.size(); i++) {
-    cDynamicElementsRuntime.push_back(mDynamicElementsRuntime[i]);
+  if (element->isVisualRuntime()) {
+    cVisualElementsRuntime.push_back(element);
+  }
+  if (element->isVisualEditing()) {
+    cVisualElementsEditing.push_back(element);
   }
 }
 
@@ -58,15 +58,15 @@ bool ElementHandler::contains(IElement* element) {
   return false;
 }
 
-void ElementHandler::update(unsigned int milliseconds) {
-  for (unsigned int i = 0; i < cDynamicElements.size(); i++) {
-    cDynamicElements[i]->update(milliseconds);
+void ElementHandler::updateEditing(unsigned int milliseconds) {
+  for (unsigned int i = 0; i < cDynamicElementsEditing.size(); i++) {
+    cDynamicElementsEditing[i]->updateEditing(milliseconds);
   }
 }
 
 void ElementHandler::updateRuntime(unsigned int milliseconds) {
   for (unsigned int i = 0; i < cDynamicElementsRuntime.size(); i++) {
-    cDynamicElementsRuntime[i]->update(milliseconds);
+    cDynamicElementsRuntime[i]->updateRuntime(milliseconds);
   }
 }
 
@@ -104,16 +104,12 @@ bool ElementHandler::init(unsigned int pass, bool editing) {
       cEditingDisplayList = glGenLists(1);
       glNewList(cEditingDisplayList, GL_COMPILE);
       for (unsigned int i = 0; i < cElements.size(); i++) {
-        cElements[i]->renderStaticEditing();
+        cElements[i]->renderStatic();
       }
       glEndList();
     }
   }
   return cDirtyElements.empty();
-}
-
-void ElementHandler::renderEditing() {
-  glCallList(cEditingDisplayList);
 }
 
 void ElementHandler::staticChanged() {
@@ -138,9 +134,15 @@ void ElementHandler::renderStatic() {
   glCallList(cDisplayList);
 }
 
-void ElementHandler::renderDynamic() {
-  for (unsigned int i = 0; i < cVisualElements.size(); i++) {
-    cVisualElements[i]->render();
+void ElementHandler::renderRuntime() {
+  for (unsigned int i = 0; i < cVisualElementsRuntime.size(); i++) {
+    cVisualElementsRuntime[i]->renderRuntime();
+  }
+}
+
+void ElementHandler::renderEditing() {
+  for (unsigned int i = 0; i < cVisualElementsEditing.size(); i++) {
+    cVisualElementsEditing[i]->renderEditing();
   }
 }
 

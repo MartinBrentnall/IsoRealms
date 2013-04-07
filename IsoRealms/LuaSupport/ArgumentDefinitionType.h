@@ -1,7 +1,8 @@
 #ifndef ARGUMENT_DEFINITION_TYPE_H
 #define ARGUMENT_DEFINITION_TYPE_H
 
-#include "../Persistence/DOMNodeWrapper.h"
+#include <IsoRealms/Persistence/DOMNodeWrapper.h>
+
 #include "ArgumentDefinition.h"
 #include "IArgumentDefinitionType.h"
 

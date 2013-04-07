@@ -64,11 +64,13 @@ add_library(IsoRealms SHARED
   Input/KeyStates.cpp
   Input/SDLKeyMap.cpp
   IsoRealmsConstants.cpp
+  Layer.cpp
   LuaSupport/LuaGlobalVariable.cpp
   LuaSupport/LuaScript.cpp
   LuaSupport/LuaScriptWithArgs.cpp
   LuaSupport/LuaSupport.cpp
   Map.cpp
+  MapType.cpp
   MiscFunctions.cpp
   MultipleClickDetector.cpp
   OpenDialogCommand.cpp
@@ -78,9 +80,11 @@ add_library(IsoRealms SHARED
   PluginRegistry.cpp
   Project.cpp
   Rectangle.cpp
+  Resources/Camera/CameraRegistry.cpp
+  Resources/Camera/DummyCamera.cpp
+  Resources/Camera/WrappedCamera.cpp
   Resources/Colour/Colour.cpp
   Resources/Colour/ColourRegistry.cpp
-  Resources/Camera/DummyCamera.cpp
   Resources/ElementType/ElementHandler.cpp
   Resources/Float/Float.cpp
   Resources/Font/DummyFont.cpp

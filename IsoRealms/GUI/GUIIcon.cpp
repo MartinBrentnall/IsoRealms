@@ -22,5 +22,6 @@ void GUIIcon::render() {
 
 bool GUIIcon::input(SDL_Event& event) {
   // Nothing to do
+  return false;
 }
 

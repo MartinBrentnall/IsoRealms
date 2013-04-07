@@ -353,7 +353,7 @@ void SpindizzyBlock::renderStatic() {
   } 
 }
 
-void SpindizzyBlock::render() {
+void SpindizzyBlock::renderRuntime() {
   for (unsigned int i = 0; i < cDynamicTileSurfaces.size(); i++) {
     cDynamicTileSurfaces[i]->render();
   }
@@ -452,24 +452,6 @@ bool SpindizzyBlock::initElement(unsigned int pass) {
   return true;
 }
 
-std::vector<IVisualElement*> SpindizzyBlock::getVisualElements() {
-  std::vector<IVisualElement*> mVisualElements;
-//  if (!cDynamicTileSurfaces.empty()) {
-    mVisualElements.push_back(this);
-//  }
-  return mVisualElements;
-}
-
-std::vector<IDynamicElement*> SpindizzyBlock::getDynamicElements() {
-  std::vector<IDynamicElement*> mDynamicElements;
-  return mDynamicElements;
-}
-
-std::vector<IInteractiveElement*> SpindizzyBlock::getInteractiveElements() {
-  std::vector<IInteractiveElement*> mInteractiveElements;
-  return mInteractiveElements;
-}
-
 bool SpindizzyBlock::isFlat() {
   return cNorthWestHeight == 0 
       && cNorthEastHeight == 0
@@ -537,4 +519,3 @@ void SpindizzyBlock::save(DOMNodeWriter* node, IResourceLocator* resourceLocator
     cCondition->save(mConditionNode);
   }
 }
-

@@ -19,6 +19,9 @@
 #ifndef BOOLEAN_MENU_ITEM_H
 #define BOOLEAN_MENU_ITEM_H
 
+#include <GL/glew.h>
+#include <GL/gl.h>
+
 #include "IFrontEndMenuItem.h"
 
 class BooleanMenuItem:public IFrontEndMenuItem {

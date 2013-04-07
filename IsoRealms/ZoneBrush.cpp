@@ -18,7 +18,7 @@
  */
 #include "ZoneBrush.h"
 
-ZoneBrush::ZoneBrush(Map* map, BlockLocation* editorCursorLocation) {
+ZoneBrush::ZoneBrush(IMap* map, BlockLocation* editorCursorLocation) {
   cEditMapPointer = map;
   cEditorCursor = editorCursorLocation;
   cStartDrawing = NULL;

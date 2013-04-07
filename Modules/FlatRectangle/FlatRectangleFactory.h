@@ -19,8 +19,10 @@
 #ifndef FLAT_RECTANGLE_FACTORY_H
 #define FLAT_RECTANGLE_FACTORY_H
 
+#include <IsoRealms/Persistence/DOMNodeWriter.h>
 #include <IsoRealms/Resources/3DModel/I3DModel.h>
 #include <IsoRealms/Resources/3DModel/I3DModelFactory.h>
+#include <IsoRealms/Resources/IResourceAccessor.h>
 #include <IsoRealms/Resources/IResourceUseListener.h>
 
 #include "FlatRectangle.h"

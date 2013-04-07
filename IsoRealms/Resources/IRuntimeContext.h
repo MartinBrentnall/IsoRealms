@@ -23,6 +23,7 @@
 
 #include <IsoRealms/Configuration.h>
 #include <IsoRealms/IComponentCustomType.h>
+#include <IsoRealms/IDynamicElement.h>
 #include <IsoRealms/LuaSupport/IArgumentDefinitionType.h>
 #include <IsoRealms/LuaSupport/IArgumentSource.h>
 #include <IsoRealms/Persistence/DOMNodeWrapper.h>
@@ -46,29 +47,30 @@ class IProject;
 
 class IRuntimeContext {
   public:
-  virtual IProject* getProject() = 0;
   virtual bool isEditing() = 0;
-  virtual void add(IResource*,                                      DOMNodeWrapper* = NULL) = 0;
-  virtual void add(IColour*,                    const std::string&, DOMNodeWrapper* = NULL) = 0;
-  virtual void add(ITexture*,                   const std::string&, DOMNodeWrapper* = NULL) = 0;
   virtual void add(I3DModel*,                   const std::string&, DOMNodeWrapper* = NULL) = 0;
   virtual void add(I3DModelFactory*,            const std::string&, DOMNodeWrapper* = NULL) = 0;
-  virtual void add(ISound*,                     const std::string&, DOMNodeWrapper* = NULL) = 0;
-  virtual void add(IInteger*,                   const std::string&, DOMNodeWrapper* = NULL) = 0;
-  virtual void add(IBoolean*,                   const std::string&, DOMNodeWrapper* = NULL) = 0;
-  virtual void add(IFont*,                      const std::string&, DOMNodeWrapper* = NULL) = 0;
-  virtual void add(IElementType*,               const std::string&, DOMNodeWrapper* = NULL) = 0;
-  virtual void add(IHUDComponentFactory*,       const std::string&, DOMNodeWrapper* = NULL) = 0;
-  virtual void add(ISurfaceProcessor*,          const std::string&, DOMNodeWrapper* = NULL) = 0;
-  virtual void add(ICollidableSurfaceRegistry*, const std::string&, DOMNodeWrapper* = NULL) = 0;
-  virtual void add(ICollectables*,              const std::string&, DOMNodeWrapper* = NULL) = 0;
-  virtual void add(IVertex*,                    const std::string&) = 0;
-  virtual void add(ICamera*,                    const std::string&, DOMNodeWrapper* = NULL) = 0;
-  virtual void add(IString*,                    const std::string&, DOMNodeWrapper* = NULL) = 0;
-  virtual void add(IZoneHandler*,               const std::string&, DOMNodeWrapper* = NULL) = 0;
-  virtual void add(IElementGroupType*,          const std::string&) = 0;
   virtual void add(IArgumentDefinitionType*,    const std::string&) = 0;
+  virtual void add(IBoolean*,                   const std::string&, DOMNodeWrapper* = NULL) = 0;
+  virtual void add(ICamera*,                    const std::string&, DOMNodeWrapper* = NULL) = 0;
+  virtual void add(ICollectables*,              const std::string&, DOMNodeWrapper* = NULL) = 0;
+  virtual void add(ICollidableSurfaceRegistry*, const std::string&, DOMNodeWrapper* = NULL) = 0;
+  virtual void add(IColour*,                    const std::string&, DOMNodeWrapper* = NULL) = 0;
   virtual void add(IComponentCustomType*,       const std::string&) = 0;
+  virtual void add(IElementGroupType*,          const std::string&) = 0;
+  virtual void add(IElementType*,               const std::string&, DOMNodeWrapper* = NULL) = 0;
+  virtual void add(IFont*,                      const std::string&, DOMNodeWrapper* = NULL) = 0;
+  virtual void add(IHUDComponentFactory*,       const std::string&, DOMNodeWrapper* = NULL) = 0;
+  virtual void add(IInteger*,                   const std::string&, DOMNodeWrapper* = NULL) = 0;
+  virtual void add(IMap*,                       const std::string&, DOMNodeWrapper* = NULL) = 0;
+  virtual void add(IResource*,                                      DOMNodeWrapper* = NULL) = 0;
+  virtual void add(ISound*,                     const std::string&, DOMNodeWrapper* = NULL) = 0;
+  virtual void add(IString*,                    const std::string&, DOMNodeWrapper* = NULL) = 0;
+  virtual void add(ISurfaceProcessor*,          const std::string&, DOMNodeWrapper* = NULL) = 0;
+  virtual void add(ITexture*,                   const std::string&, DOMNodeWrapper* = NULL) = 0;
+  virtual void add(IVertex*,                    const std::string&) = 0;
+  virtual void add(IZoneHandler*,               const std::string&, DOMNodeWrapper* = NULL) = 0;
+  
   virtual void registerArgument(const std::string&, const std::string&, IArgumentSource*) = 0;
   virtual void addDynamicElement(IDynamicElement*) = 0;
   

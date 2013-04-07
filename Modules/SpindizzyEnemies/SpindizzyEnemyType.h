@@ -36,7 +36,6 @@ class SpindizzyEnemyType:public ElementType<ISpindizzyEnemySet, SpindizzyEnemy> 
   IElementSet* cElementSet;
   std::vector<SpindizzyEnemy*> cContent;
   SpindizzyEnemy* cSampleEnemy;
-  std::vector<IVisualElement*> cSampleEnemyVisuals;
   BlockLocation* cEditingLocation;
 
   bool keyDown(SDLKey&);
@@ -60,7 +59,7 @@ class SpindizzyEnemyType:public ElementType<ISpindizzyEnemySet, SpindizzyEnemy> 
   void configureElement();
   void setEditingContext(BlockLocation*, IComponentContainer*);
   void renderEditingPreview();
-  void updateIcon(int);
+  void updateIcon(unsigned int);
   void renderIcon();
   void destroy(IElement*);
 };

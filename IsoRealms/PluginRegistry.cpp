@@ -186,44 +186,11 @@ void PluginRegistry::removePlugin(IPlugin* instance) {
   dlclose(mHandleToClose);
 }
 
-std::vector<IDynamicElement*> PluginRegistry::getPostLoopCommands() {
-  std::vector<IDynamicElement*> mCommands;
-  for (std::map<std::string, IPlugin*>::iterator j = cPluginInstances.begin(); j != cPluginInstances.end(); j++) {
-    std::vector<IDynamicElement*> mPluginCommands = j->second->getPostLoopCommands();
-    for (unsigned int k = 0; k < mPluginCommands.size(); k++) {
-      mCommands.push_back(mPluginCommands[k]);
-    }
-  }
-  return mCommands;
-}
-
-std::vector<IVisualElement*> PluginRegistry::getPostLoopRenderers() {
-  std::vector<IVisualElement*> mRenderers;
-  for (std::map<std::string, IPlugin*>::iterator j = cPluginInstances.begin(); j != cPluginInstances.end(); j++) {
-    std::vector<IVisualElement*> mPluginRenderers = j->second->getPostLoopRenderers();
-    for (unsigned int k = 0; k < mPluginRenderers.size(); k++) {
-      mRenderers.push_back(mPluginRenderers[k]);
-    }
-  }
-  return mRenderers;
-}
-
-std::vector<IInteractiveElement*> PluginRegistry::getInteractiveElements() {
-  std::vector<IInteractiveElement*> mAllInteractiveElements;
-  for (std::map<std::string, IPlugin*>::iterator j = cPluginInstances.begin(); j != cPluginInstances.end(); j++) {
-    std::vector<IInteractiveElement*> mPluginInteractiveElements = j->second->getInteractiveElements();
-    for (unsigned int k = 0; k < mPluginInteractiveElements.size(); k++) {
-      mAllInteractiveElements.push_back(mPluginInteractiveElements[k]);
-    }
-  }
-  return mAllInteractiveElements;
-}
-
 PluginRegistry::~PluginRegistry() {
-  for (std::map<std::string, IPlugin*>::iterator j = cPluginInstances.begin(); j != cPluginInstances.end(); j++) {
-    IPlugin* mInstance = j->second;
-    removePlugin(mInstance);
-  }
+//   for (std::map<std::string, IPlugin*>::iterator j = cPluginInstances.begin(); j != cPluginInstances.end(); j++) {
+//     IPlugin* mInstance = j->second;
+//     removePlugin(mInstance);
+//   }
 }
 
 

@@ -52,19 +52,38 @@ template<class T1 = IPlugin, class T2 = IElementType> class Element:public IElem
     return cElementType;
   }
   
-  std::vector<IDynamicElement*> getDynamicElements() {
-    std::vector<IDynamicElement*> mEmptyVector;
-    return mEmptyVector;
+  virtual void updateRuntime(unsigned int milliseconds) {
   }
-
-  std::vector<IDynamicElement*> getDynamicElementsRuntime() {
-    std::vector<IDynamicElement*> mEmptyVector;
-    return mEmptyVector;
+  
+  virtual void renderEditing() {
+    renderRuntime();
   }
-
-  std::vector<IInteractiveElement*> getInteractiveElements() {
-    std::vector<IInteractiveElement*> mEmptyVector;
-    return mEmptyVector;
+  
+  virtual void updateEditing(unsigned int milliseconds) {
+    updateRuntime(milliseconds);
+  }
+  
+  virtual void input(SDL_Event&) {
+  }
+  
+  virtual bool isVisualRuntime() {
+    return true;
+  }
+  
+  virtual bool isVisualEditing() {
+    return true;
+  }
+  
+  virtual bool isDynamicRuntime() {
+    return true;
+  }
+  
+  virtual bool isDynamicEditing() {
+    return true;
+  }
+  
+  virtual bool isInteractive() {
+    return false;
   }
 
   void save(DOMNodeWriter*, BlockLocation&) {}
@@ -75,6 +94,8 @@ template<class T1 = IPlugin, class T2 = IElementType> class Element:public IElem
   virtual void added() {}
   virtual void renderStaticEditing() {}
 
+  virtual void initialiseResource(DOMNodeWrapper*, IResourceAccessor*) {}
+  
   ~Element() {}
 };
 

@@ -12,9 +12,6 @@
 class DialogFontManager:public Dialog,
                         public IProjectManagerListener {
   private:
-  Colour* cAbsoluteColour;
-  std::vector<Colour*> cOwnedAbsoluteColours;
-  ComponentColourSelector* cColourSelector;
   ComponentResourceBrowser<IFont, FontIcon>* cFontBrowser;
     
   public:

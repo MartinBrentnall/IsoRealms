@@ -29,6 +29,10 @@ void SpindizzyBlockType::initialiseResource(DOMNodeWrapper* node, IResourceAcces
   cBlockTypeProperties.configure(node, resourceAccessor);
 }
 
+IElement* SpindizzyBlockType::getElement() {
+  return NULL;
+}
+
 IElement* SpindizzyBlockType::getElement(DOMNodeWrapper* node, BlockLocation* zoneLocation, IElementContainer* container) {
   BlockLocation mStartLocation;
   BlockLocation mEndLocation;
@@ -201,7 +205,7 @@ void SpindizzyBlockType::renderIcon() {
   cSampleBlock->renderStatic();
 }
 
-void SpindizzyBlockType::updateIcon(int milliseconds) {
+void SpindizzyBlockType::updateIcon(unsigned int milliseconds) {
   // Nothing to do.
 }
 

@@ -1,13 +1,13 @@
 #include "LuaSupport.h"
 
 const std::string LuaSupport::TYPE_BOOLEAN = "Boolean";
+const std::string LuaSupport::TYPE_COLOUR = "Colour";
 const std::string LuaSupport::TYPE_SOUND = "Sound";
 const std::string LuaSupport::TYPE_INTEGER = "Integer";
 const std::string LuaSupport::TYPE_FLOAT = "Float";
 const std::string LuaSupport::TYPE_MODEL = "3DModel";
 const std::string LuaSupport::TYPE_ZONE_HANDLER = "ZoneHandler";
 const std::string LuaSupport::TYPE_ZONE = "Zone";
-const std::string LuaSupport::TYPE_PROJECT = "Project";
 const std::string LuaSupport::TYPE_VERTEX = "Vertex";
 
 LuaSupport::LuaSupport() {
@@ -57,20 +57,24 @@ LuaSupport::LuaSupport() {
   ];
   
   luabind::module(cLuaState) [
-    luabind::class_<IProject>(TYPE_PROJECT.c_str())
-       .def("setZoneHandler", &IProject::setZoneHandler)
-       .def("getEast", &IProject::getEast)
-       .def("getWest", &IProject::getWest)
-       .def("getNorth", &IProject::getNorth)
-       .def("getSouth", &IProject::getSouth)
-       .def("getTop", &IProject::getTop)
-       .def("getBottom", &IProject::getBottom)
-       .def("getAspectRatio", &IProject::getAspectRatio)
-       .def("getZoneCount", &IProject::getZoneCount)
+    luabind::class_<IMap>("Map")
+       .def("setZoneHandler", &IMap::setZoneHandler)
+       .def("getEast", &IMap::getEast)
+       .def("getWest", &IMap::getWest)
+       .def("getNorth", &IMap::getNorth)
+       .def("getSouth", &IMap::getSouth)
+       .def("getTop", &IMap::getTop)
+       .def("getBottom", &IMap::getBottom)
+       .def("getAspectRatio", &IMap::getAspectRatio)
+       .def("getZoneCount", &IMap::getZoneCount)
   ];
   
   luabind::module(cLuaState) [
     luabind::class_<IVertex>(TYPE_VERTEX.c_str())
+  ];
+
+  luabind::module(cLuaState) [
+    luabind::class_<IColour>(TYPE_COLOUR.c_str())
   ];
 }
 
@@ -107,10 +111,10 @@ IArgumentDefinition* LuaSupport::createArgumentDefinition(DOMNodeWrapper* node, 
     return new ArgumentDefinition<IZoneHandler>(node, resources, &TYPE_ZONE_HANDLER);
   } else if (mType == TYPE_ZONE) {
     return new ArgumentDefinition<IZone>(node, resources, &TYPE_ZONE);
-  } else if (mType == TYPE_PROJECT) {
-    return new ArgumentDefinition<IProject>(node, resources, &TYPE_PROJECT);
   } else if (mType == TYPE_VERTEX) {
     return new ArgumentDefinition<IVertex>(node, resources, &TYPE_VERTEX);
+  } else if (mType == TYPE_COLOUR) {
+    return new ArgumentDefinition<IColour>(node, resources, &TYPE_COLOUR);
   } else {
     return resources->getRegisteredArgumentDefinition(node);
   }
@@ -147,9 +151,9 @@ IArgumentSource* LuaSupport::createArgument(DOMNodeWrapper* node, IResourceAcces
     IVertex* mVertex = resources->getLocation(mValue);
     return new ArgumentSource<IVertex>(mVertex);
   }
-  if (mType == TYPE_PROJECT) {
-    IProject* mProject = resources->getProject();
-    return new ArgumentSource<IProject>(mProject);
+  if (mType == TYPE_COLOUR) {
+    IColour* mColour = resources->getColour(mValue);
+    return new ArgumentSource<IColour>(mColour);
   }
   return resources->getRegisteredArgument(node);
 }

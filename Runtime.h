@@ -41,7 +41,7 @@ class Runtime {
 
   bool terminated();
   void input(SDL_Event&);
-  void execute(int);
+  void execute(unsigned int);
 };
 
 #endif

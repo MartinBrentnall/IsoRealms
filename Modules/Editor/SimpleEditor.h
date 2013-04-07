@@ -68,9 +68,6 @@ class SimpleEditor:public IPlugin,
                    public IEditingContext,
                    public IElementSelectionListener,
                    public IMapManager,
-                   public IDynamicElement,
-                   public IVisualElement,
-		   public IInteractiveElement,
                    public IElementType,
                    public IElement,
 		   public IProjectManager,
@@ -148,6 +145,8 @@ class SimpleEditor:public IPlugin,
 
   IResourceSelector* getResourceSelector();
   
+  ICamera* getCamera();
+  
   /******************************\
    * Implements IElementGateway *
   \******************************/
@@ -180,12 +179,6 @@ class SimpleEditor:public IPlugin,
   void bringComponentToFront(IHUDComponent*);
   void relinquishFocus(IHUDComponent*);
 
-  /***************************\
-   * Implements IControlLoop *
-  \***************************/
-  void render();
-  void update(unsigned int);
-  
   /******************************\
    * Implements IEditingContext *
   \******************************/
@@ -198,27 +191,33 @@ class SimpleEditor:public IPlugin,
    * Implements IElementType *
   \***************************/
   IPlugin* getElementSet();
+  IElement* getElement();
   IElement* getElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*);
   void setEditingContext(BlockLocation*, IComponentContainer*);
   void configureElement();
-  bool input(SDL_Event&);
   void renderEditingPreview();
   void renderIcon();
-  void updateIcon(int);
+  void updateIcon(unsigned int);
   void destroy(IElement*);
   IElementHandler* getElementHandler();
 
   /***********************\
    * Implements IElement * 
   \***********************/
+  void renderRuntime();
+  void renderEditing();
+  void updateRuntime(unsigned int);
+  void updateEditing(unsigned int);
+  bool isVisualRuntime();
+  bool isVisualEditing();
+  bool isDynamicRuntime();
+  bool isDynamicEditing();
+  bool isInteractive();
+  
   IElementType* getElementType();
   bool initElement(unsigned int);
   void renderStatic();
-  void renderStaticEditing();
-  std::vector<IVisualElement*> getVisualElements();
-  std::vector<IDynamicElement*> getDynamicElements();
-  std::vector<IDynamicElement*> getDynamicElementsRuntime();
-  std::vector<IInteractiveElement*> getInteractiveElements();
+  void input(SDL_Event&);
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
   void setDirty();
   

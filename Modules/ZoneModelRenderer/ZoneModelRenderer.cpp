@@ -25,7 +25,7 @@ void ZoneModelRenderer::render(std::vector<IZone*>& zones, IProject* project) {
   }
 }
 
-void ZoneModelRenderer::update(std::vector<IZone*>& zones, unsigned int ticks) {
+void ZoneModelRenderer::updateEditing(std::vector<IZone*>& zones, unsigned int ticks) {
   // Nothing to do
 }
 

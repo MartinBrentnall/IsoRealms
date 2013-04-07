@@ -30,7 +30,6 @@ void SpindizzyLiftType::initialiseResource(DOMNodeWrapper* node, IResourceAccess
   BlockLocation mIdentityLocation(0, 0, 0);
   cModelType = resourceAccessor->getModelType(mModelPath);
   cSampleLift = new SpindizzyLift(this, &mIdentityLocation, cModelType, cProperties, 0, 0);
-  cSampleVisualElements = cSampleLift->getVisualElements();
   cConfigurationComponent = NULL;
 }
 
@@ -146,8 +145,8 @@ void SpindizzyLiftType::renderEditingPreview() {
     glPushMatrix();
     glTranslatef(cInsertLocation->x, cInsertLocation->y, cInsertLocation->z * IsoRealmsConstants::BLOCK_HEIGHT + (IsoRealmsConstants::BLOCK_HEIGHT * 0.05));
     cSampleLift->renderStatic();
-    for (unsigned int i = 0; i < cSampleVisualElements.size(); i++) {
-      cSampleVisualElements[i]->render();
+    if (cSampleLift->isVisualRuntime()) {
+      cSampleLift->renderRuntime();
     }
     glPopMatrix();
     glPushMatrix();
@@ -175,12 +174,12 @@ void SpindizzyLiftType::renderIcon() {
 //  glScalef(0.7f, 0.7f, 0.7f);
   glColor3f(1.0f, 1.0f, 1.0f);
   cSampleLift->renderStatic();
-  for (unsigned int i = 0; i < cSampleVisualElements.size(); i++) {
-    cSampleVisualElements[i]->render();
+  if (cSampleLift->isVisualRuntime()) {
+    cSampleLift->renderRuntime();
   }
 }
 
-void SpindizzyLiftType::updateIcon(int milliseconds) {
+void SpindizzyLiftType::updateIcon(unsigned int milliseconds) {
   // Nothing to do.
 }
 
