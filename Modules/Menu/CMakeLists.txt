@@ -16,14 +16,29 @@
 # along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
 include_directories(${PROJECT_SOURCE_DIR})
 
-add_subdirectory(Attract)
-add_subdirectory(FrontEnd)
-
 add_library(Menu MODULE 
+  ArgumentedCommand.cpp
   AttractControlLoop.cpp
+  AttractDemo.cpp
+  AttractFadeOut.cpp
+  AttractHelp.cpp
+  AttractHiScore.cpp
+  AttractIntro.cpp
   AttractSceneManager.cpp
+  AttractTitle.cpp
+  BooleanMenuItem.cpp
+  DigitalInputMenuItem.cpp
+  EditMapCommand.cpp
+  EnterMenuCommand.cpp
+  FrontEnd.cpp
+  FrontEndMenu.cpp
+  FrontEndMenuItem.cpp
+  OptionMenuItem.cpp
+  ResolutionOption.cpp
   StartAttractSceneCommand.cpp
+  StartProject.cpp
   TerminateAttractSceneCommand.cpp
+  TestScreen.cpp
 )
 set_target_properties(Menu PROPERTIES OUTPUT_NAME "Module")
 set_target_properties(Menu PROPERTIES PREFIX "lib")

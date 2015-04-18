@@ -26,9 +26,6 @@
 #include <IsoRealms/BlockLocation.h>
 #include <IsoRealms/Resources/ElementType/IElementType.h>
 #include <IsoRealms/IsoRealmsConstants.h>
-#include <IsoRealms/Map.h>
-#include <IsoRealms/Zone.h>
-#include <IsoRealms/ZoneBrush.h>
 
 /**
  * TODO: Class description
@@ -36,32 +33,20 @@
 class EditorCursor:public BlockLocation,
                    public IsoRealmsConstants {
   private:
-//  Zone** cEditZonePointer;
-  Zone* cEditZonePointer;
-  Map* cEditMapPointer;
   IElementType* cElementBrush;
-
-  /**
-   * Start location of a drawing operation.
-   */
-  ZoneBrush* cZoneBrush;
 
   bool keyDown(SDLKey&);
 
-  void restrainToZone();
-
   public:
-  EditorCursor(Map*);
+  EditorCursor();
 
   /**
-   * Render the zone cursor at its current location
+   * Render the cursor at its current location
    */
   void render();                                        
 
   void setElementType(IElementType*);
 
-  void selectZone();
-  
   /**
    * Forward input events directed to the cursor.
    */
@@ -76,7 +61,7 @@ class EditorCursor:public BlockLocation,
   IElement* popElement();
   void setDirty(IElement*);
 
-  Map* getMap();
+//   Map* getMap();
 
   ~EditorCursor();
 };

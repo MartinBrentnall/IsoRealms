@@ -94,20 +94,16 @@ void Configuration::setGlobalVariable(IArgumentDefinition* argument) {
   cLuaSupport->setGlobalVariable(argument);
 }
 
-void Configuration::executeScript(const std::string& script, std::vector<ILuaFunctionArgument*> arguments) {
+void Configuration::executeScript(const std::string& script, std::vector<IArgumentValue*> arguments) {
   cLuaSupport->executeScript(script, arguments);
 }
 
-IArgumentDefinition* Configuration::createArgumentDefinition(DOMNodeWrapper* node, IResourceAccessor* resources) {
-  return cLuaSupport->createArgumentDefinition(node, resources);
+IArgumentValue* Configuration::getArgumentValue(DOMNodeWrapper* node, IResourceAccessor* resources) {
+  return cLuaSupport->getArgumentValue(node, resources);
 }
 
-IArgumentSource* Configuration::createArgument(DOMNodeWrapper* node, IResourceAccessor* resources) {
-  return cLuaSupport->createArgument(node, resources);
-}
-
-void Configuration::enableLuaSupport(InitLuaFunction* initLuaFunction, IRuntimeContext* runtimeContext) {
-  cLuaSupport->enableLuaSupport(initLuaFunction, runtimeContext);
+void Configuration::enableLuaSupport(InitLuaFunction* initLuaFunction) {
+  cLuaSupport->enableLuaSupport(initLuaFunction);
 }
 
 void Configuration::save() {

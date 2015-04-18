@@ -23,25 +23,26 @@
 #include <string>
 
 #include "Persistence/DOMNodeWriter.h"
+#include "Resources/Boolean/IBoolean.h"
 
 class ConditionElement {
   private:
   std::string cInputName;
-  bool* cInput;
+  IBoolean* cInput;
   bool cNegated;
   ConditionElement* cNegatedVersion;
 
   ConditionElement(const ConditionElement&);
 
   public:
-  ConditionElement(const std::string&, bool*, bool = false);
+  ConditionElement(const std::string&, IBoolean*, bool = false);
 
   ConditionElement* getNegatedElement();
   bool operator==(const ConditionElement&) const;
   bool operator!=(const ConditionElement&) const;
   bool isTrue();
   bool isNegated();
-  bool* getInputAddress();
+  IBoolean* getInputAddress();
   std::string getName();
   void debug();
   void save(DOMNodeWriter*);

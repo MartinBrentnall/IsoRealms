@@ -36,7 +36,7 @@
 #include <IsoRealms/IEditingContext.h>
 #include <IsoRealms/IHUDComponent.h>
 #include <IsoRealms/ICommand.h>
-#include <IsoRealms/Map.h>
+#include <IsoRealms/Project.h>
 #include <IsoRealms/Resources/ElementType/IElementType.h>
 #include <IsoRealms/Resources/Font/IFont.h>
 #include <IsoRealms/Resources/Registry.h>
@@ -45,34 +45,45 @@
 
 class OpenCommand;
 
-#include "Camera.h"
+#include "CommandDialog.h"
 #include "ComponentCustomTypeResources.h"
+#include "DialogModules.h"
+#include "DialogProjectOpen.h"
 #include "EditorCursor.h"
 #include "ElementSetInstancesCommand.h"
 #include "EntityClassInstancesComponent.h"
 #include "IComponentFactory.h"
 #include "IElementSelectionListener.h"
 #include "IMapManager.h"
-#include "OpenCommand.h"
 #include "ResourceManagerDialogs/ComponentResourceBrowser.h"
+#include "ResourceManagerDialogs/Dialog3DModelManager.h"
+#include "ResourceManagerDialogs/DialogBoundariesManager.h"
+#include "ResourceManagerDialogs/DialogCameraManager.h"
+#include "ResourceManagerDialogs/DialogCustomTypeManager.h"
 #include "ResourceManagerDialogs/DialogElementTypeManager.h"
 #include "ResourceManagerDialogs/DialogFontManager.h"
+#include "ResourceManagerDialogs/DialogGeometryProcessorManager.h"
+// #include "ResourceManagerDialogs/DialogHUDComponentManager.h"
+// #include "ResourceManagerDialogs/DialogPrimitiveManager.h"
+#include "ResourceManagerDialogs/DialogScriptManager.h"
 #include "ResourceManagerDialogs/DialogSoundManager.h"
 #include "ResourceManagerDialogs/DialogTextureManager.h"
+#include "ResourceManagerDialogs/DialogVertexManager.h"
 #include "SaveAsCommand.h"
 #include "ScreenEdge/ScreenEdgeManager.h"
 #include "TerminateEditorCommand.h"
 
-class SimpleEditor:public IPlugin,
+class SimpleEditor:public IModule,
                    public IComponentContainer,
                    public IEditingContext,
                    public IElementSelectionListener,
                    public IMapManager,
-                   public IElementType,
-                   public IElement,
-		   public IProjectManager,
-		   public ICommandSource,
-                   public IResourceSelector {
+                   public ILayerType,
+                   public ILayer,
+                   public IProjectManager,
+                   public ICommandSource,
+                   public IResourceSelector,
+                   public IEditor {
   private:
   class EntityClassDialogFactory;
     
@@ -85,22 +96,30 @@ class SimpleEditor:public IPlugin,
   static const std::string COMMAND_RESOURCE_BROWSER;
   
   IProject* cProject;
+  ILayer* cSelectedLayer;
   std::map<std::string, ICommand*> cEditorCommands;
   std::map<std::string, GUIIcon*> cResourceIcons;
   std::vector<IProjectManagerListener*> cProjectManagerListeners;
   ScreenEdgeManager cScreenEdgeManager;
-  Camera cViewPoint;
-  EditorCursor* cCursor;
   IFont* cFont;
   bool cEditorFocus;
   MenuBar* cMenuBar;
   EntityClassDialogFactory* cElementSetsFactory;
-  
-  DialogTextureManager* cDockableTextureManager;
-  DialogElementTypeManager* cDockableElementTypeManager;
-  DialogSoundManager* cDockableSoundManager;
-  DialogFontManager* cDockableFontManager;
 
+  Dialog3DModelManager* cDockable3DModelManager;
+  DialogBoundariesManager* cDockableBoundariesManager;
+  DialogCameraManager* cDockableCameraManager;
+  DialogCustomTypeManager* cDockableCustomTypeManager;
+  DialogElementTypeManager* cDockableElementTypeManager;
+  DialogFontManager* cDockableFontManager;
+//   DialogHUDComponentManager* cDockableHUDComponentManager;
+//   DialogPrimitiveManager* cDockablePrimitiveManager;
+  DialogScriptManager* cDockableScriptManager;
+  DialogSoundManager* cDockableSoundManager;
+  DialogGeometryProcessorManager* cDockableGeometryProcessorManager;
+  DialogTextureManager* cDockableTextureManager;
+  DialogVertexManager* cDockableVertexManager;
+  
   // TODO: Need undo stack per zone... or at least to empty it when changing zones.
   std::stack<IElement*> cUndoStack;
 
@@ -139,7 +158,7 @@ class SimpleEditor:public IPlugin,
   bool componentAt(float, float);
 
   public:
-  void createResources(DOMNodeWrapper*, IRuntimeContext*);
+  void load(DOMNodeWrapper*, IResourceRegistry*);
   
   void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
 
@@ -166,10 +185,10 @@ class SimpleEditor:public IPlugin,
   void elementSelected(IElementType*);
 
   /**************************************\
-   * Implements IPluginRegistryListener *
+   * Implements IModuleRegistryListener *
   \**************************************/
-  void pluginInstanceAdded(PluginRegistry*, std::string);
-  void pluginInstanceRemoved(IPlugin*, std::string);
+  void moduleInstanceAdded(ModuleRegistry*, std::string);
+  void moduleInstanceRemoved(IModule*, std::string);
 
   /**********************************\
    * Implements IComponentContainer *
@@ -187,39 +206,24 @@ class SimpleEditor:public IPlugin,
   BlockLocation* getBlockLocation();
   void staticChanged();
   
-  /***************************\
-   * Implements IElementType *
-  \***************************/
-  IPlugin* getElementSet();
-  IElement* getElement();
-  IElement* getElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*);
-  void setEditingContext(BlockLocation*, IComponentContainer*);
-  void configureElement();
-  void renderEditingPreview();
-  void renderIcon();
-  void updateIcon(unsigned int);
-  void destroy(IElement*);
-  IElementHandler* getElementHandler();
+  /*************************\
+   * Implements ILayerType *
+  \*************************/
+  ILayer* getLayer(DOMNodeWrapper*, IResourceAccessor*);
 
-  /***********************\
-   * Implements IElement * 
-  \***********************/
+  /*********************\
+   * Implements ILayer * 
+  \*********************/
+  ILayerType* getLayerType();
   void renderRuntime();
   void renderEditing();
   void updateRuntime(unsigned int);
   void updateEditing(unsigned int);
-  bool isVisualRuntime();
-  bool isVisualEditing();
-  bool isDynamicRuntime();
-  bool isDynamicEditing();
-  bool isInteractive();
-  
-  IElementType* getElementType();
-  bool initElement(unsigned int);
-  void renderStatic();
   void input(SDL_Event&);
-  void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
-  void setDirty();
+  void save(DOMNodeWriter*, IResourceLocator*);
+  void staticCnanged();
+  void initRuntime();
+  void destroy(ILayer*);
   
   /******************************\
    * Implements IProjectManager *
@@ -240,6 +244,11 @@ class SimpleEditor:public IPlugin,
   void removeResourceSelectionListener(IResourceSelectionListener<ITexture>*);
   void notifyResourceReleased(IColour*);
   void notifyResourceOwned(IColour*);
+  
+  /**********************\
+   * Implements IEditor *
+  \**********************/
+  void openProject(const std::string&);
 };
 
 #endif

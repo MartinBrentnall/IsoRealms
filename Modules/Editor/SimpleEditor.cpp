@@ -25,9 +25,10 @@ const std::string SimpleEditor::COMMAND_OPEN             = "Open";
 const std::string SimpleEditor::COMMAND_MODULES          = "Modules";
 const std::string SimpleEditor::COMMAND_RESOURCE_BROWSER = "ResourceBrowser";
 
-void SimpleEditor::createResources(DOMNodeWrapper* node, IRuntimeContext* runtimeContext) {  
+void SimpleEditor::load(DOMNodeWrapper* node, IResourceRegistry* runtimeContext) {  
   ICommand* mCommand = CommandManager::getCommand("Pop");
   cExitCommands.push_back(mCommand);
+  cSelectedLayer = NULL;
   
   cProject = NULL;
   cRunExitCommands = false;
@@ -38,7 +39,8 @@ void SimpleEditor::createResources(DOMNodeWrapper* node, IRuntimeContext* runtim
   cEditorCommands[COMMAND_EXIT]    = new TerminateEditorCommand(cConfirmExitCommands);
   cEditorCommands[COMMAND_SAVE_AS] = new SaveAsCommand(this, true);
   cEditorCommands[COMMAND_SAVE]    = new SaveAsCommand(this, false);
-  cEditorCommands[COMMAND_OPEN]    = new OpenCommand(this);
+  cEditorCommands[COMMAND_OPEN]    = new CommandDialog<DialogProjectOpen>(this, this);
+  cEditorCommands[COMMAND_MODULES] = new CommandDialog<DialogModules>(this, this);
 //  EditorCommandManager::registerCommand(COMMAND_MODULES,          new CommandModules());
 //  EditorCommandManager::registerCommand(COMMAND_RESOURCE_BROWSER, new CommandResourceBrowser());
 
@@ -60,12 +62,11 @@ void SimpleEditor::createResources(DOMNodeWrapper* node, IRuntimeContext* runtim
   cProject = mProject;
 
   // Setup map for editing
-  cCursor = NULL;
-  Vertex mNormalDistance(0.0f, 0.0f, -20.0f);
-  cViewPoint.addViewPoint(0, mNormalDistance, 315.0f, -50.0f, 0.0f);
-  cViewPoint.setViewPoint(0);
-  runtimeContext->add(&cViewPoint, "Camera", NULL);
   runtimeContext->add(this, "Editor", node);
+}
+
+void SimpleEditor::save(DOMNodeWriter* node, IResourceLocator* resources) {
+  // TODO
 }
 
 void SimpleEditor::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
@@ -83,31 +84,40 @@ void SimpleEditor::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* r
     } else if (mValueAsString == "ResourcesIcon") {
       std::string mIconName = mNode->getAttribute("icon");
       std::string mIconModel = mNode->getAttribute("iconModel");
-      I3DModelFactory* mModelType = resources->getModelType(mIconModel);
+      I3DModelType* mModelType = resources->getModelType(mIconModel);
       Vertex* mVertex = new Vertex();
       I3DModel* mModelInstance = mModelType->createModel(mVertex, 1.0f);
       std::cout << "=================================================> " << mIconName << std::endl;
       cResourceIcons[mIconName] = new GUIIcon(mModelInstance);
     }
   }
-  cDockableTextureManager     = new DialogTextureManager(    this, resources, mProjectResources, this, mProjectResources);
-  cDockableElementTypeManager = new DialogElementTypeManager(this, resources, mProjectResources, this, mProjectResources);
-  cDockableSoundManager       = new DialogSoundManager(      this, resources, mProjectResources, this, mProjectResources);
-  cDockableFontManager        = new DialogFontManager(       this, resources, mProjectResources, this, mProjectResources);
-  cScreenEdgeManager.add(cDockableTextureManager,     cResourceIcons["IconTextures"]);
-  cScreenEdgeManager.add(cDockableElementTypeManager, cResourceIcons["IconElementTypes"]);
-  cScreenEdgeManager.add(cDockableSoundManager,       cResourceIcons["IconSounds"]);
-  cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconFonts"]);
-  cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconScripts"]);
-  cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconPrimitives"]);
-  cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconSurfaceProcessors"]);
-  cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconCustomTypes"]);
-  cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconHUDComponents"]);
-  cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconZoneHandlers"]);
-  cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconVertices"]);
-  cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["Icon3DModels"]);
-  cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconCameras"]);
-  cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconCollectables"]);
+  cDockableTextureManager           = new DialogTextureManager(          this, resources, mProjectResources, this, mProjectResources, this);
+  cDockableElementTypeManager       = new DialogElementTypeManager(      this, resources, mProjectResources, this, mProjectResources, this);
+  cDockableSoundManager             = new DialogSoundManager(            this, resources, mProjectResources, this, mProjectResources, this);
+  cDockableFontManager              = new DialogFontManager(             this, resources, mProjectResources, this, mProjectResources, this);
+  cDockableScriptManager            = new DialogScriptManager(           this, resources, mProjectResources, this, mProjectResources, this);
+//   cDockablePrimitiveManager        = new DialogPrimitiveManager(       this, resources, mProjectResources, this, mProjectResources, this);
+  cDockableGeometryProcessorManager = new DialogGeometryProcessorManager(this, resources, mProjectResources, this, mProjectResources, this);
+  cDockableCustomTypeManager        = new DialogCustomTypeManager(       this, resources, mProjectResources, this, mProjectResources, this);
+//   cDockableHUDComponentManager     = new DialogHUDComponentManager(    this, resources, mProjectResources, this, mProjectResources, this);
+  cDockableVertexManager            = new DialogVertexManager(           this, resources, mProjectResources, this, mProjectResources, this);
+  cDockable3DModelManager           = new Dialog3DModelManager(          this, resources, mProjectResources, this, mProjectResources, this);
+  cDockableCameraManager            = new DialogCameraManager(           this, resources, mProjectResources, this, mProjectResources, this);
+  cDockableBoundariesManager        = new DialogBoundariesManager(       this, resources, mProjectResources, this, mProjectResources, this);
+
+  cScreenEdgeManager.add(cDockableTextureManager,           cResourceIcons["IconTextures"]);
+  cScreenEdgeManager.add(cDockableElementTypeManager,       cResourceIcons["IconElementTypes"]);
+  cScreenEdgeManager.add(cDockableSoundManager,             cResourceIcons["IconSounds"]);
+  cScreenEdgeManager.add(cDockableFontManager,              cResourceIcons["IconFonts"]);
+  cScreenEdgeManager.add(cDockableScriptManager,            cResourceIcons["IconScripts"]);
+//   cScreenEdgeManager.add(cDockablePrimitiveManager,        cResourceIcons["IconPrimitives"]);
+  cScreenEdgeManager.add(cDockableGeometryProcessorManager, cResourceIcons["IconSurfaceProcessors"]);
+  cScreenEdgeManager.add(cDockableCustomTypeManager,        cResourceIcons["IconCustomTypes"]);
+//   cScreenEdgeManager.add(cDockableHUDComponentManager,     cResourceIcons["IconHUDComponents"]);
+  cScreenEdgeManager.add(cDockableVertexManager,            cResourceIcons["IconVertices"]);
+  cScreenEdgeManager.add(cDockable3DModelManager,           cResourceIcons["Icon3DModels"]);
+  cScreenEdgeManager.add(cDockableCameraManager,            cResourceIcons["IconCameras"]);
+  cScreenEdgeManager.add(cDockableBoundariesManager,        cResourceIcons["IconCollectables"]);
   addComponent(&cScreenEdgeManager);
 }
 
@@ -146,10 +156,6 @@ bool SimpleEditor::keyDown(SDLKey& key) {
 }
 
 bool SimpleEditor::editorInput(SDL_Event& event) {
-//   if (cCursor->input(event)) {
-//     return true;
-//   }
-
   switch (event.type) {
     case SDL_MOUSEBUTTONDOWN: {
       Configuration* mConfiguration = Configuration::getInstance();
@@ -166,11 +172,10 @@ bool SimpleEditor::editorInput(SDL_Event& event) {
       return keyDown(event.key.keysym.sym);
     }
   }
-
-  if (cViewPoint.input(event)) {
-    return true;
+  
+  if (cSelectedLayer != NULL) {
+    cSelectedLayer->input(event);
   }
-
   return false;
 }
 
@@ -307,30 +312,6 @@ void SimpleEditor::saveCurrentMap() {
   cProject->save();
 }
  
-void SimpleEditor::setProject(IProject* project) {
-  if (cProject != NULL) {
-    clearUndoStack();
-    delete cProject;
-    if (cCursor == NULL) {
-      delete cCursor;
-      cCursor = NULL;
-    }
-  }
-  cProject = project;
-  if (cProject != NULL) {
-//    cCursor = new EditorCursor(NULL);
-  /* TODO: What did this do?    ElementSetRegistry* mElementSetRegistry = cProject->getElementSetRegistry();
-//     mElementSetRegistry->setEditingInfo(cCursor, this, this, this);
-//     mElementSetRegistry->addElementRegistryListener(this);
-//     cElementSetEntityClass = new ElementSetEntityClass(mElementSetRegistry, this, this);
-//     cElementSetsFactory->setEntityClass(cElementSetEntityClass);*/
-  }
-  for (unsigned int i = 0; i < cProjectManagerListeners.size(); i++) {
-    cProjectManagerListeners[i]->projectOpened(cProject);
-  }
-  cProject->setEditingContext(this);
-}
-
 void SimpleEditor::registerCommand(ICommandInfo* commandInfo) {
   cMenuBar->addCommand(commandInfo);
 }
@@ -339,61 +320,21 @@ IComponentContainer* SimpleEditor::getComponentContainer() {
   return this;
 }
 
-BlockLocation* SimpleEditor::getBlockLocation() {
-  return cCursor;
-}
-
 void SimpleEditor::staticChanged() {
   cProject->staticChanged();
 }
 
-IPlugin* SimpleEditor::getElementSet() {
+ILayer* SimpleEditor::getLayer(DOMNodeWrapper*, IResourceAccessor*) {
   return this;
 }
 
-IElement* SimpleEditor::getElement() {
-  return this;
-}
-
-IElement* SimpleEditor::getElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*) {
-  return this;
-}
-
-void SimpleEditor::setEditingContext(BlockLocation*, IComponentContainer*) {
-  // Not editable.  Nothing to do
-}
-
-void SimpleEditor::configureElement() {
-  // Not editable.  Nothing to do
-}
-
-void SimpleEditor::renderEditingPreview() {
-  // Not editable.  Nothing to do
-}
-
-void SimpleEditor::renderIcon() {
-  // Not editable.  Nothing to do
-}
-
-void SimpleEditor::updateIcon(unsigned int) {
-  // Not editable.  Nothing to do
-}
-
-void SimpleEditor::destroy(IElement* element) {
+void SimpleEditor::destroy(ILayer* layer) {
   // Editor will not self terminate
 }
 
-IElementHandler* SimpleEditor::getElementHandler() {
-  return NULL;
-}
-
 void SimpleEditor::renderRuntime() {
-  if (cCursor != NULL) {
-    cCursor->moveToCamera();
-  }
-  cProject->renderEditing();
-  if (cCursor != NULL) {
-    cCursor->render();
+  if (cSelectedLayer != NULL) {
+    cSelectedLayer->renderEditing();
   }
   
   // Render UI components
@@ -416,7 +357,10 @@ void SimpleEditor::updateRuntime(unsigned int milliseconds) {
   for (unsigned int i = 0; i < cHUDComponents.size(); i++) {
     cHUDComponents[i]->update(milliseconds);
   }
-  cProject->update(milliseconds);
+  
+  if (cSelectedLayer != NULL) {
+    cSelectedLayer->updateEditing(milliseconds);
+  }
   if (cRunExitCommands) {
     for (unsigned int i = 0; i < cExitCommands.size(); i++) {
       cExitCommands[i]->execute();
@@ -431,44 +375,11 @@ void SimpleEditor::updateEditing(unsigned int milliseconds) {
   // Nothing to do
 }
 
-bool SimpleEditor::isVisualRuntime() {
-  return true;
-}
-
-bool SimpleEditor::isVisualEditing() {
-  return false;
-}
-
-bool SimpleEditor::isDynamicRuntime() {
-  return true;
-}
-
-bool SimpleEditor::isDynamicEditing() {
-  return false;
-}
-
-bool SimpleEditor::isInteractive() {
-  return true;
-}
-
-IElementType* SimpleEditor::getElementType() {
+ILayerType* SimpleEditor::getLayerType() {
   return this;
 }
 
-bool SimpleEditor::initElement(unsigned int) {
-  return true;
-}
-
-void SimpleEditor::renderStatic() {
-  // Nothing to do
-}
-
-void SimpleEditor::save(DOMNodeWriter*, IResourceLocator*, BlockLocation&) {
-  // Not editable.  Nothing to do
-}
-
-void SimpleEditor::setDirty() {
-  // Nothing to do
+void SimpleEditor::initRuntime() {
 }
 
 void SimpleEditor::addProjectListener(IProjectManagerListener* listener) {
@@ -481,10 +392,6 @@ ICommand* SimpleEditor::getCommand(const std::string& name) {
 
 IResourceSelector* SimpleEditor::getResourceSelector() {
   return this;
-}
-
-ICamera* SimpleEditor::getCamera() {
-  return &cViewPoint;
 }
 
 void SimpleEditor::addResourceSelectionListener(IResourceSelectionListener<IColour>* listener) {
@@ -511,10 +418,30 @@ void SimpleEditor::notifyResourceOwned(IColour* colour) {
   cDockableTextureManager->notifyResourceOwned(colour);
 }
 
-extern "C" IPlugin* create() {
+void SimpleEditor::openProject(const std::string& file) {
+  DOMNodeWrapper* mConfigurationRootNode = new DOMNodeWrapper(file);
+  for (int i = 0; i < mConfigurationRootNode->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = mConfigurationRootNode->getChild(i);
+    std::string mValue = mNode->getNodeName();
+    if (mValue == "Project") {
+      if (cProject != NULL) {
+        clearUndoStack();
+        delete cProject;
+      }
+      cProject = new Project(mNode, file, this);
+      cSelectedLayer = cProject->getDefaultLayer();
+      for (unsigned int i = 0; i < cProjectManagerListeners.size(); i++) {
+        cProjectManagerListeners[i]->projectOpened(cProject);
+      }
+      return;
+    }
+  }
+}
+
+extern "C" IModule* create() {
   return new SimpleEditor();
 }
 
-extern "C" void destroy(IPlugin* plugin) {
-  delete plugin;
+extern "C" void destroy(IModule* module) {
+  delete module;
 }

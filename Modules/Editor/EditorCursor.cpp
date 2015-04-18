@@ -18,14 +18,13 @@
  */
 #include "EditorCursor.h"
 
-EditorCursor::EditorCursor(Map* map) {
-  cEditMapPointer = map;
-  cZoneBrush = new ZoneBrush(cEditMapPointer, this);
+EditorCursor::EditorCursor() {
+//  cEditMapPointer = map;
+//  cZoneBrush = new ZoneBrush(cEditMapPointer, this);
   cElementBrush = NULL;
   set(0, 0, 0);
-  selectZone();
-  cEditZonePointer = cEditMapPointer->getZone(*this);
-  cEditZonePointer->restrainLocation(this);
+//   cEditZonePointer = cEditMapPointer->getZone(*this);
+//   cEditZonePointer->restrainLocation(this);
 }
 
 void EditorCursor::render() {
@@ -55,15 +54,10 @@ void EditorCursor::render() {
   glVertex3f(mXSize,      mYSize,      mZLocation); glVertex3f(mXSize,      mYSize,      mZSize);
   glEnd();
   glColor3f(1.0, 1.0, 1.0);
-  cZoneBrush->render();
+//  cZoneBrush->render();
   if (cElementBrush != NULL) {
     cElementBrush->renderEditingPreview();
   }
-}
-
-void EditorCursor::selectZone() {
-  cEditZonePointer = cEditMapPointer->getZone(*this);
-//  cEditMapPointer->zoneContextChanged(cEditMapPointer, cEditZonePointer);
 }
 
 void EditorCursor::setElementType(IElementType* elementType) {
@@ -71,15 +65,15 @@ void EditorCursor::setElementType(IElementType* elementType) {
 }
 
 bool EditorCursor::input(SDL_Event& event) {
-  if (cEditZonePointer == NULL) {
-    if (cZoneBrush->input(event)) {
-      return true;
-    }
+//  if (cEditZonePointer == NULL) {
+//     if (cZoneBrush->input(event)) {
+//       return true;
+//     }
 //   } else if (cElementBrush != NULL) {
 //     if (cElementBrush->input(event)) {
 //       return true;
 //     }
-  }
+//  }
 
   switch (event.type) {
     case SDL_KEYDOWN: {
@@ -90,72 +84,47 @@ bool EditorCursor::input(SDL_Event& event) {
   return false;
 }
 
-void EditorCursor::restrainToZone() {
-  if (cEditZonePointer != NULL) {
-    cEditZonePointer->restrainLocation(this);
-  }
-}
-
 bool EditorCursor::keyDown(SDLKey& key) {
   switch (key) {       
     case SDLK_LEFT: {
       x--;
-      restrainToZone();
       return true;
     }
 
     case SDLK_RIGHT: {
       x++;
-      restrainToZone();
       return true;
     }
 
     case SDLK_UP: {
       y++;
-      restrainToZone();
       return true;
     }
 
     case SDLK_DOWN: {
       y--;
-      restrainToZone();
       return true;
     }
 
     case SDLK_PAGEUP: {
       z++;
-      restrainToZone();
       return true;
     }
 
     case SDLK_PAGEDOWN: {
       z--;
-      restrainToZone();
       return true;
     }
 
     case SDLK_ESCAPE: {
-      if (cEditZonePointer != NULL) {
-        cEditZonePointer = NULL;
-        return true;
-      }
       break;
     }
 
     case SDLK_RETURN: {
-      if (cEditZonePointer == NULL) {
-        selectZone();
-        return true;
-      }
       break;
     }
     
     case SDLK_DELETE: {
-      if (cEditZonePointer == NULL) {
-        Zone* mZoneToDelete = cEditMapPointer->getZone(*this);
-        // TODO: Ask for confirmation
-        cEditMapPointer->removeZone(mZoneToDelete);
-      }
     }
 
     default: {
@@ -180,20 +149,21 @@ void EditorCursor::moveToCamera() {
 // }
 // 
 IElement* EditorCursor::popElement() {
-  return cEditZonePointer != NULL ? cEditZonePointer->popElement() : NULL;
+//  return cEditZonePointer != NULL ? cEditZonePointer->popElement() : NULL;
+  return NULL;
 }
 
 void EditorCursor::setDirty(IElement* element) {
   // TODO: Do we know for sure that the element is in the current zone?
-  cEditZonePointer->setDirty(element);
-  cEditMapPointer->zoneChanged(cEditZonePointer);
+//   cEditZonePointer->setDirty(element);
+//   cEditMapPointer->zoneChanged(cEditZonePointer);
 }
 
-Map* EditorCursor::getMap() {
-  return cEditMapPointer;
-}
+// Map* EditorCursor::getMap() {
+//   return cEditMapPointer;
+// }
 
 EditorCursor::~EditorCursor() {
-  delete cZoneBrush;
+//  delete cZoneBrush;
 }
 

@@ -1,3 +1,21 @@
+/*
+ * Copyright 2015 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
 #include "RectangularComponent.h"
 
 RectangularComponent::RectangularComponent() {
@@ -49,7 +67,7 @@ void RectangularComponent::addListBoxItem(const std::string& listBoxName, const 
 }
 
 std::string RectangularComponent::getStringValue(const std::string& componentName) {
-  std::map<std::string, TextFieldComponent*>::iterator i = cStringValueComponents.find(componentName);
+  std::map<std::string, IStringValueComponent*>::iterator i = cStringValueComponents.find(componentName);
   if (i != cStringValueComponents.end()) {
     return i->second->getText();
   } else {
@@ -285,7 +303,7 @@ void RectangularComponent::loadTabbedContainer(DOMNodeWrapper* node, TabbedConta
       std::string mTabText = mNode->getAttribute("text");
       RectangularComponent* mTabComponent = new RectangularComponent();
       cComponentContainers[mTabName] = mTabComponent;
-      mTabComponent->loadDialog(mNode, mTabComponent, 0.02f, resources);
+      mTabComponent->loadDialog(mNode, mTabComponent, 0.02f, resources, this);
       IComponentBoundsCalculator* mTabLayout = tabbedContainer->getTabLayout();
       mTabComponent->setBoundsCalculator(mTabLayout);
       tabbedContainer->addTab(mTabName, mTabText, mTabComponent);
@@ -305,7 +323,12 @@ void RectangularComponent::loadPopupMenu(IRectangularComponent* component, DOMNo
   }  
 }
 
-void RectangularComponent::loadDialog(DOMNodeWrapper* node, IRectangle* parent, float padding, IResourceAccessor* resourceAccessor) {
+void RectangularComponent::addStringValueComponent(const std::string& name, IStringValueComponent* component) {
+  cStringValueComponents[name] = component;
+}
+
+void RectangularComponent::loadDialog(DOMNodeWrapper* node, IRectangle* parent, float padding, IResourceAccessor* resourceAccessor, RectangularComponent* parentComponent) {
+  cTopLevelComponent = parentComponent != NULL ? parentComponent : this;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper* mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
@@ -337,6 +360,17 @@ void RectangularComponent::loadDialog(DOMNodeWrapper* node, IRectangle* parent, 
       cChildren.push_back(mGridContainer);
       cFocusedComponent = mGridContainer;
       loadPopupMenu(mGridContainer, mNode);
+    } else if (mValueAsString == "TextEditor") {
+      std::string mName = mNode->getAttribute("name");
+      std::string mText = mNode->getAttribute("text");
+      ScrollableContainer* mTextEditorContainer = new ScrollableContainer();
+      TextEditorComponent* mTextEditorComponent = new TextEditorComponent(mText);
+      mTextEditorContainer->setRootComponent(mTextEditorComponent);
+      IComponentBoundsCalculator* mTextEditorLayout = getBoundsCalculator(mNode, parent, padding, NULL);
+      mTextEditorContainer->setBoundsCalculator(mTextEditorLayout);
+      cChildren.push_back(mTextEditorContainer);
+      cTopLevelComponent->addStringValueComponent(mName, mTextEditorComponent);
+      cFocusedComponent = mTextEditorContainer;
     } else if (mValueAsString == "Button") {
       std::string mText = mNode->getAttribute("text");
       std::string mName = mNode->getAttribute("name");
@@ -362,7 +396,7 @@ void RectangularComponent::loadDialog(DOMNodeWrapper* node, IRectangle* parent, 
       IComponentBoundsCalculator* mTextFieldLayout = getBoundsCalculator(mNode, parent, padding, mTextField);
       mTextField->setBoundsCalculator(mTextFieldLayout);
       cSizedComponents[mName] = mTextField;
-      cStringValueComponents[mName] = mTextField;
+      cTopLevelComponent->addStringValueComponent(mName, mTextField);
       cChildren.push_back(mTextField);
       cFocusedComponent = mTextField;
     } else if (mValueAsString == "Slider") {
@@ -523,19 +557,19 @@ void RectangularComponent::testFocusChange(SDL_Event& event) {
     if (contains(mX, mY)) {
       for (unsigned int i = 0; i < cChildren.size(); i++) {
         if (cChildren[i]->contains(mX, mY)) {
-	  if (cFocusedComponent != NULL) {
-	    cFocusedComponent->lostFocus();
-	  }
+          if (cFocusedComponent != NULL) {
+            cFocusedComponent->lostFocus();
+          }
           cFocusedComponent = cChildren[i];
-	  cFocusedComponent->gainedFocus();
-	  cActivePopupMenu = NULL;
-	  if (event.button.button == SDL_BUTTON_RIGHT) {
-	    std::map<IRectangularComponent*, MenuPopup*>::iterator i = cPopupMenus.find(cFocusedComponent);
-	    if (i != cPopupMenus.end()) {
-	      cActivePopupMenu = i->second;
-	      cActivePopupMenu->setPosition(mX, mY);
-	    }
-	  }
+          cFocusedComponent->gainedFocus();
+          cActivePopupMenu = NULL;
+          if (event.button.button == SDL_BUTTON_RIGHT) {
+            std::map<IRectangularComponent*, MenuPopup*>::iterator i = cPopupMenus.find(cFocusedComponent);
+            if (i != cPopupMenus.end()) {
+              cActivePopupMenu = i->second;
+              cActivePopupMenu->setPosition(mX, mY);
+            }
+          }
           return;
         }
       }
@@ -571,7 +605,7 @@ bool RectangularComponent::input(SDL_Event& event) {
   switch (event.type) {
     case SDL_MOUSEBUTTONDOWN: {
       if (mouseButtonDown(event)) {
-	return true;
+        return true;
       }
       break;
     }
@@ -622,6 +656,13 @@ void RectangularComponent::addStringListener(IStringListener* listener, const st
 
 void RectangularComponent::setFloatValue(const std::string& name, float value) {
   cFloatValueComponents[name]->setValue(value);
+}
+
+void RectangularComponent::setStringValue(const std::string& name, const std::string& value) {
+  for (std::map<std::string, IStringValueComponent*>::iterator i = cStringValueComponents.begin(); i != cStringValueComponents.end(); i++) {
+    std::cout << "String value component: " << i->first << std::endl;
+  }
+  cStringValueComponents[name]->setText(value);
 }
 
 void RectangularComponent::setStringValue(const std::string& name, float value) {

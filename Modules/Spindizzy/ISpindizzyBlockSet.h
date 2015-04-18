@@ -1,0 +1,65 @@
+/*
+ * Copyright 2009 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#ifndef I_SPINDIZZY_BLOCK_SET_H
+#define I_SPINDIZZY_BLOCK_SET_H
+
+#include <vector>
+
+#include <IsoRealms/Resources/GeometryProcessor/ITileSurface.h>
+#include <IsoRealms/Resources/GeometryProcessor/ITileSurfaceTemplate.h>
+#include <IsoRealms/Resources/GeometryProcessor/IGeometryProcessor.h>
+#include <IsoRealms/Resources/GeometryProcessor/IGeometricElement.h>
+#include <IsoRealms/Resources/GeometryProcessor/IWallSurface.h>
+#include <IsoRealms/Resources/SurfaceRegistry/ICollidableWallSurface.h>
+#include <IsoRealms/Resources/SurfaceRegistry/IRollableSurface.h>
+#include <IsoRealms/Resources/ElementType/Element.h>
+
+class ElementHandlerSpindizzyBlock;
+class ISpindizzyBlock;
+class SpindizzyBlockState;
+
+class ISpindizzyBlockSet {
+  public:
+  virtual void registerSurfaceProvider(IGeometricElement*) = 0;
+  virtual void unregisterSurfaceProvider(IGeometricElement*) = 0;
+  
+  /**
+   * The intention of this function is not simply to set all elements of this
+   * element set to dirty, but to call upon the surface processors to set all
+   * elements within _them_ to dirty.  This is necessary because changes in an
+   * element of this set may affect the surfaces of elements from another set.
+   */
+  virtual void setDirty() = 0;
+  
+  virtual std::vector<ITileSurfaceTemplate*> getTileSurfaces(IGeometricElement*, ITileSurface::FaceDirection, bool) = 0;
+  virtual std::vector<IWallSurfaceTemplate*> getWallSurfaces(IGeometricElement*, IWallSurface::FaceDirection, bool) = 0;
+  virtual void destroyTileTemplate(ITileSurfaceTemplate*, bool) = 0;
+  virtual void destroyWallTemplate(IWallSurfaceTemplate*, bool) = 0;
+  virtual void registerRollableSurface(IRollableSurface*) = 0;
+  virtual void registerWallSurface(ICollidableWallSurface*) = 0;
+  virtual std::vector<ConditionElement*> getConditionElements() = 0;
+  virtual bool isEditing() = 0;
+  virtual void staticChanged() = 0;
+  
+  virtual SpindizzyBlockState* getBlockState(IBoolean*) = 0;
+  virtual ElementHandlerSpindizzyBlock* getElementHandlerSpindizzyBlock(IElementContainer*) = 0;
+  virtual void setArgumentValue(ElementHandlerSpindizzyBlock*) = 0;
+};
+
+#endif

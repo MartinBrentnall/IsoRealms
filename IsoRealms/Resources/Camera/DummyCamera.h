@@ -33,6 +33,7 @@ class DummyCamera:public ICamera {
   float getTilt();
   void render();
   void update(int);
+  void addCameraAngleChangeListener(ICameraAngleChangeListener*);
 };
 
 #endif

@@ -1,3 +1,21 @@
+/*
+ * Copyright 2015 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
 #ifndef PROJECT_H
 #define PROJECT_H
 
@@ -5,32 +23,28 @@
 
 #include "Configuration.h"
 #include "Persistence/DOMNodeWrapper.h"
-#include "LuaSupport/IArgumentSource.h"
 #include "ICommand.h"
 #include "Layer.h"
-#include "LuaSupport/ILuaFunctionArgument.h"
-#include "LuaSupport/ILuaScript.h"
 #include "Input/InputCommands.h"
 #include "IProject.h"
-#include "LuaSupport/LuaScript.h"
-#include "LuaSupport/LuaScriptWithArgs.h"
-#include "Map.h"
-#include "PluginRegistry.h"
+#include "ModuleRegistry.h"
 #include "Resources/IResources.h"
 #include "Resources/Resources.h"
+#include "Resources/Script/IScript.h"
 
 class Project:public IProject {
   private:
-  std::vector<Layer*> cLayers;
-  PluginRegistry cPluginRegistry;
+  std::vector<ILayer*> cLayers;
+  ILayer* cDefaultLayer;
+  ModuleRegistry cModuleRegistry;
   Resources cResources;
-  IScript* cInitScript;
+  IScriptCall* cInitScript;
   
   std::vector<IDynamicElement*> cDynamicElements;
   
   public:
   Project();
-  Project(DOMNodeWrapper*, const std::string&, IEditingContext*, ICamera*);
+  Project(DOMNodeWrapper*, const std::string&, IEditingContext*);
 
   void initRuntime();
   void input(SDL_Event&);
@@ -38,24 +52,16 @@ class Project:public IProject {
   void renderEditing();
   void update(unsigned int);
   void updateRuntime(unsigned int);
+  ILayer* getDefaultLayer();
 
-  void initPlugins(IZone*, unsigned int);
-  void renderPreZone(IZone*);
-  void zoneContextChanged(IMap*, IZone*);
-  void loadPluginData(DOMNodeWrapper*, IZone*);
-  void savePluginData(DOMNodeWriter*, IMap*, IZone*);
-  
-  std::vector<IZone*> getAdjacentZones(IZone*);
-  
   void save();
 
   void removeElement(IElement*);
-  PluginRegistry* getPluginRegistry();
+  ModuleRegistry* getModuleRegistry();
   IResourceManager* getResourceManager();
   void staticChanged();
 
   float getAspectRatio();
-  void setEditingContext(IEditingContext*);
 };
 
 #endif

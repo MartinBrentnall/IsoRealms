@@ -21,7 +21,7 @@
 
 #include <string>
 
-#include <IsoRealms/PluginRegistry.h>
+#include <IsoRealms/ModuleRegistry.h>
 #include <IsoRealms/IComponentContainer.h>
 
 #include "ConfirmationBox.h"

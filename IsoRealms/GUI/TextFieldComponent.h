@@ -31,9 +31,11 @@
 #include <IsoRealms/Resources/Font/IFont.h>
 
 #include "ISizedComponent.h"
+#include "IStringValueComponent.h"
 #include "LookAndFeel.h"
 
-class TextFieldComponent:public ISizedComponent {
+class TextFieldComponent:public IStringValueComponent,
+                         public ISizedComponent {
   private:
   static const unsigned int BLINK_DELAY = 300;
 

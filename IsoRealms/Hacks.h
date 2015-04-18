@@ -33,7 +33,7 @@ FuncPtr cast_voidptr_to_funcptr(void* p) {
 
   // Check that object pointers and function pointers are the same size
   // - Compare the two ptrs => result = 0 or 1 then *2 -1 => 1 or -1
-  typedef char mSizeCheck[(sizeof(void*) == sizeof(void (*)())) * 2 - 1];
+  typedef char __attribute__((__unused__)) mSizeCheck[(sizeof(void*) == sizeof(void (*)())) * 2 - 1];
   union {
     void* mVoidPointer;
     void (*mFunctionPointer)();

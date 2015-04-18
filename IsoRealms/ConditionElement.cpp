@@ -18,7 +18,7 @@
  */
 #include "ConditionElement.h"
 
-ConditionElement::ConditionElement(const std::string& name, bool* input, bool negated) {
+ConditionElement::ConditionElement(const std::string& name, IBoolean* input, bool negated) {
   cInputName = name;
   cInput = input;
   cNegated = negated;
@@ -46,14 +46,14 @@ bool ConditionElement::operator!=(const ConditionElement& conditionElement) cons
 }
 
 bool ConditionElement::isTrue() {
-  return *cInput != cNegated;
+  return cInput->getValue() != cNegated;
 }
 
 bool ConditionElement::isNegated() {
   return cNegated;
 }
 
-bool* ConditionElement::getInputAddress() {
+IBoolean* ConditionElement::getInputAddress() {
   return cInput;
 }
 

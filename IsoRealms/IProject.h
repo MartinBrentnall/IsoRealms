@@ -1,3 +1,21 @@
+/*
+ * Copyright 2015 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
 #ifndef I_PROJECT_H
 #define I_PROJECT_H
 
@@ -7,26 +25,17 @@
 #include "BlockLocation.h"
 #include "Persistence/DOMNodeWrapper.h"
 #include "IEditingContext.h"
-#include "IZone.h"
 
 class ElementSetRegistry;
+class ILayer;
 class IResourceManager;
 class IZoneHandler;
 class Map;
-class PluginRegistry;
+class ModuleRegistry;
 class Zone;
 
 class IProject {
   public:
-  virtual void initPlugins(IZone*, unsigned int) = 0;
-  virtual void renderPreZone(IZone*) = 0;
-  virtual void savePluginData(DOMNodeWriter*, IMap*, IZone*) = 0;
-
-  // TODO: These were needed for Zone.  Investigate whether a separate interface may be more appropriate
-  virtual void zoneContextChanged(IMap*, IZone*) = 0;
-  virtual void loadPluginData(DOMNodeWrapper*, IZone*) = 0;
-
-  // TODO: These required by GERALD.  Investigate whether a separate interface may be more appropriate
 
   // TODO: Editor functions should probably not be here
   virtual void removeElement(IElement*) = 0;
@@ -35,11 +44,13 @@ class IProject {
   virtual void renderRuntime() = 0;
   virtual void renderEditing() = 0;
   virtual void save() = 0;
-  virtual PluginRegistry* getPluginRegistry() = 0;
+  virtual ModuleRegistry* getModuleRegistry() = 0;
   virtual IResourceManager* getResourceManager() = 0;
+  virtual ILayer* getDefaultLayer() = 0;
   
-  virtual void setEditingContext(IEditingContext*) = 0;
   virtual void staticChanged() = 0;
+
+  virtual ~IProject() {}
 };
 
 #endif

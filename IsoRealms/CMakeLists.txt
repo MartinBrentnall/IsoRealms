@@ -52,11 +52,11 @@ add_library(IsoRealms SHARED
   GUI/ScrollableContainer.cpp
   GUI/SliderComponent.cpp
   GUI/TabbedContainer.cpp
+  GUI/TextEditorComponent.cpp
   GUI/TextFieldComponent.cpp
   GUI/TextLabelComponent.cpp
   GUI/WrappingGridComponent.cpp
   IHUDComponent.cpp
-  IPlugin.cpp
   IllegalStateException.cpp
   InitException.cpp
   Input/DigitalInput.cpp
@@ -64,27 +64,30 @@ add_library(IsoRealms SHARED
   Input/KeyStates.cpp
   Input/SDLKeyMap.cpp
   IsoRealmsConstants.cpp
-  Layer.cpp
+  LuaSupport/ArgumentDefinitionPrimitive.cpp
+  LuaSupport/ArgumentDefinitionReference.cpp
+  LuaSupport/ArgumentValueProxy.cpp
   LuaSupport/LuaGlobalVariable.cpp
   LuaSupport/LuaScript.cpp
-  LuaSupport/LuaScriptWithArgs.cpp
+  LuaSupport/LuaScriptCall.cpp
   LuaSupport/LuaSupport.cpp
-  Map.cpp
-  MapType.cpp
   MiscFunctions.cpp
+  ModuleRegistry.cpp
+  Project.cpp
   MultipleClickDetector.cpp
   OpenDialogCommand.cpp
   Persistence/DOMNodeWrapper.cpp
   Persistence/DOMNodeWriter.cpp
   Persistence/ParseException.cpp
-  PluginRegistry.cpp
-  Project.cpp
   Rectangle.cpp
+  Resources/Boolean/Boolean.cpp
+  Resources/Boolean/BooleanRegistry.cpp
   Resources/Camera/CameraRegistry.cpp
   Resources/Camera/DummyCamera.cpp
   Resources/Camera/WrappedCamera.cpp
   Resources/Colour/Colour.cpp
   Resources/Colour/ColourRegistry.cpp
+  Resources/ElementType/ElementBounds.cpp
   Resources/ElementType/ElementHandler.cpp
   Resources/Float/Float.cpp
   Resources/Font/DummyFont.cpp
@@ -99,13 +102,8 @@ add_library(IsoRealms SHARED
   Resources/Texture/Texture.cpp
   Resources/Texture/TextureRegistry.cpp
   Resources/Vertex/Vertex.cpp
-  Resources/ZoneHandler/DefaultZoneHandler.cpp
-  Resources/ZoneHandler/ZoneHandlerRegistry.cpp
   ScreenConfiguration.cpp
   ScreenMode.cpp
   System.cpp
   Utils.cpp
-  Zone.cpp
-  ZoneBrush.cpp
-  ZoneEvent.cpp 
 )

@@ -138,3 +138,7 @@ std::vector<std::string>* System::getFileList(const std::string& filename, bool 
   closedir(dp);
   return mList;
 }
+
+unsigned int System::getCPUCores() {
+  return sysconf(_SC_NPROCESSORS_ONLN);
+}

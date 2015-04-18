@@ -1,11 +1,53 @@
+/*
+ * Copyright 2015 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
 #include "LuaScript.h"
 
-LuaScript::LuaScript(const std::string& name) {
-  cName = name;
+const std::string LuaScript::TYPE_BOOLEAN = "Boolean";
+const std::string LuaScript::TYPE_COLOUR = "Colour";
+const std::string LuaScript::TYPE_SOUND = "Sound";
+const std::string LuaScript::TYPE_INTEGER = "Integer";
+const std::string LuaScript::TYPE_FLOAT = "Float";
+const std::string LuaScript::TYPE_MODEL = "3DModel";
+const std::string LuaScript::TYPE_VERTEX = "Vertex";
+
+LuaScript::LuaScript(IDummyModule* module, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
+  cName = node->getAttribute("name");
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "Argument") {
+      IArgumentDefinition* mArgument = createArgumentDefinition(mNode, resourceRegistry);
+      cArguments.push_back(mArgument);
+    } else if (mValueAsString == "Code") {
+      std::string mCode = mNode->getStringValue();
+      setCode(mCode);
+    }
+  }
+  registerScript();
 }
 
 void LuaScript::setCode(const std::string& code) {
   cCode = code;
+}
+
+std::string LuaScript::getCode() {
+  return cCode;
 }
 
 void LuaScript::registerScript() {
@@ -24,16 +66,18 @@ void LuaScript::registerScript() {
   mConfiguration->registerScript(mFunction);
 }
 
-void LuaScript::execute(std::vector<ILuaFunctionArgument*> arguments) {
+void LuaScript::execute(std::vector<IArgumentValue*> arguments) {
+//  std::cout << "Executing script \"" << cName << "\"" << std::endl;
   Configuration* mConfiguration = Configuration::getInstance();
-  std::cout << "Executing script \"" << cName << "\"" << std::endl;
   mConfiguration->executeScript(cName, arguments);
 }
 
-std::vector<ILuaFunctionArgument*> LuaScript::readArguments(DOMNodeWrapper* node, IArgumentGenerator* resources, IArgumentGenerator* localArgs) {
-  std::vector<ILuaFunctionArgument*> mArguments;
+IScriptCall* LuaScript::createScriptCall(DOMNodeWrapper* node, IArgumentValueRegistry* globalArgs, IArgumentValueRegistry* localArgs) {
+  std::vector<IArgumentValue*> mArguments;
+  std::cout << "Reading " << cArguments.size() << " arguments for script " << cName << "..." << std::endl;
+
   for (unsigned int i = 0; i < cArguments.size(); i++) {
-    mArguments.push_back(NULL);
+    mArguments.push_back(nullptr);
   }
   
   for (int i = 0; i < node->getChildCount(); i++) {
@@ -43,25 +87,26 @@ std::vector<ILuaFunctionArgument*> LuaScript::readArguments(DOMNodeWrapper* node
       std::string mValue = mNode->getAttribute("value");
       std::string mArgumentName = mNode->getAttribute("name");
       unsigned int mArgumentIndex = getArgumentIndex(mArgumentName);
-      IArgumentGenerator* mResources;
+      IArgumentValueRegistry* mResources;
       if (mValue[0] == '~') {
         mResources = localArgs;
       } else {
-        mResources = resources;
+        mResources = globalArgs;
       }
-      IArgumentSource* mArgument = mResources->getArgument(mNode);
-      mArguments[mArgumentIndex] = mArgument->createArgument(false);
+      std::cout << "  Found value for argument " << mArgumentIndex << std::endl;
+      mArguments[mArgumentIndex] = mResources->getArgumentValue(mNode);
     }
   }
   
   // If any arguments weren't specified, use the defaults
   for (unsigned int i = 0; i < mArguments.size(); i++) {
-    if (mArguments[i] == NULL) {
-      mArguments[i] = cArguments[i]->createDefaultArgumentValue();
+    if (mArguments[i] == nullptr) {
+      std::cout << "  No value for argument " << i << "... using default " << std::endl;
+      mArguments[i] = cArguments[i]->getDefaultValue();
       // TODO: Throw if no default value?
     }
   }
-  return mArguments;
+  return new LuaScriptCall(this, mArguments);
 }
 
 void LuaScript::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
@@ -75,30 +120,18 @@ void LuaScript::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   mCodeBranch->addText(cCode);
 }
 
-void LuaScript::save(std::vector<ILuaFunctionArgument*> arguments, DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+void LuaScript::save(std::vector<IArgumentValue*> argumentValues, DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   node->addAttribute("name", cName);
-  for (unsigned int i = 0; i < cArguments.size(); i++) {
-    if (!arguments[i]->isDefaultArgument()) {
+  for (unsigned int i = 0; i < argumentValues.size(); i++) {
+    if (!argumentValues[i]->isDefaultArgument()) {
       DOMNodeWriter* mArgumentBranch = node->addBranch("Argument");
-      cArguments[i]->save(mArgumentBranch);
-      arguments[i]->save(mArgumentBranch, resourceLocator);
+      argumentValues[i]->save(mArgumentBranch, resourceLocator);
     }
   }
 }
 
 void LuaScript::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor) {
-  for (int i = 0; i < node->getChildCount(); i++) {
-    DOMNodeWrapper *mNode = node->getChild(i);
-    std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "Argument") {
-      IArgumentDefinition* mArgument = resourceAccessor->getArgumentDefinition(mNode);
-      cArguments.push_back(mArgument);
-    } else if (mValueAsString == "Code") {
-      std::string mCode = mNode->getStringValue();
-      setCode(mCode);
-    }
-  }
-  registerScript();
+  // Nothing to do?
 }
 
 unsigned int LuaScript::getArgumentIndex(const std::string& name) {
@@ -111,3 +144,25 @@ unsigned int LuaScript::getArgumentIndex(const std::string& name) {
   std::cout << "No argument in script by the name of \"" << name << "\"" << std::endl;
   exit(1);
 }
+
+IArgumentDefinition* LuaScript::createArgumentDefinition(DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
+  std::string mType = node->getAttribute("type");
+  if (mType == TYPE_SOUND) {
+    return new ArgumentDefinitionReference(node, &TYPE_SOUND, resourceRegistry);
+  } else if (mType == TYPE_INTEGER) {
+    return new ArgumentDefinitionPrimitive(node, &TYPE_INTEGER, resourceRegistry);
+  } else if (mType == TYPE_BOOLEAN) {
+    return new ArgumentDefinitionPrimitive(node, &TYPE_BOOLEAN, resourceRegistry);
+  } else if (mType == TYPE_FLOAT) {
+    return new ArgumentDefinitionPrimitive(node, &TYPE_FLOAT, resourceRegistry);
+  } else if (mType == TYPE_MODEL) {
+    return new ArgumentDefinitionReference(node, &TYPE_MODEL, resourceRegistry);
+  } else if (mType == TYPE_VERTEX) {
+    return new ArgumentDefinitionReference(node, &TYPE_VERTEX, resourceRegistry);
+  } else if (mType == TYPE_COLOUR) {
+    return new ArgumentDefinitionReference(node, &TYPE_COLOUR, resourceRegistry);
+  } else {
+    return new ArgumentDefinitionReference(node, new std::string(mType), resourceRegistry);
+  }
+}
+

@@ -21,12 +21,15 @@
 
 #include <IsoRealms/Resources/IResource.h>
 
+#include "ICameraAngleChangeListener.h"
+
 class ICamera:public IResource {
   public:
   virtual float getAngle() = 0;
   virtual float getTilt() = 0;
   virtual void update(int) = 0;
   virtual void render() = 0;
+  virtual void addCameraAngleChangeListener(ICameraAngleChangeListener*) = 0;
 };
 
 #endif

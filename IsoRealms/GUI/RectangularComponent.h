@@ -1,3 +1,21 @@
+/*
+ * Copyright 2015 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
 #ifndef RECTANGULAR_COMPONENT_H
 #define RECTANGULAR_COMPONENT_H
 
@@ -26,6 +44,7 @@
 #include "SelectableComponent.h"
 #include "SliderComponent.h"
 #include "TabbedContainer.h"
+#include "TextEditorComponent.h"
 #include "TextFieldComponent.h"
 #include "TextLabelComponent.h"
 #include "WrappingGridComponent.h"
@@ -37,12 +56,13 @@ class RectangularComponent:public ISizedComponent,
 			   public IComponentHolder,
 			   public IListBoxListener {
   private:
+  RectangularComponent* cTopLevelComponent;
   std::vector<IRectangularComponent*> cChildren;
   std::map<std::string, ISizedComponent*> cSizedComponents;
   std::map<std::string, Button*> cCommandableComponents;
   std::map<std::string, ListBox*> cListBoxComponents;
   // TODO: Should use interface to support other components; e.g. ListBoxes
-  std::map<std::string, TextFieldComponent*> cStringValueComponents;
+  std::map<std::string, IStringValueComponent*> cStringValueComponents;
   std::map<std::string, SliderComponent*> cFloatValueComponents;
   std::map<std::string, SliderComponent*> cSliders;
   std::map<std::string, IComponentHolder*> cComponentContainers;
@@ -65,6 +85,8 @@ class RectangularComponent:public ISizedComponent,
   void loadPopupMenu(IRectangularComponent*, DOMNodeWrapper*);
   void testFocusChange(SDL_Event& event);
   bool mouseButtonDown(SDL_Event&);
+  
+  void addStringValueComponent(const std::string&, IStringValueComponent*);
     
   public:
   RectangularComponent();
@@ -72,7 +94,7 @@ class RectangularComponent:public ISizedComponent,
   RectangularComponent(DOMNodeWrapper*, IResourceAccessor*);
 
   void loadComponent(DOMNodeWrapper*, IResourceAccessor*);
-  void loadDialog(DOMNodeWrapper*, IRectangle*, float, IResourceAccessor*);
+  void loadDialog(DOMNodeWrapper*, IRectangle*, float, IResourceAccessor*, RectangularComponent* = NULL);
   
   void setRenderer(ISliderRenderer*, const std::string&);
   void setRenderer(IPanelRenderer*, const std::string&);
@@ -80,6 +102,7 @@ class RectangularComponent:public ISizedComponent,
   void addFloatListener(IFloatListener*, const std::string&);
   void addStringListener(IStringListener*, const std::string&);
   void setFloatValue(const std::string&, float);
+  void setStringValue(const std::string&, const std::string&);
   void setStringValue(const std::string&, float);
   
   void clearListBox(const std::string&);

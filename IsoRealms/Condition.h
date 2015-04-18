@@ -113,7 +113,7 @@ class Condition {
   void simplify(int = 0);
 
   // Tests
-  std::set<bool*> getInputs();
+  std::set<IBoolean*> getInputs();
   bool isAbsolute() const;
   bool isTrue();
   bool isCompatibleWith(Condition*);

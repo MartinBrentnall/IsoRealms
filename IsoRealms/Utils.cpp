@@ -39,6 +39,20 @@ std::string Utils::toString(float number) {
   return mString;
 }
 
+std::vector<std::string> Utils::split(const std::string& string, char splitChar) {
+  std::string mString = string;
+  std::vector<std::string> mSplitStrings;
+  std::string::size_type mSplitPos = mString.find_first_of(splitChar);
+  while (mSplitPos != std::string::npos) {
+    std::string mSplitString = mString.substr(0, mSplitPos);
+    mSplitStrings.push_back(mSplitString);
+    mString = mString.substr(mSplitPos + 1);
+    mSplitPos = mString.find_first_of(splitChar);
+  }
+  mSplitStrings.push_back(mString);
+  return mSplitStrings;
+}
+
 // TODO: Move this into a generic "split into words" function class... or something
 std::vector<std::string> Utils::splitWords(const std::string& words, char splitChar) {
   std::string mWords = words;

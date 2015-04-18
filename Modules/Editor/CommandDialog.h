@@ -1,0 +1,49 @@
+/*
+ * Copyright 2015 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#ifndef COMMAND_DIALOG_H
+#define COMMAND_DIALOG_H
+
+#include <IsoRealms/ICommand.h>
+
+#include "DialogModules.h"
+#include "IEditor.h"
+
+template <class DIALOG> class CommandDialog:public ICommand {
+  private:
+  IEditor* cEditor;
+  IComponentContainer* cComponentContainer;
+  DIALOG* cInstance;
+  
+  public:
+  CommandDialog(IEditor* editor, IComponentContainer* componentContainer) {
+    cEditor = editor;
+    cComponentContainer = componentContainer;
+  }
+    
+  void execute() {
+    if (cInstance != NULL) {
+      cInstance = new DIALOG(cComponentContainer, NULL, cEditor);
+      cComponentContainer->addComponent(cInstance);
+    } else {
+      // TODO: Focus the existing dialog.
+    }
+  }
+};
+
+#endif

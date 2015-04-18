@@ -26,11 +26,8 @@
 
 class IEditingContext {
   public:
-  virtual void registerCommand(ICommandInfo*) = 0;
   virtual IComponentContainer* getComponentContainer() = 0;
-  virtual BlockLocation* getBlockLocation() = 0;
   virtual IResourceSelector* getResourceSelector() = 0;
-  virtual void staticChanged() = 0;
 };
 
 #endif

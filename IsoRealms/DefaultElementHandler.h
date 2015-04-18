@@ -53,8 +53,8 @@ template<class T = IElement> class DefaultElementHandler:public IElementHandler 
   void eraseElement(std::vector<IElement*>& vector, IElement* element) {
     for (unsigned int i = 0; i < vector.size(); i++) {
       if (vector[i] == element) {
-	vector.erase(vector.begin() + i);
-	return;
+        vector.erase(vector.begin() + i);
+        return;
       }
     }
   }

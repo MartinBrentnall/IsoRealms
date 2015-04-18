@@ -19,39 +19,13 @@
 #ifndef ELEMENT_H
 #define ELEMENT_H
 
-#include <IsoRealms/IPlugin.h>
+#include <IsoRealms/IModule.h>
 
-#include "ElementSet.h"
 #include "IElement.h"
 #include "IElementType.h"
 
-/**
- * 
- */
-template<class T1 = IPlugin, class T2 = IElementType> class Element:public IElement {
-  private:
-
-  /**
-   * TODO:
-   */
-  T2* cElementType;
-
+class Element:public IElement {
   public:
-  Element(T2* elementType) {
-    cElementType = elementType;
-  }
-
-  /***********************\
-   * Implements IElement *
-  \***********************/
-  T1* getElementSet() {
-    return cElementType->getElementSet();
-  }
-
-  T2* getElementType() {
-    return cElementType;
-  }
-  
   virtual void updateRuntime(unsigned int milliseconds) {
   }
   
@@ -86,15 +60,21 @@ template<class T1 = IPlugin, class T2 = IElementType> class Element:public IElem
     return false;
   }
 
-  void save(DOMNodeWriter*, BlockLocation&) {}
-  bool initElement(unsigned int) {return true;}
+  bool initElement(unsigned int) {
+    return true;
+  }
   
-  virtual void removingElement() {};
+  virtual void removingElement() {
+  };
 
-  virtual void added() {}
-  virtual void renderStaticEditing() {}
+  virtual void added() {
+  }
+  
+  virtual void renderStaticEditing() {
+  }
 
-  virtual void initialiseResource(DOMNodeWrapper*, IResourceAccessor*) {}
+  virtual void initialiseResource(DOMNodeWrapper*, IResourceAccessor*) {
+  }
   
   ~Element() {}
 };

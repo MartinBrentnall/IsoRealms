@@ -1,3 +1,21 @@
+/*
+ * Copyright 2015 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
 #ifndef REGISTRY_H
 #define REGISTRY_H
 
@@ -86,12 +104,12 @@ template<class T1> class Registry {
   
   void debug() {
     for (typename std::map<std::string, T1*>::iterator i = cObjects.begin(); i != cObjects.end(); i++) {
-      std::cout << "Object found: " << i->first << std::endl;
+      std::cout << "  Object found: " << i->first << std::endl;
     }
     for (typename std::map<std::string, Registry<T1>*>::iterator i = cSubDirectories.begin(); i != cSubDirectories.end(); i++) {
-      std::cout << "Entering directry: " << i->first << std::endl;
+      std::cout << "Entering module: " << i->first << std::endl;
       i->second->debug();
-      std::cout << "Leaving directory" << std::endl;
+      std::cout << "Leaving module" << std::endl;
     }
   }
 };

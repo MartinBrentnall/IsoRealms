@@ -32,26 +32,21 @@ class IElement;
 #include "IElement.h"
 #include "IElementContainer.h"
 
-class IPlugin;
+class IModule;
 
 /**
  * The element type creates engine elements.
  */
 class IElementType:public IResource {
   public:
-  virtual IPlugin* getElementSet() = 0;
-    
-  // Runtime and parsing functions.
-  
   /**
    * Parse an element immediately from a DOM node.
    *
    * @param DOMNodeWrapper*  The node to parse from.
    * @returns  The parsed element.
    */
-  virtual IElement* getElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*) = 0;
+  virtual void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*) = 0;
   
-  // Editor functions.
   /**
    * Signal to the type that the user wishes to configure the element.  This
    * can be typically used to push a configuration component into the
@@ -94,8 +89,6 @@ class IElementType:public IResource {
    * @param IElement*  The element to destroy.
    */
   virtual void destroy(IElement*) = 0;
-  
-  virtual IElementHandler* getElementHandler() = 0;
   
   virtual ~IElementType() {}
 };

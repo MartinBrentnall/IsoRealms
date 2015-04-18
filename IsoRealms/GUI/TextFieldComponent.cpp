@@ -164,7 +164,6 @@ bool TextFieldComponent::mouseButtonDown(SDL_Event& event) {
       if (mNewDifference < 0.0f) {
 	mNewDifference = -mNewDifference;
       }
-      std::cout << "Position " << i << ": " << mPosition << "        Difference: " << mNewDifference << std::endl;
       if (mNewDifference > mDifference) {
 	cCaret = mNewDifference > mDifference ? i - 1: i - 2;
 	return true;

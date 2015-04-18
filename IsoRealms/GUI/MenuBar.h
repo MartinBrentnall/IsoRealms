@@ -31,7 +31,6 @@
 #include <IsoRealms/IComponentContainer.h>
 #include <IsoRealms/IHUDComponent.h>
 #include <IsoRealms/Persistence/DOMNodeWrapper.h>
-#include <IsoRealms/PluginRegistry.h>
 #include <IsoRealms/Resources/Font/IFont.h>
 #include <IsoRealms/ScreenConfiguration.h>
 
@@ -41,7 +40,7 @@
 
 class MenuBar:public IHUDComponent,
               public IMenuContainer,
-	      public IMenuPopup {
+              public IMenuPopup {
   private:
   IComponentContainer* cComponentContainer;
   std::map<std::string, MenuPopup*> cMenuPopups;

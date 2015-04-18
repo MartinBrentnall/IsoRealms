@@ -24,7 +24,14 @@
 #include <string>
 #include <dlfcn.h>
 
+#include "AttractDemo.h"
+#include "AttractFadeOut.h"
+#include "AttractHelp.h"
+#include "AttractHiScore.h"
+#include "AttractIntro.h"
 #include "AttractSceneManager.h"
+#include "AttractTitle.h"
+#include "FrontEnd.h"
 #include "IFrontEnd.h"
 #include "StartAttractSceneCommand.h"
 #include "TerminateAttractSceneCommand.h"
@@ -34,16 +41,15 @@
 #include <IsoRealms/ICommand.h>
 #include <IsoRealms/InitException.h>
 #include <IsoRealms/ICommand.h>
-#include <IsoRealms/PluginRegistry.h>
 #include <IsoRealms/Project.h>
 #include <IsoRealms/Resources/Font/IFont.h>
 #include <IsoRealms/Resources/Registry.h>
 #include <IsoRealms/Resources/Resources.h>
 #include <IsoRealms/System.h>
 
-class AttractControlLoop:public IPlugin,
-                         public IElementType,
-                         public IElement,
+class AttractControlLoop:public IModule,
+                         public ILayerType,
+                         public ILayer,
                          public IController {
   private:
   std::map<IAttract*, std::vector<ICommand*> > cSceneEndCommands;
@@ -53,7 +59,6 @@ class AttractControlLoop:public IPlugin,
   AttractSceneManager cAttractSceneManager;
   std::vector<ICommand*> cInitCommands;
   IFrontEnd* cFrontEnd;
-  PluginRegistry cPluginRegistry;
   IFont* cFont;
   bool cFrontEndActive;
   std::map<std::string, int> cLayers;
@@ -67,47 +72,36 @@ class AttractControlLoop:public IPlugin,
    */
   std::vector<ICommand*> parseEventCommands(DOMNodeWrapper*);
 
+  IFrontEnd* createFrontEnd(DOMNodeWrapper*, const std::string&);
+  IAttract* createAttract(const std::string&);
+  
   public:
   AttractControlLoop();
   bool checkActiveInput(int);
 
-  void createResources(DOMNodeWrapper*, IRuntimeContext*);
+  void createResources(DOMNodeWrapper*, IResourceRegistry*);
   void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
   
-  /***************************\
-   * Implements IElementType *
-  \***************************/
-  IPlugin* getElementSet();
-  IElement* getElement();
-  IElement* getElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*);
-  void setEditingContext(BlockLocation*, IComponentContainer*);
-  void configureElement();
-  void renderEditingPreview();
-  void renderIcon();
-  void updateIcon(unsigned int);
-  void destroy(IElement*);
-  IElementHandler* getElementHandler();
+  void load(DOMNodeWrapper*, IResourceRegistry*);
+  void save(DOMNodeWriter*, IResourceLocator*);
+  
+  /*************************\
+   * Implements ILayerType *
+  \*************************/
+  ILayer* getLayer(DOMNodeWrapper*, IResourceAccessor*);
   
   /***********************\
    * Implements IElement * 
   \***********************/
-  IElementType* getElementType();
-  bool initElement(unsigned int);
-  void renderStatic();
-  void renderStaticEditing();
+  ILayerType* getLayerType();
+  void initRuntime();
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
-  void setDirty();
-  
+  void staticChanged();
   void renderRuntime();
   void renderEditing();
   void updateRuntime(unsigned int);
   void updateEditing(unsigned int);
   void input(SDL_Event&);
-  bool isVisualRuntime();
-  bool isVisualEditing();
-  bool isDynamicRuntime();
-  bool isDynamicEditing();
-  bool isInteractive();  
   
   /**************************\
    * Implements IController *

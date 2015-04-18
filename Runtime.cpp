@@ -23,7 +23,7 @@ Runtime::Runtime(DOMNodeWrapper* node, const std::string& projectName) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValue = mNode->getNodeName();
     if (mValue == "Project") {
-      cProject = new Project(mNode, projectName, NULL, NULL);
+      cProject = new Project(mNode, projectName, NULL);
     }
   }
   cProject->initRuntime();

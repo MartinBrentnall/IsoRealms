@@ -31,17 +31,13 @@ class IMap;
 #include <IsoRealms/Resources/IResource.h>
 #include <IsoRealms/Resources/IResourceLocator.h>
 
+#include "IElementBounds.h"
 #include "IElementHandler.h"
 
-class IPlugin;
+class IModule;
 
 class IElement {
   public:
-
-  /**
-   * Retrieve the element set to which this element belongs.
-   */
-  virtual IPlugin* getElementSet() = 0;
 
   /**
    * Retrieve the element type to which this element belongs.
@@ -89,9 +85,11 @@ class IElement {
 
   virtual void setDirty() = 0;
 
-  virtual void initRuntime() {}
+  virtual void initRuntime() {} // TODO: Should be pure
   
-  virtual void staticChanged() {}
+  virtual void staticChanged() {} // TODO: Should be pure
+  
+  virtual IElementBounds* getBounds() = 0;
   
   virtual ~IElement() {}
 };

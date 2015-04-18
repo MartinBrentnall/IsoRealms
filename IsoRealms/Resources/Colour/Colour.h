@@ -25,8 +25,10 @@
 #include <IsoRealms/MiscFunctions.h>
 #include <IsoRealms/Persistence/DOMNodeWrapper.h>
 #include <IsoRealms/Persistence/DOMNodeWriter.h>
+#include <IsoRealms/Resources/IDummyModule.h>
 #include <IsoRealms/Resources/IResourceAccessor.h>
 #include <IsoRealms/Resources/IResourceLocator.h>
+#include <IsoRealms/Resources/IResourceRegistry.h>
 #include <IsoRealms/Utils.h>
 
 #include "IColour.h"
@@ -51,6 +53,8 @@ class Colour:public IColour {
    * Construct opaque black.
    */
   Colour();
+  
+  Colour(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*); // TODO: Not sure this should go here
   
   Colour(const IColour&);
   

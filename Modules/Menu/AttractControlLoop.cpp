@@ -21,11 +21,10 @@
 
 AttractControlLoop::AttractControlLoop() {
 }  
-  
-void AttractControlLoop::createResources(DOMNodeWrapper* node, IRuntimeContext* runtimeContext) {
-  runtimeContext->add(this, "Menu", node);
+ 
+void AttractControlLoop::initRuntime() {
 }
-
+ 
 void AttractControlLoop::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
   cRunningProject = NULL;
   cFrontEndActive = false;
@@ -40,36 +39,10 @@ void AttractControlLoop::initialiseResource(DOMNodeWrapper* node, IResourceAcces
       std::cout << "GOT FONT: " << cFont << std::endl;
     } else if (mValueAsString == "FrontEnd") {
       std::string mFrontEndName = mNode->getAttribute("name");
-      std::string mFrontEndLocation = System::getConfigurationResource("Modules/Menu/FrontEnd/" + mFrontEndName + "/libFrontEnd");
-      void* mFrontEndSO = dlopen(mFrontEndLocation.c_str(), RTLD_LAZY | RTLD_GLOBAL);
-      if (!mFrontEndSO) {
-        throw InitException("Cannot load library: " + std::string(dlerror()));
-      }
-      createFrontEnd* createFrontEndFunction = cast_voidptr_to_funcptr<createFrontEnd*>(dlsym(mFrontEndSO, "create"));
-      const char* mDlsymError = dlerror();
-      if (mDlsymError) {
-        throw InitException("Cannot load symbol: " + std::string(mDlsymError));
-      }
-      cFrontEnd = createFrontEndFunction(mNode, cFont, this);
+      cFrontEnd = createFrontEnd(mNode, mFrontEndName);
     } else if (mValueAsString == "AttractScene") {
-      // TODO: Use relative path
-      try {
-        std::string mAttractName = mNode->getAttribute("name");
-        std::string mAttractLocation = System::getConfigurationResource("Modules/Menu/Attract/" + mAttractName + "/libAttract");
-        void* mAttractSO = dlopen(mAttractLocation.c_str(), RTLD_LAZY | RTLD_GLOBAL);
-        if (!mAttractSO) {
-          throw InitException("Cannot load library: " + std::string(dlerror()));
-        }
-        createAttract* createAttractFunction = cast_voidptr_to_funcptr<createAttract*>(dlsym(mAttractSO, "create"));
-        const char* mDlsymError = dlerror();
-        if (mDlsymError) {
-          throw InitException("Cannot load symbol: " + std::string(mDlsymError));
-        }
-        cAttractServices[mAttractName] = createAttractFunction(cFont);
-      } catch (InitException e) {
-        std::cout << e.getMessage() << std::endl;
-        std::cout << "Warning: could not load attract plug-in \"" << mNode->getStringValue() << "\":" << std::endl << e.getMessage() << std::endl;
-      }
+      std::string mAttractName = mNode->getAttribute("name");
+      cAttractServices[mAttractName] = createAttract(mAttractName);
     } else if (mValueAsString == "Layer") {
       cLayers[mNode->getStringValue()] = mCurrentLayer++;
     } else if (mValueAsString == "Init") {
@@ -87,6 +60,28 @@ void AttractControlLoop::initialiseResource(DOMNodeWrapper* node, IResourceAcces
   }
 }
 
+IFrontEnd* AttractControlLoop::createFrontEnd(DOMNodeWrapper* node, const std::string& name) {
+  return name == "Menu" ? new FrontEnd(node, cFont, this)
+                        : NULL;
+}
+
+IAttract* AttractControlLoop::createAttract(const std::string& name) {
+  return name == "Intro"   ? static_cast<IAttract*>(new AttractIntro(cFont))
+       : name == "Title"   ? static_cast<IAttract*>(new AttractTitle(cFont))
+       : name == "HiScore" ? static_cast<IAttract*>(new AttractHiScore(cFont))
+       : name == "Help"    ? static_cast<IAttract*>(new AttractHelp())
+       : name == "Demo"    ? static_cast<IAttract*>(new AttractDemo())
+       : name == "FadeOut" ? static_cast<IAttract*>(new AttractFadeOut())
+       :                     NULL;
+}
+
+void AttractControlLoop::load(DOMNodeWrapper* node, IResourceRegistry* resources) {
+  resources->add(this, "Menu", node);
+}
+
+void AttractControlLoop::save(DOMNodeWriter* node, IResourceLocator* resources) {
+}
+  
 std::vector<ICommand*> AttractControlLoop::parseEventCommands(DOMNodeWrapper* node) {
   std::vector<ICommand*> mSceneCommands;
   for (int i = 0; i < node->getChildCount(); i++) {
@@ -112,63 +107,15 @@ bool AttractControlLoop::checkActiveInput(int type) {
   return false;
 }
 
-IPlugin* AttractControlLoop::getElementSet() {
+ILayer* AttractControlLoop::getLayer(DOMNodeWrapper*, IResourceAccessor*) {
   return this;
 }
 
-IElement* AttractControlLoop::getElement() {
+ILayerType* AttractControlLoop::getLayerType() {
   return this;
 }
 
-IElement* AttractControlLoop::getElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*) {
-  return this;
-}
-
-void AttractControlLoop::setEditingContext(BlockLocation*, IComponentContainer*) {
-  // Not editable.  Nothing to do
-}
-
-void AttractControlLoop::configureElement() {
-  // Not editable.  Nothing to do
-}
-
-void AttractControlLoop::renderEditingPreview() {
-  // Not editable.  Nothing to do
-}
-
-void AttractControlLoop::renderIcon() {
-  // Not editable.  Nothing to do
-}
-
-void AttractControlLoop::updateIcon(unsigned int) {
-  // Not editable.  Nothing to do
-}
-
-void AttractControlLoop::destroy(IElement* element) {
-  // Front-end will not self terminate
-}
-
-IElementHandler* AttractControlLoop::getElementHandler() {
-  return NULL;
-}
-
-IElementType* AttractControlLoop::getElementType() {
-  return this;
-}
-
-bool AttractControlLoop::initElement(unsigned int) {
-  return true;
-}
-
-void AttractControlLoop::renderStatic() {
-  // Nothing to do
-}
-
-void AttractControlLoop::save(DOMNodeWriter*, IResourceLocator*, BlockLocation&) {
-  // Not editable.  Nothing to do
-}
-
-void AttractControlLoop::setDirty() {
+void AttractControlLoop::staticChanged() {
   // Nothing to do
 }
 
@@ -240,26 +187,6 @@ void AttractControlLoop::input(SDL_Event& event) {
   }
 }
 
-bool AttractControlLoop::isVisualRuntime() {
-  return true;
-}
-
-bool AttractControlLoop::isVisualEditing() {
-  return false;
-}
-
-bool AttractControlLoop::isDynamicRuntime() {
-  return true;
-}
-
-bool AttractControlLoop::isDynamicEditing() {
-  return false;
-}
-
-bool AttractControlLoop::isInteractive() {
-  return true;
-}
-
 void AttractControlLoop::startProject(const std::string& project) {
   std::string mProjectPath = System::getProgramResource(project);
   DOMNodeWrapper* mProjectNode = new DOMNodeWrapper(mProjectPath);
@@ -267,17 +194,17 @@ void AttractControlLoop::startProject(const std::string& project) {
     DOMNodeWrapper *mNode = mProjectNode->getChild(i);
     std::string mValue = mNode->getNodeName();
     if (mValue == "Project") {
-      cRunningProject = new Project(mNode, project, NULL, NULL);
+      cRunningProject = new Project(mNode, project, NULL);
       cRunningProject->initRuntime();
       break;
     }
   }
 }
 
-extern "C" IPlugin* create() {
+extern "C" IModule* create() {
   return new AttractControlLoop();
 }
 
-extern "C" void destroy(IPlugin* module) {
+extern "C" void destroy(IModule* module) {
   delete module;
 }

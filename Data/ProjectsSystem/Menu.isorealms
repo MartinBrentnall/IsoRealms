@@ -1,93 +1,89 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <Project>
-  <Plugin name="GLFreeType">
-    <Resources>
-      <Font name="MenuFont" file="Data/Fonts/MenuFont.ttf" detail="64"/>
-    </Resources>
-  </Plugin>
-  <Plugin name="Menu">  
-    <Resources>
-      <Font name="GLFreeType/MenuFont"/>
+  <Module name="IsoRealms">
+    <FontFile name="MenuFont" file="Data/Fonts/MenuFont.ttf" detail="64"/>
+  </Module>
+  <Module name="Menu">  
+    <Font name="IsoRealms/MenuFont"/>
 
-      <AttractScene name="Intro"/>
-      <AttractScene name="Title"/>
-      <AttractScene name="HiScore"/>
-      <AttractScene name="Help"/>
-      <AttractScene name="Demo"/>
-      <AttractScene name="FadeOut"/>
-    
-      <FrontEnd name="Menu">
-	<Menu name="Play">
-	  <ProjectList source="Data/Projects/"/>
-	</Menu>
-	<Menu name="Create">
-	  <ProjectList source="Data/ProjectsTools/"/>
-	</Menu>
-  <!--        <Menu name="Editor">
-	  <Command name="Create a new map">
-	    <ExecuteCommand type="Push:SimpleEditor"/>
-	  </Command>
-	  <Menu name="Edit an existing map">
-	    <CommandList source="Data/Projects/">
-	      <ExecuteCommand type="Push:SimpleEditor"/>
-	    </CommandList>
-	  </Menu>
-	</Menu>-->
-	<Menu name="Settings">
-	  <Menu name="Visual">
-	    <FullScreen name="Mode" trueValue="Full Screen" falseValue="Windowed"/>
-	    <Resolution name="Resolution"/>
-	  </Menu>
-	  <Menu name="Audio">
-	    <Percentage name="Music Volume"/>
-	    <Percentage name="Sound Volume"/>
-	  </Menu>
-	  <Menu name="Control">
-	    <Menu name="All Games">
-  <!--              <ControlSetup name="controls.config"/>-->
-	    </Menu>
-	    <MenuList source="Data/Projects/">
-	      <ControlSetup name="%4m"/>
-	    </MenuList>
-	  </Menu>
-	</Menu>
-	<Command name="High Scores"/>
-	<Command name="Help"/>
-	<Command name="Quit">
-	  <ExecuteCommand type="Pop"/>
-	</Command>        
-      </FrontEnd>
+    <AttractScene name="Intro"/>
+    <AttractScene name="Title"/>
+    <AttractScene name="HiScore"/>
+    <AttractScene name="Help"/>
+    <AttractScene name="Demo"/>
+    <AttractScene name="FadeOut"/>
+  
+    <FrontEnd name="Menu">
+      <Menu name="Play">
+        <ProjectList source="Data/Projects/"/>
+      </Menu>
+      <Menu name="Create">
+        <ProjectList source="Data/ProjectsTools/"/>
+      </Menu>
+<!--        <Menu name="Editor">
+        <Command name="Create a new map">
+          <ExecuteCommand type="Push:SimpleEditor"/>
+        </Command>
+        <Menu name="Edit an existing map">
+          <CommandList source="Data/Projects/">
+            <ExecuteCommand type="Push:SimpleEditor"/>
+          </CommandList>
+        </Menu>
+      </Menu>-->
+      <Menu name="Settings">
+        <Menu name="Visual">
+          <FullScreen name="Mode" trueValue="Full Screen" falseValue="Windowed"/>
+          <Resolution name="Resolution"/>
+        </Menu>
+        <Menu name="Audio">
+          <Percentage name="Music Volume"/>
+          <Percentage name="Sound Volume"/>
+        </Menu>
+        <Menu name="Control">
+          <Menu name="All Games">
+<!--              <ControlSetup name="controls.config"/>-->
+          </Menu>
+          <MenuList source="Data/Projects/">
+            <ControlSetup name="%4m"/>
+          </MenuList>
+        </Menu>
+      </Menu>
+      <Command name="High Scores"/>
+      <Command name="Help"/>
+      <Command name="Quit">
+        <ExecuteCommand type="Pop"/>
+      </Command>        
+    </FrontEnd>
 
-      <Layer>Background</Layer>
-      <Layer>Foreground</Layer>
-    
-      <Init>
-	<Start layer="Background">Intro</Start>
-      </Init>
-      <AttractSceneEnd name="Intro">
-	<Start layer="Foreground">Title</Start>
-	<Start layer="Background">Demo</Start>
-      </AttractSceneEnd>
-      <AttractSceneEnd name="Title">
-	<Start layer="Foreground">HiScore</Start>
-      </AttractSceneEnd>
-      <AttractSceneEnd name="HiScore">
-	<Start layer="Foreground">FadeOut</Start>
-      </AttractSceneEnd>
-      <AttractSceneEnd name="FadeOut">
-	<End>Demo</End>
-	<Start layer="Background">Intro</Start>
-      </AttractSceneEnd>
-    
-      <FrontEndStart>
-	<End>HiScore</End>
-	<End>FadeOut</End>
-	<End>Intro</End>
-	<End>Help</End>
-	<Start layer="Foreground">Title</Start>
-	<Start layer="Background">Demo</Start>
-      </FrontEndStart>
-    </Resources>
-  </Plugin>
+    <Layer>Background</Layer>
+    <Layer>Foreground</Layer>
+  
+    <Init>
+      <Start layer="Background">Intro</Start>
+    </Init>
+    <AttractSceneEnd name="Intro">
+      <Start layer="Foreground">Title</Start>
+      <Start layer="Background">Demo</Start>
+    </AttractSceneEnd>
+    <AttractSceneEnd name="Title">
+      <Start layer="Foreground">HiScore</Start>
+    </AttractSceneEnd>
+    <AttractSceneEnd name="HiScore">
+      <Start layer="Foreground">FadeOut</Start>
+    </AttractSceneEnd>
+    <AttractSceneEnd name="FadeOut">
+      <End>Demo</End>
+      <Start layer="Background">Intro</Start>
+    </AttractSceneEnd>
+  
+    <FrontEndStart>
+      <End>HiScore</End>
+      <End>FadeOut</End>
+      <End>Intro</End>
+      <End>Help</End>
+      <Start layer="Foreground">Title</Start>
+      <Start layer="Background">Demo</Start>
+    </FrontEndStart>
+  </Module>
   <Layer type="Menu/Menu"/>
 </Project>

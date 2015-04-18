@@ -37,3 +37,7 @@ void DummyCamera::render() {
 void DummyCamera::update(int milliseconds) {
   // Nothing to do
 }
+
+void DummyCamera::addCameraAngleChangeListener(ICameraAngleChangeListener*) {
+  // Nothing to do
+}

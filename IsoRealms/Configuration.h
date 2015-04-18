@@ -24,15 +24,13 @@
 #include <iostream>
 #include <string>
 
+#include "IEngine.h"
+#include "InitException.h"
+#include "LuaSupport/ILuaSupport.h"
 #include "Persistence/DOMNodeWrapper.h"
 #include "Persistence/DOMNodeWriter.h"
 #include "Persistence/ParseException.h"
-#include "IEngine.h"
-#include "LuaSupport/ILuaFunctionArgument.h"
-#include "LuaSupport/ILuaModule.h"
-#include "LuaSupport/ILuaSupport.h"
-#include "InitException.h"
-#include "Resources/IRuntimeContext.h"
+#include "Resources/IResourceRegistry.h"
 #include "ScreenConfiguration.h"
 #include "System.h"
 
@@ -42,9 +40,9 @@
  */
 class Configuration {
   private:
-  ILuaSupport* cLuaSupport;
   std::string cConfigurationFile;
   std::string cSettingsFile;
+  ILuaSupport* cLuaSupport;
 
   /**
    * Singleton instance of the configuration.
@@ -88,8 +86,6 @@ class Configuration {
    */
   static Configuration* getInstance();
 
-  void setLuaSupport(ILuaSupport*);
-  
   /**
    * Get the screen configuration.
    *
@@ -99,19 +95,19 @@ class Configuration {
 
   void setViewPort();
   
+  void save();
+
+  void setLuaSupport(ILuaSupport*);
+  
   void registerScript(const std::string&);
   
   void setGlobalVariable(IArgumentDefinition*);
   
-  void executeScript(const std::string&, std::vector<ILuaFunctionArgument*>);
+  void executeScript(const std::string&, std::vector<IArgumentValue*>);
 
-  IArgumentDefinition* createArgumentDefinition(DOMNodeWrapper*, IResourceAccessor*);
+  IArgumentValue* getArgumentValue(DOMNodeWrapper* node, IResourceAccessor* resources);
   
-  IArgumentSource* createArgument(DOMNodeWrapper*, IResourceAccessor*);
-  
-  void enableLuaSupport(InitLuaFunction*, IRuntimeContext*);
-
-  void save();
+  void enableLuaSupport(InitLuaFunction*);  
 };
 
 #endif

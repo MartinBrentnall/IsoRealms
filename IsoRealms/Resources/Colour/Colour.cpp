@@ -25,6 +25,9 @@ Colour::Colour() {
   cAlpha = 1.0f;
 }
 
+Colour::Colour(IDummyModule* module, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
+}
+
 Colour::Colour(const IColour& colour) {
   cRed   = colour.getRed();
   cGreen = colour.getGreen();

@@ -123,14 +123,14 @@ bool Condition::operator!=(const Condition& condition) const {
   return !(*this == condition);
 }
 
-std::set<bool*> Condition::getInputs() {
-  std::set<bool*> mInputs;
+std::set<IBoolean*> Condition::getInputs() {
+  std::set<IBoolean*> mInputs;
   for (unsigned int i = 0; i < cConditions.size(); i++) {
-    std::set<bool*> mSubInputs = cConditions[i]->getInputs();
+    std::set<IBoolean*> mSubInputs = cConditions[i]->getInputs();
     mInputs.insert(mSubInputs.begin(), mSubInputs.end());
   }
   for (std::set<ConditionElement*>::iterator i = cElements.begin(); i != cElements.end(); i++) {
-    bool* mInput = (*i)->getInputAddress();
+    IBoolean* mInput = (*i)->getInputAddress();
     mInputs.insert(mInput);
   }
   return mInputs;
@@ -220,12 +220,12 @@ void Condition::raiseConditions() {
 void Condition::checkForConflictingElements() {
   
   // TODO: This seems to assume AND gate...  for OR gate, conflicting elements should simply be removed
-  std::set<bool*> mPositiveElements;
-  std::set<bool*> mNegativeElements;
+  std::set<IBoolean*> mPositiveElements;
+  std::set<IBoolean*> mNegativeElements;
   for (std::set<ConditionElement*>::iterator i = cElements.begin(); i != cElements.end(); i++) {
-    bool* mAddress = (*i)->getInputAddress();
-    std::set<bool*>& mSetToAddTo = (*i)->isNegated() ? mNegativeElements : mPositiveElements;
-    std::set<bool*>& mOtherSet   = (*i)->isNegated() ? mPositiveElements : mNegativeElements;
+    IBoolean* mAddress = (*i)->getInputAddress();
+    std::set<IBoolean*>& mSetToAddTo = (*i)->isNegated() ? mNegativeElements : mPositiveElements;
+    std::set<IBoolean*>& mOtherSet   = (*i)->isNegated() ? mPositiveElements : mNegativeElements;
     if (mOtherSet.find(mAddress) != mOtherSet.end()) {
       cElements.clear();
       for (int j = cConditions.size() - 1; j >= 0; j--) {

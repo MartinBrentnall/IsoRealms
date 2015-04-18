@@ -54,7 +54,7 @@ class BlockArea {
   int getTop();
   int getBottom();
 
-  int alligned(int, int);  
+  bool alligned(int, int);  
 
   bool contains(BlockLocation&);
 

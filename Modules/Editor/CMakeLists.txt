@@ -17,20 +17,28 @@
 include_directories(${PROJECT_SOURCE_DIR})
 
 add_library(Editor MODULE 
-  Camera.cpp
   ConfirmationBox.cpp
+  DialogModules.cpp
+  DialogProjectOpen.cpp
   EditorCursor.cpp
   ElementSetInstancesCommand.cpp
   EntityClassInstancesComponent.cpp
-  OpenCommand.cpp
   PluginEntityClass.cpp
   ResourceManagerDialogs/ColourIcon.cpp
+  ResourceManagerDialogs/Dialog3DModelManager.cpp
+  ResourceManagerDialogs/DialogBoundariesManager.cpp
+  ResourceManagerDialogs/DialogCameraManager.cpp
+  ResourceManagerDialogs/DialogCustomTypeManager.cpp
   ResourceManagerDialogs/DialogElementTypeManager.cpp
   ResourceManagerDialogs/DialogFontManager.cpp
+  ResourceManagerDialogs/DialogGeometryProcessorManager.cpp
+  ResourceManagerDialogs/DialogScriptManager.cpp
   ResourceManagerDialogs/DialogSoundManager.cpp
   ResourceManagerDialogs/DialogTextureManager.cpp
+  ResourceManagerDialogs/DialogVertexManager.cpp
   ResourceManagerDialogs/ElementTypeIcon.cpp
   ResourceManagerDialogs/FontIcon.cpp
+  ResourceManagerDialogs/ModelIcon.cpp
   ResourceManagerDialogs/SoundIcon.cpp
   ResourceManagerDialogs/TextureIcon.cpp
   SaveAsCommand.cpp

@@ -27,6 +27,7 @@
  */
 class IComponentBoundsCalculator:public IRectangle {
   public:
+  virtual ~IComponentBoundsCalculator() {}  
 };
 
 #endif

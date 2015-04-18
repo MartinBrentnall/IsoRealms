@@ -27,7 +27,7 @@ Engine::Engine() {
       DOMNodeWrapper *mNode = mConfigurationRootNode->getChild(i);
       std::string mValue = mNode->getNodeName();
       if (mValue == "IsoRealmsConfiguration") {
-	loadProject(mNode);
+        loadProject(mNode);
       }
     }
   } catch (ParseException &e) {

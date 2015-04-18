@@ -46,6 +46,8 @@ class GridLayoutComponent {
     float getRight();
     float getTop();
     float getBottom();
+
+    virtual ~CellBoundsCalculator() {}
   };
 
   IComponentBoundsCalculator* cComponentBoundsCalculator;

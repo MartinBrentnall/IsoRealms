@@ -1,3 +1,21 @@
+/*
+ * Copyright 2015 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
 #ifndef RESOURCE_REGISTRY_H
 #define RESOURCE_REGISTRY_H
 
@@ -84,10 +102,11 @@ template<class T> class ResourceRegistry:public IResourceInstanceListener<T> {
       mResource = getSpecialResource(path);
       if (mResource == NULL) {
         mResource = getDummyResource();
-	if (mResource == NULL) {
-	  std::cout << "WARNING: Program retrieved NULL resource and may crash.  DEBUG info for this registry follows:" << std::endl;
-	  debug();
-	}
+        if (mResource == NULL) {
+          std::cout << "WARNING: Program retrieved NULL resource for \"" << path << "\".  Registry content follows:" << std::endl;
+          debug();
+          exit(1);
+        }
       }
     }
     return mResource;
@@ -114,9 +133,9 @@ template<class T> class ResourceRegistry:public IResourceInstanceListener<T> {
     cUseListeners.push_back(resourceUseListener);
   }
   
-  void editResource(T* resource, IResourceAccessor* resources) {
+  void editResource(T* resource, IResourceAccessor* resources, IEditingContext* editingContext) {
     for (unsigned int i = 0; i < cResourceTypes.size(); i++) {
-      cResourceTypes[i]->editResource(resource, resources);
+      cResourceTypes[i]->editResource(resource, resources, editingContext);
     }
   }
   

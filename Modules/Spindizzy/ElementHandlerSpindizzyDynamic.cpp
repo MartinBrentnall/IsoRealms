@@ -1,0 +1,110 @@
+/*
+ * Copyright 2009,2010 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#include "ElementHandlerSpindizzyDynamic.h"
+
+ElementHandlerSpindizzyDynamic::ElementHandlerSpindizzyDynamic(IModuleElementHandlerSpindizzyDynamic* moduleInterface) {
+  cVisibility = 0.0f;
+  cActive = false;
+  cModuleInterface = moduleInterface;
+}
+
+void ElementHandlerSpindizzyDynamic::reset() {
+  for (unsigned int i = 0; i < cElements.size(); i++) {
+    cElements[i]->reset();
+  }
+}
+
+void ElementHandlerSpindizzyDynamic::setActive(bool active) {
+  cActive = active;
+}
+
+void ElementHandlerSpindizzyDynamic::setValue() {
+  cModuleInterface->setArgumentValue(this);
+}
+
+void ElementHandlerSpindizzyDynamic::unsetValue() {
+  cModuleInterface->setArgumentValue(nullptr);
+}
+
+void ElementHandlerSpindizzyDynamic::addElement(IElementSpindizzyDynamic* element) {
+  cElements.push_back(element);
+}
+
+void ElementHandlerSpindizzyDynamic::renderRuntime() {
+  if (cVisibility > 0.0f) {
+    glEnable(GL_BLEND);
+    glColor4f(1.0f, 1.0f, 1.0f, cVisibility);
+    for (unsigned int i = 0; i < cElements.size(); i++) {
+      cElements[i]->renderRuntime();
+    }
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+  }
+}
+
+void ElementHandlerSpindizzyDynamic::updateRuntime(unsigned int ticks) {
+  if (cActive) {
+    if (cVisibility < 1.0f) {
+      cVisibility += ticks / 500.0f;
+      if (cVisibility > 1.0f) {
+        cVisibility = 1.0f;
+      }
+    }
+    for (unsigned int i = 0; i < cElements.size(); i++) {
+      cElements[i]->updateRuntime(ticks);
+    }
+  } else {
+    if (cVisibility > 0.0f) {
+      cVisibility -= ticks / 500.0f;
+      if (cVisibility < 0.0f) {
+        cVisibility = 0.0f;
+      }
+    }
+  }
+}
+
+IElementType* ElementHandlerSpindizzyDynamic::getElementType() {
+  return nullptr;
+}
+
+void ElementHandlerSpindizzyDynamic::renderStatic() {
+  // Nothing to do.
+}
+
+void ElementHandlerSpindizzyDynamic::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& location) {
+  // TODO: ?
+}
+
+void ElementHandlerSpindizzyDynamic::setDirty() {
+  // Nothing to do?
+}
+
+IElementBounds* ElementHandlerSpindizzyDynamic::getBounds() {
+  return nullptr;
+}
+
+bool ElementHandlerSpindizzyDynamic::initElement(unsigned int pass) {
+  bool mSuccess = true;
+  for (unsigned int i = 0; i < cElements.size(); i++) {
+    if (!cElements[i]->initElement(pass)) {
+      mSuccess = false;
+    }
+  }
+  return mSuccess;
+}
+  

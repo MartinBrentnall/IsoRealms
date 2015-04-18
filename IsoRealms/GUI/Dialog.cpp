@@ -203,6 +203,10 @@ void Dialog::updateContent(int milliseconds) {
 }
 
 bool Dialog::inputContent(SDL_Event& event) {
+  if (inputDialogContent(event)) {
+    return true;
+  }
+  
   switch (event.type) {
     case SDL_MOUSEBUTTONDOWN: {
       if (mouseButtonDown(event)) {
@@ -218,7 +222,7 @@ bool Dialog::inputContent(SDL_Event& event) {
 
     case SDL_MOUSEMOTION: {
       if (mouseMotion(event)) {
-	return true;
+        return true;
       }
       break;
     }
@@ -227,7 +231,7 @@ bool Dialog::inputContent(SDL_Event& event) {
       break;
     }
   }
-  return inputDialogContent(event);
+  return false;
 }
 
 Dialog::~Dialog() {

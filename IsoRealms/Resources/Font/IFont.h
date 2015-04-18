@@ -48,6 +48,28 @@ class IFont:public IResource {
    * @returns The width of the text.
    */
   virtual float getWidth(float, const char*, ...) = 0;
+  
+  /**
+   * This function calculates the height of the specified string when printed
+   * using this font at the specified size.
+   * 
+   * @param float  
+   * @param char*  
+   * @param ...  
+   * @returns The height of the text.
+   */
+  virtual float getHeight(float, const char*, ...) = 0;
+  
+  /**
+   * Calculates where the caret should be based on the clicked position.
+   * 
+   * @param float
+   * @param float
+   * @param char*
+   * @param ...
+   * @returns Caret position.
+   */
+  virtual unsigned int getChar(float, float, const char*, ...) = 0;
 };
 
 #endif

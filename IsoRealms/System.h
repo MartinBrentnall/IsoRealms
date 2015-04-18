@@ -28,6 +28,7 @@
 #include <sys/param.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <unistd.h>
 #include <vector>
 
 #include "Utils.h"
@@ -144,6 +145,8 @@ class System {
    * @return        The list of filenames.
    */
   static std::vector<std::string>* getFileList(const std::string&, bool = true);
+  
+  static unsigned int getCPUCores();
 };
 
 #endif

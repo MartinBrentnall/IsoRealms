@@ -78,8 +78,12 @@ void ScrollableContainer::testFocusChange(SDL_Event& event) {
             for (unsigned int i = 0; i < cComponents.size(); i++) {
               if (cComponents[i]->contains(mX, mY)) {
                 cFocusedComponent = cComponents[i];
+                cFocusedComponent->gainedFocus();
                 return;
               }
+            }
+            if (cFocusedComponent != NULL) {
+              cFocusedComponent->lostFocus();
             }
             cFocusedComponent = NULL;
           }

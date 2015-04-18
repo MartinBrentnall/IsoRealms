@@ -57,3 +57,6 @@ double Vertex::getZ() {
 void Vertex::debug() {
   std::cout << "Vertex is: " << x << ", " << y << ", " << z << std::endl;
 }
+
+void Vertex::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+}

@@ -1,7 +1,31 @@
+/*
+ * Copyright 2015 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
 #include "ElementHandler.h"
 
 ElementHandler::ElementHandler() {
   cUpdateStatic = false;
+  cSpawnThreads = false;
+  cStaticBounds = new ElementBounds(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+}
+
+void ElementHandler::setMultiThreaded(bool multiThreaded) {
+  cSpawnThreads = multiThreaded;
 }
 
 void ElementHandler::addElement(IElement* element) {
@@ -33,7 +57,7 @@ void ElementHandler::setAllDirty() {
 
 void ElementHandler::setDirty(IElement* element) {
   if (!contains(element)) {
-    std::cout << "WARNING: Specified dirty element is not a member of this Zone!  Did you forget to set the cursor's Zone?" << std::endl;
+    std::cout << "WARNING: Specified dirty element is not a member of this container!  Did you forget to set the cursor's container?" << std::endl;
     return;
   }
   for (unsigned int i = 0; i < cDirtyElements.size(); i++) {
@@ -80,36 +104,102 @@ int ElementHandler::getIndex(IElement* element) {
   return -1;
 }
 
-bool ElementHandler::init(unsigned int pass, bool editing) {
-  std::vector<IElement*> mCleanElements;
-  for (unsigned int i = 0; i < cDirtyElements.size(); i++) {
-    if (cDirtyElements[i]->initElement(pass)) {
-      mCleanElements.push_back(cDirtyElements[i]);
+int startThread(void* elementHandler) {
+  ElementHandler* mElementHandler = static_cast<ElementHandler*>(elementHandler);
+  mElementHandler->initThread();
+  return 0;
+}
+
+void ElementHandler::initThread() {
+  unsigned int mInitPass = 0;
+  
+//  while (!cDirtyElements.empty()) {
+    initElementHandler(mInitPass, cEditing);
+    mInitPass++;
+//  }
+
+  while (SDL_mutexP(cElementQueueMutex) == -1);
+  cLiveThreads--;
+  if (cLiveThreads == 0) {
+    SDL_CondSignal(cThreadInitComplete);
+  }
+  SDL_mutexV(cElementQueueMutex);
+}
+
+void ElementHandler::initElementHandler(unsigned int pass, bool editing) {
+  while (SDL_mutexP(cElementQueueMutex) == -1);
+  while (!cDirtyElementsRemaining.empty()) {
+    IElement* mElement = getElementToInit();
+    if (SDL_mutexV(cElementQueueMutex) == -1) {
+      std::cout << "Couldn't unlock mutex" << std::endl;
+      exit(-1);
     }
-  }
-  
-  for (unsigned int i = 0; i < mCleanElements.size(); i++) {
-    int mIndexToRemove = getIndex(mCleanElements[i]);
-    cDirtyElements.erase(cDirtyElements.begin() + mIndexToRemove);
-  }
-  
-  if (cDirtyElements.empty()) {
-
-    // Game rendering
-    updateStatic();
-
-    // Editor-only rendering
-    if (editing) {
-      glDeleteLists(cEditingDisplayList, 1);
-      cEditingDisplayList = glGenLists(1);
-      glNewList(cEditingDisplayList, GL_COMPILE);
-      for (unsigned int i = 0; i < cElements.size(); i++) {
-        cElements[i]->renderStatic();
+    if (mElement->initElement(pass)) {
+      while (SDL_mutexP(cElementQueueMutex) == -1);
+      cCleanElements.push_back(mElement);
+      if (SDL_mutexV(cElementQueueMutex) == -1) {
+        std::cout << "Couldn't unlock mutex" << std::endl;
+        exit(-1);
       }
-      glEndList();
     }
+    while (SDL_mutexP(cElementQueueMutex) == -1);
   }
+  if (SDL_mutexV(cElementQueueMutex) == -1) {
+    std::cout << "Couldn't unlock mutex" << std::endl;
+    exit(-1);
+  }
+}
+
+bool ElementHandler::initMultiThreaded() {
+  cElementQueueMutex = SDL_CreateMutex();
+  SDL_mutexP(cElementQueueMutex);
+  cThreadInitComplete = SDL_CreateCond();
+  unsigned int mCPUCores = System::getCPUCores();
+  while (!cDirtyElements.empty()) {
+    cDirtyElementsRemaining = cDirtyElements;
+    cLiveThreads = mCPUCores;
+    for (unsigned int i = 0; i < mCPUCores; i++) {
+      SDL_CreateThread(startThread, this);
+    }
+    SDL_CondWait(cThreadInitComplete, cElementQueueMutex);
+    for (unsigned int i = 0; i < cCleanElements.size(); i++) {
+      int mIndexToRemove = getElementIndex(cCleanElements[i]);
+      cDirtyElements.erase(cDirtyElements.begin() + mIndexToRemove);
+    }
+    cCleanElements.clear();
+  }
+  staticChanged();
   return cDirtyElements.empty();
+}
+
+bool ElementHandler::initSingleThreaded() {
+  int mPass = 0;
+  while (!cDirtyElements.empty()) {
+    cDirtyElementsRemaining = cDirtyElements;
+    while (!cDirtyElementsRemaining.empty()) {
+      IElement* mElement = getElementToInit();
+      if (mElement->initElement(mPass)) {
+        cCleanElements.push_back(mElement);
+      }
+    }
+    for (unsigned int i = 0; i < cCleanElements.size(); i++) {
+      int mIndexToRemove = getElementIndex(cCleanElements[i]);
+      cDirtyElements.erase(cDirtyElements.begin() + mIndexToRemove);
+    }
+    cCleanElements.clear();
+    mPass++;
+  }
+  staticChanged();
+  return cDirtyElements.empty();
+}
+
+bool ElementHandler::init(unsigned int pass, bool editing) {  
+  cEditing = editing;
+  if (cSpawnThreads) {
+    return initMultiThreaded();
+  } else {
+    return initSingleThreaded();
+  }
 }
 
 void ElementHandler::staticChanged() {
@@ -124,6 +214,18 @@ void ElementHandler::updateStatic() {
     cElements[i]->renderStatic();
   }
   glEndList();
+
+  updateStaticBounds();
+  
+//   if (editing) {
+//     glDeleteLists(cEditingDisplayList, 1);
+//     cEditingDisplayList = glGenLists(1);
+//     glNewList(cEditingDisplayList, GL_COMPILE);
+//     for (unsigned int i = 0; i < cElements.size(); i++) {
+//       cElements[i]->renderStatic();
+//     }
+//     glEndList();
+//   }
 }
 
 void ElementHandler::renderStatic() {
@@ -156,4 +258,49 @@ void ElementHandler::save(DOMNodeWriter* node, IResourceLocator* resourceLocator
     }
     cElements[i]->save(mNode, resourceLocator, location);
   }
+}
+
+int ElementHandler::getElementIndex(IElement* element) {
+  for (unsigned int i = 0; i < cDirtyElements.size(); i++) {
+    if (cDirtyElements[i] == element) {
+      return i;
+    }
+  }
+  // TODO: Throw exception
+  return -1;
+}
+
+IElement* ElementHandler::getElementToInit() {
+  IElement* mDirtyElement = NULL;
+  if (!cDirtyElementsRemaining.empty()) {
+    mDirtyElement = cDirtyElementsRemaining[0];
+    cDirtyElementsRemaining.erase(cDirtyElementsRemaining.begin());
+  }
+  return mDirtyElement;
+}
+
+void ElementHandler::updateStaticBounds() {
+  delete cStaticBounds;
+  float mWest   = std::numeric_limits<float>::max();
+  float mEast   = std::numeric_limits<float>::lowest();
+  float mSouth  = std::numeric_limits<float>::max();
+  float mNorth  = std::numeric_limits<float>::lowest();
+  float mBottom = std::numeric_limits<float>::max();
+  float mTop    = std::numeric_limits<float>::lowest();
+  for (unsigned int i = 0; i < cElements.size(); i++) {
+    IElementBounds* mElementBounds = cElements[i]->getBounds();
+    if (mElementBounds != nullptr) {
+      mWest   = std::min(mWest,   mElementBounds->getWest());
+      mEast   = std::max(mEast,   mElementBounds->getEast());
+      mSouth  = std::min(mSouth,  mElementBounds->getSouth());
+      mNorth  = std::max(mNorth,  mElementBounds->getNorth());
+      mBottom = std::min(mBottom, mElementBounds->getBottom());
+      mTop    = std::max(mTop,    mElementBounds->getTop());
+    }
+  }
+  cStaticBounds = new ElementBounds(mWest, mEast, mSouth, mNorth, mBottom, mTop);
+}
+
+IElementBounds* ElementHandler::getStaticBounds() {
+  return cStaticBounds;
 }

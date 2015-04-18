@@ -88,7 +88,7 @@ bool ResizableDialog::inputDialogContent(SDL_Event& event) {
   switch (event.type) {
     case SDL_MOUSEBUTTONDOWN: {
       if (mouseButtonDown(event)) {
-	return true;
+        return true;
       }
       break;
     }
@@ -97,14 +97,14 @@ bool ResizableDialog::inputDialogContent(SDL_Event& event) {
       bool cWasResizing = cResizing;
       cResizing = false;
       if (cWasResizing) {
-	return true;
+        return true;
       }
       break;
     }
 
     case SDL_MOUSEMOTION: {
       if (mouseMotion(event)) {
-	return true;
+        return true;
       }
       break;
     }

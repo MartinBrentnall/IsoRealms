@@ -1,3 +1,21 @@
+/*
+ * Copyright 2015 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
 #ifndef COMPONENT_RESOURCE_BROWSER_H
 #define COMPONENT_RESOURCE_BROWSER_H
 
@@ -12,19 +30,19 @@
 
 #include "IResourceBrowser.h"
 
-template <class T, class T2> class ComponentResourceBrowser:public RectangularComponent,
-                                                            public IProjectManagerListener,
-                                                            public IResourceListener<T>,
-                                                            public IResourceBrowser<T> {
+template <class TYPE, class ICON> class ComponentResourceBrowser:public RectangularComponent,
+                                                                 public IProjectManagerListener,
+                                                                 public IResourceListener<TYPE>,
+                                                                 public IResourceBrowser<TYPE> {
   private:
   
   class CommandCreateResource:public ICommand {
     private:
     ComponentResourceBrowser* cParent;
-    IResourceType<T>* cType;
+    IResourceType<TYPE>* cType;
     
     public:
-    CommandCreateResource(ComponentResourceBrowser* parent, IResourceType<T>* type) {
+    CommandCreateResource(ComponentResourceBrowser* parent, IResourceType<TYPE>* type) {
       cParent = parent;
       cType = type;
     }
@@ -33,7 +51,7 @@ template <class T, class T2> class ComponentResourceBrowser:public RectangularCo
      * Implements ICommand *
     \***********************/
     void execute() {
-      cType->createResource(cParent->cEditorResources);
+      cType->createResource(cParent->cEditorResources, cParent->cResourceRegistry, cParent->cEditingContext);
     }
   };
   
@@ -51,7 +69,7 @@ template <class T, class T2> class ComponentResourceBrowser:public RectangularCo
     \***********************/
     void execute() {
       if (cParent->cSelected != NULL) {
-	cParent->cSelected->editResource();
+        cParent->cSelected->editResource();
       }
     }    
   };
@@ -70,19 +88,22 @@ template <class T, class T2> class ComponentResourceBrowser:public RectangularCo
     \***********************/
     void execute() {
       if (cParent->cSelected != NULL) {
-	cParent->cSelected->removeResource();
+        cParent->cSelected->removeResource();
       }
     }
   };
   
-  std::map<T*, Icon<T>*> cResourceIcons;
+  IEditingContext* cEditingContext;
+  std::map<TYPE*, Icon<TYPE>*> cResourceIcons;
   IResourceManager* cProjectResources;
-  IResourceAccessor* cEditorResources;
-  Icon<T>* cSelected;
-  std::vector<IResourceSelectionListener<T>*> cListeners;
+  IResourceAccessor* cEditorResources; // TODO: Need to set this!
+  IResourceRegistry* cResourceRegistry;
+  Icon<TYPE>* cSelected;
+  std::vector<IResourceSelectionListener<TYPE>*> cListeners;
   
   public:
-  ComponentResourceBrowser(IResourceAccessor* resources, IResourceManager* projectResources, IProjectManager* projectManager, IResourceLocator* resourceLocator, float padding) : RectangularComponent("Modules/Editor/ResourceManagerDialogs/ComponentResourceBrowser", resources) {
+  ComponentResourceBrowser(IResourceAccessor* resources, IResourceManager* projectResources, IProjectManager* projectManager, IResourceLocator* resourceLocator, IEditingContext* editingContext, float padding) : RectangularComponent("Modules/Editor/ResourceManagerDialogs/ComponentResourceBrowser", resources) {
+    cEditingContext = editingContext;
     cEditorResources = resources;
     cProjectResources = projectResources;
     projectManager->addProjectListener(this);
@@ -93,20 +114,20 @@ template <class T, class T2> class ComponentResourceBrowser:public RectangularCo
     setComponentPadding("icons", padding);
   }
 
-  void addResourceSelectionListener(IResourceSelectionListener<T>* listener) {
+  void addResourceSelectionListener(IResourceSelectionListener<TYPE>* listener) {
     cListeners.push_back(listener);
   }
 
-  void removeResourceSelectionListener(IResourceSelectionListener<T>* listener) {
+  void removeResourceSelectionListener(IResourceSelectionListener<TYPE>* listener) {
     for (unsigned int i = 0; i < cListeners.size(); i++) {
       if (cListeners[i] == listener) {
-	cListeners.erase(cListeners.begin() + i);
-	return;
+        cListeners.erase(cListeners.begin() + i);
+        return;
       }
     }
   }
 
-  void setSelected(Icon<T>* icon) {
+  void setSelected(Icon<TYPE>* icon) {
     if (cSelected != NULL && cSelected != icon) {
       cSelected->setSelected(false);
     }
@@ -119,14 +140,14 @@ template <class T, class T2> class ComponentResourceBrowser:public RectangularCo
   /***********************************\
    * Implements IResourceListener<*> *
   \***********************************/
-  void resourceAdded(T* resource) {
-    Icon<T>* mIcon = new T2(this, resource);
+  void resourceAdded(TYPE* resource) {
+    Icon<TYPE>* mIcon = new ICON(this, resource);
     cResourceIcons[resource] = mIcon;
     addComponent("icons", mIcon);
   }
 
-  void resourceDeleted(T* resource) {
-    Icon<T>* mIcon = cResourceIcons[resource];
+  void resourceDeleted(TYPE* resource) {
+    Icon<TYPE>* mIcon = cResourceIcons[resource];
     removeComponent(mIcon);
     if (mIcon == cSelected) {
       cSelected = NULL;
@@ -135,7 +156,7 @@ template <class T, class T2> class ComponentResourceBrowser:public RectangularCo
     cResourceIcons.erase(resource);
   }
 
-  void resourceTypeAdded(IResourceType<T>* resourceType, const std::string& type) {
+  void resourceTypeAdded(IResourceType<TYPE>* resourceType, const std::string& type) {
     addComponentAction("createResource", type, new CommandCreateResource(this, resourceType));
   }
 
@@ -147,21 +168,21 @@ template <class T, class T2> class ComponentResourceBrowser:public RectangularCo
     cProjectResources->addResourceListener(this);
   }
   
-  void editResource(T* resource) {
-    cProjectResources->editResource(resource, cEditorResources);
+  void editResource(TYPE* resource) {
+    cProjectResources->editResource(resource, cEditorResources, cEditingContext);
   }
   
-  void removeResource(T* resource) {
+  void removeResource(TYPE* resource) {
     cProjectResources->removeResource(resource, cEditorResources);
   }
   
-  void initialise(std::vector<T*> resources) {
+  void initialise(std::vector<TYPE*> resources) {
     for (unsigned int i = 0; i < resources.size(); i++) {
       resourceAdded(resources[i]);
     }
   }
   
-  std::string getResourceLocation(T* resource) {
+  std::string getResourceLocation(TYPE* resource) {
     return cProjectResources->getPath(resource);
   }
 };

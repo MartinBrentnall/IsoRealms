@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-
-<Dialog title="Select Audio File">
-  <Button name="okButton" text="OK" align="bottom right"/>
-  <Button name="cancelButton" text="Cancel" align="bottom" right="leftof okButton"/>
-  <Container name="fileSelector" bottom="above okButton"/>
-</Dialog>

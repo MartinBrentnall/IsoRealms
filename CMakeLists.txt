@@ -17,7 +17,7 @@
 cmake_minimum_required(VERSION 2.6)
 project(Iso-Realms)
 
-set(CMAKE_CXX_FLAGS "-fPIC -Wall -pedantic -g")
+set(CMAKE_CXX_FLAGS "-fPIC -Wall -pedantic -g -std=c++11")
 
 find_package(SDL REQUIRED)
 if(SDL_FOUND)

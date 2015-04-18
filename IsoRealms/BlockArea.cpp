@@ -59,7 +59,7 @@ int BlockArea::getBottom() {
   return cStartLocation.z;
 }
 
-int BlockArea::alligned(int x, int y) {
+bool BlockArea::alligned(int x, int y) {
   return x >= cStartLocation.x && x <= cEndLocation.x && y >= cStartLocation.y && y <= cEndLocation.y;
 }
 

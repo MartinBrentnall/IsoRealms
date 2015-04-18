@@ -33,7 +33,7 @@
 #include <IsoRealms/GUI/ScrollableContainer.h>
 #include <IsoRealms/GUI/TextFieldComponent.h>
 #include <IsoRealms/IComponentContainer.h>
-#include <IsoRealms/PluginRegistry.h>
+#include <IsoRealms/ModuleRegistry.h>
 #include <IsoRealms/ScreenConfiguration.h>
 
 #include "IInstanceSelectionListener.h"
