@@ -88,7 +88,7 @@ class ResourceElementSpindizzyZone:public ISpindizzyZoneType,
   \***************************************/
   IArgumentValue* getArgumentValue(const std::string&);
   
-  ~ResourceElementSpindizzyZone();
+  virtual ~ResourceElementSpindizzyZone();
 };
 
 #endif

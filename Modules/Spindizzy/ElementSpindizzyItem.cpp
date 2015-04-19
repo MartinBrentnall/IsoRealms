@@ -33,6 +33,10 @@ bool ElementSpindizzyItem::isCollected() {
   return cCollected;
 }
 
+IElementContainer* ElementSpindizzyItem::getElementContainer() {
+  return cContainer;
+}
+
 void ElementSpindizzyItem::renderStatic() {
   // Nothing to do.
 }
@@ -122,7 +126,6 @@ BlockArea* ElementSpindizzyItem::getCoverage() {
 }
 
 void ElementSpindizzyItem::setArguments() {
-  std::cout << "Setting item container arguments..." << std::endl;
   cContainer->setArguments();
 }
 

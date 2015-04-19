@@ -50,6 +50,14 @@ ElementSpindizzyCraft::ElementSpindizzyCraft(ISpindizzyGERALDType* elementType) 
   cAppeared = false;
 }
 
+void ElementSpindizzyCraft::setElementContainer(IElementContainer* container) {
+  cContainer = container;
+}
+
+IElementContainer* ElementSpindizzyCraft::getElementContainer() {
+  return cContainer;
+}
+
 void ElementSpindizzyCraft::entered(IBoundary* boundary) {
   // Nothing to do.  TODO: Something to do?
 }

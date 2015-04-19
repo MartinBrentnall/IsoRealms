@@ -88,14 +88,7 @@ void LayerSpindizzyMap::staticChanged() {
 }
 
 void LayerSpindizzyMap::removeElement(IElement* element) {
-//   for (unsigned int i = 0; i < cZones.size(); i++) {
-//     if (cZones[i]->removeElement(element)) {
-//       zoneChanged(cZones[i]);
-//       return cZones[i];
-//     }
-//   }
-//   std::cout << "Warning: Element for removal not found in any zone.  Segmentation fault may follow!" << std::endl;
-//   return NULL;
+  cElementHandler.removeElement(element);
 }
 
 void LayerSpindizzyMap::addArgumentValue(IArgument* argument) {
@@ -112,6 +105,10 @@ void LayerSpindizzyMap::unsetArguments() {
 
 BlockArea* LayerSpindizzyMap::getCoverage() {
   return nullptr;
+}
+
+void LayerSpindizzyMap::setDirty() {
+  cElementHandler.setAllDirty();
 }
 
 bool LayerSpindizzyMap::containsElement(IElement* element) {

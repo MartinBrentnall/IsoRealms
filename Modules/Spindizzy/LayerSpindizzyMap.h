@@ -98,6 +98,7 @@ class LayerSpindizzyMap:public ILayer,
   void unsetArguments();
 
   BlockArea* getCoverage();
+  void setDirty();
   
   /****************************\
    * Implements ISpindizzyMap *

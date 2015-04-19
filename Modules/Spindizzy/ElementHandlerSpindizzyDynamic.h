@@ -37,6 +37,8 @@ class ElementHandlerSpindizzyDynamic:public Element,
   ElementHandlerSpindizzyDynamic(IModuleElementHandlerSpindizzyDynamic*);
 
   void addElement(IElementSpindizzyDynamic*);
+  void removeElement(IElementSpindizzyDynamic*);
+  bool isEmpty();
 
   /***********************\
    * Scripting Interface *
@@ -53,6 +55,7 @@ class ElementHandlerSpindizzyDynamic:public Element,
   /***********************\
    * Implements IElement *
   \***********************/
+  void renderEditing();
   void renderRuntime();
   void updateRuntime(unsigned int);
   IElementType* getElementType();

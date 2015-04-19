@@ -36,6 +36,7 @@ class ISpindizzyLiftSet {
   virtual bool isLocked() = 0;
   virtual bool isEditing() = 0;
   virtual ElementHandlerSpindizzyDynamic* getDynamicElementHandler(IElementContainer*) = 0;
+  virtual void removeElementHandlerSpindizzyDynamic(IElementContainer*) = 0;
 };
 
 #endif

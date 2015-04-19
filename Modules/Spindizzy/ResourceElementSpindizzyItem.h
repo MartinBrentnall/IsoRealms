@@ -77,7 +77,7 @@ class ResourceElementSpindizzyItem:public ISpindizzyJewelType {
   void setDirty(IElement*);
   void destroy(IElement*);
 
-  ~ResourceElementSpindizzyItem();
+  virtual ~ResourceElementSpindizzyItem();
 };
 
 #endif

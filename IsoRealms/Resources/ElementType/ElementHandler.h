@@ -43,6 +43,7 @@ class ElementHandler {
   bool cUpdateStatic;
   GLuint cDisplayList;
   GLuint cEditingDisplayList;
+  bool cDirty;
   std::vector<IElement*> cElements;
   std::vector<IElement*> cDynamicElementsRuntime;
   std::vector<IElement*> cDynamicElementsEditing;

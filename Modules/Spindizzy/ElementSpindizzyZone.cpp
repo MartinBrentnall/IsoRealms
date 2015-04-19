@@ -49,6 +49,17 @@ ElementSpindizzyZone::ElementSpindizzyZone(ISpindizzyZoneType* elementType, DOMN
   cVisited = false;
   cFlagged = false;
 }
+
+ElementSpindizzyZone::ElementSpindizzyZone(ISpindizzyZoneType* elementType, BlockArea* zoneArea) {
+  cZoneType = elementType;
+  cZoneArea = zoneArea;
+  cContainer = nullptr;
+  cZoneTheme = nullptr;
+}
+
+IElementContainer* ElementSpindizzyZone::getElementContainer() {
+  return cContainer;
+}
   
 IElementType* ElementSpindizzyZone::getElementType() {
   return cZoneType;
@@ -66,9 +77,36 @@ bool ElementSpindizzyZone::initElement(unsigned int pass) {
 }
 
 void ElementSpindizzyZone::renderEditing() {
-  cZoneTheme->set();
+  if (cZoneTheme != nullptr) {
+    cZoneTheme->set();
+  }
   cElementHandler.renderEditing();
   cElementHandler.renderStatic();
+
+  float y       = cZoneArea->getSouth()  - IsoRealmsConstants::BLOCK_RADIUS;
+  float ys      = cZoneArea->getNorth()  + IsoRealmsConstants::BLOCK_RADIUS;
+  float x       = cZoneArea->getWest()   - IsoRealmsConstants::BLOCK_RADIUS;
+  float xs      = cZoneArea->getEast()   + IsoRealmsConstants::BLOCK_RADIUS;
+  float z       = cZoneArea->getBottom() * IsoRealmsConstants::BLOCK_HEIGHT - IsoRealmsConstants::BLOCK_HEIGHT;
+  float zs      = cZoneArea->getTop()    * IsoRealmsConstants::BLOCK_HEIGHT;
+  
+  glBindTexture(GL_TEXTURE_2D, 0);
+  glBegin(GL_LINES);
+  glColor3f(0.0f, 1.0f, 0.0f);
+  glVertex3f(xs, ys, z);    glVertex3f(x,  ys, z);
+  glVertex3f(x,  ys, z);    glVertex3f(x,  y,  z);
+  glVertex3f(x,  y,  z);    glVertex3f(xs, y,  z);
+  glVertex3f(xs, y,  z);    glVertex3f(xs, ys, z);
+  glVertex3f(xs, ys, zs);   glVertex3f(x,  ys, zs);
+  glVertex3f(x,  ys, zs);   glVertex3f(x,  y,  zs);
+  glVertex3f(x,  y,  zs);   glVertex3f(xs, y,  zs);
+  glVertex3f(xs, y,  zs);   glVertex3f(xs, ys, zs);
+  glVertex3f(x,  ys, z);    glVertex3f(x,  ys, zs);
+  glVertex3f(x,  y,  z);    glVertex3f(x,  y,  zs);
+  glVertex3f(xs, y,  z);    glVertex3f(xs, y,  zs);
+  glVertex3f(xs, ys, z);    glVertex3f(xs, ys, zs);
+  glColor3f(1.0f, 1.0f, 1.0f);
+  glEnd();
 }
 
 void ElementSpindizzyZone::renderStatic() {
@@ -251,7 +289,6 @@ BlockArea* ElementSpindizzyZone::getCoverage() {
 }
 
 void ElementSpindizzyZone::setArguments() {
-  std::cout << "Setting zone arguments..." << std::endl;
   cZoneType->setZoneArgument(this);
   for (unsigned int i = 0; i < cArguments.size(); i++) {
     cArguments[i]->setValue();

@@ -53,6 +53,8 @@ class ElementSpindizzyLift:public Element,
   // Interfaces
   ISpindizzyLiftType* cLiftType;
   
+  IElementContainer* cContainer;
+  
   // Definition values
   BlockLocation cLocation;
   I3DModel* cLiftModel;
@@ -76,9 +78,10 @@ class ElementSpindizzyLift:public Element,
   Vertex* getBoundaryCrossingPoint(Vertex&, Vertex&, float*, float);
   
   public:
-  ElementSpindizzyLift(ISpindizzyLiftType*, BlockLocation*, I3DModelType*, SpindizzyLiftProperties*, int, int);
+  ElementSpindizzyLift(ISpindizzyLiftType*, BlockLocation*, I3DModelType*, SpindizzyLiftProperties*, int, int, IElementContainer*);
 
   LiftValues getZLocationAfter(int);
+  IElementContainer* getElementContainer();  
   
   /***************************************\
    * Implements IElementSpindizzyDynamic *

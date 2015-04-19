@@ -247,17 +247,17 @@
     <ModelRectangle name="LiftCircleLeft" rotate="Reverse" size="1.300000" texture="Spindizzy/C64Sprites_LiftCircleOne"/>
     <ModelRectangle name="LiftCircleRight" size="1.300000" texture="Spindizzy/C64Sprites_LiftCircleOne"/>
     <ModelRectangle name="LiftCircleFilled" size="1.300000" texture="Spindizzy/C64Sprites_LiftCircleFilled"/>
-    <ModelRectangle name="SwitchDiamondLeft" rotate="Reverse" size="0.900000" texture="Spindizzy/C64HUDSprites_LiftDiamondOne"/>
-    <ModelRectangle name="SwitchDiamondRight" size="0.900000" texture="Spindizzy/C64HUDSprites_LiftDiamondOne"/>
-    <ModelRectangle name="SwitchDiamondFilled" size="0.900000" texture="Spindizzy/C64HUDSprites_LiftDiamondFilled"/>
-    <ModelRectangle name="SwitchSquareEmpty" size="0.900000" texture="Spindizzy/C64HUDSprites_LiftSquareEmpty"/>
-    <ModelRectangle name="SwitchSquareLeft" size="0.900000" texture="Spindizzy/C64HUDSprites_LiftSquareOne"/>
-    <ModelRectangle name="SwitchSquareRight" rotate="Reverse" size="0.900000" texture="Spindizzy/C64HUDSprites_LiftSquareOne"/>
-    <ModelRectangle name="SwitchSquareFilled" size="0.900000" texture="Spindizzy/C64HUDSprites_LiftSquareFilled"/>
-    <ModelRectangle name="SwitchCircleEmpty" size="0.900000" texture="Spindizzy/C64HUDSprites_LiftCircleEmpty"/>
-    <ModelRectangle name="SwitchCircleLeft" rotate="Reverse" size="0.900000" texture="Spindizzy/C64HUDSprites_LiftCircleOne"/>
-    <ModelRectangle name="SwitchCircleRight" size="0.900000" texture="Spindizzy/C64HUDSprites_LiftCircleOne"/>
-    <ModelRectangle name="SwitchCircleFilled" size="0.900000" texture="Spindizzy/C64HUDSprites_LiftCircleFilled"/>
+    <ModelRectangle name="SwitchDiamondLeft" rotate="Reverse" size="1.087500" texture="Spindizzy/C64HUDSprites_LiftDiamondOne"/>
+    <ModelRectangle name="SwitchDiamondRight" size="1.087500" texture="Spindizzy/C64HUDSprites_LiftDiamondOne"/>
+    <ModelRectangle name="SwitchDiamondFilled" size="1.087500" texture="Spindizzy/C64HUDSprites_LiftDiamondFilled"/>
+    <ModelRectangle name="SwitchSquareEmpty" size="0.750000" texture="Spindizzy/C64HUDSprites_LiftSquareEmpty"/>
+    <ModelRectangle name="SwitchSquareLeft" size="0.750000" texture="Spindizzy/C64HUDSprites_LiftSquareOne"/>
+    <ModelRectangle name="SwitchSquareRight" rotate="Reverse" size="0.750000" texture="Spindizzy/C64HUDSprites_LiftSquareOne"/>
+    <ModelRectangle name="SwitchSquareFilled" size="0.750000" texture="Spindizzy/C64HUDSprites_LiftSquareFilled"/>
+    <ModelRectangle name="SwitchCircleEmpty" size="0.975000" texture="Spindizzy/C64HUDSprites_LiftCircleEmpty"/>
+    <ModelRectangle name="SwitchCircleLeft" rotate="Reverse" size="0.975000" texture="Spindizzy/C64HUDSprites_LiftCircleOne"/>
+    <ModelRectangle name="SwitchCircleRight" size="0.975000" texture="Spindizzy/C64HUDSprites_LiftCircleOne"/>
+    <ModelRectangle name="SwitchCircleFilled" size="0.975000" texture="Spindizzy/C64HUDSprites_LiftCircleFilled"/>
     <ModelScriptable name="ModelScriptable">
       <Instance name="PrimarySwitchState"/>
       <Instance name="SecondarySwitchState"/>

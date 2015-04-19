@@ -18,15 +18,24 @@
  */
 #include "ElementSpindizzyEnemy.h"
 
-ElementSpindizzyEnemy::ElementSpindizzyEnemy(IElementType* elementType, BlockLocation* startLocation, I3DModelType* modelType) {
+ElementSpindizzyEnemy::ElementSpindizzyEnemy(IElementType* elementType, BlockLocation* startLocation, I3DModelType* modelType, IElementContainer* container) {
   cEnemyType = elementType;
   cStartLocation = BlockLocation(*startLocation);
   cCurrentLocation = new Vertex(cStartLocation.x, cStartLocation.y, cStartLocation.z);
   cEnemyModel = modelType->createModel(cCurrentLocation);
+  cContainer = container;
+}
+
+IElementContainer* ElementSpindizzyEnemy::getElementContainer() {
+  return cContainer;
 }
 
 IElementType* ElementSpindizzyEnemy::getElementType() {
   return cEnemyType;
+}
+
+void ElementSpindizzyEnemy::renderEditing() {
+  renderRuntime();
 }
 
 void ElementSpindizzyEnemy::renderStatic() {

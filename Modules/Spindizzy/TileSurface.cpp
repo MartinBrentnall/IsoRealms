@@ -98,7 +98,7 @@ void TileSurface::coord(float x, float y) {
 }
 
 void TileSurface::render() {
-  if (cCondition == NULL || cCondition->isTrue()) {
+  if (cCondition == nullptr || cCondition->isTrue()) {
     double xs = cWest - IsoRealmsConstants::BLOCK_RADIUS; // TODO: Rename this
     double ys = cSouth - IsoRealmsConstants::BLOCK_RADIUS; // TODO: Rename this
     double xe = cEast + IsoRealmsConstants::BLOCK_RADIUS; // TODO: Rename this
@@ -237,7 +237,7 @@ Vertex* TileSurface::getBoundaryCrossingPoint(Vertex& start, Vertex& end, float*
   }
 
   // Line doesn't cross boundary
-  return NULL;
+  return nullptr;
 }
 
 bool TileSurface::contains(Vertex& location) {
@@ -253,20 +253,20 @@ bool TileSurface::contains(Vertex& location) {
 }
 
 ICollisionData* TileSurface::getRollingEvent(Vertex& start, Vertex& end) {
-  if (cCondition != NULL && !cCondition->isTrue()) {
+  if (cCondition != nullptr && !cCondition->isTrue()) {
     return new SurfaceCollisionEvent(this, ICollisionData::SURFACE_LEAVE, new Vertex(start), -cWestEastSlope, -cNorthSouthSlope, 0.0f);
   }
   
   float mGradient;
   Vertex* mLeavePoint = getBoundaryCrossingPoint(start, end, &mGradient, INFINITY);
-  if (mLeavePoint != NULL) {
+  if (mLeavePoint != nullptr) {
     return new SurfaceCollisionEvent(this, ICollisionData::SURFACE_LEAVE, mLeavePoint, -cWestEastSlope, -cNorthSouthSlope, mGradient);
   }
-  return NULL;
+  return nullptr;
 }
 
 ICollisionData* TileSurface::getCollision(Vertex& start, Vertex& end) {
-  if (cCondition == NULL || cCondition->isTrue()) {
+  if (cCondition == nullptr || cCondition->isTrue()) {
     if (contains(start)) {
       float mStartDifference = start.z - getHeightAt(start.x, start.y);
       float mEndDifference = end.z - getHeightAt(end.x, end.y);
@@ -279,7 +279,7 @@ ICollisionData* TileSurface::getCollision(Vertex& start, Vertex& end) {
     } else {
       float mGradient;
       Vertex* mEnterPoint = getBoundaryCrossingPoint(start, end, &mGradient, -INFINITY);
-      if (mEnterPoint != NULL) {
+      if (mEnterPoint != nullptr) {
         float mEnterHeight = getHeightAt(mEnterPoint->x, mEnterPoint->y);
         if (mEnterPoint->z <= mEnterHeight && mEnterPoint->z >= mEnterHeight - 0.5f) {
           return new SurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mEnterPoint, -cWestEastSlope, -cNorthSouthSlope, mGradient);
@@ -303,7 +303,7 @@ ICollisionData* TileSurface::getCollision(Vertex& start, Vertex& end) {
   }
 
   // No event
-  return NULL;
+  return nullptr;
 }
 
 float TileSurface::getXAcceleration(float, float) {
@@ -340,12 +340,12 @@ float TileSurface::getSurfaceBounce() {
 
 IRollableSurface::RespawnPossibility TileSurface::getRespawnPossibility() {
   return cBlockTypeProperties->isRespawnAllowed() 
-       ? (cCondition != NULL ? IRollableSurface::CONDITIONAL : IRollableSurface::YES)
+       ? (cCondition != nullptr ? IRollableSurface::CONDITIONAL : IRollableSurface::YES)
        : IRollableSurface::NO;
 }
 
 bool TileSurface::isRespawnPossibleNow() {
-  return cBlockTypeProperties->isRespawnAllowed() && (cCondition == NULL || cCondition->isTrue());
+  return cBlockTypeProperties->isRespawnAllowed() && (cCondition == nullptr || cCondition->isTrue());
 }
 
 void TileSurface::getRestingLocation(Vertex& location) {
@@ -396,7 +396,7 @@ bool TileSurface::alligned(int x, int y) {
 }
 
 TileSurface::~TileSurface() {
-  if (cCondition != NULL) {
-    delete cCondition; // TODO: The surface processor created this... should we really delete it?
+  if (cCondition != nullptr) {
+    // delete cCondition; // TODO: This should be enabled, but double free or corruption needs debugging
   }
 }

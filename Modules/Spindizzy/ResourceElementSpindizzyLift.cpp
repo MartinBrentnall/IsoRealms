@@ -31,7 +31,7 @@ void ResourceElementSpindizzyLift::initialiseResource(DOMNodeWrapper* node, IRes
   BlockLocation mIdentityLocation(0, 0, 0);
   cModelType = resourceAccessor->getModelType(mModelPath);
   cState = resourceAccessor->getBoolean(mStatePath);
-  cSampleLift = new ElementSpindizzyLift(this, &mIdentityLocation, cModelType, cProperties, 0, 0);
+  cSampleLift = new ElementSpindizzyLift(this, &mIdentityLocation, cModelType, cProperties, 0, 0, nullptr);
   cConfigurationComponent = nullptr;
 }
 
@@ -55,7 +55,7 @@ void ResourceElementSpindizzyLift::loadElement(DOMNodeWrapper* node, BlockLocati
   int mLiftTop = node->getIntegerAttribute("top");
   int mLiftBottom = node->getIntegerAttribute("bottom");
   cProperties->setup(node);
-  ElementSpindizzyLift* mLoadedLift = new ElementSpindizzyLift(this, &mStartLocation, cModelType, cProperties, mLiftBottom, mLiftTop);
+  ElementSpindizzyLift* mLoadedLift = new ElementSpindizzyLift(this, &mStartLocation, cModelType, cProperties, mLiftBottom, mLiftTop, container);
   cContent.push_back(mLoadedLift);
   ElementHandlerSpindizzyDynamic* mDynamicElementHandler = cModuleInterface->getDynamicElementHandler(container);
   mDynamicElementHandler->addElement(mLoadedLift);
@@ -71,7 +71,7 @@ bool ResourceElementSpindizzyLift::keyDown(SDLKey& key) {
       } else {
         int mTopRange = *cFirstRange > cEditingLocation->z ? *cFirstRange : cEditingLocation->z;
         int mBottomRange = *cFirstRange > cEditingLocation->z ? cEditingLocation->z : *cFirstRange;
-        ElementSpindizzyLift* mLiftElement = new ElementSpindizzyLift(this, cInsertLocation, cModelType, cProperties, mBottomRange, mTopRange);
+        ElementSpindizzyLift* mLiftElement = new ElementSpindizzyLift(this, cInsertLocation, cModelType, cProperties, mBottomRange, mTopRange, nullptr);
 //        addElement(mLiftElement);
         cContent.push_back(mLiftElement);
         delete cInsertLocation;
@@ -178,4 +178,18 @@ void ResourceElementSpindizzyLift::updateIcon(unsigned int milliseconds) {
 
 void ResourceElementSpindizzyLift::destroy(IElement* element) {
   delete element;
+}
+
+ResourceElementSpindizzyLift::~ResourceElementSpindizzyLift() {
+  delete cSampleLift;
+  for (unsigned int i = 0; i < cContent.size(); i++) {
+    IElementContainer* mContainer = cContent[i]->getElementContainer();
+    ElementHandlerSpindizzyDynamic* mHandler = cModuleInterface->getDynamicElementHandler(mContainer);
+    mHandler->removeElement(cContent[i]);
+    if (mHandler->isEmpty()) {
+      mContainer->removeElement(mHandler);
+      cModuleInterface->removeElementHandlerSpindizzyDynamic(mContainer);
+    }
+    delete cContent[i];
+  }
 }

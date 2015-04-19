@@ -35,6 +35,8 @@ class ElementHandlerItem:public Element,
   ElementHandlerItem(ISpindizzyJewelSet*);
 
   void addElement(ElementSpindizzyItem*);
+  void removeElement(ElementSpindizzyItem*);
+  bool isEmpty();
 
   /***********************\
    * Scripting Interface *

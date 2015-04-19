@@ -26,7 +26,7 @@ void ResourceElementSpindizzyEnemy::initialiseResource(DOMNodeWrapper* node, IRe
   std::string mModelPath = node->getAttribute("model");
   cModelType = resourceAccessor->getModelType(mModelPath);
   BlockLocation mIdentityLocation(0, 0, 0);
-  cSampleEnemy = new ElementSpindizzyEnemy(this, &mIdentityLocation, cModelType);
+  cSampleEnemy = new ElementSpindizzyEnemy(this, &mIdentityLocation, cModelType, nullptr);
 }
 
 void ResourceElementSpindizzyEnemy::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
@@ -36,7 +36,7 @@ void ResourceElementSpindizzyEnemy::save(DOMNodeWriter* node, IResourceLocator* 
 void ResourceElementSpindizzyEnemy::loadElement(DOMNodeWrapper* node, BlockLocation* relative, IElementContainer* container, IResourceAccessor* resources) {
   BlockLocation mLocation;
   mLocation.setRelative(node, *relative);
-  ElementSpindizzyEnemy* mLoadedEnemy = new ElementSpindizzyEnemy(this, &mLocation, cModelType);
+  ElementSpindizzyEnemy* mLoadedEnemy = new ElementSpindizzyEnemy(this, &mLocation, cModelType, container);
   cContent.push_back(mLoadedEnemy);
   ElementHandlerSpindizzyDynamic* mDynamicElementHandler = cModuleInterface->getDynamicElementHandler(container);
   mDynamicElementHandler->addElement(mLoadedEnemy);
@@ -45,7 +45,7 @@ void ResourceElementSpindizzyEnemy::loadElement(DOMNodeWrapper* node, BlockLocat
 bool ResourceElementSpindizzyEnemy::keyDown(SDLKey& key) {
   switch (key) {
     case SDLK_SPACE: {
-      ElementSpindizzyEnemy* mEnemy = new ElementSpindizzyEnemy(this, cEditingLocation, cModelType);
+      ElementSpindizzyEnemy* mEnemy = new ElementSpindizzyEnemy(this, cEditingLocation, cModelType, nullptr);
 //      addElement(mEnemy);
       cContent.push_back(mEnemy);
       return true;
@@ -96,4 +96,18 @@ void ResourceElementSpindizzyEnemy::renderIcon() {
 
 void ResourceElementSpindizzyEnemy::destroy(IElement* element) {
   delete element;
+}
+
+ResourceElementSpindizzyEnemy::~ResourceElementSpindizzyEnemy() {
+  delete cSampleEnemy;
+  for (unsigned int i = 0; i < cContent.size(); i++) {
+    IElementContainer* mContainer = cContent[i]->getElementContainer();
+    ElementHandlerSpindizzyDynamic* mHandler = cModuleInterface->getDynamicElementHandler(mContainer);
+    mHandler->removeElement(cContent[i]);
+    if (mHandler->isEmpty()) {
+      mContainer->removeElement(mHandler);
+      cModuleInterface->removeElementHandlerSpindizzyDynamic(mContainer);
+    }
+    delete cContent[i];
+  }
 }

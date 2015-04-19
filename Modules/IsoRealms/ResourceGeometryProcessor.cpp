@@ -28,7 +28,6 @@ ResourceGeometryProcessor::ResourceGeometryProcessor(IDummyModule* module, DOMNo
 void ResourceGeometryProcessor::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
   cRemoveHiddenSurfaces = node->getBooleanAttribute("removeHiddenSurfaces");
   cCompareOtherContainers = node->getBooleanAttribute("compareOtherContainers");
-  std::cout << "COMPARE OTHER CONTAINERS? " << cCompareOtherContainers << std::endl;
 }
 
 void ResourceGeometryProcessor::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
@@ -57,7 +56,25 @@ void ResourceGeometryProcessor::registerGeometricElement(IGeometricElement* elem
 }
 
 void ResourceGeometryProcessor::unregisterGeometricElement(IGeometricElement* element) {
-//  cGeometricElements.remove(element);
+  BlockArea* mBounds = element->getCoverage();
+  int mSouth = mBounds->getSouth();
+  int mNorth = mBounds->getNorth();
+  int mWest = mBounds->getWest();
+  int mEast = mBounds->getEast();
+  while (SDL_mutexP(cCacheAccessMutex) == -1);
+  std::vector<IndexedGeometricElement*> mIndexedGeometricElements = cGeometricElements.getElements(mSouth, mNorth, mWest, mEast);
+  for (unsigned int i = 0; i < mIndexedGeometricElements.size(); i++) {
+    IGeometricElement* mElement = mIndexedGeometricElements[i]->getGeometricElement();
+    if (mElement == element) {
+      cGeometricElements.remove(mIndexedGeometricElements[i]);
+    }
+    mElement->setDirty();
+  }
+  std::vector<FullTileColumn*> mTileColumns = cTileColumns.getElements(mSouth, mNorth, mWest, mEast);
+  for (unsigned int i = 0; i < mTileColumns.size(); i++) {
+    cTileColumns.remove(mTileColumns[i]);
+  }
+  SDL_mutexV(cCacheAccessMutex);
 }
 
 void ResourceGeometryProcessor::setDirty() {
@@ -83,7 +100,7 @@ ITileSurface* ResourceGeometryProcessor::getSurfaceAt(std::vector<ITileSurface*>
       return surfaces[i];
     }
   }
-  return NULL;
+  return nullptr;
 }
 
 IWallSurface* ResourceGeometryProcessor::findSurfaceAt(std::vector<IWallSurface*> surfaces, int x, int y) {
@@ -95,7 +112,7 @@ IWallSurface* ResourceGeometryProcessor::findSurfaceAt(std::vector<IWallSurface*
       return surfaces[i];
     }
   }
-  return NULL;
+  return nullptr;
 }
 
 int count = 0;
@@ -110,14 +127,14 @@ ResourceGeometryProcessor::FullTileColumn* ResourceGeometryProcessor::getTileCol
     }
   }
   SDL_mutexV(cCacheAccessMutex);
-  return NULL;
+  return nullptr;
 }
 
 Condition* ResourceGeometryProcessor::getSurfaceTileCondition(IGeometricElement* element, int x, int y, ITileSurface::FaceDirection facing) {
   FullTileColumn* mFullTileColumn = getTileColumn(x, y);
-  if (mFullTileColumn == NULL) {
+  if (mFullTileColumn == nullptr) {
     std::vector<TileColumn*> mPossibleTileColumns;
-    mPossibleTileColumns.push_back(new TileColumn(NULL));
+    mPossibleTileColumns.push_back(new TileColumn(nullptr));
     std::vector<IndexedGeometricElement*> mGeometricElements = getGeometricElements(x, y);
 //    std::cout << (count++) << ": " << x << " , " << y << ": " << mGeometricElements.size() << std::endl;
     for (unsigned int i = 0; i < mGeometricElements.size(); i++) {
@@ -127,7 +144,7 @@ Condition* ResourceGeometryProcessor::getSurfaceTileCondition(IGeometricElement*
       Condition* mCondition                      = mGeometricElement->getCondition();
       bool mGhost                                = mGeometricElement->isGhost();
       ITileSurface* mTopSurface = getSurfaceAt(mTopSurfaces, x, y);
-      if (mTopSurface != NULL) {
+      if (mTopSurface != nullptr) {
         ITileSurface* mBottomSurface = getSurfaceAt(mBottomSurfaces, x, y);
         int mTop = mTopSurface->getSurfaceCellHeight(x, y);
         int mBottom = mBottomSurface->getSurfaceCellHeight(x, y);
@@ -137,10 +154,10 @@ Condition* ResourceGeometryProcessor::getSurfaceTileCondition(IGeometricElement*
         
         // Split possible columns into mutually exclusive conditions
         std::vector<TileColumn*> mSplitColumns;
-        if (mCondition != NULL) {
+        if (mCondition != nullptr) {
           for (unsigned int j = 0; j < mPossibleTileColumns.size(); j++) {
             TileColumn* mTileColumn = mPossibleTileColumns[j]->split(mCondition);
-            if (mTileColumn != NULL) {
+            if (mTileColumn != nullptr) {
               mSplitColumns.push_back(mTileColumn);
             }
           }
@@ -151,15 +168,15 @@ Condition* ResourceGeometryProcessor::getSurfaceTileCondition(IGeometricElement*
         bool mTileBlockUsed = false;
         for (unsigned int j = 0; j < mPossibleTileColumns.size(); j++) {
           Condition* mColumnCondition = mPossibleTileColumns[j]->getCondition();
-          bool mIsCompatible = mColumnCondition != NULL ? mColumnCondition->isCompatibleWith(mCondition)
-                             : mCondition != NULL       ? !mCondition->isAbsolute() || mCondition->isTrue()
-                             :                            true;
+          bool mIsCompatible = mColumnCondition != nullptr ? mColumnCondition->isCompatibleWith(mCondition)
+                             : mCondition != nullptr       ? !mCondition->isAbsolute() || mCondition->isTrue()
+                             :                               true;
           if (mIsCompatible) {
             if (mPossibleTileColumns[j]->addTileBlock(mTileBlock, mGhost, mCondition)) {
               mTileBlockUsed = true;
             }
           }
-          if (mColumnCondition != NULL) {
+          if (mColumnCondition != nullptr) {
             delete mColumnCondition;
           }
         }
@@ -173,25 +190,32 @@ Condition* ResourceGeometryProcessor::getSurfaceTileCondition(IGeometricElement*
     cTileColumns.add(mFullTileColumn);
     SDL_mutexV(cCacheAccessMutex);
   }
-  Condition* mComposedCondition = new Condition(false);
+  Condition* mComposedCondition = nullptr;
   std::vector<TileColumn*>* mCachedTileColumn = mFullTileColumn->getTileColumns();
   for (unsigned int i = 0; i < mCachedTileColumn->size(); i++) {
     if ((*mCachedTileColumn)[i]->isTileVisible(element, facing)) {
       Condition* mEnabledCondition = (*mCachedTileColumn)[i]->getCondition();
-      if (mEnabledCondition != NULL) {
+      if (mEnabledCondition != nullptr) {
+        if (mComposedCondition == nullptr) {
+          mComposedCondition = new Condition(false);
+        }
         Condition* mModifiedCondition = mComposedCondition->compose(mEnabledCondition);
         delete mEnabledCondition;
         delete mComposedCondition;
         mComposedCondition = mModifiedCondition;
       } else {
-        delete mComposedCondition;
+        if (mComposedCondition != nullptr) {
+          delete mComposedCondition;
+        }
         mComposedCondition = new Condition(true);
       }
     }
   }
-  if (mComposedCondition->isAbsolute() && mComposedCondition->isTrue()) {
+  if (mComposedCondition != nullptr && mComposedCondition->isAbsolute() && mComposedCondition->isTrue()) {
     delete mComposedCondition;
-    mComposedCondition = NULL;
+    mComposedCondition = nullptr;
+  } else if (mComposedCondition == nullptr) {
+    mComposedCondition = new Condition(false);
   }
   return mComposedCondition;
 }
@@ -206,8 +230,8 @@ bool ResourceGeometryProcessor::inSurface(std::vector<ITileSurfaceTemplate*> sur
 }
 
 bool ResourceGeometryProcessor::safeEquals(Condition* a, Condition* b) {
-  return a == NULL ? b == NULL
-       : b == NULL ? false
+  return a == nullptr ? b == nullptr
+       : b == nullptr ? false
        : *a == *b;
 }
 
@@ -223,14 +247,14 @@ int ResourceGeometryProcessor::getNorth(IGeometricElement* element, std::vector<
       Condition* mTileCondition = getSurfaceTileCondition(element, x, y, faceDirection);
       ITileSurface* mTileSurface = getSurfaceAt(mRawSurfaces, x, y);
       bool mConditionSame = safeEquals(mSurfaceCondition, mTileCondition);
-      if (mTileCondition != NULL) {
+      if (mTileCondition != nullptr) {
         delete mTileCondition;
       }
       bool mSurfaceSame   = mTileSurface == mSurface;
       bool mUsedTile      = inSurface(calculatedSurfaces, x, y); // TODO: Might be able to remove this test
       if (!mConditionSame || !mSurfaceSame || mUsedTile) {
         mSurface->destroyCoverage(mSurfaceCoverage);
-        if (mSurfaceCondition != NULL) {
+        if (mSurfaceCondition != nullptr) {
           delete mSurfaceCondition;
         }
         return y - 1;
@@ -239,7 +263,7 @@ int ResourceGeometryProcessor::getNorth(IGeometricElement* element, std::vector<
   }
   int mNorth = mSurfaceCoverage->getNorth();
   mSurface->destroyCoverage(mSurfaceCoverage);
-  if (mSurfaceCondition != NULL) {
+  if (mSurfaceCondition != nullptr) {
     delete mSurfaceCondition;
   }
   return mNorth;
@@ -255,14 +279,14 @@ int ResourceGeometryProcessor::getEast(IGeometricElement* element, std::vector<I
     Condition* mTileCondition = getSurfaceTileCondition(element, i, y, faceDirection);
     ITileSurface* mTileSurface = getSurfaceAt(mRawSurfaces, i, y);
     bool mConditionSame = safeEquals(mSurfaceCondition, mTileCondition);
-    if (mTileCondition != NULL) {
+    if (mTileCondition != nullptr) {
       delete mTileCondition;
     }
     bool mSurfaceSame   = mTileSurface == mSurface;
     bool mUsedTile      = inSurface(calculatedSurfaces, i, y);
     if (!mConditionSame || !mSurfaceSame || mUsedTile) {
       element->destroyCoverage(mBlockCoverage);
-      if (mSurfaceCondition != NULL) {
+      if (mSurfaceCondition != nullptr) {
         delete mSurfaceCondition;
       }
       return i - 1;
@@ -270,7 +294,7 @@ int ResourceGeometryProcessor::getEast(IGeometricElement* element, std::vector<I
   }
   int mEast = mBlockCoverage->getEast();
   element->destroyCoverage(mBlockCoverage);
-  if (mSurfaceCondition != NULL) {
+  if (mSurfaceCondition != nullptr) {
     delete mSurfaceCondition;
   }
   return mEast;
@@ -284,14 +308,14 @@ std::vector<ITileSurfaceTemplate*> ResourceGeometryProcessor::getTileSurfaces(IG
     for (int x = mBlockCoverage->getWest(); x <= mBlockCoverage->getEast(); x++) {
       Condition* mSurfaceCondition = getSurfaceTileCondition(element, x, y, faceDirection);
       bool mTileOccupied = inSurface(mCalculatedSurfaces, x, y);
-      bool mTileNeeded = mSurfaceCondition == NULL || !mSurfaceCondition->isAbsolute() || mSurfaceCondition->isTrue();
+      bool mTileNeeded = mSurfaceCondition == nullptr || !mSurfaceCondition->isAbsolute() || mSurfaceCondition->isTrue();
 
       if (!mTileOccupied && mTileNeeded) {
         int mEast = getEast(element, mCalculatedSurfaces, x, y, faceDirection);
         int mNorth = getNorth(element, mCalculatedSurfaces, x, mEast, y, faceDirection); 
         ITileSurfaceTemplate* mTileSurfaceTemplate = new TileSurfaceTemplate(mNorth, mEast, y, x, mSurfaceCondition);
         mCalculatedSurfaces.push_back(mTileSurfaceTemplate);
-      } else if (mSurfaceCondition != NULL) {
+      } else if (mSurfaceCondition != nullptr) {
         delete mSurfaceCondition;
       }
     }
@@ -310,7 +334,7 @@ WallColumnPossibility* ResourceGeometryProcessor::getRawWallColumn(IGeometricEle
   int mCellLocation = mFacingPole ? x : y;
   std::vector<IWallSurface*> mWallSurfaces = element->getWallSurfaces(mRowLocation, facing);
   IWallSurface* mWallSurface = findSurfaceAt(mWallSurfaces, x, y);
-  if (mWallSurface != NULL) {
+  if (mWallSurface != nullptr) {
     IWallEdge* mTopEdge = mWallSurface->getTopEdge(mCellLocation);
     IWallEdge* mBottomEdge = mWallSurface->getBottomEdge(mCellLocation);
     Condition* mCondition = element->getCondition();
@@ -321,13 +345,13 @@ WallColumnPossibility* ResourceGeometryProcessor::getRawWallColumn(IGeometricEle
     delete mWallColumn;
     return mPossibility;
   }
-  return NULL;
+  return nullptr;
 }
 
 std::vector<WallColumnPossibility*> ResourceGeometryProcessor::getPhysicalWallColumn(IGeometricElement* element, int x, int y, IWallSurface::FaceDirection facing) {
   WallColumnPossibility* mRawWallColumn = getRawWallColumn(element, x, y, facing);
   std::vector<WallColumnPossibility*> mPhysicalColumns;
-  if (mRawWallColumn == NULL || mRawWallColumn->isSubtraction()) {
+  if (mRawWallColumn == nullptr || mRawWallColumn->isSubtraction()) {
     delete mRawWallColumn;
     return mPhysicalColumns;
   }
@@ -365,7 +389,7 @@ std::vector<WallColumnPossibility*> ResourceGeometryProcessor::getPhysicalWallCo
         std::vector<WallColumnPossibility*> mSplitColumns;
         for (unsigned int j = 0; j < mPhysicalColumns.size(); j++) {
           WallColumnPossibility* mNewPossibility = mPhysicalColumns[j]->split(mCondition);
-          if (mNewPossibility != NULL) {
+          if (mNewPossibility != nullptr) {
             mSplitColumns.push_back(mNewPossibility);
           }
         }
@@ -392,7 +416,7 @@ std::vector<WallColumnPossibility*> ResourceGeometryProcessor::getPhysicalWallCo
   for (unsigned int i = 0; i < mPhysicalColumns.size(); i++) {
     mPhysicalColumns[i]->shaveTop(mHeight, mCondition);
   }
-  if (mCondition != NULL) {
+  if (mCondition != nullptr) {
     delete mCondition;
   }
   return mPhysicalColumns;
@@ -423,7 +447,7 @@ std::vector<WallColumnPossibility*> ResourceGeometryProcessor::getPhysicalWallMa
         std::vector<WallColumnPossibility*> mSplitColumns;
         for (unsigned int j = 0; j < mOpposingMask.size(); j++) {
           WallColumnPossibility* mNewPossibility = mOpposingMask[j]->split(mCondition);
-          if (mNewPossibility != NULL) {
+          if (mNewPossibility != nullptr) {
             mSplitColumns.push_back(mNewPossibility);
           }
         }
@@ -435,7 +459,7 @@ std::vector<WallColumnPossibility*> ResourceGeometryProcessor::getPhysicalWallMa
             mOpposingMask[j]->unite(mOpposingPossibilities[k]);
           }
         }
-        if (mCondition != NULL) {
+        if (mCondition != nullptr) {
           delete mCondition;
         }
         delete mOpposingPossibilities[k];
@@ -475,7 +499,7 @@ std::vector<WallColumnPossibility*> ResourceGeometryProcessor::getOptimisedWallC
     std::vector<WallColumnPossibility*> mSplitColumns;
     for (unsigned int j = 0; j < mWallColumns.size(); j++) {
       WallColumnPossibility* mNewPossibility = mWallColumns[j]->split(mMaskCondition);
-      if (mNewPossibility != NULL) {
+      if (mNewPossibility != nullptr) {
         mSplitColumns.push_back(mNewPossibility);
       }
     }
@@ -488,7 +512,7 @@ std::vector<WallColumnPossibility*> ResourceGeometryProcessor::getOptimisedWallC
         mWallColumns[j]->removeHiddenSections(mWallMasks[i]);
       }
     }
-    if (mMaskCondition != NULL) {
+    if (mMaskCondition != nullptr) {
       delete mMaskCondition;
     }
     delete mWallMasks[i];
@@ -514,7 +538,7 @@ std::vector<WallColumnPossibility*> ResourceGeometryProcessor::getVisibleWallCol
       Condition* mCondition = mWallMask->getCondition();
       for (unsigned int j = 0; j < mWallColumns.size(); j++) {
         WallColumnPossibility* mNewPossibility = mWallColumns[j]->split(mCondition);
-        if (mNewPossibility != NULL) {
+        if (mNewPossibility != nullptr) {
           mSplitColumns.push_back(mNewPossibility);
         }
       }
@@ -527,7 +551,7 @@ std::vector<WallColumnPossibility*> ResourceGeometryProcessor::getVisibleWallCol
           mWallColumns[j]->applyOverlapping(mWallMask);
         }
       }
-      if (mCondition != NULL) {
+      if (mCondition != nullptr) {
         delete mCondition;
       }
     }
@@ -587,7 +611,7 @@ std::vector<IWallSurfaceTemplate*> ResourceGeometryProcessor::getWallSurfaces(IG
             mExtendedConstructionData->push_back(mNewConstructionData);
           }
         }
-        if (mColumnCondition != NULL) {
+        if (mColumnCondition != nullptr) {
           delete mColumnCondition;
         }
         delete mWallColumns[j];

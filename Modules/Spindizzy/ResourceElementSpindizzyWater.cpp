@@ -168,7 +168,10 @@ ResourceElementSpindizzyWater::~ResourceElementSpindizzyWater() {
   }
   delete cSampleWater;
   for (unsigned int i = 0; i < cContent.size(); i++) {
-//    removeElement(cContent[i]);
+    IElementContainer* mContainer = cContent[i]->getElementContainer();
+    mContainer->removeElement(cContent[i]);
+    mContainer->setDirty();
+    cModuleInterface->unregisterSurfaceProvider(cContent[i]);
     delete cContent[i];
   }  
 }

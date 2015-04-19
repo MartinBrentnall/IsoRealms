@@ -115,6 +115,8 @@ class ResourceElementSpindizzyCraft:public ISpindizzyGERALDType,
   ICamera* getCamera();
   void executeRespawnScript();
   void executeFallImpactScript(float, ElementSpindizzyCraft*);
+  
+  virtual ~ResourceElementSpindizzyCraft();
 };
 
 #endif

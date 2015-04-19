@@ -32,6 +32,7 @@ class IElementContainer {
   virtual void setArguments() = 0;
   virtual void unsetArguments() = 0;
   virtual BlockArea* getCoverage() = 0;
+  virtual void setDirty() = 0;
 };
 
 #endif

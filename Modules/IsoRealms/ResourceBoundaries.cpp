@@ -97,12 +97,9 @@ void ResourceBoundaries::notifyMovement(IBoundaryPenetrator* boundaryPenetrator,
   for (int i = mBoundaries.size() - 1; i >= 0; i--) {
     if (mBoundaries[i]->isEntered(start, end)) {
       boundaryPenetrator->entered(mBoundaries[i]);
-      std::cout << "Setting entered script arguments..." << std::endl;
       mBoundaries[i]->setArguments();
       boundaryPenetrator->setArguments();
-      std::cout << "Executing entered script..." << std::endl;
       cEnteredScript->execute();
-      std::cout << "Executed entered script!" << std::endl;
       mBoundaries[i]->unsetArguments();
       boundaryPenetrator->unsetArguments();
     }

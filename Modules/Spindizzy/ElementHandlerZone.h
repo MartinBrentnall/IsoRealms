@@ -36,6 +36,8 @@ class ElementHandlerZone:public Element,
   ElementHandlerZone(IModuleElementHandlerZone*);
 
   void addElement(ElementSpindizzyZone*);
+  void removeElement(ElementSpindizzyZone*);
+  bool isEmpty();
 
   /***********************\
    * Scripting Interface *

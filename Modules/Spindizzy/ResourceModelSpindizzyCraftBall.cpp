@@ -19,7 +19,7 @@
 #include "ResourceModelSpindizzyCraftBall.h"
 
 ResourceModelSpindizzyCraftBall::ResourceModelSpindizzyCraftBall(IDummyModule* module, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
-  cCamera = NULL;
+  cCamera = nullptr;
 }
 
 I3DModel* ResourceModelSpindizzyCraftBall::createModel(Vertex* location, float scale) {

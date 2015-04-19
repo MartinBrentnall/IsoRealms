@@ -52,7 +52,7 @@ template <class T> class SpatialContainer2D {
     int mEast = mBounds->getEast();
     SpatialContainer1D<std::vector<T*> >* mRow = cContainer.getInsertionCell(mSouth, mNorth);
     std::vector<T*>* mCell = mRow->getInsertionCell(mWest, mEast);
-    for (int i = mCell->size(); i >= 0; i--) {
+    for (int i = mCell->size() - 1; i >= 0; i--) {
       if ((*mCell)[i] == element) {
         mCell->erase(mCell->begin() + i);
       }

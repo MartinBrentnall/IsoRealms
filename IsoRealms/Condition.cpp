@@ -338,12 +338,11 @@ Condition* Condition::compose(Condition* condition) {
   }
   Condition* mNewCondition = new Condition(*this);
   if (cAnd) {
-    Condition* mThisCondition = new Condition(*this);
     mNewCondition->cConditions.clear();
     mNewCondition->cElements.clear();
     mNewCondition->cAnd = false;
     mNewCondition->cNegated = false;
-    mNewCondition->cConditions.push_back(mThisCondition);
+    mNewCondition->cConditions.push_back(new Condition(*this));
   }
   mNewCondition->cConditions.push_back(new Condition(*condition));
   mNewCondition->simplify();

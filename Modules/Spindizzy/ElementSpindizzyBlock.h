@@ -246,6 +246,8 @@ class ElementSpindizzyBlock:public ISpindizzyBlock,
   bool isGhost();
   void setDirty();
   IElementContainer* getElementContainer();
+  
+  virtual ~ElementSpindizzyBlock();
 };
 
 #endif

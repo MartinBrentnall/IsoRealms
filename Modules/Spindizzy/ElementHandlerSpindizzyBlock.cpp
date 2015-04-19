@@ -74,6 +74,19 @@ void ElementHandlerSpindizzyBlock::addElement(ElementSpindizzyBlock* element) {
   }
 }
 
+void ElementHandlerSpindizzyBlock::removeElement(ElementSpindizzyBlock* element) {
+  for (unsigned int i = 0; i < cElements.size(); i++) {
+    if (cElements[i] == element) {
+      cElements.erase(cElements.begin() + i);
+      return;
+    }
+  }
+}
+
+bool ElementHandlerSpindizzyBlock::isEmpty() {
+  return cElements.empty();
+}
+
 void ElementHandlerSpindizzyBlock::renderRuntime() {
   for (unsigned int i = 0; i < cElements.size(); i++) {
     cElements[i]->renderRuntime();

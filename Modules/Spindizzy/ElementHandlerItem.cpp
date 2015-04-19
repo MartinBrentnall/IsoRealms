@@ -33,7 +33,6 @@ unsigned int ElementHandlerItem::getCount() {
 }
 
 void ElementHandlerItem::setValue() {
-  std::cout << "Setting item handler argument..." << std::endl;
   cModuleInterface->setArgumentValue(this);
 }
 
@@ -43,6 +42,18 @@ void ElementHandlerItem::unsetValue() {
 
 void ElementHandlerItem::addElement(ElementSpindizzyItem* element) {
   cElements.push_back(element);
+}
+
+void ElementHandlerItem::removeElement(ElementSpindizzyItem* element) {
+  for (unsigned int i = 0; i < cElements.size(); i++) {
+    if (cElements[i] == element) {
+      cElements.erase(cElements.begin() + i);
+    }
+  }  
+}
+
+bool ElementHandlerItem::isEmpty() {
+  return cElements.empty();
 }
 
 void ElementHandlerItem::renderRuntime() {

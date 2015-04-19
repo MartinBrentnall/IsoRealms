@@ -201,7 +201,7 @@ void ResourceElementSpindizzyBlock::renderIcon() {
     cSampleBlock = createBlock(&mIdentityBlockLocation, &mIdentityBlockLocation, cBlockProperties, true, nullptr);
     cSampleBlock->createSampleSurfaces();
   }
-  cSampleBlock->renderStatic();
+  cSampleBlock->renderRuntime();
 }
 
 void ResourceElementSpindizzyBlock::updateIcon(unsigned int milliseconds) {
@@ -245,7 +245,15 @@ ResourceElementSpindizzyBlock::~ResourceElementSpindizzyBlock() {
     delete cConfigurationComponent;
   }
   for (unsigned int i = 0; i < cContent.size(); i++) {
-//    removeElement(cContent[i]);
+    IElementContainer* mContainer = cContent[i]->getElementContainer();
+    ElementHandlerSpindizzyBlock* mHandler = cModuleInterface->getElementHandlerSpindizzyBlock(mContainer);
+    mHandler->removeElement(cContent[i]);
+    if (mHandler->isEmpty()) {
+      mContainer->removeElement(mHandler);
+      cModuleInterface->removeElementHandlerSpindizzyBlock(mContainer);
+    }
+    mContainer->setDirty();
+    cModuleInterface->unregisterSurfaceProvider(cContent[i]);
     delete cContent[i];
   }
 }

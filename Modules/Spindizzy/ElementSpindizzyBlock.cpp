@@ -240,7 +240,9 @@ ISpindizzyWallSurface* ElementSpindizzyBlock::createSubSurface(IWallSurfaceTempl
   ITexture** mTextureBottom                  = getWallTextureBottom(mFaceDirection);
   bool mFlipBottom                           = isWallBottomFlipped(mFaceDirection);
   // TODO: Bottom slope.
-  return new WallSurface(mX, mY, mStartHeight, mLength, mEndHeight, mTopSlope, mFaceDirection, mWallType, mTexture, mTextureTop, mTextureBottom, mFlipBottom, mCondition);
+  // TODO: Delete template condition
+  Condition* mCopyCondition = mCondition != nullptr ? new Condition(*mCondition) : nullptr;
+  return new WallSurface(mX, mY, mStartHeight, mLength, mEndHeight, mTopSlope, mFaceDirection, mWallType, mTexture, mTextureTop, mTextureBottom, mFlipBottom, mCopyCondition);
 }
 
 void ElementSpindizzyBlock::setValue() {
@@ -268,7 +270,7 @@ ISpindizzyWallSurface* ElementSpindizzyBlock::createSampleWallSurface(int locati
   int mBaseHeight = getBottomHeight(mX, mY);
   int mHeight = cSteppedBottom ? (cEndLocation.z - cStartLocation.z) + getMinimumWallElevation(facing)
                                : (getTileSurfaceHeight(mLowestX, mLowestY) + getMinimumWallElevation(facing)) - cStartLocation.z;
-  return new WallSurface(mX, mY, mBaseHeight, mLength, mHeight, mSlope, facing, mWallType, mTexture, mTextureTop, mTextureBottom, mFlipBottom, cCondition);
+  return new WallSurface(mX, mY, mBaseHeight, mLength, mHeight, mSlope, facing, mWallType, mTexture, mTextureTop, mTextureBottom, mFlipBottom, nullptr);
 }
 
 std::vector<IWallSurface*> ElementSpindizzyBlock::getWallSurfaces(int location, IWallSurface::FaceDirection facing) {
@@ -325,11 +327,11 @@ std::vector<IWallSurfaceTemplate*> ElementSpindizzyBlock::calculateWallSurfaces(
 
 void ElementSpindizzyBlock::createSampleSurfaces() {
   ISpindizzyTileSurface* mTopSurface = createSubSurface(ITileSurface::UP, cEndLocation.y, cEndLocation.x, cEndLocation.y, cEndLocation.x, NULL);
-  cStaticTileSurfaces.push_back(mTopSurface);
-  cStaticWallSurfaces.push_back(createSampleWallSurface(cStartLocation.x, IWallSurface::WEST));
-  cStaticWallSurfaces.push_back(createSampleWallSurface(cStartLocation.y, IWallSurface::SOUTH));
-  cStaticWallSurfaces.push_back(createSampleWallSurface(cEndLocation.x,   IWallSurface::EAST));
-  cStaticWallSurfaces.push_back(createSampleWallSurface(cEndLocation.y,   IWallSurface::NORTH));
+  cDynamicTileSurfaces.push_back(mTopSurface);
+  cDynamicWallSurfaces.push_back(createSampleWallSurface(cStartLocation.x, IWallSurface::WEST));
+  cDynamicWallSurfaces.push_back(createSampleWallSurface(cStartLocation.y, IWallSurface::SOUTH));
+  cDynamicWallSurfaces.push_back(createSampleWallSurface(cEndLocation.x,   IWallSurface::EAST));
+  cDynamicWallSurfaces.push_back(createSampleWallSurface(cEndLocation.y,   IWallSurface::NORTH));
 }
 
 void ElementSpindizzyBlock::renderStatic() {
@@ -353,7 +355,12 @@ void ElementSpindizzyBlock::renderStatic() {
     if (!mEditing) {
       delete cStaticWallSurfaces[i];
     }
-  } 
+  }
+  
+  if (mEditing) {
+    cStaticTileSurfaces.clear();
+    cStaticWallSurfaces.clear();
+  }
 }
 
 void ElementSpindizzyBlock::renderRuntime() {
@@ -533,4 +540,20 @@ void ElementSpindizzyBlock::save(DOMNodeWriter* node, IResourceLocator* resource
     DOMNodeWriter* mConditionNode = node->addBranch("Condition");
     cCondition->save(mConditionNode);
   }
+}
+
+ElementSpindizzyBlock::~ElementSpindizzyBlock() {
+  for (unsigned int i = 0; i < cStaticTileSurfaces.size(); i++) {
+    delete cStaticTileSurfaces[i];
+  }
+  for (unsigned int i = 0; i < cStaticWallSurfaces.size(); i++) {
+    delete cStaticWallSurfaces[i];
+  }
+  for (unsigned int i = 0; i < cDynamicTileSurfaces.size(); i++) {
+    delete cDynamicTileSurfaces[i];
+  }
+  for (unsigned int i = 0; i < cDynamicWallSurfaces.size(); i++) {
+    delete cDynamicWallSurfaces[i];
+  }
+//  delete cCondition;
 }

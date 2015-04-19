@@ -41,7 +41,7 @@ int TileSplitSurface::getSurfaceCellElevation(int x, int y) {
 }
 
 void TileSplitSurface::render() {
-  if (cCondition == NULL || cCondition->isTrue()) {
+  if (cCondition == nullptr || cCondition->isTrue()) {
     float mNorthWest = (cLocation.z + cCornerHeights[0][1]) * IsoRealmsConstants::BLOCK_HEIGHT;
     float mNorthEast = (cLocation.z + cCornerHeights[1][1]) * IsoRealmsConstants::BLOCK_HEIGHT;
     float mSouthEast = (cLocation.z + cCornerHeights[1][0]) * IsoRealmsConstants::BLOCK_HEIGHT;
@@ -147,7 +147,7 @@ Vertex* TileSplitSurface::getSplitCrossingPoint(Vertex& start, Vertex& end, floa
       return new Vertex(nextafterf(mXLocation, mXDirection), nextafterf(mYLocation, mYDirection), mZLocation);
     }
   }
-  return NULL;
+  return nullptr;
 }
 
 float TileSplitSurface::getXAcceleration(float x, float y) {
@@ -202,12 +202,12 @@ float TileSplitSurface::getSurfaceBounce() {
 
 IRollableSurface::RespawnPossibility TileSplitSurface::getRespawnPossibility() {
   return cBlockTypeProperties->isRespawnAllowed() 
-       ? (cCondition != NULL ? IRollableSurface::CONDITIONAL : IRollableSurface::YES)
+       ? (cCondition != nullptr ? IRollableSurface::CONDITIONAL : IRollableSurface::YES)
        : IRollableSurface::NO;
 }
 
 bool TileSplitSurface::isRespawnPossibleNow() {
-  return cBlockTypeProperties->isRespawnAllowed() && (cCondition == NULL || cCondition->isTrue());
+  return cBlockTypeProperties->isRespawnAllowed() && (cCondition == nullptr || cCondition->isTrue());
 }
 
 Vertex* TileSplitSurface::getBoundaryCrossingPoint(Vertex& start, Vertex& end, float* mLowestGradient, float infinity) {
@@ -278,7 +278,7 @@ Vertex* TileSplitSurface::getBoundaryCrossingPoint(Vertex& start, Vertex& end, f
   }
 
   // Line doesn't cross boundary
-  return NULL;
+  return nullptr;
 }
 
 bool TileSplitSurface::inNorthSplit(float x, float y) {
@@ -304,7 +304,7 @@ ICollisionData* TileSplitSurface::getImpactCollision(Vertex& start, Vertex& end,
       }
     }
   }
-  return NULL;
+  return nullptr;
 }
 
 void TileSplitSurface::confine(double* x, double* y) {
@@ -317,7 +317,7 @@ void TileSplitSurface::confine(double* x, double* y) {
 }
 
 ICollisionData* TileSplitSurface::getCollision(Vertex& start, Vertex& end) {
-  if (cCondition == NULL || cCondition->isTrue()) {
+  if (cCondition == nullptr || cCondition->isTrue()) {
     if (contains(start)) {
       Vertex* mEnterPoint = new Vertex(start);
       confine(&(mEnterPoint->x), &(mEnterPoint->y));
@@ -326,7 +326,7 @@ ICollisionData* TileSplitSurface::getCollision(Vertex& start, Vertex& end) {
   
     float mGradient;
     Vertex* mEnterPoint = getBoundaryCrossingPoint(start, end, &mGradient, -INFINITY);
-    if (mEnterPoint != NULL) {
+    if (mEnterPoint != nullptr) {
       float mEnterHeight = getHeightAt(mEnterPoint->x, mEnterPoint->y);
       if (mEnterPoint->z <= mEnterHeight && mEnterPoint->z >= mEnterHeight - 0.5f) {
         confine(&(mEnterPoint->x), &(mEnterPoint->y));
@@ -336,33 +336,33 @@ ICollisionData* TileSplitSurface::getCollision(Vertex& start, Vertex& end) {
     }
 
     ICollisionData* mImpact = getImpactCollision(start, end, true);
-    if (mImpact != NULL) {
+    if (mImpact != nullptr) {
       return mImpact;
     }
     return getImpactCollision(start, end, false);
   }
   
   // No event
-  return NULL;
+  return nullptr;
 }
 
 ICollisionData* TileSplitSurface::getRollingEvent(Vertex& start, Vertex& end) {
-  if (cCondition != NULL && !cCondition->isTrue()) {
+  if (cCondition != nullptr && !cCondition->isTrue()) {
     return new SurfaceCollisionEvent(this, ICollisionData::SURFACE_LEAVE, new Vertex(start), getXAcceleration(start.x, start.y), getYAcceleration(start.x, start.y), 0.0f);
   }
   
   float mGradient;
   Vertex* mLeavePoint = getSplitCrossingPoint(start, end, &mGradient);
-  if (mLeavePoint != NULL) {
+  if (mLeavePoint != nullptr) {
     confine(&(mLeavePoint->x), &(mLeavePoint->y));
     return new SurfaceCollisionEvent(this, ICollisionData::SURFACE_LEAVE, mLeavePoint, getXAcceleration(start.x, start.y), getYAcceleration(start.x, start.y), mGradient);
   }
 
   mLeavePoint = getBoundaryCrossingPoint(start, end, &mGradient, INFINITY);
-  if (mLeavePoint != NULL) {
+  if (mLeavePoint != nullptr) {
     return new SurfaceCollisionEvent(this, ICollisionData::SURFACE_LEAVE, mLeavePoint, getXAcceleration(start.x, start.y), getYAcceleration(start.x, start.y), mGradient);
   }
-  return NULL;
+  return nullptr;
 }
 
 void TileSplitSurface::getRestingLocation(Vertex& location) {
@@ -399,7 +399,7 @@ BlockArea* TileSplitSurface::getBounds() {
 }
 
 TileSplitSurface::~TileSplitSurface() {
-  if (cCondition != NULL) {
-    delete cCondition; // TODO: The surface processor created this... should we really delete it?
+  if (cCondition != nullptr) {
+    // delete cCondition; // TODO: This should be enabled, but double free or corruption needs debugging
   }
 }

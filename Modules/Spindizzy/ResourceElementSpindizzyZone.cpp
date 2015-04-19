@@ -56,6 +56,9 @@ void ResourceElementSpindizzyZone::initialiseResource(DOMNodeWrapper* node, IRes
   cFlagModelType = resources->getModelType(mPathFlagModel);
   cBoundaries = resources->getBoundaries(mPathBoundaries);
   cBoundaries->registerArgumentValuesBoundaries(this);
+  BlockLocation mZoneLocation(0, 0, 0);
+  BlockArea* mZoneArea = new BlockArea(mZoneLocation, mZoneLocation);
+  cSampleZone = new ElementSpindizzyZone(this, mZoneArea);
 }
 
 void ResourceElementSpindizzyZone::save(DOMNodeWriter* node, IResourceLocator* locator) {
@@ -89,7 +92,13 @@ void ResourceElementSpindizzyZone::updateIcon(unsigned int milliseconds) {
 }
 
 void ResourceElementSpindizzyZone::renderIcon() {
-  // TODO: Render some kind of icon
+  glTranslatef(0.0f, 0.3f, 0.0f);
+  glRotatef(-55.0f, 1.0f, 0.0f, 0.0f);
+  glRotatef(-45.0f, 0.0f, 0.0f, 1.0f); // TODO: Must get this right; check with how the editor is doing it!
+  // TODO: Scale the icon
+  glScalef(1.3f, 1.3f, 1.3f);
+  glColor3f(1.0f, 1.0f, 1.0f);
+  cSampleZone->renderEditing();
 }
 
 void ResourceElementSpindizzyZone::setDirty(IElement* element) {
@@ -99,10 +108,21 @@ void ResourceElementSpindizzyZone::destroy(IElement* element) {
   delete element;
 }
 
-ResourceElementSpindizzyZone::~ResourceElementSpindizzyZone() {
-  // TODO: Remove zone content
-}
-
 IArgumentValue* ResourceElementSpindizzyZone::getArgumentValue(const std::string& argument) {
   return cModuleInterface->getArgumentValue(argument);
 }
+
+ResourceElementSpindizzyZone::~ResourceElementSpindizzyZone() {
+  delete cSampleZone;
+  for (unsigned int i = 0; i < cContent.size(); i++) {
+    IElementContainer* mContainer = cContent[i]->getElementContainer();
+    ElementHandlerZone* mHandler = cModuleInterface->getZoneElementHandler(mContainer);
+    mHandler->removeElement(cContent[i]);
+    if (mHandler->isEmpty()) {
+      mContainer->removeElement(mHandler);
+      cModuleInterface->removeElementHandlerZone(mContainer);
+    }
+    delete cContent[i];
+  }
+}
+

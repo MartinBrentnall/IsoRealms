@@ -33,6 +33,7 @@ ResourceElementSpindizzyCraft::ResourceElementSpindizzyCraft(ISpindizzyGERALDSet
       resourceRegistry->add(mCraftInstance, mNode);
       resourceRegistry->add(mCraftLocation, mName);
       resourceRegistry->add(mArgumentValue, "GERALD", mName);
+      cContent.push_back(mCraftInstance);
     }
   }
 }
@@ -82,7 +83,9 @@ void ResourceElementSpindizzyCraft::loadElement(DOMNodeWrapper* node, BlockLocat
     ElementSpindizzyCraft* mLoadedGERALD = new ElementSpindizzyCraft(this, cResources, node);
     cContent.push_back(mLoadedGERALD);
   } else {
-    container->addElement(cNamedInstances[mInstance]);
+    ElementSpindizzyCraft* mCraftInstance = cNamedInstances[mInstance];
+    mCraftInstance->setElementContainer(container);
+    container->addElement(mCraftInstance);
   }
 }
 
@@ -266,4 +269,13 @@ std::string ResourceElementSpindizzyCraft::getInstanceName(ElementSpindizzyCraft
     }
   }
   return "";
+}
+
+ResourceElementSpindizzyCraft::~ResourceElementSpindizzyCraft() {
+  delete cSampleGERALD;
+  for (unsigned int i = 0; i < cContent.size(); i++) {
+    IElementContainer* mContainer = cContent[i]->getElementContainer();
+    mContainer->removeElement(cContent[i]);
+    delete cContent[i];
+  }  
 }

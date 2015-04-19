@@ -22,6 +22,7 @@ ElementHandler::ElementHandler() {
   cUpdateStatic = false;
   cSpawnThreads = false;
   cStaticBounds = new ElementBounds(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+  cDirty = false;
 }
 
 void ElementHandler::setMultiThreaded(bool multiThreaded) {
@@ -45,7 +46,31 @@ void ElementHandler::addElement(IElement* element) {
 }
 
 void ElementHandler::removeElement(IElement* element) {
-  // TODO: Implement this
+  for (unsigned int i = 0; i < cElements.size(); i++) {
+    if (cElements[i] == element) {
+      cElements.erase(cElements.begin() + i);
+    }
+  }
+  for (unsigned int i = 0; i < cDynamicElementsRuntime.size(); i++) {
+    if (cDynamicElementsRuntime[i] == element) {
+      cDynamicElementsRuntime.erase(cDynamicElementsRuntime.begin() + i);
+    }
+  }
+  for (unsigned int i = 0; i < cDynamicElementsEditing.size(); i++) {
+    if (cDynamicElementsEditing[i] == element) {
+      cDynamicElementsEditing.erase(cDynamicElementsEditing.begin() + i);
+    }
+  }
+  for (unsigned int i = 0; i < cVisualElementsRuntime.size(); i++) {
+    if (cVisualElementsRuntime[i] == element) {
+      cVisualElementsRuntime.erase(cVisualElementsRuntime.begin() + i);
+    }
+  }
+  for (unsigned int i = 0; i < cVisualElementsEditing.size(); i++) {
+    if (cVisualElementsEditing[i] == element) {
+      cVisualElementsEditing.erase(cVisualElementsEditing.begin() + i);
+    }
+  }
 }
 
 void ElementHandler::setAllDirty() {
@@ -53,6 +78,7 @@ void ElementHandler::setAllDirty() {
   for (unsigned int i = 0; i < cDirtyElements.size(); i++) {
     cDirtyElements[i]->setDirty();
   }
+  cDirty = true;
 }
 
 void ElementHandler::setDirty(IElement* element) {
@@ -70,7 +96,7 @@ void ElementHandler::setDirty(IElement* element) {
 }
 
 bool ElementHandler::isDirty() {
-  return !cDirtyElements.empty();
+  return !cDirtyElements.empty() || cDirty;
 }
 
 bool ElementHandler::contains(IElement* element) {
@@ -190,6 +216,9 @@ bool ElementHandler::initSingleThreaded() {
     mPass++;
   }
   staticChanged();
+  if (cDirtyElements.empty()) {
+    cDirty = false;
+  }
   return cDirtyElements.empty();
 }
 
@@ -243,6 +272,9 @@ void ElementHandler::renderRuntime() {
 }
 
 void ElementHandler::renderEditing() {
+  if (isDirty()) {
+    init(0, true);
+  }
   for (unsigned int i = 0; i < cVisualElementsEditing.size(); i++) {
     cVisualElementsEditing[i]->renderEditing();
   }

@@ -30,6 +30,7 @@ class ISpindizzyEnemySet {
   virtual bool isLocked() = 0;
   virtual void registerElement(IElementContainer*, ElementSpindizzyEnemy*) = 0;
   virtual ElementHandlerSpindizzyDynamic* getDynamicElementHandler(IElementContainer*) = 0;
+  virtual void removeElementHandlerSpindizzyDynamic(IElementContainer*) = 0;
 };
 
 #endif

@@ -80,6 +80,8 @@ class ResourceElementSpindizzyLift:public ISpindizzyLiftType {
   void renderIcon();
   void updateIcon(unsigned int);
   void destroy(IElement*);
+  
+  virtual ~ResourceElementSpindizzyLift();
 };
 
 #endif

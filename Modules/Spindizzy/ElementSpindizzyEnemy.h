@@ -32,14 +32,17 @@ class ElementSpindizzyEnemy:public Element,
                             public IElementSpindizzyDynamic {
   private:
   IElementType* cEnemyType;
+  IElementContainer* cContainer;
   BlockLocation cStartLocation;
   Vertex* cCurrentLocation;
   I3DModel* cEnemyModel;
 
   public:
-  ElementSpindizzyEnemy(IElementType*, BlockLocation*, I3DModelType*);
-  ElementSpindizzyEnemy(IElementType*, DOMNodeWrapper*, BlockLocation*);
+  ElementSpindizzyEnemy(IElementType*, BlockLocation*, I3DModelType*, IElementContainer*);
+  ElementSpindizzyEnemy(IElementType*, DOMNodeWrapper*, BlockLocation*, IElementContainer*);
 
+  IElementContainer* getElementContainer();
+  
   /***************************************\
    * Implements IElementSpindizzyDynamic *
   \***************************************/
@@ -49,6 +52,7 @@ class ElementSpindizzyEnemy:public Element,
    * Implements IElement *
   \***********************/
   IElementType* getElementType();
+  void renderEditing();
   void renderStatic();
   void renderRuntime();
   void updateRuntime(unsigned int milliseconds);

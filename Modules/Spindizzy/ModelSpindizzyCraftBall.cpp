@@ -37,23 +37,25 @@ void ModelSpindizzyCraftBall::update(unsigned int milliseconds) {
 }
 
 void ModelSpindizzyCraftBall::render() {
-//   float mBallWidth = 0.33f;
-//   float mBallHeight = 0.33f;
-// 
-//   glTranslatef(cLocation->x, cLocation->y, cLocation->z * IsoRealmsConstants::BLOCK_HEIGHT + mBallHeight);
-//   float mAngle = cCamera->getAngle();
-//   float mTilt = cCamera->getTilt();
-//   glRotatef(-mAngle + 90.0f, 0.0f, 0.0f, 1.0f);
-//   glRotatef(mTilt, 0.0f, 1.0f, 0.0f);
-//   glEnable(GL_ALPHA_TEST);
-//   cTexture->set();
-//   glBegin(GL_QUADS);
-//   glTexCoord2f(1.0f, 1.0f); glVertex3f(0.0f + mBallHeight, 0.0f + mBallWidth, 0.0f);
-//   glTexCoord2f(0.0f, 1.0f); glVertex3f(0.0f - mBallHeight, 0.0f + mBallWidth, 0.0f);
-//   glTexCoord2f(0.0f, 0.0f); glVertex3f(0.0f - mBallHeight, 0.0f - mBallWidth, 0.0f);
-//   glTexCoord2f(1.0f, 0.0f); glVertex3f(0.0f + mBallHeight, 0.0f - mBallWidth, 0.0f);
-//   glEnd();
-//   glDisable(GL_ALPHA_TEST);
+  float mBallWidth = 0.33f;
+  float mBallHeight = 0.33f;
+
+  glTranslatef(cLocation->x, cLocation->y, cLocation->z * IsoRealmsConstants::BLOCK_HEIGHT + mBallHeight);
+  if (cCamera != nullptr) {
+    float mAngle = cCamera->getAngle();
+    float mTilt = cCamera->getTilt();
+    glRotatef(-mAngle + 90.0f, 0.0f, 0.0f, 1.0f);
+    glRotatef(mTilt, 0.0f, 1.0f, 0.0f);
+  }
+  glEnable(GL_ALPHA_TEST);
+  cTexture->set();
+  glBegin(GL_QUADS);
+  glTexCoord2f(1.0f, 1.0f); glVertex3f(0.0f + mBallHeight, 0.0f + mBallWidth, 0.0f);
+  glTexCoord2f(0.0f, 1.0f); glVertex3f(0.0f - mBallHeight, 0.0f + mBallWidth, 0.0f);
+  glTexCoord2f(0.0f, 0.0f); glVertex3f(0.0f - mBallHeight, 0.0f - mBallWidth, 0.0f);
+  glTexCoord2f(1.0f, 0.0f); glVertex3f(0.0f + mBallHeight, 0.0f - mBallWidth, 0.0f);
+  glEnd();
+  glDisable(GL_ALPHA_TEST);
 }
 
 void ModelSpindizzyCraftBall::renderCircle(float radius, IColour* colour) {

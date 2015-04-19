@@ -46,6 +46,24 @@ void ElementHandlerSpindizzyDynamic::addElement(IElementSpindizzyDynamic* elemen
   cElements.push_back(element);
 }
 
+void ElementHandlerSpindizzyDynamic::removeElement(IElementSpindizzyDynamic* element) {
+  for (unsigned int i = 0; i < cElements.size(); i++) {
+    if (cElements[i] == element) {
+      cElements.erase(cElements.begin() + i);
+    }
+  }
+}
+
+bool ElementHandlerSpindizzyDynamic::isEmpty() {
+  return cElements.empty();
+}
+
+void ElementHandlerSpindizzyDynamic::renderEditing() {
+  for (unsigned int i = 0; i < cElements.size(); i++) {
+    cElements[i]->renderEditing();
+  }
+}
+
 void ElementHandlerSpindizzyDynamic::renderRuntime() {
   if (cVisibility > 0.0f) {
     glEnable(GL_BLEND);

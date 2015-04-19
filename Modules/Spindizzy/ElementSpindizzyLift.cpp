@@ -18,7 +18,7 @@
  */
 #include "ElementSpindizzyLift.h"
 
-ElementSpindizzyLift::ElementSpindizzyLift(ISpindizzyLiftType* elementType, BlockLocation* location, I3DModelType* modelType, SpindizzyLiftProperties* properties, int bottom, int top) {
+ElementSpindizzyLift::ElementSpindizzyLift(ISpindizzyLiftType* elementType, BlockLocation* location, I3DModelType* modelType, SpindizzyLiftProperties* properties, int bottom, int top, IElementContainer* container) {
   cLiftType    = elementType;
   cTopDelay    = properties->getTopDelay();
   cBottomDelay = properties->getBottomDelay();
@@ -31,6 +31,7 @@ ElementSpindizzyLift::ElementSpindizzyLift(ISpindizzyLiftType* elementType, Bloc
   cLiftValues.cLocation.y = cLocation.y;
   cLiftValues.cLocation.z = cLocation.z;
   cLiftModel   = modelType->createModel(&cLiftValues.cLocation);
+  cContainer   = container;
   reset();
 }
 
@@ -60,6 +61,7 @@ void ElementSpindizzyLift::renderEditingArrow() {
 }
 
 void ElementSpindizzyLift::renderEditing() {
+  renderRuntime();
   glBindTexture(GL_TEXTURE_2D, 0);
   glColor3f(1.0, 1.0, 0.0);
   glLineWidth(3.0);
@@ -157,6 +159,10 @@ ElementSpindizzyLift::LiftValues ElementSpindizzyLift::getZLocationAfter(int mil
     }
   }
   return mLift;
+}
+
+IElementContainer* ElementSpindizzyLift::getElementContainer() {
+  return cContainer;
 }
 
 void ElementSpindizzyLift::updateRuntime(unsigned int milliseconds) {

@@ -158,9 +158,13 @@ void ResourceElementSpindizzyItem::destroy(IElement* jewel) {
 ResourceElementSpindizzyItem::~ResourceElementSpindizzyItem() {
   delete cSampleJewel;
   for (unsigned int i = 0; i < cContent.size(); i++) {
-//    ISimpleModel* mJewelModelInstance = cContent[i]->getModel();
-// TODO: Destroy the model    cJewelModelType->destroyModel(mJewelModelInstance);
-//    removeElement(cContent[i]);
+    IElementContainer* mContainer = cContent[i]->getElementContainer();
+    ElementHandlerItem* mHandler = cModuleInterface->getItemElementHandler(mContainer);
+    mHandler->removeElement(cContent[i]);
+    if (mHandler->isEmpty()) {
+      mContainer->removeElement(mHandler);
+      cModuleInterface->removeElementHandlerItem(mContainer);
+    }
     delete cContent[i];
   }
 }

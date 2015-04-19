@@ -198,6 +198,7 @@ class SpindizzyModule:public IModule,
   void staticChanged();
   SpindizzyBlockState* getBlockState(IBoolean*);
   ElementHandlerSpindizzyBlock* getElementHandlerSpindizzyBlock(IElementContainer*);
+  void removeElementHandlerSpindizzyBlock(IElementContainer*);
   void setArgumentValue(ElementHandlerSpindizzyBlock*);
 
   /*********************************\
@@ -210,6 +211,7 @@ class SpindizzyModule:public IModule,
   \*********************************/
   void itemCollected();
   ElementHandlerItem* getItemElementHandler(IElementContainer*);
+  void removeElementHandlerItem(IElementContainer*);
   void setArgumentValue(ElementHandlerItem*);
   
   /********************************\
@@ -225,6 +227,7 @@ class SpindizzyModule:public IModule,
   \***********************************/
   SpindizzyZoneTheme* getTheme(const std::string&);
   ElementHandlerZone* getZoneElementHandler(IElementContainer*);
+  void removeElementHandlerZone(IElementContainer*);
   bool isOverview();
   IArgumentValue* getArgumentValue(const std::string&);
   void setArgumentValue(ElementSpindizzyZone*);
@@ -263,6 +266,7 @@ class SpindizzyModule:public IModule,
   bool isEditing();
   bool isLocked();
   ElementHandlerSpindizzyDynamic* getDynamicElementHandler(IElementContainer*);
+  void removeElementHandlerSpindizzyDynamic(IElementContainer*);
 };
 
 #endif

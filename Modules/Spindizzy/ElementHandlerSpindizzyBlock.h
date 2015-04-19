@@ -37,6 +37,8 @@ class ElementHandlerSpindizzyBlock:public Element,
   ElementHandlerSpindizzyBlock(ISpindizzyBlockSet*);
 
   void addElement(ElementSpindizzyBlock*);
+  void removeElement(ElementSpindizzyBlock*);
+  bool isEmpty();
 
   /***********************\
    * Scripting Interface *

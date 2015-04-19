@@ -69,6 +69,9 @@ class ElementSpindizzyZone:public Element,
   
   public:
   ElementSpindizzyZone(ISpindizzyZoneType*, DOMNodeWrapper*, BlockLocation*, IResourceAccessor*, I3DModelType*, IElementContainer*);
+  ElementSpindizzyZone(ISpindizzyZoneType*, BlockArea*);
+  
+  IElementContainer* getElementContainer();
   
   void setVisited();
   bool isVisited();

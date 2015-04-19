@@ -64,6 +64,8 @@ class ElementSpindizzyCraft:public Element,
   // Interfaces
   ISpindizzyGERALDType* cCraftType;
   
+  IElementContainer* cContainer;
+  
   // User inputs
   bool* cPressedForward;
   bool* cPressedRight;
@@ -134,6 +136,9 @@ class ElementSpindizzyCraft:public Element,
   ElementSpindizzyCraft(ISpindizzyGERALDType*, IResourceAccessor*, BlockLocation*);
   ElementSpindizzyCraft(ISpindizzyGERALDType*);
 
+  void setElementContainer(IElementContainer*);
+  IElementContainer* getElementContainer();
+  
   void setModel(I3DModelType*);
   
 //  void checkCurrentZoneEvents(Vertex&, Vertex&);

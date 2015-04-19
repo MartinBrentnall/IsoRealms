@@ -64,6 +64,10 @@ BlockArea* ResourceModelElement::getCoverage() {
   return nullptr;
 }
 
+void ResourceModelElement::setDirty() {
+  // Nothing to do
+}
+
 void ResourceModelElement::updateIcon(unsigned int milliseconds) {
   cSampleModel->update(milliseconds);
 }

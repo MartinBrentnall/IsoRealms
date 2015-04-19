@@ -29,6 +29,7 @@ class ISpindizzyJewelSet {
   virtual bool isEditing() = 0;
   virtual void itemCollected() = 0;
   virtual ElementHandlerItem* getItemElementHandler(IElementContainer*) = 0;
+  virtual void removeElementHandlerItem(IElementContainer*) = 0;
   virtual void setArgumentValue(ElementHandlerItem*) = 0;
 };
 

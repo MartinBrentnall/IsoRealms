@@ -149,7 +149,7 @@ void WallColumnPossibility::shaveTop(int height, Condition* condition) {
   for (int i = cSegments.size() - 1; i >= 0; i--) {
     // TODO: This should not only be based on the start bottom height, but also the end bottom height aswell.
     int mWallBottom = cSegments[i]->getBottomHeightStart();
-    if (mWallBottom >= height && !condition->isCompatibleWith(cCondition)) {
+    if (mWallBottom >= height && condition != nullptr && !condition->isCompatibleWith(cCondition)) {
       delete cSegments[i];
       cSegments.erase(cSegments.begin() + i);
     }

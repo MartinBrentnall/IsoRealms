@@ -306,6 +306,15 @@ ElementHandlerSpindizzyBlock* SpindizzyModule::getElementHandlerSpindizzyBlock(I
   return cElementHandlersSpindizzyBlock[container];
 }
 
+void SpindizzyModule::removeElementHandlerSpindizzyBlock(IElementContainer* container) {
+  std::map<IElementContainer*, ElementHandlerSpindizzyBlock*>::iterator i = cElementHandlersSpindizzyBlock.find(container);
+  if (i == cElementHandlersSpindizzyBlock.end()) {
+    ElementHandlerSpindizzyBlock* mHandler = i->second;
+    delete mHandler;
+    cElementHandlersSpindizzyBlock.erase(container);
+  }
+}
+
 ElementHandlerItem* SpindizzyModule::getItemElementHandler(IElementContainer* container) {
   std::map<IElementContainer*, ElementHandlerItem*>::iterator i = cItemElementHandlers.find(container);
   if (i == cItemElementHandlers.end()) {
@@ -315,6 +324,15 @@ ElementHandlerItem* SpindizzyModule::getItemElementHandler(IElementContainer* co
     container->addArgumentValue(mItemElementHandler);
   }
   return cItemElementHandlers[container];
+}
+  
+void SpindizzyModule::removeElementHandlerItem(IElementContainer* container) {
+  std::map<IElementContainer*, ElementHandlerItem*>::iterator i = cItemElementHandlers.find(container);
+  if (i == cItemElementHandlers.end()) {
+    ElementHandlerItem* mHandler = i->second;
+    delete mHandler;
+    cItemElementHandlers.erase(container);
+  }
 }
   
 void SpindizzyModule::setArgumentValue(ElementHandlerItem* itemElementHandler) {
@@ -423,6 +441,15 @@ ElementHandlerSpindizzyDynamic* SpindizzyModule::getDynamicElementHandler(IEleme
   return cDynamicElementHandlers[container];
 }
 
+void SpindizzyModule::removeElementHandlerSpindizzyDynamic(IElementContainer* container) {
+  std::map<IElementContainer*, ElementHandlerSpindizzyDynamic*>::iterator i = cDynamicElementHandlers.find(container);
+  if (i == cDynamicElementHandlers.end()) {
+    ElementHandlerSpindizzyDynamic* mHandler = i->second;
+    delete mHandler;
+    cDynamicElementHandlers.erase(container);
+  }
+}
+
 ElementHandlerZone* SpindizzyModule::getZoneElementHandler(IElementContainer* container) {
   std::map<IElementContainer*, ElementHandlerZone*>::iterator i = cZoneElementHandlers.find(container);
   if (i == cZoneElementHandlers.end()) {
@@ -434,6 +461,15 @@ ElementHandlerZone* SpindizzyModule::getZoneElementHandler(IElementContainer* co
   }
   cZoneCount++;
   return cZoneElementHandlers[container];
+}
+
+void SpindizzyModule::removeElementHandlerZone(IElementContainer* container) {
+  std::map<IElementContainer*, ElementHandlerZone*>::iterator i = cZoneElementHandlers.find(container);
+  if (i == cZoneElementHandlers.end()) {
+    ElementHandlerZone* mHandler = i->second;
+    delete mHandler;
+    cZoneElementHandlers.erase(container);
+  }
 }
 
 extern "C" IModule* create(IResourceTypeRegistry* resourceManager) {

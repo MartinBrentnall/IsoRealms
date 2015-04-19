@@ -44,6 +44,18 @@ void ElementHandlerZone::addElement(ElementSpindizzyZone* element) {
   cElements.push_back(element);
 }
 
+void ElementHandlerZone::removeElement(ElementSpindizzyZone* element) {
+  for (unsigned int i = 0; i < cElements.size(); i++) {
+    if (cElements[i] == element) {
+      cElements.erase(cElements.begin() + i);
+    }
+  }
+}
+
+bool ElementHandlerZone::isEmpty() {
+  return cElements.empty();
+}
+
 void ElementHandlerZone::renderEditing() {
   for (unsigned int i = 0; i < cElements.size(); i++) {
     cElements[i]->renderEditing();

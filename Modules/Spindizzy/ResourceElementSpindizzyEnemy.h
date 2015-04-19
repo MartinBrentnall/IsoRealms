@@ -60,6 +60,8 @@ class ResourceElementSpindizzyEnemy:public IElementType {
   void updateIcon(unsigned int);
   void renderIcon();
   void destroy(IElement*);
+  
+  virtual ~ResourceElementSpindizzyEnemy();
 };
 
 #endif

@@ -57,6 +57,7 @@ class ElementSpindizzyItem:public Element,
   ElementSpindizzyItem(ISpindizzyJewelType*, BlockLocation*, I3DModelType*, IElementContainer*);
   
   bool isCollected();
+  IElementContainer* getElementContainer();
   
   /************************\
    * Implements IBoundary *
