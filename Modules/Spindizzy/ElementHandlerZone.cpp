@@ -44,6 +44,12 @@ void ElementHandlerZone::addElement(ElementSpindizzyZone* element) {
   cElements.push_back(element);
 }
 
+void ElementHandlerZone::renderEditing() {
+  for (unsigned int i = 0; i < cElements.size(); i++) {
+    cElements[i]->renderEditing();
+  }
+}
+
 void ElementHandlerZone::renderRuntime() {
   if (cSingleZone && !cModuleInterface->isOverview()) {
     cZone->renderRuntime();

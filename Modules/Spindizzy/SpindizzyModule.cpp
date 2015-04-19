@@ -79,8 +79,10 @@ SpindizzyModule::SpindizzyModule(IResourceTypeRegistry* resourceManager):cResour
     resourceManager->addResourceType(&cResourceTypeModelSpindizzyJewel,          NAME_RESOURCE_TYPE_MODEL_SPINDIZZY_JEWEL);
     resourceManager->addResourceType(&cResourceTypeTextureSpindizzyBlocksC64,    NAME_RESOURCE_TYPE_TEXTURE_SPINDIZZY_BLOCKS_C64);
     resourceManager->addResourceType(&cResourceTypeTextureSpindizzyLiftsC64,     NAME_RESOURCE_TYPE_TEXTURE_SPINDIZZY_LIFTS_C64);
+    cEditing = true;
+  } else {
+    cEditing = false;
   }
-  cEditing = false;
   cOverview = false;
   cZoneCount = 0;
 }

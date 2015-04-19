@@ -31,6 +31,8 @@ class ModelElement:public I3DModel {
   IElement** cElement;
   Vertex* cLocation;
   float cScale;
+  bool cUpdateStatic;
+  GLuint cDisplayList;
     
   public:
   ModelElement(IElement**, Vertex*, float);

@@ -333,14 +333,14 @@ void ElementSpindizzyBlock::createSampleSurfaces() {
 }
 
 void ElementSpindizzyBlock::renderStatic() {
-//  ISpindizzyBlockSet* mSpindizzyBlockSet = getSpindizzyBlockInterface();
-//  bool mEditing = mSpindizzyBlockSet->isEditing();
+  ISpindizzyBlockSet* mSpindizzyBlockSet = cBlockType->getSpindizzyBlockInterface();
+  bool mEditing = mSpindizzyBlockSet->isEditing();
   
   for (unsigned int i = 0; i < cStaticTileSurfaces.size(); i++) {
     cStaticTileSurfaces[i]->render();
-//     if (!mEditing) {
-//       delete cStaticTileSurfaces[i];
-//     }
+    if (!mEditing) {
+      delete cStaticTileSurfaces[i];
+    }
   }
 
 /* std::vector<ITileSurface*> mBottomTileSurfaces = calculateTileSurfaces(ITileSurface::DOWN);
@@ -350,9 +350,9 @@ void ElementSpindizzyBlock::renderStatic() {
   }*/
   for (unsigned int i = 0; i < cStaticWallSurfaces.size(); i++) {
     cStaticWallSurfaces[i]->render();
-//     if (!mEditing) {
-//       delete cStaticWallSurfaces[i];
-//     }
+    if (!mEditing) {
+      delete cStaticWallSurfaces[i];
+    }
   } 
 }
 

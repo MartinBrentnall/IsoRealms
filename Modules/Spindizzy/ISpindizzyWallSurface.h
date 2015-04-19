@@ -26,6 +26,8 @@ class ISpindizzyWallSurface:public IWallSurface,
                             public ICollidableWallSurface {
   public:
   virtual void render() = 0;
+  
+  virtual ~ISpindizzyWallSurface() {}
 };
 
 #endif

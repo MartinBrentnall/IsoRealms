@@ -22,6 +22,8 @@ ModelElement::ModelElement(IElement** element, Vertex* location, float scale) {
   cElement = element;
   cLocation = location;
   cScale = scale;
+  cUpdateStatic = true;
+  cDisplayList = 0;
 }
 
 void ModelElement::update(unsigned int milliseconds) {
@@ -34,10 +36,17 @@ void ModelElement::render() {
   glPushMatrix();
   glTranslatef(cLocation->x, cLocation->y, cLocation->z * IsoRealmsConstants::BLOCK_HEIGHT);
   glScalef(cScale, cScale, cScale);
-  (*cElement)->renderStatic();
+  if (cUpdateStatic) {
+    glDeleteLists(cDisplayList, 1);
+    cDisplayList = glGenLists(1);
+    glNewList(cDisplayList, GL_COMPILE);
+    (*cElement)->renderStatic();
+    glEndList();
+    cUpdateStatic = false;
+  }
+  glCallList(cDisplayList);
   if ((*cElement)->isVisualRuntime()) {
     (*cElement)->renderRuntime();
   }
   glPopMatrix();
 }
-

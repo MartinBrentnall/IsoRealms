@@ -52,6 +52,7 @@ class ElementHandlerZone:public Element,
   /***********************\
    * Implements IElement *
   \***********************/
+  void renderEditing();
   void renderRuntime();
   void updateRuntime(unsigned int);
   IElementType* getElementType();

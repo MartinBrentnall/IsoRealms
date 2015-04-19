@@ -166,18 +166,13 @@
     <BooleanFixed name="SwitchCircleRight"/>
     <BooleanFixed name="SwitchCircleBoth"/>
     <Boundaries name="Jewels">
-      <EnteredScript name="IsoRealms/jewelCollected">
-<!--          <Argument name="jewelsInZone" type="Integer" value="~zoneRemaining"/>-->
-<!--           <Argument name="zone" type="Zone" value="~zone"/> -->
-      </EnteredScript>
+      <EnteredScript name="IsoRealms/jewelCollected"/>
     </Boundaries>
     <Boundaries name="Zones">
       <EnteredScript name="IsoRealms/zoneEntered">
         <Argument name="entered" type="Spindizzy/Zone" value="~boundary->zone"/>
       </EnteredScript>
-      <ExitedScript name="IsoRealms/zoneExited">
-<!--         <Argument name="exited" type="Spindizzy/Zone" value="~boundary->zone"/> -->
-      </ExitedScript>
+      <ExitedScript name="IsoRealms/zoneExited"/>
     </Boundaries>
     <ColourFixed alpha="1" blue="0" green="0" name="Black" red="0"/>
     <ColourFixed alpha="1" blue="1" green="1" name="White" red="1"/>
@@ -225,8 +220,6 @@
         <Boolean name="IsoRealms/OverviewMode" value="false"/>
       </Layer>
     </LayerComposer>
-<!--    <GlobalVariable name="activeSwitchA" type="IsoRealms/Model" value="PrimarySwitchState"/>
-    <GlobalVariable name="activeSwitchB" type="IsoRealms/Model" value="SecondarySwitchState"/>-->
     <ModelElement name="Compass" independent="true" type="Spindizzy/ArrowNorth" x="0" y="0" z="0" width="1" length="1" height="1"/>
     <ModelElement name="ClueDiamondLeft" independent="true" type="Spindizzy/SwitchDiamondLeft" x="0" y="0" z="0" width="1" length="1" height="1"/>
     <ModelElement name="ClueDiamondRight" independent="true" type="Spindizzy/SwitchDiamondRight" x="0" y="0" z="0" width="1" length="1" height="1"/>
@@ -254,17 +247,17 @@
     <ModelRectangle name="LiftCircleLeft" rotate="Reverse" size="1.300000" texture="Spindizzy/C64Sprites_LiftCircleOne"/>
     <ModelRectangle name="LiftCircleRight" size="1.300000" texture="Spindizzy/C64Sprites_LiftCircleOne"/>
     <ModelRectangle name="LiftCircleFilled" size="1.300000" texture="Spindizzy/C64Sprites_LiftCircleFilled"/>
-    <ModelRectangle name="SwitchDiamondLeft" rotate="Reverse" size="1.000000" texture="Spindizzy/C64HUDSprites_LiftDiamondOne"/>
-    <ModelRectangle name="SwitchDiamondRight" size="1.000000" texture="Spindizzy/C64HUDSprites_LiftDiamondOne"/>
-    <ModelRectangle name="SwitchDiamondFilled" size="1.000000" texture="Spindizzy/C64HUDSprites_LiftDiamondFilled"/>
-    <ModelRectangle name="SwitchSquareEmpty" size="1.000000" texture="Spindizzy/C64HUDSprites_LiftSquareEmpty"/>
-    <ModelRectangle name="SwitchSquareLeft" size="1.000000" texture="Spindizzy/C64HUDSprites_LiftSquareOne"/>
-    <ModelRectangle name="SwitchSquareRight" rotate="Reverse" size="1.000000" texture="Spindizzy/C64HUDSprites_LiftSquareOne"/>
-    <ModelRectangle name="SwitchSquareFilled" size="1.000000" texture="Spindizzy/C64HUDSprites_LiftSquareFilled"/>
-    <ModelRectangle name="SwitchCircleEmpty" size="1.000000" texture="Spindizzy/C64HUDSprites_LiftCircleEmpty"/>
-    <ModelRectangle name="SwitchCircleLeft" rotate="Reverse" size="1.000000" texture="Spindizzy/C64HUDSprites_LiftCircleOne"/>
-    <ModelRectangle name="SwitchCircleRight" size="1.000000" texture="Spindizzy/C64HUDSprites_LiftCircleOne"/>
-    <ModelRectangle name="SwitchCircleFilled" size="1.000000" texture="Spindizzy/C64HUDSprites_LiftCircleFilled"/>
+    <ModelRectangle name="SwitchDiamondLeft" rotate="Reverse" size="0.900000" texture="Spindizzy/C64HUDSprites_LiftDiamondOne"/>
+    <ModelRectangle name="SwitchDiamondRight" size="0.900000" texture="Spindizzy/C64HUDSprites_LiftDiamondOne"/>
+    <ModelRectangle name="SwitchDiamondFilled" size="0.900000" texture="Spindizzy/C64HUDSprites_LiftDiamondFilled"/>
+    <ModelRectangle name="SwitchSquareEmpty" size="0.900000" texture="Spindizzy/C64HUDSprites_LiftSquareEmpty"/>
+    <ModelRectangle name="SwitchSquareLeft" size="0.900000" texture="Spindizzy/C64HUDSprites_LiftSquareOne"/>
+    <ModelRectangle name="SwitchSquareRight" rotate="Reverse" size="0.900000" texture="Spindizzy/C64HUDSprites_LiftSquareOne"/>
+    <ModelRectangle name="SwitchSquareFilled" size="0.900000" texture="Spindizzy/C64HUDSprites_LiftSquareFilled"/>
+    <ModelRectangle name="SwitchCircleEmpty" size="0.900000" texture="Spindizzy/C64HUDSprites_LiftCircleEmpty"/>
+    <ModelRectangle name="SwitchCircleLeft" rotate="Reverse" size="0.900000" texture="Spindizzy/C64HUDSprites_LiftCircleOne"/>
+    <ModelRectangle name="SwitchCircleRight" size="0.900000" texture="Spindizzy/C64HUDSprites_LiftCircleOne"/>
+    <ModelRectangle name="SwitchCircleFilled" size="0.900000" texture="Spindizzy/C64HUDSprites_LiftCircleFilled"/>
     <ModelScriptable name="ModelScriptable">
       <Instance name="PrimarySwitchState"/>
       <Instance name="SecondarySwitchState"/>
@@ -584,8 +577,7 @@ zoneTop = entered:getTop()
 zoneBottom = entered:getBottom()
 centerX = zoneWest + (zoneEast - zoneWest) / 2.0
 centerY = zoneNorth + (zoneSouth - zoneNorth) / 2.0
-centerZ = zoneTop + (zoneBottom - zoneTop) / 2.0
-centerZ = centerZ - 4
+centerZ = (zoneTop + (zoneBottom - zoneTop) / 2.0) - 2
 zoneLocation:setX(centerX)
 zoneLocation:setY(centerY)
 zoneLocation:setZ(centerZ)
@@ -598,12 +590,7 @@ if dynamicElements ~= nil then
 end</Code>
     </ScriptLua>
     <ScriptLua name="zoneExited">
-<!--       <Argument name="exited" type="Spindizzy/Zone"/> -->
       <Argument name="dynamicElements" type="Spindizzy/DynamicElements" value="DynamicElements"/>
-<!--         <Argument name="mapOverviewMap" type="MappedZoneHandler/Handler" value="MapOverview"/> -->
-<!--         <Argument name="currentZoneOutline" type="ZoneHandler" value="ZoneOutlineRenderer/CurrentZone"/> -->
-<!--         <Argument name="exploredZoneOutline" type="ZoneHandler" value="ZoneOutlineRenderer/ExploredZones"/> -->
-<!--         <Argument name="defaultZoneHandler" type="ZoneHandler" value="!default"/> -->
       <Code>if dynamicElements ~= nil then
   dynamicElements:setActive(false)
 end</Code>
@@ -7068,10 +7055,10 @@ end</Code>
     <Component bottom="align IsoRealms/JewelCountDisplay" left="align IsoRealms/JewelCountDisplay" right="align IsoRealms/ScoreIcon" source="IsoRealms/HUDPanel" top="align IsoRealms/ScoreIcon"/>
     <Component bottom="align IsoRealms/ZonesToExploreDisplay" right="align IsoRealms/ZonesToExploreDisplay" left="align IsoRealms/MapIcon" source="IsoRealms/HUDPanel" top="align IsoRealms/TimeIcon"/>
     <Component bottom="align IsoRealms/Clue" left="align IsoRealms/Clue" right="align IsoRealms/Compass" source="IsoRealms/HUDPanel" top="align IsoRealms/Clue"/>
-    <Component right="0.000000" scale="0.060000" source="IsoRealms/PrimarySwitchState" top="0.980000"/>
-    <Component left="0.000000" scale="0.060000" source="IsoRealms/SecondarySwitchState" top="0.980000"/>
-    <Component left="adjacent IsoRealms/SecondarySwitchState" scale="0.060000" source="IsoRealms/Compass" top="0.980000"/>
-    <Component right="adjacent IsoRealms/PrimarySwitchState" scale="0.060000" source="IsoRealms/Clue" top="0.980000"/>
+    <Component right="0.000000" scale="0.087000" source="IsoRealms/PrimarySwitchState" top="0.980000"/>
+    <Component left="0.000000" scale="0.087000" source="IsoRealms/SecondarySwitchState" top="0.980000"/>
+    <Component left="adjacent IsoRealms/SecondarySwitchState" scale="0.087000" source="IsoRealms/Compass" top="0.980000"/>
+    <Component right="adjacent IsoRealms/PrimarySwitchState" scale="0.087000" source="IsoRealms/Clue" top="0.980000"/>
     <Component right="0.980000" scale="0.045000" source="IsoRealms/ScoreIcon" top="0.980000"/>
     <Component left="-0.980000" scale="0.045000" source="IsoRealms/TimeIcon" top="0.980000"/>
     <Component right="0.980000" scale="0.045000" source="IsoRealms/JewelIcon" top="adjacent IsoRealms/ScoreIcon"/>
