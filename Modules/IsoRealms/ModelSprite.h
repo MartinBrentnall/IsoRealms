@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2009,2010 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,32 +16,31 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef RESOURCE_MODEL_SPINDIZZY_CRAFT_BALL_H
-#define RESOURCE_MODEL_SPINDIZZY_CRAFT_BALL_H
+#ifndef MODEL_SPRITE_H
+#define MODEL_SPRITE_H
 
+#include <IsoRealms/IsoRealmsConstants.h>
 #include <IsoRealms/Resources/3DModel/I3DModel.h>
-#include <IsoRealms/Resources/3DModel/I3DModelType.h>
-#include <IsoRealms/Resources/Camera/ICamera.h>
+#include <IsoRealms/Resources/Texture/ITexture.h>
+#include <IsoRealms/Resources/Vertex/Vertex.h>
 
-#include "ModelSpindizzyCraftBall.h"
+#include "IModelTypeSprite.h"
 
-class ResourceModelSpindizzyCraftBall:public I3DModelType {
+class ModelSprite:public I3DModel {
   private:
-  ICamera* cCamera;
-
+  Vertex* cLocation;
+  IModelTypeSprite* cModelType;
+  float* cSize;
+  bool cFlip;
+  
   public:
-  ResourceModelSpindizzyCraftBall(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
+  ModelSprite(Vertex*, IModelTypeSprite*, float*, bool);
 
-  /***************************\
-   * Implements I3DModelType *
-  \***************************/
-  I3DModel* createModel(Vertex*, float);
-  void destroyModel(I3DModel*);
-  void updateIcon(unsigned int);
-  void renderIcon();
-
-  void save(DOMNodeWriter*, IResourceLocator*);
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  /*********************\
+   * Implements IModel *
+  \*********************/
+  void update(unsigned int milliseconds);
+  void render();
 };
 
 #endif

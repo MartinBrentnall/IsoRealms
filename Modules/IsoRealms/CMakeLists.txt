@@ -57,8 +57,8 @@ add_library(IsoRealmsStd MODULE
   IsoRealmsModule.cpp
   IsoRealmsScriptSupport.cpp
   ModelElement.cpp
-  ModelRectangle.cpp
   ModelScriptable.cpp
+  ModelSprite.cpp
   ResourceBooleanFixed.cpp
   ResourceBoundaries.cpp
   ResourceFontFile.cpp
@@ -70,8 +70,8 @@ add_library(IsoRealmsStd MODULE
   ResourceIntegerTimer.cpp
   ResourceLayerHUD.cpp
   ResourceModelElement.cpp
-  ResourceModelRectangle.cpp
   ResourceModelScriptable.cpp
+  ResourceModelSprite.cpp
   ResourceSoundFile.cpp
   ResourceStringTime.cpp
   ResourceSurfaceRegistry.cpp

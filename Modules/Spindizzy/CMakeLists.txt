@@ -38,7 +38,6 @@ add_library(Spindizzy MODULE
   LayerBackground.cpp
   LayerSpindizzyMap.cpp
   LiftSurfaceCollisionEvent.cpp
-  ModelSpindizzyCraftBall.cpp
   ModelSpindizzyCraftGyroscope.cpp
   ModelSpindizzyCraftPyramid.cpp
   ModelSpindizzyJewel.cpp
@@ -52,10 +51,10 @@ add_library(Spindizzy MODULE
   ResourceElementSpindizzyZone.cpp
   ResourceLayerBackground.cpp
   ResourceLayerSpindizzyMap.cpp
-  ResourceModelSpindizzyCraftBall.cpp
   ResourceModelSpindizzyCraftGyroscope.cpp
   ResourceModelSpindizzyCraftPyramid.cpp
   ResourceModelSpindizzyJewel.cpp
+  ResourceTextureSpindizzyCraftBall.cpp
   ResourceTexturesSpindizzyBlocksC64.cpp
   ResourceTexturesSpindizzyLiftsC64.cpp
   SpindizzyBlockProperties.cpp

@@ -35,8 +35,8 @@
 #include "DialogIntegerTimer.h"
 #include "DialogLayerHUD.h"
 #include "DialogModelElement.h"
-#include "DialogModelRectangle.h"
 #include "DialogModelScriptable.h"
+#include "DialogModelSprite.h"
 #include "DialogScriptLua.h"
 #include "DialogStringTime.h"
 #include "DialogSoundFile.h"
@@ -54,8 +54,8 @@
 #include "ResourceIntegerTimer.h"
 #include "ResourceLayerHUD.h"
 #include "ResourceModelElement.h"
-#include "ResourceModelRectangle.h"
 #include "ResourceModelScriptable.h"
+#include "ResourceModelSprite.h"
 #include "ResourceStringTime.h"
 #include "ResourceSoundFile.h"
 #include "ResourceSurfaceRegistry.h"
@@ -77,8 +77,8 @@ class IsoRealmsModule:public IModule {
   static const std::string TAG_RESOURCE_TYPE_INTEGER_TIMER;
   static const std::string TAG_RESOURCE_TYPE_LAYER_HUD;
   static const std::string TAG_RESOURCE_TYPE_MODEL_ELEMENT;
-  static const std::string TAG_RESOURCE_TYPE_MODEL_RECTANGLE;
   static const std::string TAG_RESOURCE_TYPE_MODEL_SCRIPTABLE;
+  static const std::string TAG_RESOURCE_TYPE_MODEL_SPRITE;
   static const std::string TAG_RESOURCE_TYPE_SCRIPT_LUA;
   static const std::string TAG_RESOURCE_TYPE_SOUND_FILE;
   static const std::string TAG_RESOURCE_TYPE_STRING_TIME;
@@ -99,8 +99,8 @@ class IsoRealmsModule:public IModule {
   static const std::string NAME_RESOURCE_TYPE_INTEGER_TIMER;
   static const std::string NAME_RESOURCE_TYPE_LAYER_HUD;
   static const std::string NAME_RESOURCE_TYPE_MODEL_ELEMENT;
-  static const std::string NAME_RESOURCE_TYPE_MODEL_RECTANGLE;
   static const std::string NAME_RESOURCE_TYPE_MODEL_SCRIPTABLE;
+  static const std::string NAME_RESOURCE_TYPE_MODEL_SPRITE;
   static const std::string NAME_RESOURCE_TYPE_SCRIPT_LUA;
   static const std::string NAME_RESOURCE_TYPE_SOUND_FILE;
   static const std::string NAME_RESOURCE_TYPE_STRING_TIME;
@@ -123,8 +123,8 @@ class IsoRealmsModule:public IModule {
   ResourceType<IInteger,             ResourceIntegerTimer,        DialogIntegerTimer>        cResourceTypeIntegerTimer;
   ResourceType<ILayerType,           ResourceLayerHUD,            DialogLayerHUD>            cResourceTypeLayerHUD;
   ResourceType<I3DModelType,         ResourceModelElement,        DialogModelElement>        cResourceTypeModelElement;
-  ResourceType<I3DModelType,         ResourceModelRectangle,      DialogModelRectangle>      cResourceTypeModelRectangle;
   ResourceType<I3DModelType,         ResourceModelScriptable,     DialogModelScriptable>     cResourceTypeModelScriptable;
+  ResourceType<I3DModelType,         ResourceModelSprite,         DialogModelSprite>         cResourceTypeModelSprite;
   ResourceType<IScript,              LuaScript,                   DialogScriptLua>           cResourceTypeScriptLua;
   ResourceType<ISound,               ResourceSoundFile,           DialogSoundFile>           cResourceTypeSoundFile;
   ResourceType<IString,              ResourceStringTime,          DialogStringTime>          cResourceTypeStringTime;

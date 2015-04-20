@@ -232,37 +232,38 @@
     <ModelElement name="ClueSquareLeft" independent="true" type="Spindizzy/SwitchSquareLeft" x="0" y="0" z="0" width="1" length="1" height="1"/>
     <ModelElement name="ClueSquareRight" independent="true" type="Spindizzy/SwitchSquareRight" x="0" y="0" z="0" width="1" length="1" height="1"/>
     <ModelElement name="ClueSquareBoth" independent="true" type="Spindizzy/SwitchSquareBoth" x="0" y="0" z="0" width="1" length="1" height="1"/>
-    <ModelRectangle name="HUDIconMap" size="1.000000" texture="IsoRealms/Map"/>
-    <ModelRectangle name="HUDIconScore" size="1.000000" texture="IsoRealms/Score"/>
-    <ModelRectangle name="HUDIconTime" size="1.000000" texture="IsoRealms/Time"/>
-    <ModelRectangle name="LiftDiamondEmpty" size="1.450000" texture="Spindizzy/C64Sprites_LiftDiamondEmpty"/>
-    <ModelRectangle name="LiftDiamondLeft" rotate="Reverse" size="1.450000" texture="Spindizzy/C64Sprites_LiftDiamondOne"/>
-    <ModelRectangle name="LiftDiamondRight" size="1.450000" texture="Spindizzy/C64Sprites_LiftDiamondOne"/>
-    <ModelRectangle name="LiftDiamondFilled" size="1.450000" texture="Spindizzy/C64Sprites_LiftDiamondFilled"/>
-    <ModelRectangle name="LiftSquareEmpty" size="1.000000" texture="Spindizzy/C64Sprites_LiftSquareEmpty"/>
-    <ModelRectangle name="LiftSquareLeft" size="1.000000" texture="Spindizzy/C64Sprites_LiftSquareOne"/>
-    <ModelRectangle name="LiftSquareRight" rotate="Reverse" size="1.000000" texture="Spindizzy/C64Sprites_LiftSquareOne"/>
-    <ModelRectangle name="LiftSquareFilled" size="1.000000" texture="Spindizzy/C64Sprites_LiftSquareFilled"/>
-    <ModelRectangle name="LiftCircleEmpty" size="1.300000" texture="Spindizzy/C64Sprites_LiftCircleEmpty"/>
-    <ModelRectangle name="LiftCircleLeft" rotate="Reverse" size="1.300000" texture="Spindizzy/C64Sprites_LiftCircleOne"/>
-    <ModelRectangle name="LiftCircleRight" size="1.300000" texture="Spindizzy/C64Sprites_LiftCircleOne"/>
-    <ModelRectangle name="LiftCircleFilled" size="1.300000" texture="Spindizzy/C64Sprites_LiftCircleFilled"/>
-    <ModelRectangle name="SwitchDiamondLeft" rotate="Reverse" size="1.087500" texture="Spindizzy/C64HUDSprites_LiftDiamondOne"/>
-    <ModelRectangle name="SwitchDiamondRight" size="1.087500" texture="Spindizzy/C64HUDSprites_LiftDiamondOne"/>
-    <ModelRectangle name="SwitchDiamondFilled" size="1.087500" texture="Spindizzy/C64HUDSprites_LiftDiamondFilled"/>
-    <ModelRectangle name="SwitchSquareEmpty" size="0.750000" texture="Spindizzy/C64HUDSprites_LiftSquareEmpty"/>
-    <ModelRectangle name="SwitchSquareLeft" size="0.750000" texture="Spindizzy/C64HUDSprites_LiftSquareOne"/>
-    <ModelRectangle name="SwitchSquareRight" rotate="Reverse" size="0.750000" texture="Spindizzy/C64HUDSprites_LiftSquareOne"/>
-    <ModelRectangle name="SwitchSquareFilled" size="0.750000" texture="Spindizzy/C64HUDSprites_LiftSquareFilled"/>
-    <ModelRectangle name="SwitchCircleEmpty" size="0.975000" texture="Spindizzy/C64HUDSprites_LiftCircleEmpty"/>
-    <ModelRectangle name="SwitchCircleLeft" rotate="Reverse" size="0.975000" texture="Spindizzy/C64HUDSprites_LiftCircleOne"/>
-    <ModelRectangle name="SwitchCircleRight" size="0.975000" texture="Spindizzy/C64HUDSprites_LiftCircleOne"/>
-    <ModelRectangle name="SwitchCircleFilled" size="0.975000" texture="Spindizzy/C64HUDSprites_LiftCircleFilled"/>
     <ModelScriptable name="ModelScriptable">
       <Instance name="PrimarySwitchState"/>
       <Instance name="SecondarySwitchState"/>
       <Instance name="Clue"/>
     </ModelScriptable>
+    <ModelSprite name="Ball" size="0.660000" texture="Spindizzy/Ball" camera="Spindizzy/Camera" applyCameraRotation="true" applyCameraTilt="true" offsetRotation="90.0" offsetZ="0.330000"/>
+    <ModelSprite name="HUDIconMap" size="1.000000" texture="IsoRealms/Map"/>
+    <ModelSprite name="HUDIconScore" size="1.000000" texture="IsoRealms/Score"/>
+    <ModelSprite name="HUDIconTime" size="1.000000" texture="IsoRealms/Time"/>
+    <ModelSprite name="LiftDiamondEmpty" size="1.450000" texture="Spindizzy/C64Sprites_LiftDiamondEmpty"/>
+    <ModelSprite name="LiftDiamondLeft" rotate="Reverse" size="1.450000" texture="Spindizzy/C64Sprites_LiftDiamondOne" camera="Spindizzy/Camera" applyCameraRotation="true" offsetRotation="-45.0"/>
+    <ModelSprite name="LiftDiamondRight" size="1.450000" texture="Spindizzy/C64Sprites_LiftDiamondOne" camera="Spindizzy/Camera" applyCameraRotation="true" offsetRotation="-45.0"/>
+    <ModelSprite name="LiftDiamondFilled" size="1.450000" texture="Spindizzy/C64Sprites_LiftDiamondFilled"/>
+    <ModelSprite name="LiftSquareEmpty" size="1.000000" texture="Spindizzy/C64Sprites_LiftSquareEmpty"/>
+    <ModelSprite name="LiftSquareLeft" size="1.000000" texture="Spindizzy/C64Sprites_LiftSquareOne" camera="Spindizzy/Camera" applyCameraRotation="true" offsetRotation="-45.0"/>
+    <ModelSprite name="LiftSquareRight" rotate="Reverse" size="1.000000" texture="Spindizzy/C64Sprites_LiftSquareOne" camera="Spindizzy/Camera" applyCameraRotation="true" offsetRotation="-45.0"/>
+    <ModelSprite name="LiftSquareFilled" size="1.000000" texture="Spindizzy/C64Sprites_LiftSquareFilled" camera="Spindizzy/Camera" applyCameraRotation="true" offsetRotation="-45.0"/>
+    <ModelSprite name="LiftCircleEmpty" size="1.300000" texture="Spindizzy/C64Sprites_LiftCircleEmpty"/>
+    <ModelSprite name="LiftCircleLeft" rotate="Reverse" size="1.300000" texture="Spindizzy/C64Sprites_LiftCircleOne" camera="Spindizzy/Camera" applyCameraRotation="true" offsetRotation="-45.0"/>
+    <ModelSprite name="LiftCircleRight" size="1.300000" texture="Spindizzy/C64Sprites_LiftCircleOne" camera="Spindizzy/Camera" applyCameraRotation="true" offsetRotation="-45.0"/>
+    <ModelSprite name="LiftCircleFilled" size="1.300000" texture="Spindizzy/C64Sprites_LiftCircleFilled"/>
+    <ModelSprite name="SwitchDiamondLeft" rotate="Reverse" size="1.087500" texture="Spindizzy/C64HUDSprites_LiftDiamondOne" camera="Spindizzy/Camera" applyCameraRotation="true" offsetRotation="-45.0"/>
+    <ModelSprite name="SwitchDiamondRight" size="1.087500" texture="Spindizzy/C64HUDSprites_LiftDiamondOne" camera="Spindizzy/Camera" applyCameraRotation="true" offsetRotation="-45.0"/>
+    <ModelSprite name="SwitchDiamondFilled" size="1.087500" texture="Spindizzy/C64HUDSprites_LiftDiamondFilled"/>
+    <ModelSprite name="SwitchSquareEmpty" size="0.750000" texture="Spindizzy/C64HUDSprites_LiftSquareEmpty"/>
+    <ModelSprite name="SwitchSquareLeft" size="0.750000" texture="Spindizzy/C64HUDSprites_LiftSquareOne" camera="Spindizzy/Camera" applyCameraRotation="true" offsetRotation="-45.0"/>
+    <ModelSprite name="SwitchSquareRight" rotate="Reverse" size="0.750000" texture="Spindizzy/C64HUDSprites_LiftSquareOne" camera="Spindizzy/Camera" applyCameraRotation="true" offsetRotation="-45.0"/>
+    <ModelSprite name="SwitchSquareFilled" size="0.750000" texture="Spindizzy/C64HUDSprites_LiftSquareFilled" camera="Spindizzy/Camera" applyCameraRotation="true" offsetRotation="-45.0"/>
+    <ModelSprite name="SwitchCircleEmpty" size="0.975000" texture="Spindizzy/C64HUDSprites_LiftCircleEmpty"/>
+    <ModelSprite name="SwitchCircleLeft" rotate="Reverse" size="0.975000" texture="Spindizzy/C64HUDSprites_LiftCircleOne" camera="Spindizzy/Camera" applyCameraRotation="true" offsetRotation="-45.0"/>
+    <ModelSprite name="SwitchCircleRight" size="0.975000" texture="Spindizzy/C64HUDSprites_LiftCircleOne" camera="Spindizzy/Camera" applyCameraRotation="true" offsetRotation="-45.0"/>
+    <ModelSprite name="SwitchCircleFilled" size="0.975000" texture="Spindizzy/C64HUDSprites_LiftCircleFilled"/>
     <ScriptLua name="jewelCollected">
       <Argument name="sound" type="Sound" value="IsoRealms/Jewel"/>
       <Argument name="score" type="Integer" value="IsoRealms/Score"/>
@@ -988,7 +989,7 @@ end</Code>
       <Boundaries name="IsoRealms/Zones"/>
       <Instance name="Player" x="-4" y="3" z="0"/>
     </ElementSpindizzyCraft>
-    <ElementSpindizzyEnemy model="Spindizzy/Ball" name="Ball"/>
+    <ElementSpindizzyEnemy model="IsoRealms/Ball" name="Ball"/>
     <ElementSpindizzyEnemy model="Spindizzy/Gyroscope" name="Gyroscope"/>
     <ElementSpindizzyEnemy model="Spindizzy/Pyramid" name="Pyramid"/>
     <ElementSpindizzyItem boundaries="IsoRealms/Jewels" model="Spindizzy/Jewel" name="Jewel"/>
@@ -1012,7 +1013,6 @@ end</Code>
     <LayerSpindizzyMap name="Map">
       <Instance name="Hangworld"/>
     </LayerSpindizzyMap>
-    <ModelSpindizzyCraftBall camera="Spindizzy/Camera" name="Ball"/>
     <ModelSpindizzyCraftGyroscope name="Gyroscope" colour1="IsoRealms/Cyan" colour2="IsoRealms/Purple" colour3="IsoRealms/Yellow" colour4="IsoRealms/Red" outline="IsoRealms/Black"/>
     <ModelSpindizzyCraftPyramid name="Pyramid" top="IsoRealms/Cyan" side="IsoRealms/Purple" outline="IsoRealms/Black"/>
     <ModelSpindizzyJewel name="Jewel" frameColour="IsoRealms/Yellow" cycleSpeed="0.0015">
@@ -1023,6 +1023,7 @@ end</Code>
       <ColourCycle colour="IsoRealms/Blue"/>
       <ColourCycle colour="IsoRealms/Purple"/>
     </ModelSpindizzyJewel>/>
+    <TextureSpindizzyCraftBall outline="IsoRealms/Black" fill="IsoRealms/Purple" shine="IsoRealms/Yellow" name="Ball"/>
     <TexturesSpindizzyBlocksC64 extra="IsoRealms/Blue" floor="IsoRealms/LightBlue" grid="IsoRealms/White" name="C64Blue" wall="IsoRealms/Black"/>
     <TexturesSpindizzyBlocksC64 extra="IsoRealms/Black" floor="IsoRealms/LightBlue" grid="IsoRealms/Yellow" name="C64BlueRed" wall="IsoRealms/Red"/>
     <TexturesSpindizzyBlocksC64 extra="IsoRealms/Yellow" floor="IsoRealms/Blue" grid="IsoRealms/White" name="C64BlueYellow" wall="IsoRealms/Orange"/>

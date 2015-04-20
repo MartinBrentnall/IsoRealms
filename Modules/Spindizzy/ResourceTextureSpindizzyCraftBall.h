@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2015 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,45 +16,40 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef MODEL_SPINDIZZY_CRAFT_BALL_H
-#define MODEL_SPINDIZZY_CRAFT_BALL_H
+#ifndef RESOURCE_TEXTURE_SPINDIZZY_CRAFT_BALL_H
+#define RESOURCE_TEXTURE_SPINDIZZY_CRAFT_BALL_H
 
 #include <cmath>
-#include <GL/glew.h>
-#include <map>
 
-#include <IsoRealms/Configuration.h>
-#include <IsoRealms/IsoRealmsConstants.h>
-#include <IsoRealms/Resources/3DModel/I3DModel.h>
-#include <IsoRealms/Resources/Camera/ICamera.h>
-#include <IsoRealms/Resources/Colour/Colour.h>
-#include <IsoRealms/Resources/Colour/IColour.h>
+#include <IsoRealms/Resources/IDummyModule.h>
+#include <IsoRealms/Resources/IResourceRegistry.h>
+#include <IsoRealms/Resources/Texture/ITexture.h>
 #include <IsoRealms/Resources/Texture/Texture.h>
-#include <IsoRealms/Resources/Vertex/Vertex.h>
 
-class ModelSpindizzyCraftBall:public I3DModel {
+class ResourceTextureSpindizzyCraftBall:public ITexture {
   private:
   static const float CIRCLE_RESOLUTION;
+  IColour* cColourOutline;
+  IColour* cColourBall;
+  IColour* cColourShine;
+  Texture* cTexture;
 
-  ICamera* cCamera;
-  Vertex* cLocation;
-
-  static unsigned int cInstanceCount;
-  static Texture* cTexture;
-
-  void generateTextureBall();
+  void updateTexture();
   void renderCircle(float, IColour*);
-
+  
   public:
-  ModelSpindizzyCraftBall(Vertex*, ICamera*);
+  ResourceTextureSpindizzyCraftBall(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
+
+  void save(DOMNodeWriter*, IResourceLocator*);
+  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
 
   /***********************\
-   * Implements I3DModel *
+   * Implements ITexture *
   \***********************/
-  void update(unsigned int milliseconds);
-  void render();
-
-  ~ModelSpindizzyCraftBall();
+  void set();
+  void save(DOMNodeWriter*);
+  
+  virtual ~ResourceTextureSpindizzyCraftBall();
 };
 
 #endif

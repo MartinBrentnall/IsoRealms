@@ -16,23 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef DIALOG_MODEL_SPINDIZZY_CRAFT_BALL_H
-#define DIALOG_MODEL_SPINDIZZY_CRAFT_BALL_H
+#ifndef I_MODEL_TYPE_SPRITE_H
+#define I_MODEL_TYPE_SPRITE_H
 
-#include <IsoRealms/GUI/Dialogs/DialogOKCancelUndo.h>
-#include <IsoRealms/IConfirmationListener.h>
-#include <IsoRealms/IEditingContext.h>
-
-#include "ResourceModelSpindizzyCraftBall.h"
-
-class DialogModelSpindizzyCraftBall : public DialogOKCancelUndo {
+class IModelTypeSprite {
   public:
-  DialogModelSpindizzyCraftBall(IEditingContext*, ResourceModelSpindizzyCraftBall*, IResourceAccessor*);
-
-  ResourceModelSpindizzyCraftBall* getResource();
-  std::string getResourceName();
-  
-  void undo();
+  virtual void setTexture() = 0;
 };
 
 #endif

@@ -16,20 +16,20 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef DIALOG_MODEL_RECTANGLE_H
-#define DIALOG_MODEL_RECTANGLE_H
+#ifndef DIALOG_MODEL_SPRITE_H
+#define DIALOG_MODEL_SPRITE_H
 
 #include <IsoRealms/GUI/Dialogs/DialogOKCancelUndo.h>
 #include <IsoRealms/IConfirmationListener.h>
 #include <IsoRealms/IEditingContext.h>
 
-#include "ResourceModelRectangle.h"
+#include "ResourceModelSprite.h"
 
-class DialogModelRectangle : public DialogOKCancelUndo {
+class DialogModelSprite : public DialogOKCancelUndo {
   public:
-  DialogModelRectangle(IEditingContext*, ResourceModelRectangle*, IResourceAccessor*);
+  DialogModelSprite(IEditingContext*, ResourceModelSprite*, IResourceAccessor*);
 
-  ResourceModelRectangle* getResource();
+  ResourceModelSprite* getResource();
   std::string getResourceName();
   
   void undo();

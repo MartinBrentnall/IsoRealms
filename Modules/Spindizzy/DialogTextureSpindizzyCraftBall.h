@@ -1,5 +1,5 @@
 /*
- * Copyright 2009,2010 Martin Brentnall
+ * Copyright 2015 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,29 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef MODEL_RECTANGLE_H
-#define MODEL_RECTANGLE_H
+#ifndef DIALOG_TEXTURE_SPINDIZZY_CRAFT_BALL_H
+#define DIALOG_TEXTURE_SPINDIZZY_CRAFT_BALL_H
 
-#include <IsoRealms/IsoRealmsConstants.h>
-#include <IsoRealms/Resources/3DModel/I3DModel.h>
-#include <IsoRealms/Resources/Texture/ITexture.h>
-#include <IsoRealms/Resources/Vertex/Vertex.h>
+#include <IsoRealms/GUI/Dialogs/DialogOKCancelUndo.h>
+#include <IsoRealms/IConfirmationListener.h>
+#include <IsoRealms/IEditingContext.h>
 
-class ModelRectangle:public I3DModel {
-  private:
-  Vertex* cLocation;
-  ITexture** cTexture;
-  float* cSize;
-  bool cFlip;
-  
+#include "ResourceTextureSpindizzyCraftBall.h"
+
+class DialogTextureSpindizzyCraftBall : public DialogOKCancelUndo {
   public:
-  ModelRectangle(Vertex*, ITexture**, float*, bool);
+  DialogTextureSpindizzyCraftBall(IEditingContext*, ResourceTextureSpindizzyCraftBall*, IResourceAccessor*);
 
-  /*********************\
-   * Implements IModel *
-  \*********************/
-  void update(unsigned int milliseconds);
-  void render();
+  ResourceTextureSpindizzyCraftBall* getResource();
+  std::string getResourceName();
+  
+  void undo();
 };
 
 #endif

@@ -16,8 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef FLAT_RECTANGLE_FACTORY_H
-#define FLAT_RECTANGLE_FACTORY_H
+#ifndef RESOURCE_MODEL_SPRITE_H
+#define RESOURCE_MODEL_SPRITE_H
 
 #include <IsoRealms/Persistence/DOMNodeWriter.h>
 #include <IsoRealms/Resources/3DModel/I3DModel.h>
@@ -27,19 +27,32 @@
 #include <IsoRealms/Resources/IResourceRegistry.h>
 #include <IsoRealms/Resources/IResourceUseListener.h>
 
-#include "ModelRectangle.h"
+#include "ModelSprite.h"
 
-class ResourceModelRectangle:public I3DModelType,
-                             public IResourceUseListener<ITexture> {
+class ResourceModelSprite:public I3DModelType,
+                          public IResourceUseListener<ITexture>,
+                          public IModelTypeSprite {
   private:
   ITexture* cTexture;
+  ICamera* cCamera;
   float cSize;
   bool cFlip;
-  ModelRectangle* cSampleModel;
+  bool cApplyCameraRotation;
+  bool cApplyCameraTilt;
+  float cOffsetRotation;
+  float cOffsetZ;
+  ModelSprite* cSampleModel;
   
   public:
-  ResourceModelRectangle(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
+  ResourceModelSprite(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
 
+  /*******************************\
+   * Implements IModelTypeSprite *
+  \*******************************/
+  void setTexture();
+  float getAngle();
+  float getTilt();
+  
   /********************************\
    * Implements I3DModelFactory.h *
   \********************************/
@@ -57,7 +70,7 @@ class ResourceModelRectangle:public I3DModelType,
   void resourcePendingDestruction(ITexture*, ITexture*);
   void resourceChanged(ITexture*);
   
-  virtual ~ResourceModelRectangle() {}
+  virtual ~ResourceModelSprite() {}
 };
 
 #endif

@@ -34,10 +34,10 @@
 #include "DialogElementSpindizzyZone.h"
 #include "DialogLayerBackground.h"
 #include "DialogLayerSpindizzyMap.h"
-#include "DialogModelSpindizzyCraftBall.h"
 #include "DialogModelSpindizzyCraftGyroscope.h"
 #include "DialogModelSpindizzyCraftPyramid.h"
 #include "DialogModelSpindizzyJewel.h"
+#include "DialogTextureSpindizzyCraftBall.h"
 #include "DialogTexturesSpindizzyBlocksC64.h"
 #include "DialogTexturesSpindizzyLiftsC64.h"
 #include "ElementHandlerSpindizzyBlock.h"
@@ -53,13 +53,12 @@
 #include "ResourceElementSpindizzyZone.h"
 #include "ResourceLayerBackground.h"
 #include "ResourceLayerSpindizzyMap.h"
-#include "ResourceModelSpindizzyCraftBall.h"
 #include "ResourceModelSpindizzyCraftGyroscope.h"
 #include "ResourceModelSpindizzyCraftPyramid.h"
 #include "ResourceModelSpindizzyJewel.h"
+#include "ResourceTextureSpindizzyCraftBall.h"
 #include "ResourceTexturesSpindizzyBlocksC64.h"
 #include "ResourceTexturesSpindizzyLiftsC64.h"
-// #include "ResourceTypeCraft.h"
 // #include "ResourceTexturesSpindizzyZoneTheme.h"
 #include "SpindizzyBlockState.h"
 
@@ -88,10 +87,10 @@ class SpindizzyModule:public IModule,
   static const std::string TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_ZONE;
   static const std::string TAG_RESOURCE_TYPE_LAYER_BACKGROUND;
   static const std::string TAG_RESOURCE_TYPE_LAYER_SPINDIZZY_MAP;
-  static const std::string TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_CRAFT_BALL;
   static const std::string TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_CRAFT_GYROSCOPE;
   static const std::string TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_CRAFT_PYRAMID;
   static const std::string TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_JEWEL;
+  static const std::string TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_CRAFT_BALL;
   static const std::string TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_BLOCKS_C64;
   static const std::string TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_LIFTS_C64;
   static const std::string TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_ZONE_THEME;
@@ -106,10 +105,10 @@ class SpindizzyModule:public IModule,
   static const std::string NAME_RESOURCE_TYPE_ELEMENT_SPINDIZZY_ZONE;
   static const std::string NAME_RESOURCE_TYPE_LAYER_BACKGROUND;
   static const std::string NAME_RESOURCE_TYPE_LAYER_SPINDIZZY_MAP;
-  static const std::string NAME_RESOURCE_TYPE_MODEL_SPINDIZZY_CRAFT_BALL;
   static const std::string NAME_RESOURCE_TYPE_MODEL_SPINDIZZY_CRAFT_GYROSCOPE;
   static const std::string NAME_RESOURCE_TYPE_MODEL_SPINDIZZY_CRAFT_PYRAMID;
   static const std::string NAME_RESOURCE_TYPE_MODEL_SPINDIZZY_JEWEL;
+  static const std::string NAME_RESOURCE_TYPE_TEXTURE_SPINDIZZY_CRAFT_BALL;
   static const std::string NAME_RESOURCE_TYPE_TEXTURE_SPINDIZZY_BLOCKS_C64;
   static const std::string NAME_RESOURCE_TYPE_TEXTURE_SPINDIZZY_LIFTS_C64;
   static const std::string NAME_RESOURCE_TYPE_TEXTURE_SPINDIZZY_ZONE_THEME;
@@ -124,10 +123,10 @@ class SpindizzyModule:public IModule,
   ResourceType<   IElementType, ResourceElementSpindizzyZone,         DialogElementSpindizzyZone,         ISpindizzyZoneModule> cResourceTypeElementSpindizzyZone;
   ResourceType<   ILayerType,   ResourceLayerBackground,              DialogLayerBackground>                                    cResourceTypeLayerBackground;
   ResourceType<   ILayerType,   ResourceLayerSpindizzyMap,            DialogLayerSpindizzyMap,            ISpindizzyMapModule>  cResourceTypeLayerSpindizzyMap;
-  ResourceType<   I3DModelType, ResourceModelSpindizzyCraftBall,      DialogModelSpindizzyCraftBall>                            cResourceTypeModelSpindizzyCraftBall;
   ResourceType<   I3DModelType, ResourceModelSpindizzyCraftGyroscope, DialogModelSpindizzyCraftGyroscope>                       cResourceTypeModelSpindizzyCraftGyroscope;
   ResourceType<   I3DModelType, ResourceModelSpindizzyCraftPyramid,   DialogModelSpindizzyCraftPyramid>                         cResourceTypeModelSpindizzyCraftPyramid;
   ResourceType<   I3DModelType, ResourceModelSpindizzyJewel,          DialogModelSpindizzyJewel>                                cResourceTypeModelSpindizzyJewel;
+  ResourceType<   ITexture,     ResourceTextureSpindizzyCraftBall,    DialogTextureSpindizzyCraftBall>                          cResourceTypeTextureSpindizzyCraftBall;
   ResourceTypeSet<ITexture,     ResourceTexturesSpindizzyBlocksC64,   DialogTexturesSpindizzyBlocksC64,   ICameraSupplier>      cResourceTypeTextureSpindizzyBlocksC64;
   ResourceTypeSet<ITexture,     ResourceTexturesSpindizzyLiftsC64,    DialogTexturesSpindizzyLiftsC64>                          cResourceTypeTextureSpindizzyLiftsC64;
 //  ResourceType<ITexture,     ResourceTexturesSpindizzyZoneTheme,   DialogTexturesSpindizzyZoneTheme>   cResourceTypeTextureSpindizzyZoneTheme;

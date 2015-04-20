@@ -31,8 +31,8 @@ const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_INTEGER_FIXED         = "In
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_INTEGER_TIMER         = "IntegerTimer";
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_LAYER_HUD             = "LayerHUD";
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_MODEL_ELEMENT         = "ModelElement";
-const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_MODEL_RECTANGLE       = "ModelRectangle";
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_MODEL_SCRIPTABLE      = "ModelScriptable";
+const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_MODEL_SPRITE          = "ModelSprite";
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_SCRIPT_LUA            = "ScriptLua";
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_SOUND_FILE            = "SoundFile";
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_STRING_TIME           = "StringTime";
@@ -53,8 +53,8 @@ const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_INTEGER_FIXED         = "I
 const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_INTEGER_TIMER         = "Timer";
 const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_LAYER_HUD             = "Heads-Up Display";
 const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_MODEL_ELEMENT         = "Element Model";
-const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_MODEL_RECTANGLE       = "Rectangle Model";
 const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_MODEL_SCRIPTABLE      = "Scriptable Model";
+const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_MODEL_SPRITE          = "Sprite Model";
 const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_SCRIPT_LUA            = "Lua Script";
 const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_SOUND_FILE            = "Sound File";
 const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_STRING_TIME           = "Time String";
@@ -92,8 +92,8 @@ IsoRealmsModule::IsoRealmsModule(IResourceTypeRegistry* resourceTypeRegistry) {
     resourceTypeRegistry->addResourceType(&cResourceTypeIntegerTimer,        NAME_RESOURCE_TYPE_INTEGER_TIMER);
     resourceTypeRegistry->addResourceType(&cResourceTypeLayerHUD,            NAME_RESOURCE_TYPE_LAYER_HUD);
     resourceTypeRegistry->addResourceType(&cResourceTypeModelElement,        NAME_RESOURCE_TYPE_MODEL_ELEMENT);
-    resourceTypeRegistry->addResourceType(&cResourceTypeModelRectangle,      NAME_RESOURCE_TYPE_MODEL_RECTANGLE);
     resourceTypeRegistry->addResourceType(&cResourceTypeModelScriptable,     NAME_RESOURCE_TYPE_MODEL_SCRIPTABLE);
+    resourceTypeRegistry->addResourceType(&cResourceTypeModelSprite,         NAME_RESOURCE_TYPE_MODEL_SPRITE);
     resourceTypeRegistry->addResourceType(&cResourceTypeScriptLua,           NAME_RESOURCE_TYPE_SCRIPT_LUA);
     resourceTypeRegistry->addResourceType(&cResourceTypeSoundFile,           NAME_RESOURCE_TYPE_SOUND_FILE);
     resourceTypeRegistry->addResourceType(&cResourceTypeStringTime,          NAME_RESOURCE_TYPE_STRING_TIME);
@@ -121,8 +121,8 @@ void IsoRealmsModule::load(DOMNodeWrapper* node, IResourceRegistry* runtimeConte
     else if (mValueAsString == TAG_RESOURCE_TYPE_INTEGER_TIMER)         {cResourceTypeIntegerTimer.loadResource(       mNode, runtimeContext);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_LAYER_HUD)             {cResourceTypeLayerHUD.loadResource(           mNode, runtimeContext);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_MODEL_ELEMENT)         {cResourceTypeModelElement.loadResource(       mNode, runtimeContext);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_MODEL_RECTANGLE)       {cResourceTypeModelRectangle.loadResource(     mNode, runtimeContext);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_MODEL_SCRIPTABLE)      {cResourceTypeModelScriptable.loadResource(    mNode, runtimeContext);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_MODEL_SPRITE)          {cResourceTypeModelSprite.loadResource(        mNode, runtimeContext);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_SCRIPT_LUA)            {cResourceTypeScriptLua.loadResource(          mNode, runtimeContext);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_SOUND_FILE)            {cResourceTypeSoundFile.loadResource(          mNode, runtimeContext);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_STRING_TIME)           {cResourceTypeStringTime.loadResource(         mNode, runtimeContext);}
@@ -147,8 +147,8 @@ void IsoRealmsModule::save(DOMNodeWriter* node, IResourceLocator* resourceLocato
   cResourceTypeIntegerTimer.saveResources(       node, resourceLocator, TAG_RESOURCE_TYPE_INTEGER_TIMER);
   cResourceTypeLayerHUD.saveResources(           node, resourceLocator, TAG_RESOURCE_TYPE_LAYER_HUD);
   cResourceTypeModelElement.saveResources(       node, resourceLocator, TAG_RESOURCE_TYPE_MODEL_ELEMENT);
-  cResourceTypeModelRectangle.saveResources(     node, resourceLocator, TAG_RESOURCE_TYPE_MODEL_RECTANGLE);
   cResourceTypeModelScriptable.saveResources(    node, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SCRIPTABLE);
+  cResourceTypeModelSprite.saveResources(        node, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SPRITE);
   cResourceTypeScriptLua.saveResources(          node, resourceLocator, TAG_RESOURCE_TYPE_SCRIPT_LUA);
   cResourceTypeSoundFile.saveResources(          node, resourceLocator, TAG_RESOURCE_TYPE_SOUND_FILE);
   cResourceTypeStringTime.saveResources(         node, resourceLocator, TAG_RESOURCE_TYPE_STRING_TIME);

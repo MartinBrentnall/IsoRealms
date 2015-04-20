@@ -28,10 +28,10 @@ const std::string SpindizzyModule::TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_WATER    
 const std::string SpindizzyModule::TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_ZONE          = "ElementSpindizzyZone";
 const std::string SpindizzyModule::TAG_RESOURCE_TYPE_LAYER_BACKGROUND                = "LayerBackground";
 const std::string SpindizzyModule::TAG_RESOURCE_TYPE_LAYER_SPINDIZZY_MAP             = "LayerSpindizzyMap";
-const std::string SpindizzyModule::TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_CRAFT_BALL      = "ModelSpindizzyCraftBall";
 const std::string SpindizzyModule::TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_CRAFT_GYROSCOPE = "ModelSpindizzyCraftGyroscope";
 const std::string SpindizzyModule::TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_CRAFT_PYRAMID   = "ModelSpindizzyCraftPyramid";
 const std::string SpindizzyModule::TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_JEWEL           = "ModelSpindizzyJewel";
+const std::string SpindizzyModule::TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_CRAFT_BALL    = "TextureSpindizzyCraftBall";
 const std::string SpindizzyModule::TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_BLOCKS_C64    = "TexturesSpindizzyBlocksC64";
 const std::string SpindizzyModule::TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_LIFTS_C64     = "TexturesSpindizzyLiftsC64";
 const std::string SpindizzyModule::TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_ZONE_THEME    = "TexturesSpindizzyZoneTheme";
@@ -46,10 +46,10 @@ const std::string SpindizzyModule::NAME_RESOURCE_TYPE_ELEMENT_SPINDIZZY_WATER   
 const std::string SpindizzyModule::NAME_RESOURCE_TYPE_ELEMENT_SPINDIZZY_ZONE          = "Spindizzy Zone";
 const std::string SpindizzyModule::NAME_RESOURCE_TYPE_LAYER_BACKGROUND                = "Scriptable Coloured Background";
 const std::string SpindizzyModule::NAME_RESOURCE_TYPE_LAYER_SPINDIZZY_MAP             = "Spindizzy Map";
-const std::string SpindizzyModule::NAME_RESOURCE_TYPE_MODEL_SPINDIZZY_CRAFT_BALL      = "Spindizzy Ball Craft";
 const std::string SpindizzyModule::NAME_RESOURCE_TYPE_MODEL_SPINDIZZY_CRAFT_GYROSCOPE = "Spindizzy Gyroscope Craft";
 const std::string SpindizzyModule::NAME_RESOURCE_TYPE_MODEL_SPINDIZZY_CRAFT_PYRAMID   = "Spindizzy Pyramid Craft";
 const std::string SpindizzyModule::NAME_RESOURCE_TYPE_MODEL_SPINDIZZY_JEWEL           = "Spindizzy Jewel";
+const std::string SpindizzyModule::NAME_RESOURCE_TYPE_TEXTURE_SPINDIZZY_CRAFT_BALL    = "Spindizzy Ball Craft Texture";
 const std::string SpindizzyModule::NAME_RESOURCE_TYPE_TEXTURE_SPINDIZZY_BLOCKS_C64    = "Spindizzy C64 Block Textures";
 const std::string SpindizzyModule::NAME_RESOURCE_TYPE_TEXTURE_SPINDIZZY_LIFTS_C64     = "Spindizzy C64 Lift Textures";
 const std::string SpindizzyModule::NAME_RESOURCE_TYPE_TEXTURE_SPINDIZZY_ZONE_THEME    = "Spindizzy Zone Theme";
@@ -73,10 +73,10 @@ SpindizzyModule::SpindizzyModule(IResourceTypeRegistry* resourceManager):cResour
     resourceManager->addResourceType(&cResourceTypeElementSpindizzyZone,         NAME_RESOURCE_TYPE_ELEMENT_SPINDIZZY_ZONE);
     resourceManager->addResourceType(&cResourceTypeLayerBackground,              NAME_RESOURCE_TYPE_LAYER_BACKGROUND);
     resourceManager->addResourceType(&cResourceTypeLayerSpindizzyMap,            NAME_RESOURCE_TYPE_LAYER_SPINDIZZY_MAP);
-    resourceManager->addResourceType(&cResourceTypeModelSpindizzyCraftBall,      NAME_RESOURCE_TYPE_MODEL_SPINDIZZY_CRAFT_BALL);
     resourceManager->addResourceType(&cResourceTypeModelSpindizzyCraftGyroscope, NAME_RESOURCE_TYPE_MODEL_SPINDIZZY_CRAFT_GYROSCOPE);
     resourceManager->addResourceType(&cResourceTypeModelSpindizzyCraftPyramid,   NAME_RESOURCE_TYPE_MODEL_SPINDIZZY_CRAFT_PYRAMID);
     resourceManager->addResourceType(&cResourceTypeModelSpindizzyJewel,          NAME_RESOURCE_TYPE_MODEL_SPINDIZZY_JEWEL);
+    resourceManager->addResourceType(&cResourceTypeTextureSpindizzyCraftBall,    NAME_RESOURCE_TYPE_TEXTURE_SPINDIZZY_CRAFT_BALL);
     resourceManager->addResourceType(&cResourceTypeTextureSpindizzyBlocksC64,    NAME_RESOURCE_TYPE_TEXTURE_SPINDIZZY_BLOCKS_C64);
     resourceManager->addResourceType(&cResourceTypeTextureSpindizzyLiftsC64,     NAME_RESOURCE_TYPE_TEXTURE_SPINDIZZY_LIFTS_C64);
     cEditing = true;
@@ -109,10 +109,10 @@ void SpindizzyModule::load(DOMNodeWrapper* node, IResourceRegistry* resources) {
     else if (mValueAsString == TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_ZONE)          {cResourceTypeElementSpindizzyZone.loadResource(        mNode, resources);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_LAYER_BACKGROUND)                {cResourceTypeLayerBackground.loadResource(             mNode, resources);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_LAYER_SPINDIZZY_MAP)             {cResourceTypeLayerSpindizzyMap.loadResource(           mNode, resources);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_CRAFT_BALL)      {cResourceTypeModelSpindizzyCraftBall.loadResource(     mNode, resources);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_CRAFT_GYROSCOPE) {cResourceTypeModelSpindizzyCraftGyroscope.loadResource(mNode, resources);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_CRAFT_PYRAMID)   {cResourceTypeModelSpindizzyCraftPyramid.loadResource(  mNode, resources);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_JEWEL)           {cResourceTypeModelSpindizzyJewel.loadResource(         mNode, resources);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_CRAFT_BALL)    {cResourceTypeTextureSpindizzyCraftBall.loadResource(   mNode, resources);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_BLOCKS_C64)    {cResourceTypeTextureSpindizzyBlocksC64.loadResource(   mNode, resources);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_LIFTS_C64)     {cResourceTypeTextureSpindizzyLiftsC64.loadResource(    mNode, resources);}
 //    else if (mValueAsString == TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_ZONE_THEME)    {cResourceTypeTextureSpindizzyZoneTheme.loadResource(   mNode, resources);}
@@ -172,10 +172,10 @@ void SpindizzyModule::save(DOMNodeWriter* node, IResourceLocator* resourceLocato
   cResourceTypeElementSpindizzyZone.saveResources(        node, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_ZONE);
   cResourceTypeLayerBackground.saveResources(             node, resourceLocator, TAG_RESOURCE_TYPE_LAYER_BACKGROUND);
   cResourceTypeLayerSpindizzyMap.saveResources(           node, resourceLocator, TAG_RESOURCE_TYPE_LAYER_SPINDIZZY_MAP);
-  cResourceTypeModelSpindizzyCraftBall.saveResources(     node, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_CRAFT_BALL);
   cResourceTypeModelSpindizzyCraftGyroscope.saveResources(node, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_CRAFT_GYROSCOPE);
   cResourceTypeModelSpindizzyCraftPyramid.saveResources(  node, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_CRAFT_PYRAMID);
   cResourceTypeModelSpindizzyJewel.saveResources(         node, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_JEWEL);
+  cResourceTypeTextureSpindizzyCraftBall.saveResources(   node, resourceLocator, TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_CRAFT_BALL);
   cResourceTypeTextureSpindizzyBlocksC64.saveResources(   node, resourceLocator, TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_BLOCKS_C64);
   cResourceTypeTextureSpindizzyLiftsC64.saveResources(    node, resourceLocator, TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_LIFTS_C64);
 //  cResourceTypeTextureSpindizzyZoneTheme.saveResources(   node, resourceLocator, TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_ZONE_THEME);

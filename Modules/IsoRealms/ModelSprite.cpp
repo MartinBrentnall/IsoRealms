@@ -16,23 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "ModelRectangle.h"
+#include "ModelSprite.h"
 
-ModelRectangle::ModelRectangle(Vertex* location, ITexture** texture, float* size, bool flip) {
+ModelSprite::ModelSprite(Vertex* location, IModelTypeSprite* modelType, float* size, bool flip) {
   cLocation = location;
-  cTexture = texture;
+  cModelType = modelType;
   cSize = size;
   cFlip = flip;
 }
 
-void ModelRectangle::update(unsigned int milliseconds) {
+void ModelSprite::update(unsigned int milliseconds) {
   // Nothing to do.
 }
 
-void ModelRectangle::render() {
+void ModelSprite::render() {
   glPushMatrix();
   glTranslatef(cLocation->x, cLocation->y, (cLocation->z + 0.05f) * IsoRealmsConstants::BLOCK_HEIGHT);
-  (*cTexture)->set();
+  cModelType->setTexture();
   glAlphaFunc(GL_GREATER, 0.1f);
   glEnable(GL_ALPHA_TEST);
   glDisable(GL_CULL_FACE);
