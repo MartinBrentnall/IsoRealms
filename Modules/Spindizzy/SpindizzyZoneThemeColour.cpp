@@ -19,7 +19,7 @@
 #include "SpindizzyZoneThemeColour.h" 
 
 void SpindizzyZoneThemeColour::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
-  // TODO
+  cColour = nullptr;
 }
 
 void SpindizzyZoneThemeColour::set(IColour* colour) {
@@ -27,47 +27,53 @@ void SpindizzyZoneThemeColour::set(IColour* colour) {
 }
 
 float SpindizzyZoneThemeColour::getRed() const {
-  return cColour->getRed();
+  return cColour != nullptr ? cColour->getRed() : 0.0f;
 }
 
 float SpindizzyZoneThemeColour::getGreen() const {
-  return cColour->getGreen();
+  return cColour != nullptr ? cColour->getGreen() : 0.0f;
 }
 
 float SpindizzyZoneThemeColour::getBlue() const {
-  return cColour->getBlue();
+  return cColour != nullptr ? cColour->getBlue() : 0.0f;
 }
 
 float SpindizzyZoneThemeColour::getAlpha() const {
-  return cColour->getAlpha();
+  return cColour != nullptr ? cColour->getAlpha() : 0.0f;
 }
 
 int SpindizzyZoneThemeColour::getIntRed() const {
-  return cColour->getIntRed();
+  return cColour != nullptr ? cColour->getIntRed() : 0.0f;
 } 
 
 int SpindizzyZoneThemeColour::getIntGreen() const {
-  return cColour->getIntGreen();
+  return cColour != nullptr ? cColour->getIntGreen() : 0.0f;
 }
 
 int SpindizzyZoneThemeColour::getIntBlue() const {
-  return cColour->getIntBlue();
+  return cColour != nullptr ? cColour->getIntBlue() : 0.0f;
 }
 
 int SpindizzyZoneThemeColour::getIntAlpha() const {
-  return cColour->getIntAlpha();
+  return cColour != nullptr ? cColour->getIntAlpha() : 0.0f;
 }
 
 float SpindizzyZoneThemeColour::luminance() {
-  return cColour->luminance();
+  return cColour != nullptr ? cColour->luminance() : 0.0f;
 }
 
 void SpindizzyZoneThemeColour::set() {
-  cColour->set();
+  if (cColour != nullptr) {
+    cColour->set();
+  } else {
+    glColor3f(0.0f, 0.0f, 0.0f);
+  }
 }
 
 void SpindizzyZoneThemeColour::setBackground() {
-  cColour->setBackground();
+  if (cColour != nullptr) {
+    cColour->setBackground();
+  }
 }
 
 

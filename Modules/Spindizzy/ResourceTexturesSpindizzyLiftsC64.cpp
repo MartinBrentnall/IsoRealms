@@ -62,7 +62,6 @@ ResourceTexturesSpindizzyLiftsC64::ResourceTexturesSpindizzyLiftsC64(IResourceRe
 void ResourceTexturesSpindizzyLiftsC64::initialise() {
   cColour1 = new Colour(1.0f, 1.0f, 1.0f);
   cColour2 = new Colour(0.7f, 0.7f, 0.7f);
-  cColour3 = new Colour(0.3f, 0.3f, 0.3f);
   cOutlineColour = new Colour(0.0f, 0.0f, 0.0f);
 
   TRANSPARENT = new Colour(0.0, 0.0, 0.0, 0.0);
@@ -312,7 +311,7 @@ void ResourceTexturesSpindizzyLiftsC64::destroyTextures() {
 }
 
 void ResourceTexturesSpindizzyLiftsC64::resourceChanged(IColour* colour) {
-  if (colour == cColour1 || colour == cColour2 || colour == cColour3 || colour == cOutlineColour) {
+  if (colour == cColour1 || colour == cColour2 || colour == cOutlineColour) {
     generateTextures();
   }
 }
@@ -321,7 +320,6 @@ void ResourceTexturesSpindizzyLiftsC64::resourcePendingDestruction(IColour* dest
   bool mChanged = false;
   if (destroyee == cColour1)       {cColour1 = replacement;       mChanged = true;}
   if (destroyee == cColour2)       {cColour2 = replacement;       mChanged = true;}
-  if (destroyee == cColour3)       {cColour3 = replacement;       mChanged = true;}
   if (destroyee == cOutlineColour) {cOutlineColour = replacement; mChanged = true;}
   if (mChanged) {
     generateTextures();
@@ -336,7 +334,6 @@ ITexture* ResourceTexturesSpindizzyLiftsC64::getTexture(const std::string& name)
 void ResourceTexturesSpindizzyLiftsC64::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor) {
   cColour1 = resourceAccessor->getColour(node->getAttribute("colour1"));
   cColour2 = resourceAccessor->getColour(node->getAttribute("colour2"));
-  cColour3 = resourceAccessor->getColour(node->getAttribute("colour3"));
   cOutlineColour = resourceAccessor->getColour(node->getAttribute("outline"));
   generateTextures();
 }
@@ -348,7 +345,6 @@ void ResourceTexturesSpindizzyLiftsC64::save(DOMNodeWriter* node, IResourceLocat
   node->addAttribute("name", mResourceName);
   node->addAttribute("colour1", resourceLocator->getPath(cColour1));
   node->addAttribute("colour2", resourceLocator->getPath(cColour2));
-  node->addAttribute("colour3", resourceLocator->getPath(cColour3));
   node->addAttribute("outline", resourceLocator->getPath(cOutlineColour));
 }
 
@@ -358,10 +354,6 @@ IColour* ResourceTexturesSpindizzyLiftsC64::getColour1() {
 
 IColour* ResourceTexturesSpindizzyLiftsC64::getColour2() {
   return cColour2;
-}
-
-IColour* ResourceTexturesSpindizzyLiftsC64::getColour3() {
-  return cColour3;
 }
 
 IColour* ResourceTexturesSpindizzyLiftsC64::getColourOutline() {
@@ -375,11 +367,6 @@ void ResourceTexturesSpindizzyLiftsC64::setColour1(IColour* colour) {
 
 void ResourceTexturesSpindizzyLiftsC64::setColour2(IColour* colour) {
   cColour2 = colour;
-  generateTextures();
-}
-
-void ResourceTexturesSpindizzyLiftsC64::setColour3(IColour* colour) {
-  cColour3 = colour;
   generateTextures();
 }
 

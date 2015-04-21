@@ -18,7 +18,7 @@
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<Dialog title="Spindizzy Texture Set Properties">
+<Component>
   <FlexibleGrid name="grid" align="top left" rows="4" columns="2">
     <Cell row="4" column="1">
       <Label>Floor Colour:</Label>
@@ -46,8 +46,5 @@
     </Cell>
   </FlexibleGrid>
   <Label name="previewLabel" align="left" top="below grid">Preview</Label>
-  <Button name="okButton" text="OK" align="bottom right"/>
-  <Button name="cancelButton" text="Cancel" align="bottom" right="leftof okButton"/>
-  <Button name="undoButton" text="Undo" align="bottom" right="leftof cancelButton"/>
-  <WrappingGrid name="previewPane" top="below previewLabel" bottom="above okButton"/>
-</Dialog>
+  <WrappingGrid name="previewPane" top="below previewLabel"/>
+</Component>

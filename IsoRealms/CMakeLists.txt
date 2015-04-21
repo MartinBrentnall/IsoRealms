@@ -34,6 +34,7 @@ add_library(IsoRealms SHARED
   GUI/Dialog.cpp
   GUI/Dialogs/ComponentColourSelector.cpp
   GUI/Dialogs/ComponentFileSelector.cpp
+  GUI/Dialogs/DialogOKCancelUndo.cpp
   GUI/EdgeRelation.cpp
   GUI/FlexibleGridLayoutComponent.cpp
   GUI/GridLayoutComponent.cpp

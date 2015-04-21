@@ -18,7 +18,8 @@
  */
 #include "DialogTexturesSpindizzyBlocksC64.h"
 
-DialogTexturesSpindizzyBlocksC64::DialogTexturesSpindizzyBlocksC64(IEditingContext* editingContext, ResourceTexturesSpindizzyBlocksC64* textureSet, IResourceAccessor* resources) : ResizableDialog(editingContext->getComponentContainer(), "Modules/Spindizzy/DialogTexturesSpindizzyBlocksC64", resources) {
+DialogTexturesSpindizzyBlocksC64::DialogTexturesSpindizzyBlocksC64(IEditingContext* editingContext, ResourceTexturesSpindizzyBlocksC64* textureSet, IResourceAccessor* resources) : DialogOKCancelUndo(editingContext, resources, "Spindizzy Blocks Texture Set") {
+  RectangularComponent* mContent = new RectangularComponent("Modules/Spindizzy/DialogTexturesSpindizzyBlocksC64", resources);
   cTextureSet = textureSet;
   cResourceSelector = editingContext->getResourceSelector();
   cOriginalFloorColour  = cTextureSet->getFloorColour();
@@ -29,18 +30,15 @@ DialogTexturesSpindizzyBlocksC64::DialogTexturesSpindizzyBlocksC64(IEditingConte
   cColourSelectorWall   = new ColourSelector(this, cOriginalWallColour,   1);
   cColourSelectorGrid   = new ColourSelector(this, cOriginalGridColour,   2);
   cColourSelectorDetail = new ColourSelector(this, cOriginalDetailColour, 3);
-  setSelectable("floorColour",  cColourSelectorFloor);
-  setSelectable("wallColour"  , cColourSelectorWall);
-  setSelectable("gridColour",   cColourSelectorGrid);
-  setSelectable("detailColour", cColourSelectorDetail);
+  mContent->setSelectable("floorColour",  cColourSelectorFloor);
+  mContent->setSelectable("wallColour"  , cColourSelectorWall);
+  mContent->setSelectable("gridColour",   cColourSelectorGrid);
+  mContent->setSelectable("detailColour", cColourSelectorDetail);
   std::vector<ITexture*> mTextures = cTextureSet->getResources();
   for (unsigned int i = 0; i < mTextures.size(); i++) {
-    addComponent("previewPane", new TextureIcon(mTextures[i]));
+    mContent->addComponent("previewPane", new TextureIcon(mTextures[i]));
   }
-}
-
-void DialogTexturesSpindizzyBlocksC64::addConfirmationListener(IConfirmationListener* listener) {
-  cConfirmationListener = listener;
+  addComponent("content", mContent);
 }
 
 void DialogTexturesSpindizzyBlocksC64::undo() {

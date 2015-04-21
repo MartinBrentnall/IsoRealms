@@ -43,6 +43,13 @@ class ResourceTextureSpindizzyCraftBall:public ITexture {
   void save(DOMNodeWriter*, IResourceLocator*);
   void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
 
+  IColour* getFillColour();
+  IColour* getShineColour();
+  IColour* getOutlineColour();
+  void setFillColour(IColour*);
+  void setShineColour(IColour*);
+  void setOutlineColour(IColour*);
+  
   /***********************\
    * Implements ITexture *
   \***********************/

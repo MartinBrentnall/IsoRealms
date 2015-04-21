@@ -18,38 +18,29 @@
  */
 #include "DialogTexturesSpindizzyLiftsC64.h"
 
-DialogTexturesSpindizzyLiftsC64::DialogTexturesSpindizzyLiftsC64(IEditingContext* editingContext, ResourceTexturesSpindizzyLiftsC64* textureSet, IResourceAccessor* resources) : ResizableDialog(editingContext->getComponentContainer(), "Modules/Spindizzy/DialogTexturesSpindizzyLiftsC64", resources) {
+DialogTexturesSpindizzyLiftsC64::DialogTexturesSpindizzyLiftsC64(IEditingContext* editingContext, ResourceTexturesSpindizzyLiftsC64* textureSet, IResourceAccessor* resources) : DialogOKCancelUndo(editingContext, resources, "Spindizzy Lift Texture Set") {
+  RectangularComponent* mContent = new RectangularComponent("Modules/Spindizzy/DialogTexturesSpindizzyLiftsC64", resources);
   cSprites = textureSet;
   cResourceSelector = editingContext->getResourceSelector();
-  setComponentAction("okButton", new OKCommand(this));
-  setComponentAction("cancelButton", new CancelCommand(this));
-  setComponentAction("undoButton", new UndoCommand(this));
   cOriginalColour1       = cSprites->getColour1();
   cOriginalColour2       = cSprites->getColour2();
-  cOriginalColour3       = cSprites->getColour3();
   cOriginalColourOutline = cSprites->getColourOutline();
   cColourSelector1       = new ColourSelector(this, cOriginalColour1,       0);
   cColourSelector2       = new ColourSelector(this, cOriginalColour2,       1);
-  cColourSelector3       = new ColourSelector(this, cOriginalColour3,       2);
-  cColourSelectorOutline = new ColourSelector(this, cOriginalColourOutline, 3);
-  setSelectable("colour1",       cColourSelector1);
-  setSelectable("colour2",       cColourSelector2);
-  setSelectable("colour3",       cColourSelector3);
-  setSelectable("outlineColour", cColourSelectorOutline);
+  cColourSelectorOutline = new ColourSelector(this, cOriginalColourOutline, 2);
+  mContent->setSelectable("colour1",       cColourSelector1);
+  mContent->setSelectable("colour2",       cColourSelector2);
+  mContent->setSelectable("outlineColour", cColourSelectorOutline);
   std::vector<ITexture*> mTextures = cSprites->getResources();
   for (unsigned int i = 0; i < mTextures.size(); i++) {
-    addComponent("previewPane", new TextureIcon(mTextures[i]));
+    mContent->addComponent("previewPane", new TextureIcon(mTextures[i]));
   }
-}
-
-void DialogTexturesSpindizzyLiftsC64::addConfirmationListener(IConfirmationListener* listener) {
-  cConfirmationListener = listener;
+  addComponent("content", mContent);
 }
 
 void DialogTexturesSpindizzyLiftsC64::undo() {
   cColourSelector1->resourceSelected(cOriginalColour1);
   cColourSelector2->resourceSelected(cOriginalColour2);
-  cColourSelector3->resourceSelected(cOriginalColour3);
   cColourSelectorOutline->resourceSelected(cOriginalColourOutline);
 }
 
@@ -59,37 +50,6 @@ ResourceTexturesSpindizzyLiftsC64* DialogTexturesSpindizzyLiftsC64::getResource(
 
 std::string DialogTexturesSpindizzyLiftsC64::getResourceName() {
   return "TODO";
-}
-
-DialogTexturesSpindizzyLiftsC64::OKCommand::OKCommand(DialogTexturesSpindizzyLiftsC64* parent) {
-  cParent = parent;
-}
-
-void DialogTexturesSpindizzyLiftsC64::OKCommand::execute() {
-  cParent->close();
-  if (cParent->cConfirmationListener != NULL) {
-    cParent->cConfirmationListener->dialogConfirmed(cParent);
-  }
-}
-
-DialogTexturesSpindizzyLiftsC64::CancelCommand::CancelCommand(DialogTexturesSpindizzyLiftsC64* parent) {
-  cParent = parent;
-}
-
-void DialogTexturesSpindizzyLiftsC64::CancelCommand::execute() {
-  cParent->undo();
-  cParent->close();
-  if (cParent->cConfirmationListener != NULL) {
-    cParent->cConfirmationListener->dialogCancelled(cParent);
-  }
-}
-
-DialogTexturesSpindizzyLiftsC64::UndoCommand::UndoCommand(DialogTexturesSpindizzyLiftsC64* parent) {
-  cParent = parent;
-}
-
-void DialogTexturesSpindizzyLiftsC64::UndoCommand::execute() {
-  cParent->undo();
 }
 
 DialogTexturesSpindizzyLiftsC64::ColourSelector::ColourSelector(DialogTexturesSpindizzyLiftsC64* parent, IColour* colour, unsigned int which) {
@@ -134,8 +94,7 @@ void DialogTexturesSpindizzyLiftsC64::ColourSelector::resourceSelected(IColour* 
   switch (cWhich) {
     case 0: cParent->cSprites->setColour1(cColour);       break;
     case 1: cParent->cSprites->setColour2(cColour);       break;
-    case 2: cParent->cSprites->setColour3(cColour);       break;
-    case 3: cParent->cSprites->setColourOutline(cColour); break;
+    case 2: cParent->cSprites->setColourOutline(cColour); break;
   }
 }
 

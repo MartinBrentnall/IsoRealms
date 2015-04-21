@@ -53,8 +53,8 @@ class TabbedContainer;
 
 class RectangularComponent:public ISizedComponent,
                            public IMenuContainer,
-			   public IComponentHolder,
-			   public IListBoxListener {
+                           public IComponentHolder,
+                           public IListBoxListener {
   private:
   RectangularComponent* cTopLevelComponent;
   std::vector<IRectangularComponent*> cChildren;

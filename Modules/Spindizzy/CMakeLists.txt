@@ -22,6 +22,7 @@ add_library(Spindizzy MODULE
   DialogModelSpindizzyCraftGyroscope.cpp
   DialogModelSpindizzyCraftPyramid.cpp
   DialogModelSpindizzyJewel.cpp
+  DialogTextureSpindizzyCraftBall.cpp
   DialogTexturesSpindizzyBlocksC64.cpp
   DialogTexturesSpindizzyLiftsC64.cpp
   ElementHandlerItem.cpp

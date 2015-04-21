@@ -49,6 +49,10 @@ Dialog::Dialog(IComponentContainer* componentContainer, const std::string& title
   cDragging = false;
 }
 
+void Dialog::setTitle(const std::string& title) {
+  cTitle = title;
+}
+
 float Dialog::getLeft() {
   return cX;
 }

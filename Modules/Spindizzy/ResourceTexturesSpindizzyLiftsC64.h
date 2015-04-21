@@ -76,7 +76,6 @@ class ResourceTexturesSpindizzyLiftsC64:public IResource,
 
   IColour* cColour1;
   IColour* cColour2;
-  IColour* cColour3;
   IColour* cOutlineColour;
   
   /*
@@ -179,11 +178,9 @@ class ResourceTexturesSpindizzyLiftsC64:public IResource,
 
   IColour* getColour1();
   IColour* getColour2();
-  IColour* getColour3();
   IColour* getColourOutline();
   void setColour1(IColour*);
   void setColour2(IColour*);
-  void setColour3(IColour*);
   void setColourOutline(IColour*);
   std::vector<ITexture*> getResources();
   std::vector<std::string> getResourceNames();

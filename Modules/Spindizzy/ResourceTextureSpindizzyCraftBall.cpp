@@ -65,6 +65,33 @@ void ResourceTextureSpindizzyCraftBall::updateTexture() {
   glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0);
 }
 
+IColour* ResourceTextureSpindizzyCraftBall::getFillColour() {
+  return cColourBall;
+}
+
+IColour* ResourceTextureSpindizzyCraftBall::getShineColour() {
+  return cColourShine;
+}
+
+IColour* ResourceTextureSpindizzyCraftBall::getOutlineColour() {
+  return cColourOutline;
+}
+
+void ResourceTextureSpindizzyCraftBall::setFillColour(IColour* colour) {
+  cColourBall = colour;
+  updateTexture();
+}
+
+void ResourceTextureSpindizzyCraftBall::setShineColour(IColour* colour) {
+  cColourShine = colour;
+  updateTexture();
+}
+
+void ResourceTextureSpindizzyCraftBall::setOutlineColour(IColour* colour) {
+  cColourOutline = colour;
+  updateTexture();
+}
+
 void ResourceTextureSpindizzyCraftBall::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor) {
   std::string mPathColourOutline = node->getAttribute("outline");
   std::string mPathColourBall    = node->getAttribute("fill");

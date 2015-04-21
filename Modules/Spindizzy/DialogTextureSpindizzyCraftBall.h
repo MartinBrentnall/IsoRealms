@@ -26,13 +26,58 @@
 #include "ResourceTextureSpindizzyCraftBall.h"
 
 class DialogTextureSpindizzyCraftBall : public DialogOKCancelUndo {
+  private:
+  class ColourSelector:public ISelector,
+                       public IResourceSelectionListener<IColour> {
+    private:
+    unsigned int cWhich;
+    DialogTextureSpindizzyCraftBall* cParent;
+    IColour* cBorrowedColour;
+    IColour* cColour;
+    
+    public:
+    ColourSelector(DialogTextureSpindizzyCraftBall*, IColour*, unsigned int);
+    
+    void render(SelectableComponent*);
+    void selected();
+    void deselected();
+    
+    void resourceSelected(IColour*);
+  };
+    
+  class TextureIcon:public ISizedComponent {
+    private:
+    ITexture* cTexture;
+    
+    public:
+    TextureIcon(ITexture*);
+        
+    /******************************\
+     * Implements ISizedComponent *
+    \******************************/
+    float getWidth();
+    float getHeight();
+    void render();
+    void update(unsigned int);
+    bool input(SDL_Event&);
+  };
+  
+  ResourceTextureSpindizzyCraftBall* cTexture;
+  IResourceSelector* cResourceSelector;
+  IColour* cColourOriginalFill;
+  IColour* cColourOriginalShine;
+  IColour* cColourOriginalOutline;
+  ColourSelector* cColourSelectorFill;
+  ColourSelector* cColourSelectorShine;
+  ColourSelector* cColourSelectorOutline;
+  
+  void undo();
+  
   public:
   DialogTextureSpindizzyCraftBall(IEditingContext*, ResourceTextureSpindizzyCraftBall*, IResourceAccessor*);
 
   ResourceTextureSpindizzyCraftBall* getResource();
   std::string getResourceName();
-  
-  void undo();
 };
 
 #endif

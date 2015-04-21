@@ -21,9 +21,11 @@
 
 #include <IsoRealms/GUI/ResizableDialog.h>
 #include <IsoRealms/IConfirmationListener.h>
+#include <IsoRealms/IEditingContext.h>
+#include <IsoRealms/Resources/IResourceAccessor.h>
 
 class DialogOKCancelUndo:public ResizableDialog {
-  private:  
+  private:
   class OKCommand:public ICommand {
     private:
     DialogOKCancelUndo* cParent;
@@ -66,8 +68,8 @@ class DialogOKCancelUndo:public ResizableDialog {
   std::vector<IConfirmationListener*> cConfirmationListeners;
   
   public:
-  DialogOKCancelUndo();
-  
+  DialogOKCancelUndo(IEditingContext*, IResourceAccessor*, const std::string&);
+    
   void addConfirmationListener(IConfirmationListener*);
   void removeConfirmationListener(IConfirmationListener*);
   

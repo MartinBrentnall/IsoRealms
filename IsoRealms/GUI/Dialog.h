@@ -67,6 +67,8 @@ class Dialog : public RectangularComponent {
   Dialog(IComponentContainer*, const std::string&, IResourceAccessor*);
   Dialog(IComponentContainer*, const std::string&, float, float, float, float);
 
+  void setTitle(const std::string&);
+  
   void translate(float, float);
   void resize(float, float);
   void setSize(float, float, float, float);

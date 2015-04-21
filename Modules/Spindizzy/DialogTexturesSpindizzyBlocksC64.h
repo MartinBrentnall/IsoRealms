@@ -19,16 +19,19 @@
 #ifndef DIALOG_TEXTURES_SPINDIZZY_BLOCKS_C64_H
 #define DIALOG_TEXTURES_SPINDIZZY_BLOCKS_C64_H
 
+#include <IsoRealms/GUI/Dialogs/ComponentColourSelector.h>
+#include <IsoRealms/GUI/Dialogs/DialogOKCancelUndo.h>
 #include <IsoRealms/GUI/ISelector.h>
-#include <IsoRealms/GUI/ResizableDialog.h>
 #include <IsoRealms/GUI/SelectableComponent.h>
 #include <IsoRealms/IConfirmationListener.h>
 #include <IsoRealms/IEditingContext.h>
 
 #include "ResourceTexturesSpindizzyBlocksC64.h"
 
-class DialogTexturesSpindizzyBlocksC64:public ResizableDialog {
+class DialogTexturesSpindizzyBlocksC64:public DialogOKCancelUndo {
   private:
+  DialogOKCancelUndo* cDialog;
+  
   class ColourSelector:public ISelector,
                        public IResourceSelectionListener<IColour> {
     private:
@@ -66,7 +69,6 @@ class DialogTexturesSpindizzyBlocksC64:public ResizableDialog {
   
   ResourceTexturesSpindizzyBlocksC64* cTextureSet;
   IResourceSelector* cResourceSelector;
-  IConfirmationListener* cConfirmationListener;
   IColour* cOriginalFloorColour;
   IColour* cOriginalWallColour;
   IColour* cOriginalGridColour;
@@ -80,8 +82,6 @@ class DialogTexturesSpindizzyBlocksC64:public ResizableDialog {
   
   public:
   DialogTexturesSpindizzyBlocksC64(IEditingContext*, ResourceTexturesSpindizzyBlocksC64*, IResourceAccessor*);
-  
-  void addConfirmationListener(IConfirmationListener*);
   
   ResourceTexturesSpindizzyBlocksC64* getResource();
   std::string getResourceName();

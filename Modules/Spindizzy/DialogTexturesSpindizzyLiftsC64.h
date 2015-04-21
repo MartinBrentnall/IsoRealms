@@ -19,54 +19,15 @@
 #ifndef DIALOG_TEXTURE_SPINDIZZY_LIFTS_C64_H
 #define DIALOG_TEXTURE_SPINDIZZY_LIFTS_C64_H
 
+#include <IsoRealms/GUI/Dialogs/DialogOKCancelUndo.h>
 #include <IsoRealms/GUI/ISelector.h>
-#include <IsoRealms/GUI/ResizableDialog.h>
 #include <IsoRealms/GUI/SelectableComponent.h>
 #include <IsoRealms/IConfirmationListener.h>
 
 #include "ResourceTexturesSpindizzyLiftsC64.h"
 
-class DialogTexturesSpindizzyLiftsC64:public ResizableDialog {
+class DialogTexturesSpindizzyLiftsC64:public DialogOKCancelUndo {
   private:
-  class OKCommand:public ICommand {
-    private:
-    DialogTexturesSpindizzyLiftsC64* cParent;
-    
-    public:
-    OKCommand(DialogTexturesSpindizzyLiftsC64*);
-    
-    /***********************\
-     * Implements ICommand *
-    \***********************/
-    void execute();
-  };
-  
-  class CancelCommand:public ICommand {
-    private:
-    DialogTexturesSpindizzyLiftsC64* cParent;
-    
-    public:
-    CancelCommand(DialogTexturesSpindizzyLiftsC64*);
-    
-    /***********************\
-     * Implements ICommand *
-    \***********************/
-    void execute();
-  };
-  
-  class UndoCommand:public ICommand {
-    private:
-    DialogTexturesSpindizzyLiftsC64* cParent;
-    
-    public:
-    UndoCommand(DialogTexturesSpindizzyLiftsC64*);
-    
-    /***********************\
-     * Implements ICommand *
-    \***********************/
-    void execute();
-  };
-
   class ColourSelector:public ISelector,
                        public IResourceSelectionListener<IColour> {
     private:
@@ -104,7 +65,6 @@ class DialogTexturesSpindizzyLiftsC64:public ResizableDialog {
   
   ResourceTexturesSpindizzyLiftsC64* cSprites;
   IResourceSelector* cResourceSelector;
-  IConfirmationListener* cConfirmationListener;
   IColour* cOriginalColour1;
   IColour* cOriginalColour2;
   IColour* cOriginalColour3;
@@ -118,8 +78,6 @@ class DialogTexturesSpindizzyLiftsC64:public ResizableDialog {
   
   public:
   DialogTexturesSpindizzyLiftsC64(IEditingContext*, ResourceTexturesSpindizzyLiftsC64*, IResourceAccessor*);
-  
-  void addConfirmationListener(IConfirmationListener*);
   
   ResourceTexturesSpindizzyLiftsC64* getResource();
   std::string getResourceName();

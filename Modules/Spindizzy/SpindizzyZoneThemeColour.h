@@ -19,6 +19,8 @@
 #ifndef SPINDIZZY_ZONE_THEME_COLOUR_H
 #define SPINDIZZY_ZONE_THEME_COLOUR_H
 
+#include <GL/gl.h>
+
 #include <IsoRealms/Resources/Colour/IColour.h>
 
 class SpindizzyZoneThemeColour:public IColour {

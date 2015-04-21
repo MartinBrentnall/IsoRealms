@@ -2,21 +2,21 @@
 <Project>
   <Configuration camera="Editor/Camera"/>
   <Module name="IsoRealms">
-    <ModelRectangle name="Icon3DModels" size="1.000000" texture="IsoRealms/Icon3DModels"/>
-    <ModelRectangle name="IconCameras" size="1.000000" texture="IsoRealms/IconCameras"/>
-    <ModelRectangle name="IconCollectables" size="1.000000" texture="IsoRealms/IconCollectables"/>
-    <ModelRectangle name="IconCustomTypes" size="1.000000" texture="IsoRealms/IconCustomTypes"/>
-    <ModelRectangle name="IconElementTypes" size="1.000000" texture="IsoRealms/IconElementTypes"/>
-    <ModelRectangle name="IconFonts" size="1.000000" texture="IsoRealms/IconFonts"/>
-    <ModelRectangle name="IconHUDComponents" size="1.000000" texture="IsoRealms/IconHUDComponents"/>
-    <ModelRectangle name="IconPrimitives" size="1.000000" texture="IsoRealms/IconPrimitives"/>
-    <ModelRectangle name="IconScripts" size="1.000000" texture="IsoRealms/IconScripts"/>
-    <ModelRectangle name="IconSounds" size="1.000000" texture="IsoRealms/IconSounds"/>
-    <ModelRectangle name="IconSurfaceProcessors" size="1.000000" texture="IsoRealms/IconSurfaceProcessors"/>
-    <ModelRectangle name="IconSurfaceRegistries" size="1.000000" texture="IsoRealms/IconSurfaceRegistries"/>
-    <ModelRectangle name="IconTextures" size="1.000000" texture="IsoRealms/IconTextures"/>
-    <ModelRectangle name="IconVertices" size="1.000000" texture="IsoRealms/IconVertices"/>
-    <ModelRectangle name="IconZoneHandlers" size="1.000000" texture="IsoRealms/IconZoneHandlers"/>
+    <ModelSprite name="Icon3DModels" size="1.000000" texture="IsoRealms/Icon3DModels"/>
+    <ModelSprite name="IconCameras" size="1.000000" texture="IsoRealms/IconCameras"/>
+    <ModelSprite name="IconCollectables" size="1.000000" texture="IsoRealms/IconCollectables"/>
+    <ModelSprite name="IconCustomTypes" size="1.000000" texture="IsoRealms/IconCustomTypes"/>
+    <ModelSprite name="IconElementTypes" size="1.000000" texture="IsoRealms/IconElementTypes"/>
+    <ModelSprite name="IconFonts" size="1.000000" texture="IsoRealms/IconFonts"/>
+    <ModelSprite name="IconHUDComponents" size="1.000000" texture="IsoRealms/IconHUDComponents"/>
+    <ModelSprite name="IconPrimitives" size="1.000000" texture="IsoRealms/IconPrimitives"/>
+    <ModelSprite name="IconScripts" size="1.000000" texture="IsoRealms/IconScripts"/>
+    <ModelSprite name="IconSounds" size="1.000000" texture="IsoRealms/IconSounds"/>
+    <ModelSprite name="IconSurfaceProcessors" size="1.000000" texture="IsoRealms/IconSurfaceProcessors"/>
+    <ModelSprite name="IconSurfaceRegistries" size="1.000000" texture="IsoRealms/IconSurfaceRegistries"/>
+    <ModelSprite name="IconTextures" size="1.000000" texture="IsoRealms/IconTextures"/>
+    <ModelSprite name="IconVertices" size="1.000000" texture="IsoRealms/IconVertices"/>
+    <ModelSprite name="IconZoneHandlers" size="1.000000" texture="IsoRealms/IconZoneHandlers"/>
     <FontFile name="EditorFont" file="Data/Fonts/EditorFont.ttf" detail="64"/>
     <TextureFile file="Icon3DModels.png" name="Icon3DModels"/>
     <TextureFile file="IconCameras.png" name="IconCameras"/>
