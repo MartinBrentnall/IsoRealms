@@ -39,7 +39,7 @@ void RectangularComponent::loadComponent(DOMNodeWrapper* node, IResourceAccessor
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Component") {
-      loadDialog(mNode, this, 0.02f, resourceAccessor);
+      loadDialog(mNode, this, 0.0f, resourceAccessor);
       read = true;
     }
   }

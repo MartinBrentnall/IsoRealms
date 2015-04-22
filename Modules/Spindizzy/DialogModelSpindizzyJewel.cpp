@@ -18,7 +18,7 @@
  */
 #include "DialogModelSpindizzyJewel.h"
 
-DialogModelSpindizzyJewel::DialogModelSpindizzyJewel(IEditingContext* editingContext, ResourceModelSpindizzyJewel* modelType, IResourceAccessor* resources) : ResizableDialog(editingContext->getComponentContainer(), "Modules/Spindizzy/DialogModelSpindizzyJewel", resources) {
+DialogModelSpindizzyJewel::DialogModelSpindizzyJewel(IEditingContext* editingContext, ResourceModelSpindizzyJewel* modelType, IResourceAccessor* resources, const std::string& resourceName) : ResizableDialog(editingContext->getComponentContainer(), "Modules/Spindizzy/DialogModelSpindizzyJewel", resources) {
   cModelType = modelType;
   cResourceSelector = editingContext->getResourceSelector();
   setComponentAction("okButton", new OKCommand(this));

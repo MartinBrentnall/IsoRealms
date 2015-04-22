@@ -27,7 +27,7 @@
 
 class DialogModelElement : public DialogOKCancelUndo {
   public:
-  DialogModelElement(IEditingContext*, ResourceModelElement*, IResourceAccessor*);
+  DialogModelElement(IEditingContext*, ResourceModelElement*, IResourceAccessor*, const std::string&);
 
   ResourceModelElement* getResource();
   std::string getResourceName();

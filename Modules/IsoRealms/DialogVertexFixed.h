@@ -27,7 +27,7 @@
 
 class DialogVertexFixed : public DialogOKCancelUndo {
   public:
-  DialogVertexFixed(IEditingContext*, ResourceVertexFixed*, IResourceAccessor*);
+  DialogVertexFixed(IEditingContext*, ResourceVertexFixed*, IResourceAccessor*, const std::string&);
   
   ResourceVertexFixed* getResource();
   std::string getResourceName();

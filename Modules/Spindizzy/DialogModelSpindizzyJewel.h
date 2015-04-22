@@ -114,7 +114,7 @@ class DialogModelSpindizzyJewel:public ResizableDialog {
   void undo();
   
   public:
-  DialogModelSpindizzyJewel(IEditingContext*, ResourceModelSpindizzyJewel*, IResourceAccessor*);
+  DialogModelSpindizzyJewel(IEditingContext*, ResourceModelSpindizzyJewel*, IResourceAccessor*, const std::string&);
   
   void addConfirmationListener(IConfirmationListener*);
   

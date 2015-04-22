@@ -27,7 +27,7 @@
 
 class DialogIntegerFixed : public DialogOKCancelUndo {
   public:
-  DialogIntegerFixed(IEditingContext*, ResourceIntegerFixed*, IResourceAccessor*);
+  DialogIntegerFixed(IEditingContext*, ResourceIntegerFixed*, IResourceAccessor*, const std::string&);
 
   ResourceIntegerFixed* getResource();
   std::string getResourceName();

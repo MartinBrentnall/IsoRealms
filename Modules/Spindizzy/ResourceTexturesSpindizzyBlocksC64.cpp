@@ -59,10 +59,8 @@ ResourceTexturesSpindizzyBlocksC64::ResourceTexturesSpindizzyBlocksC64(ICameraSu
   module->addCameraAngleChangeListener(this);
 }
 
-ResourceTexturesSpindizzyBlocksC64::ResourceTexturesSpindizzyBlocksC64(IResourceRegistry* runtimeContext, const std::string& name) {
-  initialise();
-  addTextures(runtimeContext, name);
-  generateTextures();
+std::string ResourceTexturesSpindizzyBlocksC64::stripMemberName(const std::string& name) {
+  return name.substr(0, name.rfind('_'));
 }
 
 void ResourceTexturesSpindizzyBlocksC64::initialise() {

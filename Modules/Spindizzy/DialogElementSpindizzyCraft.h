@@ -27,7 +27,7 @@
 
 class DialogElementSpindizzyCraft : public DialogOKCancelUndo {
   public:
-  DialogElementSpindizzyCraft(IEditingContext*, ResourceElementSpindizzyCraft*, IResourceAccessor*);
+  DialogElementSpindizzyCraft(IEditingContext*, ResourceElementSpindizzyCraft*, IResourceAccessor*, const std::string&);
 
   ResourceElementSpindizzyCraft* getResource();
   std::string getResourceName();

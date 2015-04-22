@@ -62,7 +62,7 @@ class DialogTextureFile:public ResizableDialog,
   void confirmSelection();
   
   public:
-  DialogTextureFile(IEditingContext*, ResourceTextureFile*, IResourceAccessor*);
+  DialogTextureFile(IEditingContext*, ResourceTextureFile*, IResourceAccessor*, const std::string&);
   
   void addConfirmationListener(IConfirmationListener*);
   

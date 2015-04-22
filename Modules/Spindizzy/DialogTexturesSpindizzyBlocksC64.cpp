@@ -18,7 +18,7 @@
  */
 #include "DialogTexturesSpindizzyBlocksC64.h"
 
-DialogTexturesSpindizzyBlocksC64::DialogTexturesSpindizzyBlocksC64(IEditingContext* editingContext, ResourceTexturesSpindizzyBlocksC64* textureSet, IResourceAccessor* resources) : DialogOKCancelUndo(editingContext, resources, "Spindizzy Blocks Texture Set") {
+DialogTexturesSpindizzyBlocksC64::DialogTexturesSpindizzyBlocksC64(IEditingContext* editingContext, ResourceTexturesSpindizzyBlocksC64* textureSet, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "Spindizzy Blocks Texture Set", resourceName) {
   RectangularComponent* mContent = new RectangularComponent("Modules/Spindizzy/DialogTexturesSpindizzyBlocksC64", resources);
   cTextureSet = textureSet;
   cResourceSelector = editingContext->getResourceSelector();

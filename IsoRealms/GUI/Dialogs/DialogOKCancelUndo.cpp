@@ -18,8 +18,9 @@
  */
 #include "DialogOKCancelUndo.h"
 
-DialogOKCancelUndo::DialogOKCancelUndo(IEditingContext* editingContext, IResourceAccessor* resources, const std::string& title) : ResizableDialog(editingContext->getComponentContainer(), "IsoRealms/GUI/Dialogs/DialogOKCancelUndo", resources) {
+DialogOKCancelUndo::DialogOKCancelUndo(IEditingContext* editingContext, IResourceAccessor* resources, const std::string& title, const std::string& resourceName) : ResizableDialog(editingContext->getComponentContainer(), "IsoRealms/GUI/Dialogs/DialogOKCancelUndo", resources) {
   setTitle(title);
+  setStringValue("resourceName", resourceName);
   setComponentAction("okButton", new OKCommand(this));
   setComponentAction("cancelButton", new CancelCommand(this));
   setComponentAction("undoButton", new UndoCommand(this));

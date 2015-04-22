@@ -18,7 +18,7 @@
  */
 #include "DialogTextureFile.h"
 
-DialogTextureFile::DialogTextureFile(IEditingContext* editingContext, ResourceTextureFile* texture, IResourceAccessor* resources) : ResizableDialog(editingContext->getComponentContainer(), "Modules/IsoRealms/DialogTextureFile", resources) {
+DialogTextureFile::DialogTextureFile(IEditingContext* editingContext, ResourceTextureFile* texture, IResourceAccessor* resources, const std::string& resourceName) : ResizableDialog(editingContext->getComponentContainer(), "Modules/IsoRealms/DialogTextureFile", resources) {
   cFileSelector = new ComponentFileSelector(resources, "Data/Images", this);
   addComponent("fileSelector", cFileSelector);
   setComponentAction("okButton", new OKCommand(this));

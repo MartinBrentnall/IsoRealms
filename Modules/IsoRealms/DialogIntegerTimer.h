@@ -27,7 +27,7 @@
 
 class DialogIntegerTimer : public DialogOKCancelUndo {
   public:
-  DialogIntegerTimer(IEditingContext*, ResourceIntegerTimer*, IResourceAccessor*);
+  DialogIntegerTimer(IEditingContext*, ResourceIntegerTimer*, IResourceAccessor*, const std::string&);
 
   ResourceIntegerTimer* getResource();
   std::string getResourceName();

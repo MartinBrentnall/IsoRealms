@@ -27,7 +27,7 @@
 
 class DialogModelSprite : public DialogOKCancelUndo {
   public:
-  DialogModelSprite(IEditingContext*, ResourceModelSprite*, IResourceAccessor*);
+  DialogModelSprite(IEditingContext*, ResourceModelSprite*, IResourceAccessor*, const std::string&);
 
   ResourceModelSprite* getResource();
   std::string getResourceName();

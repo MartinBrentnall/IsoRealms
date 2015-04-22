@@ -59,7 +59,7 @@ class DialogScriptLua:public ResizableDialog {
   void confirmSelection();
   
   public:
-  DialogScriptLua(IEditingContext*, LuaScript*, IResourceAccessor*);
+  DialogScriptLua(IEditingContext*, LuaScript*, IResourceAccessor*, const std::string&);
   
   void addConfirmationListener(IConfirmationListener*);
   

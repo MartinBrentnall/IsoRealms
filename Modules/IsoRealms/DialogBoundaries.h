@@ -27,7 +27,7 @@
 
 class DialogBoundaries : public DialogOKCancelUndo {
   public:
-  DialogBoundaries(IEditingContext*, ResourceBoundaries*, IResourceAccessor*);
+  DialogBoundaries(IEditingContext*, ResourceBoundaries*, IResourceAccessor*, const std::string&);
   
   ResourceBoundaries* getResource();
   std::string getResourceName();

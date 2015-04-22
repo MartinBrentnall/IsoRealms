@@ -134,8 +134,10 @@ template<class T> class ResourceRegistry:public IResourceInstanceListener<T> {
   }
   
   void editResource(T* resource, IResourceAccessor* resources, IEditingContext* editingContext) {
+    std::string mLocation = getLocation(resource);
+    std::string mName = mLocation.substr(mLocation.find('/') + 1);
     for (unsigned int i = 0; i < cResourceTypes.size(); i++) {
-      cResourceTypes[i]->editResource(resource, resources, editingContext);
+      cResourceTypes[i]->editResource(resource, resources, editingContext, mName);
     }
   }
   

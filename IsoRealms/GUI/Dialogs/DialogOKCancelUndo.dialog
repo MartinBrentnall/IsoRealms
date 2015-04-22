@@ -19,8 +19,10 @@
 -->
 
 <Dialog>
+  <Label name="nameLabel" align="top left">Name:</Label>
+  <TextField name="resourceName" align="top" left="rightof nameLabel"/>
   <Button name="okButton" text="OK" align="bottom right"/>
   <Button name="cancelButton" text="Cancel" align="bottom" right="leftof okButton"/>
   <Button name="undoButton" text="Undo" align="bottom" right="leftof cancelButton"/>
-  <Container name="content" bottom="above okButton"/>
+  <Container name="content" bottom="above okButton" top="below nameLabel"/>
 </Dialog>

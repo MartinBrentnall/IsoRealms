@@ -18,7 +18,7 @@
  */
 #include "DialogScriptLua.h"
 
-DialogScriptLua::DialogScriptLua(IEditingContext* editingContext, LuaScript* script, IResourceAccessor* resources) : ResizableDialog(editingContext->getComponentContainer(), "Modules/IsoRealms/DialogScriptLua", resources) {
+DialogScriptLua::DialogScriptLua(IEditingContext* editingContext, LuaScript* script, IResourceAccessor* resources, const std::string& resourceName) : ResizableDialog(editingContext->getComponentContainer(), "Modules/IsoRealms/DialogScriptLua", resources) {
   setComponentAction("okButton", new OKCommand(this));
   setComponentAction("cancelButton", new CancelCommand(this));
   cLuaScript = script;

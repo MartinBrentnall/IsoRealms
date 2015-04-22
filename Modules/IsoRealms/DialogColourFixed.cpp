@@ -18,7 +18,7 @@
  */
 #include "DialogColourFixed.h"
 
-DialogColourFixed::DialogColourFixed(IEditingContext* editingContext, Colour* colour, IResourceAccessor* resources) : ResizableDialog(editingContext->getComponentContainer(), "Modules/IsoRealms/DialogColourFixed", resources) {
+DialogColourFixed::DialogColourFixed(IEditingContext* editingContext, Colour* colour, IResourceAccessor* resources, const std::string& resourceName) : ResizableDialog(editingContext->getComponentContainer(), "Modules/IsoRealms/DialogColourFixed", resources) {
   cColourSelector = new ComponentColourSelector(colour, resources);
   cColour = colour;
   cRed = colour->getRed();

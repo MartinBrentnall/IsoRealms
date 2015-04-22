@@ -18,7 +18,7 @@
  */
 #include "DialogTexturesSpindizzyLiftsC64.h"
 
-DialogTexturesSpindizzyLiftsC64::DialogTexturesSpindizzyLiftsC64(IEditingContext* editingContext, ResourceTexturesSpindizzyLiftsC64* textureSet, IResourceAccessor* resources) : DialogOKCancelUndo(editingContext, resources, "Spindizzy Lift Texture Set") {
+DialogTexturesSpindizzyLiftsC64::DialogTexturesSpindizzyLiftsC64(IEditingContext* editingContext, ResourceTexturesSpindizzyLiftsC64* textureSet, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "Spindizzy Lift Texture Set", resourceName) {
   RectangularComponent* mContent = new RectangularComponent("Modules/Spindizzy/DialogTexturesSpindizzyLiftsC64", resources);
   cSprites = textureSet;
   cResourceSelector = editingContext->getResourceSelector();

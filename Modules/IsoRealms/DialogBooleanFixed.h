@@ -27,7 +27,7 @@
 
 class DialogBooleanFixed : public DialogOKCancelUndo {
   public:
-  DialogBooleanFixed(IEditingContext*, ResourceBooleanFixed*, IResourceAccessor*);
+  DialogBooleanFixed(IEditingContext*, ResourceBooleanFixed*, IResourceAccessor*, const std::string&);
 
   ResourceBooleanFixed* getResource();
   std::string getResourceName();

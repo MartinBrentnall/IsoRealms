@@ -90,17 +90,18 @@ template <class TYPE, class RESOURCE, class DIALOG, class MODULE = IDummyModule>
 
   void createResource(IResourceAccessor* resources, IResourceRegistry* resourceRegistry, IEditingContext* editingContext) {
     RESOURCE* mResource = new RESOURCE(cModuleInterface, NULL, resourceRegistry);
-    DIALOG* mDialog = new DIALOG(editingContext, mResource, resources);
+    DIALOG* mDialog = new DIALOG(editingContext, mResource, resources, "");
     ResourceDialogConfirmationListener* mListener = new ResourceDialogConfirmationListener(mDialog, resourceRegistry, &cResources);
     mDialog->addConfirmationListener(mListener);
     IComponentContainer* mComponentContainer = editingContext->getComponentContainer();
     mComponentContainer->addComponent(mDialog);
   }
 
-  void editResource(TYPE* resource, IResourceAccessor* resources, IEditingContext* editingContext) {
+  void editResource(TYPE* resource, IResourceAccessor* resources, IEditingContext* editingContext, const std::string& name) {
     for (unsigned int i = 0; i < cResources.size(); i++) {
       if (cResources[i]->contains(resource)) {
-        DIALOG* mDialog = new DIALOG(editingContext, cResources[i], resources);
+        std::string mSetName = cResources[i]->stripMemberName(name);
+        DIALOG* mDialog = new DIALOG(editingContext, cResources[i], resources, mSetName);
         IComponentContainer* mComponentContainer = editingContext->getComponentContainer();
         mComponentContainer->addComponent(mDialog);
         return;

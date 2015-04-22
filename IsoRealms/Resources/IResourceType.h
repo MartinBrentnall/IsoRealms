@@ -27,7 +27,7 @@
 template <class T> class IResourceType {
   public:
   virtual void createResource(IResourceAccessor*, IResourceRegistry*, IEditingContext*) = 0;
-  virtual void editResource(T*, IResourceAccessor*, IEditingContext*) = 0;
+  virtual void editResource(T*, IResourceAccessor*, IEditingContext*, const std::string&) = 0;
   virtual void removeResource(T*, IResourceAccessor*, IResourceInstanceListener<T>*) = 0;
 };
 

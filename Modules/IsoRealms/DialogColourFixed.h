@@ -76,7 +76,7 @@ class DialogColourFixed:public ResizableDialog {
   };
   
   public:
-  DialogColourFixed(IEditingContext*, Colour*, IResourceAccessor*);
+  DialogColourFixed(IEditingContext*, Colour*, IResourceAccessor*, const std::string&);
   
   void addConfirmationListener(IConfirmationListener*);
   

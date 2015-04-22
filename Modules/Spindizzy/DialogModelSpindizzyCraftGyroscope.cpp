@@ -18,7 +18,7 @@
  */
 #include "DialogModelSpindizzyCraftGyroscope.h"
 
-DialogModelSpindizzyCraftGyroscope::DialogModelSpindizzyCraftGyroscope(IEditingContext* editingContext, ResourceModelSpindizzyCraftGyroscope* modelType, IResourceAccessor* resources) : ResizableDialog(editingContext->getComponentContainer(), "Modules/Spindizzy/DialogModelSpindizzyCraftGyroscope", resources) {
+DialogModelSpindizzyCraftGyroscope::DialogModelSpindizzyCraftGyroscope(IEditingContext* editingContext, ResourceModelSpindizzyCraftGyroscope* modelType, IResourceAccessor* resources, const std::string& resourceName) : ResizableDialog(editingContext->getComponentContainer(), "Modules/Spindizzy/DialogModelSpindizzyCraftGyroscope", resources) {
   cModelType = modelType;
   cResourceSelector = editingContext->getResourceSelector();
   setComponentAction("okButton", new OKCommand(this));

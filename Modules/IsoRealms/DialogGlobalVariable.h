@@ -26,7 +26,7 @@
 
 class DialogGlobalVariable : public DialogOKCancelUndo {
   public:
-  DialogGlobalVariable(IEditingContext*, LuaGlobalVariable*, IResourceAccessor*);
+  DialogGlobalVariable(IEditingContext*, LuaGlobalVariable*, IResourceAccessor*, const std::string&);
 
   LuaGlobalVariable* getResource();
   std::string getResourceName();

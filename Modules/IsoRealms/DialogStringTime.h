@@ -27,7 +27,7 @@
 
 class DialogStringTime : public DialogOKCancelUndo {
   public:
-  DialogStringTime(IEditingContext*, ResourceStringTime*, IResourceAccessor*);
+  DialogStringTime(IEditingContext*, ResourceStringTime*, IResourceAccessor*, const std::string&);
 
   ResourceStringTime* getResource();
   std::string getResourceName();

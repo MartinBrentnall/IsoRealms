@@ -18,7 +18,7 @@
  */
 #include "DialogSoundFile.h"
 
-DialogSoundFile::DialogSoundFile(IEditingContext* editingContext, ResourceSoundFile* sound, IResourceAccessor* resources) : ResizableDialog(editingContext->getComponentContainer(), "Modules/IsoRealms/DialogSoundFile", resources) {
+DialogSoundFile::DialogSoundFile(IEditingContext* editingContext, ResourceSoundFile* sound, IResourceAccessor* resources, const std::string& resourceName) : ResizableDialog(editingContext->getComponentContainer(), "Modules/IsoRealms/DialogSoundFile", resources) {
   cFileSelector = new ComponentFileSelector(resources, "Data/Sounds", this);
   addComponent("fileSelector", cFileSelector);
   setComponentAction("okButton", new OKCommand(this));

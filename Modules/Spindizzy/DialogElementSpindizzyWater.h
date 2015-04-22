@@ -27,7 +27,7 @@
 
 class DialogElementSpindizzyWater : public DialogOKCancelUndo {
   public:
-  DialogElementSpindizzyWater(IEditingContext*, ResourceElementSpindizzyWater*, IResourceAccessor*);
+  DialogElementSpindizzyWater(IEditingContext*, ResourceElementSpindizzyWater*, IResourceAccessor*, const std::string&);
 
   ResourceElementSpindizzyWater* getResource();
   std::string getResourceName();

@@ -163,7 +163,8 @@ class ResourceTexturesSpindizzyLiftsC64:public IResource,
 
   public:
   ResourceTexturesSpindizzyLiftsC64(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
-  ResourceTexturesSpindizzyLiftsC64(IResourceRegistry*, const std::string&);
+
+  std::string stripMemberName(const std::string&);
   
   /**************************\
    * Implements ITextureSet *

@@ -116,7 +116,7 @@ class DialogModelSpindizzyCraftPyramid:public ResizableDialog {
   void undo();
   
   public:
-  DialogModelSpindizzyCraftPyramid(IEditingContext*, ResourceModelSpindizzyCraftPyramid*, IResourceAccessor*);
+  DialogModelSpindizzyCraftPyramid(IEditingContext*, ResourceModelSpindizzyCraftPyramid*, IResourceAccessor*, const std::string&);
 
   void addConfirmationListener(IConfirmationListener*);
   

@@ -27,7 +27,7 @@
 
 class DialogLayerSpindizzyMap : public DialogOKCancelUndo {
   public:
-  DialogLayerSpindizzyMap(IEditingContext*, ResourceLayerSpindizzyMap*, IResourceAccessor*);
+  DialogLayerSpindizzyMap(IEditingContext*, ResourceLayerSpindizzyMap*, IResourceAccessor*, const std::string&);
 
   ResourceLayerSpindizzyMap* getResource();
   std::string getResourceName();

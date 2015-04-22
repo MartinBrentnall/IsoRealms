@@ -121,7 +121,7 @@ class DialogModelSpindizzyCraftGyroscope:public ResizableDialog {
   void undo();
   
   public:
-  DialogModelSpindizzyCraftGyroscope(IEditingContext*, ResourceModelSpindizzyCraftGyroscope*, IResourceAccessor*);
+  DialogModelSpindizzyCraftGyroscope(IEditingContext*, ResourceModelSpindizzyCraftGyroscope*, IResourceAccessor*, const std::string&);
   
   void addConfirmationListener(IConfirmationListener*);
   

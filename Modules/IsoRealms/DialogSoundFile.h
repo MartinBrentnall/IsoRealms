@@ -62,7 +62,7 @@ class DialogSoundFile:public ResizableDialog,
   void confirmSelection();
   
   public:
-  DialogSoundFile(IEditingContext*, ResourceSoundFile*, IResourceAccessor*);
+  DialogSoundFile(IEditingContext*, ResourceSoundFile*, IResourceAccessor*, const std::string&);
   
   void addConfirmationListener(IConfirmationListener*);
   

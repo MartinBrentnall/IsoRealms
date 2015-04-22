@@ -53,10 +53,8 @@ ResourceTexturesSpindizzyLiftsC64::ResourceTexturesSpindizzyLiftsC64(IDummyModul
   generateTextures();
 }
 
-ResourceTexturesSpindizzyLiftsC64::ResourceTexturesSpindizzyLiftsC64(IResourceRegistry* runtimeContext, const std::string& name) {
-  initialise();
-  addTextures(runtimeContext, name);
-  generateTextures();
+std::string ResourceTexturesSpindizzyLiftsC64::stripMemberName(const std::string& name) {
+  return name.substr(0, name.rfind('_'));
 }
 
 void ResourceTexturesSpindizzyLiftsC64::initialise() {

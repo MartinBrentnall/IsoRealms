@@ -26,7 +26,7 @@
 
 class DialogFontFile : public DialogOKCancelUndo {
   public:
-  DialogFontFile(IEditingContext*, ResourceFontFile*, IResourceAccessor*);
+  DialogFontFile(IEditingContext*, ResourceFontFile*, IResourceAccessor*, const std::string&);
 
   ResourceFontFile* getResource();
   std::string getResourceName();

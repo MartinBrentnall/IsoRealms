@@ -27,7 +27,7 @@
 
 class DialogHUDString : public DialogOKCancelUndo {
   public:
-  DialogHUDString(IEditingContext*, ResourceHUDString*, IResourceAccessor*);
+  DialogHUDString(IEditingContext*, ResourceHUDString*, IResourceAccessor*, const std::string&);
 
   ResourceHUDString* getResource();
   std::string getResourceName();

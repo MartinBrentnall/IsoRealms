@@ -68,7 +68,7 @@ class DialogOKCancelUndo:public ResizableDialog {
   std::vector<IConfirmationListener*> cConfirmationListeners;
   
   public:
-  DialogOKCancelUndo(IEditingContext*, IResourceAccessor*, const std::string&);
+  DialogOKCancelUndo(IEditingContext*, IResourceAccessor*, const std::string&, const std::string&);
     
   void addConfirmationListener(IConfirmationListener*);
   void removeConfirmationListener(IConfirmationListener*);

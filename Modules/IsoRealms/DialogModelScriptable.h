@@ -27,7 +27,7 @@
 
 class DialogModelScriptable : public DialogOKCancelUndo {
   public:
-  DialogModelScriptable(IEditingContext*, ResourceModelScriptable*, IResourceAccessor*);
+  DialogModelScriptable(IEditingContext*, ResourceModelScriptable*, IResourceAccessor*, const std::string&);
 
   ResourceModelScriptable* getResource();
   std::string getResourceName();

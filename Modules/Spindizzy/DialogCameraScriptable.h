@@ -27,7 +27,7 @@
 
 class DialogCameraScriptable : public DialogOKCancelUndo {
   public:
-  DialogCameraScriptable(IEditingContext*, ResourceCameraScriptable*, IResourceAccessor*);
+  DialogCameraScriptable(IEditingContext*, ResourceCameraScriptable*, IResourceAccessor*, const std::string&);
 
   ResourceCameraScriptable* getResource();
   std::string getResourceName();

@@ -81,7 +81,7 @@ class DialogTexturesSpindizzyBlocksC64:public DialogOKCancelUndo {
   void undo();
   
   public:
-  DialogTexturesSpindizzyBlocksC64(IEditingContext*, ResourceTexturesSpindizzyBlocksC64*, IResourceAccessor*);
+  DialogTexturesSpindizzyBlocksC64(IEditingContext*, ResourceTexturesSpindizzyBlocksC64*, IResourceAccessor*, const std::string&);
   
   ResourceTexturesSpindizzyBlocksC64* getResource();
   std::string getResourceName();

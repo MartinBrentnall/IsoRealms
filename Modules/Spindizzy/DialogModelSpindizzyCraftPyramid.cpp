@@ -18,7 +18,7 @@
  */
 #include "DialogModelSpindizzyCraftPyramid.h"
 
-DialogModelSpindizzyCraftPyramid::DialogModelSpindizzyCraftPyramid(IEditingContext* editingContext, ResourceModelSpindizzyCraftPyramid* modelType, IResourceAccessor* resources) : ResizableDialog(editingContext->getComponentContainer(), "Modules/Spindizzy/DialogModelSpindizzyCraftPyramid", resources) {
+DialogModelSpindizzyCraftPyramid::DialogModelSpindizzyCraftPyramid(IEditingContext* editingContext, ResourceModelSpindizzyCraftPyramid* modelType, IResourceAccessor* resources, const std::string& resourceName) : ResizableDialog(editingContext->getComponentContainer(), "Modules/Spindizzy/DialogModelSpindizzyCraftPyramid", resources) {
   cModelType = modelType;
   cResourceSelector = editingContext->getResourceSelector();
   setComponentAction("okButton", new OKCommand(this));

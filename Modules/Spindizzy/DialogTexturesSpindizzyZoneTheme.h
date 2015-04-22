@@ -27,7 +27,7 @@
 
 class DialogTexturesSpindizzyZoneTheme : public ResizableDialog {
   public:
-  DialogTexturesSpindizzyZoneTheme(IEditingContext*, ResourceTexturesSpindizzyZoneTheme*, IResourceAccessor*);
+  DialogTexturesSpindizzyZoneTheme(IEditingContext*, ResourceTexturesSpindizzyZoneTheme*, IResourceAccessor*, const std::string&);
 
   ResourceTexturesSpindizzyZoneTheme* getResource();
   std::string getResourceName();

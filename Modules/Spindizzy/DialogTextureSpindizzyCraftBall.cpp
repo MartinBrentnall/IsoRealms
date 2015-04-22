@@ -18,7 +18,7 @@
  */
 #include "DialogTextureSpindizzyCraftBall.h"
 
-DialogTextureSpindizzyCraftBall::DialogTextureSpindizzyCraftBall(IEditingContext* editingContext, ResourceTextureSpindizzyCraftBall* texture, IResourceAccessor* resources) : DialogOKCancelUndo(editingContext, resources, "Spindizzy Ball Craft Texture") {
+DialogTextureSpindizzyCraftBall::DialogTextureSpindizzyCraftBall(IEditingContext* editingContext, ResourceTextureSpindizzyCraftBall* texture, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "Spindizzy Ball Craft Texture", resourceName) {
   RectangularComponent* mContent = new RectangularComponent("Modules/Spindizzy/DialogTextureSpindizzyCraftBall", resources);
   cTexture = texture;
   cResourceSelector = editingContext->getResourceSelector();

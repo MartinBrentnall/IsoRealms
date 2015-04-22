@@ -27,7 +27,7 @@
 
 class DialogLayerHUD : public DialogOKCancelUndo {
   public:
-  DialogLayerHUD(IEditingContext*, ResourceLayerHUD*, IResourceAccessor*);
+  DialogLayerHUD(IEditingContext*, ResourceLayerHUD*, IResourceAccessor*, const std::string&);
 
   ResourceLayerHUD* getResource();
   std::string getResourceName();

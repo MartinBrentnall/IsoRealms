@@ -27,7 +27,7 @@
 
 class DialogHUDRoundedRectangle : public DialogOKCancelUndo {
   public:
-  DialogHUDRoundedRectangle(IEditingContext*, ResourceHUDRoundedRectangle*, IResourceAccessor*);
+  DialogHUDRoundedRectangle(IEditingContext*, ResourceHUDRoundedRectangle*, IResourceAccessor*, const std::string&);
 
   ResourceHUDRoundedRectangle* getResource();
   std::string getResourceName();

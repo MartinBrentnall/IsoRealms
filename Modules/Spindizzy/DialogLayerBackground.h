@@ -27,7 +27,7 @@
 
 class DialogLayerBackground : public DialogOKCancelUndo {
   public:
-  DialogLayerBackground(IEditingContext*, ResourceLayerBackground*, IResourceAccessor*);
+  DialogLayerBackground(IEditingContext*, ResourceLayerBackground*, IResourceAccessor*, const std::string&);
 
   ResourceLayerBackground* getResource();
   std::string getResourceName();

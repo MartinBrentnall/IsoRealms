@@ -113,8 +113,9 @@ class ResourceTexturesSpindizzyBlocksC64:public IResource,
 
   public:
   ResourceTexturesSpindizzyBlocksC64(ICameraSupplier*, DOMNodeWrapper*, IResourceRegistry*);
-  ResourceTexturesSpindizzyBlocksC64(IResourceRegistry*, const std::string&);
-
+  
+  std::string stripMemberName(const std::string&);
+  
   void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
   
   IColour* getFloorColour();
