@@ -61,24 +61,6 @@ void Resources::setEditing(bool editing, IProject* project) {
 //   add(new ArgumentDefinitionType<IMap>(), mRoot, "Map");
 }
 
-void Resources::saveDefaultElementGroups(DOMNodeWriter* node) {
-  for (std::map<IElementType*, IElementGroupType*>::iterator i = cDefaultElementGroups.begin(); i != cDefaultElementGroups.end(); i++) {
-    DOMNodeWriter* mDefaultElementGroupNode = node->addBranch("DefaultElementGroup");
-    std::string mElementType = getPath(i->first);
-    std::string mElementGroupType = getPath(i->second);
-    mDefaultElementGroupNode->addAttribute("element", mElementType);
-    mDefaultElementGroupNode->addAttribute("group", mElementGroupType);
-  }
-}
-
-void Resources::registerDefaultElementGroup(DOMNodeWrapper* node) {
-  std::string mElementGroupName = node->getAttribute("group");
-  std::string mElementTypeName = node->getAttribute("element");
-  IElementGroupType* mElementGroup = cElementGroupTypes.get(mElementGroupName);
-  IElementType* mElementType = cElementTypes.get(mElementTypeName);
-  cDefaultElementGroups[mElementType] = mElementGroup;
-}
-
 // void Resources::loadInstances(DOMNodeWrapper* node) {
 //   for (int i = 0; i < node->getChildCount(); i++) {
 //     DOMNodeWrapper *mNode = node->getChild(i);
@@ -173,12 +155,10 @@ I3DModelType* Resources::getModelType(const std::string& path)                  
 IBoolean* Resources::getBoolean(const std::string& path)                         {return cBooleans.get(path);}
 IBoundaries* Resources::getBoundaries(const std::string& path)                   {return cBoundaries.get(path);}
 ICamera* Resources::getCamera(const std::string& path)                           {return cCameras.get(path);}
-ISurfaceRegistry* Resources::getSurfaceRegistry(const std::string& path)         {return cSurfaceRegistries.get(path);}
 IColour* Resources::getColour(const std::string& name)                           {return cColours.get(name);}
 IComponentCustomType* Resources::getComponentCustomType(const std::string& path) {return cComponentCustomTypes.get(path);}
 IFloat* Resources::getFloat(const std::string& path)                             {return cFloats.get(path);}
 IFont* Resources::getFont(const std::string& path)                               {return cFonts.get(path);}
-IGeometryProcessor* Resources::getGeometryProcessor(const std::string& path)     {return cGeometryProcessors.get(path);}
 IHUDComponentType* Resources::getHUDComponentType(const std::string& path)       {return cHUDComponentTypes.get(path);}
 IInteger* Resources::getInteger(const std::string& path)                         {return cIntegers.get(path);}
 ILayerType* Resources::getLayerType(const std::string& path)                     {return cLayerTypes.get(path);}
@@ -194,14 +174,12 @@ void Resources::notifyChange(ITexture* texture) {cTextures.notifyChange(texture)
 std::vector<I3DModelType*> Resources::getAllModelTypes()                   {return c3DModelTypes.getAllVector();}
 std::vector<IBoolean*> Resources::getAllBooleans()                         {return cBooleans.getAllVector();}
 std::vector<ICamera*> Resources::getAllCameras()                           {return cCameras.getAllVector();}
-std::vector<ISurfaceRegistry*> Resources::getAllSurfaceRegistries()        {return cSurfaceRegistries.getAllVector();}
 std::vector<IBoundaries*> Resources::getAllBoundaries()                    {return cBoundaries.getAllVector();}
 std::vector<IColour*> Resources::getAllColours()                           {return cColours.getAllVector();}
 std::vector<IComponentCustomType*> Resources::getAllComponentCustomTypes() {return cComponentCustomTypes.getAllVector();}
 std::vector<IElementType*> Resources::getAllElementTypes()                 {return cElementTypes.getAllVector();}
 std::vector<IFloat*> Resources::getAllFloats()                             {return cFloats.getAllVector();}
 std::vector<IFont*> Resources::getAllFonts()                               {return cFonts.getAllVector();}
-std::vector<IGeometryProcessor*> Resources::getAllGeometryProcessors()     {return cGeometryProcessors.getAllVector();}
 std::vector<IHUDComponentType*> Resources::getAllHUDComponentTypes()       {return cHUDComponentTypes.getAllVector();}
 std::vector<IInteger*> Resources::getAllIntegers()                         {return cIntegers.getAllVector();}
 std::vector<ILayerType*> Resources::getAllLayerTypes()                     {return cLayerTypes.getAllVector();}
@@ -215,13 +193,11 @@ void Resources::addResourceListener(IResourceListener<I3DModelType>* listener)  
 void Resources::addResourceListener(IResourceListener<IBoolean>* listener)                   {cBooleans.addResourceListener(listener);}
 void Resources::addResourceListener(IResourceListener<IBoundaries>* listener)                {cBoundaries.addResourceListener(listener);}
 void Resources::addResourceListener(IResourceListener<ICamera>* listener)                    {cCameras.addResourceListener(listener);}
-void Resources::addResourceListener(IResourceListener<ISurfaceRegistry>* listener)           {cSurfaceRegistries.addResourceListener(listener);}
 void Resources::addResourceListener(IResourceListener<IColour>* listener)                    {cColours.addResourceListener(listener);}
 void Resources::addResourceListener(IResourceListener<IComponentCustomType>* listener)       {cComponentCustomTypes.addResourceListener(listener);}
 void Resources::addResourceListener(IResourceListener<IElementType>* listener)               {cElementTypes.addResourceListener(listener);}
 void Resources::addResourceListener(IResourceListener<IFloat>* listener)                     {cFloats.addResourceListener(listener);}
 void Resources::addResourceListener(IResourceListener<IFont>* listener)                      {cFonts.addResourceListener(listener);}
-void Resources::addResourceListener(IResourceListener<IGeometryProcessor>* listener)         {cGeometryProcessors.addResourceListener(listener);}
 void Resources::addResourceListener(IResourceListener<IHUDComponentType>* listener)          {cHUDComponentTypes.addResourceListener(listener);}
 void Resources::addResourceListener(IResourceListener<IInteger>* listener)                   {cIntegers.addResourceListener(listener);}
 void Resources::addResourceListener(IResourceListener<ILayerType>* listener)                 {cLayerTypes.addResourceListener(listener);}
@@ -235,13 +211,11 @@ void Resources::addResourceType(IResourceType<I3DModelType>* resourceType,      
 void Resources::addResourceType(IResourceType<IBoolean>* resourceType,                   const std::string& typeDescription) {cBooleans.addResourceType(resourceType, typeDescription);}  
 void Resources::addResourceType(IResourceType<IBoundaries>* resourceType,                const std::string& typeDescription) {cBoundaries.addResourceType(resourceType, typeDescription);}  
 void Resources::addResourceType(IResourceType<ICamera>* resourceType,                    const std::string& typeDescription) {cCameras.addResourceType(resourceType, typeDescription);}  
-void Resources::addResourceType(IResourceType<ISurfaceRegistry>* resourceType,           const std::string& typeDescription) {cSurfaceRegistries.addResourceType(resourceType, typeDescription);}  
 void Resources::addResourceType(IResourceType<IColour>* resourceType,                    const std::string& typeDescription) {cColours.addResourceType(resourceType, typeDescription);}  
 void Resources::addResourceType(IResourceType<IComponentCustomType>* resourceType,       const std::string& typeDescription) {cComponentCustomTypes.addResourceType(resourceType, typeDescription);}  
 void Resources::addResourceType(IResourceType<IElementType>* resourceType,               const std::string& typeDescription) {cElementTypes.addResourceType(resourceType, typeDescription);}
 void Resources::addResourceType(IResourceType<IFloat>* resourceType,                     const std::string& typeDescription) {cFloats.addResourceType(resourceType, typeDescription);}  
 void Resources::addResourceType(IResourceType<IFont>* resourceType,                      const std::string& typeDescription) {cFonts.addResourceType(resourceType, typeDescription);}
-void Resources::addResourceType(IResourceType<IGeometryProcessor>* resourceType,         const std::string& typeDescription) {cGeometryProcessors.addResourceType(resourceType, typeDescription);}  
 void Resources::addResourceType(IResourceType<IHUDComponentType>* resourceType,          const std::string& typeDescription) {cHUDComponentTypes.addResourceType(resourceType, typeDescription);}  
 void Resources::addResourceType(IResourceType<IInteger>* resourceType,                   const std::string& typeDescription) {cIntegers.addResourceType(resourceType, typeDescription);}  
 void Resources::addResourceType(IResourceType<ILayerType>* resourceType,                 const std::string& typeDescription) {cLayerTypes.addResourceType(resourceType, typeDescription);}  
@@ -255,13 +229,11 @@ void Resources::editResource(I3DModelType* resource,               IResourceAcce
 void Resources::editResource(IBoolean* resource,                   IResourceAccessor* editingResources, IEditingContext* editingContext) {cBooleans.editResource(            resource, this, editingContext);}
 void Resources::editResource(IBoundaries* resource,                IResourceAccessor* editingResources, IEditingContext* editingContext) {cBoundaries.editResource(          resource, this, editingContext);}
 void Resources::editResource(ICamera* resource,                    IResourceAccessor* editingResources, IEditingContext* editingContext) {cCameras.editResource(             resource, this, editingContext);}
-void Resources::editResource(ISurfaceRegistry* resource,           IResourceAccessor* editingResources, IEditingContext* editingContext) {cSurfaceRegistries.editResource(   resource, this, editingContext);}
 void Resources::editResource(IColour* resource,                    IResourceAccessor* editingResources, IEditingContext* editingContext) {cColours.editResource(             resource, this, editingContext);}
 void Resources::editResource(IComponentCustomType* resource,       IResourceAccessor* editingResources, IEditingContext* editingContext) {cComponentCustomTypes.editResource(resource, this, editingContext);}
 void Resources::editResource(IElementType* resource,               IResourceAccessor* editingResources, IEditingContext* editingContext) {cElementTypes.editResource(        resource, this, editingContext);}
 void Resources::editResource(IFloat* resource,                     IResourceAccessor* editingResources, IEditingContext* editingContext) {cFloats.editResource(              resource, this, editingContext);}
 void Resources::editResource(IFont* resource,                      IResourceAccessor* editingResources, IEditingContext* editingContext) {cFonts.editResource(               resource, this, editingContext);}
-void Resources::editResource(IGeometryProcessor* resource,         IResourceAccessor* editingResources, IEditingContext* editingContext) {cGeometryProcessors.editResource(  resource, this, editingContext);}
 void Resources::editResource(IHUDComponentType* resource,          IResourceAccessor* editingResources, IEditingContext* editingContext) {cHUDComponentTypes.editResource(   resource, this, editingContext);}
 void Resources::editResource(IInteger* resource,                   IResourceAccessor* editingResources, IEditingContext* editingContext) {cIntegers.editResource(            resource, this, editingContext);}
 void Resources::editResource(ILayerType* resource,                 IResourceAccessor* editingResources, IEditingContext* editingContext) {cLayerTypes.editResource(          resource, this, editingContext);}
@@ -275,13 +247,11 @@ void Resources::removeResource(I3DModelType* resource,               IResourceAc
 void Resources::removeResource(IBoolean* resource,                   IResourceAccessor* editingResources) {cBooleans.removeResource(resource, this);}
 void Resources::removeResource(IBoundaries* resource,                IResourceAccessor* editingResources) {cBoundaries.removeResource(resource, this);}
 void Resources::removeResource(ICamera* resource,                    IResourceAccessor* editingResources) {cCameras.removeResource(resource, this);}
-void Resources::removeResource(ISurfaceRegistry* resource,           IResourceAccessor* editingResources) {cSurfaceRegistries.removeResource(resource, this);}
 void Resources::removeResource(IColour* resource,                    IResourceAccessor* editingResources) {cColours.removeResource(resource, this);}
 void Resources::removeResource(IComponentCustomType* resource,       IResourceAccessor* editingResources) {cComponentCustomTypes.removeResource(resource, this);}
 void Resources::removeResource(IElementType* resource,               IResourceAccessor* editingResources) {cElementTypes.removeResource(resource, this);}
 void Resources::removeResource(IFloat* resource,                     IResourceAccessor* editingResources) {cFloats.removeResource(resource, this);}
 void Resources::removeResource(IFont* resource,                      IResourceAccessor* editingResources) {cFonts.removeResource(resource, this);}
-void Resources::removeResource(IGeometryProcessor* resource,         IResourceAccessor* editingResources) {cGeometryProcessors.removeResource(resource, this);}
 void Resources::removeResource(IHUDComponentType* resource,          IResourceAccessor* editingResources) {cHUDComponentTypes.removeResource(resource, this);}
 void Resources::removeResource(IInteger* resource,                   IResourceAccessor* editingResources) {cIntegers.removeResource(resource, this);}
 void Resources::removeResource(ILayerType* resource,                 IResourceAccessor* editingResources) {cLayerTypes.removeResource(resource, this);}
@@ -302,13 +272,10 @@ void Resources::add(IArgumentValue* value,                           std::vector
 void Resources::add(IBoolean* value,                                 std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cBooleans.add(value, path, name);                      addResourceToInitialise(value, node);}
 void Resources::add(ICamera* camera,                                 std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cCameras.add(camera, path, name);                      addResourceToInitialise(camera, node);}
 void Resources::add(IBoundaries* boundaries,                         std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cBoundaries.add(boundaries, path, name);               addResourceToInitialise(boundaries, node);}
-void Resources::add(ISurfaceRegistry* surfaceRegistry,               std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cSurfaceRegistries.add(surfaceRegistry, path, name);   addResourceToInitialise(surfaceRegistry, node);}
 void Resources::add(IColour* colour,                                 std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cColours.add(colour, path, name);                      addResourceToInitialise(colour, node);}
 void Resources::add(IComponentCustomType* type,                      std::vector<std::string> path, const std::string& name                      ) {cComponentCustomTypes.add(type, path, name);}
-void Resources::add(IElementGroupType* type,                         std::vector<std::string> path, const std::string& name                      ) {cElementGroupTypes.add(type, path, name);}
 void Resources::add(IElementType* type,                              std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cElementTypes.add(type, path, name);                   addResourceToInitialise(type, node);}
 void Resources::add(IFont* font,                                     std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cFonts.add(font, path, name);                          addResourceToInitialise(font, node);}
-void Resources::add(IGeometryProcessor* surfaceProcessor,            std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cGeometryProcessors.add(surfaceProcessor, path, name); addResourceToInitialise(surfaceProcessor, node);}
 void Resources::add(IGlobalVariable* variable,                       std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cGlobalVariables.add(variable, path, name);            addResourceToInitialise(variable, node);}
 void Resources::add(IHUDComponentType* type,                         std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cHUDComponentTypes.add(type, path, name);              addResourceToInitialise(type, node);}
 void Resources::add(IInteger* value,                                 std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cIntegers.add(value, path, name);                      addResourceToInitialise(value, node);}
@@ -330,20 +297,6 @@ void Resources::addDynamicElement(IDynamicElement* element) {
   cDynamicElements.push_back(element);
 }
 
-void Resources::loadDefaultElementGroups(IElementContainer* container) {
-  std::set<IElementGroup*> mElementGroups;
-  for (std::map<IElementType*, IElementGroupType*>::iterator i = cDefaultElementGroups.begin(); i != cDefaultElementGroups.end(); i++) {
-    if (i->second != nullptr) {
-      IElementGroup* mElementGroup = i->second->getElementGroup(container);
-      cImplicitElements.push_back(mElementGroup);
-      mElementGroups.insert(mElementGroup);
-    }
-  }
-  for (std::set<IElementGroup*>::iterator i = mElementGroups.begin(); i != mElementGroups.end(); i++) {
-    container->addElement(*i);
-  }
-}
-
 void Resources::loadElement(DOMNodeWrapper* node, BlockLocation* location, IElementContainer* container) {
   std::string mElementTypePath = node->getAttribute("type");
   IElementType* mElementType = cElementTypes.get(mElementTypePath);
@@ -354,13 +307,11 @@ void Resources::addListener(IResourceUseListener<I3DModelType>* listener)       
 void Resources::addListener(IResourceUseListener<IBoolean>* listener)                   {cBooleans.addResourceUseListener(listener);}
 void Resources::addListener(IResourceUseListener<IBoundaries>* listener)                {cBoundaries.addResourceUseListener(listener);}
 void Resources::addListener(IResourceUseListener<ICamera>* listener)                    {cCameras.addResourceUseListener(listener);}
-void Resources::addListener(IResourceUseListener<ISurfaceRegistry>* listener)           {cSurfaceRegistries.addResourceUseListener(listener);}
 void Resources::addListener(IResourceUseListener<IColour>* listener)                    {cColours.addResourceUseListener(listener);}
 void Resources::addListener(IResourceUseListener<IComponentCustomType>* listener)       {cComponentCustomTypes.addResourceUseListener(listener);}
 void Resources::addListener(IResourceUseListener<IElementType>* listener)               {cElementTypes.addResourceUseListener(listener);}
 void Resources::addListener(IResourceUseListener<IFloat>* listener)                     {cFloats.addResourceUseListener(listener);}
 void Resources::addListener(IResourceUseListener<IFont>* listener)                      {cFonts.addResourceUseListener(listener);}
-void Resources::addListener(IResourceUseListener<IGeometryProcessor>* listener)         {cGeometryProcessors.addResourceUseListener(listener);}
 void Resources::addListener(IResourceUseListener<IHUDComponentType>* listener)          {cHUDComponentTypes.addResourceUseListener(listener);}
 void Resources::addListener(IResourceUseListener<IInteger>* listener)                   {cIntegers.addResourceUseListener(listener);}
 void Resources::addListener(IResourceUseListener<ILayerType>* listener)                 {cLayerTypes.addResourceUseListener(listener);}
@@ -375,14 +326,11 @@ std::string Resources::getPath(IArgumentValue* argument)                    {ret
 std::string Resources::getPath(IBoolean* boolean)                           {return cBooleans.getLocation(boolean);}
 std::string Resources::getPath(IBoundaries* boundaries)                     {return cBoundaries.getLocation(boundaries);}
 std::string Resources::getPath(ICamera* camera)                             {return cCameras.getLocation(camera);}
-std::string Resources::getPath(ISurfaceRegistry* surfaceRegistry)           {return cSurfaceRegistries.getLocation(surfaceRegistry);}
 std::string Resources::getPath(IColour* colour)                             {return cColours.getLocation(colour);}
 std::string Resources::getPath(IComponentCustomType* customType)            {return cComponentCustomTypes.getLocation(customType);}
-std::string Resources::getPath(IElementGroupType* elementGroupType)         {return cElementGroupTypes.getLocation(elementGroupType);}
 std::string Resources::getPath(IElementType* elementType)                   {return cElementTypes.getLocation(elementType);}
 std::string Resources::getPath(IFloat* afloat)                              {return cFloats.getLocation(afloat);}
 std::string Resources::getPath(IFont* font)                                 {return cFonts.getLocation(font);}
-std::string Resources::getPath(IGeometryProcessor* surfaceProcessor)        {return cGeometryProcessors.getLocation(surfaceProcessor);}
 std::string Resources::getPath(IGlobalVariable* globalVariable)             {return cGlobalVariables.getLocation(globalVariable);}
 std::string Resources::getPath(IHUDComponentType* componentType)            {return cHUDComponentTypes.getLocation(componentType);}
 std::string Resources::getPath(IInteger* integer)                           {return cIntegers.getLocation(integer);}

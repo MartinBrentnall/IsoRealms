@@ -28,7 +28,6 @@
 #include "Colour/Colour.h"
 #include "Colour/ColourRegistry.h"
 #include "Font/DummyFont.h"
-#include "GeometryProcessor/IGeometryProcessor.h"
 #include "HUDComponents/IHUDComponentType.h"
 #include "Integer/IntegerRegistry.h"
 #include "IResourceInstanceListener.h"
@@ -67,7 +66,6 @@ class Resources:public IResources,
   CameraRegistry cCameras;
   ColourRegistry cColours;
   ResourceRegistry<IComponentCustomType> cComponentCustomTypes;
-  ResourceRegistry<IElementGroupType> cElementGroupTypes;
   ResourceRegistry<IElementType> cElementTypes;
   ResourceRegistry<IFloat> cFloats;
   ResourceRegistry<IFont> cFonts;
@@ -78,14 +76,10 @@ class Resources:public IResources,
   ResourceRegistry<IScript> cScripts;
   ResourceRegistry<ISound> cSounds;
   StringRegistry cStrings;
-  ResourceRegistry<ISurfaceRegistry> cSurfaceRegistries;
-  ResourceRegistry<IGeometryProcessor> cGeometryProcessors;
   ResourceRegistry<ITexture> cTextures;
   ResourceRegistry<IVertex> cVertices;
   
   std::vector<IDynamicElement*> cDynamicElements;
-  
-  std::map<IElementType*, IElementGroupType*> cDefaultElementGroups;
   
   std::vector<IElement*> cImplicitElements;
   
@@ -103,8 +97,6 @@ class Resources:public IResources,
     
   void setEditing(bool, IProject*);
     
-  void saveDefaultElementGroups(DOMNodeWriter*);
-  void registerDefaultElementGroup(DOMNodeWrapper*);
 //   void loadInstances(DOMNodeWrapper*);
 
   void initialise();
@@ -124,10 +116,8 @@ class Resources:public IResources,
   void add(ICamera*,                    std::vector<std::string>, const std::string&, DOMNodeWrapper*);
   void add(IColour*,                    std::vector<std::string>, const std::string&, DOMNodeWrapper*);
   void add(IComponentCustomType*,       std::vector<std::string>, const std::string&);
-  void add(IElementGroupType*,          std::vector<std::string>, const std::string&);
   void add(IElementType*,               std::vector<std::string>, const std::string&, DOMNodeWrapper*);
   void add(IFont*,                      std::vector<std::string>, const std::string&, DOMNodeWrapper*);
-  void add(IGeometryProcessor*,         std::vector<std::string>, const std::string&, DOMNodeWrapper*);
   void add(IHUDComponentType*,          std::vector<std::string>, const std::string&, DOMNodeWrapper*);
   void add(IGlobalVariable*,            std::vector<std::string>, const std::string&, DOMNodeWrapper*);
   void add(IInteger*,                   std::vector<std::string>, const std::string&, DOMNodeWrapper*);
@@ -135,13 +125,11 @@ class Resources:public IResources,
   void add(IScript*,                    std::vector<std::string>, const std::string&, DOMNodeWrapper*);
   void add(ISound*,                     std::vector<std::string>, const std::string&, DOMNodeWrapper*);
   void add(IString*,                    std::vector<std::string>, const std::string&, DOMNodeWrapper*);
-  void add(ISurfaceRegistry*,           std::vector<std::string>, const std::string&, DOMNodeWrapper*);
   void add(ITexture*,                   std::vector<std::string>, const std::string&, DOMNodeWrapper*);
   void add(IVertex*,                    std::vector<std::string>, const std::string&, DOMNodeWrapper*);
 
   void addDynamicElement(IDynamicElement*);
   
-  void loadDefaultElementGroups(IElementContainer*);
   void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*);
 
   void addListener(IResourceUseListener<I3DModelType>*);
@@ -153,14 +141,12 @@ class Resources:public IResources,
   void addListener(IResourceUseListener<IElementType>*);              
   void addListener(IResourceUseListener<IFloat>*);                    
   void addListener(IResourceUseListener<IFont>*);                     
-  void addListener(IResourceUseListener<IGeometryProcessor>*);         
   void addListener(IResourceUseListener<IHUDComponentType>*);      
   void addListener(IResourceUseListener<IInteger>*);                  
   void addListener(IResourceUseListener<ILayerType>*);
   void addListener(IResourceUseListener<IScript>*);
   void addListener(IResourceUseListener<ISound>*);                    
   void addListener(IResourceUseListener<IString>*);                   
-  void addListener(IResourceUseListener<ISurfaceRegistry>*);
   void addListener(IResourceUseListener<ITexture>*);                  
   void addListener(IResourceUseListener<IVertex>*);                   
   
@@ -180,14 +166,12 @@ class Resources:public IResources,
   IComponentCustomType* getComponentCustomType(const std::string&);
   IFloat*               getFloat(const std::string&);
   IFont*                getFont(const std::string&);
-  IGeometryProcessor*   getGeometryProcessor(const std::string&);
   IHUDComponentType*    getHUDComponentType(const std::string&);
   IInteger*             getInteger(const std::string&);
   ILayerType*           getLayerType(const std::string&);
   IScript*              getScript(const std::string&);
   ISound*               getSound(const std::string&);
   IString*              getString(const std::string&);
-  ISurfaceRegistry*     getSurfaceRegistry(const std::string&);
   ITexture*             getTexture(const std::string&);
   IVertex*              getVertex(const std::string&);
     
@@ -206,11 +190,9 @@ class Resources:public IResources,
   std::string getPath(ICamera*);
   std::string getPath(IColour*);
   std::string getPath(IComponentCustomType*);
-  std::string getPath(IElementGroupType*);
   std::string getPath(IElementType*);
   std::string getPath(IFloat*);
   std::string getPath(IFont*);
-  std::string getPath(IGeometryProcessor*);
   std::string getPath(IGlobalVariable*);
   std::string getPath(IHUDComponentType*);
   std::string getPath(IInteger*);
@@ -218,7 +200,6 @@ class Resources:public IResources,
   std::string getPath(IScript*);
   std::string getPath(ISound*);
   std::string getPath(IString*);
-  std::string getPath(ISurfaceRegistry*);
   std::string getPath(ITexture*);
   std::string getPath(IVertex*);
 
@@ -237,14 +218,12 @@ class Resources:public IResources,
   std::vector<IElementType*>         getAllElementTypes();
   std::vector<IFloat*>               getAllFloats();
   std::vector<IFont*>                getAllFonts();
-  std::vector<IGeometryProcessor*>   getAllGeometryProcessors();
   std::vector<IHUDComponentType*>    getAllHUDComponentTypes();
   std::vector<IInteger*>             getAllIntegers();
   std::vector<ILayerType*>           getAllLayerTypes();
   std::vector<IScript*>              getAllScripts();
   std::vector<ISound*>               getAllSounds();
   std::vector<IString*>              getAllStrings();
-  std::vector<ISurfaceRegistry*>     getAllSurfaceRegistries();
   std::vector<ITexture*>             getAllTextures();
   std::vector<IVertex*>              getAllVertices();
   
@@ -257,14 +236,12 @@ class Resources:public IResources,
   void addResourceListener(IResourceListener<IElementType>*);         
   void addResourceListener(IResourceListener<IFloat>*);               
   void addResourceListener(IResourceListener<IFont>*);                
-  void addResourceListener(IResourceListener<IGeometryProcessor>*);
   void addResourceListener(IResourceListener<IHUDComponentType>*); 
   void addResourceListener(IResourceListener<IInteger>*);         
   void addResourceListener(IResourceListener<ILayerType>*);
   void addResourceListener(IResourceListener<IScript>*);
   void addResourceListener(IResourceListener<ISound>*);           
   void addResourceListener(IResourceListener<IString>*);          
-  void addResourceListener(IResourceListener<ISurfaceRegistry>*);
   void addResourceListener(IResourceListener<ITexture>*);         
   void addResourceListener(IResourceListener<IVertex>*);          
   
@@ -277,14 +254,12 @@ class Resources:public IResources,
   void addResourceType(IResourceType<IElementType>*,         const std::string&);
   void addResourceType(IResourceType<IFloat>*,               const std::string&);
   void addResourceType(IResourceType<IFont>*,                const std::string&);
-  void addResourceType(IResourceType<IGeometryProcessor>*,   const std::string&);
   void addResourceType(IResourceType<IHUDComponentType>*,    const std::string&);
   void addResourceType(IResourceType<IInteger>*,             const std::string&);
   void addResourceType(IResourceType<ILayerType>*,           const std::string&);
   void addResourceType(IResourceType<IScript>*,              const std::string&);
   void addResourceType(IResourceType<ISound>*,               const std::string&);
   void addResourceType(IResourceType<IString>*,              const std::string&);
-  void addResourceType(IResourceType<ISurfaceRegistry>*,     const std::string&);
   void addResourceType(IResourceType<ITexture>*,             const std::string&);
   void addResourceType(IResourceType<IVertex>*,              const std::string&);
 
@@ -297,14 +272,12 @@ class Resources:public IResources,
   void editResource(IElementType*,         IResourceAccessor*, IEditingContext*);
   void editResource(IFloat*,               IResourceAccessor*, IEditingContext*);
   void editResource(IFont*,                IResourceAccessor*, IEditingContext*);
-  void editResource(IGeometryProcessor*,   IResourceAccessor*, IEditingContext*);
   void editResource(IHUDComponentType*,    IResourceAccessor*, IEditingContext*);
   void editResource(IInteger*,             IResourceAccessor*, IEditingContext*);
   void editResource(ILayerType*,           IResourceAccessor*, IEditingContext*);
   void editResource(IScript*,              IResourceAccessor*, IEditingContext*);
   void editResource(ISound*,               IResourceAccessor*, IEditingContext*);
   void editResource(IString*,              IResourceAccessor*, IEditingContext*);
-  void editResource(ISurfaceRegistry*,     IResourceAccessor*, IEditingContext*);
   void editResource(ITexture*,             IResourceAccessor*, IEditingContext*);
   void editResource(IVertex*,              IResourceAccessor*, IEditingContext*);
 
@@ -317,14 +290,12 @@ class Resources:public IResources,
   void removeResource(IElementType*,         IResourceAccessor*);
   void removeResource(IFloat*,               IResourceAccessor*);
   void removeResource(IFont*,                IResourceAccessor*);
-  void removeResource(IGeometryProcessor*,   IResourceAccessor*);
   void removeResource(IHUDComponentType*,    IResourceAccessor*);
   void removeResource(IInteger*,             IResourceAccessor*);
   void removeResource(ILayerType*,           IResourceAccessor*);
   void removeResource(IScript*,              IResourceAccessor*);
   void removeResource(ISound*,               IResourceAccessor*);
   void removeResource(IString*,              IResourceAccessor*);
-  void removeResource(ISurfaceRegistry*,     IResourceAccessor*);
   void removeResource(ITexture*,             IResourceAccessor*);
   void removeResource(IVertex*,              IResourceAccessor*);
  

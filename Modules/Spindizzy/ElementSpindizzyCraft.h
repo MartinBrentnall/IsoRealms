@@ -36,11 +36,13 @@
 #include <IsoRealms/Resources/Camera/ICamera.h>
 #include <IsoRealms/Resources/ElementType/Element.h>
 #include <IsoRealms/Resources/IResourceAccessor.h>
-#include <IsoRealms/Resources/SurfaceRegistry/ISurfaceRegistry.h>
 #include <IsoRealms/Resources/Vertex/Vertex.h>
 
 #include "ISpindizzyGERALDSet.h"
 #include "ISpindizzyGERALDType.h"
+#include "ICollisionData.h"
+#include "ICollidableWallSurface.h"
+#include "IRollableSurface.h"
 
 class ElementSpindizzyCraft:public Element, 
                             public IBoundaryPenetrator,
@@ -81,7 +83,6 @@ class ElementSpindizzyCraft:public Element,
   // Supported plugins
   I3DModel* cGERALDModel;
   IBoundaries* cBoundaries;
-  ISurfaceRegistry* cSurfaceRegistry;
   
   // Death and respawn handling
   std::stack<RespawnData*> cRespawnSurfaceStack;

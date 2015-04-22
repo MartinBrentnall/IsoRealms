@@ -19,6 +19,7 @@
 #ifndef I_SPINDIZZY_GERALD_TYPE_H
 #define I_SPINDIZZY_GERALD_TYPE_H
 
+#include "ICollisionData.h"
 #include "ISpindizzyGERALDSet.h"
 
 class ElementSpindizzyCraft;

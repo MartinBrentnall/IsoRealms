@@ -62,7 +62,6 @@ class OpenCommand;
 #include "ResourceManagerDialogs/DialogCustomTypeManager.h"
 #include "ResourceManagerDialogs/DialogElementTypeManager.h"
 #include "ResourceManagerDialogs/DialogFontManager.h"
-#include "ResourceManagerDialogs/DialogGeometryProcessorManager.h"
 // #include "ResourceManagerDialogs/DialogHUDComponentManager.h"
 // #include "ResourceManagerDialogs/DialogPrimitiveManager.h"
 #include "ResourceManagerDialogs/DialogScriptManager.h"
@@ -116,7 +115,6 @@ class SimpleEditor:public IModule,
 //   DialogPrimitiveManager* cDockablePrimitiveManager;
   DialogScriptManager* cDockableScriptManager;
   DialogSoundManager* cDockableSoundManager;
-  DialogGeometryProcessorManager* cDockableGeometryProcessorManager;
   DialogTextureManager* cDockableTextureManager;
   DialogVertexManager* cDockableVertexManager;
   

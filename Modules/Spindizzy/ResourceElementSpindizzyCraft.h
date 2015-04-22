@@ -33,7 +33,6 @@
 #include <IsoRealms/Resources/Script/IArgumentLocator.h>
 #include <IsoRealms/Resources/Script/IArgumentValueRegistry.h>
 #include <IsoRealms/Resources/Script/IScriptCall.h>
-#include <IsoRealms/Resources/SurfaceRegistry/ISurfaceRegistry.h>
 
 #include "ISpindizzyGERALDSet.h"
 #include "ISpindizzyGERALDType.h"
@@ -52,7 +51,6 @@ class ResourceElementSpindizzyCraft:public ISpindizzyGERALDType,
   I3DModelType* cModelType;
   ICamera* cCamera;
   std::vector<IBoundaries*> cBoundaries;
-  ISurfaceRegistry* cSurfaceRegistry;
   ElementSpindizzyCraft* cSampleGERALD;
   BlockLocation* cEditingLocation;
   IScriptCall* cRespawnScript;

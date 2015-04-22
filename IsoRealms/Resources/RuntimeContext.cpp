@@ -43,10 +43,8 @@ void RuntimeContext::add(ICamera* camera,                             const std:
 void RuntimeContext::add(IBoundaries* boundaries,                     const std::string& name, DOMNodeWrapper* node) {cResources->add(boundaries,          cEntityPath, name, node);}
 void RuntimeContext::add(IColour* colour,                             const std::string& name, DOMNodeWrapper* node) {cResources->add(colour,              cEntityPath, name, node);}
 void RuntimeContext::add(IComponentCustomType* componentCustomType,   const std::string& name                      ) {cResources->add(componentCustomType, cEntityPath, name);}
-void RuntimeContext::add(IElementGroupType* type,                     const std::string& name                      ) {cResources->add(type,                cEntityPath, name);}
 void RuntimeContext::add(IElementType* type,                          const std::string& name, DOMNodeWrapper* node) {cResources->add(type,                cEntityPath, name, node);}
 void RuntimeContext::add(IFont* font,                                 const std::string& name, DOMNodeWrapper* node) {cResources->add(font,                cEntityPath, name, node);}
-void RuntimeContext::add(IGeometryProcessor* geometryProcessor,       const std::string& name, DOMNodeWrapper* node) {cResources->add(geometryProcessor,   cEntityPath, name, node);}
 void RuntimeContext::add(IHUDComponentType* type,                     const std::string& name, DOMNodeWrapper* node) {cResources->add(type,                cEntityPath, name, node);}
 void RuntimeContext::add(IGlobalVariable* variable,                   const std::string& name, DOMNodeWrapper* node) {cResources->add(variable,            cEntityPath, name, node);}
 void RuntimeContext::add(IInteger* integer,                           const std::string& name, DOMNodeWrapper* node) {cResources->add(integer,             cEntityPath, name, node);}
@@ -55,7 +53,6 @@ void RuntimeContext::add(IScript* script,                             const std:
 void RuntimeContext::add(IResource* resource,                                                  DOMNodeWrapper* node) {cResources->add(resource,                               node);}
 void RuntimeContext::add(ISound* sound,                               const std::string& name, DOMNodeWrapper* node) {cResources->add(sound,               cEntityPath, name, node);}
 void RuntimeContext::add(IString* string,                             const std::string& name, DOMNodeWrapper* node) {cResources->add(string,              cEntityPath, name, node);}
-void RuntimeContext::add(ISurfaceRegistry* surfaceRegistry,           const std::string& name, DOMNodeWrapper* node) {cResources->add(surfaceRegistry,     cEntityPath, name, node);}
 void RuntimeContext::add(ITexture* texture,                           const std::string& name, DOMNodeWrapper* node) {cResources->add(texture,             cEntityPath, name, node);}
 void RuntimeContext::add(IVertex* vertex,                             const std::string& name, DOMNodeWrapper* node) {cResources->add(vertex,              cEntityPath, name, node);}
 

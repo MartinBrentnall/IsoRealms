@@ -49,7 +49,6 @@ class RuntimeContext:public IResourceRegistry {
   void add(IElementGroupType*,       const std::string&);
   void add(IElementType*,            const std::string&, DOMNodeWrapper*);
   void add(IFont*,                   const std::string&, DOMNodeWrapper*);
-  void add(IGeometryProcessor*,      const std::string&, DOMNodeWrapper*);
   void add(IGlobalVariable*,         const std::string&, DOMNodeWrapper*);
   void add(IHUDComponentType*,       const std::string&, DOMNodeWrapper*);
   void add(IInteger*,                const std::string&, DOMNodeWrapper*);
@@ -58,7 +57,6 @@ class RuntimeContext:public IResourceRegistry {
   void add(IResource*,                                   DOMNodeWrapper*);
   void add(ISound*,                  const std::string&, DOMNodeWrapper*);
   void add(IString*,                 const std::string&, DOMNodeWrapper*);
-  void add(ISurfaceRegistry*,        const std::string&, DOMNodeWrapper*);
   void add(ITexture*,                const std::string&, DOMNodeWrapper*);
   void add(IVertex*,                 const std::string&, DOMNodeWrapper*);
   

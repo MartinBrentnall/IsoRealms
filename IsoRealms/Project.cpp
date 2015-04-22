@@ -40,8 +40,6 @@ Project::Project(DOMNodeWrapper* node, const std::string& projectName, IEditingC
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Module") {
       cModuleRegistry.registerModule(mNode, &cResources, editingContext != NULL ? &cResources : NULL);
-    } else if (mValueAsString == "DefaultElementGroup") {
-      cResources.registerDefaultElementGroup(mNode);
 //     } else if (mValueAsString == "EngineData") {
 //       cResources.loadInstances(mNode);
     } else {
@@ -132,7 +130,6 @@ void Project::save() {
   DOMNodeWriter* mInputConfigurationNode = mProjectNode->addBranch("InputConfiguration");
   cModuleRegistry.save(mProjectNode, &cResources);
   cResources.saveInputConfiguration(mInputConfigurationNode);
-  cResources.saveDefaultElementGroups(mProjectNode);
   DOMNodeWriter* mInitScriptNode = mProjectNode->addBranch("InitScript");
   cInitScript->save(mInitScriptNode, &cResources);
   for (unsigned int i = 0; i < cLayers.size(); i++) {

@@ -97,7 +97,6 @@ void SimpleEditor::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* r
   cDockableFontManager              = new DialogFontManager(             this, resources, mProjectResources, this, mProjectResources, this);
   cDockableScriptManager            = new DialogScriptManager(           this, resources, mProjectResources, this, mProjectResources, this);
 //   cDockablePrimitiveManager        = new DialogPrimitiveManager(       this, resources, mProjectResources, this, mProjectResources, this);
-  cDockableGeometryProcessorManager = new DialogGeometryProcessorManager(this, resources, mProjectResources, this, mProjectResources, this);
   cDockableCustomTypeManager        = new DialogCustomTypeManager(       this, resources, mProjectResources, this, mProjectResources, this);
 //   cDockableHUDComponentManager     = new DialogHUDComponentManager(    this, resources, mProjectResources, this, mProjectResources, this);
   cDockableVertexManager            = new DialogVertexManager(           this, resources, mProjectResources, this, mProjectResources, this);
@@ -111,7 +110,6 @@ void SimpleEditor::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* r
   cScreenEdgeManager.add(cDockableFontManager,              cResourceIcons["IconFonts"]);
   cScreenEdgeManager.add(cDockableScriptManager,            cResourceIcons["IconScripts"]);
 //   cScreenEdgeManager.add(cDockablePrimitiveManager,        cResourceIcons["IconPrimitives"]);
-  cScreenEdgeManager.add(cDockableGeometryProcessorManager, cResourceIcons["IconSurfaceProcessors"]);
   cScreenEdgeManager.add(cDockableCustomTypeManager,        cResourceIcons["IconCustomTypes"]);
 //   cScreenEdgeManager.add(cDockableHUDComponentManager,     cResourceIcons["IconHUDComponents"]);
   cScreenEdgeManager.add(cDockableVertexManager,            cResourceIcons["IconVertices"]);

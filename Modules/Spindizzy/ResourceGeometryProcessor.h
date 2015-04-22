@@ -25,7 +25,6 @@
 
 #include <IsoRealms/BlockArea.h>
 #include <IsoRealms/IProject.h>
-#include <IsoRealms/Resources/GeometryProcessor/IGeometryProcessor.h>
 #include <IsoRealms/Resources/IDummyModule.h>
 #include <IsoRealms/Resources/IResourceRegistry.h>
 #include <IsoRealms/Struct/SpatialContainer2D.h>
@@ -42,7 +41,7 @@
  * Each set of surfaces is considered to be a "block", when the upper and lower
  * surfaces both correspond to the same column.
  */
-class ResourceGeometryProcessor:public IGeometryProcessor {
+class ResourceGeometryProcessor {
   public:
   class IndexedGeometricElement {
     private:
@@ -183,7 +182,7 @@ class ResourceGeometryProcessor:public IGeometryProcessor {
   std::vector<IndexedGeometricElement*> getGeometricElements(int, int);
   
   public:
-  ResourceGeometryProcessor(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
+  ResourceGeometryProcessor(bool, bool);
 
   /********************************\
    * Implements ISurfaceProcessor *
@@ -198,12 +197,6 @@ class ResourceGeometryProcessor:public IGeometryProcessor {
   void setDirty();
   void reinitialise();
 
-  /**********************\
-   * Implements IPlugin *
-  \**********************/
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
-  void save(DOMNodeWriter*, IResourceLocator*);
-  
   virtual ~ResourceGeometryProcessor() {}
 };
 

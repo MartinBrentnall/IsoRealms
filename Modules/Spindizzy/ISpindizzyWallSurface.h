@@ -19,8 +19,8 @@
 #ifndef I_SPINDIZZY_WALL_SURFACE_H
 #define I_SPINDIZZY_WALL_SURFACE_H
 
-#include <IsoRealms/Resources/GeometryProcessor/IWallSurface.h>
-#include <IsoRealms/Resources/SurfaceRegistry/ICollidableWallSurface.h>
+#include "ICollidableWallSurface.h"
+#include "IWallSurface.h"
 
 class ISpindizzyWallSurface:public IWallSurface,
                             public ICollidableWallSurface {

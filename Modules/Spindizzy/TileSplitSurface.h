@@ -26,7 +26,6 @@
 #include <IsoRealms/Collision.h>
 #include <IsoRealms/Condition.h>
 #include <IsoRealms/IsoRealmsConstants.h>
-#include <IsoRealms/Resources/GeometryProcessor/IGeometryProcessor.h>
 #include <IsoRealms/Resources/Texture/ITexture.h>
 #include <IsoRealms/MiscFunctions.h>
 

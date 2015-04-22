@@ -20,14 +20,13 @@
 #define ELEMENT_SPINDIZZY_WATER_H
 
 #include <IsoRealms/Condition.h>
-#include <IsoRealms/Resources/GeometryProcessor/IGeometricElement.h>
-#include <IsoRealms/Resources/GeometryProcessor/IGeometryProcessor.h>
-#include <IsoRealms/Resources/GeometryProcessor/IWallSurface.h>
 #include <IsoRealms/Resources/Texture/ITexture.h>
 
+#include "IGeometricElement.h"
 #include "ISpindizzyBlock.h"
 #include "ISpindizzyBlockType.h"
 #include "ISpindizzyBlockSet.h"
+#include "IWallSurface.h"
 #include "TileSurface.h"
 #include "WallSurface.h"
 

@@ -145,9 +145,9 @@ void SpindizzyModule::load(DOMNodeWrapper* node, IResourceRegistry* resources) {
 }
 
 void SpindizzyModule::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
-  cVisualProcessor = resources->getGeometryProcessor(node->getAttribute("visualProcessor"));
-  cPhysicalProcessor = resources->getGeometryProcessor(node->getAttribute("physicalProcessor"));
-  cSurfaceRegistry = resources->getSurfaceRegistry(node->getAttribute("surfaceRegistry"));
+  cVisualProcessor = new ResourceGeometryProcessor(false, false);
+  cPhysicalProcessor = new ResourceGeometryProcessor(true, true);
+  cSurfaceRegistry = new ResourceSurfaceRegistry();
   cLocked = resources->getInteger(node->getAttribute("locks"));
   cCamera = resources->getCamera(node->getAttribute("camera"));
   cCamera->addCameraAngleChangeListener(this);
@@ -420,6 +420,14 @@ void SpindizzyModule::setArgumentValue(ElementHandlerSpindizzyDynamic* dynamicEl
 
 void SpindizzyModule::setArgumentValue(ElementHandlerZone* zoneElementHandler) {
   cZoneElementHandlerArgument.setValue(zoneElementHandler);
+}
+
+ICollisionData* SpindizzyModule::getNextEvent(Vertex& start, Vertex& end, IRollableSurface* currentSurface) {
+  return cSurfaceRegistry->getNextEvent(start, end, currentSurface);
+}
+
+IRollableSurface* SpindizzyModule::getSurfaceAt(Vertex& location) {
+  return cSurfaceRegistry->getSurfaceAt(location);
 }
 
 bool SpindizzyModule::isEditing() {

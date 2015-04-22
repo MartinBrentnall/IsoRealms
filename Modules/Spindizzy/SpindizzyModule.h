@@ -51,11 +51,13 @@
 #include "ResourceElementSpindizzyLift.h"
 #include "ResourceElementSpindizzyWater.h"
 #include "ResourceElementSpindizzyZone.h"
+#include "ResourceGeometryProcessor.h"
 #include "ResourceLayerBackground.h"
 #include "ResourceLayerSpindizzyMap.h"
 #include "ResourceModelSpindizzyCraftGyroscope.h"
 #include "ResourceModelSpindizzyCraftPyramid.h"
 #include "ResourceModelSpindizzyJewel.h"
+#include "ResourceSurfaceRegistry.h"
 #include "ResourceTextureSpindizzyCraftBall.h"
 #include "ResourceTexturesSpindizzyBlocksC64.h"
 #include "ResourceTexturesSpindizzyLiftsC64.h"
@@ -140,9 +142,9 @@ class SpindizzyModule:public IModule,
   std::map<IElementContainer*, ElementHandlerZone*> cZoneElementHandlers;
   std::map<IElementContainer*, ElementHandlerItem*> cItemElementHandlers;
   std::map<IElementContainer*, ElementHandlerSpindizzyBlock*> cElementHandlersSpindizzyBlock;
-  ISurfaceRegistry* cSurfaceRegistry;
-  IGeometryProcessor* cPhysicalProcessor;
-  IGeometryProcessor* cVisualProcessor;
+  ResourceSurfaceRegistry* cSurfaceRegistry;
+  ResourceGeometryProcessor* cPhysicalProcessor;
+  ResourceGeometryProcessor* cVisualProcessor;
   IScriptCall* cLiftMovedScript;
   SpindizzyLiftProperties cSpindizzyLiftProperties;
   Integer* cCollectedCount;
@@ -259,6 +261,12 @@ class SpindizzyModule:public IModule,
   \****************************************/
   void setArgumentValue(ElementHandlerZone*);
   
+  /**********************************\
+   * Implements ISpindizzyGERALDSet *
+  \**********************************/
+  ICollisionData* getNextEvent(Vertex&, Vertex&, IRollableSurface*);
+  IRollableSurface* getSurfaceAt(Vertex&);
+
   /************\
    * Multiple *
   \************/

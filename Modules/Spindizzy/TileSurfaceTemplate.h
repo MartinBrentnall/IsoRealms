@@ -16,22 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_SURFACE_REGISTRY_H
-#define I_SURFACE_REGISTRY_H
+#ifndef TILE_SURFACE_TEMPLATE_H
+#define TILE_SURFACE_TEMPLATE_H
 
-#include <vector>
+#include "ITileSurfaceTemplate.h"
 
-#include <IsoRealms/Resources/IResource.h>
+class TileSurfaceTemplate:public ITileSurfaceTemplate {
+  private:
+  int cNorth;
+  int cSouth;
+  int cEast;
+  int cWest;
+  Condition* cCondition;
 
-#include "IRollableSurface.h"
-#include "ICollidableWallSurface.h"
-
-class ISurfaceRegistry:public IResource {
   public:
-  virtual void registerRollableSurface(IRollableSurface*, bool) = 0;
-  virtual void registerWallSurface(ICollidableWallSurface*) = 0;
-  virtual ICollisionData* getNextEvent(Vertex&, Vertex&, IRollableSurface*) = 0;
-  virtual IRollableSurface* getSurfaceAt(Vertex&) = 0;
+  TileSurfaceTemplate(int, int, int, int, Condition* = NULL);
+
+  int getNorth();
+  int getEast();
+  int getSouth();
+  int getWest();
+  Condition* getCondition();
+  bool alligned(int, int);
 };
 
 #endif

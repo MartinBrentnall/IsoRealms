@@ -19,7 +19,7 @@
 #ifndef TILE_BLOCK_H
 #define TILE_BLOCK_H
 
-#include <IsoRealms/Resources/GeometryProcessor/IGeometryProcessor.h>
+#include "IGeometricElement.h"
 
 class TileBlock {
   private:

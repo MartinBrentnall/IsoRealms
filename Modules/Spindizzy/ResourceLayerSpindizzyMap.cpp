@@ -79,7 +79,3 @@ void ResourceLayerSpindizzyMap::updateIcon(unsigned int) {
 void ResourceLayerSpindizzyMap::destroy(ILayer* layer) {
   delete layer;
 }
-
-IElementHandler* ResourceLayerSpindizzyMap::getElementHandler() {
-  return NULL;
-}

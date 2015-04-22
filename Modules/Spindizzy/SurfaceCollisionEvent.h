@@ -19,7 +19,7 @@
 #ifndef SURFACE_COLLISION_EVENT_H
 #define SURFACE_COLLISION_EVENT_H
 
-#include <IsoRealms/Resources/SurfaceRegistry/ICollisionData.h>
+#include "ICollisionData.h"
 
 class SurfaceCollisionEvent:public ICollisionData {
   private:

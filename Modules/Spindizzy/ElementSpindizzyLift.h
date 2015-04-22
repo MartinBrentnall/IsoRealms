@@ -30,9 +30,9 @@
 #include <IsoRealms/IVisualElement.h>
 #include <IsoRealms/Resources/3DModel/I3DModelType.h>
 #include <IsoRealms/Resources/ElementType/Element.h>
-#include <IsoRealms/Resources/SurfaceRegistry/IRollableSurface.h>
 
 #include "IElementSpindizzyDynamic.h"
+#include "IRollableSurface.h"
 #include "ISpindizzyLiftSet.h"
 #include "ISpindizzyLiftType.h"
 #include "LiftSurfaceCollisionEvent.h"

@@ -20,7 +20,6 @@
 #define I_SPINDIZZY_BLOCK_TYPE_H
 
 #include <IsoRealms/Resources/ElementType/IElementType.h>
-#include <IsoRealms/Resources/GeometryProcessor/IGeometryProcessor.h>
 
 #include "BlockTypeProperties.h"
 #include "ISpindizzyBlockSet.h"

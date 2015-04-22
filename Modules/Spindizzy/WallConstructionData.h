@@ -19,9 +19,8 @@
 #ifndef WALL_CONSTRUCTION_DATA_H
 #define WALL_CONSTRUCTION_DATA_H
 
-#include <IsoRealms/Resources/GeometryProcessor/IWallSurface.h>
-#include <IsoRealms/Resources/GeometryProcessor/IWallSurfaceTemplate.h>
-
+#include "IWallSurface.h"
+#include "IWallSurfaceTemplate.h"
 #include "WallColumn.h"
 
 class WallConstructionData:public IWallSurfaceTemplate {

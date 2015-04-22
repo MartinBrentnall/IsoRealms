@@ -53,7 +53,6 @@ void ResourceElementSpindizzyCraft::initialiseResource(DOMNodeWrapper* node, IRe
 //   for (std::map<std::string, ElementSpindizzyCraft*>::iterator i = cNamedInstances.begin(); i != cNamedInstances.end(); i++) {
 //     i->second->setResources(cResources);
 //   }
-  cSurfaceRegistry = resourceAccessor->getSurfaceRegistry(mSurfaceRegistryPath);
   cModelType = resourceAccessor->getModelType(mModelPath);
   cCamera = resourceAccessor->getCamera(mCameraPath);
   for (int i = 0; i < node->getChildCount(); i++) {
@@ -160,7 +159,6 @@ void ResourceElementSpindizzyCraft::saveInstances(DOMNodeWriter* node, IResource
 
 void ResourceElementSpindizzyCraft::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   node->addAttribute("model", resourceLocator->getPath(cModelType));
-  node->addAttribute("surfaceRegistry", resourceLocator->getPath(cSurfaceRegistry));
   node->addAttribute("camera", resourceLocator->getPath(cCamera));
   resourceLocator->saveScript(node, "RespawnScript", cRespawnScript);
   resourceLocator->saveScript(node, "FallImpactScript", cFallImpactScript);
@@ -240,11 +238,11 @@ void ResourceElementSpindizzyCraft::notifyDisappearance(ElementSpindizzyCraft* c
 }
 
 ICollisionData* ResourceElementSpindizzyCraft::getNextEvent(Vertex& start, Vertex& end, IRollableSurface* currentSurface) {
-  return cSurfaceRegistry->getNextEvent(start, end, currentSurface);
+  return cModuleInterface->getNextEvent(start, end, currentSurface);
 }
 
 IRollableSurface* ResourceElementSpindizzyCraft::getSurfaceAt(Vertex& location) {
-  return cSurfaceRegistry->getSurfaceAt(location);
+  return cModuleInterface->getSurfaceAt(location);
 }
 
 ICamera* ResourceElementSpindizzyCraft::getCamera() {

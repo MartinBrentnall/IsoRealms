@@ -81,7 +81,3 @@ void ResourceLayerBackground::updateIcon(unsigned int) {
 void ResourceLayerBackground::destroy(ILayer* layer) {
   delete layer;
 }
-
-IElementHandler* ResourceLayerBackground::getElementHandler() {
-  return NULL;
-}

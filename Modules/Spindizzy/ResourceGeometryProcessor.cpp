@@ -18,21 +18,11 @@
  */
 #include "ResourceGeometryProcessor.h"
 
-ResourceGeometryProcessor::ResourceGeometryProcessor(IDummyModule* module, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
-  cRemoveHiddenSurfaces = false;
-  cCompareOtherContainers = false;
+ResourceGeometryProcessor::ResourceGeometryProcessor(bool removeHiddenSurfaces, bool compareOtherContainers) {
+  cRemoveHiddenSurfaces = removeHiddenSurfaces;
+  cCompareOtherContainers = compareOtherContainers;
   cCacheAccessMutex = SDL_CreateMutex();
   cIndex = 0;
-}
-
-void ResourceGeometryProcessor::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
-  cRemoveHiddenSurfaces = node->getBooleanAttribute("removeHiddenSurfaces");
-  cCompareOtherContainers = node->getBooleanAttribute("compareOtherContainers");
-}
-
-void ResourceGeometryProcessor::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
-  node->addAttribute("removeHiddenSurfaces", cRemoveHiddenSurfaces ? "true" : "false");
-  node->addAttribute("compareOtherContainers", cCompareOtherContainers ? "true" : "false");
 }
 
 std::vector<ResourceGeometryProcessor::IndexedGeometricElement*> ResourceGeometryProcessor::getGeometricElements(int x, int y) {

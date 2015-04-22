@@ -31,7 +31,6 @@ add_library(Editor MODULE
   ResourceManagerDialogs/DialogCustomTypeManager.cpp
   ResourceManagerDialogs/DialogElementTypeManager.cpp
   ResourceManagerDialogs/DialogFontManager.cpp
-  ResourceManagerDialogs/DialogGeometryProcessorManager.cpp
   ResourceManagerDialogs/DialogScriptManager.cpp
   ResourceManagerDialogs/DialogSoundManager.cpp
   ResourceManagerDialogs/DialogTextureManager.cpp

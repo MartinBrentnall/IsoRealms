@@ -18,10 +18,7 @@
  */
 #include "ResourceSurfaceRegistry.h"
 
-ResourceSurfaceRegistry::ResourceSurfaceRegistry(IDummyModule* module, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
-}
-
-void ResourceSurfaceRegistry::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+ResourceSurfaceRegistry::ResourceSurfaceRegistry() {
   cAccessMutex = SDL_CreateMutex();
 }
 

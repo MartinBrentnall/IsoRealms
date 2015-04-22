@@ -35,7 +35,6 @@ class IElementGroupType;
 class IElementType;
 class IFloat;
 class IFont;
-class IGeometryProcessor;
 class IGlobalVariable;
 class IHUDComponentType;
 class IInteger;
@@ -44,7 +43,6 @@ class IScript;
 class IScriptCall;
 class ISound;
 class IString;
-class ISurfaceRegistry;
 class ITexture;
 class IVertex;
 
@@ -58,11 +56,9 @@ class IResourceLocator {
   virtual std::string getPath(ICamera*) = 0;
   virtual std::string getPath(IColour*) = 0;
   virtual std::string getPath(IComponentCustomType*) = 0;
-  virtual std::string getPath(IElementGroupType*) = 0;
   virtual std::string getPath(IElementType*) = 0;
   virtual std::string getPath(IFloat*) = 0;
   virtual std::string getPath(IFont*) = 0;
-  virtual std::string getPath(IGeometryProcessor*) = 0;
   virtual std::string getPath(IGlobalVariable*) = 0;
   virtual std::string getPath(IHUDComponentType*) = 0;
   virtual std::string getPath(IInteger*) = 0;
@@ -70,7 +66,6 @@ class IResourceLocator {
   virtual std::string getPath(IScript*) = 0;
   virtual std::string getPath(ISound*) = 0;
   virtual std::string getPath(IString*) = 0;
-  virtual std::string getPath(ISurfaceRegistry*) = 0;
   virtual std::string getPath(ITexture*) = 0;
   virtual std::string getPath(IVertex*) = 0;
   

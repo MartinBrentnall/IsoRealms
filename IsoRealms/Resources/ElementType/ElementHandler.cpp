@@ -160,6 +160,7 @@ void ElementHandler::initElementHandler(unsigned int pass, bool editing) {
       std::cout << "Couldn't unlock mutex" << std::endl;
       exit(-1);
     }
+    std::cout << "  Init element..." << std::endl;
     if (mElement->initElement(pass)) {
       while (SDL_mutexP(cElementQueueMutex) == -1);
       cCleanElements.push_back(mElement);
@@ -168,6 +169,7 @@ void ElementHandler::initElementHandler(unsigned int pass, bool editing) {
         exit(-1);
       }
     }
+    std::cout << "  Done init!" << std::endl;
     while (SDL_mutexP(cElementQueueMutex) == -1);
   }
   if (SDL_mutexV(cElementQueueMutex) == -1) {

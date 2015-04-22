@@ -19,7 +19,6 @@
 #ifndef ELEMENT_HANDLER_ITEM_H
 #define ELEMENT_HANDLER_ITEM_H
 
-#include <IsoRealms/DefaultElementHandler.h>
 #include <IsoRealms/Resources/ElementType/Element.h>
 
 #include "ElementSpindizzyItem.h"

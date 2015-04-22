@@ -19,7 +19,6 @@
 #ifndef ELEMENT_HANDLER_SPINDIZZY_DYNAMIC_H
 #define ELEMENT_HANDLER_SPINDIZZY_DYNAMIC_H
 
-#include <IsoRealms/DefaultElementHandler.h>
 #include <IsoRealms/Resources/ElementType/Element.h>
 
 #include "IElementSpindizzyDynamic.h"

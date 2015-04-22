@@ -19,8 +19,8 @@
 #ifndef I_SPINDIZZY_TILE_SURFACE_H
 #define I_SPINDIZZY_TILE_SURFACE_H
 
-#include <IsoRealms/Resources/GeometryProcessor/ITileSurface.h>
-#include <IsoRealms/Resources/SurfaceRegistry/IRollableSurface.h>
+#include "IRollableSurface.h"
+#include "ITileSurface.h"
 
 class ISpindizzyTileSurface:public ITileSurface,
                             public IRollableSurface {

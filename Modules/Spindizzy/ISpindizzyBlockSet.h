@@ -21,14 +21,13 @@
 
 #include <vector>
 
-#include <IsoRealms/Resources/GeometryProcessor/ITileSurface.h>
-#include <IsoRealms/Resources/GeometryProcessor/ITileSurfaceTemplate.h>
-#include <IsoRealms/Resources/GeometryProcessor/IGeometryProcessor.h>
-#include <IsoRealms/Resources/GeometryProcessor/IGeometricElement.h>
-#include <IsoRealms/Resources/GeometryProcessor/IWallSurface.h>
-#include <IsoRealms/Resources/SurfaceRegistry/ICollidableWallSurface.h>
-#include <IsoRealms/Resources/SurfaceRegistry/IRollableSurface.h>
-#include <IsoRealms/Resources/ElementType/Element.h>
+#include "ICollidableWallSurface.h"
+#include "IRollableSurface.h"
+#include "ITileSurface.h"
+#include "ITileSurfaceTemplate.h"
+#include "IGeometricElement.h"
+#include "IWallSurface.h"
+#include "IWallSurfaceTemplate.h"
 
 class ElementHandlerSpindizzyBlock;
 class ISpindizzyBlock;

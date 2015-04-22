@@ -25,16 +25,15 @@
 #include <IsoRealms/BlockLocation.h>
 #include <IsoRealms/Condition.h>
 #include <IsoRealms/Persistence/DOMNodeWrapper.h>
-#include <IsoRealms/Resources/GeometryProcessor/IGeometryProcessor.h>
-#include <IsoRealms/Resources/GeometryProcessor/IGeometricElement.h>
-#include <IsoRealms/Resources/GeometryProcessor/ITileSurface.h>
 #include <IsoRealms/Resources/Texture/ITexture.h>
 #include <IsoRealms/IVisualElement.h>
 #include <IsoRealms/MiscFunctions.h>
 
+#include "IGeometricElement.h"
 #include "ISpindizzyBlock.h"
 #include "ISpindizzyBlockSet.h"
 #include "ISpindizzyBlockType.h"
+#include "ITileSurface.h"
 #include "SpindizzyBlockProperties.h"
 #include "TileSurface.h"
 #include "TileSplitSurface.h"

@@ -30,7 +30,6 @@
 #include <IsoRealms/Resources/Boolean/IBoolean.h>
 #include <IsoRealms/Resources/Boundaries/IBoundaries.h>
 #include <IsoRealms/Resources/Colour/IColour.h>
-#include <IsoRealms/Resources/ElementType/IElementGroupType.h>
 #include <IsoRealms/Resources/ElementType/IElementType.h>
 #include <IsoRealms/Resources/Font/IFont.h>
 #include <IsoRealms/Resources/Integer/IInteger.h>
@@ -38,7 +37,6 @@
 #include <IsoRealms/Resources/Script/IGlobalVariable.h>
 #include <IsoRealms/Resources/Script/IScript.h>
 #include <IsoRealms/Resources/Sound/ISound.h>
-#include <IsoRealms/Resources/SurfaceRegistry/ISurfaceRegistry.h>
 #include <IsoRealms/Resources/Texture/ITexture.h>
 #include <IsoRealms/Resources/Vertex/Vertex.h>
 
@@ -57,10 +55,8 @@ class IResourceRegistry {
   virtual void add(ICamera*,                    const std::string&, DOMNodeWrapper* = NULL) = 0;
   virtual void add(IColour*,                    const std::string&, DOMNodeWrapper* = NULL) = 0;
   virtual void add(IComponentCustomType*,       const std::string&) = 0;
-  virtual void add(IElementGroupType*,          const std::string&) = 0;
   virtual void add(IElementType*,               const std::string&, DOMNodeWrapper* = NULL) = 0;
   virtual void add(IFont*,                      const std::string&, DOMNodeWrapper* = NULL) = 0;
-  virtual void add(IGeometryProcessor*,         const std::string&, DOMNodeWrapper* = NULL) = 0;
   virtual void add(IHUDComponentType*,          const std::string&, DOMNodeWrapper* = NULL) = 0;
   virtual void add(IGlobalVariable*,            const std::string&, DOMNodeWrapper* = NULL) = 0;
   virtual void add(IInteger*,                   const std::string&, DOMNodeWrapper* = NULL) = 0;
@@ -69,7 +65,6 @@ class IResourceRegistry {
   virtual void add(IResource*,                                      DOMNodeWrapper* = NULL) = 0;
   virtual void add(ISound*,                     const std::string&, DOMNodeWrapper* = NULL) = 0;
   virtual void add(IString*,                    const std::string&, DOMNodeWrapper* = NULL) = 0;
-  virtual void add(ISurfaceRegistry*,           const std::string&, DOMNodeWrapper* = NULL) = 0;
   virtual void add(ITexture*,                   const std::string&, DOMNodeWrapper* = NULL) = 0;
   virtual void add(IVertex*,                    const std::string&, DOMNodeWrapper* = NULL) = 0;
   

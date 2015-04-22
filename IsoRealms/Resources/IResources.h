@@ -47,13 +47,10 @@ class IResources:public IResourceAccessor {
   virtual void add(IBoolean*,                   std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
   virtual void add(IBoundaries*,                std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
   virtual void add(ICamera*,                    std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
-  virtual void add(ISurfaceRegistry*,           std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
   virtual void add(IColour*,                    std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
   virtual void add(IComponentCustomType*,       std::vector<std::string>, const std::string&) = 0;
-  virtual void add(IElementGroupType*,          std::vector<std::string>, const std::string&) = 0;
   virtual void add(IElementType*,               std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
   virtual void add(IFont*,                      std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
-  virtual void add(IGeometryProcessor*,         std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
   virtual void add(IHUDComponentType*,          std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
   virtual void add(IGlobalVariable*,            std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
   virtual void add(IInteger*,                   std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
@@ -71,13 +68,11 @@ class IResources:public IResourceAccessor {
   virtual void addListener(IResourceUseListener<IBoolean>*) = 0;
   virtual void addListener(IResourceUseListener<IBoundaries>*) = 0;
   virtual void addListener(IResourceUseListener<ICamera>*) = 0;
-  virtual void addListener(IResourceUseListener<ISurfaceRegistry>*) = 0;
   virtual void addListener(IResourceUseListener<IColour>*) = 0;
   virtual void addListener(IResourceUseListener<IComponentCustomType>*) = 0;
   virtual void addListener(IResourceUseListener<IElementType>*) = 0;
   virtual void addListener(IResourceUseListener<IFloat>*) = 0;
   virtual void addListener(IResourceUseListener<IFont>*) = 0;
-  virtual void addListener(IResourceUseListener<IGeometryProcessor>*) = 0;
   virtual void addListener(IResourceUseListener<IHUDComponentType>*) = 0;
   virtual void addListener(IResourceUseListener<IInteger>*) = 0;
   virtual void addListener(IResourceUseListener<ILayerType>*) = 0;

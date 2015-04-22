@@ -191,8 +191,6 @@
     <ColourFixed alpha="1" blue="0.851562" green="0.4375" name="LightBlue" red="0.484375"/>
     <ColourFixed alpha="1" blue="0.667969" green="0.667969" name="LightGray" red="0.667969"/>
     <FontFile detail="64" file="Data/Fonts/MenuFont.ttf" name="HUDFont"/>
-    <GeometryProcessor name="VisualSurfaceProcessor" removeHiddenSurfaces="false" compareOtherContainers="false"/>
-    <GeometryProcessor name="PhysicalSurfaceProcessor" removeHiddenSurfaces="true" compareOtherContainers="true"/>
     <HUDModel camera="Spindizzy/Camera" model="Spindizzy/Jewel" name="JewelIcon" x="0.000000" y="0.000000" z="-0.600000" scale="1.0"/>
     <HUDModel model="IsoRealms/HUDIconMap" name="MapIcon" x="0.000000" y="0.000000" z="0.000000" scale="1.0"/>
     <HUDModel model="IsoRealms/HUDIconScore" name="ScoreIcon" x="0.000000" y="0.000000" z="0.000000" scale="1.0"/>
@@ -617,13 +615,12 @@ end</Code>
     <SoundFile file="Data/Sounds/Impact Medium.ogg" name="ImpactMedium"/>
     <SoundFile file="Data/Sounds/Impact Soft.ogg" name="ImpactSoft"/>
     <StringTime name="SpindizzyTimeLimit" value="IsoRealms/SpindizzyTimeLimit"/>
-    <SurfaceRegistry name="Surfaces"/>
     <TextureFile file="Map.png" name="Map"/>
     <TextureFile file="Score.png" name="Score"/>
     <TextureFile file="Time.png" name="Time"/>
     <VertexFixed name="ZoneLocation"/>
   </Module>
-  <Module name="Spindizzy" physicalProcessor="IsoRealms/PhysicalSurfaceProcessor" surfaceRegistry="IsoRealms/Surfaces" visualProcessor="IsoRealms/VisualSurfaceProcessor" locks="IsoRealms/Locks" camera="Spindizzy/Camera">
+  <Module name="Spindizzy" locks="IsoRealms/Locks" camera="Spindizzy/Camera">
     <LiftMovedScript name="IsoRealms/randomClick"/>
     <BlockState state="IsoRealms/SwitchDiamondLeft" model="IsoRealms/ClueDiamondLeft" name="SwitchDiamondLeft" x="0.000000" y="0.000000" z="-0.500000" scale="0.7"/>
     <BlockState state="IsoRealms/SwitchDiamondRight" model="IsoRealms/ClueDiamondRight" name="SwitchDiamondRight" x="0.000000" y="0.000000" z="-0.500000" scale="0.7"/>
@@ -979,7 +976,7 @@ end</Code>
       <Texture name="Spindizzy/WallPlainCap" type="WallNorthTop"/>
       <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallNorthBottom"/>
     </ElementSpindizzyBlock>
-    <ElementSpindizzyCraft camera="Spindizzy/Camera" model="Spindizzy/Pyramid" surfaceRegistry="IsoRealms/Surfaces" name="Player">
+    <ElementSpindizzyCraft camera="Spindizzy/Camera" model="Spindizzy/Pyramid" name="Player">
       <RespawnScript name="IsoRealms/respawn"/>
       <FallImpactScript name="IsoRealms/playerFallImpact">
         <Argument name="player" type="Spindizzy/GERALD" value="~craft"/>

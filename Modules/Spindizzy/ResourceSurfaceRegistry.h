@@ -25,10 +25,12 @@
 #include <IsoRealms/IProject.h>
 #include <IsoRealms/Resources/IDummyModule.h>
 #include <IsoRealms/Resources/IResourceRegistry.h>
-#include <IsoRealms/Resources/SurfaceRegistry/ISurfaceRegistry.h>
 #include <IsoRealms/Struct/SpatialContainer2D.h>
 
-class ResourceSurfaceRegistry:public ISurfaceRegistry {
+#include "IRollableSurface.h"
+#include "ICollidableWallSurface.h"
+
+class ResourceSurfaceRegistry {
   private:
   SDL_mutex* cAccessMutex;
   SpatialContainer2D<IRollableSurface> cRollableSurfaces;
@@ -36,9 +38,7 @@ class ResourceSurfaceRegistry:public ISurfaceRegistry {
   SpatialContainer2D<ICollidableWallSurface> cWallSurfaces;
 
   public:
-  ResourceSurfaceRegistry(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
-    
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  ResourceSurfaceRegistry();
 
   /*******************************\
    * Implements ISurfaceRegistry *

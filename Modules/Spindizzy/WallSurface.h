@@ -25,10 +25,10 @@
 #include <IsoRealms/Collision.h>
 #include <IsoRealms/Condition.h>
 #include <IsoRealms/IsoRealmsConstants.h>
-#include <IsoRealms/Resources/GeometryProcessor/IWallEdge.h>
 #include <IsoRealms/Resources/Texture/ITexture.h>
 
 #include "ISpindizzyWallSurface.h"
+#include "IWallEdge.h"
 #include "SurfaceCollisionEvent.h"
 #include "WallType.h"
 

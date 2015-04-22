@@ -44,7 +44,6 @@ ElementSpindizzyZone::ElementSpindizzyZone(ISpindizzyZoneType* elementType, DOMN
       resources->loadElement(mNode, &mVertex, this);
     }
   }
-  resources->loadDefaultElementGroups(this);
   cElementHandler.setAllDirty();
   cVisited = false;
   cFlagged = false;

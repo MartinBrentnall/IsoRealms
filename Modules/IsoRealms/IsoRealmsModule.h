@@ -26,7 +26,6 @@
 #include "DialogBoundaries.h"
 #include "DialogColourFixed.h"
 #include "DialogFontFile.h"
-#include "DialogGeometryProcessor.h"
 #include "DialogGlobalVariable.h"
 #include "DialogHUDModel.h"
 #include "DialogHUDRoundedRectangle.h"
@@ -40,13 +39,11 @@
 #include "DialogScriptLua.h"
 #include "DialogStringTime.h"
 #include "DialogSoundFile.h"
-#include "DialogSurfaceRegistry.h"
 #include "DialogTextureFile.h"
 #include "DialogVertexFixed.h"
 #include "ResourceBooleanFixed.h"
 #include "ResourceBoundaries.h"
 #include "ResourceFontFile.h"
-#include "ResourceGeometryProcessor.h"
 #include "ResourceHUDModel.h"
 #include "ResourceHUDRoundedRectangle.h"
 #include "ResourceHUDString.h"
@@ -58,7 +55,6 @@
 #include "ResourceModelSprite.h"
 #include "ResourceStringTime.h"
 #include "ResourceSoundFile.h"
-#include "ResourceSurfaceRegistry.h"
 #include "ResourceTextureFile.h"
 #include "ResourceVertexFixed.h"
 
@@ -82,7 +78,6 @@ class IsoRealmsModule:public IModule {
   static const std::string TAG_RESOURCE_TYPE_SCRIPT_LUA;
   static const std::string TAG_RESOURCE_TYPE_SOUND_FILE;
   static const std::string TAG_RESOURCE_TYPE_STRING_TIME;
-  static const std::string TAG_RESOURCE_TYPE_SURFACE_REGISTRY;
   static const std::string TAG_RESOURCE_TYPE_TEXTURE_FILE;
   static const std::string TAG_RESOURCE_TYPE_VERTEX_FIXED;
 
@@ -104,7 +99,6 @@ class IsoRealmsModule:public IModule {
   static const std::string NAME_RESOURCE_TYPE_SCRIPT_LUA;
   static const std::string NAME_RESOURCE_TYPE_SOUND_FILE;
   static const std::string NAME_RESOURCE_TYPE_STRING_TIME;
-  static const std::string NAME_RESOURCE_TYPE_SURFACE_REGISTRY;
   static const std::string NAME_RESOURCE_TYPE_TEXTURE_FILE;
   static const std::string NAME_RESOURCE_TYPE_VERTEX_FIXED;
   
@@ -114,7 +108,6 @@ class IsoRealmsModule:public IModule {
   ResourceType<IBoundaries,          ResourceBoundaries,          DialogBoundaries>          cResourceTypeBoundaries;
   ResourceType<IColour,              Colour,                      DialogColourFixed>         cResourceTypeColourFixed;
   ResourceType<IFont,                ResourceFontFile,            DialogFontFile>            cResourceTypeFontFile;
-  ResourceType<IGeometryProcessor,   ResourceGeometryProcessor,   DialogGeometryProcessor>   cResourceTypeGeometryProcessor;
   ResourceType<IGlobalVariable,      LuaGlobalVariable,           DialogGlobalVariable>      cResourceTypeGlobalVariable;
   ResourceType<IHUDComponentType,    ResourceHUDModel,            DialogHUDModel>            cResourceTypeHUDModel;
   ResourceType<IHUDComponentType,    ResourceHUDRoundedRectangle, DialogHUDRoundedRectangle> cResourceTypeHUDRoundedRectangle;
@@ -128,7 +121,6 @@ class IsoRealmsModule:public IModule {
   ResourceType<IScript,              LuaScript,                   DialogScriptLua>           cResourceTypeScriptLua;
   ResourceType<ISound,               ResourceSoundFile,           DialogSoundFile>           cResourceTypeSoundFile;
   ResourceType<IString,              ResourceStringTime,          DialogStringTime>          cResourceTypeStringTime;
-  ResourceType<ISurfaceRegistry,     ResourceSurfaceRegistry,     DialogSurfaceRegistry>     cResourceTypeSurfaceRegistry;
   ResourceType<ITexture,             ResourceTextureFile,         DialogTextureFile>         cResourceTypeTextureFile;
   ResourceType<IVertex,              ResourceVertexFixed,         DialogVertexFixed>         cResourceTypeVertexFixed;
     

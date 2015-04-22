@@ -22,7 +22,6 @@ const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_BOOLEAN_FIXED         = "Bo
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_BOUNDARIES            = "Boundaries";
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_COLOUR_FIXED          = "ColourFixed";
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_FONT_FILE             = "FontFile";
-const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_GEOMETRY_PROCESSOR    = "GeometryProcessor";
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_GLOBAL_VARIABLE       = "GlobalVariable";
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_HUD_MODEL             = "HUDModel";
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_HUD_ROUNDED_RECTANGLE = "HUDRoundedRectangle";
@@ -36,7 +35,6 @@ const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_MODEL_SPRITE          = "Mo
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_SCRIPT_LUA            = "ScriptLua";
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_SOUND_FILE            = "SoundFile";
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_STRING_TIME           = "StringTime";
-const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_SURFACE_REGISTRY      = "SurfaceRegistry";
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_TEXTURE_FILE          = "TextureFile";
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_VERTEX_FIXED          = "VertexFixed";
 
@@ -44,7 +42,6 @@ const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_BOOLEAN_FIXED         = "B
 const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_BOUNDARIES            = "Boundaries";
 const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_COLOUR_FIXED          = "Fixed Colour";
 const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_FONT_FILE             = "TrueType Font";
-const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_GEOMETRY_PROCESSOR    = "Geometry Processor";
 const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_GLOBAL_VARIABLE       = "Global Variable";
 const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_HUD_MODEL             = "HUD Model";
 const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_HUD_ROUNDED_RECTANGLE = "HUD Rounded Rectangle";
@@ -58,7 +55,6 @@ const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_MODEL_SPRITE          = "S
 const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_SCRIPT_LUA            = "Lua Script";
 const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_SOUND_FILE            = "Sound File";
 const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_STRING_TIME           = "Time String";
-const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_SURFACE_REGISTRY      = "Surface Registry";
 const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_TEXTURE_FILE          = "Texture File";
 const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_VERTEX_FIXED          = "Vertex Fixed";
 
@@ -83,7 +79,6 @@ IsoRealmsModule::IsoRealmsModule(IResourceTypeRegistry* resourceTypeRegistry) {
     resourceTypeRegistry->addResourceType(&cResourceTypeBoundaries,          NAME_RESOURCE_TYPE_BOUNDARIES);
     resourceTypeRegistry->addResourceType(&cResourceTypeColourFixed,         NAME_RESOURCE_TYPE_COLOUR_FIXED);
     resourceTypeRegistry->addResourceType(&cResourceTypeFontFile,            NAME_RESOURCE_TYPE_FONT_FILE);
-    resourceTypeRegistry->addResourceType(&cResourceTypeGeometryProcessor,   NAME_RESOURCE_TYPE_GEOMETRY_PROCESSOR);
 //    resourceTypeRegistry->addResourceType(&cResourceTypeGlobalVariable,      NAME_RESOURCE_TYPE_GLOBAL_VARIABLE);
     resourceTypeRegistry->addResourceType(&cResourceTypeHUDModel,            NAME_RESOURCE_TYPE_HUD_MODEL);
     resourceTypeRegistry->addResourceType(&cResourceTypeHUDRoundedRectangle, NAME_RESOURCE_TYPE_HUD_ROUNDED_RECTANGLE);
@@ -97,7 +92,6 @@ IsoRealmsModule::IsoRealmsModule(IResourceTypeRegistry* resourceTypeRegistry) {
     resourceTypeRegistry->addResourceType(&cResourceTypeScriptLua,           NAME_RESOURCE_TYPE_SCRIPT_LUA);
     resourceTypeRegistry->addResourceType(&cResourceTypeSoundFile,           NAME_RESOURCE_TYPE_SOUND_FILE);
     resourceTypeRegistry->addResourceType(&cResourceTypeStringTime,          NAME_RESOURCE_TYPE_STRING_TIME);
-    resourceTypeRegistry->addResourceType(&cResourceTypeSurfaceRegistry,     NAME_RESOURCE_TYPE_SURFACE_REGISTRY);
     resourceTypeRegistry->addResourceType(&cResourceTypeTextureFile,         NAME_RESOURCE_TYPE_TEXTURE_FILE);
     resourceTypeRegistry->addResourceType(&cResourceTypeVertexFixed,         NAME_RESOURCE_TYPE_VERTEX_FIXED);
   }
@@ -112,7 +106,6 @@ void IsoRealmsModule::load(DOMNodeWrapper* node, IResourceRegistry* runtimeConte
     else if (mValueAsString == TAG_RESOURCE_TYPE_BOUNDARIES)            {cResourceTypeBoundaries.loadResource(         mNode, runtimeContext);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_COLOUR_FIXED)          {cResourceTypeColourFixed.loadResource(        mNode, runtimeContext);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_FONT_FILE)             {cResourceTypeFontFile.loadResource(           mNode, runtimeContext);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_GEOMETRY_PROCESSOR)    {cResourceTypeGeometryProcessor.loadResource(  mNode, runtimeContext);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_GLOBAL_VARIABLE)       {cResourceTypeGlobalVariable.loadResource(     mNode, runtimeContext);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_HUD_MODEL)             {cResourceTypeHUDModel.loadResource(           mNode, runtimeContext);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_HUD_ROUNDED_RECTANGLE) {cResourceTypeHUDRoundedRectangle.loadResource(mNode, runtimeContext);}
@@ -126,7 +119,6 @@ void IsoRealmsModule::load(DOMNodeWrapper* node, IResourceRegistry* runtimeConte
     else if (mValueAsString == TAG_RESOURCE_TYPE_SCRIPT_LUA)            {cResourceTypeScriptLua.loadResource(          mNode, runtimeContext);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_SOUND_FILE)            {cResourceTypeSoundFile.loadResource(          mNode, runtimeContext);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_STRING_TIME)           {cResourceTypeStringTime.loadResource(         mNode, runtimeContext);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_SURFACE_REGISTRY)      {cResourceTypeSurfaceRegistry.loadResource(    mNode, runtimeContext);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_TEXTURE_FILE)          {cResourceTypeTextureFile.loadResource(        mNode, runtimeContext);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_VERTEX_FIXED)          {cResourceTypeVertexFixed.loadResource(        mNode, runtimeContext);}
     else                                                                {/* TODO: Throw */}
@@ -138,7 +130,6 @@ void IsoRealmsModule::save(DOMNodeWriter* node, IResourceLocator* resourceLocato
   cResourceTypeBoundaries.saveResources(         node, resourceLocator, TAG_RESOURCE_TYPE_BOUNDARIES);
   cResourceTypeColourFixed.saveResources(        node, resourceLocator, TAG_RESOURCE_TYPE_COLOUR_FIXED);
   cResourceTypeFontFile.saveResources(           node, resourceLocator, TAG_RESOURCE_TYPE_FONT_FILE);
-  cResourceTypeGeometryProcessor.saveResources(  node, resourceLocator, TAG_RESOURCE_TYPE_GEOMETRY_PROCESSOR);
   cResourceTypeGlobalVariable.saveResources(     node, resourceLocator, TAG_RESOURCE_TYPE_GLOBAL_VARIABLE);
   cResourceTypeHUDModel.saveResources(           node, resourceLocator, TAG_RESOURCE_TYPE_HUD_MODEL);
   cResourceTypeHUDRoundedRectangle.saveResources(node, resourceLocator, TAG_RESOURCE_TYPE_HUD_ROUNDED_RECTANGLE);
@@ -152,7 +143,6 @@ void IsoRealmsModule::save(DOMNodeWriter* node, IResourceLocator* resourceLocato
   cResourceTypeScriptLua.saveResources(          node, resourceLocator, TAG_RESOURCE_TYPE_SCRIPT_LUA);
   cResourceTypeSoundFile.saveResources(          node, resourceLocator, TAG_RESOURCE_TYPE_SOUND_FILE);
   cResourceTypeStringTime.saveResources(         node, resourceLocator, TAG_RESOURCE_TYPE_STRING_TIME);
-  cResourceTypeSurfaceRegistry.saveResources(    node, resourceLocator, TAG_RESOURCE_TYPE_SURFACE_REGISTRY);
   cResourceTypeTextureFile.saveResources(        node, resourceLocator, TAG_RESOURCE_TYPE_TEXTURE_FILE);
   cResourceTypeVertexFixed.saveResources(        node, resourceLocator, TAG_RESOURCE_TYPE_VERTEX_FIXED);
 }

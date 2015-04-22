@@ -49,7 +49,6 @@ class ResourceLayerBackground:public ILayerType {
   void renderIcon();
   void updateIcon(unsigned int);
   void destroy(ILayer*);
-  IElementHandler* getElementHandler();
   
   virtual ~ResourceLayerBackground() {}
 };

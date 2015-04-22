@@ -47,7 +47,6 @@ endif(FREETYPE_FOUND)
 add_library(IsoRealmsStd MODULE
   DialogBoundaries.cpp
   DialogColourFixed.cpp
-  DialogGeometryProcessor.cpp
   DialogScriptLua.cpp
   DialogSoundFile.cpp
   DialogTextureFile.cpp
@@ -62,7 +61,6 @@ add_library(IsoRealmsStd MODULE
   ResourceBooleanFixed.cpp
   ResourceBoundaries.cpp
   ResourceFontFile.cpp
-  ResourceGeometryProcessor.cpp
   ResourceHUDModel.cpp
   ResourceHUDRoundedRectangle.cpp
   ResourceHUDString.cpp
@@ -74,16 +72,9 @@ add_library(IsoRealmsStd MODULE
   ResourceModelSprite.cpp
   ResourceSoundFile.cpp
   ResourceStringTime.cpp
-  ResourceSurfaceRegistry.cpp
   ResourceTextureFile.cpp
   ResourceVertexFixed.cpp
   ScreenRelation.cpp
-  TileBlock.cpp
-  TileColumn.cpp
-  TileSurfaceTemplate.cpp
-  WallColumn.cpp
-  WallColumnPossibility.cpp
-  WallConstructionData.cpp
 )
 
 set_target_properties(IsoRealmsStd PROPERTIES OUTPUT_NAME "Module")

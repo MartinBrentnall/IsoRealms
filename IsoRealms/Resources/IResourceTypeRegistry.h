@@ -32,13 +32,11 @@ class IComponentCustomType;
 class IElementType;
 class IFloat;
 class IFont;
-class IGeometryProcessor;
 class IHUDComponentType;
 class IInteger;
 class IScript;
 class ISound;
 class IString;
-class ISurfaceRegistry;
 class ITexture;
 class IVertex;
 
@@ -53,14 +51,12 @@ class IResourceTypeRegistry {
   virtual void addResourceType(IResourceType<IElementType>*,         const std::string&) = 0;
   virtual void addResourceType(IResourceType<IFloat>*,               const std::string&) = 0;
   virtual void addResourceType(IResourceType<IFont>*,                const std::string&) = 0;
-  virtual void addResourceType(IResourceType<IGeometryProcessor>*,   const std::string&) = 0;
   virtual void addResourceType(IResourceType<IHUDComponentType>*,    const std::string&) = 0;
   virtual void addResourceType(IResourceType<IInteger>*,             const std::string&) = 0;
   virtual void addResourceType(IResourceType<ILayerType>*,           const std::string&) = 0;
   virtual void addResourceType(IResourceType<IScript>*,              const std::string&) = 0;
   virtual void addResourceType(IResourceType<ISound>*,               const std::string&) = 0;
   virtual void addResourceType(IResourceType<IString>*,              const std::string&) = 0;
-  virtual void addResourceType(IResourceType<ISurfaceRegistry>*,     const std::string&) = 0;
   virtual void addResourceType(IResourceType<ITexture>*,             const std::string&) = 0;
   virtual void addResourceType(IResourceType<IVertex>*,              const std::string&) = 0;
 };

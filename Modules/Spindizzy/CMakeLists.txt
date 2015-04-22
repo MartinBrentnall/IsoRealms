@@ -50,11 +50,13 @@ add_library(Spindizzy MODULE
   ResourceElementSpindizzyLift.cpp
   ResourceElementSpindizzyWater.cpp
   ResourceElementSpindizzyZone.cpp
+  ResourceGeometryProcessor.cpp
   ResourceLayerBackground.cpp
   ResourceLayerSpindizzyMap.cpp
   ResourceModelSpindizzyCraftGyroscope.cpp
   ResourceModelSpindizzyCraftPyramid.cpp
   ResourceModelSpindizzyJewel.cpp
+  ResourceSurfaceRegistry.cpp
   ResourceTextureSpindizzyCraftBall.cpp
   ResourceTexturesSpindizzyBlocksC64.cpp
   ResourceTexturesSpindizzyLiftsC64.cpp
@@ -67,8 +69,14 @@ add_library(Spindizzy MODULE
   SpindizzyZoneThemeColour.cpp
   SpindizzyZoneThemeTexture.cpp
   SurfaceCollisionEvent.cpp
+  TileBlock.cpp
+  TileColumn.cpp
   TileSplitSurface.cpp
   TileSurface.cpp
+  TileSurfaceTemplate.cpp
+  WallColumn.cpp
+  WallColumnPossibility.cpp
+  WallConstructionData.cpp
   WallSurface.cpp
 )
 

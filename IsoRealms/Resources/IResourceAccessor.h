@@ -38,14 +38,12 @@ class IColour;
 class IComponentCustomType;
 class IFloat;
 class IFont;
-class IGeometryProcessor;
 class IHUDComponentType;
 class IInteger;
 class IProject;
 class IScriptCall;
 class ISound;
 class IString;
-class ISurfaceRegistry;
 class ITexture;
 class IVertex;
 
@@ -65,17 +63,14 @@ class IResourceAccessor {
   virtual IComponentCustomType* getComponentCustomType(const std::string&) = 0;
   virtual IFloat*               getFloat(              const std::string&) = 0;
   virtual IFont*                getFont(               const std::string&) = 0;
-  virtual IGeometryProcessor*   getGeometryProcessor(  const std::string&) = 0;
   virtual IHUDComponentType*    getHUDComponentType(   const std::string&) = 0;
   virtual IInteger*             getInteger(            const std::string&) = 0;
   virtual ISound*               getSound(              const std::string&) = 0;
   virtual IString*              getString(             const std::string&) = 0;
-  virtual ISurfaceRegistry*     getSurfaceRegistry(    const std::string&) = 0;
   virtual ITexture*             getTexture(            const std::string&) = 0;
   virtual IVertex*              getVertex(             const std::string&) = 0;
   
   virtual void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*) = 0;
-  virtual void loadDefaultElementGroups(IElementContainer*) = 0;
   virtual IScriptCall* getScriptCall(DOMNodeWrapper*, IArgumentValueRegistry* = NULL) = 0;
 //  virtual IArgumentDefinition* getRegisteredArgumentDefinition(DOMNodeWrapper*) = 0;
 //  virtual IArgumentValue* createArgumentValue(DOMNodeWrapper*) = 0;

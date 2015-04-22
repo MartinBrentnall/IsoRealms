@@ -21,9 +21,9 @@
 
 #include <IsoRealms/Resources/ElementType/IElement.h>
 #include <IsoRealms/Resources/ElementType/IElementContainer.h>
-#include <IsoRealms/Resources/SurfaceRegistry/IRollableSurface.h>
 
 #include "ElementHandlerSpindizzyDynamic.h"
+#include "IRollableSurface.h"
 #include "SpindizzyLiftProperties.h"
 
 class ElementSpindizzyLift;

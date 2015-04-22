@@ -21,10 +21,14 @@
 
 #include <IsoRealms/Resources/ElementType/IElementType.h>
 
+#include "ICollisionData.h"
+
 class ISpindizzyGERALDSet {
   public:
   virtual bool isEditing() = 0;
   virtual bool isLocked() = 0; 
+  virtual ICollisionData* getNextEvent(Vertex&, Vertex&, IRollableSurface*) = 0;
+  virtual IRollableSurface* getSurfaceAt(Vertex&) = 0;
 };
 
 #endif

@@ -32,7 +32,6 @@ class IMap;
 #include <IsoRealms/Resources/IResourceLocator.h>
 
 #include "IElementBounds.h"
-#include "IElementHandler.h"
 
 class IModule;
 

@@ -29,7 +29,6 @@
 #include <IsoRealms/Resources/Layer/ILayer.h>
 #include <IsoRealms/Resources/Layer/ILayerType.h>
 #include <IsoRealms/Resources/ElementType/ElementHandler.h>
-#include <IsoRealms/Resources/ElementType/IElementHandler.h>
 #include <IsoRealms/Resources/IResources.h>
 
 #include "CameraLayerMapEditing.h"
