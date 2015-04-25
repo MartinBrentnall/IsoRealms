@@ -60,7 +60,6 @@ class IResourceLocator {
   virtual std::string getPath(IFloat*) = 0;
   virtual std::string getPath(IFont*) = 0;
   virtual std::string getPath(IGlobalVariable*) = 0;
-  virtual std::string getPath(IHUDComponentType*) = 0;
   virtual std::string getPath(IInteger*) = 0;
   virtual std::string getPath(ILayerType*) = 0;
   virtual std::string getPath(IScript*) = 0;

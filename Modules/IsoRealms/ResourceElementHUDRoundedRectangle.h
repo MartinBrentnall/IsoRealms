@@ -16,21 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef RESOURCE_HUD_ROUNDED_RECTANGLE_H
-#define RESOURCE_HUD_ROUNDED_RECTANGLE_H
+#ifndef RESOURCE_ELEMENT_HUD_ROUNDED_RECTANGLE_H
+#define RESOURCE_ELEMENT_HUD_ROUNDED_RECTANGLE_H
 
 #include <cmath>
 #include <GL/glew.h>
 
 #include <IsoRealms/Configuration.h>
 #include <IsoRealms/Resources/Colour/Colour.h>
-#include <IsoRealms/Resources/HUDComponents/IHUDComponentType.h>
-#include <IsoRealms/Resources/HUDComponents/IHUDGameComponent.h>
+#include <IsoRealms/Resources/ElementType/Element.h>
 #include <IsoRealms/Resources/IDummyModule.h>
 #include <IsoRealms/Resources/Texture/Texture.h>
 
-class ResourceHUDRoundedRectangle:public IHUDComponentType,
-                                  public IHUDGameComponent {
+class ResourceElementHUDRoundedRectangle:public IElementType,
+                                         public IElementBounds,
+                                         public Element {
   private:
   static Texture* cCornerTexture;
   static unsigned int cInstanceCount;
@@ -42,25 +42,43 @@ class ResourceHUDRoundedRectangle:public IHUDComponentType,
   void renderRectangle(float, float, float, float);
 
   public:
-  ResourceHUDRoundedRectangle(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
+  ResourceElementHUDRoundedRectangle(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
   
   void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
-  
-  /********************************\
-   * Implements IHUDComponentType *
-  \********************************/
-  IHUDGameComponent* getHUDComponent();
-
-  /********************************\
-   * Implements IHUDGameComponent *
-  \********************************/
-  void render(float, float);
-  void update(unsigned int);
-  float getAspectRatio();
-  
   void save(DOMNodeWriter*, IResourceLocator*);
   
-  virtual ~ResourceHUDRoundedRectangle();  
+  /***************************\
+   * Implements IElementType *
+  \***************************/
+  void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*);
+  void configureElement();
+  void renderEditingPreview();
+  void renderIcon();
+  void updateIcon(unsigned int);
+  void destroy(IElement*);
+
+  /***********************\
+   * Implements IElement *
+  \***********************/
+  IElementType* getElementType();
+  void renderStatic();
+  void setDirty();
+  IElementBounds* getBounds();
+  void renderRuntime();
+  void updateRuntime(unsigned int);
+  void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
+  
+  /*****************************\
+   * Implements IElementBounds *
+  \*****************************/
+  float getWest();
+  float getEast();
+  float getSouth();
+  float getNorth();
+  float getTop();
+  float getBottom();
+
+  virtual ~ResourceElementHUDRoundedRectangle();  
 };
 
 #endif

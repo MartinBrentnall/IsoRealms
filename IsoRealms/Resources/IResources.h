@@ -51,7 +51,6 @@ class IResources:public IResourceAccessor {
   virtual void add(IComponentCustomType*,       std::vector<std::string>, const std::string&) = 0;
   virtual void add(IElementType*,               std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
   virtual void add(IFont*,                      std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
-  virtual void add(IHUDComponentType*,          std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
   virtual void add(IGlobalVariable*,            std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
   virtual void add(IInteger*,                   std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
   virtual void add(ILayerType*,                 std::vector<std::string>, const std::string&, DOMNodeWrapper*) = 0;
@@ -73,7 +72,6 @@ class IResources:public IResourceAccessor {
   virtual void addListener(IResourceUseListener<IElementType>*) = 0;
   virtual void addListener(IResourceUseListener<IFloat>*) = 0;
   virtual void addListener(IResourceUseListener<IFont>*) = 0;
-  virtual void addListener(IResourceUseListener<IHUDComponentType>*) = 0;
   virtual void addListener(IResourceUseListener<IInteger>*) = 0;
   virtual void addListener(IResourceUseListener<ILayerType>*) = 0;
   virtual void addListener(IResourceUseListener<ISound>*) = 0;

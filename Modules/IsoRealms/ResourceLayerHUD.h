@@ -25,8 +25,8 @@
 #include <IsoRealms/Configuration.h>
 #include <IsoRealms/GUI/LookAndFeel.h>
 #include <IsoRealms/Resources/IDummyModule.h>
+#include <IsoRealms/Resources/IResourceAccessor.h>
 #include <IsoRealms/Resources/Layer/ILayerType.h>
-#include <IsoRealms/Resources/HUDComponents/IHUDComponentType.h>
 #include <IsoRealms/Utils.h>
 
 #include "HUDComponentProxy.h"

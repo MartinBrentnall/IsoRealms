@@ -28,7 +28,6 @@
 #include "Colour/Colour.h"
 #include "Colour/ColourRegistry.h"
 #include "Font/DummyFont.h"
-#include "HUDComponents/IHUDComponentType.h"
 #include "Integer/IntegerRegistry.h"
 #include "IResourceInstanceListener.h"
 #include "IResourceListener.h"
@@ -70,7 +69,6 @@ class Resources:public IResources,
   ResourceRegistry<IFloat> cFloats;
   ResourceRegistry<IFont> cFonts;
   ResourceRegistry<IGlobalVariable> cGlobalVariables;
-  ResourceRegistry<IHUDComponentType> cHUDComponentTypes;
   IntegerRegistry cIntegers;
   ResourceRegistry<ILayerType> cLayerTypes;
   ResourceRegistry<IScript> cScripts;
@@ -118,7 +116,6 @@ class Resources:public IResources,
   void add(IComponentCustomType*,       std::vector<std::string>, const std::string&);
   void add(IElementType*,               std::vector<std::string>, const std::string&, DOMNodeWrapper*);
   void add(IFont*,                      std::vector<std::string>, const std::string&, DOMNodeWrapper*);
-  void add(IHUDComponentType*,          std::vector<std::string>, const std::string&, DOMNodeWrapper*);
   void add(IGlobalVariable*,            std::vector<std::string>, const std::string&, DOMNodeWrapper*);
   void add(IInteger*,                   std::vector<std::string>, const std::string&, DOMNodeWrapper*);
   void add(ILayerType*,                 std::vector<std::string>, const std::string&, DOMNodeWrapper*);
@@ -141,7 +138,6 @@ class Resources:public IResources,
   void addListener(IResourceUseListener<IElementType>*);              
   void addListener(IResourceUseListener<IFloat>*);                    
   void addListener(IResourceUseListener<IFont>*);                     
-  void addListener(IResourceUseListener<IHUDComponentType>*);      
   void addListener(IResourceUseListener<IInteger>*);                  
   void addListener(IResourceUseListener<ILayerType>*);
   void addListener(IResourceUseListener<IScript>*);
@@ -166,7 +162,6 @@ class Resources:public IResources,
   IComponentCustomType* getComponentCustomType(const std::string&);
   IFloat*               getFloat(const std::string&);
   IFont*                getFont(const std::string&);
-  IHUDComponentType*    getHUDComponentType(const std::string&);
   IInteger*             getInteger(const std::string&);
   ILayerType*           getLayerType(const std::string&);
   IScript*              getScript(const std::string&);
@@ -194,7 +189,6 @@ class Resources:public IResources,
   std::string getPath(IFloat*);
   std::string getPath(IFont*);
   std::string getPath(IGlobalVariable*);
-  std::string getPath(IHUDComponentType*);
   std::string getPath(IInteger*);
   std::string getPath(ILayerType*);
   std::string getPath(IScript*);
@@ -218,7 +212,6 @@ class Resources:public IResources,
   std::vector<IElementType*>         getAllElementTypes();
   std::vector<IFloat*>               getAllFloats();
   std::vector<IFont*>                getAllFonts();
-  std::vector<IHUDComponentType*>    getAllHUDComponentTypes();
   std::vector<IInteger*>             getAllIntegers();
   std::vector<ILayerType*>           getAllLayerTypes();
   std::vector<IScript*>              getAllScripts();
@@ -236,7 +229,6 @@ class Resources:public IResources,
   void addResourceListener(IResourceListener<IElementType>*);         
   void addResourceListener(IResourceListener<IFloat>*);               
   void addResourceListener(IResourceListener<IFont>*);                
-  void addResourceListener(IResourceListener<IHUDComponentType>*); 
   void addResourceListener(IResourceListener<IInteger>*);         
   void addResourceListener(IResourceListener<ILayerType>*);
   void addResourceListener(IResourceListener<IScript>*);
@@ -254,7 +246,6 @@ class Resources:public IResources,
   void addResourceType(IResourceType<IElementType>*,         const std::string&);
   void addResourceType(IResourceType<IFloat>*,               const std::string&);
   void addResourceType(IResourceType<IFont>*,                const std::string&);
-  void addResourceType(IResourceType<IHUDComponentType>*,    const std::string&);
   void addResourceType(IResourceType<IInteger>*,             const std::string&);
   void addResourceType(IResourceType<ILayerType>*,           const std::string&);
   void addResourceType(IResourceType<IScript>*,              const std::string&);
@@ -272,7 +263,6 @@ class Resources:public IResources,
   void editResource(IElementType*,         IResourceAccessor*, IEditingContext*);
   void editResource(IFloat*,               IResourceAccessor*, IEditingContext*);
   void editResource(IFont*,                IResourceAccessor*, IEditingContext*);
-  void editResource(IHUDComponentType*,    IResourceAccessor*, IEditingContext*);
   void editResource(IInteger*,             IResourceAccessor*, IEditingContext*);
   void editResource(ILayerType*,           IResourceAccessor*, IEditingContext*);
   void editResource(IScript*,              IResourceAccessor*, IEditingContext*);
@@ -290,7 +280,6 @@ class Resources:public IResources,
   void removeResource(IElementType*,         IResourceAccessor*);
   void removeResource(IFloat*,               IResourceAccessor*);
   void removeResource(IFont*,                IResourceAccessor*);
-  void removeResource(IHUDComponentType*,    IResourceAccessor*);
   void removeResource(IInteger*,             IResourceAccessor*);
   void removeResource(ILayerType*,           IResourceAccessor*);
   void removeResource(IScript*,              IResourceAccessor*);

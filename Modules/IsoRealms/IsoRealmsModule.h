@@ -25,11 +25,11 @@
 #include "DialogBooleanFixed.h"
 #include "DialogBoundaries.h"
 #include "DialogColourFixed.h"
+#include "DialogElementHUDModel.h"
+#include "DialogElementHUDRoundedRectangle.h"
+#include "DialogElementHUDString.h"
 #include "DialogFontFile.h"
 #include "DialogGlobalVariable.h"
-#include "DialogHUDModel.h"
-#include "DialogHUDRoundedRectangle.h"
-#include "DialogHUDString.h"
 #include "DialogIntegerFixed.h"
 #include "DialogIntegerTimer.h"
 #include "DialogLayerHUD.h"
@@ -43,10 +43,10 @@
 #include "DialogVertexFixed.h"
 #include "ResourceBooleanFixed.h"
 #include "ResourceBoundaries.h"
+#include "ResourceElementHUDModel.h"
+#include "ResourceElementHUDRoundedRectangle.h"
+#include "ResourceElementHUDString.h"
 #include "ResourceFontFile.h"
-#include "ResourceHUDModel.h"
-#include "ResourceHUDRoundedRectangle.h"
-#include "ResourceHUDString.h"
 #include "ResourceIntegerFixed.h"
 #include "ResourceIntegerTimer.h"
 #include "ResourceLayerHUD.h"
@@ -63,12 +63,11 @@ class IsoRealmsModule:public IModule {
   static const std::string TAG_RESOURCE_TYPE_BOOLEAN_FIXED;
   static const std::string TAG_RESOURCE_TYPE_BOUNDARIES;
   static const std::string TAG_RESOURCE_TYPE_COLOUR_FIXED;
+  static const std::string TAG_RESOURCE_TYPE_ELEMENT_HUD_MODEL;
+  static const std::string TAG_RESOURCE_TYPE_ELEMENT_HUD_ROUNDED_RECTANGLE;
+  static const std::string TAG_RESOURCE_TYPE_ELEMENT_HUD_STRING;
   static const std::string TAG_RESOURCE_TYPE_FONT_FILE;
-  static const std::string TAG_RESOURCE_TYPE_GEOMETRY_PROCESSOR;
   static const std::string TAG_RESOURCE_TYPE_GLOBAL_VARIABLE;
-  static const std::string TAG_RESOURCE_TYPE_HUD_MODEL;
-  static const std::string TAG_RESOURCE_TYPE_HUD_ROUNDED_RECTANGLE;
-  static const std::string TAG_RESOURCE_TYPE_HUD_STRING;
   static const std::string TAG_RESOURCE_TYPE_INTEGER_FIXED;
   static const std::string TAG_RESOURCE_TYPE_INTEGER_TIMER;
   static const std::string TAG_RESOURCE_TYPE_LAYER_HUD;
@@ -84,12 +83,11 @@ class IsoRealmsModule:public IModule {
   static const std::string NAME_RESOURCE_TYPE_BOOLEAN_FIXED;
   static const std::string NAME_RESOURCE_TYPE_BOUNDARIES;
   static const std::string NAME_RESOURCE_TYPE_COLOUR_FIXED;
+  static const std::string NAME_RESOURCE_TYPE_ELEMENT_HUD_MODEL;
+  static const std::string NAME_RESOURCE_TYPE_ELEMENT_HUD_ROUNDED_RECTANGLE;
+  static const std::string NAME_RESOURCE_TYPE_ELEMENT_HUD_STRING;
   static const std::string NAME_RESOURCE_TYPE_FONT_FILE;
-  static const std::string NAME_RESOURCE_TYPE_GEOMETRY_PROCESSOR;
   static const std::string NAME_RESOURCE_TYPE_GLOBAL_VARIABLE;
-  static const std::string NAME_RESOURCE_TYPE_HUD_MODEL;
-  static const std::string NAME_RESOURCE_TYPE_HUD_ROUNDED_RECTANGLE;
-  static const std::string NAME_RESOURCE_TYPE_HUD_STRING;
   static const std::string NAME_RESOURCE_TYPE_INTEGER_FIXED;
   static const std::string NAME_RESOURCE_TYPE_INTEGER_TIMER;
   static const std::string NAME_RESOURCE_TYPE_LAYER_HUD;
@@ -104,25 +102,25 @@ class IsoRealmsModule:public IModule {
   
   static bool cStaticInit;
   
-  ResourceType<IBoolean,             ResourceBooleanFixed,        DialogBooleanFixed>        cResourceTypeBooleanFixed;
-  ResourceType<IBoundaries,          ResourceBoundaries,          DialogBoundaries>          cResourceTypeBoundaries;
-  ResourceType<IColour,              Colour,                      DialogColourFixed>         cResourceTypeColourFixed;
-  ResourceType<IFont,                ResourceFontFile,            DialogFontFile>            cResourceTypeFontFile;
-  ResourceType<IGlobalVariable,      LuaGlobalVariable,           DialogGlobalVariable>      cResourceTypeGlobalVariable;
-  ResourceType<IHUDComponentType,    ResourceHUDModel,            DialogHUDModel>            cResourceTypeHUDModel;
-  ResourceType<IHUDComponentType,    ResourceHUDRoundedRectangle, DialogHUDRoundedRectangle> cResourceTypeHUDRoundedRectangle;
-  ResourceType<IHUDComponentType,    ResourceHUDString,           DialogHUDString>           cResourceTypeHUDString;
-  ResourceType<IInteger,             ResourceIntegerFixed,        DialogIntegerFixed>        cResourceTypeIntegerFixed;
-  ResourceType<IInteger,             ResourceIntegerTimer,        DialogIntegerTimer>        cResourceTypeIntegerTimer;
-  ResourceType<ILayerType,           ResourceLayerHUD,            DialogLayerHUD>            cResourceTypeLayerHUD;
-  ResourceType<I3DModelType,         ResourceModelElement,        DialogModelElement>        cResourceTypeModelElement;
-  ResourceType<I3DModelType,         ResourceModelScriptable,     DialogModelScriptable>     cResourceTypeModelScriptable;
-  ResourceType<I3DModelType,         ResourceModelSprite,         DialogModelSprite>         cResourceTypeModelSprite;
-  ResourceType<IScript,              LuaScript,                   DialogScriptLua>           cResourceTypeScriptLua;
-  ResourceType<ISound,               ResourceSoundFile,           DialogSoundFile>           cResourceTypeSoundFile;
-  ResourceType<IString,              ResourceStringTime,          DialogStringTime>          cResourceTypeStringTime;
-  ResourceType<ITexture,             ResourceTextureFile,         DialogTextureFile>         cResourceTypeTextureFile;
-  ResourceType<IVertex,              ResourceVertexFixed,         DialogVertexFixed>         cResourceTypeVertexFixed;
+  ResourceType<IBoolean,             ResourceBooleanFixed,               DialogBooleanFixed>               cResourceTypeBooleanFixed;
+  ResourceType<IBoundaries,          ResourceBoundaries,                 DialogBoundaries>                 cResourceTypeBoundaries;
+  ResourceType<IColour,              Colour,                             DialogColourFixed>                cResourceTypeColourFixed;
+  ResourceType<IElementType,         ResourceElementHUDModel,            DialogElementHUDModel>            cResourceTypeElementHUDModel;
+  ResourceType<IElementType,         ResourceElementHUDRoundedRectangle, DialogElementHUDRoundedRectangle> cResourceTypeElementHUDRoundedRectangle;
+  ResourceType<IElementType,         ResourceElementHUDString,           DialogElementHUDString>           cResourceTypeElementHUDString;
+  ResourceType<IFont,                ResourceFontFile,                   DialogFontFile>                   cResourceTypeFontFile;
+  ResourceType<IGlobalVariable,      LuaGlobalVariable,                  DialogGlobalVariable>             cResourceTypeGlobalVariable;
+  ResourceType<IInteger,             ResourceIntegerFixed,               DialogIntegerFixed>               cResourceTypeIntegerFixed;
+  ResourceType<IInteger,             ResourceIntegerTimer,               DialogIntegerTimer>               cResourceTypeIntegerTimer;
+  ResourceType<ILayerType,           ResourceLayerHUD,                   DialogLayerHUD>                   cResourceTypeLayerHUD;
+  ResourceType<I3DModelType,         ResourceModelElement,               DialogModelElement>               cResourceTypeModelElement;
+  ResourceType<I3DModelType,         ResourceModelScriptable,            DialogModelScriptable>            cResourceTypeModelScriptable;
+  ResourceType<I3DModelType,         ResourceModelSprite,                DialogModelSprite>                cResourceTypeModelSprite;
+  ResourceType<IScript,              LuaScript,                          DialogScriptLua>                  cResourceTypeScriptLua;
+  ResourceType<ISound,               ResourceSoundFile,                  DialogSoundFile>                  cResourceTypeSoundFile;
+  ResourceType<IString,              ResourceStringTime,                 DialogStringTime>                 cResourceTypeStringTime;
+  ResourceType<ITexture,             ResourceTextureFile,                DialogTextureFile>                cResourceTypeTextureFile;
+  ResourceType<IVertex,              ResourceVertexFixed,                DialogVertexFixed>                cResourceTypeVertexFixed;
     
   IResourceRegistry* cRuntimeContext;
   IComponentContainer* cComponentContainer;

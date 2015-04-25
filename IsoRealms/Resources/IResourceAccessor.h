@@ -38,7 +38,6 @@ class IColour;
 class IComponentCustomType;
 class IFloat;
 class IFont;
-class IHUDComponentType;
 class IInteger;
 class IProject;
 class IScriptCall;
@@ -63,7 +62,6 @@ class IResourceAccessor {
   virtual IComponentCustomType* getComponentCustomType(const std::string&) = 0;
   virtual IFloat*               getFloat(              const std::string&) = 0;
   virtual IFont*                getFont(               const std::string&) = 0;
-  virtual IHUDComponentType*    getHUDComponentType(   const std::string&) = 0;
   virtual IInteger*             getInteger(            const std::string&) = 0;
   virtual ISound*               getSound(              const std::string&) = 0;
   virtual IString*              getString(             const std::string&) = 0;

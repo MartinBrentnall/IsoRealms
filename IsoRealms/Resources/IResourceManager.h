@@ -33,7 +33,6 @@ class IResourceManager:public IResourceLocator {
   virtual std::vector<IElementType*>         getAllElementTypes() = 0;
   virtual std::vector<IFloat*>               getAllFloats() = 0;
   virtual std::vector<IFont*>                getAllFonts() = 0;
-  virtual std::vector<IHUDComponentType*>    getAllHUDComponentTypes() = 0;
   virtual std::vector<IInteger*>             getAllIntegers() = 0;
   virtual std::vector<IScript*>              getAllScripts() = 0;
   virtual std::vector<ISound*>               getAllSounds() = 0;
@@ -50,7 +49,6 @@ class IResourceManager:public IResourceLocator {
   virtual void addResourceListener(IResourceListener<IElementType>*) = 0;         
   virtual void addResourceListener(IResourceListener<IFloat>*) = 0;               
   virtual void addResourceListener(IResourceListener<IFont>*) = 0;                
-  virtual void addResourceListener(IResourceListener<IHUDComponentType>*) = 0; 
   virtual void addResourceListener(IResourceListener<IInteger>*) = 0;
   virtual void addResourceListener(IResourceListener<IScript>*) = 0;
   virtual void addResourceListener(IResourceListener<ISound>*) = 0;           
@@ -67,7 +65,6 @@ class IResourceManager:public IResourceLocator {
   virtual void editResource(IElementType*,         IResourceAccessor*, IEditingContext*) = 0;
   virtual void editResource(IFloat*,               IResourceAccessor*, IEditingContext*) = 0;
   virtual void editResource(IFont*,                IResourceAccessor*, IEditingContext*) = 0;
-  virtual void editResource(IHUDComponentType*,    IResourceAccessor*, IEditingContext*) = 0;
   virtual void editResource(IInteger*,             IResourceAccessor*, IEditingContext*) = 0;
   virtual void editResource(IScript*,              IResourceAccessor*, IEditingContext*) = 0;
   virtual void editResource(ISound*,               IResourceAccessor*, IEditingContext*) = 0;
@@ -84,7 +81,6 @@ class IResourceManager:public IResourceLocator {
   virtual void removeResource(IElementType*,         IResourceAccessor*) = 0;
   virtual void removeResource(IFloat*,               IResourceAccessor*) = 0;
   virtual void removeResource(IFont*,                IResourceAccessor*) = 0;
-  virtual void removeResource(IHUDComponentType*,    IResourceAccessor*) = 0;
   virtual void removeResource(IInteger*,             IResourceAccessor*) = 0;
   virtual void removeResource(IScript*,              IResourceAccessor*) = 0;
   virtual void removeResource(ISound*,               IResourceAccessor*) = 0;

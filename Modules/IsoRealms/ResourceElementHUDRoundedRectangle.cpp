@@ -16,17 +16,45 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "ResourceHUDRoundedRectangle.h"
+#include "ResourceElementHUDRoundedRectangle.h"
 
-Texture* ResourceHUDRoundedRectangle::cCornerTexture = NULL;
-unsigned int ResourceHUDRoundedRectangle::cInstanceCount = 0;
-const float ResourceHUDRoundedRectangle::CIRCLE_RESOLUTION = 5.0f * (M_PI / 180.0);
+Texture* ResourceElementHUDRoundedRectangle::cCornerTexture = NULL;
+unsigned int ResourceElementHUDRoundedRectangle::cInstanceCount = 0;
+const float ResourceElementHUDRoundedRectangle::CIRCLE_RESOLUTION = 5.0f * (M_PI / 180.0);
 
-void ResourceHUDRoundedRectangle::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void ResourceElementHUDRoundedRectangle::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
   // TODO: Initialise.
 }
 
-ResourceHUDRoundedRectangle::ResourceHUDRoundedRectangle(IDummyModule* module, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
+void ResourceElementHUDRoundedRectangle::save(DOMNodeWriter*, IResourceLocator*) {
+  // TODO
+}
+
+void ResourceElementHUDRoundedRectangle::loadElement(DOMNodeWrapper* node, BlockLocation* location, IElementContainer* container, IResourceAccessor* resources) {
+  container->addElement(this);
+}
+
+void ResourceElementHUDRoundedRectangle::configureElement() {
+  // TODO
+}
+
+void ResourceElementHUDRoundedRectangle::destroy(IElement* element) {
+  // TODO
+}
+
+void ResourceElementHUDRoundedRectangle::renderEditingPreview() {
+  // TODO
+}
+
+void ResourceElementHUDRoundedRectangle::renderIcon() {
+  // TODO
+}
+
+void ResourceElementHUDRoundedRectangle::updateIcon(unsigned int) {
+  // TODO
+}
+
+ResourceElementHUDRoundedRectangle::ResourceElementHUDRoundedRectangle(IDummyModule* module, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
   if (cInstanceCount++ == 0) {
     glPushAttrib(GL_TRANSFORM_BIT);
     glMatrixMode(GL_PROJECTION);
@@ -61,30 +89,44 @@ ResourceHUDRoundedRectangle::ResourceHUDRoundedRectangle(IDummyModule* module, D
   cCornerSize = 0.02f;
 }
 
-IHUDGameComponent* ResourceHUDRoundedRectangle::getHUDComponent() {
-  return this;
-}
-
-void ResourceHUDRoundedRectangle::renderCorner(float xStart, float yStart, float xEnd, float yEnd, float xTextureEnd, float yTextureEnd) {
+void ResourceElementHUDRoundedRectangle::renderCorner(float xStart, float yStart, float xEnd, float yEnd, float xTextureEnd, float yTextureEnd) {
   glTexCoord2f(0.0f,        0.0f);        glVertex2f(xStart, yStart);
   glTexCoord2f(xTextureEnd, 0.0f);        glVertex2f(xEnd,   yStart);
   glTexCoord2f(xTextureEnd, yTextureEnd); glVertex2f(xEnd,   yEnd);
   glTexCoord2f(0.0f,        yTextureEnd); glVertex2f(xStart, yEnd);
 }
 
-void ResourceHUDRoundedRectangle::renderRectangle(float xStart, float yStart, float xEnd, float yEnd) {
+void ResourceElementHUDRoundedRectangle::renderRectangle(float xStart, float yStart, float xEnd, float yEnd) {
   glVertex2f(xStart, yStart);
   glVertex2f(xEnd,   yStart);
   glVertex2f(xEnd,   yEnd);
   glVertex2f(xStart, yEnd);
 }
 
-void ResourceHUDRoundedRectangle::render(float xZoom, float yZoom) {
+IElementType* ResourceElementHUDRoundedRectangle::getElementType() {
+  return this;
+}
+
+void ResourceElementHUDRoundedRectangle::renderStatic() {
+  // Nothing to do.
+}
+
+void ResourceElementHUDRoundedRectangle::setDirty() {
+  // Nothing to do.
+}
+
+IElementBounds* ResourceElementHUDRoundedRectangle::getBounds() {
+  return this;
+}
+
+void ResourceElementHUDRoundedRectangle::renderRuntime() {
   Configuration* mConfiguration = Configuration::getInstance();
   ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
   float mScreenAspectRatio = mScreen->getAspectRatio();
-  float mYCornerSize = cCornerSize / yZoom;
-  float mXCornerSize = cCornerSize / (xZoom / mScreenAspectRatio);
+//   float mYCornerSize = cCornerSize / yZoom;
+//   float mXCornerSize = cCornerSize / (xZoom / mScreenAspectRatio);
+  float mYCornerSize = cCornerSize / 1.0f;
+  float mXCornerSize = cCornerSize / (1.0f / mScreenAspectRatio);
   float mXStartCorner = -1.0f + mXCornerSize / mScreenAspectRatio;
   float mYStartCorner = -1.0f + mYCornerSize;
   float mXEndCorner = 1.0f - mXCornerSize / mScreenAspectRatio;
@@ -108,18 +150,38 @@ void ResourceHUDRoundedRectangle::render(float xZoom, float yZoom) {
   glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
-void ResourceHUDRoundedRectangle::update(unsigned int) {
+void ResourceElementHUDRoundedRectangle::updateRuntime(unsigned int) {
   // Nothing to do
 }
 
-float ResourceHUDRoundedRectangle::getAspectRatio() {
-  return 1.0f;
-}
-
-void ResourceHUDRoundedRectangle::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+void ResourceElementHUDRoundedRectangle::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& blockLocation) {
   // TODO: Save colour and roundiness
 }
 
-ResourceHUDRoundedRectangle::~ResourceHUDRoundedRectangle() {
+ResourceElementHUDRoundedRectangle::~ResourceElementHUDRoundedRectangle() {
   // TODO: Unbind the texture, etc.
+}
+
+float ResourceElementHUDRoundedRectangle::getWest() {
+  return -0.5f;
+}
+
+float ResourceElementHUDRoundedRectangle::getEast() {
+  return 0.5f;
+}
+
+float ResourceElementHUDRoundedRectangle::getSouth() {
+  return -0.5f;
+}
+
+float ResourceElementHUDRoundedRectangle::getNorth() {
+  return 0.5f;
+}
+
+float ResourceElementHUDRoundedRectangle::getTop() {
+  return 0.0f;
+}
+
+float ResourceElementHUDRoundedRectangle::getBottom() {
+  return 0.0f;
 }

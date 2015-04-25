@@ -159,7 +159,6 @@ IColour* Resources::getColour(const std::string& name)                          
 IComponentCustomType* Resources::getComponentCustomType(const std::string& path) {return cComponentCustomTypes.get(path);}
 IFloat* Resources::getFloat(const std::string& path)                             {return cFloats.get(path);}
 IFont* Resources::getFont(const std::string& path)                               {return cFonts.get(path);}
-IHUDComponentType* Resources::getHUDComponentType(const std::string& path)       {return cHUDComponentTypes.get(path);}
 IInteger* Resources::getInteger(const std::string& path)                         {return cIntegers.get(path);}
 ILayerType* Resources::getLayerType(const std::string& path)                     {return cLayerTypes.get(path);}
 IScript* Resources::getScript(const std::string& path)                           {return cScripts.get(path);}
@@ -180,7 +179,6 @@ std::vector<IComponentCustomType*> Resources::getAllComponentCustomTypes() {retu
 std::vector<IElementType*> Resources::getAllElementTypes()                 {return cElementTypes.getAllVector();}
 std::vector<IFloat*> Resources::getAllFloats()                             {return cFloats.getAllVector();}
 std::vector<IFont*> Resources::getAllFonts()                               {return cFonts.getAllVector();}
-std::vector<IHUDComponentType*> Resources::getAllHUDComponentTypes()       {return cHUDComponentTypes.getAllVector();}
 std::vector<IInteger*> Resources::getAllIntegers()                         {return cIntegers.getAllVector();}
 std::vector<ILayerType*> Resources::getAllLayerTypes()                     {return cLayerTypes.getAllVector();}
 std::vector<IScript*> Resources::getAllScripts()                           {return cScripts.getAllVector();}
@@ -198,7 +196,6 @@ void Resources::addResourceListener(IResourceListener<IComponentCustomType>* lis
 void Resources::addResourceListener(IResourceListener<IElementType>* listener)               {cElementTypes.addResourceListener(listener);}
 void Resources::addResourceListener(IResourceListener<IFloat>* listener)                     {cFloats.addResourceListener(listener);}
 void Resources::addResourceListener(IResourceListener<IFont>* listener)                      {cFonts.addResourceListener(listener);}
-void Resources::addResourceListener(IResourceListener<IHUDComponentType>* listener)          {cHUDComponentTypes.addResourceListener(listener);}
 void Resources::addResourceListener(IResourceListener<IInteger>* listener)                   {cIntegers.addResourceListener(listener);}
 void Resources::addResourceListener(IResourceListener<ILayerType>* listener)                 {cLayerTypes.addResourceListener(listener);}
 void Resources::addResourceListener(IResourceListener<IScript>* listener)                    {cScripts.addResourceListener(listener);}
@@ -216,7 +213,6 @@ void Resources::addResourceType(IResourceType<IComponentCustomType>* resourceTyp
 void Resources::addResourceType(IResourceType<IElementType>* resourceType,               const std::string& typeDescription) {cElementTypes.addResourceType(resourceType, typeDescription);}
 void Resources::addResourceType(IResourceType<IFloat>* resourceType,                     const std::string& typeDescription) {cFloats.addResourceType(resourceType, typeDescription);}  
 void Resources::addResourceType(IResourceType<IFont>* resourceType,                      const std::string& typeDescription) {cFonts.addResourceType(resourceType, typeDescription);}
-void Resources::addResourceType(IResourceType<IHUDComponentType>* resourceType,          const std::string& typeDescription) {cHUDComponentTypes.addResourceType(resourceType, typeDescription);}  
 void Resources::addResourceType(IResourceType<IInteger>* resourceType,                   const std::string& typeDescription) {cIntegers.addResourceType(resourceType, typeDescription);}  
 void Resources::addResourceType(IResourceType<ILayerType>* resourceType,                 const std::string& typeDescription) {cLayerTypes.addResourceType(resourceType, typeDescription);}  
 void Resources::addResourceType(IResourceType<IScript>* resourceType,                    const std::string& typeDescription) {cScripts.addResourceType(resourceType, typeDescription);}
@@ -234,7 +230,6 @@ void Resources::editResource(IComponentCustomType* resource,       IResourceAcce
 void Resources::editResource(IElementType* resource,               IResourceAccessor* editingResources, IEditingContext* editingContext) {cElementTypes.editResource(        resource, this, editingContext);}
 void Resources::editResource(IFloat* resource,                     IResourceAccessor* editingResources, IEditingContext* editingContext) {cFloats.editResource(              resource, this, editingContext);}
 void Resources::editResource(IFont* resource,                      IResourceAccessor* editingResources, IEditingContext* editingContext) {cFonts.editResource(               resource, this, editingContext);}
-void Resources::editResource(IHUDComponentType* resource,          IResourceAccessor* editingResources, IEditingContext* editingContext) {cHUDComponentTypes.editResource(   resource, this, editingContext);}
 void Resources::editResource(IInteger* resource,                   IResourceAccessor* editingResources, IEditingContext* editingContext) {cIntegers.editResource(            resource, this, editingContext);}
 void Resources::editResource(ILayerType* resource,                 IResourceAccessor* editingResources, IEditingContext* editingContext) {cLayerTypes.editResource(          resource, this, editingContext);}
 void Resources::editResource(IScript* resource,                    IResourceAccessor* editingResources, IEditingContext* editingContext) {cScripts.editResource(             resource, this, editingContext);}
@@ -252,7 +247,6 @@ void Resources::removeResource(IComponentCustomType* resource,       IResourceAc
 void Resources::removeResource(IElementType* resource,               IResourceAccessor* editingResources) {cElementTypes.removeResource(resource, this);}
 void Resources::removeResource(IFloat* resource,                     IResourceAccessor* editingResources) {cFloats.removeResource(resource, this);}
 void Resources::removeResource(IFont* resource,                      IResourceAccessor* editingResources) {cFonts.removeResource(resource, this);}
-void Resources::removeResource(IHUDComponentType* resource,          IResourceAccessor* editingResources) {cHUDComponentTypes.removeResource(resource, this);}
 void Resources::removeResource(IInteger* resource,                   IResourceAccessor* editingResources) {cIntegers.removeResource(resource, this);}
 void Resources::removeResource(ILayerType* resource,                 IResourceAccessor* editingResources) {cLayerTypes.removeResource(resource, this);}
 void Resources::removeResource(IScript* resource,                    IResourceAccessor* editingResources) {cScripts.removeResource(resource, this);}
@@ -277,7 +271,6 @@ void Resources::add(IComponentCustomType* type,                      std::vector
 void Resources::add(IElementType* type,                              std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cElementTypes.add(type, path, name);                   addResourceToInitialise(type, node);}
 void Resources::add(IFont* font,                                     std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cFonts.add(font, path, name);                          addResourceToInitialise(font, node);}
 void Resources::add(IGlobalVariable* variable,                       std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cGlobalVariables.add(variable, path, name);            addResourceToInitialise(variable, node);}
-void Resources::add(IHUDComponentType* type,                         std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cHUDComponentTypes.add(type, path, name);              addResourceToInitialise(type, node);}
 void Resources::add(IInteger* value,                                 std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cIntegers.add(value, path, name);                      addResourceToInitialise(value, node);}
 void Resources::add(ILayerType* layerType,                           std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cLayerTypes.add(layerType, path, name);                addResourceToInitialise(layerType, node);}
 void Resources::add(IScript* script,                                 std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cScripts.add(script, path, name);                      addResourceToInitialise(script, node);}
@@ -312,7 +305,6 @@ void Resources::addListener(IResourceUseListener<IComponentCustomType>* listener
 void Resources::addListener(IResourceUseListener<IElementType>* listener)               {cElementTypes.addResourceUseListener(listener);}
 void Resources::addListener(IResourceUseListener<IFloat>* listener)                     {cFloats.addResourceUseListener(listener);}
 void Resources::addListener(IResourceUseListener<IFont>* listener)                      {cFonts.addResourceUseListener(listener);}
-void Resources::addListener(IResourceUseListener<IHUDComponentType>* listener)          {cHUDComponentTypes.addResourceUseListener(listener);}
 void Resources::addListener(IResourceUseListener<IInteger>* listener)                   {cIntegers.addResourceUseListener(listener);}
 void Resources::addListener(IResourceUseListener<ILayerType>* listener)                 {cLayerTypes.addResourceUseListener(listener);}
 void Resources::addListener(IResourceUseListener<IScript>* listener)                    {cScripts.addResourceUseListener(listener);}
@@ -332,7 +324,6 @@ std::string Resources::getPath(IElementType* elementType)                   {ret
 std::string Resources::getPath(IFloat* afloat)                              {return cFloats.getLocation(afloat);}
 std::string Resources::getPath(IFont* font)                                 {return cFonts.getLocation(font);}
 std::string Resources::getPath(IGlobalVariable* globalVariable)             {return cGlobalVariables.getLocation(globalVariable);}
-std::string Resources::getPath(IHUDComponentType* componentType)            {return cHUDComponentTypes.getLocation(componentType);}
 std::string Resources::getPath(IInteger* integer)                           {return cIntegers.getLocation(integer);}
 std::string Resources::getPath(ILayerType* layerType)                       {return cLayerTypes.getLocation(layerType);}
 std::string Resources::getPath(IScript* script)                             {return cScripts.getLocation(script);}

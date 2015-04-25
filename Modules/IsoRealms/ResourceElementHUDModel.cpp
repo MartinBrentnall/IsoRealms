@@ -16,12 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "ResourceHUDModel.h"
+#include "ResourceElementHUDModel.h"
 
-ResourceHUDModel::ResourceHUDModel(IDummyModule* module, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
+ResourceElementHUDModel::ResourceElementHUDModel(IDummyModule* module, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
 }
 
-void ResourceHUDModel::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void ResourceElementHUDModel::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
   cModelLocation.x = node->getFloatAttribute("x");
   cModelLocation.y = node->getFloatAttribute("y");
   cModelLocation.z = node->getFloatAttribute("z");
@@ -32,7 +32,7 @@ void ResourceHUDModel::initialiseResource(DOMNodeWrapper* node, IResourceAccesso
   cCamera = resources->getCamera(mCameraPath);
 }
 
-void ResourceHUDModel::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+void ResourceElementHUDModel::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   node->addAttribute("model", resourceLocator->getPath(cModel));
   node->addAttribute("camera", resourceLocator->getPath(cCamera));
   node->addAttribute("scale", cModelScale);
@@ -41,15 +41,55 @@ void ResourceHUDModel::save(DOMNodeWriter* node, IResourceLocator* resourceLocat
   node->addAttribute("z", cModelLocation.z);
 }
 
-IHUDGameComponent* ResourceHUDModel::getHUDComponent() {
+void ResourceElementHUDModel::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& blockLocation) {
+  // TODO
+}
+
+void ResourceElementHUDModel::loadElement(DOMNodeWrapper* node, BlockLocation* location, IElementContainer* container, IResourceAccessor* resources) {
+  container->addElement(this);
+}
+
+void ResourceElementHUDModel::configureElement() {
+  // TODO
+}
+
+void ResourceElementHUDModel::destroy(IElement* element) {
+  // TODO
+}
+
+void ResourceElementHUDModel::renderEditingPreview() {
+  // TODO
+}
+
+void ResourceElementHUDModel::renderIcon() {
+  // TODO
+}
+
+void ResourceElementHUDModel::updateIcon(unsigned int) {
+  // TODO
+}
+
+IElementType* ResourceElementHUDModel::getElementType() {
   return this;
 }
-  
-void ResourceHUDModel::update(unsigned int milliseconds) {
+
+void ResourceElementHUDModel::renderStatic() {
+  // Nothing to do
+}
+
+void ResourceElementHUDModel::setDirty() {
+  // Nothing to do
+}
+
+IElementBounds* ResourceElementHUDModel::getBounds() {
+  return this;
+}
+
+void ResourceElementHUDModel::updateRuntime(unsigned int milliseconds) {
   cModel->update(milliseconds);
 }
   
-void ResourceHUDModel::render(float xZoom, float yZoom) {
+void ResourceElementHUDModel::renderRuntime() {
   float mAngle = cCamera->getAngle();
   float mTilt = cCamera->getTilt();
 //   glBegin(GL_LINE_LOOP);
@@ -67,6 +107,27 @@ void ResourceHUDModel::render(float xZoom, float yZoom) {
   glPopMatrix();
 }
 
-float ResourceHUDModel::getAspectRatio() {
-  return 1.0f;
+float ResourceElementHUDModel::getWest() {
+  return -0.5f;
 }
+
+float ResourceElementHUDModel::getEast() {
+  return 0.5f;
+}
+
+float ResourceElementHUDModel::getSouth() {
+  return -0.5f;
+}
+
+float ResourceElementHUDModel::getNorth() {
+  return 0.5f;
+}
+
+float ResourceElementHUDModel::getTop() {
+  return 0.0f;
+}
+
+float ResourceElementHUDModel::getBottom() {
+  return 0.0f;
+}
+

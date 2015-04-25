@@ -48,10 +48,10 @@ add_library(IsoRealmsStd MODULE
   DialogBooleanFixed.cpp
   DialogBoundaries.cpp
   DialogColourFixed.cpp
+  DialogElementHUDModel.cpp
+  DialogElementHUDRoundedRectangle.cpp
+  DialogElementHUDString.cpp
   DialogFontFile.cpp
-  DialogHUDModel.cpp
-  DialogHUDRoundedRectangle.cpp
-  DialogHUDString.cpp
   DialogIntegerFixed.cpp
   DialogIntegerTimer.cpp
   DialogLayerHUD.cpp
@@ -73,10 +73,10 @@ add_library(IsoRealmsStd MODULE
   ModelSprite.cpp
   ResourceBooleanFixed.cpp
   ResourceBoundaries.cpp
+  ResourceElementHUDModel.cpp
+  ResourceElementHUDRoundedRectangle.cpp
+  ResourceElementHUDString.cpp
   ResourceFontFile.cpp
-  ResourceHUDModel.cpp
-  ResourceHUDRoundedRectangle.cpp
-  ResourceHUDString.cpp
   ResourceIntegerFixed.cpp
   ResourceIntegerTimer.cpp
   ResourceLayerHUD.cpp

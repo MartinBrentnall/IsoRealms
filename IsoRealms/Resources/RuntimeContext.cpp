@@ -45,7 +45,6 @@ void RuntimeContext::add(IColour* colour,                             const std:
 void RuntimeContext::add(IComponentCustomType* componentCustomType,   const std::string& name                      ) {cResources->add(componentCustomType, cEntityPath, name);}
 void RuntimeContext::add(IElementType* type,                          const std::string& name, DOMNodeWrapper* node) {cResources->add(type,                cEntityPath, name, node);}
 void RuntimeContext::add(IFont* font,                                 const std::string& name, DOMNodeWrapper* node) {cResources->add(font,                cEntityPath, name, node);}
-void RuntimeContext::add(IHUDComponentType* type,                     const std::string& name, DOMNodeWrapper* node) {cResources->add(type,                cEntityPath, name, node);}
 void RuntimeContext::add(IGlobalVariable* variable,                   const std::string& name, DOMNodeWrapper* node) {cResources->add(variable,            cEntityPath, name, node);}
 void RuntimeContext::add(IInteger* integer,                           const std::string& name, DOMNodeWrapper* node) {cResources->add(integer,             cEntityPath, name, node);}
 void RuntimeContext::add(ILayerType* layerType,                       const std::string& name, DOMNodeWrapper* node) {cResources->add(layerType,           cEntityPath, name, node);}

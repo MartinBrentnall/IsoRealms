@@ -18,61 +18,72 @@
  */
 #include "HUDComponentPosition.h"
 
-HUDComponentPosition::HUDComponentPosition(IHUDGameComponent* component, IHUDComponentRelation* leftRelation, IHUDComponentRelation* rightRelation, IHUDComponentRelation* topRelation, IHUDComponentRelation* bottomRelation, float xScale, float yScale) {
+HUDComponentPosition::HUDComponentPosition(IHUDComponentRelation* leftRelation, IHUDComponentRelation* rightRelation, IHUDComponentRelation* topRelation, IHUDComponentRelation* bottomRelation, float xScale, float yScale) {
   cLeftRelation = leftRelation;
   cRightRelation = rightRelation;
   cTopRelation = topRelation;
   cBottomRelation = bottomRelation;
-  cComponent = component;
+  cComponent = nullptr;
   cXScale = xScale;
   cYScale = yScale;
 }
 
 void HUDComponentPosition::update(unsigned int milliseconds) {
-  cComponent->update(milliseconds);
+  cComponent->updateRuntime(milliseconds);
 }
 
 float HUDComponentPosition::getXScale() {
   Configuration* mConfiguration = Configuration::getInstance();
   ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
   float mAspectRatio = mScreen->getAspectRatio();
-  if (cLeftRelation != NULL && cRightRelation != NULL) {
+  if (cLeftRelation != nullptr && cRightRelation != nullptr) {
     return ((cRightRelation->getLocation() - cLeftRelation->getLocation()) / mAspectRatio) / 2.0f;
   }
   return cXScale;
 }
 
 float HUDComponentPosition::getYScale() {
-  if (cTopRelation != NULL && cBottomRelation != NULL) {
+  if (cTopRelation != nullptr && cBottomRelation != nullptr) {
     return (cTopRelation->getLocation() - cBottomRelation->getLocation()) / 2.0f;
   }
   return cYScale;
+}
+
+float HUDComponentPosition::getAspectRatio() {
+  IElementBounds* mBounds = cComponent->getBounds();
+  float mSouth = mBounds->getSouth();
+  float mNorth = mBounds->getNorth();
+  float mWest = mBounds->getWest();
+  float mEast = mBounds->getEast();
+  float mWidth = mEast - mWest;
+  float mLength = mNorth - mSouth;
+  return mWidth / mLength;
 }
 
 float HUDComponentPosition::getXPosition() {
   Configuration* mConfiguration = Configuration::getInstance();
   ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
   float mAspectRatio = mScreen->getAspectRatio();
-  if (cLeftRelation == NULL && cRightRelation == NULL) {
+  if (cLeftRelation == nullptr && cRightRelation == nullptr) {
     return 0.0f;
   }
-  if (cRightRelation == NULL) {
-    return cLeftRelation->getLocation() / mAspectRatio + cXScale * cComponent->getAspectRatio();
+  if (cRightRelation == nullptr) {
+    return cLeftRelation->getLocation() / mAspectRatio + cXScale * getAspectRatio();
   }
-  if (cLeftRelation == NULL) {
-    return cRightRelation->getLocation() / mAspectRatio - cXScale * cComponent->getAspectRatio();
+  if (cLeftRelation == nullptr) {
+    return cRightRelation->getLocation() / mAspectRatio - cXScale * getAspectRatio();
   }
   return (cRightRelation->getLocation() / mAspectRatio - cLeftRelation->getLocation() / mAspectRatio) / 2.0f + cLeftRelation->getLocation() / mAspectRatio;
 }
 
 float HUDComponentPosition::getYPosition() {
-  if (cBottomRelation == NULL && cTopRelation == NULL) {
+  if (cBottomRelation == nullptr && cTopRelation == nullptr) {
     return 0.0f;
   }
-  if (cTopRelation == NULL) {
+  if (cTopRelation == nullptr) {
     return cBottomRelation->getLocation() + cYScale;
   }
-  if (cBottomRelation == NULL) {
+  if (cBottomRelation == nullptr) {
     return cTopRelation->getLocation() - cYScale;
   }
   return (cTopRelation->getLocation() - cBottomRelation->getLocation()) / 2.0f + cBottomRelation->getLocation();
@@ -110,7 +121,7 @@ void HUDComponentPosition::render() {
   glVertex2f(-cComponent->getAspectRatio(), -1.0f);
   glVertex2f( cComponent->getAspectRatio(), -1.0f);
   glEnd();*/
-  cComponent->render(mXScale, mYScale);
+  cComponent->renderRuntime();
   glPopMatrix();
 }
 
@@ -120,7 +131,7 @@ float HUDComponentPosition::getLeft() {
   float mAspectRatio = mScreen->getAspectRatio();
   float mXScale = getXScale() * mAspectRatio;
   float mXPosition = getXPosition() * mAspectRatio;
-  return mXPosition - mXScale * cComponent->getAspectRatio();
+  return mXPosition - mXScale * getAspectRatio();
 }
 
 float HUDComponentPosition::getRight() {
@@ -129,7 +140,7 @@ float HUDComponentPosition::getRight() {
   float mAspectRatio = mScreen->getAspectRatio();
   float mXScale = getXScale() * mAspectRatio;
   float mXPosition = getXPosition() * mAspectRatio;
-  return mXPosition + mXScale * cComponent->getAspectRatio();
+  return mXPosition + mXScale * getAspectRatio();
 }
 
 float HUDComponentPosition::getBottom() {
@@ -145,26 +156,55 @@ float HUDComponentPosition::getTop() {
 }
 
 void HUDComponentPosition::save(DOMNodeWriter* node, IComponentSources* sources) {
-  if ((cTopRelation == NULL || cBottomRelation == NULL) && (cLeftRelation == NULL || cRightRelation == NULL) && (cXScale == cYScale && cXScale != 1.0f)) {
+  if ((cTopRelation == nullptr || cBottomRelation == nullptr) && (cLeftRelation == nullptr || cRightRelation == nullptr) && (cXScale == cYScale && cXScale != 1.0f)) {
     node->addAttribute("scale", cXScale);
   } else {
-    if ((cLeftRelation == NULL || cRightRelation == NULL) && cXScale != 1.0f) {
+    if ((cLeftRelation == nullptr || cRightRelation == nullptr) && cXScale != 1.0f) {
       node->addAttribute("xScale", cXScale);
     }
-    if ((cTopRelation == NULL || cBottomRelation == NULL) && cYScale != 1.0f) {
+    if ((cTopRelation == nullptr || cBottomRelation == nullptr) && cYScale != 1.0f) {
       node->addAttribute("yScale", cYScale);
     }
   }
-  if (cTopRelation != NULL) {
+  if (cTopRelation != nullptr) {
     cTopRelation->save(node, "top", sources);
   }
-  if (cBottomRelation != NULL) {
+  if (cBottomRelation != nullptr) {
     cBottomRelation->save(node, "bottom", sources);
   }
-  if (cLeftRelation != NULL) {
+  if (cLeftRelation != nullptr) {
     cLeftRelation->save(node, "left", sources);
   }
-  if (cRightRelation != NULL) {
+  if (cRightRelation != nullptr) {
     cRightRelation->save(node, "right", sources);
   }
 }
+
+void HUDComponentPosition::addElement(IElement* element) {
+  cComponent = element;
+}
+
+void HUDComponentPosition::removeElement(IElement*) {
+  // TODO
+}
+
+void HUDComponentPosition::addArgumentValue(IArgument* argumentValue) {
+  // TODO
+}
+
+BlockArea* HUDComponentPosition::getCoverage() {
+  return nullptr; // TODO
+}
+
+void HUDComponentPosition::setArguments() {
+  // TODO
+}
+
+void HUDComponentPosition::setDirty() {
+  // TODO
+}
+
+void HUDComponentPosition::unsetArguments() {
+  // TODO
+}
+

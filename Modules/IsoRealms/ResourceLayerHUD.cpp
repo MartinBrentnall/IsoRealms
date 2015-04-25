@@ -25,27 +25,22 @@ void ResourceLayerHUD::initialiseResource(DOMNodeWrapper* node, IResourceAccesso
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "Component") {
-      std::string mComponentSource = mNode->getAttribute("source");
+    if (mValueAsString == "Element") {
+      std::string mComponentSource = mNode->getAttribute("type");
       float mScale = mNode->getFloatAttribute("scale");
       if (mScale <= 0.0f) {
         mScale = 1.0f;
       }
 
-      IHUDComponentType* mType = resources->getHUDComponentType(mComponentSource);
-      if (mType != nullptr) {
-        IHUDGameComponent* mHUDComponent = mType->getHUDComponent();
-        IHUDComponentRelation* mLeftRelation   = getRelation(mNode->getAttribute("left"),   "left");
-        IHUDComponentRelation* mRightRelation  = getRelation(mNode->getAttribute("right"),  "right");
-        IHUDComponentRelation* mBottomRelation = getRelation(mNode->getAttribute("bottom"), "bottom");
-        IHUDComponentRelation* mTopRelation    = getRelation(mNode->getAttribute("top"),    "top");
-        HUDComponentPosition* mHUDRenderer = new HUDComponentPosition(mHUDComponent, mLeftRelation, mRightRelation, mTopRelation, mBottomRelation, mScale, mScale);
-        cComponents.push_back(mHUDRenderer);
-        HUDComponentProxy* mHUDComponentProxy = getComponentProxy(mComponentSource);
-        mHUDComponentProxy->setHUDComponentPosition(mHUDRenderer);
-      } else {
-        std::cout << "TYPE IS NULL!" << std::endl;
-      }
+      IHUDComponentRelation* mLeftRelation   = getRelation(mNode->getAttribute("left"),   "left");
+      IHUDComponentRelation* mRightRelation  = getRelation(mNode->getAttribute("right"),  "right");
+      IHUDComponentRelation* mBottomRelation = getRelation(mNode->getAttribute("bottom"), "bottom");
+      IHUDComponentRelation* mTopRelation    = getRelation(mNode->getAttribute("top"),    "top");
+      HUDComponentPosition* mHUDRenderer = new HUDComponentPosition(mLeftRelation, mRightRelation, mTopRelation, mBottomRelation, mScale, mScale);
+      resources->loadElement(mNode, nullptr, mHUDRenderer);
+      cComponents.push_back(mHUDRenderer);
+      HUDComponentProxy* mHUDComponentProxy = getComponentProxy(mComponentSource);
+      mHUDComponentProxy->setHUDComponentPosition(mHUDRenderer);
     } else {
       // TODO: Throw
     }

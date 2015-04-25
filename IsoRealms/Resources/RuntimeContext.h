@@ -50,7 +50,6 @@ class RuntimeContext:public IResourceRegistry {
   void add(IElementType*,            const std::string&, DOMNodeWrapper*);
   void add(IFont*,                   const std::string&, DOMNodeWrapper*);
   void add(IGlobalVariable*,         const std::string&, DOMNodeWrapper*);
-  void add(IHUDComponentType*,       const std::string&, DOMNodeWrapper*);
   void add(IInteger*,                const std::string&, DOMNodeWrapper*);
   void add(ILayerType*,              const std::string&, DOMNodeWrapper*);
   void add(IScript*,                 const std::string&, DOMNodeWrapper*);

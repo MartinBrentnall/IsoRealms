@@ -17,16 +17,16 @@
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "DialogHUDRoundedRectangle.h"
+#include "DialogElementHUDRoundedRectangle.h"
 
-DialogHUDRoundedRectangle::DialogHUDRoundedRectangle(IEditingContext* editingContext, ResourceHUDRoundedRectangle* hudRoundedRectangle, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "HUD Rounded Rectangle", resourceName) {
-  cHUDRoundedRectangle = hudRoundedRectangle;
+DialogElementHUDRoundedRectangle::DialogElementHUDRoundedRectangle(IEditingContext* editingContext, ResourceElementHUDRoundedRectangle* elementHUDRoundedRectangle, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "HUD Rounded Rectangle", resourceName) {
+  cElementHUDRoundedRectangle = elementHUDRoundedRectangle;
 }
 
-void DialogHUDRoundedRectangle::undo() {
+void DialogElementHUDRoundedRectangle::undo() {
   // TODO:
 }
 
-ResourceHUDRoundedRectangle* DialogHUDRoundedRectangle::getResource() {
-  return cHUDRoundedRectangle;
+ResourceElementHUDRoundedRectangle* DialogElementHUDRoundedRectangle::getResource() {
+  return cElementHUDRoundedRectangle;
 }

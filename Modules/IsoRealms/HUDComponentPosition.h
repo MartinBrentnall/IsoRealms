@@ -23,15 +23,16 @@
 #include <string>
 
 #include <IsoRealms/Configuration.h>
-#include <IsoRealms/Resources/HUDComponents/IHUDGameComponent.h>
+#include <IsoRealms/Resources/ElementType/IElement.h>
+#include <IsoRealms/Resources/ElementType/IElementContainer.h>
 #include <IsoRealms/ScreenConfiguration.h>
 
 #include "IComponentSources.h"
 #include "IHUDComponentRelation.h"
 
-class HUDComponentPosition {
+class HUDComponentPosition : public IElementContainer {
   private:
-  IHUDGameComponent* cComponent;
+  IElement* cComponent;
   float cXScale;
   float cYScale;
   IHUDComponentRelation* cLeftRelation;
@@ -41,11 +42,12 @@ class HUDComponentPosition {
 
   float getXScale();
   float getYScale();
+  float getAspectRatio();
   float getXPosition();
   float getYPosition();  
   
   public:
-  HUDComponentPosition(IHUDGameComponent*, IHUDComponentRelation*, IHUDComponentRelation*, IHUDComponentRelation*, IHUDComponentRelation*, float, float);
+  HUDComponentPosition(IHUDComponentRelation*, IHUDComponentRelation*, IHUDComponentRelation*, IHUDComponentRelation*, float, float);
   void update(unsigned int);
   void render();
   float getLeft();
@@ -53,6 +55,18 @@ class HUDComponentPosition {
   float getBottom();
   float getTop();
   void save(DOMNodeWriter*, IComponentSources*);
+
+  /********************************\
+   * Implements IElementContainer * 
+  \********************************/
+  void addElement(IElement*);
+  void removeElement(IElement*);
+  void addArgumentValue(IArgument*);
+  void setArguments();
+  void unsetArguments();
+  BlockArea* getCoverage();
+  void setDirty();
+  
 };
 
 #endif

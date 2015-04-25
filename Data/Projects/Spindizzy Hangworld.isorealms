@@ -190,20 +190,20 @@
     <ColourFixed alpha="1" blue="0.53125" green="0.914062" name="LightGreen" red="0.671875"/>
     <ColourFixed alpha="1" blue="0.851562" green="0.4375" name="LightBlue" red="0.484375"/>
     <ColourFixed alpha="1" blue="0.667969" green="0.667969" name="LightGray" red="0.667969"/>
+    <ElementHUDModel camera="Spindizzy/Camera" model="Spindizzy/Jewel" name="JewelIcon" x="0.000000" y="0.000000" z="-0.600000" scale="1.0"/>
+    <ElementHUDModel model="IsoRealms/HUDIconMap" name="MapIcon" x="0.000000" y="0.000000" z="0.000000" scale="1.0"/>
+    <ElementHUDModel model="IsoRealms/HUDIconScore" name="ScoreIcon" x="0.000000" y="0.000000" z="0.000000" scale="1.0"/>
+    <ElementHUDModel model="IsoRealms/HUDIconTime" name="TimeIcon" x="0.000000" y="0.000000" z="0.000000" scale="1.0"/>
+    <ElementHUDModel camera="Spindizzy/Camera" model="IsoRealms/Compass" name="Compass" x="0.000000" y="0.000000" z="-0.500000" scale="0.7"/>
+    <ElementHUDModel camera="Spindizzy/Camera" model=":Model/IsoRealms/PrimarySwitchState" name="PrimarySwitchState" x="0.000000" y="0.000000" z="0.000000" scale="1.0"/>
+    <ElementHUDModel camera="Spindizzy/Camera" model=":Model/IsoRealms/SecondarySwitchState" name="SecondarySwitchState" x="0.000000" y="0.000000" z="0.000000" scale="1.0"/>
+    <ElementHUDModel camera="Spindizzy/Camera" model=":Model/IsoRealms/Clue" name="Clue"/>
+    <ElementHUDRoundedRectangle name="HUDPanel"/>
+    <ElementHUDString font="IsoRealms/HUDFont" name="ScoreDisplay" value=":Integer/IsoRealms/Score"/>
+    <ElementHUDString font="IsoRealms/HUDFont" name="TimeDisplay" value="IsoRealms/SpindizzyTimeLimit"/>
+    <ElementHUDString font="IsoRealms/HUDFont" name="ZonesToExploreDisplay" value=":Integer/IsoRealms/ZonesToExplore"/>
+    <ElementHUDString font="IsoRealms/HUDFont" name="JewelCountDisplay" value=":Integer/IsoRealms/Collected"/>
     <FontFile detail="64" file="Data/Fonts/MenuFont.ttf" name="HUDFont"/>
-    <HUDModel camera="Spindizzy/Camera" model="Spindizzy/Jewel" name="JewelIcon" x="0.000000" y="0.000000" z="-0.600000" scale="1.0"/>
-    <HUDModel model="IsoRealms/HUDIconMap" name="MapIcon" x="0.000000" y="0.000000" z="0.000000" scale="1.0"/>
-    <HUDModel model="IsoRealms/HUDIconScore" name="ScoreIcon" x="0.000000" y="0.000000" z="0.000000" scale="1.0"/>
-    <HUDModel model="IsoRealms/HUDIconTime" name="TimeIcon" x="0.000000" y="0.000000" z="0.000000" scale="1.0"/>
-    <HUDModel camera="Spindizzy/Camera" model="IsoRealms/Compass" name="Compass" x="0.000000" y="0.000000" z="-0.500000" scale="0.7"/>
-    <HUDModel camera="Spindizzy/Camera" model=":Model/IsoRealms/PrimarySwitchState" name="PrimarySwitchState" x="0.000000" y="0.000000" z="0.000000" scale="1.0"/>
-    <HUDModel camera="Spindizzy/Camera" model=":Model/IsoRealms/SecondarySwitchState" name="SecondarySwitchState" x="0.000000" y="0.000000" z="0.000000" scale="1.0"/>
-    <HUDModel camera="Spindizzy/Camera" model=":Model/IsoRealms/Clue" name="Clue"/>
-    <HUDRoundedRectangle name="HUDPanel"/>
-    <HUDString font="IsoRealms/HUDFont" name="ScoreDisplay" value=":Integer/IsoRealms/Score"/>
-    <HUDString font="IsoRealms/HUDFont" name="TimeDisplay" value="IsoRealms/SpindizzyTimeLimit"/>
-    <HUDString font="IsoRealms/HUDFont" name="ZonesToExploreDisplay" value=":Integer/IsoRealms/ZonesToExplore"/>
-    <HUDString font="IsoRealms/HUDFont" name="JewelCountDisplay" value=":Integer/IsoRealms/Collected"/>
     <IntegerFixed name="Score"/>
     <IntegerFixed name="ZonesToExplore"/>
     <IntegerFixed name="Collected"/>
@@ -7050,20 +7050,20 @@ end</Code>
     </Element>
   </Layer>
   <Layer type="IsoRealms/HUD">
-    <Component bottom="align IsoRealms/JewelCountDisplay" left="align IsoRealms/JewelCountDisplay" right="align IsoRealms/ScoreIcon" source="IsoRealms/HUDPanel" top="align IsoRealms/ScoreIcon"/>
-    <Component bottom="align IsoRealms/ZonesToExploreDisplay" right="align IsoRealms/ZonesToExploreDisplay" left="align IsoRealms/MapIcon" source="IsoRealms/HUDPanel" top="align IsoRealms/TimeIcon"/>
-    <Component bottom="align IsoRealms/Clue" left="align IsoRealms/Clue" right="align IsoRealms/Compass" source="IsoRealms/HUDPanel" top="align IsoRealms/Clue"/>
-    <Component right="0.000000" scale="0.087000" source="IsoRealms/PrimarySwitchState" top="0.980000"/>
-    <Component left="0.000000" scale="0.087000" source="IsoRealms/SecondarySwitchState" top="0.980000"/>
-    <Component left="adjacent IsoRealms/SecondarySwitchState" scale="0.087000" source="IsoRealms/Compass" top="0.980000"/>
-    <Component right="adjacent IsoRealms/PrimarySwitchState" scale="0.087000" source="IsoRealms/Clue" top="0.980000"/>
-    <Component right="0.980000" scale="0.045000" source="IsoRealms/ScoreIcon" top="0.980000"/>
-    <Component left="-0.980000" scale="0.045000" source="IsoRealms/TimeIcon" top="0.980000"/>
-    <Component right="0.980000" scale="0.045000" source="IsoRealms/JewelIcon" top="adjacent IsoRealms/ScoreIcon"/>
-    <Component left="-0.980000" scale="0.045000" source="IsoRealms/MapIcon" top="adjacent IsoRealms/TimeIcon"/>
-    <Component left="adjacent IsoRealms/TimeIcon" scale="0.045000" source="IsoRealms/TimeDisplay" top="0.980000"/>
-    <Component right="adjacent IsoRealms/ScoreIcon" scale="0.045000" source="IsoRealms/ScoreDisplay" top="0.980000"/>
-    <Component left="adjacent IsoRealms/MapIcon" scale="0.045000" source="IsoRealms/ZonesToExploreDisplay" top="adjacent IsoRealms/ScoreIcon"/>
-    <Component right="adjacent IsoRealms/JewelIcon" scale="0.045000" source="IsoRealms/JewelCountDisplay" top="adjacent IsoRealms/TimeIcon"/>
+    <Element bottom="align IsoRealms/JewelCountDisplay" left="align IsoRealms/JewelCountDisplay" right="align IsoRealms/ScoreIcon" type="IsoRealms/HUDPanel" top="align IsoRealms/ScoreIcon"/>
+    <Element bottom="align IsoRealms/ZonesToExploreDisplay" right="align IsoRealms/ZonesToExploreDisplay" left="align IsoRealms/MapIcon" type="IsoRealms/HUDPanel" top="align IsoRealms/TimeIcon"/>
+    <Element bottom="align IsoRealms/Clue" left="align IsoRealms/Clue" right="align IsoRealms/Compass" type="IsoRealms/HUDPanel" top="align IsoRealms/Clue"/>
+    <Element right="0.000000" scale="0.087000" type="IsoRealms/PrimarySwitchState" top="0.980000"/>
+    <Element left="0.000000" scale="0.087000" type="IsoRealms/SecondarySwitchState" top="0.980000"/>
+    <Element left="adjacent IsoRealms/SecondarySwitchState" scale="0.087000" type="IsoRealms/Compass" top="0.980000"/>
+    <Element right="adjacent IsoRealms/PrimarySwitchState" scale="0.087000" type="IsoRealms/Clue" top="0.980000"/>
+    <Element right="0.980000" scale="0.045000" type="IsoRealms/ScoreIcon" top="0.980000"/>
+    <Element left="-0.980000" scale="0.045000" type="IsoRealms/TimeIcon" top="0.980000"/>
+    <Element right="0.980000" scale="0.045000" type="IsoRealms/JewelIcon" top="adjacent IsoRealms/ScoreIcon"/>
+    <Element left="-0.980000" scale="0.045000" type="IsoRealms/MapIcon" top="adjacent IsoRealms/TimeIcon"/>
+    <Element left="adjacent IsoRealms/TimeIcon" scale="0.045000" type="IsoRealms/TimeDisplay" top="0.980000"/>
+    <Element right="adjacent IsoRealms/ScoreIcon" scale="0.045000" type="IsoRealms/ScoreDisplay" top="0.980000"/>
+    <Element left="adjacent IsoRealms/MapIcon" scale="0.045000" type="IsoRealms/ZonesToExploreDisplay" top="adjacent IsoRealms/ScoreIcon"/>
+    <Element right="adjacent IsoRealms/JewelIcon" scale="0.045000" type="IsoRealms/JewelCountDisplay" top="adjacent IsoRealms/TimeIcon"/>
   </Layer>
 </Project>

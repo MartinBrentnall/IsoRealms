@@ -16,25 +16,66 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "ResourceHUDString.h"
+#include "ResourceElementHUDString.h"
 
-ResourceHUDString::ResourceHUDString(IDummyModule* module, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
+ResourceElementHUDString::ResourceElementHUDString(IDummyModule* module, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
 }
 
-void ResourceHUDString::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void ResourceElementHUDString::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
   cText = resources->getString(node->getAttribute("value"));
   cFont = resources->getFont(node->getAttribute("font"));
 }
 
-IHUDGameComponent* ResourceHUDString::getHUDComponent() {
+void ResourceElementHUDString::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+  node->addAttribute("font", resourceLocator->getPath(cFont));
+  node->addAttribute("value", resourceLocator->getPath(cText));
+}
+
+void ResourceElementHUDString::loadElement(DOMNodeWrapper* node, BlockLocation* location, IElementContainer* container, IResourceAccessor* resources) {
+  container->addElement(this);
+}
+
+void ResourceElementHUDString::configureElement() {
+  // TODO:
+}
+
+void ResourceElementHUDString::destroy(IElement* element) {
+  // TODO
+}
+
+void ResourceElementHUDString::renderEditingPreview() {
+  // TODO
+}
+
+void ResourceElementHUDString::renderIcon() {
+  // TODO
+}
+
+void ResourceElementHUDString::updateIcon(unsigned int) {
+  // TODO
+}
+
+IElementType* ResourceElementHUDString::getElementType() {
   return this;
 }
-  
-void ResourceHUDString::update(unsigned int milliseconds) {
+
+void ResourceElementHUDString::renderStatic() {
+  // Nothing to do
+}
+
+void ResourceElementHUDString::setDirty() {
+  // Nothing to do
+}
+
+IElementBounds* ResourceElementHUDString::getBounds() {
+  return this;
+}
+
+void ResourceElementHUDString::updateRuntime(unsigned int milliseconds) {
   // TODO: Nothing to do
 }
   
-void ResourceHUDString::render(float xZoom, float yZoom) {
+void ResourceElementHUDString::renderRuntime() {
   glLoadIdentity();
   glColor3f(0.0f, 0.0f, 0.0f);
   float mX = -0.90f;
@@ -68,11 +109,30 @@ void ResourceHUDString::render(float xZoom, float yZoom) {
 //  cFont->print(3.5f, -0.1f, 0.99f, 1, "Testing");
 }
 
-float ResourceHUDString::getAspectRatio() {
-  return 6.0f;
+void ResourceElementHUDString::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& blockLocation) {
+  // TODO
 }
 
-void ResourceHUDString::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
-  node->addAttribute("font", resourceLocator->getPath(cFont));
-  node->addAttribute("value", resourceLocator->getPath(cText));
+float ResourceElementHUDString::getWest() {
+  return -3.0f;
+}
+
+float ResourceElementHUDString::getEast() {
+  return 3.0f;
+}
+
+float ResourceElementHUDString::getSouth() {
+  return -0.5f;
+}
+
+float ResourceElementHUDString::getNorth() {
+  return 0.5f;
+}
+
+float ResourceElementHUDString::getTop() {
+  return 0.0f;
+}
+
+float ResourceElementHUDString::getBottom() {
+  return 0.0f;
 }

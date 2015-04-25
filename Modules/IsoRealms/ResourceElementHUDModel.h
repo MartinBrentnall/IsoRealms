@@ -16,21 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef RESOURCE_HUD_MODEL_H
-#define RESOURCE_HUD_MODEL_H
+#ifndef RESOURCE_ELEMENT_HUD_MODEL_H
+#define RESOURCE_ELEMENT_HUD_MODEL_H
 
 #include <IsoRealms/IsoRealmsConstants.h>
 #include <IsoRealms/Persistence/DOMNodeWriter.h>
 #include <IsoRealms/Resources/3DModel/I3DModelType.h>
 #include <IsoRealms/Resources/Camera/ICamera.h>
-#include <IsoRealms/Resources/HUDComponents/IHUDComponentType.h>
-#include <IsoRealms/Resources/HUDComponents/IHUDGameComponent.h>
+#include <IsoRealms/Resources/ElementType/Element.h>
 #include <IsoRealms/Resources/IDummyModule.h>
 #include <IsoRealms/Resources/IResourceAccessor.h>
 #include <IsoRealms/Resources/IResourceRegistry.h>
 
-class ResourceHUDModel:public IHUDComponentType,
-                       public IHUDGameComponent {
+class ResourceElementHUDModel:public IElementType,
+                              public IElementBounds,
+                              public Element {
   private:
   Vertex cModelLocation;
   float cModelScale;
@@ -38,7 +38,7 @@ class ResourceHUDModel:public IHUDComponentType,
   I3DModel* cModel;
 
   public:
-  ResourceHUDModel(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
+  ResourceElementHUDModel(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
     
   /**********************\
    * Implements IPlugin *
@@ -46,19 +46,38 @@ class ResourceHUDModel:public IHUDComponentType,
   void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
   void save(DOMNodeWriter*, IResourceLocator*);
   
-  /***********************************\
-   * Implements IHUDComponentFactory *
-  \***********************************/
-  IHUDGameComponent* getHUDComponent();
+  /***************************\
+   * Implements IElementType *
+  \***************************/
+  void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*);
+  void configureElement();
+  void renderEditingPreview();
+  void renderIcon();
+  void updateIcon(unsigned int);
+  void destroy(IElement*);
 
-  /********************************\
-   * Implements IHUDGameComponent *
-  \********************************/
-  void render(float, float);
-  void update(unsigned int);
-  float getAspectRatio();
+  /***********************\
+   * Implements IElement *
+  \***********************/
+  IElementType* getElementType();
+  void renderStatic();
+  void setDirty();
+  IElementBounds* getBounds();
+  void renderRuntime();
+  void updateRuntime(unsigned int);
+  void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
   
-  virtual ~ResourceHUDModel() {}
+  /*****************************\
+   * Implements IElementBounds *
+  \*****************************/
+  float getWest();
+  float getEast();
+  float getSouth();
+  float getNorth();
+  float getTop();
+  float getBottom();
+
+  virtual ~ResourceElementHUDModel() {}
 };
 
 #endif

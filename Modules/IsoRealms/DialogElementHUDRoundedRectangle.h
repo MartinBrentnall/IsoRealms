@@ -1,5 +1,5 @@
 /*
- * Copyright 2009,2010,2011 Martin Brentnall
+ * Copyright 2015 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,14 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_HUD_GAME_COMPONENT_H
-#define I_HUD_GAME_COMPONENT_H
+#ifndef DIALOG_ELEMENT_HUD_ROUNDED_RECTANGLE_H
+#define DIALOG_ELEMENT_HUD_ROUNDED_RECTANGLE_H
 
-class IHUDGameComponent {
+#include <IsoRealms/GUI/Dialogs/DialogOKCancelUndo.h>
+#include <IsoRealms/IConfirmationListener.h>
+#include <IsoRealms/IEditingContext.h>
+
+#include "ResourceElementHUDRoundedRectangle.h"
+
+class DialogElementHUDRoundedRectangle : public DialogOKCancelUndo {
+  private:
+  ResourceElementHUDRoundedRectangle* cElementHUDRoundedRectangle;
+
   public:
-  virtual void render(float, float) = 0;
-  virtual void update(unsigned int) = 0;
-  virtual float getAspectRatio() = 0;
+  DialogElementHUDRoundedRectangle(IEditingContext*, ResourceElementHUDRoundedRectangle*, IResourceAccessor*, const std::string&);
+
+  ResourceElementHUDRoundedRectangle* getResource();
+
+  void undo();  
 };
 
 #endif

@@ -57,7 +57,6 @@ class IResourceRegistry {
   virtual void add(IComponentCustomType*,       const std::string&) = 0;
   virtual void add(IElementType*,               const std::string&, DOMNodeWrapper* = NULL) = 0;
   virtual void add(IFont*,                      const std::string&, DOMNodeWrapper* = NULL) = 0;
-  virtual void add(IHUDComponentType*,          const std::string&, DOMNodeWrapper* = NULL) = 0;
   virtual void add(IGlobalVariable*,            const std::string&, DOMNodeWrapper* = NULL) = 0;
   virtual void add(IInteger*,                   const std::string&, DOMNodeWrapper* = NULL) = 0;
   virtual void add(ILayerType*,                 const std::string&, DOMNodeWrapper* = NULL) = 0;
