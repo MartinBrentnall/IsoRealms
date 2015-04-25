@@ -16,3 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#include "DialogFontFile.h"
+
+DialogFontFile::DialogFontFile(IEditingContext* editingContext, ResourceFontFile* font, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "Colour", resourceName) {
+  cFont = font;
+}
+
+void DialogFontFile::undo() {
+  // TODO:
+}
+
+ResourceFontFile* DialogFontFile::getResource() {
+  return cFont;
+}

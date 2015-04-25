@@ -26,11 +26,13 @@
 #include "ResourceIntegerTimer.h"
 
 class DialogIntegerTimer : public DialogOKCancelUndo {
+  private:
+  ResourceIntegerTimer* cInteger;
+
   public:
   DialogIntegerTimer(IEditingContext*, ResourceIntegerTimer*, IResourceAccessor*, const std::string&);
 
   ResourceIntegerTimer* getResource();
-  std::string getResourceName();
   
   void undo();
 };

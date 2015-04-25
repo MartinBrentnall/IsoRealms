@@ -26,11 +26,13 @@
 #include "ResourceVertexFixed.h"
 
 class DialogVertexFixed : public DialogOKCancelUndo {
+  private:
+  ResourceVertexFixed* cVertex;
+
   public:
   DialogVertexFixed(IEditingContext*, ResourceVertexFixed*, IResourceAccessor*, const std::string&);
   
   ResourceVertexFixed* getResource();
-  std::string getResourceName();
   
   void undo();
 };

@@ -16,3 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#include "DialogIntegerFixed.h"
+
+DialogIntegerFixed::DialogIntegerFixed(IEditingContext* editingContext, ResourceIntegerFixed* integer, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "Integer", resourceName) {
+  cInteger = integer;
+}
+
+void DialogIntegerFixed::undo() {
+  // TODO:
+}
+
+ResourceIntegerFixed* DialogIntegerFixed::getResource() {
+  return cInteger;
+}

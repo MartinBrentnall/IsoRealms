@@ -19,55 +19,16 @@
 #ifndef DIALOG_MODEL_SPINDIZZY_JEWEL_H
 #define DIALOG_MODEL_SPINDIZZY_JEWEL_H
 
+#include <IsoRealms/GUI/Dialogs/DialogOKCancelUndo.h>
 #include <IsoRealms/GUI/ISelector.h>
-#include <IsoRealms/GUI/ResizableDialog.h>
 #include <IsoRealms/GUI/SelectableComponent.h>
 #include <IsoRealms/IConfirmationListener.h>
 #include <IsoRealms/IEditingContext.h>
 
 #include "ResourceModelSpindizzyJewel.h"
 
-class DialogModelSpindizzyJewel:public ResizableDialog {
+class DialogModelSpindizzyJewel : public DialogOKCancelUndo {
   private:
-  class OKCommand:public ICommand {
-    private:
-    DialogModelSpindizzyJewel* cParent;
-    
-    public:
-    OKCommand(DialogModelSpindizzyJewel*);
-    
-    /***********************\
-     * Implements ICommand *
-    \***********************/
-    void execute();
-  };
-  
-  class CancelCommand:public ICommand {
-    private:
-    DialogModelSpindizzyJewel* cParent;
-    
-    public:
-    CancelCommand(DialogModelSpindizzyJewel*);
-    
-    /***********************\
-     * Implements ICommand *
-    \***********************/
-    void execute();
-  };
-  
-  class UndoCommand:public ICommand {
-    private:
-    DialogModelSpindizzyJewel* cParent;
-    
-    public:
-    UndoCommand(DialogModelSpindizzyJewel*);
-    
-    /***********************\
-     * Implements ICommand *
-    \***********************/
-    void execute();
-  };
-
   class ColourSelector:public ISelector,
                        public IResourceSelectionListener<IColour> {
     private:
@@ -105,21 +66,18 @@ class DialogModelSpindizzyJewel:public ResizableDialog {
   
   ResourceModelSpindizzyJewel* cModelType;
   IResourceSelector* cResourceSelector;
-  IConfirmationListener* cConfirmationListener;
   IColour* cOriginalFrameColour;
   std::vector<IColour*> cOriginalCycleColours;
   ColourSelector* cColourSelectorFrame;
   std::vector<ColourSelector*> cColourSelectorsCycle;
   
-  void undo();
   
   public:
   DialogModelSpindizzyJewel(IEditingContext*, ResourceModelSpindizzyJewel*, IResourceAccessor*, const std::string&);
   
-  void addConfirmationListener(IConfirmationListener*);
-  
   ResourceModelSpindizzyJewel* getResource();
-  std::string getResourceName();
+  
+  void undo();
 };
 
 #endif

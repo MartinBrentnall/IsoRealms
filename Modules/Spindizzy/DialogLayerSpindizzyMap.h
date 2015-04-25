@@ -26,11 +26,13 @@
 #include "ResourceLayerSpindizzyMap.h"
 
 class DialogLayerSpindizzyMap : public DialogOKCancelUndo {
+  private:
+  ResourceLayerSpindizzyMap* cLayerSpindizzyMap;
+  
   public:
   DialogLayerSpindizzyMap(IEditingContext*, ResourceLayerSpindizzyMap*, IResourceAccessor*, const std::string&);
 
   ResourceLayerSpindizzyMap* getResource();
-  std::string getResourceName();
   
   void undo();
 };

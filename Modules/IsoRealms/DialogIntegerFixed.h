@@ -26,11 +26,13 @@
 #include "ResourceIntegerFixed.h"
 
 class DialogIntegerFixed : public DialogOKCancelUndo {
+  private:
+  ResourceIntegerFixed* cInteger;
+  
   public:
   DialogIntegerFixed(IEditingContext*, ResourceIntegerFixed*, IResourceAccessor*, const std::string&);
 
   ResourceIntegerFixed* getResource();
-  std::string getResourceName();
   
   void undo();
 };

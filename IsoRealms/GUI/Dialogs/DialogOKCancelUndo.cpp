@@ -39,6 +39,10 @@ void DialogOKCancelUndo::removeConfirmationListener(IConfirmationListener* liste
   }
 }
 
+std::string DialogOKCancelUndo::getResourceName() {
+  return getValue("resourceName");
+}
+
 DialogOKCancelUndo::OKCommand::OKCommand(DialogOKCancelUndo* parent) {
   cParent = parent;
 }

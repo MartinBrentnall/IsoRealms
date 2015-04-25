@@ -16,3 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#include "DialogLayerSpindizzyMap.h"
+
+DialogLayerSpindizzyMap::DialogLayerSpindizzyMap(IEditingContext* editingContext, ResourceLayerSpindizzyMap* layerSpindizzyMap, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "Spindizzy Map Layer", resourceName) {
+  cLayerSpindizzyMap = layerSpindizzyMap;
+}
+
+void DialogLayerSpindizzyMap::undo() {
+  // TODO:
+}
+
+ResourceLayerSpindizzyMap* DialogLayerSpindizzyMap::getResource() {
+  return cLayerSpindizzyMap;
+}

@@ -26,11 +26,13 @@
 #include "ResourceHUDModel.h"
 
 class DialogHUDModel : public DialogOKCancelUndo {
+  private:
+  ResourceHUDModel* cHUDModel;
+
   public:
   DialogHUDModel(IEditingContext*, ResourceHUDModel*, IResourceAccessor*, const std::string&);
 
   ResourceHUDModel* getResource();
-  std::string getResourceName();
 
   void undo();  
 };

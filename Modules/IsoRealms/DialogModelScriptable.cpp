@@ -16,3 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#include "DialogModelScriptable.h"
+
+DialogModelScriptable::DialogModelScriptable(IEditingContext* editingContext, ResourceModelScriptable* modelScriptable, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "Scriptable Model", resourceName) {
+  cModelScriptable = modelScriptable;
+}
+
+void DialogModelScriptable::undo() {
+  // TODO:
+}
+
+ResourceModelScriptable* DialogModelScriptable::getResource() {
+  return cModelScriptable;
+}

@@ -20,54 +20,15 @@
 #define DIALOG_MODEL_SPINDIZZY_CRAFT_PYRAMID_H
 
 #include <IsoRealms/GUI/ISelector.h>
-#include <IsoRealms/GUI/ResizableDialog.h>
+#include <IsoRealms/GUI/Dialogs/DialogOKCancelUndo.h>
 #include <IsoRealms/GUI/SelectableComponent.h>
 #include <IsoRealms/IConfirmationListener.h>
 #include <IsoRealms/IEditingContext.h>
 
 #include "ResourceModelSpindizzyCraftPyramid.h"
 
-class DialogModelSpindizzyCraftPyramid:public ResizableDialog {
+class DialogModelSpindizzyCraftPyramid : public DialogOKCancelUndo {
   private:
-  class OKCommand:public ICommand {
-    private:
-    DialogModelSpindizzyCraftPyramid* cParent;
-    
-    public:
-    OKCommand(DialogModelSpindizzyCraftPyramid*);
-    
-    /***********************\
-     * Implements ICommand *
-    \***********************/
-    void execute();
-  };
-  
-  class CancelCommand:public ICommand {
-    private:
-    DialogModelSpindizzyCraftPyramid* cParent;
-    
-    public:
-    CancelCommand(DialogModelSpindizzyCraftPyramid*);
-    
-    /***********************\
-     * Implements ICommand *
-    \***********************/
-    void execute();
-  };
-  
-  class UndoCommand:public ICommand {
-    private:
-    DialogModelSpindizzyCraftPyramid* cParent;
-    
-    public:
-    UndoCommand(DialogModelSpindizzyCraftPyramid*);
-    
-    /***********************\
-     * Implements ICommand *
-    \***********************/
-    void execute();
-  };
-
   class ColourSelector:public ISelector,
                        public IResourceSelectionListener<IColour> {
     private:
@@ -105,7 +66,6 @@ class DialogModelSpindizzyCraftPyramid:public ResizableDialog {
   
   ResourceModelSpindizzyCraftPyramid* cModelType;
   IResourceSelector* cResourceSelector;
-  IConfirmationListener* cConfirmationListener;
   IColour* cOriginalTopColour;
   IColour* cOriginalSideColour;
   IColour* cOriginalOutlineColour;
@@ -113,15 +73,13 @@ class DialogModelSpindizzyCraftPyramid:public ResizableDialog {
   ColourSelector* cColourSelectorSide;
   ColourSelector* cColourSelectorOutline;
   
-  void undo();
   
   public:
   DialogModelSpindizzyCraftPyramid(IEditingContext*, ResourceModelSpindizzyCraftPyramid*, IResourceAccessor*, const std::string&);
-
-  void addConfirmationListener(IConfirmationListener*);
   
   ResourceModelSpindizzyCraftPyramid* getResource();
-  std::string getResourceName();
+  
+  void undo();
 };
 
 #endif

@@ -26,11 +26,13 @@
 #include "ResourceModelElement.h"
 
 class DialogModelElement : public DialogOKCancelUndo {
+  private:
+  ResourceModelElement* cModelElement;
+
   public:
   DialogModelElement(IEditingContext*, ResourceModelElement*, IResourceAccessor*, const std::string&);
 
   ResourceModelElement* getResource();
-  std::string getResourceName();
   
   void undo();
 };

@@ -16,3 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#include "DialogElementSpindizzyWater.h"
+
+DialogElementSpindizzyWater::DialogElementSpindizzyWater(IEditingContext* editingContext, ResourceElementSpindizzyWater* elementSpindizzyWater, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "Spindizzy Water Terrain Element", resourceName) {
+  cElementSpindizzyWater = elementSpindizzyWater;
+}
+
+void DialogElementSpindizzyWater::undo() {
+  // TODO:
+}
+
+ResourceElementSpindizzyWater* DialogElementSpindizzyWater::getResource() {
+  return cElementSpindizzyWater;
+}

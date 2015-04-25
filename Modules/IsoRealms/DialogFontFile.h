@@ -25,11 +25,13 @@
 #include "ResourceFontFile.h"
 
 class DialogFontFile : public DialogOKCancelUndo {
+  private:
+  ResourceFontFile* cFont;
+  
   public:
   DialogFontFile(IEditingContext*, ResourceFontFile*, IResourceAccessor*, const std::string&);
 
   ResourceFontFile* getResource();
-  std::string getResourceName();
   
   void undo();
 };

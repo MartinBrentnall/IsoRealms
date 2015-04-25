@@ -77,7 +77,6 @@ class DialogTextureSpindizzyCraftBall : public DialogOKCancelUndo {
   DialogTextureSpindizzyCraftBall(IEditingContext*, ResourceTextureSpindizzyCraftBall*, IResourceAccessor*, const std::string&);
 
   ResourceTextureSpindizzyCraftBall* getResource();
-  std::string getResourceName();
 };
 
 #endif

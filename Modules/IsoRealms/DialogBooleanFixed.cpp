@@ -16,3 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#include "DialogBooleanFixed.h"
+
+DialogBooleanFixed::DialogBooleanFixed(IEditingContext* editingContext, ResourceBooleanFixed* boolean, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "Boolean", resourceName) {
+  cBoolean = boolean;
+}
+
+void DialogBooleanFixed::undo() {
+  // TODO:
+}
+
+ResourceBooleanFixed* DialogBooleanFixed::getResource() {
+  return cBoolean;
+}

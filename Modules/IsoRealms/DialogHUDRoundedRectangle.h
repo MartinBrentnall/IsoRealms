@@ -26,11 +26,13 @@
 #include "ResourceHUDRoundedRectangle.h"
 
 class DialogHUDRoundedRectangle : public DialogOKCancelUndo {
+  private:
+  ResourceHUDRoundedRectangle* cHUDRoundedRectangle;
+
   public:
   DialogHUDRoundedRectangle(IEditingContext*, ResourceHUDRoundedRectangle*, IResourceAccessor*, const std::string&);
 
   ResourceHUDRoundedRectangle* getResource();
-  std::string getResourceName();
 
   void undo();  
 };

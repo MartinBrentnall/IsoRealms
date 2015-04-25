@@ -26,11 +26,13 @@
 #include "ResourceLayerHUD.h"
 
 class DialogLayerHUD : public DialogOKCancelUndo {
+  private:
+  ResourceLayerHUD* cLayerHUD;  
+
   public:
   DialogLayerHUD(IEditingContext*, ResourceLayerHUD*, IResourceAccessor*, const std::string&);
 
   ResourceLayerHUD* getResource();
-  std::string getResourceName();
   
   void undo();
 };

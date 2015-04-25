@@ -16,3 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#include "DialogTexturesSpindizzyZoneTheme.h"
+
+DialogTexturesSpindizzyZoneTheme::DialogTexturesSpindizzyZoneTheme(IEditingContext* editingContext, ResourceHUDModel* hudModel, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "Colour", resourceName) {
+  cHUDModel = hudModel;
+}
+
+void DialogHUDModel::undo() {
+  // TODO:
+}
+
+ResourceHUDModel* DialogHUDModel::getResource() {
+  return cHUDModel;
+}

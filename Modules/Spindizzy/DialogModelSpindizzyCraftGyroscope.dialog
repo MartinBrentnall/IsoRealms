@@ -18,7 +18,7 @@
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<Dialog title="Spindizzy Gyroscope Craft Model">
+<Component>
   <FlexibleGrid name="grid" align="top left" rows="5" columns="2">
     <Cell row="5" column="1">
       <Label>Colour 1:</Label>
@@ -52,8 +52,5 @@
     </Cell>
   </FlexibleGrid>
   <Label name="previewLabel" align="left" top="below grid">Preview</Label>
-  <Button name="okButton" text="OK" align="bottom right"/>
-  <Button name="cancelButton" text="Cancel" align="bottom" right="leftof okButton"/>
-  <Button name="undoButton" text="Undo" align="bottom" right="leftof cancelButton"/>
   <WrappingGrid name="previewPane" top="below previewLabel" bottom="above okButton"/>
-</Dialog>
+</Component>

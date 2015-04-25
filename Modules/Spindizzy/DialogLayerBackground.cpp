@@ -16,3 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#include "DialogLayerBackground.h"
+
+DialogLayerBackground::DialogLayerBackground(IEditingContext* editingContext, ResourceLayerBackground* layerBackground, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "Plain Background Layer", resourceName) {
+  cLayerBackground = layerBackground;
+}
+
+void DialogLayerBackground::undo() {
+  // TODO:
+}
+
+ResourceLayerBackground* DialogLayerBackground::getResource() {
+  return cLayerBackground;
+}

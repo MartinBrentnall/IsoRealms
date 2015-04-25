@@ -45,11 +45,24 @@ else(FREETYPE_FOUND)
 endif(FREETYPE_FOUND)
 
 add_library(IsoRealmsStd MODULE
+  DialogBooleanFixed.cpp
   DialogBoundaries.cpp
   DialogColourFixed.cpp
+  DialogFontFile.cpp
+  DialogHUDModel.cpp
+  DialogHUDRoundedRectangle.cpp
+  DialogHUDString.cpp
+  DialogIntegerFixed.cpp
+  DialogIntegerTimer.cpp
+  DialogLayerHUD.cpp
+  DialogModelElement.cpp
+  DialogModelScriptable.cpp
+  DialogModelSprite.cpp
   DialogScriptLua.cpp
   DialogSoundFile.cpp
+  DialogStringTime.cpp
   DialogTextureFile.cpp
+  DialogVertexFixed.cpp
   HUDComponentPosition.cpp
   HUDComponentProxy.cpp
   HUDComponentRelation.cpp

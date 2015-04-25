@@ -26,11 +26,13 @@
 #include "ResourceElementSpindizzyZone.h"
 
 class DialogElementSpindizzyZone : public DialogOKCancelUndo {
+  private:
+  ResourceElementSpindizzyZone* cElementSpindizzyZone;
+  
   public:
   DialogElementSpindizzyZone(IEditingContext*, ResourceElementSpindizzyZone*, IResourceAccessor*, const std::string&);
 
   ResourceElementSpindizzyZone* getResource();
-  std::string getResourceName();
   
   void undo();
 };

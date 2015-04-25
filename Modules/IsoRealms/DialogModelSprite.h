@@ -26,11 +26,13 @@
 #include "ResourceModelSprite.h"
 
 class DialogModelSprite : public DialogOKCancelUndo {
+  private:
+  ResourceModelSprite* cModelSprite;
+
   public:
   DialogModelSprite(IEditingContext*, ResourceModelSprite*, IResourceAccessor*, const std::string&);
 
   ResourceModelSprite* getResource();
-  std::string getResourceName();
   
   void undo();
 };

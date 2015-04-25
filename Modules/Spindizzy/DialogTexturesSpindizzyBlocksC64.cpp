@@ -52,10 +52,6 @@ ResourceTexturesSpindizzyBlocksC64* DialogTexturesSpindizzyBlocksC64::getResourc
   return cTextureSet;
 }
 
-std::string DialogTexturesSpindizzyBlocksC64::getResourceName() {
-  return "TODO";
-}
-
 DialogTexturesSpindizzyBlocksC64::ColourSelector::ColourSelector(DialogTexturesSpindizzyBlocksC64* parent, IColour* colour, unsigned int which) {
   cWhich = which;
   cParent = parent;

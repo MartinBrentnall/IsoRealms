@@ -20,55 +20,15 @@
 #define DIALOG_MODEL_SPINDIZZY_CRAFT_GYROSCOPE_H
 
 #include <IsoRealms/GUI/ISelector.h>
-#include <IsoRealms/GUI/ResizableDialog.h>
+#include <IsoRealms/GUI/Dialogs/DialogOKCancelUndo.h>
 #include <IsoRealms/GUI/SelectableComponent.h>
 #include <IsoRealms/IConfirmationListener.h>
 #include <IsoRealms/IEditingContext.h>
 
 #include "ResourceModelSpindizzyCraftGyroscope.h"
 
-class DialogModelSpindizzyCraftGyroscope:public ResizableDialog {
+class DialogModelSpindizzyCraftGyroscope : public DialogOKCancelUndo {
   private:
-
-  class OKCommand:public ICommand {
-    private:
-    DialogModelSpindizzyCraftGyroscope* cParent;
-    
-    public:
-    OKCommand(DialogModelSpindizzyCraftGyroscope*);
-    
-    /***********************\
-     * Implements ICommand *
-    \***********************/
-    void execute();
-  };
-  
-  class CancelCommand:public ICommand {
-    private:
-    DialogModelSpindizzyCraftGyroscope* cParent;
-    
-    public:
-    CancelCommand(DialogModelSpindizzyCraftGyroscope*);
-    
-    /***********************\
-     * Implements ICommand *
-    \***********************/
-    void execute();
-  };
-  
-  class UndoCommand:public ICommand {
-    private:
-    DialogModelSpindizzyCraftGyroscope* cParent;
-    
-    public:
-    UndoCommand(DialogModelSpindizzyCraftGyroscope*);
-    
-    /***********************\
-     * Implements ICommand *
-    \***********************/
-    void execute();
-  };
-
   class ColourSelector:public ISelector,
                        public IResourceSelectionListener<IColour> {
     private:
@@ -106,7 +66,6 @@ class DialogModelSpindizzyCraftGyroscope:public ResizableDialog {
   
   ResourceModelSpindizzyCraftGyroscope* cModelType;
   IResourceSelector* cResourceSelector;
-  IConfirmationListener* cConfirmationListener;
   IColour* cOriginalColour1;
   IColour* cOriginalColour2;
   IColour* cOriginalColour3;
@@ -118,15 +77,12 @@ class DialogModelSpindizzyCraftGyroscope:public ResizableDialog {
   ColourSelector* cColourSelector4;
   ColourSelector* cColourSelectorOutline;
   
-  void undo();
   
   public:
   DialogModelSpindizzyCraftGyroscope(IEditingContext*, ResourceModelSpindizzyCraftGyroscope*, IResourceAccessor*, const std::string&);
   
-  void addConfirmationListener(IConfirmationListener*);
-  
   ResourceModelSpindizzyCraftGyroscope* getResource();
-  std::string getResourceName();
+  void undo();
 };
 
 #endif

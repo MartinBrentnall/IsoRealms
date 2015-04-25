@@ -20,68 +20,25 @@
 #define DIALOG_COLOUR_FIXED_H
 
 #include <IsoRealms/GUI/Dialogs/ComponentColourSelector.h>
-#include <IsoRealms/GUI/ResizableDialog.h>
+#include <IsoRealms/GUI/Dialogs/DialogOKCancelUndo.h>
 #include <IsoRealms/IConfirmationListener.h>
 #include <IsoRealms/IEditingContext.h>
 #include <IsoRealms/Resources/Colour/Colour.h>
 #include <IsoRealms/Resources/IResourceUseListener.h>
 
-class DialogColourFixed:public ResizableDialog {
+class DialogColourFixed:public DialogOKCancelUndo {
   private:
   ComponentColourSelector* cColourSelector;
-  IConfirmationListener* cConfirmationListener;
   Colour* cColour;
   float cRed;
   float cGreen;
   float cBlue;
   float cAlpha;
 
-  class OKCommand:public ICommand {
-    private:
-    DialogColourFixed* cParent;
-    
-    public:
-    OKCommand(DialogColourFixed*);
-    
-    /***********************\
-     * Implements ICommand *
-    \***********************/
-    void execute();
-  };
-  
-  class CancelCommand:public ICommand {
-    private:
-    DialogColourFixed* cParent;
-    
-    public:
-    CancelCommand(DialogColourFixed*);
-    
-    /***********************\
-     * Implements ICommand *
-    \***********************/
-    void execute();
-  };
-  
-  class UndoCommand:public ICommand {
-    private:
-    DialogColourFixed* cParent;
-    
-    public:
-    UndoCommand(DialogColourFixed*);
-    
-    /***********************\
-     * Implements ICommand *
-    \***********************/
-    void execute();
-  };
-  
   public:
   DialogColourFixed(IEditingContext*, Colour*, IResourceAccessor*, const std::string&);
   
-  void addConfirmationListener(IConfirmationListener*);
-  
   Colour* getResource();
-  std::string getResourceName();
   
   void undo();
 };

@@ -16,3 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#include "DialogHUDModel.h"
+
+DialogHUDModel::DialogHUDModel(IEditingContext* editingContext, ResourceHUDModel* hudModel, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "HUD Model", resourceName) {
+  cHUDModel = hudModel;
+}
+
+void DialogHUDModel::undo() {
+  // TODO:
+}
+
+ResourceHUDModel* DialogHUDModel::getResource() {
+  return cHUDModel;
+}

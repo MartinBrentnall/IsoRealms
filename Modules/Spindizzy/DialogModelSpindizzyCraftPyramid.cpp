@@ -18,26 +18,21 @@
  */
 #include "DialogModelSpindizzyCraftPyramid.h"
 
-DialogModelSpindizzyCraftPyramid::DialogModelSpindizzyCraftPyramid(IEditingContext* editingContext, ResourceModelSpindizzyCraftPyramid* modelType, IResourceAccessor* resources, const std::string& resourceName) : ResizableDialog(editingContext->getComponentContainer(), "Modules/Spindizzy/DialogModelSpindizzyCraftPyramid", resources) {
+DialogModelSpindizzyCraftPyramid::DialogModelSpindizzyCraftPyramid(IEditingContext* editingContext, ResourceModelSpindizzyCraftPyramid* modelType, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "Spindizzy Pyramid Craft Model", resourceName) {
   cModelType = modelType;
+  RectangularComponent* mContent = new RectangularComponent("Modules/Spindizzy/DialogModelSpindizzyCraftPyramid", resources);
   cResourceSelector = editingContext->getResourceSelector();
-  setComponentAction("okButton", new OKCommand(this));
-  setComponentAction("cancelButton", new CancelCommand(this));
-  setComponentAction("undoButton", new UndoCommand(this));
   cOriginalTopColour     = cModelType->getTopColour();
   cOriginalSideColour    = cModelType->getSideColour();
   cOriginalOutlineColour = cModelType->getOutlineColour();
   cColourSelectorTop     = new ColourSelector(this, cOriginalTopColour,     0);
   cColourSelectorSide    = new ColourSelector(this, cOriginalSideColour,    1);
   cColourSelectorOutline = new ColourSelector(this, cOriginalOutlineColour, 2);
-  setSelectable("topColour",     cColourSelectorTop);
-  setSelectable("sideColour"  ,  cColourSelectorSide);
-  setSelectable("outlineColour", cColourSelectorOutline);
-  addComponent("previewPane", new ModelIcon(cModelType));
-}
-
-void DialogModelSpindizzyCraftPyramid::addConfirmationListener(IConfirmationListener* listener) {
-  cConfirmationListener = listener;
+  mContent->setSelectable("topColour",     cColourSelectorTop);
+  mContent->setSelectable("sideColour"  ,  cColourSelectorSide);
+  mContent->setSelectable("outlineColour", cColourSelectorOutline);
+  mContent->addComponent("previewPane", new ModelIcon(cModelType));
+  addComponent("content", mContent);
 }
 
 void DialogModelSpindizzyCraftPyramid::undo() {
@@ -48,41 +43,6 @@ void DialogModelSpindizzyCraftPyramid::undo() {
 
 ResourceModelSpindizzyCraftPyramid* DialogModelSpindizzyCraftPyramid::getResource() {
   return cModelType;
-}
-
-std::string DialogModelSpindizzyCraftPyramid::getResourceName() {
-  return "TODO";
-}
-
-DialogModelSpindizzyCraftPyramid::OKCommand::OKCommand(DialogModelSpindizzyCraftPyramid* parent) {
-  cParent = parent;
-}
-
-void DialogModelSpindizzyCraftPyramid::OKCommand::execute() {
-  cParent->close();
-  if (cParent->cConfirmationListener != NULL) {
-    cParent->cConfirmationListener->dialogConfirmed(cParent);
-  }
-}
-
-DialogModelSpindizzyCraftPyramid::CancelCommand::CancelCommand(DialogModelSpindizzyCraftPyramid* parent) {
-  cParent = parent;
-}
-
-void DialogModelSpindizzyCraftPyramid::CancelCommand::execute() {
-  cParent->undo();
-  cParent->close();
-  if (cParent->cConfirmationListener != NULL) {
-    cParent->cConfirmationListener->dialogCancelled(cParent);
-  }
-}
-
-DialogModelSpindizzyCraftPyramid::UndoCommand::UndoCommand(DialogModelSpindizzyCraftPyramid* parent) {
-  cParent = parent;
-}
-
-void DialogModelSpindizzyCraftPyramid::UndoCommand::execute() {
-  cParent->undo();
 }
 
 DialogModelSpindizzyCraftPyramid::ColourSelector::ColourSelector(DialogModelSpindizzyCraftPyramid* parent, IColour* colour, unsigned int which) {

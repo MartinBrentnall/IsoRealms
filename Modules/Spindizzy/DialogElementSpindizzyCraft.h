@@ -26,11 +26,13 @@
 #include "ResourceElementSpindizzyCraft.h"
 
 class DialogElementSpindizzyCraft : public DialogOKCancelUndo {
+  private:
+  ResourceElementSpindizzyCraft* cElementSpindizzyCraft;
+  
   public:
   DialogElementSpindizzyCraft(IEditingContext*, ResourceElementSpindizzyCraft*, IResourceAccessor*, const std::string&);
 
   ResourceElementSpindizzyCraft* getResource();
-  std::string getResourceName();
   
   void undo();
 };

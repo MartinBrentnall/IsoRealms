@@ -18,7 +18,7 @@
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<Dialog title="Spindizzy Pyramid Craft Model">
+<Component>
   <FlexibleGrid name="grid" align="top left" rows="2" columns="2">
     <Cell row="2" column="1">
       <Label>Frame Colour:</Label>
@@ -35,8 +35,5 @@
   </FlexibleGrid>
   <ScrollableContainer name="cycleColours" align="left" top="below grid" bottom="above previewLabel"/>
   <Label name="previewLabel" align="left" bottom="above previewPane">Preview</Label>
-  <Button name="okButton" text="OK" align="bottom right"/>
-  <Button name="cancelButton" text="Cancel" align="bottom" right="leftof okButton"/>
-  <Button name="undoButton" text="Undo" align="bottom" right="leftof cancelButton"/>
   <WrappingGrid name="previewPane" height="0.2" bottom="above okButton"/>
-</Dialog>
+</Component>

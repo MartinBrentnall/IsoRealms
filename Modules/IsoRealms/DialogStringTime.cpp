@@ -16,3 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#include "DialogStringTime.h"
+
+DialogStringTime::DialogStringTime(IEditingContext* editingContext, ResourceStringTime* string, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "Time String", resourceName) {
+  cString = string;
+}
+
+void DialogStringTime::undo() {
+  // TODO:
+}
+
+ResourceStringTime* DialogStringTime::getResource() {
+  return cString;
+}

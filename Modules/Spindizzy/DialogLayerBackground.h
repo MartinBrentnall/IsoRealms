@@ -26,11 +26,13 @@
 #include "ResourceLayerBackground.h"
 
 class DialogLayerBackground : public DialogOKCancelUndo {
+  private:
+  ResourceLayerBackground* cLayerBackground;
+  
   public:
   DialogLayerBackground(IEditingContext*, ResourceLayerBackground*, IResourceAccessor*, const std::string&);
 
   ResourceLayerBackground* getResource();
-  std::string getResourceName();
   
   void undo();
 };

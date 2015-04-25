@@ -16,3 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#include "DialogIntegerTimer.h"
+
+DialogIntegerTimer::DialogIntegerTimer(IEditingContext* editingContext, ResourceIntegerTimer* integer, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "Timer", resourceName) {
+  cInteger = integer;
+}
+
+void DialogIntegerTimer::undo() {
+  // TODO:
+}
+
+ResourceIntegerTimer* DialogIntegerTimer::getResource() {
+  return cInteger;
+}

@@ -16,3 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#include "DialogHUDRoundedRectangle.h"
+
+DialogHUDRoundedRectangle::DialogHUDRoundedRectangle(IEditingContext* editingContext, ResourceHUDRoundedRectangle* hudRoundedRectangle, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "HUD Rounded Rectangle", resourceName) {
+  cHUDRoundedRectangle = hudRoundedRectangle;
+}
+
+void DialogHUDRoundedRectangle::undo() {
+  // TODO:
+}
+
+ResourceHUDRoundedRectangle* DialogHUDRoundedRectangle::getResource() {
+  return cHUDRoundedRectangle;
+}

@@ -26,11 +26,13 @@
 #include "ResourceModelScriptable.h"
 
 class DialogModelScriptable : public DialogOKCancelUndo {
+  private:
+  ResourceModelScriptable* cModelScriptable;
+
   public:
   DialogModelScriptable(IEditingContext*, ResourceModelScriptable*, IResourceAccessor*, const std::string&);
 
   ResourceModelScriptable* getResource();
-  std::string getResourceName();
   
   void undo();
 };

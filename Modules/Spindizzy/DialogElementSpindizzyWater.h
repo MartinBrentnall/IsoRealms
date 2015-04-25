@@ -26,11 +26,13 @@
 #include "ResourceElementSpindizzyWater.h"
 
 class DialogElementSpindizzyWater : public DialogOKCancelUndo {
+  private:
+  ResourceElementSpindizzyWater* cElementSpindizzyWater;
+  
   public:
   DialogElementSpindizzyWater(IEditingContext*, ResourceElementSpindizzyWater*, IResourceAccessor*, const std::string&);
 
   ResourceElementSpindizzyWater* getResource();
-  std::string getResourceName();
   
   void undo();
 };

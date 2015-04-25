@@ -16,3 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#include "DialogLayerHUD.h"
+
+DialogLayerHUD::DialogLayerHUD(IEditingContext* editingContext, ResourceLayerHUD* layerHUD, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "HUD Layer", resourceName) {
+  cLayerHUD = layerHUD;
+}
+
+void DialogLayerHUD::undo() {
+  // TODO:
+}
+
+ResourceLayerHUD* DialogLayerHUD::getResource() {
+  return cLayerHUD;
+}

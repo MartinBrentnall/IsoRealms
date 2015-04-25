@@ -18,12 +18,10 @@
  */
 #include "DialogModelSpindizzyCraftGyroscope.h"
 
-DialogModelSpindizzyCraftGyroscope::DialogModelSpindizzyCraftGyroscope(IEditingContext* editingContext, ResourceModelSpindizzyCraftGyroscope* modelType, IResourceAccessor* resources, const std::string& resourceName) : ResizableDialog(editingContext->getComponentContainer(), "Modules/Spindizzy/DialogModelSpindizzyCraftGyroscope", resources) {
+DialogModelSpindizzyCraftGyroscope::DialogModelSpindizzyCraftGyroscope(IEditingContext* editingContext, ResourceModelSpindizzyCraftGyroscope* modelType, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "Spindizzy Gyroscope Craft Model", resourceName) {
   cModelType = modelType;
+  RectangularComponent* mContent = new RectangularComponent("Modules/Spindizzy/DialogModelSpindizzyCraftGyroscope", resources);
   cResourceSelector = editingContext->getResourceSelector();
-  setComponentAction("okButton", new OKCommand(this));
-  setComponentAction("cancelButton", new CancelCommand(this));
-  setComponentAction("undoButton", new UndoCommand(this));
   cOriginalColour1       = cModelType->getColour1();
   cOriginalColour2       = cModelType->getColour2();
   cOriginalColour3       = cModelType->getColour3();
@@ -34,16 +32,13 @@ DialogModelSpindizzyCraftGyroscope::DialogModelSpindizzyCraftGyroscope(IEditingC
   cColourSelector3       = new ColourSelector(this, cOriginalColour3,       2);
   cColourSelector4       = new ColourSelector(this, cOriginalColour4,       3);
   cColourSelectorOutline = new ColourSelector(this, cOriginalOutlineColour, 4);
-  setSelectable("colour1",       cColourSelector1);
-  setSelectable("colour2",       cColourSelector2);
-  setSelectable("colour3",       cColourSelector3);
-  setSelectable("colour4",       cColourSelector4);
-  setSelectable("outlineColour", cColourSelectorOutline);
-  addComponent("previewPane", new ModelIcon(cModelType));
-}
-
-void DialogModelSpindizzyCraftGyroscope::addConfirmationListener(IConfirmationListener* listener) {
-  cConfirmationListener = listener;
+  mContent->setSelectable("colour1",       cColourSelector1);
+  mContent->setSelectable("colour2",       cColourSelector2);
+  mContent->setSelectable("colour3",       cColourSelector3);
+  mContent->setSelectable("colour4",       cColourSelector4);
+  mContent->setSelectable("outlineColour", cColourSelectorOutline);
+  mContent->addComponent("previewPane", new ModelIcon(cModelType));
+  addComponent("content", mContent);
 }
 
 void DialogModelSpindizzyCraftGyroscope::undo() {
@@ -56,41 +51,6 @@ void DialogModelSpindizzyCraftGyroscope::undo() {
 
 ResourceModelSpindizzyCraftGyroscope* DialogModelSpindizzyCraftGyroscope::getResource() {
   return cModelType;
-}
-
-std::string DialogModelSpindizzyCraftGyroscope::getResourceName() {
-  return "TODO";
-}
-
-DialogModelSpindizzyCraftGyroscope::OKCommand::OKCommand(DialogModelSpindizzyCraftGyroscope* parent) {
-  cParent = parent;
-}
-
-void DialogModelSpindizzyCraftGyroscope::OKCommand::execute() {
-  cParent->close();
-  if (cParent->cConfirmationListener != NULL) {
-    cParent->cConfirmationListener->dialogConfirmed(cParent);
-  }
-}
-
-DialogModelSpindizzyCraftGyroscope::CancelCommand::CancelCommand(DialogModelSpindizzyCraftGyroscope* parent) {
-  cParent = parent;
-}
-
-void DialogModelSpindizzyCraftGyroscope::CancelCommand::execute() {
-  cParent->undo();
-  cParent->close();
-  if (cParent->cConfirmationListener != NULL) {
-    cParent->cConfirmationListener->dialogCancelled(cParent);
-  }
-}
-
-DialogModelSpindizzyCraftGyroscope::UndoCommand::UndoCommand(DialogModelSpindizzyCraftGyroscope* parent) {
-  cParent = parent;
-}
-
-void DialogModelSpindizzyCraftGyroscope::UndoCommand::execute() {
-  cParent->undo();
 }
 
 DialogModelSpindizzyCraftGyroscope::ColourSelector::ColourSelector(DialogModelSpindizzyCraftGyroscope* parent, IColour* colour, unsigned int which) {

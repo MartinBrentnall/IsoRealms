@@ -16,3 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#include "DialogModelElement.h"
+
+DialogModelElement::DialogModelElement(IEditingContext* editingContext, ResourceModelElement* modelElement, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "Element Model", resourceName) {
+  cModelElement = modelElement;
+}
+
+void DialogModelElement::undo() {
+  // TODO:
+}
+
+ResourceModelElement* DialogModelElement::getResource() {
+  return cModelElement;
+}

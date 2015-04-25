@@ -48,10 +48,6 @@ ResourceTexturesSpindizzyLiftsC64* DialogTexturesSpindizzyLiftsC64::getResource(
   return cSprites;
 }
 
-std::string DialogTexturesSpindizzyLiftsC64::getResourceName() {
-  return "TODO";
-}
-
 DialogTexturesSpindizzyLiftsC64::ColourSelector::ColourSelector(DialogTexturesSpindizzyLiftsC64* parent, IColour* colour, unsigned int which) {
   cWhich = which;
   cParent = parent;

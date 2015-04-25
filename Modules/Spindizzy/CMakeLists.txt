@@ -19,6 +19,15 @@ include_directories(${PROJECT_SOURCE_DIR})
 add_library(Spindizzy MODULE
   BlockTypeProperties.cpp
   CameraLayerMapEditing.cpp
+  DialogElementSpindizzyBlock.cpp
+  DialogElementSpindizzyCraft.cpp
+  DialogElementSpindizzyEnemy.cpp
+  DialogElementSpindizzyItem.cpp
+  DialogElementSpindizzyLift.cpp
+  DialogElementSpindizzyWater.cpp
+  DialogElementSpindizzyZone.cpp
+  DialogLayerBackground.cpp
+  DialogLayerSpindizzyMap.cpp
   DialogModelSpindizzyCraftGyroscope.cpp
   DialogModelSpindizzyCraftPyramid.cpp
   DialogModelSpindizzyJewel.cpp

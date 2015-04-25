@@ -72,6 +72,7 @@ class DialogOKCancelUndo:public ResizableDialog {
     
   void addConfirmationListener(IConfirmationListener*);
   void removeConfirmationListener(IConfirmationListener*);
+  std::string getResourceName();
   
   virtual void undo() = 0;
 };

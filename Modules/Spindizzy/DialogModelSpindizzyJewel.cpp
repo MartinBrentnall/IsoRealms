@@ -18,12 +18,10 @@
  */
 #include "DialogModelSpindizzyJewel.h"
 
-DialogModelSpindizzyJewel::DialogModelSpindizzyJewel(IEditingContext* editingContext, ResourceModelSpindizzyJewel* modelType, IResourceAccessor* resources, const std::string& resourceName) : ResizableDialog(editingContext->getComponentContainer(), "Modules/Spindizzy/DialogModelSpindizzyJewel", resources) {
+DialogModelSpindizzyJewel::DialogModelSpindizzyJewel(IEditingContext* editingContext, ResourceModelSpindizzyJewel* modelType, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "Spindizzy Jewel Model", resourceName) {
   cModelType = modelType;
+  RectangularComponent* mContent = new RectangularComponent("Modules/Spindizzy/DialogModelSpindizzyJewel", resources);
   cResourceSelector = editingContext->getResourceSelector();
-  setComponentAction("okButton", new OKCommand(this));
-  setComponentAction("cancelButton", new CancelCommand(this));
-  setComponentAction("undoButton", new UndoCommand(this));
   cOriginalFrameColour     = cModelType->getFrameColour();
   cOriginalCycleColours    = cModelType->getCycleColours();
   cColourSelectorFrame     = new ColourSelector(this, cOriginalFrameColour,     0);
@@ -31,13 +29,9 @@ DialogModelSpindizzyJewel::DialogModelSpindizzyJewel(IEditingContext* editingCon
     ColourSelector* mColourSelector = new ColourSelector(this, cOriginalCycleColours[i], i + 1);
     cColourSelectorsCycle.push_back(mColourSelector);
   }
-  setSelectable("frameColour",   cColourSelectorFrame);
+  mContent->setSelectable("frameColour",   cColourSelectorFrame);
 //  setSelectable("cycleColours",  cColourSelectorsCycle);
-  addComponent("previewPane", new ModelIcon(cModelType));
-}
-
-void DialogModelSpindizzyJewel::addConfirmationListener(IConfirmationListener* listener) {
-  cConfirmationListener = listener;
+  mContent->addComponent("previewPane", new ModelIcon(cModelType));
 }
 
 void DialogModelSpindizzyJewel::undo() {
@@ -50,41 +44,6 @@ void DialogModelSpindizzyJewel::undo() {
 
 ResourceModelSpindizzyJewel* DialogModelSpindizzyJewel::getResource() {
   return cModelType;
-}
-
-std::string DialogModelSpindizzyJewel::getResourceName() {
-  return "TODO";
-}
-
-DialogModelSpindizzyJewel::OKCommand::OKCommand(DialogModelSpindizzyJewel* parent) {
-  cParent = parent;
-}
-
-void DialogModelSpindizzyJewel::OKCommand::execute() {
-  cParent->close();
-  if (cParent->cConfirmationListener != NULL) {
-    cParent->cConfirmationListener->dialogConfirmed(cParent);
-  }
-}
-
-DialogModelSpindizzyJewel::CancelCommand::CancelCommand(DialogModelSpindizzyJewel* parent) {
-  cParent = parent;
-}
-
-void DialogModelSpindizzyJewel::CancelCommand::execute() {
-  cParent->undo();
-  cParent->close();
-  if (cParent->cConfirmationListener != NULL) {
-    cParent->cConfirmationListener->dialogCancelled(cParent);
-  }
-}
-
-DialogModelSpindizzyJewel::UndoCommand::UndoCommand(DialogModelSpindizzyJewel* parent) {
-  cParent = parent;
-}
-
-void DialogModelSpindizzyJewel::UndoCommand::execute() {
-  cParent->undo();
 }
 
 DialogModelSpindizzyJewel::ColourSelector::ColourSelector(DialogModelSpindizzyJewel* parent, IColour* colour, unsigned int which) {

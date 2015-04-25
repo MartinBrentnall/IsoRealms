@@ -45,10 +45,6 @@ ResourceTextureSpindizzyCraftBall* DialogTextureSpindizzyCraftBall::getResource(
   return cTexture;
 }
 
-std::string DialogTextureSpindizzyCraftBall::getResourceName() {
-  return "TODO";
-}
-
 DialogTextureSpindizzyCraftBall::ColourSelector::ColourSelector(DialogTextureSpindizzyCraftBall* parent, IColour* colour, unsigned int which) {
   cWhich = which;
   cParent = parent;

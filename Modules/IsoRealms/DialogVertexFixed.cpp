@@ -16,3 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#include "DialogVertexFixed.h"
+
+DialogVertexFixed::DialogVertexFixed(IEditingContext* editingContext, ResourceVertexFixed* vertex, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "Vertex", resourceName) {
+  cVertex = vertex;
+}
+
+void DialogVertexFixed::undo() {
+  // TODO:
+}
+
+ResourceVertexFixed* DialogVertexFixed::getResource() {
+  return cVertex;
+}

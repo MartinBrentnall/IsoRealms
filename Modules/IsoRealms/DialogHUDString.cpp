@@ -16,3 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#include "DialogHUDString.h"
+
+DialogHUDString::DialogHUDString(IEditingContext* editingContext, ResourceHUDString* hudString, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "HUD String", resourceName) {
+  cHUDString = hudString;
+}
+
+void DialogHUDString::undo() {
+  // TODO:
+}
+
+ResourceHUDString* DialogHUDString::getResource() {
+  return cHUDString;
+}

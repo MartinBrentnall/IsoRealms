@@ -26,11 +26,13 @@
 #include "ResourceHUDString.h"
 
 class DialogHUDString : public DialogOKCancelUndo {
+  private:
+  ResourceHUDString* cHUDString;
+  
   public:
   DialogHUDString(IEditingContext*, ResourceHUDString*, IResourceAccessor*, const std::string&);
 
   ResourceHUDString* getResource();
-  std::string getResourceName();
   
   void undo();
 };

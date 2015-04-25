@@ -16,3 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#include "DialogModelSprite.h"
+
+DialogModelSprite::DialogModelSprite(IEditingContext* editingContext, ResourceModelSprite* modelSprite, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "Sprite Model", resourceName) {
+  cModelSprite = modelSprite;
+}
+
+void DialogModelSprite::undo() {
+  // TODO:
+}
+
+ResourceModelSprite* DialogModelSprite::getResource() {
+  return cModelSprite;
+}

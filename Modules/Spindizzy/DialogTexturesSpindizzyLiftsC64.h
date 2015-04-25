@@ -80,7 +80,6 @@ class DialogTexturesSpindizzyLiftsC64:public DialogOKCancelUndo {
   DialogTexturesSpindizzyLiftsC64(IEditingContext*, ResourceTexturesSpindizzyLiftsC64*, IResourceAccessor*, const std::string&);
   
   ResourceTexturesSpindizzyLiftsC64* getResource();
-  std::string getResourceName();
 };
 
 #endif

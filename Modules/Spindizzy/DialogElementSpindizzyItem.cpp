@@ -16,3 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#include "DialogElementSpindizzyItem.h"
+
+DialogElementSpindizzyItem::DialogElementSpindizzyItem(IEditingContext* editingContext, ResourceElementSpindizzyItem* elementSpindizzyItem, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "Spindizzy Item Element", resourceName) {
+  cElementSpindizzyItem = elementSpindizzyItem;
+}
+
+void DialogElementSpindizzyItem::undo() {
+  // TODO:
+}
+
+ResourceElementSpindizzyItem* DialogElementSpindizzyItem::getResource() {
+  return cElementSpindizzyItem;
+}

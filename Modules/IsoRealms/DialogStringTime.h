@@ -26,11 +26,13 @@
 #include "ResourceStringTime.h"
 
 class DialogStringTime : public DialogOKCancelUndo {
+  private:
+  ResourceStringTime* cString;
+
   public:
   DialogStringTime(IEditingContext*, ResourceStringTime*, IResourceAccessor*, const std::string&);
 
   ResourceStringTime* getResource();
-  std::string getResourceName();
   
   void undo();
 };
