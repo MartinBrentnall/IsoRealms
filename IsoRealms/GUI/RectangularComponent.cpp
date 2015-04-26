@@ -323,6 +323,14 @@ void RectangularComponent::loadPopupMenu(IRectangularComponent* component, DOMNo
   }  
 }
 
+void RectangularComponent::addBooleanValueComponent(const std::string& name, IValueComponent<bool>* component) {
+  cBooleanValueComponents[name] = component;
+}
+
+void RectangularComponent::addIntegerValueComponent(const std::string& name, IValueComponent<int>* component) {
+  cIntegerValueComponents[name] = component;
+}
+
 void RectangularComponent::addStringValueComponent(const std::string& name, IStringValueComponent* component) {
   cStringValueComponents[name] = component;
 }
@@ -381,6 +389,16 @@ void RectangularComponent::loadDialog(DOMNodeWrapper* node, IRectangle* parent, 
       cCommandableComponents[mName] = mButton;
       cChildren.push_back(mButton);
       cFocusedComponent = mButton;
+    } else if (mValueAsString == "CheckBox") {
+      std::string mLabelText = mNode->getStringValue();
+      std::string mName = mNode->getAttribute("name");
+      CheckBox* mCheckBox = new CheckBox(mLabelText);
+      IComponentBoundsCalculator* mLabelLayout = getBoundsCalculator(mNode, parent, padding, mCheckBox);
+      mCheckBox->setBoundsCalculator(mLabelLayout);
+      cSizedComponents[mName] = mCheckBox;
+      cTopLevelComponent->addBooleanValueComponent(mName, mCheckBox);
+      cChildren.push_back(mCheckBox);
+      cFocusedComponent = mCheckBox;
     } else if (mValueAsString == "Label") {
       std::string mLabelText = mNode->getStringValue();
       std::string mName = mNode->getAttribute("name");
@@ -390,6 +408,15 @@ void RectangularComponent::loadDialog(DOMNodeWrapper* node, IRectangle* parent, 
       cSizedComponents[mName] = mLabel;
       cChildren.push_back(mLabel);
       cFocusedComponent = mLabel;
+    } else if (mValueAsString == "IntegerField") {
+      std::string mName = mNode->getAttribute("name");
+      IntegerField* mIntegerField = new IntegerField();
+      IComponentBoundsCalculator* mIntegerFieldLayout = getBoundsCalculator(mNode, parent, padding, mIntegerField);
+      mIntegerField->setBoundsCalculator(mIntegerFieldLayout);
+      cSizedComponents[mName] = mIntegerField;
+      cTopLevelComponent->addIntegerValueComponent(mName, mIntegerField);
+      cChildren.push_back(mIntegerField);
+      cFocusedComponent = mIntegerField;
     } else if (mValueAsString == "TextField") {
       std::string mName = mNode->getAttribute("name");
       TextFieldComponent* mTextField = new TextFieldComponent();
@@ -652,6 +679,22 @@ void RectangularComponent::addFloatListener(IFloatListener* listener, const std:
 
 void RectangularComponent::addStringListener(IStringListener* listener, const std::string& name) {
   cStringValueComponents[name]->addStringListener(listener);
+}
+
+void RectangularComponent::addBooleanListener(IValueListener<bool>* listener, const std::string& name) {
+  cBooleanValueComponents[name]->addValueListener(listener);
+}
+
+void RectangularComponent::addIntegerListener(IValueListener<int>* listener, const std::string& name) {
+  cIntegerValueComponents[name]->addValueListener(listener);
+}
+
+void RectangularComponent::setBooleanValue(const std::string& name, bool value) {
+  cBooleanValueComponents[name]->setValue(value);
+}
+
+void RectangularComponent::setIntegerValue(const std::string& name, int value) {
+  cIntegerValueComponents[name]->setValue(value);
 }
 
 void RectangularComponent::setFloatValue(const std::string& name, float value) {

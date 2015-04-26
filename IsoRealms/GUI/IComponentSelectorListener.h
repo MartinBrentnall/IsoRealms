@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<!--
+/*
  * Copyright 2015 Martin Brentnall
  *
  * This file is part of Iso-Realms.
@@ -16,8 +15,15 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
--->
-<Component>
-  <Label name="labelValue" align="top left">Value (milliseconds):</Label>
-  <IntegerField name="integerFieldValue" align="top" left="rightof labelValue"/>
-</Component>
+ */
+#ifndef I_COMPONENT_SELECTOR_LISTENER_H
+#define I_COMPONENT_SELECTOR_LISTENER_H
+
+#include "ISelector.h"
+
+template <class T> class IComponentSelectorListener {
+  public:
+  virtual void selected(ISelector*, T*) = 0;
+};
+
+#endif

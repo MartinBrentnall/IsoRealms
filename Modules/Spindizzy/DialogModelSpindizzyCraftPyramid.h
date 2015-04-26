@@ -19,67 +19,38 @@
 #ifndef DIALOG_MODEL_SPINDIZZY_CRAFT_PYRAMID_H
 #define DIALOG_MODEL_SPINDIZZY_CRAFT_PYRAMID_H
 
-#include <IsoRealms/GUI/ISelector.h>
+#include <IsoRealms/GUI/ComponentResourceColourSelector.h>
 #include <IsoRealms/GUI/Dialogs/DialogOKCancelUndo.h>
+#include <IsoRealms/GUI/Icons/ComponentIconModel.h>
+#include <IsoRealms/GUI/ISelector.h>
 #include <IsoRealms/GUI/SelectableComponent.h>
 #include <IsoRealms/IConfirmationListener.h>
 #include <IsoRealms/IEditingContext.h>
 
 #include "ResourceModelSpindizzyCraftPyramid.h"
 
-class DialogModelSpindizzyCraftPyramid : public DialogOKCancelUndo {
+class DialogModelSpindizzyCraftPyramid : public IComponentSelectorListener<IColour>,
+                                         public DialogOKCancelUndo {
   private:
-  class ColourSelector:public ISelector,
-                       public IResourceSelectionListener<IColour> {
-    private:
-    unsigned int cWhich;
-    DialogModelSpindizzyCraftPyramid* cParent;
-    IColour* cBorrowedColour;
-    IColour* cColour;
-    
-    public:
-    ColourSelector(DialogModelSpindizzyCraftPyramid*, IColour*, unsigned int);
-    
-    void render(SelectableComponent*);
-    void selected();
-    void deselected();
-    
-    void resourceSelected(IColour*);
-  };
-    
-  class ModelIcon:public ISizedComponent {
-    private:
-    I3DModelType* cModelType;
-    
-    public:
-    ModelIcon(ResourceModelSpindizzyCraftPyramid*);
-        
-    /******************************\
-     * Implements ISizedComponent *
-    \******************************/
-    float getWidth();
-    float getHeight();
-    void render();
-    void update(unsigned int);
-    bool input(SDL_Event&);
-  };
-  
   ResourceModelSpindizzyCraftPyramid* cModelType;
-  IResourceSelector* cResourceSelector;
   IColour* cOriginalTopColour;
   IColour* cOriginalSideColour;
   IColour* cOriginalOutlineColour;
-  ColourSelector* cColourSelectorTop;
-  ColourSelector* cColourSelectorSide;
-  ColourSelector* cColourSelectorOutline;
+  ComponentResourceColourSelector* cColourSelectorTop;
+  ComponentResourceColourSelector* cColourSelectorSide;
+  ComponentResourceColourSelector* cColourSelectorOutline;
   
+  void undo();
   
   public:
   DialogModelSpindizzyCraftPyramid(IEditingContext*, ResourceModelSpindizzyCraftPyramid*, IResourceAccessor*, const std::string&);
   
   ResourceModelSpindizzyCraftPyramid* getResource();
   
-  void undo();
+  /**************************************************\
+   * Implements IComponentSelectorListener<IColour> *
+  \**************************************************/
+  void selected(ISelector*, IColour*);
 };
 
 #endif

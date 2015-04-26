@@ -25,16 +25,24 @@
 
 #include "ResourceBooleanFixed.h"
 
-class DialogBooleanFixed : public DialogOKCancelUndo {
+class DialogBooleanFixed : public DialogOKCancelUndo,
+                           public IValueListener<bool> {
   private:
+  RectangularComponent* cContent;
   ResourceBooleanFixed* cBoolean;
+  bool cOriginalValue;
+  
+  void undo();
   
   public:
   DialogBooleanFixed(IEditingContext*, ResourceBooleanFixed*, IResourceAccessor*, const std::string&);
 
   ResourceBooleanFixed* getResource();
-  
-  void undo();
+
+  /***********************************\
+   * Implements IValueListener<bool> *
+  \***********************************/
+  void valueChanged(bool&);
 };
 
 #endif

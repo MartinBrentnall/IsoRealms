@@ -1,5 +1,6 @@
-/*
- * Copyright 2009 Martin Brentnall
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!--
+ * Copyright 2015 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -15,28 +16,21 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
- */
-#ifndef ELEMENT_SET_INSTANCES_COMMAND_H
-#define ELEMENT_SET_INSTANCES_COMMAND_H
+-->
 
-#include <IsoRealms/ICommand.h>
-#include <IsoRealms/IComponentContainer.h>
-
-#include "IComponentFactory.h"
-
-// TODO: This class is a generic component adding command!  Needs to be renamed to reflect this!
-class ElementSetInstancesCommand:public ICommand {
-  private:
-  IComponentContainer* cComponentContainer;
-  IComponentFactory* cComponentFactory;
-
-  public:
-  ElementSetInstancesCommand(IComponentContainer*, IComponentFactory*);
-
-  /***********************\
-   * Implements ICommand *
-  \***********************/
-  void execute();
-};
-
-#endif
+<Dialog title="Primitives">
+  <TabbedContainer name="tabbedContainer">
+    <Tab name="tabBoolean" text="Booleans">
+      <Container name="containerBooleans"/>
+    </Tab>
+    <Tab name="tabInteger" text="Integers">
+      <Container name="containerIntegers"/>
+    </Tab>
+    <Tab name="tabFloat" text="Floats">
+      <Container name="containerFloats"/>
+    </Tab>
+    <Tab name="tabString" text="Strings">
+      <Container name="containerStrings"/>
+    </Tab>
+  </TabbedContainer>
+</Dialog>

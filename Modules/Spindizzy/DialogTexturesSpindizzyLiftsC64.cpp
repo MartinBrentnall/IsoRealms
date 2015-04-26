@@ -25,15 +25,15 @@ DialogTexturesSpindizzyLiftsC64::DialogTexturesSpindizzyLiftsC64(IEditingContext
   cOriginalColour1       = cSprites->getColour1();
   cOriginalColour2       = cSprites->getColour2();
   cOriginalColourOutline = cSprites->getColourOutline();
-  cColourSelector1       = new ColourSelector(this, cOriginalColour1,       0);
-  cColourSelector2       = new ColourSelector(this, cOriginalColour2,       1);
-  cColourSelectorOutline = new ColourSelector(this, cOriginalColourOutline, 2);
+  cColourSelector1       = new ComponentResourceColourSelector(this, cOriginalColour1,       cResourceSelector);
+  cColourSelector2       = new ComponentResourceColourSelector(this, cOriginalColour2,       cResourceSelector);
+  cColourSelectorOutline = new ComponentResourceColourSelector(this, cOriginalColourOutline, cResourceSelector);
   mContent->setSelectable("colour1",       cColourSelector1);
   mContent->setSelectable("colour2",       cColourSelector2);
   mContent->setSelectable("outlineColour", cColourSelectorOutline);
   std::vector<ITexture*> mTextures = cSprites->getResources();
   for (unsigned int i = 0; i < mTextures.size(); i++) {
-    mContent->addComponent("previewPane", new TextureIcon(mTextures[i]));
+    mContent->addComponent("previewPane", new ComponentIconTexture(mTextures[i]));
   }
   addComponent("content", mContent);
 }
@@ -48,89 +48,8 @@ ResourceTexturesSpindizzyLiftsC64* DialogTexturesSpindizzyLiftsC64::getResource(
   return cSprites;
 }
 
-DialogTexturesSpindizzyLiftsC64::ColourSelector::ColourSelector(DialogTexturesSpindizzyLiftsC64* parent, IColour* colour, unsigned int which) {
-  cWhich = which;
-  cParent = parent;
-  cColour = colour;
-  cBorrowedColour = NULL;
+void DialogTexturesSpindizzyLiftsC64::selected(ISelector* selector, IColour* colour) {
+  if      (selector == cColourSelector1)       {cSprites->setColour1(colour);}
+  else if (selector == cColourSelector2)       {cSprites->setColour2(colour);}
+  else if (selector == cColourSelectorOutline) {cSprites->setColourOutline(colour);}
 }
-    
-void DialogTexturesSpindizzyLiftsC64::ColourSelector::render(SelectableComponent* component) {
-  float mLeft =   component->getLeft();
-  float mRight =  component->getRight();
-  float mTop =    component->getTop();
-  float mBottom = component->getBottom();
-  cColour->set();
-  glBegin(GL_QUADS);
-  glVertex2f(mLeft,  mBottom);
-  glVertex2f(mRight, mBottom);
-  glVertex2f(mRight, mTop);
-  glVertex2f(mLeft,  mTop);
-  glEnd();
-}
-
-void DialogTexturesSpindizzyLiftsC64::ColourSelector::selected() {
-  cParent->cResourceSelector->addResourceSelectionListener(this);
-}
-
-void DialogTexturesSpindizzyLiftsC64::ColourSelector::deselected() {
-  cParent->cResourceSelector->removeResourceSelectionListener(this);
-  if (cBorrowedColour != NULL) {
-    cParent->cResourceSelector->notifyResourceOwned(cBorrowedColour);
-    cBorrowedColour = NULL;
-  }
-}
-
-void DialogTexturesSpindizzyLiftsC64::ColourSelector::resourceSelected(IColour* colour) {
-  if (cBorrowedColour != NULL) {
-    cParent->cResourceSelector->notifyResourceReleased(cBorrowedColour);
-  }
-  cColour = colour;
-  cBorrowedColour = colour;
-  switch (cWhich) {
-    case 0: cParent->cSprites->setColour1(cColour);       break;
-    case 1: cParent->cSprites->setColour2(cColour);       break;
-    case 2: cParent->cSprites->setColourOutline(cColour); break;
-  }
-}
-
-DialogTexturesSpindizzyLiftsC64::TextureIcon::TextureIcon(ITexture* texture) {
-  cTexture = texture;
-}
-
-float DialogTexturesSpindizzyLiftsC64::TextureIcon::getWidth() {
-  Configuration* mConfiguration = Configuration::getInstance();
-  ScreenConfiguration* mScreenConfiguration = mConfiguration->getScreenConfiguration();
-  float mAspectRatio = mScreenConfiguration->getAspectRatio();
-  return 0.1f * mAspectRatio;
-}
-
-float DialogTexturesSpindizzyLiftsC64::TextureIcon::getHeight() {
-  return 0.1f;
-}
-
-void DialogTexturesSpindizzyLiftsC64::TextureIcon::render() {
-  cTexture->set();
-  float mLeft = getLeft();
-  float mRight = getRight();
-  float mTop = getTop();
-  float mBottom = getBottom();
-  glColor3f(1.0f, 1.0f, 1.0f);
-  glBegin(GL_QUADS);
-  glTexCoord2f(0.0f, 1.0f); glVertex2f(mLeft,  mBottom);
-  glTexCoord2f(1.0f, 1.0f); glVertex2f(mRight, mBottom);
-  glTexCoord2f(1.0f, 0.0f); glVertex2f(mRight, mTop);
-  glTexCoord2f(0.0f, 0.0f); glVertex2f(mLeft,  mTop);
-  glEnd();
-}
-
-void DialogTexturesSpindizzyLiftsC64::TextureIcon::update(unsigned int milliseconds) {
-  // Nothing to do
-}
-
-bool DialogTexturesSpindizzyLiftsC64::TextureIcon::input(SDL_Event& event) {
-  return false;
-}
-
-
-

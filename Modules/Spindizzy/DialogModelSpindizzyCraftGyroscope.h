@@ -19,6 +19,8 @@
 #ifndef DIALOG_MODEL_SPINDIZZY_CRAFT_GYROSCOPE_H
 #define DIALOG_MODEL_SPINDIZZY_CRAFT_GYROSCOPE_H
 
+#include <IsoRealms/GUI/ComponentResourceColourSelector.h>
+#include <IsoRealms/GUI/Icons/ComponentIconModel.h>
 #include <IsoRealms/GUI/ISelector.h>
 #include <IsoRealms/GUI/Dialogs/DialogOKCancelUndo.h>
 #include <IsoRealms/GUI/SelectableComponent.h>
@@ -27,62 +29,32 @@
 
 #include "ResourceModelSpindizzyCraftGyroscope.h"
 
-class DialogModelSpindizzyCraftGyroscope : public DialogOKCancelUndo {
+class DialogModelSpindizzyCraftGyroscope : public IComponentSelectorListener<IColour>,
+                                           public DialogOKCancelUndo {
   private:
-  class ColourSelector:public ISelector,
-                       public IResourceSelectionListener<IColour> {
-    private:
-    unsigned int cWhich;
-    DialogModelSpindizzyCraftGyroscope* cParent;
-    IColour* cBorrowedColour;
-    IColour* cColour;
-    
-    public:
-    ColourSelector(DialogModelSpindizzyCraftGyroscope*, IColour*, unsigned int);
-    
-    void render(SelectableComponent*);
-    void selected();
-    void deselected();
-    
-    void resourceSelected(IColour*);
-  };
-    
-  class ModelIcon:public ISizedComponent {
-    private:
-    I3DModelType* cModelType;
-    
-    public:
-    ModelIcon(ResourceModelSpindizzyCraftGyroscope*);
-        
-    /******************************\
-     * Implements ISizedComponent *
-    \******************************/
-    float getWidth();
-    float getHeight();
-    void render();
-    void update(unsigned int);
-    bool input(SDL_Event&);
-  };
-  
   ResourceModelSpindizzyCraftGyroscope* cModelType;
-  IResourceSelector* cResourceSelector;
   IColour* cOriginalColour1;
   IColour* cOriginalColour2;
   IColour* cOriginalColour3;
   IColour* cOriginalColour4;
   IColour* cOriginalOutlineColour;
-  ColourSelector* cColourSelector1;
-  ColourSelector* cColourSelector2;
-  ColourSelector* cColourSelector3;
-  ColourSelector* cColourSelector4;
-  ColourSelector* cColourSelectorOutline;
+  ComponentResourceColourSelector* cColourSelector1;
+  ComponentResourceColourSelector* cColourSelector2;
+  ComponentResourceColourSelector* cColourSelector3;
+  ComponentResourceColourSelector* cColourSelector4;
+  ComponentResourceColourSelector* cColourSelectorOutline;
   
+  void undo();
   
   public:
   DialogModelSpindizzyCraftGyroscope(IEditingContext*, ResourceModelSpindizzyCraftGyroscope*, IResourceAccessor*, const std::string&);
   
   ResourceModelSpindizzyCraftGyroscope* getResource();
-  void undo();
+  
+  /**************************************************\
+   * Implements IComponentSelectorListener<IColour> *
+  \**************************************************/
+  void selected(ISelector*, IColour*);
 };
 
 #endif

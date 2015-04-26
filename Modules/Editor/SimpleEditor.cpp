@@ -91,31 +91,29 @@ void SimpleEditor::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* r
       cResourceIcons[mIconName] = new GUIIcon(mModelInstance);
     }
   }
-  cDockableTextureManager           = new DialogTextureManager(          this, resources, mProjectResources, this, mProjectResources, this);
-  cDockableElementTypeManager       = new DialogElementTypeManager(      this, resources, mProjectResources, this, mProjectResources, this);
-  cDockableSoundManager             = new DialogSoundManager(            this, resources, mProjectResources, this, mProjectResources, this);
-  cDockableFontManager              = new DialogFontManager(             this, resources, mProjectResources, this, mProjectResources, this);
-  cDockableScriptManager            = new DialogScriptManager(           this, resources, mProjectResources, this, mProjectResources, this);
-//   cDockablePrimitiveManager        = new DialogPrimitiveManager(       this, resources, mProjectResources, this, mProjectResources, this);
-  cDockableCustomTypeManager        = new DialogCustomTypeManager(       this, resources, mProjectResources, this, mProjectResources, this);
-//   cDockableHUDComponentManager     = new DialogHUDComponentManager(    this, resources, mProjectResources, this, mProjectResources, this);
-  cDockableVertexManager            = new DialogVertexManager(           this, resources, mProjectResources, this, mProjectResources, this);
-  cDockable3DModelManager           = new Dialog3DModelManager(          this, resources, mProjectResources, this, mProjectResources, this);
-  cDockableCameraManager            = new DialogCameraManager(           this, resources, mProjectResources, this, mProjectResources, this);
-  cDockableBoundariesManager        = new DialogBoundariesManager(       this, resources, mProjectResources, this, mProjectResources, this);
+  cDockableTextureManager     = new DialogTextureManager(    this, resources, mProjectResources, this, mProjectResources, this);
+  cDockableElementTypeManager = new DialogElementTypeManager(this, resources, mProjectResources, this, mProjectResources, this);
+  cDockableSoundManager       = new DialogSoundManager(      this, resources, mProjectResources, this, mProjectResources, this);
+  cDockableFontManager        = new DialogFontManager(       this, resources, mProjectResources, this, mProjectResources, this);
+  cDockableScriptManager      = new DialogScriptManager(     this, resources, mProjectResources, this, mProjectResources, this);
+  cDockablePrimitiveManager   = new DialogPrimitiveManager(  this, resources, mProjectResources, this, mProjectResources, this);
+  cDockableCustomTypeManager  = new DialogCustomTypeManager( this, resources, mProjectResources, this, mProjectResources, this);
+  cDockableVertexManager      = new DialogVertexManager(     this, resources, mProjectResources, this, mProjectResources, this);
+  cDockable3DModelManager     = new Dialog3DModelManager(    this, resources, mProjectResources, this, mProjectResources, this);
+  cDockableCameraManager      = new DialogCameraManager(     this, resources, mProjectResources, this, mProjectResources, this);
+  cDockableBoundariesManager  = new DialogBoundariesManager( this, resources, mProjectResources, this, mProjectResources, this);
 
-  cScreenEdgeManager.add(cDockableTextureManager,           cResourceIcons["IconTextures"]);
-  cScreenEdgeManager.add(cDockableElementTypeManager,       cResourceIcons["IconElementTypes"]);
-  cScreenEdgeManager.add(cDockableSoundManager,             cResourceIcons["IconSounds"]);
-  cScreenEdgeManager.add(cDockableFontManager,              cResourceIcons["IconFonts"]);
-  cScreenEdgeManager.add(cDockableScriptManager,            cResourceIcons["IconScripts"]);
-//   cScreenEdgeManager.add(cDockablePrimitiveManager,        cResourceIcons["IconPrimitives"]);
-  cScreenEdgeManager.add(cDockableCustomTypeManager,        cResourceIcons["IconCustomTypes"]);
-//   cScreenEdgeManager.add(cDockableHUDComponentManager,     cResourceIcons["IconHUDComponents"]);
-  cScreenEdgeManager.add(cDockableVertexManager,            cResourceIcons["IconVertices"]);
-  cScreenEdgeManager.add(cDockable3DModelManager,           cResourceIcons["Icon3DModels"]);
-  cScreenEdgeManager.add(cDockableCameraManager,            cResourceIcons["IconCameras"]);
-  cScreenEdgeManager.add(cDockableBoundariesManager,        cResourceIcons["IconCollectables"]);
+  cScreenEdgeManager.add(cDockableTextureManager,     cResourceIcons["IconTextures"]);
+  cScreenEdgeManager.add(cDockableElementTypeManager, cResourceIcons["IconElementTypes"]);
+  cScreenEdgeManager.add(cDockableSoundManager,       cResourceIcons["IconSounds"]);
+  cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconFonts"]);
+  cScreenEdgeManager.add(cDockableScriptManager,      cResourceIcons["IconScripts"]);
+  cScreenEdgeManager.add(cDockablePrimitiveManager,   cResourceIcons["IconPrimitives"]);
+  cScreenEdgeManager.add(cDockableCustomTypeManager,  cResourceIcons["IconCustomTypes"]);
+  cScreenEdgeManager.add(cDockableVertexManager,      cResourceIcons["IconVertices"]);
+  cScreenEdgeManager.add(cDockable3DModelManager,     cResourceIcons["Icon3DModels"]);
+  cScreenEdgeManager.add(cDockableCameraManager,      cResourceIcons["IconCameras"]);
+  cScreenEdgeManager.add(cDockableBoundariesManager,  cResourceIcons["IconCollectables"]);
   addComponent(&cScreenEdgeManager);
 }
 

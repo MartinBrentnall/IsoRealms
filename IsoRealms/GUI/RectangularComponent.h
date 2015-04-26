@@ -26,6 +26,7 @@
 
 #include "AbstractRectangularComponent.h"
 #include "Button.h"
+#include "CheckBox.h"
 #include "ComponentEdgeLayout.h"
 #include "Container.h"
 #include "EdgeRelation.h"
@@ -34,9 +35,11 @@
 #include "IComponentHolder.h"
 #include "../IComponentCustomType.h"
 #include "IFloatListener.h"
+#include "IntegerField.h" 
 #include "../IStringListener.h"
 #include "ISizedComponent.h"
 #include "ISliderRenderer.h"
+#include "IValueComponent.h"
 #include "ListBox.h"
 #include "MenuPopup.h"
 #include "PanelComponent.h"
@@ -63,6 +66,8 @@ class RectangularComponent:public ISizedComponent,
   std::map<std::string, ListBox*> cListBoxComponents;
   // TODO: Should use interface to support other components; e.g. ListBoxes
   std::map<std::string, IStringValueComponent*> cStringValueComponents;
+  std::map<std::string, IValueComponent<bool>*> cBooleanValueComponents;
+  std::map<std::string, IValueComponent<int>*> cIntegerValueComponents;
   std::map<std::string, SliderComponent*> cFloatValueComponents;
   std::map<std::string, SliderComponent*> cSliders;
   std::map<std::string, IComponentHolder*> cComponentContainers;
@@ -86,6 +91,8 @@ class RectangularComponent:public ISizedComponent,
   void testFocusChange(SDL_Event& event);
   bool mouseButtonDown(SDL_Event&);
   
+  void addBooleanValueComponent(const std::string&, IValueComponent<bool>*);
+  void addIntegerValueComponent(const std::string&, IValueComponent<int>*);
   void addStringValueComponent(const std::string&, IStringValueComponent*);
     
   public:
@@ -101,6 +108,10 @@ class RectangularComponent:public ISizedComponent,
   void setSelectable(const std::string&, ISelector*);
   void addFloatListener(IFloatListener*, const std::string&);
   void addStringListener(IStringListener*, const std::string&);
+  void addBooleanListener(IValueListener<bool>*, const std::string&);
+  void addIntegerListener(IValueListener<int>*, const std::string&);
+  void setBooleanValue(const std::string&, bool);
+  void setIntegerValue(const std::string&, int);
   void setFloatValue(const std::string&, float);
   void setStringValue(const std::string&, const std::string&);
   void setStringValue(const std::string&, float);

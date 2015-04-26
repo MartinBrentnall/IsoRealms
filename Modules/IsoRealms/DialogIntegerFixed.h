@@ -25,16 +25,24 @@
 
 #include "ResourceIntegerFixed.h"
 
-class DialogIntegerFixed : public DialogOKCancelUndo {
+class DialogIntegerFixed : public DialogOKCancelUndo,
+                           public IValueListener<int> {
   private:
+  RectangularComponent* cContent;
   ResourceIntegerFixed* cInteger;
+  int cOriginalValue;
+  
+  void undo();
   
   public:
   DialogIntegerFixed(IEditingContext*, ResourceIntegerFixed*, IResourceAccessor*, const std::string&);
 
   ResourceIntegerFixed* getResource();
-  
-  void undo();
+
+  /**********************************\
+   * Implements IValueListener<int> *
+  \**********************************/
+  void valueChanged(int&);  
 };
 
 #endif

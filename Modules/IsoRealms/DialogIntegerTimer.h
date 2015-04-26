@@ -25,16 +25,24 @@
 
 #include "ResourceIntegerTimer.h"
 
-class DialogIntegerTimer : public DialogOKCancelUndo {
+class DialogIntegerTimer : public DialogOKCancelUndo,
+                           public IValueListener<int> {
   private:
+  RectangularComponent* cContent;
   ResourceIntegerTimer* cInteger;
-
+  int cOriginalValue;
+  
+  void undo();
+  
   public:
   DialogIntegerTimer(IEditingContext*, ResourceIntegerTimer*, IResourceAccessor*, const std::string&);
 
   ResourceIntegerTimer* getResource();
-  
-  void undo();
+
+  /**********************************\
+   * Implements IValueListener<int> *
+  \**********************************/
+  void valueChanged(int&);  
 };
 
 #endif

@@ -28,7 +28,9 @@ add_library(IsoRealms SHARED
   DefaultCommandInfo.cpp
   GUI/AbstractRectangularComponent.cpp
   GUI/Button.cpp
+  GUI/CheckBox.cpp
   GUI/CloseDialogCommand.cpp
+  GUI/ComponentResourceColourSelector.cpp
   GUI/ComponentEdgeLayout.cpp
   GUI/Container.cpp
   GUI/Dialog.cpp
@@ -39,6 +41,9 @@ add_library(IsoRealms SHARED
   GUI/FlexibleGridLayoutComponent.cpp
   GUI/GridLayoutComponent.cpp
   GUI/GUIIcon.cpp
+  GUI/Icons/ComponentIconTexture.cpp
+  GUI/Icons/ComponentIconModel.cpp
+  GUI/IntegerField.cpp
   GUI/ListBox.cpp
   GUI/LookAndFeel.cpp
   GUI/MenuBar.cpp

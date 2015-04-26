@@ -22,23 +22,39 @@ DialogModelSpindizzyJewel::DialogModelSpindizzyJewel(IEditingContext* editingCon
   cModelType = modelType;
   RectangularComponent* mContent = new RectangularComponent("Modules/Spindizzy/DialogModelSpindizzyJewel", resources);
   cResourceSelector = editingContext->getResourceSelector();
-  cOriginalFrameColour     = cModelType->getFrameColour();
-  cOriginalCycleColours    = cModelType->getCycleColours();
-  cColourSelectorFrame     = new ColourSelector(this, cOriginalFrameColour,     0);
-  for (unsigned int i = 0; i < cOriginalCycleColours.size(); i++) {
-    ColourSelector* mColourSelector = new ColourSelector(this, cOriginalCycleColours[i], i + 1);
-    cColourSelectorsCycle.push_back(mColourSelector);
-  }
-  mContent->setSelectable("frameColour",   cColourSelectorFrame);
-//  setSelectable("cycleColours",  cColourSelectorsCycle);
-  mContent->addComponent("previewPane", new ModelIcon(cModelType));
+  cOriginalFrameColour  = cModelType->getFrameColour();
+  cOriginalCycleColours = cModelType->getCycleColours();
+  cColourSelectorFrame  = new ComponentResourceColourSelector(this, cOriginalFrameColour, cResourceSelector);
+  undo();
+  mContent->addStringListener(new StringListener(this), "numberCycleColours");
+  mContent->setSelectable("frameColour", cColourSelectorFrame);
+  // TODO: Set fill selectables
+  mContent->addComponent("previewPane", new ComponentIconModel(cModelType));
+  addComponent("content", mContent);
 }
 
 void DialogModelSpindizzyJewel::undo() {
+  std::cout << "Setting frame..." << std::endl;
   cColourSelectorFrame->resourceSelected(cOriginalFrameColour);
-  // TODO: Reset number of cycle colours
-  for (unsigned int i = 0; i < cColourSelectorsCycle.size(); i++) {
+  std::cout << "Setting " << cOriginalCycleColours.size() << " cycle colours..." << std::endl;
+  setCycleColours(cOriginalCycleColours.size());
+  for (unsigned int i = 0; i < cOriginalCycleColours.size(); i++) {
+    std::cout << "  Setting cycle colour " << i << std::endl;
     cColourSelectorsCycle[i]->resourceSelected(cOriginalCycleColours[i]);
+  }
+}
+
+void DialogModelSpindizzyJewel::setCycleColours(unsigned int count) {
+  std::cout << "Setting " << count << " cycle colours (currently " << cColourSelectorsCycle.size() << ")..." << std::endl;
+  while (cColourSelectorsCycle.size() < count) {
+    ComponentResourceColourSelector* mColourSelector = new ComponentResourceColourSelector(this, new Colour(1.0f, 0.0f, 0.0f), cResourceSelector);
+    cColourSelectorsCycle.push_back(mColourSelector);
+//     addComponent("cycleColours", new SelectableComponent(mColourSelector));
+    std::cout << "  Added cycle colour, now there are " << cColourSelectorsCycle.size() << " colours" << std::endl;
+  }
+  while (cColourSelectorsCycle.size() > count) {
+    cColourSelectorsCycle.pop_back();
+    std::cout << "  Removed cycle colour, now there are " << cColourSelectorsCycle.size() << " colours" << std::endl;
   }
 }
 
@@ -46,85 +62,24 @@ ResourceModelSpindizzyJewel* DialogModelSpindizzyJewel::getResource() {
   return cModelType;
 }
 
-DialogModelSpindizzyJewel::ColourSelector::ColourSelector(DialogModelSpindizzyJewel* parent, IColour* colour, unsigned int which) {
-  cWhich = which;
+void DialogModelSpindizzyJewel::selected(ISelector* selector, IColour* colour) {
+  std::cout << "Seleciton on " << this << std::endl;
+  if (selector == cColourSelectorFrame) {cModelType->setFrameColour(colour);}
+  std::cout << "There are " << cColourSelectorsCycle.size() << " cycle colours" << std::endl;
+  for (unsigned int i = 0; i < cColourSelectorsCycle.size(); i++) {
+    std::cout << "  Checking colour " << i << std::endl;
+    if (selector == cColourSelectorsCycle[i]) {cModelType->setCycleColour(i, colour);}
+    if (i == 30) {
+      exit(1);
+    }
+  }
+}
+
+DialogModelSpindizzyJewel::StringListener::StringListener(DialogModelSpindizzyJewel* parent) {
   cParent = parent;
-  cColour = colour;
-  cBorrowedColour = NULL;
-}
-    
-void DialogModelSpindizzyJewel::ColourSelector::render(SelectableComponent* component) {
-  float mLeft =   component->getLeft();
-  float mRight =  component->getRight();
-  float mTop =    component->getTop();
-  float mBottom = component->getBottom();
-  cColour->set();
-  glBegin(GL_QUADS);
-  glVertex2f(mLeft,  mBottom);
-  glVertex2f(mRight, mBottom);
-  glVertex2f(mRight, mTop);
-  glVertex2f(mLeft,  mTop);
-  glEnd();
 }
 
-void DialogModelSpindizzyJewel::ColourSelector::selected() {
-  cParent->cResourceSelector->addResourceSelectionListener(this);
-}
-
-void DialogModelSpindizzyJewel::ColourSelector::deselected() {
-  cParent->cResourceSelector->removeResourceSelectionListener(this);
-  if (cBorrowedColour != NULL) {
-    cParent->cResourceSelector->notifyResourceOwned(cBorrowedColour);
-    cBorrowedColour = NULL;
-  }
-}
-
-void DialogModelSpindizzyJewel::ColourSelector::resourceSelected(IColour* colour) {
-  if (cBorrowedColour != NULL) {
-    cParent->cResourceSelector->notifyResourceReleased(cBorrowedColour);
-  }
-  cColour = colour;
-  cBorrowedColour = colour;
-  switch (cWhich) {
-    case 0:  cParent->cModelType->setFrameColour(cColour);             break;
-    default: cParent->cModelType->setCycleColour(cWhich + 1, cColour); break;
-  }
-}
-
-DialogModelSpindizzyJewel::ModelIcon::ModelIcon(ResourceModelSpindizzyJewel* modelType) {
-  cModelType = modelType;
-}
-
-float DialogModelSpindizzyJewel::ModelIcon::getWidth() {
-  Configuration* mConfiguration = Configuration::getInstance();
-  ScreenConfiguration* mScreenConfiguration = mConfiguration->getScreenConfiguration();
-  float mAspectRatio = mScreenConfiguration->getAspectRatio();
-  return 0.2f * mAspectRatio;
-}
-
-float DialogModelSpindizzyJewel::ModelIcon::getHeight() {
-  return 0.2f;
-}
-
-void DialogModelSpindizzyJewel::ModelIcon::render() {
-  glPushMatrix();
-  float mScale = 0.12f; // TODO: Calculate this
-  Configuration* mConfiguration = Configuration::getInstance();
-  ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
-  float mXLocation = getLeft() + (getRight() - getLeft()) / 2.0f;
-  float mYLocation = getBottom() + (getTop() - getBottom()) / 2.0f;
-  glTranslatef(mXLocation, mYLocation, 0.0f);
-  float mAspectRatio = mScreen->getAspectRatio();
-  glScalef(mAspectRatio * mScale, mScale, mScale);
-  glColor3f(1.0f, 1.0f, 1.0f);
-  cModelType->renderIcon();
-  glPopMatrix();
-}
-
-void DialogModelSpindizzyJewel::ModelIcon::update(unsigned int milliseconds) {
-  // Nothing to do
-}
-
-bool DialogModelSpindizzyJewel::ModelIcon::input(SDL_Event& event) {
-  return false;
+void DialogModelSpindizzyJewel::StringListener::valueChanged(const std::string& value) {
+  unsigned int mCycleColours = min(1, max(32, atoi(value.c_str())));
+  cParent->setCycleColours(mCycleColours);
 }

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<!--
+/*
  * Copyright 2015 Martin Brentnall
  *
  * This file is part of Iso-Realms.
@@ -16,8 +15,29 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
--->
-<Component>
-  <Label name="labelValue" align="top left">Value (milliseconds):</Label>
-  <IntegerField name="integerFieldValue" align="top" left="rightof labelValue"/>
-</Component>
+ */
+#ifndef COMPONENT_ICON_TEXTURE_H
+#define COMPONENT_ICON_TEXTURE_H
+
+#include <IsoRealms/Configuration.h>
+#include <IsoRealms/GUI/ISizedComponent.h>
+#include <IsoRealms/Resources/Texture/ITexture.h>
+
+class ComponentIconTexture : public ISizedComponent {
+  private:
+  ITexture* cTexture;
+  
+  public:
+  ComponentIconTexture(ITexture*);
+      
+  /******************************\
+   * Implements ISizedComponent *
+  \******************************/
+  float getWidth();
+  float getHeight();
+  void render();
+  void update(unsigned int);
+  bool input(SDL_Event&);
+};
+  
+#endif

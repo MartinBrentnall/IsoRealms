@@ -20,13 +20,23 @@
 #include "DialogIntegerTimer.h"
 
 DialogIntegerTimer::DialogIntegerTimer(IEditingContext* editingContext, ResourceIntegerTimer* integer, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "Timer", resourceName) {
+  cContent = new RectangularComponent("Modules/IsoRealms/DialogIntegerTimer", resources);
   cInteger = integer;
+  cOriginalValue = cInteger->getValue();
+  cContent->addIntegerListener(this, "integerFieldValue");
+  cContent->setIntegerValue("integerFieldValue", cOriginalValue);
+  addComponent("content", cContent);
 }
 
 void DialogIntegerTimer::undo() {
-  // TODO:
+  cInteger->setValue(cOriginalValue);
+  cContent->setIntegerValue("integerFieldValue", cOriginalValue);
 }
 
 ResourceIntegerTimer* DialogIntegerTimer::getResource() {
   return cInteger;
+}
+
+void DialogIntegerTimer::valueChanged(int& value) {
+  cInteger->setValue(value);
 }

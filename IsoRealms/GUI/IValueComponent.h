@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<!--
+/*
  * Copyright 2015 Martin Brentnall
  *
  * This file is part of Iso-Realms.
@@ -16,8 +15,17 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
--->
-<Component>
-  <Label name="labelValue" align="top left">Value (milliseconds):</Label>
-  <IntegerField name="integerFieldValue" align="top" left="rightof labelValue"/>
-</Component>
+ */
+#ifndef I_VALUE_COMPONENT_H
+#define I_VALUE_COMPONENT_H
+
+#include <IsoRealms/IValueListener.h>
+
+template <class T> class IValueComponent {
+  public:
+  virtual void setValue(T) = 0;
+  virtual T getValue() = 0;
+  virtual void addValueListener(IValueListener<T>*) = 0;
+};
+
+#endif

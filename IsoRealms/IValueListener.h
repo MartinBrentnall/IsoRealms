@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2015 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,14 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "ElementSetInstancesCommand.h"
+#ifndef I_VALUE_LISTENER_H
+#define I_VALUE_LISTENER_H
 
-ElementSetInstancesCommand::ElementSetInstancesCommand(IComponentContainer* componentContainer, IComponentFactory* componentFactory) {
-  cComponentFactory = componentFactory;
-  cComponentContainer = componentContainer;
-}
+template <class T> class IValueListener {
+  public:
+  virtual void valueChanged(T&) = 0;
+};
 
-void ElementSetInstancesCommand::execute() {
-  IHUDComponent* mComponent = cComponentFactory->createComponent();
-  cComponentContainer->addComponent(mComponent);
-}
+#endif

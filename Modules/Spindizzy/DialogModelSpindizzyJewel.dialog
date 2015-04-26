@@ -33,7 +33,7 @@
       <TextField name="numberCycleColours"/>
     </Cell>
   </FlexibleGrid>
-  <ScrollableContainer name="cycleColours" align="left" top="below grid" bottom="above previewLabel"/>
-  <Label name="previewLabel" align="left" bottom="above previewPane">Preview</Label>
-  <WrappingGrid name="previewPane" height="0.2" bottom="above okButton"/>
+<!--  <WrappingGrid name="cycleColours" top="below grid" bottom="above previewLabel"/> 
+  <Label name="previewLabel" align="left" bottom="above previewPane">Preview</Label>-->
+  <WrappingGrid name="previewPane" top="below grid" height="0.02"/>
 </Component>

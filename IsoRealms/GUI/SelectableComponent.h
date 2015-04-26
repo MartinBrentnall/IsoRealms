@@ -30,6 +30,7 @@ class SelectableComponent:public ISizedComponent {
     
   public:
   SelectableComponent();
+  SelectableComponent(ISelector*);
     
   void setHandler(ISelector*);
   

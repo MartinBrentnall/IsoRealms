@@ -122,11 +122,13 @@ IElementBounds* ResourceElementHUDRoundedRectangle::getBounds() {
 void ResourceElementHUDRoundedRectangle::renderRuntime() {
   Configuration* mConfiguration = Configuration::getInstance();
   ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
+  GLfloat matrix[16]; 
   float mScreenAspectRatio = mScreen->getAspectRatio();
-//   float mYCornerSize = cCornerSize / yZoom;
-//   float mXCornerSize = cCornerSize / (xZoom / mScreenAspectRatio);
-  float mYCornerSize = cCornerSize / 1.0f;
-  float mXCornerSize = cCornerSize / (1.0f / mScreenAspectRatio);
+  
+  // Get the current scaling
+  glGetFloatv(GL_MODELVIEW_MATRIX, matrix);
+  float mYCornerSize = (cCornerSize / matrix[5]) * 2.0f;
+  float mXCornerSize = (cCornerSize / (matrix[0] / mScreenAspectRatio)) * 2.0f;
   float mXStartCorner = -1.0f + mXCornerSize / mScreenAspectRatio;
   float mYStartCorner = -1.0f + mYCornerSize;
   float mXEndCorner = 1.0f - mXCornerSize / mScreenAspectRatio;

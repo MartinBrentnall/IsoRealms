@@ -19,7 +19,7 @@
 -->
 
 <Component>
-  <FlexibleGrid name="grid" align="top left" rows="4" columns="2">
+  <FlexibleGrid name="grid" align="top left" rows="3" columns="2">
     <Cell row="3" column="1">
       <Label>Fill Colour:</Label>
     </Cell>
@@ -40,5 +40,5 @@
     </Cell>
   </FlexibleGrid>
   <Label name="previewLabel" align="left" top="below grid">Preview</Label>
-  <WrappingGrid name="previewPane" top="below previewLabel" bottom="above okButton"/>
+  <WrappingGrid name="previewPane" top="below previewLabel"/>
 </Component>

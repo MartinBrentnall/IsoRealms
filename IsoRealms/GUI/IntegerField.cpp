@@ -16,19 +16,19 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "TextFieldComponent.h"
+#include "IntegerField.h"
 
-int TextFieldComponent::cDelayUntilBlinkChange = BLINK_DELAY;
-bool TextFieldComponent::cBlinkShowing = true;
+int IntegerField::cDelayUntilBlinkChange = BLINK_DELAY;
+bool IntegerField::cBlinkShowing = true;
 
-TextFieldComponent::TextFieldComponent(std::string initialText) {
+IntegerField::IntegerField(std::string initialText) {
   cInput = initialText;
   cCaret = 0;
   cUpdating = false;
   cHasFocus = false;
 }
 
-void TextFieldComponent::render() {
+void IntegerField::render() {
   float mLeft = getLeft();
   float mBottom = getBottom();
   float mRight = getRight();
@@ -57,7 +57,7 @@ void TextFieldComponent::render() {
   }
 }
 
-void TextFieldComponent::update(unsigned int milliseconds) {
+void IntegerField::update(unsigned int milliseconds) {
   if (cHasFocus) {
     cDelayUntilBlinkChange -= milliseconds;
     if (cDelayUntilBlinkChange <= 0) {
@@ -67,7 +67,7 @@ void TextFieldComponent::update(unsigned int milliseconds) {
   }
 }
 
-bool TextFieldComponent::input(SDL_Event& event) {
+bool IntegerField::input(SDL_Event& event) {
   switch (event.type) {
     case SDL_KEYDOWN: {
       return keyDown(event.key.keysym.sym, event.key.keysym.mod);
@@ -80,15 +80,32 @@ bool TextFieldComponent::input(SDL_Event& event) {
   return false;
 }
 
-void TextFieldComponent::gainedFocus() {
+void IntegerField::gainedFocus() {
   cHasFocus = true;
 }
 
-void TextFieldComponent::lostFocus() {
+void IntegerField::lostFocus() {
   cHasFocus = false;
 }
 
-bool TextFieldComponent::keyDown(SDLKey& key, SDLMod& mod) {
+void IntegerField::validateValue() {
+  if (cInput.empty() || cInput == "-") {
+    return;
+  }
+  long mValue = atol(cInput.c_str());
+  if (mValue > std::numeric_limits<int>::max()) {
+    mValue = std::numeric_limits<int>::max();
+  }
+  if (mValue < std::numeric_limits<int>::lowest()) {
+    mValue = std::numeric_limits<int>::lowest();
+  }
+  cInput = std::to_string(mValue);
+  if (cCaret > cInput.length()) {
+    cCaret = cInput.length();
+  }
+}
+
+bool IntegerField::keyDown(SDLKey& key, SDLMod& mod) {
   switch (key) {
     case SDLK_LEFT: {
       if (cCaret != 0) {
@@ -119,21 +136,23 @@ bool TextFieldComponent::keyDown(SDLKey& key, SDLMod& mod) {
       if (cCaret > 0) {
         cInput = cInput.substr(0, cCaret - 1) + cInput.substr(cCaret);
         cCaret--;
-	fireChange();
+        fireChange();
       }
+      validateValue();
       return true;
     }
 
     case SDLK_DELETE: {
       if (cCaret < cInput.length()) {
         cInput = cInput.substr(0, cCaret) + cInput.substr(cCaret + 1);
-	fireChange();
+        fireChange();
       }
+      validateValue();
       return true;
     }
 
     default: {
-      if (key >= 32 && key <= 127 && cInput.length() < 40) {
+      if ((key >= '0' && key <= '9') || (key == '-' && cCaret == 0)) {
         if (mod & KMOD_SHIFT) {
           cInput = cInput.substr(0, cCaret) + (char) toupper((char) key) + cInput.substr(cCaret);
         } else {
@@ -142,13 +161,14 @@ bool TextFieldComponent::keyDown(SDLKey& key, SDLMod& mod) {
         cCaret++;
         fireChange();
       }
+      validateValue();
       return true;
     }
   }
   return false;
 }
 
-bool TextFieldComponent::mouseButtonDown(SDL_Event& event) {
+bool IntegerField::mouseButtonDown(SDL_Event& event) {
   Configuration* mConfiguration = Configuration::getInstance();
   ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
   float mX = mScreen->getXLocation(event.button.x);
@@ -162,11 +182,11 @@ bool TextFieldComponent::mouseButtonDown(SDL_Event& event) {
       float mPosition = mLeft + mFont->getWidth(mFontSize, cInput.substr(0, i).c_str());
       float mNewDifference = mX - mPosition;
       if (mNewDifference < 0.0f) {
-	mNewDifference = -mNewDifference;
+        mNewDifference = -mNewDifference;
       }
       if (mNewDifference > mDifference) {
-	cCaret = mNewDifference > mDifference ? i - 1: i - 2;
-	return true;
+        cCaret = mNewDifference > mDifference ? i - 1: i - 2;
+        return true;
       }
       mDifference = mNewDifference;
     }
@@ -176,33 +196,34 @@ bool TextFieldComponent::mouseButtonDown(SDL_Event& event) {
   return false;
 }
 
-void TextFieldComponent::fireChange() {
+void IntegerField::fireChange() {
   cUpdating = true;
+  int mValue = atoi(cInput.c_str());
   for (unsigned int i = 0; i < cListeners.size(); i++) {
-    cListeners[i]->valueChanged(cInput);
+    cListeners[i]->valueChanged(mValue);
   }
   cUpdating = false;
 }
 
-void TextFieldComponent::setText(std::string text) {
+void IntegerField::setValue(int value) {
   if (!cUpdating) {
-    cInput = text;
+    cInput = std::to_string(value);
 //    fireChange();
   } 
 }
 
-std::string TextFieldComponent::getText() {
-  return cInput;
+int IntegerField::getValue() {
+  return atoi(cInput.c_str());
 }
 
-void TextFieldComponent::addStringListener(IStringListener* listener) {
+void IntegerField::addValueListener(IValueListener<int>* listener) {
   cListeners.push_back(listener);
 }
 
-float TextFieldComponent::getWidth() {
+float IntegerField::getWidth() {
   return 0.4f;
 }
 
-float TextFieldComponent::getHeight() {
+float IntegerField::getHeight() {
   return 0.05f;
 }

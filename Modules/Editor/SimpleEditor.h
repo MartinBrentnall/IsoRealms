@@ -50,8 +50,6 @@ class OpenCommand;
 #include "DialogModules.h"
 #include "DialogProjectOpen.h"
 #include "EditorCursor.h"
-#include "ElementSetInstancesCommand.h"
-#include "EntityClassInstancesComponent.h"
 #include "IComponentFactory.h"
 #include "IElementSelectionListener.h"
 #include "IMapManager.h"
@@ -62,8 +60,7 @@ class OpenCommand;
 #include "ResourceManagerDialogs/DialogCustomTypeManager.h"
 #include "ResourceManagerDialogs/DialogElementTypeManager.h"
 #include "ResourceManagerDialogs/DialogFontManager.h"
-// #include "ResourceManagerDialogs/DialogHUDComponentManager.h"
-// #include "ResourceManagerDialogs/DialogPrimitiveManager.h"
+#include "ResourceManagerDialogs/DialogPrimitiveManager.h"
 #include "ResourceManagerDialogs/DialogScriptManager.h"
 #include "ResourceManagerDialogs/DialogSoundManager.h"
 #include "ResourceManagerDialogs/DialogTextureManager.h"
@@ -111,8 +108,7 @@ class SimpleEditor:public IModule,
   DialogCustomTypeManager* cDockableCustomTypeManager;
   DialogElementTypeManager* cDockableElementTypeManager;
   DialogFontManager* cDockableFontManager;
-//   DialogHUDComponentManager* cDockableHUDComponentManager;
-//   DialogPrimitiveManager* cDockablePrimitiveManager;
+  DialogPrimitiveManager* cDockablePrimitiveManager;
   DialogScriptManager* cDockableScriptManager;
   DialogSoundManager* cDockableSoundManager;
   DialogTextureManager* cDockableTextureManager;

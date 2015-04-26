@@ -23,6 +23,11 @@ SelectableComponent::SelectableComponent() {
   cSelected = false;
 }
 
+SelectableComponent::SelectableComponent(ISelector* handler) {
+  cSelected = false;
+  setHandler(handler);
+}
+
 void SelectableComponent::setHandler(ISelector* handler) {
   cHandler = handler;
 }

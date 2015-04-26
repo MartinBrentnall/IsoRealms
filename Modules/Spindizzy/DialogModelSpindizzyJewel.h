@@ -19,7 +19,9 @@
 #ifndef DIALOG_MODEL_SPINDIZZY_JEWEL_H
 #define DIALOG_MODEL_SPINDIZZY_JEWEL_H
 
+#include <IsoRealms/GUI/ComponentResourceColourSelector.h>
 #include <IsoRealms/GUI/Dialogs/DialogOKCancelUndo.h>
+#include <IsoRealms/GUI/Icons/ComponentIconModel.h>
 #include <IsoRealms/GUI/ISelector.h>
 #include <IsoRealms/GUI/SelectableComponent.h>
 #include <IsoRealms/IConfirmationListener.h>
@@ -27,57 +29,40 @@
 
 #include "ResourceModelSpindizzyJewel.h"
 
-class DialogModelSpindizzyJewel : public DialogOKCancelUndo {
-  private:
-  class ColourSelector:public ISelector,
-                       public IResourceSelectionListener<IColour> {
-    private:
-    unsigned int cWhich;
-    DialogModelSpindizzyJewel* cParent;
-    IColour* cBorrowedColour;
-    IColour* cColour;
-    
-    public:
-    ColourSelector(DialogModelSpindizzyJewel*, IColour*, unsigned int);
-    
-    void render(SelectableComponent*);
-    void selected();
-    void deselected();
-    
-    void resourceSelected(IColour*);
-  };
-    
-  class ModelIcon:public ISizedComponent {
-    private:
-    ResourceModelSpindizzyJewel* cModelType;
-    
-    public:
-    ModelIcon(ResourceModelSpindizzyJewel*);
-        
-    /******************************\
-     * Implements ISizedComponent *
-    \******************************/
-    float getWidth();
-    float getHeight();
-    void render();
-    void update(unsigned int);
-    bool input(SDL_Event&);
-  };
-  
+class DialogModelSpindizzyJewel : public IComponentSelectorListener<IColour>,
+                                  public DialogOKCancelUndo {
   ResourceModelSpindizzyJewel* cModelType;
   IResourceSelector* cResourceSelector;
   IColour* cOriginalFrameColour;
   std::vector<IColour*> cOriginalCycleColours;
-  ColourSelector* cColourSelectorFrame;
-  std::vector<ColourSelector*> cColourSelectorsCycle;
+  ComponentResourceColourSelector* cColourSelectorFrame;
+  std::vector<ComponentResourceColourSelector*> cColourSelectorsCycle;
   
+  class StringListener:public IStringListener {
+    private:
+    DialogModelSpindizzyJewel* cParent;
+    
+    public:
+    StringListener(DialogModelSpindizzyJewel*);
+    
+    /******************************\
+     * Implements IStringListener *
+    \******************************/
+    void valueChanged(const std::string&);
+  };
+    
+  void undo();
+  void setCycleColours(unsigned int);  
   
   public:
   DialogModelSpindizzyJewel(IEditingContext*, ResourceModelSpindizzyJewel*, IResourceAccessor*, const std::string&);
   
   ResourceModelSpindizzyJewel* getResource();
   
-  void undo();
+  /**************************************************\
+   * Implements IComponentSelectorListener<IColour> *
+  \**************************************************/
+  void selected(ISelector*, IColour*);  
 };
 
 #endif

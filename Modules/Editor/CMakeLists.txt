@@ -21,9 +21,6 @@ add_library(Editor MODULE
   DialogModules.cpp
   DialogProjectOpen.cpp
   EditorCursor.cpp
-  ElementSetInstancesCommand.cpp
-  EntityClassInstancesComponent.cpp
-  PluginEntityClass.cpp
   ResourceManagerDialogs/ColourIcon.cpp
   ResourceManagerDialogs/Dialog3DModelManager.cpp
   ResourceManagerDialogs/DialogBoundariesManager.cpp
@@ -31,6 +28,7 @@ add_library(Editor MODULE
   ResourceManagerDialogs/DialogCustomTypeManager.cpp
   ResourceManagerDialogs/DialogElementTypeManager.cpp
   ResourceManagerDialogs/DialogFontManager.cpp
+  ResourceManagerDialogs/DialogPrimitiveManager.cpp
   ResourceManagerDialogs/DialogScriptManager.cpp
   ResourceManagerDialogs/DialogSoundManager.cpp
   ResourceManagerDialogs/DialogTextureManager.cpp

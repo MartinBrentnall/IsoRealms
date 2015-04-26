@@ -19,8 +19,10 @@
 #ifndef DIALOG_TEXTURES_SPINDIZZY_BLOCKS_C64_H
 #define DIALOG_TEXTURES_SPINDIZZY_BLOCKS_C64_H
 
-#include <IsoRealms/GUI/Dialogs/ComponentColourSelector.h>
+#include <IsoRealms/GUI/ComponentResourceColourSelector.h>
 #include <IsoRealms/GUI/Dialogs/DialogOKCancelUndo.h>
+#include <IsoRealms/GUI/IComponentSelectorListener.h>
+#include <IsoRealms/GUI/Icons/ComponentIconTexture.h>
 #include <IsoRealms/GUI/ISelector.h>
 #include <IsoRealms/GUI/SelectableComponent.h>
 #include <IsoRealms/IConfirmationListener.h>
@@ -28,44 +30,10 @@
 
 #include "ResourceTexturesSpindizzyBlocksC64.h"
 
-class DialogTexturesSpindizzyBlocksC64:public DialogOKCancelUndo {
+class DialogTexturesSpindizzyBlocksC64:public IComponentSelectorListener<IColour>,
+                                       public DialogOKCancelUndo {
   private:
   DialogOKCancelUndo* cDialog;
-  
-  class ColourSelector:public ISelector,
-                       public IResourceSelectionListener<IColour> {
-    private:
-    unsigned int cWhich;
-    DialogTexturesSpindizzyBlocksC64* cParent;
-    IColour* cBorrowedColour;
-    IColour* cColour;
-    
-    public:
-    ColourSelector(DialogTexturesSpindizzyBlocksC64*, IColour*, unsigned int);
-    
-    void render(SelectableComponent*);
-    void selected();
-    void deselected();
-    
-    void resourceSelected(IColour*);
-  };
-    
-  class TextureIcon:public ISizedComponent {
-    private:
-    ITexture* cTexture;
-    
-    public:
-    TextureIcon(ITexture*);
-        
-    /******************************\
-     * Implements ISizedComponent *
-    \******************************/
-    float getWidth();
-    float getHeight();
-    void render();
-    void update(unsigned int);
-    bool input(SDL_Event&);
-  };
   
   ResourceTexturesSpindizzyBlocksC64* cTextureSet;
   IResourceSelector* cResourceSelector;
@@ -73,10 +41,10 @@ class DialogTexturesSpindizzyBlocksC64:public DialogOKCancelUndo {
   IColour* cOriginalWallColour;
   IColour* cOriginalGridColour;
   IColour* cOriginalDetailColour;
-  ColourSelector* cColourSelectorFloor;
-  ColourSelector* cColourSelectorWall;
-  ColourSelector* cColourSelectorGrid;
-  ColourSelector* cColourSelectorDetail;
+  ComponentResourceColourSelector* cColourSelectorFloor;
+  ComponentResourceColourSelector* cColourSelectorWall;
+  ComponentResourceColourSelector* cColourSelectorGrid;
+  ComponentResourceColourSelector* cColourSelectorDetail;
   
   void undo();
   
@@ -84,6 +52,11 @@ class DialogTexturesSpindizzyBlocksC64:public DialogOKCancelUndo {
   DialogTexturesSpindizzyBlocksC64(IEditingContext*, ResourceTexturesSpindizzyBlocksC64*, IResourceAccessor*, const std::string&);
   
   ResourceTexturesSpindizzyBlocksC64* getResource();
+  
+  /**************************************************\
+   * Implements IComponentSelectorListener<IColour> *
+  \**************************************************/
+  void selected(ISelector*, IColour*);
 };
 
 #endif
