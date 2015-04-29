@@ -29,7 +29,7 @@ void SliderComponent::setRenderer(ISliderRenderer* renderer) {
   cRenderer = renderer;
 }
 
-void SliderComponent::addFloatListener(IFloatListener* listener) {
+void SliderComponent::addValueListener(IValueListener<float>* listener) {
   cValueListeners.push_back(listener);
 }
 
@@ -155,7 +155,7 @@ bool SliderComponent::input(SDL_Event& event) {
 void SliderComponent::fireChange() {
   cSliderUpdating = true;
   for (unsigned int i = 0; i < cValueListeners.size(); i++) {
-    cValueListeners[i]->floatValueChanged(cValue);
+    cValueListeners[i]->valueChanged(cValue);
   }
   cSliderUpdating = false;
 }

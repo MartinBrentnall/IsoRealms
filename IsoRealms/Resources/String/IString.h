@@ -25,8 +25,8 @@
 
 class IString:public IResource {
   public:
-  virtual std::string getValue() = 0;
   virtual void setValue(const std::string&) = 0;
+  virtual std::string getValue() = 0;
 };
 
 #endif

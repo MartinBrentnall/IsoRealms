@@ -21,7 +21,7 @@
 
 template <class T> class IValueListener {
   public:
-  virtual void valueChanged(T&) = 0;
+  virtual void valueChanged(T) = 0;
 };
 
 #endif

@@ -429,7 +429,7 @@ ComponentColourSelector::SliderListener::SliderListener(ComponentColourSelector*
   cParent = parent;
 }
     
-void ComponentColourSelector::SliderListener::floatValueChanged(float value) {
+void ComponentColourSelector::SliderListener::valueChanged(float value) {
   (*cChannel) = value;
   cParent->updateHSLSliders();
 }
@@ -439,7 +439,7 @@ ComponentColourSelector::HueListener::HueListener(ComponentColourSelector* paren
   cChannel = channel;
 }
 
-void ComponentColourSelector::HueListener::floatValueChanged(float value) {
+void ComponentColourSelector::HueListener::valueChanged(float value) {
   (*cChannel) = value;
   cParent->updateRGBSliders();
 }
@@ -449,7 +449,7 @@ ComponentColourSelector::StringListener::StringListener(ComponentColourSelector*
   cChannel = channel;
 }
 
-void ComponentColourSelector::StringListener::valueChanged(const std::string& value) {
+void ComponentColourSelector::StringListener::valueChanged(std::string value) {
   (*cChannel) = min(1.0f, max(0.0f, atof(value.c_str())));
   cParent->updateHSLSliders();
 }
@@ -459,7 +459,7 @@ ComponentColourSelector::StringListenerHSL::StringListenerHSL(ComponentColourSel
   cChannel = channel;
 }
 
-void ComponentColourSelector::StringListenerHSL::valueChanged(const std::string& value) {
+void ComponentColourSelector::StringListenerHSL::valueChanged(std::string value) {
   (*cChannel) = min(1.0f, max(0.0f, atof(value.c_str())));
   cParent->updateRGBSliders();
 }

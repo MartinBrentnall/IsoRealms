@@ -34,7 +34,6 @@ const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_MODEL_SCRIPTABLE           
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_MODEL_SPRITE                  = "ModelSprite";
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_SCRIPT_LUA                    = "ScriptLua";
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_SOUND_FILE                    = "SoundFile";
-const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_STRING_TIME                   = "StringTime";
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_TEXTURE_FILE                  = "TextureFile";
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_VERTEX_FIXED                  = "VertexFixed";
 
@@ -54,7 +53,6 @@ const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_MODEL_SCRIPTABLE          
 const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_MODEL_SPRITE                  = "Sprite Model";
 const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_SCRIPT_LUA                    = "Lua Script";
 const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_SOUND_FILE                    = "Sound File";
-const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_STRING_TIME                   = "Time String";
 const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_TEXTURE_FILE                  = "Texture File";
 const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_VERTEX_FIXED                  = "Vertex Fixed";
 
@@ -91,7 +89,6 @@ IsoRealmsModule::IsoRealmsModule(IResourceTypeRegistry* resourceTypeRegistry) {
     resourceTypeRegistry->addResourceType(&cResourceTypeModelSprite,                NAME_RESOURCE_TYPE_MODEL_SPRITE);
     resourceTypeRegistry->addResourceType(&cResourceTypeScriptLua,                  NAME_RESOURCE_TYPE_SCRIPT_LUA);
     resourceTypeRegistry->addResourceType(&cResourceTypeSoundFile,                  NAME_RESOURCE_TYPE_SOUND_FILE);
-    resourceTypeRegistry->addResourceType(&cResourceTypeStringTime,                 NAME_RESOURCE_TYPE_STRING_TIME);
     resourceTypeRegistry->addResourceType(&cResourceTypeTextureFile,                NAME_RESOURCE_TYPE_TEXTURE_FILE);
     resourceTypeRegistry->addResourceType(&cResourceTypeVertexFixed,                NAME_RESOURCE_TYPE_VERTEX_FIXED);
   }
@@ -118,7 +115,6 @@ void IsoRealmsModule::load(DOMNodeWrapper* node, IResourceRegistry* runtimeConte
     else if (mValueAsString == TAG_RESOURCE_TYPE_MODEL_SPRITE)                  {cResourceTypeModelSprite.loadResource(               mNode, runtimeContext);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_SCRIPT_LUA)                    {cResourceTypeScriptLua.loadResource(                 mNode, runtimeContext);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_SOUND_FILE)                    {cResourceTypeSoundFile.loadResource(                 mNode, runtimeContext);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_STRING_TIME)                   {cResourceTypeStringTime.loadResource(                mNode, runtimeContext);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_TEXTURE_FILE)                  {cResourceTypeTextureFile.loadResource(               mNode, runtimeContext);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_VERTEX_FIXED)                  {cResourceTypeVertexFixed.loadResource(               mNode, runtimeContext);}
     else                                                                {/* TODO: Throw */}
@@ -142,7 +138,6 @@ void IsoRealmsModule::save(DOMNodeWriter* node, IResourceLocator* resourceLocato
   cResourceTypeModelSprite.saveResources(               node, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SPRITE);
   cResourceTypeScriptLua.saveResources(                 node, resourceLocator, TAG_RESOURCE_TYPE_SCRIPT_LUA);
   cResourceTypeSoundFile.saveResources(                 node, resourceLocator, TAG_RESOURCE_TYPE_SOUND_FILE);
-  cResourceTypeStringTime.saveResources(                node, resourceLocator, TAG_RESOURCE_TYPE_STRING_TIME);
   cResourceTypeTextureFile.saveResources(               node, resourceLocator, TAG_RESOURCE_TYPE_TEXTURE_FILE);
   cResourceTypeVertexFixed.saveResources(               node, resourceLocator, TAG_RESOURCE_TYPE_VERTEX_FIXED);
 }

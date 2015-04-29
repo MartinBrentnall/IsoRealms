@@ -19,17 +19,29 @@
 #ifndef I_RESOURCE_SELECTOR_H
 #define I_RESOURCE_SELECTOR_H
 
+#include <IsoRealms/Resources/Boolean/IBoolean.h>
 #include <IsoRealms/Resources/Colour/IColour.h>
+#include <IsoRealms/Resources/Float/IFloat.h>
+#include <IsoRealms/Resources/Integer/IInteger.h>
+#include <IsoRealms/Resources/String/IString.h>
 #include <IsoRealms/Resources/Texture/ITexture.h>
 
 #include "IResourceSelectionListener.h"
 
 class IResourceSelector {
   public:
+  virtual void addResourceSelectionListener(IResourceSelectionListener<IBoolean>*) = 0;
   virtual void addResourceSelectionListener(IResourceSelectionListener<IColour>*) = 0;
+  virtual void addResourceSelectionListener(IResourceSelectionListener<IFloat>*) = 0;
+  virtual void addResourceSelectionListener(IResourceSelectionListener<IInteger>*) = 0;
+  virtual void addResourceSelectionListener(IResourceSelectionListener<IString>*) = 0;
   virtual void addResourceSelectionListener(IResourceSelectionListener<ITexture>*) = 0;
   
+  virtual void removeResourceSelectionListener(IResourceSelectionListener<IBoolean>*) = 0;
   virtual void removeResourceSelectionListener(IResourceSelectionListener<IColour>*) = 0;
+  virtual void removeResourceSelectionListener(IResourceSelectionListener<IFloat>*) = 0;
+  virtual void removeResourceSelectionListener(IResourceSelectionListener<IInteger>*) = 0;
+  virtual void removeResourceSelectionListener(IResourceSelectionListener<IString>*) = 0;
   virtual void removeResourceSelectionListener(IResourceSelectionListener<ITexture>*) = 0;
   
   virtual void notifyResourceReleased(IColour*) = 0;

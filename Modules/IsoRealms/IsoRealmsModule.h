@@ -37,7 +37,6 @@
 #include "DialogModelScriptable.h"
 #include "DialogModelSprite.h"
 #include "DialogScriptLua.h"
-#include "DialogStringTime.h"
 #include "DialogSoundFile.h"
 #include "DialogTextureFile.h"
 #include "DialogVertexFixed.h"
@@ -53,7 +52,6 @@
 #include "ResourceModelElement.h"
 #include "ResourceModelScriptable.h"
 #include "ResourceModelSprite.h"
-#include "ResourceStringTime.h"
 #include "ResourceSoundFile.h"
 #include "ResourceTextureFile.h"
 #include "ResourceVertexFixed.h"
@@ -76,7 +74,6 @@ class IsoRealmsModule:public IModule {
   static const std::string TAG_RESOURCE_TYPE_MODEL_SPRITE;
   static const std::string TAG_RESOURCE_TYPE_SCRIPT_LUA;
   static const std::string TAG_RESOURCE_TYPE_SOUND_FILE;
-  static const std::string TAG_RESOURCE_TYPE_STRING_TIME;
   static const std::string TAG_RESOURCE_TYPE_TEXTURE_FILE;
   static const std::string TAG_RESOURCE_TYPE_VERTEX_FIXED;
 
@@ -96,7 +93,6 @@ class IsoRealmsModule:public IModule {
   static const std::string NAME_RESOURCE_TYPE_MODEL_SPRITE;
   static const std::string NAME_RESOURCE_TYPE_SCRIPT_LUA;
   static const std::string NAME_RESOURCE_TYPE_SOUND_FILE;
-  static const std::string NAME_RESOURCE_TYPE_STRING_TIME;
   static const std::string NAME_RESOURCE_TYPE_TEXTURE_FILE;
   static const std::string NAME_RESOURCE_TYPE_VERTEX_FIXED;
   
@@ -118,7 +114,6 @@ class IsoRealmsModule:public IModule {
   ResourceType<I3DModelType,         ResourceModelSprite,                DialogModelSprite>                cResourceTypeModelSprite;
   ResourceType<IScript,              LuaScript,                          DialogScriptLua>                  cResourceTypeScriptLua;
   ResourceType<ISound,               ResourceSoundFile,                  DialogSoundFile>                  cResourceTypeSoundFile;
-  ResourceType<IString,              ResourceStringTime,                 DialogStringTime>                 cResourceTypeStringTime;
   ResourceType<ITexture,             ResourceTextureFile,                DialogTextureFile>                cResourceTypeTextureFile;
   ResourceType<IVertex,              ResourceVertexFixed,                DialogVertexFixed>                cResourceTypeVertexFixed;
     

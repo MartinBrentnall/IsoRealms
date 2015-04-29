@@ -38,7 +38,7 @@ class DialogModelSpindizzyJewel : public IComponentSelectorListener<IColour>,
   ComponentResourceColourSelector* cColourSelectorFrame;
   std::vector<ComponentResourceColourSelector*> cColourSelectorsCycle;
   
-  class StringListener:public IStringListener {
+  class StringListener:public IValueListener<std::string> {
     private:
     DialogModelSpindizzyJewel* cParent;
     
@@ -48,7 +48,7 @@ class DialogModelSpindizzyJewel : public IComponentSelectorListener<IColour>,
     /******************************\
      * Implements IStringListener *
     \******************************/
-    void valueChanged(const std::string&);
+    void valueChanged(std::string);
   };
     
   void undo();

@@ -28,20 +28,19 @@
 
 #include <IsoRealms/Configuration.h>
 #include <IsoRealms/IllegalStateException.h>
-#include <IsoRealms/IStringListener.h>
 #include <IsoRealms/Resources/Font/IFont.h>
 
 #include "ISizedComponent.h"
-#include "IStringValueComponent.h"
+#include "IValueComponent.h"
 #include "LookAndFeel.h"
 
-class TextEditorComponent:public IStringValueComponent,
+class TextEditorComponent:public IValueComponent<std::string>,
                           public ISizedComponent {
   private:
   static const unsigned int BLINK_DELAY = 300;
   static const double CARET_X_NOT_ASSIGNED;
 
-  std::vector<IStringListener*> cListeners;
+  std::vector<IValueListener<std::string>*> cListeners;
   static int cDelayUntilBlinkChange;
   static bool cBlinkShowing;
 
@@ -64,9 +63,12 @@ class TextEditorComponent:public IStringValueComponent,
   public:
   TextEditorComponent(std::string = "");
 
-  void setText(std::string);
-  std::string getText();
-  void addStringListener(IStringListener*);
+  /*******************************************\
+   * Implements IValueComponent<std::string> *
+  \*******************************************/
+  void setValue(std::string);
+  std::string getValue();
+  void addValueListener(IValueListener<std::string>*);
 
   /***************************************\
    * Implements IComponentSizeCalculator *

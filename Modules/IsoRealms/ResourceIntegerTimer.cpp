@@ -21,6 +21,7 @@
 ResourceIntegerTimer::ResourceIntegerTimer(IDummyModule* module, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
   cLock = false;
   cMilliseconds = 0;
+  resourceRegistry->add(new StringTimer(this), node->getAttribute("name"));
   resourceRegistry->addDynamicElement(this);
 }
 
@@ -34,6 +35,28 @@ void ResourceIntegerTimer::setValue(int value) {
 
 int ResourceIntegerTimer::getValue() {
   return cMilliseconds;
+}
+
+ResourceIntegerTimer::StringTimer::StringTimer(ResourceIntegerTimer* timer) {
+  cTimer = timer;
+}
+
+void ResourceIntegerTimer::StringTimer::initialiseResource(DOMNodeWrapper*, IResourceAccessor*) {
+  // Nothing to do
+}
+
+void ResourceIntegerTimer::StringTimer::setValue(const std::string& value) {
+  // Not supported
+}
+
+std::string ResourceIntegerTimer::StringTimer::getValue() {
+  int mMilliseconds = cTimer->cMilliseconds % 1000;
+  int mSeconds = cTimer->cMilliseconds / 1000;
+  int mMinutes = mSeconds / 60;
+  mSeconds = mSeconds % 60;
+  std::stringstream mStringStream;
+  mStringStream << mMinutes << ":" << std::setfill('0') << std::setw(2) << mSeconds << "." << std::setw(1) << mMilliseconds;
+  return mStringStream.str();
 }
 
 void ResourceIntegerTimer::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {

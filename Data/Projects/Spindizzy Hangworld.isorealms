@@ -614,7 +614,6 @@ end</Code>
     <SoundFile file="Data/Sounds/Impact Hard.ogg" name="ImpactHard"/>
     <SoundFile file="Data/Sounds/Impact Medium.ogg" name="ImpactMedium"/>
     <SoundFile file="Data/Sounds/Impact Soft.ogg" name="ImpactSoft"/>
-    <StringTime name="SpindizzyTimeLimit" value="IsoRealms/SpindizzyTimeLimit"/>
     <TextureFile file="Map.png" name="Map"/>
     <TextureFile file="Score.png" name="Score"/>
     <TextureFile file="Time.png" name="Time"/>

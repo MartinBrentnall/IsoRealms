@@ -42,7 +42,7 @@ class DialogIntegerTimer : public DialogOKCancelUndo,
   /**********************************\
    * Implements IValueListener<int> *
   \**********************************/
-  void valueChanged(int&);  
+  void valueChanged(int);  
 };
 
 #endif

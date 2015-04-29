@@ -60,7 +60,6 @@ add_library(IsoRealmsStd MODULE
   DialogModelSprite.cpp
   DialogScriptLua.cpp
   DialogSoundFile.cpp
-  DialogStringTime.cpp
   DialogTextureFile.cpp
   DialogVertexFixed.cpp
   HUDComponentPosition.cpp
@@ -84,7 +83,6 @@ add_library(IsoRealmsStd MODULE
   ResourceModelScriptable.cpp
   ResourceModelSprite.cpp
   ResourceSoundFile.cpp
-  ResourceStringTime.cpp
   ResourceTextureFile.cpp
   ResourceVertexFixed.cpp
   ScreenRelation.cpp

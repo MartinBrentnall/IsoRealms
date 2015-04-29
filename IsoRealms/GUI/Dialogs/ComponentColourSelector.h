@@ -96,7 +96,7 @@ class ComponentColourSelector:public RectangularComponent {
     void render(PanelComponent*);
   };
   
-  class SliderListener:public IFloatListener {
+  class SliderListener:public IValueListener<float> {
     private:
     ComponentColourSelector* cParent;
     float* cChannel;
@@ -104,13 +104,13 @@ class ComponentColourSelector:public RectangularComponent {
     public:
     SliderListener(ComponentColourSelector*, float*);
     
-    /*****************************\
-     * Implements IFloatListener *
-    \*****************************/
-    void floatValueChanged(float);
+    /************************************\
+     * Implements IValueListener<float> *
+    \************************************/
+    void valueChanged(float);
   };
   
-  class HueListener:public IFloatListener {
+  class HueListener:public IValueListener<float> {
     private:
     ComponentColourSelector* cParent;
     float* cChannel;
@@ -118,13 +118,13 @@ class ComponentColourSelector:public RectangularComponent {
     public:
     HueListener(ComponentColourSelector*, float*);
     
-    /*****************************\
-     * Implements IFloatListener *
-    \*****************************/
-    void floatValueChanged(float);
+    /************************************\
+     * Implements IValueListener<float> *
+    \************************************/
+    void valueChanged(float);
   };
   
-  class StringListener:public IStringListener {
+  class StringListener:public IValueListener<std::string> {
     private:
     ComponentColourSelector* cParent;
     float* cChannel;
@@ -132,13 +132,13 @@ class ComponentColourSelector:public RectangularComponent {
     public:
     StringListener(ComponentColourSelector*, float*);
     
-    /******************************\
-     * Implements IStringListener *
-    \******************************/
-    void valueChanged(const std::string&);
+    /*****************************************\
+     * Implements IValueListener<std::string *
+    \*****************************************/
+    void valueChanged(std::string);
   };
     
-  class StringListenerHSL:public IStringListener {
+  class StringListenerHSL:public IValueListener<std::string> {
     private:
     ComponentColourSelector* cParent;
     float* cChannel;
@@ -146,10 +146,10 @@ class ComponentColourSelector:public RectangularComponent {
     public:
     StringListenerHSL(ComponentColourSelector*, float*);
     
-    /******************************\
-     * Implements IStringListener *
-    \******************************/
-    void valueChanged(const std::string&);
+    /******************************************\
+     * Implements IValueListener<std::string> *
+    \******************************************/
+    void valueChanged(std::string);
   };
     
   float cRed;

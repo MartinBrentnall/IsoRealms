@@ -28,7 +28,7 @@ TextEditorComponent::TextEditorComponent(std::string initialText) {
   cCaretX = CARET_X_NOT_ASSIGNED;
   cUpdating = false;
   cHasFocus = false;
-  setText(initialText);
+  setValue(initialText);
 }
 
 void TextEditorComponent::render() {
@@ -289,20 +289,20 @@ bool TextEditorComponent::mouseButtonDown(SDL_Event& event) {
 
 void TextEditorComponent::fireChange() {
   cUpdating = true;
-  std::string mText = getText();
+  std::string mText = getValue();
   for (unsigned int i = 0; i < cListeners.size(); i++) {
     cListeners[i]->valueChanged(mText);
   }
   cUpdating = false;
 }
 
-void TextEditorComponent::setText(std::string text) {
+void TextEditorComponent::setValue(std::string text) {
   if (!cUpdating) {
     cInput = Utils::split(text, '\n');
   } 
 }
 
-std::string TextEditorComponent::getText() {
+std::string TextEditorComponent::getValue() {
   std::string mResult;
   for (unsigned int i = 0; i < cInput.size(); i++) {
     mResult = mResult + cInput[i];
@@ -313,18 +313,18 @@ std::string TextEditorComponent::getText() {
   return mResult;
 }
 
-void TextEditorComponent::addStringListener(IStringListener* listener) {
+void TextEditorComponent::addValueListener(IValueListener<std::string>* listener) {
   cListeners.push_back(listener);
 }
 
 float TextEditorComponent::getWidth() {
   IFont* mFont = LookAndFeel::getDefaultFont();
   float mFontSize = LookAndFeel::getDefaultFontSize();
-  return mFont->getWidth(mFontSize, getText().c_str()) + 0.04f;
+  return mFont->getWidth(mFontSize, getValue().c_str()) + 0.04f;
 }
 
 float TextEditorComponent::getHeight() {
   IFont* mFont = LookAndFeel::getDefaultFont();
   float mFontSize = LookAndFeel::getDefaultFontSize();
-  return mFont->getHeight(mFontSize, getText().c_str());
+  return mFont->getHeight(mFontSize, getValue().c_str());
 }

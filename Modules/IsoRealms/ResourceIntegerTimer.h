@@ -19,6 +19,8 @@
 #ifndef RESOURCE_INTEGER_TIMER_H
 #define RESOURCE_INTEGER_TIMER_H
 
+#include <iomanip>
+
 #include <IsoRealms/ICommand.h>
 #include <IsoRealms/IDynamicElement.h>
 #include <IsoRealms/Persistence/DOMNodeWriter.h>
@@ -26,12 +28,29 @@
 #include <IsoRealms/Resources/IDummyModule.h>
 #include <IsoRealms/Resources/IResourceAccessor.h>
 #include <IsoRealms/Resources/IResourceRegistry.h>
+#include <IsoRealms/Resources/String/IString.h>
 
-class ResourceIntegerTimer:public IInteger,
-                           public IDynamicElement {
+class ResourceIntegerTimer : public IInteger,
+                             public IDynamicElement {
   private:
   int cMilliseconds;
   bool cLock;
+  
+  class StringTimer : public IString {
+    private:
+    ResourceIntegerTimer* cTimer;
+    
+    public:
+    StringTimer(ResourceIntegerTimer*);
+      
+    void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  
+    /**********************\
+     * Implements IString *
+    \**********************/
+    void setValue(const std::string&);
+    std::string getValue();
+  };
 
   public:
   ResourceIntegerTimer(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
@@ -39,9 +58,9 @@ class ResourceIntegerTimer:public IInteger,
   void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
   void save(DOMNodeWriter*, IResourceLocator*);
 
-  /****************************\
-   * Implements IIntegerValue *
-  \****************************/
+  /***********************\
+   * Implements IInteger *
+  \***********************/
   void setValue(int);
   int getValue();
 

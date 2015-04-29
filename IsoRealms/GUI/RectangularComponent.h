@@ -34,9 +34,7 @@
 #include "GridLayoutComponent.h"
 #include "IComponentHolder.h"
 #include "../IComponentCustomType.h"
-#include "IFloatListener.h"
 #include "IntegerField.h" 
-#include "../IStringListener.h"
 #include "ISizedComponent.h"
 #include "ISliderRenderer.h"
 #include "IValueComponent.h"
@@ -65,10 +63,15 @@ class RectangularComponent:public ISizedComponent,
   std::map<std::string, Button*> cCommandableComponents;
   std::map<std::string, ListBox*> cListBoxComponents;
   // TODO: Should use interface to support other components; e.g. ListBoxes
-  std::map<std::string, IStringValueComponent*> cStringValueComponents;
-  std::map<std::string, IValueComponent<bool>*> cBooleanValueComponents;
-  std::map<std::string, IValueComponent<int>*> cIntegerValueComponents;
-  std::map<std::string, SliderComponent*> cFloatValueComponents;
+  
+  // Value components.
+  std::map<std::string, IValueComponent<bool>*>        cValueComponentsBoolean;
+  std::map<std::string, IValueComponent<int>*>         cValueComponentsInteger;
+  std::map<std::string, IValueComponent<float>*>       cValueComponentsFloat;
+  std::map<std::string, IValueComponent<std::string>*> cValueComponentsString;
+  std::map<std::string, IValueComponent<IColour*>*>    cValueComponentsResourceColour;
+  std::map<std::string, IValueComponent<ITexture*>*>   cValueComponentsResourceTexture;
+  
   std::map<std::string, SliderComponent*> cSliders;
   std::map<std::string, IComponentHolder*> cComponentContainers;
   std::map<std::string, WrappingGridComponent*> cPaddedComponents;
@@ -93,7 +96,7 @@ class RectangularComponent:public ISizedComponent,
   
   void addBooleanValueComponent(const std::string&, IValueComponent<bool>*);
   void addIntegerValueComponent(const std::string&, IValueComponent<int>*);
-  void addStringValueComponent(const std::string&, IStringValueComponent*);
+  void addStringValueComponent(const std::string&,  IValueComponent<std::string>*);
     
   public:
   RectangularComponent();
@@ -106,10 +109,10 @@ class RectangularComponent:public ISizedComponent,
   void setRenderer(ISliderRenderer*, const std::string&);
   void setRenderer(IPanelRenderer*, const std::string&);
   void setSelectable(const std::string&, ISelector*);
-  void addFloatListener(IFloatListener*, const std::string&);
-  void addStringListener(IStringListener*, const std::string&);
-  void addBooleanListener(IValueListener<bool>*, const std::string&);
-  void addIntegerListener(IValueListener<int>*, const std::string&);
+  void addFloatListener(  IValueListener<float>*,       const std::string&);
+  void addStringListener( IValueListener<std::string>*, const std::string&);
+  void addBooleanListener(IValueListener<bool>*,        const std::string&);
+  void addIntegerListener(IValueListener<int>*,         const std::string&);
   void setBooleanValue(const std::string&, bool);
   void setIntegerValue(const std::string&, int);
   void setFloatValue(const std::string&, float);

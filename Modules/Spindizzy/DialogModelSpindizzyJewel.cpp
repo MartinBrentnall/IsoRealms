@@ -79,7 +79,7 @@ DialogModelSpindizzyJewel::StringListener::StringListener(DialogModelSpindizzyJe
   cParent = parent;
 }
 
-void DialogModelSpindizzyJewel::StringListener::valueChanged(const std::string& value) {
+void DialogModelSpindizzyJewel::StringListener::valueChanged(std::string value) {
   unsigned int mCycleColours = min(1, max(32, atoi(value.c_str())));
   cParent->setCycleColours(mCycleColours);
 }

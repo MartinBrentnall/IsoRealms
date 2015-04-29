@@ -37,6 +37,6 @@ ResourceIntegerFixed* DialogIntegerFixed::getResource() {
   return cInteger;
 }
 
-void DialogIntegerFixed::valueChanged(int& value) {
+void DialogIntegerFixed::valueChanged(int value) {
   cInteger->setValue(value);
 }

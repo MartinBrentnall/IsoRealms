@@ -37,6 +37,6 @@ ResourceBooleanFixed* DialogBooleanFixed::getResource() {
   return cBoolean;
 }
 
-void DialogBooleanFixed::valueChanged(bool& value) {
+void DialogBooleanFixed::valueChanged(bool value) {
   cBoolean->setValue(value);
 }

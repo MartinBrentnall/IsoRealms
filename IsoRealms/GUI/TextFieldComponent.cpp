@@ -184,18 +184,18 @@ void TextFieldComponent::fireChange() {
   cUpdating = false;
 }
 
-void TextFieldComponent::setText(std::string text) {
+void TextFieldComponent::setValue(std::string text) {
   if (!cUpdating) {
     cInput = text;
 //    fireChange();
   } 
 }
 
-std::string TextFieldComponent::getText() {
+std::string TextFieldComponent::getValue() {
   return cInput;
 }
 
-void TextFieldComponent::addStringListener(IStringListener* listener) {
+void TextFieldComponent::addValueListener(IValueListener<std::string>* listener) {
   cListeners.push_back(listener);
 }
 

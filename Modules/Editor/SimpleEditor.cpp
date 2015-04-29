@@ -390,16 +390,48 @@ IResourceSelector* SimpleEditor::getResourceSelector() {
   return this;
 }
 
+void SimpleEditor::addResourceSelectionListener(IResourceSelectionListener<IBoolean>* listener) {
+  cDockablePrimitiveManager->addBooleanSelectionListener(listener);
+}
+
 void SimpleEditor::addResourceSelectionListener(IResourceSelectionListener<IColour>* listener) {
   cDockableTextureManager->addColourSelectionListener(listener);
+}
+
+void SimpleEditor::addResourceSelectionListener(IResourceSelectionListener<IFloat>* listener) {
+  cDockablePrimitiveManager->addFloatSelectionListener(listener);
+}
+
+void SimpleEditor::addResourceSelectionListener(IResourceSelectionListener<IInteger>* listener) {
+  cDockablePrimitiveManager->addIntegerSelectionListener(listener);
+}
+
+void SimpleEditor::addResourceSelectionListener(IResourceSelectionListener<IString>* listener) {
+  cDockablePrimitiveManager->addStringSelectionListener(listener);
 }
 
 void SimpleEditor::addResourceSelectionListener(IResourceSelectionListener<ITexture>* listener) {
   cDockableTextureManager->addTextureSelectionListener(listener);
 }
 
+void SimpleEditor::removeResourceSelectionListener(IResourceSelectionListener<IBoolean>* listener) {
+  cDockablePrimitiveManager->removeBooleanSelectionListener(listener);
+}
+
 void SimpleEditor::removeResourceSelectionListener(IResourceSelectionListener<IColour>* listener) {
   cDockableTextureManager->removeColourSelectionListener(listener);
+}
+
+void SimpleEditor::removeResourceSelectionListener(IResourceSelectionListener<IFloat>* listener) {
+  cDockablePrimitiveManager->removeFloatSelectionListener(listener);
+}
+
+void SimpleEditor::removeResourceSelectionListener(IResourceSelectionListener<IInteger>* listener) {
+  cDockablePrimitiveManager->removeIntegerSelectionListener(listener);
+}
+
+void SimpleEditor::removeResourceSelectionListener(IResourceSelectionListener<IString>* listener) {
+  cDockablePrimitiveManager->removeStringSelectionListener(listener);
 }
 
 void SimpleEditor::removeResourceSelectionListener(IResourceSelectionListener<ITexture>* listener) {

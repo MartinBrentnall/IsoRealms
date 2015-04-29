@@ -24,17 +24,18 @@
 
 #include "../Configuration.h"
 #include "../MiscFunctions.h"
-#include "IFloatListener.h"
 #include "ISizedComponent.h"
 #include "ISliderRenderer.h"
+#include "IValueComponent.h"
 
-class SliderComponent:public ISizedComponent {
+class SliderComponent:public ISizedComponent,
+                      public IValueComponent<float> {
   private:
   float cValue;
   bool cSliderUpdating;
   bool cDragging;
   ISliderRenderer* cRenderer;
-  std::vector<IFloatListener*> cValueListeners;
+  std::vector<IValueListener<float>*> cValueListeners;
   
   bool mouseButtonDown(SDL_Event&);
   bool mouseMotion(Uint16);
@@ -46,10 +47,12 @@ class SliderComponent:public ISizedComponent {
   
   void setRenderer(ISliderRenderer*);
     
+  /*************************************\
+   * Implements IValueComponent<float> *
+  \*************************************/
   void setValue(float);
   float getValue();
-  
-  void addFloatListener(IFloatListener*);
+  void addValueListener(IValueListener<float>*);
   
   /***************************************\
    * Implements IComponentSizeCalculator *
