@@ -16,45 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "ResourceBoundaries.h"
+#include "Boundaries.h"
 
-ResourceBoundaries::ResourceBoundaries(IDummyModule* module, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
-//   cCollectablesCount = 0;
-//   cCollectedCount = 0;
-//   cCollectedCountString = "0";
-  cEnteredScript = nullptr;
-  cExitedScript = nullptr;
+Boundaries::Boundaries() {
   cAccessMutex = SDL_CreateMutex();
 }
 
-void ResourceBoundaries::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
-  for (int i = 0; i < node->getChildCount(); i++) {
-    DOMNodeWrapper *mNode = node->getChild(i);
-    std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "EnteredScript") {
-      cEnteredScript = resources->getScriptCall(mNode, this);
-    } else if (mValueAsString == "ExitedScript") {
-      cExitedScript = resources->getScriptCall(mNode, this);
-    } else {
-      // TODO: Throw
-    }
-  }
+void Boundaries::initialiseResource(DOMNodeWrapper*, IResourceAccessor*) {
+  // Nothing to do
 }
 
-void ResourceBoundaries::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
-  DOMNodeWriter* mEnteredScriptNode = node->addBranch("EnteredScript");
-  cEnteredScript->save(mEnteredScriptNode, resourceLocator);
-  DOMNodeWriter* mExitedScriptNode = node->addBranch("ExitedScript");
-  cExitedScript->save(mExitedScriptNode, resourceLocator);
-}
-
-void ResourceBoundaries::registerBoundary(IBoundary* boundary) {
+void Boundaries::registerBoundary(IBoundary* boundary) {
   while (SDL_mutexP(cAccessMutex) == -1);
   cBoundaries.add(boundary);
   SDL_mutexV(cAccessMutex);
 }
 
-void ResourceBoundaries::notifyAppearance(IBoundaryPenetrator* boundaryPenetrator, Vertex& location) {
+void Boundaries::notifyAppearance(IBoundaryPenetrator* boundaryPenetrator, Vertex& location, BoundaryHandler* boundaryHandler) {
   while (SDL_mutexP(cAccessMutex) == -1);
   std::vector<IBoundary*> mBoundaries = cBoundaries.getElements(location.getX(), location.getY());
   SDL_mutexV(cAccessMutex);
@@ -63,14 +41,14 @@ void ResourceBoundaries::notifyAppearance(IBoundaryPenetrator* boundaryPenetrato
       boundaryPenetrator->entered(mBoundaries[i]);
       mBoundaries[i]->setArguments();
       boundaryPenetrator->setArguments();
-      cEnteredScript->execute();
+      boundaryHandler->entered();
       mBoundaries[i]->unsetArguments();
       boundaryPenetrator->unsetArguments();
     }
   }
 }
 
-void ResourceBoundaries::notifyDisappearance(IBoundaryPenetrator* boundaryPenetrator, Vertex& location) {
+void Boundaries::notifyDisappearance(IBoundaryPenetrator* boundaryPenetrator, Vertex& location, BoundaryHandler* boundaryHandler) {
   while (SDL_mutexP(cAccessMutex) == -1);
   std::vector<IBoundary*> mBoundaries = cBoundaries.getElements(location.getX(), location.getY());
   SDL_mutexV(cAccessMutex);
@@ -79,14 +57,14 @@ void ResourceBoundaries::notifyDisappearance(IBoundaryPenetrator* boundaryPenetr
       boundaryPenetrator->entered(mBoundaries[i]);
       mBoundaries[i]->setArguments();
       boundaryPenetrator->setArguments();
-      cExitedScript->execute();
+      boundaryHandler->exited();
       mBoundaries[i]->unsetArguments();
       boundaryPenetrator->unsetArguments();
     }
   }
 }
 
-void ResourceBoundaries::notifyMovement(IBoundaryPenetrator* boundaryPenetrator, Vertex& start, Vertex& end) {
+void Boundaries::notifyMovement(IBoundaryPenetrator* boundaryPenetrator, Vertex& start, Vertex& end, BoundaryHandler* boundaryHandler) {
   int mSouth = std::floor(std::min(start.getY(), end.getY())) - 1;
   int mNorth = std::ceil(std::max(start.getY(), end.getY())) + 1;
   int mWest  = std::floor(std::min(start.getX(), end.getX())) - 1;
@@ -99,21 +77,21 @@ void ResourceBoundaries::notifyMovement(IBoundaryPenetrator* boundaryPenetrator,
       boundaryPenetrator->entered(mBoundaries[i]);
       mBoundaries[i]->setArguments();
       boundaryPenetrator->setArguments();
-      cEnteredScript->execute();
+      boundaryHandler->entered();
       mBoundaries[i]->unsetArguments();
       boundaryPenetrator->unsetArguments();
     }
     if (mBoundaries[i]->isExited(start, end)) {
       mBoundaries[i]->setArguments();
       boundaryPenetrator->setArguments();
-      cExitedScript->execute();
+      boundaryHandler->exited();
       mBoundaries[i]->unsetArguments();
       boundaryPenetrator->unsetArguments();
     }
   }
 }
 
-void ResourceBoundaries::reinitialise() {
+void Boundaries::reinitialise() {
 //   for (std::map<IZone*, std::vector<ICollectable*>*>::iterator i = cBoundaries.begin(); i != cBoundaries.end(); ++i) {
 //     for (unsigned int j = 0; j < i->second->size(); j++) {
 //       (*i->second)[j]->setDirty();
@@ -127,14 +105,14 @@ void ResourceBoundaries::reinitialise() {
 //   return cCollectedCount == cCollectablesCount;
 // }
 
-std::string ResourceBoundaries::getPath(IArgumentValue* value) {
+std::string Boundaries::getPath(IArgumentValue* value) {
 //   return value == &cArgumentZoneRemaining ? "zoneRemaining"
 //        : value == &cArgumentZone          ? "zone"
 //        :                                    "";
   return "";
 }
 
-void ResourceBoundaries::connectArguments(std::vector<IArgumentValueCollection*> argumentValueCollection, const std::string& entity) {
+void Boundaries::connectArguments(std::vector<IArgumentValueCollection*> argumentValueCollection, const std::string& entity) {
   for (std::map<std::string, ArgumentValueProxy*>::iterator i = cArgumentValues.begin(); i != cArgumentValues.end(); i++) {
     std::size_t mPointerLocation = i->first.find("->");
     if (mPointerLocation != std::string::npos) {
@@ -152,17 +130,17 @@ void ResourceBoundaries::connectArguments(std::vector<IArgumentValueCollection*>
   }
 }
 
-void ResourceBoundaries::registerArgumentValuesBoundaries(IArgumentValueCollection* argumentValueRegistry) {
+void Boundaries::registerArgumentValuesBoundaries(IArgumentValueCollection* argumentValueRegistry) {
   cArgumentValuesBondaries.push_back(argumentValueRegistry);
   connectArguments(cArgumentValuesBondaries, "boundary");
 }
 
-void ResourceBoundaries::registerArgumentValuesBoundaryPenetrator(IArgumentValueCollection* argumentValueRegistry) {
+void Boundaries::registerArgumentValuesBoundaryPenetrator(IArgumentValueCollection* argumentValueRegistry) {
   cArgumentValuesBoundaryPenetrators.push_back(argumentValueRegistry);
   connectArguments(cArgumentValuesBoundaryPenetrators, "boundaryPenetrator");
 }
 
-ArgumentValueProxy* ResourceBoundaries::getArgumentValue(const std::string& path) {
+ArgumentValueProxy* Boundaries::getArgumentValue(const std::string& path) {
   std::map<std::string, ArgumentValueProxy*>::iterator i = cArgumentValues.find(path);
   if (i == cArgumentValues.end()) {
     cArgumentValues[path] = new ArgumentValueProxy();
@@ -172,7 +150,7 @@ ArgumentValueProxy* ResourceBoundaries::getArgumentValue(const std::string& path
   return cArgumentValues[path];
 }
 
-IArgumentValue* ResourceBoundaries::getArgumentValue(DOMNodeWrapper* node) {
+IArgumentValue* Boundaries::getArgumentValue(DOMNodeWrapper* node) {
   std::string mType = node->getAttribute("type");
   std::string mValue = node->getAttribute("value").substr(1);
   IArgumentValue* mArgumentValue = getArgumentValue(mValue);

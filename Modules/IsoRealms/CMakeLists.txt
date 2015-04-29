@@ -46,7 +46,6 @@ endif(FREETYPE_FOUND)
 
 add_library(IsoRealmsStd MODULE
   DialogBooleanFixed.cpp
-  DialogBoundaries.cpp
   DialogColourFixed.cpp
   DialogElementHUDModel.cpp
   DialogElementHUDRoundedRectangle.cpp
@@ -71,7 +70,6 @@ add_library(IsoRealmsStd MODULE
   ModelScriptable.cpp
   ModelSprite.cpp
   ResourceBooleanFixed.cpp
-  ResourceBoundaries.cpp
   ResourceElementHUDModel.cpp
   ResourceElementHUDRoundedRectangle.cpp
   ResourceElementHUDString.cpp

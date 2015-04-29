@@ -26,14 +26,16 @@
 #include "IBoundary.h"
 #include "IBoundaryPenetrator.h"
 
+class BoundaryHandler;
+
 class IBoundaries:public IResource {
   public:
   virtual void registerArgumentValuesBoundaries(IArgumentValueCollection*) = 0;
   virtual void registerArgumentValuesBoundaryPenetrator(IArgumentValueCollection*) = 0;
   virtual void registerBoundary(IBoundary*) = 0;
-  virtual void notifyMovement(IBoundaryPenetrator*, Vertex&, Vertex&) = 0;
-  virtual void notifyAppearance(IBoundaryPenetrator*, Vertex&) = 0;
-  virtual void notifyDisappearance(IBoundaryPenetrator*, Vertex&) = 0;
+  virtual void notifyMovement(IBoundaryPenetrator*, Vertex&, Vertex&, BoundaryHandler*) = 0;
+  virtual void notifyAppearance(IBoundaryPenetrator*, Vertex&, BoundaryHandler*) = 0;
+  virtual void notifyDisappearance(IBoundaryPenetrator*, Vertex&, BoundaryHandler*) = 0;
   virtual void reinitialise() = 0;
 };
 

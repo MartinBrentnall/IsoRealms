@@ -165,15 +165,6 @@
     <BooleanFixed name="SwitchCircleLeft"/>
     <BooleanFixed name="SwitchCircleRight"/>
     <BooleanFixed name="SwitchCircleBoth"/>
-    <Boundaries name="Jewels">
-      <EnteredScript name="IsoRealms/jewelCollected"/>
-    </Boundaries>
-    <Boundaries name="Zones">
-      <EnteredScript name="IsoRealms/zoneEntered">
-        <Argument name="entered" type="Spindizzy/Zone" value="~boundary->zone"/>
-      </EnteredScript>
-      <ExitedScript name="IsoRealms/zoneExited"/>
-    </Boundaries>
     <ColourFixed alpha="1" blue="0" green="0" name="Black" red="0"/>
     <ColourFixed alpha="1" blue="1" green="1" name="White" red="1"/>
     <ColourFixed alpha="1" blue="0.203125" green="0.242188" name="Red" red="0.546875"/>
@@ -981,14 +972,21 @@ end</Code>
         <Argument name="player" type="Spindizzy/GERALD" value="~craft"/>
         <Argument name="fallDistance" type="Float" value="~fallDistance"/>
       </FallImpactScript>
-      <Boundaries name="IsoRealms/Jewels"/>
-      <Boundaries name="IsoRealms/Zones"/>
+      <Boundaries name="Spindizzy/Jewel">
+        <EnteredScript name="IsoRealms/jewelCollected"/>
+      </Boundaries>
+      <Boundaries name="Spindizzy/Zone">
+        <EnteredScript name="IsoRealms/zoneEntered">
+          <Argument name="entered" type="Spindizzy/Zone" value="Zone"/>
+        </EnteredScript>
+        <ExitedScript name="IsoRealms/zoneExited"/>
+      </Boundaries>
       <Instance name="Player" x="-4" y="3" z="0"/>
     </ElementSpindizzyCraft>
     <ElementSpindizzyEnemy model="IsoRealms/Ball" name="Ball"/>
     <ElementSpindizzyEnemy model="Spindizzy/Gyroscope" name="Gyroscope"/>
     <ElementSpindizzyEnemy model="Spindizzy/Pyramid" name="Pyramid"/>
-    <ElementSpindizzyItem boundaries="IsoRealms/Jewels" model="Spindizzy/Jewel" name="Jewel"/>
+    <ElementSpindizzyItem model="Spindizzy/Jewel" name="Jewel"/>
     <ElementSpindizzyLift state="#true" model="IsoRealms/LiftDiamondEmpty" name="DiamondEmpty"/>
     <ElementSpindizzyLift state="IsoRealms/SwitchDiamondLeft" model="IsoRealms/LiftDiamondLeft" name="DiamondLeft"/>
     <ElementSpindizzyLift state="IsoRealms/SwitchDiamondRight" model="IsoRealms/LiftDiamondRight" name="DiamondRight"/>
@@ -1002,7 +1000,7 @@ end</Code>
     <ElementSpindizzyLift state="IsoRealms/SwitchCircleRight" model="IsoRealms/LiftCircleRight" name="CircleRight"/>
     <ElementSpindizzyLift state="IsoRealms/SwitchCircleBoth" model="IsoRealms/LiftCircleFilled" name="CircleFilled"/>
     <ElementSpindizzyWater name="Water" texture="Spindizzy/IceWater"/>
-    <ElementSpindizzyZone name="Zone" visitedColour="#0.6 0.9 1 0" unvisitedColour="#0.1 0.2 0.25 0" currentColour="#1 0.6 0.5 0" flagModel="Spindizzy/Jewel" boundaries="IsoRealms/Zones"/>
+    <ElementSpindizzyZone name="Zone" visitedColour="#0.6 0.9 1 0" unvisitedColour="#0.1 0.2 0.25 0" currentColour="#1 0.6 0.5 0" flagModel="Spindizzy/Jewel"/>
     <LayerBackground name="Background">
       <Instance name="Background"/>
     </LayerBackground>

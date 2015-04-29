@@ -63,9 +63,8 @@ void ResourceElementSpindizzyCraft::initialiseResource(DOMNodeWrapper* node, IRe
     } else if (mValueAsString == "RespawnScript") {
       cRespawnScript = resourceAccessor->getScriptCall(mNode);
     } else if (mValueAsString == "Boundaries") {
-      std::string mBoundariesPath = mNode->getAttribute("name");
-      IBoundaries* mBoundaries = resourceAccessor->getBoundaries(mBoundariesPath);
-      cBoundaries.push_back(mBoundaries);
+      IBoundaryHandler* mBoundaryHandler = resourceAccessor->getBoundaryHandler(mNode);
+      cBoundaryHandlers.push_back(mBoundaryHandler);
     }
   }
   BlockLocation mIdentityLocation(0, 0, 0);
@@ -162,9 +161,9 @@ void ResourceElementSpindizzyCraft::save(DOMNodeWriter* node, IResourceLocator* 
   node->addAttribute("camera", resourceLocator->getPath(cCamera));
   resourceLocator->saveScript(node, "RespawnScript", cRespawnScript);
   resourceLocator->saveScript(node, "FallImpactScript", cFallImpactScript);
-  for (unsigned int i = 0; i < cBoundaries.size(); i++) {
-    DOMNodeWriter* mBoundariesNode = node->addBranch("Boundaries");
-    mBoundariesNode->addAttribute("name", resourceLocator->getPath(cBoundaries[i]));
+  for (unsigned int i = 0; i < cBoundaryHandlers.size(); i++) {
+//    DOMNodeWriter* mBoundariesNode = node->addBranch("Boundaries");
+//    mBoundariesNode->addAttribute("name", resourceLocator->getPath(cBoundaries[i]));
   }
 }
 
@@ -220,20 +219,20 @@ I3DModel* ResourceElementSpindizzyCraft::createModel(Vertex* vertex) {
 }
 
 void ResourceElementSpindizzyCraft::notifyMovement(ElementSpindizzyCraft* gerald, Vertex& start, Vertex& end) {
-  for (unsigned int i = 0; i < cBoundaries.size(); i++) {
-    cBoundaries[i]->notifyMovement(gerald, start, end);
+  for (unsigned int i = 0; i < cBoundaryHandlers.size(); i++) {
+    cBoundaryHandlers[i]->notifyMovement(gerald, start, end);
   }
 }
 
 void ResourceElementSpindizzyCraft::notifyAppearance(ElementSpindizzyCraft* craft, Vertex& location) {
-  for (unsigned int i = 0; i < cBoundaries.size(); i++) {
-    cBoundaries[i]->notifyAppearance(craft, location);
+  for (unsigned int i = 0; i < cBoundaryHandlers.size(); i++) {
+    cBoundaryHandlers[i]->notifyAppearance(craft, location);
   }
 }
 
 void ResourceElementSpindizzyCraft::notifyDisappearance(ElementSpindizzyCraft* craft, Vertex& location) {
-  for (unsigned int i = 0; i < cBoundaries.size(); i++) {
-    cBoundaries[i]->notifyDisappearance(craft, location);
+  for (unsigned int i = 0; i < cBoundaryHandlers.size(); i++) {
+    cBoundaryHandlers[i]->notifyDisappearance(craft, location);
   }
 }
 

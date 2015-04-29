@@ -23,7 +23,6 @@
 #include <luabind/operator.hpp>
 #include <iostream>
 
-#include "ResourceBoundaries.h"
 #include "ResourceIntegerTimer.h"
 #include "ResourceModelScriptable.h"
 #include "ResourceVertexFixed.h"

@@ -27,6 +27,7 @@
 #include <IsoRealms/IsoRealmsConstants.h>
 #include <IsoRealms/IVisualElement.h>
 #include <IsoRealms/LuaSupport/ArgumentValueLocal.h>
+#include <IsoRealms/Resources/Boundaries/Boundaries.h>
 #include <IsoRealms/Resources/Script/IScript.h>
 #include <IsoRealms/Resources/Vertex/Vertex.h>
 

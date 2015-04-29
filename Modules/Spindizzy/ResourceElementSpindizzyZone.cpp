@@ -20,6 +20,9 @@
 
 ResourceElementSpindizzyZone::ResourceElementSpindizzyZone(ISpindizzyZoneModule* module, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
   cModuleInterface = module;
+  cBoundaries = new Boundaries();
+  cBoundaries->registerArgumentValuesBoundaries(this);
+  resourceRegistry->add(cBoundaries, node->getAttribute("name"));
 }
 
 ISpindizzyZoneModule* ResourceElementSpindizzyZone::getSpindizzyZoneInterface() {
@@ -50,12 +53,9 @@ void ResourceElementSpindizzyZone::initialiseResource(DOMNodeWrapper* node, IRes
   std::string mPathVisitedColour = node->getAttribute("visitedColour");
   std::string mPathUnvisitedColour = node->getAttribute("unvisitedColour");
   std::string mPathFlagModel = node->getAttribute("flagModel");
-  std::string mPathBoundaries = node->getAttribute("boundaries");
   cVisitedColour = resources->getColour(mPathVisitedColour);
   cUnvisitedColour = resources->getColour(mPathUnvisitedColour);
   cFlagModelType = resources->getModelType(mPathFlagModel);
-  cBoundaries = resources->getBoundaries(mPathBoundaries);
-  cBoundaries->registerArgumentValuesBoundaries(this);
   BlockLocation mZoneLocation(0, 0, 0);
   BlockArea* mZoneArea = new BlockArea(mZoneLocation, mZoneLocation);
   cSampleZone = new ElementSpindizzyZone(this, mZoneArea);

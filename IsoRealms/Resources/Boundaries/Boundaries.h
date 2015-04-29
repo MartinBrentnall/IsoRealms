@@ -16,8 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef RESOURCE_BOUNDARIES_H
-#define RESOURCE_BOUNDARIES_H
+#ifndef BOUNDARIES_H
+#define BOUNDARIES_H
 
 #include <map>
 #include <SDL/SDL_mutex.h>
@@ -25,7 +25,6 @@
 #include <vector>
 
 #include <IsoRealms/LuaSupport/ArgumentValueProxy.h>
-#include <IsoRealms/Resources/Boundaries/IBoundaries.h>
 #include <IsoRealms/Resources/IDummyModule.h>
 #include <IsoRealms/Resources/Integer/Integer.h>
 #include <IsoRealms/Resources/IResourceAccessor.h>
@@ -35,13 +34,14 @@
 #include <IsoRealms/Resources/Script/IScriptCall.h>
 #include <IsoRealms/Struct/SpatialContainer2D.h>
 
-class ResourceBoundaries:public IBoundaries,
-                         public IArgumentValueRegistry,
-                         public IArgumentLocator {
+#include "BoundaryHandler.h"
+#include "IBoundaries.h"
+
+class Boundaries:public IBoundaries,
+                 public IArgumentValueRegistry,
+                 public IArgumentLocator {
   private:
   SDL_mutex* cAccessMutex;
-  IScriptCall* cEnteredScript;
-  IScriptCall* cExitedScript;
 //   ArgumentValue<IInteger> cArgumentZoneRemaining;
   SpatialContainer2D<IBoundary> cBoundaries;
   std::vector<IArgumentValueCollection*> cArgumentValuesBondaries;
@@ -57,26 +57,25 @@ class ResourceBoundaries:public IBoundaries,
   void connectArguments(std::vector<IArgumentValueCollection*>, const std::string&);
   
   public:
-  ResourceBoundaries(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
+  Boundaries();
   
   void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
-  void save(DOMNodeWriter*, IResourceLocator*);
-  
+
   /**************************\
    * Implements IBoundaries *
   \**************************/
   void registerArgumentValuesBoundaries(IArgumentValueCollection*);
   void registerArgumentValuesBoundaryPenetrator(IArgumentValueCollection*);
   void registerBoundary(IBoundary*);
-  void notifyAppearance(IBoundaryPenetrator*, Vertex&);
-  void notifyDisappearance(IBoundaryPenetrator*, Vertex&);
-  void notifyMovement(IBoundaryPenetrator*, Vertex&, Vertex&);
+  void notifyAppearance(IBoundaryPenetrator*, Vertex&, BoundaryHandler*);
+  void notifyDisappearance(IBoundaryPenetrator*, Vertex&, BoundaryHandler*);
+  void notifyMovement(IBoundaryPenetrator*, Vertex&, Vertex&, BoundaryHandler*);
   void reinitialise();
   
   IArgumentValue* getArgumentValue(DOMNodeWrapper*);
   std::string getPath(IArgumentValue*);
   
-  virtual ~ResourceBoundaries() {}
+  virtual ~Boundaries() {}
 };
 
 #endif

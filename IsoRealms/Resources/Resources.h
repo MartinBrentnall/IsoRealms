@@ -23,6 +23,7 @@
 #include <IsoRealms/Input/InputCommands.h>
 
 #include "Boolean/BooleanRegistry.h"
+#include "Boundaries/BoundaryHandler.h"
 #include "Camera/CameraRegistry.h"
 #include "Camera/DummyCamera.h"
 #include "Colour/Colour.h"
@@ -156,7 +157,7 @@ class Resources:public IResources,
   I3DModel*             getModel(const std::string&, Vertex*, float = 1.0f);
   I3DModelType*         getModelType(const std::string&);
   IBoolean*             getBoolean(const std::string&);
-  IBoundaries*          getBoundaries(const std::string&);
+  IBoundaryHandler*     getBoundaryHandler(DOMNodeWrapper*);
   ICamera*              getCamera(const std::string&);
   IColour*              getColour(const std::string&);
   IComponentCustomType* getComponentCustomType(const std::string&);

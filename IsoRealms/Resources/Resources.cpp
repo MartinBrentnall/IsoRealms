@@ -153,7 +153,7 @@ IArgumentValue* Resources::getArgumentValueCustom(DOMNodeWrapper* node) {
 I3DModel* Resources::getModelInstance(const std::string& name)                   {return c3DModels.get(name);}
 I3DModelType* Resources::getModelType(const std::string& path)                   {return c3DModelTypes.get(path);}
 IBoolean* Resources::getBoolean(const std::string& path)                         {return cBooleans.get(path);}
-IBoundaries* Resources::getBoundaries(const std::string& path)                   {return cBoundaries.get(path);}
+IBoundaryHandler* Resources::getBoundaryHandler(DOMNodeWrapper* node)            {return new BoundaryHandler(node, this, cBoundaries.get(node->getAttribute("name")));}
 ICamera* Resources::getCamera(const std::string& path)                           {return cCameras.get(path);}
 IColour* Resources::getColour(const std::string& name)                           {return cColours.get(name);}
 IComponentCustomType* Resources::getComponentCustomType(const std::string& path) {return cComponentCustomTypes.get(path);}

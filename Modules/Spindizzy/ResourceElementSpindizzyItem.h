@@ -26,6 +26,7 @@
 #include <IsoRealms/IDynamicElement.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 #include <IsoRealms/IVisualElement.h>
+#include <IsoRealms/Resources/Boundaries/Boundaries.h>
 #include <IsoRealms/Resources/IResourceAccessor.h>
 #include <IsoRealms/Resources/Script/IScriptCall.h>
 #include <IsoRealms/Resources/Vertex/Vertex.h>

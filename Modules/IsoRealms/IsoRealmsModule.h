@@ -23,7 +23,6 @@
 #include <IsoRealms/LuaSupport/LuaGlobalVariable.h>
 
 #include "DialogBooleanFixed.h"
-#include "DialogBoundaries.h"
 #include "DialogColourFixed.h"
 #include "DialogElementHUDModel.h"
 #include "DialogElementHUDRoundedRectangle.h"
@@ -41,7 +40,6 @@
 #include "DialogTextureFile.h"
 #include "DialogVertexFixed.h"
 #include "ResourceBooleanFixed.h"
-#include "ResourceBoundaries.h"
 #include "ResourceElementHUDModel.h"
 #include "ResourceElementHUDRoundedRectangle.h"
 #include "ResourceElementHUDString.h"
@@ -59,7 +57,6 @@
 class IsoRealmsModule:public IModule {
   private:
   static const std::string TAG_RESOURCE_TYPE_BOOLEAN_FIXED;
-  static const std::string TAG_RESOURCE_TYPE_BOUNDARIES;
   static const std::string TAG_RESOURCE_TYPE_COLOUR_FIXED;
   static const std::string TAG_RESOURCE_TYPE_ELEMENT_HUD_MODEL;
   static const std::string TAG_RESOURCE_TYPE_ELEMENT_HUD_ROUNDED_RECTANGLE;
@@ -78,7 +75,6 @@ class IsoRealmsModule:public IModule {
   static const std::string TAG_RESOURCE_TYPE_VERTEX_FIXED;
 
   static const std::string NAME_RESOURCE_TYPE_BOOLEAN_FIXED;
-  static const std::string NAME_RESOURCE_TYPE_BOUNDARIES;
   static const std::string NAME_RESOURCE_TYPE_COLOUR_FIXED;
   static const std::string NAME_RESOURCE_TYPE_ELEMENT_HUD_MODEL;
   static const std::string NAME_RESOURCE_TYPE_ELEMENT_HUD_ROUNDED_RECTANGLE;
@@ -99,7 +95,6 @@ class IsoRealmsModule:public IModule {
   static bool cStaticInit;
   
   ResourceType<IBoolean,             ResourceBooleanFixed,               DialogBooleanFixed>               cResourceTypeBooleanFixed;
-  ResourceType<IBoundaries,          ResourceBoundaries,                 DialogBoundaries>                 cResourceTypeBoundaries;
   ResourceType<IColour,              Colour,                             DialogColourFixed>                cResourceTypeColourFixed;
   ResourceType<IElementType,         ResourceElementHUDModel,            DialogElementHUDModel>            cResourceTypeElementHUDModel;
   ResourceType<IElementType,         ResourceElementHUDRoundedRectangle, DialogElementHUDRoundedRectangle> cResourceTypeElementHUDRoundedRectangle;

@@ -18,10 +18,6 @@
  */
 #include "IsoRealmsScriptSupport.h"
 
-bool operator==(const ResourceBoundaries& a, const ResourceBoundaries& b) {
-  return &a == &b; 
-}
-
 bool operator==(const ResourceIntegerTimer& a, const ResourceIntegerTimer& b) {
   return &a == &b; 
 }
@@ -36,11 +32,6 @@ bool operator==(const ResourceVertexFixed& a, const ResourceVertexFixed& b) {
 
 extern "C" void initLua(lua_State* luaState) {
   if (!cScriptSupportEnabled) {
-    luabind::module(luaState) [
-      luabind::class_<ResourceBoundaries>("Boundaries")
-  //       .def("getRemaining", &ZoneCollectables::getRemaining)
-        .def(luabind::const_self == luabind::const_self)
-    ];
     luabind::module(luaState) [
       luabind::class_<ModelScriptable>("ScriptableModel")
         .def("setModel", &ModelScriptable::setModel)

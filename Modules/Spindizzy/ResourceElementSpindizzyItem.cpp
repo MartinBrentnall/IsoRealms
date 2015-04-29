@@ -22,13 +22,13 @@ ResourceElementSpindizzyItem::ResourceElementSpindizzyItem(ISpindizzyJewelSet* e
   cModuleInterface = elementSet;
   cJewelCollectedScript = nullptr;
   cAllJewelsCollectedScript = nullptr;
+  cBoundaries = new Boundaries();
+  resourceRegistry->add(cBoundaries, node->getAttribute("name"));
 }
 
 void ResourceElementSpindizzyItem::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor) {
   std::string mModelPath = node->getAttribute("model");
   cModelType = resourceAccessor->getModelType(mModelPath);
-  std::string mBoundariesPath = node->getAttribute("boundaries");
-  cBoundaries = resourceAccessor->getBoundaries(mBoundariesPath);
   BlockLocation mIdentityLocation(0, 0, 0);
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
@@ -46,7 +46,6 @@ void ResourceElementSpindizzyItem::initialiseResource(DOMNodeWrapper* node, IRes
 
 void ResourceElementSpindizzyItem::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   node->addAttribute("model", resourceLocator->getPath(cModelType));
-  node->addAttribute("boundaries", resourceLocator->getPath(cBoundaries));
   if (cJewelCollectedScript != nullptr) {
     DOMNodeWriter* mJewelCollectedScriptNode = node->addBranch("JewelCollectedScript");
     cJewelCollectedScript->save(mJewelCollectedScriptNode, resourceLocator);

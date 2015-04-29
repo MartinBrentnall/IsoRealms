@@ -19,7 +19,6 @@
 #include "IsoRealmsModule.h"
 
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_BOOLEAN_FIXED                 = "BooleanFixed";
-const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_BOUNDARIES                    = "Boundaries";
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_COLOUR_FIXED                  = "ColourFixed";
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_ELEMENT_HUD_MODEL             = "ElementHUDModel";
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_ELEMENT_HUD_ROUNDED_RECTANGLE = "ElementHUDRoundedRectangle";
@@ -38,7 +37,6 @@ const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_TEXTURE_FILE               
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_VERTEX_FIXED                  = "VertexFixed";
 
 const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_BOOLEAN_FIXED                 = "BooleanFixed";
-const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_BOUNDARIES                    = "Boundaries";
 const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_COLOUR_FIXED                  = "Fixed Colour";
 const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_ELEMENT_HUD_MODEL             = "HUD Model Element";
 const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_ELEMENT_HUD_ROUNDED_RECTANGLE = "HUD Rounded Rectangle Element";
@@ -74,7 +72,6 @@ IsoRealmsModule::IsoRealmsModule(IResourceTypeRegistry* resourceTypeRegistry) {
   
   if (resourceTypeRegistry != NULL) {
     resourceTypeRegistry->addResourceType(&cResourceTypeBooleanFixed,               NAME_RESOURCE_TYPE_BOOLEAN_FIXED);
-    resourceTypeRegistry->addResourceType(&cResourceTypeBoundaries,                 NAME_RESOURCE_TYPE_BOUNDARIES);
     resourceTypeRegistry->addResourceType(&cResourceTypeColourFixed,                NAME_RESOURCE_TYPE_COLOUR_FIXED);
     resourceTypeRegistry->addResourceType(&cResourceTypeElementHUDModel,            NAME_RESOURCE_TYPE_ELEMENT_HUD_MODEL);
     resourceTypeRegistry->addResourceType(&cResourceTypeElementHUDRoundedRectangle, NAME_RESOURCE_TYPE_ELEMENT_HUD_ROUNDED_RECTANGLE);
@@ -100,7 +97,6 @@ void IsoRealmsModule::load(DOMNodeWrapper* node, IResourceRegistry* runtimeConte
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if      (mValueAsString == TAG_RESOURCE_TYPE_BOOLEAN_FIXED)                 {cResourceTypeBooleanFixed.loadResource(              mNode, runtimeContext);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_BOUNDARIES)                    {cResourceTypeBoundaries.loadResource(                mNode, runtimeContext);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_COLOUR_FIXED)                  {cResourceTypeColourFixed.loadResource(               mNode, runtimeContext);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_ELEMENT_HUD_MODEL)             {cResourceTypeElementHUDModel.loadResource(           mNode, runtimeContext);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_ELEMENT_HUD_ROUNDED_RECTANGLE) {cResourceTypeElementHUDRoundedRectangle.loadResource(mNode, runtimeContext);}
@@ -123,7 +119,6 @@ void IsoRealmsModule::load(DOMNodeWrapper* node, IResourceRegistry* runtimeConte
 
 void IsoRealmsModule::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   cResourceTypeBooleanFixed.saveResources(              node, resourceLocator, TAG_RESOURCE_TYPE_BOOLEAN_FIXED);
-  cResourceTypeBoundaries.saveResources(                node, resourceLocator, TAG_RESOURCE_TYPE_BOUNDARIES);
   cResourceTypeColourFixed.saveResources(               node, resourceLocator, TAG_RESOURCE_TYPE_COLOUR_FIXED);
   cResourceTypeFontFile.saveResources(                  node, resourceLocator, TAG_RESOURCE_TYPE_FONT_FILE);
   cResourceTypeGlobalVariable.saveResources(            node, resourceLocator, TAG_RESOURCE_TYPE_GLOBAL_VARIABLE);

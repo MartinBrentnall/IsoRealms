@@ -26,7 +26,7 @@
 #include <IsoRealms/IVisualElement.h>
 #include <IsoRealms/LuaSupport/ArgumentValue.h>
 #include <IsoRealms/LuaSupport/ArgumentValueLocal.h>
-#include <IsoRealms/Resources/Boundaries/IBoundaries.h>
+#include <IsoRealms/Resources/Boundaries/IBoundaryHandler.h>
 #include <IsoRealms/Resources/3DModel/I3DModelType.h>
 #include <IsoRealms/Resources/Camera/ICamera.h>
 #include <IsoRealms/Resources/Float/Float.h>
@@ -50,7 +50,7 @@ class ResourceElementSpindizzyCraft:public ISpindizzyGERALDType,
   IResourceAccessor* cResources;
   I3DModelType* cModelType;
   ICamera* cCamera;
-  std::vector<IBoundaries*> cBoundaries;
+  std::vector<IBoundaryHandler*> cBoundaryHandlers;
   ElementSpindizzyCraft* cSampleGERALD;
   BlockLocation* cEditingLocation;
   IScriptCall* cRespawnScript;

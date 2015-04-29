@@ -32,7 +32,7 @@ class IArgumentValueRegistry;
 class IArgumentDefinition;
 class I3DModel;
 class I3DModelType;
-class IBoundaries;
+class IBoundaryHandler;
 class ICamera;
 class IColour;
 class IComponentCustomType;
@@ -56,7 +56,7 @@ class IResourceAccessor {
   virtual I3DModel*             getModel(              const std::string&, Vertex*, float = 1.0f) = 0;
   virtual I3DModelType*         getModelType(          const std::string&) = 0;
   virtual IBoolean*             getBoolean(            const std::string&) = 0;
-  virtual IBoundaries*          getBoundaries(         const std::string&) = 0;
+  virtual IBoundaryHandler*     getBoundaryHandler(    DOMNodeWrapper*) = 0;
   virtual ICamera*              getCamera(             const std::string&) = 0;
   virtual IColour*              getColour(             const std::string&) = 0;
   virtual IComponentCustomType* getComponentCustomType(const std::string&) = 0;

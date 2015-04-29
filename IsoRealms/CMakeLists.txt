@@ -88,6 +88,8 @@ add_library(IsoRealms SHARED
   Rectangle.cpp
   Resources/Boolean/Boolean.cpp
   Resources/Boolean/BooleanRegistry.cpp
+  Resources/Boundaries/Boundaries.cpp
+  Resources/Boundaries/BoundaryHandler.cpp
   Resources/Camera/CameraRegistry.cpp
   Resources/Camera/DummyCamera.cpp
   Resources/Camera/WrappedCamera.cpp
