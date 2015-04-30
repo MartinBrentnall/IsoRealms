@@ -107,7 +107,7 @@ class ComponentColourSelector:public RectangularComponent {
     /************************************\
      * Implements IValueListener<float> *
     \************************************/
-    void valueChanged(float);
+    void valueChanged(IValueComponent<float>*, float);
   };
   
   class HueListener:public IValueListener<float> {
@@ -121,7 +121,7 @@ class ComponentColourSelector:public RectangularComponent {
     /************************************\
      * Implements IValueListener<float> *
     \************************************/
-    void valueChanged(float);
+    void valueChanged(IValueComponent<float>*, float);
   };
   
   class StringListener:public IValueListener<std::string> {
@@ -135,7 +135,7 @@ class ComponentColourSelector:public RectangularComponent {
     /*****************************************\
      * Implements IValueListener<std::string *
     \*****************************************/
-    void valueChanged(std::string);
+    void valueChanged(IValueComponent<std::string>*, std::string);
   };
     
   class StringListenerHSL:public IValueListener<std::string> {
@@ -149,7 +149,7 @@ class ComponentColourSelector:public RectangularComponent {
     /******************************************\
      * Implements IValueListener<std::string> *
     \******************************************/
-    void valueChanged(std::string);
+    void valueChanged(IValueComponent<std::string>*, std::string);
   };
     
   float cRed;

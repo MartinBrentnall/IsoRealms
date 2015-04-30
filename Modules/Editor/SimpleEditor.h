@@ -232,12 +232,14 @@ class SimpleEditor:public IModule,
   /********************************\
    * Implements IResourceSelector *
   \********************************/
+  void addResourceSelectionListener(IResourceSelectionListener<I3DModelType>*);
   void addResourceSelectionListener(IResourceSelectionListener<IBoolean>*);
   void addResourceSelectionListener(IResourceSelectionListener<IColour>*);
   void addResourceSelectionListener(IResourceSelectionListener<IFloat>*);
   void addResourceSelectionListener(IResourceSelectionListener<IInteger>*);
   void addResourceSelectionListener(IResourceSelectionListener<IString>*);
   void addResourceSelectionListener(IResourceSelectionListener<ITexture>*);
+  void removeResourceSelectionListener(IResourceSelectionListener<I3DModelType>*);
   void removeResourceSelectionListener(IResourceSelectionListener<IBoolean>*);
   void removeResourceSelectionListener(IResourceSelectionListener<IColour>*);
   void removeResourceSelectionListener(IResourceSelectionListener<IFloat>*);

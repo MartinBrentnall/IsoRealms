@@ -34,6 +34,7 @@
 #include "GridLayoutComponent.h"
 #include "IComponentHolder.h"
 #include "../IComponentCustomType.h"
+#include "IDialogValueListener.h"
 #include "IntegerField.h" 
 #include "ISizedComponent.h"
 #include "ISliderRenderer.h"
@@ -48,6 +49,7 @@
 #include "TextEditorComponent.h"
 #include "TextFieldComponent.h"
 #include "TextLabelComponent.h"
+#include "ValueComponents/ComponentResourceModel.h"
 #include "WrappingGridComponent.h"
 
 class TabbedContainer;
@@ -55,7 +57,8 @@ class TabbedContainer;
 class RectangularComponent:public ISizedComponent,
                            public IMenuContainer,
                            public IComponentHolder,
-                           public IListBoxListener {
+                           public IListBoxListener,
+                           public IValueListener<I3DModelType*> {
   private:
   RectangularComponent* cTopLevelComponent;
   std::vector<IRectangularComponent*> cChildren;
@@ -65,12 +68,13 @@ class RectangularComponent:public ISizedComponent,
   // TODO: Should use interface to support other components; e.g. ListBoxes
   
   // Value components.
-  std::map<std::string, IValueComponent<bool>*>        cValueComponentsBoolean;
-  std::map<std::string, IValueComponent<int>*>         cValueComponentsInteger;
-  std::map<std::string, IValueComponent<float>*>       cValueComponentsFloat;
-  std::map<std::string, IValueComponent<std::string>*> cValueComponentsString;
-  std::map<std::string, IValueComponent<IColour*>*>    cValueComponentsResourceColour;
-  std::map<std::string, IValueComponent<ITexture*>*>   cValueComponentsResourceTexture;
+  std::map<std::string, IValueComponent<bool>*>          cValueComponentsBoolean;
+  std::map<std::string, IValueComponent<int>*>           cValueComponentsInteger;
+  std::map<std::string, IValueComponent<float>*>         cValueComponentsFloat;
+  std::map<std::string, IValueComponent<std::string>*>   cValueComponentsString;
+  std::map<std::string, IValueComponent<I3DModelType*>*> cValueComponentsResource3DModelType;
+  std::map<std::string, IValueComponent<IColour*>*>      cValueComponentsResourceColour;
+  std::map<std::string, IValueComponent<ITexture*>*>     cValueComponentsResourceTexture;
   
   std::map<std::string, SliderComponent*> cSliders;
   std::map<std::string, IComponentHolder*> cComponentContainers;
@@ -81,13 +85,15 @@ class RectangularComponent:public ISizedComponent,
   std::map<IRectangularComponent*, MenuPopup*> cPopupMenus;
   IRectangularComponent* cFocusedComponent;
   MenuPopup* cActivePopupMenu;
+  
+  IDialogValueListener* cValueListener;
 
   ListBox* getListBox(const std::string&);
   std::string getStringValue(const std::string&);
   void setComponentText(DOMNodeWrapper*, ITextComponent*);
   IComponentBoundsCalculator* getBoundsCalculator(DOMNodeWrapper*, IRectangle*, float, ISizedComponent*);
-  ISizedComponent* loadSizedComponent(DOMNodeWrapper*);
-  void loadFlexibleGridCells(DOMNodeWrapper*, FlexibleGridLayoutComponent*);
+  ISizedComponent* loadSizedComponent(DOMNodeWrapper*, IEditingContext*);
+  void loadFlexibleGridCells(DOMNodeWrapper*, FlexibleGridLayoutComponent*, IEditingContext*);
   void loadEvenGridCells(DOMNodeWrapper*, GridLayoutComponent*, IResourceAccessor*);
   void loadTabbedContainer(DOMNodeWrapper*, TabbedContainer*, IResourceAccessor*);
   void loadPopupMenu(IRectangularComponent*, DOMNodeWrapper*);
@@ -100,11 +106,11 @@ class RectangularComponent:public ISizedComponent,
     
   public:
   RectangularComponent();
-  RectangularComponent(const std::string&, IResourceAccessor*);
+  RectangularComponent(const std::string&, IResourceAccessor*, IEditingContext* = nullptr, IDialogValueListener* = nullptr);
   RectangularComponent(DOMNodeWrapper*, IResourceAccessor*);
 
-  void loadComponent(DOMNodeWrapper*, IResourceAccessor*);
-  void loadDialog(DOMNodeWrapper*, IRectangle*, float, IResourceAccessor*, RectangularComponent* = NULL);
+  void loadComponent(DOMNodeWrapper*, IResourceAccessor*, IEditingContext* = nullptr);
+  void loadDialog(DOMNodeWrapper*, IRectangle*, float, IResourceAccessor*, IEditingContext*, RectangularComponent* = nullptr);
   
   void setRenderer(ISliderRenderer*, const std::string&);
   void setRenderer(IPanelRenderer*, const std::string&);
@@ -118,6 +124,7 @@ class RectangularComponent:public ISizedComponent,
   void setFloatValue(const std::string&, float);
   void setStringValue(const std::string&, const std::string&);
   void setStringValue(const std::string&, float);
+  void setValue(const std::string&, I3DModelType*);
   
   void clearListBox(const std::string&);
   void addListBoxItem(const std::string&, const std::string&);
@@ -156,6 +163,11 @@ class RectangularComponent:public ISizedComponent,
    * Implements IListBoxListener *
   \*******************************/
   void assertSelection(ListBox*, const std::string&);
+  
+  /********************************************\
+   * Implements IValueListener<I3DModelType*> *
+  \********************************************/
+  void valueChanged(IValueComponent<I3DModelType*>*, I3DModelType*);
   
   virtual void assertSelection(const std::string&, const std::string&) {
   }

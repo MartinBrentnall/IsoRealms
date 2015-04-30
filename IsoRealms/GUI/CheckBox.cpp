@@ -111,6 +111,6 @@ void CheckBox::lostFocus() {
 void CheckBox::fireChange() {
   std::cout << "There are " << cListeners.size() << " listeners!" << std::endl;
   for (unsigned int i = 0; i < cListeners.size(); i++) {
-    cListeners[i]->valueChanged(cValue);
+    cListeners[i]->valueChanged(nullptr, cValue);
   }
 }

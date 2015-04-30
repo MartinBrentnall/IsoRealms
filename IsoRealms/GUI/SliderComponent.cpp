@@ -155,7 +155,7 @@ bool SliderComponent::input(SDL_Event& event) {
 void SliderComponent::fireChange() {
   cSliderUpdating = true;
   for (unsigned int i = 0; i < cValueListeners.size(); i++) {
-    cValueListeners[i]->valueChanged(cValue);
+    cValueListeners[i]->valueChanged(this, cValue);
   }
   cSliderUpdating = false;
 }

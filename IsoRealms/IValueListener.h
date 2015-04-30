@@ -19,9 +19,11 @@
 #ifndef I_VALUE_LISTENER_H
 #define I_VALUE_LISTENER_H
 
+template <class T> class IValueComponent;
+
 template <class T> class IValueListener {
   public:
-  virtual void valueChanged(T) = 0;
+  virtual void valueChanged(IValueComponent<T>*, T) = 0;
 };
 
 #endif

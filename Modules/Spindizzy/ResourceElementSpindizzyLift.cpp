@@ -25,6 +25,18 @@ ResourceElementSpindizzyLift::ResourceElementSpindizzyLift(ISpindizzyLiftSet* el
   cFirstRange = nullptr;
 }
 
+I3DModelType* ResourceElementSpindizzyLift::getModelType() {
+  return cModelType;
+}
+
+void ResourceElementSpindizzyLift::setModelType(I3DModelType* modelType) {
+  cSampleLift->setModelType(cModelType, modelType);
+  for (unsigned int i = 0; i < cContent.size(); i++) {
+    cContent[i]->setModelType(cModelType, modelType);
+  }
+  cModelType = modelType;
+}
+
 void ResourceElementSpindizzyLift::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor) {
   std::string mModelPath = node->getAttribute("model");
   std::string mStatePath = node->getAttribute("state");

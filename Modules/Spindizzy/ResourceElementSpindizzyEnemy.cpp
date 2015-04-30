@@ -22,6 +22,18 @@ ResourceElementSpindizzyEnemy::ResourceElementSpindizzyEnemy(ISpindizzyEnemySet*
   cModuleInterface = elementSet;
 }
 
+I3DModelType* ResourceElementSpindizzyEnemy::getModelType() {
+  return cModelType;
+}
+
+void ResourceElementSpindizzyEnemy::setModelType(I3DModelType* modelType) {
+  cSampleEnemy->setModelType(cModelType, modelType);
+  for (unsigned int i = 0; i < cContent.size(); i++) {
+    cContent[i]->setModelType(cModelType, modelType);
+  }
+  cModelType = modelType;
+}
+
 void ResourceElementSpindizzyEnemy::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor) {
   std::string mModelPath = node->getAttribute("model");
   cModelType = resourceAccessor->getModelType(mModelPath);

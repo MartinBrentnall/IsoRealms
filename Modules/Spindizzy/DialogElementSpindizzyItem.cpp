@@ -20,7 +20,10 @@
 #include "DialogElementSpindizzyItem.h"
 
 DialogElementSpindizzyItem::DialogElementSpindizzyItem(IEditingContext* editingContext, ResourceElementSpindizzyItem* elementSpindizzyItem, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "Spindizzy Item Element", resourceName) {
+  RectangularComponent* mContent = new RectangularComponent("Modules/Spindizzy/DialogElementSpindizzyItem", resources, editingContext, this);
   cElementSpindizzyItem = elementSpindizzyItem;
+  mContent->setValue("resourceModel", cElementSpindizzyItem->getModelType());
+  addComponent("content", mContent);
 }
 
 void DialogElementSpindizzyItem::undo() {
@@ -29,4 +32,8 @@ void DialogElementSpindizzyItem::undo() {
 
 ResourceElementSpindizzyItem* DialogElementSpindizzyItem::getResource() {
   return cElementSpindizzyItem;
+}
+
+void DialogElementSpindizzyItem::valueChanged(const std::string& component, I3DModelType* value) {
+  if (component == "resourceModel") {cElementSpindizzyItem->setModelType(value);}
 }

@@ -200,7 +200,7 @@ void IntegerField::fireChange() {
   cUpdating = true;
   int mValue = atoi(cInput.c_str());
   for (unsigned int i = 0; i < cListeners.size(); i++) {
-    cListeners[i]->valueChanged(mValue);
+    cListeners[i]->valueChanged(nullptr, mValue);
   }
   cUpdating = false;
 }

@@ -50,6 +50,11 @@ ElementSpindizzyCraft::ElementSpindizzyCraft(ISpindizzyGERALDType* elementType) 
   cAppeared = false;
 }
 
+void ElementSpindizzyCraft::setModelType(I3DModelType* oldModelType, I3DModelType* newModelType) {
+  oldModelType->destroyModel(cGERALDModel);
+  cGERALDModel = newModelType->createModel(cLocation);
+}
+
 void ElementSpindizzyCraft::setElementContainer(IElementContainer* container) {
   cContainer = container;
 }

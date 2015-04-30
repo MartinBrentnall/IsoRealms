@@ -20,40 +20,31 @@
 
 ResourceElementSpindizzyItem::ResourceElementSpindizzyItem(ISpindizzyJewelSet* elementSet, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
   cModuleInterface = elementSet;
-  cJewelCollectedScript = nullptr;
-  cAllJewelsCollectedScript = nullptr;
   cBoundaries = new Boundaries();
   resourceRegistry->add(cBoundaries, node->getAttribute("name"));
+}
+
+I3DModelType* ResourceElementSpindizzyItem::getModelType() {
+  return cModelType;
+}
+
+void ResourceElementSpindizzyItem::setModelType(I3DModelType* modelType) {
+  cSampleJewel->setModelType(cModelType, modelType);
+  for (unsigned int i = 0; i < cContent.size(); i++) {
+    cContent[i]->setModelType(cModelType, modelType);
+  }
+  cModelType = modelType;
 }
 
 void ResourceElementSpindizzyItem::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor) {
   std::string mModelPath = node->getAttribute("model");
   cModelType = resourceAccessor->getModelType(mModelPath);
   BlockLocation mIdentityLocation(0, 0, 0);
-  for (int i = 0; i < node->getChildCount(); i++) {
-    DOMNodeWrapper *mNode = node->getChild(i);
-    std::string mValueAsString = mNode->getNodeName();
-    if (mValueAsString == "JewelCollectedScript") {
-      cJewelCollectedScript = resourceAccessor->getScriptCall(mNode);
-    } else if (mValueAsString == "AllJewelsCollectedScript") {
-      cAllJewelsCollectedScript = resourceAccessor->getScriptCall(mNode);
-    } else {
-      // TODO: Throw something!
-    }
-  }
   cSampleJewel = new ElementSpindizzyItem(this, &mIdentityLocation, cModelType, nullptr);
 }
 
 void ResourceElementSpindizzyItem::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   node->addAttribute("model", resourceLocator->getPath(cModelType));
-  if (cJewelCollectedScript != nullptr) {
-    DOMNodeWriter* mJewelCollectedScriptNode = node->addBranch("JewelCollectedScript");
-    cJewelCollectedScript->save(mJewelCollectedScriptNode, resourceLocator);
-  }
-  if (cAllJewelsCollectedScript != nullptr) {
-    DOMNodeWriter* mAllCollectedScriptNode = node->addBranch("AllJewelsCollectedScript");
-    cAllJewelsCollectedScript->save(mAllCollectedScriptNode, resourceLocator);
-  }
 }
 
 ISpindizzyJewelSet* ResourceElementSpindizzyItem::getSpindizzyItemInterface() {
@@ -129,26 +120,6 @@ void ResourceElementSpindizzyItem::renderIcon() {
 IBoundaries* ResourceElementSpindizzyItem::getCollectables() {
   return cBoundaries;
 }
-
-void ResourceElementSpindizzyItem::jewelCollected() {
-  cModuleInterface->itemCollected();
-  if (cJewelCollectedScript != nullptr) {
-    cJewelCollectedScript->execute();
-  }
-}
-
-void ResourceElementSpindizzyItem::allJewelsCollected() {
-  if (cAllJewelsCollectedScript != nullptr) {
-    cAllJewelsCollectedScript->execute();
-  }
-}
-
-/* TODO: Save this type
-void ResourceElementSpindizzyItem::save(DOMNodeWriter* node) {
-  cJewelCollectedScript->save(node, "JewelCollectedScript");
-  cAllJewelsCollectedScript->save(node, "AllJewelsCollectedScript");
-}
-*/
 
 void ResourceElementSpindizzyItem::destroy(IElement* jewel) {
   delete jewel;

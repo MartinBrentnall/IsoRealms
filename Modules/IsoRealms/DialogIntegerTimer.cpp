@@ -37,6 +37,6 @@ ResourceIntegerTimer* DialogIntegerTimer::getResource() {
   return cInteger;
 }
 
-void DialogIntegerTimer::valueChanged(int value) {
+void DialogIntegerTimer::valueChanged(IValueComponent<int>* component, int value) {
   cInteger->setValue(value);
 }

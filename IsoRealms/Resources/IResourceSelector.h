@@ -19,6 +19,7 @@
 #ifndef I_RESOURCE_SELECTOR_H
 #define I_RESOURCE_SELECTOR_H
 
+#include <IsoRealms/Resources/3DModel/I3DModelType.h>
 #include <IsoRealms/Resources/Boolean/IBoolean.h>
 #include <IsoRealms/Resources/Colour/IColour.h>
 #include <IsoRealms/Resources/Float/IFloat.h>
@@ -27,9 +28,11 @@
 #include <IsoRealms/Resources/Texture/ITexture.h>
 
 #include "IResourceSelectionListener.h"
+#include "3DModel/I3DModel.h"
 
 class IResourceSelector {
   public:
+  virtual void addResourceSelectionListener(IResourceSelectionListener<I3DModelType>*) = 0;
   virtual void addResourceSelectionListener(IResourceSelectionListener<IBoolean>*) = 0;
   virtual void addResourceSelectionListener(IResourceSelectionListener<IColour>*) = 0;
   virtual void addResourceSelectionListener(IResourceSelectionListener<IFloat>*) = 0;
@@ -37,6 +40,7 @@ class IResourceSelector {
   virtual void addResourceSelectionListener(IResourceSelectionListener<IString>*) = 0;
   virtual void addResourceSelectionListener(IResourceSelectionListener<ITexture>*) = 0;
   
+  virtual void removeResourceSelectionListener(IResourceSelectionListener<I3DModelType>*) = 0;
   virtual void removeResourceSelectionListener(IResourceSelectionListener<IBoolean>*) = 0;
   virtual void removeResourceSelectionListener(IResourceSelectionListener<IColour>*) = 0;
   virtual void removeResourceSelectionListener(IResourceSelectionListener<IFloat>*) = 0;

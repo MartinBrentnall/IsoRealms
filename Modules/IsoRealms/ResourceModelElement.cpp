@@ -73,7 +73,7 @@ void ResourceModelElement::updateIcon(unsigned int milliseconds) {
 }
 
 void ResourceModelElement::renderIcon() {
-  glTranslatef(0.0f, -1.0f, 0.0f);
+  glTranslatef(0.0f, -0.5f, 0.0f);
   glRotatef(-55.0f, 1.0f, 0.0f, 0.0f);
   glRotatef(45.0f, 0.0f, 0.0f, 1.0f);
   cSampleModel->render();

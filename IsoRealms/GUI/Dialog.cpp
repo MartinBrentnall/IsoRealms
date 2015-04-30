@@ -28,7 +28,7 @@ Dialog::Dialog(IComponentContainer* componentContainer, const std::string& dialo
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Dialog") {
       cTitle = mNode->getAttribute("title");
-      loadDialog(mNode, this, 0.02f, resourceAccessor);
+      loadDialog(mNode, this, 0.02f, resourceAccessor, nullptr);
     }
   }
   cComponentContainer = componentContainer;

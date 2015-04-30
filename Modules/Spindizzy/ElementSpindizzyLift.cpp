@@ -35,6 +35,11 @@ ElementSpindizzyLift::ElementSpindizzyLift(ISpindizzyLiftType* elementType, Bloc
   reset();
 }
 
+void ElementSpindizzyLift::setModelType(I3DModelType* oldModelType, I3DModelType* newModelType) {
+  oldModelType->destroyModel(cLiftModel);
+  cLiftModel = newModelType->createModel(&cLiftValues.cLocation);
+}
+
 void ElementSpindizzyLift::renderStatic() {
   // Nothing to do.
 }

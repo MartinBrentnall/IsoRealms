@@ -57,7 +57,7 @@ void ResourceModelSpindizzyJewel::updateIcon(unsigned int milliseconds) {
 }
 
 void ResourceModelSpindizzyJewel::renderIcon() {
-  glTranslatef(0.0f, -1.0f, 0.0f);
+  glTranslatef(0.0f, -0.5f, 0.0f);
   glRotatef(-55.0f, 1.0f, 0.0f, 0.0f);
   glRotatef(45.0f, 0.0f, 0.0f, 1.0f);
   glScalef(2.0f, 2.0f, 2.0f);

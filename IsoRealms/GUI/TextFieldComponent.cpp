@@ -179,7 +179,7 @@ bool TextFieldComponent::mouseButtonDown(SDL_Event& event) {
 void TextFieldComponent::fireChange() {
   cUpdating = true;
   for (unsigned int i = 0; i < cListeners.size(); i++) {
-    cListeners[i]->valueChanged(cInput);
+    cListeners[i]->valueChanged(this, cInput);
   }
   cUpdating = false;
 }

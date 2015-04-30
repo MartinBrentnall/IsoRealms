@@ -42,6 +42,9 @@ class ResourceElementSpindizzyEnemy:public IElementType {
   public:
   ResourceElementSpindizzyEnemy(ISpindizzyEnemySet*, DOMNodeWrapper*, IResourceRegistry*);
 
+  I3DModelType* getModelType();
+  void setModelType(I3DModelType*);
+
   /************************\
    * Implements IResource *
   \************************/

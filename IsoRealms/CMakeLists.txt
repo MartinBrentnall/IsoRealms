@@ -61,6 +61,7 @@ add_library(IsoRealms SHARED
   GUI/TextEditorComponent.cpp
   GUI/TextFieldComponent.cpp
   GUI/TextLabelComponent.cpp
+  GUI/ValueComponents/ComponentResourceModel.cpp
   GUI/WrappingGridComponent.cpp
   IHUDComponent.cpp
   IllegalStateException.cpp

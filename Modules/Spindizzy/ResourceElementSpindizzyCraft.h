@@ -65,6 +65,9 @@ class ResourceElementSpindizzyCraft:public ISpindizzyGERALDType,
   public:
   ResourceElementSpindizzyCraft(ISpindizzyGERALDSet*, DOMNodeWrapper*, IResourceRegistry*);
   
+  I3DModelType* getModelType();
+  void setModelType(I3DModelType*);
+
   ElementSpindizzyCraft* createInstance(const std::string&);
   std::string getInstanceName(ElementSpindizzyCraft*);
 

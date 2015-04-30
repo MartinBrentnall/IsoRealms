@@ -17,3 +17,14 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
 -->
+
+<Component>
+  <FlexibleGrid name="grid" align="top left" rows="1" columns="2">
+    <Cell row="1" column="1">
+      <Label>Model:</Label>
+    </Cell>
+    <Cell row="1" column="2">
+      <ResourceModel name="resourceModel"/>
+    </Cell>
+  </FlexibleGrid>
+</Component>

@@ -19,8 +19,11 @@
 
 #include "DialogElementSpindizzyCraft.h"
 
-DialogElementSpindizzyCraft::DialogElementSpindizzyCraft(IEditingContext* editingContext, ResourceElementSpindizzyCraft* elementSpindizzyCraft, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "Spindizzy Player Craft Element", resourceName) {
+DialogElementSpindizzyCraft::DialogElementSpindizzyCraft(IEditingContext* editingContext, ResourceElementSpindizzyCraft* elementSpindizzyCraft, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "Spindizzy Craft Element", resourceName) {
+  RectangularComponent* mContent = new RectangularComponent("Modules/Spindizzy/DialogElementSpindizzyCraft", resources, editingContext, this);
   cElementSpindizzyCraft = elementSpindizzyCraft;
+  mContent->setValue("resourceModel", cElementSpindizzyCraft->getModelType());
+  addComponent("content", mContent);
 }
 
 void DialogElementSpindizzyCraft::undo() {
@@ -29,4 +32,8 @@ void DialogElementSpindizzyCraft::undo() {
 
 ResourceElementSpindizzyCraft* DialogElementSpindizzyCraft::getResource() {
   return cElementSpindizzyCraft;
+}
+
+void DialogElementSpindizzyCraft::valueChanged(const std::string& component, I3DModelType* value) {
+  if (component == "resourceModel") {cElementSpindizzyCraft->setModelType(value);}
 }

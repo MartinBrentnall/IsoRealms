@@ -56,6 +56,7 @@ class ElementSpindizzyItem:public Element,
   public:
   ElementSpindizzyItem(ISpindizzyJewelType*, BlockLocation*, I3DModelType*, IElementContainer*);
   
+  void setModelType(I3DModelType*, I3DModelType*);
   bool isCollected();
   IElementContainer* getElementContainer();
   

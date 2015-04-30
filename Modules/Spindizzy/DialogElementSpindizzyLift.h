@@ -33,8 +33,10 @@ class DialogElementSpindizzyLift : public DialogOKCancelUndo {
   DialogElementSpindizzyLift(IEditingContext*, ResourceElementSpindizzyLift*, IResourceAccessor*, const std::string&);
 
   ResourceElementSpindizzyLift* getResource();
-
+  
   void undo();  
+
+  void valueChanged(const std::string&, I3DModelType*);
 };
 
 #endif

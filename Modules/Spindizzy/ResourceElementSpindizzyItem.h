@@ -45,8 +45,6 @@ class ResourceElementSpindizzyItem:public ISpindizzyJewelType {
   IBoundaries* cBoundaries;
   ElementSpindizzyItem* cSampleJewel;
   BlockLocation* cEditingLocation;
-  IScriptCall* cJewelCollectedScript;
-  IScriptCall* cAllJewelsCollectedScript;
 
   bool keyDown(SDLKey&);
 
@@ -54,8 +52,8 @@ class ResourceElementSpindizzyItem:public ISpindizzyJewelType {
   ResourceElementSpindizzyItem(ISpindizzyJewelSet*, DOMNodeWrapper*, IResourceRegistry*);
   
   IBoundaries* getCollectables();
-  void jewelCollected();
-  void allJewelsCollected();
+  I3DModelType* getModelType();
+  void setModelType(I3DModelType*);
   
   /************************\
    * Implements IResource *

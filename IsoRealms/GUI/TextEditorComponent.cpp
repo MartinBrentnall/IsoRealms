@@ -291,7 +291,7 @@ void TextEditorComponent::fireChange() {
   cUpdating = true;
   std::string mText = getValue();
   for (unsigned int i = 0; i < cListeners.size(); i++) {
-    cListeners[i]->valueChanged(mText);
+    cListeners[i]->valueChanged(this, mText);
   }
   cUpdating = false;
 }

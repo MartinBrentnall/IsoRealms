@@ -38,6 +38,18 @@ ResourceElementSpindizzyCraft::ResourceElementSpindizzyCraft(ISpindizzyGERALDSet
   }
 }
 
+I3DModelType* ResourceElementSpindizzyCraft::getModelType() {
+  return cModelType;
+}
+
+void ResourceElementSpindizzyCraft::setModelType(I3DModelType* modelType) {
+  cSampleGERALD->setModelType(cModelType, modelType);
+  for (unsigned int i = 0; i < cContent.size(); i++) {
+    cContent[i]->setModelType(cModelType, modelType);
+  }
+  cModelType = modelType;
+}
+
 ElementSpindizzyCraft* ResourceElementSpindizzyCraft::createInstance(const std::string& name) {
   ElementSpindizzyCraft* mNamedInstance = new ElementSpindizzyCraft(this);
   cNamedInstances[name] = mNamedInstance;

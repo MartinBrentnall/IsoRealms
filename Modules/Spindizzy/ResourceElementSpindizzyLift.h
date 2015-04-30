@@ -54,6 +54,9 @@ class ResourceElementSpindizzyLift:public ISpindizzyLiftType {
   public:
   ResourceElementSpindizzyLift(ISpindizzyLiftSet*, DOMNodeWrapper*, IResourceRegistry*);
 
+  I3DModelType* getModelType();
+  void setModelType(I3DModelType*);
+
   std::vector<ICommand*> getLiftCommands();  
   
   void save(DOMNodeWriter*, IResourceLocator*);

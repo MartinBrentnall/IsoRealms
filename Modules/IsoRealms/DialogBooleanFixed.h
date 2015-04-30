@@ -42,7 +42,7 @@ class DialogBooleanFixed : public DialogOKCancelUndo,
   /***********************************\
    * Implements IValueListener<bool> *
   \***********************************/
-  void valueChanged(bool);
+  void valueChanged(IValueComponent<bool>*, bool);
 };
 
 #endif

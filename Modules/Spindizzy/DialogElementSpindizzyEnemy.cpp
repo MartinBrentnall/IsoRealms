@@ -19,8 +19,11 @@
 
 #include "DialogElementSpindizzyEnemy.h"
 
-DialogElementSpindizzyEnemy::DialogElementSpindizzyEnemy(IEditingContext* editingContext, ResourceElementSpindizzyEnemy* elementSpindizzyEnemy, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "Spindizzy Enemy Craft Element", resourceName) {
+DialogElementSpindizzyEnemy::DialogElementSpindizzyEnemy(IEditingContext* editingContext, ResourceElementSpindizzyEnemy* elementSpindizzyEnemy, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "Spindizzy Enemy Element", resourceName) {
+  RectangularComponent* mContent = new RectangularComponent("Modules/Spindizzy/DialogElementSpindizzyEnemy", resources, editingContext, this);
   cElementSpindizzyEnemy = elementSpindizzyEnemy;
+  mContent->setValue("resourceModel", cElementSpindizzyEnemy->getModelType());
+  addComponent("content", mContent);
 }
 
 void DialogElementSpindizzyEnemy::undo() {
@@ -29,4 +32,8 @@ void DialogElementSpindizzyEnemy::undo() {
 
 ResourceElementSpindizzyEnemy* DialogElementSpindizzyEnemy::getResource() {
   return cElementSpindizzyEnemy;
+}
+
+void DialogElementSpindizzyEnemy::valueChanged(const std::string& component, I3DModelType* value) {
+  if (component == "resourceModel") {cElementSpindizzyEnemy->setModelType(value);}
 }

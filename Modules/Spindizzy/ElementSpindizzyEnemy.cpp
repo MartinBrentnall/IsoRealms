@@ -26,6 +26,11 @@ ElementSpindizzyEnemy::ElementSpindizzyEnemy(IElementType* elementType, BlockLoc
   cContainer = container;
 }
 
+void ElementSpindizzyEnemy::setModelType(I3DModelType* oldModelType, I3DModelType* newModelType) {
+  oldModelType->destroyModel(cEnemyModel);
+  cEnemyModel = newModelType->createModel(cCurrentLocation);
+}
+
 IElementContainer* ElementSpindizzyEnemy::getElementContainer() {
   return cContainer;
 }

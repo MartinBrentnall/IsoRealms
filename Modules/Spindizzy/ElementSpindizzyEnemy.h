@@ -41,6 +41,8 @@ class ElementSpindizzyEnemy:public Element,
   ElementSpindizzyEnemy(IElementType*, BlockLocation*, I3DModelType*, IElementContainer*);
   ElementSpindizzyEnemy(IElementType*, DOMNodeWrapper*, BlockLocation*, IElementContainer*);
 
+  void setModelType(I3DModelType*, I3DModelType*);
+
   IElementContainer* getElementContainer();
   
   /***************************************\

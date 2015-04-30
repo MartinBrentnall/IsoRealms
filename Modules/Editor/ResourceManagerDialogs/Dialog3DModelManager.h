@@ -35,6 +35,9 @@ class Dialog3DModelManager:public Dialog,
   public:
   Dialog3DModelManager(IComponentContainer*, IResourceAccessor*, IResourceManager*, IProjectManager*, IResourceLocator*, IEditingContext*);
   
+  void add3DModelSelectionListener(IResourceSelectionListener<I3DModelType>*);
+  void remove3DModelSelectionListener(IResourceSelectionListener<I3DModelType>*);
+  
   /******************************\
    * Implements IProjectManager *
   \******************************/

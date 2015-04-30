@@ -19,12 +19,14 @@
 #ifndef DIALOG_OK_CANCEL_UNDO_H
 #define DIALOG_OK_CANCEL_UNDO_H
 
+#include <IsoRealms/GUI/IDialogValueListener.h>
 #include <IsoRealms/GUI/ResizableDialog.h>
 #include <IsoRealms/IConfirmationListener.h>
 #include <IsoRealms/IEditingContext.h>
 #include <IsoRealms/Resources/IResourceAccessor.h>
 
-class DialogOKCancelUndo:public ResizableDialog {
+class DialogOKCancelUndo:public ResizableDialog,
+                         public IDialogValueListener {
   private:
   class OKCommand:public ICommand {
     private:
@@ -73,6 +75,11 @@ class DialogOKCancelUndo:public ResizableDialog {
   void addConfirmationListener(IConfirmationListener*);
   void removeConfirmationListener(IConfirmationListener*);
   std::string getResourceName();
+  
+  /***********************************\
+   * Implements IDialogValueListener *
+  \***********************************/
+  virtual void valueChanged(const std::string&, I3DModelType*) {}
   
   virtual void undo() = 0;
 };

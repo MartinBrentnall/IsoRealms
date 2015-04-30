@@ -35,6 +35,8 @@ class DialogElementSpindizzyItem : public DialogOKCancelUndo {
   ResourceElementSpindizzyItem* getResource();
   
   void undo();
+
+  void valueChanged(const std::string&, I3DModelType*);
 };
 
 #endif

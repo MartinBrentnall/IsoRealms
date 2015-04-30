@@ -29,6 +29,11 @@ ElementSpindizzyItem::ElementSpindizzyItem(ISpindizzyJewelType* elementType, Blo
   cContainer = container;
 }
 
+void ElementSpindizzyItem::setModelType(I3DModelType* oldModelType, I3DModelType* newModelType) {
+  oldModelType->destroyModel(cModel);
+  cModel = newModelType->createModel(&cVertexLocation);
+}
+
 bool ElementSpindizzyItem::isCollected() {
   return cCollected;
 }
@@ -78,7 +83,6 @@ bool ElementSpindizzyItem::initElement(unsigned int) {
 
 void ElementSpindizzyItem::collect() {
   cCollected = true;
-  cItemType->jewelCollected();
 }
 
 bool ElementSpindizzyItem::contains(Vertex& location) {

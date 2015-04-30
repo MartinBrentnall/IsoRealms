@@ -48,7 +48,7 @@ class DialogModelSpindizzyJewel : public IComponentSelectorListener<IColour>,
     /******************************\
      * Implements IStringListener *
     \******************************/
-    void valueChanged(std::string);
+    void valueChanged(IValueComponent<std::string>*, std::string);
   };
     
   void undo();

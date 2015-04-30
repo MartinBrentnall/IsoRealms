@@ -80,6 +80,7 @@ class ElementSpindizzyLift:public Element,
   public:
   ElementSpindizzyLift(ISpindizzyLiftType*, BlockLocation*, I3DModelType*, SpindizzyLiftProperties*, int, int, IElementContainer*);
 
+  void setModelType(I3DModelType*, I3DModelType*);
   LiftValues getZLocationAfter(int);
   IElementContainer* getElementContainer();  
   

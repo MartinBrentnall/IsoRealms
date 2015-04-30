@@ -137,6 +137,8 @@ class ElementSpindizzyCraft:public Element,
   ElementSpindizzyCraft(ISpindizzyGERALDType*, IResourceAccessor*, BlockLocation*);
   ElementSpindizzyCraft(ISpindizzyGERALDType*);
 
+  void setModelType(I3DModelType*, I3DModelType*);
+
   void setElementContainer(IElementContainer*);
   IElementContainer* getElementContainer();
   

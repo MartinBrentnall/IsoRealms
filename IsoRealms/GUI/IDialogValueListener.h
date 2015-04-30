@@ -1,5 +1,5 @@
 /*
- * Copyright 2009,2010 Martin Brentnall
+ * Copyright 2015 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,17 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_SPINDIZZY_JEWEL_TYPE_H
-#define I_SPINDIZZY_JEWEL_TYPE_H
+#ifndef I_DIALOG_VALUE_LISTENER_H
+#define I_DIALOG_VALUE_LISTENER_H
 
-#include <IsoRealms/Resources/ElementType/IElementType.h>
+#include <string>
 
-#include "ISpindizzyJewelSet.h"
+#include <IsoRealms/Resources/3DModel/I3DModelType.h>
 
-class ISpindizzyJewelType:public IElementType {
+class IDialogValueListener {
   public:
-  virtual ISpindizzyJewelSet* getSpindizzyItemInterface() = 0;
-  virtual IBoundaries* getCollectables() = 0;
+  virtual void valueChanged(const std::string&, I3DModelType*) = 0;
 };
 
 #endif

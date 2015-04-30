@@ -23,23 +23,24 @@ RectangularComponent::RectangularComponent() {
   cActivePopupMenu = nullptr;
 }
 
-RectangularComponent::RectangularComponent(const std::string& description, IResourceAccessor* resourceAccessor) {
+RectangularComponent::RectangularComponent(const std::string& description, IResourceAccessor* resourceAccessor, IEditingContext* editingContext, IDialogValueListener* valueListener) {
   std::string mFullPath = System::getProgramResource(description) + ".dialog";
   DOMNodeWrapper* mFileNode = new DOMNodeWrapper(mFullPath);
-  loadComponent(mFileNode, resourceAccessor);
+  cValueListener = valueListener;
+  loadComponent(mFileNode, resourceAccessor, editingContext);
 }
 
 RectangularComponent::RectangularComponent(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor) {
   loadComponent(node, resourceAccessor);
 }
 
-void RectangularComponent::loadComponent(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor) {
+void RectangularComponent::loadComponent(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor, IEditingContext* editingContext) {
   bool read = false;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Component") {
-      loadDialog(mNode, this, 0.0f, resourceAccessor);
+      loadDialog(mNode, this, 0.0f, resourceAccessor, editingContext);
       read = true;
     }
   }
@@ -217,7 +218,7 @@ IComponentBoundsCalculator* RectangularComponent::getBoundsCalculator(DOMNodeWra
   return new ComponentEdgeLayout(mTopEdge, mLeftEdge, mBottomEdge, mRightEdge, component);
 }
 
-ISizedComponent* RectangularComponent::loadSizedComponent(DOMNodeWrapper* node) {
+ISizedComponent* RectangularComponent::loadSizedComponent(DOMNodeWrapper* node, IEditingContext* editingContext) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper* mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
@@ -251,11 +252,18 @@ ISizedComponent* RectangularComponent::loadSizedComponent(DOMNodeWrapper* node) 
       Button* mButton = new Button(nullptr, nullptr, mText);
       cCommandableComponents[mName] = mButton;
       return mButton;
+    } else if (mValueAsString == "ResourceModel") {
+      std::string mName = mNode->getAttribute("name");
+      ComponentResourceModel* mComponentResourceModel = new ComponentResourceModel(0.12f, editingContext->getResourceSelector());
+      mComponentResourceModel->addValueListener(this);
+      cValueComponentsResource3DModelType[mName] = mComponentResourceModel;
+      return mComponentResourceModel;
     } else {
 //      std::cout << "WARNING: Unknown sized component tag: \"" << mValueAsString << "\"" << std::endl;
       // TODO: Throw
     }
   }  
+  std::cout << "WARNING: Sized component is not known!" << std::endl;
   return nullptr;
 }
 
@@ -268,7 +276,7 @@ void RectangularComponent::loadEvenGridCells(DOMNodeWrapper* node, GridLayoutCom
       int mColumn = mNode->getIntegerAttribute("column") - 1;
       IComponentBoundsCalculator* mCellRectangle = grid->getCellLayout(mColumn, mRow);
       std::cout << "Loading even cell " << mRow << "," << mColumn << std::endl;
-      loadDialog(mNode, mCellRectangle, 0.0f, resourceAccessor);
+      loadDialog(mNode, mCellRectangle, 0.0f, resourceAccessor, nullptr);
     } else {
 //      std::cout << "WARNING: Unknown cell tag: \"" << mValueAsString << "\"" << std::endl;
       // TODO: Throw
@@ -276,14 +284,14 @@ void RectangularComponent::loadEvenGridCells(DOMNodeWrapper* node, GridLayoutCom
   }
 }
 
-void RectangularComponent::loadFlexibleGridCells(DOMNodeWrapper* node, FlexibleGridLayoutComponent* grid) {
+void RectangularComponent::loadFlexibleGridCells(DOMNodeWrapper* node, FlexibleGridLayoutComponent* grid, IEditingContext* editingContext) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper* mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Cell") {
       int mRow = mNode->getIntegerAttribute("row") - 1;
       int mColumn = mNode->getIntegerAttribute("column") - 1;
-      ISizedComponent* mCellComponent = loadSizedComponent(mNode);
+      ISizedComponent* mCellComponent = loadSizedComponent(mNode, editingContext);
       cChildren.push_back(mCellComponent);
       cFocusedComponent = mCellComponent;
       grid->addComponent(mCellComponent, mColumn, mRow);
@@ -303,7 +311,7 @@ void RectangularComponent::loadTabbedContainer(DOMNodeWrapper* node, TabbedConta
       std::string mTabText = mNode->getAttribute("text");
       RectangularComponent* mTabComponent = new RectangularComponent();
       cComponentContainers[mTabName] = mTabComponent;
-      mTabComponent->loadDialog(mNode, mTabComponent, 0.02f, resources, this);
+      mTabComponent->loadDialog(mNode, mTabComponent, 0.02f, resources, nullptr, this);
       IComponentBoundsCalculator* mTabLayout = tabbedContainer->getTabLayout();
       mTabComponent->setBoundsCalculator(mTabLayout);
       tabbedContainer->addTab(mTabName, mTabText, mTabComponent);
@@ -335,7 +343,7 @@ void RectangularComponent::addStringValueComponent(const std::string& name, IVal
   cValueComponentsString[name] = component;
 }
 
-void RectangularComponent::loadDialog(DOMNodeWrapper* node, IRectangle* parent, float padding, IResourceAccessor* resourceAccessor, RectangularComponent* parentComponent) {
+void RectangularComponent::loadDialog(DOMNodeWrapper* node, IRectangle* parent, float padding, IResourceAccessor* resourceAccessor, IEditingContext* editingContext, RectangularComponent* parentComponent) {
   cTopLevelComponent = parentComponent != nullptr ? parentComponent : this;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper* mNode = node->getChild(i);
@@ -354,7 +362,7 @@ void RectangularComponent::loadDialog(DOMNodeWrapper* node, IRectangle* parent, 
       FlexibleGridLayoutComponent* mGridComponent = new FlexibleGridLayoutComponent(mColumns, mRows);
       IComponentBoundsCalculator* mGridLayout = getBoundsCalculator(mNode, parent, padding, mGridComponent);
       mGridComponent->setBoundsCalculator(mGridLayout);
-      loadFlexibleGridCells(mNode, mGridComponent);
+      loadFlexibleGridCells(mNode, mGridComponent, editingContext);
       cSizedComponents[mName] = mGridComponent;
     } else if (mValueAsString == "WrappingGrid") {
       std::string mName = mNode->getAttribute("name");
@@ -490,6 +498,15 @@ void RectangularComponent::loadDialog(DOMNodeWrapper* node, IRectangle* parent, 
       cSelectableComponents[mName] = mSelectableComponent;
       cChildren.push_back(mSelectableComponent);
       cFocusedComponent = mSelectableComponent;
+    } else if (mValueAsString == "ResourceModel") {
+      std::string mName = mNode->getAttribute("name");
+      ComponentResourceModel* mComponentResourceModel = new ComponentResourceModel(0.12f, editingContext->getResourceSelector());
+      IComponentBoundsCalculator* mComponentResourceModelLayout = getBoundsCalculator(mNode, parent, padding, nullptr);
+      mComponentResourceModel->setBoundsCalculator(mComponentResourceModelLayout);
+      cValueComponentsResource3DModelType[mName] = mComponentResourceModel;
+      cSizedComponents[mName] = mComponentResourceModel;
+      cChildren.push_back(mComponentResourceModel);
+      cFocusedComponent = mComponentResourceModel;
     } else if (mValueAsString == "CustomComponent") {
       std::string mType = mNode->getAttribute("type");
       std::string mDescription = mNode->getAttribute("description");
@@ -679,7 +696,6 @@ void RectangularComponent::setRenderer(IPanelRenderer* renderer, const std::stri
 }
 
 void RectangularComponent::setSelectable(const std::string& name, ISelector* selectable) {
-  std::cout << "There are " << cSelectableComponents.size() << " selectables" << std::endl;
   cSelectableComponents[name]->setHandler(selectable);
 }
 
@@ -720,6 +736,10 @@ void RectangularComponent::setStringValue(const std::string& name, const std::st
 
 void RectangularComponent::setStringValue(const std::string& name, float value) {
   cValueComponentsString[name]->setValue(Utils::toString(value));
+}
+
+void RectangularComponent::setValue(const std::string& name, I3DModelType* value) {
+  cValueComponentsResource3DModelType[name]->setValue(value);
 }
 
 void RectangularComponent::addComponent(IRectangularComponent* component) {
@@ -777,6 +797,15 @@ void RectangularComponent::assertSelection(ListBox* listBox, const std::string& 
   for (std::map<std::string, ListBox*>::iterator i = cListBoxComponents.begin(); i != cListBoxComponents.end(); i++) {
     if (listBox == i->second) {
       assertSelection(i->first, item);
+    }
+  }
+}
+
+void RectangularComponent::valueChanged(IValueComponent<I3DModelType*>* component, I3DModelType* value) {
+  for (std::map<std::string, IValueComponent<I3DModelType*>*>::iterator i = cValueComponentsResource3DModelType.begin(); i != cValueComponentsResource3DModelType.end(); i++) {
+    if (component == i->second) {
+      cValueListener->valueChanged(i->first, value);
+      return;
     }
   }
 }

@@ -25,6 +25,14 @@ Dialog3DModelManager::Dialog3DModelManager(IComponentContainer* container, IReso
   // TODO: Init resources
 }
 
+void Dialog3DModelManager::add3DModelSelectionListener(IResourceSelectionListener<I3DModelType>* listener) {
+  c3DModelBrowser->addResourceSelectionListener(listener);
+}
+
+void Dialog3DModelManager::remove3DModelSelectionListener(IResourceSelectionListener<I3DModelType>* listener) {
+  c3DModelBrowser->removeResourceSelectionListener(listener);
+}
+
 void Dialog3DModelManager::projectOpened(IProject* project) {
   IResourceManager* mResourceManager = project->getResourceManager();
   std::vector<I3DModelType*> mModelTypes = mResourceManager->getAllModelTypes();
