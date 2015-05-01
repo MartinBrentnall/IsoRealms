@@ -29,7 +29,7 @@ void ModelSpindizzyCraftGyroscope::update(unsigned int milliseconds) {
 
 void ModelSpindizzyCraftGyroscope::render() {
   glTranslatef(cLocation->x, cLocation->y, cLocation->z * IsoRealmsConstants::BLOCK_HEIGHT);
-  glRotatef((cLocation->x + cLocation->y) * -180.0f, 0.0f, 0.0f, 1.0f);
+  glRotatef((cLocation->x + cLocation->y) * -360.0f, 0.0f, 0.0f, 1.0f);
   float mBaseWidth = 0.03;
   float mTopWidth = 0.33;
   float mBaseHeight = IsoRealmsConstants::BLOCK_HEIGHT * 0.9;

@@ -7,6 +7,10 @@
         <Argument name="player" type="Spindizzy/GERALD" value="Player"/>
       </OnStart>
     </DigitalInput>
+    <DigitalInput name="Change Craft Appearance">
+      <Mapping type="keyDown" value="i"/>
+      <OnStart name="IsoRealms/ChangeCraft"/>
+    </DigitalInput>
     <DigitalInput name="Debug Activate Empty Circle Switch">
       <Mapping type="keyDown" value="9"/>
       <OnStart name="IsoRealms/setSecondarySwitch">
@@ -209,6 +213,16 @@
         <Boolean name="IsoRealms/OverviewMode" value="false"/>
       </Layer>
     </LayerComposer>
+    <ModelCycleable name="CraftEnemy">
+      <Model name="Spindizzy/CraftPyramidEnemy"/>
+      <Model name="IsoRealms/CraftBall"/>
+      <Model name="Spindizzy/CraftGyroscopeEnemy"/>
+    </ModelCycleable>
+    <ModelCycleable name="CraftPlayer">
+      <Model name="Spindizzy/CraftPyramidPlayer"/>
+      <Model name="IsoRealms/CraftBall"/>
+      <Model name="Spindizzy/CraftGyroscopePlayer"/>
+    </ModelCycleable>
     <ModelElement name="Compass" independent="true" type="Spindizzy/ArrowNorth" x="0" y="0" z="0" width="1" length="1" height="1"/>
     <ModelElement name="ClueDiamondLeft" independent="true" type="Spindizzy/SwitchDiamondLeft" x="0" y="0" z="0" width="1" length="1" height="1"/>
     <ModelElement name="ClueDiamondRight" independent="true" type="Spindizzy/SwitchDiamondRight" x="0" y="0" z="0" width="1" length="1" height="1"/>
@@ -226,7 +240,7 @@
       <Instance name="SecondarySwitchState"/>
       <Instance name="Clue"/>
     </ModelScriptable>
-    <ModelSprite name="Ball" size="0.660000" texture="Spindizzy/Ball" camera="Spindizzy/Camera" applyCameraRotation="true" applyCameraTilt="true" offsetRotation="90.0" offsetZ="0.330000"/>
+    <ModelSprite name="CraftBall" size="0.660000" texture="Spindizzy/Ball" camera="Spindizzy/Camera" applyCameraRotation="true" applyCameraTilt="true" offsetRotation="90.0" offsetZ="0.330000"/>
     <ModelSprite name="HUDIconMap" size="1.000000" texture="IsoRealms/Map"/>
     <ModelSprite name="HUDIconScore" size="1.000000" texture="IsoRealms/Score"/>
     <ModelSprite name="HUDIconTime" size="1.000000" texture="IsoRealms/Time"/>
@@ -284,6 +298,12 @@ end</Code>
       <Argument name="time" type="Integer" value="IsoRealms/SpindizzyTimeLimit"/>
       <Code>player:stop()
 time = time - 500</Code>
+    </ScriptLua>
+    <ScriptLua name="ChangeCraft">
+      <Argument name="playerCraftModels" type="IsoRealms/ModelSetCycleable" value="CraftPlayer"/>
+      <Argument name="enemyCraftModels" type="IsoRealms/ModelSetCycleable" value="CraftEnemy"/>
+      <Code>playerCraftModels:next()
+enemyCraftModels:next()</Code>
     </ScriptLua>
     <ScriptLua name="playerFallImpact">
       <Argument name="player" type="Spindizzy/GERALD"/>
@@ -966,7 +986,7 @@ end</Code>
       <Texture name="Spindizzy/WallPlainCap" type="WallNorthTop"/>
       <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallNorthBottom"/>
     </ElementSpindizzyBlock>
-    <ElementSpindizzyCraft camera="Spindizzy/Camera" model="Spindizzy/Pyramid" name="Player">
+    <ElementSpindizzyCraft camera="Spindizzy/Camera" model="IsoRealms/CraftPlayer_0" name="Player">
       <RespawnScript name="IsoRealms/respawn"/>
       <FallImpactScript name="IsoRealms/playerFallImpact">
         <Argument name="player" type="Spindizzy/GERALD" value="~craft"/>
@@ -983,9 +1003,9 @@ end</Code>
       </Boundaries>
       <Instance name="Player" x="-4" y="3" z="0"/>
     </ElementSpindizzyCraft>
-    <ElementSpindizzyEnemy model="IsoRealms/Ball" name="Ball"/>
-    <ElementSpindizzyEnemy model="Spindizzy/Gyroscope" name="Gyroscope"/>
-    <ElementSpindizzyEnemy model="Spindizzy/Pyramid" name="Pyramid"/>
+    <ElementSpindizzyEnemy model="IsoRealms/CraftEnemy_0" name="Pyramid"/>
+    <ElementSpindizzyEnemy model="IsoRealms/CraftEnemy_1" name="Gyroscope"/>
+    <ElementSpindizzyEnemy model="IsoRealms/CraftEnemy_2" name="Ball"/>
     <ElementSpindizzyItem model="Spindizzy/Jewel" name="Jewel"/>
     <ElementSpindizzyLift state="#true" model="IsoRealms/LiftDiamondEmpty" name="DiamondEmpty"/>
     <ElementSpindizzyLift state="IsoRealms/SwitchDiamondLeft" model="IsoRealms/LiftDiamondLeft" name="DiamondLeft"/>
@@ -1007,8 +1027,10 @@ end</Code>
     <LayerSpindizzyMap name="Map">
       <Instance name="Hangworld"/>
     </LayerSpindizzyMap>
-    <ModelSpindizzyCraftGyroscope name="Gyroscope" colour1="IsoRealms/Cyan" colour2="IsoRealms/Purple" colour3="IsoRealms/Yellow" colour4="IsoRealms/Red" outline="IsoRealms/Black"/>
-    <ModelSpindizzyCraftPyramid name="Pyramid" top="IsoRealms/Cyan" side="IsoRealms/Purple" outline="IsoRealms/Black"/>
+    <ModelSpindizzyCraftGyroscope name="CraftGyroscopePlayer" colour1="IsoRealms/Cyan" colour2="IsoRealms/Purple" colour3="IsoRealms/Yellow" colour4="#0 0 0 0" outline="IsoRealms/Black"/>
+    <ModelSpindizzyCraftGyroscope name="CraftGyroscopeEnemy" colour1="IsoRealms/Pink" colour2="IsoRealms/Purple" colour3="IsoRealms/Yellow" colour4="#0 0 0 0" outline="IsoRealms/Black"/>
+    <ModelSpindizzyCraftPyramid name="CraftPyramidPlayer" top="IsoRealms/Cyan" side="IsoRealms/Purple" outline="IsoRealms/Black"/>
+    <ModelSpindizzyCraftPyramid name="CraftPyramidEnemy" top="IsoRealms/Pink" side="IsoRealms/Purple" outline="IsoRealms/Black"/>
     <ModelSpindizzyJewel name="Jewel" frameColour="IsoRealms/Yellow" cycleSpeed="0.0015">
       <ColourCycle colour="IsoRealms/Red"/>
       <ColourCycle colour="IsoRealms/Yellow"/>

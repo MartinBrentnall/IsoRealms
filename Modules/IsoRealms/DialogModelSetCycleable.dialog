@@ -1,4 +1,5 @@
-/*
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!--
  * Copyright 2015 Martin Brentnall
  *
  * This file is part of Iso-Realms.
@@ -15,19 +16,4 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
- */
-#ifndef ISO_REALMS_SCRIPT_SUPPORT_H
-#define ISO_REALMS_SCRIPT_SUPPORT_H
-
-#include <luabind/luabind.hpp>
-#include <luabind/operator.hpp>
-#include <iostream>
-
-#include "ResourceIntegerTimer.h"
-#include "ResourceModelScriptable.h"
-#include "ResourceModelSetCycleable.h"
-#include "ResourceVertexFixed.h"
-
-static bool cScriptSupportEnabled = false;
-
-#endif
+-->

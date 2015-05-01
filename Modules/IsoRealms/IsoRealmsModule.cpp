@@ -30,6 +30,7 @@ const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_INTEGER_TIMER              
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_LAYER_HUD                     = "LayerHUD";
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_MODEL_ELEMENT                 = "ModelElement";
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_MODEL_SCRIPTABLE              = "ModelScriptable";
+const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_MODEL_SET_CYCLEABLE           = "ModelCycleable";
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_MODEL_SPRITE                  = "ModelSprite";
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_SCRIPT_LUA                    = "ScriptLua";
 const std::string IsoRealmsModule::TAG_RESOURCE_TYPE_SOUND_FILE                    = "SoundFile";
@@ -48,6 +49,7 @@ const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_INTEGER_TIMER             
 const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_LAYER_HUD                     = "Heads-Up Display";
 const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_MODEL_ELEMENT                 = "Element Model";
 const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_MODEL_SCRIPTABLE              = "Scriptable Model";
+const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_MODEL_SET_CYCLEABLE           = "Cycleable Model";
 const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_MODEL_SPRITE                  = "Sprite Model";
 const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_SCRIPT_LUA                    = "Lua Script";
 const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_SOUND_FILE                    = "Sound File";
@@ -83,6 +85,7 @@ IsoRealmsModule::IsoRealmsModule(IResourceTypeRegistry* resourceTypeRegistry) {
     resourceTypeRegistry->addResourceType(&cResourceTypeLayerHUD,                   NAME_RESOURCE_TYPE_LAYER_HUD);
     resourceTypeRegistry->addResourceType(&cResourceTypeModelElement,               NAME_RESOURCE_TYPE_MODEL_ELEMENT);
     resourceTypeRegistry->addResourceType(&cResourceTypeModelScriptable,            NAME_RESOURCE_TYPE_MODEL_SCRIPTABLE);
+    resourceTypeRegistry->addResourceType(&cResourceTypeModelSetCycleable,          NAME_RESOURCE_TYPE_MODEL_SET_CYCLEABLE);
     resourceTypeRegistry->addResourceType(&cResourceTypeModelSprite,                NAME_RESOURCE_TYPE_MODEL_SPRITE);
     resourceTypeRegistry->addResourceType(&cResourceTypeScriptLua,                  NAME_RESOURCE_TYPE_SCRIPT_LUA);
     resourceTypeRegistry->addResourceType(&cResourceTypeSoundFile,                  NAME_RESOURCE_TYPE_SOUND_FILE);
@@ -108,6 +111,7 @@ void IsoRealmsModule::load(DOMNodeWrapper* node, IResourceRegistry* runtimeConte
     else if (mValueAsString == TAG_RESOURCE_TYPE_LAYER_HUD)                     {cResourceTypeLayerHUD.loadResource(                  mNode, runtimeContext);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_MODEL_ELEMENT)                 {cResourceTypeModelElement.loadResource(              mNode, runtimeContext);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_MODEL_SCRIPTABLE)              {cResourceTypeModelScriptable.loadResource(           mNode, runtimeContext);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_MODEL_SET_CYCLEABLE)           {cResourceTypeModelSetCycleable.loadResource(         mNode, runtimeContext);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_MODEL_SPRITE)                  {cResourceTypeModelSprite.loadResource(               mNode, runtimeContext);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_SCRIPT_LUA)                    {cResourceTypeScriptLua.loadResource(                 mNode, runtimeContext);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_SOUND_FILE)                    {cResourceTypeSoundFile.loadResource(                 mNode, runtimeContext);}
@@ -130,6 +134,7 @@ void IsoRealmsModule::save(DOMNodeWriter* node, IResourceLocator* resourceLocato
   cResourceTypeLayerHUD.saveResources(                  node, resourceLocator, TAG_RESOURCE_TYPE_LAYER_HUD);
   cResourceTypeModelElement.saveResources(              node, resourceLocator, TAG_RESOURCE_TYPE_MODEL_ELEMENT);
   cResourceTypeModelScriptable.saveResources(           node, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SCRIPTABLE);
+  cResourceTypeModelSetCycleable.saveResources(         node, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SET_CYCLEABLE);
   cResourceTypeModelSprite.saveResources(               node, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SPRITE);
   cResourceTypeScriptLua.saveResources(                 node, resourceLocator, TAG_RESOURCE_TYPE_SCRIPT_LUA);
   cResourceTypeSoundFile.saveResources(                 node, resourceLocator, TAG_RESOURCE_TYPE_SOUND_FILE);

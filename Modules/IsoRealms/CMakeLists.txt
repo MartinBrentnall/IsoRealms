@@ -56,6 +56,7 @@ add_library(IsoRealmsStd MODULE
   DialogLayerHUD.cpp
   DialogModelElement.cpp
   DialogModelScriptable.cpp
+  DialogModelSetCycleable.cpp
   DialogModelSprite.cpp
   DialogScriptLua.cpp
   DialogSoundFile.cpp
@@ -66,6 +67,7 @@ add_library(IsoRealmsStd MODULE
   HUDComponentRelation.cpp
   IsoRealmsModule.cpp
   IsoRealmsScriptSupport.cpp
+  ModelCycleable.cpp
   ModelElement.cpp
   ModelScriptable.cpp
   ModelSprite.cpp
@@ -79,6 +81,7 @@ add_library(IsoRealmsStd MODULE
   ResourceLayerHUD.cpp
   ResourceModelElement.cpp
   ResourceModelScriptable.cpp
+  ResourceModelSetCycleable.cpp
   ResourceModelSprite.cpp
   ResourceSoundFile.cpp
   ResourceTextureFile.cpp

@@ -16,18 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ISO_REALMS_SCRIPT_SUPPORT_H
-#define ISO_REALMS_SCRIPT_SUPPORT_H
+#ifndef DIALOG_MODEL_SET_CYCLEABLE_H
+#define DIALOG_MODEL_SET_CYCLEABLE_H
 
-#include <luabind/luabind.hpp>
-#include <luabind/operator.hpp>
-#include <iostream>
+#include <IsoRealms/GUI/Dialogs/DialogOKCancelUndo.h>
+#include <IsoRealms/IConfirmationListener.h>
+#include <IsoRealms/IEditingContext.h>
 
-#include "ResourceIntegerTimer.h"
-#include "ResourceModelScriptable.h"
 #include "ResourceModelSetCycleable.h"
-#include "ResourceVertexFixed.h"
 
-static bool cScriptSupportEnabled = false;
+class DialogModelSetCycleable : public DialogOKCancelUndo {
+  private:
+  ResourceModelSetCycleable* cModelSetCycleable;
+
+  public:
+  DialogModelSetCycleable(IEditingContext*, ResourceModelSetCycleable*, IResourceAccessor*, const std::string&);
+
+  ResourceModelSetCycleable* getResource();
+  
+  void undo();
+};
 
 #endif

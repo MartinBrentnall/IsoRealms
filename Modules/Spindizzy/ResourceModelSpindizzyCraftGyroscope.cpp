@@ -163,6 +163,9 @@ void ResourceModelSpindizzyCraftGyroscope::resourcePendingDestruction(IColour* d
 
 // TODO: Nasty stuff below here.  Clean up!
 void ResourceModelSpindizzyCraftGyroscope::renderCircle(float radius, float startAngle, float endAngle, IColour* colour) {
+  if (colour->getAlpha() == 0.0f) {
+    return;
+  }
   glBegin(GL_TRIANGLE_FAN);
   colour->set();
   glVertex2f(0.0f, 0.0f);
@@ -176,6 +179,7 @@ void ResourceModelSpindizzyCraftGyroscope::renderCircle(float radius, float star
 
 void ResourceModelSpindizzyCraftGyroscope::renderCircle(float outerRadius, float innerRadius, IColour* colour) {
   glBegin(GL_TRIANGLE_STRIP);
+  glEnable(GL_BLEND);
   colour->set();
   float mStartAngle = 0.0f * (M_PI / 180.0f);
   float mEndAngle = 360.0f * (M_PI / 180.0f);

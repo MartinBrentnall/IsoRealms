@@ -18,12 +18,12 @@
  */
 #include "IsoRealmsScriptSupport.h"
 
-bool operator==(const ResourceIntegerTimer& a, const ResourceIntegerTimer& b) {
+bool operator==(const ModelScriptable& a, const ModelScriptable& b) {
   return &a == &b; 
 }
 
-bool operator==(const ModelScriptable& a, const ModelScriptable& b) {
-  return &a == &b; 
+bool operator==(const ResourceModelSetCycleable& a, const ResourceModelSetCycleable& b) {
+  return &a == &b;
 }
 
 bool operator==(const ResourceVertexFixed& a, const ResourceVertexFixed& b) {
@@ -35,6 +35,12 @@ extern "C" void initLua(lua_State* luaState) {
     luabind::module(luaState) [
       luabind::class_<ModelScriptable>("ScriptableModel")
         .def("setModel", &ModelScriptable::setModel)
+        .def(luabind::const_self == luabind::const_self)
+    ];
+    luabind::module(luaState) [
+      luabind::class_<ResourceModelSetCycleable>("ModelSetCycleable")
+        .def("next", &ResourceModelSetCycleable::next)
+        .def("previous", &ResourceModelSetCycleable::previous)
         .def(luabind::const_self == luabind::const_self)
     ];
     luabind::module(luaState) [

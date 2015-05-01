@@ -19,6 +19,7 @@
 #include <IsoRealms/IModule.h>
 #include <IsoRealms/Resources/Colour/Colour.h>
 #include <IsoRealms/Resources/ResourceType.h>
+#include <IsoRealms/Resources/ResourceTypeSet.h>
 #include <IsoRealms/Resources/Script/IGlobalVariable.h>
 #include <IsoRealms/LuaSupport/LuaGlobalVariable.h>
 
@@ -34,6 +35,7 @@
 #include "DialogLayerHUD.h"
 #include "DialogModelElement.h"
 #include "DialogModelScriptable.h"
+#include "DialogModelSetCycleable.h"
 #include "DialogModelSprite.h"
 #include "DialogScriptLua.h"
 #include "DialogSoundFile.h"
@@ -49,6 +51,7 @@
 #include "ResourceLayerHUD.h"
 #include "ResourceModelElement.h"
 #include "ResourceModelScriptable.h"
+#include "ResourceModelSetCycleable.h"
 #include "ResourceModelSprite.h"
 #include "ResourceSoundFile.h"
 #include "ResourceTextureFile.h"
@@ -68,6 +71,7 @@ class IsoRealmsModule:public IModule {
   static const std::string TAG_RESOURCE_TYPE_LAYER_HUD;
   static const std::string TAG_RESOURCE_TYPE_MODEL_ELEMENT;
   static const std::string TAG_RESOURCE_TYPE_MODEL_SCRIPTABLE;
+  static const std::string TAG_RESOURCE_TYPE_MODEL_SET_CYCLEABLE;
   static const std::string TAG_RESOURCE_TYPE_MODEL_SPRITE;
   static const std::string TAG_RESOURCE_TYPE_SCRIPT_LUA;
   static const std::string TAG_RESOURCE_TYPE_SOUND_FILE;
@@ -86,6 +90,7 @@ class IsoRealmsModule:public IModule {
   static const std::string NAME_RESOURCE_TYPE_LAYER_HUD;
   static const std::string NAME_RESOURCE_TYPE_MODEL_ELEMENT;
   static const std::string NAME_RESOURCE_TYPE_MODEL_SCRIPTABLE;
+  static const std::string NAME_RESOURCE_TYPE_MODEL_SET_CYCLEABLE;
   static const std::string NAME_RESOURCE_TYPE_MODEL_SPRITE;
   static const std::string NAME_RESOURCE_TYPE_SCRIPT_LUA;
   static const std::string NAME_RESOURCE_TYPE_SOUND_FILE;
@@ -106,6 +111,7 @@ class IsoRealmsModule:public IModule {
   ResourceType<ILayerType,           ResourceLayerHUD,                   DialogLayerHUD>                   cResourceTypeLayerHUD;
   ResourceType<I3DModelType,         ResourceModelElement,               DialogModelElement>               cResourceTypeModelElement;
   ResourceType<I3DModelType,         ResourceModelScriptable,            DialogModelScriptable>            cResourceTypeModelScriptable;
+  ResourceTypeSet<I3DModelType,      ResourceModelSetCycleable,          DialogModelSetCycleable>          cResourceTypeModelSetCycleable;
   ResourceType<I3DModelType,         ResourceModelSprite,                DialogModelSprite>                cResourceTypeModelSprite;
   ResourceType<IScript,              LuaScript,                          DialogScriptLua>                  cResourceTypeScriptLua;
   ResourceType<ISound,               ResourceSoundFile,                  DialogSoundFile>                  cResourceTypeSoundFile;
