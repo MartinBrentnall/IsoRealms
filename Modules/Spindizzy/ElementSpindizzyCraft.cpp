@@ -260,8 +260,14 @@ void ElementSpindizzyCraft::getNewLocation(float ticks, Vertex* location, Vertex
                      ? std::max(mAcceleration * 2.0f, mYSlopeMomentum)
                      : mAcceleration);
       }
-      momentum->x += mXSlopeMomentum;
-      momentum->y += mYSlopeMomentum;
+      
+      // Disallow momentum above/below zero when craft is forced against wall by a slope.
+      momentum->y = cLockNorth != nullptr ? std::min(momentum->y + mYSlopeMomentum, 0.0) 
+                  : cLockSouth != nullptr ? std::max(momentum->y + mYSlopeMomentum, 0.0)
+                  :                                  momentum->y + mYSlopeMomentum;
+      momentum->x = cLockEast  != nullptr ? std::min(momentum->x + mXSlopeMomentum, 0.0) 
+                  : cLockWest  != nullptr ? std::max(momentum->x + mXSlopeMomentum, 0.0)
+                  :                                  momentum->x + mXSlopeMomentum;;
       momentum->x *= mSurfaceFriction;
       momentum->y *= mSurfaceFriction;
       location->x += momentum->x;
