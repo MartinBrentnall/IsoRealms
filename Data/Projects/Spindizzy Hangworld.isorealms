@@ -555,6 +555,7 @@ end</Code>
       <Argument name="zoneLocation" type="IsoRealms/Vertex" value="ZoneLocation"/>
       <Argument name="clueIcon" type="IsoRealms/ModelScriptable" value="Clue"/>
       <Argument name="terrainHandler" type="Spindizzy/SpindizzyBlockHandler" value="SpindizzyBlockHandler"/>
+      <Argument name="spindizzy" type="Spindizzy/Spindizzy" value="Spindizzy"/>
       <Code>if terrainHandler ~= nil then
   local clueCount = terrainHandler:getClueCount()
   if clueCount > 0 then
@@ -594,6 +595,8 @@ zoneLocation:setZ(centerZ)
 backgroundColour = entered:getColour(zoneBackgroundColour)
 background:setColour(backgroundColour)
 zoneHandler:setCurrentZone(entered)
+theme = entered:getTheme()
+spindizzy:setTheme(theme)
 if dynamicElements ~= nil then
   dynamicElements:setActive(true)
   dynamicElements:reset()
@@ -4043,8 +4046,8 @@ end</Code>
       <Element height="1" length="1" type="Spindizzy/SwitchCircleRight" width="1" x="3" y="3" z="0"/>
       <Element height="1" length="1" type="Spindizzy/SwitchDiamondNone" width="1" x="3" y="4" z="0"/>
       <Element height="1" length="1" type="Spindizzy/ArrowSouth" width="1" x="6" y="0" z="-1"/>
-      <Element bottom="0" bottomDelay="0" downSpeed="750" top="5" topDelay="0" type="Spindizzy/CircleLeft" upSpeed="750" x="6" y="0" z="0"/>
       <Element bottom="4" bottomDelay="1500" downSpeed="750" top="7" topDelay="1500" type="Spindizzy/CircleRight" upSpeed="750" x="6" y="0" z="4"/>
+      <Element bottom="0" bottomDelay="0" downSpeed="750" top="5" topDelay="0" type="Spindizzy/CircleLeft" upSpeed="750" x="6" y="0" z="0"/>
     </Element>
     <Element type="Spindizzy/Zone" height="15" length="7" width="7" x="-71" y="-8" z="0" theme="C64Pink">
       <Element height="-1" length="7" type="Spindizzy/Water" width="7" x="0" y="0" z="0"/>
@@ -5926,8 +5929,8 @@ end</Code>
           <Element name="SwitchCircleBoth"/>
         </Condition>
       </Element>
-      <Element bottom="0" bottomDelay="0" downSpeed="750" top="4" topDelay="0" type="Spindizzy/SquareEmpty" upSpeed="750" x="2" y="5" z="0"/>
       <Element bottom="3" bottomDelay="0" downSpeed="750" top="7" topDelay="0" type="Spindizzy/SquareEmpty" upSpeed="750" x="2" y="5" z="7"/>
+      <Element bottom="0" bottomDelay="0" downSpeed="750" top="4" topDelay="0" type="Spindizzy/SquareEmpty" upSpeed="750" x="2" y="5" z="0"/>
     </Element>
     <Element type="Spindizzy/Zone" height="15" length="7" width="7" x="-63" y="56" z="0" theme="C64BlueRed">
       <Element height="1" length="8" type="Spindizzy/Plain" width="8" x="0" y="0" z="-1"/>

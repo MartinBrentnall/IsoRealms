@@ -18,19 +18,7 @@
  */
 #include "SpindizzyScriptSupport.h"
 
-bool operator==(const ResourceCameraScriptable& a, const ResourceCameraScriptable& b) {
-  return &a == &b; 
-}
-
-bool operator==(const ElementSpindizzyCraft& a, const ElementSpindizzyCraft& b) {
-  return &a == &b; 
-}
-
-bool operator==(const LayerSpindizzyMap& a, const LayerSpindizzyMap& b) {
-  return &a == &b; 
-}
- 
-bool operator==(const SpindizzyZoneThemeColour& a, const SpindizzyZoneThemeColour& b) {
+bool operator==(const ElementHandlerItem& a, const ElementHandlerItem& b) {
   return &a == &b;
 }
 
@@ -46,15 +34,35 @@ bool operator==(const ElementHandlerZone& a, const ElementHandlerZone& b) {
   return &a == &b;
 }
 
-bool operator==(const ElementHandlerItem& a, const ElementHandlerItem& b) {
-  return &a == &b;
+bool operator==(const ElementSpindizzyCraft& a, const ElementSpindizzyCraft& b) {
+  return &a == &b; 
+}
+
+bool operator==(const ElementSpindizzyZone& a, const ElementSpindizzyZone& b) {
+  return &a == &b; 
 }
 
 bool operator==(const LayerBackground& a, const LayerBackground& b) {
   return &a == &b;
 }
 
+bool operator==(const LayerSpindizzyMap& a, const LayerSpindizzyMap& b) {
+  return &a == &b; 
+}
+ 
+bool operator==(const ResourceCameraScriptable& a, const ResourceCameraScriptable& b) {
+  return &a == &b; 
+}
+
 bool operator==(const SpindizzyModule& a, const SpindizzyModule& b) {
+  return &a == &b;
+}
+
+bool operator==(const SpindizzyZoneTheme& a, const SpindizzyZoneTheme& b) {
+  return &a == &b;
+}
+
+bool operator==(const SpindizzyZoneThemeColour& a, const SpindizzyZoneThemeColour& b) {
   return &a == &b;
 }
 
@@ -90,6 +98,7 @@ extern "C" void initLua(lua_State* luaState) {
         .def("getTop", &LayerSpindizzyMap::getTop)
         .def("getBottom", &LayerSpindizzyMap::getBottom)
         .def("getAspectRatio", &LayerSpindizzyMap::getAspectRatio)
+        .def(luabind::const_self == luabind::const_self)
     ];
     luabind::module(luaState) [
       luabind::class_<ElementSpindizzyZone>("Zone")
@@ -103,6 +112,12 @@ extern "C" void initLua(lua_State* luaState) {
         .def("isVisited", &ElementSpindizzyZone::isVisited)
         .def("getColour", &ElementSpindizzyZone::getColour)
         .def("setFlag", &ElementSpindizzyZone::setFlag)
+        .def("getTheme", &ElementSpindizzyZone::getTheme)
+        .def(luabind::const_self == luabind::const_self)
+    ];
+    luabind::module(luaState) [
+      luabind::class_<SpindizzyZoneTheme>("SpindizzyZoneTheme")
+        .def(luabind::const_self == luabind::const_self)
     ];
     luabind::module(luaState) [
       luabind::class_<SpindizzyZoneThemeColour>("ThemeColour")
@@ -141,6 +156,7 @@ extern "C" void initLua(lua_State* luaState) {
       luabind::class_<SpindizzyModule>("Spindizzy")
         .def("setOverview", &SpindizzyModule::setOverview)
         .def("getZoneCount", &SpindizzyModule::getZoneCount)
+        .def("setTheme", &SpindizzyModule::setTheme)
         .def(luabind::const_self == luabind::const_self)
     ];
     cScriptSupportEnabled = true;

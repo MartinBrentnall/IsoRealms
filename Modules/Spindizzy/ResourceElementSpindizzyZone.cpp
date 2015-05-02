@@ -25,6 +25,10 @@ ResourceElementSpindizzyZone::ResourceElementSpindizzyZone(ISpindizzyZoneModule*
   resourceRegistry->add(cBoundaries, node->getAttribute("name"));
 }
 
+void ResourceElementSpindizzyZone::applyDefaultTheme() {
+  cModuleInterface->applyDefaultTheme();
+}
+
 ISpindizzyZoneModule* ResourceElementSpindizzyZone::getSpindizzyZoneInterface() {
   return cModuleInterface;
 }

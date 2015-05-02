@@ -54,6 +54,8 @@ class ResourceElementSpindizzyZone:public ISpindizzyZoneType,
   public:
   ResourceElementSpindizzyZone(ISpindizzyZoneModule*, DOMNodeWrapper*, IResourceRegistry*);
 
+  void applyDefaultTheme();
+  
   /*********************************\
    * Implements ISpindizzyZoneType *
   \*********************************/

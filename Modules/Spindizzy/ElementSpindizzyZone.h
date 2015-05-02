@@ -77,6 +77,7 @@ class ElementSpindizzyZone:public Element,
   bool isVisited();
   IColour* getColour(SpindizzyZoneThemeColour*);
   void setFlag(bool);
+  SpindizzyZoneTheme* getTheme();
   
   /***********************\
    * Implements IElement *

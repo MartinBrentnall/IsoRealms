@@ -161,6 +161,7 @@ class SpindizzyModule:public IModule,
   
   bool cOverview;
   unsigned int cZoneCount;
+  SpindizzyZoneTheme* cDefaultTheme;
   
   public:
   SpindizzyModule(IResourceTypeRegistry*);
@@ -170,6 +171,7 @@ class SpindizzyModule:public IModule,
   \***********************/
   void setOverview(bool);
   unsigned int getZoneCount();
+  void setTheme(SpindizzyZoneTheme*);
   
   /**********************\
    * Implements IPlugin *
@@ -232,6 +234,7 @@ class SpindizzyModule:public IModule,
   bool isOverview();
   IArgumentValue* getArgumentValue(const std::string&);
   void setArgumentValue(ElementSpindizzyZone*);
+  void applyDefaultTheme();
   
   /***************************\
    * Implements IThemeSource *

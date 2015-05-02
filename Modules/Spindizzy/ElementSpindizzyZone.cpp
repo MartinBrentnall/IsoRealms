@@ -106,6 +106,7 @@ void ElementSpindizzyZone::renderEditing() {
   glVertex3f(xs, ys, z);    glVertex3f(xs, ys, zs);
   glColor3f(1.0f, 1.0f, 1.0f);
   glEnd();
+  cZoneType->applyDefaultTheme();
 }
 
 void ElementSpindizzyZone::renderStatic() {
@@ -127,6 +128,10 @@ IColour* ElementSpindizzyZone::getColour(SpindizzyZoneThemeColour* themeColour) 
 
 void ElementSpindizzyZone::setFlag(bool flag) {
   cFlagged = flag;
+}
+
+SpindizzyZoneTheme* ElementSpindizzyZone::getTheme() {
+  return cZoneTheme;
 }
 
 void ElementSpindizzyZone::renderRuntime() {
@@ -169,6 +174,7 @@ void ElementSpindizzyZone::renderRuntime() {
       cElementHandler.renderStatic();
     }
   }
+  cZoneType->applyDefaultTheme();
 }
 
 void ElementSpindizzyZone::updateEditing(unsigned int milliseconds) {

@@ -33,6 +33,7 @@ class ISpindizzyZoneType:public IElementType {
   virtual IColour* getUnvisitedColour() = 0;
   virtual IBoundaries* getBoundaries() = 0;
   virtual void setZoneArgument(ElementSpindizzyZone*) = 0;
+  virtual void applyDefaultTheme() = 0;
 };
 
 #endif

@@ -85,6 +85,7 @@ SpindizzyModule::SpindizzyModule(IResourceTypeRegistry* resourceManager):cResour
   }
   cOverview = false;
   cZoneCount = 0;
+  cDefaultTheme = nullptr;
 }
 
 void SpindizzyModule::setOverview(bool overview) {
@@ -93,6 +94,10 @@ void SpindizzyModule::setOverview(bool overview) {
 
 unsigned int SpindizzyModule::getZoneCount() {
   return cZoneCount;
+}
+
+void SpindizzyModule::setTheme(SpindizzyZoneTheme* theme) {
+  cDefaultTheme = theme;
 }
 
 void SpindizzyModule::load(DOMNodeWrapper* node, IResourceRegistry* resources) {
@@ -372,6 +377,12 @@ IArgumentValue* SpindizzyModule::getArgumentValue(const std::string& argument) {
 
 void SpindizzyModule::setArgumentValue(ElementSpindizzyZone* zone) {
   cArgumentValueZone.setValue(zone);
+}
+
+void SpindizzyModule::applyDefaultTheme() {
+  if (cDefaultTheme != nullptr) {
+    cDefaultTheme->set();
+  }
 }
 
 SpindizzyZoneThemeTexture* SpindizzyModule::getThemeTexture(const std::string& type) {
