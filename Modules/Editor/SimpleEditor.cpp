@@ -165,7 +165,10 @@ bool SimpleEditor::editorInput(SDL_Event& event) {
     }
 
     case SDL_KEYDOWN: {
-      return keyDown(event.key.keysym.sym);
+      if (keyDown(event.key.keysym.sym)) {
+        return true;
+      }
+      break;
     }
   }
   

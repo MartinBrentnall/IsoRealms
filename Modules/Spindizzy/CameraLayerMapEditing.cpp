@@ -114,11 +114,16 @@ void CameraLayerMapEditing::rotate(float rotate, float tilt) {
 }
 
 float CameraLayerMapEditing::getAngle() {
+  float mAngle;
   if (cProgress < 1.0) {
-    return getSineAngle(cPreviousViewPoint->cRotation, cCurrentViewPoint->cRotation);
+    mAngle = getSineAngle(cPreviousViewPoint->cRotation, cCurrentViewPoint->cRotation);
   } else {
-    return cCurrentViewPoint->cRotation;
+    mAngle = cCurrentViewPoint->cRotation;
   }
+  if (mAngle > 180.0f) {
+    mAngle -= 360.0f;
+  }
+  return mAngle;
 }
 
 float CameraLayerMapEditing::getTilt() {

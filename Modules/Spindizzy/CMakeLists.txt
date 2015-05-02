@@ -47,6 +47,7 @@ add_library(Spindizzy MODULE
   ElementSpindizzyZone.cpp
   LayerBackground.cpp
   LayerSpindizzyMap.cpp
+  LayerSpindizzyMapEditingContext.cpp
   LiftSurfaceCollisionEvent.cpp
   ModelSpindizzyCraftGyroscope.cpp
   ModelSpindizzyCraftPyramid.cpp

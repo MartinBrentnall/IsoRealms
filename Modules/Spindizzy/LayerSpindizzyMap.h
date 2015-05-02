@@ -34,6 +34,7 @@
 #include "CameraLayerMapEditing.h"
 #include "ISpindizzyMapType.h"
 #include "ISpindizzyMapModule.h"
+#include "LayerSpindizzyMapEditingContext.h"
 
 /**
  * This class holds data for an IsoRealms map.
@@ -44,7 +45,8 @@ class LayerSpindizzyMap:public ILayer,
   ISpindizzyMapType* cMapType;
   bool cEditing;
   ICamera* cCamera;
-  CameraLayerMapEditing cCameraEditing;
+  LayerSpindizzyMapEditingContext* cEditingContext;
+  Vertex* cLocationEditing;
 
   ElementHandler cElementHandler;
 

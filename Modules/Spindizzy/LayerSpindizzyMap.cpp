@@ -28,9 +28,7 @@ void LayerSpindizzyMap::load(DOMNodeWrapper* node, bool editing, IResourceAccess
   cEditing = editing;
   initialiseResource(node, resources);
   if (cEditing) {
-    Vertex mNormalDistance(0.0f, 0.0f, -20.0f);
-    cCameraEditing.addViewPoint(0, mNormalDistance, 315.0f, -50.0f, 0.0f);
-    cCameraEditing.setViewPoint(0);
+    cEditingContext = new LayerSpindizzyMapEditingContext();
   }
 }
 
@@ -151,7 +149,7 @@ ILayerType* LayerSpindizzyMap::getLayerType() {
 
 void LayerSpindizzyMap::updateEditing(unsigned int milliseconds) {
   cElementHandler.init(0, cEditing);
-  cCameraEditing.update(milliseconds);
+  cEditingContext->update(milliseconds);
   // TODO: Need a more permanent solution for better performance.
 //   std::vector<IZone*> mZones;
 //   for (unsigned int i = 0; i < cZones.size(); i++) {
@@ -182,7 +180,7 @@ void LayerSpindizzyMap::renderRuntime() {
 }
 
 void LayerSpindizzyMap::renderEditing() {
-  cCameraEditing.render();
+  cEditingContext->render();
   glColor3f(1.0f, 1.0f, 1.0f);
   // TODO: Need a more permanent solution for better performance.
 //   std::vector<IZone*> mZones;
@@ -195,7 +193,7 @@ void LayerSpindizzyMap::renderEditing() {
 }
 
 void LayerSpindizzyMap::input(SDL_Event& event) {
-  if (cCameraEditing.input(event)) {
+  if (cEditingContext->input(event)) {
     return;
   }
 }
