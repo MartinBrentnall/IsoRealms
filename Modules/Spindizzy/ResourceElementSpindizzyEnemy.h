@@ -19,6 +19,7 @@
 #ifndef RESOURCE_ELEMENT_SPINDIZZY_ENEMY_H
 #define RESOURCE_ELEMENT_SPINDIZZY_ENEMY_H
 
+#include <cmath>
 #include <GL/glew.h>
 
 #include <IsoRealms/BlockLocation.h>
@@ -35,7 +36,6 @@ class ResourceElementSpindizzyEnemy:public IElementType {
   I3DModelType* cModelType;
   std::vector<ElementSpindizzyEnemy*> cContent;
   ElementSpindizzyEnemy* cSampleEnemy;
-  BlockLocation* cEditingLocation;
 
   bool keyDown(SDLKey&);
 
@@ -56,13 +56,14 @@ class ResourceElementSpindizzyEnemy:public IElementType {
    * Implements IElementType *
   \***************************/
   void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*);
-  bool input(SDL_Event&);
+  bool inputEdit(SDL_Event&, ILayerEditingContext*);
   void configureElement();
   void setEditingContext(BlockLocation*, IComponentContainer*);
   void renderEditingPreview();
   void updateIcon(unsigned int);
   void renderIcon();
   void destroy(IElement*);
+  Vertex* editorCursorStopped(Vertex*);
   
   virtual ~ResourceElementSpindizzyEnemy();
 };

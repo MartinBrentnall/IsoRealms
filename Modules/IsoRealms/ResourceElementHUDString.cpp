@@ -43,6 +43,14 @@ void ResourceElementHUDString::destroy(IElement* element) {
   // TODO
 }
 
+Vertex* ResourceElementHUDString::editorCursorStopped(Vertex* location) {
+  return nullptr;
+}
+
+bool ResourceElementHUDString::inputEdit(SDL_Event& event, ILayerEditingContext* editingContext) {
+  return false;// TODO
+}
+
 void ResourceElementHUDString::renderEditingPreview() {
   // TODO
 }

@@ -34,7 +34,6 @@ class ResourceElementSpindizzyWater:public ISpindizzyBlockType,
     
   ITexture* cTexture;
   std::vector<ElementSpindizzyWater*> cContent;
-  BlockLocation* cEditingLocation;
   BlockLocation* cStartWaterLocation;
   ElementSpindizzyWater* cSampleWater;
 
@@ -64,11 +63,12 @@ class ResourceElementSpindizzyWater:public ISpindizzyBlockType,
   IElement* getElement();
   void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*);
   void setEditingContext(BlockLocation*, IComponentContainer*);
-  bool input(SDL_Event&);
+  bool inputEdit(SDL_Event&, ILayerEditingContext*);
   void renderEditingPreview();
   void renderIcon();
   void updateIcon(unsigned int);
   void destroy(IElement*);
+  Vertex* editorCursorStopped(Vertex*);
 
   /*******************************\
    * Implements ITextureListener *

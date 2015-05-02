@@ -80,6 +80,10 @@ std::string ResourceLayerHUD::getSource(HUDComponentPosition* component) {
   return "";
 }
 
+void ResourceLayerHUD::resourceSelected(IElementType* elementType) {
+  // TODO:
+}
+
 void ResourceLayerHUD::initRuntime() {
   // Nothing to do
 }

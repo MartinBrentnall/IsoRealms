@@ -42,6 +42,14 @@ void ResourceElementHUDRoundedRectangle::destroy(IElement* element) {
   // TODO
 }
 
+Vertex* ResourceElementHUDRoundedRectangle::editorCursorStopped(Vertex* location) {
+  return nullptr;
+}
+
+bool ResourceElementHUDRoundedRectangle::inputEdit(SDL_Event& event, ILayerEditingContext* editingContext) {
+  return false;// TODO
+}
+
 void ResourceElementHUDRoundedRectangle::renderEditingPreview() {
   // TODO
 }

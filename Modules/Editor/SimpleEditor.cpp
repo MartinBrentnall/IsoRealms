@@ -28,9 +28,9 @@ const std::string SimpleEditor::COMMAND_RESOURCE_BROWSER = "ResourceBrowser";
 void SimpleEditor::load(DOMNodeWrapper* node, IResourceRegistry* runtimeContext) {  
   ICommand* mCommand = CommandManager::getCommand("Pop");
   cExitCommands.push_back(mCommand);
-  cSelectedLayer = NULL;
+  cSelectedLayer = nullptr;
   
-  cProject = NULL;
+  cProject = nullptr;
   cRunExitCommands = false;
   cConfirmExitCommands = false;
   cEditorFocus = true;
@@ -115,6 +115,8 @@ void SimpleEditor::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* r
   cScreenEdgeManager.add(cDockableCameraManager,      cResourceIcons["IconCameras"]);
   cScreenEdgeManager.add(cDockableBoundariesManager,  cResourceIcons["IconCollectables"]);
   addComponent(&cScreenEdgeManager);
+  
+  cDockableElementTypeManager->addElementTypeSelectionListener(this);
 }
 
 bool SimpleEditor::componentAt(float x, float y) {
@@ -130,7 +132,7 @@ bool SimpleEditor::keyDown(SDLKey& key) {
   switch (key) {
     case SDLK_u: {
 //       IElement* mElement = cCursor->popElement();
-//       if (mElement != NULL) {
+//       if (mElement != nullptr) {
 //         cUndoStack.push(mElement);
 //       }
       return true;
@@ -172,7 +174,7 @@ bool SimpleEditor::editorInput(SDL_Event& event) {
     }
   }
   
-  if (cSelectedLayer != NULL) {
+  if (cSelectedLayer != nullptr) {
     cSelectedLayer->input(event);
   }
   return false;
@@ -261,8 +263,8 @@ void SimpleEditor::input(SDL_Event& event) {
 //   cProject->removeElement(element);
 // }
 // 
-void SimpleEditor::elementSelected(IElementType* elementType) {
-//  cCursor->setElementType(elementType);
+void SimpleEditor::resourceSelected(IElementType* elementType) {
+  cSelectedLayer->resourceSelected(elementType);
 }
 
 int SimpleEditor::getComponentIndex(IHUDComponent* component) {
@@ -332,7 +334,7 @@ void SimpleEditor::destroy(ILayer* layer) {
 }
 
 void SimpleEditor::renderRuntime() {
-  if (cSelectedLayer != NULL) {
+  if (cSelectedLayer != nullptr) {
     cSelectedLayer->renderEditing();
   }
   
@@ -357,7 +359,7 @@ void SimpleEditor::updateRuntime(unsigned int milliseconds) {
     cHUDComponents[i]->update(milliseconds);
   }
   
-  if (cSelectedLayer != NULL) {
+  if (cSelectedLayer != nullptr) {
     cSelectedLayer->updateEditing(milliseconds);
   }
   if (cRunExitCommands) {
@@ -463,7 +465,7 @@ void SimpleEditor::openProject(const std::string& file) {
     DOMNodeWrapper *mNode = mConfigurationRootNode->getChild(i);
     std::string mValue = mNode->getNodeName();
     if (mValue == "Project") {
-      if (cProject != NULL) {
+      if (cProject != nullptr) {
         clearUndoStack();
         delete cProject;
       }

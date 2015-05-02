@@ -30,6 +30,14 @@ void ResourceElementSpindizzyBlock::initialiseResource(DOMNodeWrapper* node, IRe
   cBlockTypeProperties.configure(node, resourceAccessor);
 }
 
+Vertex* ResourceElementSpindizzyBlock::editorCursorStopped(Vertex* location) {
+  Vertex* mGridLocation = new Vertex();
+  mGridLocation->x = std::round(location->x);
+  mGridLocation->y = std::round(location->y);
+  mGridLocation->z = std::round(location->z * 2.0) * 0.5;
+  return mGridLocation;
+}
+
 IElement* ResourceElementSpindizzyBlock::getElement() {
   return nullptr;
 }
@@ -80,35 +88,48 @@ void ResourceElementSpindizzyBlock::save(DOMNodeWriter* node, IResourceLocator* 
 
 void ResourceElementSpindizzyBlock::setEditingContext(BlockLocation* editingLocation, IComponentContainer* componentContainer) {
   cComponentContainer = componentContainer;
-  cEditingLocation = editingLocation;
 }
 
-bool ResourceElementSpindizzyBlock::keyDown(SDLKey& key) {
-  switch (key) {
-    case SDLK_SPACE: {
-      if (cStartBlockLocation == nullptr) {
-        cStartBlockLocation = new BlockLocation(*cEditingLocation);
-      } else {
-        ElementSpindizzyBlock* mNewBlock = createBlock(cStartBlockLocation, cEditingLocation, cBlockProperties, true, nullptr);
-        cContent.push_back(mNewBlock);
-//        addElement(mNewBlock);
-        delete cStartBlockLocation;
-        cStartBlockLocation = nullptr;
-      }
-      return true;
-    }
+unsigned int ResourceElementSpindizzyBlock::getXCorner(float angle) {
+  return 0;
+}
 
-    case SDLK_DELETE: {
-      if (cStartBlockLocation == nullptr) {
-        cStartBlockLocation = new BlockLocation(*cEditingLocation);
-      } else {
-        ElementSpindizzyBlock* mNewBlock = createBlock(cStartBlockLocation, cEditingLocation, cBlockProperties, false, nullptr);
-        cContent.push_back(mNewBlock);
-//        addElement(mNewBlock);
-        delete cStartBlockLocation;
-        cStartBlockLocation = nullptr;
-      }
-    }
+bool ResourceElementSpindizzyBlock::keyDown(SDLKey& key, ILayerEditingContext* editingContext) {
+  switch (key) {
+    case SDLK_KP_DIVIDE:   cBlockProperties->raiseCorner(0, 1);     return true;
+    case SDLK_KP8:         cBlockProperties->lowerCorner(0, 1);     return true;
+    case SDLK_KP9:         cBlockProperties->raiseCorner(1, 1);     return true;
+    case SDLK_KP6:         cBlockProperties->lowerCorner(1, 1);     return true;
+    case SDLK_KP5:         cBlockProperties->raiseCorner(1, 0);     return true;
+    case SDLK_KP2:         cBlockProperties->lowerCorner(1, 0);     return true;
+    case SDLK_KP7:         cBlockProperties->raiseCorner(0, 0);     return true;
+    case SDLK_KP4:         cBlockProperties->lowerCorner(0, 0);     return true;
+    case SDLK_KP_MULTIPLY: cBlockProperties->toggleSplit();         return true;
+    case SDLK_KP_PERIOD:   cBlockProperties->toggleSteppedBottom(); return true;
+//     case SDLK_SPACE: {
+//       if (cStartBlockLocation == nullptr) {
+//         cStartBlockLocation = new BlockLocation(*cEditingLocation);
+//       } else {
+//         ElementSpindizzyBlock* mNewBlock = createBlock(cStartBlockLocation, cEditingLocation, cBlockProperties, true, nullptr);
+//         cContent.push_back(mNewBlock);
+// //        addElement(mNewBlock);
+//         delete cStartBlockLocation;
+//         cStartBlockLocation = nullptr;
+//       }
+//       return true;
+//     }
+// 
+//     case SDLK_DELETE: {
+//       if (cStartBlockLocation == nullptr) {
+//         cStartBlockLocation = new BlockLocation(*cEditingLocation);
+//       } else {
+//         ElementSpindizzyBlock* mNewBlock = createBlock(cStartBlockLocation, cEditingLocation, cBlockProperties, false, nullptr);
+//         cContent.push_back(mNewBlock);
+// //        addElement(mNewBlock);
+//         delete cStartBlockLocation;
+//         cStartBlockLocation = nullptr;
+//       }
+//     }
 
     default: {
       return false;
@@ -124,10 +145,14 @@ void ResourceElementSpindizzyBlock::configureElement() {
   }
 }
 
-bool ResourceElementSpindizzyBlock::input(SDL_Event& event) {
+bool ResourceElementSpindizzyBlock::inputEdit(SDL_Event& event, ILayerEditingContext* editingContext) {
   switch (event.type) {
     case SDL_KEYDOWN: {
-      return keyDown(event.key.keysym.sym);
+      if (keyDown(event.key.keysym.sym, editingContext)) {
+        delete cEditingBlock;
+        cEditingBlock = nullptr;
+        return true;
+      }
     }
   }
   return false;
@@ -135,57 +160,65 @@ bool ResourceElementSpindizzyBlock::input(SDL_Event& event) {
 
 void ResourceElementSpindizzyBlock::renderEditingPreview() {
   if (cStartBlockLocation != nullptr) {
-    float mEast  = (cEditingLocation->x > cStartBlockLocation->x ? cEditingLocation->x    : cStartBlockLocation->x) + IsoRealmsConstants::BLOCK_RADIUS;
-    float mWest  = (cEditingLocation->x > cStartBlockLocation->x ? cStartBlockLocation->x : cEditingLocation->x)    - IsoRealmsConstants::BLOCK_RADIUS;
-    float mNorth = (cEditingLocation->y > cStartBlockLocation->y ? cEditingLocation->y    : cStartBlockLocation->y) + IsoRealmsConstants::BLOCK_RADIUS;
-    float mSouth = (cEditingLocation->y > cStartBlockLocation->y ? cStartBlockLocation->y : cEditingLocation->y)    - IsoRealmsConstants::BLOCK_RADIUS;
-    float mBottom = (cEditingLocation->z > cStartBlockLocation->z ? cStartBlockLocation->z : cEditingLocation->z)    * IsoRealmsConstants::BLOCK_HEIGHT - IsoRealmsConstants::BLOCK_HEIGHT;
-    float mTopSouthWest = (cEditingLocation->z > cStartBlockLocation->z ? cEditingLocation->z    : cStartBlockLocation->z) * IsoRealmsConstants::BLOCK_HEIGHT;
-    float mTopSouthEast = mTopSouthWest;
-    float mTopNorthEast = mTopSouthWest;
-    float mTopNorthWest = mTopSouthWest;
-  
-    int mXSlope = cBlockProperties->getXSlope();
-    if (mXSlope > 0) {
-      int mHeightOffset = mXSlope * ((mWest - mEast)) * IsoRealmsConstants::BLOCK_HEIGHT;
-      mTopSouthEast -= mHeightOffset;
-      mTopNorthEast -= mHeightOffset;
-    } else if (mXSlope < 0) {
-      int mHeightOffset = mXSlope * ((mWest - mEast)) * IsoRealmsConstants::BLOCK_HEIGHT;
-      mTopNorthWest += mHeightOffset;
-      mTopSouthWest += mHeightOffset;
+//     float mEast  = (cEditingLocation->x > cStartBlockLocation->x ? cEditingLocation->x    : cStartBlockLocation->x) + IsoRealmsConstants::BLOCK_RADIUS;
+//     float mWest  = (cEditingLocation->x > cStartBlockLocation->x ? cStartBlockLocation->x : cEditingLocation->x)    - IsoRealmsConstants::BLOCK_RADIUS;
+//     float mNorth = (cEditingLocation->y > cStartBlockLocation->y ? cEditingLocation->y    : cStartBlockLocation->y) + IsoRealmsConstants::BLOCK_RADIUS;
+//     float mSouth = (cEditingLocation->y > cStartBlockLocation->y ? cStartBlockLocation->y : cEditingLocation->y)    - IsoRealmsConstants::BLOCK_RADIUS;
+//     float mBottom = (cEditingLocation->z > cStartBlockLocation->z ? cStartBlockLocation->z : cEditingLocation->z)    * IsoRealmsConstants::BLOCK_HEIGHT - IsoRealmsConstants::BLOCK_HEIGHT;
+//     float mTopSouthWest = (cEditingLocation->z > cStartBlockLocation->z ? cEditingLocation->z    : cStartBlockLocation->z) * IsoRealmsConstants::BLOCK_HEIGHT;
+//     float mTopSouthEast = mTopSouthWest;
+//     float mTopNorthEast = mTopSouthWest;
+//     float mTopNorthWest = mTopSouthWest;
+//   
+//     int mXSlope = cBlockProperties->getXSlope();
+//     if (mXSlope > 0) {
+//       int mHeightOffset = mXSlope * ((mWest - mEast)) * IsoRealmsConstants::BLOCK_HEIGHT;
+//       mTopSouthEast -= mHeightOffset;
+//       mTopNorthEast -= mHeightOffset;
+//     } else if (mXSlope < 0) {
+//       int mHeightOffset = mXSlope * ((mWest - mEast)) * IsoRealmsConstants::BLOCK_HEIGHT;
+//       mTopNorthWest += mHeightOffset;
+//       mTopSouthWest += mHeightOffset;
+//     }
+//   
+//     int mYSlope = cBlockProperties->getYSlope();
+//     if (mYSlope > 0) {
+//       int mHeightOffset = mYSlope * ((mSouth - mNorth)) * IsoRealmsConstants::BLOCK_HEIGHT;
+//       mTopNorthWest -= mHeightOffset;
+//       mTopNorthEast -= mHeightOffset;
+//     } else if (mYSlope < 0) {
+//       int mHeightOffset = mYSlope * ((mSouth - mNorth)) * IsoRealmsConstants::BLOCK_HEIGHT;
+//       mTopSouthEast += mHeightOffset;
+//       mTopSouthWest += mHeightOffset;
+//     }
+//   
+//     glBindTexture(GL_TEXTURE_2D, 0);
+//     glColor3f(1.0, 0.5f, 0.5f);
+//     glBegin(GL_LINE_LOOP);
+//     glVertex3f(mWest, mSouth, mTopSouthWest);
+//     glVertex3f(mEast, mSouth, mTopSouthEast);
+//     glVertex3f(mEast, mSouth, mBottom);
+//     glVertex3f(mWest, mSouth, mBottom);
+//     glVertex3f(mWest, mNorth, mBottom);
+//     glVertex3f(mEast, mNorth, mBottom);
+//     glVertex3f(mEast, mNorth, mTopNorthEast);
+//     glVertex3f(mWest, mNorth, mTopNorthWest);
+//     glEnd();
+// 
+//     glBegin(GL_LINES);
+//     glVertex3f(mWest, mSouth, mTopSouthWest);  glVertex3f(mWest, mSouth, mBottom);
+//     glVertex3f(mWest, mNorth, mTopNorthWest);  glVertex3f(mWest, mNorth, mBottom);
+//     glVertex3f(mEast, mSouth, mBottom);        glVertex3f(mEast, mNorth, mBottom);
+//     glVertex3f(mEast, mSouth, mTopSouthEast);  glVertex3f(mEast, mNorth, mTopNorthEast);
+//     glEnd();
+  } else {
+    glColor3f(1.0f, 1.0f, 1.0f);
+    if (cEditingBlock == nullptr) {
+      BlockLocation mIdentityBlockLocation(0, 0, 0);
+      cEditingBlock = createBlock(&mIdentityBlockLocation, &mIdentityBlockLocation, cBlockProperties, true, nullptr);
+      cEditingBlock->createSampleSurfaces();
     }
-  
-    int mYSlope = cBlockProperties->getYSlope();
-    if (mYSlope > 0) {
-      int mHeightOffset = mYSlope * ((mSouth - mNorth)) * IsoRealmsConstants::BLOCK_HEIGHT;
-      mTopNorthWest -= mHeightOffset;
-      mTopNorthEast -= mHeightOffset;
-    } else if (mYSlope < 0) {
-      int mHeightOffset = mYSlope * ((mSouth - mNorth)) * IsoRealmsConstants::BLOCK_HEIGHT;
-      mTopSouthEast += mHeightOffset;
-      mTopSouthWest += mHeightOffset;
-    }
-  
-    glBindTexture(GL_TEXTURE_2D, 0);
-    glColor3f(1.0, 0.5f, 0.5f);
-    glBegin(GL_LINE_LOOP);
-    glVertex3f(mWest, mSouth, mTopSouthWest);
-    glVertex3f(mEast, mSouth, mTopSouthEast);
-    glVertex3f(mEast, mSouth, mBottom);
-    glVertex3f(mWest, mSouth, mBottom);
-    glVertex3f(mWest, mNorth, mBottom);
-    glVertex3f(mEast, mNorth, mBottom);
-    glVertex3f(mEast, mNorth, mTopNorthEast);
-    glVertex3f(mWest, mNorth, mTopNorthWest);
-    glEnd();
-
-    glBegin(GL_LINES);
-    glVertex3f(mWest, mSouth, mTopSouthWest);  glVertex3f(mWest, mSouth, mBottom);
-    glVertex3f(mWest, mNorth, mTopNorthWest);  glVertex3f(mWest, mNorth, mBottom);
-    glVertex3f(mEast, mSouth, mBottom);        glVertex3f(mEast, mNorth, mBottom);
-    glVertex3f(mEast, mSouth, mTopSouthEast);  glVertex3f(mEast, mNorth, mTopNorthEast);
-    glEnd();
+    cEditingBlock->renderRuntime();
   }
 }
 

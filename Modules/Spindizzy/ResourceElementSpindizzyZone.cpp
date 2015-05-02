@@ -84,9 +84,10 @@ void ResourceElementSpindizzyZone::setEditingContext(BlockLocation*, IComponentC
 }
 
 void ResourceElementSpindizzyZone::renderEditingPreview() {
+  cSampleZone->renderEditing();
 }
 
-bool ResourceElementSpindizzyZone::input(SDL_Event& event) {
+bool ResourceElementSpindizzyZone::inputEdit(SDL_Event& event, ILayerEditingContext* editingContext) {
   // TODO: This is apparently for editor input!
   return false;
 }
@@ -110,6 +111,14 @@ void ResourceElementSpindizzyZone::setDirty(IElement* element) {
 
 void ResourceElementSpindizzyZone::destroy(IElement* element) {
   delete element;
+}
+
+Vertex* ResourceElementSpindizzyZone::editorCursorStopped(Vertex* location) {
+  Vertex* mGridLocation = new Vertex();
+  mGridLocation->x = std::round(location->x);
+  mGridLocation->y = std::round(location->y);
+  mGridLocation->z = std::round(location->z * 2.0) * 0.5;
+  return mGridLocation;
 }
 
 IArgumentValue* ResourceElementSpindizzyZone::getArgumentValue(const std::string& argument) {

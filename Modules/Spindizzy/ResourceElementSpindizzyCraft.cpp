@@ -103,9 +103,9 @@ bool ResourceElementSpindizzyCraft::keyDown(SDLKey& key) {
   switch (key) {
     case SDLK_SPACE: {
       if (cContent.size() == 0) {
-        ElementSpindizzyCraft* mGERALD = new ElementSpindizzyCraft(this, cResources, cEditingLocation);
+//        ElementSpindizzyCraft* mGERALD = new ElementSpindizzyCraft(this, cResources, cEditingLocation);
 //        addElement(mGERALD);
-        cContent.push_back(mGERALD);
+//        cContent.push_back(mGERALD);
       } else {
         // TODO: How to replace existing element?
       }
@@ -119,7 +119,7 @@ bool ResourceElementSpindizzyCraft::keyDown(SDLKey& key) {
   return false;
 }
 
-bool ResourceElementSpindizzyCraft::input(SDL_Event& event) {
+bool ResourceElementSpindizzyCraft::inputEdit(SDL_Event& event, ILayerEditingContext* editingContext) {
   switch (event.type) {
     case SDL_KEYDOWN: {
       return keyDown(event.key.keysym.sym);
@@ -133,11 +133,10 @@ void ResourceElementSpindizzyCraft::configureElement() {
 }
 
 void ResourceElementSpindizzyCraft::setEditingContext(BlockLocation* editingLocation, IComponentContainer* componentContainer) {
-  cEditingLocation = editingLocation;  
 }
 
 void ResourceElementSpindizzyCraft::renderEditingPreview() {
-  // Nothing to do
+  cSampleGERALD->renderRuntime();
 }
 
 void ResourceElementSpindizzyCraft::updateIcon(unsigned int milliseconds) {
@@ -187,6 +186,14 @@ void ResourceElementSpindizzyCraft::stop() {
 
 void ResourceElementSpindizzyCraft::destroy(IElement* element) {
   delete element;
+}
+
+Vertex* ResourceElementSpindizzyCraft::editorCursorStopped(Vertex* location) {
+  Vertex* mGridLocation = new Vertex();
+  mGridLocation->x = std::round(location->x * 2.0) * 0.5;
+  mGridLocation->y = std::round(location->y * 2.0) * 0.5;
+  mGridLocation->z = std::round(location->z * 2.0) * 0.5;
+  return mGridLocation;
 }
 
 std::string ResourceElementSpindizzyCraft::getPath(IArgumentValue* value) {

@@ -16,27 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_LAYER_H
-#define I_LAYER_H
+#ifndef I_LAYER_EDITING_CONTEXT_H
+#define I_LAYER_EDITING_CONTEXT_H
 
-#include <SDL/SDL.h>
+#include "Resources/ElementType/IElementContainer.h"
+#include "Resources/Vertex/Vertex.h"
 
-#include <IsoRealms/Persistence/DOMNodeWriter.h>
-#include <IsoRealms/Resources/IResourceLocator.h>
-#include <IsoRealms/Resources/IResourceSelectionListener.h>
-
-class ILayer : public virtual IResourceSelectionListener<IElementType> {
+class ILayerEditingContext {
   public:
-  virtual void updateRuntime(unsigned int) = 0;
-  virtual void updateEditing(unsigned int) = 0;
-  virtual void renderRuntime() = 0;
-  virtual void renderEditing() = 0;
-  virtual void input(SDL_Event&) = 0;
-  virtual void initRuntime() = 0;
-  virtual void save(DOMNodeWriter*, IResourceLocator*) = 0;
-  virtual void staticChanged() = 0;
-  
-  virtual ~ILayer() {}
+  virtual IElementContainer* getElementContainer() = 0;
+  virtual Vertex* getLocation() = 0;
+  virtual float getAngle() = 0;
 };
 
 #endif

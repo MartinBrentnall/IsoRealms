@@ -25,9 +25,11 @@ class IElement;
 
 #include <IsoRealms/BlockLocation.h>
 #include <IsoRealms/IComponentContainer.h>
+#include <IsoRealms/ILayerEditingContext.h>
 #include <IsoRealms/IResourceSource.h>
 #include <IsoRealms/Persistence/DOMNodeWrapper.h>
 #include <IsoRealms/Resources/IResource.h>
+#include <IsoRealms/Resources/Vertex/Vertex.h>
 
 #include "IElement.h"
 #include "IElementContainer.h"
@@ -57,7 +59,7 @@ class IElementType:public IResource {
   /**
    * Enable user input for configuring the type.
    */
-//  virtual bool input(SDL_Event&) = 0;
+  virtual bool inputEdit(SDL_Event&, ILayerEditingContext*) = 0;
 
   /**
    * Render a preview representation of the element to be created by this
@@ -89,6 +91,15 @@ class IElementType:public IResource {
    * @param IElement*  The element to destroy.
    */
   virtual void destroy(IElement*) = 0;
+  
+  /**
+   * Called when the editor cursor has stopped.  This is used if the element
+   * wants to adjust the cursor position (e.g. to align to a grid).
+   * 
+   * @param Vertex*  The cursor location.
+   * @return         Adjusted cursor location.
+   */
+  virtual Vertex* editorCursorStopped(Vertex*) = 0;
   
   virtual ~IElementType() {}
 };

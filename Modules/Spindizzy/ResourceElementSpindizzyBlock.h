@@ -19,6 +19,8 @@
 #ifndef RESOURCE_ELEMENT_SPINDIZZY_BLOCK_H
 #define RESOURCE_ELEMENT_SPINDIZZY_BLOCK_H
 
+#include <cmath>
+
 #include <GL/glew.h>
 #include <SDL/SDL.h>
 
@@ -48,11 +50,13 @@ class ResourceElementSpindizzyBlock:public ISpindizzyBlockType,
   IComponentContainer* cComponentContainer;
   SpindizzyBlockProperties* cBlockProperties;
   BlockLocation* cStartBlockLocation;
-  BlockLocation* cEditingLocation;
   ElementSpindizzyBlock* cSampleBlock;
+  ElementSpindizzyBlock* cEditingBlock;
   BlockTypeProperties cBlockTypeProperties;
   
-  bool keyDown(SDLKey&);  
+  unsigned int getXCorner(float);
+  
+  bool keyDown(SDLKey&, ILayerEditingContext*);  
 
   void drawSlopeWireFrameCuboid(BlockLocation* location, BlockLocation* dimension, int xslope, int yslope);
 
@@ -91,13 +95,14 @@ class ResourceElementSpindizzyBlock:public ISpindizzyBlockType,
   IElement* getElement();
   void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*);
   void setEditingContext(BlockLocation*, IComponentContainer*);
-  bool input(SDL_Event&);
+  bool inputEdit(SDL_Event&, ILayerEditingContext*);
   void renderEditingPreview();
   void renderIcon();
   void updateIcon(unsigned int);
   std::string getName();
   void destroy(IElement*);
   void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  Vertex* editorCursorStopped(Vertex*);
 
   /**************************************\
    * Implements IComponentCloseListener *

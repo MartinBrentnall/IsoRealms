@@ -80,11 +80,12 @@ class ResourceElementSpindizzyZone:public ISpindizzyZoneType,
   void configureElement();
   void setEditingContext(BlockLocation*, IComponentContainer*);
   void renderEditingPreview();
-  bool input(SDL_Event&);
+  bool inputEdit(SDL_Event&, ILayerEditingContext*);
   void updateIcon(unsigned int milliseconds);
   void renderIcon();
   void setDirty(IElement*);
   void destroy(IElement*);
+  Vertex* editorCursorStopped(Vertex*);
 
   /***************************************\
    * Implements IArgumentValueCollection *

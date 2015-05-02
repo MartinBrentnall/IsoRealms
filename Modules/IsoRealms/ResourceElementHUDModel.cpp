@@ -57,6 +57,14 @@ void ResourceElementHUDModel::destroy(IElement* element) {
   // TODO
 }
 
+Vertex* ResourceElementHUDModel::editorCursorStopped(Vertex* location) {
+  return nullptr;
+}
+
+bool ResourceElementHUDModel::inputEdit(SDL_Event& event, ILayerEditingContext* editingContext) {
+  return false;// TODO
+}
+
 void ResourceElementHUDModel::renderEditingPreview() {
   // TODO
 }

@@ -57,21 +57,20 @@ void ResourceElementSpindizzyWater::loadElement(DOMNodeWrapper* node, BlockLocat
 // }
 
 void ResourceElementSpindizzyWater::setEditingContext(BlockLocation* editingLocation, IComponentContainer* componentContainer) {
-  cEditingLocation = editingLocation;
 }
 
 bool ResourceElementSpindizzyWater::keyDown(SDLKey& key) {
   switch (key) {
     case SDLK_SPACE: {
-      if (cStartWaterLocation == nullptr) {
-        cStartWaterLocation = new BlockLocation(*cEditingLocation);
-      } else {
-        ElementSpindizzyWater* mNewBlock = new ElementSpindizzyWater(this, cStartWaterLocation, cEditingLocation, &cTexture, nullptr);
-        cContent.push_back(mNewBlock);
-//        addElement(mNewBlock);
-        delete cStartWaterLocation;
-        cStartWaterLocation = nullptr;
-      }
+//       if (cStartWaterLocation == nullptr) {
+//         cStartWaterLocation = new BlockLocation(*cEditingLocation);
+//       } else {
+//         ElementSpindizzyWater* mNewBlock = new ElementSpindizzyWater(this, cStartWaterLocation, cEditingLocation, &cTexture, nullptr);
+//         cContent.push_back(mNewBlock);
+// //        addElement(mNewBlock);
+//         delete cStartWaterLocation;
+//         cStartWaterLocation = nullptr;
+//       }
       return true;
     }
 
@@ -82,7 +81,7 @@ bool ResourceElementSpindizzyWater::keyDown(SDLKey& key) {
   return false;
 }
 
-bool ResourceElementSpindizzyWater::input(SDL_Event& event) {
+bool ResourceElementSpindizzyWater::inputEdit(SDL_Event& event, ILayerEditingContext* editingContext) {
   switch (event.type) {
     case SDL_KEYDOWN: {
       return keyDown(event.key.keysym.sym);
@@ -93,20 +92,22 @@ bool ResourceElementSpindizzyWater::input(SDL_Event& event) {
 
 void ResourceElementSpindizzyWater::renderEditingPreview() {
   if (cStartWaterLocation != nullptr) {
-    float x  = (cEditingLocation->x > cStartWaterLocation->x ? cEditingLocation->x    : cStartWaterLocation->x) + IsoRealmsConstants::BLOCK_RADIUS;
-    float xs = (cEditingLocation->x > cStartWaterLocation->x ? cStartWaterLocation->x : cEditingLocation->x)    - IsoRealmsConstants::BLOCK_RADIUS;
-    float y  = (cEditingLocation->y > cStartWaterLocation->y ? cEditingLocation->y    : cStartWaterLocation->y) + IsoRealmsConstants::BLOCK_RADIUS;
-    float ys = (cEditingLocation->y > cStartWaterLocation->y ? cStartWaterLocation->y : cEditingLocation->y)    - IsoRealmsConstants::BLOCK_RADIUS;
-    float z  = (cEditingLocation->z > cStartWaterLocation->z ? cEditingLocation->z    : cStartWaterLocation->z) * IsoRealmsConstants::BLOCK_HEIGHT;
-  
-    glBindTexture(GL_TEXTURE_2D, 0);
-    glColor3f(1.0, 0.5f, 0.5f);
-    glBegin(GL_LINES);
-    glVertex3f(xs, ys, z);   glVertex3f(x,  ys, z);
-    glVertex3f(x,  ys, z);   glVertex3f(x,  y,  z);
-    glVertex3f(x,  y,  z);   glVertex3f(xs, y,  z);
-    glVertex3f(xs, y,  z);   glVertex3f(xs, ys, z);
-    glEnd();
+//     float x  = (cEditingLocation->x > cStartWaterLocation->x ? cEditingLocation->x    : cStartWaterLocation->x) + IsoRealmsConstants::BLOCK_RADIUS;
+//     float xs = (cEditingLocation->x > cStartWaterLocation->x ? cStartWaterLocation->x : cEditingLocation->x)    - IsoRealmsConstants::BLOCK_RADIUS;
+//     float y  = (cEditingLocation->y > cStartWaterLocation->y ? cEditingLocation->y    : cStartWaterLocation->y) + IsoRealmsConstants::BLOCK_RADIUS;
+//     float ys = (cEditingLocation->y > cStartWaterLocation->y ? cStartWaterLocation->y : cEditingLocation->y)    - IsoRealmsConstants::BLOCK_RADIUS;
+//     float z  = (cEditingLocation->z > cStartWaterLocation->z ? cEditingLocation->z    : cStartWaterLocation->z) * IsoRealmsConstants::BLOCK_HEIGHT;
+//   
+//     glBindTexture(GL_TEXTURE_2D, 0);
+//     glColor3f(1.0, 0.5f, 0.5f);
+//     glBegin(GL_LINES);
+//     glVertex3f(xs, ys, z);   glVertex3f(x,  ys, z);
+//     glVertex3f(x,  ys, z);   glVertex3f(x,  y,  z);
+//     glVertex3f(x,  y,  z);   glVertex3f(xs, y,  z);
+//     glVertex3f(xs, y,  z);   glVertex3f(xs, ys, z);
+//     glEnd();
+  } else {
+    cSampleWater->renderStatic();
   }
 }
 
@@ -131,6 +132,14 @@ void ResourceElementSpindizzyWater::updateIcon(unsigned int) {
 
 void ResourceElementSpindizzyWater::destroy(IElement* element) {
   delete element;
+}
+
+Vertex* ResourceElementSpindizzyWater::editorCursorStopped(Vertex* location) {
+  Vertex* mGridLocation = new Vertex();
+  mGridLocation->x = std::round(location->x);
+  mGridLocation->y = std::round(location->y);
+  mGridLocation->z = std::round(location->z * 2.0) * 0.5;
+  return mGridLocation;
 }
 
 ISpindizzyBlockSet* ResourceElementSpindizzyWater::getSpindizzyBlockInterface() {

@@ -38,6 +38,18 @@ void SpindizzyBlockProperties::lowerSelectedCorner() {
   }
 }
 
+void SpindizzyBlockProperties::raiseCorner(unsigned int x, unsigned int y) {
+  if (cCornerHeight[x][y] < 2) {
+    cCornerHeight[x][y]++;
+  }
+}
+
+void SpindizzyBlockProperties::lowerCorner(unsigned int x, unsigned int y) {
+  if (cCornerHeight[x][y] > 0) {
+    cCornerHeight[x][y]--;
+  }
+}
+
 void SpindizzyBlockProperties::selectNorth() {
   cY = 1;
 }

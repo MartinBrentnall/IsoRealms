@@ -39,6 +39,10 @@ void LayerBackground::setColour(IColour* colour) {
   cProgressBackgroundColour = 0.0f;
 }
 
+void LayerBackground::resourceSelected(IElementType* elementType) {
+  // Not supported.
+}
+
 ILayerType* LayerBackground::getLayerType() {
   return cLayerType;
 }

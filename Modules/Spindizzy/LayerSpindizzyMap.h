@@ -40,7 +40,8 @@
  * This class holds data for an IsoRealms map.
  */
 class LayerSpindizzyMap:public ILayer,
-                        public IElementContainer {
+                        public IElementContainer, 
+                        public ILayerSpindizzyMap {
   private:
   ISpindizzyMapType* cMapType;
   bool cEditing;
@@ -115,8 +116,8 @@ class LayerSpindizzyMap:public ILayer,
   /*********************\
    * Implements ILayer *
   \*********************/
+  void resourceSelected(IElementType*);  
   ILayerType* getLayerType();
-  
   void updateRuntime(unsigned int);
   void updateEditing(unsigned int);
   void renderRuntime();
@@ -125,6 +126,11 @@ class LayerSpindizzyMap:public ILayer,
   void initRuntime();
   void save(DOMNodeWriter*, IResourceLocator*);
   void staticChanged();
+  
+  /*********************************\
+   * Implements ILayerSpindizzyMap *
+  \*********************************/
+  IElementContainer* getElementContainer();
   
   ~LayerSpindizzyMap();
 };

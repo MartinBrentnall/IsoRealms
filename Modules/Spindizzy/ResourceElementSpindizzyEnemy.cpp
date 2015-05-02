@@ -57,9 +57,9 @@ void ResourceElementSpindizzyEnemy::loadElement(DOMNodeWrapper* node, BlockLocat
 bool ResourceElementSpindizzyEnemy::keyDown(SDLKey& key) {
   switch (key) {
     case SDLK_SPACE: {
-      ElementSpindizzyEnemy* mEnemy = new ElementSpindizzyEnemy(this, cEditingLocation, cModelType, nullptr);
+//      ElementSpindizzyEnemy* mEnemy = new ElementSpindizzyEnemy(this, cEditingLocation, cModelType, nullptr);
 //      addElement(mEnemy);
-      cContent.push_back(mEnemy);
+//      cContent.push_back(mEnemy);
       return true;
     }
 
@@ -70,7 +70,7 @@ bool ResourceElementSpindizzyEnemy::keyDown(SDLKey& key) {
   return false;
 }
 
-bool ResourceElementSpindizzyEnemy::input(SDL_Event& event) {
+bool ResourceElementSpindizzyEnemy::inputEdit(SDL_Event& event, ILayerEditingContext* editingContext) {
   switch (event.type) {
     case SDL_KEYDOWN: {
       return keyDown(event.key.keysym.sym);
@@ -84,11 +84,10 @@ void ResourceElementSpindizzyEnemy::configureElement() {
 }
 
 void ResourceElementSpindizzyEnemy::setEditingContext(BlockLocation* editingLocation, IComponentContainer* componentContainer) {
-  cEditingLocation = editingLocation;  
 }
 
 void ResourceElementSpindizzyEnemy::renderEditingPreview() {
-  // Nothing to do
+  cSampleEnemy->renderRuntime();
 }
 
 void ResourceElementSpindizzyEnemy::updateIcon(unsigned int milliseconds) {
@@ -108,6 +107,14 @@ void ResourceElementSpindizzyEnemy::renderIcon() {
 
 void ResourceElementSpindizzyEnemy::destroy(IElement* element) {
   delete element;
+}
+
+Vertex* ResourceElementSpindizzyEnemy::editorCursorStopped(Vertex* location) {
+  Vertex* mGridLocation = new Vertex();
+  mGridLocation->x = std::round(location->x);
+  mGridLocation->y = std::round(location->y);
+  mGridLocation->z = std::round(location->z * 2.0) * 0.5;
+  return mGridLocation;
 }
 
 ResourceElementSpindizzyEnemy::~ResourceElementSpindizzyEnemy() {

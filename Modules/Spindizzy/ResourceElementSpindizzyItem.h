@@ -44,9 +44,9 @@ class ResourceElementSpindizzyItem:public ISpindizzyJewelType {
   std::vector<ElementSpindizzyItem*> cContent;
   IBoundaries* cBoundaries;
   ElementSpindizzyItem* cSampleJewel;
-  BlockLocation* cEditingLocation;
+  ElementSpindizzyItem* cEditingJewel;
 
-  bool keyDown(SDLKey&);
+  bool keyDown(SDLKey&, ILayerEditingContext*);
 
   public:
   ResourceElementSpindizzyItem(ISpindizzyJewelSet*, DOMNodeWrapper*, IResourceRegistry*);
@@ -70,11 +70,12 @@ class ResourceElementSpindizzyItem:public ISpindizzyJewelType {
   void configureElement();
   void setEditingContext(BlockLocation*, IComponentContainer*);
   void renderEditingPreview();
-  bool input(SDL_Event&);
+  bool inputEdit(SDL_Event&, ILayerEditingContext*);
   void updateIcon(unsigned int milliseconds);
   void renderIcon();
   void setDirty(IElement*);
   void destroy(IElement*);
+  Vertex* editorCursorStopped(Vertex*);
 
   virtual ~ResourceElementSpindizzyItem();
 };

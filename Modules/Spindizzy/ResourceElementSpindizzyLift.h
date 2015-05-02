@@ -19,6 +19,7 @@
 #ifndef RESOURCE_ELEMENT_SPINDIZZY_LIFT_H
 #define RESOURCE_ELEMENT_SPINDIZZY_LIFT_H
 
+#include <cmath>
 #include <GL/glew.h>
 
 #include <IsoRealms/BlockLocation.h>
@@ -39,7 +40,6 @@ class ResourceElementSpindizzyLift:public ISpindizzyLiftType {
   std::vector<ElementSpindizzyLift*> cContent;
   I3DModelType* cModelType;
   ElementSpindizzyLift* cSampleLift;
-  BlockLocation* cEditingLocation;
   BlockLocation* cInsertLocation;
   SpindizzyLiftConfigurationComponent* cConfigurationComponent;
   SpindizzyLiftProperties* cProperties;
@@ -77,12 +77,13 @@ class ResourceElementSpindizzyLift:public ISpindizzyLiftType {
   ISpindizzyLiftSet* getSpindizzyLiftInterface();
   void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*);
   void configureElement();
-  bool input(SDL_Event&);
+  bool inputEdit(SDL_Event&, ILayerEditingContext*);
   void setEditingContext(BlockLocation*, IComponentContainer*);
   void renderEditingPreview();
   void renderIcon();
   void updateIcon(unsigned int);
   void destroy(IElement*);
+  Vertex* editorCursorStopped(Vertex*);
   
   virtual ~ResourceElementSpindizzyLift();
 };

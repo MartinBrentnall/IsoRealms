@@ -76,21 +76,21 @@ void ResourceElementSpindizzyLift::loadElement(DOMNodeWrapper* node, BlockLocati
 bool ResourceElementSpindizzyLift::keyDown(SDLKey& key) {
   switch (key) {
     case SDLK_SPACE: {
-      if (cInsertLocation == nullptr) {
-        cInsertLocation = new BlockLocation(*cEditingLocation);
-      } else if (cFirstRange == nullptr) {
-        cFirstRange = new int(cEditingLocation->z);
-      } else {
-        int mTopRange = *cFirstRange > cEditingLocation->z ? *cFirstRange : cEditingLocation->z;
-        int mBottomRange = *cFirstRange > cEditingLocation->z ? cEditingLocation->z : *cFirstRange;
-        ElementSpindizzyLift* mLiftElement = new ElementSpindizzyLift(this, cInsertLocation, cModelType, cProperties, mBottomRange, mTopRange, nullptr);
-//        addElement(mLiftElement);
-        cContent.push_back(mLiftElement);
-        delete cInsertLocation;
-        cInsertLocation = nullptr;
-        delete cFirstRange;
-        cFirstRange = nullptr;
-      }
+//       if (cInsertLocation == nullptr) {
+//         cInsertLocation = new BlockLocation(*cEditingLocation);
+//       } else if (cFirstRange == nullptr) {
+//         cFirstRange = new int(cEditingLocation->z);
+//       } else {
+//         int mTopRange = *cFirstRange > cEditingLocation->z ? *cFirstRange : cEditingLocation->z;
+//         int mBottomRange = *cFirstRange > cEditingLocation->z ? cEditingLocation->z : *cFirstRange;
+//         ElementSpindizzyLift* mLiftElement = new ElementSpindizzyLift(this, cInsertLocation, cModelType, cProperties, mBottomRange, mTopRange, nullptr);
+// //        addElement(mLiftElement);
+//         cContent.push_back(mLiftElement);
+//         delete cInsertLocation;
+//         cInsertLocation = nullptr;
+//         delete cFirstRange;
+//         cFirstRange = nullptr;
+//       }
       return true;
     }
 
@@ -108,7 +108,7 @@ void ResourceElementSpindizzyLift::configureElement() {
   }
 }
 
-bool ResourceElementSpindizzyLift::input(SDL_Event& event) {
+bool ResourceElementSpindizzyLift::inputEdit(SDL_Event& event, ILayerEditingContext* editingContext) {
   switch (event.type) {
     case SDL_KEYDOWN: {
       return keyDown(event.key.keysym.sym);
@@ -118,31 +118,30 @@ bool ResourceElementSpindizzyLift::input(SDL_Event& event) {
 }
 
 void ResourceElementSpindizzyLift::setEditingContext(BlockLocation* editingLocation, IComponentContainer* componentContainer) {
-  cEditingLocation = editingLocation;  
   cComponentContainer = componentContainer;
 }
 
 void ResourceElementSpindizzyLift::renderArrowLines() {
-  float mLineRadius = IsoRealmsConstants::BLOCK_RADIUS * 0.5;
-  float mArrowOffset = IsoRealmsConstants::BLOCK_HEIGHT * 0.5;
-  glBegin(GL_LINES);
-  int mTop = cFirstRange != nullptr ? (*cFirstRange > cEditingLocation->z ? *cFirstRange : cEditingLocation->z) : cEditingLocation->z;
-  int mBottom = cFirstRange != nullptr ? (*cFirstRange > cEditingLocation->z ? cEditingLocation->z : *cFirstRange) : cEditingLocation->z;
-  glVertex3f(0, 0, mTop * IsoRealmsConstants::BLOCK_HEIGHT);
-  glVertex3f(0, 0, mBottom * IsoRealmsConstants::BLOCK_HEIGHT);
-
-  // Top point
-  glVertex3f( 0,           0, mTop * IsoRealmsConstants::BLOCK_HEIGHT);
-  glVertex3f( mLineRadius, 0, mTop * IsoRealmsConstants::BLOCK_HEIGHT - mArrowOffset);
-  glVertex3f( 0,           0, mTop * IsoRealmsConstants::BLOCK_HEIGHT);
-  glVertex3f(-mLineRadius, 0, mTop * IsoRealmsConstants::BLOCK_HEIGHT - mArrowOffset);
-
-  // Bottom point
-  glVertex3f( 0,           0, mBottom * IsoRealmsConstants::BLOCK_HEIGHT);
-  glVertex3f( mLineRadius, 0, mBottom * IsoRealmsConstants::BLOCK_HEIGHT + mArrowOffset);
-  glVertex3f( 0,           0, mBottom * IsoRealmsConstants::BLOCK_HEIGHT);
-  glVertex3f(-mLineRadius, 0, mBottom * IsoRealmsConstants::BLOCK_HEIGHT + mArrowOffset);
-  glEnd();
+//   float mLineRadius = IsoRealmsConstants::BLOCK_RADIUS * 0.5;
+//   float mArrowOffset = IsoRealmsConstants::BLOCK_HEIGHT * 0.5;
+//   glBegin(GL_LINES);
+//   int mTop = cFirstRange != nullptr ? (*cFirstRange > cEditingLocation->z ? *cFirstRange : cEditingLocation->z) : cEditingLocation->z;
+//   int mBottom = cFirstRange != nullptr ? (*cFirstRange > cEditingLocation->z ? cEditingLocation->z : *cFirstRange) : cEditingLocation->z;
+//   glVertex3f(0, 0, mTop * IsoRealmsConstants::BLOCK_HEIGHT);
+//   glVertex3f(0, 0, mBottom * IsoRealmsConstants::BLOCK_HEIGHT);
+// 
+//   // Top point
+//   glVertex3f( 0,           0, mTop * IsoRealmsConstants::BLOCK_HEIGHT);
+//   glVertex3f( mLineRadius, 0, mTop * IsoRealmsConstants::BLOCK_HEIGHT - mArrowOffset);
+//   glVertex3f( 0,           0, mTop * IsoRealmsConstants::BLOCK_HEIGHT);
+//   glVertex3f(-mLineRadius, 0, mTop * IsoRealmsConstants::BLOCK_HEIGHT - mArrowOffset);
+// 
+//   // Bottom point
+//   glVertex3f( 0,           0, mBottom * IsoRealmsConstants::BLOCK_HEIGHT);
+//   glVertex3f( mLineRadius, 0, mBottom * IsoRealmsConstants::BLOCK_HEIGHT + mArrowOffset);
+//   glVertex3f( 0,           0, mBottom * IsoRealmsConstants::BLOCK_HEIGHT);
+//   glVertex3f(-mLineRadius, 0, mBottom * IsoRealmsConstants::BLOCK_HEIGHT + mArrowOffset);
+//   glEnd();
 }
 
 void ResourceElementSpindizzyLift::renderEditingPreview() {
@@ -169,6 +168,9 @@ void ResourceElementSpindizzyLift::renderEditingPreview() {
     glColor3f(1.0, 1.0, 1.0);
     glLineWidth(1.0);
     glPopMatrix();
+  } else {
+    glColor3f(1.0f, 1.0f, 1.0f);
+    cSampleLift->renderRuntime();
   }
 }
 
@@ -190,6 +192,14 @@ void ResourceElementSpindizzyLift::updateIcon(unsigned int milliseconds) {
 
 void ResourceElementSpindizzyLift::destroy(IElement* element) {
   delete element;
+}
+
+Vertex* ResourceElementSpindizzyLift::editorCursorStopped(Vertex* location) {
+  Vertex* mGridLocation = new Vertex();
+  mGridLocation->x = std::round(location->x);
+  mGridLocation->y = std::round(location->y);
+  mGridLocation->z = std::round(location->z * 2.0) * 0.5;
+  return mGridLocation;
 }
 
 ResourceElementSpindizzyLift::~ResourceElementSpindizzyLift() {

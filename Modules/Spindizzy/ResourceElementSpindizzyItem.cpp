@@ -41,6 +41,7 @@ void ResourceElementSpindizzyItem::initialiseResource(DOMNodeWrapper* node, IRes
   cModelType = resourceAccessor->getModelType(mModelPath);
   BlockLocation mIdentityLocation(0, 0, 0);
   cSampleJewel = new ElementSpindizzyItem(this, &mIdentityLocation, cModelType, nullptr);
+  cEditingJewel = new ElementSpindizzyItem(this, &mIdentityLocation, cModelType, nullptr);
 }
 
 void ResourceElementSpindizzyItem::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
@@ -60,11 +61,17 @@ void ResourceElementSpindizzyItem::loadElement(DOMNodeWrapper* node, BlockLocati
   mDynamicElementHandler->addElement(mJewel);
 }
 
-bool ResourceElementSpindizzyItem::keyDown(SDLKey& key) {
+bool ResourceElementSpindizzyItem::keyDown(SDLKey& key, ILayerEditingContext* editingContext) {
   switch (key) {
     case SDLK_SPACE: {
-      ElementSpindizzyItem* mJewel = new ElementSpindizzyItem(this, cEditingLocation, cModelType, nullptr);
-//      addElement(mJewel);
+      IElementContainer* mElementContainer = editingContext->getElementContainer();
+      Vertex* mLocation = editingContext->getLocation();
+      BlockLocation mGridLocation;
+      mGridLocation.x = std::round(mLocation->x);
+      mGridLocation.y = std::round(mLocation->y);
+      mGridLocation.z = std::round(mLocation->z * 2.0);
+      ElementSpindizzyItem* mJewel = new ElementSpindizzyItem(this, &mGridLocation, cModelType, nullptr);
+      mElementContainer->addElement(mJewel);
       cContent.push_back(mJewel);
       return true;
     }
@@ -76,10 +83,10 @@ bool ResourceElementSpindizzyItem::keyDown(SDLKey& key) {
   return false;
 }
 
-bool ResourceElementSpindizzyItem::input(SDL_Event& event) {
+bool ResourceElementSpindizzyItem::inputEdit(SDL_Event& event, ILayerEditingContext* editingContext) {
   switch (event.type) {
     case SDL_KEYDOWN: {
-      return keyDown(event.key.keysym.sym);
+      return keyDown(event.key.keysym.sym, editingContext);
     }
   }
   return false;
@@ -90,10 +97,10 @@ void ResourceElementSpindizzyItem::configureElement() {
 }
 
 void ResourceElementSpindizzyItem::setEditingContext(BlockLocation* editingLocation, IComponentContainer* componentContainer) {
-  cEditingLocation = editingLocation;  
 }
 
 void ResourceElementSpindizzyItem::renderEditingPreview() {
+  cEditingJewel->renderRuntime();
 }
 
 void ResourceElementSpindizzyItem::updateIcon(unsigned int milliseconds) {
@@ -123,6 +130,14 @@ IBoundaries* ResourceElementSpindizzyItem::getCollectables() {
 
 void ResourceElementSpindizzyItem::destroy(IElement* jewel) {
   delete jewel;
+}
+
+Vertex* ResourceElementSpindizzyItem::editorCursorStopped(Vertex* location) {
+  Vertex* mGridLocation = new Vertex();
+  mGridLocation->x = std::round(location->x);
+  mGridLocation->y = std::round(location->y);
+  mGridLocation->z = std::round(location->z * 2.0) * 0.5;
+  return mGridLocation;
 }
 
 ResourceElementSpindizzyItem::~ResourceElementSpindizzyItem() {

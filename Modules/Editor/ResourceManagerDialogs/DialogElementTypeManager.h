@@ -35,6 +35,9 @@ class DialogElementTypeManager:public Dialog,
   public:
   DialogElementTypeManager(IComponentContainer*, IResourceAccessor*, IResourceManager*, IProjectManager*, IResourceLocator*, IEditingContext*);
   
+  void addElementTypeSelectionListener(IResourceSelectionListener<IElementType>*);
+  void removeElementTypeSelectionListener(IResourceSelectionListener<IElementType>*);
+
   /******************************\
    * Implements IProjectManager *
   \******************************/

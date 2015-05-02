@@ -25,6 +25,14 @@ DialogElementTypeManager::DialogElementTypeManager(IComponentContainer* containe
   // TODO: Init resources
 }
 
+void DialogElementTypeManager::addElementTypeSelectionListener(IResourceSelectionListener<IElementType>* listener) {
+  cElementTypeBrowser->addResourceSelectionListener(listener);
+}
+
+void DialogElementTypeManager::removeElementTypeSelectionListener(IResourceSelectionListener<IElementType>* listener) {
+  cElementTypeBrowser->removeResourceSelectionListener(listener);
+}
+
 void DialogElementTypeManager::projectOpened(IProject* project) {
   IResourceManager* mResourceManager = project->getResourceManager();
   std::vector<IElementType*> mElementTypes = mResourceManager->getAllElementTypes();

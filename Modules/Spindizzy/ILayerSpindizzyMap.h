@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2015 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,16 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_ELEMENT_SELECTION_LISTENER_H
-#define I_ELEMENT_SELECTION_LISTENER_H
+#ifndef I_LAYER_SPINDIZZY_MAP_H
+#define I_LAYER_SPINDIZZY_MAP_H
 
-#include <IsoRealms/Resources/ElementType/IElementType.h>
-
-class IElementSelectionListener {
+class ILayerSpindizzyMap {
   public:
-  virtual ~IElementSelectionListener() {}
-
-  virtual void elementSelected(IElementType*) = 0;
+  virtual IElementContainer* getElementContainer() = 0;
 };
 
 #endif

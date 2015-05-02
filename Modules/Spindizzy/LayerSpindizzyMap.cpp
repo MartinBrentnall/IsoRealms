@@ -28,7 +28,7 @@ void LayerSpindizzyMap::load(DOMNodeWrapper* node, bool editing, IResourceAccess
   cEditing = editing;
   initialiseResource(node, resources);
   if (cEditing) {
-    cEditingContext = new LayerSpindizzyMapEditingContext();
+    cEditingContext = new LayerSpindizzyMapEditingContext(this);
   }
 }
 
@@ -83,6 +83,10 @@ void LayerSpindizzyMap::staticChanged() {
 //     cZones[i]->staticChanged();
 //   }
   // TODO  
+}
+
+IElementContainer* LayerSpindizzyMap::getElementContainer() {
+  return this;
 }
 
 void LayerSpindizzyMap::removeElement(IElement* element) {
@@ -141,6 +145,10 @@ float LayerSpindizzyMap::getAspectRatio() {
   Configuration* mConfiguration = Configuration::getInstance();
   ScreenConfiguration* mScreenConfiguration = mConfiguration->getScreenConfiguration();
   return mScreenConfiguration->getAspectRatio();
+}
+
+void LayerSpindizzyMap::resourceSelected(IElementType* elementType) {
+  cEditingContext->setElementType(elementType);
 }
 
 ILayerType* LayerSpindizzyMap::getLayerType() {

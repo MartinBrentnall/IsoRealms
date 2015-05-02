@@ -18,11 +18,12 @@
  */
 #include "LayerSpindizzyMapEditingContext.h"
 
-const float LayerSpindizzyMapEditingContext::SPEED_FAST   = 1.5f;
-const float LayerSpindizzyMapEditingContext::SPEED_NORMAL = 0.5f;
-const float LayerSpindizzyMapEditingContext::SPEED_SLOW   = 0.1f;
+const float LayerSpindizzyMapEditingContext::SPEED_FAST     = 1.5f;
+const float LayerSpindizzyMapEditingContext::SPEED_NORMAL   = 0.51f;
+const float LayerSpindizzyMapEditingContext::SPEED_SLOW     = 0.1f;
+const float LayerSpindizzyMapEditingContext::STOP_THRESHOLD = 0.01f;
 
-LayerSpindizzyMapEditingContext::LayerSpindizzyMapEditingContext() {
+LayerSpindizzyMapEditingContext::LayerSpindizzyMapEditingContext(ILayerSpindizzyMap* map) {
   Vertex mNormalDistance(0.0f, 0.0f, -20.0f);
   cCameraEditing.addViewPoint(0, mNormalDistance, 315.0f, -50.0f, 0.0f);
   cCameraEditing.setViewPoint(0);
@@ -34,6 +35,8 @@ LayerSpindizzyMapEditingContext::LayerSpindizzyMapEditingContext() {
   cActiveDown   = false;
   cActiveHigher = false;
   cActiveLower  = false;
+  cElementType = nullptr;
+  cMap = map;
 }
 
 bool LayerSpindizzyMapEditingContext::isMovingNorth() {
@@ -80,28 +83,43 @@ void LayerSpindizzyMapEditingContext::update(unsigned int milliseconds) {
   if (isMovingEast())  {cMomentum.x += getMovementSpeed();}
   if (isMovingSouth()) {cMomentum.y -= getMovementSpeed();}
   if (isMovingNorth()) {cMomentum.y += getMovementSpeed();}
-  if (cActiveLower)    {cMomentum.z -= getMovementSpeed();}
-  if (cActiveHigher)   {cMomentum.z += getMovementSpeed();}
+  if (cActiveLower)    {cMomentum.z -= getMovementSpeed() * 0.5;}
+  if (cActiveHigher)   {cMomentum.z += getMovementSpeed() * 0.5;}
   cMomentum.x *= 0.5f;
   cMomentum.y *= 0.5f;
-  cMomentum.z *= 0.5f;
+  cMomentum.z *= 0.25f;
   cLocation.x += cMomentum.x;
   cLocation.y += cMomentum.y;
   cLocation.z += cMomentum.z;
+  if (std::abs(cMomentum.x) < STOP_THRESHOLD && std::abs(cMomentum.y) < STOP_THRESHOLD && std::abs(cMomentum.z) < STOP_THRESHOLD * 0.5 && !cActiveLeft && !cActiveRight && !cActiveUp && !cActiveDown && !cActiveHigher && !cActiveLower) {
+    cMomentum.x = 0.0f;
+    cMomentum.y = 0.0f;
+    cMomentum.y = 0.0f;
+    if (cElementType != nullptr) {
+      Vertex* mLocation = cElementType->editorCursorStopped(&cLocation);
+      if (mLocation != nullptr) {
+        cLocation = *mLocation;
+      }
+    }
+  }
   cCameraEditing.update(milliseconds);
 }
 
 void LayerSpindizzyMapEditingContext::render() {
   cCameraEditing.render();
-  glBegin(GL_LINES);
-  glColor3f(1.0f, 0.0f, 0.0f);
-  glVertex3f(-1.0f,  0.0f,  0.0f);
-  glVertex3f(+1.0f,  0.0f,  0.0f);
-  glVertex3f( 0.0f, -1.0f,  0.0f);
-  glVertex3f( 0.0f, +1.0f,  0.0f);
-  glVertex3f( 0.0f,  0.0f, -1.0f);
-  glVertex3f( 0.0f,  0.0f, +1.0f);
-  glEnd();
+  if (cElementType != nullptr) {
+    cElementType->renderEditingPreview();
+  } else {
+    glBegin(GL_LINES);
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glVertex3f(-1.0f,  0.0f,  0.0f);
+    glVertex3f(+1.0f,  0.0f,  0.0f);
+    glVertex3f( 0.0f, -1.0f,  0.0f);
+    glVertex3f( 0.0f, +1.0f,  0.0f);
+    glVertex3f( 0.0f,  0.0f, -1.0f);
+    glVertex3f( 0.0f,  0.0f, +1.0f);
+    glEnd();
+  }
   glTranslatef(-cLocation.x, -cLocation.y, -cLocation.z);
 }
 
@@ -155,6 +173,24 @@ bool LayerSpindizzyMapEditingContext::input(SDL_Event& event) {
   if (cCameraEditing.input(event)) {
     return true;
   }
+  if (cElementType != nullptr && cElementType->inputEdit(event, this)) {
+    return true;
+  }
   return false;
 }
 
+void LayerSpindizzyMapEditingContext::setElementType(IElementType* elementType) {
+  cElementType = elementType;
+}
+
+IElementContainer* LayerSpindizzyMapEditingContext::getElementContainer() {
+  return cMap->getElementContainer();
+}
+
+Vertex* LayerSpindizzyMapEditingContext::getLocation() {
+  return &cLocation;
+}
+
+float LayerSpindizzyMapEditingContext::getAngle() {
+  return cCameraEditing.getAngle();
+}

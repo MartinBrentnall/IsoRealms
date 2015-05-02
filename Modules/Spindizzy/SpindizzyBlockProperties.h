@@ -44,6 +44,8 @@ class SpindizzyBlockProperties {
   // Configuration functions
   void raiseSelectedCorner();
   void lowerSelectedCorner();
+  void raiseCorner(unsigned int x, unsigned int y);
+  void lowerCorner(unsigned int x, unsigned int y);
   void selectNorth();
   void selectSouth();
   void selectEast();

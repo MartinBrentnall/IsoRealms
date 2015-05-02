@@ -49,9 +49,7 @@ class OpenCommand;
 #include "ComponentCustomTypeResources.h"
 #include "DialogModules.h"
 #include "DialogProjectOpen.h"
-#include "EditorCursor.h"
 #include "IComponentFactory.h"
-#include "IElementSelectionListener.h"
 #include "IMapManager.h"
 #include "ResourceManagerDialogs/ComponentResourceBrowser.h"
 #include "ResourceManagerDialogs/Dialog3DModelManager.h"
@@ -72,7 +70,7 @@ class OpenCommand;
 class SimpleEditor:public IModule,
                    public IComponentContainer,
                    public IEditingContext,
-                   public IElementSelectionListener,
+                   public virtual IResourceSelectionListener<IElementType>,
                    public IMapManager,
                    public ILayerType,
                    public ILayer,
@@ -173,10 +171,10 @@ class SimpleEditor:public IModule,
 //   IElementContainer* pushMapElement(IElement*);
 //   void removeElement(IElement*);
 
-  /****************************************\
-   * Implements IElementSelectionListener *
-  \****************************************/
-  void elementSelected(IElementType*);
+  /*******************************************************\
+   * Implements IResourceSelectionListener<IElementType> *
+  \*******************************************************/
+  void resourceSelected(IElementType*);
 
   /**************************************\
    * Implements IModuleRegistryListener *

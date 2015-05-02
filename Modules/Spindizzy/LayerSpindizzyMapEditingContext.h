@@ -19,13 +19,17 @@
 #ifndef LAYER_SPINDIZZY_MAP_EDITING_CONTEXT_H
 #define LAYER_SPINDIZZY_MAP_EDITING_CONTEXT_H
 
-#include "CameraLayerMapEditing.h"
+#include <IsoRealms/Resources/ElementType/IElementType.h>
 
-class LayerSpindizzyMapEditingContext {
+#include "CameraLayerMapEditing.h"
+#include "ILayerSpindizzyMap.h"
+
+class LayerSpindizzyMapEditingContext : public ILayerEditingContext {
   private:
   static const float SPEED_FAST;
   static const float SPEED_NORMAL;
   static const float SPEED_SLOW;
+  static const float STOP_THRESHOLD;
 
   bool cActiveLeft;
   bool cActiveRight;
@@ -38,6 +42,8 @@ class LayerSpindizzyMapEditingContext {
   Vertex cLocation;
   Vertex cMomentum;
   CameraLayerMapEditing cCameraEditing;
+  IElementType* cElementType;
+  ILayerSpindizzyMap* cMap;
   
   bool isMovingWest();
   bool isMovingEast();
@@ -48,11 +54,19 @@ class LayerSpindizzyMapEditingContext {
   bool keyUp(SDLKey&, SDLMod&);
   
   public:
-  LayerSpindizzyMapEditingContext();
+  LayerSpindizzyMapEditingContext(ILayerSpindizzyMap* map);
   
   void update(unsigned int);
   void render();
   bool input(SDL_Event&);
+  void setElementType(IElementType* elementType);
+  
+  /**********************************\
+   * Implemens ILayerEditingContext *
+  \**********************************/
+  IElementContainer* getElementContainer();
+  Vertex* getLocation();
+  float getAngle();
 };
 
 #endif

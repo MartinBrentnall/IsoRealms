@@ -111,6 +111,10 @@ ILayer* AttractControlLoop::getLayer(DOMNodeWrapper*, IResourceAccessor*) {
   return this;
 }
 
+void AttractControlLoop::resourceSelected(IElementType* elementType) {
+  // Not supported
+}
+
 ILayerType* AttractControlLoop::getLayerType() {
   return this;
 }

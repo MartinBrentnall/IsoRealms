@@ -52,7 +52,6 @@ class ResourceElementSpindizzyCraft:public ISpindizzyGERALDType,
   ICamera* cCamera;
   std::vector<IBoundaryHandler*> cBoundaryHandlers;
   ElementSpindizzyCraft* cSampleGERALD;
-  BlockLocation* cEditingLocation;
   IScriptCall* cRespawnScript;
   IScriptCall* cFallImpactScript;
 //   ArgumentValue<IZone> cArgumentZoneEntered;
@@ -89,13 +88,14 @@ class ResourceElementSpindizzyCraft:public ISpindizzyGERALDType,
    * Implements IElementType *
   \***************************/
   void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*);
-  bool input(SDL_Event&);
+  bool inputEdit(SDL_Event&, ILayerEditingContext*);
   void configureElement();
   void setEditingContext(BlockLocation*, IComponentContainer*);
   void renderEditingPreview();
   void updateIcon(unsigned int);
   void renderIcon();
   void destroy(IElement*);
+  Vertex* editorCursorStopped(Vertex*);
   
   /*********************************\
    * Implements IArgumentGenerator *

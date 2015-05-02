@@ -63,6 +63,7 @@ class ResourceLayerHUD:public IComponentSources,
   /*********************\
    * Implements ILayer *
   \*********************/
+  void resourceSelected(IElementType*);
   void initRuntime();
   void renderRuntime();
   void renderEditing();
