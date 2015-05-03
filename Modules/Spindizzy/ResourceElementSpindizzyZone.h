@@ -54,7 +54,6 @@ class ResourceElementSpindizzyZone:public ISpindizzyZoneType,
   public:
   ResourceElementSpindizzyZone(ISpindizzyZoneModule*, DOMNodeWrapper*, IResourceRegistry*);
 
-  void applyDefaultTheme();
   
   /*********************************\
    * Implements ISpindizzyZoneType *
@@ -65,6 +64,8 @@ class ResourceElementSpindizzyZone:public ISpindizzyZoneType,
   IColour* getUnvisitedColour();
   IBoundaries* getBoundaries();
   void setZoneArgument(ElementSpindizzyZone*);
+  void applyDefaultTheme();
+  void setDefaultTheme(SpindizzyZoneTheme*);
 
   /************************\
    * Implements IResource *

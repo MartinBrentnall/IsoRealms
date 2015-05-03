@@ -124,3 +124,41 @@ bool ElementHandlerZone::initElement(unsigned int pass) {
   }
   return mSuccess;
 }
+
+void ElementHandlerZone::cursorMoved(Vertex& start, Vertex& end) {
+  for (IElement* mElement : cElements) {
+    IElementBounds* mBounds = mElement->getBounds();
+    float mSouth  = mBounds->getSouth();
+    float mWest   = mBounds->getWest();
+    float mBottom = mBounds->getBottom();
+    float mNorth  = mBounds->getNorth();
+    float mEast   = mBounds->getEast();
+    float mTop    = mBounds->getTop();
+    bool mContainsStart = Collision::contains(start, mWest, mEast, mSouth, mNorth, mBottom, mTop);
+    bool mContainsEnd   = Collision::contains(end,   mWest, mEast, mSouth, mNorth, mBottom, mTop);
+    if (!mContainsStart && mContainsEnd) {
+      mElement->focusGained();
+    } else if (mContainsStart && !mContainsEnd) {
+      mElement->focusLost();
+    }
+    if (mContainsStart || mContainsEnd) {
+      mElement->cursorMoved(start, end);
+    }
+  }
+}
+
+void ElementHandlerZone::cursorAppeared(Vertex& location) {
+  for (IElement* mElement : cElements) {
+    IElementBounds* mBounds = mElement->getBounds();
+    float mSouth  = mBounds->getSouth();
+    float mWest   = mBounds->getWest();
+    float mBottom = mBounds->getBottom();
+    float mNorth  = mBounds->getNorth();
+    float mEast   = mBounds->getEast();
+    float mTop    = mBounds->getTop();
+    if (Collision::contains(location, mWest, mEast, mSouth, mNorth, mBottom, mTop)) {
+      mElement->focusGained();
+      mElement->cursorAppeared(location);
+    }
+  }
+}

@@ -52,11 +52,11 @@ class ResourceGeometryProcessor {
     IndexedGeometricElement(IGeometricElement*, unsigned int);
     bool operator<(const IndexedGeometricElement &value) const;
     IGeometricElement* getGeometricElement();
-    BlockArea* getCoverage();
+    IElementBounds* getBounds();
     unsigned int getIndex();
   };
   
-  class FullTileColumn {
+  class FullTileColumn : public IElementBounds {
     private:
     int cX;
     int cY;
@@ -65,8 +65,15 @@ class ResourceGeometryProcessor {
     public:
     FullTileColumn(std::vector<TileColumn*>, int, int);
     bool isAt(int, int);
-    BlockArea* getCoverage();
+    IElementBounds* getBounds();
     std::vector<TileColumn*>* getTileColumns();
+
+    float getWest();
+    float getEast();
+    float getSouth();
+    float getNorth();
+    float getTop();
+    float getBottom();
   };
   
   private:

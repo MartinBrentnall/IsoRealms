@@ -51,7 +51,7 @@ void ElementSpindizzyItem::save(DOMNodeWriter* node, IResourceLocator* resourceL
 }
 
 IElementBounds* ElementSpindizzyItem::getBounds() {
-  return nullptr; // TODO: Implement this
+  return this;
 }
 
 void ElementSpindizzyItem::updateRuntime(unsigned int milliseconds) {
@@ -135,4 +135,28 @@ void ElementSpindizzyItem::setArguments() {
 
 void ElementSpindizzyItem::unsetArguments() {
   cContainer->unsetArguments();
+}
+
+float ElementSpindizzyItem::getWest() {
+  return cLocation.x;
+}
+
+float ElementSpindizzyItem::getEast() {
+  return cLocation.x;
+}
+
+float ElementSpindizzyItem::getSouth() {
+  return cLocation.y;
+}
+
+float ElementSpindizzyItem::getNorth() {
+  return cLocation.y;
+}
+
+float ElementSpindizzyItem::getBottom() {
+  return cLocation.z;
+}
+
+float ElementSpindizzyItem::getTop() {
+  return cLocation.z;
 }

@@ -49,6 +49,7 @@ class LayerBackground:public ILayer {
   void renderEditing();
   void input(SDL_Event&);
   void initRuntime();
+  void initEditor();
   void save(DOMNodeWriter*, IResourceLocator*);
   void staticChanged();
 };

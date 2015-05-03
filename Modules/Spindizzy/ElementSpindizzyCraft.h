@@ -44,7 +44,8 @@
 #include "ICollidableWallSurface.h"
 #include "IRollableSurface.h"
 
-class ElementSpindizzyCraft:public Element, 
+class ElementSpindizzyCraft:public Element,
+                            public IElementBounds,
                             public IBoundaryPenetrator,
                             public IResource {
   private:
@@ -175,6 +176,16 @@ class ElementSpindizzyCraft:public Element,
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
   void setDirty();
   IElementBounds* getBounds();
+  
+  /*****************************\
+   * Implements IElementBounds *
+  \*****************************/
+  float getWest();
+  float getEast();
+  float getSouth();
+  float getNorth();
+  float getBottom();
+  float getTop();
   
   /************************\
    * Implements IResource *

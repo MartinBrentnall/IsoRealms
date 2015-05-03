@@ -40,7 +40,8 @@
 
 class ElementSpindizzyLift:public Element,
                            public IRollableSurface,
-                           public IElementSpindizzyDynamic {
+                           public IElementSpindizzyDynamic,
+                           public IElementBounds {
   private:
   
   enum LiftState {
@@ -121,6 +122,16 @@ class ElementSpindizzyLift:public Element,
   bool isRespawnPossibleNow();
   void getRestingLocation(Vertex&);
   BlockArea* getCoverage();
+
+  /******************\
+   * IElementBounds *
+  \******************/
+  float getWest();
+  float getEast();
+  float getSouth();
+  float getNorth();
+  float getBottom();
+  float getTop();
 };
 
 #endif

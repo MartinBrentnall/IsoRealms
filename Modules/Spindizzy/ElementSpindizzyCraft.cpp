@@ -664,7 +664,31 @@ void ElementSpindizzyCraft::setDirty() {
 }
 
 IElementBounds* ElementSpindizzyCraft::getBounds() {
-  return nullptr; // TODO: Implement this
+  return this;
+}
+
+float ElementSpindizzyCraft::getWest() {
+  return cLocation->x;
+}
+
+float ElementSpindizzyCraft::getEast() {
+  return cLocation->x;
+}
+
+float ElementSpindizzyCraft::getSouth() {
+  return cLocation->y;
+}
+
+float ElementSpindizzyCraft::getNorth() {
+  return cLocation->y;
+}
+
+float ElementSpindizzyCraft::getBottom() {
+  return cLocation->z;
+}
+
+float ElementSpindizzyCraft::getTop() {
+  return cLocation->z;
 }
 
 void ElementSpindizzyCraft::saveInstance(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& relative) {

@@ -19,7 +19,7 @@
 #ifndef I_BOUNDARY_H
 #define I_BOUNDARY_H
 
-#include <IsoRealms/BlockArea.h>
+#include <IsoRealms/Resources/ElementType/IElementBounds.h>
 #include <IsoRealms/Resources/Vertex/Vertex.h>
 
 class IBoundary {
@@ -28,7 +28,7 @@ class IBoundary {
   virtual bool isEntered(Vertex&, Vertex&) = 0;
   virtual bool isExited(Vertex&, Vertex&) = 0;
   virtual void setDirty() = 0;
-  virtual BlockArea* getCoverage() = 0;
+  virtual IElementBounds* getBounds() = 0;
   virtual void setArguments() = 0;
   virtual void unsetArguments() = 0;
 };

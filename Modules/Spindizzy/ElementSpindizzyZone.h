@@ -92,6 +92,8 @@ class ElementSpindizzyZone:public Element,
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
   void setDirty();
   IElementBounds* getBounds();
+  void focusGained();
+  void focusLost();
 
   /*****************************\
    * Implements IElementBounds *

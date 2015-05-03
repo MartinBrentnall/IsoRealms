@@ -58,13 +58,14 @@ class ResourceLayerHUD:public IComponentSources,
   /***************************\
    * Implements ILayerType *
   \***************************/
-  ILayer* getLayer(DOMNodeWrapper*, IResourceAccessor*);
+  ILayer* getLayer(DOMNodeWrapper*, IResourceAccessor*, bool);
   
   /*********************\
    * Implements ILayer *
   \*********************/
   void resourceSelected(IElementType*);
   void initRuntime();
+  void initEditor();
   void renderRuntime();
   void renderEditing();
   void updateRuntime(unsigned int);

@@ -135,7 +135,9 @@ SpindizzyZoneTheme* ElementSpindizzyZone::getTheme() {
 }
 
 void ElementSpindizzyZone::renderRuntime() {
-  cZoneTheme->set();
+  if (cZoneTheme != nullptr) {
+    cZoneTheme->set();
+  }
   if (cZoneType->isOverview()) {
     glBindTexture(GL_TEXTURE_2D, 0);
     glLineWidth(2.0);
@@ -182,11 +184,14 @@ void ElementSpindizzyZone::updateEditing(unsigned int milliseconds) {
 }
 
 void ElementSpindizzyZone::updateRuntime(unsigned int milliseconds) {
-  cZoneTheme->set();
+  if (cZoneTheme != nullptr) {
+    cZoneTheme->set();
+  }
   if (cZoneType->isOverview() && cFlagged) {
     cFlagModel->update(milliseconds);
   }
   cElementHandler.updateRuntime(milliseconds);
+  cZoneType->applyDefaultTheme();
 }
 
 void ElementSpindizzyZone::save(DOMNodeWriter*, IResourceLocator*, BlockLocation&) {
@@ -198,6 +203,14 @@ void ElementSpindizzyZone::setDirty() {
 
 IElementBounds* ElementSpindizzyZone::getBounds() {
   return this;
+}
+
+void ElementSpindizzyZone::focusGained() {
+  cZoneType->setDefaultTheme(cZoneTheme);
+}
+
+void ElementSpindizzyZone::focusLost() {
+  // Nothing to do
 }
 
 float ElementSpindizzyZone::getWest() {
@@ -308,4 +321,3 @@ void ElementSpindizzyZone::unsetArguments() {
   }
   cContainer->unsetArguments();
 }
-

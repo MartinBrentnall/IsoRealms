@@ -47,6 +47,7 @@ class IProject {
   virtual ModuleRegistry* getModuleRegistry() = 0;
   virtual IResourceManager* getResourceManager() = 0;
   virtual ILayer* getDefaultLayer() = 0;
+  virtual void initEditor() = 0;
   
   virtual void staticChanged() = 0;
 

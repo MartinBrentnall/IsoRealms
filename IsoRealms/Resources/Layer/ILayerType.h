@@ -25,7 +25,7 @@
 
 class ILayerType:public IResource {
   public:
-  virtual ILayer* getLayer(DOMNodeWrapper*, IResourceAccessor*) = 0;
+  virtual ILayer* getLayer(DOMNodeWrapper*, IResourceAccessor*, bool) = 0;
 };
 
 #endif

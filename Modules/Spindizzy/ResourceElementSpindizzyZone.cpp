@@ -53,6 +53,10 @@ void ResourceElementSpindizzyZone::setZoneArgument(ElementSpindizzyZone* zone) {
   cModuleInterface->setArgumentValue(zone);
 }
 
+void ResourceElementSpindizzyZone::setDefaultTheme(SpindizzyZoneTheme* theme) {
+  cModuleInterface->setTheme(theme);
+}
+
 void ResourceElementSpindizzyZone::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
   std::string mPathVisitedColour = node->getAttribute("visitedColour");
   std::string mPathUnvisitedColour = node->getAttribute("unvisitedColour");

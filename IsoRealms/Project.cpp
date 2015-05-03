@@ -65,7 +65,7 @@ Project::Project(DOMNodeWrapper* node, const std::string& projectName, IEditingC
       std::string mLayerTypeName = mNode->getAttribute("type");
       bool mDefaultLayer = mNode->getBooleanAttribute("default");
       ILayerType* mLayerType = cResources.getLayerType(mLayerTypeName);
-      ILayer* mLayer = mLayerType->getLayer(mNode, &cResources);
+      ILayer* mLayer = mLayerType->getLayer(mNode, &cResources, editingContext != nullptr);
       cLayers.push_back(mLayer);
       if (mDefaultLayer) {
         cDefaultLayer = mLayer;
@@ -116,6 +116,12 @@ void Project::input(SDL_Event& event) {
   cResources.input(event);
   for (unsigned int i = 0; i < cLayers.size(); i++) {
     cLayers[i]->input(event);
+  }
+}
+
+void Project::initEditor() {
+  for (unsigned int i = 0; i < cLayers.size(); i++) {
+    cLayers[i]->initEditor();
   }
 }
 

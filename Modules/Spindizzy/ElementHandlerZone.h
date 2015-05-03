@@ -63,6 +63,8 @@ class ElementHandlerZone:public Element,
   void setDirty();
   bool initElement(unsigned int);
   IElementBounds* getBounds();
+  void cursorMoved(Vertex&, Vertex&);
+  void cursorAppeared(Vertex&);
 };
 
 #endif

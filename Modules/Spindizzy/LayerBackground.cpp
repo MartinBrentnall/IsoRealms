@@ -50,6 +50,9 @@ ILayerType* LayerBackground::getLayerType() {
 void LayerBackground::initRuntime() {
 }
 
+void LayerBackground::initEditor() {
+}
+
 void LayerBackground::renderRuntime() {
   float mRed   = cPreviousBackgroundColour->getRed()   + (cTargetBackgroundColour->getRed()   - cPreviousBackgroundColour->getRed())   * cProgressBackgroundColour;
   float mGreen = cPreviousBackgroundColour->getGreen() + (cTargetBackgroundColour->getGreen() - cPreviousBackgroundColour->getGreen()) * cProgressBackgroundColour;

@@ -32,7 +32,8 @@
 #include "SurfaceCollisionEvent.h"
 #include "WallType.h"
 
-class WallSurface:public ISpindizzyWallSurface {
+class WallSurface:public ISpindizzyWallSurface,
+                  public IElementBounds {
   private:
   /** 
    * Starting X location of the wall surface.
@@ -141,9 +142,20 @@ class WallSurface:public ISpindizzyWallSurface {
   \***************************/
   IWallEdge* getTopEdge(int);
   IWallEdge* getBottomEdge(int);
-  BlockArea* getCoverage();
+  BlockArea* getCoverage(); // TODO: Still needed?
+  IElementBounds* getBounds();
   void destroyEdge(IWallEdge*);
   void destroyCoverage(BlockArea*);
+  
+  /*****************************\
+   * Implements IElementBounds *
+  \*****************************/
+  float getSouth();
+  float getNorth();
+  float getWest();
+  float getEast();
+  float getBottom();
+  float getTop();
   
   /*************************************\
    * Implements ICollidableWallSurface *

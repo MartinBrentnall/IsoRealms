@@ -36,6 +36,7 @@ class ISpindizzyZoneModule {
   virtual IArgumentValue* getArgumentValue(const std::string&) = 0;
   virtual void setArgumentValue(ElementSpindizzyZone*) = 0;
   virtual void applyDefaultTheme() = 0;
+  virtual void setTheme(SpindizzyZoneTheme*) = 0;
 };
 
 #endif

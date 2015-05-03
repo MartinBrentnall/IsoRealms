@@ -22,13 +22,19 @@ LayerSpindizzyMap::LayerSpindizzyMap(ISpindizzyMapType* type) {
   cMapType = type;
   cCamera = NULL;
   cElementHandler.setMultiThreaded(true);
+  cEditingContext = nullptr;
 }
 
 void LayerSpindizzyMap::load(DOMNodeWrapper* node, bool editing, IResourceAccessor* resources) {
-  cEditing = editing;
-  initialiseResource(node, resources);
-  if (cEditing) {
+  if (editing) {
     cEditingContext = new LayerSpindizzyMapEditingContext(this);
+  }
+  initialiseResource(node, resources);
+  if (cEditingContext != nullptr) {
+    std::vector<IElement*> mElements = cElementHandler.getElements();
+    for (IElement* mElement : mElements) {
+      cEditingContext->addElement(mElement);
+    }
   }
 }
 
@@ -65,7 +71,11 @@ DOMNodeWrapper* LayerSpindizzyMap::getConfigurationNode(DOMNodeWrapper* node) {
 }
 
 void LayerSpindizzyMap::initRuntime() {
-  cElementHandler.init(0, cEditing);
+  cElementHandler.init(0, cEditingContext != nullptr);
+}
+
+void LayerSpindizzyMap::initEditor() {
+  cEditingContext->init();
 }
 
 void LayerSpindizzyMap::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
@@ -75,7 +85,7 @@ void LayerSpindizzyMap::save(DOMNodeWriter* node, IResourceLocator* resourceLoca
 }
 
 void LayerSpindizzyMap::pushElement(IElement* element) {
-  cElementHandler.addElement(element);
+  addElement(element);
 }
 
 void LayerSpindizzyMap::staticChanged() {
@@ -156,7 +166,7 @@ ILayerType* LayerSpindizzyMap::getLayerType() {
 }
 
 void LayerSpindizzyMap::updateEditing(unsigned int milliseconds) {
-  cElementHandler.init(0, cEditing);
+  cElementHandler.init(0, cEditingContext != nullptr);
   cEditingContext->update(milliseconds);
   // TODO: Need a more permanent solution for better performance.
 //   std::vector<IZone*> mZones;
@@ -201,7 +211,7 @@ void LayerSpindizzyMap::renderEditing() {
 }
 
 void LayerSpindizzyMap::input(SDL_Event& event) {
-  if (cEditingContext->input(event)) {
+  if (cEditingContext != nullptr && cEditingContext->input(event)) {
     return;
   }
 }

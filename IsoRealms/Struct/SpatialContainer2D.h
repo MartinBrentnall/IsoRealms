@@ -22,6 +22,8 @@
 #include <iostream>
 #include <vector>
 
+#include <IsoRealms/Resources/ElementType/IElementBounds.h>
+
 #include "SpatialContainer1D.h"
 
 template <class T> class SpatialContainer2D {
@@ -34,22 +36,22 @@ template <class T> class SpatialContainer2D {
   }
     
   void add(T* element) {
-    BlockArea* mBounds = element->getCoverage();
-    int mSouth = mBounds->getSouth();
-    int mNorth = mBounds->getNorth();
-    int mWest = mBounds->getWest();
-    int mEast = mBounds->getEast();
+    IElementBounds* mBounds = element->getBounds();
+    int mSouth = std::floor(mBounds->getSouth());
+    int mNorth = std::ceil(mBounds->getNorth());
+    int mWest = std::floor(mBounds->getWest());
+    int mEast = std::ceil(mBounds->getEast());
     SpatialContainer1D<std::vector<T*> >* mRow = cContainer.getInsertionCell(mSouth, mNorth);
     std::vector<T*>* mCell = mRow->getInsertionCell(mWest, mEast);
     mCell->push_back(element);
   }
 
   void remove(T* element) {
-    BlockArea* mBounds = element->getCoverage();
-    int mSouth = mBounds->getSouth();
-    int mNorth = mBounds->getNorth();
-    int mWest = mBounds->getWest();
-    int mEast = mBounds->getEast();
+    IElementBounds* mBounds = element->getBounds();
+    int mSouth = std::floor(mBounds->getSouth());
+    int mNorth = std::ceil(mBounds->getNorth());
+    int mWest = std::floor(mBounds->getWest());
+    int mEast = std::ceil(mBounds->getEast());
     SpatialContainer1D<std::vector<T*> >* mRow = cContainer.getInsertionCell(mSouth, mNorth);
     std::vector<T*>* mCell = mRow->getInsertionCell(mWest, mEast);
     for (int i = mCell->size() - 1; i >= 0; i--) {
@@ -73,6 +75,14 @@ template <class T> class SpatialContainer2D {
  
   std::vector<T*> getElements(int x, int y) {
     return getElements(y, y, x, x);
+  }
+ 
+  std::vector<T*> getElements(Vertex& start, Vertex& end) {
+    int mSouth = std::min(start.y, end.y);
+    int mNorth = std::max(start.y, end.y);
+    int mWest  = std::min(start.x, end.x);
+    int mEast  = std::max(start.x, end.x);
+    return getElements(mSouth, mNorth, mWest, mEast);
   }
  
   std::vector<T*> getElements(int south, int north, int west, int east) {

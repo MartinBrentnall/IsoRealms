@@ -325,7 +325,7 @@ void SimpleEditor::staticChanged() {
   cProject->staticChanged();
 }
 
-ILayer* SimpleEditor::getLayer(DOMNodeWrapper*, IResourceAccessor*) {
+ILayer* SimpleEditor::getLayer(DOMNodeWrapper* node, IResourceAccessor* resources, bool editing) {
   return this;
 }
 
@@ -381,6 +381,9 @@ ILayerType* SimpleEditor::getLayerType() {
 }
 
 void SimpleEditor::initRuntime() {
+}
+
+void SimpleEditor::initEditor() {
 }
 
 void SimpleEditor::addProjectListener(IProjectManagerListener* listener) {
@@ -470,6 +473,7 @@ void SimpleEditor::openProject(const std::string& file) {
         delete cProject;
       }
       cProject = new Project(mNode, file, this);
+      cProject->initEditor();
       cSelectedLayer = cProject->getDefaultLayer();
       for (unsigned int i = 0; i < cProjectManagerListeners.size(); i++) {
         cProjectManagerListeners[i]->projectOpened(cProject);

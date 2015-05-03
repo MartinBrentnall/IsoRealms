@@ -373,10 +373,32 @@ void TileSurface::getRestingLocation(Vertex& location) {
   }
 }
 
-BlockArea* TileSurface::getBounds() {
-  BlockLocation* mStart = new BlockLocation(cWest, cSouth, 0);
-  BlockLocation* mEnd = new BlockLocation(cEast, cNorth, 0);
-  return new BlockArea(*mStart, *mEnd);
+IElementBounds* TileSurface::getBounds() {
+  return this;
+}
+
+float TileSurface::getSouth() {
+  return cSouth;
+}
+
+float TileSurface::getNorth() {
+  return cNorth;
+}
+
+float TileSurface::getWest() {
+  return cWest;
+}
+
+float TileSurface::getEast() {
+  return cEast;
+}
+
+float TileSurface::getBottom() {
+  return 0.0f;
+}
+
+float TileSurface::getTop() {
+  return 0.0f;
 }
 
 BlockArea* TileSurface::getCoverage() {

@@ -19,7 +19,7 @@
 #ifndef I_COLLIDABLE_WALL_SURFACE_H
 #define I_COLLIDABLE_WALL_SURFACE_H
 
-#include <IsoRealms/BlockArea.h>
+#include <IsoRealms/Resources/ElementType/IElementBounds.h>
 
 #include "ICollisionData.h"
 
@@ -72,7 +72,7 @@ class ICollidableWallSurface {
    */
   virtual Vertex* getLocation() = 0;
   
-  virtual BlockArea* getCoverage() = 0;
+  virtual IElementBounds* getBounds() = 0;
 };
 
 #endif

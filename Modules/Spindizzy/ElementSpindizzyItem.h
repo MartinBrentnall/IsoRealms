@@ -38,7 +38,8 @@
 #include "ISpindizzyJewelSet.h"
 
 class ElementSpindizzyItem:public Element,
-                           public IBoundary {
+                           public IBoundary,
+                           public IElementBounds {
   private:
   ISpindizzyJewelType* cItemType;
   I3DModel* cModel;
@@ -81,6 +82,16 @@ class ElementSpindizzyItem:public Element,
   void updateRuntime(unsigned int);
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
   IElementBounds* getBounds();
+
+  /******************\
+   * IElementBounds *
+  \******************/
+  float getWest();
+  float getEast();
+  float getSouth();
+  float getNorth();
+  float getBottom();
+  float getTop();
 };
 
 #endif

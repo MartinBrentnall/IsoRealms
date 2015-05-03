@@ -165,5 +165,29 @@ void ElementSpindizzyWater::save(DOMNodeWriter* node, IResourceLocator* resource
 }
 
 IElementBounds* ElementSpindizzyWater::getBounds() {
-  return nullptr; // TODO: Implement this
+  return this;
+}
+
+float ElementSpindizzyWater::getWest() {
+  return cStartLocation.x;
+}
+
+float ElementSpindizzyWater::getEast() {
+  return cEndLocation.x;
+}
+
+float ElementSpindizzyWater::getSouth() {
+  return cStartLocation.y;
+}
+
+float ElementSpindizzyWater::getNorth() {
+  return cEndLocation.y;
+}
+
+float ElementSpindizzyWater::getBottom() {
+  return cStartLocation.z;
+}
+
+float ElementSpindizzyWater::getTop() {
+  return cEndLocation.z;
 }

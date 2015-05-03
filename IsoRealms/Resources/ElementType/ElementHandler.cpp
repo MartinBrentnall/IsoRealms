@@ -25,6 +25,10 @@ ElementHandler::ElementHandler() {
   cDirty = false;
 }
 
+std::vector<IElement*> ElementHandler::getElements() {
+  return cElements;
+}
+
 void ElementHandler::setMultiThreaded(bool multiThreaded) {
   cSpawnThreads = multiThreaded;
 }

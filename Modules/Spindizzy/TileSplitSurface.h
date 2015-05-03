@@ -33,7 +33,8 @@
 #include "ISpindizzyTileSurface.h"
 #include "SurfaceCollisionEvent.h"
 
-class TileSplitSurface:public ISpindizzyTileSurface {
+class TileSplitSurface:public ISpindizzyTileSurface,
+                       public IElementBounds {
   private:
   BlockLocation cLocation;
   ITexture** cTexture;
@@ -82,8 +83,18 @@ class TileSplitSurface:public ISpindizzyTileSurface {
   IRollableSurface::RespawnPossibility getRespawnPossibility();
   bool isRespawnPossibleNow();
   void getRestingLocation(Vertex&);
-  BlockArea* getBounds();
+  IElementBounds* getBounds();
 
+  /*****************************\
+   * Implements IElementBounds *
+  \*****************************/
+  float getSouth();
+  float getNorth();
+  float getWest();
+  float getEast();
+  float getBottom();
+  float getTop();
+  
   /***************************\
    * Implements ITileSurface *
   \***************************/

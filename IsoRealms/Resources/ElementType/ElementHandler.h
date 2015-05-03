@@ -68,6 +68,7 @@ class ElementHandler {
   public:
   ElementHandler();
     
+  std::vector<IElement*> getElements();
   void setMultiThreaded(bool);
   void initThread();
 

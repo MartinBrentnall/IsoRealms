@@ -227,7 +227,7 @@ void ElementSpindizzyLift::setDirty() {
 }
 
 IElementBounds* ElementSpindizzyLift::getBounds() {
-  return nullptr; // TODO: Implement this
+  return this;
 }
 
 Vertex* ElementSpindizzyLift::getBoundaryCrossingPoint(Vertex& start, Vertex& end, float* mLowestGradient, float infinity) {
@@ -400,4 +400,28 @@ void ElementSpindizzyLift::getRestingLocation(Vertex&) {
 
 BlockArea* ElementSpindizzyLift::getCoverage() {
   return new BlockArea(cLocation, cLocation);
+}
+
+float ElementSpindizzyLift::getWest() {
+  return cLocation.x;
+}
+
+float ElementSpindizzyLift::getEast() {
+  return cLocation.x;
+}
+
+float ElementSpindizzyLift::getSouth() {
+  return cLocation.y;
+}
+
+float ElementSpindizzyLift::getNorth() {
+  return cLocation.y;
+}
+
+float ElementSpindizzyLift::getBottom() {
+  return cLocation.z;
+}
+
+float ElementSpindizzyLift::getTop() {
+  return cLocation.z;
 }

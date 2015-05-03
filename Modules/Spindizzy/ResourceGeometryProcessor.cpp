@@ -651,8 +651,8 @@ IGeometricElement* ResourceGeometryProcessor::IndexedGeometricElement::getGeomet
   return cGeometricElement;
 }
 
-BlockArea* ResourceGeometryProcessor::IndexedGeometricElement::getCoverage() {
-  return cGeometricElement->getCoverage();
+IElementBounds* ResourceGeometryProcessor::IndexedGeometricElement::getBounds() {
+  return cGeometricElement->getBounds();
 }
 
 unsigned int ResourceGeometryProcessor::IndexedGeometricElement::getIndex() {
@@ -669,12 +669,34 @@ bool ResourceGeometryProcessor::FullTileColumn::isAt(int x, int y) {
   return cX == x && cY == y;
 }
 
-BlockArea* ResourceGeometryProcessor::FullTileColumn::getCoverage() {
-  BlockLocation* mStart = new BlockLocation(cX, cY, 0);
-  BlockLocation* mEnd   = new BlockLocation(cX, cY, 0);
-  return new BlockArea(*mStart, *mEnd);
+IElementBounds* ResourceGeometryProcessor::FullTileColumn::getBounds() {
+  return this;
 }
 
 std::vector<TileColumn*>* ResourceGeometryProcessor::FullTileColumn::getTileColumns() {
   return &cTileColumns;
+}
+
+float ResourceGeometryProcessor::FullTileColumn::getSouth() {
+  return cY;
+}
+
+float ResourceGeometryProcessor::FullTileColumn::getNorth() {
+  return cY;
+}
+
+float ResourceGeometryProcessor::FullTileColumn::getWest() {
+  return cX;
+}
+
+float ResourceGeometryProcessor::FullTileColumn::getEast() {
+  return cX;
+}
+
+float ResourceGeometryProcessor::FullTileColumn::getBottom() {
+  return 0.0f;
+}
+
+float ResourceGeometryProcessor::FullTileColumn::getTop() {
+  return 0.0f;
 }

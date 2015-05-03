@@ -44,7 +44,6 @@ class LayerSpindizzyMap:public ILayer,
                         public ILayerSpindizzyMap {
   private:
   ISpindizzyMapType* cMapType;
-  bool cEditing;
   ICamera* cCamera;
   LayerSpindizzyMapEditingContext* cEditingContext;
   Vertex* cLocationEditing;
@@ -124,13 +123,14 @@ class LayerSpindizzyMap:public ILayer,
   void renderEditing();
   void input(SDL_Event&);
   void initRuntime();
+  void initEditor();
   void save(DOMNodeWriter*, IResourceLocator*);
   void staticChanged();
   
   /*********************************\
    * Implements ILayerSpindizzyMap *
   \*********************************/
-  IElementContainer* getElementContainer();
+  IElementContainer* getElementContainer();  
   
   ~LayerSpindizzyMap();
 };

@@ -35,7 +35,8 @@
 #include "SurfaceCollisionEvent.h"
 #include "TextureRotation.h"
 
-class TileSurface:public ISpindizzyTileSurface {
+class TileSurface:public ISpindizzyTileSurface,
+                  public IElementBounds {
   private:
   IArgument* cElement;
   ITileSurface::FaceDirection cFacing;
@@ -99,8 +100,18 @@ class TileSurface:public ISpindizzyTileSurface {
   IRollableSurface::RespawnPossibility getRespawnPossibility();
   bool isRespawnPossibleNow();
   void getRestingLocation(Vertex&);
-  BlockArea* getBounds();
+  IElementBounds* getBounds();
 
+  /*****************************\
+   * Implements IElementBounds *
+  \*****************************/
+  float getSouth();
+  float getNorth();
+  float getWest();
+  float getEast();
+  float getBottom();
+  float getTop();
+  
   /***************************\
    * Implements ITileSurface *
   \***************************/

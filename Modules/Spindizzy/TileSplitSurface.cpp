@@ -394,8 +394,32 @@ void TileSplitSurface::getRestingLocation(Vertex& location) {
   location.z = getHeightAt(location.x, location.y);
 }
 
-BlockArea* TileSplitSurface::getBounds() {
-  return new BlockArea(cLocation, cLocation);
+IElementBounds* TileSplitSurface::getBounds() {
+  return this;
+}
+
+float TileSplitSurface::getSouth() {
+  return cLocation.y;
+}
+
+float TileSplitSurface::getNorth() {
+  return cLocation.y;
+}
+
+float TileSplitSurface::getWest() {
+  return cLocation.x;
+}
+
+float TileSplitSurface::getEast() {
+  return cLocation.x;
+}
+
+float TileSplitSurface::getBottom() {
+  return 0.0f;
+}
+
+float TileSplitSurface::getTop() {
+  return 0.0f;
 }
 
 TileSplitSurface::~TileSplitSurface() {

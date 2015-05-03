@@ -39,6 +39,10 @@ LayerSpindizzyMapEditingContext::LayerSpindizzyMapEditingContext(ILayerSpindizzy
   cMap = map;
 }
 
+void LayerSpindizzyMapEditingContext::init() {
+  processCursorAppearance(cLocation);
+}
+
 bool LayerSpindizzyMapEditingContext::isMovingNorth() {
   float mCameraAngle = cCameraEditing.getAngle();
   return mCameraAngle >=   40.0f && mCameraAngle <= 130.0f ? cActiveLeft
@@ -88,21 +92,64 @@ void LayerSpindizzyMapEditingContext::update(unsigned int milliseconds) {
   cMomentum.x *= 0.5f;
   cMomentum.y *= 0.5f;
   cMomentum.z *= 0.25f;
-  cLocation.x += cMomentum.x;
-  cLocation.y += cMomentum.y;
-  cLocation.z += cMomentum.z;
+  Vertex mNewLocation;
+  mNewLocation.x = cLocation.x + cMomentum.x;
+  mNewLocation.y = cLocation.y + cMomentum.y;
+  mNewLocation.z = cLocation.z + cMomentum.z;
   if (std::abs(cMomentum.x) < STOP_THRESHOLD && std::abs(cMomentum.y) < STOP_THRESHOLD && std::abs(cMomentum.z) < STOP_THRESHOLD * 0.5 && !cActiveLeft && !cActiveRight && !cActiveUp && !cActiveDown && !cActiveHigher && !cActiveLower) {
     cMomentum.x = 0.0f;
     cMomentum.y = 0.0f;
     cMomentum.y = 0.0f;
     if (cElementType != nullptr) {
-      Vertex* mLocation = cElementType->editorCursorStopped(&cLocation);
+      Vertex* mLocation = cElementType->editorCursorStopped(&mNewLocation);
       if (mLocation != nullptr) {
-        cLocation = *mLocation;
+        mNewLocation = *mLocation;
       }
     }
   }
+  processCursorMovement(cLocation, mNewLocation);
+  cLocation = mNewLocation;
   cCameraEditing.update(milliseconds);
+}
+
+void LayerSpindizzyMapEditingContext::processCursorAppearance(Vertex& location) {
+  std::vector<IElement*> mElements = cElements.getElements(location.x, location.y);
+  for (IElement* mElement : mElements) {
+    IElementBounds* mBounds = mElement->getBounds();
+    float mSouth  = mBounds->getSouth()  - IsoRealmsConstants::BLOCK_RADIUS;
+    float mWest   = mBounds->getWest()   - IsoRealmsConstants::BLOCK_RADIUS;
+    float mBottom = mBounds->getBottom() - 1.0f;
+    float mNorth  = mBounds->getNorth()  + IsoRealmsConstants::BLOCK_RADIUS;
+    float mEast   = mBounds->getEast()   + IsoRealmsConstants::BLOCK_RADIUS;
+    float mTop    = mBounds->getTop();
+    if (Collision::contains(location, mWest, mEast, mSouth, mNorth, mBottom, mTop)) {
+      mElement->focusGained();
+      mElement->cursorAppeared(location);
+    }
+  }
+}
+
+void LayerSpindizzyMapEditingContext::processCursorMovement(Vertex& start, Vertex& end) {
+  std::vector<IElement*> mElements = cElements.getElements(start, end);
+  for (IElement* mElement : mElements) {
+    IElementBounds* mBounds = mElement->getBounds();
+    float mSouth  = mBounds->getSouth()  - IsoRealmsConstants::BLOCK_RADIUS;
+    float mWest   = mBounds->getWest()   - IsoRealmsConstants::BLOCK_RADIUS;
+    float mBottom = mBounds->getBottom() - 1.0f;
+    float mNorth  = mBounds->getNorth()  + IsoRealmsConstants::BLOCK_RADIUS;
+    float mEast   = mBounds->getEast()   + IsoRealmsConstants::BLOCK_RADIUS;
+    float mTop    = mBounds->getTop();
+    bool mContainsStart = Collision::contains(start, mWest, mEast, mSouth, mNorth, mBottom, mTop);
+    bool mContainsEnd   = Collision::contains(end,   mWest, mEast, mSouth, mNorth, mBottom, mTop);
+    if (!mContainsStart && mContainsEnd) {
+      mElement->focusGained();
+    } else if (mContainsStart && !mContainsEnd) {
+      mElement->focusLost();
+    }
+    if (mContainsStart || mContainsEnd) {
+      mElement->cursorMoved(start, end);
+    }
+  }
 }
 
 void LayerSpindizzyMapEditingContext::render() {
@@ -181,6 +228,12 @@ bool LayerSpindizzyMapEditingContext::input(SDL_Event& event) {
 
 void LayerSpindizzyMapEditingContext::setElementType(IElementType* elementType) {
   cElementType = elementType;
+}
+
+void LayerSpindizzyMapEditingContext::addElement(IElement* element) {
+  std::cout << "Adding element " << element << std::endl;
+  cElements.add(element);
+  std::cout << "Added element " << element << std::endl;
 }
 
 IElementContainer* LayerSpindizzyMapEditingContext::getElementContainer() {

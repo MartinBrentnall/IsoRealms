@@ -44,7 +44,8 @@
  */
 class ElementSpindizzyBlock:public ISpindizzyBlock,
                             public IGeometricElement,
-                            public IArgument {
+                            public IArgument,
+                            public IElementBounds {
   private:
   enum SplitType {
     NORTH_SOUTH,
@@ -234,6 +235,16 @@ class ElementSpindizzyBlock:public ISpindizzyBlock,
   void renderRuntime();
   IElementBounds* getBounds();
 
+  /******************\
+   * IElementBounds *
+  \******************/
+  float getWest();
+  float getEast();
+  float getSouth();
+  float getNorth();
+  float getBottom();
+  float getTop();
+  
   /********************************\
    * Implements IGeometricElement *
   \********************************/

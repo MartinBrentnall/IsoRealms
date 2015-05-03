@@ -30,6 +30,7 @@ class IMap;
 #include <IsoRealms/Persistence/DOMNodeWriter.h>
 #include <IsoRealms/Resources/IResource.h>
 #include <IsoRealms/Resources/IResourceLocator.h>
+#include <IsoRealms/Resources/Vertex/Vertex.h>
 
 #include "IElementBounds.h"
 
@@ -89,6 +90,11 @@ class IElement {
   virtual void staticChanged() {} // TODO: Should be pure
   
   virtual IElementBounds* getBounds() = 0;
+  
+  virtual void focusGained() = 0;
+  virtual void focusLost() = 0;
+  virtual void cursorMoved(Vertex&, Vertex&) = 0;
+  virtual void cursorAppeared(Vertex&) = 0;
   
   virtual ~IElement() {}
 };

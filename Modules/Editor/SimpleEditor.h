@@ -201,7 +201,7 @@ class SimpleEditor:public IModule,
   /*************************\
    * Implements ILayerType *
   \*************************/
-  ILayer* getLayer(DOMNodeWrapper*, IResourceAccessor*);
+  ILayer* getLayer(DOMNodeWrapper*, IResourceAccessor*, bool);
 
   /*********************\
    * Implements ILayer * 
@@ -215,6 +215,7 @@ class SimpleEditor:public IModule,
   void save(DOMNodeWriter*, IResourceLocator*);
   void staticCnanged();
   void initRuntime();
+  void initEditor();
   void destroy(ILayer*);
   
   /******************************\

@@ -19,7 +19,7 @@
 #ifndef I_ROLLABLE_SURFACE_H
 #define I_ROLLABLE_SURFACE_H
 
-#include <IsoRealms/BlockArea.h>
+#include <IsoRealms/Resources/ElementType/IElementBounds.h>
 #include <IsoRealms/Resources/Vertex/Vertex.h>
 
 #include "ICollisionData.h"
@@ -164,7 +164,7 @@ class IRollableSurface {
    */
   virtual void getRestingLocation(Vertex&) = 0;
   
-  virtual BlockArea* getCoverage() = 0;
+  virtual IElementBounds* getBounds() = 0;
 };
 
 #endif

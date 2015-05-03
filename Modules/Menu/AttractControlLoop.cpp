@@ -24,6 +24,9 @@ AttractControlLoop::AttractControlLoop() {
  
 void AttractControlLoop::initRuntime() {
 }
+
+void AttractControlLoop::initEditor() {
+}
  
 void AttractControlLoop::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
   cRunningProject = NULL;
@@ -107,7 +110,7 @@ bool AttractControlLoop::checkActiveInput(int type) {
   return false;
 }
 
-ILayer* AttractControlLoop::getLayer(DOMNodeWrapper*, IResourceAccessor*) {
+ILayer* AttractControlLoop::getLayer(DOMNodeWrapper* node, IResourceAccessor* resources, bool editing) {
   return this;
 }
 

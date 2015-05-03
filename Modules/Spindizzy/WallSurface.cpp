@@ -73,6 +73,36 @@ BlockArea* WallSurface::getCoverage() {
   return new BlockArea(mStartLocation, mEndLocation);
 }
 
+IElementBounds* WallSurface::getBounds() {
+  return this;
+}
+
+float WallSurface::getSouth() {
+  return cY;
+}
+
+float WallSurface::getNorth() {
+  bool mFacingPole = cFacing == IWallSurface::NORTH || cFacing == IWallSurface::SOUTH;
+  return mFacingPole ? cY : cY + (cLength - 1); 
+}
+
+float WallSurface::getWest() {
+  return cX;
+}
+
+float WallSurface::getEast() {
+  bool mFacingPole = cFacing == IWallSurface::NORTH || cFacing == IWallSurface::SOUTH;
+  return mFacingPole ? cX + (cLength - 1) : cX;
+}
+
+float WallSurface::getBottom() {
+  return cZ;
+}
+
+float WallSurface::getTop() {
+  return cHeight + cLength * cTopSlope;
+}
+
 void WallSurface::destroyCoverage(BlockArea* coverage) {
   delete coverage;
 }

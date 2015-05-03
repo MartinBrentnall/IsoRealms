@@ -373,7 +373,31 @@ void ElementSpindizzyBlock::renderRuntime() {
 }
 
 IElementBounds* ElementSpindizzyBlock::getBounds() {
-  return nullptr; // TODO: Implement this
+  return this;
+}
+
+float ElementSpindizzyBlock::getWest() {
+  return cStartLocation.x;
+}
+
+float ElementSpindizzyBlock::getEast() {
+  return cEndLocation.x;
+}
+
+float ElementSpindizzyBlock::getSouth() {
+  return cStartLocation.y;
+}
+
+float ElementSpindizzyBlock::getNorth() {
+  return cEndLocation.y;
+}
+
+float ElementSpindizzyBlock::getBottom() {
+  return cStartLocation.z;
+}
+
+float ElementSpindizzyBlock::getTop() {
+  return cEndLocation.z;
 }
 
 std::set<IBoolean*> ElementSpindizzyBlock::getInputs() {

@@ -34,12 +34,14 @@
 class IGeometricElement {
   public:
 
+  virtual BlockArea* getCoverage() = 0;
+    
   /**
    * This can be used by algorithms to perform optimizations.
    * 
    * @returns TODO
    */
-  virtual BlockArea* getCoverage() = 0;
+  virtual IElementBounds* getBounds() = 0;
 
   virtual void destroyCoverage(BlockArea*) = 0;
   

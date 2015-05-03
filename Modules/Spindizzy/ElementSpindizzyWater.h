@@ -31,7 +31,8 @@
 #include "WallSurface.h"
 
 class ElementSpindizzyWater:public ISpindizzyBlock,
-                            public IGeometricElement {
+                            public IGeometricElement,
+                            public IElementBounds {
   private:
   // TODO: Need to define an "initialisation scheme" somewhere
   static const unsigned int INIT_PROCESS_BLOCKS;
@@ -72,6 +73,16 @@ class ElementSpindizzyWater:public ISpindizzyBlock,
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
   IElementBounds* getBounds();
 
+  /******************\
+   * IElementBounds *
+  \******************/
+  float getWest();
+  float getEast();
+  float getSouth();
+  float getNorth();
+  float getBottom();
+  float getTop();
+  
   /*******************************\
    * Implements ISurfaceProvider *
   \*******************************/

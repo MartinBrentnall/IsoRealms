@@ -88,6 +88,10 @@ void ResourceLayerHUD::initRuntime() {
   // Nothing to do
 }
 
+void ResourceLayerHUD::initEditor() {
+  // Nothing to do
+}
+
 void ResourceLayerHUD::renderRuntime() {
   Configuration* mConfiguration = Configuration::getInstance();
   ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
@@ -142,7 +146,7 @@ void ResourceLayerHUD::save(DOMNodeWriter* node, IResourceLocator* resources) {
   }
 }
 
-ILayer* ResourceLayerHUD::getLayer(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor) {
+ILayer* ResourceLayerHUD::getLayer(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor, bool editing) {
   initialiseResource(node, resourceAccessor);
   return this;
 }

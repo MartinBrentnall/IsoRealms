@@ -46,6 +46,7 @@ class Project:public IProject {
   Project();
   Project(DOMNodeWrapper*, const std::string&, IEditingContext*);
 
+  void initEditor();
   void initRuntime();
   void input(SDL_Event&);
   void renderRuntime();
