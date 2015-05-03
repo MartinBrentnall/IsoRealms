@@ -1006,7 +1006,6 @@ end</Code>
       </Boundaries>
       <Instance name="Player" x="-4" y="3" z="0"/>
     </ElementSpindizzyCraft>
-    <ElementSpindizzyEnemy model="IsoRealms/CraftEnemy_0" name="Pyramid"/>
     <ElementSpindizzyEnemy model="IsoRealms/CraftEnemy_1" name="Gyroscope"/>
     <ElementSpindizzyEnemy model="IsoRealms/CraftEnemy_2" name="Ball"/>
     <ElementSpindizzyItem model="Spindizzy/Jewel" name="Jewel"/>

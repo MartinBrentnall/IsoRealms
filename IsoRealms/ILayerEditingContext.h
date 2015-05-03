@@ -19,14 +19,17 @@
 #ifndef I_LAYER_EDITING_CONTEXT_H
 #define I_LAYER_EDITING_CONTEXT_H
 
-#include "Resources/ElementType/IElementContainer.h"
 #include "Resources/Vertex/Vertex.h"
+
+class IElementContainer;
 
 class ILayerEditingContext {
   public:
   virtual IElementContainer* getElementContainer() = 0;
   virtual Vertex* getLocation() = 0;
   virtual float getAngle() = 0;
+  virtual void selectElementContainer(IElementContainer*) = 0;
+  virtual void deselectElementContainer(IElementContainer*) = 0;
 };
 
 #endif

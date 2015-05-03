@@ -76,16 +76,16 @@ class Element:public IElement {
   virtual void initialiseResource(DOMNodeWrapper*, IResourceAccessor*) {
   }
   
-  virtual void focusGained() {
+  virtual void focusGained(ILayerEditingContext*) {
   }
   
-  virtual void focusLost() {
+  virtual void focusLost(ILayerEditingContext*) {
   }
   
-  virtual void cursorMoved(Vertex&, Vertex&) {
+  virtual void cursorMoved(ILayerEditingContext*, Vertex&, Vertex&) {
   }
   
-  virtual void cursorAppeared(Vertex&) {
+  virtual void cursorAppeared(ILayerEditingContext*, Vertex&) {
   }
   
   ~Element() {}

@@ -19,6 +19,8 @@
 #ifndef LAYER_SPINDIZZY_MAP_EDITING_CONTEXT_H
 #define LAYER_SPINDIZZY_MAP_EDITING_CONTEXT_H
 
+#include <stack>
+
 #include <IsoRealms/Collision.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 #include <IsoRealms/Resources/ElementType/IElementType.h>
@@ -48,6 +50,7 @@ class LayerSpindizzyMapEditingContext : public ILayerEditingContext {
   IElementType* cElementType;
   ILayerSpindizzyMap* cMap;
   SpatialContainer2D<IElement> cElements;
+  std::stack<IElementContainer*> cSelectedElementContainers;
   
   bool isMovingWest();
   bool isMovingEast();
@@ -75,6 +78,8 @@ class LayerSpindizzyMapEditingContext : public ILayerEditingContext {
   IElementContainer* getElementContainer();
   Vertex* getLocation();
   float getAngle();
+  void selectElementContainer(IElementContainer*);
+  void deselectElementContainer(IElementContainer*);
 };
 
 #endif

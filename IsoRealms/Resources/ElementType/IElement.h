@@ -27,6 +27,7 @@ class IElementSet;
 class IMap;
 
 #include <IsoRealms/BlockLocation.h>
+#include <IsoRealms/ILayerEditingContext.h>
 #include <IsoRealms/Persistence/DOMNodeWriter.h>
 #include <IsoRealms/Resources/IResource.h>
 #include <IsoRealms/Resources/IResourceLocator.h>
@@ -91,10 +92,10 @@ class IElement {
   
   virtual IElementBounds* getBounds() = 0;
   
-  virtual void focusGained() = 0;
-  virtual void focusLost() = 0;
-  virtual void cursorMoved(Vertex&, Vertex&) = 0;
-  virtual void cursorAppeared(Vertex&) = 0;
+  virtual void focusGained(ILayerEditingContext*) = 0;
+  virtual void focusLost(ILayerEditingContext*) = 0;
+  virtual void cursorMoved(ILayerEditingContext*, Vertex&, Vertex&) = 0;
+  virtual void cursorAppeared(ILayerEditingContext*, Vertex&) = 0;
   
   virtual ~IElement() {}
 };

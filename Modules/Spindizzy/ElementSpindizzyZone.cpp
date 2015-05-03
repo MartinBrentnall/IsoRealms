@@ -205,12 +205,13 @@ IElementBounds* ElementSpindizzyZone::getBounds() {
   return this;
 }
 
-void ElementSpindizzyZone::focusGained() {
+void ElementSpindizzyZone::focusGained(ILayerEditingContext* layerEditingContext) {
   cZoneType->setDefaultTheme(cZoneTheme);
+  layerEditingContext->selectElementContainer(this);
 }
 
-void ElementSpindizzyZone::focusLost() {
-  // Nothing to do
+void ElementSpindizzyZone::focusLost(ILayerEditingContext* layerEditingContext) {
+  layerEditingContext->deselectElementContainer(this);
 }
 
 float ElementSpindizzyZone::getWest() {

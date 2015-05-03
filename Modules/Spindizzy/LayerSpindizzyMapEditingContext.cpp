@@ -123,8 +123,8 @@ void LayerSpindizzyMapEditingContext::processCursorAppearance(Vertex& location) 
     float mEast   = mBounds->getEast()   + IsoRealmsConstants::BLOCK_RADIUS;
     float mTop    = mBounds->getTop();
     if (Collision::contains(location, mWest, mEast, mSouth, mNorth, mBottom, mTop)) {
-      mElement->focusGained();
-      mElement->cursorAppeared(location);
+      mElement->focusGained(this);
+      mElement->cursorAppeared(this, location);
     }
   }
 }
@@ -142,12 +142,12 @@ void LayerSpindizzyMapEditingContext::processCursorMovement(Vertex& start, Verte
     bool mContainsStart = Collision::contains(start, mWest, mEast, mSouth, mNorth, mBottom, mTop);
     bool mContainsEnd   = Collision::contains(end,   mWest, mEast, mSouth, mNorth, mBottom, mTop);
     if (!mContainsStart && mContainsEnd) {
-      mElement->focusGained();
+      mElement->focusGained(this);
     } else if (mContainsStart && !mContainsEnd) {
-      mElement->focusLost();
+      mElement->focusLost(this);
     }
     if (mContainsStart || mContainsEnd) {
-      mElement->cursorMoved(start, end);
+      mElement->cursorMoved(this, start, end);
     }
   }
 }
@@ -237,7 +237,7 @@ void LayerSpindizzyMapEditingContext::addElement(IElement* element) {
 }
 
 IElementContainer* LayerSpindizzyMapEditingContext::getElementContainer() {
-  return cMap->getElementContainer();
+  return cSelectedElementContainers.empty() ? cMap->getElementContainer() : cSelectedElementContainers.top();
 }
 
 Vertex* LayerSpindizzyMapEditingContext::getLocation() {
@@ -246,4 +246,12 @@ Vertex* LayerSpindizzyMapEditingContext::getLocation() {
 
 float LayerSpindizzyMapEditingContext::getAngle() {
   return cCameraEditing.getAngle();
+}
+
+void LayerSpindizzyMapEditingContext::selectElementContainer(IElementContainer* elementContainer) {
+  cSelectedElementContainers.push(elementContainer);
+}
+
+void LayerSpindizzyMapEditingContext::deselectElementContainer(IElementContainer* elementContainer) {
+  cSelectedElementContainers.pop();
 }
