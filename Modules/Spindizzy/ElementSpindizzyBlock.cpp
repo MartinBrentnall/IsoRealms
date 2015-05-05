@@ -395,6 +395,7 @@ void ElementSpindizzyBlock::renderPreviewWalls(IWallSurface::FaceDirection facin
 }
 
 void ElementSpindizzyBlock::renderPreview(Vertex& start, Vertex& end) {
+  bool mAddition = cStartLocation.z <= cEndLocation.z;
   cStartLocation.x = std::min(std::round(start.x      ), std::round(end.x      ));
   cStartLocation.y = std::min(std::round(start.y      ), std::round(end.y      ));
   cStartLocation.z = std::min(std::round(start.z * 2.0), std::round(end.z * 2.0));
@@ -410,6 +411,11 @@ void ElementSpindizzyBlock::renderPreview(Vertex& start, Vertex& end) {
   renderPreviewWalls(IWallSurface::EAST);
   renderPreviewWalls(IWallSurface::NORTH);
   mTopSurface->render();
+  if (!mAddition) {
+    int mTemp = cEndLocation.z;
+    cEndLocation.z = cStartLocation.z;
+    cStartLocation.z = mTemp;
+  } 
   delete mTopSurface;
 }
 

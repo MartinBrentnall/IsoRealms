@@ -106,7 +106,8 @@ bool ResourceElementSpindizzyBlock::keyDown(SDLKey& key, ILayerEditingContext* e
     case SDLK_KP4:         cBlockProperties->lowerCorner(0, 0);     return true;
     case SDLK_KP_MULTIPLY: cBlockProperties->toggleSplit();         return true;
     case SDLK_KP_PERIOD:   cBlockProperties->toggleSteppedBottom(); return true;
-    case SDLK_SPACE: {
+    case SDLK_SPACE:
+    case SDLK_DELETE: {
       IElementContainer* mContainer = editingContext->getElementContainer();
       ElementHandlerSpindizzyBlock* mHandler = cModuleInterface->getElementHandlerSpindizzyBlock(mContainer);
       if (cStartLocation == nullptr) {
@@ -116,7 +117,7 @@ bool ResourceElementSpindizzyBlock::keyDown(SDLKey& key, ILayerEditingContext* e
         if (cEditingBlock != nullptr) {
           delete cEditingBlock;
         }
-        cEditingBlock = createBlock(&mStartLocation, &mStartLocation, cBlockProperties, true, mHandler);
+        cEditingBlock = createBlock(&mStartLocation, &mStartLocation, cBlockProperties, key == SDLK_SPACE, mHandler);
         cStartLocation = new Vertex(*mLocation);
       } else {
         editingContext->removeCursorRestriction(mContainer);
@@ -130,17 +131,6 @@ bool ResourceElementSpindizzyBlock::keyDown(SDLKey& key, ILayerEditingContext* e
         editingContext->staticChanged();
       }
     }
-//     case SDLK_DELETE: {
-//       if (cStartBlockLocation == nullptr) {
-//         cStartBlockLocation = new BlockLocation(*cEditingLocation);
-//       } else {
-//         ElementSpindizzyBlock* mNewBlock = createBlock(cStartBlockLocation, cEditingLocation, cBlockProperties, false, nullptr);
-//         cContent.push_back(mNewBlock);
-// //        addElement(mNewBlock);
-//         delete cStartBlockLocation;
-//         cStartBlockLocation = nullptr;
-//       }
-//     }
 
     default: {
       return false;
