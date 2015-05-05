@@ -50,7 +50,7 @@ bool ResourceElementHUDRoundedRectangle::inputEdit(SDL_Event& event, ILayerEditi
   return false;// TODO
 }
 
-void ResourceElementHUDRoundedRectangle::renderEditingPreview() {
+void ResourceElementHUDRoundedRectangle::renderEditingPreview(Vertex& location) {
   // TODO
 }
 

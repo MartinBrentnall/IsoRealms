@@ -219,10 +219,10 @@ void SpindizzyModule::createThemeColour(const std::string& type, IResourceRegist
   /*********************************\
    * Implements ISpindizzyBlockSet *
   \*********************************/
-void SpindizzyModule::registerSurfaceProvider(IGeometricElement* element) {
-  cVisualProcessor->registerGeometricElement(element);
+void SpindizzyModule::registerSurfaceProvider(IGeometricElement* element, bool recalculationSurroundings) {
+  cVisualProcessor->registerGeometricElement(element, recalculationSurroundings);
   if (!cEditing) {
-    cPhysicalProcessor->registerGeometricElement(element);
+    cPhysicalProcessor->registerGeometricElement(element, recalculationSurroundings);
   }
 }
 
@@ -303,7 +303,7 @@ void SpindizzyModule::itemCollected() {
 ElementHandlerSpindizzyBlock* SpindizzyModule::getElementHandlerSpindizzyBlock(IElementContainer* container) {
   std::map<IElementContainer*, ElementHandlerSpindizzyBlock*>::iterator i = cElementHandlersSpindizzyBlock.find(container);
   if (i == cElementHandlersSpindizzyBlock.end()) {
-    ElementHandlerSpindizzyBlock* mHandler = new ElementHandlerSpindizzyBlock(this);
+    ElementHandlerSpindizzyBlock* mHandler = new ElementHandlerSpindizzyBlock(this, container);
     cElementHandlersSpindizzyBlock[container] = mHandler;
     container->addElement(mHandler);
     container->addArgumentValue(mHandler);

@@ -49,9 +49,9 @@ class ResourceElementSpindizzyBlock:public ISpindizzyBlockType,
   SpindizzyBlockConfigurationComponent* cConfigurationComponent;
   IComponentContainer* cComponentContainer;
   SpindizzyBlockProperties* cBlockProperties;
-  BlockLocation* cStartBlockLocation;
   ElementSpindizzyBlock* cSampleBlock;
   ElementSpindizzyBlock* cEditingBlock;
+  Vertex* cStartLocation;
   BlockTypeProperties cBlockTypeProperties;
   
   unsigned int getXCorner(float);
@@ -78,7 +78,7 @@ class ResourceElementSpindizzyBlock:public ISpindizzyBlockType,
    * @param bool  true to create an addition, false to create a subtraction.
    * @returns  The new usable block.
    */
-  ElementSpindizzyBlock* createBlock(BlockLocation*, BlockLocation*, SpindizzyBlockProperties*, bool, IElementContainer*);
+  ElementSpindizzyBlock* createBlock(BlockLocation*, BlockLocation*, SpindizzyBlockProperties*, bool, ElementHandlerSpindizzyBlock*);
   
   /**********************************\
    * Implements ISpindizzyBlockType *
@@ -96,7 +96,7 @@ class ResourceElementSpindizzyBlock:public ISpindizzyBlockType,
   void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*);
   void setEditingContext(BlockLocation*, IComponentContainer*);
   bool inputEdit(SDL_Event&, ILayerEditingContext*);
-  void renderEditingPreview();
+  void renderEditingPreview(Vertex&);
   void renderIcon();
   void updateIcon(unsigned int);
   std::string getName();

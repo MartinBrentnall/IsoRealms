@@ -37,7 +37,7 @@ class ResourceElementSpindizzyEnemy:public IElementType {
   std::vector<ElementSpindizzyEnemy*> cContent;
   ElementSpindizzyEnemy* cSampleEnemy;
 
-  bool keyDown(SDLKey&);
+  bool keyDown(SDLKey&, ILayerEditingContext*);
 
   public:
   ResourceElementSpindizzyEnemy(ISpindizzyEnemySet*, DOMNodeWrapper*, IResourceRegistry*);
@@ -59,7 +59,7 @@ class ResourceElementSpindizzyEnemy:public IElementType {
   bool inputEdit(SDL_Event&, ILayerEditingContext*);
   void configureElement();
   void setEditingContext(BlockLocation*, IComponentContainer*);
-  void renderEditingPreview();
+  void renderEditingPreview(Vertex&);
   void updateIcon(unsigned int);
   void renderIcon();
   void destroy(IElement*);

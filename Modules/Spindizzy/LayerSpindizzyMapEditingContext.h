@@ -50,7 +50,8 @@ class LayerSpindizzyMapEditingContext : public ILayerEditingContext {
   IElementType* cElementType;
   ILayerSpindizzyMap* cMap;
   SpatialContainer2D<IElement> cElements;
-  std::stack<IElementContainer*> cSelectedElementContainers;
+  IElementContainer* cSelectedElementContainers;
+  IElementContainer* cCursorRestriction;
   
   bool isMovingWest();
   bool isMovingEast();
@@ -67,7 +68,8 @@ class LayerSpindizzyMapEditingContext : public ILayerEditingContext {
   
   void init();
   void update(unsigned int);
-  void render();
+  void renderCamera();
+  void renderCursor();
   bool input(SDL_Event&);
   void setElementType(IElementType*);
   void addElement(IElement*);
@@ -80,6 +82,9 @@ class LayerSpindizzyMapEditingContext : public ILayerEditingContext {
   float getAngle();
   void selectElementContainer(IElementContainer*);
   void deselectElementContainer(IElementContainer*);
+  void staticChanged();
+  void setCursorRestriction(IElementContainer*);
+  void removeCursorRestriction(IElementContainer*);
 };
 
 #endif

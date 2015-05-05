@@ -65,7 +65,7 @@ bool ResourceElementHUDModel::inputEdit(SDL_Event& event, ILayerEditingContext* 
   return false;// TODO
 }
 
-void ResourceElementHUDModel::renderEditingPreview() {
+void ResourceElementHUDModel::renderEditingPreview(Vertex& location) {
   // TODO
 }
 

@@ -87,7 +87,8 @@ void ResourceElementSpindizzyZone::configureElement() {
 void ResourceElementSpindizzyZone::setEditingContext(BlockLocation*, IComponentContainer*) {
 }
 
-void ResourceElementSpindizzyZone::renderEditingPreview() {
+void ResourceElementSpindizzyZone::renderEditingPreview(Vertex& location) {
+  glTranslatef(location.x, location.y, location.z);
   cSampleZone->renderEditing();
 }
 

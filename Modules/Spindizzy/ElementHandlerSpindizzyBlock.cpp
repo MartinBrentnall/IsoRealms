@@ -18,8 +18,9 @@
  */
 #include "ElementHandlerSpindizzyBlock.h"
 
-ElementHandlerSpindizzyBlock::ElementHandlerSpindizzyBlock(ISpindizzyBlockSet* moduleInterface) {
+ElementHandlerSpindizzyBlock::ElementHandlerSpindizzyBlock(ISpindizzyBlockSet* moduleInterface, IElementContainer* container) {
   cModuleInterface = moduleInterface;
+  cContainer = container;
 }
 
 unsigned int ElementHandlerSpindizzyBlock::getClueCount() {
@@ -129,4 +130,20 @@ bool ElementHandlerSpindizzyBlock::initElement(unsigned int pass) {
     }
   }
   return mSuccess;
+}
+
+void ElementHandlerSpindizzyBlock::setArguments() {
+  cContainer->setArguments();
+}
+
+void ElementHandlerSpindizzyBlock::unsetArguments() {
+  cContainer->unsetArguments();
+}
+
+void ElementHandlerSpindizzyBlock::setDirty(IElement* element) {
+  cContainer->setDirty(this);
+}
+
+IElementContainer* ElementHandlerSpindizzyBlock::getElementContainer() {
+  return cContainer;
 }

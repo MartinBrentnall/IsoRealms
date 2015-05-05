@@ -89,10 +89,6 @@ void LayerSpindizzyMap::pushElement(IElement* element) {
 }
 
 void LayerSpindizzyMap::staticChanged() {
-//   for (unsigned int i = 0; i < cZones.size(); i++) {
-//     cZones[i]->staticChanged();
-//   }
-  // TODO  
 }
 
 IElementContainer* LayerSpindizzyMap::getElementContainer() {
@@ -119,8 +115,13 @@ BlockArea* LayerSpindizzyMap::getCoverage() {
   return nullptr;
 }
 
-void LayerSpindizzyMap::setDirty() {
+void LayerSpindizzyMap::setDirty(IElement* element) {
+//  cElementHandler.setDirty(element);
   cElementHandler.setAllDirty();
+}
+
+void LayerSpindizzyMap::restrictCursor(Vertex& cursorLocation) {
+  // Nothing to do
 }
 
 bool LayerSpindizzyMap::containsElement(IElement* element) {
@@ -168,46 +169,27 @@ ILayerType* LayerSpindizzyMap::getLayerType() {
 void LayerSpindizzyMap::updateEditing(unsigned int milliseconds) {
   cElementHandler.init(0, cEditingContext != nullptr);
   cEditingContext->update(milliseconds);
-  // TODO: Need a more permanent solution for better performance.
-//   std::vector<IZone*> mZones;
-//   for (unsigned int i = 0; i < cZones.size(); i++) {
-//     mZones.push_back(cZones[i]);
-//   }
-  // TODO: End.
   cElementHandler.updateEditing(milliseconds);
 }
 
 void LayerSpindizzyMap::updateRuntime(unsigned int milliseconds) {
   cCamera->update(milliseconds);
-  // TODO: Need a more permanent solution for better performance.
-//   std::vector<IZone*> mZones;
-//   for (unsigned int i = 0; i < cZones.size(); i++) {
-//     mZones.push_back(cZones[i]);
-//   }
-  // TODO: End.
   cElementHandler.updateRuntime(milliseconds);
 }
 
 void LayerSpindizzyMap::renderRuntime() {
   cCamera->render();
   glColor3f(1.0f, 1.0f, 1.0f);
-  // TODO: Need a more permanent solution for better performance.
-  // TODO: End.
   cElementHandler.renderRuntime();
   cElementHandler.renderStatic();
 }
 
 void LayerSpindizzyMap::renderEditing() {
-  cEditingContext->render();
+  cEditingContext->renderCamera();
   glColor3f(1.0f, 1.0f, 1.0f);
-  // TODO: Need a more permanent solution for better performance.
-//   std::vector<IZone*> mZones;
-//   for (unsigned int i = 0; i < cZones.size(); i++) {
-//     mZones.push_back(cZones[i]);
-//   }
-  // TODO: End.
   cElementHandler.renderEditing();
   cElementHandler.renderStatic();
+  cEditingContext->renderCursor();
 }
 
 void LayerSpindizzyMap::input(SDL_Event& event) {

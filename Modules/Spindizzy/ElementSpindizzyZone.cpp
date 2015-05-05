@@ -197,8 +197,13 @@ void ElementSpindizzyZone::updateRuntime(unsigned int milliseconds) {
 void ElementSpindizzyZone::save(DOMNodeWriter*, IResourceLocator*, BlockLocation&) {
 }
 
+void ElementSpindizzyZone::setDirty(IElement* element) {
+  cElementHandler.setDirty(element);
+  cContainer->setDirty(this);
+}
+
 void ElementSpindizzyZone::setDirty() {
-  cElementHandler.setAllDirty();
+  // TODO
 }
 
 IElementBounds* ElementSpindizzyZone::getBounds() {
@@ -248,6 +253,18 @@ void ElementSpindizzyZone::removeElement(IElement* element) {
 
 void ElementSpindizzyZone::addArgumentValue(IArgument* argument) {
   cArguments.push_back(argument);
+}
+
+void ElementSpindizzyZone::restrictCursor(Vertex& cursor) {
+  double mSouth  = cZoneArea->getSouth();
+  double mWest   = cZoneArea->getWest();
+  double mBottom = cZoneArea->getBottom() * 0.5;
+  double mNorth  = cZoneArea->getNorth();
+  double mEast   = cZoneArea->getEast();
+  double mTop    = cZoneArea->getTop() * 0.5;
+  cursor.x = std::max(mWest,   std::min(mEast,  cursor.x));
+  cursor.y = std::max(mSouth,  std::min(mNorth, cursor.y));
+  cursor.z = std::max(mBottom, std::min(mTop,  cursor.z));
 }
 
 bool ElementSpindizzyZone::contains(Vertex& location) {

@@ -37,6 +37,7 @@ LayerSpindizzyMapEditingContext::LayerSpindizzyMapEditingContext(ILayerSpindizzy
   cActiveLower  = false;
   cElementType = nullptr;
   cMap = map;
+  cCursorRestriction = nullptr;
 }
 
 void LayerSpindizzyMapEditingContext::init() {
@@ -107,6 +108,9 @@ void LayerSpindizzyMapEditingContext::update(unsigned int milliseconds) {
       }
     }
   }
+  if (cCursorRestriction != nullptr) {
+    cCursorRestriction->restrictCursor(mNewLocation);
+  }
   processCursorMovement(cLocation, mNewLocation);
   cLocation = mNewLocation;
   cCameraEditing.update(milliseconds);
@@ -152,11 +156,18 @@ void LayerSpindizzyMapEditingContext::processCursorMovement(Vertex& start, Verte
   }
 }
 
-void LayerSpindizzyMapEditingContext::render() {
+void LayerSpindizzyMapEditingContext::renderCamera() {
   cCameraEditing.render();
+  glTranslatef(-cLocation.x, -cLocation.y, -cLocation.z);
+}
+
+void LayerSpindizzyMapEditingContext::renderCursor() {
   if (cElementType != nullptr) {
-    cElementType->renderEditingPreview();
+    glPushMatrix();
+    cElementType->renderEditingPreview(cLocation);
+    glPopMatrix();
   } else {
+    glTranslatef(cLocation.x, cLocation.y, cLocation.z);
     glBegin(GL_LINES);
     glColor3f(1.0f, 0.0f, 0.0f);
     glVertex3f(-1.0f,  0.0f,  0.0f);
@@ -167,7 +178,6 @@ void LayerSpindizzyMapEditingContext::render() {
     glVertex3f( 0.0f,  0.0f, +1.0f);
     glEnd();
   }
-  glTranslatef(-cLocation.x, -cLocation.y, -cLocation.z);
 }
 
 bool LayerSpindizzyMapEditingContext::keyDown(SDLKey& key, SDLMod& mod) {
@@ -231,13 +241,11 @@ void LayerSpindizzyMapEditingContext::setElementType(IElementType* elementType) 
 }
 
 void LayerSpindizzyMapEditingContext::addElement(IElement* element) {
-  std::cout << "Adding element " << element << std::endl;
   cElements.add(element);
-  std::cout << "Added element " << element << std::endl;
 }
 
 IElementContainer* LayerSpindizzyMapEditingContext::getElementContainer() {
-  return cSelectedElementContainers.empty() ? cMap->getElementContainer() : cSelectedElementContainers.top();
+  return cSelectedElementContainers == nullptr ? cMap->getElementContainer() : cSelectedElementContainers;
 }
 
 Vertex* LayerSpindizzyMapEditingContext::getLocation() {
@@ -249,9 +257,23 @@ float LayerSpindizzyMapEditingContext::getAngle() {
 }
 
 void LayerSpindizzyMapEditingContext::selectElementContainer(IElementContainer* elementContainer) {
-  cSelectedElementContainers.push(elementContainer);
+  cSelectedElementContainers = elementContainer;
 }
 
 void LayerSpindizzyMapEditingContext::deselectElementContainer(IElementContainer* elementContainer) {
-  cSelectedElementContainers.pop();
+  if (cSelectedElementContainers == elementContainer) {
+    cSelectedElementContainers = nullptr;
+  }
+}
+
+void LayerSpindizzyMapEditingContext::staticChanged() {
+  cMap->staticChanged();
+}
+
+void LayerSpindizzyMapEditingContext::setCursorRestriction(IElementContainer* container) {
+  cCursorRestriction = container;
+}
+
+void LayerSpindizzyMapEditingContext::removeCursorRestriction(IElementContainer* container) {
+  cCursorRestriction = nullptr;
 }

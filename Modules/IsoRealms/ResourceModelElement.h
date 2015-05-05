@@ -52,7 +52,8 @@ class ResourceModelElement:public I3DModelType,
   void setArguments();
   void unsetArguments();
   BlockArea* getCoverage();
-  void setDirty();
+  void setDirty(IElement*);
+  void restrictCursor(Vertex&);
   
   virtual ~ResourceModelElement() {}
 };

@@ -99,7 +99,8 @@ class LayerSpindizzyMap:public ILayer,
   void unsetArguments();
 
   BlockArea* getCoverage();
-  void setDirty();
+  void setDirty(IElement*);
+  void restrictCursor(Vertex&);
   
   /****************************\
    * Implements ISpindizzyMap *
@@ -130,7 +131,7 @@ class LayerSpindizzyMap:public ILayer,
   /*********************************\
    * Implements ILayerSpindizzyMap *
   \*********************************/
-  IElementContainer* getElementContainer();  
+  IElementContainer* getElementContainer();
   
   ~LayerSpindizzyMap();
 };

@@ -200,7 +200,7 @@ void HUDComponentPosition::setArguments() {
   // TODO
 }
 
-void HUDComponentPosition::setDirty() {
+void HUDComponentPosition::setDirty(IElement* element) {
   // TODO
 }
 
@@ -208,3 +208,6 @@ void HUDComponentPosition::unsetArguments() {
   // TODO
 }
 
+void HUDComponentPosition::restrictCursor(Vertex& cursorLocation) {
+  // TODO
+}

@@ -45,7 +45,7 @@ void ResourceElementSpindizzyWater::loadElement(DOMNodeWrapper* node, BlockLocat
   mEndLocation.z++;
   ElementSpindizzyWater* mLoadedWater = new ElementSpindizzyWater(this, &mStartLocation, &mEndLocation, &cTexture, container);
   cContent.push_back(mLoadedWater);
-  cModuleInterface->registerSurfaceProvider(mLoadedWater);
+  cModuleInterface->registerSurfaceProvider(mLoadedWater, false);
   cModuleInterface->setDirty();
   container->addElement(mLoadedWater);
 }
@@ -90,7 +90,8 @@ bool ResourceElementSpindizzyWater::inputEdit(SDL_Event& event, ILayerEditingCon
   return false;
 }
 
-void ResourceElementSpindizzyWater::renderEditingPreview() {
+void ResourceElementSpindizzyWater::renderEditingPreview(Vertex& location) {
+  glTranslatef(location.x, location.y, location.z);
   if (cStartWaterLocation != nullptr) {
 //     float x  = (cEditingLocation->x > cStartWaterLocation->x ? cEditingLocation->x    : cStartWaterLocation->x) + IsoRealmsConstants::BLOCK_RADIUS;
 //     float xs = (cEditingLocation->x > cStartWaterLocation->x ? cStartWaterLocation->x : cEditingLocation->x)    - IsoRealmsConstants::BLOCK_RADIUS;
@@ -179,7 +180,6 @@ ResourceElementSpindizzyWater::~ResourceElementSpindizzyWater() {
   for (unsigned int i = 0; i < cContent.size(); i++) {
     IElementContainer* mContainer = cContent[i]->getElementContainer();
     mContainer->removeElement(cContent[i]);
-    mContainer->setDirty();
     cModuleInterface->unregisterSurfaceProvider(cContent[i]);
     delete cContent[i];
   }  

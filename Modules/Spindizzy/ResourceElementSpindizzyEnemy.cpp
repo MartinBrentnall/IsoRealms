@@ -54,12 +54,18 @@ void ResourceElementSpindizzyEnemy::loadElement(DOMNodeWrapper* node, BlockLocat
   mDynamicElementHandler->addElement(mLoadedEnemy);
 }
 
-bool ResourceElementSpindizzyEnemy::keyDown(SDLKey& key) {
+bool ResourceElementSpindizzyEnemy::keyDown(SDLKey& key, ILayerEditingContext* editingContext) {
   switch (key) {
     case SDLK_SPACE: {
-//      ElementSpindizzyEnemy* mEnemy = new ElementSpindizzyEnemy(this, cEditingLocation, cModelType, nullptr);
-//      addElement(mEnemy);
-//      cContent.push_back(mEnemy);
+      IElementContainer* mElementContainer = editingContext->getElementContainer();
+      Vertex* mLocation = editingContext->getLocation();
+      BlockLocation mGridLocation;
+      mGridLocation.x = std::round(mLocation->x);
+      mGridLocation.y = std::round(mLocation->y);
+      mGridLocation.z = std::round(mLocation->z * 2.0);
+      ElementSpindizzyEnemy* mEnemy = new ElementSpindizzyEnemy(this, &mGridLocation, cModelType, nullptr);
+      mElementContainer->addElement(mEnemy);
+      cContent.push_back(mEnemy);
       return true;
     }
 
@@ -73,7 +79,7 @@ bool ResourceElementSpindizzyEnemy::keyDown(SDLKey& key) {
 bool ResourceElementSpindizzyEnemy::inputEdit(SDL_Event& event, ILayerEditingContext* editingContext) {
   switch (event.type) {
     case SDL_KEYDOWN: {
-      return keyDown(event.key.keysym.sym);
+      return keyDown(event.key.keysym.sym, editingContext);
     }
   }
   return false;
@@ -86,7 +92,8 @@ void ResourceElementSpindizzyEnemy::configureElement() {
 void ResourceElementSpindizzyEnemy::setEditingContext(BlockLocation* editingLocation, IComponentContainer* componentContainer) {
 }
 
-void ResourceElementSpindizzyEnemy::renderEditingPreview() {
+void ResourceElementSpindizzyEnemy::renderEditingPreview(Vertex& location) {
+  glTranslatef(location.x, location.y, location.z);
   cSampleEnemy->renderRuntime();
 }
 

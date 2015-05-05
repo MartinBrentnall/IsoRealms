@@ -22,6 +22,7 @@
 class ILayerSpindizzyMap {
   public:
   virtual IElementContainer* getElementContainer() = 0;
+  virtual void staticChanged() = 0;
 };
 
 #endif

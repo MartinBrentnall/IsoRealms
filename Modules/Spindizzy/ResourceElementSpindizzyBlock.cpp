@@ -21,9 +21,9 @@
 ResourceElementSpindizzyBlock::ResourceElementSpindizzyBlock(ISpindizzyBlockSet* elementSet, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
   cModuleInterface = elementSet;
   cConfigurationComponent = nullptr;
-  cStartBlockLocation = nullptr;
   cBlockProperties = new SpindizzyBlockProperties();
   cSampleBlock = nullptr;
+  cStartLocation = nullptr;
 }
 
 void ResourceElementSpindizzyBlock::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor) {
@@ -56,15 +56,15 @@ void ResourceElementSpindizzyBlock::loadElement(DOMNodeWrapper* node, BlockLocat
   mEndLocation.x--;
   mEndLocation.y--;
   bool mIndependent = node->getBooleanAttribute("independent");
-  ElementSpindizzyBlock* mLoadedBlock = createBlock(&mStartLocation, &mEndLocation, cBlockProperties, mAddition, container);
+  ElementHandlerSpindizzyBlock* mHandler = cModuleInterface->getElementHandlerSpindizzyBlock(container);  
+  ElementSpindizzyBlock* mLoadedBlock = createBlock(&mStartLocation, &mEndLocation, cBlockProperties, mAddition, mHandler);
   cContent.push_back(mLoadedBlock);
   if (mIndependent) {
     mLoadedBlock->createSampleSurfaces();
   } else {
-    cModuleInterface->registerSurfaceProvider(mLoadedBlock);
+    cModuleInterface->registerSurfaceProvider(mLoadedBlock, false);
     cModuleInterface->setDirty();
   }
-  ElementHandlerSpindizzyBlock* mHandler = cModuleInterface->getElementHandlerSpindizzyBlock(container);  
   mHandler->addElement(mLoadedBlock);
 }
 
@@ -106,19 +106,30 @@ bool ResourceElementSpindizzyBlock::keyDown(SDLKey& key, ILayerEditingContext* e
     case SDLK_KP4:         cBlockProperties->lowerCorner(0, 0);     return true;
     case SDLK_KP_MULTIPLY: cBlockProperties->toggleSplit();         return true;
     case SDLK_KP_PERIOD:   cBlockProperties->toggleSteppedBottom(); return true;
-//     case SDLK_SPACE: {
-//       if (cStartBlockLocation == nullptr) {
-//         cStartBlockLocation = new BlockLocation(*cEditingLocation);
-//       } else {
-//         ElementSpindizzyBlock* mNewBlock = createBlock(cStartBlockLocation, cEditingLocation, cBlockProperties, true, nullptr);
-//         cContent.push_back(mNewBlock);
-// //        addElement(mNewBlock);
-//         delete cStartBlockLocation;
-//         cStartBlockLocation = nullptr;
-//       }
-//       return true;
-//     }
-// 
+    case SDLK_SPACE: {
+      IElementContainer* mContainer = editingContext->getElementContainer();
+      ElementHandlerSpindizzyBlock* mHandler = cModuleInterface->getElementHandlerSpindizzyBlock(mContainer);
+      if (cStartLocation == nullptr) {
+        editingContext->setCursorRestriction(mContainer);
+        Vertex* mLocation = editingContext->getLocation();
+        BlockLocation mStartLocation(mLocation->x, mLocation->y, mLocation->z * 2.0);
+        if (cEditingBlock != nullptr) {
+          delete cEditingBlock;
+        }
+        cEditingBlock = createBlock(&mStartLocation, &mStartLocation, cBlockProperties, true, mHandler);
+        cStartLocation = new Vertex(*mLocation);
+      } else {
+        editingContext->removeCursorRestriction(mContainer);
+        mHandler->addElement(cEditingBlock);
+        cContent.push_back(cEditingBlock);
+        cModuleInterface->registerSurfaceProvider(cEditingBlock, true);
+        cStartLocation = nullptr;
+        BlockLocation mIdentityBlockLocation(0, 0, 0);
+        cEditingBlock = createBlock(&mIdentityBlockLocation, &mIdentityBlockLocation, cBlockProperties, true, nullptr);
+        cEditingBlock->createSampleSurfaces();
+        editingContext->staticChanged();
+      }
+    }
 //     case SDLK_DELETE: {
 //       if (cStartBlockLocation == nullptr) {
 //         cStartBlockLocation = new BlockLocation(*cEditingLocation);
@@ -158,68 +169,22 @@ bool ResourceElementSpindizzyBlock::inputEdit(SDL_Event& event, ILayerEditingCon
   return false;
 }
 
-void ResourceElementSpindizzyBlock::renderEditingPreview() {
-  if (cStartBlockLocation != nullptr) {
-//     float mEast  = (cEditingLocation->x > cStartBlockLocation->x ? cEditingLocation->x    : cStartBlockLocation->x) + IsoRealmsConstants::BLOCK_RADIUS;
-//     float mWest  = (cEditingLocation->x > cStartBlockLocation->x ? cStartBlockLocation->x : cEditingLocation->x)    - IsoRealmsConstants::BLOCK_RADIUS;
-//     float mNorth = (cEditingLocation->y > cStartBlockLocation->y ? cEditingLocation->y    : cStartBlockLocation->y) + IsoRealmsConstants::BLOCK_RADIUS;
-//     float mSouth = (cEditingLocation->y > cStartBlockLocation->y ? cStartBlockLocation->y : cEditingLocation->y)    - IsoRealmsConstants::BLOCK_RADIUS;
-//     float mBottom = (cEditingLocation->z > cStartBlockLocation->z ? cStartBlockLocation->z : cEditingLocation->z)    * IsoRealmsConstants::BLOCK_HEIGHT - IsoRealmsConstants::BLOCK_HEIGHT;
-//     float mTopSouthWest = (cEditingLocation->z > cStartBlockLocation->z ? cEditingLocation->z    : cStartBlockLocation->z) * IsoRealmsConstants::BLOCK_HEIGHT;
-//     float mTopSouthEast = mTopSouthWest;
-//     float mTopNorthEast = mTopSouthWest;
-//     float mTopNorthWest = mTopSouthWest;
-//   
-//     int mXSlope = cBlockProperties->getXSlope();
-//     if (mXSlope > 0) {
-//       int mHeightOffset = mXSlope * ((mWest - mEast)) * IsoRealmsConstants::BLOCK_HEIGHT;
-//       mTopSouthEast -= mHeightOffset;
-//       mTopNorthEast -= mHeightOffset;
-//     } else if (mXSlope < 0) {
-//       int mHeightOffset = mXSlope * ((mWest - mEast)) * IsoRealmsConstants::BLOCK_HEIGHT;
-//       mTopNorthWest += mHeightOffset;
-//       mTopSouthWest += mHeightOffset;
-//     }
-//   
-//     int mYSlope = cBlockProperties->getYSlope();
-//     if (mYSlope > 0) {
-//       int mHeightOffset = mYSlope * ((mSouth - mNorth)) * IsoRealmsConstants::BLOCK_HEIGHT;
-//       mTopNorthWest -= mHeightOffset;
-//       mTopNorthEast -= mHeightOffset;
-//     } else if (mYSlope < 0) {
-//       int mHeightOffset = mYSlope * ((mSouth - mNorth)) * IsoRealmsConstants::BLOCK_HEIGHT;
-//       mTopSouthEast += mHeightOffset;
-//       mTopSouthWest += mHeightOffset;
-//     }
-//   
-//     glBindTexture(GL_TEXTURE_2D, 0);
-//     glColor3f(1.0, 0.5f, 0.5f);
-//     glBegin(GL_LINE_LOOP);
-//     glVertex3f(mWest, mSouth, mTopSouthWest);
-//     glVertex3f(mEast, mSouth, mTopSouthEast);
-//     glVertex3f(mEast, mSouth, mBottom);
-//     glVertex3f(mWest, mSouth, mBottom);
-//     glVertex3f(mWest, mNorth, mBottom);
-//     glVertex3f(mEast, mNorth, mBottom);
-//     glVertex3f(mEast, mNorth, mTopNorthEast);
-//     glVertex3f(mWest, mNorth, mTopNorthWest);
-//     glEnd();
-// 
-//     glBegin(GL_LINES);
-//     glVertex3f(mWest, mSouth, mTopSouthWest);  glVertex3f(mWest, mSouth, mBottom);
-//     glVertex3f(mWest, mNorth, mTopNorthWest);  glVertex3f(mWest, mNorth, mBottom);
-//     glVertex3f(mEast, mSouth, mBottom);        glVertex3f(mEast, mNorth, mBottom);
-//     glVertex3f(mEast, mSouth, mTopSouthEast);  glVertex3f(mEast, mNorth, mTopNorthEast);
-//     glEnd();
+void ResourceElementSpindizzyBlock::renderEditingPreview(Vertex& location) {
+  glEnable(GL_BLEND);
+  if (cEditingBlock == nullptr) {
+    BlockLocation mIdentityBlockLocation(0, 0, 0);
+    cEditingBlock = createBlock(&mIdentityBlockLocation, &mIdentityBlockLocation, cBlockProperties, true, nullptr);
+    cEditingBlock->createSampleSurfaces();
+    cStartLocation = nullptr;
+  }
+  glColor4f(1.0f, 1.0f, 1.0f, 0.5f);
+  if (cStartLocation != nullptr) {
+    cEditingBlock->renderPreview(*cStartLocation, location);
   } else {
-    glColor3f(1.0f, 1.0f, 1.0f);
-    if (cEditingBlock == nullptr) {
-      BlockLocation mIdentityBlockLocation(0, 0, 0);
-      cEditingBlock = createBlock(&mIdentityBlockLocation, &mIdentityBlockLocation, cBlockProperties, true, nullptr);
-      cEditingBlock->createSampleSurfaces();
-    }
+    glTranslatef(location.x, location.y, location.z);
     cEditingBlock->renderRuntime();
   }
+  glDisable(GL_BLEND);
 }
 
 void ResourceElementSpindizzyBlock::renderIcon() {
@@ -251,8 +216,8 @@ void ResourceElementSpindizzyBlock::destroy(IElement* element) {
   delete element;
 }
 
-ElementSpindizzyBlock* ResourceElementSpindizzyBlock::createBlock(BlockLocation* startLocation, BlockLocation* endLocation, SpindizzyBlockProperties* blockProperties, bool addition, IElementContainer* container) {
-  return new ElementSpindizzyBlock(this, startLocation, endLocation, blockProperties, addition, container);
+ElementSpindizzyBlock* ResourceElementSpindizzyBlock::createBlock(BlockLocation* startLocation, BlockLocation* endLocation, SpindizzyBlockProperties* blockProperties, bool addition, ElementHandlerSpindizzyBlock* handler) {
+  return new ElementSpindizzyBlock(this, startLocation, endLocation, blockProperties, addition, handler);
 }
 
 void ResourceElementSpindizzyBlock::resourcePendingDestruction(ITexture* destroyee, ITexture* replacement) {
@@ -268,9 +233,6 @@ void ResourceElementSpindizzyBlock::resourceChanged(ITexture* texture) {
 }
 
 ResourceElementSpindizzyBlock::~ResourceElementSpindizzyBlock() {
-  if (cStartBlockLocation != nullptr) {
-    delete cStartBlockLocation;
-  }
   delete cSampleBlock;
   delete cBlockProperties;
   if (cConfigurationComponent != nullptr) {
@@ -285,7 +247,6 @@ ResourceElementSpindizzyBlock::~ResourceElementSpindizzyBlock() {
       mContainer->removeElement(mHandler);
       cModuleInterface->removeElementHandlerSpindizzyBlock(mContainer);
     }
-    mContainer->setDirty();
     cModuleInterface->unregisterSurfaceProvider(cContent[i]);
     delete cContent[i];
   }

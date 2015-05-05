@@ -26,14 +26,16 @@
 #include "SpindizzyBlockState.h"
 
 class ElementHandlerSpindizzyBlock:public Element,
-                                   public IArgument {
+                                   public IArgument,
+                                   public ISpindizzyElementManager {
   private:
   ISpindizzyBlockSet* cModuleInterface;
+  IElementContainer* cContainer;
   std::vector<ElementSpindizzyBlock*> cElements;
   std::vector<SpindizzyBlockState*> cClues;
 
   public:
-  ElementHandlerSpindizzyBlock(ISpindizzyBlockSet*);
+  ElementHandlerSpindizzyBlock(ISpindizzyBlockSet*, IElementContainer*);
 
   void addElement(ElementSpindizzyBlock*);
   void removeElement(ElementSpindizzyBlock*);
@@ -62,6 +64,14 @@ class ElementHandlerSpindizzyBlock:public Element,
   void setDirty();
   bool initElement(unsigned int);
   IElementBounds* getBounds();
+
+  /***************************************\
+   * Implements ISpindizzyElementManager *
+  \***************************************/
+  void setArguments();
+  void unsetArguments();
+  void setDirty(IElement*);
+  IElementContainer* getElementContainer();
 };
 
 #endif

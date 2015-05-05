@@ -30,6 +30,7 @@
 #include <IsoRealms/MiscFunctions.h>
 
 #include "IGeometricElement.h"
+#include "ISpindizzyElementManager.h"
 #include "ISpindizzyBlock.h"
 #include "ISpindizzyBlockSet.h"
 #include "ISpindizzyBlockType.h"
@@ -53,7 +54,7 @@ class ElementSpindizzyBlock:public ISpindizzyBlock,
   };
 
   ISpindizzyBlockType* cBlockType;
-  IElementContainer* cContainer;
+  ISpindizzyElementManager* cContainer;
   
   // TODO: Need to define an "initialisation scheme" somewhere
   static const unsigned int INIT_PROCESS_BLOCKS;
@@ -177,7 +178,7 @@ class ElementSpindizzyBlock:public ISpindizzyBlock,
   bool isWallBottomFlipped(WallSurface::FaceDirection);
 
   public:
-  ElementSpindizzyBlock(ISpindizzyBlockType*, BlockLocation*, BlockLocation*, SpindizzyBlockProperties*, bool, IElementContainer*);
+  ElementSpindizzyBlock(ISpindizzyBlockType*, BlockLocation*, BlockLocation*, SpindizzyBlockProperties*, bool, ISpindizzyElementManager*);
   ElementSpindizzyBlock(ISpindizzyBlockType*, DOMNodeWrapper*);
 
   ITexture** getTileSurfaceTexture();
@@ -233,6 +234,8 @@ class ElementSpindizzyBlock:public ISpindizzyBlock,
   void renderStatic();
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
   void renderRuntime();
+  void renderPreviewWalls(IWallSurface::FaceDirection);
+  void renderPreview(Vertex&, Vertex&);
   IElementBounds* getBounds();
 
   /******************\
@@ -256,6 +259,8 @@ class ElementSpindizzyBlock:public ISpindizzyBlock,
   bool isGhost();
   void setDirty();
   IElementContainer* getElementContainer();
+
+  std::vector<WallSurface*> getPreviewWallSurfaces(int, IWallSurface::FaceDirection);
   
   virtual ~ElementSpindizzyBlock();
 };

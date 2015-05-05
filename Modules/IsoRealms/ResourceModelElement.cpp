@@ -64,7 +64,11 @@ BlockArea* ResourceModelElement::getCoverage() {
   return nullptr;
 }
 
-void ResourceModelElement::setDirty() {
+void ResourceModelElement::setDirty(IElement* element) {
+  // Nothing to do
+}
+
+void ResourceModelElement::restrictCursor(Vertex& cursorLocation) {
   // Nothing to do
 }
 

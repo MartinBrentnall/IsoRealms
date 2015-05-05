@@ -144,7 +144,8 @@ void ResourceElementSpindizzyLift::renderArrowLines() {
 //   glEnd();
 }
 
-void ResourceElementSpindizzyLift::renderEditingPreview() {
+void ResourceElementSpindizzyLift::renderEditingPreview(Vertex& location) {
+  glTranslatef(location.x, location.y, location.z);
   if (cInsertLocation != nullptr) {
     glPushMatrix();
     glTranslatef(cInsertLocation->x, cInsertLocation->y, cInsertLocation->z * IsoRealmsConstants::BLOCK_HEIGHT + (IsoRealmsConstants::BLOCK_HEIGHT * 0.05));

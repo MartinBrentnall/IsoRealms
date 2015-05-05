@@ -39,10 +39,29 @@ bool sort(ResourceGeometryProcessor::IndexedGeometricElement* a, ResourceGeometr
   return mIndexB > mIndexA; 
 }
 
-void ResourceGeometryProcessor::registerGeometricElement(IGeometricElement* element) {
+void ResourceGeometryProcessor::registerGeometricElement(IGeometricElement* element, bool recalculateSurrounding) {
 //  cCache->add(element);
   IndexedGeometricElement* mIndexedGeometricElement = new IndexedGeometricElement(element, cIndex++);
   cGeometricElements.add(mIndexedGeometricElement);
+  
+  if (recalculateSurrounding) {
+    BlockArea* mBounds = element->getCoverage();
+    int mSouth = mBounds->getSouth();
+    int mNorth = mBounds->getNorth();
+    int mWest = mBounds->getWest();
+    int mEast = mBounds->getEast();
+    while (SDL_mutexP(cCacheAccessMutex) == -1);
+    std::vector<IndexedGeometricElement*> mIndexedGeometricElements = cGeometricElements.getElements(mSouth, mNorth, mWest, mEast);
+    for (unsigned int i = 0; i < mIndexedGeometricElements.size(); i++) {
+      IGeometricElement* mElement = mIndexedGeometricElements[i]->getGeometricElement();
+      mElement->setDirty();
+    }
+    std::vector<FullTileColumn*> mSurroundingTileColumns = cTileColumns.getElements(mSouth, mNorth, mWest, mEast);
+    for (FullTileColumn* mTileColumn : mSurroundingTileColumns) {
+      cTileColumns.remove(mTileColumn);
+    }    
+    SDL_mutexV(cCacheAccessMutex);
+  }
 }
 
 void ResourceGeometryProcessor::unregisterGeometricElement(IGeometricElement* element) {
@@ -68,7 +87,7 @@ void ResourceGeometryProcessor::unregisterGeometricElement(IGeometricElement* el
 }
 
 void ResourceGeometryProcessor::setDirty() {
-//  cCache->setDirty();
+//   cCache->setDirty();
 //   for (std::map<IZone*, ResourceGeometryProcessorCache*>::iterator i = cCache.begin(); i != cCache.end(); i++) {
 //     i->second->setDirty();
 //   }
@@ -478,7 +497,7 @@ std::vector<WallColumnPossibility*> ResourceGeometryProcessor::getOptimisedWallC
   if (!cCompareOtherContainers) {
     IElementContainer* mElementContainer = element->getElementContainer();
     BlockArea* mCoverage = mElementContainer->getCoverage();
-    if (!mCoverage->alligned(x, y)) {
+    if (mCoverage == nullptr || !mCoverage->alligned(x, y)) {
       return mWallColumns;
     }
   }

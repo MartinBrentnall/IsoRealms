@@ -135,7 +135,8 @@ void ResourceElementSpindizzyCraft::configureElement() {
 void ResourceElementSpindizzyCraft::setEditingContext(BlockLocation* editingLocation, IComponentContainer* componentContainer) {
 }
 
-void ResourceElementSpindizzyCraft::renderEditingPreview() {
+void ResourceElementSpindizzyCraft::renderEditingPreview(Vertex& location) {
+  glTranslatef(location.x, location.y, location.z);
   cSampleGERALD->renderRuntime();
 }
 

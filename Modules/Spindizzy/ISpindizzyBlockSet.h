@@ -35,7 +35,7 @@ class SpindizzyBlockState;
 
 class ISpindizzyBlockSet {
   public:
-  virtual void registerSurfaceProvider(IGeometricElement*) = 0;
+  virtual void registerSurfaceProvider(IGeometricElement*, bool) = 0;
   virtual void unregisterSurfaceProvider(IGeometricElement*) = 0;
   
   /**

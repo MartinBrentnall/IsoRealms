@@ -20,7 +20,7 @@
 
 const unsigned int ElementSpindizzyBlock::INIT_PROCESS_BLOCKS = 0;
 
-ElementSpindizzyBlock::ElementSpindizzyBlock(ISpindizzyBlockType* elementType, BlockLocation* startLocation, BlockLocation* endLocation, SpindizzyBlockProperties* blockProperties, bool addition, IElementContainer* container) {
+ElementSpindizzyBlock::ElementSpindizzyBlock(ISpindizzyBlockType* elementType, BlockLocation* startLocation, BlockLocation* endLocation, SpindizzyBlockProperties* blockProperties, bool addition, ISpindizzyElementManager* container) {
   cStartLocation = BlockLocation(endLocation->x > startLocation->x              ? startLocation->x : endLocation->x,
                                  endLocation->y > startLocation->y              ? startLocation->y : endLocation->y,
                                 (endLocation->z > startLocation->z) == addition ? startLocation->z : endLocation->z);
@@ -125,7 +125,7 @@ ISpindizzyTileSurface* ElementSpindizzyBlock::createSubSurface(ITileSurface::Fac
     case ITileSurface::DOWN: {
       // TODO: Make sure the subsurface does not violate the stepping
       int mHeight = getBottomHeight(east, north);
-      return new TileSurface(mTexture, mRotation, north, east, south, west, mHeight, 0, 0, faceDirection, condition, NULL, this);
+      return new TileSurface(mTexture, mRotation, north, east, south, west, mHeight, 0, 0, faceDirection, condition, nullptr, this);
     }
   }
   std::cout << "ERROR: Face direction does not exist" << std::endl;
@@ -274,9 +274,18 @@ ISpindizzyWallSurface* ElementSpindizzyBlock::createSampleWallSurface(int locati
 }
 
 std::vector<IWallSurface*> ElementSpindizzyBlock::getWallSurfaces(int location, IWallSurface::FaceDirection facing) {
+  std::vector<WallSurface*> mPreviewWallSurfaces = getPreviewWallSurfaces(location, facing);
+  std::vector<IWallSurface*> mWallSurfaces;
+  for (WallSurface* mPreviewWallSurface : mPreviewWallSurfaces) {
+    mWallSurfaces.push_back(mPreviewWallSurface);
+  }
+  return mWallSurfaces;
+}
+
+std::vector<WallSurface*> ElementSpindizzyBlock::getPreviewWallSurfaces(int location, IWallSurface::FaceDirection facing) {
   bool mFacesPole = facing == IWallSurface::NORTH || facing == IWallSurface::SOUTH;
   int mSlope = getWallSlope(facing);
-  std::vector<IWallSurface*> mWallSurfaces;
+  std::vector<WallSurface*> mWallSurfaces;
   WallType* mWallType = getWallType();
   ITexture** mTexture = getWallTexture(facing);
   ITexture** mTextureTop = getWallTextureTop(facing);
@@ -290,7 +299,7 @@ std::vector<IWallSurface*> ElementSpindizzyBlock::getWallSurfaces(int location, 
       int mY = mFacesPole ? location : i;
       int mBaseHeight = getBottomHeight(mX, mY);
       int mHeight = cEndLocation.z - cStartLocation.z;
-      IWallSurface* mWallSurface = new WallSurface(mX, mY, mBaseHeight, 1, mHeight, mSlope, facing, mWallType, mTexture, mTextureTop, mTextureBottom, mFlipBottom, cCondition);
+      WallSurface* mWallSurface = new WallSurface(mX, mY, mBaseHeight, 1, mHeight, mSlope, facing, mWallType, mTexture, mTextureTop, mTextureBottom, mFlipBottom, cCondition);
       mWallSurfaces.push_back(mWallSurface);
     }
   } else {
@@ -302,7 +311,7 @@ std::vector<IWallSurface*> ElementSpindizzyBlock::getWallSurfaces(int location, 
     int mBaseHeight = getBottomHeight(mX, mY);
     int mHeight = cSteppedBottom ? (cEndLocation.z - cStartLocation.z) + getMinimumWallElevation(facing)
                                  : (getTileSurfaceHeight(mLowestX, mLowestY) + getMinimumWallElevation(facing)) - cStartLocation.z;
-    IWallSurface* mWallSurface = new WallSurface(mX, mY, mBaseHeight, mLength, mHeight, mSlope, facing, mWallType, mTexture, mTextureTop, mTextureBottom, mFlipBottom, cCondition);
+    WallSurface* mWallSurface = new WallSurface(mX, mY, mBaseHeight, mLength, mHeight, mSlope, facing, mWallType, mTexture, mTextureTop, mTextureBottom, mFlipBottom, cCondition);
     mWallSurfaces.push_back(mWallSurface);
   }
   return mWallSurfaces;
@@ -326,7 +335,7 @@ std::vector<IWallSurfaceTemplate*> ElementSpindizzyBlock::calculateWallSurfaces(
 }
 
 void ElementSpindizzyBlock::createSampleSurfaces() {
-  ISpindizzyTileSurface* mTopSurface = createSubSurface(ITileSurface::UP, cEndLocation.y, cEndLocation.x, cEndLocation.y, cEndLocation.x, NULL);
+  ISpindizzyTileSurface* mTopSurface = createSubSurface(ITileSurface::UP, cEndLocation.y, cEndLocation.x, cEndLocation.y, cEndLocation.x, nullptr);
   cDynamicTileSurfaces.push_back(mTopSurface);
   cDynamicWallSurfaces.push_back(createSampleWallSurface(cStartLocation.x, IWallSurface::WEST));
   cDynamicWallSurfaces.push_back(createSampleWallSurface(cStartLocation.y, IWallSurface::SOUTH));
@@ -372,6 +381,38 @@ void ElementSpindizzyBlock::renderRuntime() {
   }
 }
 
+void ElementSpindizzyBlock::renderPreviewWalls(IWallSurface::FaceDirection facing) {
+  bool mFacesPole = facing == IWallSurface::NORTH || facing == IWallSurface::SOUTH;
+  int mStart = mFacesPole ? cStartLocation.y : cStartLocation.x;
+  int mEnd   = mFacesPole ? cEndLocation.y   : cEndLocation.x;
+  for (int i = mStart; i <= mEnd; i++) {
+    std::vector<WallSurface*> mWalls = getPreviewWallSurfaces(i, facing);
+    for (WallSurface* mWall : mWalls) {
+      mWall->render();
+      delete mWall;
+    }
+  }
+}
+
+void ElementSpindizzyBlock::renderPreview(Vertex& start, Vertex& end) {
+  cStartLocation.x = std::min(std::round(start.x      ), std::round(end.x      ));
+  cStartLocation.y = std::min(std::round(start.y      ), std::round(end.y      ));
+  cStartLocation.z = std::min(std::round(start.z * 2.0), std::round(end.z * 2.0));
+  cEndLocation.x   = std::max(std::round(start.x      ), std::round(end.x      ));
+  cEndLocation.y   = std::max(std::round(start.y      ), std::round(end.y      ));
+  cEndLocation.z   = std::max(std::round(start.z * 2.0), std::round(end.z * 2.0));
+  if (cEndLocation.z >= cStartLocation.z) {
+    cStartLocation.z--;
+  }
+  ISpindizzyTileSurface* mTopSurface = createSubSurface(ITileSurface::UP, cEndLocation.y, cEndLocation.x, cStartLocation.y, cStartLocation.x, nullptr);
+  renderPreviewWalls(IWallSurface::WEST);
+  renderPreviewWalls(IWallSurface::SOUTH);
+  renderPreviewWalls(IWallSurface::EAST);
+  renderPreviewWalls(IWallSurface::NORTH);
+  mTopSurface->render();
+  delete mTopSurface;
+}
+
 IElementBounds* ElementSpindizzyBlock::getBounds() {
   return this;
 }
@@ -401,16 +442,12 @@ float ElementSpindizzyBlock::getTop() {
 }
 
 std::set<IBoolean*> ElementSpindizzyBlock::getInputs() {
-  if (cCondition != NULL) {
+  if (cCondition != nullptr) {
     return cCondition->getInputs();
   }
   std::set<IBoolean*> mNoInputs;
   return mNoInputs;
 }
-
-// TODO  ISpindizzyBlockSet* mSpindizzyBlockSet = getSpindizzyBlockInterface();
-//   mSpindizzyBlockSet->unregisterSurfaceProvider(this);
-//   mSpindizzyBlockSet->setDirty();
 
 void ElementSpindizzyBlock::generateWallSurfaces(IWallSurface::FaceDirection faceDirection) {
   ISpindizzyBlockSet* mSpindizzyBlockSet = cBlockType->getSpindizzyBlockInterface();
@@ -431,7 +468,7 @@ void ElementSpindizzyBlock::generateWallSurfaces(IWallSurface::FaceDirection fac
   for (unsigned int i = 0; i < mWallSurfaces.size(); i++) {
     Condition* mCondition = mWallSurfaces[i]->getCondition();
     ISpindizzyWallSurface* mWallSurface = createSubSurface(mWallSurfaces[i]);
-    if (mCondition != NULL) {
+    if (mCondition != nullptr) {
       cDynamicWallSurfaces.push_back(mWallSurface);
     } else {
       cStaticWallSurfaces.push_back(mWallSurface);
@@ -475,7 +512,7 @@ bool ElementSpindizzyBlock::initElement(unsigned int pass) {
         int mSouth = mTopTileSurfaces[i]->getSouth();
         int mWest = mTopTileSurfaces[i]->getWest();
         ISpindizzyTileSurface* mTileSurface = createSubSurface(ITileSurface::UP, mNorth, mEast, mSouth, mWest, mCondition);
-        if (mCondition != NULL) {
+        if (mCondition != nullptr) {
           cDynamicTileSurfaces.push_back(mTileSurface);
         } else {
           cStaticTileSurfaces.push_back(mTileSurface);
@@ -502,18 +539,27 @@ bool ElementSpindizzyBlock::isFlat() {
 }
 
 void ElementSpindizzyBlock::setDirty() {
-//   for (unsigned int i = 0; i < cStaticTileSurfaces.size(); i++) {
-//     delete cStaticTileSurfaces[i];
-//   }
-//   cStaticTileSurfaces.clear();
-//   for (unsigned int i = 0; i < cStaticTileSurfaces.size(); i++) {
-//     delete cStaticWallSurfaces[i];
-//   }
-//   cStaticWallSurfaces.clear();
+  for (unsigned int i = 0; i < cStaticTileSurfaces.size(); i++) {
+    delete cStaticTileSurfaces[i];
+  }
+  cStaticTileSurfaces.clear();
+  for (unsigned int i = 0; i < cStaticTileSurfaces.size(); i++) {
+    delete cStaticWallSurfaces[i];
+  }
+  cStaticWallSurfaces.clear();
+  for (ISpindizzyTileSurface* mTileSurface : cDynamicTileSurfaces) {
+    delete mTileSurface;
+  }
+  cDynamicTileSurfaces.clear();
+  for (ISpindizzyWallSurface* mWallSurface : cDynamicWallSurfaces) {
+    delete mWallSurface;
+  }
+  cDynamicWallSurfaces.clear();
+  cContainer->setDirty(this);
 }
 
 IElementContainer* ElementSpindizzyBlock::getElementContainer() {
-  return cContainer;
+  return cContainer->getElementContainer();
 }
 
 bool ElementSpindizzyBlock::isGhost() {
@@ -560,7 +606,7 @@ void ElementSpindizzyBlock::save(DOMNodeWriter* node, IResourceLocator* resource
       }
     }
   }
-  if (cCondition != NULL) {
+  if (cCondition != nullptr) {
     DOMNodeWriter* mConditionNode = node->addBranch("Condition");
     cCondition->save(mConditionNode);
   }

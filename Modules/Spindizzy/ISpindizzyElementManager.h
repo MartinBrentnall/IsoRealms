@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Martin Brentnall
+ * Copyright 2009,2010 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,23 +16,18 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_LAYER_EDITING_CONTEXT_H
-#define I_LAYER_EDITING_CONTEXT_H
+#ifndef I_SPINDIZZY_ELEMENT_MANAGER_H
+#define I_SPINDIZZY_ELEMENT_MANAGER_H
 
-#include "Resources/Vertex/Vertex.h"
+#include <IsoRealms/Resources/ElementType/IElement.h>
+#include <IsoRealms/Resources/ElementType/IElementContainer.h>
 
-class IElementContainer;
-
-class ILayerEditingContext {
+class ISpindizzyElementManager {
   public:
+  virtual void setArguments() = 0;
+  virtual void unsetArguments() = 0;
+  virtual void setDirty(IElement*) = 0;
   virtual IElementContainer* getElementContainer() = 0;
-  virtual Vertex* getLocation() = 0;
-  virtual float getAngle() = 0;
-  virtual void selectElementContainer(IElementContainer*) = 0;
-  virtual void deselectElementContainer(IElementContainer*) = 0;
-  virtual void staticChanged() = 0;
-  virtual void setCursorRestriction(IElementContainer*) = 0;
-  virtual void removeCursorRestriction(IElementContainer*) = 0;
 };
 
 #endif

@@ -65,7 +65,7 @@ class IElementType:public IResource {
    * Render a preview representation of the element to be created by this
    * type.  This representation lies in 3D map space.
    */
-  virtual void renderEditingPreview() = 0;
+  virtual void renderEditingPreview(Vertex&) = 0;
 
   /**
    * Render an iconic representation of the element to be created by this

@@ -99,7 +99,8 @@ void ResourceElementSpindizzyItem::configureElement() {
 void ResourceElementSpindizzyItem::setEditingContext(BlockLocation* editingLocation, IComponentContainer* componentContainer) {
 }
 
-void ResourceElementSpindizzyItem::renderEditingPreview() {
+void ResourceElementSpindizzyItem::renderEditingPreview(Vertex& location) {
+  glTranslatef(location.x, location.y, location.z);
   cEditingJewel->renderRuntime();
 }
 

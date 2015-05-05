@@ -188,7 +188,7 @@ class SpindizzyModule:public IModule,
   /*********************************\
    * Implements ISpindizzyBlockSet *
   \*********************************/
-  void registerSurfaceProvider(IGeometricElement*);
+  void registerSurfaceProvider(IGeometricElement*, bool);
   void unregisterSurfaceProvider(IGeometricElement*);
   void setDirty();
   std::vector<ITileSurfaceTemplate*> getTileSurfaces(IGeometricElement*, ITileSurface::FaceDirection, bool);

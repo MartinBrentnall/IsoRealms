@@ -90,7 +90,7 @@ class ElementSpindizzyZone:public Element,
   void updateEditing(unsigned int);
   void updateRuntime(unsigned int);
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
-  void setDirty();
+  void setDirty(IElement*);
   IElementBounds* getBounds();
   void focusGained(ILayerEditingContext*);
   void focusLost(ILayerEditingContext*);
@@ -111,6 +111,7 @@ class ElementSpindizzyZone:public Element,
   void addElement(IElement*);
   void removeElement(IElement*);
   void addArgumentValue(IArgument*);
+  void restrictCursor(Vertex&);
   
   /************************\
    * Implements IBoundary *
@@ -121,6 +122,7 @@ class ElementSpindizzyZone:public Element,
   BlockArea* getCoverage();
   void setArguments();  
   void unsetArguments();
+  void setDirty();
 };
 
 #endif

@@ -194,7 +194,7 @@ class ResourceGeometryProcessor {
   /********************************\
    * Implements ISurfaceProcessor *
   \********************************/
-  void registerGeometricElement(IGeometricElement*);
+  void registerGeometricElement(IGeometricElement*, bool);
   void unregisterGeometricElement(IGeometricElement*);
   std::vector<ITileSurfaceTemplate*> getTileSurfaces(IGeometricElement*, ITileSurface::FaceDirection);
   std::vector<IWallSurfaceTemplate*> getWallSurfaces(IGeometricElement*, IWallSurface::FaceDirection);
