@@ -265,29 +265,16 @@ void ResourceTexturesSpindizzyBlocksC64::renderArrow() {
   glEnd();
 }
 
-void ResourceTexturesSpindizzyBlocksC64::renderWallPlainMiddle() {
-  Colour mGridColour(cGridColour, 1.0f + getGridWallLuminanceAdjustment());
-  clear(&mGridColour);
-  renderRectangle(-TILE_SIZE, -1.0f, TILE_SIZE, 1.0f, cWallColour);
-}
-
-void ResourceTexturesSpindizzyBlocksC64::renderWallMixedMiddle() {
-  Colour mGridColour(cGridColour, 1.0f + getGridWallLuminanceAdjustment() / 2.0f);
-  Colour mWallFloorMix(cFloorColour, cWallColour);
+void ResourceTexturesSpindizzyBlocksC64::renderWallMiddle(float interpolation) {
+  Colour mGridColour(cGridColour, 1.0f + getGridWallLuminanceAdjustment() / (interpolation + 1.0f));
+  Colour mWallFloorMix(cWallColour, cFloorColour, interpolation * 0.5f);
   clear(&mGridColour);
   renderRectangle(-TILE_SIZE, -1.0f, TILE_SIZE, 1.0f, &mWallFloorMix);
 }
 
-void ResourceTexturesSpindizzyBlocksC64::renderWallPlainCap() {
-  Colour mGridColour(cGridColour, 1.0f + getGridWallLuminanceAdjustment());
-  Colour mWallFloorMix(cFloorColour, cWallColour);
-  clear(&mGridColour);
-  renderRectangle(-TILE_SIZE, -TILE_SIZE / 2.0f, TILE_SIZE, 1.0f, cWallColour);
-}
-
-void ResourceTexturesSpindizzyBlocksC64::renderWallMixedCap() {
-  Colour mGridColour(cGridColour, 1.0f + getGridWallLuminanceAdjustment() / 2.0f);
-  Colour mWallFloorMix(cFloorColour, cWallColour);
+void ResourceTexturesSpindizzyBlocksC64::renderWallCap(float interpolation) {
+  Colour mGridColour(cGridColour, 1.0f + getGridWallLuminanceAdjustment() / (interpolation + 1.0f));
+  Colour mWallFloorMix(cWallColour, cFloorColour, interpolation * 0.5f);
   clear(&mGridColour);
   renderRectangle(-TILE_SIZE, -TILE_SIZE / 2.0f, TILE_SIZE, 1.0f, &mWallFloorMix);
 }
@@ -304,10 +291,21 @@ void ResourceTexturesSpindizzyBlocksC64::renderIceWall() {
 }
 
 void ResourceTexturesSpindizzyBlocksC64::generateAngledTextures(float angle) {
+  if (angle > 180.0f) {
+    angle -= 360.0f;
+  }
   cTextures[SWITCH_CIRCLE_ONE]->setRenderTarget();   renderSwitchCircleHalf(angle);
   cTextures[SWITCH_SQUARE_ONE]->setRenderTarget();   renderSwitchSquareHalf(angle);
   cTextures[SWITCH_SQUARE_BOTH]->setRenderTarget();  renderSwitchSquareBoth(angle);
   cTextures[SWITCH_DIAMOND_ONE]->setRenderTarget();  renderSwitchDiamondHalf(angle);
+  float mInterpolation = std::abs(angle / 90.0f);
+  if (mInterpolation > 1.0f) {
+    mInterpolation -= ((mInterpolation - 1.0f) * 2.0f);
+  }
+  cTextures[WALL_MIXED_CAP]->setRenderTarget();      renderWallCap(std::abs(mInterpolation - 1.0f));
+  cTextures[WALL_MIXED_MIDDLE]->setRenderTarget();   renderWallMiddle(std::abs(mInterpolation - 1.0f));
+  cTextures[WALL_PLAIN_CAP]->setRenderTarget();      renderWallCap(mInterpolation);
+  cTextures[WALL_PLAIN_MIDDLE]->setRenderTarget();   renderWallMiddle(mInterpolation);
 }
 
 void ResourceTexturesSpindizzyBlocksC64::generateTextures() {
@@ -333,10 +331,6 @@ void ResourceTexturesSpindizzyBlocksC64::generateTextures() {
   cTextures[ICE_WATER]->setRenderTarget();           renderIce();
   cTextures[PLAIN]->setRenderTarget();               renderPlain();
   cTextures[PLAIN_SPLIT]->setRenderTarget();         renderSplitPlain();
-  cTextures[WALL_MIXED_CAP]->setRenderTarget();      renderWallMixedCap();
-  cTextures[WALL_MIXED_MIDDLE]->setRenderTarget();   renderWallMixedMiddle();
-  cTextures[WALL_PLAIN_CAP]->setRenderTarget();      renderWallPlainCap();
-  cTextures[WALL_PLAIN_MIDDLE]->setRenderTarget();   renderWallPlainMiddle();
   cTextures[WALL_ICE]->setRenderTarget();            renderIceWall();
 
   glPushAttrib(GL_TRANSFORM_BIT);

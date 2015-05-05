@@ -69,7 +69,6 @@ void TileSplitSurface::render() {
       glTexCoord2f(0.0f, 0.0f); glVertex3f(mWest, mSouth, mSouthWest);
       glTexCoord2f(1.0f, 0.0f); glVertex3f(mEast, mSouth, mSouthEast);
     }
-    glColor3f(1.0f, 1.0f, 1.0f);
     glEnd();
   }
 }

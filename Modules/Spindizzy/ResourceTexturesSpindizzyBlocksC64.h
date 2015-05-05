@@ -101,10 +101,8 @@ class ResourceTexturesSpindizzyBlocksC64:public IResource,
   void renderSwitchCircleBoth();
   void renderSwitchCircleHalf(float);
   void renderArrow();
-  void renderWallPlainMiddle();
-  void renderWallMixedMiddle();
-  void renderWallPlainCap();
-  void renderWallMixedCap();
+  void renderWallMiddle(float);
+  void renderWallCap(float);
   void renderIceWall();
 
   void generateAngledTextures(float);

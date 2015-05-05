@@ -383,15 +383,17 @@ void ElementSpindizzyBlock::renderRuntime() {
 
 void ElementSpindizzyBlock::renderPreviewWalls(IWallSurface::FaceDirection facing) {
   bool mFacesPole = facing == IWallSurface::NORTH || facing == IWallSurface::SOUTH;
+  bool mFacesPos = facing == IWallSurface::NORTH || facing == IWallSurface::EAST;
   int mStart = mFacesPole ? cStartLocation.y : cStartLocation.x;
   int mEnd   = mFacesPole ? cEndLocation.y   : cEndLocation.x;
-  for (int i = mStart; i <= mEnd; i++) {
-    std::vector<WallSurface*> mWalls = getPreviewWallSurfaces(i, facing);
+  int mEdge  = mFacesPos  ? mEnd : mStart;
+//   for (int i = mStart; i <= mEnd; i++) {
+    std::vector<WallSurface*> mWalls = getPreviewWallSurfaces(mEdge, facing);
     for (WallSurface* mWall : mWalls) {
       mWall->render();
       delete mWall;
     }
-  }
+//   }
 }
 
 void ElementSpindizzyBlock::renderPreview(Vertex& start, Vertex& end) {
