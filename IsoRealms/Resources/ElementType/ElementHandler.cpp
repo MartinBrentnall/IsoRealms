@@ -299,6 +299,18 @@ void ElementHandler::save(DOMNodeWriter* node, IResourceLocator* resourceLocator
   }
 }
 
+void ElementHandler::cursorAppeared(ILayerEditingContext* editingContext, Vertex& location) {
+  for (IElement* mElement : cElements) {
+    mElement->processCursorAppearance(editingContext, location);
+  }
+}
+
+void ElementHandler::cursorMoved(ILayerEditingContext* editingContext, Vertex& start, Vertex& end) {
+  for (IElement* mElement : cElements) {
+    mElement->processCursorMovement(editingContext, start, end);
+  }
+}
+
 int ElementHandler::getElementIndex(IElement* element) {
   for (unsigned int i = 0; i < cDirtyElements.size(); i++) {
     if (cDirtyElements[i] == element) {

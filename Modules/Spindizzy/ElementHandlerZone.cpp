@@ -41,41 +41,31 @@ void ElementHandlerZone::unsetValue() {
 }
 
 void ElementHandlerZone::addElement(ElementSpindizzyZone* element) {
-  cElements.push_back(element);
+  cElements.addElement(element);
 }
 
 void ElementHandlerZone::removeElement(ElementSpindizzyZone* element) {
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    if (cElements[i] == element) {
-      cElements.erase(cElements.begin() + i);
-    }
-  }
+  cElements.removeElement(element);
 }
 
 bool ElementHandlerZone::isEmpty() {
-  return cElements.empty();
+  return cElements.isEmpty();
 }
 
 void ElementHandlerZone::renderEditing() {
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    cElements[i]->renderEditing();
-  }
+  cElements.renderEditing();
 }
 
 void ElementHandlerZone::renderRuntime() {
   if (cSingleZone && !cModuleInterface->isOverview()) {
     cZone->renderRuntime();
   } else {
-    for (unsigned int i = 0; i < cElements.size(); i++) {
-      cElements[i]->renderRuntime();
-    }
+    cElements.renderRuntime();
   }
 }
 
 void ElementHandlerZone::updateRuntime(unsigned int ticks) {
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    cElements[i]->updateRuntime(ticks);
-  }
+  cElements.updateRuntime(ticks);
 }
 
 IElementType* ElementHandlerZone::getElementType() {
@@ -95,70 +85,17 @@ void ElementHandlerZone::setDirty() {
 }
 
 IElementBounds* ElementHandlerZone::getBounds() {
-  float mWest   = std::numeric_limits<float>::max();
-  float mEast   = std::numeric_limits<float>::lowest();
-  float mSouth  = std::numeric_limits<float>::max();
-  float mNorth  = std::numeric_limits<float>::lowest();
-  float mBottom = std::numeric_limits<float>::max();
-  float mTop    = std::numeric_limits<float>::lowest();
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    IElementBounds* mElementBounds = cElements[i]->getBounds();
-    if (mElementBounds != nullptr) {
-      mWest   = std::min(mWest,   mElementBounds->getWest());
-      mEast   = std::max(mEast,   mElementBounds->getEast());
-      mSouth  = std::min(mSouth,  mElementBounds->getSouth());
-      mNorth  = std::max(mNorth,  mElementBounds->getNorth());
-      mBottom = std::min(mBottom, mElementBounds->getBottom());
-      mTop    = std::max(mTop,    mElementBounds->getTop());
-    }
-  }
-  return new ElementBounds(mWest, mEast, mSouth, mNorth, mBottom, mTop);
+  return cElements.getBounds();
 }
 
 bool ElementHandlerZone::initElement(unsigned int pass) {
-  bool mSuccess = true;
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    if (!cElements[i]->initElement(pass)) {
-      mSuccess = false;
-    }
-  }
-  return mSuccess;
+  return cElements.init(pass);
 }
 
 void ElementHandlerZone::cursorMoved(ILayerEditingContext* editingContext, Vertex& start, Vertex& end) {
-  for (IElement* mElement : cElements) {
-    IElementBounds* mBounds = mElement->getBounds();
-    float mSouth  = mBounds->getSouth();
-    float mWest   = mBounds->getWest();
-    float mBottom = mBounds->getBottom();
-    float mNorth  = mBounds->getNorth();
-    float mEast   = mBounds->getEast();
-    float mTop    = mBounds->getTop();
-    bool mContainsStart = Collision::contains(start, mWest, mEast, mSouth, mNorth, mBottom, mTop);
-    bool mContainsEnd   = Collision::contains(end,   mWest, mEast, mSouth, mNorth, mBottom, mTop);
-    if (!mContainsStart && mContainsEnd) {
-      mElement->focusGained(editingContext);
-    } else if (mContainsStart && !mContainsEnd) {
-      mElement->focusLost(editingContext);
-    }
-    if (mContainsStart || mContainsEnd) {
-      mElement->cursorMoved(editingContext, start, end);
-    }
-  }
+  cElements.cursorMoved(editingContext, start, end);
 }
 
 void ElementHandlerZone::cursorAppeared(ILayerEditingContext* editingContext, Vertex& location) {
-  for (IElement* mElement : cElements) {
-    IElementBounds* mBounds = mElement->getBounds();
-    float mSouth  = mBounds->getSouth();
-    float mWest   = mBounds->getWest();
-    float mBottom = mBounds->getBottom();
-    float mNorth  = mBounds->getNorth();
-    float mEast   = mBounds->getEast();
-    float mTop    = mBounds->getTop();
-    if (Collision::contains(location, mWest, mEast, mSouth, mNorth, mBottom, mTop)) {
-      mElement->focusGained(editingContext);
-      mElement->cursorAppeared(editingContext, location);
-    }
-  }
+  cElements.cursorAppeared(editingContext, location);
 }

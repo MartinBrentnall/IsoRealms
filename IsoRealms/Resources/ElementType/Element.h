@@ -19,7 +19,9 @@
 #ifndef ELEMENT_H
 #define ELEMENT_H
 
+#include <IsoRealms/Collision.h>
 #include <IsoRealms/IModule.h>
+#include <IsoRealms/IsoRealmsConstants.h>
 
 #include "IElement.h"
 #include "IElementType.h"
@@ -87,7 +89,43 @@ class Element:public IElement {
   
   virtual void cursorAppeared(ILayerEditingContext*, Vertex&) {
   }
+
+  virtual void processCursorMovement(ILayerEditingContext* editingContext, Vertex& start, Vertex& end) {
+    IElementBounds* mBounds = getBounds();
+    float mSouth  = mBounds->getSouth();
+    float mWest   = mBounds->getWest();
+    float mBottom = mBounds->getBottom();
+    float mNorth  = mBounds->getNorth();
+    float mEast   = mBounds->getEast();
+    float mTop    = mBounds->getTop();
+    bool mContainsStart = Collision::contains(start, mWest, mEast, mSouth, mNorth, mBottom, mTop);
+    bool mContainsEnd   = Collision::contains(end,   mWest, mEast, mSouth, mNorth, mBottom, mTop);
+    if (!mContainsStart && mContainsEnd) {
+      editingContext->addCursorElement(this);
+      focusGained(editingContext);
+    } else if (mContainsStart && !mContainsEnd) {
+      focusLost(editingContext);
+    }
+    if (mContainsStart || mContainsEnd) {
+      cursorMoved(editingContext, start, end);
+    }
+  }
   
+  virtual void processCursorAppearance(ILayerEditingContext* editingContext, Vertex& location) {
+    IElementBounds* mBounds = getBounds();
+    float mSouth  = mBounds->getSouth();
+    float mWest   = mBounds->getWest();
+    float mBottom = mBounds->getBottom();
+    float mNorth  = mBounds->getNorth();
+    float mEast   = mBounds->getEast();
+    float mTop    = mBounds->getTop();
+    if (Collision::contains(location, mWest, mEast, mSouth, mNorth, mBottom, mTop)) {
+      editingContext->addCursorElement(this);
+      focusGained(editingContext);
+      cursorAppeared(editingContext, location);
+    }
+  }
+    
   ~Element() {}
 };
 

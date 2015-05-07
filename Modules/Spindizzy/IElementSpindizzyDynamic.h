@@ -19,6 +19,9 @@
 #ifndef I_ELEMENT_SPINDIZZY_DYNAMIC_H
 #define I_ELEMENT_SPINDIZZY_DYNAMIC_H
 
+#include <IsoRealms/ILayerEditingContext.h>
+#include <IsoRealms/Resources/ElementType/IElementBounds.h>
+
 class IElementSpindizzyDynamic {
   public:
   virtual void reset() = 0;
@@ -26,6 +29,9 @@ class IElementSpindizzyDynamic {
   virtual void renderRuntime() = 0;
   virtual void updateRuntime(unsigned int) = 0;
   virtual bool initElement(unsigned int) = 0;  
+  virtual IElementBounds* getBounds() = 0;
+  virtual void processCursorMovement(ILayerEditingContext*, Vertex&, Vertex&) = 0;
+  virtual void processCursorAppearance(ILayerEditingContext*, Vertex&) = 0;
 };
 
 #endif

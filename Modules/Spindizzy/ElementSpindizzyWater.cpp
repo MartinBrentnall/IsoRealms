@@ -30,7 +30,7 @@ ElementSpindizzyWater::ElementSpindizzyWater(ISpindizzyBlockType* elementType, B
   cEndLocation = BlockLocation(endLocation->x > startLocation->x ? endLocation->x : startLocation->x,
                                endLocation->y > startLocation->y ? endLocation->y : startLocation->y,
                               (endLocation->z <= startLocation->z ? endLocation->z : startLocation->z) - 1);
-  cCondition = NULL;
+  cCondition = nullptr;
 }
 
 bool ElementSpindizzyWater::isGhost() {
@@ -79,7 +79,7 @@ void ElementSpindizzyWater::renderRuntime() {
 }
 
 ISpindizzyTileSurface* ElementSpindizzyWater::createSubSurface(ITileSurface::FaceDirection facing, int north, int east, int south, int west, Condition* condition) {
-  return new TileSurface(cTexture, STRAIGHT, north, east, south, west, facing == ITileSurface::UP ? cStartLocation.z : cEndLocation.z, 0, 0, facing, condition, NULL, NULL);
+  return new TileSurface(cTexture, STRAIGHT, north, east, south, west, facing == ITileSurface::UP ? cStartLocation.z : cEndLocation.z, 0, 0, facing, condition, nullptr, nullptr);
 }
 
 IWallSurface* ElementSpindizzyWater::createSubSurface(int x, int y, IWallSurface::FaceDirection facing, int length, int startHeight, int endHeight, int topSlope, int bottomSlope) {
@@ -108,16 +108,16 @@ void ElementSpindizzyWater::destroyCoverage(BlockArea* coverage) {
 }
 
 Condition* ElementSpindizzyWater::getCondition() {
-  return NULL; // TODO: Allow dynamic surfaces
+  return nullptr; // TODO: Allow dynamic surfaces
 }
 
 void ElementSpindizzyWater::createSampleSurfaces() {
-  ISpindizzyTileSurface* mTopSurface = createSubSurface(ITileSurface::UP, cEndLocation.y, cEndLocation.x, cEndLocation.y, cEndLocation.x, NULL);
+  ISpindizzyTileSurface* mTopSurface = createSubSurface(ITileSurface::UP, cEndLocation.y, cEndLocation.x, cEndLocation.y, cEndLocation.x, nullptr);
   cStaticTileSurfaces.push_back(mTopSurface);
 }
 
 std::set<IBoolean*> ElementSpindizzyWater::getInputs() {
-  if (cCondition != NULL) {
+  if (cCondition != nullptr) {
     return cCondition->getInputs();
   }
   std::set<IBoolean*> mNoInputs;
@@ -143,7 +143,7 @@ bool ElementSpindizzyWater::initElement(unsigned int pass) {
         int mWest = mTopTileSurfaces[i]->getWest();
         Condition* mCondition = mTopTileSurfaces[i]->getCondition();
         ISpindizzyTileSurface* mTileSurface = createSubSurface(ITileSurface::UP, mNorth, mEast, mSouth, mWest, mCondition);
-        if (mCondition == NULL) {
+        if (mCondition == nullptr) {
           cStaticTileSurfaces.push_back(mTileSurface);
         } else {
           cDynamicTileSurfaces.push_back(mTileSurface);

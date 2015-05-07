@@ -88,6 +88,8 @@ class ScreenConfiguration {
   void setMode(ScreenMode*);
   
   void save(DOMNodeWriter*);
+  
+  Uint16 invertY(Uint16);
 };
 
 #endif

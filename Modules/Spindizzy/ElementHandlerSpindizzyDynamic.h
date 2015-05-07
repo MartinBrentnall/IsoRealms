@@ -20,6 +20,7 @@
 #define ELEMENT_HANDLER_SPINDIZZY_DYNAMIC_H
 
 #include <IsoRealms/Resources/ElementType/Element.h>
+#include <IsoRealms/Resources/ElementType/ElementCollection.h>
 
 #include "IElementSpindizzyDynamic.h"
 #include "IModuleElementHandlerSpindizzyDynamic.h"
@@ -30,7 +31,7 @@ class ElementHandlerSpindizzyDynamic:public Element,
   IModuleElementHandlerSpindizzyDynamic* cModuleInterface;
   bool cActive;
   float cVisibility;
-  std::vector<IElementSpindizzyDynamic*> cElements;
+  ElementCollection<IElementSpindizzyDynamic> cElements;
 
   public:
   ElementHandlerSpindizzyDynamic(IModuleElementHandlerSpindizzyDynamic*);
@@ -63,6 +64,8 @@ class ElementHandlerSpindizzyDynamic:public Element,
   void setDirty();
   bool initElement(unsigned int);
   IElementBounds* getBounds();
+  void cursorMoved(ILayerEditingContext*, Vertex&, Vertex&);
+  void cursorAppeared(ILayerEditingContext*, Vertex&);
 };
 
 #endif

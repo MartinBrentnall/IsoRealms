@@ -219,6 +219,14 @@ void ElementSpindizzyZone::focusLost(ILayerEditingContext* layerEditingContext) 
   layerEditingContext->deselectElementContainer(this);
 }
 
+void ElementSpindizzyZone::cursorAppeared(ILayerEditingContext* editingContext, Vertex& location) {
+  cElementHandler.cursorAppeared(editingContext, location);
+}
+
+void ElementSpindizzyZone::cursorMoved(ILayerEditingContext* editingContext, Vertex& start, Vertex& end) {
+  cElementHandler.cursorMoved(editingContext, start, end);
+}
+
 float ElementSpindizzyZone::getWest() {
   return cZoneArea->getWest() - IsoRealmsConstants::BLOCK_RADIUS;
 }
@@ -236,11 +244,11 @@ float ElementSpindizzyZone::getNorth() {
 }
 
 float ElementSpindizzyZone::getBottom() {
-  return cZoneArea->getBottom() - 1.0f;
+  return (cZoneArea->getBottom() - 1.0f) * IsoRealmsConstants::BLOCK_HEIGHT;
 }
 
 float ElementSpindizzyZone::getTop() {
-  return cZoneArea->getTop();
+  return cZoneArea->getTop() * IsoRealmsConstants::BLOCK_HEIGHT;
 }
 
 void ElementSpindizzyZone::addElement(IElement* element) {

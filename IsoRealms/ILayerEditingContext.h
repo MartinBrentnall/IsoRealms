@@ -21,6 +21,7 @@
 
 #include "Resources/Vertex/Vertex.h"
 
+class IElement;
 class IElementContainer;
 
 class ILayerEditingContext {
@@ -33,6 +34,7 @@ class ILayerEditingContext {
   virtual void staticChanged() = 0;
   virtual void setCursorRestriction(IElementContainer*) = 0;
   virtual void removeCursorRestriction(IElementContainer*) = 0;
+  virtual void addCursorElement(IElement*) = 0;
 };
 
 #endif

@@ -20,6 +20,7 @@
 #define ELEMENT_HANDLER_SPINDIZZY_BLOCK_H
 
 #include <IsoRealms/Resources/ElementType/Element.h>
+#include <IsoRealms/Resources/ElementType/ElementCollection.h>
 
 #include "ElementSpindizzyBlock.h"
 #include "ISpindizzyBlockSet.h"
@@ -31,7 +32,7 @@ class ElementHandlerSpindizzyBlock:public Element,
   private:
   ISpindizzyBlockSet* cModuleInterface;
   IElementContainer* cContainer;
-  std::vector<ElementSpindizzyBlock*> cElements;
+  ElementCollection<ElementSpindizzyBlock> cElements;
   std::vector<SpindizzyBlockState*> cClues;
 
   public:
@@ -64,6 +65,8 @@ class ElementHandlerSpindizzyBlock:public Element,
   void setDirty();
   bool initElement(unsigned int);
   IElementBounds* getBounds();
+  void cursorMoved(ILayerEditingContext*, Vertex&, Vertex&);
+  void cursorAppeared(ILayerEditingContext*, Vertex&);
 
   /***************************************\
    * Implements ISpindizzyElementManager *

@@ -22,6 +22,7 @@
 #include <stack>
 
 #include <IsoRealms/Collision.h>
+#include <IsoRealms/Configuration.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 #include <IsoRealms/Resources/ElementType/IElementType.h>
 #include <IsoRealms/Struct/SpatialContainer2D.h>
@@ -35,6 +36,7 @@ class LayerSpindizzyMapEditingContext : public ILayerEditingContext {
   static const float SPEED_NORMAL;
   static const float SPEED_SLOW;
   static const float STOP_THRESHOLD;
+  static const float SELECTION_BOUNDARY_RENDERING_OFFSET;
 
   bool cActiveLeft;
   bool cActiveRight;
@@ -52,6 +54,8 @@ class LayerSpindizzyMapEditingContext : public ILayerEditingContext {
   SpatialContainer2D<IElement> cElements;
   IElementContainer* cSelectedElementContainers;
   IElementContainer* cCursorRestriction;
+  std::vector<IElement*> cCursorElements;
+  IElement* cSelectedElement;
   
   bool isMovingWest();
   bool isMovingEast();
@@ -60,6 +64,7 @@ class LayerSpindizzyMapEditingContext : public ILayerEditingContext {
   float getMovementSpeed();
   bool keyDown(SDLKey&, SDLMod&);
   bool keyUp(SDLKey&, SDLMod&);
+  void removeCursorElement(IElement*);
   void processCursorMovement(Vertex&, Vertex&);
   void processCursorAppearance(Vertex&);
   
@@ -69,6 +74,7 @@ class LayerSpindizzyMapEditingContext : public ILayerEditingContext {
   void init();
   void update(unsigned int);
   void renderCamera();
+  void renderElementSelection();
   void renderCursor();
   bool input(SDL_Event&);
   void setElementType(IElementType*);
@@ -85,6 +91,7 @@ class LayerSpindizzyMapEditingContext : public ILayerEditingContext {
   void staticChanged();
   void setCursorRestriction(IElementContainer*);
   void removeCursorRestriction(IElementContainer*);
+  void addCursorElement(IElement*);
 };
 
 #endif

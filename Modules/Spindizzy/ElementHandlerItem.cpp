@@ -41,31 +41,23 @@ void ElementHandlerItem::unsetValue() {
 }
 
 void ElementHandlerItem::addElement(ElementSpindizzyItem* element) {
-  cElements.push_back(element);
+  cElements.addElement(element);
 }
 
 void ElementHandlerItem::removeElement(ElementSpindizzyItem* element) {
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    if (cElements[i] == element) {
-      cElements.erase(cElements.begin() + i);
-    }
-  }  
+  cElements.removeElement(element);
 }
 
 bool ElementHandlerItem::isEmpty() {
-  return cElements.empty();
+  return cElements.isEmpty();
 }
 
 void ElementHandlerItem::renderRuntime() {
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    cElements[i]->renderRuntime();
-  }
+  cElements.renderRuntime();
 }
 
 void ElementHandlerItem::updateRuntime(unsigned int ticks) {
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    cElements[i]->updateRuntime(ticks);
-  }
+  cElements.updateRuntime(ticks);
 }
 
 IElementType* ElementHandlerItem::getElementType() {
@@ -85,16 +77,18 @@ void ElementHandlerItem::setDirty() {
 }
 
 IElementBounds* ElementHandlerItem::getBounds() {
-  return nullptr;
+  return cElements.getBounds();
 }
 
 bool ElementHandlerItem::initElement(unsigned int pass) {
-  bool mSuccess = true;
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    if (!cElements[i]->initElement(pass)) {
-      mSuccess = false;
-    }
-  }
-  return mSuccess;
+  return cElements.init(pass);
+}
+
+void ElementHandlerItem::cursorMoved(ILayerEditingContext* editingContext, Vertex& start, Vertex& end) {
+  cElements.cursorMoved(editingContext, start, end);
+}
+
+void ElementHandlerItem::cursorAppeared(ILayerEditingContext* editingContext, Vertex& location) {
+  cElements.cursorAppeared(editingContext, location);
 }
   

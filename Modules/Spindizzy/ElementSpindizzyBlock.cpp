@@ -426,27 +426,27 @@ IElementBounds* ElementSpindizzyBlock::getBounds() {
 }
 
 float ElementSpindizzyBlock::getWest() {
-  return cStartLocation.x;
+  return cStartLocation.x - IsoRealmsConstants::BLOCK_RADIUS;
 }
 
 float ElementSpindizzyBlock::getEast() {
-  return cEndLocation.x;
+  return cEndLocation.x + IsoRealmsConstants::BLOCK_RADIUS;
 }
 
 float ElementSpindizzyBlock::getSouth() {
-  return cStartLocation.y;
+  return cStartLocation.y - IsoRealmsConstants::BLOCK_RADIUS;
 }
 
 float ElementSpindizzyBlock::getNorth() {
-  return cEndLocation.y;
+  return cEndLocation.y + IsoRealmsConstants::BLOCK_RADIUS;
 }
 
 float ElementSpindizzyBlock::getBottom() {
-  return cStartLocation.z;
+  return cStartLocation.z * IsoRealmsConstants::BLOCK_HEIGHT;
 }
 
 float ElementSpindizzyBlock::getTop() {
-  return cEndLocation.z;
+  return cEndLocation.z * IsoRealmsConstants::BLOCK_HEIGHT;
 }
 
 std::set<IBoolean*> ElementSpindizzyBlock::getInputs() {

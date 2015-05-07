@@ -96,6 +96,8 @@ class IElement {
   virtual void focusLost(ILayerEditingContext*) = 0;
   virtual void cursorMoved(ILayerEditingContext*, Vertex&, Vertex&) = 0;
   virtual void cursorAppeared(ILayerEditingContext*, Vertex&) = 0;
+  virtual void processCursorMovement(ILayerEditingContext*, Vertex&, Vertex&) = 0;
+  virtual void processCursorAppearance(ILayerEditingContext*, Vertex&) = 0;
   
   virtual ~IElement() {}
 };

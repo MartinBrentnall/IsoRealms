@@ -230,6 +230,14 @@ IElementBounds* ElementSpindizzyLift::getBounds() {
   return this;
 }
 
+void ElementSpindizzyLift::processCursorAppearance(ILayerEditingContext* editingContext, Vertex& location) {
+  Element::processCursorAppearance(editingContext, location);
+}
+
+void ElementSpindizzyLift::processCursorMovement(ILayerEditingContext* editingContext, Vertex& start, Vertex& end) {
+  Element::processCursorMovement(editingContext, start, end);
+}
+
 Vertex* ElementSpindizzyLift::getBoundaryCrossingPoint(Vertex& start, Vertex& end, float* mLowestGradient, float infinity) {
   *mLowestGradient = 2.0f;
   float mXMovement = end.x - start.x;
@@ -299,7 +307,7 @@ Vertex* ElementSpindizzyLift::getBoundaryCrossingPoint(Vertex& start, Vertex& en
   }
 
   // Line doesn't cross boundary
-  return NULL;
+  return nullptr;
 }
 
 bool ElementSpindizzyLift::contains(Vertex& location) {
@@ -322,7 +330,7 @@ ICollisionData* ElementSpindizzyLift::getCollision(Vertex& start, Vertex& end) {
   
   float mGradient;
   Vertex* mEnterPoint = getBoundaryCrossingPoint(start, end, &mGradient, -INFINITY);
-  if (mEnterPoint != NULL) {
+  if (mEnterPoint != nullptr) {
     float mEnterHeight = getHeightAt(mEnterPoint->x, mEnterPoint->y);
     if (mEnterPoint->z <= mEnterHeight && mEnterPoint->z >= mEnterHeight - 0.5f) {
       return new LiftSurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mEnterPoint, mGradient);
@@ -342,16 +350,16 @@ ICollisionData* ElementSpindizzyLift::getCollision(Vertex& start, Vertex& end) {
       return new LiftSurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mImpactLocation, mGradient);
     }
   }
-  return NULL;
+  return nullptr;
 }
 
 ICollisionData* ElementSpindizzyLift::getRollingEvent(Vertex& start, Vertex& end) {
   float mGradient;
   Vertex* mLeavePoint = getBoundaryCrossingPoint(start, end, &mGradient, INFINITY);
-  if (mLeavePoint != NULL) {
+  if (mLeavePoint != nullptr) {
     return new LiftSurfaceCollisionEvent(this, ICollisionData::SURFACE_LEAVE, mLeavePoint, mGradient);
   }
-  return NULL;
+  return nullptr;
 }
 
 float ElementSpindizzyLift::getHeightAt(float, float) {

@@ -24,6 +24,7 @@
 #include <limits>
 #include <vector>
 
+#include <IsoRealms/Collision.h>
 #include <IsoRealms/IDynamicElement.h>
 #include <IsoRealms/IVisualElement.h>
 #include <IsoRealms/System.h>
@@ -86,6 +87,9 @@ class ElementHandler {
   void renderEditing();
   void staticChanged();
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
+  
+  void cursorAppeared(ILayerEditingContext*, Vertex&);
+  void cursorMoved(ILayerEditingContext*, Vertex&, Vertex&);
   
   IElementBounds* getStaticBounds();
 };

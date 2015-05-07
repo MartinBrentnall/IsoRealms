@@ -89,6 +89,8 @@ class ElementSpindizzyLift:public Element,
    * Implements IElementSpindizzyDynamic *
   \***************************************/
   void reset();
+  void processCursorMovement(ILayerEditingContext*, Vertex&, Vertex&);
+  void processCursorAppearance(ILayerEditingContext*, Vertex&);
   
   /***********************\
    * Implements IElement *

@@ -55,7 +55,7 @@ void ElementHandlerSpindizzyBlock::unsetValue() {
 }
 
 void ElementHandlerSpindizzyBlock::addElement(ElementSpindizzyBlock* element) {
-  cElements.push_back(element);
+  cElements.addElement(element);
   Condition* mCondition = element->getCondition();
   if (mCondition != nullptr) {
     std::set<IBoolean*> mInputs = mCondition->getInputs();
@@ -76,28 +76,19 @@ void ElementHandlerSpindizzyBlock::addElement(ElementSpindizzyBlock* element) {
 }
 
 void ElementHandlerSpindizzyBlock::removeElement(ElementSpindizzyBlock* element) {
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    if (cElements[i] == element) {
-      cElements.erase(cElements.begin() + i);
-      return;
-    }
-  }
+  cElements.removeElement(element);
 }
 
 bool ElementHandlerSpindizzyBlock::isEmpty() {
-  return cElements.empty();
+  return cElements.isEmpty();
 }
 
 void ElementHandlerSpindizzyBlock::renderRuntime() {
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    cElements[i]->renderRuntime();
-  }
+  cElements.renderRuntime();
 }
 
 void ElementHandlerSpindizzyBlock::updateRuntime(unsigned int ticks) {
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    cElements[i]->updateRuntime(ticks);
-  }
+  cElements.updateRuntime(ticks);
 }
 
 IElementType* ElementHandlerSpindizzyBlock::getElementType() {
@@ -105,9 +96,7 @@ IElementType* ElementHandlerSpindizzyBlock::getElementType() {
 }
 
 void ElementHandlerSpindizzyBlock::renderStatic() {
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    cElements[i]->renderStatic();
-  }
+  cElements.renderStatic();
 }
 
 void ElementHandlerSpindizzyBlock::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& location) {
@@ -119,17 +108,11 @@ void ElementHandlerSpindizzyBlock::setDirty() {
 }
 
 IElementBounds* ElementHandlerSpindizzyBlock::getBounds() {
-  return nullptr;
+  return cElements.getBounds();
 }
 
 bool ElementHandlerSpindizzyBlock::initElement(unsigned int pass) {
-  bool mSuccess = true;
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    if (!cElements[i]->initElement(pass)) {
-      mSuccess = false;
-    }
-  }
-  return mSuccess;
+  return cElements.init(pass);
 }
 
 void ElementHandlerSpindizzyBlock::setArguments() {
@@ -146,4 +129,12 @@ void ElementHandlerSpindizzyBlock::setDirty(IElement* element) {
 
 IElementContainer* ElementHandlerSpindizzyBlock::getElementContainer() {
   return cContainer;
+}
+
+void ElementHandlerSpindizzyBlock::cursorMoved(ILayerEditingContext* editingContext, Vertex& start, Vertex& end) {
+  cElements.cursorMoved(editingContext, start, end);
+}
+
+void ElementHandlerSpindizzyBlock::cursorAppeared(ILayerEditingContext* editingContext, Vertex& location) {
+  cElements.cursorAppeared(editingContext, location);
 }

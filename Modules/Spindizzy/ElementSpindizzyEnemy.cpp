@@ -74,5 +74,37 @@ bool ElementSpindizzyEnemy::initElement(unsigned int pass) {
 }
 
 IElementBounds* ElementSpindizzyEnemy::getBounds() {
-  return nullptr; // TODO: Implement this
+  return this;
+}
+
+void ElementSpindizzyEnemy::processCursorAppearance(ILayerEditingContext* editingContext, Vertex& location) {
+  Element::processCursorAppearance(editingContext, location);
+}
+
+void ElementSpindizzyEnemy::processCursorMovement(ILayerEditingContext* editingContext, Vertex& start, Vertex& end) {
+  Element::processCursorMovement(editingContext, start, end);
+}
+
+float ElementSpindizzyEnemy::getWest() {
+  return cStartLocation.x;
+}
+
+float ElementSpindizzyEnemy::getEast() {
+  return cStartLocation.x;
+}
+
+float ElementSpindizzyEnemy::getSouth() {
+  return cStartLocation.y;
+}
+
+float ElementSpindizzyEnemy::getNorth() {
+  return cStartLocation.y;
+}
+
+float ElementSpindizzyEnemy::getBottom() {
+  return cStartLocation.z;
+}
+
+float ElementSpindizzyEnemy::getTop() {
+  return cStartLocation.z;
 }

@@ -189,3 +189,7 @@ void ScreenConfiguration::save(DOMNodeWriter* node) {
   DOMNodeWriter* mScreenDepth = mScreenNode->addBranch("Depth");
   mScreenDepth->addText(cScreenDepth);
 }
+
+Uint16 ScreenConfiguration::invertY(Uint16 y) {
+  return cScreenHeight - y;
+}

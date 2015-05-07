@@ -20,6 +20,7 @@
 #define ELEMENT_HANDLER_ZONE_H
 
 #include <IsoRealms/Resources/ElementType/Element.h>
+#include <IsoRealms/Resources/ElementType/ElementCollection.h>
 
 #include "ElementSpindizzyZone.h"
 #include "IModuleElementHandlerZone.h"
@@ -30,7 +31,7 @@ class ElementHandlerZone:public Element,
   IModuleElementHandlerZone* cModuleInterface;
   bool cSingleZone;
   ElementSpindizzyZone* cZone;
-  std::vector<ElementSpindizzyZone*> cElements;
+  ElementCollection<ElementSpindizzyZone> cElements;
 
   public:
   ElementHandlerZone(IModuleElementHandlerZone*);

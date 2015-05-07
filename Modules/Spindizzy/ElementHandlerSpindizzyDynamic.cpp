@@ -43,34 +43,26 @@ void ElementHandlerSpindizzyDynamic::unsetValue() {
 }
 
 void ElementHandlerSpindizzyDynamic::addElement(IElementSpindizzyDynamic* element) {
-  cElements.push_back(element);
+  cElements.addElement(element);
 }
 
 void ElementHandlerSpindizzyDynamic::removeElement(IElementSpindizzyDynamic* element) {
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    if (cElements[i] == element) {
-      cElements.erase(cElements.begin() + i);
-    }
-  }
+  cElements.removeElement(element);
 }
 
 bool ElementHandlerSpindizzyDynamic::isEmpty() {
-  return cElements.empty();
+  return cElements.isEmpty();
 }
 
 void ElementHandlerSpindizzyDynamic::renderEditing() {
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    cElements[i]->renderEditing();
-  }
+  cElements.renderEditing();
 }
 
 void ElementHandlerSpindizzyDynamic::renderRuntime() {
   if (cVisibility > 0.0f) {
     glEnable(GL_BLEND);
     glColor4f(1.0f, 1.0f, 1.0f, cVisibility);
-    for (unsigned int i = 0; i < cElements.size(); i++) {
-      cElements[i]->renderRuntime();
-    }
+    cElements.renderRuntime();
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
   }
 }
@@ -83,9 +75,7 @@ void ElementHandlerSpindizzyDynamic::updateRuntime(unsigned int ticks) {
         cVisibility = 1.0f;
       }
     }
-    for (unsigned int i = 0; i < cElements.size(); i++) {
-      cElements[i]->updateRuntime(ticks);
-    }
+    cElements.updateRuntime(ticks);
   } else {
     if (cVisibility > 0.0f) {
       cVisibility -= ticks / 500.0f;
@@ -113,16 +103,17 @@ void ElementHandlerSpindizzyDynamic::setDirty() {
 }
 
 IElementBounds* ElementHandlerSpindizzyDynamic::getBounds() {
-  return nullptr;
+  return cElements.getBounds();
+}
+
+void ElementHandlerSpindizzyDynamic::cursorMoved(ILayerEditingContext* editingContext, Vertex& start, Vertex& end) {
+  cElements.cursorMoved(editingContext, start, end);
+}
+
+void ElementHandlerSpindizzyDynamic::cursorAppeared(ILayerEditingContext* editingContext, Vertex& location) {
+  cElements.cursorAppeared(editingContext, location);
 }
 
 bool ElementHandlerSpindizzyDynamic::initElement(unsigned int pass) {
-  bool mSuccess = true;
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    if (!cElements[i]->initElement(pass)) {
-      mSuccess = false;
-    }
-  }
-  return mSuccess;
+  return cElements.init(pass);
 }
-  

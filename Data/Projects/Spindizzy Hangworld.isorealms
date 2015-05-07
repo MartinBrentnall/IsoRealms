@@ -588,7 +588,7 @@ zoneTop = entered:getTop()
 zoneBottom = entered:getBottom()
 centerX = zoneWest + (zoneEast - zoneWest) / 2.0
 centerY = zoneNorth + (zoneSouth - zoneNorth) / 2.0
-centerZ = (zoneTop + (zoneBottom - zoneTop) / 2.0) - 2
+centerZ = (zoneTop + (zoneBottom - zoneTop) / 2.0) + 1.5
 zoneLocation:setX(centerX)
 zoneLocation:setY(centerY)
 zoneLocation:setZ(centerZ)
@@ -4266,7 +4266,7 @@ end</Code>
       <Element height="1" length="1" type="Spindizzy/Plain" width="6" x="2" xSlope="0" y="7" ySlope="-1" z="-1"/>
       <Element height="7" length="7" type="Spindizzy/Plain" width="7" x="1" y="0" z="-1"/>
       <Element height="-6" length="6" type="Spindizzy/Plain" width="6" x="2" y="0" z="6"/>
-      <Element height="7" length="2" type="Spindizzy/Plain" width="2" x="0" y="6" z="0"/>
+      <Element height="8" length="2" type="Spindizzy/Plain" width="2" x="0" y="6" z="-1"/>
       <Element height="7" length="1" type="Spindizzy/Plain" width="1" x="2" y="5" z="-1"/>
       <Element height="1" length="1" type="Spindizzy/Plain" width="1" x="2" y="3" z="4"/>
       <Element height="1" length="1" type="Spindizzy/Plain" width="4" x="4" y="5" z="4"/>

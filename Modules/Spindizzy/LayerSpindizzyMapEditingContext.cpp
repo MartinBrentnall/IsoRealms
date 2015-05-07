@@ -22,6 +22,7 @@ const float LayerSpindizzyMapEditingContext::SPEED_FAST     = 1.5f;
 const float LayerSpindizzyMapEditingContext::SPEED_NORMAL   = 0.51f;
 const float LayerSpindizzyMapEditingContext::SPEED_SLOW     = 0.1f;
 const float LayerSpindizzyMapEditingContext::STOP_THRESHOLD = 0.01f;
+const float LayerSpindizzyMapEditingContext::SELECTION_BOUNDARY_RENDERING_OFFSET = 0.001f;
 
 LayerSpindizzyMapEditingContext::LayerSpindizzyMapEditingContext(ILayerSpindizzyMap* map) {
   Vertex mNormalDistance(0.0f, 0.0f, -20.0f);
@@ -38,6 +39,7 @@ LayerSpindizzyMapEditingContext::LayerSpindizzyMapEditingContext(ILayerSpindizzy
   cElementType = nullptr;
   cMap = map;
   cCursorRestriction = nullptr;
+  cSelectedElement = nullptr;
 }
 
 void LayerSpindizzyMapEditingContext::init() {
@@ -119,16 +121,17 @@ void LayerSpindizzyMapEditingContext::update(unsigned int milliseconds) {
 void LayerSpindizzyMapEditingContext::processCursorAppearance(Vertex& location) {
   std::vector<IElement*> mElements = cElements.getElements(location.x, location.y);
   for (IElement* mElement : mElements) {
-    IElementBounds* mBounds = mElement->getBounds();
-    float mSouth  = mBounds->getSouth()  - IsoRealmsConstants::BLOCK_RADIUS;
-    float mWest   = mBounds->getWest()   - IsoRealmsConstants::BLOCK_RADIUS;
-    float mBottom = mBounds->getBottom() - 1.0f;
-    float mNorth  = mBounds->getNorth()  + IsoRealmsConstants::BLOCK_RADIUS;
-    float mEast   = mBounds->getEast()   + IsoRealmsConstants::BLOCK_RADIUS;
-    float mTop    = mBounds->getTop();
-    if (Collision::contains(location, mWest, mEast, mSouth, mNorth, mBottom, mTop)) {
-      mElement->focusGained(this);
-      mElement->cursorAppeared(this, location);
+    mElement->processCursorAppearance(this, location);
+  }
+}
+
+void LayerSpindizzyMapEditingContext::removeCursorElement(IElement* element) {
+  for (unsigned int i = 0; i < cCursorElements.size(); i++) {
+    if (cCursorElements[i] == element) {
+      cCursorElements.erase(cCursorElements.begin() + i);
+      if (cSelectedElement == element) {
+        cSelectedElement = cCursorElements.empty() ? nullptr : cCursorElements.back();
+      }
     }
   }
 }
@@ -136,22 +139,19 @@ void LayerSpindizzyMapEditingContext::processCursorAppearance(Vertex& location) 
 void LayerSpindizzyMapEditingContext::processCursorMovement(Vertex& start, Vertex& end) {
   std::vector<IElement*> mElements = cElements.getElements(start, end);
   for (IElement* mElement : mElements) {
+    mElement->processCursorMovement(this, start, end);
+  }
+  
+  for (IElement* mElement : cCursorElements) {
     IElementBounds* mBounds = mElement->getBounds();
-    float mSouth  = mBounds->getSouth()  - IsoRealmsConstants::BLOCK_RADIUS;
-    float mWest   = mBounds->getWest()   - IsoRealmsConstants::BLOCK_RADIUS;
-    float mBottom = mBounds->getBottom() - 1.0f;
-    float mNorth  = mBounds->getNorth()  + IsoRealmsConstants::BLOCK_RADIUS;
-    float mEast   = mBounds->getEast()   + IsoRealmsConstants::BLOCK_RADIUS;
+    float mSouth  = mBounds->getSouth();
+    float mWest   = mBounds->getWest();
+    float mBottom = mBounds->getBottom();
+    float mNorth  = mBounds->getNorth();
+    float mEast   = mBounds->getEast();
     float mTop    = mBounds->getTop();
-    bool mContainsStart = Collision::contains(start, mWest, mEast, mSouth, mNorth, mBottom, mTop);
-    bool mContainsEnd   = Collision::contains(end,   mWest, mEast, mSouth, mNorth, mBottom, mTop);
-    if (!mContainsStart && mContainsEnd) {
-      mElement->focusGained(this);
-    } else if (mContainsStart && !mContainsEnd) {
-      mElement->focusLost(this);
-    }
-    if (mContainsStart || mContainsEnd) {
-      mElement->cursorMoved(this, start, end);
+    if (!Collision::contains(end,   mWest, mEast, mSouth, mNorth, mBottom, mTop)) {
+      removeCursorElement(mElement);
     }
   }
 }
@@ -161,12 +161,59 @@ void LayerSpindizzyMapEditingContext::renderCamera() {
   glTranslatef(-cLocation.x, -cLocation.y, -cLocation.z);
 }
 
+void LayerSpindizzyMapEditingContext::renderElementSelection() {
+  if (cSelectedElement != nullptr) {
+    IElementBounds* mBounds = cSelectedElement->getBounds();
+    float mSouth  = mBounds->getSouth()  - SELECTION_BOUNDARY_RENDERING_OFFSET;
+    float mWest   = mBounds->getWest()   - SELECTION_BOUNDARY_RENDERING_OFFSET;
+    float mBottom = mBounds->getBottom() - SELECTION_BOUNDARY_RENDERING_OFFSET;
+    float mNorth  = mBounds->getNorth()  + SELECTION_BOUNDARY_RENDERING_OFFSET;
+    float mEast   = mBounds->getEast()   + SELECTION_BOUNDARY_RENDERING_OFFSET;
+    float mTop    = mBounds->getTop()    + SELECTION_BOUNDARY_RENDERING_OFFSET;
+    glEnable(GL_BLEND);
+    glBegin(GL_QUADS);
+    glColor4f(1.0f, 1.0f, 0.0f, 0.5f);
+    glVertex3f(mWest, mSouth, mTop);
+    glVertex3f(mEast, mSouth, mTop);
+    glVertex3f(mEast, mNorth, mTop);
+    glVertex3f(mWest, mNorth, mTop);
+
+    glVertex3f(mWest, mSouth, mBottom);
+    glVertex3f(mWest, mNorth, mBottom);
+    glVertex3f(mEast, mNorth, mBottom);
+    glVertex3f(mEast, mSouth, mBottom);
+
+    glVertex3f(mWest, mSouth, mBottom);
+    glVertex3f(mEast, mSouth, mBottom);
+    glVertex3f(mEast, mSouth, mTop);
+    glVertex3f(mWest, mSouth, mTop);
+
+    glVertex3f(mEast, mSouth, mBottom);
+    glVertex3f(mEast, mNorth, mBottom);
+    glVertex3f(mEast, mNorth, mTop);
+    glVertex3f(mEast, mSouth, mTop);
+
+    glVertex3f(mWest, mNorth, mBottom);
+    glVertex3f(mWest, mNorth, mTop);
+    glVertex3f(mEast, mNorth, mTop);
+    glVertex3f(mEast, mNorth, mBottom);
+
+    glVertex3f(mWest, mSouth, mBottom);
+    glVertex3f(mWest, mSouth, mTop);
+    glVertex3f(mWest, mNorth, mTop);
+    glVertex3f(mWest, mNorth, mBottom);
+    glEnd();
+    glDisable(GL_BLEND);
+  }
+}
+
 void LayerSpindizzyMapEditingContext::renderCursor() {
   if (cElementType != nullptr) {
     glPushMatrix();
     cElementType->renderEditingPreview(cLocation);
     glPopMatrix();
   } else {
+    glPushMatrix();
     glTranslatef(cLocation.x, cLocation.y, cLocation.z);
     glBegin(GL_LINES);
     glColor3f(1.0f, 0.0f, 0.0f);
@@ -177,6 +224,8 @@ void LayerSpindizzyMapEditingContext::renderCursor() {
     glVertex3f( 0.0f,  0.0f, -1.0f);
     glVertex3f( 0.0f,  0.0f, +1.0f);
     glEnd();
+    glPopMatrix();
+    renderElementSelection();    
   }
 }
 
@@ -224,6 +273,25 @@ bool LayerSpindizzyMapEditingContext::input(SDL_Event& event) {
         return true;
       }
       break;
+    }
+    
+    case SDL_MOUSEBUTTONDOWN: {
+      double mModelViewMatrix[16];
+      double mProjectionMatrix[16];
+      GLint mViewport[4];
+      glPushMatrix();
+      renderCamera();
+      glGetDoublev(GL_MODELVIEW_MATRIX, mModelViewMatrix);
+      glGetDoublev(GL_PROJECTION_MATRIX, mProjectionMatrix);
+      glGetIntegerv(GL_VIEWPORT, mViewport);
+      Vertex mStart;
+      Vertex mEnd;
+      Configuration* mConfiguration = Configuration::getInstance();
+      ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
+      Uint16 mInvertedY = mScreen->invertY(event.button.y);
+      gluUnProject(event.button.x, mInvertedY, 0.0, mModelViewMatrix, mProjectionMatrix, mViewport, &mStart.x, &mStart.y, &mStart.z);
+      gluUnProject(event.button.x, mInvertedY, 1.0, mModelViewMatrix, mProjectionMatrix, mViewport, &mEnd.x,   &mEnd.y,   &mEnd.z);
+      glPopMatrix();
     }
   }
   
@@ -276,4 +344,9 @@ void LayerSpindizzyMapEditingContext::setCursorRestriction(IElementContainer* co
 
 void LayerSpindizzyMapEditingContext::removeCursorRestriction(IElementContainer* container) {
   cCursorRestriction = nullptr;
+}
+
+void LayerSpindizzyMapEditingContext::addCursorElement(IElement* element) {
+  cCursorElements.push_back(element);
+  cSelectedElement = element;
 }

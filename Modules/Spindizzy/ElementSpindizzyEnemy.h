@@ -29,7 +29,8 @@
 #include "IElementSpindizzyDynamic.h"
 
 class ElementSpindizzyEnemy:public Element,
-                            public IElementSpindizzyDynamic {
+                            public IElementSpindizzyDynamic,
+                            public IElementBounds {
   private:
   IElementType* cEnemyType;
   IElementContainer* cContainer;
@@ -49,6 +50,8 @@ class ElementSpindizzyEnemy:public Element,
    * Implements IElementSpindizzyDynamic *
   \***************************************/
   void reset();
+  void processCursorMovement(ILayerEditingContext*, Vertex&, Vertex&);
+  void processCursorAppearance(ILayerEditingContext*, Vertex&);
   
   /***********************\
    * Implements IElement *
@@ -62,6 +65,16 @@ class ElementSpindizzyEnemy:public Element,
   void setDirty();
   bool initElement(unsigned int);
   IElementBounds* getBounds();
+  
+  /*****************************\
+   * Implements IElementBounds *
+  \*****************************/
+  float getWest();
+  float getEast();
+  float getSouth();
+  float getNorth();
+  float getBottom();
+  float getTop();
 };
 
 #endif

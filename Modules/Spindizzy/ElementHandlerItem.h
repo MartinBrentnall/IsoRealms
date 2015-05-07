@@ -20,6 +20,7 @@
 #define ELEMENT_HANDLER_ITEM_H
 
 #include <IsoRealms/Resources/ElementType/Element.h>
+#include <IsoRealms/Resources/ElementType/ElementCollection.h>
 
 #include "ElementSpindizzyItem.h"
 #include "ISpindizzyJewelSet.h"
@@ -28,7 +29,7 @@ class ElementHandlerItem:public Element,
                          public IArgument {
   private:
   ISpindizzyJewelSet* cModuleInterface;
-  std::vector<ElementSpindizzyItem*> cElements;
+  ElementCollection<ElementSpindizzyItem> cElements;
 
   public:
   ElementHandlerItem(ISpindizzyJewelSet*);
@@ -59,6 +60,8 @@ class ElementHandlerItem:public Element,
   void setDirty();
   bool initElement(unsigned int);
   IElementBounds* getBounds();
+  void cursorMoved(ILayerEditingContext*, Vertex&, Vertex&);
+  void cursorAppeared(ILayerEditingContext*, Vertex&);
 };
 
 #endif

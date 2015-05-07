@@ -94,6 +94,8 @@ class ElementSpindizzyZone:public Element,
   IElementBounds* getBounds();
   void focusGained(ILayerEditingContext*);
   void focusLost(ILayerEditingContext*);
+  void cursorAppeared(ILayerEditingContext*, Vertex&);
+  void cursorMoved(ILayerEditingContext*, Vertex&, Vertex&);
 
   /*****************************\
    * Implements IElementBounds *
