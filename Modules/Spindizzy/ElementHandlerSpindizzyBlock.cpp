@@ -131,6 +131,10 @@ IElementContainer* ElementHandlerSpindizzyBlock::getElementContainer() {
   return cContainer;
 }
 
+bool ElementHandlerSpindizzyBlock::isSelectable() {
+  return false;
+}
+
 void ElementHandlerSpindizzyBlock::cursorMoved(ILayerEditingContext* editingContext, Vertex& start, Vertex& end) {
   cElements.cursorMoved(editingContext, start, end);
 }

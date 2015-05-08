@@ -84,6 +84,10 @@ class Element:public IElement {
   virtual void focusLost(ILayerEditingContext*) {
   }
   
+  virtual bool isSelectable() {
+    return true;
+  }
+  
   virtual void cursorMoved(ILayerEditingContext*, Vertex&, Vertex&) {
   }
   
@@ -100,11 +104,13 @@ class Element:public IElement {
     float mTop    = mBounds->getTop();
     bool mContainsStart = Collision::contains(start, mWest, mEast, mSouth, mNorth, mBottom, mTop);
     bool mContainsEnd   = Collision::contains(end,   mWest, mEast, mSouth, mNorth, mBottom, mTop);
-    if (!mContainsStart && mContainsEnd) {
-      editingContext->addCursorElement(this);
-      focusGained(editingContext);
-    } else if (mContainsStart && !mContainsEnd) {
-      focusLost(editingContext);
+    if (isSelectable()) {
+      if (!mContainsStart && mContainsEnd) {
+        editingContext->addCursorElement(this);
+        focusGained(editingContext);
+      } else if (mContainsStart && !mContainsEnd) {
+        focusLost(editingContext);
+      }
     }
     if (mContainsStart || mContainsEnd) {
       cursorMoved(editingContext, start, end);
@@ -120,8 +126,10 @@ class Element:public IElement {
     float mEast   = mBounds->getEast();
     float mTop    = mBounds->getTop();
     if (Collision::contains(location, mWest, mEast, mSouth, mNorth, mBottom, mTop)) {
-      editingContext->addCursorElement(this);
-      focusGained(editingContext);
+      if (isSelectable()) {
+        editingContext->addCursorElement(this);
+        focusGained(editingContext);
+      }
       cursorAppeared(editingContext, location);
     }
   }

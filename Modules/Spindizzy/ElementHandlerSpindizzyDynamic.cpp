@@ -106,6 +106,10 @@ IElementBounds* ElementHandlerSpindizzyDynamic::getBounds() {
   return cElements.getBounds();
 }
 
+bool ElementHandlerSpindizzyDynamic::isSelectable() {
+  return false;
+}
+
 void ElementHandlerSpindizzyDynamic::cursorMoved(ILayerEditingContext* editingContext, Vertex& start, Vertex& end) {
   cElements.cursorMoved(editingContext, start, end);
 }

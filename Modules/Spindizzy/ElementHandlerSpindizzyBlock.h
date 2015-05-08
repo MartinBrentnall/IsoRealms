@@ -65,6 +65,7 @@ class ElementHandlerSpindizzyBlock:public Element,
   void setDirty();
   bool initElement(unsigned int);
   IElementBounds* getBounds();
+  bool isSelectable();
   void cursorMoved(ILayerEditingContext*, Vertex&, Vertex&);
   void cursorAppeared(ILayerEditingContext*, Vertex&);
 

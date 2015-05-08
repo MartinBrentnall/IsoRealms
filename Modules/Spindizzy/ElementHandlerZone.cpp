@@ -92,6 +92,10 @@ bool ElementHandlerZone::initElement(unsigned int pass) {
   return cElements.init(pass);
 }
 
+bool ElementHandlerZone::isSelectable() {
+  return false;
+}
+
 void ElementHandlerZone::cursorMoved(ILayerEditingContext* editingContext, Vertex& start, Vertex& end) {
   cElements.cursorMoved(editingContext, start, end);
 }

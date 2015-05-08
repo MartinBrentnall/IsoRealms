@@ -84,6 +84,10 @@ bool ElementHandlerItem::initElement(unsigned int pass) {
   return cElements.init(pass);
 }
 
+bool ElementHandlerItem::isSelectable() {
+  return false;
+}
+
 void ElementHandlerItem::cursorMoved(ILayerEditingContext* editingContext, Vertex& start, Vertex& end) {
   cElements.cursorMoved(editingContext, start, end);
 }
