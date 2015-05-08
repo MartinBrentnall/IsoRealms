@@ -16,24 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_ELEMENT_SPINDIZZY_DYNAMIC_H
-#define I_ELEMENT_SPINDIZZY_DYNAMIC_H
+#ifndef PICKED_ELEMENT_H
+#define PICKED_ELEMENT_H
 
-#include <IsoRealms/ILayerEditingContext.h>
-#include <IsoRealms/Resources/ElementType/IElementBounds.h>
-#include <IsoRealms/Resources/ElementType/PickedElement.h>
+#include <IsoRealms/CollisionVertex.h>
+#include <IsoRealms/Resources/ElementType/IElement.h>
 
-class IElementSpindizzyDynamic {
+class PickedElement {
+  private:
+  CollisionVertex* cPickedLocation;
+  IElement* cPickedElement;
+  
   public:
-  virtual void reset() = 0;
-  virtual void renderEditing() = 0;
-  virtual void renderRuntime() = 0;
-  virtual void updateRuntime(unsigned int) = 0;
-  virtual bool initElement(unsigned int) = 0;  
-  virtual IElementBounds* getBounds() = 0;
-  virtual void processCursorMovement(ILayerEditingContext*, Vertex&, Vertex&) = 0;
-  virtual void processCursorAppearance(ILayerEditingContext*, Vertex&) = 0;
-  virtual PickedElement* pickElement(Vertex&, Vertex&) = 0;
+  PickedElement(CollisionVertex*, IElement*);
+  
+  float getGradient();
+  IElement* getElement();
 };
 
 #endif

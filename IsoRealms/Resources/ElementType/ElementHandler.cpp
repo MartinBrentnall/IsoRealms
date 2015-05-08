@@ -311,6 +311,20 @@ void ElementHandler::cursorMoved(ILayerEditingContext* editingContext, Vertex& s
   }
 }
 
+PickedElement* ElementHandler::pickElement(Vertex& start, Vertex& end) {
+  PickedElement* mClosestPickedElement = nullptr;
+  for (IElement* mElement : cElements) {
+    PickedElement* mPickedElement = mElement->pickElement(start, end);
+    if (mPickedElement != nullptr) {
+      if (mClosestPickedElement == nullptr || mPickedElement->getGradient() < mClosestPickedElement->getGradient()) {
+        // TODO: Delete Picked Element
+        mClosestPickedElement = mPickedElement;
+      }
+    }
+  }
+  return mClosestPickedElement;
+}
+
 int ElementHandler::getElementIndex(IElement* element) {
   for (unsigned int i = 0; i < cDirtyElements.size(); i++) {
     if (cDirtyElements[i] == element) {

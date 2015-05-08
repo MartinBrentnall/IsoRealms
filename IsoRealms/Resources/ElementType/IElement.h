@@ -35,7 +35,7 @@ class IMap;
 
 #include "IElementBounds.h"
 
-class IModule;
+class PickedElement;
 
 class IElement {
   public:
@@ -98,6 +98,7 @@ class IElement {
   virtual void cursorAppeared(ILayerEditingContext*, Vertex&) = 0;
   virtual void processCursorMovement(ILayerEditingContext*, Vertex&, Vertex&) = 0;
   virtual void processCursorAppearance(ILayerEditingContext*, Vertex&) = 0;
+  virtual PickedElement* pickElement(Vertex&, Vertex&) = 0;
   
   virtual ~IElement() {}
 };

@@ -25,6 +25,7 @@
 #include <IsoRealms/Configuration.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 #include <IsoRealms/Resources/ElementType/IElementType.h>
+#include <IsoRealms/Resources/ElementType/PickedElement.h>
 #include <IsoRealms/Struct/SpatialContainer2D.h>
 
 #include "CameraLayerMapEditing.h"

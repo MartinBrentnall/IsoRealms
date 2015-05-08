@@ -85,6 +85,10 @@ void ElementSpindizzyEnemy::processCursorMovement(ILayerEditingContext* editingC
   Element::processCursorMovement(editingContext, start, end);
 }
 
+PickedElement* ElementSpindizzyEnemy::pickElement(Vertex& start, Vertex& end) {
+  return Element::pickElement(start, end);
+}
+
 float ElementSpindizzyEnemy::getWest() {
   return cStartLocation.x;
 }

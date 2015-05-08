@@ -31,6 +31,7 @@
 
 #include "ElementBounds.h"
 #include "IElement.h"
+#include "PickedElement.h"
 
 class ElementHandler {
   private:
@@ -90,6 +91,7 @@ class ElementHandler {
   
   void cursorAppeared(ILayerEditingContext*, Vertex&);
   void cursorMoved(ILayerEditingContext*, Vertex&, Vertex&);
+  PickedElement* pickElement(Vertex&, Vertex&);
   
   IElementBounds* getStaticBounds();
 };

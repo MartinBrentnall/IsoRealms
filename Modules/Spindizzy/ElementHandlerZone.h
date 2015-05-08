@@ -67,6 +67,7 @@ class ElementHandlerZone:public Element,
   bool isSelectable();
   void cursorMoved(ILayerEditingContext*, Vertex&, Vertex&);
   void cursorAppeared(ILayerEditingContext*, Vertex&);
+  PickedElement* pickElement(Vertex&, Vertex&);
 };
 
 #endif

@@ -26,6 +26,7 @@
 #include <IsoRealms/ILayerEditingContext.h>
 
 #include "IElementBounds.h"
+#include "PickedElement.h"
 
 template <class T> class ElementCollection : public IElementBounds {
   private:
@@ -162,6 +163,20 @@ template <class T> class ElementCollection : public IElementBounds {
     for (T* mElement : cElements) {
       mElement->processCursorAppearance(editingContext, location);
     }
+  }
+  
+  PickedElement* pickElement(Vertex& start, Vertex& end) {
+    PickedElement* mClosestPickedElement = nullptr;
+    for (T* mElement : cElements) {
+      PickedElement* mPickedElement = mElement->pickElement(start, end);
+      if (mPickedElement != nullptr) {
+        if (mClosestPickedElement == nullptr || mPickedElement->getGradient() < mClosestPickedElement->getGradient()) {
+          // TODO: Delete Picked Element
+          mClosestPickedElement = mPickedElement;
+        }
+      }
+    }
+    return mClosestPickedElement;
   }
 };
 

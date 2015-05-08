@@ -96,6 +96,7 @@ class ElementSpindizzyZone:public Element,
   void focusLost(ILayerEditingContext*);
   void cursorAppeared(ILayerEditingContext*, Vertex&);
   void cursorMoved(ILayerEditingContext*, Vertex&, Vertex&);
+  PickedElement* pickElement(Vertex&, Vertex&);
 
   /*****************************\
    * Implements IElementBounds *

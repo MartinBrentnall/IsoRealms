@@ -76,6 +76,7 @@ class ElementHandlerSpindizzyBlock:public Element,
   void unsetArguments();
   void setDirty(IElement*);
   IElementContainer* getElementContainer();
+  PickedElement* pickElement(Vertex&, Vertex&);
 };
 
 #endif

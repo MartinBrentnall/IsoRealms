@@ -103,3 +103,7 @@ void ElementHandlerZone::cursorMoved(ILayerEditingContext* editingContext, Verte
 void ElementHandlerZone::cursorAppeared(ILayerEditingContext* editingContext, Vertex& location) {
   cElements.cursorAppeared(editingContext, location);
 }
+
+PickedElement* ElementHandlerZone::pickElement(Vertex& start, Vertex& end) {
+  return cElements.pickElement(start, end);
+}

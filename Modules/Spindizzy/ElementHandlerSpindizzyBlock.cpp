@@ -142,3 +142,7 @@ void ElementHandlerSpindizzyBlock::cursorMoved(ILayerEditingContext* editingCont
 void ElementHandlerSpindizzyBlock::cursorAppeared(ILayerEditingContext* editingContext, Vertex& location) {
   cElements.cursorAppeared(editingContext, location);
 }
+
+PickedElement* ElementHandlerSpindizzyBlock::pickElement(Vertex& start, Vertex& end) {
+  return cElements.pickElement(start, end);
+}

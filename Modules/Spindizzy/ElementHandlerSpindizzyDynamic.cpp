@@ -118,6 +118,10 @@ void ElementHandlerSpindizzyDynamic::cursorAppeared(ILayerEditingContext* editin
   cElements.cursorAppeared(editingContext, location);
 }
 
+PickedElement* ElementHandlerSpindizzyDynamic::pickElement(Vertex& start, Vertex& end) {
+  return cElements.pickElement(start, end);
+}
+
 bool ElementHandlerSpindizzyDynamic::initElement(unsigned int pass) {
   return cElements.init(pass);
 }

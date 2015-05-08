@@ -291,6 +291,20 @@ bool LayerSpindizzyMapEditingContext::input(SDL_Event& event) {
       Uint16 mInvertedY = mScreen->invertY(event.button.y);
       gluUnProject(event.button.x, mInvertedY, 0.0, mModelViewMatrix, mProjectionMatrix, mViewport, &mStart.x, &mStart.y, &mStart.z);
       gluUnProject(event.button.x, mInvertedY, 1.0, mModelViewMatrix, mProjectionMatrix, mViewport, &mEnd.x,   &mEnd.y,   &mEnd.z);
+      std::vector<IElement*> mElements = cElements.getElements(mStart, mEnd);
+      PickedElement* mClosestPickedElement = nullptr;
+      for (IElement* mElement : mElements) {
+        PickedElement* mPickedElement = mElement->pickElement(mStart, mEnd);
+        if (mPickedElement != nullptr) {
+          if (mClosestPickedElement == nullptr || mPickedElement->getGradient() < mClosestPickedElement->getGradient()) {
+            // TODO: Delete Picked Element
+            mClosestPickedElement = mPickedElement;
+          }
+        }
+      }
+      if (mClosestPickedElement != nullptr) {
+        cSelectedElement = mClosestPickedElement->getElement();
+      }
       glPopMatrix();
     }
   }

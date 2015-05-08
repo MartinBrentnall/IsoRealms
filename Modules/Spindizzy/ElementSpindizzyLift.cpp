@@ -238,6 +238,10 @@ void ElementSpindizzyLift::processCursorMovement(ILayerEditingContext* editingCo
   Element::processCursorMovement(editingContext, start, end);
 }
 
+PickedElement* ElementSpindizzyLift::pickElement(Vertex& start, Vertex& end) {
+  return Element::pickElement(start, end);
+}
+
 Vertex* ElementSpindizzyLift::getBoundaryCrossingPoint(Vertex& start, Vertex& end, float* mLowestGradient, float infinity) {
   *mLowestGradient = 2.0f;
   float mXMovement = end.x - start.x;

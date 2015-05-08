@@ -52,6 +52,7 @@ class ElementSpindizzyEnemy:public Element,
   void reset();
   void processCursorMovement(ILayerEditingContext*, Vertex&, Vertex&);
   void processCursorAppearance(ILayerEditingContext*, Vertex&);
+  PickedElement* pickElement(Vertex&, Vertex&);
   
   /***********************\
    * Implements IElement *

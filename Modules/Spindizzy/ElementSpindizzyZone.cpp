@@ -227,6 +227,10 @@ void ElementSpindizzyZone::cursorMoved(ILayerEditingContext* editingContext, Ver
   cElementHandler.cursorMoved(editingContext, start, end);
 }
 
+PickedElement* ElementSpindizzyZone::pickElement(Vertex& start, Vertex& end) {
+  return cElementHandler.pickElement(start, end);
+}
+
 float ElementSpindizzyZone::getWest() {
   return cZoneArea->getWest() - IsoRealmsConstants::BLOCK_RADIUS;
 }

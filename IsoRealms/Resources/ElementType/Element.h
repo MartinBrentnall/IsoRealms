@@ -25,6 +25,7 @@
 
 #include "IElement.h"
 #include "IElementType.h"
+#include "PickedElement.h"
 
 class Element:public IElement {
   public:
@@ -132,6 +133,18 @@ class Element:public IElement {
       }
       cursorAppeared(editingContext, location);
     }
+  }
+  
+  virtual PickedElement* pickElement(Vertex& start, Vertex& end) {
+    IElementBounds* mBounds = getBounds();
+    float mSouth  = mBounds->getSouth();
+    float mWest   = mBounds->getWest();
+    float mBottom = mBounds->getBottom();
+    float mNorth  = mBounds->getNorth();
+    float mEast   = mBounds->getEast();
+    float mTop    = mBounds->getTop();
+    CollisionVertex* mPickedLocation = Collision::getEntryPoint(start, end, mWest, mEast, mSouth, mNorth, mBottom, mTop);
+    return mPickedLocation != nullptr ? new PickedElement(mPickedLocation, this) : nullptr;
   }
     
   ~Element() {}
