@@ -73,7 +73,6 @@ void Engine::keyDown(SDLKey& key) {
 }
 
 void Engine::input(SDL_Event& event) {
-  cProject->input(event);
   switch (event.type) {
     case SDL_KEYDOWN: {
       keyDown(event.key.keysym.sym);

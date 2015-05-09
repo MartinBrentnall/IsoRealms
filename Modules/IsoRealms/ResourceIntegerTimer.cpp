@@ -55,7 +55,7 @@ std::string ResourceIntegerTimer::StringTimer::getValue() {
   int mMinutes = mSeconds / 60;
   mSeconds = mSeconds % 60;
   std::stringstream mStringStream;
-  mStringStream << mMinutes << ":" << std::setfill('0') << std::setw(2) << mSeconds << "." << std::setw(1) << mMilliseconds;
+  mStringStream << mMinutes << ":" << std::setfill('0') << std::setw(2) << mSeconds << "." << std::setw(1) << (mMilliseconds / 10);
   return mStringStream.str();
 }
 

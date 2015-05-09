@@ -16,9 +16,12 @@
 # along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
 include_directories(${PROJECT_SOURCE_DIR})
 
-add_subdirectory(Editor)
-add_subdirectory(InputRecorder)
-add_subdirectory(IsoRealms)
-add_subdirectory(Menu)
-add_subdirectory(Rollaround)
-add_subdirectory(Spindizzy)
+add_library(InputRecorder MODULE 
+  LayerInputPlayer.cpp
+  LayerInputRecorder.cpp
+  ModuleInputPersistence.cpp
+  ResourceLayerInputPlayer.cpp
+  ResourceLayerInputRecorder.cpp
+)
+set_target_properties(InputRecorder PROPERTIES OUTPUT_NAME "Module")
+set_target_properties(InputRecorder PROPERTIES PREFIX "lib")

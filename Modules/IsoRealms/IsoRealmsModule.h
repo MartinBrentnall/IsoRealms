@@ -39,6 +39,7 @@
 #include "DialogModelSprite.h"
 #include "DialogScriptLua.h"
 #include "DialogSoundFile.h"
+#include "DialogStringFixed.h"
 #include "DialogTextureFile.h"
 #include "DialogVertexFixed.h"
 #include "ResourceBooleanFixed.h"
@@ -54,6 +55,7 @@
 #include "ResourceModelSetCycleable.h"
 #include "ResourceModelSprite.h"
 #include "ResourceSoundFile.h"
+#include "ResourceStringFixed.h"
 #include "ResourceTextureFile.h"
 #include "ResourceVertexFixed.h"
 
@@ -75,6 +77,7 @@ class IsoRealmsModule:public IModule {
   static const std::string TAG_RESOURCE_TYPE_MODEL_SPRITE;
   static const std::string TAG_RESOURCE_TYPE_SCRIPT_LUA;
   static const std::string TAG_RESOURCE_TYPE_SOUND_FILE;
+  static const std::string TAG_RESOURCE_TYPE_STRING_FIXED;
   static const std::string TAG_RESOURCE_TYPE_TEXTURE_FILE;
   static const std::string TAG_RESOURCE_TYPE_VERTEX_FIXED;
 
@@ -94,6 +97,7 @@ class IsoRealmsModule:public IModule {
   static const std::string NAME_RESOURCE_TYPE_MODEL_SPRITE;
   static const std::string NAME_RESOURCE_TYPE_SCRIPT_LUA;
   static const std::string NAME_RESOURCE_TYPE_SOUND_FILE;
+  static const std::string NAME_RESOURCE_TYPE_STRING_FIXED;
   static const std::string NAME_RESOURCE_TYPE_TEXTURE_FILE;
   static const std::string NAME_RESOURCE_TYPE_VERTEX_FIXED;
   
@@ -115,6 +119,7 @@ class IsoRealmsModule:public IModule {
   ResourceType<I3DModelType,         ResourceModelSprite,                DialogModelSprite>                cResourceTypeModelSprite;
   ResourceType<IScript,              LuaScript,                          DialogScriptLua>                  cResourceTypeScriptLua;
   ResourceType<ISound,               ResourceSoundFile,                  DialogSoundFile>                  cResourceTypeSoundFile;
+  ResourceType<IString,              ResourceStringFixed,                DialogStringFixed>                cResourceTypeStringFixed;
   ResourceType<ITexture,             ResourceTextureFile,                DialogTextureFile>                cResourceTypeTextureFile;
   ResourceType<IVertex,              ResourceVertexFixed,                DialogVertexFixed>                cResourceTypeVertexFixed;
     

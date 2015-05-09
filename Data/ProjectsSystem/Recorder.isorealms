@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<Project>
+  <Module name="IsoRealms">
+    <StringFixed name="Project"/>
+  </Module>
+  <Module name="InputRecorder">  
+    <LayerRecorder name="Recorder" project="IsoRealms/Project"/>
+  </Module>
+  <Layer type="InputRecorder/Recorder"/>
+</Project>
