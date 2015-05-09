@@ -49,8 +49,8 @@ class ResourceElementSpindizzyZone:public ISpindizzyZoneType,
   I3DModelType* cFlagModelType;
   IBoundaries* cBoundaries;
 
-  bool keyDown(SDLKey&);
-
+  ElementSpindizzyZone* getElement(IElement*);
+  
   public:
   ResourceElementSpindizzyZone(ISpindizzyZoneModule*, DOMNodeWrapper*, IResourceRegistry*);
 
@@ -86,6 +86,7 @@ class ResourceElementSpindizzyZone:public ISpindizzyZoneType,
   void renderIcon();
   void setDirty(IElement*);
   void destroy(IElement*);
+  void removeElement(IElement*);
   Vertex* editorCursorStopped(Vertex*);
 
   /***************************************\

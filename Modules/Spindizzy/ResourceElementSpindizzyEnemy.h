@@ -39,6 +39,8 @@ class ResourceElementSpindizzyEnemy:public IElementType {
 
   bool keyDown(SDLKey&, ILayerEditingContext*);
 
+  ElementSpindizzyEnemy* getElement(IElement*);
+  
   public:
   ResourceElementSpindizzyEnemy(ISpindizzyEnemySet*, DOMNodeWrapper*, IResourceRegistry*);
 
@@ -63,6 +65,7 @@ class ResourceElementSpindizzyEnemy:public IElementType {
   void updateIcon(unsigned int);
   void renderIcon();
   void destroy(IElement*);
+  void removeElement(IElement*);
   Vertex* editorCursorStopped(Vertex*);
   
   virtual ~ResourceElementSpindizzyEnemy();

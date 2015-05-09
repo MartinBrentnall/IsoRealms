@@ -25,6 +25,15 @@ ResourceElementSpindizzyZone::ResourceElementSpindizzyZone(ISpindizzyZoneModule*
   resourceRegistry->add(cBoundaries, node->getAttribute("name"));
 }
 
+ElementSpindizzyZone* ResourceElementSpindizzyZone::getElement(IElement* element) {
+  for (ElementSpindizzyZone* mElement : cContent) {
+    if (mElement == element) {
+      return mElement;
+    }
+  }
+  return nullptr;
+}
+
 void ResourceElementSpindizzyZone::applyDefaultTheme() {
   cModuleInterface->applyDefaultTheme();
 }
@@ -118,6 +127,17 @@ void ResourceElementSpindizzyZone::destroy(IElement* element) {
   delete element;
 }
 
+void ResourceElementSpindizzyZone::removeElement(IElement* element) {
+  ElementSpindizzyZone* mZone = getElement(element);
+  IElementContainer* mContainer = mZone->getElementContainer();
+  ElementHandlerZone* mHandler = cModuleInterface->getZoneElementHandler(mContainer);
+  mHandler->removeElement(mZone);
+  if (mHandler->isEmpty()) {
+    mContainer->removeElement(mHandler);
+    cModuleInterface->removeElementHandlerZone(mContainer);
+  }
+}
+
 Vertex* ResourceElementSpindizzyZone::editorCursorStopped(Vertex* location) {
   Vertex* mGridLocation = new Vertex();
   mGridLocation->x = std::round(location->x);
@@ -133,14 +153,8 @@ IArgumentValue* ResourceElementSpindizzyZone::getArgumentValue(const std::string
 ResourceElementSpindizzyZone::~ResourceElementSpindizzyZone() {
   delete cSampleZone;
   for (unsigned int i = 0; i < cContent.size(); i++) {
-    IElementContainer* mContainer = cContent[i]->getElementContainer();
-    ElementHandlerZone* mHandler = cModuleInterface->getZoneElementHandler(mContainer);
-    mHandler->removeElement(cContent[i]);
-    if (mHandler->isEmpty()) {
-      mContainer->removeElement(mHandler);
-      cModuleInterface->removeElementHandlerZone(mContainer);
-    }
-    delete cContent[i];
+    removeElement(cContent[i]);
+    destroy(cContent[i]);
   }
 }
 

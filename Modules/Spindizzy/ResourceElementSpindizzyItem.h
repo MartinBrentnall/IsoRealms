@@ -48,6 +48,8 @@ class ResourceElementSpindizzyItem:public ISpindizzyJewelType {
 
   bool keyDown(SDLKey&, ILayerEditingContext*);
 
+  ElementSpindizzyItem* getElement(IElement*);
+  
   public:
   ResourceElementSpindizzyItem(ISpindizzyJewelSet*, DOMNodeWrapper*, IResourceRegistry*);
   
@@ -75,6 +77,7 @@ class ResourceElementSpindizzyItem:public ISpindizzyJewelType {
   void renderIcon();
   void setDirty(IElement*);
   void destroy(IElement*);
+  void removeElement(IElement*);
   Vertex* editorCursorStopped(Vertex*);
 
   virtual ~ResourceElementSpindizzyItem();

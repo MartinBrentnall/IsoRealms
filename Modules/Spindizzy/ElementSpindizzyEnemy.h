@@ -28,8 +28,7 @@
 
 #include "IElementSpindizzyDynamic.h"
 
-class ElementSpindizzyEnemy:public Element,
-                            public IElementSpindizzyDynamic,
+class ElementSpindizzyEnemy:public IElementSpindizzyDynamic,
                             public IElementBounds {
   private:
   IElementType* cEnemyType;

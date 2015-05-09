@@ -64,6 +64,7 @@ class ElementHandlerItem:public Element,
   void cursorMoved(ILayerEditingContext*, Vertex&, Vertex&);
   void cursorAppeared(ILayerEditingContext*, Vertex&);
   PickedElement* pickElement(Vertex&, Vertex&);
+  IElementContainer* getElementContainer();
 };
 
 #endif

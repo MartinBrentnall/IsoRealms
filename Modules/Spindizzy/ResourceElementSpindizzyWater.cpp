@@ -50,12 +50,6 @@ void ResourceElementSpindizzyWater::loadElement(DOMNodeWrapper* node, BlockLocat
   container->addElement(mLoadedWater);
 }
 
-// void ResourceElementSpindizzyWater::unregisterSurfaces(ISurfaceProcessor* surfaceProcessor) {
-//   for (unsigned int i = 0; i < cContent.size(); i++) {
-//     surfaceProcessor->unregisterSurfaceProvider(cContent[i]);
-//   }
-// }
-
 void ResourceElementSpindizzyWater::setEditingContext(BlockLocation* editingLocation, IComponentContainer* componentContainer) {
 }
 
@@ -79,6 +73,15 @@ bool ResourceElementSpindizzyWater::keyDown(SDLKey& key) {
     }
   }
   return false;
+}
+
+ElementSpindizzyWater* ResourceElementSpindizzyWater::getElement(IElement* element) {
+  for (ElementSpindizzyWater* mElement : cContent) {
+    if (mElement == element) {
+      return mElement;
+    }
+  }
+  return nullptr;
 }
 
 bool ResourceElementSpindizzyWater::inputEdit(SDL_Event& event, ILayerEditingContext* editingContext) {
@@ -135,6 +138,13 @@ void ResourceElementSpindizzyWater::destroy(IElement* element) {
   delete element;
 }
 
+void ResourceElementSpindizzyWater::removeElement(IElement* element) {
+  ElementSpindizzyWater* mWater = getElement(element);
+  IElementContainer* mContainer = mWater->getElementContainer();
+  mContainer->removeElement(mWater);
+  cModuleInterface->unregisterSurfaceProvider(mWater);
+}
+
 Vertex* ResourceElementSpindizzyWater::editorCursorStopped(Vertex* location) {
   Vertex* mGridLocation = new Vertex();
   mGridLocation->x = std::round(location->x);
@@ -178,10 +188,8 @@ ResourceElementSpindizzyWater::~ResourceElementSpindizzyWater() {
   }
   delete cSampleWater;
   for (unsigned int i = 0; i < cContent.size(); i++) {
-    IElementContainer* mContainer = cContent[i]->getElementContainer();
-    mContainer->removeElement(cContent[i]);
-    cModuleInterface->unregisterSurfaceProvider(cContent[i]);
-    delete cContent[i];
+    removeElement(cContent[i]);
+    destroy(cContent[i]);
   }  
 }
 

@@ -38,8 +38,7 @@
 #include "LiftSurfaceCollisionEvent.h"
 #include "SpindizzyLiftProperties.h"
 
-class ElementSpindizzyLift:public Element,
-                           public IRollableSurface,
+class ElementSpindizzyLift:public IRollableSurface,
                            public IElementSpindizzyDynamic,
                            public IElementBounds {
   private:

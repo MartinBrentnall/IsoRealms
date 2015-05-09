@@ -107,3 +107,7 @@ void ElementHandlerZone::cursorAppeared(ILayerEditingContext* editingContext, Ve
 PickedElement* ElementHandlerZone::pickElement(Vertex& start, Vertex& end) {
   return cElements.pickElement(start, end);
 }
+
+IElementContainer* ElementHandlerZone::getElementContainer() {
+  return nullptr;
+}

@@ -206,6 +206,27 @@ void ResourceElementSpindizzyBlock::destroy(IElement* element) {
   delete element;
 }
 
+ElementSpindizzyBlock* ResourceElementSpindizzyBlock::getElement(IElement* element) {
+  for (ElementSpindizzyBlock* mBlock : cContent) {
+    if (mBlock == element) {
+      return mBlock;
+    }
+  }
+  return nullptr;
+}
+
+void ResourceElementSpindizzyBlock::removeElement(IElement* element) {
+  ElementSpindizzyBlock* mBlock = getElement(element);
+  IElementContainer* mContainer = mBlock->getElementContainer();
+  ElementHandlerSpindizzyBlock* mItemHandler = cModuleInterface->getElementHandlerSpindizzyBlock(mContainer);
+  mItemHandler->removeElement(mBlock);  
+  cModuleInterface->unregisterSurfaceProvider(mBlock);
+  if (mItemHandler->isEmpty()) {
+    mContainer->removeElement(mItemHandler);
+    cModuleInterface->removeElementHandlerSpindizzyBlock(mContainer);
+  }
+}
+
 ElementSpindizzyBlock* ResourceElementSpindizzyBlock::createBlock(BlockLocation* startLocation, BlockLocation* endLocation, SpindizzyBlockProperties* blockProperties, bool addition, ElementHandlerSpindizzyBlock* handler) {
   return new ElementSpindizzyBlock(this, startLocation, endLocation, blockProperties, addition, handler);
 }
@@ -230,15 +251,8 @@ ResourceElementSpindizzyBlock::~ResourceElementSpindizzyBlock() {
     delete cConfigurationComponent;
   }
   for (unsigned int i = 0; i < cContent.size(); i++) {
-    IElementContainer* mContainer = cContent[i]->getElementContainer();
-    ElementHandlerSpindizzyBlock* mHandler = cModuleInterface->getElementHandlerSpindizzyBlock(mContainer);
-    mHandler->removeElement(cContent[i]);
-    if (mHandler->isEmpty()) {
-      mContainer->removeElement(mHandler);
-      cModuleInterface->removeElementHandlerSpindizzyBlock(mContainer);
-    }
-    cModuleInterface->unregisterSurfaceProvider(cContent[i]);
-    delete cContent[i];
+    removeElement(cContent[i]);
+    destroy(cContent[i]);
   }
 }
 

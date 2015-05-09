@@ -76,6 +76,15 @@ bool ResourceElementSpindizzyEnemy::keyDown(SDLKey& key, ILayerEditingContext* e
   return false;
 }
 
+ElementSpindizzyEnemy* ResourceElementSpindizzyEnemy::getElement(IElement* element) {
+  for (ElementSpindizzyEnemy* mElement : cContent) {
+    if (mElement == element) {
+      return mElement;
+    }
+  }
+  return nullptr;
+}
+
 bool ResourceElementSpindizzyEnemy::inputEdit(SDL_Event& event, ILayerEditingContext* editingContext) {
   switch (event.type) {
     case SDL_KEYDOWN: {
@@ -116,6 +125,17 @@ void ResourceElementSpindizzyEnemy::destroy(IElement* element) {
   delete element;
 }
 
+void ResourceElementSpindizzyEnemy::removeElement(IElement* element) {
+  ElementSpindizzyEnemy* mEnemy = getElement(element);
+  IElementContainer* mContainer = mEnemy->getElementContainer();
+  ElementHandlerSpindizzyDynamic* mItemHandler = cModuleInterface->getDynamicElementHandler(mContainer);
+  mItemHandler->removeElement(mEnemy);
+  if (mItemHandler->isEmpty()) {
+    mContainer->removeElement(mItemHandler);
+    cModuleInterface->removeElementHandlerSpindizzyDynamic(mContainer);
+  }
+}
+
 Vertex* ResourceElementSpindizzyEnemy::editorCursorStopped(Vertex* location) {
   Vertex* mGridLocation = new Vertex();
   mGridLocation->x = std::round(location->x);
@@ -127,13 +147,7 @@ Vertex* ResourceElementSpindizzyEnemy::editorCursorStopped(Vertex* location) {
 ResourceElementSpindizzyEnemy::~ResourceElementSpindizzyEnemy() {
   delete cSampleEnemy;
   for (unsigned int i = 0; i < cContent.size(); i++) {
-    IElementContainer* mContainer = cContent[i]->getElementContainer();
-    ElementHandlerSpindizzyDynamic* mHandler = cModuleInterface->getDynamicElementHandler(mContainer);
-    mHandler->removeElement(cContent[i]);
-    if (mHandler->isEmpty()) {
-      mContainer->removeElement(mHandler);
-      cModuleInterface->removeElementHandlerSpindizzyDynamic(mContainer);
-    }
-    delete cContent[i];
+    removeElement(cContent[i]);
+    destroy(cContent[i]);
   }
 }

@@ -30,8 +30,6 @@ class ISpindizzyBlockType:public IElementType {
   public:
   virtual ISpindizzyBlockSet* getSpindizzyBlockInterface() = 0;
 
-//  virtual void unregisterSurfaces(ISurfaceProcessor*) = 0;
-  
   virtual BlockTypeProperties* getBlockTypeProperties() = 0;
 };
 

@@ -58,8 +58,8 @@ class ResourceElementSpindizzyBlock:public ISpindizzyBlockType,
   
   bool keyDown(SDLKey&, ILayerEditingContext*);  
 
-  void drawSlopeWireFrameCuboid(BlockLocation* location, BlockLocation* dimension, int xslope, int yslope);
-
+  ElementSpindizzyBlock* getElement(IElement*);
+  
   public:
 
   /**
@@ -84,7 +84,6 @@ class ResourceElementSpindizzyBlock:public ISpindizzyBlockType,
    * Implements ISpindizzyBlockType *
   \**********************************/
   ISpindizzyBlockSet* getSpindizzyBlockInterface();
-//  void unregisterSurfaces(ISurfaceProcessor*);
   BlockTypeProperties* getBlockTypeProperties();
   void save(DOMNodeWriter*, IResourceLocator*);
 
@@ -99,8 +98,8 @@ class ResourceElementSpindizzyBlock:public ISpindizzyBlockType,
   void renderEditingPreview(Vertex&);
   void renderIcon();
   void updateIcon(unsigned int);
-  std::string getName();
   void destroy(IElement*);
+  void removeElement(IElement*);
   void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
   Vertex* editorCursorStopped(Vertex*);
 

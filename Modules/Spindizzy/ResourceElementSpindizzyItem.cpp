@@ -83,6 +83,15 @@ bool ResourceElementSpindizzyItem::keyDown(SDLKey& key, ILayerEditingContext* ed
   return false;
 }
 
+ElementSpindizzyItem* ResourceElementSpindizzyItem::getElement(IElement* element) {
+  for (ElementSpindizzyItem* mElement : cContent) {
+    if (mElement == element) {
+      return mElement;
+    }
+  }
+  return nullptr;
+}
+
 bool ResourceElementSpindizzyItem::inputEdit(SDL_Event& event, ILayerEditingContext* editingContext) {
   switch (event.type) {
     case SDL_KEYDOWN: {
@@ -133,6 +142,17 @@ void ResourceElementSpindizzyItem::destroy(IElement* jewel) {
   delete jewel;
 }
 
+void ResourceElementSpindizzyItem::removeElement(IElement* element) {
+  ElementSpindizzyItem* mItem = getElement(element);
+  IElementContainer* mContainer = mItem->getElementContainer();
+  ElementHandlerItem* mItemHandler = cModuleInterface->getItemElementHandler(mContainer);
+  mItemHandler->removeElement(mItem);
+  if (mItemHandler->isEmpty()) {
+    mContainer->removeElement(mItemHandler);
+    cModuleInterface->removeElementHandlerItem(mContainer);
+  }
+}
+
 Vertex* ResourceElementSpindizzyItem::editorCursorStopped(Vertex* location) {
   Vertex* mGridLocation = new Vertex();
   mGridLocation->x = std::round(location->x);
@@ -144,14 +164,8 @@ Vertex* ResourceElementSpindizzyItem::editorCursorStopped(Vertex* location) {
 ResourceElementSpindizzyItem::~ResourceElementSpindizzyItem() {
   delete cSampleJewel;
   for (unsigned int i = 0; i < cContent.size(); i++) {
-    IElementContainer* mContainer = cContent[i]->getElementContainer();
-    ElementHandlerItem* mHandler = cModuleInterface->getItemElementHandler(mContainer);
-    mHandler->removeElement(cContent[i]);
-    if (mHandler->isEmpty()) {
-      mContainer->removeElement(mHandler);
-      cModuleInterface->removeElementHandlerItem(mContainer);
-    }
-    delete cContent[i];
+    removeElement(cContent[i]);
+    destroy(cContent[i]);
   }
 }
 

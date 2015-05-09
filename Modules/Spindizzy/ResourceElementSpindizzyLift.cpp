@@ -144,6 +144,15 @@ void ResourceElementSpindizzyLift::renderArrowLines() {
 //   glEnd();
 }
 
+ElementSpindizzyLift* ResourceElementSpindizzyLift::getElement(IElement* element) {
+  for (ElementSpindizzyLift* mElement : cContent) {
+    if (mElement == element) {
+      return mElement;
+    }
+  }
+  return nullptr;
+}
+
 void ResourceElementSpindizzyLift::renderEditingPreview(Vertex& location) {
   glTranslatef(location.x, location.y, location.z);
   if (cInsertLocation != nullptr) {
@@ -195,6 +204,17 @@ void ResourceElementSpindizzyLift::destroy(IElement* element) {
   delete element;
 }
 
+void ResourceElementSpindizzyLift::removeElement(IElement* element) {
+  ElementSpindizzyLift* mLift = getElement(element);
+  IElementContainer* mContainer = mLift->getElementContainer();
+  ElementHandlerSpindizzyDynamic* mItemHandler = cModuleInterface->getDynamicElementHandler(mContainer);
+  mItemHandler->removeElement(mLift);
+  if (mItemHandler->isEmpty()) {
+    mContainer->removeElement(mItemHandler);
+    cModuleInterface->removeElementHandlerSpindizzyDynamic(mContainer);
+  }
+}
+
 Vertex* ResourceElementSpindizzyLift::editorCursorStopped(Vertex* location) {
   Vertex* mGridLocation = new Vertex();
   mGridLocation->x = std::round(location->x);
@@ -206,13 +226,7 @@ Vertex* ResourceElementSpindizzyLift::editorCursorStopped(Vertex* location) {
 ResourceElementSpindizzyLift::~ResourceElementSpindizzyLift() {
   delete cSampleLift;
   for (unsigned int i = 0; i < cContent.size(); i++) {
-    IElementContainer* mContainer = cContent[i]->getElementContainer();
-    ElementHandlerSpindizzyDynamic* mHandler = cModuleInterface->getDynamicElementHandler(mContainer);
-    mHandler->removeElement(cContent[i]);
-    if (mHandler->isEmpty()) {
-      mContainer->removeElement(mHandler);
-      cModuleInterface->removeElementHandlerSpindizzyDynamic(mContainer);
-    }
-    delete cContent[i];
+    removeElement(cContent[i]);
+    destroy(cContent[i]);
   }
 }

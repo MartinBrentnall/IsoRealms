@@ -125,3 +125,7 @@ PickedElement* ElementHandlerSpindizzyDynamic::pickElement(Vertex& start, Vertex
 bool ElementHandlerSpindizzyDynamic::initElement(unsigned int pass) {
   return cElements.init(pass);
 }
+
+IElementContainer* ElementHandlerSpindizzyDynamic::getElementContainer() {
+  return nullptr;
+}

@@ -23,7 +23,7 @@
 #include <IsoRealms/Resources/ElementType/IElementBounds.h>
 #include <IsoRealms/Resources/ElementType/PickedElement.h>
 
-class IElementSpindizzyDynamic {
+class IElementSpindizzyDynamic : public Element {
   public:
   virtual void reset() = 0;
   virtual void renderEditing() = 0;

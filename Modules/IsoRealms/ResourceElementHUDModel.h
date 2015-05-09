@@ -55,6 +55,7 @@ class ResourceElementHUDModel:public IElementType,
   void renderIcon();
   void updateIcon(unsigned int);
   void destroy(IElement*);
+  void removeElement(IElement*);
   Vertex* editorCursorStopped(Vertex*);
   bool inputEdit(SDL_Event&, ILayerEditingContext*);
 

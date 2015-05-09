@@ -259,6 +259,17 @@ bool LayerSpindizzyMapEditingContext::keyDown(SDLKey& key, SDLMod& mod) {
       }
       break;
     }
+    case SDLK_DELETE:   {
+      if (cSelectedElement != nullptr) {
+        IElementType* mElementType = cSelectedElement->getElementType();
+        mElementType->removeElement(cSelectedElement);
+        removeCursorElement(cSelectedElement);
+        mElementType->destroy(cSelectedElement);
+        cSelectedElement = nullptr;
+        return true;
+      }
+      break;
+    }
     default:            {} // Nothing to do
   }
   return false;

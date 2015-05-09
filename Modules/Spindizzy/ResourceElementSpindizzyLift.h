@@ -51,6 +51,8 @@ class ResourceElementSpindizzyLift:public ISpindizzyLiftType {
 
   void renderArrowLines();
 
+  ElementSpindizzyLift* getElement(IElement*);
+  
   public:
   ResourceElementSpindizzyLift(ISpindizzyLiftSet*, DOMNodeWrapper*, IResourceRegistry*);
 
@@ -83,6 +85,7 @@ class ResourceElementSpindizzyLift:public ISpindizzyLiftType {
   void renderIcon();
   void updateIcon(unsigned int);
   void destroy(IElement*);
+  void removeElement(IElement*);
   Vertex* editorCursorStopped(Vertex*);
   
   virtual ~ResourceElementSpindizzyLift();

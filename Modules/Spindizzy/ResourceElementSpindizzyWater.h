@@ -26,6 +26,7 @@
 
 #include "ISpindizzyBlockType.h"
 #include "ElementSpindizzyWater.h"
+#include "ElementHandlerSpindizzyBlock.h"
 
 class ResourceElementSpindizzyWater:public ISpindizzyBlockType,
                                     public IResourceUseListener<ITexture> {
@@ -39,6 +40,8 @@ class ResourceElementSpindizzyWater:public ISpindizzyBlockType,
 
   bool keyDown(SDLKey& key);
 
+  ElementSpindizzyWater* getElement(IElement*);
+  
   public:
   ResourceElementSpindizzyWater(ISpindizzyBlockSet*, DOMNodeWrapper*, IResourceRegistry*);
   
@@ -51,7 +54,6 @@ class ResourceElementSpindizzyWater:public ISpindizzyBlockType,
    * Implements ISpindizzyBlockType *
   \**********************************/
   ISpindizzyBlockSet* getSpindizzyBlockInterface();
-//  void unregisterSurfaces(ISurfaceProcessor*);
   BlockTypeProperties* getBlockTypeProperties();
   void save(DOMNodeWriter*, IResourceLocator*);
   void configureBlock(DOMNodeWrapper*);
@@ -68,6 +70,7 @@ class ResourceElementSpindizzyWater:public ISpindizzyBlockType,
   void renderIcon();
   void updateIcon(unsigned int);
   void destroy(IElement*);
+  void removeElement(IElement*);
   Vertex* editorCursorStopped(Vertex*);
 
   /*******************************\

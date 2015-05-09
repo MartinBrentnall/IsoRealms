@@ -61,6 +61,8 @@ class ResourceElementSpindizzyCraft:public ISpindizzyGERALDType,
   
   bool keyDown(SDLKey&);
 
+  ElementSpindizzyCraft* getElement(IElement*);
+  
   public:
   ResourceElementSpindizzyCraft(ISpindizzyGERALDSet*, DOMNodeWrapper*, IResourceRegistry*);
   
@@ -95,6 +97,7 @@ class ResourceElementSpindizzyCraft:public ISpindizzyGERALDType,
   void updateIcon(unsigned int);
   void renderIcon();
   void destroy(IElement*);
+  void removeElement(IElement*);
   Vertex* editorCursorStopped(Vertex*);
   
   /*********************************\

@@ -594,12 +594,12 @@ bool ElementSpindizzyBlock::isFlat() {
 }
 
 void ElementSpindizzyBlock::setDirty() {
-  for (unsigned int i = 0; i < cStaticTileSurfaces.size(); i++) {
-    delete cStaticTileSurfaces[i];
+  for (ISpindizzyTileSurface* mTileSurface : cStaticTileSurfaces) {
+    delete mTileSurface;
   }
   cStaticTileSurfaces.clear();
-  for (unsigned int i = 0; i < cStaticTileSurfaces.size(); i++) {
-    delete cStaticWallSurfaces[i];
+  for (ISpindizzyWallSurface* mWallSurface : cStaticWallSurfaces) {
+    delete mWallSurface;
   }
   cStaticWallSurfaces.clear();
   for (ISpindizzyTileSurface* mTileSurface : cDynamicTileSurfaces) {

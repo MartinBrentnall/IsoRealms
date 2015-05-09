@@ -57,6 +57,10 @@ void ResourceElementHUDModel::destroy(IElement* element) {
   // TODO
 }
 
+void ResourceElementHUDModel::removeElement(IElement* element) {
+  // TODO
+}
+
 Vertex* ResourceElementHUDModel::editorCursorStopped(Vertex* location) {
   return nullptr;
 }

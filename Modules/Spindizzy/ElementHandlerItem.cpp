@@ -99,3 +99,7 @@ void ElementHandlerItem::cursorAppeared(ILayerEditingContext* editingContext, Ve
 PickedElement* ElementHandlerItem::pickElement(Vertex& start, Vertex& end) {
   return cElements.pickElement(start, end);
 }
+
+IElementContainer* ElementHandlerItem::getElementContainer() {
+  return nullptr;
+}

@@ -92,6 +92,8 @@ class IElementType:public IResource {
    */
   virtual void destroy(IElement*) = 0;
   
+  virtual void removeElement(IElement*) = 0;
+  
   /**
    * Called when the editor cursor has stopped.  This is used if the element
    * wants to adjust the cursor position (e.g. to align to a grid).

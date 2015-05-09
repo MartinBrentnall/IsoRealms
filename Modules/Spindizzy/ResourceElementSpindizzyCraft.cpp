@@ -119,6 +119,15 @@ bool ResourceElementSpindizzyCraft::keyDown(SDLKey& key) {
   return false;
 }
 
+ElementSpindizzyCraft* ResourceElementSpindizzyCraft::getElement(IElement* element) {
+  for (ElementSpindizzyCraft* mElement : cContent) {
+    if (mElement == element) {
+      return mElement;
+    }
+  }
+  return nullptr;
+}
+
 bool ResourceElementSpindizzyCraft::inputEdit(SDL_Event& event, ILayerEditingContext* editingContext) {
   switch (event.type) {
     case SDL_KEYDOWN: {
@@ -187,6 +196,12 @@ void ResourceElementSpindizzyCraft::stop() {
 
 void ResourceElementSpindizzyCraft::destroy(IElement* element) {
   delete element;
+}
+
+void ResourceElementSpindizzyCraft::removeElement(IElement* element) {
+  ElementSpindizzyCraft* mCraft = getElement(element);
+  IElementContainer* mContainer = mCraft->getElementContainer();
+  mContainer->removeElement(mCraft);
 }
 
 Vertex* ResourceElementSpindizzyCraft::editorCursorStopped(Vertex* location) {
@@ -291,8 +306,7 @@ std::string ResourceElementSpindizzyCraft::getInstanceName(ElementSpindizzyCraft
 ResourceElementSpindizzyCraft::~ResourceElementSpindizzyCraft() {
   delete cSampleGERALD;
   for (unsigned int i = 0; i < cContent.size(); i++) {
-    IElementContainer* mContainer = cContent[i]->getElementContainer();
-    mContainer->removeElement(cContent[i]);
-    delete cContent[i];
+    removeElement(cContent[i]);
+    destroy(cContent[i]);
   }  
 }

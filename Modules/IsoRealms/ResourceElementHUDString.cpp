@@ -43,6 +43,10 @@ void ResourceElementHUDString::destroy(IElement* element) {
   // TODO
 }
 
+void ResourceElementHUDString::removeElement(IElement* element) {
+  // TODO
+}
+
 Vertex* ResourceElementHUDString::editorCursorStopped(Vertex* location) {
   return nullptr;
 }

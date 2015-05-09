@@ -42,6 +42,10 @@ void ResourceElementHUDRoundedRectangle::destroy(IElement* element) {
   // TODO
 }
 
+void ResourceElementHUDRoundedRectangle::removeElement(IElement* element) {
+  // TODO
+}
+
 Vertex* ResourceElementHUDRoundedRectangle::editorCursorStopped(Vertex* location) {
   return nullptr;
 }
