@@ -1006,8 +1006,8 @@ end</Code>
       </Boundaries>
       <Instance name="Player" x="-4" y="3" z="0"/>
     </ElementSpindizzyCraft>
-    <ElementSpindizzyEnemy model="IsoRealms/CraftEnemy_1" name="Gyroscope"/>
-    <ElementSpindizzyEnemy model="IsoRealms/CraftEnemy_2" name="Ball"/>
+    <ElementSpindizzyEnemy model="IsoRealms/CraftEnemy_1" name="Ball"/>
+    <ElementSpindizzyEnemy model="IsoRealms/CraftEnemy_2" name="Gyroscope"/>
     <ElementSpindizzyItem model="Spindizzy/Jewel" name="Jewel"/>
     <ElementSpindizzyLift state="#true" model="IsoRealms/LiftDiamondEmpty" name="DiamondEmpty"/>
     <ElementSpindizzyLift state="IsoRealms/SwitchDiamondLeft" model="IsoRealms/LiftDiamondLeft" name="DiamondLeft"/>

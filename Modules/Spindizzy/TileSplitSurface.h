@@ -50,7 +50,8 @@ class TileSplitSurface:public ISpindizzyTileSurface,
   void confine(double*, double*);
   bool inNorthSplit(float, float);
   ICollisionData* getImpactCollision(Vertex&, Vertex&, bool);
-
+  CollisionVertex* pickSurface(Vertex&, Vertex&, bool);
+    
   public:
 
   /**
@@ -60,11 +61,12 @@ class TileSplitSurface:public ISpindizzyTileSurface,
    * @param BlockLocation&  
    */
   TileSplitSurface(bool, BlockLocation&, ITexture**, int, int, int, int, Condition*, BlockTypeProperties*);
-
+  
   /************************************\
    * Implements ISpindizzyTileSurface *
   \************************************/
   void render();
+  CollisionVertex* pickSurface(Vertex&, Vertex&);
 
   /*******************************\
    * Implements IRollableSurface *

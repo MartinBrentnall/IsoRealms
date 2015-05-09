@@ -668,27 +668,27 @@ IElementBounds* ElementSpindizzyCraft::getBounds() {
 }
 
 float ElementSpindizzyCraft::getWest() {
-  return cLocation->x;
+  return cLocation->x - IsoRealmsConstants::BLOCK_RADIUS;
 }
 
 float ElementSpindizzyCraft::getEast() {
-  return cLocation->x;
+  return cLocation->x + IsoRealmsConstants::BLOCK_RADIUS;
 }
 
 float ElementSpindizzyCraft::getSouth() {
-  return cLocation->y;
+  return cLocation->y - IsoRealmsConstants::BLOCK_RADIUS;
 }
 
 float ElementSpindizzyCraft::getNorth() {
-  return cLocation->y;
+  return cLocation->y + IsoRealmsConstants::BLOCK_RADIUS;
 }
 
 float ElementSpindizzyCraft::getBottom() {
-  return cLocation->z;
+  return cLocation->z * IsoRealmsConstants::BLOCK_HEIGHT;
 }
 
 float ElementSpindizzyCraft::getTop() {
-  return cLocation->z;
+  return (cLocation->z + 2.0) * IsoRealmsConstants::BLOCK_HEIGHT;
 }
 
 void ElementSpindizzyCraft::saveInstance(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& relative) {

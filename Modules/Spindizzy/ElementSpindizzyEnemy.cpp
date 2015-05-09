@@ -90,25 +90,25 @@ PickedElement* ElementSpindizzyEnemy::pickElement(Vertex& start, Vertex& end) {
 }
 
 float ElementSpindizzyEnemy::getWest() {
-  return cStartLocation.x;
+  return cStartLocation.x - IsoRealmsConstants::BLOCK_RADIUS;
 }
 
 float ElementSpindizzyEnemy::getEast() {
-  return cStartLocation.x;
+  return cStartLocation.x + IsoRealmsConstants::BLOCK_RADIUS;
 }
 
 float ElementSpindizzyEnemy::getSouth() {
-  return cStartLocation.y;
+  return cStartLocation.y - IsoRealmsConstants::BLOCK_RADIUS;
 }
 
 float ElementSpindizzyEnemy::getNorth() {
-  return cStartLocation.y;
+  return cStartLocation.y + IsoRealmsConstants::BLOCK_RADIUS;
 }
 
 float ElementSpindizzyEnemy::getBottom() {
-  return cStartLocation.z;
+  return cStartLocation.z * IsoRealmsConstants::BLOCK_HEIGHT;
 }
 
 float ElementSpindizzyEnemy::getTop() {
-  return cStartLocation.z;
+  return (cStartLocation.z + 2.0) * IsoRealmsConstants::BLOCK_HEIGHT;
 }

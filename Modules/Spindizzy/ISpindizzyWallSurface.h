@@ -19,6 +19,8 @@
 #ifndef I_SPINDIZZY_WALL_SURFACE_H
 #define I_SPINDIZZY_WALL_SURFACE_H
 
+#include <IsoRealms/CollisionVertex.h>
+
 #include "ICollidableWallSurface.h"
 #include "IWallSurface.h"
 
@@ -26,6 +28,7 @@ class ISpindizzyWallSurface:public IWallSurface,
                             public ICollidableWallSurface {
   public:
   virtual void render() = 0;
+  virtual CollisionVertex* pickSurface(Vertex&, Vertex&) = 0;
   
   virtual ~ISpindizzyWallSurface() {}
 };

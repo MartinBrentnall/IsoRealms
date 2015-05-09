@@ -221,6 +221,35 @@ void WallSurface::render() {
   glEnd();
 }
 
+CollisionVertex* WallSurface::pickSurface(Vertex& start, Vertex& end) {
+  if (cCondition == nullptr || cCondition->isTrue()) {
+    float mOffset = cFacing == IWallSurface::NORTH || cFacing == IWallSurface::EAST
+                  ?   IsoRealmsConstants::BLOCK_RADIUS
+                  : -(IsoRealmsConstants::BLOCK_RADIUS);
+                  
+    if ((cFacing == IWallSurface::NORTH && start.y > end.y) || (cFacing == IWallSurface::SOUTH && start.y < end.y)) {
+      CollisionVertex* mVertex = Collision::getYCrossingPoint(start, end, cY + mOffset);
+      if (mVertex != nullptr && mVertex->x >= cX - IsoRealmsConstants::BLOCK_RADIUS && mVertex->x < (cX + cLength) - IsoRealmsConstants::BLOCK_RADIUS) {
+        float mWallHeight = getHeightAt(mVertex->x);
+        if (mVertex->z >= cZ && mVertex->z < mWallHeight) {
+          return mVertex;
+        }
+      }
+    }
+     
+    if ((cFacing == IWallSurface::EAST && start.x > end.x) || (cFacing == IWallSurface::WEST && start.x < end.x)) {
+      CollisionVertex* mVertex = Collision::getXCrossingPoint(start, end, cX + mOffset);
+      if (mVertex != nullptr && mVertex->y >= cY - IsoRealmsConstants::BLOCK_RADIUS && mVertex->y < (cY + cLength) - IsoRealmsConstants::BLOCK_RADIUS) {
+        float mWallHeight = getHeightAt(mVertex->y);
+        if (mVertex->z >= cZ && mVertex->z < mWallHeight) {
+          return mVertex;
+        }
+      }
+    }    
+  }
+  return nullptr;
+}
+
 WallSurface::WallEdge::WallEdge(int startHeight, int endHeight) {
   cStartHeight = startHeight;
   cEndHeight = endHeight;

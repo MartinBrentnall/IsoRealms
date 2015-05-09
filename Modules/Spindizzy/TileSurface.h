@@ -82,6 +82,7 @@ class TileSurface:public ISpindizzyTileSurface,
    * Implements ISpindizzyTileSurface *
   \************************************/
   void render();
+  CollisionVertex* pickSurface(Vertex&, Vertex&);
 
   /*******************************\
    * Implements IRollableSurface *

@@ -73,6 +73,28 @@ void TileSplitSurface::render() {
   }
 }
 
+CollisionVertex* TileSplitSurface::pickSurface(Vertex& start, Vertex& end, bool northSplit) {
+  float mStartHeight = getHeightAt(start.x, start.y, northSplit);
+  float mEndHeight   = getHeightAt(end.x,   end.y,   northSplit);
+  if ((start.z > mStartHeight) != (end.z > mEndHeight) && start.z > mStartHeight) {
+    float mGradient = Collision::getCrossingPoint(start.z, end.z, mStartHeight, mEndHeight);
+    double mXImpact = start.x + (end.x - start.x) * mGradient;
+    double mYImpact = start.y + (end.y - start.y) * mGradient;
+    if (inNorthSplit(mXImpact, mYImpact) == northSplit) {
+      if (alligned(round(mXImpact), round(mYImpact))) {
+        double mZImpact = getHeightAt(mXImpact, mYImpact);
+        return new CollisionVertex(mXImpact, mYImpact, mZImpact, mGradient);
+      }
+    }
+  }
+  return nullptr;
+}
+
+CollisionVertex* TileSplitSurface::pickSurface(Vertex& start, Vertex& end) {
+  CollisionVertex* mCollisionVertex = pickSurface(start, end, false);
+  return mCollisionVertex != nullptr ? mCollisionVertex : pickSurface(start, end, true);
+}
+
 BlockArea* TileSplitSurface::getCoverage() {
   return new BlockArea(cLocation, cLocation);
 }

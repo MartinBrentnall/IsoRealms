@@ -415,25 +415,25 @@ BlockArea* ElementSpindizzyLift::getCoverage() {
 }
 
 float ElementSpindizzyLift::getWest() {
-  return cLocation.x;
+  return cLocation.x - IsoRealmsConstants::BLOCK_RADIUS;
 }
 
 float ElementSpindizzyLift::getEast() {
-  return cLocation.x;
+  return cLocation.x + IsoRealmsConstants::BLOCK_RADIUS;
 }
 
 float ElementSpindizzyLift::getSouth() {
-  return cLocation.y;
+  return cLocation.y - IsoRealmsConstants::BLOCK_RADIUS;
 }
 
 float ElementSpindizzyLift::getNorth() {
-  return cLocation.y;
+  return cLocation.y + IsoRealmsConstants::BLOCK_RADIUS;
 }
 
 float ElementSpindizzyLift::getBottom() {
-  return cLocation.z;
+  return std::min(cLocation.z, cBottom) * IsoRealmsConstants::BLOCK_HEIGHT;
 }
 
 float ElementSpindizzyLift::getTop() {
-  return cLocation.z;
+  return std::max(cLocation.z, cTop) * IsoRealmsConstants::BLOCK_HEIGHT;
 }

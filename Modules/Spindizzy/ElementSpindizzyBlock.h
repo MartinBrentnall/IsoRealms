@@ -237,6 +237,7 @@ class ElementSpindizzyBlock:public ISpindizzyBlock,
   void renderPreviewWalls(IWallSurface::FaceDirection);
   void renderPreview(Vertex&, Vertex&);
   IElementBounds* getBounds();
+  PickedElement* pickElement(Vertex&, Vertex&);  
 
   /******************\
    * IElementBounds *

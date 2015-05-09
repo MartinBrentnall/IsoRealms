@@ -265,18 +265,40 @@ ICollisionData* TileSurface::getRollingEvent(Vertex& start, Vertex& end) {
   return nullptr;
 }
 
+CollisionVertex* TileSurface::pickSurface(Vertex& start, Vertex& end) {
+  float mStartHeight = getHeightAt(start.x, start.y);
+  float mEndHeight   = getHeightAt(end.x, end.y);
+  if ((start.z > mStartHeight) != (end.z > mEndHeight) && start.z > mStartHeight) {
+    float mGradient = Collision::getCrossingPoint(start.z, end.z, mStartHeight, mEndHeight);
+    double mXImpact = start.x + (end.x - start.x) * mGradient;
+    double mYImpact = start.y + (end.y - start.y) * mGradient;
+    double mZImpact = getHeightAt(mXImpact, mYImpact);
+    Vertex mImpactLocation(mXImpact, mYImpact, mZImpact);
+    if (alligned(round(mImpactLocation.x), round(mImpactLocation.y))) {
+      return new CollisionVertex(mImpactLocation.x, mImpactLocation.y, mImpactLocation.z, mGradient);
+    }
+  }
+  return nullptr;
+}
+
 ICollisionData* TileSurface::getCollision(Vertex& start, Vertex& end) {
   if (cCondition == nullptr || cCondition->isTrue()) {
     if (contains(start)) {
+      // Starting point is already within the surface.
+      // We ignore this if the craft is moving away from the surface.
       float mStartDifference = start.z - getHeightAt(start.x, start.y);
-      float mEndDifference = end.z - getHeightAt(end.x, end.y);
+      float mEndDifference   = end.z   - getHeightAt(end.x, end.y);
       if (mStartDifference >= mEndDifference) {
         Vertex* mEnterPoint = new Vertex(start);
+        
+        // Make sure the collision point is really confined to the area of the surface
         mEnterPoint->x = max(min(mEnterPoint->x, nextafterf(cEast  + IsoRealmsConstants::BLOCK_RADIUS, -INFINITY)), nextafterf(cWest  - IsoRealmsConstants::BLOCK_RADIUS, INFINITY));
         mEnterPoint->y = max(min(mEnterPoint->y, nextafterf(cNorth + IsoRealmsConstants::BLOCK_RADIUS, -INFINITY)), nextafterf(cSouth - IsoRealmsConstants::BLOCK_RADIUS, INFINITY));
         return new SurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mEnterPoint, -cWestEastSlope, -cNorthSouthSlope, 0.0f);
       }
     } else {
+      
+      // Test if the craft crossed the X/Y boundary of this surface.
       float mGradient;
       Vertex* mEnterPoint = getBoundaryCrossingPoint(start, end, &mGradient, -INFINITY);
       if (mEnterPoint != nullptr) {

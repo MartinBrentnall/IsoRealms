@@ -26,6 +26,7 @@ class ISpindizzyTileSurface:public ITileSurface,
                             public IRollableSurface {
   public:
   virtual void render() = 0;
+  virtual CollisionVertex* pickSurface(Vertex&, Vertex&) = 0;
 };
 
 #endif

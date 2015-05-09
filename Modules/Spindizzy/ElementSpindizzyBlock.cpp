@@ -366,10 +366,10 @@ void ElementSpindizzyBlock::renderStatic() {
     }
   }
   
-  if (mEditing) {
-    cStaticTileSurfaces.clear();
-    cStaticWallSurfaces.clear();
-  }
+//   if (mEditing) {
+//     cStaticTileSurfaces.clear();
+//     cStaticWallSurfaces.clear();
+//   }
 }
 
 void ElementSpindizzyBlock::renderRuntime() {
@@ -425,6 +425,48 @@ IElementBounds* ElementSpindizzyBlock::getBounds() {
   return this;
 }
 
+PickedElement* ElementSpindizzyBlock::pickElement(Vertex& start, Vertex& end) {
+  Vertex mStart(start.x, start.y, start.z / IsoRealmsConstants::BLOCK_HEIGHT);
+  Vertex mEnd(  end.x,   end.y,   end.z   / IsoRealmsConstants::BLOCK_HEIGHT);
+  CollisionVertex* mClosestCollision = nullptr;
+  for (ISpindizzyTileSurface* mTileSurface : cStaticTileSurfaces) {
+    CollisionVertex* mCollisionVertex = mTileSurface->pickSurface(mStart, mEnd);
+    if (mCollisionVertex != nullptr && (mClosestCollision == nullptr || mCollisionVertex->gradient < mClosestCollision->gradient)) {
+      // TODO: Delete Picked Element
+      mClosestCollision = mCollisionVertex;
+    }
+  }
+
+  for (ISpindizzyWallSurface* mWallSurface : cStaticWallSurfaces) {
+    CollisionVertex* mCollisionVertex = mWallSurface->pickSurface(mStart, mEnd);
+    if (mCollisionVertex != nullptr && (mClosestCollision == nullptr || mCollisionVertex->gradient < mClosestCollision->gradient)) {
+      // TODO: Delete Picked Element
+      mClosestCollision = mCollisionVertex;
+    }
+  }
+  
+  for (ISpindizzyTileSurface* mTileSurface : cDynamicTileSurfaces) {
+    CollisionVertex* mCollisionVertex = mTileSurface->pickSurface(mStart, mEnd);
+    if (mCollisionVertex != nullptr && (mClosestCollision == nullptr || mCollisionVertex->gradient < mClosestCollision->gradient)) {
+      // TODO: Delete Picked Element
+      mClosestCollision = mCollisionVertex;
+    }
+  }
+
+  for (ISpindizzyWallSurface* mWallSurface : cDynamicWallSurfaces) {
+    CollisionVertex* mCollisionVertex = mWallSurface->pickSurface(mStart, mEnd);
+    if (mCollisionVertex != nullptr && (mClosestCollision == nullptr || mCollisionVertex->gradient < mClosestCollision->gradient)) {
+      // TODO: Delete Picked Element
+      mClosestCollision = mCollisionVertex;
+    }
+  }  
+  
+  if (mClosestCollision != nullptr) {
+    return new PickedElement(mClosestCollision, this);
+  }
+  return nullptr;
+}
+
 float ElementSpindizzyBlock::getWest() {
   return cStartLocation.x - IsoRealmsConstants::BLOCK_RADIUS;
 }
@@ -442,11 +484,16 @@ float ElementSpindizzyBlock::getNorth() {
 }
 
 float ElementSpindizzyBlock::getBottom() {
-  return cStartLocation.z * IsoRealmsConstants::BLOCK_HEIGHT;
+  return std::min(cStartLocation.z, cEndLocation.z) * IsoRealmsConstants::BLOCK_HEIGHT;
 }
 
 float ElementSpindizzyBlock::getTop() {
-  return cEndLocation.z * IsoRealmsConstants::BLOCK_HEIGHT;
+  int mWidth  = (cEndLocation.x - cStartLocation.x) + 1;
+  int mLength = (cEndLocation.y - cStartLocation.y) + 1;
+  int mXSlopeHeight = mWidth  * std::abs(getXSlope());
+  int mYSlopeHeight = mLength * std::abs(getYSlope());
+  int mHighestCorner = mXSlopeHeight + mYSlopeHeight == 0 ? std::max(std::max(std::max(cSouthEastHeight, cSouthWestHeight), cNorthEastHeight), cNorthWestHeight) : 0;
+  return (std::max(cStartLocation.z, cEndLocation.z) + mXSlopeHeight + mYSlopeHeight + mHighestCorner) * IsoRealmsConstants::BLOCK_HEIGHT;
 }
 
 std::set<IBoolean*> ElementSpindizzyBlock::getInputs() {

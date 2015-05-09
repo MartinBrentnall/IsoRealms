@@ -129,9 +129,9 @@ void LayerSpindizzyMapEditingContext::removeCursorElement(IElement* element) {
   for (unsigned int i = 0; i < cCursorElements.size(); i++) {
     if (cCursorElements[i] == element) {
       cCursorElements.erase(cCursorElements.begin() + i);
-      if (cSelectedElement == element) {
-        cSelectedElement = cCursorElements.empty() ? nullptr : cCursorElements.back();
-      }
+//       if (cSelectedElement == element) {
+//         cSelectedElement = cCursorElements.empty() ? nullptr : cCursorElements.back();
+//       }
     }
   }
 }
@@ -239,6 +239,26 @@ bool LayerSpindizzyMapEditingContext::keyDown(SDLKey& key, SDLMod& mod) {
     case SDLK_DOWN:     {cActiveDown   = true; return true;}
     case SDLK_PAGEUP:   {cActiveHigher = true; return true;}
     case SDLK_PAGEDOWN: {cActiveLower  = true; return true;}
+    case SDLK_SPACE:    {
+      if (cElementType == nullptr) {
+        if (!cCursorElements.empty()) {
+          if (cSelectedElement == cCursorElements[0]) {
+            cSelectedElement = cCursorElements.back();
+          } else {
+            IElement* mElementToSelect = nullptr;
+            for (unsigned int i = 0; i < cCursorElements.size(); i++) {
+              if (cCursorElements[i] == cSelectedElement) {
+                break;
+              }
+              mElementToSelect = cCursorElements[i];
+            }
+            cSelectedElement = mElementToSelect;
+          }
+        }
+        return true;
+      }
+      break;
+    }
     default:            {} // Nothing to do
   }
   return false;
@@ -302,9 +322,7 @@ bool LayerSpindizzyMapEditingContext::input(SDL_Event& event) {
           }
         }
       }
-      if (mClosestPickedElement != nullptr) {
-        cSelectedElement = mClosestPickedElement->getElement();
-      }
+      cSelectedElement = mClosestPickedElement != nullptr ? mClosestPickedElement->getElement() : nullptr;
       glPopMatrix();
     }
   }
@@ -362,5 +380,5 @@ void LayerSpindizzyMapEditingContext::removeCursorRestriction(IElementContainer*
 
 void LayerSpindizzyMapEditingContext::addCursorElement(IElement* element) {
   cCursorElements.push_back(element);
-  cSelectedElement = element;
+//   cSelectedElement = element;
 }

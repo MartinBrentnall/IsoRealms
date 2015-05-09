@@ -72,6 +72,7 @@ class ElementSpindizzyWater:public ISpindizzyBlock,
   void renderRuntime();
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
   IElementBounds* getBounds();
+  PickedElement* pickElement(Vertex&, Vertex&);
 
   /******************\
    * IElementBounds *

@@ -168,26 +168,53 @@ IElementBounds* ElementSpindizzyWater::getBounds() {
   return this;
 }
 
+PickedElement* ElementSpindizzyWater::pickElement(Vertex& start, Vertex& end) {
+  ICollisionData* mClosestCollision = nullptr;
+  for (ISpindizzyTileSurface* mTileSurface : cStaticTileSurfaces) {
+    ICollisionData* mCollisionData = mTileSurface->getCollision(start, end);
+    if (mCollisionData != nullptr && (mClosestCollision == nullptr || mCollisionData->getGradient() < mClosestCollision->getGradient())) {
+      // TODO: Delete Picked Element
+      mClosestCollision = mCollisionData;
+    }
+  }
+
+  for (ISpindizzyTileSurface* mTileSurface : cDynamicTileSurfaces) {
+    ICollisionData* mCollisionData = mTileSurface->getCollision(start, end);
+    if (mCollisionData != nullptr && (mClosestCollision == nullptr || mCollisionData->getGradient() < mClosestCollision->getGradient())) {
+      // TODO: Delete Picked Element
+      mClosestCollision = mCollisionData;
+    }
+  }
+
+  if (mClosestCollision != nullptr) {
+    float mGradient = mClosestCollision->getGradient();
+    Vertex* mLocation = mClosestCollision->getEventLocation();
+    CollisionVertex* mCollisionVertex = new CollisionVertex(mLocation->x, mLocation->y, mLocation->z, mGradient);
+    return new PickedElement(mCollisionVertex, this);
+  }
+  return nullptr;
+}
+
 float ElementSpindizzyWater::getWest() {
-  return cStartLocation.x;
+  return cStartLocation.x - IsoRealmsConstants::BLOCK_RADIUS;
 }
 
 float ElementSpindizzyWater::getEast() {
-  return cEndLocation.x;
+  return cEndLocation.x + IsoRealmsConstants::BLOCK_RADIUS;
 }
 
 float ElementSpindizzyWater::getSouth() {
-  return cStartLocation.y;
+  return cStartLocation.y - IsoRealmsConstants::BLOCK_RADIUS;
 }
 
 float ElementSpindizzyWater::getNorth() {
-  return cEndLocation.y;
+  return cEndLocation.y + IsoRealmsConstants::BLOCK_RADIUS;
 }
 
 float ElementSpindizzyWater::getBottom() {
-  return cStartLocation.z;
+  return cEndLocation.z * IsoRealmsConstants::BLOCK_HEIGHT;
 }
 
 float ElementSpindizzyWater::getTop() {
-  return cEndLocation.z;
+  return cStartLocation.z * IsoRealmsConstants::BLOCK_HEIGHT;
 }

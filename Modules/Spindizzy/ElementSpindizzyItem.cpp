@@ -138,25 +138,25 @@ void ElementSpindizzyItem::unsetArguments() {
 }
 
 float ElementSpindizzyItem::getWest() {
-  return cLocation.x;
+  return cLocation.x - IsoRealmsConstants::BLOCK_RADIUS;
 }
 
 float ElementSpindizzyItem::getEast() {
-  return cLocation.x;
+  return cLocation.x + IsoRealmsConstants::BLOCK_RADIUS;
 }
 
 float ElementSpindizzyItem::getSouth() {
-  return cLocation.y;
+  return cLocation.y - IsoRealmsConstants::BLOCK_RADIUS;
 }
 
 float ElementSpindizzyItem::getNorth() {
-  return cLocation.y;
+  return cLocation.y + IsoRealmsConstants::BLOCK_RADIUS;
 }
 
 float ElementSpindizzyItem::getBottom() {
-  return cLocation.z;
+  return cLocation.z * IsoRealmsConstants::BLOCK_HEIGHT;
 }
 
 float ElementSpindizzyItem::getTop() {
-  return cLocation.z;
+  return (cLocation.z + 2.0) * IsoRealmsConstants::BLOCK_HEIGHT;
 }
