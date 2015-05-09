@@ -38,7 +38,7 @@ void ResourceSurfaceRegistry::registerWallSurface(ICollidableWallSurface* wallSu
   SDL_mutexV(cAccessMutex);
 }
 
-ICollisionData* ResourceSurfaceRegistry::getNextEvent(Vertex& start, Vertex& end, IRollableSurface* currentSurface) {
+ICollisionData* ResourceSurfaceRegistry::getNextEvent(Vertex& start, Vertex& end, IRollableSurface* currentSurface, float stepHeight) {
   int mSouth = std::floor(std::min(start.getY(), end.getY())) - 1;
   int mNorth = std::ceil(std::max(start.getY(), end.getY())) + 1;
   int mWest  = std::floor(std::min(start.getX(), end.getX())) - 1;
@@ -55,7 +55,7 @@ ICollisionData* ResourceSurfaceRegistry::getNextEvent(Vertex& start, Vertex& end
   ICollisionData* mStaticEvent = NULL;
   if (currentSurface == NULL) {
     for (unsigned int i = 0; i < mRollableSurfaces.size(); i++) {
-      ICollisionData* mEvent = mRollableSurfaces[i]->getCollision(start, end);
+      ICollisionData* mEvent = mRollableSurfaces[i]->getCollision(start, end, stepHeight);
       if (mEvent != NULL) {
         float mGradient = mEvent->getGradient();
         if (mEventGradient == -1.0f || mGradient < mEventGradient) {
@@ -67,7 +67,7 @@ ICollisionData* ResourceSurfaceRegistry::getNextEvent(Vertex& start, Vertex& end
   }
   
   for (unsigned int i = 0; i < mWallSurfaces.size(); i++) {
-    ICollisionData* mEvent = mWallSurfaces[i]->getCollision(start, end);
+    ICollisionData* mEvent = mWallSurfaces[i]->getCollision(start, end, stepHeight);
     if (mEvent != NULL) {
       float mGradient = mEvent->getGradient();
       if (mEventGradient == -1.0f || mGradient < mEventGradient) {
@@ -82,7 +82,7 @@ ICollisionData* ResourceSurfaceRegistry::getNextEvent(Vertex& start, Vertex& end
   }
 
   for (unsigned int i = 0; i < mInterceptingSurfaces.size(); i++) {
-    ICollisionData* mEvent = mInterceptingSurfaces[i]->getCollision(start, end);
+    ICollisionData* mEvent = mInterceptingSurfaces[i]->getCollision(start, end, stepHeight);
     if (mEvent != NULL) {
       float mGradient = mEvent->getGradient();
       if (mEventGradient == -1.0f || mGradient == mEventGradient) {
@@ -143,12 +143,12 @@ ICollisionData* ResourceSurfaceRegistry::getNextEvent(Vertex& start, Vertex& end
 //   return NULL;
 }
 
-IRollableSurface* ResourceSurfaceRegistry::getSurfaceAt(Vertex& location) {
+IRollableSurface* ResourceSurfaceRegistry::getSurfaceAt(Vertex& location, float stepHeight) {
   while (SDL_mutexP(cAccessMutex) == -1);
   std::vector<IRollableSurface*> mRollableSurfaces = cRollableSurfaces.getElements(location.x, location.y);
   SDL_mutexV(cAccessMutex);
   for (unsigned int i = 0; i < mRollableSurfaces.size(); i++) {
-    if (mRollableSurfaces[i]->contains(location)) {
+    if (mRollableSurfaces[i]->contains(location, stepHeight)) {
       return mRollableSurfaces[i];
     }
   }

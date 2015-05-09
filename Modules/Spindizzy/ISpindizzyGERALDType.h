@@ -31,8 +31,8 @@ class ISpindizzyGERALDType:public IElementType {
   virtual void notifyMovement(ElementSpindizzyCraft*, Vertex&, Vertex&) = 0;
   virtual void notifyAppearance(ElementSpindizzyCraft*, Vertex&) = 0;
   virtual void notifyDisappearance(ElementSpindizzyCraft*, Vertex&) = 0;
-  virtual ICollisionData* getNextEvent(Vertex&, Vertex&, IRollableSurface*) = 0;
-  virtual IRollableSurface* getSurfaceAt(Vertex&) = 0;
+  virtual ICollisionData* getNextEvent(Vertex&, Vertex&, IRollableSurface*, float) = 0;
+  virtual IRollableSurface* getSurfaceAt(Vertex&, float) = 0;
   virtual ICamera* getCamera() = 0;
   virtual void executeRespawnScript() = 0;
   virtual void executeFallImpactScript(float, ElementSpindizzyCraft*) = 0;

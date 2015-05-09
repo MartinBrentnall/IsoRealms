@@ -358,18 +358,17 @@ ICollisionData* WallSurface::checkVerticalEdgeCollision(Vertex& start, Vertex& e
   return nullptr;
 }
 
-ICollisionData* WallSurface::getCollision(Vertex& start, Vertex& end) {
+ICollisionData* WallSurface::getCollision(Vertex& start, Vertex& end, float stepHeight) {
   if (cCondition == nullptr || cCondition->isTrue()) {
     // TODO: Only do one way collision detection
     // TODO: Craft radius consideration
     
-    float mStepHeight = 0.5f; // TODO: This should be configurable somewhere
     float mCraftHeight = 1.7f; // TODO: This should be configurable somewhere
     float mCraftRadius = 0.4f; // TODO: This should be configurable somewhere
     float mXMovement = end.x - start.x;
     float mYMovement = end.y - start.y;
     
-    if (contains(start, mCraftRadius, mCraftHeight, mStepHeight)) {
+    if (contains(start, mCraftRadius, mCraftHeight, stepHeight)) {
       switch (cFacing) {
         case IWallSurface::NORTH: return new SurfaceCollisionEvent(this, ICollisionData::WALL_CLIP, new Vertex(start.x,                                          nextafterf(getNorthEdge(mCraftRadius),  INFINITY), start.z), 0.0f);
         case IWallSurface::SOUTH: return new SurfaceCollisionEvent(this, ICollisionData::WALL_CLIP, new Vertex(start.x,                                          nextafterf(getSouthEdge(mCraftRadius), -INFINITY), start.z), 0.0f); 
@@ -387,7 +386,7 @@ ICollisionData* WallSurface::getCollision(Vertex& start, Vertex& end) {
       CollisionVertex* mVertex = Collision::getYCrossingPoint(start, end, cY + mOffset);
       if (mVertex != nullptr && mVertex->x >= cX - IsoRealmsConstants::BLOCK_RADIUS && mVertex->x < (cX + cLength) - IsoRealmsConstants::BLOCK_RADIUS) {
         float mWallHeight = getHeightAt(mVertex->x);
-        if (mVertex->z >= cZ - mCraftHeight && mVertex->z < mWallHeight - mStepHeight) {
+        if (mVertex->z >= cZ - mCraftHeight && mVertex->z < mWallHeight - stepHeight) {
           float mDirection = cFacing == IWallSurface::NORTH ? INFINITY : -INFINITY;
           return new SurfaceCollisionEvent(this, ICollisionData::WALL_IMPACT, new Vertex(mVertex->x, nextafterf(mVertex->y, mDirection), mVertex->z), mVertex->gradient);
         }
@@ -398,7 +397,7 @@ ICollisionData* WallSurface::getCollision(Vertex& start, Vertex& end) {
       CollisionVertex* mVertex = Collision::getXCrossingPoint(start, end, cX + mOffset);
       if (mVertex != nullptr && mVertex->y >= cY - IsoRealmsConstants::BLOCK_RADIUS && mVertex->y < (cY + cLength) - IsoRealmsConstants::BLOCK_RADIUS) {
         float mWallHeight = getHeightAt(mVertex->y);
-        if (mVertex->z >= cZ - mCraftHeight && mVertex->z < mWallHeight - mStepHeight) {
+        if (mVertex->z >= cZ - mCraftHeight && mVertex->z < mWallHeight - stepHeight) {
           float mDirection = cFacing == IWallSurface::EAST ? INFINITY : -INFINITY;
           return new SurfaceCollisionEvent(this, ICollisionData::WALL_IMPACT, new Vertex(nextafterf(mVertex->x, mDirection), mVertex->y, mVertex->z), mVertex->gradient);
         }
@@ -413,7 +412,7 @@ ICollisionData* WallSurface::getCollision(Vertex& start, Vertex& end) {
           CollisionVertex* mVertex = Collision::getXCrossingPoint(start, end, mEdgePosition);
           if (mVertex != nullptr && mVertex->y >= cY + IsoRealmsConstants::BLOCK_RADIUS && mVertex->y <= cY + IsoRealmsConstants::BLOCK_RADIUS + mCraftRadius) {
             float mWallHeight = getHeightAt(mEdgePosition);
-            if (mVertex->z >= cZ - mCraftHeight && mVertex->z < mWallHeight - mStepHeight) {
+            if (mVertex->z >= cZ - mCraftHeight && mVertex->z < mWallHeight - stepHeight) {
               float mGradient = (mEdgePosition - start.x) / mXMovement; // TODO: Why isn't this gradient exactly same as the one in the CollisionVertex?  We shouldn't need this; we should just be able to use the one in the collision vertex.
               float mDirection = start.x < end.x ? INFINITY : -INFINITY;
               return new SurfaceCollisionEvent(this, ICollisionData::WALL_CLIP, new Vertex(nextafterf(mVertex->x, mDirection), nextafterf(cY + IsoRealmsConstants::BLOCK_RADIUS + mCraftRadius, INFINITY), mVertex->z), mGradient);
@@ -429,7 +428,7 @@ ICollisionData* WallSurface::getCollision(Vertex& start, Vertex& end) {
           CollisionVertex* mVertex = Collision::getXCrossingPoint(start, end, mEdgePosition);
           if (mVertex != nullptr && mVertex->y <= cY - IsoRealmsConstants::BLOCK_RADIUS && mVertex->y >= (cY - IsoRealmsConstants::BLOCK_RADIUS) - mCraftRadius) {
             float mWallHeight = getHeightAt(mEdgePosition);
-            if (mVertex->z >= cZ - mCraftHeight && mVertex->z < mWallHeight - mStepHeight) {
+            if (mVertex->z >= cZ - mCraftHeight && mVertex->z < mWallHeight - stepHeight) {
               float mGradient = (mEdgePosition - start.x) / mXMovement; // TODO: Why isn't this gradient exactly same as the one in the CollisionVertex?  We shouldn't need this; we should just be able to use the one in the collision vertex.
               float mDirection = start.x < end.x ? INFINITY : -INFINITY;
               return new SurfaceCollisionEvent(this, ICollisionData::WALL_CLIP, new Vertex(nextafterf(mVertex->x, mDirection), nextafterf((cY - IsoRealmsConstants::BLOCK_RADIUS) - mCraftRadius, -INFINITY), mVertex->z), mGradient);
@@ -445,7 +444,7 @@ ICollisionData* WallSurface::getCollision(Vertex& start, Vertex& end) {
           CollisionVertex* mVertex = Collision::getYCrossingPoint(start, end, mEdgePosition);
           if (mVertex != nullptr && mVertex->x >= cX + IsoRealmsConstants::BLOCK_RADIUS && mVertex->x <= cX + IsoRealmsConstants::BLOCK_RADIUS + mCraftRadius) {
             float mWallHeight = getHeightAt(mEdgePosition);
-            if (mVertex->z >= cZ - mCraftHeight && mVertex->z < mWallHeight - mStepHeight) {
+            if (mVertex->z >= cZ - mCraftHeight && mVertex->z < mWallHeight - stepHeight) {
               float mGradient = (mEdgePosition - start.y) / mYMovement; // TODO: Why isn't this gradient exactly same as the one in the CollisionVertex?  We shouldn't need this; we should just be able to use the one in the collision vertex.
               float mDirection = start.y < end.y ? INFINITY : -INFINITY;
               return new SurfaceCollisionEvent(this, ICollisionData::WALL_CLIP, new Vertex(nextafterf(cX + IsoRealmsConstants::BLOCK_RADIUS + mCraftRadius, INFINITY), nextafterf(mVertex->y, mDirection), mVertex->z), mGradient);
@@ -461,7 +460,7 @@ ICollisionData* WallSurface::getCollision(Vertex& start, Vertex& end) {
           CollisionVertex* mVertex = Collision::getYCrossingPoint(start, end, mEdgePosition);
           if (mVertex != nullptr && mVertex->x <= cX - IsoRealmsConstants::BLOCK_RADIUS && mVertex->x >= (cX - IsoRealmsConstants::BLOCK_RADIUS) - mCraftRadius) {
             float mWallHeight = getHeightAt(mEdgePosition);
-            if (mVertex->z >= cZ - mCraftHeight && mVertex->z < mWallHeight - mStepHeight) {
+            if (mVertex->z >= cZ - mCraftHeight && mVertex->z < mWallHeight - stepHeight) {
               float mGradient = (mEdgePosition - start.y) / mYMovement; // TODO: Why isn't this gradient exactly same as the one in the CollisionVertex?  We shouldn't need this; we should just be able to use the one in the collision vertex.
               float mDirection = start.y < end.y ? INFINITY : -INFINITY;
               return new SurfaceCollisionEvent(this, ICollisionData::WALL_CLIP, new Vertex(nextafterf((cX - IsoRealmsConstants::BLOCK_RADIUS) - mCraftRadius, -INFINITY), nextafterf(mVertex->y, mDirection), mVertex->z), mGradient);
@@ -473,8 +472,8 @@ ICollisionData* WallSurface::getCollision(Vertex& start, Vertex& end) {
     }
     
     // Top Clip Detection
-    float mStartHeight = getHeightAt(cFacing == IWallSurface::NORTH || cFacing == IWallSurface::SOUTH ? start.x : start.y) - mStepHeight;
-    float mEndHeight   = getHeightAt(cFacing == IWallSurface::NORTH || cFacing == IWallSurface::SOUTH ? end.x   : end.y) - mStepHeight;
+    float mStartHeight = getHeightAt(cFacing == IWallSurface::NORTH || cFacing == IWallSurface::SOUTH ? start.x : start.y) - stepHeight;
+    float mEndHeight   = getHeightAt(cFacing == IWallSurface::NORTH || cFacing == IWallSurface::SOUTH ? end.x   : end.y) - stepHeight;
     ICollisionData* mClipEvent = checkVerticalEdgeCollision(start, end, mStartHeight, mEndHeight, mCraftRadius, false);
     if (mClipEvent != nullptr) {
       return mClipEvent;

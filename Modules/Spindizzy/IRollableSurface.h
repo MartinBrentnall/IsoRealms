@@ -42,7 +42,7 @@ class IRollableSurface {
    * @param Vertex&  Ending point of movement along the surface.
    * @returns  An event if one is generated, otherwise NULL.
    */
-  virtual ICollisionData* getCollision(Vertex&, Vertex&) = 0;
+  virtual ICollisionData* getCollision(Vertex&, Vertex&, float) = 0;
   
   /**
    * Determine whether an event occurs assuming that the specified vertices
@@ -74,7 +74,7 @@ class IRollableSurface {
    * @param Vertex&  The vertex to test.
    * @returns true if the vertex is on this surface, otherwise false.
    */
-  virtual bool contains(Vertex&) = 0;
+  virtual bool contains(Vertex&, float) = 0;
   
   /**
    * Determine the sloping of this surface along the X axis at the specified

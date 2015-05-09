@@ -271,12 +271,12 @@ void ResourceElementSpindizzyCraft::notifyDisappearance(ElementSpindizzyCraft* c
   }
 }
 
-ICollisionData* ResourceElementSpindizzyCraft::getNextEvent(Vertex& start, Vertex& end, IRollableSurface* currentSurface) {
-  return cModuleInterface->getNextEvent(start, end, currentSurface);
+ICollisionData* ResourceElementSpindizzyCraft::getNextEvent(Vertex& start, Vertex& end, IRollableSurface* currentSurface, float stepHeight) {
+  return cModuleInterface->getNextEvent(start, end, currentSurface, stepHeight);
 }
 
-IRollableSurface* ResourceElementSpindizzyCraft::getSurfaceAt(Vertex& location) {
-  return cModuleInterface->getSurfaceAt(location);
+IRollableSurface* ResourceElementSpindizzyCraft::getSurfaceAt(Vertex& location, float stepHeight) {
+  return cModuleInterface->getSurfaceAt(location, stepHeight);
 }
 
 ICamera* ResourceElementSpindizzyCraft::getCamera() {

@@ -433,12 +433,12 @@ void SpindizzyModule::setArgumentValue(ElementHandlerZone* zoneElementHandler) {
   cZoneElementHandlerArgument.setValue(zoneElementHandler);
 }
 
-ICollisionData* SpindizzyModule::getNextEvent(Vertex& start, Vertex& end, IRollableSurface* currentSurface) {
-  return cSurfaceRegistry->getNextEvent(start, end, currentSurface);
+ICollisionData* SpindizzyModule::getNextEvent(Vertex& start, Vertex& end, IRollableSurface* currentSurface, float stepHeight) {
+  return cSurfaceRegistry->getNextEvent(start, end, currentSurface, stepHeight);
 }
 
-IRollableSurface* SpindizzyModule::getSurfaceAt(Vertex& location) {
-  return cSurfaceRegistry->getSurfaceAt(location);
+IRollableSurface* SpindizzyModule::getSurfaceAt(Vertex& location, float stepHeight) {
+  return cSurfaceRegistry->getSurfaceAt(location, stepHeight);
 }
 
 bool SpindizzyModule::isEditing() {

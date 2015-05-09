@@ -26,11 +26,15 @@ const unsigned int ElementSpindizzyCraft::INIT_REGISTER_SURFACES = 2;
 const unsigned int ElementSpindizzyCraft::INIT_USE_SURFACES = 3;
 const unsigned int ElementSpindizzyCraft::BOUNCE_CONTROL_TIME = 40;
 
+const float ElementSpindizzyCraft::STEP_REACH_NORMAL = 0.5f;
+const float ElementSpindizzyCraft::STEP_REACH_BOUNCE = 0.8f;
+
 ElementSpindizzyCraft::ElementSpindizzyCraft(ISpindizzyGERALDType* elementType, IResourceAccessor* resources, DOMNodeWrapper* node) {
   cCraftType = elementType;
   cLocation = new Vertex();
   cAppeared = false;
   readData(node);
+  cStepReach = STEP_REACH_NORMAL;
 }
 
 ElementSpindizzyCraft::ElementSpindizzyCraft(ISpindizzyGERALDType* elementType, IResourceAccessor* resources, BlockLocation* startLocation) {
@@ -42,12 +46,14 @@ ElementSpindizzyCraft::ElementSpindizzyCraft(ISpindizzyGERALDType* elementType, 
   cLocation->z = cStartLocation.z;
   cGERALDModel = elementType->createModel(cLocation);
   cAppeared = false;
+  cStepReach = STEP_REACH_NORMAL;
 }
 
 ElementSpindizzyCraft::ElementSpindizzyCraft(ISpindizzyGERALDType* elementType) {
   cCraftType = elementType;
   cLocation = new Vertex();
   cAppeared = false;
+  cStepReach = STEP_REACH_NORMAL;
 }
 
 void ElementSpindizzyCraft::setModelType(I3DModelType* oldModelType, I3DModelType* newModelType) {
@@ -98,7 +104,7 @@ bool ElementSpindizzyCraft::initElement(unsigned int pass) {
 //     }
 // 
 //     case INIT_USE_SURFACES: {
-      cCurrentSurface = cCraftType->getSurfaceAt(*cLocation);
+      cCurrentSurface = cCraftType->getSurfaceAt(*cLocation, cStepReach);
       cRespawnData = new RespawnData();
       cRespawnData->cSurface = cCurrentSurface;
       cRespawnSurfaceStack.push(cRespawnData);
@@ -341,7 +347,7 @@ ICollisionData* ElementSpindizzyCraft::pollCollisionEvent(Vertex& startLocation,
     mEvent = mSlideEvent;
   }
   
-  ICollisionData* mOtherEvent = cCraftType->getNextEvent(startLocation, endLocation, cCurrentSurface);
+  ICollisionData* mOtherEvent = cCraftType->getNextEvent(startLocation, endLocation, cCurrentSurface, cStepReach);
   if (mOtherEvent != nullptr) {
     bool mValidEvent = isValidEvent(mOtherEvent);
     if (mValidEvent && (mEvent == nullptr || mOtherEvent->getGradient() < mEvent->getGradient())) {
@@ -411,6 +417,7 @@ bool ElementSpindizzyCraft::processEvent(ICollisionData& event) {
       if (mMountedSurface != cCurrentSurface) {
         cMomentum.z = -cMomentum.z * mMountedSurface->getSurfaceBounce();
         if (cCycleBounce || cMomentum.z == 0.0f || cPeakHeight <= mMountedSurface->getHeightAt(mEventLocation->x, mEventLocation->y)) {
+          cStepReach = STEP_REACH_NORMAL;
           cCraftType->executeFallImpactScript(cPeakHeight - mEventLocation->z, this);
           if (cRespawning) {
             return false;      
@@ -421,6 +428,7 @@ bool ElementSpindizzyCraft::processEvent(ICollisionData& event) {
 //          std::cout << " + + + We entd: " << cCurrentSurface << std::endl;
           cPeakHeight = cMapBottom;
         } else {
+          cStepReach = STEP_REACH_BOUNCE;
           Vertex mDummyLocation = *mEventLocation;
           cCurrentSurface = mMountedSurface;
           getNewLocation(BOUNCE_CONTROL_TIME, &mDummyLocation, &cMomentum);
@@ -430,7 +438,7 @@ bool ElementSpindizzyCraft::processEvent(ICollisionData& event) {
 //          std::cout << "Bounced to " << cMomentum.z << "...!" << std::endl;
 //          std::cout << "Peak height is " << cPeakHeight << "...!" << std::endl;
 //          std::cout << "Current height is " << mEventLocation->z << "...!" << std::endl;
-          float mFallHeight = (cPeakHeight - mEventLocation->z) + (cJumpedFromRamp ? 0.0f : 0.335f);
+          float mFallHeight = (cPeakHeight - mEventLocation->z) + 0.335f;// (cJumpedFromRamp ? 0.0f : 0.335f);
 //          std::cout << "Fall height is " << mFallHeight << "...!" << std::endl;
           float mIdealProjection = sqrt(mFallHeight * 2 * -GRAVITY_STRENGTH);
 //          std::cout << "Ideal projection is " << mIdealProjection << "...!" << std::endl;

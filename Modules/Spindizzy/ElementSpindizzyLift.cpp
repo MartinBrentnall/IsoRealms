@@ -314,20 +314,20 @@ Vertex* ElementSpindizzyLift::getBoundaryCrossingPoint(Vertex& start, Vertex& en
   return nullptr;
 }
 
-bool ElementSpindizzyLift::contains(Vertex& location) {
+bool ElementSpindizzyLift::contains(Vertex& location, float stepHeight) {
   float mSouthEdge = cLocation.y - IsoRealmsConstants::BLOCK_RADIUS;
   float mWestEdge  = cLocation.x - IsoRealmsConstants::BLOCK_RADIUS;
   float mNorthEdge = cLocation.y + IsoRealmsConstants::BLOCK_RADIUS;
   float mEastEdge  = cLocation.x + IsoRealmsConstants::BLOCK_RADIUS;
   if (location.y >= mSouthEdge  && location.y < mNorthEdge && location.x >= mWestEdge && location.x < mEastEdge) {
     float mEnterHeight = getHeightAt(location.x, location.y);
-    return location.z <= mEnterHeight && location.z >= mEnterHeight - 0.5f;
+    return location.z <= mEnterHeight && location.z >= mEnterHeight - stepHeight;
   }
   return false;
 }
 
-ICollisionData* ElementSpindizzyLift::getCollision(Vertex& start, Vertex& end) {
-  if (contains(start)) {
+ICollisionData* ElementSpindizzyLift::getCollision(Vertex& start, Vertex& end, float stepHeight) {
+  if (contains(start, stepHeight)) {
     Vertex* mEnterPoint = new Vertex(start);
     return new LiftSurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mEnterPoint, 0.0f);;
   }
@@ -336,7 +336,7 @@ ICollisionData* ElementSpindizzyLift::getCollision(Vertex& start, Vertex& end) {
   Vertex* mEnterPoint = getBoundaryCrossingPoint(start, end, &mGradient, -INFINITY);
   if (mEnterPoint != nullptr) {
     float mEnterHeight = getHeightAt(mEnterPoint->x, mEnterPoint->y);
-    if (mEnterPoint->z <= mEnterHeight && mEnterPoint->z >= mEnterHeight - 0.5f) {
+    if (mEnterPoint->z <= mEnterHeight && mEnterPoint->z >= mEnterHeight - stepHeight) {
       return new LiftSurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mEnterPoint, mGradient);
     }
   }

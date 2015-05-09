@@ -460,11 +460,7 @@ PickedElement* ElementSpindizzyBlock::pickElement(Vertex& start, Vertex& end) {
       mClosestCollision = mCollisionVertex;
     }
   }  
-  
-  if (mClosestCollision != nullptr) {
-    return new PickedElement(mClosestCollision, this);
-  }
-  return nullptr;
+  return mClosestCollision != nullptr ? new PickedElement(mClosestCollision, this) : nullptr;
 }
 
 float ElementSpindizzyBlock::getWest() {

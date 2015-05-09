@@ -58,6 +58,9 @@ class ElementSpindizzyCraft:public Element,
   static const unsigned int INIT_USE_SURFACES;
   static const unsigned int BOUNCE_CONTROL_TIME;
   
+  static const float STEP_REACH_NORMAL;
+  static const float STEP_REACH_BOUNCE;
+  
   struct RespawnData {
     IRollableSurface* cSurface;
     int cX;
@@ -103,6 +106,7 @@ class ElementSpindizzyCraft:public Element,
   float cRespawnAnimation;
   bool cCycleBounce;
   int cFastEvents;
+  float cStepReach;
   
   // Surfaces
   IRollableSurface* cCurrentSurface;

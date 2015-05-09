@@ -267,8 +267,8 @@ class SpindizzyModule:public IModule,
   /**********************************\
    * Implements ISpindizzyGERALDSet *
   \**********************************/
-  ICollisionData* getNextEvent(Vertex&, Vertex&, IRollableSurface*);
-  IRollableSurface* getSurfaceAt(Vertex&);
+  ICollisionData* getNextEvent(Vertex&, Vertex&, IRollableSurface*, float);
+  IRollableSurface* getSurfaceAt(Vertex&, float);
 
   /************\
    * Multiple *

@@ -41,7 +41,7 @@ class ICollidableWallSurface {
    * @param Vertex&  Ending point of movement along the surface.
    * @returns  An event if one is generated, otherwise NULL.
    */
-  virtual ICollisionData* getCollision(Vertex&, Vertex&) = 0;  
+  virtual ICollisionData* getCollision(Vertex&, Vertex&, float) = 0;
 
   /**
    * Returns the bounciness of this surface.  The bounciness determines how much

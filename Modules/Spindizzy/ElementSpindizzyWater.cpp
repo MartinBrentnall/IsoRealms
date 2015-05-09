@@ -169,30 +169,25 @@ IElementBounds* ElementSpindizzyWater::getBounds() {
 }
 
 PickedElement* ElementSpindizzyWater::pickElement(Vertex& start, Vertex& end) {
-  ICollisionData* mClosestCollision = nullptr;
+  Vertex mStart(start.x, start.y, start.z / IsoRealmsConstants::BLOCK_HEIGHT);
+  Vertex mEnd(  end.x,   end.y,   end.z   / IsoRealmsConstants::BLOCK_HEIGHT);
+  CollisionVertex* mClosestCollision = nullptr;
   for (ISpindizzyTileSurface* mTileSurface : cStaticTileSurfaces) {
-    ICollisionData* mCollisionData = mTileSurface->getCollision(start, end);
-    if (mCollisionData != nullptr && (mClosestCollision == nullptr || mCollisionData->getGradient() < mClosestCollision->getGradient())) {
+    CollisionVertex* mCollisionVertex = mTileSurface->pickSurface(mStart, mEnd);
+    if (mCollisionVertex != nullptr && (mClosestCollision == nullptr || mCollisionVertex->gradient < mClosestCollision->gradient)) {
       // TODO: Delete Picked Element
-      mClosestCollision = mCollisionData;
+      mClosestCollision = mCollisionVertex;
     }
   }
 
   for (ISpindizzyTileSurface* mTileSurface : cDynamicTileSurfaces) {
-    ICollisionData* mCollisionData = mTileSurface->getCollision(start, end);
-    if (mCollisionData != nullptr && (mClosestCollision == nullptr || mCollisionData->getGradient() < mClosestCollision->getGradient())) {
+    CollisionVertex* mCollisionVertex = mTileSurface->pickSurface(mStart, mEnd);
+    if (mCollisionVertex != nullptr && (mClosestCollision == nullptr || mCollisionVertex->gradient < mClosestCollision->gradient)) {
       // TODO: Delete Picked Element
-      mClosestCollision = mCollisionData;
+      mClosestCollision = mCollisionVertex;
     }
   }
-
-  if (mClosestCollision != nullptr) {
-    float mGradient = mClosestCollision->getGradient();
-    Vertex* mLocation = mClosestCollision->getEventLocation();
-    CollisionVertex* mCollisionVertex = new CollisionVertex(mLocation->x, mLocation->y, mLocation->z, mGradient);
-    return new PickedElement(mCollisionVertex, this);
-  }
-  return nullptr;
+  return mClosestCollision != nullptr ? new PickedElement(mClosestCollision, this) : nullptr;
 }
 
 float ElementSpindizzyWater::getWest() {

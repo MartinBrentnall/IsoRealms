@@ -27,8 +27,8 @@ class ISpindizzyGERALDSet {
   public:
   virtual bool isEditing() = 0;
   virtual bool isLocked() = 0; 
-  virtual ICollisionData* getNextEvent(Vertex&, Vertex&, IRollableSurface*) = 0;
-  virtual IRollableSurface* getSurfaceAt(Vertex&) = 0;
+  virtual ICollisionData* getNextEvent(Vertex&, Vertex&, IRollableSurface*, float) = 0;
+  virtual IRollableSurface* getSurfaceAt(Vertex&, float) = 0;
 };
 
 #endif

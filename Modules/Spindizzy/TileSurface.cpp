@@ -240,14 +240,14 @@ Vertex* TileSurface::getBoundaryCrossingPoint(Vertex& start, Vertex& end, float*
   return nullptr;
 }
 
-bool TileSurface::contains(Vertex& location) {
+bool TileSurface::contains(Vertex& location, float stepHeight) {
   float mSouthEdge  = cSouth - IsoRealmsConstants::BLOCK_RADIUS;
   float mWestEdge   = cWest  - IsoRealmsConstants::BLOCK_RADIUS;
   float mNorthEdge  = cNorth + IsoRealmsConstants::BLOCK_RADIUS;
   float mEastEdge   = cEast  + IsoRealmsConstants::BLOCK_RADIUS;
   if (location.y >= mSouthEdge  && location.y < mNorthEdge && location.x >= mWestEdge && location.x < mEastEdge) {
     float mSurfaceHeight = getHeightAt(location.x, location.y);
-    return location.z <= mSurfaceHeight && location.z >= mSurfaceHeight - 0.5f;
+    return location.z <= mSurfaceHeight && location.z >= mSurfaceHeight - stepHeight;
   }
   return false;
 }
@@ -281,9 +281,9 @@ CollisionVertex* TileSurface::pickSurface(Vertex& start, Vertex& end) {
   return nullptr;
 }
 
-ICollisionData* TileSurface::getCollision(Vertex& start, Vertex& end) {
+ICollisionData* TileSurface::getCollision(Vertex& start, Vertex& end, float stepHeight) {
   if (cCondition == nullptr || cCondition->isTrue()) {
-    if (contains(start)) {
+    if (contains(start, stepHeight)) {
       // Starting point is already within the surface.
       // We ignore this if the craft is moving away from the surface.
       float mStartDifference = start.z - getHeightAt(start.x, start.y);
@@ -303,7 +303,7 @@ ICollisionData* TileSurface::getCollision(Vertex& start, Vertex& end) {
       Vertex* mEnterPoint = getBoundaryCrossingPoint(start, end, &mGradient, -INFINITY);
       if (mEnterPoint != nullptr) {
         float mEnterHeight = getHeightAt(mEnterPoint->x, mEnterPoint->y);
-        if (mEnterPoint->z <= mEnterHeight && mEnterPoint->z >= mEnterHeight - 0.5f) {
+        if (mEnterPoint->z <= mEnterHeight && mEnterPoint->z >= mEnterHeight - stepHeight) {
           return new SurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mEnterPoint, -cWestEastSlope, -cNorthSouthSlope, mGradient);
         }
       }

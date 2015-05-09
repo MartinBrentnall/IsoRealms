@@ -107,14 +107,14 @@ bool TileSplitSurface::alligned(int x, int y) {
   return cLocation.x == x && cLocation.y == y;
 }
 
-bool TileSplitSurface::contains(Vertex& location) {
+bool TileSplitSurface::contains(Vertex& location, float stepHeight) {
   float mSouthEdge  = cLocation.y - IsoRealmsConstants::BLOCK_RADIUS;
   float mWestEdge   = cLocation.x  - IsoRealmsConstants::BLOCK_RADIUS;
   float mNorthEdge  = cLocation.y + IsoRealmsConstants::BLOCK_RADIUS;
   float mEastEdge   = cLocation.x  + IsoRealmsConstants::BLOCK_RADIUS;
   if (location.y > mSouthEdge  && location.y <= mNorthEdge && location.x > mWestEdge && location.x <= mEastEdge) {
     float mSurfaceHeight = getHeightAt(location.x, location.y);
-    return location.z <= mSurfaceHeight && location.z >= mSurfaceHeight - 0.5f;
+    return location.z <= mSurfaceHeight && location.z >= mSurfaceHeight - stepHeight;
   }
   return false;
 }
@@ -337,9 +337,9 @@ void TileSplitSurface::confine(double* x, double* y) {
   *y = max(mSouth, min(mNorth, *y));
 }
 
-ICollisionData* TileSplitSurface::getCollision(Vertex& start, Vertex& end) {
+ICollisionData* TileSplitSurface::getCollision(Vertex& start, Vertex& end, float stepHeight) {
   if (cCondition == nullptr || cCondition->isTrue()) {
-    if (contains(start)) {
+    if (contains(start, stepHeight)) {
       Vertex* mEnterPoint = new Vertex(start);
       confine(&(mEnterPoint->x), &(mEnterPoint->y));
       return new SurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mEnterPoint, getXAcceleration(start.x, start.y), getYAcceleration(start.x, start.y), 0.0f);
@@ -349,7 +349,7 @@ ICollisionData* TileSplitSurface::getCollision(Vertex& start, Vertex& end) {
     Vertex* mEnterPoint = getBoundaryCrossingPoint(start, end, &mGradient, -INFINITY);
     if (mEnterPoint != nullptr) {
       float mEnterHeight = getHeightAt(mEnterPoint->x, mEnterPoint->y);
-      if (mEnterPoint->z <= mEnterHeight && mEnterPoint->z >= mEnterHeight - 0.5f) {
+      if (mEnterPoint->z <= mEnterHeight && mEnterPoint->z >= mEnterHeight - stepHeight) {
         confine(&(mEnterPoint->x), &(mEnterPoint->y));
         SurfaceCollisionEvent* mEvent = new SurfaceCollisionEvent(this, ICollisionData::SURFACE_MOUNT, mEnterPoint, getXAcceleration(start.x, start.y), getYAcceleration(start.x, start.y), mGradient);
         return mEvent;

@@ -162,7 +162,7 @@ class WallSurface:public ISpindizzyWallSurface,
    * Implements ICollidableWallSurface *
   \*************************************/
   WallFaceDirection getWallFaceDirection();
-  ICollisionData* getCollision(Vertex&, Vertex&);
+  ICollisionData* getCollision(Vertex&, Vertex&, float);
   float getSurfaceBounce();
   ICollisionData* getSlidingEvent(Vertex&, Vertex&);
   Vertex* getLocation();

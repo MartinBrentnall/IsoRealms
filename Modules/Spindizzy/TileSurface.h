@@ -87,8 +87,8 @@ class TileSurface:public ISpindizzyTileSurface,
   /*******************************\
    * Implements IRollableSurface *
   \*******************************/
-  bool contains(Vertex&);
-  ICollisionData* getCollision(Vertex&, Vertex&);
+  bool contains(Vertex&, float);
+  ICollisionData* getCollision(Vertex&, Vertex&, float);
   ICollisionData* getRollingEvent(Vertex&, Vertex&);
   float getHeightAt(float, float);
   float getXAcceleration(float, float);

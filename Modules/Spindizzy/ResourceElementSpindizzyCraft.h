@@ -114,8 +114,8 @@ class ResourceElementSpindizzyCraft:public ISpindizzyGERALDType,
   void notifyMovement(ElementSpindizzyCraft*, Vertex&, Vertex&);
   void notifyAppearance(ElementSpindizzyCraft*, Vertex&);
   void notifyDisappearance(ElementSpindizzyCraft*, Vertex&);
-  ICollisionData* getNextEvent(Vertex&, Vertex&, IRollableSurface*);
-  IRollableSurface* getSurfaceAt(Vertex&);
+  ICollisionData* getNextEvent(Vertex&, Vertex&, IRollableSurface*, float);
+  IRollableSurface* getSurfaceAt(Vertex&, float);
   ICamera* getCamera();
   void executeRespawnScript();
   void executeFallImpactScript(float, ElementSpindizzyCraft*);
