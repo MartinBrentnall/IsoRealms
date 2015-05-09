@@ -19,7 +19,8 @@
 #include "Engine.h"
 
 Engine::Engine() {
-  cRuntime = NULL;
+  cProject = nullptr;
+  cTerminate = false;
   try {
     std::string mConfigurationFileLocation = System::getConfigurationFileLocation();
     DOMNodeWrapper* mConfigurationRootNode = new DOMNodeWrapper(mConfigurationFileLocation);
@@ -43,7 +44,39 @@ void Engine::loadProject(DOMNodeWrapper* node) {
       std::string mRootProject = mNode->getAttribute("project");
       std::string mRootProjectFullPath = System::getProgramResource(mRootProject + ".isorealms");
       DOMNodeWrapper* mProjectNode = new DOMNodeWrapper(mRootProjectFullPath);
-      cRuntime = new Runtime(mProjectNode, mRootProject);
+      loadProject(mProjectNode, mRootProject);
+    }
+  }
+}
+
+void Engine::loadProject(DOMNodeWrapper* node, const std::string& projectName) {
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValue = mNode->getNodeName();
+    if (mValue == "Project") {
+      cProject = new Project(mNode, projectName, NULL);
+    }
+  }
+  cProject->initRuntime();
+}
+
+void Engine::keyDown(SDLKey& key) {
+  switch (key) {
+    case SDLK_ESCAPE: {
+      cTerminate = true;
+    }
+
+    default: {
+      // Do nothing.
+    }
+  }
+}
+
+void Engine::input(SDL_Event& event) {
+  cProject->input(event);
+  switch (event.type) {
+    case SDL_KEYDOWN: {
+      keyDown(event.key.keysym.sym);
     }
   }
 }
@@ -51,30 +84,35 @@ void Engine::loadProject(DOMNodeWrapper* node) {
 void Engine::run() {
 
   // Flush event buffer before we start
-  while (SDL_PollEvent(&cEvent));
-  if (cRuntime == NULL) {
+  SDL_Event mEvent;
+  unsigned int mLeftoverMilliseconds = 0;
+  while (SDL_PollEvent(&mEvent));
+  if (cProject == nullptr) {
     throw InitException("No project specified by the engine configuration");
   }
   int mOldTicks = SDL_GetTicks();
   do {
-    while (!cPendingCommands.empty()) {
-      cPendingCommands.front()->execute();
-      cPendingCommands.pop();
-    }
     int mNewTicks = SDL_GetTicks();
     int mTicksPassed = mNewTicks - mOldTicks;
     if (mTicksPassed > 0) {
-      while (SDL_PollEvent(&cEvent)) {
-        KeyStates::input(cEvent);
-        cRuntime->input(cEvent);
+      while (SDL_PollEvent(&mEvent)) {
+        KeyStates::input(mEvent);
+        input(mEvent);
+        cProject->input(mEvent);
       }
       glLoadIdentity();
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-      cRuntime->execute(mTicksPassed);
+      mTicksPassed += mLeftoverMilliseconds;
+      while (mTicksPassed >= 10) {
+        cProject->updateRuntime(10);
+        mTicksPassed -= 10;
+      }
+      mLeftoverMilliseconds = mTicksPassed;
+      cProject->renderRuntime();
       SDL_GL_SwapBuffers();
     }
  
     mOldTicks = mNewTicks;
-  } while (!cRuntime->terminated());
+  } while (!cTerminate);
   std::cout << "Engine terminated" << std::endl;
 }

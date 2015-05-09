@@ -66,7 +66,6 @@ add_executable(IsoRealms.bin
   Engine.cpp
   EngineArguments.cpp
   Main.cpp
-  Runtime.cpp
   TerminateEngineCommand.cpp
 )
 target_link_libraries(IsoRealms.bin ${SDL_LIBRARY} ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY} ${GLEW_LIBRARY} ${LUABIND_LIBRARY} ${XERCESC_LIBRARY} IsoRealms)

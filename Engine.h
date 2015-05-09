@@ -35,10 +35,10 @@
 #include <IsoRealms/ICommand.h>
 #include <IsoRealms/IEngine.h>
 #include <IsoRealms/Input/KeyStates.h>
+#include <IsoRealms/Project.h>
 #include <IsoRealms/System.h>
 
 #include "EngineArguments.h"
-#include "Runtime.h"
 #include "TerminateEngineCommand.h"
 
 /**
@@ -65,17 +65,15 @@
  */
 class Engine:public IEngine {
   private:
-  Runtime* cRuntime;
-  std::queue<ICommand*> cPendingCommands;  
-
-  EngineArguments cEngineArguments;
-  SDL_Event cEvent;
+  Project* cProject;
   bool cTerminate;
   
   void loadProject(DOMNodeWrapper*);
+  void loadProject(DOMNodeWrapper*, const std::string&);
+  void keyDown(SDLKey&);
+  void input(SDL_Event&);  
   
   public:
-
   Engine();
 
   /**********************\
