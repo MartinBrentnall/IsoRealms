@@ -19,21 +19,35 @@
 #include "ResourceBooleanFixed.h"
 
 ResourceBooleanFixed::ResourceBooleanFixed(IDummyModule* module, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
-  cValue = 0;
+  cInitialValue = false;
+  cCurrentValue = false;
+}
+
+void ResourceBooleanFixed::setInitialValue(bool value) {
+  cInitialValue = value;
+}
+
+bool ResourceBooleanFixed::getInitialValue() {
+  return cInitialValue;
 }
 
 void ResourceBooleanFixed::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
-  cValue = node->getBooleanAttribute("value");
+  cInitialValue = node->getBooleanAttribute("value");
+  cCurrentValue = cInitialValue;
 }
 
 void ResourceBooleanFixed::save(DOMNodeWriter* node, IResourceLocator* resources) {
-  node->addAttribute("value", cValue);
+  node->addAttribute("value", cInitialValue);
 }
 
 void ResourceBooleanFixed::setValue(bool value) {
-  cValue = value;
+  cCurrentValue = value;
 }
 
 bool ResourceBooleanFixed::getValue() {
-  return cValue;
+  return cCurrentValue;
+}
+
+void ResourceBooleanFixed::reset() {
+  cCurrentValue = cInitialValue;
 }

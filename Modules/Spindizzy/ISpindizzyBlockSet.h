@@ -52,6 +52,8 @@ class ISpindizzyBlockSet {
   virtual void destroyWallTemplate(IWallSurfaceTemplate*, bool) = 0;
   virtual void registerRollableSurface(IRollableSurface*) = 0;
   virtual void registerWallSurface(ICollidableWallSurface*) = 0;
+  virtual void unregisterRollableSurface(IRollableSurface*) = 0;
+  virtual void unregisterWallSurface(ICollidableWallSurface*) = 0;
   virtual std::vector<ConditionElement*> getConditionElements() = 0;
   virtual bool isEditing() = 0;
   virtual void staticChanged() = 0;

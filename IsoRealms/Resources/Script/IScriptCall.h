@@ -19,12 +19,12 @@
 #ifndef I_SCRIPT_CALL_H
 #define I_SCRIPT_CALL_H
 
+#include <IsoRealms/ICommand.h>
 #include <IsoRealms/Persistence/DOMNodeWriter.h>
 #include <IsoRealms/Resources/IResourceLocator.h>
 
-class IScriptCall {
+class IScriptCall : public ICommand {
   public:
-  virtual void execute() = 0;
   virtual void save(DOMNodeWriter*, IResourceLocator*) = 0;
   
   virtual ~IScriptCall() {}

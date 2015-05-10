@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2015 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,12 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "TerminateEditorCommand.h"
+#ifndef TEST_COMMAND_H
+#define TEST_COMMAND_H
 
-TerminateEditorCommand::TerminateEditorCommand(bool& terminationFlag) {
-  cTerminationFlag = &terminationFlag;
-}
+#include <IsoRealms/ICommand.h>
 
-void TerminateEditorCommand::execute() {
-  *cTerminationFlag = true;
-}
+#include "IMapManager.h"
+
+class TestCommand : public ICommand {
+  private:
+  IMapManager* cMapManager;
+
+  public:
+  TestCommand(IMapManager*);
+  
+  /***********************\
+   * Implements ICommand *
+  \***********************/
+  void execute();
+};
+
+#endif

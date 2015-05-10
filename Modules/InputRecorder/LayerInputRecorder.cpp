@@ -53,3 +53,6 @@ void LayerInputRecorder::resourceSelected(IElementType* elementType) {
   // Not supported
 }
 
+void LayerInputRecorder::reset() {
+  // Not supported
+}

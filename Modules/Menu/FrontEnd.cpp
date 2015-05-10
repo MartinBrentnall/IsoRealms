@@ -20,26 +20,35 @@
 
 int FrontEnd::MAX_IDLE_TIME = 60000;
 
-FrontEnd::FrontEnd(DOMNodeWrapper* node, IFont* font, IController* controller) {
-  cExitCommand = CommandManager::getCommand("Pop");
+FrontEnd::FrontEnd(DOMNodeWrapper* node, IFont* font, IController* controller, IResourceAccessor* resources) {
   std::string mMenuName = node->getAttribute("name");
   std::vector<std::string> mTree;
   mTree.push_back(mMenuName);
   cFont = font;
-  FrontEndMenu* mMainMenu = new FrontEndMenu(this, this, node, mMenuName, mTree, controller);
+  FrontEndMenu* mMainMenu = new FrontEndMenu(this, this, node, mMenuName, mTree, controller, resources);
   cActiveMenu.push_back(mMainMenu);
+
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "ExitAction") {
+      cScriptExit = resources->getScriptCall(mNode);
+    }
+  }
 }
 
-ICommand* FrontEnd::parseCommand(DOMNodeWrapper* node) {
+ICommand* FrontEnd::parseCommand(DOMNodeWrapper* node, IResourceAccessor* resources) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "ExecuteCommand") {
       std::string mCommandType = mNode->getAttribute("type");
       return CommandManager::getCommand(mCommandType);
+    } else if (mValueAsString == "Script") {
+      return resources->getScriptCall(mNode);
     }
   }
-  return NULL;
+  return nullptr;
 }
 
 ICommand* FrontEnd::parseArgumentCommand(DOMNodeWrapper* node, const std::string& argument) {
@@ -52,7 +61,7 @@ ICommand* FrontEnd::parseArgumentCommand(DOMNodeWrapper* node, const std::string
       return new ArgumentedCommand(mCommand, argument);
     }
   }
-  return NULL;
+  return nullptr;
 }
 
 void FrontEnd::update(int ticks) {
@@ -94,7 +103,6 @@ void FrontEnd::render() {
 void FrontEnd::setActive(bool active) {
   if (active) {
     cIdleTime = 0;
-    cHasExited = false;
     cFade = 0.0f;
     cStage = 0;
   }
@@ -104,11 +112,7 @@ bool FrontEnd::keyDown(SDLKey& key) {
   switch (key) {
     case SDLK_ESCAPE: {
       if (cActiveMenu.size() == 1) {
-        if (cExitCommand != NULL) {
-          cExitCommand->execute();
-        } else {
-          std::cout << "Warning: No exit command has been defined!" << std::endl;
-        } 
+        cScriptExit->execute();
       } else {
         std::map<IFrontEndMenu*, std::vector<IApplicableItem*>*>::iterator i = cItemsToTest.find(cActiveMenu[cActiveMenu.size() - 1]);
         cActiveMenu[cActiveMenu.size() - 1]->cancelled();
@@ -147,16 +151,8 @@ void FrontEnd::input(SDL_Event& event) {
   }
 }
 
-void FrontEnd::terminate() {
-  cHasExited = true;
-}
-
 bool FrontEnd::hasIdled() {
   return cStage == 3;
-}
-
-bool FrontEnd::hasExited() {
-  return cHasExited;
 }
 
 void FrontEnd::push(FrontEndMenu* menu) {
@@ -169,7 +165,7 @@ void FrontEnd::pop() {
 
 void FrontEnd::testOnExit(FrontEndMenu* menu, IApplicableItem* testItem) {
   std::vector<IApplicableItem*>* mItemsToTest = cItemsToTest[menu];
-  if (mItemsToTest == NULL) {
+  if (mItemsToTest == nullptr) {
     mItemsToTest = new std::vector<IApplicableItem*>();
     cItemsToTest[menu] = mItemsToTest;
   }

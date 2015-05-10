@@ -33,7 +33,8 @@
 class ResourceIntegerTimer : public IInteger,
                              public IDynamicElement {
   private:
-  int cMilliseconds;
+  int cInitialMilliseconds;
+  int cCurrentMilliseconds;
   bool cLock;
   
   class StringTimer : public IString {
@@ -55,6 +56,9 @@ class ResourceIntegerTimer : public IInteger,
   public:
   ResourceIntegerTimer(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
   
+  void setInitialValue(int);
+  int getInitialValue();
+
   void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
   void save(DOMNodeWriter*, IResourceLocator*);
 
@@ -63,6 +67,7 @@ class ResourceIntegerTimer : public IInteger,
   \***********************/
   void setValue(int);
   int getValue();
+  void reset();
 
   /******************************\
    * Implements IDynamicElement *

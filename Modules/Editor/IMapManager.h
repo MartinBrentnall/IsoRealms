@@ -22,6 +22,7 @@
 class IMapManager {
   public:
   virtual void saveCurrentMap() = 0;
+  virtual void testCurrentMap() = 0;
 };
 
 #endif

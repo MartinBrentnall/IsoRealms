@@ -2,6 +2,10 @@
 <Project>
   <Module name="IsoRealms">
     <FontFile name="MenuFont" file="Data/Fonts/MenuFont.ttf" detail="64"/>
+    <ScriptLua name="Quit">
+      <Argument name="project" type="Project" value="Project"/>
+      <Code>project:finish()</Code>
+    </ScriptLua>
   </Module>
   <Module name="Menu">  
     <Font name="IsoRealms/MenuFont"/>
@@ -51,8 +55,10 @@
       <Command name="High Scores"/>
       <Command name="Help"/>
       <Command name="Quit">
-        <ExecuteCommand type="Pop"/>
-      </Command>        
+        <Script name="IsoRealms/Quit"/>
+      </Command>
+      
+      <ExitAction name="IsoRealms/Quit"/>
     </FrontEnd>
 
     <Layer>Background</Layer>

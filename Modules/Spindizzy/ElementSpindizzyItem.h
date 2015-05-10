@@ -82,6 +82,7 @@ class ElementSpindizzyItem:public Element,
   void updateRuntime(unsigned int);
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
   IElementBounds* getBounds();
+  void reset();
 
   /******************\
    * IElementBounds *

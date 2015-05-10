@@ -20,21 +20,35 @@
 
 ResourceIntegerTimer::ResourceIntegerTimer(IDummyModule* module, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
   cLock = false;
-  cMilliseconds = 0;
+  cInitialMilliseconds = 0;
+  cCurrentMilliseconds = 0;
   resourceRegistry->add(new StringTimer(this), node->getAttribute("name"));
   resourceRegistry->addDynamicElement(this);
 }
 
+void ResourceIntegerTimer::setInitialValue(int value) {
+  cInitialMilliseconds = value;
+}
+
+int ResourceIntegerTimer::getInitialValue() {
+  return cInitialMilliseconds;
+}
+
 void ResourceIntegerTimer::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
-  cMilliseconds = node->getIntegerAttribute("value");
+  cInitialMilliseconds = node->getIntegerAttribute("value");
+  cCurrentMilliseconds = cInitialMilliseconds;
 }
 
 void ResourceIntegerTimer::setValue(int value) {
-  cMilliseconds = value;  
+  cCurrentMilliseconds = value;  
 }
 
 int ResourceIntegerTimer::getValue() {
-  return cMilliseconds;
+  return cCurrentMilliseconds;
+}
+
+void ResourceIntegerTimer::reset() {
+  cCurrentMilliseconds = cInitialMilliseconds;
 }
 
 ResourceIntegerTimer::StringTimer::StringTimer(ResourceIntegerTimer* timer) {
@@ -50,8 +64,8 @@ void ResourceIntegerTimer::StringTimer::setValue(const std::string& value) {
 }
 
 std::string ResourceIntegerTimer::StringTimer::getValue() {
-  int mMilliseconds = cTimer->cMilliseconds % 1000;
-  int mSeconds = cTimer->cMilliseconds / 1000;
+  int mMilliseconds = cTimer->cCurrentMilliseconds % 1000;
+  int mSeconds = cTimer->cCurrentMilliseconds / 1000;
   int mMinutes = mSeconds / 60;
   mSeconds = mSeconds % 60;
   std::stringstream mStringStream;
@@ -60,15 +74,15 @@ std::string ResourceIntegerTimer::StringTimer::getValue() {
 }
 
 void ResourceIntegerTimer::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
-  node->addAttribute("value", cMilliseconds);
+  node->addAttribute("value", cInitialMilliseconds);
 }
 
 void ResourceIntegerTimer::update(unsigned int milliseconds) {
   if (!cLock) {
-    if (cMilliseconds > 0) {
-      cMilliseconds -= milliseconds;
-      if (cMilliseconds <= 0) {
-        cMilliseconds = 0;
+    if (cCurrentMilliseconds > 0) {
+      cCurrentMilliseconds -= milliseconds;
+      if (cCurrentMilliseconds <= 0) {
+        cCurrentMilliseconds = 0;
       }
     }
   }

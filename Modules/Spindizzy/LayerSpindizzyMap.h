@@ -127,6 +127,7 @@ class LayerSpindizzyMap:public ILayer,
   void initEditor();
   void save(DOMNodeWriter*, IResourceLocator*);
   void staticChanged();
+  void reset();
   
   /*********************************\
    * Implements ILayerSpindizzyMap *

@@ -45,6 +45,8 @@ class ResourceSurfaceRegistry {
   \*******************************/
   void registerRollableSurface(IRollableSurface*, bool);
   void registerWallSurface(ICollidableWallSurface*);
+  void unregisterRollableSurface(IRollableSurface*);
+  void unregisterWallSurface(ICollidableWallSurface*);
   ICollisionData* getNextEvent(Vertex&, Vertex&, IRollableSurface*, float);
   IRollableSurface* getSurfaceAt(Vertex&, float);
 

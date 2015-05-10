@@ -61,6 +61,17 @@ void Resources::setEditing(bool editing, IProject* project) {
 //   add(new ArgumentDefinitionType<IMap>(), mRoot, "Map");
 }
 
+void Resources::reset() {
+  std::vector<IBoolean*> mBooleans = cBooleans.getAllVector();
+  for (IBoolean* mBoolean : mBooleans) {
+    mBoolean->reset();
+  }
+  std::vector<IInteger*> mIntegers = cIntegers.getAllVector();
+  for (IInteger* mInteger : mIntegers) {
+    mInteger->reset();
+  }
+}
+
 // void Resources::loadInstances(DOMNodeWrapper* node) {
 //   for (int i = 0; i < node->getChildCount(); i++) {
 //     DOMNodeWrapper *mNode = node->getChild(i);

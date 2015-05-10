@@ -299,6 +299,12 @@ void ElementHandler::save(DOMNodeWriter* node, IResourceLocator* resourceLocator
   }
 }
 
+void ElementHandler::reset() {
+  for (IElement* mElement : cElements) {
+    mElement->reset();
+  }
+}
+
 void ElementHandler::cursorAppeared(ILayerEditingContext* editingContext, Vertex& location) {
   for (IElement* mElement : cElements) {
     mElement->processCursorAppearance(editingContext, location);

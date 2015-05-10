@@ -20,7 +20,6 @@
 
 Engine::Engine() {
   cProject = nullptr;
-  cTerminate = false;
   try {
     std::string mConfigurationFileLocation = System::getConfigurationFileLocation();
     DOMNodeWrapper* mConfigurationRootNode = new DOMNodeWrapper(mConfigurationFileLocation);
@@ -60,26 +59,6 @@ void Engine::loadProject(DOMNodeWrapper* node, const std::string& projectName) {
   cProject->initRuntime();
 }
 
-void Engine::keyDown(SDLKey& key) {
-  switch (key) {
-    case SDLK_ESCAPE: {
-      cTerminate = true;
-    }
-
-    default: {
-      // Do nothing.
-    }
-  }
-}
-
-void Engine::input(SDL_Event& event) {
-  switch (event.type) {
-    case SDL_KEYDOWN: {
-      keyDown(event.key.keysym.sym);
-    }
-  }
-}
-
 void Engine::run() {
 
   // Flush event buffer before we start
@@ -96,8 +75,7 @@ void Engine::run() {
     if (mTicksPassed > 0) {
       while (SDL_PollEvent(&mEvent)) {
         KeyStates::input(mEvent);
-        input(mEvent);
-        cProject->input(mEvent);
+        cProject->inputRuntime(mEvent);
       }
       glLoadIdentity();
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -112,6 +90,6 @@ void Engine::run() {
     }
  
     mOldTicks = mNewTicks;
-  } while (!cTerminate);
+  } while (!cProject->hasCompleted());
   std::cout << "Engine terminated" << std::endl;
 }

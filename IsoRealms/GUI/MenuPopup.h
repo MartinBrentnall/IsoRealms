@@ -24,6 +24,8 @@
 #include <map>
 #include <vector>
 
+#include <IsoRealms/Resources/Script/IScriptCall.h>
+
 #include "../Configuration.h"
 #include "../Persistence/DOMNodeWrapper.h"
 #include "../IComponentContainer.h"
@@ -50,7 +52,7 @@ class MenuPopup:public IMenu,
   IMenuContainer* cParent;
   unsigned int cSelectedItem;
 
-  ICommand* parseCommand(DOMNodeWrapper*, ICommandSource*);
+  ICommand* parseCommand(DOMNodeWrapper*, ICommandSource*, IResourceAccessor*);
   
   bool mouseButtonDown(SDL_Event&);
   bool mouseMotion(SDL_Event&);
@@ -59,7 +61,7 @@ class MenuPopup:public IMenu,
   void addMenuItem(const std::string&, const std::string&, ICommand*, bool);
 
   public:
-  MenuPopup(DOMNodeWrapper*, IMenuContainer*, float, float, IComponentContainer*, ICommandSource*);
+  MenuPopup(DOMNodeWrapper*, IMenuContainer*, float, float, IComponentContainer*, ICommandSource*, IResourceAccessor*);
   MenuPopup(IMenuContainer*, float, float);
 
   void addCommand(std::vector<std::string>, ICommandInfo*);

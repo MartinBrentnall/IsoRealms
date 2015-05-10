@@ -33,6 +33,7 @@ class Boolean:public IBoolean {
   \***********************/
   void setValue(bool);
   bool getValue();
+  void reset();
 
   void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
 };

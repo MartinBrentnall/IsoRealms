@@ -73,6 +73,7 @@ class ResourceLayerHUD:public IComponentSources,
   void input(SDL_Event&);
   void save(DOMNodeWriter*, IResourceLocator*);
   void staticChanged();
+  void reset();
 };
 
 #endif

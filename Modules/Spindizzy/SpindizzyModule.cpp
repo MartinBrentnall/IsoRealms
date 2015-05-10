@@ -221,23 +221,17 @@ void SpindizzyModule::createThemeColour(const std::string& type, IResourceRegist
   \*********************************/
 void SpindizzyModule::registerSurfaceProvider(IGeometricElement* element, bool recalculationSurroundings) {
   cVisualProcessor->registerGeometricElement(element, recalculationSurroundings);
-  if (!cEditing) {
-    cPhysicalProcessor->registerGeometricElement(element, recalculationSurroundings);
-  }
+  cPhysicalProcessor->registerGeometricElement(element, recalculationSurroundings);
 }
 
 void SpindizzyModule::unregisterSurfaceProvider(IGeometricElement* element) {
   cVisualProcessor->unregisterGeometricElement(element);
-  if (!cEditing) {
-    cPhysicalProcessor->unregisterGeometricElement(element);
-  }
+  cPhysicalProcessor->unregisterGeometricElement(element);
 }
 
 void SpindizzyModule::setDirty() {
   cVisualProcessor->setDirty();
-  if (!cEditing) { // TODO: Is this necessary?  Does this function even get called during runtime?
-    cPhysicalProcessor->setDirty();
-  }
+  cPhysicalProcessor->setDirty();
 }
 
 std::vector<ITileSurfaceTemplate*> SpindizzyModule::getTileSurfaces(IGeometricElement* element, ITileSurface::FaceDirection facing, bool visual) {
@@ -262,6 +256,14 @@ void SpindizzyModule::registerRollableSurface(IRollableSurface* rollableSurface)
 
 void SpindizzyModule::registerWallSurface(ICollidableWallSurface* wallSurface) {
   cSurfaceRegistry->registerWallSurface(wallSurface);
+}
+
+void SpindizzyModule::unregisterRollableSurface(IRollableSurface* rollableSurface) {
+  cSurfaceRegistry->unregisterRollableSurface(rollableSurface);
+}
+
+void SpindizzyModule::unregisterWallSurface(ICollidableWallSurface* wallSurface) {
+  cSurfaceRegistry->unregisterWallSurface(wallSurface);
 }
 
 std::vector<ConditionElement*> SpindizzyModule::getConditionElements() {

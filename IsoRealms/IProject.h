@@ -40,14 +40,17 @@ class IProject {
   // TODO: Editor functions should probably not be here
   virtual void removeElement(IElement*) = 0;
 
-  virtual void update(unsigned int) = 0;
+  virtual void updateRuntime(unsigned int) = 0;
   virtual void renderRuntime() = 0;
-  virtual void renderEditing() = 0;
+  virtual void inputRuntime(SDL_Event&) = 0;
   virtual void save() = 0;
   virtual ModuleRegistry* getModuleRegistry() = 0;
   virtual IResourceManager* getResourceManager() = 0;
   virtual ILayer* getDefaultLayer() = 0;
   virtual void initEditor() = 0;
+  virtual void initRuntime() = 0;
+  virtual bool hasCompleted() = 0;
+  virtual void reset() = 0;
   
   virtual void staticChanged() = 0;
 

@@ -30,6 +30,10 @@ int Integer::getValue() {
   return cValue;
 }
 
+void Integer::reset() {
+  // Not supported
+}
+
 void Integer::initialiseResource(DOMNodeWrapper*, IResourceAccessor*) {
 }
 

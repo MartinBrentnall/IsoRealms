@@ -36,7 +36,7 @@ class FrontEndMenuItem:public IFrontEndMenuItem {
   ICommand* cCommand;
 
   public:
-  FrontEndMenuItem(IFrontEndCommands*, DOMNodeWrapper*);
+  FrontEndMenuItem(IFrontEndCommands*, DOMNodeWrapper*, IResourceAccessor*);
   FrontEndMenuItem(const std::string&, ICommand*);
 
   /********************************\

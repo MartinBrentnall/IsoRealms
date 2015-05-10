@@ -99,6 +99,7 @@ class IElement {
   virtual void processCursorMovement(ILayerEditingContext*, Vertex&, Vertex&) = 0;
   virtual void processCursorAppearance(ILayerEditingContext*, Vertex&) = 0;
   virtual PickedElement* pickElement(Vertex&, Vertex&) = 0;
+  virtual void reset() = 0;
   
   virtual ~IElement() {}
 };

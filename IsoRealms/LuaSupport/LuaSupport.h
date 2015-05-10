@@ -50,6 +50,7 @@ class LuaSupport:public ILuaSupport {
   static const std::string TYPE_FLOAT;
   static const std::string TYPE_MODEL;
   static const std::string TYPE_VERTEX;
+  static const std::string TYPE_PROJECT;
     
   lua_State* cLuaState;
 

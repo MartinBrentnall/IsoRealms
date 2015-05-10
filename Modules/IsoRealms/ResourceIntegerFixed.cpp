@@ -19,21 +19,35 @@
 #include "ResourceIntegerFixed.h"
 
 ResourceIntegerFixed::ResourceIntegerFixed(IDummyModule* module, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
-  cValue = 0;
+  cInitialValue = 0;
+  cCurrentValue = 0;
+}
+
+void ResourceIntegerFixed::setInitialValue(int value) {
+  cInitialValue = value;
+}
+
+int ResourceIntegerFixed::getInitialValue() {
+  return cInitialValue;
 }
 
 void ResourceIntegerFixed::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
-  cValue = node->getIntegerAttribute("value");
+  cInitialValue = node->getIntegerAttribute("value");
+  cCurrentValue = cInitialValue;
 }
 
 void ResourceIntegerFixed::save(DOMNodeWriter* node, IResourceLocator* resources) {
-  node->addAttribute("value", cValue);
+  node->addAttribute("value", cInitialValue);
 }
 
 void ResourceIntegerFixed::setValue(int value) {
-  cValue = value;
+  cCurrentValue = value;
 }
 
 int ResourceIntegerFixed::getValue() {
-  return cValue;
+  return cCurrentValue;
+}
+
+void ResourceIntegerFixed::reset() {
+  cCurrentValue = cInitialValue;
 }

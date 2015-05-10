@@ -96,7 +96,7 @@ class RectangularComponent:public ISizedComponent,
   void loadFlexibleGridCells(DOMNodeWrapper*, FlexibleGridLayoutComponent*, IEditingContext*);
   void loadEvenGridCells(DOMNodeWrapper*, GridLayoutComponent*, IResourceAccessor*);
   void loadTabbedContainer(DOMNodeWrapper*, TabbedContainer*, IResourceAccessor*);
-  void loadPopupMenu(IRectangularComponent*, DOMNodeWrapper*);
+  void loadPopupMenu(IRectangularComponent*, DOMNodeWrapper*, IResourceAccessor*);
   void testFocusChange(SDL_Event& event);
   bool mouseButtonDown(SDL_Event&);
   

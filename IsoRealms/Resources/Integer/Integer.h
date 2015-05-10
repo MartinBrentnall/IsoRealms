@@ -33,6 +33,7 @@ class Integer:public IInteger {
   \***********************/
   void setValue(int);
   int getValue();
+  void reset();
 
   void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
 };

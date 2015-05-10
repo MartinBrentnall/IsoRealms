@@ -22,14 +22,14 @@
 DialogBooleanFixed::DialogBooleanFixed(IEditingContext* editingContext, ResourceBooleanFixed* boolean, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "Boolean", resourceName) {
   cContent = new RectangularComponent("Modules/IsoRealms/DialogBooleanFixed", resources);
   cBoolean = boolean;
-  cOriginalValue = cBoolean->getValue();
+  cOriginalValue = cBoolean->getInitialValue();
   cContent->addBooleanListener(this, "checkBoxValue");
   cContent->setBooleanValue("checkBoxValue", cOriginalValue);
   addComponent("content", cContent);
 }
 
 void DialogBooleanFixed::undo() {
-  cBoolean->setValue(cOriginalValue);
+  cBoolean->setInitialValue(cOriginalValue);
   cContent->setBooleanValue("checkBoxValue", cOriginalValue);
 }
 
@@ -38,5 +38,5 @@ ResourceBooleanFixed* DialogBooleanFixed::getResource() {
 }
 
 void DialogBooleanFixed::valueChanged(IValueComponent<bool>* component, bool value) {
-  cBoolean->setValue(value);
+  cBoolean->setInitialValue(value);
 }

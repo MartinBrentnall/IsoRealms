@@ -94,3 +94,7 @@ void LayerBackground::save(DOMNodeWriter*, IResourceLocator*) {
 void LayerBackground::staticChanged() {
   // Nothing to do
 }
+
+void LayerBackground::reset() {
+  // Nothing to do
+}

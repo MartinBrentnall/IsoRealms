@@ -66,11 +66,8 @@ IElementType* ElementSpindizzyZone::getElementType() {
 
 bool ElementSpindizzyZone::initElement(unsigned int pass) {
   if (pass == 0) {
-    ISpindizzyZoneModule* mZoneModule = cZoneType->getSpindizzyZoneInterface();
-    if (!mZoneModule->isEditing()) {
-      IBoundaries* mBoundaries = cZoneType->getBoundaries();
-      mBoundaries->registerBoundary(this);
-    }
+    IBoundaries* mBoundaries = cZoneType->getBoundaries();
+    mBoundaries->registerBoundary(this);
   }
   return cElementHandler.init(pass, true);
 }
@@ -229,6 +226,12 @@ void ElementSpindizzyZone::cursorMoved(ILayerEditingContext* editingContext, Ver
 
 PickedElement* ElementSpindizzyZone::pickElement(Vertex& start, Vertex& end) {
   return cElementHandler.pickElement(start, end);
+}
+
+void ElementSpindizzyZone::reset() {
+  cElementHandler.reset();
+  cVisited = false;
+  cFlagged = false;
 }
 
 float ElementSpindizzyZone::getWest() {

@@ -48,7 +48,7 @@ add_library(Editor MODULE
   ScreenEdge/ScreenEdgeTop.cpp
   ScreenEdge/ScreenEdgeVertical.cpp
   SimpleEditor.cpp
-  TerminateEditorCommand.cpp
+  TestCommand.cpp
 )
 set_target_properties(Editor PROPERTIES OUTPUT_NAME "Module")
 set_target_properties(Editor PROPERTIES PREFIX "lib")

@@ -95,6 +95,7 @@ class Resources:public IResources,
   void saveInputConfiguration(DOMNodeWriter*);
     
   void setEditing(bool, IProject*);
+  void reset();
     
 //   void loadInstances(DOMNodeWrapper*);
 

@@ -156,6 +156,10 @@
       <Mapping type="keyDown" value="F9"/>
       <OnStart name="IsoRealms/toggleRenderingMode"/>
     </DigitalInput>
+    <DigitalInput>
+      <Mapping type="keyDown" value="q"/>
+      <OnStart name="IsoRealms/Quit"/>
+    </DigitalInput>
   </InputConfiguration>
   <Module name="IsoRealms" locks="IsoRealms/Locks">
     <BooleanFixed name="SwitchDiamondLeft"/>
@@ -267,6 +271,12 @@
     <ModelSprite name="SwitchCircleLeft" rotate="Reverse" size="0.975000" texture="Spindizzy/C64HUDSprites_LiftCircleOne" camera="Spindizzy/Camera" applyCameraRotation="true" offsetRotation="-45.0"/>
     <ModelSprite name="SwitchCircleRight" size="0.975000" texture="Spindizzy/C64HUDSprites_LiftCircleOne" camera="Spindizzy/Camera" applyCameraRotation="true" offsetRotation="-45.0"/>
     <ModelSprite name="SwitchCircleFilled" size="0.975000" texture="Spindizzy/C64HUDSprites_LiftCircleFilled"/>
+    <ScriptLua name="ChangeCraft">
+      <Argument name="playerCraftModels" type="IsoRealms/ModelSetCycleable" value="CraftPlayer"/>
+      <Argument name="enemyCraftModels" type="IsoRealms/ModelSetCycleable" value="CraftEnemy"/>
+      <Code>playerCraftModels:next()
+enemyCraftModels:next()</Code>
+    </ScriptLua>
     <ScriptLua name="jewelCollected">
       <Argument name="sound" type="Sound" value="IsoRealms/Jewel"/>
       <Argument name="score" type="Integer" value="IsoRealms/Score"/>
@@ -299,12 +309,6 @@ end</Code>
       <Code>player:stop()
 time = time - 500</Code>
     </ScriptLua>
-    <ScriptLua name="ChangeCraft">
-      <Argument name="playerCraftModels" type="IsoRealms/ModelSetCycleable" value="CraftPlayer"/>
-      <Argument name="enemyCraftModels" type="IsoRealms/ModelSetCycleable" value="CraftEnemy"/>
-      <Code>playerCraftModels:next()
-enemyCraftModels:next()</Code>
-    </ScriptLua>
     <ScriptLua name="playerFallImpact">
       <Argument name="player" type="Spindizzy/GERALD"/>
       <Argument name="fallDistance" type="Float"/>
@@ -313,6 +317,10 @@ enemyCraftModels:next()</Code>
   player:destroy()
   sound:play()
 end</Code>
+    </ScriptLua>
+    <ScriptLua name="Quit">
+      <Argument name="project" type="Project" value="Project"/>
+      <Code>project:finish()</Code>
     </ScriptLua>
     <ScriptLua name="randomClick">
       <Argument name="click1" type="Sound" value="IsoRealms/LiftClick1"/>

@@ -90,10 +90,6 @@ IElementType* ElementSpindizzyCraft::getElementType() {
 }
 
 bool ElementSpindizzyCraft::initElement(unsigned int pass) {
-  ISpindizzyGERALDSet* mGERALDSet = cCraftType->getSpindizzyCraftInterface();
-  if (mGERALDSet->isEditing()) {
-    return true;
-  }
   switch (pass) {
     case INIT_REGISTER_BLOCKS: {
 //       if (cMap != nullptr) {
@@ -673,6 +669,22 @@ void ElementSpindizzyCraft::setDirty() {
 
 IElementBounds* ElementSpindizzyCraft::getBounds() {
   return this;
+}
+
+void ElementSpindizzyCraft::reset() {
+  cLocation->x = cStartLocation.x + IsoRealmsConstants::BLOCK_RADIUS;
+  cLocation->y = cStartLocation.y + IsoRealmsConstants::BLOCK_RADIUS;
+  cLocation->z = cStartLocation.z;
+  cMomentum.x = 0.0;
+  cMomentum.y = 0.0;
+  cMomentum.z = 0.0;
+  cRespawning = false;
+  cAppeared = false;
+  cStepReach = STEP_REACH_NORMAL;
+  while (!cRespawnSurfaceStack.empty()) {
+    delete cRespawnSurfaceStack.top();
+    cRespawnSurfaceStack.pop();
+  }
 }
 
 float ElementSpindizzyCraft::getWest() {

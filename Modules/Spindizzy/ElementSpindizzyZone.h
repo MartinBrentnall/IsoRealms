@@ -97,6 +97,7 @@ class ElementSpindizzyZone:public Element,
   void cursorAppeared(ILayerEditingContext*, Vertex&);
   void cursorMoved(ILayerEditingContext*, Vertex&, Vertex&);
   PickedElement* pickElement(Vertex&, Vertex&);
+  void reset();
 
   /*****************************\
    * Implements IElementBounds *

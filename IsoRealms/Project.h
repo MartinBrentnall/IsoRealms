@@ -21,6 +21,8 @@
 
 #include <string>
 
+#include <IsoRealms/LuaSupport/ArgumentValue.h>
+
 #include "Configuration.h"
 #include "Persistence/DOMNodeWrapper.h"
 #include "ICommand.h"
@@ -39,6 +41,7 @@ class Project:public IProject {
   ModuleRegistry cModuleRegistry;
   Resources cResources;
   IScriptCall* cInitScript;
+  bool cCompleted;
   
   std::vector<IDynamicElement*> cDynamicElements;
   
@@ -48,13 +51,14 @@ class Project:public IProject {
 
   void initEditor();
   void initRuntime();
-  void input(SDL_Event&);
+  void inputRuntime(SDL_Event&);
   void renderRuntime();
-  void renderEditing();
-  void update(unsigned int);
   void updateRuntime(unsigned int);
   ILayer* getDefaultLayer();
-
+  void finish();
+  bool hasCompleted();
+  void reset();
+  
   void save();
 
   void removeElement(IElement*);

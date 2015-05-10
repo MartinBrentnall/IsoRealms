@@ -27,10 +27,14 @@
 
 class ResourceIntegerFixed:public IInteger {
   private:
-  int cValue;
+  int cInitialValue;
+  int cCurrentValue;
 
   public:
   ResourceIntegerFixed(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
+  
+  void setInitialValue(int);
+  int getInitialValue();
 
   void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
   void save(DOMNodeWriter*, IResourceLocator*);
@@ -40,6 +44,7 @@ class ResourceIntegerFixed:public IInteger {
   \***********************/
   void setValue(int);
   int getValue();
+  void reset();
   
   virtual ~ResourceIntegerFixed() {}
 };

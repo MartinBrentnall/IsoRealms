@@ -66,12 +66,9 @@
 class Engine:public IEngine {
   private:
   Project* cProject;
-  bool cTerminate;
   
   void loadProject(DOMNodeWrapper*);
   void loadProject(DOMNodeWrapper*, const std::string&);
-  void keyDown(SDLKey&);
-  void input(SDL_Event&);  
   
   public:
   Engine();

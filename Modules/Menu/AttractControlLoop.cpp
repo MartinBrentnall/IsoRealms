@@ -29,7 +29,7 @@ void AttractControlLoop::initEditor() {
 }
  
 void AttractControlLoop::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
-  cRunningProject = NULL;
+  cRunningProject = nullptr;
   cFrontEndActive = false;
   int mCurrentLayer = 0;
   
@@ -42,7 +42,7 @@ void AttractControlLoop::initialiseResource(DOMNodeWrapper* node, IResourceAcces
       std::cout << "GOT FONT: " << cFont << std::endl;
     } else if (mValueAsString == "FrontEnd") {
       std::string mFrontEndName = mNode->getAttribute("name");
-      cFrontEnd = createFrontEnd(mNode, mFrontEndName);
+      cFrontEnd = createFrontEnd(mNode, mFrontEndName, resources);
     } else if (mValueAsString == "AttractScene") {
       std::string mAttractName = mNode->getAttribute("name");
       cAttractServices[mAttractName] = createAttract(mAttractName);
@@ -63,9 +63,9 @@ void AttractControlLoop::initialiseResource(DOMNodeWrapper* node, IResourceAcces
   }
 }
 
-IFrontEnd* AttractControlLoop::createFrontEnd(DOMNodeWrapper* node, const std::string& name) {
-  return name == "Menu" ? new FrontEnd(node, cFont, this)
-                        : NULL;
+IFrontEnd* AttractControlLoop::createFrontEnd(DOMNodeWrapper* node, const std::string& name, IResourceAccessor* resources) {
+  return name == "Menu" ? new FrontEnd(node, cFont, this, resources)
+                        : nullptr;
 }
 
 IAttract* AttractControlLoop::createAttract(const std::string& name) {
@@ -75,7 +75,7 @@ IAttract* AttractControlLoop::createAttract(const std::string& name) {
        : name == "Help"    ? static_cast<IAttract*>(new AttractHelp())
        : name == "Demo"    ? static_cast<IAttract*>(new AttractDemo())
        : name == "FadeOut" ? static_cast<IAttract*>(new AttractFadeOut())
-       :                     NULL;
+       :                     nullptr;
 }
 
 void AttractControlLoop::load(DOMNodeWrapper* node, IResourceRegistry* resources) {
@@ -127,7 +127,7 @@ void AttractControlLoop::staticChanged() {
 }
 
 void AttractControlLoop::renderRuntime() {
-  if (cRunningProject != NULL) {
+  if (cRunningProject != nullptr) {
     cRunningProject->renderRuntime();
   } else {
     cAttractSceneManager.render();
@@ -142,29 +142,34 @@ void AttractControlLoop::renderEditing() {
 }
 
 void AttractControlLoop::updateRuntime(unsigned int milliseconds) {
-  if (cRunningProject != NULL) {
+  if (cRunningProject != nullptr) {
     cRunningProject->updateRuntime(milliseconds);
+    if (cRunningProject->hasCompleted()) {
+      std::cout << "Project has completed" << std::endl;
+      // TODO: Destroy project
+      cRunningProject = nullptr;
+    }
   } else {
     cAttractSceneManager.update(milliseconds);
     if (cFrontEndActive) {
       cFrontEnd->update(milliseconds);
       if (cFrontEnd->hasIdled()) {
-	cFrontEnd->setActive(false);
-	for (unsigned int i = 0; i < cFrontEndEndCommands.size(); i++) {
-	  cFrontEndEndCommands[i]->execute();
-	}
-	  
-	for (std::map<std::string, IAttract*>::iterator i = cAttractServices.begin(); i != cAttractServices.end(); i++) {
-	  i->second->frontEndActive(false);
-	}          
-	cFrontEndActive = false;
+        cFrontEnd->setActive(false);
+        for (unsigned int i = 0; i < cFrontEndEndCommands.size(); i++) {
+          cFrontEndEndCommands[i]->execute();
+        }
+          
+        for (std::map<std::string, IAttract*>::iterator i = cAttractServices.begin(); i != cAttractServices.end(); i++) {
+          i->second->frontEndActive(false);
+        }          
+        cFrontEndActive = false;
       }
     }
     std::vector<IAttract*> mCompletedScenes = cAttractSceneManager.getCompletedScenes();
     for (unsigned int i = 0; i < mCompletedScenes.size(); i++) {
       std::vector<ICommand*> mCommandsToExecute = cSceneEndCommands[mCompletedScenes[i]];
       for (unsigned int j = 0; j < mCommandsToExecute.size(); j++) {
-	mCommandsToExecute[j]->execute();
+        mCommandsToExecute[j]->execute();
       }        
     }
   }
@@ -175,23 +180,27 @@ void AttractControlLoop::updateEditing(unsigned int) {
 }
 
 void AttractControlLoop::input(SDL_Event& event) {
-  if (cRunningProject != NULL) {
-    cRunningProject->input(event);
+  if (cRunningProject != nullptr) {
+    cRunningProject->inputRuntime(event);
   } else {
     if (!cFrontEndActive && checkActiveInput(event.type)) {
       cFrontEndActive = true;
       cFrontEnd->setActive(true);
       for (unsigned int i = 0; i < cFrontEndStartCommands.size(); i++) {
-	cFrontEndStartCommands[i]->execute();
+        cFrontEndStartCommands[i]->execute();
       }
       
       for (std::map<std::string, IAttract*>::iterator i = cAttractServices.begin(); i != cAttractServices.end(); i++) {
-	i->second->frontEndActive(true);
+        i->second->frontEndActive(true);
       }          
     } else {
       cFrontEnd->input(event);
     }
   }
+}
+
+void AttractControlLoop::reset() {
+  // Not supported
 }
 
 void AttractControlLoop::startProject(const std::string& project) {
@@ -201,14 +210,15 @@ void AttractControlLoop::startProject(const std::string& project) {
     DOMNodeWrapper *mNode = mProjectNode->getChild(i);
     std::string mValue = mNode->getNodeName();
     if (mValue == "Project") {
-      cRunningProject = new Project(mNode, project, NULL);
+      cRunningProject = new Project(mNode, project, nullptr);
       cRunningProject->initRuntime();
+      std::cout << "Project has started" << std::endl;
       break;
     }
   }
 }
 
-extern "C" IModule* create() {
+extern "C" IModule* create(IResourceTypeRegistry* resourceTypeRegistry) {
   return new AttractControlLoop();
 }
 

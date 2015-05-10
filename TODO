@@ -1,11 +1,6 @@
 Misc
  - Make background go black on map overview
- - Collision problem:  Stand on doorway on inside of the castle (white screen), fall off, then immediately go north after respawning.  GERALD will fall through the wall.
- - Freeze problem:  Immediately after getting onto west wall of castle, slide along the top upper part of the wall to the southwest corner.
- - Lifts cause segmentation fault
- - Freeze problem:  After returning from "The Cross", there is a simple room with sloped surfaces against walls.  Resting on any of these causes the game to freeze.
  - On a sloped surface away from a wall, GERALD will lock and then immediately roll away from the wall (and remain locked).
- - Southeast area is impossible to complete due to a hitting a hidden wall whilst going up a steep slope.
  - Investigate problem caused by same name classes implementing same interface in different modules (e.g. SurfaceCollisionEvent in both SpindizzyBlocks and SpindizzyLifts)
 
 Dialog Engine and UI framework:
@@ -14,8 +9,6 @@ Dialog Engine and UI framework:
    - Lift Configuration Dialog
  - Implement a mechanism for showing an existing dialog instead of always opening a new one.
  - Implement a mechanism to position dialogs more appropriately in the container.
- - In Plugin Support dialog, plugins should be selected from a combo box.
- - Entity Class Instances dialog should not be used in selecting plugin instances.
 
 Command Registry:
  - Implement a command selection mechanism.
@@ -23,8 +16,6 @@ Command Registry:
 Font Issues:
  - Add shadow and colour properties to the GLFreeType Font class.
  - Add support to reuse existing texture ID's for same font name and size.
-
-Refactor Utilities to be a separate entity class.
 
 Build Process:
  - Modify headers to use non-relative include paths for Global / Plugins stuff.

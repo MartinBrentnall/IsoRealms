@@ -61,7 +61,7 @@ class MenuBar:public IHUDComponent,
   bool keyDown(SDLKey&);
 
   public:
-  MenuBar(IComponentContainer*, DOMNodeWrapper*, ICommandSource*);
+  MenuBar(IComponentContainer*, DOMNodeWrapper*, ICommandSource*, IResourceAccessor*);
 
   void addCommand(ICommandInfo*);
   void removeCommand(ICommandInfo*);

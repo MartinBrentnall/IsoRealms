@@ -146,7 +146,10 @@ class Element:public IElement {
     CollisionVertex* mPickedLocation = Collision::getEntryPoint(start, end, mWest, mEast, mSouth, mNorth, mBottom, mTop);
     return mPickedLocation != nullptr ? new PickedElement(mPickedLocation, this) : nullptr;
   }
-    
+
+  virtual void reset() {
+  }
+  
   ~Element() {}
 };
 

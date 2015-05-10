@@ -27,19 +27,24 @@
 
 class ResourceBooleanFixed:public IBoolean {
   private:
-  bool cValue;
+  bool cInitialValue;
+  bool cCurrentValue;
 
   public:
   ResourceBooleanFixed(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
 
+  void setInitialValue(bool);
+  bool getInitialValue();
+  
   void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
   void save(DOMNodeWriter*, IResourceLocator*);
-
+  
   /***********************\
    * Implements IBoolean *
   \***********************/
   void setValue(bool);
   bool getValue();
+  void reset();
   
   virtual ~ResourceBooleanFixed() {}
 };

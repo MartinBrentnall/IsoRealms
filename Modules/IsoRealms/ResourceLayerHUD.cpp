@@ -155,3 +155,6 @@ void ResourceLayerHUD::staticChanged() {
   // Nothing to do
 }
 
+void ResourceLayerHUD::reset() {
+  // Nothing to do
+}

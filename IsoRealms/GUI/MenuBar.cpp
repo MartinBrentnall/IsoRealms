@@ -18,7 +18,7 @@
  */
 #include "MenuBar.h"
 
-MenuBar::MenuBar(IComponentContainer* componentContainer, DOMNodeWrapper* node, ICommandSource* commandSource) {
+MenuBar::MenuBar(IComponentContainer* componentContainer, DOMNodeWrapper* node, ICommandSource* commandSource, IResourceAccessor* resources) {
   cComponentContainer = componentContainer;
   cSelectedItem = 0;
   cMenuPopupShowing = NULL;
@@ -29,7 +29,7 @@ MenuBar::MenuBar(IComponentContainer* componentContainer, DOMNodeWrapper* node, 
     std::string mValueAsString = mNode->getNodeName();
     
     if (mValueAsString == "Menu") {
-      MenuPopup* mPopupMenu = new MenuPopup(mNode, this, mXOffset, 0.95f, componentContainer, commandSource);
+      MenuPopup* mPopupMenu = new MenuPopup(mNode, this, mXOffset, 0.95f, componentContainer, commandSource, resources);
       PopupMenuCommand* mPopupMenuCommand = new PopupMenuCommand(this, mPopupMenu);
       std::string mMenuItemName = mNode->getAttribute("text");
       MenuItem* mMenuItem = new MenuItem(mMenuItemName, mPopupMenuCommand, mXOffset, 0.96f, true);

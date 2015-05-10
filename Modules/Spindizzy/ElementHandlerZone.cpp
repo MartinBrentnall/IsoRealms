@@ -111,3 +111,7 @@ PickedElement* ElementHandlerZone::pickElement(Vertex& start, Vertex& end) {
 IElementContainer* ElementHandlerZone::getElementContainer() {
   return nullptr;
 }
+
+void ElementHandlerZone::reset() {
+  cElements.reset();
+}

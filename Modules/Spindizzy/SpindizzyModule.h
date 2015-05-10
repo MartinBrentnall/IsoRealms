@@ -197,6 +197,8 @@ class SpindizzyModule:public IModule,
   void destroyWallTemplate(IWallSurfaceTemplate*, bool);
   void registerRollableSurface(IRollableSurface*);
   void registerWallSurface(ICollidableWallSurface*);
+  void unregisterRollableSurface(IRollableSurface*);
+  void unregisterWallSurface(ICollidableWallSurface*);
   std::vector<ConditionElement*> getConditionElements();
   void staticChanged();
   SpindizzyBlockState* getBlockState(IBoolean*);

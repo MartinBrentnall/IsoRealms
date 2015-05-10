@@ -213,9 +213,7 @@ bool ElementSpindizzyLift::initElement(unsigned int pass) {
   switch (pass) {
     case 0: {
       ISpindizzyLiftSet* mLiftSet = cLiftType->getSpindizzyLiftInterface();
-      if (!mLiftSet->isEditing()) {
-        mLiftSet->registerInterceptingSurface(this);
-      }
+      mLiftSet->registerInterceptingSurface(this);
       return true;
     }
   }

@@ -18,6 +18,10 @@
     <ModelSprite name="IconVertices" size="1.000000" texture="IsoRealms/IconVertices"/>
     <ModelSprite name="IconZoneHandlers" size="1.000000" texture="IsoRealms/IconZoneHandlers"/>
     <FontFile name="EditorFont" file="Data/Fonts/EditorFont.ttf" detail="64"/>
+    <ScriptLua name="Quit">
+      <Argument name="project" type="Project" value="Project"/>
+      <Code>project:finish()</Code>
+    </ScriptLua>
     <TextureFile file="Icon3DModels.png" name="Icon3DModels"/>
     <TextureFile file="IconCameras.png" name="IconCameras"/>
     <TextureFile file="IconCollectables.png" name="IconCollectables"/>
@@ -63,8 +67,11 @@
         <MenuItem text="Save ^As...">
           <ExecuteEditorCommand type="SaveAs"/>
         </MenuItem>          
-          <MenuItem text="^Quit">
-          <ExecuteEditorCommand type="Exit"/>
+        <MenuItem text="^Test">
+          <ExecuteEditorCommand type="Test"/>
+        </MenuItem>
+        <MenuItem text="^Quit">
+          <Action name="IsoRealms/Quit"/>
         </MenuItem>
       </Menu>
       <Menu text="^Edit">

@@ -170,11 +170,11 @@ ScreenMode* ScreenConfiguration::getScreenMode() {
 void ScreenConfiguration::setMode(ScreenMode* screenMode) {
   int mScreenWidth = screenMode->getWidth();
   int mScreenHeight = screenMode->getHeight();
-  if (mScreenWidth != cScreenWidth || mScreenHeight != cScreenHeight) {
+//  if (mScreenWidth != cScreenWidth || mScreenHeight != cScreenHeight) {
     cScreenWidth = mScreenWidth;
     cScreenHeight = mScreenHeight;
     resizeScreen();
-  }
+//  }
 }
 
 void ScreenConfiguration::save(DOMNodeWriter* node) {

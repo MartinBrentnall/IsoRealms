@@ -39,6 +39,7 @@ class LayerInputRecorder : public ILayer {
   void save(DOMNodeWriter*, IResourceLocator*);
   void staticChanged();
   void resourceSelected(IElementType*);
+  void reset();
 };
 
 #endif

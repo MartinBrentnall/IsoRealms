@@ -21,7 +21,7 @@
 
 class IFrontEndCommands {
   public:
-  virtual ICommand* parseCommand(DOMNodeWrapper*) = 0;
+  virtual ICommand* parseCommand(DOMNodeWrapper*, IResourceAccessor*) = 0;
   virtual ICommand* parseArgumentCommand(DOMNodeWrapper*, const std::string&) = 0;
 };
 

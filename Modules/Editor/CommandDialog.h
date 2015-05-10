@@ -34,11 +34,12 @@ template <class DIALOG> class CommandDialog:public ICommand {
   CommandDialog(IEditor* editor, IComponentContainer* componentContainer) {
     cEditor = editor;
     cComponentContainer = componentContainer;
+    cInstance = nullptr;
   }
     
   void execute() {
-    if (cInstance != NULL) {
-      cInstance = new DIALOG(cComponentContainer, NULL, cEditor);
+    if (cInstance == nullptr) {
+      cInstance = new DIALOG(cComponentContainer, nullptr, cEditor);
       cComponentContainer->addComponent(cInstance);
     } else {
       // TODO: Focus the existing dialog.

@@ -52,6 +52,7 @@ class LayerBackground:public ILayer {
   void initEditor();
   void save(DOMNodeWriter*, IResourceLocator*);
   void staticChanged();
+  void reset();
 };
 
 #endif

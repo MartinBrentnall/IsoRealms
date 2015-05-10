@@ -52,3 +52,7 @@ void LayerInputPlayer::staticChanged() {
 void LayerInputPlayer::resourceSelected(IElementType* elementType) {
   // Not supported
 }
+
+void LayerInputPlayer::reset() {
+  // Not supported
+}

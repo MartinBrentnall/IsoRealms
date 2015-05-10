@@ -22,14 +22,14 @@
 DialogIntegerFixed::DialogIntegerFixed(IEditingContext* editingContext, ResourceIntegerFixed* integer, IResourceAccessor* resources, const std::string& resourceName) : DialogOKCancelUndo(editingContext, resources, "Integer", resourceName) {
   cContent = new RectangularComponent("Modules/IsoRealms/DialogIntegerFixed", resources);
   cInteger = integer;
-  cOriginalValue = cInteger->getValue();
+  cOriginalValue = cInteger->getInitialValue();
   cContent->addIntegerListener(this, "integerFieldValue");
   cContent->setIntegerValue("integerFieldValue", cOriginalValue);
   addComponent("content", cContent);
 }
 
 void DialogIntegerFixed::undo() {
-  cInteger->setValue(cOriginalValue);
+  cInteger->setInitialValue(cOriginalValue);
   cContent->setIntegerValue("integerFieldValue", cOriginalValue);
 }
 
@@ -38,5 +38,5 @@ ResourceIntegerFixed* DialogIntegerFixed::getResource() {
 }
 
 void DialogIntegerFixed::valueChanged(IValueComponent<int>* component, int value) {
-  cInteger->setValue(value);
+  cInteger->setInitialValue(value);
 }

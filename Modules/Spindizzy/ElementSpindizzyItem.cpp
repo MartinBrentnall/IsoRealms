@@ -73,11 +73,8 @@ IElementType* ElementSpindizzyItem::getElementType() {
 }
 
 bool ElementSpindizzyItem::initElement(unsigned int) {
-  ISpindizzyJewelSet* mSpindizzyJewelSet = cItemType->getSpindizzyItemInterface();
-  if (!mSpindizzyJewelSet->isEditing()) {
-    IBoundaries* mCollectables = cItemType->getCollectables();
-    mCollectables->registerBoundary(this);
-  }
+  IBoundaries* mCollectables = cItemType->getCollectables();
+  mCollectables->registerBoundary(this);
   return true;
 }
 
@@ -159,4 +156,8 @@ float ElementSpindizzyItem::getBottom() {
 
 float ElementSpindizzyItem::getTop() {
   return (cLocation.z + 2.0) * IsoRealmsConstants::BLOCK_HEIGHT;
+}
+
+void ElementSpindizzyItem::reset() {
+  cCollected = false;
 }

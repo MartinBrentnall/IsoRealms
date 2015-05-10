@@ -36,6 +36,7 @@ class ILayer : public virtual IResourceSelectionListener<IElementType> {
   virtual void initEditor() = 0;
   virtual void save(DOMNodeWriter*, IResourceLocator*) = 0;
   virtual void staticChanged() = 0;
+  virtual void reset() = 0;
   
   virtual ~ILayer() {}
 };

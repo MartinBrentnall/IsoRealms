@@ -59,11 +59,6 @@ class IFrontEnd {
   virtual void input(SDL_Event&) = 0;
 
   /**
-   * Determine when the front-end wants the engine to terminate.
-   */
-  virtual bool hasExited() = 0;
-
-  /**
    * Determine when the front-end wants to be de-activated.
    *
    * TODO: Maybe this should be controlled via the engine, or should be genericised (named) for de-activation (rather than idled)?

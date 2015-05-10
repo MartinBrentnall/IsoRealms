@@ -18,9 +18,9 @@
  */
 #include "FrontEndMenuItem.h"
 
-FrontEndMenuItem::FrontEndMenuItem(IFrontEndCommands* commandRegistry, DOMNodeWrapper* node) {
+FrontEndMenuItem::FrontEndMenuItem(IFrontEndCommands* commandRegistry, DOMNodeWrapper* node, IResourceAccessor* resources) {
   cMenuText = node->getAttribute("name");
-  cCommand = commandRegistry->parseCommand(node);
+  cCommand = commandRegistry->parseCommand(node, resources);
 }
 
 FrontEndMenuItem::FrontEndMenuItem(const std::string& name, ICommand* command) {

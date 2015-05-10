@@ -178,6 +178,12 @@ template <class T> class ElementCollection : public IElementBounds {
     }
     return mClosestPickedElement;
   }
+  
+  void reset() {
+    for (T* mElement : cElements) {
+      mElement->reset();
+    }
+  }
 };
 
 #endif

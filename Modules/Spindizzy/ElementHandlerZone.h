@@ -69,6 +69,7 @@ class ElementHandlerZone:public Element,
   void cursorAppeared(ILayerEditingContext*, Vertex&);
   PickedElement* pickElement(Vertex&, Vertex&);
   IElementContainer* getElementContainer();
+  void reset();
 };
 
 #endif

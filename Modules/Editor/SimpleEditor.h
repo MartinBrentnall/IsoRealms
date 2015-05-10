@@ -65,7 +65,7 @@ class OpenCommand;
 #include "ResourceManagerDialogs/DialogVertexManager.h"
 #include "SaveAsCommand.h"
 #include "ScreenEdge/ScreenEdgeManager.h"
-#include "TerminateEditorCommand.h"
+#include "TestCommand.h"
 
 class SimpleEditor:public IModule,
                    public IComponentContainer,
@@ -83,9 +83,8 @@ class SimpleEditor:public IModule,
     
   static const std::string COMMAND_SAVE_AS;
   static const std::string COMMAND_SAVE;
-  static const std::string COMMAND_EXIT;
   static const std::string COMMAND_OPEN;
-  static const std::string COMMAND_ZONE_RENDERERS;
+  static const std::string COMMAND_TEST;
   static const std::string COMMAND_MODULES;
   static const std::string COMMAND_RESOURCE_BROWSER;
   
@@ -98,6 +97,7 @@ class SimpleEditor:public IModule,
   IFont* cFont;
   bool cEditorFocus;
   MenuBar* cMenuBar;
+  bool cTesting;
   EntityClassDialogFactory* cElementSetsFactory;
 
   Dialog3DModelManager* cDockable3DModelManager;
@@ -162,6 +162,7 @@ class SimpleEditor:public IModule,
    * Implements IElementGateway *
   \******************************/
   void saveCurrentMap();
+  void testCurrentMap();
   void setProject(IProject*); // TODO: Not an interface yet.
 
   /******************************\
@@ -217,6 +218,7 @@ class SimpleEditor:public IModule,
   void initRuntime();
   void initEditor();
   void destroy(ILayer*);
+  void reset();
   
   /******************************\
    * Implements IProjectManager *

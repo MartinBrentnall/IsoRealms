@@ -103,3 +103,7 @@ PickedElement* ElementHandlerItem::pickElement(Vertex& start, Vertex& end) {
 IElementContainer* ElementHandlerItem::getElementContainer() {
   return nullptr;
 }
+
+void ElementHandlerItem::reset() {
+  cElements.reset();
+}

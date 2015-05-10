@@ -41,7 +41,7 @@
 #include "ResolutionOption.h"
 #include "StartProject.h"
 
-class FrontEndMenu:public IFrontEndMenu {
+class FrontEndMenu : public IFrontEndMenu {
   private:
   std::string cMenuName;
   std::vector<IFrontEndMenuItem*> cMenuItems;
@@ -57,7 +57,7 @@ class FrontEndMenu:public IFrontEndMenu {
   std::string format(const std::string&, std::vector<std::string>);
   
   public:
-  FrontEndMenu(IFrontEndCommands*, IMenuStack*, DOMNodeWrapper*, const std::string&, std::vector<std::string>, IController*);
+  FrontEndMenu(IFrontEndCommands*, IMenuStack*, DOMNodeWrapper*, const std::string&, std::vector<std::string>, IController*, IResourceAccessor*);
   FrontEndMenu(IFrontEndCommands*, DOMNodeWrapper*);
 
   void applyAll();

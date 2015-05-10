@@ -20,6 +20,7 @@
 
 Project::Project() {
   cResources.setEditing(true, this);
+  cCompleted = false;
 }
 
 Project::Project(DOMNodeWrapper* node, const std::string& projectName, IEditingContext* editingContext) {
@@ -29,6 +30,10 @@ Project::Project(DOMNodeWrapper* node, const std::string& projectName, IEditingC
   std::string mProjectName = projectName.substr(0, mExtensionPosition);
 
   std::map<std::string, std::string> mDefaultElementGroups;
+  
+  ArgumentValue<Project>* mProjectArgument = new ArgumentValue<Project>(this);
+  std::vector<std::string> mRootPath;
+  cResources.add(mProjectArgument, mRootPath, "Project", "Project");
   
   /*
    * First pass only loads module instances; we need to make sure all modules
@@ -78,24 +83,14 @@ Project::Project(DOMNodeWrapper* node, const std::string& projectName, IEditingC
   if (cInitScript != NULL) {
     cInitScript->execute();
   }
+  cCompleted = false;
+  
   std::cout << "Loaded Project!" << std::endl;
 }
 
 void Project::renderRuntime() {
   for (unsigned int i = 0; i < cLayers.size(); i++) {
     cLayers[i]->renderRuntime();
-  }
-}
-
-void Project::renderEditing() {
-  for (unsigned int i = 0; i < cLayers.size(); i++) {
-    cLayers[i]->renderEditing();
-  }
-}
-
-void Project::update(unsigned int ticks) {
-  for (unsigned int i = 0; i < cLayers.size(); i++) {
-    cLayers[i]->updateEditing(ticks);
   }
 }
 
@@ -112,7 +107,23 @@ ILayer* Project::getDefaultLayer() {
   return cDefaultLayer;
 }
 
-void Project::input(SDL_Event& event) {
+void Project::finish() {
+  cCompleted = true;
+}
+
+bool Project::hasCompleted() {
+  return cCompleted;
+}
+
+void Project::reset() {
+  cCompleted = false;
+  for (ILayer* mLayer : cLayers) {
+    mLayer->reset();
+  }
+  cResources.reset();
+}
+
+void Project::inputRuntime(SDL_Event& event) {
   cResources.input(event);
   for (unsigned int i = 0; i < cLayers.size(); i++) {
     cLayers[i]->input(event);

@@ -25,9 +25,7 @@ ElementHandlerSpindizzyDynamic::ElementHandlerSpindizzyDynamic(IModuleElementHan
 }
 
 void ElementHandlerSpindizzyDynamic::reset() {
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    cElements[i]->reset();
-  }
+  cElements.reset();
 }
 
 void ElementHandlerSpindizzyDynamic::setActive(bool active) {

@@ -20,8 +20,8 @@
 
 const std::string SimpleEditor::COMMAND_SAVE_AS          = "SaveAs";
 const std::string SimpleEditor::COMMAND_SAVE             = "Save";
-const std::string SimpleEditor::COMMAND_EXIT             = "Exit";
 const std::string SimpleEditor::COMMAND_OPEN             = "Open";
+const std::string SimpleEditor::COMMAND_TEST             = "Test";
 const std::string SimpleEditor::COMMAND_MODULES          = "Modules";
 const std::string SimpleEditor::COMMAND_RESOURCE_BROWSER = "ResourceBrowser";
 
@@ -36,10 +36,10 @@ void SimpleEditor::load(DOMNodeWrapper* node, IResourceRegistry* runtimeContext)
   cEditorFocus = true;
 
   // Register commands
-  cEditorCommands[COMMAND_EXIT]    = new TerminateEditorCommand(cConfirmExitCommands);
   cEditorCommands[COMMAND_SAVE_AS] = new SaveAsCommand(this, true);
   cEditorCommands[COMMAND_SAVE]    = new SaveAsCommand(this, false);
   cEditorCommands[COMMAND_OPEN]    = new CommandDialog<DialogProjectOpen>(this, this);
+  cEditorCommands[COMMAND_TEST]    = new TestCommand(this);
   cEditorCommands[COMMAND_MODULES] = new CommandDialog<DialogModules>(this, this);
 //  EditorCommandManager::registerCommand(COMMAND_MODULES,          new CommandModules());
 //  EditorCommandManager::registerCommand(COMMAND_RESOURCE_BROWSER, new CommandResourceBrowser());
@@ -60,6 +60,7 @@ void SimpleEditor::load(DOMNodeWrapper* node, IResourceRegistry* runtimeContext)
 //     }
 //   }  
   cProject = mProject;
+  cTesting = false;
 
   // Setup map for editing
   runtimeContext->add(this, "Editor", node);
@@ -79,7 +80,7 @@ void SimpleEditor::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* r
       cFont = resources->getFont(mFontName);
       LookAndFeel::setDefaultFont(cFont, 0.02f);
     } else if (mValueAsString == "MenuBar") {
-      cMenuBar = new MenuBar(this, mNode, this);
+      cMenuBar = new MenuBar(this, mNode, this, resources);
       addComponent(cMenuBar);
     } else if (mValueAsString == "ResourcesIcon") {
       std::string mIconName = mNode->getAttribute("icon");
@@ -87,7 +88,6 @@ void SimpleEditor::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* r
       I3DModelType* mModelType = resources->getModelType(mIconModel);
       Vertex* mVertex = new Vertex();
       I3DModel* mModelInstance = mModelType->createModel(mVertex, 1.0f);
-      std::cout << "=================================================> " << mIconName << std::endl;
       cResourceIcons[mIconName] = new GUIIcon(mModelInstance);
     }
   }
@@ -201,49 +201,53 @@ void SimpleEditor::testFocusChange(SDL_Event& event) {
 }
 
 void SimpleEditor::input(SDL_Event& event) {
-  testFocusChange(event);
-  bool mEventConsumed = false;
-  if (cConfirmExitCommands) {
-    switch (event.type) {
-      case SDL_KEYDOWN: {
-        switch (event.key.keysym.sym) {
-          case SDLK_n: {
-            cConfirmExitCommands = false;
-            break;
-          }
+  if (cTesting) {
+    cProject->inputRuntime(event);
+  } else {
+    testFocusChange(event);
+    bool mEventConsumed = false;
+    if (cConfirmExitCommands) {
+      switch (event.type) {
+        case SDL_KEYDOWN: {
+          switch (event.key.keysym.sym) {
+            case SDLK_n: {
+              cConfirmExitCommands = false;
+              break;
+            }
 
-          case SDLK_ESCAPE: {
-            cConfirmExitCommands = false;
-            break;
-          }
+            case SDLK_ESCAPE: {
+              cConfirmExitCommands = false;
+              break;
+            }
 
-          case SDLK_y: {
-            cRunExitCommands = true;
-            cConfirmExitCommands = false;
-            break;
-          }
+            case SDLK_y: {
+              cRunExitCommands = true;
+              cConfirmExitCommands = false;
+              break;
+            }
 
-          default: {
-            // Nothing to do
+            default: {
+              // Nothing to do
+            }
           }
         }
-      }
 
-      case SDL_QUIT: {
-        cConfirmExitCommands = true;
+        case SDL_QUIT: {
+          cConfirmExitCommands = true;
+        }
       }
+    } else if (cEditorFocus) {
+      mEventConsumed = editorInput(event);
+    } else {
+      mEventConsumed = cHUDComponents[cHUDComponents.size() - 1]->input(event);
     }
-  } else if (cEditorFocus) {
-    mEventConsumed = editorInput(event);
-  } else {
-    mEventConsumed = cHUDComponents[cHUDComponents.size() - 1]->input(event);
-  }
 
-  // Passive input (e.g. mouse overs, etc.)
-  if (!mEventConsumed) {
-    for (int i = cHUDComponents.size() - 1; i >= 0; i--) {
-      if (cHUDComponents[i]->input(event)) {
-        return;
+    // Passive input (e.g. mouse overs, etc.)
+    if (!mEventConsumed) {
+      for (int i = cHUDComponents.size() - 1; i >= 0; i--) {
+        if (cHUDComponents[i]->input(event)) {
+          return;
+        }
       }
     }
   }
@@ -312,6 +316,11 @@ void SimpleEditor::clearUndoStack() {
 void SimpleEditor::saveCurrentMap() {
   cProject->save();
 }
+
+void SimpleEditor::testCurrentMap() {
+  cTesting = true;
+  cProject->initRuntime();
+}
  
 void SimpleEditor::registerCommand(ICommandInfo* commandInfo) {
   cMenuBar->addCommand(commandInfo);
@@ -333,20 +342,28 @@ void SimpleEditor::destroy(ILayer* layer) {
   // Editor will not self terminate
 }
 
+void SimpleEditor::reset() {
+  // Not supported
+}
+
 void SimpleEditor::renderRuntime() {
-  if (cSelectedLayer != nullptr) {
-    cSelectedLayer->renderEditing();
-  }
-  
-  // Render UI components
-  for (unsigned int i = 0; i < cHUDComponents.size(); i++) {
-    cHUDComponents[i]->render();
-  }
-  if (cConfirmExitCommands) {
-    glColor3f(0.0f, 0.0f, 0.0f);
-    cFont->print(0.004f, -0.004f, 0.03f, 1, "Are you sure you want to quit?");
-    glColor3f(1.0f, 1.0f, 1.0f);
-    cFont->print(0.0f, 0.0f, 0.03f, 1, "Are you sure you want to quit?");
+  if (cTesting) {
+    cProject->renderRuntime();
+  } else {
+    if (cSelectedLayer != nullptr) {
+      cSelectedLayer->renderEditing();
+    }
+    
+    // Render UI components
+    for (unsigned int i = 0; i < cHUDComponents.size(); i++) {
+      cHUDComponents[i]->render();
+    }
+    if (cConfirmExitCommands) {
+      glColor3f(0.0f, 0.0f, 0.0f);
+      cFont->print(0.004f, -0.004f, 0.03f, 1, "Are you sure you want to quit?");
+      glColor3f(1.0f, 1.0f, 1.0f);
+      cFont->print(0.0f, 0.0f, 0.03f, 1, "Are you sure you want to quit?");
+    }
   }
 }
 
@@ -355,20 +372,31 @@ void SimpleEditor::renderEditing() {
 }
 
 void SimpleEditor::updateRuntime(unsigned int milliseconds) {
-  for (unsigned int i = 0; i < cHUDComponents.size(); i++) {
-    cHUDComponents[i]->update(milliseconds);
-  }
-  
-  if (cSelectedLayer != nullptr) {
-    cSelectedLayer->updateEditing(milliseconds);
-  }
-  if (cRunExitCommands) {
-    for (unsigned int i = 0; i < cExitCommands.size(); i++) {
-      cExitCommands[i]->execute();
+  if (cTesting) {
+    cProject->updateRuntime(milliseconds);
+    if (cProject->hasCompleted()) {
+      cTesting = false;
+      cProject->reset();
+      Configuration* mConfiguration = Configuration::getInstance();
+      ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
+      mScreen->setMode(mScreen->getScreenMode());
     }
-    cRunExitCommands = false;
   } else {
-    glBindTexture(GL_TEXTURE_2D, 0);
+    for (unsigned int i = 0; i < cHUDComponents.size(); i++) {
+      cHUDComponents[i]->update(milliseconds);
+    }
+    
+    if (cSelectedLayer != nullptr) {
+      cSelectedLayer->updateEditing(milliseconds);
+    }
+    if (cRunExitCommands) {
+      for (unsigned int i = 0; i < cExitCommands.size(); i++) {
+        cExitCommands[i]->execute();
+      }
+      cRunExitCommands = false;
+    } else {
+      glBindTexture(GL_TEXTURE_2D, 0);
+    }
   }
 }
 

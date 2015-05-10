@@ -72,7 +72,7 @@ class AttractControlLoop:public IModule,
    */
   std::vector<ICommand*> parseEventCommands(DOMNodeWrapper*);
 
-  IFrontEnd* createFrontEnd(DOMNodeWrapper*, const std::string&);
+  IFrontEnd* createFrontEnd(DOMNodeWrapper*, const std::string&, IResourceAccessor*);
   IAttract* createAttract(const std::string&);
   
   public:
@@ -104,6 +104,7 @@ class AttractControlLoop:public IModule,
   void updateRuntime(unsigned int);
   void updateEditing(unsigned int);
   void input(SDL_Event&);
+  void reset();
   
   /**************************\
    * Implements IController *

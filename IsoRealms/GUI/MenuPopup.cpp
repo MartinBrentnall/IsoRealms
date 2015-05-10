@@ -18,7 +18,7 @@
  */
 #include "MenuPopup.h"
 
-MenuPopup::MenuPopup(DOMNodeWrapper* node, IMenuContainer* parent, float x, float y, IComponentContainer* componentContainer, ICommandSource* commandSource) {
+MenuPopup::MenuPopup(DOMNodeWrapper* node, IMenuContainer* parent, float x, float y, IComponentContainer* componentContainer, ICommandSource* commandSource, IResourceAccessor* resources) {
   cX = x;
   cY = y;
   cParent = parent;
@@ -31,13 +31,13 @@ MenuPopup::MenuPopup(DOMNodeWrapper* node, IMenuContainer* parent, float x, floa
     if (mValueAsString == "Menu") {
       std::string mSubMenuName = mNode->getAttribute("name");
       std::string mSubMenuText = mNode->getAttribute("text");
-      MenuPopup* mMenuPopup = new MenuPopup(mNode, parent, x, y, componentContainer, commandSource);
+      MenuPopup* mMenuPopup = new MenuPopup(mNode, parent, x, y, componentContainer, commandSource, resources);
       PopupMenuCommand* mPopupMenuCommand = new PopupMenuCommand(this, mMenuPopup);
       addMenuItem(mSubMenuName, mSubMenuText, mPopupMenuCommand, true);
       cMenuPopups[mSubMenuName] = mMenuPopup;
     } else if (mValueAsString == "MenuItem") {
-      ICommand* mCommand = parseCommand(mNode, commandSource);
       std::string mPathElementName = mNode->getAttribute("name");
+      ICommand* mCommand = parseCommand(mNode, commandSource, resources);
       std::string mPathElementText = mNode->getAttribute("text");
       addMenuItem(mPathElementName, mPathElementText, mCommand, false);
     }
@@ -98,13 +98,15 @@ void MenuPopup::setPosition(float x, float y) {
 }
 
 // TODO: return (i.e. support) a vector
-ICommand* MenuPopup::parseCommand(DOMNodeWrapper* node, ICommandSource* commandSource) {
+ICommand* MenuPopup::parseCommand(DOMNodeWrapper* node, ICommandSource* commandSource, IResourceAccessor* resources) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "ExecuteEditorCommand") {
       std::string mCommandName = mNode->getAttribute("type");
       return commandSource->getCommand(mCommandName);
+    } else if (mValueAsString == "Action") {
+      return resources->getScriptCall(mNode);
     }
   }
   return NULL;
@@ -226,9 +228,9 @@ bool MenuPopup::keyDown(SDLKey& key) {
 
     case SDLK_RETURN: {
       if (cSelectedItem != cMenuItems.size()) {
-	cMenuItems[cSelectedItem]->execute();
-	cParent->closeMenu(this);
-	cSelectedItem = cMenuItems.size();
+        cMenuItems[cSelectedItem]->execute();
+        cParent->closeMenu(this);
+        cSelectedItem = cMenuItems.size();
       }
       return true;
     }

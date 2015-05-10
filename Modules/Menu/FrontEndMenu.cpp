@@ -18,7 +18,7 @@
  */
 #include "FrontEndMenu.h"
 
-FrontEndMenu::FrontEndMenu(IFrontEndCommands* commandRegistry, IMenuStack* menuStack, DOMNodeWrapper* node, const std::string& menuName, std::vector<std::string> tree, IController* controller) {
+FrontEndMenu::FrontEndMenu(IFrontEndCommands* commandRegistry, IMenuStack* menuStack, DOMNodeWrapper* node, const std::string& menuName, std::vector<std::string> tree, IController* controller, IResourceAccessor* resources) {
   cMenuName = menuName;
   tree.push_back(cMenuName);
   cSelectedItem = 0;
@@ -27,11 +27,11 @@ FrontEndMenu::FrontEndMenu(IFrontEndCommands* commandRegistry, IMenuStack* menuS
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Command") {
-      FrontEndMenuItem* mMenuItem = new FrontEndMenuItem(commandRegistry, mNode);
+      FrontEndMenuItem* mMenuItem = new FrontEndMenuItem(commandRegistry, mNode, resources);
       cMenuItems.push_back(mMenuItem);
     } else if (mValueAsString == "Menu") {
       std::string mName = mNode->getAttribute("name");
-      FrontEndMenu* mSubMenu = new FrontEndMenu(commandRegistry, menuStack, mNode, mName, tree, controller);
+      FrontEndMenu* mSubMenu = new FrontEndMenu(commandRegistry, menuStack, mNode, mName, tree, controller, resources);
       ICommand* mEnterMenuCommand = new EnterMenuCommand(menuStack, mSubMenu);
       FrontEndMenuItem* mMenuItem = new FrontEndMenuItem(mName, mEnterMenuCommand);
       cMenuItems.push_back(mMenuItem);
@@ -42,7 +42,7 @@ FrontEndMenu::FrontEndMenu(IFrontEndCommands* commandRegistry, IMenuStack* menuS
       for (unsigned int i = 0; i < mFileList->size(); i++) {
         std::size_t mExtensionPosition = (*mFileList)[i].find_last_of('.');
         std::string mProjectName = (*mFileList)[i].substr(0, mExtensionPosition);
-        FrontEndMenu* mSubMenu = new FrontEndMenu(commandRegistry, menuStack, mNode, mProjectName, tree, controller);
+        FrontEndMenu* mSubMenu = new FrontEndMenu(commandRegistry, menuStack, mNode, mProjectName, tree, controller, resources);
         ICommand* mEnterMenuCommand = new EnterMenuCommand(menuStack, mSubMenu);
         FrontEndMenuItem* mMenuItem = new FrontEndMenuItem(mProjectName, mEnterMenuCommand);
         cMenuItems.push_back(mMenuItem);

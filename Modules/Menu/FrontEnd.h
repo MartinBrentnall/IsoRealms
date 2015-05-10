@@ -79,18 +79,12 @@ class FrontEnd:public IFrontEnd,
    */
   std::vector<IFrontEndMenu*> cActiveMenu;
   std::map<IFrontEndMenu*, std::vector<IApplicableItem*>*> cItemsToTest;
-  ICommand* cExitCommand;
-  bool cHasExited;
+  IScriptCall* cScriptExit;
 
   bool keyDown(SDLKey&);
   
   public:
-  FrontEnd(DOMNodeWrapper*, IFont*, IController*);
-
-  /**
-   * Signal the front-end to terminate.
-   */
-  void terminate();
+  FrontEnd(DOMNodeWrapper*, IFont*, IController*, IResourceAccessor*);
 
   /************************\
    * Implements IFrontEnd *
@@ -100,12 +94,11 @@ class FrontEnd:public IFrontEnd,
   void setActive(bool);
   void input(SDL_Event&);
   bool hasIdled();
-  bool hasExited();
   
   /********************************\
    * Implements IFrontEndCommands *
   \********************************/
-  ICommand* parseCommand(DOMNodeWrapper*);
+  ICommand* parseCommand(DOMNodeWrapper*, IResourceAccessor*);
   ICommand* parseArgumentCommand(DOMNodeWrapper*, const std::string&);
 
   /*************************\

@@ -25,6 +25,7 @@ LuaScriptCall::LuaScriptCall(IScript* script, std::vector<IArgumentValue*> argum
 
 void LuaScriptCall::execute() {
   cScript->execute(cArgumentValues);
+  std::cout << std::flush;
 }
 
 void LuaScriptCall::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {

@@ -319,12 +319,12 @@ void RectangularComponent::loadTabbedContainer(DOMNodeWrapper* node, TabbedConta
   }
 }
 
-void RectangularComponent::loadPopupMenu(IRectangularComponent* component, DOMNodeWrapper* node) {
+void RectangularComponent::loadPopupMenu(IRectangularComponent* component, DOMNodeWrapper* node, IResourceAccessor* resources) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper* mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "PopupMenu") {
-      MenuPopup* mMenuPopup = new MenuPopup(mNode, this, 0.0f, 0.0f, nullptr, nullptr);
+      MenuPopup* mMenuPopup = new MenuPopup(mNode, this, 0.0f, 0.0f, nullptr, nullptr, resources);
       cPopupMenus[component] = mMenuPopup;
       return;
     }
@@ -375,7 +375,7 @@ void RectangularComponent::loadDialog(DOMNodeWrapper* node, IRectangle* parent, 
       cPaddedComponents[mName] = mGridComponent;
       cChildren.push_back(mGridContainer);
       cFocusedComponent = mGridContainer;
-      loadPopupMenu(mGridContainer, mNode);
+      loadPopupMenu(mGridContainer, mNode, resourceAccessor);
     } else if (mValueAsString == "TextEditor") {
       std::string mName = mNode->getAttribute("name");
       std::string mText = mNode->getAttribute("text");

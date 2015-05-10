@@ -91,6 +91,10 @@ void LayerSpindizzyMap::pushElement(IElement* element) {
 void LayerSpindizzyMap::staticChanged() {
 }
 
+void LayerSpindizzyMap::reset() {
+  cElementHandler.reset();
+}
+
 IElementContainer* LayerSpindizzyMap::getElementContainer() {
   return this;
 }

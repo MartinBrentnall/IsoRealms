@@ -38,6 +38,19 @@ void ResourceSurfaceRegistry::registerWallSurface(ICollidableWallSurface* wallSu
   SDL_mutexV(cAccessMutex);
 }
 
+void ResourceSurfaceRegistry::unregisterRollableSurface(IRollableSurface* rollableSurface) {
+  while (SDL_mutexP(cAccessMutex) == -1);
+  cRollableSurfaces.remove(rollableSurface);
+  cInterceptingSurfaces.remove(rollableSurface);
+  SDL_mutexV(cAccessMutex);
+}
+
+void ResourceSurfaceRegistry::unregisterWallSurface(ICollidableWallSurface* wallSurface) {
+  while (SDL_mutexP(cAccessMutex) == -1);
+  cWallSurfaces.remove(wallSurface);
+  SDL_mutexV(cAccessMutex);
+}
+
 ICollisionData* ResourceSurfaceRegistry::getNextEvent(Vertex& start, Vertex& end, IRollableSurface* currentSurface, float stepHeight) {
   int mSouth = std::floor(std::min(start.getY(), end.getY())) - 1;
   int mNorth = std::ceil(std::max(start.getY(), end.getY())) + 1;

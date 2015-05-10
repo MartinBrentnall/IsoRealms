@@ -25,6 +25,8 @@ class IInteger:public IResource {
   public:
   virtual void setValue(int) = 0;
   virtual int getValue() = 0;
+
+  virtual void reset() = 0; // TODO: move to IResource  
 };
 
 #endif
