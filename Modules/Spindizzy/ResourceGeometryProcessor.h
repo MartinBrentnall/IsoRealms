@@ -100,7 +100,7 @@ class ResourceGeometryProcessor {
    *           is facing.
    * @returns  True if the surface tile is visible, otherwise false.
    */
-  Condition* getSurfaceTileCondition(IGeometricElement*, int x, int y, ITileSurface::FaceDirection);
+  Condition* getSurfaceTileCondition(IGeometricElement*, int x, int y, ITileSurface::FaceDirection, std::vector<IndexedGeometricElement*>);
 
   /**
    * Test whether the specified 2D location is vertically aligned with any of
@@ -145,9 +145,9 @@ class ResourceGeometryProcessor {
    *           get.
    * @returns  The completely raw unprocessed wall column.
    */
-  std::vector<WallColumnPossibility*> getPhysicalWallColumn(IGeometricElement*, int, int, IWallSurface::FaceDirection);
+  std::vector<WallColumnPossibility*> getPhysicalWallColumn(IGeometricElement*, int, int, IWallSurface::FaceDirection, std::vector<IndexedGeometricElement*>);
 
-  std::vector<WallColumnPossibility*> getPhysicalWallMasks(int, int, IWallSurface::FaceDirection);
+  std::vector<WallColumnPossibility*> getPhysicalWallMasks(int, int, IWallSurface::FaceDirection, std::vector<IndexedGeometricElement*>);
   
   /**
    * Unite a set of wall columns with another set of wall columns.
@@ -172,21 +172,21 @@ class ResourceGeometryProcessor {
    *           get.
    * @returns  The completely raw unprocessed wall column.
    */
-  std::vector<WallColumnPossibility*> getOptimisedWallColumn(IGeometricElement*, int, int, IWallSurface::FaceDirection);
+  std::vector<WallColumnPossibility*> getOptimisedWallColumn(IGeometricElement*, int, int, IWallSurface::FaceDirection, std::vector<IndexedGeometricElement*>);
 
-  std::vector<WallColumnPossibility*> getVisibleWallColumn(IGeometricElement*, int, int, IWallSurface::FaceDirection);
+  std::vector<WallColumnPossibility*> getVisibleWallColumn(IGeometricElement*, int, int, IWallSurface::FaceDirection, std::vector<IndexedGeometricElement*>);
   
   ITileSurface* getSurfaceAt(std::vector<ITileSurface*>, int, int);
   IWallSurface* findSurfaceAt(std::vector<IWallSurface*>, int, int);
 
   
-  int getEast(IGeometricElement*, std::vector<ITileSurfaceTemplate*>&, int, int, ITileSurface::FaceDirection);
-  int getNorth(IGeometricElement*, std::vector<ITileSurfaceTemplate*>&, int, int, int, ITileSurface::FaceDirection);
+  int getEast(IGeometricElement*, std::vector<ITileSurfaceTemplate*>&, int, int, ITileSurface::FaceDirection, std::vector<IndexedGeometricElement*>);
+  int getNorth(IGeometricElement*, std::vector<ITileSurfaceTemplate*>&, int, int, int, ITileSurface::FaceDirection, std::vector<IndexedGeometricElement*>);
   
   // TODO: Maybe this should be moved to Condition class as static function
   bool safeEquals(Condition* a, Condition* b);
 
-  std::vector<IndexedGeometricElement*> getGeometricElements(int, int);
+  std::vector<IndexedGeometricElement*> getGeometricElements(int, int, int, int);
   
   public:
   ResourceGeometryProcessor(bool, bool);
