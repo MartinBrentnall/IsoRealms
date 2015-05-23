@@ -33,6 +33,7 @@
 #include <IsoRealms/Resources/ElementType/Element.h>
 #include <IsoRealms/Resources/ElementType/ElementHandler.h>
 #include <IsoRealms/Resources/ElementType/IElementType.h>
+#include <IsoRealms/Resources/Script/IScriptCall.h>
 #include <IsoRealms/Resources/Vertex/Vertex.h>
 
 #include "ISpindizzyZoneType.h"
@@ -56,16 +57,19 @@ class ElementSpindizzyZone:public Element,
 
   // Interfaces
   ISpindizzyZoneType* cZoneType;
+  IElementContainer* cContainer;
+  ElementHandler cElementHandler;
     
   // Definition data
   BlockArea* cZoneArea;
   SpindizzyZoneTheme* cZoneTheme;
-  ElementHandler cElementHandler;
+  I3DModel* cFlagModel;
+  std::map<std::string, IScriptCall*> cScripts;
+  std::vector<IArgument*> cArguments;
+  
+  // Runtime data
   bool cVisited;
   bool cFlagged;
-  I3DModel* cFlagModel;
-  std::vector<IArgument*> cArguments;
-  IElementContainer* cContainer;
   
   public:
   ElementSpindizzyZone(ISpindizzyZoneType*, DOMNodeWrapper*, BlockLocation*, IResourceAccessor*, I3DModelType*, IElementContainer*);
@@ -78,6 +82,7 @@ class ElementSpindizzyZone:public Element,
   IColour* getColour(SpindizzyZoneThemeColour*);
   void setFlag(bool);
   SpindizzyZoneTheme* getTheme();
+  IScriptCall* getScriptCall(const std::string&);
   
   /***********************\
    * Implements IElement *

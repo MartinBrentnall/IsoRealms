@@ -38,10 +38,13 @@ ElementSpindizzyZone::ElementSpindizzyZone(ISpindizzyZoneType* elementType, DOMN
   cZoneTheme = mModule->getTheme(mThemeName);
   BlockLocation mVertex(cZoneArea->getWest(), cZoneArea->getSouth(), cZoneArea->getBottom());
   for (int i = 0; i < node->getChildCount(); i++) {
-    DOMNodeWrapper *mNode = node->getChild(i);
+    DOMNodeWrapper* mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Element") {
       resources->loadElement(mNode, &mVertex, this);
+    } else if (mValueAsString == "Script") {
+      std::string mId = mNode->getAttribute("id");
+      cScripts[mId] = resources->getScriptCall(mNode);
     }
   }
   cElementHandler.setAllDirty();
@@ -129,6 +132,11 @@ void ElementSpindizzyZone::setFlag(bool flag) {
 
 SpindizzyZoneTheme* ElementSpindizzyZone::getTheme() {
   return cZoneTheme;
+}
+
+IScriptCall* ElementSpindizzyZone::getScriptCall(const std::string& id) {
+  std::map<std::string, IScriptCall*>::iterator mScript = cScripts.find(id);
+  return mScript != cScripts.end() ? mScript->second : nullptr;
 }
 
 void ElementSpindizzyZone::renderRuntime() {

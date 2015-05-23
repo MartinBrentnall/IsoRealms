@@ -25,6 +25,7 @@ const std::string LuaSupport::TYPE_INTEGER = "Integer";
 const std::string LuaSupport::TYPE_FLOAT = "Float";
 const std::string LuaSupport::TYPE_MODEL = "3DModel";
 const std::string LuaSupport::TYPE_VERTEX = "Vertex";
+const std::string LuaSupport::TYPE_SCRIPT_CALL = "ScriptCall";
 const std::string LuaSupport::TYPE_PROJECT = "Project";
 
 bool operator==(const ISound& a, const ISound& b) {
@@ -49,6 +50,10 @@ bool operator==(const IVertex& a, const IVertex& b) {
  
 bool operator==(const IColour& a, const IColour& b) {
   return &a == &b; 
+}
+ 
+bool operator==(const IScriptCall& a, const IScriptCall& b) {
+  return &a == &b;
 }
  
 bool operator==(const Project& a, const Project& b) {
@@ -98,6 +103,12 @@ LuaSupport::LuaSupport() {
 
   luabind::module(cLuaState) [
     luabind::class_<IColour>(TYPE_COLOUR.c_str())
+       .def(luabind::const_self == luabind::const_self)
+  ];
+  
+  luabind::module(cLuaState) [
+    luabind::class_<IScriptCall>(TYPE_SCRIPT_CALL.c_str())
+       .def("execute", &IScriptCall::execute)
        .def(luabind::const_self == luabind::const_self)
   ];
   

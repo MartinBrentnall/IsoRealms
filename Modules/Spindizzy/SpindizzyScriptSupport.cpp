@@ -113,6 +113,7 @@ extern "C" void initLua(lua_State* luaState) {
         .def("getColour", &ElementSpindizzyZone::getColour)
         .def("setFlag", &ElementSpindizzyZone::setFlag)
         .def("getTheme", &ElementSpindizzyZone::getTheme)
+        .def("getScriptCall", &ElementSpindizzyZone::getScriptCall)
         .def(luabind::const_self == luabind::const_self)
     ];
     luabind::module(luaState) [
