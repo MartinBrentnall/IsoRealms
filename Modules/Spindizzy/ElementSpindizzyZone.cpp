@@ -75,19 +75,26 @@ bool ElementSpindizzyZone::initElement(unsigned int pass) {
   return cElementHandler.init(pass, true);
 }
 
-void ElementSpindizzyZone::renderEditing() {
+void ElementSpindizzyZone::renderPreview(Vertex& start, Vertex& end) {
+  BlockLocation mStart(start.x, start.y, start.z * 2.0);
+  BlockLocation mEnd(end.x, end.y, end.z * 2.0);
+  cZoneArea = new BlockArea(mStart, mEnd);
+  renderEditing(*cZoneArea);
+}
+
+void ElementSpindizzyZone::renderEditing(BlockArea& area) {
   if (cZoneTheme != nullptr) {
     cZoneTheme->set();
   }
   cElementHandler.renderEditing();
   cElementHandler.renderStatic();
 
-  float y       = cZoneArea->getSouth()  - IsoRealmsConstants::BLOCK_RADIUS;
-  float ys      = cZoneArea->getNorth()  + IsoRealmsConstants::BLOCK_RADIUS;
-  float x       = cZoneArea->getWest()   - IsoRealmsConstants::BLOCK_RADIUS;
-  float xs      = cZoneArea->getEast()   + IsoRealmsConstants::BLOCK_RADIUS;
-  float z       = cZoneArea->getBottom() * IsoRealmsConstants::BLOCK_HEIGHT - IsoRealmsConstants::BLOCK_HEIGHT;
-  float zs      = cZoneArea->getTop()    * IsoRealmsConstants::BLOCK_HEIGHT;
+  float y       = area.getSouth()  - IsoRealmsConstants::BLOCK_RADIUS;
+  float ys      = area.getNorth()  + IsoRealmsConstants::BLOCK_RADIUS;
+  float x       = area.getWest()   - IsoRealmsConstants::BLOCK_RADIUS;
+  float xs      = area.getEast()   + IsoRealmsConstants::BLOCK_RADIUS;
+  float z       = area.getBottom() * IsoRealmsConstants::BLOCK_HEIGHT - IsoRealmsConstants::BLOCK_HEIGHT;
+  float zs      = area.getTop()    * IsoRealmsConstants::BLOCK_HEIGHT;
   
   glBindTexture(GL_TEXTURE_2D, 0);
   glBegin(GL_LINES);
@@ -107,6 +114,10 @@ void ElementSpindizzyZone::renderEditing() {
   glColor3f(1.0f, 1.0f, 1.0f);
   glEnd();
   cZoneType->applyDefaultTheme();
+}
+
+void ElementSpindizzyZone::renderEditing() {
+  renderEditing(*cZoneArea);
 }
 
 void ElementSpindizzyZone::renderStatic() {

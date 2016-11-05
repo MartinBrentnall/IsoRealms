@@ -44,13 +44,17 @@ class ResourceElementSpindizzyZone:public ISpindizzyZoneType,
     
   std::vector<ElementSpindizzyZone*> cContent;
   ElementSpindizzyZone* cSampleZone;
+  ElementSpindizzyZone* cEditingZone;
   IColour* cVisitedColour;
   IColour* cUnvisitedColour;
   I3DModelType* cFlagModelType;
   IBoundaries* cBoundaries;
+  Vertex* cStartLocation;
 
   ElementSpindizzyZone* getElement(IElement*);
   
+  bool keyDown(SDLKey&, ILayerEditingContext*);  
+
   public:
   ResourceElementSpindizzyZone(ISpindizzyZoneModule*, DOMNodeWrapper*, IResourceRegistry*);
 

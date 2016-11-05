@@ -23,6 +23,8 @@ ResourceElementSpindizzyZone::ResourceElementSpindizzyZone(ISpindizzyZoneModule*
   cBoundaries = new Boundaries();
   cBoundaries->registerArgumentValuesBoundaries(this);
   resourceRegistry->add(cBoundaries, node->getAttribute("name"));
+  cStartLocation = nullptr;
+  cEditingZone = nullptr;
 }
 
 ElementSpindizzyZone* ResourceElementSpindizzyZone::getElement(IElement* element) {
@@ -99,12 +101,66 @@ void ResourceElementSpindizzyZone::setEditingContext(BlockLocation*, IComponentC
 }
 
 void ResourceElementSpindizzyZone::renderEditingPreview(Vertex& location) {
-  glTranslatef(location.x, location.y, location.z);
-  cSampleZone->renderEditing();
+  if (cEditingZone == nullptr) {
+    BlockLocation mZoneLocation(0, 0, 0);
+    BlockArea* mZoneArea = new BlockArea(mZoneLocation, mZoneLocation);
+    cEditingZone = new ElementSpindizzyZone(this, mZoneArea);
+    cStartLocation = nullptr;
+  }
+  if (cStartLocation != nullptr) {
+    cEditingZone->renderPreview(*cStartLocation, location);
+  } else {
+    glTranslatef(location.x, location.y, location.z);
+    cEditingZone->renderEditing();
+  }
+}
+
+bool ResourceElementSpindizzyZone::keyDown(SDLKey& key, ILayerEditingContext* editingContext) {
+  switch (key) {
+    case SDLK_SPACE: {
+      IElementContainer* mContainer = editingContext->getElementContainer();
+      ElementHandlerZone* mHandler = cModuleInterface->getZoneElementHandler(mContainer);
+      if (cStartLocation == nullptr) {
+//        editingContext->setCursorRestriction(mContainer);
+        Vertex* mLocation = editingContext->getLocation();
+        BlockLocation mStartLocation(mLocation->x, mLocation->y, mLocation->z * 2.0);
+        if (cEditingZone != nullptr) {
+          delete cEditingZone;
+        }
+        BlockArea* mZoneArea = new BlockArea(mStartLocation, mStartLocation);
+        cEditingZone = new ElementSpindizzyZone(this, mZoneArea);
+        cStartLocation = new Vertex(*mLocation);
+      } else {
+//        editingContext->removeCursorRestriction(mContainer);
+        mHandler->addElement(cEditingZone);
+        cContent.push_back(cEditingZone);
+//        cModuleInterface->registerSurfaceProvider(cEditingBlock, true);
+        cStartLocation = nullptr;
+        BlockLocation mIdentityBlockLocation(0, 0, 0);
+        BlockArea* mZoneArea = new BlockArea(mIdentityBlockLocation, mIdentityBlockLocation);
+        cEditingZone = new ElementSpindizzyZone(this, mZoneArea);
+//        cEditingZone->createSampleSurfaces();
+        editingContext->staticChanged();
+      }
+    }
+
+    default: {
+      return false;
+    }
+  }
+  return false;
 }
 
 bool ResourceElementSpindizzyZone::inputEdit(SDL_Event& event, ILayerEditingContext* editingContext) {
-  // TODO: This is apparently for editor input!
+  switch (event.type) {
+    case SDL_KEYDOWN: {
+      if (keyDown(event.key.keysym.sym, editingContext)) {
+        delete cEditingZone;
+        cEditingZone = nullptr;
+        return true;
+      }
+    }
+  }
   return false;
 }
 

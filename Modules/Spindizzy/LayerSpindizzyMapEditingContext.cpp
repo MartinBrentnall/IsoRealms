@@ -18,9 +18,9 @@
  */
 #include "LayerSpindizzyMapEditingContext.h"
 
-const float LayerSpindizzyMapEditingContext::SPEED_FAST     = 1.5f;
-const float LayerSpindizzyMapEditingContext::SPEED_NORMAL   = 0.51f;
-const float LayerSpindizzyMapEditingContext::SPEED_SLOW     = 0.1f;
+const float LayerSpindizzyMapEditingContext::SPEED_FAST     = 0.5f;
+const float LayerSpindizzyMapEditingContext::SPEED_NORMAL   = 0.21f;
+const float LayerSpindizzyMapEditingContext::SPEED_SLOW     = 0.06f;
 const float LayerSpindizzyMapEditingContext::STOP_THRESHOLD = 0.01f;
 const float LayerSpindizzyMapEditingContext::SELECTION_BOUNDARY_RENDERING_OFFSET = 0.001f;
 

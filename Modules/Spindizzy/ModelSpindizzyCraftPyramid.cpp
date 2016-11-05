@@ -76,6 +76,7 @@ void ModelSpindizzyCraftPyramid::render() {
   glTexCoord2f(0.0, 0.0); glVertex3f(0.0 - mTopWidth, 0.0 - mTopWidth, 0.0 + mTopHeight);
   glTexCoord2f(1.0, 0.0); glVertex3f(0.0 + mTopWidth, 0.0 - mTopWidth, 0.0 + mTopHeight);
   glEnd();
+  glBindTexture(GL_TEXTURE_2D, 0);
   
   glEnable(GL_CULL_FACE);  
 }

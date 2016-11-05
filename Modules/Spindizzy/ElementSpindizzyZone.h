@@ -83,6 +83,8 @@ class ElementSpindizzyZone:public Element,
   void setFlag(bool);
   SpindizzyZoneTheme* getTheme();
   IScriptCall* getScriptCall(const std::string&);
+  void renderPreview(Vertex&, Vertex&);
+  void renderEditing(BlockArea&);
   
   /***********************\
    * Implements IElement *

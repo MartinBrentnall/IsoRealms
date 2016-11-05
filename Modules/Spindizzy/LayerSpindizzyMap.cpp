@@ -190,7 +190,30 @@ void LayerSpindizzyMap::renderRuntime() {
 
 void LayerSpindizzyMap::renderEditing() {
   cEditingContext->renderCamera();
-  glColor3f(1.0f, 1.0f, 1.0f);
+  glBegin(GL_POINTS);
+  Vertex* mEditingLocation = cEditingContext->getLocation();
+  for (int x = mEditingLocation->x - 64; x <= mEditingLocation->x + 64; x++) {
+    for (int y = mEditingLocation->y - 64; y <= mEditingLocation->y + 64; y++) {
+      if (x % 8 == 0 && y % 8 == 0) {
+        glColor3f(1.0f, 1.0f, 1.0f);
+      } else if (x % 8 == 0 || y % 8 == 0) {
+        glColor3f(0.7f, 0.7f, 0.7f);
+      } else {
+        glColor3f(0.4f, 0.4f, 0.4f);
+      }
+      glVertex3f(x - 0.5f, y - 0.5f, std::round(mEditingLocation->z / 8.0f) * 8.0f - 0.5f);
+    }
+  }
+  glEnd();
+  glBegin(GL_LINES);
+  glColor3f(0.0f, 0.0f, 1.0f);
+  glVertex3f( 0.5f, -0.5f,  -0.5f);
+  glVertex3f(-1.5f, -0.5f,  -0.5f);
+  glVertex3f(-0.5f,  0.5f,  -0.5f);
+  glVertex3f(-0.5f, -1.5f,  -0.5f);
+  glVertex3f(-0.5f, -0.5f,  -1.5f);
+  glVertex3f(-0.5f, -0.5f,   0.5f);
+  glEnd();
   cElementHandler.renderEditing();
   cElementHandler.renderStatic();
   cEditingContext->renderCursor();
