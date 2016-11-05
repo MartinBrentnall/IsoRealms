@@ -41,7 +41,7 @@ ElementSpindizzyZone::ElementSpindizzyZone(ISpindizzyZoneType* elementType, DOMN
     DOMNodeWrapper* mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Element") {
-      resources->loadElement(mNode, &mVertex, this);
+      resources->loadElement(mNode, &mVertex, this, false);
     } else if (mValueAsString == "Script") {
       std::string mId = mNode->getAttribute("id");
       cScripts[mId] = resources->getScriptCall(mNode);

@@ -68,7 +68,7 @@ class ResourceElementSpindizzyItem:public ISpindizzyJewelType {
    * Implements IElementType *
   \***************************/
   ISpindizzyJewelSet* getSpindizzyItemInterface();
-  void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*);
+  void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*, bool);
   void configureElement();
   void setEditingContext(BlockLocation*, IComponentContainer*);
   void renderEditingPreview(Vertex&);

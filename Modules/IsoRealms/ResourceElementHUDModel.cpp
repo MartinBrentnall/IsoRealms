@@ -45,7 +45,7 @@ void ResourceElementHUDModel::save(DOMNodeWriter* node, IResourceLocator* resour
   // TODO
 }
 
-void ResourceElementHUDModel::loadElement(DOMNodeWrapper* node, BlockLocation* location, IElementContainer* container, IResourceAccessor* resources) {
+void ResourceElementHUDModel::loadElement(DOMNodeWrapper* node, BlockLocation* location, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
   container->addElement(this);
 }
 

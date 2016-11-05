@@ -110,7 +110,7 @@ bool AttractControlLoop::checkActiveInput(int type) {
   return false;
 }
 
-ILayer* AttractControlLoop::getLayer(DOMNodeWrapper* node, IResourceAccessor* resources, bool editing) {
+ILayer* AttractControlLoop::getLayer(DOMNodeWrapper* node, IResourceAccessor* resources, bool editing, bool asTemplate) {
   return this;
 }
 
@@ -210,7 +210,7 @@ void AttractControlLoop::startProject(const std::string& project) {
     DOMNodeWrapper *mNode = mProjectNode->getChild(i);
     std::string mValue = mNode->getNodeName();
     if (mValue == "Project") {
-      cRunningProject = new Project(mNode, project, nullptr);
+      cRunningProject = new Project(mNode, project, nullptr, false);
       cRunningProject->initRuntime();
       std::cout << "Project has started" << std::endl;
       break;

@@ -37,7 +37,7 @@ void ResourceLayerHUD::initialiseResource(DOMNodeWrapper* node, IResourceAccesso
       IHUDComponentRelation* mBottomRelation = getRelation(mNode->getAttribute("bottom"), "bottom");
       IHUDComponentRelation* mTopRelation    = getRelation(mNode->getAttribute("top"),    "top");
       HUDComponentPosition* mHUDRenderer = new HUDComponentPosition(mLeftRelation, mRightRelation, mTopRelation, mBottomRelation, mScale, mScale);
-      resources->loadElement(mNode, nullptr, mHUDRenderer);
+      resources->loadElement(mNode, nullptr, mHUDRenderer, false);
       cComponents.push_back(mHUDRenderer);
       HUDComponentProxy* mHUDComponentProxy = getComponentProxy(mComponentSource);
       mHUDComponentProxy->setHUDComponentPosition(mHUDRenderer);
@@ -146,7 +146,7 @@ void ResourceLayerHUD::save(DOMNodeWriter* node, IResourceLocator* resources) {
   }
 }
 
-ILayer* ResourceLayerHUD::getLayer(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor, bool editing) {
+ILayer* ResourceLayerHUD::getLayer(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor, bool editing, bool asTemplate) {
   initialiseResource(node, resourceAccessor);
   return this;
 }

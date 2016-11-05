@@ -20,6 +20,7 @@ add_library(Editor MODULE
   ConfirmationBox.cpp
   DialogModules.cpp
   DialogProjectOpen.cpp
+  DialogProjectOpenTemplate.cpp
   ResourceManagerDialogs/ColourIcon.cpp
   ResourceManagerDialogs/Dialog3DModelManager.cpp
   ResourceManagerDialogs/DialogBoundariesManager.cpp

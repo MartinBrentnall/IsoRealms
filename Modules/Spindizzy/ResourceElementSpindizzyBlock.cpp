@@ -42,30 +42,32 @@ IElement* ResourceElementSpindizzyBlock::getElement() {
   return nullptr;
 }
 
-void ResourceElementSpindizzyBlock::loadElement(DOMNodeWrapper* node, BlockLocation* zoneLocation, IElementContainer* container, IResourceAccessor* resources) {
-  BlockLocation mStartLocation;
-  BlockLocation mEndLocation;
-  // TODO: Should throw something if these are not specified!
-  cBlockProperties->reset();
-  mStartLocation.setRelative(node, *zoneLocation);
-  mEndLocation.setRelative(node, mStartLocation, "width", "length", "height");
-  std::vector<ConditionElement*> mElements = cModuleInterface->getConditionElements();
-  cBlockProperties->setup(node, mElements);
-  bool mAddition = mStartLocation.z <= mEndLocation.z;
-  (mAddition ? mStartLocation.z : mEndLocation.z)++;
-  mEndLocation.x--;
-  mEndLocation.y--;
-  bool mIndependent = node->getBooleanAttribute("independent");
-  ElementHandlerSpindizzyBlock* mHandler = cModuleInterface->getElementHandlerSpindizzyBlock(container);  
-  ElementSpindizzyBlock* mLoadedBlock = createBlock(&mStartLocation, &mEndLocation, cBlockProperties, mAddition, mHandler);
-  cContent.push_back(mLoadedBlock);
-  if (mIndependent) {
-    mLoadedBlock->createSampleSurfaces();
-  } else {
-    cModuleInterface->registerSurfaceProvider(mLoadedBlock, false);
-    cModuleInterface->setDirty();
+void ResourceElementSpindizzyBlock::loadElement(DOMNodeWrapper* node, BlockLocation* zoneLocation, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
+  if (!asTemplate) {
+    BlockLocation mStartLocation;
+    BlockLocation mEndLocation;
+    // TODO: Should throw something if these are not specified!
+    cBlockProperties->reset();
+    mStartLocation.setRelative(node, *zoneLocation);
+    mEndLocation.setRelative(node, mStartLocation, "width", "length", "height");
+    std::vector<ConditionElement*> mElements = cModuleInterface->getConditionElements();
+    cBlockProperties->setup(node, mElements);
+    bool mAddition = mStartLocation.z <= mEndLocation.z;
+    (mAddition ? mStartLocation.z : mEndLocation.z)++;
+    mEndLocation.x--;
+    mEndLocation.y--;
+    bool mIndependent = node->getBooleanAttribute("independent");
+    ElementHandlerSpindizzyBlock* mHandler = cModuleInterface->getElementHandlerSpindizzyBlock(container);  
+    ElementSpindizzyBlock* mLoadedBlock = createBlock(&mStartLocation, &mEndLocation, cBlockProperties, mAddition, mHandler);
+    cContent.push_back(mLoadedBlock);
+    if (mIndependent) {
+      mLoadedBlock->createSampleSurfaces();
+    } else {
+      cModuleInterface->registerSurfaceProvider(mLoadedBlock, false);
+      cModuleInterface->setDirty();
+    }
+    mHandler->addElement(mLoadedBlock);
   }
-  mHandler->addElement(mLoadedBlock);
 }
 
 // void ResourceElementSpindizzyBlock::unregisterSurfaces(ISurfaceProcessor* surfaceProcessor) {

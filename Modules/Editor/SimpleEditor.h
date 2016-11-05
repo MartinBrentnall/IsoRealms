@@ -49,6 +49,7 @@ class OpenCommand;
 #include "ComponentCustomTypeResources.h"
 #include "DialogModules.h"
 #include "DialogProjectOpen.h"
+#include "DialogProjectOpenTemplate.h"
 #include "IComponentFactory.h"
 #include "IMapManager.h"
 #include "ResourceManagerDialogs/ComponentResourceBrowser.h"
@@ -84,6 +85,7 @@ class SimpleEditor:public IModule,
   static const std::string COMMAND_SAVE_AS;
   static const std::string COMMAND_SAVE;
   static const std::string COMMAND_OPEN;
+  static const std::string COMMAND_OPEN_TEMPLATE;
   static const std::string COMMAND_TEST;
   static const std::string COMMAND_MODULES;
   static const std::string COMMAND_RESOURCE_BROWSER;
@@ -202,7 +204,7 @@ class SimpleEditor:public IModule,
   /*************************\
    * Implements ILayerType *
   \*************************/
-  ILayer* getLayer(DOMNodeWrapper*, IResourceAccessor*, bool);
+  ILayer* getLayer(DOMNodeWrapper*, IResourceAccessor*, bool, bool);
 
   /*********************\
    * Implements ILayer * 
@@ -253,7 +255,7 @@ class SimpleEditor:public IModule,
   /**********************\
    * Implements IEditor *
   \**********************/
-  void openProject(const std::string&);
+  void openProject(const std::string&, bool);
 };
 
 #endif

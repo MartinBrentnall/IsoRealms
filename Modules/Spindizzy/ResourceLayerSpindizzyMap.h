@@ -47,7 +47,7 @@ class ResourceLayerSpindizzyMap:public ISpindizzyMapType {
    * Implements ILayerType *
   \*************************/
   LayerSpindizzyMap* createInstance(const std::string&);
-  ILayer* getLayer(DOMNodeWrapper*, IResourceAccessor*, bool);
+  ILayer* getLayer(DOMNodeWrapper*, IResourceAccessor*, bool, bool);
   void configureLayer();
   bool input(SDL_Event&);
   void renderEditingPreview();

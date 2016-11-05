@@ -81,13 +81,15 @@ void ResourceElementSpindizzyZone::initialiseResource(DOMNodeWrapper* node, IRes
 void ResourceElementSpindizzyZone::save(DOMNodeWriter* node, IResourceLocator* locator) {
 }
 
-void ResourceElementSpindizzyZone::loadElement(DOMNodeWrapper* node, BlockLocation* location, IElementContainer* container, IResourceAccessor* resources) {
-  BlockLocation* mLocation = new BlockLocation();
-  mLocation->setRelative(node, *location);
-  ElementSpindizzyZone* mSpindizzyZone = new ElementSpindizzyZone(this, node, mLocation, resources, cFlagModelType, container);
-  cContent.push_back(mSpindizzyZone);
-  ElementHandlerZone* mZoneElementHandler = cModuleInterface->getZoneElementHandler(container);
-  mZoneElementHandler->addElement(mSpindizzyZone);
+void ResourceElementSpindizzyZone::loadElement(DOMNodeWrapper* node, BlockLocation* location, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
+  if (!asTemplate) {
+    BlockLocation* mLocation = new BlockLocation();
+    mLocation->setRelative(node, *location);
+    ElementSpindizzyZone* mSpindizzyZone = new ElementSpindizzyZone(this, node, mLocation, resources, cFlagModelType, container);
+    cContent.push_back(mSpindizzyZone);
+    ElementHandlerZone* mZoneElementHandler = cModuleInterface->getZoneElementHandler(container);
+    mZoneElementHandler->addElement(mSpindizzyZone);
+  }
 }
 
 void ResourceElementSpindizzyZone::configureElement() {

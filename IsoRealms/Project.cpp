@@ -23,7 +23,7 @@ Project::Project() {
   cCompleted = false;
 }
 
-Project::Project(DOMNodeWrapper* node, const std::string& projectName, IEditingContext* editingContext) {
+Project::Project(DOMNodeWrapper* node, const std::string& projectName, IEditingContext* editingContext, bool asTemplate) {
   cResources.setEditing(editingContext != NULL, this);
   cInitScript = NULL;
   std::size_t mExtensionPosition = projectName.find_last_of('.');
@@ -70,7 +70,7 @@ Project::Project(DOMNodeWrapper* node, const std::string& projectName, IEditingC
       std::string mLayerTypeName = mNode->getAttribute("type");
       bool mDefaultLayer = mNode->getBooleanAttribute("default");
       ILayerType* mLayerType = cResources.getLayerType(mLayerTypeName);
-      ILayer* mLayer = mLayerType->getLayer(mNode, &cResources, editingContext != nullptr);
+      ILayer* mLayer = mLayerType->getLayer(mNode, &cResources, editingContext != nullptr, asTemplate);
       cLayers.push_back(mLayer);
       if (mDefaultLayer) {
         cDefaultLayer = mLayer;

@@ -48,10 +48,10 @@ LayerSpindizzyMap* ResourceLayerSpindizzyMap::createInstance(const std::string& 
   return mNamedInstance;
 } 
 
-ILayer* ResourceLayerSpindizzyMap::getLayer(DOMNodeWrapper* node, IResourceAccessor* resources, bool editing) {
+ILayer* ResourceLayerSpindizzyMap::getLayer(DOMNodeWrapper* node, IResourceAccessor* resources, bool editing, bool asTemplate) {
   std::string mInstanceName = node->getAttribute("instance");
   LayerSpindizzyMap* mMap = cNamedInstances[mInstanceName];
-  mMap->load(node, editing, resources);
+  mMap->load(node, editing, resources, asTemplate);
   return mMap;
 }
 

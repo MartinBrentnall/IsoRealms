@@ -42,7 +42,7 @@ class ResourceLayerBackground:public ILayerType {
    * Implements ILayerType *
   \*************************/
 //   void loadInstance(DOMNodeWrapper*, IRuntimeContext*);
-  ILayer* getLayer(DOMNodeWrapper*, IResourceAccessor*, bool);
+  ILayer* getLayer(DOMNodeWrapper*, IResourceAccessor*, bool, bool);
   void configureLayer();
   bool input(SDL_Event&);
   void renderEditingPreview();

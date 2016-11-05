@@ -16,9 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "DialogProjectOpen.h"
+#include "DialogProjectOpenTemplate.h"
 
-DialogProjectOpen::DialogProjectOpen(IComponentContainer* componentContainer, IResourceAccessor* resources, IEditor* editor): ResizableDialog(componentContainer, "Modules/Editor/DialogProjectOpen", resources) {
+DialogProjectOpenTemplate::DialogProjectOpenTemplate(IComponentContainer* componentContainer, IResourceAccessor* resources, IEditor* editor): ResizableDialog(componentContainer, "Modules/Editor/DialogProjectOpenTemplate", resources) {
   cFileSelector = new ComponentFileSelector(resources, "Data/Projects", this);
   cEditor = editor;
   addComponent("fileSelector", cFileSelector);
@@ -26,28 +26,28 @@ DialogProjectOpen::DialogProjectOpen(IComponentContainer* componentContainer, IR
   setComponentAction("cancelButton", new CancelCommand(this));
 }
 
-void DialogProjectOpen::confirmSelection() {
+void DialogProjectOpenTemplate::confirmSelection() {
   cFile = cFileSelector->getSelectedFile();
-  cEditor->openProject(cFile, false);
+  cEditor->openProject(cFile, true);
   close();
 }
 
-void DialogProjectOpen::fileSelectionAsserted(const std::string& file) {
+void DialogProjectOpenTemplate::fileSelectionAsserted(const std::string& file) {
   confirmSelection();
 }
 
-DialogProjectOpen::OKCommand::OKCommand(DialogProjectOpen* parent) {
+DialogProjectOpenTemplate::OKCommand::OKCommand(DialogProjectOpenTemplate* parent) {
   cParent = parent;
 }
 
-void DialogProjectOpen::OKCommand::execute() {
+void DialogProjectOpenTemplate::OKCommand::execute() {
   cParent->confirmSelection();
 }
 
-DialogProjectOpen::CancelCommand::CancelCommand(DialogProjectOpen* parent) {
+DialogProjectOpenTemplate::CancelCommand::CancelCommand(DialogProjectOpenTemplate* parent) {
   cParent = parent;
 }
 
-void DialogProjectOpen::CancelCommand::execute() {
+void DialogProjectOpenTemplate::CancelCommand::execute() {
   cParent->close();
 }

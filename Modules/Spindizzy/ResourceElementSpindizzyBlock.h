@@ -92,7 +92,7 @@ class ResourceElementSpindizzyBlock:public ISpindizzyBlockType,
   \***************************/
   void configureElement();
   IElement* getElement();
-  void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*);
+  void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*, bool);
   void setEditingContext(BlockLocation*, IComponentContainer*);
   bool inputEdit(SDL_Event&, ILayerEditingContext*);
   void renderEditingPreview(Vertex&);

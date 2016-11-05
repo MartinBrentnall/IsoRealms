@@ -57,9 +57,9 @@ class LayerSpindizzyMap:public ILayer,
   public:
   LayerSpindizzyMap(ISpindizzyMapType*);
   
-  void load(DOMNodeWrapper*, bool, IResourceAccessor*);
+  void load(DOMNodeWrapper*, bool, IResourceAccessor*, bool);
 
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*, bool);
   
   /**
    * Test whether the specified block area overlaps with a zone in this map.

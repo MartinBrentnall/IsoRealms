@@ -60,17 +60,19 @@ ISpindizzyLiftSet* ResourceElementSpindizzyLift::getSpindizzyLiftInterface() {
   return cModuleInterface;
 }
 
-void ResourceElementSpindizzyLift::loadElement(DOMNodeWrapper* node, BlockLocation* relative, IElementContainer* container, IResourceAccessor* resources) {
-  cProperties->reset();
-  BlockLocation mStartLocation;
-  mStartLocation.setRelative(node, *relative);
-  int mLiftTop = node->getIntegerAttribute("top");
-  int mLiftBottom = node->getIntegerAttribute("bottom");
-  cProperties->setup(node);
-  ElementSpindizzyLift* mLoadedLift = new ElementSpindizzyLift(this, &mStartLocation, cModelType, cProperties, mLiftBottom, mLiftTop, container);
-  cContent.push_back(mLoadedLift);
-  ElementHandlerSpindizzyDynamic* mDynamicElementHandler = cModuleInterface->getDynamicElementHandler(container);
-  mDynamicElementHandler->addElement(mLoadedLift);
+void ResourceElementSpindizzyLift::loadElement(DOMNodeWrapper* node, BlockLocation* relative, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
+  if (!asTemplate) {
+    cProperties->reset();
+    BlockLocation mStartLocation;
+    mStartLocation.setRelative(node, *relative);
+    int mLiftTop = node->getIntegerAttribute("top");
+    int mLiftBottom = node->getIntegerAttribute("bottom");
+    cProperties->setup(node);
+    ElementSpindizzyLift* mLoadedLift = new ElementSpindizzyLift(this, &mStartLocation, cModelType, cProperties, mLiftBottom, mLiftTop, container);
+    cContent.push_back(mLoadedLift);
+    ElementHandlerSpindizzyDynamic* mDynamicElementHandler = cModuleInterface->getDynamicElementHandler(container);
+    mDynamicElementHandler->addElement(mLoadedLift);
+  }
 }
 
 bool ResourceElementSpindizzyLift::keyDown(SDLKey& key) {

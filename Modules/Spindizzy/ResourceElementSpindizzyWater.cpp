@@ -37,17 +37,19 @@ IElement* ResourceElementSpindizzyWater::getElement() {
   return nullptr;
 }
 
-void ResourceElementSpindizzyWater::loadElement(DOMNodeWrapper* node, BlockLocation* zoneLocation, IElementContainer* container, IResourceAccessor* resources) {
-  BlockLocation mStartLocation;
-  BlockLocation mEndLocation;
-  mStartLocation.setRelative(node, *zoneLocation);
-  mEndLocation.setRelative(node, mStartLocation, "width", "length", "height");
-  mEndLocation.z++;
-  ElementSpindizzyWater* mLoadedWater = new ElementSpindizzyWater(this, &mStartLocation, &mEndLocation, &cTexture, container);
-  cContent.push_back(mLoadedWater);
-  cModuleInterface->registerSurfaceProvider(mLoadedWater, false);
-  cModuleInterface->setDirty();
-  container->addElement(mLoadedWater);
+void ResourceElementSpindizzyWater::loadElement(DOMNodeWrapper* node, BlockLocation* zoneLocation, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
+  if (!asTemplate) {
+    BlockLocation mStartLocation;
+    BlockLocation mEndLocation;
+    mStartLocation.setRelative(node, *zoneLocation);
+    mEndLocation.setRelative(node, mStartLocation, "width", "length", "height");
+    mEndLocation.z++;
+    ElementSpindizzyWater* mLoadedWater = new ElementSpindizzyWater(this, &mStartLocation, &mEndLocation, &cTexture, container);
+    cContent.push_back(mLoadedWater);
+    cModuleInterface->registerSurfaceProvider(mLoadedWater, false);
+    cModuleInterface->setDirty();
+    container->addElement(mLoadedWater);
+  }
 }
 
 void ResourceElementSpindizzyWater::setEditingContext(BlockLocation* editingLocation, IComponentContainer* componentContainer) {

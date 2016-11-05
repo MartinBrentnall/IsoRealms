@@ -47,7 +47,7 @@ class Project:public IProject {
   
   public:
   Project();
-  Project(DOMNodeWrapper*, const std::string&, IEditingContext*);
+  Project(DOMNodeWrapper*, const std::string&, IEditingContext*, bool);
 
   void initEditor();
   void initRuntime();

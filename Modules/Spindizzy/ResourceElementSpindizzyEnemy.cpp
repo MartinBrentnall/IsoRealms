@@ -45,13 +45,15 @@ void ResourceElementSpindizzyEnemy::save(DOMNodeWriter* node, IResourceLocator* 
   node->addAttribute("model", resourceLocator->getPath(cModelType));
 }
 
-void ResourceElementSpindizzyEnemy::loadElement(DOMNodeWrapper* node, BlockLocation* relative, IElementContainer* container, IResourceAccessor* resources) {
-  BlockLocation mLocation;
-  mLocation.setRelative(node, *relative);
-  ElementSpindizzyEnemy* mLoadedEnemy = new ElementSpindizzyEnemy(this, &mLocation, cModelType, container);
-  cContent.push_back(mLoadedEnemy);
-  ElementHandlerSpindizzyDynamic* mDynamicElementHandler = cModuleInterface->getDynamicElementHandler(container);
-  mDynamicElementHandler->addElement(mLoadedEnemy);
+void ResourceElementSpindizzyEnemy::loadElement(DOMNodeWrapper* node, BlockLocation* relative, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
+  if (!asTemplate) {
+    BlockLocation mLocation;
+    mLocation.setRelative(node, *relative);
+    ElementSpindizzyEnemy* mLoadedEnemy = new ElementSpindizzyEnemy(this, &mLocation, cModelType, container);
+    cContent.push_back(mLoadedEnemy);
+    ElementHandlerSpindizzyDynamic* mDynamicElementHandler = cModuleInterface->getDynamicElementHandler(container);
+    mDynamicElementHandler->addElement(mLoadedEnemy);
+  }
 }
 
 bool ResourceElementSpindizzyEnemy::keyDown(SDLKey& key, ILayerEditingContext* editingContext) {

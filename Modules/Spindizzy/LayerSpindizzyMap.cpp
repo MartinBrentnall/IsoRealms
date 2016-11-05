@@ -25,11 +25,11 @@ LayerSpindizzyMap::LayerSpindizzyMap(ISpindizzyMapType* type) {
   cEditingContext = nullptr;
 }
 
-void LayerSpindizzyMap::load(DOMNodeWrapper* node, bool editing, IResourceAccessor* resources) {
+void LayerSpindizzyMap::load(DOMNodeWrapper* node, bool editing, IResourceAccessor* resources, bool asTemplate) {
   if (editing) {
     cEditingContext = new LayerSpindizzyMapEditingContext(this);
   }
-  initialiseResource(node, resources);
+  initialiseResource(node, resources, asTemplate);
   if (cEditingContext != nullptr) {
     std::vector<IElement*> mElements = cElementHandler.getElements();
     for (IElement* mElement : mElements) {
@@ -38,7 +38,7 @@ void LayerSpindizzyMap::load(DOMNodeWrapper* node, bool editing, IResourceAccess
   }
 }
 
-void LayerSpindizzyMap::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void LayerSpindizzyMap::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources, bool asTemplate) {
   BlockLocation mStartLocation(0, 0, 0);
   std::string mCameraPath = node->getAttribute("camera");
   cCamera = resources->getCamera(mCameraPath);
@@ -47,7 +47,7 @@ void LayerSpindizzyMap::initialiseResource(DOMNodeWrapper* node, IResourceAccess
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Element") {
-      resources->loadElement(mNode, &mStartLocation, this);
+      resources->loadElement(mNode, &mStartLocation, this, asTemplate);
     } else {
       // TODO: Throw something
     }

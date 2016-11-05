@@ -88,7 +88,7 @@ class AttractControlLoop:public IModule,
   /*************************\
    * Implements ILayerType *
   \*************************/
-  ILayer* getLayer(DOMNodeWrapper*, IResourceAccessor*, bool);
+  ILayer* getLayer(DOMNodeWrapper*, IResourceAccessor*, bool, bool);
   
   /*********************\
    * Implements ILayer * 

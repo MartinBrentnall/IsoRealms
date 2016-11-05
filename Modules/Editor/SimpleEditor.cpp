@@ -21,6 +21,7 @@
 const std::string SimpleEditor::COMMAND_SAVE_AS          = "SaveAs";
 const std::string SimpleEditor::COMMAND_SAVE             = "Save";
 const std::string SimpleEditor::COMMAND_OPEN             = "Open";
+const std::string SimpleEditor::COMMAND_OPEN_TEMPLATE    = "OpenTemplate";
 const std::string SimpleEditor::COMMAND_TEST             = "Test";
 const std::string SimpleEditor::COMMAND_MODULES          = "Modules";
 const std::string SimpleEditor::COMMAND_RESOURCE_BROWSER = "ResourceBrowser";
@@ -36,11 +37,12 @@ void SimpleEditor::load(DOMNodeWrapper* node, IResourceRegistry* runtimeContext)
   cEditorFocus = true;
 
   // Register commands
-  cEditorCommands[COMMAND_SAVE_AS] = new SaveAsCommand(this, true);
-  cEditorCommands[COMMAND_SAVE]    = new SaveAsCommand(this, false);
-  cEditorCommands[COMMAND_OPEN]    = new CommandDialog<DialogProjectOpen>(this, this);
-  cEditorCommands[COMMAND_TEST]    = new TestCommand(this);
-  cEditorCommands[COMMAND_MODULES] = new CommandDialog<DialogModules>(this, this);
+  cEditorCommands[COMMAND_SAVE_AS]       = new SaveAsCommand(this, true);
+  cEditorCommands[COMMAND_SAVE]          = new SaveAsCommand(this, false);
+  cEditorCommands[COMMAND_OPEN]          = new CommandDialog<DialogProjectOpen>(this, this);
+  cEditorCommands[COMMAND_OPEN_TEMPLATE] = new CommandDialog<DialogProjectOpenTemplate>(this, this);
+  cEditorCommands[COMMAND_TEST]          = new TestCommand(this);
+  cEditorCommands[COMMAND_MODULES]       = new CommandDialog<DialogModules>(this, this);
 //  EditorCommandManager::registerCommand(COMMAND_MODULES,          new CommandModules());
 //  EditorCommandManager::registerCommand(COMMAND_RESOURCE_BROWSER, new CommandResourceBrowser());
 
@@ -334,7 +336,7 @@ void SimpleEditor::staticChanged() {
   cProject->staticChanged();
 }
 
-ILayer* SimpleEditor::getLayer(DOMNodeWrapper* node, IResourceAccessor* resources, bool editing) {
+ILayer* SimpleEditor::getLayer(DOMNodeWrapper* node, IResourceAccessor* resources, bool editing, bool asTemplate) {
   return this;
 }
 
@@ -490,7 +492,7 @@ void SimpleEditor::notifyResourceOwned(IColour* colour) {
   cDockableTextureManager->notifyResourceOwned(colour);
 }
 
-void SimpleEditor::openProject(const std::string& file) {
+void SimpleEditor::openProject(const std::string& file, bool asTemplate) {
   DOMNodeWrapper* mConfigurationRootNode = new DOMNodeWrapper(file);
   for (int i = 0; i < mConfigurationRootNode->getChildCount(); i++) {
     DOMNodeWrapper *mNode = mConfigurationRootNode->getChild(i);
@@ -500,7 +502,7 @@ void SimpleEditor::openProject(const std::string& file) {
         clearUndoStack();
         delete cProject;
       }
-      cProject = new Project(mNode, file, this);
+      cProject = new Project(mNode, file, this, asTemplate);
       cProject->initEditor();
       cSelectedLayer = cProject->getDefaultLayer();
       for (unsigned int i = 0; i < cProjectManagerListeners.size(); i++) {

@@ -301,10 +301,10 @@ void Resources::addDynamicElement(IDynamicElement* element) {
   cDynamicElements.push_back(element);
 }
 
-void Resources::loadElement(DOMNodeWrapper* node, BlockLocation* location, IElementContainer* container) {
+void Resources::loadElement(DOMNodeWrapper* node, BlockLocation* location, IElementContainer* container, bool asTemplate) {
   std::string mElementTypePath = node->getAttribute("type");
   IElementType* mElementType = cElementTypes.get(mElementTypePath);
-  mElementType->loadElement(node, location, container, this);
+  mElementType->loadElement(node, location, container, this, asTemplate);
 }
 
 void Resources::addListener(IResourceUseListener<I3DModelType>* listener)               {c3DModelTypes.addResourceUseListener(listener);}

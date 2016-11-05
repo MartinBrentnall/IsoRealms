@@ -52,13 +52,15 @@ ISpindizzyJewelSet* ResourceElementSpindizzyItem::getSpindizzyItemInterface() {
   return cModuleInterface;
 }
 
-void ResourceElementSpindizzyItem::loadElement(DOMNodeWrapper* node, BlockLocation* relative, IElementContainer* container, IResourceAccessor* resources) {
-  BlockLocation* mLocation = new BlockLocation();
-  mLocation->setRelative(node, *relative);
-  ElementSpindizzyItem* mJewel = new ElementSpindizzyItem(this, mLocation, cModelType, container);
-  cContent.push_back(mJewel);
-  ElementHandlerItem* mDynamicElementHandler = cModuleInterface->getItemElementHandler(container);
-  mDynamicElementHandler->addElement(mJewel);
+void ResourceElementSpindizzyItem::loadElement(DOMNodeWrapper* node, BlockLocation* relative, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
+  if (!asTemplate) {
+    BlockLocation* mLocation = new BlockLocation();
+    mLocation->setRelative(node, *relative);
+    ElementSpindizzyItem* mJewel = new ElementSpindizzyItem(this, mLocation, cModelType, container);
+    cContent.push_back(mJewel);
+    ElementHandlerItem* mDynamicElementHandler = cModuleInterface->getItemElementHandler(container);
+    mDynamicElementHandler->addElement(mJewel);
+  }
 }
 
 bool ResourceElementSpindizzyItem::keyDown(SDLKey& key, ILayerEditingContext* editingContext) {

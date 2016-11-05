@@ -52,7 +52,7 @@ void ResourceLayerBackground::save(DOMNodeWriter* node, IResourceLocator* resour
 //   runtimeContext->registerArgument("Map", mInstanceName, mArgumentSource);
 // }
 
-ILayer* ResourceLayerBackground::getLayer(DOMNodeWrapper* node, IResourceAccessor* resources, bool editing) {
+ILayer* ResourceLayerBackground::getLayer(DOMNodeWrapper* node, IResourceAccessor* resources, bool editing, bool asTemplate) {
   std::string mInstanceName = node->getAttribute("instance");
   return cNamedInstances[mInstanceName];
 }

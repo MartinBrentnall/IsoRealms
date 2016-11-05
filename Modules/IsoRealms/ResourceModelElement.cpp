@@ -35,7 +35,7 @@ void ResourceModelElement::save(DOMNodeWriter* node, IResourceLocator* resources
 }
 
 void ResourceModelElement::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
-  resources->loadElement(node, &cIdentity, this);
+  resources->loadElement(node, &cIdentity, this, false);
   Vertex* mVertex = new Vertex(0.0f, 0.0f, 0.0f);
   cSampleModel = new ModelElement(&cElement, mVertex, 1.0f);
 }

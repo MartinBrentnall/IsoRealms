@@ -77,7 +77,7 @@ class ResourceElementSpindizzyLift:public ISpindizzyLiftType {
    * Implements IElementType *
   \***************************/
   ISpindizzyLiftSet* getSpindizzyLiftInterface();
-  void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*);
+  void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*, bool);
   void configureElement();
   bool inputEdit(SDL_Event&, ILayerEditingContext*);
   void setEditingContext(BlockLocation*, IComponentContainer*);
