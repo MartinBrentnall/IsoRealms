@@ -21,9 +21,11 @@
 
 #include <string>
 
+#include <IsoRealms/Persistence/DOMNodeWrapper.h>
+
 class IController {
   public:
-  virtual void startProject(const std::string&) = 0;
+  virtual void startProject(const std::string&, DOMNodeWrapper*) = 0;
 };
 
 #endif

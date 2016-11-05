@@ -18,11 +18,12 @@
  */
 #include "StartProject.h"
 
-StartProject::StartProject(IController* controller, const std::string& project) {
+StartProject::StartProject(IController* controller, const std::string& project, DOMNodeWrapper* options) {
   cController = controller;
   cProject = project;
+  cOptions = options;
 }
 
 void StartProject::execute() {
-  cController->startProject(cProject);
+  cController->startProject(cProject, cOptions);
 }

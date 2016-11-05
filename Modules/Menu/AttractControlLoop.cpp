@@ -78,7 +78,7 @@ IAttract* AttractControlLoop::createAttract(const std::string& name) {
        :                     nullptr;
 }
 
-void AttractControlLoop::load(DOMNodeWrapper* node, IResourceRegistry* resources) {
+void AttractControlLoop::load(DOMNodeWrapper* node, IResourceRegistry* resources, DOMNodeWrapper* options) {
   resources->add(this, "Menu", node);
 }
 
@@ -203,14 +203,14 @@ void AttractControlLoop::reset() {
   // Not supported
 }
 
-void AttractControlLoop::startProject(const std::string& project) {
+void AttractControlLoop::startProject(const std::string& project, DOMNodeWrapper* options) {
   std::string mProjectPath = System::getProgramResource(project);
   DOMNodeWrapper* mProjectNode = new DOMNodeWrapper(mProjectPath);
   for (int i = 0; i < mProjectNode->getChildCount(); i++) {
     DOMNodeWrapper *mNode = mProjectNode->getChild(i);
     std::string mValue = mNode->getNodeName();
     if (mValue == "Project") {
-      cRunningProject = new Project(mNode, project, nullptr, false);
+      cRunningProject = new Project(mNode, project, nullptr, false, options);
       cRunningProject->initRuntime();
       std::cout << "Project has started" << std::endl;
       break;

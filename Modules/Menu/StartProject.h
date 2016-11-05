@@ -27,9 +27,10 @@ class StartProject:public ICommand {
   private:
   IController* cController;
   std::string cProject;
+  DOMNodeWrapper* cOptions;
   
   public:
-  StartProject(IController*, const std::string&);
+  StartProject(IController*, const std::string&, DOMNodeWrapper*);
     
   void execute();
 };

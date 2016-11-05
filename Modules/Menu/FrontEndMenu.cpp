@@ -47,6 +47,12 @@ FrontEndMenu::FrontEndMenu(IFrontEndCommands* commandRegistry, IMenuStack* menuS
         FrontEndMenuItem* mMenuItem = new FrontEndMenuItem(mProjectName, mEnterMenuCommand);
         cMenuItems.push_back(mMenuItem);
       }
+    } else if (mValueAsString == "Project") {
+      std::string mProjectFile = mNode->getAttribute("file");
+      std::string mLabel = mNode->getAttribute("label");
+      ICommand* mProjectCommand = new StartProject(controller, mProjectFile, mNode);
+      FrontEndMenuItem* mMenuItem = new FrontEndMenuItem(mLabel, mProjectCommand);
+      cMenuItems.push_back(mMenuItem);
     } else if (mValueAsString == "ProjectList") {
       std::string mDirForSelection = mNode->getAttribute("source");
       std::string mActualDir = System::getProgramResource(mDirForSelection);
@@ -54,7 +60,7 @@ FrontEndMenu::FrontEndMenu(IFrontEndCommands* commandRegistry, IMenuStack* menuS
       for (unsigned int i = 0; i < mFileList->size(); i++) {
         std::size_t mExtensionPosition = (*mFileList)[i].find_last_of('.');
         std::string mProjectName = (*mFileList)[i].substr(0, mExtensionPosition);
-        ICommand* mArgumentedCommand = new StartProject(controller, mDirForSelection + (*mFileList)[i]);
+        ICommand* mArgumentedCommand = new StartProject(controller, mDirForSelection + (*mFileList)[i], mNode);
         FrontEndMenuItem* mMenuItem = new FrontEndMenuItem(mProjectName, mArgumentedCommand);
         cMenuItems.push_back(mMenuItem);
       }

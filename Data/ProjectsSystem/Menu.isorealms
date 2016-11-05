@@ -22,18 +22,19 @@
         <ProjectList source="Data/Projects/"/>
       </Menu>
       <Menu name="Create">
-        <ProjectList source="Data/ProjectsTools/"/>
-      </Menu>
-<!--        <Menu name="Editor">
-        <Command name="Create a new map">
-          <ExecuteCommand type="Push:SimpleEditor"/>
-        </Command>
-        <Menu name="Edit an existing map">
-          <CommandList source="Data/Projects/">
-            <ExecuteCommand type="Push:SimpleEditor"/>
-          </CommandList>
+        <Project file="Data/ProjectsTools/Editor.isorealms" label="Create a New Project"/>
+        <Project file="Data/ProjectsTools/Editor.isorealms" label="Create a New Map">
+          <ModuleOptions name="Editor">
+            <MapEditorMode value="true"/>
+          </ModuleOptions>
+        </Project>
+        <Menu name="Edit an Existing Project">
+          <ProjectListOpenWith file="Data/ProjectsTools/Editor.isorealms" source="Data/Projects/"/>
         </Menu>
-      </Menu>-->
+        <Menu name="Edit an Existing Map">
+          <ProjectListOpenWith file="Data/ProjectsTools/Editor.isorealms" source="Data/Projects/"/>
+        </Menu>
+      </Menu>
       <Menu name="Settings">
         <Menu name="Visual">
           <FullScreen name="Mode" trueValue="Full Screen" falseValue="Windowed"/>

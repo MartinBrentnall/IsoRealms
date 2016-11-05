@@ -101,6 +101,7 @@ class SimpleEditor:public IModule,
   MenuBar* cMenuBar;
   bool cTesting;
   EntityClassDialogFactory* cElementSetsFactory;
+  bool cMapEditorMode;
 
   Dialog3DModelManager* cDockable3DModelManager;
   DialogBoundariesManager* cDockableBoundariesManager;
@@ -152,7 +153,7 @@ class SimpleEditor:public IModule,
   bool componentAt(float, float);
 
   public:
-  void load(DOMNodeWrapper*, IResourceRegistry*);
+  void load(DOMNodeWrapper*, IResourceRegistry*, DOMNodeWrapper*);
   
   void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
 

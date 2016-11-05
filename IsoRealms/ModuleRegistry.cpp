@@ -18,7 +18,7 @@
  */
 #include "ModuleRegistry.h"
 
-void ModuleRegistry::registerModule(DOMNodeWrapper* node, IResources* resources, IResourceTypeRegistry* resourceTypeRegistry) {
+void ModuleRegistry::registerModule(DOMNodeWrapper* node, IResources* resources, IResourceTypeRegistry* resourceTypeRegistry, DOMNodeWrapper* options) {
   std::string mType = node->getAttribute("name");
   std::vector<std::string> mDirectory;
   mDirectory.push_back(mType);
@@ -26,7 +26,24 @@ void ModuleRegistry::registerModule(DOMNodeWrapper* node, IResources* resources,
   std::cout << "Loading Module \"" << mType  << "\"" << std::endl;
   loadModule(mType, mRuntimeContext, resourceTypeRegistry);
   IModule* mModule = getModule(mType);
-  mModule->load(node, mRuntimeContext);
+  DOMNodeWrapper* mModuleOptions = getModuleOptions(mType, options);
+  mModule->load(node, mRuntimeContext, mModuleOptions);
+}
+
+DOMNodeWrapper* ModuleRegistry::getModuleOptions(const std::string& moduleName, DOMNodeWrapper* options) {
+  if (options != nullptr) {
+    for (int i = 0; i < options->getChildCount(); i++) {
+      DOMNodeWrapper *mNode = options->getChild(i);
+      std::string mValueAsString = mNode->getNodeName();
+      if (mValueAsString == "ModuleOptions") {
+        std::string mModuleName = mNode->getAttribute("name");
+        if (mModuleName == moduleName) {
+          return mNode;
+        }
+      }
+    }
+  }
+  return nullptr;
 }
 
 void ModuleRegistry::loadModule(std::string& type, IResourceRegistry* resourceRegistry, IResourceTypeRegistry* resourceTypeRegistry) {

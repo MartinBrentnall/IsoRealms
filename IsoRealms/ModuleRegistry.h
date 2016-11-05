@@ -59,6 +59,8 @@ class ModuleRegistry:public IModuleRegistry {
    */
   std::map<IModule*, destroyModule*> cDestroyFunctions;
 
+  DOMNodeWrapper* getModuleOptions(const std::string&, DOMNodeWrapper*);
+  
   public:
 
   /**
@@ -69,7 +71,7 @@ class ModuleRegistry:public IModuleRegistry {
    */
   std::string getModuleType(IModule*);  
 
-  void registerModule(DOMNodeWrapper*, IResources*, IResourceTypeRegistry*);
+  void registerModule(DOMNodeWrapper*, IResources*, IResourceTypeRegistry*, DOMNodeWrapper*);
 
   /**
    * Load a logic module.

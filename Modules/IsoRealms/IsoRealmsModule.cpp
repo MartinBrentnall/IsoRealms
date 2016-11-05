@@ -97,7 +97,7 @@ IsoRealmsModule::IsoRealmsModule(IResourceTypeRegistry* resourceTypeRegistry) {
   }
 }
 
-void IsoRealmsModule::load(DOMNodeWrapper* node, IResourceRegistry* runtimeContext) {
+void IsoRealmsModule::load(DOMNodeWrapper* node, IResourceRegistry* runtimeContext, DOMNodeWrapper* options) {
   cRuntimeContext = runtimeContext;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);

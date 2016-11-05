@@ -23,7 +23,7 @@ Project::Project() {
   cCompleted = false;
 }
 
-Project::Project(DOMNodeWrapper* node, const std::string& projectName, IEditingContext* editingContext, bool asTemplate) {
+Project::Project(DOMNodeWrapper* node, const std::string& projectName, IEditingContext* editingContext, bool asTemplate, DOMNodeWrapper* options) {
   cResources.setEditing(editingContext != NULL, this);
   cInitScript = NULL;
   std::size_t mExtensionPosition = projectName.find_last_of('.');
@@ -44,7 +44,7 @@ Project::Project(DOMNodeWrapper* node, const std::string& projectName, IEditingC
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Module") {
-      cModuleRegistry.registerModule(mNode, &cResources, editingContext != NULL ? &cResources : NULL);
+      cModuleRegistry.registerModule(mNode, &cResources, editingContext != NULL ? &cResources : NULL, options);
 //     } else if (mValueAsString == "EngineData") {
 //       cResources.loadInstances(mNode);
     } else {

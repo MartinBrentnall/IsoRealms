@@ -26,7 +26,18 @@ const std::string SimpleEditor::COMMAND_TEST             = "Test";
 const std::string SimpleEditor::COMMAND_MODULES          = "Modules";
 const std::string SimpleEditor::COMMAND_RESOURCE_BROWSER = "ResourceBrowser";
 
-void SimpleEditor::load(DOMNodeWrapper* node, IResourceRegistry* runtimeContext) {  
+void SimpleEditor::load(DOMNodeWrapper* node, IResourceRegistry* runtimeContext, DOMNodeWrapper* options) {  
+  cMapEditorMode = false;
+  if (options != nullptr) {
+    for (int i = 0; i < options->getChildCount(); i++) {
+      DOMNodeWrapper *mNode = options->getChild(i);
+      std::string mValueAsString = mNode->getNodeName();
+      if (mValueAsString == "MapEditorMode") {
+        cMapEditorMode = mNode->getBooleanAttribute("value");
+      }
+    }
+  }
+
   ICommand* mCommand = CommandManager::getCommand("Pop");
   cExitCommands.push_back(mCommand);
   cSelectedLayer = nullptr;
@@ -82,8 +93,11 @@ void SimpleEditor::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* r
       cFont = resources->getFont(mFontName);
       LookAndFeel::setDefaultFont(cFont, 0.02f);
     } else if (mValueAsString == "MenuBar") {
-      cMenuBar = new MenuBar(this, mNode, this, resources);
-      addComponent(cMenuBar);
+      bool mMapEditor = mNode->getBooleanAttribute("mapEditor");
+      if (cMapEditorMode == mMapEditor) {
+        cMenuBar = new MenuBar(this, mNode, this, resources);
+        addComponent(cMenuBar);
+      }
     } else if (mValueAsString == "ResourcesIcon") {
       std::string mIconName = mNode->getAttribute("icon");
       std::string mIconModel = mNode->getAttribute("iconModel");
@@ -93,6 +107,7 @@ void SimpleEditor::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* r
       cResourceIcons[mIconName] = new GUIIcon(mModelInstance);
     }
   }
+  
   cDockableTextureManager     = new DialogTextureManager(    this, resources, mProjectResources, this, mProjectResources, this);
   cDockableElementTypeManager = new DialogElementTypeManager(this, resources, mProjectResources, this, mProjectResources, this);
   cDockableSoundManager       = new DialogSoundManager(      this, resources, mProjectResources, this, mProjectResources, this);
@@ -105,17 +120,21 @@ void SimpleEditor::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* r
   cDockableCameraManager      = new DialogCameraManager(     this, resources, mProjectResources, this, mProjectResources, this);
   cDockableBoundariesManager  = new DialogBoundariesManager( this, resources, mProjectResources, this, mProjectResources, this);
 
-  cScreenEdgeManager.add(cDockableTextureManager,     cResourceIcons["IconTextures"]);
-  cScreenEdgeManager.add(cDockableElementTypeManager, cResourceIcons["IconElementTypes"]);
-  cScreenEdgeManager.add(cDockableSoundManager,       cResourceIcons["IconSounds"]);
-  cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconFonts"]);
-  cScreenEdgeManager.add(cDockableScriptManager,      cResourceIcons["IconScripts"]);
-  cScreenEdgeManager.add(cDockablePrimitiveManager,   cResourceIcons["IconPrimitives"]);
-  cScreenEdgeManager.add(cDockableCustomTypeManager,  cResourceIcons["IconCustomTypes"]);
-  cScreenEdgeManager.add(cDockableVertexManager,      cResourceIcons["IconVertices"]);
-  cScreenEdgeManager.add(cDockable3DModelManager,     cResourceIcons["Icon3DModels"]);
-  cScreenEdgeManager.add(cDockableCameraManager,      cResourceIcons["IconCameras"]);
-  cScreenEdgeManager.add(cDockableBoundariesManager,  cResourceIcons["IconCollectables"]);
+  if (cMapEditorMode) {
+    cScreenEdgeManager.add(cDockableElementTypeManager, cResourceIcons["IconElementTypes"]);
+  } else {
+    cScreenEdgeManager.add(cDockableTextureManager,     cResourceIcons["IconTextures"]);
+    cScreenEdgeManager.add(cDockableElementTypeManager, cResourceIcons["IconElementTypes"]);
+    cScreenEdgeManager.add(cDockableSoundManager,       cResourceIcons["IconSounds"]);
+    cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconFonts"]);
+    cScreenEdgeManager.add(cDockableScriptManager,      cResourceIcons["IconScripts"]);
+    cScreenEdgeManager.add(cDockablePrimitiveManager,   cResourceIcons["IconPrimitives"]);
+    cScreenEdgeManager.add(cDockableCustomTypeManager,  cResourceIcons["IconCustomTypes"]);
+    cScreenEdgeManager.add(cDockableVertexManager,      cResourceIcons["IconVertices"]);
+    cScreenEdgeManager.add(cDockable3DModelManager,     cResourceIcons["Icon3DModels"]);
+    cScreenEdgeManager.add(cDockableCameraManager,      cResourceIcons["IconCameras"]);
+    cScreenEdgeManager.add(cDockableBoundariesManager,  cResourceIcons["IconCollectables"]);
+  }
   addComponent(&cScreenEdgeManager);
   
   cDockableElementTypeManager->addElementTypeSelectionListener(this);
@@ -502,7 +521,7 @@ void SimpleEditor::openProject(const std::string& file, bool asTemplate) {
         clearUndoStack();
         delete cProject;
       }
-      cProject = new Project(mNode, file, this, asTemplate);
+      cProject = new Project(mNode, file, this, asTemplate, nullptr);
       cProject->initEditor();
       cSelectedLayer = cProject->getDefaultLayer();
       for (unsigned int i = 0; i < cProjectManagerListeners.size(); i++) {

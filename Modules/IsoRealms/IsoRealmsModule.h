@@ -132,6 +132,6 @@ class IsoRealmsModule:public IModule {
   /**********************\
    * Implements IPlugin *
   \**********************/
-  void load(DOMNodeWrapper*, IResourceRegistry*);
+  void load(DOMNodeWrapper*, IResourceRegistry*, DOMNodeWrapper*);
   void save(DOMNodeWriter*, IResourceLocator*);
 };

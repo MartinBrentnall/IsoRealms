@@ -100,7 +100,7 @@ void SpindizzyModule::setTheme(SpindizzyZoneTheme* theme) {
   cDefaultTheme = theme;
 }
 
-void SpindizzyModule::load(DOMNodeWrapper* node, IResourceRegistry* resources) {
+void SpindizzyModule::load(DOMNodeWrapper* node, IResourceRegistry* resources, DOMNodeWrapper* options) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
