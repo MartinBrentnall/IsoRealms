@@ -20,6 +20,7 @@
 
 void SpindizzyZoneThemeTexture::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
   // TODO
+  cTexture = nullptr;
 }
 
 void SpindizzyZoneThemeTexture::set(ITexture* texture) {
@@ -27,5 +28,7 @@ void SpindizzyZoneThemeTexture::set(ITexture* texture) {
 }
 
 void SpindizzyZoneThemeTexture::set() {
-  cTexture->set();
+  if (cTexture != nullptr) {
+    cTexture->set();
+  }
 }

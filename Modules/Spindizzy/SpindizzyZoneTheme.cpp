@@ -41,6 +41,7 @@ void SpindizzyZoneTheme::initialiseResource(DOMNodeWrapper* node, IResourceAcces
       registerElement(mThemeColour, mColour);
     }
   }
+  set();
 }
 
 void SpindizzyZoneTheme::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {

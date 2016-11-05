@@ -146,7 +146,7 @@ void SpindizzyModule::load(DOMNodeWrapper* node, IResourceRegistry* resources, D
   resources->add(&cZoneElementHandlerArgument, "ZoneHandler", "ZoneHandler");
   resources->add(&cItemElementHandlerArgument, "ItemHandler", "ItemHandler");
   resources->add(&cArgumentValueZone, "Zone", "Zone");
-  resources->add(mModuleArgumentValue, "Spindizzy", "Spindizzy");  
+  resources->add(mModuleArgumentValue, "Spindizzy", "Spindizzy");
 }
 
 void SpindizzyModule::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
