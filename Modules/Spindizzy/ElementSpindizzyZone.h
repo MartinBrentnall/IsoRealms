@@ -121,6 +121,7 @@ class ElementSpindizzyZone:public Element,
   \********************************/
   void addElement(IElement*);
   void removeElement(IElement*);
+  void updateElement(IElement*);
   void addArgumentValue(IArgument*);
   void restrictCursor(Vertex&);
   

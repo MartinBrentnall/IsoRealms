@@ -28,6 +28,7 @@ class IElementContainer {
   public:
   virtual void addElement(IElement*) = 0;
   virtual void removeElement(IElement*) = 0;
+  virtual void updateElement(IElement*) = 0;
   virtual void addArgumentValue(IArgument*) = 0;
   virtual void setArguments() = 0;
   virtual void unsetArguments() = 0;

@@ -121,7 +121,6 @@ bool ResourceElementSpindizzyZone::keyDown(SDLKey& key, ILayerEditingContext* ed
       IElementContainer* mContainer = editingContext->getElementContainer();
       ElementHandlerZone* mHandler = cModuleInterface->getZoneElementHandler(mContainer);
       if (cStartLocation == nullptr) {
-//        editingContext->setCursorRestriction(mContainer);
         Vertex* mLocation = editingContext->getLocation();
         BlockLocation mStartLocation(mLocation->x, mLocation->y, mLocation->z * 2.0);
         if (cEditingZone != nullptr) {
@@ -131,15 +130,13 @@ bool ResourceElementSpindizzyZone::keyDown(SDLKey& key, ILayerEditingContext* ed
         cEditingZone = new ElementSpindizzyZone(this, mZoneArea);
         cStartLocation = new Vertex(*mLocation);
       } else {
-//        editingContext->removeCursorRestriction(mContainer);
         mHandler->addElement(cEditingZone);
         cContent.push_back(cEditingZone);
-//        cModuleInterface->registerSurfaceProvider(cEditingBlock, true);
+        mContainer->updateElement(mHandler);
         cStartLocation = nullptr;
         BlockLocation mIdentityBlockLocation(0, 0, 0);
         BlockArea* mZoneArea = new BlockArea(mIdentityBlockLocation, mIdentityBlockLocation);
         cEditingZone = new ElementSpindizzyZone(this, mZoneArea);
-//        cEditingZone->createSampleSurfaces();
         editingContext->staticChanged();
       }
     }

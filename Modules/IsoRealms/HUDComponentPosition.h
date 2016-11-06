@@ -61,6 +61,7 @@ class HUDComponentPosition : public IElementContainer {
   \********************************/
   void addElement(IElement*);
   void removeElement(IElement*);
+  void updateElement(IElement*);
   void addArgumentValue(IArgument*);
   void setArguments();
   void unsetArguments();

@@ -285,6 +285,10 @@ void ElementSpindizzyZone::removeElement(IElement* element) {
   cElementHandler.removeElement(element);
 }
 
+void ElementSpindizzyZone::updateElement(IElement* element) {
+  // TODO: Implement this!
+}
+
 void ElementSpindizzyZone::addArgumentValue(IArgument* argument) {
   cArguments.push_back(argument);
 }

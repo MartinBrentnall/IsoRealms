@@ -47,20 +47,20 @@ template <class T> class SpatialContainer2D {
   }
 
   void remove(T* element) {
-    IElementBounds* mBounds = element->getBounds();
-    int mSouth = std::floor(mBounds->getSouth());
-    int mNorth = std::ceil(mBounds->getNorth());
-    int mWest = std::floor(mBounds->getWest());
-    int mEast = std::ceil(mBounds->getEast());
-    SpatialContainer1D<std::vector<T*> >* mRow = cContainer.getInsertionCell(mSouth, mNorth);
-    std::vector<T*>* mCell = mRow->getInsertionCell(mWest, mEast);
-    for (int i = mCell->size() - 1; i >= 0; i--) {
-      if ((*mCell)[i] == element) {
-        mCell->erase(mCell->begin() + i);
+    std::vector<SpatialContainer1D<std::vector<T*> >*> mRows = cContainer.getAllCells();
+    for (unsigned int i = 0; i < mRows.size(); i++) {
+      std::vector<std::vector<T*>*> mCells = mRows[i]->getAllCells();
+      for (unsigned int j = 0; j < mCells.size(); j++) {
+        std::vector<T*>* mCell = mCells[j];
+        for (int k = mCell->size() - 1; k >= 0; k--) {
+          if ((*mCell)[k] == element) {
+            mCell->erase(mCell->begin() + k);
+          }
+        }
       }
     }
   }
- 
+  
   void clear() {
     std::vector<SpatialContainer1D<std::vector<T*> > > mRows = cContainer.getAllElements();
     for (unsigned int i = 0; i < mRows.size(); i++) {

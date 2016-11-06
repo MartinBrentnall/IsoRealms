@@ -94,6 +94,7 @@ class LayerSpindizzyMap:public ILayer,
    *          element wasn't found.
    */  
   void removeElement(IElement*);
+  void updateElement(IElement*);
   void addArgumentValue(IArgument*);
   void setArguments();
   void unsetArguments();

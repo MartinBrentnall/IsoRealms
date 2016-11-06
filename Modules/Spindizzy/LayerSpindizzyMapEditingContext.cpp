@@ -355,6 +355,10 @@ void LayerSpindizzyMapEditingContext::addElement(IElement* element) {
   cElements.add(element);
 }
 
+void LayerSpindizzyMapEditingContext::removeElement(IElement* element) {
+  cElements.remove(element);
+}
+
 IElementContainer* LayerSpindizzyMapEditingContext::getElementContainer() {
   return cSelectedElementContainers == nullptr ? cMap->getElementContainer() : cSelectedElementContainers;
 }

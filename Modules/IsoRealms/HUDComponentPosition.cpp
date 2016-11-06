@@ -184,8 +184,12 @@ void HUDComponentPosition::addElement(IElement* element) {
   cComponent = element;
 }
 
-void HUDComponentPosition::removeElement(IElement*) {
+void HUDComponentPosition::removeElement(IElement* element) {
   // TODO
+}
+
+void HUDComponentPosition::updateElement(IElement* element) {
+  // Nothing to do
 }
 
 void HUDComponentPosition::addArgumentValue(IArgument* argumentValue) {

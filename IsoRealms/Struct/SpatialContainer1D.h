@@ -33,7 +33,7 @@ template <class T> class SpatialContainer1D {
   SpatialContainer1D<T>() {
     cUnit = 8;
     cStepOffset = 0;
-    cBiggerSpace = NULL;
+    cBiggerSpace = nullptr;
   }
   
   void setUnit(unsigned int unit) {
@@ -45,7 +45,7 @@ template <class T> class SpatialContainer1D {
     int mCellStepsStart = (int) floor(start / (double) mCellSpacing);
     int mCellStepsEnd   = (int) floor(end   / (double) mCellSpacing);
     if (mCellStepsEnd - mCellStepsStart >= 2) {
-      if (cBiggerSpace == NULL) {
+      if (cBiggerSpace == nullptr) {
         cBiggerSpace = new SpatialContainer1D<T>();
         cBiggerSpace->setUnit(cUnit * 2);
       }
@@ -63,7 +63,7 @@ template <class T> class SpatialContainer1D {
     // If the object is "behind" the first cell     
     } else if (mCellIndex < 0) {
       for (int i = mCellIndex; i < -1; i++) {
-        cCells.insert(cCells.begin(), NULL);
+        cCells.insert(cCells.begin(), nullptr);
       }
       cStepOffset += mCellIndex;
       mCell = new T();
@@ -72,7 +72,7 @@ template <class T> class SpatialContainer1D {
     // If the object is "after" the last cell
     } else if (mCellIndex >= cCells.size()) {
       for (int i = cCells.size(); i < mCellIndex; i++) {
-        cCells.push_back(NULL);
+        cCells.push_back(nullptr);
       }
       mCell = new T();
       cCells.push_back(mCell);
@@ -80,7 +80,7 @@ template <class T> class SpatialContainer1D {
     // The object is in an existing cell
     } else {
       mCell = cCells[mCellIndex];
-      if (mCell == NULL) {
+      if (mCell == nullptr) {
         mCell = new T();
         cCells[mCellIndex] = mCell;
       }
@@ -102,11 +102,33 @@ template <class T> class SpatialContainer1D {
       mResult.push_back(mCell);
     }
 
-    if (cBiggerSpace != NULL) {
+    if (cBiggerSpace != nullptr) {
       std::vector<T*> mBiggerElements = cBiggerSpace->getElements(start, end);
       mResult.insert(mResult.end(), mBiggerElements.begin(), mBiggerElements.end());
     }
     return mResult;
+  }
+  
+  std::vector<T*> getAllCells() {
+    std::vector<T*> mCells;
+    mCells.insert(mCells.end(), cCells.begin(), cCells.end());
+    if (cBiggerSpace != nullptr) {
+      std::vector<T*> mBiggerElements = cBiggerSpace->getAllCells();
+      mCells.insert(mCells.end(), mBiggerElements.begin(), mBiggerElements.end());
+    }
+    return mCells;
+  }
+  
+  void removeElement(T* element) {
+    for (unsigned int i = cCells.size() - 1; i >= 0; i--) {
+      if (cCells[i] == element) {
+        cCells->erase(cCells->begin() + i);
+      }
+    }
+    
+    if (cBiggerSpace != nullptr) {
+      cBiggerSpace->removeElement(element);
+    }
   }
  
   void clear() {

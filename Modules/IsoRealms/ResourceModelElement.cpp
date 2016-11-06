@@ -48,6 +48,10 @@ void ResourceModelElement::removeElement(IElement* element) {
   cElement = NULL;
 }
 
+void ResourceModelElement::updateElement(IElement* element) {
+  // Nothing to do
+}
+
 void ResourceModelElement::addArgumentValue(IArgument* argument) {
   // Ignore it
 }

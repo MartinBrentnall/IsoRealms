@@ -100,6 +100,9 @@ template <class T> class ElementCollection : public IElementBounds {
   }
   
   float getWest() {
+    if (cElements.size() == 0) {
+      return 0.0f;
+    }
     float mValue = std::numeric_limits<float>::max();
     for (T* mElement : cElements) {
       IElementBounds* mBounds = mElement->getBounds();
@@ -109,6 +112,9 @@ template <class T> class ElementCollection : public IElementBounds {
   }
 
   float getEast() {
+    if (cElements.size() == 0) {
+      return 0.0f;
+    }
     float mValue = std::numeric_limits<float>::lowest();
     for (T* mElement : cElements) {
       IElementBounds* mBounds = mElement->getBounds();
@@ -118,6 +124,9 @@ template <class T> class ElementCollection : public IElementBounds {
   }
   
   float getSouth() {
+    if (cElements.size() == 0) {
+      return 0.0f;
+    }
     float mValue = std::numeric_limits<float>::max();
     for (T* mElement : cElements) {
       IElementBounds* mBounds = mElement->getBounds();
@@ -127,6 +136,9 @@ template <class T> class ElementCollection : public IElementBounds {
   }
 
   float getNorth() {
+    if (cElements.size() == 0) {
+      return 0.0f;
+    }
     float mValue = std::numeric_limits<float>::lowest();
     for (T* mElement : cElements) {
       IElementBounds* mBounds = mElement->getBounds();
@@ -136,6 +148,9 @@ template <class T> class ElementCollection : public IElementBounds {
   }
 
   float getBottom() {
+    if (cElements.size() == 0) {
+      return 0.0f;
+    }
     float mValue = std::numeric_limits<float>::max();
     for (T* mElement : cElements) {
       IElementBounds* mBounds = mElement->getBounds();
@@ -145,6 +160,9 @@ template <class T> class ElementCollection : public IElementBounds {
   }
 
   float getTop() {
+    if (cElements.size() == 0) {
+      return 0.0f;
+    }
     float mValue = std::numeric_limits<float>::lowest();
     for (T* mElement : cElements) {
       IElementBounds* mBounds = mElement->getBounds();

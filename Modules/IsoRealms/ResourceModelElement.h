@@ -48,6 +48,7 @@ class ResourceModelElement:public I3DModelType,
   
   void addElement(IElement*);
   void removeElement(IElement*);
+  void updateElement(IElement*);
   void addArgumentValue(IArgument*);
   void setArguments();
   void unsetArguments();

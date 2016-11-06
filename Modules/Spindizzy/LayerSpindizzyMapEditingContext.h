@@ -80,6 +80,7 @@ class LayerSpindizzyMapEditingContext : public ILayerEditingContext {
   bool input(SDL_Event&);
   void setElementType(IElementType*);
   void addElement(IElement*);
+  void removeElement(IElement*);
   
   /**********************************\
    * Implemens ILayerEditingContext *

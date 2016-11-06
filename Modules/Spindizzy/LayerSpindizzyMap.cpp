@@ -32,9 +32,9 @@ void LayerSpindizzyMap::load(DOMNodeWrapper* node, bool editing, IResourceAccess
   initialiseResource(node, resources, asTemplate);
   if (cEditingContext != nullptr) {
     std::vector<IElement*> mElements = cElementHandler.getElements();
-    for (IElement* mElement : mElements) {
-      cEditingContext->addElement(mElement);
-    }
+//    for (IElement* mElement : mElements) {
+//      cEditingContext->addElement(mElement);
+//    }
   }
 }
 
@@ -57,6 +57,7 @@ void LayerSpindizzyMap::initialiseResource(DOMNodeWrapper* node, IResourceAccess
 
 void LayerSpindizzyMap::addElement(IElement* element) {
   cElementHandler.addElement(element);
+  cEditingContext->addElement(element);
 }
 
 DOMNodeWrapper* LayerSpindizzyMap::getConfigurationNode(DOMNodeWrapper* node) {
@@ -101,6 +102,12 @@ IElementContainer* LayerSpindizzyMap::getElementContainer() {
 
 void LayerSpindizzyMap::removeElement(IElement* element) {
   cElementHandler.removeElement(element);
+  cEditingContext->removeElement(element);
+}
+
+void LayerSpindizzyMap::updateElement(IElement* element) {
+  cEditingContext->removeElement(element);
+  cEditingContext->addElement(element);
 }
 
 void LayerSpindizzyMap::addArgumentValue(IArgument* argument) {
