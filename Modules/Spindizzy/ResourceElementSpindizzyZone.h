@@ -32,11 +32,13 @@
 #include <IsoRealms/Resources/Vertex/Vertex.h>
 
 #include "ISpindizzyZoneModule.h"
+#include "ISpindizzyZoneThemeListener.h"
 #include "ISpindizzyZoneType.h"
 #include "ElementHandlerZone.h"
 #include "ElementSpindizzyZone.h"
 
-class ResourceElementSpindizzyZone:public ISpindizzyZoneType,
+class ResourceElementSpindizzyZone:public ISpindizzyZoneThemeListener,
+                                   public ISpindizzyZoneType,
                                    public IsoRealmsConstants,
                                    public IArgumentValueCollection {
   private:
@@ -45,6 +47,7 @@ class ResourceElementSpindizzyZone:public ISpindizzyZoneType,
   std::vector<ElementSpindizzyZone*> cContent;
   ElementSpindizzyZone* cSampleZone;
   ElementSpindizzyZone* cEditingZone;
+  ElementSpindizzyZone* cFocusedZone;
   IColour* cVisitedColour;
   IColour* cUnvisitedColour;
   I3DModelType* cFlagModelType;
@@ -58,10 +61,15 @@ class ResourceElementSpindizzyZone:public ISpindizzyZoneType,
   public:
   ResourceElementSpindizzyZone(ISpindizzyZoneModule*, DOMNodeWrapper*, IResourceRegistry*);
 
+  /******************************************\
+   * Implements ISpindizzyZoneThemeListener *
+  \******************************************/
+  void spindizzyZoneThemeSelected(SpindizzyZoneTheme*);
   
   /*********************************\
    * Implements ISpindizzyZoneType *
   \*********************************/
+  void setEditingZone(ElementSpindizzyZone*);
   ISpindizzyZoneModule* getSpindizzyZoneInterface();
   bool isOverview();
   IColour* getVisitedColour();

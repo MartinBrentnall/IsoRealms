@@ -25,7 +25,7 @@
 
 class ISpindizzyMapType:public ILayerType {
   public:
-  virtual ISpindizzyMapModule* getSpindizzyMapInterface() = 0;
+//  virtual ISpindizzyMapModule* getSpindizzyMapInterface() = 0;
 
 //   virtual IBoundaries* getBoundaries() = 0;
 };

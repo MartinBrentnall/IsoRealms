@@ -30,3 +30,4 @@ void DialogHUDModel::undo() {
 ResourceHUDModel* DialogHUDModel::getResource() {
   return cHUDModel;
 }
+

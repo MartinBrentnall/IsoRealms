@@ -377,6 +377,10 @@ SpindizzyZoneTheme* SpindizzyModule::getTheme(const std::string& type) {
 SpindizzyZoneTheme* SpindizzyModule::getSelectedZoneTheme() {
   return cSelectedZoneTheme;
 }
+
+void SpindizzyModule::addSpindizzyZoneThemeListener(ISpindizzyZoneThemeListener* listener) {
+  cZoneThemeSelectionListeners.push_back(listener);
+}
   
 bool SpindizzyModule::isOverview() {
   return cOverview;
@@ -455,6 +459,14 @@ IRollableSurface* SpindizzyModule::getSurfaceAt(Vertex& location, float stepHeig
 
 std::map<std::string, SpindizzyZoneTheme*> SpindizzyModule::getSpindizzyZoneThemes() {
   return cThemes;
+}
+
+void SpindizzyModule::spindizzyZoneThemeSelected(SpindizzyZoneTheme* spindizzyZoneTheme) {
+  cSelectedZoneTheme = spindizzyZoneTheme;
+  cDefaultTheme = spindizzyZoneTheme;
+  for (ISpindizzyZoneThemeListener* listener : cZoneThemeSelectionListeners) {
+    listener->spindizzyZoneThemeSelected(cSelectedZoneTheme);
+  }
 }
 
 bool SpindizzyModule::isEditing() {

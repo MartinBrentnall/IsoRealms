@@ -30,7 +30,8 @@
 #include "SpindizzyZoneThemeIcon.h"
 
 class DialogSpindizzyZoneThemeSelector:public Dialog,
-                                       public ICustomResourceManager {
+                                       public ICustomResourceManager,
+                                       public IResourceSelectionListener<SpindizzyZoneTheme> {
   private:
   ISpindizzyZoneThemeAccessor* cSpindizzyZoneThemeAccessor;
   ComponentCustomResourceBrowser<SpindizzyZoneTheme, SpindizzyZoneThemeIcon>* cSpindizzyZoneThemeBrowser;
@@ -42,6 +43,11 @@ class DialogSpindizzyZoneThemeSelector:public Dialog,
    * Implements ICustomResourceManager *
   \*************************************/
   std::string getPath(IResource*);
+  
+  /*************************************************************\
+   * Implements IResourceSelectionListener<SpindizzyZoneTheme> *
+  \*************************************************************/
+  void resourceSelected(SpindizzyZoneTheme*);
 };
 
 #endif

@@ -81,6 +81,7 @@ class ElementSpindizzyZone:public Element,
   bool isVisited();
   IColour* getColour(SpindizzyZoneThemeColour*);
   void setFlag(bool);
+  void setTheme(SpindizzyZoneTheme*);
   SpindizzyZoneTheme* getTheme();
   IScriptCall* getScriptCall(const std::string&);
   void renderPreview(Vertex&, Vertex&);

@@ -161,6 +161,7 @@ class SpindizzyModule:public IModule,
   ArgumentValueLocal<ElementHandlerItem> cItemElementHandlerArgument;
   ArgumentValueLocal<ElementSpindizzyZone> cArgumentValueZone;
   SpindizzyZoneTheme* cSelectedZoneTheme;
+  std::vector<ISpindizzyZoneThemeListener*> cZoneThemeSelectionListeners;
   
   bool cOverview;
   unsigned int cZoneCount;
@@ -235,6 +236,7 @@ class SpindizzyModule:public IModule,
   \***********************************/
   SpindizzyZoneTheme* getTheme(const std::string&);
   SpindizzyZoneTheme* getSelectedZoneTheme();
+  void addSpindizzyZoneThemeListener(ISpindizzyZoneThemeListener*);
   ElementHandlerZone* getZoneElementHandler(IElementContainer*);
   void removeElementHandlerZone(IElementContainer*);
   bool isOverview();
@@ -280,6 +282,7 @@ class SpindizzyModule:public IModule,
    * Implements ISpindizzyZoneThemeAccessor *
   \******************************************/
   std::map<std::string, SpindizzyZoneTheme*> getSpindizzyZoneThemes();
+  void spindizzyZoneThemeSelected(SpindizzyZoneTheme*);
   
   /************\
    * Multiple *

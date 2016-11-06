@@ -25,6 +25,7 @@ ResourceElementSpindizzyZone::ResourceElementSpindizzyZone(ISpindizzyZoneModule*
   resourceRegistry->add(cBoundaries, node->getAttribute("name"));
   cStartLocation = nullptr;
   cEditingZone = nullptr;
+  cModuleInterface->addSpindizzyZoneThemeListener(this);
 }
 
 ElementSpindizzyZone* ResourceElementSpindizzyZone::getElement(IElement* element) {
@@ -38,6 +39,17 @@ ElementSpindizzyZone* ResourceElementSpindizzyZone::getElement(IElement* element
 
 void ResourceElementSpindizzyZone::applyDefaultTheme() {
   cModuleInterface->applyDefaultTheme();
+}
+
+void ResourceElementSpindizzyZone::spindizzyZoneThemeSelected(SpindizzyZoneTheme* spindizzyZoneTheme) {
+  if (cFocusedZone != nullptr) {
+    cFocusedZone->setTheme(spindizzyZoneTheme);
+  }
+}
+
+void ResourceElementSpindizzyZone::setEditingZone(ElementSpindizzyZone* editingZone) {
+  std::cout << "Focused Zone: " << editingZone << std::endl;
+  cFocusedZone = editingZone;
 }
 
 ISpindizzyZoneModule* ResourceElementSpindizzyZone::getSpindizzyZoneInterface() {

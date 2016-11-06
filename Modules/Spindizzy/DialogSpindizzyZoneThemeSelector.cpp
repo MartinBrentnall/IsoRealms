@@ -25,6 +25,7 @@ DialogSpindizzyZoneThemeSelector::DialogSpindizzyZoneThemeSelector(IComponentCon
   for (std::pair<std::string, SpindizzyZoneTheme*> mZoneTheme : mZoneThemes) {
     cSpindizzyZoneThemeBrowser->resourceAdded(mZoneTheme.second);
   }
+  cSpindizzyZoneThemeBrowser->addResourceSelectionListener(this);
   cSpindizzyZoneThemeAccessor = spindizzyZoneThemeAccessor;
 }
 
@@ -37,4 +38,10 @@ std::string DialogSpindizzyZoneThemeSelector::getPath(IResource* resource) {
   }
   return "<Theme name not found>";
 }
+
+void DialogSpindizzyZoneThemeSelector::resourceSelected(SpindizzyZoneTheme* spindizzyZoneTheme) {
+  cSpindizzyZoneThemeAccessor->spindizzyZoneThemeSelected(spindizzyZoneTheme);
+}
+
+
 

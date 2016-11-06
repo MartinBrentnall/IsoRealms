@@ -141,6 +141,11 @@ void ElementSpindizzyZone::setFlag(bool flag) {
   cFlagged = flag;
 }
 
+void ElementSpindizzyZone::setTheme(SpindizzyZoneTheme* zoneTheme) {
+  cZoneTheme = zoneTheme;
+  cElementHandler.staticChanged();
+}
+
 SpindizzyZoneTheme* ElementSpindizzyZone::getTheme() {
   return cZoneTheme;
 }
@@ -228,10 +233,12 @@ IElementBounds* ElementSpindizzyZone::getBounds() {
 
 void ElementSpindizzyZone::focusGained(ILayerEditingContext* layerEditingContext) {
   cZoneType->setDefaultTheme(cZoneTheme);
+  cZoneType->setEditingZone(this);
   layerEditingContext->selectElementContainer(this);
 }
 
 void ElementSpindizzyZone::focusLost(ILayerEditingContext* layerEditingContext) {
+  cZoneType->setEditingZone(nullptr);
   layerEditingContext->deselectElementContainer(this);
 }
 

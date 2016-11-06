@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Martin Brentnall
+ * Copyright 2016 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,26 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_SPINDIZZY_ZONE_TYPE_H
-#define I_SPINDIZZY_ZONE_TYPE_H
+#ifndef I_SPINDIZZY_ZONE_THEME_LISTENER_H
+#define I_SPINDIZZY_ZONE_THEME_LISTENER_H
 
-#include <IsoRealms/Resources/ElementType/IElementType.h>
+#include "SpindizzyZoneTheme.h"
 
-#include "ISpindizzyZoneModule.h"
-
-class ElementSpindizzyZone;
-
-class ISpindizzyZoneType:public IElementType {
+class ISpindizzyZoneThemeListener {
   public:
-  virtual void setEditingZone(ElementSpindizzyZone*) = 0;
-  virtual ISpindizzyZoneModule* getSpindizzyZoneInterface() = 0;
-  virtual bool isOverview() = 0;
-  virtual IColour* getVisitedColour() = 0;
-  virtual IColour* getUnvisitedColour() = 0;
-  virtual IBoundaries* getBoundaries() = 0;
-  virtual void setZoneArgument(ElementSpindizzyZone*) = 0;
-  virtual void applyDefaultTheme() = 0;
-  virtual void setDefaultTheme(SpindizzyZoneTheme*) = 0;
+  virtual void spindizzyZoneThemeSelected(SpindizzyZoneTheme*) = 0;
 };
 
 #endif
+

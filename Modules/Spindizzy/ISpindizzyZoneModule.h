@@ -19,6 +19,7 @@
 #ifndef I_SPINDIZZY_ZONE_MODULE_H
 #define I_SPINDIZZY_ZONE_MODULE_H
 
+#include "ISpindizzyZoneThemeListener.h"
 #include "SpindizzyZoneTheme.h"
 #include "SpindizzyZoneThemeColour.h"
 #include "SpindizzyZoneThemeTexture.h"
@@ -30,6 +31,7 @@ class ISpindizzyZoneModule {
   public:
   virtual SpindizzyZoneTheme* getTheme(const std::string&) = 0;
   virtual SpindizzyZoneTheme* getSelectedZoneTheme() = 0;
+  virtual void addSpindizzyZoneThemeListener(ISpindizzyZoneThemeListener*) = 0;
   virtual bool isEditing() = 0;
   virtual ElementHandlerZone* getZoneElementHandler(IElementContainer*) = 0;
   virtual void removeElementHandlerZone(IElementContainer*) = 0;
