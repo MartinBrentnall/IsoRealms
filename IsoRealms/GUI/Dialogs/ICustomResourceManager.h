@@ -16,23 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ELEMENT_TYPE_ICON_H
-#define ELEMENT_TYPE_ICON_H
+#ifndef I_CUSTOM_RESOURCE_MANAGER_H
+#define I_CUSTOM_RESOURCE_MANAGER_H
 
-#include <IsoRealms/GUI/Icon.h>
-#include <IsoRealms/Resources/ElementType/IElementType.h>
+#include <string>
 
-class ElementTypeIcon:public Icon<IElementType> {
-  private:
-  IElementType* cElementType;
-  
+#include <IsoRealms/Resources/IResource.h>
+
+class ICustomResourceManager {
   public:
-  ElementTypeIcon(IResourceBrowser<IElementType>*, IElementType*);
-    
-  void renderIcon();  
-  void updateIcon(unsigned int);
-  float getWidth();
-  float getHeight();
+  virtual std::string getPath(IResource*) = 0;
 };
 
 #endif

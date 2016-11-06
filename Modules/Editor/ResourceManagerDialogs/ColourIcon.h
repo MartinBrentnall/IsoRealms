@@ -19,7 +19,7 @@
 #ifndef COLOUR_ICON_H
 #define COLOUR_ICON_H
 
-#include "Icon.h"
+#include <IsoRealms/GUI/Icon.h>
 
 class ColourIcon:public Icon<IColour> {
   public:

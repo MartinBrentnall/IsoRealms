@@ -29,6 +29,7 @@ class IBoundaries;
 class ICamera;
 class IColour;
 class IComponentCustomType;
+class IDialogGenerator;
 class IElementType;
 class IFloat;
 class IFont;
@@ -57,6 +58,8 @@ class IResourceTypeRegistry {
   virtual void addResourceType(IResourceType<IString>*,              const std::string&) = 0;
   virtual void addResourceType(IResourceType<ITexture>*,             const std::string&) = 0;
   virtual void addResourceType(IResourceType<IVertex>*,              const std::string&) = 0;
+  
+  virtual void registerCustomResourceManager(IDialogGenerator*) = 0;
 };
 
 #endif

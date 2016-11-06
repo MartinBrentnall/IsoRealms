@@ -1,5 +1,6 @@
+
 /*
- * Copyright 2015 Martin Brentnall
+ * Copyright 2016 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,23 +17,25 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ELEMENT_TYPE_ICON_H
-#define ELEMENT_TYPE_ICON_H
+#ifndef DIALOG_GENERATOR_SPINDIZZY_ZONE_THEME_SELECTOR_H
+#define DIALOG_GENERATOR_SPINDIZZY_ZONE_THEME_SELECTOR_H
 
-#include <IsoRealms/GUI/Icon.h>
-#include <IsoRealms/Resources/ElementType/IElementType.h>
+#include <IsoRealms/GUI/IDialogGenerator.h>
 
-class ElementTypeIcon:public Icon<IElementType> {
-  private:
-  IElementType* cElementType;
+#include "DialogSpindizzyZoneThemeSelector.h"
+#include "ISpindizzyZoneThemeAccessor.h"
+
+class DialogGeneratorSpindizzyZoneThemeSelector:public IDialogGenerator {
+  private:  
+  ISpindizzyZoneThemeAccessor* cSpindizzyZoneThemeAccessor;
   
   public:
-  ElementTypeIcon(IResourceBrowser<IElementType>*, IElementType*);
-    
-  void renderIcon();  
-  void updateIcon(unsigned int);
-  float getWidth();
-  float getHeight();
+  DialogGeneratorSpindizzyZoneThemeSelector(ISpindizzyZoneThemeAccessor*);
+
+  /*******************************\
+   * Implements IDialogGenerator *
+  \*******************************/
+  Dialog* createDialog(IComponentContainer*, IResourceAccessor*);
 };
 
 #endif

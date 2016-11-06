@@ -523,6 +523,12 @@ void SimpleEditor::openProject(const std::string& file, bool asTemplate) {
       }
       cProject = new Project(mNode, file, this, asTemplate, nullptr);
       cProject->initEditor();
+      IResourceManager* mProjectResources = cProject->getResourceManager();
+      std::vector<IDialogGenerator*> mProjectDialogGenerators = mProjectResources->getDialogGenerators();
+      for (unsigned int i = 0; i < mProjectDialogGenerators.size(); i++) {
+        Dialog* mProjectDialog = mProjectDialogGenerators[i]->createDialog(this, nullptr);
+        cScreenEdgeManager.add(mProjectDialog, cResourceIcons["IconVertices"]);
+      }
       cSelectedLayer = cProject->getDefaultLayer();
       for (unsigned int i = 0; i < cProjectManagerListeners.size(); i++) {
         cProjectManagerListeners[i]->projectOpened(cProject);

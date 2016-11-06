@@ -16,21 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ELEMENT_TYPE_ICON_H
-#define ELEMENT_TYPE_ICON_H
+#ifndef SPINDIZZY_ZONE_THEME_ICON_H
+#define SPINDIZZY_ZONE_THEME_ICON_H
 
 #include <IsoRealms/GUI/Icon.h>
-#include <IsoRealms/Resources/ElementType/IElementType.h>
+#include <IsoRealms/GUI/LookAndFeel.h>
 
-class ElementTypeIcon:public Icon<IElementType> {
+#include "SpindizzyZoneTheme.h"
+
+class SpindizzyZoneThemeIcon:public Icon<SpindizzyZoneTheme> {
   private:
-  IElementType* cElementType;
+  IResourceLocator* cResources;
   
   public:
-  ElementTypeIcon(IResourceBrowser<IElementType>*, IElementType*);
+  SpindizzyZoneThemeIcon(IResourceBrowser<SpindizzyZoneTheme>*, SpindizzyZoneTheme*);
     
-  void renderIcon();  
-  void updateIcon(unsigned int);
+  void renderIcon();
+  void iconSelected();
   float getWidth();
   float getHeight();
 };

@@ -29,6 +29,7 @@ class ElementHandlerZone;
 class ISpindizzyZoneModule {
   public:
   virtual SpindizzyZoneTheme* getTheme(const std::string&) = 0;
+  virtual SpindizzyZoneTheme* getSelectedZoneTheme() = 0;
   virtual bool isEditing() = 0;
   virtual ElementHandlerZone* getZoneElementHandler(IElementContainer*) = 0;
   virtual void removeElementHandlerZone(IElementContainer*) = 0;

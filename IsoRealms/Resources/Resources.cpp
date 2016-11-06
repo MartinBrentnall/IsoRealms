@@ -232,6 +232,14 @@ void Resources::addResourceType(IResourceType<IString>* resourceType,           
 void Resources::addResourceType(IResourceType<ITexture>* resourceType,                   const std::string& typeDescription) {cTextures.addResourceType(resourceType, typeDescription);}
 void Resources::addResourceType(IResourceType<IVertex>* resourceType,                    const std::string& typeDescription) {cVertices.addResourceType(resourceType, typeDescription);}  
 
+void Resources::registerCustomResourceManager(IDialogGenerator* resourceManagerDialogGenerator) {
+  cResourceManagerDialogGenerators.push_back(resourceManagerDialogGenerator);
+}
+
+std::vector<IDialogGenerator*> Resources::getDialogGenerators() {
+  return cResourceManagerDialogGenerators;
+}
+
 void Resources::editResource(I3DModelType* resource,               IResourceAccessor* editingResources, IEditingContext* editingContext) {c3DModelTypes.editResource(        resource, this, editingContext);}
 void Resources::editResource(IBoolean* resource,                   IResourceAccessor* editingResources, IEditingContext* editingContext) {cBooleans.editResource(            resource, this, editingContext);}
 void Resources::editResource(IBoundaries* resource,                IResourceAccessor* editingResources, IEditingContext* editingContext) {cBoundaries.editResource(          resource, this, editingContext);}

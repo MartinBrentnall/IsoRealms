@@ -19,7 +19,7 @@
 #ifndef TEXTURE_ICON_H
 #define TEXTURE_ICON_H
 
-#include "Icon.h"
+#include <IsoRealms/GUI/Icon.h>
 
 class TextureIcon:public Icon<ITexture> {
   public:

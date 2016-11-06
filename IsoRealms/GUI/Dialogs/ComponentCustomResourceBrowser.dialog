@@ -1,4 +1,5 @@
-/*
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!--
  * Copyright 2015 Martin Brentnall
  *
  * This file is part of Iso-Realms.
@@ -15,24 +16,17 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
- */
-#ifndef ELEMENT_TYPE_ICON_H
-#define ELEMENT_TYPE_ICON_H
+-->
 
-#include <IsoRealms/GUI/Icon.h>
-#include <IsoRealms/Resources/ElementType/IElementType.h>
+<Component>
+  <Label name="iconSizeLabel" align="top left">Icon Size:</Label>
+  <Slider name="iconSizeSlider" align="top" left="rightOf iconSizeLabel"/>
+  <WrappingGrid name="icons" top="below iconSizeLabel">
+    <PopupMenu name="resourcesMenu">
+      <Menu name="createResource" text="Create"/>
+      <MenuItem name="removeResource" text="Remove..."/>
+      <MenuItem name="editResource" text="Edit..."/>
+    </PopupMenu>
+  </WrappingGrid>
+</Component>
 
-class ElementTypeIcon:public Icon<IElementType> {
-  private:
-  IElementType* cElementType;
-  
-  public:
-  ElementTypeIcon(IResourceBrowser<IElementType>*, IElementType*);
-    
-  void renderIcon();  
-  void updateIcon(unsigned int);
-  float getWidth();
-  float getHeight();
-};
-
-#endif

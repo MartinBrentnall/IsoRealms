@@ -19,9 +19,8 @@
 #ifndef MODEL_ICON_H
 #define MODEL_ICON_H
 
+#include <IsoRealms/GUI/Icon.h>
 #include <IsoRealms/Resources/3DModel/I3DModelType.h>
-
-#include "Icon.h"
 
 class ModelIcon:public Icon<I3DModelType> {
   private:

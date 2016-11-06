@@ -73,7 +73,7 @@ class ElementSpindizzyZone:public Element,
   
   public:
   ElementSpindizzyZone(ISpindizzyZoneType*, DOMNodeWrapper*, BlockLocation*, IResourceAccessor*, I3DModelType*, IElementContainer*);
-  ElementSpindizzyZone(ISpindizzyZoneType*, BlockArea*);
+  ElementSpindizzyZone(ISpindizzyZoneType*, BlockArea*, IElementContainer* = nullptr, SpindizzyZoneTheme* = nullptr);
   
   IElementContainer* getElementContainer();
   

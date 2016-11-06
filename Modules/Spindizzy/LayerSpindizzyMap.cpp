@@ -57,7 +57,9 @@ void LayerSpindizzyMap::initialiseResource(DOMNodeWrapper* node, IResourceAccess
 
 void LayerSpindizzyMap::addElement(IElement* element) {
   cElementHandler.addElement(element);
-  cEditingContext->addElement(element);
+  if (cEditingContext != nullptr) {
+    cEditingContext->addElement(element);
+  }
 }
 
 DOMNodeWrapper* LayerSpindizzyMap::getConfigurationNode(DOMNodeWrapper* node) {
@@ -102,12 +104,16 @@ IElementContainer* LayerSpindizzyMap::getElementContainer() {
 
 void LayerSpindizzyMap::removeElement(IElement* element) {
   cElementHandler.removeElement(element);
-  cEditingContext->removeElement(element);
+  if (cEditingContext != nullptr) {
+    cEditingContext->removeElement(element);
+  }
 }
 
 void LayerSpindizzyMap::updateElement(IElement* element) {
-  cEditingContext->removeElement(element);
-  cEditingContext->addElement(element);
+  if (cEditingContext != nullptr) {
+    cEditingContext->removeElement(element);
+    cEditingContext->addElement(element);
+  }
 }
 
 void LayerSpindizzyMap::addArgumentValue(IArgument* argument) {

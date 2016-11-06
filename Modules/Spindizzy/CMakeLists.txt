@@ -26,11 +26,13 @@ add_library(Spindizzy MODULE
   DialogElementSpindizzyLift.cpp
   DialogElementSpindizzyWater.cpp
   DialogElementSpindizzyZone.cpp
+  DialogGeneratorSpindizzyZoneThemeSelector.cpp
   DialogLayerBackground.cpp
   DialogLayerSpindizzyMap.cpp
   DialogModelSpindizzyCraftGyroscope.cpp
   DialogModelSpindizzyCraftPyramid.cpp
   DialogModelSpindizzyJewel.cpp
+  DialogSpindizzyZoneThemeSelector.cpp
   DialogTextureSpindizzyCraftBall.cpp
   DialogTexturesSpindizzyBlocksC64.cpp
   DialogTexturesSpindizzyLiftsC64.cpp
@@ -77,6 +79,7 @@ add_library(Spindizzy MODULE
   SpindizzyScriptSupport.cpp
   SpindizzyZoneTheme.cpp
   SpindizzyZoneThemeColour.cpp
+  SpindizzyZoneThemeIcon.cpp
   SpindizzyZoneThemeTexture.cpp
   SurfaceCollisionEvent.cpp
   TileBlock.cpp

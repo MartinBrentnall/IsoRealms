@@ -52,11 +52,11 @@ ElementSpindizzyZone::ElementSpindizzyZone(ISpindizzyZoneType* elementType, DOMN
   cFlagged = false;
 }
 
-ElementSpindizzyZone::ElementSpindizzyZone(ISpindizzyZoneType* elementType, BlockArea* zoneArea) {
+ElementSpindizzyZone::ElementSpindizzyZone(ISpindizzyZoneType* elementType, BlockArea* zoneArea, IElementContainer* container, SpindizzyZoneTheme* zoneTheme) {
   cZoneType = elementType;
   cZoneArea = zoneArea;
-  cContainer = nullptr;
-  cZoneTheme = nullptr;
+  cContainer = container;
+  cZoneTheme = zoneTheme;
 }
 
 IElementContainer* ElementSpindizzyZone::getElementContainer() {

@@ -32,6 +32,7 @@
 #include "DialogElementSpindizzyLift.h"
 #include "DialogElementSpindizzyWater.h"
 #include "DialogElementSpindizzyZone.h"
+#include "DialogGeneratorSpindizzyZoneThemeSelector.h"
 #include "DialogLayerBackground.h"
 #include "DialogLayerSpindizzyMap.h"
 #include "DialogModelSpindizzyCraftGyroscope.h"
@@ -72,6 +73,7 @@ class SpindizzyModule:public IModule,
                       public ISpindizzyLiftSet,
                       public ISpindizzyMapModule,
                       public ISpindizzyZoneModule,
+                      public ISpindizzyZoneThemeAccessor,
                       public IThemeSource,
                       public IResource,
                       public ICameraAngleChangeListener, 
@@ -158,6 +160,7 @@ class SpindizzyModule:public IModule,
   ArgumentValueLocal<ElementHandlerZone> cZoneElementHandlerArgument;
   ArgumentValueLocal<ElementHandlerItem> cItemElementHandlerArgument;
   ArgumentValueLocal<ElementSpindizzyZone> cArgumentValueZone;
+  SpindizzyZoneTheme* cSelectedZoneTheme;
   
   bool cOverview;
   unsigned int cZoneCount;
@@ -231,6 +234,7 @@ class SpindizzyModule:public IModule,
    * Implements ISpindizzyZoneModule *
   \***********************************/
   SpindizzyZoneTheme* getTheme(const std::string&);
+  SpindizzyZoneTheme* getSelectedZoneTheme();
   ElementHandlerZone* getZoneElementHandler(IElementContainer*);
   void removeElementHandlerZone(IElementContainer*);
   bool isOverview();
@@ -272,6 +276,11 @@ class SpindizzyModule:public IModule,
   ICollisionData* getNextEvent(Vertex&, Vertex&, IRollableSurface*, float);
   IRollableSurface* getSurfaceAt(Vertex&, float);
 
+  /******************************************\
+   * Implements ISpindizzyZoneThemeAccessor *
+  \******************************************/
+  std::map<std::string, SpindizzyZoneTheme*> getSpindizzyZoneThemes();
+  
   /************\
    * Multiple *
   \************/

@@ -22,6 +22,8 @@
 #include "IResourceListener.h"
 #include "IResourceType.h"
 
+class IDialogGenerator;
+
 class IResourceManager:public IResourceLocator {
   public:
   virtual std::vector<I3DModelType*>         getAllModelTypes() = 0;
@@ -87,6 +89,8 @@ class IResourceManager:public IResourceLocator {
   virtual void removeResource(IString*,              IResourceAccessor*) = 0;
   virtual void removeResource(ITexture*,             IResourceAccessor*) = 0;
   virtual void removeResource(IVertex*,              IResourceAccessor*) = 0;
+  
+  virtual std::vector<IDialogGenerator*> getDialogGenerators() = 0;
 };
 
 #endif

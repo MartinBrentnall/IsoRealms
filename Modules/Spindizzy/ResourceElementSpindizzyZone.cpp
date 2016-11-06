@@ -127,7 +127,8 @@ bool ResourceElementSpindizzyZone::keyDown(SDLKey& key, ILayerEditingContext* ed
           delete cEditingZone;
         }
         BlockArea* mZoneArea = new BlockArea(mStartLocation, mStartLocation);
-        cEditingZone = new ElementSpindizzyZone(this, mZoneArea);
+        SpindizzyZoneTheme* mSelectedZoneTheme = cModuleInterface->getSelectedZoneTheme();
+        cEditingZone = new ElementSpindizzyZone(this, mZoneArea, mContainer, mSelectedZoneTheme);
         cStartLocation = new Vertex(*mLocation);
       } else {
         mHandler->addElement(cEditingZone);

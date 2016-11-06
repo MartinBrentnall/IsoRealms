@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2015 Martin Brentnall
  *
@@ -16,8 +17,8 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef COMPONENT_RESOURCE_BROWSER_H
-#define COMPONENT_RESOURCE_BROWSER_H
+#ifndef COMPONENT_CUSTOM_RESOURCE_BROWSER_H
+#define COMPONENT_CUSTOM_RESOURCE_BROWSER_H
 
 #include <IsoRealms/Persistence/DOMNodeWrapper.h>
 #include <IsoRealms/GUI/EdgeRelation.h>
@@ -27,22 +28,20 @@
 #include <IsoRealms/Resources/IResourceManager.h>
 #include <IsoRealms/MultipleClickDetector.h>
 
-#include "../IProjectManager.h"
+#include "ICustomResourceManager.h"
 
-
-template <class TYPE, class ICON> class ComponentResourceBrowser:public RectangularComponent,
-                                                                 public IProjectManagerListener,
-                                                                 public IResourceListener<TYPE>,
-                                                                 public IResourceBrowser<TYPE> {
+template <class TYPE, class ICON> class ComponentCustomResourceBrowser:public RectangularComponent,
+                                                                       public IResourceListener<TYPE>,
+                                                                       public IResourceBrowser<TYPE> {
   private:
   
   class CommandCreateResource:public ICommand {
     private:
-    ComponentResourceBrowser* cParent;
+    ComponentCustomResourceBrowser* cParent;
     IResourceType<TYPE>* cType;
     
     public:
-    CommandCreateResource(ComponentResourceBrowser* parent, IResourceType<TYPE>* type) {
+    CommandCreateResource(ComponentCustomResourceBrowser* parent, IResourceType<TYPE>* type) {
       cParent = parent;
       cType = type;
     }
@@ -57,10 +56,10 @@ template <class TYPE, class ICON> class ComponentResourceBrowser:public Rectangu
   
   class CommandEditResource:public ICommand {
     private:
-    ComponentResourceBrowser* cParent;
+    ComponentCustomResourceBrowser* cParent;
     
     public:
-    CommandEditResource(ComponentResourceBrowser* parent) {
+    CommandEditResource(ComponentCustomResourceBrowser* parent) {
       cParent = parent;
     }
 
@@ -76,10 +75,10 @@ template <class TYPE, class ICON> class ComponentResourceBrowser:public Rectangu
   
   class CommandRemoveResource:public ICommand {
     private:
-    ComponentResourceBrowser* cParent;
+    ComponentCustomResourceBrowser* cParent;
     
     public:
-    CommandRemoveResource(ComponentResourceBrowser* parent) {
+    CommandRemoveResource(ComponentCustomResourceBrowser* parent) {
       cParent = parent;
     }
 
@@ -95,19 +94,19 @@ template <class TYPE, class ICON> class ComponentResourceBrowser:public Rectangu
   
   IEditingContext* cEditingContext;
   std::map<TYPE*, Icon<TYPE>*> cResourceIcons;
-  IResourceManager* cProjectResources;
+  ICustomResourceManager* cProjectResources;
   IResourceAccessor* cEditorResources; // TODO: Need to set this!
   IResourceRegistry* cResourceRegistry;
   Icon<TYPE>* cSelected;
   std::vector<IResourceSelectionListener<TYPE>*> cListeners;
   
   public:
-  ComponentResourceBrowser(IResourceAccessor* resources, IResourceManager* projectResources, IProjectManager* projectManager, IResourceLocator* resourceLocator, IEditingContext* editingContext, float padding) : RectangularComponent("Modules/Editor/ResourceManagerDialogs/ComponentResourceBrowser", resources) {
+  ComponentCustomResourceBrowser(IResourceAccessor* resources, IEditingContext* editingContext, ICustomResourceManager* projectResources, float padding) : RectangularComponent("IsoRealms/GUI/Dialogs/ComponentCustomResourceBrowser", resources) {
     cEditingContext = editingContext;
     cEditorResources = resources;
     cProjectResources = projectResources;
-    projectManager->addProjectListener(this);
-    cProjectResources->addResourceListener(this);
+//    projectManager->addProjectListener(this);
+//    cProjectResources->addResourceListener(this);
     cSelected = NULL;
     setComponentAction("editResource", new CommandEditResource(this));
     setComponentAction("removeResource", new CommandRemoveResource(this));
@@ -160,20 +159,12 @@ template <class TYPE, class ICON> class ComponentResourceBrowser:public Rectangu
     addComponentAction("createResource", type, new CommandCreateResource(this, resourceType));
   }
 
-  /**************************************\
-   * Implements IProjectManagerListener *
-  \**************************************/
-  void projectOpened(IProject* project) {
-    cProjectResources = project->getResourceManager();
-    cProjectResources->addResourceListener(this);
-  }
-  
   void editResource(TYPE* resource) {
-    cProjectResources->editResource(resource, cEditorResources, cEditingContext);
+//    cProjectResources->editResource(resource, cEditorResources, cEditingContext);
   }
   
   void removeResource(TYPE* resource) {
-    cProjectResources->removeResource(resource, cEditorResources);
+//    cProjectResources->removeResource(resource, cEditorResources);
   }
   
   void initialise(std::vector<TYPE*> resources) {

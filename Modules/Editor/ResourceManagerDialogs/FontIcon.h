@@ -19,9 +19,8 @@
 #ifndef FONT_ICON_H
 #define FONT_ICON_H
 
+#include <IsoRealms/GUI/Icon.h>
 #include <IsoRealms/GUI/LookAndFeel.h>
-
-#include "Icon.h"
 
 class FontIcon:public Icon<IFont> {
   public:

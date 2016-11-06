@@ -29,6 +29,7 @@
 #include <IsoRealms/GUI/ComponentCustomType.h>
 #include <IsoRealms/GUI/Dialogs/ComponentColourSelector.h>
 #include <IsoRealms/GUI/GUIIcon.h>
+#include <IsoRealms/GUI/IDialogGenerator.h>
 #include <IsoRealms/GUI/MenuBar.h>
 #include <IsoRealms/GUI/OpenDialogCommand.h>
 #include <IsoRealms/ICommandInfo.h>

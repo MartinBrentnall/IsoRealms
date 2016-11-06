@@ -19,9 +19,8 @@
 #ifndef SOUND_ICON_H
 #define SOUND_ICON_H
 
+#include <IsoRealms/GUI/Icon.h>
 #include <IsoRealms/GUI/LookAndFeel.h>
-
-#include "Icon.h"
 
 class SoundIcon:public Icon<ISound> {
   private:

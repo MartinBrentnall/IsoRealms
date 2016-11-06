@@ -82,6 +82,8 @@ class Resources:public IResources,
   
   std::vector<IElement*> cImplicitElements;
   
+  std::vector<IDialogGenerator*> cResourceManagerDialogGenerators;
+  
   template <class T> T* getDirectory(T*, std::vector<std::string>);
   
   void addResourceToInitialise(IResource*, DOMNodeWrapper*);
@@ -255,6 +257,9 @@ class Resources:public IResources,
   void addResourceType(IResourceType<IString>*,              const std::string&);
   void addResourceType(IResourceType<ITexture>*,             const std::string&);
   void addResourceType(IResourceType<IVertex>*,              const std::string&);
+  
+  void registerCustomResourceManager(IDialogGenerator*);
+  std::vector<IDialogGenerator*> getDialogGenerators();
 
   void editResource(I3DModelType*,         IResourceAccessor*, IEditingContext*);
   void editResource(IBoolean*,             IResourceAccessor*, IEditingContext*);

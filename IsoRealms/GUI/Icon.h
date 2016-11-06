@@ -52,20 +52,20 @@ template <class T> class Icon:public ISizedComponent {
   bool input(SDL_Event& event) {
     switch (event.type) {
       case SDL_MOUSEBUTTONDOWN: {
-	Configuration* mConfiguration = Configuration::getInstance();
-	ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
-	float mX = mScreen->getXLocation(event.button.x);
-	float mY = mScreen->getYLocation(event.button.y);
-	if (contains(mX, mY)) {
-	  cMultipleClickDetector.input(event);
-	  cSelected = true;
-	  cBrowser->setSelected(this);
-	  iconSelected();
-	  if (cMultipleClickDetector.getClicks() == MultipleClickDetector::DOUBLE_CLICK && event.button.button == SDL_BUTTON_LEFT) {
-	    editResource();
-	  }
-	  return true;
-	}
+        Configuration* mConfiguration = Configuration::getInstance();
+        ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
+        float mX = mScreen->getXLocation(event.button.x);
+        float mY = mScreen->getYLocation(event.button.y);
+        if (contains(mX, mY)) {
+          cMultipleClickDetector.input(event);
+          cSelected = true;
+          cBrowser->setSelected(this);
+          iconSelected();
+          if (cMultipleClickDetector.getClicks() == MultipleClickDetector::DOUBLE_CLICK && event.button.button == SDL_BUTTON_LEFT) {
+            editResource();
+          }
+          return true;
+        }
       }
     }
     return false;

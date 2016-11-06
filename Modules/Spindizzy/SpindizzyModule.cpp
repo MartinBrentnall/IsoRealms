@@ -79,6 +79,8 @@ SpindizzyModule::SpindizzyModule(IResourceTypeRegistry* resourceManager):cResour
     resourceManager->addResourceType(&cResourceTypeTextureSpindizzyCraftBall,    NAME_RESOURCE_TYPE_TEXTURE_SPINDIZZY_CRAFT_BALL);
     resourceManager->addResourceType(&cResourceTypeTextureSpindizzyBlocksC64,    NAME_RESOURCE_TYPE_TEXTURE_SPINDIZZY_BLOCKS_C64);
     resourceManager->addResourceType(&cResourceTypeTextureSpindizzyLiftsC64,     NAME_RESOURCE_TYPE_TEXTURE_SPINDIZZY_LIFTS_C64);
+    
+    resourceManager->registerCustomResourceManager(new DialogGeneratorSpindizzyZoneThemeSelector(this));
     cEditing = true;
   } else {
     cEditing = false;
@@ -86,6 +88,7 @@ SpindizzyModule::SpindizzyModule(IResourceTypeRegistry* resourceManager):cResour
   cOverview = false;
   cZoneCount = 0;
   cDefaultTheme = nullptr;
+  cSelectedZoneTheme = nullptr;
 }
 
 void SpindizzyModule::setOverview(bool overview) {
@@ -124,6 +127,9 @@ void SpindizzyModule::load(DOMNodeWrapper* node, IResourceRegistry* resources, D
     else if (mValueAsString == TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_ZONE_THEME)    {
       std::string mThemeName = mNode->getAttribute("name");
       SpindizzyZoneTheme* mTheme = new SpindizzyZoneTheme(this);
+      if (cSelectedZoneTheme == nullptr) {
+        cSelectedZoneTheme = mTheme;
+      }
       resources->add(mTheme, mNode);
       resources->addListener(static_cast<IResourceUseListener<ITexture>*>(mTheme));
       resources->addListener(static_cast<IResourceUseListener<IColour>*>(mTheme));
@@ -367,6 +373,10 @@ void SpindizzyModule::registerElement(IElementContainer* container, ElementSpind
 SpindizzyZoneTheme* SpindizzyModule::getTheme(const std::string& type) {
   return cThemes[type];
 }
+
+SpindizzyZoneTheme* SpindizzyModule::getSelectedZoneTheme() {
+  return cSelectedZoneTheme;
+}
   
 bool SpindizzyModule::isOverview() {
   return cOverview;
@@ -441,6 +451,10 @@ ICollisionData* SpindizzyModule::getNextEvent(Vertex& start, Vertex& end, IRolla
 
 IRollableSurface* SpindizzyModule::getSurfaceAt(Vertex& location, float stepHeight) {
   return cSurfaceRegistry->getSurfaceAt(location, stepHeight);
+}
+
+std::map<std::string, SpindizzyZoneTheme*> SpindizzyModule::getSpindizzyZoneThemes() {
+  return cThemes;
 }
 
 bool SpindizzyModule::isEditing() {

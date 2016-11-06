@@ -19,9 +19,8 @@
 #ifndef NAMED_RESOURCE_ICON_H
 #define NAMED_RESOURCE_ICON_H
 
+#include <IsoRealms/GUI/Icon.h>
 #include <IsoRealms/GUI/LookAndFeel.h>
-
-#include "Icon.h"
 
 template <class T> class NamedResourceIcon:public Icon<T> {
   private:
