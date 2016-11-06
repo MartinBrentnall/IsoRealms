@@ -20,6 +20,7 @@
 #define RESOURCE_ELEMENT_SPINDIZZY_ZONE_H
 
 #include <cmath>
+#include <set>
 
 #include <IsoRealms/BlockLocation.h>
 #include <IsoRealms/IComponentContainer.h>
@@ -47,7 +48,7 @@ class ResourceElementSpindizzyZone:public ISpindizzyZoneThemeListener,
   std::vector<ElementSpindizzyZone*> cContent;
   ElementSpindizzyZone* cSampleZone;
   ElementSpindizzyZone* cEditingZone;
-  ElementSpindizzyZone* cFocusedZone;
+  std::set<ElementSpindizzyZone*> cFocusedZones;
   IColour* cVisitedColour;
   IColour* cUnvisitedColour;
   I3DModelType* cFlagModelType;
@@ -69,7 +70,8 @@ class ResourceElementSpindizzyZone:public ISpindizzyZoneThemeListener,
   /*********************************\
    * Implements ISpindizzyZoneType *
   \*********************************/
-  void setEditingZone(ElementSpindizzyZone*);
+  void zoneGainedFocus(ElementSpindizzyZone*);
+  void zoneLostFocus(ElementSpindizzyZone*);
   ISpindizzyZoneModule* getSpindizzyZoneInterface();
   bool isOverview();
   IColour* getVisitedColour();

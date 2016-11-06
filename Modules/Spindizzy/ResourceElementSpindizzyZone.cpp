@@ -42,14 +42,17 @@ void ResourceElementSpindizzyZone::applyDefaultTheme() {
 }
 
 void ResourceElementSpindizzyZone::spindizzyZoneThemeSelected(SpindizzyZoneTheme* spindizzyZoneTheme) {
-  if (cFocusedZone != nullptr) {
-    cFocusedZone->setTheme(spindizzyZoneTheme);
+  for (ElementSpindizzyZone* mFocusedZone : cFocusedZones) {
+    mFocusedZone->setTheme(spindizzyZoneTheme);
   }
 }
 
-void ResourceElementSpindizzyZone::setEditingZone(ElementSpindizzyZone* editingZone) {
-  std::cout << "Focused Zone: " << editingZone << std::endl;
-  cFocusedZone = editingZone;
+void ResourceElementSpindizzyZone::zoneGainedFocus(ElementSpindizzyZone* zone) {
+  cFocusedZones.insert(zone);
+}
+
+void ResourceElementSpindizzyZone::zoneLostFocus(ElementSpindizzyZone* zone) {
+  cFocusedZones.erase(zone);
 }
 
 ISpindizzyZoneModule* ResourceElementSpindizzyZone::getSpindizzyZoneInterface() {
@@ -103,6 +106,7 @@ void ResourceElementSpindizzyZone::loadElement(DOMNodeWrapper* node, BlockLocati
     cContent.push_back(mSpindizzyZone);
     ElementHandlerZone* mZoneElementHandler = cModuleInterface->getZoneElementHandler(container);
     mZoneElementHandler->addElement(mSpindizzyZone);
+    container->updateElement(mZoneElementHandler);
   }
 }
 

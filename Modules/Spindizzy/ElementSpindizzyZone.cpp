@@ -233,12 +233,12 @@ IElementBounds* ElementSpindizzyZone::getBounds() {
 
 void ElementSpindizzyZone::focusGained(ILayerEditingContext* layerEditingContext) {
   cZoneType->setDefaultTheme(cZoneTheme);
-  cZoneType->setEditingZone(this);
+  cZoneType->zoneGainedFocus(this);
   layerEditingContext->selectElementContainer(this);
 }
 
 void ElementSpindizzyZone::focusLost(ILayerEditingContext* layerEditingContext) {
-  cZoneType->setEditingZone(nullptr);
+  cZoneType->zoneLostFocus(this);
   layerEditingContext->deselectElementContainer(this);
 }
 

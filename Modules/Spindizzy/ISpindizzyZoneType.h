@@ -27,7 +27,8 @@ class ElementSpindizzyZone;
 
 class ISpindizzyZoneType:public IElementType {
   public:
-  virtual void setEditingZone(ElementSpindizzyZone*) = 0;
+  virtual void zoneGainedFocus(ElementSpindizzyZone*) = 0;
+  virtual void zoneLostFocus(ElementSpindizzyZone*) = 0;
   virtual ISpindizzyZoneModule* getSpindizzyZoneInterface() = 0;
   virtual bool isOverview() = 0;
   virtual IColour* getVisitedColour() = 0;
