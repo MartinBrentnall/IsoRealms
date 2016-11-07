@@ -50,6 +50,7 @@ ElementSpindizzyZone::ElementSpindizzyZone(ISpindizzyZoneType* elementType, DOMN
   cElementHandler.setAllDirty();
   cVisited = false;
   cFlagged = false;
+  cHasFocus = false;
 }
 
 ElementSpindizzyZone::ElementSpindizzyZone(ISpindizzyZoneType* elementType, BlockArea* zoneArea, IElementContainer* container, SpindizzyZoneTheme* zoneTheme) {
@@ -99,18 +100,52 @@ void ElementSpindizzyZone::renderEditing(BlockArea& area) {
   glBindTexture(GL_TEXTURE_2D, 0);
   glBegin(GL_LINES);
   glColor3f(0.0f, 1.0f, 0.0f);
-  glVertex3f(xs, ys, z);    glVertex3f(x,  ys, z);
-  glVertex3f(x,  ys, z);    glVertex3f(x,  y,  z);
-  glVertex3f(x,  y,  z);    glVertex3f(xs, y,  z);
-  glVertex3f(xs, y,  z);    glVertex3f(xs, ys, z);
-  glVertex3f(xs, ys, zs);   glVertex3f(x,  ys, zs);
-  glVertex3f(x,  ys, zs);   glVertex3f(x,  y,  zs);
-  glVertex3f(x,  y,  zs);   glVertex3f(xs, y,  zs);
-  glVertex3f(xs, y,  zs);   glVertex3f(xs, ys, zs);
-  glVertex3f(x,  ys, z);    glVertex3f(x,  ys, zs);
-  glVertex3f(x,  y,  z);    glVertex3f(x,  y,  zs);
-  glVertex3f(xs, y,  z);    glVertex3f(xs, y,  zs);
-  glVertex3f(xs, ys, z);    glVertex3f(xs, ys, zs);
+  if (cHasFocus) {
+    glVertex3f(xs, ys, z);    glVertex3f(x,  ys, z);
+    glVertex3f(x,  ys, z);    glVertex3f(x,  y,  z);
+    glVertex3f(x,  y,  z);    glVertex3f(xs, y,  z);
+    glVertex3f(xs, y,  z);    glVertex3f(xs, ys, z);
+    glVertex3f(xs, ys, zs);   glVertex3f(x,  ys, zs);
+    glVertex3f(x,  ys, zs);   glVertex3f(x,  y,  zs);
+    glVertex3f(x,  y,  zs);   glVertex3f(xs, y,  zs);
+    glVertex3f(xs, y,  zs);   glVertex3f(xs, ys, zs);
+    glVertex3f(x,  ys, z);    glVertex3f(x,  ys, zs);
+    glVertex3f(x,  y,  z);    glVertex3f(x,  y,  zs);
+    glVertex3f(xs, y,  z);    glVertex3f(xs, y,  zs);
+    glVertex3f(xs, ys, z);    glVertex3f(xs, ys, zs);
+  } else {
+    glVertex3f(x,  y,  z);    glVertex3f(x + IsoRealmsConstants::BLOCK_RADIUS,  y,                                     z);
+    glVertex3f(x,  y,  z);    glVertex3f(x,                                     y + IsoRealmsConstants::BLOCK_RADIUS,  z);
+    glVertex3f(x,  y,  z);    glVertex3f(x,                                     y,                                     z + IsoRealmsConstants::BLOCK_RADIUS);
+
+    glVertex3f(x,  y,  zs);   glVertex3f(x + IsoRealmsConstants::BLOCK_RADIUS,  y,                                     zs);
+    glVertex3f(x,  y,  zs);   glVertex3f(x,                                     y + IsoRealmsConstants::BLOCK_RADIUS,  zs);
+    glVertex3f(x,  y,  zs);   glVertex3f(x,                                     y,                                     zs - IsoRealmsConstants::BLOCK_RADIUS);
+    
+    glVertex3f(x,  ys, z);    glVertex3f(x + IsoRealmsConstants::BLOCK_RADIUS,  ys,                                    z);
+    glVertex3f(x,  ys, z);    glVertex3f(x,                                     ys - IsoRealmsConstants::BLOCK_RADIUS, z);
+    glVertex3f(x,  ys, z);    glVertex3f(x,                                     ys,                                    z + IsoRealmsConstants::BLOCK_RADIUS);
+
+    glVertex3f(x,  ys, zs);   glVertex3f(x + IsoRealmsConstants::BLOCK_RADIUS,  ys,                                    zs);
+    glVertex3f(x,  ys, zs);   glVertex3f(x,                                     ys - IsoRealmsConstants::BLOCK_RADIUS, zs);
+    glVertex3f(x,  ys, zs);   glVertex3f(x,                                     ys,                                    zs - IsoRealmsConstants::BLOCK_RADIUS);
+
+    glVertex3f(xs, y,  z);    glVertex3f(xs - IsoRealmsConstants::BLOCK_RADIUS, y,                                     z);
+    glVertex3f(xs, y,  z);    glVertex3f(xs,                                    y + IsoRealmsConstants::BLOCK_RADIUS,  z);
+    glVertex3f(xs, y,  z);    glVertex3f(xs,                                    y,                                     z + IsoRealmsConstants::BLOCK_RADIUS);
+
+    glVertex3f(xs, y,  zs);   glVertex3f(xs - IsoRealmsConstants::BLOCK_RADIUS, y,                                     zs);
+    glVertex3f(xs, y,  zs);   glVertex3f(xs,                                    y + IsoRealmsConstants::BLOCK_RADIUS,  zs);
+    glVertex3f(xs, y,  zs);   glVertex3f(xs,                                    y,                                     zs - IsoRealmsConstants::BLOCK_RADIUS);
+
+    glVertex3f(xs, ys, z);    glVertex3f(xs - IsoRealmsConstants::BLOCK_RADIUS, ys,                                    z);
+    glVertex3f(xs, ys, z);    glVertex3f(xs,                                    ys - IsoRealmsConstants::BLOCK_RADIUS, z);
+    glVertex3f(xs, ys, z);    glVertex3f(xs,                                    ys,                                    z + IsoRealmsConstants::BLOCK_RADIUS);
+
+    glVertex3f(xs, ys, zs);   glVertex3f(xs - IsoRealmsConstants::BLOCK_RADIUS, ys,                                    zs);
+    glVertex3f(xs, ys, zs);   glVertex3f(xs,                                    ys - IsoRealmsConstants::BLOCK_RADIUS, zs);
+    glVertex3f(xs, ys, zs);   glVertex3f(xs,                                    ys,                                    zs - IsoRealmsConstants::BLOCK_RADIUS);
+  }
   glColor3f(1.0f, 1.0f, 1.0f);
   glEnd();
   cZoneType->applyDefaultTheme();
@@ -235,11 +270,13 @@ void ElementSpindizzyZone::focusGained(ILayerEditingContext* layerEditingContext
   cZoneType->setDefaultTheme(cZoneTheme);
   cZoneType->zoneGainedFocus(this);
   layerEditingContext->selectElementContainer(this);
+  cHasFocus = true;
 }
 
 void ElementSpindizzyZone::focusLost(ILayerEditingContext* layerEditingContext) {
   cZoneType->zoneLostFocus(this);
   layerEditingContext->deselectElementContainer(this);
+  cHasFocus = false;
 }
 
 void ElementSpindizzyZone::cursorAppeared(ILayerEditingContext* editingContext, Vertex& location) {

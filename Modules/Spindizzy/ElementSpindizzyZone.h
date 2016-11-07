@@ -71,6 +71,9 @@ class ElementSpindizzyZone:public Element,
   bool cVisited;
   bool cFlagged;
   
+  // Edit data
+  bool cHasFocus;
+  
   public:
   ElementSpindizzyZone(ISpindizzyZoneType*, DOMNodeWrapper*, BlockLocation*, IResourceAccessor*, I3DModelType*, IElementContainer*);
   ElementSpindizzyZone(ISpindizzyZoneType*, BlockArea*, IElementContainer* = nullptr, SpindizzyZoneTheme* = nullptr);
