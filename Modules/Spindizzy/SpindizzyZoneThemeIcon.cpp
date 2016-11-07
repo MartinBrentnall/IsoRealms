@@ -18,16 +18,36 @@
  */
 #include "SpindizzyZoneThemeIcon.h"
 
-SpindizzyZoneThemeIcon::SpindizzyZoneThemeIcon(IResourceBrowser<SpindizzyZoneTheme>* browser, SpindizzyZoneTheme* spindizzyZoneTheme) : Icon<SpindizzyZoneTheme>(browser, spindizzyZoneTheme) {
+SpindizzyZoneThemeIcon::SpindizzyZoneThemeIcon(IResourceBrowser<ISpindizzyZoneTheme>* browser, ISpindizzyZoneTheme* spindizzyZoneTheme, I3DModel* model) : Icon<ISpindizzyZoneTheme>(browser, spindizzyZoneTheme) {
+  cSpindizzyZoneTheme = spindizzyZoneTheme;
+  cModel = model;
 }
 
 void SpindizzyZoneThemeIcon::renderIcon() {
-  float mLeft = getLeft();
-  float mBottom = getBottom();
-  IFont* mFont = LookAndFeel::getDefaultFont();
-  float mFontSize = LookAndFeel::getDefaultFontSize();
+  
+  // Scale to icon position
+  glPushMatrix();
+  float mScale = 0.06f;
+  Configuration* mConfiguration = Configuration::getInstance();
+  ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
+  float mXLocation = getLeft() + (getRight() - getLeft()) / 2.0f;
+  float mYLocation = getBottom() + (getTop() - getBottom()) / 2.0f;
+  glTranslatef(mXLocation, mYLocation, 0.0f);
+  float mAspectRatio = mScreen->getAspectRatio();
+  glScalef(mAspectRatio * mScale, mScale, mScale);
   glColor3f(1.0f, 1.0f, 1.0f);
-  mFont->print(mLeft + 0.01f, mBottom + 0.01f, mFontSize, 0, getResourceLocation().c_str());
+
+  // Rotate and scale up to fit whole icon square
+  glRotatef(-55.0f, 1.0f, 0.0f, 0.0f);
+  glRotatef(-45.0f, 0.0f, 0.0f, 1.0f); // TODO: Must get this right; check with how the editor is doing it!
+  // TODO: Scale the icon
+  glScalef(1.3f, 1.3f, 1.3f);
+  glColor3f(1.0f, 1.0f, 1.0f);
+  
+  cSpindizzyZoneTheme->set();
+  cModel->render();
+  
+  glPopMatrix();
 }
 
 void SpindizzyZoneThemeIcon::iconSelected() {
@@ -35,10 +55,13 @@ void SpindizzyZoneThemeIcon::iconSelected() {
 }
 
 float SpindizzyZoneThemeIcon::getWidth() {
-  return 0.66f;
+  Configuration* mConfiguration = Configuration::getInstance();
+  ScreenConfiguration* mScreenConfiguration = mConfiguration->getScreenConfiguration();
+  float mAspectRatio = mScreenConfiguration->getAspectRatio();
+  return 0.1f * mAspectRatio;
 }
 
 float SpindizzyZoneThemeIcon::getHeight() {
-  return 0.05f;
+  return 0.1f;
 }
 

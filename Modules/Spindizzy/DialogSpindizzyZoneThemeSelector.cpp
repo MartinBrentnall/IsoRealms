@@ -19,7 +19,7 @@
 #include "DialogSpindizzyZoneThemeSelector.h"
 
 DialogSpindizzyZoneThemeSelector::DialogSpindizzyZoneThemeSelector(IComponentContainer* container, IResourceAccessor* resources, ISpindizzyZoneThemeAccessor* spindizzyZoneThemeAccessor) : Dialog(container, "Modules/Spindizzy/DialogSpindizzyZoneThemeSelector", resources) {
-  cSpindizzyZoneThemeBrowser = new ComponentCustomResourceBrowser<SpindizzyZoneTheme, SpindizzyZoneThemeIcon>(resources, nullptr, this, 0.0f);
+  cSpindizzyZoneThemeBrowser = new ComponentCustomResourceBrowser<ISpindizzyZoneTheme, SpindizzyZoneThemeIcon>(resources, nullptr, this, 0.02f);
   addComponent("zoneThemes", cSpindizzyZoneThemeBrowser);
   std::map<std::string, SpindizzyZoneTheme*> mZoneThemes = spindizzyZoneThemeAccessor->getSpindizzyZoneThemes();
   for (std::pair<std::string, SpindizzyZoneTheme*> mZoneTheme : mZoneThemes) {
@@ -39,7 +39,7 @@ std::string DialogSpindizzyZoneThemeSelector::getPath(IResource* resource) {
   return "<Theme name not found>";
 }
 
-void DialogSpindizzyZoneThemeSelector::resourceSelected(SpindizzyZoneTheme* spindizzyZoneTheme) {
+void DialogSpindizzyZoneThemeSelector::resourceSelected(ISpindizzyZoneTheme* spindizzyZoneTheme) {
   cSpindizzyZoneThemeAccessor->spindizzyZoneThemeSelected(spindizzyZoneTheme);
 }
 

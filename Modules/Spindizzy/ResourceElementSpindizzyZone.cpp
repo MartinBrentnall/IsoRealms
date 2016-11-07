@@ -41,7 +41,7 @@ void ResourceElementSpindizzyZone::applyDefaultTheme() {
   cModuleInterface->applyDefaultTheme();
 }
 
-void ResourceElementSpindizzyZone::spindizzyZoneThemeSelected(SpindizzyZoneTheme* spindizzyZoneTheme) {
+void ResourceElementSpindizzyZone::spindizzyZoneThemeSelected(ISpindizzyZoneTheme* spindizzyZoneTheme) {
   for (ElementSpindizzyZone* mFocusedZone : cFocusedZones) {
     mFocusedZone->setTheme(spindizzyZoneTheme);
   }
@@ -79,7 +79,7 @@ void ResourceElementSpindizzyZone::setZoneArgument(ElementSpindizzyZone* zone) {
   cModuleInterface->setArgumentValue(zone);
 }
 
-void ResourceElementSpindizzyZone::setDefaultTheme(SpindizzyZoneTheme* theme) {
+void ResourceElementSpindizzyZone::setDefaultTheme(ISpindizzyZoneTheme* theme) {
   cModuleInterface->setTheme(theme);
 }
 
@@ -143,7 +143,7 @@ bool ResourceElementSpindizzyZone::keyDown(SDLKey& key, ILayerEditingContext* ed
           delete cEditingZone;
         }
         BlockArea* mZoneArea = new BlockArea(mStartLocation, mStartLocation);
-        SpindizzyZoneTheme* mSelectedZoneTheme = cModuleInterface->getSelectedZoneTheme();
+        ISpindizzyZoneTheme* mSelectedZoneTheme = cModuleInterface->getSelectedZoneTheme();
         cEditingZone = new ElementSpindizzyZone(this, mZoneArea, mContainer, mSelectedZoneTheme);
         cStartLocation = new Vertex(*mLocation);
       } else {

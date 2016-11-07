@@ -28,7 +28,7 @@ class ISpindizzyZoneThemeAccessor {
     
   public:
   virtual std::map<std::string, SpindizzyZoneTheme*> getSpindizzyZoneThemes() = 0;
-  virtual void spindizzyZoneThemeSelected(SpindizzyZoneTheme*) = 0;
+  virtual void spindizzyZoneThemeSelected(ISpindizzyZoneTheme*) = 0;
 };
 
 #endif

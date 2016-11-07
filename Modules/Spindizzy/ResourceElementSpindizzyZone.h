@@ -65,7 +65,7 @@ class ResourceElementSpindizzyZone:public ISpindizzyZoneThemeListener,
   /******************************************\
    * Implements ISpindizzyZoneThemeListener *
   \******************************************/
-  void spindizzyZoneThemeSelected(SpindizzyZoneTheme*);
+  void spindizzyZoneThemeSelected(ISpindizzyZoneTheme*);
   
   /*********************************\
    * Implements ISpindizzyZoneType *
@@ -79,7 +79,7 @@ class ResourceElementSpindizzyZone:public ISpindizzyZoneThemeListener,
   IBoundaries* getBoundaries();
   void setZoneArgument(ElementSpindizzyZone*);
   void applyDefaultTheme();
-  void setDefaultTheme(SpindizzyZoneTheme*);
+  void setDefaultTheme(ISpindizzyZoneTheme*);
 
   /************************\
    * Implements IResource *

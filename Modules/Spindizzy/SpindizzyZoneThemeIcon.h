@@ -22,14 +22,16 @@
 #include <IsoRealms/GUI/Icon.h>
 #include <IsoRealms/GUI/LookAndFeel.h>
 
-#include "SpindizzyZoneTheme.h"
+#include "ISpindizzyZoneTheme.h"
 
-class SpindizzyZoneThemeIcon:public Icon<SpindizzyZoneTheme> {
+class SpindizzyZoneThemeIcon:public Icon<ISpindizzyZoneTheme> {
   private:
+  I3DModel* cModel;
   IResourceLocator* cResources;
+  ISpindizzyZoneTheme* cSpindizzyZoneTheme;
   
   public:
-  SpindizzyZoneThemeIcon(IResourceBrowser<SpindizzyZoneTheme>*, SpindizzyZoneTheme*);
+  SpindizzyZoneThemeIcon(IResourceBrowser<ISpindizzyZoneTheme>*, ISpindizzyZoneTheme*, I3DModel*);
     
   void renderIcon();
   void iconSelected();

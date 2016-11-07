@@ -140,7 +140,7 @@ template <class TYPE, class ICON> class ComponentCustomResourceBrowser:public Re
    * Implements IResourceListener<*> *
   \***********************************/
   void resourceAdded(TYPE* resource) {
-    Icon<TYPE>* mIcon = new ICON(this, resource);
+    Icon<TYPE>* mIcon = resource->createCustomResourceIcon(this);
     cResourceIcons[resource] = mIcon;
     addComponent("icons", mIcon);
   }

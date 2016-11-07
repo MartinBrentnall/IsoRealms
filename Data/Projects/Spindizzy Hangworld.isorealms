@@ -239,6 +239,7 @@
     <ModelElement name="ClueSquareLeft" independent="true" type="Spindizzy/SwitchSquareLeft" x="0" y="0" z="0" width="1" length="1" height="1"/>
     <ModelElement name="ClueSquareRight" independent="true" type="Spindizzy/SwitchSquareRight" x="0" y="0" z="0" width="1" length="1" height="1"/>
     <ModelElement name="ClueSquareBoth" independent="true" type="Spindizzy/SwitchSquareBoth" x="0" y="0" z="0" width="1" length="1" height="1"/>
+    <ModelElement name="ThemeModelIcon" independent="true" type="Spindizzy/Plain" x="0" y="0" z="0" width="1" length="1" height="1"/>
     <ModelScriptable name="ModelScriptable">
       <Instance name="PrimarySwitchState"/>
       <Instance name="SecondarySwitchState"/>
@@ -1071,6 +1072,7 @@ end</Code>
     <TexturesSpindizzyBlocksC64 extra="IsoRealms/MediumGray" floor="IsoRealms/Yellow" grid="IsoRealms/Blue" name="C64YellowPurple" wall="IsoRealms/Purple"/>
     <TexturesSpindizzyLiftsC64 colour1="IsoRealms/Purple" colour2="IsoRealms/Yellow" colour3="IsoRealms/Pink" name="C64Sprites" outline="IsoRealms/Black"/>
     <TexturesSpindizzyLiftsC64 colour1="IsoRealms/Cyan" colour2="IsoRealms/Orange" colour3="IsoRealms/Pink" name="C64HUDSprites" outline="IsoRealms/Black"/>
+    <TexturesSpindizzyZoneThemeIcon model="IsoRealms/ThemeModelIcon" x="0.000000" y="0.000000" z="-0.600000" scale="1.0"/>
     <TexturesSpindizzyZoneTheme name="C64Blue">
       <Texture name="Spindizzy/C64Blue_Plain" type="Plain"/>
       <Texture name="Spindizzy/C64Blue_PlainSplit" type="PlainSplit"/>

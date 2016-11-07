@@ -88,6 +88,11 @@ IColour* SpindizzyZoneTheme::getColour(SpindizzyZoneThemeColour* colour) {
   return cColours[colour];
 }
 
+SpindizzyZoneThemeIcon* SpindizzyZoneTheme::createCustomResourceIcon(IResourceBrowser<ISpindizzyZoneTheme>* resourceBrowser) {
+  I3DModel* mIconModel = cThemeSource->getThemeIcon();
+  return new SpindizzyZoneThemeIcon(resourceBrowser, this, mIconModel);
+}
+
 void SpindizzyZoneTheme::resourcePendingDestruction(ITexture* destroyee, ITexture* replacement) {
   for (std::map<SpindizzyZoneThemeTexture*, ITexture*>::iterator i = cTextures.begin(); i != cTextures.end(); i++) {
     if (destroyee == i->second) {

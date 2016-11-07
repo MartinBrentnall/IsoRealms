@@ -62,7 +62,7 @@ class ElementSpindizzyZone:public Element,
     
   // Definition data
   BlockArea* cZoneArea;
-  SpindizzyZoneTheme* cZoneTheme;
+  ISpindizzyZoneTheme* cZoneTheme;
   I3DModel* cFlagModel;
   std::map<std::string, IScriptCall*> cScripts;
   std::vector<IArgument*> cArguments;
@@ -76,7 +76,7 @@ class ElementSpindizzyZone:public Element,
   
   public:
   ElementSpindizzyZone(ISpindizzyZoneType*, DOMNodeWrapper*, BlockLocation*, IResourceAccessor*, I3DModelType*, IElementContainer*);
-  ElementSpindizzyZone(ISpindizzyZoneType*, BlockArea*, IElementContainer* = nullptr, SpindizzyZoneTheme* = nullptr);
+  ElementSpindizzyZone(ISpindizzyZoneType*, BlockArea*, IElementContainer* = nullptr, ISpindizzyZoneTheme* = nullptr);
   
   IElementContainer* getElementContainer();
   
@@ -84,8 +84,8 @@ class ElementSpindizzyZone:public Element,
   bool isVisited();
   IColour* getColour(SpindizzyZoneThemeColour*);
   void setFlag(bool);
-  void setTheme(SpindizzyZoneTheme*);
-  SpindizzyZoneTheme* getTheme();
+  void setTheme(ISpindizzyZoneTheme*);
+  ISpindizzyZoneTheme* getTheme();
   IScriptCall* getScriptCall(const std::string&);
   void renderPreview(Vertex&, Vertex&);
   void renderEditing(BlockArea&);

@@ -28,12 +28,14 @@
 #include <IsoRealms/Resources/Texture/ITexture.h>
 
 #include "SpindizzyZoneThemeColour.h"
+#include "SpindizzyZoneThemeIcon.h"
 #include "SpindizzyZoneThemeTexture.h"
+#include "ISpindizzyZoneTheme.h"
 #include "IThemeSource.h"
 
-class SpindizzyZoneTheme:public IResource,
-                         public IResourceUseListener<ITexture>,
-                         public IResourceUseListener<IColour> {
+class SpindizzyZoneTheme:public IResourceUseListener<ITexture>,
+                         public IResourceUseListener<IColour>,
+                         public ISpindizzyZoneTheme {
   private:
   IResourceAccessor* cResources;
   std::map<SpindizzyZoneThemeTexture*, ITexture*> cTextures;
@@ -48,10 +50,15 @@ class SpindizzyZoneTheme:public IResource,
     
   void registerElement(SpindizzyZoneThemeTexture*, ITexture*);
   void registerElement(SpindizzyZoneThemeColour*, IColour*);
-  void set();
   void removeTexture(SpindizzyZoneThemeTexture*);
   void removeColour(SpindizzyZoneThemeColour*);
-  IColour* getColour(SpindizzyZoneThemeColour*);  
+  SpindizzyZoneThemeIcon* createCustomResourceIcon(IResourceBrowser<ISpindizzyZoneTheme>*);
+  
+  /**********************************\
+   * Implements ISpindizzyZoneTheme *
+  \**********************************/
+  IColour* getColour(SpindizzyZoneThemeColour*);
+  void set();
   
   /*********************************************\
    * Implements IResourceUseListener<ITexture> *

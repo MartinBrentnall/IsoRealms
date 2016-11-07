@@ -30,7 +30,7 @@ class ElementHandlerZone;
 class ISpindizzyZoneModule {
   public:
   virtual SpindizzyZoneTheme* getTheme(const std::string&) = 0;
-  virtual SpindizzyZoneTheme* getSelectedZoneTheme() = 0;
+  virtual ISpindizzyZoneTheme* getSelectedZoneTheme() = 0;
   virtual void addSpindizzyZoneThemeListener(ISpindizzyZoneThemeListener*) = 0;
   virtual bool isEditing() = 0;
   virtual ElementHandlerZone* getZoneElementHandler(IElementContainer*) = 0;
@@ -39,7 +39,7 @@ class ISpindizzyZoneModule {
   virtual IArgumentValue* getArgumentValue(const std::string&) = 0;
   virtual void setArgumentValue(ElementSpindizzyZone*) = 0;
   virtual void applyDefaultTheme() = 0;
-  virtual void setTheme(SpindizzyZoneTheme*) = 0;
+  virtual void setTheme(ISpindizzyZoneTheme*) = 0;
 };
 
 #endif

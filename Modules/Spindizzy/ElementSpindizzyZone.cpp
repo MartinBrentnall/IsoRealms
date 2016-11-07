@@ -53,7 +53,7 @@ ElementSpindizzyZone::ElementSpindizzyZone(ISpindizzyZoneType* elementType, DOMN
   cHasFocus = false;
 }
 
-ElementSpindizzyZone::ElementSpindizzyZone(ISpindizzyZoneType* elementType, BlockArea* zoneArea, IElementContainer* container, SpindizzyZoneTheme* zoneTheme) {
+ElementSpindizzyZone::ElementSpindizzyZone(ISpindizzyZoneType* elementType, BlockArea* zoneArea, IElementContainer* container, ISpindizzyZoneTheme* zoneTheme) {
   cZoneType = elementType;
   cZoneArea = zoneArea;
   cContainer = container;
@@ -176,12 +176,12 @@ void ElementSpindizzyZone::setFlag(bool flag) {
   cFlagged = flag;
 }
 
-void ElementSpindizzyZone::setTheme(SpindizzyZoneTheme* zoneTheme) {
+void ElementSpindizzyZone::setTheme(ISpindizzyZoneTheme* zoneTheme) {
   cZoneTheme = zoneTheme;
   cElementHandler.staticChanged();
 }
 
-SpindizzyZoneTheme* ElementSpindizzyZone::getTheme() {
+ISpindizzyZoneTheme* ElementSpindizzyZone::getTheme() {
   return cZoneTheme;
 }
 

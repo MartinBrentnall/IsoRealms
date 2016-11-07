@@ -16,14 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_SPINDIZZY_ZONE_THEME_LISTENER_H
-#define I_SPINDIZZY_ZONE_THEME_LISTENER_H
+#ifndef I_SPINDIZZY_ZONE_THEME_H
+#define I_SPINDIZZY_ZONE_THEME_H
 
-#include "SpindizzyZoneTheme.h"
+#include "SpindizzyZoneThemeColour.h"
+#include "SpindizzyZoneThemeTexture.h"
 
-class ISpindizzyZoneThemeListener {
+class ISpindizzyZoneTheme:public IResource {
   public:
-  virtual void spindizzyZoneThemeSelected(ISpindizzyZoneTheme*) = 0;
+  virtual Icon<ISpindizzyZoneTheme>* createCustomResourceIcon(IResourceBrowser<ISpindizzyZoneTheme>*) = 0;
+  virtual void set() = 0;
+  virtual IColour* getColour(SpindizzyZoneThemeColour*) = 0;
 };
 
 #endif

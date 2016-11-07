@@ -31,10 +31,10 @@
 
 class DialogSpindizzyZoneThemeSelector:public Dialog,
                                        public ICustomResourceManager,
-                                       public IResourceSelectionListener<SpindizzyZoneTheme> {
+                                       public IResourceSelectionListener<ISpindizzyZoneTheme> {
   private:
   ISpindizzyZoneThemeAccessor* cSpindizzyZoneThemeAccessor;
-  ComponentCustomResourceBrowser<SpindizzyZoneTheme, SpindizzyZoneThemeIcon>* cSpindizzyZoneThemeBrowser;
+  ComponentCustomResourceBrowser<ISpindizzyZoneTheme, SpindizzyZoneThemeIcon>* cSpindizzyZoneThemeBrowser;
     
   public:
   DialogSpindizzyZoneThemeSelector(IComponentContainer*, IResourceAccessor*, ISpindizzyZoneThemeAccessor*);
@@ -47,7 +47,7 @@ class DialogSpindizzyZoneThemeSelector:public Dialog,
   /*************************************************************\
    * Implements IResourceSelectionListener<SpindizzyZoneTheme> *
   \*************************************************************/
-  void resourceSelected(SpindizzyZoneTheme*);
+  void resourceSelected(ISpindizzyZoneTheme*);
 };
 
 #endif

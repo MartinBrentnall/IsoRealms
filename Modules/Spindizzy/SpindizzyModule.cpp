@@ -18,6 +18,10 @@
  */
 #include "SpindizzyModule.h"
 
+const std::string SpindizzyModule::TAG_CUSTOM_TYPE_BLOCK_STATE                       = "BlockState";
+
+const std::string SpindizzyModule::TAG_EDITOR_CONFIG_SPINDIZZY_ZONE_THEME_ICON       = "TexturesSpindizzyZoneThemeIcon";
+
 const std::string SpindizzyModule::TAG_RESOURCE_TYPE_CAMERA_SCRIPTABLE               = "CameraScriptable";
 const std::string SpindizzyModule::TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_BLOCK         = "ElementSpindizzyBlock";
 const std::string SpindizzyModule::TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_CRAFT         = "ElementSpindizzyCraft";
@@ -89,6 +93,7 @@ SpindizzyModule::SpindizzyModule(IResourceTypeRegistry* resourceManager):cResour
   cZoneCount = 0;
   cDefaultTheme = nullptr;
   cSelectedZoneTheme = nullptr;
+  cThemeModelIcon = nullptr;
 }
 
 void SpindizzyModule::setOverview(bool overview) {
@@ -99,7 +104,7 @@ unsigned int SpindizzyModule::getZoneCount() {
   return cZoneCount;
 }
 
-void SpindizzyModule::setTheme(SpindizzyZoneTheme* theme) {
+void SpindizzyModule::setTheme(ISpindizzyZoneTheme* theme) {
   cDefaultTheme = theme;
 }
 
@@ -135,7 +140,7 @@ void SpindizzyModule::load(DOMNodeWrapper* node, IResourceRegistry* resources, D
       resources->addListener(static_cast<IResourceUseListener<IColour>*>(mTheme));
       cThemes[mThemeName] = mTheme;
       createThemeResources(mNode, resources);
-    } else if (mValueAsString == "BlockState") {
+    } else if (mValueAsString == TAG_CUSTOM_TYPE_BLOCK_STATE) {
       SpindizzyBlockState* mBlockState = new SpindizzyBlockState();
       std::string mName = mNode->getAttribute("name");
       cBlockStateData.push_back(mBlockState);
@@ -168,6 +173,14 @@ void SpindizzyModule::initialiseResource(DOMNodeWrapper* node, IResourceAccessor
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "LiftMovedScript") {
       cLiftMovedScript = resources->getScriptCall(mNode);
+    } else if (mValueAsString == TAG_EDITOR_CONFIG_SPINDIZZY_ZONE_THEME_ICON) {
+      Vertex* mModelLocation = new Vertex();
+      mModelLocation->x = mNode->getFloatAttribute("x");
+      mModelLocation->y = mNode->getFloatAttribute("y");
+      mModelLocation->z = mNode->getFloatAttribute("z");
+      float mModelScale = mNode->getFloatAttribute("scale");
+      std::string mModelPath = mNode->getAttribute("model");
+      cThemeModelIcon = resources->getModel(mModelPath, mModelLocation, mModelScale);
     }
   }
 }
@@ -374,7 +387,7 @@ SpindizzyZoneTheme* SpindizzyModule::getTheme(const std::string& type) {
   return cThemes[type];
 }
 
-SpindizzyZoneTheme* SpindizzyModule::getSelectedZoneTheme() {
+ISpindizzyZoneTheme* SpindizzyModule::getSelectedZoneTheme() {
   return cSelectedZoneTheme;
 }
 
@@ -431,6 +444,10 @@ std::string SpindizzyModule::getThemeElement(SpindizzyZoneThemeColour* themeColo
   exit(1);
 }
 
+I3DModel* SpindizzyModule::getThemeIcon() {
+  return cThemeModelIcon;
+}
+
 void SpindizzyModule::cameraAngleChanged(float angle) {
   for (unsigned int i = 0; i < cCameraAngleChangeListeners.size(); i++) {
     cCameraAngleChangeListeners[i]->cameraAngleChanged(angle);
@@ -461,7 +478,7 @@ std::map<std::string, SpindizzyZoneTheme*> SpindizzyModule::getSpindizzyZoneThem
   return cThemes;
 }
 
-void SpindizzyModule::spindizzyZoneThemeSelected(SpindizzyZoneTheme* spindizzyZoneTheme) {
+void SpindizzyModule::spindizzyZoneThemeSelected(ISpindizzyZoneTheme* spindizzyZoneTheme) {
   cSelectedZoneTheme = spindizzyZoneTheme;
   cDefaultTheme = spindizzyZoneTheme;
   for (ISpindizzyZoneThemeListener* listener : cZoneThemeSelectionListeners) {

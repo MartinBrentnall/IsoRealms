@@ -81,6 +81,10 @@ class SpindizzyModule:public IModule,
                       public IModuleElementHandlerSpindizzyDynamic,
                       public IModuleElementHandlerZone {
   private:
+  static const std::string TAG_CUSTOM_TYPE_BLOCK_STATE;
+
+  static const std::string TAG_EDITOR_CONFIG_SPINDIZZY_ZONE_THEME_ICON;
+
   static const std::string TAG_RESOURCE_TYPE_CAMERA_SCRIPTABLE;
   static const std::string TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_BLOCK;
   static const std::string TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_CRAFT;
@@ -160,12 +164,13 @@ class SpindizzyModule:public IModule,
   ArgumentValueLocal<ElementHandlerZone> cZoneElementHandlerArgument;
   ArgumentValueLocal<ElementHandlerItem> cItemElementHandlerArgument;
   ArgumentValueLocal<ElementSpindizzyZone> cArgumentValueZone;
-  SpindizzyZoneTheme* cSelectedZoneTheme;
+  ISpindizzyZoneTheme* cSelectedZoneTheme;
   std::vector<ISpindizzyZoneThemeListener*> cZoneThemeSelectionListeners;
   
   bool cOverview;
   unsigned int cZoneCount;
-  SpindizzyZoneTheme* cDefaultTheme;
+  ISpindizzyZoneTheme* cDefaultTheme;
+  I3DModel* cThemeModelIcon;
   
   public:
   SpindizzyModule(IResourceTypeRegistry*);
@@ -175,7 +180,7 @@ class SpindizzyModule:public IModule,
   \***********************/
   void setOverview(bool);
   unsigned int getZoneCount();
-  void setTheme(SpindizzyZoneTheme*);
+  void setTheme(ISpindizzyZoneTheme*);
   
   /**********************\
    * Implements IPlugin *
@@ -235,7 +240,7 @@ class SpindizzyModule:public IModule,
    * Implements ISpindizzyZoneModule *
   \***********************************/
   SpindizzyZoneTheme* getTheme(const std::string&);
-  SpindizzyZoneTheme* getSelectedZoneTheme();
+  ISpindizzyZoneTheme* getSelectedZoneTheme();
   void addSpindizzyZoneThemeListener(ISpindizzyZoneThemeListener*);
   ElementHandlerZone* getZoneElementHandler(IElementContainer*);
   void removeElementHandlerZone(IElementContainer*);
@@ -251,6 +256,7 @@ class SpindizzyModule:public IModule,
   SpindizzyZoneThemeColour* getThemeColour(const std::string&);
   std::string getThemeElement(SpindizzyZoneThemeTexture*);
   std::string getThemeElement(SpindizzyZoneThemeColour*);
+  I3DModel* getThemeIcon();
 
   /*****************************************\
    * Implements ICameraAngleChangeListener *
@@ -282,7 +288,7 @@ class SpindizzyModule:public IModule,
    * Implements ISpindizzyZoneThemeAccessor *
   \******************************************/
   std::map<std::string, SpindizzyZoneTheme*> getSpindizzyZoneThemes();
-  void spindizzyZoneThemeSelected(SpindizzyZoneTheme*);
+  void spindizzyZoneThemeSelected(ISpindizzyZoneTheme*);
   
   /************\
    * Multiple *
