@@ -124,10 +124,13 @@ void ResourceElementSpindizzyZone::renderEditingPreview(Vertex& location) {
     cStartLocation = nullptr;
   }
   if (cStartLocation != nullptr) {
-    cEditingZone->renderPreview(*cStartLocation, location);
+    bool mValidZone = !intersectsExistingZone(cEditingZone);
+    cEditingZone->renderPreview(*cStartLocation, location, mValidZone);
   } else {
     glTranslatef(location.x, location.y, location.z);
-    cEditingZone->renderEditing();
+    BlockLocation mCurrentBlockLocation(location.x, location.y, location.z * 2.0);
+    bool mValidZone = !intersectsExistingZone(mCurrentBlockLocation);
+    cEditingZone->renderEditing(mValidZone);
   }
 }
 
@@ -139,27 +142,49 @@ bool ResourceElementSpindizzyZone::keyDown(SDLKey& key, ILayerEditingContext* ed
       if (cStartLocation == nullptr) {
         Vertex* mLocation = editingContext->getLocation();
         BlockLocation mStartLocation(mLocation->x, mLocation->y, mLocation->z * 2.0);
-        if (cEditingZone != nullptr) {
-          delete cEditingZone;
+        if (!intersectsExistingZone(mStartLocation)) {
+          if (cEditingZone != nullptr) {
+            delete cEditingZone;
+          }
+          BlockArea* mZoneArea = new BlockArea(mStartLocation, mStartLocation);
+          ISpindizzyZoneTheme* mSelectedZoneTheme = cModuleInterface->getSelectedZoneTheme();
+          cEditingZone = new ElementSpindizzyZone(this, mZoneArea, mContainer, mSelectedZoneTheme);
+          cStartLocation = new Vertex(*mLocation);
         }
-        BlockArea* mZoneArea = new BlockArea(mStartLocation, mStartLocation);
-        ISpindizzyZoneTheme* mSelectedZoneTheme = cModuleInterface->getSelectedZoneTheme();
-        cEditingZone = new ElementSpindizzyZone(this, mZoneArea, mContainer, mSelectedZoneTheme);
-        cStartLocation = new Vertex(*mLocation);
       } else {
-        mHandler->addElement(cEditingZone);
-        cContent.push_back(cEditingZone);
-        mContainer->updateElement(mHandler);
-        cStartLocation = nullptr;
-        BlockLocation mIdentityBlockLocation(0, 0, 0);
-        BlockArea* mZoneArea = new BlockArea(mIdentityBlockLocation, mIdentityBlockLocation);
-        cEditingZone = new ElementSpindizzyZone(this, mZoneArea);
-        editingContext->staticChanged();
+        if (!intersectsExistingZone(cEditingZone)) { 
+          mHandler->addElement(cEditingZone);
+          cContent.push_back(cEditingZone);
+          mContainer->updateElement(mHandler);
+          cStartLocation = nullptr;
+          BlockLocation mIdentityBlockLocation(0, 0, 0);
+          BlockArea* mZoneArea = new BlockArea(mIdentityBlockLocation, mIdentityBlockLocation);
+          cEditingZone = new ElementSpindizzyZone(this, mZoneArea);
+          editingContext->staticChanged();
+        }
       }
     }
 
     default: {
       return false;
+    }
+  }
+  return false;
+}
+
+bool ResourceElementSpindizzyZone::intersectsExistingZone(ElementSpindizzyZone* zone) {
+  for (ElementSpindizzyZone* mZone : cContent) {
+    if (mZone->intersects(zone)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool ResourceElementSpindizzyZone::intersectsExistingZone(BlockLocation& location) {
+  for (ElementSpindizzyZone* mZone : cContent) {
+    if (mZone->intersects(location)) {
+      return true;
     }
   }
   return false;

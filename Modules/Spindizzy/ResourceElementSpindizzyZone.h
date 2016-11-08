@@ -57,7 +57,10 @@ class ResourceElementSpindizzyZone:public ISpindizzyZoneThemeListener,
 
   ElementSpindizzyZone* getElement(IElement*);
   
-  bool keyDown(SDLKey&, ILayerEditingContext*);  
+  bool keyDown(SDLKey&, ILayerEditingContext*);
+  
+  bool intersectsExistingZone(ElementSpindizzyZone*);
+  bool intersectsExistingZone(BlockLocation&);
 
   public:
   ResourceElementSpindizzyZone(ISpindizzyZoneModule*, DOMNodeWrapper*, IResourceRegistry*);

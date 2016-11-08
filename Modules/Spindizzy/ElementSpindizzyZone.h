@@ -87,8 +87,11 @@ class ElementSpindizzyZone:public Element,
   void setTheme(ISpindizzyZoneTheme*);
   ISpindizzyZoneTheme* getTheme();
   IScriptCall* getScriptCall(const std::string&);
-  void renderPreview(Vertex&, Vertex&);
-  void renderEditing(BlockArea&);
+  void renderPreview(Vertex&, Vertex&, bool);
+  void renderEditing(BlockArea&, bool, bool);
+  void renderEditing(bool);
+  bool intersects(ElementSpindizzyZone*);
+  bool intersects(BlockLocation&);
   
   /***********************\
    * Implements IElement *

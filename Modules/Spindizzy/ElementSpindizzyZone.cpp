@@ -76,14 +76,14 @@ bool ElementSpindizzyZone::initElement(unsigned int pass) {
   return cElementHandler.init(pass, true);
 }
 
-void ElementSpindizzyZone::renderPreview(Vertex& start, Vertex& end) {
+void ElementSpindizzyZone::renderPreview(Vertex& start, Vertex& end, bool valid) {
   BlockLocation mStart(start.x, start.y, start.z * 2.0);
   BlockLocation mEnd(end.x, end.y, end.z * 2.0);
   cZoneArea = new BlockArea(mStart, mEnd);
-  renderEditing(*cZoneArea);
+  renderEditing(*cZoneArea, valid, true);
 }
 
-void ElementSpindizzyZone::renderEditing(BlockArea& area) {
+void ElementSpindizzyZone::renderEditing(BlockArea& area, bool valid, bool preview) {
   if (cZoneTheme != nullptr) {
     cZoneTheme->set();
   }
@@ -99,8 +99,12 @@ void ElementSpindizzyZone::renderEditing(BlockArea& area) {
   
   glBindTexture(GL_TEXTURE_2D, 0);
   glBegin(GL_LINES);
-  glColor3f(0.0f, 1.0f, 0.0f);
-  if (cHasFocus) {
+  if (valid) {
+    glColor3f(0.0f, 1.0f, 0.0f);
+  } else {
+    glColor3f(1.0f, 0.0f, 0.0f);
+  }
+  if (cHasFocus || preview) {
     glVertex3f(xs, ys, z);    glVertex3f(x,  ys, z);
     glVertex3f(x,  ys, z);    glVertex3f(x,  y,  z);
     glVertex3f(x,  y,  z);    glVertex3f(xs, y,  z);
@@ -151,8 +155,20 @@ void ElementSpindizzyZone::renderEditing(BlockArea& area) {
   cZoneType->applyDefaultTheme();
 }
 
+bool ElementSpindizzyZone::intersects(ElementSpindizzyZone* zone) {
+  return cZoneArea->overlaps(*zone->cZoneArea);
+}
+
+bool ElementSpindizzyZone::intersects(BlockLocation& location) {
+  return cZoneArea->contains(location);
+}
+
+void ElementSpindizzyZone::renderEditing(bool valid) {
+  renderEditing(*cZoneArea, valid, false);
+}
+
 void ElementSpindizzyZone::renderEditing() {
-  renderEditing(*cZoneArea);
+  renderEditing(true);
 }
 
 void ElementSpindizzyZone::renderStatic() {
