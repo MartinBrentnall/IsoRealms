@@ -83,8 +83,8 @@ void LayerBackground::updateEditing(unsigned int milliseconds) {
   // Nothing to do
 }
 
-void LayerBackground::input(SDL_Event&) {
-  // Nothing to do
+bool LayerBackground::input(SDL_Event&) {
+  return false;
 }
 
 void LayerBackground::save(DOMNodeWriter*, IResourceLocator*) {

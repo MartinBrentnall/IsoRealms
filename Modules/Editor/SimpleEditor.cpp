@@ -121,19 +121,19 @@ void SimpleEditor::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* r
   cDockableBoundariesManager  = new DialogBoundariesManager( this, resources, mProjectResources, this, mProjectResources, this);
 
   if (cMapEditorMode) {
-    cScreenEdgeManager.add(cDockableElementTypeManager, cResourceIcons["IconElementTypes"]);
+    cScreenEdgeManager.add(cDockableElementTypeManager, cResourceIcons["IconElementTypes"], 0.4f);
   } else {
-    cScreenEdgeManager.add(cDockableTextureManager,     cResourceIcons["IconTextures"]);
-    cScreenEdgeManager.add(cDockableElementTypeManager, cResourceIcons["IconElementTypes"]);
-    cScreenEdgeManager.add(cDockableSoundManager,       cResourceIcons["IconSounds"]);
-    cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconFonts"]);
-    cScreenEdgeManager.add(cDockableScriptManager,      cResourceIcons["IconScripts"]);
-    cScreenEdgeManager.add(cDockablePrimitiveManager,   cResourceIcons["IconPrimitives"]);
-    cScreenEdgeManager.add(cDockableCustomTypeManager,  cResourceIcons["IconCustomTypes"]);
-    cScreenEdgeManager.add(cDockableVertexManager,      cResourceIcons["IconVertices"]);
-    cScreenEdgeManager.add(cDockable3DModelManager,     cResourceIcons["Icon3DModels"]);
-    cScreenEdgeManager.add(cDockableCameraManager,      cResourceIcons["IconCameras"]);
-    cScreenEdgeManager.add(cDockableBoundariesManager,  cResourceIcons["IconCollectables"]);
+    cScreenEdgeManager.add(cDockableTextureManager,     cResourceIcons["IconTextures"],     0.8f);
+    cScreenEdgeManager.add(cDockableElementTypeManager, cResourceIcons["IconElementTypes"], 0.4f);
+    cScreenEdgeManager.add(cDockableSoundManager,       cResourceIcons["IconSounds"],       0.5f);
+    cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconFonts"],        0.5f);
+    cScreenEdgeManager.add(cDockableScriptManager,      cResourceIcons["IconScripts"],      0.6f);
+    cScreenEdgeManager.add(cDockablePrimitiveManager,   cResourceIcons["IconPrimitives"],   0.6f);
+    cScreenEdgeManager.add(cDockableCustomTypeManager,  cResourceIcons["IconCustomTypes"],  0.4f);
+    cScreenEdgeManager.add(cDockableVertexManager,      cResourceIcons["IconVertices"],     0.5f);
+    cScreenEdgeManager.add(cDockable3DModelManager,     cResourceIcons["Icon3DModels"],     0.4f);
+    cScreenEdgeManager.add(cDockableCameraManager,      cResourceIcons["IconCameras"],      0.4f);
+    cScreenEdgeManager.add(cDockableBoundariesManager,  cResourceIcons["IconCollectables"], 0.4f);
   }
   addComponent(&cScreenEdgeManager);
   
@@ -196,7 +196,9 @@ bool SimpleEditor::editorInput(SDL_Event& event) {
   }
   
   if (cSelectedLayer != nullptr) {
-    cSelectedLayer->input(event);
+    if (cSelectedLayer->input(event)) {
+      return true;
+    }
   }
   return false;
 }
@@ -221,7 +223,7 @@ void SimpleEditor::testFocusChange(SDL_Event& event) {
   }
 }
 
-void SimpleEditor::input(SDL_Event& event) {
+bool SimpleEditor::input(SDL_Event& event) {
   if (cTesting) {
     cProject->inputRuntime(event);
   } else {
@@ -261,17 +263,21 @@ void SimpleEditor::input(SDL_Event& event) {
       mEventConsumed = editorInput(event);
     } else {
       mEventConsumed = cHUDComponents[cHUDComponents.size() - 1]->input(event);
+      if (!mEventConsumed) {
+        mEventConsumed = editorInput(event);
+      }
     }
 
     // Passive input (e.g. mouse overs, etc.)
     if (!mEventConsumed) {
       for (int i = cHUDComponents.size() - 1; i >= 0; i--) {
         if (cHUDComponents[i]->input(event)) {
-          return;
+          return true;
         }
       }
     }
   }
+  return false;
 }
 
 // IElementContainer* SimpleEditor::pushElement(IElement* element) {
@@ -527,7 +533,7 @@ void SimpleEditor::openProject(const std::string& file, bool asTemplate) {
       std::vector<IDialogGenerator*> mProjectDialogGenerators = mProjectResources->getDialogGenerators();
       for (unsigned int i = 0; i < mProjectDialogGenerators.size(); i++) {
         Dialog* mProjectDialog = mProjectDialogGenerators[i]->createDialog(this, nullptr);
-        cScreenEdgeManager.add(mProjectDialog, cResourceIcons["IconVertices"]);
+        cScreenEdgeManager.add(mProjectDialog, cResourceIcons["IconVertices"], 0.2f); // TODO: ICON!
       }
       cSelectedLayer = cProject->getDefaultLayer();
       for (unsigned int i = 0; i < cProjectManagerListeners.size(); i++) {

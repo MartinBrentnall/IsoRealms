@@ -32,7 +32,8 @@ void LayerInputRecorder::renderEditing() {
   // Not supported
 }
 
-void LayerInputRecorder::input(SDL_Event& event) {
+bool LayerInputRecorder::input(SDL_Event& event) {
+  return false;
 }
 
 void LayerInputRecorder::initRuntime() {

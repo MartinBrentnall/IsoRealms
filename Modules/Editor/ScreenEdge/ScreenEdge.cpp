@@ -31,8 +31,8 @@ void ScreenEdge::update(int milliseconds) {
     if (cAnimation > 1.0f) {
       cAnimation = 1.0f;
     }
-    float mLocation = sine(1.0f, 0.2f, cAnimation);
-    cExpandedDialog->setSize(mLocation, -1.0f, mLocation + 0.8f, 1.0f);
+    float mLocation = sine(1.0f, 1.0f - cExpandedDialog->getPreferredSize(), cAnimation);
+    cExpandedDialog->setSize(mLocation, -1.0f, mLocation + cExpandedDialog->getPreferredSize(), 1.0f);
   }
   if (cExpandedDialog != NULL) {
     cExpandedDialog->update(milliseconds);
@@ -42,8 +42,8 @@ void ScreenEdge::update(int milliseconds) {
     if (i->second > 1.0f) {
       cCollapsingDialogs.erase(i);
     } else {
-      float mLocation = sine(0.2f, 1.0f, cAnimation);
-      i->first->setSize(mLocation, -1.0f, mLocation + 0.8f, 1.0f);
+      float mLocation = sine(i->first->getPreferredSize(), 1.0f, cAnimation);
+      i->first->setSize(mLocation, -1.0f, mLocation + i->first->getPreferredSize(), 1.0f);
     }
   }
 }
@@ -136,8 +136,8 @@ bool ScreenEdge::contains(float x, float y) {
   return false;
 }
 
-void ScreenEdge::add(Dialog* dialog, AbstractRectangularComponent* icon) {
-  DockedDialog* mDockedDialog = new DockedDialog(dialog, icon);
+void ScreenEdge::add(Dialog* dialog, AbstractRectangularComponent* icon, float preferredSize) {
+  DockedDialog* mDockedDialog = new DockedDialog(dialog, icon, preferredSize);
   cDockedDialogs.push_back(mDockedDialog);
   IComponentBoundsCalculator* mIconLayout = new TabIconLayout(this, mDockedDialog);
   icon->setBoundsCalculator(mIconLayout);

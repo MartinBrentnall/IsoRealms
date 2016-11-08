@@ -32,7 +32,8 @@ void LayerInputPlayer::renderEditing() {
   // Not supported
 }
 
-void LayerInputPlayer::input(SDL_Event& event) {
+bool LayerInputPlayer::input(SDL_Event& event) {
+  return false;
 }
 
 void LayerInputPlayer::initRuntime() {

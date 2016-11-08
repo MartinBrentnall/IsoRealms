@@ -216,7 +216,7 @@ class SimpleEditor:public IModule,
   void renderEditing();
   void updateRuntime(unsigned int);
   void updateEditing(unsigned int);
-  void input(SDL_Event&);
+  bool input(SDL_Event&);
   void save(DOMNodeWriter*, IResourceLocator*);
   void staticCnanged();
   void initRuntime();

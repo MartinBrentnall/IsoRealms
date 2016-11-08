@@ -133,8 +133,8 @@ void ResourceLayerHUD::updateEditing(unsigned int milliseconds) {
   // TODO
 }
 
-void ResourceLayerHUD::input(SDL_Event& event) {
-  // Nothing to do
+bool ResourceLayerHUD::input(SDL_Event& event) {
+  return false;
 }
 
 void ResourceLayerHUD::save(DOMNodeWriter* node, IResourceLocator* resources) {

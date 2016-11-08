@@ -18,9 +18,10 @@
  */
 #include "DockedDialog.h"
 
-DockedDialog::DockedDialog(Dialog* dialog, AbstractRectangularComponent* icon) {
+DockedDialog::DockedDialog(Dialog* dialog, AbstractRectangularComponent* icon, float preferredSize) {
   cDialog = dialog;
   cIcon = icon;
+  cPreferredSize = preferredSize;
 }
 
 bool DockedDialog::input(SDL_Event& event) {
@@ -45,11 +46,15 @@ bool DockedDialog::contains(float x, float y) {
 }
 
 float DockedDialog::getHeight() {
-  return 0.8f;
+  return cDialog->getHeight();
 }
 
 float DockedDialog::getWidth() {
-  return 0.8f;
+  return cPreferredSize;
+}
+
+float DockedDialog::getPreferredSize() {
+  return cPreferredSize;
 }
 
 void DockedDialog::setSize(float left, float bottom, float right, float top) {

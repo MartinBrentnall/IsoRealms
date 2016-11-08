@@ -66,7 +66,7 @@ class ScreenEdge {
   void render();
   bool input(SDL_Event&);
   bool contains(float, float);
-  void add(Dialog*, AbstractRectangularComponent*);
+  void add(Dialog*, AbstractRectangularComponent*, float);
 };
 
 #endif

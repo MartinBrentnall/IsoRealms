@@ -179,7 +179,7 @@ void AttractControlLoop::updateEditing(unsigned int) {
   // Nothing to do
 }
 
-void AttractControlLoop::input(SDL_Event& event) {
+bool AttractControlLoop::input(SDL_Event& event) {
   if (cRunningProject != nullptr) {
     cRunningProject->inputRuntime(event);
   } else {
@@ -197,6 +197,7 @@ void AttractControlLoop::input(SDL_Event& event) {
       cFrontEnd->input(event);
     }
   }
+  return false;
 }
 
 void AttractControlLoop::reset() {

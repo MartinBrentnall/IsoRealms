@@ -25,7 +25,7 @@ float ScreenEdgeRight::getTabX(DockedDialog* dockedDialog) {
   }
   for (std::map<DockedDialog*, float>::iterator i = cCollapsingDialogs.begin(); i != cCollapsingDialogs.end(); i++) {
     if (dockedDialog == i->first) {
-      mX = sine(mX - cExpandedDialog->getWidth(), mX, i->second);
+      mX = sine(mX - dockedDialog->getWidth(), mX, i->second);
     }
   }
   return mX;

@@ -26,9 +26,10 @@ class DockedDialog:public IHUDComponent {
   private:
   Dialog* cDialog;
   AbstractRectangularComponent* cIcon;
+  float cPreferredSize;
   
   public:
-  DockedDialog(Dialog*, AbstractRectangularComponent*);
+  DockedDialog(Dialog*, AbstractRectangularComponent*, float);
     
   bool input(SDL_Event&);
   void update(unsigned int);
@@ -37,6 +38,7 @@ class DockedDialog:public IHUDComponent {
   bool contains(float, float);
   float getHeight();   
   float getWidth();
+  float getPreferredSize();
   void setSize(float, float, float, float);
 };
 
