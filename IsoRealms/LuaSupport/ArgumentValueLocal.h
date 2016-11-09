@@ -21,17 +21,21 @@
 
 #include <luabind/luabind.hpp>
 
+#include <IsoRealms/Resources/Script/IArgumentLocator.h>
+
 #include "IArgumentValue.h"
 
 template <class T> class ArgumentValueLocal:public IArgumentValue {
   private:
+  IArgumentLocator* cArgumentLocator;
   T* cValue;
   
   public:
-  ArgumentValueLocal() {
+  ArgumentValueLocal(IArgumentLocator* argumentLocator) {
     cValue = nullptr;
+    cArgumentLocator = argumentLocator;
   }
-    
+  
   void setValue(T* value) {
     cValue = value;
   }
@@ -46,8 +50,8 @@ template <class T> class ArgumentValueLocal:public IArgumentValue {
   }
   
   void save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
-//     std::string mPath = "~" + cLocalResources->getPath(cValue);
-//     node->addAttribute("value", mPath);
+    std::string mPath = "~" + cArgumentLocator->getPath(this);
+    node->addAttribute("value", mPath);
   }
   
   bool isDefaultArgument() {

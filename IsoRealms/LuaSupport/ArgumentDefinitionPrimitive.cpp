@@ -53,6 +53,15 @@ void ArgumentDefinitionPrimitive::save(DOMNodeWriter* node, IResourceLocator* re
   }
 }  
 
+void ArgumentDefinitionPrimitive::saveCall(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+  node->addAttribute("type", *cType);
+  node->addAttribute("name", cName);
+}  
+
 IArgumentValue* ArgumentDefinitionPrimitive::getDefaultValue() {
   return cDefaultValue;
+}
+
+bool ArgumentDefinitionPrimitive::isDefaultValue(IArgumentValue* argumentValue) {
+  return cDefaultValue == argumentValue;
 }

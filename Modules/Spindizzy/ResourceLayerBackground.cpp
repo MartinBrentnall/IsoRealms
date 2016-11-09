@@ -25,7 +25,7 @@ ResourceLayerBackground::ResourceLayerBackground(IDummyModule* module, DOMNodeWr
     if (mValueAsString == "Instance") {
       std::string mName = mNode->getAttribute("name");
       LayerBackground* mLayerBackgroundInstance = createInstance(mName);
-      IArgumentValue* mArgumentValue = new ArgumentValue<LayerBackground>(mLayerBackgroundInstance);
+      IArgumentValue* mArgumentValue = new ArgumentValueCustomType<LayerBackground>(mLayerBackgroundInstance);
       resourceRegistry->add(mArgumentValue, "Background", mName);
     }
   }

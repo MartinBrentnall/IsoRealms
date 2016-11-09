@@ -20,6 +20,8 @@
 
 BoundaryHandler::BoundaryHandler(DOMNodeWrapper* node, IResourceAccessor* resources, IBoundaries* boundaries) {
   cBoundaries = boundaries;
+  cScriptEntered = nullptr;
+  cScriptExited = nullptr;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
@@ -36,10 +38,8 @@ BoundaryHandler::BoundaryHandler(DOMNodeWrapper* node, IResourceAccessor* resour
 void BoundaryHandler::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   std::string mBoundariesPath = resourceLocator->getPath(cBoundaries);
   node->addAttribute("name", mBoundariesPath);
-  DOMNodeWriter* mEnteredScriptNode = node->addBranch("EnteredScript");
-  cScriptEntered->save(mEnteredScriptNode, resourceLocator);
-  DOMNodeWriter* mExitedScriptNode = node->addBranch("ExitedScript");
-  cScriptExited->save(mExitedScriptNode, resourceLocator);
+  resourceLocator->saveScript(node, "EnteredScript", cScriptEntered);
+  resourceLocator->saveScript(node, "ExitedScript", cScriptExited);
 }
   
 void BoundaryHandler::notifyMovement(IBoundaryPenetrator* client, Vertex& start, Vertex& end) {

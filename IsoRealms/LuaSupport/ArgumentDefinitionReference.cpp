@@ -49,6 +49,15 @@ void ArgumentDefinitionReference::save(DOMNodeWriter* node, IResourceLocator* re
   }
 }
 
+void ArgumentDefinitionReference::saveCall(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+  node->addAttribute("type", *cType);
+  node->addAttribute("name", cName);
+}
+
 IArgumentValue* ArgumentDefinitionReference::getDefaultValue() {
   return cDefaultValue;
+}
+
+bool ArgumentDefinitionReference::isDefaultValue(IArgumentValue* argumentValue) {
+  return cDefaultValue == argumentValue;
 }

@@ -121,11 +121,26 @@ void LuaScript::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
 }
 
 void LuaScript::save(std::vector<IArgumentValue*> argumentValues, DOMNodeWriter* node, IResourceLocator* resourceLocator) {
-  node->addAttribute("name", cName);
+  std::string mScriptPath = resourceLocator->getPath(this);
+  node->addAttribute("name", mScriptPath);
   for (unsigned int i = 0; i < argumentValues.size(); i++) {
+    
+    /*
+     * TODO:  Notice that default argument is checked twice here in two
+     * different ways.  The second one is the one that actually works.  The
+     * first one always returns false.  I'm not entirely sure what the
+     * intention was behind the first mechanism, but *maybe* the second one can
+     * fail if the user chooses a custom argument that happens to be the same
+     * as the default one.  So maybe the first one should be used and the
+     * 'default' should be a flag in the argument rather than an equality
+     * check like the second one.
+     */
     if (!argumentValues[i]->isDefaultArgument()) {
-      DOMNodeWriter* mArgumentBranch = node->addBranch("Argument");
-      argumentValues[i]->save(mArgumentBranch, resourceLocator);
+      if (!cArguments[i]->isDefaultValue(argumentValues[i])) {
+        DOMNodeWriter* mArgumentBranch = node->addBranch("Argument");
+        cArguments[i]->saveCall(mArgumentBranch, resourceLocator);
+        argumentValues[i]->save(mArgumentBranch, resourceLocator);
+      }
     }
   }
 }

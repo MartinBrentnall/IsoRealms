@@ -16,19 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ARGUMENT_VALUE_H
-#define ARGUMENT_VALUE_H
+#ifndef ARGUMENT_VALUE_CUSTOM_TYPE_H
+#define ARGUMENT_VALUE_CUSTOM_TYPE_H
 
 #include <luabind/luabind.hpp>
 
 #include "IArgumentValue.h"
 
-template <class T> class ArgumentValue:public IArgumentValue {
+template <class T> class ArgumentValueCustomType:public IArgumentValue {
   private:
   T* cValue;
   
   public:
-  ArgumentValue(T* value) {
+  ArgumentValueCustomType() {
+    cValue = nullptr;
+  }
+    
+  ArgumentValueCustomType(T* value) {
+    cValue = value;
+  }
+  
+  void setValue(T* value) {
     cValue = value;
   }
   
@@ -42,7 +50,8 @@ template <class T> class ArgumentValue:public IArgumentValue {
   }
   
   void save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
-    std::string mPath = resourceLocator->getPath(cValue);
+    std::string mPath = resourceLocator->getPath(this);
+    mPath = mPath.substr(mPath.find_last_of('/') + 1);
     node->addAttribute("value", mPath);
   }
   

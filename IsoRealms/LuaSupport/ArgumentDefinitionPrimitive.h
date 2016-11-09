@@ -40,7 +40,9 @@ class ArgumentDefinitionPrimitive:public IArgumentDefinition {
   std::string getCode(const std::string&, unsigned int);
   std::string getCleanup();
   void save(DOMNodeWriter*, IResourceLocator*);
+  void saveCall(DOMNodeWriter*, IResourceLocator*);
   IArgumentValue* getDefaultValue();
+  bool isDefaultValue(IArgumentValue*);
 };
 
 #endif

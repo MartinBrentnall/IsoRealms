@@ -144,13 +144,13 @@ void SpindizzyModule::load(DOMNodeWrapper* node, IResourceRegistry* resources, D
       SpindizzyBlockState* mBlockState = new SpindizzyBlockState();
       std::string mName = mNode->getAttribute("name");
       cBlockStateData.push_back(mBlockState);
-      IArgumentValue* mArgumentValue = new ArgumentValue<SpindizzyBlockState>(mBlockState);
+      IArgumentValue* mArgumentValue = new ArgumentValueCustomType<SpindizzyBlockState>(mBlockState);
       resources->add(mBlockState, mNode);
       resources->add(mArgumentValue, "BlockState", mName);
     }
     else                                                                          {/* TODO: Throw */}
   }
-  IArgumentValue* mModuleArgumentValue = new ArgumentValue<SpindizzyModule>(this);
+  IArgumentValue* mModuleArgumentValue = new ArgumentValueCustomType<SpindizzyModule>(this);
   resources->add(this, node);
   resources->add(&cElementHandlerSpindizzyBlock, "SpindizzyBlockHandler", "SpindizzyBlockHandler");
   resources->add(&cDynamicElementHandlerArgument, "DynamicElements", "DynamicElements");

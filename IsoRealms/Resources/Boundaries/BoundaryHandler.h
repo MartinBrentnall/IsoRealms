@@ -36,7 +36,6 @@ class BoundaryHandler : public IBoundaryHandler {
   public:
   BoundaryHandler(DOMNodeWrapper*, IResourceAccessor*, IBoundaries*);
    
-  void save(DOMNodeWriter*, IResourceLocator*);
   void entered();
   void exited();  
   
@@ -46,6 +45,7 @@ class BoundaryHandler : public IBoundaryHandler {
   void notifyMovement(IBoundaryPenetrator*, Vertex&, Vertex&);
   void notifyAppearance(IBoundaryPenetrator*, Vertex&);
   void notifyDisappearance(IBoundaryPenetrator*, Vertex&);
+  void save(DOMNodeWriter*, IResourceLocator*);
 };
 
 #endif

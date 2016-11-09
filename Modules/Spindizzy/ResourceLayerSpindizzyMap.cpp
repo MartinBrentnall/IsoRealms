@@ -26,7 +26,7 @@ ResourceLayerSpindizzyMap::ResourceLayerSpindizzyMap(ISpindizzyMapModule* module
     if (mValueAsString == "Instance") {
       std::string mName = mNode->getAttribute("name");
       LayerSpindizzyMap* mMapInstance = createInstance(mName);
-      IArgumentValue* mArgumentValue = new ArgumentValue<LayerSpindizzyMap>(mMapInstance);
+      IArgumentValue* mArgumentValue = new ArgumentValueCustomType<LayerSpindizzyMap>(mMapInstance);
       resourceRegistry->add(mArgumentValue, "Map", mName);
     }
   }

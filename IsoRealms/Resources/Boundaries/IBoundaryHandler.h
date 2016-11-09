@@ -31,6 +31,7 @@ class IBoundaryHandler {
   virtual void notifyMovement(IBoundaryPenetrator*, Vertex&, Vertex&) = 0;
   virtual void notifyAppearance(IBoundaryPenetrator*, Vertex&) = 0;
   virtual void notifyDisappearance(IBoundaryPenetrator*, Vertex&) = 0;
+  virtual void save(DOMNodeWriter*, IResourceLocator*) = 0;
 };
 
 #endif

@@ -31,7 +31,7 @@ Project::Project(DOMNodeWrapper* node, const std::string& projectName, IEditingC
 
   std::map<std::string, std::string> mDefaultElementGroups;
   
-  ArgumentValue<Project>* mProjectArgument = new ArgumentValue<Project>(this);
+  IArgumentValue* mProjectArgument = new ArgumentValueCustomType<Project>(this);
   std::vector<std::string> mRootPath;
   cResources.add(mProjectArgument, mRootPath, "Project", "Project");
   

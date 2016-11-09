@@ -31,7 +31,9 @@ class IArgumentDefinition {
   virtual std::string getCode(const std::string&, unsigned int) = 0;
   virtual std::string getCleanup() = 0;
   virtual void save(DOMNodeWriter*, IResourceLocator*) = 0;
+  virtual void saveCall(DOMNodeWriter*, IResourceLocator*) = 0;
   virtual IArgumentValue* getDefaultValue() = 0;
+  virtual bool isDefaultValue(IArgumentValue*) = 0;
 };
 
 #endif

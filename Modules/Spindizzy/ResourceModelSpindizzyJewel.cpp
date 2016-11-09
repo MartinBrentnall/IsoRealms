@@ -66,7 +66,7 @@ void ResourceModelSpindizzyJewel::renderIcon() {
 
 void ResourceModelSpindizzyJewel::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   node->addAttribute("frameColour", resourceLocator->getPath(cColourFrame));
-  for (unsigned int i = 0; cColoursCycle.size(); i++) {
+  for (unsigned int i = 0; i < cColoursCycle.size(); i++) {
     DOMNodeWriter* mNode = node->addBranch("ColourCycle");
     mNode->addAttribute("colour", resourceLocator->getPath(cColoursCycle[i]));
   }

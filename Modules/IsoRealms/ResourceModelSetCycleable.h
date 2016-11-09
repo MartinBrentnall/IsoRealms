@@ -19,7 +19,7 @@
 #ifndef RESOURCE_MODEL_SET_CYCLEABLE_H
 #define RESOURCE_MODEL_SET_CYCLEABLE_H
 
-#include <IsoRealms/LuaSupport/ArgumentValue.h>
+#include <IsoRealms/LuaSupport/ArgumentValueCustomType.h>
 #include <IsoRealms/Resources/3DModel/I3DModelType.h>
 #include <IsoRealms/Resources/IDummyModule.h>
 #include <IsoRealms/Resources/IResourceRegistry.h>

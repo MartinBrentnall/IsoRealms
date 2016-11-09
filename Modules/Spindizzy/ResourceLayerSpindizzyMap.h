@@ -19,7 +19,7 @@
 #ifndef RESOURCE_LAYER_SPINDIZZY_MAP_H
 #define RESOURCE_LAYER_SPINDIZZY_MAP_H
 
-#include <IsoRealms/LuaSupport/ArgumentValue.h>
+#include <IsoRealms/LuaSupport/ArgumentValueCustomType.h>
 #include <IsoRealms/Resources/Layer/ILayerType.h>
 
 #include "ISpindizzyMapType.h"

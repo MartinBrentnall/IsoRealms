@@ -29,7 +29,7 @@ ResourceModelSetCycleable::ResourceModelSetCycleable(IDummyModule* module, DOMNo
       mIndex++;
     }
   }
-  IArgumentValue* mArgumentValue = new ArgumentValue<ResourceModelSetCycleable>(this);
+  IArgumentValue* mArgumentValue = new ArgumentValueCustomType<ResourceModelSetCycleable>(this);
   resourceRegistry->add(mArgumentValue, "ModelSetCycleable", node->getAttribute("name"));
 }
 

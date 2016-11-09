@@ -20,6 +20,7 @@
 #define SPINDIZZY_MODULE_H
 
 #include <IsoRealms/IModule.h>
+#include <IsoRealms/LuaSupport/ArgumentValueCustomType.h>
 #include <IsoRealms/Resources/ResourceType.h>
 #include <IsoRealms/Resources/ResourceTypeSet.h>
 #include <IsoRealms/Resources/Integer/Integer.h>
@@ -159,11 +160,11 @@ class SpindizzyModule:public IModule,
   bool cEditing;
   std::vector<SpindizzyBlockState*> cBlockStateData;
   std::vector<ICameraAngleChangeListener*> cCameraAngleChangeListeners;
-  ArgumentValueLocal<ElementHandlerSpindizzyBlock> cElementHandlerSpindizzyBlock;
-  ArgumentValueLocal<ElementHandlerSpindizzyDynamic> cDynamicElementHandlerArgument;
-  ArgumentValueLocal<ElementHandlerZone> cZoneElementHandlerArgument;
-  ArgumentValueLocal<ElementHandlerItem> cItemElementHandlerArgument;
-  ArgumentValueLocal<ElementSpindizzyZone> cArgumentValueZone;
+  ArgumentValueCustomType<ElementHandlerSpindizzyBlock> cElementHandlerSpindizzyBlock;
+  ArgumentValueCustomType<ElementHandlerSpindizzyDynamic> cDynamicElementHandlerArgument;
+  ArgumentValueCustomType<ElementHandlerZone> cZoneElementHandlerArgument;
+  ArgumentValueCustomType<ElementHandlerItem> cItemElementHandlerArgument;
+  ArgumentValueCustomType<ElementSpindizzyZone> cArgumentValueZone;
   ISpindizzyZoneTheme* cSelectedZoneTheme;
   std::vector<ISpindizzyZoneThemeListener*> cZoneThemeSelectionListeners;
   

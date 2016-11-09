@@ -35,7 +35,9 @@ void ArgumentValueProxy::setArgument(lua_State* luaState, const std::string& nam
 }
 
 void ArgumentValueProxy::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
-  cArgumentValue->save(node, resourceLocator);
+  if (cArgumentValue != nullptr) {
+    cArgumentValue->save(node, resourceLocator);
+  }
 }
 
 bool ArgumentValueProxy::isDefaultArgument() {

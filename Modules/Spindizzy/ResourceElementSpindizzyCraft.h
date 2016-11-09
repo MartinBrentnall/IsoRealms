@@ -24,7 +24,7 @@
 #include <IsoRealms/BlockLocation.h>
 #include <IsoRealms/IComponentContainer.h>
 #include <IsoRealms/IVisualElement.h>
-#include <IsoRealms/LuaSupport/ArgumentValue.h>
+#include <IsoRealms/LuaSupport/ArgumentValueCustomType.h>
 #include <IsoRealms/LuaSupport/ArgumentValueLocal.h>
 #include <IsoRealms/Resources/Boundaries/IBoundaryHandler.h>
 #include <IsoRealms/Resources/3DModel/I3DModelType.h>

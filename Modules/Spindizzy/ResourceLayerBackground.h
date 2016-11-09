@@ -21,7 +21,7 @@
 
 #include <map>
 
-#include <IsoRealms/LuaSupport/ArgumentValue.h>
+#include <IsoRealms/LuaSupport/ArgumentValueCustomType.h>
 #include <IsoRealms/Resources/Layer/ILayerType.h>
 
 #include "LayerBackground.h"

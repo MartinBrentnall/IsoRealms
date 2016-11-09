@@ -21,7 +21,7 @@
 
 #include <string>
 
-#include <IsoRealms/LuaSupport/ArgumentValue.h>
+#include <IsoRealms/LuaSupport/ArgumentValueCustomType.h>
 
 #include "Configuration.h"
 #include "Persistence/DOMNodeWrapper.h"

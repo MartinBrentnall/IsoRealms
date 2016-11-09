@@ -18,7 +18,8 @@
  */
 #include "ResourceElementSpindizzyCraft.h"
 
-ResourceElementSpindizzyCraft::ResourceElementSpindizzyCraft(ISpindizzyGERALDSet* elementSet, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
+ResourceElementSpindizzyCraft::ResourceElementSpindizzyCraft(ISpindizzyGERALDSet* elementSet, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry):cArgumentFallDistance(this),
+                                                                                                                                                         cArgumentCraft(this) {
   cModuleInterface = elementSet;
   cRespawnScript = nullptr;
   cFallImpactScript = nullptr;
@@ -28,7 +29,7 @@ ResourceElementSpindizzyCraft::ResourceElementSpindizzyCraft(ISpindizzyGERALDSet
     if (mValueAsString == "Instance") {
       std::string mName = mNode->getAttribute("name");
       ElementSpindizzyCraft* mCraftInstance = createInstance(mName);
-      IArgumentValue* mArgumentValue = new ArgumentValue<ElementSpindizzyCraft>(mCraftInstance);
+      IArgumentValue* mArgumentValue = new ArgumentValueCustomType<ElementSpindizzyCraft>(mCraftInstance);
       Vertex* mCraftLocation = mCraftInstance->getLocation();
       resourceRegistry->add(mCraftInstance, mNode);
       resourceRegistry->add(mCraftLocation, mName);
@@ -183,8 +184,14 @@ void ResourceElementSpindizzyCraft::save(DOMNodeWriter* node, IResourceLocator* 
   resourceLocator->saveScript(node, "RespawnScript", cRespawnScript);
   resourceLocator->saveScript(node, "FallImpactScript", cFallImpactScript);
   for (unsigned int i = 0; i < cBoundaryHandlers.size(); i++) {
-//    DOMNodeWriter* mBoundariesNode = node->addBranch("Boundaries");
-//    mBoundariesNode->addAttribute("name", resourceLocator->getPath(cBoundaries[i]));
+    DOMNodeWriter* mBoundariesNode = node->addBranch("Boundaries");
+    cBoundaryHandlers[i]->save(mBoundariesNode, resourceLocator);
+  }
+  for (std::pair<std::string, ElementSpindizzyCraft*> mNamedInstance : cNamedInstances) {
+    DOMNodeWriter* mInstanceNode = node->addBranch("Instance");
+    mInstanceNode->addAttribute("name", mNamedInstance.first);
+    BlockLocation mIdentityLocation;
+    mNamedInstance.second->saveInstance(mInstanceNode, resourceLocator, mIdentityLocation);
   }
 }
 
