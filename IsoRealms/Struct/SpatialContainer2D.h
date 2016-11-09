@@ -52,9 +52,11 @@ template <class T> class SpatialContainer2D {
       std::vector<std::vector<T*>*> mCells = mRows[i]->getAllCells();
       for (unsigned int j = 0; j < mCells.size(); j++) {
         std::vector<T*>* mCell = mCells[j];
-        for (int k = mCell->size() - 1; k >= 0; k--) {
-          if ((*mCell)[k] == element) {
-            mCell->erase(mCell->begin() + k);
+        if (mCell != nullptr) {
+          for (int k = mCell->size() - 1; k >= 0; k--) {
+            if ((*mCell)[k] == element) {
+              mCell->erase(mCell->begin() + k);
+            }
           }
         }
       }
