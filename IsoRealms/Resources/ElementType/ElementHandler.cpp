@@ -290,7 +290,7 @@ void ElementHandler::renderEditing() {
 void ElementHandler::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& location) {
   for (unsigned int i = 0; i < cElements.size(); i++) {
     DOMNodeWriter* mNode = node;
-    if (!resourceLocator->isImplicit(cElements[i])) {
+    if (!(cElements[i]->isImplicit())) {
       mNode = node->addBranch("Element");
       IElementType* mElementType = cElements[i]->getElementType();
       mNode->addAttribute("type", resourceLocator->getPath(mElementType));

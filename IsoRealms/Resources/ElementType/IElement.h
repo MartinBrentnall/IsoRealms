@@ -90,6 +90,8 @@ class IElement {
   
   virtual void staticChanged() {} // TODO: Should be pure
   
+  virtual bool isImplicit() {return false;} // TODO: Should be pure
+  
   virtual IElementBounds* getBounds() = 0;
   
   virtual void focusGained(ILayerEditingContext*) = 0;

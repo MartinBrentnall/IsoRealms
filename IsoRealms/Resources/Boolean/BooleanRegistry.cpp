@@ -21,7 +21,7 @@
 std::string BooleanRegistry::getSpecialLocation(IBoolean* boolean) {
   for (unsigned int i = 0; i < cLiteralBooleans.size(); i++) {
     if (cLiteralBooleans[i] == boolean) {
-      return "#" + boolean->getValue() ? "true" : "false";
+      return "#" + (boolean->getValue() ? std::string("true") : std::string("false"));
     }
   }
   return "";

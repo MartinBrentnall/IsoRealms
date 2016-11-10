@@ -150,7 +150,8 @@ void Project::save() {
   DOMNodeWriter* mInitScriptNode = mProjectNode->addBranch("InitScript");
   cInitScript->save(mInitScriptNode, &cResources);
   for (unsigned int i = 0; i < cLayers.size(); i++) {
-    cLayers[i]->save(mProjectNode, &cResources);
+    DOMNodeWriter* mLayerNode = mProjectNode->addBranch("Layer");
+    cLayers[i]->save(mLayerNode, &cResources);
   }
   mProjectNode->save("Test.isorealms");
 }

@@ -28,12 +28,12 @@ ResourceSoundFile::ResourceSoundFile(const std::string& filename, const std::str
 
 void ResourceSoundFile::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
   cName = node->getAttribute("name");
-  std::string mFilename = node->getAttribute("file");
-  loadData(mFilename);
+  cFile = node->getAttribute("file");
+  loadData(cFile);
 }
 
 void ResourceSoundFile::save(DOMNodeWriter* node, IResourceLocator* resources) {
-  // TODO
+  node->addAttribute("file", cFile);
 }
 
 void ResourceSoundFile::loadData(const std::string& filename) {

@@ -69,7 +69,7 @@ void ElementHandlerItem::renderStatic() {
 }
 
 void ElementHandlerItem::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& location) {
-  // TODO: ?
+  cElements.save(node, resourceLocator, location);
 }
 
 void ElementHandlerItem::setDirty() {
@@ -106,4 +106,8 @@ IElementContainer* ElementHandlerItem::getElementContainer() {
 
 void ElementHandlerItem::reset() {
   cElements.reset();
+}
+
+bool ElementHandlerItem::isImplicit() {
+  return true;
 }

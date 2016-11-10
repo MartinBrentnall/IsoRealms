@@ -61,6 +61,8 @@ class BlockArea {
   bool overlaps(BlockArea&);
   
   bool isAdjacent(BlockArea&);
+  
+  void saveRelative(DOMNodeWriter*, BlockLocation&);
 
 //   CollisionVertex* getEntryPoint(Vertex&, Vertex&);
 //   CollisionVertex* getExitPoint(Vertex&, Vertex&);

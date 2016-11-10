@@ -48,6 +48,8 @@ class ResourceLayerSpindizzyMap:public ISpindizzyMapType {
   \*************************/
   LayerSpindizzyMap* createInstance(const std::string&);
   ILayer* getLayer(DOMNodeWrapper*, IResourceAccessor*, bool, bool);
+  std::string getInstanceName(ILayer*);
+  
   void configureLayer();
   bool input(SDL_Event&);
   void renderEditingPreview();

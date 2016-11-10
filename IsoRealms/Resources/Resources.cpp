@@ -373,12 +373,3 @@ void Resources::saveScript(DOMNodeWriter* node, const std::string& nodeName, ISc
     script->save(mNode, this);
   }
 }
-
-bool Resources::isImplicit(IElement* element) {
-  for (unsigned int i = 0; i < cImplicitElements.size(); i++) {
-    if (cImplicitElements[i] == element) {
-      return true;
-    }
-  }
-  return false;
-}

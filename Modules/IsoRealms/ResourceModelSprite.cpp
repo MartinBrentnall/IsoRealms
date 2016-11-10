@@ -73,10 +73,22 @@ void ResourceModelSprite::initialiseResource(DOMNodeWrapper* node, IResourceAcce
 
 void ResourceModelSprite::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   node->addAttribute("texture", resourceLocator->getPath(cTexture));
-  node->addAttribute("size", cSize);
+  node->addAttribute("size", cSize, 1.0f);
   if (cFlip) {
     node->addAttribute("rotate", "Reverse");
   }
+  if (cCamera != nullptr) {
+    std::string mCameraPath = resourceLocator->getPath(cCamera);
+    node->addAttribute("camera", mCameraPath);
+  }
+  if (cApplyCameraRotation) {
+    node->addAttribute("applyCameraRotation", true);
+  }
+  if (cApplyCameraTilt) {
+    node->addAttribute("applyCameraTilt", true);
+  }
+  node->addAttribute("offsetRotation", cOffsetRotation, 0.0f);
+  node->addAttribute("offsetZ", cOffsetZ, 0.0f);
 }
 
 void ResourceModelSprite::updateIcon(unsigned int milliseconds) {

@@ -59,7 +59,8 @@
 #include "ResourceTextureFile.h"
 #include "ResourceVertexFixed.h"
 
-class IsoRealmsModule:public IModule {
+class IsoRealmsModule:public IModule,
+                      public IResource {
   private:
   static const std::string TAG_RESOURCE_TYPE_BOOLEAN_FIXED;
   static const std::string TAG_RESOURCE_TYPE_COLOUR_FIXED;
@@ -125,10 +126,13 @@ class IsoRealmsModule:public IModule {
     
   IResourceRegistry* cRuntimeContext;
   IComponentContainer* cComponentContainer;
+  IInteger* cLocks;
 
   public:
   IsoRealmsModule(IResourceTypeRegistry*);
-    
+
+  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  
   /**********************\
    * Implements IPlugin *
   \**********************/

@@ -365,6 +365,10 @@ ILayer* SimpleEditor::getLayer(DOMNodeWrapper* node, IResourceAccessor* resource
   return this;
 }
 
+std::string SimpleEditor::getInstanceName(ILayer* layer) {
+  return "<default>";
+}
+
 void SimpleEditor::destroy(ILayer* layer) {
   // Editor will not self terminate
 }
@@ -429,10 +433,6 @@ void SimpleEditor::updateRuntime(unsigned int milliseconds) {
 
 void SimpleEditor::updateEditing(unsigned int milliseconds) {
   // Nothing to do
-}
-
-ILayerType* SimpleEditor::getLayerType() {
-  return this;
 }
 
 void SimpleEditor::initRuntime() {

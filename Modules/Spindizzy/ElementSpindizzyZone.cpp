@@ -266,7 +266,12 @@ void ElementSpindizzyZone::updateRuntime(unsigned int milliseconds) {
   cZoneType->applyDefaultTheme();
 }
 
-void ElementSpindizzyZone::save(DOMNodeWriter*, IResourceLocator*, BlockLocation&) {
+void ElementSpindizzyZone::save(DOMNodeWriter* node, IResourceLocator* resourceLocation, BlockLocation& location) {
+  ISpindizzyZoneModule* mModuleInterface = cZoneType->getSpindizzyZoneInterface();
+  node->addAttribute("type", resourceLocation->getPath(cZoneType));
+  node->addAttribute("theme", mModuleInterface->getThemeName(cZoneTheme));
+  cZoneArea->saveRelative(node, location);
+  cElementHandler.save(node, resourceLocation, location);
 }
 
 void ElementSpindizzyZone::setDirty(IElement* element) {

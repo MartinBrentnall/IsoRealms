@@ -172,6 +172,8 @@ class SpindizzyModule:public IModule,
   unsigned int cZoneCount;
   ISpindizzyZoneTheme* cDefaultTheme;
   I3DModel* cThemeModelIcon;
+  Vertex cThemeModelIconLocation;
+  float cThemeModelIconScale;
   
   public:
   SpindizzyModule(IResourceTypeRegistry*);
@@ -249,6 +251,7 @@ class SpindizzyModule:public IModule,
   IArgumentValue* getArgumentValue(const std::string&);
   void setArgumentValue(ElementSpindizzyZone*);
   void applyDefaultTheme();
+  std::string getThemeName(ISpindizzyZoneTheme*);
   
   /***************************\
    * Implements IThemeSource *

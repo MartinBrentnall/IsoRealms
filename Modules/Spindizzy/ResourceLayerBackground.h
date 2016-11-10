@@ -43,6 +43,8 @@ class ResourceLayerBackground:public ILayerType {
   \*************************/
 //   void loadInstance(DOMNodeWrapper*, IRuntimeContext*);
   ILayer* getLayer(DOMNodeWrapper*, IResourceAccessor*, bool, bool);
+  std::string getInstanceName(ILayer*);
+  
   void configureLayer();
   bool input(SDL_Event&);
   void renderEditingPreview();

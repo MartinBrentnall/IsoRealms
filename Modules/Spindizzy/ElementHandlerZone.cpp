@@ -77,7 +77,7 @@ void ElementHandlerZone::renderStatic() {
 }
 
 void ElementHandlerZone::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& location) {
-  // TODO: ?
+  cElements.save(node, resourceLocator, location);
 }
 
 void ElementHandlerZone::setDirty() {

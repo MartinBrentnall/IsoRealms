@@ -37,7 +37,9 @@ void ResourceIntegerFixed::initialiseResource(DOMNodeWrapper* node, IResourceAcc
 }
 
 void ResourceIntegerFixed::save(DOMNodeWriter* node, IResourceLocator* resources) {
-  node->addAttribute("value", cInitialValue);
+  if (cInitialValue != 0) {
+    node->addAttribute("value", cInitialValue);
+  }
 }
 
 void ResourceIntegerFixed::setValue(int value) {

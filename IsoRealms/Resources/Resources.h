@@ -202,7 +202,6 @@ class Resources:public IResources,
   std::string getPath(IVertex*);
 
   void saveScript(DOMNodeWriter*, const std::string&, IScriptCall*);
-  bool isImplicit(IElement*);  
   
   /******************************\
    * Implements ResourceManager *

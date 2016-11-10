@@ -68,6 +68,7 @@ class ElementHandlerSpindizzyBlock:public Element,
   bool isSelectable();
   void cursorMoved(ILayerEditingContext*, Vertex&, Vertex&);
   void cursorAppeared(ILayerEditingContext*, Vertex&);
+  bool isImplicit();
 
   /***************************************\
    * Implements ISpindizzyElementManager *

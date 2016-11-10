@@ -32,6 +32,7 @@
 class ResourceSoundFile:public ISound {
   private:
   std::string cName;
+  std::string cFile;
   Mix_Chunk* cSoundData;
 
   void loadData(const std::string&);

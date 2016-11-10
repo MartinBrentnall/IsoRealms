@@ -95,6 +95,7 @@ IsoRealmsModule::IsoRealmsModule(IResourceTypeRegistry* resourceTypeRegistry) {
     resourceTypeRegistry->addResourceType(&cResourceTypeTextureFile,                NAME_RESOURCE_TYPE_TEXTURE_FILE);
     resourceTypeRegistry->addResourceType(&cResourceTypeVertexFixed,                NAME_RESOURCE_TYPE_VERTEX_FIXED);
   }
+  cLocks = nullptr;
 }
 
 void IsoRealmsModule::load(DOMNodeWrapper* node, IResourceRegistry* runtimeContext, DOMNodeWrapper* options) {
@@ -123,6 +124,14 @@ void IsoRealmsModule::load(DOMNodeWrapper* node, IResourceRegistry* runtimeConte
     else if (mValueAsString == TAG_RESOURCE_TYPE_VERTEX_FIXED)                  {cResourceTypeVertexFixed.loadResource(               mNode, runtimeContext);}
     else                                                                {/* TODO: Throw */}
   }
+  runtimeContext->add(this, node);
+}
+
+void IsoRealmsModule::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+  std::string mIntegerPath = node->getAttribute("locks");
+  if (!mIntegerPath.empty()) {
+    cLocks = resources->getInteger(mIntegerPath);
+  }
 }
 
 void IsoRealmsModule::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
@@ -145,6 +154,11 @@ void IsoRealmsModule::save(DOMNodeWriter* node, IResourceLocator* resourceLocato
   cResourceTypeStringFixed.saveResources(               node, resourceLocator, TAG_RESOURCE_TYPE_STRING_FIXED);
   cResourceTypeTextureFile.saveResources(               node, resourceLocator, TAG_RESOURCE_TYPE_TEXTURE_FILE);
   cResourceTypeVertexFixed.saveResources(               node, resourceLocator, TAG_RESOURCE_TYPE_VERTEX_FIXED);
+  
+  if (cLocks != nullptr) {
+    std::string mLocksPath = resourceLocator->getPath(cLocks);
+    node->addAttribute("locks", mLocksPath);
+  }
 }
 
 extern "C" IModule* create(IResourceTypeRegistry* resourceTypeRegistry) {

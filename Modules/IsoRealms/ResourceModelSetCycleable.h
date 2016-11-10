@@ -56,6 +56,7 @@ class ResourceModelSetCycleable : public IResource {
     void updateIcon(unsigned int);
   };
  
+  std::string cModelSetName;
   std::vector<I3DModelType*> cModelTypes;
   std::vector<ModelCycleableOffset*> cCycleableModels;
   unsigned int cCycleIndex = 0;

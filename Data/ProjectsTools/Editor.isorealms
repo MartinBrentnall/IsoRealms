@@ -22,21 +22,21 @@
       <Argument name="project" type="Project" value="Project"/>
       <Code>project:finish()</Code>
     </ScriptLua>
-    <TextureFile file="Icon3DModels.png" name="Icon3DModels"/>
-    <TextureFile file="IconCameras.png" name="IconCameras"/>
-    <TextureFile file="IconCollectables.png" name="IconCollectables"/>
-    <TextureFile file="IconCustomTypes.png" name="IconCustomTypes"/>
-    <TextureFile file="IconElementTypes.png" name="IconElementTypes"/>
-    <TextureFile file="IconFonts.png" name="IconFonts"/>
-    <TextureFile file="IconHUDComponents.png" name="IconHUDComponents"/>
-    <TextureFile file="IconPrimitives.png" name="IconPrimitives"/>
-    <TextureFile file="IconScripts.png" name="IconScripts"/>
-    <TextureFile file="IconSounds.png" name="IconSounds"/>
-    <TextureFile file="IconSurfaceProcessors.png" name="IconSurfaceProcessors"/>
-    <TextureFile file="IconSurfaceRegistries.png" name="IconSurfaceRegistries"/>
-    <TextureFile file="IconTextures.png" name="IconTextures"/>
-    <TextureFile file="IconVertices.png" name="IconVertices"/>
-    <TextureFile file="IconZoneHandlers.png" name="IconZoneHandlers"/>
+    <TextureFile file="Data/Images/Icon3DModels.png" name="Icon3DModels"/>
+    <TextureFile file="Data/Images/IconCameras.png" name="IconCameras"/>
+    <TextureFile file="Data/Images/IconCollectables.png" name="IconCollectables"/>
+    <TextureFile file="Data/Images/IconCustomTypes.png" name="IconCustomTypes"/>
+    <TextureFile file="Data/Images/IconElementTypes.png" name="IconElementTypes"/>
+    <TextureFile file="Data/Images/IconFonts.png" name="IconFonts"/>
+    <TextureFile file="Data/Images/IconHUDComponents.png" name="IconHUDComponents"/>
+    <TextureFile file="Data/Images/IconPrimitives.png" name="IconPrimitives"/>
+    <TextureFile file="Data/Images/IconScripts.png" name="IconScripts"/>
+    <TextureFile file="Data/Images/IconSounds.png" name="IconSounds"/>
+    <TextureFile file="Data/Images/IconSurfaceProcessors.png" name="IconSurfaceProcessors"/>
+    <TextureFile file="Data/Images/IconSurfaceRegistries.png" name="IconSurfaceRegistries"/>
+    <TextureFile file="Data/Images/IconTextures.png" name="IconTextures"/>
+    <TextureFile file="Data/Images/IconVertices.png" name="IconVertices"/>
+    <TextureFile file="Data/Images/IconZoneHandlers.png" name="IconZoneHandlers"/>
   </Module>
   <Module name="Editor">
     <Font name="IsoRealms/EditorFont"/>

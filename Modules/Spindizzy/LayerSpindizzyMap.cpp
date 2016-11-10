@@ -82,9 +82,8 @@ void LayerSpindizzyMap::initEditor() {
 }
 
 void LayerSpindizzyMap::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
-  DOMNodeWriter* mMapNode = node->addBranch("Map");
   BlockLocation mStartLocation(0, 0, 0);
-  cElementHandler.save(mMapNode, resourceLocator, mStartLocation);
+  cElementHandler.save(node, resourceLocator, mStartLocation);
 }
 
 void LayerSpindizzyMap::pushElement(IElement* element) {
@@ -177,10 +176,6 @@ float LayerSpindizzyMap::getAspectRatio() {
 
 void LayerSpindizzyMap::resourceSelected(IElementType* elementType) {
   cEditingContext->setElementType(elementType);
-}
-
-ILayerType* LayerSpindizzyMap::getLayerType() {
-  return cMapType;
 }
 
 void LayerSpindizzyMap::updateEditing(unsigned int milliseconds) {

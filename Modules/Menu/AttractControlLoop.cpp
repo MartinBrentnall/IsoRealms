@@ -114,12 +114,12 @@ ILayer* AttractControlLoop::getLayer(DOMNodeWrapper* node, IResourceAccessor* re
   return this;
 }
 
-void AttractControlLoop::resourceSelected(IElementType* elementType) {
-  // Not supported
+std::string AttractControlLoop::getInstanceName(ILayer*) {
+  return "<default>";
 }
 
-ILayerType* AttractControlLoop::getLayerType() {
-  return this;
+void AttractControlLoop::resourceSelected(IElementType* elementType) {
+  // Not supported
 }
 
 void AttractControlLoop::staticChanged() {

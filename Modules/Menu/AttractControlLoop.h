@@ -89,12 +89,12 @@ class AttractControlLoop:public IModule,
    * Implements ILayerType *
   \*************************/
   ILayer* getLayer(DOMNodeWrapper*, IResourceAccessor*, bool, bool);
+  std::string getInstanceName(ILayer*);
   
   /*********************\
    * Implements ILayer * 
   \*********************/
   void resourceSelected(IElementType*);
-  ILayerType* getLayerType();
   void initRuntime();
   void initEditor();
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);

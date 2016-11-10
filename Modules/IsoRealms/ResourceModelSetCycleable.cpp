@@ -19,6 +19,7 @@
 #include "ResourceModelSetCycleable.h"
 
 ResourceModelSetCycleable::ResourceModelSetCycleable(IDummyModule* module, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
+  cModelSetName = node->getAttribute("name");
   unsigned int mIndex = 0;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
@@ -30,7 +31,7 @@ ResourceModelSetCycleable::ResourceModelSetCycleable(IDummyModule* module, DOMNo
     }
   }
   IArgumentValue* mArgumentValue = new ArgumentValueCustomType<ResourceModelSetCycleable>(this);
-  resourceRegistry->add(mArgumentValue, "ModelSetCycleable", node->getAttribute("name"));
+  resourceRegistry->add(mArgumentValue, "ModelSetCycleable", cModelSetName);
 }
 
 void ResourceModelSetCycleable::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
@@ -47,7 +48,12 @@ void ResourceModelSetCycleable::initialiseResource(DOMNodeWrapper* node, IResour
 }
 
 void ResourceModelSetCycleable::save(DOMNodeWriter* node, IResourceLocator* resources) {
-  // TODO
+  node->addAttribute("name", cModelSetName);
+  for (I3DModelType* mModelType : cModelTypes) {
+    DOMNodeWriter* mModelBranch = node->addBranch("Model");
+    std::string mModelTypePath = resources->getPath(mModelType);
+    mModelBranch->addAttribute("name", mModelTypePath);
+  }
 }
 
 std::vector<std::string> ResourceModelSetCycleable::getResourceNames() {

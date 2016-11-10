@@ -29,16 +29,17 @@ ResourceTextureFile::ResourceTextureFile(const std::string& filename) {
 }
 
 void ResourceTextureFile::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor) {
-  cFileName = System::getProgramResource("Data/Images/" + node->getAttribute("file"));
+  cFileName = node->getAttribute("file");
   readFile();
 }
 
 void ResourceTextureFile::save(DOMNodeWriter* node, IResourceLocator* resources) {
-  // TODO
+  node->addAttribute("file", cFileName);
 }
 
 void ResourceTextureFile::readFile() {
-  SDL_Surface* mSurface = IMG_Load(cFileName.c_str());
+  std::string mFullPath = System::getProgramResource(cFileName);
+  SDL_Surface* mSurface = IMG_Load(mFullPath.c_str());
   glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
   glBindTexture(GL_TEXTURE_2D, cTextureID);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);

@@ -82,6 +82,11 @@ bool BlockArea::isAdjacent(BlockArea& blockArea) {
       && blockArea.cEndLocation.z >= cStartLocation.z - 1 && blockArea.cStartLocation.z <= cEndLocation.z + 1;
 }
 
+void BlockArea::saveRelative(DOMNodeWriter* node, BlockLocation& location) {
+  cStartLocation.saveRelative(node, location);
+  cEndLocation.saveRelative(node, cStartLocation, "width", "length", "height");
+}
+
 // CollisionVertex* BlockArea::getEntryPoint(Vertex& start, Vertex& end) {
 //   return Collision::getEntryPoint(start, end, cWest, cEast, cSouth, cNorth, cBottom, cTop);
 // }

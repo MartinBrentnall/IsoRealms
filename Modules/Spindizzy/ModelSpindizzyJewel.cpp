@@ -22,11 +22,12 @@ unsigned int ModelSpindizzyJewel::cReferenceCount = 0;
 GLuint ModelSpindizzyJewel::cPanelDisplayList;
 GLuint ModelSpindizzyJewel::cFrameDisplayList;
 
-ModelSpindizzyJewel::ModelSpindizzyJewel(Vertex* location, float scale, std::vector<IColour*>* coloursCycle, IColour** colourFrame) {
+ModelSpindizzyJewel::ModelSpindizzyJewel(Vertex* location, float scale, std::vector<IColour*>* coloursCycle, IColour** colourFrame, float* cycleSpeed) {
   cColoursCycle = coloursCycle;
   cColourFrame = colourFrame;
   cLocation = location;
   cScale = scale;
+  cCycleSpeed = cycleSpeed;
   if ((*cColourFrame) != NULL) {
     refresh();
   }
@@ -78,7 +79,7 @@ void ModelSpindizzyJewel::refresh() {
 }
 
 void ModelSpindizzyJewel::update(unsigned int milliseconds) {
-  cProgress += milliseconds * 0.0015;
+  cProgress += milliseconds * *cCycleSpeed;
   while (cProgress >= cColoursCycle->size()) {
     cProgress -= cColoursCycle->size();
   }

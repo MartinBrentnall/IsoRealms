@@ -82,12 +82,14 @@ void DOMNodeWriter::addAttribute(std::string name, int val) {
   cElement->setAttributeNode(mAttribute);
 }
 
-void DOMNodeWriter::addAttribute(const std::string& name, float val) {
-  DOMAttr* mAttribute = cDocument->createAttribute(XMLString::transcode(name.c_str()));
-  char mAttributeValue[16];
-  sprintf(mAttributeValue, "%f", val);
-  mAttribute->setValue(XMLString::transcode(mAttributeValue));
-  cElement->setAttributeNode(mAttribute);
+void DOMNodeWriter::addAttribute(const std::string& name, float val, float defaultValue) {
+  if (val != defaultValue) {
+    DOMAttr* mAttribute = cDocument->createAttribute(XMLString::transcode(name.c_str()));
+    char mAttributeValue[16];
+    sprintf(mAttributeValue, "%f", val);
+    mAttribute->setValue(XMLString::transcode(mAttributeValue));
+    cElement->setAttributeNode(mAttribute);
+  }
 }
 
 void DOMNodeWriter::addAttribute(const std::string& name, double val) {

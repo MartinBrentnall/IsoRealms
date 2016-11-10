@@ -35,10 +35,10 @@ void ResourceElementHUDModel::initialiseResource(DOMNodeWrapper* node, IResource
 void ResourceElementHUDModel::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   node->addAttribute("model", resourceLocator->getPath(cModel));
   node->addAttribute("camera", resourceLocator->getPath(cCamera));
-  node->addAttribute("scale", cModelScale);
-  node->addAttribute("x", cModelLocation.x);
-  node->addAttribute("y", cModelLocation.y);
-  node->addAttribute("z", cModelLocation.z);
+  node->addAttribute("scale", cModelScale, 1.0f);
+  node->addAttribute("x", cModelLocation.x, 0.0f);
+  node->addAttribute("y", cModelLocation.y, 0.0f);
+  node->addAttribute("z", cModelLocation.z, 0.0f);
 }
 
 void ResourceElementHUDModel::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& blockLocation) {

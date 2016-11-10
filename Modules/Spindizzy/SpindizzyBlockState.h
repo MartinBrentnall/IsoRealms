@@ -33,6 +33,7 @@ class SpindizzyBlockState:public IResource {
   private:
   std::string cName;
   Vertex cClueModelLocation;
+  float cScale;
   I3DModel* cClueModel;
   ConditionElement* cState;
     

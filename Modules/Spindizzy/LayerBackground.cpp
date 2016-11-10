@@ -43,10 +43,6 @@ void LayerBackground::resourceSelected(IElementType* elementType) {
   // Not supported.
 }
 
-ILayerType* LayerBackground::getLayerType() {
-  return cLayerType;
-}
-
 void LayerBackground::initRuntime() {
 }
 
@@ -87,8 +83,10 @@ bool LayerBackground::input(SDL_Event&) {
   return false;
 }
 
-void LayerBackground::save(DOMNodeWriter*, IResourceLocator*) {
-  // TODO
+void LayerBackground::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+  std::string mInstanceName = cLayerType->getInstanceName(this);
+  node->addAttribute("name", mInstanceName);
+  node->addAttribute("type", resourceLocator->getPath(cLayerType));
 }
 
 void LayerBackground::staticChanged() {

@@ -68,6 +68,7 @@ add_library(IsoRealmsStd MODULE
   HUDComponentRelation.cpp
   IsoRealmsModule.cpp
   IsoRealmsScriptSupport.cpp
+  LayerHUD.cpp
   ModelCycleable.cpp
   ModelElement.cpp
   ModelScriptable.cpp

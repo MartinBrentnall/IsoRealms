@@ -32,6 +32,7 @@ class ResourceModelSpindizzyJewel:public I3DModelType,
   std::vector<IColour*> cColoursCycle;
   IColour* cColourFrame;
   ModelSpindizzyJewel* cSampleModel;
+  float cCycleSpeed;
   
   public:
   ResourceModelSpindizzyJewel(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);

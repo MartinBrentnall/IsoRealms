@@ -36,6 +36,10 @@ void ResourceLayerSpindizzyMap::initialiseResource(DOMNodeWrapper* node, IResour
 }
 
 void ResourceLayerSpindizzyMap::save(DOMNodeWriter* node, IResourceLocator* resources) {
+  for (std::pair<std::string, LayerSpindizzyMap*> mInstance : cNamedInstances) {
+    DOMNodeWriter* mInstanceBranch = node->addBranch("Instance");
+    mInstanceBranch->addAttribute("name", mInstance.first);
+  }
 }
 
 ISpindizzyMapModule* ResourceLayerSpindizzyMap::getSpindizzyMapInterface() {
@@ -53,6 +57,15 @@ ILayer* ResourceLayerSpindizzyMap::getLayer(DOMNodeWrapper* node, IResourceAcces
   LayerSpindizzyMap* mMap = cNamedInstances[mInstanceName];
   mMap->load(node, editing, resources, asTemplate);
   return mMap;
+}
+
+std::string ResourceLayerSpindizzyMap::getInstanceName(ILayer* layer) {
+  for (std::pair<std::string, LayerSpindizzyMap*> mLayerInstance : cNamedInstances) {
+    if (mLayerInstance.second == layer) {
+      return mLayerInstance.first;
+    }
+  }
+  return ""; // TODO: Throw
 }
 
 void ResourceLayerSpindizzyMap::configureLayer() {

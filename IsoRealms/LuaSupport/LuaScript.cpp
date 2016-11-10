@@ -110,13 +110,12 @@ IScriptCall* LuaScript::createScriptCall(DOMNodeWrapper* node, IArgumentValueReg
 }
 
 void LuaScript::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
-  DOMNodeWriter* mScriptBranch = node->addBranch("Script");
-  mScriptBranch->addAttribute("name", cName);
+  node->addAttribute("name", cName);
   for (unsigned int i = 0; i < cArguments.size(); i++) {
-    DOMNodeWriter* mArgumentBranch = mScriptBranch->addBranch("Argument");
+    DOMNodeWriter* mArgumentBranch = node->addBranch("Argument");
     cArguments[i]->save(mArgumentBranch, resourceLocator);
   }
-  DOMNodeWriter* mCodeBranch = mScriptBranch->addBranch("Code");
+  DOMNodeWriter* mCodeBranch = node->addBranch("Code");
   mCodeBranch->addText(cCode);
 }
 

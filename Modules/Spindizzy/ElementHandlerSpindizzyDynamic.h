@@ -69,6 +69,7 @@ class ElementHandlerSpindizzyDynamic:public Element,
   void cursorAppeared(ILayerEditingContext*, Vertex&);
   PickedElement* pickElement(Vertex&, Vertex&);
   IElementContainer* getElementContainer();
+  bool isImplicit();
 };
 
 #endif

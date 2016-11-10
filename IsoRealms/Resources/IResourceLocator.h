@@ -69,8 +69,6 @@ class IResourceLocator {
   virtual std::string getPath(IVertex*) = 0;
   
   virtual void saveScript(DOMNodeWriter*, const std::string&, IScriptCall*) = 0;
-  
-  virtual bool isImplicit(IElement*) = 0;
 };
 
 #endif

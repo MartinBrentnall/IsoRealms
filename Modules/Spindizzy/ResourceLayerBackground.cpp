@@ -41,6 +41,10 @@ void ResourceLayerBackground::initialiseResource(DOMNodeWrapper* node, IResource
 }
 
 void ResourceLayerBackground::save(DOMNodeWriter* node, IResourceLocator* resources) {
+  for (std::pair<std::string, LayerBackground*> mInstance : cNamedInstances) {
+    DOMNodeWriter* mInstanceBranch = node->addBranch("Instance");
+    mInstanceBranch->addAttribute("name", mInstance.first);
+  }
 }
 
 // void ResourceLayerBackground::loadInstance(DOMNodeWrapper* node, IRuntimeContext* runtimeContext) {
@@ -55,6 +59,15 @@ void ResourceLayerBackground::save(DOMNodeWriter* node, IResourceLocator* resour
 ILayer* ResourceLayerBackground::getLayer(DOMNodeWrapper* node, IResourceAccessor* resources, bool editing, bool asTemplate) {
   std::string mInstanceName = node->getAttribute("instance");
   return cNamedInstances[mInstanceName];
+}
+
+std::string ResourceLayerBackground::getInstanceName(ILayer* layer) {
+  for (std::pair<std::string, LayerBackground*> mLayerInstance : cNamedInstances) {
+    if (mLayerInstance.second == layer) {
+      return mLayerInstance.first;
+    }
+  }
+  return ""; // TODO: Throw
 }
 
 void ResourceLayerBackground::configureLayer() {

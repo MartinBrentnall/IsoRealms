@@ -21,6 +21,7 @@
 
 #include <cstdio>
 #include <iostream>
+#include <limits>
 #include <sstream>
 #include <string>
 #include <xercesc/dom/DOM.hpp>
@@ -114,7 +115,7 @@ class DOMNodeWriter {
    * @param std::string&  Attribute name.
    * @param float         Attribute content.
    */
-  void addAttribute(const std::string&, float);
+  void addAttribute(const std::string&, float, float = std::numeric_limits<float>::quiet_NaN());
 
   /**
    * Add the specified attribute of the specified name.

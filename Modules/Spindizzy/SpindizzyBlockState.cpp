@@ -26,10 +26,10 @@ void SpindizzyBlockState::initialiseResource(DOMNodeWrapper* node, IResourceAcce
   cClueModelLocation.x = node->getFloatAttribute("x");
   cClueModelLocation.y = node->getFloatAttribute("y");
   cClueModelLocation.z = node->getFloatAttribute("z");
-  float mScale = node->getFloatAttribute("scale");
+  cScale = node->getFloatAttribute("scale");
   std::string mModelPath = node->getAttribute("model");
   std::string mStatePath = node->getAttribute("state");
-  cClueModel = resources->getModel(mModelPath, &cClueModelLocation, mScale);
+  cClueModel = resources->getModel(mModelPath, &cClueModelLocation, cScale);
   IBoolean* mState = resources->getBoolean(mStatePath);
   cState = new ConditionElement(cName, mState);
 }
@@ -52,6 +52,8 @@ void SpindizzyBlockState::save(DOMNodeWriter* node, IResourceLocator* resourceLo
   node->addAttribute("x", cClueModelLocation.x);
   node->addAttribute("y", cClueModelLocation.y);
   node->addAttribute("z", cClueModelLocation.z);
+  node->addAttribute("state", resourceLocator->getPath(cState->getInputAddress()));
+  node->addAttribute("scale", cScale);
 }
 
 bool SpindizzyBlockState::isActive() {

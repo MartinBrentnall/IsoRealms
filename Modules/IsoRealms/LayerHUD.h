@@ -1,5 +1,5 @@
 /*
- * Copyright 2009,2010,2011 Martin Brentnall
+ * Copyright 2016 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,8 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef RESOURCE_LAYER_HUD_H
-#define RESOURCE_LAYER_HUD_H
+#ifndef LAYER_HUD_H
+#define LAYER_HUD_H
 
 #include <map>
 #include <string>
@@ -33,21 +33,41 @@
 #include "HUDComponentPosition.h"
 #include "HUDComponentRelation.h"
 #include "IComponentSources.h"
-#include "LayerHUD.h"
 #include "ScreenRelation.h"
 
-class ResourceLayerHUD:public ILayerType {
-  public:
-  ResourceLayerHUD(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
+class LayerHUD:public IComponentSources,
+               public ILayer {
+  private:
+  ILayerType* cLayerType;
+  std::vector<HUDComponentPosition*> cComponents;
+  std::map<std::string, HUDComponentProxy*> cComponentsByName;
   
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  IHUDComponentRelation* getRelation(const std::string&, const std::string&);
+  HUDComponentProxy* getComponentProxy(const std::string&);
+  
+  public:
+  LayerHUD(DOMNodeWrapper*, IResourceAccessor*, ILayerType*);
+  
+  /********************************\
+   * Implements IComponentSources *
+  \********************************/
+  std::string getSource(HUDComponentPosition* component);
 
-  /***************************\
-   * Implements ILayerType *
-  \***************************/
-  ILayer* getLayer(DOMNodeWrapper*, IResourceAccessor*, bool, bool);
-  std::string getInstanceName(ILayer*);
+  /*********************\
+   * Implements ILayer *
+  \*********************/
+  void resourceSelected(IElementType*);
+  void initRuntime();
+  void initEditor();
+  void renderRuntime();
+  void renderEditing();
+  void updateRuntime(unsigned int);
+  void updateEditing(unsigned int);
+  bool input(SDL_Event&);
   void save(DOMNodeWriter*, IResourceLocator*);
+  void staticChanged();
+  void reset();
 };
 
 #endif
+

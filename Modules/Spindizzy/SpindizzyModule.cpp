@@ -174,18 +174,29 @@ void SpindizzyModule::initialiseResource(DOMNodeWrapper* node, IResourceAccessor
     if (mValueAsString == "LiftMovedScript") {
       cLiftMovedScript = resources->getScriptCall(mNode);
     } else if (mValueAsString == TAG_EDITOR_CONFIG_SPINDIZZY_ZONE_THEME_ICON) {
-      Vertex* mModelLocation = new Vertex();
-      mModelLocation->x = mNode->getFloatAttribute("x");
-      mModelLocation->y = mNode->getFloatAttribute("y");
-      mModelLocation->z = mNode->getFloatAttribute("z");
-      float mModelScale = mNode->getFloatAttribute("scale");
+      cThemeModelIconLocation.x = mNode->getFloatAttribute("x");
+      cThemeModelIconLocation.y = mNode->getFloatAttribute("y");
+      cThemeModelIconLocation.z = mNode->getFloatAttribute("z");
+      cThemeModelIconScale = mNode->getFloatAttribute("scale");
       std::string mModelPath = mNode->getAttribute("model");
-      cThemeModelIcon = resources->getModel(mModelPath, mModelLocation, mModelScale);
+      cThemeModelIcon = resources->getModel(mModelPath, &cThemeModelIconLocation, cThemeModelIconScale);
     }
   }
 }
 
 void SpindizzyModule::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+  resourceLocator->saveScript(node, "LiftMovedScript", cLiftMovedScript);
+  for (SpindizzyBlockState* mBlockState : cBlockStateData) {
+    DOMNodeWriter* mBlockStateNode = node->addBranch("BlockState");
+    mBlockState->save(mBlockStateNode, resourceLocator);
+  }
+  DOMNodeWriter* mThemeIconNode = node->addBranch(TAG_EDITOR_CONFIG_SPINDIZZY_ZONE_THEME_ICON);
+  mThemeIconNode->addAttribute("model", resourceLocator->getPath(cThemeModelIcon));
+  mThemeIconNode->addAttribute("x", cThemeModelIconLocation.x);
+  mThemeIconNode->addAttribute("y", cThemeModelIconLocation.y);
+  mThemeIconNode->addAttribute("z", cThemeModelIconLocation.z);
+  mThemeIconNode->addAttribute("scale", cThemeModelIconScale);
+
   cResourceTypeCameraScriptable.saveResources(            node, resourceLocator, TAG_RESOURCE_TYPE_CAMERA_SCRIPTABLE);
   cResourceTypeElementSpindizzyBlock.saveResources(       node, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_BLOCK);
   cResourceTypeElementSpindizzyCraft.saveResources(       node, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_CRAFT);
@@ -202,7 +213,17 @@ void SpindizzyModule::save(DOMNodeWriter* node, IResourceLocator* resourceLocato
   cResourceTypeTextureSpindizzyCraftBall.saveResources(   node, resourceLocator, TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_CRAFT_BALL);
   cResourceTypeTextureSpindizzyBlocksC64.saveResources(   node, resourceLocator, TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_BLOCKS_C64);
   cResourceTypeTextureSpindizzyLiftsC64.saveResources(    node, resourceLocator, TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_LIFTS_C64);
-//  cResourceTypeTextureSpindizzyZoneTheme.saveResources(   node, resourceLocator, TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_ZONE_THEME);
+  
+  for (std::pair<std::string, SpindizzyZoneTheme*> mTheme : cThemes) {
+    DOMNodeWriter* mThemeNode = node->addBranch(TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_ZONE_THEME);
+    mThemeNode->addAttribute("name", mTheme.first);
+    mTheme.second->save(mThemeNode, resourceLocator);
+  }
+
+  std::string mLocksPath = resourceLocator->getPath(cLocked);
+  std::string mCameraPath = resourceLocator->getPath(cCamera);
+  node->addAttribute("locks", mLocksPath);
+  node->addAttribute("camera", mCameraPath);
 }
 
 void SpindizzyModule::createThemeResources(DOMNodeWrapper* node, IResourceRegistry* runtimeContext) {
@@ -412,6 +433,15 @@ void SpindizzyModule::applyDefaultTheme() {
   if (cDefaultTheme != nullptr) {
     cDefaultTheme->set();
   }
+}
+
+std::string SpindizzyModule::getThemeName(ISpindizzyZoneTheme* zoneTheme) {
+  for (std::pair<std::string, SpindizzyZoneTheme*> mTheme : cThemes) {
+    if (mTheme.second == zoneTheme) {
+      return mTheme.first;
+    }
+  }
+  return ""; // TODO: Throw
 }
 
 SpindizzyZoneThemeTexture* SpindizzyModule::getThemeTexture(const std::string& type) {

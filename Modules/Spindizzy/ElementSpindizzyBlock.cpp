@@ -633,6 +633,8 @@ Condition* ElementSpindizzyBlock::getCondition() {
 }
 
 void ElementSpindizzyBlock::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& zoneLocation) {
+  std::string mBlockTypePath = resourceLocator->getPath(cBlockType);
+  node->addAttribute("type", mBlockTypePath);
   cStartLocation.saveRelative(node, zoneLocation);
   // TODO: Only save size if it's bigger than 1.
   BlockLocation mEndLocation = cEndLocation;

@@ -118,7 +118,6 @@ class LayerSpindizzyMap:public ILayer,
    * Implements ILayer *
   \*********************/
   void resourceSelected(IElementType*);  
-  ILayerType* getLayerType();
   void updateRuntime(unsigned int);
   void updateEditing(unsigned int);
   void renderRuntime();

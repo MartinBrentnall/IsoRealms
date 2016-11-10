@@ -100,7 +100,7 @@ void ElementHandlerSpindizzyBlock::renderStatic() {
 }
 
 void ElementHandlerSpindizzyBlock::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& location) {
-  // TODO: ?
+  cElements.save(node, resourceLocator, location);
 }
 
 void ElementHandlerSpindizzyBlock::setDirty() {
@@ -145,4 +145,8 @@ void ElementHandlerSpindizzyBlock::cursorAppeared(ILayerEditingContext* editingC
 
 PickedElement* ElementHandlerSpindizzyBlock::pickElement(Vertex& start, Vertex& end) {
   return cElements.pickElement(start, end);
+}
+
+bool ElementHandlerSpindizzyBlock::isImplicit() {
+  return true;
 }

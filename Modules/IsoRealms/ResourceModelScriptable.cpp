@@ -28,6 +28,7 @@ ResourceModelScriptable::ResourceModelScriptable(IDummyModule* module, DOMNodeWr
       IArgumentValue* mArgumentValue = new ArgumentValue<ModelScriptable>(mInstance);
       resourceRegistry->add(mInstance, mName);
       resourceRegistry->add(mArgumentValue, "ModelScriptable", mName);
+      cResources.push_back(mInstance);
     }
   }
 }

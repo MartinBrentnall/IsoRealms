@@ -36,21 +36,11 @@ class ModelSpindizzyJewel:public I3DModel {
 
   Vertex* cLocation;
   float cScale;
+  float* cCycleSpeed;
 
   IColour** cColourFrame;
   std::vector<IColour*>* cColoursCycle;
   float cProgress;
-
-  /** 
-   * Points to the colour channel that is being adjusted by the update process.
-   */
-  float *cColourChannel;
-
-  /**
-   * true if the current colour channel is fading in, otherwise false (fade
-   * out).
-   */
-  bool cColourUp;
 
   // TODO: Move these to some kind of generic library.
   /**
@@ -85,7 +75,7 @@ class ModelSpindizzyJewel:public I3DModel {
   static double distance(double a1, double a2, double b1, double b2);
 
   public:
-  ModelSpindizzyJewel(Vertex*, float, std::vector<IColour*>*, IColour**);
+  ModelSpindizzyJewel(Vertex*, float, std::vector<IColour*>*, IColour**, float*);
   
   void refresh();
 

@@ -207,11 +207,11 @@ class SimpleEditor:public IModule,
    * Implements ILayerType *
   \*************************/
   ILayer* getLayer(DOMNodeWrapper*, IResourceAccessor*, bool, bool);
-
+  std::string getInstanceName(ILayer*);
+  
   /*********************\
    * Implements ILayer * 
   \*********************/
-  ILayerType* getLayerType();
   void renderRuntime();
   void renderEditing();
   void updateRuntime(unsigned int);

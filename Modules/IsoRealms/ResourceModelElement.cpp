@@ -31,7 +31,7 @@ void ResourceModelElement::destroyModel(I3DModel* model) {
 
 void ResourceModelElement::save(DOMNodeWriter* node, IResourceLocator* resources) {
   cElement->save(node, resources, cIdentity);
-  node->addAttribute("independent", true);
+  node->addAttribute("independent", "true");
 }
 
 void ResourceModelElement::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {

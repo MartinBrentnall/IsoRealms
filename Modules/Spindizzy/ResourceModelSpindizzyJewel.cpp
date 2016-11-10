@@ -23,7 +23,7 @@ ResourceModelSpindizzyJewel::ResourceModelSpindizzyJewel(IDummyModule* module, D
   cColoursCycle.push_back(new Colour(0.0f, 0.0f, 0.0f));
   cColoursCycle.push_back(new Colour(1.0f, 0.0f, 0.0f));
   Vertex* mVertex = new Vertex(0.0f, 0.0f, 0.0f);
-  cSampleModel = new ModelSpindizzyJewel(mVertex, 1.0f, &cColoursCycle, &cColourFrame);
+  cSampleModel = new ModelSpindizzyJewel(mVertex, 1.0f, &cColoursCycle, &cColourFrame, &cCycleSpeed);
 }
 
 IColour* ResourceModelSpindizzyJewel::getFrameColour() {
@@ -43,7 +43,7 @@ void ResourceModelSpindizzyJewel::setCycleColour(unsigned int index, IColour* co
 }
 
 I3DModel* ResourceModelSpindizzyJewel::createModel(Vertex* location, float scale) {
-  ModelSpindizzyJewel* mJewelModel = new ModelSpindizzyJewel(location, scale, &cColoursCycle, &cColourFrame);
+  ModelSpindizzyJewel* mJewelModel = new ModelSpindizzyJewel(location, scale, &cColoursCycle, &cColourFrame, &cCycleSpeed);
   cInstances.push_back(mJewelModel);
   return mJewelModel;
 }
@@ -66,6 +66,7 @@ void ResourceModelSpindizzyJewel::renderIcon() {
 
 void ResourceModelSpindizzyJewel::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   node->addAttribute("frameColour", resourceLocator->getPath(cColourFrame));
+  node->addAttribute("cycleSpeed", cCycleSpeed);
   for (unsigned int i = 0; i < cColoursCycle.size(); i++) {
     DOMNodeWriter* mNode = node->addBranch("ColourCycle");
     mNode->addAttribute("colour", resourceLocator->getPath(cColoursCycle[i]));
@@ -74,6 +75,7 @@ void ResourceModelSpindizzyJewel::save(DOMNodeWriter* node, IResourceLocator* re
 
 void ResourceModelSpindizzyJewel::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor) {
   std::string mFrameColour = node->getAttribute("frameColour");
+  cCycleSpeed = node->getFloatAttribute("cycleSpeed");
   cColourFrame = resourceAccessor->getColour(mFrameColour);
   cColoursCycle.clear();
   for (int i = 0; i < node->getChildCount(); i++) {

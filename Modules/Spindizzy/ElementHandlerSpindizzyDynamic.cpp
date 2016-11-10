@@ -93,7 +93,7 @@ void ElementHandlerSpindizzyDynamic::renderStatic() {
 }
 
 void ElementHandlerSpindizzyDynamic::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& location) {
-  // TODO: ?
+  cElements.save(node, resourceLocator, location);
 }
 
 void ElementHandlerSpindizzyDynamic::setDirty() {
@@ -126,4 +126,8 @@ bool ElementHandlerSpindizzyDynamic::initElement(unsigned int pass) {
 
 IElementContainer* ElementHandlerSpindizzyDynamic::getElementContainer() {
   return nullptr;
+}
+
+bool ElementHandlerSpindizzyDynamic::isImplicit() {
+  return true;
 }

@@ -49,13 +49,15 @@ template <class T> class SpatialContainer2D {
   void remove(T* element) {
     std::vector<SpatialContainer1D<std::vector<T*> >*> mRows = cContainer.getAllCells();
     for (unsigned int i = 0; i < mRows.size(); i++) {
-      std::vector<std::vector<T*>*> mCells = mRows[i]->getAllCells();
-      for (unsigned int j = 0; j < mCells.size(); j++) {
-        std::vector<T*>* mCell = mCells[j];
-        if (mCell != nullptr) {
-          for (int k = mCell->size() - 1; k >= 0; k--) {
-            if ((*mCell)[k] == element) {
-              mCell->erase(mCell->begin() + k);
+      if (mRows[i] != nullptr) {
+        std::vector<std::vector<T*>*> mCells = mRows[i]->getAllCells();
+        for (unsigned int j = 0; j < mCells.size(); j++) {
+          std::vector<T*>* mCell = mCells[j];
+          if (mCell != nullptr) {
+            for (int k = mCell->size() - 1; k >= 0; k--) {
+              if ((*mCell)[k] == element) {
+                mCell->erase(mCell->begin() + k);
+              }
             }
           }
         }
