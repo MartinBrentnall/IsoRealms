@@ -37,7 +37,7 @@ IElement* ResourceElementSpindizzyWater::getElement() {
   return nullptr;
 }
 
-void ResourceElementSpindizzyWater::loadElement(DOMNodeWrapper* node, BlockLocation* zoneLocation, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
+void ResourceElementSpindizzyWater::loadElement(DOMNodeWrapper* node, BlockLocation* zoneLocation, IElementContainer* container, IResourceAccessor* resources, bool asTemplate, bool independent) {
   if (!asTemplate) {
     BlockLocation mStartLocation;
     BlockLocation mEndLocation;

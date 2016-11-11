@@ -250,7 +250,7 @@ void SpindizzyModule::createThemeTexture(const std::string& type, IResourceRegis
 void SpindizzyModule::createThemeColour(const std::string& type, IResourceRegistry* runtimeContext) {
   if (cColours.find(type) == cColours.end()) {
     cColours[type] = new SpindizzyZoneThemeColour();
-    IArgumentValue* mArgumentValue = new ArgumentValue<SpindizzyZoneThemeColour>(cColours[type]);
+    IArgumentValue* mArgumentValue = new ArgumentValueCustomType<SpindizzyZoneThemeColour>(cColours[type]);
     runtimeContext->add(cColours[type], type);
     runtimeContext->add(mArgumentValue, "ThemeColour", type);
   }

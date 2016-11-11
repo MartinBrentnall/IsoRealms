@@ -47,7 +47,7 @@ void LayerSpindizzyMap::initialiseResource(DOMNodeWrapper* node, IResourceAccess
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Element") {
-      resources->loadElement(mNode, &mStartLocation, this, asTemplate);
+      resources->loadElement(mNode, &mStartLocation, this, asTemplate, false);
     } else {
       // TODO: Throw something
     }
@@ -82,6 +82,10 @@ void LayerSpindizzyMap::initEditor() {
 }
 
 void LayerSpindizzyMap::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+  node->addAttribute("type", resourceLocator->getPath(cMapType));
+  node->addAttribute("camera", resourceLocator->getPath(cCamera));
+  node->addAttribute("default", "true"); // TODO: Should this be outside of here?  It's used for the editor to make this layer the starting one.
+  node->addAttribute("instance", cMapType->getInstanceName(this));
   BlockLocation mStartLocation(0, 0, 0);
   cElementHandler.save(node, resourceLocator, mStartLocation);
 }

@@ -42,7 +42,7 @@ IElement* ResourceElementSpindizzyBlock::getElement() {
   return nullptr;
 }
 
-void ResourceElementSpindizzyBlock::loadElement(DOMNodeWrapper* node, BlockLocation* zoneLocation, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
+void ResourceElementSpindizzyBlock::loadElement(DOMNodeWrapper* node, BlockLocation* zoneLocation, IElementContainer* container, IResourceAccessor* resources, bool asTemplate, bool independent) {
   if (!asTemplate) {
     BlockLocation mStartLocation;
     BlockLocation mEndLocation;
@@ -56,11 +56,10 @@ void ResourceElementSpindizzyBlock::loadElement(DOMNodeWrapper* node, BlockLocat
     (mAddition ? mStartLocation.z : mEndLocation.z)++;
     mEndLocation.x--;
     mEndLocation.y--;
-    bool mIndependent = node->getBooleanAttribute("independent");
     ElementHandlerSpindizzyBlock* mHandler = cModuleInterface->getElementHandlerSpindizzyBlock(container);  
     ElementSpindizzyBlock* mLoadedBlock = createBlock(&mStartLocation, &mEndLocation, cBlockProperties, mAddition, mHandler);
     cContent.push_back(mLoadedBlock);
-    if (mIndependent) {
+    if (independent) {
       mLoadedBlock->createSampleSurfaces();
     } else {
       cModuleInterface->registerSurfaceProvider(mLoadedBlock, false);

@@ -70,6 +70,7 @@ class ElementHandlerZone:public Element,
   PickedElement* pickElement(Vertex&, Vertex&);
   IElementContainer* getElementContainer();
   void reset();
+  bool isImplicit();
 };
 
 #endif

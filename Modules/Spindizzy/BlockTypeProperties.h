@@ -58,6 +58,7 @@ class BlockTypeProperties {
   WallType cWallType;
 
   void saveTexture(DOMNodeWriter*, const std::string&, ITexture*, IResourceLocator*, bool = false);
+  void saveTextureFloor(DOMNodeWriter*, const std::string&, ITexture*, IResourceLocator*, TextureRotation);
   
   bool replaceTexture(ITexture*&, ITexture*, ITexture*);
   

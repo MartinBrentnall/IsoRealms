@@ -96,9 +96,12 @@ void ResourceElementSpindizzyZone::initialiseResource(DOMNodeWrapper* node, IRes
 }
 
 void ResourceElementSpindizzyZone::save(DOMNodeWriter* node, IResourceLocator* locator) {
+  node->addAttribute("visitedColour", locator->getPath(cVisitedColour));
+  node->addAttribute("unvisitedColour", locator->getPath(cUnvisitedColour));
+  node->addAttribute("flagModel", locator->getPath(cFlagModelType));
 }
 
-void ResourceElementSpindizzyZone::loadElement(DOMNodeWrapper* node, BlockLocation* location, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
+void ResourceElementSpindizzyZone::loadElement(DOMNodeWrapper* node, BlockLocation* location, IElementContainer* container, IResourceAccessor* resources, bool asTemplate, bool independent) {
   if (!asTemplate) {
     BlockLocation* mLocation = new BlockLocation();
     mLocation->setRelative(node, *location);

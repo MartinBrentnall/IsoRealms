@@ -62,6 +62,8 @@ void ElementSpindizzyEnemy::updateRuntime(unsigned int milliseconds) {
 }
 
 void ElementSpindizzyEnemy::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& relative) {
+  std::string mElementTypePath = resourceLocator->getPath(cEnemyType);
+  node->addAttribute("type", mElementTypePath);
   cStartLocation.saveRelative(node, relative);  
 }
 

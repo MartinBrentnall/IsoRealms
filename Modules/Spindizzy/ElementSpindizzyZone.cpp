@@ -41,7 +41,7 @@ ElementSpindizzyZone::ElementSpindizzyZone(ISpindizzyZoneType* elementType, DOMN
     DOMNodeWrapper* mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Element") {
-      resources->loadElement(mNode, &mVertex, this, false);
+      resources->loadElement(mNode, &mVertex, this, false, false);
     } else if (mValueAsString == "Script") {
       std::string mId = mNode->getAttribute("id");
       cScripts[mId] = resources->getScriptCall(mNode);
@@ -271,7 +271,8 @@ void ElementSpindizzyZone::save(DOMNodeWriter* node, IResourceLocator* resourceL
   node->addAttribute("type", resourceLocation->getPath(cZoneType));
   node->addAttribute("theme", mModuleInterface->getThemeName(cZoneTheme));
   cZoneArea->saveRelative(node, location);
-  cElementHandler.save(node, resourceLocation, location);
+  BlockLocation mZoneLocation(cZoneArea->getWest(), cZoneArea->getSouth(), cZoneArea->getBottom());
+  cElementHandler.save(node, resourceLocation, mZoneLocation);
 }
 
 void ElementSpindizzyZone::setDirty(IElement* element) {

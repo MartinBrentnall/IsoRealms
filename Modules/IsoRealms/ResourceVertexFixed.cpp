@@ -19,7 +19,7 @@
 #include "ResourceVertexFixed.h"
 
 ResourceVertexFixed::ResourceVertexFixed(IDummyModule* dummy, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
-  IArgumentValue* mArgumentValue = new ArgumentValue<ResourceVertexFixed>(this);
+  IArgumentValue* mArgumentValue = new ArgumentValueCustomType<ResourceVertexFixed>(this);
   resourceRegistry->add(mArgumentValue, "Vertex", node->getAttribute("name"));
 }
 

@@ -31,7 +31,7 @@ void ResourceElementHUDString::save(DOMNodeWriter* node, IResourceLocator* resou
   node->addAttribute("value", resourceLocator->getPath(cText));
 }
 
-void ResourceElementHUDString::loadElement(DOMNodeWrapper* node, BlockLocation* location, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
+void ResourceElementHUDString::loadElement(DOMNodeWrapper* node, BlockLocation* location, IElementContainer* container, IResourceAccessor* resources, bool asTemplate, bool independent) {
   container->addElement(this);
 }
 

@@ -19,7 +19,7 @@
 #ifndef RESOURCE_MODEL_SCRIPTABLE_H
 #define RESOURCE_MODEL_SCRIPTABLE_H
 
-#include <IsoRealms/LuaSupport/ArgumentValue.h>
+#include <IsoRealms/LuaSupport/ArgumentValueCustomType.h>
 #include <IsoRealms/Persistence/DOMNodeWriter.h>
 #include <IsoRealms/Resources/3DModel/I3DModelType.h>
 #include <IsoRealms/Resources/IDummyModule.h>

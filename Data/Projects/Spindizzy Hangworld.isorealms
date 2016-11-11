@@ -227,19 +227,45 @@
       <Model name="IsoRealms/CraftBall"/>
       <Model name="Spindizzy/CraftGyroscopePlayer"/>
     </ModelCycleable>
-    <ModelElement name="Compass" independent="true" type="Spindizzy/ArrowNorth" x="0" y="0" z="0" width="1" length="1" height="1"/>
-    <ModelElement name="ClueDiamondLeft" independent="true" type="Spindizzy/SwitchDiamondLeft" x="0" y="0" z="0" width="1" length="1" height="1"/>
-    <ModelElement name="ClueDiamondRight" independent="true" type="Spindizzy/SwitchDiamondRight" x="0" y="0" z="0" width="1" length="1" height="1"/>
-    <ModelElement name="ClueDiamondBoth" independent="true" type="Spindizzy/SwitchDiamondBoth" x="0" y="0" z="0" width="1" length="1" height="1"/>
-    <ModelElement name="ClueCircleNone" independent="true" type="Spindizzy/SwitchCircleNone" x="0" y="0" z="0" width="1" length="1" height="1"/>
-    <ModelElement name="ClueCircleLeft" independent="true" type="Spindizzy/SwitchCircleLeft" x="0" y="0" z="0" width="1" length="1" height="1"/>
-    <ModelElement name="ClueCircleRight" independent="true" type="Spindizzy/SwitchCircleRight" x="0" y="0" z="0" width="1" length="1" height="1"/>
-    <ModelElement name="ClueCircleBoth" independent="true" type="Spindizzy/SwitchCircleBoth" x="0" y="0" z="0" width="1" length="1" height="1"/>
-    <ModelElement name="ClueSquareNone" independent="true" type="Spindizzy/SwitchSquareNone" x="0" y="0" z="0" width="1" length="1" height="1"/>
-    <ModelElement name="ClueSquareLeft" independent="true" type="Spindizzy/SwitchSquareLeft" x="0" y="0" z="0" width="1" length="1" height="1"/>
-    <ModelElement name="ClueSquareRight" independent="true" type="Spindizzy/SwitchSquareRight" x="0" y="0" z="0" width="1" length="1" height="1"/>
-    <ModelElement name="ClueSquareBoth" independent="true" type="Spindizzy/SwitchSquareBoth" x="0" y="0" z="0" width="1" length="1" height="1"/>
-    <ModelElement name="ThemeModelIcon" independent="true" type="Spindizzy/Plain" x="0" y="0" z="0" width="1" length="1" height="1"/>
+    <ModelElement name="Compass">
+      <Element  type="Spindizzy/ArrowNorth" x="0" y="0" z="0" width="1" length="1" height="1"/>
+    </ModelElement>
+    <ModelElement name="ClueDiamondLeft">
+      <Element  type="Spindizzy/SwitchDiamondLeft" x="0" y="0" z="0" width="1" length="1" height="1"/>
+    </ModelElement>
+    <ModelElement name="ClueDiamondRight">
+      <Element  type="Spindizzy/SwitchDiamondRight" x="0" y="0" z="0" width="1" length="1" height="1"/>
+    </ModelElement>
+    <ModelElement name="ClueDiamondBoth">
+      <Element  type="Spindizzy/SwitchDiamondBoth" x="0" y="0" z="0" width="1" length="1" height="1"/>
+    </ModelElement>
+    <ModelElement name="ClueCircleNone">
+      <Element  type="Spindizzy/SwitchCircleNone" x="0" y="0" z="0" width="1" length="1" height="1"/>
+    </ModelElement>
+    <ModelElement name="ClueCircleLeft">
+      <Element  type="Spindizzy/SwitchCircleLeft" x="0" y="0" z="0" width="1" length="1" height="1"/>
+    </ModelElement>
+    <ModelElement name="ClueCircleRight">
+      <Element  type="Spindizzy/SwitchCircleRight" x="0" y="0" z="0" width="1" length="1" height="1"/>
+    </ModelElement>
+    <ModelElement name="ClueCircleBoth">
+      <Element  type="Spindizzy/SwitchCircleBoth" x="0" y="0" z="0" width="1" length="1" height="1"/>
+    </ModelElement>
+    <ModelElement name="ClueSquareNone">
+      <Element  type="Spindizzy/SwitchSquareNone" x="0" y="0" z="0" width="1" length="1" height="1"/>
+    </ModelElement>
+    <ModelElement name="ClueSquareLeft">
+      <Element  type="Spindizzy/SwitchSquareLeft" x="0" y="0" z="0" width="1" length="1" height="1"/>
+    </ModelElement>
+    <ModelElement name="ClueSquareRight">
+      <Element  type="Spindizzy/SwitchSquareRight" x="0" y="0" z="0" width="1" length="1" height="1"/>
+    </ModelElement>
+    <ModelElement name="ClueSquareBoth">
+      <Element  type="Spindizzy/SwitchSquareBoth" x="0" y="0" z="0" width="1" length="1" height="1"/>
+    </ModelElement>
+    <ModelElement name="ThemeModelIcon">
+      <Element  type="Spindizzy/Plain" x="0" y="0" z="0" width="1" length="1" height="1"/>
+    </ModelElement>
     <ModelScriptable name="ModelScriptable">
       <Instance name="PrimarySwitchState"/>
       <Instance name="SecondarySwitchState"/>
@@ -7088,20 +7114,20 @@ end</Code>
     </Element>
   </Layer>
   <Layer type="IsoRealms/HUD">
-    <Element bottom="align IsoRealms/JewelCountDisplay" left="align IsoRealms/JewelCountDisplay" right="align IsoRealms/ScoreIcon" type="IsoRealms/HUDPanel" top="align IsoRealms/ScoreIcon"/>
-    <Element bottom="align IsoRealms/ZonesToExploreDisplay" right="align IsoRealms/ZonesToExploreDisplay" left="align IsoRealms/MapIcon" type="IsoRealms/HUDPanel" top="align IsoRealms/TimeIcon"/>
-    <Element bottom="align IsoRealms/Clue" left="align IsoRealms/Clue" right="align IsoRealms/Compass" type="IsoRealms/HUDPanel" top="align IsoRealms/Clue"/>
-    <Element right="0.000000" scale="0.087000" type="IsoRealms/PrimarySwitchState" top="0.980000"/>
-    <Element left="0.000000" scale="0.087000" type="IsoRealms/SecondarySwitchState" top="0.980000"/>
-    <Element left="adjacent IsoRealms/SecondarySwitchState" scale="0.087000" type="IsoRealms/Compass" top="0.980000"/>
-    <Element right="adjacent IsoRealms/PrimarySwitchState" scale="0.087000" type="IsoRealms/Clue" top="0.980000"/>
-    <Element right="0.980000" scale="0.045000" type="IsoRealms/ScoreIcon" top="0.980000"/>
-    <Element left="-0.980000" scale="0.045000" type="IsoRealms/TimeIcon" top="0.980000"/>
-    <Element right="0.980000" scale="0.045000" type="IsoRealms/JewelIcon" top="adjacent IsoRealms/ScoreIcon"/>
-    <Element left="-0.980000" scale="0.045000" type="IsoRealms/MapIcon" top="adjacent IsoRealms/TimeIcon"/>
-    <Element left="adjacent IsoRealms/TimeIcon" scale="0.045000" type="IsoRealms/TimeDisplay" top="0.980000"/>
-    <Element right="adjacent IsoRealms/ScoreIcon" scale="0.045000" type="IsoRealms/ScoreDisplay" top="0.980000"/>
-    <Element left="adjacent IsoRealms/MapIcon" scale="0.045000" type="IsoRealms/ZonesToExploreDisplay" top="adjacent IsoRealms/ScoreIcon"/>
-    <Element right="adjacent IsoRealms/JewelIcon" scale="0.045000" type="IsoRealms/JewelCountDisplay" top="adjacent IsoRealms/TimeIcon"/>
+    <Element name="PanelRight" bottom="align ValueJewel" left="align ValueJewel" right="align IconScore" type="IsoRealms/HUDPanel" top="align IconScore"/>
+    <Element name="PanelLift" bottom="align ValueMap" right="align ValueMap" left="align IconMap" type="IsoRealms/HUDPanel" top="align IconTime"/>
+    <Element name="PanelMiddle" bottom="align Clue" left="align Clue" right="align Compass" type="IsoRealms/HUDPanel" top="align Clue"/>
+    <Element name="SwitchStatePrimary" right="0.000000" scale="0.087000" type="IsoRealms/PrimarySwitchState" top="0.980000"/>
+    <Element name="SwitchStateSecondary" left="0.000000" scale="0.087000" type="IsoRealms/SecondarySwitchState" top="0.980000"/>
+    <Element name="Compass" left="adjacent SwitchStateSecondary" scale="0.087000" type="IsoRealms/Compass" top="0.980000"/>
+    <Element name="Clue" right="adjacent SwitchStatePrimary" scale="0.087000" type="IsoRealms/Clue" top="0.980000"/>
+    <Element name="IconScore" right="0.980000" scale="0.045000" type="IsoRealms/ScoreIcon" top="0.980000"/>
+    <Element name="IconTime" left="-0.980000" scale="0.045000" type="IsoRealms/TimeIcon" top="0.980000"/>
+    <Element name="IconJewel" right="0.980000" scale="0.045000" type="IsoRealms/JewelIcon" top="adjacent IconScore"/>
+    <Element name="IconMap" left="-0.980000" scale="0.045000" type="IsoRealms/MapIcon" top="adjacent IconTime"/>
+    <Element name="ValueTime" left="adjacent IconTime" scale="0.045000" type="IsoRealms/TimeDisplay" top="0.980000"/>
+    <Element name="ValueScore" right="adjacent IconScore" scale="0.045000" type="IsoRealms/ScoreDisplay" top="0.980000"/>
+    <Element name="ValueMap" left="adjacent IconMap" scale="0.045000" type="IsoRealms/ZonesToExploreDisplay" top="adjacent IconScore"/>
+    <Element name="ValueJewel" right="adjacent IconJewel" scale="0.045000" type="IsoRealms/JewelCountDisplay" top="adjacent IconTime"/>
   </Layer>
 </Project>

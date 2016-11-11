@@ -88,7 +88,7 @@ void ResourceElementSpindizzyCraft::initialiseResource(DOMNodeWrapper* node, IRe
   }
 }
 
-void ResourceElementSpindizzyCraft::loadElement(DOMNodeWrapper* node, BlockLocation* relative, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
+void ResourceElementSpindizzyCraft::loadElement(DOMNodeWrapper* node, BlockLocation* relative, IElementContainer* container, IResourceAccessor* resources, bool asTemplate, bool independent) {
   std::string mInstance = node->getAttribute("instance");
   if (mInstance == "") {
     ElementSpindizzyCraft* mLoadedGERALD = new ElementSpindizzyCraft(this, cResources, node);

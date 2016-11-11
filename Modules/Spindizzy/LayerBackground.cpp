@@ -85,7 +85,7 @@ bool LayerBackground::input(SDL_Event&) {
 
 void LayerBackground::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   std::string mInstanceName = cLayerType->getInstanceName(this);
-  node->addAttribute("name", mInstanceName);
+  node->addAttribute("instance", mInstanceName);
   node->addAttribute("type", resourceLocator->getPath(cLayerType));
 }
 

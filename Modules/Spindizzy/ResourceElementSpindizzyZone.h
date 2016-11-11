@@ -94,7 +94,7 @@ class ResourceElementSpindizzyZone:public ISpindizzyZoneThemeListener,
   /***************************\
    * Implements IElementType *
   \***************************/
-  void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*, bool);
+  void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*, bool, bool);
   void configureElement();
   void setEditingContext(BlockLocation*, IComponentContainer*);
   void renderEditingPreview(Vertex&);

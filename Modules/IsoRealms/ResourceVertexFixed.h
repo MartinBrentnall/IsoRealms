@@ -19,7 +19,7 @@
 #ifndef RESOURCE_VERTEX_FIXED_H
 #define RESOURCE_VERTEX_FIXED_H
 
-#include <IsoRealms/LuaSupport/ArgumentValue.h>
+#include <IsoRealms/LuaSupport/ArgumentValueCustomType.h>
 #include <IsoRealms/Persistence/DOMNodeWriter.h>
 #include <IsoRealms/Resources/IDummyModule.h>
 #include <IsoRealms/Resources/IResourceAccessor.h>

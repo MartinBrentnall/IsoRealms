@@ -196,6 +196,8 @@ void ElementSpindizzyLift::renderRuntime() {
 }
 
 void ElementSpindizzyLift::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& relative) {
+  std::string mElementTypePath = resourceLocator->getPath(cLiftType);
+  node->addAttribute("type", mElementTypePath);
   cLocation.saveRelative(node, relative);
   node->addAttribute("top", cTop - relative.z);
   node->addAttribute("bottom", cBottom - relative.z);

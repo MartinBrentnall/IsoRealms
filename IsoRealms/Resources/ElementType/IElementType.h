@@ -47,7 +47,7 @@ class IElementType:public IResource {
    * @param DOMNodeWrapper*  The node to parse from.
    * @returns  The parsed element.
    */
-  virtual void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*, bool) = 0;
+  virtual void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*, bool, bool) = 0;
   
   /**
    * Signal to the type that the user wishes to configure the element.  This

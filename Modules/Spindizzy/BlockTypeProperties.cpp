@@ -223,6 +223,19 @@ void BlockTypeProperties::saveTexture(DOMNodeWriter* node, const std::string& ty
   }
 }
 
+void BlockTypeProperties::saveTextureFloor(DOMNodeWriter* node, const std::string& type, ITexture* texture, IResourceLocator* resourceLocator, TextureRotation rotation) {
+  if (texture != nullptr) {
+    DOMNodeWriter* mTextureNode = node->addBranch("Texture");
+    mTextureNode->addAttribute("type", type);
+    mTextureNode->addAttribute("name", resourceLocator->getPath(texture));
+    if (rotation != STRAIGHT) {
+      mTextureNode->addAttribute("rotate", cSurfaceRotation == LEFT  ? "Left" 
+                                         : cSurfaceRotation == RIGHT ? "Right"
+                                         :                             "Reverse");
+    }
+  }
+}
+
 void BlockTypeProperties::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   node->addAttribute("friction", cSurfaceFriction);
   node->addAttribute("grip", cSurfaceGrip);
@@ -232,14 +245,14 @@ void BlockTypeProperties::save(DOMNodeWriter* node, IResourceLocator* resourceLo
   resourceLocator->saveScript(node, "ContactScript", cContactScript);
   if (cWallType == TILED) {
     node->addAttribute("wallType", "tiled");
-    saveTexture(node, "Surface", cSurfaceTexture, resourceLocator);
+    saveTextureFloor(node, "Surface", cSurfaceTexture, resourceLocator, cSurfaceRotation);
     saveTexture(node, "WallWest", cWestWallTexture, resourceLocator);
     saveTexture(node, "WallEast", cEastWallTexture, resourceLocator);
     saveTexture(node, "WallSouth", cSouthWallTexture, resourceLocator);
     saveTexture(node, "WallNorth", cNorthWallTexture, resourceLocator);
   } else if (cWallType == CAPPED) {
     node->addAttribute("wallType", "capped");
-    saveTexture(node, "Surface", cSurfaceTexture, resourceLocator);
+    saveTextureFloor(node, "Surface", cSurfaceTexture, resourceLocator, cSurfaceRotation);
     saveTexture(node, "NESplitSurface", cSurfaceSplitNETexture, resourceLocator);
     saveTexture(node, "NWSplitSurface", cSurfaceSplitNWTexture, resourceLocator);
     saveTexture(node, "WallWest", cWestWallTexture, resourceLocator);

@@ -31,13 +31,18 @@ void ResourceModelElement::destroyModel(I3DModel* model) {
 
 void ResourceModelElement::save(DOMNodeWriter* node, IResourceLocator* resources) {
   cElement->save(node, resources, cIdentity);
-  node->addAttribute("independent", "true");
 }
 
 void ResourceModelElement::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
-  resources->loadElement(node, &cIdentity, this, false);
-  Vertex* mVertex = new Vertex(0.0f, 0.0f, 0.0f);
-  cSampleModel = new ModelElement(&cElement, mVertex, 1.0f);
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper* mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "Element") {
+      resources->loadElement(mNode, &cIdentity, this, false, true);
+      Vertex* mVertex = new Vertex(0.0f, 0.0f, 0.0f);
+      cSampleModel = new ModelElement(&cElement, mVertex, 1.0f);
+    }
+  }
 }
 
 void ResourceModelElement::addElement(IElement* element) {

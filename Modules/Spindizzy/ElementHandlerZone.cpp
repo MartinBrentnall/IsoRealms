@@ -115,3 +115,7 @@ IElementContainer* ElementHandlerZone::getElementContainer() {
 void ElementHandlerZone::reset() {
   cElements.reset();
 }
+
+bool ElementHandlerZone::isImplicit() {
+  return true;
+}

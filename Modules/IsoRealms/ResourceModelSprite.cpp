@@ -73,7 +73,7 @@ void ResourceModelSprite::initialiseResource(DOMNodeWrapper* node, IResourceAcce
 
 void ResourceModelSprite::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   node->addAttribute("texture", resourceLocator->getPath(cTexture));
-  node->addAttribute("size", cSize, 1.0f);
+  node->addAttribute("size", cSize);
   if (cFlip) {
     node->addAttribute("rotate", "Reverse");
   }
@@ -82,10 +82,10 @@ void ResourceModelSprite::save(DOMNodeWriter* node, IResourceLocator* resourceLo
     node->addAttribute("camera", mCameraPath);
   }
   if (cApplyCameraRotation) {
-    node->addAttribute("applyCameraRotation", true);
+    node->addAttribute("applyCameraRotation", "true");
   }
   if (cApplyCameraTilt) {
-    node->addAttribute("applyCameraTilt", true);
+    node->addAttribute("applyCameraTilt", "true");
   }
   node->addAttribute("offsetRotation", cOffsetRotation, 0.0f);
   node->addAttribute("offsetZ", cOffsetZ, 0.0f);

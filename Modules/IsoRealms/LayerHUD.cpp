@@ -25,6 +25,7 @@ LayerHUD::LayerHUD(DOMNodeWrapper* node, IResourceAccessor* resources, ILayerTyp
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Element") {
       std::string mComponentSource = mNode->getAttribute("type");
+      std::string mComponentName = mNode->getAttribute("name");
       float mScale = mNode->getFloatAttribute("scale");
       if (mScale <= 0.0f) {
         mScale = 1.0f;
@@ -35,9 +36,9 @@ LayerHUD::LayerHUD(DOMNodeWrapper* node, IResourceAccessor* resources, ILayerTyp
       IHUDComponentRelation* mBottomRelation = getRelation(mNode->getAttribute("bottom"), "bottom");
       IHUDComponentRelation* mTopRelation    = getRelation(mNode->getAttribute("top"),    "top");
       HUDComponentPosition* mHUDRenderer = new HUDComponentPosition(mLeftRelation, mRightRelation, mTopRelation, mBottomRelation, mScale, mScale);
-      resources->loadElement(mNode, nullptr, mHUDRenderer, false);
+      resources->loadElement(mNode, nullptr, mHUDRenderer, false, false);
       cComponents.push_back(mHUDRenderer);
-      HUDComponentProxy* mHUDComponentProxy = getComponentProxy(mComponentSource);
+      HUDComponentProxy* mHUDComponentProxy = getComponentProxy(mComponentName);
       mHUDComponentProxy->setHUDComponentPosition(mHUDRenderer);
     } else {
       // TODO: Throw
@@ -138,10 +139,10 @@ bool LayerHUD::input(SDL_Event& event) {
 void LayerHUD::save(DOMNodeWriter* node, IResourceLocator* resources) {
   node->addAttribute("type", resources->getPath(cLayerType));
   for (unsigned int i = 0; i < cComponents.size(); i++) {
-    DOMNodeWriter* mComponentNode = node->addBranch("Component");
-    std::string mSource = getSource(cComponents[i]);
-    mComponentNode->addAttribute("source", mSource);
-    cComponents[i]->save(mComponentNode, this);
+    DOMNodeWriter* mComponentNode = node->addBranch("Element");
+    std::string mComponentName = getSource(cComponents[i]);
+    mComponentNode->addAttribute("name", mComponentName);
+    cComponents[i]->save(mComponentNode, this, resources);
   }
 }
 

@@ -54,7 +54,7 @@ class HUDComponentPosition : public IElementContainer {
   float getRight();
   float getBottom();
   float getTop();
-  void save(DOMNodeWriter*, IComponentSources*);
+  void save(DOMNodeWriter*, IComponentSources*, IResourceLocator*);
 
   /********************************\
    * Implements IElementContainer * 

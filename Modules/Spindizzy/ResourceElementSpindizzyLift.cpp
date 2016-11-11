@@ -60,7 +60,7 @@ ISpindizzyLiftSet* ResourceElementSpindizzyLift::getSpindizzyLiftInterface() {
   return cModuleInterface;
 }
 
-void ResourceElementSpindizzyLift::loadElement(DOMNodeWrapper* node, BlockLocation* relative, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
+void ResourceElementSpindizzyLift::loadElement(DOMNodeWrapper* node, BlockLocation* relative, IElementContainer* container, IResourceAccessor* resources, bool asTemplate, bool independent) {
   if (!asTemplate) {
     cProperties->reset();
     BlockLocation mStartLocation;

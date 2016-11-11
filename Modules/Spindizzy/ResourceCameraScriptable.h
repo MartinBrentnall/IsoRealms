@@ -23,7 +23,7 @@
 
 #include <IsoRealms/Configuration.h>
 #include <IsoRealms/IsoRealmsConstants.h>
-#include <IsoRealms/LuaSupport/ArgumentValue.h>
+#include <IsoRealms/LuaSupport/ArgumentValueCustomType.h>
 #include <IsoRealms/MiscFunctions.h>
 #include <IsoRealms/Resources/Camera/ICamera.h>
 #include <IsoRealms/Resources/IDummyModule.h>

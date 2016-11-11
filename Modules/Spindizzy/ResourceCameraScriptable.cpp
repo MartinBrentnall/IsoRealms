@@ -30,7 +30,7 @@ ResourceCameraScriptable::ResourceCameraScriptable(IDummyModule* module, DOMNode
   cTiltUpdated = false;
   cZoomUpdated = false;
   cLocationUpdated = false;
-  IArgumentValue* mArgumentValue = new ArgumentValue<ResourceCameraScriptable>(this);
+  IArgumentValue* mArgumentValue = new ArgumentValueCustomType<ResourceCameraScriptable>(this);
   resourceRegistry->add(mArgumentValue, "Camera", node->getAttribute("name"));
 }
 

@@ -155,7 +155,9 @@ float HUDComponentPosition::getTop() {
   return mYPosition + mYScale;
 }
 
-void HUDComponentPosition::save(DOMNodeWriter* node, IComponentSources* sources) {
+void HUDComponentPosition::save(DOMNodeWriter* node, IComponentSources* sources, IResourceLocator* resourceLocator) {
+  IElementType* mType = cComponent->getElementType();
+  node->addAttribute("type", resourceLocator->getPath(mType));
   if ((cTopRelation == nullptr || cBottomRelation == nullptr) && (cLeftRelation == nullptr || cRightRelation == nullptr) && (cXScale == cYScale && cXScale != 1.0f)) {
     node->addAttribute("scale", cXScale);
   } else {
