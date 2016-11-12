@@ -54,7 +54,7 @@ void ElementHandlerSpindizzyBlock::unsetValue() {
   cModuleInterface->setArgumentValue(nullptr);
 }
 
-void ElementHandlerSpindizzyBlock::addElement(ElementSpindizzyBlock* element) {
+void ElementHandlerSpindizzyBlock::addElement(ISpindizzyBlock* element) {
   cElements.addElement(element);
   Condition* mCondition = element->getCondition();
   if (mCondition != nullptr) {
@@ -75,7 +75,7 @@ void ElementHandlerSpindizzyBlock::addElement(ElementSpindizzyBlock* element) {
   }
 }
 
-void ElementHandlerSpindizzyBlock::removeElement(ElementSpindizzyBlock* element) {
+void ElementHandlerSpindizzyBlock::removeElement(ISpindizzyBlock* element) {
   cElements.removeElement(element);
 }
 

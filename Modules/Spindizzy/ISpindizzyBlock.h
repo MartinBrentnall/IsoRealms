@@ -29,6 +29,8 @@
 class ISpindizzyBlock:public Element {
   public:
   virtual std::set<IBoolean*> getInputs() = 0;
+  virtual Condition* getCondition() = 0;
+
 };
 
 #endif

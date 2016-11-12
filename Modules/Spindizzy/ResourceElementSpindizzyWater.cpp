@@ -45,10 +45,11 @@ void ResourceElementSpindizzyWater::loadElement(DOMNodeWrapper* node, BlockLocat
     mEndLocation.setRelative(node, mStartLocation, "width", "length", "height");
     mEndLocation.z++;
     ElementSpindizzyWater* mLoadedWater = new ElementSpindizzyWater(this, &mStartLocation, &mEndLocation, &cTexture, container);
+    ElementHandlerSpindizzyBlock* mHandler = cModuleInterface->getElementHandlerSpindizzyBlock(container);  
     cContent.push_back(mLoadedWater);
     cModuleInterface->registerSurfaceProvider(mLoadedWater, false);
     cModuleInterface->setDirty();
-    container->addElement(mLoadedWater);
+    mHandler->addElement(mLoadedWater);
   }
 }
 

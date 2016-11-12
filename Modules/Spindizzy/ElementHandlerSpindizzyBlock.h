@@ -22,8 +22,9 @@
 #include <IsoRealms/Resources/ElementType/Element.h>
 #include <IsoRealms/Resources/ElementType/ElementCollection.h>
 
-#include "ElementSpindizzyBlock.h"
+#include "ISpindizzyBlock.h"
 #include "ISpindizzyBlockSet.h"
+#include "ISpindizzyElementManager.h"
 #include "SpindizzyBlockState.h"
 
 class ElementHandlerSpindizzyBlock:public Element,
@@ -32,14 +33,14 @@ class ElementHandlerSpindizzyBlock:public Element,
   private:
   ISpindizzyBlockSet* cModuleInterface;
   IElementContainer* cContainer;
-  ElementCollection<ElementSpindizzyBlock> cElements;
+  ElementCollection<ISpindizzyBlock> cElements;
   std::vector<SpindizzyBlockState*> cClues;
 
   public:
   ElementHandlerSpindizzyBlock(ISpindizzyBlockSet*, IElementContainer*);
 
-  void addElement(ElementSpindizzyBlock*);
-  void removeElement(ElementSpindizzyBlock*);
+  void addElement(ISpindizzyBlock*);
+  void removeElement(ISpindizzyBlock*);
   bool isEmpty();
 
   /***********************\

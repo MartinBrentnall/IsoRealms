@@ -159,6 +159,8 @@ bool ElementSpindizzyWater::initElement(unsigned int pass) {
 }
 
 void ElementSpindizzyWater::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& location) {
+  std::string mElementTypePath = resourceLocator->getPath(cWaterType);
+  node->addAttribute("type", mElementTypePath);
   cStartLocation.saveRelative(node, location);
   // TODO: Only save size if it's bigger than 1.
   cEndLocation.saveRelative(node, cStartLocation, "width", "length", "height");
