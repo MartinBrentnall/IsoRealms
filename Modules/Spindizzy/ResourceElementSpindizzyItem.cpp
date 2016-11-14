@@ -72,8 +72,9 @@ bool ResourceElementSpindizzyItem::keyDown(SDLKey& key, ILayerEditingContext* ed
       mGridLocation.x = std::round(mLocation->x);
       mGridLocation.y = std::round(mLocation->y);
       mGridLocation.z = std::round(mLocation->z * 2.0);
-      ElementSpindizzyItem* mJewel = new ElementSpindizzyItem(this, &mGridLocation, cModelType, nullptr);
+      ElementSpindizzyItem* mJewel = new ElementSpindizzyItem(this, &mGridLocation, cModelType, mElementContainer);
       mElementContainer->addElement(mJewel);
+      mElementContainer->setDirty(mJewel);
       cContent.push_back(mJewel);
       return true;
     }
