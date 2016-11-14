@@ -31,6 +31,7 @@
 #include <IsoRealms/Resources/3DModel/I3DModelType.h>
 #include <IsoRealms/Resources/ElementType/Element.h>
 
+#include "ICollidableSurfaceElement.h"
 #include "IElementSpindizzyDynamic.h"
 #include "IRollableSurface.h"
 #include "ISpindizzyLiftSet.h"
@@ -38,7 +39,8 @@
 #include "LiftSurfaceCollisionEvent.h"
 #include "SpindizzyLiftProperties.h"
 
-class ElementSpindizzyLift:public IRollableSurface,
+class ElementSpindizzyLift:public ICollidableSurfaceElement,
+                           public IRollableSurface,
                            public IElementSpindizzyDynamic,
                            public IElementBounds {
   private:

@@ -507,7 +507,7 @@ void ElementSpindizzyBlock::generateWallSurfaces(IWallSurface::FaceDirection fac
   std::vector<IWallSurfaceTemplate*> mWallSurfaces = calculateWallSurfaces(faceDirection, false);
   for (unsigned int i = 0; i < mWallSurfaces.size(); i++) {
     ISpindizzyWallSurface* mWallSurface = createSubSurface(mWallSurfaces[i]);
-    mSpindizzyBlockSet->registerWallSurface(mWallSurface);
+    mSpindizzyBlockSet->registerWallSurface(this, mWallSurface);
     mSpindizzyBlockSet->destroyWallTemplate(mWallSurfaces[i], false);
   }
 
@@ -544,7 +544,7 @@ bool ElementSpindizzyBlock::initElement(unsigned int pass) {
         int mWest = mTopTileSurfaces[i]->getWest();
         Condition* mCondition = mTopTileSurfaces[i]->getCondition();
         ISpindizzyTileSurface* mTileSurface = createSubSurface(ITileSurface::UP, mNorth, mEast, mSouth, mWest, mCondition);
-        mSpindizzyBlockSet->registerRollableSurface(mTileSurface);
+        mSpindizzyBlockSet->registerRollableSurface(this, mTileSurface);
         mSpindizzyBlockSet->destroyTileTemplate(mTopTileSurfaces[i], false);
       }
 
@@ -585,23 +585,20 @@ bool ElementSpindizzyBlock::isFlat() {
 
 void ElementSpindizzyBlock::setDirty() {
   ISpindizzyBlockSet* mSpindizzyBlockSet = cBlockType->getSpindizzyBlockInterface();
+  mSpindizzyBlockSet->unregisterSurfaces(this);
   for (ISpindizzyTileSurface* mTileSurface : cStaticTileSurfaces) {
-    mSpindizzyBlockSet->unregisterRollableSurface(mTileSurface);
     delete mTileSurface;
   }
   cStaticTileSurfaces.clear();
   for (ISpindizzyWallSurface* mWallSurface : cStaticWallSurfaces) {
-    mSpindizzyBlockSet->unregisterWallSurface(mWallSurface);
     delete mWallSurface;
   }
   cStaticWallSurfaces.clear();
   for (ISpindizzyTileSurface* mTileSurface : cDynamicTileSurfaces) {
-    mSpindizzyBlockSet->unregisterRollableSurface(mTileSurface);
     delete mTileSurface;
   }
   cDynamicTileSurfaces.clear();
   for (ISpindizzyWallSurface* mWallSurface : cDynamicWallSurfaces) {
-    mSpindizzyBlockSet->unregisterWallSurface(mWallSurface);
     delete mWallSurface;
   }
   cDynamicWallSurfaces.clear();
@@ -665,20 +662,17 @@ void ElementSpindizzyBlock::save(DOMNodeWriter* node, IResourceLocator* resource
 
 ElementSpindizzyBlock::~ElementSpindizzyBlock() {
   ISpindizzyBlockSet* mSpindizzyBlockSet = cBlockType->getSpindizzyBlockInterface();
+  mSpindizzyBlockSet->unregisterSurfaces(this);
   for (unsigned int i = 0; i < cStaticTileSurfaces.size(); i++) {
-    mSpindizzyBlockSet->unregisterRollableSurface(cStaticTileSurfaces[i]);
     delete cStaticTileSurfaces[i];
   }
   for (unsigned int i = 0; i < cStaticWallSurfaces.size(); i++) {
-    mSpindizzyBlockSet->unregisterWallSurface(cStaticWallSurfaces[i]);
     delete cStaticWallSurfaces[i];
   }
   for (unsigned int i = 0; i < cDynamicTileSurfaces.size(); i++) {
-    mSpindizzyBlockSet->unregisterRollableSurface(cDynamicTileSurfaces[i]);
     delete cDynamicTileSurfaces[i];
   }
   for (unsigned int i = 0; i < cDynamicWallSurfaces.size(); i++) {
-    mSpindizzyBlockSet->unregisterWallSurface(cDynamicWallSurfaces[i]);
     delete cDynamicWallSurfaces[i];
   }
 //  delete cCondition;

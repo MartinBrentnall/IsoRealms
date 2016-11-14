@@ -28,14 +28,23 @@
 #include <IsoRealms/Struct/SpatialContainer2D.h>
 
 #include "IRollableSurface.h"
+#include "ICollidableSurfaceElement.h"
 #include "ICollidableWallSurface.h"
 
 class ResourceSurfaceRegistry {
   private:
+    
+  class ElementSurfaces {
+    public:
+    std::vector<IRollableSurface*> cFloorSurfaces;
+    std::vector<ICollidableWallSurface*> cWallSurfaces;
+  };
+    
   SDL_mutex* cAccessMutex;
   SpatialContainer2D<IRollableSurface> cRollableSurfaces;
   SpatialContainer2D<IRollableSurface> cInterceptingSurfaces;
   SpatialContainer2D<ICollidableWallSurface> cWallSurfaces;
+  std::map<ICollidableSurfaceElement*, ElementSurfaces*> cElementSurfaces;
 
   public:
   ResourceSurfaceRegistry();
@@ -43,8 +52,9 @@ class ResourceSurfaceRegistry {
   /*******************************\
    * Implements ISurfaceRegistry *
   \*******************************/
-  void registerRollableSurface(IRollableSurface*, bool);
-  void registerWallSurface(ICollidableWallSurface*);
+  void registerRollableSurface(ICollidableSurfaceElement*, IRollableSurface*, bool);
+  void registerWallSurface(ICollidableSurfaceElement*, ICollidableWallSurface*);
+  void unregisterSurfaces(ICollidableSurfaceElement*);
   void unregisterRollableSurface(IRollableSurface*);
   void unregisterWallSurface(ICollidableWallSurface*);
   ICollisionData* getNextEvent(Vertex&, Vertex&, IRollableSurface*, float);

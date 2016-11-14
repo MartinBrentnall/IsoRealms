@@ -43,7 +43,8 @@
 /**
  * TODO: Refactor dynamic_casts into static_casts.
  */
-class ElementSpindizzyBlock:public ISpindizzyBlock,
+class ElementSpindizzyBlock:public ICollidableSurfaceElement,
+                            public ISpindizzyBlock,
                             public IGeometricElement,
                             public IArgument,
                             public IElementBounds {

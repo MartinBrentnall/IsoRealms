@@ -22,19 +22,52 @@ ResourceSurfaceRegistry::ResourceSurfaceRegistry() {
   cAccessMutex = SDL_CreateMutex();
 }
 
-void ResourceSurfaceRegistry::registerRollableSurface(IRollableSurface* rollableSurface, bool intercepting) {
+void ResourceSurfaceRegistry::registerRollableSurface(ICollidableSurfaceElement* element , IRollableSurface* rollableSurface, bool intercepting) {
   while (SDL_mutexP(cAccessMutex) == -1);
   if (intercepting) {
     cInterceptingSurfaces.add(rollableSurface);
   } else {
     cRollableSurfaces.add(rollableSurface);
   }
+  
+  ElementSurfaces* mElementSurfaces = cElementSurfaces[element];
+  if (mElementSurfaces == nullptr) {
+    mElementSurfaces = new ElementSurfaces();
+    cElementSurfaces[element] = mElementSurfaces;
+  }
+  mElementSurfaces->cFloorSurfaces.push_back(rollableSurface);
+  
   SDL_mutexV(cAccessMutex);
 }
 
-void ResourceSurfaceRegistry::registerWallSurface(ICollidableWallSurface* wallSurface) {
+void ResourceSurfaceRegistry::registerWallSurface(ICollidableSurfaceElement* element, ICollidableWallSurface* wallSurface) {
   while (SDL_mutexP(cAccessMutex) == -1);
   cWallSurfaces.add(wallSurface);
+
+  ElementSurfaces* mElementSurfaces = cElementSurfaces[element];
+  if (mElementSurfaces == nullptr) {
+    mElementSurfaces = new ElementSurfaces();
+    cElementSurfaces[element] = mElementSurfaces;
+  }
+  mElementSurfaces->cWallSurfaces.push_back(wallSurface);
+
+  SDL_mutexV(cAccessMutex);
+}
+
+void ResourceSurfaceRegistry::unregisterSurfaces(ICollidableSurfaceElement* element) {
+  while (SDL_mutexP(cAccessMutex) == -1);
+  std::map<ICollidableSurfaceElement*, ElementSurfaces*>::iterator mElementSurfaces = cElementSurfaces.find(element);
+  if (mElementSurfaces != cElementSurfaces.end()) {
+    for (IRollableSurface* mFloorSurface : mElementSurfaces->second->cFloorSurfaces) {
+      cRollableSurfaces.remove(mFloorSurface);
+      cInterceptingSurfaces.remove(mFloorSurface);
+    }
+    for (ICollidableWallSurface* mWallSurface : mElementSurfaces->second->cWallSurfaces) {
+      cWallSurfaces.remove(mWallSurface);
+    }
+    delete mElementSurfaces->second;
+    cElementSurfaces.erase(element);
+  }
   SDL_mutexV(cAccessMutex);
 }
 

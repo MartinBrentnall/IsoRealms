@@ -23,6 +23,7 @@
 #include <IsoRealms/Resources/ElementType/IElementContainer.h>
 
 #include "ElementHandlerSpindizzyDynamic.h"
+#include "ICollidableSurfaceElement.h"
 #include "IRollableSurface.h"
 #include "SpindizzyLiftProperties.h"
 
@@ -32,7 +33,7 @@ class ISpindizzyLiftSet {
   public:
   virtual SpindizzyLiftProperties* getSpindizzyLiftProperties() = 0;
   virtual void executeLiftMovedScript() = 0;
-  virtual void registerInterceptingSurface(IRollableSurface*) = 0;
+  virtual void registerInterceptingSurface(ICollidableSurfaceElement*, IRollableSurface*) = 0;
   virtual bool isLocked() = 0;
   virtual bool isEditing() = 0;
   virtual ElementHandlerSpindizzyDynamic* getDynamicElementHandler(IElementContainer*) = 0;

@@ -207,8 +207,9 @@ class SpindizzyModule:public IModule,
   std::vector<IWallSurfaceTemplate*> getWallSurfaces(IGeometricElement*, IWallSurface::FaceDirection, bool);
   void destroyTileTemplate(ITileSurfaceTemplate*, bool);
   void destroyWallTemplate(IWallSurfaceTemplate*, bool);
-  void registerRollableSurface(IRollableSurface*);
-  void registerWallSurface(ICollidableWallSurface*);
+  void registerRollableSurface(ICollidableSurfaceElement*, IRollableSurface*);
+  void registerWallSurface(ICollidableSurfaceElement*, ICollidableWallSurface*);
+  void unregisterSurfaces(ICollidableSurfaceElement*);
   void unregisterRollableSurface(IRollableSurface*);
   void unregisterWallSurface(ICollidableWallSurface*);
   std::vector<ConditionElement*> getConditionElements();
@@ -236,7 +237,7 @@ class SpindizzyModule:public IModule,
   \********************************/
   SpindizzyLiftProperties* getSpindizzyLiftProperties();
   void executeLiftMovedScript();
-  void registerInterceptingSurface(IRollableSurface*);
+  void registerInterceptingSurface(ICollidableSurfaceElement*, IRollableSurface*);
   void registerElement(IElementContainer*, ElementSpindizzyLift*);
   
   /***********************************\

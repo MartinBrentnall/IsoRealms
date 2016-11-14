@@ -290,12 +290,16 @@ void SpindizzyModule::destroyWallTemplate(IWallSurfaceTemplate* wallTemplate, bo
   (visual ? cVisualProcessor : cPhysicalProcessor)->destroyWallTemplate(wallTemplate);
 }
 
-void SpindizzyModule::registerRollableSurface(IRollableSurface* rollableSurface) {
-  cSurfaceRegistry->registerRollableSurface(rollableSurface, false);
+void SpindizzyModule::registerRollableSurface(ICollidableSurfaceElement* element, IRollableSurface* rollableSurface) {
+  cSurfaceRegistry->registerRollableSurface(element, rollableSurface, false);
 }
 
-void SpindizzyModule::registerWallSurface(ICollidableWallSurface* wallSurface) {
-  cSurfaceRegistry->registerWallSurface(wallSurface);
+void SpindizzyModule::registerWallSurface(ICollidableSurfaceElement* element, ICollidableWallSurface* wallSurface) {
+  cSurfaceRegistry->registerWallSurface(element, wallSurface);
+}
+
+void SpindizzyModule::unregisterSurfaces(ICollidableSurfaceElement* element) {
+  cSurfaceRegistry->unregisterSurfaces(element);
 }
 
 void SpindizzyModule::unregisterRollableSurface(IRollableSurface* rollableSurface) {
@@ -394,8 +398,8 @@ void SpindizzyModule::executeLiftMovedScript() {
   cLiftMovedScript->execute();
 }
 
-void SpindizzyModule::registerInterceptingSurface(IRollableSurface* surface) {
-  cSurfaceRegistry->registerRollableSurface(surface, true);
+void SpindizzyModule::registerInterceptingSurface(ICollidableSurfaceElement* element, IRollableSurface* surface) {
+  cSurfaceRegistry->registerRollableSurface(element, surface, true);
 }
 
 void SpindizzyModule::registerElement(IElementContainer* container, ElementSpindizzyLift* lift) {

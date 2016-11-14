@@ -21,6 +21,7 @@
 
 #include <vector>
 
+#include "ICollidableSurfaceElement.h"
 #include "ICollidableWallSurface.h"
 #include "IRollableSurface.h"
 #include "ITileSurface.h"
@@ -50,8 +51,9 @@ class ISpindizzyBlockSet {
   virtual std::vector<IWallSurfaceTemplate*> getWallSurfaces(IGeometricElement*, IWallSurface::FaceDirection, bool) = 0;
   virtual void destroyTileTemplate(ITileSurfaceTemplate*, bool) = 0;
   virtual void destroyWallTemplate(IWallSurfaceTemplate*, bool) = 0;
-  virtual void registerRollableSurface(IRollableSurface*) = 0;
-  virtual void registerWallSurface(ICollidableWallSurface*) = 0;
+  virtual void registerRollableSurface(ICollidableSurfaceElement*, IRollableSurface*) = 0;
+  virtual void registerWallSurface(ICollidableSurfaceElement*, ICollidableWallSurface*) = 0;
+  virtual void unregisterSurfaces(ICollidableSurfaceElement*) = 0;
   virtual void unregisterRollableSurface(IRollableSurface*) = 0;
   virtual void unregisterWallSurface(ICollidableWallSurface*) = 0;
   virtual std::vector<ConditionElement*> getConditionElements() = 0;
