@@ -104,6 +104,7 @@ class AttractControlLoop:public IModule,
   void updateRuntime(unsigned int);
   void updateEditing(unsigned int);
   bool input(SDL_Event&);
+  bool inputEditor(SDL_Event&);
   void reset();
   
   /**************************\

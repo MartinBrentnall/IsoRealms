@@ -196,7 +196,7 @@ bool SimpleEditor::editorInput(SDL_Event& event) {
   }
   
   if (cSelectedLayer != nullptr) {
-    if (cSelectedLayer->input(event)) {
+    if (cSelectedLayer->inputEditor(event)) {
       return true;
     }
   }
@@ -278,6 +278,10 @@ bool SimpleEditor::input(SDL_Event& event) {
     }
   }
   return false;
+}
+
+bool SimpleEditor::inputEditor(SDL_Event& event) {
+  return false; // We can't edit the editor.
 }
 
 // IElementContainer* SimpleEditor::pushElement(IElement* element) {

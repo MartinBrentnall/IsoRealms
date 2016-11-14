@@ -79,7 +79,11 @@ void LayerBackground::updateEditing(unsigned int milliseconds) {
   // Nothing to do
 }
 
-bool LayerBackground::input(SDL_Event&) {
+bool LayerBackground::input(SDL_Event& event) {
+  return false;
+}
+
+bool LayerBackground::inputEditor(SDL_Event& event) {
   return false;
 }
 

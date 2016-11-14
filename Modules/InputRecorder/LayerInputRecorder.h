@@ -34,6 +34,7 @@ class LayerInputRecorder : public ILayer {
   void renderRuntime();
   void renderEditing();
   bool input(SDL_Event&);
+  bool inputEditor(SDL_Event&);
   void initRuntime();
   void initEditor();
   void save(DOMNodeWriter*, IResourceLocator*);

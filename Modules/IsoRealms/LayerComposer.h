@@ -41,7 +41,8 @@ class LayerComposer:public ILayer {
   void updateEditing(unsigned int);
   void renderRuntime();
   void renderEditing();
-  void input(SDL_Event&);
+  bool input(SDL_Event&);
+  bool inputEditor(SDL_Event&);
   void initRuntime();
   void save(DOMNodeWriter*, IResourceLocator*);
   void staticChanged();

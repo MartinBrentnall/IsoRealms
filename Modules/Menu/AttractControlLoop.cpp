@@ -200,6 +200,10 @@ bool AttractControlLoop::input(SDL_Event& event) {
   return false;
 }
 
+bool AttractControlLoop::inputEditor(SDL_Event& event) {
+  return false;
+}
+  
 void AttractControlLoop::reset() {
   // Not supported
 }

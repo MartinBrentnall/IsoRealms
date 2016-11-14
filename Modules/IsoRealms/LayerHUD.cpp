@@ -136,6 +136,10 @@ bool LayerHUD::input(SDL_Event& event) {
   return false;
 }
 
+bool LayerHUD::inputEditor(SDL_Event& event) {
+  return false; // TODO: Implement this
+}
+
 void LayerHUD::save(DOMNodeWriter* node, IResourceLocator* resources) {
   node->addAttribute("type", resources->getPath(cLayerType));
   for (unsigned int i = 0; i < cComponents.size(); i++) {

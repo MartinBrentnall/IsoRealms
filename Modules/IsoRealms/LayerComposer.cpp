@@ -39,8 +39,12 @@ void LayerComposer::renderEditing() {
   cLayers[0]->renderEditing();
 }
 
-void LayerComposer::input(SDL_Event& event) {
+bool LayerComposer::input(SDL_Event& event) {
   cLayers[0]->input(event);
+}
+
+bool LayerComposer::inputEditor(SDL_Event& event) {
+  return false; // TODO?
 }
 
 void LayerComposer::initRuntime() {

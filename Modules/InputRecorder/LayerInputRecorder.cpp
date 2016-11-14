@@ -36,6 +36,10 @@ bool LayerInputRecorder::input(SDL_Event& event) {
   return false;
 }
 
+bool LayerInputRecorder::inputEditor(SDL_Event& event) {
+  return false;
+}
+
 void LayerInputRecorder::initRuntime() {
 }
 

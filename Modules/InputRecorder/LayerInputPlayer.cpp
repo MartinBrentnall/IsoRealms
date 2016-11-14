@@ -36,6 +36,10 @@ bool LayerInputPlayer::input(SDL_Event& event) {
   return false;
 }
 
+bool LayerInputPlayer::inputEditor(SDL_Event& event) {
+  return false;
+}
+
 void LayerInputPlayer::initRuntime() {
 }
 

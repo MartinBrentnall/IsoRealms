@@ -232,10 +232,11 @@ void LayerSpindizzyMap::renderEditing() {
 }
 
 bool LayerSpindizzyMap::input(SDL_Event& event) {
-  if (cEditingContext != nullptr && cEditingContext->input(event)) {
-    return true;
-  }
   return false;
+}
+
+bool LayerSpindizzyMap::inputEditor(SDL_Event& event) {
+  return cEditingContext->input(event);
 }
 
 LayerSpindizzyMap::~LayerSpindizzyMap() {

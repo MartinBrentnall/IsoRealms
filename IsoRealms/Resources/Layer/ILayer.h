@@ -32,6 +32,7 @@ class ILayer : public virtual IResourceSelectionListener<IElementType> {
   virtual void renderRuntime() = 0;
   virtual void renderEditing() = 0;
   virtual bool input(SDL_Event&) = 0;
+  virtual bool inputEditor(SDL_Event&) = 0;
   virtual void initRuntime() = 0;
   virtual void initEditor() = 0;
   virtual void save(DOMNodeWriter*, IResourceLocator*) = 0;
