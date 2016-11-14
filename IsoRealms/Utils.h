@@ -19,6 +19,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#include <GL/glew.h>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -39,6 +40,9 @@ class Utils {
   
   static std::vector<std::string> split(const std::string&, char = '\n');  
   static std::vector<std::string> splitWords(const std::string&, char = ' ');
+  
+  static void renderVolumeLines(float, float, float, float, float, float);
+  static void renderVolumeMarkers(float, float, float, float, float, float, float);
 };
 
 #endif

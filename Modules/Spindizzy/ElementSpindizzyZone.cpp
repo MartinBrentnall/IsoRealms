@@ -105,50 +105,9 @@ void ElementSpindizzyZone::renderEditing(BlockArea& area, bool valid, bool previ
     glColor3f(1.0f, 0.0f, 0.0f);
   }
   if (cHasFocus || preview) {
-    glVertex3f(xs, ys, z);    glVertex3f(x,  ys, z);
-    glVertex3f(x,  ys, z);    glVertex3f(x,  y,  z);
-    glVertex3f(x,  y,  z);    glVertex3f(xs, y,  z);
-    glVertex3f(xs, y,  z);    glVertex3f(xs, ys, z);
-    glVertex3f(xs, ys, zs);   glVertex3f(x,  ys, zs);
-    glVertex3f(x,  ys, zs);   glVertex3f(x,  y,  zs);
-    glVertex3f(x,  y,  zs);   glVertex3f(xs, y,  zs);
-    glVertex3f(xs, y,  zs);   glVertex3f(xs, ys, zs);
-    glVertex3f(x,  ys, z);    glVertex3f(x,  ys, zs);
-    glVertex3f(x,  y,  z);    glVertex3f(x,  y,  zs);
-    glVertex3f(xs, y,  z);    glVertex3f(xs, y,  zs);
-    glVertex3f(xs, ys, z);    glVertex3f(xs, ys, zs);
+    Utils::renderVolumeLines(x, xs, y, ys, z, zs);
   } else {
-    glVertex3f(x,  y,  z);    glVertex3f(x + IsoRealmsConstants::BLOCK_RADIUS,  y,                                     z);
-    glVertex3f(x,  y,  z);    glVertex3f(x,                                     y + IsoRealmsConstants::BLOCK_RADIUS,  z);
-    glVertex3f(x,  y,  z);    glVertex3f(x,                                     y,                                     z + IsoRealmsConstants::BLOCK_RADIUS);
-
-    glVertex3f(x,  y,  zs);   glVertex3f(x + IsoRealmsConstants::BLOCK_RADIUS,  y,                                     zs);
-    glVertex3f(x,  y,  zs);   glVertex3f(x,                                     y + IsoRealmsConstants::BLOCK_RADIUS,  zs);
-    glVertex3f(x,  y,  zs);   glVertex3f(x,                                     y,                                     zs - IsoRealmsConstants::BLOCK_RADIUS);
-    
-    glVertex3f(x,  ys, z);    glVertex3f(x + IsoRealmsConstants::BLOCK_RADIUS,  ys,                                    z);
-    glVertex3f(x,  ys, z);    glVertex3f(x,                                     ys - IsoRealmsConstants::BLOCK_RADIUS, z);
-    glVertex3f(x,  ys, z);    glVertex3f(x,                                     ys,                                    z + IsoRealmsConstants::BLOCK_RADIUS);
-
-    glVertex3f(x,  ys, zs);   glVertex3f(x + IsoRealmsConstants::BLOCK_RADIUS,  ys,                                    zs);
-    glVertex3f(x,  ys, zs);   glVertex3f(x,                                     ys - IsoRealmsConstants::BLOCK_RADIUS, zs);
-    glVertex3f(x,  ys, zs);   glVertex3f(x,                                     ys,                                    zs - IsoRealmsConstants::BLOCK_RADIUS);
-
-    glVertex3f(xs, y,  z);    glVertex3f(xs - IsoRealmsConstants::BLOCK_RADIUS, y,                                     z);
-    glVertex3f(xs, y,  z);    glVertex3f(xs,                                    y + IsoRealmsConstants::BLOCK_RADIUS,  z);
-    glVertex3f(xs, y,  z);    glVertex3f(xs,                                    y,                                     z + IsoRealmsConstants::BLOCK_RADIUS);
-
-    glVertex3f(xs, y,  zs);   glVertex3f(xs - IsoRealmsConstants::BLOCK_RADIUS, y,                                     zs);
-    glVertex3f(xs, y,  zs);   glVertex3f(xs,                                    y + IsoRealmsConstants::BLOCK_RADIUS,  zs);
-    glVertex3f(xs, y,  zs);   glVertex3f(xs,                                    y,                                     zs - IsoRealmsConstants::BLOCK_RADIUS);
-
-    glVertex3f(xs, ys, z);    glVertex3f(xs - IsoRealmsConstants::BLOCK_RADIUS, ys,                                    z);
-    glVertex3f(xs, ys, z);    glVertex3f(xs,                                    ys - IsoRealmsConstants::BLOCK_RADIUS, z);
-    glVertex3f(xs, ys, z);    glVertex3f(xs,                                    ys,                                    z + IsoRealmsConstants::BLOCK_RADIUS);
-
-    glVertex3f(xs, ys, zs);   glVertex3f(xs - IsoRealmsConstants::BLOCK_RADIUS, ys,                                    zs);
-    glVertex3f(xs, ys, zs);   glVertex3f(xs,                                    ys - IsoRealmsConstants::BLOCK_RADIUS, zs);
-    glVertex3f(xs, ys, zs);   glVertex3f(xs,                                    ys,                                    zs - IsoRealmsConstants::BLOCK_RADIUS);
+    Utils::renderVolumeMarkers(x, xs, y, ys, z, zs, IsoRealmsConstants::BLOCK_RADIUS);
   }
   glColor3f(1.0f, 1.0f, 1.0f);
   glEnd();

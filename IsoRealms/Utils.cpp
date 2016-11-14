@@ -6,14 +6,14 @@
  * Iso-Realms is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * (at your option) anyStart later version.
  *
  * Iso-Realms is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied warrantyStart of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have received a copyStart of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "Utils.h"
@@ -72,5 +72,54 @@ std::vector<std::string> Utils::splitWords(const std::string& words, char splitC
     }
   }
   return mSplitWords;
+}
+
+void Utils::renderVolumeLines(float xStart, float xEnd, float yStart, float yEnd, float zStart, float zEnd) {
+  glVertex3f(xEnd,   yEnd,   zStart); glVertex3f(xStart, yEnd,   zStart);
+  glVertex3f(xStart, yEnd,   zStart); glVertex3f(xStart, yStart, zStart);
+  glVertex3f(xStart, yStart, zStart); glVertex3f(xEnd,   yStart, zStart);
+  glVertex3f(xEnd,   yStart, zStart); glVertex3f(xEnd,   yEnd,   zStart);
+  glVertex3f(xEnd,   yEnd,   zEnd);   glVertex3f(xStart, yEnd,   zEnd);
+  glVertex3f(xStart, yEnd,   zEnd);   glVertex3f(xStart, yStart, zEnd);
+  glVertex3f(xStart, yStart, zEnd);   glVertex3f(xEnd,   yStart, zEnd);
+  glVertex3f(xEnd,   yStart, zEnd);   glVertex3f(xEnd,   yEnd,   zEnd);
+  glVertex3f(xStart, yEnd,   zStart); glVertex3f(xStart, yEnd,   zEnd);
+  glVertex3f(xStart, yStart, zStart); glVertex3f(xStart, yStart, zEnd);
+  glVertex3f(xEnd,   yStart, zStart); glVertex3f(xEnd,   yStart, zEnd);
+  glVertex3f(xEnd,   yEnd,   zStart); glVertex3f(xEnd,   yEnd,   zEnd);
+}
+
+void Utils::renderVolumeMarkers(float xStart, float xEnd, float yStart, float yEnd, float zStart, float zEnd, float length) {
+  glVertex3f(xStart, yStart, zStart); glVertex3f(xStart + length, yStart,          zStart);
+  glVertex3f(xStart, yStart, zStart); glVertex3f(xStart,          yStart + length, zStart);
+  glVertex3f(xStart, yStart, zStart); glVertex3f(xStart,          yStart,          zStart + length);
+
+  glVertex3f(xStart, yStart, zEnd);   glVertex3f(xStart + length, yStart,          zEnd);
+  glVertex3f(xStart, yStart, zEnd);   glVertex3f(xStart,          yStart + length, zEnd);
+  glVertex3f(xStart, yStart, zEnd);   glVertex3f(xStart,          yStart,          zEnd - length);
+  
+  glVertex3f(xStart, yEnd,   zStart); glVertex3f(xStart + length, yEnd,            zStart);
+  glVertex3f(xStart, yEnd,   zStart); glVertex3f(xStart,          yEnd - length,   zStart);
+  glVertex3f(xStart, yEnd,   zStart); glVertex3f(xStart,          yEnd,            zStart + length);
+
+  glVertex3f(xStart, yEnd,   zEnd);   glVertex3f(xStart + length, yEnd,            zEnd);
+  glVertex3f(xStart, yEnd,   zEnd);   glVertex3f(xStart,          yEnd - length,   zEnd);
+  glVertex3f(xStart, yEnd,   zEnd);   glVertex3f(xStart,          yEnd,            zEnd - length);
+
+  glVertex3f(xEnd,   yStart, zStart); glVertex3f(xEnd - length,   yStart,          zStart);
+  glVertex3f(xEnd,   yStart, zStart); glVertex3f(xEnd,            yStart + length, zStart);
+  glVertex3f(xEnd,   yStart, zStart); glVertex3f(xEnd,            yStart,          zStart + length);
+
+  glVertex3f(xEnd,   yStart, zEnd);   glVertex3f(xEnd - length,   yStart,          zEnd);
+  glVertex3f(xEnd,   yStart, zEnd);   glVertex3f(xEnd,            yStart + length, zEnd);
+  glVertex3f(xEnd,   yStart, zEnd);   glVertex3f(xEnd,            yStart,          zEnd - length);
+
+  glVertex3f(xEnd,   yEnd,   zStart); glVertex3f(xEnd - length,   yEnd,            zStart);
+  glVertex3f(xEnd,   yEnd,   zStart); glVertex3f(xEnd,            yEnd - length,   zStart);
+  glVertex3f(xEnd,   yEnd,   zStart); glVertex3f(xEnd,            yEnd,            zStart + length);
+
+  glVertex3f(xEnd,   yEnd,   zEnd);   glVertex3f(xEnd - length,   yEnd,            zEnd);
+  glVertex3f(xEnd,   yEnd,   zEnd);   glVertex3f(xEnd,            yEnd - length,   zEnd);
+  glVertex3f(xEnd,   yEnd,   zEnd);   glVertex3f(xEnd,            yEnd,            zEnd - length);
 }
 

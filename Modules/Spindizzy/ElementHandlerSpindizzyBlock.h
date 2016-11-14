@@ -59,6 +59,7 @@ class ElementHandlerSpindizzyBlock:public Element,
    * Implements IElement *
   \***********************/
   void renderRuntime();
+  void renderEditing();
   void updateRuntime(unsigned int);
   IElementType* getElementType();
   void renderStatic();

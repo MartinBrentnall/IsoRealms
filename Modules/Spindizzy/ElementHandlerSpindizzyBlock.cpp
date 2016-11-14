@@ -87,6 +87,10 @@ void ElementHandlerSpindizzyBlock::renderRuntime() {
   cElements.renderRuntime();
 }
 
+void ElementHandlerSpindizzyBlock::renderEditing() {
+  cElements.renderEditing();
+}
+
 void ElementHandlerSpindizzyBlock::updateRuntime(unsigned int ticks) {
   cElements.updateRuntime(ticks);
 }

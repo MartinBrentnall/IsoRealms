@@ -381,6 +381,25 @@ void ElementSpindizzyBlock::renderRuntime() {
   }
 }
 
+void ElementSpindizzyBlock::renderEditing() {
+  if (cStartLocation.z > cEndLocation.z) {
+    float y       = getSouth();
+    float ys      = getNorth();
+    float x       = getWest();
+    float xs      = getEast();
+    float z       = getBottom();
+    float zs      = getTop();
+    glLineWidth(3.0f);
+    glBegin(GL_LINES);
+    glColor3f(1.0f, 0.0f, 0.0f);
+    Utils::renderVolumeLines(x, xs, y, ys, z, zs);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glEnd();
+    glLineWidth(1.0f);
+  }
+  renderRuntime();
+}
+  
 void ElementSpindizzyBlock::renderPreviewWalls(IWallSurface::FaceDirection facing) {
   bool mFacesPole = facing == IWallSurface::NORTH || facing == IWallSurface::SOUTH;
   bool mFacesPos = facing == IWallSurface::NORTH || facing == IWallSurface::EAST;
