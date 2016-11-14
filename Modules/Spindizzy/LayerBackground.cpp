@@ -23,7 +23,7 @@ LayerBackground::LayerBackground(ILayerType* layerType) {
   cProgressBackgroundColour = 1.0f;
   cPreviousBackgroundColour = new Colour(0.0f, 0.0f, 0.0f);
   cTargetBackgroundColour = new Colour(0.0f, 0.0f, 0.0f);
-  cChangeSpeed = 0.0025f;
+  cChangeSpeed = 1.0f;
 }
 
 void LayerBackground::setChangeSpeed(float changeSpeed) {

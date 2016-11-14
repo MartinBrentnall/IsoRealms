@@ -225,8 +225,8 @@ void LayerSpindizzyMapEditingContext::renderCursor() {
     glVertex3f( 0.0f,  0.0f, +1.0f);
     glEnd();
     glPopMatrix();
-    renderElementSelection();    
   }
+  renderElementSelection();    
 }
 
 bool LayerSpindizzyMapEditingContext::keyDown(SDLKey& key, SDLMod& mod) {

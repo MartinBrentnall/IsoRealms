@@ -493,7 +493,7 @@ end</Code>
       <Code>zoneCount = spindizzy:getZoneCount()
 mapOverviewMode = 0
 mapTrasition = 0
-classicMode = false</Code>
+classicMode = true</Code>
     </ScriptLua>
     <ScriptLua name="switchToGameplay">
       <Argument name="locks" type="Integer" value="IsoRealms/Locks"/>
@@ -685,7 +685,7 @@ end</Code>
     <BlockState state="IsoRealms/SwitchCircleLeft" model="IsoRealms/ClueCircleLeft" name="SwitchCircleLeft" x="0.000000" y="0.000000" z="-0.500000" scale="0.7"/>
     <BlockState state="IsoRealms/SwitchCircleRight" model="IsoRealms/ClueCircleRight" name="SwitchCircleRight" x="0.000000" y="0.000000" z="-0.500000" scale="0.7"/>
     <BlockState state="IsoRealms/SwitchCircleBoth" model="IsoRealms/ClueCircleBoth" name="SwitchCircleBoth" x="0.000000" y="0.000000" z="-0.500000" scale="0.7"/>
-    <CameraScriptable location="Spindizzy/Player" name="Camera">
+    <CameraScriptable location="IsoRealms/ZoneLocation" name="Camera">
       <TransitionCompleteScript name="IsoRealms/switchToGameplay"/>
     </CameraScriptable>
     <ElementSpindizzyBlock bounce="0.000000" friction="0.000000" grip="0.000000" name="Ice" respawnAllowed="false" wallType="tiled">

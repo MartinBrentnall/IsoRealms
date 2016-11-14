@@ -19,7 +19,7 @@
 #include "ElementHandlerZone.h"
 
 ElementHandlerZone::ElementHandlerZone(IModuleElementHandlerZone* moduleInterface) {
-  cSingleZone = false;
+  cSingleZone = true;
   cZone = nullptr;
   cModuleInterface = moduleInterface;
 }
