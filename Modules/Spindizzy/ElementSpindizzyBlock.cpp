@@ -659,8 +659,7 @@ void ElementSpindizzyBlock::save(DOMNodeWriter* node, IResourceLocator* resource
     }
   }
   if (cCondition != nullptr) {
-    DOMNodeWriter* mConditionNode = node->addBranch("Condition");
-    cCondition->save(mConditionNode);
+    cCondition->save(node);
   }
 }
 
