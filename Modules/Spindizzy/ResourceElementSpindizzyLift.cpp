@@ -75,24 +75,31 @@ void ResourceElementSpindizzyLift::loadElement(DOMNodeWrapper* node, BlockLocati
   }
 }
 
-bool ResourceElementSpindizzyLift::keyDown(SDLKey& key) {
+bool ResourceElementSpindizzyLift::keyDown(SDLKey& key, ILayerEditingContext* editingContext) {
   switch (key) {
     case SDLK_SPACE: {
-//       if (cInsertLocation == nullptr) {
-//         cInsertLocation = new BlockLocation(*cEditingLocation);
-//       } else if (cFirstRange == nullptr) {
-//         cFirstRange = new int(cEditingLocation->z);
-//       } else {
-//         int mTopRange = *cFirstRange > cEditingLocation->z ? *cFirstRange : cEditingLocation->z;
-//         int mBottomRange = *cFirstRange > cEditingLocation->z ? cEditingLocation->z : *cFirstRange;
-//         ElementSpindizzyLift* mLiftElement = new ElementSpindizzyLift(this, cInsertLocation, cModelType, cProperties, mBottomRange, mTopRange, nullptr);
-// //        addElement(mLiftElement);
-//         cContent.push_back(mLiftElement);
-//         delete cInsertLocation;
-//         cInsertLocation = nullptr;
-//         delete cFirstRange;
-//         cFirstRange = nullptr;
-//       }
+      Vertex* mLocation = editingContext->getLocation();
+      IElementContainer* mElementContainer = editingContext->getElementContainer();
+      if (cInsertLocation == nullptr) {
+        cInsertLocation = new BlockLocation(std::round(mLocation->x), std::round(mLocation->y), std::round(mLocation->z * 2.0));
+        editingContext->setCursorRestriction(mElementContainer);
+      } else if (cFirstRange == nullptr) {
+        cFirstRange = new int(std::round(mLocation->z * 2.0));
+      } else {
+        editingContext->removeCursorRestriction(mElementContainer);
+        int mSecondRange = std::round(mLocation->z * 2.0);
+        int mTopRange    = *cFirstRange > mSecondRange ? *cFirstRange : mSecondRange;
+        int mBottomRange = *cFirstRange > mSecondRange ? mSecondRange : *cFirstRange;
+        ElementSpindizzyLift* mLiftElement = new ElementSpindizzyLift(this, cInsertLocation, cModelType, cProperties, mBottomRange, mTopRange, mElementContainer);
+        ElementHandlerSpindizzyDynamic* mHandler = cModuleInterface->getDynamicElementHandler(mElementContainer);
+        mHandler->addElement(mLiftElement);
+        mElementContainer->setDirty(mHandler);
+        cContent.push_back(mLiftElement);
+        delete cInsertLocation;
+        cInsertLocation = nullptr;
+        delete cFirstRange;
+        cFirstRange = nullptr;
+      }
       return true;
     }
 
@@ -113,7 +120,7 @@ void ResourceElementSpindizzyLift::configureElement() {
 bool ResourceElementSpindizzyLift::inputEdit(SDL_Event& event, ILayerEditingContext* editingContext) {
   switch (event.type) {
     case SDL_KEYDOWN: {
-      return keyDown(event.key.keysym.sym);
+      return keyDown(event.key.keysym.sym, editingContext);
     }
   }
   return false;
@@ -123,27 +130,27 @@ void ResourceElementSpindizzyLift::setEditingContext(BlockLocation* editingLocat
   cComponentContainer = componentContainer;
 }
 
-void ResourceElementSpindizzyLift::renderArrowLines() {
-//   float mLineRadius = IsoRealmsConstants::BLOCK_RADIUS * 0.5;
-//   float mArrowOffset = IsoRealmsConstants::BLOCK_HEIGHT * 0.5;
-//   glBegin(GL_LINES);
-//   int mTop = cFirstRange != nullptr ? (*cFirstRange > cEditingLocation->z ? *cFirstRange : cEditingLocation->z) : cEditingLocation->z;
-//   int mBottom = cFirstRange != nullptr ? (*cFirstRange > cEditingLocation->z ? cEditingLocation->z : *cFirstRange) : cEditingLocation->z;
-//   glVertex3f(0, 0, mTop * IsoRealmsConstants::BLOCK_HEIGHT);
-//   glVertex3f(0, 0, mBottom * IsoRealmsConstants::BLOCK_HEIGHT);
-// 
-//   // Top point
-//   glVertex3f( 0,           0, mTop * IsoRealmsConstants::BLOCK_HEIGHT);
-//   glVertex3f( mLineRadius, 0, mTop * IsoRealmsConstants::BLOCK_HEIGHT - mArrowOffset);
-//   glVertex3f( 0,           0, mTop * IsoRealmsConstants::BLOCK_HEIGHT);
-//   glVertex3f(-mLineRadius, 0, mTop * IsoRealmsConstants::BLOCK_HEIGHT - mArrowOffset);
-// 
-//   // Bottom point
-//   glVertex3f( 0,           0, mBottom * IsoRealmsConstants::BLOCK_HEIGHT);
-//   glVertex3f( mLineRadius, 0, mBottom * IsoRealmsConstants::BLOCK_HEIGHT + mArrowOffset);
-//   glVertex3f( 0,           0, mBottom * IsoRealmsConstants::BLOCK_HEIGHT);
-//   glVertex3f(-mLineRadius, 0, mBottom * IsoRealmsConstants::BLOCK_HEIGHT + mArrowOffset);
-//   glEnd();
+void ResourceElementSpindizzyLift::renderArrowLines(float rangeA, float rangeB) {
+  float mLineRadius = IsoRealmsConstants::BLOCK_RADIUS * 0.5;
+  float mArrowOffset = IsoRealmsConstants::BLOCK_HEIGHT * 0.5;
+  float mTop    = rangeA > rangeB ? rangeA : rangeB;
+  float mBottom = rangeA > rangeB ? rangeB : rangeA;
+  glBegin(GL_LINES);
+  glVertex3f(0, 0, mTop);
+  glVertex3f(0, 0, mBottom);
+
+  // Top point
+  glVertex3f( 0,           0, mTop);
+  glVertex3f( mLineRadius, 0, mTop - mArrowOffset);
+  glVertex3f( 0,           0, mTop);
+  glVertex3f(-mLineRadius, 0, mTop - mArrowOffset);
+
+  // Bottom point
+  glVertex3f( 0,           0, mBottom);
+  glVertex3f( mLineRadius, 0, mBottom + mArrowOffset);
+  glVertex3f( 0,           0, mBottom);
+  glVertex3f(-mLineRadius, 0, mBottom + mArrowOffset);
+  glEnd();
 }
 
 ElementSpindizzyLift* ResourceElementSpindizzyLift::getElement(IElement* element) {
@@ -156,9 +163,25 @@ ElementSpindizzyLift* ResourceElementSpindizzyLift::getElement(IElement* element
 }
 
 void ResourceElementSpindizzyLift::renderEditingPreview(Vertex& location) {
-  glTranslatef(location.x, location.y, location.z);
   if (cInsertLocation != nullptr) {
     glPushMatrix();
+//    glTranslatef(location.x, location.y, location.z);
+    if (cFirstRange == nullptr) {
+      glColor3f(1.0f, 0.5f, 0.5f);
+    } else {
+      glColor3f(0.5f, 1.0f, 0.5f);
+    }
+    glLineWidth(3.0);
+    glBegin(GL_LINES);
+    Utils::renderVolumeLines(location.x - IsoRealmsConstants::BLOCK_RADIUS, location.x + IsoRealmsConstants::BLOCK_RADIUS,
+                             location.y - IsoRealmsConstants::BLOCK_RADIUS, location.y + IsoRealmsConstants::BLOCK_RADIUS,
+                             location.z,                                    location.z);
+    glEnd();
+//    cSampleLift->renderStatic();
+//    if (cSampleLift->isVisualRuntime()) {
+//      cSampleLift->renderRuntime();
+//    }
+    glColor3f(1.0f, 1.0f, 1.0f);
     glTranslatef(cInsertLocation->x, cInsertLocation->y, cInsertLocation->z * IsoRealmsConstants::BLOCK_HEIGHT + (IsoRealmsConstants::BLOCK_HEIGHT * 0.05));
     cSampleLift->renderStatic();
     if (cSampleLift->isVisualRuntime()) {
@@ -169,20 +192,27 @@ void ResourceElementSpindizzyLift::renderEditingPreview(Vertex& location) {
     glTranslatef(cInsertLocation->x, cInsertLocation->y, 0);
     glBindTexture(GL_TEXTURE_2D, 0);
     glColor3f(1.0, 1.0, 0.0);
-    glLineWidth(3.0);
     glLineStipple(1, 255);
-    glEnable(GL_LINE_STIPPLE);
-    renderArrowLines();
+    glEnable(GL_LINE_STIPPLE);    
+    float mRangeA = location.z;
+    float mRangeB = cFirstRange != nullptr ? *cFirstRange * IsoRealmsConstants::BLOCK_HEIGHT : location.z;
+    renderArrowLines(mRangeA, mRangeB);
     glColor3f(1.0, 0.0, 0.0);
     glDisable(GL_LINE_STIPPLE);
     glLineWidth(5.0);
-    renderArrowLines();
+    renderArrowLines(mRangeA, mRangeB);
     glColor3f(1.0, 1.0, 1.0);
     glLineWidth(1.0);
     glPopMatrix();
   } else {
+    glPushMatrix();
+    glTranslatef(location.x, location.y, location.z);
     glColor3f(1.0f, 1.0f, 1.0f);
-    cSampleLift->renderRuntime();
+    cSampleLift->renderStatic();
+    if (cSampleLift->isVisualRuntime()) {
+      cSampleLift->renderRuntime();
+    }
+    glPopMatrix();
   }
 }
 

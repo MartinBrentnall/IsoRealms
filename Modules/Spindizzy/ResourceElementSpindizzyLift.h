@@ -47,9 +47,9 @@ class ResourceElementSpindizzyLift:public ISpindizzyLiftType {
   int* cFirstRange;
   IBoolean* cState;
 
-  bool keyDown(SDLKey&);
+  bool keyDown(SDLKey&, ILayerEditingContext*);
 
-  void renderArrowLines();
+  void renderArrowLines(float, float);
 
   ElementSpindizzyLift* getElement(IElement*);
   
