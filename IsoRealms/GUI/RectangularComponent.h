@@ -89,7 +89,6 @@ class RectangularComponent:public ISizedComponent,
   IDialogValueListener* cValueListener;
 
   ListBox* getListBox(const std::string&);
-  std::string getStringValue(const std::string&);
   void setComponentText(DOMNodeWrapper*, ITextComponent*);
   IComponentBoundsCalculator* getBoundsCalculator(DOMNodeWrapper*, IRectangle*, float, ISizedComponent*);
   ISizedComponent* loadSizedComponent(DOMNodeWrapper*, IEditingContext*);
@@ -125,6 +124,8 @@ class RectangularComponent:public ISizedComponent,
   void setStringValue(const std::string&, const std::string&);
   void setStringValue(const std::string&, float);
   void setValue(const std::string&, I3DModelType*);
+  
+  std::string getStringValue(const std::string&);
   
   void clearListBox(const std::string&);
   void addListBoxItem(const std::string&, const std::string&);

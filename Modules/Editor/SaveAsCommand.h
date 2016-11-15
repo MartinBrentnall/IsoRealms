@@ -19,17 +19,20 @@
 #ifndef SAVE_AS_COMMAND_H
 #define SAVE_AS_COMMAND_H
 
+#include "DialogProjectSaveAs.h"
 #include "IMapManager.h"
 
 #include <IsoRealms/ICommand.h>
 
 class SaveAsCommand:public ICommand {
   private:
+  IComponentContainer* cComponentContainer;
+  DialogProjectSaveAs* cInstance;
   IMapManager* cMapManager;
   bool cPromptForName;
 
   public:
-  SaveAsCommand(IMapManager*, bool);
+  SaveAsCommand(IMapManager*, bool, IComponentContainer*);
   
   /***********************\
    * Implements ICommand *

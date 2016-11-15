@@ -21,6 +21,7 @@ add_library(Editor MODULE
   DialogModules.cpp
   DialogProjectOpen.cpp
   DialogProjectOpenTemplate.cpp
+  DialogProjectSaveAs.cpp
   ResourceManagerDialogs/ColourIcon.cpp
   ResourceManagerDialogs/Dialog3DModelManager.cpp
   ResourceManagerDialogs/DialogBoundariesManager.cpp

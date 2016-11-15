@@ -74,6 +74,14 @@ std::vector<std::string> Utils::splitWords(const std::string& words, char splitC
   return mSplitWords;
 }
 
+
+bool Utils::endsWith(const std::string& fullString, const std::string& ending) {
+  if (fullString.length() >= ending.length()) {
+    return (0 == fullString.compare(fullString.length() - ending.length(), ending.length(), ending));
+  }
+  return false;
+}
+
 void Utils::renderVolumeLines(float xStart, float xEnd, float yStart, float yEnd, float zStart, float zEnd) {
   glVertex3f(xEnd,   yEnd,   zStart); glVertex3f(xStart, yEnd,   zStart);
   glVertex3f(xStart, yEnd,   zStart); glVertex3f(xStart, yStart, zStart);

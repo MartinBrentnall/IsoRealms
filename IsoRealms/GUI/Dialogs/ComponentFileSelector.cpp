@@ -59,10 +59,15 @@ void ComponentFileSelector::assertSelection(const std::string& listBox, const st
 }
 
 std::string ComponentFileSelector::getSelectedFile() {
+  std::string mDataPath = getSelectedDirectory();
+  mDataPath += getValue("listFiles");
+  return mDataPath;
+}
+
+std::string ComponentFileSelector::getSelectedDirectory() {
   std::string mDataPath;
   for (unsigned int i = 0; i < cDirectory.size(); i++) {
     mDataPath += cDirectory[i] + "/";
   }
-  mDataPath += getValue("listFiles");
   return System::getProgramResource(mDataPath);
 }

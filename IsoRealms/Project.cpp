@@ -26,6 +26,9 @@ Project::Project() {
 Project::Project(DOMNodeWrapper* node, const std::string& projectName, IEditingContext* editingContext, bool asTemplate, DOMNodeWrapper* options) {
   cResources.setEditing(editingContext != NULL, this);
   cInitScript = NULL;
+  if (!asTemplate) {
+    cFileName = projectName;
+  }
   std::size_t mExtensionPosition = projectName.find_last_of('.');
   std::string mProjectName = projectName.substr(0, mExtensionPosition);
 
@@ -143,17 +146,28 @@ void Project::initRuntime() {
 }
 
 void Project::save() {
-  DOMNodeWriter* mProjectNode = new DOMNodeWriter("Project");
-  DOMNodeWriter* mInputConfigurationNode = mProjectNode->addBranch("InputConfiguration");
-  cModuleRegistry.save(mProjectNode, &cResources);
-  cResources.saveInputConfiguration(mInputConfigurationNode);
-  DOMNodeWriter* mInitScriptNode = mProjectNode->addBranch("InitScript");
-  cInitScript->save(mInitScriptNode, &cResources);
-  for (unsigned int i = 0; i < cLayers.size(); i++) {
-    DOMNodeWriter* mLayerNode = mProjectNode->addBranch("Layer");
-    cLayers[i]->save(mLayerNode, &cResources);
+  if (!cFileName.empty()) {
+    DOMNodeWriter* mProjectNode = new DOMNodeWriter("Project");
+    DOMNodeWriter* mInputConfigurationNode = mProjectNode->addBranch("InputConfiguration");
+    cModuleRegistry.save(mProjectNode, &cResources);
+    cResources.saveInputConfiguration(mInputConfigurationNode);
+    DOMNodeWriter* mInitScriptNode = mProjectNode->addBranch("InitScript");
+    cInitScript->save(mInitScriptNode, &cResources);
+    for (unsigned int i = 0; i < cLayers.size(); i++) {
+      DOMNodeWriter* mLayerNode = mProjectNode->addBranch("Layer");
+      cLayers[i]->save(mLayerNode, &cResources);
+    }
+    mProjectNode->save(cFileName);
   }
-  mProjectNode->save("Test.isorealms");
+}
+
+void Project::save(const std::string& fileName) {
+  cFileName = fileName;
+  save();
+}
+
+bool Project::hasFileName() {
+  return !cFileName.empty();
 }
 
 void Project::removeElement(IElement* element) {

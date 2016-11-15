@@ -162,19 +162,14 @@ class SimpleEditor:public IModule,
   
   ICamera* getCamera();
   
-  /******************************\
-   * Implements IElementGateway *
-  \******************************/
+  /**************************\
+   * Implements IMapManager *
+  \**************************/
   void saveCurrentMap();
+  void saveCurrentMap(const std::string&);
   void testCurrentMap();
+  bool hasFileName();
   void setProject(IProject*); // TODO: Not an interface yet.
-
-  /******************************\
-   * Implements IElementGateway *
-  \******************************/
-//   IElementContainer* pushElement(IElement*);
-//   IElementContainer* pushMapElement(IElement*);
-//   void removeElement(IElement*);
 
   /*******************************************************\
    * Implements IResourceSelectionListener<IElementType> *

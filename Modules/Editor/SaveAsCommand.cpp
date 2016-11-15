@@ -18,11 +18,22 @@
  */
 #include "SaveAsCommand.h"
 
-SaveAsCommand::SaveAsCommand(IMapManager* mapManager, bool promptForName) {
+SaveAsCommand::SaveAsCommand(IMapManager* mapManager, bool promptForName, IComponentContainer* componentContainer) {
   cMapManager = mapManager;
   cPromptForName = promptForName;
+  cInstance = nullptr;
+  cComponentContainer = componentContainer;
 }
 
 void SaveAsCommand::execute() {
-  cMapManager->saveCurrentMap();
+  if (cPromptForName || !cMapManager->hasFileName()) {
+    if (cInstance == nullptr) {
+      cInstance = new DialogProjectSaveAs(cComponentContainer, nullptr, cMapManager);
+      cComponentContainer->addComponent(cInstance);
+    } else {
+      // TODO: Focus the existing dialog.
+    }
+  } else {
+    cMapManager->saveCurrentMap();
+  }
 }

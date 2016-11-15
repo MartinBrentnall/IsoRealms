@@ -42,6 +42,7 @@ class Project:public IProject {
   Resources cResources;
   IScriptCall* cInitScript;
   bool cCompleted;
+  std::string cFileName;
   
   std::vector<IDynamicElement*> cDynamicElements;
   
@@ -60,6 +61,8 @@ class Project:public IProject {
   void reset();
   
   void save();
+  void save(const std::string&);
+  bool hasFileName();
 
   void removeElement(IElement*);
   ModuleRegistry* getModuleRegistry();

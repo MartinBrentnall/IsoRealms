@@ -48,8 +48,8 @@ void SimpleEditor::load(DOMNodeWrapper* node, IResourceRegistry* runtimeContext,
   cEditorFocus = true;
 
   // Register commands
-  cEditorCommands[COMMAND_SAVE_AS]       = new SaveAsCommand(this, true);
-  cEditorCommands[COMMAND_SAVE]          = new SaveAsCommand(this, false);
+  cEditorCommands[COMMAND_SAVE_AS]       = new SaveAsCommand(this, true, this);
+  cEditorCommands[COMMAND_SAVE]          = new SaveAsCommand(this, false, this);
   cEditorCommands[COMMAND_OPEN]          = new CommandDialog<DialogProjectOpen>(this, this);
   cEditorCommands[COMMAND_OPEN_TEMPLATE] = new CommandDialog<DialogProjectOpenTemplate>(this, this);
   cEditorCommands[COMMAND_TEST]          = new TestCommand(this);
@@ -348,9 +348,17 @@ void SimpleEditor::saveCurrentMap() {
   cProject->save();
 }
 
+void SimpleEditor::saveCurrentMap(const std::string& fileName) {
+  cProject->save(fileName);
+}
+
 void SimpleEditor::testCurrentMap() {
   cTesting = true;
   cProject->initRuntime();
+}
+ 
+bool SimpleEditor::hasFileName() {
+  return cProject->hasFileName();
 }
  
 void SimpleEditor::registerCommand(ICommandInfo* commandInfo) {

@@ -44,6 +44,8 @@ class IProject {
   virtual void renderRuntime() = 0;
   virtual void inputRuntime(SDL_Event&) = 0;
   virtual void save() = 0;
+  virtual void save(const std::string&) = 0;
+  virtual bool hasFileName() = 0;
   virtual ModuleRegistry* getModuleRegistry() = 0;
   virtual IResourceManager* getResourceManager() = 0;
   virtual ILayer* getDefaultLayer() = 0;

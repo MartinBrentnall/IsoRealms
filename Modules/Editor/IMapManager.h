@@ -19,10 +19,14 @@
 #ifndef I_MAP_MANAGER_H
 #define I_MAP_MANAGER_H
 
+#include <string>
+
 class IMapManager {
   public:
   virtual void saveCurrentMap() = 0;
+  virtual void saveCurrentMap(const std::string&) = 0;
   virtual void testCurrentMap() = 0;
+  virtual bool hasFileName() = 0;
 };
 
 #endif
