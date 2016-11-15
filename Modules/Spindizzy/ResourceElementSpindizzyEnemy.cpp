@@ -66,7 +66,9 @@ bool ResourceElementSpindizzyEnemy::keyDown(SDLKey& key, ILayerEditingContext* e
       mGridLocation.y = std::round(mLocation->y);
       mGridLocation.z = std::round(mLocation->z * 2.0);
       ElementSpindizzyEnemy* mEnemy = new ElementSpindizzyEnemy(this, &mGridLocation, cModelType, nullptr);
-      mElementContainer->addElement(mEnemy);
+      ElementHandlerSpindizzyDynamic* mHandler = cModuleInterface->getDynamicElementHandler(mElementContainer);
+      mHandler->addElement(mEnemy);
+      mElementContainer->setDirty(mHandler);
       cContent.push_back(mEnemy);
       return true;
     }

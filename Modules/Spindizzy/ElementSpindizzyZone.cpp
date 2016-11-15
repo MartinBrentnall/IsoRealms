@@ -22,16 +22,9 @@ ElementSpindizzyZone::ElementSpindizzyZone(ISpindizzyZoneType* elementType, DOMN
   cZoneType = elementType;
   cZoneArea = new BlockArea(node);
   cContainer = container;
+  cFlagModel = nullptr;
 
-  float mXDifference = cZoneArea->getEast() - cZoneArea->getWest();
-  float mYDifference = cZoneArea->getNorth() - cZoneArea->getSouth();
-  float mZDifference = cZoneArea->getTop() - cZoneArea->getBottom();
-  float mX = cZoneArea->getWest() + (mXDifference / 2.0f);
-  float mY = cZoneArea->getSouth() + (mYDifference / 2.0f);
-  float mZ = (cZoneArea->getBottom() + (mZDifference / 2.0f) - 1.0f) * IsoRealmsConstants::BLOCK_HEIGHT;
-  float mScale = std::min(mXDifference, std::min(mYDifference, mZDifference)) + 1;
-  Vertex* mLocation = new Vertex(mX, mY, mZ);
-  cFlagModel = flagModelType->createModel(mLocation, mScale);
+  updateFlagModel(flagModelType);
 
   ISpindizzyZoneModule* mModule = cZoneType->getSpindizzyZoneInterface();
   std::string mThemeName = node->getAttribute("theme");
@@ -58,6 +51,25 @@ ElementSpindizzyZone::ElementSpindizzyZone(ISpindizzyZoneType* elementType, Bloc
   cZoneArea = zoneArea;
   cContainer = container;
   cZoneTheme = zoneTheme;
+  cFlagModel = nullptr;
+  cVisited = false;
+  cFlagged = false;
+  cHasFocus = false;
+}
+
+void ElementSpindizzyZone::updateFlagModel(I3DModelType* flagModelType) {
+  if (cFlagModel != nullptr) {
+    flagModelType->destroyModel(cFlagModel);
+  }
+  float mXDifference = cZoneArea->getEast() - cZoneArea->getWest();
+  float mYDifference = cZoneArea->getNorth() - cZoneArea->getSouth();
+  float mZDifference = cZoneArea->getTop() - cZoneArea->getBottom();
+  float mX = cZoneArea->getWest() + (mXDifference / 2.0f);
+  float mY = cZoneArea->getSouth() + (mYDifference / 2.0f);
+  float mZ = (cZoneArea->getBottom() + (mZDifference / 2.0f) - 1.0f) * IsoRealmsConstants::BLOCK_HEIGHT;
+  float mScale = std::min(mXDifference, std::min(mYDifference, mZDifference)) + 1;
+  Vertex* mLocation = new Vertex(mX, mY, mZ);
+  cFlagModel = flagModelType->createModel(mLocation, mScale);
 }
 
 IElementContainer* ElementSpindizzyZone::getElementContainer() {

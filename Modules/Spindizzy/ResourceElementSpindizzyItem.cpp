@@ -73,8 +73,9 @@ bool ResourceElementSpindizzyItem::keyDown(SDLKey& key, ILayerEditingContext* ed
       mGridLocation.y = std::round(mLocation->y);
       mGridLocation.z = std::round(mLocation->z * 2.0);
       ElementSpindizzyItem* mJewel = new ElementSpindizzyItem(this, &mGridLocation, cModelType, mElementContainer);
-      mElementContainer->addElement(mJewel);
-      mElementContainer->setDirty(mJewel);
+      ElementHandlerItem* mHandler = cModuleInterface->getItemElementHandler(mElementContainer);
+      mHandler->addElement(mJewel);
+      mElementContainer->setDirty(mHandler);
       cContent.push_back(mJewel);
       return true;
     }

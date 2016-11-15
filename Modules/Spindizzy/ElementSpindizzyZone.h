@@ -79,6 +79,7 @@ class ElementSpindizzyZone:public Element,
   ElementSpindizzyZone(ISpindizzyZoneType*, BlockArea*, IElementContainer* = nullptr, ISpindizzyZoneTheme* = nullptr);
   
   IElementContainer* getElementContainer();
+  void updateFlagModel(I3DModelType*);
   
   void setVisited();
   bool isVisited();

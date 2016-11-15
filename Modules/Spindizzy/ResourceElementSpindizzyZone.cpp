@@ -158,7 +158,9 @@ bool ResourceElementSpindizzyZone::keyDown(SDLKey& key, ILayerEditingContext* ed
         if (!intersectsExistingZone(cEditingZone)) { 
           mHandler->addElement(cEditingZone);
           cContent.push_back(cEditingZone);
+          cEditingZone->updateFlagModel(cFlagModelType);
           mContainer->updateElement(mHandler);
+          mContainer->setDirty(mHandler);
           cStartLocation = nullptr;
           BlockLocation mIdentityBlockLocation(0, 0, 0);
           BlockArea* mZoneArea = new BlockArea(mIdentityBlockLocation, mIdentityBlockLocation);
