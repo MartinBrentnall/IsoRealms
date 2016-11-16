@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Martin Brentnall
+ * Copyright 2016 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,17 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef DIALOG_MODULES_H
-#define DIALOG_MODULES_H
+#ifndef I_DIALOG_PARENT_H
+#define I_DIALOG_PARENT_H
 
-#include <IsoRealms/GUI/ResizableDialog.h>
+#include <string>
 
-#include "IDialogParent.h"
-#include "IEditor.h"
+#include <IsoRealms/GUI/Dialog.h>
 
-class DialogModules:public ResizableDialog {
+class IDialogParent {
   public:
-  DialogModules(IComponentContainer*, IResourceAccessor*, IEditor*, IDialogParent*);
+  virtual void dialogClosed(Dialog*) = 0;
 };
 
 #endif
+

@@ -18,9 +18,10 @@
  */
 #include "DialogProjectOpenTemplate.h"
 
-DialogProjectOpenTemplate::DialogProjectOpenTemplate(IComponentContainer* componentContainer, IResourceAccessor* resources, IEditor* editor): ResizableDialog(componentContainer, "Modules/Editor/DialogProjectOpenTemplate", resources) {
+DialogProjectOpenTemplate::DialogProjectOpenTemplate(IComponentContainer* componentContainer, IResourceAccessor* resources, IEditor* editor, IDialogParent* parent): ResizableDialog(componentContainer, "Modules/Editor/DialogProjectOpenTemplate", resources) {
   cFileSelector = new ComponentFileSelector(resources, "Data/Projects", this);
   cEditor = editor;
+  cParent = parent;
   addComponent("fileSelector", cFileSelector);
   setComponentAction("okButton", new OKCommand(this));
   setComponentAction("cancelButton", new CancelCommand(this));
@@ -29,6 +30,12 @@ DialogProjectOpenTemplate::DialogProjectOpenTemplate(IComponentContainer* compon
 void DialogProjectOpenTemplate::confirmSelection() {
   cFile = cFileSelector->getSelectedFile();
   cEditor->openProject(cFile, true);
+  cParent->dialogClosed(this);
+  close();
+}
+
+void DialogProjectOpenTemplate::cancel() {
+  cParent->dialogClosed(this);
   close();
 }
 
@@ -49,5 +56,5 @@ DialogProjectOpenTemplate::CancelCommand::CancelCommand(DialogProjectOpenTemplat
 }
 
 void DialogProjectOpenTemplate::CancelCommand::execute() {
-  cParent->close();
+  cParent->cancel();
 }

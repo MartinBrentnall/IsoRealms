@@ -28,12 +28,18 @@ SaveAsCommand::SaveAsCommand(IMapManager* mapManager, bool promptForName, ICompo
 void SaveAsCommand::execute() {
   if (cPromptForName || !cMapManager->hasFileName()) {
     if (cInstance == nullptr) {
-      cInstance = new DialogProjectSaveAs(cComponentContainer, nullptr, cMapManager);
+      cInstance = new DialogProjectSaveAs(cComponentContainer, nullptr, cMapManager, this);
       cComponentContainer->addComponent(cInstance);
     } else {
       // TODO: Focus the existing dialog.
     }
   } else {
     cMapManager->saveCurrentMap();
+  }
+}
+
+void SaveAsCommand::dialogClosed(Dialog* dialog) {
+  if (cInstance == dialog) {
+    cInstance = nullptr;
   }
 }

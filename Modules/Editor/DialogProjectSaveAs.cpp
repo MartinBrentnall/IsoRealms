@@ -18,9 +18,10 @@
  */
 #include "DialogProjectSaveAs.h"
 
-DialogProjectSaveAs::DialogProjectSaveAs(IComponentContainer* componentContainer, IResourceAccessor* resources, IMapManager* mapManager): ResizableDialog(componentContainer, "Modules/Editor/DialogProjectSaveAs", resources) {
+DialogProjectSaveAs::DialogProjectSaveAs(IComponentContainer* componentContainer, IResourceAccessor* resources, IMapManager* mapManager, IDialogParent* parent): ResizableDialog(componentContainer, "Modules/Editor/DialogProjectSaveAs", resources) {
   cFileSelector = new ComponentFileSelector(resources, "Data/Projects", this);
   cMapManager = mapManager;
+  cParent = parent;
   addComponent("fileSelector", cFileSelector);
   setComponentAction("okButton", new OKCommand(this));
   setComponentAction("cancelButton", new CancelCommand(this));
@@ -32,6 +33,12 @@ void DialogProjectSaveAs::confirmSelection() {
     mFileName += ".isorealms";
   }
   cMapManager->saveCurrentMap(mFileName);
+  cParent->dialogClosed(this);
+  close();
+}
+
+void DialogProjectSaveAs::cancel() {
+  cParent->dialogClosed(this);
   close();
 }
 
@@ -52,5 +59,5 @@ DialogProjectSaveAs::CancelCommand::CancelCommand(DialogProjectSaveAs* parent) {
 }
 
 void DialogProjectSaveAs::CancelCommand::execute() {
-  cParent->close();
+  cParent->cancel();
 }

@@ -22,9 +22,11 @@
 #include <IsoRealms/ICommand.h>
 
 #include "DialogModules.h"
+#include "IDialogParent.h"
 #include "IEditor.h"
 
-template <class DIALOG> class CommandDialog:public ICommand {
+template <class DIALOG> class CommandDialog:public ICommand,
+                                            public IDialogParent {
   private:
   IEditor* cEditor;
   IComponentContainer* cComponentContainer;
@@ -39,10 +41,16 @@ template <class DIALOG> class CommandDialog:public ICommand {
     
   void execute() {
     if (cInstance == nullptr) {
-      cInstance = new DIALOG(cComponentContainer, nullptr, cEditor);
+      cInstance = new DIALOG(cComponentContainer, nullptr, cEditor, this);
       cComponentContainer->addComponent(cInstance);
     } else {
       // TODO: Focus the existing dialog.
+    }
+  }
+  
+  void dialogClosed(Dialog* dialog) {
+    if (dialog == cInstance) {
+      cInstance = nullptr;
     }
   }
 };

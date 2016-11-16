@@ -18,5 +18,5 @@
  */
 #include "DialogModules.h"
 
-DialogModules::DialogModules(IComponentContainer* componentContainer, IResourceAccessor* resources, IEditor* editor) : ResizableDialog(cComponentContainer, "Modules/Editor/DialogModules", resources) {
+DialogModules::DialogModules(IComponentContainer* componentContainer, IResourceAccessor* resources, IEditor* editor, IDialogParent* parent) : ResizableDialog(cComponentContainer, "Modules/Editor/DialogModules", resources) {
 }

@@ -23,6 +23,7 @@
 #include <IsoRealms/GUI/ResizableDialog.h>
 #include <IsoRealms/IConfirmationListener.h>
 
+#include "IDialogParent.h"
 #include "IEditor.h"
 
 class DialogProjectOpen:public ResizableDialog,
@@ -31,6 +32,7 @@ class DialogProjectOpen:public ResizableDialog,
   ComponentFileSelector* cFileSelector;
   std::string cFile;
   IEditor* cEditor;
+  IDialogParent* cParent;
   
   class OKCommand:public ICommand {
     private:
@@ -59,9 +61,10 @@ class DialogProjectOpen:public ResizableDialog,
   };
   
   void confirmSelection();
+  void cancel();
 
   public:
-  DialogProjectOpen(IComponentContainer*, IResourceAccessor*, IEditor*);
+  DialogProjectOpen(IComponentContainer*, IResourceAccessor*, IEditor*, IDialogParent*);
   
   /*************************************\
    * Implements IFileSelectionListener *

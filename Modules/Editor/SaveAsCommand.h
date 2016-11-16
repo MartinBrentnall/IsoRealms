@@ -19,12 +19,14 @@
 #ifndef SAVE_AS_COMMAND_H
 #define SAVE_AS_COMMAND_H
 
-#include "DialogProjectSaveAs.h"
-#include "IMapManager.h"
-
 #include <IsoRealms/ICommand.h>
 
-class SaveAsCommand:public ICommand {
+#include "DialogProjectSaveAs.h"
+#include "IDialogParent.h"
+#include "IMapManager.h"
+
+class SaveAsCommand:public ICommand,
+                    public IDialogParent {
   private:
   IComponentContainer* cComponentContainer;
   DialogProjectSaveAs* cInstance;
@@ -38,6 +40,11 @@ class SaveAsCommand:public ICommand {
    * Implements ICommand *
   \***********************/
   void execute();
+  
+  /****************************\
+   * Implements IDialogParent *
+  \****************************/
+  void dialogClosed(Dialog*);
 };
 
 #endif
