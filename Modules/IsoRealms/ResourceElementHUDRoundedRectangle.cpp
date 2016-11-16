@@ -119,6 +119,10 @@ std::string ResourceElementHUDRoundedRectangle::getTypeName() {
   return ""; // TODO
 }
   
+std::vector<IObjectProperty*> ResourceElementHUDRoundedRectangle::getProperties() {
+  return std::vector<IObjectProperty*>();
+}
+
 IElementType* ResourceElementHUDRoundedRectangle::getElementType() {
   return this;
 }

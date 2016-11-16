@@ -548,6 +548,10 @@ std::string ElementSpindizzyBlock::getTypeName() {
   return "Spindizzy Block"; // TODO
 }
   
+std::vector<IObjectProperty*> ElementSpindizzyBlock::getProperties() {
+  return std::vector<IObjectProperty*>();
+}
+
 IElementType* ElementSpindizzyBlock::getElementType() {
   return cBlockType;
 }

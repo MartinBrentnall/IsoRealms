@@ -39,6 +39,10 @@ std::string ElementSpindizzyEnemy::getTypeName() {
   return "Spindizzy Enemy"; // TODO
 }
   
+std::vector<IObjectProperty*> ElementSpindizzyEnemy::getProperties() {
+  return std::vector<IObjectProperty*>();
+}
+
 IElementType* ElementSpindizzyEnemy::getElementType() {
   return cEnemyType;
 }

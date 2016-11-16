@@ -62,6 +62,7 @@ class ResourceElementHUDString:public IElementType,
    * Implements IObjectWithProperties *
   \************************************/
   std::string getTypeName();
+  std::vector<IObjectProperty*> getProperties();
   
   /***********************\
    * Implements IElement *

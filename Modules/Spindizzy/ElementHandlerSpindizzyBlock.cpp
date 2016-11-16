@@ -99,6 +99,10 @@ std::string ElementHandlerSpindizzyBlock::getTypeName() {
   return ""; // TODO
 }
   
+std::vector<IObjectProperty*> ElementHandlerSpindizzyBlock::getProperties() {
+  return std::vector<IObjectProperty*>();
+}
+
 IElementType* ElementHandlerSpindizzyBlock::getElementType() {
   return nullptr;
 }

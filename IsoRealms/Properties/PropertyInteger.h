@@ -16,22 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef DIALOG_OBJECT_PROPERTIES_H
-#define DIALOG_OBJECT_PROPERTIES_H
+#ifndef PROPERTY_INTEGER_H
+#define PROPERTY_INTEGER_H
 
-#include <IsoRealms/GUI/ComponentTable.h>
-#include <IsoRealms/GUI/Dialog.h>
-#include <IsoRealms/IObjectWithProperties.h>
+#include <string>
+
 #include <IsoRealms/IObjectProperty.h>
 
-class DialogObjectProperties:public Dialog {
+class PropertyInteger:public IObjectProperty {
   private:
-  ComponentTable* cPropertiesTable;
+  std::string cName;
   
   public:
-  DialogObjectProperties(IComponentContainer* container, IResourceAccessor* resources);
-  
-  void objectSelected(IObjectWithProperties*);
+  PropertyInteger(const std::string&);
+
+  /******************************\
+   * Implements IObjectProperty *
+  \******************************/
+  std::string getPropertyName();
 };
 
 #endif
+

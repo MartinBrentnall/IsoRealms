@@ -67,6 +67,7 @@ class ElementSpindizzyWater:public ISpindizzyBlock,
    * Implements IObjectWithProperties *
   \************************************/
   std::string getTypeName();
+  std::vector<IObjectProperty*> getProperties();
   
   /***********************\
    * Implements IElement *

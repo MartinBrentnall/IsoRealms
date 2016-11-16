@@ -64,6 +64,10 @@ std::string ElementHandlerItem::getTypeName() {
   return ""; // TODO
 }
   
+std::vector<IObjectProperty*> ElementHandlerItem::getProperties() {
+  return std::vector<IObjectProperty*>();
+}
+
 IElementType* ElementHandlerItem::getElementType() {
   return nullptr;
 }

@@ -72,6 +72,10 @@ std::string ElementHandlerZone::getTypeName() {
   return ""; // TODO
 }
   
+std::vector<IObjectProperty*> ElementHandlerZone::getProperties() {
+  return std::vector<IObjectProperty*>();
+}
+
 IElementType* ElementHandlerZone::getElementType() {
   return nullptr;
 }

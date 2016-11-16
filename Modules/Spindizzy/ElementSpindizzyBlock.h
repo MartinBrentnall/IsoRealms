@@ -231,6 +231,7 @@ class ElementSpindizzyBlock:public ICollidableSurfaceElement,
    * Implements IObjectWithProperties *
   \************************************/
   std::string getTypeName();
+  std::vector<IObjectProperty*> getProperties();
   
   /***********************\
    * Implements IElement *

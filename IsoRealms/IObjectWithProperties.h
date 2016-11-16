@@ -20,10 +20,14 @@
 #define I_OBJECT_WITH_PROPERTIES_H
 
 #include <string>
+#include <vector>
+
+#include "IObjectProperty.h"
 
 class IObjectWithProperties {
   public:
   virtual std::string getTypeName() = 0;
+  virtual std::vector<IObjectProperty*> getProperties() = 0;
 };
 
 #endif

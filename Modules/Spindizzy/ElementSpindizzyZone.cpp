@@ -80,6 +80,10 @@ std::string ElementSpindizzyZone::getTypeName() {
   return "Spindizzy Zone"; // TODO
 }
   
+std::vector<IObjectProperty*> ElementSpindizzyZone::getProperties() {
+  return std::vector<IObjectProperty*>();
+}
+
 IElementType* ElementSpindizzyZone::getElementType() {
   return cZoneType;
 }

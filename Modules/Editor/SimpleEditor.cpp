@@ -123,7 +123,7 @@ void SimpleEditor::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* r
 
   if (cMapEditorMode) {
     cScreenEdgeManager.add(cDockableElementTypeManager, cResourceIcons["IconElementTypes"], 0.4f);
-    cScreenEdgeManager.add(cDockableObjectProperties,   cResourceIcons["IconCustomTypes"],  0.6f);
+    cScreenEdgeManager.add(cDockableObjectProperties,   cResourceIcons["IconCustomTypes"],  0.7f);
   } else {
     cScreenEdgeManager.add(cDockableTextureManager,     cResourceIcons["IconTextures"],     0.8f);
     cScreenEdgeManager.add(cDockableElementTypeManager, cResourceIcons["IconElementTypes"], 0.4f);
@@ -131,12 +131,12 @@ void SimpleEditor::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* r
     cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconFonts"],        0.5f);
     cScreenEdgeManager.add(cDockableScriptManager,      cResourceIcons["IconScripts"],      0.6f);
     cScreenEdgeManager.add(cDockablePrimitiveManager,   cResourceIcons["IconPrimitives"],   0.6f);
-    cScreenEdgeManager.add(cDockableCustomTypeManager,  cResourceIcons["IconCustomTypes"],  0.4f);
+//    cScreenEdgeManager.add(cDockableCustomTypeManager,  cResourceIcons["IconCustomTypes"],  0.4f);
     cScreenEdgeManager.add(cDockableVertexManager,      cResourceIcons["IconVertices"],     0.5f);
     cScreenEdgeManager.add(cDockable3DModelManager,     cResourceIcons["Icon3DModels"],     0.4f);
     cScreenEdgeManager.add(cDockableCameraManager,      cResourceIcons["IconCameras"],      0.4f);
     cScreenEdgeManager.add(cDockableBoundariesManager,  cResourceIcons["IconCollectables"], 0.4f);
-    cScreenEdgeManager.add(cDockableObjectProperties,   cResourceIcons["IconCustomTypes"],  0.6f);
+    cScreenEdgeManager.add(cDockableObjectProperties,   cResourceIcons["IconCustomTypes"],  0.7f);
   }
   addComponent(&cScreenEdgeManager);
   

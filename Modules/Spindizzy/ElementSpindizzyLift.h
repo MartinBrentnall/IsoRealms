@@ -28,6 +28,7 @@
 #include <IsoRealms/IDynamicElement.h>
 #include <IsoRealms/IsoRealmsConstants.h>
 #include <IsoRealms/IVisualElement.h>
+#include <IsoRealms/Properties/PropertyInteger.h>
 #include <IsoRealms/Resources/3DModel/I3DModelType.h>
 #include <IsoRealms/Resources/ElementType/Element.h>
 
@@ -75,6 +76,9 @@ class ElementSpindizzyLift:public ICollidableSurfaceElement,
   };
   LiftValues cLiftValues;
   
+  // Editor data
+  std::vector<IObjectProperty*> cProperties;
+  
   void renderEditingArrow();
   void executeLiftMovedScript();
   Vertex* getBoundaryCrossingPoint(Vertex&, Vertex&, float*, float);
@@ -98,6 +102,7 @@ class ElementSpindizzyLift:public ICollidableSurfaceElement,
    * Implements IObjectWithProperties *
   \************************************/
   std::string getTypeName();
+  std::vector<IObjectProperty*> getProperties();
   
   /***********************\
    * Implements IElement *

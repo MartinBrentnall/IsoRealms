@@ -74,6 +74,10 @@ std::string ElementSpindizzyItem::getTypeName() {
   return "Spindizzy Item"; // TODO
 }
   
+std::vector<IObjectProperty*> ElementSpindizzyItem::getProperties() {
+  return std::vector<IObjectProperty*>();
+}
+
 IElementType* ElementSpindizzyItem::getElementType() {
   return cItemType;
 }

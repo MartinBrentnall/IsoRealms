@@ -131,6 +131,10 @@ std::string ElementSpindizzyWater::getTypeName() {
   return "Spindizzy Water"; // TODO
 }
   
+std::vector<IObjectProperty*> ElementSpindizzyWater::getProperties() {
+  return std::vector<IObjectProperty*>();
+}
+
 IElementType* ElementSpindizzyWater::getElementType() {
   return cWaterType;
 }

@@ -19,12 +19,26 @@
 #include "DialogObjectProperties.h"
 
 DialogObjectProperties::DialogObjectProperties(IComponentContainer* container, IResourceAccessor* resources) : Dialog(container, "Modules/Editor/DialogObjectProperties", resources) {
+  cPropertiesTable = new ComponentTable(2);
+  addComponent("properties", cPropertiesTable);
+  setTitle("Properties (no selection)");
 }
 
 void DialogObjectProperties::objectSelected(IObjectWithProperties* object) {
+  cPropertiesTable->clear();
   if (object != nullptr) {
     std::string mObjectTypeName = object->getTypeName();
     setTitle("Properties of " + mObjectTypeName);
+    std::vector<IObjectProperty*> mObjectProperties = object->getProperties();
+    for (IObjectProperty* mObjectProperty : mObjectProperties) {
+      std::string mPropertyName = mObjectProperty->getPropertyName();
+      TextLabelComponent* mPropertyNameLabel = new TextLabelComponent(mPropertyName);
+      TextFieldComponent* mPropertyNameValue = new TextFieldComponent("1000");
+      std::vector<ISizedComponent*> mRow;
+      mRow.push_back(mPropertyNameLabel);
+      mRow.push_back(mPropertyNameValue);
+      cPropertiesTable->addRow(mRow);
+    }
   } else {
     setTitle("Properties (no selection)");
   }

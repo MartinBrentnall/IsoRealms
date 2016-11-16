@@ -89,6 +89,10 @@ std::string ElementSpindizzyCraft::getTypeName() {
   return "Spindizzy Craft"; // TODO
 }
   
+std::vector<IObjectProperty*> ElementSpindizzyCraft::getProperties() {
+  return std::vector<IObjectProperty*>();
+}
+
 IElementType* ElementSpindizzyCraft::getElementType() {
   return cCraftType;
 }

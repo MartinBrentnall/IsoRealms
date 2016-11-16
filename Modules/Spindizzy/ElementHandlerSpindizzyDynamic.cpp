@@ -88,6 +88,10 @@ std::string ElementHandlerSpindizzyDynamic::getTypeName() {
   return ""; // TODO
 }
   
+std::vector<IObjectProperty*> ElementHandlerSpindizzyDynamic::getProperties() {
+  return std::vector<IObjectProperty*>();
+}
+
 IElementType* ElementHandlerSpindizzyDynamic::getElementType() {
   return nullptr;
 }

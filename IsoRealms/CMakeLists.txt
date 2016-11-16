@@ -30,8 +30,9 @@ add_library(IsoRealms SHARED
   GUI/Button.cpp
   GUI/CheckBox.cpp
   GUI/CloseDialogCommand.cpp
-  GUI/ComponentResourceColourSelector.cpp
   GUI/ComponentEdgeLayout.cpp
+  GUI/ComponentResourceColourSelector.cpp
+  GUI/ComponentTable.cpp
   GUI/Container.cpp
   GUI/Dialog.cpp
   GUI/Dialogs/ComponentColourSelector.cpp
@@ -86,6 +87,7 @@ add_library(IsoRealms SHARED
   Persistence/DOMNodeWrapper.cpp
   Persistence/DOMNodeWriter.cpp
   Persistence/ParseException.cpp
+  Properties/PropertyInteger.cpp
   Rectangle.cpp
   Resources/Boolean/Boolean.cpp
   Resources/Boolean/BooleanRegistry.cpp

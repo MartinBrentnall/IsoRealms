@@ -70,7 +70,11 @@ void ResourceElementHUDString::updateIcon(unsigned int) {
 std::string ResourceElementHUDString::getTypeName() {
   return ""; // TODO
 }
-  
+
+std::vector<IObjectProperty*> ResourceElementHUDString::getProperties() {
+  return std::vector<IObjectProperty*>();
+}
+
 IElementType* ResourceElementHUDString::getElementType() {
   return this;
 }

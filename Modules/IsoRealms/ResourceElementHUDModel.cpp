@@ -85,6 +85,10 @@ std::string ResourceElementHUDModel::getTypeName() {
   return ""; // TODO
 }
   
+std::vector<IObjectProperty*> ResourceElementHUDModel::getProperties() {
+  return std::vector<IObjectProperty*>();
+}
+
 IElementType* ResourceElementHUDModel::getElementType() {
   return this;
 }

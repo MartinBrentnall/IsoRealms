@@ -32,6 +32,10 @@ ElementSpindizzyLift::ElementSpindizzyLift(ISpindizzyLiftType* elementType, Bloc
   cLiftValues.cLocation.z = cLocation.z;
   cLiftModel   = modelType->createModel(&cLiftValues.cLocation);
   cContainer   = container;
+  cProperties.push_back(new PropertyInteger("Time to move one block up (ms):"));
+  cProperties.push_back(new PropertyInteger("Time to move one block down (ms):"));
+  cProperties.push_back(new PropertyInteger("Delay at top (ms):"));
+  cProperties.push_back(new PropertyInteger("Delay at bottom (ms):"));
   reset();
 }
 
@@ -211,6 +215,10 @@ std::string ElementSpindizzyLift::getTypeName() {
   return "Spindizzy Lift"; // TODO
 }
   
+std::vector<IObjectProperty*> ElementSpindizzyLift::getProperties() {
+  return cProperties;
+}
+
 IElementType* ElementSpindizzyLift::getElementType() {
   return cLiftType;
 }

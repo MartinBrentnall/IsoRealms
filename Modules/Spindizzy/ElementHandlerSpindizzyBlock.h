@@ -59,6 +59,7 @@ class ElementHandlerSpindizzyBlock:public Element,
    * Implements IObjectWithProperties *
   \************************************/
   std::string getTypeName();
+  std::vector<IObjectProperty*> getProperties();
   
   /***********************\
    * Implements IElement *

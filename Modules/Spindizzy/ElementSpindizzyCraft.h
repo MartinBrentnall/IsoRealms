@@ -172,6 +172,7 @@ class ElementSpindizzyCraft:public Element,
    * Implements IObjectWithProperties *
   \************************************/
   std::string getTypeName();
+  std::vector<IObjectProperty*> getProperties();
   
   /***********************\
    * Implements IElement *
