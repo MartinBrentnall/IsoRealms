@@ -41,6 +41,7 @@ class LayerInputPlayer : public ILayer {
   void staticChanged();    
   void resourceSelected(IElementType*);
   void reset();
+  void addObjectSelectionListener(IObjectSelectionListener*);
 };
 
 #endif

@@ -32,11 +32,13 @@
 #include <IsoRealms/GUI/IDialogGenerator.h>
 #include <IsoRealms/GUI/MenuBar.h>
 #include <IsoRealms/GUI/OpenDialogCommand.h>
+#include <IsoRealms/ICommand.h>
 #include <IsoRealms/ICommandInfo.h>
 #include <IsoRealms/IComponentContainer.h>
 #include <IsoRealms/IEditingContext.h>
 #include <IsoRealms/IHUDComponent.h>
-#include <IsoRealms/ICommand.h>
+#include <IsoRealms/IObjectSelectionListener.h>
+#include <IsoRealms/IObjectWithProperties.h>
 #include <IsoRealms/Project.h>
 #include <IsoRealms/Resources/ElementType/IElementType.h>
 #include <IsoRealms/Resources/Font/IFont.h>
@@ -49,6 +51,7 @@ class OpenCommand;
 #include "CommandDialog.h"
 #include "ComponentCustomTypeResources.h"
 #include "DialogModules.h"
+#include "DialogObjectProperties.h"
 #include "DialogProjectOpen.h"
 #include "DialogProjectOpenTemplate.h"
 #include "IComponentFactory.h"
@@ -79,6 +82,7 @@ class SimpleEditor:public IModule,
                    public IProjectManager,
                    public ICommandSource,
                    public IResourceSelector,
+                   public IObjectSelectionListener,
                    public IEditor {
   private:
   class EntityClassDialogFactory;
@@ -115,6 +119,7 @@ class SimpleEditor:public IModule,
   DialogSoundManager* cDockableSoundManager;
   DialogTextureManager* cDockableTextureManager;
   DialogVertexManager* cDockableVertexManager;
+  DialogObjectProperties* cDockableObjectProperties;
   
   // TODO: Need undo stack per zone... or at least to empty it when changing zones.
   std::stack<IElement*> cUndoStack;
@@ -219,6 +224,7 @@ class SimpleEditor:public IModule,
   void initEditor();
   void destroy(ILayer*);
   void reset();
+  void addObjectSelectionListener(IObjectSelectionListener*);
   
   /******************************\
    * Implements IProjectManager *
@@ -249,6 +255,11 @@ class SimpleEditor:public IModule,
   void removeResourceSelectionListener(IResourceSelectionListener<ITexture>*);
   void notifyResourceReleased(IColour*);
   void notifyResourceOwned(IColour*);
+  
+  /***************************************\
+   * Implements IObjectSelectionListener *
+  \***************************************/
+  void objectSelected(IObjectWithProperties*);
   
   /**********************\
    * Implements IEditor *

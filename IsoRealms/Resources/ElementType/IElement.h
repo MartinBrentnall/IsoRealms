@@ -28,6 +28,7 @@ class IMap;
 
 #include <IsoRealms/BlockLocation.h>
 #include <IsoRealms/ILayerEditingContext.h>
+#include <IsoRealms/IObjectWithProperties.h>
 #include <IsoRealms/Persistence/DOMNodeWriter.h>
 #include <IsoRealms/Resources/IResource.h>
 #include <IsoRealms/Resources/IResourceLocator.h>
@@ -37,7 +38,7 @@ class IMap;
 
 class PickedElement;
 
-class IElement {
+class IElement:public IObjectWithProperties {
   public:
 
   /**

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Martin Brentnall
+ * Copyright 2016 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,32 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef LAYER_INPUT_RECORDER_H
-#define LAYER_INPUT_RECORDER_H
+#ifndef DIALOG_OBJECT_PROPERTIES_H
+#define DIALOG_OBJECT_PROPERTIES_H
 
-#include <IsoRealms/Resources/Layer/ILayer.h>
+#include <IsoRealms/GUI/Dialog.h>
+#include <IsoRealms/IObjectWithProperties.h>
 
-class LayerInputRecorder : public ILayer {
-  private:
-    
+class DialogObjectProperties:public Dialog {
   public:
-    
-  /*********************\
-   * Implements ILayer *
-  \*********************/
-  void updateRuntime(unsigned int);
-  void updateEditing(unsigned int);
-  void renderRuntime();
-  void renderEditing();
-  bool input(SDL_Event&);
-  bool inputEditor(SDL_Event&);
-  void initRuntime();
-  void initEditor();
-  void save(DOMNodeWriter*, IResourceLocator*);
-  void staticChanged();
-  void resourceSelected(IElementType*);
-  void reset();
-  void addObjectSelectionListener(IObjectSelectionListener*);
+  DialogObjectProperties(IComponentContainer* container, IResourceAccessor* resources);
+  
+  void objectSelected(IObjectWithProperties*);
 };
 
 #endif

@@ -81,6 +81,10 @@ void ResourceElementHUDModel::updateIcon(unsigned int) {
   // TODO
 }
 
+std::string ResourceElementHUDModel::getTypeName() {
+  return ""; // TODO
+}
+  
 IElementType* ResourceElementHUDModel::getElementType() {
   return this;
 }

@@ -35,6 +35,10 @@ IElementContainer* ElementSpindizzyEnemy::getElementContainer() {
   return cContainer;
 }
 
+std::string ElementSpindizzyEnemy::getTypeName() {
+  return "Spindizzy Enemy"; // TODO
+}
+  
 IElementType* ElementSpindizzyEnemy::getElementType() {
   return cEnemyType;
 }

@@ -76,6 +76,10 @@ IElementContainer* ElementSpindizzyZone::getElementContainer() {
   return cContainer;
 }
   
+std::string ElementSpindizzyZone::getTypeName() {
+  return "Spindizzy Zone"; // TODO
+}
+  
 IElementType* ElementSpindizzyZone::getElementType() {
   return cZoneType;
 }

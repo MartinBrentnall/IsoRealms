@@ -25,14 +25,11 @@
 #include "BlockLocation.h"
 #include "Persistence/DOMNodeWrapper.h"
 #include "IEditingContext.h"
+#include "IObjectSelectionListener.h"
 
-class ElementSetRegistry;
 class ILayer;
 class IResourceManager;
-class IZoneHandler;
-class Map;
 class ModuleRegistry;
-class Zone;
 
 class IProject {
   public:
@@ -53,6 +50,7 @@ class IProject {
   virtual void initRuntime() = 0;
   virtual bool hasCompleted() = 0;
   virtual void reset() = 0;
+  virtual void addObjectSelectionListener(IObjectSelectionListener*) = 0;
   
   virtual void staticChanged() = 0;
 

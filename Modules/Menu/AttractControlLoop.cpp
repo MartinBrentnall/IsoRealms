@@ -208,6 +208,10 @@ void AttractControlLoop::reset() {
   // Not supported
 }
 
+void AttractControlLoop::addObjectSelectionListener(IObjectSelectionListener* listener) {
+  // Not supported
+}
+
 void AttractControlLoop::startProject(const std::string& project, DOMNodeWrapper* options) {
   std::string mProjectPath = System::getProgramResource(project);
   DOMNodeWrapper* mProjectNode = new DOMNodeWrapper(mProjectPath);

@@ -158,3 +158,6 @@ void LayerHUD::reset() {
   // Nothing to do
 }
 
+void LayerHUD::addObjectSelectionListener(IObjectSelectionListener* listener) {
+  // TODO
+}

@@ -207,6 +207,10 @@ void ElementSpindizzyLift::save(DOMNodeWriter* node, IResourceLocator* resourceL
   node->addAttribute("bottomDelay", cBottomDelay);
 }
 
+std::string ElementSpindizzyLift::getTypeName() {
+  return "Spindizzy Lift"; // TODO
+}
+  
 IElementType* ElementSpindizzyLift::getElementType() {
   return cLiftType;
 }

@@ -227,6 +227,11 @@ class ElementSpindizzyBlock:public ICollidableSurfaceElement,
   \******************************/
   std::set<IBoolean*> getInputs();
 
+  /************************************\
+   * Implements IObjectWithProperties *
+  \************************************/
+  std::string getTypeName();
+  
   /***********************\
    * Implements IElement *
   \***********************/

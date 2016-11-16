@@ -63,6 +63,11 @@ class ElementSpindizzyWater:public ISpindizzyBlock,
   \******************************/
   std::set<IBoolean*> getInputs();
 
+  /************************************\
+   * Implements IObjectWithProperties *
+  \************************************/
+  std::string getTypeName();
+  
   /***********************\
    * Implements IElement *
   \***********************/

@@ -21,6 +21,7 @@
 
 #include <SDL/SDL.h>
 
+#include <IsoRealms/IObjectSelectionListener.h>
 #include <IsoRealms/Persistence/DOMNodeWriter.h>
 #include <IsoRealms/Resources/IResourceLocator.h>
 #include <IsoRealms/Resources/IResourceSelectionListener.h>
@@ -38,6 +39,7 @@ class ILayer : public virtual IResourceSelectionListener<IElementType> {
   virtual void save(DOMNodeWriter*, IResourceLocator*) = 0;
   virtual void staticChanged() = 0;
   virtual void reset() = 0;
+  virtual void addObjectSelectionListener(IObjectSelectionListener*) = 0;
   
   virtual ~ILayer() {}
 };

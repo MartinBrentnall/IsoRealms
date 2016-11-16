@@ -61,3 +61,8 @@ void LayerInputRecorder::resourceSelected(IElementType* elementType) {
 void LayerInputRecorder::reset() {
   // Not supported
 }
+
+void LayerInputRecorder::addObjectSelectionListener(IObjectSelectionListener* listener) {
+  // Not supported
+}
+

@@ -74,6 +74,7 @@ Project::Project(DOMNodeWrapper* node, const std::string& projectName, IEditingC
       bool mDefaultLayer = mNode->getBooleanAttribute("default");
       ILayerType* mLayerType = cResources.getLayerType(mLayerTypeName);
       ILayer* mLayer = mLayerType->getLayer(mNode, &cResources, editingContext != nullptr, asTemplate);
+      // TODO: Do we need to add object selection listeners here!?
       cLayers.push_back(mLayer);
       if (mDefaultLayer) {
         cDefaultLayer = mLayer;
@@ -124,6 +125,13 @@ void Project::reset() {
     mLayer->reset();
   }
   cResources.reset();
+}
+
+void Project::addObjectSelectionListener(IObjectSelectionListener* listener) {
+  cObjectSelectionListeners.push_back(listener);
+  for (ILayer* mLayer : cLayers) {
+    mLayer->addObjectSelectionListener(listener);
+  }
 }
 
 void Project::inputRuntime(SDL_Event& event) {

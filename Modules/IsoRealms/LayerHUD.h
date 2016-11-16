@@ -68,6 +68,7 @@ class LayerHUD:public IComponentSources,
   void save(DOMNodeWriter*, IResourceLocator*);
   void staticChanged();
   void reset();
+  void addObjectSelectionListener(IObjectSelectionListener*);
 };
 
 #endif

@@ -100,3 +100,7 @@ void LayerBackground::staticChanged() {
 void LayerBackground::reset() {
   // Nothing to do
 }
+
+void LayerBackground::addObjectSelectionListener(IObjectSelectionListener* listener) {
+  // Nothing to do because this layer has no objects.
+}

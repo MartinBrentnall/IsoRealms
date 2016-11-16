@@ -72,6 +72,11 @@ class ElementSpindizzyItem:public Element,
   void setArguments();
   void unsetArguments();
 
+  /************************************\
+   * Implements IObjectWithProperties *
+  \************************************/
+  std::string getTypeName();
+  
   /***********************\
    * Implements IElement *
   \***********************/

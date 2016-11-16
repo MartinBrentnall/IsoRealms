@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Martin Brentnall
+ * Copyright 2016 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,32 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef LAYER_INPUT_RECORDER_H
-#define LAYER_INPUT_RECORDER_H
+#ifndef I_OBJECT_WITH_PROPERTIES_H
+#define I_OBJECT_WITH_PROPERTIES_H
 
-#include <IsoRealms/Resources/Layer/ILayer.h>
+#include <string>
 
-class LayerInputRecorder : public ILayer {
-  private:
-    
+class IObjectWithProperties {
   public:
-    
-  /*********************\
-   * Implements ILayer *
-  \*********************/
-  void updateRuntime(unsigned int);
-  void updateEditing(unsigned int);
-  void renderRuntime();
-  void renderEditing();
-  bool input(SDL_Event&);
-  bool inputEditor(SDL_Event&);
-  void initRuntime();
-  void initEditor();
-  void save(DOMNodeWriter*, IResourceLocator*);
-  void staticChanged();
-  void resourceSelected(IElementType*);
-  void reset();
-  void addObjectSelectionListener(IObjectSelectionListener*);
+  virtual std::string getTypeName() = 0;
 };
 
 #endif
+

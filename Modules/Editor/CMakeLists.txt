@@ -19,6 +19,7 @@ include_directories(${PROJECT_SOURCE_DIR})
 add_library(Editor MODULE 
   ConfirmationBox.cpp
   DialogModules.cpp
+  DialogObjectProperties.cpp
   DialogProjectOpen.cpp
   DialogProjectOpenTemplate.cpp
   DialogProjectSaveAs.cpp

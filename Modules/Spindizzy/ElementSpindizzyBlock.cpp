@@ -544,6 +544,10 @@ void ElementSpindizzyBlock::generateWallSurfaces(IWallSurface::FaceDirection fac
   }
 }
 
+std::string ElementSpindizzyBlock::getTypeName() {
+  return "Spindizzy Block"; // TODO
+}
+  
 IElementType* ElementSpindizzyBlock::getElementType() {
   return cBlockType;
 }

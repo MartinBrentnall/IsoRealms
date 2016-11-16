@@ -52,6 +52,11 @@ class ElementHandlerZone:public Element,
   void setValue();
   void unsetValue();
   
+  /************************************\
+   * Implements IObjectWithProperties *
+  \************************************/
+  std::string getTypeName();
+  
   /***********************\
    * Implements IElement *
   \***********************/

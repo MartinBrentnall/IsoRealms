@@ -84,6 +84,10 @@ void ElementHandlerSpindizzyDynamic::updateRuntime(unsigned int ticks) {
   }
 }
 
+std::string ElementHandlerSpindizzyDynamic::getTypeName() {
+  return ""; // TODO
+}
+  
 IElementType* ElementHandlerSpindizzyDynamic::getElementType() {
   return nullptr;
 }

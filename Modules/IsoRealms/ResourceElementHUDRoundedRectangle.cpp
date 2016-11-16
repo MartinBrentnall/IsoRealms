@@ -115,6 +115,10 @@ void ResourceElementHUDRoundedRectangle::renderRectangle(float xStart, float ySt
   glVertex2f(xStart, yEnd);
 }
 
+std::string ResourceElementHUDRoundedRectangle::getTypeName() {
+  return ""; // TODO
+}
+  
 IElementType* ResourceElementHUDRoundedRectangle::getElementType() {
   return this;
 }

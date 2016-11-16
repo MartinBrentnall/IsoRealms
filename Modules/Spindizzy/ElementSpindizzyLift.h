@@ -94,6 +94,11 @@ class ElementSpindizzyLift:public ICollidableSurfaceElement,
   void processCursorAppearance(ILayerEditingContext*, Vertex&);
   PickedElement* pickElement(Vertex&, Vertex&);
   
+  /************************************\
+   * Implements IObjectWithProperties *
+  \************************************/
+  std::string getTypeName();
+  
   /***********************\
    * Implements IElement *
   \***********************/

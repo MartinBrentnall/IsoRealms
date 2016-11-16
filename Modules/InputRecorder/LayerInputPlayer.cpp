@@ -61,3 +61,7 @@ void LayerInputPlayer::resourceSelected(IElementType* elementType) {
 void LayerInputPlayer::reset() {
   // Not supported
 }
+
+void LayerInputPlayer::addObjectSelectionListener(IObjectSelectionListener* listener) {
+  // Not supported
+}

@@ -57,6 +57,7 @@ class LayerSpindizzyMapEditingContext : public ILayerEditingContext {
   IElementContainer* cCursorRestriction;
   std::vector<IElement*> cCursorElements;
   IElement* cSelectedElement;
+  std::vector<IObjectSelectionListener*> cObjectSelectionListeners;
   
   bool isMovingWest();
   bool isMovingEast();
@@ -68,6 +69,7 @@ class LayerSpindizzyMapEditingContext : public ILayerEditingContext {
   void removeCursorElement(IElement*);
   void processCursorMovement(Vertex&, Vertex&);
   void processCursorAppearance(Vertex&);
+  void fireObjectSelectedEvent(IObjectWithProperties*);
   
   public:
   LayerSpindizzyMapEditingContext(ILayerSpindizzyMap*);
@@ -81,6 +83,7 @@ class LayerSpindizzyMapEditingContext : public ILayerEditingContext {
   void setElementType(IElementType*);
   void addElement(IElement*);
   void removeElement(IElement*);
+  void addObjectSelectionListener(IObjectSelectionListener*);
   
   /**********************************\
    * Implemens ILayerEditingContext *

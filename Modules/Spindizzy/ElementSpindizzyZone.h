@@ -94,6 +94,11 @@ class ElementSpindizzyZone:public Element,
   bool intersects(ElementSpindizzyZone*);
   bool intersects(BlockLocation&);
   
+  /************************************\
+   * Implements IObjectWithProperties *
+  \************************************/
+  std::string getTypeName();
+  
   /***********************\
    * Implements IElement *
   \***********************/

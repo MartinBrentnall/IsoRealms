@@ -70,6 +70,10 @@ void ElementSpindizzyItem::renderRuntime() {
   }
 }
 
+std::string ElementSpindizzyItem::getTypeName() {
+  return "Spindizzy Item"; // TODO
+}
+  
 IElementType* ElementSpindizzyItem::getElementType() {
   return cItemType;
 }

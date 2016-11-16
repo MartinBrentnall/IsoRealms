@@ -95,6 +95,10 @@ void ElementHandlerSpindizzyBlock::updateRuntime(unsigned int ticks) {
   cElements.updateRuntime(ticks);
 }
 
+std::string ElementHandlerSpindizzyBlock::getTypeName() {
+  return ""; // TODO
+}
+  
 IElementType* ElementHandlerSpindizzyBlock::getElementType() {
   return nullptr;
 }

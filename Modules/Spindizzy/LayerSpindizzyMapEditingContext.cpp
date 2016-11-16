@@ -125,6 +125,12 @@ void LayerSpindizzyMapEditingContext::processCursorAppearance(Vertex& location) 
   }
 }
 
+void LayerSpindizzyMapEditingContext::fireObjectSelectedEvent(IObjectWithProperties* object) {
+  for (IObjectSelectionListener* mListener : cObjectSelectionListeners) {
+    mListener->objectSelected(object);
+  }
+}
+
 void LayerSpindizzyMapEditingContext::removeCursorElement(IElement* element) {
   for (unsigned int i = 0; i < cCursorElements.size(); i++) {
     if (cCursorElements[i] == element) {
@@ -254,6 +260,7 @@ bool LayerSpindizzyMapEditingContext::keyDown(SDLKey& key, SDLMod& mod) {
             }
             cSelectedElement = mElementToSelect;
           }
+          fireObjectSelectedEvent(cSelectedElement);
         }
         return true;
       }
@@ -266,6 +273,7 @@ bool LayerSpindizzyMapEditingContext::keyDown(SDLKey& key, SDLMod& mod) {
         removeCursorElement(cSelectedElement);
         mElementType->destroy(cSelectedElement);
         cSelectedElement = nullptr;
+        fireObjectSelectedEvent(nullptr);
         return true;
       }
       break;
@@ -334,6 +342,7 @@ bool LayerSpindizzyMapEditingContext::input(SDL_Event& event) {
         }
       }
       cSelectedElement = mClosestPickedElement != nullptr ? mClosestPickedElement->getElement() : nullptr;
+      fireObjectSelectedEvent(cSelectedElement);
       glPopMatrix();
     }
   }
@@ -357,6 +366,10 @@ void LayerSpindizzyMapEditingContext::addElement(IElement* element) {
 
 void LayerSpindizzyMapEditingContext::removeElement(IElement* element) {
   cElements.remove(element);
+}
+
+void LayerSpindizzyMapEditingContext::addObjectSelectionListener(IObjectSelectionListener* listener) {
+  cObjectSelectionListeners.push_back(listener);
 }
 
 IElementContainer* LayerSpindizzyMapEditingContext::getElementContainer() {

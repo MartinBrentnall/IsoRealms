@@ -101,6 +101,10 @@ void LayerSpindizzyMap::reset() {
   cElementHandler.reset();
 }
 
+void LayerSpindizzyMap::addObjectSelectionListener(IObjectSelectionListener* listener) {
+  cEditingContext->addObjectSelectionListener(listener);
+}
+
 IElementContainer* LayerSpindizzyMap::getElementContainer() {
   return this;
 }

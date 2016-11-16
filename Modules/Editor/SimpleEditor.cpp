@@ -119,9 +119,11 @@ void SimpleEditor::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* r
   cDockable3DModelManager     = new Dialog3DModelManager(    this, resources, mProjectResources, this, mProjectResources, this);
   cDockableCameraManager      = new DialogCameraManager(     this, resources, mProjectResources, this, mProjectResources, this);
   cDockableBoundariesManager  = new DialogBoundariesManager( this, resources, mProjectResources, this, mProjectResources, this);
+  cDockableObjectProperties   = new DialogObjectProperties(  this, resources);
 
   if (cMapEditorMode) {
     cScreenEdgeManager.add(cDockableElementTypeManager, cResourceIcons["IconElementTypes"], 0.4f);
+    cScreenEdgeManager.add(cDockableObjectProperties,   cResourceIcons["IconCustomTypes"],  0.6f);
   } else {
     cScreenEdgeManager.add(cDockableTextureManager,     cResourceIcons["IconTextures"],     0.8f);
     cScreenEdgeManager.add(cDockableElementTypeManager, cResourceIcons["IconElementTypes"], 0.4f);
@@ -134,6 +136,7 @@ void SimpleEditor::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* r
     cScreenEdgeManager.add(cDockable3DModelManager,     cResourceIcons["Icon3DModels"],     0.4f);
     cScreenEdgeManager.add(cDockableCameraManager,      cResourceIcons["IconCameras"],      0.4f);
     cScreenEdgeManager.add(cDockableBoundariesManager,  cResourceIcons["IconCollectables"], 0.4f);
+    cScreenEdgeManager.add(cDockableObjectProperties,   cResourceIcons["IconCustomTypes"],  0.6f);
   }
   addComponent(&cScreenEdgeManager);
   
@@ -389,6 +392,10 @@ void SimpleEditor::reset() {
   // Not supported
 }
 
+void SimpleEditor::addObjectSelectionListener(IObjectSelectionListener* listener) {
+  // Not supported
+}
+
 void SimpleEditor::renderRuntime() {
   if (cTesting) {
     cProject->renderRuntime();
@@ -529,6 +536,10 @@ void SimpleEditor::notifyResourceOwned(IColour* colour) {
   cDockableTextureManager->notifyResourceOwned(colour);
 }
 
+void SimpleEditor::objectSelected(IObjectWithProperties* object) {
+  cDockableObjectProperties->objectSelected(object);
+}
+
 void SimpleEditor::openProject(const std::string& file, bool asTemplate) {
   DOMNodeWrapper* mConfigurationRootNode = new DOMNodeWrapper(file);
   for (int i = 0; i < mConfigurationRootNode->getChildCount(); i++) {
@@ -551,6 +562,7 @@ void SimpleEditor::openProject(const std::string& file, bool asTemplate) {
       for (unsigned int i = 0; i < cProjectManagerListeners.size(); i++) {
         cProjectManagerListeners[i]->projectOpened(cProject);
       }
+      cProject->addObjectSelectionListener(this);
       return;
     }
   }

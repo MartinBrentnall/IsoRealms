@@ -85,6 +85,10 @@ void ElementSpindizzyCraft::renderStatic() {
   // Nothing to do.
 }
 
+std::string ElementSpindizzyCraft::getTypeName() {
+  return "Spindizzy Craft"; // TODO
+}
+  
 IElementType* ElementSpindizzyCraft::getElementType() {
   return cCraftType;
 }

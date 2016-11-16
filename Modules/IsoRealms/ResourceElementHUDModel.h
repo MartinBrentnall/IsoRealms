@@ -59,6 +59,11 @@ class ResourceElementHUDModel:public IElementType,
   Vertex* editorCursorStopped(Vertex*);
   bool inputEdit(SDL_Event&, ILayerEditingContext*);
 
+  /************************************\
+   * Implements IObjectWithProperties *
+  \************************************/
+  std::string getTypeName();
+  
   /***********************\
    * Implements IElement *
   \***********************/

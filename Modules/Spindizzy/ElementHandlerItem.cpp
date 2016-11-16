@@ -60,6 +60,10 @@ void ElementHandlerItem::updateRuntime(unsigned int ticks) {
   cElements.updateRuntime(ticks);
 }
 
+std::string ElementHandlerItem::getTypeName() {
+  return ""; // TODO
+}
+  
 IElementType* ElementHandlerItem::getElementType() {
   return nullptr;
 }

@@ -46,6 +46,8 @@ class Project:public IProject {
   
   std::vector<IDynamicElement*> cDynamicElements;
   
+  std::vector<IObjectSelectionListener*> cObjectSelectionListeners;
+  
   public:
   Project();
   Project(DOMNodeWrapper*, const std::string&, IEditingContext*, bool, DOMNodeWrapper*);
@@ -59,6 +61,7 @@ class Project:public IProject {
   void finish();
   bool hasCompleted();
   void reset();
+  void addObjectSelectionListener(IObjectSelectionListener*);
   
   void save();
   void save(const std::string&);

@@ -127,6 +127,10 @@ std::set<IBoolean*> ElementSpindizzyWater::getInputs() {
 /* TODO  ISpindizzyBlockSet* mSurfaceProcessor = cWaterType->getElementSet();
   mSurfaceProcessor->unregisterSurfaceProvider(this);*/
 
+std::string ElementSpindizzyWater::getTypeName() {
+  return "Spindizzy Water"; // TODO
+}
+  
 IElementType* ElementSpindizzyWater::getElementType() {
   return cWaterType;
 }

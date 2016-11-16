@@ -53,6 +53,11 @@ class ElementSpindizzyEnemy:public IElementSpindizzyDynamic,
   void processCursorAppearance(ILayerEditingContext*, Vertex&);
   PickedElement* pickElement(Vertex&, Vertex&);
   
+  /************************************\
+   * Implements IObjectWithProperties *
+  \************************************/
+  std::string getTypeName();
+  
   /***********************\
    * Implements IElement *
   \***********************/
