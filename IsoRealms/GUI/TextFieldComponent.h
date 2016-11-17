@@ -46,6 +46,7 @@ class TextFieldComponent:public IValueComponent<std::string>,
   unsigned int cCaret;
   bool cUpdating;
   bool cHasFocus;
+  bool cFireOnKeyPress;
   std::string cInput;
 
   bool keyDown(SDLKey&, SDLMod&);
@@ -53,7 +54,7 @@ class TextFieldComponent:public IValueComponent<std::string>,
   void fireChange();
 
   public:
-  TextFieldComponent(std::string = "");
+  TextFieldComponent(std::string = "", bool = true);
 
   /*******************************************\
    * Implements IValueComponent<std::string> *

@@ -21,11 +21,12 @@
 int TextFieldComponent::cDelayUntilBlinkChange = BLINK_DELAY;
 bool TextFieldComponent::cBlinkShowing = true;
 
-TextFieldComponent::TextFieldComponent(std::string initialText) {
+TextFieldComponent::TextFieldComponent(std::string initialText, bool fireOnKeyPress) {
   cInput = initialText;
   cCaret = 0;
   cUpdating = false;
   cHasFocus = false;
+  cFireOnKeyPress = fireOnKeyPress;
 }
 
 void TextFieldComponent::render() {
@@ -86,6 +87,9 @@ void TextFieldComponent::gainedFocus() {
 
 void TextFieldComponent::lostFocus() {
   cHasFocus = false;
+  if (!cFireOnKeyPress) {
+    fireChange();
+  }
 }
 
 bool TextFieldComponent::keyDown(SDLKey& key, SDLMod& mod) {
@@ -119,7 +123,9 @@ bool TextFieldComponent::keyDown(SDLKey& key, SDLMod& mod) {
       if (cCaret > 0) {
         cInput = cInput.substr(0, cCaret - 1) + cInput.substr(cCaret);
         cCaret--;
-	fireChange();
+        if (cFireOnKeyPress) {
+          fireChange();
+        }
       }
       return true;
     }
@@ -127,8 +133,17 @@ bool TextFieldComponent::keyDown(SDLKey& key, SDLMod& mod) {
     case SDLK_DELETE: {
       if (cCaret < cInput.length()) {
         cInput = cInput.substr(0, cCaret) + cInput.substr(cCaret + 1);
-	fireChange();
+        if (cFireOnKeyPress) {
+          fireChange();
+        }
       }
+      return true;
+    }
+    
+    case SDLK_RETURN: {
+      fireChange();
+      unsigned int mInputSize = cInput.size();
+      cCaret = std::min(cCaret, mInputSize);
       return true;
     }
 
@@ -140,7 +155,9 @@ bool TextFieldComponent::keyDown(SDLKey& key, SDLMod& mod) {
           cInput = cInput.substr(0, cCaret) + (char) key + cInput.substr(cCaret);
         }
         cCaret++;
-        fireChange();
+        if (cFireOnKeyPress) {
+          fireChange();
+        }
       }
       return true;
     }
@@ -162,11 +179,11 @@ bool TextFieldComponent::mouseButtonDown(SDL_Event& event) {
       float mPosition = mLeft + mFont->getWidth(mFontSize, cInput.substr(0, i).c_str());
       float mNewDifference = mX - mPosition;
       if (mNewDifference < 0.0f) {
-	mNewDifference = -mNewDifference;
+        mNewDifference = -mNewDifference;
       }
       if (mNewDifference > mDifference) {
-	cCaret = mNewDifference > mDifference ? i - 1: i - 2;
-	return true;
+        cCaret = mNewDifference > mDifference ? i - 1: i - 2;
+        return true;
       }
       mDifference = mNewDifference;
     }
@@ -185,10 +202,10 @@ void TextFieldComponent::fireChange() {
 }
 
 void TextFieldComponent::setValue(std::string text) {
-  if (!cUpdating) {
+//  if (!cUpdating) {
     cInput = text;
 //    fireChange();
-  } 
+//  } 
 }
 
 std::string TextFieldComponent::getValue() {

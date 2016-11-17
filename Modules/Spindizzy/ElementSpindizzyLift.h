@@ -45,6 +45,45 @@ class ElementSpindizzyLift:public ICollidableSurfaceElement,
                            public IElementSpindizzyDynamic,
                            public IElementBounds {
   private:
+  class PropertyUpSpeed:public IPropertyValue<int> {
+    private:
+    ElementSpindizzyLift* cParent;
+    
+    public:
+    PropertyUpSpeed(ElementSpindizzyLift*);
+    void setValue(int);
+    int getValue();
+  };
+  
+  class PropertyDownSpeed:public IPropertyValue<int> {
+    private:
+    ElementSpindizzyLift* cParent;
+    
+    public:
+    PropertyDownSpeed(ElementSpindizzyLift*);
+    void setValue(int);
+    int getValue();
+  };
+  
+  class PropertyTopDelay:public IPropertyValue<int> {
+    private:
+    ElementSpindizzyLift* cParent;
+    
+    public:
+    PropertyTopDelay(ElementSpindizzyLift*);
+    void setValue(int);
+    int getValue();
+  };
+  
+  class PropertyBottomDelay:public IPropertyValue<int> {
+    private:
+    ElementSpindizzyLift* cParent;
+    
+    public:
+    PropertyBottomDelay(ElementSpindizzyLift*);
+    void setValue(int);
+    int getValue();
+  };
   
   enum LiftState {
     MOVING_UP,
@@ -76,8 +115,11 @@ class ElementSpindizzyLift:public ICollidableSurfaceElement,
   };
   LiftValues cLiftValues;
   
-  // Editor data
-  std::vector<IObjectProperty*> cProperties;
+  // Properties
+  IPropertyValue<int>* cPropertyUpSpeed;
+  IPropertyValue<int>* cPropertyDownSpeed;
+  IPropertyValue<int>* cPropertyTopDelay;
+  IPropertyValue<int>* cPropertyBottomDelay;
   
   void renderEditingArrow();
   void executeLiftMovedScript();
@@ -103,6 +145,7 @@ class ElementSpindizzyLift:public ICollidableSurfaceElement,
   \************************************/
   std::string getTypeName();
   std::vector<IObjectProperty*> getProperties();
+  void destroyProperties(std::vector<IObjectProperty*>);
   
   /***********************\
    * Implements IElement *

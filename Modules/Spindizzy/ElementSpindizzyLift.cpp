@@ -32,10 +32,10 @@ ElementSpindizzyLift::ElementSpindizzyLift(ISpindizzyLiftType* elementType, Bloc
   cLiftValues.cLocation.z = cLocation.z;
   cLiftModel   = modelType->createModel(&cLiftValues.cLocation);
   cContainer   = container;
-  cProperties.push_back(new PropertyInteger("Time to move one block up (ms):"));
-  cProperties.push_back(new PropertyInteger("Time to move one block down (ms):"));
-  cProperties.push_back(new PropertyInteger("Delay at top (ms):"));
-  cProperties.push_back(new PropertyInteger("Delay at bottom (ms):"));
+  cPropertyUpSpeed     = new PropertyUpSpeed(    this);
+  cPropertyDownSpeed   = new PropertyDownSpeed(  this);
+  cPropertyTopDelay    = new PropertyTopDelay(   this);
+  cPropertyBottomDelay = new PropertyBottomDelay(this);
   reset();
 }
 
@@ -207,11 +207,11 @@ void ElementSpindizzyLift::save(DOMNodeWriter* node, IResourceLocator* resourceL
   std::string mElementTypePath = resourceLocator->getPath(cLiftType);
   node->addAttribute("type", mElementTypePath);
   cLocation.saveRelative(node, relative);
-  node->addAttribute("top", cTop - relative.z);
-  node->addAttribute("bottom", cBottom - relative.z);
-  node->addAttribute("upSpeed", cUpSpeed);
-  node->addAttribute("downSpeed", cDownSpeed);
-  node->addAttribute("topDelay", cTopDelay);
+  node->addAttribute("top",         cTop    - relative.z);
+  node->addAttribute("bottom",      cBottom - relative.z);
+  node->addAttribute("upSpeed",     cUpSpeed);
+  node->addAttribute("downSpeed",   cDownSpeed);
+  node->addAttribute("topDelay",    cTopDelay);
   node->addAttribute("bottomDelay", cBottomDelay);
 }
 
@@ -220,7 +220,16 @@ std::string ElementSpindizzyLift::getTypeName() {
 }
   
 std::vector<IObjectProperty*> ElementSpindizzyLift::getProperties() {
-  return cProperties;
+  std::vector<IObjectProperty*> mProperties;
+  mProperties.push_back(new PropertyInteger("Time to move one block up (ms):",   cPropertyUpSpeed));
+  mProperties.push_back(new PropertyInteger("Time to move one block down (ms):", cPropertyDownSpeed));
+  mProperties.push_back(new PropertyInteger("Delay at top (ms):",                cPropertyTopDelay));
+  mProperties.push_back(new PropertyInteger("Delay at bottom (ms):",             cPropertyBottomDelay));
+  return mProperties;
+}
+
+void ElementSpindizzyLift::destroyProperties(std::vector<IObjectProperty*> properties) {
+  // TODO: Implement this
 }
 
 IElementType* ElementSpindizzyLift::getElementType() {
@@ -452,4 +461,52 @@ float ElementSpindizzyLift::getBottom() {
 
 float ElementSpindizzyLift::getTop() {
   return std::max(cLocation.z, cTop) * IsoRealmsConstants::BLOCK_HEIGHT;
+}
+
+ElementSpindizzyLift::PropertyUpSpeed::PropertyUpSpeed(ElementSpindizzyLift* parent) {
+  cParent = parent;
+}
+
+void ElementSpindizzyLift::PropertyUpSpeed::setValue(int value) {
+  cParent->cUpSpeed = std::max(1, value);;
+}
+
+int ElementSpindizzyLift::PropertyUpSpeed::getValue() {
+  return cParent->cUpSpeed;
+}
+
+ElementSpindizzyLift::PropertyDownSpeed::PropertyDownSpeed(ElementSpindizzyLift* parent) {
+  cParent = parent;
+}
+
+void ElementSpindizzyLift::PropertyDownSpeed::setValue(int value) {
+  cParent->cDownSpeed = std::max(1, value);;
+}
+
+int ElementSpindizzyLift::PropertyDownSpeed::getValue() {
+  return cParent->cDownSpeed;
+}
+
+ElementSpindizzyLift::PropertyTopDelay::PropertyTopDelay(ElementSpindizzyLift* parent) {
+  cParent = parent;
+}
+
+void ElementSpindizzyLift::PropertyTopDelay::setValue(int value) {
+  cParent->cTopDelay = std::max(0, value);
+}
+
+int ElementSpindizzyLift::PropertyTopDelay::getValue() {
+  return cParent->cTopDelay;
+}
+
+ElementSpindizzyLift::PropertyBottomDelay::PropertyBottomDelay(ElementSpindizzyLift* parent) {
+  cParent = parent;
+}
+
+void ElementSpindizzyLift::PropertyBottomDelay::setValue(int value) {
+  cParent->cBottomDelay = std::max(0, value);;
+}
+
+int ElementSpindizzyLift::PropertyBottomDelay::getValue() {
+  return cParent->cBottomDelay;
 }

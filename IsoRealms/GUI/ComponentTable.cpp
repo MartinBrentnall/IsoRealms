@@ -117,7 +117,11 @@ void ComponentTable::testFocusChange(SDL_Event& event) {
         for (unsigned int x = 0; x < cGridComponents[y].size(); x++) {
           ISizedComponent* mComponent = cGridComponents[y][x];
           if (mComponent != nullptr && mComponent->contains(mX, mY)) {
+            if (cFocusedComponent != nullptr) {
+              cFocusedComponent->lostFocus();
+            }
             cFocusedComponent = mComponent;
+            cFocusedComponent->gainedFocus();
             return;
           }
         }

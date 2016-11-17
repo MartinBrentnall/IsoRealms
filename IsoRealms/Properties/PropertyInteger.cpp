@@ -18,10 +18,31 @@
  */
 #include "PropertyInteger.h"
 
-PropertyInteger::PropertyInteger(const std::string& name) {
+PropertyInteger::PropertyInteger(const std::string& name, IPropertyValue<int>* value) {
   cName = name;
+  cValue = value;
+  cComponent = new TextFieldComponent(std::to_string(cValue->getValue()), false);
+  cComponent->addValueListener(this);
 }
 
 std::string PropertyInteger::getPropertyName() {
   return cName;
+}
+
+ISizedComponent* PropertyInteger::getPropertyComponent() {
+  return cComponent;
+}
+
+void PropertyInteger::valueChanged(IValueComponent<std::string>* component, std::string value) {
+  try {
+    int mValue = std::stoi(value);
+    std::cout << "Value: \"" << value << "\" -> " << mValue << std::endl;
+    cValue->setValue(mValue);
+    mValue = cValue->getValue();
+    cComponent->setValue(std::to_string(mValue));
+  } catch (std::invalid_argument e) {
+    std::cout << "Invalid: \"" << value << "\" -> " << cValue->getValue() << std::endl;
+    std::string mOldValue = std::to_string(cValue->getValue());
+    cComponent->setValue(mOldValue);
+  }
 }

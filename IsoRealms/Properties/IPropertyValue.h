@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Martin Brentnall
+ * Copyright 2015 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,19 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_OBJECT_PROPERTY_H
-#define I_OBJECT_PROPERTY_H
+#ifndef I_PROPERTY_VALUE_H
+#define I_PROPERTY_VALUE_H
 
-#include <string>
-
-#include "GUI/ISizedComponent.h"
-
-class IObjectProperty {
+template <class TYPE> class IPropertyValue {
+  
   public:
-  virtual std::string getPropertyName() = 0;
-  virtual ISizedComponent* getPropertyComponent() = 0;
+  virtual void setValue(TYPE) = 0;
+  virtual TYPE getValue() = 0;
 };
 
 #endif
-
-

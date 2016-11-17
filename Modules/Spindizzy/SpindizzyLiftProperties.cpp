@@ -62,10 +62,10 @@ void SpindizzyLiftProperties::setup(DOMNodeWrapper* node) {
 }
 
 void SpindizzyLiftProperties::reset() {
-  cTopDelay    = 1000;
-  cBottomDelay = 1000;
-  cUpSpeed     = 1000;
-  cDownSpeed   = 1000;
+  cTopDelay    = 1500;
+  cBottomDelay = 1500;
+  cUpSpeed     = 750;
+  cDownSpeed   = 750;
 }
 
 

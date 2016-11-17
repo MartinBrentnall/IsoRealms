@@ -19,21 +19,35 @@
 #ifndef PROPERTY_INTEGER_H
 #define PROPERTY_INTEGER_H
 
+#include <functional>
 #include <string>
 
+#include <IsoRealms/GUI/TextFieldComponent.h>
 #include <IsoRealms/IObjectProperty.h>
+#include <IsoRealms/Resources/ElementType/IElement.h>
 
-class PropertyInteger:public IObjectProperty {
+#include "IPropertyValue.h"
+
+class PropertyInteger:public IObjectProperty,
+                      public IValueListener<std::string> {
   private:
   std::string cName;
+  IPropertyValue<int>* cValue;
+  TextFieldComponent* cComponent;
   
   public:
-  PropertyInteger(const std::string&);
+  PropertyInteger(const std::string&, IPropertyValue<int>*);
 
   /******************************\
    * Implements IObjectProperty *
   \******************************/
   std::string getPropertyName();
+  ISizedComponent* getPropertyComponent();
+  
+  /******************************************\
+   * Implements IValueListener<std::string> *
+  \******************************************/
+  void valueChanged(IValueComponent<std::string>*, std::string);
 };
 
 #endif
