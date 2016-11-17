@@ -66,6 +66,7 @@ class TileSplitSurface:public ISpindizzyTileSurface,
    * Implements ISpindizzyTileSurface *
   \************************************/
   void render();
+  void renderSelectionHighlight();
   CollisionVertex* pickSurface(Vertex&, Vertex&);
 
   /*******************************\

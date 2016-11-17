@@ -221,6 +221,39 @@ void WallSurface::render() {
   glEnd();
 }
 
+void WallSurface::renderSelectionHighlight() {
+  float mBlockRadius = IsoRealmsConstants::BLOCK_RADIUS;
+  double mFromX = cX + (cFacing == EAST ? mBlockRadius : -mBlockRadius);
+  double mFromY = cY + (cFacing == NORTH ? mBlockRadius : -mBlockRadius); 
+  double mFromZ = cZ * IsoRealmsConstants::BLOCK_HEIGHT;
+  double mToX = (cFacing == WEST || cFacing == EAST) ? (mFromX) : cX - mBlockRadius + cLength;
+  double mToY = (cFacing == SOUTH || cFacing == NORTH) ? (mFromY) : cY - mBlockRadius + cLength;
+  double mHighStartSlopeZ = (cZ + cHeight) * IsoRealmsConstants::BLOCK_HEIGHT;
+  double mHighEndSlopeZ =  ((cZ + cHeight) + cTopSlope * cLength) * IsoRealmsConstants::BLOCK_HEIGHT;
+
+  glColor4f(1.0f, 1.0f, 0.0f, 0.5f);
+  glEnable(GL_BLEND);
+  glBegin(GL_QUADS);
+  if (cFacing == EAST || cFacing == SOUTH) {
+    double mXOffset = cFacing == EAST  ?  0.001 : 0.0;
+    double mYOffset = cFacing == SOUTH ? -0.001 : 0.0;
+    glVertex3f(mFromX + mXOffset, mFromY + mYOffset, mFromZ);
+    glVertex3f(mToX   + mXOffset, mToY   + mYOffset, mFromZ);
+    glVertex3f(mToX   + mXOffset, mToY   + mYOffset, mHighEndSlopeZ);
+    glVertex3f(mFromX + mXOffset, mFromY + mYOffset, mHighStartSlopeZ);
+  } else {
+    double mXOffset = cFacing == WEST  ? -0.001 : 0.0;
+    double mYOffset = cFacing == NORTH ?  0.001 : 0.0;
+    glVertex3f(mFromX + mXOffset, mFromY + mYOffset, mHighStartSlopeZ);
+    glVertex3f(mToX   + mXOffset, mToY   + mYOffset, mHighEndSlopeZ);
+    glVertex3f(mToX   + mXOffset, mToY   + mYOffset, mFromZ);
+    glVertex3f(mFromX + mXOffset, mFromY + mYOffset, mFromZ);
+  }
+  glEnd();
+  glDisable(GL_BLEND);
+  glColor4f(1.0f, 1.0f, 1.0f, 0.0f);
+}
+
 CollisionVertex* WallSurface::pickSurface(Vertex& start, Vertex& end) {
   if (cCondition == nullptr || cCondition->isTrue()) {
     float mOffset = cFacing == IWallSurface::NORTH || cFacing == IWallSurface::EAST

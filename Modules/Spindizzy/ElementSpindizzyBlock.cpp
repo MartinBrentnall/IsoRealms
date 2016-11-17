@@ -410,9 +410,30 @@ bool ElementSpindizzyBlock::renderSelectionHighlight() {
     float mTop    = getTop()    + 0.001f;
     glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
     Utils::renderVolumeCuboid(mWest, mEast, mSouth, mNorth, mBottom, mTop);
-    return true;
+  } else if (cStaticTileSurfaces.empty() && cStaticWallSurfaces.empty() && cDynamicTileSurfaces.empty() && cDynamicWallSurfaces.empty()) {
+    float mSouth  = getSouth()  - 0.001f;
+    float mWest   = getWest()   - 0.001f;
+    float mBottom = getBottom() - 0.001f;   
+    float mNorth  = getNorth()  + 0.001f;
+    float mEast   = getEast()   + 0.001f;
+    float mTop    = getTop()    + 0.001f;
+    glColor4f(0.5f, 0.5f, 1.0f, 0.5f);
+    Utils::renderVolumeCuboid(mWest, mEast, mSouth, mNorth, mBottom, mTop);
+  } else {
+    for (ISpindizzyTileSurface* mTileSurface : cStaticTileSurfaces) {
+      mTileSurface->renderSelectionHighlight();
+    }
+    for (ISpindizzyWallSurface* mWallSurface : cStaticWallSurfaces) {
+      mWallSurface->renderSelectionHighlight();
+    }
+    for (ISpindizzyTileSurface* mTileSurface : cDynamicTileSurfaces) {
+      mTileSurface->renderSelectionHighlight();
+    }
+    for (ISpindizzyWallSurface* mWallSurface : cDynamicWallSurfaces) {
+      mWallSurface->renderSelectionHighlight();
+    }
   }
-  return false; // TODO: Implement this
+  return true;
 }
 
 void ElementSpindizzyBlock::renderPreviewWalls(IWallSurface::FaceDirection facing) {
