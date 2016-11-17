@@ -76,6 +76,7 @@ class ElementSpindizzyWater:public ISpindizzyBlock,
   bool initElement(unsigned int);
   void renderStatic();
   void renderRuntime();
+  bool renderSelectionHighlight();
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
   IElementBounds* getBounds();
   PickedElement* pickElement(Vertex&, Vertex&);

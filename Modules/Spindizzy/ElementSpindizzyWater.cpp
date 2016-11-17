@@ -78,6 +78,10 @@ void ElementSpindizzyWater::renderRuntime() {
   }
 }
 
+bool ElementSpindizzyWater::renderSelectionHighlight() {
+  return false; // TODO: Something to do?
+}
+
 ISpindizzyTileSurface* ElementSpindizzyWater::createSubSurface(ITileSurface::FaceDirection facing, int north, int east, int south, int west, Condition* condition) {
   return new TileSurface(cTexture, STRAIGHT, north, east, south, west, facing == ITileSurface::UP ? cStartLocation.z : cEndLocation.z, 0, 0, facing, condition, nullptr, nullptr);
 }

@@ -127,6 +127,10 @@ void ResourceElementHUDModel::renderRuntime() {
   glPopMatrix();
 }
 
+bool ResourceElementHUDModel::renderSelectionHighlight() {
+  return false;
+}
+
 float ResourceElementHUDModel::getWest() {
   return -0.5f;
 }

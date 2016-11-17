@@ -111,6 +111,7 @@ class ElementSpindizzyLift:public ICollidableSurfaceElement,
   void renderStatic();
   void renderEditing();
   void renderRuntime();
+  bool renderSelectionHighlight();
   void updateRuntime(unsigned int);
   void updateEditing(unsigned int);
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);

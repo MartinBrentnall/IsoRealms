@@ -82,6 +82,42 @@ bool Utils::endsWith(const std::string& fullString, const std::string& ending) {
   return false;
 }
 
+void Utils::renderVolumeCuboid(float mWest, float mEast, float mSouth, float mNorth, float mBottom, float mTop) {
+  glEnable(GL_BLEND);
+  glBegin(GL_QUADS);
+  glVertex3f(mWest, mSouth, mTop);
+  glVertex3f(mEast, mSouth, mTop);
+  glVertex3f(mEast, mNorth, mTop);
+  glVertex3f(mWest, mNorth, mTop);
+
+  glVertex3f(mWest, mSouth, mBottom);
+  glVertex3f(mWest, mNorth, mBottom);
+  glVertex3f(mEast, mNorth, mBottom);
+  glVertex3f(mEast, mSouth, mBottom);
+
+  glVertex3f(mWest, mSouth, mBottom);
+  glVertex3f(mEast, mSouth, mBottom);
+  glVertex3f(mEast, mSouth, mTop);
+  glVertex3f(mWest, mSouth, mTop);
+
+  glVertex3f(mEast, mSouth, mBottom);
+  glVertex3f(mEast, mNorth, mBottom);
+  glVertex3f(mEast, mNorth, mTop);
+  glVertex3f(mEast, mSouth, mTop);
+
+  glVertex3f(mWest, mNorth, mBottom);
+  glVertex3f(mWest, mNorth, mTop);
+  glVertex3f(mEast, mNorth, mTop);
+  glVertex3f(mEast, mNorth, mBottom);
+
+  glVertex3f(mWest, mSouth, mBottom);
+  glVertex3f(mWest, mSouth, mTop);
+  glVertex3f(mWest, mNorth, mTop);
+  glVertex3f(mWest, mNorth, mBottom);
+  glEnd();
+  glDisable(GL_BLEND);
+}
+
 void Utils::renderVolumeLines(float xStart, float xEnd, float yStart, float yEnd, float zStart, float zEnd) {
   glVertex3f(xEnd,   yEnd,   zStart); glVertex3f(xStart, yEnd,   zStart);
   glVertex3f(xStart, yEnd,   zStart); glVertex3f(xStart, yStart, zStart);

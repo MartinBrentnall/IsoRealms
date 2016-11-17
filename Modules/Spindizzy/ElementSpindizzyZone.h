@@ -108,6 +108,7 @@ class ElementSpindizzyZone:public Element,
   void renderEditing();
   void renderStatic();
   void renderRuntime();
+  bool renderSelectionHighlight();
   void updateEditing(unsigned int);
   void updateRuntime(unsigned int);
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);

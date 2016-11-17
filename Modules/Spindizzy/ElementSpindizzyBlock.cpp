@@ -400,6 +400,21 @@ void ElementSpindizzyBlock::renderEditing() {
   renderRuntime();
 }
   
+bool ElementSpindizzyBlock::renderSelectionHighlight() {
+  if (cStartLocation.z > cEndLocation.z) {
+    float mSouth  = getSouth()  - 0.001f;
+    float mWest   = getWest()   - 0.001f;
+    float mBottom = getBottom() - 0.001f;
+    float mNorth  = getNorth()  + 0.001f;
+    float mEast   = getEast()   + 0.001f;
+    float mTop    = getTop()    + 0.001f;
+    glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
+    Utils::renderVolumeCuboid(mWest, mEast, mSouth, mNorth, mBottom, mTop);
+    return true;
+  }
+  return false; // TODO: Implement this
+}
+
 void ElementSpindizzyBlock::renderPreviewWalls(IWallSurface::FaceDirection facing) {
   bool mFacesPole = facing == IWallSurface::NORTH || facing == IWallSurface::SOUTH;
   bool mFacesPos = facing == IWallSurface::NORTH || facing == IWallSurface::EAST;

@@ -129,6 +129,10 @@ void ResourceElementHUDString::renderRuntime() {
 //  cFont->print(3.5f, -0.1f, 0.99f, 1, "Testing");
 }
 
+bool ResourceElementHUDString::renderSelectionHighlight() {
+  return false;
+}
+
 void ResourceElementHUDString::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& blockLocation) {
   // TODO
 }

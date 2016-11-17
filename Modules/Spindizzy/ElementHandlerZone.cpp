@@ -56,6 +56,10 @@ void ElementHandlerZone::renderEditing() {
   cElements.renderEditing();
 }
 
+bool ElementHandlerZone::renderSelectionHighlight() {
+  return false;
+}
+
 void ElementHandlerZone::renderRuntime() {
   if (cSingleZone && !cModuleInterface->isOverview()) {
     cZone->renderRuntime();

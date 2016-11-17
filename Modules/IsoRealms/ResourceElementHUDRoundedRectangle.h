@@ -74,6 +74,7 @@ class ResourceElementHUDRoundedRectangle:public IElementType,
   void setDirty();
   IElementBounds* getBounds();
   void renderRuntime();
+  bool renderSelectionHighlight();
   void updateRuntime(unsigned int);
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
   

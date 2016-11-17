@@ -85,6 +85,7 @@ class ElementSpindizzyItem:public Element,
   bool initElement(unsigned int);
   void renderStatic();
   void renderRuntime();
+  bool renderSelectionHighlight();
   void updateRuntime(unsigned int);
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
   IElementBounds* getBounds();

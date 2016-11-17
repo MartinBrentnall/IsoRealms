@@ -180,6 +180,7 @@ class ElementSpindizzyCraft:public Element,
   IElementType* getElementType();
   void renderStatic();
   void renderRuntime();
+  bool renderSelectionHighlight();
   void updateRuntime(unsigned int);
   void updateEditing(unsigned int);
   bool initElement(unsigned int);

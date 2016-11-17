@@ -168,7 +168,7 @@ void LayerSpindizzyMapEditingContext::renderCamera() {
 }
 
 void LayerSpindizzyMapEditingContext::renderElementSelection() {
-  if (cSelectedElement != nullptr) {
+  if (cSelectedElement != nullptr && !cSelectedElement->renderSelectionHighlight()) {
     IElementBounds* mBounds = cSelectedElement->getBounds();
     float mSouth  = mBounds->getSouth()  - SELECTION_BOUNDARY_RENDERING_OFFSET;
     float mWest   = mBounds->getWest()   - SELECTION_BOUNDARY_RENDERING_OFFSET;
@@ -176,40 +176,8 @@ void LayerSpindizzyMapEditingContext::renderElementSelection() {
     float mNorth  = mBounds->getNorth()  + SELECTION_BOUNDARY_RENDERING_OFFSET;
     float mEast   = mBounds->getEast()   + SELECTION_BOUNDARY_RENDERING_OFFSET;
     float mTop    = mBounds->getTop()    + SELECTION_BOUNDARY_RENDERING_OFFSET;
-    glEnable(GL_BLEND);
-    glBegin(GL_QUADS);
     glColor4f(1.0f, 1.0f, 0.0f, 0.5f);
-    glVertex3f(mWest, mSouth, mTop);
-    glVertex3f(mEast, mSouth, mTop);
-    glVertex3f(mEast, mNorth, mTop);
-    glVertex3f(mWest, mNorth, mTop);
-
-    glVertex3f(mWest, mSouth, mBottom);
-    glVertex3f(mWest, mNorth, mBottom);
-    glVertex3f(mEast, mNorth, mBottom);
-    glVertex3f(mEast, mSouth, mBottom);
-
-    glVertex3f(mWest, mSouth, mBottom);
-    glVertex3f(mEast, mSouth, mBottom);
-    glVertex3f(mEast, mSouth, mTop);
-    glVertex3f(mWest, mSouth, mTop);
-
-    glVertex3f(mEast, mSouth, mBottom);
-    glVertex3f(mEast, mNorth, mBottom);
-    glVertex3f(mEast, mNorth, mTop);
-    glVertex3f(mEast, mSouth, mTop);
-
-    glVertex3f(mWest, mNorth, mBottom);
-    glVertex3f(mWest, mNorth, mTop);
-    glVertex3f(mEast, mNorth, mTop);
-    glVertex3f(mEast, mNorth, mBottom);
-
-    glVertex3f(mWest, mSouth, mBottom);
-    glVertex3f(mWest, mSouth, mTop);
-    glVertex3f(mWest, mNorth, mTop);
-    glVertex3f(mWest, mNorth, mBottom);
-    glEnd();
-    glDisable(GL_BLEND);
+    Utils::renderVolumeCuboid(mWest, mEast, mSouth, mNorth, mBottom, mTop);
   }
 }
 

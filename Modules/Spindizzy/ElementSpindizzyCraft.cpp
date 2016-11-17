@@ -671,6 +671,10 @@ void ElementSpindizzyCraft::renderRuntime() {
   }
 }
 
+bool ElementSpindizzyCraft::renderSelectionHighlight() {
+  return false;
+}
+
 void ElementSpindizzyCraft::setDirty() {
   // Nothing to do
 }

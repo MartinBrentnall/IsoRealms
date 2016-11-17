@@ -70,6 +70,10 @@ void ElementSpindizzyItem::renderRuntime() {
   }
 }
 
+bool ElementSpindizzyItem::renderSelectionHighlight() {
+  return false;
+}
+
 std::string ElementSpindizzyItem::getTypeName() {
   return "Spindizzy Item"; // TODO
 }

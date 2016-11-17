@@ -67,6 +67,8 @@ class IElement:public IObjectWithProperties {
   
   virtual void renderEditing() = 0;
   
+  virtual bool renderSelectionHighlight() = 0;
+  
   virtual void updateRuntime(unsigned int) = 0;
   
   virtual void updateEditing(unsigned int) = 0;

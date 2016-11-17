@@ -86,6 +86,10 @@ void ElementSpindizzyLift::renderEditing() {
   glPopMatrix();
 }
 
+bool ElementSpindizzyLift::renderSelectionHighlight() {
+  return false; // TODO: Something to do?
+}
+
 void ElementSpindizzyLift::executeLiftMovedScript() {
   ISpindizzyLiftSet* mLiftSet = cLiftType->getSpindizzyLiftInterface();
   mLiftSet->executeLiftMovedScript();

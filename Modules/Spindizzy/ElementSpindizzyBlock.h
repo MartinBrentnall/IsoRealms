@@ -242,6 +242,7 @@ class ElementSpindizzyBlock:public ICollidableSurfaceElement,
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
   void renderRuntime();
   void renderEditing();
+  bool renderSelectionHighlight();
   void renderPreviewWalls(IWallSurface::FaceDirection);
   void renderPreview(Vertex&, Vertex&);
   IElementBounds* getBounds();

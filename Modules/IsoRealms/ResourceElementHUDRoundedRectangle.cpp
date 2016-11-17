@@ -172,6 +172,10 @@ void ResourceElementHUDRoundedRectangle::renderRuntime() {
   glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
+bool ResourceElementHUDRoundedRectangle::renderSelectionHighlight() {
+  return false;
+}
+
 void ResourceElementHUDRoundedRectangle::updateRuntime(unsigned int) {
   // Nothing to do
 }

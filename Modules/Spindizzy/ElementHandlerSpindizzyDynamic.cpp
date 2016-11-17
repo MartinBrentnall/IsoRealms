@@ -56,6 +56,10 @@ void ElementHandlerSpindizzyDynamic::renderEditing() {
   cElements.renderEditing();
 }
 
+bool ElementHandlerSpindizzyDynamic::renderSelectionHighlight() {
+  return false;
+}
+
 void ElementHandlerSpindizzyDynamic::renderRuntime() {
   if (cVisibility > 0.0f) {
     glEnable(GL_BLEND);

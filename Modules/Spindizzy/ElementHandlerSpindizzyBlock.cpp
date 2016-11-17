@@ -91,6 +91,10 @@ void ElementHandlerSpindizzyBlock::renderEditing() {
   cElements.renderEditing();
 }
 
+bool ElementHandlerSpindizzyBlock::renderSelectionHighlight() {
+  return false;
+}
+
 void ElementHandlerSpindizzyBlock::updateRuntime(unsigned int ticks) {
   cElements.updateRuntime(ticks);
 }

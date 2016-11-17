@@ -63,6 +63,7 @@ class ElementHandlerSpindizzyDynamic:public Element,
   \***********************/
   void renderEditing();
   void renderRuntime();
+  bool renderSelectionHighlight();
   void updateRuntime(unsigned int);
   IElementType* getElementType();
   void renderStatic();

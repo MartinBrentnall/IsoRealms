@@ -42,6 +42,7 @@ class Utils {
   static std::vector<std::string> splitWords(const std::string&, char = ' ');
   static bool endsWith(const std::string&, const std::string&);
   
+  static void renderVolumeCuboid(float, float, float, float, float, float);
   static void renderVolumeLines(float, float, float, float, float, float);
   static void renderVolumeMarkers(float, float, float, float, float, float, float);
 };

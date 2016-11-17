@@ -27,6 +27,7 @@
 #include <IsoRealms/Resources/ElementType/IElementType.h>
 #include <IsoRealms/Resources/ElementType/PickedElement.h>
 #include <IsoRealms/Struct/SpatialContainer2D.h>
+#include <IsoRealms/Utils.h>
 
 #include "CameraLayerMapEditing.h"
 #include "ILayerSpindizzyMap.h"

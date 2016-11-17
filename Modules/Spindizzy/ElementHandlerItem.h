@@ -59,6 +59,7 @@ class ElementHandlerItem:public Element,
    * Implements IElement *
   \***********************/
   void renderRuntime();
+  bool renderSelectionHighlight();
   void updateRuntime(unsigned int);
   IElementType* getElementType();
   void renderStatic();

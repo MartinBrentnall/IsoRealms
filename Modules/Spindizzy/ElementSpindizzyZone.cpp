@@ -150,6 +150,18 @@ void ElementSpindizzyZone::renderEditing() {
   renderEditing(true);
 }
 
+bool ElementSpindizzyZone::renderSelectionHighlight() {
+  float mSouth  = getSouth()  - 0.001f;
+  float mWest   = getWest()   - 0.001f;
+  float mBottom = getBottom() - 0.001f;
+  float mNorth  = getNorth()  + 0.001f;
+  float mEast   = getEast()   + 0.001f;
+  float mTop    = getTop()    + 0.001f;
+  glColor4f(0.0f, 1.0f, 0.0f, 0.5f);
+  Utils::renderVolumeCuboid(mWest, mEast, mSouth, mNorth, mBottom, mTop);
+  return true;
+}
+
 void ElementSpindizzyZone::renderStatic() {
 //   cZoneTheme->set();
 //   cElementHandler.renderStatic();

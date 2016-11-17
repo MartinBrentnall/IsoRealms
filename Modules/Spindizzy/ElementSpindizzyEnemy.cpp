@@ -51,6 +51,10 @@ void ElementSpindizzyEnemy::renderEditing() {
   renderRuntime();
 }
 
+bool ElementSpindizzyEnemy::renderSelectionHighlight() {
+  return false;
+}
+
 void ElementSpindizzyEnemy::renderStatic() {
   // Nothing to do.
 }

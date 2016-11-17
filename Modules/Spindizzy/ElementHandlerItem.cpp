@@ -56,6 +56,10 @@ void ElementHandlerItem::renderRuntime() {
   cElements.renderRuntime();
 }
 
+bool ElementHandlerItem::renderSelectionHighlight() {
+  return false;
+}
+
 void ElementHandlerItem::updateRuntime(unsigned int ticks) {
   cElements.updateRuntime(ticks);
 }
