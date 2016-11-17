@@ -99,6 +99,12 @@ template <class T> class ElementCollection : public IElementBounds {
     }
   }
   
+  void updateEditing(unsigned int milliseconds) {
+    for (T* mElement : cElements) {
+      mElement->updateEditing(milliseconds);
+    }
+  }
+  
   float getWest() {
     if (cElements.size() == 0) {
       return 0.0f;

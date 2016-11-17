@@ -150,6 +150,10 @@ void ResourceElementSpindizzyCraft::renderEditingPreview(Vertex& location) {
   cSampleGERALD->renderRuntime();
 }
 
+void ResourceElementSpindizzyCraft::updateEditingPreview(unsigned int milliseconds) {
+  // TODO
+}
+
 void ResourceElementSpindizzyCraft::updateIcon(unsigned int milliseconds) {
   // Nothing to do
 }

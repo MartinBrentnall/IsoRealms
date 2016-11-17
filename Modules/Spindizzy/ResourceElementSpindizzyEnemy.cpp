@@ -110,6 +110,10 @@ void ResourceElementSpindizzyEnemy::renderEditingPreview(Vertex& location) {
   cSampleEnemy->renderRuntime();
 }
 
+void ResourceElementSpindizzyEnemy::updateEditingPreview(unsigned int milliseconds) {
+  // TODO
+}
+
 void ResourceElementSpindizzyEnemy::updateIcon(unsigned int milliseconds) {
   // Nothing to do
 }

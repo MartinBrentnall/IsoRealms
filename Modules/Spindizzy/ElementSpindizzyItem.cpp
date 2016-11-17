@@ -62,6 +62,10 @@ void ElementSpindizzyItem::updateRuntime(unsigned int milliseconds) {
   }
 }
 
+void ElementSpindizzyItem::updateEditing(unsigned int milliseconds) {
+  cModel->update(milliseconds);
+}
+
 void ElementSpindizzyItem::renderRuntime() {
   if (!cCollected) {
     glPushMatrix();

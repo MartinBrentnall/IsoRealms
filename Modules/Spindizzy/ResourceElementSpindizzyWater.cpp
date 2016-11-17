@@ -118,6 +118,10 @@ void ResourceElementSpindizzyWater::renderEditingPreview(Vertex& location) {
   }
 }
 
+void ResourceElementSpindizzyWater::updateEditingPreview(unsigned int milliseconds) {
+  // TODO
+}
+
 void ResourceElementSpindizzyWater::renderIcon() {
   glTranslatef(0.0f, 0.3f, 0.0f);
   glRotatef(-55.0f, 1.0f, 0.0f, 0.0f);

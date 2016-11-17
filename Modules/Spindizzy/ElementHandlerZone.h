@@ -65,6 +65,7 @@ class ElementHandlerZone:public Element,
   void renderRuntime();
   bool renderSelectionHighlight();
   void updateRuntime(unsigned int);
+  void updateEditing(unsigned int);
   IElementType* getElementType();
   void renderStatic();
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);

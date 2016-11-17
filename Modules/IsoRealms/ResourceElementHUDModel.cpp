@@ -73,6 +73,10 @@ void ResourceElementHUDModel::renderEditingPreview(Vertex& location) {
   // TODO
 }
 
+void ResourceElementHUDModel::updateEditingPreview(unsigned int milliseconds) {
+  // TODO
+}
+
 void ResourceElementHUDModel::renderIcon() {
   // TODO
 }

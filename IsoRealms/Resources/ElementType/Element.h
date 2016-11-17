@@ -37,7 +37,6 @@ class Element:public IElement {
   }
   
   virtual void updateEditing(unsigned int milliseconds) {
-    updateRuntime(milliseconds);
   }
   
   virtual void input(SDL_Event&) {

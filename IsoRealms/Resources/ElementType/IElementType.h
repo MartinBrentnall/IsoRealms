@@ -67,6 +67,8 @@ class IElementType:public IResource {
    */
   virtual void renderEditingPreview(Vertex&) = 0;
 
+  virtual void updateEditingPreview(unsigned int) = 0;
+  
   /**
    * Render an iconic representation of the element to be created by this
    * type.  This representation should fit inside -1 to +1 on each

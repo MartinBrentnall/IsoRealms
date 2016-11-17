@@ -178,6 +178,10 @@ void ResourceElementSpindizzyBlock::renderEditingPreview(Vertex& location) {
   glDisable(GL_BLEND);
 }
 
+void ResourceElementSpindizzyBlock::updateEditingPreview(unsigned int milliseconds) {
+  // TODO
+}
+
 void ResourceElementSpindizzyBlock::renderIcon() {
   glTranslatef(0.0f, 0.3f, 0.0f);
   glRotatef(-55.0f, 1.0f, 0.0f, 0.0f);

@@ -216,6 +216,10 @@ void ResourceElementSpindizzyLift::renderEditingPreview(Vertex& location) {
   }
 }
 
+void ResourceElementSpindizzyLift::updateEditingPreview(unsigned int milliseconds) {
+  // TODO
+}
+
 void ResourceElementSpindizzyLift::renderIcon() {
   glRotatef(-55.0f, 1.0f, 0.0f, 0.0f);
   glRotatef(-45.0f, 0.0f, 0.0f, 1.0f); // TODO: Must get this right; check with how the editor is doing it!

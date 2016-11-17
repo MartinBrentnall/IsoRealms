@@ -52,6 +52,7 @@ class ResourceElementHUDModel:public IElementType,
   void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*, bool, bool);
   void configureElement();
   void renderEditingPreview(Vertex&);
+  void updateEditingPreview(unsigned int);
   void renderIcon();
   void updateIcon(unsigned int);
   void destroy(IElement*);

@@ -117,6 +117,10 @@ void ResourceElementSpindizzyItem::renderEditingPreview(Vertex& location) {
   cEditingJewel->renderRuntime();
 }
 
+void ResourceElementSpindizzyItem::updateEditingPreview(unsigned int milliseconds) {
+  cEditingJewel->updateEditing(milliseconds);
+}
+
 void ResourceElementSpindizzyItem::updateIcon(unsigned int milliseconds) {
   if (cSampleJewel->isDynamicRuntime()) {
     cSampleJewel->updateRuntime(milliseconds);

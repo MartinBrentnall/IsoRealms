@@ -59,6 +59,10 @@ void ResourceElementHUDString::renderEditingPreview(Vertex& location) {
   // TODO
 }
 
+void ResourceElementHUDString::updateEditingPreview(unsigned int milliseconds) {
+  // TODO
+}
+
 void ResourceElementHUDString::renderIcon() {
   // TODO
 }

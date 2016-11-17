@@ -72,6 +72,7 @@ class ResourceElementSpindizzyItem:public ISpindizzyJewelType {
   void configureElement();
   void setEditingContext(BlockLocation*, IComponentContainer*);
   void renderEditingPreview(Vertex&);
+  void updateEditingPreview(unsigned int);
   bool inputEdit(SDL_Event&, ILayerEditingContext*);
   void updateIcon(unsigned int milliseconds);
   void renderIcon();

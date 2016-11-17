@@ -137,6 +137,10 @@ void ResourceElementSpindizzyZone::renderEditingPreview(Vertex& location) {
   }
 }
 
+void ResourceElementSpindizzyZone::updateEditingPreview(unsigned int milliseconds) {
+  // TODO
+}
+
 bool ResourceElementSpindizzyZone::keyDown(SDLKey& key, ILayerEditingContext* editingContext) {
   switch (key) {
     case SDLK_SPACE: {

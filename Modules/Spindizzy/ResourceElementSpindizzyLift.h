@@ -82,6 +82,7 @@ class ResourceElementSpindizzyLift:public ISpindizzyLiftType {
   bool inputEdit(SDL_Event&, ILayerEditingContext*);
   void setEditingContext(BlockLocation*, IComponentContainer*);
   void renderEditingPreview(Vertex&);
+  void updateEditingPreview(unsigned int);
   void renderIcon();
   void updateIcon(unsigned int);
   void destroy(IElement*);

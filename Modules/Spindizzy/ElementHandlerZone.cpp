@@ -72,6 +72,10 @@ void ElementHandlerZone::updateRuntime(unsigned int ticks) {
   cElements.updateRuntime(ticks);
 }
 
+void ElementHandlerZone::updateEditing(unsigned int ticks) {
+  cElements.updateEditing(ticks);
+}
+
 std::string ElementHandlerZone::getTypeName() {
   return ""; // TODO
 }

@@ -58,6 +58,10 @@ void ResourceElementHUDRoundedRectangle::renderEditingPreview(Vertex& location) 
   // TODO
 }
 
+void ResourceElementHUDRoundedRectangle::updateEditingPreview(unsigned int milliseconds) {
+  // TODO
+}
+
 void ResourceElementHUDRoundedRectangle::renderIcon() {
   // TODO
 }

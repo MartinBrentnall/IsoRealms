@@ -116,6 +116,9 @@ void LayerSpindizzyMapEditingContext::update(unsigned int milliseconds) {
   processCursorMovement(cLocation, mNewLocation);
   cLocation = mNewLocation;
   cCameraEditing.update(milliseconds);
+  if (cElementType != nullptr) {
+    cElementType->updateEditingPreview(milliseconds);
+  }
 }
 
 void LayerSpindizzyMapEditingContext::processCursorAppearance(Vertex& location) {

@@ -94,6 +94,7 @@ class ResourceElementSpindizzyCraft:public ISpindizzyGERALDType,
   void configureElement();
   void setEditingContext(BlockLocation*, IComponentContainer*);
   void renderEditingPreview(Vertex&);
+  void updateEditingPreview(unsigned int);
   void updateIcon(unsigned int);
   void renderIcon();
   void destroy(IElement*);

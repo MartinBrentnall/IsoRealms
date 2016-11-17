@@ -60,8 +60,12 @@ bool ElementHandlerItem::renderSelectionHighlight() {
   return false;
 }
 
-void ElementHandlerItem::updateRuntime(unsigned int ticks) {
-  cElements.updateRuntime(ticks);
+void ElementHandlerItem::updateRuntime(unsigned int milliseconds) {
+  cElements.updateRuntime(milliseconds);
+}
+
+void ElementHandlerItem::updateEditing(unsigned int milliseconds) {
+  cElements.updateEditing(milliseconds);
 }
 
 std::string ElementHandlerItem::getTypeName() {

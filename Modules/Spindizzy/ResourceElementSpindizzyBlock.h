@@ -96,6 +96,7 @@ class ResourceElementSpindizzyBlock:public ISpindizzyBlockType,
   void setEditingContext(BlockLocation*, IComponentContainer*);
   bool inputEdit(SDL_Event&, ILayerEditingContext*);
   void renderEditingPreview(Vertex&);
+  void updateEditingPreview(unsigned int);
   void renderIcon();
   void updateIcon(unsigned int);
   void destroy(IElement*);
