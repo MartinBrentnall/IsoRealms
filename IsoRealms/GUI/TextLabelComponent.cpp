@@ -18,8 +18,9 @@
  */
 #include "TextLabelComponent.h"
 
-TextLabelComponent::TextLabelComponent(std::string label) {
+TextLabelComponent::TextLabelComponent(std::string label, float padding) {
   cLabel = label;
+  cPadding = padding;
 }
 
 void TextLabelComponent::render() {
@@ -28,7 +29,7 @@ void TextLabelComponent::render() {
   glColor3f(1.0f, 1.0f, 1.0f);
   IFont* mFont = LookAndFeel::getDefaultFont();
   float mFontSize = LookAndFeel::getDefaultFontSize();
-  mFont->print(mLeft + 0.01f, mBottom + 0.01f, mFontSize, 0, cLabel.c_str());
+  mFont->print(mLeft + cPadding / 2.0f, mBottom + 0.01f, mFontSize, 0, cLabel.c_str());
 }
 
 void TextLabelComponent::update(unsigned int milliseconds) {
@@ -45,7 +46,7 @@ bool TextLabelComponent::contains(float, float) {
 float TextLabelComponent::getWidth() {
   IFont* mFont = LookAndFeel::getDefaultFont();
   float mFontSize = LookAndFeel::getDefaultFontSize();
-  return mFont->getWidth(mFontSize, cLabel.c_str()) + 0.02f;
+  return mFont->getWidth(mFontSize, cLabel.c_str()) + cPadding;
 }
 
 float TextLabelComponent::getHeight() {

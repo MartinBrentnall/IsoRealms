@@ -256,6 +256,15 @@ void SpindizzyModule::createThemeColour(const std::string& type, IResourceRegist
   }
 }
 
+I3DModel* SpindizzyModule::getConditionElementIcon(ConditionElement* element) {
+  for (SpindizzyBlockState* mBlockState : cBlockStateData) {
+    if (mBlockState->getInputAddress() == element->getInputAddress()) {
+      return mBlockState->getModel();
+    }
+  }
+  return nullptr; // TODO: Throw
+}
+  
   /*********************************\
    * Implements ISpindizzyBlockSet *
   \*********************************/

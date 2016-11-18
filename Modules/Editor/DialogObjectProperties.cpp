@@ -32,7 +32,7 @@ void DialogObjectProperties::objectSelected(IObjectWithProperties* object) {
     std::vector<IObjectProperty*> mObjectProperties = object->getProperties();
     for (IObjectProperty* mObjectProperty : mObjectProperties) {
       std::string mPropertyName = mObjectProperty->getPropertyName();
-      TextLabelComponent* mPropertyNameLabel = new TextLabelComponent(mPropertyName);
+      TextLabelComponent* mPropertyNameLabel = new TextLabelComponent(mPropertyName + ":");
       ISizedComponent* mPropertyNameValue = mObjectProperty->getPropertyComponent();
       std::vector<ISizedComponent*> mRow;
       mRow.push_back(mPropertyNameLabel);

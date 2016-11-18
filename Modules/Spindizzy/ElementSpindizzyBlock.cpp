@@ -37,6 +37,7 @@ ElementSpindizzyBlock::ElementSpindizzyBlock(ISpindizzyBlockType* elementType, B
   cCondition = blockProperties->getCondition();
   cBlockType = elementType;
   cContainer = container;
+  cPropertyCondition = new PropertyBlockCondition(this);
 }
 
 ElementSpindizzyBlock::ElementSpindizzyBlock(ISpindizzyBlockType* elementType, DOMNodeWrapper* node) {
@@ -585,7 +586,10 @@ std::string ElementSpindizzyBlock::getTypeName() {
 }
   
 std::vector<IObjectProperty*> ElementSpindizzyBlock::getProperties() {
-  return std::vector<IObjectProperty*>();
+  std::vector<IObjectProperty*> mProperties;
+  ISpindizzyBlockSet* mModuleInterface = cBlockType->getSpindizzyBlockInterface();
+  mProperties.push_back(new PropertyCondition("Condition", cPropertyCondition, mModuleInterface));
+  return mProperties;
 }
 
 IElementType* ElementSpindizzyBlock::getElementType() {
@@ -721,6 +725,18 @@ void ElementSpindizzyBlock::save(DOMNodeWriter* node, IResourceLocator* resource
   if (cCondition != nullptr) {
     cCondition->save(node);
   }
+}
+
+ElementSpindizzyBlock::PropertyBlockCondition::PropertyBlockCondition(ElementSpindizzyBlock* parent) {
+  cParent = parent;
+}
+
+void ElementSpindizzyBlock::PropertyBlockCondition::setValue(Condition* condition) {
+  cParent->cCondition = condition;
+}
+
+Condition* ElementSpindizzyBlock::PropertyBlockCondition::getValue() {
+  return cParent->cCondition;
 }
 
 ElementSpindizzyBlock::~ElementSpindizzyBlock() {

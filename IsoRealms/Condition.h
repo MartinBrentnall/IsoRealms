@@ -123,7 +123,11 @@ class Condition {
   // Persistence
   void save(DOMNodeWriter*);
   
-  
+  // Analysis
+  std::vector<Condition*> getConditions();
+  std::set<ConditionElement*> getConditionElements();
+  bool isNegated();
+  bool isAnd();
 
   void debug(const std::string&) const;
   void debug(int = 0) const;

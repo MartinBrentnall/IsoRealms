@@ -21,6 +21,8 @@
 
 #include <vector>
 
+#include <IsoRealms/IConditionElementIcons.h>
+
 #include "ICollidableSurfaceElement.h"
 #include "ICollidableWallSurface.h"
 #include "IRollableSurface.h"
@@ -34,7 +36,7 @@ class ElementHandlerSpindizzyBlock;
 class ISpindizzyBlock;
 class SpindizzyBlockState;
 
-class ISpindizzyBlockSet {
+class ISpindizzyBlockSet:public IConditionElementIcons {
   public:
   virtual void registerSurfaceProvider(IGeometricElement*, bool) = 0;
   virtual void unregisterSurfaceProvider(IGeometricElement*) = 0;

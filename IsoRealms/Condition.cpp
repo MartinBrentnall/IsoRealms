@@ -88,6 +88,22 @@ void Condition::save(DOMNodeWriter* node) {
   }
 }
 
+std::vector<Condition*> Condition::getConditions() {
+  return cConditions;
+}
+
+std::set<ConditionElement*> Condition::getConditionElements() {
+  return cElements;
+}
+
+bool Condition::isNegated() {
+  return cNegated;
+}
+
+bool Condition::isAnd() {
+  return cAnd;
+}
+
 bool Condition::operator==(const Condition& condition) const {
   Condition mThis(*this);
   Condition mThat(condition);
@@ -319,8 +335,8 @@ bool Condition::isAbsolute() const {
 }
 
 bool Condition::isTrue() {
-  for (std::set<ConditionElement*>::iterator i = cElements.begin(); i != cElements.end(); i++) {
-    if (cAnd != (*i)->isTrue()) {
+  for (ConditionElement* mElement : cElements) {
+    if (cAnd != mElement->isTrue()) {
       return cAnd == cNegated;
     }
   }

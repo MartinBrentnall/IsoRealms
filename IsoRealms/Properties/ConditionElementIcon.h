@@ -1,5 +1,5 @@
 /*
- * Copyright 2009,2010 Martin Brentnall
+ * Copyright 2016 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,38 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef TEXT_LABEL_COMPONENT_H
-#define TEXT_LABEL_COMPONENT_H
+#ifndef CONDITION_ELEMENT_ICON_H
+#define CONDITION_ELEMENT_ICON_H
 
-#include <GL/glew.h>
-#include <string>
+#include <SDL/SDL.h>
 
-#include <IsoRealms/Resources/Font/IFont.h>
+#include <IsoRealms/Configuration.h>
+#include <IsoRealms/GUI/ISizedComponent.h>
 
-#include "ISizedComponent.h"
-#include "LookAndFeel.h"
-
-class TextLabelComponent:public ISizedComponent {
+class ConditionElementIcon:public ISizedComponent {
   private:
-  std::string cLabel;
-  float cPadding;
-
-  public:
-  TextLabelComponent(std::string, float = 0.02);
+  I3DModel* cIconModel;
   
-  /***************************************\
-   * Implements IComponentSizeCalculator *
-  \***************************************/
-  float getWidth();
-  float getHeight();  
-
-  /****************************\
-   * Implements IHUDComponent *
-  \****************************/
+  public:
+  ConditionElementIcon(I3DModel*);
+    
+  /******************************\
+   * Implements ISizedComponent *
+  \******************************/
   void update(unsigned int);
   void render();
   bool input(SDL_Event&);
-  bool contains(float, float);
+  float getWidth();
+  float getHeight();
 };
 
 #endif
+

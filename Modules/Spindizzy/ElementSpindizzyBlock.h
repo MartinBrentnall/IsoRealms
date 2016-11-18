@@ -25,6 +25,8 @@
 #include <IsoRealms/BlockLocation.h>
 #include <IsoRealms/Condition.h>
 #include <IsoRealms/Persistence/DOMNodeWrapper.h>
+#include <IsoRealms/Properties/IPropertyValue.h>
+#include <IsoRealms/Properties/PropertyCondition.h>
 #include <IsoRealms/Resources/Texture/ITexture.h>
 #include <IsoRealms/IVisualElement.h>
 #include <IsoRealms/MiscFunctions.h>
@@ -49,6 +51,16 @@ class ElementSpindizzyBlock:public ICollidableSurfaceElement,
                             public IArgument,
                             public IElementBounds {
   private:
+  class PropertyBlockCondition:public IPropertyValue<Condition*> {
+    private:
+    ElementSpindizzyBlock* cParent;
+    
+    public:
+    PropertyBlockCondition(ElementSpindizzyBlock*);
+    void setValue(Condition*);
+    Condition* getValue();
+  };
+  
   enum SplitType {
     NORTH_SOUTH,
     EAST_WEST    
@@ -80,6 +92,7 @@ class ElementSpindizzyBlock:public ICollidableSurfaceElement,
    */
   bool cSteppedBottom;
   Condition* cCondition;
+  IPropertyValue<Condition*>* cPropertyCondition;
 
   /**
    * Return the stepping of the slope along the X axis.  A negative value

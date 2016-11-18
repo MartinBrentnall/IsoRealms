@@ -221,10 +221,10 @@ std::string ElementSpindizzyLift::getTypeName() {
   
 std::vector<IObjectProperty*> ElementSpindizzyLift::getProperties() {
   std::vector<IObjectProperty*> mProperties;
-  mProperties.push_back(new PropertyInteger("Time to move one block up (ms):",   cPropertyUpSpeed));
-  mProperties.push_back(new PropertyInteger("Time to move one block down (ms):", cPropertyDownSpeed));
-  mProperties.push_back(new PropertyInteger("Delay at top (ms):",                cPropertyTopDelay));
-  mProperties.push_back(new PropertyInteger("Delay at bottom (ms):",             cPropertyBottomDelay));
+  mProperties.push_back(new PropertyInteger("Time to move one block up (ms)",   cPropertyUpSpeed));
+  mProperties.push_back(new PropertyInteger("Time to move one block down (ms)", cPropertyDownSpeed));
+  mProperties.push_back(new PropertyInteger("Delay at top (ms)",                cPropertyTopDelay));
+  mProperties.push_back(new PropertyInteger("Delay at bottom (ms)",             cPropertyBottomDelay));
   return mProperties;
 }
 

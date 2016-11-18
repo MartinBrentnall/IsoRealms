@@ -197,6 +197,11 @@ class SpindizzyModule:public IModule,
   void createThemeTexture(const std::string&, IResourceRegistry*);
   void createThemeColour(const std::string&, IResourceRegistry*);
 
+  /*************************************\
+   * Implements IConditionElementIcons *
+  \*************************************/
+  I3DModel* getConditionElementIcon(ConditionElement*);
+  
   /*********************************\
    * Implements ISpindizzyBlockSet *
   \*********************************/
