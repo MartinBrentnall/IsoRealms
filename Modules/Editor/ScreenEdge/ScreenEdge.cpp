@@ -137,6 +137,8 @@ bool ScreenEdge::contains(float x, float y) {
 }
 
 void ScreenEdge::add(Dialog* dialog, AbstractRectangularComponent* icon, float preferredSize) {
+  dialog->setMovable(false);
+  dialog->setClosable(false);
   DockedDialog* mDockedDialog = new DockedDialog(dialog, icon, preferredSize);
   cDockedDialogs.push_back(mDockedDialog);
   IComponentBoundsCalculator* mIconLayout = new TabIconLayout(this, mDockedDialog);

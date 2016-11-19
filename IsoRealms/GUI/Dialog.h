@@ -62,6 +62,10 @@ class Dialog : public RectangularComponent {
   float cHeight;
   bool cDragging;
   IComponentContainer* cComponentContainer;
+  
+  // Properties
+  bool cMovable;
+  bool cClosable;
 
   public:
   Dialog(IComponentContainer*, const std::string&, IResourceAccessor*);
@@ -72,6 +76,8 @@ class Dialog : public RectangularComponent {
   void translate(float, float);
   void resize(float, float);
   void setSize(float, float, float, float);
+  void setMovable(bool);
+  void setClosable(bool);
 
   bool mouseButtonDown(SDL_Event&);
   bool mouseMotion(SDL_Event&);

@@ -37,6 +37,8 @@ Dialog::Dialog(IComponentContainer* componentContainer, const std::string& dialo
   cWidth = 0.75f;
   cHeight = 0.75;
   cDragging = false;
+  cMovable = true;
+  cClosable = true;
 }
 
 Dialog::Dialog(IComponentContainer* componentContainer, const std::string& title, float x, float y, float width, float height) {
@@ -47,6 +49,8 @@ Dialog::Dialog(IComponentContainer* componentContainer, const std::string& title
   cWidth = width;
   cHeight = height;
   cDragging = false;
+  cMovable = true;
+  cClosable = true;
 }
 
 void Dialog::setTitle(const std::string& title) {
@@ -90,6 +94,14 @@ void Dialog::setSize(float left, float bottom, float right, float top) {
   cHeight = (top - bottom) - 0.05f;
 }
 
+void Dialog::setMovable(bool movable) {
+  cMovable = movable;
+}
+
+void Dialog::setClosable(bool closable) {
+  cClosable = closable;
+}
+
 void Dialog::renderContent() {
   float mLeft = getLeft();
   float mTop = getTop();
@@ -130,17 +142,19 @@ void Dialog::renderContent() {
   glScissor(mLeftPixels + 1, mBottomPixels + 1, (mRightPixels - mLeftPixels) - 1, (mTopPixels - mBottomPixels) - 1);
 
   // Close button
-  glEnd();
-  float mButtonPadding = TITLE_BAR_HEIGHT * 0.25f;
-  glLineWidth(2.0f);
-  glBegin(GL_LINES);
-  glColor3f(1.0f, 1.0f, 1.0f);
-  glVertex2f((mRight - mAspectRatio * TITLE_BAR_HEIGHT) + mAspectRatio * mButtonPadding,  mTop + mButtonPadding);
-  glVertex2f( mRight - mAspectRatio * mButtonPadding,                                    (mTop + TITLE_BAR_HEIGHT) - mButtonPadding);
-  glVertex2f((mRight - mAspectRatio * TITLE_BAR_HEIGHT) + mAspectRatio * mButtonPadding, (mTop + TITLE_BAR_HEIGHT) - mButtonPadding);
-  glVertex2f( mRight - mAspectRatio * mButtonPadding,                                     mTop + mButtonPadding);
-  glEnd();
-  glLineWidth(1.0f);
+  if (cClosable) {
+    glEnd();
+    float mButtonPadding = TITLE_BAR_HEIGHT * 0.25f;
+    glLineWidth(2.0f);
+    glBegin(GL_LINES);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glVertex2f((mRight - mAspectRatio * TITLE_BAR_HEIGHT) + mAspectRatio * mButtonPadding,  mTop + mButtonPadding);
+    glVertex2f( mRight - mAspectRatio * mButtonPadding,                                    (mTop + TITLE_BAR_HEIGHT) - mButtonPadding);
+    glVertex2f((mRight - mAspectRatio * TITLE_BAR_HEIGHT) + mAspectRatio * mButtonPadding, (mTop + TITLE_BAR_HEIGHT) - mButtonPadding);
+    glVertex2f( mRight - mAspectRatio * mButtonPadding,                                     mTop + mButtonPadding);
+    glEnd();
+    glLineWidth(1.0f);
+  }
 
   // Title bar text
   IFont* mFont = LookAndFeel::getDefaultFont();
@@ -163,7 +177,7 @@ bool Dialog::mouseButtonDown(SDL_Event& event) {
   float mAspectRatio = mScreen->getAspectRatio();
   float mX = mScreen->getXLocation(event.button.x);
   float mY = mScreen->getYLocation(event.button.y);
-  if (mX >= mRight - mAspectRatio * TITLE_BAR_HEIGHT && mX <= mRight && mY >= mTop && mY <= mTop + TITLE_BAR_HEIGHT) {
+  if (cClosable && mX >= mRight - mAspectRatio * TITLE_BAR_HEIGHT && mX <= mRight && mY >= mTop && mY <= mTop + TITLE_BAR_HEIGHT) {
     close();
     return true;
   }
@@ -177,11 +191,13 @@ bool Dialog::mouseButtonDown(SDL_Event& event) {
 
 bool Dialog::mouseMotion(SDL_Event& event) {
   if (cDragging) {
-    Configuration* mConfiguration = Configuration::getInstance();
-    ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
-    float mX = mScreen->getXLocation(event.motion.xrel) + 1.0f;
-    float mY = mScreen->getYLocation(event.motion.yrel) - 1.0f;
-    translate(mX, mY);
+    if (cMovable) {
+      Configuration* mConfiguration = Configuration::getInstance();
+      ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
+      float mX = mScreen->getXLocation(event.motion.xrel) + 1.0f;
+      float mY = mScreen->getYLocation(event.motion.yrel) - 1.0f;
+      translate(mX, mY);
+    }
     return true;
   }
   return false;
