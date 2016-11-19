@@ -22,6 +22,7 @@ DialogObjectProperties::DialogObjectProperties(IComponentContainer* container, I
   cPropertiesTable = new ComponentTable(2);
   addComponent("properties", cPropertiesTable);
   setTitle("Properties (no selection)");
+  cWindowWorkspace = container;
 }
 
 void DialogObjectProperties::objectSelected(IObjectWithProperties* object) {
@@ -29,7 +30,7 @@ void DialogObjectProperties::objectSelected(IObjectWithProperties* object) {
   if (object != nullptr) {
     std::string mObjectTypeName = object->getTypeName();
     setTitle("Properties of " + mObjectTypeName);
-    std::vector<IObjectProperty*> mObjectProperties = object->getProperties();
+    std::vector<IObjectProperty*> mObjectProperties = object->getProperties(cWindowWorkspace);
     for (IObjectProperty* mObjectProperty : mObjectProperties) {
       std::string mPropertyName = mObjectProperty->getPropertyName();
       TextLabelComponent* mPropertyNameLabel = new TextLabelComponent(mPropertyName + ":");

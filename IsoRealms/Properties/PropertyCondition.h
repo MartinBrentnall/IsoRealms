@@ -27,7 +27,6 @@
 #include <IsoRealms/IObjectProperty.h>
 #include <IsoRealms/Condition.h>
 
-#include "ConditionElementIcon.h"
 #include "ConditionValueComponent.h"
 #include "IPropertyValue.h"
 
@@ -37,11 +36,9 @@ class PropertyCondition:public IObjectProperty {
   IPropertyValue<Condition*>* cValue;
   ConditionValueComponent* cComponent;
   IConditionElementIcons* cConditionElementIcons;
-  
-  std::vector<ISizedComponent*> getConditionIcons(Condition*);
-  
+    
   public:
-  PropertyCondition(const std::string&, IPropertyValue<Condition*>*, IConditionElementIcons*);
+  PropertyCondition(const std::string&, IPropertyValue<Condition*>*, IConditionElementIcons*, IComponentContainer*);
 
   /******************************\
    * Implements IObjectProperty *

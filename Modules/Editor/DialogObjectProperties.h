@@ -27,6 +27,7 @@
 class DialogObjectProperties:public Dialog {
   private:
   ComponentTable* cPropertiesTable;
+  IComponentContainer* cWindowWorkspace;
   
   public:
   DialogObjectProperties(IComponentContainer* container, IResourceAccessor* resources);

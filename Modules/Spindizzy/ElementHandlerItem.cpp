@@ -72,7 +72,7 @@ std::string ElementHandlerItem::getTypeName() {
   return ""; // TODO
 }
   
-std::vector<IObjectProperty*> ElementHandlerItem::getProperties() {
+std::vector<IObjectProperty*> ElementHandlerItem::getProperties(IComponentContainer* windowWorkspace) {
   return std::vector<IObjectProperty*>();
 }
 

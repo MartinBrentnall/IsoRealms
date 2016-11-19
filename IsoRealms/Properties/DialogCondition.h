@@ -16,20 +16,18 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "PropertyCondition.h"
+#ifndef DIALOG_CONDITION_H
+#define DIALOG_CONDITION_H
 
-PropertyCondition::PropertyCondition(const std::string& name, IPropertyValue<Condition*>* value, IConditionElementIcons* icons, IComponentContainer* container) {
-  cName = name;
-  cValue = value;
-  cConditionElementIcons = icons;
-  Condition* mCondition = value->getValue();
-  cComponent = new ConditionValueComponent(mCondition, icons, container);
-}
+#include <IsoRealms/Condition.h>
+#include <IsoRealms/GUI/Dialog.h>
+#include <IsoRealms/IConditionElementIcons.h>
 
-std::string PropertyCondition::getPropertyName() {
-  return cName;
-}
+#include "ConditionValueEditorComponent.h"
 
-ISizedComponent* PropertyCondition::getPropertyComponent() {
-  return cComponent;
-}
+class DialogCondition:public Dialog {
+  public:
+  DialogCondition(IComponentContainer*, IResourceAccessor*, Condition*, IConditionElementIcons*);
+};
+
+#endif

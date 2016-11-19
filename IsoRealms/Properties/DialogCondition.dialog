@@ -1,4 +1,5 @@
-/*
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!--
  * Copyright 2016 Martin Brentnall
  *
  * This file is part of Iso-Realms.
@@ -15,21 +16,10 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
- */
-#include "PropertyCondition.h"
+-->
 
-PropertyCondition::PropertyCondition(const std::string& name, IPropertyValue<Condition*>* value, IConditionElementIcons* icons, IComponentContainer* container) {
-  cName = name;
-  cValue = value;
-  cConditionElementIcons = icons;
-  Condition* mCondition = value->getValue();
-  cComponent = new ConditionValueComponent(mCondition, icons, container);
-}
-
-std::string PropertyCondition::getPropertyName() {
-  return cName;
-}
-
-ISizedComponent* PropertyCondition::getPropertyComponent() {
-  return cComponent;
-}
+<Dialog title="Condition">
+  <Button name="okButton" text="OK" align="bottom right"/>
+  <Button name="cancelButton" text="Cancel" align="bottom" right="leftof okButton"/>
+  <Container name="condition" bottom="above okButton"/>
+</Dialog>

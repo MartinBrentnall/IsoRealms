@@ -27,9 +27,10 @@
 class ConditionElementIcon:public ISizedComponent {
   private:
   I3DModel* cIconModel;
+  float cSize;
   
   public:
-  ConditionElementIcon(I3DModel*);
+  ConditionElementIcon(I3DModel*, float);
     
   /******************************\
    * Implements ISizedComponent *

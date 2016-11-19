@@ -16,8 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef CONDITION_VALUE_COMPONENT_H
-#define CONDITION_VALUE_COMPONENT_H
+#ifndef CONDITION_VALUE_EDITOR_COMPONENT_H
+#define CONDITION_VALUE_EDITOR_COMPONENT_H
 
 #include "../Configuration.h"
 #include "../ScreenConfiguration.h"
@@ -26,27 +26,19 @@
 #include <IsoRealms/GUI/IComponentSizeCalculator.h>
 #include <IsoRealms/GUI/ISizedComponent.h>
 #include <IsoRealms/IConditionElementIcons.h>
-#include <IsoRealms/MultipleClickDetector.h>
 
 #include "ConditionComponent.h"
-#include "ConditionElementIcon.h"
-#include "DialogCondition.h"
 
-class ConditionValueComponent:public ConditionComponent {
-  private:
-  MultipleClickDetector cMultipleClickDetector;
-  IComponentContainer* cComponentContainer;
-  DialogCondition* cEditorDialog;
-
+class ConditionValueEditorComponent:public ConditionComponent {
   public:
-  ConditionValueComponent(Condition*, IConditionElementIcons*, IComponentContainer*);
+  ConditionValueEditorComponent(Condition*, IConditionElementIcons*);
 
   /******************************\
    * Implements ISizedComponent *
   \******************************/
   bool input(SDL_Event&);
   
-  virtual ~ConditionValueComponent() {};
+  virtual ~ConditionValueEditorComponent() {};
 };
 
 #endif

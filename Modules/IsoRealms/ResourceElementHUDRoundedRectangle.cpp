@@ -123,7 +123,7 @@ std::string ResourceElementHUDRoundedRectangle::getTypeName() {
   return ""; // TODO
 }
   
-std::vector<IObjectProperty*> ResourceElementHUDRoundedRectangle::getProperties() {
+std::vector<IObjectProperty*> ResourceElementHUDRoundedRectangle::getProperties(IComponentContainer* windowWorkspace) {
   return std::vector<IObjectProperty*>();
 }
 

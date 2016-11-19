@@ -22,12 +22,14 @@
 #include <string>
 #include <vector>
 
+#include <IsoRealms/IComponentContainer.h>
+
 #include "IObjectProperty.h"
 
 class IObjectWithProperties {
   public:
   virtual std::string getTypeName() = 0;
-  virtual std::vector<IObjectProperty*> getProperties() = 0;
+  virtual std::vector<IObjectProperty*> getProperties(IComponentContainer*) = 0;
 };
 
 #endif

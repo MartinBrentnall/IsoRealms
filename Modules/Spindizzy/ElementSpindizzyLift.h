@@ -144,7 +144,7 @@ class ElementSpindizzyLift:public ICollidableSurfaceElement,
    * Implements IObjectWithProperties *
   \************************************/
   std::string getTypeName();
-  std::vector<IObjectProperty*> getProperties();
+  std::vector<IObjectProperty*> getProperties(IComponentContainer*);
   void destroyProperties(std::vector<IObjectProperty*>);
   
   /***********************\

@@ -89,7 +89,7 @@ std::string ResourceElementHUDModel::getTypeName() {
   return ""; // TODO
 }
   
-std::vector<IObjectProperty*> ResourceElementHUDModel::getProperties() {
+std::vector<IObjectProperty*> ResourceElementHUDModel::getProperties(IComponentContainer* windowWorkspace) {
   return std::vector<IObjectProperty*>();
 }
 

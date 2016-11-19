@@ -89,7 +89,7 @@ std::string ElementSpindizzyCraft::getTypeName() {
   return "Spindizzy Craft"; // TODO
 }
   
-std::vector<IObjectProperty*> ElementSpindizzyCraft::getProperties() {
+std::vector<IObjectProperty*> ElementSpindizzyCraft::getProperties(IComponentContainer* windowWorkspace) {
   return std::vector<IObjectProperty*>();
 }
 

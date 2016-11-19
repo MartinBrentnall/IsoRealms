@@ -75,7 +75,7 @@ std::string ResourceElementHUDString::getTypeName() {
   return ""; // TODO
 }
 
-std::vector<IObjectProperty*> ResourceElementHUDString::getProperties() {
+std::vector<IObjectProperty*> ResourceElementHUDString::getProperties(IComponentContainer* windowWorkspace) {
   return std::vector<IObjectProperty*>();
 }
 

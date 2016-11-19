@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2016 Martin Brentnall
  *
@@ -16,20 +17,22 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "PropertyCondition.h"
+#include "ConditionValueEditorComponent.h"
 
-PropertyCondition::PropertyCondition(const std::string& name, IPropertyValue<Condition*>* value, IConditionElementIcons* icons, IComponentContainer* container) {
-  cName = name;
-  cValue = value;
-  cConditionElementIcons = icons;
-  Condition* mCondition = value->getValue();
-  cComponent = new ConditionValueComponent(mCondition, icons, container);
+ConditionValueEditorComponent::ConditionValueEditorComponent(Condition* condition, IConditionElementIcons* icons) : ConditionComponent(condition, icons, 0.12f) {
 }
 
-std::string PropertyCondition::getPropertyName() {
-  return cName;
-}
-
-ISizedComponent* PropertyCondition::getPropertyComponent() {
-  return cComponent;
+bool ConditionValueEditorComponent::input(SDL_Event& event) {
+  switch (event.type) {
+    case SDL_MOUSEBUTTONDOWN: {
+      Configuration* mConfiguration = Configuration::getInstance();
+      ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
+      float mX = mScreen->getXLocation(event.button.x);
+      float mY = mScreen->getYLocation(event.button.y);
+      if (contains(mX, mY)) {
+        return true;
+      }
+    }
+  }
+  return false;
 }

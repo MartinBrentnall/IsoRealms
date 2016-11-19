@@ -219,7 +219,7 @@ std::string ElementSpindizzyLift::getTypeName() {
   return "Spindizzy Lift"; // TODO
 }
   
-std::vector<IObjectProperty*> ElementSpindizzyLift::getProperties() {
+std::vector<IObjectProperty*> ElementSpindizzyLift::getProperties(IComponentContainer* windowWorkspace) {
   std::vector<IObjectProperty*> mProperties;
   mProperties.push_back(new PropertyInteger("Time to move one block up (ms)",   cPropertyUpSpeed));
   mProperties.push_back(new PropertyInteger("Time to move one block down (ms)", cPropertyDownSpeed));

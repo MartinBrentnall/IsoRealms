@@ -80,7 +80,7 @@ std::string ElementHandlerZone::getTypeName() {
   return ""; // TODO
 }
   
-std::vector<IObjectProperty*> ElementHandlerZone::getProperties() {
+std::vector<IObjectProperty*> ElementHandlerZone::getProperties(IComponentContainer* windowWorkspace) {
   return std::vector<IObjectProperty*>();
 }
 

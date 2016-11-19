@@ -87,8 +87,11 @@ add_library(IsoRealms SHARED
   Persistence/DOMNodeWrapper.cpp
   Persistence/DOMNodeWriter.cpp
   Persistence/ParseException.cpp
+  Properties/ConditionComponent.cpp
   Properties/ConditionElementIcon.cpp
   Properties/ConditionValueComponent.cpp
+  Properties/ConditionValueEditorComponent.cpp
+  Properties/DialogCondition.cpp
   Properties/PropertyCondition.cpp
   Properties/PropertyInteger.cpp
   Rectangle.cpp

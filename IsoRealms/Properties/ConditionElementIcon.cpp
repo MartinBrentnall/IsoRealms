@@ -18,8 +18,9 @@
  */
 #include "ConditionElementIcon.h"
 
-ConditionElementIcon::ConditionElementIcon(I3DModel* model) {
+ConditionElementIcon::ConditionElementIcon(I3DModel* model, float size) {
   cIconModel = model;
+  cSize = size;
 }
     
 void ConditionElementIcon::update(unsigned int milliseconds) {
@@ -28,14 +29,13 @@ void ConditionElementIcon::update(unsigned int milliseconds) {
 
 void ConditionElementIcon::render() {
   glPushMatrix();
-  float mScale = 0.06f;
   Configuration* mConfiguration = Configuration::getInstance();
   ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
   float mXLocation = getLeft() + (getRight() - getLeft()) / 2.0f;
   float mYLocation = getBottom() + (getTop() - getBottom()) / 2.0f;
   glTranslatef(mXLocation, mYLocation, 0.0f);
   float mAspectRatio = mScreen->getAspectRatio();
-  glScalef(mAspectRatio * mScale, mScale, mScale);
+  glScalef(mAspectRatio * cSize, cSize, cSize);
   glColor3f(1.0f, 1.0f, 1.0f);
   
 //  glTranslatef(0.0f, 0.3f, 0.0f);
@@ -55,9 +55,9 @@ float ConditionElementIcon::getWidth() {
   Configuration* mConfiguration = Configuration::getInstance();
   ScreenConfiguration* mScreenConfiguration = mConfiguration->getScreenConfiguration();
   float mAspectRatio = mScreenConfiguration->getAspectRatio();
-  return 0.05f * mAspectRatio;
+  return cSize * mAspectRatio;
 }
 
 float ConditionElementIcon::getHeight() {
-  return 0.05f;
+  return cSize;
 }

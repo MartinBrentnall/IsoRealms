@@ -585,10 +585,10 @@ std::string ElementSpindizzyBlock::getTypeName() {
   return "Spindizzy Block"; // TODO
 }
   
-std::vector<IObjectProperty*> ElementSpindizzyBlock::getProperties() {
+std::vector<IObjectProperty*> ElementSpindizzyBlock::getProperties(IComponentContainer* container) {
   std::vector<IObjectProperty*> mProperties;
   ISpindizzyBlockSet* mModuleInterface = cBlockType->getSpindizzyBlockInterface();
-  mProperties.push_back(new PropertyCondition("Condition", cPropertyCondition, mModuleInterface));
+  mProperties.push_back(new PropertyCondition("Condition", cPropertyCondition, mModuleInterface, container));
   return mProperties;
 }
 

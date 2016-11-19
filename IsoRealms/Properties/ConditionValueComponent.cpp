@@ -19,82 +19,26 @@
  */
 #include "ConditionValueComponent.h"
 
-ConditionValueComponent::ConditionValueComponent(std::vector<ISizedComponent*> components) {
-  cComponents = components;
-  for (unsigned int i = 0; i < cComponents.size(); i++) {
-    IComponentBoundsCalculator* mCellCalculator = new CellLayout(this, i);
-    cComponents[i]->setBoundsCalculator(mCellCalculator);
-  }
-}
-
-float ConditionValueComponent::getWidth() {
-  float mGridWidth = 0.02f;
-  for (ISizedComponent* mComponent : cComponents) {
-    mGridWidth += mComponent->getWidth();
-  }
-  return mGridWidth;
-}
-
-float ConditionValueComponent::getHeight() {
-  float mGridHeight = 0.0f;
-  for (ISizedComponent* mComponent : cComponents) {
-    mGridHeight = std::max(mComponent->getHeight(), mGridHeight);
-  }
-  return mGridHeight;
-}
-
-void ConditionValueComponent::update(unsigned int ticks) {
-  // Nothing to do
-}
-
-void ConditionValueComponent::render() {
-  for (ISizedComponent* mComponent : cComponents) {
-    mComponent->render();
-  }
-  float mLeft = getLeft();
-  float mBottom = getBottom();
-  float mRight = getRight();
-  float mTop = getTop();
-  glBindTexture(GL_TEXTURE_2D, 0);
-  glBegin(GL_LINE_LOOP);
-  glColor3f(0.45f, 0.0f, 0.9f);
-  glVertex2f(mLeft,  mTop);
-  glVertex2f(mLeft,  mBottom);
-  glVertex2f(mRight, mBottom);
-  glVertex2f(mRight, mTop);
-  glEnd();
+ConditionValueComponent::ConditionValueComponent(Condition* condition, IConditionElementIcons* icons, IComponentContainer* componentContainer) : ConditionComponent(condition, icons, 0.05f) {
+  cComponentContainer = componentContainer;
 }
 
 bool ConditionValueComponent::input(SDL_Event& event) {
-  return false; // Nothing to do.
-}
-
-ConditionValueComponent::CellLayout::CellLayout(ConditionValueComponent* parent, unsigned int location) {
-  cParent = parent;
-  cLocation = location;
-}
-
-float ConditionValueComponent::CellLayout::getLeft() {
-  float cLeftOffset = cParent->getLeft() + 0.01;
-  for (unsigned int i = 0; i < cLocation; i++) {
-    cLeftOffset += cParent->cComponents[i]->getWidth();
+  switch (event.type) {
+    case SDL_MOUSEBUTTONDOWN: {
+      Configuration* mConfiguration = Configuration::getInstance();
+      ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
+      float mX = mScreen->getXLocation(event.button.x);
+      float mY = mScreen->getYLocation(event.button.y);
+      if (contains(mX, mY)) {
+        cMultipleClickDetector.input(event);
+        if (cMultipleClickDetector.getClicks() == MultipleClickDetector::DOUBLE_CLICK && event.button.button == SDL_BUTTON_LEFT) {
+          cEditorDialog = new DialogCondition(cComponentContainer, nullptr, getCondition(), getConditionElementIcons());
+          cComponentContainer->addComponent(cEditorDialog);
+        }
+        return true;
+      }
+    }
   }
-  return cLeftOffset;
+  return false;
 }
-
-float ConditionValueComponent::CellLayout::getRight() {
-  float cLeftOffset = cParent->getLeft() + 0.01;
-  for (unsigned int i = 0; i <= cLocation; i++) {
-    cLeftOffset += cParent->cComponents[i]->getWidth();
-  }
-  return cLeftOffset;
-}
-
-float ConditionValueComponent::CellLayout::getTop() {
-  return cParent->getBottom() + cParent->cComponents[cLocation]->getHeight();
-}
-
-float ConditionValueComponent::CellLayout::getBottom() {
-  return cParent->getBottom();
-}
-

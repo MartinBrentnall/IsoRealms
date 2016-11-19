@@ -103,7 +103,7 @@ std::string ElementHandlerSpindizzyBlock::getTypeName() {
   return ""; // TODO
 }
   
-std::vector<IObjectProperty*> ElementHandlerSpindizzyBlock::getProperties() {
+std::vector<IObjectProperty*> ElementHandlerSpindizzyBlock::getProperties(IComponentContainer* windowWorkspace) {
   return std::vector<IObjectProperty*>();
 }
 

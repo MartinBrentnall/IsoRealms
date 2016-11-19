@@ -16,37 +16,68 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef CONDITION_VALUE_COMPONENT_H
-#define CONDITION_VALUE_COMPONENT_H
+#ifndef CONDITION_COMPONENT_H
+#define CONDITION_COMPONENT_H
 
 #include "../Configuration.h"
 #include "../ScreenConfiguration.h"
 
+#include <IsoRealms/Condition.h>
 #include <IsoRealms/GUI/IComponentBoundsCalculator.h>
 #include <IsoRealms/GUI/IComponentSizeCalculator.h>
 #include <IsoRealms/GUI/ISizedComponent.h>
+#include <IsoRealms/GUI/TextLabelComponent.h>
 #include <IsoRealms/IConditionElementIcons.h>
 #include <IsoRealms/MultipleClickDetector.h>
 
-#include "ConditionComponent.h"
 #include "ConditionElementIcon.h"
-#include "DialogCondition.h"
 
-class ConditionValueComponent:public ConditionComponent {
+class ConditionComponent:public ISizedComponent {
   private:
+  std::vector<ISizedComponent*> cComponents;
   MultipleClickDetector cMultipleClickDetector;
   IComponentContainer* cComponentContainer;
-  DialogCondition* cEditorDialog;
+  Condition* cCondition;
+  IConditionElementIcons* cConditionElementIcons;
+  float cIconSize;
+
+  float getComponentWidth(unsigned int);
+
+  class CellLayout:public IComponentBoundsCalculator {
+    private:
+    ConditionComponent* cParent;
+    unsigned int cLocation;
+
+    public:
+    CellLayout(ConditionComponent*, unsigned int);
+
+    /*****************************************\
+     * Implements IComponentBoundsCalculator *
+    \*****************************************/
+    float getLeft();
+    float getRight();
+    float getTop();
+    float getBottom();
+  };
+
+  std::vector<ISizedComponent*> getConditionIcons(Condition*);
 
   public:
-  ConditionValueComponent(Condition*, IConditionElementIcons*, IComponentContainer*);
+  ConditionComponent(Condition*, IConditionElementIcons*, float);
 
+  Condition* getCondition();
+  IConditionElementIcons* getConditionElementIcons();
+  
   /******************************\
    * Implements ISizedComponent *
   \******************************/
-  bool input(SDL_Event&);
+  float getWidth();
+  float getHeight();
+  void update(unsigned int);
+  void render();
   
-  virtual ~ConditionValueComponent() {};
+  virtual ~ConditionComponent() {};
 };
 
 #endif
+
