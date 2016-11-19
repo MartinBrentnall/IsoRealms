@@ -25,6 +25,7 @@ ScreenEdge::ScreenEdge() {
   cAnimation = 1.0f;
   cDragging = nullptr;
   cDragged = false;
+  cExpandedDialog = nullptr;
 }
 
 void ScreenEdge::update(int milliseconds) {
@@ -33,7 +34,7 @@ void ScreenEdge::update(int milliseconds) {
     if (cAnimation > 1.0f) {
       cAnimation = 1.0f;
     }
-    float mLocation = sine(1.0f, 1.0f - cExpandedDialog->getPreferredSize(), cAnimation);
+    float mLocation = sine(1.0f, 1.0f - (cExpandedDialog->getPreferredSize() + getTabWidth(cExpandedDialog)), cAnimation);
     cExpandedDialog->setSize(mLocation, -1.0f, mLocation + cExpandedDialog->getPreferredSize(), 1.0f);
   }
   if (cExpandedDialog != nullptr) {
@@ -44,7 +45,7 @@ void ScreenEdge::update(int milliseconds) {
     if (i->second > 1.0f) {
       cCollapsingDialogs.erase(i);
     } else {
-      float mLocation = sine(i->first->getPreferredSize(), 1.0f, cAnimation);
+      float mLocation = sine(1.0f - (i->first->getPreferredSize() + getTabWidth(i->first)), 1.0f, i->second);
       i->first->setSize(mLocation, -1.0f, mLocation + i->first->getPreferredSize(), 1.0f);
     }
   }
@@ -98,6 +99,15 @@ bool ScreenEdge::mouseButtonDown(SDL_Event& event) {
       return true;
     }
   }
+  
+  // This is supposed to make the expanded dialog collapse when clicking outside
+  // it.  However, I'm not sure if this is what we really want.  Furthermore, it
+  // is still very buggy, as it causes the dialog to collapse even when clicking
+  // on things in the dialogs themselves.
+//   if (cExpandedDialog != nullptr) {
+//     cCollapsingDialogs[cExpandedDialog] = 0.0f;
+//     cExpandedDialog = nullptr;
+//   }
   return false;
 }
 

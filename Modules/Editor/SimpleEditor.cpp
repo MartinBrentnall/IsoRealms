@@ -26,6 +26,18 @@ const std::string SimpleEditor::COMMAND_TEST             = "Test";
 const std::string SimpleEditor::COMMAND_MODULES          = "Modules";
 const std::string SimpleEditor::COMMAND_RESOURCE_BROWSER = "ResourceBrowser";
 
+const float SimpleEditor::DOCKABLE_3D_MODEL_DEFAULT_WIDTH          = 0.285f;
+const float SimpleEditor::DOCKABLE_BOUNDARIES_DEFAULT_WIDTH        = 0.35f;
+const float SimpleEditor::DOCKABLE_CAMERA_DEFAULT_WIDTH            = 0.35f;
+const float SimpleEditor::DOCKABLE_ELEMENT_TYPE_DEFAULT_WIDTH      = 0.35f;
+const float SimpleEditor::DOCKABLE_FONT_DEFAULT_WIDTH              = 0.4f;
+const float SimpleEditor::DOCKABLE_PRIMITIVE_DEFAULT_WIDTH         = 0.5f;
+const float SimpleEditor::DOCKABLE_SCRIPT_DEFAULT_WIDTH            = 0.5f;
+const float SimpleEditor::DOCKABLE_SOUND_DEFAULT_WIDTH             = 0.4f;
+const float SimpleEditor::DOCKABLE_TEXTURE_DEFAULT_WIDTH           = 0.8f;
+const float SimpleEditor::DOCKABLE_VERTEX_DEFAULT_WIDTH            = 0.4f;
+const float SimpleEditor::DOCKABLE_OBJECT_PROPERTIES_DEFAULT_WIDTH = 0.62f;
+
 void SimpleEditor::load(DOMNodeWrapper* node, IResourceRegistry* runtimeContext, DOMNodeWrapper* options) {  
   cMapEditorMode = false;
   if (options != nullptr) {
@@ -122,21 +134,21 @@ void SimpleEditor::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* r
   cDockableObjectProperties   = new DialogObjectProperties(  this, resources);
 
   if (cMapEditorMode) {
-    cScreenEdgeManager.add(cDockableElementTypeManager, cResourceIcons["IconElementTypes"], 0.4f);
-    cScreenEdgeManager.add(cDockableObjectProperties,   cResourceIcons["IconCustomTypes"],  0.7f);
+    cScreenEdgeManager.add(cDockableElementTypeManager, cResourceIcons["IconElementTypes"], DOCKABLE_ELEMENT_TYPE_DEFAULT_WIDTH);
+    cScreenEdgeManager.add(cDockableObjectProperties,   cResourceIcons["IconCustomTypes"],  DOCKABLE_OBJECT_PROPERTIES_DEFAULT_WIDTH);
   } else {
-    cScreenEdgeManager.add(cDockableTextureManager,     cResourceIcons["IconTextures"],     0.8f);
-    cScreenEdgeManager.add(cDockableElementTypeManager, cResourceIcons["IconElementTypes"], 0.4f);
-    cScreenEdgeManager.add(cDockableSoundManager,       cResourceIcons["IconSounds"],       0.5f);
-    cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconFonts"],        0.5f);
-    cScreenEdgeManager.add(cDockableScriptManager,      cResourceIcons["IconScripts"],      0.6f);
-    cScreenEdgeManager.add(cDockablePrimitiveManager,   cResourceIcons["IconPrimitives"],   0.6f);
+    cScreenEdgeManager.add(cDockableTextureManager,     cResourceIcons["IconTextures"],     DOCKABLE_TEXTURE_DEFAULT_WIDTH);
+    cScreenEdgeManager.add(cDockableElementTypeManager, cResourceIcons["IconElementTypes"], DOCKABLE_ELEMENT_TYPE_DEFAULT_WIDTH);
+    cScreenEdgeManager.add(cDockableSoundManager,       cResourceIcons["IconSounds"],       DOCKABLE_SOUND_DEFAULT_WIDTH);
+    cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconFonts"],        DOCKABLE_FONT_DEFAULT_WIDTH);
+    cScreenEdgeManager.add(cDockableScriptManager,      cResourceIcons["IconScripts"],      DOCKABLE_SCRIPT_DEFAULT_WIDTH);
+    cScreenEdgeManager.add(cDockablePrimitiveManager,   cResourceIcons["IconPrimitives"],   DOCKABLE_PRIMITIVE_DEFAULT_WIDTH);
 //    cScreenEdgeManager.add(cDockableCustomTypeManager,  cResourceIcons["IconCustomTypes"],  0.4f);
-    cScreenEdgeManager.add(cDockableVertexManager,      cResourceIcons["IconVertices"],     0.5f);
-    cScreenEdgeManager.add(cDockable3DModelManager,     cResourceIcons["Icon3DModels"],     0.4f);
-    cScreenEdgeManager.add(cDockableCameraManager,      cResourceIcons["IconCameras"],      0.4f);
-    cScreenEdgeManager.add(cDockableBoundariesManager,  cResourceIcons["IconCollectables"], 0.4f);
-    cScreenEdgeManager.add(cDockableObjectProperties,   cResourceIcons["IconCustomTypes"],  0.7f);
+    cScreenEdgeManager.add(cDockableVertexManager,      cResourceIcons["IconVertices"],     DOCKABLE_VERTEX_DEFAULT_WIDTH);
+    cScreenEdgeManager.add(cDockable3DModelManager,     cResourceIcons["Icon3DModels"],     DOCKABLE_3D_MODEL_DEFAULT_WIDTH);
+    cScreenEdgeManager.add(cDockableCameraManager,      cResourceIcons["IconCameras"],      DOCKABLE_CAMERA_DEFAULT_WIDTH);
+    cScreenEdgeManager.add(cDockableBoundariesManager,  cResourceIcons["IconCollectables"], DOCKABLE_BOUNDARIES_DEFAULT_WIDTH);
+    cScreenEdgeManager.add(cDockableObjectProperties,   cResourceIcons["IconCustomTypes"],  DOCKABLE_OBJECT_PROPERTIES_DEFAULT_WIDTH);
   }
   addComponent(&cScreenEdgeManager);
   
@@ -556,7 +568,7 @@ void SimpleEditor::openProject(const std::string& file, bool asTemplate) {
       std::vector<IDialogGenerator*> mProjectDialogGenerators = mProjectResources->getDialogGenerators();
       for (unsigned int i = 0; i < mProjectDialogGenerators.size(); i++) {
         Dialog* mProjectDialog = mProjectDialogGenerators[i]->createDialog(this, nullptr);
-        cScreenEdgeManager.add(mProjectDialog, cResourceIcons["IconVertices"], 0.2f); // TODO: ICON!
+        cScreenEdgeManager.add(mProjectDialog, cResourceIcons["IconVertices"], 0.15f); // TODO: ICON!  SIZE!
       }
       cSelectedLayer = cProject->getDefaultLayer();
       for (unsigned int i = 0; i < cProjectManagerListeners.size(); i++) {

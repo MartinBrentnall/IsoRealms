@@ -21,11 +21,11 @@
 float ScreenEdgeRight::getTabX(DockedDialog* dockedDialog) {
   float mX = 1.0f - getTabWidth(dockedDialog);
   if (dockedDialog == cExpandedDialog) {
-    mX = sine(mX, mX - cExpandedDialog->getWidth(), cAnimation);
+    mX = sine(mX, mX - (cExpandedDialog->getWidth() + getTabWidth(dockedDialog)), cAnimation);
   }
   for (std::map<DockedDialog*, float>::iterator i = cCollapsingDialogs.begin(); i != cCollapsingDialogs.end(); i++) {
     if (dockedDialog == i->first) {
-      mX = sine(mX - dockedDialog->getWidth(), mX, i->second);
+      mX = sine(mX - (dockedDialog->getWidth() + getTabWidth(dockedDialog)), mX, i->second);
     }
   }
   return mX;
@@ -55,7 +55,9 @@ void ScreenEdgeRight::renderTab(DockedDialog* dockedDialog, float x, float y) {
 }
 
 void ScreenEdgeRight::moveTab(DockedDialog* dockedDialog, float x, float y) {
-  float mLeft = getTabX(dockedDialog) + getTabWidth(dockedDialog);
-  dockedDialog->setSize(mLeft + x, -1.0f, 1.0f, 1.0f);
-  dockedDialog->updatePreferredWidth();
+  if (dockedDialog == cExpandedDialog) {
+    float mLeft = getTabX(dockedDialog) + getTabWidth(dockedDialog);
+    dockedDialog->setSize(mLeft + x, -1.0f, 1.0f - getTabWidth(dockedDialog), 1.0f);
+    dockedDialog->updatePreferredWidth();
+  }
 }

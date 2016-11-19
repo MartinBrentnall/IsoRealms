@@ -95,6 +95,18 @@ class SimpleEditor:public IModule,
   static const std::string COMMAND_MODULES;
   static const std::string COMMAND_RESOURCE_BROWSER;
   
+  static const float DOCKABLE_3D_MODEL_DEFAULT_WIDTH;
+  static const float DOCKABLE_BOUNDARIES_DEFAULT_WIDTH;
+  static const float DOCKABLE_CAMERA_DEFAULT_WIDTH;
+  static const float DOCKABLE_ELEMENT_TYPE_DEFAULT_WIDTH;
+  static const float DOCKABLE_FONT_DEFAULT_WIDTH;
+  static const float DOCKABLE_PRIMITIVE_DEFAULT_WIDTH;
+  static const float DOCKABLE_SCRIPT_DEFAULT_WIDTH;
+  static const float DOCKABLE_SOUND_DEFAULT_WIDTH;
+  static const float DOCKABLE_TEXTURE_DEFAULT_WIDTH;
+  static const float DOCKABLE_VERTEX_DEFAULT_WIDTH;
+  static const float DOCKABLE_OBJECT_PROPERTIES_DEFAULT_WIDTH;
+  
   IProject* cProject;
   ILayer* cSelectedLayer;
   std::map<std::string, ICommand*> cEditorCommands;
