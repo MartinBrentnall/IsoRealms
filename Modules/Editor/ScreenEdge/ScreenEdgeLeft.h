@@ -25,6 +25,7 @@ class ScreenEdgeLeft:public ScreenEdgeVertical {
   public:
   float getTabX(DockedDialog*);
   void renderTab(DockedDialog*, float, float);
+  void moveTab(DockedDialog*, float, float);  
 };
 
 #endif

@@ -73,6 +73,14 @@ float Dialog::getTop() {
   return cY + cHeight;
 }
 
+float Dialog::getWidth() {
+  return cWidth;
+}
+
+float Dialog::getHeight() {
+  return cHeight;
+}
+
 bool Dialog::contains(float x, float y) {
   return x >= cX && x <= cX + cWidth && y >= cY && y <= cY + cHeight + TITLE_BAR_HEIGHT;
 }

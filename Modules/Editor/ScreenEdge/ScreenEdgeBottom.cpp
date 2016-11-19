@@ -29,3 +29,7 @@ float ScreenEdgeBottom::getTabY(DockedDialog* dockedDialog) {
 void ScreenEdgeBottom::renderTab(DockedDialog* dockedDialog, float x, float y) {
   // TODO: Implement this
 }
+
+void ScreenEdgeBottom::moveTab(DockedDialog* dockedDialog, float x, float y) {
+  // TODO: Implement this
+}

@@ -39,6 +39,7 @@ class DockedDialog:public IHUDComponent {
   float getHeight();   
   float getWidth();
   float getPreferredSize();
+  void updatePreferredWidth();
   void setSize(float, float, float, float);
 };
 

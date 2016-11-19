@@ -114,6 +114,9 @@ class Dialog : public RectangularComponent {
   float getBottom();
   float getRight();
   float getTop();
+  
+  float getWidth();
+  float getHeight();
 
   virtual ~Dialog();
 };

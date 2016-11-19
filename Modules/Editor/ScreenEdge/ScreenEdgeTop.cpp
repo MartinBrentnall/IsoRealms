@@ -30,3 +30,6 @@ void ScreenEdgeTop::renderTab(DockedDialog* dockedDialog, float x, float y) {
   // TODO: Implement this
 }
 
+void ScreenEdgeTop::moveTab(DockedDialog* dockedDialog, float x, float y) {
+  // TODO: Implement this
+}

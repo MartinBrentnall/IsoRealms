@@ -50,11 +50,15 @@ float DockedDialog::getHeight() {
 }
 
 float DockedDialog::getWidth() {
-  return cPreferredSize;
+  return cDialog->getWidth();
 }
 
 float DockedDialog::getPreferredSize() {
   return cPreferredSize;
+}
+
+void DockedDialog::updatePreferredWidth() {
+  cPreferredSize = getWidth();
 }
 
 void DockedDialog::setSize(float left, float bottom, float right, float top) {

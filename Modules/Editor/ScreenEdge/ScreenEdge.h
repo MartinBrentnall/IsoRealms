@@ -36,6 +36,8 @@ class ScreenEdge {
   std::map<DockedDialog*, float> cCollapsingDialogs;
   DockedDialog* cExpandedDialog;
   float cAnimation;
+  DockedDialog* cDragging;
+  bool cDragged = true;
 
   class TabIconLayout:public IComponentBoundsCalculator {
     private:
@@ -56,8 +58,11 @@ class ScreenEdge {
   virtual float getTabWidth(DockedDialog*) = 0;
   virtual float getTabHeight(DockedDialog*) = 0;
   virtual void renderTab(DockedDialog*, float, float) = 0;
+  virtual void moveTab(DockedDialog*, float, float) = 0;
 
   bool mouseButtonDown(SDL_Event&);
+  bool mouseButtonUp(SDL_Event&);
+  bool mouseMotion(SDL_Event&);
 
   public:
   ScreenEdge();

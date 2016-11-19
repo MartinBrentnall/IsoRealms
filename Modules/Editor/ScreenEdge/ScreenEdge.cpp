@@ -23,6 +23,8 @@ const float ScreenEdge::TAB_WIDTH = 0.08f;
 
 ScreenEdge::ScreenEdge() {
   cAnimation = 1.0f;
+  cDragging = nullptr;
+  cDragged = false;
 }
 
 void ScreenEdge::update(int milliseconds) {
@@ -34,7 +36,7 @@ void ScreenEdge::update(int milliseconds) {
     float mLocation = sine(1.0f, 1.0f - cExpandedDialog->getPreferredSize(), cAnimation);
     cExpandedDialog->setSize(mLocation, -1.0f, mLocation + cExpandedDialog->getPreferredSize(), 1.0f);
   }
-  if (cExpandedDialog != NULL) {
+  if (cExpandedDialog != nullptr) {
     cExpandedDialog->update(milliseconds);
   }
   for (std::map<DockedDialog*, float>::iterator i = cCollapsingDialogs.begin(); i != cCollapsingDialogs.end(); i++) {
@@ -52,7 +54,7 @@ void ScreenEdge::render() {
   for (std::map<DockedDialog*, float>::iterator i = cCollapsingDialogs.begin(); i != cCollapsingDialogs.end(); i++) {
     i->first->render();
   }
-  if (cExpandedDialog != NULL) {
+  if (cExpandedDialog != nullptr) {
     cExpandedDialog->render();
   }
   for (unsigned int i = 0; i < cDockedDialogs.size(); i++) {
@@ -91,18 +93,44 @@ bool ScreenEdge::mouseButtonDown(SDL_Event& event) {
     float mRight  = mLeft + getTabWidth(cDockedDialogs[i]);
     float mBottom = mTop -  getTabHeight(cDockedDialogs[i]);
     if (mX >= mLeft && mX <= mRight && mY >= mBottom && mY <= mTop) {
-      if (cDockedDialogs[i] != cExpandedDialog) {
-        if (cExpandedDialog != NULL) {
+      cDragging = cDockedDialogs[i];
+      cDragged = false;
+      return true;
+    }
+  }
+  return false;
+}
+
+bool ScreenEdge::mouseButtonUp(SDL_Event& event) {
+  if (cDragging != nullptr) {
+    if (!cDragged) {
+      if (cDragging != cExpandedDialog) {
+        if (cExpandedDialog != nullptr) {
           cCollapsingDialogs[cExpandedDialog] = 0.0f;
         }
-        cExpandedDialog = cDockedDialogs[i];
+        cExpandedDialog = cDragging;
         cAnimation = 0.0f;
       } else {
         cCollapsingDialogs[cExpandedDialog] = 0.0f;
-        cExpandedDialog = NULL;
+        cExpandedDialog = nullptr;
       }
-      return true;
     }
+    cDragging = nullptr;
+    cDragged = false;
+    return true;
+  }
+  return false;
+}
+
+bool ScreenEdge::mouseMotion(SDL_Event& event) {
+  if (cDragging != nullptr) {
+    Configuration* mConfiguration = Configuration::getInstance();
+    ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
+    float mX = mScreen->getXLocation(event.motion.xrel) + 1.0f;
+    float mY = mScreen->getYLocation(event.motion.yrel) - 1.0f;
+    moveTab(cDragging, mX, mY);
+    cDragged = true;
+    return true;
   }
   return false;
 }
@@ -113,9 +141,24 @@ bool ScreenEdge::input(SDL_Event& event) {
       if (mouseButtonDown(event)) {
         return true;
       }
+      break;
+    }
+    
+    case SDL_MOUSEBUTTONUP: {
+      if (mouseButtonUp(event)) {
+        return true;
+      }
+      break;
+    }
+    
+    case SDL_MOUSEMOTION: {
+      if (mouseMotion(event)) {
+        return true;
+      }
+      break;
     }
   }
-  return cExpandedDialog != NULL ? cExpandedDialog->input(event) : false;
+  return cExpandedDialog != nullptr ? cExpandedDialog->input(event) : false;
 }
 
 bool ScreenEdge::contains(float x, float y) {
@@ -129,7 +172,7 @@ bool ScreenEdge::contains(float x, float y) {
     }
     if (cDockedDialogs[i] == cExpandedDialog) {
       if (cExpandedDialog->contains(x, y)) {
-	return true;
+        return true;
       }
     }
   }

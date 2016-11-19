@@ -53,3 +53,9 @@ void ScreenEdgeRight::renderTab(DockedDialog* dockedDialog, float x, float y) {
   glVertex2f(mEndX, y);    
   glEnd();
 }
+
+void ScreenEdgeRight::moveTab(DockedDialog* dockedDialog, float x, float y) {
+  float mLeft = getTabX(dockedDialog) + getTabWidth(dockedDialog);
+  dockedDialog->setSize(mLeft + x, -1.0f, 1.0f, 1.0f);
+  dockedDialog->updatePreferredWidth();
+}

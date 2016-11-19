@@ -152,8 +152,8 @@ class RectangularComponent:public ISizedComponent,
   void update(unsigned int);
   bool input(SDL_Event&);
   
-  float getWidth();
-  float getHeight();
+  virtual float getWidth();
+  virtual float getHeight();
   
   /*****************************\
    * Implements IMenuContainer *
