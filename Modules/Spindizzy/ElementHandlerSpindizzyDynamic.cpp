@@ -132,8 +132,8 @@ PickedElement* ElementHandlerSpindizzyDynamic::pickElement(Vertex& start, Vertex
   return cElements.pickElement(start, end);
 }
 
-bool ElementHandlerSpindizzyDynamic::initElement(unsigned int pass) {
-  return cElements.init(pass);
+bool ElementHandlerSpindizzyDynamic::initElement(IUniverse* universe, unsigned int pass) {
+  return cElements.init(universe, pass);
 }
 
 IElementContainer* ElementHandlerSpindizzyDynamic::getElementContainer() {

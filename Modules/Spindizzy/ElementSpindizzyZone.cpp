@@ -34,7 +34,7 @@ ElementSpindizzyZone::ElementSpindizzyZone(ISpindizzyZoneType* elementType, DOMN
     DOMNodeWrapper* mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Element") {
-      resources->loadElement(mNode, &mVertex, this, false, false);
+      resources->loadElement(mNode, &mVertex, this, false);
     } else if (mValueAsString == "Script") {
       std::string mId = mNode->getAttribute("id");
       cScripts[mId] = resources->getScriptCall(mNode);
@@ -88,12 +88,12 @@ IElementType* ElementSpindizzyZone::getElementType() {
   return cZoneType;
 }
 
-bool ElementSpindizzyZone::initElement(unsigned int pass) {
+bool ElementSpindizzyZone::initElement(IUniverse* universe, unsigned int pass) {
   if (pass == 0) {
     IBoundaries* mBoundaries = cZoneType->getBoundaries();
     mBoundaries->registerBoundary(this);
   }
-  return cElementHandler.init(pass, true);
+  return cElementHandler.init(universe, pass, true);
 }
 
 void ElementSpindizzyZone::renderPreview(Vertex& start, Vertex& end, bool valid) {
@@ -107,7 +107,7 @@ void ElementSpindizzyZone::renderEditing(BlockArea& area, bool valid, bool previ
   if (cZoneTheme != nullptr) {
     cZoneTheme->set();
   }
-  cElementHandler.renderEditing();
+  cElementHandler.renderEditing(getUniverse());
   cElementHandler.renderStatic();
 
   float y       = area.getSouth()  - IsoRealmsConstants::BLOCK_RADIUS;
@@ -360,6 +360,10 @@ void ElementSpindizzyZone::restrictCursor(Vertex& cursor) {
   cursor.x = std::max(mWest,   std::min(mEast,  cursor.x));
   cursor.y = std::max(mSouth,  std::min(mNorth, cursor.y));
   cursor.z = std::max(mBottom, std::min(mTop,  cursor.z));
+}
+
+IUniverse* ElementSpindizzyZone::getUniverse() {
+  return cContainer != nullptr ? cContainer->getUniverse() : nullptr;
 }
 
 bool ElementSpindizzyZone::contains(Vertex& location) {

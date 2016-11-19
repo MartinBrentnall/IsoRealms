@@ -158,7 +158,7 @@ class ElementSpindizzyLift:public ICollidableSurfaceElement,
   void updateRuntime(unsigned int);
   void updateEditing(unsigned int);
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
-  bool initElement(unsigned int);
+  bool initElement(IUniverse*, unsigned int);
   void setDirty();
   IElementBounds* getBounds();
 

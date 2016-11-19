@@ -94,6 +94,7 @@ SpindizzyModule::SpindizzyModule(IResourceTypeRegistry* resourceManager):cResour
   cDefaultTheme = nullptr;
   cSelectedZoneTheme = nullptr;
   cThemeModelIcon = nullptr;
+  cActiveSurfaceRegistry = nullptr;
 }
 
 void SpindizzyModule::setOverview(bool overview) {
@@ -106,6 +107,10 @@ unsigned int SpindizzyModule::getZoneCount() {
 
 void SpindizzyModule::setTheme(ISpindizzyZoneTheme* theme) {
   cDefaultTheme = theme;
+}
+
+void SpindizzyModule::setActiveUniverse(IUniverse* universe) {
+  cActiveSurfaceRegistry = getSurfaceRegistry(universe);
 }
 
 void SpindizzyModule::load(DOMNodeWrapper* node, IResourceRegistry* resources, DOMNodeWrapper* options) {
@@ -161,9 +166,6 @@ void SpindizzyModule::load(DOMNodeWrapper* node, IResourceRegistry* resources, D
 }
 
 void SpindizzyModule::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
-  cVisualProcessor = new ResourceGeometryProcessor(false, false);
-  cPhysicalProcessor = new ResourceGeometryProcessor(true, true);
-  cSurfaceRegistry = new ResourceSurfaceRegistry();
   cLocked = resources->getInteger(node->getAttribute("locks"));
   cCamera = resources->getCamera(node->getAttribute("camera"));
   cCamera->addCameraAngleChangeListener(this);
@@ -179,7 +181,7 @@ void SpindizzyModule::initialiseResource(DOMNodeWrapper* node, IResourceAccessor
       cThemeModelIconLocation.z = mNode->getFloatAttribute("z");
       cThemeModelIconScale = mNode->getFloatAttribute("scale");
       std::string mModelPath = mNode->getAttribute("model");
-      cThemeModelIcon = resources->getModel(mModelPath, &cThemeModelIconLocation, cThemeModelIconScale);
+      cThemeModelIcon = resources->getModelType(mModelPath);
     }
   }
 }
@@ -264,59 +266,130 @@ I3DModel* SpindizzyModule::getConditionElementIcon(ConditionElement* element) {
   }
   return nullptr; // TODO: Throw
 }
-  
+
+std::map<IUniverse*, ResourceGeometryProcessor*>* SpindizzyModule::getGeometryProcessors(bool visual) {
+  return visual ? &cVisualProcessors : &cPhysicalProcessors;
+}
+
+ResourceGeometryProcessor* SpindizzyModule::getGeometryProcessor(IUniverse* universe, bool visual) {
+  if (universe == nullptr) {
+    return nullptr; // TODO: Throw
+  }
+  std::map<IUniverse*, ResourceGeometryProcessor*>* mProcessors = getGeometryProcessors(visual);
+  ResourceGeometryProcessor* mProcessor = (*mProcessors)[universe];
+  if (mProcessor == nullptr) {
+    mProcessor = new ResourceGeometryProcessor(!visual, !visual);
+    (*mProcessors)[universe] = mProcessor;
+  }
+  return mProcessor;
+}
+
   /*********************************\
    * Implements ISpindizzyBlockSet *
   \*********************************/
-void SpindizzyModule::registerSurfaceProvider(IGeometricElement* element, bool recalculationSurroundings) {
-  cVisualProcessor->registerGeometricElement(element, recalculationSurroundings);
-  cPhysicalProcessor->registerGeometricElement(element, recalculationSurroundings);
+void SpindizzyModule::registerSurfaceProvider(IGeometricElement* element, bool recalculationSurroundings, IUniverse* universe) {
+  getGeometryProcessor(universe, false)->registerGeometricElement(element, recalculationSurroundings);
+  getGeometryProcessor(universe, true )->registerGeometricElement(element, recalculationSurroundings);
 }
 
 void SpindizzyModule::unregisterSurfaceProvider(IGeometricElement* element) {
-  cVisualProcessor->unregisterGeometricElement(element);
-  cPhysicalProcessor->unregisterGeometricElement(element);
+  for (std::pair<IUniverse*, ResourceGeometryProcessor*> mVisualProcessor : cVisualProcessors) {
+    mVisualProcessor.second->unregisterGeometricElement(element);
+  }
+  for (std::pair<IUniverse*, ResourceGeometryProcessor*> mPhysicalProcessor : cPhysicalProcessors) {
+    mPhysicalProcessor.second->unregisterGeometricElement(element);
+  }
 }
 
 void SpindizzyModule::setDirty() {
-  cVisualProcessor->setDirty();
-  cPhysicalProcessor->setDirty();
+  for (std::pair<IUniverse*, ResourceGeometryProcessor*> mVisualProcessor : cVisualProcessors) {
+    mVisualProcessor.second->setDirty();
+  }
+  for (std::pair<IUniverse*, ResourceGeometryProcessor*> mPhysicalProcessor : cPhysicalProcessors) {
+    mPhysicalProcessor.second->setDirty();
+  }
 }
 
 std::vector<ITileSurfaceTemplate*> SpindizzyModule::getTileSurfaces(IGeometricElement* element, ITileSurface::FaceDirection facing, bool visual) {
-  return (visual ? cVisualProcessor : cPhysicalProcessor)->getTileSurfaces(element, facing);
+  std::map<IUniverse*, ResourceGeometryProcessor*>* mProcessors = getGeometryProcessors(visual);
+  for (std::pair<IUniverse*, ResourceGeometryProcessor*> mProcessor : (*mProcessors)) {
+    if (mProcessor.second->contains(element)) {
+      return mProcessor.second->getTileSurfaces(element, facing);
+    }
+  }
+  std::vector<ITileSurfaceTemplate*> mError;
+  return mError; // TODO: Throw
 }
 
 std::vector<IWallSurfaceTemplate*> SpindizzyModule::getWallSurfaces(IGeometricElement* element, IWallSurface::FaceDirection facing, bool visual) {
-  return (visual ? cVisualProcessor : cPhysicalProcessor)->getWallSurfaces(element, facing);
+  std::map<IUniverse*, ResourceGeometryProcessor*>* mProcessors = getGeometryProcessors(visual);
+  for (std::pair<IUniverse*, ResourceGeometryProcessor*> mProcessor : (*mProcessors)) {
+    if (mProcessor.second->contains(element)) {
+      return mProcessor.second->getWallSurfaces(element, facing);
+    }
+  }
+  std::vector<IWallSurfaceTemplate*> mError;
+  return mError; // TODO: Throw
 }
 
-void SpindizzyModule::destroyTileTemplate(ITileSurfaceTemplate* tileTemplate, bool visual) {
-  (visual ? cVisualProcessor : cPhysicalProcessor)->destroyTileTemplate(tileTemplate);
+void SpindizzyModule::destroyTileTemplate(IGeometricElement* element, ITileSurfaceTemplate* tileTemplate, bool visual) {
+  std::map<IUniverse*, ResourceGeometryProcessor*>* mProcessors = getGeometryProcessors(visual);
+  for (std::pair<IUniverse*, ResourceGeometryProcessor*> mProcessor : (*mProcessors)) {
+    if (mProcessor.second->contains(element)) {
+      mProcessor.second->destroyTileTemplate(tileTemplate);
+      return;
+    }
+  }
+  // TODO: Throw
 }
 
-void SpindizzyModule::destroyWallTemplate(IWallSurfaceTemplate* wallTemplate, bool visual) {
-  (visual ? cVisualProcessor : cPhysicalProcessor)->destroyWallTemplate(wallTemplate);
+void SpindizzyModule::destroyWallTemplate(IGeometricElement* element, IWallSurfaceTemplate* wallTemplate, bool visual) {
+  std::map<IUniverse*, ResourceGeometryProcessor*>* mProcessors = getGeometryProcessors(visual);
+  for (std::pair<IUniverse*, ResourceGeometryProcessor*> mProcessor : (*mProcessors)) {
+    if (mProcessor.second->contains(element)) {
+      mProcessor.second->destroyWallTemplate(wallTemplate);
+      return;
+    }
+  }
+  // TODO: Throw
 }
 
-void SpindizzyModule::registerRollableSurface(ICollidableSurfaceElement* element, IRollableSurface* rollableSurface) {
-  cSurfaceRegistry->registerRollableSurface(element, rollableSurface, false);
+ResourceSurfaceRegistry* SpindizzyModule::getSurfaceRegistry(IUniverse* universe) {
+  if (universe == nullptr) {
+    return nullptr; // TODO: Throw
+  }
+  ResourceSurfaceRegistry* mSurfaceRegistry = cSurfaceRegistries[universe];
+  if (mSurfaceRegistry == nullptr) {
+    mSurfaceRegistry = new ResourceSurfaceRegistry();
+    cSurfaceRegistries[universe] = mSurfaceRegistry;
+  }
+  return mSurfaceRegistry;
 }
 
-void SpindizzyModule::registerWallSurface(ICollidableSurfaceElement* element, ICollidableWallSurface* wallSurface) {
-  cSurfaceRegistry->registerWallSurface(element, wallSurface);
+void SpindizzyModule::registerRollableSurface(ICollidableSurfaceElement* element, IRollableSurface* rollableSurface, IUniverse* universe) {
+  getSurfaceRegistry(universe)->registerRollableSurface(element, rollableSurface, false);
+}
+
+void SpindizzyModule::registerWallSurface(ICollidableSurfaceElement* element, ICollidableWallSurface* wallSurface, IUniverse* universe) {
+  getSurfaceRegistry(universe)->registerWallSurface(element, wallSurface);
 }
 
 void SpindizzyModule::unregisterSurfaces(ICollidableSurfaceElement* element) {
-  cSurfaceRegistry->unregisterSurfaces(element);
+  for (std::pair<IUniverse*, ResourceSurfaceRegistry*> mSurfaceRegistry : cSurfaceRegistries) {
+    mSurfaceRegistry.second->unregisterSurfaces(element);
+  }
 }
 
 void SpindizzyModule::unregisterRollableSurface(IRollableSurface* rollableSurface) {
-  cSurfaceRegistry->unregisterRollableSurface(rollableSurface);
+  for (std::pair<IUniverse*, ResourceSurfaceRegistry*> mSurfaceRegistry : cSurfaceRegistries) {
+    mSurfaceRegistry.second->unregisterRollableSurface(rollableSurface);
+  }
 }
 
 void SpindizzyModule::unregisterWallSurface(ICollidableWallSurface* wallSurface) {
-  cSurfaceRegistry->unregisterWallSurface(wallSurface);
+  for (std::pair<IUniverse*, ResourceSurfaceRegistry*> mSurfaceRegistry : cSurfaceRegistries) {
+    mSurfaceRegistry.second->unregisterWallSurface(wallSurface);
+  }
 }
 
 std::vector<ConditionElement*> SpindizzyModule::getConditionElements() {
@@ -407,8 +480,8 @@ void SpindizzyModule::executeLiftMovedScript() {
   cLiftMovedScript->execute();
 }
 
-void SpindizzyModule::registerInterceptingSurface(ICollidableSurfaceElement* element, IRollableSurface* surface) {
-  cSurfaceRegistry->registerRollableSurface(element, surface, true);
+void SpindizzyModule::registerInterceptingSurface(ICollidableSurfaceElement* element, IRollableSurface* surface, IUniverse* universe) {
+  getSurfaceRegistry(universe)->registerRollableSurface(element, surface, true);
 }
 
 void SpindizzyModule::registerElement(IElementContainer* container, ElementSpindizzyLift* lift) {
@@ -487,8 +560,8 @@ std::string SpindizzyModule::getThemeElement(SpindizzyZoneThemeColour* themeColo
   exit(1);
 }
 
-I3DModel* SpindizzyModule::getThemeIcon() {
-  return cThemeModelIcon;
+I3DModel* SpindizzyModule::createThemeIcon() {
+  return cThemeModelIcon->createModel(&cThemeModelIconLocation, cThemeModelIconScale);
 }
 
 void SpindizzyModule::cameraAngleChanged(float angle) {
@@ -510,11 +583,11 @@ void SpindizzyModule::setArgumentValue(ElementHandlerZone* zoneElementHandler) {
 }
 
 ICollisionData* SpindizzyModule::getNextEvent(Vertex& start, Vertex& end, IRollableSurface* currentSurface, float stepHeight) {
-  return cSurfaceRegistry->getNextEvent(start, end, currentSurface, stepHeight);
+  return cActiveSurfaceRegistry->getNextEvent(start, end, currentSurface, stepHeight);
 }
 
 IRollableSurface* SpindizzyModule::getSurfaceAt(Vertex& location, float stepHeight) {
-  return cSurfaceRegistry->getSurfaceAt(location, stepHeight);
+  return cActiveSurfaceRegistry->getSurfaceAt(location, stepHeight);
 }
 
 std::map<std::string, SpindizzyZoneTheme*> SpindizzyModule::getSpindizzyZoneThemes() {

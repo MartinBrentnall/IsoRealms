@@ -52,6 +52,7 @@ class LuaSupport:public ILuaSupport {
   static const std::string TYPE_VERTEX;
   static const std::string TYPE_SCRIPT_CALL;
   static const std::string TYPE_PROJECT;
+  static const std::string TYPE_UNIVERSE;
     
   lua_State* cLuaState;
 
@@ -60,7 +61,7 @@ class LuaSupport:public ILuaSupport {
   void registerScript(const std::string&);
   void setGlobalVariable(IArgumentDefinition*);
   void executeScript(const std::string&, std::vector<IArgumentValue*>);
-//   IArgumentDefinition* createArgumentDefinition(DOMNodeWrapper*, IResourceAccessor*);
+  IArgumentDefinition* createArgumentDefinition(DOMNodeWrapper*, IResourceAccessor*);
   IArgumentValue* getArgumentValue(DOMNodeWrapper*, IResourceAccessor*);
   void enableLuaSupport(InitLuaFunction*);
 };

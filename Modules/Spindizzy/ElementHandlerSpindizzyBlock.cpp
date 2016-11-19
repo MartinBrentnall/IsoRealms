@@ -127,8 +127,8 @@ IElementBounds* ElementHandlerSpindizzyBlock::getBounds() {
   return cElements.getBounds();
 }
 
-bool ElementHandlerSpindizzyBlock::initElement(unsigned int pass) {
-  return cElements.init(pass);
+bool ElementHandlerSpindizzyBlock::initElement(IUniverse* universe, unsigned int pass) {
+  return cElements.init(universe, pass);
 }
 
 void ElementHandlerSpindizzyBlock::setArguments() {

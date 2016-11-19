@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Martin Brentnall
+ * Copyright 2016 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,27 +16,10 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_ELEMENT_CONTAINER_H
-#define I_ELEMENT_CONTAINER_H
+#ifndef I_UNIVERSE_H
+#define I_UNIVERSE_H
 
-#include <IsoRealms/BlockArea.h>
-#include <IsoRealms/Resources/Script/IArgument.h>
-#include <IsoRealms/IUniverse.h>
-
-#include "IElement.h"
-
-class IElementContainer {
-  public:
-  virtual void addElement(IElement*) = 0;
-  virtual void removeElement(IElement*) = 0;
-  virtual void updateElement(IElement*) = 0;
-  virtual void addArgumentValue(IArgument*) = 0;
-  virtual void setArguments() = 0;
-  virtual void unsetArguments() = 0;
-  virtual BlockArea* getCoverage() = 0;
-  virtual void setDirty(IElement*) = 0;
-  virtual void restrictCursor(Vertex&) = 0;
-  virtual IUniverse* getUniverse() = 0;
+class IUniverse {
 };
 
 #endif

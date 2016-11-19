@@ -83,7 +83,7 @@ void ElementSpindizzyEnemy::setDirty() {
   // Nothing to do
 }
 
-bool ElementSpindizzyEnemy::initElement(unsigned int pass) {
+bool ElementSpindizzyEnemy::initElement(IUniverse* universe, unsigned int pass) {
   return true;
 }
 

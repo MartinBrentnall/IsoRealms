@@ -38,7 +38,7 @@ class SpindizzyBlockState;
 
 class ISpindizzyBlockSet:public IConditionElementIcons {
   public:
-  virtual void registerSurfaceProvider(IGeometricElement*, bool) = 0;
+  virtual void registerSurfaceProvider(IGeometricElement*, bool, IUniverse*) = 0;
   virtual void unregisterSurfaceProvider(IGeometricElement*) = 0;
   
   /**
@@ -51,10 +51,10 @@ class ISpindizzyBlockSet:public IConditionElementIcons {
   
   virtual std::vector<ITileSurfaceTemplate*> getTileSurfaces(IGeometricElement*, ITileSurface::FaceDirection, bool) = 0;
   virtual std::vector<IWallSurfaceTemplate*> getWallSurfaces(IGeometricElement*, IWallSurface::FaceDirection, bool) = 0;
-  virtual void destroyTileTemplate(ITileSurfaceTemplate*, bool) = 0;
-  virtual void destroyWallTemplate(IWallSurfaceTemplate*, bool) = 0;
-  virtual void registerRollableSurface(ICollidableSurfaceElement*, IRollableSurface*) = 0;
-  virtual void registerWallSurface(ICollidableSurfaceElement*, ICollidableWallSurface*) = 0;
+  virtual void destroyTileTemplate(IGeometricElement*, ITileSurfaceTemplate*, bool) = 0;
+  virtual void destroyWallTemplate(IGeometricElement*, IWallSurfaceTemplate*, bool) = 0;
+  virtual void registerRollableSurface(ICollidableSurfaceElement*, IRollableSurface*, IUniverse*) = 0;
+  virtual void registerWallSurface(ICollidableSurfaceElement*, ICollidableWallSurface*, IUniverse*) = 0;
   virtual void unregisterSurfaces(ICollidableSurfaceElement*) = 0;
   virtual void unregisterRollableSurface(IRollableSurface*) = 0;
   virtual void unregisterWallSurface(ICollidableWallSurface*) = 0;

@@ -183,7 +183,7 @@ class ElementSpindizzyBlock:public ICollidableSurfaceElement,
 
   int getBottomHeight(int, int);
   
-  void generateWallSurfaces(IWallSurface::FaceDirection);
+  void generateWallSurfaces(IUniverse*, IWallSurface::FaceDirection);
   
   WallType* getWallType();
   ITexture** getWallTexture(WallSurface::FaceDirection);
@@ -250,7 +250,7 @@ class ElementSpindizzyBlock:public ICollidableSurfaceElement,
    * Implements IElement *
   \***********************/
   IElementType* getElementType();
-  bool initElement(unsigned int);
+  bool initElement(IUniverse*, unsigned int);
   void renderStatic();
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
   void renderRuntime();

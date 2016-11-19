@@ -41,6 +41,7 @@ class ElementHandler {
   unsigned int cLiveThreads;
   bool cEditing;
   IElementBounds* cStaticBounds;
+  IUniverse* cUniverse;
 
   bool cUpdateStatic;
   GLuint cDisplayList;
@@ -82,10 +83,10 @@ class ElementHandler {
   bool isDirty();
   void updateEditing(unsigned int);
   void updateRuntime(unsigned int);
-  bool init(unsigned int, bool);
+  bool init(IUniverse*, unsigned int, bool);
   void renderStatic();
   void renderRuntime();
-  void renderEditing();
+  void renderEditing(IUniverse*);
   void staticChanged();
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
   void reset();

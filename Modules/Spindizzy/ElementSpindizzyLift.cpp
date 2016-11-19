@@ -236,11 +236,11 @@ IElementType* ElementSpindizzyLift::getElementType() {
   return cLiftType;
 }
 
-bool ElementSpindizzyLift::initElement(unsigned int pass) {
+bool ElementSpindizzyLift::initElement(IUniverse* universe, unsigned int pass) {
   switch (pass) {
     case 0: {
       ISpindizzyLiftSet* mLiftSet = cLiftType->getSpindizzyLiftInterface();
-      mLiftSet->registerInterceptingSurface(this, this);
+      mLiftSet->registerInterceptingSurface(this, this, universe);
       return true;
     }
   }

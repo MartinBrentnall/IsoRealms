@@ -27,6 +27,7 @@ const std::string LuaSupport::TYPE_MODEL = "3DModel";
 const std::string LuaSupport::TYPE_VERTEX = "Vertex";
 const std::string LuaSupport::TYPE_SCRIPT_CALL = "ScriptCall";
 const std::string LuaSupport::TYPE_PROJECT = "Project";
+const std::string LuaSupport::TYPE_UNIVERSE = "Universe";
 
 bool operator==(const ISound& a, const ISound& b) {
   return &a == &b; 
@@ -57,6 +58,10 @@ bool operator==(const IScriptCall& a, const IScriptCall& b) {
 }
  
 bool operator==(const Project& a, const Project& b) {
+  return &a == &b;
+}
+ 
+bool operator==(const IUniverse& a, const IUniverse& b) {
   return &a == &b;
 }
  
@@ -115,6 +120,11 @@ LuaSupport::LuaSupport() {
   luabind::module(cLuaState) [
     luabind::class_<Project>(TYPE_PROJECT.c_str())
        .def("finish", &Project::finish)
+       .def(luabind::const_self == luabind::const_self)
+  ];
+  
+  luabind::module(cLuaState) [
+    luabind::class_<IUniverse>(TYPE_UNIVERSE.c_str())
        .def(luabind::const_self == luabind::const_self)
   ];
 }

@@ -37,7 +37,7 @@ IElement* ResourceElementSpindizzyWater::getElement() {
   return nullptr;
 }
 
-void ResourceElementSpindizzyWater::loadElement(DOMNodeWrapper* node, BlockLocation* zoneLocation, IElementContainer* container, IResourceAccessor* resources, bool asTemplate, bool independent) {
+void ResourceElementSpindizzyWater::loadElement(DOMNodeWrapper* node, BlockLocation* zoneLocation, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
   if (!asTemplate) {
     BlockLocation mStartLocation;
     BlockLocation mEndLocation;
@@ -47,7 +47,8 @@ void ResourceElementSpindizzyWater::loadElement(DOMNodeWrapper* node, BlockLocat
     ElementSpindizzyWater* mLoadedWater = new ElementSpindizzyWater(this, &mStartLocation, &mEndLocation, &cTexture, container);
     ElementHandlerSpindizzyBlock* mHandler = cModuleInterface->getElementHandlerSpindizzyBlock(container);  
     cContent.push_back(mLoadedWater);
-    cModuleInterface->registerSurfaceProvider(mLoadedWater, false);
+    IUniverse* mUniverse = container->getUniverse();
+    cModuleInterface->registerSurfaceProvider(mLoadedWater, false, mUniverse);
     cModuleInterface->setDirty();
     mHandler->addElement(mLoadedWater);
   }

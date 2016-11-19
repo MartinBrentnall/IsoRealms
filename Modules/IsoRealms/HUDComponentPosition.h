@@ -68,6 +68,7 @@ class HUDComponentPosition : public IElementContainer {
   BlockArea* getCoverage();
   void setDirty(IElement*);
   void restrictCursor(Vertex&);
+  IUniverse* getUniverse();
 };
 
 #endif

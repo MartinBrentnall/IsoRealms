@@ -556,15 +556,15 @@ std::set<IBoolean*> ElementSpindizzyBlock::getInputs() {
   return mNoInputs;
 }
 
-void ElementSpindizzyBlock::generateWallSurfaces(IWallSurface::FaceDirection faceDirection) {
+void ElementSpindizzyBlock::generateWallSurfaces(IUniverse* universe, IWallSurface::FaceDirection faceDirection) {
   ISpindizzyBlockSet* mSpindizzyBlockSet = cBlockType->getSpindizzyBlockInterface();
   
   // Physical surfaces
   std::vector<IWallSurfaceTemplate*> mWallSurfaces = calculateWallSurfaces(faceDirection, false);
   for (unsigned int i = 0; i < mWallSurfaces.size(); i++) {
     ISpindizzyWallSurface* mWallSurface = createSubSurface(mWallSurfaces[i]);
-    mSpindizzyBlockSet->registerWallSurface(this, mWallSurface);
-    mSpindizzyBlockSet->destroyWallTemplate(mWallSurfaces[i], false);
+    mSpindizzyBlockSet->registerWallSurface(this, mWallSurface, universe);
+    mSpindizzyBlockSet->destroyWallTemplate(this, mWallSurfaces[i], false);
   }
 
   // Visual surfaces
@@ -577,7 +577,7 @@ void ElementSpindizzyBlock::generateWallSurfaces(IWallSurface::FaceDirection fac
     } else {
       cStaticWallSurfaces.push_back(mWallSurface);
     }
-    mSpindizzyBlockSet->destroyWallTemplate(mWallSurfaces[i], true);
+    mSpindizzyBlockSet->destroyWallTemplate(this, mWallSurfaces[i], true);
   }
 }
 
@@ -596,9 +596,8 @@ IElementType* ElementSpindizzyBlock::getElementType() {
   return cBlockType;
 }
 
-bool ElementSpindizzyBlock::initElement(unsigned int pass) {
+bool ElementSpindizzyBlock::initElement(IUniverse* universe, unsigned int pass) {
   ISpindizzyBlockSet* mSpindizzyBlockSet = cBlockType->getSpindizzyBlockInterface();
-
   switch (pass) {
     case INIT_PROCESS_BLOCKS: {
       
@@ -611,8 +610,8 @@ bool ElementSpindizzyBlock::initElement(unsigned int pass) {
         int mWest = mTopTileSurfaces[i]->getWest();
         Condition* mCondition = mTopTileSurfaces[i]->getCondition();
         ISpindizzyTileSurface* mTileSurface = createSubSurface(ITileSurface::UP, mNorth, mEast, mSouth, mWest, mCondition);
-        mSpindizzyBlockSet->registerRollableSurface(this, mTileSurface);
-        mSpindizzyBlockSet->destroyTileTemplate(mTopTileSurfaces[i], false);
+        mSpindizzyBlockSet->registerRollableSurface(this, mTileSurface, universe);
+        mSpindizzyBlockSet->destroyTileTemplate(this, mTopTileSurfaces[i], false);
       }
 
       // Visual surfaces
@@ -629,13 +628,13 @@ bool ElementSpindizzyBlock::initElement(unsigned int pass) {
         } else {
           cStaticTileSurfaces.push_back(mTileSurface);
         }
-        mSpindizzyBlockSet->destroyTileTemplate(mTopTileSurfaces[i], true);
+        mSpindizzyBlockSet->destroyTileTemplate(this, mTopTileSurfaces[i], true);
       }
 
-      generateWallSurfaces(IWallSurface::SOUTH);
-      generateWallSurfaces(IWallSurface::NORTH);
-      generateWallSurfaces(IWallSurface::EAST);
-      generateWallSurfaces(IWallSurface::WEST);
+      generateWallSurfaces(universe, IWallSurface::SOUTH);
+      generateWallSurfaces(universe, IWallSurface::NORTH);
+      generateWallSurfaces(universe, IWallSurface::EAST);
+      generateWallSurfaces(universe, IWallSurface::WEST);
       return true;
     }
   }

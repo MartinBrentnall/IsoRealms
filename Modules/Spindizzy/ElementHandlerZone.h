@@ -70,7 +70,7 @@ class ElementHandlerZone:public Element,
   void renderStatic();
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
   void setDirty();
-  bool initElement(unsigned int);
+  bool initElement(IUniverse*, unsigned int);
   IElementBounds* getBounds();
   bool isSelectable();
   void cursorMoved(ILayerEditingContext*, Vertex&, Vertex&);

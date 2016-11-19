@@ -62,7 +62,7 @@ class Element:public IElement {
     return false;
   }
 
-  bool initElement(unsigned int) {
+  bool initElement(IUniverse*, unsigned int) {
     return true;
   }
   

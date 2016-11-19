@@ -164,7 +164,7 @@ void ElementHandler::initElementHandler(unsigned int pass, bool editing) {
       std::cout << "Couldn't unlock mutex" << std::endl;
       exit(-1);
     }
-    if (mElement->initElement(pass)) {
+    if (mElement->initElement(cUniverse, pass)) {
       while (SDL_mutexP(cElementQueueMutex) == -1);
       cCleanElements.push_back(mElement);
       if (SDL_mutexV(cElementQueueMutex) == -1) {
@@ -208,7 +208,7 @@ bool ElementHandler::initSingleThreaded() {
     cDirtyElementsRemaining = cDirtyElements;
     while (!cDirtyElementsRemaining.empty()) {
       IElement* mElement = getElementToInit();
-      if (mElement->initElement(mPass)) {
+      if (mElement->initElement(cUniverse, mPass)) {
         cCleanElements.push_back(mElement);
       }
     }
@@ -226,7 +226,8 @@ bool ElementHandler::initSingleThreaded() {
   return cDirtyElements.empty();
 }
 
-bool ElementHandler::init(unsigned int pass, bool editing) {  
+bool ElementHandler::init(IUniverse* universe, unsigned int pass, bool editing) {  
+  cUniverse = universe;
   if (!cDirtyElements.empty()) {
     cEditing = editing;
     if (cSpawnThreads) {
@@ -278,9 +279,9 @@ void ElementHandler::renderRuntime() {
   }
 }
 
-void ElementHandler::renderEditing() {
+void ElementHandler::renderEditing(IUniverse* universe) {
   if (isDirty()) {
-    init(0, true);
+    init(universe, 0, true);
   }
   for (unsigned int i = 0; i < cVisualElementsEditing.size(); i++) {
     cVisualElementsEditing[i]->renderEditing();

@@ -131,7 +131,7 @@ class Resources:public IResources,
 
   void addDynamicElement(IDynamicElement*);
   
-  void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*, bool, bool);
+  void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*, bool);
 
   void addListener(IResourceUseListener<I3DModelType>*);
   void addListener(IResourceUseListener<IBoolean>*);       

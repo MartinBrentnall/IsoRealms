@@ -33,7 +33,7 @@ class ISpindizzyLiftSet {
   public:
   virtual SpindizzyLiftProperties* getSpindizzyLiftProperties() = 0;
   virtual void executeLiftMovedScript() = 0;
-  virtual void registerInterceptingSurface(ICollidableSurfaceElement*, IRollableSurface*) = 0;
+  virtual void registerInterceptingSurface(ICollidableSurfaceElement*, IRollableSurface*, IUniverse*) = 0;
   virtual bool isLocked() = 0;
   virtual bool isEditing() = 0;
   virtual ElementHandlerSpindizzyDynamic* getDynamicElementHandler(IElementContainer*) = 0;

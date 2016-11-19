@@ -1,4 +1,4 @@
-/*
+  /*
  * Copyright 2015 Martin Brentnall
  *
  * This file is part of Iso-Realms.
@@ -149,9 +149,9 @@ class SpindizzyModule:public IModule,
   std::map<IElementContainer*, ElementHandlerZone*> cZoneElementHandlers;
   std::map<IElementContainer*, ElementHandlerItem*> cItemElementHandlers;
   std::map<IElementContainer*, ElementHandlerSpindizzyBlock*> cElementHandlersSpindizzyBlock;
-  ResourceSurfaceRegistry* cSurfaceRegistry;
-  ResourceGeometryProcessor* cPhysicalProcessor;
-  ResourceGeometryProcessor* cVisualProcessor;
+  std::map<IUniverse*, ResourceSurfaceRegistry*> cSurfaceRegistries;
+  std::map<IUniverse*, ResourceGeometryProcessor*> cPhysicalProcessors;
+  std::map<IUniverse*, ResourceGeometryProcessor*> cVisualProcessors;
   IScriptCall* cLiftMovedScript;
   SpindizzyLiftProperties cSpindizzyLiftProperties;
   Integer* cCollectedCount;
@@ -171,9 +171,14 @@ class SpindizzyModule:public IModule,
   bool cOverview;
   unsigned int cZoneCount;
   ISpindizzyZoneTheme* cDefaultTheme;
-  I3DModel* cThemeModelIcon;
+  I3DModelType* cThemeModelIcon;
   Vertex cThemeModelIconLocation;
   float cThemeModelIconScale;
+  ResourceSurfaceRegistry* cActiveSurfaceRegistry;
+  
+  std::map<IUniverse*, ResourceGeometryProcessor*>* getGeometryProcessors(bool);
+  ResourceGeometryProcessor* getGeometryProcessor(IUniverse*, bool);
+  ResourceSurfaceRegistry* getSurfaceRegistry(IUniverse*);
   
   public:
   SpindizzyModule(IResourceTypeRegistry*);
@@ -184,6 +189,7 @@ class SpindizzyModule:public IModule,
   void setOverview(bool);
   unsigned int getZoneCount();
   void setTheme(ISpindizzyZoneTheme*);
+  void setActiveUniverse(IUniverse*);
   
   /**********************\
    * Implements IPlugin *
@@ -205,15 +211,15 @@ class SpindizzyModule:public IModule,
   /*********************************\
    * Implements ISpindizzyBlockSet *
   \*********************************/
-  void registerSurfaceProvider(IGeometricElement*, bool);
+  void registerSurfaceProvider(IGeometricElement*, bool, IUniverse*);
   void unregisterSurfaceProvider(IGeometricElement*);
   void setDirty();
   std::vector<ITileSurfaceTemplate*> getTileSurfaces(IGeometricElement*, ITileSurface::FaceDirection, bool);
   std::vector<IWallSurfaceTemplate*> getWallSurfaces(IGeometricElement*, IWallSurface::FaceDirection, bool);
-  void destroyTileTemplate(ITileSurfaceTemplate*, bool);
-  void destroyWallTemplate(IWallSurfaceTemplate*, bool);
-  void registerRollableSurface(ICollidableSurfaceElement*, IRollableSurface*);
-  void registerWallSurface(ICollidableSurfaceElement*, ICollidableWallSurface*);
+  void destroyTileTemplate(IGeometricElement*, ITileSurfaceTemplate*, bool);
+  void destroyWallTemplate(IGeometricElement*, IWallSurfaceTemplate*, bool);
+  void registerRollableSurface(ICollidableSurfaceElement*, IRollableSurface*, IUniverse*);
+  void registerWallSurface(ICollidableSurfaceElement*, ICollidableWallSurface*, IUniverse*);
   void unregisterSurfaces(ICollidableSurfaceElement*);
   void unregisterRollableSurface(IRollableSurface*);
   void unregisterWallSurface(ICollidableWallSurface*);
@@ -242,7 +248,7 @@ class SpindizzyModule:public IModule,
   \********************************/
   SpindizzyLiftProperties* getSpindizzyLiftProperties();
   void executeLiftMovedScript();
-  void registerInterceptingSurface(ICollidableSurfaceElement*, IRollableSurface*);
+  void registerInterceptingSurface(ICollidableSurfaceElement*, IRollableSurface*, IUniverse*);
   void registerElement(IElementContainer*, ElementSpindizzyLift*);
   
   /***********************************\
@@ -266,7 +272,7 @@ class SpindizzyModule:public IModule,
   SpindizzyZoneThemeColour* getThemeColour(const std::string&);
   std::string getThemeElement(SpindizzyZoneThemeTexture*);
   std::string getThemeElement(SpindizzyZoneThemeColour*);
-  I3DModel* getThemeIcon();
+  I3DModel* createThemeIcon();
 
   /*****************************************\
    * Implements ICameraAngleChangeListener *

@@ -42,7 +42,7 @@ IElement* ResourceElementSpindizzyBlock::getElement() {
   return nullptr;
 }
 
-void ResourceElementSpindizzyBlock::loadElement(DOMNodeWrapper* node, BlockLocation* zoneLocation, IElementContainer* container, IResourceAccessor* resources, bool asTemplate, bool independent) {
+void ResourceElementSpindizzyBlock::loadElement(DOMNodeWrapper* node, BlockLocation* zoneLocation, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
   if (!asTemplate) {
     BlockLocation mStartLocation;
     BlockLocation mEndLocation;
@@ -59,12 +59,9 @@ void ResourceElementSpindizzyBlock::loadElement(DOMNodeWrapper* node, BlockLocat
     ElementHandlerSpindizzyBlock* mHandler = cModuleInterface->getElementHandlerSpindizzyBlock(container);  
     ElementSpindizzyBlock* mLoadedBlock = createBlock(&mStartLocation, &mEndLocation, cBlockProperties, mAddition, mHandler);
     cContent.push_back(mLoadedBlock);
-    if (independent) {
-      mLoadedBlock->createSampleSurfaces();
-    } else {
-      cModuleInterface->registerSurfaceProvider(mLoadedBlock, false);
-      cModuleInterface->setDirty();
-    }
+    IUniverse* mUniverse = container->getUniverse();
+    cModuleInterface->registerSurfaceProvider(mLoadedBlock, false, mUniverse);
+    cModuleInterface->setDirty();
     mHandler->addElement(mLoadedBlock);
   }
 }
@@ -124,7 +121,8 @@ bool ResourceElementSpindizzyBlock::keyDown(SDLKey& key, ILayerEditingContext* e
         editingContext->removeCursorRestriction(mContainer);
         mHandler->addElement(cEditingBlock);
         cContent.push_back(cEditingBlock);
-        cModuleInterface->registerSurfaceProvider(cEditingBlock, true);
+        IUniverse* mUniverse = mContainer->getUniverse();
+        cModuleInterface->registerSurfaceProvider(cEditingBlock, true, mUniverse);
         cStartLocation = nullptr;
         BlockLocation mIdentityBlockLocation(0, 0, 0);
         cEditingBlock = createBlock(&mIdentityBlockLocation, &mIdentityBlockLocation, cBlockProperties, true, nullptr);

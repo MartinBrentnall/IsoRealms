@@ -38,9 +38,13 @@ void ResourceModelElement::initialiseResource(DOMNodeWrapper* node, IResourceAcc
     DOMNodeWrapper* mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Element") {
-      resources->loadElement(mNode, &cIdentity, this, false, true);
+      resources->loadElement(mNode, &cIdentity, this, false);
       Vertex* mVertex = new Vertex(0.0f, 0.0f, 0.0f);
       cSampleModel = new ModelElement(&cElement, mVertex, 1.0f);
+      
+      // TODO: Shouldn't we init these elements alongside everything else!?
+      unsigned int mInitPass = 0;
+      while (!cElement->initElement(this, mInitPass++));
     }
   }
 }
@@ -79,6 +83,10 @@ void ResourceModelElement::setDirty(IElement* element) {
 
 void ResourceModelElement::restrictCursor(Vertex& cursorLocation) {
   // Nothing to do
+}
+
+IUniverse* ResourceModelElement::getUniverse() {
+  return this;
 }
 
 void ResourceModelElement::updateIcon(unsigned int milliseconds) {

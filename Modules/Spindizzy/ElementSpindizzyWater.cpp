@@ -143,7 +143,7 @@ IElementType* ElementSpindizzyWater::getElementType() {
   return cWaterType;
 }
 
-bool ElementSpindizzyWater::initElement(unsigned int pass) {
+bool ElementSpindizzyWater::initElement(IUniverse* universe, unsigned int pass) {
   ISpindizzyBlockSet* mSurfaceProcessor = cWaterType->getSpindizzyBlockInterface();
   switch (pass) {
     case INIT_PROCESS_BLOCKS: {
@@ -160,7 +160,7 @@ bool ElementSpindizzyWater::initElement(unsigned int pass) {
         } else {
           cDynamicTileSurfaces.push_back(mTileSurface);
         }
-        mSurfaceProcessor->destroyTileTemplate(mTopTileSurfaces[i], true);
+        mSurfaceProcessor->destroyTileTemplate(this, mTopTileSurfaces[i], true);
       }
       // TODO: Use the calculator to calculate surfaces
       return true;

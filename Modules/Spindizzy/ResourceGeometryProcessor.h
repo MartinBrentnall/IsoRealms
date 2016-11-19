@@ -190,6 +190,8 @@ class ResourceGeometryProcessor {
   
   public:
   ResourceGeometryProcessor(bool, bool);
+  
+  bool contains(IGeometricElement*);
 
   /********************************\
    * Implements ISurfaceProcessor *

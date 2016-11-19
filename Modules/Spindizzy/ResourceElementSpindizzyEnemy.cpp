@@ -45,7 +45,7 @@ void ResourceElementSpindizzyEnemy::save(DOMNodeWriter* node, IResourceLocator* 
   node->addAttribute("model", resourceLocator->getPath(cModelType));
 }
 
-void ResourceElementSpindizzyEnemy::loadElement(DOMNodeWrapper* node, BlockLocation* relative, IElementContainer* container, IResourceAccessor* resources, bool asTemplate, bool independent) {
+void ResourceElementSpindizzyEnemy::loadElement(DOMNodeWrapper* node, BlockLocation* relative, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
   if (!asTemplate) {
     BlockLocation mLocation;
     mLocation.setRelative(node, *relative);

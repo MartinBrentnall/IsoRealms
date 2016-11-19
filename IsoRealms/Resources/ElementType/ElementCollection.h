@@ -41,10 +41,10 @@ template <class T> class ElementCollection : public IElementBounds {
     return cElements.size();
   }
   
-  bool init(unsigned int pass) {
+  bool init(IUniverse* universe, unsigned int pass) {
     bool mSuccess = true;
     for (T* mElement : cElements) {
-      if (!mElement->initElement(pass)) {
+      if (!mElement->initElement(universe, pass)) {
         mSuccess = false;
       }
     }

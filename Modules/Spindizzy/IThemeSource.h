@@ -28,7 +28,7 @@ class IThemeSource {
   virtual SpindizzyZoneThemeColour* getThemeColour(const std::string&) = 0;
   virtual std::string getThemeElement(SpindizzyZoneThemeTexture*) = 0;
   virtual std::string getThemeElement(SpindizzyZoneThemeColour*) = 0;
-  virtual I3DModel* getThemeIcon() = 0;
+  virtual I3DModel* createThemeIcon() = 0;
 };
 
 #endif

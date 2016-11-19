@@ -104,7 +104,7 @@ class ElementSpindizzyZone:public Element,
    * Implements IElement *
   \***********************/
   IElementType* getElementType();
-  bool initElement(unsigned int);
+  bool initElement(IUniverse*, unsigned int);
   void renderEditing();
   void renderStatic();
   void renderRuntime();
@@ -139,6 +139,7 @@ class ElementSpindizzyZone:public Element,
   void updateElement(IElement*);
   void addArgumentValue(IArgument*);
   void restrictCursor(Vertex&);
+  IUniverse* getUniverse();
   
   /************************\
    * Implements IBoundary *

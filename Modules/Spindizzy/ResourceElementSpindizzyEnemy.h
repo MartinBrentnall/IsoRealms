@@ -57,7 +57,7 @@ class ResourceElementSpindizzyEnemy:public IElementType {
   /***************************\
    * Implements IElementType *
   \***************************/
-  void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*, bool, bool);
+  void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*, bool);
   bool inputEdit(SDL_Event&, ILayerEditingContext*);
   void configureElement();
   void setEditingContext(BlockLocation*, IComponentContainer*);

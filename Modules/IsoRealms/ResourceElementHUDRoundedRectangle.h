@@ -50,7 +50,7 @@ class ResourceElementHUDRoundedRectangle:public IElementType,
   /***************************\
    * Implements IElementType *
   \***************************/
-  void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*, bool, bool);
+  void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*, bool);
   void configureElement();
   void renderEditingPreview(Vertex&);
   void updateEditingPreview(unsigned int);

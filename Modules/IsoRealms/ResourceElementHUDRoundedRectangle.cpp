@@ -30,7 +30,7 @@ void ResourceElementHUDRoundedRectangle::save(DOMNodeWriter*, IResourceLocator*)
   // TODO
 }
 
-void ResourceElementHUDRoundedRectangle::loadElement(DOMNodeWrapper* node, BlockLocation* location, IElementContainer* container, IResourceAccessor* resources, bool asTemplate, bool independent) {
+void ResourceElementHUDRoundedRectangle::loadElement(DOMNodeWrapper* node, BlockLocation* location, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
   container->addElement(this);
 }
 

@@ -36,7 +36,7 @@ LayerHUD::LayerHUD(DOMNodeWrapper* node, IResourceAccessor* resources, ILayerTyp
       IHUDComponentRelation* mBottomRelation = getRelation(mNode->getAttribute("bottom"), "bottom");
       IHUDComponentRelation* mTopRelation    = getRelation(mNode->getAttribute("top"),    "top");
       HUDComponentPosition* mHUDRenderer = new HUDComponentPosition(mLeftRelation, mRightRelation, mTopRelation, mBottomRelation, mScale, mScale);
-      resources->loadElement(mNode, nullptr, mHUDRenderer, false, false);
+      resources->loadElement(mNode, nullptr, mHUDRenderer, false);
       cComponents.push_back(mHUDRenderer);
       HUDComponentProxy* mHUDComponentProxy = getComponentProxy(mComponentName);
       mHUDComponentProxy->setHUDComponentPosition(mHUDRenderer);

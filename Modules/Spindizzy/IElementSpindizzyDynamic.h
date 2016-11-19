@@ -29,7 +29,7 @@ class IElementSpindizzyDynamic : public Element {
   virtual void renderEditing() = 0;
   virtual void renderRuntime() = 0;
   virtual void updateRuntime(unsigned int) = 0;
-  virtual bool initElement(unsigned int) = 0;  
+  virtual bool initElement(IUniverse*, unsigned int) = 0;  
   virtual IElementBounds* getBounds() = 0;
   virtual void processCursorMovement(ILayerEditingContext*, Vertex&, Vertex&) = 0;
   virtual void processCursorAppearance(ILayerEditingContext*, Vertex&) = 0;

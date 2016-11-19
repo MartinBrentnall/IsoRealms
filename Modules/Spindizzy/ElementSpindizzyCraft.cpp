@@ -97,7 +97,7 @@ IElementType* ElementSpindizzyCraft::getElementType() {
   return cCraftType;
 }
 
-bool ElementSpindizzyCraft::initElement(unsigned int pass) {
+bool ElementSpindizzyCraft::initElement(IUniverse* universe, unsigned int pass) {
   switch (pass) {
     case INIT_REGISTER_BLOCKS: {
 //       if (cMap != nullptr) {
@@ -368,6 +368,10 @@ void ElementSpindizzyCraft::updateRespawnData() {
       while (cRespawnSurfaceStack.size() > 1) {
         delete cRespawnSurfaceStack.top();
         cRespawnSurfaceStack.pop();
+      }
+      if (cRespawnSurfaceStack.empty()) {
+        std::cout << "ERROR: Craft not yet initialised" << std::endl;
+        exit(1);
       }
       cRespawnData = cRespawnSurfaceStack.top();
       cRespawnData->cSurface = cCurrentSurface;
@@ -661,6 +665,10 @@ void ElementSpindizzyCraft::stop() {
     cMomentum.y = 0.0f;
     cMomentum.z = 0.0f;
   }
+}
+
+IUniverse* ElementSpindizzyCraft::getUniverse() {
+  return cContainer->getUniverse();
 }
 
 void ElementSpindizzyCraft::renderRuntime() {

@@ -29,7 +29,8 @@
 #include "ModelElement.h"
 
 class ResourceModelElement:public I3DModelType,
-                           public IElementContainer {
+                           public IElementContainer,
+                           public IUniverse {
   private:
   BlockLocation cIdentity;
   IElement* cElement;
@@ -55,6 +56,7 @@ class ResourceModelElement:public I3DModelType,
   BlockArea* getCoverage();
   void setDirty(IElement*);
   void restrictCursor(Vertex&);
+  IUniverse* getUniverse();
   
   virtual ~ResourceModelElement() {}
 };

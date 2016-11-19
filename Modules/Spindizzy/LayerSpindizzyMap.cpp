@@ -47,7 +47,7 @@ void LayerSpindizzyMap::initialiseResource(DOMNodeWrapper* node, IResourceAccess
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Element") {
-      resources->loadElement(mNode, &mStartLocation, this, asTemplate, false);
+      resources->loadElement(mNode, &mStartLocation, this, asTemplate);
     } else {
       // TODO: Throw something
     }
@@ -74,7 +74,7 @@ DOMNodeWrapper* LayerSpindizzyMap::getConfigurationNode(DOMNodeWrapper* node) {
 }
 
 void LayerSpindizzyMap::initRuntime() {
-  cElementHandler.init(0, cEditingContext != nullptr);
+  cElementHandler.init(this, 0, cEditingContext != nullptr);
 }
 
 void LayerSpindizzyMap::initEditor() {
@@ -148,6 +148,10 @@ void LayerSpindizzyMap::restrictCursor(Vertex& cursorLocation) {
   // Nothing to do
 }
 
+IUniverse* LayerSpindizzyMap::getUniverse() {
+  return this;
+}
+
 bool LayerSpindizzyMap::containsElement(IElement* element) {
   return cElementHandler.contains(element);
 }
@@ -187,7 +191,7 @@ void LayerSpindizzyMap::resourceSelected(IElementType* elementType) {
 }
 
 void LayerSpindizzyMap::updateEditing(unsigned int milliseconds) {
-  cElementHandler.init(0, cEditingContext != nullptr);
+  cElementHandler.init(this, 0, cEditingContext != nullptr);
   cEditingContext->update(milliseconds);
   cElementHandler.updateEditing(milliseconds);
 }
@@ -230,7 +234,7 @@ void LayerSpindizzyMap::renderEditing() {
   glVertex3f(-0.5f, -0.5f,  -1.5f);
   glVertex3f(-0.5f, -0.5f,   0.5f);
   glEnd();
-  cElementHandler.renderEditing();
+  cElementHandler.renderEditing(this);
   cElementHandler.renderStatic();
   cEditingContext->renderCursor();
 }

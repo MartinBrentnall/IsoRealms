@@ -70,7 +70,7 @@ class ElementSpindizzyEnemy:public IElementSpindizzyDynamic,
   void updateRuntime(unsigned int milliseconds);
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
   void setDirty();
-  bool initElement(unsigned int);
+  bool initElement(IUniverse*, unsigned int);
   IElementBounds* getBounds();
   
   /*****************************\

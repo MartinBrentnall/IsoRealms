@@ -90,7 +90,7 @@ IElementType* ElementSpindizzyItem::getElementType() {
   return cItemType;
 }
 
-bool ElementSpindizzyItem::initElement(unsigned int) {
+bool ElementSpindizzyItem::initElement(IUniverse* universe, unsigned int) {
   IBoundaries* mCollectables = cItemType->getCollectables();
   mCollectables->registerBoundary(this);
   return true;

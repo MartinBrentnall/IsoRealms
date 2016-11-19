@@ -490,10 +490,13 @@ end</Code>
     <ScriptLua name="spindizzyInit">
       <Argument name="zoneCount" type="Integer" value="IsoRealms/ZonesToExplore"/>
       <Argument name="spindizzy" type="Spindizzy/Spindizzy" value="Spindizzy"/>
+      <Argument name="player" type="Spindizzy/GERALD" value="Player"/>
       <Code>zoneCount = spindizzy:getZoneCount()
 mapOverviewMode = 0
 mapTrasition = 0
-classicMode = true</Code>
+classicMode = true
+universe = player:getUniverse()
+spindizzy:setActiveUniverse(universe)</Code>
     </ScriptLua>
     <ScriptLua name="switchToGameplay">
       <Argument name="locks" type="Integer" value="IsoRealms/Locks"/>

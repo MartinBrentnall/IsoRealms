@@ -101,7 +101,7 @@ void ResourceElementSpindizzyZone::save(DOMNodeWriter* node, IResourceLocator* l
   node->addAttribute("flagModel", locator->getPath(cFlagModelType));
 }
 
-void ResourceElementSpindizzyZone::loadElement(DOMNodeWrapper* node, BlockLocation* location, IElementContainer* container, IResourceAccessor* resources, bool asTemplate, bool independent) {
+void ResourceElementSpindizzyZone::loadElement(DOMNodeWrapper* node, BlockLocation* location, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
   if (!asTemplate) {
     BlockLocation* mLocation = new BlockLocation();
     mLocation->setRelative(node, *location);

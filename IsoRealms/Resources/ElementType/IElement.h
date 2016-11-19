@@ -29,6 +29,7 @@ class IMap;
 #include <IsoRealms/BlockLocation.h>
 #include <IsoRealms/ILayerEditingContext.h>
 #include <IsoRealms/IObjectWithProperties.h>
+#include <IsoRealms/IUniverse.h>
 #include <IsoRealms/Persistence/DOMNodeWriter.h>
 #include <IsoRealms/Resources/IResource.h>
 #include <IsoRealms/Resources/IResourceLocator.h>
@@ -59,7 +60,7 @@ class IElement:public IObjectWithProperties {
    *           runtime, otherwise false to indicate that a call to initElement
    *           is required.
    */
-  virtual bool initElement(unsigned int) = 0;
+  virtual bool initElement(IUniverse*, unsigned int) = 0;
 
   virtual void renderStatic() = 0;
   

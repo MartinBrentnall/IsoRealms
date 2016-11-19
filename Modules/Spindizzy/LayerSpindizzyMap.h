@@ -41,7 +41,8 @@
  */
 class LayerSpindizzyMap:public ILayer,
                         public IElementContainer, 
-                        public ILayerSpindizzyMap {
+                        public ILayerSpindizzyMap,
+                        public IUniverse {
   private:
   ISpindizzyMapType* cMapType;
   ICamera* cCamera;
@@ -102,6 +103,7 @@ class LayerSpindizzyMap:public ILayer,
   BlockArea* getCoverage();
   void setDirty(IElement*);
   void restrictCursor(Vertex&);
+  IUniverse* getUniverse();
   
   /****************************\
    * Implements ISpindizzyMap *

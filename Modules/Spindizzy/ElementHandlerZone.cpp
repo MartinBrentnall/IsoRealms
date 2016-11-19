@@ -104,8 +104,8 @@ IElementBounds* ElementHandlerZone::getBounds() {
   return cElements.getBounds();
 }
 
-bool ElementHandlerZone::initElement(unsigned int pass) {
-  return cElements.init(pass);
+bool ElementHandlerZone::initElement(IUniverse* universe, unsigned int pass) {
+  return cElements.init(universe, pass);
 }
 
 bool ElementHandlerZone::isSelectable() {

@@ -653,6 +653,21 @@ void ResourceGeometryProcessor::destroyWallTemplate(IWallSurfaceTemplate* wallTe
   delete wallTemplate;
 }
 
+bool ResourceGeometryProcessor::contains(IGeometricElement* element) {
+  IElementBounds* mBounds = element->getBounds();
+  float mWest  = mBounds->getWest();
+  float mEast  = mBounds->getEast();
+  float mSouth = mBounds->getSouth();
+  float mNorth = mBounds->getNorth();
+  std::vector<IndexedGeometricElement*> mElements = cGeometricElements.getElements(mSouth, mNorth, mWest, mEast);
+  for (IndexedGeometricElement* mElement : mElements) {
+    if (mElement->getGeometricElement() == element) {
+      return true;
+    }
+  }
+  return false;
+}
+
 void ResourceGeometryProcessor::initElementsComplete() {
 //  cCache.clear();
 }

@@ -160,6 +160,7 @@ class ElementSpindizzyCraft:public Element,
   \*************/
   void destroy();
   void stop();
+  IUniverse* getUniverse();
 
   /**********************************\
    * Implements IBoundaryPenetrator *
@@ -183,7 +184,7 @@ class ElementSpindizzyCraft:public Element,
   bool renderSelectionHighlight();
   void updateRuntime(unsigned int);
   void updateEditing(unsigned int);
-  bool initElement(unsigned int);
+  bool initElement(IUniverse*, unsigned int);
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
   void setDirty();
   IElementBounds* getBounds();

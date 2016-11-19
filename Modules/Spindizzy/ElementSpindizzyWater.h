@@ -73,7 +73,7 @@ class ElementSpindizzyWater:public ISpindizzyBlock,
    * Implements IElement *
   \***********************/
   IElementType* getElementType();
-  bool initElement(unsigned int);
+  bool initElement(IUniverse*, unsigned int);
   void renderStatic();
   void renderRuntime();
   bool renderSelectionHighlight();

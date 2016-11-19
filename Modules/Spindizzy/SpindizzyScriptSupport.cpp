@@ -87,6 +87,7 @@ extern "C" void initLua(lua_State* luaState) {
       luabind::class_<ElementSpindizzyCraft>("SpindizzyGERALD")
         .def("destroy", &ElementSpindizzyCraft::destroy)
         .def("stop", &ElementSpindizzyCraft::stop)
+        .def("getUniverse", &ElementSpindizzyCraft::getUniverse)
         .def(luabind::const_self == luabind::const_self)
     ];
     luabind::module(luaState) [
@@ -158,6 +159,7 @@ extern "C" void initLua(lua_State* luaState) {
         .def("setOverview", &SpindizzyModule::setOverview)
         .def("getZoneCount", &SpindizzyModule::getZoneCount)
         .def("setTheme", &SpindizzyModule::setTheme)
+        .def("setActiveUniverse", &SpindizzyModule::setActiveUniverse)
         .def(luabind::const_self == luabind::const_self)
     ];
     cScriptSupportEnabled = true;

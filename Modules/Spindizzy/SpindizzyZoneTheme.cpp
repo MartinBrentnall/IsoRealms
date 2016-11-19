@@ -89,7 +89,7 @@ IColour* SpindizzyZoneTheme::getColour(SpindizzyZoneThemeColour* colour) {
 }
 
 SpindizzyZoneThemeIcon* SpindizzyZoneTheme::createCustomResourceIcon(IResourceBrowser<ISpindizzyZoneTheme>* resourceBrowser) {
-  I3DModel* mIconModel = cThemeSource->getThemeIcon();
+  I3DModel* mIconModel = cThemeSource->createThemeIcon();
   return new SpindizzyZoneThemeIcon(resourceBrowser, this, mIconModel);
 }
 

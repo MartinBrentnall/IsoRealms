@@ -217,3 +217,8 @@ void HUDComponentPosition::unsetArguments() {
 void HUDComponentPosition::restrictCursor(Vertex& cursorLocation) {
   // TODO
 }
+
+IUniverse* HUDComponentPosition::getUniverse() {
+  return nullptr; // TODO
+}
+

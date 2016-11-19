@@ -82,7 +82,7 @@ class ElementSpindizzyItem:public Element,
    * Implements IElement *
   \***********************/
   IElementType* getElementType();
-  bool initElement(unsigned int);
+  bool initElement(IUniverse*, unsigned int);
   void renderStatic();
   void renderRuntime();
   bool renderSelectionHighlight();
