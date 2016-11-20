@@ -18,7 +18,7 @@
  */
 #include "DummyFont.h"
 
-void DummyFont::initialiseResource(DOMNodeWrapper*, IResourceAccessor*) {
+void DummyFont::initialiseResource(DOMNodeWrapper*, DOMNodeWrapper* cache, IResourceAccessor*) {
 }
 
 void DummyFont::print(float, float, float, int, const char*, ...) {

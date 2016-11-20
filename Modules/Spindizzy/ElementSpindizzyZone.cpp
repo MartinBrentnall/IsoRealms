@@ -18,7 +18,7 @@
  */
 #include "ElementSpindizzyZone.h"
 
-ElementSpindizzyZone::ElementSpindizzyZone(ISpindizzyZoneType* elementType, DOMNodeWrapper* node, BlockLocation* location, IResourceAccessor* resources, I3DModelType* flagModelType, IElementContainer* container) {
+ElementSpindizzyZone::ElementSpindizzyZone(ISpindizzyZoneType* elementType, DOMNodeWrapper* node, DOMNodeWrapper* cache, BlockLocation* location, IResourceAccessor* resources, I3DModelType* flagModelType, IElementContainer* container) {
   cZoneType = elementType;
   cZoneArea = new BlockArea(node);
   cContainer = container;
@@ -34,7 +34,7 @@ ElementSpindizzyZone::ElementSpindizzyZone(ISpindizzyZoneType* elementType, DOMN
     DOMNodeWrapper* mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Element") {
-      resources->loadElement(mNode, &mVertex, this, false);
+      resources->loadElement(mNode, cache, &mVertex, this, false);
     } else if (mValueAsString == "Script") {
       std::string mId = mNode->getAttribute("id");
       cScripts[mId] = resources->getScriptCall(mNode);
@@ -257,13 +257,13 @@ void ElementSpindizzyZone::updateRuntime(unsigned int milliseconds) {
   cZoneType->applyDefaultTheme();
 }
 
-void ElementSpindizzyZone::save(DOMNodeWriter* node, IResourceLocator* resourceLocation, BlockLocation& location) {
+void ElementSpindizzyZone::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocation, BlockLocation& location) {
   ISpindizzyZoneModule* mModuleInterface = cZoneType->getSpindizzyZoneInterface();
   node->addAttribute("type", resourceLocation->getPath(cZoneType));
   node->addAttribute("theme", mModuleInterface->getThemeName(cZoneTheme));
   cZoneArea->saveRelative(node, location);
   BlockLocation mZoneLocation(cZoneArea->getWest(), cZoneArea->getSouth(), cZoneArea->getBottom());
-  cElementHandler.save(node, resourceLocation, mZoneLocation);
+  cElementHandler.save(node, cache, resourceLocation, mZoneLocation);
 }
 
 void ElementSpindizzyZone::setDirty(IElement* element) {

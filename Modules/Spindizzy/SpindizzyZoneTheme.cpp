@@ -22,7 +22,7 @@ SpindizzyZoneTheme::SpindizzyZoneTheme(IThemeSource* source) {
   cThemeSource = source;
 }
 
-void SpindizzyZoneTheme::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void SpindizzyZoneTheme::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
   cResources = resources;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);

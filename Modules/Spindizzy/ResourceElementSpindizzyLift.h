@@ -61,12 +61,12 @@ class ResourceElementSpindizzyLift:public ISpindizzyLiftType {
 
   std::vector<ICommand*> getLiftCommands();  
   
-  void save(DOMNodeWriter*, IResourceLocator*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
   
   /************************\
    * Implements IResource *
   \************************/
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
   
   /*********************************\
    * Implements ISpindizzyLiftType *
@@ -77,7 +77,7 @@ class ResourceElementSpindizzyLift:public ISpindizzyLiftType {
    * Implements IElementType *
   \***************************/
   ISpindizzyLiftSet* getSpindizzyLiftInterface();
-  void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*, bool);
+  void loadElement(DOMNodeWrapper*, DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*, bool);
   void configureElement();
   bool inputEdit(SDL_Event&, ILayerEditingContext*);
   void setEditingContext(BlockLocation*, IComponentContainer*);

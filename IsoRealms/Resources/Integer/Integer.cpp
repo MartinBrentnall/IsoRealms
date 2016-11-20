@@ -34,6 +34,6 @@ void Integer::reset() {
   // Not supported
 }
 
-void Integer::initialiseResource(DOMNodeWrapper*, IResourceAccessor*) {
+void Integer::initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*) {
 }
 

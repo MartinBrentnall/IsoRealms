@@ -164,6 +164,8 @@ class IRollableSurface {
    */
   virtual void getRestingLocation(Vertex&) = 0;
   
+  virtual void saveCache(DOMNodeWriter*, bool) = 0;
+  
   virtual IElementBounds* getBounds() = 0;
 };
 

@@ -203,7 +203,7 @@ void ElementSpindizzyLift::renderRuntime() {
   cLiftModel->render();
 }
 
-void ElementSpindizzyLift::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& relative) {
+void ElementSpindizzyLift::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator, BlockLocation& relative) {
   std::string mElementTypePath = resourceLocator->getPath(cLiftType);
   node->addAttribute("type", mElementTypePath);
   cLocation.saveRelative(node, relative);
@@ -437,6 +437,10 @@ void ElementSpindizzyLift::getRestingLocation(Vertex&) {
 
 BlockArea* ElementSpindizzyLift::getCoverage() {
   return new BlockArea(cLocation, cLocation);
+}
+
+void ElementSpindizzyLift::saveCache(DOMNodeWriter* node, bool physical) {
+  // Nothing to do
 }
 
 float ElementSpindizzyLift::getWest() {

@@ -35,8 +35,8 @@ class ResourceLayerSpindizzyMap:public ISpindizzyMapType {
   public:
   ResourceLayerSpindizzyMap(ISpindizzyMapModule*, DOMNodeWrapper*, IResourceRegistry*); 
     
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
-  void save(DOMNodeWriter*, IResourceLocator*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
   
   /********************************\
    * Implements ISpindizzyMapType *
@@ -47,7 +47,7 @@ class ResourceLayerSpindizzyMap:public ISpindizzyMapType {
    * Implements ILayerType *
   \*************************/
   LayerSpindizzyMap* createInstance(const std::string&);
-  ILayer* getLayer(DOMNodeWrapper*, IResourceAccessor*, bool, bool);
+  ILayer* getLayer(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*, bool, bool);
   std::string getInstanceName(ILayer*);
   
   void configureLayer();

@@ -28,9 +28,10 @@ class ResourceInitialiser {
   private:
   IResource* cResource;
   DOMNodeWrapper* cConfigurationNode;
+  DOMNodeWrapper* cCache;
 
   public:
-  ResourceInitialiser(IResource*, DOMNodeWrapper*);
+  ResourceInitialiser(IResource*, DOMNodeWrapper*, DOMNodeWrapper*);
     
   void initialiseResource(IResourceAccessor*);
 };

@@ -131,11 +131,11 @@ class IsoRealmsModule:public IModule,
   public:
   IsoRealmsModule(IResourceTypeRegistry*);
 
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
   
   /**********************\
    * Implements IPlugin *
   \**********************/
-  void load(DOMNodeWrapper*, IResourceRegistry*, DOMNodeWrapper*);
-  void save(DOMNodeWriter*, IResourceLocator*);
+  void load(DOMNodeWrapper*, DOMNodeWrapper*, IResourceRegistry*, DOMNodeWrapper*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
 };

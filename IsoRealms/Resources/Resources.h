@@ -86,7 +86,7 @@ class Resources:public IResources,
   
   template <class T> T* getDirectory(T*, std::vector<std::string>);
   
-  void addResourceToInitialise(IResource*, DOMNodeWrapper*);
+  void addResourceToInitialise(IResource*, DOMNodeWrapper*, DOMNodeWrapper*);
   
   public:
   Resources();
@@ -107,31 +107,31 @@ class Resources:public IResources,
   /*************************\
    * Implements IResources *
   \*************************/
-  void add(IResource*, DOMNodeWrapper*);
+  void add(IResource*, DOMNodeWrapper*, DOMNodeWrapper*);
   
-  void add(I3DModel*,                   std::vector<std::string>, const std::string&, DOMNodeWrapper*);
-  void add(I3DModelType*,               std::vector<std::string>, const std::string&, DOMNodeWrapper*);
+  void add(I3DModel*,                   std::vector<std::string>, const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
+  void add(I3DModelType*,               std::vector<std::string>, const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
 //  void add(IArgumentDefinitionType*,    std::vector<std::string>, const std::string&);
   void add(IArgumentValue*,             std::vector<std::string>, const std::string&, const std::string&);  
-  void add(IBoolean*,                   std::vector<std::string>, const std::string&, DOMNodeWrapper*);
-  void add(IBoundaries*,                std::vector<std::string>, const std::string&, DOMNodeWrapper*);
-  void add(ICamera*,                    std::vector<std::string>, const std::string&, DOMNodeWrapper*);
-  void add(IColour*,                    std::vector<std::string>, const std::string&, DOMNodeWrapper*);
+  void add(IBoolean*,                   std::vector<std::string>, const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
+  void add(IBoundaries*,                std::vector<std::string>, const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
+  void add(ICamera*,                    std::vector<std::string>, const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
+  void add(IColour*,                    std::vector<std::string>, const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
   void add(IComponentCustomType*,       std::vector<std::string>, const std::string&);
-  void add(IElementType*,               std::vector<std::string>, const std::string&, DOMNodeWrapper*);
-  void add(IFont*,                      std::vector<std::string>, const std::string&, DOMNodeWrapper*);
-  void add(IGlobalVariable*,            std::vector<std::string>, const std::string&, DOMNodeWrapper*);
-  void add(IInteger*,                   std::vector<std::string>, const std::string&, DOMNodeWrapper*);
-  void add(ILayerType*,                 std::vector<std::string>, const std::string&, DOMNodeWrapper*);
-  void add(IScript*,                    std::vector<std::string>, const std::string&, DOMNodeWrapper*);
-  void add(ISound*,                     std::vector<std::string>, const std::string&, DOMNodeWrapper*);
-  void add(IString*,                    std::vector<std::string>, const std::string&, DOMNodeWrapper*);
-  void add(ITexture*,                   std::vector<std::string>, const std::string&, DOMNodeWrapper*);
-  void add(IVertex*,                    std::vector<std::string>, const std::string&, DOMNodeWrapper*);
+  void add(IElementType*,               std::vector<std::string>, const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
+  void add(IFont*,                      std::vector<std::string>, const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
+  void add(IGlobalVariable*,            std::vector<std::string>, const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
+  void add(IInteger*,                   std::vector<std::string>, const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
+  void add(ILayerType*,                 std::vector<std::string>, const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
+  void add(IScript*,                    std::vector<std::string>, const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
+  void add(ISound*,                     std::vector<std::string>, const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
+  void add(IString*,                    std::vector<std::string>, const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
+  void add(ITexture*,                   std::vector<std::string>, const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
+  void add(IVertex*,                    std::vector<std::string>, const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
 
   void addDynamicElement(IDynamicElement*);
   
-  void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*, bool);
+  void loadElement(DOMNodeWrapper*, DOMNodeWrapper*, BlockLocation*, IElementContainer*, bool);
 
   void addListener(IResourceUseListener<I3DModelType>*);
   void addListener(IResourceUseListener<IBoolean>*);       

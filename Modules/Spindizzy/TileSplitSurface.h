@@ -61,6 +61,8 @@ class TileSplitSurface:public ISpindizzyTileSurface,
    * @param BlockLocation&  
    */
   TileSplitSurface(bool, BlockLocation&, ITexture**, int, int, int, int, Condition*, BlockTypeProperties*);
+  TileSplitSurface(DOMNodeWrapper*, std::vector<ConditionElement*>, ITexture**, BlockTypeProperties*);
+  Condition* getCondition();
   
   /************************************\
    * Implements ISpindizzyTileSurface *
@@ -106,6 +108,7 @@ class TileSplitSurface:public ISpindizzyTileSurface,
   BlockArea* getCoverage();
   void destroyCoverage(BlockArea*);
   bool alligned(int, int);
+  void saveCache(DOMNodeWriter*, bool);
   
   ~TileSplitSurface();
 };

@@ -44,7 +44,7 @@ class ResourceIntegerTimer : public IInteger,
     public:
     StringTimer(ResourceIntegerTimer*);
       
-    void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+    void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
   
     /**********************\
      * Implements IString *
@@ -59,8 +59,8 @@ class ResourceIntegerTimer : public IInteger,
   void setInitialValue(int);
   int getInitialValue();
 
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
-  void save(DOMNodeWriter*, IResourceLocator*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
 
   /***********************\
    * Implements IInteger *

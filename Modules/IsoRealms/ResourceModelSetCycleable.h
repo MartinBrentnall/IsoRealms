@@ -49,7 +49,7 @@ class ResourceModelSetCycleable : public IResource {
     /***************************\
      * Implements I3DModelType *
     \***************************/
-    void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+    void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
     I3DModel* createModel(Vertex*, float);
     void destroyModel(I3DModel*);
     void renderIcon();
@@ -64,8 +64,8 @@ class ResourceModelSetCycleable : public IResource {
   public:
   ResourceModelSetCycleable(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
  
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
-  void save(DOMNodeWriter*, IResourceLocator*);  
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);  
   std::vector<std::string> getResourceNames();
   I3DModelType* getResource(const std::string&);
   std::vector<I3DModelType*> getResources();

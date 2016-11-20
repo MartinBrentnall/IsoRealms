@@ -58,9 +58,9 @@ class LayerSpindizzyMap:public ILayer,
   public:
   LayerSpindizzyMap(ISpindizzyMapType*);
   
-  void load(DOMNodeWrapper*, bool, IResourceAccessor*, bool);
+  void load(DOMNodeWrapper*, DOMNodeWrapper*, bool, IResourceAccessor*, bool);
 
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*, bool);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*, bool);
   
   /**
    * Test whether the specified block area overlaps with a zone in this map.
@@ -128,7 +128,7 @@ class LayerSpindizzyMap:public ILayer,
   bool inputEditor(SDL_Event&);
   void initRuntime();
   void initEditor();
-  void save(DOMNodeWriter*, IResourceLocator*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
   void staticChanged();
   void reset();
   void addObjectSelectionListener(IObjectSelectionListener* listener);

@@ -34,6 +34,39 @@ TileSurface::TileSurface(ITexture** texture, TextureRotation rotation, int north
   cElement = element;
 }
 
+TileSurface::TileSurface(DOMNodeWrapper* node, std::vector<ConditionElement*> elements, ITexture** texture, BlockTypeProperties* blockTypeProperties, IArgument* element) {
+  cElement = element;
+  cTexture = texture;
+  cBlockTypeProperties = blockTypeProperties;
+  
+  cSouth                = node->getIntegerAttribute("south");
+  cNorth                = node->getIntegerAttribute("north");
+  cWest                 = node->getIntegerAttribute("west");
+  cEast                 = node->getIntegerAttribute("east");
+  cHeight               = node->getIntegerAttribute("height");
+  cWestEastSlope        = node->getIntegerAttribute("xSlope");
+  cNorthSouthSlope      = node->getIntegerAttribute("ySlope");
+  cFacing               = node->getAttribute("direction") == "up" ? ITileSurface::UP : ITileSurface::DOWN;
+  std::string mRotation = node->getAttribute("rotation");
+  cRotation = mRotation == "straight" ? TextureRotation::STRAIGHT
+            : mRotation == "right"    ? TextureRotation::RIGHT
+            : mRotation == "left"     ? TextureRotation::LEFT
+            :                           TextureRotation::REVERSE;
+  
+  cCondition = nullptr;
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "Condition") {
+      cCondition = new Condition(mNode, elements);
+    }
+  }
+}
+
+Condition* TileSurface::getCondition() {
+  return cCondition;
+}
+
 int TileSurface::getSurfaceCellHeight(int x, int y) {
   return abs(((cWestEastSlope   >= 0 ? cWest  : cEast)  - x) * cWestEastSlope)
        + abs(((cNorthSouthSlope >= 0 ? cSouth : cNorth) - y) * cNorthSouthSlope)
@@ -488,6 +521,26 @@ void TileSurface::destroyCoverage(BlockArea* coverage) {
 
 bool TileSurface::alligned(int x, int y) {
   return y >= cSouth && y <= cNorth && x >= cWest && x <= cEast;
+}
+
+void TileSurface::saveCache(DOMNodeWriter* node, bool physical) {
+  DOMNodeWriter* mSurfaceNode = node->addBranch("TileSurface");
+  mSurfaceNode->addAttribute("south",     cSouth);
+  mSurfaceNode->addAttribute("north",     cNorth);
+  mSurfaceNode->addAttribute("west",      cWest);
+  mSurfaceNode->addAttribute("east",      cEast);
+  mSurfaceNode->addAttribute("height",    cHeight);
+  mSurfaceNode->addAttribute("xSlope",    cWestEastSlope);
+  mSurfaceNode->addAttribute("ySlope",    cNorthSouthSlope);
+  mSurfaceNode->addAttribute("rotation",  cRotation == STRAIGHT ? "straight"
+                                        : cRotation == RIGHT    ? "right"
+                                        : cRotation == LEFT     ? "left"
+                                        :                         "reverse");
+  mSurfaceNode->addAttribute("direction", cFacing == ITileSurface::UP ? "up" : "down");
+  mSurfaceNode->addAttribute("physical",  physical ? "true" : "false");
+  if (cCondition != nullptr) {
+    cCondition->save(mSurfaceNode);
+  }
 }
 
 TileSurface::~TileSurface() {

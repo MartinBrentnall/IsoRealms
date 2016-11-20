@@ -57,7 +57,7 @@ void ResourceModelSprite::destroyModel(I3DModel* model) {
   delete model;
 }
 
-void ResourceModelSprite::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor) {
+void ResourceModelSprite::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resourceAccessor) {
   std::string mTexturePath = node->getAttribute("texture");
   std::string mCameraPath = node->getAttribute("camera");
   cSize = node->getFloatAttribute("size");
@@ -71,7 +71,7 @@ void ResourceModelSprite::initialiseResource(DOMNodeWrapper* node, IResourceAcce
   cCamera = resourceAccessor->getCamera(mCameraPath);
 }
 
-void ResourceModelSprite::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+void ResourceModelSprite::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
   node->addAttribute("texture", resourceLocator->getPath(cTexture));
   node->addAttribute("size", cSize);
   if (cFlip) {

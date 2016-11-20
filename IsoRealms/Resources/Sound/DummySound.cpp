@@ -18,7 +18,7 @@
  */
 #include "DummySound.h"
 
-void DummySound::initialiseResource(DOMNodeWrapper*, IResourceAccessor*) {
+void DummySound::initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*) {
 }
 
 void DummySound::play() {

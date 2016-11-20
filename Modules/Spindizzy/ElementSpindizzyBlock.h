@@ -190,10 +190,15 @@ class ElementSpindizzyBlock:public ICollidableSurfaceElement,
   ITexture** getWallTextureTop(WallSurface::FaceDirection);
   ITexture** getWallTextureBottom(WallSurface::FaceDirection);
   bool isWallBottomFlipped(WallSurface::FaceDirection);
+  
+  void loadSurfaces(DOMNodeWrapper*, std::vector<ConditionElement*>, IUniverse*);
+  void loadWallSurface(DOMNodeWrapper*, std::vector<ConditionElement*>, IUniverse*);
 
   public:
   ElementSpindizzyBlock(ISpindizzyBlockType*, BlockLocation*, BlockLocation*, SpindizzyBlockProperties*, bool, ISpindizzyElementManager*);
   ElementSpindizzyBlock(ISpindizzyBlockType*, DOMNodeWrapper*);
+  
+  void loadCache(DOMNodeWrapper*, std::vector<ConditionElement*>, IUniverse*);
 
   ITexture** getTileSurfaceTexture();
   TextureRotation getTileSurfaceRotation();
@@ -252,7 +257,7 @@ class ElementSpindizzyBlock:public ICollidableSurfaceElement,
   IElementType* getElementType();
   bool initElement(IUniverse*, unsigned int);
   void renderStatic();
-  void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*, BlockLocation&);
   void renderRuntime();
   void renderEditing();
   bool renderSelectionHighlight();

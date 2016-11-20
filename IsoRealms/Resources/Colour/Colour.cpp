@@ -35,7 +35,7 @@ Colour::Colour(const IColour& colour) {
   cAlpha = colour.getAlpha();
 }
 
-void Colour::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void Colour::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
   cRed   = node->getFloatAttribute("red");
   cGreen = node->getFloatAttribute("green");
   cBlue  = node->getFloatAttribute("blue");
@@ -157,7 +157,7 @@ void Colour::debug() {
   std::cout << "  " << cRed << " " << cGreen << " " << cBlue << std::endl;
 }
 
-void Colour::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+void Colour::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
   // TODO: Skip zero values
   std::string mRedString = Utils::toString(cRed);
   std::string mGreenString = Utils::toString(cGreen);

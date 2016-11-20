@@ -23,7 +23,7 @@
 
 class DummyFont:public IFont {
   public:
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
   void print(float, float, float, int, const char*, ...);
   float getWidth(float, const char*, ...);
   float getHeight(float, const char*, ...);

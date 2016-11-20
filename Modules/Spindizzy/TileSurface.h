@@ -77,6 +77,8 @@ class TileSurface:public ISpindizzyTileSurface,
    * @param ITileSurface::FaceDirection  Facing direction of the surface.
    */
   TileSurface(ITexture**, TextureRotation, int, int, int, int, int, int, int, ITileSurface::FaceDirection, Condition*, BlockTypeProperties*, IArgument*);
+  TileSurface(DOMNodeWrapper*, std::vector<ConditionElement*>, ITexture**, BlockTypeProperties*, IArgument*);
+  Condition* getCondition();
 
   /************************************\
    * Implements ISpindizzyTileSurface *
@@ -122,6 +124,7 @@ class TileSurface:public ISpindizzyTileSurface,
   BlockArea* getCoverage();
   void destroyCoverage(BlockArea*);
   bool alligned(int, int);
+  void saveCache(DOMNodeWriter*, bool);
   
   ~TileSurface();
 };

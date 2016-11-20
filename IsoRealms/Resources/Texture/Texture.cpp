@@ -35,7 +35,7 @@ Texture::Texture(bool clamp) {
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 }
 
-void Texture::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void Texture::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
   // Nothing to do
 }
 

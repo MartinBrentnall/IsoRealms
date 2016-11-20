@@ -25,11 +25,11 @@ LayerSpindizzyMap::LayerSpindizzyMap(ISpindizzyMapType* type) {
   cEditingContext = nullptr;
 }
 
-void LayerSpindizzyMap::load(DOMNodeWrapper* node, bool editing, IResourceAccessor* resources, bool asTemplate) {
+void LayerSpindizzyMap::load(DOMNodeWrapper* node, DOMNodeWrapper* cache, bool editing, IResourceAccessor* resources, bool asTemplate) {
   if (editing) {
     cEditingContext = new LayerSpindizzyMapEditingContext(this);
   }
-  initialiseResource(node, resources, asTemplate);
+  initialiseResource(node, cache, resources, asTemplate);
   if (cEditingContext != nullptr) {
     std::vector<IElement*> mElements = cElementHandler.getElements();
 //    for (IElement* mElement : mElements) {
@@ -38,7 +38,7 @@ void LayerSpindizzyMap::load(DOMNodeWrapper* node, bool editing, IResourceAccess
   }
 }
 
-void LayerSpindizzyMap::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources, bool asTemplate) {
+void LayerSpindizzyMap::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources, bool asTemplate) {
   BlockLocation mStartLocation(0, 0, 0);
   std::string mCameraPath = node->getAttribute("camera");
   cCamera = resources->getCamera(mCameraPath);
@@ -47,7 +47,7 @@ void LayerSpindizzyMap::initialiseResource(DOMNodeWrapper* node, IResourceAccess
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Element") {
-      resources->loadElement(mNode, &mStartLocation, this, asTemplate);
+      resources->loadElement(mNode, cache, &mStartLocation, this, asTemplate);
     } else {
       // TODO: Throw something
     }
@@ -81,13 +81,13 @@ void LayerSpindizzyMap::initEditor() {
   cEditingContext->init();
 }
 
-void LayerSpindizzyMap::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+void LayerSpindizzyMap::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
   node->addAttribute("type", resourceLocator->getPath(cMapType));
   node->addAttribute("camera", resourceLocator->getPath(cCamera));
   node->addAttribute("default", "true"); // TODO: Should this be outside of here?  It's used for the editor to make this layer the starting one.
   node->addAttribute("instance", cMapType->getInstanceName(this));
   BlockLocation mStartLocation(0, 0, 0);
-  cElementHandler.save(node, resourceLocator, mStartLocation);
+  cElementHandler.save(node, cache, resourceLocator, mStartLocation);
 }
 
 void LayerSpindizzyMap::pushElement(IElement* element) {

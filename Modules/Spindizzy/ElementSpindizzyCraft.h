@@ -185,7 +185,7 @@ class ElementSpindizzyCraft:public Element,
   void updateRuntime(unsigned int);
   void updateEditing(unsigned int);
   bool initElement(IUniverse*, unsigned int);
-  void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*, BlockLocation&);
   void setDirty();
   IElementBounds* getBounds();
   void reset();
@@ -203,7 +203,7 @@ class ElementSpindizzyCraft:public Element,
   /************************\
    * Implements IResource *
   \************************/
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
 };
 
 #endif

@@ -43,7 +43,7 @@ class IntegerToString:public IString {
   /************************\
    * Implements IResource *
   \************************/
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
 };
 
 #endif

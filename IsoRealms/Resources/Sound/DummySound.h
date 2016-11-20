@@ -23,7 +23,7 @@
 
 class DummySound:public ISound {
   public:
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
   void play();
 };
 

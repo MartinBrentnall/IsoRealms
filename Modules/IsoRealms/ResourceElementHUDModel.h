@@ -43,13 +43,13 @@ class ResourceElementHUDModel:public IElementType,
   /**********************\
    * Implements IPlugin *
   \**********************/
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
-  void save(DOMNodeWriter*, IResourceLocator*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
   
   /***************************\
    * Implements IElementType *
   \***************************/
-  void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*, bool);
+  void loadElement(DOMNodeWrapper*, DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*, bool);
   void configureElement();
   void renderEditingPreview(Vertex&);
   void updateEditingPreview(unsigned int);
@@ -76,7 +76,7 @@ class ResourceElementHUDModel:public IElementType,
   void renderRuntime();
   bool renderSelectionHighlight();
   void updateRuntime(unsigned int);
-  void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*, BlockLocation&);
   
   /*****************************\
    * Implements IElementBounds *

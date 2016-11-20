@@ -34,5 +34,5 @@ void Boolean::reset() {
   // Not supported
 }
 
-void Boolean::initialiseResource(DOMNodeWrapper*, IResourceAccessor*) {
+void Boolean::initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*) {
 }

@@ -47,7 +47,7 @@ void LayerInputPlayer::initEditor() {
   // Not supported
 }
 
-void LayerInputPlayer::save(DOMNodeWriter* node, IResourceLocator* resources) {
+void LayerInputPlayer::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
   // Not supported
 }
 

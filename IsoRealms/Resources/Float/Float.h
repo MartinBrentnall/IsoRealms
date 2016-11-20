@@ -34,7 +34,7 @@ class Float:public IFloat {
   void setValue(float);
   float getValue();
 
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
 };
 
 #endif

@@ -53,7 +53,8 @@ void Engine::loadProject(DOMNodeWrapper* node, const std::string& projectName) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValue = mNode->getNodeName();
     if (mValue == "Project") {
-      cProject = new Project(mNode, projectName, NULL, false, nullptr);
+      // TODO: Project cache!
+      cProject = new Project(mNode, nullptr, projectName, NULL, false, nullptr);
     }
   }
   cProject->initRuntime();

@@ -80,7 +80,7 @@ class ResourceFontFile:public IFont {
   public:
   ResourceFontFile(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
 
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
 
   //Free all the resources assosiated with the font.
   void clean();
@@ -88,7 +88,7 @@ class ResourceFontFile:public IFont {
   /**********************\
    * Implements IPlugin *
   \**********************/
-  void save(DOMNodeWriter*, IResourceLocator*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
 
   /********************\
    * Implements IFont *

@@ -129,6 +129,7 @@ class WallSurface:public ISpindizzyWallSurface,
    * @param Condition  Condition of the walls existence.
    */
   WallSurface(int, int, int, int, int, int, FaceDirection, WallType*, ITexture**, ITexture**, ITexture**, bool, Condition*);
+  Condition* getCondition();
 
   float getHeightAt(float);
   
@@ -148,6 +149,7 @@ class WallSurface:public ISpindizzyWallSurface,
   IElementBounds* getBounds();
   void destroyEdge(IWallEdge*);
   void destroyCoverage(BlockArea*);
+  void saveCache(DOMNodeWriter*, bool);
   
   /*****************************\
    * Implements IElementBounds *

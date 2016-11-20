@@ -57,7 +57,7 @@ ElementSpindizzyCraft* ResourceElementSpindizzyCraft::createInstance(const std::
   return mNamedInstance;
 } 
 
-void ResourceElementSpindizzyCraft::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor) {
+void ResourceElementSpindizzyCraft::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resourceAccessor) {
   std::string mMapPath = node->getAttribute("map");
   std::string mModelPath = node->getAttribute("model");
   std::string mSurfaceRegistryPath = node->getAttribute("surfaceRegistry");
@@ -88,7 +88,7 @@ void ResourceElementSpindizzyCraft::initialiseResource(DOMNodeWrapper* node, IRe
   }
 }
 
-void ResourceElementSpindizzyCraft::loadElement(DOMNodeWrapper* node, BlockLocation* relative, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
+void ResourceElementSpindizzyCraft::loadElement(DOMNodeWrapper* node, DOMNodeWrapper* cache, BlockLocation* relative, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
   std::string mInstance = node->getAttribute("instance");
   if (mInstance == "") {
     ElementSpindizzyCraft* mLoadedGERALD = new ElementSpindizzyCraft(this, cResources, node);
@@ -182,7 +182,7 @@ void ResourceElementSpindizzyCraft::saveInstances(DOMNodeWriter* node, IResource
   }
 } 
 
-void ResourceElementSpindizzyCraft::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+void ResourceElementSpindizzyCraft::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
   node->addAttribute("model", resourceLocator->getPath(cModelType));
   node->addAttribute("camera", resourceLocator->getPath(cCamera));
   resourceLocator->saveScript(node, "RespawnScript", cRespawnScript);

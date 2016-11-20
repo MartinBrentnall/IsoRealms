@@ -28,7 +28,7 @@ void AttractControlLoop::initRuntime() {
 void AttractControlLoop::initEditor() {
 }
  
-void AttractControlLoop::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void AttractControlLoop::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
   cRunningProject = nullptr;
   cFrontEndActive = false;
   int mCurrentLayer = 0;
@@ -78,11 +78,11 @@ IAttract* AttractControlLoop::createAttract(const std::string& name) {
        :                     nullptr;
 }
 
-void AttractControlLoop::load(DOMNodeWrapper* node, IResourceRegistry* resources, DOMNodeWrapper* options) {
+void AttractControlLoop::load(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceRegistry* resources, DOMNodeWrapper* options) {
   resources->add(this, "Menu", node);
 }
 
-void AttractControlLoop::save(DOMNodeWriter* node, IResourceLocator* resources) {
+void AttractControlLoop::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
 }
   
 std::vector<ICommand*> AttractControlLoop::parseEventCommands(DOMNodeWrapper* node) {
@@ -110,7 +110,7 @@ bool AttractControlLoop::checkActiveInput(int type) {
   return false;
 }
 
-ILayer* AttractControlLoop::getLayer(DOMNodeWrapper* node, IResourceAccessor* resources, bool editing, bool asTemplate) {
+ILayer* AttractControlLoop::getLayer(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources, bool editing, bool asTemplate) {
   return this;
 }
 
@@ -214,12 +214,19 @@ void AttractControlLoop::addObjectSelectionListener(IObjectSelectionListener* li
 
 void AttractControlLoop::startProject(const std::string& project, DOMNodeWrapper* options) {
   std::string mProjectPath = System::getProgramResource(project);
+  std::string mCacheFileName = project.substr(0, project.length() - 10) + "/project.cache";
+  DOMNodeWrapper* mCache = nullptr;
+  if (System::fileExists(mCacheFileName)) {
+    mCache = new DOMNodeWrapper(mCacheFileName);
+  }
+
   DOMNodeWrapper* mProjectNode = new DOMNodeWrapper(mProjectPath);
   for (int i = 0; i < mProjectNode->getChildCount(); i++) {
     DOMNodeWrapper *mNode = mProjectNode->getChild(i);
     std::string mValue = mNode->getNodeName();
     if (mValue == "Project") {
-      cRunningProject = new Project(mNode, project, nullptr, false, options);
+      // TODO: Cache!
+      cRunningProject = new Project(mNode, mCache, project, nullptr, false, options);
       cRunningProject->initRuntime();
       std::cout << "Project has started" << std::endl;
       break;

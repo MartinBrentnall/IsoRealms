@@ -18,11 +18,12 @@
  */
 #include "ResourceInitialiser.h"
 
-ResourceInitialiser::ResourceInitialiser(IResource* resource, DOMNodeWrapper* configurationNode) {
+ResourceInitialiser::ResourceInitialiser(IResource* resource, DOMNodeWrapper* configurationNode, DOMNodeWrapper* cache) {
   cResource = resource;
   cConfigurationNode = configurationNode;
+  cCache = cache;
 }
     
 void ResourceInitialiser::initialiseResource(IResourceAccessor* resourceAccessor) {
-  cResource->initialiseResource(cConfigurationNode, resourceAccessor);
+  cResource->initialiseResource(cConfigurationNode, cCache, resourceAccessor);
 }

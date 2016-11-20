@@ -138,7 +138,7 @@ void CameraLayerMapEditing::addCameraAngleChangeListener(ICameraAngleChangeListe
   // Not supported
 }
 
-void CameraLayerMapEditing::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor) {
+void CameraLayerMapEditing::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resourceAccessor) {
   // Nothing to do
 }
 

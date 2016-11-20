@@ -397,7 +397,7 @@ ResourceTexturesSpindizzyBlocksC64::~ResourceTexturesSpindizzyBlocksC64() {
   destroyTextures();
 }
 
-void ResourceTexturesSpindizzyBlocksC64::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor) {
+void ResourceTexturesSpindizzyBlocksC64::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resourceAccessor) {
   cFloorColour = resourceAccessor->getColour(node->getAttribute("floor"));
   cWallColour = resourceAccessor->getColour(node->getAttribute("wall"));
   cGridColour = resourceAccessor->getColour(node->getAttribute("grid"));
@@ -462,7 +462,7 @@ ITexture* ResourceTexturesSpindizzyBlocksC64::getResource(const std::string& nam
   return cTextures[name];
 }
 
-void ResourceTexturesSpindizzyBlocksC64::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+void ResourceTexturesSpindizzyBlocksC64::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
   std::string mResourceName = resourceLocator->getPath(cTextures[PLAIN]);
   mResourceName = mResourceName.substr(mResourceName.find_last_of('/') + 1);
   mResourceName = mResourceName.substr(0, mResourceName.find_last_of('_'));

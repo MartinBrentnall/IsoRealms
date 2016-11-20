@@ -44,8 +44,8 @@ class ResourceModelSpindizzyCraftPyramid:public I3DModelType,
   public:
   ResourceModelSpindizzyCraftPyramid(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
     
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
-  void save(DOMNodeWriter*, IResourceLocator*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
     
   void setTopColour(IColour*);
   void setSideColour(IColour*);

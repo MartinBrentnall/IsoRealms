@@ -36,7 +36,7 @@ void ResourceElementSpindizzyItem::setModelType(I3DModelType* modelType) {
   cModelType = modelType;
 }
 
-void ResourceElementSpindizzyItem::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor) {
+void ResourceElementSpindizzyItem::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resourceAccessor) {
   std::string mModelPath = node->getAttribute("model");
   cModelType = resourceAccessor->getModelType(mModelPath);
   BlockLocation mIdentityLocation(0, 0, 0);
@@ -44,7 +44,7 @@ void ResourceElementSpindizzyItem::initialiseResource(DOMNodeWrapper* node, IRes
   cEditingJewel = new ElementSpindizzyItem(this, &mIdentityLocation, cModelType, nullptr);
 }
 
-void ResourceElementSpindizzyItem::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+void ResourceElementSpindizzyItem::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
   node->addAttribute("model", resourceLocator->getPath(cModelType));
 }
 
@@ -52,7 +52,7 @@ ISpindizzyJewelSet* ResourceElementSpindizzyItem::getSpindizzyItemInterface() {
   return cModuleInterface;
 }
 
-void ResourceElementSpindizzyItem::loadElement(DOMNodeWrapper* node, BlockLocation* relative, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
+void ResourceElementSpindizzyItem::loadElement(DOMNodeWrapper* node, DOMNodeWrapper* cache, BlockLocation* relative, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
   if (!asTemplate) {
     BlockLocation* mLocation = new BlockLocation();
     mLocation->setRelative(node, *relative);

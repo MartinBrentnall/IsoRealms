@@ -43,7 +43,7 @@ void Resources::loadInstance(DOMNodeWrapper* node) {
     I3DModelType* mModelType = getModelType(mResourceRef);
     I3DModel* mModelInstance = mModelType->createModel(nullptr, 1.0f);
     std::vector<std::string> mEmptyPath;
-    add(mModelInstance, mEmptyPath, mResourceName, nullptr);
+    add(mModelInstance, mEmptyPath, mResourceName, nullptr, nullptr);
   }
 }
 
@@ -274,33 +274,33 @@ void Resources::removeResource(IString* resource,                    IResourceAc
 void Resources::removeResource(ITexture* resource,                   IResourceAccessor* editingResources) {cTextures.removeResource(resource, this);}
 void Resources::removeResource(IVertex* resource,                    IResourceAccessor* editingResources) {cVertices.removeResource(resource, this);}
 
-void Resources::add(IResource* resource, DOMNodeWrapper* node) {
-  addResourceToInitialise(resource, node);
+void Resources::add(IResource* resource, DOMNodeWrapper* node, DOMNodeWrapper* cache) {
+  addResourceToInitialise(resource, node, cache);
 }
 
-void Resources::add(I3DModel* model,                                 std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {c3DModels.add(model, path, name);                      addResourceToInitialise(model, node);}
-void Resources::add(I3DModelType* modelType,                         std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {c3DModelTypes.add(modelType, path, name);              addResourceToInitialise(modelType, node);}
+void Resources::add(I3DModel* model,                                 std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {c3DModels.add(model, path, name);                      addResourceToInitialise(model,      node, cache);}
+void Resources::add(I3DModelType* modelType,                         std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {c3DModelTypes.add(modelType, path, name);              addResourceToInitialise(modelType,  node, cache);}
 //void Resources::add(IArgumentDefinitionType* argumentDefinitionType, std::vector<std::string> path, const std::string& name                      ) {cArgumentDefinitionTypes.add(argumentDefinitionType, path, name);}
 void Resources::add(IArgumentValue* value,                           std::vector<std::string> path, const std::string& type, const std::string& name) {path.push_back(type); cArgumentValues.add(value, path, name);}
-void Resources::add(IBoolean* value,                                 std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cBooleans.add(value, path, name);                      addResourceToInitialise(value, node);}
-void Resources::add(ICamera* camera,                                 std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cCameras.add(camera, path, name);                      addResourceToInitialise(camera, node);}
-void Resources::add(IBoundaries* boundaries,                         std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cBoundaries.add(boundaries, path, name);               addResourceToInitialise(boundaries, node);}
-void Resources::add(IColour* colour,                                 std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cColours.add(colour, path, name);                      addResourceToInitialise(colour, node);}
-void Resources::add(IComponentCustomType* type,                      std::vector<std::string> path, const std::string& name                      ) {cComponentCustomTypes.add(type, path, name);}
-void Resources::add(IElementType* type,                              std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cElementTypes.add(type, path, name);                   addResourceToInitialise(type, node);}
-void Resources::add(IFont* font,                                     std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cFonts.add(font, path, name);                          addResourceToInitialise(font, node);}
-void Resources::add(IGlobalVariable* variable,                       std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cGlobalVariables.add(variable, path, name);            addResourceToInitialise(variable, node);}
-void Resources::add(IInteger* value,                                 std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cIntegers.add(value, path, name);                      addResourceToInitialise(value, node);}
-void Resources::add(ILayerType* layerType,                           std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cLayerTypes.add(layerType, path, name);                addResourceToInitialise(layerType, node);}
-void Resources::add(IScript* script,                                 std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cScripts.add(script, path, name);                      addResourceToInitialise(script, node);}
-void Resources::add(ISound* sound,                                   std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cSounds.add(sound, path, name);                        addResourceToInitialise(sound, node);}
-void Resources::add(IString* string,                                 std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cStrings.add(string, path, name);                      addResourceToInitialise(string, node);}
-void Resources::add(ITexture* texture,                               std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cTextures.add(texture, path, name);                    addResourceToInitialise(texture, node);}
-void Resources::add(IVertex* location,                               std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node) {cVertices.add(location, path, name);                   addResourceToInitialise(location, node);}
+void Resources::add(IBoolean* value,                                 std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {cBooleans.add(value, path, name);                      addResourceToInitialise(value,      node, cache);}
+void Resources::add(ICamera* camera,                                 std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {cCameras.add(camera, path, name);                      addResourceToInitialise(camera,     node, cache);}
+void Resources::add(IBoundaries* boundaries,                         std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {cBoundaries.add(boundaries, path, name);               addResourceToInitialise(boundaries, node, cache);}
+void Resources::add(IColour* colour,                                 std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {cColours.add(colour, path, name);                      addResourceToInitialise(colour,     node, cache);}
+void Resources::add(IComponentCustomType* type,                      std::vector<std::string> path, const std::string& name                                             ) {cComponentCustomTypes.add(type, path, name);}
+void Resources::add(IElementType* type,                              std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {cElementTypes.add(type, path, name);                   addResourceToInitialise(type,       node, cache);}
+void Resources::add(IFont* font,                                     std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {cFonts.add(font, path, name);                          addResourceToInitialise(font,       node, cache);}
+void Resources::add(IGlobalVariable* variable,                       std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {cGlobalVariables.add(variable, path, name);            addResourceToInitialise(variable,   node, cache);}
+void Resources::add(IInteger* value,                                 std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {cIntegers.add(value, path, name);                      addResourceToInitialise(value,      node, cache);}
+void Resources::add(ILayerType* layerType,                           std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {cLayerTypes.add(layerType, path, name);                addResourceToInitialise(layerType,  node, cache);}
+void Resources::add(IScript* script,                                 std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {cScripts.add(script, path, name);                      addResourceToInitialise(script,     node, cache);}
+void Resources::add(ISound* sound,                                   std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {cSounds.add(sound, path, name);                        addResourceToInitialise(sound,      node, cache);}
+void Resources::add(IString* string,                                 std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {cStrings.add(string, path, name);                      addResourceToInitialise(string,     node, cache);}
+void Resources::add(ITexture* texture,                               std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {cTextures.add(texture, path, name);                    addResourceToInitialise(texture,    node, cache);}
+void Resources::add(IVertex* location,                               std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {cVertices.add(location, path, name);                   addResourceToInitialise(location,   node, cache);}
 
-void Resources::addResourceToInitialise(IResource* resource, DOMNodeWrapper* node) {
+void Resources::addResourceToInitialise(IResource* resource, DOMNodeWrapper* node, DOMNodeWrapper* cache) {
   if (node != nullptr) {
-    ResourceInitialiser* mResourceInitialiser = new ResourceInitialiser(resource, node);
+    ResourceInitialiser* mResourceInitialiser = new ResourceInitialiser(resource, node, cache);
     cResourcesToInitialise.push_back(mResourceInitialiser);
   }
 }
@@ -309,10 +309,10 @@ void Resources::addDynamicElement(IDynamicElement* element) {
   cDynamicElements.push_back(element);
 }
 
-void Resources::loadElement(DOMNodeWrapper* node, BlockLocation* location, IElementContainer* container, bool asTemplate) {
+void Resources::loadElement(DOMNodeWrapper* node, DOMNodeWrapper* cache, BlockLocation* location, IElementContainer* container, bool asTemplate) {
   std::string mElementTypePath = node->getAttribute("type");
   IElementType* mElementType = cElementTypes.get(mElementTypePath);
-  mElementType->loadElement(node, location, container, this, asTemplate);
+  mElementType->loadElement(node, cache, location, container, this, asTemplate);
 }
 
 void Resources::addListener(IResourceUseListener<I3DModelType>* listener)               {c3DModelTypes.addResourceUseListener(listener);}

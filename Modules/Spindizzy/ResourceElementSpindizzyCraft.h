@@ -73,13 +73,13 @@ class ResourceElementSpindizzyCraft:public ISpindizzyGERALDType,
   std::string getInstanceName(ElementSpindizzyCraft*);
 
   void saveInstances(DOMNodeWriter*, IResourceLocator*);
-  void save(DOMNodeWriter*, IResourceLocator*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
   void stop();
 
   /************************\
    * Implements IResource *
   \************************/
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
   
   /******************************\
    * Implements IResourceSource *
@@ -89,7 +89,7 @@ class ResourceElementSpindizzyCraft:public ISpindizzyGERALDType,
   /***************************\
    * Implements IElementType *
   \***************************/
-  void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*, bool);
+  void loadElement(DOMNodeWrapper*, DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*, bool);
   bool inputEdit(SDL_Event&, ILayerEditingContext*);
   void configureElement();
   void setEditingContext(BlockLocation*, IComponentContainer*);

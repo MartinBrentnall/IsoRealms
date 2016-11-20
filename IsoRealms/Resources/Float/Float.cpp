@@ -30,6 +30,6 @@ float Float::getValue() {
   return cValue;
 }
 
-void Float::initialiseResource(DOMNodeWrapper*, IResourceAccessor*) {
+void Float::initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*) {
 }
 

@@ -28,12 +28,12 @@ ResourceTextureFile::ResourceTextureFile(const std::string& filename) {
   readFile();
 }
 
-void ResourceTextureFile::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor) {
+void ResourceTextureFile::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resourceAccessor) {
   cFileName = node->getAttribute("file");
   readFile();
 }
 
-void ResourceTextureFile::save(DOMNodeWriter* node, IResourceLocator* resources) {
+void ResourceTextureFile::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
   node->addAttribute("file", cFileName);
 }
 

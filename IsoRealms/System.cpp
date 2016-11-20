@@ -30,6 +30,19 @@ std::string System::getUserDataDirectory() {
   return getenv("HOME") + getDirectorySeparator() + getUserDataDirectoryName() + getDirectorySeparator();
 }
 
+void System::makeDirectory(const std::string& path) {
+  struct stat mDirInfo;
+  if (stat(path.c_str(), &mDirInfo) == 0) {
+    if (!S_ISDIR(mDirInfo.st_mode)) {
+      std::cout << path << " exists, but is not a directory!" << std::endl;
+      exit(1);
+    }
+  } else if (mkdir(path.c_str(), 0700)) {
+    std::cout << "Couldn't create directory " << path << std::endl;
+    exit(1);
+  }
+}
+
 void System::makeUserDataDirectory(const std::string& path) {
   struct stat mUserDataLocationInfo;
   std::string mUserDataLocation = getenv("HOME") + getDirectorySeparator() + getUserDataDirectoryName();

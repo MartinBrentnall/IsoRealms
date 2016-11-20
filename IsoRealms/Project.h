@@ -50,7 +50,7 @@ class Project:public IProject {
   
   public:
   Project();
-  Project(DOMNodeWrapper*, const std::string&, IEditingContext*, bool, DOMNodeWrapper*);
+  Project(DOMNodeWrapper*, DOMNodeWrapper*, const std::string&, IEditingContext*, bool, DOMNodeWrapper*);
 
   void initEditor();
   void initRuntime();

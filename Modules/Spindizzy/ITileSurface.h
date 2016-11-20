@@ -57,6 +57,8 @@ class ITileSurface {
   
   virtual void destroyCoverage(BlockArea*) = 0;
   
+  virtual void saveCache(DOMNodeWriter*, bool) = 0;
+  
   virtual ~ITileSurface() {}
 };
 

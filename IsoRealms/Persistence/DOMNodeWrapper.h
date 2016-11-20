@@ -40,6 +40,7 @@ using namespace xercesc;
 class DOMNodeWrapper {
   private:
   DOMNode* cNode;
+  int cIndex;
 
   DOMNodeWrapper(DOMNode*);  
 
@@ -51,6 +52,7 @@ class DOMNodeWrapper {
    * Return 
    */
   DOMNodeWrapper* getChild(int); // TODO: Use '[]'
+  DOMNodeWrapper* next();
 
   /**
    * Return the named attribute of this node.

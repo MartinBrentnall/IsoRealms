@@ -69,6 +69,8 @@ class System {
    */
   static std::string convertToSystemFormat(const std::string&);
 
+  static void makeDirectory(const std::string&);
+  
   static void makeUserDataDirectory(const std::string&);
   
   /**

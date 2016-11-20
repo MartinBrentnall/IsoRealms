@@ -25,9 +25,9 @@
 
 class ILayerType:public IResource {
   public:
-  virtual ILayer* getLayer(DOMNodeWrapper*, IResourceAccessor*, bool, bool) = 0;
+  virtual ILayer* getLayer(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*, bool, bool) = 0;
   virtual std::string getInstanceName(ILayer*) = 0;
-  virtual void save(DOMNodeWriter*, IResourceLocator*) = 0;
+  virtual void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*) = 0;
   
   virtual ~ILayerType() {}
 };

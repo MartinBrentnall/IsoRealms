@@ -21,7 +21,7 @@
 SpindizzyBlockState::SpindizzyBlockState() {
 }
 
-void SpindizzyBlockState::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void SpindizzyBlockState::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
   cName = node->getAttribute("name");
   cClueModelLocation.x = node->getFloatAttribute("x");
   cClueModelLocation.y = node->getFloatAttribute("y");

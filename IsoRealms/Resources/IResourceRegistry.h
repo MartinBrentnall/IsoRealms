@@ -47,25 +47,25 @@ class IProject;
 class IResourceRegistry {
   public:
   virtual bool isEditing() = 0;
-  virtual void add(I3DModel*,                   const std::string&, DOMNodeWrapper* = NULL) = 0;
-  virtual void add(I3DModelType*,               const std::string&, DOMNodeWrapper* = NULL) = 0;
+  virtual void add(I3DModel*,                   const std::string&, DOMNodeWrapper* = nullptr, DOMNodeWrapper* = nullptr) = 0;
+  virtual void add(I3DModelType*,               const std::string&, DOMNodeWrapper* = nullptr, DOMNodeWrapper* = nullptr) = 0;
   virtual void add(IArgumentValue*,             const std::string&, const std::string&) = 0;
-  virtual void add(IBoolean*,                   const std::string&, DOMNodeWrapper* = NULL) = 0;
-  virtual void add(IBoundaries*,                const std::string&, DOMNodeWrapper* = NULL) = 0;
-  virtual void add(ICamera*,                    const std::string&, DOMNodeWrapper* = NULL) = 0;
-  virtual void add(IColour*,                    const std::string&, DOMNodeWrapper* = NULL) = 0;
+  virtual void add(IBoolean*,                   const std::string&, DOMNodeWrapper* = nullptr, DOMNodeWrapper* = nullptr) = 0;
+  virtual void add(IBoundaries*,                const std::string&, DOMNodeWrapper* = nullptr, DOMNodeWrapper* = nullptr) = 0;
+  virtual void add(ICamera*,                    const std::string&, DOMNodeWrapper* = nullptr, DOMNodeWrapper* = nullptr) = 0;
+  virtual void add(IColour*,                    const std::string&, DOMNodeWrapper* = nullptr, DOMNodeWrapper* = nullptr) = 0;
   virtual void add(IComponentCustomType*,       const std::string&) = 0;
-  virtual void add(IElementType*,               const std::string&, DOMNodeWrapper* = NULL) = 0;
-  virtual void add(IFont*,                      const std::string&, DOMNodeWrapper* = NULL) = 0;
-  virtual void add(IGlobalVariable*,            const std::string&, DOMNodeWrapper* = NULL) = 0;
-  virtual void add(IInteger*,                   const std::string&, DOMNodeWrapper* = NULL) = 0;
-  virtual void add(ILayerType*,                 const std::string&, DOMNodeWrapper* = NULL) = 0;
-  virtual void add(IScript*,                    const std::string&, DOMNodeWrapper* = NULL) = 0;
-  virtual void add(IResource*,                                      DOMNodeWrapper* = NULL) = 0;
-  virtual void add(ISound*,                     const std::string&, DOMNodeWrapper* = NULL) = 0;
-  virtual void add(IString*,                    const std::string&, DOMNodeWrapper* = NULL) = 0;
-  virtual void add(ITexture*,                   const std::string&, DOMNodeWrapper* = NULL) = 0;
-  virtual void add(IVertex*,                    const std::string&, DOMNodeWrapper* = NULL) = 0;
+  virtual void add(IElementType*,               const std::string&, DOMNodeWrapper* = nullptr, DOMNodeWrapper* = nullptr) = 0;
+  virtual void add(IFont*,                      const std::string&, DOMNodeWrapper* = nullptr, DOMNodeWrapper* = nullptr) = 0;
+  virtual void add(IGlobalVariable*,            const std::string&, DOMNodeWrapper* = nullptr, DOMNodeWrapper* = nullptr) = 0;
+  virtual void add(IInteger*,                   const std::string&, DOMNodeWrapper* = nullptr, DOMNodeWrapper* = nullptr) = 0;
+  virtual void add(ILayerType*,                 const std::string&, DOMNodeWrapper* = nullptr, DOMNodeWrapper* = nullptr) = 0;
+  virtual void add(IScript*,                    const std::string&, DOMNodeWrapper* = nullptr, DOMNodeWrapper* = nullptr) = 0;
+  virtual void add(IResource*,                                      DOMNodeWrapper* = nullptr, DOMNodeWrapper* = nullptr) = 0;
+  virtual void add(ISound*,                     const std::string&, DOMNodeWrapper* = nullptr, DOMNodeWrapper* = nullptr) = 0;
+  virtual void add(IString*,                    const std::string&, DOMNodeWrapper* = nullptr, DOMNodeWrapper* = nullptr) = 0;
+  virtual void add(ITexture*,                   const std::string&, DOMNodeWrapper* = nullptr, DOMNodeWrapper* = nullptr) = 0;
+  virtual void add(IVertex*,                    const std::string&, DOMNodeWrapper* = nullptr, DOMNodeWrapper* = nullptr) = 0;
   
   virtual void addDynamicElement(IDynamicElement*) = 0;
   

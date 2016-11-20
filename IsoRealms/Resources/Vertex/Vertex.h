@@ -43,7 +43,7 @@ class Vertex:public IVertex {
   double getY();
   double getZ();
 
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
   
   virtual ~Vertex() {}
 };

@@ -32,10 +32,10 @@ ResourceLayerSpindizzyMap::ResourceLayerSpindizzyMap(ISpindizzyMapModule* module
   }
 }
 
-void ResourceLayerSpindizzyMap::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void ResourceLayerSpindizzyMap::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
 }
 
-void ResourceLayerSpindizzyMap::save(DOMNodeWriter* node, IResourceLocator* resources) {
+void ResourceLayerSpindizzyMap::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
   for (std::pair<std::string, LayerSpindizzyMap*> mInstance : cNamedInstances) {
     DOMNodeWriter* mInstanceBranch = node->addBranch("Instance");
     mInstanceBranch->addAttribute("name", mInstance.first);
@@ -52,10 +52,10 @@ LayerSpindizzyMap* ResourceLayerSpindizzyMap::createInstance(const std::string& 
   return mNamedInstance;
 } 
 
-ILayer* ResourceLayerSpindizzyMap::getLayer(DOMNodeWrapper* node, IResourceAccessor* resources, bool editing, bool asTemplate) {
+ILayer* ResourceLayerSpindizzyMap::getLayer(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources, bool editing, bool asTemplate) {
   std::string mInstanceName = node->getAttribute("instance");
   LayerSpindizzyMap* mMap = cNamedInstances[mInstanceName];
-  mMap->load(node, editing, resources, asTemplate);
+  mMap->load(node, cache, editing, resources, asTemplate);
   return mMap;
 }
 

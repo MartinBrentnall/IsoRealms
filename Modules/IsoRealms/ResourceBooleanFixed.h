@@ -36,8 +36,8 @@ class ResourceBooleanFixed:public IBoolean {
   void setInitialValue(bool);
   bool getInitialValue();
   
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
-  void save(DOMNodeWriter*, IResourceLocator*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
   
   /***********************\
    * Implements IBoolean *

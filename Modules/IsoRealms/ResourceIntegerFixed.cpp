@@ -31,12 +31,12 @@ int ResourceIntegerFixed::getInitialValue() {
   return cInitialValue;
 }
 
-void ResourceIntegerFixed::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void ResourceIntegerFixed::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
   cInitialValue = node->getIntegerAttribute("value");
   cCurrentValue = cInitialValue;
 }
 
-void ResourceIntegerFixed::save(DOMNodeWriter* node, IResourceLocator* resources) {
+void ResourceIntegerFixed::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
   if (cInitialValue != 0) {
     node->addAttribute("value", cInitialValue);
   }

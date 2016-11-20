@@ -42,8 +42,8 @@ class ResourceTextureFile:public ITexture {
   ResourceTextureFile(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
   ResourceTextureFile(const std::string&);
   
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
-  void save(DOMNodeWriter*, IResourceLocator*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
   
   /***********************\
    * Implements ITexture *

@@ -114,7 +114,7 @@ class ResourceTexturesSpindizzyBlocksC64:public IResource,
   
   std::string stripMemberName(const std::string&);
   
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
   
   IColour* getFloorColour();
   IColour* getWallColour();
@@ -137,7 +137,7 @@ class ResourceTexturesSpindizzyBlocksC64:public IResource,
   void deleteResources(IResourceInstanceListener<ITexture>*);
   void addTextures(IResourceRegistry*, const std::string&);
 
-  void save(DOMNodeWriter*, IResourceLocator*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
 
   /*****************************************\
    * Implements ICameraAngleChangeListener *

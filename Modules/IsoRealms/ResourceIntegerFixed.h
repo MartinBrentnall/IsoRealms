@@ -36,8 +36,8 @@ class ResourceIntegerFixed:public IInteger {
   void setInitialValue(int);
   int getInitialValue();
 
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
-  void save(DOMNodeWriter*, IResourceLocator*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
 
   /***********************\
    * Implements IInteger *

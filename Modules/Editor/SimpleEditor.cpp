@@ -38,7 +38,7 @@ const float SimpleEditor::DOCKABLE_TEXTURE_DEFAULT_WIDTH           = 0.8f;
 const float SimpleEditor::DOCKABLE_VERTEX_DEFAULT_WIDTH            = 0.4f;
 const float SimpleEditor::DOCKABLE_OBJECT_PROPERTIES_DEFAULT_WIDTH = 0.62f;
 
-void SimpleEditor::load(DOMNodeWrapper* node, IResourceRegistry* runtimeContext, DOMNodeWrapper* options) {  
+void SimpleEditor::load(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceRegistry* runtimeContext, DOMNodeWrapper* options) {  
   cMapEditorMode = false;
   if (options != nullptr) {
     for (int i = 0; i < options->getChildCount(); i++) {
@@ -91,11 +91,11 @@ void SimpleEditor::load(DOMNodeWrapper* node, IResourceRegistry* runtimeContext,
   runtimeContext->add(this, "Editor", node);
 }
 
-void SimpleEditor::save(DOMNodeWriter* node, IResourceLocator* resources) {
+void SimpleEditor::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
   // TODO
 }
 
-void SimpleEditor::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void SimpleEditor::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
   IResourceManager* mProjectResources = cProject->getResourceManager();
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
@@ -388,7 +388,7 @@ void SimpleEditor::staticChanged() {
   cProject->staticChanged();
 }
 
-ILayer* SimpleEditor::getLayer(DOMNodeWrapper* node, IResourceAccessor* resources, bool editing, bool asTemplate) {
+ILayer* SimpleEditor::getLayer(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources, bool editing, bool asTemplate) {
   return this;
 }
 
@@ -554,6 +554,11 @@ void SimpleEditor::objectSelected(IObjectWithProperties* object) {
 
 void SimpleEditor::openProject(const std::string& file, bool asTemplate) {
   DOMNodeWrapper* mConfigurationRootNode = new DOMNodeWrapper(file);
+  std::string mCacheFileName = file.substr(0, file.length() - 10) + "/project.cache";
+  DOMNodeWrapper* mCache = nullptr;
+  if (System::fileExists(mCacheFileName)) {
+    mCache = new DOMNodeWrapper(mCacheFileName);
+  }
   for (int i = 0; i < mConfigurationRootNode->getChildCount(); i++) {
     DOMNodeWrapper *mNode = mConfigurationRootNode->getChild(i);
     std::string mValue = mNode->getNodeName();
@@ -562,7 +567,7 @@ void SimpleEditor::openProject(const std::string& file, bool asTemplate) {
         clearUndoStack();
         delete cProject;
       }
-      cProject = new Project(mNode, file, this, asTemplate, nullptr);
+      cProject = new Project(mNode, mCache, file, this, asTemplate, nullptr);
       cProject->initEditor();
       IResourceManager* mProjectResources = cProject->getResourceManager();
       std::vector<IDialogGenerator*> mProjectDialogGenerators = mProjectResources->getDialogGenerators();

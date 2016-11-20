@@ -18,7 +18,7 @@
  */
 #include "ModuleRegistry.h"
 
-void ModuleRegistry::registerModule(DOMNodeWrapper* node, IResources* resources, IResourceTypeRegistry* resourceTypeRegistry, DOMNodeWrapper* options) {
+void ModuleRegistry::registerModule(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResources* resources, IResourceTypeRegistry* resourceTypeRegistry, DOMNodeWrapper* options) {
   std::string mType = node->getAttribute("name");
   std::vector<std::string> mDirectory;
   mDirectory.push_back(mType);
@@ -27,7 +27,7 @@ void ModuleRegistry::registerModule(DOMNodeWrapper* node, IResources* resources,
   loadModule(mType, mRuntimeContext, resourceTypeRegistry);
   IModule* mModule = getModule(mType);
   DOMNodeWrapper* mModuleOptions = getModuleOptions(mType, options);
-  mModule->load(node, mRuntimeContext, mModuleOptions);
+  mModule->load(node, cache, mRuntimeContext, mModuleOptions);
 }
 
 DOMNodeWrapper* ModuleRegistry::getModuleOptions(const std::string& moduleName, DOMNodeWrapper* options) {
@@ -103,13 +103,13 @@ std::string ModuleRegistry::getEntityPath(IModule* module) {
   return "Module/" + mType + "/";
 }
 
-void ModuleRegistry::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+void ModuleRegistry::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
   for (std::map<std::string, IModule*>::iterator j = cModuleInstances.begin(); j != cModuleInstances.end(); j++) {
     IModule* mInstance = j->second;
     std::string mTypeName = j->first;
     DOMNodeWriter* mModuleBranch = node->addBranch("Module");
     mModuleBranch->addAttribute("name", mTypeName);
-    mInstance->save(mModuleBranch, resourceLocator);
+    mInstance->save(mModuleBranch, cache, resourceLocator);
   }
 }
 

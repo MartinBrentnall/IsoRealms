@@ -59,7 +59,7 @@ class Boundaries:public IBoundaries,
   public:
   Boundaries();
   
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
 
   /**************************\
    * Implements IBoundaries *

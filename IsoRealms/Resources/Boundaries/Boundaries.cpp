@@ -22,7 +22,7 @@ Boundaries::Boundaries() {
   cAccessMutex = SDL_CreateMutex();
 }
 
-void Boundaries::initialiseResource(DOMNodeWrapper*, IResourceAccessor*) {
+void Boundaries::initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*) {
   // Nothing to do
 }
 

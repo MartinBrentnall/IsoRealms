@@ -35,7 +35,7 @@ class Layer:public IElementContainer {
   void renderEditing();
   void input(SDL_Event&);
   void initRuntime();
-  void save(DOMNodeWriter*, IResourceLocator*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
   void staticChanged();
   
   /*********************\

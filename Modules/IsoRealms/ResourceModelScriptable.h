@@ -43,8 +43,8 @@ class ResourceModelScriptable:public I3DModelType {
   void updateIcon(unsigned int);
   void renderIcon();
 
-  void save(DOMNodeWriter*, IResourceLocator*);
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
   
   virtual ~ResourceModelScriptable() {}
 };

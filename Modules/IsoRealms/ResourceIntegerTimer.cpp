@@ -34,7 +34,7 @@ int ResourceIntegerTimer::getInitialValue() {
   return cInitialMilliseconds;
 }
 
-void ResourceIntegerTimer::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void ResourceIntegerTimer::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
   cInitialMilliseconds = node->getIntegerAttribute("value");
   cCurrentMilliseconds = cInitialMilliseconds;
 }
@@ -55,7 +55,7 @@ ResourceIntegerTimer::StringTimer::StringTimer(ResourceIntegerTimer* timer) {
   cTimer = timer;
 }
 
-void ResourceIntegerTimer::StringTimer::initialiseResource(DOMNodeWrapper*, IResourceAccessor*) {
+void ResourceIntegerTimer::StringTimer::initialiseResource(DOMNodeWrapper*, DOMNodeWrapper* cache, IResourceAccessor*) {
   // Nothing to do
 }
 
@@ -73,7 +73,7 @@ std::string ResourceIntegerTimer::StringTimer::getValue() {
   return mStringStream.str();
 }
 
-void ResourceIntegerTimer::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+void ResourceIntegerTimer::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
   node->addAttribute("value", cInitialMilliseconds);
 }
 

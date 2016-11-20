@@ -59,6 +59,7 @@ class ResourceSurfaceRegistry {
   void unregisterWallSurface(ICollidableWallSurface*);
   ICollisionData* getNextEvent(Vertex&, Vertex&, IRollableSurface*, float);
   IRollableSurface* getSurfaceAt(Vertex&, float);
+  void saveCache(DOMNodeWriter*, ICollidableSurfaceElement*);
 
   /**********************\
    * Implements IPlugin *

@@ -49,7 +49,7 @@ void Layer::initRuntime() {
   cRootElement->initRuntime();
 }
 
-void Layer::save(DOMNodeWriter* node, IResourceLocator* resources) {
+void Layer::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
   IElementType* mElementType = cRootElement->getElementType();
   node->addAttribute("rootElementType", resources->getPath(mElementType));
   BlockLocation* mIdentity = new BlockLocation();

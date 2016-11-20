@@ -64,20 +64,20 @@ template <class TYPE, class RESOURCE, class DIALOG, class MODULE = IDummyModule>
     cModuleInterface = moduleInterface;
   }
     
-  void loadResource(DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
+  void loadResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceRegistry* resourceRegistry) {
     RESOURCE* mResource = new RESOURCE(cModuleInterface, node, resourceRegistry);
     cResources.push_back(mResource);
     std::string mResourceName = node->getAttribute("name");
-    resourceRegistry->add(mResource, mResourceName, node);
+    resourceRegistry->add(mResource, mResourceName, node, cache);
   }
 
-  void saveResources(DOMNodeWriter* node, IResourceLocator* resourceLocator, const std::string& tag) {
+  void saveResources(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator, const std::string& tag) {
     for (unsigned int i = 0; i < cResources.size(); i++) {
       DOMNodeWriter* mResourceNode = node->addBranch(tag);
       std::string mResourceName = resourceLocator->getPath(cResources[i]);
       mResourceName = mResourceName.substr(mResourceName.find_last_of('/') + 1);
       mResourceNode->addAttribute("name", mResourceName);
-      cResources[i]->save(mResourceNode, resourceLocator);
+      cResources[i]->save(mResourceNode, cache, resourceLocator);
     }
   }
 

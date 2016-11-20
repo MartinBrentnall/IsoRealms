@@ -735,7 +735,7 @@ void ElementSpindizzyCraft::saveInstance(DOMNodeWriter* node, IResourceLocator* 
   cStartLocation.saveRelative(node, relative);
 }
 
-void ElementSpindizzyCraft::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& relative) {
+void ElementSpindizzyCraft::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator, BlockLocation& relative) {
   std::string mInstanceName = cCraftType->getInstanceName(this);
   if (mInstanceName != "") {
     node->addAttribute("instance", mInstanceName);
@@ -755,7 +755,7 @@ void ElementSpindizzyCraft::setModel(I3DModelType* modelType) {
   cGERALDModel = modelType->createModel(cLocation);
 }
 
-void ElementSpindizzyCraft::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void ElementSpindizzyCraft::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
   readData(node);
 //  cGERALDModel = cCraftType->createModel(cLocation);
   cRespawning = false;

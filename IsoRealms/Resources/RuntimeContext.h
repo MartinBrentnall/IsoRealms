@@ -37,27 +37,27 @@ class RuntimeContext:public IResourceRegistry {
   \********************************/
   std::string getModule();
   bool isEditing();
-  void add(I3DModel*,                const std::string&, DOMNodeWrapper*);
-  void add(I3DModelType*,            const std::string&, DOMNodeWrapper*);
+  void add(I3DModel*,                const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
+  void add(I3DModelType*,            const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
 //  void add(IArgumentDefinitionType*, const std::string&);
   void add(IArgumentValue*,          const std::string&, const std::string&);
-  void add(IBoolean*,                const std::string&, DOMNodeWrapper*);
-  void add(ICamera*,                 const std::string&, DOMNodeWrapper*);
-  void add(IBoundaries*,             const std::string&, DOMNodeWrapper*);
-  void add(IColour*,                 const std::string&, DOMNodeWrapper*);
+  void add(IBoolean*,                const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
+  void add(ICamera*,                 const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
+  void add(IBoundaries*,             const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
+  void add(IColour*,                 const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
   void add(IComponentCustomType*,    const std::string&);
   void add(IElementGroupType*,       const std::string&);
-  void add(IElementType*,            const std::string&, DOMNodeWrapper*);
-  void add(IFont*,                   const std::string&, DOMNodeWrapper*);
-  void add(IGlobalVariable*,         const std::string&, DOMNodeWrapper*);
-  void add(IInteger*,                const std::string&, DOMNodeWrapper*);
-  void add(ILayerType*,              const std::string&, DOMNodeWrapper*);
-  void add(IScript*,                 const std::string&, DOMNodeWrapper*);
-  void add(IResource*,                                   DOMNodeWrapper*);
-  void add(ISound*,                  const std::string&, DOMNodeWrapper*);
-  void add(IString*,                 const std::string&, DOMNodeWrapper*);
-  void add(ITexture*,                const std::string&, DOMNodeWrapper*);
-  void add(IVertex*,                 const std::string&, DOMNodeWrapper*);
+  void add(IElementType*,            const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
+  void add(IFont*,                   const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
+  void add(IGlobalVariable*,         const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
+  void add(IInteger*,                const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
+  void add(ILayerType*,              const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
+  void add(IScript*,                 const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
+  void add(IResource*,                                   DOMNodeWrapper*, DOMNodeWrapper*);
+  void add(ISound*,                  const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
+  void add(IString*,                 const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
+  void add(ITexture*,                const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
+  void add(IVertex*,                 const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
   
   void addDynamicElement(IDynamicElement*);
   

@@ -85,14 +85,14 @@ class ResourceElementSpindizzyBlock:public ISpindizzyBlockType,
   \**********************************/
   ISpindizzyBlockSet* getSpindizzyBlockInterface();
   BlockTypeProperties* getBlockTypeProperties();
-  void save(DOMNodeWriter*, IResourceLocator*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
 
   /***************************\
    * Implements IElementType *
   \***************************/
   void configureElement();
   IElement* getElement();
-  void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*, bool);
+  void loadElement(DOMNodeWrapper*, DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*, bool);
   void setEditingContext(BlockLocation*, IComponentContainer*);
   bool inputEdit(SDL_Event&, ILayerEditingContext*);
   void renderEditingPreview(Vertex&);
@@ -101,7 +101,7 @@ class ResourceElementSpindizzyBlock:public ISpindizzyBlockType,
   void updateIcon(unsigned int);
   void destroy(IElement*);
   void removeElement(IElement*);
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
   Vertex* editorCursorStopped(Vertex*);
 
   /**************************************\

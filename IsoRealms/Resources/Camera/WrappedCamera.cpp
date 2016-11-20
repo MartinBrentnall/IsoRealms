@@ -22,7 +22,7 @@ WrappedCamera::WrappedCamera(ICamera* camera) {
   cCamera = camera;
 }
 
-void WrappedCamera::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void WrappedCamera::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
   // Nothing to do
 }
 

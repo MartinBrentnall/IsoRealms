@@ -37,7 +37,7 @@ void ResourceElementSpindizzyLift::setModelType(I3DModelType* modelType) {
   cModelType = modelType;
 }
 
-void ResourceElementSpindizzyLift::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor) {
+void ResourceElementSpindizzyLift::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resourceAccessor) {
   std::string mModelPath = node->getAttribute("model");
   std::string mStatePath = node->getAttribute("state");
   BlockLocation mIdentityLocation(0, 0, 0);
@@ -51,7 +51,7 @@ bool ResourceElementSpindizzyLift::isActive() {
   return cState->getValue();
 }
 
-void ResourceElementSpindizzyLift::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+void ResourceElementSpindizzyLift::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
   node->addAttribute("model", resourceLocator->getPath(cModelType));
   node->addAttribute("state", resourceLocator->getPath(cState));
 }
@@ -60,7 +60,7 @@ ISpindizzyLiftSet* ResourceElementSpindizzyLift::getSpindizzyLiftInterface() {
   return cModuleInterface;
 }
 
-void ResourceElementSpindizzyLift::loadElement(DOMNodeWrapper* node, BlockLocation* relative, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
+void ResourceElementSpindizzyLift::loadElement(DOMNodeWrapper* node, DOMNodeWrapper* cache, BlockLocation* relative, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
   if (!asTemplate) {
     cProperties->reset();
     BlockLocation mStartLocation;

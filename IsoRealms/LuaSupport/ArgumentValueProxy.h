@@ -34,7 +34,7 @@ class ArgumentValueProxy:public IArgumentValue,
   /************************\
    * Implements IResource *
   \************************/
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
     
   /*****************************\
    * Implements IArgumentValue *

@@ -71,7 +71,7 @@ class ModuleRegistry:public IModuleRegistry {
    */
   std::string getModuleType(IModule*);  
 
-  void registerModule(DOMNodeWrapper*, IResources*, IResourceTypeRegistry*, DOMNodeWrapper*);
+  void registerModule(DOMNodeWrapper*, DOMNodeWrapper*, IResources*, IResourceTypeRegistry*, DOMNodeWrapper*);
 
   /**
    * Load a logic module.
@@ -97,7 +97,7 @@ class ModuleRegistry:public IModuleRegistry {
    */
   std::vector<std::string> getInstances();
 
-  void save(DOMNodeWriter*, IResourceLocator*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
 
   /******************************\
    * Implements IModuleRegistry *

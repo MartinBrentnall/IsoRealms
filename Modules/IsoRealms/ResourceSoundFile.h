@@ -41,8 +41,8 @@ class ResourceSoundFile:public ISound {
   ResourceSoundFile(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
   ResourceSoundFile(const std::string&, const std::string&);
     
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
-  void save(DOMNodeWriter*, IResourceLocator*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
   
   std::string getName();
 

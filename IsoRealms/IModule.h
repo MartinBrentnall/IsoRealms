@@ -29,12 +29,12 @@ class IResourceRegistry;
 class IModule:public IResourceSource {
   public:
 
-  virtual void load(DOMNodeWrapper*, IResourceRegistry*, DOMNodeWrapper*) = 0;
+  virtual void load(DOMNodeWrapper*, DOMNodeWrapper*, IResourceRegistry*, DOMNodeWrapper*) = 0;
     
   /**
    * Save the configuration and resources of the module.
    */
-  virtual void save(DOMNodeWriter*, IResourceLocator*) = 0;
+  virtual void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*) = 0;
 
   virtual ~IModule() {}
 };

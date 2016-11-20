@@ -23,7 +23,7 @@ Project::Project() {
   cCompleted = false;
 }
 
-Project::Project(DOMNodeWrapper* node, const std::string& projectName, IEditingContext* editingContext, bool asTemplate, DOMNodeWrapper* options) {
+Project::Project(DOMNodeWrapper* node, DOMNodeWrapper* cache, const std::string& projectName, IEditingContext* editingContext, bool asTemplate, DOMNodeWrapper* options) {
   cResources.setEditing(editingContext != NULL, this);
   cInitScript = NULL;
   if (!asTemplate) {
@@ -38,6 +38,20 @@ Project::Project(DOMNodeWrapper* node, const std::string& projectName, IEditingC
   std::vector<std::string> mRootPath;
   cResources.add(mProjectArgument, mRootPath, "Project", "Project");
   
+  // Get cache node
+  DOMNodeWrapper* mCacheNode = nullptr;
+  if (cache != nullptr) {
+    for (int i = 0; i < cache->getChildCount(); i++) {
+      DOMNodeWrapper* mNode = cache->getChild(i);
+      std::string mValueAsString = mNode->getNodeName();
+      if (mValueAsString == "ProjectCache") {
+        // Verify version!
+        mCacheNode = mNode;
+        break;
+      }
+    }
+  }
+  
   /*
    * First pass only loads module instances; we need to make sure all modules
    * are available before we start connecting them together
@@ -47,7 +61,7 @@ Project::Project(DOMNodeWrapper* node, const std::string& projectName, IEditingC
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Module") {
-      cModuleRegistry.registerModule(mNode, &cResources, editingContext != NULL ? &cResources : NULL, options);
+      cModuleRegistry.registerModule(mNode, mCacheNode, &cResources, editingContext != NULL ? &cResources : NULL, options);
 //     } else if (mValueAsString == "EngineData") {
 //       cResources.loadInstances(mNode);
     } else {
@@ -73,7 +87,7 @@ Project::Project(DOMNodeWrapper* node, const std::string& projectName, IEditingC
       std::string mLayerTypeName = mNode->getAttribute("type");
       bool mDefaultLayer = mNode->getBooleanAttribute("default");
       ILayerType* mLayerType = cResources.getLayerType(mLayerTypeName);
-      ILayer* mLayer = mLayerType->getLayer(mNode, &cResources, editingContext != nullptr, asTemplate);
+      ILayer* mLayer = mLayerType->getLayer(mNode, mCacheNode, &cResources, editingContext != nullptr, asTemplate);
       // TODO: Do we need to add object selection listeners here!?
       cLayers.push_back(mLayer);
       if (mDefaultLayer) {
@@ -155,17 +169,22 @@ void Project::initRuntime() {
 
 void Project::save() {
   if (!cFileName.empty()) {
+    DOMNodeWriter* mCacheNode = new DOMNodeWriter("ProjectCache");
+    
     DOMNodeWriter* mProjectNode = new DOMNodeWriter("Project");
     DOMNodeWriter* mInputConfigurationNode = mProjectNode->addBranch("InputConfiguration");
-    cModuleRegistry.save(mProjectNode, &cResources);
+    cModuleRegistry.save(mProjectNode, mCacheNode, &cResources);
     cResources.saveInputConfiguration(mInputConfigurationNode);
     DOMNodeWriter* mInitScriptNode = mProjectNode->addBranch("InitScript");
     cInitScript->save(mInitScriptNode, &cResources);
     for (unsigned int i = 0; i < cLayers.size(); i++) {
       DOMNodeWriter* mLayerNode = mProjectNode->addBranch("Layer");
-      cLayers[i]->save(mLayerNode, &cResources);
+      cLayers[i]->save(mLayerNode, mCacheNode, &cResources);
     }
+    std::string mCacheDirectory = cFileName.substr(0, cFileName.length() - 10);
+    System::makeDirectory(mCacheDirectory);
     mProjectNode->save(cFileName);
+    mCacheNode->save(mCacheDirectory + "/project.cache");
   }
 }
 

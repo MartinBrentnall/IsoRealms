@@ -40,8 +40,8 @@ class ResourceTextureSpindizzyCraftBall:public ITexture {
   public:
   ResourceTextureSpindizzyCraftBall(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
 
-  void save(DOMNodeWriter*, IResourceLocator*);
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
 
   IColour* getFillColour();
   IColour* getShineColour();

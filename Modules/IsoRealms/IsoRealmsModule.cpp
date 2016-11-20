@@ -98,62 +98,62 @@ IsoRealmsModule::IsoRealmsModule(IResourceTypeRegistry* resourceTypeRegistry) {
   cLocks = nullptr;
 }
 
-void IsoRealmsModule::load(DOMNodeWrapper* node, IResourceRegistry* runtimeContext, DOMNodeWrapper* options) {
+void IsoRealmsModule::load(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceRegistry* runtimeContext, DOMNodeWrapper* options) {
   cRuntimeContext = runtimeContext;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
-    if      (mValueAsString == TAG_RESOURCE_TYPE_BOOLEAN_FIXED)                 {cResourceTypeBooleanFixed.loadResource(              mNode, runtimeContext);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_COLOUR_FIXED)                  {cResourceTypeColourFixed.loadResource(               mNode, runtimeContext);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_ELEMENT_HUD_MODEL)             {cResourceTypeElementHUDModel.loadResource(           mNode, runtimeContext);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_ELEMENT_HUD_ROUNDED_RECTANGLE) {cResourceTypeElementHUDRoundedRectangle.loadResource(mNode, runtimeContext);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_ELEMENT_HUD_STRING)            {cResourceTypeElementHUDString.loadResource(          mNode, runtimeContext);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_FONT_FILE)                     {cResourceTypeFontFile.loadResource(                  mNode, runtimeContext);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_GLOBAL_VARIABLE)               {cResourceTypeGlobalVariable.loadResource(            mNode, runtimeContext);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_INTEGER_FIXED)                 {cResourceTypeIntegerFixed.loadResource(              mNode, runtimeContext);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_INTEGER_TIMER)                 {cResourceTypeIntegerTimer.loadResource(              mNode, runtimeContext);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_LAYER_HUD)                     {cResourceTypeLayerHUD.loadResource(                  mNode, runtimeContext);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_MODEL_ELEMENT)                 {cResourceTypeModelElement.loadResource(              mNode, runtimeContext);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_MODEL_SCRIPTABLE)              {cResourceTypeModelScriptable.loadResource(           mNode, runtimeContext);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_MODEL_SET_CYCLEABLE)           {cResourceTypeModelSetCycleable.loadResource(         mNode, runtimeContext);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_MODEL_SPRITE)                  {cResourceTypeModelSprite.loadResource(               mNode, runtimeContext);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_SCRIPT_LUA)                    {cResourceTypeScriptLua.loadResource(                 mNode, runtimeContext);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_SOUND_FILE)                    {cResourceTypeSoundFile.loadResource(                 mNode, runtimeContext);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_STRING_FIXED)                  {cResourceTypeStringFixed.loadResource(               mNode, runtimeContext);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_TEXTURE_FILE)                  {cResourceTypeTextureFile.loadResource(               mNode, runtimeContext);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_VERTEX_FIXED)                  {cResourceTypeVertexFixed.loadResource(               mNode, runtimeContext);}
+    if      (mValueAsString == TAG_RESOURCE_TYPE_BOOLEAN_FIXED)                 {cResourceTypeBooleanFixed.loadResource(              mNode, cache, runtimeContext);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_COLOUR_FIXED)                  {cResourceTypeColourFixed.loadResource(               mNode, cache, runtimeContext);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_ELEMENT_HUD_MODEL)             {cResourceTypeElementHUDModel.loadResource(           mNode, cache, runtimeContext);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_ELEMENT_HUD_ROUNDED_RECTANGLE) {cResourceTypeElementHUDRoundedRectangle.loadResource(mNode, cache, runtimeContext);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_ELEMENT_HUD_STRING)            {cResourceTypeElementHUDString.loadResource(          mNode, cache, runtimeContext);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_FONT_FILE)                     {cResourceTypeFontFile.loadResource(                  mNode, cache, runtimeContext);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_GLOBAL_VARIABLE)               {cResourceTypeGlobalVariable.loadResource(            mNode, cache, runtimeContext);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_INTEGER_FIXED)                 {cResourceTypeIntegerFixed.loadResource(              mNode, cache, runtimeContext);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_INTEGER_TIMER)                 {cResourceTypeIntegerTimer.loadResource(              mNode, cache, runtimeContext);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_LAYER_HUD)                     {cResourceTypeLayerHUD.loadResource(                  mNode, cache, runtimeContext);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_MODEL_ELEMENT)                 {cResourceTypeModelElement.loadResource(              mNode, cache, runtimeContext);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_MODEL_SCRIPTABLE)              {cResourceTypeModelScriptable.loadResource(           mNode, cache, runtimeContext);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_MODEL_SET_CYCLEABLE)           {cResourceTypeModelSetCycleable.loadResource(         mNode, cache, runtimeContext);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_MODEL_SPRITE)                  {cResourceTypeModelSprite.loadResource(               mNode, cache, runtimeContext);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_SCRIPT_LUA)                    {cResourceTypeScriptLua.loadResource(                 mNode, cache, runtimeContext);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_SOUND_FILE)                    {cResourceTypeSoundFile.loadResource(                 mNode, cache, runtimeContext);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_STRING_FIXED)                  {cResourceTypeStringFixed.loadResource(               mNode, cache, runtimeContext);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_TEXTURE_FILE)                  {cResourceTypeTextureFile.loadResource(               mNode, cache, runtimeContext);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_VERTEX_FIXED)                  {cResourceTypeVertexFixed.loadResource(               mNode, cache, runtimeContext);}
     else                                                                {/* TODO: Throw */}
   }
   runtimeContext->add(this, node);
 }
 
-void IsoRealmsModule::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void IsoRealmsModule::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
   std::string mIntegerPath = node->getAttribute("locks");
   if (!mIntegerPath.empty()) {
     cLocks = resources->getInteger(mIntegerPath);
   }
 }
 
-void IsoRealmsModule::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
-  cResourceTypeBooleanFixed.saveResources(              node, resourceLocator, TAG_RESOURCE_TYPE_BOOLEAN_FIXED);
-  cResourceTypeColourFixed.saveResources(               node, resourceLocator, TAG_RESOURCE_TYPE_COLOUR_FIXED);
-  cResourceTypeFontFile.saveResources(                  node, resourceLocator, TAG_RESOURCE_TYPE_FONT_FILE);
-  cResourceTypeGlobalVariable.saveResources(            node, resourceLocator, TAG_RESOURCE_TYPE_GLOBAL_VARIABLE);
-  cResourceTypeElementHUDModel.saveResources(           node, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_HUD_MODEL);
-  cResourceTypeElementHUDRoundedRectangle.saveResources(node, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_HUD_ROUNDED_RECTANGLE);
-  cResourceTypeElementHUDString.saveResources(          node, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_HUD_STRING);
-  cResourceTypeIntegerFixed.saveResources(              node, resourceLocator, TAG_RESOURCE_TYPE_INTEGER_FIXED);
-  cResourceTypeIntegerTimer.saveResources(              node, resourceLocator, TAG_RESOURCE_TYPE_INTEGER_TIMER);
-  cResourceTypeLayerHUD.saveResources(                  node, resourceLocator, TAG_RESOURCE_TYPE_LAYER_HUD);
-  cResourceTypeModelElement.saveResources(              node, resourceLocator, TAG_RESOURCE_TYPE_MODEL_ELEMENT);
-  cResourceTypeModelScriptable.saveResources(           node, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SCRIPTABLE);
-  cResourceTypeModelSetCycleable.saveResources(         node, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SET_CYCLEABLE);
-  cResourceTypeModelSprite.saveResources(               node, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SPRITE);
-  cResourceTypeScriptLua.saveResources(                 node, resourceLocator, TAG_RESOURCE_TYPE_SCRIPT_LUA);
-  cResourceTypeSoundFile.saveResources(                 node, resourceLocator, TAG_RESOURCE_TYPE_SOUND_FILE);
-  cResourceTypeStringFixed.saveResources(               node, resourceLocator, TAG_RESOURCE_TYPE_STRING_FIXED);
-  cResourceTypeTextureFile.saveResources(               node, resourceLocator, TAG_RESOURCE_TYPE_TEXTURE_FILE);
-  cResourceTypeVertexFixed.saveResources(               node, resourceLocator, TAG_RESOURCE_TYPE_VERTEX_FIXED);
+void IsoRealmsModule::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
+  cResourceTypeBooleanFixed.saveResources(              node, cache, resourceLocator, TAG_RESOURCE_TYPE_BOOLEAN_FIXED);
+  cResourceTypeColourFixed.saveResources(               node, cache, resourceLocator, TAG_RESOURCE_TYPE_COLOUR_FIXED);
+  cResourceTypeFontFile.saveResources(                  node, cache, resourceLocator, TAG_RESOURCE_TYPE_FONT_FILE);
+  cResourceTypeGlobalVariable.saveResources(            node, cache, resourceLocator, TAG_RESOURCE_TYPE_GLOBAL_VARIABLE);
+  cResourceTypeElementHUDModel.saveResources(           node, cache, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_HUD_MODEL);
+  cResourceTypeElementHUDRoundedRectangle.saveResources(node, cache, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_HUD_ROUNDED_RECTANGLE);
+  cResourceTypeElementHUDString.saveResources(          node, cache, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_HUD_STRING);
+  cResourceTypeIntegerFixed.saveResources(              node, cache, resourceLocator, TAG_RESOURCE_TYPE_INTEGER_FIXED);
+  cResourceTypeIntegerTimer.saveResources(              node, cache, resourceLocator, TAG_RESOURCE_TYPE_INTEGER_TIMER);
+  cResourceTypeLayerHUD.saveResources(                  node, cache, resourceLocator, TAG_RESOURCE_TYPE_LAYER_HUD);
+  cResourceTypeModelElement.saveResources(              node, cache, resourceLocator, TAG_RESOURCE_TYPE_MODEL_ELEMENT);
+  cResourceTypeModelScriptable.saveResources(           node, cache, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SCRIPTABLE);
+  cResourceTypeModelSetCycleable.saveResources(         node, cache, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SET_CYCLEABLE);
+  cResourceTypeModelSprite.saveResources(               node, cache, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SPRITE);
+  cResourceTypeScriptLua.saveResources(                 node, cache, resourceLocator, TAG_RESOURCE_TYPE_SCRIPT_LUA);
+  cResourceTypeSoundFile.saveResources(                 node, cache, resourceLocator, TAG_RESOURCE_TYPE_SOUND_FILE);
+  cResourceTypeStringFixed.saveResources(               node, cache, resourceLocator, TAG_RESOURCE_TYPE_STRING_FIXED);
+  cResourceTypeTextureFile.saveResources(               node, cache, resourceLocator, TAG_RESOURCE_TYPE_TEXTURE_FILE);
+  cResourceTypeVertexFixed.saveResources(               node, cache, resourceLocator, TAG_RESOURCE_TYPE_VERTEX_FIXED);
   
   if (cLocks != nullptr) {
     std::string mLocksPath = resourceLocator->getPath(cLocks);

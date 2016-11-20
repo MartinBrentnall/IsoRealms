@@ -50,7 +50,7 @@ class LayerBackground:public ILayer {
   bool inputEditor(SDL_Event&);
   void initRuntime();
   void initEditor();
-  void save(DOMNodeWriter*, IResourceLocator*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
   void staticChanged();
   void reset();
   void addObjectSelectionListener(IObjectSelectionListener*);

@@ -34,7 +34,7 @@ ResourceModelSetCycleable::ResourceModelSetCycleable(IDummyModule* module, DOMNo
   resourceRegistry->add(mArgumentValue, "ModelSetCycleable", cModelSetName);
 }
 
-void ResourceModelSetCycleable::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void ResourceModelSetCycleable::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
   unsigned int mIndex = 0;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
@@ -47,7 +47,7 @@ void ResourceModelSetCycleable::initialiseResource(DOMNodeWrapper* node, IResour
   }
 }
 
-void ResourceModelSetCycleable::save(DOMNodeWriter* node, IResourceLocator* resources) {
+void ResourceModelSetCycleable::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
   node->addAttribute("name", cModelSetName);
   for (I3DModelType* mModelType : cModelTypes) {
     DOMNodeWriter* mModelBranch = node->addBranch("Model");
@@ -116,7 +116,7 @@ unsigned int ResourceModelSetCycleable::ModelCycleableOffset::getCycleIndex() {
   return (cParent->cCycleIndex + cOffset) % cParent->cModelTypes.size();
 }
 
-void ResourceModelSetCycleable::ModelCycleableOffset::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void ResourceModelSetCycleable::ModelCycleableOffset::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
   // cParent->cModelTypes[cOffset] = resources->getModelType(node->getAttribute("model"));
 }
 

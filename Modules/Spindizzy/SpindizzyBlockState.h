@@ -39,7 +39,7 @@ class SpindizzyBlockState:public IResource {
     
   public:
   SpindizzyBlockState();
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
   IBoolean* getInputAddress();
   I3DModel* getModel();
   ConditionElement* getConditionElement();

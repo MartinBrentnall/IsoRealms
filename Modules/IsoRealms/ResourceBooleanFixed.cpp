@@ -31,12 +31,12 @@ bool ResourceBooleanFixed::getInitialValue() {
   return cInitialValue;
 }
 
-void ResourceBooleanFixed::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void ResourceBooleanFixed::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
   cInitialValue = node->getBooleanAttribute("value");
   cCurrentValue = cInitialValue;
 }
 
-void ResourceBooleanFixed::save(DOMNodeWriter* node, IResourceLocator* resources) {
+void ResourceBooleanFixed::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
   
   // Default is false, so we only need to save if it's true.
   if (cInitialValue) {

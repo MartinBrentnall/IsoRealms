@@ -35,7 +35,7 @@ class Boolean:public IBoolean {
   bool getValue();
   void reset();
 
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
 };
 
 #endif

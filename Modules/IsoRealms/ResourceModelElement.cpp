@@ -29,16 +29,16 @@ void ResourceModelElement::destroyModel(I3DModel* model) {
   delete model;
 }
 
-void ResourceModelElement::save(DOMNodeWriter* node, IResourceLocator* resources) {
-  cElement->save(node, resources, cIdentity);
+void ResourceModelElement::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
+  cElement->save(node, cache, resources, cIdentity);
 }
 
-void ResourceModelElement::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void ResourceModelElement::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper* mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Element") {
-      resources->loadElement(mNode, &cIdentity, this, false);
+      resources->loadElement(mNode, cache, &cIdentity, this, false);
       Vertex* mVertex = new Vertex(0.0f, 0.0f, 0.0f);
       cSampleModel = new ModelElement(&cElement, mVertex, 1.0f);
       

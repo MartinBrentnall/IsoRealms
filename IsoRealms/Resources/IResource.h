@@ -25,7 +25,7 @@ class IResourceAccessor;
 
 class IResource {
   public:
-  virtual void initialiseResource(DOMNodeWrapper*, IResourceAccessor*) = 0;
+  virtual void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*) = 0;
 };
 
 #endif

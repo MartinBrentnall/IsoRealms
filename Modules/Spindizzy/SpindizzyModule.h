@@ -176,6 +176,8 @@ class SpindizzyModule:public IModule,
   float cThemeModelIconScale;
   ResourceSurfaceRegistry* cActiveSurfaceRegistry;
   
+  bool cUsingCache;
+  
   std::map<IUniverse*, ResourceGeometryProcessor*>* getGeometryProcessors(bool);
   ResourceGeometryProcessor* getGeometryProcessor(IUniverse*, bool);
   ResourceSurfaceRegistry* getSurfaceRegistry(IUniverse*);
@@ -194,10 +196,10 @@ class SpindizzyModule:public IModule,
   /**********************\
    * Implements IPlugin *
   \**********************/
-  void load(DOMNodeWrapper*, IResourceRegistry*, DOMNodeWrapper*);
-  void save(DOMNodeWriter*, IResourceLocator*);
+  void load(DOMNodeWrapper*, DOMNodeWrapper*, IResourceRegistry*, DOMNodeWrapper*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
   
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
   
   void createThemeResources(DOMNodeWrapper*, IResourceRegistry*);
   void createThemeTexture(const std::string&, IResourceRegistry*);
@@ -223,12 +225,14 @@ class SpindizzyModule:public IModule,
   void unregisterSurfaces(ICollidableSurfaceElement*);
   void unregisterRollableSurface(IRollableSurface*);
   void unregisterWallSurface(ICollidableWallSurface*);
+  void saveCachePhysicalSurfaces(DOMNodeWriter*, ICollidableSurfaceElement*);
   std::vector<ConditionElement*> getConditionElements();
   void staticChanged();
   SpindizzyBlockState* getBlockState(IBoolean*);
   ElementHandlerSpindizzyBlock* getElementHandlerSpindizzyBlock(IElementContainer*);
   void removeElementHandlerSpindizzyBlock(IElementContainer*);
   void setArgumentValue(ElementHandlerSpindizzyBlock*);
+  bool isUsingCache();
 
   /*********************************\
    * Implements ISpindizzyEnemySet *

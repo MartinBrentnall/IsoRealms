@@ -22,18 +22,18 @@ ResourceLayerHUD::ResourceLayerHUD(IDummyModule* module, DOMNodeWrapper* node, I
   // Nothing to do.
 }
 
-void ResourceLayerHUD::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void ResourceLayerHUD::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
   // Nothing to do.
 }
 
-ILayer* ResourceLayerHUD::getLayer(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor, bool editing, bool asTemplate) {
-  return new LayerHUD(node, resourceAccessor, this);
+ILayer* ResourceLayerHUD::getLayer(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resourceAccessor, bool editing, bool asTemplate) {
+  return new LayerHUD(node, cache, resourceAccessor, this);
 }
 
 std::string ResourceLayerHUD::getInstanceName(ILayer* layer) {
   return "<default>"; // TODO: Support instanced HUD's?
 }
 
-void ResourceLayerHUD::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+void ResourceLayerHUD::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
   // Nothing to do.
 }

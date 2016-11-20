@@ -44,6 +44,95 @@ ElementSpindizzyBlock::ElementSpindizzyBlock(ISpindizzyBlockType* elementType, D
   cBlockType = elementType;
 }
 
+void ElementSpindizzyBlock::loadCache(DOMNodeWrapper* cache, std::vector<ConditionElement*> elements, IUniverse* universe) {
+  if (cache != nullptr) {
+    DOMNodeWrapper* mNode = cache->next();
+    while (mNode != nullptr) {
+      std::string mValueAsString = mNode->getNodeName();
+      if (mValueAsString == "SpindizzyBlock") {
+        loadSurfaces(mNode, elements, universe);
+        return;
+      }
+      mNode = cache->next();
+    }
+    std::cout << "Invalid cache.  Delete the cache and try loading again" << std::endl;
+    exit(1);
+  }
+}
+
+void ElementSpindizzyBlock::loadSurfaces(DOMNodeWrapper* node, std::vector<ConditionElement*> elements, IUniverse* universe) {
+  ISpindizzyBlockSet* mSpindizzyBlockInterface = cBlockType->getSpindizzyBlockInterface();
+  ITexture** mTileSurfaceTexture = getTileSurfaceTexture();
+  BlockTypeProperties* mBlockTypeProperties = cBlockType->getBlockTypeProperties();
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper* mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "TileSurface") {
+      bool mPhysical = mNode->getBooleanAttribute("physical");
+      TileSurface* mSurface = new TileSurface(mNode, elements, mTileSurfaceTexture, mBlockTypeProperties, this);
+      if (mPhysical) {
+        mSpindizzyBlockInterface->registerRollableSurface(this, mSurface, universe);
+      } else {
+        std::vector<ISpindizzyTileSurface*>* mFloorSurfaces = mSurface->getCondition() == nullptr ? &cStaticTileSurfaces : &cDynamicTileSurfaces;
+        mFloorSurfaces->push_back(mSurface);
+      }
+    } else if (mValueAsString == "TileSplitSurface") {
+      bool mPhysical = mNode->getBooleanAttribute("physical");
+      TileSplitSurface* mSurface = new TileSplitSurface(mNode, elements, mTileSurfaceTexture, mBlockTypeProperties);
+      if (mPhysical) {
+        mSpindizzyBlockInterface->registerRollableSurface(this, mSurface, universe);
+      } else {
+      std::vector<ISpindizzyTileSurface*>* mFloorSurfaces = mSurface->getCondition() == nullptr ? &cStaticTileSurfaces : &cDynamicTileSurfaces;
+      mFloorSurfaces->push_back(mSurface);
+      }
+    } else if (mValueAsString == "WallSurface") {
+      loadWallSurface(mNode, elements, universe);
+    }
+  }
+}
+
+void ElementSpindizzyBlock::loadWallSurface(DOMNodeWrapper* node, std::vector<ConditionElement*> elements, IUniverse* universe) {
+  bool mPhysical =         node->getBooleanAttribute("physical");
+  int mX =                 node->getIntegerAttribute("x");
+  int mY =                 node->getIntegerAttribute("y");
+  int mZ =                 node->getIntegerAttribute("z");
+  int mLength =            node->getIntegerAttribute("length");
+  int mHeight =            node->getIntegerAttribute("height");
+  int mSlopeTop =          node->getIntegerAttribute("slopeTop");
+  std::string mDirection = node->getAttribute("direction");
+  IWallSurface::FaceDirection mFacing = mDirection == "south" ? IWallSurface::SOUTH
+                                      : mDirection == "north" ? IWallSurface::NORTH
+                                      : mDirection == "east"  ? IWallSurface::EAST
+                                      :                         IWallSurface::WEST;
+  if (mSlopeTop < 0) {
+    mHeight += mSlopeTop * mLength;
+  }
+  
+  Condition* mWallCondition = nullptr;
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "Condition") {
+      mWallCondition = new Condition(mNode, elements);
+    }
+  }
+  
+  WallType* mWallType       = getWallType();
+  ITexture** mTexture       = getWallTexture(mFacing);
+  ITexture** mTextureTop    = getWallTextureTop(mFacing);
+  ITexture** mTextureBottom = getWallTextureBottom(mFacing);
+  bool mFlipBottom          = isWallBottomFlipped(mFacing);
+
+  WallSurface* mSurface = new WallSurface(mX, mY, mZ, mLength, mHeight, mSlopeTop, mFacing, mWallType, mTexture, mTextureTop, mTextureBottom, mFlipBottom, mWallCondition);
+  if (mPhysical) {
+    ISpindizzyBlockSet* mSpindizzyBlockSet = cBlockType->getSpindizzyBlockInterface();
+    mSpindizzyBlockSet->registerWallSurface(this, mSurface, universe);
+  } else {
+    std::vector<ISpindizzyWallSurface*>* mWallSurfaces = mWallCondition == nullptr ? &cStaticWallSurfaces : &cDynamicWallSurfaces;
+    mWallSurfaces->push_back(mSurface);
+  } 
+}
+
 ITexture** ElementSpindizzyBlock::getTileSurfaceTexture() {
   BlockTypeProperties* mBlockTypeProperties = cBlockType->getBlockTypeProperties();
   return isSplit() ? mBlockTypeProperties->getSplitNETexture() : mBlockTypeProperties->getSurfaceTexture();
@@ -598,6 +687,10 @@ IElementType* ElementSpindizzyBlock::getElementType() {
 
 bool ElementSpindizzyBlock::initElement(IUniverse* universe, unsigned int pass) {
   ISpindizzyBlockSet* mSpindizzyBlockSet = cBlockType->getSpindizzyBlockInterface();
+  if (mSpindizzyBlockSet->isUsingCache()) {
+    return true;
+  }
+  
   switch (pass) {
     case INIT_PROCESS_BLOCKS: {
       
@@ -695,7 +788,7 @@ Condition* ElementSpindizzyBlock::getCondition() {
   return cCondition;
 }
 
-void ElementSpindizzyBlock::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& zoneLocation) {
+void ElementSpindizzyBlock::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator, BlockLocation& zoneLocation) {
   std::string mBlockTypePath = resourceLocator->getPath(cBlockType);
   node->addAttribute("type", mBlockTypePath);
   cStartLocation.saveRelative(node, zoneLocation);
@@ -724,6 +817,23 @@ void ElementSpindizzyBlock::save(DOMNodeWriter* node, IResourceLocator* resource
   if (cCondition != nullptr) {
     cCondition->save(node);
   }
+  
+  // Save cache.
+  DOMNodeWriter* mBlockNode = cache->addBranch("SpindizzyBlock");
+  for (ITileSurface* mTileSurface : cStaticTileSurfaces) {
+    mTileSurface->saveCache(mBlockNode, false);
+  }
+  for (ITileSurface* mTileSurface : cDynamicTileSurfaces) {
+    mTileSurface->saveCache(mBlockNode, false);
+  }
+  for (IWallSurface* mWallSurface : cStaticWallSurfaces) {
+    mWallSurface->saveCache(mBlockNode, false);
+  }
+  for (IWallSurface* mWallSurface : cDynamicWallSurfaces) {
+    mWallSurface->saveCache(mBlockNode, false);
+  }
+  ISpindizzyBlockSet* mSpindizzyBlockInterface = cBlockType->getSpindizzyBlockInterface();
+  mSpindizzyBlockInterface->saveCachePhysicalSurfaces(mBlockNode, this);
 }
 
 ElementSpindizzyBlock::PropertyBlockCondition::PropertyBlockCondition(ElementSpindizzyBlock* parent) {

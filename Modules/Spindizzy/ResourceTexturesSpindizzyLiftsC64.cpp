@@ -329,14 +329,14 @@ ITexture* ResourceTexturesSpindizzyLiftsC64::getTexture(const std::string& name)
   return i != cTextures.end() ? i->second : cTextures.begin()->second;
 }
 
-void ResourceTexturesSpindizzyLiftsC64::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor) {
+void ResourceTexturesSpindizzyLiftsC64::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resourceAccessor) {
   cColour1 = resourceAccessor->getColour(node->getAttribute("colour1"));
   cColour2 = resourceAccessor->getColour(node->getAttribute("colour2"));
   cOutlineColour = resourceAccessor->getColour(node->getAttribute("outline"));
   generateTextures();
 }
 
-void ResourceTexturesSpindizzyLiftsC64::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+void ResourceTexturesSpindizzyLiftsC64::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
   std::string mResourceName = resourceLocator->getPath(cTextures[LIFT_DIAMOND_NONE]);
   mResourceName = mResourceName.substr(mResourceName.find_last_of('/') + 1);
   mResourceName = mResourceName.substr(0, mResourceName.find_last_of('_'));

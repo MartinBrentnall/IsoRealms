@@ -46,7 +46,7 @@ class LayerHUD:public IComponentSources,
   HUDComponentProxy* getComponentProxy(const std::string&);
   
   public:
-  LayerHUD(DOMNodeWrapper*, IResourceAccessor*, ILayerType*);
+  LayerHUD(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*, ILayerType*);
   
   /********************************\
    * Implements IComponentSources *
@@ -65,7 +65,7 @@ class LayerHUD:public IComponentSources,
   void updateEditing(unsigned int);
   bool input(SDL_Event&);
   bool inputEditor(SDL_Event&);
-  void save(DOMNodeWriter*, IResourceLocator*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
   void staticChanged();
   void reset();
   void addObjectSelectionListener(IObjectSelectionListener*);

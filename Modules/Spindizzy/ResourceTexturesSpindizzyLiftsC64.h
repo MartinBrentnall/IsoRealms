@@ -191,8 +191,8 @@ class ResourceTexturesSpindizzyLiftsC64:public IResource,
   void addTextures(IResourceRegistry*, const std::string&);
   void deleteResources(IResourceInstanceListener<ITexture>*);
 
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
-  void save(DOMNodeWriter*, IResourceLocator*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
 
   virtual ~ResourceTexturesSpindizzyLiftsC64();
 };

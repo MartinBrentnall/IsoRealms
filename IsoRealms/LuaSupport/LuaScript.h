@@ -62,7 +62,7 @@ class LuaScript:public IScript {
   /************************\
    * Implements IResource *
   \************************/
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
   
   /**********************\
    * Implements IScript *
@@ -70,7 +70,7 @@ class LuaScript:public IScript {
   void execute(std::vector<IArgumentValue*>);
   IScriptCall* createScriptCall(DOMNodeWrapper*, IArgumentValueRegistry*, IArgumentValueRegistry*);
   
-  void save(DOMNodeWriter*, IResourceLocator*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
   void save(std::vector<IArgumentValue*>, DOMNodeWriter*, IResourceLocator*);
 
   static IArgumentDefinition* createArgumentDefinition(DOMNodeWrapper*, IResourceRegistry*);

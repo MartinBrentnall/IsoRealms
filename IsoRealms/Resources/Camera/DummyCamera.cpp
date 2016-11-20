@@ -18,7 +18,7 @@
  */
 #include "DummyCamera.h"
 
-void DummyCamera::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void DummyCamera::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
   // Nothing to do
 }
 

@@ -43,7 +43,7 @@ class IScript:public IResource {
   virtual void execute(std::vector<IArgumentValue*>) = 0;
   
   // TODO: Seperate this to another interface.
-  virtual void save(DOMNodeWriter*, IResourceLocator*) = 0;
+  virtual void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*) = 0;
   virtual void save(std::vector<IArgumentValue*>, DOMNodeWriter*, IResourceLocator*) = 0;
   
   virtual ~IScript() {}

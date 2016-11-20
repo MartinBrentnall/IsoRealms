@@ -24,7 +24,7 @@ ResourceElementSpindizzyWater::ResourceElementSpindizzyWater(ISpindizzyBlockSet*
   cSampleWater = nullptr;
 }
 
-void ResourceElementSpindizzyWater::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor) {
+void ResourceElementSpindizzyWater::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resourceAccessor) {
   std::string mTexturePath = node->getAttribute("texture");
   cTexture = resourceAccessor->getTexture(mTexturePath);
 }
@@ -37,7 +37,7 @@ IElement* ResourceElementSpindizzyWater::getElement() {
   return nullptr;
 }
 
-void ResourceElementSpindizzyWater::loadElement(DOMNodeWrapper* node, BlockLocation* zoneLocation, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
+void ResourceElementSpindizzyWater::loadElement(DOMNodeWrapper* node, DOMNodeWrapper* cache, BlockLocation* zoneLocation, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
   if (!asTemplate) {
     BlockLocation mStartLocation;
     BlockLocation mEndLocation;
@@ -46,8 +46,10 @@ void ResourceElementSpindizzyWater::loadElement(DOMNodeWrapper* node, BlockLocat
     mEndLocation.z++;
     ElementSpindizzyWater* mLoadedWater = new ElementSpindizzyWater(this, &mStartLocation, &mEndLocation, &cTexture, container);
     ElementHandlerSpindizzyBlock* mHandler = cModuleInterface->getElementHandlerSpindizzyBlock(container);  
-    cContent.push_back(mLoadedWater);
+    std::vector<ConditionElement*> mElements = cModuleInterface->getConditionElements();
     IUniverse* mUniverse = container->getUniverse();
+    mLoadedWater->loadCache(cache, mElements, mUniverse);
+    cContent.push_back(mLoadedWater);
     cModuleInterface->registerSurfaceProvider(mLoadedWater, false, mUniverse);
     cModuleInterface->setDirty();
     mHandler->addElement(mLoadedWater);
@@ -169,7 +171,7 @@ BlockTypeProperties* ResourceElementSpindizzyWater::getBlockTypeProperties() {
   return nullptr;
 }
 
-void ResourceElementSpindizzyWater::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+void ResourceElementSpindizzyWater::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
   node->addAttribute("texture", resourceLocator->getPath(cTexture));
 }
 

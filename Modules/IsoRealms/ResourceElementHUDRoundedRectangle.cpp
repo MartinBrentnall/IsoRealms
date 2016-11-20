@@ -22,15 +22,15 @@ Texture* ResourceElementHUDRoundedRectangle::cCornerTexture = NULL;
 unsigned int ResourceElementHUDRoundedRectangle::cInstanceCount = 0;
 const float ResourceElementHUDRoundedRectangle::CIRCLE_RESOLUTION = 5.0f * (M_PI / 180.0);
 
-void ResourceElementHUDRoundedRectangle::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void ResourceElementHUDRoundedRectangle::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
   // TODO: Initialise.
 }
 
-void ResourceElementHUDRoundedRectangle::save(DOMNodeWriter*, IResourceLocator*) {
+void ResourceElementHUDRoundedRectangle::save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*) {
   // TODO
 }
 
-void ResourceElementHUDRoundedRectangle::loadElement(DOMNodeWrapper* node, BlockLocation* location, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
+void ResourceElementHUDRoundedRectangle::loadElement(DOMNodeWrapper* node, DOMNodeWrapper* cache, BlockLocation* location, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
   container->addElement(this);
 }
 
@@ -184,7 +184,7 @@ void ResourceElementHUDRoundedRectangle::updateRuntime(unsigned int) {
   // Nothing to do
 }
 
-void ResourceElementHUDRoundedRectangle::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& blockLocation) {
+void ResourceElementHUDRoundedRectangle::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator, BlockLocation& blockLocation) {
   // TODO: Save colour and roundiness
 }
 

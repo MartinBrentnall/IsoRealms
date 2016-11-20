@@ -24,7 +24,7 @@
 class DummyCamera:public ICamera {
   public:
 
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
 
   /**********************\
    * Implements ICamera *

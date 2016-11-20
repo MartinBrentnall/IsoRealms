@@ -26,13 +26,13 @@ ResourceSoundFile::ResourceSoundFile(const std::string& filename, const std::str
   loadData(filename);
 }
 
-void ResourceSoundFile::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void ResourceSoundFile::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
   cName = node->getAttribute("name");
   cFile = node->getAttribute("file");
   loadData(cFile);
 }
 
-void ResourceSoundFile::save(DOMNodeWriter* node, IResourceLocator* resources) {
+void ResourceSoundFile::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
   node->addAttribute("file", cFile);
 }
 

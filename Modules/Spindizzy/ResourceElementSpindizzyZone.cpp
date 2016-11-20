@@ -83,7 +83,7 @@ void ResourceElementSpindizzyZone::setDefaultTheme(ISpindizzyZoneTheme* theme) {
   cModuleInterface->setTheme(theme);
 }
 
-void ResourceElementSpindizzyZone::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void ResourceElementSpindizzyZone::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
   std::string mPathVisitedColour = node->getAttribute("visitedColour");
   std::string mPathUnvisitedColour = node->getAttribute("unvisitedColour");
   std::string mPathFlagModel = node->getAttribute("flagModel");
@@ -95,17 +95,17 @@ void ResourceElementSpindizzyZone::initialiseResource(DOMNodeWrapper* node, IRes
   cSampleZone = new ElementSpindizzyZone(this, mZoneArea);
 }
 
-void ResourceElementSpindizzyZone::save(DOMNodeWriter* node, IResourceLocator* locator) {
+void ResourceElementSpindizzyZone::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* locator) {
   node->addAttribute("visitedColour", locator->getPath(cVisitedColour));
   node->addAttribute("unvisitedColour", locator->getPath(cUnvisitedColour));
   node->addAttribute("flagModel", locator->getPath(cFlagModelType));
 }
 
-void ResourceElementSpindizzyZone::loadElement(DOMNodeWrapper* node, BlockLocation* location, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
+void ResourceElementSpindizzyZone::loadElement(DOMNodeWrapper* node, DOMNodeWrapper* cache, BlockLocation* location, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
   if (!asTemplate) {
     BlockLocation* mLocation = new BlockLocation();
     mLocation->setRelative(node, *location);
-    ElementSpindizzyZone* mSpindizzyZone = new ElementSpindizzyZone(this, node, mLocation, resources, cFlagModelType, container);
+    ElementSpindizzyZone* mSpindizzyZone = new ElementSpindizzyZone(this, node, cache, mLocation, resources, cFlagModelType, container);
     cContent.push_back(mSpindizzyZone);
     ElementHandlerZone* mZoneElementHandler = cModuleInterface->getZoneElementHandler(container);
     mZoneElementHandler->addElement(mSpindizzyZone);

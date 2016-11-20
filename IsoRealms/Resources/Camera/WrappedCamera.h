@@ -31,7 +31,7 @@ class WrappedCamera:public ICamera {
   /**********************\
    * Implements ICamera *
   \**********************/
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
   float getAngle();
   float getTilt();
   void update(int);

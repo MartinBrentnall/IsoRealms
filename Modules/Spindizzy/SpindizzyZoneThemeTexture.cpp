@@ -18,7 +18,7 @@
  */
 #include "SpindizzyZoneThemeTexture.h" 
 
-void SpindizzyZoneThemeTexture::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void SpindizzyZoneThemeTexture::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
   // TODO
   cTexture = nullptr;
 }

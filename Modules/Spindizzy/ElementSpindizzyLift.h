@@ -157,7 +157,7 @@ class ElementSpindizzyLift:public ICollidableSurfaceElement,
   bool renderSelectionHighlight();
   void updateRuntime(unsigned int);
   void updateEditing(unsigned int);
-  void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*, BlockLocation&);
   bool initElement(IUniverse*, unsigned int);
   void setDirty();
   IElementBounds* getBounds();
@@ -180,6 +180,7 @@ class ElementSpindizzyLift:public ICollidableSurfaceElement,
   bool isRespawnPossibleNow();
   void getRestingLocation(Vertex&);
   BlockArea* getCoverage();
+  void saveCache(DOMNodeWriter*, bool);
 
   /******************\
    * IElementBounds *

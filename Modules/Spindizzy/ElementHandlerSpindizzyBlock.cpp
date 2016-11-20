@@ -115,8 +115,8 @@ void ElementHandlerSpindizzyBlock::renderStatic() {
   cElements.renderStatic();
 }
 
-void ElementHandlerSpindizzyBlock::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& location) {
-  cElements.save(node, resourceLocator, location);
+void ElementHandlerSpindizzyBlock::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator, BlockLocation& location) {
+  cElements.save(node, cache, resourceLocator, location);
 }
 
 void ElementHandlerSpindizzyBlock::setDirty() {

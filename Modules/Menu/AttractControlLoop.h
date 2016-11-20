@@ -80,15 +80,15 @@ class AttractControlLoop:public IModule,
   bool checkActiveInput(int);
 
   void createResources(DOMNodeWrapper*, IResourceRegistry*);
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
   
-  void load(DOMNodeWrapper*, IResourceRegistry*, DOMNodeWrapper*);
-  void save(DOMNodeWriter*, IResourceLocator*);
+  void load(DOMNodeWrapper*, DOMNodeWrapper*, IResourceRegistry*, DOMNodeWrapper*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
   
   /*************************\
    * Implements ILayerType *
   \*************************/
-  ILayer* getLayer(DOMNodeWrapper*, IResourceAccessor*, bool, bool);
+  ILayer* getLayer(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*, bool, bool);
   std::string getInstanceName(ILayer*);
   
   /*********************\

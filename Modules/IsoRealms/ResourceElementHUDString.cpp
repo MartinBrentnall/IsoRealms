@@ -21,17 +21,17 @@
 ResourceElementHUDString::ResourceElementHUDString(IDummyModule* module, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
 }
 
-void ResourceElementHUDString::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void ResourceElementHUDString::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
   cText = resources->getString(node->getAttribute("value"));
   cFont = resources->getFont(node->getAttribute("font"));
 }
 
-void ResourceElementHUDString::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+void ResourceElementHUDString::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
   node->addAttribute("font", resourceLocator->getPath(cFont));
   node->addAttribute("value", resourceLocator->getPath(cText));
 }
 
-void ResourceElementHUDString::loadElement(DOMNodeWrapper* node, BlockLocation* location, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
+void ResourceElementHUDString::loadElement(DOMNodeWrapper* node, DOMNodeWrapper* cache, BlockLocation* location, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
   container->addElement(this);
 }
 
@@ -137,7 +137,7 @@ bool ResourceElementHUDString::renderSelectionHighlight() {
   return false;
 }
 
-void ResourceElementHUDString::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& blockLocation) {
+void ResourceElementHUDString::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator, BlockLocation& blockLocation) {
   // TODO
 }
 

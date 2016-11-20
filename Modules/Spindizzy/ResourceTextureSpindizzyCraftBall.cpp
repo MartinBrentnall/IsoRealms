@@ -92,7 +92,7 @@ void ResourceTextureSpindizzyCraftBall::setOutlineColour(IColour* colour) {
   updateTexture();
 }
 
-void ResourceTextureSpindizzyCraftBall::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor) {
+void ResourceTextureSpindizzyCraftBall::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resourceAccessor) {
   std::string mPathColourOutline = node->getAttribute("outline");
   std::string mPathColourBall    = node->getAttribute("fill");
   std::string mPathColourShine   = node->getAttribute("shine");
@@ -102,7 +102,7 @@ void ResourceTextureSpindizzyCraftBall::initialiseResource(DOMNodeWrapper* node,
   updateTexture();
 }
 
-void ResourceTextureSpindizzyCraftBall::save(DOMNodeWriter* node, IResourceLocator* resources) {
+void ResourceTextureSpindizzyCraftBall::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
   node->addAttribute("outline", resources->getPath(cColourOutline));
   node->addAttribute("fill",    resources->getPath(cColourBall));
   node->addAttribute("shine",   resources->getPath(cColourShine));

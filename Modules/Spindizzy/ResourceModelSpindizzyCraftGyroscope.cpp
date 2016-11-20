@@ -126,7 +126,7 @@ void ResourceModelSpindizzyCraftGyroscope::renderIcon() {
   cSampleModel->render();
 }
 
-void ResourceModelSpindizzyCraftGyroscope::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+void ResourceModelSpindizzyCraftGyroscope::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
   node->addAttribute("colour1", resourceLocator->getPath(cColour1));
   node->addAttribute("colour2", resourceLocator->getPath(cColour2));
   node->addAttribute("colour3", resourceLocator->getPath(cColour3));
@@ -134,7 +134,7 @@ void ResourceModelSpindizzyCraftGyroscope::save(DOMNodeWriter* node, IResourceLo
   node->addAttribute("outline", resourceLocator->getPath(cColourOutline));
 }
 
-void ResourceModelSpindizzyCraftGyroscope::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor) {
+void ResourceModelSpindizzyCraftGyroscope::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resourceAccessor) {
   cColour1       = resourceAccessor->getColour(node->getAttribute("colour1"));
   cColour2       = resourceAccessor->getColour(node->getAttribute("colour2"));
   cColour3       = resourceAccessor->getColour(node->getAttribute("colour3"));

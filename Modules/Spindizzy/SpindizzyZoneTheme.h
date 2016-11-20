@@ -45,7 +45,7 @@ class SpindizzyZoneTheme:public IResourceUseListener<ITexture>,
   public:
   SpindizzyZoneTheme(IThemeSource*);
     
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
   void save(DOMNodeWriter*, IResourceLocator*);
     
   void registerElement(SpindizzyZoneThemeTexture*, ITexture*);

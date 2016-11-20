@@ -40,14 +40,14 @@ class ResourceLayerHUD:public ILayerType {
   public:
   ResourceLayerHUD(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
   
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
 
   /***************************\
    * Implements ILayerType *
   \***************************/
-  ILayer* getLayer(DOMNodeWrapper*, IResourceAccessor*, bool, bool);
+  ILayer* getLayer(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*, bool, bool);
   std::string getInstanceName(ILayer*);
-  void save(DOMNodeWriter*, IResourceLocator*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
 };
 
 #endif

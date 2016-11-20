@@ -22,11 +22,11 @@ ResourceStringFixed::ResourceStringFixed(IDummyModule* module, DOMNodeWrapper* n
   cValue = "";
 }
 
-void ResourceStringFixed::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void ResourceStringFixed::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
   cValue = node->getAttribute("value");
 }
 
-void ResourceStringFixed::save(DOMNodeWriter* node, IResourceLocator* resources) {
+void ResourceStringFixed::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
   node->addAttribute("value", cValue);
 }
 

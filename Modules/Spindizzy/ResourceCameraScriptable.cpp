@@ -108,7 +108,7 @@ void ResourceCameraScriptable::render() {
 //  std::cout << "Location: " << mXLocation << " , " << mYLocation << std::endl;
 }
 
-void ResourceCameraScriptable::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void ResourceCameraScriptable::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
   std::string mLocationPath = node->getAttribute("location");
   cTargetLocation = resources->getVertex(mLocationPath);
   cPreviousLocation = cTargetLocation;
@@ -121,7 +121,7 @@ void ResourceCameraScriptable::initialiseResource(DOMNodeWrapper* node, IResourc
   }
 }
 
-void ResourceCameraScriptable::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+void ResourceCameraScriptable::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
   node->addAttribute("location", resourceLocator->getPath(cTargetLocation));
   DOMNodeWriter* mTransitionCompleteScriptNode = node->addBranch("TransitionCompleteScript");
   cTransitionCompleteScript->save(mTransitionCompleteScriptNode, resourceLocator);

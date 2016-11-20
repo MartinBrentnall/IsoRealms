@@ -30,6 +30,33 @@ TileSplitSurface::TileSplitSurface(bool splitDirection, BlockLocation& location,
   cBlockTypeProperties = blockTypeProperties;
 }
 
+TileSplitSurface::TileSplitSurface(DOMNodeWrapper* node, std::vector<ConditionElement*> elements, ITexture** texture, BlockTypeProperties* blockTypeProperties) {
+  cTexture = texture;
+  cBlockTypeProperties = blockTypeProperties;
+  
+  cLocation.x          = node->getIntegerAttribute("x");
+  cLocation.y          = node->getIntegerAttribute("y");
+  cLocation.z          = node->getIntegerAttribute("z");
+  cCornerHeights[0][0] = node->getIntegerAttribute("heightSW");
+  cCornerHeights[1][0] = node->getIntegerAttribute("heightSE");
+  cCornerHeights[0][1] = node->getIntegerAttribute("heightNW");
+  cCornerHeights[1][1] = node->getIntegerAttribute("heightNE");
+  cSplitDirection      = node->getAttribute("split") == "northEast";
+  
+  cCondition = nullptr;
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "Condition") {
+      cCondition = new Condition(mNode, elements);
+    }
+  }
+}
+
+Condition* TileSplitSurface::getCondition() {
+  return cCondition;
+}
+
 int TileSplitSurface::getSurfaceCellHeight(int x, int y) {
   return cLocation.z;
 }
@@ -141,11 +168,27 @@ bool TileSplitSurface::alligned(int x, int y) {
   return cLocation.x == x && cLocation.y == y;
 }
 
+void TileSplitSurface::saveCache(DOMNodeWriter* node, bool physical) {
+  DOMNodeWriter* mSurfaceNode = node->addBranch("TileSplitSurface");
+  mSurfaceNode->addAttribute("x",        cLocation.x);
+  mSurfaceNode->addAttribute("y",        cLocation.y);
+  mSurfaceNode->addAttribute("z",        cLocation.z);
+  mSurfaceNode->addAttribute("heightSW", cCornerHeights[0][0]);
+  mSurfaceNode->addAttribute("heightSE", cCornerHeights[1][0]);
+  mSurfaceNode->addAttribute("heightNW", cCornerHeights[0][1]);
+  mSurfaceNode->addAttribute("heightNE", cCornerHeights[1][1]);
+  mSurfaceNode->addAttribute("split",    cSplitDirection ? "northEast" : "northWest");
+  mSurfaceNode->addAttribute("physical",  physical ? "true" : "false");
+  if (cCondition != nullptr) {
+    cCondition->save(mSurfaceNode);
+  }
+}
+
 bool TileSplitSurface::contains(Vertex& location, float stepHeight) {
   float mSouthEdge  = cLocation.y - IsoRealmsConstants::BLOCK_RADIUS;
-  float mWestEdge   = cLocation.x  - IsoRealmsConstants::BLOCK_RADIUS;
+  float mWestEdge   = cLocation.x - IsoRealmsConstants::BLOCK_RADIUS;
   float mNorthEdge  = cLocation.y + IsoRealmsConstants::BLOCK_RADIUS;
-  float mEastEdge   = cLocation.x  + IsoRealmsConstants::BLOCK_RADIUS;
+  float mEastEdge   = cLocation.x + IsoRealmsConstants::BLOCK_RADIUS;
   if (location.y > mSouthEdge  && location.y <= mNorthEdge && location.x > mWestEdge && location.x <= mEastEdge) {
     float mSurfaceHeight = getHeightAt(location.x, location.y);
     return location.z <= mSurfaceHeight && location.z >= mSurfaceHeight - stepHeight;

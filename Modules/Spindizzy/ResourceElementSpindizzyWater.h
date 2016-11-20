@@ -48,14 +48,14 @@ class ResourceElementSpindizzyWater:public ISpindizzyBlockType,
   /************************\
    * Implements IResource *
   \************************/
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
 
   /**********************************\
    * Implements ISpindizzyBlockType *
   \**********************************/
   ISpindizzyBlockSet* getSpindizzyBlockInterface();
   BlockTypeProperties* getBlockTypeProperties();
-  void save(DOMNodeWriter*, IResourceLocator*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
   void configureBlock(DOMNodeWrapper*);
 
   /***************************\
@@ -63,7 +63,7 @@ class ResourceElementSpindizzyWater:public ISpindizzyBlockType,
   \***************************/
   void configureElement();
   IElement* getElement();
-  void loadElement(DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*, bool);
+  void loadElement(DOMNodeWrapper*, DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*, bool);
   void setEditingContext(BlockLocation*, IComponentContainer*);
   bool inputEdit(SDL_Event&, ILayerEditingContext*);
   void renderEditingPreview(Vertex&);

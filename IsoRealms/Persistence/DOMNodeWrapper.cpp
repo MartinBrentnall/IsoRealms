@@ -42,10 +42,12 @@ DOMNodeWrapper::DOMNodeWrapper(std::string filename) {
     throw mException;
   }
   cNode = mParser->getDocument(); 
+  cIndex = 0;
 }
 
 DOMNodeWrapper::DOMNodeWrapper(DOMNode* node) {
   cNode = node;
+  cIndex = 0;
 }
 
 std::string DOMNodeWrapper::getAttribute(const std::string& attribute) {
@@ -143,6 +145,14 @@ int DOMNodeWrapper::getChildCount() {
 DOMNodeWrapper* DOMNodeWrapper::getChild(int index) {
   DOMNodeList *mChildNodes = cNode->getChildNodes();
   return new DOMNodeWrapper(mChildNodes->item(index));
+}
+
+DOMNodeWrapper* DOMNodeWrapper::next() {
+  DOMNodeList *mChildNodes = cNode->getChildNodes();
+  if (cIndex < getChildCount()) {
+    return new DOMNodeWrapper(mChildNodes->item(cIndex++));
+  }
+  return nullptr;
 }
 
 std::string DOMNodeWrapper::getNodeName() {

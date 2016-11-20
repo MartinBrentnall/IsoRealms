@@ -75,7 +75,7 @@ class ElementSpindizzyZone:public Element,
   bool cHasFocus;
   
   public:
-  ElementSpindizzyZone(ISpindizzyZoneType*, DOMNodeWrapper*, BlockLocation*, IResourceAccessor*, I3DModelType*, IElementContainer*);
+  ElementSpindizzyZone(ISpindizzyZoneType*, DOMNodeWrapper*, DOMNodeWrapper*, BlockLocation*, IResourceAccessor*, I3DModelType*, IElementContainer*);
   ElementSpindizzyZone(ISpindizzyZoneType*, BlockArea*, IElementContainer* = nullptr, ISpindizzyZoneTheme* = nullptr);
   
   IElementContainer* getElementContainer();
@@ -111,7 +111,7 @@ class ElementSpindizzyZone:public Element,
   bool renderSelectionHighlight();
   void updateEditing(unsigned int);
   void updateRuntime(unsigned int);
-  void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*, BlockLocation&);
   void setDirty(IElement*);
   IElementBounds* getBounds();
   void focusGained(ILayerEditingContext*);

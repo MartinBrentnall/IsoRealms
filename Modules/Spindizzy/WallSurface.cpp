@@ -53,6 +53,10 @@ WallSurface::WallSurface(int x, int y, int z, int length, int height, int topSlo
   cCondition = condition;
 }
 
+Condition* WallSurface::getCondition() {
+  return cCondition;
+}
+
 IWallEdge* WallSurface::getTopEdge(int location) {
   location -= cFacing == IWallSurface::NORTH || cFacing == IWallSurface::SOUTH ? cX : cY;
   int mStartLocation = location * cTopSlope;
@@ -105,6 +109,25 @@ float WallSurface::getTop() {
 
 void WallSurface::destroyCoverage(BlockArea* coverage) {
   delete coverage;
+}
+
+void WallSurface::saveCache(DOMNodeWriter* node, bool physical) {
+  DOMNodeWriter* mSurfaceNode = node->addBranch("WallSurface");
+  mSurfaceNode->addAttribute("x",         cX);
+  mSurfaceNode->addAttribute("y",         cY);
+  mSurfaceNode->addAttribute("z",         cZ);
+  mSurfaceNode->addAttribute("length",    cLength);
+  mSurfaceNode->addAttribute("height",    cHeight);
+  mSurfaceNode->addAttribute("slopeTop",  cTopSlope);
+  mSurfaceNode->addAttribute("direction", cFacing == SOUTH ? "south"
+                                        : cFacing == NORTH ? "north"
+                                        : cFacing == WEST  ? "west"
+                                        :                    "east");
+  mSurfaceNode->addAttribute("physical",  physical ? "true" : "false");
+  
+  if (cCondition != nullptr) {
+    cCondition->save(mSurfaceNode);
+  }
 }
 
 void WallSurface::destroyEdge(IWallEdge* wallEdge) {

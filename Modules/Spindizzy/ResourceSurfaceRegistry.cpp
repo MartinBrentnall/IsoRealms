@@ -201,6 +201,18 @@ IRollableSurface* ResourceSurfaceRegistry::getSurfaceAt(Vertex& location, float 
   return NULL;
 }
 
+void ResourceSurfaceRegistry::saveCache(DOMNodeWriter* node, ICollidableSurfaceElement* element) {
+  std::map<ICollidableSurfaceElement*, ElementSurfaces*>::iterator i = cElementSurfaces.find(element);
+  if (i != cElementSurfaces.end()) {
+    for (IRollableSurface* mTileSurface : i->second->cFloorSurfaces) {
+      mTileSurface->saveCache(node, true);
+    }
+    for (ICollidableWallSurface* mWallSurface : i->second->cWallSurfaces) {
+      mWallSurface->saveCache(node, true);
+    }
+  }
+}
+
 void ResourceSurfaceRegistry::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   // TODO
 }

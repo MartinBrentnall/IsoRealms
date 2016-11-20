@@ -125,13 +125,13 @@ void ResourceModelSpindizzyCraftPyramid::renderIcon() {
   cSampleModel->render();
 }
 
-void ResourceModelSpindizzyCraftPyramid::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+void ResourceModelSpindizzyCraftPyramid::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
   node->addAttribute("top", resourceLocator->getPath(cColourTop));
   node->addAttribute("side", resourceLocator->getPath(cColourSide));
   node->addAttribute("outline", resourceLocator->getPath(cColourOutline));
 }
 
-void ResourceModelSpindizzyCraftPyramid::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor) {
+void ResourceModelSpindizzyCraftPyramid::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resourceAccessor) {
   cColourTop = resourceAccessor->getColour(node->getAttribute("top"));
   cColourSide = resourceAccessor->getColour(node->getAttribute("side"));
   cColourOutline = resourceAccessor->getColour(node->getAttribute("outline"));

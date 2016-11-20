@@ -28,7 +28,7 @@ class SpindizzyZoneThemeTexture:public ITexture {
   public:
   void set(ITexture*);
 
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
 
   /***********************\
    * Implements ITexture *

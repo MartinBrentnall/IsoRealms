@@ -95,6 +95,7 @@ SpindizzyModule::SpindizzyModule(IResourceTypeRegistry* resourceManager):cResour
   cSelectedZoneTheme = nullptr;
   cThemeModelIcon = nullptr;
   cActiveSurfaceRegistry = nullptr;
+  cUsingCache = false;
 }
 
 void SpindizzyModule::setOverview(bool overview) {
@@ -113,27 +114,28 @@ void SpindizzyModule::setActiveUniverse(IUniverse* universe) {
   cActiveSurfaceRegistry = getSurfaceRegistry(universe);
 }
 
-void SpindizzyModule::load(DOMNodeWrapper* node, IResourceRegistry* resources, DOMNodeWrapper* options) {
+void SpindizzyModule::load(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceRegistry* resources, DOMNodeWrapper* options) {
+  cUsingCache = cache != nullptr;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
-    if      (mValueAsString == TAG_RESOURCE_TYPE_CAMERA_SCRIPTABLE)               {cResourceTypeCameraScriptable.loadResource(            mNode, resources);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_BLOCK)         {cResourceTypeElementSpindizzyBlock.loadResource(       mNode, resources);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_CRAFT)         {cResourceTypeElementSpindizzyCraft.loadResource(       mNode, resources);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_ENEMY)         {cResourceTypeElementSpindizzyEnemy.loadResource(       mNode, resources);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_ITEM)          {cResourceTypeElementSpindizzyItem.loadResource(        mNode, resources);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_LIFT)          {cResourceTypeElementSpindizzyLift.loadResource(        mNode, resources);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_WATER)         {cResourceTypeElementSpindizzyWater.loadResource(       mNode, resources);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_ZONE)          {cResourceTypeElementSpindizzyZone.loadResource(        mNode, resources);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_LAYER_BACKGROUND)                {cResourceTypeLayerBackground.loadResource(             mNode, resources);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_LAYER_SPINDIZZY_MAP)             {cResourceTypeLayerSpindizzyMap.loadResource(           mNode, resources);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_CRAFT_GYROSCOPE) {cResourceTypeModelSpindizzyCraftGyroscope.loadResource(mNode, resources);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_CRAFT_PYRAMID)   {cResourceTypeModelSpindizzyCraftPyramid.loadResource(  mNode, resources);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_JEWEL)           {cResourceTypeModelSpindizzyJewel.loadResource(         mNode, resources);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_CRAFT_BALL)    {cResourceTypeTextureSpindizzyCraftBall.loadResource(   mNode, resources);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_BLOCKS_C64)    {cResourceTypeTextureSpindizzyBlocksC64.loadResource(   mNode, resources);}
-    else if (mValueAsString == TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_LIFTS_C64)     {cResourceTypeTextureSpindizzyLiftsC64.loadResource(    mNode, resources);}
-//    else if (mValueAsString == TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_ZONE_THEME)    {cResourceTypeTextureSpindizzyZoneTheme.loadResource(   mNode, resources);}
+    if      (mValueAsString == TAG_RESOURCE_TYPE_CAMERA_SCRIPTABLE)               {cResourceTypeCameraScriptable.loadResource(            mNode, cache, resources);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_BLOCK)         {cResourceTypeElementSpindizzyBlock.loadResource(       mNode, cache, resources);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_CRAFT)         {cResourceTypeElementSpindizzyCraft.loadResource(       mNode, cache, resources);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_ENEMY)         {cResourceTypeElementSpindizzyEnemy.loadResource(       mNode, cache, resources);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_ITEM)          {cResourceTypeElementSpindizzyItem.loadResource(        mNode, cache, resources);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_LIFT)          {cResourceTypeElementSpindizzyLift.loadResource(        mNode, cache, resources);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_WATER)         {cResourceTypeElementSpindizzyWater.loadResource(       mNode, cache, resources);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_ZONE)          {cResourceTypeElementSpindizzyZone.loadResource(        mNode, cache, resources);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_LAYER_BACKGROUND)                {cResourceTypeLayerBackground.loadResource(             mNode, cache, resources);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_LAYER_SPINDIZZY_MAP)             {cResourceTypeLayerSpindizzyMap.loadResource(           mNode, cache, resources);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_CRAFT_GYROSCOPE) {cResourceTypeModelSpindizzyCraftGyroscope.loadResource(mNode, cache, resources);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_CRAFT_PYRAMID)   {cResourceTypeModelSpindizzyCraftPyramid.loadResource(  mNode, cache, resources);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_JEWEL)           {cResourceTypeModelSpindizzyJewel.loadResource(         mNode, cache, resources);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_CRAFT_BALL)    {cResourceTypeTextureSpindizzyCraftBall.loadResource(   mNode, cache, resources);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_BLOCKS_C64)    {cResourceTypeTextureSpindizzyBlocksC64.loadResource(   mNode, cache, resources);}
+    else if (mValueAsString == TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_LIFTS_C64)     {cResourceTypeTextureSpindizzyLiftsC64.loadResource(    mNode, cache, resources);}
+//    else if (mValueAsString == TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_ZONE_THEME)    {cResourceTypeTextureSpindizzyZoneTheme.loadResource(   mNode, cache, resources);}
     else if (mValueAsString == TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_ZONE_THEME)    {
       std::string mThemeName = mNode->getAttribute("name");
       SpindizzyZoneTheme* mTheme = new SpindizzyZoneTheme(this);
@@ -165,7 +167,7 @@ void SpindizzyModule::load(DOMNodeWrapper* node, IResourceRegistry* resources, D
   resources->add(mModuleArgumentValue, "Spindizzy", "Spindizzy");
 }
 
-void SpindizzyModule::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void SpindizzyModule::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
   cLocked = resources->getInteger(node->getAttribute("locks"));
   cCamera = resources->getCamera(node->getAttribute("camera"));
   cCamera->addCameraAngleChangeListener(this);
@@ -186,7 +188,7 @@ void SpindizzyModule::initialiseResource(DOMNodeWrapper* node, IResourceAccessor
   }
 }
 
-void SpindizzyModule::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+void SpindizzyModule::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
   resourceLocator->saveScript(node, "LiftMovedScript", cLiftMovedScript);
   for (SpindizzyBlockState* mBlockState : cBlockStateData) {
     DOMNodeWriter* mBlockStateNode = node->addBranch("BlockState");
@@ -199,22 +201,22 @@ void SpindizzyModule::save(DOMNodeWriter* node, IResourceLocator* resourceLocato
   mThemeIconNode->addAttribute("z", cThemeModelIconLocation.z);
   mThemeIconNode->addAttribute("scale", cThemeModelIconScale);
 
-  cResourceTypeCameraScriptable.saveResources(            node, resourceLocator, TAG_RESOURCE_TYPE_CAMERA_SCRIPTABLE);
-  cResourceTypeElementSpindizzyBlock.saveResources(       node, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_BLOCK);
-  cResourceTypeElementSpindizzyCraft.saveResources(       node, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_CRAFT);
-  cResourceTypeElementSpindizzyEnemy.saveResources(       node, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_ENEMY);
-  cResourceTypeElementSpindizzyItem.saveResources(        node, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_ITEM);
-  cResourceTypeElementSpindizzyLift.saveResources(        node, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_LIFT);
-  cResourceTypeElementSpindizzyWater.saveResources(       node, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_WATER);
-  cResourceTypeElementSpindizzyZone.saveResources(        node, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_ZONE);
-  cResourceTypeLayerBackground.saveResources(             node, resourceLocator, TAG_RESOURCE_TYPE_LAYER_BACKGROUND);
-  cResourceTypeLayerSpindizzyMap.saveResources(           node, resourceLocator, TAG_RESOURCE_TYPE_LAYER_SPINDIZZY_MAP);
-  cResourceTypeModelSpindizzyCraftGyroscope.saveResources(node, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_CRAFT_GYROSCOPE);
-  cResourceTypeModelSpindizzyCraftPyramid.saveResources(  node, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_CRAFT_PYRAMID);
-  cResourceTypeModelSpindizzyJewel.saveResources(         node, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_JEWEL);
-  cResourceTypeTextureSpindizzyCraftBall.saveResources(   node, resourceLocator, TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_CRAFT_BALL);
-  cResourceTypeTextureSpindizzyBlocksC64.saveResources(   node, resourceLocator, TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_BLOCKS_C64);
-  cResourceTypeTextureSpindizzyLiftsC64.saveResources(    node, resourceLocator, TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_LIFTS_C64);
+  cResourceTypeCameraScriptable.saveResources(            node, cache, resourceLocator, TAG_RESOURCE_TYPE_CAMERA_SCRIPTABLE);
+  cResourceTypeElementSpindizzyBlock.saveResources(       node, cache, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_BLOCK);
+  cResourceTypeElementSpindizzyCraft.saveResources(       node, cache, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_CRAFT);
+  cResourceTypeElementSpindizzyEnemy.saveResources(       node, cache, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_ENEMY);
+  cResourceTypeElementSpindizzyItem.saveResources(        node, cache, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_ITEM);
+  cResourceTypeElementSpindizzyLift.saveResources(        node, cache, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_LIFT);
+  cResourceTypeElementSpindizzyWater.saveResources(       node, cache, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_WATER);
+  cResourceTypeElementSpindizzyZone.saveResources(        node, cache, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_ZONE);
+  cResourceTypeLayerBackground.saveResources(             node, cache, resourceLocator, TAG_RESOURCE_TYPE_LAYER_BACKGROUND);
+  cResourceTypeLayerSpindizzyMap.saveResources(           node, cache, resourceLocator, TAG_RESOURCE_TYPE_LAYER_SPINDIZZY_MAP);
+  cResourceTypeModelSpindizzyCraftGyroscope.saveResources(node, cache, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_CRAFT_GYROSCOPE);
+  cResourceTypeModelSpindizzyCraftPyramid.saveResources(  node, cache, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_CRAFT_PYRAMID);
+  cResourceTypeModelSpindizzyJewel.saveResources(         node, cache, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_JEWEL);
+  cResourceTypeTextureSpindizzyCraftBall.saveResources(   node, cache, resourceLocator, TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_CRAFT_BALL);
+  cResourceTypeTextureSpindizzyBlocksC64.saveResources(   node, cache, resourceLocator, TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_BLOCKS_C64);
+  cResourceTypeTextureSpindizzyLiftsC64.saveResources(    node, cache, resourceLocator, TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_LIFTS_C64);
   
   for (std::pair<std::string, SpindizzyZoneTheme*> mTheme : cThemes) {
     DOMNodeWriter* mThemeNode = node->addBranch(TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_ZONE_THEME);
@@ -392,6 +394,12 @@ void SpindizzyModule::unregisterWallSurface(ICollidableWallSurface* wallSurface)
   }
 }
 
+void SpindizzyModule::saveCachePhysicalSurfaces(DOMNodeWriter* node, ICollidableSurfaceElement* element) {
+  for (std::pair<IUniverse*, ResourceSurfaceRegistry*> mSurfaceRegistry : cSurfaceRegistries) {
+    mSurfaceRegistry.second->saveCache(node, element);
+  }
+}
+
 std::vector<ConditionElement*> SpindizzyModule::getConditionElements() {
   std::vector<ConditionElement*> mConditionElements;
   for (unsigned int i = 0; i < cBlockStateData.size(); i++) {
@@ -416,6 +424,10 @@ SpindizzyBlockState* SpindizzyModule::getBlockState(IBoolean* input) {
 
 void SpindizzyModule::setArgumentValue(ElementHandlerSpindizzyBlock* handler) {
   cElementHandlerSpindizzyBlock.setValue(handler);
+}
+
+bool SpindizzyModule::isUsingCache() {
+  return cUsingCache;
 }
 
 void SpindizzyModule::registerElement(IElementContainer* container, ElementSpindizzyEnemy* enemy) {

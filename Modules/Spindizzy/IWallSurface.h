@@ -55,6 +55,8 @@ class IWallSurface {
   virtual BlockArea* getCoverage() = 0;
 
   virtual void destroyCoverage(BlockArea*) = 0;
+  
+  virtual void saveCache(DOMNodeWriter*, bool) = 0;
 };
 
 #endif

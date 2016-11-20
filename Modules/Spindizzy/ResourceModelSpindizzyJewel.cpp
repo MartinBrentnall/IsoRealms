@@ -64,7 +64,7 @@ void ResourceModelSpindizzyJewel::renderIcon() {
   cSampleModel->render();
 }
 
-void ResourceModelSpindizzyJewel::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+void ResourceModelSpindizzyJewel::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
   node->addAttribute("frameColour", resourceLocator->getPath(cColourFrame));
   node->addAttribute("cycleSpeed", cCycleSpeed);
   for (unsigned int i = 0; i < cColoursCycle.size(); i++) {
@@ -73,7 +73,7 @@ void ResourceModelSpindizzyJewel::save(DOMNodeWriter* node, IResourceLocator* re
   }
 }
 
-void ResourceModelSpindizzyJewel::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor) {
+void ResourceModelSpindizzyJewel::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resourceAccessor) {
   std::string mFrameColour = node->getAttribute("frameColour");
   cCycleSpeed = node->getFloatAttribute("cycleSpeed");
   cColourFrame = resourceAccessor->getColour(mFrameColour);

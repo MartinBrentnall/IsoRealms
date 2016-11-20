@@ -34,7 +34,7 @@ class I3DModel:public IResource {
    */
   virtual void render() = 0;
   
-  virtual void initialiseResource(DOMNodeWrapper*, IResourceAccessor*) {};
+  virtual void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*) {};
 
   virtual ~I3DModel() {}
 };

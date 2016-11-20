@@ -21,7 +21,7 @@
 ResourceElementHUDModel::ResourceElementHUDModel(IDummyModule* module, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
 }
 
-void ResourceElementHUDModel::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void ResourceElementHUDModel::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
   cModelLocation.x = node->getFloatAttribute("x");
   cModelLocation.y = node->getFloatAttribute("y");
   cModelLocation.z = node->getFloatAttribute("z");
@@ -32,7 +32,7 @@ void ResourceElementHUDModel::initialiseResource(DOMNodeWrapper* node, IResource
   cCamera = resources->getCamera(mCameraPath);
 }
 
-void ResourceElementHUDModel::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+void ResourceElementHUDModel::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
   node->addAttribute("model", resourceLocator->getPath(cModel));
   node->addAttribute("camera", resourceLocator->getPath(cCamera));
   node->addAttribute("scale", cModelScale);
@@ -41,11 +41,11 @@ void ResourceElementHUDModel::save(DOMNodeWriter* node, IResourceLocator* resour
   node->addAttribute("z", cModelLocation.z, 0.0f);
 }
 
-void ResourceElementHUDModel::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& blockLocation) {
+void ResourceElementHUDModel::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator, BlockLocation& blockLocation) {
   // TODO
 }
 
-void ResourceElementHUDModel::loadElement(DOMNodeWrapper* node, BlockLocation* location, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
+void ResourceElementHUDModel::loadElement(DOMNodeWrapper* node, DOMNodeWrapper* cache, BlockLocation* location, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
   container->addElement(this);
 }
 

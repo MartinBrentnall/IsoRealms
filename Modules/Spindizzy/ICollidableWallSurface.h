@@ -71,6 +71,8 @@ class ICollidableWallSurface {
    * @returns  Location of this wall.
    */
   virtual Vertex* getLocation() = 0;
+
+  virtual void saveCache(DOMNodeWriter*, bool) = 0;
   
   virtual IElementBounds* getBounds() = 0;
 };

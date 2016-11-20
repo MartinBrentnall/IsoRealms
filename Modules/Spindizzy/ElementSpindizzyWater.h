@@ -53,8 +53,12 @@ class ElementSpindizzyWater:public ISpindizzyBlock,
    */
   std::vector<ITileSurfaceTemplate*> getWaterSurfaces();
 
+  void loadSurfaces(DOMNodeWrapper*, std::vector<ConditionElement*>, IUniverse*);
+
   public:
   ElementSpindizzyWater(ISpindizzyBlockType*, BlockLocation*, BlockLocation*, ITexture**, IElementContainer*);
+  
+  void loadCache(DOMNodeWrapper*, std::vector<ConditionElement*>, IUniverse*);
 
   void createSampleSurfaces();
   
@@ -77,7 +81,7 @@ class ElementSpindizzyWater:public ISpindizzyBlock,
   void renderStatic();
   void renderRuntime();
   bool renderSelectionHighlight();
-  void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*, BlockLocation&);
   IElementBounds* getBounds();
   PickedElement* pickElement(Vertex&, Vertex&);
 

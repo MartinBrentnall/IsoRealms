@@ -58,6 +58,7 @@ class ISpindizzyBlockSet:public IConditionElementIcons {
   virtual void unregisterSurfaces(ICollidableSurfaceElement*) = 0;
   virtual void unregisterRollableSurface(IRollableSurface*) = 0;
   virtual void unregisterWallSurface(ICollidableWallSurface*) = 0;
+  virtual void saveCachePhysicalSurfaces(DOMNodeWriter*, ICollidableSurfaceElement*) = 0;
   virtual std::vector<ConditionElement*> getConditionElements() = 0;
   virtual bool isEditing() = 0;
   virtual void staticChanged() = 0;
@@ -66,6 +67,7 @@ class ISpindizzyBlockSet:public IConditionElementIcons {
   virtual ElementHandlerSpindizzyBlock* getElementHandlerSpindizzyBlock(IElementContainer*) = 0;
   virtual void removeElementHandlerSpindizzyBlock(IElementContainer*) = 0;
   virtual void setArgumentValue(ElementHandlerSpindizzyBlock*) = 0;
+  virtual bool isUsingCache() = 0;  
 };
 
 #endif

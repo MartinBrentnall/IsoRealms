@@ -31,7 +31,7 @@ class Texture:public ITexture {
   public:
   Texture(bool = false);
 
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
   
   void setRenderTarget();
 

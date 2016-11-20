@@ -42,8 +42,8 @@ class ResourceVertexFixed:public IVertex {
   void setY(double);
   void setZ(double);
 
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
-  void save(DOMNodeWriter*, IResourceLocator*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
   
   virtual ~ResourceVertexFixed() {}
 };

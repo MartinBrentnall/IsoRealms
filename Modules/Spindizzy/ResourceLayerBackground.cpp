@@ -37,10 +37,10 @@ LayerBackground* ResourceLayerBackground::createInstance(const std::string& name
   return mNamedInstance;
 } 
 
-void ResourceLayerBackground::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void ResourceLayerBackground::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
 }
 
-void ResourceLayerBackground::save(DOMNodeWriter* node, IResourceLocator* resources) {
+void ResourceLayerBackground::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
   for (std::pair<std::string, LayerBackground*> mInstance : cNamedInstances) {
     DOMNodeWriter* mInstanceBranch = node->addBranch("Instance");
     mInstanceBranch->addAttribute("name", mInstance.first);
@@ -56,7 +56,7 @@ void ResourceLayerBackground::save(DOMNodeWriter* node, IResourceLocator* resour
 //   runtimeContext->registerArgument("Map", mInstanceName, mArgumentSource);
 // }
 
-ILayer* ResourceLayerBackground::getLayer(DOMNodeWrapper* node, IResourceAccessor* resources, bool editing, bool asTemplate) {
+ILayer* ResourceLayerBackground::getLayer(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources, bool editing, bool asTemplate) {
   std::string mInstanceName = node->getAttribute("instance");
   return cNamedInstances[mInstanceName];
 }

@@ -33,6 +33,34 @@ ElementSpindizzyWater::ElementSpindizzyWater(ISpindizzyBlockType* elementType, B
   cCondition = nullptr;
 }
 
+void ElementSpindizzyWater::loadSurfaces(DOMNodeWrapper* node, std::vector<ConditionElement*> elements, IUniverse* universe) {
+  for (int i = 0; i < node->getChildCount(); i++) {
+    DOMNodeWrapper* mNode = node->getChild(i);
+    std::string mValueAsString = mNode->getNodeName();
+    if (mValueAsString == "TileSurface") {
+      TileSurface* mSurface = new TileSurface(mNode, elements, cTexture, nullptr, nullptr);
+      std::vector<ISpindizzyTileSurface*>* mFloorSurfaces = mSurface->getCondition() == nullptr ? &cStaticTileSurfaces : &cDynamicTileSurfaces;
+      mFloorSurfaces->push_back(mSurface);
+    }
+  }
+}
+
+void ElementSpindizzyWater::loadCache(DOMNodeWrapper* cache, std::vector<ConditionElement*> elements, IUniverse* universe) {
+  if (cache != nullptr) {
+    DOMNodeWrapper* mNode = cache->next();
+    while (mNode != nullptr) {
+      std::string mValueAsString = mNode->getNodeName();
+      if (mValueAsString == "SpindizzyWater") {
+        loadSurfaces(mNode, elements, universe);
+        return;
+      }
+      mNode = cache->next();
+    }
+    std::cout << "Invalid cache.  Delete the cache and try loading again" << std::endl;
+    exit(1);
+  }
+}
+
 bool ElementSpindizzyWater::isGhost() {
   return true;
 }
@@ -145,6 +173,10 @@ IElementType* ElementSpindizzyWater::getElementType() {
 
 bool ElementSpindizzyWater::initElement(IUniverse* universe, unsigned int pass) {
   ISpindizzyBlockSet* mSurfaceProcessor = cWaterType->getSpindizzyBlockInterface();
+  if (mSurfaceProcessor->isUsingCache()) {
+    return true;
+  }
+  
   switch (pass) {
     case INIT_PROCESS_BLOCKS: {
       std::vector<ITileSurfaceTemplate*> mTopTileSurfaces = getWaterSurfaces();
@@ -170,12 +202,21 @@ bool ElementSpindizzyWater::initElement(IUniverse* universe, unsigned int pass) 
   return true;
 }
 
-void ElementSpindizzyWater::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& location) {
+void ElementSpindizzyWater::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator, BlockLocation& location) {
   std::string mElementTypePath = resourceLocator->getPath(cWaterType);
   node->addAttribute("type", mElementTypePath);
   cStartLocation.saveRelative(node, location);
   // TODO: Only save size if it's bigger than 1.
   cEndLocation.saveRelative(node, cStartLocation, "width", "length", "height");
+  
+  // Save the surface cache
+  DOMNodeWriter* mBlockNode = cache->addBranch("SpindizzyWater");
+  for (ITileSurface* mTileSurface : cStaticTileSurfaces) {
+    mTileSurface->saveCache(mBlockNode, false);
+  }
+  for (ITileSurface* mTileSurface : cDynamicTileSurfaces) {
+    mTileSurface->saveCache(mBlockNode, false);
+  }
 }
 
 IElementBounds* ElementSpindizzyWater::getBounds() {

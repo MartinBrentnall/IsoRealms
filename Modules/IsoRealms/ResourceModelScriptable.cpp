@@ -33,7 +33,7 @@ ResourceModelScriptable::ResourceModelScriptable(IDummyModule* module, DOMNodeWr
   }
 }
 
-void ResourceModelScriptable::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor) {
+void ResourceModelScriptable::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resourceAccessor) {
 //   runtimeContext->add(this, "Factory");
 //   for (int i = 0; i < node->getChildCount(); i++) {
 //     DOMNodeWrapper *mNode = node->getChild(i);
@@ -56,7 +56,7 @@ void ResourceModelScriptable::destroyModel(I3DModel* model) {
   delete model;
 }
 
-void ResourceModelScriptable::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+void ResourceModelScriptable::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
   for (unsigned int i = 0; i < cResources.size(); i++) {
     DOMNodeWriter* mResourceNode = node->addBranch("Instance");
     std::string mResourceName = resourceLocator->getPath(cResources[i]);

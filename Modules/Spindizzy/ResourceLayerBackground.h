@@ -35,14 +35,14 @@ class ResourceLayerBackground:public ILayerType {
   public:
   ResourceLayerBackground(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*); 
     
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
-  void save(DOMNodeWriter*, IResourceLocator*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
   
   /*************************\
    * Implements ILayerType *
   \*************************/
 //   void loadInstance(DOMNodeWrapper*, IRuntimeContext*);
-  ILayer* getLayer(DOMNodeWrapper*, IResourceAccessor*, bool, bool);
+  ILayer* getLayer(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*, bool, bool);
   std::string getInstanceName(ILayer*);
   
   void configureLayer();

@@ -32,8 +32,8 @@ class ResourceStringFixed : public IString {
   public:
   ResourceStringFixed(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
 
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
-  void save(DOMNodeWriter*, IResourceLocator*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
 
   /**********************\
    * Implements IString *

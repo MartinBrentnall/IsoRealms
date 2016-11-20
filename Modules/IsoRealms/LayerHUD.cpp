@@ -18,7 +18,7 @@
  */
 #include "LayerHUD.h"
 
-LayerHUD::LayerHUD(DOMNodeWrapper* node, IResourceAccessor* resources, ILayerType* layerType) {
+LayerHUD::LayerHUD(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources, ILayerType* layerType) {
   cLayerType = layerType;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
@@ -36,7 +36,7 @@ LayerHUD::LayerHUD(DOMNodeWrapper* node, IResourceAccessor* resources, ILayerTyp
       IHUDComponentRelation* mBottomRelation = getRelation(mNode->getAttribute("bottom"), "bottom");
       IHUDComponentRelation* mTopRelation    = getRelation(mNode->getAttribute("top"),    "top");
       HUDComponentPosition* mHUDRenderer = new HUDComponentPosition(mLeftRelation, mRightRelation, mTopRelation, mBottomRelation, mScale, mScale);
-      resources->loadElement(mNode, nullptr, mHUDRenderer, false);
+      resources->loadElement(mNode, cache, nullptr, mHUDRenderer, false);
       cComponents.push_back(mHUDRenderer);
       HUDComponentProxy* mHUDComponentProxy = getComponentProxy(mComponentName);
       mHUDComponentProxy->setHUDComponentPosition(mHUDRenderer);
@@ -140,7 +140,7 @@ bool LayerHUD::inputEditor(SDL_Event& event) {
   return false; // TODO: Implement this
 }
 
-void LayerHUD::save(DOMNodeWriter* node, IResourceLocator* resources) {
+void LayerHUD::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
   node->addAttribute("type", resources->getPath(cLayerType));
   for (unsigned int i = 0; i < cComponents.size(); i++) {
     DOMNodeWriter* mComponentNode = node->addBranch("Element");

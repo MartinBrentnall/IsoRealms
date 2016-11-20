@@ -209,10 +209,10 @@ template <class T> class ElementCollection : public IElementBounds {
     }
   }
   
-  void save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& location) {
+  void save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator, BlockLocation& location) {
     for (T* mElement : cElements) {
       DOMNodeWriter* mElementBranch = node->addBranch("Element");
-      mElement->save(mElementBranch, resourceLocator, location);
+      mElement->save(mElementBranch, cache, resourceLocator, location);
     }
   }
 };

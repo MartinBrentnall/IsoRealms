@@ -51,9 +51,9 @@ void ResourceVertexFixed::setZ(double z) {
   cVertex.z = z;
 }
 
-void ResourceVertexFixed::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void ResourceVertexFixed::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
 }
 
-void ResourceVertexFixed::save(DOMNodeWriter* node, IResourceLocator* resources) {
+void ResourceVertexFixed::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
 }
 

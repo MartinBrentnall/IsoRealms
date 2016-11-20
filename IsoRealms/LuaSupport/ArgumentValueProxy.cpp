@@ -22,7 +22,7 @@ ArgumentValueProxy::ArgumentValueProxy() {
   cArgumentValue = nullptr;
 }
 
-void ArgumentValueProxy::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor) {
+void ArgumentValueProxy::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resourceAccessor) {
   cArgumentValue = resourceAccessor->getArgumentValue(node);
 }
 

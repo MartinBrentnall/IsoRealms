@@ -30,7 +30,7 @@ class SpindizzyZoneThemeColour:public IColour {
   public:
   void set(IColour*);
 
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
 
   /**********************\
    * Implements IColour *

@@ -18,7 +18,7 @@
  */
 #include "SpindizzyZoneThemeColour.h" 
 
-void SpindizzyZoneThemeColour::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void SpindizzyZoneThemeColour::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
   cColour = nullptr;
 }
 

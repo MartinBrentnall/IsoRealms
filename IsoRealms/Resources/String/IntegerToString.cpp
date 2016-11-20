@@ -36,7 +36,7 @@ void IntegerToString::setValue(const std::string&) {
   exit(1);
 }
 
-void IntegerToString::initialiseResource(DOMNodeWrapper*, IResourceAccessor*) {
+void IntegerToString::initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*) {
   std::cout << "WARNING: Trying to initialise wrapper!" << std::endl;
   exit(1);
 }

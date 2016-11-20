@@ -34,18 +34,18 @@ void ResourceElementSpindizzyEnemy::setModelType(I3DModelType* modelType) {
   cModelType = modelType;
 }
 
-void ResourceElementSpindizzyEnemy::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor) {
+void ResourceElementSpindizzyEnemy::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resourceAccessor) {
   std::string mModelPath = node->getAttribute("model");
   cModelType = resourceAccessor->getModelType(mModelPath);
   BlockLocation mIdentityLocation(0, 0, 0);
   cSampleEnemy = new ElementSpindizzyEnemy(this, &mIdentityLocation, cModelType, nullptr);
 }
 
-void ResourceElementSpindizzyEnemy::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+void ResourceElementSpindizzyEnemy::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
   node->addAttribute("model", resourceLocator->getPath(cModelType));
 }
 
-void ResourceElementSpindizzyEnemy::loadElement(DOMNodeWrapper* node, BlockLocation* relative, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
+void ResourceElementSpindizzyEnemy::loadElement(DOMNodeWrapper* node, DOMNodeWrapper* cache, BlockLocation* relative, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
   if (!asTemplate) {
     BlockLocation mLocation;
     mLocation.setRelative(node, *relative);

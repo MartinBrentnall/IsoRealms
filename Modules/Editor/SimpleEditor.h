@@ -171,9 +171,9 @@ class SimpleEditor:public IModule,
   bool componentAt(float, float);
 
   public:
-  void load(DOMNodeWrapper*, IResourceRegistry*, DOMNodeWrapper*);
+  void load(DOMNodeWrapper*, DOMNodeWrapper*, IResourceRegistry*, DOMNodeWrapper*);
   
-  void initialiseResource(DOMNodeWrapper*, IResourceAccessor*);
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
 
   IResourceSelector* getResourceSelector();
   
@@ -218,7 +218,7 @@ class SimpleEditor:public IModule,
   /*************************\
    * Implements ILayerType *
   \*************************/
-  ILayer* getLayer(DOMNodeWrapper*, IResourceAccessor*, bool, bool);
+  ILayer* getLayer(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*, bool, bool);
   std::string getInstanceName(ILayer*);
   
   /*********************\
@@ -230,7 +230,7 @@ class SimpleEditor:public IModule,
   void updateEditing(unsigned int);
   bool input(SDL_Event&);
   bool inputEditor(SDL_Event&);
-  void save(DOMNodeWriter*, IResourceLocator*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
   void staticCnanged();
   void initRuntime();
   void initEditor();

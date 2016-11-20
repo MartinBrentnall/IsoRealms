@@ -26,7 +26,7 @@ ResourceElementSpindizzyBlock::ResourceElementSpindizzyBlock(ISpindizzyBlockSet*
   cStartLocation = nullptr;
 }
 
-void ResourceElementSpindizzyBlock::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor) {
+void ResourceElementSpindizzyBlock::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resourceAccessor) {
   cBlockTypeProperties.configure(node, resourceAccessor);
 }
 
@@ -42,7 +42,7 @@ IElement* ResourceElementSpindizzyBlock::getElement() {
   return nullptr;
 }
 
-void ResourceElementSpindizzyBlock::loadElement(DOMNodeWrapper* node, BlockLocation* zoneLocation, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
+void ResourceElementSpindizzyBlock::loadElement(DOMNodeWrapper* node, DOMNodeWrapper* cache, BlockLocation* zoneLocation, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
   if (!asTemplate) {
     BlockLocation mStartLocation;
     BlockLocation mEndLocation;
@@ -58,8 +58,9 @@ void ResourceElementSpindizzyBlock::loadElement(DOMNodeWrapper* node, BlockLocat
     mEndLocation.y--;
     ElementHandlerSpindizzyBlock* mHandler = cModuleInterface->getElementHandlerSpindizzyBlock(container);  
     ElementSpindizzyBlock* mLoadedBlock = createBlock(&mStartLocation, &mEndLocation, cBlockProperties, mAddition, mHandler);
-    cContent.push_back(mLoadedBlock);
     IUniverse* mUniverse = container->getUniverse();
+    mLoadedBlock->loadCache(cache, mElements, mUniverse);
+    cContent.push_back(mLoadedBlock);
     cModuleInterface->registerSurfaceProvider(mLoadedBlock, false, mUniverse);
     cModuleInterface->setDirty();
     mHandler->addElement(mLoadedBlock);
@@ -80,7 +81,7 @@ BlockTypeProperties* ResourceElementSpindizzyBlock::getBlockTypeProperties() {
   return &cBlockTypeProperties;
 }
 
-void ResourceElementSpindizzyBlock::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+void ResourceElementSpindizzyBlock::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
   cBlockTypeProperties.save(node, resourceLocator);
 }
 

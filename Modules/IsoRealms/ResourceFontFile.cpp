@@ -21,7 +21,7 @@
 ResourceFontFile::ResourceFontFile(IDummyModule* module, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
 }
 
-void ResourceFontFile::initialiseResource(DOMNodeWrapper* node, IResourceAccessor* resources) {
+void ResourceFontFile::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
   cFilename = node->getAttribute("file");
   cDetail = node->getIntegerAttribute("detail");
   std::string mFontLocation = System::getProgramResource(cFilename);
@@ -62,7 +62,7 @@ void ResourceFontFile::initialiseResource(DOMNodeWrapper* node, IResourceAccesso
   FT_Done_FreeType(library);
 }
 
-void ResourceFontFile::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+void ResourceFontFile::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
   node->addAttribute("file", cFilename);
   node->addAttribute("detail", cDetail);
 }
