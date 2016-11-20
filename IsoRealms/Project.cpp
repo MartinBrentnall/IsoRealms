@@ -21,6 +21,7 @@
 Project::Project() {
   cResources.setEditing(true, this);
   cCompleted = false;
+  cFirstInitialised = false;
 }
 
 Project::Project(DOMNodeWrapper* node, DOMNodeWrapper* cache, const std::string& projectName, IEditingContext* editingContext, bool asTemplate, DOMNodeWrapper* options) {
@@ -102,6 +103,7 @@ Project::Project(DOMNodeWrapper* node, DOMNodeWrapper* cache, const std::string&
     cInitScript->execute();
   }
   cCompleted = false;
+  cFirstInitialised = false;
   
   std::cout << "Loaded Project!" << std::endl;
 }
@@ -118,6 +120,18 @@ void Project::updateRuntime(unsigned int ticks) {
   }
   for (unsigned int i = 0; i < cDynamicElements.size(); i++) {
     cDynamicElements[i]->update(ticks);
+  }
+  
+  if (!cFirstInitialised) {
+    cModuleRegistry.projectInitialised();
+    cFirstInitialised = true;
+  }
+}
+
+void Project::initialised() {
+  if (!cFirstInitialised) {
+    cModuleRegistry.projectInitialised();
+    cFirstInitialised = true;
   }
 }
 

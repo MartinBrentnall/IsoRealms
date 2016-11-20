@@ -198,6 +198,7 @@ class SpindizzyModule:public IModule,
   \**********************/
   void load(DOMNodeWrapper*, DOMNodeWrapper*, IResourceRegistry*, DOMNodeWrapper*);
   void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
+  void projectInitialised();
   
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
   

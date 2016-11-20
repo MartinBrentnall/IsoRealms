@@ -36,6 +36,8 @@ class IModule:public IResourceSource {
    */
   virtual void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*) = 0;
 
+  virtual void projectInitialised() = 0;
+
   virtual ~IModule() {}
 };
 

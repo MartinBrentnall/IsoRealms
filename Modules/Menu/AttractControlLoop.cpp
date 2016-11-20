@@ -85,6 +85,10 @@ void AttractControlLoop::load(DOMNodeWrapper* node, DOMNodeWrapper* cache, IReso
 void AttractControlLoop::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
 }
   
+void AttractControlLoop::projectInitialised() {
+  // Nothing to do.
+}
+
 std::vector<ICommand*> AttractControlLoop::parseEventCommands(DOMNodeWrapper* node) {
   std::vector<ICommand*> mSceneCommands;
   for (int i = 0; i < node->getChildCount(); i++) {

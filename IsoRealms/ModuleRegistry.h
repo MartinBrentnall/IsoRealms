@@ -99,6 +99,8 @@ class ModuleRegistry:public IModuleRegistry {
 
   void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
 
+  void projectInitialised();
+  
   /******************************\
    * Implements IModuleRegistry *
   \******************************/

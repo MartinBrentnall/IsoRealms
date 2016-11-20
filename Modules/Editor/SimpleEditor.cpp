@@ -95,6 +95,10 @@ void SimpleEditor::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLoca
   // TODO
 }
 
+void SimpleEditor::projectInitialised() {
+  // Nothing to do.
+}
+
 void SimpleEditor::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
   IResourceManager* mProjectResources = cProject->getResourceManager();
   for (int i = 0; i < node->getChildCount(); i++) {
@@ -459,6 +463,7 @@ void SimpleEditor::updateRuntime(unsigned int milliseconds) {
     } else {
       glBindTexture(GL_TEXTURE_2D, 0);
     }
+    cProject->initialised();
   }
 }
 

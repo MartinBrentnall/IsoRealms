@@ -140,6 +140,12 @@ void ModuleRegistry::removeModule(IModule* instance) {
   dlclose(mHandleToClose);
 }
 
+void ModuleRegistry::projectInitialised() {
+  for (std::pair<std::string, IModule*> mModule : cModuleInstances) {
+    mModule.second->projectInitialised();
+  }
+}
+
 ModuleRegistry::~ModuleRegistry() {
 //   for (std::map<std::string, IModule*>::iterator j = cModuleInstances.begin(); j != cModuleInstances.end(); j++) {
 //     IModule* mInstance = j->second;

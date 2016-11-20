@@ -230,6 +230,10 @@ void SpindizzyModule::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceL
   node->addAttribute("camera", mCameraPath);
 }
 
+void SpindizzyModule::projectInitialised() {
+  cUsingCache = false;
+}
+
 void SpindizzyModule::createThemeResources(DOMNodeWrapper* node, IResourceRegistry* runtimeContext) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);

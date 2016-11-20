@@ -172,6 +172,8 @@ class SimpleEditor:public IModule,
 
   public:
   void load(DOMNodeWrapper*, DOMNodeWrapper*, IResourceRegistry*, DOMNodeWrapper*);
+
+  void projectInitialised();
   
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
 

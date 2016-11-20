@@ -53,6 +53,8 @@ class IProject {
   virtual void addObjectSelectionListener(IObjectSelectionListener*) = 0;
   
   virtual void staticChanged() = 0;
+  
+  virtual void initialised() = 0;
 
   virtual ~IProject() {}
 };

@@ -43,6 +43,7 @@ class Project:public IProject {
   IScriptCall* cInitScript;
   bool cCompleted;
   std::string cFileName;
+  bool cFirstInitialised;
   
   std::vector<IDynamicElement*> cDynamicElements;
   
@@ -57,6 +58,7 @@ class Project:public IProject {
   void inputRuntime(SDL_Event&);
   void renderRuntime();
   void updateRuntime(unsigned int);
+  void initialised();
   ILayer* getDefaultLayer();
   void finish();
   bool hasCompleted();

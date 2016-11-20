@@ -161,6 +161,10 @@ void IsoRealmsModule::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceL
   }
 }
 
+void IsoRealmsModule::projectInitialised() {
+  // Nothing to do.
+}
+
 extern "C" IModule* create(IResourceTypeRegistry* resourceTypeRegistry) {
   return new IsoRealmsModule(resourceTypeRegistry);
 }
