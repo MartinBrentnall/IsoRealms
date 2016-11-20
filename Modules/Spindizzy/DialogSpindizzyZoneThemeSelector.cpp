@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Martin Brentnall
+ * Copyright 2016 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -27,6 +27,7 @@ DialogSpindizzyZoneThemeSelector::DialogSpindizzyZoneThemeSelector(IComponentCon
   }
   cSpindizzyZoneThemeBrowser->addResourceSelectionListener(this);
   cSpindizzyZoneThemeAccessor = spindizzyZoneThemeAccessor;
+  cWindowWorkspace = container;
 }
 
 std::string DialogSpindizzyZoneThemeSelector::getPath(IResource* resource) {
@@ -39,9 +40,11 @@ std::string DialogSpindizzyZoneThemeSelector::getPath(IResource* resource) {
   return "<Theme name not found>";
 }
 
+void DialogSpindizzyZoneThemeSelector::editResource(ISpindizzyZoneTheme* theme, IResourceAccessor* resources, IEditingContext* editingContext) {
+  DialogSpindizzyZoneTheme* mDialog = new DialogSpindizzyZoneTheme(cWindowWorkspace, resources);
+  cWindowWorkspace->addComponent(mDialog);
+}
+
 void DialogSpindizzyZoneThemeSelector::resourceSelected(ISpindizzyZoneTheme* spindizzyZoneTheme) {
   cSpindizzyZoneThemeAccessor->spindizzyZoneThemeSelected(spindizzyZoneTheme);
 }
-
-
-

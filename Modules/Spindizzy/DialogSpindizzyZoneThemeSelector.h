@@ -25,24 +25,27 @@
 #include <IsoRealms/Resources/IResourceSelectionListener.h>
 #include <IsoRealms/Resources/IResourceType.h>
 
+#include "DialogSpindizzyZoneTheme.h"
 #include "ISpindizzyZoneThemeAccessor.h"
 #include "SpindizzyZoneTheme.h"
 #include "SpindizzyZoneThemeIcon.h"
 
 class DialogSpindizzyZoneThemeSelector:public Dialog,
-                                       public ICustomResourceManager,
+                                       public ICustomResourceManager<ISpindizzyZoneTheme>,
                                        public IResourceSelectionListener<ISpindizzyZoneTheme> {
   private:
   ISpindizzyZoneThemeAccessor* cSpindizzyZoneThemeAccessor;
   ComponentCustomResourceBrowser<ISpindizzyZoneTheme, SpindizzyZoneThemeIcon>* cSpindizzyZoneThemeBrowser;
+  IComponentContainer* cWindowWorkspace;
     
   public:
   DialogSpindizzyZoneThemeSelector(IComponentContainer*, IResourceAccessor*, ISpindizzyZoneThemeAccessor*);
 
-  /*************************************\
-   * Implements ICustomResourceManager *
-  \*************************************/
+  /*********************************************************\
+   * Implements ICustomResourceManager<SpindizzyZoneTheme> *
+  \*********************************************************/
   std::string getPath(IResource*);
+  void editResource(ISpindizzyZoneTheme*, IResourceAccessor*, IEditingContext*);
   
   /*************************************************************\
    * Implements IResourceSelectionListener<SpindizzyZoneTheme> *

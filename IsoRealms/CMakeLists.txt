@@ -32,6 +32,7 @@ add_library(IsoRealms SHARED
   GUI/CloseDialogCommand.cpp
   GUI/ComponentEdgeLayout.cpp
   GUI/ComponentResourceColourSelector.cpp
+  GUI/ComponentResourceTextureSelector.cpp
   GUI/ComponentTable.cpp
   GUI/Container.cpp
   GUI/Dialog.cpp

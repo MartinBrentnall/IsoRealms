@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Martin Brentnall
+ * Copyright 2016 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,18 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_CUSTOM_RESOURCE_MANAGER_H
-#define I_CUSTOM_RESOURCE_MANAGER_H
+#ifndef DIALOG_SPINDIZZY_ZONE_THEME_H
+#define DIALOG_SPINDIZZY_ZONE_THEME_H
 
-#include <string>
-
-#include <IsoRealms/Resources/IResource.h>
+#include <IsoRealms/GUI/Dialog.h>
+#include <IsoRealms/IComponentContainer.h>
 #include <IsoRealms/Resources/IResourceAccessor.h>
 
-template <class TYPE> class ICustomResourceManager {
+class DialogSpindizzyZoneTheme:public Dialog {
   public:
-  virtual std::string getPath(IResource*) = 0;
-  virtual void editResource(TYPE*, IResourceAccessor*, IEditingContext*) = 0;
+  DialogSpindizzyZoneTheme(IComponentContainer*, IResourceAccessor*);
 };
 
 #endif
+

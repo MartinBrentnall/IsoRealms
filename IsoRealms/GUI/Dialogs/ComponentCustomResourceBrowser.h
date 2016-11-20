@@ -94,14 +94,14 @@ template <class TYPE, class ICON> class ComponentCustomResourceBrowser:public Re
   
   IEditingContext* cEditingContext;
   std::map<TYPE*, Icon<TYPE>*> cResourceIcons;
-  ICustomResourceManager* cProjectResources;
+  ICustomResourceManager<TYPE>* cProjectResources;
   IResourceAccessor* cEditorResources; // TODO: Need to set this!
   IResourceRegistry* cResourceRegistry;
   Icon<TYPE>* cSelected;
   std::vector<IResourceSelectionListener<TYPE>*> cListeners;
   
   public:
-  ComponentCustomResourceBrowser(IResourceAccessor* resources, IEditingContext* editingContext, ICustomResourceManager* projectResources, float padding) : RectangularComponent("IsoRealms/GUI/Dialogs/ComponentCustomResourceBrowser", resources) {
+  ComponentCustomResourceBrowser(IResourceAccessor* resources, IEditingContext* editingContext, ICustomResourceManager<TYPE>* projectResources, float padding) : RectangularComponent("IsoRealms/GUI/Dialogs/ComponentCustomResourceBrowser", resources) {
     cEditingContext = editingContext;
     cEditorResources = resources;
     cProjectResources = projectResources;
@@ -160,7 +160,7 @@ template <class TYPE, class ICON> class ComponentCustomResourceBrowser:public Re
   }
 
   void editResource(TYPE* resource) {
-//    cProjectResources->editResource(resource, cEditorResources, cEditingContext);
+    cProjectResources->editResource(resource, cEditorResources, cEditingContext);
   }
   
   void removeResource(TYPE* resource) {
