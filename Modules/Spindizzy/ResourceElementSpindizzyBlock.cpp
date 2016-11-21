@@ -50,6 +50,10 @@ void ResourceElementSpindizzyBlock::loadElement(DOMNodeWrapper* node, DOMNodeWra
     cBlockProperties->reset();
     mStartLocation.setRelative(node, *zoneLocation);
     mEndLocation.setRelative(node, mStartLocation, "width", "length", "height");
+    std::string mBehaviour = node->getAttribute("behaviour");
+    bool mInvisible    = mBehaviour == "invisible";
+    bool mGhost        = mBehaviour == "ghost"   || mBehaviour == "dynamicGhost";
+    bool mForceDynamic = mBehaviour == "dynamic" || mBehaviour == "dynamicGhost";
     std::vector<ConditionElement*> mElements = cModuleInterface->getConditionElements();
     cBlockProperties->setup(node, mElements);
     bool mAddition = mStartLocation.z <= mEndLocation.z;
@@ -57,7 +61,7 @@ void ResourceElementSpindizzyBlock::loadElement(DOMNodeWrapper* node, DOMNodeWra
     mEndLocation.x--;
     mEndLocation.y--;
     ElementHandlerSpindizzyBlock* mHandler = cModuleInterface->getElementHandlerSpindizzyBlock(container);  
-    ElementSpindizzyBlock* mLoadedBlock = createBlock(&mStartLocation, &mEndLocation, cBlockProperties, mAddition, mHandler);
+    ElementSpindizzyBlock* mLoadedBlock = createBlock(&mStartLocation, &mEndLocation, cBlockProperties, mAddition, mHandler, mInvisible, mGhost, mForceDynamic);
     IUniverse* mUniverse = container->getUniverse();
     mLoadedBlock->loadCache(cache, mElements, mUniverse);
     cContent.push_back(mLoadedBlock);
@@ -116,7 +120,7 @@ bool ResourceElementSpindizzyBlock::keyDown(SDLKey& key, ILayerEditingContext* e
         if (cEditingBlock != nullptr) {
           delete cEditingBlock;
         }
-        cEditingBlock = createBlock(&mStartLocation, &mStartLocation, cBlockProperties, key == SDLK_SPACE, mHandler);
+        cEditingBlock = createBlock(&mStartLocation, &mStartLocation, cBlockProperties, key == SDLK_SPACE, mHandler, false, false, false);
         cStartLocation = new Vertex(*mLocation);
       } else {
         editingContext->removeCursorRestriction(mContainer);
@@ -126,7 +130,7 @@ bool ResourceElementSpindizzyBlock::keyDown(SDLKey& key, ILayerEditingContext* e
         cModuleInterface->registerSurfaceProvider(cEditingBlock, true, mUniverse);
         cStartLocation = nullptr;
         BlockLocation mIdentityBlockLocation(0, 0, 0);
-        cEditingBlock = createBlock(&mIdentityBlockLocation, &mIdentityBlockLocation, cBlockProperties, true, nullptr);
+        cEditingBlock = createBlock(&mIdentityBlockLocation, &mIdentityBlockLocation, cBlockProperties, true, nullptr, false, false, false);
         cEditingBlock->createSampleSurfaces();
         editingContext->staticChanged();
       }
@@ -163,7 +167,7 @@ void ResourceElementSpindizzyBlock::renderEditingPreview(Vertex& location) {
   glEnable(GL_BLEND);
   if (cEditingBlock == nullptr) {
     BlockLocation mIdentityBlockLocation(0, 0, 0);
-    cEditingBlock = createBlock(&mIdentityBlockLocation, &mIdentityBlockLocation, cBlockProperties, true, nullptr);
+    cEditingBlock = createBlock(&mIdentityBlockLocation, &mIdentityBlockLocation, cBlockProperties, true, nullptr, false, false, false);
     cEditingBlock->createSampleSurfaces();
     cStartLocation = nullptr;
   }
@@ -190,7 +194,7 @@ void ResourceElementSpindizzyBlock::renderIcon() {
   glColor3f(1.0f, 1.0f, 1.0f);
   if (cSampleBlock == nullptr) {
     BlockLocation mIdentityBlockLocation(0, 0, 0);
-    cSampleBlock = createBlock(&mIdentityBlockLocation, &mIdentityBlockLocation, cBlockProperties, true, nullptr);
+    cSampleBlock = createBlock(&mIdentityBlockLocation, &mIdentityBlockLocation, cBlockProperties, true, nullptr, false, false, false);
     cSampleBlock->createSampleSurfaces();
   }
   cSampleBlock->renderRuntime();
@@ -231,8 +235,8 @@ void ResourceElementSpindizzyBlock::removeElement(IElement* element) {
   }
 }
 
-ElementSpindizzyBlock* ResourceElementSpindizzyBlock::createBlock(BlockLocation* startLocation, BlockLocation* endLocation, SpindizzyBlockProperties* blockProperties, bool addition, ElementHandlerSpindizzyBlock* handler) {
-  return new ElementSpindizzyBlock(this, startLocation, endLocation, blockProperties, addition, handler);
+ElementSpindizzyBlock* ResourceElementSpindizzyBlock::createBlock(BlockLocation* startLocation, BlockLocation* endLocation, SpindizzyBlockProperties* blockProperties, bool addition, ElementHandlerSpindizzyBlock* handler, bool invisible, bool ghost, bool forceDynamic) {
+  return new ElementSpindizzyBlock(this, startLocation, endLocation, blockProperties, addition, handler, invisible, ghost, forceDynamic);
 }
 
 void ResourceElementSpindizzyBlock::resourcePendingDestruction(ITexture* destroyee, ITexture* replacement) {

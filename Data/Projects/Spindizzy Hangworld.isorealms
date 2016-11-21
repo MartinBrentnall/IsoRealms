@@ -210,40 +210,40 @@
     <IntegerTimer name="SpindizzyTimeLimit" value="150000"/>
     <LayerHUD name="HUD"/>
     <ModelElement name="Compass">
-      <Element height="1" length="1" type="Spindizzy/ArrowNorth" width="1" x="0" y="0" z="0"/>
+      <Element behaviour="dynamic" height="1" length="1" type="Spindizzy/ArrowNorth" width="1" x="0" y="0" z="0"/>
     </ModelElement>
     <ModelElement name="ClueDiamondLeft">
-      <Element height="1" length="1" type="Spindizzy/SwitchDiamondLeft" width="1" x="0" y="0" z="0"/>
+      <Element behaviour="dynamic" height="1" length="1" type="Spindizzy/SwitchDiamondLeft" width="1" x="0" y="0" z="0"/>
     </ModelElement>
     <ModelElement name="ClueDiamondRight">
-      <Element height="1" length="1" type="Spindizzy/SwitchDiamondRight" width="1" x="0" y="0" z="0"/>
+      <Element behaviour="dynamic" height="1" length="1" type="Spindizzy/SwitchDiamondRight" width="1" x="0" y="0" z="0"/>
     </ModelElement>
     <ModelElement name="ClueDiamondBoth">
-      <Element height="1" length="1" type="Spindizzy/SwitchDiamondBoth" width="1" x="0" y="0" z="0"/>
+      <Element behaviour="dynamic" height="1" length="1" type="Spindizzy/SwitchDiamondBoth" width="1" x="0" y="0" z="0"/>
     </ModelElement>
     <ModelElement name="ClueCircleNone">
-      <Element height="1" length="1" type="Spindizzy/SwitchCircleNone" width="1" x="0" y="0" z="0"/>
+      <Element behaviour="dynamic" height="1" length="1" type="Spindizzy/SwitchCircleNone" width="1" x="0" y="0" z="0"/>
     </ModelElement>
     <ModelElement name="ClueCircleLeft">
-      <Element height="1" length="1" type="Spindizzy/SwitchCircleLeft" width="1" x="0" y="0" z="0"/>
+      <Element behaviour="dynamic" height="1" length="1" type="Spindizzy/SwitchCircleLeft" width="1" x="0" y="0" z="0"/>
     </ModelElement>
     <ModelElement name="ClueCircleRight">
-      <Element height="1" length="1" type="Spindizzy/SwitchCircleRight" width="1" x="0" y="0" z="0"/>
+      <Element behaviour="dynamic" height="1" length="1" type="Spindizzy/SwitchCircleRight" width="1" x="0" y="0" z="0"/>
     </ModelElement>
     <ModelElement name="ClueCircleBoth">
-      <Element height="1" length="1" type="Spindizzy/SwitchCircleBoth" width="1" x="0" y="0" z="0"/>
+      <Element behaviour="dynamic" height="1" length="1" type="Spindizzy/SwitchCircleBoth" width="1" x="0" y="0" z="0"/>
     </ModelElement>
     <ModelElement name="ClueSquareNone">
-      <Element height="1" length="1" type="Spindizzy/SwitchSquareNone" width="1" x="0" y="0" z="0"/>
+      <Element behaviour="dynamic" height="1" length="1" type="Spindizzy/SwitchSquareNone" width="1" x="0" y="0" z="0"/>
     </ModelElement>
     <ModelElement name="ClueSquareLeft">
-      <Element height="1" length="1" type="Spindizzy/SwitchSquareLeft" width="1" x="0" y="0" z="0"/>
+      <Element behaviour="dynamic" height="1" length="1" type="Spindizzy/SwitchSquareLeft" width="1" x="0" y="0" z="0"/>
     </ModelElement>
     <ModelElement name="ClueSquareRight">
-      <Element height="1" length="1" type="Spindizzy/SwitchSquareRight" width="1" x="0" y="0" z="0"/>
+      <Element behaviour="dynamic" height="1" length="1" type="Spindizzy/SwitchSquareRight" width="1" x="0" y="0" z="0"/>
     </ModelElement>
     <ModelElement name="ClueSquareBoth">
-      <Element height="1" length="1" type="Spindizzy/SwitchSquareBoth" width="1" x="0" y="0" z="0"/>
+      <Element behaviour="dynamic" height="1" length="1" type="Spindizzy/SwitchSquareBoth" width="1" x="0" y="0" z="0"/>
     </ModelElement>
     <ModelElement name="ThemeModelIcon">
       <Element height="1" length="1" type="Spindizzy/Plain" width="1" x="0" y="0" z="0"/>

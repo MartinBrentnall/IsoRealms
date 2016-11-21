@@ -19,11 +19,11 @@
 #include "ModelElement.h"
 
 ModelElement::ModelElement(IElement** element, Vertex* location, float scale) {
-  cElement = element;
-  cLocation = location;
-  cScale = scale;
+  cElement      = element;
+  cLocation     = location;
+  cScale        = scale;
   cUpdateStatic = true;
-  cDisplayList = 0;
+  cDisplayList  = 0;
 }
 
 void ModelElement::update(unsigned int milliseconds) {

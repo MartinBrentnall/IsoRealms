@@ -20,7 +20,7 @@
 
 const unsigned int ElementSpindizzyBlock::INIT_PROCESS_BLOCKS = 0;
 
-ElementSpindizzyBlock::ElementSpindizzyBlock(ISpindizzyBlockType* elementType, BlockLocation* startLocation, BlockLocation* endLocation, SpindizzyBlockProperties* blockProperties, bool addition, ISpindizzyElementManager* container) {
+ElementSpindizzyBlock::ElementSpindizzyBlock(ISpindizzyBlockType* elementType, BlockLocation* startLocation, BlockLocation* endLocation, SpindizzyBlockProperties* blockProperties, bool addition, ISpindizzyElementManager* container, bool invisible, bool ghost, bool forceDynamic) {
   cStartLocation = BlockLocation(endLocation->x > startLocation->x              ? startLocation->x : endLocation->x,
                                  endLocation->y > startLocation->y              ? startLocation->y : endLocation->y,
                                 (endLocation->z > startLocation->z) == addition ? startLocation->z : endLocation->z);
@@ -38,6 +38,10 @@ ElementSpindizzyBlock::ElementSpindizzyBlock(ISpindizzyBlockType* elementType, B
   cBlockType = elementType;
   cContainer = container;
   cPropertyCondition = new PropertyBlockCondition(this);
+  cFlags = FLAGS_NORMAL;
+  cFlags |= invisible    ? FLAG_INVISIBLE     : 0;
+  cFlags |= ghost        ? FLAG_GHOST         : 0;
+  cFlags |= forceDynamic ? FLAG_FORCE_DYNAMIC : 0;
 }
 
 ElementSpindizzyBlock::ElementSpindizzyBlock(ISpindizzyBlockType* elementType, DOMNodeWrapper* node) {
@@ -73,7 +77,7 @@ void ElementSpindizzyBlock::loadSurfaces(DOMNodeWrapper* node, std::vector<Condi
       if (mPhysical) {
         mSpindizzyBlockInterface->registerRollableSurface(this, mSurface, universe);
       } else {
-        std::vector<ISpindizzyTileSurface*>* mFloorSurfaces = mSurface->getCondition() == nullptr ? &cStaticTileSurfaces : &cDynamicTileSurfaces;
+        std::vector<ISpindizzyTileSurface*>* mFloorSurfaces = mSurface->getCondition() != nullptr || (cFlags & FLAG_FORCE_DYNAMIC) ? &cDynamicTileSurfaces : &cStaticTileSurfaces;
         mFloorSurfaces->push_back(mSurface);
       }
     } else if (mValueAsString == "TileSplitSurface") {
@@ -82,7 +86,7 @@ void ElementSpindizzyBlock::loadSurfaces(DOMNodeWrapper* node, std::vector<Condi
       if (mPhysical) {
         mSpindizzyBlockInterface->registerRollableSurface(this, mSurface, universe);
       } else {
-      std::vector<ISpindizzyTileSurface*>* mFloorSurfaces = mSurface->getCondition() == nullptr ? &cStaticTileSurfaces : &cDynamicTileSurfaces;
+      std::vector<ISpindizzyTileSurface*>* mFloorSurfaces = mSurface->getCondition() != nullptr || (cFlags & FLAG_FORCE_DYNAMIC) ? &cDynamicTileSurfaces : &cStaticTileSurfaces;
       mFloorSurfaces->push_back(mSurface);
       }
     } else if (mValueAsString == "WallSurface") {
@@ -128,7 +132,7 @@ void ElementSpindizzyBlock::loadWallSurface(DOMNodeWrapper* node, std::vector<Co
     ISpindizzyBlockSet* mSpindizzyBlockSet = cBlockType->getSpindizzyBlockInterface();
     mSpindizzyBlockSet->registerWallSurface(this, mSurface, universe);
   } else {
-    std::vector<ISpindizzyWallSurface*>* mWallSurfaces = mWallCondition == nullptr ? &cStaticWallSurfaces : &cDynamicWallSurfaces;
+    std::vector<ISpindizzyWallSurface*>* mWallSurfaces = mWallCondition != nullptr || cFlags & FLAG_FORCE_DYNAMIC ? &cDynamicWallSurfaces : &cStaticWallSurfaces;
     mWallSurfaces->push_back(mSurface);
   } 
 }
@@ -443,6 +447,7 @@ void ElementSpindizzyBlock::renderStatic() {
       delete cStaticTileSurfaces[i];
     }
   }
+  cStaticTileSurfaces.clear();
 
 /* std::vector<ITileSurface*> mBottomTileSurfaces = calculateTileSurfaces(ITileSurface::DOWN);
     for (unsigned int i = 0; i < mBottomTileSurfaces.size(); i++) {
@@ -455,6 +460,7 @@ void ElementSpindizzyBlock::renderStatic() {
       delete cStaticWallSurfaces[i];
     }
   }
+  cStaticWallSurfaces.clear();
   
 //   if (mEditing) {
 //     cStaticTileSurfaces.clear();
@@ -649,24 +655,28 @@ void ElementSpindizzyBlock::generateWallSurfaces(IUniverse* universe, IWallSurfa
   ISpindizzyBlockSet* mSpindizzyBlockSet = cBlockType->getSpindizzyBlockInterface();
   
   // Physical surfaces
-  std::vector<IWallSurfaceTemplate*> mWallSurfaces = calculateWallSurfaces(faceDirection, false);
-  for (unsigned int i = 0; i < mWallSurfaces.size(); i++) {
-    ISpindizzyWallSurface* mWallSurface = createSubSurface(mWallSurfaces[i]);
-    mSpindizzyBlockSet->registerWallSurface(this, mWallSurface, universe);
-    mSpindizzyBlockSet->destroyWallTemplate(this, mWallSurfaces[i], false);
+  if (!(cFlags & FLAG_GHOST)) {
+    std::vector<IWallSurfaceTemplate*> mWallSurfaces = calculateWallSurfaces(faceDirection, false);
+    for (unsigned int i = 0; i < mWallSurfaces.size(); i++) {
+      ISpindizzyWallSurface* mWallSurface = createSubSurface(mWallSurfaces[i]);
+      mSpindizzyBlockSet->registerWallSurface(this, mWallSurface, universe);
+      mSpindizzyBlockSet->destroyWallTemplate(this, mWallSurfaces[i], false);
+    }
   }
 
   // Visual surfaces
-  mWallSurfaces = calculateWallSurfaces(faceDirection, true);
-  for (unsigned int i = 0; i < mWallSurfaces.size(); i++) {
-    Condition* mCondition = mWallSurfaces[i]->getCondition();
-    ISpindizzyWallSurface* mWallSurface = createSubSurface(mWallSurfaces[i]);
-    if (mCondition != nullptr) {
-      cDynamicWallSurfaces.push_back(mWallSurface);
-    } else {
-      cStaticWallSurfaces.push_back(mWallSurface);
+  if (!(cFlags & FLAG_INVISIBLE)) {
+    std::vector<IWallSurfaceTemplate*> mWallSurfaces = calculateWallSurfaces(faceDirection, true);
+    for (unsigned int i = 0; i < mWallSurfaces.size(); i++) {
+      Condition* mCondition = mWallSurfaces[i]->getCondition();
+      ISpindizzyWallSurface* mWallSurface = createSubSurface(mWallSurfaces[i]);
+      if (mCondition != nullptr || cFlags & FLAG_FORCE_DYNAMIC) {
+        cDynamicWallSurfaces.push_back(mWallSurface);
+      } else {
+        cStaticWallSurfaces.push_back(mWallSurface);
+      }
+      mSpindizzyBlockSet->destroyWallTemplate(this, mWallSurfaces[i], true);
     }
-    mSpindizzyBlockSet->destroyWallTemplate(this, mWallSurfaces[i], true);
   }
 }
 
@@ -695,33 +705,37 @@ bool ElementSpindizzyBlock::initElement(IUniverse* universe, unsigned int pass) 
     case INIT_PROCESS_BLOCKS: {
       
       // Physical surfaces
-      std::vector<ITileSurfaceTemplate*> mTopTileSurfaces = calculateTileSurfaces(ITileSurface::UP, false);
-      for (unsigned int i = 0; i < mTopTileSurfaces.size(); i++) {
-        int mNorth = mTopTileSurfaces[i]->getNorth();
-        int mEast = mTopTileSurfaces[i]->getEast();
-        int mSouth = mTopTileSurfaces[i]->getSouth();
-        int mWest = mTopTileSurfaces[i]->getWest();
-        Condition* mCondition = mTopTileSurfaces[i]->getCondition();
-        ISpindizzyTileSurface* mTileSurface = createSubSurface(ITileSurface::UP, mNorth, mEast, mSouth, mWest, mCondition);
-        mSpindizzyBlockSet->registerRollableSurface(this, mTileSurface, universe);
-        mSpindizzyBlockSet->destroyTileTemplate(this, mTopTileSurfaces[i], false);
+      if (!(cFlags & FLAG_GHOST)) {
+        std::vector<ITileSurfaceTemplate*> mTopTileSurfaces = calculateTileSurfaces(ITileSurface::UP, false);
+        for (unsigned int i = 0; i < mTopTileSurfaces.size(); i++) {
+          int mNorth = mTopTileSurfaces[i]->getNorth();
+          int mEast = mTopTileSurfaces[i]->getEast();
+          int mSouth = mTopTileSurfaces[i]->getSouth();
+          int mWest = mTopTileSurfaces[i]->getWest();
+          Condition* mCondition = mTopTileSurfaces[i]->getCondition();
+          ISpindizzyTileSurface* mTileSurface = createSubSurface(ITileSurface::UP, mNorth, mEast, mSouth, mWest, mCondition);
+          mSpindizzyBlockSet->registerRollableSurface(this, mTileSurface, universe);
+          mSpindizzyBlockSet->destroyTileTemplate(this, mTopTileSurfaces[i], false);
+        }
       }
 
       // Visual surfaces
-      mTopTileSurfaces = calculateTileSurfaces(ITileSurface::UP, true);
-      for (unsigned int i = 0; i < mTopTileSurfaces.size(); i++) {
-        Condition* mCondition = mTopTileSurfaces[i]->getCondition();
-        int mNorth = mTopTileSurfaces[i]->getNorth();
-        int mEast = mTopTileSurfaces[i]->getEast();
-        int mSouth = mTopTileSurfaces[i]->getSouth();
-        int mWest = mTopTileSurfaces[i]->getWest();
-        ISpindizzyTileSurface* mTileSurface = createSubSurface(ITileSurface::UP, mNorth, mEast, mSouth, mWest, mCondition);
-        if (mCondition != nullptr) {
-          cDynamicTileSurfaces.push_back(mTileSurface);
-        } else {
-          cStaticTileSurfaces.push_back(mTileSurface);
+      if (!(cFlags & FLAG_INVISIBLE)) {
+        std::vector<ITileSurfaceTemplate*> mTopTileSurfaces = calculateTileSurfaces(ITileSurface::UP, true);
+        for (unsigned int i = 0; i < mTopTileSurfaces.size(); i++) {
+          Condition* mCondition = mTopTileSurfaces[i]->getCondition();
+          int mNorth = mTopTileSurfaces[i]->getNorth();
+          int mEast = mTopTileSurfaces[i]->getEast();
+          int mSouth = mTopTileSurfaces[i]->getSouth();
+          int mWest = mTopTileSurfaces[i]->getWest();
+          ISpindizzyTileSurface* mTileSurface = createSubSurface(ITileSurface::UP, mNorth, mEast, mSouth, mWest, mCondition);
+          if (mCondition != nullptr || cFlags & FLAG_FORCE_DYNAMIC) {
+            cDynamicTileSurfaces.push_back(mTileSurface);
+          } else {
+            cStaticTileSurfaces.push_back(mTileSurface);
+          }
+          mSpindizzyBlockSet->destroyTileTemplate(this, mTopTileSurfaces[i], true);
         }
-        mSpindizzyBlockSet->destroyTileTemplate(this, mTopTileSurfaces[i], true);
       }
 
       generateWallSurfaces(universe, IWallSurface::SOUTH);

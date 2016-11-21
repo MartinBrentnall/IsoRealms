@@ -78,7 +78,7 @@ class ResourceElementSpindizzyBlock:public ISpindizzyBlockType,
    * @param bool  true to create an addition, false to create a subtraction.
    * @returns  The new usable block.
    */
-  ElementSpindizzyBlock* createBlock(BlockLocation*, BlockLocation*, SpindizzyBlockProperties*, bool, ElementHandlerSpindizzyBlock*);
+  ElementSpindizzyBlock* createBlock(BlockLocation*, BlockLocation*, SpindizzyBlockProperties*, bool, ElementHandlerSpindizzyBlock*, bool, bool, bool);
   
   /**********************************\
    * Implements ISpindizzyBlockType *

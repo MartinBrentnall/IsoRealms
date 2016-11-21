@@ -51,6 +51,11 @@ class ElementSpindizzyBlock:public ICollidableSurfaceElement,
                             public IArgument,
                             public IElementBounds {
   private:
+  const static char FLAGS_NORMAL       = 0;
+  const static char FLAG_INVISIBLE     = 0x1;
+  const static char FLAG_GHOST         = 0x2;
+  const static char FLAG_FORCE_DYNAMIC = 0x4;
+    
   class PropertyBlockCondition:public IPropertyValue<Condition*> {
     private:
     ElementSpindizzyBlock* cParent;
@@ -85,6 +90,7 @@ class ElementSpindizzyBlock:public ICollidableSurfaceElement,
   int cSouthWestHeight;
   int cSouthEastHeight;
   SplitType cSplitType;
+  char cFlags;
 
   /**
    * When a block is sloped, the bottom of the block can be stepped along with
@@ -195,7 +201,7 @@ class ElementSpindizzyBlock:public ICollidableSurfaceElement,
   void loadWallSurface(DOMNodeWrapper*, std::vector<ConditionElement*>, IUniverse*);
 
   public:
-  ElementSpindizzyBlock(ISpindizzyBlockType*, BlockLocation*, BlockLocation*, SpindizzyBlockProperties*, bool, ISpindizzyElementManager*);
+  ElementSpindizzyBlock(ISpindizzyBlockType*, BlockLocation*, BlockLocation*, SpindizzyBlockProperties*, bool, ISpindizzyElementManager*, bool, bool, bool);
   ElementSpindizzyBlock(ISpindizzyBlockType*, DOMNodeWrapper*);
   
   void loadCache(DOMNodeWrapper*, std::vector<ConditionElement*>, IUniverse*);
