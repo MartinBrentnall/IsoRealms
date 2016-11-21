@@ -27,6 +27,7 @@
 #include <IsoRealms/Persistence/DOMNodeWrapper.h>
 #include <IsoRealms/Properties/IPropertyValue.h>
 #include <IsoRealms/Properties/PropertyCondition.h>
+#include <IsoRealms/Properties/PropertyEnum.h>
 #include <IsoRealms/Resources/Texture/ITexture.h>
 #include <IsoRealms/IVisualElement.h>
 #include <IsoRealms/MiscFunctions.h>
@@ -55,6 +56,13 @@ class ElementSpindizzyBlock:public ICollidableSurfaceElement,
   const static char FLAG_INVISIBLE     = 0x1;
   const static char FLAG_GHOST         = 0x2;
   const static char FLAG_FORCE_DYNAMIC = 0x4;
+  
+  const static unsigned int BEHAVIOUR_NORMAL        = 0;
+  const static unsigned int BEHAVIOUR_INVISIBLE     = 1;
+  const static unsigned int BEHAVIOUR_GHOST         = 2;
+  const static unsigned int BEHAVIOUR_DYNAMIC       = 3;
+  const static unsigned int BEHAVIOUR_DYNAMIC_GHOST = 4;
+  
     
   class PropertyBlockCondition:public IPropertyValue<Condition*> {
     private:
@@ -64,6 +72,16 @@ class ElementSpindizzyBlock:public ICollidableSurfaceElement,
     PropertyBlockCondition(ElementSpindizzyBlock*);
     void setValue(Condition*);
     Condition* getValue();
+  };
+  
+  class PropertyBlockBehaviour:public IPropertyValue<unsigned int> {
+    private:
+    ElementSpindizzyBlock* cParent;
+    
+    public:
+    PropertyBlockBehaviour(ElementSpindizzyBlock*);
+    void setValue(unsigned int);
+    unsigned int getValue();
   };
   
   enum SplitType {
@@ -99,6 +117,7 @@ class ElementSpindizzyBlock:public ICollidableSurfaceElement,
   bool cSteppedBottom;
   Condition* cCondition;
   IPropertyValue<Condition*>* cPropertyCondition;
+  IPropertyValue<unsigned int>* cPropertyBehaviour;
 
   /**
    * Return the stepping of the slope along the X axis.  A negative value

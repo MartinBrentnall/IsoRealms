@@ -51,7 +51,7 @@ class AbstractRectangularComponent:public IRectangularComponent {
   /****************************\
    * Implements IHUDComponent *
   \****************************/
-  bool contains(float, float);
+  virtual bool contains(float, float);
   virtual void gainedFocus();
   virtual void lostFocus();
 

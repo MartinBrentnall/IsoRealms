@@ -65,7 +65,7 @@ void ResourceElementSpindizzyBlock::loadElement(DOMNodeWrapper* node, DOMNodeWra
     IUniverse* mUniverse = container->getUniverse();
     mLoadedBlock->loadCache(cache, mElements, mUniverse);
     cContent.push_back(mLoadedBlock);
-    cModuleInterface->registerSurfaceProvider(mLoadedBlock, false, mUniverse);
+    cModuleInterface->registerSurfaceProvider(mLoadedBlock, false, mUniverse, !mInvisible, !mGhost);
     cModuleInterface->setDirty();
     mHandler->addElement(mLoadedBlock);
   }
@@ -127,7 +127,7 @@ bool ResourceElementSpindizzyBlock::keyDown(SDLKey& key, ILayerEditingContext* e
         mHandler->addElement(cEditingBlock);
         cContent.push_back(cEditingBlock);
         IUniverse* mUniverse = mContainer->getUniverse();
-        cModuleInterface->registerSurfaceProvider(cEditingBlock, true, mUniverse);
+        cModuleInterface->registerSurfaceProvider(cEditingBlock, true, mUniverse, true, true);
         cStartLocation = nullptr;
         BlockLocation mIdentityBlockLocation(0, 0, 0);
         cEditingBlock = createBlock(&mIdentityBlockLocation, &mIdentityBlockLocation, cBlockProperties, true, nullptr, false, false, false);

@@ -50,7 +50,7 @@ void ResourceElementSpindizzyWater::loadElement(DOMNodeWrapper* node, DOMNodeWra
     IUniverse* mUniverse = container->getUniverse();
     mLoadedWater->loadCache(cache, mElements, mUniverse);
     cContent.push_back(mLoadedWater);
-    cModuleInterface->registerSurfaceProvider(mLoadedWater, false, mUniverse);
+    cModuleInterface->registerSurfaceProvider(mLoadedWater, false, mUniverse, true, true);
     cModuleInterface->setDirty();
     mHandler->addElement(mLoadedWater);
   }

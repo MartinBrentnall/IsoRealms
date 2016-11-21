@@ -293,9 +293,13 @@ ResourceGeometryProcessor* SpindizzyModule::getGeometryProcessor(IUniverse* univ
   /*********************************\
    * Implements ISpindizzyBlockSet *
   \*********************************/
-void SpindizzyModule::registerSurfaceProvider(IGeometricElement* element, bool recalculationSurroundings, IUniverse* universe) {
-  getGeometryProcessor(universe, false)->registerGeometricElement(element, recalculationSurroundings);
-  getGeometryProcessor(universe, true )->registerGeometricElement(element, recalculationSurroundings);
+void SpindizzyModule::registerSurfaceProvider(IGeometricElement* element, bool recalculationSurroundings, IUniverse* universe, bool visual, bool physical) {
+  if (physical) {
+    getGeometryProcessor(universe, false)->registerGeometricElement(element, recalculationSurroundings);
+  }
+  if (visual) {
+    getGeometryProcessor(universe, true )->registerGeometricElement(element, recalculationSurroundings);
+  }
 }
 
 void SpindizzyModule::unregisterSurfaceProvider(IGeometricElement* element) {

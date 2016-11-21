@@ -38,6 +38,7 @@ ElementSpindizzyBlock::ElementSpindizzyBlock(ISpindizzyBlockType* elementType, B
   cBlockType = elementType;
   cContainer = container;
   cPropertyCondition = new PropertyBlockCondition(this);
+  cPropertyBehaviour = new PropertyBlockBehaviour(this);
   cFlags = FLAGS_NORMAL;
   cFlags |= invisible    ? FLAG_INVISIBLE     : 0;
   cFlags |= ghost        ? FLAG_GHOST         : 0;
@@ -447,7 +448,9 @@ void ElementSpindizzyBlock::renderStatic() {
       delete cStaticTileSurfaces[i];
     }
   }
-  cStaticTileSurfaces.clear();
+  if (!mEditing) {
+    cStaticTileSurfaces.clear();
+  }
 
 /* std::vector<ITileSurface*> mBottomTileSurfaces = calculateTileSurfaces(ITileSurface::DOWN);
     for (unsigned int i = 0; i < mBottomTileSurfaces.size(); i++) {
@@ -460,7 +463,9 @@ void ElementSpindizzyBlock::renderStatic() {
       delete cStaticWallSurfaces[i];
     }
   }
-  cStaticWallSurfaces.clear();
+  if (!mEditing) {
+    cStaticWallSurfaces.clear();
+  }
   
 //   if (mEditing) {
 //     cStaticTileSurfaces.clear();
@@ -685,9 +690,16 @@ std::string ElementSpindizzyBlock::getTypeName() {
 }
   
 std::vector<IObjectProperty*> ElementSpindizzyBlock::getProperties(IComponentContainer* container) {
+  std::vector<std::string> mBehaviourItems;
+  mBehaviourItems.push_back("Normal");
+  mBehaviourItems.push_back("Invisible");
+  mBehaviourItems.push_back("Ghost");
+  mBehaviourItems.push_back("Dynamic");
+  mBehaviourItems.push_back("Dynamic Ghost");
   std::vector<IObjectProperty*> mProperties;
   ISpindizzyBlockSet* mModuleInterface = cBlockType->getSpindizzyBlockInterface();
   mProperties.push_back(new PropertyCondition("Condition", cPropertyCondition, mModuleInterface, container));
+  mProperties.push_back(new PropertyEnum(     "Behaviour", cPropertyBehaviour, mBehaviourItems,  container));
   return mProperties;
 }
 
@@ -805,6 +817,14 @@ Condition* ElementSpindizzyBlock::getCondition() {
 void ElementSpindizzyBlock::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator, BlockLocation& zoneLocation) {
   std::string mBlockTypePath = resourceLocator->getPath(cBlockType);
   node->addAttribute("type", mBlockTypePath);
+  if (cFlags != FLAGS_NORMAL) {
+    unsigned int mBehavour = cPropertyBehaviour->getValue();
+    node->addAttribute("behaviour", mBehavour == BEHAVIOUR_INVISIBLE     ? "invisible"
+                                  : mBehavour == BEHAVIOUR_GHOST         ? "ghost"
+                                  : mBehavour == BEHAVIOUR_DYNAMIC       ? "dynamic"
+                                  : mBehavour == BEHAVIOUR_DYNAMIC_GHOST ? "dynamicGhost"
+                                  :                                        "normal");
+  }
   cStartLocation.saveRelative(node, zoneLocation);
   // TODO: Only save size if it's bigger than 1.
   BlockLocation mEndLocation = cEndLocation;
@@ -860,6 +880,26 @@ void ElementSpindizzyBlock::PropertyBlockCondition::setValue(Condition* conditio
 
 Condition* ElementSpindizzyBlock::PropertyBlockCondition::getValue() {
   return cParent->cCondition;
+}
+
+ElementSpindizzyBlock::PropertyBlockBehaviour::PropertyBlockBehaviour(ElementSpindizzyBlock* parent) {
+  cParent = parent;
+}
+
+void ElementSpindizzyBlock::PropertyBlockBehaviour::setValue(unsigned int value) {
+  cParent->cFlags = value == BEHAVIOUR_INVISIBLE     ? FLAG_INVISIBLE
+                  : value == BEHAVIOUR_GHOST         ? FLAG_GHOST
+                  : value == BEHAVIOUR_DYNAMIC       ? FLAG_FORCE_DYNAMIC
+                  : value == BEHAVIOUR_DYNAMIC_GHOST ? FLAG_GHOST | FLAG_FORCE_DYNAMIC
+                  :                                    FLAGS_NORMAL;
+}
+
+unsigned int ElementSpindizzyBlock::PropertyBlockBehaviour::getValue() {
+  return cParent->cFlags & FLAG_INVISIBLE                                        ? BEHAVIOUR_INVISIBLE
+      : (cParent->cFlags & FLAG_GHOST) && (cParent->cFlags & FLAG_FORCE_DYNAMIC) ? BEHAVIOUR_DYNAMIC_GHOST
+      :  cParent->cFlags & FLAG_GHOST                                            ? BEHAVIOUR_GHOST
+      :  cParent->cFlags & FLAG_FORCE_DYNAMIC                                    ? BEHAVIOUR_DYNAMIC
+      :                                                                            BEHAVIOUR_NORMAL;
 }
 
 ElementSpindizzyBlock::~ElementSpindizzyBlock() {

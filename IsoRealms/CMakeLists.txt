@@ -39,6 +39,7 @@ add_library(IsoRealms SHARED
   GUI/Dialogs/ComponentColourSelector.cpp
   GUI/Dialogs/ComponentFileSelector.cpp
   GUI/Dialogs/DialogOKCancelUndo.cpp
+  GUI/DropDownListComponent.cpp
   GUI/EdgeRelation.cpp
   GUI/FlexibleGridLayoutComponent.cpp
   GUI/GridLayoutComponent.cpp
@@ -94,6 +95,7 @@ add_library(IsoRealms SHARED
   Properties/ConditionValueEditorComponent.cpp
   Properties/DialogCondition.cpp
   Properties/PropertyCondition.cpp
+  Properties/PropertyEnum.cpp
   Properties/PropertyInteger.cpp
   Rectangle.cpp
   Resources/Boolean/Boolean.cpp

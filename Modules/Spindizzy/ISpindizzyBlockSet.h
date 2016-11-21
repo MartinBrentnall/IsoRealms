@@ -38,7 +38,7 @@ class SpindizzyBlockState;
 
 class ISpindizzyBlockSet:public IConditionElementIcons {
   public:
-  virtual void registerSurfaceProvider(IGeometricElement*, bool, IUniverse*) = 0;
+  virtual void registerSurfaceProvider(IGeometricElement*, bool, IUniverse*, bool, bool) = 0;
   virtual void unregisterSurfaceProvider(IGeometricElement*) = 0;
   
   /**
