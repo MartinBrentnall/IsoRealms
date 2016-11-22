@@ -31,10 +31,10 @@ void ComponentResourceTextureSelector::render(SelectableComponent* component) {
   float mBottom = component->getBottom();
   cTexture->set();
   glBegin(GL_QUADS);
-  glVertex2f(mLeft,  mBottom);
-  glVertex2f(mRight, mBottom);
-  glVertex2f(mRight, mTop);
-  glVertex2f(mLeft,  mTop);
+  glTexCoord2f(0.0f, 1.0f); glVertex2f(mLeft,  mBottom);
+  glTexCoord2f(1.0f, 1.0f); glVertex2f(mRight, mBottom);
+  glTexCoord2f(1.0f, 0.0f); glVertex2f(mRight, mTop);
+  glTexCoord2f(0.0f, 0.0f); glVertex2f(mLeft,  mTop);
   glEnd();
 }
 

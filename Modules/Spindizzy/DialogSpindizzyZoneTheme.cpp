@@ -18,6 +18,46 @@
  */
 #include "DialogSpindizzyZoneTheme.h"
 
-DialogSpindizzyZoneTheme::DialogSpindizzyZoneTheme(IComponentContainer* container, IResourceAccessor* resources) : Dialog(container, "Modules/Spindizzy/DialogSpindizzyZoneTheme", resources) {
+DialogSpindizzyZoneTheme::DialogSpindizzyZoneTheme(IEditingContext* editingContext, IResourceAccessor* resources, ISpindizzyZoneTheme* theme) : DialogOKCancelUndo(editingContext, resources, "Spindizzy Zone Theme", theme->getName()) {
+  cTable = new ComponentTable(2, 0.02f);
+  IResourceSelector* mResourceSelector = editingContext->getResourceSelector();
+  Configuration* mConfiguration = Configuration::getInstance();
+  ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
+  float mAspectRatio = mScreen->getAspectRatio();
+  
+  std::map<std::string, ITexture*> mTextureElements = theme->getTextureElements();
+  for (std::pair<std::string, ITexture*> mTextureElement : mTextureElements) {
+    TextLabelComponent* mTextureName = new TextLabelComponent(mTextureElement.first + ": ");
+    ComponentResourceTextureSelector* mTextureSelector = new ComponentResourceTextureSelector(this, mTextureElement.second, mResourceSelector);
+    SelectableComponent* mTextureSelectable = new SelectableComponent(mTextureSelector, 0.1f * mAspectRatio, 0.1f);
+    std::vector<ISizedComponent*> mRow;
+    mRow.push_back(mTextureName);
+    mRow.push_back(mTextureSelectable);
+    cTable->addRow(mRow);
+  }
+
+  std::map<std::string, IColour*> mColourElements = theme->getColourElements();
+  for (std::pair<std::string, IColour*> mColourElement : mColourElements) {
+    TextLabelComponent* mColourName = new TextLabelComponent(mColourElement.first);
+    ComponentResourceColourSelector* mColourSelector = new ComponentResourceColourSelector(this, mColourElement.second, mResourceSelector);
+    SelectableComponent* mColourSelectable = new SelectableComponent(mColourSelector, 0.1f * mAspectRatio, 0.1f);
+    std::vector<ISizedComponent*> mRow;
+    mRow.push_back(mColourName);
+    mRow.push_back(mColourSelectable);
+    cTable->addRow(mRow);
+  }
+  
+  addComponent("content", cTable);
+}
+
+void DialogSpindizzyZoneTheme::undo() {
+  // TODO: Implement this
+}
+
+void DialogSpindizzyZoneTheme::selected(ISelector*, IColour*) {
+  // TODO: Implement this
+}
+
+void DialogSpindizzyZoneTheme::selected(ISelector*, ITexture*) {
   // TODO: Implement this
 }

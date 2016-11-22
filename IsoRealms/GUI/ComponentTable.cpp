@@ -19,9 +19,10 @@
  */
 #include "ComponentTable.h"
 
-ComponentTable::ComponentTable(unsigned int columns) {
+ComponentTable::ComponentTable(unsigned int columns, float padding) {
   cColumns = columns;
   cFocusedComponent = nullptr;
+  cPadding = padding;
 }
 
 void ComponentTable::addRow(std::vector<ISizedComponent*> row) {
@@ -48,9 +49,9 @@ float ComponentTable::getWidth() {
     for (unsigned int x = 0; x < cGridComponents[0].size(); x++) {
       mGridWidth += getColumnWidth(x);
     }
-    mGridWidth += cGridComponents[0].size() * 0.02f;
+    mGridWidth += cGridComponents[0].size() * cPadding;
   } else {
-    mGridWidth = 0.02f;
+    mGridWidth = cPadding;
   }
   return mGridWidth;
 }
@@ -60,7 +61,7 @@ float ComponentTable::getHeight() {
   for (unsigned int y = 0; y < cGridComponents.size(); y++) {
     mGridHeight += getRowHeight(y);
   }
-  return mGridHeight + cGridComponents.size() * 0.02f;
+  return mGridHeight + cGridComponents.size() * cPadding;
 }
 
 float ComponentTable::getRowHeight(unsigned int row) {
@@ -145,33 +146,33 @@ ComponentTable::CellLayout::CellLayout(ComponentTable* parent, unsigned int row,
 float ComponentTable::CellLayout::getLeft() {
   float cLeftOffset = cParent->getLeft();
   for (unsigned int x = 0; x < cColumn; x++) {
-    cLeftOffset += cParent->getColumnWidth(x);
+    cLeftOffset += cParent->getColumnWidth(x) + cParent->cPadding;
   }
-  return cLeftOffset;
+  return cLeftOffset + cParent->cPadding / 2.0f;
 }
 
 float ComponentTable::CellLayout::getRight() {
   float cLeftOffset = cParent->getLeft();
   for (unsigned int x = 0; x <= cColumn; x++) {
-    cLeftOffset += cParent->getColumnWidth(x);
+    cLeftOffset += cParent->getColumnWidth(x) + cParent->cPadding;
   }
-  return cLeftOffset;
+  return cLeftOffset - cParent->cPadding / 2.0f;
 }
 
 float ComponentTable::CellLayout::getTop() {
   float cTopOffset = cParent->getTop();
   for (unsigned int y = 0; y < cRow; y++) {
-    cTopOffset -= cParent->getRowHeight(y);
+    cTopOffset -= cParent->getRowHeight(y) + cParent->cPadding;
   }
-  return cTopOffset;
+  return cTopOffset - cParent->cPadding / 2.0f;
 }
 
 float ComponentTable::CellLayout::getBottom() {
   float cTopOffset = cParent->getTop();
   for (unsigned int y = 0; y <= cRow; y++) {
-    cTopOffset -= cParent->getRowHeight(y);
+    cTopOffset -= cParent->getRowHeight(y) + cParent->cPadding;
   }
-  return cTopOffset;
+  return cTopOffset + cParent->cPadding / 2.0f;
 }
 
 

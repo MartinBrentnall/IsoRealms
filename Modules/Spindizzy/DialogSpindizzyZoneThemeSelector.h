@@ -36,10 +36,9 @@ class DialogSpindizzyZoneThemeSelector:public Dialog,
   private:
   ISpindizzyZoneThemeAccessor* cSpindizzyZoneThemeAccessor;
   ComponentCustomResourceBrowser<ISpindizzyZoneTheme, SpindizzyZoneThemeIcon>* cSpindizzyZoneThemeBrowser;
-  IComponentContainer* cWindowWorkspace;
     
   public:
-  DialogSpindizzyZoneThemeSelector(IComponentContainer*, IResourceAccessor*, ISpindizzyZoneThemeAccessor*);
+  DialogSpindizzyZoneThemeSelector(IEditingContext*, IResourceAccessor*, ISpindizzyZoneThemeAccessor*);
 
   /*********************************************************\
    * Implements ICustomResourceManager<SpindizzyZoneTheme> *

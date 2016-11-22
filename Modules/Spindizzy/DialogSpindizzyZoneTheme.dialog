@@ -19,6 +19,6 @@
 -->
 
 <Dialog title="Zone Theme">
-  <Container name="zoneTheme"/>
+  <ScrollableContainer name="zoneTheme"/>
 </Dialog>
 

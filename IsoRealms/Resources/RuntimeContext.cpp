@@ -42,7 +42,6 @@ void RuntimeContext::add(IBoolean* value,                             const std:
 void RuntimeContext::add(ICamera* camera,                             const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {cResources->add(camera,              cEntityPath, name, node, cache);}
 void RuntimeContext::add(IBoundaries* boundaries,                     const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {cResources->add(boundaries,          cEntityPath, name, node, cache);}
 void RuntimeContext::add(IColour* colour,                             const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {cResources->add(colour,              cEntityPath, name, node, cache);}
-void RuntimeContext::add(IComponentCustomType* componentCustomType,   const std::string& name                                             ) {cResources->add(componentCustomType, cEntityPath, name);}
 void RuntimeContext::add(IElementType* type,                          const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {cResources->add(type,                cEntityPath, name, node, cache);}
 void RuntimeContext::add(IFont* font,                                 const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {cResources->add(font,                cEntityPath, name, node, cache);}
 void RuntimeContext::add(IGlobalVariable* variable,                   const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {cResources->add(variable,            cEntityPath, name, node, cache);}

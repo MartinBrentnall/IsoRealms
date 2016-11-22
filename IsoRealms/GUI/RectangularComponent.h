@@ -33,7 +33,6 @@
 #include "FlexibleGridLayoutComponent.h"
 #include "GridLayoutComponent.h"
 #include "IComponentHolder.h"
-#include "../IComponentCustomType.h"
 #include "IDialogValueListener.h"
 #include "IntegerField.h" 
 #include "ISizedComponent.h"

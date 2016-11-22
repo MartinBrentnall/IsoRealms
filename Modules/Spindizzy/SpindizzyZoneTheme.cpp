@@ -76,6 +76,28 @@ void SpindizzyZoneTheme::set() {
 //   }
 }
 
+std::string SpindizzyZoneTheme::getName() {
+  return cThemeSource->getThemeName(this);
+}
+
+std::map<std::string, ITexture*> SpindizzyZoneTheme::getTextureElements() {
+  std::map<std::string, ITexture*> mElements;
+  for (std::pair<SpindizzyZoneThemeTexture*, ITexture*> mTexture : cTextures) {
+    std::string mName = cThemeSource->getThemeElement(mTexture.first);
+    mElements[mName] = mTexture.second;
+  }
+  return mElements;
+}
+
+std::map<std::string, IColour*> SpindizzyZoneTheme::getColourElements() {
+  std::map<std::string, IColour*> mElements;
+  for (std::pair<SpindizzyZoneThemeColour*, IColour*> mColour : cColours) {
+    std::string mName = cThemeSource->getThemeElement(mColour.first);
+    mElements[mName] = mColour.second;
+  }
+  return mElements;
+}
+
 void SpindizzyZoneTheme::removeTexture(SpindizzyZoneThemeTexture* texture) {
   cTextures.erase(texture);
 }

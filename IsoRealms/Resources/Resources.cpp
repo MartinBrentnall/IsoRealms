@@ -167,7 +167,6 @@ IBoolean* Resources::getBoolean(const std::string& path)                        
 IBoundaryHandler* Resources::getBoundaryHandler(DOMNodeWrapper* node)            {return new BoundaryHandler(node, this, cBoundaries.get(node->getAttribute("name")));}
 ICamera* Resources::getCamera(const std::string& path)                           {return cCameras.get(path);}
 IColour* Resources::getColour(const std::string& name)                           {return cColours.get(name);}
-IComponentCustomType* Resources::getComponentCustomType(const std::string& path) {return cComponentCustomTypes.get(path);}
 IFloat* Resources::getFloat(const std::string& path)                             {return cFloats.get(path);}
 IFont* Resources::getFont(const std::string& path)                               {return cFonts.get(path);}
 IInteger* Resources::getInteger(const std::string& path)                         {return cIntegers.get(path);}
@@ -186,7 +185,6 @@ std::vector<IBoolean*> Resources::getAllBooleans()                         {retu
 std::vector<ICamera*> Resources::getAllCameras()                           {return cCameras.getAllVector();}
 std::vector<IBoundaries*> Resources::getAllBoundaries()                    {return cBoundaries.getAllVector();}
 std::vector<IColour*> Resources::getAllColours()                           {return cColours.getAllVector();}
-std::vector<IComponentCustomType*> Resources::getAllComponentCustomTypes() {return cComponentCustomTypes.getAllVector();}
 std::vector<IElementType*> Resources::getAllElementTypes()                 {return cElementTypes.getAllVector();}
 std::vector<IFloat*> Resources::getAllFloats()                             {return cFloats.getAllVector();}
 std::vector<IFont*> Resources::getAllFonts()                               {return cFonts.getAllVector();}
@@ -203,7 +201,6 @@ void Resources::addResourceListener(IResourceListener<IBoolean>* listener)      
 void Resources::addResourceListener(IResourceListener<IBoundaries>* listener)                {cBoundaries.addResourceListener(listener);}
 void Resources::addResourceListener(IResourceListener<ICamera>* listener)                    {cCameras.addResourceListener(listener);}
 void Resources::addResourceListener(IResourceListener<IColour>* listener)                    {cColours.addResourceListener(listener);}
-void Resources::addResourceListener(IResourceListener<IComponentCustomType>* listener)       {cComponentCustomTypes.addResourceListener(listener);}
 void Resources::addResourceListener(IResourceListener<IElementType>* listener)               {cElementTypes.addResourceListener(listener);}
 void Resources::addResourceListener(IResourceListener<IFloat>* listener)                     {cFloats.addResourceListener(listener);}
 void Resources::addResourceListener(IResourceListener<IFont>* listener)                      {cFonts.addResourceListener(listener);}
@@ -220,7 +217,6 @@ void Resources::addResourceType(IResourceType<IBoolean>* resourceType,          
 void Resources::addResourceType(IResourceType<IBoundaries>* resourceType,                const std::string& typeDescription) {cBoundaries.addResourceType(resourceType, typeDescription);}  
 void Resources::addResourceType(IResourceType<ICamera>* resourceType,                    const std::string& typeDescription) {cCameras.addResourceType(resourceType, typeDescription);}  
 void Resources::addResourceType(IResourceType<IColour>* resourceType,                    const std::string& typeDescription) {cColours.addResourceType(resourceType, typeDescription);}  
-void Resources::addResourceType(IResourceType<IComponentCustomType>* resourceType,       const std::string& typeDescription) {cComponentCustomTypes.addResourceType(resourceType, typeDescription);}  
 void Resources::addResourceType(IResourceType<IElementType>* resourceType,               const std::string& typeDescription) {cElementTypes.addResourceType(resourceType, typeDescription);}
 void Resources::addResourceType(IResourceType<IFloat>* resourceType,                     const std::string& typeDescription) {cFloats.addResourceType(resourceType, typeDescription);}  
 void Resources::addResourceType(IResourceType<IFont>* resourceType,                      const std::string& typeDescription) {cFonts.addResourceType(resourceType, typeDescription);}
@@ -245,7 +241,6 @@ void Resources::editResource(IBoolean* resource,                   IResourceAcce
 void Resources::editResource(IBoundaries* resource,                IResourceAccessor* editingResources, IEditingContext* editingContext) {cBoundaries.editResource(          resource, this, editingContext);}
 void Resources::editResource(ICamera* resource,                    IResourceAccessor* editingResources, IEditingContext* editingContext) {cCameras.editResource(             resource, this, editingContext);}
 void Resources::editResource(IColour* resource,                    IResourceAccessor* editingResources, IEditingContext* editingContext) {cColours.editResource(             resource, this, editingContext);}
-void Resources::editResource(IComponentCustomType* resource,       IResourceAccessor* editingResources, IEditingContext* editingContext) {cComponentCustomTypes.editResource(resource, this, editingContext);}
 void Resources::editResource(IElementType* resource,               IResourceAccessor* editingResources, IEditingContext* editingContext) {cElementTypes.editResource(        resource, this, editingContext);}
 void Resources::editResource(IFloat* resource,                     IResourceAccessor* editingResources, IEditingContext* editingContext) {cFloats.editResource(              resource, this, editingContext);}
 void Resources::editResource(IFont* resource,                      IResourceAccessor* editingResources, IEditingContext* editingContext) {cFonts.editResource(               resource, this, editingContext);}
@@ -262,7 +257,6 @@ void Resources::removeResource(IBoolean* resource,                   IResourceAc
 void Resources::removeResource(IBoundaries* resource,                IResourceAccessor* editingResources) {cBoundaries.removeResource(resource, this);}
 void Resources::removeResource(ICamera* resource,                    IResourceAccessor* editingResources) {cCameras.removeResource(resource, this);}
 void Resources::removeResource(IColour* resource,                    IResourceAccessor* editingResources) {cColours.removeResource(resource, this);}
-void Resources::removeResource(IComponentCustomType* resource,       IResourceAccessor* editingResources) {cComponentCustomTypes.removeResource(resource, this);}
 void Resources::removeResource(IElementType* resource,               IResourceAccessor* editingResources) {cElementTypes.removeResource(resource, this);}
 void Resources::removeResource(IFloat* resource,                     IResourceAccessor* editingResources) {cFloats.removeResource(resource, this);}
 void Resources::removeResource(IFont* resource,                      IResourceAccessor* editingResources) {cFonts.removeResource(resource, this);}
@@ -286,7 +280,6 @@ void Resources::add(IBoolean* value,                                 std::vector
 void Resources::add(ICamera* camera,                                 std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {cCameras.add(camera, path, name);                      addResourceToInitialise(camera,     node, cache);}
 void Resources::add(IBoundaries* boundaries,                         std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {cBoundaries.add(boundaries, path, name);               addResourceToInitialise(boundaries, node, cache);}
 void Resources::add(IColour* colour,                                 std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {cColours.add(colour, path, name);                      addResourceToInitialise(colour,     node, cache);}
-void Resources::add(IComponentCustomType* type,                      std::vector<std::string> path, const std::string& name                                             ) {cComponentCustomTypes.add(type, path, name);}
 void Resources::add(IElementType* type,                              std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {cElementTypes.add(type, path, name);                   addResourceToInitialise(type,       node, cache);}
 void Resources::add(IFont* font,                                     std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {cFonts.add(font, path, name);                          addResourceToInitialise(font,       node, cache);}
 void Resources::add(IGlobalVariable* variable,                       std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {cGlobalVariables.add(variable, path, name);            addResourceToInitialise(variable,   node, cache);}
@@ -320,7 +313,6 @@ void Resources::addListener(IResourceUseListener<IBoolean>* listener)           
 void Resources::addListener(IResourceUseListener<IBoundaries>* listener)                {cBoundaries.addResourceUseListener(listener);}
 void Resources::addListener(IResourceUseListener<ICamera>* listener)                    {cCameras.addResourceUseListener(listener);}
 void Resources::addListener(IResourceUseListener<IColour>* listener)                    {cColours.addResourceUseListener(listener);}
-void Resources::addListener(IResourceUseListener<IComponentCustomType>* listener)       {cComponentCustomTypes.addResourceUseListener(listener);}
 void Resources::addListener(IResourceUseListener<IElementType>* listener)               {cElementTypes.addResourceUseListener(listener);}
 void Resources::addListener(IResourceUseListener<IFloat>* listener)                     {cFloats.addResourceUseListener(listener);}
 void Resources::addListener(IResourceUseListener<IFont>* listener)                      {cFonts.addResourceUseListener(listener);}
@@ -338,7 +330,6 @@ std::string Resources::getPath(IBoolean* boolean)                           {ret
 std::string Resources::getPath(IBoundaries* boundaries)                     {return cBoundaries.getLocation(boundaries);}
 std::string Resources::getPath(ICamera* camera)                             {return cCameras.getLocation(camera);}
 std::string Resources::getPath(IColour* colour)                             {return cColours.getLocation(colour);}
-std::string Resources::getPath(IComponentCustomType* customType)            {return cComponentCustomTypes.getLocation(customType);}
 std::string Resources::getPath(IElementType* elementType)                   {return cElementTypes.getLocation(elementType);}
 std::string Resources::getPath(IFloat* afloat)                              {return cFloats.getLocation(afloat);}
 std::string Resources::getPath(IFont* font)                                 {return cFonts.getLocation(font);}

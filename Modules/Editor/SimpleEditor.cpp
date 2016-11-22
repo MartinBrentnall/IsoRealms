@@ -130,7 +130,6 @@ void SimpleEditor::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cach
   cDockableFontManager        = new DialogFontManager(       this, resources, mProjectResources, this, mProjectResources, this);
   cDockableScriptManager      = new DialogScriptManager(     this, resources, mProjectResources, this, mProjectResources, this);
   cDockablePrimitiveManager   = new DialogPrimitiveManager(  this, resources, mProjectResources, this, mProjectResources, this);
-  cDockableCustomTypeManager  = new DialogCustomTypeManager( this, resources, mProjectResources, this, mProjectResources, this);
   cDockableVertexManager      = new DialogVertexManager(     this, resources, mProjectResources, this, mProjectResources, this);
   cDockable3DModelManager     = new Dialog3DModelManager(    this, resources, mProjectResources, this, mProjectResources, this);
   cDockableCameraManager      = new DialogCameraManager(     this, resources, mProjectResources, this, mProjectResources, this);
@@ -147,7 +146,6 @@ void SimpleEditor::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cach
     cScreenEdgeManager.add(cDockableFontManager,        cResourceIcons["IconFonts"],        DOCKABLE_FONT_DEFAULT_WIDTH);
     cScreenEdgeManager.add(cDockableScriptManager,      cResourceIcons["IconScripts"],      DOCKABLE_SCRIPT_DEFAULT_WIDTH);
     cScreenEdgeManager.add(cDockablePrimitiveManager,   cResourceIcons["IconPrimitives"],   DOCKABLE_PRIMITIVE_DEFAULT_WIDTH);
-//    cScreenEdgeManager.add(cDockableCustomTypeManager,  cResourceIcons["IconCustomTypes"],  0.4f);
     cScreenEdgeManager.add(cDockableVertexManager,      cResourceIcons["IconVertices"],     DOCKABLE_VERTEX_DEFAULT_WIDTH);
     cScreenEdgeManager.add(cDockable3DModelManager,     cResourceIcons["Icon3DModels"],     DOCKABLE_3D_MODEL_DEFAULT_WIDTH);
     cScreenEdgeManager.add(cDockableCameraManager,      cResourceIcons["IconCameras"],      DOCKABLE_CAMERA_DEFAULT_WIDTH);
@@ -578,7 +576,7 @@ void SimpleEditor::openProject(const std::string& file, bool asTemplate) {
       std::vector<IDialogGenerator*> mProjectDialogGenerators = mProjectResources->getDialogGenerators();
       for (unsigned int i = 0; i < mProjectDialogGenerators.size(); i++) {
         Dialog* mProjectDialog = mProjectDialogGenerators[i]->createDialog(this, nullptr);
-        cScreenEdgeManager.add(mProjectDialog, cResourceIcons["IconVertices"], 0.15f); // TODO: ICON!  SIZE!
+        cScreenEdgeManager.add(mProjectDialog, cResourceIcons["IconSurfaceProcessors"], 0.15f); // TODO: ICON!  SIZE!
       }
       cSelectedLayer = cProject->getDefaultLayer();
       for (unsigned int i = 0; i < cProjectManagerListeners.size(); i++) {

@@ -22,6 +22,6 @@ DialogGeneratorSpindizzyZoneThemeSelector::DialogGeneratorSpindizzyZoneThemeSele
   cSpindizzyZoneThemeAccessor = spindizzyZoneThemeAccessor;
 }
 
-Dialog* DialogGeneratorSpindizzyZoneThemeSelector::createDialog(IComponentContainer* container, IResourceAccessor* resources) {
-  return new DialogSpindizzyZoneThemeSelector(container, resources, cSpindizzyZoneThemeAccessor);
+Dialog* DialogGeneratorSpindizzyZoneThemeSelector::createDialog(IEditingContext* editingContext, IResourceAccessor* resources) {
+  return new DialogSpindizzyZoneThemeSelector(editingContext, resources, cSpindizzyZoneThemeAccessor);
 }

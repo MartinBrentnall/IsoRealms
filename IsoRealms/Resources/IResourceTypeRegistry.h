@@ -28,7 +28,6 @@ class IBoolean;
 class IBoundaries;
 class ICamera;
 class IColour;
-class IComponentCustomType;
 class IDialogGenerator;
 class IElementType;
 class IFloat;
@@ -47,7 +46,6 @@ class IResourceTypeRegistry {
   virtual void addResourceType(IResourceType<IBoundaries>*,          const std::string&) = 0;
   virtual void addResourceType(IResourceType<ICamera>*,              const std::string&) = 0;
   virtual void addResourceType(IResourceType<IColour>*,              const std::string&) = 0;
-  virtual void addResourceType(IResourceType<IComponentCustomType>*, const std::string&) = 0;
   virtual void addResourceType(IResourceType<IElementType>*,         const std::string&) = 0;
   virtual void addResourceType(IResourceType<IFloat>*,               const std::string&) = 0;
   virtual void addResourceType(IResourceType<IFont>*,                const std::string&) = 0;

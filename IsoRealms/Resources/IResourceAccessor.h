@@ -59,7 +59,6 @@ class IResourceAccessor {
   virtual IBoundaryHandler*     getBoundaryHandler(    DOMNodeWrapper*) = 0;
   virtual ICamera*              getCamera(             const std::string&) = 0;
   virtual IColour*              getColour(             const std::string&) = 0;
-  virtual IComponentCustomType* getComponentCustomType(const std::string&) = 0;
   virtual IFloat*               getFloat(              const std::string&) = 0;
   virtual IFont*                getFont(               const std::string&) = 0;
   virtual IInteger*             getInteger(            const std::string&) = 0;

@@ -19,6 +19,11 @@
 #ifndef I_SPINDIZZY_ZONE_THEME_H
 #define I_SPINDIZZY_ZONE_THEME_H
 
+#include <map>
+
+#include <IsoRealms/GUI/Icon.h>
+#include <IsoRealms/Resources/Colour/IColour.h>
+
 #include "SpindizzyZoneThemeColour.h"
 #include "SpindizzyZoneThemeTexture.h"
 
@@ -27,6 +32,11 @@ class ISpindizzyZoneTheme:public IResource {
   virtual Icon<ISpindizzyZoneTheme>* createCustomResourceIcon(IResourceBrowser<ISpindizzyZoneTheme>*) = 0;
   virtual void set() = 0;
   virtual IColour* getColour(SpindizzyZoneThemeColour*) = 0;
+  
+  // Editing functions.  TODO: Separate into different interface?
+  virtual std::string getName() = 0;
+  virtual std::map<std::string, ITexture*> getTextureElements() = 0;
+  virtual std::map<std::string, IColour*> getColourElements() = 0;
 };
 
 #endif

@@ -18,8 +18,8 @@
  */
 #include "DialogSpindizzyZoneThemeSelector.h"
 
-DialogSpindizzyZoneThemeSelector::DialogSpindizzyZoneThemeSelector(IComponentContainer* container, IResourceAccessor* resources, ISpindizzyZoneThemeAccessor* spindizzyZoneThemeAccessor) : Dialog(container, "Modules/Spindizzy/DialogSpindizzyZoneThemeSelector", resources) {
-  cSpindizzyZoneThemeBrowser = new ComponentCustomResourceBrowser<ISpindizzyZoneTheme, SpindizzyZoneThemeIcon>(resources, nullptr, this, 0.02f);
+DialogSpindizzyZoneThemeSelector::DialogSpindizzyZoneThemeSelector(IEditingContext* editingContext, IResourceAccessor* resources, ISpindizzyZoneThemeAccessor* spindizzyZoneThemeAccessor) : Dialog(editingContext->getComponentContainer(), "Modules/Spindizzy/DialogSpindizzyZoneThemeSelector", resources) {
+  cSpindizzyZoneThemeBrowser = new ComponentCustomResourceBrowser<ISpindizzyZoneTheme, SpindizzyZoneThemeIcon>(resources, editingContext, this, 0.02f);
   addComponent("zoneThemes", cSpindizzyZoneThemeBrowser);
   std::map<std::string, SpindizzyZoneTheme*> mZoneThemes = spindizzyZoneThemeAccessor->getSpindizzyZoneThemes();
   for (std::pair<std::string, SpindizzyZoneTheme*> mZoneTheme : mZoneThemes) {
@@ -27,7 +27,6 @@ DialogSpindizzyZoneThemeSelector::DialogSpindizzyZoneThemeSelector(IComponentCon
   }
   cSpindizzyZoneThemeBrowser->addResourceSelectionListener(this);
   cSpindizzyZoneThemeAccessor = spindizzyZoneThemeAccessor;
-  cWindowWorkspace = container;
 }
 
 std::string DialogSpindizzyZoneThemeSelector::getPath(IResource* resource) {
@@ -41,8 +40,8 @@ std::string DialogSpindizzyZoneThemeSelector::getPath(IResource* resource) {
 }
 
 void DialogSpindizzyZoneThemeSelector::editResource(ISpindizzyZoneTheme* theme, IResourceAccessor* resources, IEditingContext* editingContext) {
-  DialogSpindizzyZoneTheme* mDialog = new DialogSpindizzyZoneTheme(cWindowWorkspace, resources);
-  cWindowWorkspace->addComponent(mDialog);
+  DialogSpindizzyZoneTheme* mDialog = new DialogSpindizzyZoneTheme(editingContext, resources, theme);
+  editingContext->getComponentContainer()->addComponent(mDialog);
 }
 
 void DialogSpindizzyZoneThemeSelector::resourceSelected(ISpindizzyZoneTheme* spindizzyZoneTheme) {

@@ -26,7 +26,6 @@
 #include <IsoRealms/CommandManager.h>
 #include <IsoRealms/Configuration.h>
 #include <IsoRealms/Persistence/DOMNodeWrapper.h>
-#include <IsoRealms/GUI/ComponentCustomType.h>
 #include <IsoRealms/GUI/Dialogs/ComponentColourSelector.h>
 #include <IsoRealms/GUI/GUIIcon.h>
 #include <IsoRealms/GUI/IDialogGenerator.h>
@@ -49,7 +48,6 @@
 class OpenCommand;
 
 #include "CommandDialog.h"
-#include "ComponentCustomTypeResources.h"
 #include "DialogModules.h"
 #include "DialogObjectProperties.h"
 #include "DialogProjectOpen.h"
@@ -60,7 +58,6 @@ class OpenCommand;
 #include "ResourceManagerDialogs/Dialog3DModelManager.h"
 #include "ResourceManagerDialogs/DialogBoundariesManager.h"
 #include "ResourceManagerDialogs/DialogCameraManager.h"
-#include "ResourceManagerDialogs/DialogCustomTypeManager.h"
 #include "ResourceManagerDialogs/DialogElementTypeManager.h"
 #include "ResourceManagerDialogs/DialogFontManager.h"
 #include "ResourceManagerDialogs/DialogPrimitiveManager.h"
@@ -123,7 +120,6 @@ class SimpleEditor:public IModule,
   Dialog3DModelManager* cDockable3DModelManager;
   DialogBoundariesManager* cDockableBoundariesManager;
   DialogCameraManager* cDockableCameraManager;
-  DialogCustomTypeManager* cDockableCustomTypeManager;
   DialogElementTypeManager* cDockableElementTypeManager;
   DialogFontManager* cDockableFontManager;
   DialogPrimitiveManager* cDockablePrimitiveManager;

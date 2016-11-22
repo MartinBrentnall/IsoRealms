@@ -65,7 +65,6 @@ class Resources:public IResources,
   ResourceRegistry<IBoundaries> cBoundaries;
   CameraRegistry cCameras;
   ColourRegistry cColours;
-  ResourceRegistry<IComponentCustomType> cComponentCustomTypes;
   ResourceRegistry<IElementType> cElementTypes;
   ResourceRegistry<IFloat> cFloats;
   ResourceRegistry<IFont> cFonts;
@@ -117,7 +116,6 @@ class Resources:public IResources,
   void add(IBoundaries*,                std::vector<std::string>, const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
   void add(ICamera*,                    std::vector<std::string>, const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
   void add(IColour*,                    std::vector<std::string>, const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
-  void add(IComponentCustomType*,       std::vector<std::string>, const std::string&);
   void add(IElementType*,               std::vector<std::string>, const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
   void add(IFont*,                      std::vector<std::string>, const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
   void add(IGlobalVariable*,            std::vector<std::string>, const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
@@ -138,7 +136,6 @@ class Resources:public IResources,
   void addListener(IResourceUseListener<IBoundaries>*);  
   void addListener(IResourceUseListener<ICamera>*);        
   void addListener(IResourceUseListener<IColour>*);                   
-  void addListener(IResourceUseListener<IComponentCustomType>*);      
   void addListener(IResourceUseListener<IElementType>*);              
   void addListener(IResourceUseListener<IFloat>*);                    
   void addListener(IResourceUseListener<IFont>*);                     
@@ -163,7 +160,6 @@ class Resources:public IResources,
   IBoundaryHandler*     getBoundaryHandler(DOMNodeWrapper*);
   ICamera*              getCamera(const std::string&);
   IColour*              getColour(const std::string&);
-  IComponentCustomType* getComponentCustomType(const std::string&);
   IFloat*               getFloat(const std::string&);
   IFont*                getFont(const std::string&);
   IInteger*             getInteger(const std::string&);
@@ -188,7 +184,6 @@ class Resources:public IResources,
   std::string getPath(IBoundaries*);
   std::string getPath(ICamera*);
   std::string getPath(IColour*);
-  std::string getPath(IComponentCustomType*);
   std::string getPath(IElementType*);
   std::string getPath(IFloat*);
   std::string getPath(IFont*);
@@ -211,7 +206,6 @@ class Resources:public IResources,
   std::vector<IBoundaries*>          getAllBoundaries();
   std::vector<ICamera*>              getAllCameras();
   std::vector<IColour*>              getAllColours();
-  std::vector<IComponentCustomType*> getAllComponentCustomTypes();
   std::vector<IElementType*>         getAllElementTypes();
   std::vector<IFloat*>               getAllFloats();
   std::vector<IFont*>                getAllFonts();
@@ -228,7 +222,6 @@ class Resources:public IResources,
   void addResourceListener(IResourceListener<IBoundaries>*);        
   void addResourceListener(IResourceListener<ICamera>*);                  
   void addResourceListener(IResourceListener<IColour>*);              
-  void addResourceListener(IResourceListener<IComponentCustomType>*); 
   void addResourceListener(IResourceListener<IElementType>*);         
   void addResourceListener(IResourceListener<IFloat>*);               
   void addResourceListener(IResourceListener<IFont>*);                
@@ -245,7 +238,6 @@ class Resources:public IResources,
   void addResourceType(IResourceType<IBoundaries>*,          const std::string&);
   void addResourceType(IResourceType<ICamera>*,              const std::string&);
   void addResourceType(IResourceType<IColour>*,              const std::string&);
-  void addResourceType(IResourceType<IComponentCustomType>*, const std::string&);
   void addResourceType(IResourceType<IElementType>*,         const std::string&);
   void addResourceType(IResourceType<IFloat>*,               const std::string&);
   void addResourceType(IResourceType<IFont>*,                const std::string&);
@@ -265,7 +257,6 @@ class Resources:public IResources,
   void editResource(IBoundaries*,          IResourceAccessor*, IEditingContext*);
   void editResource(ICamera*,              IResourceAccessor*, IEditingContext*);
   void editResource(IColour*,              IResourceAccessor*, IEditingContext*);
-  void editResource(IComponentCustomType*, IResourceAccessor*, IEditingContext*);
   void editResource(IElementType*,         IResourceAccessor*, IEditingContext*);
   void editResource(IFloat*,               IResourceAccessor*, IEditingContext*);
   void editResource(IFont*,                IResourceAccessor*, IEditingContext*);
@@ -282,7 +273,6 @@ class Resources:public IResources,
   void removeResource(IBoundaries*,          IResourceAccessor*);
   void removeResource(ICamera*,              IResourceAccessor*);
   void removeResource(IColour*,              IResourceAccessor*);
-  void removeResource(IComponentCustomType*, IResourceAccessor*);
   void removeResource(IElementType*,         IResourceAccessor*);
   void removeResource(IFloat*,               IResourceAccessor*);
   void removeResource(IFont*,                IResourceAccessor*);

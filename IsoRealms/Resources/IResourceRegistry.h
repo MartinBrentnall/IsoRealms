@@ -22,7 +22,6 @@
 #include <string>
 
 #include <IsoRealms/Configuration.h>
-#include <IsoRealms/IComponentCustomType.h>
 #include <IsoRealms/IDynamicElement.h>
 #include <IsoRealms/Persistence/DOMNodeWrapper.h>
 #include <IsoRealms/Resources/3DModel/I3DModel.h>
@@ -54,7 +53,6 @@ class IResourceRegistry {
   virtual void add(IBoundaries*,                const std::string&, DOMNodeWrapper* = nullptr, DOMNodeWrapper* = nullptr) = 0;
   virtual void add(ICamera*,                    const std::string&, DOMNodeWrapper* = nullptr, DOMNodeWrapper* = nullptr) = 0;
   virtual void add(IColour*,                    const std::string&, DOMNodeWrapper* = nullptr, DOMNodeWrapper* = nullptr) = 0;
-  virtual void add(IComponentCustomType*,       const std::string&) = 0;
   virtual void add(IElementType*,               const std::string&, DOMNodeWrapper* = nullptr, DOMNodeWrapper* = nullptr) = 0;
   virtual void add(IFont*,                      const std::string&, DOMNodeWrapper* = nullptr, DOMNodeWrapper* = nullptr) = 0;
   virtual void add(IGlobalVariable*,            const std::string&, DOMNodeWrapper* = nullptr, DOMNodeWrapper* = nullptr) = 0;

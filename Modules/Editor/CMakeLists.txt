@@ -27,7 +27,6 @@ add_library(Editor MODULE
   ResourceManagerDialogs/Dialog3DModelManager.cpp
   ResourceManagerDialogs/DialogBoundariesManager.cpp
   ResourceManagerDialogs/DialogCameraManager.cpp
-  ResourceManagerDialogs/DialogCustomTypeManager.cpp
   ResourceManagerDialogs/DialogElementTypeManager.cpp
   ResourceManagerDialogs/DialogFontManager.cpp
   ResourceManagerDialogs/DialogPrimitiveManager.cpp

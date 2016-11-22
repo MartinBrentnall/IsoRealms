@@ -19,13 +19,17 @@
 #include "SelectableComponent.h"
 
 SelectableComponent::SelectableComponent() {
-  cHandler = NULL;
+  cHandler = nullptr;
   cSelected = false;
+  cWidth = 0.3f;
+  cHeight = 0.05f;
 }
 
-SelectableComponent::SelectableComponent(ISelector* handler) {
+SelectableComponent::SelectableComponent(ISelector* handler, float width, float height) {
   cSelected = false;
   setHandler(handler);
+  cWidth = width;
+  cHeight = height;
 }
 
 void SelectableComponent::setHandler(ISelector* handler) {
@@ -41,7 +45,7 @@ void SelectableComponent::render() {
   float mTop = getTop();
   float mBottom = getBottom();
   glBindTexture(GL_TEXTURE_2D, 0);
-  if (cHandler != NULL) {
+  if (cHandler != nullptr) {
     cHandler->render(this);
   }
   if (cSelected) {
@@ -74,24 +78,24 @@ bool SelectableComponent::input(SDL_Event& event) {
 }
 
 void SelectableComponent::gainedFocus() {
-  if (!cSelected && cHandler != NULL) {
+  if (!cSelected && cHandler != nullptr) {
     cSelected = true;
     cHandler->selected();
   }
 }
 
 void SelectableComponent::lostFocus() {
-  if (cSelected && cHandler != NULL) {
+  if (cSelected && cHandler != nullptr) {
     cSelected = false;
     cHandler->deselected();
   }
 }
 
 float SelectableComponent::getWidth() {
-  return 0.3f;
+  return cWidth;
 }
 
 float SelectableComponent::getHeight() {
-  return 0.05f;
+  return cHeight;
 }
 

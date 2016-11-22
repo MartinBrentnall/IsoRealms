@@ -29,6 +29,9 @@ class IThemeSource {
   virtual std::string getThemeElement(SpindizzyZoneThemeTexture*) = 0;
   virtual std::string getThemeElement(SpindizzyZoneThemeColour*) = 0;
   virtual I3DModel* createThemeIcon() = 0;
+  
+  // Editing functions.  TODO Separate into different interface?
+  virtual std::string getThemeName(ISpindizzyZoneTheme*) = 0;
 };
 
 #endif

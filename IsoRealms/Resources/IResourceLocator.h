@@ -55,7 +55,6 @@ class IResourceLocator {
   virtual std::string getPath(IBoundaries*) = 0;
   virtual std::string getPath(ICamera*) = 0;
   virtual std::string getPath(IColour*) = 0;
-  virtual std::string getPath(IComponentCustomType*) = 0;
   virtual std::string getPath(IElementType*) = 0;
   virtual std::string getPath(IFloat*) = 0;
   virtual std::string getPath(IFont*) = 0;

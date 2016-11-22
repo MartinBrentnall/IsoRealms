@@ -31,7 +31,6 @@ class IResourceManager:public IResourceLocator {
   virtual std::vector<IBoundaries*>          getAllBoundaries() = 0;
   virtual std::vector<ICamera*>              getAllCameras() = 0;
   virtual std::vector<IColour*>              getAllColours() = 0;
-  virtual std::vector<IComponentCustomType*> getAllComponentCustomTypes() = 0;
   virtual std::vector<IElementType*>         getAllElementTypes() = 0;
   virtual std::vector<IFloat*>               getAllFloats() = 0;
   virtual std::vector<IFont*>                getAllFonts() = 0;
@@ -46,8 +45,7 @@ class IResourceManager:public IResourceLocator {
   virtual void addResourceListener(IResourceListener<IBoolean>*) = 0;                 
   virtual void addResourceListener(IResourceListener<IBoundaries>*) = 0;        
   virtual void addResourceListener(IResourceListener<ICamera>*) = 0;                  
-  virtual void addResourceListener(IResourceListener<IColour>*) = 0;              
-  virtual void addResourceListener(IResourceListener<IComponentCustomType>*) = 0; 
+  virtual void addResourceListener(IResourceListener<IColour>*) = 0;
   virtual void addResourceListener(IResourceListener<IElementType>*) = 0;         
   virtual void addResourceListener(IResourceListener<IFloat>*) = 0;               
   virtual void addResourceListener(IResourceListener<IFont>*) = 0;                
@@ -63,7 +61,6 @@ class IResourceManager:public IResourceLocator {
   virtual void editResource(IBoundaries*,          IResourceAccessor*, IEditingContext*) = 0;
   virtual void editResource(ICamera*,              IResourceAccessor*, IEditingContext*) = 0;
   virtual void editResource(IColour*,              IResourceAccessor*, IEditingContext*) = 0;
-  virtual void editResource(IComponentCustomType*, IResourceAccessor*, IEditingContext*) = 0;
   virtual void editResource(IElementType*,         IResourceAccessor*, IEditingContext*) = 0;
   virtual void editResource(IFloat*,               IResourceAccessor*, IEditingContext*) = 0;
   virtual void editResource(IFont*,                IResourceAccessor*, IEditingContext*) = 0;
@@ -79,7 +76,6 @@ class IResourceManager:public IResourceLocator {
   virtual void removeResource(IBoundaries*,          IResourceAccessor*) = 0;
   virtual void removeResource(ICamera*,              IResourceAccessor*) = 0;
   virtual void removeResource(IColour*,              IResourceAccessor*) = 0;
-  virtual void removeResource(IComponentCustomType*, IResourceAccessor*) = 0;
   virtual void removeResource(IElementType*,         IResourceAccessor*) = 0;
   virtual void removeResource(IFloat*,               IResourceAccessor*) = 0;
   virtual void removeResource(IFont*,                IResourceAccessor*) = 0;

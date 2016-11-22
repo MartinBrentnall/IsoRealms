@@ -32,6 +32,7 @@ class ComponentTable:public ISizedComponent {
   unsigned int cColumns;    
   std::vector<std::vector<ISizedComponent*> > cGridComponents;
   ISizedComponent* cFocusedComponent;
+  float cPadding;
 
   float getColumnWidth(unsigned int);
   float getRowHeight(unsigned int);
@@ -57,7 +58,7 @@ class ComponentTable:public ISizedComponent {
   };
 
   public:
-  ComponentTable(unsigned int);
+  ComponentTable(unsigned int, float = 0.0f);
 
   /**
    * Set the component to be displayed in the specified cell.

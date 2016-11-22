@@ -507,22 +507,6 @@ void RectangularComponent::loadDialog(DOMNodeWrapper* node, IRectangle* parent, 
       cSizedComponents[mName] = mComponentResourceModel;
       cChildren.push_back(mComponentResourceModel);
       cFocusedComponent = mComponentResourceModel;
-    } else if (mValueAsString == "CustomComponent") {
-      std::string mType = mNode->getAttribute("type");
-      std::string mDescription = mNode->getAttribute("description");
-      DOMNodeWrapper* mContentsNode = mNode;
-      if (mDescription != "") {
-        std::string mFullPath = System::getProgramResource(mDescription) + ".dialog";
-	std::cout << "Reading external description from: " << mFullPath << std::endl;
-        mContentsNode = new DOMNodeWrapper(mFullPath);
-      }
-      std::cout << "Creating custom component of type: " << mType << std::endl;
-      IComponentCustomType* mComponentCustomType = resourceAccessor->getComponentCustomType(mType);
-      AbstractRectangularComponent* mComponent = mComponentCustomType->createComponent(mContentsNode, resourceAccessor);
-      IComponentBoundsCalculator* mComponentLayout = getBoundsCalculator(mNode, parent, padding, nullptr);
-      mComponent->setBoundsCalculator(mComponentLayout);
-      cChildren.push_back(mComponent);
-      cFocusedComponent = mComponent;
     } else {
 //      std::cout << "WARNING: Unknown dialog tag: \"" << mValueAsString << "\"" << std::endl;
 //      exit(1);

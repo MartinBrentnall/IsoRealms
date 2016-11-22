@@ -24,7 +24,7 @@
 class IDialogGenerator {
     
   public:
-  virtual Dialog* createDialog(IComponentContainer*, IResourceAccessor*) = 0;
+  virtual Dialog* createDialog(IEditingContext*, IResourceAccessor*) = 0;
 };
 
 #endif

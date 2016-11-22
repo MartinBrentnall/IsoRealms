@@ -21,6 +21,7 @@
 
 #include <map>
 
+#include <IsoRealms/GUI/SelectableComponent.h>
 #include <IsoRealms/Persistence/DOMNodeWriter.h>
 #include <IsoRealms/Resources/IResourceAccessor.h>
 #include <IsoRealms/Resources/IResourceUseListener.h>
@@ -59,6 +60,10 @@ class SpindizzyZoneTheme:public IResourceUseListener<ITexture>,
   \**********************************/
   IColour* getColour(SpindizzyZoneThemeColour*);
   void set();
+  
+  std::string getName();
+  std::map<std::string, ITexture*> getTextureElements();
+  std::map<std::string, IColour*> getColourElements();
   
   /*********************************************\
    * Implements IResourceUseListener<ITexture> *

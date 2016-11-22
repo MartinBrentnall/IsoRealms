@@ -27,10 +27,12 @@ class SelectableComponent:public ISizedComponent {
   private:
   ISelector* cHandler;
   bool cSelected;
+  float cWidth;
+  float cHeight;
     
   public:
   SelectableComponent();
-  SelectableComponent(ISelector*);
+  SelectableComponent(ISelector*, float, float);
     
   void setHandler(ISelector*);
   

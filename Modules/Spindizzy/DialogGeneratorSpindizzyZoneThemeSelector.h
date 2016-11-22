@@ -35,7 +35,7 @@ class DialogGeneratorSpindizzyZoneThemeSelector:public IDialogGenerator {
   /*******************************\
    * Implements IDialogGenerator *
   \*******************************/
-  Dialog* createDialog(IComponentContainer*, IResourceAccessor*);
+  Dialog* createDialog(IEditingContext*, IResourceAccessor*);
 };
 
 #endif
