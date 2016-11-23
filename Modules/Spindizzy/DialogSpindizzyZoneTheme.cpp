@@ -19,16 +19,20 @@
 #include "DialogSpindizzyZoneTheme.h"
 
 DialogSpindizzyZoneTheme::DialogSpindizzyZoneTheme(IEditingContext* editingContext, IResourceAccessor* resources, ISpindizzyZoneTheme* theme) : DialogOKCancelUndo(editingContext, resources, "Spindizzy Zone Theme", theme->getName()) {
+  cTheme = theme;
   cTable = new ComponentTable(2, 0.02f);
   IResourceSelector* mResourceSelector = editingContext->getResourceSelector();
   Configuration* mConfiguration = Configuration::getInstance();
   ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
   float mAspectRatio = mScreen->getAspectRatio();
   
-  std::map<std::string, ITexture*> mTextureElements = theme->getTextureElements();
-  for (std::pair<std::string, ITexture*> mTextureElement : mTextureElements) {
-    TextLabelComponent* mTextureName = new TextLabelComponent(mTextureElement.first + ": ");
+  std::map<SpindizzyZoneThemeTexture*, ITexture*> mTextureElements = theme->getTextureElements();
+  cOriginalTextures = mTextureElements;
+  for (std::pair<SpindizzyZoneThemeTexture*, ITexture*> mTextureElement : mTextureElements) {
+    std::string mElementName = theme->getElementName(mTextureElement.first);
+    TextLabelComponent* mTextureName = new TextLabelComponent(mElementName + ": ");
     ComponentResourceTextureSelector* mTextureSelector = new ComponentResourceTextureSelector(this, mTextureElement.second, mResourceSelector);
+    cTextureSelectorElementMap[mTextureSelector] = mTextureElement.first;
     SelectableComponent* mTextureSelectable = new SelectableComponent(mTextureSelector, 0.1f * mAspectRatio, 0.1f);
     std::vector<ISizedComponent*> mRow;
     mRow.push_back(mTextureName);
@@ -36,10 +40,13 @@ DialogSpindizzyZoneTheme::DialogSpindizzyZoneTheme(IEditingContext* editingConte
     cTable->addRow(mRow);
   }
 
-  std::map<std::string, IColour*> mColourElements = theme->getColourElements();
-  for (std::pair<std::string, IColour*> mColourElement : mColourElements) {
-    TextLabelComponent* mColourName = new TextLabelComponent(mColourElement.first);
+  std::map<SpindizzyZoneThemeColour*, IColour*> mColourElements = theme->getColourElements();
+  cOriginalColours = mColourElements;
+  for (std::pair<SpindizzyZoneThemeColour*, IColour*> mColourElement : mColourElements) {
+    std::string mElementName = theme->getElementName(mColourElement.first);
+    TextLabelComponent* mColourName = new TextLabelComponent(mElementName + ": ");
     ComponentResourceColourSelector* mColourSelector = new ComponentResourceColourSelector(this, mColourElement.second, mResourceSelector);
+    cColourSelectorElementMap[mColourSelector] = mColourElement.first;
     SelectableComponent* mColourSelectable = new SelectableComponent(mColourSelector, 0.1f * mAspectRatio, 0.1f);
     std::vector<ISizedComponent*> mRow;
     mRow.push_back(mColourName);
@@ -51,13 +58,20 @@ DialogSpindizzyZoneTheme::DialogSpindizzyZoneTheme(IEditingContext* editingConte
 }
 
 void DialogSpindizzyZoneTheme::undo() {
-  // TODO: Implement this
+  for (std::pair<SpindizzyZoneThemeTexture*, ITexture*> mOriginal : cOriginalTextures) {
+    cTheme->registerElement(mOriginal.first, mOriginal.second);
+  }
+  for (std::pair<SpindizzyZoneThemeColour*, IColour*> mOriginal : cOriginalColours) {
+    cTheme->registerElement(mOriginal.first, mOriginal.second);
+  }
 }
 
-void DialogSpindizzyZoneTheme::selected(ISelector*, IColour*) {
-  // TODO: Implement this
+void DialogSpindizzyZoneTheme::selected(ISelector* selector, IColour* colour) {
+  SpindizzyZoneThemeColour* mElement = cColourSelectorElementMap[selector];
+  cTheme->registerElement(mElement, colour);
 }
 
-void DialogSpindizzyZoneTheme::selected(ISelector*, ITexture*) {
-  // TODO: Implement this
+void DialogSpindizzyZoneTheme::selected(ISelector* selector, ITexture* texture) {
+  SpindizzyZoneThemeTexture* mElement = cTextureSelectorElementMap[selector];
+  cTheme->registerElement(mElement, texture);
 }

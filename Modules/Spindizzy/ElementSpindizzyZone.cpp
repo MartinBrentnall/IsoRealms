@@ -188,6 +188,12 @@ void ElementSpindizzyZone::setTheme(ISpindizzyZoneTheme* zoneTheme) {
   cElementHandler.staticChanged();
 }
 
+void ElementSpindizzyZone::spindizzyZoneThemeEdited(ISpindizzyZoneTheme* zoneTheme) {
+  if (cZoneTheme == zoneTheme) {
+    cElementHandler.staticChanged();
+  }
+}
+
 ISpindizzyZoneTheme* ElementSpindizzyZone::getTheme() {
   return cZoneTheme;
 }

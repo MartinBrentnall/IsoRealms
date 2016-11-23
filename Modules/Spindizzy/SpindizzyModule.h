@@ -278,6 +278,7 @@ class SpindizzyModule:public IModule,
   std::string getThemeElement(SpindizzyZoneThemeTexture*);
   std::string getThemeElement(SpindizzyZoneThemeColour*);
   I3DModel* createThemeIcon();
+  void themeChanged(ISpindizzyZoneTheme*);
 
   /*****************************************\
    * Implements ICameraAngleChangeListener *

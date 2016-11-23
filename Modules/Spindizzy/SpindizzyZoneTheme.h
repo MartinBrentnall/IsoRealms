@@ -49,8 +49,6 @@ class SpindizzyZoneTheme:public IResourceUseListener<ITexture>,
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
   void save(DOMNodeWriter*, IResourceLocator*);
     
-  void registerElement(SpindizzyZoneThemeTexture*, ITexture*);
-  void registerElement(SpindizzyZoneThemeColour*, IColour*);
   void removeTexture(SpindizzyZoneThemeTexture*);
   void removeColour(SpindizzyZoneThemeColour*);
   SpindizzyZoneThemeIcon* createCustomResourceIcon(IResourceBrowser<ISpindizzyZoneTheme>*);
@@ -62,8 +60,12 @@ class SpindizzyZoneTheme:public IResourceUseListener<ITexture>,
   void set();
   
   std::string getName();
-  std::map<std::string, ITexture*> getTextureElements();
-  std::map<std::string, IColour*> getColourElements();
+  void registerElement(SpindizzyZoneThemeTexture*, ITexture*);
+  void registerElement(SpindizzyZoneThemeColour*, IColour*);
+  std::map<SpindizzyZoneThemeTexture*, ITexture*> getTextureElements();
+  std::map<SpindizzyZoneThemeColour*, IColour*> getColourElements();
+  std::string getElementName(SpindizzyZoneThemeTexture*);
+  std::string getElementName(SpindizzyZoneThemeColour*);
   
   /*********************************************\
    * Implements IResourceUseListener<ITexture> *

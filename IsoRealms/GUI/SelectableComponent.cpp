@@ -48,6 +48,7 @@ void SelectableComponent::render() {
   if (cHandler != nullptr) {
     cHandler->render(this);
   }
+  glBindTexture(GL_TEXTURE_2D, 0);
   if (cSelected) {
     glLineWidth(2.0f);
     glColor3f(1.0f, 1.0f, 1.0f);

@@ -32,6 +32,7 @@ class IThemeSource {
   
   // Editing functions.  TODO Separate into different interface?
   virtual std::string getThemeName(ISpindizzyZoneTheme*) = 0;
+  virtual void themeChanged(ISpindizzyZoneTheme*) = 0;
 };
 
 #endif

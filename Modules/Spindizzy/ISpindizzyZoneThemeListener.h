@@ -24,6 +24,7 @@
 class ISpindizzyZoneThemeListener {
   public:
   virtual void spindizzyZoneThemeSelected(ISpindizzyZoneTheme*) = 0;
+  virtual void spindizzyZoneThemeEdited(ISpindizzyZoneTheme*) = 0;
 };
 
 #endif

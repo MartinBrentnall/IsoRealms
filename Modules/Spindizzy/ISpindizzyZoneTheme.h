@@ -35,8 +35,12 @@ class ISpindizzyZoneTheme:public IResource {
   
   // Editing functions.  TODO: Separate into different interface?
   virtual std::string getName() = 0;
-  virtual std::map<std::string, ITexture*> getTextureElements() = 0;
-  virtual std::map<std::string, IColour*> getColourElements() = 0;
+  virtual std::map<SpindizzyZoneThemeTexture*, ITexture*> getTextureElements() = 0;
+  virtual std::map<SpindizzyZoneThemeColour*, IColour*> getColourElements() = 0;
+  virtual std::string getElementName(SpindizzyZoneThemeTexture*) = 0;
+  virtual std::string getElementName(SpindizzyZoneThemeColour*) = 0;
+  virtual void registerElement(SpindizzyZoneThemeTexture*, ITexture*) = 0;
+  virtual void registerElement(SpindizzyZoneThemeColour*, IColour*) = 0;
 };
 
 #endif

@@ -110,25 +110,30 @@ void ComponentTable::render() {
 void ComponentTable::testFocusChange(SDL_Event& event) {
   switch (event.type) {
     case SDL_MOUSEBUTTONDOWN: {
-      Configuration* mConfiguration = Configuration::getInstance();
-      ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
-      float mX = mScreen->getXLocation(event.button.x);
-      float mY = mScreen->getYLocation(event.button.y);
-      for (unsigned int y = 0; y < cGridComponents.size(); y++) {
-        for (unsigned int x = 0; x < cGridComponents[y].size(); x++) {
-          ISizedComponent* mComponent = cGridComponents[y][x];
-          if (mComponent != nullptr && mComponent->contains(mX, mY)) {
-            if (cFocusedComponent != nullptr) {
-              cFocusedComponent->lostFocus();
+      if (event.button.button == SDL_BUTTON_LEFT) {
+        Configuration* mConfiguration = Configuration::getInstance();
+        ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
+        float mX = mScreen->getXLocation(event.button.x);
+        float mY = mScreen->getYLocation(event.button.y);
+        for (unsigned int y = 0; y < cGridComponents.size(); y++) {
+          for (unsigned int x = 0; x < cGridComponents[y].size(); x++) {
+            ISizedComponent* mComponent = cGridComponents[y][x];
+            if (mComponent != nullptr && mComponent->contains(mX, mY)) {
+              if (cFocusedComponent != nullptr) {
+                cFocusedComponent->lostFocus();
+              }
+              cFocusedComponent = mComponent;
+              cFocusedComponent->gainedFocus();
+              return;
             }
-            cFocusedComponent = mComponent;
-            cFocusedComponent->gainedFocus();
-            return;
           }
+        }
+        if (cFocusedComponent != nullptr) {
+          cFocusedComponent->lostFocus();
+          cFocusedComponent = nullptr;
         }
       }
     }
-    cFocusedComponent = nullptr;
   }
 }
 

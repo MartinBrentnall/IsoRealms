@@ -584,6 +584,12 @@ I3DModel* SpindizzyModule::createThemeIcon() {
   return cThemeModelIcon->createModel(&cThemeModelIconLocation, cThemeModelIconScale);
 }
 
+void SpindizzyModule::themeChanged(ISpindizzyZoneTheme* theme) {
+  for (ISpindizzyZoneThemeListener* mListener : cZoneThemeSelectionListeners) {
+    mListener->spindizzyZoneThemeEdited(theme);
+  }
+}
+
 void SpindizzyModule::cameraAngleChanged(float angle) {
   for (unsigned int i = 0; i < cCameraAngleChangeListeners.size(); i++) {
     cCameraAngleChangeListeners[i]->cameraAngleChanged(angle);

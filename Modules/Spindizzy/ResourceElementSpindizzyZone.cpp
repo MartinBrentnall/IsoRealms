@@ -47,6 +47,12 @@ void ResourceElementSpindizzyZone::spindizzyZoneThemeSelected(ISpindizzyZoneThem
   }
 }
 
+void ResourceElementSpindizzyZone::spindizzyZoneThemeEdited(ISpindizzyZoneTheme* spindizzyZoneTheme) {
+  for (ElementSpindizzyZone* mZone : cContent) {
+    mZone->spindizzyZoneThemeEdited(spindizzyZoneTheme);
+  }
+}
+
 void ResourceElementSpindizzyZone::zoneGainedFocus(ElementSpindizzyZone* zone) {
   cFocusedZones.insert(zone);
 }

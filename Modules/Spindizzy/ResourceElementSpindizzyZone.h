@@ -69,6 +69,7 @@ class ResourceElementSpindizzyZone:public ISpindizzyZoneThemeListener,
    * Implements ISpindizzyZoneThemeListener *
   \******************************************/
   void spindizzyZoneThemeSelected(ISpindizzyZoneTheme*);
+  void spindizzyZoneThemeEdited(ISpindizzyZoneTheme*);
   
   /*********************************\
    * Implements ISpindizzyZoneType *

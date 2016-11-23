@@ -32,7 +32,12 @@ class DialogSpindizzyZoneTheme:public DialogOKCancelUndo,
                                public IComponentSelectorListener<IColour>,
                                public IComponentSelectorListener<ITexture> {
   private:
+  ISpindizzyZoneTheme* cTheme;
   ComponentTable* cTable;
+  std::map<SpindizzyZoneThemeTexture*, ITexture*> cOriginalTextures;
+  std::map<SpindizzyZoneThemeColour*, IColour*> cOriginalColours;
+  std::map<ISelector*, SpindizzyZoneThemeTexture*> cTextureSelectorElementMap;
+  std::map<ISelector*, SpindizzyZoneThemeColour*> cColourSelectorElementMap;
   
   public:
   DialogSpindizzyZoneTheme(IEditingContext*, IResourceAccessor*, ISpindizzyZoneTheme*);
