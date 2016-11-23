@@ -40,8 +40,21 @@ MenuPopup::MenuPopup(DOMNodeWrapper* node, IMenuContainer* parent, float x, floa
       ICommand* mCommand = parseCommand(mNode, commandSource, resources);
       std::string mPathElementText = mNode->getAttribute("text");
       addMenuItem(mPathElementName, mPathElementText, mCommand, false);
+    } else if (mValueAsString == "DynamicMenuItems") {
+      std::string mDynamicMenuItemsName = mNode->getAttribute("name");
+      DynamicMenuItems* mDynamicMenuItems = new DynamicMenuItems();
+      cDynamicMenuItems[mDynamicMenuItemsName] = mDynamicMenuItems;
+      cMenuItems.push_back(mDynamicMenuItems);
     }
   }
+}
+
+DynamicMenuItems* MenuPopup::getDynamicMenuItems(const std::string& name) {
+  std::map<std::string, DynamicMenuItems*>::iterator mDynamicMenuItem = cDynamicMenuItems.find(name);
+  if (mDynamicMenuItem != cDynamicMenuItems.end()) {
+    return mDynamicMenuItem->second;
+  }
+  return nullptr;
 }
 
 MenuPopup::MenuPopup(IMenuContainer* parent, float x, float y) {
@@ -52,9 +65,9 @@ MenuPopup::MenuPopup(IMenuContainer* parent, float x, float y) {
 }
 
 void MenuPopup::addMenuItem(const std::string& name, const std::string& text, ICommand* command, bool subMenuCommand) {
-  float mXDestination = getX() + 0.02f;
-  float mYDestination = getY() + getHeight() - 0.04f;
-  MenuItem* mMenuItem = new MenuItem(text, command, mXDestination, mYDestination, subMenuCommand);
+//   float mXDestination = getX() + 0.02f;
+//   float mYDestination = getY() + getHeight() - 0.04f;
+  MenuItem* mMenuItem = new MenuItem(text, command, subMenuCommand);
   cMenuItemsByName[name] = mMenuItem;
   cMenuItems.push_back(mMenuItem);
 }
@@ -83,18 +96,13 @@ void MenuPopup::addCommand(std::vector<std::string> path, ICommandInfo* command)
 void MenuPopup::setPosition(float x, float y) {
   cX = x;
   cY = y;
-  float mX = getX() + 0.02f;
-  float mY = getY() - 0.04f;
-  for (unsigned int i = 0; i < cMenuItems.size(); i++) {
-    cMenuItems[i]->setPosition(mX, mY);
-    mY -= 0.05f;
-  }
-  for (std::map<std::string, MenuPopup*>::iterator i = cMenuPopups.begin(); i != cMenuPopups.end(); i++) {
-    MenuItem* mMenuItem = cMenuItemsByName[i->first];
-    float mY = mMenuItem->getY();
-    i->second->setPosition(getX() + getWidth(), mY + 0.04f);
-  }
-  cSubMenuShowing = NULL;
+  // TODO: This don't work, but we don't have any sub-popups anyway right now.
+//   float mX = getX() + 0.02f;
+//   float mY = getY() - 0.04f;
+//   for (std::map<std::string, MenuPopup*>::iterator i = cMenuPopups.begin(); i != cMenuPopups.end(); i++) {
+//     i->second->setPosition(getX() + getWidth(), mY + 0.04f);
+//   }
+//   cSubMenuShowing = NULL;
 }
 
 // TODO: return (i.e. support) a vector
@@ -178,8 +186,11 @@ void MenuPopup::render() {
   glPopAttrib();
 
   glLoadIdentity();
+  float mX = getX() + 0.02f;
+  float mY = getY() - 0.04f;
   for (unsigned int i = 0; i < cMenuItems.size(); i++) {
-    cMenuItems[i]->render(i == cSelectedItem);
+    cMenuItems[i]->render(i == cSelectedItem, mX, mY);
+    mY -= cMenuItems[i]->getHeight();
   }
   if (cSubMenuShowing != NULL) {
     cSubMenuShowing->render();
@@ -191,15 +202,18 @@ bool MenuPopup::mouseButtonDown(SDL_Event& event) {
   ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
   float mX = mScreen->getXLocation(event.button.x);
   float mY = mScreen->getYLocation(event.button.y);
+  float mXMenuItem = getX() + 0.02f;
+  float mYMenuItem = getY() - 0.04f;
   for (unsigned int i = 0; i < cMenuItems.size(); i++) {
     // TODO: Test the width of the popup, not just the menu item text!
-    if (cMenuItems[i]->testClick(mX, mY)) {
+    if (cMenuItems[i]->testClick(mXMenuItem, mYMenuItem, mX, mY)) {
       if (!cMenuItems[i]->isSubMenuCommand()) {
         cParent->closeMenu(this);
       }
       cSelectedItem = cMenuItems.size();
       return true;
     }
+    mYMenuItem -= cMenuItems[i]->getHeight();
   }
   return false;
 }
@@ -209,12 +223,15 @@ bool MenuPopup::mouseMotion(SDL_Event& event) {
   ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
   float mX = mScreen->getXLocation(event.button.x);
   float mY = mScreen->getYLocation(event.button.y);
+  float mXMenuItem = getX() + 0.02f;
+  float mYMenuItem = getY() - 0.04f;
   for (unsigned int i = 0; i < cMenuItems.size(); i++) {
-    if (cMenuItems[i]->contains(mX, mY)) {
+    if (cMenuItems[i]->contains(mXMenuItem, mYMenuItem, mX, mY)) {
       cSelectedItem = i;
       // TODO: Access sub-menu! (DO NOT EXECUTE MENU ITEM WITHOUT CHECKING FIRST THAT ITS A SUBMENU!)
       return false;
     }
+    mYMenuItem -= cMenuItems[i]->getHeight();
   }
   return false;
 }

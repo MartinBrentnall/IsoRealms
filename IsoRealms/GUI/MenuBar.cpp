@@ -23,7 +23,7 @@ MenuBar::MenuBar(IComponentContainer* componentContainer, DOMNodeWrapper* node, 
   cSelectedItem = 0;
   cMenuPopupShowing = NULL;
 
-  float mXOffset = getLeft() + 0.01f;
+  float mXOffset = -1.0f;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
@@ -32,7 +32,7 @@ MenuBar::MenuBar(IComponentContainer* componentContainer, DOMNodeWrapper* node, 
       MenuPopup* mPopupMenu = new MenuPopup(mNode, this, mXOffset, 0.95f, componentContainer, commandSource, resources);
       PopupMenuCommand* mPopupMenuCommand = new PopupMenuCommand(this, mPopupMenu);
       std::string mMenuItemName = mNode->getAttribute("text");
-      MenuItem* mMenuItem = new MenuItem(mMenuItemName, mPopupMenuCommand, mXOffset, 0.96f, true);
+      MenuItem* mMenuItem = new MenuItem(mMenuItemName, mPopupMenuCommand, true);
       cMenuItems.push_back(mMenuItem);
       mXOffset += mMenuItem->getWidth() + 0.05f;
       unsigned int mAcceleratorIndex = mMenuItemName.find('^');
@@ -42,6 +42,16 @@ MenuBar::MenuBar(IComponentContainer* componentContainer, DOMNodeWrapper* node, 
       cMenuPopups[mMenuItemName] = mPopupMenu;
     }
   }
+}
+
+DynamicMenuItems* MenuBar::getDynamicMenuItems(const std::string& name) {
+  for (std::pair<std::string, MenuPopup*> mMenuPopup : cMenuPopups) {
+    DynamicMenuItems* mDynamicMenuItems = mMenuPopup.second->getDynamicMenuItems(name);
+    if (mDynamicMenuItems != nullptr) {
+      return mDynamicMenuItems;
+    }
+  }
+  return nullptr;
 }
 
 void MenuBar::addCommand(ICommandInfo* commandInfo) {
@@ -54,7 +64,7 @@ void MenuBar::addCommand(ICommandInfo* commandInfo) {
       mPopupMenu = new MenuPopup(this, getRight() - 0.01f, 0.95f);
       cMenuPopups[mPathElementName] = mPopupMenu;
       PopupMenuCommand* mPopupMenuCommand = new PopupMenuCommand(cMenuPopupShowing, mPopupMenu);
-      MenuItem* mMenuItem = new MenuItem(mPathElementName, mPopupMenuCommand, getRight() - 0.01f, 0.96f, true);
+      MenuItem* mMenuItem = new MenuItem(mPathElementName, mPopupMenuCommand, true);
       cMenuItems.push_back(mMenuItem);
     } else {
       mPopupMenu = mIterator->second;
@@ -116,8 +126,11 @@ void MenuBar::render() {
   glPopAttrib();
 
   glLoadIdentity();
+  float mX = getLeft() + 0.01f;
+  float mY = 0.96f;
   for (unsigned int i = 0; i < cMenuItems.size(); i++) {
-    cMenuItems[i]->render(i == cSelectedItem);
+    cMenuItems[i]->render(i == cSelectedItem, mX, mY);
+    mX += cMenuItems[i]->getWidth() + 0.05f;
   }
   if (cMenuPopupShowing != NULL) {
     cMenuPopupShowing->render();
@@ -129,11 +142,14 @@ bool MenuBar::mouseButtonDown(SDL_Event& event) {
   ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
   float mX = mScreen->getXLocation(event.button.x);
   float mY = mScreen->getYLocation(event.button.y);
+  float mXMenuItem = getLeft() + 0.01f;
+  float mYMenuItem = 0.95f;
   for (unsigned int i = 0; i < cMenuItems.size(); i++) {
-    if (cMenuItems[i]->testClick(mX, mY)) {
+    if (cMenuItems[i]->testClick(mXMenuItem, mYMenuItem, mX, mY)) {
       cComponentContainer->bringComponentToFront(this);
       return true;
     }
+    mXMenuItem += cMenuItems[i]->getWidth() + 0.05f;
   }
   cMenuPopupShowing = NULL;
   return false;
@@ -198,8 +214,10 @@ bool MenuBar::mouseMotion(SDL_Event& event) {
   ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
   float mX = mScreen->getXLocation(event.button.x);
   float mY = mScreen->getYLocation(event.button.y);
+  float mXMenuItem = getLeft() + 0.01f;
+  float mYMenuItem = 0.95f;
   for (unsigned int i = 0; i < cMenuItems.size(); i++) {
-    if (cMenuItems[i]->contains(mX, mY)) {
+    if (cMenuItems[i]->contains(mXMenuItem, mYMenuItem, mX, mY)) {
       cSelectedItem = i;
       if (cMenuPopupShowing != NULL) {
         // TODO: Should ONLY excute if it's a sub-menu!
@@ -207,6 +225,7 @@ bool MenuBar::mouseMotion(SDL_Event& event) {
       }
       return false;
     }
+    mXMenuItem += cMenuItems[i]->getWidth() + 0.05f;
   }
   return false;
 }

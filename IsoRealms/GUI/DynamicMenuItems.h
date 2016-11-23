@@ -16,12 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef MENU_ITEM_H
-#define MENU_ITEM_H
+#ifndef DYNAMIC_MENU_ITEMS_H
+#define DYNAMIC_MENU_ITEMS_H
 
 #include <GL/glew.h>
 #include <SDL/SDL.h>
 #include <string>
+#include <vector>
 
 #include <IsoRealms/ICommand.h>
 #include <IsoRealms/Input/KeyStates.h>
@@ -30,22 +31,19 @@
 #include "IMenuEntry.h"
 #include "LookAndFeel.h"
 
-class MenuItem:public IMenuEntry {
+class DynamicMenuItems:public IMenuEntry {
   private:
-  char cAccelerator;
-  std::string::size_type cAcceleratorIndex;
-  std::string cText;
-  ICommand* cCommand;
-  bool cIsSubMenuCommand;
+  std::vector<std::pair<std::string, ICommand*> > cItems;
+  unsigned int cSelected;
 
   public:
 
   /**
    * Construct a new menu item with the specified command.
    */
-  MenuItem(std::string, ICommand*, bool);
+  DynamicMenuItems();
 
-  void setCommand(ICommand*);
+  void addItem(std::string, ICommand*);
   
   void render(bool, float, float);
 

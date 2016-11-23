@@ -77,16 +77,15 @@
           <Action name="IsoRealms/Quit"/>
         </MenuItem>
       </Menu>
-      <Menu text="^Edit">
-        <MenuItem text="^Pop Stack"/>
-        <MenuItem text="P^ush Stack"/>
+      <Menu text="^Layers">
+        <MenuItem text="^Manage Layers">
+          <ExecuteEditorCommand type="ManageLayers"/>
+        </MenuItem>
+        <DynamicMenuItems name="Layers"/>
       </Menu>
       <Menu text="^Project">
         <MenuItem text="^Modules">
           <ExecuteEditorCommand type="Modules"/>
-        </MenuItem>
-        <MenuItem text="^Resource Browser">
-          <ExecuteEditorCommand type="ResourceBrowser"/>
         </MenuItem>
       </Menu>
     </MenuBar>

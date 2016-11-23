@@ -139,6 +139,14 @@ ILayer* Project::getDefaultLayer() {
   return cDefaultLayer;
 }
 
+std::vector<ILayer*> Project::getAllLayers() {
+  return cLayers;
+}
+
+std::string Project::getName(ILayer* layer) {
+  return "<Layer Name Goes Here>";
+}
+
 void Project::finish() {
   cCompleted = true;
 }

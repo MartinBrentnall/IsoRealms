@@ -48,6 +48,7 @@
 class OpenCommand;
 
 #include "CommandDialog.h"
+#include "CommandSelectLayer.h"
 #include "DialogModules.h"
 #include "DialogObjectProperties.h"
 #include "DialogProjectOpen.h"
@@ -185,6 +186,7 @@ class SimpleEditor:public IModule,
   void testCurrentMap();
   bool hasFileName();
   void setProject(IProject*); // TODO: Not an interface yet.
+  void selectLayer(ILayer*);
 
   /*******************************************************\
    * Implements IResourceSelectionListener<IElementType> *

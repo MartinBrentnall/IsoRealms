@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2016 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,20 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_MAP_MANAGER_H
-#define I_MAP_MANAGER_H
+#ifndef COMMAND_SELECT_LAYER_H
+#define COMMAND_SELECT_LAYER_H
 
-#include <string>
+#include <IsoRealms/ICommand.h>
 
-#include <IsoRealms/Resources/Layer/ILayer.h>
+#include "DialogProjectSaveAs.h"
+#include "IMapManager.h"
 
-class IMapManager {
+class CommandSelectLayer:public ICommand {
+  private:
+  IMapManager* cEditor;
+  ILayer* cLayer;
+
   public:
-  virtual void saveCurrentMap() = 0;
-  virtual void saveCurrentMap(const std::string&) = 0;
-  virtual void testCurrentMap() = 0;
-  virtual bool hasFileName() = 0;
-  virtual void selectLayer(ILayer*) = 0;
+  CommandSelectLayer(IMapManager*, ILayer*);
+  
+  /***********************\
+   * Implements ICommand *
+  \***********************/
+  void execute();
 };
 
 #endif
+

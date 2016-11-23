@@ -382,6 +382,10 @@ void SimpleEditor::registerCommand(ICommandInfo* commandInfo) {
   cMenuBar->addCommand(commandInfo);
 }
 
+void SimpleEditor::selectLayer(ILayer* layer) {
+  cSelectedLayer = layer;
+}
+
 IComponentContainer* SimpleEditor::getComponentContainer() {
   return this;
 }
@@ -583,8 +587,21 @@ void SimpleEditor::openProject(const std::string& file, bool asTemplate) {
         cProjectManagerListeners[i]->projectOpened(cProject);
       }
       cProject->addObjectSelectionListener(this);
-      return;
     }
+  }
+  
+  // Put Layers in Editor Menu.
+  std::vector<ILayer*> mLayers = cProject->getAllLayers();
+  DynamicMenuItems* mLayerMenuItems = cMenuBar->getDynamicMenuItems("Layers");
+  
+  if (mLayerMenuItems != nullptr) {
+    for (ILayer* mLayer : mLayers) {
+      std::string mLayerName = cProject->getName(mLayer);
+      ICommand* mSelectLayerCommand = new CommandSelectLayer(this, mLayer);
+      mLayerMenuItems->addItem(mLayerName, mSelectLayerCommand);
+    }
+  } else {
+    // TODO: Warning.
   }
 }
 

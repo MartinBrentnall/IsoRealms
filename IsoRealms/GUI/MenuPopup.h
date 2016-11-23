@@ -34,8 +34,10 @@
 #include "../ICommandSource.h"
 #include "../ScreenConfiguration.h"
 
+#include "DynamicMenuItems.h"
 #include "IMenuContainer.h"
 #include "IMenu.h"
+#include "IMenuEntry.h"
 #include "IMenuPopup.h"
 #include "MenuItem.h"
 #include "PopupMenuCommand.h"
@@ -45,7 +47,8 @@ class MenuPopup:public IMenu,
   private:
   std::map<std::string, MenuPopup*> cMenuPopups;
   std::map<std::string, MenuItem*> cMenuItemsByName;
-  std::vector<MenuItem*> cMenuItems;
+  std::map<std::string, DynamicMenuItems*> cDynamicMenuItems;
+  std::vector<IMenuEntry*> cMenuItems;
   MenuPopup* cSubMenuShowing;
   float cX;
   float cY;
@@ -64,6 +67,8 @@ class MenuPopup:public IMenu,
   MenuPopup(DOMNodeWrapper*, IMenuContainer*, float, float, IComponentContainer*, ICommandSource*, IResourceAccessor*);
   MenuPopup(IMenuContainer*, float, float);
 
+  DynamicMenuItems* getDynamicMenuItems(const std::string&);  
+  
   void addCommand(std::vector<std::string>, ICommandInfo*);
   void setPosition(float, float);
 

@@ -60,6 +60,8 @@ class Project:public IProject {
   void updateRuntime(unsigned int);
   void initialised();
   ILayer* getDefaultLayer();
+  std::vector<ILayer*> getAllLayers();
+  std::string getName(ILayer*);
   void finish();
   bool hasCompleted();
   void reset();

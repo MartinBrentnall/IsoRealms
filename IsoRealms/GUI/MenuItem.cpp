@@ -18,7 +18,7 @@
  */
 #include "MenuItem.h"
 
-MenuItem::MenuItem(std::string text, ICommand* command, float xOffset, float yOffset, bool isSubMenuCommand) {
+MenuItem::MenuItem(std::string text, ICommand* command, bool isSubMenuCommand) {
   cText = text;
   cAcceleratorIndex = cText.find('^');
   if (cAcceleratorIndex != std::string::npos) {
@@ -28,8 +28,6 @@ MenuItem::MenuItem(std::string text, ICommand* command, float xOffset, float yOf
     cText = text;
   }
   cCommand = command;
-  cXOffset = xOffset;
-  cYOffset = yOffset;
   cIsSubMenuCommand = isSubMenuCommand;
 }
 
@@ -41,25 +39,16 @@ void MenuItem::setCommand(ICommand* command) {
   cCommand = command;
 }
 
-void MenuItem::setPosition(float x, float y) {
-  cXOffset = x;
-  cYOffset = y;
-}
-
-float MenuItem::getY() {
-  return cYOffset;
-}
-
-void MenuItem::render(bool selected) {
+void MenuItem::render(bool selected, float x, float y) {
   float mMultiplier = selected ? 1.0f : 0.3f;
   glColor3f(1.0f * mMultiplier, 1.0f * mMultiplier, 1.0f * mMultiplier);
   IFont* mFont = LookAndFeel::getDefaultFont();
   float mFontSize = LookAndFeel::getDefaultFontSize();
-  mFont->print(cXOffset, cYOffset, mFontSize, 0, cText.c_str());
+  mFont->print(x, y, mFontSize, 0, cText.c_str());
   if (cAcceleratorIndex != std::string::npos) {
     float mWidth = mFont->getWidth(mFontSize, cText.substr(0, cAcceleratorIndex).c_str());
     glColor3f(0.0f * mMultiplier, 1.0f * mMultiplier, 1.0f * mMultiplier);
-    mFont->print(cXOffset + mWidth, cYOffset, mFontSize, 0, cText.substr(cAcceleratorIndex, 1).c_str());
+    mFont->print(x + mWidth, y, mFontSize, 0, cText.substr(cAcceleratorIndex, 1).c_str());
   }
 }
 
@@ -90,7 +79,7 @@ void MenuItem::execute() {
   cCommand->execute();
 }
 
-bool MenuItem::contains(float x, float y) {
+bool MenuItem::contains(float cXOffset, float cYOffset, float x, float y) {
   IFont* mFont = LookAndFeel::getDefaultFont();
   float mFontSize = LookAndFeel::getDefaultFontSize();
   float mWidth = mFont->getWidth(mFontSize, cText.c_str());
@@ -100,8 +89,8 @@ bool MenuItem::contains(float x, float y) {
   return false;
 }
 
-bool MenuItem::testClick(float x, float y) {
-  if (contains(x, y)) {
+bool MenuItem::testClick(float cXOffset, float cYOffset, float x, float y) {
+  if (contains(cXOffset, cYOffset, x, y)) {
     if (cCommand != NULL) {
       cCommand->execute();
     }

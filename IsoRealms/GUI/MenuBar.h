@@ -63,6 +63,8 @@ class MenuBar:public IHUDComponent,
   public:
   MenuBar(IComponentContainer*, DOMNodeWrapper*, ICommandSource*, IResourceAccessor*);
 
+  DynamicMenuItems* getDynamicMenuItems(const std::string&);
+  
   void addCommand(ICommandInfo*);
   void removeCommand(ICommandInfo*);
 

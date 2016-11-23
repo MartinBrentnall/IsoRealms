@@ -46,6 +46,8 @@ class IProject {
   virtual ModuleRegistry* getModuleRegistry() = 0;
   virtual IResourceManager* getResourceManager() = 0;
   virtual ILayer* getDefaultLayer() = 0;
+  virtual std::vector<ILayer*> getAllLayers() = 0;
+  virtual std::string getName(ILayer*) = 0;
   virtual void initEditor() = 0;
   virtual void initRuntime() = 0;
   virtual bool hasCompleted() = 0;

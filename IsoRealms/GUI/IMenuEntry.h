@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2016 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,20 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_MAP_MANAGER_H
-#define I_MAP_MANAGER_H
+#ifndef I_MENU_ENTRY_H
+#define I_MENU_ENTRY_H
 
+#include <SDL/SDL.h>
 #include <string>
 
-#include <IsoRealms/Resources/Layer/ILayer.h>
-
-class IMapManager {
+class IMenuEntry {
   public:
-  virtual void saveCurrentMap() = 0;
-  virtual void saveCurrentMap(const std::string&) = 0;
-  virtual void testCurrentMap() = 0;
-  virtual bool hasFileName() = 0;
-  virtual void selectLayer(ILayer*) = 0;
+  virtual void render(bool, float, float) = 0;
+  virtual float getWidth() = 0;
+  virtual float getHeight() = 0;
+  virtual bool input(SDL_Event&) = 0;
+  virtual void execute() = 0;
+  virtual bool contains(float, float, float, float) = 0;
+  virtual bool testClick(float, float, float, float) = 0;
+  virtual bool isSubMenuCommand() = 0;
 };
 
 #endif

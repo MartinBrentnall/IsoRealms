@@ -40,6 +40,7 @@ add_library(IsoRealms SHARED
   GUI/Dialogs/ComponentFileSelector.cpp
   GUI/Dialogs/DialogOKCancelUndo.cpp
   GUI/DropDownListComponent.cpp
+  GUI/DynamicMenuItems.cpp
   GUI/EdgeRelation.cpp
   GUI/FlexibleGridLayoutComponent.cpp
   GUI/GridLayoutComponent.cpp
