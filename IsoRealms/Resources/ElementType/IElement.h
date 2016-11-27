@@ -33,6 +33,7 @@ class IMap;
 #include <IsoRealms/Persistence/DOMNodeWriter.h>
 #include <IsoRealms/Resources/IResource.h>
 #include <IsoRealms/Resources/IResourceLocator.h>
+#include <IsoRealms/Resources/Layer/ILayer.h>
 #include <IsoRealms/Resources/Vertex/Vertex.h>
 
 #include "IElementBounds.h"
@@ -75,6 +76,8 @@ class IElement:public IObjectWithProperties {
   virtual void updateEditing(unsigned int) = 0;
   
   virtual void input(SDL_Event&) = 0;
+  
+  virtual bool inputEditor(SDL_Event&, ILayer*) = 0;
 
   virtual bool isVisualRuntime() = 0;
   

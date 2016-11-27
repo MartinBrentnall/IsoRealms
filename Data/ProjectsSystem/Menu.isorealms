@@ -22,18 +22,12 @@
         <ProjectList source="Data/Projects/"/>
       </Menu>
       <Menu name="Create">
-        <Project file="Data/ProjectsTools/Editor.isorealms" label="Create a New Project"/>
-        <Project file="Data/ProjectsTools/Editor.isorealms" label="Create a New Map">
+        <Project file="Data/ProjectsTools/Editor.isorealms" label="World Builder">
           <ModuleOptions name="Editor">
             <MapEditorMode value="true"/>
           </ModuleOptions>
         </Project>
-        <Menu name="Edit an Existing Project">
-          <ProjectListOpenWith file="Data/ProjectsTools/Editor.isorealms" source="Data/Projects/"/>
-        </Menu>
-        <Menu name="Edit an Existing Map">
-          <ProjectListOpenWith file="Data/ProjectsTools/Editor.isorealms" source="Data/Projects/"/>
-        </Menu>
+        <Project file="Data/ProjectsTools/Editor.isorealms" label="IsoRealms"/>
       </Menu>
       <Menu name="Settings">
         <Menu name="Visual">

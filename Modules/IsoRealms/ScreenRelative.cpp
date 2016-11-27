@@ -41,3 +41,18 @@ void ScreenRelative::save(DOMNodeWriter* node, const std::string& attribute, ICo
   node->addAttribute(attribute, getLocation());
 }
 
+void ScreenRelative::renderRelation() {
+  Configuration* mConfiguration = Configuration::getInstance();
+  ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
+  float mAspectRatio = mScreen->getAspectRatio();
+  float mXStart = (cEdge == RIGHT  ? -1.0f :  1.0f) / mAspectRatio;
+  float mYStart =  cEdge == TOP    ? -1.0f :  1.0f;
+  float mXEnd   = (cEdge == LEFT   ?  1.0f : -1.0f) / mAspectRatio;
+  float mYEnd   =  cEdge == BOTTOM ?  1.0f : -1.0f;
+  glLineWidth(5.0f);
+  glColor3f(0.5f, 0.0f, 1.0f);
+  glBegin(GL_LINES);
+  glVertex2f(mXStart, mYStart);
+  glVertex2f(mXEnd,   mYEnd);
+  glEnd();
+}

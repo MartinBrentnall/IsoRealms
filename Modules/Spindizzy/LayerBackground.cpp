@@ -87,6 +87,10 @@ bool LayerBackground::inputEditor(SDL_Event& event) {
   return false;
 }
 
+ElementPickRay* LayerBackground::getPickRay(float x, float y) {
+  return nullptr;
+}
+
 void LayerBackground::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
   std::string mInstanceName = cLayerType->getInstanceName(this);
   node->addAttribute("instance", mInstanceName);

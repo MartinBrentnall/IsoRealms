@@ -106,6 +106,7 @@ class AttractControlLoop:public IModule,
   void updateEditing(unsigned int);
   bool input(SDL_Event&);
   bool inputEditor(SDL_Event&);
+  ElementPickRay* getPickRay(float, float);
   void reset();
   void addObjectSelectionListener(IObjectSelectionListener*);
   

@@ -1,5 +1,5 @@
 /*
- * Copyright 2009,2010,2011 Martin Brentnall
+ * Copyright 2016 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,20 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_HUD_COMPONENT_RELATION_H
-#define I_HUD_COMPONENT_RELATION_H
+#ifndef ELEMENT_PICK_RAY_H
+#define ELEMENT_PICK_RAY_H
 
-#include <string>
+#include <IsoRealms/Resources/Vertex/Vertex.h>
 
-#include <IsoRealms/Persistence/DOMNodeWriter.h>
-
-#include "IComponentSources.h"
-
-class IHUDComponentRelation {
+class ElementPickRay {
   public:
-  virtual float getLocation() = 0;
-  virtual void save(DOMNodeWriter*, const std::string&, IComponentSources*) = 0;
-  virtual void renderRelation() = 0;
+  Vertex cStart;
+  Vertex cEnd;
 };
 
 #endif

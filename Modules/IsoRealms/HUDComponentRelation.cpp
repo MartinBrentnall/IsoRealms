@@ -49,7 +49,49 @@ float HUDComponentRelation::getLocation() {
   return 0.0f;
 }
 
+float HUDComponentRelation::getEdgeLocation() {
+  switch (cEdge) {
+    case LEFT:   return cRelationType == ADJACENT ? cRelative->getEast()
+                      : cRelationType == ALIGNED  ? cRelative->getWest()
+                      :                            (cRelative->getEast() + cRelative->getWest())   / 2.0f;
+    case RIGHT:  return cRelationType == ADJACENT ? cRelative->getWest()
+                      : cRelationType == ALIGNED  ? cRelative->getEast()
+                      :                            (cRelative->getEast()  + cRelative->getWest())  / 2.0f;
+    case BOTTOM: return cRelationType == ADJACENT ? cRelative->getNorth()
+                      : cRelationType == ALIGNED  ? cRelative->getSouth()
+                      :                            (cRelative->getNorth() + cRelative->getSouth()) / 2.0f;
+    case TOP:    return cRelationType == ADJACENT ? cRelative->getSouth()
+                      : cRelationType == ALIGNED  ? cRelative->getNorth()
+                      :                            (cRelative->getNorth() + cRelative->getSouth()) / 2.0f;
+  }
+  std::cout << "WARNING: Edge type not known" << std::endl;
+  return 0.0f;
+}
+
 void HUDComponentRelation::save(DOMNodeWriter* node, const std::string& name, IComponentSources* sources) {
   std::string mSource = cRelative->getSource(sources);
-  node->addAttribute(name, (cRelationType == ADJACENT ? "adjacent " : "align ") + mSource); 
+  node->addAttribute(name, (cRelationType == ADJACENT ? "adjacent " : "align ") + mSource + " " + std::to_string(cOffset)); 
+}
+
+void HUDComponentRelation::renderRelation() {
+  float mXStart;
+  float mYStart;
+  float mXEnd;
+  float mYEnd;
+  switch (cEdge) {
+    case LEFT:   mXStart = getEdgeLocation(); mXEnd = getEdgeLocation(); mYStart = cRelative->getSouth(); mYEnd = cRelative->getNorth(); break;
+    case RIGHT:  mXStart = getEdgeLocation(); mXEnd = getEdgeLocation(); mYStart = cRelative->getSouth(); mYEnd = cRelative->getNorth(); break;
+    case BOTTOM: mYStart = getEdgeLocation(); mYEnd = getEdgeLocation(); mXStart = cRelative->getWest();  mXEnd = cRelative->getEast();  break;
+    case TOP:    mYStart = getEdgeLocation(); mYEnd = getEdgeLocation(); mXStart = cRelative->getWest();  mXEnd = cRelative->getEast();  break;
+  }
+  glLineWidth(5.0f);
+  glColor3f(0.5f, 0.0f, 1.0f);
+  glEnable(GL_LINE_STIPPLE);
+  glLineStipple(1, 255);
+  glBegin(GL_LINES);
+  glVertex2f(mXStart, mYStart);
+  glVertex2f(mXEnd,   mYEnd);
+  glEnd();
+  glDisable(GL_LINE_STIPPLE);
+  glLineWidth(1.0f);
 }

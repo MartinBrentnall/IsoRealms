@@ -247,5 +247,9 @@ bool LayerSpindizzyMap::inputEditor(SDL_Event& event) {
   return cEditingContext->input(event);
 }
 
+ElementPickRay* LayerSpindizzyMap::getPickRay(float x, float y) {
+  return nullptr; // TODO: Implement
+}
+
 LayerSpindizzyMap::~LayerSpindizzyMap() {
 }

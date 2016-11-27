@@ -25,6 +25,7 @@
 #include <IsoRealms/Configuration.h>
 #include <IsoRealms/GUI/LookAndFeel.h>
 #include <IsoRealms/IUniverse.h>
+#include <IsoRealms/Resources/ElementType/PickedElement.h>
 #include <IsoRealms/Resources/IDummyModule.h>
 #include <IsoRealms/Resources/IResourceAccessor.h>
 #include <IsoRealms/Resources/Layer/ILayerType.h>
@@ -70,6 +71,7 @@ class LayerHUD:public ILayer,
   void updateEditing(unsigned int);
   bool input(SDL_Event&);
   bool inputEditor(SDL_Event&);
+  ElementPickRay* getPickRay(float, float);
   void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
   void staticChanged();
   void reset();

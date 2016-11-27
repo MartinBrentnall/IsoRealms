@@ -105,16 +105,15 @@ void LayerHUD::renderEditing() {
   for (unsigned int i = 0; i < cElements.size(); i++) {
     cElements[i]->renderEditing();
   }
+  if (cSelectedElement != nullptr) {
+    cSelectedElement->renderSelectionHighlight();
+  }
   glLoadIdentity();  
   glEnable(GL_DEPTH_TEST);
   glPushAttrib(GL_TRANSFORM_BIT);
   glMatrixMode(GL_PROJECTION);
   glPopMatrix();
   glPopAttrib();
-  
-  if (cSelectedElement != nullptr) {
-    cSelectedElement->renderSelectionHighlight();
-  }
 }
 
 void LayerHUD::updateRuntime(unsigned int milliseconds) {
@@ -134,7 +133,62 @@ bool LayerHUD::input(SDL_Event& event) {
 }
 
 bool LayerHUD::inputEditor(SDL_Event& event) {
-  return false; // TODO: Implement this
+  if (cSelectedElement != nullptr && cSelectedElement->inputEditor(event, this)) {
+    return true;
+  }
+  
+  switch (event.type) {
+    case SDL_MOUSEBUTTONDOWN: {
+      PickedElement* mPickedElement = nullptr;
+      for (int i = cElements.size() - 1; i >= 0; i--) {
+        ElementPickRay* mPickRay = getPickRay(event.button.x, event.button.y);
+        mPickedElement = cElements[i]->pickElement(mPickRay->cStart, mPickRay->cEnd);
+        if (mPickedElement != nullptr) {
+          
+          // HUD renders without depth, so we take the first element with a hit.
+          break;
+        }
+      }
+      cSelectedElement = mPickedElement != nullptr ? mPickedElement->getElement() : nullptr;
+//      fireObjectSelectedEvent(cSelectedElement);
+      glPopMatrix();
+      return true;
+    }
+  }
+  
+  return false;
+}
+
+ElementPickRay* LayerHUD::getPickRay(float x, float y) {
+  double mModelViewMatrix[16];
+  double mProjectionMatrix[16];
+  GLint mViewport[4];
+  
+  Configuration* mConfiguration = Configuration::getInstance();
+  ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
+  float mAspectRatio = mScreen->getAspectRatio();
+
+  // TODO: This is duplicate from render function
+  glPushAttrib(GL_TRANSFORM_BIT);
+  glMatrixMode(GL_PROJECTION);
+  glPushMatrix();
+  glLoadIdentity();
+  glPopAttrib();
+  glDisable(GL_DEPTH_TEST);
+
+  glBindTexture(GL_TEXTURE_2D, 0);
+  glLoadIdentity();
+
+  glScalef(mAspectRatio, 1.0f, 1.0f);
+  
+  glGetDoublev(GL_MODELVIEW_MATRIX, mModelViewMatrix);
+  glGetDoublev(GL_PROJECTION_MATRIX, mProjectionMatrix);
+  glGetIntegerv(GL_VIEWPORT, mViewport);
+  ElementPickRay* mRay = new ElementPickRay();
+  Uint16 mInvertedY = mScreen->invertY(y);
+  gluUnProject(x, mInvertedY, 0.0, mModelViewMatrix, mProjectionMatrix, mViewport, &mRay->cStart.x, &mRay->cStart.y, &mRay->cStart.z);
+  gluUnProject(x, mInvertedY, 1.0, mModelViewMatrix, mProjectionMatrix, mViewport, &mRay->cEnd.x,   &mRay->cEnd.y,   &mRay->cEnd.z);
+  return mRay;
 }
 
 void LayerHUD::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {

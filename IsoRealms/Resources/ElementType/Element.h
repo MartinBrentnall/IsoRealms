@@ -42,6 +42,10 @@ class Element:public IElement {
   virtual void input(SDL_Event&) {
   }
   
+  virtual bool inputEditor(SDL_Event&, ILayer*) {
+    return false;
+  }
+  
   virtual bool isVisualRuntime() {
     return true;
   }

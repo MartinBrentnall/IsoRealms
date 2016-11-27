@@ -208,6 +208,10 @@ bool AttractControlLoop::inputEditor(SDL_Event& event) {
   return false;
 }
   
+ElementPickRay* AttractControlLoop::getPickRay(float, float) {
+  return nullptr;
+}
+
 void AttractControlLoop::reset() {
   // Not supported
 }

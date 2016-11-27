@@ -230,6 +230,7 @@ class SimpleEditor:public IModule,
   void updateEditing(unsigned int);
   bool input(SDL_Event&);
   bool inputEditor(SDL_Event&);
+  ElementPickRay* getPickRay(float, float);
   void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
   void staticCnanged();
   void initRuntime();

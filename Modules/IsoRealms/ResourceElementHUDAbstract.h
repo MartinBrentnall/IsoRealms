@@ -48,6 +48,7 @@ class ResourceElementHUDAbstract:public IElementType {
     \************************************/
     float getLocation();
     void save(DOMNodeWriter*, const std::string&, IComponentSources*);
+    void renderRelation();
   };
   
   IElementRelationManager* cManager;

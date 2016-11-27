@@ -46,6 +46,7 @@ class ScreenRelative:public IHUDComponentRelation {
   \************************************/
   float getLocation();
   void save(DOMNodeWriter*, const std::string&, IComponentSources*);
+  void renderRelation();
 };
 
 #endif

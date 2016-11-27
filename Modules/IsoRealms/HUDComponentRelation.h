@@ -42,6 +42,8 @@ class HUDComponentRelation:public IHUDComponentRelation {
   Edge cEdge;
   float cOffset;
   
+  float getEdgeLocation();
+  
   public:
   HUDComponentRelation(HUDComponentProxy*, std::vector<std::string>, const std::string&);
     
@@ -50,6 +52,7 @@ class HUDComponentRelation:public IHUDComponentRelation {
   \************************************/
   float getLocation();
   void save(DOMNodeWriter*, const std::string&, IComponentSources*);
+  void renderRelation();
 };
 
 #endif

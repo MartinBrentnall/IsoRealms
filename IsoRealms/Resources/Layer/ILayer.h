@@ -23,6 +23,7 @@
 
 #include <IsoRealms/IObjectSelectionListener.h>
 #include <IsoRealms/Persistence/DOMNodeWriter.h>
+#include <IsoRealms/Resources/ElementType/ElementPickRay.h>
 #include <IsoRealms/Resources/IResourceLocator.h>
 #include <IsoRealms/Resources/IResourceSelectionListener.h>
 
@@ -34,6 +35,7 @@ class ILayer : public virtual IResourceSelectionListener<IElementType> {
   virtual void renderEditing() = 0;
   virtual bool input(SDL_Event&) = 0;
   virtual bool inputEditor(SDL_Event&) = 0;
+  virtual ElementPickRay* getPickRay(float, float) = 0;
   virtual void initRuntime() = 0;
   virtual void initEditor() = 0;
   virtual void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*) = 0;

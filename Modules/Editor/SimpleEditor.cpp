@@ -301,6 +301,10 @@ bool SimpleEditor::inputEditor(SDL_Event& event) {
   return false; // We can't edit the editor.
 }
 
+ElementPickRay* SimpleEditor::getPickRay(float x, float y) {
+  return nullptr;
+}
+
 // IElementContainer* SimpleEditor::pushElement(IElement* element) {
 //   clearUndoStack();
 //   return cCursor->pushElement(element);

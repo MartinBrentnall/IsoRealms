@@ -79,3 +79,7 @@ float ResourceElementHUDAbstract::SizeRelation::getLocation() {
 void ResourceElementHUDAbstract::SizeRelation::save(DOMNodeWriter*, const std::string&, IComponentSources*) {
   // TODO: Implement this
 }
+
+void ResourceElementHUDAbstract::SizeRelation::renderRelation() {
+  cRelation->renderRelation();
+}

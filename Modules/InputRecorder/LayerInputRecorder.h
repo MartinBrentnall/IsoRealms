@@ -35,6 +35,7 @@ class LayerInputRecorder : public ILayer {
   void renderEditing();
   bool input(SDL_Event&);
   bool inputEditor(SDL_Event&);
+  ElementPickRay* getPickRay(float, float);
   void initRuntime();
   void initEditor();
   void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);

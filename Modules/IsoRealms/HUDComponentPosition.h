@@ -22,9 +22,11 @@
 #include <map>
 #include <string>
 
+#include <IsoRealms/Collision.h>
 #include <IsoRealms/Configuration.h>
 #include <IsoRealms/Resources/ElementType/IElement.h>
 #include <IsoRealms/Resources/ElementType/IElementContainer.h>
+#include <IsoRealms/Resources/ElementType/PickedElement.h>
 #include <IsoRealms/ScreenConfiguration.h>
 
 #include "IComponentSources.h"
@@ -32,12 +34,28 @@
 
 class HUDComponentPosition:public IElement {
   private:
+  enum Handle {
+    NONE,
+    WEST,
+    EAST,
+    SOUTH,
+    NORTH,
+    BOTTOM,
+    TOP
+  };
+    
+  static const float EDIT_HANDLE_RADIUS;
+  
   IElement* cElement;
   IHUDComponentRelation* cLeftRelation;
   IHUDComponentRelation* cRightRelation;
   IHUDComponentRelation* cTopRelation;
   IHUDComponentRelation* cBottomRelation;
+  Handle cSelectedHandle;
 
+  void renderEditingHandle(float, float, Handle);
+  void testHandlePick(ElementPickRay*, float, float, Handle);
+  
   public:
   HUDComponentPosition(IHUDComponentRelation*, IHUDComponentRelation*, IHUDComponentRelation*, IHUDComponentRelation*);
   
@@ -60,6 +78,7 @@ class HUDComponentPosition:public IElement {
   void updateRuntime(unsigned int);
   void updateEditing(unsigned int);
   void input(SDL_Event&);
+  bool inputEditor(SDL_Event&, ILayer*);
   bool isVisualRuntime();
   bool isVisualEditing();
   bool isDynamicRuntime();
