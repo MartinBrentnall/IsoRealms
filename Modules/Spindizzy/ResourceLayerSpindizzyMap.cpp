@@ -28,6 +28,7 @@ ResourceLayerSpindizzyMap::ResourceLayerSpindizzyMap(ISpindizzyMapModule* module
       LayerSpindizzyMap* mMapInstance = createInstance(mName);
       IArgumentValue* mArgumentValue = new ArgumentValueCustomType<LayerSpindizzyMap>(mMapInstance);
       resourceRegistry->add(mArgumentValue, "Map", mName);
+      // TODO: resourceRegistry->add(mName, mMapInstance);
     }
   }
 }

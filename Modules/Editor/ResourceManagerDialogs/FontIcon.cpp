@@ -27,7 +27,7 @@ void FontIcon::renderIcon() {
   float mBottom = getBottom();
   glColor3f(1.0f, 1.0f, 1.0f);
   float mFontSize = LookAndFeel::getDefaultFontSize();
-  mFont->print(mLeft + 0.01f, mBottom + 0.01f, mFontSize, 0, getResourceLocation().c_str());
+  mFont->print(mLeft + 0.01f, mBottom + 0.01f, mFontSize, IFont::LEFT, getResourceLocation().c_str());
 }
 
 float FontIcon::getWidth() {

@@ -36,7 +36,7 @@ void IntegerField::render() {
   IFont* mFont = LookAndFeel::getDefaultFont();
   float mFontSize = LookAndFeel::getDefaultFontSize();
   glColor3f(1.0f, 1.0f, 1.0f);
-  mFont->print(mLeft + 0.01f, mBottom + 0.01f, mFontSize, 0, cInput.c_str());
+  mFont->print(mLeft + 0.01f, mBottom + 0.01f, mFontSize, IFont::LEFT, cInput.c_str());
 
   glBindTexture(GL_TEXTURE_2D, 0);
   glBegin(GL_LINE_LOOP);

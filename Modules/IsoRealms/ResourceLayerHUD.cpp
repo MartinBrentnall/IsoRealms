@@ -18,8 +18,8 @@
  */
 #include "ResourceLayerHUD.h"
 
-ResourceLayerHUD::ResourceLayerHUD(IDummyModule* module, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
-  // Nothing to do.
+ResourceLayerHUD::ResourceLayerHUD(IElementRelationManager* manager, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
+  cManager = manager;
 }
 
 void ResourceLayerHUD::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
@@ -27,7 +27,9 @@ void ResourceLayerHUD::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* 
 }
 
 ILayer* ResourceLayerHUD::getLayer(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resourceAccessor, bool editing, bool asTemplate) {
-  return new LayerHUD(node, cache, resourceAccessor, this);
+  LayerHUD* mLayerHUD = new LayerHUD(node, cache, resourceAccessor, this, cManager);
+  //mLayerRegistry->add(mLayerHUD)
+  return mLayerHUD;
 }
 
 std::string ResourceLayerHUD::getInstanceName(ILayer* layer) {

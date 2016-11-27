@@ -34,7 +34,7 @@ void DropDownListComponent::render() {
   IFont* mFont = LookAndFeel::getDefaultFont();
   float mFontSize = LookAndFeel::getDefaultFontSize();
   glColor3f(1.0f, 1.0f, 1.0f);
-  mFont->print(mLeft + 0.01f, mTop - 0.04f, mFontSize, 0, cItems[cSelected].c_str());
+  mFont->print(mLeft + 0.01f, mTop - 0.04f, mFontSize, IFont::LEFT, cItems[cSelected].c_str());
 
   glBindTexture(GL_TEXTURE_2D, 0);
   glBegin(GL_LINE_LOOP);
@@ -180,7 +180,7 @@ void DropDownListComponent::ListPopup::render() {
   float mFontSize = LookAndFeel::getDefaultFontSize();
   glColor3f(1.0f, 1.0f, 1.0f);
   for (unsigned int i = 0; i < cParent->cItems.size(); i++) {
-    mFont->print(mLeft + 0.01f, mTop - (0.04f + i * 0.05f), mFontSize, 0, cParent->cItems[i].c_str());
+    mFont->print(mLeft + 0.01f, mTop - (0.04f + i * 0.05f), mFontSize, IFont::LEFT, cParent->cItems[i].c_str());
   }
   glBindTexture(GL_TEXTURE_2D, 0);
 

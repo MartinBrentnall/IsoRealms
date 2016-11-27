@@ -19,7 +19,7 @@
 #include "HUDComponentProxy.h"
 
 HUDComponentProxy::HUDComponentProxy() {
-  cHUDComponentPosition = NULL;
+  cHUDComponentPosition = nullptr;
 }
   
 void HUDComponentProxy::setHUDComponentPosition(HUDComponentPosition* hudComponentPosition) {
@@ -30,12 +30,20 @@ bool HUDComponentProxy::isComponent(HUDComponentPosition* hudComponentPosition) 
   return cHUDComponentPosition == hudComponentPosition;
 }
 
-float HUDComponentProxy::getLeft() {
-  return cHUDComponentPosition->getLeft();
+float HUDComponentProxy::getWest() {
+  return cHUDComponentPosition->getWest();
 }
 
-float HUDComponentProxy::getRight() {
-  return cHUDComponentPosition->getRight();
+float HUDComponentProxy::getEast() {
+  return cHUDComponentPosition->getEast();
+}
+
+float HUDComponentProxy::getSouth() {
+  return cHUDComponentPosition->getSouth();
+}
+
+float HUDComponentProxy::getNorth() {
+  return cHUDComponentPosition->getNorth();
 }
 
 float HUDComponentProxy::getBottom() {

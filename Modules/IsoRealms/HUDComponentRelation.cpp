@@ -18,22 +18,32 @@
  */
 #include "HUDComponentRelation.h"
 
-HUDComponentRelation::HUDComponentRelation(HUDComponentProxy* relative, const std::string& relationType, const std::string& edge) {
+HUDComponentRelation::HUDComponentRelation(HUDComponentProxy* relative, std::vector<std::string> description, const std::string& edge) {
   cRelative = relative;
-  cRelationType = relationType == "adjacent" ? ADJACENT
-                                             : ALIGNED;
+  cRelationType = description[0] == "adjacent" ? ADJACENT
+                : description[0] == "align"    ? ALIGNED
+                :                                CENTER;
   cEdge = edge == "left"   ? LEFT
         : edge == "right"  ? RIGHT
         : edge == "bottom" ? BOTTOM
                            : TOP;
+  cOffset = description.size() >= 3 ? atof(description[2].c_str()) : 0.0f;
 }
 
 float HUDComponentRelation::getLocation() {
   switch (cEdge) {
-    case LEFT:   return cRelationType == ADJACENT ? cRelative->getRight()  : cRelative->getLeft();
-    case RIGHT:  return cRelationType == ADJACENT ? cRelative->getLeft()   : cRelative->getRight();
-    case TOP:    return cRelationType == ADJACENT ? cRelative->getBottom() : cRelative->getTop();
-    case BOTTOM: return cRelationType == ADJACENT ? cRelative->getTop()    : cRelative->getBottom();
+    case LEFT:   return cRelationType == ADJACENT ? cRelative->getEast()                                  + cOffset
+                      : cRelationType == ALIGNED  ? cRelative->getWest()                                  + cOffset
+                      :                            (cRelative->getEast() + cRelative->getWest())   / 2.0f + cOffset;
+    case RIGHT:  return cRelationType == ADJACENT ? cRelative->getWest()                                  - cOffset
+                      : cRelationType == ALIGNED  ? cRelative->getEast()                                  - cOffset
+                      :                            (cRelative->getEast()  + cRelative->getWest())  / 2.0f - cOffset;
+    case BOTTOM: return cRelationType == ADJACENT ? cRelative->getNorth()                                 + cOffset
+                      : cRelationType == ALIGNED  ? cRelative->getSouth()                                 + cOffset
+                      :                            (cRelative->getNorth() + cRelative->getSouth()) / 2.0f + cOffset;
+    case TOP:    return cRelationType == ADJACENT ? cRelative->getSouth()                                 - cOffset
+                      : cRelationType == ALIGNED  ? cRelative->getNorth()                                 - cOffset
+                      :                            (cRelative->getNorth() + cRelative->getSouth()) / 2.0f + cOffset;
   }
   std::cout << "WARNING: Edge type not known" << std::endl;
   return 0.0f;

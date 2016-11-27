@@ -27,6 +27,7 @@ ResourceLayerBackground::ResourceLayerBackground(IDummyModule* module, DOMNodeWr
       LayerBackground* mLayerBackgroundInstance = createInstance(mName);
       IArgumentValue* mArgumentValue = new ArgumentValueCustomType<LayerBackground>(mLayerBackgroundInstance);
       resourceRegistry->add(mArgumentValue, "Background", mName);
+      // TODO: resourceRegistry->add(mName, mLayerBackgroundInstance);
     }
   }
 }

@@ -28,9 +28,13 @@
 #include <IsoRealms/Resources/IDummyModule.h>
 #include <IsoRealms/Resources/Texture/Texture.h>
 
-class ResourceElementHUDRoundedRectangle:public IElementType,
-                                         public IElementBounds,
-                                         public Element {
+#include "ElementHUDRoundedRectangle.h"
+#include "IElementRelationManager.h"
+#include "IElementTypeHUDRoundedRectangle.h"
+#include "ResourceElementHUDAbstract.h"
+
+class ResourceElementHUDRoundedRectangle:public ResourceElementHUDAbstract,
+                                         public IElementTypeHUDRoundedRectangle {
   private:
   static Texture* cCornerTexture;
   static unsigned int cInstanceCount;
@@ -38,19 +42,20 @@ class ResourceElementHUDRoundedRectangle:public IElementType,
 
   float cCornerSize;
 
-  void renderCorner(float, float, float, float, float, float);
-  void renderRectangle(float, float, float, float);
-
   public:
-  ResourceElementHUDRoundedRectangle(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
+  ResourceElementHUDRoundedRectangle(IElementRelationManager*, DOMNodeWrapper*, IResourceRegistry*);
   
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
   void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
   
+  /*****************************************\
+   * Implements ResourceElementHUDAbstract *
+  \*****************************************/
+  IElement* createHUDElement(DOMNodeWrapper*, DOMNodeWrapper*, BlockLocation*, IResourceAccessor*, bool, HUDComponentPosition*);
+  
   /***************************\
    * Implements IElementType *
   \***************************/
-  void loadElement(DOMNodeWrapper*, DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*, bool);
   void configureElement();
   void renderEditingPreview(Vertex&);
   void updateEditingPreview(unsigned int);
@@ -61,34 +66,13 @@ class ResourceElementHUDRoundedRectangle:public IElementType,
   Vertex* editorCursorStopped(Vertex*);
   bool inputEdit(SDL_Event&, ILayerEditingContext*);
 
-  /************************************\
-   * Implements IObjectWithProperties *
-  \************************************/
-  std::string getTypeName();
-  std::vector<IObjectProperty*> getProperties(IComponentContainer*);
-  
-  /***********************\
-   * Implements IElement *
-  \***********************/
+  /**********************************************\
+   * Implements IElementTypeHUDRoundedRectangle *
+  \**********************************************/
   IElementType* getElementType();
-  void renderStatic();
-  void setDirty();
-  IElementBounds* getBounds();
-  void renderRuntime();
-  bool renderSelectionHighlight();
-  void updateRuntime(unsigned int);
-  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*, BlockLocation&);
+  float getCornerSize();
+  void setCornerTexture();
   
-  /*****************************\
-   * Implements IElementBounds *
-  \*****************************/
-  float getWest();
-  float getEast();
-  float getSouth();
-  float getNorth();
-  float getTop();
-  float getBottom();
-
   virtual ~ResourceElementHUDRoundedRectangle();  
 };
 

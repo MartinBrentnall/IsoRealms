@@ -68,7 +68,7 @@ void Button::render() {
   }
   IFont* mFont = LookAndFeel::getDefaultFont();
   float mFontSize = LookAndFeel::getDefaultFontSize();
-  mFont->print(mLeft + (mRight - mLeft) * 0.5f, mBottom + 0.01f, mFontSize, 1, cText.c_str());
+  mFont->print(mLeft + (mRight - mLeft) * 0.5f, mBottom + 0.01f, mFontSize, IFont::CENTER, cText.c_str());
 
   glPushAttrib(GL_TRANSFORM_BIT);
   glMatrixMode(GL_PROJECTION);

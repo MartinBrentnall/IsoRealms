@@ -30,45 +30,70 @@
 #include "IComponentSources.h"
 #include "IHUDComponentRelation.h"
 
-class HUDComponentPosition : public IElementContainer {
+class HUDComponentPosition:public IElement {
   private:
-  IElement* cComponent;
-  float cXScale;
-  float cYScale;
+  IElement* cElement;
   IHUDComponentRelation* cLeftRelation;
   IHUDComponentRelation* cRightRelation;
   IHUDComponentRelation* cTopRelation;
   IHUDComponentRelation* cBottomRelation;
 
-  float getXScale();
-  float getYScale();
-  float getAspectRatio();
-  float getXPosition();
-  float getYPosition();  
-  
   public:
-  HUDComponentPosition(IHUDComponentRelation*, IHUDComponentRelation*, IHUDComponentRelation*, IHUDComponentRelation*, float, float);
-  void update(unsigned int);
-  void render();
-  float getLeft();
-  float getRight();
-  float getBottom();
-  float getTop();
+  HUDComponentPosition(IHUDComponentRelation*, IHUDComponentRelation*, IHUDComponentRelation*, IHUDComponentRelation*);
+  
+  void setElement(IElement*);
+  
   void save(DOMNodeWriter*, IComponentSources*, IResourceLocator*);
 
-  /********************************\
-   * Implements IElementContainer * 
-  \********************************/
-  void addElement(IElement*);
-  void removeElement(IElement*);
-  void updateElement(IElement*);
-  void addArgumentValue(IArgument*);
-  void setArguments();
-  void unsetArguments();
-  BlockArea* getCoverage();
-  void setDirty(IElement*);
-  void restrictCursor(Vertex&);
-  IUniverse* getUniverse();
+  // Editing functions
+  void renderSelection();
+
+  /***********************\
+   * Implements IElement *
+  \***********************/
+  IElementType* getElementType();
+  bool initElement(IUniverse*, unsigned int);
+  void renderStatic();
+  void renderRuntime();
+  void renderEditing();
+  bool renderSelectionHighlight();
+  void updateRuntime(unsigned int);
+  void updateEditing(unsigned int);
+  void input(SDL_Event&);
+  bool isVisualRuntime();
+  bool isVisualEditing();
+  bool isDynamicRuntime();
+  bool isDynamicEditing();
+  bool isInteractive();
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*, BlockLocation&);
+  void setDirty();
+  void initRuntime();
+  void staticChanged();
+  bool isImplicit();  
+  IElementBounds* getBounds();  
+  void focusGained(ILayerEditingContext*);
+  void focusLost(ILayerEditingContext*);
+  void cursorMoved(ILayerEditingContext*, Vertex&, Vertex&);
+  void cursorAppeared(ILayerEditingContext*, Vertex&);
+  void processCursorMovement(ILayerEditingContext*, Vertex&, Vertex&);
+  void processCursorAppearance(ILayerEditingContext*, Vertex&);
+  PickedElement* pickElement(Vertex&, Vertex&);
+  void reset();
+
+  /************************************\
+   * Implements IObjectWithProperties *
+  \************************************/
+  std::string getTypeName();
+  std::vector<IObjectProperty*> getProperties(IComponentContainer*);
+
+  float getWest();
+  float getEast();
+  float getSouth();
+  float getNorth();
+  float getTop();
+  float getBottom();
+  
+  virtual ~HUDComponentPosition() {}
 };
 
 #endif

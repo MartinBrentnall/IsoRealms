@@ -60,7 +60,8 @@
 #include "ResourceVertexFixed.h"
 
 class IsoRealmsModule:public IModule,
-                      public IResource {
+                      public IResource,
+                      public IElementRelationManager {
   private:
   static const std::string TAG_RESOURCE_TYPE_BOOLEAN_FIXED;
   static const std::string TAG_RESOURCE_TYPE_COLOUR_FIXED;
@@ -104,29 +105,32 @@ class IsoRealmsModule:public IModule,
   
   static bool cStaticInit;
   
-  ResourceType<IBoolean,             ResourceBooleanFixed,               DialogBooleanFixed>               cResourceTypeBooleanFixed;
-  ResourceType<IColour,              Colour,                             DialogColourFixed>                cResourceTypeColourFixed;
-  ResourceType<IElementType,         ResourceElementHUDModel,            DialogElementHUDModel>            cResourceTypeElementHUDModel;
-  ResourceType<IElementType,         ResourceElementHUDRoundedRectangle, DialogElementHUDRoundedRectangle> cResourceTypeElementHUDRoundedRectangle;
-  ResourceType<IElementType,         ResourceElementHUDString,           DialogElementHUDString>           cResourceTypeElementHUDString;
-  ResourceType<IFont,                ResourceFontFile,                   DialogFontFile>                   cResourceTypeFontFile;
-  ResourceType<IGlobalVariable,      LuaGlobalVariable,                  DialogGlobalVariable>             cResourceTypeGlobalVariable;
-  ResourceType<IInteger,             ResourceIntegerFixed,               DialogIntegerFixed>               cResourceTypeIntegerFixed;
-  ResourceType<IInteger,             ResourceIntegerTimer,               DialogIntegerTimer>               cResourceTypeIntegerTimer;
-  ResourceType<ILayerType,           ResourceLayerHUD,                   DialogLayerHUD>                   cResourceTypeLayerHUD;
-  ResourceType<I3DModelType,         ResourceModelElement,               DialogModelElement>               cResourceTypeModelElement;
-  ResourceType<I3DModelType,         ResourceModelScriptable,            DialogModelScriptable>            cResourceTypeModelScriptable;
-  ResourceTypeSet<I3DModelType,      ResourceModelSetCycleable,          DialogModelSetCycleable>          cResourceTypeModelSetCycleable;
-  ResourceType<I3DModelType,         ResourceModelSprite,                DialogModelSprite>                cResourceTypeModelSprite;
-  ResourceType<IScript,              LuaScript,                          DialogScriptLua>                  cResourceTypeScriptLua;
-  ResourceType<ISound,               ResourceSoundFile,                  DialogSoundFile>                  cResourceTypeSoundFile;
-  ResourceType<IString,              ResourceStringFixed,                DialogStringFixed>                cResourceTypeStringFixed;
-  ResourceType<ITexture,             ResourceTextureFile,                DialogTextureFile>                cResourceTypeTextureFile;
-  ResourceType<IVertex,              ResourceVertexFixed,                DialogVertexFixed>                cResourceTypeVertexFixed;
+  ResourceType<IBoolean,             ResourceBooleanFixed,               DialogBooleanFixed>                                        cResourceTypeBooleanFixed;
+  ResourceType<IColour,              Colour,                             DialogColourFixed>                                         cResourceTypeColourFixed;
+  ResourceType<IElementType,         ResourceElementHUDModel,            DialogElementHUDModel,            IElementRelationManager> cResourceTypeElementHUDModel;
+  ResourceType<IElementType,         ResourceElementHUDRoundedRectangle, DialogElementHUDRoundedRectangle, IElementRelationManager> cResourceTypeElementHUDRoundedRectangle;
+  ResourceType<IElementType,         ResourceElementHUDString,           DialogElementHUDString,           IElementRelationManager> cResourceTypeElementHUDString;
+  ResourceType<IFont,                ResourceFontFile,                   DialogFontFile>                                            cResourceTypeFontFile;
+  ResourceType<IGlobalVariable,      LuaGlobalVariable,                  DialogGlobalVariable>                                      cResourceTypeGlobalVariable;
+  ResourceType<IInteger,             ResourceIntegerFixed,               DialogIntegerFixed>                                        cResourceTypeIntegerFixed;
+  ResourceType<IInteger,             ResourceIntegerTimer,               DialogIntegerTimer>                                        cResourceTypeIntegerTimer;
+  ResourceType<ILayerType,           ResourceLayerHUD,                   DialogLayerHUD,                   IElementRelationManager> cResourceTypeLayerHUD;
+  ResourceType<I3DModelType,         ResourceModelElement,               DialogModelElement>                                        cResourceTypeModelElement;
+  ResourceType<I3DModelType,         ResourceModelScriptable,            DialogModelScriptable>                                     cResourceTypeModelScriptable;
+  ResourceTypeSet<I3DModelType,      ResourceModelSetCycleable,          DialogModelSetCycleable>                                   cResourceTypeModelSetCycleable;
+  ResourceType<I3DModelType,         ResourceModelSprite,                DialogModelSprite>                                         cResourceTypeModelSprite;
+  ResourceType<IScript,              LuaScript,                          DialogScriptLua>                                           cResourceTypeScriptLua;
+  ResourceType<ISound,               ResourceSoundFile,                  DialogSoundFile>                                           cResourceTypeSoundFile;
+  ResourceType<IString,              ResourceStringFixed,                DialogStringFixed>                                         cResourceTypeStringFixed;
+  ResourceType<ITexture,             ResourceTextureFile,                DialogTextureFile>                                         cResourceTypeTextureFile;
+  ResourceType<IVertex,              ResourceVertexFixed,                DialogVertexFixed>                                         cResourceTypeVertexFixed;
     
   IResourceRegistry* cRuntimeContext;
   IComponentContainer* cComponentContainer;
   IInteger* cLocks;
+  std::map<IUniverse*, std::map<std::string, HUDComponentProxy*>*> cRelativeElements;
+  
+  HUDComponentProxy* getComponentProxy(IUniverse*, const std::string&);
 
   public:
   IsoRealmsModule(IResourceTypeRegistry*);
@@ -139,4 +143,10 @@ class IsoRealmsModule:public IModule,
   void load(DOMNodeWrapper*, DOMNodeWrapper*, IResourceRegistry*, DOMNodeWrapper*);
   void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
   void projectInitialised();
+  
+  /**************************************\
+   * Implements IElementRelationManager *
+  \**************************************/
+  IHUDComponentRelation* getRelation(IUniverse*, const std::string&, const std::string&);
+  void addRelatableElement(IUniverse*, const std::string&, HUDComponentPosition*);
 };

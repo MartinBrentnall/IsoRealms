@@ -18,21 +18,25 @@
  */
 #include "ResourceElementHUDString.h"
 
-ResourceElementHUDString::ResourceElementHUDString(IDummyModule* module, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
+ResourceElementHUDString::ResourceElementHUDString(IElementRelationManager* manager, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) : ResourceElementHUDAbstract(manager) {
+}
+
+IElement* ResourceElementHUDString::createHUDElement(DOMNodeWrapper* node, DOMNodeWrapper* cache, BlockLocation* location, IResourceAccessor* resources, bool asTemplate, HUDComponentPosition* elementTransformer) {
+  return new ElementHUDString(this, elementTransformer);
 }
 
 void ResourceElementHUDString::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
-  cText = resources->getString(node->getAttribute("value"));
-  cFont = resources->getFont(node->getAttribute("font"));
+  cText      = resources->getString(node->getAttribute("value"));
+  cFont      = resources->getFont(  node->getAttribute("font"));
+  std::string mAlignment = node->getAttribute("alignment");
+  cAlignment = mAlignment == "Left"  ? IFont::LEFT
+             : mAlignment == "Right" ? IFont::RIGHT
+             :                         IFont::CENTER;
 }
 
 void ResourceElementHUDString::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
-  node->addAttribute("font", resourceLocator->getPath(cFont));
+  node->addAttribute("font",  resourceLocator->getPath(cFont));
   node->addAttribute("value", resourceLocator->getPath(cText));
-}
-
-void ResourceElementHUDString::loadElement(DOMNodeWrapper* node, DOMNodeWrapper* cache, BlockLocation* location, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
-  container->addElement(this);
 }
 
 void ResourceElementHUDString::configureElement() {
@@ -71,96 +75,18 @@ void ResourceElementHUDString::updateIcon(unsigned int) {
   // TODO
 }
 
-std::string ResourceElementHUDString::getTypeName() {
-  return ""; // TODO
-}
-
-std::vector<IObjectProperty*> ResourceElementHUDString::getProperties(IComponentContainer* windowWorkspace) {
-  return std::vector<IObjectProperty*>();
-}
-
 IElementType* ResourceElementHUDString::getElementType() {
   return this;
 }
 
-void ResourceElementHUDString::renderStatic() {
-  // Nothing to do
+IFont* ResourceElementHUDString::getFont() {
+  return cFont;
 }
 
-void ResourceElementHUDString::setDirty() {
-  // Nothing to do
+std::string ResourceElementHUDString::getValue() {
+  return cText->getValue();
 }
 
-IElementBounds* ResourceElementHUDString::getBounds() {
-  return this;
-}
-
-void ResourceElementHUDString::updateRuntime(unsigned int milliseconds) {
-  // TODO: Nothing to do
-}
-  
-void ResourceElementHUDString::renderRuntime() {
-  glLoadIdentity();
-  glColor3f(0.0f, 0.0f, 0.0f);
-  float mX = -0.90f;
-  float mY =  0.885f;
-/*  float mX = 0.0f;
-  float mY = -0.065f;*/
-  float mShadow = 0.0065f; 
-  float mSize = 0.04f;
-  std::string mText = cText->getValue();
-  if (mText.length() < 3) {
-    // Jewels
-    cFont->print(-mX + mShadow, (mY - 0.09f) - mShadow, mSize, 2, mText.c_str());
-    glColor3f(1.0f, 1.0f, 1.0f);
-    cFont->print(-mX, mY - 0.09f, mSize, 2, mText.c_str());
-  } else if (mText.length() == 3) {
-    // Zones
-    cFont->print(mX + mShadow, (mY - 0.09f) - mShadow, mSize, 0, mText.c_str());
-    glColor3f(1.0f, 1.0f, 1.0f);
-    cFont->print(mX, mY - 0.09f, mSize, 0, mText.c_str());
-  } else if (mText.find('.') != std::string::npos) {
-    // Timer
-    cFont->print(mX + mShadow, mY - mShadow, mSize, 0, mText.c_str());
-    glColor3f(1.0f, 1.0f, 1.0f);
-    cFont->print(mX, mY, mSize, 0, mText.c_str());
-  } else {
-    // Score
-    cFont->print(-mX + mShadow, mY - mShadow, mSize, 2, mText.c_str());
-    glColor3f(1.0f, 1.0f, 1.0f);
-    cFont->print(-mX, mY, mSize, 2, mText.c_str());
-  }
-//  cFont->print(3.5f, -0.1f, 0.99f, 1, "Testing");
-}
-
-bool ResourceElementHUDString::renderSelectionHighlight() {
-  return false;
-}
-
-void ResourceElementHUDString::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator, BlockLocation& blockLocation) {
-  // TODO
-}
-
-float ResourceElementHUDString::getWest() {
-  return -3.0f;
-}
-
-float ResourceElementHUDString::getEast() {
-  return 3.0f;
-}
-
-float ResourceElementHUDString::getSouth() {
-  return -0.5f;
-}
-
-float ResourceElementHUDString::getNorth() {
-  return 0.5f;
-}
-
-float ResourceElementHUDString::getTop() {
-  return 0.0f;
-}
-
-float ResourceElementHUDString::getBottom() {
-  return 0.0f;
+IFont::Alignment ResourceElementHUDString::getAlignment() {
+  return cAlignment;
 }

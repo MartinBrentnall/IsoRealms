@@ -60,7 +60,7 @@ void ListBox::render() {
   for (unsigned int i = 0; i < cItems.size(); i++) {
     float mBrightness = i == cSelectedItem ? 1.0f : 0.4f;
     glColor3f(1.0f * mBrightness, 1.0f * mBrightness, 1.0f * mBrightness);
-    mFont->print(mXOffset, mLine, mFontSize, 0, cItems[i].c_str());
+    mFont->print(mXOffset, mLine, mFontSize, IFont::LEFT, cItems[i].c_str());
     mLine -= 0.05f;
   }
 }

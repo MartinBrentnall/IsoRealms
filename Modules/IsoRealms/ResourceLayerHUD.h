@@ -33,12 +33,16 @@
 #include "HUDComponentPosition.h"
 #include "HUDComponentRelation.h"
 #include "IComponentSources.h"
+#include "IElementRelationManager.h"
 #include "LayerHUD.h"
 #include "ScreenRelation.h"
 
 class ResourceLayerHUD:public ILayerType {
+  private:
+  IElementRelationManager* cManager;
+  
   public:
-  ResourceLayerHUD(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
+  ResourceLayerHUD(IElementRelationManager*, DOMNodeWrapper*, IResourceRegistry*);
   
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
 

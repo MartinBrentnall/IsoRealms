@@ -18,7 +18,12 @@
  */
 #include "ResourceElementHUDModel.h"
 
-ResourceElementHUDModel::ResourceElementHUDModel(IDummyModule* module, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
+ResourceElementHUDModel::ResourceElementHUDModel(IElementRelationManager* manager, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) : ResourceElementHUDAbstract(manager) {
+}
+
+IElement* ResourceElementHUDModel::createHUDElement(DOMNodeWrapper* node, DOMNodeWrapper* cache, BlockLocation* location, IResourceAccessor* resources, bool asTemplate, HUDComponentPosition* elementDimensions) {
+  // TODO: Each Element should get its own Model
+  return new ElementHUDModel(this, elementDimensions, cModel, cCamera);
 }
 
 void ResourceElementHUDModel::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
@@ -39,14 +44,6 @@ void ResourceElementHUDModel::save(DOMNodeWriter* node, DOMNodeWriter* cache, IR
   node->addAttribute("x", cModelLocation.x, 0.0f);
   node->addAttribute("y", cModelLocation.y, 0.0f);
   node->addAttribute("z", cModelLocation.z, 0.0f);
-}
-
-void ResourceElementHUDModel::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator, BlockLocation& blockLocation) {
-  // TODO
-}
-
-void ResourceElementHUDModel::loadElement(DOMNodeWrapper* node, DOMNodeWrapper* cache, BlockLocation* location, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
-  container->addElement(this);
 }
 
 void ResourceElementHUDModel::configureElement() {
@@ -84,78 +81,3 @@ void ResourceElementHUDModel::renderIcon() {
 void ResourceElementHUDModel::updateIcon(unsigned int) {
   // TODO
 }
-
-std::string ResourceElementHUDModel::getTypeName() {
-  return ""; // TODO
-}
-  
-std::vector<IObjectProperty*> ResourceElementHUDModel::getProperties(IComponentContainer* windowWorkspace) {
-  return std::vector<IObjectProperty*>();
-}
-
-IElementType* ResourceElementHUDModel::getElementType() {
-  return this;
-}
-
-void ResourceElementHUDModel::renderStatic() {
-  // Nothing to do
-}
-
-void ResourceElementHUDModel::setDirty() {
-  // Nothing to do
-}
-
-IElementBounds* ResourceElementHUDModel::getBounds() {
-  return this;
-}
-
-void ResourceElementHUDModel::updateRuntime(unsigned int milliseconds) {
-  cModel->update(milliseconds);
-}
-  
-void ResourceElementHUDModel::renderRuntime() {
-  float mAngle = cCamera->getAngle();
-  float mTilt = cCamera->getTilt();
-//   glBegin(GL_LINE_LOOP);
-//   glBindTexture(GL_TEXTURE_2D, 0);
-//   glVertex2f(-1.0f, -1.0f);
-//   glVertex2f( 1.0f, -1.0f);
-//   glVertex2f( 1.0f,  1.0f);
-//   glVertex2f(-1.0f,  1.0f);
-//   glEnd();
-  glPushMatrix();
-  glScalef(2.0f, 2.0f, 2.0f); // TODO: Should be configurable
-  glRotatef(mTilt, 1.0f, 0.0f, 0.0f);
-  glRotatef(mAngle, 0.0f, 0.0f, 1.0f);
-  cModel->render();
-  glPopMatrix();
-}
-
-bool ResourceElementHUDModel::renderSelectionHighlight() {
-  return false;
-}
-
-float ResourceElementHUDModel::getWest() {
-  return -0.5f;
-}
-
-float ResourceElementHUDModel::getEast() {
-  return 0.5f;
-}
-
-float ResourceElementHUDModel::getSouth() {
-  return -0.5f;
-}
-
-float ResourceElementHUDModel::getNorth() {
-  return 0.5f;
-}
-
-float ResourceElementHUDModel::getTop() {
-  return 0.0f;
-}
-
-float ResourceElementHUDModel::getBottom() {
-  return 0.0f;
-}
-

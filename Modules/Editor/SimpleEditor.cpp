@@ -428,9 +428,9 @@ void SimpleEditor::renderRuntime() {
     }
     if (cConfirmExitCommands) {
       glColor3f(0.0f, 0.0f, 0.0f);
-      cFont->print(0.004f, -0.004f, 0.03f, 1, "Are you sure you want to quit?");
+      cFont->print(0.004f, -0.004f, 0.03f, IFont::CENTER, "Are you sure you want to quit?");
       glColor3f(1.0f, 1.0f, 1.0f);
-      cFont->print(0.0f, 0.0f, 0.03f, 1, "Are you sure you want to quit?");
+      cFont->print(0.0f, 0.0f, 0.03f, IFont::CENTER, "Are you sure you want to quit?");
     }
   }
 }

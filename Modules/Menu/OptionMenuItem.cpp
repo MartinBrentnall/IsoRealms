@@ -41,15 +41,15 @@ void OptionMenuItem::save() {
 void OptionMenuItem::render(int i, float fade, IFont* font, bool selected) {
   std::string mOptionText = cOptions[cSelectedOption]->getOption();
   glColor4f(0.0f, 0.0f, 0.0f, fade);
-  font->print(-0.492f, (-0.10f * i) - 0.008f, 0.05f, 0, cName.c_str());
-  font->print(0.508f, (-0.10f * i) - 0.008f, 0.05f, 2, mOptionText.c_str());
+  font->print(-0.492f, (-0.10f * i) - 0.008f, 0.05f, IFont::LEFT, cName.c_str());
+  font->print(0.508f, (-0.10f * i) - 0.008f, 0.05f, IFont::RIGHT, mOptionText.c_str());
   if (selected) {
     glColor4f(0.6f, 1.0f, 0.4f, fade);
   } else {
     glColor4f(1.0f, 1.0f, 1.0f, fade);
   }
-  font->print(-0.5f, -0.10f * i, 0.05f, 0, cName.c_str());
-  font->print(0.5f, -0.10f * i, 0.05f, 2, mOptionText.c_str());
+  font->print(-0.5f, -0.10f * i, 0.05f, IFont::LEFT, cName.c_str());
+  font->print(0.5f, -0.10f * i, 0.05f, IFont::RIGHT, mOptionText.c_str());
 }
 
 FocusAction OptionMenuItem::keyDown(SDLKey& key) {

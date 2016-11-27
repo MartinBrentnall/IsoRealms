@@ -29,16 +29,25 @@
 #include <IsoRealms/Resources/IResourceRegistry.h>
 #include <IsoRealms/Resources/String/IString.h>
 
-class ResourceElementHUDString:public IElementType,
-                               public IElementBounds,
-                               public Element {
+#include "ElementHUDString.h"
+#include "IElementTypeHUDString.h"
+#include "ResourceElementHUDAbstract.h"
+
+class ResourceElementHUDString:public ResourceElementHUDAbstract,
+                               public IElementTypeHUDString {
   private:
   IString* cText;
   IFont* cFont;
+  IFont::Alignment cAlignment;
 
   public:
-  ResourceElementHUDString(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
+  ResourceElementHUDString(IElementRelationManager*, DOMNodeWrapper*, IResourceRegistry*);
 
+  /*****************************************\
+   * Implements ResourceElementHUDAbstract *
+  \*****************************************/
+  IElement* createHUDElement(DOMNodeWrapper*, DOMNodeWrapper*, BlockLocation*, IResourceAccessor*, bool, HUDComponentPosition*);
+  
   /**********************\
    * Implements IPlugin *
   \**********************/
@@ -48,7 +57,6 @@ class ResourceElementHUDString:public IElementType,
   /***************************\
    * Implements IElementType *
   \***************************/
-  void loadElement(DOMNodeWrapper*, DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*, bool);
   void configureElement();
   void renderEditingPreview(Vertex&);
   void updateEditingPreview(unsigned int);
@@ -58,35 +66,15 @@ class ResourceElementHUDString:public IElementType,
   void removeElement(IElement*);
   Vertex* editorCursorStopped(Vertex*);
   bool inputEdit(SDL_Event&, ILayerEditingContext*);
-
+  
   /************************************\
-   * Implements IObjectWithProperties *
+   * Implements IElementTypeHUDString *
   \************************************/
-  std::string getTypeName();
-  std::vector<IObjectProperty*> getProperties(IComponentContainer*);
-  
-  /***********************\
-   * Implements IElement *
-  \***********************/
   IElementType* getElementType();
-  void renderStatic();
-  void setDirty();
-  IElementBounds* getBounds();
-  void renderRuntime();
-  bool renderSelectionHighlight();
-  void updateRuntime(unsigned int);
-  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*, BlockLocation&);
+  IFont* getFont();
+  std::string getValue();
+  IFont::Alignment getAlignment();
 
-  /*****************************\
-   * Implements IElementBounds *
-  \*****************************/
-  float getWest();
-  float getEast();
-  float getSouth();
-  float getNorth();
-  float getTop();
-  float getBottom();
-  
   virtual ~ResourceElementHUDString() {}
 };
 

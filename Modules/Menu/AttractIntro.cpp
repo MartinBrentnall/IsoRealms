@@ -62,7 +62,7 @@ void AttractIntro::update(int ticks) {
 
 void AttractIntro::render() {
   glColor3f(cFade, cFade, cFade);
-  cFont->print(0.0f, 0.0f, 0.05f, 1, "Introducing...");
+  cFont->print(0.0f, 0.0f, 0.05f, IFont::CENTER, "Avalon One Software Presents...");
 }
 
 bool AttractIntro::hasFinished() {

@@ -18,66 +18,34 @@
  */
 #include "LayerHUD.h"
 
-LayerHUD::LayerHUD(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources, ILayerType* layerType) {
+LayerHUD::LayerHUD(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources, ILayerType* layerType, IElementRelationManager* manager) {
   cLayerType = layerType;
+  cSelectedElement = nullptr;
+  
+  HUDComponentPosition* mScreenElement = new HUDComponentPosition(&ScreenRelative::LEFT_EDGE, &ScreenRelative::RIGHT_EDGE, &ScreenRelative::BOTTOM_EDGE, &ScreenRelative::TOP_EDGE);
+  manager->addRelatableElement(this, "screen", mScreenElement);
+  
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Element") {
       std::string mComponentSource = mNode->getAttribute("type");
       std::string mComponentName = mNode->getAttribute("name");
-      float mScale = mNode->getFloatAttribute("scale");
-      if (mScale <= 0.0f) {
-        mScale = 1.0f;
-      }
-
-      IHUDComponentRelation* mLeftRelation   = getRelation(mNode->getAttribute("left"),   "left");
-      IHUDComponentRelation* mRightRelation  = getRelation(mNode->getAttribute("right"),  "right");
-      IHUDComponentRelation* mBottomRelation = getRelation(mNode->getAttribute("bottom"), "bottom");
-      IHUDComponentRelation* mTopRelation    = getRelation(mNode->getAttribute("top"),    "top");
-      HUDComponentPosition* mHUDRenderer = new HUDComponentPosition(mLeftRelation, mRightRelation, mTopRelation, mBottomRelation, mScale, mScale);
-      resources->loadElement(mNode, cache, nullptr, mHUDRenderer, false);
-      cComponents.push_back(mHUDRenderer);
-      HUDComponentProxy* mHUDComponentProxy = getComponentProxy(mComponentName);
-      mHUDComponentProxy->setHUDComponentPosition(mHUDRenderer);
+      resources->loadElement(mNode, cache, nullptr, this, false);
     } else {
       // TODO: Throw
     }
   }
 }
 
-HUDComponentProxy* LayerHUD::getComponentProxy(const std::string& name) {
-  std::map<std::string, HUDComponentProxy*>::iterator i = cComponentsByName.find(name);
-  if (i != cComponentsByName.end()) {
-    return i->second;
-  }
-  HUDComponentProxy* mProxy = new HUDComponentProxy();
-  cComponentsByName[name] = mProxy;
-  return mProxy;
-}
-
-IHUDComponentRelation* LayerHUD::getRelation(const std::string& description, const std::string& edge) {
-  if (description == "") {
-    return nullptr;
-  }
-  std::vector<std::string> mRelationWords = Utils::splitWords(description);
-  if (mRelationWords.size() == 2) {
-    return new HUDComponentRelation(getComponentProxy(mRelationWords[1]), mRelationWords[0], edge);
-  }
-  if (mRelationWords.size() == 1) {
-    return new ScreenRelation(atof(mRelationWords[0].c_str()));
-  }
-  return nullptr;
-}
-
-std::string LayerHUD::getSource(HUDComponentPosition* component) {
-  for (std::map<std::string, HUDComponentProxy*>::iterator i = cComponentsByName.begin(); i != cComponentsByName.end(); i++) {
-    if (i->second->isComponent(component)) {
-      return i->first;
-    }
-  }
-  return "";
-}
+// std::string LayerHUD::getSource(HUDComponentPosition* component) {
+//   for (std::map<std::string, HUDComponentProxy*>::iterator i = cComponentsByName.begin(); i != cComponentsByName.end(); i++) {
+//     if (i->second->isComponent(component)) {
+//       return i->first;
+//     }
+//   }
+//   return "";
+// }
 
 void LayerHUD::resourceSelected(IElementType* elementType) {
   // TODO: Implement this!
@@ -107,8 +75,8 @@ void LayerHUD::renderRuntime() {
   glLoadIdentity();
 
   glScalef(mAspectRatio, 1.0f, 1.0f);
-  for (unsigned int i = 0; i < cComponents.size(); i++) {
-    cComponents[i]->render();
+  for (unsigned int i = 0; i < cElements.size(); i++) {
+    cElements[i]->renderRuntime();
   }
   glLoadIdentity();  
   glEnable(GL_DEPTH_TEST);
@@ -119,17 +87,46 @@ void LayerHUD::renderRuntime() {
 }
 
 void LayerHUD::renderEditing() {
-  // TODO:
+  Configuration* mConfiguration = Configuration::getInstance();
+  ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
+  float mAspectRatio = mScreen->getAspectRatio();
+
+  glPushAttrib(GL_TRANSFORM_BIT);
+  glMatrixMode(GL_PROJECTION);
+  glPushMatrix();
+  glLoadIdentity();
+  glPopAttrib();
+  glDisable(GL_DEPTH_TEST);
+
+  glBindTexture(GL_TEXTURE_2D, 0);
+  glLoadIdentity();
+
+  glScalef(mAspectRatio, 1.0f, 1.0f);
+  for (unsigned int i = 0; i < cElements.size(); i++) {
+    cElements[i]->renderEditing();
+  }
+  glLoadIdentity();  
+  glEnable(GL_DEPTH_TEST);
+  glPushAttrib(GL_TRANSFORM_BIT);
+  glMatrixMode(GL_PROJECTION);
+  glPopMatrix();
+  glPopAttrib();
+  
+  if (cSelectedElement != nullptr) {
+    cSelectedElement->renderSelectionHighlight();
+  }
 }
 
 void LayerHUD::updateRuntime(unsigned int milliseconds) {
-  for (unsigned int i = 0; i < cComponents.size(); i++) {
-    cComponents[i]->update(milliseconds);
+  for (unsigned int i = 0; i < cElements.size(); i++) {
+    cElements[i]->updateRuntime(milliseconds);
   }
 }
 
 void LayerHUD::updateEditing(unsigned int milliseconds) {
-  // TODO
+  for (unsigned int i = 0; i < cElements.size(); i++) {
+    cElements[i]->updateEditing(milliseconds);
+  }
 }
 
 bool LayerHUD::input(SDL_Event& event) {
@@ -142,11 +139,12 @@ bool LayerHUD::inputEditor(SDL_Event& event) {
 
 void LayerHUD::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
   node->addAttribute("type", resources->getPath(cLayerType));
-  for (unsigned int i = 0; i < cComponents.size(); i++) {
+  for (unsigned int i = 0; i < cElements.size(); i++) {
     DOMNodeWriter* mComponentNode = node->addBranch("Element");
-    std::string mComponentName = getSource(cComponents[i]);
-    mComponentNode->addAttribute("name", mComponentName);
-    cComponents[i]->save(mComponentNode, this, resources);
+//     std::string mComponentName = getSource(cComponents[i]);
+//     mComponentNode->addAttribute("name", mComponentName);
+    BlockLocation mBlockLocation(0, 0, 0);
+    cElements[i]->save(mComponentNode, cache, resources, mBlockLocation);
   }
 }
 
@@ -160,4 +158,44 @@ void LayerHUD::reset() {
 
 void LayerHUD::addObjectSelectionListener(IObjectSelectionListener* listener) {
   // TODO
+}
+
+void LayerHUD::addElement(IElement* element) {
+  cElements.push_back(element);
+}
+
+void LayerHUD::removeElement(IElement* element) {
+  // TODO
+}
+
+void LayerHUD::updateElement(IElement* element) {
+  // Nothing to do
+}
+
+void LayerHUD::addArgumentValue(IArgument* argument) {
+  // Nothing to do
+}
+
+void LayerHUD::setArguments() {
+  // Nothing to do
+}
+
+void LayerHUD::unsetArguments() {
+  // Nothing to do
+}
+
+BlockArea* LayerHUD::getCoverage() {
+  return nullptr; // Nothing to do
+}
+
+void LayerHUD::setDirty(IElement* element) {
+  // Nothing to do
+}
+
+void LayerHUD::restrictCursor(Vertex& vertex) {
+  // Nothing to do
+}
+
+IUniverse* LayerHUD::getUniverse() {
+  return this;
 }

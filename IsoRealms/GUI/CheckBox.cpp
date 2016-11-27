@@ -53,7 +53,7 @@ void CheckBox::render() {
   IFont* mFont = LookAndFeel::getDefaultFont();
   float mFontSize = LookAndFeel::getDefaultFontSize();
   glColor3f(1.0f, 1.0f, 1.0f);
-  mFont->print(mLeft + 0.04f, mBottom + 0.01f, mFontSize, 0, cLabel.c_str());
+  mFont->print(mLeft + 0.04f, mBottom + 0.01f, mFontSize, IFont::LEFT, cLabel.c_str());
 
   Configuration* mConfiguration = Configuration::getInstance();
   ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();

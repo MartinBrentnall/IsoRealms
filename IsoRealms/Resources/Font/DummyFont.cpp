@@ -21,7 +21,7 @@
 void DummyFont::initialiseResource(DOMNodeWrapper*, DOMNodeWrapper* cache, IResourceAccessor*) {
 }
 
-void DummyFont::print(float, float, float, int, const char*, ...) {
+void DummyFont::print(float, float, float, IFont::Alignment, const char*, ...) {
 }
 
 float DummyFont::getWidth(float, const char*, ...) {

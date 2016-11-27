@@ -199,10 +199,10 @@
     <ElementHUDModel camera="Spindizzy/Camera" model=":Model/IsoRealms/SecondarySwitchState" name="SecondarySwitchState" scale="1.000000"/>
     <ElementHUDModel camera="Spindizzy/Camera" model=":Model/IsoRealms/Clue" name="Clue" scale="0.000000"/>
     <ElementHUDRoundedRectangle name="HUDPanel"/>
-    <ElementHUDString font="IsoRealms/HUDFont" name="ScoreDisplay" value=":Integer/IsoRealms/Score"/>
-    <ElementHUDString font="IsoRealms/HUDFont" name="TimeDisplay" value="IsoRealms/SpindizzyTimeLimit"/>
-    <ElementHUDString font="IsoRealms/HUDFont" name="ZonesToExploreDisplay" value=":Integer/IsoRealms/ZonesToExplore"/>
-    <ElementHUDString font="IsoRealms/HUDFont" name="JewelCountDisplay" value=":Integer/IsoRealms/Collected"/>
+    <ElementHUDString font="IsoRealms/HUDFont" alignment="Right" name="ScoreDisplay" value=":Integer/IsoRealms/Score"/>
+    <ElementHUDString font="IsoRealms/HUDFont" alignment="Left" name="TimeDisplay" value="IsoRealms/SpindizzyTimeLimit"/>
+    <ElementHUDString font="IsoRealms/HUDFont" alignment="Left" name="ZonesToExploreDisplay" value=":Integer/IsoRealms/ZonesToExplore"/>
+    <ElementHUDString font="IsoRealms/HUDFont" alignment="Right" name="JewelCountDisplay" value=":Integer/IsoRealms/Collected"/>
     <IntegerFixed name="Score"/>
     <IntegerFixed name="ZonesToExplore"/>
     <IntegerFixed name="Collected"/>
@@ -7103,21 +7103,21 @@ end</Code>
       <Element bottom="3" bottomDelay="0" downSpeed="750" top="4" topDelay="0" type="Spindizzy/SquareFilled" upSpeed="750" x="1" y="3" z="3"/>
     </Element>
   </Layer>
-  <Layer type="IsoRealms/HUD">
-    <Element bottom="align ValueJewel" left="align ValueJewel" name="PanelRight" right="align IconScore" top="align IconScore" type="IsoRealms/HUDPanel"/>
-    <Element bottom="align ValueMap" left="align IconMap" name="PanelLift" right="align ValueMap" top="align IconTime" type="IsoRealms/HUDPanel"/>
-    <Element bottom="align Clue" left="align Clue" name="PanelMiddle" right="align Compass" top="align Clue" type="IsoRealms/HUDPanel"/>
-    <Element name="SwitchStatePrimary" right="0.000000" scale="0.087000" top="0.980000" type="IsoRealms/PrimarySwitchState"/>
-    <Element left="0.000000" name="SwitchStateSecondary" scale="0.087000" top="0.980000" type="IsoRealms/SecondarySwitchState"/>
-    <Element left="adjacent SwitchStateSecondary" name="Compass" scale="0.087000" top="0.980000" type="IsoRealms/Compass"/>
-    <Element name="Clue" right="adjacent SwitchStatePrimary" scale="0.087000" top="0.980000" type="IsoRealms/Clue"/>
-    <Element name="IconScore" right="0.980000" scale="0.045000" top="0.980000" type="IsoRealms/ScoreIcon"/>
-    <Element left="-0.980000" name="IconTime" scale="0.045000" top="0.980000" type="IsoRealms/TimeIcon"/>
-    <Element name="IconJewel" right="0.980000" scale="0.045000" top="adjacent IconScore" type="IsoRealms/JewelIcon"/>
-    <Element left="-0.980000" name="IconMap" scale="0.045000" top="adjacent IconTime" type="IsoRealms/MapIcon"/>
-    <Element left="adjacent IconTime" name="ValueTime" scale="0.045000" top="0.980000" type="IsoRealms/TimeDisplay"/>
-    <Element name="ValueScore" right="adjacent IconScore" scale="0.045000" top="0.980000" type="IsoRealms/ScoreDisplay"/>
-    <Element left="adjacent IconMap" name="ValueMap" scale="0.045000" top="adjacent IconScore" type="IsoRealms/ZonesToExploreDisplay"/>
-    <Element name="ValueJewel" right="adjacent IconJewel" scale="0.045000" top="adjacent IconTime" type="IsoRealms/JewelCountDisplay"/>
+  <Layer type="IsoRealms/HUD" name="Spindizzy HUD">
+    <Element bottom="align ValueJewel" left="align ValueJewel" name="PanelRight"  right="align IconScore" top="align IconScore" type="IsoRealms/HUDPanel"/>
+    <Element bottom="align ValueMap"   left="align IconMap"    name="PanelLift"   right="align ValueMap"  top="align IconTime"  type="IsoRealms/HUDPanel"/>
+    <Element bottom="align Clue"       left="align Clue"       name="PanelMiddle" right="align Compass"   top="align Clue"      type="IsoRealms/HUDPanel"/>
+    <Element name="SwitchStatePrimary"   right="center screen"                size="0.174" top="align screen 0.02" type="IsoRealms/PrimarySwitchState"/>
+    <Element name="SwitchStateSecondary" left="center screen"                 size="0.174" top="align screen 0.02" type="IsoRealms/SecondarySwitchState"/>
+    <Element name="Compass"              left="adjacent SwitchStateSecondary" size="0.174" top="align screen 0.02" type="IsoRealms/Compass"/>
+    <Element name="Clue"                 right="adjacent SwitchStatePrimary"  size="0.174" top="align screen 0.02" type="IsoRealms/Clue"/>
+    <Element name="IconScore"  right="align screen 0.02"       top="align screen 0.02"  size="0.09"               type="IsoRealms/ScoreIcon"/>
+    <Element name="IconTime"   left="align screen 0.02"        top="align screen 0.02"  size="0.09"               type="IsoRealms/TimeIcon"/>
+    <Element name="IconJewel"  right="align IconScore"         top="adjacent IconScore" size="0.09"               type="IsoRealms/JewelIcon"/>
+    <Element name="IconMap"    left="align IconTime"           top="adjacent IconTime"  size="0.09"               type="IsoRealms/MapIcon"/> 
+    <Element name="ValueTime"  left="adjacent IconTime 0.02"   top="align IconTime"     length="0.09" width="0.5" type="IsoRealms/TimeDisplay"/>
+    <Element name="ValueScore" right="adjacent IconScore 0.02" top="align IconScore"    length="0.09" width="0.5" type="IsoRealms/ScoreDisplay"/>
+    <Element name="ValueMap"   left="adjacent IconMap 0.02"    top="align IconMap"      length="0.09" width="0.5" type="IsoRealms/ZonesToExploreDisplay"/>
+    <Element name="ValueJewel" right="adjacent IconJewel 0.02" top="align IconJewel"    length="0.09" width="0.5" type="IsoRealms/JewelCountDisplay"/>-->
   </Layer>
 </Project>

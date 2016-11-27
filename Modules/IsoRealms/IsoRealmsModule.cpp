@@ -60,7 +60,10 @@ const std::string IsoRealmsModule::NAME_RESOURCE_TYPE_VERTEX_FIXED              
 
 bool IsoRealmsModule::cStaticInit = false;
 
-IsoRealmsModule::IsoRealmsModule(IResourceTypeRegistry* resourceTypeRegistry) {
+IsoRealmsModule::IsoRealmsModule(IResourceTypeRegistry* resourceTypeRegistry) : cResourceTypeElementHUDModel(this),
+                                                                                cResourceTypeElementHUDRoundedRectangle(this),
+                                                                                cResourceTypeElementHUDString(this),
+                                                                                cResourceTypeLayerHUD(this) {
   if (!cStaticInit) {
     int mAudioRate = 44100;
     Uint16 mAudioFormat = AUDIO_S16SYS;
@@ -163,6 +166,44 @@ void IsoRealmsModule::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceL
 
 void IsoRealmsModule::projectInitialised() {
   // Nothing to do.
+}
+
+HUDComponentProxy* IsoRealmsModule::getComponentProxy(IUniverse* universe, const std::string& name) {
+  std::map<IUniverse*, std::map<std::string, HUDComponentProxy*>*>::iterator mUniverseElements = cRelativeElements.find(universe);
+  std::map<std::string, HUDComponentProxy*>* mProxyMap;
+  if (mUniverseElements == cRelativeElements.end()) {
+    mProxyMap = new std::map<std::string, HUDComponentProxy*>();
+    cRelativeElements[universe] = mProxyMap;
+  } else {
+    mProxyMap = mUniverseElements->second;
+  }
+  
+  std::map<std::string, HUDComponentProxy*>::iterator mNamedElement = mProxyMap->find(name);
+  if (mNamedElement != mProxyMap->end()) {
+    return mNamedElement->second;
+  }
+  HUDComponentProxy* mProxy = new HUDComponentProxy();
+  (*mProxyMap)[name] = mProxy;
+  return mProxy;
+}
+
+IHUDComponentRelation* IsoRealmsModule::getRelation(IUniverse* universe, const std::string& description, const std::string& edge) {
+  if (description == "") {
+    return nullptr;
+  }
+  std::vector<std::string> mRelationWords = Utils::splitWords(description);
+  if (mRelationWords.size() >= 2) {
+    return new HUDComponentRelation(getComponentProxy(universe, mRelationWords[1]), mRelationWords, edge);
+  }
+  if (mRelationWords.size() == 1) {
+    return new ScreenRelation(atof(mRelationWords[0].c_str()));
+  }
+  return nullptr;
+}
+
+void IsoRealmsModule::addRelatableElement(IUniverse* universe, const std::string& name, HUDComponentPosition* element) {
+  HUDComponentProxy* mProxy = getComponentProxy(universe, name);
+  mProxy->setHUDComponentPosition(element);
 }
 
 extern "C" IModule* create(IResourceTypeRegistry* resourceTypeRegistry) {

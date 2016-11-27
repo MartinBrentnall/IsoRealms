@@ -24,6 +24,7 @@
 
 #include <IsoRealms/Configuration.h>
 #include <IsoRealms/GUI/LookAndFeel.h>
+#include <IsoRealms/IUniverse.h>
 #include <IsoRealms/Resources/IDummyModule.h>
 #include <IsoRealms/Resources/IResourceAccessor.h>
 #include <IsoRealms/Resources/Layer/ILayerType.h>
@@ -33,25 +34,29 @@
 #include "HUDComponentPosition.h"
 #include "HUDComponentRelation.h"
 #include "IComponentSources.h"
-#include "ScreenRelation.h"
+#include "IElementRelationManager.h"
+#include "ScreenRelative.h"
 
-class LayerHUD:public IComponentSources,
-               public ILayer {
+class LayerHUD:public ILayer,
+               public IElementContainer,
+               public IUniverse {
   private:
   ILayerType* cLayerType;
-  std::vector<HUDComponentPosition*> cComponents;
-  std::map<std::string, HUDComponentProxy*> cComponentsByName;
+  std::vector<IElement*> cElements;
   
-  IHUDComponentRelation* getRelation(const std::string&, const std::string&);
   HUDComponentProxy* getComponentProxy(const std::string&);
+  IHUDComponentRelation* getRelation(const std::string&, const std::string&);
+  
+  // Editing
+  IElement* cSelectedElement;
   
   public:
-  LayerHUD(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*, ILayerType*);
+  LayerHUD(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*, ILayerType*, IElementRelationManager*);
   
   /********************************\
    * Implements IComponentSources *
   \********************************/
-  std::string getSource(HUDComponentPosition* component);
+//   std::string getSource(HUDComponentPosition* component);
 
   /*********************\
    * Implements ILayer *
@@ -69,6 +74,20 @@ class LayerHUD:public IComponentSources,
   void staticChanged();
   void reset();
   void addObjectSelectionListener(IObjectSelectionListener*);
+
+  /********************************\
+   * Implements IElementContainer *
+  \********************************/
+  void addElement(IElement*);
+  void removeElement(IElement*);
+  void updateElement(IElement*);
+  void addArgumentValue(IArgument*);
+  void setArguments();
+  void unsetArguments();
+  BlockArea* getCoverage();
+  void setDirty(IElement*);
+  void restrictCursor(Vertex&);
+  IUniverse* getUniverse();
 };
 
 #endif

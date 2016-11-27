@@ -167,7 +167,7 @@ void Dialog::renderContent() {
   // Title bar text
   IFont* mFont = LookAndFeel::getDefaultFont();
   float mFontSize = LookAndFeel::getDefaultFontSize();
-  mFont->print(mLeft + 0.01f, mTop + 0.01f, mFontSize, 0, cTitle.c_str());
+  mFont->print(mLeft + 0.01f, mTop + 0.01f, mFontSize, IFont::LEFT, cTitle.c_str());
   
 //   for (unsigned int i = 0; i < cChildren.size(); i++) {
 //     cChildren[i]->render();

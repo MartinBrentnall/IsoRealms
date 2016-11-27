@@ -36,7 +36,7 @@ template <class T> class NamedResourceIcon:public Icon<T> {
     IFont* mFont = LookAndFeel::getDefaultFont();
     float mFontSize = LookAndFeel::getDefaultFontSize();
     glColor3f(1.0f, 1.0f, 1.0f);
-    mFont->print(mLeft + 0.01f, mBottom + 0.01f, mFontSize, 0, this->getResourceLocation().c_str());
+    mFont->print(mLeft + 0.01f, mBottom + 0.01f, mFontSize, IFont::LEFT, this->getResourceLocation().c_str());
   }
 
   float getWidth() {

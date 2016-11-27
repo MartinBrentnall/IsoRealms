@@ -18,156 +18,44 @@
  */
 #include "HUDComponentPosition.h"
 
-HUDComponentPosition::HUDComponentPosition(IHUDComponentRelation* leftRelation, IHUDComponentRelation* rightRelation, IHUDComponentRelation* topRelation, IHUDComponentRelation* bottomRelation, float xScale, float yScale) {
-  cLeftRelation = leftRelation;
-  cRightRelation = rightRelation;
-  cTopRelation = topRelation;
+HUDComponentPosition::HUDComponentPosition(IHUDComponentRelation* leftRelation, IHUDComponentRelation* rightRelation, IHUDComponentRelation* bottomRelation, IHUDComponentRelation* topRelation) {
+  cLeftRelation   = leftRelation;
+  cRightRelation  = rightRelation;
+  cTopRelation    = topRelation;
   cBottomRelation = bottomRelation;
-  cComponent = nullptr;
-  cXScale = xScale;
-  cYScale = yScale;
 }
 
-void HUDComponentPosition::update(unsigned int milliseconds) {
-  cComponent->updateRuntime(milliseconds);
+void HUDComponentPosition::setElement(IElement* element) {
+  cElement = element;
 }
 
-float HUDComponentPosition::getXScale() {
-  Configuration* mConfiguration = Configuration::getInstance();
-  ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
-  float mAspectRatio = mScreen->getAspectRatio();
-  if (cLeftRelation != nullptr && cRightRelation != nullptr) {
-    return ((cRightRelation->getLocation() - cLeftRelation->getLocation()) / mAspectRatio) / 2.0f;
-  }
-  return cXScale;
+float HUDComponentPosition::getWest() {
+  return cLeftRelation->getLocation();
 }
 
-float HUDComponentPosition::getYScale() {
-  if (cTopRelation != nullptr && cBottomRelation != nullptr) {
-    return (cTopRelation->getLocation() - cBottomRelation->getLocation()) / 2.0f;
-  }
-  return cYScale;
+float HUDComponentPosition::getEast() {
+  return cRightRelation->getLocation();
 }
 
-float HUDComponentPosition::getAspectRatio() {
-  IElementBounds* mBounds = cComponent->getBounds();
-  float mSouth = mBounds->getSouth();
-  float mNorth = mBounds->getNorth();
-  float mWest = mBounds->getWest();
-  float mEast = mBounds->getEast();
-  float mWidth = mEast - mWest;
-  float mLength = mNorth - mSouth;
-  return mWidth / mLength;
+float HUDComponentPosition::getSouth() {
+  return cBottomRelation->getLocation();
 }
 
-float HUDComponentPosition::getXPosition() {
-  Configuration* mConfiguration = Configuration::getInstance();
-  ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
-  float mAspectRatio = mScreen->getAspectRatio();
-  if (cLeftRelation == nullptr && cRightRelation == nullptr) {
-    return 0.0f;
-  }
-  if (cRightRelation == nullptr) {
-    return cLeftRelation->getLocation() / mAspectRatio + cXScale * getAspectRatio();
-  }
-  if (cLeftRelation == nullptr) {
-    return cRightRelation->getLocation() / mAspectRatio - cXScale * getAspectRatio();
-  }
-  return (cRightRelation->getLocation() / mAspectRatio - cLeftRelation->getLocation() / mAspectRatio) / 2.0f + cLeftRelation->getLocation() / mAspectRatio;
-}
-
-float HUDComponentPosition::getYPosition() {
-  if (cBottomRelation == nullptr && cTopRelation == nullptr) {
-    return 0.0f;
-  }
-  if (cTopRelation == nullptr) {
-    return cBottomRelation->getLocation() + cYScale;
-  }
-  if (cBottomRelation == nullptr) {
-    return cTopRelation->getLocation() - cYScale;
-  }
-  return (cTopRelation->getLocation() - cBottomRelation->getLocation()) / 2.0f + cBottomRelation->getLocation();
-}
-
-void HUDComponentPosition::render() {
-  glPushMatrix();
-  float mXScale = getXScale();
-  float mYScale = getYScale();
-  float mXPosition = getXPosition();
-  float mYPosition = getYPosition();
-  float mScaledXPosition = mXPosition / mXScale;
-  float mScaledYPosition = mYPosition / mYScale;
-  glScalef(mXScale, mYScale, 0.0f);
-  glTranslatef(mScaledXPosition, mScaledYPosition, 0.0f);
-  glColor3f(1.0f, 1.0f, 1.0f);
-  glBindTexture(GL_TEXTURE_2D, 0);
-/*  glBegin(GL_LINES);
-  for (float x = -cComponent->getAspectRatio(); x < cComponent->getAspectRatio(); x += cComponent->getAspectRatio() / 4.0f) {
-    glVertex2f(x, -1.0f);
-    glVertex2f(x,  1.0f);
-  }
-  for (float y = -1.0f; y < 1.0f; y += 2.0f / 8.0f) {
-    glVertex2f(-cComponent->getAspectRatio(), y);
-    glVertex2f( cComponent->getAspectRatio(), y);
-  }
-  glVertex2f( cComponent->getAspectRatio(), -1.0f);
-  glVertex2f( cComponent->getAspectRatio(),  1.0f);
-  glVertex2f(-cComponent->getAspectRatio(),  1.0f);
-  glVertex2f( cComponent->getAspectRatio(),  1.0f);
-  glEnd();*/
-/*  glBegin(GL_LINE_LOOP);
-  glVertex2f( cComponent->getAspectRatio(),  1.0f);
-  glVertex2f(-cComponent->getAspectRatio(),  1.0f);
-  glVertex2f(-cComponent->getAspectRatio(), -1.0f);
-  glVertex2f( cComponent->getAspectRatio(), -1.0f);
-  glEnd();*/
-  cComponent->renderRuntime();
-  glPopMatrix();
-}
-
-float HUDComponentPosition::getLeft() {
-  Configuration* mConfiguration = Configuration::getInstance();
-  ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
-  float mAspectRatio = mScreen->getAspectRatio();
-  float mXScale = getXScale() * mAspectRatio;
-  float mXPosition = getXPosition() * mAspectRatio;
-  return mXPosition - mXScale * getAspectRatio();
-}
-
-float HUDComponentPosition::getRight() {
-  Configuration* mConfiguration = Configuration::getInstance();
-  ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
-  float mAspectRatio = mScreen->getAspectRatio();
-  float mXScale = getXScale() * mAspectRatio;
-  float mXPosition = getXPosition() * mAspectRatio;
-  return mXPosition + mXScale * getAspectRatio();
-}
-
-float HUDComponentPosition::getBottom() {
-  float mYScale = getYScale();
-  float mYPosition = getYPosition();
-  return mYPosition - mYScale;
+float HUDComponentPosition::getNorth() {
+  return cTopRelation->getLocation();
 }
 
 float HUDComponentPosition::getTop() {
-  float mYScale = getYScale();
-  float mYPosition = getYPosition();
-  return mYPosition + mYScale;
+  return 0.5f;
+}
+
+float HUDComponentPosition::getBottom() {
+  return -0.5f;
 }
 
 void HUDComponentPosition::save(DOMNodeWriter* node, IComponentSources* sources, IResourceLocator* resourceLocator) {
-  IElementType* mType = cComponent->getElementType();
+  IElementType* mType = cElement->getElementType();
   node->addAttribute("type", resourceLocator->getPath(mType));
-  if ((cTopRelation == nullptr || cBottomRelation == nullptr) && (cLeftRelation == nullptr || cRightRelation == nullptr) && (cXScale == cYScale && cXScale != 1.0f)) {
-    node->addAttribute("scale", cXScale);
-  } else {
-    if ((cLeftRelation == nullptr || cRightRelation == nullptr) && cXScale != 1.0f) {
-      node->addAttribute("xScale", cXScale);
-    }
-    if ((cTopRelation == nullptr || cBottomRelation == nullptr) && cYScale != 1.0f) {
-      node->addAttribute("yScale", cYScale);
-    }
-  }
   if (cTopRelation != nullptr) {
     cTopRelation->save(node, "top", sources);
   }
@@ -182,43 +70,154 @@ void HUDComponentPosition::save(DOMNodeWriter* node, IComponentSources* sources,
   }
 }
 
-void HUDComponentPosition::addElement(IElement* element) {
-  cComponent = element;
+IElementType* HUDComponentPosition::getElementType() {
+  return nullptr;
 }
 
-void HUDComponentPosition::removeElement(IElement* element) {
-  // TODO
+bool HUDComponentPosition::initElement(IUniverse*, unsigned int) {
+  return true;
 }
 
-void HUDComponentPosition::updateElement(IElement* element) {
-  // Nothing to do
+void HUDComponentPosition::renderStatic() {
 }
 
-void HUDComponentPosition::addArgumentValue(IArgument* argumentValue) {
-  // TODO
+void HUDComponentPosition::renderRuntime() {
+  cElement->renderRuntime();
+//   glPushMatrix();
+//   float mXScale = getXScale();
+//   float mYScale = getYScale();
+//   float mXPosition = getXPosition();
+//   float mYPosition = getYPosition();
+//   float mScaledXPosition = mXPosition / mXScale;
+//   float mScaledYPosition = mYPosition / mYScale;
+//   glScalef(mXScale, mYScale, 0.0f);
+//   glTranslatef(mScaledXPosition, mScaledYPosition, 0.0f);
+//   glColor3f(1.0f, 1.0f, 1.0f);
+//   glBindTexture(GL_TEXTURE_2D, 0);
+// /*  glBegin(GL_LINES);
+//   for (float x = -cElement->getAspectRatio(); x < cElement->getAspectRatio(); x += cElement->getAspectRatio() / 4.0f) {
+//     glVertex2f(x, -1.0f);
+//     glVertex2f(x,  1.0f);
+//   }
+//   for (float y = -1.0f; y < 1.0f; y += 2.0f / 8.0f) {
+//     glVertex2f(-cElement->getAspectRatio(), y);
+//     glVertex2f( cElement->getAspectRatio(), y);
+//   }
+//   glVertex2f( cElement->getAspectRatio(), -1.0f);
+//   glVertex2f( cElement->getAspectRatio(),  1.0f);
+//   glVertex2f(-cElement->getAspectRatio(),  1.0f);
+//   glVertex2f( cElement->getAspectRatio(),  1.0f);
+//   glEnd();*/
+// /*  glBegin(GL_LINE_LOOP);
+//   glVertex2f( cElement->getAspectRatio(),  1.0f);
+//   glVertex2f(-cElement->getAspectRatio(),  1.0f);
+//   glVertex2f(-cElement->getAspectRatio(), -1.0f);
+//   glVertex2f( cElement->getAspectRatio(), -1.0f);
+//   glEnd();*/
+//   cElement->renderRuntime();
+//   glPopMatrix();
 }
 
-BlockArea* HUDComponentPosition::getCoverage() {
-  return nullptr; // TODO
+void HUDComponentPosition::renderEditing() {
 }
 
-void HUDComponentPosition::setArguments() {
-  // TODO
+bool HUDComponentPosition::renderSelectionHighlight() {
+//   glPushMatrix();
+//   float mXScale = getXScale();
+//   float mYScale = getYScale();
+//   float mXPosition = getXPosition();
+//   float mYPosition = getYPosition();
+//   float mScaledXPosition = mXPosition / mXScale;
+//   float mScaledYPosition = mYPosition / mYScale;
+//   glScalef(mXScale, mYScale, 0.0f);
+//   glTranslatef(mScaledXPosition, mScaledYPosition, 0.0f);
+//   glColor3f(1.0f, 1.0f, 1.0f);
+//   glBindTexture(GL_TEXTURE_2D, 0);
+//   cElement->renderSelectionHighlight();
+//   glPopMatrix();
+  return false;
 }
 
-void HUDComponentPosition::setDirty(IElement* element) {
-  // TODO
+void HUDComponentPosition::updateRuntime(unsigned int milliseconds) {
+  cElement->updateRuntime(milliseconds);
 }
 
-void HUDComponentPosition::unsetArguments() {
-  // TODO
+void HUDComponentPosition::updateEditing(unsigned int milliseconds) {
+  cElement->updateEditing(milliseconds);
 }
 
-void HUDComponentPosition::restrictCursor(Vertex& cursorLocation) {
-  // TODO
+void HUDComponentPosition::input(SDL_Event& event) {
 }
 
-IUniverse* HUDComponentPosition::getUniverse() {
-  return nullptr; // TODO
+bool HUDComponentPosition::isVisualRuntime() {
+  return true;
 }
 
+bool HUDComponentPosition::isVisualEditing() {
+  return true;
+}
+
+bool HUDComponentPosition::isDynamicRuntime() {
+  return true;
+}
+
+bool HUDComponentPosition::isDynamicEditing() {
+  return true;
+}
+
+bool HUDComponentPosition::isInteractive() {
+  return false;
+}
+
+void HUDComponentPosition::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources, BlockLocation& location) {
+}
+
+void HUDComponentPosition::setDirty() {
+}
+
+void HUDComponentPosition::initRuntime() {
+}
+
+void HUDComponentPosition::staticChanged() {
+}
+
+bool HUDComponentPosition::isImplicit() {
+  return true;
+}
+
+IElementBounds* HUDComponentPosition::getBounds() {
+  return nullptr;
+}
+
+void HUDComponentPosition::focusGained(ILayerEditingContext* editingContext) {
+}
+
+void HUDComponentPosition::focusLost(ILayerEditingContext* editingContext) {
+}
+
+void HUDComponentPosition::cursorMoved(ILayerEditingContext* editingContext, Vertex& start, Vertex& end) {
+}
+
+void HUDComponentPosition::cursorAppeared(ILayerEditingContext* editingContext, Vertex& location) {
+}
+
+void HUDComponentPosition::processCursorMovement(ILayerEditingContext* editingContext, Vertex& start, Vertex& end) {
+}
+
+void HUDComponentPosition::processCursorAppearance(ILayerEditingContext* editingContext, Vertex& location) {
+}
+
+PickedElement* HUDComponentPosition::pickElement(Vertex& start, Vertex& end) {
+  return nullptr;
+}
+
+void HUDComponentPosition::reset() {
+}
+
+std::string HUDComponentPosition::getTypeName() {
+  return ""; // TODO: Throw
+}
+
+std::vector<IObjectProperty*> HUDComponentPosition::getProperties(IComponentContainer*) {
+  return std::vector<IObjectProperty*>();
+}

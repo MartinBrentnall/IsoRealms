@@ -36,7 +36,7 @@ void DynamicMenuItems::render(bool selected, float x, float y) {
     } else {
       glColor3f(0.3f, 0.3f, 0.3f);
     }
-    mFont->print(x, y, mFontSize, 0, mMenuItem.first.c_str());
+    mFont->print(x, y, mFontSize, IFont::LEFT, mMenuItem.first.c_str());
     y -= 0.05f;
     mIndex++;
   }

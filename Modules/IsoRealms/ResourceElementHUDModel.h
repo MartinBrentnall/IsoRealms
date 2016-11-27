@@ -28,18 +28,26 @@
 #include <IsoRealms/Resources/IResourceAccessor.h>
 #include <IsoRealms/Resources/IResourceRegistry.h>
 
-class ResourceElementHUDModel:public IElementType,
-                              public IElementBounds,
-                              public Element {
+#include "ElementHUDModel.h"
+#include "IElementRelationManager.h"
+#include "ResourceElementHUDAbstract.h"
+
+class ResourceElementHUDModel:public ResourceElementHUDAbstract {
   private:
+  HUDComponentPosition* cElementDimensions;
   Vertex cModelLocation;
   float cModelScale;
   ICamera* cCamera;
   I3DModel* cModel;
 
   public:
-  ResourceElementHUDModel(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
+  ResourceElementHUDModel(IElementRelationManager*, DOMNodeWrapper*, IResourceRegistry*);
     
+  /*****************************************\
+   * Implements ResourceElementHUDAbstract *
+  \*****************************************/
+  IElement* createHUDElement(DOMNodeWrapper*, DOMNodeWrapper*, BlockLocation*, IResourceAccessor*, bool, HUDComponentPosition*);
+  
   /**********************\
    * Implements IPlugin *
   \**********************/
@@ -49,7 +57,6 @@ class ResourceElementHUDModel:public IElementType,
   /***************************\
    * Implements IElementType *
   \***************************/
-  void loadElement(DOMNodeWrapper*, DOMNodeWrapper*, BlockLocation*, IElementContainer*, IResourceAccessor*, bool);
   void configureElement();
   void renderEditingPreview(Vertex&);
   void updateEditingPreview(unsigned int);
@@ -60,24 +67,6 @@ class ResourceElementHUDModel:public IElementType,
   Vertex* editorCursorStopped(Vertex*);
   bool inputEdit(SDL_Event&, ILayerEditingContext*);
 
-  /************************************\
-   * Implements IObjectWithProperties *
-  \************************************/
-  std::string getTypeName();
-  std::vector<IObjectProperty*> getProperties(IComponentContainer*);
-  
-  /***********************\
-   * Implements IElement *
-  \***********************/
-  IElementType* getElementType();
-  void renderStatic();
-  void setDirty();
-  IElementBounds* getBounds();
-  void renderRuntime();
-  bool renderSelectionHighlight();
-  void updateRuntime(unsigned int);
-  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*, BlockLocation&);
-  
   /*****************************\
    * Implements IElementBounds *
   \*****************************/

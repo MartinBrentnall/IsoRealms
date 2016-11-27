@@ -93,7 +93,7 @@ class ResourceFontFile:public IFont {
   /********************\
    * Implements IFont *
   \********************/
-  void print(float, float, float, int, const char*, ...);
+  void print(float, float, float, Alignment, const char*, ...);
   float getWidth(float, const char*, ...);
   float getHeight(float, const char*, ...);
   unsigned int getChar(float, float, const char*, ...);

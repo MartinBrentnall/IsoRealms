@@ -179,7 +179,7 @@ void ResourceFontFile::popProjectionMatrix() {
   glPopAttrib();
 }
 
-void ResourceFontFile::print(float x, float y, float size, int alignment, const char *fmt, ...) {
+void ResourceFontFile::print(float x, float y, float size, IFont::Alignment alignment, const char *fmt, ...) {
   if (fmt == NULL) {
     return;
   }
@@ -234,7 +234,7 @@ void ResourceFontFile::print(float x, float y, float size, int alignment, const 
 
   // Widths are required in case the text is to be right or center aligned
   std::vector<double> mTotalWidths;
-  if (alignment != 0) {
+  if (alignment != IFont::LEFT) {
     for (unsigned int i = 0; i < lines.size(); i ++) {
       double mTotalWidth = 0.0;
       for (unsigned int j = 0; j < lines[i].length(); j++) {
@@ -257,8 +257,8 @@ void ResourceFontFile::print(float x, float y, float size, int alignment, const 
     if (size != 1.0f) {
       glScalef(size * mAspectRatio, size, 0.0f);
     }
-    if (alignment != 0) {
-      double mAlignmentOffset = alignment == 1 ? mTotalWidths[i] / 2.0 : mTotalWidths[i];
+    if (alignment != IFont::LEFT) {
+      double mAlignmentOffset = alignment == IFont::CENTER ? mTotalWidths[i] / 2.0 : mTotalWidths[i];
       glTranslatef(-mAlignmentOffset, 0.0f, 0.0f);
     }
     glMultMatrixf(modelview_matrix);

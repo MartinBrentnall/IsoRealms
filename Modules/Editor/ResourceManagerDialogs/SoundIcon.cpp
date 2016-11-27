@@ -27,7 +27,7 @@ void SoundIcon::renderIcon() {
   IFont* mFont = LookAndFeel::getDefaultFont();
   float mFontSize = LookAndFeel::getDefaultFontSize();
   glColor3f(1.0f, 1.0f, 1.0f);
-  mFont->print(mLeft + 0.01f, mBottom + 0.01f, mFontSize, 0, getResourceLocation().c_str());
+  mFont->print(mLeft + 0.01f, mBottom + 0.01f, mFontSize, IFont::LEFT, getResourceLocation().c_str());
 }
 
 void SoundIcon::iconSelected() {

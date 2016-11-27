@@ -16,34 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef HUD_COMPONENT_RELATION_H
-#define HUD_COMPONENT_RELATION_H
+#ifndef SCREEN_RELATIVE_H
+#define SCREEN_RELATIVE_H
 
-#include "HUDComponentProxy.h"
+#include <IsoRealms/Configuration.h>
+
 #include "IHUDComponentRelation.h"
 
-class HUDComponentRelation:public IHUDComponentRelation {
-  public:
-  enum Edge {
+class ScreenRelative:public IHUDComponentRelation {
+  private:
+  enum ScreenEdge {
     LEFT,
     RIGHT,
-    TOP,
-    BOTTOM
+    BOTTOM,
+    TOP
   };
-  enum EdgeRelationType {
-    ADJACENT,
-    ALIGNED,
-    CENTER
-  };
+  ScreenEdge cEdge;
   
-  private:
-  HUDComponentProxy* cRelative;
-  EdgeRelationType cRelationType;
-  Edge cEdge;
-  float cOffset;
+  ScreenRelative(ScreenEdge);
   
   public:
-  HUDComponentRelation(HUDComponentProxy*, std::vector<std::string>, const std::string&);
+  static ScreenRelative LEFT_EDGE;
+  static ScreenRelative RIGHT_EDGE;
+  static ScreenRelative BOTTOM_EDGE;
+  static ScreenRelative TOP_EDGE;
     
   /************************************\
    * Implements IHUDComponentRelation *
@@ -53,3 +49,4 @@ class HUDComponentRelation:public IHUDComponentRelation {
 };
 
 #endif
+

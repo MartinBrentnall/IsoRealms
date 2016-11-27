@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Martin Brentnall
+ * Copyright 2016 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,18 +16,20 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef DUMMY_FONT_H
-#define DUMMY_FONT_H
+#ifndef I_ELEMENT_RELATION_MANAGER_H
+#define I_ELEMENT_RELATION_MANAGER_H
 
-#include "IFont.h"
+#include <string>
 
-class DummyFont:public IFont {
+#include <IsoRealms/IUniverse.h>
+
+#include "IHUDComponentRelation.h"
+
+class IElementRelationManager {
   public:
-  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
-  void print(float, float, float, Alignment, const char*, ...);
-  float getWidth(float, const char*, ...);
-  float getHeight(float, const char*, ...);
-  unsigned int getChar(float, float, const char*, ...);
+  virtual IHUDComponentRelation* getRelation(IUniverse*, const std::string&, const std::string&) = 0;
+  virtual void addRelatableElement(IUniverse*, const std::string&, HUDComponentPosition*) = 0;
 };
 
 #endif
+

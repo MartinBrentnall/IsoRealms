@@ -63,6 +63,9 @@ add_library(IsoRealmsStd MODULE
   DialogStringFixed.cpp
   DialogTextureFile.cpp
   DialogVertexFixed.cpp
+  ElementHUDModel.cpp
+  ElementHUDRoundedRectangle.cpp
+  ElementHUDString.cpp
   HUDComponentPosition.cpp
   HUDComponentProxy.cpp
   HUDComponentRelation.cpp
@@ -74,6 +77,7 @@ add_library(IsoRealmsStd MODULE
   ModelScriptable.cpp
   ModelSprite.cpp
   ResourceBooleanFixed.cpp
+  ResourceElementHUDAbstract.cpp
   ResourceElementHUDModel.cpp
   ResourceElementHUDRoundedRectangle.cpp
   ResourceElementHUDString.cpp
@@ -90,6 +94,7 @@ add_library(IsoRealmsStd MODULE
   ResourceTextureFile.cpp
   ResourceVertexFixed.cpp
   ScreenRelation.cpp
+  ScreenRelative.cpp
 )
 
 set_target_properties(IsoRealmsStd PROPERTIES OUTPUT_NAME "Module")

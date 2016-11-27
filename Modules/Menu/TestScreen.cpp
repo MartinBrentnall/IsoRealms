@@ -71,24 +71,24 @@ void TestScreen::render(float fade, IFont* font) {
   std::stringstream mString;
   mString << "Are these settings OK? (" << (cTimeOut / 1000) << ")";
   std::string mMessage = mString.str();
-  font->print( 0.008f, (-0.10f * 0) - 0.008f, 0.05f, 1, mMessage.c_str());
-  font->print(-0.492f, (-0.10f * 1) - 0.008f, 0.05f, 0, "No");
-  font->print( 0.508f, (-0.10f * 1) - 0.008f, 0.05f, 2, "Yes");
+  font->print( 0.008f, (-0.10f * 0) - 0.008f, 0.05f, IFont::CENTER, mMessage.c_str());
+  font->print(-0.492f, (-0.10f * 1) - 0.008f, 0.05f, IFont::LEFT, "No");
+  font->print( 0.508f, (-0.10f * 1) - 0.008f, 0.05f, IFont::RIGHT, "Yes");
 
   glColor4f(1.0f, 1.0f, 1.0f, fade);
-  font->print( 0.0f, -0.10f * 0, 0.05f, 1, mMessage.c_str());
+  font->print( 0.0f, -0.10f * 0, 0.05f, IFont::CENTER, mMessage.c_str());
   if (!cConfirmed) {
     glColor4f(0.6f, 1.0f, 0.4f, fade);
   } else {
     glColor4f(1.0f, 1.0f, 1.0f, fade);
   }
-  font->print(-0.5f, -0.10f * 1, 0.05f, 0, "No");
+  font->print(-0.5f, -0.10f * 1, 0.05f, IFont::LEFT, "No");
   if (cConfirmed) {
     glColor4f(0.6f, 1.0f, 0.4f, fade);
   } else {
     glColor4f(1.0f, 1.0f, 1.0f, fade);
   }
-  font->print( 0.5f, -0.10f * 1, 0.05f, 2, "Yes");
+  font->print( 0.5f, -0.10f * 1, 0.05f, IFont::RIGHT, "Yes");
   glDisable(GL_BLEND);
 }
 

@@ -23,7 +23,11 @@
 
 class IFont:public IResource {
   public:
-  virtual ~IFont() {}
+  enum Alignment {
+    LEFT,
+    CENTER,
+    RIGHT
+  };
 
   /**
    * This function will print out text at window coordinates x,y, using the font ft_font.
@@ -36,7 +40,7 @@ class IFont:public IResource {
    * @param char*  
    * @param ...  
    */
-  virtual void print(float, float, float, int, const char*, ...) = 0;
+  virtual void print(float, float, float, Alignment, const char*, ...) = 0;
 
   /**
    * This function calculates the width of the specified string when printed
@@ -70,6 +74,8 @@ class IFont:public IResource {
    * @returns Caret position.
    */
   virtual unsigned int getChar(float, float, const char*, ...) = 0;
+  
+  virtual ~IFont() {}
 };
 
 #endif

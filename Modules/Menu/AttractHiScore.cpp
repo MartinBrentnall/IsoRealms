@@ -63,26 +63,26 @@ void AttractHiScore::update(int ticks) {
 void AttractHiScore::render() {
   glEnable(GL_BLEND);
   glColor4f(0.0f, 0.0f, 0.0f, cFade);
-  cFont->print(-0.79f, 0.79f, 0.035f, 0, "Pos.");
-  cFont->print(-0.59f, 0.79f, 0.035f, 0, "Name");
-  cFont->print( 0.01f, 0.79f, 0.035f, 0, "Score");
-  cFont->print( 0.81f, 0.79f, 0.035f, 2, "Time");
+  cFont->print(-0.79f, 0.79f, 0.035f, IFont::LEFT,  "Pos.");
+  cFont->print(-0.59f, 0.79f, 0.035f, IFont::LEFT,  "Name");
+  cFont->print( 0.01f, 0.79f, 0.035f, IFont::LEFT,  "Score");
+  cFont->print( 0.81f, 0.79f, 0.035f, IFont::RIGHT, "Time");
   glColor4f(1.0f, 1.0f, 1.0f, cFade);
-  cFont->print(-0.8f, 0.8f, 0.035f, 0, "Pos.");
-  cFont->print(-0.6f, 0.8f, 0.035f, 0, "Name");
-  cFont->print( 0.0f, 0.8f, 0.035f, 0, "Score");
-  cFont->print( 0.8f, 0.8f, 0.035f, 2, "Time");
+  cFont->print(-0.8f, 0.8f, 0.035f, IFont::LEFT, "Pos.");
+  cFont->print(-0.6f, 0.8f, 0.035f, IFont::LEFT, "Name");
+  cFont->print( 0.0f, 0.8f, 0.035f, IFont::LEFT, "Score");
+  cFont->print( 0.8f, 0.8f, 0.035f, IFont::RIGHT, "Time");
   for (int i = 0; i < 20; i ++) {
     glColor4f(0.0f, 0.0f, 0.0f, cFade);
-    cFont->print(-0.79f, 0.71f - (i * (0.08)), 0.025f, 0, "%d", i + 1);
-    cFont->print(-0.59f, 0.71f - (i * (0.08)), 0.025f, 0, "No-one yet");
-    cFont->print( 0.01f, 0.71f - (i * (0.08)), 0.025f, 0, "10,000");
-    cFont->print( 0.81f, 0.71f - (i * (0.08)), 0.025f, 2, "59:59.999");
+    cFont->print(-0.79f, 0.71f - (i * (0.08)), 0.025f, IFont::LEFT,  "%d", i + 1);
+    cFont->print(-0.59f, 0.71f - (i * (0.08)), 0.025f, IFont::LEFT,  "No-one yet");
+    cFont->print( 0.01f, 0.71f - (i * (0.08)), 0.025f, IFont::LEFT,  "10,000");
+    cFont->print( 0.81f, 0.71f - (i * (0.08)), 0.025f, IFont::RIGHT, "59:59.999");
     glColor4f(1.0f, 1.0f, 1.0f, cFade);
-    cFont->print(-0.8f, 0.72f - (i * (0.08)), 0.025f, 0, "%d", i + 1);
-    cFont->print(-0.6f, 0.72f - (i * (0.08)), 0.025f, 0, "No-one yet");
-    cFont->print( 0.0f, 0.72f - (i * (0.08)), 0.025f, 0, "10,000");
-    cFont->print( 0.8f, 0.72f - (i * (0.08)), 0.025f, 2, "59:59.999");
+    cFont->print(-0.8f, 0.72f - (i * (0.08)), 0.025f, IFont::LEFT,  "%d", i + 1);
+    cFont->print(-0.6f, 0.72f - (i * (0.08)), 0.025f, IFont::LEFT,  "No-one yet");
+    cFont->print( 0.0f, 0.72f - (i * (0.08)), 0.025f, IFont::LEFT,  "10,000");
+    cFont->print( 0.8f, 0.72f - (i * (0.08)), 0.025f, IFont::RIGHT, "59:59.999");
   }
   glDisable(GL_BLEND);
 }

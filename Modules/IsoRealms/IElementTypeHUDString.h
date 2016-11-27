@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Martin Brentnall
+ * Copyright 2016 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,18 +16,19 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef DUMMY_FONT_H
-#define DUMMY_FONT_H
+#ifndef I_ELEMENT_TYPE_HUD_STRING_H
+#define I_ELEMENT_TYPE_HUD_STRING_H
 
-#include "IFont.h"
+#include <IsoRealms/Resources/ElementType/IElementType.h>
+#include <IsoRealms/Resources/Font/IFont.h>
 
-class DummyFont:public IFont {
+class IElementTypeHUDString {
   public:
-  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
-  void print(float, float, float, Alignment, const char*, ...);
-  float getWidth(float, const char*, ...);
-  float getHeight(float, const char*, ...);
-  unsigned int getChar(float, float, const char*, ...);
+  virtual IElementType* getElementType() = 0;
+  virtual IFont* getFont() = 0;
+  virtual std::string getValue() = 0;
+  virtual IFont::Alignment getAlignment() = 0;
 };
 
 #endif
+

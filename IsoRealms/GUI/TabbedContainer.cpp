@@ -72,7 +72,7 @@ void TabbedContainer::render() {
     } else {
       glColor3f(0.3f, 0.3f, 0.3f);
     }
-    mFont->print(mX + 0.01f, mFontBase, mFontSize, 0, cTabs[i]->cName.c_str());
+    mFont->print(mX + 0.01f, mFontBase, mFontSize, IFont::LEFT, cTabs[i]->cName.c_str());
     float mNewX = mX + mFont->getWidth(mFontSize, cTabs[i]->cName.c_str()) + 0.02f;
     glBindTexture(GL_TEXTURE_2D, 0);
     glBegin(GL_LINE_STRIP);

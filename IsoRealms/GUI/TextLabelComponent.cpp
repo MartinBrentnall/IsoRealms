@@ -29,7 +29,7 @@ void TextLabelComponent::render() {
   glColor3f(1.0f, 1.0f, 1.0f);
   IFont* mFont = LookAndFeel::getDefaultFont();
   float mFontSize = LookAndFeel::getDefaultFontSize();
-  mFont->print(mLeft + cPadding / 2.0f, mBottom + 0.01f, mFontSize, 0, cLabel.c_str());
+  mFont->print(mLeft + cPadding / 2.0f, mBottom + 0.01f, mFontSize, IFont::LEFT, cLabel.c_str());
 }
 
 void TextLabelComponent::update(unsigned int milliseconds) {

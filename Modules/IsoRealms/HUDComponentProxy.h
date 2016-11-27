@@ -31,8 +31,10 @@ class HUDComponentProxy {
   void setHUDComponentPosition(HUDComponentPosition*);
   bool isComponent(HUDComponentPosition*);
   
-  float getLeft();
-  float getRight();
+  float getWest();
+  float getEast();
+  float getSouth();
+  float getNorth();
   float getBottom();
   float getTop();
   std::string getSource(IComponentSources*);

@@ -88,7 +88,7 @@ void TextEditorComponent::render() {
   }
   
   for (unsigned int i = 0; i < cInput.size(); i++) {
-    mFont->print(mLeft + 0.01f, (mTop - 0.04f) - (mLineHeight * i), mFontSize, 0, cInput[i].c_str());
+    mFont->print(mLeft + 0.01f, (mTop - 0.04f) - (mLineHeight * i), mFontSize, IFont::LEFT, cInput[i].c_str());
   }
 
   glBindTexture(GL_TEXTURE_2D, 0);

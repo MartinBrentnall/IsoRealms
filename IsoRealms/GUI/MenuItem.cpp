@@ -44,11 +44,11 @@ void MenuItem::render(bool selected, float x, float y) {
   glColor3f(1.0f * mMultiplier, 1.0f * mMultiplier, 1.0f * mMultiplier);
   IFont* mFont = LookAndFeel::getDefaultFont();
   float mFontSize = LookAndFeel::getDefaultFontSize();
-  mFont->print(x, y, mFontSize, 0, cText.c_str());
+  mFont->print(x, y, mFontSize, IFont::LEFT, cText.c_str());
   if (cAcceleratorIndex != std::string::npos) {
     float mWidth = mFont->getWidth(mFontSize, cText.substr(0, cAcceleratorIndex).c_str());
     glColor3f(0.0f * mMultiplier, 1.0f * mMultiplier, 1.0f * mMultiplier);
-    mFont->print(x + mWidth, y, mFontSize, 0, cText.substr(cAcceleratorIndex, 1).c_str());
+    mFont->print(x + mWidth, y, mFontSize, IFont::LEFT, cText.substr(cAcceleratorIndex, 1).c_str());
   }
 }
 
