@@ -196,7 +196,7 @@ class SpindizzyModule:public IModule,
   /**********************\
    * Implements IPlugin *
   \**********************/
-  void load(DOMNodeWrapper*, DOMNodeWrapper*, IResourceRegistry*, DOMNodeWrapper*);
+  void load(DOMNodeWrapper*, DOMNodeWrapper*, IResourceRegistry*, IModuleOptions*);
   void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
   void projectInitialised();
   

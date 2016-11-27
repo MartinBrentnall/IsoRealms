@@ -114,7 +114,7 @@ void SpindizzyModule::setActiveUniverse(IUniverse* universe) {
   cActiveSurfaceRegistry = getSurfaceRegistry(universe);
 }
 
-void SpindizzyModule::load(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceRegistry* resources, DOMNodeWrapper* options) {
+void SpindizzyModule::load(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceRegistry* resources, IModuleOptions* options) {
   cUsingCache = cache != nullptr;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);

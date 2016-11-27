@@ -125,7 +125,6 @@ class IsoRealmsModule:public IModule,
   ResourceType<ITexture,             ResourceTextureFile,                DialogTextureFile>                                         cResourceTypeTextureFile;
   ResourceType<IVertex,              ResourceVertexFixed,                DialogVertexFixed>                                         cResourceTypeVertexFixed;
     
-  IResourceRegistry* cRuntimeContext;
   IComponentContainer* cComponentContainer;
   IInteger* cLocks;
   std::map<IUniverse*, std::map<std::string, HUDComponentProxy*>*> cRelativeElements;
@@ -140,7 +139,7 @@ class IsoRealmsModule:public IModule,
   /**********************\
    * Implements IPlugin *
   \**********************/
-  void load(DOMNodeWrapper*, DOMNodeWrapper*, IResourceRegistry*, DOMNodeWrapper*);
+  void load(DOMNodeWrapper*, DOMNodeWrapper*, IResourceRegistry*, IModuleOptions*);
   void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
   void projectInitialised();
   

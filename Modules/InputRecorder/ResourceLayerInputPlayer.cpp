@@ -18,6 +18,22 @@
  */
 #include "ResourceLayerInputPlayer.h"
 
-ILayer* ResourceLayerInputPlayer::getLayer(DOMNodeWrapper* node, IResourceAccessor* resources, bool editing) {
-  return new LayerInputPlayer();
+ResourceLayerInputPlayer::ResourceLayerInputPlayer(IModuleInputPersistence* module) {
+  cModule = module;
+}
+
+void ResourceLayerInputPlayer::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
+  // Nothing to do
+}
+
+ILayer* ResourceLayerInputPlayer::getLayer(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources, bool editing, bool asTemplate) {
+  return new LayerInputPlayer(cModule);
+}
+
+std::string ResourceLayerInputPlayer::getInstanceName(ILayer* layer) {
+  return ""; // Not supported
+}
+
+void ResourceLayerInputPlayer::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
+  // Not supported
 }

@@ -94,6 +94,7 @@ class Resources:public IResources,
   void loadInstance(DOMNodeWrapper*);
   void input(SDL_Event&);
   void saveInputConfiguration(DOMNodeWriter*);
+  InputCommands* getInputConfiguration();
     
   void setEditing(bool, IProject*);
   void reset();

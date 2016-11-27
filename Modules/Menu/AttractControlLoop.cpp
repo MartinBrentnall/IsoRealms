@@ -39,7 +39,6 @@ void AttractControlLoop::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper
     if (mValueAsString == "Font") {
       std::string mFontPath = mNode->getAttribute("name");
       cFont = resources->getFont(mFontPath);
-      std::cout << "GOT FONT: " << cFont << std::endl;
     } else if (mValueAsString == "FrontEnd") {
       std::string mFrontEndName = mNode->getAttribute("name");
       cFrontEnd = createFrontEnd(mNode, mFrontEndName, resources);
@@ -78,7 +77,7 @@ IAttract* AttractControlLoop::createAttract(const std::string& name) {
        :                     nullptr;
 }
 
-void AttractControlLoop::load(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceRegistry* resources, DOMNodeWrapper* options) {
+void AttractControlLoop::load(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceRegistry* resources, IModuleOptions* options) {
   resources->add(this, "Menu", node);
 }
 
@@ -149,7 +148,7 @@ void AttractControlLoop::updateRuntime(unsigned int milliseconds) {
   if (cRunningProject != nullptr) {
     cRunningProject->updateRuntime(milliseconds);
     if (cRunningProject->hasCompleted()) {
-      std::cout << "Project has completed" << std::endl;
+      std::cout << "Project Terminated" << std::endl;
       // TODO: Destroy project
       cRunningProject = nullptr;
     }
@@ -220,7 +219,7 @@ void AttractControlLoop::addObjectSelectionListener(IObjectSelectionListener* li
   // Not supported
 }
 
-void AttractControlLoop::startProject(const std::string& project, DOMNodeWrapper* options) {
+void AttractControlLoop::startProject(const std::string& project, IProjectOptions* options) {
   std::string mProjectPath = System::getProgramResource(project);
   std::string mCacheFileName = project.substr(0, project.length() - 10) + "/project.cache";
   DOMNodeWrapper* mCache = nullptr;
@@ -236,7 +235,7 @@ void AttractControlLoop::startProject(const std::string& project, DOMNodeWrapper
       // TODO: Cache!
       cRunningProject = new Project(mNode, mCache, project, nullptr, false, options);
       cRunningProject->initRuntime();
-      std::cout << "Project has started" << std::endl;
+      std::cout << "Project Started" << std::endl;
       break;
     }
   }

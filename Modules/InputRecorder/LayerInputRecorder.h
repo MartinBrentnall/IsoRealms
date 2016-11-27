@@ -19,12 +19,30 @@
 #ifndef LAYER_INPUT_RECORDER_H
 #define LAYER_INPUT_RECORDER_H
 
+#include <IsoRealms/Project.h>
 #include <IsoRealms/Resources/Layer/ILayer.h>
+
+#include "IModuleInputPersistence.h"
+#include "InputEvent.h"
 
 class LayerInputRecorder : public ILayer {
   private:
+  class InputState {
+    public:
+    std::string cName;
+    bool cState;
+    
+    InputState(const std::string&);
+  };
+    
+  unsigned int cElapsedTime;
+  IModuleInputPersistence* cModule;
+  Project* cProject;
+  std::map<bool*, InputState*> cInputs;
+  std::vector<InputEvent*> cRecordedEvents;
     
   public:
+  LayerInputRecorder(IModuleInputPersistence*);
     
   /*********************\
    * Implements ILayer *

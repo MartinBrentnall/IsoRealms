@@ -131,3 +131,6 @@ std::vector<std::string> InputCommands::getInputNames() {
   return mInputNames;
 }
 
+std::map<std::string, DigitalInput*> InputCommands::getDigitalInputs() {
+  return cDigitalInputs;
+}

@@ -21,10 +21,17 @@
       <Menu name="Play">
         <ProjectList source="Data/Projects/"/>
       </Menu>
+      <Menu name="Record Game">
+        <OpenWith project="Data/ProjectsSystem/Recorder.isorealms" source="Data/Projects/">
+          <ModuleOptions name="InputRecorder">
+            <Option name="Project" ref="file"/>
+          </ModuleOptions>
+        </OpenWith>
+      </Menu>
       <Menu name="Create">
         <Project file="Data/ProjectsTools/Editor.isorealms" label="World Builder">
           <ModuleOptions name="Editor">
-            <MapEditorMode value="true"/>
+            <Option name="MapEditorMode" value="true"/>
           </ModuleOptions>
         </Project>
         <Project file="Data/ProjectsTools/Editor.isorealms" label="IsoRealms"/>

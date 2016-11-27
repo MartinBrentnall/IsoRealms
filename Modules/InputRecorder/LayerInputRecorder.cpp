@@ -18,7 +18,43 @@
  */
 #include "LayerInputRecorder.h"
 
+LayerInputRecorder::LayerInputRecorder(IModuleInputPersistence* module) {
+  cModule = module;
+  cProject = module->getProject();
+  cElapsedTime = 0;
+  InputCommands* mInputCommands = cProject->getInputConfiguration();
+  std::map<std::string, DigitalInput*> mDigitalInputs = mInputCommands->getDigitalInputs();
+  for (std::pair<std::string, DigitalInput*> mDigitalInput : mDigitalInputs) {
+    bool* mInput = mDigitalInput.second->getDigitalInput();
+    cInputs[mInput] = new InputState(mDigitalInput.first);
+  }
+}
+
 void LayerInputRecorder::updateRuntime(unsigned int milliseconds) {
+  if (cProject->hasCompleted()) {
+    DOMNodeWriter* mRecordingNode = new DOMNodeWriter("InputRecording");
+    for (InputEvent* mEvent : cRecordedEvents) {
+      DOMNodeWriter* mEventNode = mRecordingNode->addBranch("Event");
+      mEventNode->addAttribute("name", cInputs[mEvent->getInput()]->cName);
+      mEventNode->addAttribute("time", mEvent->getTime());
+      mEventNode->addAttribute("on", mEvent->getState());
+    }
+    std::string mFileName = cProject->getFileName();
+    std::string mRecordingDirectory = mFileName.substr(0, mFileName.length() - 10);
+    System::makeDirectory(mRecordingDirectory);
+    mRecordingNode->save(mRecordingDirectory + "/recording.recording");
+    cModule->quit();
+    return;
+  }
+  
+  for (std::pair<bool*, InputState*> mInputState : cInputs) {
+    if (*(mInputState.first) != mInputState.second->cState) {
+      cRecordedEvents.push_back(new InputEvent(mInputState.first, *(mInputState.first), cElapsedTime));
+      mInputState.second->cState = *(mInputState.first);
+    }
+  }
+  cElapsedTime += milliseconds;
+  cProject->updateRuntime(milliseconds);
 }
 
 void LayerInputRecorder::updateEditing(unsigned int milliseconds) {
@@ -26,6 +62,7 @@ void LayerInputRecorder::updateEditing(unsigned int milliseconds) {
 }
 
 void LayerInputRecorder::renderRuntime() {
+  cProject->renderRuntime();
 }
 
 void LayerInputRecorder::renderEditing() {
@@ -33,14 +70,20 @@ void LayerInputRecorder::renderEditing() {
 }
 
 bool LayerInputRecorder::input(SDL_Event& event) {
-  return false;
+  cProject->inputRuntime(event);
+  return true;
 }
 
 bool LayerInputRecorder::inputEditor(SDL_Event& event) {
   return false;
 }
 
+ElementPickRay* LayerInputRecorder::getPickRay(float x, float y) {
+  return nullptr; // Not supported
+}
+
 void LayerInputRecorder::initRuntime() {
+//  cProject->initRuntime();
 }
 
 void LayerInputRecorder::initEditor() {
@@ -66,3 +109,7 @@ void LayerInputRecorder::addObjectSelectionListener(IObjectSelectionListener* li
   // Not supported
 }
 
+LayerInputRecorder::InputState::InputState(const std::string& name) {
+  cName = name;
+  cState = false;
+}

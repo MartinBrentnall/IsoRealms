@@ -61,7 +61,7 @@ void LuaScript::registerScript() {
     mFunction += cArguments[i]->getCleanup();
   }
   mFunction += "end\n";
-  std::cout << "Code is:\n" << mFunction << std::endl;
+//  std::cout << "Code is:\n" << mFunction << std::endl;
   Configuration* mConfiguration = Configuration::getInstance();
   mConfiguration->registerScript(mFunction);
 }
@@ -74,7 +74,7 @@ void LuaScript::execute(std::vector<IArgumentValue*> arguments) {
 
 IScriptCall* LuaScript::createScriptCall(DOMNodeWrapper* node, IArgumentValueRegistry* globalArgs, IArgumentValueRegistry* localArgs) {
   std::vector<IArgumentValue*> mArguments;
-  std::cout << "Reading " << cArguments.size() << " arguments for script " << cName << "..." << std::endl;
+//  std::cout << "Reading " << cArguments.size() << " arguments for script " << cName << "..." << std::endl;
 
   for (unsigned int i = 0; i < cArguments.size(); i++) {
     mArguments.push_back(nullptr);
@@ -93,7 +93,7 @@ IScriptCall* LuaScript::createScriptCall(DOMNodeWrapper* node, IArgumentValueReg
       } else {
         mResources = globalArgs;
       }
-      std::cout << "  Found value for argument " << mArgumentIndex << std::endl;
+//      std::cout << "  Found value for argument " << mArgumentIndex << std::endl;
       mArguments[mArgumentIndex] = mResources->getArgumentValue(mNode);
     }
   }
@@ -101,7 +101,7 @@ IScriptCall* LuaScript::createScriptCall(DOMNodeWrapper* node, IArgumentValueReg
   // If any arguments weren't specified, use the defaults
   for (unsigned int i = 0; i < mArguments.size(); i++) {
     if (mArguments[i] == nullptr) {
-      std::cout << "  No value for argument " << i << "... using default " << std::endl;
+//      std::cout << "  No value for argument " << i << "... using default " << std::endl;
       mArguments[i] = cArguments[i]->getDefaultValue();
       // TODO: Throw if no default value?
     }

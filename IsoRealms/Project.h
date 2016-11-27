@@ -29,6 +29,7 @@
 #include "Layer.h"
 #include "Input/InputCommands.h"
 #include "IProject.h"
+#include "IProjectOptions.h"
 #include "ModuleRegistry.h"
 #include "Resources/IResources.h"
 #include "Resources/Resources.h"
@@ -51,7 +52,7 @@ class Project:public IProject {
   
   public:
   Project();
-  Project(DOMNodeWrapper*, DOMNodeWrapper*, const std::string&, IEditingContext*, bool, DOMNodeWrapper*);
+  Project(DOMNodeWrapper*, DOMNodeWrapper*, const std::string&, IEditingContext*, bool, IProjectOptions*);
 
   void initEditor();
   void initRuntime();
@@ -77,6 +78,9 @@ class Project:public IProject {
   void staticChanged();
 
   float getAspectRatio();
+  
+  InputCommands* getInputConfiguration();
+  std::string getFileName();
 };
 
 #endif

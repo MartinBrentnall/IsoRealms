@@ -18,6 +18,22 @@
  */
 #include "ResourceLayerInputRecorder.h"
 
-ILayer* ResourceLayerInputRecorder::getLayer(DOMNodeWrapper* node, IResourceAccessor* resources, bool editing) {
-  return new LayerInputRecorder();
+ResourceLayerInputRecorder::ResourceLayerInputRecorder(IModuleInputPersistence* module) {
+  cModule = module;
+}
+
+void ResourceLayerInputRecorder::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
+  // Nothing to do
+}
+
+ILayer* ResourceLayerInputRecorder::getLayer(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources, bool editing, bool asTemplate) {
+  return new LayerInputRecorder(cModule);
+}
+
+std::string ResourceLayerInputRecorder::getInstanceName(ILayer* layer) {
+  return ""; // Not supported
+}
+
+void ResourceLayerInputRecorder::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
+  // Not supported
 }

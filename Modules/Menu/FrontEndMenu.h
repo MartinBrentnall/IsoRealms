@@ -38,6 +38,7 @@
 #include "IFrontEndMenuItem.h"
 #include "IMenuStack.h"
 #include "OptionMenuItem.h"
+#include "ProjectOptions.h"
 #include "ResolutionOption.h"
 #include "StartProject.h"
 

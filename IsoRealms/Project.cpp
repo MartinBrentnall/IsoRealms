@@ -24,7 +24,7 @@ Project::Project() {
   cFirstInitialised = false;
 }
 
-Project::Project(DOMNodeWrapper* node, DOMNodeWrapper* cache, const std::string& projectName, IEditingContext* editingContext, bool asTemplate, DOMNodeWrapper* options) {
+Project::Project(DOMNodeWrapper* node, DOMNodeWrapper* cache, const std::string& projectName, IEditingContext* editingContext, bool asTemplate, IProjectOptions* options) {
   cResources.setEditing(editingContext != NULL, this);
   cInitScript = NULL;
   if (!asTemplate) {
@@ -57,7 +57,7 @@ Project::Project(DOMNodeWrapper* node, DOMNodeWrapper* cache, const std::string&
    * First pass only loads module instances; we need to make sure all modules
    * are available before we start connecting them together
    */
-  std::cout << "Loading modules and Creating resources..." << std::endl;
+  std::cout << "Loading Modules and creating Resources..." << std::endl;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
@@ -71,7 +71,7 @@ Project::Project(DOMNodeWrapper* node, DOMNodeWrapper* cache, const std::string&
   }
   cResources.initialise();
   
-  std::cout << "Configuring modules (old method)..." << std::endl;
+  std::cout << "Configuring Project..." << std::endl;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
@@ -105,7 +105,7 @@ Project::Project(DOMNodeWrapper* node, DOMNodeWrapper* cache, const std::string&
   cCompleted = false;
   cFirstInitialised = false;
   
-  std::cout << "Loaded Project!" << std::endl;
+  std::cout << "Project Ready." << std::endl;
 }
 
 void Project::renderRuntime() {
@@ -239,3 +239,10 @@ void Project::staticChanged() {
   }
 }
 
+InputCommands* Project::getInputConfiguration() {
+  return cResources.getInputConfiguration();
+}
+
+std::string Project::getFileName() {
+  return cFileName;
+}

@@ -68,7 +68,7 @@ class IResourceAccessor {
   virtual IVertex*              getVertex(             const std::string&) = 0;
   
   virtual void loadElement(DOMNodeWrapper*, DOMNodeWrapper*, BlockLocation*, IElementContainer*, bool) = 0;
-  virtual IScriptCall* getScriptCall(DOMNodeWrapper*, IArgumentValueRegistry* = NULL) = 0;
+  virtual IScriptCall* getScriptCall(DOMNodeWrapper*, IArgumentValueRegistry* = nullptr) = 0;
 //  virtual IArgumentDefinition* getRegisteredArgumentDefinition(DOMNodeWrapper*) = 0;
 //  virtual IArgumentValue* createArgumentValue(DOMNodeWrapper*) = 0;
   

@@ -17,6 +17,7 @@
 include_directories(${PROJECT_SOURCE_DIR})
 
 add_library(InputRecorder MODULE 
+  InputEvent.cpp
   LayerInputPlayer.cpp
   LayerInputRecorder.cpp
   ModuleInputPersistence.cpp

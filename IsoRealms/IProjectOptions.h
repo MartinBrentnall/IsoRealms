@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Martin Brentnall
+ * Copyright 2016 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,14 +16,19 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "StartProject.h"
+#ifndef I_PROJECT_OPTIONS_H
+#define I_PROJECT_OPTIONS_H
 
-StartProject::StartProject(IController* controller, const std::string& project, IProjectOptions* options) {
-  cController = controller;
-  cProject = project;
-  cOptions = options;
-}
+#include <string>
 
-void StartProject::execute() {
-  cController->startProject(cProject, cOptions);
-}
+#include "IModuleOptions.h"
+
+class IProjectOptions {
+  public:
+  virtual IModuleOptions* getModuleOptions(const std::string&) = 0;
+  
+  virtual ~IProjectOptions() {}
+};
+
+#endif
+

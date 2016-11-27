@@ -47,6 +47,7 @@ class InputCommands {
   bool input(SDL_Event&);
   std::vector<std::string> getInputNames();
   DigitalInput* findDigitalInput(const std::string&);
+  std::map<std::string, DigitalInput*> getDigitalInputs();
 };
 
 #endif

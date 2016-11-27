@@ -101,8 +101,7 @@ IsoRealmsModule::IsoRealmsModule(IResourceTypeRegistry* resourceTypeRegistry) : 
   cLocks = nullptr;
 }
 
-void IsoRealmsModule::load(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceRegistry* runtimeContext, DOMNodeWrapper* options) {
-  cRuntimeContext = runtimeContext;
+void IsoRealmsModule::load(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceRegistry* runtimeContext, IModuleOptions* options) {
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();

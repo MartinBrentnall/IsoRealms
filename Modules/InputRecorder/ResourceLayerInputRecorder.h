@@ -23,14 +23,24 @@
 #include <IsoRealms/Resources/IResourceAccessor.h>
 #include <IsoRealms/Resources/Layer/ILayerType.h>
 
+#include "IModuleInputPersistence.h"
 #include "LayerInputRecorder.h"
 
-class ResourceLayerInputRecorder : public ILayerType {
+class ResourceLayerInputRecorder:public ILayerType {
   private:
-  IProject* cProjectRecording;
+  IModuleInputPersistence* cModule;
+  IScriptCall* cScriptQuit;
   
   public:
-  ILayer* getLayer(DOMNodeWrapper*, IResourceAccessor*, bool);
+  ResourceLayerInputRecorder(IModuleInputPersistence*);
+    
+  /*************************\
+   * Implements ILayerType *
+  \*************************/
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  ILayer* getLayer(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*, bool, bool);
+  std::string getInstanceName(ILayer*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
 };
 
 #endif

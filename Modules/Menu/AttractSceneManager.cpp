@@ -46,7 +46,6 @@ void AttractSceneManager::start(IAttract* attractScene, int layer) {
     }
   }
 
-  std::cout << "Starting scene in layer: " << layer << std::endl;
   attractScene->init();
   cActiveAttractServicesByLayer[layer] = attractScene;
   if (layer < cFirstActiveLayer) {

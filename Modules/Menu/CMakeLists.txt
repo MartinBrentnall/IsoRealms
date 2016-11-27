@@ -34,6 +34,7 @@ add_library(Menu MODULE
   FrontEndMenu.cpp
   FrontEndMenuItem.cpp
   OptionMenuItem.cpp
+  ProjectOptions.cpp
   ResolutionOption.cpp
   StartAttractSceneCommand.cpp
   StartProject.cpp

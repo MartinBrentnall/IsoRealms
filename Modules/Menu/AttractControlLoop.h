@@ -82,7 +82,7 @@ class AttractControlLoop:public IModule,
   void createResources(DOMNodeWrapper*, IResourceRegistry*);
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
   
-  void load(DOMNodeWrapper*, DOMNodeWrapper*, IResourceRegistry*, DOMNodeWrapper*);
+  void load(DOMNodeWrapper*, DOMNodeWrapper*, IResourceRegistry*, IModuleOptions*);
   void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
   void projectInitialised();
   
@@ -113,7 +113,7 @@ class AttractControlLoop:public IModule,
   /**************************\
    * Implements IController *
   \**************************/
-  void startProject(const std::string&, DOMNodeWrapper*);
+  void startProject(const std::string&, IProjectOptions*);
 };
 
 #endif

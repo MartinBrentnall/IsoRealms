@@ -331,7 +331,7 @@ Vertex* ElementSpindizzyLift::getBoundaryCrossingPoint(Vertex& start, Vertex& en
       mImpactY = start.y + mYMovement * *mLowestGradient;
     }
     float mImpactZ = start.z + mMovementZ * *mLowestGradient;
-    std::cout << std::fixed << std::setprecision(56) << "Impact Y: " << mImpactY << std::endl;
+//    std::cout << std::fixed << std::setprecision(56) << "Impact Y: " << mImpactY << std::endl;
     return new Vertex(mImpactX, mImpactY, mImpactZ);
   }
 

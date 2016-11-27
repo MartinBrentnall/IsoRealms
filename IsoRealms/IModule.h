@@ -19,6 +19,7 @@
 #ifndef I_MODULE_H
 #define I_MODULE_H
 
+#include "IModuleOptions.h"
 #include "IResourceSource.h"
 #include "Persistence/DOMNodeWriter.h"
 #include "Resources/IResourceTypeRegistry.h"
@@ -29,7 +30,7 @@ class IResourceRegistry;
 class IModule:public IResourceSource {
   public:
 
-  virtual void load(DOMNodeWrapper*, DOMNodeWrapper*, IResourceRegistry*, DOMNodeWrapper*) = 0;
+  virtual void load(DOMNodeWrapper*, DOMNodeWrapper*, IResourceRegistry*, IModuleOptions*) = 0;
     
   /**
    * Save the configuration and resources of the module.

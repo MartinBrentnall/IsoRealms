@@ -55,6 +55,10 @@ void Resources::saveInputConfiguration(DOMNodeWriter* node) {
   cInputCommands.saveConfiguration(node, this);
 }
 
+InputCommands* Resources::getInputConfiguration() {
+  return &cInputCommands;
+}
+
 void Resources::setEditing(bool editing, IProject* project) {
   cEditing = editing;
 //   std::vector<std::string> mRoot;
@@ -157,7 +161,6 @@ IArgumentValue* Resources::getArgumentValueCustom(DOMNodeWrapper* node) {
   if (mValue[0] == '~') {
     mValue = mValue.substr(1);
   }
-  std::cout << "Getting custom argument: \"" << mType << "/" << mValue + "\"..." << std::endl;
   return cArgumentValues.get(mType + "/" + mValue);
 }
 

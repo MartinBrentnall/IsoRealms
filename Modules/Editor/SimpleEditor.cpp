@@ -38,16 +38,10 @@ const float SimpleEditor::DOCKABLE_TEXTURE_DEFAULT_WIDTH           = 0.8f;
 const float SimpleEditor::DOCKABLE_VERTEX_DEFAULT_WIDTH            = 0.4f;
 const float SimpleEditor::DOCKABLE_OBJECT_PROPERTIES_DEFAULT_WIDTH = 0.62f;
 
-void SimpleEditor::load(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceRegistry* runtimeContext, DOMNodeWrapper* options) {  
+void SimpleEditor::load(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceRegistry* runtimeContext, IModuleOptions* options) {  
   cMapEditorMode = false;
   if (options != nullptr) {
-    for (int i = 0; i < options->getChildCount(); i++) {
-      DOMNodeWrapper *mNode = options->getChild(i);
-      std::string mValueAsString = mNode->getNodeName();
-      if (mValueAsString == "MapEditorMode") {
-        cMapEditorMode = mNode->getBooleanAttribute("value");
-      }
-    }
+    cMapEditorMode = options->getOption("MapEditorMode") == "true";
   }
 
   ICommand* mCommand = CommandManager::getCommand("Pop");

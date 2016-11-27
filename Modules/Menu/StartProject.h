@@ -20,6 +20,7 @@
 #define START_PROJECT_H
 
 #include <IsoRealms/ICommand.h>
+#include <IsoRealms/IProjectOptions.h>
 
 #include "IController.h"
 
@@ -27,10 +28,10 @@ class StartProject:public ICommand {
   private:
   IController* cController;
   std::string cProject;
-  DOMNodeWrapper* cOptions;
+  IProjectOptions* cOptions;
   
   public:
-  StartProject(IController*, const std::string&, DOMNodeWrapper*);
+  StartProject(IController*, const std::string&, IProjectOptions*);
     
   void execute();
 };

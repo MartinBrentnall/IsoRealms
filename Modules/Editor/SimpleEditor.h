@@ -168,7 +168,7 @@ class SimpleEditor:public IModule,
   bool componentAt(float, float);
 
   public:
-  void load(DOMNodeWrapper*, DOMNodeWrapper*, IResourceRegistry*, DOMNodeWrapper*);
+  void load(DOMNodeWrapper*, DOMNodeWrapper*, IResourceRegistry*, IModuleOptions*);
 
   void projectInitialised();
   

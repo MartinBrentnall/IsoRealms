@@ -18,6 +18,11 @@
  */
 #include "LayerInputPlayer.h"
 
+LayerInputPlayer::LayerInputPlayer(IModuleInputPersistence* module) {
+  cModule = module;
+  cProject = module->getProject();
+}
+
 void LayerInputPlayer::updateRuntime(unsigned int milliseconds) {
 }
 
@@ -38,6 +43,10 @@ bool LayerInputPlayer::input(SDL_Event& event) {
 
 bool LayerInputPlayer::inputEditor(SDL_Event& event) {
   return false;
+}
+
+ElementPickRay* LayerInputPlayer::getPickRay(float x, float y) {
+  return nullptr; // Not supported
 }
 
 void LayerInputPlayer::initRuntime() {

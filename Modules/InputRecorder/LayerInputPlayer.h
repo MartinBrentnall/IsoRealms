@@ -19,12 +19,18 @@
 #ifndef LAYER_INPUT_PLAYER_H
 #define LAYER_INPUT_PLAYER_H
 
+#include <IsoRealms/Project.h>
 #include <IsoRealms/Resources/Layer/ILayer.h>
+
+#include "IModuleInputPersistence.h"
 
 class LayerInputPlayer : public ILayer {
   private:
+  IModuleInputPersistence* cModule;
+  Project* cProject;
     
   public:
+  LayerInputPlayer(IModuleInputPersistence*);
     
   /*********************\
    * Implements ILayer *

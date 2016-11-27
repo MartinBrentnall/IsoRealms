@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Martin Brentnall
+ * Copyright 2016 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,14 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "StartProject.h"
+#include "InputEvent.h"
 
-StartProject::StartProject(IController* controller, const std::string& project, IProjectOptions* options) {
-  cController = controller;
-  cProject = project;
-  cOptions = options;
+InputEvent::InputEvent(bool* input, bool state, unsigned long time) {
+  cInput = input;
+  cState = state;
+  cTime = time;
 }
 
-void StartProject::execute() {
-  cController->startProject(cProject, cOptions);
+bool* InputEvent::getInput() {
+  return cInput;
+}
+
+bool InputEvent::getState() {
+  return cState;
+}
+
+unsigned int InputEvent::getTime() {
+  return cTime;
 }

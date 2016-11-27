@@ -46,8 +46,8 @@ int main(int argc, char **argv) {
     GLenum err = glewInit();
     if (GLEW_OK != err) {
       std::cout << "Error: " << glewGetErrorString(err) << std::endl;
+      return 1;
     }
-    std::cout << "Using GLEW " << glewGetString(GLEW_VERSION) << std::endl;
     Engine* mEngine = new Engine();
     mEngine->run();
   } catch (InitException &e) {

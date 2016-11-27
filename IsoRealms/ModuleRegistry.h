@@ -30,6 +30,7 @@
 #include "InitException.h"
 #include "IModule.h"
 #include "IModuleRegistry.h"
+#include "IProjectOptions.h"
 #include "LuaSupport/ILuaModule.h"
 #include "LuaSupport/ILuaSupport.h"
 #include "Resources/IResources.h"
@@ -59,8 +60,6 @@ class ModuleRegistry:public IModuleRegistry {
    */
   std::map<IModule*, destroyModule*> cDestroyFunctions;
 
-  DOMNodeWrapper* getModuleOptions(const std::string&, DOMNodeWrapper*);
-  
   public:
 
   /**
@@ -71,7 +70,7 @@ class ModuleRegistry:public IModuleRegistry {
    */
   std::string getModuleType(IModule*);  
 
-  void registerModule(DOMNodeWrapper*, DOMNodeWrapper*, IResources*, IResourceTypeRegistry*, DOMNodeWrapper*);
+  void registerModule(DOMNodeWrapper*, DOMNodeWrapper*, IResources*, IResourceTypeRegistry*, IProjectOptions*);
 
   /**
    * Load a logic module.
