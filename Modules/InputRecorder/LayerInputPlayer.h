@@ -19,6 +19,11 @@
 #ifndef LAYER_INPUT_PLAYER_H
 #define LAYER_INPUT_PLAYER_H
 
+#include <fstream>
+#include <iostream>
+#include <vector>
+
+#include <IsoRealms/Input/DigitalInput.h>
 #include <IsoRealms/Project.h>
 #include <IsoRealms/Resources/Layer/ILayer.h>
 
@@ -26,9 +31,24 @@
 
 class LayerInputPlayer : public ILayer {
   private:
-  IModuleInputPersistence* cModule;
-  Project* cProject;
+  class InputEvent {
     
+    public:
+    unsigned int cID;
+    bool cState;
+    unsigned int cTime;
+  };
+    
+  IModuleInputPersistence* cModule;
+  std::ifstream* cRecording;
+  Project* cProject;
+  std::vector<DigitalInput*> cInputs;
+  unsigned int cElapsedTime;
+  InputEvent cNextEvent;
+  bool cFinished;
+    
+  void readNextEvent();
+  
   public:
   LayerInputPlayer(IModuleInputPersistence*);
     

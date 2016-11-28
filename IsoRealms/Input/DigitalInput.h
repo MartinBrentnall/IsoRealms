@@ -33,6 +33,7 @@
 class DigitalInput {
   private:
   static SDLKeyMap cSDLKeyMap;
+  bool cTriggered;
   bool* cInput;
   std::set<SDLKey> cActiveKeys;
   std::vector<SDLKey> cKeys;
@@ -49,6 +50,7 @@ class DigitalInput {
   void configure(DOMNodeWrapper*);
   void save(DOMNodeWriter*, IResourceLocator*);
   bool input(SDL_Event&);
+  void trigger(bool);
   bool* getDigitalInput();
 };
 

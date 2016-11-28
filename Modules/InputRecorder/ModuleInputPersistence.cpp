@@ -22,12 +22,24 @@ ModuleInputPersistence::ModuleInputPersistence(IResourceTypeRegistry* resourceTy
                                                                                               cLayerTypeInputRecorder(this) {
   cProject = nullptr;
   cScriptQuit = nullptr;
+  cRecordingFile = "";
 }
 
 void ModuleInputPersistence::load(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceRegistry* resources, IModuleOptions* options) {
   if (options != nullptr) {
-    std::string mProjectFile = options->getOption("Project");
+    cRecordingFile = options->getOption("Recording");
+    std::string mProjectFile;
+    if (cRecordingFile != "") {
+      cRecordingFile = System::getUserResource(cRecordingFile);
+      std::cout << "Got recording: " << cRecordingFile << std::endl;
+      std::ifstream mRecordingFile(cRecordingFile);
+      std::getline(mRecordingFile, mProjectFile);
+      mRecordingFile.close();
+    } else {
+      mProjectFile = options->getOption("Project");
+    }
     std::string mProjectPath = System::getProgramResource(mProjectFile);
+    std::cout << "Got project file: " << mProjectPath << std::endl;
     std::string mCacheFileName = mProjectFile.substr(0, mProjectFile.length() - 10) + "/project.cache";
     DOMNodeWrapper* mCache = nullptr;
     if (System::fileExists(mCacheFileName)) {
@@ -79,6 +91,11 @@ void ModuleInputPersistence::projectInitialised() {
 
 Project* ModuleInputPersistence::getProject() {
   return cProject;
+}
+
+std::ifstream* ModuleInputPersistence::getRecording() {
+  std::ifstream* mRecording = new std::ifstream(cRecordingFile);
+  return mRecording;
 }
 
 void ModuleInputPersistence::quit() {

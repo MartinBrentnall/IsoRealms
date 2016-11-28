@@ -69,7 +69,8 @@ FrontEndMenu::FrontEndMenu(IFrontEndCommands* commandRegistry, IMenuStack* menuS
     } else if (mValueAsString == "OpenWith") {
       std::string mProjectName = mNode->getAttribute("project");
       std::string mDirForSelection = mNode->getAttribute("source");
-      std::string mActualDir = System::getProgramResource(mDirForSelection);
+      bool mUserDirectory = mNode->getBooleanAttribute("user");
+      std::string mActualDir = mUserDirectory ? System::getUserResource(mDirForSelection) : System::getProgramResource(mDirForSelection);
       std::vector<std::string>* mFileList = System::getFileList(mActualDir); // TODO: Destruction
       for (unsigned int i = 0; i < mFileList->size(); i++) {
         std::map<std::string, std::string> mReferenceOptionValues;

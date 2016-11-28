@@ -21,7 +21,7 @@
 SDLKeyMap DigitalInput::cSDLKeyMap;
 
 DigitalInput::DigitalInput() {
-  cActivatedScript = NULL;
+  cActivatedScript = nullptr;
   cInput = new bool;
   *cInput = false;
 }
@@ -59,7 +59,7 @@ void DigitalInput::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) 
     mMappingNode->addAttribute("type", "keyDown");
     mMappingNode->addAttribute("value", cSDLKeyMap.getName(cKeys[i]));
   }
-  if (cActivatedScript != NULL) {
+  if (cActivatedScript != nullptr) {
     DOMNodeWriter* mStartScriptNode = node->addBranch("OnStart");
     cActivatedScript->save(mStartScriptNode, resourceLocator);
   }
@@ -78,7 +78,7 @@ bool DigitalInput::keyDown(SDLKey& key) {
   if (isMapped(key)) {
     if (cActiveKeys.empty()) {
       *cInput = true;
-      if (cActivatedScript != NULL) {
+      if (cActivatedScript != nullptr) {
         cActivatedScript->execute();
       }
     }
@@ -110,6 +110,13 @@ bool DigitalInput::input(SDL_Event& event) {
     }
   }
   return false;
+}
+
+void DigitalInput::trigger(bool state) {
+  if (!(*cInput) && state && cActivatedScript != nullptr) {
+    cActivatedScript->execute();
+  }
+  *cInput = state;
 }
 
 bool* DigitalInput::getDigitalInput() {

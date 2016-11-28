@@ -22,36 +22,60 @@ LayerInputRecorder::LayerInputRecorder(IModuleInputPersistence* module) {
   cModule = module;
   cProject = module->getProject();
   cElapsedTime = 0;
+
+  // Construct date and time string for filename
+  time_t mCurrentTime = time(0);
+  struct tm* mNow = localtime(&mCurrentTime);
+  std::stringstream mDateTimeReader;
+  mDateTimeReader << std::setfill('0') << std::setw(2) << (mNow->tm_year - 100)
+                                       << std::setw(2) << (mNow->tm_mon + 1) 
+                                       << std::setw(2) <<  mNow->tm_mday << "-"
+                                       << std::setw(2) <<  mNow->tm_hour
+                                       << std::setw(2) <<  mNow->tm_min
+                                       << std::setw(2) <<  mNow->tm_sec;
+  std::string mFullPath = System::getUserResource("Recordings/");
+  
+  // Make the directory if it doesn't exist yet
+  System::makeDirectory(mFullPath);
+  mFullPath += "/" + mDateTimeReader.str();
+                                       
+  // Combine the path and name, then open the file
+  std::cout << "Writing to: " << mFullPath << std::endl;
+  cRecordingFile.open(mFullPath);
+  
+  // Write the Project name first
+  std::string mProjectName = cProject->getFileName();
+  cRecordingFile << mProjectName << std::endl;
+  
+  // Write input mapping
   InputCommands* mInputCommands = cProject->getInputConfiguration();
   std::map<std::string, DigitalInput*> mDigitalInputs = mInputCommands->getDigitalInputs();
+  unsigned int mInputID = 0;
   for (std::pair<std::string, DigitalInput*> mDigitalInput : mDigitalInputs) {
+    if (mInputID > 0) {
+      cRecordingFile << ",";
+    }
+    cRecordingFile << mInputID << "=\"" << mDigitalInput.first << "\"";
     bool* mInput = mDigitalInput.second->getDigitalInput();
-    cInputs[mInput] = new InputState(mDigitalInput.first);
+    cInputs[mInput] = new InputState(mDigitalInput.first, mInputID);
+    mInputID++;
   }
+  cRecordingFile << std::endl;
 }
 
 void LayerInputRecorder::updateRuntime(unsigned int milliseconds) {
-  if (cProject->hasCompleted()) {
-    DOMNodeWriter* mRecordingNode = new DOMNodeWriter("InputRecording");
-    for (InputEvent* mEvent : cRecordedEvents) {
-      DOMNodeWriter* mEventNode = mRecordingNode->addBranch("Event");
-      mEventNode->addAttribute("name", cInputs[mEvent->getInput()]->cName);
-      mEventNode->addAttribute("time", mEvent->getTime());
-      mEventNode->addAttribute("on", mEvent->getState());
-    }
-    std::string mFileName = cProject->getFileName();
-    std::string mRecordingDirectory = mFileName.substr(0, mFileName.length() - 10);
-    System::makeDirectory(mRecordingDirectory);
-    mRecordingNode->save(mRecordingDirectory + "/recording.recording");
-    cModule->quit();
-    return;
-  }
-  
   for (std::pair<bool*, InputState*> mInputState : cInputs) {
     if (*(mInputState.first) != mInputState.second->cState) {
-      cRecordedEvents.push_back(new InputEvent(mInputState.first, *(mInputState.first), cElapsedTime));
       mInputState.second->cState = *(mInputState.first);
+      cRecordingFile << mInputState.second->cID << "=" << mInputState.second->cState << "@" << cElapsedTime << std::endl;      
+      cRecordingFile.flush();
     }
+  }
+  
+  if (cProject->hasCompleted()) {
+    cRecordingFile.close();
+    cModule->quit();
+    return;
   }
   cElapsedTime += milliseconds;
   cProject->updateRuntime(milliseconds);
@@ -109,7 +133,8 @@ void LayerInputRecorder::addObjectSelectionListener(IObjectSelectionListener* li
   // Not supported
 }
 
-LayerInputRecorder::InputState::InputState(const std::string& name) {
+LayerInputRecorder::InputState::InputState(const std::string& name, unsigned int id) {
   cName = name;
   cState = false;
+  cID = id;
 }

@@ -19,6 +19,8 @@
 #ifndef MODULE_INPUT_PERSISTENCE_H
 #define MODULE_INPUT_PERSISTENCE_H
 
+#include <iostream>
+
 #include <IsoRealms/IModule.h>
 #include <IsoRealms/Project.h>
 
@@ -30,6 +32,7 @@ class ModuleInputPersistence:public IModule,
                              public IModuleInputPersistence,
                              public IResource {
   private:
+  std::string cRecordingFile;
   Project* cProject;
   ResourceLayerInputPlayer cLayerTypeInputPlayer;
   ResourceLayerInputRecorder cLayerTypeInputRecorder;
@@ -54,6 +57,7 @@ class ModuleInputPersistence:public IModule,
    * Implements IModuleInputPersistence *
   \**************************************/
   Project* getProject();
+  std::ifstream* getRecording();
   void quit();
 };
 

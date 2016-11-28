@@ -28,6 +28,13 @@
           </ModuleOptions>
         </OpenWith>
       </Menu>
+      <Menu name="View Replay">
+        <OpenWith project="Data/ProjectsSystem/Player.isorealms" source="Recordings/" user="true">
+          <ModuleOptions name="InputRecorder">
+            <Option name="Recording" ref="file"/>
+          </ModuleOptions>
+        </OpenWith>
+      </Menu>
       <Menu name="Create">
         <Project file="Data/ProjectsTools/Editor.isorealms" label="World Builder">
           <ModuleOptions name="Editor">

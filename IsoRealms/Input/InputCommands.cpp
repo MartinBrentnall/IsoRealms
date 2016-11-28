@@ -34,7 +34,7 @@ InputCommands::InputCommands(const std::string& file) {
   }
   DOMNodeWrapper* mControlConfigNode = new DOMNodeWrapper(mConfigFileResource);
   std::vector<std::string> mEmptyVector;
-  loadConfiguration(mControlConfigNode, mEmptyVector, NULL);
+  loadConfiguration(mControlConfigNode, mEmptyVector, nullptr);
 }
 
 DigitalInput* InputCommands::getDigitalInput(const std::string& name) {
@@ -48,7 +48,7 @@ DigitalInput* InputCommands::getDigitalInput(const std::string& name) {
 
 DigitalInput* InputCommands::findDigitalInput(const std::string& name) {
   std::map<std::string, DigitalInput*>::iterator i = cDigitalInputs.find(name);
-  return i != cDigitalInputs.end() ? i->second : NULL;
+  return i != cDigitalInputs.end() ? i->second : nullptr;
 }
 
 DOMNodeWrapper* InputCommands::findConfiguration(std::vector<DOMNodeWrapper*> node, const std::string& name) {
@@ -64,7 +64,7 @@ DOMNodeWrapper* InputCommands::findConfiguration(std::vector<DOMNodeWrapper*> no
       }
     }
   }
-  return NULL;
+  return nullptr;
 }
 
 void InputCommands::loadConfiguration(DOMNodeWrapper* node, std::vector<std::string> configurationFiles, IResources* resources) {
@@ -87,7 +87,7 @@ void InputCommands::loadConfiguration(DOMNodeWrapper* node, std::vector<std::str
       std::string mName = mNode->getAttribute("name");
       DigitalInput* mDigitalInput = getDigitalInput(mName);
       DOMNodeWrapper* mConfigurationNode = findConfiguration(mConfigurationNodes, mName);
-      if (mConfigurationNode == NULL) {
+      if (mConfigurationNode == nullptr) {
         mConfigurationNode = mNode;
       }
       mDigitalInput->setup(mNode, resources);

@@ -19,6 +19,10 @@
 #ifndef LAYER_INPUT_RECORDER_H
 #define LAYER_INPUT_RECORDER_H
 
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+
 #include <IsoRealms/Project.h>
 #include <IsoRealms/Resources/Layer/ILayer.h>
 
@@ -31,15 +35,16 @@ class LayerInputRecorder : public ILayer {
     public:
     std::string cName;
     bool cState;
+    unsigned int cID;
     
-    InputState(const std::string&);
+    InputState(const std::string&, unsigned int);
   };
     
+  std::ofstream cRecordingFile;
   unsigned int cElapsedTime;
   IModuleInputPersistence* cModule;
   Project* cProject;
   std::map<bool*, InputState*> cInputs;
-  std::vector<InputEvent*> cRecordedEvents;
     
   public:
   LayerInputRecorder(IModuleInputPersistence*);

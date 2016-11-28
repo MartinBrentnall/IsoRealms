@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<Project>
+  <Module name="IsoRealms">
+    <ScriptLua name="Quit">
+      <Argument name="project" type="Project" value="Project"/>
+      <Code>project:finish()</Code>
+    </ScriptLua>
+  </Module>
+  <Module name="InputRecorder">  
+    <Quit name="IsoRealms/Quit"/>
+    <LayerPlayer name="Player" project="IsoRealms/Project"/>
+  </Module>
+  <Layer type="InputRecorder/Player"/>
+</Project>
+

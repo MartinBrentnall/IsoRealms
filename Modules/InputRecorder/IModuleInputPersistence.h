@@ -19,11 +19,15 @@
 #ifndef I_MODULE_INPUT_PERSISTENCE_H
 #define I_MODULE_INPUT_PERSISTENCE_H
 
+#include <fstream>
+#include <iostream>
+
 #include <IsoRealms/Project.h>
 
 class IModuleInputPersistence {
   public:
   virtual Project* getProject() = 0;
+  virtual std::ifstream* getRecording() = 0;
   virtual void quit() = 0;
 };
 
