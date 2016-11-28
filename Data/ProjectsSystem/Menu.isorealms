@@ -14,14 +14,16 @@
     <AttractScene name="Title"/>
     <AttractScene name="HiScore"/>
     <AttractScene name="Help"/>
-    <AttractScene name="Demo"/>
+    <AttractScene name="Demo" project="Data/ProjectsSystem/Player.isorealms">
+      <ModuleOptions name="InputRecorder">
+        <Option name="User" value="false"/>
+        <Option name="Recording" value="Data/Demos/Demo.recording"/>
+      </ModuleOptions>
+    </AttractScene>
     <AttractScene name="FadeOut"/>
   
     <FrontEnd name="Menu">
       <Menu name="Play">
-        <ProjectList source="Data/Projects/"/>
-      </Menu>
-      <Menu name="Record Game">
         <OpenWith project="Data/ProjectsSystem/Recorder.isorealms" source="Data/Projects/">
           <ModuleOptions name="InputRecorder">
             <Option name="Project" ref="file"/>
@@ -31,6 +33,7 @@
       <Menu name="View Replay">
         <OpenWith project="Data/ProjectsSystem/Player.isorealms" source="Recordings/" user="true">
           <ModuleOptions name="InputRecorder">
+            <Option name="User" value="true"/>
             <Option name="Recording" ref="file"/>
           </ModuleOptions>
         </OpenWith>

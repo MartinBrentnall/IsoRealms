@@ -28,9 +28,10 @@ ModuleInputPersistence::ModuleInputPersistence(IResourceTypeRegistry* resourceTy
 void ModuleInputPersistence::load(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceRegistry* resources, IModuleOptions* options) {
   if (options != nullptr) {
     cRecordingFile = options->getOption("Recording");
+    bool mUserRecording = options->getOption("User") == "true";
     std::string mProjectFile;
     if (cRecordingFile != "") {
-      cRecordingFile = System::getUserResource(cRecordingFile);
+      cRecordingFile = mUserRecording ? System::getUserResource(cRecordingFile) : System::getProgramResource(cRecordingFile);
       std::cout << "Got recording: " << cRecordingFile << std::endl;
       std::ifstream mRecordingFile(cRecordingFile);
       std::getline(mRecordingFile, mProjectFile);

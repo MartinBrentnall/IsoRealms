@@ -94,6 +94,21 @@ void LayerInputPlayer::renderEditing() {
 }
 
 bool LayerInputPlayer::input(SDL_Event& event) {
+  switch (event.type) {
+    case SDL_KEYDOWN: {
+      switch (event.key.keysym.sym) {
+        case SDLK_ESCAPE: {
+          cRecording->close();
+          cModule->quit();
+          return true;
+        }
+      
+        default: {
+          // Nothing to do
+        }        
+      }
+    }
+  }
   return false;
 }
 

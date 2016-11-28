@@ -24,50 +24,29 @@
 #include <GL/glew.h>
 #include <SDL/SDL.h>
 
+#include <IsoRealms/Project.h>
 #include <IsoRealms/Configuration.h>
 
 #include "IAttract.h"
+#include "ProjectOptions.h"
 
 /**
  * This attract scene displays the title logo for a limited time.
  */
 class AttractDemo:public IAttract {
   private:
-   
-  float cRed;
-  float cGreen;
-  float cBlue;
-
-  /** 
-   * Points to the colour channel that is being adjusted by the update process.
-   */
-  float *cColourChannel;
-
-  /**
-   * true if the current colour channel is fading in, otherwise false (fade
-   * out).
-   */
-  bool cColourUp;
+  Project* cProject;
     
-    
-  float cRotation;
-  
-  float cAngle;
-  GLuint cTexture;
-  GLuint cFrameBuffer;
-
-  void drawBox();
-
   public:
 
   /**
    * Default constructor.
    */
-  AttractDemo();
+  AttractDemo(DOMNodeWrapper*);
 
-  /**************************************************************************\
-   * Implemented methods of IAttract.h                                      *
-  \**************************************************************************/
+  /***********************\
+   * Implements IAttract *
+  \***********************/
   void init();
   void update(int);
   void render();

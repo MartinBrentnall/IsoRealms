@@ -44,7 +44,7 @@ void AttractControlLoop::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper
       cFrontEnd = createFrontEnd(mNode, mFrontEndName, resources);
     } else if (mValueAsString == "AttractScene") {
       std::string mAttractName = mNode->getAttribute("name");
-      cAttractServices[mAttractName] = createAttract(mAttractName);
+      cAttractServices[mAttractName] = createAttract(mAttractName, mNode);
     } else if (mValueAsString == "Layer") {
       cLayers[mNode->getStringValue()] = mCurrentLayer++;
     } else if (mValueAsString == "Init") {
@@ -67,12 +67,12 @@ IFrontEnd* AttractControlLoop::createFrontEnd(DOMNodeWrapper* node, const std::s
                         : nullptr;
 }
 
-IAttract* AttractControlLoop::createAttract(const std::string& name) {
+IAttract* AttractControlLoop::createAttract(const std::string& name, DOMNodeWrapper* node) {
   return name == "Intro"   ? static_cast<IAttract*>(new AttractIntro(cFont))
        : name == "Title"   ? static_cast<IAttract*>(new AttractTitle(cFont))
        : name == "HiScore" ? static_cast<IAttract*>(new AttractHiScore(cFont))
        : name == "Help"    ? static_cast<IAttract*>(new AttractHelp())
-       : name == "Demo"    ? static_cast<IAttract*>(new AttractDemo())
+       : name == "Demo"    ? static_cast<IAttract*>(new AttractDemo(node))
        : name == "FadeOut" ? static_cast<IAttract*>(new AttractFadeOut())
        :                     nullptr;
 }

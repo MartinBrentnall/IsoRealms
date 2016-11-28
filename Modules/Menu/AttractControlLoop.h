@@ -73,7 +73,7 @@ class AttractControlLoop:public IModule,
   std::vector<ICommand*> parseEventCommands(DOMNodeWrapper*);
 
   IFrontEnd* createFrontEnd(DOMNodeWrapper*, const std::string&, IResourceAccessor*);
-  IAttract* createAttract(const std::string&);
+  IAttract* createAttract(const std::string&, DOMNodeWrapper*);
   
   public:
   AttractControlLoop();
