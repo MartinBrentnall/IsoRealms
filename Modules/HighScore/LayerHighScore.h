@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Martin Brentnall
+ * Copyright 2016 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,37 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef LAYER_INPUT_RECORDER_H
-#define LAYER_INPUT_RECORDER_H
-
-#include <fstream>
-#include <iomanip>
-#include <iostream>
+#ifndef LAYER_HIGH_SCORE_H
+#define LAYER_HIGH_SCORE_H
 
 #include <IsoRealms/Project.h>
 #include <IsoRealms/Resources/Layer/ILayer.h>
 
-#include "IModuleInputPersistence.h"
+#include "IModuleHighScore.h"
 
-class LayerInputRecorder : public ILayer {
+class LayerHighScore:public ILayer {
   private:
-  class InputState {
-    public:
-    std::string cName;
-    bool cState;
-    unsigned int cID;
-    
-    InputState(const std::string&, unsigned int);
-  };
-    
-  std::ofstream cRecordingFile;
-  unsigned int cElapsedTime;
-  IModuleInputPersistence* cModule;
+  IModuleHighScore* cModule;
   Project* cProject;
-  std::map<bool*, InputState*> cInputs;
     
   public:
-  LayerInputRecorder(IModuleInputPersistence*);
+  LayerHighScore(IModuleHighScore*);
     
   /*********************\
    * Implements ILayer *
@@ -68,3 +52,4 @@ class LayerInputRecorder : public ILayer {
 };
 
 #endif
+

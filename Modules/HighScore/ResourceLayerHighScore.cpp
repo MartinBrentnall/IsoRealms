@@ -16,22 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "InputEvent.h"
+#include "ResourceLayerHighScore.h"
 
-InputEvent::InputEvent(bool* input, bool state, unsigned long time) {
-  cInput = input;
-  cState = state;
-  cTime = time;
+ResourceLayerHighScore::ResourceLayerHighScore(IModuleHighScore* module) {
+  cModule = module;
 }
 
-bool* InputEvent::getInput() {
-  return cInput;
+void ResourceLayerHighScore::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
+  // Nothing to do
 }
 
-bool InputEvent::getState() {
-  return cState;
+ILayer* ResourceLayerHighScore::getLayer(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources, bool editing, bool asTemplate) {
+  return new LayerHighScore(cModule);
 }
 
-unsigned int InputEvent::getTime() {
-  return cTime;
+std::string ResourceLayerHighScore::getInstanceName(ILayer* layer) {
+  return ""; // Not supported
+}
+
+void ResourceLayerHighScore::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
+  // Not supported
 }

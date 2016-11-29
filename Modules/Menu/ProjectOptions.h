@@ -32,6 +32,7 @@ class ProjectOptions:public IProjectOptions {
   class ModuleOptions:public IModuleOptions {
     private:
     std::map<std::string, std::string> cModuleOptions;
+    std::map<std::string, IProjectOptions*> cSubProjectOptions;
     
     public:
     ModuleOptions(DOMNodeWrapper*, std::map<std::string, std::string>);
@@ -40,6 +41,7 @@ class ProjectOptions:public IProjectOptions {
      * Implements IModuleOptions *
     \*****************************/
     std::string getOption(const std::string&);
+    IProjectOptions* getProjectOptions(const std::string&);
   };
   
   public:

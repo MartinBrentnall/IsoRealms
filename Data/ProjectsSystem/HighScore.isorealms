@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<Project>
+  <Module name="IsoRealms">
+    <ScriptLua name="Quit">
+      <Argument name="project" type="Project" value="Project"/>
+      <Code>project:finish()</Code>
+    </ScriptLua>
+  </Module>
+  <Module name="HighScore">  
+    <Quit name="IsoRealms/Quit"/>
+    <LayerHighScore name="HighScore" project="IsoRealms/Project"/>
+  </Module>
+  <Layer type="HighScore/HighScore"/>
+</Project>

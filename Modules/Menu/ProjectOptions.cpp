@@ -53,6 +53,10 @@ ProjectOptions::ModuleOptions::ModuleOptions(DOMNodeWrapper* node, std::map<std:
         exit(1);
       }
       cModuleOptions[mName] = mValue;
+    } else if (mValueAsString == "ProjectOptions") {
+      std::string mName  = mNode->getAttribute("name");
+      IProjectOptions* mSubProjectOptions = new ProjectOptions(mNode, referenceOptions);
+      cSubProjectOptions[mName] = mSubProjectOptions;
     }
   }  
 }
@@ -64,4 +68,13 @@ std::string ProjectOptions::ModuleOptions::getOption(const std::string& option) 
   }
   // TODO: Throw
   return "";
+}
+
+IProjectOptions* ProjectOptions::ModuleOptions::getProjectOptions(const std::string& option) {
+  std::map<std::string, IProjectOptions*>::iterator mSubProjectOptions = cSubProjectOptions.find(option);
+  if (mSubProjectOptions != cSubProjectOptions.end()) {
+    return mSubProjectOptions->second;
+  }
+  // TODO: Throw
+  return nullptr;
 }

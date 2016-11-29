@@ -16,25 +16,31 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef INPUT_EVENT_H
-#define INPUT_EVENT_H
+#ifndef RESOURCE_LAYER_HIGH_SCORE_H
+#define RESOURCE_LAYER_HIGH_SCORE_H
 
-#include <IsoRealms/Project.h>
+#include <IsoRealms/IProject.h>
+#include <IsoRealms/Resources/IResourceAccessor.h>
+#include <IsoRealms/Resources/Layer/ILayerType.h>
 
-class InputEvent {
+#include "IModuleHighScore.h"
+#include "LayerHighScore.h"
+
+class ResourceLayerHighScore:public ILayerType {
   private:
-  bool* cInput;
-  bool cState;
-  unsigned int cTime;
-  
+  IModuleHighScore* cModule;
+    
   public:
-  InputEvent(bool*, bool, unsigned long);
-  
-  bool* getInput();
-  bool getState();
-  unsigned int getTime();
+  ResourceLayerHighScore(IModuleHighScore*);
+    
+  /*************************\
+   * Implements ILayerType *
+  \*************************/
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  ILayer* getLayer(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*, bool, bool);
+  std::string getInstanceName(ILayer*);
+  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
 };
 
 #endif
-
 

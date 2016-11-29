@@ -52,7 +52,8 @@ void ModuleInputPersistence::load(DOMNodeWrapper* node, DOMNodeWrapper* cache, I
       DOMNodeWrapper *mNode = mProjectNode->getChild(i);
       std::string mValue = mNode->getNodeName();
       if (mValue == "Project") {
-        cProject = new Project(mNode, mCache, mProjectFile, nullptr, false, nullptr);
+        IProjectOptions* mProjectOptions = options->getProjectOptions("Project");
+        cProject = new Project(mNode, mCache, mProjectFile, nullptr, false, mProjectOptions);
         cProject->initRuntime();
         std::cout << "Project Started for Recording/Playback" << std::endl;
       }

@@ -1,4 +1,4 @@
-# Copyright 2009,2010 Martin Brentnall
+# Copyright 2016 Martin Brentnall
 #
 # This file is part of Iso-Realms.
 #
@@ -16,10 +16,10 @@
 # along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
 include_directories(${PROJECT_SOURCE_DIR})
 
-add_subdirectory(Editor)
-add_subdirectory(HighScore)
-add_subdirectory(InputRecorder)
-add_subdirectory(IsoRealms)
-add_subdirectory(Menu)
-add_subdirectory(Rollaround)
-add_subdirectory(Spindizzy)
+add_library(HighScore MODULE 
+  LayerHighScore.cpp
+  ModuleHighScore.cpp
+  ResourceLayerHighScore.cpp
+)
+set_target_properties(HighScore PROPERTIES OUTPUT_NAME "Module")
+set_target_properties(HighScore PROPERTIES PREFIX "lib")

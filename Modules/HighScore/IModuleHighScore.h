@@ -16,19 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_MODULE_OPTIONS_H
-#define I_MODULE_OPTIONS_H
+#ifndef I_MODULE_HIGH_SCORE_H
+#define I_MODULE_HIGH_SCORE_H
 
-#include <string>
+#include <IsoRealms/Project.h>
 
-class IProjectOptions;
-
-class IModuleOptions {
+class IModuleHighScore {
   public:
-  virtual std::string getOption(const std::string&) = 0;
-  virtual IProjectOptions* getProjectOptions(const std::string&) = 0;
-  
-  virtual ~IModuleOptions() {}
+  virtual Project* getProject() = 0;
+  virtual void quit() = 0;
 };
 
 #endif
+
+

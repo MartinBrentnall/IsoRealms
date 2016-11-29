@@ -24,9 +24,14 @@
   
     <FrontEnd name="Menu">
       <Menu name="Play">
-        <OpenWith project="Data/ProjectsSystem/Recorder.isorealms" source="Data/Projects/">
-          <ModuleOptions name="InputRecorder">
-            <Option name="Project" ref="file"/>
+        <OpenWith project="Data/ProjectsSystem/HighScore.isorealms" source="Data/Projects/">
+          <ModuleOptions name="HighScore">
+            <Option name="Project" value="Data/ProjectsSystem/Recorder.isorealms"/>
+            <ProjectOptions name="ProjectOptions">
+              <ModuleOptions name="InputRecorder">
+                <Option name="Project" ref="file"/>
+              </ModuleOptions>
+            </ProjectOptions>
           </ModuleOptions>
         </OpenWith>
       </Menu>
