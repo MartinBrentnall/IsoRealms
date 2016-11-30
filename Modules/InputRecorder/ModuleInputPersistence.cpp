@@ -55,6 +55,7 @@ void ModuleInputPersistence::load(DOMNodeWrapper* node, DOMNodeWrapper* cache, I
         IProjectOptions* mProjectOptions = options->getProjectOptions("Project");
         cProject = new Project(mNode, mCache, mProjectFile, nullptr, false, mProjectOptions);
         cProject->initRuntime();
+        resources->add(cProject, "Project");
         std::cout << "Project Started for Recording/Playback" << std::endl;
       }
     }
@@ -65,6 +66,7 @@ void ModuleInputPersistence::load(DOMNodeWrapper* node, DOMNodeWrapper* cache, I
     exit(1);
   }
   
+  resources->add(&cFilename,               "Filename");
   resources->add(&cLayerTypeInputPlayer,   "Player",   node);
   resources->add(&cLayerTypeInputRecorder, "Recorder", node);
   resources->add(this, node);
@@ -76,7 +78,7 @@ void ModuleInputPersistence::initialiseResource(DOMNodeWrapper* node, DOMNodeWra
     std::string mValue = mNode->getNodeName();
     if (mValue == "Quit") {
       cScriptQuit = resources->getScriptCall(mNode);
-    }
+    } 
   }
   if (cScriptQuit == nullptr) {
     std::cout << "Warning: No 'Quit' script set.  Project cannot be terminated" << std::endl;
@@ -100,8 +102,24 @@ std::ifstream* ModuleInputPersistence::getRecording() {
   return mRecording;
 }
 
+void ModuleInputPersistence::setFilename(const std::string& filename) {
+  cFilename.setValue(filename);
+}
+
 void ModuleInputPersistence::quit() {
   cScriptQuit->execute();
+}
+
+void ModuleInputPersistence::Filename::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
+  // Nothing to do.
+}
+
+void ModuleInputPersistence::Filename::setValue(const std::string& value) {
+  cFilename = value;
+}
+
+std::string ModuleInputPersistence::Filename::getValue() {
+  return cFilename;
 }
 
 extern "C" IModule* create(IResourceTypeRegistry* resourceTypeRegistry) {

@@ -21,11 +21,15 @@
 LayerHighScore::LayerHighScore(IModuleHighScore* module) {
   cModule = module;
   cProject = module->getProject();
+  cNotifiedProjectComplete = false;
 }
 
 void LayerHighScore::updateRuntime(unsigned int milliseconds) {
   if (cProject->hasCompleted()) {
-    cModule->quit();
+    if (!cNotifiedProjectComplete) {
+      cModule->projectCompleted();
+      cNotifiedProjectComplete = true;
+    }
     return;
   }
   cProject->updateRuntime(milliseconds);

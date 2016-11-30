@@ -174,6 +174,7 @@ IFloat* Resources::getFloat(const std::string& path)                            
 IFont* Resources::getFont(const std::string& path)                               {return cFonts.get(path);}
 IInteger* Resources::getInteger(const std::string& path)                         {return cIntegers.get(path);}
 ILayerType* Resources::getLayerType(const std::string& path)                     {return cLayerTypes.get(path);}
+IProject* Resources::getProject(const std::string& path)                         {return cSubProjects.get(path);}
 IScript* Resources::getScript(const std::string& path)                           {return cScripts.get(path);}
 ISound* Resources::getSound(const std::string& path)                             {return cSounds.get(path);}
 IString* Resources::getString(const std::string& path)                           {return cStrings.get(path);}
@@ -288,6 +289,7 @@ void Resources::add(IFont* font,                                     std::vector
 void Resources::add(IGlobalVariable* variable,                       std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {cGlobalVariables.add(variable, path, name);            addResourceToInitialise(variable,   node, cache);}
 void Resources::add(IInteger* value,                                 std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {cIntegers.add(value, path, name);                      addResourceToInitialise(value,      node, cache);}
 void Resources::add(ILayerType* layerType,                           std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {cLayerTypes.add(layerType, path, name);                addResourceToInitialise(layerType,  node, cache);}
+void Resources::add(IProject* project,                               std::vector<std::string> path, const std::string& name)                                              {cSubProjects.add(project, path, name);}
 void Resources::add(IScript* script,                                 std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {cScripts.add(script, path, name);                      addResourceToInitialise(script,     node, cache);}
 void Resources::add(ISound* sound,                                   std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {cSounds.add(sound, path, name);                        addResourceToInitialise(sound,      node, cache);}
 void Resources::add(IString* string,                                 std::vector<std::string> path, const std::string& name, DOMNodeWrapper* node, DOMNodeWrapper* cache) {cStrings.add(string, path, name);                      addResourceToInitialise(string,     node, cache);}

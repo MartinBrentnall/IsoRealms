@@ -32,10 +32,23 @@ class ModuleInputPersistence:public IModule,
                              public IModuleInputPersistence,
                              public IResource {
   private:
+    
+  // TODO: Make a general fixed string class in the isorealms framework
+  class Filename:public IString {
+    private:
+    std::string cFilename;
+    
+    public:
+    void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+    void setValue(const std::string&);
+    std::string getValue();
+  };
+  
   std::string cRecordingFile;
   Project* cProject;
   ResourceLayerInputPlayer cLayerTypeInputPlayer;
   ResourceLayerInputRecorder cLayerTypeInputRecorder;
+  Filename cFilename; 
   IScriptCall* cScriptQuit;
     
   public:
@@ -58,6 +71,7 @@ class ModuleInputPersistence:public IModule,
   \**************************************/
   Project* getProject();
   std::ifstream* getRecording();
+  void setFilename(const std::string&);
   void quit();
 };
 

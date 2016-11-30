@@ -71,6 +71,7 @@ class Resources:public IResources,
   ResourceRegistry<IGlobalVariable> cGlobalVariables;
   IntegerRegistry cIntegers;
   ResourceRegistry<ILayerType> cLayerTypes;
+  ResourceRegistry<IProject> cSubProjects;
   ResourceRegistry<IScript> cScripts;
   ResourceRegistry<ISound> cSounds;
   StringRegistry cStrings;
@@ -122,6 +123,7 @@ class Resources:public IResources,
   void add(IGlobalVariable*,            std::vector<std::string>, const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
   void add(IInteger*,                   std::vector<std::string>, const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
   void add(ILayerType*,                 std::vector<std::string>, const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
+  void add(IProject*,                   std::vector<std::string>, const std::string&);
   void add(IScript*,                    std::vector<std::string>, const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
   void add(ISound*,                     std::vector<std::string>, const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
   void add(IString*,                    std::vector<std::string>, const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
@@ -165,6 +167,7 @@ class Resources:public IResources,
   IFont*                getFont(const std::string&);
   IInteger*             getInteger(const std::string&);
   ILayerType*           getLayerType(const std::string&);
+  IProject*             getProject(const std::string&); /* Not accessible via interface */
   IScript*              getScript(const std::string&);
   ISound*               getSound(const std::string&);
   IString*              getString(const std::string&);

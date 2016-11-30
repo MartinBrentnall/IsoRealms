@@ -52,8 +52,9 @@ class RuntimeContext:public IResourceRegistry {
   void add(IGlobalVariable*,         const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
   void add(IInteger*,                const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
   void add(ILayerType*,              const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
-  void add(IScript*,                 const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
+  void add(IProject*,                const std::string&);
   void add(IResource*,                                   DOMNodeWrapper*, DOMNodeWrapper*);
+  void add(IScript*,                 const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
   void add(ISound*,                  const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
   void add(IString*,                 const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);
   void add(ITexture*,                const std::string&, DOMNodeWrapper*, DOMNodeWrapper*);

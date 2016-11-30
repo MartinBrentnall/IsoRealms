@@ -53,6 +53,7 @@ class IResources:public IResourceAccessor {
   virtual void add(IGlobalVariable*,            std::vector<std::string>, const std::string&, DOMNodeWrapper*, DOMNodeWrapper*) = 0;
   virtual void add(IInteger*,                   std::vector<std::string>, const std::string&, DOMNodeWrapper*, DOMNodeWrapper*) = 0;
   virtual void add(ILayerType*,                 std::vector<std::string>, const std::string&, DOMNodeWrapper*, DOMNodeWrapper*) = 0;
+  virtual void add(IProject*,                   std::vector<std::string>, const std::string&) = 0;
   virtual void add(IResource*,                                                                DOMNodeWrapper*, DOMNodeWrapper*) = 0;
   virtual void add(IScript*,                    std::vector<std::string>, const std::string&, DOMNodeWrapper*, DOMNodeWrapper*) = 0;
   virtual void add(ISound*,                     std::vector<std::string>, const std::string&, DOMNodeWrapper*, DOMNodeWrapper*) = 0;

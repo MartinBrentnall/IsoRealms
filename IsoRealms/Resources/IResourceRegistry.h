@@ -58,8 +58,9 @@ class IResourceRegistry {
   virtual void add(IGlobalVariable*,            const std::string&, DOMNodeWrapper* = nullptr, DOMNodeWrapper* = nullptr) = 0;
   virtual void add(IInteger*,                   const std::string&, DOMNodeWrapper* = nullptr, DOMNodeWrapper* = nullptr) = 0;
   virtual void add(ILayerType*,                 const std::string&, DOMNodeWrapper* = nullptr, DOMNodeWrapper* = nullptr) = 0;
-  virtual void add(IScript*,                    const std::string&, DOMNodeWrapper* = nullptr, DOMNodeWrapper* = nullptr) = 0;
+  virtual void add(IProject*,                   const std::string&) = 0;
   virtual void add(IResource*,                                      DOMNodeWrapper* = nullptr, DOMNodeWrapper* = nullptr) = 0;
+  virtual void add(IScript*,                    const std::string&, DOMNodeWrapper* = nullptr, DOMNodeWrapper* = nullptr) = 0;
   virtual void add(ISound*,                     const std::string&, DOMNodeWrapper* = nullptr, DOMNodeWrapper* = nullptr) = 0;
   virtual void add(IString*,                    const std::string&, DOMNodeWrapper* = nullptr, DOMNodeWrapper* = nullptr) = 0;
   virtual void add(ITexture*,                   const std::string&, DOMNodeWrapper* = nullptr, DOMNodeWrapper* = nullptr) = 0;

@@ -28,6 +28,7 @@ class IModuleInputPersistence {
   public:
   virtual Project* getProject() = 0;
   virtual std::ifstream* getRecording() = 0;
+  virtual void setFilename(const std::string&) = 0;
   virtual void quit() = 0;
 };
 

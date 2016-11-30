@@ -24,6 +24,7 @@
 class IModuleHighScore {
   public:
   virtual Project* getProject() = 0;
+  virtual void projectCompleted() = 0;
   virtual void quit() = 0;
 };
 

@@ -33,7 +33,8 @@ LayerInputRecorder::LayerInputRecorder(IModuleInputPersistence* module) {
                                        << std::setw(2) <<  mNow->tm_hour
                                        << std::setw(2) <<  mNow->tm_min
                                        << std::setw(2) <<  mNow->tm_sec;
-  std::string mFullPath = System::getUserResource("Recordings/");
+  std::string mFullPath = System::getUserResource("Recordings/"); 
+  cModule->setFilename("Recordings/" + mDateTimeReader.str());
   
   // Make the directory if it doesn't exist yet
   System::makeDirectory(mFullPath);

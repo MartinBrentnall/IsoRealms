@@ -28,6 +28,7 @@ class LayerHighScore:public ILayer {
   private:
   IModuleHighScore* cModule;
   Project* cProject;
+  bool cNotifiedProjectComplete;
     
   public:
   LayerHighScore(IModuleHighScore*);

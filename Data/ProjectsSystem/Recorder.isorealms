@@ -11,4 +11,6 @@
     <LayerRecorder name="Recorder" project="IsoRealms/Project"/>
   </Module>
   <Layer type="InputRecorder/Recorder"/>
+  <ReturnValue name="Project" type="Project" value="InputRecorder/Project"/>
+  <ReturnValue name="Recording" type="String" value="InputRecorder/Filename"/>
 </Project>

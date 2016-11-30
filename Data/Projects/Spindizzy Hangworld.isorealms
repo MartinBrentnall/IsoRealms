@@ -7120,4 +7120,8 @@ end</Code>
     <Element name="ValueMap"   left="adjacent IconMap 0.02"    top="align IconMap"      length="0.09" width="0.5" type="IsoRealms/ZonesToExploreDisplay"/>
     <Element name="ValueJewel" right="adjacent IconJewel 0.02" top="align IconJewel"    length="0.09" width="0.5" type="IsoRealms/JewelCountDisplay"/>-->
   </Layer>
+  <ReturnValue name="Score" type="Integer" value="IsoRealms/Score"/>
+  <ReturnValue name="Time" type="Integer" value="IsoRealms/SpindizzyTimeLimit"/>
+  <ReturnValue name="Zones" type="Integer" value="IsoRealms/ZonesToExplore"/>
+  <ReturnValue name="Jewels" type="Integer" value="IsoRealms/Collected"/>
 </Project>

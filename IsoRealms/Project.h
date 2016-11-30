@@ -37,6 +37,21 @@
 
 class Project:public IProject {
   private:
+  class ReturnValue {
+    public:
+    std::string cType;
+    std::string cReference;
+    std::string cValue;
+    ReturnValue(const std::string&, const std::string&);
+  };
+    
+  class ReturnProject {
+    public:
+    std::string cReference;
+    IProject*   cProject;
+    ReturnProject(const std::string&);
+  };
+    
   std::vector<ILayer*> cLayers;
   ILayer* cDefaultLayer;
   ModuleRegistry cModuleRegistry;
@@ -45,6 +60,8 @@ class Project:public IProject {
   bool cCompleted;
   std::string cFileName;
   bool cFirstInitialised;
+  std::map<std::string, ReturnValue*>   cReturnValues;
+  std::map<std::string, ReturnProject*> cReturnProjects;
   
   std::vector<IDynamicElement*> cDynamicElements;
   
@@ -81,6 +98,8 @@ class Project:public IProject {
   
   InputCommands* getInputConfiguration();
   std::string getFileName();
+  
+  std::string getReturnValue(const std::string&);
 };
 
 #endif

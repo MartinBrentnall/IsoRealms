@@ -19,15 +19,15 @@
 #include "ModuleHighScore.h"
 
 ModuleHighScore::ModuleHighScore(IResourceTypeRegistry* resourceTypeRegistry) : cLayerTypeHighScore(this) {
-  cProject = nullptr;
-  cScriptQuit = nullptr;
+  cProject          = nullptr;
+  cScriptQuit       = nullptr;
+  cScriptOnComplete = nullptr;
 }
 
 void ModuleHighScore::load(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceRegistry* resources, IModuleOptions* options) {
   if (options != nullptr) {
     std::string mProjectFile = options->getOption("Project");
     std::string mProjectPath = System::getProgramResource(mProjectFile);
-    std::cout << "Got project to score: " << mProjectPath << std::endl;
     std::string mCacheFileName = mProjectFile.substr(0, mProjectFile.length() - 10) + "/project.cache";
     DOMNodeWrapper* mCache = nullptr;
     if (System::fileExists(mCacheFileName)) {
@@ -42,7 +42,8 @@ void ModuleHighScore::load(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourc
         IProjectOptions* mProjectOptions = options->getProjectOptions("ProjectOptions");
         cProject = new Project(mNode, mCache, mProjectFile, nullptr, false, mProjectOptions);
         cProject->initRuntime();
-        std::cout << "Project Started for Scoring" << std::endl;
+        resources->add(cProject, "Project");
+        std::cout << "Project Started for Scoring: " << mProjectFile << std::endl;
       }
     }
   }
@@ -61,11 +62,37 @@ void ModuleHighScore::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* c
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValue = mNode->getNodeName();
     if (mValue == "Quit") {
-      cScriptQuit = resources->getScriptCall(mNode);
-    }
+      cScriptQuit       = resources->getScriptCall(mNode);
+    } else if (mValue == "OnComplete") {
+      cScriptOnComplete = resources->getScriptCall(mNode);
+    } else if (mValue == "ReadProjectValue") {
+      std::string mFrom = mNode->getAttribute("from");
+      std::string mTo   = mNode->getAttribute("to");
+      std::string mType = mNode->getAttribute("type");
+      if      (mType == "Integer") {cReadIntegers[mFrom] = resources->getInteger(mTo);} 
+      else if (mType == "String")  {cReadStrings[mFrom]  = resources->getString(mTo);}
+      else    {
+        std::cout << "Unknown type: " << mType << std::endl;
+        exit(1);
+      }
+    } else if (mValue == "WriteValue") {
+      std::string mFieldName  = mNode->getAttribute("name");
+      std::string mFieldValue = mNode->getAttribute("value");
+      std::string mFieldType  = mNode->getAttribute("type");
+      if      (mFieldType == "Integer") {cWriteIntegers[mFieldName] = resources->getInteger(mFieldValue);} 
+      else if (mFieldType == "String")  {cWriteStrings[mFieldName]  = resources->getString(mFieldValue);}
+      else    {
+        std::cout << "Unknown type: " << mFieldType << std::endl;
+        exit(1);
+      }
+    }    
   }
+  
   if (cScriptQuit == nullptr) {
     std::cout << "Warning: No 'Quit' script set.  Project won't terminate autamotically" << std::endl;
+  }
+  if (cScriptOnComplete == nullptr) {
+    std::cout << "Warning: No 'OnComplete' script set.  No action will be taken when the project completes" << std::endl;
   }
 }
 
@@ -79,6 +106,31 @@ void ModuleHighScore::projectInitialised() {
 
 Project* ModuleHighScore::getProject() {
   return cProject;
+}
+
+void ModuleHighScore::projectCompleted() {
+  
+  // Obtain Project values
+  std::cout << "================== Game Results:" << std::endl;
+  for (std::pair<std::string, IInteger*> mInteger : cReadIntegers) {
+    std::string mStringValue = cProject->getReturnValue(mInteger.first);
+    int mIntegerValue = std::stoi(mStringValue);
+    std::cout << mInteger.first << ": " << mIntegerValue << std::endl;
+    mInteger.second->setValue(mIntegerValue);
+  }
+  for (std::pair<std::string, IString*> mString : cReadStrings) {
+    std::string mStringValue = cProject->getReturnValue(mString.first);
+    std::cout << mString.first << ": " << mStringValue << std::endl;
+    mString.second->setValue(mStringValue);
+  }
+  cScriptOnComplete->execute();
+}
+
+void ModuleHighScore::writeValues() {
+  
+  // Write Values to XML
+  
+  quit();
 }
 
 void ModuleHighScore::quit() {

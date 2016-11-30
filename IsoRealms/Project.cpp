@@ -94,6 +94,15 @@ Project::Project(DOMNodeWrapper* node, DOMNodeWrapper* cache, const std::string&
       if (mDefaultLayer) {
         cDefaultLayer = mLayer;
       }
+    } else if (mValueAsString == "ReturnValue") {
+      std::string mName  = mNode->getAttribute("name");
+      std::string mValue = mNode->getAttribute("value");
+      std::string mType  = mNode->getAttribute("type");
+      if (mType == "Project") {
+        cReturnProjects[mName] = new ReturnProject(mValue);
+      } else {
+        cReturnValues[mName] = new ReturnValue(mType, mValue);
+      }
     } else {
       // TODO: Throw something
     }
@@ -149,6 +158,22 @@ std::string Project::getName(ILayer* layer) {
 
 void Project::finish() {
   cCompleted = true;
+  for (std::pair<std::string, ReturnValue*> mReturnValue : cReturnValues) {
+    if (mReturnValue.second->cType == "String") {
+      IString* mString = cResources.getString(mReturnValue.second->cReference);
+      mReturnValue.second->cValue = mString->getValue();
+    } else if (mReturnValue.second->cType == "Integer") {
+      int mValue = cResources.getInteger(mReturnValue.second->cReference)->getValue();
+      mReturnValue.second->cValue = std::to_string(mValue);
+    } else {
+      // TODO: Floats and bools
+      std::cout << "Unknown return type \"" << mReturnValue.second->cType << "\"" << std::endl;
+      exit(1);
+    }
+  }
+  for (std::pair<std::string, ReturnProject*> mReturnProject : cReturnProjects) {
+    mReturnProject.second->cProject = cResources.getProject(mReturnProject.second->cReference);
+  }
 }
 
 bool Project::hasCompleted() {
@@ -245,4 +270,32 @@ InputCommands* Project::getInputConfiguration() {
 
 std::string Project::getFileName() {
   return cFileName;
+}
+
+std::string Project::getReturnValue(const std::string& name) {
+  if (!cCompleted) {
+    std::cout << "Cannot obtain return value because project hasn't finished" << std::endl;
+    return "!ERROR:PROJECT_NOT_COMPLETE";
+  }
+  
+  std::size_t mSplit = name.find('/');
+  if (mSplit != std::string::npos) {
+    std::string mProject   = name.substr(0, mSplit);
+    std::string mValueName = name.substr(mSplit + 1);
+    return cReturnProjects[mProject]->cProject->getReturnValue(mValueName);
+  }
+  std::map<std::string, ReturnValue*>::iterator mReturnValue = cReturnValues.find(name);
+  if (mReturnValue == cReturnValues.end()) {
+    return "!ERROR:DOES_NOT_EXIST";
+  }
+  return mReturnValue->second->cValue;
+}
+
+Project::ReturnValue::ReturnValue(const std::string& type, const std::string& reference) {
+  cType      = type;
+  cReference = reference;
+}
+
+Project::ReturnProject::ReturnProject(const std::string& reference) {
+  cReference = reference;
 }

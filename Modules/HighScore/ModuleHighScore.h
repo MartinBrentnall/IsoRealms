@@ -34,6 +34,11 @@ class ModuleHighScore:public IModule,
   Project* cProject;
   ResourceLayerHighScore cLayerTypeHighScore;
   IScriptCall* cScriptQuit;
+  IScriptCall* cScriptOnComplete;
+  std::map<std::string, IInteger*> cReadIntegers;
+  std::map<std::string, IString*> cReadStrings;
+  std::map<std::string, IInteger*> cWriteIntegers;
+  std::map<std::string, IString*> cWriteStrings;
     
   public:
   ModuleHighScore(IResourceTypeRegistry*);
@@ -54,6 +59,8 @@ class ModuleHighScore:public IModule,
    * Implements IModuleHighScore *
   \*******************************/
   Project* getProject();
+  void projectCompleted();
+  void writeValues();
   void quit();
 };
 
