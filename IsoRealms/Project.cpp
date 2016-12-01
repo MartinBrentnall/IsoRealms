@@ -107,6 +107,14 @@ Project::Project(DOMNodeWrapper* node, DOMNodeWrapper* cache, const std::string&
       // TODO: Throw something
     }
   }
+  
+  // Expsoe the project filename in a string
+  std::string mProjectNamePath = node->getAttribute("filename");
+  if (mProjectNamePath != "") {
+    IString* mProjectNameString = cResources.getString(mProjectNamePath);
+    mProjectNameString->setValue(projectName);
+  }
+  
   cDynamicElements = cResources.getDynamicElements();
   if (cInitScript != NULL) {
     cInitScript->execute();

@@ -5,19 +5,19 @@
       <Argument name="project" type="Project" value="Project"/>
       <Code>project:finish()</Code>
     </ScriptLua>
-    <ScriptLua name="ProjectComplete">
-      <Argument name="project" type="Project" value="Project"/>
-      <Code>project:finish()</Code>
+    <ScriptLua name="GetPlayerName">
+      <Argument name="highScore" type="HighScore/ModuleHighScore" value="HighScore"/>
+      <Code>highScore:writeValues()</Code>
     </ScriptLua>
     <IntegerFixed name="Score"/>
-    <IntegerFixed name="Time"/>
+    <IntegerTimer name="Time"/>
     <IntegerFixed name="Jewels"/>
     <IntegerFixed name="Zones"/>
     <StringFixed name="Name"/>
     <StringFixed name="Recording"/>
-    <StringTime name="TimeString" value="IsoRealms/Time"/>
+    <StringFixed name="Project"/>
   </Module>
-  <Module name="HighScore">  
+  <Module name="HighScore" project="IsoRealms/Project" maximumRecords="20">  
     <Quit name="IsoRealms/Quit"/>
     <LayerHighScore name="HighScore" project="IsoRealms/Project"/>
     <ReadProjectValue from="Project/Score" to="IsoRealms/Score" type="Integer"/>
@@ -25,13 +25,14 @@
     <ReadProjectValue from="Project/Jewels" to="IsoRealms/Jewels" type="Integer"/>
     <ReadProjectValue from="Project/Zones" to="IsoRealms/Zones" type="Integer"/>
     <ReadProjectValue from="Recording" to="IsoRealms/Recording" type="String"/>
+    <ReadProjectValue from="Project/Project" to="IsoRealms/Project" type="String"/>
     <WriteField name="Name" value="IsoRealms/Name" type="String"/>
     <WriteField name="Score" value="IsoRealms/Score" type="Integer" compare="true"/>
-    <WriteField name="Time" value="IsoRealms/TimeString" type="String"/>
+    <WriteField name="Time" value="IsoRealms/Time" type="String"/>
     <WriteField name="Jewels" value="IsoRealms/Jewels" type="Integer"/>
     <WriteField name="Zones" value="IsoRealms/Zones" type="Integer"/>
     <WriteField name="Recording" value="IsoRealms/Recording" type="String"/>
-    <OnComplete name="IsoRealms/ProjectComplete"/>
+    <OnHighScoreAchieved name="IsoRealms/GetPlayerName"/>
   </Module>
   <Layer type="HighScore/HighScore"/>
 </Project>

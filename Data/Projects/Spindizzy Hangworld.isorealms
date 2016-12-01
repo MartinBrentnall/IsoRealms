@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<Project>
+<Project filename="IsoRealms/ProjectName">
   <InputConfiguration>
     <DigitalInput name="Quit">
       <Mapping type="keyDown" value="q"/>
@@ -207,6 +207,7 @@
     <IntegerFixed name="ZonesToExplore"/>
     <IntegerFixed name="Collected"/>
     <IntegerFixed name="Locks"/>
+    <StringFixed name="ProjectName"/>
     <IntegerTimer name="SpindizzyTimeLimit" value="150000"/>
     <LayerHUD name="HUD"/>
     <ModelElement name="Compass">
@@ -7124,4 +7125,5 @@ end</Code>
   <ReturnValue name="Time" type="Integer" value="IsoRealms/SpindizzyTimeLimit"/>
   <ReturnValue name="Zones" type="Integer" value="IsoRealms/ZonesToExplore"/>
   <ReturnValue name="Jewels" type="Integer" value="IsoRealms/Collected"/>
+  <ReturnValue name="Project" type="String" value="IsoRealms/ProjectName"/>
 </Project>

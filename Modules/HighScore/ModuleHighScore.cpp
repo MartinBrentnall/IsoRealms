@@ -19,9 +19,9 @@
 #include "ModuleHighScore.h"
 
 ModuleHighScore::ModuleHighScore(IResourceTypeRegistry* resourceTypeRegistry) : cLayerTypeHighScore(this) {
-  cProject          = nullptr;
-  cScriptQuit       = nullptr;
-  cScriptOnComplete = nullptr;
+  cProject                   = nullptr;
+  cScriptQuit                = nullptr;
+  cScriptOnHighScoreAchieved = nullptr;
 }
 
 void ModuleHighScore::load(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceRegistry* resources, IModuleOptions* options) {
@@ -36,7 +36,7 @@ void ModuleHighScore::load(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourc
 
     DOMNodeWrapper* mProjectNode = new DOMNodeWrapper(mProjectFile);
     for (int i = 0; i < mProjectNode->getChildCount(); i++) {
-      DOMNodeWrapper *mNode = mProjectNode->getChild(i);
+      DOMNodeWrapper* mNode = mProjectNode->getChild(i);
       std::string mValue = mNode->getNodeName();
       if (mValue == "Project") {
         IProjectOptions* mProjectOptions = options->getProjectOptions("ProjectOptions");
@@ -55,16 +55,22 @@ void ModuleHighScore::load(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourc
   
   resources->add(&cLayerTypeHighScore, "HighScore", node);
   resources->add(this, node);
+  IArgumentValue* mModuleArgumentValue = new ArgumentValueCustomType<ModuleHighScore>(this);
+  resources->add(mModuleArgumentValue, "ModuleHighScore", "HighScore");
 }
 
 void ModuleHighScore::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
+  std::string mProjectNamePath = node->getAttribute("project");
+  cProjectName = resources->getString(mProjectNamePath);
+  cMaximumRecords = node->getIntegerAttribute("maximumRecords");
+  
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValue = mNode->getNodeName();
     if (mValue == "Quit") {
       cScriptQuit       = resources->getScriptCall(mNode);
-    } else if (mValue == "OnComplete") {
-      cScriptOnComplete = resources->getScriptCall(mNode);
+    } else if (mValue == "OnHighScoreAchieved") {
+      cScriptOnHighScoreAchieved = resources->getScriptCall(mNode);
     } else if (mValue == "ReadProjectValue") {
       std::string mFrom = mNode->getAttribute("from");
       std::string mTo   = mNode->getAttribute("to");
@@ -75,13 +81,20 @@ void ModuleHighScore::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* c
         std::cout << "Unknown type: " << mType << std::endl;
         exit(1);
       }
-    } else if (mValue == "WriteValue") {
+    } else if (mValue == "WriteField") {
       std::string mFieldName  = mNode->getAttribute("name");
       std::string mFieldValue = mNode->getAttribute("value");
       std::string mFieldType  = mNode->getAttribute("type");
-      if      (mFieldType == "Integer") {cWriteIntegers[mFieldName] = resources->getInteger(mFieldValue);} 
-      else if (mFieldType == "String")  {cWriteStrings[mFieldName]  = resources->getString(mFieldValue);}
-      else    {
+      cFields.push_back(mFieldName);
+      bool mCompare = mNode->getBooleanAttribute("compare");
+      if (mFieldType == "Integer") {
+        cWriteIntegers[mFieldName] = resources->getInteger(mFieldValue);
+        if (mCompare) {
+          cComparisonField = mFieldName;
+        }
+      } else if (mFieldType == "String") {
+        cWriteStrings[mFieldName]  = resources->getString(mFieldValue);
+      } else {
         std::cout << "Unknown type: " << mFieldType << std::endl;
         exit(1);
       }
@@ -91,8 +104,8 @@ void ModuleHighScore::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* c
   if (cScriptQuit == nullptr) {
     std::cout << "Warning: No 'Quit' script set.  Project won't terminate autamotically" << std::endl;
   }
-  if (cScriptOnComplete == nullptr) {
-    std::cout << "Warning: No 'OnComplete' script set.  No action will be taken when the project completes" << std::endl;
+  if (cScriptOnHighScoreAchieved == nullptr) {
+    std::cout << "Warning: No 'OnHighScoreAchieved' script set.  No action will be taken when the project completes" << std::endl;
   }
 }
 
@@ -111,24 +124,80 @@ Project* ModuleHighScore::getProject() {
 void ModuleHighScore::projectCompleted() {
   
   // Obtain Project values
-  std::cout << "================== Game Results:" << std::endl;
   for (std::pair<std::string, IInteger*> mInteger : cReadIntegers) {
     std::string mStringValue = cProject->getReturnValue(mInteger.first);
     int mIntegerValue = std::stoi(mStringValue);
-    std::cout << mInteger.first << ": " << mIntegerValue << std::endl;
     mInteger.second->setValue(mIntegerValue);
   }
   for (std::pair<std::string, IString*> mString : cReadStrings) {
     std::string mStringValue = cProject->getReturnValue(mString.first);
-    std::cout << mString.first << ": " << mStringValue << std::endl;
     mString.second->setValue(mStringValue);
   }
-  cScriptOnComplete->execute();
+  
+  // See if score qualifies
+  cHighScoreTable = readHighScoreTable();
+  // TODO: Support other types.
+  IInteger* mInteger = cWriteIntegers[cComparisonField];
+  std::string mChallengerValue = std::to_string(mInteger->getValue());
+  if (cHighScoreTable->qualifies(mChallengerValue)) {
+    cScriptOnHighScoreAchieved->execute();
+  } else {
+    cScriptQuit->execute();
+  }
+}
+
+HighScoreTable* ModuleHighScore::readHighScoreTable() {
+  std::string mProjectName = cProjectName->getValue();
+  mProjectName = mProjectName.substr(0, mProjectName.length() - 10);
+  std::string mHighScoreTablePath = System::getUserResource(mProjectName);
+  System::makeDirectory(mHighScoreTablePath);
+  mHighScoreTablePath += "/HighScores.table";
+  if (System::fileExists(mHighScoreTablePath)) {
+    DOMNodeWrapper* mHighScoreNode = new DOMNodeWrapper(mHighScoreTablePath);
+    for (int i = 0; i < mHighScoreNode->getChildCount(); i++) {
+      DOMNodeWrapper* mNode = mHighScoreNode->getChild(i);
+      std::string mValue = mNode->getNodeName();
+      if (mValue == "HighScoreTable") {
+        return new HighScoreTable(mNode);
+      }
+    }
+    std::cout << "WARNING: High Score Table exists, but could not be read" << std::endl;
+    exit(1);
+  }
+  return new HighScoreTable(cFields, cComparisonField, cMaximumRecords);
+}
+
+std::string ModuleHighScore::getFieldValue(const std::string& field) {
+  for (std::pair<std::string, IInteger*> mWriteInteger : cWriteIntegers) {
+    if (mWriteInteger.first == field) {
+      return std::to_string(mWriteInteger.second->getValue());
+    }
+  }
+  for (std::pair<std::string, IString*> mWriteString : cWriteStrings) {
+    if (mWriteString.first == field) {
+      return mWriteString.second->getValue();
+    }
+  }
+  std::cout << "WARNING: Could not obtain value for field \"" << field << "\"" << std::endl;
+  exit(1);
+  return "";
 }
 
 void ModuleHighScore::writeValues() {
+  std::map<std::string, std::string> cRecordToInsert;
+  for (std::string mFieldName : cFields) {
+    cRecordToInsert[mFieldName] = getFieldValue(mFieldName);
+  }
+  cHighScoreTable->insertRecord(cRecordToInsert);
+
+  std::string mProjectName = cProjectName->getValue();
+  mProjectName = mProjectName.substr(0, mProjectName.length() - 10);
+  std::string mHighScoreTablePath = System::getUserResource(mProjectName + "/HighScores.table");
+  DOMNodeWriter* mNode = new DOMNodeWriter("HighScoreTable");
   
-  // Write Values to XML
+  cHighScoreTable->save(mNode);
+  
+  mNode->save(mHighScoreTablePath);
   
   quit();
 }

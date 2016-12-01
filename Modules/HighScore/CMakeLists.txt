@@ -17,8 +17,11 @@
 include_directories(${PROJECT_SOURCE_DIR})
 
 add_library(HighScore MODULE 
+  HighScoreRecord.cpp
+  HighScoreTable.cpp
   LayerHighScore.cpp
   ModuleHighScore.cpp
+  ModuleHighScoreScriptSupport.cpp
   ResourceLayerHighScore.cpp
 )
 set_target_properties(HighScore PROPERTIES OUTPUT_NAME "Module")

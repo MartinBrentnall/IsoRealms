@@ -24,6 +24,7 @@
 #include <IsoRealms/IModule.h>
 #include <IsoRealms/Project.h>
 
+#include "HighScoreTable.h"
 #include "IModuleHighScore.h"
 #include "ResourceLayerHighScore.h"
 
@@ -34,12 +35,20 @@ class ModuleHighScore:public IModule,
   Project* cProject;
   ResourceLayerHighScore cLayerTypeHighScore;
   IScriptCall* cScriptQuit;
-  IScriptCall* cScriptOnComplete;
+  IScriptCall* cScriptOnHighScoreAchieved;
+  std::string cComparisonField;
+  unsigned int cMaximumRecords;
+  std::vector<std::string> cFields;
   std::map<std::string, IInteger*> cReadIntegers;
   std::map<std::string, IString*> cReadStrings;
   std::map<std::string, IInteger*> cWriteIntegers;
   std::map<std::string, IString*> cWriteStrings;
+  IString* cProjectName;
+  HighScoreTable* cHighScoreTable;
     
+  HighScoreTable* readHighScoreTable();
+  std::string getFieldValue(const std::string&);
+  
   public:
   ModuleHighScore(IResourceTypeRegistry*);
 
