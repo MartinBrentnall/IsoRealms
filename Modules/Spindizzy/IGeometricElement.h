@@ -77,6 +77,8 @@ class IGeometricElement {
   virtual void setDirty() = 0;
   
   virtual IElementContainer* getElementContainer() = 0;
+  
+  virtual unsigned int getOrderIndex() = 0;
 };
 
 #endif

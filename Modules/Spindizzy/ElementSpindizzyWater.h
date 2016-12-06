@@ -26,6 +26,7 @@
 #include "ISpindizzyBlock.h"
 #include "ISpindizzyBlockType.h"
 #include "ISpindizzyBlockSet.h"
+#include "ISpindizzyElementManager.h"
 #include "IWallSurface.h"
 #include "TileSurface.h"
 #include "WallSurface.h"
@@ -38,7 +39,7 @@ class ElementSpindizzyWater:public ISpindizzyBlock,
   static const unsigned int INIT_PROCESS_BLOCKS;
 
   ISpindizzyBlockType* cWaterType;
-  IElementContainer* cContainer;
+  ISpindizzyElementManager* cContainer;
   
   BlockLocation cStartLocation;
   BlockLocation cEndLocation;
@@ -56,7 +57,7 @@ class ElementSpindizzyWater:public ISpindizzyBlock,
   void loadSurfaces(DOMNodeWrapper*, std::vector<ConditionElement*>, IUniverse*);
 
   public:
-  ElementSpindizzyWater(ISpindizzyBlockType*, BlockLocation*, BlockLocation*, ITexture**, IElementContainer*);
+  ElementSpindizzyWater(ISpindizzyBlockType*, BlockLocation*, BlockLocation*, ITexture**, ISpindizzyElementManager*);
   
   void loadCache(DOMNodeWrapper*, std::vector<ConditionElement*>, IUniverse*);
 
@@ -108,6 +109,7 @@ class ElementSpindizzyWater:public ISpindizzyBlock,
   bool isGhost();
   void setDirty();
   IElementContainer* getElementContainer();
+  unsigned int getOrderIndex();
 };
 
 #endif

@@ -43,19 +43,6 @@
  */
 class ResourceGeometryProcessor {
   public:
-  class IndexedGeometricElement {
-    private:
-    IGeometricElement* cGeometricElement;
-    unsigned int cOrder;
-    
-    public:
-    IndexedGeometricElement(IGeometricElement*, unsigned int);
-    bool operator<(const IndexedGeometricElement &value) const;
-    IGeometricElement* getGeometricElement();
-    IElementBounds* getBounds();
-    unsigned int getIndex();
-  };
-  
   class FullTileColumn : public IElementBounds {
     private:
     int cX;
@@ -79,10 +66,9 @@ class ResourceGeometryProcessor {
   private:
   SDL_mutex* cCacheAccessMutex;
   SpatialContainer2D<FullTileColumn> cTileColumns;
-  SpatialContainer2D<IndexedGeometricElement> cGeometricElements;
+  SpatialContainer2D<IGeometricElement> cGeometricElements;
   bool cRemoveHiddenSurfaces;
   bool cCompareOtherContainers;
-  unsigned int cIndex;
   
   std::vector<ITileSurfaceTemplate*> getTileSurfaces(ITileSurface*, IGeometricElement*, ITileSurface::FaceDirection);
 
@@ -100,7 +86,7 @@ class ResourceGeometryProcessor {
    *           is facing.
    * @returns  True if the surface tile is visible, otherwise false.
    */
-  Condition* getSurfaceTileCondition(IGeometricElement*, int x, int y, ITileSurface::FaceDirection, std::vector<IndexedGeometricElement*>);
+  Condition* getSurfaceTileCondition(IGeometricElement*, int x, int y, ITileSurface::FaceDirection, std::vector<IGeometricElement*>);
 
   /**
    * Test whether the specified 2D location is vertically aligned with any of
@@ -145,9 +131,9 @@ class ResourceGeometryProcessor {
    *           get.
    * @returns  The completely raw unprocessed wall column.
    */
-  std::vector<WallColumnPossibility*> getPhysicalWallColumn(IGeometricElement*, int, int, IWallSurface::FaceDirection, std::vector<IndexedGeometricElement*>);
+  std::vector<WallColumnPossibility*> getPhysicalWallColumn(IGeometricElement*, int, int, IWallSurface::FaceDirection, std::vector<IGeometricElement*>);
 
-  std::vector<WallColumnPossibility*> getPhysicalWallMasks(int, int, IWallSurface::FaceDirection, std::vector<IndexedGeometricElement*>);
+  std::vector<WallColumnPossibility*> getPhysicalWallMasks(int, int, IWallSurface::FaceDirection, std::vector<IGeometricElement*>);
   
   /**
    * Unite a set of wall columns with another set of wall columns.
@@ -172,21 +158,21 @@ class ResourceGeometryProcessor {
    *           get.
    * @returns  The completely raw unprocessed wall column.
    */
-  std::vector<WallColumnPossibility*> getOptimisedWallColumn(IGeometricElement*, int, int, IWallSurface::FaceDirection, std::vector<IndexedGeometricElement*>);
+  std::vector<WallColumnPossibility*> getOptimisedWallColumn(IGeometricElement*, int, int, IWallSurface::FaceDirection, std::vector<IGeometricElement*>);
 
-  std::vector<WallColumnPossibility*> getVisibleWallColumn(IGeometricElement*, int, int, IWallSurface::FaceDirection, std::vector<IndexedGeometricElement*>);
+  std::vector<WallColumnPossibility*> getVisibleWallColumn(IGeometricElement*, int, int, IWallSurface::FaceDirection, std::vector<IGeometricElement*>);
   
   ITileSurface* getSurfaceAt(std::vector<ITileSurface*>, int, int);
   IWallSurface* findSurfaceAt(std::vector<IWallSurface*>, int, int);
 
   
-  int getEast(IGeometricElement*, std::vector<ITileSurfaceTemplate*>&, int, int, ITileSurface::FaceDirection, std::vector<IndexedGeometricElement*>);
-  int getNorth(IGeometricElement*, std::vector<ITileSurfaceTemplate*>&, int, int, int, ITileSurface::FaceDirection, std::vector<IndexedGeometricElement*>);
+  int getEast(IGeometricElement*, std::vector<ITileSurfaceTemplate*>&, int, int, ITileSurface::FaceDirection, std::vector<IGeometricElement*>);
+  int getNorth(IGeometricElement*, std::vector<ITileSurfaceTemplate*>&, int, int, int, ITileSurface::FaceDirection, std::vector<IGeometricElement*>);
   
   // TODO: Maybe this should be moved to Condition class as static function
   bool safeEquals(Condition* a, Condition* b);
 
-  std::vector<IndexedGeometricElement*> getGeometricElements(int, int, int, int);
+  std::vector<IGeometricElement*> getGeometricElements(int, int, int, int);
   
   public:
   ResourceGeometryProcessor(bool, bool);
@@ -198,6 +184,7 @@ class ResourceGeometryProcessor {
   \********************************/
   void registerGeometricElement(IGeometricElement*, bool);
   void unregisterGeometricElement(IGeometricElement*);
+  void updateSurfaces(IGeometricElement*, bool);
   std::vector<ITileSurfaceTemplate*> getTileSurfaces(IGeometricElement*, ITileSurface::FaceDirection);
   std::vector<IWallSurfaceTemplate*> getWallSurfaces(IGeometricElement*, IWallSurface::FaceDirection);
   void destroyTileTemplate(ITileSurfaceTemplate*);
@@ -209,6 +196,6 @@ class ResourceGeometryProcessor {
   virtual ~ResourceGeometryProcessor() {}
 };
 
-bool sort(ResourceGeometryProcessor::IndexedGeometricElement*, ResourceGeometryProcessor::IndexedGeometricElement*);
+bool sort(IGeometricElement*, IGeometricElement*);
 
 #endif

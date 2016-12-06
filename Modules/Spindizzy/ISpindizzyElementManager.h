@@ -22,12 +22,15 @@
 #include <IsoRealms/Resources/ElementType/IElement.h>
 #include <IsoRealms/Resources/ElementType/IElementContainer.h>
 
+#include "ISpindizzyBlock.h"
+
 class ISpindizzyElementManager {
   public:
   virtual void setArguments() = 0;
   virtual void unsetArguments() = 0;
   virtual void setDirty(IElement*) = 0;
   virtual IElementContainer* getElementContainer() = 0;
+  virtual unsigned int getOrderIndex(ISpindizzyBlock*) = 0;
 };
 
 #endif

@@ -802,6 +802,10 @@ bool ElementSpindizzyBlock::isSplit() {
   return !isFlat() && getXSlope() == 0 && getYSlope() == 0;
 }
 
+unsigned int ElementSpindizzyBlock::getOrderIndex() {
+  return cContainer->getOrderIndex(this);
+}
+
 BlockArea* ElementSpindizzyBlock::getCoverage() {
   return new BlockArea(cStartLocation, cEndLocation);
 }
@@ -887,11 +891,18 @@ ElementSpindizzyBlock::PropertyBlockBehaviour::PropertyBlockBehaviour(ElementSpi
 }
 
 void ElementSpindizzyBlock::PropertyBlockBehaviour::setValue(unsigned int value) {
+  char mOldFlags = cParent->cFlags;
   cParent->cFlags = value == BEHAVIOUR_INVISIBLE     ? FLAG_INVISIBLE
                   : value == BEHAVIOUR_GHOST         ? FLAG_GHOST
                   : value == BEHAVIOUR_DYNAMIC       ? FLAG_FORCE_DYNAMIC
                   : value == BEHAVIOUR_DYNAMIC_GHOST ? FLAG_GHOST | FLAG_FORCE_DYNAMIC
                   :                                    FLAGS_NORMAL;
+  if (mOldFlags != cParent->cFlags) {
+    ISpindizzyBlockSet* mModuleInterface = cParent->cBlockType->getSpindizzyBlockInterface();
+    IElementContainer* mContainer = cParent->cContainer->getElementContainer();
+    IUniverse* mUniverse = mContainer->getUniverse();
+    mModuleInterface->updateSurfaces(mUniverse, cParent, !(cParent->cFlags & FLAG_INVISIBLE), !(cParent->cFlags & FLAG_GHOST));
+  }
 }
 
 unsigned int ElementSpindizzyBlock::PropertyBlockBehaviour::getValue() {

@@ -311,6 +311,13 @@ void SpindizzyModule::unregisterSurfaceProvider(IGeometricElement* element) {
   }
 }
 
+void SpindizzyModule::updateSurfaces(IUniverse* universe, IGeometricElement* element, bool visual, bool physical) {
+  ResourceGeometryProcessor* mVisualProcessor   = getGeometryProcessor(universe, true);
+  ResourceGeometryProcessor* mPhysicalProcessor = getGeometryProcessor(universe, false);
+  mVisualProcessor->updateSurfaces(element, visual);
+  mPhysicalProcessor->updateSurfaces(element, physical);
+}
+
 void SpindizzyModule::setDirty() {
   for (std::pair<IUniverse*, ResourceGeometryProcessor*> mVisualProcessor : cVisualProcessors) {
     mVisualProcessor.second->setDirty();

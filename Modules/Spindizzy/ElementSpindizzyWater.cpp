@@ -20,7 +20,7 @@
 
 const unsigned int ElementSpindizzyWater::INIT_PROCESS_BLOCKS = 0;
 
-ElementSpindizzyWater::ElementSpindizzyWater(ISpindizzyBlockType* elementType, BlockLocation* startLocation, BlockLocation* endLocation, ITexture** texture, IElementContainer* container) {
+ElementSpindizzyWater::ElementSpindizzyWater(ISpindizzyBlockType* elementType, BlockLocation* startLocation, BlockLocation* endLocation, ITexture** texture, ISpindizzyElementManager* container) {
   cWaterType = elementType;
   cContainer = container;
   cTexture = texture;
@@ -73,7 +73,11 @@ void ElementSpindizzyWater::setDirty() {
 }
 
 IElementContainer* ElementSpindizzyWater::getElementContainer() {
-  return cContainer;
+  return cContainer->getElementContainer();
+}
+
+unsigned int ElementSpindizzyWater::getOrderIndex() {
+  return cContainer->getOrderIndex(this);
 }
 
 std::vector<ITileSurfaceTemplate*> ElementSpindizzyWater::getWaterSurfaces() {

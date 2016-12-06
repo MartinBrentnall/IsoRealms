@@ -13,6 +13,12 @@
     <AttractScene name="Intro"/>
     <AttractScene name="Title"/>
     <AttractScene name="HiScore"/>
+      <Field name="Name" location="-0.8" align="Left"/>
+      <Field name="Zones" location="-0.5" align="Left"/>
+      <Field name="Jewels" location="-0.3" align="Left"/>
+      <Field name="Time" location="0.0" align="Left"/>
+      <Field name="Score" location="0.8" align="Right"/>
+      <Project name="Recording"/>
     <AttractScene name="Help"/>
     <AttractScene name="Demo" project="Data/ProjectsSystem/Player.isorealms">
       <ModuleOptions name="InputRecorder">
@@ -70,7 +76,7 @@
         </Menu>
       </Menu>
       <Command name="High Scores"/>
-      <Command name="Help"/>
+      <Command name="How To Play"/>
       <Command name="Quit">
         <Script name="IsoRealms/Quit"/>
       </Command>

@@ -234,6 +234,7 @@ class SpindizzyModule:public IModule,
   void removeElementHandlerSpindizzyBlock(IElementContainer*);
   void setArgumentValue(ElementHandlerSpindizzyBlock*);
   bool isUsingCache();
+  void updateSurfaces(IUniverse*, IGeometricElement*, bool, bool);
 
   /*********************************\
    * Implements ISpindizzyEnemySet *

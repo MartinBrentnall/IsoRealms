@@ -19,18 +19,15 @@
 #ifndef I_SPINDIZZY_BLOCK_H
 #define I_SPINDIZZY_BLOCK_H
 
-#include <vector>
+#include <set>
 
+#include <IsoRealms/Condition.h>
 #include <IsoRealms/Resources/ElementType/Element.h>
-
-#include "ISpindizzyBlockType.h"
-#include "ISpindizzyBlockSet.h"
 
 class ISpindizzyBlock:public Element {
   public:
   virtual std::set<IBoolean*> getInputs() = 0;
   virtual Condition* getCondition() = 0;
-
 };
 
 #endif

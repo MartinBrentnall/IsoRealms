@@ -59,6 +59,10 @@ template <class T> class ElementCollection : public IElementBounds {
     return cElements[index];
   };
   
+  unsigned int getIndex(T* element) {
+    return std::find(cElements.begin(), cElements.end(), element) - cElements.begin();
+  }
+  
   void addElement(T* element) {
     cElements.push_back(element);
   }

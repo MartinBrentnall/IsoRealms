@@ -44,8 +44,8 @@ void ResourceElementSpindizzyWater::loadElement(DOMNodeWrapper* node, DOMNodeWra
     mStartLocation.setRelative(node, *zoneLocation);
     mEndLocation.setRelative(node, mStartLocation, "width", "length", "height");
     mEndLocation.z++;
-    ElementSpindizzyWater* mLoadedWater = new ElementSpindizzyWater(this, &mStartLocation, &mEndLocation, &cTexture, container);
     ElementHandlerSpindizzyBlock* mHandler = cModuleInterface->getElementHandlerSpindizzyBlock(container);  
+    ElementSpindizzyWater* mLoadedWater = new ElementSpindizzyWater(this, &mStartLocation, &mEndLocation, &cTexture, mHandler);
     std::vector<ConditionElement*> mElements = cModuleInterface->getConditionElements();
     IUniverse* mUniverse = container->getUniverse();
     mLoadedWater->loadCache(cache, mElements, mUniverse);

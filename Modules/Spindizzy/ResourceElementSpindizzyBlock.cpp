@@ -24,6 +24,7 @@ ResourceElementSpindizzyBlock::ResourceElementSpindizzyBlock(ISpindizzyBlockSet*
   cBlockProperties = new SpindizzyBlockProperties();
   cSampleBlock = nullptr;
   cStartLocation = nullptr;
+  cEditingBlock = nullptr;
 }
 
 void ResourceElementSpindizzyBlock::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resourceAccessor) {

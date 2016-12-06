@@ -88,6 +88,16 @@ template <class T> class SpatialContainer1D {
     return mCell;
   }
 
+  std::vector<T*> getElements() {
+    std::vector<T*> mResult;
+    mResult.push_back(cCells.end(), cCells.begin(), cCells.end());
+    if (cBiggerSpace != nullptr) {
+      std::vector<T*> mBiggerElements = cBiggerSpace->getElements();
+      mResult.insert(mResult.end(), mBiggerElements.begin(), mBiggerElements.end());
+    }
+    return mResult;
+  }
+  
   std::vector<T*> getElements(int start, int end) {
     int mCellSpacing = cUnit / 2;
     int mCellStepsStart = (int) floor(start / (double) mCellSpacing);

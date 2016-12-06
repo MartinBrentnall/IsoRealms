@@ -40,6 +40,7 @@ class ISpindizzyBlockSet:public IConditionElementIcons {
   public:
   virtual void registerSurfaceProvider(IGeometricElement*, bool, IUniverse*, bool, bool) = 0;
   virtual void unregisterSurfaceProvider(IGeometricElement*) = 0;
+  virtual void updateSurfaces(IUniverse*, IGeometricElement*, bool, bool) = 0;
   
   /**
    * The intention of this function is not simply to set all elements of this

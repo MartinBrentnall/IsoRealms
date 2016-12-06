@@ -147,6 +147,10 @@ IElementContainer* ElementHandlerSpindizzyBlock::getElementContainer() {
   return cContainer;
 }
 
+unsigned int ElementHandlerSpindizzyBlock::getOrderIndex(ISpindizzyBlock* element) {
+  return cElements.getIndex(element);
+}
+
 bool ElementHandlerSpindizzyBlock::isSelectable() {
   return false;
 }

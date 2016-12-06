@@ -314,6 +314,7 @@ class ElementSpindizzyBlock:public ICollidableSurfaceElement,
   IElementContainer* getElementContainer();
 
   std::vector<WallSurface*> getPreviewWallSurfaces(int, IWallSurface::FaceDirection);
+  unsigned int getOrderIndex();
   
   virtual ~ElementSpindizzyBlock();
 };

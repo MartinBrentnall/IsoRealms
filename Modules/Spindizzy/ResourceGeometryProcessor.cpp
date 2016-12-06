@@ -22,25 +22,23 @@ ResourceGeometryProcessor::ResourceGeometryProcessor(bool removeHiddenSurfaces, 
   cRemoveHiddenSurfaces = removeHiddenSurfaces;
   cCompareOtherContainers = compareOtherContainers;
   cCacheAccessMutex = SDL_CreateMutex();
-  cIndex = 0;
 }
 
-std::vector<ResourceGeometryProcessor::IndexedGeometricElement*> ResourceGeometryProcessor::getGeometricElements(int south, int north, int west, int east) {
-  std::vector<IndexedGeometricElement*> mIndexedGeometricElements = cGeometricElements.getElements(south, north, west, east);
-  std::sort(mIndexedGeometricElements.begin(), mIndexedGeometricElements.end(), sort);
-  return mIndexedGeometricElements;
+std::vector<IGeometricElement*> ResourceGeometryProcessor::getGeometricElements(int south, int north, int west, int east) {
+  std::vector<IGeometricElement*> mNearbyGeometricElements = cGeometricElements.getElements(south, north, west, east);
+  std::sort(mNearbyGeometricElements.begin(), mNearbyGeometricElements.end(), sort);
+  return mNearbyGeometricElements;
 }
 
-bool sort(ResourceGeometryProcessor::IndexedGeometricElement* a, ResourceGeometryProcessor::IndexedGeometricElement* b) {
-  unsigned int mIndexA = a->getIndex();
-  unsigned int mIndexB = b->getIndex();
+bool sort(IGeometricElement* a, IGeometricElement* b) {
+  unsigned int mIndexA = a->getOrderIndex();
+  unsigned int mIndexB = b->getOrderIndex();
   return mIndexB > mIndexA; 
 }
 
 void ResourceGeometryProcessor::registerGeometricElement(IGeometricElement* element, bool recalculateSurrounding) {
 //  cCache->add(element);
-  IndexedGeometricElement* mIndexedGeometricElement = new IndexedGeometricElement(element, cIndex++);
-  cGeometricElements.add(mIndexedGeometricElement);
+  cGeometricElements.add(element);
   
   if (recalculateSurrounding) {
     BlockArea* mBounds = element->getCoverage();
@@ -49,10 +47,9 @@ void ResourceGeometryProcessor::registerGeometricElement(IGeometricElement* elem
     int mWest = mBounds->getWest();
     int mEast = mBounds->getEast();
     while (SDL_mutexP(cCacheAccessMutex) == -1);
-    std::vector<IndexedGeometricElement*> mIndexedGeometricElements = cGeometricElements.getElements(mSouth, mNorth, mWest, mEast);
-    for (unsigned int i = 0; i < mIndexedGeometricElements.size(); i++) {
-      IGeometricElement* mElement = mIndexedGeometricElements[i]->getGeometricElement();
-      mElement->setDirty();
+    std::vector<IGeometricElement*> mNearbyGeometricElements = cGeometricElements.getElements(mSouth, mNorth, mWest, mEast);
+    for (unsigned int i = 0; i < mNearbyGeometricElements.size(); i++) {
+      mNearbyGeometricElements[i]->setDirty();
     }
     std::vector<FullTileColumn*> mSurroundingTileColumns = cTileColumns.getElements(mSouth, mNorth, mWest, mEast);
     for (FullTileColumn* mTileColumn : mSurroundingTileColumns) {
@@ -69,19 +66,24 @@ void ResourceGeometryProcessor::unregisterGeometricElement(IGeometricElement* el
   int mWest = mBounds->getWest();
   int mEast = mBounds->getEast();
   while (SDL_mutexP(cCacheAccessMutex) == -1);
-  std::vector<IndexedGeometricElement*> mIndexedGeometricElements = cGeometricElements.getElements(mSouth, mNorth, mWest, mEast);
-  for (unsigned int i = 0; i < mIndexedGeometricElements.size(); i++) {
-    IGeometricElement* mElement = mIndexedGeometricElements[i]->getGeometricElement();
-    if (mElement == element) {
-      cGeometricElements.remove(mIndexedGeometricElements[i]);
-    }
-    mElement->setDirty();
+  std::vector<IGeometricElement*> mNearbyGeometricElements = cGeometricElements.getElements(mSouth, mNorth, mWest, mEast);
+  for (unsigned int i = 0; i < mNearbyGeometricElements.size(); i++) {
+    mNearbyGeometricElements[i]->setDirty();
   }
+  cGeometricElements.remove(element);
   std::vector<FullTileColumn*> mTileColumns = cTileColumns.getElements(mSouth, mNorth, mWest, mEast);
   for (unsigned int i = 0; i < mTileColumns.size(); i++) {
     cTileColumns.remove(mTileColumns[i]);
   }
   SDL_mutexV(cCacheAccessMutex);
+}
+
+void ResourceGeometryProcessor::updateSurfaces(IGeometricElement* element, bool present) {
+  if (contains(element) && !present) {
+    unregisterGeometricElement(element);
+  } else if (!contains(element) && present) {
+    registerGeometricElement(element, true);
+  }
 }
 
 void ResourceGeometryProcessor::setDirty() {
@@ -137,18 +139,17 @@ ResourceGeometryProcessor::FullTileColumn* ResourceGeometryProcessor::getTileCol
   return nullptr;
 }
 
-Condition* ResourceGeometryProcessor::getSurfaceTileCondition(IGeometricElement* element, int x, int y, ITileSurface::FaceDirection facing, std::vector<IndexedGeometricElement*> otherElements) {
+Condition* ResourceGeometryProcessor::getSurfaceTileCondition(IGeometricElement* element, int x, int y, ITileSurface::FaceDirection facing, std::vector<IGeometricElement*> otherElements) {
   FullTileColumn* mFullTileColumn = getTileColumn(x, y);
   if (mFullTileColumn == nullptr) {
     std::vector<TileColumn*> mPossibleTileColumns;
     mPossibleTileColumns.push_back(new TileColumn(nullptr));
 //    std::cout << (count++) << ": " << x << " , " << y << ": " << otherElements.size() << std::endl;
     for (unsigned int i = 0; i < otherElements.size(); i++) {
-      IGeometricElement* mGeometricElement = otherElements[i]->getGeometricElement();
-      std::vector<ITileSurface*> mTopSurfaces    = mGeometricElement->getTileSurfaces(ITileSurface::UP);
-      std::vector<ITileSurface*> mBottomSurfaces = mGeometricElement->getTileSurfaces(ITileSurface::DOWN);
-      Condition* mCondition                      = mGeometricElement->getCondition();
-      bool mGhost                                = mGeometricElement->isGhost();
+      std::vector<ITileSurface*> mTopSurfaces    = otherElements[i]->getTileSurfaces(ITileSurface::UP);
+      std::vector<ITileSurface*> mBottomSurfaces = otherElements[i]->getTileSurfaces(ITileSurface::DOWN);
+      Condition* mCondition                      = otherElements[i]->getCondition();
+      bool mGhost                                = otherElements[i]->isGhost();
       ITileSurface* mTopSurface = getSurfaceAt(mTopSurfaces, x, y);
       if (mTopSurface != nullptr) {
         ITileSurface* mBottomSurface = getSurfaceAt(mBottomSurfaces, x, y);
@@ -156,7 +157,7 @@ Condition* ResourceGeometryProcessor::getSurfaceTileCondition(IGeometricElement*
         int mBottom = mBottomSurface->getSurfaceCellHeight(x, y);
         bool mTopExtended = mTopSurface->getSurfaceCellElevation(x, y) != 0;
         bool mBottomExtended = mBottomSurface->getSurfaceCellElevation(x, y) != 0;
-        TileBlock* mTileBlock = new TileBlock(mGeometricElement, mTop, mBottom, mTopExtended, mBottomExtended);
+        TileBlock* mTileBlock = new TileBlock(otherElements[i], mTop, mBottom, mTopExtended, mBottomExtended);
         
         // Split possible columns into mutually exclusive conditions
         std::vector<TileColumn*> mSplitColumns;
@@ -241,7 +242,7 @@ bool ResourceGeometryProcessor::safeEquals(Condition* a, Condition* b) {
        : *a == *b;
 }
 
-int ResourceGeometryProcessor::getNorth(IGeometricElement* element, std::vector<ITileSurfaceTemplate*>& calculatedSurfaces, int west, int east, int south, ITileSurface::FaceDirection faceDirection, std::vector<IndexedGeometricElement*> otherElements) {
+int ResourceGeometryProcessor::getNorth(IGeometricElement* element, std::vector<ITileSurfaceTemplate*>& calculatedSurfaces, int west, int east, int south, ITileSurface::FaceDirection faceDirection, std::vector<IGeometricElement*> otherElements) {
   Condition* mSurfaceCondition = getSurfaceTileCondition(element, west, south, faceDirection, otherElements);
 
   std::vector<ITileSurface*> mRawSurfaces = element->getTileSurfaces(faceDirection);
@@ -275,7 +276,7 @@ int ResourceGeometryProcessor::getNorth(IGeometricElement* element, std::vector<
   return mNorth;
 }
 
-int ResourceGeometryProcessor::getEast(IGeometricElement* element, std::vector<ITileSurfaceTemplate*>& calculatedSurfaces, int x, int y, ITileSurface::FaceDirection faceDirection, std::vector<IndexedGeometricElement*> otherElements) {
+int ResourceGeometryProcessor::getEast(IGeometricElement* element, std::vector<ITileSurfaceTemplate*>& calculatedSurfaces, int x, int y, ITileSurface::FaceDirection faceDirection, std::vector<IGeometricElement*> otherElements) {
   Condition* mSurfaceCondition = getSurfaceTileCondition(element, x, y, faceDirection, otherElements);
   std::vector<ITileSurface*> mRawSurfaces = element->getTileSurfaces(faceDirection);
   ITileSurface* mSurface = getSurfaceAt(mRawSurfaces, x, y);
@@ -311,7 +312,7 @@ std::vector<ITileSurfaceTemplate*> ResourceGeometryProcessor::getTileSurfaces(IG
   
   BlockArea* mBlockCoverage = element->getCoverage();
   
-  std::vector<IndexedGeometricElement*> mOtherElements = getGeometricElements(mBlockCoverage->getSouth(), mBlockCoverage->getNorth(), mBlockCoverage->getWest(), mBlockCoverage->getEast());
+  std::vector<IGeometricElement*> mOtherElements = getGeometricElements(mBlockCoverage->getSouth(), mBlockCoverage->getNorth(), mBlockCoverage->getWest(), mBlockCoverage->getEast());
   for (int y = mBlockCoverage->getSouth(); y <= mBlockCoverage->getNorth(); y++) {
     for (int x = mBlockCoverage->getWest(); x <= mBlockCoverage->getEast(); x++) {
       Condition* mSurfaceCondition = getSurfaceTileCondition(element, x, y, faceDirection, mOtherElements);
@@ -356,7 +357,7 @@ WallColumnPossibility* ResourceGeometryProcessor::getRawWallColumn(IGeometricEle
   return nullptr;
 }
 
-std::vector<WallColumnPossibility*> ResourceGeometryProcessor::getPhysicalWallColumn(IGeometricElement* element, int x, int y, IWallSurface::FaceDirection facing, std::vector<IndexedGeometricElement*> otherElements) {
+std::vector<WallColumnPossibility*> ResourceGeometryProcessor::getPhysicalWallColumn(IGeometricElement* element, int x, int y, IWallSurface::FaceDirection facing, std::vector<IGeometricElement*> otherElements) {
   WallColumnPossibility* mRawWallColumn = getRawWallColumn(element, x, y, facing);
   std::vector<WallColumnPossibility*> mPhysicalColumns;
   if (mRawWallColumn == nullptr || mRawWallColumn->isSubtraction()) {
@@ -364,35 +365,19 @@ std::vector<WallColumnPossibility*> ResourceGeometryProcessor::getPhysicalWallCo
     return mPhysicalColumns;
   }
   mPhysicalColumns.push_back(mRawWallColumn);
-
-  unsigned int mCurrentIndex = 0;
-  bool mIndexSet = false;
+  unsigned int mCurrentIndex = element->getOrderIndex();
   for (unsigned int i = 0; i < otherElements.size(); i++) {
-    IGeometricElement* mGeometricElement = otherElements[i]->getGeometricElement();
-    if (mGeometricElement == element) {
-      mCurrentIndex = otherElements[i]->getIndex();
-      mIndexSet = true;
-      break;
-    }
-  }
-  if (!mIndexSet) {
-    std::cout << "Index not found for current geometric element.  Was the element registered?" << std::endl;
-    exit(1);
-  }
-  
-  for (unsigned int i = 0; i < otherElements.size(); i++) {
-    IGeometricElement* mGeometricElement = otherElements[i]->getGeometricElement();
-    unsigned int mComparisonIndex = otherElements[i]->getIndex();
+    unsigned int mComparisonIndex = otherElements[i]->getOrderIndex();
     if (mComparisonIndex <= mCurrentIndex) {
       continue;
     }
 /*    std::cout << "Applying surface provide " << i << std::endl;*/
-    BlockArea* mBlockArea = mGeometricElement->getCoverage();
+    BlockArea* mBlockArea = otherElements[i]->getCoverage();
     if (mBlockArea->alligned(x, y)) {
-      WallColumnPossibility* mWallColumn = getRawWallColumn(mGeometricElement, x, y, facing);
+      WallColumnPossibility* mWallColumn = getRawWallColumn(otherElements[i], x, y, facing);
       if (!mWallColumn->empty()) {
         mWallColumn->convertToAddition();
-        Condition* mCondition = mGeometricElement->getCondition();
+        Condition* mCondition = otherElements[i]->getCondition();
         std::vector<WallColumnPossibility*> mSplitColumns;
         for (unsigned int j = 0; j < mPhysicalColumns.size(); j++) {
           WallColumnPossibility* mNewPossibility = mPhysicalColumns[j]->split(mCondition);
@@ -412,7 +397,7 @@ std::vector<WallColumnPossibility*> ResourceGeometryProcessor::getPhysicalWallCo
       }
       delete mWallColumn;
     }
-    mGeometricElement->destroyCoverage(mBlockArea);
+    otherElements[i]->destroyCoverage(mBlockArea);
   }
 
   // Shave the top off invisible surfaces
@@ -440,14 +425,13 @@ IWallSurface::FaceDirection ResourceGeometryProcessor::getOppositeOf(IWallSurfac
   exit(1);
 }
 
-std::vector<WallColumnPossibility*> ResourceGeometryProcessor::getPhysicalWallMasks(int x, int y, IWallSurface::FaceDirection facing, std::vector<IndexedGeometricElement*> otherElements) {
+std::vector<WallColumnPossibility*> ResourceGeometryProcessor::getPhysicalWallMasks(int x, int y, IWallSurface::FaceDirection facing, std::vector<IGeometricElement*> otherElements) {
   std::vector<WallColumnPossibility*> mOpposingMask;
   mOpposingMask.push_back(new WallColumnPossibility());
   for (unsigned int i = 0; i < otherElements.size(); i++) {
-    IGeometricElement* mGeometricElement = otherElements[i]->getGeometricElement();
-    BlockArea* mCoverage = mGeometricElement->getCoverage();
+    BlockArea* mCoverage = otherElements[i]->getCoverage();
     if (mCoverage->alligned(x, y)) {
-      std::vector<WallColumnPossibility*> mOpposingPossibilities = getPhysicalWallColumn(mGeometricElement, x, y, facing, otherElements);
+      std::vector<WallColumnPossibility*> mOpposingPossibilities = getPhysicalWallColumn(otherElements[i], x, y, facing, otherElements);
       for (unsigned int k = 0; k < mOpposingPossibilities.size(); k++) {
         Condition* mCondition = mOpposingPossibilities[k]->getCondition();
         std::vector<WallColumnPossibility*> mSplitColumns;
@@ -471,7 +455,7 @@ std::vector<WallColumnPossibility*> ResourceGeometryProcessor::getPhysicalWallMa
         delete mOpposingPossibilities[k];
       }
     }
-    mGeometricElement->destroyCoverage(mCoverage);
+    otherElements[i]->destroyCoverage(mCoverage);
   }
   for (int i = mOpposingMask.size() - 1; i >= 0; i--) {
     if (mOpposingMask.empty()) {
@@ -482,7 +466,7 @@ std::vector<WallColumnPossibility*> ResourceGeometryProcessor::getPhysicalWallMa
   return mOpposingMask;
 }
 
-std::vector<WallColumnPossibility*> ResourceGeometryProcessor::getOptimisedWallColumn(IGeometricElement* element, int x, int y, IWallSurface::FaceDirection facing, std::vector<IndexedGeometricElement*> otherElements) {
+std::vector<WallColumnPossibility*> ResourceGeometryProcessor::getOptimisedWallColumn(IGeometricElement* element, int x, int y, IWallSurface::FaceDirection facing, std::vector<IGeometricElement*> otherElements) {
   std::vector<WallColumnPossibility*> mWallColumns= getPhysicalWallColumn(element, x, y, facing, otherElements);
   switch (facing) {
     case IWallSurface::NORTH: y++; break;
@@ -526,7 +510,7 @@ std::vector<WallColumnPossibility*> ResourceGeometryProcessor::getOptimisedWallC
   return mWallColumns;
 }
 
-std::vector<WallColumnPossibility*> ResourceGeometryProcessor::getVisibleWallColumn(IGeometricElement* element, int x, int y, IWallSurface::FaceDirection facing, std::vector<IndexedGeometricElement*> otherElements) {
+std::vector<WallColumnPossibility*> ResourceGeometryProcessor::getVisibleWallColumn(IGeometricElement* element, int x, int y, IWallSurface::FaceDirection facing, std::vector<IGeometricElement*> otherElements) {
   std::vector<WallColumnPossibility*> mWallColumns = getOptimisedWallColumn(element, x, y, facing, otherElements);
   switch (facing) {
     case IWallSurface::NORTH: y++; break;
@@ -586,7 +570,7 @@ std::vector<IWallSurfaceTemplate*> ResourceGeometryProcessor::getWallSurfaces(IG
   int mStartRow = mXWalls ? mCoverage->getWest() : mCoverage->getSouth();
   int mEndRow = mXWalls ? mCoverage->getEast() : mCoverage->getNorth();
   
-  std::vector<IndexedGeometricElement*> mOtherElements = getGeometricElements(mCoverage->getSouth(), mCoverage->getNorth(), mCoverage->getWest(), mCoverage->getEast());
+  std::vector<IGeometricElement*> mOtherElements = getGeometricElements(mCoverage->getSouth(), mCoverage->getNorth(), mCoverage->getWest(), mCoverage->getEast());
   
   element->destroyCoverage(mCoverage);
   std::vector<IWallSurfaceTemplate*> mWallSurfaces;
@@ -654,43 +638,11 @@ void ResourceGeometryProcessor::destroyWallTemplate(IWallSurfaceTemplate* wallTe
 }
 
 bool ResourceGeometryProcessor::contains(IGeometricElement* element) {
-  IElementBounds* mBounds = element->getBounds();
-  float mWest  = mBounds->getWest();
-  float mEast  = mBounds->getEast();
-  float mSouth = mBounds->getSouth();
-  float mNorth = mBounds->getNorth();
-  std::vector<IndexedGeometricElement*> mElements = cGeometricElements.getElements(mSouth, mNorth, mWest, mEast);
-  for (IndexedGeometricElement* mElement : mElements) {
-    if (mElement->getGeometricElement() == element) {
-      return true;
-    }
-  }
-  return false;
+  return cGeometricElements.contains(element);
 }
 
 void ResourceGeometryProcessor::initElementsComplete() {
 //  cCache.clear();
-}
-
-ResourceGeometryProcessor::IndexedGeometricElement::IndexedGeometricElement(IGeometricElement* element, unsigned int order) {
-  cGeometricElement = element;
-  cOrder = order;
-}
-
-bool ResourceGeometryProcessor::IndexedGeometricElement::operator<(const ResourceGeometryProcessor::IndexedGeometricElement& value) const {
-  return cOrder < value.cOrder;
-}
-
-IGeometricElement* ResourceGeometryProcessor::IndexedGeometricElement::getGeometricElement() {
-  return cGeometricElement;
-}
-
-IElementBounds* ResourceGeometryProcessor::IndexedGeometricElement::getBounds() {
-  return cGeometricElement->getBounds();
-}
-
-unsigned int ResourceGeometryProcessor::IndexedGeometricElement::getIndex() {
-  return cOrder;
 }
 
 ResourceGeometryProcessor::FullTileColumn::FullTileColumn(std::vector<TileColumn*> tileColumns, int x, int y) {

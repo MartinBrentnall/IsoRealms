@@ -86,6 +86,8 @@ class ElementHandlerSpindizzyBlock:public Element,
   void unsetArguments();
   void setDirty(IElement*);
   IElementContainer* getElementContainer();
+  unsigned int getOrderIndex(ISpindizzyBlock*);
+  
   PickedElement* pickElement(Vertex&, Vertex&);
 };
 
