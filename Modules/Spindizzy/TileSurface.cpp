@@ -18,9 +18,8 @@
  */
 #include "TileSurface.h"
 
-TileSurface::TileSurface(ITexture** texture, TextureRotation rotation, int north, int east, int south, int west, int height, int westEastSlope, int northSouthSlope, ITileSurface::FaceDirection facing, Condition* condition, BlockTypeProperties* blockTypeProperties, IArgument* element) {
+TileSurface::TileSurface(ITexture** texture, int north, int east, int south, int west, int height, int westEastSlope, int northSouthSlope, ITileSurface::FaceDirection facing, Condition* condition, BlockTypeProperties* blockTypeProperties, IArgument* element) {
   cTexture = texture;
-  cRotation = rotation;
   cNorth = north;
   cEast = east;
   cSouth = south;
@@ -48,11 +47,6 @@ TileSurface::TileSurface(DOMNodeWrapper* node, std::vector<ConditionElement*> el
   cNorthSouthSlope      = node->getIntegerAttribute("ySlope");
   cFacing               = node->getAttribute("direction") == "up" ? ITileSurface::UP : ITileSurface::DOWN;
   std::string mRotation = node->getAttribute("rotation");
-  cRotation = mRotation == "straight" ? TextureRotation::STRAIGHT
-            : mRotation == "right"    ? TextureRotation::RIGHT
-            : mRotation == "left"     ? TextureRotation::LEFT
-            :                           TextureRotation::REVERSE;
-  
   cCondition = nullptr;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
@@ -77,56 +71,12 @@ int TileSurface::getSurfaceCellElevation(int x, int y) {
   return abs(cWestEastSlope) + abs(cNorthSouthSlope);
 }
 
-float TileSurface::getEastTextureCoord() {
-  switch (cRotation) {
-    case STRAIGHT: return   cEast  + 1;
-    case RIGHT:    return -(cNorth + 1);
-    case LEFT:     return   cNorth + 1;
-    case REVERSE:  return -(cEast  + 1);
-  }
-  std::cout << "WARNING: Shouldn't happen" << std::endl; // TODO: Throw
-  return 0.0f;
-}
-
-float TileSurface::getWestTextureCoord() {
-  switch (cRotation) {
-    case STRAIGHT: return   cWest;
-    case RIGHT:    return  -cSouth;
-    case LEFT:     return   cSouth;
-    case REVERSE:  return  -cWest;
-  }
-  std::cout << "WARNING: Shouldn't happen" << std::endl; // TODO: Throw
-  return 0.0f;
-}
-
-float TileSurface::getNorthTextureCoord() {
-  switch (cRotation) {
-    case STRAIGHT: return   cNorth + 1;
-    case RIGHT:    return -(cEast  + 1);
-    case LEFT:     return   cEast  + 1;    
-    case REVERSE:  return -(cNorth + 1);
-  }
-  std::cout << "WARNING: Shouldn't happen" << std::endl; // TODO: Throw
-  return 0.0f;
-}
-
-float TileSurface::getSouthTextureCoord() {
-  switch (cRotation) {
-    case STRAIGHT: return   cSouth;
-    case RIGHT:    return  -cWest;
-    case LEFT:     return   cWest;
-    case REVERSE:  return  -cSouth;
-  }
-  std::cout << "WARNING: Shouldn't happen" << std::endl; // TODO: Throw
-  return 0.0f;
-}
-
 void TileSurface::coord(float x, float y) {
-  switch (cRotation) {
+  switch (cBlockTypeProperties != nullptr ? cBlockTypeProperties->getSurfaceRotation() : STRAIGHT) {
     case STRAIGHT: glTexCoord2f( x,  y); break;
-    case RIGHT:    glTexCoord2f( y,  x); break;
+    case RIGHT:    glTexCoord2f( y, -x); break;
     case REVERSE:  glTexCoord2f(-x, -y); break;
-    case LEFT:     glTexCoord2f(-y, -x); break;
+    case LEFT:     glTexCoord2f(-y,  x); break;
   }
 }
 
@@ -162,22 +112,10 @@ void TileSurface::render() {
 
     switch (cFacing) {
       case ITileSurface::UP: {
-/*        float mEast  = getEastTextureCoord();
-        float mWest  = getWestTextureCoord();
-        float mNorth = getNorthTextureCoord();
-        float mSouth = getSouthTextureCoord();
-        cTexture->texCoord2f(mEast, mNorth); glVertex3f(xe, ys, xsye);
-        cTexture->texCoord2f(mEast, mSouth); glVertex3f(xe, ye, xeye);
-        cTexture->texCoord2f(mWest, mSouth); glVertex3f(xs, ye, xeys);
-        cTexture->texCoord2f(mWest, mNorth); glVertex3f(xs, ys, xsys);*/
         coord(cEast + 1, cNorth + 1); glVertex3f(xe, ys, xsye);
         coord(cEast + 1, cSouth);     glVertex3f(xe, ye, xeye);
         coord(cWest,     cSouth);     glVertex3f(xs, ye, xeys);
         coord(cWest,     cNorth + 1); glVertex3f(xs, ys, xsys);
-/*        glColor3f(1.0, 1.0, 0.0); cTexture->texCoord2f(cEast + 1, cNorth + 1); glVertex3f(xe, ys, xsye);
-        glColor3f(0.0, 1.0, 1.0); cTexture->texCoord2f(cEast + 1, cSouth);     glVertex3f(xe, ye, xeye);
-        glColor3f(1.0, 0.0, 1.0); cTexture->texCoord2f(cWest,     cSouth);     glVertex3f(xs, ye, xeys);
-        glColor3f(1.0, 1.0, 1.0); cTexture->texCoord2f(cWest,     cNorth + 1);  glVertex3f(xs, ys, xsys);*/
         break;
       }
 
@@ -532,10 +470,6 @@ void TileSurface::saveCache(DOMNodeWriter* node, bool physical) {
   mSurfaceNode->addAttribute("height",    cHeight);
   mSurfaceNode->addAttribute("xSlope",    cWestEastSlope);
   mSurfaceNode->addAttribute("ySlope",    cNorthSouthSlope);
-  mSurfaceNode->addAttribute("rotation",  cRotation == STRAIGHT ? "straight"
-                                        : cRotation == RIGHT    ? "right"
-                                        : cRotation == LEFT     ? "left"
-                                        :                         "reverse");
   mSurfaceNode->addAttribute("direction", cFacing == ITileSurface::UP ? "up" : "down");
   mSurfaceNode->addAttribute("physical",  physical ? "true" : "false");
   if (cCondition != nullptr) {

@@ -41,7 +41,6 @@ class TileSurface:public ISpindizzyTileSurface,
   IArgument* cElement;
   ITileSurface::FaceDirection cFacing;
   ITexture** cTexture;
-  TextureRotation cRotation;
   int cNorth;
   int cEast;
   int cSouth;
@@ -54,11 +53,6 @@ class TileSurface:public ISpindizzyTileSurface,
 
   Vertex* getBoundaryCrossingPoint(Vertex&, Vertex&, float*, float);
 
-  float getEastTextureCoord();
-  float getWestTextureCoord();
-  float getNorthTextureCoord();
-  float getSouthTextureCoord();
-  
   void coord(float, float);
   
   public:
@@ -76,7 +70,7 @@ class TileSurface:public ISpindizzyTileSurface,
    * @param int  Slope step along north-to-south (Y axis).
    * @param ITileSurface::FaceDirection  Facing direction of the surface.
    */
-  TileSurface(ITexture**, TextureRotation, int, int, int, int, int, int, int, ITileSurface::FaceDirection, Condition*, BlockTypeProperties*, IArgument*);
+  TileSurface(ITexture**, int, int, int, int, int, int, int, ITileSurface::FaceDirection, Condition*, BlockTypeProperties*, IArgument*);
   TileSurface(DOMNodeWrapper*, std::vector<ConditionElement*>, ITexture**, BlockTypeProperties*, IArgument*);
   Condition* getCondition();
 

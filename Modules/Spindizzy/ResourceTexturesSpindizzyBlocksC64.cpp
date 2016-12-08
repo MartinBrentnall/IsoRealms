@@ -28,7 +28,7 @@ const float ResourceTexturesSpindizzyBlocksC64::SWITCH_DIAMOND_INNER         = 0
 
 const float ResourceTexturesSpindizzyBlocksC64::SWITCH_CIRCLE_OUTER          = 0.7f;
 const float ResourceTexturesSpindizzyBlocksC64::SWITCH_CIRCLE_INNER          = 0.52f;
-const float ResourceTexturesSpindizzyBlocksC64::ICE_EDGE_WIDTH               = 0.9f;
+const float ResourceTexturesSpindizzyBlocksC64::ICE_EDGE_WIDTH               = 0.1f;
 const float ResourceTexturesSpindizzyBlocksC64::ARROW_SIZE                   = 0.66f;
 const float ResourceTexturesSpindizzyBlocksC64::ARROW_LINE_WIDTH             = 0.25f;
 const float ResourceTexturesSpindizzyBlocksC64::CIRCLE_RESOLUTION            = 5.0f * (M_PI / 180.0);
@@ -256,12 +256,12 @@ void ResourceTexturesSpindizzyBlocksC64::renderSwitchCircleHalf(float angle) {
 
 void ResourceTexturesSpindizzyBlocksC64::renderArrow() {
   renderTile(cFloorColour);
-  renderRectangle(-ARROW_LINE_WIDTH, -ARROW_SIZE, ARROW_LINE_WIDTH, 0.0f, cWallColour);
+  renderRectangle(-ARROW_LINE_WIDTH, 0.0f, ARROW_LINE_WIDTH, ARROW_SIZE, cWallColour);
   glBegin(GL_TRIANGLES);
   cWallColour->set();
-  glVertex2f(-ARROW_SIZE, 0.0f);
-  glVertex2f( ARROW_SIZE, 0.0f);
-  glVertex2f( 0.0f,       ARROW_SIZE);
+  glVertex2f( ARROW_SIZE,  0.0f);
+  glVertex2f(-ARROW_SIZE,  0.0f);
+  glVertex2f( 0.0f,       -ARROW_SIZE);
   glEnd();
 }
 
@@ -283,10 +283,10 @@ void ResourceTexturesSpindizzyBlocksC64::renderIceWall() {
   clear(cGridColour);
   glBegin(GL_QUADS);
   cBackgroundColour->set();
-  glVertex2f(-1.0f,           1.0f);
-  glVertex2f(-ICE_EDGE_WIDTH, ICE_EDGE_WIDTH - (1.0f - ICE_EDGE_WIDTH));
-  glVertex2f( ICE_EDGE_WIDTH, ICE_EDGE_WIDTH - (1.0f - ICE_EDGE_WIDTH));
-  glVertex2f( 1.0f,           1.0f);
+  glVertex2f( 1.0f,                  -1.0f);
+  glVertex2f( 1.0f - ICE_EDGE_WIDTH, -1.0f + ICE_EDGE_WIDTH * 2.0f);
+  glVertex2f(-1.0f + ICE_EDGE_WIDTH, -1.0f + ICE_EDGE_WIDTH * 2.0f);
+  glVertex2f(-1.0f,                  -1.0f);
   glEnd();
 }
 

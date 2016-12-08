@@ -226,7 +226,6 @@ class ElementSpindizzyBlock:public ICollidableSurfaceElement,
   void loadCache(DOMNodeWrapper*, std::vector<ConditionElement*>, IUniverse*);
 
   ITexture** getTileSurfaceTexture();
-  TextureRotation getTileSurfaceRotation();
 
   /**
    * Create a new rectangular surface by using the specified section of this

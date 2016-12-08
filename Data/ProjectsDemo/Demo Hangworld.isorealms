@@ -755,7 +755,7 @@ end</Code>
       <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallNorthBottom"/>
     </ElementSpindizzyBlock>
     <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="ArrowNorth" respawnAllowed="true" wallType="capped">
-      <Texture name="Spindizzy/Arrow" rotate="Reverse" type="Surface"/>
+      <Texture name="Spindizzy/Arrow" type="Surface"/>
       <Texture name="Spindizzy/WallMixedMiddle" type="WallWest"/>
       <Texture name="Spindizzy/WallMixedCap" type="WallWestTop"/>
       <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallWestBottom"/>
@@ -770,7 +770,7 @@ end</Code>
       <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallNorthBottom"/>
     </ElementSpindizzyBlock>
     <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="ArrowSouth" respawnAllowed="true" wallType="capped">
-      <Texture name="Spindizzy/Arrow" type="Surface"/>
+      <Texture name="Spindizzy/Arrow" rotate="Reverse" type="Surface"/>
       <Texture name="Spindizzy/WallMixedMiddle" type="WallWest"/>
       <Texture name="Spindizzy/WallMixedCap" type="WallWestTop"/>
       <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallWestBottom"/>

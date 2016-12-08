@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <Project filename="IsoRealms/ProjectName">
   <InputConfiguration>
-    <DigitalInput name="Quit">
-      <Mapping type="keyDown" value="q"/>
-      <OnStart name="IsoRealms/Quit"/>
-    </DigitalInput>
     <DigitalInput name="Brake">
       <Mapping type="keyDown" value="Space"/>
       <OnStart name="IsoRealms/playerBrake">
@@ -129,6 +125,10 @@
       <Mapping type="keyDown" value="ArrowLeft"/>
       <Mapping type="keyDown" value="a"/>
     </DigitalInput>
+    <DigitalInput name="Quit">
+      <Mapping type="keyDown" value="q"/>
+      <OnStart name="IsoRealms/Quit"/>
+    </DigitalInput>
     <DigitalInput name="Reset Camera">
       <Mapping type="keyDown" value="F1"/>
       <OnStart name="IsoRealms/rotateViewTo">
@@ -207,7 +207,6 @@
     <IntegerFixed name="ZonesToExplore"/>
     <IntegerFixed name="Collected"/>
     <IntegerFixed name="Locks"/>
-    <StringFixed name="ProjectName"/>
     <IntegerTimer name="SpindizzyTimeLimit" value="150000"/>
     <LayerHUD name="HUD"/>
     <ModelElement name="Compass">
@@ -661,6 +660,7 @@ end</Code>
     <SoundFile file="Data/Sounds/Impact Hard.ogg" name="ImpactHard"/>
     <SoundFile file="Data/Sounds/Impact Medium.ogg" name="ImpactMedium"/>
     <SoundFile file="Data/Sounds/Impact Soft.ogg" name="ImpactSoft"/>
+    <StringFixed name="ProjectName" value="/usr/share/IsoRealms/Data/Projects/Spindizzy Hangworld.isorealms"/>
     <TextureFile file="Data/Images/Map.png" name="Map"/>
     <TextureFile file="Data/Images/Score.png" name="Score"/>
     <TextureFile file="Data/Images/Time.png" name="Time"/>
@@ -756,7 +756,7 @@ end</Code>
       <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallNorthBottom"/>
     </ElementSpindizzyBlock>
     <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="ArrowNorth" respawnAllowed="true" wallType="capped">
-      <Texture name="Spindizzy/Arrow" rotate="Reverse" type="Surface"/>
+      <Texture name="Spindizzy/Arrow" type="Surface"/>
       <Texture name="Spindizzy/WallMixedMiddle" type="WallWest"/>
       <Texture name="Spindizzy/WallMixedCap" type="WallWestTop"/>
       <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallWestBottom"/>
@@ -771,7 +771,7 @@ end</Code>
       <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallNorthBottom"/>
     </ElementSpindizzyBlock>
     <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="ArrowSouth" respawnAllowed="true" wallType="capped">
-      <Texture name="Spindizzy/Arrow" type="Surface"/>
+      <Texture name="Spindizzy/Arrow" rotate="Reverse" type="Surface"/>
       <Texture name="Spindizzy/WallMixedMiddle" type="WallWest"/>
       <Texture name="Spindizzy/WallMixedCap" type="WallWestTop"/>
       <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallWestBottom"/>
@@ -5337,8 +5337,8 @@ end</Code>
       <Element height="1" length="1" type="Spindizzy/SwitchDiamondNone" width="1" x="6" y="1" z="-1"/>
       <Element height="3" length="3" type="Spindizzy/Plain" width="3" x="0" y="5" z="-1">
         <Condition negated="true" type="and">
-          <Element name="SwitchCircleNone"/>
           <Element name="SwitchCircleBoth"/>
+          <Element name="SwitchCircleNone"/>
         </Condition>
       </Element>
       <Element height="-2" length="1" type="Spindizzy/Plain" width="1" x="1" y="6" z="2"/>
@@ -7119,7 +7119,7 @@ end</Code>
     <Element name="ValueTime"  left="adjacent IconTime 0.02"   top="align IconTime"     length="0.09" width="0.5" type="IsoRealms/TimeDisplay"/>
     <Element name="ValueScore" right="adjacent IconScore 0.02" top="align IconScore"    length="0.09" width="0.5" type="IsoRealms/ScoreDisplay"/>
     <Element name="ValueMap"   left="adjacent IconMap 0.02"    top="align IconMap"      length="0.09" width="0.5" type="IsoRealms/ZonesToExploreDisplay"/>
-    <Element name="ValueJewel" right="adjacent IconJewel 0.02" top="align IconJewel"    length="0.09" width="0.5" type="IsoRealms/JewelCountDisplay"/>-->
+    <Element name="ValueJewel" right="adjacent IconJewel 0.02" top="align IconJewel"    length="0.09" width="0.5" type="IsoRealms/JewelCountDisplay"/>
   </Layer>
   <ReturnValue name="Score" type="Integer" value="IsoRealms/Score"/>
   <ReturnValue name="Time" type="Integer" value="IsoRealms/SpindizzyTimeLimit"/>

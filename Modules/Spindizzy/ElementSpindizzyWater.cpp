@@ -115,7 +115,7 @@ bool ElementSpindizzyWater::renderSelectionHighlight() {
 }
 
 ISpindizzyTileSurface* ElementSpindizzyWater::createSubSurface(ITileSurface::FaceDirection facing, int north, int east, int south, int west, Condition* condition) {
-  return new TileSurface(cTexture, STRAIGHT, north, east, south, west, facing == ITileSurface::UP ? cStartLocation.z : cEndLocation.z, 0, 0, facing, condition, nullptr, nullptr);
+  return new TileSurface(cTexture, north, east, south, west, facing == ITileSurface::UP ? cStartLocation.z : cEndLocation.z, 0, 0, facing, condition, nullptr, nullptr);
 }
 
 IWallSurface* ElementSpindizzyWater::createSubSurface(int x, int y, IWallSurface::FaceDirection facing, int length, int startHeight, int endHeight, int topSlope, int bottomSlope) {

@@ -143,11 +143,6 @@ ITexture** ElementSpindizzyBlock::getTileSurfaceTexture() {
   return isSplit() ? mBlockTypeProperties->getSplitNETexture() : mBlockTypeProperties->getSurfaceTexture();
 }
 
-TextureRotation ElementSpindizzyBlock::getTileSurfaceRotation() {
-  BlockTypeProperties* mBlockTypeProperties = cBlockType->getBlockTypeProperties();
-  return mBlockTypeProperties->getSurfaceRotation();
-}
-
 int ElementSpindizzyBlock::getXSlope() {
   if (cNorthEastHeight - cNorthWestHeight == cSouthEastHeight - cSouthWestHeight) {
     return cNorthEastHeight - cNorthWestHeight ;
@@ -202,7 +197,6 @@ int ElementSpindizzyBlock::getBottomHeight(int x, int y) {
 
 ISpindizzyTileSurface* ElementSpindizzyBlock::createSubSurface(ITileSurface::FaceDirection faceDirection, int north, int east, int south, int west, Condition* condition) {
   ITexture** mTexture = getTileSurfaceTexture();
-  TextureRotation mRotation = getTileSurfaceRotation();
   switch (faceDirection) {
     case ITileSurface::UP: {
       int mXSlope = getXSlope();
@@ -213,14 +207,14 @@ ISpindizzyTileSurface* ElementSpindizzyBlock::createSubSurface(ITileSurface::Fac
       if (isSplit()) {
         return new TileSplitSurface(cSplitType == NORTH_SOUTH, mSurfaceLocation, mTexture, cNorthWestHeight, cNorthEastHeight, cSouthEastHeight, cSouthWestHeight, condition, mBlockTypeProperties);
       } else {
-        return new TileSurface(mTexture, mRotation, north, east, south, west, mHeight, mXSlope, mYSlope, faceDirection, condition, mBlockTypeProperties, this);
+        return new TileSurface(mTexture, north, east, south, west, mHeight, mXSlope, mYSlope, faceDirection, condition, mBlockTypeProperties, this);
       }
     }
     
     case ITileSurface::DOWN: {
       // TODO: Make sure the subsurface does not violate the stepping
       int mHeight = getBottomHeight(east, north);
-      return new TileSurface(mTexture, mRotation, north, east, south, west, mHeight, 0, 0, faceDirection, condition, nullptr, this);
+      return new TileSurface(mTexture, north, east, south, west, mHeight, 0, 0, faceDirection, condition, nullptr, this);
     }
   }
   std::cout << "ERROR: Face direction does not exist" << std::endl;
