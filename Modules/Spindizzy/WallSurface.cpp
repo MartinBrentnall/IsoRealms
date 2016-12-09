@@ -218,6 +218,36 @@ void WallSurface::render() {
   glEnd();
 }
 
+void WallSurface::renderOutline() {
+  float mBlockRadius = IsoRealmsConstants::BLOCK_RADIUS;
+  double mFromX = cX + (cFacing == EAST ? mBlockRadius : -mBlockRadius);
+  double mFromY = cY + (cFacing == NORTH ? mBlockRadius : -mBlockRadius); 
+  double mFromZ = cZ * IsoRealmsConstants::BLOCK_HEIGHT;
+  double mToX = (cFacing == WEST || cFacing == EAST) ? (mFromX) : cX - mBlockRadius + cLength;
+  double mToY = (cFacing == SOUTH || cFacing == NORTH) ? (mFromY) : cY - mBlockRadius + cLength;
+  double mHighStartSlopeZ = (cZ + cHeight) * IsoRealmsConstants::BLOCK_HEIGHT;
+  double mHighEndSlopeZ =  ((cZ + cHeight) + cTopSlope * cLength) * IsoRealmsConstants::BLOCK_HEIGHT;
+
+  glBindTexture(GL_TEXTURE_2D, 0);
+  glColor3f(0.0f, 1.0f, 1.0f);
+  glLineWidth(6.0f);
+  glBegin(GL_LINE_LOOP);
+  if (cFacing == EAST || cFacing == SOUTH) {
+    glVertex3f(mFromX, mFromY, mFromZ);
+    glVertex3f(mToX,   mToY,   mFromZ);
+    glVertex3f(mToX,   mToY,   mHighEndSlopeZ);
+    glVertex3f(mFromX, mFromY, mHighStartSlopeZ);
+  } else {
+    glVertex3f(mFromX, mFromY, mHighStartSlopeZ);
+    glVertex3f(mToX,   mToY,   mHighEndSlopeZ);
+    glVertex3f(mToX,   mToY,   mFromZ);
+    glVertex3f(mFromX, mFromY, mFromZ);
+  }
+  glEnd();
+  glLineWidth(1.0f);
+  glColor3f(1.0f, 1.0f, 1.0f);
+}
+
 void WallSurface::renderSelectionHighlight() {
   float mBlockRadius = IsoRealmsConstants::BLOCK_RADIUS;
   double mFromX = cX + (cFacing == EAST ? mBlockRadius : -mBlockRadius);

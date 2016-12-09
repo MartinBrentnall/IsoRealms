@@ -28,6 +28,7 @@ class ISpindizzyWallSurface:public IWallSurface,
                             public ICollidableWallSurface {
   public:
   virtual void render() = 0;
+  virtual void renderOutline() = 0;
   virtual void renderSelectionHighlight() = 0;
   virtual CollisionVertex* pickSurface(Vertex&, Vertex&) = 0;
   

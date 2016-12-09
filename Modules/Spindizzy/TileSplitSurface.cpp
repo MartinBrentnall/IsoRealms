@@ -100,6 +100,42 @@ void TileSplitSurface::render() {
   }
 }
 
+void TileSplitSurface::renderOutline() {
+  float mNorthWest = (cLocation.z + cCornerHeights[0][1]) * IsoRealmsConstants::BLOCK_HEIGHT;
+  float mNorthEast = (cLocation.z + cCornerHeights[1][1]) * IsoRealmsConstants::BLOCK_HEIGHT;
+  float mSouthEast = (cLocation.z + cCornerHeights[1][0]) * IsoRealmsConstants::BLOCK_HEIGHT;
+  float mSouthWest = (cLocation.z + cCornerHeights[0][0]) * IsoRealmsConstants::BLOCK_HEIGHT;
+  float mWest  = cLocation.x - IsoRealmsConstants::BLOCK_RADIUS;
+  float mEast  = cLocation.x + IsoRealmsConstants::BLOCK_RADIUS;
+  float mSouth = cLocation.y - IsoRealmsConstants::BLOCK_RADIUS;
+  float mNorth = cLocation.y + IsoRealmsConstants::BLOCK_RADIUS;
+  
+  glBindTexture(GL_TEXTURE_2D, 0);
+  glColor3f(0.0f, 1.0f, 1.0f);
+  glLineWidth(6.0f);
+  glBegin(GL_LINE_LOOP);
+  if (cSplitDirection) {
+    glVertex3f(mEast, mNorth, mNorthEast);
+    glVertex3f(mWest, mNorth, mNorthWest);
+    glVertex3f(mWest, mSouth, mSouthWest);
+
+    glVertex3f(mEast, mNorth, mNorthEast);
+    glVertex3f(mEast, mSouth, mSouthEast);
+    glVertex3f(mWest, mSouth, mSouthWest);
+  } else {
+    glVertex3f(mWest, mNorth, mNorthWest);
+    glVertex3f(mEast, mNorth, mNorthEast);
+    glVertex3f(mEast, mSouth, mSouthEast);
+
+    glVertex3f(mWest, mNorth, mNorthWest);
+    glVertex3f(mWest, mSouth, mSouthWest);
+    glVertex3f(mEast, mSouth, mSouthEast);
+  }
+  glEnd();
+  glLineWidth(1.0f);
+  glColor3f(1.0f, 1.0f, 1.0f);
+}
+
 void TileSplitSurface::renderSelectionHighlight() {
   float mNorthWest = (cLocation.z + cCornerHeights[0][1]) * IsoRealmsConstants::BLOCK_HEIGHT;
   float mNorthEast = (cLocation.z + cCornerHeights[1][1]) * IsoRealmsConstants::BLOCK_HEIGHT;

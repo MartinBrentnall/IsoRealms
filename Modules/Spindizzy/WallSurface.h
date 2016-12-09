@@ -137,6 +137,7 @@ class WallSurface:public ISpindizzyWallSurface,
    * Implements ISpindizzyWallSurface *
   \************************************/
   void render();
+  void renderOutline();
   void renderSelectionHighlight();
   CollisionVertex* pickSurface(Vertex&, Vertex&);
   

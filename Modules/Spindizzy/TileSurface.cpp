@@ -135,6 +135,59 @@ void TileSurface::render() {
   }
 }
 
+void TileSurface::renderOutline() {
+  double mXStart = cWest  - IsoRealmsConstants::BLOCK_RADIUS;
+  double mXEnd   = cEast  + IsoRealmsConstants::BLOCK_RADIUS;
+  double mYStart = cSouth - IsoRealmsConstants::BLOCK_RADIUS;
+  double mYEnd   = cNorth + IsoRealmsConstants::BLOCK_RADIUS;
+
+  double mHeightSouthWest = cHeight * IsoRealmsConstants::BLOCK_HEIGHT;
+  double mHeightNorthWest = cHeight * IsoRealmsConstants::BLOCK_HEIGHT;
+  double mHeightNorthEast = cHeight * IsoRealmsConstants::BLOCK_HEIGHT;
+  double mHeightSouthEast = cHeight * IsoRealmsConstants::BLOCK_HEIGHT;
+  
+  if (cWestEastSlope < 0) {
+    mHeightSouthWest += (abs(cWestEastSlope) * IsoRealmsConstants::BLOCK_HEIGHT * (mXEnd - mXStart));
+    mHeightSouthEast += (abs(cWestEastSlope) * IsoRealmsConstants::BLOCK_HEIGHT * (mXEnd - mXStart));
+  } else {
+    mHeightNorthWest += (abs(cWestEastSlope) * IsoRealmsConstants::BLOCK_HEIGHT * (mXEnd - mXStart));
+    mHeightNorthEast += (abs(cWestEastSlope) * IsoRealmsConstants::BLOCK_HEIGHT * (mXEnd - mXStart));
+  }
+
+  if (cNorthSouthSlope < 0) {
+    mHeightSouthWest += (abs(cNorthSouthSlope) * IsoRealmsConstants::BLOCK_HEIGHT * (mYEnd - mYStart));
+    mHeightNorthWest += (abs(cNorthSouthSlope) * IsoRealmsConstants::BLOCK_HEIGHT * (mYEnd - mYStart));
+  } else {
+    mHeightSouthEast += (abs(cNorthSouthSlope) * IsoRealmsConstants::BLOCK_HEIGHT * (mYEnd - mYStart));
+    mHeightNorthEast += (abs(cNorthSouthSlope) * IsoRealmsConstants::BLOCK_HEIGHT * (mYEnd - mYStart));
+  }
+  
+  glBindTexture(GL_TEXTURE_2D, 0);
+  glColor3f(0.0f, 1.0f, 1.0f);
+  glLineWidth(6.0f);
+  glBegin(GL_LINE_LOOP);
+  switch (cFacing) {
+    case ITileSurface::UP: {
+      glVertex3f(mXEnd,   mYStart, mHeightNorthWest);
+      glVertex3f(mXEnd,   mYEnd,   mHeightNorthEast);
+      glVertex3f(mXStart, mYEnd,   mHeightSouthEast);
+      glVertex3f(mXStart, mYStart, mHeightSouthWest);
+      break;
+    }
+
+    case ITileSurface::DOWN: {
+      glVertex3f(mXStart, mYStart, mHeightSouthWest);
+      glVertex3f(mXStart, mYEnd,   mHeightSouthEast);
+      glVertex3f(mXEnd,   mYEnd,   mHeightNorthEast);
+      glVertex3f(mXEnd,   mYStart, mHeightNorthWest);
+      break;
+    }
+  }
+  glEnd();
+  glLineWidth(1.0f);
+  glColor3f(1.0f, 1.0f, 1.0f);
+}
+
 void TileSurface::renderSelectionHighlight() {
   double mXStart = cWest  - IsoRealmsConstants::BLOCK_RADIUS;
   double mXEnd   = cEast  + IsoRealmsConstants::BLOCK_RADIUS;

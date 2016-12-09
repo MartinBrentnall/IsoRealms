@@ -25,6 +25,8 @@ const double TextEditorComponent::CARET_X_NOT_ASSIGNED = DBL_MAX;
 TextEditorComponent::TextEditorComponent(std::string initialText) {
   cCaretChar = 0;
   cCaretLine = 0;
+  cSelectionChar = 0;
+  cSelectionLine = 0;
   cCaretX = CARET_X_NOT_ASSIGNED;
   cUpdating = false;
   cHasFocus = false;

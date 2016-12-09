@@ -491,6 +491,13 @@ void ElementSpindizzyBlock::renderEditing() {
     glColor3f(1.0f, 1.0f, 1.0f);
     glEnd();
     glLineWidth(1.0f);
+  } else if (cCondition != nullptr && !cCondition->isTrue()) {
+    for (ISpindizzyTileSurface* mSurface : cDynamicTileSurfaces) {
+      mSurface->renderOutline();
+    }
+    for (ISpindizzyWallSurface* mSurface : cDynamicWallSurfaces) {
+      mSurface->renderOutline();
+    }
   }
   renderRuntime();
 }
