@@ -22,21 +22,7 @@ AttractDemo::AttractDemo(DOMNodeWrapper* node) {
   std::string mProjectName = node->getAttribute("project");
   IProjectOptions* mProjectOptions = new ProjectOptions(node);
   std::string mProjectPath = System::getProgramResource(mProjectName);
-  std::string mCacheFileName = mProjectPath.substr(0, mProjectPath.length() - 10) + "/project.cache";
-  DOMNodeWrapper* mCache = nullptr;
-  if (System::fileExists(mCacheFileName)) {
-    mCache = new DOMNodeWrapper(mCacheFileName);
-  }
-
-  DOMNodeWrapper* mProjectNode = new DOMNodeWrapper(mProjectPath);
-  for (int i = 0; i < mProjectNode->getChildCount(); i++) {
-    DOMNodeWrapper *mNode = mProjectNode->getChild(i);
-    std::string mValue = mNode->getNodeName();
-    if (mValue == "Project") {
-      cProject = new Project(mNode, mCache, mProjectName, nullptr, false, mProjectOptions);
-      break;
-    }
-  }
+  cProject = new Project(mProjectPath, nullptr, false, mProjectOptions);
   init();
 }
 

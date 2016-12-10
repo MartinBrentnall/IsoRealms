@@ -68,7 +68,7 @@ class Engine:public IEngine {
   Project* cProject;
   
   void loadProject(DOMNodeWrapper*);
-  void loadProject(DOMNodeWrapper*, const std::string&);
+  void loadProject(const std::string&);
   
   public:
   Engine();

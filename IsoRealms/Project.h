@@ -67,9 +67,11 @@ class Project:public IProject {
   
   std::vector<IObjectSelectionListener*> cObjectSelectionListeners;
   
+  void loadProject(DOMNodeWrapper*, DOMNodeWrapper*, const std::string&, IEditingContext*, bool, IProjectOptions*);
+  
   public:
   Project();
-  Project(DOMNodeWrapper*, DOMNodeWrapper*, const std::string&, IEditingContext*, bool, IProjectOptions*);
+  Project(const std::string&, IEditingContext*, bool, IProjectOptions*);
 
   void initEditor();
   void initRuntime();

@@ -558,21 +558,7 @@ void SimpleEditor::objectSelected(IObjectWithProperties* object) {
 }
 
 void SimpleEditor::openProject(const std::string& file, bool asTemplate) {
-  DOMNodeWrapper* mConfigurationRootNode = new DOMNodeWrapper(file);
-  std::string mCacheFileName = file.substr(0, file.length() - 10) + "/project.cache";
-  DOMNodeWrapper* mCache = nullptr;
-  if (System::fileExists(mCacheFileName)) {
-    mCache = new DOMNodeWrapper(mCacheFileName);
-  }
-  for (int i = 0; i < mConfigurationRootNode->getChildCount(); i++) {
-    DOMNodeWrapper *mNode = mConfigurationRootNode->getChild(i);
-    std::string mValue = mNode->getNodeName();
-    if (mValue == "Project") {
-      if (cProject != nullptr) {
-        clearUndoStack();
-        delete cProject;
-      }
-      cProject = new Project(mNode, mCache, file, this, asTemplate, nullptr);
+      cProject = new Project(file, this, asTemplate, nullptr);
       cProject->initEditor();
       IResourceManager* mProjectResources = cProject->getResourceManager();
       std::vector<IDialogGenerator*> mProjectDialogGenerators = mProjectResources->getDialogGenerators();
@@ -585,8 +571,6 @@ void SimpleEditor::openProject(const std::string& file, bool asTemplate) {
         cProjectManagerListeners[i]->projectOpened(cProject);
       }
       cProject->addObjectSelectionListener(this);
-    }
-  }
   
   // Put Layers in Editor Menu.
   std::vector<ILayer*> mLayers = cProject->getAllLayers();

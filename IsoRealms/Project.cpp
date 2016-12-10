@@ -24,15 +24,47 @@ Project::Project() {
   cFirstInitialised = false;
 }
 
-Project::Project(DOMNodeWrapper* node, DOMNodeWrapper* cache, const std::string& projectName, IEditingContext* editingContext, bool asTemplate, IProjectOptions* options) {
-  cResources.setEditing(editingContext != NULL, this);
-  cInitScript = NULL;
+Project::Project(const std::string& file, IEditingContext* editingContext, bool asTemplate, IProjectOptions* options) {
+  std::size_t mExtensionPosition = file.find_last_of('.');
+  std::string mProjectName = file.substr(0, mExtensionPosition);
   if (!asTemplate) {
-    cFileName = projectName;
+    cFileName = file;
   }
-  std::size_t mExtensionPosition = projectName.find_last_of('.');
-  std::string mProjectName = projectName.substr(0, mExtensionPosition);
+  cInitScript = nullptr;
+  cResources.setEditing(editingContext != nullptr, this);
+  DOMNodeWrapper* mConfigurationRootNode = new DOMNodeWrapper(file);
+  std::string mCacheFileName = file.substr(0, file.length() - 10) + "/project.cache";
+  DOMNodeWrapper* mCache = nullptr;
+  if (System::fileExists(mCacheFileName)) {
+    mCache = new DOMNodeWrapper(mCacheFileName);
+  }
+  for (int i = 0; i < mConfigurationRootNode->getChildCount(); i++) {
+    DOMNodeWrapper *mNode = mConfigurationRootNode->getChild(i);
+    std::string mValue = mNode->getNodeName();
+    if (mValue == "Project") {
+      loadProject(mNode, mCache, mProjectName, editingContext, asTemplate, options);
+      
+      // Expsoe the project filename in a string
+      std::string mProjectNamePath = mNode->getAttribute("filename");
+      if (mProjectNamePath != "") {
+        IString* mProjectNameString = cResources.getString(mProjectNamePath);
+        mProjectNameString->setValue(file);
+      }
+      break;
+    }
+  }
 
+  cDynamicElements = cResources.getDynamicElements();
+  if (cInitScript != nullptr) {
+    cInitScript->execute();
+  }
+  cCompleted = false;
+  cFirstInitialised = false;
+  
+  std::cout << "Project Ready." << std::endl;
+}
+
+void Project::loadProject(DOMNodeWrapper* node, DOMNodeWrapper* cache, const std::string& projectDataPath, IEditingContext* editingContext, bool asTemplate, IProjectOptions* options) {
   std::map<std::string, std::string> mDefaultElementGroups;
   
   IArgumentValue* mProjectArgument = new ArgumentValueCustomType<Project>(this);
@@ -62,9 +94,7 @@ Project::Project(DOMNodeWrapper* node, DOMNodeWrapper* cache, const std::string&
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Module") {
-      cModuleRegistry.registerModule(mNode, mCacheNode, &cResources, editingContext != NULL ? &cResources : NULL, options);
-//     } else if (mValueAsString == "EngineData") {
-//       cResources.loadInstances(mNode);
+      cModuleRegistry.registerModule(mNode, mCacheNode, &cResources, editingContext != nullptr ? &cResources : nullptr, options);
     } else {
       // TODO: Throw something
     }
@@ -76,14 +106,14 @@ Project::Project(DOMNodeWrapper* node, DOMNodeWrapper* cache, const std::string&
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "InputConfiguration") {
-      std::string mProjectConfigurationFile = mProjectName + "/controls.config";
+      std::string mProjectConfigurationFile = projectDataPath + "/controls.config";
       std::string mGlobalConfigurationFile = "controls.config";
       std::vector<std::string> mConfigFiles;
       mConfigFiles.push_back(mProjectConfigurationFile);
       mConfigFiles.push_back(mGlobalConfigurationFile);
       cResources.loadInputConfiguration(mNode, mConfigFiles);
     } else if (mValueAsString == "InitScript") {
-      cInitScript = cResources.getScriptCall(mNode, NULL);
+      cInitScript = cResources.getScriptCall(mNode, nullptr);
     } else if (mValueAsString == "Layer") {
       std::string mLayerTypeName = mNode->getAttribute("type");
       bool mDefaultLayer = mNode->getBooleanAttribute("default");
@@ -107,22 +137,6 @@ Project::Project(DOMNodeWrapper* node, DOMNodeWrapper* cache, const std::string&
       // TODO: Throw something
     }
   }
-  
-  // Expsoe the project filename in a string
-  std::string mProjectNamePath = node->getAttribute("filename");
-  if (mProjectNamePath != "") {
-    IString* mProjectNameString = cResources.getString(mProjectNamePath);
-    mProjectNameString->setValue(projectName);
-  }
-  
-  cDynamicElements = cResources.getDynamicElements();
-  if (cInitScript != NULL) {
-    cInitScript->execute();
-  }
-  cCompleted = false;
-  cFirstInitialised = false;
-  
-  std::cout << "Project Ready." << std::endl;
 }
 
 void Project::renderRuntime() {

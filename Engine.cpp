@@ -42,21 +42,13 @@ void Engine::loadProject(DOMNodeWrapper* node) {
     if (mValueAsString == "Engine") {
       std::string mRootProject = mNode->getAttribute("project");
       std::string mRootProjectFullPath = System::getProgramResource(mRootProject + ".isorealms");
-      DOMNodeWrapper* mProjectNode = new DOMNodeWrapper(mRootProjectFullPath);
-      loadProject(mProjectNode, mRootProject);
+      loadProject(mRootProjectFullPath);
     }
   }
 }
 
-void Engine::loadProject(DOMNodeWrapper* node, const std::string& projectName) {
-  for (int i = 0; i < node->getChildCount(); i++) {
-    DOMNodeWrapper *mNode = node->getChild(i);
-    std::string mValue = mNode->getNodeName();
-    if (mValue == "Project") {
-      // TODO: Project cache!
-      cProject = new Project(mNode, nullptr, projectName, NULL, false, nullptr);
-    }
-  }
+void Engine::loadProject(const std::string& projectName) {
+  cProject = new Project(projectName, NULL, false, nullptr);
   cProject->initRuntime();
 }
 

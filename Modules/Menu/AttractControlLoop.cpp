@@ -221,24 +221,9 @@ void AttractControlLoop::addObjectSelectionListener(IObjectSelectionListener* li
 
 void AttractControlLoop::startProject(const std::string& project, IProjectOptions* options) {
   std::string mProjectPath = System::getProgramResource(project);
-  std::string mCacheFileName = project.substr(0, project.length() - 10) + "/project.cache";
-  DOMNodeWrapper* mCache = nullptr;
-  if (System::fileExists(mCacheFileName)) {
-    mCache = new DOMNodeWrapper(mCacheFileName);
-  }
-
-  DOMNodeWrapper* mProjectNode = new DOMNodeWrapper(mProjectPath);
-  for (int i = 0; i < mProjectNode->getChildCount(); i++) {
-    DOMNodeWrapper *mNode = mProjectNode->getChild(i);
-    std::string mValue = mNode->getNodeName();
-    if (mValue == "Project") {
-      // TODO: Cache!
-      cRunningProject = new Project(mNode, mCache, project, nullptr, false, options);
-      cRunningProject->initRuntime();
-      std::cout << "Project Started" << std::endl;
-      break;
-    }
-  }
+  cRunningProject = new Project(mProjectPath, nullptr, false, options);
+  cRunningProject->initRuntime();
+  std::cout << "Project Started" << std::endl;
 }
 
 extern "C" IModule* create(IResourceTypeRegistry* resourceTypeRegistry) {

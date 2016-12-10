@@ -41,24 +41,11 @@ void ModuleInputPersistence::load(DOMNodeWrapper* node, DOMNodeWrapper* cache, I
     }
     std::string mProjectPath = System::getProgramResource(mProjectFile);
     std::cout << "Got project file: " << mProjectPath << std::endl;
-    std::string mCacheFileName = mProjectFile.substr(0, mProjectFile.length() - 10) + "/project.cache";
-    DOMNodeWrapper* mCache = nullptr;
-    if (System::fileExists(mCacheFileName)) {
-      mCache = new DOMNodeWrapper(mCacheFileName);
-    }
-
-    DOMNodeWrapper* mProjectNode = new DOMNodeWrapper(mProjectFile);
-    for (int i = 0; i < mProjectNode->getChildCount(); i++) {
-      DOMNodeWrapper *mNode = mProjectNode->getChild(i);
-      std::string mValue = mNode->getNodeName();
-      if (mValue == "Project") {
-        IProjectOptions* mProjectOptions = options->getProjectOptions("Project");
-        cProject = new Project(mNode, mCache, mProjectFile, nullptr, false, mProjectOptions);
-        cProject->initRuntime();
-        resources->add(cProject, "Project");
-        std::cout << "Project Started for Recording/Playback" << std::endl;
-      }
-    }
+    IProjectOptions* mProjectOptions = options->getProjectOptions("Project");
+    cProject = new Project(mProjectFile, nullptr, false, mProjectOptions);
+    cProject->initRuntime();
+    resources->add(cProject, "Project");
+    std::cout << "Project Started for Recording/Playback" << std::endl;
   }
   
   if (cProject == nullptr) {

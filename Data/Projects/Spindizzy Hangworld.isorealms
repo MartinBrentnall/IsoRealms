@@ -660,7 +660,7 @@ end</Code>
     <SoundFile file="Data/Sounds/Impact Hard.ogg" name="ImpactHard"/>
     <SoundFile file="Data/Sounds/Impact Medium.ogg" name="ImpactMedium"/>
     <SoundFile file="Data/Sounds/Impact Soft.ogg" name="ImpactSoft"/>
-    <StringFixed name="ProjectName" value="/usr/share/IsoRealms/Data/Projects/Spindizzy Hangworld.isorealms"/>
+    <StringFixed name="ProjectName"/>
     <TextureFile file="Data/Images/Map.png" name="Map"/>
     <TextureFile file="Data/Images/Score.png" name="Score"/>
     <TextureFile file="Data/Images/Time.png" name="Time"/>
