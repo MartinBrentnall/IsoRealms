@@ -65,7 +65,7 @@ template <class TYPE, class RESOURCE, class DIALOG, class MODULE = IDummyModule>
   };
   
   public:
-  ResourceTypeSet(MODULE* moduleInterface = NULL) {
+  ResourceTypeSet(MODULE* moduleInterface = nullptr) {
     cModuleInterface = moduleInterface;
   }
     
@@ -81,15 +81,21 @@ template <class TYPE, class RESOURCE, class DIALOG, class MODULE = IDummyModule>
     resourceRegistry->add(mResourceSet, node);
   }
 
-  void saveResources(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator, const std::string& tag) {
-    for (unsigned int i = 0; i < cResources.size(); i++) {
+  void saveResources(DOMNodeWriter* node, IResourceLocator* resourceLocator, const std::string& tag) {
+    for (RESOURCE* mResource : cResources) {
       DOMNodeWriter* mResourceNode = node->addBranch(tag);
-      cResources[i]->save(mResourceNode, cache, resourceLocator);
+      mResource->save(mResourceNode, resourceLocator);
+    }
+  }
+
+  void saveCache(DOMNodeWriter* cache) {
+    for (RESOURCE* mResource : cResources) {
+      mResource->saveCache(cache);
     }
   }
 
   void createResource(IResourceAccessor* resources, IResourceRegistry* resourceRegistry, IEditingContext* editingContext) {
-    RESOURCE* mResource = new RESOURCE(cModuleInterface, NULL, resourceRegistry);
+    RESOURCE* mResource = new RESOURCE(cModuleInterface, nullptr, resourceRegistry);
     DIALOG* mDialog = new DIALOG(editingContext, mResource, resources, "");
     ResourceDialogConfirmationListener* mListener = new ResourceDialogConfirmationListener(mDialog, resourceRegistry, &cResources);
     mDialog->addConfirmationListener(mListener);

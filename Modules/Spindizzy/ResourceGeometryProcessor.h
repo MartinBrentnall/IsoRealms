@@ -41,7 +41,7 @@
  * Each set of surfaces is considered to be a "block", when the upper and lower
  * surfaces both correspond to the same column.
  */
-class ResourceGeometryProcessor {
+class ResourceGeometryProcessor { // TODO: Not actually a resource any more... Rename!
   public:
   class FullTileColumn : public IElementBounds {
     private:

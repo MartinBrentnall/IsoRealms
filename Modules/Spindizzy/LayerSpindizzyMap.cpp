@@ -81,13 +81,17 @@ void LayerSpindizzyMap::initEditor() {
   cEditingContext->init();
 }
 
-void LayerSpindizzyMap::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
+void LayerSpindizzyMap::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   node->addAttribute("type", resourceLocator->getPath(cMapType));
   node->addAttribute("camera", resourceLocator->getPath(cCamera));
   node->addAttribute("default", "true"); // TODO: Should this be outside of here?  It's used for the editor to make this layer the starting one.
   node->addAttribute("instance", cMapType->getInstanceName(this));
   BlockLocation mStartLocation(0, 0, 0);
-  cElementHandler.save(node, cache, resourceLocator, mStartLocation);
+  cElementHandler.save(node, resourceLocator, mStartLocation);
+}
+
+void LayerSpindizzyMap::saveCache(DOMNodeWriter* cache) {
+  cElementHandler.saveCache(cache);
 }
 
 void LayerSpindizzyMap::pushElement(IElement* element) {

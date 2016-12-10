@@ -33,8 +33,12 @@ void ResourceTextureFile::initialiseResource(DOMNodeWrapper* node, DOMNodeWrappe
   readFile();
 }
 
-void ResourceTextureFile::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
+void ResourceTextureFile::save(DOMNodeWriter* node, IResourceLocator* resources) {
   node->addAttribute("file", cFileName);
+}
+
+void ResourceTextureFile::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do
 }
 
 void ResourceTextureFile::readFile() {

@@ -433,18 +433,19 @@ void ElementSpindizzyBlock::createSampleSurfaces() {
 }
 
 void ElementSpindizzyBlock::renderStatic() {
-  ISpindizzyBlockSet* mSpindizzyBlockSet = cBlockType->getSpindizzyBlockInterface();
-  bool mEditing = mSpindizzyBlockSet->isEditing();
+  // TODO: We should remove static surfaces; this is disabled for now because we lose the surfaces when cached as the project is closed
+//   ISpindizzyBlockSet* mSpindizzyBlockSet = cBlockType->getSpindizzyBlockInterface();
+//   bool mEditing = mSpindizzyBlockSet->isEditing();
   
   for (unsigned int i = 0; i < cStaticTileSurfaces.size(); i++) {
     cStaticTileSurfaces[i]->render();
-    if (!mEditing) {
-      delete cStaticTileSurfaces[i];
-    }
+//     if (!mEditing) {
+//       delete cStaticTileSurfaces[i];
+//     }
   }
-  if (!mEditing) {
-    cStaticTileSurfaces.clear();
-  }
+//   if (!mEditing) {
+//     cStaticTileSurfaces.clear();
+//   }
 
 /* std::vector<ITileSurface*> mBottomTileSurfaces = calculateTileSurfaces(ITileSurface::DOWN);
     for (unsigned int i = 0; i < mBottomTileSurfaces.size(); i++) {
@@ -453,13 +454,13 @@ void ElementSpindizzyBlock::renderStatic() {
   }*/
   for (unsigned int i = 0; i < cStaticWallSurfaces.size(); i++) {
     cStaticWallSurfaces[i]->render();
-    if (!mEditing) {
-      delete cStaticWallSurfaces[i];
-    }
+//     if (!mEditing) {
+//       delete cStaticWallSurfaces[i];
+//     }
   }
-  if (!mEditing) {
-    cStaticWallSurfaces.clear();
-  }
+//   if (!mEditing) {
+//     cStaticWallSurfaces.clear();
+//   }
   
 //   if (mEditing) {
 //     cStaticTileSurfaces.clear();
@@ -819,7 +820,7 @@ Condition* ElementSpindizzyBlock::getCondition() {
   return cCondition;
 }
 
-void ElementSpindizzyBlock::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator, BlockLocation& zoneLocation) {
+void ElementSpindizzyBlock::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& zoneLocation) {
   std::string mBlockTypePath = resourceLocator->getPath(cBlockType);
   node->addAttribute("type", mBlockTypePath);
   if (cFlags != FLAGS_NORMAL) {
@@ -856,8 +857,9 @@ void ElementSpindizzyBlock::save(DOMNodeWriter* node, DOMNodeWriter* cache, IRes
   if (cCondition != nullptr) {
     cCondition->save(node);
   }
-  
-  // Save cache.
+}
+
+void ElementSpindizzyBlock::saveCache(DOMNodeWriter* cache) {
   DOMNodeWriter* mBlockNode = cache->addBranch("SpindizzyBlock");
   for (ITileSurface* mTileSurface : cStaticTileSurfaces) {
     mTileSurface->saveCache(mBlockNode, false);

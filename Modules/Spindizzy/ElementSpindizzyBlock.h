@@ -281,7 +281,8 @@ class ElementSpindizzyBlock:public ICollidableSurfaceElement,
   IElementType* getElementType();
   bool initElement(IUniverse*, unsigned int);
   void renderStatic();
-  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*, BlockLocation&);
+  void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
+  void saveCache(DOMNodeWriter*);
   void renderRuntime();
   void renderEditing();
   bool renderSelectionHighlight();

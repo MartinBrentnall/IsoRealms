@@ -35,7 +35,8 @@ class IModule:public IResourceSource {
   /**
    * Save the configuration and resources of the module.
    */
-  virtual void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*) = 0;
+  virtual void save(DOMNodeWriter*, IResourceLocator*) = 0;
+  virtual void saveCache(DOMNodeWriter*) = 0;
 
   virtual void projectInitialised() = 0;
 

@@ -68,7 +68,8 @@ class ElementSpindizzyEnemy:public IElementSpindizzyDynamic,
   void renderRuntime();
   bool renderSelectionHighlight();
   void updateRuntime(unsigned int milliseconds);
-  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*, BlockLocation&);
+  void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
+  void saveCache(DOMNodeWriter*);
   void setDirty();
   bool initElement(IUniverse*, unsigned int);
   IElementBounds* getBounds();

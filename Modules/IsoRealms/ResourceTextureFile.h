@@ -43,7 +43,8 @@ class ResourceTextureFile:public ITexture {
   ResourceTextureFile(const std::string&);
   
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
-  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
+  void save(DOMNodeWriter*, IResourceLocator*);
+  void saveCache(DOMNodeWriter*);
   
   /***********************\
    * Implements ITexture *

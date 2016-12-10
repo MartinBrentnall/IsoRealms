@@ -231,7 +231,8 @@ class SimpleEditor:public IModule,
   bool input(SDL_Event&);
   bool inputEditor(SDL_Event&);
   ElementPickRay* getPickRay(float, float);
-  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
+  void save(DOMNodeWriter*, IResourceLocator*);
+  void saveCache(DOMNodeWriter*);
   void staticCnanged();
   void initRuntime();
   void initEditor();
@@ -277,7 +278,7 @@ class SimpleEditor:public IModule,
   /**********************\
    * Implements IEditor *
   \**********************/
-  void openProject(const std::string&, bool);
+  void openProject(const std::string&, bool, bool);
 };
 
 #endif

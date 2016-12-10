@@ -34,6 +34,10 @@ std::string ResourceLayerInputRecorder::getInstanceName(ILayer* layer) {
   return ""; // Not supported
 }
 
-void ResourceLayerInputRecorder::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
+void ResourceLayerInputRecorder::save(DOMNodeWriter* node, IResourceLocator* resources) {
+  // Not supported
+}
+
+void ResourceLayerInputRecorder::saveCache(DOMNodeWriter* cache) {
   // Not supported
 }

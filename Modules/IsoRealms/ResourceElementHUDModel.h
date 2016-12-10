@@ -48,11 +48,12 @@ class ResourceElementHUDModel:public ResourceElementHUDAbstract {
   \*****************************************/
   IElement* createHUDElement(DOMNodeWrapper*, DOMNodeWrapper*, BlockLocation*, IResourceAccessor*, bool, HUDComponentPosition*);
   
-  /**********************\
-   * Implements IPlugin *
-  \**********************/
+  /*******************\
+   * Implements TODO *
+  \*******************/
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
-  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
+  void save(DOMNodeWriter*, IResourceLocator*);
+  void saveCache(DOMNodeWriter*);
   
   /***************************\
    * Implements IElementType *

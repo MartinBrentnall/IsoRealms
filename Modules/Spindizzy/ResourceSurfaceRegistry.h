@@ -31,7 +31,7 @@
 #include "ICollidableSurfaceElement.h"
 #include "ICollidableWallSurface.h"
 
-class ResourceSurfaceRegistry {
+class ResourceSurfaceRegistry { // TODO: Not actually a resource any more.  Rename!
   private:
     
   class ElementSurfaces {

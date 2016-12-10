@@ -32,8 +32,12 @@ void ResourceSoundFile::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper*
   loadData(cFile);
 }
 
-void ResourceSoundFile::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
+void ResourceSoundFile::save(DOMNodeWriter* node, IResourceLocator* resources) {
   node->addAttribute("file", cFile);
+}
+
+void ResourceSoundFile::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do
 }
 
 void ResourceSoundFile::loadData(const std::string& filename) {

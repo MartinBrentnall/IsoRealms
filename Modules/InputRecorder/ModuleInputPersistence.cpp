@@ -39,10 +39,9 @@ void ModuleInputPersistence::load(DOMNodeWrapper* node, DOMNodeWrapper* cache, I
     } else {
       mProjectFile = options->getOption("Project");
     }
-    std::string mProjectPath = System::getProgramResource(mProjectFile);
-    std::cout << "Got project file: " << mProjectPath << std::endl;
+    std::cout << "Got project file: " << mProjectFile << std::endl;
     IProjectOptions* mProjectOptions = options->getProjectOptions("Project");
-    cProject = new Project(mProjectFile, nullptr, false, mProjectOptions);
+    cProject = new Project(mProjectFile, false, nullptr, false, mProjectOptions); // TODO: 'user' flag shouldn't always be false
     cProject->initRuntime();
     resources->add(cProject, "Project");
     std::cout << "Project Started for Recording/Playback" << std::endl;
@@ -72,7 +71,11 @@ void ModuleInputPersistence::initialiseResource(DOMNodeWrapper* node, DOMNodeWra
   }
 }
 
-void ModuleInputPersistence::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
+void ModuleInputPersistence::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+  // Not supported
+}
+
+void ModuleInputPersistence::saveCache(DOMNodeWriter* cache) {
   // Not supported
 }
 

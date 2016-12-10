@@ -68,7 +68,11 @@ void LayerHighScore::initEditor() {
   // Not supported
 }
 
-void LayerHighScore::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
+void LayerHighScore::save(DOMNodeWriter* node, IResourceLocator* resources) {
+  // Not supported
+}
+
+void LayerHighScore::saveCache(DOMNodeWriter* cache) {
   // Not supported
 }
 

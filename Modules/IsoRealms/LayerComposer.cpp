@@ -51,8 +51,12 @@ void LayerComposer::initRuntime() {
   cLayers[0]->initRuntime();
 }
 
-void LayerComposer::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
+void LayerComposer::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   // TODO:
+}
+
+void LayerComposer::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do?
 }
 
 void LayerComposer::staticChanged() {

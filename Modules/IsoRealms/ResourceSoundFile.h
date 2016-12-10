@@ -42,7 +42,8 @@ class ResourceSoundFile:public ISound {
   ResourceSoundFile(const std::string&, const std::string&);
     
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
-  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
+  void save(DOMNodeWriter*, IResourceLocator*);
+  void saveCache(DOMNodeWriter*);
   
   std::string getName();
 

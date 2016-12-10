@@ -62,7 +62,8 @@ class ResourceCameraScriptable:public ICamera {
    * Implements IPlugin *
   \**********************/
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
-  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
+  void save(DOMNodeWriter*, IResourceLocator*);
+  void saveCache(DOMNodeWriter*);
 
   void changeLocation(IVertex*);
   void changeLocationFixed(float, float, float);

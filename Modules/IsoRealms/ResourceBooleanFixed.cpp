@@ -36,12 +36,16 @@ void ResourceBooleanFixed::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapp
   cCurrentValue = cInitialValue;
 }
 
-void ResourceBooleanFixed::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
+void ResourceBooleanFixed::save(DOMNodeWriter* node, IResourceLocator* resources) {
   
   // Default is false, so we only need to save if it's true.
   if (cInitialValue) {
     node->addAttribute("value", cInitialValue);
   }
+}
+
+void ResourceBooleanFixed::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do
 }
 
 void ResourceBooleanFixed::setValue(bool value) {

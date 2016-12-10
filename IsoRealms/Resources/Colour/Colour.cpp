@@ -157,7 +157,7 @@ void Colour::debug() {
   std::cout << "  " << cRed << " " << cGreen << " " << cBlue << std::endl;
 }
 
-void Colour::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
+void Colour::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   // TODO: Skip zero values
   std::string mRedString = Utils::toString(cRed);
   std::string mGreenString = Utils::toString(cGreen);
@@ -167,4 +167,8 @@ void Colour::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* r
   node->addAttribute("green", mGreenString);
   node->addAttribute("blue", mBlueString);
   node->addAttribute("alpha", mAlphaString);
+}
+
+void Colour::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do
 }

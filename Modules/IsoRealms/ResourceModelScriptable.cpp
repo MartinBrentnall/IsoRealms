@@ -56,13 +56,17 @@ void ResourceModelScriptable::destroyModel(I3DModel* model) {
   delete model;
 }
 
-void ResourceModelScriptable::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
+void ResourceModelScriptable::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   for (unsigned int i = 0; i < cResources.size(); i++) {
     DOMNodeWriter* mResourceNode = node->addBranch("Instance");
     std::string mResourceName = resourceLocator->getPath(cResources[i]);
     mResourceName = mResourceName.substr(mResourceName.find_last_of('/') + 1);
     mResourceNode->addAttribute("name", mResourceName);
   }
+}
+
+void ResourceModelScriptable::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do
 }
 
 void ResourceModelScriptable::updateIcon(unsigned int milliseconds) {

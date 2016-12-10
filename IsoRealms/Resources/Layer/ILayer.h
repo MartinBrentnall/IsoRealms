@@ -38,7 +38,8 @@ class ILayer : public virtual IResourceSelectionListener<IElementType> {
   virtual ElementPickRay* getPickRay(float, float) = 0;
   virtual void initRuntime() = 0;
   virtual void initEditor() = 0;
-  virtual void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*) = 0;
+  virtual void save(DOMNodeWriter*, IResourceLocator*) = 0;
+  virtual void saveCache(DOMNodeWriter*) = 0;
   virtual void staticChanged() = 0;
   virtual void reset() = 0;
   virtual void addObjectSelectionListener(IObjectSelectionListener*) = 0;

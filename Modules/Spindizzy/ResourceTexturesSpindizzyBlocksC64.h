@@ -137,7 +137,8 @@ class ResourceTexturesSpindizzyBlocksC64:public IResource,
   void deleteResources(IResourceInstanceListener<ITexture>*);
   void addTextures(IResourceRegistry*, const std::string&);
 
-  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
+  void save(DOMNodeWriter*, IResourceLocator*);
+  void saveCache(DOMNodeWriter*);
 
   /*****************************************\
    * Implements ICameraAngleChangeListener *

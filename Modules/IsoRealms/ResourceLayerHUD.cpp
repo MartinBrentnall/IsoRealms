@@ -36,6 +36,10 @@ std::string ResourceLayerHUD::getInstanceName(ILayer* layer) {
   return "<default>"; // TODO: Support instanced HUD's?
 }
 
-void ResourceLayerHUD::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
+void ResourceLayerHUD::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   // Nothing to do.
+}
+
+void ResourceLayerHUD::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do
 }

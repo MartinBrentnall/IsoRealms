@@ -75,8 +75,8 @@ void LayerHUD::renderRuntime() {
   glLoadIdentity();
 
   glScalef(mAspectRatio, 1.0f, 1.0f);
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    cElements[i]->renderRuntime();
+  for (IElement* mElement : cElements) {
+    mElement->renderRuntime();
   }
   glLoadIdentity();  
   glEnable(GL_DEPTH_TEST);
@@ -102,8 +102,8 @@ void LayerHUD::renderEditing() {
   glLoadIdentity();
 
   glScalef(mAspectRatio, 1.0f, 1.0f);
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    cElements[i]->renderEditing();
+  for (IElement* mElement : cElements) {
+    mElement->renderEditing();
   }
   if (cSelectedElement != nullptr) {
     cSelectedElement->renderSelectionHighlight();
@@ -117,14 +117,14 @@ void LayerHUD::renderEditing() {
 }
 
 void LayerHUD::updateRuntime(unsigned int milliseconds) {
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    cElements[i]->updateRuntime(milliseconds);
+  for (IElement* mElement : cElements) {
+    mElement->updateRuntime(milliseconds);
   }
 }
 
 void LayerHUD::updateEditing(unsigned int milliseconds) {
-  for (unsigned int i = 0; i < cElements.size(); i++) {
-    cElements[i]->updateEditing(milliseconds);
+  for (IElement* mElement : cElements) {
+    mElement->updateEditing(milliseconds);
   }
 }
 
@@ -191,14 +191,21 @@ ElementPickRay* LayerHUD::getPickRay(float x, float y) {
   return mRay;
 }
 
-void LayerHUD::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
+void LayerHUD::save(DOMNodeWriter* node, IResourceLocator* resources) {
   node->addAttribute("type", resources->getPath(cLayerType));
-  for (unsigned int i = 0; i < cElements.size(); i++) {
+  for (IElement* mElement : cElements) {
     DOMNodeWriter* mComponentNode = node->addBranch("Element");
 //     std::string mComponentName = getSource(cComponents[i]);
 //     mComponentNode->addAttribute("name", mComponentName);
     BlockLocation mBlockLocation(0, 0, 0);
-    cElements[i]->save(mComponentNode, cache, resources, mBlockLocation);
+    mElement->save(mComponentNode, resources, mBlockLocation);
+  }
+}
+
+void LayerHUD::saveCache(DOMNodeWriter* cache) {
+  for (IElement* mElement : cElements) {
+//    BlockLocation mBlockLocation(0, 0, 0);
+    mElement->saveCache(cache);
   }
 }
 

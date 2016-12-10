@@ -73,7 +73,8 @@ class ResourceElementSpindizzyCraft:public ISpindizzyGERALDType,
   std::string getInstanceName(ElementSpindizzyCraft*);
 
   void saveInstances(DOMNodeWriter*, IResourceLocator*);
-  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
+  void save(DOMNodeWriter*, IResourceLocator*);
+  void saveCache(DOMNodeWriter*);
   void stop();
 
   /************************\

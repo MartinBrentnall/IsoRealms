@@ -41,8 +41,12 @@ void ResourceElementSpindizzyEnemy::initialiseResource(DOMNodeWrapper* node, DOM
   cSampleEnemy = new ElementSpindizzyEnemy(this, &mIdentityLocation, cModelType, nullptr);
 }
 
-void ResourceElementSpindizzyEnemy::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
+void ResourceElementSpindizzyEnemy::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   node->addAttribute("model", resourceLocator->getPath(cModelType));
+}
+
+void ResourceElementSpindizzyEnemy::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do
 }
 
 void ResourceElementSpindizzyEnemy::loadElement(DOMNodeWrapper* node, DOMNodeWrapper* cache, BlockLocation* relative, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {

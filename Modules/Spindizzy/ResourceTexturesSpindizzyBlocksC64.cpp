@@ -462,7 +462,7 @@ ITexture* ResourceTexturesSpindizzyBlocksC64::getResource(const std::string& nam
   return cTextures[name];
 }
 
-void ResourceTexturesSpindizzyBlocksC64::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
+void ResourceTexturesSpindizzyBlocksC64::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   std::string mResourceName = resourceLocator->getPath(cTextures[PLAIN]);
   mResourceName = mResourceName.substr(mResourceName.find_last_of('/') + 1);
   mResourceName = mResourceName.substr(0, mResourceName.find_last_of('_'));
@@ -471,6 +471,10 @@ void ResourceTexturesSpindizzyBlocksC64::save(DOMNodeWriter* node, DOMNodeWriter
   node->addAttribute("wall", resourceLocator->getPath(cWallColour));
   node->addAttribute("grid", resourceLocator->getPath(cGridColour));
   node->addAttribute("extra", resourceLocator->getPath(cBackgroundColour));
+}
+
+void ResourceTexturesSpindizzyBlocksC64::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do
 }
 
 void ResourceTexturesSpindizzyBlocksC64::cameraAngleChanged(float angle) {

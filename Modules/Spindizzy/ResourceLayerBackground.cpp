@@ -41,11 +41,15 @@ LayerBackground* ResourceLayerBackground::createInstance(const std::string& name
 void ResourceLayerBackground::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
 }
 
-void ResourceLayerBackground::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
+void ResourceLayerBackground::save(DOMNodeWriter* node, IResourceLocator* resources) {
   for (std::pair<std::string, LayerBackground*> mInstance : cNamedInstances) {
     DOMNodeWriter* mInstanceBranch = node->addBranch("Instance");
     mInstanceBranch->addAttribute("name", mInstance.first);
   }
+}
+
+void ResourceLayerBackground::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do
 }
 
 // void ResourceLayerBackground::loadInstance(DOMNodeWrapper* node, IRuntimeContext* runtimeContext) {

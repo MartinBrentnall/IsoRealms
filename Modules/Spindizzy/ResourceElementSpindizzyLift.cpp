@@ -51,9 +51,13 @@ bool ResourceElementSpindizzyLift::isActive() {
   return cState->getValue();
 }
 
-void ResourceElementSpindizzyLift::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
+void ResourceElementSpindizzyLift::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   node->addAttribute("model", resourceLocator->getPath(cModelType));
   node->addAttribute("state", resourceLocator->getPath(cState));
+}
+
+void ResourceElementSpindizzyLift::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do
 }
 
 ISpindizzyLiftSet* ResourceElementSpindizzyLift::getSpindizzyLiftInterface() {

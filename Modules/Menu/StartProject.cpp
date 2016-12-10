@@ -18,12 +18,13 @@
  */
 #include "StartProject.h"
 
-StartProject::StartProject(IController* controller, const std::string& project, IProjectOptions* options) {
+StartProject::StartProject(IController* controller, const std::string& project, bool user, IProjectOptions* options) {
   cController = controller;
-  cProject = project;
-  cOptions = options;
+  cProject    = project;
+  cUser       = user;
+  cOptions    = options;
 }
 
 void StartProject::execute() {
-  cController->startProject(cProject, cOptions);
+  cController->startProject(cProject, cUser, cOptions);
 }

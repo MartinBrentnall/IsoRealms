@@ -89,7 +89,9 @@ class IElement:public IObjectWithProperties {
 
   virtual bool isInteractive() = 0;
 
-  virtual void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*, BlockLocation&) = 0;
+  virtual void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&) = 0;
+  
+  virtual void saveCache(DOMNodeWriter*) = 0;
 
   virtual void setDirty() = 0;
 

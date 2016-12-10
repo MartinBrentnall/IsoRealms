@@ -185,7 +185,8 @@ class ElementSpindizzyCraft:public Element,
   void updateRuntime(unsigned int);
   void updateEditing(unsigned int);
   bool initElement(IUniverse*, unsigned int);
-  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*, BlockLocation&);
+  void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
+  void saveCache(DOMNodeWriter*);
   void setDirty();
   IElementBounds* getBounds();
   void reset();

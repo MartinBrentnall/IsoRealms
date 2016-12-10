@@ -73,8 +73,12 @@ std::string ResourceIntegerTimer::StringTimer::getValue() {
   return mStringStream.str();
 }
 
-void ResourceIntegerTimer::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
+void ResourceIntegerTimer::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   node->addAttribute("value", cInitialMilliseconds);
+}
+
+void ResourceIntegerTimer::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do
 }
 
 void ResourceIntegerTimer::update(unsigned int milliseconds) {

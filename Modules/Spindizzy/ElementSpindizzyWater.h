@@ -82,7 +82,8 @@ class ElementSpindizzyWater:public ISpindizzyBlock,
   void renderStatic();
   void renderRuntime();
   bool renderSelectionHighlight();
-  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*, BlockLocation&);
+  void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
+  void saveCache(DOMNodeWriter*);
   IElementBounds* getBounds();
   PickedElement* pickElement(Vertex&, Vertex&);
 

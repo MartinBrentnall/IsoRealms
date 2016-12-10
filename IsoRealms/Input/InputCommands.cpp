@@ -69,15 +69,17 @@ DOMNodeWrapper* InputCommands::findConfiguration(std::vector<DOMNodeWrapper*> no
 
 void InputCommands::loadConfiguration(DOMNodeWrapper* node, std::vector<std::string> configurationFiles, IResources* resources) {
   std::vector<DOMNodeWrapper*> mConfigurationNodes;
-  for (unsigned int i = 0; i < configurationFiles.size(); i++) {
-    std::string mControlConfigurationPath = System::getUserResource(configurationFiles[i]);
-    if (!System::fileExists(mControlConfigurationPath)) {
-      System::makeUserDataDirectory(configurationFiles[i].substr(0, configurationFiles[i].find_last_of('/')));
+  for (std::string mConfigurationFile : configurationFiles) {
+    if (!System::fileExists(mConfigurationFile)) {
+      size_t mLastDirectorySeparator = mConfigurationFile.find_last_of('/');
+      if (mLastDirectorySeparator != std::string::npos) {
+        System::makeDirectory(mConfigurationFile.substr(0, mLastDirectorySeparator));
+      }
       DOMNodeWriter* mNode = new DOMNodeWriter("InputConfiguration");
-      std::cout << "Creating configuration file: " << mControlConfigurationPath << std::endl;
-      mNode->save(mControlConfigurationPath);
+      std::cout << "Creating configuration file: " << mConfigurationFile << std::endl;
+      mNode->save(mConfigurationFile);
     }
-    mConfigurationNodes.push_back(new DOMNodeWrapper(mControlConfigurationPath));
+    mConfigurationNodes.push_back(new DOMNodeWrapper(mConfigurationFile));
   }
   
   for (int i = 0; i < node->getChildCount(); i++) {

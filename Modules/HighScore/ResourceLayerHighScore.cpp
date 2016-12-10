@@ -34,6 +34,10 @@ std::string ResourceLayerHighScore::getInstanceName(ILayer* layer) {
   return ""; // Not supported
 }
 
-void ResourceLayerHighScore::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
+void ResourceLayerHighScore::save(DOMNodeWriter* node, IResourceLocator* resources) {
+  // Not supported
+}
+
+void ResourceLayerHighScore::saveCache(DOMNodeWriter* cache) {
   // Not supported
 }

@@ -49,41 +49,44 @@ FrontEndMenu::FrontEndMenu(IFrontEndCommands* commandRegistry, IMenuStack* menuS
       }
     } else if (mValueAsString == "Project") {
       std::string mProjectFile = mNode->getAttribute("file");
+      bool mProjectUser = mNode->getBooleanAttribute("user");
       std::string mLabel = mNode->getAttribute("label");
       IProjectOptions* mProjectOptions = new ProjectOptions(mNode);
-      ICommand* mProjectCommand = new StartProject(controller, mProjectFile, mProjectOptions);
+      ICommand* mProjectCommand = new StartProject(controller, mProjectFile, mProjectUser, mProjectOptions);
       FrontEndMenuItem* mMenuItem = new FrontEndMenuItem(mLabel, mProjectCommand);
       cMenuItems.push_back(mMenuItem);
-    } else if (mValueAsString == "ProjectList") {
+    } else if (mValueAsString == "ProjectList") { // TODO: Not sure if this is used any more
       std::string mDirForSelection = mNode->getAttribute("source");
+      bool mProjectUser = mNode->getBooleanAttribute("user");
       std::string mActualDir = System::getProgramResource(mDirForSelection);
       std::vector<std::string>* mFileList = System::getFileList(mActualDir); // TODO: Destruction
       for (unsigned int i = 0; i < mFileList->size(); i++) {
         std::size_t mExtensionPosition = (*mFileList)[i].find_last_of('.');
         std::string mProjectName = (*mFileList)[i].substr(0, mExtensionPosition);
         IProjectOptions* mProjectOptions = new ProjectOptions(mNode);
-        ICommand* mArgumentedCommand = new StartProject(controller, mDirForSelection + (*mFileList)[i], mProjectOptions);
+        ICommand* mArgumentedCommand = new StartProject(controller, mDirForSelection + (*mFileList)[i], mProjectUser, mProjectOptions);
         FrontEndMenuItem* mMenuItem = new FrontEndMenuItem(mProjectName, mArgumentedCommand);
         cMenuItems.push_back(mMenuItem);
       }
     } else if (mValueAsString == "OpenWith") {
       std::string mProjectName = mNode->getAttribute("project");
+      bool mProjectUser = mNode->getBooleanAttribute("user");
       std::string mDirForSelection = mNode->getAttribute("source");
-      bool mUserDirectory = mNode->getBooleanAttribute("user");
+      bool mUserDirectory = mNode->getBooleanAttribute("sourceUser");
       std::string mActualDir = mUserDirectory ? System::getUserResource(mDirForSelection) : System::getProgramResource(mDirForSelection);
       std::vector<std::string>* mFileList = System::getFileList(mActualDir); // TODO: Destruction
       for (unsigned int i = 0; i < mFileList->size(); i++) {
         std::map<std::string, std::string> mReferenceOptionValues;
         mReferenceOptionValues["file"] = mDirForSelection + (*mFileList)[i];
         IProjectOptions* mProjectOptions = new ProjectOptions(mNode, mReferenceOptionValues);
-        ICommand* mArgumentedCommand = new StartProject(controller, mProjectName, mProjectOptions);
+        ICommand* mArgumentedCommand = new StartProject(controller, mProjectName, mProjectUser, mProjectOptions);
         FrontEndMenuItem* mMenuItem = new FrontEndMenuItem((*mFileList)[i], mArgumentedCommand);
         cMenuItems.push_back(mMenuItem);
       }
-    } else if (mValueAsString == "ControlSetup") {
-      std::string mFilename = format(mNode->getAttribute("name"), tree);
-      std::vector<IFrontEndMenuItem*> mControlMenuItems = parseControlConfig(mFilename);
-      cMenuItems.insert(cMenuItems.end(), mControlMenuItems.begin(), mControlMenuItems.end());
+    } else if (mValueAsString == "ControlSetup") { // TODO: Get this working
+//       std::string mFilename = format(mNode->getAttribute("name"), tree);
+//       std::vector<IFrontEndMenuItem*> mControlMenuItems = parseControlConfig(mFilename);
+//       cMenuItems.insert(cMenuItems.end(), mControlMenuItems.begin(), mControlMenuItems.end());
     } else if (mValueAsString == "FullScreen") {
       std::string mName = mNode->getAttribute("name");
       std::string mTrueValue = mNode->getAttribute("trueValue");

@@ -182,7 +182,7 @@ void ResourceElementSpindizzyCraft::saveInstances(DOMNodeWriter* node, IResource
   }
 } 
 
-void ResourceElementSpindizzyCraft::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
+void ResourceElementSpindizzyCraft::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   node->addAttribute("model", resourceLocator->getPath(cModelType));
   node->addAttribute("camera", resourceLocator->getPath(cCamera));
   resourceLocator->saveScript(node, "RespawnScript", cRespawnScript);
@@ -197,6 +197,10 @@ void ResourceElementSpindizzyCraft::save(DOMNodeWriter* node, DOMNodeWriter* cac
     BlockLocation mIdentityLocation;
     mNamedInstance.second->saveInstance(mInstanceNode, resourceLocator, mIdentityLocation);
   }
+}
+
+void ResourceElementSpindizzyCraft::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do
 }
 
 void ResourceElementSpindizzyCraft::stop() {

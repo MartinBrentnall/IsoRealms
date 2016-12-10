@@ -72,7 +72,8 @@ class LayerHUD:public ILayer,
   bool input(SDL_Event&);
   bool inputEditor(SDL_Event&);
   ElementPickRay* getPickRay(float, float);
-  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
+  void save(DOMNodeWriter*, IResourceLocator*);
+  void saveCache(DOMNodeWriter*);
   void staticChanged();
   void reset();
   void addObjectSelectionListener(IObjectSelectionListener*);

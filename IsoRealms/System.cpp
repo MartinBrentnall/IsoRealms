@@ -31,15 +31,20 @@ std::string System::getUserDataDirectory() {
 }
 
 void System::makeDirectory(const std::string& path) {
-  struct stat mDirInfo;
-  if (stat(path.c_str(), &mDirInfo) == 0) {
-    if (!S_ISDIR(mDirInfo.st_mode)) {
-      std::cout << path << " exists, but is not a directory!" << std::endl;
+  struct stat mUserDataLocationInfo;
+  std::vector<std::string> mFolders = Utils::splitWords(path, '/');
+  std::string mUserDataLocation = "";
+  for (unsigned int i = 0; i < mFolders.size(); i++) {
+    mUserDataLocation += "/" + mFolders[i];
+    if (stat(mUserDataLocation.c_str(), &mUserDataLocationInfo) == 0) {
+      if (!S_ISDIR(mUserDataLocationInfo.st_mode)) {
+        std::cout << "Exists, but is not a directory!" << std::endl;
+        exit(1);
+      }
+    } else if (mkdir(mUserDataLocation.c_str(), 0700)) {
+      std::cout << "Couldn't create user data directory" << std::endl;
       exit(1);
     }
-  } else if (mkdir(path.c_str(), 0700)) {
-    std::cout << "Couldn't create directory " << path << std::endl;
-    exit(1);
   }
 }
 
@@ -131,20 +136,21 @@ std::vector<std::string>* System::getFileList(const std::string& filename, bool 
   std::vector<std::string>* mList = new std::vector<std::string>();
   DIR *dp;
   struct dirent *dirp;
-  if ((dp = opendir(filename.c_str())) == NULL) {
-    std::cout << "Error(" << errno << ") opening " << filename << std::endl;
+  if ((dp = opendir(filename.c_str())) == nullptr) {
+    std::cout << "WARNING(" << errno << "); Directory \"" << filename << "\" could not be opened to list files" << std::endl;
+    return mList;
   }
 
   struct stat mFileInfo;
-  while ((dirp = readdir(dp)) != NULL) {
+  while ((dirp = readdir(dp)) != nullptr) {
     if (dirp->d_name[0] != '.' && dirp->d_type) {
       std::string mFullPath = filename + dirp->d_name;
       if (lstat(mFullPath.c_str(), &mFileInfo) < 0) {
-	perror(mFullPath.c_str());
+        perror(mFullPath.c_str());
       } else {
-	if (S_ISDIR(mFileInfo.st_mode) != files) {
+        if (S_ISDIR(mFileInfo.st_mode) != files) {
           mList->push_back(std::string(dirp->d_name));
-	}
+        }
       }
     }
   }

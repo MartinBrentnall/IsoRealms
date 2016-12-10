@@ -52,7 +52,8 @@ class ElementHUDRoundedRectangle:public Element {
   void renderRuntime();
   bool renderSelectionHighlight();
   void updateRuntime(unsigned int);
-  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*, BlockLocation&);
+  void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
+  void saveCache(DOMNodeWriter*);
 };
 
 #endif

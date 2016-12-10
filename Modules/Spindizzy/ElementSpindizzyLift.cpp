@@ -203,7 +203,7 @@ void ElementSpindizzyLift::renderRuntime() {
   cLiftModel->render();
 }
 
-void ElementSpindizzyLift::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator, BlockLocation& relative) {
+void ElementSpindizzyLift::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& relative) {
   std::string mElementTypePath = resourceLocator->getPath(cLiftType);
   node->addAttribute("type", mElementTypePath);
   cLocation.saveRelative(node, relative);
@@ -213,6 +213,10 @@ void ElementSpindizzyLift::save(DOMNodeWriter* node, DOMNodeWriter* cache, IReso
   node->addAttribute("downSpeed",   cDownSpeed);
   node->addAttribute("topDelay",    cTopDelay);
   node->addAttribute("bottomDelay", cBottomDelay);
+}
+
+void ElementSpindizzyLift::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do
 }
 
 std::string ElementSpindizzyLift::getTypeName() {

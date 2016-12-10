@@ -41,14 +41,14 @@ void Engine::loadProject(DOMNodeWrapper* node) {
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Engine") {
       std::string mRootProject = mNode->getAttribute("project");
-      std::string mRootProjectFullPath = System::getProgramResource(mRootProject + ".isorealms");
-      loadProject(mRootProjectFullPath);
+      bool mUserProject = mNode->getBooleanAttribute("user");
+      loadProject(mRootProject, mUserProject);
     }
   }
 }
 
-void Engine::loadProject(const std::string& projectName) {
-  cProject = new Project(projectName, NULL, false, nullptr);
+void Engine::loadProject(const std::string& projectName, bool userProject) {
+  cProject = new Project(projectName, userProject, nullptr, false, nullptr);
   cProject->initRuntime();
 }
 

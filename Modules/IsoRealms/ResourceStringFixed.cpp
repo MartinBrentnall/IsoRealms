@@ -26,8 +26,12 @@ void ResourceStringFixed::initialiseResource(DOMNodeWrapper* node, DOMNodeWrappe
   cValue = node->getAttribute("value");
 }
 
-void ResourceStringFixed::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
+void ResourceStringFixed::save(DOMNodeWriter* node, IResourceLocator* resources) {
   node->addAttribute("value", cValue);
+}
+
+void ResourceStringFixed::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do
 }
 
 void ResourceStringFixed::setValue(const std::string& value) {

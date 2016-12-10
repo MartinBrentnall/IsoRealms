@@ -42,7 +42,8 @@ class ResourceModelElement:public I3DModelType,
   I3DModel* createModel(Vertex*, float);
   void destroyModel(I3DModel*);
 
-  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
+  void save(DOMNodeWriter*, IResourceLocator*);
+  void saveCache(DOMNodeWriter*);
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
   void updateIcon(unsigned int);
   void renderIcon();

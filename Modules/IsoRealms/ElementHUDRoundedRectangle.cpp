@@ -105,7 +105,10 @@ void ElementHUDRoundedRectangle::updateRuntime(unsigned int) {
   // Nothing to do
 }
 
-void ElementHUDRoundedRectangle::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator, BlockLocation& blockLocation) {
+void ElementHUDRoundedRectangle::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& blockLocation) {
   // TODO: Save colour and roundiness
 }
 
+void ElementHUDRoundedRectangle::saveCache(DOMNodeWriter* cache) {
+  // TODO
+}

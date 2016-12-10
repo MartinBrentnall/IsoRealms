@@ -92,8 +92,12 @@ void ElementHandlerZone::renderStatic() {
   // Nothing to do.
 }
 
-void ElementHandlerZone::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator, BlockLocation& location) {
-  cElements.save(node, cache, resourceLocator, location);
+void ElementHandlerZone::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& location) {
+  cElements.save(node, resourceLocator, location);
+}
+
+void ElementHandlerZone::saveCache(DOMNodeWriter* cache) {
+  cElements.saveCache(cache);
 }
 
 void ElementHandlerZone::setDirty() {

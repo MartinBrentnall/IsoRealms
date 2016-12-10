@@ -59,6 +59,7 @@ class Project:public IProject {
   IScriptCall* cInitScript;
   bool cCompleted;
   std::string cFileName;
+  std::string cProjectDataPath;
   bool cFirstInitialised;
   std::map<std::string, ReturnValue*>   cReturnValues;
   std::map<std::string, ReturnProject*> cReturnProjects;
@@ -67,11 +68,12 @@ class Project:public IProject {
   
   std::vector<IObjectSelectionListener*> cObjectSelectionListeners;
   
-  void loadProject(DOMNodeWrapper*, DOMNodeWrapper*, const std::string&, IEditingContext*, bool, IProjectOptions*);
+  void loadProject(DOMNodeWrapper*, DOMNodeWrapper*, IEditingContext*, bool, IProjectOptions*);
+  void updateCache();
   
   public:
   Project();
-  Project(const std::string&, IEditingContext*, bool, IProjectOptions*);
+  Project(const std::string&, bool, IEditingContext*, bool, IProjectOptions*);
 
   void initEditor();
   void initRuntime();

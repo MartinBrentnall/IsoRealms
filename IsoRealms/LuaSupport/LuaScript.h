@@ -70,7 +70,8 @@ class LuaScript:public IScript {
   void execute(std::vector<IArgumentValue*>);
   IScriptCall* createScriptCall(DOMNodeWrapper*, IArgumentValueRegistry*, IArgumentValueRegistry*);
   
-  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
+  void save(DOMNodeWriter*, IResourceLocator*);
+  void saveCache(DOMNodeWriter*);
   void save(std::vector<IArgumentValue*>, DOMNodeWriter*, IResourceLocator*);
 
   static IArgumentDefinition* createArgumentDefinition(DOMNodeWrapper*, IResourceRegistry*);

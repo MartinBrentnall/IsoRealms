@@ -87,13 +87,21 @@ std::string ModuleRegistry::getEntityPath(IModule* module) {
   return "Module/" + mType + "/";
 }
 
-void ModuleRegistry::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
+void ModuleRegistry::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   for (std::map<std::string, IModule*>::iterator j = cModuleInstances.begin(); j != cModuleInstances.end(); j++) {
     IModule* mInstance = j->second;
     std::string mTypeName = j->first;
     DOMNodeWriter* mModuleBranch = node->addBranch("Module");
     mModuleBranch->addAttribute("name", mTypeName);
-    mInstance->save(mModuleBranch, cache, resourceLocator);
+    mInstance->save(mModuleBranch, resourceLocator);
+  }
+}
+
+void ModuleRegistry::saveCache(DOMNodeWriter* cache) {
+  for (std::map<std::string, IModule*>::iterator j = cModuleInstances.begin(); j != cModuleInstances.end(); j++) {
+    IModule* mInstance = j->second;
+    std::string mTypeName = j->first;
+    mInstance->saveCache(cache);
   }
 }
 

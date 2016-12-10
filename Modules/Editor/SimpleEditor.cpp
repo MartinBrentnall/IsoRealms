@@ -85,8 +85,12 @@ void SimpleEditor::load(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceRe
   runtimeContext->add(this, "Editor", node);
 }
 
-void SimpleEditor::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
+void SimpleEditor::save(DOMNodeWriter* node, IResourceLocator* resources) {
   // TODO
+}
+
+void SimpleEditor::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do.
 }
 
 void SimpleEditor::projectInitialised() {
@@ -557,20 +561,20 @@ void SimpleEditor::objectSelected(IObjectWithProperties* object) {
   cDockableObjectProperties->objectSelected(object);
 }
 
-void SimpleEditor::openProject(const std::string& file, bool asTemplate) {
-      cProject = new Project(file, this, asTemplate, nullptr);
-      cProject->initEditor();
-      IResourceManager* mProjectResources = cProject->getResourceManager();
-      std::vector<IDialogGenerator*> mProjectDialogGenerators = mProjectResources->getDialogGenerators();
-      for (unsigned int i = 0; i < mProjectDialogGenerators.size(); i++) {
-        Dialog* mProjectDialog = mProjectDialogGenerators[i]->createDialog(this, nullptr);
-        cScreenEdgeManager.add(mProjectDialog, cResourceIcons["IconSurfaceProcessors"], 0.15f); // TODO: ICON!  SIZE!
-      }
-      cSelectedLayer = cProject->getDefaultLayer();
-      for (unsigned int i = 0; i < cProjectManagerListeners.size(); i++) {
-        cProjectManagerListeners[i]->projectOpened(cProject);
-      }
-      cProject->addObjectSelectionListener(this);
+void SimpleEditor::openProject(const std::string& file, bool user, bool asTemplate) {
+  cProject = new Project(file, user, this, asTemplate, nullptr);
+  cProject->initEditor();
+  IResourceManager* mProjectResources = cProject->getResourceManager();
+  std::vector<IDialogGenerator*> mProjectDialogGenerators = mProjectResources->getDialogGenerators();
+  for (unsigned int i = 0; i < mProjectDialogGenerators.size(); i++) {
+    Dialog* mProjectDialog = mProjectDialogGenerators[i]->createDialog(this, nullptr);
+    cScreenEdgeManager.add(mProjectDialog, cResourceIcons["IconSurfaceProcessors"], 0.15f); // TODO: ICON!  SIZE!
+  }
+  cSelectedLayer = cProject->getDefaultLayer();
+  for (unsigned int i = 0; i < cProjectManagerListeners.size(); i++) {
+    cProjectManagerListeners[i]->projectOpened(cProject);
+  }
+  cProject->addObjectSelectionListener(this);
   
   // Put Layers in Editor Menu.
   std::vector<ILayer*> mLayers = cProject->getAllLayers();

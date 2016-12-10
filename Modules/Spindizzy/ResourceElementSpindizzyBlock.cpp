@@ -86,8 +86,12 @@ BlockTypeProperties* ResourceElementSpindizzyBlock::getBlockTypeProperties() {
   return &cBlockTypeProperties;
 }
 
-void ResourceElementSpindizzyBlock::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
+void ResourceElementSpindizzyBlock::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   cBlockTypeProperties.save(node, resourceLocator);
+}
+
+void ResourceElementSpindizzyBlock::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do
 }
 
 void ResourceElementSpindizzyBlock::setEditingContext(BlockLocation* editingLocation, IComponentContainer* componentContainer) {

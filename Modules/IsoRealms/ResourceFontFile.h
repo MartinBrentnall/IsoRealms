@@ -85,10 +85,11 @@ class ResourceFontFile:public IFont {
   //Free all the resources assosiated with the font.
   void clean();
   
-  /**********************\
-   * Implements IPlugin *
-  \**********************/
-  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
+  /*******************\
+   * Implements TODO *
+  \*******************/
+  void save(DOMNodeWriter*, IResourceLocator*);
+  void saveCache(DOMNodeWriter*);
 
   /********************\
    * Implements IFont *

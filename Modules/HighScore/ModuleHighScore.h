@@ -43,7 +43,7 @@ class ModuleHighScore:public IModule,
   std::map<std::string, IString*> cReadStrings;
   std::map<std::string, IInteger*> cWriteIntegers;
   std::map<std::string, IString*> cWriteStrings;
-  IString* cProjectName;
+  IString* cProjectDataPath;
   HighScoreTable* cHighScoreTable;
     
   HighScoreTable* readHighScoreTable();
@@ -61,7 +61,8 @@ class ModuleHighScore:public IModule,
    * Implements IModule *
   \**********************/
   void load(DOMNodeWrapper*, DOMNodeWrapper*, IResourceRegistry*, IModuleOptions*);
-  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
+  void save(DOMNodeWriter*, IResourceLocator*);
+  void saveCache(DOMNodeWriter*);
   void projectInitialised();
   
   /*******************************\

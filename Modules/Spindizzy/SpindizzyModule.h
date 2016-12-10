@@ -194,10 +194,11 @@ class SpindizzyModule:public IModule,
   void setActiveUniverse(IUniverse*);
   
   /**********************\
-   * Implements IPlugin *
+   * Implements IModule *
   \**********************/
   void load(DOMNodeWrapper*, DOMNodeWrapper*, IResourceRegistry*, IModuleOptions*);
-  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
+  void save(DOMNodeWriter*, IResourceLocator*);
+  void saveCache(DOMNodeWriter*);
   void projectInitialised();
   
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);

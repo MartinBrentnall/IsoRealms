@@ -206,14 +206,15 @@ bool ElementSpindizzyWater::initElement(IUniverse* universe, unsigned int pass) 
   return true;
 }
 
-void ElementSpindizzyWater::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator, BlockLocation& location) {
+void ElementSpindizzyWater::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& location) {
   std::string mElementTypePath = resourceLocator->getPath(cWaterType);
   node->addAttribute("type", mElementTypePath);
   cStartLocation.saveRelative(node, location);
   // TODO: Only save size if it's bigger than 1.
   cEndLocation.saveRelative(node, cStartLocation, "width", "length", "height");
-  
-  // Save the surface cache
+}
+
+void ElementSpindizzyWater::saveCache(DOMNodeWriter* cache) {
   DOMNodeWriter* mBlockNode = cache->addBranch("SpindizzyWater");
   for (ITileSurface* mTileSurface : cStaticTileSurfaces) {
     mTileSurface->saveCache(mBlockNode, false);

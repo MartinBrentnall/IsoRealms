@@ -36,10 +36,14 @@ void ResourceIntegerFixed::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapp
   cCurrentValue = cInitialValue;
 }
 
-void ResourceIntegerFixed::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
+void ResourceIntegerFixed::save(DOMNodeWriter* node, IResourceLocator* resources) {
   if (cInitialValue != 0) {
     node->addAttribute("value", cInitialValue);
   }
+}
+
+void ResourceIntegerFixed::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do
 }
 
 void ResourceIntegerFixed::setValue(int value) {

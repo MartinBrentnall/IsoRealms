@@ -206,7 +206,10 @@ bool HUDComponentPosition::isInteractive() {
   return false;
 }
 
-void HUDComponentPosition::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources, BlockLocation& location) {
+void HUDComponentPosition::save(DOMNodeWriter* node, IResourceLocator* resources, BlockLocation& location) {
+}
+
+void HUDComponentPosition::saveCache(DOMNodeWriter* cache) {
 }
 
 void HUDComponentPosition::setDirty() {

@@ -91,10 +91,14 @@ ElementPickRay* LayerBackground::getPickRay(float x, float y) {
   return nullptr;
 }
 
-void LayerBackground::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
+void LayerBackground::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   std::string mInstanceName = cLayerType->getInstanceName(this);
   node->addAttribute("instance", mInstanceName);
   node->addAttribute("type", resourceLocator->getPath(cLayerType));
+}
+
+void LayerBackground::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do
 }
 
 void LayerBackground::staticChanged() {

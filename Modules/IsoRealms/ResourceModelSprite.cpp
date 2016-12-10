@@ -71,7 +71,7 @@ void ResourceModelSprite::initialiseResource(DOMNodeWrapper* node, DOMNodeWrappe
   cCamera = resourceAccessor->getCamera(mCameraPath);
 }
 
-void ResourceModelSprite::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
+void ResourceModelSprite::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   node->addAttribute("texture", resourceLocator->getPath(cTexture));
   node->addAttribute("size", cSize);
   if (cFlip) {
@@ -89,6 +89,10 @@ void ResourceModelSprite::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResou
   }
   node->addAttribute("offsetRotation", cOffsetRotation, 0.0f);
   node->addAttribute("offsetZ", cOffsetZ, 0.0f);
+}
+
+void ResourceModelSprite::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do
 }
 
 void ResourceModelSprite::updateIcon(unsigned int milliseconds) {

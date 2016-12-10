@@ -65,7 +65,8 @@ class ResourceModelSetCycleable : public IResource {
   ResourceModelSetCycleable(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
  
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
-  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);  
+  void save(DOMNodeWriter*, IResourceLocator*);
+  void saveCache(DOMNodeWriter*);
   std::vector<std::string> getResourceNames();
   I3DModelType* getResource(const std::string&);
   std::vector<I3DModelType*> getResources();

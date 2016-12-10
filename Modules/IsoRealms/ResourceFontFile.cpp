@@ -62,9 +62,13 @@ void ResourceFontFile::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* 
   FT_Done_FreeType(library);
 }
 
-void ResourceFontFile::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
+void ResourceFontFile::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   node->addAttribute("file", cFilename);
   node->addAttribute("detail", cDetail);
+}
+
+void ResourceFontFile::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do
 }
 
 int ResourceFontFile::nextPowerOfTwo(int a) {

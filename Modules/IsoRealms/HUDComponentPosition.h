@@ -84,7 +84,8 @@ class HUDComponentPosition:public IElement {
   bool isDynamicRuntime();
   bool isDynamicEditing();
   bool isInteractive();
-  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*, BlockLocation&);
+  void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
+  void saveCache(DOMNodeWriter*);
   void setDirty();
   void initRuntime();
   void staticChanged();

@@ -28,10 +28,11 @@ class StartProject:public ICommand {
   private:
   IController* cController;
   std::string cProject;
+  bool cUser;
   IProjectOptions* cOptions;
   
   public:
-  StartProject(IController*, const std::string&, IProjectOptions*);
+  StartProject(IController*, const std::string&, bool, IProjectOptions*);
     
   void execute();
 };

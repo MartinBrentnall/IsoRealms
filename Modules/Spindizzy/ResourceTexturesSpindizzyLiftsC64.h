@@ -192,7 +192,8 @@ class ResourceTexturesSpindizzyLiftsC64:public IResource,
   void deleteResources(IResourceInstanceListener<ITexture>*);
 
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
-  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
+  void save(DOMNodeWriter*, IResourceLocator*);
+  void saveCache(DOMNodeWriter*);
 
   virtual ~ResourceTexturesSpindizzyLiftsC64();
 };

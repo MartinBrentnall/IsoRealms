@@ -288,7 +288,7 @@ void ElementHandler::renderEditing(IUniverse* universe) {
   }
 }
 
-void ElementHandler::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator, BlockLocation& location) {
+void ElementHandler::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& location) {
   for (unsigned int i = 0; i < cElements.size(); i++) {
     DOMNodeWriter* mNode = node;
     if (!(cElements[i]->isImplicit())) {
@@ -296,7 +296,13 @@ void ElementHandler::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLo
       IElementType* mElementType = cElements[i]->getElementType();
       mNode->addAttribute("type", resourceLocator->getPath(mElementType));
     }
-    cElements[i]->save(mNode, cache, resourceLocator, location);
+    cElements[i]->save(mNode, resourceLocator, location);
+  }
+}
+
+void ElementHandler::saveCache(DOMNodeWriter* cache) {
+  for (unsigned int i = 0; i < cElements.size(); i++) {
+    cElements[i]->saveCache(cache);
   }
 }
 

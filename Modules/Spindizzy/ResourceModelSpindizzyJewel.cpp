@@ -64,13 +64,17 @@ void ResourceModelSpindizzyJewel::renderIcon() {
   cSampleModel->render();
 }
 
-void ResourceModelSpindizzyJewel::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
+void ResourceModelSpindizzyJewel::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   node->addAttribute("frameColour", resourceLocator->getPath(cColourFrame));
   node->addAttribute("cycleSpeed", cCycleSpeed);
   for (unsigned int i = 0; i < cColoursCycle.size(); i++) {
     DOMNodeWriter* mNode = node->addBranch("ColourCycle");
     mNode->addAttribute("colour", resourceLocator->getPath(cColoursCycle[i]));
   }
+}
+
+void ResourceModelSpindizzyJewel::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do
 }
 
 void ResourceModelSpindizzyJewel::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resourceAccessor) {

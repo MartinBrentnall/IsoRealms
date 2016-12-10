@@ -27,9 +27,8 @@ ModuleHighScore::ModuleHighScore(IResourceTypeRegistry* resourceTypeRegistry) : 
 void ModuleHighScore::load(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceRegistry* resources, IModuleOptions* options) {
   if (options != nullptr) {
     std::string mProjectFile = options->getOption("Project");
-    std::string mProjectPath = System::getProgramResource(mProjectFile);
     IProjectOptions* mProjectOptions = options->getProjectOptions("ProjectOptions");
-    cProject = new Project(mProjectFile, nullptr, false, mProjectOptions);
+    cProject = new Project(mProjectFile, false, nullptr, false, mProjectOptions); // TODO: 'user' flag shouldn't always be false
     cProject->initRuntime();
     resources->add(cProject, "Project");
     std::cout << "Project Started for Scoring: " << mProjectFile << std::endl;
@@ -47,8 +46,8 @@ void ModuleHighScore::load(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourc
 }
 
 void ModuleHighScore::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
-  std::string mProjectNamePath = node->getAttribute("project");
-  cProjectName = resources->getString(mProjectNamePath);
+  std::string mProjectNamePath = node->getAttribute("savePath");
+  cProjectDataPath = resources->getString(mProjectNamePath);
   cMaximumRecords = node->getIntegerAttribute("maximumRecords");
   
   for (int i = 0; i < node->getChildCount(); i++) {
@@ -96,7 +95,11 @@ void ModuleHighScore::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* c
   }
 }
 
-void ModuleHighScore::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
+void ModuleHighScore::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+  // Not supported
+}
+
+void ModuleHighScore::saveCache(DOMNodeWriter* cache) {
   // Not supported
 }
 
@@ -134,11 +137,9 @@ void ModuleHighScore::projectCompleted() {
 }
 
 HighScoreTable* ModuleHighScore::readHighScoreTable() {
-  std::string mProjectName = cProjectName->getValue();
-  mProjectName = mProjectName.substr(0, mProjectName.length() - 10);
-  std::string mHighScoreTablePath = System::getUserResource(mProjectName);
-  System::makeDirectory(mHighScoreTablePath);
-  mHighScoreTablePath += "/HighScores.table";
+  std::string mProjectName = cProjectDataPath->getValue();
+  System::makeDirectory(mProjectName);
+  std::string mHighScoreTablePath = mProjectName + "/HighScores.table";
   if (System::fileExists(mHighScoreTablePath)) {
     DOMNodeWrapper* mHighScoreNode = new DOMNodeWrapper(mHighScoreTablePath);
     for (int i = 0; i < mHighScoreNode->getChildCount(); i++) {
@@ -177,9 +178,8 @@ void ModuleHighScore::writeValues() {
   }
   cHighScoreTable->insertRecord(cRecordToInsert);
 
-  std::string mProjectName = cProjectName->getValue();
-  mProjectName = mProjectName.substr(0, mProjectName.length() - 10);
-  std::string mHighScoreTablePath = System::getUserResource(mProjectName + "/HighScores.table");
+  std::string mProjectName = cProjectDataPath->getValue();
+  std::string mHighScoreTablePath = mProjectName + "/HighScores.table";
   DOMNodeWriter* mNode = new DOMNodeWriter("HighScoreTable");
   
   cHighScoreTable->save(mNode);

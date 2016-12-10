@@ -121,10 +121,14 @@ void ResourceCameraScriptable::initialiseResource(DOMNodeWrapper* node, DOMNodeW
   }
 }
 
-void ResourceCameraScriptable::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
+void ResourceCameraScriptable::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   node->addAttribute("location", resourceLocator->getPath(cTargetLocation));
   DOMNodeWriter* mTransitionCompleteScriptNode = node->addBranch("TransitionCompleteScript");
   cTransitionCompleteScript->save(mTransitionCompleteScriptNode, resourceLocator);
+}
+
+void ResourceCameraScriptable::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do
 }
 
 void ResourceCameraScriptable::changeLocation(IVertex* vertex) {

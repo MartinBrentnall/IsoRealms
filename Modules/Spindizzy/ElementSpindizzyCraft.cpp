@@ -735,13 +735,17 @@ void ElementSpindizzyCraft::saveInstance(DOMNodeWriter* node, IResourceLocator* 
   cStartLocation.saveRelative(node, relative);
 }
 
-void ElementSpindizzyCraft::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator, BlockLocation& relative) {
+void ElementSpindizzyCraft::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& relative) {
   std::string mInstanceName = cCraftType->getInstanceName(this);
   if (mInstanceName != "") {
     node->addAttribute("instance", mInstanceName);
   } else {
     saveInstance(node, resourceLocator, relative);
   }
+}
+
+void ElementSpindizzyCraft::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do
 }
 
 void ElementSpindizzyCraft::readData(DOMNodeWrapper* node) {

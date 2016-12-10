@@ -85,7 +85,8 @@ class ResourceElementSpindizzyBlock:public ISpindizzyBlockType,
   \**********************************/
   ISpindizzyBlockSet* getSpindizzyBlockInterface();
   BlockTypeProperties* getBlockTypeProperties();
-  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
+  void save(DOMNodeWriter*, IResourceLocator*);
+  void saveCache(DOMNodeWriter*);
 
   /***************************\
    * Implements IElementType *

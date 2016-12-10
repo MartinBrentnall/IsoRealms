@@ -36,11 +36,15 @@ ResourceLayerSpindizzyMap::ResourceLayerSpindizzyMap(ISpindizzyMapModule* module
 void ResourceLayerSpindizzyMap::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
 }
 
-void ResourceLayerSpindizzyMap::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
+void ResourceLayerSpindizzyMap::save(DOMNodeWriter* node, IResourceLocator* resources) {
   for (std::pair<std::string, LayerSpindizzyMap*> mInstance : cNamedInstances) {
     DOMNodeWriter* mInstanceBranch = node->addBranch("Instance");
     mInstanceBranch->addAttribute("name", mInstance.first);
   }
+}
+
+void ResourceLayerSpindizzyMap::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do
 }
 
 ISpindizzyMapModule* ResourceLayerSpindizzyMap::getSpindizzyMapInterface() {

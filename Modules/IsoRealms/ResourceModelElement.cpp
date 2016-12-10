@@ -29,8 +29,12 @@ void ResourceModelElement::destroyModel(I3DModel* model) {
   delete model;
 }
 
-void ResourceModelElement::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
-  cElement->save(node, cache, resources, cIdentity);
+void ResourceModelElement::save(DOMNodeWriter* node, IResourceLocator* resources) {
+  cElement->save(node, resources, cIdentity);
+}
+
+void ResourceModelElement::saveCache(DOMNodeWriter* cache) {
+  cElement->saveCache(cache);
 }
 
 void ResourceModelElement::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {

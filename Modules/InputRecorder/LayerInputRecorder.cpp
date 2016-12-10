@@ -115,7 +115,11 @@ void LayerInputRecorder::initEditor() {
   // Not supported
 }
 
-void LayerInputRecorder::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
+void LayerInputRecorder::save(DOMNodeWriter* node, IResourceLocator* resources) {
+  // Not supported
+}
+
+void LayerInputRecorder::saveCache(DOMNodeWriter* cache) {
   // Not supported
 }
 

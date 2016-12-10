@@ -24,31 +24,34 @@ Project::Project() {
   cFirstInitialised = false;
 }
 
-Project::Project(const std::string& file, IEditingContext* editingContext, bool asTemplate, IProjectOptions* options) {
+Project::Project(const std::string& file, bool user, IEditingContext* editingContext, bool asTemplate, IProjectOptions* options) {
   std::size_t mExtensionPosition = file.find_last_of('.');
-  std::string mProjectName = file.substr(0, mExtensionPosition);
-  if (!asTemplate) {
+  cProjectDataPath = System::getUserResource((user ? "User/" : "Program/") + file.substr(0, mExtensionPosition));
+  if (!asTemplate && user) {
     cFileName = file;
   }
   cInitScript = nullptr;
   cResources.setEditing(editingContext != nullptr, this);
-  DOMNodeWrapper* mConfigurationRootNode = new DOMNodeWrapper(file);
-  std::string mCacheFileName = file.substr(0, file.length() - 10) + "/project.cache";
-  DOMNodeWrapper* mCache = nullptr;
-  if (System::fileExists(mCacheFileName)) {
-    mCache = new DOMNodeWrapper(mCacheFileName);
-  }
+  std::string mFullPath = (user ? System::getUserResource(file) : System::getProgramResource(file));
+  DOMNodeWrapper* mConfigurationRootNode = new DOMNodeWrapper(mFullPath);
+  std::string mFullPathCache = cProjectDataPath + "/project.cache";
+  DOMNodeWrapper* mCache = System::fileExists(mFullPathCache) ? new DOMNodeWrapper(mFullPathCache) : nullptr;
   for (int i = 0; i < mConfigurationRootNode->getChildCount(); i++) {
     DOMNodeWrapper *mNode = mConfigurationRootNode->getChild(i);
     std::string mValue = mNode->getNodeName();
     if (mValue == "Project") {
-      loadProject(mNode, mCache, mProjectName, editingContext, asTemplate, options);
+      loadProject(mNode, mCache, editingContext, asTemplate, options);
       
-      // Expsoe the project filename in a string
+      // Expsoe the project filename and data path in a string
       std::string mProjectNamePath = mNode->getAttribute("filename");
       if (mProjectNamePath != "") {
         IString* mProjectNameString = cResources.getString(mProjectNamePath);
         mProjectNameString->setValue(file);
+      }
+      std::string mProjectDataPath = mNode->getAttribute("datapath");
+      if (mProjectDataPath != "") {
+        IString* mProjectDataPathString = cResources.getString(mProjectDataPath);
+        mProjectDataPathString->setValue(cProjectDataPath);
       }
       break;
     }
@@ -62,9 +65,24 @@ Project::Project(const std::string& file, IEditingContext* editingContext, bool 
   cFirstInitialised = false;
   
   std::cout << "Project Ready." << std::endl;
+  
+/*  
+  if (mCache == nullptr) {
+    updateCache();
+  }*/
 }
 
-void Project::loadProject(DOMNodeWrapper* node, DOMNodeWrapper* cache, const std::string& projectDataPath, IEditingContext* editingContext, bool asTemplate, IProjectOptions* options) {
+void Project::updateCache() {
+  DOMNodeWriter* mCacheNode = new DOMNodeWriter("ProjectCache");
+  cModuleRegistry.saveCache(mCacheNode);
+  for (ILayer* mLayer : cLayers) {
+    mLayer->saveCache(mCacheNode);
+  }
+  System::makeDirectory(cProjectDataPath);
+  mCacheNode->save(cProjectDataPath + "/project.cache");
+}
+
+void Project::loadProject(DOMNodeWrapper* node, DOMNodeWrapper* cache, IEditingContext* editingContext, bool asTemplate, IProjectOptions* options) {
   std::map<std::string, std::string> mDefaultElementGroups;
   
   IArgumentValue* mProjectArgument = new ArgumentValueCustomType<Project>(this);
@@ -106,8 +124,8 @@ void Project::loadProject(DOMNodeWrapper* node, DOMNodeWrapper* cache, const std
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "InputConfiguration") {
-      std::string mProjectConfigurationFile = projectDataPath + "/controls.config";
-      std::string mGlobalConfigurationFile = "controls.config";
+      std::string mProjectConfigurationFile = cProjectDataPath + "/controls.config";
+      std::string mGlobalConfigurationFile = System::getUserResource("controls.config");
       std::vector<std::string> mConfigFiles;
       mConfigFiles.push_back(mProjectConfigurationFile);
       mConfigFiles.push_back(mGlobalConfigurationFile);
@@ -140,17 +158,17 @@ void Project::loadProject(DOMNodeWrapper* node, DOMNodeWrapper* cache, const std
 }
 
 void Project::renderRuntime() {
-  for (unsigned int i = 0; i < cLayers.size(); i++) {
-    cLayers[i]->renderRuntime();
+  for (ILayer* mLayer : cLayers) {
+    mLayer->renderRuntime();
   }
 }
 
 void Project::updateRuntime(unsigned int ticks) {
-  for (unsigned int i = 0; i < cLayers.size(); i++) {
-    cLayers[i]->updateRuntime(ticks);
+  for (ILayer* mLayer : cLayers) {
+    mLayer->updateRuntime(ticks);
   }
-  for (unsigned int i = 0; i < cDynamicElements.size(); i++) {
-    cDynamicElements[i]->update(ticks);
+  for (IDynamicElement* mDynamicElement : cDynamicElements) {
+    mDynamicElement->update(ticks);
   }
   
   if (!cFirstInitialised) {
@@ -179,6 +197,7 @@ std::string Project::getName(ILayer* layer) {
 }
 
 void Project::finish() {
+  updateCache(); // TODO: Probably should do this when the project loads, not when finished.  We do it here now because we need to initialise the surfaces after loading before doing this
   cCompleted = true;
   for (std::pair<std::string, ReturnValue*> mReturnValue : cReturnValues) {
     if (mReturnValue.second->cType == "String") {
@@ -219,41 +238,37 @@ void Project::addObjectSelectionListener(IObjectSelectionListener* listener) {
 
 void Project::inputRuntime(SDL_Event& event) {
   cResources.input(event);
-  for (unsigned int i = 0; i < cLayers.size(); i++) {
-    cLayers[i]->input(event);
+  for (ILayer* mLayer : cLayers) {
+    mLayer->input(event);
   }
 }
 
 void Project::initEditor() {
-  for (unsigned int i = 0; i < cLayers.size(); i++) {
-    cLayers[i]->initEditor();
+  for (ILayer* mLayer : cLayers) {
+    mLayer->initEditor();
   }
 }
 
 void Project::initRuntime() {
-  for (unsigned int i = 0; i < cLayers.size(); i++) {
-    cLayers[i]->initRuntime();
+  for (ILayer* mLayer : cLayers) {
+    mLayer->initRuntime();
   }
 }
 
 void Project::save() {
   if (!cFileName.empty()) {
-    DOMNodeWriter* mCacheNode = new DOMNodeWriter("ProjectCache");
-    
     DOMNodeWriter* mProjectNode = new DOMNodeWriter("Project");
     DOMNodeWriter* mInputConfigurationNode = mProjectNode->addBranch("InputConfiguration");
-    cModuleRegistry.save(mProjectNode, mCacheNode, &cResources);
+    cModuleRegistry.save(mProjectNode, &cResources);
     cResources.saveInputConfiguration(mInputConfigurationNode);
     DOMNodeWriter* mInitScriptNode = mProjectNode->addBranch("InitScript");
     cInitScript->save(mInitScriptNode, &cResources);
-    for (unsigned int i = 0; i < cLayers.size(); i++) {
+    for (ILayer* mLayer : cLayers) {
       DOMNodeWriter* mLayerNode = mProjectNode->addBranch("Layer");
-      cLayers[i]->save(mLayerNode, mCacheNode, &cResources);
+      mLayer->save(mLayerNode, &cResources);
     }
-    std::string mCacheDirectory = cFileName.substr(0, cFileName.length() - 10);
-    System::makeDirectory(mCacheDirectory);
     mProjectNode->save(cFileName);
-    mCacheNode->save(mCacheDirectory + "/project.cache");
+    updateCache();
   }
 }
 
@@ -267,9 +282,9 @@ bool Project::hasFileName() {
 }
 
 void Project::removeElement(IElement* element) {
-  for (unsigned int i = 0; i < cLayers.size(); i++) {
-//    cLayers[i]->removeElement(element);
-  }
+//  for (ILayer* mLayer : cLayers) {
+//    mLayer->removeElement(element);
+//  }
 }
 
 ModuleRegistry* Project::getModuleRegistry() {
@@ -281,8 +296,8 @@ IResourceManager* Project::getResourceManager() {
 }
 
 void Project::staticChanged() {
-  for (unsigned int i = 0; i < cLayers.size(); i++) {
-    cLayers[i]->staticChanged();
+  for (ILayer* mLayer : cLayers) {
+    mLayer->staticChanged();
   }
 }
 

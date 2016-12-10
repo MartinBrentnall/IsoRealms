@@ -20,9 +20,9 @@
 
 AttractDemo::AttractDemo(DOMNodeWrapper* node) {
   std::string mProjectName = node->getAttribute("project");
+  bool mProjectUser = node->getBooleanAttribute("user");
   IProjectOptions* mProjectOptions = new ProjectOptions(node);
-  std::string mProjectPath = System::getProgramResource(mProjectName);
-  cProject = new Project(mProjectPath, nullptr, false, mProjectOptions);
+  cProject = new Project(mProjectName, mProjectUser, nullptr, false, mProjectOptions);
   init();
 }
 

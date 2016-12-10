@@ -26,7 +26,7 @@
 
 class IController {
   public:
-  virtual void startProject(const std::string&, IProjectOptions*) = 0;
+  virtual void startProject(const std::string&, bool, IProjectOptions*) = 0;
 };
 
 #endif

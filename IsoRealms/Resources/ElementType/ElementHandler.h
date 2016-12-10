@@ -88,7 +88,8 @@ class ElementHandler {
   void renderRuntime();
   void renderEditing(IUniverse*);
   void staticChanged();
-  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*, BlockLocation&);
+  void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
+  void saveCache(DOMNodeWriter*);
   void reset();
   
   void cursorAppeared(ILayerEditingContext*, Vertex&);

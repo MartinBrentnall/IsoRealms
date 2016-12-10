@@ -20,7 +20,7 @@
       <Field name="Score" location="0.8" align="Right"/>
       <Project name="Recording"/>
     <AttractScene name="Help"/>
-    <AttractScene name="Demo" project="Data/ProjectsSystem/Player.isorealms">
+    <AttractScene name="Demo" project="Data/ProjectsSystem/Player.isorealms" user="false">
       <ModuleOptions name="InputRecorder">
         <Option name="User" value="false"/>
         <Option name="Recording" value="Data/Demos/Demo.recording"/>
@@ -30,7 +30,7 @@
   
     <FrontEnd name="Menu">
       <Menu name="Play">
-        <OpenWith project="Data/ProjectsSystem/HighScore.isorealms" source="Data/Projects/">
+        <OpenWith project="Data/ProjectsSystem/HighScore.isorealms" user="false" source="Data/Projects/">
           <ModuleOptions name="HighScore">
             <Option name="Project" value="Data/ProjectsSystem/Recorder.isorealms"/>
             <ProjectOptions name="ProjectOptions">
@@ -42,7 +42,7 @@
         </OpenWith>
       </Menu>
       <Menu name="View Replay">
-        <OpenWith project="Data/ProjectsSystem/Player.isorealms" source="Recordings/" user="true">
+        <OpenWith project="Data/ProjectsSystem/Player.isorealms" user="false" source="Recordings/" sourceUser="true">
           <ModuleOptions name="InputRecorder">
             <Option name="User" value="true"/>
             <Option name="Recording" ref="file"/>
@@ -50,12 +50,12 @@
         </OpenWith>
       </Menu>
       <Menu name="Create">
-        <Project file="Data/ProjectsTools/Editor.isorealms" label="World Builder">
+        <Project file="Data/ProjectsTools/Editor.isorealms" user="false" label="World Builder">
           <ModuleOptions name="Editor">
             <Option name="MapEditorMode" value="true"/>
           </ModuleOptions>
         </Project>
-        <Project file="Data/ProjectsTools/Editor.isorealms" label="IsoRealms"/>
+        <Project file="Data/ProjectsTools/Editor.isorealms" user="false" label="IsoRealms"/>
       </Menu>
       <Menu name="Settings">
         <Menu name="Visual">

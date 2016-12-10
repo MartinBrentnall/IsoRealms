@@ -101,10 +101,14 @@ void ResourceElementSpindizzyZone::initialiseResource(DOMNodeWrapper* node, DOMN
   cSampleZone = new ElementSpindizzyZone(this, mZoneArea);
 }
 
-void ResourceElementSpindizzyZone::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* locator) {
+void ResourceElementSpindizzyZone::save(DOMNodeWriter* node, IResourceLocator* locator) {
   node->addAttribute("visitedColour", locator->getPath(cVisitedColour));
   node->addAttribute("unvisitedColour", locator->getPath(cUnvisitedColour));
   node->addAttribute("flagModel", locator->getPath(cFlagModelType));
+}
+
+void ResourceElementSpindizzyZone::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do
 }
 
 void ResourceElementSpindizzyZone::loadElement(DOMNodeWrapper* node, DOMNodeWrapper* cache, BlockLocation* location, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {

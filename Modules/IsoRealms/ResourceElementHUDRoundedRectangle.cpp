@@ -65,8 +65,12 @@ void ResourceElementHUDRoundedRectangle::initialiseResource(DOMNodeWrapper* node
   // TODO: Initialise.
 }
 
-void ResourceElementHUDRoundedRectangle::save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*) {
+void ResourceElementHUDRoundedRectangle::save(DOMNodeWriter* node, IResourceLocator* resources) {
   // TODO
+}
+
+void ResourceElementHUDRoundedRectangle::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do
 }
 
 void ResourceElementHUDRoundedRectangle::configureElement() {

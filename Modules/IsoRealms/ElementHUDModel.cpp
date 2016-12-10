@@ -86,6 +86,11 @@ bool ElementHUDModel::renderSelectionHighlight() {
   return false;
 }
 
-void ElementHUDModel::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator, BlockLocation& blockLocation) {
+void ElementHUDModel::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& blockLocation) {
   // TODO
 }
+
+void ElementHUDModel::saveCache(DOMNodeWriter* cache) {
+  // TODO
+}
+

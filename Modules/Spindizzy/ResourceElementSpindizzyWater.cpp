@@ -171,8 +171,12 @@ BlockTypeProperties* ResourceElementSpindizzyWater::getBlockTypeProperties() {
   return nullptr;
 }
 
-void ResourceElementSpindizzyWater::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
+void ResourceElementSpindizzyWater::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   node->addAttribute("texture", resourceLocator->getPath(cTexture));
+}
+
+void ResourceElementSpindizzyWater::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do
 }
 
 void ResourceElementSpindizzyWater::configureBlock(DOMNodeWrapper*) {

@@ -47,13 +47,17 @@ void ResourceModelSetCycleable::initialiseResource(DOMNodeWrapper* node, DOMNode
   }
 }
 
-void ResourceModelSetCycleable::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
+void ResourceModelSetCycleable::save(DOMNodeWriter* node, IResourceLocator* resources) {
   node->addAttribute("name", cModelSetName);
   for (I3DModelType* mModelType : cModelTypes) {
     DOMNodeWriter* mModelBranch = node->addBranch("Model");
     std::string mModelTypePath = resources->getPath(mModelType);
     mModelBranch->addAttribute("name", mModelTypePath);
   }
+}
+
+void ResourceModelSetCycleable::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do
 }
 
 std::vector<std::string> ResourceModelSetCycleable::getResourceNames() {

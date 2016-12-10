@@ -15,17 +15,17 @@
     <IntegerFixed name="Zones"/>
     <StringFixed name="Name"/>
     <StringFixed name="Recording"/>
-    <StringFixed name="Project"/>
+    <StringFixed name="SavePath"/>
   </Module>
-  <Module name="HighScore" project="IsoRealms/Project" maximumRecords="20">  
+  <Module name="HighScore" savePath="IsoRealms/SavePath" maximumRecords="20">  
     <Quit name="IsoRealms/Quit"/>
-    <LayerHighScore name="HighScore" project="IsoRealms/Project"/>
+    <LayerHighScore name="HighScore"/>
     <ReadProjectValue from="Project/Score" to="IsoRealms/Score" type="Integer"/>
     <ReadProjectValue from="Project/Time" to="IsoRealms/Time" type="Integer"/>
     <ReadProjectValue from="Project/Jewels" to="IsoRealms/Jewels" type="Integer"/>
     <ReadProjectValue from="Project/Zones" to="IsoRealms/Zones" type="Integer"/>
     <ReadProjectValue from="Recording" to="IsoRealms/Recording" type="String"/>
-    <ReadProjectValue from="Project/Project" to="IsoRealms/Project" type="String"/>
+    <ReadProjectValue from="Project/DataPath" to="IsoRealms/SavePath" type="String"/>
     <WriteField name="Name" value="IsoRealms/Name" type="String"/>
     <WriteField name="Score" value="IsoRealms/Score" type="Integer" compare="true"/>
     <WriteField name="Time" value="IsoRealms/Time" type="String"/>

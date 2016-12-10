@@ -23,7 +23,7 @@
 
 class IEditor {
   public:
-  virtual void openProject(const std::string&, bool) = 0;
+  virtual void openProject(const std::string&, bool, bool) = 0;
 };
 
 #endif

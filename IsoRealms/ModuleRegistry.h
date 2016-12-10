@@ -96,7 +96,8 @@ class ModuleRegistry:public IModuleRegistry {
    */
   std::vector<std::string> getInstances();
 
-  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
+  void save(DOMNodeWriter*, IResourceLocator*);
+  void saveCache(DOMNodeWriter*);
 
   void projectInitialised();
   

@@ -22,9 +22,13 @@ LuaGlobalVariable::LuaGlobalVariable(IDummyModule* module, DOMNodeWrapper* node,
   cArgument = LuaScript::createArgumentDefinition(node, resourceRegistry);
 }
 
-void LuaGlobalVariable::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
+void LuaGlobalVariable::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   DOMNodeWriter* mGlobalVariableNode = node->addBranch("GlobalVariable");
   cArgument->save(mGlobalVariableNode, resourceLocator);
+}
+
+void LuaGlobalVariable::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do
 }
 
 void LuaGlobalVariable::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resourceAccessor) {

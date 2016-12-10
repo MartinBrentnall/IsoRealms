@@ -91,7 +91,10 @@ bool ElementHUDString::renderSelectionHighlight() {
   return false;
 }
 
-void ElementHUDString::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator, BlockLocation& blockLocation) {
+void ElementHUDString::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& blockLocation) {
   // TODO
 }
 
+void ElementHUDString::saveCache(DOMNodeWriter* cache) {
+  // TODO
+}

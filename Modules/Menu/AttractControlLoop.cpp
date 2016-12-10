@@ -81,7 +81,12 @@ void AttractControlLoop::load(DOMNodeWrapper* node, DOMNodeWrapper* cache, IReso
   resources->add(this, "Menu", node);
 }
 
-void AttractControlLoop::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
+void AttractControlLoop::save(DOMNodeWriter* node, IResourceLocator* resources) {
+  // Nothing to do.
+}
+
+void AttractControlLoop::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do.
 }
   
 void AttractControlLoop::projectInitialised() {
@@ -219,9 +224,8 @@ void AttractControlLoop::addObjectSelectionListener(IObjectSelectionListener* li
   // Not supported
 }
 
-void AttractControlLoop::startProject(const std::string& project, IProjectOptions* options) {
-  std::string mProjectPath = System::getProgramResource(project);
-  cRunningProject = new Project(mProjectPath, nullptr, false, options);
+void AttractControlLoop::startProject(const std::string& project, bool user, IProjectOptions* options) {
+  cRunningProject = new Project(project, user, nullptr, false, options);
   cRunningProject->initRuntime();
   std::cout << "Project Started" << std::endl;
 }

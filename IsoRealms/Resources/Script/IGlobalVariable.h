@@ -29,7 +29,7 @@
 
 class IGlobalVariable:public IResource {
   public:
-  virtual void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*) = 0;
+  virtual void save(DOMNodeWriter*, IResourceLocator*) = 0;
 };
 
 #endif

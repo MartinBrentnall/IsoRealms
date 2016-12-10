@@ -61,7 +61,8 @@ class ResourceElementSpindizzyLift:public ISpindizzyLiftType {
 
   std::vector<ICommand*> getLiftCommands();  
   
-  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
+  void save(DOMNodeWriter*, IResourceLocator*);
+  void saveCache(DOMNodeWriter*);
   
   /************************\
    * Implements IResource *

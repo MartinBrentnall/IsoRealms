@@ -46,10 +46,14 @@ void ElementSpindizzyItem::renderStatic() {
   // Nothing to do.
 }
 
-void ElementSpindizzyItem::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator, BlockLocation& location) {
+void ElementSpindizzyItem::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& location) {
   std::string mItemTypePath = resourceLocator->getPath(cItemType);
   node->addAttribute("type", mItemTypePath);
   cLocation.saveRelative(node, location);  
+}
+
+void ElementSpindizzyItem::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do
 }
 
 IElementBounds* ElementSpindizzyItem::getBounds() {

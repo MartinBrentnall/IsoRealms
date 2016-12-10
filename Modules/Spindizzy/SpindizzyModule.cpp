@@ -188,7 +188,7 @@ void SpindizzyModule::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* c
   }
 }
 
-void SpindizzyModule::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
+void SpindizzyModule::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   resourceLocator->saveScript(node, "LiftMovedScript", cLiftMovedScript);
   for (SpindizzyBlockState* mBlockState : cBlockStateData) {
     DOMNodeWriter* mBlockStateNode = node->addBranch("BlockState");
@@ -201,22 +201,22 @@ void SpindizzyModule::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceL
   mThemeIconNode->addAttribute("z", cThemeModelIconLocation.z);
   mThemeIconNode->addAttribute("scale", cThemeModelIconScale);
 
-  cResourceTypeCameraScriptable.saveResources(            node, cache, resourceLocator, TAG_RESOURCE_TYPE_CAMERA_SCRIPTABLE);
-  cResourceTypeElementSpindizzyBlock.saveResources(       node, cache, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_BLOCK);
-  cResourceTypeElementSpindizzyCraft.saveResources(       node, cache, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_CRAFT);
-  cResourceTypeElementSpindizzyEnemy.saveResources(       node, cache, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_ENEMY);
-  cResourceTypeElementSpindizzyItem.saveResources(        node, cache, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_ITEM);
-  cResourceTypeElementSpindizzyLift.saveResources(        node, cache, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_LIFT);
-  cResourceTypeElementSpindizzyWater.saveResources(       node, cache, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_WATER);
-  cResourceTypeElementSpindizzyZone.saveResources(        node, cache, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_ZONE);
-  cResourceTypeLayerBackground.saveResources(             node, cache, resourceLocator, TAG_RESOURCE_TYPE_LAYER_BACKGROUND);
-  cResourceTypeLayerSpindizzyMap.saveResources(           node, cache, resourceLocator, TAG_RESOURCE_TYPE_LAYER_SPINDIZZY_MAP);
-  cResourceTypeModelSpindizzyCraftGyroscope.saveResources(node, cache, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_CRAFT_GYROSCOPE);
-  cResourceTypeModelSpindizzyCraftPyramid.saveResources(  node, cache, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_CRAFT_PYRAMID);
-  cResourceTypeModelSpindizzyJewel.saveResources(         node, cache, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_JEWEL);
-  cResourceTypeTextureSpindizzyCraftBall.saveResources(   node, cache, resourceLocator, TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_CRAFT_BALL);
-  cResourceTypeTextureSpindizzyBlocksC64.saveResources(   node, cache, resourceLocator, TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_BLOCKS_C64);
-  cResourceTypeTextureSpindizzyLiftsC64.saveResources(    node, cache, resourceLocator, TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_LIFTS_C64);
+  cResourceTypeCameraScriptable.saveResources(            node, resourceLocator, TAG_RESOURCE_TYPE_CAMERA_SCRIPTABLE);
+  cResourceTypeElementSpindizzyBlock.saveResources(       node, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_BLOCK);
+  cResourceTypeElementSpindizzyCraft.saveResources(       node, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_CRAFT);
+  cResourceTypeElementSpindizzyEnemy.saveResources(       node, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_ENEMY);
+  cResourceTypeElementSpindizzyItem.saveResources(        node, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_ITEM);
+  cResourceTypeElementSpindizzyLift.saveResources(        node, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_LIFT);
+  cResourceTypeElementSpindizzyWater.saveResources(       node, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_WATER);
+  cResourceTypeElementSpindizzyZone.saveResources(        node, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_SPINDIZZY_ZONE);
+  cResourceTypeLayerBackground.saveResources(             node, resourceLocator, TAG_RESOURCE_TYPE_LAYER_BACKGROUND);
+  cResourceTypeLayerSpindizzyMap.saveResources(           node, resourceLocator, TAG_RESOURCE_TYPE_LAYER_SPINDIZZY_MAP);
+  cResourceTypeModelSpindizzyCraftGyroscope.saveResources(node, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_CRAFT_GYROSCOPE);
+  cResourceTypeModelSpindizzyCraftPyramid.saveResources(  node, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_CRAFT_PYRAMID);
+  cResourceTypeModelSpindizzyJewel.saveResources(         node, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SPINDIZZY_JEWEL);
+  cResourceTypeTextureSpindizzyCraftBall.saveResources(   node, resourceLocator, TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_CRAFT_BALL);
+  cResourceTypeTextureSpindizzyBlocksC64.saveResources(   node, resourceLocator, TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_BLOCKS_C64);
+  cResourceTypeTextureSpindizzyLiftsC64.saveResources(    node, resourceLocator, TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_LIFTS_C64);
   
   for (std::pair<std::string, SpindizzyZoneTheme*> mTheme : cThemes) {
     DOMNodeWriter* mThemeNode = node->addBranch(TAG_RESOURCE_TYPE_TEXTURE_SPINDIZZY_ZONE_THEME);
@@ -228,6 +228,25 @@ void SpindizzyModule::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceL
   std::string mCameraPath = resourceLocator->getPath(cCamera);
   node->addAttribute("locks", mLocksPath);
   node->addAttribute("camera", mCameraPath);
+}
+
+void SpindizzyModule::saveCache(DOMNodeWriter* cache) {
+  cResourceTypeCameraScriptable.saveCache(            cache);
+  cResourceTypeElementSpindizzyBlock.saveCache(       cache);
+  cResourceTypeElementSpindizzyCraft.saveCache(       cache);
+  cResourceTypeElementSpindizzyEnemy.saveCache(       cache);
+  cResourceTypeElementSpindizzyItem.saveCache(        cache);
+  cResourceTypeElementSpindizzyLift.saveCache(        cache);
+  cResourceTypeElementSpindizzyWater.saveCache(       cache);
+  cResourceTypeElementSpindizzyZone.saveCache(        cache);
+  cResourceTypeLayerBackground.saveCache(             cache);
+  cResourceTypeLayerSpindizzyMap.saveCache(           cache);
+  cResourceTypeModelSpindizzyCraftGyroscope.saveCache(cache);
+  cResourceTypeModelSpindizzyCraftPyramid.saveCache(  cache);
+  cResourceTypeModelSpindizzyJewel.saveCache(         cache);
+  cResourceTypeTextureSpindizzyCraftBall.saveCache(   cache);
+  cResourceTypeTextureSpindizzyBlocksC64.saveCache(   cache);
+  cResourceTypeTextureSpindizzyLiftsC64.saveCache(    cache);
 }
 
 void SpindizzyModule::projectInitialised() {

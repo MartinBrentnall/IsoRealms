@@ -38,7 +38,8 @@ class LuaGlobalVariable:public IGlobalVariable {
   public:
   LuaGlobalVariable(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
     
-  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
+  void save(DOMNodeWriter*, IResourceLocator*);
+  void saveCache(DOMNodeWriter*);
 
   /************************\
    * Implements IResource *

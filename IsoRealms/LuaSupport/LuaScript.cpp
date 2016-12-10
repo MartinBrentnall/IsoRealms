@@ -109,7 +109,7 @@ IScriptCall* LuaScript::createScriptCall(DOMNodeWrapper* node, IArgumentValueReg
   return new LuaScriptCall(this, mArguments);
 }
 
-void LuaScript::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
+void LuaScript::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   node->addAttribute("name", cName);
   for (unsigned int i = 0; i < cArguments.size(); i++) {
     DOMNodeWriter* mArgumentBranch = node->addBranch("Argument");
@@ -117,6 +117,10 @@ void LuaScript::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator
   }
   DOMNodeWriter* mCodeBranch = node->addBranch("Code");
   mCodeBranch->addText(cCode);
+}
+
+void LuaScript::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do
 }
 
 void LuaScript::save(std::vector<IArgumentValue*> argumentValues, DOMNodeWriter* node, IResourceLocator* resourceLocator) {

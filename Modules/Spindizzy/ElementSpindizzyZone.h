@@ -112,7 +112,8 @@ class ElementSpindizzyZone:public Element,
   bool renderSelectionHighlight();
   void updateEditing(unsigned int);
   void updateRuntime(unsigned int);
-  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*, BlockLocation&);
+  void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
+  void saveCache(DOMNodeWriter*);
   void setDirty(IElement*);
   IElementBounds* getBounds();
   void focusGained(ILayerEditingContext*);

@@ -136,31 +136,53 @@ void IsoRealmsModule::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* c
   }
 }
 
-void IsoRealmsModule::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator) {
-  cResourceTypeBooleanFixed.saveResources(              node, cache, resourceLocator, TAG_RESOURCE_TYPE_BOOLEAN_FIXED);
-  cResourceTypeColourFixed.saveResources(               node, cache, resourceLocator, TAG_RESOURCE_TYPE_COLOUR_FIXED);
-  cResourceTypeFontFile.saveResources(                  node, cache, resourceLocator, TAG_RESOURCE_TYPE_FONT_FILE);
-  cResourceTypeGlobalVariable.saveResources(            node, cache, resourceLocator, TAG_RESOURCE_TYPE_GLOBAL_VARIABLE);
-  cResourceTypeElementHUDModel.saveResources(           node, cache, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_HUD_MODEL);
-  cResourceTypeElementHUDRoundedRectangle.saveResources(node, cache, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_HUD_ROUNDED_RECTANGLE);
-  cResourceTypeElementHUDString.saveResources(          node, cache, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_HUD_STRING);
-  cResourceTypeIntegerFixed.saveResources(              node, cache, resourceLocator, TAG_RESOURCE_TYPE_INTEGER_FIXED);
-  cResourceTypeIntegerTimer.saveResources(              node, cache, resourceLocator, TAG_RESOURCE_TYPE_INTEGER_TIMER);
-  cResourceTypeLayerHUD.saveResources(                  node, cache, resourceLocator, TAG_RESOURCE_TYPE_LAYER_HUD);
-  cResourceTypeModelElement.saveResources(              node, cache, resourceLocator, TAG_RESOURCE_TYPE_MODEL_ELEMENT);
-  cResourceTypeModelScriptable.saveResources(           node, cache, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SCRIPTABLE);
-  cResourceTypeModelSetCycleable.saveResources(         node, cache, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SET_CYCLEABLE);
-  cResourceTypeModelSprite.saveResources(               node, cache, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SPRITE);
-  cResourceTypeScriptLua.saveResources(                 node, cache, resourceLocator, TAG_RESOURCE_TYPE_SCRIPT_LUA);
-  cResourceTypeSoundFile.saveResources(                 node, cache, resourceLocator, TAG_RESOURCE_TYPE_SOUND_FILE);
-  cResourceTypeStringFixed.saveResources(               node, cache, resourceLocator, TAG_RESOURCE_TYPE_STRING_FIXED);
-  cResourceTypeTextureFile.saveResources(               node, cache, resourceLocator, TAG_RESOURCE_TYPE_TEXTURE_FILE);
-  cResourceTypeVertexFixed.saveResources(               node, cache, resourceLocator, TAG_RESOURCE_TYPE_VERTEX_FIXED);
+void IsoRealmsModule::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
+  cResourceTypeBooleanFixed.saveResources(              node, resourceLocator, TAG_RESOURCE_TYPE_BOOLEAN_FIXED);
+  cResourceTypeColourFixed.saveResources(               node, resourceLocator, TAG_RESOURCE_TYPE_COLOUR_FIXED);
+  cResourceTypeFontFile.saveResources(                  node, resourceLocator, TAG_RESOURCE_TYPE_FONT_FILE);
+  cResourceTypeGlobalVariable.saveResources(            node, resourceLocator, TAG_RESOURCE_TYPE_GLOBAL_VARIABLE);
+  cResourceTypeElementHUDModel.saveResources(           node, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_HUD_MODEL);
+  cResourceTypeElementHUDRoundedRectangle.saveResources(node, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_HUD_ROUNDED_RECTANGLE);
+  cResourceTypeElementHUDString.saveResources(          node, resourceLocator, TAG_RESOURCE_TYPE_ELEMENT_HUD_STRING);
+  cResourceTypeIntegerFixed.saveResources(              node, resourceLocator, TAG_RESOURCE_TYPE_INTEGER_FIXED);
+  cResourceTypeIntegerTimer.saveResources(              node, resourceLocator, TAG_RESOURCE_TYPE_INTEGER_TIMER);
+  cResourceTypeLayerHUD.saveResources(                  node, resourceLocator, TAG_RESOURCE_TYPE_LAYER_HUD);
+  cResourceTypeModelElement.saveResources(              node, resourceLocator, TAG_RESOURCE_TYPE_MODEL_ELEMENT);
+  cResourceTypeModelScriptable.saveResources(           node, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SCRIPTABLE);
+  cResourceTypeModelSetCycleable.saveResources(         node, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SET_CYCLEABLE);
+  cResourceTypeModelSprite.saveResources(               node, resourceLocator, TAG_RESOURCE_TYPE_MODEL_SPRITE);
+  cResourceTypeScriptLua.saveResources(                 node, resourceLocator, TAG_RESOURCE_TYPE_SCRIPT_LUA);
+  cResourceTypeSoundFile.saveResources(                 node, resourceLocator, TAG_RESOURCE_TYPE_SOUND_FILE);
+  cResourceTypeStringFixed.saveResources(               node, resourceLocator, TAG_RESOURCE_TYPE_STRING_FIXED);
+  cResourceTypeTextureFile.saveResources(               node, resourceLocator, TAG_RESOURCE_TYPE_TEXTURE_FILE);
+  cResourceTypeVertexFixed.saveResources(               node, resourceLocator, TAG_RESOURCE_TYPE_VERTEX_FIXED);
   
   if (cLocks != nullptr) {
     std::string mLocksPath = resourceLocator->getPath(cLocks);
     node->addAttribute("locks", mLocksPath);
   }
+}
+
+void IsoRealmsModule::saveCache(DOMNodeWriter* cache) {
+  cResourceTypeBooleanFixed.saveCache(              cache);
+  cResourceTypeColourFixed.saveCache(               cache);
+  cResourceTypeFontFile.saveCache(                  cache);
+  cResourceTypeGlobalVariable.saveCache(            cache);
+  cResourceTypeElementHUDModel.saveCache(           cache);
+  cResourceTypeElementHUDRoundedRectangle.saveCache(cache);
+  cResourceTypeElementHUDString.saveCache(          cache);
+  cResourceTypeIntegerFixed.saveCache(              cache);
+  cResourceTypeIntegerTimer.saveCache(              cache);
+  cResourceTypeLayerHUD.saveCache(                  cache);
+  cResourceTypeModelElement.saveCache(              cache);
+  cResourceTypeModelScriptable.saveCache(           cache);
+  cResourceTypeModelSetCycleable.saveCache(         cache);
+  cResourceTypeModelSprite.saveCache(               cache);
+  cResourceTypeScriptLua.saveCache(                 cache);
+  cResourceTypeSoundFile.saveCache(                 cache);
+  cResourceTypeStringFixed.saveCache(               cache);
+  cResourceTypeTextureFile.saveCache(               cache);
+  cResourceTypeVertexFixed.saveCache(               cache);
 }
 
 void IsoRealmsModule::projectInitialised() {

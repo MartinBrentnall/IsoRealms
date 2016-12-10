@@ -51,7 +51,8 @@ class LayerBackground:public ILayer {
   ElementPickRay* getPickRay(float, float);
   void initRuntime();
   void initEditor();
-  void save(DOMNodeWriter*, DOMNodeWriter*, IResourceLocator*);
+  void save(DOMNodeWriter*, IResourceLocator*);
+  void saveCache(DOMNodeWriter*);
   void staticChanged();
   void reset();
   void addObjectSelectionListener(IObjectSelectionListener*);

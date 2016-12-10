@@ -54,6 +54,9 @@ void ResourceVertexFixed::setZ(double z) {
 void ResourceVertexFixed::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
 }
 
-void ResourceVertexFixed::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resources) {
+void ResourceVertexFixed::save(DOMNodeWriter* node, IResourceLocator* resources) {
 }
 
+void ResourceVertexFixed::saveCache(DOMNodeWriter* cache) {
+  // Nothing to do
+}

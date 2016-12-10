@@ -84,8 +84,12 @@ void ElementHandlerItem::renderStatic() {
   // Nothing to do.
 }
 
-void ElementHandlerItem::save(DOMNodeWriter* node, DOMNodeWriter* cache, IResourceLocator* resourceLocator, BlockLocation& location) {
-  cElements.save(node, cache, resourceLocator, location);
+void ElementHandlerItem::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& location) {
+  cElements.save(node, resourceLocator, location);
+}
+
+void ElementHandlerItem::saveCache(DOMNodeWriter* cache) {
+  cElements.saveCache(cache);
 }
 
 void ElementHandlerItem::setDirty() {
