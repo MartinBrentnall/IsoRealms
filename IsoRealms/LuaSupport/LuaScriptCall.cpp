@@ -28,6 +28,10 @@ void LuaScriptCall::execute() {
   std::cout << std::flush;
 }
 
+std::string LuaScriptCall::getScriptName() {
+  return cScript->getName();
+}
+
 void LuaScriptCall::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   cScript->save(cArgumentValues, node, resourceLocator);
 }

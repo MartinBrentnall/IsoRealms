@@ -110,7 +110,6 @@ void ComponentResourceModel::lostFocus() {
 }
 
 void ComponentResourceModel::fireChange() {
-  std::cout << "There are " << cListeners.size() << " listeners for " << this << "!" << std::endl;
   for (unsigned int i = 0; i < cListeners.size(); i++) {
     cListeners[i]->valueChanged(this, cValue);
   }

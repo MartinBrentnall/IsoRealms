@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Martin Brentnall
+ * Copyright 2016 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,17 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_EDITOR_H
-#define I_EDITOR_H
+#ifndef DIALOG_INPUT_CONFIGURATION_H
+#define DIALOG_INPUT_CONFIGURATION_H
 
-#include <string>
-
+#include <IsoRealms/GUI/ComponentDigitalInputMapping.h>
+#include <IsoRealms/GUI/ComponentScriptCall.h>
+#include <IsoRealms/GUI/ComponentTable.h>
+#include <IsoRealms/GUI/ResizableDialog.h>
 #include <IsoRealms/Input/InputCommands.h>
 
-class IEditor {
+#include "IDialogParent.h"
+#include "IEditor.h"
+
+class DialogInputConfiguration:public ResizableDialog {
+  private:
+  ComponentTable* cTable;
+    
   public:
-  virtual void openProject(const std::string&, bool, bool) = 0;
-  virtual InputCommands* getInputConfiguration() = 0;
+  DialogInputConfiguration(IComponentContainer*, IResourceAccessor*, IEditor*, IDialogParent*);
 };
 
 #endif
+

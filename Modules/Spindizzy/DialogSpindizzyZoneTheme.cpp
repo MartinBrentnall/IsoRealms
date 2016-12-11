@@ -20,7 +20,10 @@
 
 DialogSpindizzyZoneTheme::DialogSpindizzyZoneTheme(IEditingContext* editingContext, IResourceAccessor* resources, ISpindizzyZoneTheme* theme) : DialogOKCancelUndo(editingContext, resources, "Spindizzy Zone Theme", theme->getName()) {
   cTheme = theme;
-  cTable = new ComponentTable(2, 0.02f);
+  std::vector<std::string> mColumnHeadings;
+  mColumnHeadings.push_back("Name");
+  mColumnHeadings.push_back("Texture");
+  cTable = new ComponentTable(mColumnHeadings, 0.02f);
   IResourceSelector* mResourceSelector = editingContext->getResourceSelector();
   Configuration* mConfiguration = Configuration::getInstance();
   ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();

@@ -39,6 +39,7 @@ class LuaScriptCall:public IScriptCall {
    * Implements IScriptCall *
   \**************************/
   void execute();
+  std::string getScriptName();
   void save(DOMNodeWriter*, IResourceLocator*);
 };
 

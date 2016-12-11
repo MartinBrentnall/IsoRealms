@@ -25,6 +25,13 @@ ComponentTable::ComponentTable(unsigned int columns, float padding) {
   cPadding = padding;
 }
 
+ComponentTable::ComponentTable(std::vector<std::string> headings, float padding) {
+  cColumns = headings.size();
+  cHeadings = headings;
+  cFocusedComponent = nullptr;
+  cPadding = padding;
+}
+
 void ComponentTable::addRow(std::vector<ISizedComponent*> row) {
   if (row.size() != cColumns) {
     return; // TODO: Throw
@@ -60,6 +67,9 @@ float ComponentTable::getHeight() {
   float mGridHeight = 0.0f;
   for (unsigned int y = 0; y < cGridComponents.size(); y++) {
     mGridHeight += getRowHeight(y);
+  }
+  if (!cHeadings.empty()) {
+    mGridHeight += 0.05f;
   }
   return mGridHeight + cGridComponents.size() * cPadding;
 }
@@ -97,6 +107,51 @@ void ComponentTable::update(unsigned int ticks) {
 }
 
 void ComponentTable::render() {
+  float mTop    = getTop();
+  float mLeft   = getLeft();
+  float mRight  = getRight();
+  float mBottom = mTop - 0.05f; // TODO: Heading height
+  
+  glEnable(GL_BLEND);
+  glBegin(GL_QUADS);
+  if (!cHeadings.empty()) {
+    glColor4f(0.15f, 0.0f, 0.3f, 1.0f);
+    glVertex2f(mLeft,  mBottom);
+    glVertex2f(mRight, mBottom);
+    glColor4f(0.9f, 0.0f, 0.45f, 1.0f);
+    glVertex2f(mRight, mTop);
+    glVertex2f(mLeft,  mTop);
+    mTop = mBottom;
+  }
+  
+  glColor4f(0.45f, 0.0f, 0.9f, 0.3f);
+  for (unsigned int y = 0; y < cGridComponents.size(); y++) {
+    float mRowHeight = getRowHeight(y) + cPadding;
+    mBottom          = mTop - mRowHeight;
+    if (y % 2 == 1) {
+      glVertex2f(mLeft,  mBottom);
+      glVertex2f(mRight, mBottom);
+      glVertex2f(mRight, mTop);
+      glVertex2f(mLeft,  mTop);
+    }
+    mTop = mBottom;
+  }
+  glEnd();
+  glDisable(GL_BLEND);
+  glColor3f(1.0f, 1.0f, 1.0f);
+
+  float mColumnLeft = mLeft;
+  unsigned int mColumn = 0;  
+  IFont* mFont = LookAndFeel::getDefaultFont();
+  float mFontSize = LookAndFeel::getDefaultFontSize();
+  glColor3f(1.0f, 1.0f, 1.0f);
+  
+  mTop = getTop();
+  for (std::string mHeading : cHeadings) {
+    mFont->print(mColumnLeft + 0.01f, mTop - 0.04f, mFontSize, IFont::LEFT, mHeading.c_str());
+    mColumnLeft += getColumnWidth(mColumn++);
+  }
+  
   for (unsigned int y = 0; y < cGridComponents.size(); y++) {
     for (unsigned int x = 0; x < cGridComponents[y].size(); x++) {
       ISizedComponent* mComponent = cGridComponents[y][x];
@@ -166,6 +221,9 @@ float ComponentTable::CellLayout::getRight() {
 
 float ComponentTable::CellLayout::getTop() {
   float cTopOffset = cParent->getTop();
+  if (!cParent->cHeadings.empty()) {
+    cTopOffset -= 0.05f;
+  }
   for (unsigned int y = 0; y < cRow; y++) {
     cTopOffset -= cParent->getRowHeight(y) + cParent->cPadding;
   }
@@ -174,6 +232,9 @@ float ComponentTable::CellLayout::getTop() {
 
 float ComponentTable::CellLayout::getBottom() {
   float cTopOffset = cParent->getTop();
+  if (!cParent->cHeadings.empty()) {
+    cTopOffset -= 0.05f;
+  }
   for (unsigned int y = 0; y <= cRow; y++) {
     cTopOffset -= cParent->getRowHeight(y) + cParent->cPadding;
   }

@@ -25,6 +25,7 @@
 
 class IScriptCall : public ICommand {
   public:
+  virtual std::string getScriptName() = 0;
   virtual void save(DOMNodeWriter*, IResourceLocator*) = 0;
   
   virtual ~IScriptCall() {}

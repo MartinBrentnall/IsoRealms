@@ -21,12 +21,14 @@
 int TextFieldComponent::cDelayUntilBlinkChange = BLINK_DELAY;
 bool TextFieldComponent::cBlinkShowing = true;
 
-TextFieldComponent::TextFieldComponent(std::string initialText, bool fireOnKeyPress) {
+TextFieldComponent::TextFieldComponent(std::string initialText, bool fireOnKeyPress, float width, bool renderBorder) {
   cInput = initialText;
   cCaret = 0;
   cUpdating = false;
   cHasFocus = false;
   cFireOnKeyPress = fireOnKeyPress;
+  cWidth = width;
+  cRenderBorder = renderBorder;
 }
 
 void TextFieldComponent::render() {
@@ -40,13 +42,15 @@ void TextFieldComponent::render() {
   mFont->print(mLeft + 0.01f, mBottom + 0.01f, mFontSize, IFont::LEFT, cInput.c_str());
 
   glBindTexture(GL_TEXTURE_2D, 0);
-  glBegin(GL_LINE_LOOP);
-  glColor3f(0.45f, 0.0f, 0.9f);
-  glVertex2f(mLeft,  mTop);
-  glVertex2f(mLeft,  mBottom);
-  glVertex2f(mRight, mBottom);
-  glVertex2f(mRight, mTop);
-  glEnd();
+  if (cRenderBorder) {
+    glBegin(GL_LINE_LOOP);
+    glColor3f(0.45f, 0.0f, 0.9f);
+    glVertex2f(mLeft,  mTop);
+    glVertex2f(mLeft,  mBottom);
+    glVertex2f(mRight, mBottom);
+    glVertex2f(mRight, mTop);
+    glEnd();
+  }
 
   if (cHasFocus && cBlinkShowing) {
     float mCaretOffset = mFont->getWidth(mFontSize, cInput.substr(0, cCaret).c_str());
@@ -217,7 +221,10 @@ void TextFieldComponent::addValueListener(IValueListener<std::string>* listener)
 }
 
 float TextFieldComponent::getWidth() {
-  return 0.4f;
+  Configuration* mConfiguration = Configuration::getInstance();
+  ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
+  float mAspectRatio = mScreen->getAspectRatio();
+  return cWidth * mAspectRatio;
 }
 
 float TextFieldComponent::getHeight() {

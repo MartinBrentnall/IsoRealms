@@ -26,10 +26,12 @@
 #include "IComponentBoundsCalculator.h"
 #include "IComponentSizeCalculator.h"
 #include "ISizedComponent.h"
+#include "LookAndFeel.h"
 
 class ComponentTable:public ISizedComponent {
   private:
   unsigned int cColumns;    
+  std::vector<std::string> cHeadings;
   std::vector<std::vector<ISizedComponent*> > cGridComponents;
   ISizedComponent* cFocusedComponent;
   float cPadding;
@@ -59,6 +61,7 @@ class ComponentTable:public ISizedComponent {
 
   public:
   ComponentTable(unsigned int, float = 0.0f);
+  ComponentTable(std::vector<std::string>, float = 0.0f);
 
   /**
    * Set the component to be displayed in the specified cell.

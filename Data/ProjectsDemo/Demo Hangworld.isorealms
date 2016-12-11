@@ -8,7 +8,7 @@
       </OnStart>
     </DigitalInput>
     <DigitalInput name="Change Craft Appearance">
-      <Mapping type="keyDown" value="i"/>
+      <Mapping type="keyDown" value="I"/>
       <OnStart name="IsoRealms/ChangeCraft"/>
     </DigitalInput>
     <DigitalInput name="Debug Activate Empty Circle Switch">
@@ -106,27 +106,27 @@
       </OnStart>
     </DigitalInput>
     <DigitalInput name="Map">
-      <Mapping type="keyDown" value="m"/>
+      <Mapping type="keyDown" value="M"/>
       <OnStart name="IsoRealms/toggleMapOverview"/>
     </DigitalInput>
     <DigitalInput name="Move East">
       <Mapping type="keyDown" value="ArrowRight"/>
-      <Mapping type="keyDown" value="d"/>
+      <Mapping type="keyDown" value="D"/>
     </DigitalInput>
     <DigitalInput name="Move North">
       <Mapping type="keyDown" value="ArrowUp"/>
-      <Mapping type="keyDown" value="w"/>
+      <Mapping type="keyDown" value="W"/>
     </DigitalInput>
     <DigitalInput name="Move South">
       <Mapping type="keyDown" value="ArrowDown"/>
-      <Mapping type="keyDown" value="s"/>
+      <Mapping type="keyDown" value="S"/>
     </DigitalInput>
     <DigitalInput name="Move West">
       <Mapping type="keyDown" value="ArrowLeft"/>
-      <Mapping type="keyDown" value="a"/>
+      <Mapping type="keyDown" value="A"/>
     </DigitalInput>
     <DigitalInput name="Quit">
-      <Mapping type="keyDown" value="q"/>
+      <Mapping type="keyDown" value="Q"/>
       <OnStart name="IsoRealms/Quit"/>
     </DigitalInput>
     <DigitalInput name="Reset Camera">

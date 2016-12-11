@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2016 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,54 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef TEXT_FIELD_COMPONENT_H
-#define TEXT_FIELD_COMPONENT_H
+#ifndef COMPONENT_SCRIPT_CALL_H
+#define COMPONENT_SCRIPT_CALL_H
 
-#include <cfloat>
 #include <GL/glew.h>
-#include <iostream>
-#include <SDL/SDL.h>
-#include <string>
+#include <GL/gl.h>
 
 #include <IsoRealms/Configuration.h>
-#include <IsoRealms/IllegalStateException.h>
 #include <IsoRealms/IValueListener.h>
-#include <IsoRealms/Resources/Font/IFont.h>
+#include <IsoRealms/GUI/LookAndFeel.h>
+#include <IsoRealms/GUI/ISizedComponent.h>
+#include <IsoRealms/GUI/IValueComponent.h>
+#include <IsoRealms/Resources/Script/IScriptCall.h>
 
-#include "ISizedComponent.h"
-#include "IValueComponent.h"
-#include "LookAndFeel.h"
-
-class TextFieldComponent:public IValueComponent<std::string>,
-                         public ISizedComponent {
+class ComponentScriptCall:public ISizedComponent {
   private:
-  static const unsigned int BLINK_DELAY = 300;
-
-  std::vector<IValueListener<std::string>*> cListeners;
-  static int cDelayUntilBlinkChange;
-  static bool cBlinkShowing;
-  float cWidth;
-
-  unsigned int cCaret;
-  bool cUpdating;
+  IScriptCall* cScriptCall;
   bool cHasFocus;
-  bool cFireOnKeyPress;
-  std::string cInput;
-  bool cRenderBorder;
-
-  bool keyDown(SDLKey&, SDLMod&);
-  bool mouseButtonDown(SDL_Event&);
+  float cSize;
+  IResourceSelector* cResourceSelector;
+  
   void fireChange();
-
+  
   public:
-  TextFieldComponent(std::string = "", bool = true, float = 0.4f, bool = true);
-
-  /*******************************************\
-   * Implements IValueComponent<std::string> *
-  \*******************************************/
-  void setValue(std::string);
-  std::string getValue();
-  void addValueListener(IValueListener<std::string>*);
+  ComponentScriptCall(IScriptCall*, float);
 
   /***************************************\
    * Implements IComponentSizeCalculator *
@@ -78,7 +54,8 @@ class TextFieldComponent:public IValueComponent<std::string>,
   void render();
   bool input(SDL_Event&);
   virtual void gainedFocus();
-  virtual void lostFocus();
+  virtual void lostFocus();  
 };
 
 #endif
+

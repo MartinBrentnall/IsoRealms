@@ -30,9 +30,11 @@ add_library(IsoRealms SHARED
   GUI/Button.cpp
   GUI/CheckBox.cpp
   GUI/CloseDialogCommand.cpp
+  GUI/ComponentDigitalInputMapping.cpp
   GUI/ComponentEdgeLayout.cpp
   GUI/ComponentResourceColourSelector.cpp
   GUI/ComponentResourceTextureSelector.cpp
+  GUI/ComponentScriptCall.cpp
   GUI/ComponentTable.cpp
   GUI/Container.cpp
   GUI/Dialog.cpp

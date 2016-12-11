@@ -87,6 +87,9 @@
         <MenuItem text="^Modules">
           <ExecuteEditorCommand type="Modules"/>
         </MenuItem>
+        <MenuItem text="^Input Configuration">
+          <ExecuteEditorCommand type="InputConfiguration"/>
+        </MenuItem>
       </Menu>
     </MenuBar>
     <MenuBar mapEditor="true">

@@ -49,6 +49,7 @@ class OpenCommand;
 
 #include "CommandDialog.h"
 #include "CommandSelectLayer.h"
+#include "DialogInputConfiguration.h"
 #include "DialogModules.h"
 #include "DialogObjectProperties.h"
 #include "DialogProjectOpen.h"
@@ -91,6 +92,7 @@ class SimpleEditor:public IModule,
   static const std::string COMMAND_OPEN_TEMPLATE;
   static const std::string COMMAND_TEST;
   static const std::string COMMAND_MODULES;
+  static const std::string COMMAND_INPUT_CONFIGURATION;
   static const std::string COMMAND_RESOURCE_BROWSER;
   
   static const float DOCKABLE_3D_MODEL_DEFAULT_WIDTH;
@@ -279,6 +281,7 @@ class SimpleEditor:public IModule,
    * Implements IEditor *
   \**********************/
   void openProject(const std::string&, bool, bool);
+  InputCommands* getInputConfiguration();
 };
 
 #endif

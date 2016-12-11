@@ -18,7 +18,7 @@
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<Dialog title="Open Project">
+<Dialog title="Save Project">
   <Button name="okButton" text="OK" align="bottom right"/>
   <Button name="cancelButton" text="Cancel" align="bottom" right="leftof okButton"/>
   <TextField name="fileName" align="left" bottom="above okButton"/>

@@ -109,6 +109,10 @@ IScriptCall* LuaScript::createScriptCall(DOMNodeWrapper* node, IArgumentValueReg
   return new LuaScriptCall(this, mArguments);
 }
 
+std::string LuaScript::getName() {
+  return cName;
+}
+
 void LuaScript::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   node->addAttribute("name", cName);
   for (unsigned int i = 0; i < cArguments.size(); i++) {

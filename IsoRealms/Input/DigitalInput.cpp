@@ -21,9 +21,10 @@
 SDLKeyMap DigitalInput::cSDLKeyMap;
 
 DigitalInput::DigitalInput() {
-  cActivatedScript = nullptr;
-  cInput = new bool;
-  *cInput = false;
+  cActivatedScript   = nullptr;
+  cDeactivatedScript = nullptr;
+  cInput             = new bool;
+  *cInput            = false;
 }
 
 void DigitalInput::setup(DOMNodeWrapper* node, IResources* resources) {
@@ -32,6 +33,8 @@ void DigitalInput::setup(DOMNodeWrapper* node, IResources* resources) {
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "OnStart") {
       cActivatedScript = resources->getScriptCall(mNode);
+    } else if (mValueAsString == "OnEnd") {
+      cDeactivatedScript = resources->getScriptCall(mNode);
     }
   }
 }
@@ -63,6 +66,10 @@ void DigitalInput::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) 
     DOMNodeWriter* mStartScriptNode = node->addBranch("OnStart");
     cActivatedScript->save(mStartScriptNode, resourceLocator);
   }
+  if (cDeactivatedScript != nullptr) {
+    DOMNodeWriter* mEndScriptNode = node->addBranch("OnEnd");
+    cDeactivatedScript->save(mEndScriptNode, resourceLocator);
+  }
 }
 
 bool DigitalInput::isMapped(SDLKey& key) {
@@ -93,6 +100,9 @@ bool DigitalInput::keyUp(SDLKey& key) {
     cActiveKeys.erase(key);
     if (cActiveKeys.empty()) {
       *cInput = false;
+      if (cDeactivatedScript != nullptr) {
+        cDeactivatedScript->execute();
+      }
     }
     return true;
   }
@@ -115,10 +125,24 @@ bool DigitalInput::input(SDL_Event& event) {
 void DigitalInput::trigger(bool state) {
   if (!(*cInput) && state && cActivatedScript != nullptr) {
     cActivatedScript->execute();
+  } else if (*cInput && !state && cDeactivatedScript != nullptr) {
+    cDeactivatedScript->execute();
   }
   *cInput = state;
 }
 
 bool* DigitalInput::getDigitalInput() {
   return cInput;
+}
+
+IScriptCall* DigitalInput::getActivatedScript() {
+  return cActivatedScript;
+}
+
+IScriptCall* DigitalInput::getDeactivatedScript() {
+  return cDeactivatedScript;
+}
+
+std::vector<SDLKey> DigitalInput::getKeys() {
+  return cKeys;
 }

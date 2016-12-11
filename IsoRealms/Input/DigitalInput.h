@@ -38,6 +38,7 @@ class DigitalInput {
   std::set<SDLKey> cActiveKeys;
   std::vector<SDLKey> cKeys;
   IScriptCall* cActivatedScript;
+  IScriptCall* cDeactivatedScript;
     
   bool keyDown(SDLKey& key);
   bool keyUp(SDLKey& key);
@@ -52,6 +53,9 @@ class DigitalInput {
   bool input(SDL_Event&);
   void trigger(bool);
   bool* getDigitalInput();
+  IScriptCall* getActivatedScript();
+  IScriptCall* getDeactivatedScript();
+  std::vector<SDLKey> getKeys();
 };
 
 #endif

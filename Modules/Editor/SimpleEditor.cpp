@@ -18,13 +18,14 @@
  */
 #include "SimpleEditor.h"
 
-const std::string SimpleEditor::COMMAND_SAVE_AS          = "SaveAs";
-const std::string SimpleEditor::COMMAND_SAVE             = "Save";
-const std::string SimpleEditor::COMMAND_OPEN             = "Open";
-const std::string SimpleEditor::COMMAND_OPEN_TEMPLATE    = "OpenTemplate";
-const std::string SimpleEditor::COMMAND_TEST             = "Test";
-const std::string SimpleEditor::COMMAND_MODULES          = "Modules";
-const std::string SimpleEditor::COMMAND_RESOURCE_BROWSER = "ResourceBrowser";
+const std::string SimpleEditor::COMMAND_SAVE_AS             = "SaveAs";
+const std::string SimpleEditor::COMMAND_SAVE                = "Save";
+const std::string SimpleEditor::COMMAND_OPEN                = "Open";
+const std::string SimpleEditor::COMMAND_OPEN_TEMPLATE       = "OpenTemplate";
+const std::string SimpleEditor::COMMAND_TEST                = "Test";
+const std::string SimpleEditor::COMMAND_MODULES             = "Modules";
+const std::string SimpleEditor::COMMAND_INPUT_CONFIGURATION = "InputConfiguration";
+const std::string SimpleEditor::COMMAND_RESOURCE_BROWSER    = "ResourceBrowser";
 
 const float SimpleEditor::DOCKABLE_3D_MODEL_DEFAULT_WIDTH          = 0.285f;
 const float SimpleEditor::DOCKABLE_BOUNDARIES_DEFAULT_WIDTH        = 0.35f;
@@ -54,12 +55,13 @@ void SimpleEditor::load(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceRe
   cEditorFocus = true;
 
   // Register commands
-  cEditorCommands[COMMAND_SAVE_AS]       = new SaveAsCommand(this, true, this);
-  cEditorCommands[COMMAND_SAVE]          = new SaveAsCommand(this, false, this);
-  cEditorCommands[COMMAND_OPEN]          = new CommandDialog<DialogProjectOpen>(this, this);
-  cEditorCommands[COMMAND_OPEN_TEMPLATE] = new CommandDialog<DialogProjectOpenTemplate>(this, this);
-  cEditorCommands[COMMAND_TEST]          = new TestCommand(this);
-  cEditorCommands[COMMAND_MODULES]       = new CommandDialog<DialogModules>(this, this);
+  cEditorCommands[COMMAND_SAVE_AS]             = new SaveAsCommand(this, true, this);
+  cEditorCommands[COMMAND_SAVE]                = new SaveAsCommand(this, false, this);
+  cEditorCommands[COMMAND_OPEN]                = new CommandDialog<DialogProjectOpen>(this, this);
+  cEditorCommands[COMMAND_OPEN_TEMPLATE]       = new CommandDialog<DialogProjectOpenTemplate>(this, this);
+  cEditorCommands[COMMAND_TEST]                = new TestCommand(this);
+  cEditorCommands[COMMAND_MODULES]             = new CommandDialog<DialogModules>(this, this);
+  cEditorCommands[COMMAND_INPUT_CONFIGURATION] = new CommandDialog<DialogInputConfiguration>(this, this);
 //  EditorCommandManager::registerCommand(COMMAND_MODULES,          new CommandModules());
 //  EditorCommandManager::registerCommand(COMMAND_RESOURCE_BROWSER, new CommandResourceBrowser());
 
@@ -590,6 +592,10 @@ void SimpleEditor::openProject(const std::string& file, bool user, bool asTempla
   } else {
     // TODO: Warning.
   }
+}
+
+InputCommands* SimpleEditor::getInputConfiguration() {
+  return cProject->getInputConfiguration();
 }
 
 extern "C" IModule* create() {

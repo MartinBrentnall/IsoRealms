@@ -28,6 +28,7 @@
 #include "IObjectSelectionListener.h"
 
 class ILayer;
+class InputCommands;
 class IResourceManager;
 class ModuleRegistry;
 
@@ -54,6 +55,7 @@ class IProject {
   virtual bool hasCompleted() = 0;
   virtual void reset() = 0;
   virtual void addObjectSelectionListener(IObjectSelectionListener*) = 0;
+  virtual InputCommands* getInputConfiguration() = 0;
   
   virtual void staticChanged() = 0;
   
