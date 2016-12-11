@@ -45,6 +45,7 @@
 #include "ElementHandlerSpindizzyBlock.h"
 #include "ElementHandlerSpindizzyDynamic.h"
 //#include "DialogTexturesSpindizzyZoneTheme.h"
+#include "IIconAnimator.h"
 #include "ResourceCameraScriptable.h"
 #include "ResourceElementSpindizzyBlock.h"
 #include "ResourceElementSpindizzyCraft.h"
@@ -80,8 +81,13 @@ class SpindizzyModule:public IModule,
                       public ICameraAngleChangeListener, 
                       public ICameraSupplier,
                       public IModuleElementHandlerSpindizzyDynamic,
-                      public IModuleElementHandlerZone {
+                      public IModuleElementHandlerZone,
+                      public IIconAnimator,
+                      public IDynamicElement {
   private:
+  static const unsigned int ICON_TRANSITION_TIME;
+  static const unsigned int ICON_PAUSE_TIME;
+    
   static const std::string TAG_CUSTOM_TYPE_BLOCK_STATE;
 
   static const std::string TAG_EDITOR_CONFIG_SPINDIZZY_ZONE_THEME_ICON;
@@ -167,6 +173,11 @@ class SpindizzyModule:public IModule,
   ArgumentValueCustomType<ElementSpindizzyZone> cArgumentValueZone;
   ISpindizzyZoneTheme* cSelectedZoneTheme;
   std::vector<ISpindizzyZoneThemeListener*> cZoneThemeSelectionListeners;
+  
+  // Icon animation stuff
+  int cPause;
+  int cAnimation;
+  unsigned int cThemeIcon;
   
   bool cOverview;
   unsigned int cZoneCount;
@@ -314,6 +325,20 @@ class SpindizzyModule:public IModule,
   std::map<std::string, SpindizzyZoneTheme*> getSpindizzyZoneThemes();
   void spindizzyZoneThemeSelected(ISpindizzyZoneTheme*);
   
+  /****************************\
+   * Implements IIconAnimator *
+  \****************************/
+  float getAnimation();
+  ITexture* getPreviousTexture(SpindizzyZoneThemeTexture*);
+  ITexture* getCurrentTexture(SpindizzyZoneThemeTexture*);
+  IColour* getPreviousColour(SpindizzyZoneThemeColour*);
+  IColour* getCurrentColour(SpindizzyZoneThemeColour*);
+  
+  /******************************\
+   * Implements IDynamicElement *
+  \******************************/
+  void update(unsigned int);
+
   /************\
    * Multiple *
   \************/

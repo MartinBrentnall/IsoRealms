@@ -19,9 +19,9 @@
 #ifndef I_INTEGER_H
 #define I_INTEGER_H
 
-#include <IsoRealms/Resources/IResource.h>
+#include <IsoRealms/Resources/IResourceManageable.h>
 
-class IInteger:public IResource {
+class IInteger:public IResourceManageable<IInteger> {
   public:
   virtual void setValue(int) = 0;
   virtual int getValue() = 0;

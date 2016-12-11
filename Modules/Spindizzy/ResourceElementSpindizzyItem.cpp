@@ -44,6 +44,10 @@ void ResourceElementSpindizzyItem::initialiseResource(DOMNodeWrapper* node, DOMN
   cEditingJewel = new ElementSpindizzyItem(this, &mIdentityLocation, cModelType, nullptr);
 }
 
+Icon<IElementType>* ResourceElementSpindizzyItem::getResourceIcon(IResourceBrowser<IElementType>* browser) {
+  return nullptr;
+}
+
 void ResourceElementSpindizzyItem::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   node->addAttribute("model", resourceLocator->getPath(cModelType));
 }

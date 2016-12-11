@@ -38,6 +38,7 @@ class IProject {
   virtual void removeElement(IElement*) = 0;
 
   virtual void updateRuntime(unsigned int) = 0;
+  virtual void updateEditing(unsigned int) = 0;
   virtual void renderRuntime() = 0;
   virtual void inputRuntime(SDL_Event&) = 0;
   virtual void save() = 0;

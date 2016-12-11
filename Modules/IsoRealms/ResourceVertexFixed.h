@@ -43,6 +43,7 @@ class ResourceVertexFixed:public IVertex {
   void setZ(double);
 
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  Icon<IVertex>* getResourceIcon(IResourceBrowser<IVertex>*);
   void save(DOMNodeWriter*, IResourceLocator*);
   void saveCache(DOMNodeWriter*);
   

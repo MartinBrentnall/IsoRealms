@@ -19,9 +19,9 @@
 #ifndef I_TEXTURE_H
 #define I_TEXTURE_H
 
-#include <IsoRealms/Resources/IResource.h>
+#include <IsoRealms/Resources/IResourceManageable.h>
 
-class ITexture:public IResource {
+class ITexture:public IResourceManageable<ITexture> {
   public:
   virtual void set() = 0;
   virtual ~ITexture() {}

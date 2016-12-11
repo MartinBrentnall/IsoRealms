@@ -36,6 +36,10 @@ void ResourceIntegerFixed::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapp
   cCurrentValue = cInitialValue;
 }
 
+Icon<IInteger>* ResourceIntegerFixed::getResourceIcon(IResourceBrowser<IInteger>* browser) {
+  return nullptr;
+}
+
 void ResourceIntegerFixed::save(DOMNodeWriter* node, IResourceLocator* resources) {
   if (cInitialValue != 0) {
     node->addAttribute("value", cInitialValue);

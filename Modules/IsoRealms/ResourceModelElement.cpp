@@ -53,6 +53,10 @@ void ResourceModelElement::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapp
   }
 }
 
+Icon<I3DModelType>* ResourceModelElement::getResourceIcon(IResourceBrowser<I3DModelType>* browser) {
+  return nullptr;
+}
+
 void ResourceModelElement::addElement(IElement* element) {
   cElement = element;
 }

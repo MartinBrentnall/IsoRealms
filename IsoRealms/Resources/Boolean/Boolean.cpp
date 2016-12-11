@@ -36,3 +36,7 @@ void Boolean::reset() {
 
 void Boolean::initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*) {
 }
+
+Icon<IBoolean>* Boolean::getResourceIcon(IResourceBrowser<IBoolean>* browser) {
+  return nullptr;
+}

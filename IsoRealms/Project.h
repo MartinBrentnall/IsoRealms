@@ -80,6 +80,7 @@ class Project:public IProject {
   void inputRuntime(SDL_Event&);
   void renderRuntime();
   void updateRuntime(unsigned int);
+  void updateEditing(unsigned int);
   void initialised();
   ILayer* getDefaultLayer();
   std::vector<ILayer*> getAllLayers();

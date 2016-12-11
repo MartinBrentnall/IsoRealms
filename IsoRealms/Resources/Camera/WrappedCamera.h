@@ -32,6 +32,7 @@ class WrappedCamera:public ICamera {
    * Implements ICamera *
   \**********************/
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  Icon<ICamera>* getResourceIcon(IResourceBrowser<ICamera>*);
   float getAngle();
   float getTilt();
   void update(int);

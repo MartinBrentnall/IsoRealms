@@ -33,6 +33,10 @@ void ResourceTextureFile::initialiseResource(DOMNodeWrapper* node, DOMNodeWrappe
   readFile();
 }
 
+Icon<ITexture>* ResourceTextureFile::getResourceIcon(IResourceBrowser<ITexture>* browser) {
+  return nullptr;
+}
+
 void ResourceTextureFile::save(DOMNodeWriter* node, IResourceLocator* resources) {
   node->addAttribute("file", cFileName);
 }

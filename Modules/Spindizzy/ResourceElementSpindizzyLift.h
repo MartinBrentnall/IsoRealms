@@ -68,6 +68,7 @@ class ResourceElementSpindizzyLift:public ISpindizzyLiftType {
    * Implements IResource *
   \************************/
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  Icon<IElementType>* getResourceIcon(IResourceBrowser<IElementType>*);
   
   /*********************************\
    * Implements ISpindizzyLiftType *

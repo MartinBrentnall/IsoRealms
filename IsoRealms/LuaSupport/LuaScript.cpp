@@ -152,6 +152,10 @@ void LuaScript::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, 
   // Nothing to do?
 }
 
+Icon<IScript>* LuaScript::getResourceIcon(IResourceBrowser<IScript>* browser) {
+  return nullptr;
+}
+
 unsigned int LuaScript::getArgumentIndex(const std::string& name) {
   for (unsigned int i = 0; i < cArguments.size(); i++) {
     std::string mName = cArguments[i]->getName();

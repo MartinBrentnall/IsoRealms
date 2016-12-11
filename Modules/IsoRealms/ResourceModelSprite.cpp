@@ -71,6 +71,10 @@ void ResourceModelSprite::initialiseResource(DOMNodeWrapper* node, DOMNodeWrappe
   cCamera = resourceAccessor->getCamera(mCameraPath);
 }
 
+Icon<I3DModelType>* ResourceModelSprite::getResourceIcon(IResourceBrowser<I3DModelType>* browser) {
+  return nullptr;
+}
+
 void ResourceModelSprite::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   node->addAttribute("texture", resourceLocator->getPath(cTexture));
   node->addAttribute("size", cSize);

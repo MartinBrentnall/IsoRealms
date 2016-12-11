@@ -21,9 +21,9 @@
 
 class IDynamicElement {
   public:
-  virtual ~IDynamicElement() {}
-
   virtual void update(unsigned int) = 0;
+
+  virtual ~IDynamicElement() {}
 };
 
 #endif

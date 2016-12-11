@@ -21,9 +21,9 @@
 
 #include <string>
 
-#include <IsoRealms/Resources/IResource.h>
+#include <IsoRealms/Resources/IResourceManageable.h>
 
-class IString:public IResource {
+class IString:public IResourceManageable<IString> {
   public:
   virtual void setValue(const std::string&) = 0;
   virtual std::string getValue() = 0;

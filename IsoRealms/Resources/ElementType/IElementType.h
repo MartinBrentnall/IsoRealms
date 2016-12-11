@@ -28,7 +28,7 @@ class IElement;
 #include <IsoRealms/ILayerEditingContext.h>
 #include <IsoRealms/IResourceSource.h>
 #include <IsoRealms/Persistence/DOMNodeWrapper.h>
-#include <IsoRealms/Resources/IResource.h>
+#include <IsoRealms/Resources/IResourceManageable.h>
 #include <IsoRealms/Resources/Vertex/Vertex.h>
 
 #include "IElement.h"
@@ -39,7 +39,7 @@ class IModule;
 /**
  * The element type creates engine elements.
  */
-class IElementType:public IResource {
+class IElementType:public IResourceManageable<IElementType> {
   public:
   /**
    * Parse an element immediately from a DOM node.

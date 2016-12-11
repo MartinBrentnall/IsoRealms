@@ -452,6 +452,7 @@ void SimpleEditor::updateRuntime(unsigned int milliseconds) {
       mScreen->setMode(mScreen->getScreenMode());
     }
   } else {
+    cProject->updateEditing(milliseconds);
     for (unsigned int i = 0; i < cHUDComponents.size(); i++) {
       cHUDComponents[i]->update(milliseconds);
     }

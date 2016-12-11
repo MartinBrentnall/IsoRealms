@@ -41,6 +41,10 @@ void ResourceElementSpindizzyEnemy::initialiseResource(DOMNodeWrapper* node, DOM
   cSampleEnemy = new ElementSpindizzyEnemy(this, &mIdentityLocation, cModelType, nullptr);
 }
 
+Icon<IElementType>* ResourceElementSpindizzyEnemy::getResourceIcon(IResourceBrowser<IElementType>* browser) {
+  return nullptr;
+}
+
 void ResourceElementSpindizzyEnemy::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   node->addAttribute("model", resourceLocator->getPath(cModelType));
 }

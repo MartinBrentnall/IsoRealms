@@ -62,6 +62,10 @@ void ResourceFontFile::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* 
   FT_Done_FreeType(library);
 }
 
+Icon<IFont>* ResourceFontFile::getResourceIcon(IResourceBrowser<IFont>* browser) {
+  return nullptr;
+}
+
 void ResourceFontFile::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   node->addAttribute("file", cFilename);
   node->addAttribute("detail", cDetail);

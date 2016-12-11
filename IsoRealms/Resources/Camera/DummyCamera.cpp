@@ -22,6 +22,10 @@ void DummyCamera::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache
   // Nothing to do
 }
 
+Icon<ICamera>* DummyCamera::getResourceIcon(IResourceBrowser<ICamera>* browser) {
+  return nullptr;
+}
+
 float DummyCamera::getAngle() {
   return 0.0f;
 }

@@ -83,3 +83,7 @@ void ResourceElementHUDAbstract::SizeRelation::save(DOMNodeWriter*, const std::s
 void ResourceElementHUDAbstract::SizeRelation::renderRelation() {
   cRelation->renderRelation();
 }
+
+Icon<IElementType>* ResourceElementHUDAbstract::getResourceIcon(IResourceBrowser<IElementType>* browser) {
+  return nullptr;
+}

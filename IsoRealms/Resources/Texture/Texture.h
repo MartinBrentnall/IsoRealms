@@ -32,6 +32,7 @@ class Texture:public ITexture {
   Texture(bool = false);
 
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  Icon<ITexture>* getResourceIcon(IResourceBrowser<ITexture>*);
   
   void setRenderTarget();
 

@@ -42,6 +42,7 @@ class ResourceSoundFile:public ISound {
   ResourceSoundFile(const std::string&, const std::string&);
     
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  Icon<ISound>* getResourceIcon(IResourceBrowser<ISound>*);
   void save(DOMNodeWriter*, IResourceLocator*);
   void saveCache(DOMNodeWriter*);
   

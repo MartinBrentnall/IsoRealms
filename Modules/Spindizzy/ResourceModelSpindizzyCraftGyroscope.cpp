@@ -147,6 +147,10 @@ void ResourceModelSpindizzyCraftGyroscope::initialiseResource(DOMNodeWrapper* no
   updateTexture();
 }
 
+Icon<I3DModelType>* ResourceModelSpindizzyCraftGyroscope::getResourceIcon(IResourceBrowser<I3DModelType>* browser) {
+  return nullptr;
+}
+
 void ResourceModelSpindizzyCraftGyroscope::resourceChanged(IColour* colour) {
   if (colour == cColour1 || colour == cColour2 || colour == cColour3 || colour == cColour4 || colour == cColourOutline) {
     updateTexture();

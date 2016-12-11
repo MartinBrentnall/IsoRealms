@@ -177,6 +177,12 @@ void Project::updateRuntime(unsigned int ticks) {
   }
 }
 
+void Project::updateEditing(unsigned int milliseconds) {
+  for (IDynamicElement* mDynamicElement : cDynamicElements) {
+    mDynamicElement->update(milliseconds);
+  }
+}
+
 void Project::initialised() {
   if (!cFirstInitialised) {
     cModuleRegistry.projectInitialised();

@@ -25,7 +25,7 @@
 #include <IsoRealms/Resources/IResourceRegistry.h>
 #include <IsoRealms/Resources/String/IString.h>
 
-class ResourceStringFixed : public IString {
+class ResourceStringFixed:public IString {
   private:
   std::string cValue;
 
@@ -33,6 +33,7 @@ class ResourceStringFixed : public IString {
   ResourceStringFixed(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
 
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  Icon<IString>* getResourceIcon(IResourceBrowser<IString>*);
   void save(DOMNodeWriter*, IResourceLocator*);
   void saveCache(DOMNodeWriter*);
 

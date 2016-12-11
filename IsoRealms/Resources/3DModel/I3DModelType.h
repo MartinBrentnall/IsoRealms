@@ -19,12 +19,12 @@
 #ifndef I_3D_MODEL_TYPE_H
 #define I_3D_MODEL_TYPE_H
 
-#include <IsoRealms/Resources/IResource.h>
+#include <IsoRealms/Resources/IResourceManageable.h>
 #include <IsoRealms/Resources/Vertex/Vertex.h>
 
 #include "I3DModel.h"
 
-class I3DModelType:public IResource {
+class I3DModelType:public IResourceManageable<I3DModelType> {
   public:
 
   /**

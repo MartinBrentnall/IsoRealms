@@ -63,6 +63,7 @@ class LuaScript:public IScript {
    * Implements IResource *
   \************************/
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  Icon<IScript>* getResourceIcon(IResourceBrowser<IScript>*);
   
   /**********************\
    * Implements IScript *

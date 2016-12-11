@@ -62,6 +62,7 @@ class ResourceModelSprite:public I3DModelType,
   void save(DOMNodeWriter*, IResourceLocator*);
   void saveCache(DOMNodeWriter*);
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);  
+  Icon<I3DModelType>* getResourceIcon(IResourceBrowser<I3DModelType>*);
   void updateIcon(unsigned int);
   void renderIcon();
   

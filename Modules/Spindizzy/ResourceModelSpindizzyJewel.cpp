@@ -93,6 +93,10 @@ void ResourceModelSpindizzyJewel::initialiseResource(DOMNodeWrapper* node, DOMNo
   }
 }
 
+Icon<I3DModelType>* ResourceModelSpindizzyJewel::getResourceIcon(IResourceBrowser<I3DModelType>* browser) {
+  return nullptr;
+}
+
 void ResourceModelSpindizzyJewel::resourceChanged(IColour* colour) {
   // No action necessary
 }

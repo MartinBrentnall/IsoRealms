@@ -61,6 +61,7 @@ class ResourceElementSpindizzyItem:public ISpindizzyJewelType {
    * Implements IResource *
   \************************/
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  Icon<IElementType>* getResourceIcon(IResourceBrowser<IElementType>*);
   
   void save(DOMNodeWriter*, IResourceLocator*);
   void saveCache(DOMNodeWriter*);

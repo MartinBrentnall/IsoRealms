@@ -37,3 +37,6 @@ void Integer::reset() {
 void Integer::initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*) {
 }
 
+Icon<IInteger>* Integer::getResourceIcon(IResourceBrowser<IInteger>* browser) {
+  return nullptr;
+}

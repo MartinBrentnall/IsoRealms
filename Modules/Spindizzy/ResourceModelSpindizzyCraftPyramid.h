@@ -45,6 +45,7 @@ class ResourceModelSpindizzyCraftPyramid:public I3DModelType,
   ResourceModelSpindizzyCraftPyramid(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
     
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  Icon<I3DModelType>* getResourceIcon(IResourceBrowser<I3DModelType>*);
   void save(DOMNodeWriter*, IResourceLocator*);
   void saveCache(DOMNodeWriter*);
     

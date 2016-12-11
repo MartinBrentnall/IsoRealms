@@ -25,6 +25,7 @@ class DummyCamera:public ICamera {
   public:
 
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  Icon<ICamera>* getResourceIcon(IResourceBrowser<ICamera>*);
 
   /**********************\
    * Implements ICamera *

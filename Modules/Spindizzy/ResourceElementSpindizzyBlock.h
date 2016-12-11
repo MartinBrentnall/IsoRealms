@@ -103,6 +103,7 @@ class ResourceElementSpindizzyBlock:public ISpindizzyBlockType,
   void destroy(IElement*);
   void removeElement(IElement*);
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  Icon<IElementType>* getResourceIcon(IResourceBrowser<IElementType>*);
   Vertex* editorCursorStopped(Vertex*);
 
   /**************************************\

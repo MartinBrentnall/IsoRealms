@@ -26,6 +26,10 @@ void ResourceStringFixed::initialiseResource(DOMNodeWrapper* node, DOMNodeWrappe
   cValue = node->getAttribute("value");
 }
 
+Icon<IString>* ResourceStringFixed::getResourceIcon(IResourceBrowser<IString>* browser) {
+  return nullptr;
+}
+
 void ResourceStringFixed::save(DOMNodeWriter* node, IResourceLocator* resources) {
   node->addAttribute("value", cValue);
 }

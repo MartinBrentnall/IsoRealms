@@ -21,6 +21,10 @@
 void DummyFont::initialiseResource(DOMNodeWrapper*, DOMNodeWrapper* cache, IResourceAccessor*) {
 }
 
+Icon<IFont>* DummyFont::getResourceIcon(IResourceBrowser<IFont>* browser) {
+  return nullptr;
+}
+
 void DummyFont::print(float, float, float, IFont::Alignment, const char*, ...) {
 }
 

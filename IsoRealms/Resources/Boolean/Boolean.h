@@ -36,6 +36,7 @@ class Boolean:public IBoolean {
   void reset();
 
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  Icon<IBoolean>* getResourceIcon(IResourceBrowser<IBoolean>*);
 };
 
 #endif

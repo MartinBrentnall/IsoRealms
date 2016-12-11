@@ -81,6 +81,7 @@ class ResourceFontFile:public IFont {
   ResourceFontFile(IDummyModule*, DOMNodeWrapper*, IResourceRegistry*);
 
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  Icon<IFont>* getResourceIcon(IResourceBrowser<IFont>*);
 
   //Free all the resources assosiated with the font.
   void clean();

@@ -19,7 +19,7 @@
 #ifndef I_BOUNDARIES_H
 #define I_BOUNDARIES_H
 
-#include <IsoRealms/Resources/IResource.h>
+#include <IsoRealms/Resources/IResourceManageable.h>
 #include <IsoRealms/Resources/Script/IArgumentValueCollection.h>
 #include <IsoRealms/Resources/Vertex/Vertex.h>
 
@@ -28,7 +28,7 @@
 
 class BoundaryHandler;
 
-class IBoundaries:public IResource {
+class IBoundaries:public IResourceManageable<IBoundaries> {
   public:
   virtual void registerArgumentValuesBoundaries(IArgumentValueCollection*) = 0;
   virtual void registerArgumentValuesBoundaryPenetrator(IArgumentValueCollection*) = 0;

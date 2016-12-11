@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Martin Brentnall
+ * Copyright 2016 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,16 +16,18 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef DUMMY_SOUND_H
-#define DUMMY_SOUND_H
+#ifndef I_RESOURCE_MANAGEABLE_H
+#define I_RESOURCE_MANAGEABLE_H
 
-#include "ISound.h"
+#include <IsoRealms/GUI/IResourceBrowser.h>
+#include <IsoRealms/Resources/IResource.h>
 
-class DummySound:public ISound {
+template <class TYPE> class Icon;
+
+template <class TYPE> class IResourceManageable:public IResource {
   public:
-  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
-  Icon<ISound>* getResourceIcon(IResourceBrowser<ISound>*);
-  void play();
+  virtual Icon<TYPE>* getResourceIcon(IResourceBrowser<TYPE>*) = 0;
 };
 
 #endif
+

@@ -142,6 +142,10 @@ void ResourceModelSpindizzyCraftPyramid::initialiseResource(DOMNodeWrapper* node
   updateTextures();
 }
 
+Icon<I3DModelType>* ResourceModelSpindizzyCraftPyramid::getResourceIcon(IResourceBrowser<I3DModelType>* browser) {
+  return nullptr;
+}
+
 void ResourceModelSpindizzyCraftPyramid::resourceChanged(IColour* colour) {
   if (colour == cColourTop || colour == cColourSide || colour == cColourOutline) {
     updateTextures();

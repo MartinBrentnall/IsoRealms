@@ -29,7 +29,7 @@ DialogProjectOpen::DialogProjectOpen(IComponentContainer* componentContainer, IR
 
 void DialogProjectOpen::confirmSelection() {
   cFile = cFileSelector->getSelectedFile();
-  cEditor->openProject(cFile, true, false); // TODO: Allow open user projects too
+  cEditor->openProject(cFile, false, false); // TODO: Allow open user projects too
   cParent->dialogClosed(this);
   close();
 }

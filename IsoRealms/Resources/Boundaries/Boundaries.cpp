@@ -26,6 +26,10 @@ void Boundaries::initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceA
   // Nothing to do
 }
 
+Icon<IBoundaries>* Boundaries::getResourceIcon(IResourceBrowser<IBoundaries>* browser) {
+  return nullptr;
+}
+
 void Boundaries::registerBoundary(IBoundary* boundary) {
   while (SDL_mutexP(cAccessMutex) == -1);
   cBoundaries.add(boundary);

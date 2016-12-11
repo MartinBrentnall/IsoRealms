@@ -47,6 +47,10 @@ void ResourceModelSetCycleable::initialiseResource(DOMNodeWrapper* node, DOMNode
   }
 }
 
+Icon<I3DModelType>* ResourceModelSetCycleable::getResourceIcon() {
+  return nullptr;
+}
+
 void ResourceModelSetCycleable::save(DOMNodeWriter* node, IResourceLocator* resources) {
   node->addAttribute("name", cModelSetName);
   for (I3DModelType* mModelType : cModelTypes) {
@@ -122,6 +126,10 @@ unsigned int ResourceModelSetCycleable::ModelCycleableOffset::getCycleIndex() {
 
 void ResourceModelSetCycleable::ModelCycleableOffset::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
   // cParent->cModelTypes[cOffset] = resources->getModelType(node->getAttribute("model"));
+}
+
+Icon<I3DModelType>* ResourceModelSetCycleable::ModelCycleableOffset::getResourceIcon(IResourceBrowser<I3DModelType>* browser) {
+  return nullptr;
 }
 
 I3DModel* ResourceModelSetCycleable::ModelCycleableOffset::createModel(Vertex* location, float scale) {

@@ -104,6 +104,10 @@ void ModuleInputPersistence::Filename::initialiseResource(DOMNodeWrapper* node, 
   // Nothing to do.
 }
 
+Icon<IString>* ModuleInputPersistence::Filename::getResourceIcon(IResourceBrowser<IString>* browser) {
+  return nullptr;
+}
+
 void ModuleInputPersistence::Filename::setValue(const std::string& value) {
   cFilename = value;
 }

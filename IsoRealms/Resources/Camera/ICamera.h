@@ -19,11 +19,11 @@
 #ifndef I_CAMERA_H
 #define I_CAMERA_H
 
-#include <IsoRealms/Resources/IResource.h>
+#include <IsoRealms/Resources/IResourceManageable.h>
 
 #include "ICameraAngleChangeListener.h"
 
-class ICamera:public IResource {
+class ICamera:public IResourceManageable<ICamera> {
   public:
   virtual float getAngle() = 0;
   virtual float getTilt() = 0;

@@ -72,6 +72,7 @@ class CameraLayerMapEditing:public ICamera {
   void rotate(float, float);
 
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  Icon<ICamera>* getResourceIcon(IResourceBrowser<ICamera>*);
   void update(int);
   void render();
   float getAngle();

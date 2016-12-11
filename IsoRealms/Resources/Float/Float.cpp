@@ -33,3 +33,6 @@ float Float::getValue() {
 void Float::initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*) {
 }
 
+Icon<IFloat>* Float::getResourceIcon(IResourceBrowser<IFloat>* browser) {
+  return nullptr;
+}

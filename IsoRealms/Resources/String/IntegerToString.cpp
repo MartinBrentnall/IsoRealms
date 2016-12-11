@@ -40,3 +40,7 @@ void IntegerToString::initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IReso
   std::cout << "WARNING: Trying to initialise wrapper!" << std::endl;
   exit(1);
 }
+
+Icon<IString>* IntegerToString::getResourceIcon(IResourceBrowser<IString>* browser) {
+  return nullptr;
+}

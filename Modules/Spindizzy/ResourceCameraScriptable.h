@@ -62,6 +62,7 @@ class ResourceCameraScriptable:public ICamera {
    * Implements IPlugin *
   \**********************/
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  Icon<ICamera>* getResourceIcon(IResourceBrowser<ICamera>*);
   void save(DOMNodeWriter*, IResourceLocator*);
   void saveCache(DOMNodeWriter*);
 

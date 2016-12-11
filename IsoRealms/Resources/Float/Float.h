@@ -35,6 +35,7 @@ class Float:public IFloat {
   float getValue();
 
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  Icon<IFloat>* getResourceIcon(IResourceBrowser<IFloat>*);
 };
 
 #endif

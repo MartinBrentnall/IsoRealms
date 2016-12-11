@@ -44,6 +44,7 @@ class Vertex:public IVertex {
   double getZ();
 
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  Icon<IVertex>* getResourceIcon(IResourceBrowser<IVertex>*);
   
   virtual ~Vertex() {}
 };

@@ -18,6 +18,9 @@
  */
 #include "SpindizzyModule.h"
 
+const unsigned int SpindizzyModule::ICON_TRANSITION_TIME                             = 500;
+const unsigned int SpindizzyModule::ICON_PAUSE_TIME                                  = 1000;
+
 const std::string SpindizzyModule::TAG_CUSTOM_TYPE_BLOCK_STATE                       = "BlockState";
 
 const std::string SpindizzyModule::TAG_EDITOR_CONFIG_SPINDIZZY_ZONE_THEME_ICON       = "TexturesSpindizzyZoneThemeIcon";
@@ -96,6 +99,9 @@ SpindizzyModule::SpindizzyModule(IResourceTypeRegistry* resourceManager):cResour
   cThemeModelIcon = nullptr;
   cActiveSurfaceRegistry = nullptr;
   cUsingCache = false;
+  cPause = 0;
+  cAnimation = 0;
+  cThemeIcon = 0;
 }
 
 void SpindizzyModule::setOverview(bool overview) {
@@ -165,6 +171,7 @@ void SpindizzyModule::load(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourc
   resources->add(&cItemElementHandlerArgument, "ItemHandler", "ItemHandler");
   resources->add(&cArgumentValueZone, "Zone", "Zone");
   resources->add(mModuleArgumentValue, "Spindizzy", "Spindizzy");
+  resources->addDynamicElement(this); // TODO: Only for editor!
 }
 
 void SpindizzyModule::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
@@ -269,14 +276,14 @@ void SpindizzyModule::createThemeResources(DOMNodeWrapper* node, IResourceRegist
 
 void SpindizzyModule::createThemeTexture(const std::string& type, IResourceRegistry* runtimeContext) {
   if (cTextures.find(type) == cTextures.end()) {
-    cTextures[type] = new SpindizzyZoneThemeTexture();
+    cTextures[type] = new SpindizzyZoneThemeTexture(this);
     runtimeContext->add(cTextures[type], type);
   }
 }
 
 void SpindizzyModule::createThemeColour(const std::string& type, IResourceRegistry* runtimeContext) {
   if (cColours.find(type) == cColours.end()) {
-    cColours[type] = new SpindizzyZoneThemeColour();
+    cColours[type] = new SpindizzyZoneThemeColour(this);
     IArgumentValue* mArgumentValue = new ArgumentValueCustomType<SpindizzyZoneThemeColour>(cColours[type]);
     runtimeContext->add(cColours[type], type);
     runtimeContext->add(mArgumentValue, "ThemeColour", type);
@@ -651,6 +658,76 @@ void SpindizzyModule::spindizzyZoneThemeSelected(ISpindizzyZoneTheme* spindizzyZ
   cDefaultTheme = spindizzyZoneTheme;
   for (ISpindizzyZoneThemeListener* listener : cZoneThemeSelectionListeners) {
     listener->spindizzyZoneThemeSelected(cSelectedZoneTheme);
+  }
+}
+
+float SpindizzyModule::getAnimation() {
+  return -(static_cast<float>(cAnimation) / static_cast<float>(ICON_TRANSITION_TIME)) + 1.0f;
+}
+
+ITexture* SpindizzyModule::getPreviousTexture(SpindizzyZoneThemeTexture* texture) {
+  unsigned int mCount = 0;
+  unsigned int mPreviousThemeIcon = cThemeIcon == 0 ? cThemes.size() - 1 : cThemeIcon - 1;
+  for (std::pair<std::string, SpindizzyZoneTheme*> mTheme : cThemes) {
+    if (mCount == mPreviousThemeIcon) {
+      return mTheme.second->getTexture(texture);
+    }
+    mCount++;
+  }
+  return nullptr;
+}
+
+ITexture* SpindizzyModule::getCurrentTexture(SpindizzyZoneThemeTexture* texture) {
+  unsigned int mCount = 0;
+  for (std::pair<std::string, SpindizzyZoneTheme*> mTheme : cThemes) {
+    if (mCount == cThemeIcon) {
+      return mTheme.second->getTexture(texture);
+    }
+    mCount++;
+  }
+  return nullptr;
+}
+
+IColour* SpindizzyModule::getPreviousColour(SpindizzyZoneThemeColour* colour) {
+  unsigned int mCount = 0;
+  unsigned int mPreviousThemeIcon = cThemeIcon == 0 ? cThemes.size() - 1 : cThemeIcon - 1;
+  for (std::pair<std::string, SpindizzyZoneTheme*> mTheme : cThemes) {
+    if (mCount == mPreviousThemeIcon) {
+      return mTheme.second->getColour(colour);
+    }
+    mCount++;
+  }
+  return nullptr;
+}
+
+IColour* SpindizzyModule::getCurrentColour(SpindizzyZoneThemeColour* colour) {
+  unsigned int mCount = 0;
+  for (std::pair<std::string, SpindizzyZoneTheme*> mTheme : cThemes) {
+    if (mCount == cThemeIcon) {
+      return mTheme.second->getColour(colour);
+    }
+    mCount++;
+  }
+  return nullptr;
+}
+
+void SpindizzyModule::update(unsigned int milliseconds) {
+  if (cPause > 0) {
+    cPause -= milliseconds;
+    if (cPause <= 0) {
+      cAnimation = ICON_TRANSITION_TIME;
+      cPause = 0;
+      cThemeIcon++;
+      if (cThemeIcon == cThemes.size()) {
+        cThemeIcon = 0;
+      }
+    }
+  } else {
+    cAnimation -= milliseconds;
+    if (cAnimation <= 0) {
+      cAnimation = 0;
+      cPause = ICON_PAUSE_TIME;
+    }
   }
 }
 

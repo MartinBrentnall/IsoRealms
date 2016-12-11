@@ -19,9 +19,9 @@
 #ifndef I_FONT_H
 #define I_FONT_H
 
-#include <IsoRealms/Resources/IResource.h>
+#include <IsoRealms/Resources/IResourceManageable.h>
 
-class IFont:public IResource {
+class IFont:public IResourceManageable<IFont> {
   public:
   enum Alignment {
     LEFT,

@@ -21,9 +21,9 @@
 
 #include <string>
 
-#include <IsoRealms/Resources/IResource.h>
+#include <IsoRealms/Resources/IResourceManageable.h>
 
-class ISound:public IResource {
+class ISound:public IResourceManageable<ISound> {
   public:
   virtual void play() = 0;
 };

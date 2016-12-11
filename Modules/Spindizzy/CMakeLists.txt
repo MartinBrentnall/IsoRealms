@@ -48,6 +48,8 @@ add_library(Spindizzy MODULE
   ElementSpindizzyLift.cpp
   ElementSpindizzyWater.cpp
   ElementSpindizzyZone.cpp
+  IconThemeColour.cpp
+  IconThemeTexture.cpp
   LayerBackground.cpp
   LayerSpindizzyMap.cpp
   LayerSpindizzyMapEditingContext.cpp

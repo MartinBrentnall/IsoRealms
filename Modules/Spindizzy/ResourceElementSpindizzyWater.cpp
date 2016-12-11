@@ -29,6 +29,10 @@ void ResourceElementSpindizzyWater::initialiseResource(DOMNodeWrapper* node, DOM
   cTexture = resourceAccessor->getTexture(mTexturePath);
 }
 
+Icon<IElementType>* ResourceElementSpindizzyWater::getResourceIcon(IResourceBrowser<IElementType>* browser) {
+  return nullptr;
+}
+
 void ResourceElementSpindizzyWater::configureElement() {
   // Nothing to do.
 }

@@ -36,6 +36,7 @@ class Integer:public IInteger {
   void reset();
 
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  Icon<IInteger>* getResourceIcon(IResourceBrowser<IInteger>*);
 };
 
 #endif

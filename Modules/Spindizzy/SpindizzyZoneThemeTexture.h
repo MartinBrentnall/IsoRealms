@@ -21,14 +21,21 @@
 
 #include <IsoRealms/Resources/Texture/ITexture.h>
 
+#include "IconThemeTexture.h"
+#include "IIconAnimator.h"
+
 class SpindizzyZoneThemeTexture:public ITexture {
   private:
   ITexture* cTexture;
+  IIconAnimator* cAnimator;
 
   public:
+  SpindizzyZoneThemeTexture(IIconAnimator*);
+    
   void set(ITexture*);
 
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  Icon<ITexture>* getResourceIcon(IResourceBrowser<ITexture>* browser);
 
   /***********************\
    * Implements ITexture *

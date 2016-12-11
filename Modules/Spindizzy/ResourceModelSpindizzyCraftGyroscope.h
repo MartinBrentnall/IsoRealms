@@ -67,6 +67,7 @@ class ResourceModelSpindizzyCraftGyroscope:public I3DModelType,
   void save(DOMNodeWriter*, IResourceLocator*);
   void saveCache(DOMNodeWriter*);
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);  
+  Icon<I3DModelType>* getResourceIcon(IResourceBrowser<I3DModelType>*);
 
   /******************************\
    * Implements IColourListener *

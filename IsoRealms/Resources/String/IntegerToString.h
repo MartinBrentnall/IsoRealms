@@ -44,6 +44,7 @@ class IntegerToString:public IString {
    * Implements IResource *
   \************************/
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  Icon<IString>* getResourceIcon(IResourceBrowser<IString>*);
 };
 
 #endif

@@ -31,6 +31,10 @@ void ResourceElementSpindizzyBlock::initialiseResource(DOMNodeWrapper* node, DOM
   cBlockTypeProperties.configure(node, resourceAccessor);
 }
 
+Icon<IElementType>* ResourceElementSpindizzyBlock::getResourceIcon(IResourceBrowser<IElementType>* browser) {
+  return nullptr;
+}
+
 Vertex* ResourceElementSpindizzyBlock::editorCursorStopped(Vertex* location) {
   Vertex* mGridLocation = new Vertex();
   mGridLocation->x = std::round(location->x);

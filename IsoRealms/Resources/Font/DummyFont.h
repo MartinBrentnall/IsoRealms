@@ -24,6 +24,7 @@
 class DummyFont:public IFont {
   public:
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  Icon<IFont>* getResourceIcon(IResourceBrowser<IFont>*);
   void print(float, float, float, Alignment, const char*, ...);
   float getWidth(float, const char*, ...);
   float getHeight(float, const char*, ...);

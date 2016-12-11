@@ -49,6 +49,7 @@ class SpindizzyZoneTheme:public IResourceUseListener<ITexture>,
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
   void save(DOMNodeWriter*, IResourceLocator*);
     
+  ITexture* getTexture(SpindizzyZoneThemeTexture*);
   void removeTexture(SpindizzyZoneThemeTexture*);
   void removeColour(SpindizzyZoneThemeColour*);
   SpindizzyZoneThemeIcon* createCustomResourceIcon(IResourceBrowser<ISpindizzyZoneTheme>*);

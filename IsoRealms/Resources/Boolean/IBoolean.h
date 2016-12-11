@@ -19,9 +19,9 @@
 #ifndef I_BOOLEAN_H
 #define I_BOOLEAN_H
 
-#include <IsoRealms/Resources/IResource.h>
+#include <IsoRealms/Resources/IResourceManageable.h>
 
-class IBoolean:public IResource {
+class IBoolean:public IResourceManageable<IBoolean> {
   public:
   virtual void setValue(bool) = 0;
   virtual bool getValue() = 0;

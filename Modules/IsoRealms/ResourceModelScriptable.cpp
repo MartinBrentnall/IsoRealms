@@ -48,6 +48,10 @@ void ResourceModelScriptable::initialiseResource(DOMNodeWrapper* node, DOMNodeWr
 //   }
 }
 
+Icon<I3DModelType>* ResourceModelScriptable::getResourceIcon(IResourceBrowser<I3DModelType>* browser) {
+  return nullptr;
+}
+
 ModelScriptable* ResourceModelScriptable::createModel(Vertex* location, float scale) {
   return new ModelScriptable();
 }

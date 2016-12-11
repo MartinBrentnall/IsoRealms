@@ -26,6 +26,10 @@ void WrappedCamera::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cac
   // Nothing to do
 }
 
+Icon<ICamera>* WrappedCamera::getResourceIcon(IResourceBrowser<ICamera>* browser) {
+  return nullptr;
+}
+
 float WrappedCamera::getAngle() {
   return cCamera->getAngle();
 }

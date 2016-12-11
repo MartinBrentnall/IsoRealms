@@ -47,6 +47,10 @@ void ResourceElementSpindizzyLift::initialiseResource(DOMNodeWrapper* node, DOMN
   cConfigurationComponent = nullptr;
 }
 
+Icon<IElementType>* ResourceElementSpindizzyLift::getResourceIcon(IResourceBrowser<IElementType>* browser) {
+  return nullptr;
+}
+
 bool ResourceElementSpindizzyLift::isActive() {
   return cState->getValue();
 }

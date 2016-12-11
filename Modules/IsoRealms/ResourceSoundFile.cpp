@@ -32,6 +32,10 @@ void ResourceSoundFile::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper*
   loadData(cFile);
 }
 
+Icon<ISound>* ResourceSoundFile::getResourceIcon(IResourceBrowser<ISound>* browser) {
+  return nullptr;
+}
+
 void ResourceSoundFile::save(DOMNodeWriter* node, IResourceLocator* resources) {
   node->addAttribute("file", cFile);
 }

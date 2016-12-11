@@ -21,9 +21,9 @@
 
 #include <string>
 
-#include <IsoRealms/Resources/IResource.h>
+#include <IsoRealms/Resources/IResourceManageable.h>
 
-class IColour:public IResource {
+class IColour:public IResourceManageable<IColour> {
   public:
   
   /**

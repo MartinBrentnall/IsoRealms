@@ -39,6 +39,10 @@ void Texture::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IR
   // Nothing to do
 }
 
+Icon<ITexture>* Texture::getResourceIcon(IResourceBrowser<ITexture>* browser) {
+  return nullptr;
+}
+
 void Texture::setRenderTarget() {
   glViewport(0, 0, 128, 128);
   glBindTexture(GL_TEXTURE_2D, 0);

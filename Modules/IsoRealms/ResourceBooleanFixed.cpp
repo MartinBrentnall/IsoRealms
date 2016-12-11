@@ -36,6 +36,10 @@ void ResourceBooleanFixed::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapp
   cCurrentValue = cInitialValue;
 }
 
+Icon<IBoolean>* ResourceBooleanFixed::getResourceIcon(IResourceBrowser<IBoolean>* browser) {
+  return nullptr;
+}
+
 void ResourceBooleanFixed::save(DOMNodeWriter* node, IResourceLocator* resources) {
   
   // Default is false, so we only need to save if it's true.

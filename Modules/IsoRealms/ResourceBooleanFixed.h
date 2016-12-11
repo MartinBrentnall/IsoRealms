@@ -37,6 +37,7 @@ class ResourceBooleanFixed:public IBoolean {
   bool getInitialValue();
   
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  Icon<IBoolean>* getResourceIcon(IResourceBrowser<IBoolean>*);  
   void save(DOMNodeWriter*, IResourceLocator*);
   void saveCache(DOMNodeWriter*);
   

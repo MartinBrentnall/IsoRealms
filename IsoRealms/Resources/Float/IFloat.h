@@ -19,9 +19,9 @@
 #ifndef I_FLOAT_H
 #define I_FLOAT_H
 
-#include <IsoRealms/Resources/IResource.h>
+#include <IsoRealms/Resources/IResourceManageable.h>
 
-class IFloat:public IResource {
+class IFloat:public IResourceManageable<IFloat> {
   public:
   virtual void setValue(float) = 0;
   virtual float getValue() = 0;

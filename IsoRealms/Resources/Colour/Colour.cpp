@@ -43,6 +43,10 @@ void Colour::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IRe
   resources->notifyChange(this);
 }
 
+Icon<IColour>* Colour::getResourceIcon(IResourceBrowser<IColour>* browser) {
+  return nullptr;
+}
+
 Colour::Colour(float r, float g, float b, float a) {
   set(r, g, b, a);
 }

@@ -37,6 +37,7 @@ class ResourceIntegerFixed:public IInteger {
   int getInitialValue();
 
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  Icon<IInteger>* getResourceIcon(IResourceBrowser<IInteger>*);
   void save(DOMNodeWriter*, IResourceLocator*);
   void saveCache(DOMNodeWriter*);
 

@@ -49,6 +49,7 @@ class ResourceElementSpindizzyWater:public ISpindizzyBlockType,
    * Implements IResource *
   \************************/
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  Icon<IElementType>* getResourceIcon(IResourceBrowser<IElementType>*);
 
   /**********************************\
    * Implements ISpindizzyBlockType *

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Martin Brentnall
+ * Copyright 2016 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,16 +16,26 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef DUMMY_SOUND_H
-#define DUMMY_SOUND_H
+#ifndef ICON_THEME_COLOUR_H
+#define ICON_THEME_COLOUR_H
 
-#include "ISound.h"
+#include <IsoRealms/GUI/Icon.h>
+#include <IsoRealms/Resources/Colour/Colour.h>
 
-class DummySound:public ISound {
+#include "IIconAnimator.h"
+#include "SpindizzyZoneThemeColour.h"
+
+class IconThemeColour:public Icon<IColour> {
+  private:
+  IIconAnimator* cResourceAnimator;
+  SpindizzyZoneThemeColour* cColour;
+  
   public:
-  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
-  Icon<ISound>* getResourceIcon(IResourceBrowser<ISound>*);
-  void play();
+  IconThemeColour(IIconAnimator*, IResourceBrowser<IColour>*, SpindizzyZoneThemeColour*);
+
+  void renderIcon();  
+  float getWidth();
+  float getHeight();
 };
 
 #endif

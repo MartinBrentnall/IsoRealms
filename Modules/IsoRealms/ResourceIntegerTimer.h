@@ -30,8 +30,8 @@
 #include <IsoRealms/Resources/IResourceRegistry.h>
 #include <IsoRealms/Resources/String/IString.h>
 
-class ResourceIntegerTimer : public IInteger,
-                             public IDynamicElement {
+class ResourceIntegerTimer:public IInteger,
+                           public IDynamicElement {
   private:
   int cInitialMilliseconds;
   int cCurrentMilliseconds;
@@ -45,6 +45,7 @@ class ResourceIntegerTimer : public IInteger,
     StringTimer(ResourceIntegerTimer*);
       
     void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+    Icon<IString>* getResourceIcon(IResourceBrowser<IString>*);
   
     /**********************\
      * Implements IString *
@@ -60,6 +61,7 @@ class ResourceIntegerTimer : public IInteger,
   int getInitialValue();
 
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  Icon<IInteger>* getResourceIcon(IResourceBrowser<IInteger>*);
   void save(DOMNodeWriter*, IResourceLocator*);
   void saveCache(DOMNodeWriter*);
 

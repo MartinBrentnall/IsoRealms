@@ -98,6 +98,10 @@ std::string SpindizzyZoneTheme::getElementName(SpindizzyZoneThemeColour* colour)
   return cThemeSource->getThemeElement(colour);
 }
 
+ITexture* SpindizzyZoneTheme::getTexture(SpindizzyZoneThemeTexture* themeTexture) {
+  return cTextures[themeTexture];
+}
+
 void SpindizzyZoneTheme::removeTexture(SpindizzyZoneThemeTexture* texture) {
   cTextures.erase(texture);
 }

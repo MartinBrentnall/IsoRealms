@@ -19,6 +19,8 @@
 #ifndef I_RESOURCE_BROWSER_H
 #define I_RESOURCE_BROWSER_H
 
+#include <string>
+
 template <class T> class Icon;
 
 template <class T> class IResourceBrowser {

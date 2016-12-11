@@ -102,6 +102,10 @@ void ResourceTextureSpindizzyCraftBall::initialiseResource(DOMNodeWrapper* node,
   updateTexture();
 }
 
+Icon<ITexture>* ResourceTextureSpindizzyCraftBall::getResourceIcon(IResourceBrowser<ITexture>* browser) {
+  return nullptr;
+}
+
 void ResourceTextureSpindizzyCraftBall::save(DOMNodeWriter* node, IResourceLocator* resources) {
   node->addAttribute("outline", resources->getPath(cColourOutline));
   node->addAttribute("fill",    resources->getPath(cColourBall));

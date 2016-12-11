@@ -22,14 +22,14 @@
 #include <vector>
 
 #include <IsoRealms/Persistence/DOMNodeWrapper.h>
-#include <IsoRealms/Resources/IResource.h>
+#include <IsoRealms/Resources/IResourceManageable.h>
 #include <IsoRealms/Resources/IResources.h>
 
 class IArgumentValue;
 class IArgumentValueRegistry;
 class IResources;
 
-class IScript:public IResource {
+class IScript:public IResourceManageable<IScript> {
   public:
     
   /**

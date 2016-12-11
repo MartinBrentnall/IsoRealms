@@ -81,6 +81,7 @@ class ResourceElementSpindizzyCraft:public ISpindizzyGERALDType,
    * Implements IResource *
   \************************/
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  Icon<IElementType>* getResourceIcon(IResourceBrowser<IElementType>*);
   
   /******************************\
    * Implements IResourceSource *

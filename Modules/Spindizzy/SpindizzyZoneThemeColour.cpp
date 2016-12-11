@@ -18,8 +18,16 @@
  */
 #include "SpindizzyZoneThemeColour.h" 
 
+SpindizzyZoneThemeColour::SpindizzyZoneThemeColour(IIconAnimator* animator) {
+  cAnimator = animator;
+}
+
 void SpindizzyZoneThemeColour::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
   cColour = nullptr;
+}
+
+Icon<IColour>* SpindizzyZoneThemeColour::getResourceIcon(IResourceBrowser<IColour>* browser) {
+  return new IconThemeColour(cAnimator, browser, this);
 }
 
 void SpindizzyZoneThemeColour::set(IColour* colour) {

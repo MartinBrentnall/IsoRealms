@@ -57,6 +57,8 @@ class ResourceElementHUDAbstract:public IElementType {
   
   public:
   ResourceElementHUDAbstract(IElementRelationManager*);
+  
+  Icon<IElementType>* getResourceIcon(IResourceBrowser<IElementType>*);
     
   IHUDComponentRelation* getRelation(const std::string&, const std::string&);
   

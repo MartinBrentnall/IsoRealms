@@ -18,9 +18,16 @@
  */
 #include "SpindizzyZoneThemeTexture.h" 
 
+SpindizzyZoneThemeTexture::SpindizzyZoneThemeTexture(IIconAnimator* animator) {
+  cAnimator = animator;
+}
+
 void SpindizzyZoneThemeTexture::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
-  // TODO
   cTexture = nullptr;
+}
+
+Icon<ITexture>* SpindizzyZoneThemeTexture::getResourceIcon(IResourceBrowser<ITexture>* browser) {
+  return new IconThemeTexture(cAnimator, browser, this);
 }
 
 void SpindizzyZoneThemeTexture::set(ITexture* texture) {

@@ -40,6 +40,7 @@ class ModuleInputPersistence:public IModule,
     
     public:
     void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+    Icon<IString>* getResourceIcon(IResourceBrowser<IString>*);
     void setValue(const std::string&);
     std::string getValue();
   };

@@ -43,6 +43,7 @@ class ResourceTextureFile:public ITexture {
   ResourceTextureFile(const std::string&);
   
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  Icon<ITexture>* getResourceIcon(IResourceBrowser<ITexture>*);
   void save(DOMNodeWriter*, IResourceLocator*);
   void saveCache(DOMNodeWriter*);
   

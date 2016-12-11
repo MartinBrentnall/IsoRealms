@@ -142,6 +142,10 @@ void CameraLayerMapEditing::initialiseResource(DOMNodeWrapper* node, DOMNodeWrap
   // Nothing to do
 }
 
+Icon<ICamera>* CameraLayerMapEditing::getResourceIcon(IResourceBrowser<ICamera>* browser) {
+  return nullptr;
+}
+
 void CameraLayerMapEditing::update(int milliseconds) {
   // Nothing to do
 }

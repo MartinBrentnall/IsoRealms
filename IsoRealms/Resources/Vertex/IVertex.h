@@ -19,9 +19,9 @@
 #ifndef I_VERTEX_H
 #define I_VERTEX_H
 
-#include <IsoRealms/Resources/IResource.h>
+#include <IsoRealms/Resources/IResourceManageable.h>
 
-class IVertex : public IResource {
+class IVertex:public IResourceManageable<IVertex> {
   public:
   virtual double getX() = 0;
   virtual double getY() = 0;

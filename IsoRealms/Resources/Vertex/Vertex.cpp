@@ -60,3 +60,7 @@ void Vertex::debug() {
 
 void Vertex::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
 }
+
+Icon<IVertex>* Vertex::getResourceIcon(IResourceBrowser<IVertex>* browser) {
+  return nullptr;
+}

@@ -19,18 +19,26 @@
 #ifndef SPINDIZZY_ZONE_THEME_COLOUR_H
 #define SPINDIZZY_ZONE_THEME_COLOUR_H
 
+#include <GL/glew.h>
 #include <GL/gl.h>
 
 #include <IsoRealms/Resources/Colour/IColour.h>
 
+#include "IconThemeColour.h"
+#include "IIconAnimator.h"
+
 class SpindizzyZoneThemeColour:public IColour {
   private:
   IColour* cColour;
+  IIconAnimator* cAnimator;
 
   public:
+  SpindizzyZoneThemeColour(IIconAnimator*);
+    
   void set(IColour*);
 
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  Icon<IColour>* getResourceIcon(IResourceBrowser<IColour>*);
 
   /**********************\
    * Implements IColour *

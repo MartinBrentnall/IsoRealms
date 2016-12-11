@@ -143,6 +143,7 @@ class Colour:public IColour {
   void saveCache(DOMNodeWriter*);
 
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  Icon<IColour>* getResourceIcon(IResourceBrowser<IColour>*);
   
   /**********************\
    * Implements IColour *

@@ -21,5 +21,9 @@
 void DummySound::initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*) {
 }
 
+Icon<ISound>* DummySound::getResourceIcon(IResourceBrowser<ISound>* browser) {
+  return nullptr;
+}
+
 void DummySound::play() {
 }

@@ -121,6 +121,10 @@ void ResourceCameraScriptable::initialiseResource(DOMNodeWrapper* node, DOMNodeW
   }
 }
 
+Icon<ICamera>* ResourceCameraScriptable::getResourceIcon(IResourceBrowser<ICamera>* browser) {
+  return nullptr;
+}
+
 void ResourceCameraScriptable::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
   node->addAttribute("location", resourceLocator->getPath(cTargetLocation));
   DOMNodeWriter* mTransitionCompleteScriptNode = node->addBranch("TransitionCompleteScript");

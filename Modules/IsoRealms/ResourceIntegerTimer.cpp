@@ -39,6 +39,10 @@ void ResourceIntegerTimer::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapp
   cCurrentMilliseconds = cInitialMilliseconds;
 }
 
+Icon<IInteger>* ResourceIntegerTimer::getResourceIcon(IResourceBrowser<IInteger>* browser) {
+  return nullptr;
+}
+
 void ResourceIntegerTimer::setValue(int value) {
   cCurrentMilliseconds = value;  
 }
@@ -57,6 +61,10 @@ ResourceIntegerTimer::StringTimer::StringTimer(ResourceIntegerTimer* timer) {
 
 void ResourceIntegerTimer::StringTimer::initialiseResource(DOMNodeWrapper*, DOMNodeWrapper* cache, IResourceAccessor*) {
   // Nothing to do
+}
+
+Icon<IString>* ResourceIntegerTimer::StringTimer::getResourceIcon(IResourceBrowser<IString>* browser) {
+  return nullptr;
 }
 
 void ResourceIntegerTimer::StringTimer::setValue(const std::string& value) {

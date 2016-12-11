@@ -69,5 +69,5 @@ std::string ComponentFileSelector::getSelectedDirectory() {
   for (unsigned int i = 0; i < cDirectory.size(); i++) {
     mDataPath += cDirectory[i] + "/";
   }
-  return System::getProgramResource(mDataPath);
+  return mDataPath;// System::getProgramResource(mDataPath);
 }

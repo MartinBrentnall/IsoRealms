@@ -88,6 +88,10 @@ void ResourceElementSpindizzyCraft::initialiseResource(DOMNodeWrapper* node, DOM
   }
 }
 
+Icon<IElementType>* ResourceElementSpindizzyCraft::getResourceIcon(IResourceBrowser<IElementType>* browser) {
+  return nullptr;
+}
+
 void ResourceElementSpindizzyCraft::loadElement(DOMNodeWrapper* node, DOMNodeWrapper* cache, BlockLocation* relative, IElementContainer* container, IResourceAccessor* resources, bool asTemplate) {
   std::string mInstance = node->getAttribute("instance");
   if (mInstance == "") {

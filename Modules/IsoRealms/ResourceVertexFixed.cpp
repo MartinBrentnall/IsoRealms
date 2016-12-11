@@ -54,6 +54,10 @@ void ResourceVertexFixed::setZ(double z) {
 void ResourceVertexFixed::initialiseResource(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccessor* resources) {
 }
 
+Icon<IVertex>* ResourceVertexFixed::getResourceIcon(IResourceBrowser<IVertex>* browser) {
+  return nullptr;
+}
+
 void ResourceVertexFixed::save(DOMNodeWriter* node, IResourceLocator* resources) {
 }
 

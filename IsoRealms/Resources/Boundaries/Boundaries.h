@@ -60,7 +60,8 @@ class Boundaries:public IBoundaries,
   Boundaries();
   
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
-
+  Icon<IBoundaries>* getResourceIcon(IResourceBrowser<IBoundaries>*);
+    
   /**************************\
    * Implements IBoundaries *
   \**************************/

@@ -29,7 +29,6 @@
 
 #include "../IProjectManager.h"
 
-
 template <class TYPE, class ICON> class ComponentResourceBrowser:public RectangularComponent,
                                                                  public IProjectManagerListener,
                                                                  public IResourceListener<TYPE>,
@@ -141,7 +140,10 @@ template <class TYPE, class ICON> class ComponentResourceBrowser:public Rectangu
    * Implements IResourceListener<*> *
   \***********************************/
   void resourceAdded(TYPE* resource) {
-    Icon<TYPE>* mIcon = new ICON(this, resource);
+    Icon<TYPE>* mIcon = resource->getResourceIcon(this);
+    if (mIcon == nullptr) {
+      mIcon = new ICON(this, resource);
+    }
     cResourceIcons[resource] = mIcon;
     addComponent("icons", mIcon);
   }

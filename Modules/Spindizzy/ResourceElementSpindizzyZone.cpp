@@ -101,6 +101,10 @@ void ResourceElementSpindizzyZone::initialiseResource(DOMNodeWrapper* node, DOMN
   cSampleZone = new ElementSpindizzyZone(this, mZoneArea);
 }
 
+Icon<IElementType>* ResourceElementSpindizzyZone::getResourceIcon(IResourceBrowser<IElementType>* browser) {
+  return nullptr;
+}
+
 void ResourceElementSpindizzyZone::save(DOMNodeWriter* node, IResourceLocator* locator) {
   node->addAttribute("visitedColour", locator->getPath(cVisitedColour));
   node->addAttribute("unvisitedColour", locator->getPath(cUnvisitedColour));
