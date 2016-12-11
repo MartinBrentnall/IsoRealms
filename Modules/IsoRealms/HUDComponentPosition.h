@@ -29,7 +29,7 @@
 #include <IsoRealms/Resources/ElementType/PickedElement.h>
 #include <IsoRealms/ScreenConfiguration.h>
 
-#include "IComponentSources.h"
+#include "IElementRelationManager.h"
 #include "IHUDComponentRelation.h"
 
 class HUDComponentPosition:public IElement {
@@ -47,6 +47,7 @@ class HUDComponentPosition:public IElement {
   static const float EDIT_HANDLE_RADIUS;
   
   IElement* cElement;
+  IElementRelationManager* cManager;
   IHUDComponentRelation* cLeftRelation;
   IHUDComponentRelation* cRightRelation;
   IHUDComponentRelation* cTopRelation;
@@ -57,12 +58,10 @@ class HUDComponentPosition:public IElement {
   void testHandlePick(ElementPickRay*, float, float, Handle);
   
   public:
-  HUDComponentPosition(IHUDComponentRelation*, IHUDComponentRelation*, IHUDComponentRelation*, IHUDComponentRelation*);
+  HUDComponentPosition(IElementRelationManager*, IHUDComponentRelation*, IHUDComponentRelation*, IHUDComponentRelation*, IHUDComponentRelation*);
   
   void setElement(IElement*);
   
-  void save(DOMNodeWriter*, IComponentSources*, IResourceLocator*);
-
   // Editing functions
   void renderSelection();
 

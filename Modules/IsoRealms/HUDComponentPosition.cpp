@@ -20,7 +20,8 @@
 
 const float HUDComponentPosition::EDIT_HANDLE_RADIUS = 0.01f;
 
-HUDComponentPosition::HUDComponentPosition(IHUDComponentRelation* leftRelation, IHUDComponentRelation* rightRelation, IHUDComponentRelation* bottomRelation, IHUDComponentRelation* topRelation) {
+HUDComponentPosition::HUDComponentPosition(IElementRelationManager* manager, IHUDComponentRelation* leftRelation, IHUDComponentRelation* rightRelation, IHUDComponentRelation* bottomRelation, IHUDComponentRelation* topRelation) {
+  cManager        = manager;
   cLeftRelation   = leftRelation;
   cRightRelation  = rightRelation;
   cTopRelation    = topRelation;
@@ -53,23 +54,6 @@ float HUDComponentPosition::getTop() {
 
 float HUDComponentPosition::getBottom() {
   return -0.5f;
-}
-
-void HUDComponentPosition::save(DOMNodeWriter* node, IComponentSources* sources, IResourceLocator* resourceLocator) {
-  IElementType* mType = cElement->getElementType();
-  node->addAttribute("type", resourceLocator->getPath(mType));
-  if (cTopRelation != nullptr) {
-    cTopRelation->save(node, "top", sources);
-  }
-  if (cBottomRelation != nullptr) {
-    cBottomRelation->save(node, "bottom", sources);
-  }
-  if (cLeftRelation != nullptr) {
-    cLeftRelation->save(node, "left", sources);
-  }
-  if (cRightRelation != nullptr) {
-    cRightRelation->save(node, "right", sources);
-  }
 }
 
 IElementType* HUDComponentPosition::getElementType() {
@@ -207,6 +191,22 @@ bool HUDComponentPosition::isInteractive() {
 }
 
 void HUDComponentPosition::save(DOMNodeWriter* node, IResourceLocator* resources, BlockLocation& location) {
+  IElementType* mType = cElement->getElementType();
+  std::string mElementName = cManager->getRelatableElementName(this);
+  node->addAttribute("name", mElementName);
+  node->addAttribute("type", resources->getPath(mType));
+  if (cTopRelation != nullptr) {
+    cTopRelation->save(node, "top", cManager);
+  }
+  if (cBottomRelation != nullptr) {
+    cBottomRelation->save(node, "bottom", cManager);
+  }
+  if (cLeftRelation != nullptr) {
+    cLeftRelation->save(node, "left", cManager);
+  }
+  if (cRightRelation != nullptr) {
+    cRightRelation->save(node, "right", cManager);
+  }
 }
 
 void HUDComponentPosition::saveCache(DOMNodeWriter* cache) {

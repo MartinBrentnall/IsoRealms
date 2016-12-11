@@ -51,7 +51,7 @@ class HUDComponentRelation:public IHUDComponentRelation {
    * Implements IHUDComponentRelation *
   \************************************/
   float getLocation();
-  void save(DOMNodeWriter*, const std::string&, IComponentSources*);
+  void save(DOMNodeWriter*, const std::string&, IElementRelationManager*);
   void renderRelation();
 };
 

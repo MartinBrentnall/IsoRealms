@@ -58,7 +58,7 @@ void ResourceElementHUDAbstract::loadElement(DOMNodeWrapper* node, DOMNodeWrappe
   if (mBottomRelation == nullptr) {mBottomRelation = new SizeRelation(mTopRelation,    -getSize(node, Y_AXIS_DESCRIPTOR));}
   if (mTopRelation    == nullptr) {mTopRelation    = new SizeRelation(mBottomRelation,  getSize(node, Y_AXIS_DESCRIPTOR));}
   
-  HUDComponentPosition* cElementDimensions = new HUDComponentPosition(mLeftRelation, mRightRelation, mBottomRelation, mTopRelation);
+  HUDComponentPosition* cElementDimensions = new HUDComponentPosition(cManager, mLeftRelation, mRightRelation, mBottomRelation, mTopRelation);
   IElement* mElement = createHUDElement(node, cache, location, resources, asTemplate, cElementDimensions);
   cElementDimensions->setElement(mElement);
   container->addElement(cElementDimensions);
@@ -76,8 +76,10 @@ float ResourceElementHUDAbstract::SizeRelation::getLocation() {
   return cRelation->getLocation() + cOffset;
 }
 
-void ResourceElementHUDAbstract::SizeRelation::save(DOMNodeWriter*, const std::string&, IComponentSources*) {
-  // TODO: Implement this
+void ResourceElementHUDAbstract::SizeRelation::save(DOMNodeWriter* node, const std::string& attribute, IElementRelationManager* manager) {
+  std::string mAttribute = attribute == "left" || attribute == "right" ? "width" : "length";
+  float mValue = attribute == "left" || attribute == "bottom" ? -cOffset : cOffset;
+  node->addAttribute(mAttribute, mValue);
 }
 
 void ResourceElementHUDAbstract::SizeRelation::renderRelation() {

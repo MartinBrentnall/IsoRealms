@@ -42,17 +42,12 @@ Project::Project(const std::string& file, bool user, IEditingContext* editingCon
     if (mValue == "Project") {
       loadProject(mNode, mCache, editingContext, asTemplate, options);
       
-      // Expsoe the project filename and data path in a string
-      std::string mProjectNamePath = mNode->getAttribute("filename");
-      if (mProjectNamePath != "") {
-        IString* mProjectNameString = cResources.getString(mProjectNamePath);
-        mProjectNameString->setValue(file);
-      }
-      std::string mProjectDataPath = mNode->getAttribute("datapath");
-      if (mProjectDataPath != "") {
-        IString* mProjectDataPathString = cResources.getString(mProjectDataPath);
-        mProjectDataPathString->setValue(cProjectDataPath);
-      }
+      String* mFilePath = new String(file);
+      String* mDataPath = new String(cProjectDataPath);
+      
+      std::vector<std::string> mRootPath;
+      cResources.add(mFilePath, mRootPath, "ProjectFileName", nullptr, nullptr);
+      cResources.add(mDataPath, mRootPath, "ProjectDataPath", nullptr, nullptr);
       break;
     }
   }
@@ -273,7 +268,22 @@ void Project::save() {
       DOMNodeWriter* mLayerNode = mProjectNode->addBranch("Layer");
       mLayer->save(mLayerNode, &cResources);
     }
+    
+    // Save return values and projects
+    for (std::pair<std::string, ReturnValue*> mReturnValue : cReturnValues) {
+      DOMNodeWriter* mNodeReturnValue = mProjectNode->addBranch("ReturnValue");
+      mNodeReturnValue->addAttribute("name",  mReturnValue.first);
+      mNodeReturnValue->addAttribute("type",  mReturnValue.second->cType);
+      mNodeReturnValue->addAttribute("value", mReturnValue.second->cReference);
+    }
+    for (std::pair<std::string, ReturnProject*> mReturnProject : cReturnProjects) {
+      DOMNodeWriter* mNodeReturnValue = mProjectNode->addBranch("ReturnValue");
+      mNodeReturnValue->addAttribute("name",  mReturnProject.first);
+      mNodeReturnValue->addAttribute("type",  "Project");
+      mNodeReturnValue->addAttribute("value", mReturnProject.second->cReference);
+    }
     mProjectNode->save(cFileName);
+    
     updateCache();
   }
 }

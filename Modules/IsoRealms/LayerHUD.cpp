@@ -22,15 +22,13 @@ LayerHUD::LayerHUD(DOMNodeWrapper* node, DOMNodeWrapper* cache, IResourceAccesso
   cLayerType = layerType;
   cSelectedElement = nullptr;
   
-  HUDComponentPosition* mScreenElement = new HUDComponentPosition(&ScreenRelative::LEFT_EDGE, &ScreenRelative::RIGHT_EDGE, &ScreenRelative::BOTTOM_EDGE, &ScreenRelative::TOP_EDGE);
+  HUDComponentPosition* mScreenElement = new HUDComponentPosition(manager, &ScreenRelative::LEFT_EDGE, &ScreenRelative::RIGHT_EDGE, &ScreenRelative::BOTTOM_EDGE, &ScreenRelative::TOP_EDGE);
   manager->addRelatableElement(this, "screen", mScreenElement);
   
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
     if (mValueAsString == "Element") {
-      std::string mComponentSource = mNode->getAttribute("type");
-      std::string mComponentName = mNode->getAttribute("name");
       resources->loadElement(mNode, cache, nullptr, this, false);
     } else {
       // TODO: Throw

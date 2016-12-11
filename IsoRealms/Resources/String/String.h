@@ -1,5 +1,5 @@
 /*
- * Copyright 2009,2010,2011 Martin Brentnall
+ * Copyright 2016 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,28 +16,27 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef HUD_COMPONENT_PROXY_H
-#define HUD_COMPONENT_PROXY_H
+#ifndef STRING_H
+#define STRING_H
 
-#include "HUDComponentPosition.h"
+#include "IString.h"
 
-class HUDComponentProxy {
+class String:public IString {
   private:
-  HUDComponentPosition* cHUDComponentPosition;
-
+  std::string cValue;
+  
   public:
-  HUDComponentProxy();
-  
-  void setHUDComponentPosition(HUDComponentPosition*);
-  bool isComponent(HUDComponentPosition*);
-  HUDComponentPosition* getComponent();
-  
-  float getWest();
-  float getEast();
-  float getSouth();
-  float getNorth();
-  float getBottom();
-  float getTop();
+  String(const std::string&);
+    
+  /**********************\
+   * Implements IString *
+  \**********************/
+  void setValue(const std::string&);
+  std::string getValue();
+
+  void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
+  Icon<IString>* getResourceIcon(IResourceBrowser<IString>*);
 };
 
 #endif
+

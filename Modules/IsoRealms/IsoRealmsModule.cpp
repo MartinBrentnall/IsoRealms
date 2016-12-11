@@ -227,6 +227,18 @@ void IsoRealmsModule::addRelatableElement(IUniverse* universe, const std::string
   mProxy->setHUDComponentPosition(element);
 }
 
+std::string IsoRealmsModule::getRelatableElementName(HUDComponentPosition* element) {
+  for (std::pair<IUniverse*, std::map<std::string, HUDComponentProxy*>*> mUniverseElements : cRelativeElements) {
+    for (std::pair<std::string, HUDComponentProxy*> mRelatableElements : *(mUniverseElements.second)) {
+      if (mRelatableElements.second->isComponent(element)) {
+        return mRelatableElements.first;
+      }
+    }
+  }
+  std::cout << "WARNING: Element name could not be determined because the element wasn't found" << std::endl;
+  return "";
+}
+
 extern "C" IModule* create(IResourceTypeRegistry* resourceTypeRegistry) {
   return new IsoRealmsModule(resourceTypeRegistry);
 }

@@ -19,6 +19,7 @@
 #ifndef SCREEN_RELATION_H
 #define SCREEN_RELATION_H
 
+#include "IElementRelationManager.h"
 #include "IHUDComponentRelation.h"
 
 class ScreenRelation:public IHUDComponentRelation {
@@ -32,7 +33,7 @@ class ScreenRelation:public IHUDComponentRelation {
    * Implements IHUDComponentRelation *
   \************************************/
   float getLocation();
-  void save(DOMNodeWriter*, const std::string&, IComponentSources*);
+  void save(DOMNodeWriter*, const std::string&, IElementRelationManager*);
   void renderRelation();
 };
 

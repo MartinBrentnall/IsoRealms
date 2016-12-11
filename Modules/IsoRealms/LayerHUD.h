@@ -34,7 +34,6 @@
 #include "HUDComponentProxy.h"
 #include "HUDComponentPosition.h"
 #include "HUDComponentRelation.h"
-#include "IComponentSources.h"
 #include "IElementRelationManager.h"
 #include "ScreenRelative.h"
 

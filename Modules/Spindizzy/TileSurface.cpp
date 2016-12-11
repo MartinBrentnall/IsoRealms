@@ -452,18 +452,13 @@ void TileSurface::getRestingLocation(Vertex& location) {
   float mXEdgeLocation = cWestEastSlope > 0 ? nextafterf(cWest - IsoRealmsConstants::BLOCK_RADIUS,  INFINITY)
                        : cWestEastSlope < 0 ? nextafterf(cEast + IsoRealmsConstants::BLOCK_RADIUS, -INFINITY)
                        :                      location.x;
-  std::cout << "X EDGE: " << mXEdgeLocation << std::endl;
   float mDistanceToY = mYEdgeLocation - location.y;
   float mDistanceToX = mXEdgeLocation - location.x;
-  std::cout << "Time to reach X: " << mDistanceToX << " / " << cWestEastSlope << " == " << fabs(mDistanceToX / cWestEastSlope) << std::endl;
-  std::cout << "Time to reach Y: " << fabs(mDistanceToY / cNorthSouthSlope) << std::endl;
   if (fabs(mDistanceToY / cNorthSouthSlope) < fabs(mDistanceToX / cWestEastSlope) || isnan(fabs(mDistanceToX / cWestEastSlope))) {
-    std::cout << "Closer to Y" << std::endl;
     // Reach Y edge first
     location.y = mYEdgeLocation;
     // TODO: location.x
   } else {
-    std::cout << "Closer to X" << std::endl;
     // Reach X edge first
     location.x = mXEdgeLocation;
     // TODO: location.y

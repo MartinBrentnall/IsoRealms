@@ -34,6 +34,7 @@
 #include "Resources/IResources.h"
 #include "Resources/Resources.h"
 #include "Resources/Script/IScript.h"
+#include "Resources/String/String.h"
 
 class Project:public IProject {
   private:

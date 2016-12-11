@@ -26,7 +26,7 @@ float ScreenRelation::getLocation() {
   return cLocation;
 }
 
-void ScreenRelation::save(DOMNodeWriter* node, const std::string& attribute, IComponentSources*) {
+void ScreenRelation::save(DOMNodeWriter* node, const std::string& attribute, IElementRelationManager* manager) {
   node->addAttribute(attribute, cLocation);
 }
 

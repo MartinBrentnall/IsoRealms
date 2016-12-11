@@ -35,8 +35,11 @@ void ResourceElementHUDString::initialiseResource(DOMNodeWrapper* node, DOMNodeW
 }
 
 void ResourceElementHUDString::save(DOMNodeWriter* node, IResourceLocator* resourceLocator) {
-  node->addAttribute("font",  resourceLocator->getPath(cFont));
-  node->addAttribute("value", resourceLocator->getPath(cText));
+  node->addAttribute("font",      resourceLocator->getPath(cFont));
+  node->addAttribute("value",     resourceLocator->getPath(cText));
+  node->addAttribute("alignment", cAlignment == IFont::LEFT  ? "Left"
+                                : cAlignment == IFont::RIGHT ? "Right"
+                                :                              "Center");
 }
 
 void ResourceElementHUDString::saveCache(DOMNodeWriter* cache) {

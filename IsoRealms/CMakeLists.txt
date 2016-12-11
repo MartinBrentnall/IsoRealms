@@ -120,6 +120,7 @@ add_library(IsoRealms SHARED
   Resources/RuntimeContext.cpp
   Resources/Sound/DummySound.cpp
   Resources/String/IntegerToString.cpp
+  Resources/String/String.cpp
   Resources/String/StringRegistry.cpp
   Resources/Texture/Texture.cpp
   Resources/Texture/TextureRegistry.cpp

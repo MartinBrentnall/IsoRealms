@@ -68,9 +68,11 @@ float HUDComponentRelation::getEdgeLocation() {
   return 0.0f;
 }
 
-void HUDComponentRelation::save(DOMNodeWriter* node, const std::string& name, IComponentSources* sources) {
-  std::string mSource = cRelative->getSource(sources);
-  node->addAttribute(name, (cRelationType == ADJACENT ? "adjacent " : "align ") + mSource + " " + std::to_string(cOffset)); 
+void HUDComponentRelation::save(DOMNodeWriter* node, const std::string& name, IElementRelationManager* manager) {
+  std::string mSource = manager->getRelatableElementName(cRelative->getComponent());
+  node->addAttribute(name, (cRelationType == ADJACENT ? "adjacent " 
+                          : cRelationType == ALIGNED  ? "align "
+                          :                             "center ") + mSource + (cOffset > 0.0f ? " " + std::to_string(cOffset) : "")); 
 }
 
 void HUDComponentRelation::renderRelation() {

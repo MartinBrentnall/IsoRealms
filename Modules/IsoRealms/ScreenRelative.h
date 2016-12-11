@@ -21,6 +21,7 @@
 
 #include <IsoRealms/Configuration.h>
 
+#include "IElementRelationManager.h"
 #include "IHUDComponentRelation.h"
 
 class ScreenRelative:public IHUDComponentRelation {
@@ -45,7 +46,7 @@ class ScreenRelative:public IHUDComponentRelation {
    * Implements IHUDComponentRelation *
   \************************************/
   float getLocation();
-  void save(DOMNodeWriter*, const std::string&, IComponentSources*);
+  void save(DOMNodeWriter*, const std::string&, IElementRelationManager*);
   void renderRelation();
 };
 

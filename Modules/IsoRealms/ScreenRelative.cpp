@@ -37,7 +37,7 @@ float ScreenRelative::getLocation() {
        :                    1.0f;
 }
 
-void ScreenRelative::save(DOMNodeWriter* node, const std::string& attribute, IComponentSources*) {
+void ScreenRelative::save(DOMNodeWriter* node, const std::string& attribute, IElementRelationManager* manager) {
   node->addAttribute(attribute, getLocation());
 }
 

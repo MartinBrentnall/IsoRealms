@@ -25,10 +25,13 @@
 
 #include "IHUDComponentRelation.h"
 
+class HUDComponentPosition;
+
 class IElementRelationManager {
   public:
   virtual IHUDComponentRelation* getRelation(IUniverse*, const std::string&, const std::string&) = 0;
   virtual void addRelatableElement(IUniverse*, const std::string&, HUDComponentPosition*) = 0;
+  virtual std::string getRelatableElementName(HUDComponentPosition*) = 0;
 };
 
 #endif

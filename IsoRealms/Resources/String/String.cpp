@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Martin Brentnall
+ * Copyright 2016 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,14 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_COMPONENT_SOURCES_H
-#define I_COMPONENT_SOURCES_H
+#include "String.h"
 
-class HUDComponentPosition;
+String::String(const std::string& value) {
+  setValue(value);
+}
 
-class IComponentSources {
-  public:
-  virtual std::string getSource(HUDComponentPosition*) = 0;
-};
+void String::setValue(const std::string& value) {
+  cValue = value;
+}
 
-#endif
+std::string String::getValue() {
+  return cValue;
+}
+
+void String::initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*) {
+}
+
+Icon<IString>* String::getResourceIcon(IResourceBrowser<IString>* browser) {
+  return nullptr;
+}
+

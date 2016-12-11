@@ -23,12 +23,12 @@
 
 #include <IsoRealms/Persistence/DOMNodeWriter.h>
 
-#include "IComponentSources.h"
+class IElementRelationManager;
 
 class IHUDComponentRelation {
   public:
   virtual float getLocation() = 0;
-  virtual void save(DOMNodeWriter*, const std::string&, IComponentSources*) = 0;
+  virtual void save(DOMNodeWriter*, const std::string&, IElementRelationManager*) = 0;
   virtual void renderRelation() = 0;
 };
 

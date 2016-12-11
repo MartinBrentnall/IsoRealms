@@ -149,4 +149,5 @@ class IsoRealmsModule:public IModule,
   \**************************************/
   IHUDComponentRelation* getRelation(IUniverse*, const std::string&, const std::string&);
   void addRelatableElement(IUniverse*, const std::string&, HUDComponentPosition*);
+  std::string getRelatableElementName(HUDComponentPosition*);
 };
