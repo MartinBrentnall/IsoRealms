@@ -77,9 +77,9 @@ void Engine::run() {
         cProject->updateRuntime(10);
         mTicksPassed -= 10;
       }
-      mLeftoverMilliseconds = mTicksPassed;
       cProject->renderRuntime();
       SDL_GL_SwapBuffers();
+      mLeftoverMilliseconds = mTicksPassed;
     }
  
     mOldTicks = mNewTicks;

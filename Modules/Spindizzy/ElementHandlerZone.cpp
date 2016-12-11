@@ -62,7 +62,9 @@ bool ElementHandlerZone::renderSelectionHighlight() {
 
 void ElementHandlerZone::renderRuntime() {
   if (cSingleZone && !cModuleInterface->isOverview()) {
-    cZone->renderRuntime();
+    if (cZone != nullptr) {
+      cZone->renderRuntime();
+    }
   } else {
     cElements.renderRuntime();
   }
