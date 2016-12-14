@@ -163,7 +163,7 @@ void Project::updateRuntime(unsigned int ticks) {
     mLayer->updateRuntime(ticks);
   }
   for (IDynamicElement* mDynamicElement : cDynamicElements) {
-    mDynamicElement->update(ticks);
+    mDynamicElement->updateRuntime(ticks);
   }
   
   if (!cFirstInitialised) {
@@ -174,7 +174,7 @@ void Project::updateRuntime(unsigned int ticks) {
 
 void Project::updateEditing(unsigned int milliseconds) {
   for (IDynamicElement* mDynamicElement : cDynamicElements) {
-    mDynamicElement->update(milliseconds);
+    mDynamicElement->updateEditing(milliseconds);
   }
 }
 

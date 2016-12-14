@@ -21,7 +21,8 @@
 
 class IDynamicElement {
   public:
-  virtual void update(unsigned int) = 0;
+  virtual void updateRuntime(unsigned int) = 0;
+  virtual void updateEditing(unsigned int) = 0;
 
   virtual ~IDynamicElement() {}
 };

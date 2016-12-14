@@ -89,7 +89,7 @@ void ResourceIntegerTimer::saveCache(DOMNodeWriter* cache) {
   // Nothing to do
 }
 
-void ResourceIntegerTimer::update(unsigned int milliseconds) {
+void ResourceIntegerTimer::updateRuntime(unsigned int milliseconds) {
   if (!cLock) {
     if (cCurrentMilliseconds > 0) {
       cCurrentMilliseconds -= milliseconds;
@@ -98,4 +98,8 @@ void ResourceIntegerTimer::update(unsigned int milliseconds) {
       }
     }
   }
+}
+
+void ResourceIntegerTimer::updateEditing(unsigned int milliseconds) {
+  // Nothing to do
 }

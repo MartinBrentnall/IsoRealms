@@ -75,7 +75,8 @@ class ResourceIntegerTimer:public IInteger,
   /******************************\
    * Implements IDynamicElement *
   \******************************/
-  void update(unsigned int);
+  void updateRuntime(unsigned int);
+  void updateEditing(unsigned int);
   
   virtual ~ResourceIntegerTimer() {}
 };

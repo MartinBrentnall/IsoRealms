@@ -711,7 +711,11 @@ IColour* SpindizzyModule::getCurrentColour(SpindizzyZoneThemeColour* colour) {
   return nullptr;
 }
 
-void SpindizzyModule::update(unsigned int milliseconds) {
+void SpindizzyModule::updateRuntime(unsigned int milliseconds) {
+  // Nothing to do
+}
+
+void SpindizzyModule::updateEditing(unsigned int milliseconds) {
   if (cPause > 0) {
     cPause -= milliseconds;
     if (cPause <= 0) {

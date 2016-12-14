@@ -337,7 +337,8 @@ class SpindizzyModule:public IModule,
   /******************************\
    * Implements IDynamicElement *
   \******************************/
-  void update(unsigned int);
+  void updateRuntime(unsigned int);
+  void updateEditing(unsigned int);
 
   /************\
    * Multiple *

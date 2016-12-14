@@ -22,5 +22,4 @@
   <Button name="okButton" text="OK" align="bottom right"/>
   <Button name="cancelButton" text="Cancel" align="bottom" right="leftof okButton"/>
   <TextField name="fileName" align="left" bottom="above okButton"/>
-  <Container name="fileSelector" bottom="above fileName"/>
 </Dialog>
