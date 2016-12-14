@@ -21,15 +21,15 @@
 Project::Project() {
   cResources.setEditing(true, this);
   cCompleted = false;
+  cCanSave = false;
   cFirstInitialised = false;
 }
 
 Project::Project(const std::string& file, bool user, IEditingContext* editingContext, bool asTemplate, IProjectOptions* options) {
   std::size_t mExtensionPosition = file.find_last_of('.');
   cProjectDataPath = System::getUserResource((user ? "User/" : "Program/") + file.substr(0, mExtensionPosition));
-  if (!asTemplate && user) {
-    cFileName = file;
-  }
+  cFileName = file;
+  cCanSave = !asTemplate && user;
   cInitScript = nullptr;
   cResources.setEditing(editingContext != nullptr, this);
   std::string mFullPath = (user ? System::getUserResource(file) : System::getProgramResource(file));
@@ -257,7 +257,7 @@ void Project::initRuntime() {
 }
 
 void Project::save() {
-  if (!cFileName.empty()) {
+  if (!cFileName.empty() && cCanSave) {
     DOMNodeWriter* mProjectNode = new DOMNodeWriter("Project");
     DOMNodeWriter* mInputConfigurationNode = mProjectNode->addBranch("InputConfiguration");
     cModuleRegistry.save(mProjectNode, &cResources);
@@ -290,11 +290,12 @@ void Project::save() {
 
 void Project::save(const std::string& fileName) {
   cFileName = fileName;
+  cCanSave = true;
   save();
 }
 
 bool Project::hasFileName() {
-  return !cFileName.empty();
+  return cCanSave;
 }
 
 void Project::removeElement(IElement* element) {

@@ -59,6 +59,7 @@ class Project:public IProject {
   Resources cResources;
   IScriptCall* cInitScript;
   bool cCompleted;
+  bool cCanSave;
   std::string cFileName;
   std::string cProjectDataPath;
   bool cFirstInitialised;

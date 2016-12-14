@@ -7120,6 +7120,7 @@ end</Code>
     <Element left="adjacent IconMap 0.020000" length="0.090000" name="ValueMap" top="align IconMap" type="IsoRealms/ZonesToExploreDisplay" width="0.500000"/>
     <Element length="0.090000" name="ValueJewel" right="adjacent IconJewel 0.020000" top="align IconJewel" type="IsoRealms/JewelCountDisplay" width="0.500000"/>
   </Layer>
+  <ReturnValue name="FileName" type="String" value="ProjectFileName"/>
   <ReturnValue name="DataPath" type="String" value="ProjectDataPath"/>
   <ReturnValue name="Jewels" type="Integer" value="IsoRealms/Collected"/>
   <ReturnValue name="Score" type="Integer" value="IsoRealms/Score"/>
