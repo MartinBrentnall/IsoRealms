@@ -1,68 +1,130 @@
-# - Try to find Xerces-C
-# Once done this will define
+# Distributed under the OSI-approved BSD 3-Clause License.  See accompanying
+# file Copyright.txt or https://cmake.org/licensing for details.
+
+#.rst:
+# FindXercesC
+# -----------
 #
-#  XERCESC_FOUND - system has Xerces-C
-#  XERCESC_INCLUDE - the Xerces-C include directory
-#  XERCESC_LIBRARY - Link these to use Xerces-C
-#  XERCESC_VERSION - Xerces-C found version
+# Find the Apache Xerces-C++ validating XML parser headers and libraries.
+#
+# Imported targets
+# ^^^^^^^^^^^^^^^^
+#
+# This module defines the following :prop_tgt:`IMPORTED` targets:
+#
+# ``XercesC::XercesC``
+#   The Xerces-C++ ``xerces-c`` library, if found.
+#
+# Result variables
+# ^^^^^^^^^^^^^^^^
+#
+# This module will set the following variables in your project:
+#
+# ``XercesC_FOUND``
+#   true if the Xerces headers and libraries were found
+# ``XercesC_VERSION``
+#   Xerces release version
+# ``XercesC_INCLUDE_DIRS``
+#   the directory containing the Xerces headers
+# ``XercesC_LIBRARIES``
+#   Xerces libraries to be linked
+#
+# Cache variables
+# ^^^^^^^^^^^^^^^
+#
+# The following cache variables may also be set:
+#
+# ``XercesC_INCLUDE_DIR``
+#   the directory containing the Xerces headers
+# ``XercesC_LIBRARY``
+#   the Xerces library
 
-IF (XERCESC_INCLUDE AND XERCESC_LIBRARY)
-# in cache already
-SET(XERCESC_FIND_QUIETLY TRUE)
-ENDIF (XERCESC_INCLUDE AND XERCESC_LIBRARY)
+# Written by Roger Leigh <rleigh@codelibre.net>
 
-FIND_PATH(
-XERCESC_INCLUDE
-NAMES xercesc/util/XercesVersion.hpp
-PATHS c:/Libs/xerces-c_2_8_0 ${XERCES_INCLUDE_DIR}
-PATH_SUFFIXES xercesc)
+function(_XercesC_GET_VERSION  version_hdr)
+    file(STRINGS ${version_hdr} _contents REGEX "^[ \t]*#define XERCES_VERSION_.*")
+    if(_contents)
+        string(REGEX REPLACE ".*#define XERCES_VERSION_MAJOR[ \t]+([0-9]+).*" "\\1" XercesC_MAJOR "${_contents}")
+        string(REGEX REPLACE ".*#define XERCES_VERSION_MINOR[ \t]+([0-9]+).*" "\\1" XercesC_MINOR "${_contents}")
+        string(REGEX REPLACE ".*#define XERCES_VERSION_REVISION[ \t]+([0-9]+).*" "\\1" XercesC_PATCH "${_contents}")
 
-FIND_LIBRARY(
- XERCESC_LIBRARY
- NAMES xerces-c xerces-c_2
- PATHS ${XERCES_LIBRARY_DIR})
+        if(NOT XercesC_MAJOR MATCHES "^[0-9]+$")
+            message(FATAL_ERROR "Version parsing failed for XERCES_VERSION_MAJOR!")
+        endif()
+        if(NOT XercesC_MINOR MATCHES "^[0-9]+$")
+            message(FATAL_ERROR "Version parsing failed for XERCES_VERSION_MINOR!")
+        endif()
+        if(NOT XercesC_PATCH MATCHES "^[0-9]+$")
+            message(FATAL_ERROR "Version parsing failed for XERCES_VERSION_REVISION!")
+        endif()
 
-IF (XERCESC_INCLUDE AND XERCESC_LIBRARY)
-SET(XERCESC_FOUND TRUE)
-ELSE (XERCESC_INCLUDE AND XERCESC_LIBRARY)
-SET(XERCESC_FOUND FALSE)
-ENDIF (XERCESC_INCLUDE AND XERCESC_LIBRARY)
+        set(XercesC_VERSION "${XercesC_MAJOR}.${XercesC_MINOR}.${XercesC_PATCH}" PARENT_SCOPE)
+    else()
+        message(FATAL_ERROR "Include file ${version_hdr} does not exist or does not contain expected version information")
+    endif()
+endfunction()
 
-IF(XERCESC_FOUND)
+# Find include directory
+find_path(XercesC_INCLUDE_DIR
+          NAMES "xercesc/util/PlatformUtils.hpp"
+          DOC "Xerces-C++ include directory")
+mark_as_advanced(XercesC_INCLUDE_DIR)
 
-FIND_PATH(XVERHPPPATH NAMES XercesVersion.hpp PATHS
- ${XERCESC_INCLUDE}/xercesc/util  NO_DEFAULT_PATH)
+if(NOT XercesC_LIBRARY)
+  # Find all XercesC libraries
+  find_library(XercesC_LIBRARY_RELEASE
+               NAMES "xerces-c" "xerces-c_3"
+               DOC "Xerces-C++ libraries (release)")
+  find_library(XercesC_LIBRARY_DEBUG
+               NAMES "xerces-cd" "xerces-c_3D" "xerces-c_3_1D"
+               DOC "Xerces-C++ libraries (debug)")
+  include(${CMAKE_CURRENT_LIST_DIR}/SelectLibraryConfigurations.cmake)
+  select_library_configurations(XercesC)
+  mark_as_advanced(XercesC_LIBRARY_RELEASE XercesC_LIBRARY_DEBUG)
+endif()
 
-IF ( ${XVERHPPPATH} STREQUAL XVERHPPPATH-NOTFOUND )
- SET(XERCES_VERSION "0")
-ELSE( ${XVERHPPPATH} STREQUAL XVERHPPPATH-NOTFOUND )
- FILE(READ ${XVERHPPPATH}/XercesVersion.hpp XVERHPP)
+if(XercesC_INCLUDE_DIR)
+  _XercesC_GET_VERSION("${XercesC_INCLUDE_DIR}/xercesc/util/XercesVersion.hpp")
+endif()
 
- STRING(REGEX MATCHALL "\n *#define XERCES_VERSION_MAJOR +[0-9]+" XVERMAJ
-   ${XVERHPP})
- STRING(REGEX MATCH "\n *#define XERCES_VERSION_MINOR +[0-9]+" XVERMIN
-   ${XVERHPP})
- STRING(REGEX MATCH "\n *#define XERCES_VERSION_REVISION +[0-9]+" XVERREV
-   ${XVERHPP})
+include(${CMAKE_CURRENT_LIST_DIR}/FindPackageHandleStandardArgs.cmake)
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(XercesC
+                                  FOUND_VAR XercesC_FOUND
+                                  REQUIRED_VARS XercesC_LIBRARY
+                                                XercesC_INCLUDE_DIR
+                                                XercesC_VERSION
+                                  VERSION_VAR XercesC_VERSION
+                                  FAIL_MESSAGE "Failed to find XercesC")
 
- STRING(REGEX REPLACE "\n *#define XERCES_VERSION_MAJOR +" ""
-   XVERMAJ ${XVERMAJ})
- STRING(REGEX REPLACE "\n *#define XERCES_VERSION_MINOR +" ""
-   XVERMIN ${XVERMIN})
- STRING(REGEX REPLACE "\n *#define XERCES_VERSION_REVISION +" ""
-   XVERREV ${XVERREV})
+if(XercesC_FOUND)
+  set(XercesC_INCLUDE_DIRS "${XercesC_INCLUDE_DIR}")
+  set(XercesC_LIBRARIES "${XercesC_LIBRARY}")
 
- SET(XERCESC_VERSION ${XVERMAJ}.${XVERMIN}.${XVERREV})
-
-ENDIF ( ${XVERHPPPATH} STREQUAL XVERHPPPATH-NOTFOUND )
-
-IF(NOT XERCESC_FIND_QUIETLY)
- MESSAGE(STATUS "Found Xerces-C: ${XERCESC_LIBRARY}")
- MESSAGE(STATUS "              : ${XERCESC_INCLUDE}")
- MESSAGE(STATUS "       Version: ${XERCESC_VERSION}")
-ENDIF(NOT XERCESC_FIND_QUIETLY)
-ELSE(XERCESC_FOUND)
-MESSAGE(FATAL_ERROR "Could not find Xerces-C !")
-ENDIF(XERCESC_FOUND)
-
-MARK_AS_ADVANCED(XERCESC_INCLUDE XERCESC_LIBRARY)
+  # For header-only libraries
+  if(NOT TARGET XercesC::XercesC)
+    add_library(XercesC::XercesC UNKNOWN IMPORTED)
+    if(XercesC_INCLUDE_DIRS)
+      set_target_properties(XercesC::XercesC PROPERTIES
+        INTERFACE_INCLUDE_DIRECTORIES "${XercesC_INCLUDE_DIRS}")
+    endif()
+    if(EXISTS "${XercesC_LIBRARY}")
+      set_target_properties(XercesC::XercesC PROPERTIES
+        IMPORTED_LINK_INTERFACE_LANGUAGES "CXX"
+        IMPORTED_LOCATION "${XercesC_LIBRARY}")
+    endif()
+    if(EXISTS "${XercesC_LIBRARY_RELEASE}")
+      set_property(TARGET XercesC::XercesC APPEND PROPERTY
+        IMPORTED_CONFIGURATIONS RELEASE)
+      set_target_properties(XercesC::XercesC PROPERTIES
+        IMPORTED_LINK_INTERFACE_LANGUAGES_RELEASE "CXX"
+        IMPORTED_LOCATION_RELEASE "${XercesC_LIBRARY_RELEASE}")
+    endif()
+    if(EXISTS "${XercesC_LIBRARY_DEBUG}")
+      set_property(TARGET XercesC::XercesC APPEND PROPERTY
+        IMPORTED_CONFIGURATIONS DEBUG)
+      set_target_properties(XercesC::XercesC PROPERTIES
+        IMPORTED_LINK_INTERFACE_LANGUAGES_DEBUG "CXX"
+        IMPORTED_LOCATION_DEBUG "${XercesC_LIBRARY_DEBUG}")
+    endif()
+  endif()
+endif()

@@ -56,6 +56,7 @@ class ResourceTextureSpindizzyCraftBall:public ITexture {
    * Implements ITexture *
   \***********************/
   void set();
+  void hintInUse(bool);
   void save(DOMNodeWriter*);
   
   virtual ~ResourceTextureSpindizzyCraftBall();

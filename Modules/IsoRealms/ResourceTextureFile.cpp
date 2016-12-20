@@ -68,6 +68,10 @@ void ResourceTextureFile::save(DOMNodeWriter* node) {
   node->addAttribute("file", cFileName);
 }
 
+void ResourceTextureFile::hintInUse(bool inUse) {
+  // Nothing to do
+}
+
 ResourceTextureFile::~ResourceTextureFile() {
   glDeleteTextures(1, &cTextureID);
 }

@@ -63,31 +63,39 @@ std::string ResourceTexturesSpindizzyBlocksC64::stripMemberName(const std::strin
   return name.substr(0, name.rfind('_'));
 }
 
+Texture* ResourceTexturesSpindizzyBlocksC64::createTexture(bool clamp) {
+  Texture* mTexture = new Texture(clamp);
+  mTexture->addUseListener(this);
+  return mTexture;
+}
+
 void ResourceTexturesSpindizzyBlocksC64::initialise() {
   cFloorColour = new Colour(1.0f, 1.0f, 1.0f);
   cWallColour = new Colour(0.7f, 0.7f, 0.7f);
   cGridColour = new Colour(0.3f, 0.3f, 0.3f);
   cBackgroundColour = new Colour(0.0f, 0.0f, 0.0f);
+  cTexturesInUseCount = 0;
+  cNeedsAngleRedraw = false;
   
-  cTextures[SWITCH_CIRCLE_BOTH]  = new Texture();
-  cTextures[SWITCH_CIRCLE_ONE]   = new Texture();
-  cTextures[SWITCH_CIRCLE_NONE]  = new Texture();
-  cTextures[SWITCH_SQUARE_BOTH]  = new Texture();
-  cTextures[SWITCH_SQUARE_ONE]   = new Texture();
-  cTextures[SWITCH_SQUARE_NONE]  = new Texture();
-  cTextures[SWITCH_DIAMOND_NONE] = new Texture();
-  cTextures[SWITCH_DIAMOND_ONE]  = new Texture();
-  cTextures[SWITCH_DIAMOND_BOTH] = new Texture();
-  cTextures[ARROW]               = new Texture();
-  cTextures[TRAMPOLINE]          = new Texture();
-  cTextures[ICE_WATER]           = new Texture();
-  cTextures[PLAIN]               = new Texture();
-  cTextures[PLAIN_SPLIT]         = new Texture();
-  cTextures[WALL_MIXED_CAP]      = new Texture(true);
-  cTextures[WALL_MIXED_MIDDLE]   = new Texture();
-  cTextures[WALL_PLAIN_CAP]      = new Texture(true);
-  cTextures[WALL_PLAIN_MIDDLE]   = new Texture();
-  cTextures[WALL_ICE]            = new Texture();
+  cTextures[SWITCH_CIRCLE_BOTH]  = createTexture();
+  cTextures[SWITCH_CIRCLE_ONE]   = createTexture();
+  cTextures[SWITCH_CIRCLE_NONE]  = createTexture();
+  cTextures[SWITCH_SQUARE_BOTH]  = createTexture();
+  cTextures[SWITCH_SQUARE_ONE]   = createTexture();
+  cTextures[SWITCH_SQUARE_NONE]  = createTexture();
+  cTextures[SWITCH_DIAMOND_NONE] = createTexture();
+  cTextures[SWITCH_DIAMOND_ONE]  = createTexture();
+  cTextures[SWITCH_DIAMOND_BOTH] = createTexture();
+  cTextures[ARROW]               = createTexture();
+  cTextures[TRAMPOLINE]          = createTexture();
+  cTextures[ICE_WATER]           = createTexture();
+  cTextures[PLAIN]               = createTexture();
+  cTextures[PLAIN_SPLIT]         = createTexture();
+  cTextures[WALL_MIXED_CAP]      = createTexture(true);
+  cTextures[WALL_MIXED_MIDDLE]   = createTexture();
+  cTextures[WALL_PLAIN_CAP]      = createTexture(true);
+  cTextures[WALL_PLAIN_MIDDLE]   = createTexture();
+  cTextures[WALL_ICE]            = createTexture();
 }
 
 float ResourceTexturesSpindizzyBlocksC64::getGridWallLuminanceAdjustment() {
@@ -477,14 +485,14 @@ void ResourceTexturesSpindizzyBlocksC64::saveCache(DOMNodeWriter* cache) {
   // Nothing to do
 }
 
-void ResourceTexturesSpindizzyBlocksC64::cameraAngleChanged(float angle) {
+void ResourceTexturesSpindizzyBlocksC64::performAngleRedraw() {
   glPushAttrib(GL_TRANSFORM_BIT);
   glMatrixMode(GL_PROJECTION);
   glPushMatrix();
   glLoadIdentity();
   glPopAttrib();
 
-  generateAngledTextures(angle + 45.0f);
+  generateAngledTextures(cCameraAngle + 45.0f);
 
   glPushAttrib(GL_TRANSFORM_BIT);
   glMatrixMode(GL_PROJECTION);
@@ -496,4 +504,22 @@ void ResourceTexturesSpindizzyBlocksC64::cameraAngleChanged(float angle) {
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
   glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0);
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);  
+  
+  cNeedsAngleRedraw = false;
+}
+
+void ResourceTexturesSpindizzyBlocksC64::cameraAngleChanged(float angle) {
+  cCameraAngle = angle;
+  if (cTexturesInUseCount > 0) {
+    performAngleRedraw();
+  } else {
+    cNeedsAngleRedraw = true;
+  }
+}
+
+void ResourceTexturesSpindizzyBlocksC64::hintTextureUsed(ITexture* texture, bool inUse) {
+  if (cTexturesInUseCount == 0 && inUse && cNeedsAngleRedraw) {
+    performAngleRedraw();
+  }
+  cTexturesInUseCount += inUse ? 1 : -1;
 }

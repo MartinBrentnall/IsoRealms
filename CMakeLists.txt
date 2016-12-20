@@ -51,16 +51,19 @@ endif(LUABIND_FOUND)
 
 set(XercesC_DIR ${PROJECT_SOURCE_DIR})
 find_package(XercesC REQUIRED)
-if(XERCESC_FOUND)
-  include_directories(${XERCESX_INCLUDE})
-else(XERCESC_FOUND)
+if(XercesC_FOUND)
+  include_directories(${XercesC_INCLUDE_DIRS})
+else(XercesC_FOUND)
   message(STATUS "XercesC not found.")
-endif(XERCESC_FOUND)
+endif(XercesC_FOUND)
 
 add_subdirectory(IsoRealms)
 add_subdirectory(Modules)
 
 include_directories(${PROJECT_SOURCE_DIR})
+
+message("LUABIND: ${LUABIND_LIBRARY}")
+message("XERCES: ${XercesC_LIBRARIES}")
 
 add_executable(IsoRealms.bin 
   Engine.cpp
@@ -68,4 +71,4 @@ add_executable(IsoRealms.bin
   Main.cpp
   TerminateEngineCommand.cpp
 )
-target_link_libraries(IsoRealms.bin ${SDL_LIBRARY} ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY} ${GLEW_LIBRARY} ${LUABIND_LIBRARY} ${XERCESC_LIBRARY} IsoRealms)
+target_link_libraries(IsoRealms.bin ${SDL_LIBRARY} ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY} ${GLEW_LIBRARY} ${LUABIND_LIBRARY} ${XercesC_LIBRARIES} IsoRealms)

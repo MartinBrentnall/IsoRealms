@@ -50,6 +50,16 @@ void Texture::setRenderTarget() {
   glClear(GL_COLOR_BUFFER_BIT);
 }
 
+void Texture::addUseListener(ITextureUseListener* listener) {
+  cUseListeners.push_back(listener);
+}
+
 void Texture::set() {
   glBindTexture(GL_TEXTURE_2D, cTexture);
+}
+
+void Texture::hintInUse(bool inUse) {
+  for (ITextureUseListener* mListener : cUseListeners) {
+    mListener->hintTextureUsed(this, inUse);
+  }
 }

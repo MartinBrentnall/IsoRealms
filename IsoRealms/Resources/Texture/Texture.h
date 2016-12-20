@@ -20,13 +20,16 @@
 #define TEXTURE_H
 
 #include <GL/glew.h>
+#include <vector>
 
 #include "ITexture.h"
+#include "ITextureUseListener.h"
 
 class Texture:public ITexture {
   private:
   GLuint cTexture;
   GLuint cFrameBuffer;
+  std::vector<ITextureUseListener*> cUseListeners;
 
   public:
   Texture(bool = false);
@@ -35,11 +38,13 @@ class Texture:public ITexture {
   Icon<ITexture>* getResourceIcon(IResourceBrowser<ITexture>*);
   
   void setRenderTarget();
+  void addUseListener(ITextureUseListener*);
 
   /***********************\
    * Implements ITexture *
   \***********************/
   void set();
+  void hintInUse(bool);
 };
 
 #endif

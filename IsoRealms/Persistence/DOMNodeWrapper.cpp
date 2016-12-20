@@ -27,19 +27,19 @@ DOMNodeWrapper::DOMNodeWrapper(std::string filename) {
     mParser->parse(filename.c_str());
   } catch (const XMLException& mException) {
     char* mMessage = XMLString::transcode(mException.getMessage());
-    ParseException mException("XML parsing exception: " + std::string(mMessage));
+    ParseException mThrowException("XML parsing exception: " + std::string(mMessage));
     XMLString::release(&mMessage);
-    throw mException;
+    throw mThrowException;
   } catch (const DOMException& mException) {
     char* mMessage = XMLString::transcode(mException.msg);
-    ParseException mException("XML parsing exception: " + std::string(mMessage));
+    ParseException mThrowException("XML parsing exception: " + std::string(mMessage));
     XMLString::release(&mMessage);
-    throw mException;
+    throw mThrowException;
   } catch (const SAXException& mException) {
     char* mMessage = XMLString::transcode(mException.getMessage());
-    ParseException mException("XML parsing exception: " + std::string(mMessage));
+    ParseException mThrowException("XML parsing exception: " + std::string(mMessage));
     XMLString::release(&mMessage);
-    throw mException;
+    throw mThrowException;
   }
   cNode = mParser->getDocument(); 
   cIndex = 0;

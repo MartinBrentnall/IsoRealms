@@ -98,6 +98,12 @@ std::string SpindizzyZoneTheme::getElementName(SpindizzyZoneThemeColour* colour)
   return cThemeSource->getThemeElement(colour);
 }
 
+void SpindizzyZoneTheme::hintInUse(bool inUse) {
+  for (std::map<SpindizzyZoneThemeTexture*, ITexture*>::iterator i = cTextures.begin(); i != cTextures.end(); i++) {
+    i->second->hintInUse(inUse);
+  }
+}
+
 ITexture* SpindizzyZoneTheme::getTexture(SpindizzyZoneThemeTexture* themeTexture) {
   return cTextures[themeTexture];
 }

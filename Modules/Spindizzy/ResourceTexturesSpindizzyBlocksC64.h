@@ -34,7 +34,8 @@
 
 class ResourceTexturesSpindizzyBlocksC64:public IResource,
                                          public IResourceUseListener<IColour>,
-                                         public ICameraAngleChangeListener {
+                                         public ICameraAngleChangeListener,
+                                         public ITextureUseListener {
   private:
   static const float TILE_SIZE;
   static const float SWITCH_SQUARE_OUTER;
@@ -76,6 +77,9 @@ class ResourceTexturesSpindizzyBlocksC64:public IResource,
   IColour* cWallColour;
   IColour* cGridColour;
   IColour* cBackgroundColour;
+  unsigned int cTexturesInUseCount;
+  float cCameraAngle; // TODO: Probably should access the camera directly
+  bool cNeedsAngleRedraw;
 
   void initialise();
   
@@ -109,6 +113,9 @@ class ResourceTexturesSpindizzyBlocksC64:public IResource,
   void generateTextures();
   void destroyTextures();
 
+  Texture* createTexture(bool clamp = false);
+  void performAngleRedraw();
+  
   public:
   ResourceTexturesSpindizzyBlocksC64(ICameraSupplier*, DOMNodeWrapper*, IResourceRegistry*);
   
@@ -145,6 +152,11 @@ class ResourceTexturesSpindizzyBlocksC64:public IResource,
   \*****************************************/
   void cameraAngleChanged(float);
   
+  /**********************************\
+   * Implements ITextureUseListener *
+  \**********************************/
+  void hintTextureUsed(ITexture*, bool);  
+
   virtual ~ResourceTexturesSpindizzyBlocksC64();
 };
 

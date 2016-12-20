@@ -120,6 +120,10 @@ void ResourceTextureSpindizzyCraftBall::set() {
   cTexture->set();
 }
 
+void ResourceTextureSpindizzyCraftBall::hintInUse(bool inUse) {
+  // Nothing to do
+}
+
 void ResourceTextureSpindizzyCraftBall::save(DOMNodeWriter* node) {
   // TODO
 }

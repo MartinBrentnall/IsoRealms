@@ -19,8 +19,8 @@
 #include "ScreenConfiguration.h"
 
 ScreenConfiguration::ScreenConfiguration() {
-  cFullScreen = true;
-  cScreenWidth = 640;
+  cFullScreen = false;
+  cScreenWidth = 800;
   cScreenHeight = 480;
   cScreenDepth = 24;
 }

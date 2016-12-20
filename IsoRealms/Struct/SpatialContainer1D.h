@@ -70,7 +70,7 @@ template <class T> class SpatialContainer1D {
       cCells.insert(cCells.begin(), mCell);
      
     // If the object is "after" the last cell
-    } else if (mCellIndex >= cCells.size()) {
+    } else if (mCellIndex >= static_cast<int>(cCells.size())) {
       for (int i = cCells.size(); i < mCellIndex; i++) {
         cCells.push_back(nullptr);
       }

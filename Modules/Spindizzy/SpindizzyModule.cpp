@@ -113,7 +113,13 @@ unsigned int SpindizzyModule::getZoneCount() {
 }
 
 void SpindizzyModule::setTheme(ISpindizzyZoneTheme* theme) {
+  if (cDefaultTheme != nullptr) {
+    cDefaultTheme->hintInUse(false);
+  }
   cDefaultTheme = theme;
+  if (cDefaultTheme != nullptr) {
+    cDefaultTheme->hintInUse(true);
+  }
 }
 
 void SpindizzyModule::setActiveUniverse(IUniverse* universe) {

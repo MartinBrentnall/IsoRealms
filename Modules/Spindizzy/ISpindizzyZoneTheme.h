@@ -41,6 +41,7 @@ class ISpindizzyZoneTheme:public IResource {
   virtual std::string getElementName(SpindizzyZoneThemeColour*) = 0;
   virtual void registerElement(SpindizzyZoneThemeTexture*, ITexture*) = 0;
   virtual void registerElement(SpindizzyZoneThemeColour*, IColour*) = 0;
+  virtual void hintInUse(bool) = 0;
 };
 
 #endif

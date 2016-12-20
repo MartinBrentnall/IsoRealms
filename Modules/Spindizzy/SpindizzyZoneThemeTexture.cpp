@@ -39,3 +39,10 @@ void SpindizzyZoneThemeTexture::set() {
     cTexture->set();
   }
 }
+
+void SpindizzyZoneThemeTexture::hintInUse(bool inUse) {
+  if (cTexture != nullptr) {
+    cTexture->hintInUse(inUse);
+  }
+}
+

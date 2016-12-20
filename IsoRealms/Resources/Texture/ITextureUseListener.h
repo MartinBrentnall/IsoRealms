@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2016 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,16 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_TEXTURE_H
-#define I_TEXTURE_H
+#ifndef I_TEXTURE_USE_LISTENER_H
+#define I_TEXTURE_USE_LISTENER_H
 
-#include <IsoRealms/Resources/IResourceManageable.h>
+#include "ITexture.h"
 
-class ITexture:public IResourceManageable<ITexture> {
+class ITextureUseListener {
   public:
-  virtual void set() = 0;
-  virtual void hintInUse(bool) = 0;
-  virtual ~ITexture() {}
+  virtual void hintTextureUsed(ITexture*, bool) = 0;
 };
 
 #endif

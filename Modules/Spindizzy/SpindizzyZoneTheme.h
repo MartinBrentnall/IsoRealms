@@ -67,6 +67,7 @@ class SpindizzyZoneTheme:public IResourceUseListener<ITexture>,
   std::map<SpindizzyZoneThemeColour*, IColour*> getColourElements();
   std::string getElementName(SpindizzyZoneThemeTexture*);
   std::string getElementName(SpindizzyZoneThemeColour*);
+  void hintInUse(bool);
   
   /*********************************************\
    * Implements IResourceUseListener<ITexture> *

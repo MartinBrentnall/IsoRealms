@@ -52,6 +52,7 @@ class ResourceTextureFile:public ITexture {
   \***********************/
   void set();
   void save(DOMNodeWriter*);
+  void hintInUse(bool);
   
   ~ResourceTextureFile();
 };
