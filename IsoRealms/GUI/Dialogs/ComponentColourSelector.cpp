@@ -89,12 +89,12 @@ void ComponentColourSelector::setupComponent() {
 }
 
 void ComponentColourSelector::updateColour() {
-  if (isnan(cRed))        {cRed        = 0.0f;}
-  if (isnan(cGreen))      {cGreen      = 0.0f;}
-  if (isnan(cBlue))       {cBlue       = 0.0f;}
-  if (isnan(cHue))        {cHue        = 0.0f;}
-  if (isnan(cSaturation)) {cSaturation = 0.0f;}
-  if (isnan(cLightness))  {cLightness  = 0.0f;}
+  if (std::isnan(cRed))        {cRed        = 0.0f;}
+  if (std::isnan(cGreen))      {cGreen      = 0.0f;}
+  if (std::isnan(cBlue))       {cBlue       = 0.0f;}
+  if (std::isnan(cHue))        {cHue        = 0.0f;}
+  if (std::isnan(cSaturation)) {cSaturation = 0.0f;}
+  if (std::isnan(cLightness))  {cLightness  = 0.0f;}
   cColour->setRed(cRed);
   cColour->setGreen(cGreen);
   cColour->setBlue(cBlue);
