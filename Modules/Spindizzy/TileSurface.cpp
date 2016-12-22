@@ -454,7 +454,7 @@ void TileSurface::getRestingLocation(Vertex& location) {
                        :                      location.x;
   float mDistanceToY = mYEdgeLocation - location.y;
   float mDistanceToX = mXEdgeLocation - location.x;
-  if (fabs(mDistanceToY / cNorthSouthSlope) < fabs(mDistanceToX / cWestEastSlope) || isnan(fabs(mDistanceToX / cWestEastSlope))) {
+  if (fabs(mDistanceToY / cNorthSouthSlope) < fabs(mDistanceToX / cWestEastSlope) || std::isnan(fabs(mDistanceToX / cWestEastSlope))) {
     // Reach Y edge first
     location.y = mYEdgeLocation;
     // TODO: location.x
