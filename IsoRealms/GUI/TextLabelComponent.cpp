@@ -30,6 +30,7 @@ void TextLabelComponent::render() {
   IFont* mFont = LookAndFeel::getDefaultFont();
   float mFontSize = LookAndFeel::getDefaultFontSize();
   mFont->print(mLeft + cPadding / 2.0f, mBottom + 0.01f, mFontSize, IFont::LEFT, cLabel.c_str());
+  glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void TextLabelComponent::update(unsigned int milliseconds) {

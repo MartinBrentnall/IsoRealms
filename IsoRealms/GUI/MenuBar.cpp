@@ -87,12 +87,6 @@ void MenuBar::update(unsigned int milliseconds) {
 void MenuBar::render() {
 
   // Render the bar
-  glPushAttrib(GL_TRANSFORM_BIT);
-  glMatrixMode(GL_PROJECTION);
-  glPushMatrix();
-  glLoadIdentity();
-  glPopAttrib();
-  glDisable(GL_DEPTH_TEST);
 
   float mLeft = getLeft();
   float mBottom = getBottom();
@@ -117,15 +111,7 @@ void MenuBar::render() {
   glVertex2f(mRight, mBottom);
   glVertex2f(mRight, mTop);
   glEnd();
-  glLoadIdentity();  
-  glEnable(GL_DEPTH_TEST);
 
-  glPushAttrib(GL_TRANSFORM_BIT);
-  glMatrixMode(GL_PROJECTION);
-  glPopMatrix();
-  glPopAttrib();
-
-  glLoadIdentity();
   float mX = getLeft() + 0.01f;
   float mY = 0.96f;
   for (unsigned int i = 0; i < cMenuItems.size(); i++) {

@@ -151,6 +151,19 @@ void CameraLayerMapEditing::update(int milliseconds) {
 }
 
 void CameraLayerMapEditing::render() {
+  Configuration* mConfiguration = Configuration::getInstance();
+  ScreenConfiguration* mScreenConfiguration = mConfiguration->getScreenConfiguration();
+  ScreenMode* mScreenMode = mScreenConfiguration->getScreenMode();
+  unsigned int mScreenWidth = mScreenMode->getWidth();
+  unsigned int mScreenHeight = mScreenMode->getHeight();
+  delete mScreenMode;
+  
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  gluPerspective(45.0, (GLfloat) mScreenWidth / (GLfloat) mScreenHeight, 0.3, 800.0);
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+
   if (cProgress < 1.0) {
     float mX = sine(cPreviousViewPoint->cLocation.x, cCurrentViewPoint->cLocation.x, cProgress);
     float mY = sine(cPreviousViewPoint->cLocation.y, cCurrentViewPoint->cLocation.y, cProgress);

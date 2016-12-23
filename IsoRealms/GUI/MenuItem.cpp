@@ -50,6 +50,7 @@ void MenuItem::render(bool selected, float x, float y) {
     glColor3f(0.0f * mMultiplier, 1.0f * mMultiplier, 1.0f * mMultiplier);
     mFont->print(x + mWidth, y, mFontSize, IFont::LEFT, cText.substr(cAcceleratorIndex, 1).c_str());
   }
+  glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 float MenuItem::getWidth() {

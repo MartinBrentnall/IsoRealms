@@ -83,7 +83,6 @@ void ElementSpindizzyLift::renderEditing() {
   renderEditingArrow();
   glColor3f(1.0, 1.0, 1.0);
   glLineWidth(1.0);
-  glPopMatrix();
 }
 
 bool ElementSpindizzyLift::renderSelectionHighlight() {

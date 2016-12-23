@@ -134,16 +134,6 @@ void DropDownListComponent::ListPopup::render() {
   Configuration* mConfiguration = Configuration::getInstance();
   ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
 
-  glPushAttrib(GL_TRANSFORM_BIT);
-  glMatrixMode(GL_PROJECTION);
-  glPushMatrix();
-  glLoadIdentity();
-  glPopAttrib();
-  glDisable(GL_DEPTH_TEST);
-
-  glBindTexture(GL_TEXTURE_2D, 0);
-  glLoadIdentity();
-
   glBindTexture(GL_TEXTURE_2D, 0);
   glEnable(GL_BLEND);
   glBegin(GL_QUADS);
@@ -188,10 +178,6 @@ void DropDownListComponent::ListPopup::render() {
   glLoadIdentity();  
   glEnable(GL_DEPTH_TEST);
 
-  glPushAttrib(GL_TRANSFORM_BIT);
-  glMatrixMode(GL_PROJECTION);
-  glPopMatrix();
-  glPopAttrib();
   glBindTexture(GL_TEXTURE_2D, 0);
   glColor3f(1.0f, 1.0f, 1.0f);  
 }

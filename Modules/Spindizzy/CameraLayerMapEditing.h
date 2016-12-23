@@ -25,6 +25,7 @@
 #include <string>
 #include <map>
 
+#include <IsoRealms/Configuration.h>
 #include <IsoRealms/Resources/Camera/ICamera.h>
 #include <IsoRealms/Resources/Vertex/Vertex.h>
 

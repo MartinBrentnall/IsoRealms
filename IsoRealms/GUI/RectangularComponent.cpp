@@ -526,32 +526,6 @@ void RectangularComponent::update(unsigned int milliseconds) {
 }
 
 void RectangularComponent::render() {
-//   float mLeft = getLeft();
-//   float mTop = getTop();
-//   float mRight = getRight();
-//   float mBottom = getBottom();
-//   Configuration* mConfiguration = Configuration::getInstance();
-//   ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
-//   float mAspectRatio = mScreen->getAspectRatio();
-
-//   glPushAttrib(GL_TRANSFORM_BIT);
-//   glMatrixMode(GL_PROJECTION);
-//   glPushMatrix();
-//   glLoadIdentity();
-//   glPopAttrib();
-//   glDisable(GL_DEPTH_TEST);
-//   glBindTexture(GL_TEXTURE_2D, 0);
-  
-  glPushAttrib(GL_TRANSFORM_BIT);
-  glMatrixMode(GL_PROJECTION);
-  glPushMatrix();
-  glLoadIdentity();
-  glPopAttrib();
-  glDisable(GL_DEPTH_TEST);
-
-  glBindTexture(GL_TEXTURE_2D, 0);
-  glLoadIdentity();
-  
 //   glEnable(GL_SCISSOR_TEST);
 //   int mLeftPixels = mScreen->convertToXPixels(mLeft);
 //   int mRightPixels = mScreen->convertToXPixels(mRight);
@@ -567,22 +541,6 @@ void RectangularComponent::render() {
     cActivePopupMenu->render();
   }
 //   glDisable(GL_SCISSOR_TEST);
-//   glLoadIdentity();  
-//   glEnable(GL_DEPTH_TEST);
-//   glPushAttrib(GL_TRANSFORM_BIT);
-//   glMatrixMode(GL_PROJECTION);
-//   glPopMatrix();
-//   glPopAttrib();
-
-  glLoadIdentity();  
-  glEnable(GL_DEPTH_TEST);
-
-  glPushAttrib(GL_TRANSFORM_BIT);
-  glMatrixMode(GL_PROJECTION);
-  glPopMatrix();
-  glPopAttrib();
-  glBindTexture(GL_TEXTURE_2D, 0);
-  glColor3f(1.0f, 1.0f, 1.0f);
 }
 
 void RectangularComponent::testFocusChange(SDL_Event& event) {

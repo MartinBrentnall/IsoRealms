@@ -59,27 +59,10 @@ void ScreenEdge::render() {
     cExpandedDialog->render();
   }
   for (unsigned int i = 0; i < cDockedDialogs.size(); i++) {
-    glPushAttrib(GL_TRANSFORM_BIT);
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    glPopAttrib();
-    glDisable(GL_DEPTH_TEST);
-
-    glBindTexture(GL_TEXTURE_2D, 0);
-    glLoadIdentity();
     float mX = getTabX(cDockedDialogs[i]);
     float mY = getTabY(cDockedDialogs[i]);
     renderTab(cDockedDialogs[i], mX, mY);
     cDockedDialogs[i]->renderIcon();
-  
-    glLoadIdentity();  
-    glEnable(GL_DEPTH_TEST);
-
-    glPushAttrib(GL_TRANSFORM_BIT);
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glPopAttrib();  
   }
 }
 

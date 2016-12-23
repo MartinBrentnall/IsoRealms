@@ -426,6 +426,14 @@ void SimpleEditor::renderRuntime() {
       cSelectedLayer->renderEditing();
     }
     
+    // Set up OpenGL to render components
+    glPushAttrib(GL_TRANSFORM_BIT);
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glPopAttrib();
+    glDisable(GL_DEPTH_TEST);
+    
     // Render UI components
     for (unsigned int i = 0; i < cHUDComponents.size(); i++) {
       cHUDComponents[i]->render();
@@ -436,6 +444,17 @@ void SimpleEditor::renderRuntime() {
       glColor3f(1.0f, 1.0f, 1.0f);
       cFont->print(0.0f, 0.0f, 0.03f, IFont::CENTER, "Are you sure you want to quit?");
     }
+    
+    // Reset OpenGL to normal state
+    glLoadIdentity();  
+    glEnable(GL_DEPTH_TEST);
+
+    glPushAttrib(GL_TRANSFORM_BIT);
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glPopAttrib();
+
+    glLoadIdentity();
   }
 }
 

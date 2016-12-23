@@ -70,12 +70,6 @@ void Button::render() {
   float mFontSize = LookAndFeel::getDefaultFontSize();
   mFont->print(mLeft + (mRight - mLeft) * 0.5f, mBottom + 0.01f, mFontSize, IFont::CENTER, cText.c_str());
 
-  glPushAttrib(GL_TRANSFORM_BIT);
-  glMatrixMode(GL_PROJECTION);
-  glPushMatrix();
-  glLoadIdentity();
-  glPopAttrib();
-
   glBindTexture(GL_TEXTURE_2D, 0);
   glLoadIdentity();
 
@@ -88,11 +82,6 @@ void Button::render() {
   glEnd();  
 
   glLoadIdentity();  
-
-  glPushAttrib(GL_TRANSFORM_BIT);
-  glMatrixMode(GL_PROJECTION);
-  glPopMatrix();
-  glPopAttrib();
 
   // TODO: Button accelerator
 /*  float mWidth = ;

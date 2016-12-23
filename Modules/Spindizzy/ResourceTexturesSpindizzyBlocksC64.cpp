@@ -317,18 +317,14 @@ void ResourceTexturesSpindizzyBlocksC64::generateAngledTextures(float angle) {
 }
 
 void ResourceTexturesSpindizzyBlocksC64::generateTextures() {
-//   GLuint mFramebufferObject;
-//   glGenFramebuffersEXT(1, &mFramebufferObject);
-//   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, mFramebufferObject);
-
   glPushAttrib(GL_TRANSFORM_BIT);
   glMatrixMode(GL_PROJECTION);
   glPushMatrix();
   glLoadIdentity();
   glPopAttrib();
-
-  generateAngledTextures(0.0f);
   
+  generateAngledTextures(0.0f);
+
   cTextures[SWITCH_CIRCLE_BOTH]->setRenderTarget();  renderSwitchCircleBoth();
   cTextures[SWITCH_CIRCLE_NONE]->setRenderTarget();  renderSwitchCircle(0.0f);
   cTextures[SWITCH_SQUARE_NONE]->setRenderTarget();  renderSwitchSquare(0.0f);

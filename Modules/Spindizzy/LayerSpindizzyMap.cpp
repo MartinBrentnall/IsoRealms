@@ -213,6 +213,7 @@ void LayerSpindizzyMap::renderRuntime() {
 }
 
 void LayerSpindizzyMap::renderEditing() {
+  glPushMatrix();
   cEditingContext->renderCamera();
   glBegin(GL_POINTS);
   Vertex* mEditingLocation = cEditingContext->getLocation();
@@ -241,6 +242,7 @@ void LayerSpindizzyMap::renderEditing() {
   cElementHandler.renderEditing(this);
   cElementHandler.renderStatic();
   cEditingContext->renderCursor();
+  glPopMatrix();
 }
 
 bool LayerSpindizzyMap::input(SDL_Event& event) {

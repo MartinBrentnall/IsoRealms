@@ -31,7 +31,7 @@ void ModelSprite::update(unsigned int milliseconds) {
 
 void ModelSprite::render() {
   glPushMatrix();
-  glTranslatef(cLocation->x, cLocation->y, (cLocation->z + 0.05f) * IsoRealmsConstants::BLOCK_HEIGHT);
+  glTranslatef(cLocation->x, cLocation->y, (cLocation->z + 0.05f) * IsoRealmsConstants::BLOCK_HEIGHT); // TODO: That 0.05f looks like a hack
   cModelType->setTexture();
   glAlphaFunc(GL_GREATER, 0.1f);
   glEnable(GL_ALPHA_TEST);
