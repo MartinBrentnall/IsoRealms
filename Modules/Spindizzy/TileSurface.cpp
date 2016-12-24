@@ -80,6 +80,15 @@ void TileSurface::coord(float x, float y) {
   }
 }
 
+ITexture* TileSurface::getTexture() {
+  return *cTexture;
+}
+
+void TileSurface::renderDynamic() {
+  (*cTexture)->set();
+  render();
+}
+
 void TileSurface::render() {
   if (cCondition == nullptr || cCondition->isTrue()) {
     double xs = cWest - IsoRealmsConstants::BLOCK_RADIUS; // TODO: Rename this
@@ -107,7 +116,7 @@ void TileSurface::render() {
       xeys += (abs(cNorthSouthSlope) * IsoRealmsConstants::BLOCK_HEIGHT * (ye - ys));
       xeye += (abs(cNorthSouthSlope) * IsoRealmsConstants::BLOCK_HEIGHT * (ye - ys));
     }
-    (*cTexture)->set();
+//    (*cTexture)->set();
     glBegin(GL_QUADS);
 
     switch (cFacing) {

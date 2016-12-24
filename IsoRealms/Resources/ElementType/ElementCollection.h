@@ -91,10 +91,13 @@ template <class T> class ElementCollection : public IElementBounds {
     }    
   }
 
-  void renderStatic() {
+  std::vector<IVisualElement*> getStaticVisuals() {
+    std::vector<IVisualElement*> mAllVisuals;
     for (T* mElement : cElements) {
-      mElement->renderStatic();
-    }    
+      std::vector<IVisualElement*> mElementVisuals = mElement->getStaticVisuals();
+      mAllVisuals.insert(std::end(mAllVisuals), std::begin(mElementVisuals), std::end(mElementVisuals));
+    }
+    return mAllVisuals;
   }
   
   void updateRuntime(unsigned int milliseconds) {

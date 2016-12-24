@@ -67,6 +67,15 @@ int TileSplitSurface::getSurfaceCellElevation(int x, int y) {
   return mHighestA > mHighestB ? mHighestA : mHighestB;
 }
 
+ITexture* TileSplitSurface::getTexture() {
+  return *cTexture;
+}
+
+void TileSplitSurface::renderDynamic() {
+  (*cTexture)->set();
+  render();
+}
+
 void TileSplitSurface::render() {
   if (cCondition == nullptr || cCondition->isTrue()) {
     float mNorthWest = (cLocation.z + cCornerHeights[0][1]) * IsoRealmsConstants::BLOCK_HEIGHT;
@@ -77,7 +86,7 @@ void TileSplitSurface::render() {
     float mEast  = cLocation.x + IsoRealmsConstants::BLOCK_RADIUS;
     float mSouth = cLocation.y - IsoRealmsConstants::BLOCK_RADIUS;
     float mNorth = cLocation.y + IsoRealmsConstants::BLOCK_RADIUS;
-    (*cTexture)->set();
+//    (*cTexture)->set();
     glBegin(GL_TRIANGLES);
     if (cSplitDirection) {
       glTexCoord2f(1.0f, 1.0f); glVertex3f(mWest, mNorth, mNorthWest);

@@ -167,7 +167,7 @@ void ResourceElementSpindizzyCraft::renderIcon() {
   glRotatef(-55.0f, 1.0f, 0.0f, 0.0f);
   glRotatef(45.0f, 0.0f, 0.0f, 1.0f);
   glScalef(2.0f, 2.0f, 2.0f);
-  cSampleGERALD->renderStatic();
+//  cSampleGERALD->renderStatic(); TODO
   if (cSampleGERALD->isVisualRuntime()) {
     cSampleGERALD->renderRuntime();
   }

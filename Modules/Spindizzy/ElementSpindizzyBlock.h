@@ -210,11 +210,7 @@ class ElementSpindizzyBlock:public ICollidableSurfaceElement,
   
   void generateWallSurfaces(IUniverse*, IWallSurface::FaceDirection);
   
-  WallType* getWallType();
-  ITexture** getWallTexture(WallSurface::FaceDirection);
-  ITexture** getWallTextureTop(WallSurface::FaceDirection);
-  ITexture** getWallTextureBottom(WallSurface::FaceDirection);
-  bool isWallBottomFlipped(WallSurface::FaceDirection);
+  IWallPattern* getWallPattern(WallSurface::FaceDirection);
   
   void loadSurfaces(DOMNodeWrapper*, std::vector<ConditionElement*>, IUniverse*);
   void loadWallSurface(DOMNodeWrapper*, std::vector<ConditionElement*>, IUniverse*);
@@ -280,7 +276,7 @@ class ElementSpindizzyBlock:public ICollidableSurfaceElement,
   \***********************/
   IElementType* getElementType();
   bool initElement(IUniverse*, unsigned int);
-  void renderStatic();
+  std::vector<IVisualElement*> getStaticVisuals();
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
   void saveCache(DOMNodeWriter*);
   void renderRuntime();

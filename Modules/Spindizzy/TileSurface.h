@@ -77,6 +77,8 @@ class TileSurface:public ISpindizzyTileSurface,
   /************************************\
    * Implements ISpindizzyTileSurface *
   \************************************/
+  ITexture* getTexture();
+  void renderDynamic();
   void render();
   void renderOutline();
   void renderSelectionHighlight();

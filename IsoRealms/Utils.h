@@ -19,7 +19,10 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#include <IsoRealms/IVisualElement.h>
+
 #include <GL/glew.h>
+#include <map>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -45,6 +48,10 @@ class Utils {
   static void renderVolumeCuboid(float, float, float, float, float, float);
   static void renderVolumeLines(float, float, float, float, float, float);
   static void renderVolumeMarkers(float, float, float, float, float, float, float);
+  
+  static void renderStaticVisuals(std::vector<IVisualElement*>);
+
+  static bool replaceTexture(ITexture*&, ITexture*, ITexture*);
 };
 
 #endif

@@ -244,12 +244,16 @@ void ElementHandler::staticChanged() {
 }
 
 void ElementHandler::updateStatic() {
+  std::vector<IVisualElement*> mAllVisuals;
+  for (int i = cElements.size() - 1; i >= 0; i--) {
+    std::vector<IVisualElement*> mStaticVisuals = cElements[i]->getStaticVisuals();
+    mAllVisuals.insert(std::end(mAllVisuals), std::begin(mStaticVisuals), std::end(mStaticVisuals));
+  }
+  
   glDeleteLists(cDisplayList, 1);
   cDisplayList = glGenLists(1);
   glNewList(cDisplayList, GL_COMPILE);
-  for (int i = cElements.size() - 1; i >= 0; i--) {
-    cElements[i]->renderStatic();
-  }
+  Utils::renderStaticVisuals(mAllVisuals);
   glEndList();
 
   updateStaticBounds();

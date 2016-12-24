@@ -1,5 +1,5 @@
 /*
- * Copyright 2009,2010 Martin Brentnall
+ * Copyright 2016 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,24 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_SPINDIZZY_WALL_SURFACE_H
-#define I_SPINDIZZY_WALL_SURFACE_H
+#ifndef I_WALL_PATTERN_H
+#define I_WALL_PATTERN_H
 
-#include <IsoRealms/CollisionVertex.h>
-#include <IsoRealms/IVisualElement.h>
+#include <IsoRealms/IsoRealmsConstants.h>
+#include <IsoRealms/Persistence/DOMNodeWriter.h>
+#include <IsoRealms/Resources/IResourceLocator.h>
+#include <IsoRealms/Resources/Texture/ITexture.h>
 
-#include "ICollidableWallSurface.h"
 #include "IWallSurface.h"
 
-class ISpindizzyWallSurface:public IWallSurface,
-                            public ICollidableWallSurface {
+class IWallPattern {
   public:
-  virtual void render() = 0;
-  virtual void renderOutline() = 0;
-  virtual void renderSelectionHighlight() = 0;
-  virtual CollisionVertex* pickSurface(Vertex&, Vertex&) = 0;
-  
-  virtual ~ISpindizzyWallSurface() {}
+  virtual bool contains(ITexture*) = 0;
+  virtual bool resourcePendingDestruction(ITexture*, ITexture*) = 0;
+  virtual void save(DOMNodeWriter*, IResourceLocator*) = 0;
+  virtual std::vector<IVisualElement*> getStaticVisuals(IWallSurface*) = 0;
+  virtual void render(IWallSurface*) = 0;
 };
 
 #endif

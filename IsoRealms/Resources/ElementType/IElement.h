@@ -30,6 +30,7 @@ class IMap;
 #include <IsoRealms/ILayerEditingContext.h>
 #include <IsoRealms/IObjectWithProperties.h>
 #include <IsoRealms/IUniverse.h>
+#include <IsoRealms/IVisualElement.h>
 #include <IsoRealms/Persistence/DOMNodeWriter.h>
 #include <IsoRealms/Resources/IResource.h>
 #include <IsoRealms/Resources/IResourceLocator.h>
@@ -63,7 +64,7 @@ class IElement:public IObjectWithProperties {
    */
   virtual bool initElement(IUniverse*, unsigned int) = 0;
 
-  virtual void renderStatic() = 0;
+  virtual std::vector<IVisualElement*> getStaticVisuals() = 0;
   
   virtual void renderRuntime() = 0;
   

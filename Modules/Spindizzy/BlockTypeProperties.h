@@ -24,8 +24,11 @@
 #include <IsoRealms/Resources/Texture/ITexture.h>
 #include <IsoRealms/Resources/Script/IScriptCall.h>
 
+#include "IWallPattern.h"
 #include "TextureRotation.h"
 #include "WallType.h"
+#include "WallPatternCap.h"
+#include "WallPatternTile.h"
 
 class BlockTypeProperties {
   private:
@@ -38,29 +41,17 @@ class BlockTypeProperties {
   ITexture* cSurfaceTexture;
   ITexture* cSurfaceSplitNETexture;
   ITexture* cSurfaceSplitNWTexture;
-  ITexture* cWestWallTexture;
-  ITexture* cEastWallTexture;
-  ITexture* cSouthWallTexture;
-  ITexture* cNorthWallTexture;
-  ITexture* cWestWallTextureTop;
-  ITexture* cEastWallTextureTop;
-  ITexture* cSouthWallTextureTop;
-  ITexture* cNorthWallTextureTop;
-  ITexture* cWestWallTextureBottom;
-  ITexture* cEastWallTextureBottom;
-  ITexture* cSouthWallTextureBottom;
-  ITexture* cNorthWallTextureBottom;
-  bool cWestBottomFlip;
-  bool cEastBottomFlip;
-  bool cSouthBottomFlip;
-  bool cNorthBottomFlip;
+  IWallPattern* cWestWallPattern;
+  IWallPattern* cEastWallPattern;
+  IWallPattern* cSouthWallPattern;
+  IWallPattern* cNorthWallPattern;
   TextureRotation cSurfaceRotation;
   WallType cWallType;
 
   void saveTexture(DOMNodeWriter*, const std::string&, ITexture*, IResourceLocator*, bool = false);
   void saveTextureFloor(DOMNodeWriter*, const std::string&, ITexture*, IResourceLocator*, TextureRotation);
   
-  bool replaceTexture(ITexture*&, ITexture*, ITexture*);
+  IWallPattern* configureWall(DOMNodeWrapper*, IResourceAccessor*);
   
   public:
   BlockTypeProperties();
@@ -73,26 +64,13 @@ class BlockTypeProperties {
   float getSurfaceGrip();
   float getSurfaceBounce();
   bool isRespawnAllowed();
-  WallType* getWallType();
   ITexture** getSurfaceTexture();
   ITexture** getSplitNETexture();
   ITexture** getSplitNWTexture();
-  ITexture** getWestWallTexture();
-  ITexture** getEastWallTexture();
-  ITexture** getSouthWallTexture();
-  ITexture** getNorthWallTexture();
-  ITexture** getWestWallTextureTop();
-  ITexture** getEastWallTextureTop();
-  ITexture** getSouthWallTextureTop();
-  ITexture** getNorthWallTextureTop();
-  ITexture** getWestWallTextureBottom();
-  ITexture** getEastWallTextureBottom();
-  ITexture** getSouthWallTextureBottom();
-  ITexture** getNorthWallTextureBottom();
-  bool isWestWallBottomFlipped();
-  bool isEastWallBottomFlipped();
-  bool isSouthWallBottomFlipped();
-  bool isNorthWallBottomFlipped();
+  IWallPattern* getWestWallPattern();
+  IWallPattern* getEastWallPattern();
+  IWallPattern* getSouthWallPattern();
+  IWallPattern* getNorthWallPattern();
   TextureRotation getSurfaceRotation();
   void save(DOMNodeWriter*, IResourceLocator*);
   

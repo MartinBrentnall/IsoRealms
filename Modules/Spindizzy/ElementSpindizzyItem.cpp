@@ -42,8 +42,8 @@ IElementContainer* ElementSpindizzyItem::getElementContainer() {
   return cContainer;
 }
 
-void ElementSpindizzyItem::renderStatic() {
-  // Nothing to do.
+std::vector<IVisualElement*> ElementSpindizzyItem::getStaticVisuals() {
+  return std::vector<IVisualElement*>();
 }
 
 void ElementSpindizzyItem::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& location) {

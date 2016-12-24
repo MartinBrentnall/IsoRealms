@@ -37,8 +37,8 @@ IElementType* ElementHUDModel::getElementType() {
   return cElementType;
 }
 
-void ElementHUDModel::renderStatic() {
-  // Nothing to do
+std::vector<IVisualElement*> ElementHUDModel::getStaticVisuals() {
+  return std::vector<IVisualElement*>();
 }
 
 void ElementHUDModel::setDirty() {

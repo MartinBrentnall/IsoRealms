@@ -44,8 +44,8 @@ void ElementSpindizzyLift::setModelType(I3DModelType* oldModelType, I3DModelType
   cLiftModel = newModelType->createModel(&cLiftValues.cLocation);
 }
 
-void ElementSpindizzyLift::renderStatic() {
-  // Nothing to do.
+std::vector<IVisualElement*> ElementSpindizzyLift::getStaticVisuals() {
+  return std::vector<IVisualElement*>();
 }
 
 void ElementSpindizzyLift::renderEditingArrow() {

@@ -66,7 +66,7 @@ class ElementHandlerSpindizzyDynamic:public Element,
   bool renderSelectionHighlight();
   void updateRuntime(unsigned int);
   IElementType* getElementType();
-  void renderStatic();
+  std::vector<IVisualElement*> getStaticVisuals();
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);
   void saveCache(DOMNodeWriter*);
   void setDirty();

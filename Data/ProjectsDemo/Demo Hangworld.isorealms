@@ -3,7 +3,7 @@
   <InputConfiguration>
     <DigitalInput name="Brake">
       <Mapping type="keyDown" value="Space"/>
-      <OnStart name="IsoRealms/playerBrake">
+      <OnStart name="IsoRealms/PlayerBrake">
         <Argument name="player" type="Spindizzy/GERALD" value="Player"/>
       </OnStart>
     </DigitalInput>
@@ -13,7 +13,7 @@
     </DigitalInput>
     <DigitalInput name="Debug Activate Empty Circle Switch">
       <Mapping type="keyDown" value="9"/>
-      <OnStart name="IsoRealms/setSecondarySwitch">
+      <OnStart name="IsoRealms/SetSecondarySwitch">
         <Argument name="switchState" type="Boolean" value="IsoRealms/SwitchCircleNone"/>
         <Argument name="switchIcon" type="3DModel" value="IsoRealms/SwitchCircleEmpty"/>
         <Argument name="sound" type="Sound" value="IsoRealms/CircleNone"/>
@@ -21,7 +21,7 @@
     </DigitalInput>
     <DigitalInput name="Debug Activate Empty Square Switch">
       <Mapping type="keyDown" value="5"/>
-      <OnStart name="IsoRealms/setPrimarySwitch">
+      <OnStart name="IsoRealms/SetPrimarySwitch">
         <Argument name="switchState" type="Boolean" value="IsoRealms/SwitchSquareNone"/>
         <Argument name="switchIcon" type="3DModel" value="IsoRealms/SwitchSquareEmpty"/>
         <Argument name="sound" type="Sound" value="IsoRealms/SquareNone"/>
@@ -29,7 +29,7 @@
     </DigitalInput>
     <DigitalInput name="Debug Activate Filled Circle Switch">
       <Mapping type="keyDown" value="]"/>
-      <OnStart name="IsoRealms/setSecondarySwitch">
+      <OnStart name="IsoRealms/SetSecondarySwitch">
         <Argument name="switchState" type="Boolean" value="IsoRealms/SwitchCircleBoth"/>
         <Argument name="switchIcon" type="3DModel" value="IsoRealms/SwitchCircleFilled"/>
         <Argument name="sound" type="Sound" value="IsoRealms/CircleBoth"/>
@@ -37,7 +37,7 @@
     </DigitalInput>
     <DigitalInput name="Debug Activate Filled Diamond Switch">
       <Mapping type="keyDown" value="4"/>
-      <OnStart name="IsoRealms/setPrimarySwitch">
+      <OnStart name="IsoRealms/SetPrimarySwitch">
         <Argument name="switchState" type="Boolean" value="IsoRealms/SwitchDiamondBoth"/>
         <Argument name="switchIcon" type="3DModel" value="IsoRealms/SwitchDiamondFilled"/>
         <Argument name="sound" type="Sound" value="IsoRealms/DiamondBoth"/>
@@ -45,7 +45,7 @@
     </DigitalInput>
     <DigitalInput name="Debug Activate Filled Square Switch">
       <Mapping type="keyDown" value="8"/>
-      <OnStart name="IsoRealms/setPrimarySwitch">
+      <OnStart name="IsoRealms/SetPrimarySwitch">
         <Argument name="switchState" type="Boolean" value="IsoRealms/SwitchSquareBoth"/>
         <Argument name="switchIcon" type="3DModel" value="IsoRealms/SwitchSquareFilled"/>
         <Argument name="sound" type="Sound" value="IsoRealms/SquareBoth"/>
@@ -53,7 +53,7 @@
     </DigitalInput>
     <DigitalInput name="Debug Activate Left Circle Switch">
       <Mapping type="keyDown" value="0"/>
-      <OnStart name="IsoRealms/setSecondarySwitch">
+      <OnStart name="IsoRealms/SetSecondarySwitch">
         <Argument name="switchState" type="Boolean" value="IsoRealms/SwitchCircleLeft"/>
         <Argument name="switchIcon" type="3DModel" value="IsoRealms/SwitchCircleLeft"/>
         <Argument name="sound" type="Sound" value="IsoRealms/CircleLeft"/>
@@ -61,7 +61,7 @@
     </DigitalInput>
     <DigitalInput name="Debug Activate Left Diamond Switch">
       <Mapping type="keyDown" value="2"/>
-      <OnStart name="IsoRealms/setPrimarySwitch">
+      <OnStart name="IsoRealms/SetPrimarySwitch">
         <Argument name="switchState" type="Boolean" value="IsoRealms/SwitchDiamondLeft"/>
         <Argument name="switchIcon" type="3DModel" value="IsoRealms/SwitchDiamondLeft"/>
         <Argument name="sound" type="Sound" value="IsoRealms/DiamondLeft"/>
@@ -69,7 +69,7 @@
     </DigitalInput>
     <DigitalInput name="Debug Activate Left Square Switch">
       <Mapping type="keyDown" value="6"/>
-      <OnStart name="IsoRealms/setPrimarySwitch">
+      <OnStart name="IsoRealms/SetPrimarySwitch">
         <Argument name="switchState" type="Boolean" value="IsoRealms/SwitchSquareLeft"/>
         <Argument name="switchIcon" type="3DModel" value="IsoRealms/SwitchSquareLeft"/>
         <Argument name="sound" type="Sound" value="IsoRealms/SquareLeft"/>
@@ -77,7 +77,7 @@
     </DigitalInput>
     <DigitalInput name="Debug Activate Right Circle Switch">
       <Mapping type="keyDown" value="["/>
-      <OnStart name="IsoRealms/setSecondarySwitch">
+      <OnStart name="IsoRealms/SetSecondarySwitch">
         <Argument name="switchState" type="Boolean" value="IsoRealms/SwitchCircleRight"/>
         <Argument name="switchIcon" type="3DModel" value="IsoRealms/SwitchCircleRight"/>
         <Argument name="sound" type="Sound" value="IsoRealms/CircleRight"/>
@@ -85,7 +85,7 @@
     </DigitalInput>
     <DigitalInput name="Debug Activate Right Diamond Switch">
       <Mapping type="keyDown" value="3"/>
-      <OnStart name="IsoRealms/setPrimarySwitch">
+      <OnStart name="IsoRealms/SetPrimarySwitch">
         <Argument name="switchState" type="Boolean" value="IsoRealms/SwitchDiamondRight"/>
         <Argument name="switchIcon" type="3DModel" value="IsoRealms/SwitchDiamondRight"/>
         <Argument name="sound" type="Sound" value="IsoRealms/DiamondRight"/>
@@ -93,7 +93,7 @@
     </DigitalInput>
     <DigitalInput name="Debug Activate Right Square Switch">
       <Mapping type="keyDown" value="7"/>
-      <OnStart name="IsoRealms/setPrimarySwitch">
+      <OnStart name="IsoRealms/SetPrimarySwitch">
         <Argument name="switchState" type="Boolean" value="IsoRealms/SwitchSquareRight"/>
         <Argument name="switchIcon" type="3DModel" value="IsoRealms/SwitchSquareRight"/>
         <Argument name="sound" type="Sound" value="IsoRealms/SquareRight"/>
@@ -101,13 +101,13 @@
     </DigitalInput>
     <DigitalInput name="Debug Reset Switches">
       <Mapping type="keyDown" value="1"/>
-      <OnStart name="IsoRealms/resetSwitch">
+      <OnStart name="IsoRealms/ResetSwitch">
         <Argument name="sound" type="Sound" value="IsoRealms/DiamondNone"/>
       </OnStart>
     </DigitalInput>
     <DigitalInput name="Map">
       <Mapping type="keyDown" value="M"/>
-      <OnStart name="IsoRealms/toggleMapOverview"/>
+      <OnStart name="IsoRealms/ToggleMapOverview"/>
     </DigitalInput>
     <DigitalInput name="Move East">
       <Mapping type="keyDown" value="ArrowRight"/>
@@ -131,25 +131,25 @@
     </DigitalInput>
     <DigitalInput name="Reset Camera">
       <Mapping type="keyDown" value="F1"/>
-      <OnStart name="IsoRealms/rotateViewTo">
+      <OnStart name="IsoRealms/RotateViewTo">
         <Argument name="angle" type="Integer" value="#-45"/>
       </OnStart>
     </DigitalInput>
     <DigitalInput name="Reverse Camera">
       <Mapping type="keyDown" value="F7"/>
-      <OnStart name="IsoRealms/rotateViewBy">
+      <OnStart name="IsoRealms/RotateViewBy">
         <Argument name="amount" type="Integer" value="#180"/>
       </OnStart>
     </DigitalInput>
     <DigitalInput name="Rotate Camera Left">
       <Mapping type="keyDown" value="F3"/>
-      <OnStart name="IsoRealms/rotateViewBy">
+      <OnStart name="IsoRealms/RotateViewBy">
         <Argument name="amount" type="Integer" value="#90"/>
       </OnStart>
     </DigitalInput>
     <DigitalInput name="Rotate Camera Right">
       <Mapping type="keyDown" value="F5"/>
-      <OnStart name="IsoRealms/rotateViewBy">
+      <OnStart name="IsoRealms/RotateViewBy">
         <Argument name="amount" type="Integer" value="#-90"/>
       </OnStart>
     </DigitalInput>
@@ -158,7 +158,7 @@
     </DigitalInput>
     <DigitalInput name="View Mode">
       <Mapping type="keyDown" value="F9"/>
-      <OnStart name="IsoRealms/toggleRenderingMode"/>
+      <OnStart name="IsoRealms/ToggleRenderingMode"/>
     </DigitalInput>
   </InputConfiguration>
   <Module locks="IsoRealms/Locks" name="IsoRealms">
@@ -296,7 +296,7 @@
       <Code>playerCraftModels:next()
 enemyCraftModels:next()</Code>
     </ScriptLua>
-    <ScriptLua name="jewelCollected">
+    <ScriptLua name="JewelCollected">
       <Argument name="sound" type="Sound" value="IsoRealms/Jewel"/>
       <Argument name="score" type="Integer" value="IsoRealms/Score"/>
       <Argument name="time" type="Integer" value="IsoRealms/SpindizzyTimeLimit"/>
@@ -318,17 +318,17 @@ if count == 0 then
   zone:setFlag(false)
 end</Code>
     </ScriptLua>
-    <ScriptLua name="playSound">
+    <ScriptLua name="PlaySound">
       <Argument name="sound" type="Sound"/>
       <Code>sound:play()</Code>
     </ScriptLua>
-    <ScriptLua name="playerBrake">
+    <ScriptLua name="PlayerBrake">
       <Argument name="player" type="Spindizzy/GERALD"/>
       <Argument name="time" type="Integer" value="IsoRealms/SpindizzyTimeLimit"/>
       <Code>player:stop()
 time = time - 500</Code>
     </ScriptLua>
-    <ScriptLua name="playerFallImpact">
+    <ScriptLua name="PlayerFallImpact">
       <Argument name="player" type="Spindizzy/GERALD"/>
       <Argument name="fallDistance" type="Float"/>
       <Argument name="sound" type="Sound" value="IsoRealms/ImpactHard"/>
@@ -341,7 +341,7 @@ end</Code>
       <Argument name="project" type="Project" value="Project"/>
       <Code>project:finish()</Code>
     </ScriptLua>
-    <ScriptLua name="randomClick">
+    <ScriptLua name="RandomClick">
       <Argument name="click1" type="Sound" value="IsoRealms/LiftClick1"/>
       <Argument name="click2" type="Sound" value="IsoRealms/LiftClick2"/>
       <Argument name="click3" type="Sound" value="IsoRealms/LiftClick3"/>
@@ -354,7 +354,7 @@ elseif val == 2 then
   click3:play()
 end</Code>
     </ScriptLua>
-    <ScriptLua name="resetSwitch">
+    <ScriptLua name="ResetSwitch">
       <Argument name="sound" type="Sound"/>
       <Argument name="switchIconPrimary" type="IsoRealms/ModelScriptable" value="PrimarySwitchState"/>
       <Argument name="switchIconSecondary" type="IsoRealms/ModelScriptable" value="SecondarySwitchState"/>
@@ -382,14 +382,14 @@ if terrainHandler ~= nil then
   end
 end</Code>
     </ScriptLua>
-    <ScriptLua name="respawn">
+    <ScriptLua name="Respawn">
       <Argument name="time" type="Integer" value="IsoRealms/SpindizzyTimeLimit"/>
       <Code>time = time - 10000
 if time &lt; 0 then
   time = 0
 end</Code>
     </ScriptLua>
-    <ScriptLua name="rotateViewBy">
+    <ScriptLua name="RotateViewBy">
       <Argument name="amount" type="Integer"/>
       <Argument name="camera" type="Spindizzy/Camera" value="Camera"/>
       <Code>if mapOverviewMode == 0 and mapTrasition == 0 then
@@ -397,7 +397,7 @@ end</Code>
   camera:startTransition()
 end</Code>
     </ScriptLua>
-    <ScriptLua name="rotateViewTo">
+    <ScriptLua name="RotateViewTo">
       <Argument name="angle" type="Integer"/>
       <Argument name="camera" type="Spindizzy/Camera" value="Camera"/>
       <Code>if mapOverviewMode == 0 and mapTrasition == 0 then
@@ -405,7 +405,7 @@ end</Code>
   camera:startTransition()
 end</Code>
     </ScriptLua>
-    <ScriptLua name="setPrimarySwitch">
+    <ScriptLua name="SetPrimarySwitch">
       <Argument name="switchState" type="Boolean"/>
       <Argument name="switchIcon" type="3DModel"/>
       <Argument name="sound" type="Sound"/>
@@ -440,7 +440,7 @@ if terrainHandler ~= nil then
   end
 end</Code>
     </ScriptLua>
-    <ScriptLua name="setSecondarySwitch">
+    <ScriptLua name="SetSecondarySwitch">
       <Argument name="switchState" type="Boolean"/>
       <Argument name="switchIcon" type="3DModel"/>
       <Argument name="sound" type="Sound"/>
@@ -479,7 +479,7 @@ if terrainHandler ~= nil then
   end
 end</Code>
     </ScriptLua>
-    <ScriptLua name="spindizzyInit">
+    <ScriptLua name="SpindizzyInit">
       <Argument name="zoneCount" type="Integer" value="IsoRealms/ZonesToExplore"/>
       <Argument name="spindizzy" type="Spindizzy/Spindizzy" value="Spindizzy"/>
       <Argument name="player" type="Spindizzy/GERALD" value="Player"/>
@@ -490,7 +490,7 @@ classicMode = true
 universe = player:getUniverse()
 spindizzy:setActiveUniverse(universe)</Code>
     </ScriptLua>
-    <ScriptLua name="switchToGameplay">
+    <ScriptLua name="SwitchToGameplay">
       <Argument name="locks" type="Integer" value="IsoRealms/Locks"/>
       <Argument name="map" type="Spindizzy/Map" value="Hangworld"/>
       <Argument name="spindizzy" type="Spindizzy/Spindizzy" value="Spindizzy"/>
@@ -500,7 +500,7 @@ spindizzy:setActiveUniverse(universe)</Code>
   spindizzy:setOverview(false)
 end</Code>
     </ScriptLua>
-    <ScriptLua name="toggleMapOverview">
+    <ScriptLua name="ToggleMapOverview">
       <Argument name="locks" type="Integer" value="IsoRealms/Locks"/>
       <Argument name="camera" type="Spindizzy/Camera" value="Camera"/>
       <Argument name="map" type="Spindizzy/Map" value="Hangworld"/>
@@ -549,7 +549,7 @@ else
 end
 camera:startTransition()</Code>
     </ScriptLua>
-    <ScriptLua name="toggleRenderingMode">
+    <ScriptLua name="ToggleRenderingMode">
       <Argument name="zoneHandler" type="Spindizzy/ZoneHandler" value="ZoneHandler"/>
       <Argument name="camera" type="Spindizzy/Camera" value="Camera"/>
       <Argument name="zoneLocation" type="Vertex" value="IsoRealms/ZoneLocation"/>
@@ -570,7 +570,7 @@ camera:startTransition()</Code>
   camera:startTransition()
 end</Code>
     </ScriptLua>
-    <ScriptLua name="zoneEntered">
+    <ScriptLua name="ZoneEntered">
       <Argument name="score" type="Integer" value="IsoRealms/Score"/>
       <Argument name="time" type="Integer" value="IsoRealms/SpindizzyTimeLimit"/>
       <Argument name="zoneCount" type="Integer" value="IsoRealms/ZonesToExplore"/>
@@ -634,7 +634,7 @@ if dynamicElements ~= nil then
   dynamicElements:reset()
 end</Code>
     </ScriptLua>
-    <ScriptLua name="zoneExited">
+    <ScriptLua name="ZoneExited">
       <Argument name="dynamicElements" type="Spindizzy/DynamicElements" value="DynamicElements"/>
       <Code>if dynamicElements ~= nil then
   dynamicElements:setActive(false)
@@ -666,7 +666,7 @@ end</Code>
     <VertexFixed name="ZoneLocation"/>
   </Module>
   <Module camera="Spindizzy/Camera" locks="IsoRealms/Locks" name="Spindizzy">
-    <LiftMovedScript name="IsoRealms/randomClick"/>
+    <LiftMovedScript name="IsoRealms/RandomClick"/>
     <BlockState model="IsoRealms/ClueDiamondLeft" name="SwitchDiamondLeft" scale="0.700000" state="IsoRealms/SwitchDiamondLeft" x="0.000000" y="0.000000" z="-0.500000"/>
     <BlockState model="IsoRealms/ClueDiamondRight" name="SwitchDiamondRight" scale="0.700000" state="IsoRealms/SwitchDiamondRight" x="0.000000" y="0.000000" z="-0.500000"/>
     <BlockState model="IsoRealms/ClueDiamondBoth" name="SwitchDiamondBoth" scale="0.700000" state="IsoRealms/SwitchDiamondBoth" x="0.000000" y="0.000000" z="-0.500000"/>
@@ -680,362 +680,218 @@ end</Code>
     <BlockState model="IsoRealms/ClueCircleBoth" name="SwitchCircleBoth" scale="0.700000" state="IsoRealms/SwitchCircleBoth" x="0.000000" y="0.000000" z="-0.500000"/>
     <TexturesSpindizzyZoneThemeIcon model="IsoRealms/ThemeModelIcon" scale="1.000000" x="0.000000" y="0.000000" z="-0.600000"/>
     <CameraScriptable location="IsoRealms/ZoneLocation" name="Camera">
-      <TransitionCompleteScript name="IsoRealms/switchToGameplay"/>
+      <TransitionCompleteScript name="IsoRealms/SwitchToGameplay"/>
     </CameraScriptable>
-    <ElementSpindizzyBlock bounce="0.000000" friction="0.000000" grip="0.000000" name="Ice" respawnAllowed="false" wallType="tiled">
+    <ElementSpindizzyBlock bounce="0.000000" friction="0.000000" grip="0.000000" name="Ice" respawnAllowed="false">
       <Texture name="Spindizzy/IceWater" type="Surface"/>
-      <Texture name="Spindizzy/WallIce" type="WallWest"/>
-      <Texture name="Spindizzy/WallIce" type="WallEast"/>
-      <Texture name="Spindizzy/WallIce" type="WallSouth"/>
-      <Texture name="Spindizzy/WallIce" type="WallNorth"/>
+      <WallWest type="tile" texture="Spindizzy/WallIce"/>
+      <WallEast type="tile" texture="Spindizzy/WallIce"/>
+      <WallSouth type="tile" texture="Spindizzy/WallIce"/>
+      <WallNorth type="tile" texture="Spindizzy/WallIce"/>
     </ElementSpindizzyBlock>
-    <ElementSpindizzyBlock bounce="1.000000" friction="0.000000" grip="1.000000" name="Trampoline" respawnAllowed="false" wallType="capped">
-      <ImpactScript name="IsoRealms/playSound">
+    <ElementSpindizzyBlock bounce="1.000000" friction="0.000000" grip="1.000000" name="Trampoline" respawnAllowed="false">
+      <ImpactScript name="IsoRealms/PlaySound">
         <Argument name="sound" type="Sound" value="IsoRealms/Trampoline"/>
       </ImpactScript>
       <Texture name="Spindizzy/Trampoline" type="Surface"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallWest"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallWestTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallWestBottom"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallEast"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallEastTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallEastBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallSouth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallSouthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallSouthBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallNorth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallNorthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallNorthBottom"/>
+      <WallWest type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallEast type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallSouth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
+      <WallNorth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
     </ElementSpindizzyBlock>
-    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="Plain" respawnAllowed="true" wallType="capped">
+    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="Plain" respawnAllowed="true">
       <Texture name="Spindizzy/Plain" type="Surface"/>
       <Texture name="Spindizzy/PlainSplit" type="NESplitSurface"/>
       <Texture name="Spindizzy/PlainSplit" type="NWSplitSurface"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallWest"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallWestTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallWestBottom"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallEast"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallEastTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallEastBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallSouth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallSouthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallSouthBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallNorth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallNorthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallNorthBottom"/>
+      <WallWest type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallEast type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallSouth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
+      <WallNorth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
     </ElementSpindizzyBlock>
-    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="ArrowWest" respawnAllowed="true" wallType="capped">
+    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="ArrowWest" respawnAllowed="true">
       <Texture name="Spindizzy/Arrow" rotate="Left" type="Surface"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallWest"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallWestTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallWestBottom"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallEast"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallEastTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallEastBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallSouth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallSouthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallSouthBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallNorth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallNorthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallNorthBottom"/>
+      <WallWest type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallEast type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallSouth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
+      <WallNorth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
     </ElementSpindizzyBlock>
-    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="ArrowEast" respawnAllowed="true" wallType="capped">
+    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="ArrowEast" respawnAllowed="true">
       <Texture name="Spindizzy/Arrow" rotate="Right" type="Surface"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallWest"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallWestTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallWestBottom"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallEast"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallEastTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallEastBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallSouth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallSouthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallSouthBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallNorth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallNorthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallNorthBottom"/>
+      <WallWest type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallEast type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallSouth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
+      <WallNorth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
     </ElementSpindizzyBlock>
-    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="ArrowNorth" respawnAllowed="true" wallType="capped">
+    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="ArrowNorth" respawnAllowed="true">
       <Texture name="Spindizzy/Arrow" type="Surface"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallWest"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallWestTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallWestBottom"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallEast"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallEastTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallEastBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallSouth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallSouthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallSouthBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallNorth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallNorthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallNorthBottom"/>
+      <WallWest type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallEast type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallSouth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
+      <WallNorth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
     </ElementSpindizzyBlock>
-    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="ArrowSouth" respawnAllowed="true" wallType="capped">
+    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="ArrowSouth" respawnAllowed="true">
       <Texture name="Spindizzy/Arrow" rotate="Reverse" type="Surface"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallWest"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallWestTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallWestBottom"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallEast"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallEastTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallEastBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallSouth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallSouthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallSouthBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallNorth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallNorthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallNorthBottom"/>
+      <WallWest type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallEast type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallSouth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
+      <WallNorth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
     </ElementSpindizzyBlock>
-    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="SwitchDiamondNone" respawnAllowed="true" wallType="capped">
-      <ContactScript name="IsoRealms/resetSwitch">
+    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="SwitchDiamondNone" respawnAllowed="true">
+      <ContactScript name="IsoRealms/ResetSwitch">
         <Argument name="sound" type="Sound" value="IsoRealms/DiamondNone"/>
       </ContactScript>
       <Texture name="Spindizzy/SwitchDiamondFilled" type="Surface"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallWest"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallWestTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallWestBottom"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallEast"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallEastTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallEastBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallSouth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallSouthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallSouthBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallNorth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallNorthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallNorthBottom"/>
+      <WallWest type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallEast type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallSouth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
+      <WallNorth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
     </ElementSpindizzyBlock>
-    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="SwitchDiamondLeft" respawnAllowed="true" wallType="capped">
-      <ContactScript name="IsoRealms/setPrimarySwitch">
+    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="SwitchDiamondLeft" respawnAllowed="true">
+      <ContactScript name="IsoRealms/SetPrimarySwitch">
         <Argument name="switchState" type="Boolean" value="IsoRealms/SwitchDiamondLeft"/>
         <Argument name="switchIcon" type="3DModel" value="IsoRealms/SwitchDiamondLeft"/>
         <Argument name="sound" type="Sound" value="IsoRealms/DiamondLeft"/>
       </ContactScript>
       <Texture name="Spindizzy/SwitchDiamondOne" type="Surface"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallWest"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallWestTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallWestBottom"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallEast"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallEastTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallEastBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallSouth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallSouthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallSouthBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallNorth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallNorthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallNorthBottom"/>
+      <WallWest type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallEast type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallSouth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
+      <WallNorth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
     </ElementSpindizzyBlock>
-    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="SwitchDiamondRight" respawnAllowed="true" wallType="capped">
-      <ContactScript name="IsoRealms/setPrimarySwitch">
+    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="SwitchDiamondRight" respawnAllowed="true">
+      <ContactScript name="IsoRealms/SetPrimarySwitch">
         <Argument name="switchState" type="Boolean" value="IsoRealms/SwitchDiamondRight"/>
         <Argument name="switchIcon" type="3DModel" value="IsoRealms/SwitchDiamondRight"/>
         <Argument name="sound" type="Sound" value="IsoRealms/DiamondRight"/>
       </ContactScript>
       <Texture name="Spindizzy/SwitchDiamondOne" rotate="Reverse" type="Surface"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallWest"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallWestTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallWestBottom"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallEast"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallEastTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallEastBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallSouth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallSouthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallSouthBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallNorth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallNorthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallNorthBottom"/>
+      <WallWest type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallEast type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallSouth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
+      <WallNorth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
     </ElementSpindizzyBlock>
-    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="SwitchDiamondBoth" respawnAllowed="true" wallType="capped">
-      <ContactScript name="IsoRealms/setPrimarySwitch">
+    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="SwitchDiamondBoth" respawnAllowed="true">
+      <ContactScript name="IsoRealms/SetPrimarySwitch">
         <Argument name="switchState" type="Boolean" value="IsoRealms/SwitchDiamondBoth"/>
         <Argument name="switchIcon" type="3DModel" value="IsoRealms/SwitchDiamondFilled"/>
         <Argument name="sound" type="Sound" value="IsoRealms/DiamondBoth"/>
       </ContactScript>
       <Texture name="Spindizzy/SwitchDiamondEmpty" type="Surface"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallWest"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallWestTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallWestBottom"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallEast"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallEastTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallEastBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallSouth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallSouthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallSouthBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallNorth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallNorthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallNorthBottom"/>
+      <WallWest type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallEast type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallSouth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
+      <WallNorth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
     </ElementSpindizzyBlock>
-    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="SwitchSquareNone" respawnAllowed="true" wallType="capped">
-      <ContactScript name="IsoRealms/setPrimarySwitch">
+    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="SwitchSquareNone" respawnAllowed="true">
+      <ContactScript name="IsoRealms/SetPrimarySwitch">
         <Argument name="switchState" type="Boolean" value="IsoRealms/SwitchSquareNone"/>
         <Argument name="switchIcon" type="3DModel" value="IsoRealms/SwitchSquareEmpty"/>
         <Argument name="sound" type="Sound" value="IsoRealms/SquareNone"/>
       </ContactScript>
       <Texture name="Spindizzy/SwitchSquareEmpty" type="Surface"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallWest"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallWestTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallWestBottom"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallEast"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallEastTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallEastBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallSouth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallSouthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallSouthBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallNorth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallNorthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallNorthBottom"/>
+      <WallWest type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallEast type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallSouth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
+      <WallNorth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
     </ElementSpindizzyBlock>
-    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="SwitchSquareLeft" respawnAllowed="true" wallType="capped">
-      <ContactScript name="IsoRealms/setPrimarySwitch">
+    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="SwitchSquareLeft" respawnAllowed="true">
+      <ContactScript name="IsoRealms/SetPrimarySwitch">
         <Argument name="switchState" type="Boolean" value="IsoRealms/SwitchSquareLeft"/>
         <Argument name="switchIcon" type="3DModel" value="IsoRealms/SwitchSquareLeft"/>
         <Argument name="sound" type="Sound" value="IsoRealms/SquareLeft"/>
       </ContactScript>
       <Texture name="Spindizzy/SwitchSquareOne" rotate="Reverse" type="Surface"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallWest"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallWestTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallWestBottom"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallEast"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallEastTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallEastBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallSouth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallSouthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallSouthBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallNorth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallNorthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallNorthBottom"/>
+      <WallWest type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallEast type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallSouth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
+      <WallNorth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
     </ElementSpindizzyBlock>
-    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="SwitchSquareRight" respawnAllowed="true" wallType="capped">
-      <ContactScript name="IsoRealms/setPrimarySwitch">
+    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="SwitchSquareRight" respawnAllowed="true">
+      <ContactScript name="IsoRealms/SetPrimarySwitch">
         <Argument name="switchState" type="Boolean" value="IsoRealms/SwitchSquareRight"/>
         <Argument name="switchIcon" type="3DModel" value="IsoRealms/SwitchSquareRight"/>
         <Argument name="sound" type="Sound" value="IsoRealms/SquareRight"/>
       </ContactScript>
       <Texture name="Spindizzy/SwitchSquareOne" type="Surface"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallWest"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallWestTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallWestBottom"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallEast"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallEastTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallEastBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallSouth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallSouthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallSouthBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallNorth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallNorthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallNorthBottom"/>
+      <WallWest type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallEast type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallSouth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
+      <WallNorth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
     </ElementSpindizzyBlock>
-    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="SwitchSquareBoth" respawnAllowed="true" wallType="capped">
-      <ContactScript name="IsoRealms/setPrimarySwitch">
+    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="SwitchSquareBoth" respawnAllowed="true">
+      <ContactScript name="IsoRealms/SetPrimarySwitch">
         <Argument name="switchState" type="Boolean" value="IsoRealms/SwitchSquareBoth"/>
         <Argument name="switchIcon" type="3DModel" value="IsoRealms/SwitchSquareFilled"/>
         <Argument name="sound" type="Sound" value="IsoRealms/SquareBoth"/>
       </ContactScript>
       <Texture name="Spindizzy/SwitchSquareFilled" type="Surface"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallWest"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallWestTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallWestBottom"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallEast"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallEastTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallEastBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallSouth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallSouthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallSouthBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallNorth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallNorthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallNorthBottom"/>
+      <WallWest type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallEast type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallSouth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
+      <WallNorth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
     </ElementSpindizzyBlock>
-    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="SwitchCircleNone" respawnAllowed="true" wallType="capped">
-      <ContactScript name="IsoRealms/setSecondarySwitch">
+    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="SwitchCircleNone" respawnAllowed="true">
+      <ContactScript name="IsoRealms/SetSecondarySwitch">
         <Argument name="switchState" type="Boolean" value="IsoRealms/SwitchCircleNone"/>
         <Argument name="switchIcon" type="3DModel" value="IsoRealms/SwitchCircleEmpty"/>
         <Argument name="sound" type="Sound" value="IsoRealms/CircleNone"/>
       </ContactScript>
       <Texture name="Spindizzy/SwitchCircleEmpty" type="Surface"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallWest"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallWestTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallWestBottom"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallEast"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallEastTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallEastBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallSouth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallSouthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallSouthBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallNorth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallNorthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallNorthBottom"/>
+      <WallWest type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallEast type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallSouth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
+      <WallNorth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
     </ElementSpindizzyBlock>
-    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="SwitchCircleLeft" respawnAllowed="true" wallType="capped">
-      <ContactScript name="IsoRealms/setSecondarySwitch">
+    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="SwitchCircleLeft" respawnAllowed="true">
+      <ContactScript name="IsoRealms/SetSecondarySwitch">
         <Argument name="switchState" type="Boolean" value="IsoRealms/SwitchCircleLeft"/>
         <Argument name="switchIcon" type="3DModel" value="IsoRealms/SwitchCircleLeft"/>
         <Argument name="sound" type="Sound" value="IsoRealms/CircleLeft"/>
       </ContactScript>
       <Texture name="Spindizzy/SwitchCircleOne" rotate="Reverse" type="Surface"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallWest"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallWestTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallWestBottom"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallEast"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallEastTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallEastBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallSouth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallSouthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallSouthBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallNorth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallNorthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallNorthBottom"/>
+      <WallWest type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallEast type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallSouth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
+      <WallNorth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
     </ElementSpindizzyBlock>
-    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="SwitchCircleRight" respawnAllowed="true" wallType="capped">
-      <ContactScript name="IsoRealms/setSecondarySwitch">
+    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="SwitchCircleRight" respawnAllowed="true">
+      <ContactScript name="IsoRealms/SetSecondarySwitch">
         <Argument name="switchState" type="Boolean" value="IsoRealms/SwitchCircleRight"/>
         <Argument name="switchIcon" type="3DModel" value="IsoRealms/SwitchCircleRight"/>
         <Argument name="sound" type="Sound" value="IsoRealms/CircleRight"/>
       </ContactScript>
       <Texture name="Spindizzy/SwitchCircleOne" type="Surface"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallWest"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallWestTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallWestBottom"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallEast"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallEastTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallEastBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallSouth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallSouthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallSouthBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallNorth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallNorthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallNorthBottom"/>
+      <WallWest type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallEast type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallSouth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
+      <WallNorth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
     </ElementSpindizzyBlock>
-    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="SwitchCircleBoth" respawnAllowed="true" wallType="capped">
-      <ContactScript name="IsoRealms/setSecondarySwitch">
+    <ElementSpindizzyBlock bounce="0.000000" friction="0.001000" grip="1.000000" name="SwitchCircleBoth" respawnAllowed="true">
+      <ContactScript name="IsoRealms/SetSecondarySwitch">
         <Argument name="switchState" type="Boolean" value="IsoRealms/SwitchCircleBoth"/>
         <Argument name="switchIcon" type="3DModel" value="IsoRealms/SwitchCircleFilled"/>
         <Argument name="sound" type="Sound" value="IsoRealms/CircleBoth"/>
       </ContactScript>
       <Texture name="Spindizzy/SwitchCircleFilled" type="Surface"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallWest"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallWestTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallWestBottom"/>
-      <Texture name="Spindizzy/WallMixedMiddle" type="WallEast"/>
-      <Texture name="Spindizzy/WallMixedCap" type="WallEastTop"/>
-      <Texture flip="true" name="Spindizzy/WallMixedCap" type="WallEastBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallSouth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallSouthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallSouthBottom"/>
-      <Texture name="Spindizzy/WallPlainMiddle" type="WallNorth"/>
-      <Texture name="Spindizzy/WallPlainCap" type="WallNorthTop"/>
-      <Texture flip="true" name="Spindizzy/WallPlainCap" type="WallNorthBottom"/>
+      <WallWest type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallEast type="cap" top="Spindizzy/WallMixedCap" middle="Spindizzy/WallMixedMiddle" bottom="Spindizzy/WallMixedCap" bottomFlip="true"/>
+      <WallSouth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
+      <WallNorth type="cap" top="Spindizzy/WallPlainCap" middle="Spindizzy/WallPlainMiddle" bottom="Spindizzy/WallPlainCap" bottomFlip="true"/>
     </ElementSpindizzyBlock>
     <ElementSpindizzyCraft camera="Spindizzy/Camera" model="IsoRealms/CraftPlayer_0" name="Player">
-      <RespawnScript name="IsoRealms/respawn"/>
-      <FallImpactScript name="IsoRealms/playerFallImpact">
+      <RespawnScript name="IsoRealms/Respawn"/>
+      <FallImpactScript name="IsoRealms/PlayerFallImpact">
         <Argument name="player" type="Spindizzy/GERALD" value="~craft"/>
         <Argument name="fallDistance" type="Float" value="~fallDistance"/>
       </FallImpactScript>
       <Boundaries name="Spindizzy/Jewel">
-        <EnteredScript name="IsoRealms/jewelCollected"/>
+        <EnteredScript name="IsoRealms/JewelCollected"/>
       </Boundaries>
       <Boundaries name="Spindizzy/Zone">
-        <EnteredScript name="IsoRealms/zoneEntered">
+        <EnteredScript name="IsoRealms/ZoneEntered">
           <Argument name="entered" type="Spindizzy/Zone" value="Zone"/>
         </EnteredScript>
-        <ExitedScript name="IsoRealms/zoneExited"/>
+        <ExitedScript name="IsoRealms/ZoneExited"/>
       </Boundaries>
       <Instance name="Player" x="-4" y="3" z="0"/>
     </ElementSpindizzyCraft>
@@ -1423,7 +1279,7 @@ end</Code>
       <Colour name="IsoRealms/DarkGray" type="Background"/>
     </TexturesSpindizzyZoneTheme>
   </Module>
-  <InitScript name="IsoRealms/spindizzyInit"/>
+  <InitScript name="IsoRealms/SpindizzyInit"/>
   <Layer instance="Background" type="Spindizzy/Background"/>
   <Layer camera="Spindizzy/Camera" default="true" instance="Hangworld" type="Spindizzy/Map">
     <Element instance="Player" type="Spindizzy/Player"/>

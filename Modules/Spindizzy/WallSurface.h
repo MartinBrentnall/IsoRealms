@@ -20,7 +20,6 @@
 #define WALL_SURFACE_H
 
 #include <iostream>
-#include <GL/glew.h>
 
 #include <IsoRealms/Collision.h>
 #include <IsoRealms/Condition.h>
@@ -29,6 +28,7 @@
 
 #include "ISpindizzyWallSurface.h"
 #include "IWallEdge.h"
+#include "IWallPattern.h"
 #include "SurfaceCollisionEvent.h"
 #include "WallType.h"
 
@@ -61,7 +61,7 @@ class WallSurface:public ISpindizzyWallSurface,
   int cHeight;
 
   /**
-   * Slopiness at the top
+   * Slopiness at the top.
    */
   int cTopSlope;
 
@@ -71,14 +71,13 @@ class WallSurface:public ISpindizzyWallSurface,
   FaceDirection cFacing;
 
   /**
-   * Texture set used for rendering the wall
+   * Pattern of the wall.
    */
-  ITexture** cTexture;
-  ITexture** cTextureTop;
-  ITexture** cTextureBottom;
-  WallType* cWallType;
-  bool cFlipBottom;
-
+  IWallPattern* cWallPattern;
+  
+  /**
+   * Condition under which the wall is visible.
+   */
   Condition* cCondition;
   
   class WallEdge:public IWallEdge {
@@ -128,14 +127,23 @@ class WallSurface:public ISpindizzyWallSurface,
    * @param ITexture*  Appearance of the wall.
    * @param Condition  Condition of the walls existence.
    */
-  WallSurface(int, int, int, int, int, int, FaceDirection, WallType*, ITexture**, ITexture**, ITexture**, bool, Condition*);
+  WallSurface(int, int, int, int, int, int, FaceDirection, IWallPattern*, Condition*);
   Condition* getCondition();
 
   float getHeightAt(float);
   
+  int getX();
+  int getY();
+  int getZ();
+  int getLength();
+  int getHeight();
+  int getTopSlope();
+  FaceDirection getFaceDirection();
+  
   /************************************\
    * Implements ISpindizzyWallSurface *
   \************************************/
+  std::vector<IVisualElement*> getStaticVisuals();
   void render();
   void renderOutline();
   void renderSelectionHighlight();

@@ -19,13 +19,16 @@
 #ifndef I_SPINDIZZY_TILE_SURFACE_H
 #define I_SPINDIZZY_TILE_SURFACE_H
 
+#include <IsoRealms/IVisualElement.h>
+
 #include "IRollableSurface.h"
 #include "ITileSurface.h"
 
 class ISpindizzyTileSurface:public ITileSurface,
-                            public IRollableSurface {
+                            public IRollableSurface,
+                            public IVisualElement {
   public:
-  virtual void render() = 0;
+  virtual void renderDynamic() = 0;
   virtual void renderOutline() = 0;
   virtual void renderSelectionHighlight() = 0;
   virtual CollisionVertex* pickSurface(Vertex&, Vertex&) = 0;

@@ -100,8 +100,8 @@ IElementType* ElementHandlerSpindizzyDynamic::getElementType() {
   return nullptr;
 }
 
-void ElementHandlerSpindizzyDynamic::renderStatic() {
-  // Nothing to do.
+std::vector<IVisualElement*> ElementHandlerSpindizzyDynamic::getStaticVisuals() {
+  return std::vector<IVisualElement*>();
 }
 
 void ElementHandlerSpindizzyDynamic::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& location) {

@@ -121,7 +121,7 @@ void ResourceElementSpindizzyWater::renderEditingPreview(Vertex& location) {
 //     glVertex3f(xs, y,  z);   glVertex3f(xs, ys, z);
 //     glEnd();
   } else {
-    cSampleWater->renderStatic();
+//    cSampleWater->renderStatic(); TODO
   }
 }
 
@@ -141,7 +141,7 @@ void ResourceElementSpindizzyWater::renderIcon() {
     cSampleWater = new ElementSpindizzyWater(this, &mIdentityBlockLocation, &mIdentityBlockLocation, &cTexture, nullptr);
     cSampleWater->createSampleSurfaces();
   }
-  cSampleWater->renderStatic();
+//  cSampleWater->renderStatic(); TODO
 }
 
 void ResourceElementSpindizzyWater::updateIcon(unsigned int) {

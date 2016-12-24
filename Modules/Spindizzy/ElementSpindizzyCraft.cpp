@@ -81,8 +81,8 @@ void ElementSpindizzyCraft::unsetArguments() {
   // TODO: Something to do?
 }
 
-void ElementSpindizzyCraft::renderStatic() {
-  // Nothing to do.
+std::vector<IVisualElement*> ElementSpindizzyCraft::getStaticVisuals() {
+  return std::vector<IVisualElement*>();
 }
 
 std::string ElementSpindizzyCraft::getTypeName() {

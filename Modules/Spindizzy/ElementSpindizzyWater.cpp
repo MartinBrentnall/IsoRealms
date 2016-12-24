@@ -92,17 +92,23 @@ std::vector<ITileSurface*> ElementSpindizzyWater::getTileSurfaces(ITileSurface::
   return mSurfaces;
 }
 
-void ElementSpindizzyWater::renderStatic() {
-  ISpindizzyBlockSet* mSpindizzyBlockSet = cWaterType->getSpindizzyBlockInterface();
-  bool mEditing = mSpindizzyBlockSet->isEditing();
-  
-  for (unsigned int i = 0; i < cStaticTileSurfaces.size(); i++) {
-    cStaticTileSurfaces[i]->render();
-    if (!mEditing) {
-      delete cStaticTileSurfaces[i];
-    }
-  }
+std::vector<IVisualElement*> ElementSpindizzyWater::getStaticVisuals() {
+  std::vector<IVisualElement*> mAllVisuals;
+  mAllVisuals.insert(std::end(mAllVisuals), std::begin(cStaticTileSurfaces), std::end(cStaticTileSurfaces));
+  return mAllVisuals;
 }
+
+// void ElementSpindizzyWater::renderStatic() {
+//   ISpindizzyBlockSet* mSpindizzyBlockSet = cWaterType->getSpindizzyBlockInterface();
+//   bool mEditing = mSpindizzyBlockSet->isEditing();
+//   
+//   for (unsigned int i = 0; i < cStaticTileSurfaces.size(); i++) {
+//     cStaticTileSurfaces[i]->render();
+//     if (!mEditing) {
+//       delete cStaticTileSurfaces[i];
+//     }
+//   }
+// }
 
 void ElementSpindizzyWater::renderRuntime() {
   for (unsigned int i = 0; i < cDynamicTileSurfaces.size(); i++) {

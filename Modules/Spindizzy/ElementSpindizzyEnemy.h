@@ -64,7 +64,7 @@ class ElementSpindizzyEnemy:public IElementSpindizzyDynamic,
   \***********************/
   IElementType* getElementType();
   void renderEditing();
-  void renderStatic();
+  std::vector<IVisualElement*> getStaticVisuals();
   void renderRuntime();
   bool renderSelectionHighlight();
   void updateRuntime(unsigned int milliseconds);

@@ -83,7 +83,7 @@ class ElementSpindizzyItem:public Element,
   \***********************/
   IElementType* getElementType();
   bool initElement(IUniverse*, unsigned int);
-  void renderStatic();
+  std::vector<IVisualElement*> getStaticVisuals();
   void renderRuntime();
   bool renderSelectionHighlight();
   void updateRuntime(unsigned int);

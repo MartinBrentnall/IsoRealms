@@ -40,7 +40,7 @@ void ModelElement::render() {
     glDeleteLists(cDisplayList, 1);
     cDisplayList = glGenLists(1);
     glNewList(cDisplayList, GL_COMPILE);
-    (*cElement)->renderStatic();
+//    (*cElement)->renderStatic(); TODO: Enable this
     glEndList();
     cUpdateStatic = false;
   }

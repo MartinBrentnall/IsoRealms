@@ -29,11 +29,12 @@ WallSurface::WallSurface(int x, int y, int z, int length, int height, int topSlo
     cHeight = height;
   }
   cFacing = facing;
+  cWallPattern = nullptr;
   cTopSlope = topSlope;
   cCondition = nullptr;
 }
 
-WallSurface::WallSurface(int x, int y, int z, int length, int height, int topSlope, FaceDirection facing, WallType* wallType, ITexture** texture, ITexture** textureTop, ITexture** textureBottom, bool flipBottom, Condition* condition) {
+WallSurface::WallSurface(int x, int y, int z, int length, int height, int topSlope, FaceDirection facing, IWallPattern* wallPattern, Condition* condition) {
   cX = x;
   cY = y;
   cZ = z;
@@ -44,11 +45,7 @@ WallSurface::WallSurface(int x, int y, int z, int length, int height, int topSlo
     cHeight = height;
   }
   cFacing = facing;
-  cWallType = wallType;
-  cTexture = texture;
-  cTextureTop = textureTop;
-  cTextureBottom = textureBottom;
-  cFlipBottom = flipBottom;
+  cWallPattern = wallPattern;
   cTopSlope = topSlope;
   cCondition = condition;
 }
@@ -134,96 +131,23 @@ void WallSurface::destroyEdge(IWallEdge* wallEdge) {
   delete wallEdge;
 }
 
+std::vector<IVisualElement*> WallSurface::getStaticVisuals() {
+  return cWallPattern->getStaticVisuals(this);
+}
+
 void WallSurface::render() {
-  if (cCondition == nullptr || cCondition->isTrue()) {
-    float mBlockRadius = IsoRealmsConstants::BLOCK_RADIUS;
-    double mFromX = cX + (cFacing == EAST ? mBlockRadius : -mBlockRadius);
-    double mFromY = cY + (cFacing == NORTH ? mBlockRadius : -mBlockRadius); 
-    double mFromZ = cZ * IsoRealmsConstants::BLOCK_HEIGHT;
-    double mToX = (cFacing == WEST || cFacing == EAST) ? (mFromX) : cX - mBlockRadius + cLength;
-    double mToY = (cFacing == SOUTH || cFacing == NORTH) ? (mFromY) : cY - mBlockRadius + cLength;
-    double mHighStartSlopeZ = (cZ + cHeight) * IsoRealmsConstants::BLOCK_HEIGHT;
-    double mHighEndSlopeZ =  ((cZ + cHeight) + cTopSlope * cLength) * IsoRealmsConstants::BLOCK_HEIGHT;
-    double mHighStartSlopeTexture = cZ + cHeight;
-    double mHighEndSlopeTexture = (cZ + cHeight) + cTopSlope * cLength;
-
-    (*cTexture)->set();
-    float mEdgeWidth = IsoRealmsConstants::BLOCK_HEIGHT * 0.5f;
-    glBegin(GL_QUADS);
-
-    switch (*cWallType) {
-      case TILED: {
-        if (cFacing == EAST || cFacing == SOUTH) {
-          glTexCoord2f(cX,           mHighStartSlopeTexture); glVertex3f(mFromX, mFromY, mFromZ);
-          glTexCoord2f(cX + cLength, mHighEndSlopeTexture);   glVertex3f(mToX,   mToY,   mFromZ);
-          glTexCoord2f(cX + cLength, cZ);                     glVertex3f(mToX,   mToY,   mHighEndSlopeZ);
-          glTexCoord2f(cX,           cZ);                     glVertex3f(mFromX, mFromY, mHighStartSlopeZ);
-        } else {
-          glTexCoord2f(cX,           cZ);                     glVertex3f(mFromX, mFromY, mHighStartSlopeZ);
-          glTexCoord2f(cX + cLength, cZ);                     glVertex3f(mToX,   mToY,   mHighEndSlopeZ);
-          glTexCoord2f(cX + cLength, mHighEndSlopeTexture);   glVertex3f(mToX,   mToY,   mFromZ);
-          glTexCoord2f(cX,           mHighStartSlopeTexture); glVertex3f(mFromX, mFromY, mFromZ);
-        }
-        break;
-      }
-
-      case CAPPED: {
-        if (cFacing == EAST || cFacing == SOUTH) {
-          if (mHighEndSlopeZ - mFromZ > 0.0f || mHighStartSlopeZ - mFromZ > 0.0f) {
-            glTexCoord2f(cX,           cZ);                          glVertex3f(mFromX, mFromY, mFromZ           + mEdgeWidth);
-            glTexCoord2f(cX + cLength, cZ);                          glVertex3f(mToX,   mToY,   mFromZ           + mEdgeWidth);
-            glTexCoord2f(cX + cLength, cZ - mHighEndSlopeTexture);   glVertex3f(mToX,   mToY,   mHighEndSlopeZ   - mEdgeWidth);
-            glTexCoord2f(cX,           cZ - mHighStartSlopeTexture); glVertex3f(mFromX, mFromY, mHighStartSlopeZ - mEdgeWidth);
-          }
-          glEnd();
-          (*cTextureBottom)->set();
-          glBegin(GL_QUADS);
-          glTexCoord2f(cX,           0.0f); glVertex3f(mFromX, mFromY, mFromZ);
-          glTexCoord2f(cX + cLength, 0.0f); glVertex3f(mToX,   mToY,   mFromZ);
-          glTexCoord2f(cX + cLength, 1.0f); glVertex3f(mToX,   mToY,   mFromZ + mEdgeWidth);
-          glTexCoord2f(cX,           1.0f); glVertex3f(mFromX, mFromY, mFromZ + mEdgeWidth);
-          glEnd();
-          (*cTextureTop)->set();
-          glBegin(GL_QUADS);
-          glTexCoord2f(cX,           1.0f); glVertex3f(mFromX, mFromY, mHighStartSlopeZ - mEdgeWidth);
-          glTexCoord2f(cX + cLength, 1.0f); glVertex3f(mToX,   mToY,   mHighEndSlopeZ   - mEdgeWidth);
-          glTexCoord2f(cX + cLength, 0.0f); glVertex3f(mToX,   mToY,   mHighEndSlopeZ);
-          glTexCoord2f(cX,           0.0f); glVertex3f(mFromX, mFromY, mHighStartSlopeZ);
-        } else {
-          if (mHighEndSlopeZ - mFromZ > 0.0f || mHighStartSlopeZ - mFromZ > 0.0f) {
-            glTexCoord2f(cX + cLength, cZ - mHighStartSlopeTexture); glVertex3f(mFromX, mFromY, mHighStartSlopeZ - mEdgeWidth);
-            glTexCoord2f(cX,           cZ - mHighEndSlopeTexture);   glVertex3f(mToX,   mToY,   mHighEndSlopeZ   - mEdgeWidth);
-            glTexCoord2f(cX,           cZ);                          glVertex3f(mToX,   mToY,   mFromZ           + mEdgeWidth);
-            glTexCoord2f(cX + cLength, cZ);                          glVertex3f(mFromX, mFromY, mFromZ           + mEdgeWidth);
-          }
-          glEnd();
-          (*cTextureBottom)->set();
-          glBegin(GL_QUADS);
-          glTexCoord2f(cX + cLength, 1.0f); glVertex3f(mFromX, mFromY, mFromZ + mEdgeWidth);
-          glTexCoord2f(cX,           1.0f); glVertex3f(mToX,   mToY,   mFromZ + mEdgeWidth);
-          glTexCoord2f(cX,           0.0f); glVertex3f(mToX,   mToY,   mFromZ);
-          glTexCoord2f(cX + cLength, 0.0f); glVertex3f(mFromX, mFromY, mFromZ);
-          glEnd();
-          (*cTextureTop)->set();
-          glBegin(GL_QUADS);
-          glTexCoord2f(cX + cLength, 0.0f); glVertex3f(mFromX, mFromY, mHighStartSlopeZ);
-          glTexCoord2f(cX,           0.0f); glVertex3f(mToX,   mToY,   mHighEndSlopeZ);
-          glTexCoord2f(cX,           1.0f); glVertex3f(mToX,   mToY,   mHighEndSlopeZ   - mEdgeWidth);
-          glTexCoord2f(cX + cLength, 1.0f); glVertex3f(mFromX, mFromY, mHighStartSlopeZ - mEdgeWidth);
-        }
-        break;
-      }
-    }
+  if ((cCondition == nullptr || cCondition->isTrue()) && cWallPattern != nullptr) {
+    cWallPattern->render(this);
   }
   glEnd();
 }
 
 void WallSurface::renderOutline() {
   float mBlockRadius = IsoRealmsConstants::BLOCK_RADIUS;
-  double mFromX = cX + (cFacing == EAST ? mBlockRadius : -mBlockRadius);
+  double mFromX = cX + (cFacing == EAST  ? mBlockRadius : -mBlockRadius);
   double mFromY = cY + (cFacing == NORTH ? mBlockRadius : -mBlockRadius); 
   double mFromZ = cZ * IsoRealmsConstants::BLOCK_HEIGHT;
-  double mToX = (cFacing == WEST || cFacing == EAST) ? (mFromX) : cX - mBlockRadius + cLength;
+  double mToX = (cFacing == WEST  || cFacing == EAST)  ? (mFromX) : cX - mBlockRadius + cLength;
   double mToY = (cFacing == SOUTH || cFacing == NORTH) ? (mFromY) : cY - mBlockRadius + cLength;
   double mHighStartSlopeZ = (cZ + cHeight) * IsoRealmsConstants::BLOCK_HEIGHT;
   double mHighEndSlopeZ =  ((cZ + cHeight) + cTopSlope * cLength) * IsoRealmsConstants::BLOCK_HEIGHT;
@@ -250,10 +174,10 @@ void WallSurface::renderOutline() {
 
 void WallSurface::renderSelectionHighlight() {
   float mBlockRadius = IsoRealmsConstants::BLOCK_RADIUS;
-  double mFromX = cX + (cFacing == EAST ? mBlockRadius : -mBlockRadius);
+  double mFromX = cX + (cFacing == EAST  ? mBlockRadius : -mBlockRadius);
   double mFromY = cY + (cFacing == NORTH ? mBlockRadius : -mBlockRadius); 
   double mFromZ = cZ * IsoRealmsConstants::BLOCK_HEIGHT;
-  double mToX = (cFacing == WEST || cFacing == EAST) ? (mFromX) : cX - mBlockRadius + cLength;
+  double mToX = (cFacing == WEST  || cFacing == EAST)  ? (mFromX) : cX - mBlockRadius + cLength;
   double mToY = (cFacing == SOUTH || cFacing == NORTH) ? (mFromY) : cY - mBlockRadius + cLength;
   double mHighStartSlopeZ = (cZ + cHeight) * IsoRealmsConstants::BLOCK_HEIGHT;
   double mHighEndSlopeZ =  ((cZ + cHeight) + cTopSlope * cLength) * IsoRealmsConstants::BLOCK_HEIGHT;
@@ -550,6 +474,34 @@ ICollisionData* WallSurface::getCollision(Vertex& start, Vertex& end, float step
 float WallSurface::getHeightAt(float location) {
   int mStart = cFacing == NORTH || cFacing == SOUTH ? cX : cY;
   return (cTopSlope * ((cTopSlope > 0 ? location - mStart  : -((mStart + (cLength - 1)) - location)) + IsoRealmsConstants::BLOCK_RADIUS) + cHeight) + cZ;
+}
+
+int WallSurface::getX() {
+  return cX;
+}
+
+int WallSurface::getY() {
+  return cY;
+}
+
+int WallSurface::getZ() {
+  return cZ;
+}
+
+int WallSurface::getLength() {
+  return cLength;
+}
+
+int WallSurface::getHeight() {
+  return cHeight;
+}
+
+int WallSurface::getTopSlope() {
+  return cTopSlope;
+}
+
+IWallSurface::FaceDirection WallSurface::getFaceDirection() {
+  return cFacing;
 }
 
 float WallSurface::getSurfaceBounce() {

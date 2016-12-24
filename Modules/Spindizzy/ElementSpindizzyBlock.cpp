@@ -122,13 +122,8 @@ void ElementSpindizzyBlock::loadWallSurface(DOMNodeWrapper* node, std::vector<Co
     }
   }
   
-  WallType* mWallType       = getWallType();
-  ITexture** mTexture       = getWallTexture(mFacing);
-  ITexture** mTextureTop    = getWallTextureTop(mFacing);
-  ITexture** mTextureBottom = getWallTextureBottom(mFacing);
-  bool mFlipBottom          = isWallBottomFlipped(mFacing);
-
-  WallSurface* mSurface = new WallSurface(mX, mY, mZ, mLength, mHeight, mSlopeTop, mFacing, mWallType, mTexture, mTextureTop, mTextureBottom, mFlipBottom, mWallCondition);
+  IWallPattern* mWallPattern = getWallPattern(mFacing);
+  WallSurface* mSurface = new WallSurface(mX, mY, mZ, mLength, mHeight, mSlopeTop, mFacing, mWallPattern, mWallCondition);
   if (mPhysical) {
     ISpindizzyBlockSet* mSpindizzyBlockSet = cBlockType->getSpindizzyBlockInterface();
     mSpindizzyBlockSet->registerWallSurface(this, mSurface, universe);
@@ -226,57 +221,13 @@ std::vector<ITileSurfaceTemplate*> ElementSpindizzyBlock::calculateTileSurfaces(
   return mSpindizzyBlockSet->getTileSurfaces(this, faceDirection, visual);
 }
 
-WallType* ElementSpindizzyBlock::getWallType() {
-  BlockTypeProperties* mBlockTypeProperties = cBlockType->getBlockTypeProperties();
-  return mBlockTypeProperties->getWallType();
-}
-
-ITexture** ElementSpindizzyBlock::getWallTexture(WallSurface::FaceDirection direction) {
+IWallPattern* ElementSpindizzyBlock::getWallPattern(WallSurface::FaceDirection direction) {
   BlockTypeProperties* mBlockTypeProperties = cBlockType->getBlockTypeProperties();
   switch (direction) {
-    case IWallSurface::NORTH: return mBlockTypeProperties->getNorthWallTexture();
-    case IWallSurface::EAST:  return mBlockTypeProperties->getEastWallTexture();
-    case IWallSurface::SOUTH: return mBlockTypeProperties->getSouthWallTexture();
-    case IWallSurface::WEST:  return mBlockTypeProperties->getWestWallTexture();
-  }
-  // TODO: Throw a wobbly
-  std::cout << "Unknown face direction in SpindizzyBlock!" << std::endl;
-  exit(1);
-}
-
-ITexture** ElementSpindizzyBlock::getWallTextureTop(WallSurface::FaceDirection direction) {
-  BlockTypeProperties* mBlockTypeProperties = cBlockType->getBlockTypeProperties();
-  switch (direction) {
-    case IWallSurface::NORTH: return mBlockTypeProperties->getNorthWallTextureTop();
-    case IWallSurface::EAST:  return mBlockTypeProperties->getEastWallTextureTop();
-    case IWallSurface::SOUTH: return mBlockTypeProperties->getSouthWallTextureTop();
-    case IWallSurface::WEST:  return mBlockTypeProperties->getWestWallTextureTop();
-  }
-  // TODO: Throw a wobbly
-  std::cout << "Unknown face direction in SpindizzyBlock!" << std::endl;
-  exit(1);
-}
-
-ITexture** ElementSpindizzyBlock::getWallTextureBottom(WallSurface::FaceDirection direction) {
-  BlockTypeProperties* mBlockTypeProperties = cBlockType->getBlockTypeProperties();
-  switch (direction) {
-    case IWallSurface::NORTH: return mBlockTypeProperties->getNorthWallTextureBottom();
-    case IWallSurface::EAST:  return mBlockTypeProperties->getEastWallTextureBottom();
-    case IWallSurface::SOUTH: return mBlockTypeProperties->getSouthWallTextureBottom();
-    case IWallSurface::WEST:  return mBlockTypeProperties->getWestWallTextureBottom();
-  }
-  // TODO: Throw a wobbly
-  std::cout << "Unknown face direction in SpindizzyBlock!" << std::endl;
-  exit(1);
-}
-
-bool ElementSpindizzyBlock::isWallBottomFlipped(WallSurface::FaceDirection direction) {
-  BlockTypeProperties* mBlockTypeProperties = cBlockType->getBlockTypeProperties();
-  switch (direction) {
-    case IWallSurface::NORTH: return mBlockTypeProperties->isNorthWallBottomFlipped();
-    case IWallSurface::EAST:  return mBlockTypeProperties->isEastWallBottomFlipped();
-    case IWallSurface::SOUTH: return mBlockTypeProperties->isSouthWallBottomFlipped();
-    case IWallSurface::WEST:  return mBlockTypeProperties->isWestWallBottomFlipped();
+    case IWallSurface::NORTH: return mBlockTypeProperties->getNorthWallPattern();
+    case IWallSurface::EAST:  return mBlockTypeProperties->getEastWallPattern();
+    case IWallSurface::SOUTH: return mBlockTypeProperties->getSouthWallPattern();
+    case IWallSurface::WEST:  return mBlockTypeProperties->getWestWallPattern();
   }
   // TODO: Throw a wobbly
   std::cout << "Unknown face direction in SpindizzyBlock!" << std::endl;
@@ -323,15 +274,11 @@ ISpindizzyWallSurface* ElementSpindizzyBlock::createSubSurface(IWallSurfaceTempl
 //  int mBottomSlope                           = wallTemplate->getBottomSlope();
   int mTopSlope                              = wallTemplate->getTopSlope();
   Condition* mCondition                      = wallTemplate->getCondition();
-  WallType* mWallType                        = getWallType();
-  ITexture** mTexture                        = getWallTexture(mFaceDirection);
-  ITexture** mTextureTop                     = getWallTextureTop(mFaceDirection);
-  ITexture** mTextureBottom                  = getWallTextureBottom(mFaceDirection);
-  bool mFlipBottom                           = isWallBottomFlipped(mFaceDirection);
+  IWallPattern* mWallPattern                 = getWallPattern(mFaceDirection);
   // TODO: Bottom slope.
   // TODO: Delete template condition
   Condition* mCopyCondition = mCondition != nullptr ? new Condition(*mCondition) : nullptr;
-  return new WallSurface(mX, mY, mStartHeight, mLength, mEndHeight, mTopSlope, mFaceDirection, mWallType, mTexture, mTextureTop, mTextureBottom, mFlipBottom, mCopyCondition);
+  return new WallSurface(mX, mY, mStartHeight, mLength, mEndHeight, mTopSlope, mFaceDirection, mWallPattern, mCopyCondition);
 }
 
 void ElementSpindizzyBlock::setValue() {
@@ -346,11 +293,7 @@ ISpindizzyWallSurface* ElementSpindizzyBlock::createSampleWallSurface(int locati
   bool mFacesPole = facing == IWallSurface::NORTH || facing == IWallSurface::SOUTH;
   int mSlope = getWallSlope(facing);
   std::vector<IWallSurface*> mWallSurfaces;
-  WallType* mWallType = getWallType();
-  ITexture** mTexture = getWallTexture(facing);
-  ITexture** mTextureTop = getWallTextureTop(facing);
-  ITexture** mTextureBottom = getWallTextureBottom(facing);
-  bool mFlipBottom = isWallBottomFlipped(facing);
+  IWallPattern* mWallPattern = getWallPattern(facing);
   int mX = mFacesPole ? cStartLocation.x : location;
   int mY = mFacesPole ? location : cStartLocation.y;
   int mLength = (mFacesPole ? cEndLocation.x - cStartLocation.x : cEndLocation.y - cStartLocation.y) + 1;
@@ -359,7 +302,7 @@ ISpindizzyWallSurface* ElementSpindizzyBlock::createSampleWallSurface(int locati
   int mBaseHeight = getBottomHeight(mX, mY);
   int mHeight = cSteppedBottom ? (cEndLocation.z - cStartLocation.z) + getMinimumWallElevation(facing)
                                : (getTileSurfaceHeight(mLowestX, mLowestY) + getMinimumWallElevation(facing)) - cStartLocation.z;
-  return new WallSurface(mX, mY, mBaseHeight, mLength, mHeight, mSlope, facing, mWallType, mTexture, mTextureTop, mTextureBottom, mFlipBottom, nullptr);
+  return new WallSurface(mX, mY, mBaseHeight, mLength, mHeight, mSlope, facing, mWallPattern, nullptr);
 }
 
 std::vector<IWallSurface*> ElementSpindizzyBlock::getWallSurfaces(int location, IWallSurface::FaceDirection facing) {
@@ -375,11 +318,7 @@ std::vector<WallSurface*> ElementSpindizzyBlock::getPreviewWallSurfaces(int loca
   bool mFacesPole = facing == IWallSurface::NORTH || facing == IWallSurface::SOUTH;
   int mSlope = getWallSlope(facing);
   std::vector<WallSurface*> mWallSurfaces;
-  WallType* mWallType = getWallType();
-  ITexture** mTexture = getWallTexture(facing);
-  ITexture** mTextureTop = getWallTextureTop(facing);
-  ITexture** mTextureBottom = getWallTextureBottom(facing);
-  bool mFlipBottom = isWallBottomFlipped(facing);
+  IWallPattern* mWallPattern = getWallPattern(facing);
   if (cSteppedBottom && mSlope != 0) {
     int mStart = mFacesPole ? cStartLocation.x : cStartLocation.y;
     int mEnd   = mFacesPole ? cEndLocation.x   : cEndLocation.y;
@@ -388,7 +327,7 @@ std::vector<WallSurface*> ElementSpindizzyBlock::getPreviewWallSurfaces(int loca
       int mY = mFacesPole ? location : i;
       int mBaseHeight = getBottomHeight(mX, mY);
       int mHeight = cEndLocation.z - cStartLocation.z;
-      WallSurface* mWallSurface = new WallSurface(mX, mY, mBaseHeight, 1, mHeight, mSlope, facing, mWallType, mTexture, mTextureTop, mTextureBottom, mFlipBottom, cCondition);
+      WallSurface* mWallSurface = new WallSurface(mX, mY, mBaseHeight, 1, mHeight, mSlope, facing, mWallPattern, cCondition);
       mWallSurfaces.push_back(mWallSurface);
     }
   } else {
@@ -400,7 +339,7 @@ std::vector<WallSurface*> ElementSpindizzyBlock::getPreviewWallSurfaces(int loca
     int mBaseHeight = getBottomHeight(mX, mY);
     int mHeight = cSteppedBottom ? (cEndLocation.z - cStartLocation.z) + getMinimumWallElevation(facing)
                                  : (getTileSurfaceHeight(mLowestX, mLowestY) + getMinimumWallElevation(facing)) - cStartLocation.z;
-    WallSurface* mWallSurface = new WallSurface(mX, mY, mBaseHeight, mLength, mHeight, mSlope, facing, mWallType, mTexture, mTextureTop, mTextureBottom, mFlipBottom, cCondition);
+    WallSurface* mWallSurface = new WallSurface(mX, mY, mBaseHeight, mLength, mHeight, mSlope, facing, mWallPattern, cCondition);
     mWallSurfaces.push_back(mWallSurface);
   }
   return mWallSurfaces;
@@ -432,45 +371,55 @@ void ElementSpindizzyBlock::createSampleSurfaces() {
   cDynamicWallSurfaces.push_back(createSampleWallSurface(cEndLocation.y,   IWallSurface::NORTH));
 }
 
-void ElementSpindizzyBlock::renderStatic() {
-  // TODO: We should remove static surfaces; this is disabled for now because we lose the surfaces when cached as the project is closed
-//   ISpindizzyBlockSet* mSpindizzyBlockSet = cBlockType->getSpindizzyBlockInterface();
-//   bool mEditing = mSpindizzyBlockSet->isEditing();
-  
-  for (unsigned int i = 0; i < cStaticTileSurfaces.size(); i++) {
-    cStaticTileSurfaces[i]->render();
-//     if (!mEditing) {
-//       delete cStaticTileSurfaces[i];
-//     }
+std::vector<IVisualElement*> ElementSpindizzyBlock::getStaticVisuals() {
+  std::vector<IVisualElement*> mAllVisuals;
+  mAllVisuals.insert(std::end(mAllVisuals), std::begin(cStaticTileSurfaces), std::end(cStaticTileSurfaces));
+  for (IWallSurface* mStaticWallSurface : cStaticWallSurfaces) {
+    std::vector<IVisualElement*> mWallVisuals = mStaticWallSurface->getStaticVisuals();
+    mAllVisuals.insert(std::end(mAllVisuals), std::begin(mWallVisuals), std::end(mWallVisuals));
   }
-//   if (!mEditing) {
-//     cStaticTileSurfaces.clear();
-//   }
-
-/* std::vector<ITileSurface*> mBottomTileSurfaces = calculateTileSurfaces(ITileSurface::DOWN);
-    for (unsigned int i = 0; i < mBottomTileSurfaces.size(); i++) {
-    mBottomTileSurfaces[i]->render();
-    delete mBottomTileSurfaces[i];
-  }*/
-  for (unsigned int i = 0; i < cStaticWallSurfaces.size(); i++) {
-    cStaticWallSurfaces[i]->render();
-//     if (!mEditing) {
-//       delete cStaticWallSurfaces[i];
-//     }
-  }
-//   if (!mEditing) {
-//     cStaticWallSurfaces.clear();
-//   }
-  
-//   if (mEditing) {
-//     cStaticTileSurfaces.clear();
-//     cStaticWallSurfaces.clear();
-//   }
+  return mAllVisuals;
 }
+
+// void ElementSpindizzyBlock::renderStatic() {
+//   // TODO: We should remove static surfaces; this is disabled for now because we lose the surfaces when cached as the project is closed
+// //   ISpindizzyBlockSet* mSpindizzyBlockSet = cBlockType->getSpindizzyBlockInterface();
+// //   bool mEditing = mSpindizzyBlockSet->isEditing();
+//   
+//   for (unsigned int i = 0; i < cStaticTileSurfaces.size(); i++) {
+//     cStaticTileSurfaces[i]->render();
+// //     if (!mEditing) {
+// //       delete cStaticTileSurfaces[i];
+// //     }
+//   }
+// //   if (!mEditing) {
+// //     cStaticTileSurfaces.clear();
+// //   }
+// 
+// /* std::vector<ITileSurface*> mBottomTileSurfaces = calculateTileSurfaces(ITileSurface::DOWN);
+//     for (unsigned int i = 0; i < mBottomTileSurfaces.size(); i++) {
+//     mBottomTileSurfaces[i]->render();
+//     delete mBottomTileSurfaces[i];
+//   }*/
+//   for (unsigned int i = 0; i < cStaticWallSurfaces.size(); i++) {
+//     cStaticWallSurfaces[i]->render();
+// //     if (!mEditing) {
+// //       delete cStaticWallSurfaces[i];
+// //     }
+//   }
+// //   if (!mEditing) {
+// //     cStaticWallSurfaces.clear();
+// //   }
+//   
+// //   if (mEditing) {
+// //     cStaticTileSurfaces.clear();
+// //     cStaticWallSurfaces.clear();
+// //   }
+// }
 
 void ElementSpindizzyBlock::renderRuntime() {
   for (unsigned int i = 0; i < cDynamicTileSurfaces.size(); i++) {
-    cDynamicTileSurfaces[i]->render();
+    cDynamicTileSurfaces[i]->renderDynamic();
   }
   for (unsigned int i = 0; i < cDynamicWallSurfaces.size(); i++) {
     cDynamicWallSurfaces[i]->render();
@@ -548,7 +497,7 @@ void ElementSpindizzyBlock::renderPreviewWalls(IWallSurface::FaceDirection facin
 //   for (int i = mStart; i <= mEnd; i++) {
     std::vector<WallSurface*> mWalls = getPreviewWallSurfaces(mEdge, facing);
     for (WallSurface* mWall : mWalls) {
-      mWall->render();
+//      mWall->render(); TODO
       delete mWall;
     }
 //   }

@@ -31,18 +31,17 @@ BlockTypeProperties::BlockTypeProperties() {
   cSurfaceTexture         = nullptr;
   cSurfaceSplitNETexture  = nullptr;
   cSurfaceSplitNWTexture  = nullptr;
-  cWestWallTexture        = nullptr;
-  cEastWallTexture        = nullptr;
-  cSouthWallTexture       = nullptr;
-  cNorthWallTexture       = nullptr;
-  cWestWallTextureTop     = nullptr;
-  cEastWallTextureTop     = nullptr;
-  cSouthWallTextureTop    = nullptr;
-  cNorthWallTextureTop    = nullptr;
-  cWestWallTextureBottom  = nullptr;
-  cEastWallTextureBottom  = nullptr;
-  cSouthWallTextureBottom = nullptr;
-  cNorthWallTextureBottom = nullptr;
+  cWestWallPattern        = nullptr;
+  cEastWallPattern        = nullptr;
+  cSouthWallPattern       = nullptr;
+  cNorthWallPattern       = nullptr;
+}
+
+IWallPattern* BlockTypeProperties::configureWall(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor) {
+  std::string mPatternType = node->getAttribute("type");
+  return mPatternType == "tile" ? static_cast<IWallPattern*>(new WallPatternTile(node, resourceAccessor))
+       : mPatternType == "cap"  ? static_cast<IWallPattern*>(new WallPatternCap( node, resourceAccessor))
+       :                          nullptr;
 }
 
 void BlockTypeProperties::configure(DOMNodeWrapper* node, IResourceAccessor* resourceAccessor) {
@@ -50,9 +49,6 @@ void BlockTypeProperties::configure(DOMNodeWrapper* node, IResourceAccessor* res
   cSurfaceGrip = node->getFloatAttribute("grip");
   cRespawnAllowed = node->getBooleanAttribute("respawnAllowed");
   cSurfaceBounce = node->getFloatAttribute("bounce");
-  std::string mWallType = node->getAttribute("wallType");
-  cWallType = mWallType == "capped" ? CAPPED
-            :                         TILED;
   for (int i = 0; i < node->getChildCount(); i++) {
     DOMNodeWrapper *mNode = node->getChild(i);
     std::string mValueAsString = mNode->getNodeName();
@@ -60,6 +56,14 @@ void BlockTypeProperties::configure(DOMNodeWrapper* node, IResourceAccessor* res
       cContactScript = resourceAccessor->getScriptCall(mNode);
     } else if (mValueAsString == "ImpactScript") {
       cImpactScript = resourceAccessor->getScriptCall(mNode);
+    } else if (mValueAsString == "WallWest") {
+      cWestWallPattern = configureWall(mNode, resourceAccessor);
+    } else if (mValueAsString == "WallEast") {
+      cEastWallPattern = configureWall(mNode, resourceAccessor);
+    } else if (mValueAsString == "WallSouth") {
+      cSouthWallPattern = configureWall(mNode, resourceAccessor);
+    } else if (mValueAsString == "WallNorth") {
+      cNorthWallPattern = configureWall(mNode, resourceAccessor);
     } else if (mValueAsString == "Texture") {
       std::string mApplyTo = mNode->getAttribute("type");
       std::string mTexturePath = mNode->getAttribute("name");
@@ -75,38 +79,6 @@ void BlockTypeProperties::configure(DOMNodeWrapper* node, IResourceAccessor* res
         cSurfaceSplitNETexture = mTexture;
       } else if (mApplyTo == "NWSplitSurface") {
         cSurfaceSplitNWTexture = mTexture;
-      } else if (mApplyTo == "WallWest") {
-        cWestWallTexture = mTexture;
-      } else if (mApplyTo == "WallEast") {
-        cEastWallTexture = mTexture;
-      } else if (mApplyTo == "WallSouth") {
-        cSouthWallTexture = mTexture;
-      } else if (mApplyTo == "WallNorth") {
-        cNorthWallTexture = mTexture;
-      } else if (mApplyTo == "WallWestTop") {
-        cWestWallTextureTop = mTexture;
-      } else if (mApplyTo == "WallEastTop") {
-        cEastWallTextureTop = mTexture;
-      } else if (mApplyTo == "WallSouthTop") {
-        cSouthWallTextureTop = mTexture;
-      } else if (mApplyTo == "WallNorthTop") {
-        cNorthWallTextureTop = mTexture;
-      } else if (mApplyTo == "WallWestBottom") {
-        cWestWallTextureBottom = mTexture;
-        std::string mFlip = mNode->getAttribute("flip");
-        cWestBottomFlip = mFlip == "true" ? true : false;
-      } else if (mApplyTo == "WallEastBottom") {
-        cEastWallTextureBottom = mTexture;
-        std::string mFlip = mNode->getAttribute("flip");
-        cEastBottomFlip = mFlip == "true" ? true : false;
-      } else if (mApplyTo == "WallSouthBottom") {
-        cSouthWallTextureBottom = mTexture;
-        std::string mFlip = mNode->getAttribute("flip");
-        cSouthBottomFlip = mFlip == "true" ? true : false;
-      } else if (mApplyTo == "WallNorthBottom") {
-        cNorthWallTextureBottom = mTexture;
-        std::string mFlip = mNode->getAttribute("flip");
-        cNorthBottomFlip = mFlip == "true" ? true : false;
       } else {
         // TODO: Throw
         std::cout << "Unknown texture type \"" << mApplyTo << "\"" << std::endl;
@@ -156,74 +128,22 @@ ITexture** BlockTypeProperties::getSplitNWTexture() {
   return cSurfaceSplitNETexture != nullptr ? &cSurfaceSplitNETexture : getSurfaceTexture();
 }
 
-WallType* BlockTypeProperties::getWallType() {
-  return &cWallType;
+IWallPattern* BlockTypeProperties::getWestWallPattern() {
+  return cWestWallPattern;
 }
 
-ITexture** BlockTypeProperties::getWestWallTexture() {
-  return &cWestWallTexture;
+IWallPattern* BlockTypeProperties::getEastWallPattern() {
+  return cEastWallPattern;
 }
 
-ITexture** BlockTypeProperties::getEastWallTexture() {
-  return &cEastWallTexture;
+IWallPattern* BlockTypeProperties::getSouthWallPattern() {
+  return cSouthWallPattern;
 }
 
-ITexture** BlockTypeProperties::getSouthWallTexture() {
-  return &cSouthWallTexture;
+IWallPattern* BlockTypeProperties::getNorthWallPattern() {
+  return cNorthWallPattern;
 }
 
-ITexture** BlockTypeProperties::getNorthWallTexture() {
-  return &cNorthWallTexture;
-}
-
-ITexture** BlockTypeProperties::getWestWallTextureTop() {
-  return &cWestWallTextureTop;
-}
-
-ITexture** BlockTypeProperties::getEastWallTextureTop() {
-  return &cEastWallTextureTop;
-}
-
-ITexture** BlockTypeProperties::getSouthWallTextureTop() {
-  return &cSouthWallTextureTop;
-}
-
-ITexture** BlockTypeProperties::getNorthWallTextureTop() {
-  return &cNorthWallTextureTop;
-}
-
-ITexture** BlockTypeProperties::getWestWallTextureBottom() {
-  return &cWestWallTextureBottom;
-}
-
-ITexture** BlockTypeProperties::getEastWallTextureBottom() {
-  return &cEastWallTextureBottom;
-}
-
-ITexture** BlockTypeProperties::getSouthWallTextureBottom() {
-  return &cSouthWallTextureBottom;
-}
-
-ITexture** BlockTypeProperties::getNorthWallTextureBottom() {
-  return &cNorthWallTextureBottom;
-}
-
-bool BlockTypeProperties::isWestWallBottomFlipped() {
-  return cWestBottomFlip;
-}
-
-bool BlockTypeProperties::isEastWallBottomFlipped() {
-  return cEastBottomFlip;
-}
-
-bool BlockTypeProperties::isSouthWallBottomFlipped() {
-  return cSouthBottomFlip;
-}
-
-bool BlockTypeProperties::isNorthWallBottomFlipped() {
-  return cNorthBottomFlip;
-}
-  
 TextureRotation BlockTypeProperties::getSurfaceRotation() {
   return cSurfaceRotation;
 }
@@ -259,58 +179,46 @@ void BlockTypeProperties::save(DOMNodeWriter* node, IResourceLocator* resourceLo
   node->addAttribute("respawnAllowed", cRespawnAllowed ? "true" : "false");
   resourceLocator->saveScript(node, "ImpactScript", cImpactScript);
   resourceLocator->saveScript(node, "ContactScript", cContactScript);
-  if (cWallType == TILED) {
-    node->addAttribute("wallType", "tiled");
-    saveTextureFloor(node, "Surface", cSurfaceTexture, resourceLocator, cSurfaceRotation);
-    saveTexture(node, "WallWest",  cWestWallTexture,  resourceLocator);
-    saveTexture(node, "WallEast",  cEastWallTexture,  resourceLocator);
-    saveTexture(node, "WallSouth", cSouthWallTexture, resourceLocator);
-    saveTexture(node, "WallNorth", cNorthWallTexture, resourceLocator);
-  } else if (cWallType == CAPPED) {
-    node->addAttribute("wallType", "capped");
-    saveTextureFloor(node, "Surface", cSurfaceTexture, resourceLocator, cSurfaceRotation);
-    saveTexture(node, "NESplitSurface",  cSurfaceSplitNETexture,  resourceLocator);
-    saveTexture(node, "NWSplitSurface",  cSurfaceSplitNWTexture,  resourceLocator);
-    saveTexture(node, "WallWest",        cWestWallTexture,        resourceLocator);
-    saveTexture(node, "WallWestTop",     cWestWallTextureTop,     resourceLocator);
-    saveTexture(node, "WallWestBottom",  cWestWallTextureBottom,  resourceLocator, cWestBottomFlip);
-    saveTexture(node, "WallEast",        cEastWallTexture,        resourceLocator);
-    saveTexture(node, "WallEastTop",     cEastWallTextureTop,     resourceLocator);
-    saveTexture(node, "WallEastBottom",  cEastWallTextureBottom,  resourceLocator, cEastBottomFlip);
-    saveTexture(node, "WallSouth",       cSouthWallTexture,       resourceLocator);
-    saveTexture(node, "WallSouthTop",    cSouthWallTextureTop,    resourceLocator);
-    saveTexture(node, "WallSouthBottom", cSouthWallTextureBottom, resourceLocator, cSouthBottomFlip);
-    saveTexture(node, "WallNorth",       cNorthWallTexture,       resourceLocator);
-    saveTexture(node, "WallNorthTop",    cNorthWallTextureTop,    resourceLocator);
-    saveTexture(node, "WallNorthBottom", cNorthWallTextureBottom, resourceLocator, cNorthBottomFlip);
-  }
-}
-
-bool BlockTypeProperties::replaceTexture(ITexture*& replacee, ITexture* destroyee, ITexture* replacement) {
-  if (replacee == destroyee) {
-    replacee = replacement;
-    return true;
-  }
-  return false;
+  cNorthWallPattern->save(node, resourceLocator);
+  cSouthWallPattern->save(node, resourceLocator);
+  cWestWallPattern->save(node, resourceLocator);
+  cEastWallPattern->save(node, resourceLocator);
+//   if (cWallType == TILED) {
+//     node->addAttribute("wallType", "tiled");
+//     saveTextureFloor(node, "Surface", cSurfaceTexture, resourceLocator, cSurfaceRotation);
+//     saveTexture(node, "WallWest",  cWestWallTexture,  resourceLocator);
+//     saveTexture(node, "WallEast",  cEastWallTexture,  resourceLocator);
+//     saveTexture(node, "WallSouth", cSouthWallTexture, resourceLocator);
+//     saveTexture(node, "WallNorth", cNorthWallTexture, resourceLocator);
+//   } else if (cWallType == CAPPED) {
+//     node->addAttribute("wallType", "capped");
+//     saveTextureFloor(node, "Surface", cSurfaceTexture, resourceLocator, cSurfaceRotation);
+//     saveTexture(node, "NESplitSurface",  cSurfaceSplitNETexture,  resourceLocator);
+//     saveTexture(node, "NWSplitSurface",  cSurfaceSplitNWTexture,  resourceLocator);
+//     saveTexture(node, "WallWest",        cWestWallTexture,        resourceLocator);
+//     saveTexture(node, "WallWestTop",     cWestWallTextureTop,     resourceLocator);
+//     saveTexture(node, "WallWestBottom",  cWestWallTextureBottom,  resourceLocator, cWestBottomFlip);
+//     saveTexture(node, "WallEast",        cEastWallTexture,        resourceLocator);
+//     saveTexture(node, "WallEastTop",     cEastWallTextureTop,     resourceLocator);
+//     saveTexture(node, "WallEastBottom",  cEastWallTextureBottom,  resourceLocator, cEastBottomFlip);
+//     saveTexture(node, "WallSouth",       cSouthWallTexture,       resourceLocator);
+//     saveTexture(node, "WallSouthTop",    cSouthWallTextureTop,    resourceLocator);
+//     saveTexture(node, "WallSouthBottom", cSouthWallTextureBottom, resourceLocator, cSouthBottomFlip);
+//     saveTexture(node, "WallNorth",       cNorthWallTexture,       resourceLocator);
+//     saveTexture(node, "WallNorthTop",    cNorthWallTextureTop,    resourceLocator);
+//     saveTexture(node, "WallNorthBottom", cNorthWallTextureBottom, resourceLocator, cNorthBottomFlip);
+//   }
 }
 
 bool BlockTypeProperties::resourcePendingDestruction(ITexture* destroyee, ITexture* replacement) {
   bool mTexturesReplaced = false;
-  mTexturesReplaced |= replaceTexture(cSurfaceTexture,         destroyee, replacement);
-  mTexturesReplaced |= replaceTexture(cSurfaceSplitNETexture,  destroyee, replacement);
-  mTexturesReplaced |= replaceTexture(cSurfaceSplitNWTexture,  destroyee, replacement);
-  mTexturesReplaced |= replaceTexture(cWestWallTexture,        destroyee, replacement);
-  mTexturesReplaced |= replaceTexture(cWestWallTextureTop,     destroyee, replacement);
-  mTexturesReplaced |= replaceTexture(cWestWallTextureBottom,  destroyee, replacement);
-  mTexturesReplaced |= replaceTexture(cEastWallTexture,        destroyee, replacement);
-  mTexturesReplaced |= replaceTexture(cEastWallTextureTop,     destroyee, replacement);
-  mTexturesReplaced |= replaceTexture(cEastWallTextureBottom,  destroyee, replacement);
-  mTexturesReplaced |= replaceTexture(cSouthWallTexture,       destroyee, replacement);
-  mTexturesReplaced |= replaceTexture(cSouthWallTextureTop,    destroyee, replacement);
-  mTexturesReplaced |= replaceTexture(cSouthWallTextureBottom, destroyee, replacement);
-  mTexturesReplaced |= replaceTexture(cNorthWallTexture,       destroyee, replacement);
-  mTexturesReplaced |= replaceTexture(cNorthWallTextureTop,    destroyee, replacement);
-  mTexturesReplaced |= replaceTexture(cNorthWallTextureBottom, destroyee, replacement);
+  mTexturesReplaced |= Utils::replaceTexture(cSurfaceTexture,         destroyee, replacement);
+  mTexturesReplaced |= Utils::replaceTexture(cSurfaceSplitNETexture,  destroyee, replacement);
+  mTexturesReplaced |= Utils::replaceTexture(cSurfaceSplitNWTexture,  destroyee, replacement);
+  mTexturesReplaced |= cNorthWallPattern->resourcePendingDestruction(destroyee, replacement);
+  mTexturesReplaced |= cSouthWallPattern->resourcePendingDestruction(destroyee, replacement);
+  mTexturesReplaced |= cWestWallPattern->resourcePendingDestruction(destroyee, replacement);
+  mTexturesReplaced |= cEastWallPattern->resourcePendingDestruction(destroyee, replacement);
   return mTexturesReplaced;
 }
 
@@ -318,16 +226,8 @@ bool BlockTypeProperties::contains(ITexture* texture) {
   return cSurfaceTexture         == texture
       || cSurfaceSplitNETexture  == texture
       || cSurfaceSplitNWTexture  == texture
-      || cWestWallTexture        == texture
-      || cWestWallTextureTop     == texture
-      || cWestWallTextureBottom  == texture
-      || cEastWallTexture        == texture
-      || cEastWallTextureTop     == texture
-      || cEastWallTextureBottom  == texture
-      || cSouthWallTexture       == texture
-      || cSouthWallTextureTop    == texture
-      || cSouthWallTextureBottom == texture
-      || cNorthWallTexture       == texture
-      || cNorthWallTextureTop    == texture
-      || cNorthWallTextureBottom == texture;
+      || cNorthWallPattern->contains(texture)
+      || cSouthWallPattern->contains(texture)
+      || cWestWallPattern->contains(texture)
+      || cEastWallPattern->contains(texture);
 }

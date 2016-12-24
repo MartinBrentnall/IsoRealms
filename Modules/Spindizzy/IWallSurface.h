@@ -32,6 +32,15 @@ class IWallSurface {
     WEST
   };
 
+  // TODO: Should these go somewhere else?
+  virtual int getX() = 0;
+  virtual int getY() = 0;
+  virtual int getZ() = 0;
+  virtual int getLength() = 0;
+  virtual int getHeight() = 0;
+  virtual int getTopSlope() = 0;
+  virtual FaceDirection getFaceDirection() = 0;
+  
   /**
    * Get the bottom height of the wall at the specified location.
    * 
@@ -47,6 +56,8 @@ class IWallSurface {
   virtual IWallEdge* getTopEdge(int) = 0;
 
   virtual void destroyEdge(IWallEdge*) = 0;
+  
+  virtual std::vector<IVisualElement*> getStaticVisuals() = 0;
   
   /**
    * 

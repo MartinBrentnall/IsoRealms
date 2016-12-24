@@ -46,7 +46,8 @@ class ElementHUDRoundedRectangle:public Element {
    * Implements IElement *
   \***********************/
   IElementType* getElementType();
-  void renderStatic();
+  std::vector<IVisualElement*> getStaticVisuals();
+
   void setDirty();
   IElementBounds* getBounds();
   void renderRuntime();

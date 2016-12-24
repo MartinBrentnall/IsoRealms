@@ -162,9 +162,8 @@ bool ElementSpindizzyZone::renderSelectionHighlight() {
   return true;
 }
 
-void ElementSpindizzyZone::renderStatic() {
-//   cZoneTheme->set();
-//   cElementHandler.renderStatic();
+std::vector<IVisualElement*> ElementSpindizzyZone::getStaticVisuals() {
+  return std::vector<IVisualElement*>();
 }
 
 bool ElementSpindizzyZone::isVisited() {

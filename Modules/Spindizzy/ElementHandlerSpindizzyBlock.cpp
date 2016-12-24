@@ -111,8 +111,8 @@ IElementType* ElementHandlerSpindizzyBlock::getElementType() {
   return nullptr;
 }
 
-void ElementHandlerSpindizzyBlock::renderStatic() {
-  cElements.renderStatic();
+std::vector<IVisualElement*> ElementHandlerSpindizzyBlock::getStaticVisuals() {
+  return cElements.getStaticVisuals();
 }
 
 void ElementHandlerSpindizzyBlock::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& location) {

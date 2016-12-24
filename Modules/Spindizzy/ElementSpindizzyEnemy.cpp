@@ -55,8 +55,8 @@ bool ElementSpindizzyEnemy::renderSelectionHighlight() {
   return false;
 }
 
-void ElementSpindizzyEnemy::renderStatic() {
-  // Nothing to do.
+std::vector<IVisualElement*> ElementSpindizzyEnemy::getStaticVisuals() {
+  return std::vector<IVisualElement*>();
 }
 
 void ElementSpindizzyEnemy::reset() {

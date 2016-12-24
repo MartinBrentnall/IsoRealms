@@ -19,11 +19,14 @@
 #ifndef I_VISUAL_ELEMENT_H
 #define I_VISUAL_ELEMENT_H
 
+#include <IsoRealms/Resources/Texture/ITexture.h>
+
 class IVisualElement {
   public:
-  virtual ~IVisualElement() {}
-
   virtual void render() = 0;
+  virtual ITexture* getTexture() = 0;
+
+  virtual ~IVisualElement() {}
 };
 
 #endif

@@ -35,8 +35,8 @@ IElementType* ElementHUDString::getElementType() {
   return cElementType->getElementType();
 }
 
-void ElementHUDString::renderStatic() {
-  // Nothing to do
+std::vector<IVisualElement*> ElementHUDString::getStaticVisuals() {
+  return std::vector<IVisualElement*>();
 }
 
 void ElementHUDString::setDirty() {

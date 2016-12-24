@@ -80,8 +80,8 @@ IElementType* ElementHandlerItem::getElementType() {
   return nullptr;
 }
 
-void ElementHandlerItem::renderStatic() {
-  // Nothing to do.
+std::vector<IVisualElement*> ElementHandlerItem::getStaticVisuals() {
+  return std::vector<IVisualElement*>();
 }
 
 void ElementHandlerItem::save(DOMNodeWriter* node, IResourceLocator* resourceLocator, BlockLocation& location) {

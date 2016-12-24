@@ -93,6 +93,8 @@ add_library(Spindizzy MODULE
   WallColumn.cpp
   WallColumnPossibility.cpp
   WallConstructionData.cpp
+  WallPatternCap.cpp
+  WallPatternTile.cpp
   WallSurface.cpp
 )
 

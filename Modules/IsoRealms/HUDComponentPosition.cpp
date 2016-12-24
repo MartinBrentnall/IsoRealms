@@ -64,7 +64,8 @@ bool HUDComponentPosition::initElement(IUniverse*, unsigned int) {
   return true;
 }
 
-void HUDComponentPosition::renderStatic() {
+std::vector<IVisualElement*> HUDComponentPosition::getStaticVisuals() {
+  return std::vector<IVisualElement*>();
 }
 
 void HUDComponentPosition::renderRuntime() {

@@ -79,7 +79,7 @@ class ElementSpindizzyWater:public ISpindizzyBlock,
   \***********************/
   IElementType* getElementType();
   bool initElement(IUniverse*, unsigned int);
-  void renderStatic();
+  std::vector<IVisualElement*> getStaticVisuals();
   void renderRuntime();
   bool renderSelectionHighlight();
   void save(DOMNodeWriter*, IResourceLocator*, BlockLocation&);

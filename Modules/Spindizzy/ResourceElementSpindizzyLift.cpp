@@ -191,7 +191,7 @@ void ResourceElementSpindizzyLift::renderEditingPreview(Vertex& location) {
 //    }
     glColor3f(1.0f, 1.0f, 1.0f);
     glTranslatef(cInsertLocation->x, cInsertLocation->y, cInsertLocation->z * IsoRealmsConstants::BLOCK_HEIGHT + (IsoRealmsConstants::BLOCK_HEIGHT * 0.05));
-    cSampleLift->renderStatic();
+//    cSampleLift->renderStatic(); TODO
     if (cSampleLift->isVisualRuntime()) {
       cSampleLift->renderRuntime();
     }
@@ -216,7 +216,7 @@ void ResourceElementSpindizzyLift::renderEditingPreview(Vertex& location) {
     glPushMatrix();
     glTranslatef(location.x, location.y, location.z);
     glColor3f(1.0f, 1.0f, 1.0f);
-    cSampleLift->renderStatic();
+//    cSampleLift->renderStatic(); TODO
     if (cSampleLift->isVisualRuntime()) {
       cSampleLift->renderRuntime();
     }
@@ -234,7 +234,7 @@ void ResourceElementSpindizzyLift::renderIcon() {
   // TODO: Scale the icon
 //  glScalef(0.7f, 0.7f, 0.7f);
   glColor3f(1.0f, 1.0f, 1.0f);
-  cSampleLift->renderStatic();
+//  cSampleLift->renderStatic(); TODO
   if (cSampleLift->isVisualRuntime()) {
     cSampleLift->renderRuntime();
   }

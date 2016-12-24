@@ -151,7 +151,7 @@ class ElementSpindizzyLift:public ICollidableSurfaceElement,
    * Implements IElement *
   \***********************/
   IElementType* getElementType();
-  void renderStatic();
+  std::vector<IVisualElement*> getStaticVisuals();
   void renderEditing();
   void renderRuntime();
   bool renderSelectionHighlight();

@@ -70,7 +70,7 @@ class HUDComponentPosition:public IElement {
   \***********************/
   IElementType* getElementType();
   bool initElement(IUniverse*, unsigned int);
-  void renderStatic();
+  std::vector<IVisualElement*> getStaticVisuals();
   void renderRuntime();
   void renderEditing();
   bool renderSelectionHighlight();

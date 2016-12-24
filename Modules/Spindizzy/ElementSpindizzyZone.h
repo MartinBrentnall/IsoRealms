@@ -107,7 +107,7 @@ class ElementSpindizzyZone:public Element,
   IElementType* getElementType();
   bool initElement(IUniverse*, unsigned int);
   void renderEditing();
-  void renderStatic();
+  std::vector<IVisualElement*> getStaticVisuals();
   void renderRuntime();
   bool renderSelectionHighlight();
   void updateEditing(unsigned int);

@@ -35,8 +35,8 @@ IElementType* ElementHUDRoundedRectangle::getElementType() {
   return cElementType->getElementType();
 }
 
-void ElementHUDRoundedRectangle::renderStatic() {
-  // Nothing to do.
+std::vector<IVisualElement*> ElementHUDRoundedRectangle::getStaticVisuals() {
+  return std::vector<IVisualElement*>();
 }
 
 void ElementHUDRoundedRectangle::setDirty() {

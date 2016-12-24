@@ -167,3 +167,31 @@ void Utils::renderVolumeMarkers(float xStart, float xEnd, float yStart, float yE
   glVertex3f(xEnd,   yEnd,   zEnd);   glVertex3f(xEnd,            yEnd,            zEnd - length);
 }
 
+void Utils::renderStaticVisuals(std::vector<IVisualElement*> visuals) {
+  std::map<ITexture*, std::vector<IVisualElement*>*> mSortedElements;
+  for (IVisualElement* mVisual : visuals) {
+    ITexture* mTexture = mVisual->getTexture();
+    std::vector<IVisualElement*>* mSingleTextureVisuals = mSortedElements[mTexture];
+    if (mSingleTextureVisuals == nullptr) {
+      mSingleTextureVisuals = new std::vector<IVisualElement*>();
+      mSortedElements[mTexture] = mSingleTextureVisuals;
+    }
+    mSingleTextureVisuals->push_back(mVisual);
+  }
+  
+  for (std::pair<ITexture*, std::vector<IVisualElement*>*> mSingleTextureVisuals : mSortedElements) {
+    mSingleTextureVisuals.first->set();
+    for (IVisualElement* mVisual : *(mSingleTextureVisuals.second)) {
+      mVisual->render();
+    }
+    delete mSingleTextureVisuals.second;
+  }
+}
+
+bool Utils::replaceTexture(ITexture*& replacee, ITexture* destroyee, ITexture* replacement) {
+  if (replacee == destroyee) {
+    replacee = replacement;
+    return true;
+  }
+  return false;
+}
