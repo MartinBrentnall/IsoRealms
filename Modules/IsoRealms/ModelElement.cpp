@@ -40,7 +40,8 @@ void ModelElement::render() {
     glDeleteLists(cDisplayList, 1);
     cDisplayList = glGenLists(1);
     glNewList(cDisplayList, GL_COMPILE);
-//    (*cElement)->renderStatic(); TODO: Enable this
+    std::vector<IVisualElement*> mVisuals = (*cElement)->getStaticVisuals();
+    Utils::renderStaticVisuals(mVisuals);
     glEndList();
     cUpdateStatic = false;
   }
