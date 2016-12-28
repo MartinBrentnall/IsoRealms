@@ -73,7 +73,7 @@ class WallSurface:public ISpindizzyWallSurface,
   /**
    * Pattern of the wall.
    */
-  IWallPattern* cWallPattern;
+  IWallPattern** cWallPattern;
   
   /**
    * Condition under which the wall is visible.
@@ -127,7 +127,7 @@ class WallSurface:public ISpindizzyWallSurface,
    * @param ITexture*  Appearance of the wall.
    * @param Condition  Condition of the walls existence.
    */
-  WallSurface(int, int, int, int, int, int, FaceDirection, IWallPattern*, Condition*);
+  WallSurface(int, int, int, int, int, int, FaceDirection, IWallPattern**, Condition*);
   Condition* getCondition();
 
   float getHeightAt(float);

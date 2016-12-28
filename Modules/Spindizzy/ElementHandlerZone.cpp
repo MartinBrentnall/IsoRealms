@@ -20,6 +20,7 @@
 
 ElementHandlerZone::ElementHandlerZone(IModuleElementHandlerZone* moduleInterface) {
   cSingleZone = true;
+  cUpdateStatic = true;
   cZone = nullptr;
   cModuleInterface = moduleInterface;
 }
@@ -53,6 +54,17 @@ bool ElementHandlerZone::isEmpty() {
 }
 
 void ElementHandlerZone::renderEditing() {
+  if (cUpdateStatic) {
+    cDisplayList = glGenLists(1);
+    glNewList(cDisplayList, GL_COMPILE_AND_EXECUTE);
+    std::vector<IVisualElement*> mVisuals = cElements.getStaticVisuals();
+    Utils::renderStaticVisuals(mVisuals);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glEndList();
+    cUpdateStatic = false;
+  } else {
+    glCallList(cDisplayList);
+  }
   cElements.renderEditing();
 }
 

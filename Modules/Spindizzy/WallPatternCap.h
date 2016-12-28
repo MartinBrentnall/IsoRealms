@@ -42,6 +42,7 @@ class WallPatternCap:public IWallPattern {
     \*****************************/
     void render();
     ITexture* getTexture();
+    void prepareVisual();
   };
 
   class SectionMiddle:public IVisualElement {
@@ -57,6 +58,7 @@ class WallPatternCap:public IWallPattern {
     \*****************************/
     void render();
     ITexture* getTexture();
+    void prepareVisual();
   };
 
   class SectionBottom:public IVisualElement {
@@ -72,6 +74,7 @@ class WallPatternCap:public IWallPattern {
     \*****************************/
     void render();
     ITexture* getTexture();
+    void prepareVisual();
   };
 
   ITexture* cTexture;

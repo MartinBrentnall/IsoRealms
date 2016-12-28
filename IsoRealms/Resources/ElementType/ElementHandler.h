@@ -97,6 +97,7 @@ class ElementHandler {
   PickedElement* pickElement(Vertex&, Vertex&);
   
   IElementBounds* getStaticBounds();
+  std::vector<IVisualElement*> getStaticVisuals();
 };
 
 #endif

@@ -122,7 +122,7 @@ void ElementSpindizzyBlock::loadWallSurface(DOMNodeWrapper* node, std::vector<Co
     }
   }
   
-  IWallPattern* mWallPattern = getWallPattern(mFacing);
+  IWallPattern** mWallPattern = getWallPattern(mFacing);
   WallSurface* mSurface = new WallSurface(mX, mY, mZ, mLength, mHeight, mSlopeTop, mFacing, mWallPattern, mWallCondition);
   if (mPhysical) {
     ISpindizzyBlockSet* mSpindizzyBlockSet = cBlockType->getSpindizzyBlockInterface();
@@ -221,7 +221,7 @@ std::vector<ITileSurfaceTemplate*> ElementSpindizzyBlock::calculateTileSurfaces(
   return mSpindizzyBlockSet->getTileSurfaces(this, faceDirection, visual);
 }
 
-IWallPattern* ElementSpindizzyBlock::getWallPattern(WallSurface::FaceDirection direction) {
+IWallPattern** ElementSpindizzyBlock::getWallPattern(WallSurface::FaceDirection direction) {
   BlockTypeProperties* mBlockTypeProperties = cBlockType->getBlockTypeProperties();
   switch (direction) {
     case IWallSurface::NORTH: return mBlockTypeProperties->getNorthWallPattern();
@@ -274,7 +274,7 @@ ISpindizzyWallSurface* ElementSpindizzyBlock::createSubSurface(IWallSurfaceTempl
 //  int mBottomSlope                           = wallTemplate->getBottomSlope();
   int mTopSlope                              = wallTemplate->getTopSlope();
   Condition* mCondition                      = wallTemplate->getCondition();
-  IWallPattern* mWallPattern                 = getWallPattern(mFaceDirection);
+  IWallPattern** mWallPattern                = getWallPattern(mFaceDirection);
   // TODO: Bottom slope.
   // TODO: Delete template condition
   Condition* mCopyCondition = mCondition != nullptr ? new Condition(*mCondition) : nullptr;
@@ -293,7 +293,7 @@ ISpindizzyWallSurface* ElementSpindizzyBlock::createSampleWallSurface(int locati
   bool mFacesPole = facing == IWallSurface::NORTH || facing == IWallSurface::SOUTH;
   int mSlope = getWallSlope(facing);
   std::vector<IWallSurface*> mWallSurfaces;
-  IWallPattern* mWallPattern = getWallPattern(facing);
+  IWallPattern** mWallPattern = getWallPattern(facing);
   int mX = mFacesPole ? cStartLocation.x : location;
   int mY = mFacesPole ? location : cStartLocation.y;
   int mLength = (mFacesPole ? cEndLocation.x - cStartLocation.x : cEndLocation.y - cStartLocation.y) + 1;
@@ -318,7 +318,7 @@ std::vector<WallSurface*> ElementSpindizzyBlock::getPreviewWallSurfaces(int loca
   bool mFacesPole = facing == IWallSurface::NORTH || facing == IWallSurface::SOUTH;
   int mSlope = getWallSlope(facing);
   std::vector<WallSurface*> mWallSurfaces;
-  IWallPattern* mWallPattern = getWallPattern(facing);
+  IWallPattern** mWallPattern = getWallPattern(facing);
   if (cSteppedBottom && mSlope != 0) {
     int mStart = mFacesPole ? cStartLocation.x : cStartLocation.y;
     int mEnd   = mFacesPole ? cEndLocation.x   : cEndLocation.y;
@@ -418,11 +418,11 @@ std::vector<IVisualElement*> ElementSpindizzyBlock::getStaticVisuals() {
 // }
 
 void ElementSpindizzyBlock::renderRuntime() {
-  for (unsigned int i = 0; i < cDynamicTileSurfaces.size(); i++) {
-    cDynamicTileSurfaces[i]->renderDynamic();
+  for (ISpindizzyTileSurface* mTileSurface : cDynamicTileSurfaces) {
+    mTileSurface->renderDynamic();
   }
-  for (unsigned int i = 0; i < cDynamicWallSurfaces.size(); i++) {
-    cDynamicWallSurfaces[i]->render();
+  for (ISpindizzyWallSurface* mWallSurface : cDynamicWallSurfaces) {
+    mWallSurface->render();
   }
 }
 

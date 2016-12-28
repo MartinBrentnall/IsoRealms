@@ -108,7 +108,6 @@ void ElementSpindizzyZone::renderEditing(BlockArea& area, bool valid, bool previ
     cZoneTheme->set();
   }
   cElementHandler.renderEditing(getUniverse());
-  cElementHandler.renderStatic();
 
   float y       = area.getSouth()  - IsoRealmsConstants::BLOCK_RADIUS;
   float ys      = area.getNorth()  + IsoRealmsConstants::BLOCK_RADIUS;
@@ -117,7 +116,6 @@ void ElementSpindizzyZone::renderEditing(BlockArea& area, bool valid, bool previ
   float z       = area.getBottom() * IsoRealmsConstants::BLOCK_HEIGHT - IsoRealmsConstants::BLOCK_HEIGHT;
   float zs      = area.getTop()    * IsoRealmsConstants::BLOCK_HEIGHT;
   
-  glBindTexture(GL_TEXTURE_2D, 0);
   glBegin(GL_LINES);
   if (valid) {
     glColor3f(0.0f, 1.0f, 0.0f);
@@ -131,7 +129,7 @@ void ElementSpindizzyZone::renderEditing(BlockArea& area, bool valid, bool previ
   }
   glColor3f(1.0f, 1.0f, 1.0f);
   glEnd();
-  cZoneType->applyDefaultTheme();
+//  cZoneType->applyDefaultTheme();
 }
 
 bool ElementSpindizzyZone::intersects(ElementSpindizzyZone* zone) {
@@ -163,7 +161,11 @@ bool ElementSpindizzyZone::renderSelectionHighlight() {
 }
 
 std::vector<IVisualElement*> ElementSpindizzyZone::getStaticVisuals() {
-  return std::vector<IVisualElement*>();
+  std::vector<IVisualElement*> mZoneVisuals;
+  std::vector<IVisualElement*> mInsideVisuals = cElementHandler.getStaticVisuals();
+  mZoneVisuals.push_back(this);
+  mZoneVisuals.insert(std::end(mZoneVisuals), std::begin(mInsideVisuals), std::end(mInsideVisuals));
+  return mZoneVisuals;
 }
 
 bool ElementSpindizzyZone::isVisited() {
@@ -446,4 +448,16 @@ void ElementSpindizzyZone::unsetArguments() {
     cArguments[i]->unsetValue();
   }
   cContainer->unsetArguments();
+}
+
+void ElementSpindizzyZone::render() {
+  // Nothing to do
+}
+
+ITexture* ElementSpindizzyZone::getTexture() {
+  return nullptr;
+}
+
+void ElementSpindizzyZone::prepareVisual() {
+  cZoneTheme->set();
 }

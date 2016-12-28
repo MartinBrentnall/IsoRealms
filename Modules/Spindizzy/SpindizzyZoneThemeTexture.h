@@ -40,6 +40,7 @@ class SpindizzyZoneThemeTexture:public ITexture {
   /***********************\
    * Implements ITexture *
   \***********************/
+  ITexture* getTexture();
   void set();
   void hintInUse(bool);
 };

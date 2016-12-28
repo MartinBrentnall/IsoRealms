@@ -50,6 +50,7 @@ class ResourceTextureFile:public ITexture {
   /***********************\
    * Implements ITexture *
   \***********************/
+  ITexture* getTexture();
   void set();
   void save(DOMNodeWriter*);
   void hintInUse(bool);

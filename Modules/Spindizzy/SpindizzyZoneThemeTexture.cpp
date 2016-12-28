@@ -34,6 +34,10 @@ void SpindizzyZoneThemeTexture::set(ITexture* texture) {
   cTexture = texture;
 }
 
+ITexture* SpindizzyZoneThemeTexture::getTexture() {
+  return cTexture->getTexture();
+}
+
 void SpindizzyZoneThemeTexture::set() {
   if (cTexture != nullptr) {
     cTexture->set();

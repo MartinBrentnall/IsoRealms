@@ -210,7 +210,7 @@ class ElementSpindizzyBlock:public ICollidableSurfaceElement,
   
   void generateWallSurfaces(IUniverse*, IWallSurface::FaceDirection);
   
-  IWallPattern* getWallPattern(WallSurface::FaceDirection);
+  IWallPattern** getWallPattern(WallSurface::FaceDirection);
   
   void loadSurfaces(DOMNodeWrapper*, std::vector<ConditionElement*>, IUniverse*);
   void loadWallSurface(DOMNodeWrapper*, std::vector<ConditionElement*>, IUniverse*);

@@ -98,5 +98,10 @@ void WallPatternTile::WallPatternTileSurface::render() {
 }
 
 ITexture* WallPatternTile::WallPatternTileSurface::getTexture() {
-  return cParent->cTexture;
+  return cParent->cTexture->getTexture();
 }
+
+void WallPatternTile::WallPatternTileSurface::prepareVisual() {
+  // Nothing to do
+}
+

@@ -81,7 +81,7 @@ void TileSurface::coord(float x, float y) {
 }
 
 ITexture* TileSurface::getTexture() {
-  return *cTexture;
+  return (*cTexture)->getTexture();
 }
 
 void TileSurface::renderDynamic() {
@@ -142,6 +142,10 @@ void TileSurface::render() {
     }
     glEnd();
   }
+}
+
+void TileSurface::prepareVisual() {
+  // Nothing to do
 }
 
 void TileSurface::renderOutline() {

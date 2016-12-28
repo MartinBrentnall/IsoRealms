@@ -26,7 +26,6 @@ BlockTypeProperties::BlockTypeProperties() {
   cSurfaceBounce = 0.0f;
   cRespawnAllowed = true;
   cSurfaceRotation = STRAIGHT;
-  cWallType = TILED;
   
   cSurfaceTexture         = nullptr;
   cSurfaceSplitNETexture  = nullptr;
@@ -128,20 +127,20 @@ ITexture** BlockTypeProperties::getSplitNWTexture() {
   return cSurfaceSplitNETexture != nullptr ? &cSurfaceSplitNETexture : getSurfaceTexture();
 }
 
-IWallPattern* BlockTypeProperties::getWestWallPattern() {
-  return cWestWallPattern;
+IWallPattern** BlockTypeProperties::getWestWallPattern() {
+  return &cWestWallPattern;
 }
 
-IWallPattern* BlockTypeProperties::getEastWallPattern() {
-  return cEastWallPattern;
+IWallPattern** BlockTypeProperties::getEastWallPattern() {
+  return &cEastWallPattern;
 }
 
-IWallPattern* BlockTypeProperties::getSouthWallPattern() {
-  return cSouthWallPattern;
+IWallPattern** BlockTypeProperties::getSouthWallPattern() {
+  return &cSouthWallPattern;
 }
 
-IWallPattern* BlockTypeProperties::getNorthWallPattern() {
-  return cNorthWallPattern;
+IWallPattern** BlockTypeProperties::getNorthWallPattern() {
+  return &cNorthWallPattern;
 }
 
 TextureRotation BlockTypeProperties::getSurfaceRotation() {
@@ -183,31 +182,6 @@ void BlockTypeProperties::save(DOMNodeWriter* node, IResourceLocator* resourceLo
   cSouthWallPattern->save(node, resourceLocator);
   cWestWallPattern->save(node, resourceLocator);
   cEastWallPattern->save(node, resourceLocator);
-//   if (cWallType == TILED) {
-//     node->addAttribute("wallType", "tiled");
-//     saveTextureFloor(node, "Surface", cSurfaceTexture, resourceLocator, cSurfaceRotation);
-//     saveTexture(node, "WallWest",  cWestWallTexture,  resourceLocator);
-//     saveTexture(node, "WallEast",  cEastWallTexture,  resourceLocator);
-//     saveTexture(node, "WallSouth", cSouthWallTexture, resourceLocator);
-//     saveTexture(node, "WallNorth", cNorthWallTexture, resourceLocator);
-//   } else if (cWallType == CAPPED) {
-//     node->addAttribute("wallType", "capped");
-//     saveTextureFloor(node, "Surface", cSurfaceTexture, resourceLocator, cSurfaceRotation);
-//     saveTexture(node, "NESplitSurface",  cSurfaceSplitNETexture,  resourceLocator);
-//     saveTexture(node, "NWSplitSurface",  cSurfaceSplitNWTexture,  resourceLocator);
-//     saveTexture(node, "WallWest",        cWestWallTexture,        resourceLocator);
-//     saveTexture(node, "WallWestTop",     cWestWallTextureTop,     resourceLocator);
-//     saveTexture(node, "WallWestBottom",  cWestWallTextureBottom,  resourceLocator, cWestBottomFlip);
-//     saveTexture(node, "WallEast",        cEastWallTexture,        resourceLocator);
-//     saveTexture(node, "WallEastTop",     cEastWallTextureTop,     resourceLocator);
-//     saveTexture(node, "WallEastBottom",  cEastWallTextureBottom,  resourceLocator, cEastBottomFlip);
-//     saveTexture(node, "WallSouth",       cSouthWallTexture,       resourceLocator);
-//     saveTexture(node, "WallSouthTop",    cSouthWallTextureTop,    resourceLocator);
-//     saveTexture(node, "WallSouthBottom", cSouthWallTextureBottom, resourceLocator, cSouthBottomFlip);
-//     saveTexture(node, "WallNorth",       cNorthWallTexture,       resourceLocator);
-//     saveTexture(node, "WallNorthTop",    cNorthWallTextureTop,    resourceLocator);
-//     saveTexture(node, "WallNorthBottom", cNorthWallTextureBottom, resourceLocator, cNorthBottomFlip);
-//   }
 }
 
 bool BlockTypeProperties::resourcePendingDestruction(ITexture* destroyee, ITexture* replacement) {

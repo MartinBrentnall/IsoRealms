@@ -60,6 +60,10 @@ void ResourceTextureFile::readFile() {
   SDL_FreeSurface(mSurface);
 }
 
+ITexture* ResourceTextureFile::getTexture() {
+  return this;
+}
+
 void ResourceTextureFile::set() {
   glBindTexture(GL_TEXTURE_2D, cTextureID);
 }

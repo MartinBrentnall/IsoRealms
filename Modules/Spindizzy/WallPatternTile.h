@@ -43,6 +43,7 @@ class WallPatternTile:public IWallPattern {
     \*****************************/
     void render();
     ITexture* getTexture();
+    void prepareVisual();
   };
   
   public:

@@ -54,6 +54,10 @@ void Texture::addUseListener(ITextureUseListener* listener) {
   cUseListeners.push_back(listener);
 }
 
+ITexture* Texture::getTexture() {
+  return this;
+}
+
 void Texture::set() {
   glBindTexture(GL_TEXTURE_2D, cTexture);
 }

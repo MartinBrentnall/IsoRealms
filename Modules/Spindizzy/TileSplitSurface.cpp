@@ -68,7 +68,7 @@ int TileSplitSurface::getSurfaceCellElevation(int x, int y) {
 }
 
 ITexture* TileSplitSurface::getTexture() {
-  return *cTexture;
+  return (*cTexture)->getTexture();;
 }
 
 void TileSplitSurface::renderDynamic() {
@@ -107,6 +107,10 @@ void TileSplitSurface::render() {
     }
     glEnd();
   }
+}
+
+void TileSplitSurface::prepareVisual() {
+  // Nothing to do
 }
 
 void TileSplitSurface::renderOutline() {

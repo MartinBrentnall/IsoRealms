@@ -52,7 +52,8 @@
 class ElementSpindizzyZone:public Element,
                            public IElementContainer,
                            public IElementBounds,
-                           public IBoundary {
+                           public IBoundary,
+                           public IVisualElement {
   private:
 
   // Interfaces
@@ -153,6 +154,13 @@ class ElementSpindizzyZone:public Element,
   void setArguments();  
   void unsetArguments();
   void setDirty();
+
+  /*****************************\
+   * Implements IVisualElement * 
+  \*****************************/ 
+  void render();
+  ITexture* getTexture();
+  void prepareVisual();
 };
 
 #endif

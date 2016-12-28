@@ -34,7 +34,7 @@ WallSurface::WallSurface(int x, int y, int z, int length, int height, int topSlo
   cCondition = nullptr;
 }
 
-WallSurface::WallSurface(int x, int y, int z, int length, int height, int topSlope, FaceDirection facing, IWallPattern* wallPattern, Condition* condition) {
+WallSurface::WallSurface(int x, int y, int z, int length, int height, int topSlope, FaceDirection facing, IWallPattern** wallPattern, Condition* condition) {
   cX = x;
   cY = y;
   cZ = z;
@@ -132,12 +132,12 @@ void WallSurface::destroyEdge(IWallEdge* wallEdge) {
 }
 
 std::vector<IVisualElement*> WallSurface::getStaticVisuals() {
-  return cWallPattern->getStaticVisuals(this);
+  return (*cWallPattern)->getStaticVisuals(this);
 }
 
 void WallSurface::render() {
-  if ((cCondition == nullptr || cCondition->isTrue()) && cWallPattern != nullptr) {
-    cWallPattern->render(this);
+  if (cCondition == nullptr || cCondition->isTrue()) {
+    (*cWallPattern)->render(this);
   }
   glEnd();
 }

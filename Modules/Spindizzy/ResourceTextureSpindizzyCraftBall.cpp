@@ -116,6 +116,10 @@ void ResourceTextureSpindizzyCraftBall::saveCache(DOMNodeWriter* cache) {
   // Nothing to do
 }
 
+ITexture* ResourceTextureSpindizzyCraftBall::getTexture() {
+  return this;
+}
+
 void ResourceTextureSpindizzyCraftBall::set() {
   cTexture->set();
 }

@@ -167,7 +167,11 @@ void WallPatternCap::SectionBottom::render() {
 }
 
 ITexture* WallPatternCap::SectionBottom::getTexture() {
-  return cParent->cTextureBottom;
+  return cParent->cTextureBottom->getTexture();
+}
+
+void WallPatternCap::SectionBottom::prepareVisual() {
+  // Nothing to do
 }
 
 WallPatternCap::SectionMiddle::SectionMiddle(WallPatternCap* parent, IWallSurface* surface) {
@@ -187,7 +191,11 @@ void WallPatternCap::SectionMiddle::render() {
 }
 
 ITexture* WallPatternCap::SectionMiddle::getTexture() {
-  return cParent->cTexture;
+  return cParent->cTexture->getTexture();
+}
+
+void WallPatternCap::SectionMiddle::prepareVisual() {
+  // Nothing to do
 }
 
 WallPatternCap::SectionTop::SectionTop(WallPatternCap* parent, IWallSurface* surface) {
@@ -207,5 +215,9 @@ void WallPatternCap::SectionTop::render() {
 }
 
 ITexture* WallPatternCap::SectionTop::getTexture() {
-  return cParent->cTextureTop;
+  return cParent->cTextureTop->getTexture();
+}
+
+void WallPatternCap::SectionTop::prepareVisual() {
+  // Nothing to do
 }

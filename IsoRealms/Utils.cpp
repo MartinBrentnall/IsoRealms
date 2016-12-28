@@ -171,12 +171,16 @@ void Utils::renderStaticVisuals(std::vector<IVisualElement*> visuals) {
   std::map<ITexture*, std::vector<IVisualElement*>*> mSortedElements;
   for (IVisualElement* mVisual : visuals) {
     ITexture* mTexture = mVisual->getTexture();
-    std::vector<IVisualElement*>* mSingleTextureVisuals = mSortedElements[mTexture];
-    if (mSingleTextureVisuals == nullptr) {
-      mSingleTextureVisuals = new std::vector<IVisualElement*>();
-      mSortedElements[mTexture] = mSingleTextureVisuals;
+    if (mTexture != nullptr) {
+      std::vector<IVisualElement*>* mSingleTextureVisuals = mSortedElements[mTexture];
+      if (mSingleTextureVisuals == nullptr) {
+	mSingleTextureVisuals = new std::vector<IVisualElement*>();
+	mSortedElements[mTexture] = mSingleTextureVisuals;
+      }
+      mSingleTextureVisuals->push_back(mVisual);
+    } else {
+      mVisual->prepareVisual();
     }
-    mSingleTextureVisuals->push_back(mVisual);
   }
   
   for (std::pair<ITexture*, std::vector<IVisualElement*>*> mSingleTextureVisuals : mSortedElements) {

@@ -25,6 +25,7 @@ class IVisualElement {
   public:
   virtual void render() = 0;
   virtual ITexture* getTexture() = 0;
+  virtual void prepareVisual() = 0;
 
   virtual ~IVisualElement() {}
 };

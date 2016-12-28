@@ -46,7 +46,6 @@ class BlockTypeProperties {
   IWallPattern* cSouthWallPattern;
   IWallPattern* cNorthWallPattern;
   TextureRotation cSurfaceRotation;
-  WallType cWallType;
 
   void saveTexture(DOMNodeWriter*, const std::string&, ITexture*, IResourceLocator*, bool = false);
   void saveTextureFloor(DOMNodeWriter*, const std::string&, ITexture*, IResourceLocator*, TextureRotation);
@@ -67,10 +66,10 @@ class BlockTypeProperties {
   ITexture** getSurfaceTexture();
   ITexture** getSplitNETexture();
   ITexture** getSplitNWTexture();
-  IWallPattern* getWestWallPattern();
-  IWallPattern* getEastWallPattern();
-  IWallPattern* getSouthWallPattern();
-  IWallPattern* getNorthWallPattern();
+  IWallPattern** getWestWallPattern();
+  IWallPattern** getEastWallPattern();
+  IWallPattern** getSouthWallPattern();
+  IWallPattern** getNorthWallPattern();
   TextureRotation getSurfaceRotation();
   void save(DOMNodeWriter*, IResourceLocator*);
   

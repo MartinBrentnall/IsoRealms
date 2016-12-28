@@ -70,6 +70,7 @@ class TileSplitSurface:public ISpindizzyTileSurface,
   ITexture* getTexture();
   void renderDynamic();
   void render();
+  void prepareVisual();
   void renderOutline();
   void renderSelectionHighlight();
   CollisionVertex* pickSurface(Vertex&, Vertex&);

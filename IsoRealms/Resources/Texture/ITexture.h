@@ -23,6 +23,7 @@
 
 class ITexture:public IResourceManageable<ITexture> {
   public:
+  virtual ITexture* getTexture() = 0;
   virtual void set() = 0;
   virtual void hintInUse(bool) = 0;
   virtual ~ITexture() {}

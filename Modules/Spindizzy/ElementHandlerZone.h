@@ -32,6 +32,8 @@ class ElementHandlerZone:public Element,
   bool cSingleZone;
   ElementSpindizzyZone* cZone;
   ElementCollection<ElementSpindizzyZone> cElements;
+  bool cUpdateStatic;
+  GLuint cDisplayList;
 
   public:
   ElementHandlerZone(IModuleElementHandlerZone*);
