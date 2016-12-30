@@ -37,6 +37,7 @@ class IElementContainer {
   virtual void setDirty(IElement*) = 0;
   virtual void restrictCursor(Vertex&) = 0;
   virtual IUniverse* getUniverse() = 0;
+  virtual void staticChanged() = 0;
 };
 
 #endif

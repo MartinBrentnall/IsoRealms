@@ -59,6 +59,7 @@ class ResourceModelElement:public I3DModelType,
   void setDirty(IElement*);
   void restrictCursor(Vertex&);
   IUniverse* getUniverse();
+  void staticChanged();
   
   virtual ~ResourceModelElement() {}
 };

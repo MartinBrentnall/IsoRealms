@@ -99,6 +99,7 @@ void LayerSpindizzyMap::pushElement(IElement* element) {
 }
 
 void LayerSpindizzyMap::staticChanged() {
+  cElementHandler.staticChanged();
 }
 
 void LayerSpindizzyMap::reset() {
@@ -209,7 +210,7 @@ void LayerSpindizzyMap::renderRuntime() {
   cCamera->render();
   glColor3f(1.0f, 1.0f, 1.0f);
   cElementHandler.renderRuntime();
-  cElementHandler.renderStatic();
+//  cElementHandler.renderStatic(); TODO: This should probably be enabled because the map may have static elements outside of zones.
 }
 
 void LayerSpindizzyMap::renderEditing() {

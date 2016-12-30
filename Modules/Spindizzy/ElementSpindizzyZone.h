@@ -143,6 +143,7 @@ class ElementSpindizzyZone:public Element,
   void addArgumentValue(IArgument*);
   void restrictCursor(Vertex&);
   IUniverse* getUniverse();
+  void staticChanged();
   
   /************************\
    * Implements IBoundary *

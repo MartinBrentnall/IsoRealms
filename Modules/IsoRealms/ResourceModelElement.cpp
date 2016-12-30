@@ -97,6 +97,10 @@ IUniverse* ResourceModelElement::getUniverse() {
   return this;
 }
 
+void ResourceModelElement::staticChanged() {
+  // Nothing to do
+}
+
 void ResourceModelElement::updateIcon(unsigned int milliseconds) {
   cSampleModel->update(milliseconds);
 }

@@ -129,7 +129,7 @@ void ElementSpindizzyZone::renderEditing(BlockArea& area, bool valid, bool previ
   }
   glColor3f(1.0f, 1.0f, 1.0f);
   glEnd();
-//  cZoneType->applyDefaultTheme();
+  cZoneType->applyDefaultTheme();
 }
 
 bool ElementSpindizzyZone::intersects(ElementSpindizzyZone* zone) {
@@ -187,11 +187,13 @@ void ElementSpindizzyZone::setFlag(bool flag) {
 void ElementSpindizzyZone::setTheme(ISpindizzyZoneTheme* zoneTheme) {
   cZoneTheme = zoneTheme;
   cElementHandler.staticChanged();
+  cContainer->staticChanged();
 }
 
 void ElementSpindizzyZone::spindizzyZoneThemeEdited(ISpindizzyZoneTheme* zoneTheme) {
   if (cZoneTheme == zoneTheme) {
     cElementHandler.staticChanged();
+    cContainer->staticChanged();
   }
 }
 
@@ -375,6 +377,10 @@ void ElementSpindizzyZone::restrictCursor(Vertex& cursor) {
 
 IUniverse* ElementSpindizzyZone::getUniverse() {
   return cContainer != nullptr ? cContainer->getUniverse() : nullptr;
+}
+
+void ElementSpindizzyZone::staticChanged() {
+  cContainer->staticChanged();
 }
 
 bool ElementSpindizzyZone::contains(Vertex& location) {
