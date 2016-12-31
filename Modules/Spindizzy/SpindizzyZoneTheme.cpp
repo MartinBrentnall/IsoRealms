@@ -60,11 +60,21 @@ void SpindizzyZoneTheme::save(DOMNodeWriter* node, IResourceLocator* resourceLoc
 }
 
 void SpindizzyZoneTheme::registerElement(SpindizzyZoneThemeTexture* themeTexture, ITexture* texture) {
+  for (std::pair<SpindizzyZoneThemeTexture*, ITexture*> mTexture : cTextures) {
+    if (mTexture.first == texture) { // Selected texture belongs to this theme.  TODO: What if two themes reference each other?
+      return; // TODO: Error message?
+    }
+  }
   cTextures[themeTexture] = texture;
   cThemeSource->themeChanged(this);
 }
 
 void SpindizzyZoneTheme::registerElement(SpindizzyZoneThemeColour* themeColour, IColour* colour) {
+  for (std::pair<SpindizzyZoneThemeColour*, IColour*> mColour : cColours) {
+    if (mColour.first == colour) { // Selected colour belongs to this theme.  TODO: What if two themes reference each other?
+      return; // TODO: Error message?
+    }
+  }
   cColours[themeColour] = colour;
   cThemeSource->themeChanged(this);
 }
