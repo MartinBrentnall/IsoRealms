@@ -20,10 +20,6 @@
 
 const float ElementSpindizzyCraft::CRAFT_ACCELERATION = 0.00003f;
 const float ElementSpindizzyCraft::GRAVITY_STRENGTH = -0.0002f;
-const unsigned int ElementSpindizzyCraft::INIT_REGISTER_BLOCKS = 0;
-const unsigned int ElementSpindizzyCraft::INIT_PROCESS_BLOCKS = 1;
-const unsigned int ElementSpindizzyCraft::INIT_REGISTER_SURFACES = 2;
-const unsigned int ElementSpindizzyCraft::INIT_USE_SURFACES = 3;
 const unsigned int ElementSpindizzyCraft::BOUNCE_CONTROL_TIME = 40;
 
 const float ElementSpindizzyCraft::STEP_REACH_NORMAL = 0.5f;
@@ -32,7 +28,6 @@ const float ElementSpindizzyCraft::STEP_REACH_BOUNCE = 0.8f;
 ElementSpindizzyCraft::ElementSpindizzyCraft(ISpindizzyGERALDType* elementType, IResourceAccessor* resources, DOMNodeWrapper* node) {
   cCraftType = elementType;
   cLocation = new Vertex();
-  cAppeared = false;
   readData(node);
   cStepReach = STEP_REACH_NORMAL;
 }
@@ -45,14 +40,12 @@ ElementSpindizzyCraft::ElementSpindizzyCraft(ISpindizzyGERALDType* elementType, 
   cLocation->y = cStartLocation.y + IsoRealmsConstants::BLOCK_RADIUS;
   cLocation->z = cStartLocation.z;
   cGERALDModel = elementType->createModel(cLocation);
-  cAppeared = false;
   cStepReach = STEP_REACH_NORMAL;
 }
 
 ElementSpindizzyCraft::ElementSpindizzyCraft(ISpindizzyGERALDType* elementType) {
   cCraftType = elementType;
   cLocation = new Vertex();
-  cAppeared = false;
   cStepReach = STEP_REACH_NORMAL;
 }
 
@@ -98,83 +91,14 @@ IElementType* ElementSpindizzyCraft::getElementType() {
 }
 
 bool ElementSpindizzyCraft::initElement(IUniverse* universe, unsigned int pass) {
-  switch (pass) {
-    case INIT_REGISTER_BLOCKS: {
-//       if (cMap != nullptr) {
-//         cZone = (*cMap)->getZone(*cLocation);
-//         mGERALDType->executeZoneEnteredScript(cZone);
-//       }
-//       return false;
-//     }
-// 
-//     case INIT_USE_SURFACES: {
-      cCurrentSurface = cCraftType->getSurfaceAt(*cLocation, cStepReach);
-      cRespawnData = new RespawnData();
-      cRespawnData->cSurface = cCurrentSurface;
-      cRespawnSurfaceStack.push(cRespawnData);
-      cPeakHeight = cMapBottom;
-      return true;
-    }
-
-    default: {
-      return false;
-    }
-  }
+  cRespawning = true;
+  cRespawnAnimation = 1.0f;
+  return true;
 }
-
-// void ElementSpindizzyCraft::checkCurrentZoneEvents(Vertex& start, Vertex& end) {
-//   std::vector<ZoneEvent*> mZoneEvents = cZone->getZoneEvents(start, end);
-//   for (unsigned int i = 0; i < mZoneEvents.size(); i++) {
-//     switch (mZoneEvents[i]->getType()) {
-//       case ZoneEvent::EXITED: {
-//         cCraftType->executeZoneExitedScript(cZone);
-//         cZone = nullptr;
-//         break;
-//       }
-// 
-//       default: {
-//         // TODO: Throw wobbly
-//         std::cout << "Zone entered event should never happen for the current zone" << std::endl;
-//         exit(1);
-//       }
-//     }
-//   }
-// }
 
 Vertex* ElementSpindizzyCraft::getLocation() {
   return cLocation;
 }
-
-// void ElementSpindizzyCraft::checkMapZoneEvents(IZone* previousZone, Vertex& start, Vertex& end) {
-//   std::vector<ZoneEvent*> mZoneEvents = (*cMap)->getZoneEvents(start, end);
-//   for (unsigned int i = 0; i < mZoneEvents.size(); i++) {
-//     if (mZoneEvents[i]->getZone() != previousZone) {
-//       switch (mZoneEvents[i]->getType()) {
-//         case ZoneEvent::ENTERED: {
-//           if (cZone != nullptr) {
-//             // TODO: Throw wobbly
-//             std::cout << "Multiple zone entered event should occur in a row" << std::endl;
-//             exit(1);
-//           }
-//           cZone = mZoneEvents[i]->getZone();
-//           cCraftType->executeZoneEnteredScript(cZone);
-//           break;
-//         }
-// 
-//         case ZoneEvent::EXITED: {
-//           if (cZone == nullptr) {
-//             // TODO: Throw wobbly
-//             std::cout << "On event " << i << ": Zone exited event should never happen when not inside a zone" << std::endl;
-//             exit(1);
-//           }
-//           cCraftType->executeZoneExitedScript(cZone);
-//           cZone = nullptr;
-//           break;
-//         }
-//       }
-//     }
-//   }
-// }
 
 bool ElementSpindizzyCraft::isMovingNorth() {
   ICamera* mCamera = cCraftType->getCamera();
@@ -514,6 +438,9 @@ bool ElementSpindizzyCraft::processEvent(ICollisionData& event) {
 }
 
 ElementSpindizzyCraft::RespawnData* ElementSpindizzyCraft::getRespawnData() {
+  if (cRespawnSurfaceStack.empty()) {
+    return nullptr;
+  }
   RespawnData* mRespawnData = cRespawnSurfaceStack.top();
   while (!mRespawnData->cSurface->isRespawnPossibleNow()) {
     cRespawnSurfaceStack.pop();
@@ -531,17 +458,27 @@ void ElementSpindizzyCraft::destroy() {
 
 void ElementSpindizzyCraft::respawn() {
   RespawnData* mRespawnData = getRespawnData();
-  cLocation->x = mRespawnData->cX;
-  cLocation->y = mRespawnData->cY;
-  cCurrentSurface = mRespawnData->cSurface;
-  cLocation->z = cCurrentSurface->getHeightAt(cLocation->x, cLocation->y);
-  cCraftType->executeRespawnScript();
+  if (mRespawnData == nullptr) { // Beginning of the game.
+    cLocation->x = cStartLocation.x + IsoRealmsConstants::BLOCK_RADIUS;
+    cLocation->y = cStartLocation.y + IsoRealmsConstants::BLOCK_RADIUS;
+    cLocation->z = cStartLocation.z;
+    cCurrentSurface = cCraftType->getSurfaceAt(*cLocation, cStepReach);
+    cRespawnData = new RespawnData();
+    cRespawnData->cSurface = cCurrentSurface;
+    cRespawnSurfaceStack.push(cRespawnData);
+  } else {
+    cLocation->x = mRespawnData->cX;
+    cLocation->y = mRespawnData->cY;
+    cCurrentSurface = mRespawnData->cSurface;
+    cLocation->z = cCurrentSurface->getHeightAt(cLocation->x, cLocation->y);
+    cCraftType->executeRespawnScript();
+  }
   cCraftType->notifyAppearance(this, *cLocation);
   cMomentum.x = 0.0f;
   cMomentum.y = 0.0f;
   cMomentum.z = 0.0f;
-  cRespawning = false;
   cPeakHeight = cMapBottom;
+  cRespawning = false;
 }
 
 void ElementSpindizzyCraft::checkFall() {
@@ -641,10 +578,6 @@ void ElementSpindizzyCraft::updateDead(unsigned int ticks) {
 }
 
 void ElementSpindizzyCraft::updateRuntime(unsigned int ticks) {
-  if (!cAppeared) {
-    cCraftType->notifyAppearance(this, *cLocation);
-    cAppeared = true;
-  }
   if (cRespawning) {
     updateDead(ticks);
   } else {
@@ -699,7 +632,6 @@ void ElementSpindizzyCraft::reset() {
   cMomentum.y = 0.0;
   cMomentum.z = 0.0;
   cRespawning = false;
-  cAppeared = false;
   cStepReach = STEP_REACH_NORMAL;
   while (!cRespawnSurfaceStack.empty()) {
     delete cRespawnSurfaceStack.top();

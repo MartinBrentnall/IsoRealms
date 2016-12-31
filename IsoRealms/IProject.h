@@ -59,8 +59,6 @@ class IProject {
   
   virtual void staticChanged() = 0;
   
-  virtual void initialised() = 0;
-  
   virtual std::string getReturnValue(const std::string&) = 0;
 
   virtual ~IProject() {}

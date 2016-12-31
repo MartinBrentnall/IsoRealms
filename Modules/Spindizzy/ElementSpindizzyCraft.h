@@ -52,10 +52,6 @@ class ElementSpindizzyCraft:public Element,
   static const float CRAFT_ACCELERATION;
   static const float GRAVITY_STRENGTH;
   // TODO: Need to define an "initialisation scheme" somewhere
-  static const unsigned int INIT_REGISTER_BLOCKS;
-  static const unsigned int INIT_PROCESS_BLOCKS;
-  static const unsigned int INIT_REGISTER_SURFACES;
-  static const unsigned int INIT_USE_SURFACES;
   static const unsigned int BOUNCE_CONTROL_TIME;
   
   static const float STEP_REACH_NORMAL;

@@ -131,6 +131,7 @@ void WallPatternCap::render(IWallSurface* surface) {
   renderMiddle(mX, mY, mZ, mLength, mHeight, mTopSlope, mFaceDirection);
   cTextureTop->set();
   renderTop(   mX, mY, mZ, mLength, mHeight, mTopSlope, mFaceDirection);
+  glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 bool WallPatternCap::contains(ITexture* texture) {

@@ -38,7 +38,9 @@ void WallPatternTile::render(IWallSurface* surface) {
   int mHeight                                = surface->getHeight();
   int mTopSlope                              = surface->getTopSlope();
   IWallSurface::FaceDirection mFaceDirection = surface->getFaceDirection();
+  cTexture->set();
   render(mX, mY, mZ, mLength, mHeight, mTopSlope, mFaceDirection);
+  glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void WallPatternTile::render(int x, int y, int z, int length, int height, int topSlope, IWallSurface::FaceDirection facing) {

@@ -62,7 +62,6 @@ class Project:public IProject {
   bool cCanSave;
   std::string cFileName;
   std::string cProjectDataPath;
-  bool cFirstInitialised;
   std::map<std::string, ReturnValue*>   cReturnValues;
   std::map<std::string, ReturnProject*> cReturnProjects;
   
@@ -83,7 +82,6 @@ class Project:public IProject {
   void renderRuntime();
   void updateRuntime(unsigned int);
   void updateEditing(unsigned int);
-  void initialised();
   ILayer* getDefaultLayer();
   std::vector<ILayer*> getAllLayers();
   std::string getName(ILayer*);

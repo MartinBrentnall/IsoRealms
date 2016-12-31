@@ -83,24 +83,23 @@ class ElementSpindizzyBlock:public ICollidableSurfaceElement,
     void setValue(unsigned int);
     unsigned int getValue();
   };
-  
+
   enum SplitType {
     NORTH_SOUTH,
-    EAST_WEST    
+    EAST_WEST
   };
 
   ISpindizzyBlockType* cBlockType;
   ISpindizzyElementManager* cContainer;
-  
+
   // TODO: Need to define an "initialisation scheme" somewhere
-  static const unsigned int INIT_PROCESS_BLOCKS;
-  
+
   std::vector<ISpindizzyTileSurface*> cStaticTileSurfaces;
   std::vector<ISpindizzyTileSurface*> cDynamicTileSurfaces;
 
   std::vector<ISpindizzyWallSurface*> cStaticWallSurfaces;
   std::vector<ISpindizzyWallSurface*> cDynamicWallSurfaces;
-  
+
   BlockLocation cStartLocation;
   BlockLocation cEndLocation;
   int cNorthWestHeight;

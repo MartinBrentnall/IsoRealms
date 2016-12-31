@@ -18,8 +18,6 @@
  */
 #include "ElementSpindizzyBlock.h"
 
-const unsigned int ElementSpindizzyBlock::INIT_PROCESS_BLOCKS = 0;
-
 ElementSpindizzyBlock::ElementSpindizzyBlock(ISpindizzyBlockType* elementType, BlockLocation* startLocation, BlockLocation* endLocation, SpindizzyBlockProperties* blockProperties, bool addition, ISpindizzyElementManager* container, bool invisible, bool ghost, bool forceDynamic) {
   cStartLocation = BlockLocation(endLocation->x > startLocation->x              ? startLocation->x : endLocation->x,
                                  endLocation->y > startLocation->y              ? startLocation->y : endLocation->y,
@@ -451,7 +449,7 @@ void ElementSpindizzyBlock::renderEditing() {
   }
   renderRuntime();
 }
-  
+
 bool ElementSpindizzyBlock::renderSelectionHighlight() {
   if (cStartLocation.z > cEndLocation.z) {
     float mSouth  = getSouth()  - 0.001f;
@@ -494,13 +492,11 @@ void ElementSpindizzyBlock::renderPreviewWalls(IWallSurface::FaceDirection facin
   int mStart = mFacesPole ? cStartLocation.y : cStartLocation.x;
   int mEnd   = mFacesPole ? cEndLocation.y   : cEndLocation.x;
   int mEdge  = mFacesPos  ? mEnd : mStart;
-//   for (int i = mStart; i <= mEnd; i++) {
-    std::vector<WallSurface*> mWalls = getPreviewWallSurfaces(mEdge, facing);
-    for (WallSurface* mWall : mWalls) {
-//      mWall->render(); TODO
-      delete mWall;
-    }
-//   }
+  std::vector<WallSurface*> mWalls = getPreviewWallSurfaces(mEdge, facing);
+  for (WallSurface* mWall : mWalls) {
+    mWall->render();
+    delete mWall;
+  }
 }
 
 void ElementSpindizzyBlock::renderPreview(Vertex& start, Vertex& end) {
@@ -519,7 +515,7 @@ void ElementSpindizzyBlock::renderPreview(Vertex& start, Vertex& end) {
   renderPreviewWalls(IWallSurface::SOUTH);
   renderPreviewWalls(IWallSurface::EAST);
   renderPreviewWalls(IWallSurface::NORTH);
-  mTopSurface->render();
+  mTopSurface->renderDynamic();
   if (!mAddition) {
     int mTemp = cEndLocation.z;
     cEndLocation.z = cStartLocation.z;
@@ -663,52 +659,45 @@ bool ElementSpindizzyBlock::initElement(IUniverse* universe, unsigned int pass) 
   if (mSpindizzyBlockSet->isUsingCache()) {
     return true;
   }
-  
-  switch (pass) {
-    case INIT_PROCESS_BLOCKS: {
-      
-      // Physical surfaces
-      if (!(cFlags & FLAG_GHOST)) {
-        std::vector<ITileSurfaceTemplate*> mTopTileSurfaces = calculateTileSurfaces(ITileSurface::UP, false);
-        for (unsigned int i = 0; i < mTopTileSurfaces.size(); i++) {
-          int mNorth = mTopTileSurfaces[i]->getNorth();
-          int mEast = mTopTileSurfaces[i]->getEast();
-          int mSouth = mTopTileSurfaces[i]->getSouth();
-          int mWest = mTopTileSurfaces[i]->getWest();
-          Condition* mCondition = mTopTileSurfaces[i]->getCondition();
-          ISpindizzyTileSurface* mTileSurface = createSubSurface(ITileSurface::UP, mNorth, mEast, mSouth, mWest, mCondition);
-          mSpindizzyBlockSet->registerRollableSurface(this, mTileSurface, universe);
-          mSpindizzyBlockSet->destroyTileTemplate(this, mTopTileSurfaces[i], false);
-        }
-      }
 
-      // Visual surfaces
-      if (!(cFlags & FLAG_INVISIBLE)) {
-        std::vector<ITileSurfaceTemplate*> mTopTileSurfaces = calculateTileSurfaces(ITileSurface::UP, true);
-        for (unsigned int i = 0; i < mTopTileSurfaces.size(); i++) {
-          Condition* mCondition = mTopTileSurfaces[i]->getCondition();
-          int mNorth = mTopTileSurfaces[i]->getNorth();
-          int mEast = mTopTileSurfaces[i]->getEast();
-          int mSouth = mTopTileSurfaces[i]->getSouth();
-          int mWest = mTopTileSurfaces[i]->getWest();
-          ISpindizzyTileSurface* mTileSurface = createSubSurface(ITileSurface::UP, mNorth, mEast, mSouth, mWest, mCondition);
-          if (mCondition != nullptr || cFlags & FLAG_FORCE_DYNAMIC) {
-            cDynamicTileSurfaces.push_back(mTileSurface);
-          } else {
-            cStaticTileSurfaces.push_back(mTileSurface);
-          }
-          mSpindizzyBlockSet->destroyTileTemplate(this, mTopTileSurfaces[i], true);
-        }
-      }
-
-      generateWallSurfaces(universe, IWallSurface::SOUTH);
-      generateWallSurfaces(universe, IWallSurface::NORTH);
-      generateWallSurfaces(universe, IWallSurface::EAST);
-      generateWallSurfaces(universe, IWallSurface::WEST);
-      return true;
+  // Physical surfaces
+  if (!(cFlags & FLAG_GHOST)) {
+    std::vector<ITileSurfaceTemplate*> mTopTileSurfaces = calculateTileSurfaces(ITileSurface::UP, false);
+    for (unsigned int i = 0; i < mTopTileSurfaces.size(); i++) {
+      int mNorth = mTopTileSurfaces[i]->getNorth();
+      int mEast = mTopTileSurfaces[i]->getEast();
+      int mSouth = mTopTileSurfaces[i]->getSouth();
+      int mWest = mTopTileSurfaces[i]->getWest();
+      Condition* mCondition = mTopTileSurfaces[i]->getCondition();
+      ISpindizzyTileSurface* mTileSurface = createSubSurface(ITileSurface::UP, mNorth, mEast, mSouth, mWest, mCondition);
+      mSpindizzyBlockSet->registerRollableSurface(this, mTileSurface, universe);
+      mSpindizzyBlockSet->destroyTileTemplate(this, mTopTileSurfaces[i], false);
     }
   }
-  // TODO: Throw exception of some kind
+
+  // Visual surfaces
+  if (!(cFlags & FLAG_INVISIBLE)) {
+    std::vector<ITileSurfaceTemplate*> mTopTileSurfaces = calculateTileSurfaces(ITileSurface::UP, true);
+    for (unsigned int i = 0; i < mTopTileSurfaces.size(); i++) {
+      Condition* mCondition = mTopTileSurfaces[i]->getCondition();
+      int mNorth = mTopTileSurfaces[i]->getNorth();
+      int mEast = mTopTileSurfaces[i]->getEast();
+      int mSouth = mTopTileSurfaces[i]->getSouth();
+      int mWest = mTopTileSurfaces[i]->getWest();
+      ISpindizzyTileSurface* mTileSurface = createSubSurface(ITileSurface::UP, mNorth, mEast, mSouth, mWest, mCondition);
+      if (mCondition != nullptr || cFlags & FLAG_FORCE_DYNAMIC) {
+        cDynamicTileSurfaces.push_back(mTileSurface);
+      } else {
+        cStaticTileSurfaces.push_back(mTileSurface);
+      }
+      mSpindizzyBlockSet->destroyTileTemplate(this, mTopTileSurfaces[i], true);
+    }
+  }
+
+  generateWallSurfaces(universe, IWallSurface::SOUTH);
+  generateWallSurfaces(universe, IWallSurface::NORTH);
+  generateWallSurfaces(universe, IWallSurface::EAST);
+  generateWallSurfaces(universe, IWallSurface::WEST);
   return true;
 }
 

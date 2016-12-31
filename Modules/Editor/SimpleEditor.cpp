@@ -489,7 +489,6 @@ void SimpleEditor::updateRuntime(unsigned int milliseconds) {
     } else {
       glBindTexture(GL_TEXTURE_2D, 0);
     }
-    cProject->initialised();
   }
 }
 

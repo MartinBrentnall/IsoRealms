@@ -87,6 +87,7 @@ ITexture* TileSurface::getTexture() {
 void TileSurface::renderDynamic() {
   (*cTexture)->set();
   render();
+  glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void TileSurface::render() {

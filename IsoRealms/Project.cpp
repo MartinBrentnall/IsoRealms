@@ -22,7 +22,6 @@ Project::Project() {
   cResources.setEditing(true, this);
   cCompleted = false;
   cCanSave = false;
-  cFirstInitialised = false;
 }
 
 Project::Project(const std::string& file, bool user, IEditingContext* editingContext, bool asTemplate, IProjectOptions* options) {
@@ -41,10 +40,10 @@ Project::Project(const std::string& file, bool user, IEditingContext* editingCon
     std::string mValue = mNode->getNodeName();
     if (mValue == "Project") {
       loadProject(mNode, mCache, editingContext, asTemplate, options);
-      
+
       String* mFilePath = new String(file);
       String* mDataPath = new String(cProjectDataPath);
-      
+
       std::vector<std::string> mRootPath;
       cResources.add(mFilePath, mRootPath, "ProjectFileName", nullptr, nullptr);
       cResources.add(mDataPath, mRootPath, "ProjectDataPath", nullptr, nullptr);
@@ -53,18 +52,20 @@ Project::Project(const std::string& file, bool user, IEditingContext* editingCon
   }
 
   cDynamicElements = cResources.getDynamicElements();
+
+  initRuntime();
+  cModuleRegistry.projectInitialised();
+
   if (cInitScript != nullptr) {
     cInitScript->execute();
   }
   cCompleted = false;
-  cFirstInitialised = false;
-  
-  std::cout << "Project Ready." << std::endl;
-  
-/*  
+
+  // Save the cache if there isn't one already
   if (mCache == nullptr) {
     updateCache();
-  }*/
+  }
+  std::cout << "Project Ready." << std::endl;
 }
 
 void Project::updateCache() {
@@ -165,23 +166,11 @@ void Project::updateRuntime(unsigned int ticks) {
   for (IDynamicElement* mDynamicElement : cDynamicElements) {
     mDynamicElement->updateRuntime(ticks);
   }
-  
-  if (!cFirstInitialised) {
-    cModuleRegistry.projectInitialised();
-    cFirstInitialised = true;
-  }
 }
 
 void Project::updateEditing(unsigned int milliseconds) {
   for (IDynamicElement* mDynamicElement : cDynamicElements) {
     mDynamicElement->updateEditing(milliseconds);
-  }
-}
-
-void Project::initialised() {
-  if (!cFirstInitialised) {
-    cModuleRegistry.projectInitialised();
-    cFirstInitialised = true;
   }
 }
 
@@ -198,7 +187,6 @@ std::string Project::getName(ILayer* layer) {
 }
 
 void Project::finish() {
-  updateCache(); // TODO: Probably should do this when the project loads, not when finished.  We do it here now because we need to initialise the surfaces after loading before doing this
   cCompleted = true;
   for (std::pair<std::string, ReturnValue*> mReturnValue : cReturnValues) {
     if (mReturnValue.second->cType == "String") {
@@ -268,7 +256,7 @@ void Project::save() {
       DOMNodeWriter* mLayerNode = mProjectNode->addBranch("Layer");
       mLayer->save(mLayerNode, &cResources);
     }
-    
+
     // Save return values and projects
     for (std::pair<std::string, ReturnValue*> mReturnValue : cReturnValues) {
       DOMNodeWriter* mNodeReturnValue = mProjectNode->addBranch("ReturnValue");
@@ -283,7 +271,7 @@ void Project::save() {
       mNodeReturnValue->addAttribute("value", mReturnProject.second->cReference);
     }
     mProjectNode->save(cFileName);
-    
+
     updateCache();
   }
 }

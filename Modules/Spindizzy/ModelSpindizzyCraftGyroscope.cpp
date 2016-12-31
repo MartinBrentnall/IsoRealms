@@ -65,4 +65,5 @@ void ModelSpindizzyCraftGyroscope::render() {
   glDisable(GL_ALPHA_TEST);
   
   glEnable(GL_CULL_FACE);  
+  glBindTexture(GL_TEXTURE_2D, 0);
 }
