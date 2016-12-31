@@ -68,7 +68,8 @@ SpindizzyModule::SpindizzyModule(IResourceTypeRegistry* resourceManager):cResour
                                                                          cResourceTypeElementSpindizzyLift(this),
                                                                          cResourceTypeElementSpindizzyWater(this),
                                                                          cResourceTypeElementSpindizzyZone(this),
-                                                                         cResourceTypeTextureSpindizzyBlocksC64(this) {
+                                                                         cResourceTypeTextureSpindizzyBlocksC64(this),
+                                                                         cSpindizzyCursorAligner(1.0, 1.0, 0.5) {
   if (resourceManager != nullptr) {
     resourceManager->addResourceType(&cResourceTypeCameraScriptable,             NAME_RESOURCE_TYPE_CAMERA_SCRIPTABLE);
     resourceManager->addResourceType(&cResourceTypeElementSpindizzyBlock,        NAME_RESOURCE_TYPE_ELEMENT_SPINDIZZY_BLOCK);
@@ -767,6 +768,10 @@ void SpindizzyModule::removeElementHandlerSpindizzyDynamic(IElementContainer* co
     delete mHandler;
     cDynamicElementHandlers.erase(container);
   }
+}
+
+IEditorCursorAligner* SpindizzyModule::getCursorAligner() {
+  return &cSpindizzyCursorAligner;
 }
 
 ElementHandlerZone* SpindizzyModule::getZoneElementHandler(IElementContainer* container) {

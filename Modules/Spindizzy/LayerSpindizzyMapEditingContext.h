@@ -40,6 +40,10 @@ class LayerSpindizzyMapEditingContext : public ILayerEditingContext {
   static const float STOP_THRESHOLD;
   static const float SELECTION_BOUNDARY_RENDERING_OFFSET;
 
+  int cXDirection;
+  int cYDirection;
+  int cZDirection;
+
   bool cActiveLeft;
   bool cActiveRight;
   bool cActiveUp;

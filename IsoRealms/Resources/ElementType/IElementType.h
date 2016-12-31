@@ -31,6 +31,7 @@ class IElement;
 #include <IsoRealms/Resources/IResourceManageable.h>
 #include <IsoRealms/Resources/Vertex/Vertex.h>
 
+#include "IEditorCursorAligner.h"
 #include "IElement.h"
 #include "IElementContainer.h"
 
@@ -93,9 +94,9 @@ class IElementType:public IResourceManageable<IElementType> {
    * @param IElement*  The element to destroy.
    */
   virtual void destroy(IElement*) = 0;
-  
+
   virtual void removeElement(IElement*) = 0;
-  
+
   /**
    * Called when the editor cursor has stopped.  This is used if the element
    * wants to adjust the cursor position (e.g. to align to a grid).
@@ -103,8 +104,8 @@ class IElementType:public IResourceManageable<IElementType> {
    * @param Vertex*  The cursor location.
    * @return         Adjusted cursor location.
    */
-  virtual Vertex* editorCursorStopped(Vertex*) = 0;
-  
+  virtual IEditorCursorAligner* getCursorAligner() = 0;
+
   virtual ~IElementType() {}
 };
 

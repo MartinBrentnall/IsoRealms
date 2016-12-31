@@ -29,6 +29,8 @@ class ISpindizzyGERALDSet {
   virtual bool isLocked() = 0; 
   virtual ICollisionData* getNextEvent(Vertex&, Vertex&, IRollableSurface*, float) = 0;
   virtual IRollableSurface* getSurfaceAt(Vertex&, float) = 0;
+  
+  virtual IEditorCursorAligner* getCursorAligner() = 0;  
 };
 
 #endif

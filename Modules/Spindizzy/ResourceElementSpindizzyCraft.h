@@ -101,7 +101,7 @@ class ResourceElementSpindizzyCraft:public ISpindizzyGERALDType,
   void renderIcon();
   void destroy(IElement*);
   void removeElement(IElement*);
-  Vertex* editorCursorStopped(Vertex*);
+  IEditorCursorAligner* getCursorAligner();
   
   /*********************************\
    * Implements IArgumentGenerator *

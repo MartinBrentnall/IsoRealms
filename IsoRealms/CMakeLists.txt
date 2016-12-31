@@ -112,6 +112,7 @@ add_library(IsoRealms SHARED
   Resources/Colour/ColourRegistry.cpp
   Resources/ElementType/ElementBounds.cpp
   Resources/ElementType/ElementHandler.cpp
+  Resources/ElementType/GridAligner.cpp
   Resources/ElementType/PickedElement.cpp
   Resources/Float/Float.cpp
   Resources/Font/DummyFont.cpp

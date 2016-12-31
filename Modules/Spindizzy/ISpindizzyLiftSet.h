@@ -38,6 +38,8 @@ class ISpindizzyLiftSet {
   virtual bool isEditing() = 0;
   virtual ElementHandlerSpindizzyDynamic* getDynamicElementHandler(IElementContainer*) = 0;
   virtual void removeElementHandlerSpindizzyDynamic(IElementContainer*) = 0;
+  
+  virtual IEditorCursorAligner* getCursorAligner() = 0;  
 };
 
 #endif

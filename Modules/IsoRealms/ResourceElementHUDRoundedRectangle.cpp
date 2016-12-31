@@ -85,7 +85,7 @@ void ResourceElementHUDRoundedRectangle::removeElement(IElement* element) {
   // TODO
 }
 
-Vertex* ResourceElementHUDRoundedRectangle::editorCursorStopped(Vertex* location) {
+IEditorCursorAligner* ResourceElementHUDRoundedRectangle::getCursorAligner() {
   return nullptr;
 }
 

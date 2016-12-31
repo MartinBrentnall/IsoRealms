@@ -41,6 +41,8 @@ class ISpindizzyZoneModule {
   virtual void applyDefaultTheme() = 0;
   virtual void setTheme(ISpindizzyZoneTheme*) = 0;
   virtual std::string getThemeName(ISpindizzyZoneTheme*) = 0;
+
+  virtual IEditorCursorAligner* getCursorAligner() = 0;  
 };
 
 #endif

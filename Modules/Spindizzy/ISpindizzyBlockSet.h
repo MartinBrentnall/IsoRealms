@@ -68,7 +68,9 @@ class ISpindizzyBlockSet:public IConditionElementIcons {
   virtual ElementHandlerSpindizzyBlock* getElementHandlerSpindizzyBlock(IElementContainer*) = 0;
   virtual void removeElementHandlerSpindizzyBlock(IElementContainer*) = 0;
   virtual void setArgumentValue(ElementHandlerSpindizzyBlock*) = 0;
-  virtual bool isUsingCache() = 0;  
+  virtual bool isUsingCache() = 0;
+
+  virtual IEditorCursorAligner* getCursorAligner() = 0;
 };
 
 #endif

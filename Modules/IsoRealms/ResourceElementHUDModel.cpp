@@ -62,7 +62,7 @@ void ResourceElementHUDModel::removeElement(IElement* element) {
   // TODO
 }
 
-Vertex* ResourceElementHUDModel::editorCursorStopped(Vertex* location) {
+IEditorCursorAligner* ResourceElementHUDModel::getCursorAligner() {
   return nullptr;
 }
 

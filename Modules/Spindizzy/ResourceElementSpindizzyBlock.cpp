@@ -19,7 +19,7 @@
 #include "ResourceElementSpindizzyBlock.h"
 
 ResourceElementSpindizzyBlock::ResourceElementSpindizzyBlock(ISpindizzyBlockSet* elementSet, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
-  cModuleInterface = elementSet;
+  cModuleInterface = elementSet; 
   cConfigurationComponent = nullptr;
   cBlockProperties = new SpindizzyBlockProperties();
   cSampleBlock = nullptr;
@@ -35,12 +35,8 @@ Icon<IElementType>* ResourceElementSpindizzyBlock::getResourceIcon(IResourceBrow
   return nullptr;
 }
 
-Vertex* ResourceElementSpindizzyBlock::editorCursorStopped(Vertex* location) {
-  Vertex* mGridLocation = new Vertex();
-  mGridLocation->x = std::round(location->x);
-  mGridLocation->y = std::round(location->y);
-  mGridLocation->z = std::round(location->z * 2.0) * 0.5;
-  return mGridLocation;
+IEditorCursorAligner* ResourceElementSpindizzyBlock::getCursorAligner() {
+  return cModuleInterface->getCursorAligner();
 }
 
 IElement* ResourceElementSpindizzyBlock::getElement() {

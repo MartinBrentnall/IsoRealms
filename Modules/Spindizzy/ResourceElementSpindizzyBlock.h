@@ -104,7 +104,7 @@ class ResourceElementSpindizzyBlock:public ISpindizzyBlockType,
   void removeElement(IElement*);
   void initialiseResource(DOMNodeWrapper*, DOMNodeWrapper*, IResourceAccessor*);
   Icon<IElementType>* getResourceIcon(IResourceBrowser<IElementType>*);
-  Vertex* editorCursorStopped(Vertex*);
+  IEditorCursorAligner* getCursorAligner();
 
   /**************************************\
    * Implements IComponentCloseListener *

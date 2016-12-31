@@ -69,7 +69,7 @@ class ResourceElementSpindizzyEnemy:public IElementType {
   void renderIcon();
   void destroy(IElement*);
   void removeElement(IElement*);
-  Vertex* editorCursorStopped(Vertex*);
+  IEditorCursorAligner* getCursorAligner();
   
   virtual ~ResourceElementSpindizzyEnemy();
 };

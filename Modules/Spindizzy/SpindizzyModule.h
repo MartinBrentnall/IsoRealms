@@ -1,4 +1,4 @@
-  /*
+/*
  * Copyright 2015 Martin Brentnall
  *
  * This file is part of Iso-Realms.
@@ -21,6 +21,7 @@
 
 #include <IsoRealms/IModule.h>
 #include <IsoRealms/LuaSupport/ArgumentValueCustomType.h>
+#include <IsoRealms/Resources/ElementType/GridAligner.h>
 #include <IsoRealms/Resources/ResourceType.h>
 #include <IsoRealms/Resources/ResourceTypeSet.h>
 #include <IsoRealms/Resources/Integer/Integer.h>
@@ -173,7 +174,8 @@ class SpindizzyModule:public IModule,
   ArgumentValueCustomType<ElementSpindizzyZone> cArgumentValueZone;
   ISpindizzyZoneTheme* cSelectedZoneTheme;
   std::vector<ISpindizzyZoneThemeListener*> cZoneThemeSelectionListeners;
-  
+  GridAligner cSpindizzyCursorAligner;
+
   // Icon animation stuff
   int cPause;
   int cAnimation;
@@ -347,6 +349,7 @@ class SpindizzyModule:public IModule,
   bool isLocked();
   ElementHandlerSpindizzyDynamic* getDynamicElementHandler(IElementContainer*);
   void removeElementHandlerSpindizzyDynamic(IElementContainer*);
+  IEditorCursorAligner* getCursorAligner();
 };
 
 #endif

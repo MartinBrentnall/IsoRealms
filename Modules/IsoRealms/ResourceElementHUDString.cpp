@@ -58,7 +58,7 @@ void ResourceElementHUDString::removeElement(IElement* element) {
   // TODO
 }
 
-Vertex* ResourceElementHUDString::editorCursorStopped(Vertex* location) {
+IEditorCursorAligner* ResourceElementHUDString::getCursorAligner() {
   return nullptr;
 }
 

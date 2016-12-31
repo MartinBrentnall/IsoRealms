@@ -223,12 +223,8 @@ void ResourceElementSpindizzyCraft::removeElement(IElement* element) {
   mContainer->removeElement(mCraft);
 }
 
-Vertex* ResourceElementSpindizzyCraft::editorCursorStopped(Vertex* location) {
-  Vertex* mGridLocation = new Vertex();
-  mGridLocation->x = std::round(location->x * 2.0) * 0.5;
-  mGridLocation->y = std::round(location->y * 2.0) * 0.5;
-  mGridLocation->z = std::round(location->z * 2.0) * 0.5;
-  return mGridLocation;
+IEditorCursorAligner* ResourceElementSpindizzyCraft::getCursorAligner() {
+  return cModuleInterface->getCursorAligner();
 }
 
 std::string ResourceElementSpindizzyCraft::getPath(IArgumentValue* value) {

@@ -65,7 +65,7 @@ class ResourceElementHUDString:public ResourceElementHUDAbstract,
   void updateIcon(unsigned int);
   void destroy(IElement*);
   void removeElement(IElement*);
-  Vertex* editorCursorStopped(Vertex*);
+  IEditorCursorAligner* getCursorAligner();
   bool inputEdit(SDL_Event&, ILayerEditingContext*);
   
   /************************************\

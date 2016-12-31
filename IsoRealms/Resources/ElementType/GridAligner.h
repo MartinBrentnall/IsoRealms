@@ -1,5 +1,5 @@
 /*
- * Copyright 2009,2010 Martin Brentnall
+ * Copyright 2016 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,23 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_SPINDIZZY_ENEMY_SET_H
-#define I_SPINDIZZY_ENEMY_SET_H
+#ifndef GRID_ALIGNER_H
+#define GRID_ALIGNER_H
 
-#include <IsoRealms/Resources/ElementType/IElementContainer.h>
+#include <cmath>
 
-#include "ElementHandlerSpindizzyDynamic.h"
+#include "IEditorCursorAligner.h"
 
-class ElementSpindizzyEnemy;
+class GridAligner:public IEditorCursorAligner {
+  private:
+  double cAlignX;
+  double cAlignY;
+  double cAlignZ;
 
-class ISpindizzyEnemySet {
+  double alignTo(double, double, int); // TODO: Should be in Utils?
+  
   public:
-  virtual bool isLocked() = 0;
-  virtual void registerElement(IElementContainer*, ElementSpindizzyEnemy*) = 0;
-  virtual ElementHandlerSpindizzyDynamic* getDynamicElementHandler(IElementContainer*) = 0;
-  virtual void removeElementHandlerSpindizzyDynamic(IElementContainer*) = 0;
+  GridAligner(double, double, double);
 
-  virtual IEditorCursorAligner* getCursorAligner() = 0;  
+  /***********************************\
+   * Implements IEditorCursorAligner *
+  \***********************************/
+  double alignX(double, int);
+  double alignY(double, int);
+  double alignZ(double, int);
 };
 
 #endif

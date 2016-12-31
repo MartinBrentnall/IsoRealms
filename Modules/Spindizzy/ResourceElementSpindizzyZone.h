@@ -108,7 +108,7 @@ class ResourceElementSpindizzyZone:public ISpindizzyZoneThemeListener,
   void setDirty(IElement*);
   void destroy(IElement*);
   void removeElement(IElement*);
-  Vertex* editorCursorStopped(Vertex*);
+  IEditorCursorAligner* getCursorAligner();
 
   /***************************************\
    * Implements IArgumentValueCollection *

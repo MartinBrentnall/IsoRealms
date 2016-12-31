@@ -152,12 +152,8 @@ void ResourceElementSpindizzyEnemy::removeElement(IElement* element) {
   }
 }
 
-Vertex* ResourceElementSpindizzyEnemy::editorCursorStopped(Vertex* location) {
-  Vertex* mGridLocation = new Vertex();
-  mGridLocation->x = std::round(location->x);
-  mGridLocation->y = std::round(location->y);
-  mGridLocation->z = std::round(location->z * 2.0) * 0.5;
-  return mGridLocation;
+IEditorCursorAligner* ResourceElementSpindizzyEnemy::getCursorAligner() {
+  return cModuleInterface->getCursorAligner();
 }
 
 ResourceElementSpindizzyEnemy::~ResourceElementSpindizzyEnemy() {

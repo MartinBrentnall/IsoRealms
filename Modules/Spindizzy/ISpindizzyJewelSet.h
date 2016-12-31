@@ -31,6 +31,8 @@ class ISpindizzyJewelSet {
   virtual ElementHandlerItem* getItemElementHandler(IElementContainer*) = 0;
   virtual void removeElementHandlerItem(IElementContainer*) = 0;
   virtual void setArgumentValue(ElementHandlerItem*) = 0;
+  
+  virtual IEditorCursorAligner* getCursorAligner() = 0;  
 };
 
 #endif

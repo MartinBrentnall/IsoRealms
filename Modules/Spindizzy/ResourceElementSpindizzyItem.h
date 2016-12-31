@@ -81,7 +81,7 @@ class ResourceElementSpindizzyItem:public ISpindizzyJewelType {
   void setDirty(IElement*);
   void destroy(IElement*);
   void removeElement(IElement*);
-  Vertex* editorCursorStopped(Vertex*);
+  IEditorCursorAligner* getCursorAligner();
 
   virtual ~ResourceElementSpindizzyItem();
 };

@@ -89,7 +89,7 @@ class ResourceElementSpindizzyLift:public ISpindizzyLiftType {
   void updateIcon(unsigned int);
   void destroy(IElement*);
   void removeElement(IElement*);
-  Vertex* editorCursorStopped(Vertex*);
+  IEditorCursorAligner* getCursorAligner();
   
   virtual ~ResourceElementSpindizzyLift();
 };

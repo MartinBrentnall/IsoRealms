@@ -18,9 +18,9 @@
  */
 #include "LayerSpindizzyMapEditingContext.h"
 
-const float LayerSpindizzyMapEditingContext::SPEED_FAST     = 0.5f;
-const float LayerSpindizzyMapEditingContext::SPEED_NORMAL   = 0.21f;
-const float LayerSpindizzyMapEditingContext::SPEED_SLOW     = 0.06f;
+const float LayerSpindizzyMapEditingContext::SPEED_FAST     = 0.3f;
+const float LayerSpindizzyMapEditingContext::SPEED_NORMAL   = 0.1f;
+const float LayerSpindizzyMapEditingContext::SPEED_SLOW     = 0.05f;
 const float LayerSpindizzyMapEditingContext::STOP_THRESHOLD = 0.01f;
 const float LayerSpindizzyMapEditingContext::SELECTION_BOUNDARY_RENDERING_OFFSET = 0.001f;
 
@@ -36,6 +36,9 @@ LayerSpindizzyMapEditingContext::LayerSpindizzyMapEditingContext(ILayerSpindizzy
   cActiveDown   = false;
   cActiveHigher = false;
   cActiveLower  = false;
+  cXDirection   = 0;
+  cYDirection   = 0;
+  cZDirection   = 0;
   cElementType = nullptr;
   cMap = map;
   cCursorRestriction = nullptr;
@@ -86,28 +89,36 @@ float LayerSpindizzyMapEditingContext::getMovementSpeed() {
 }
 
 void LayerSpindizzyMapEditingContext::update(unsigned int milliseconds) {
-  if (isMovingWest())  {cMomentum.x -= getMovementSpeed();}
-  if (isMovingEast())  {cMomentum.x += getMovementSpeed();}
-  if (isMovingSouth()) {cMomentum.y -= getMovementSpeed();}
-  if (isMovingNorth()) {cMomentum.y += getMovementSpeed();}
-  if (cActiveLower)    {cMomentum.z -= getMovementSpeed() * 0.5;}
-  if (cActiveHigher)   {cMomentum.z += getMovementSpeed() * 0.5;}
+  if (isMovingWest())  {cMomentum.x -= getMovementSpeed();       cXDirection = -1;}
+  if (isMovingEast())  {cMomentum.x += getMovementSpeed();       cXDirection =  1;}
+  if (isMovingSouth()) {cMomentum.y -= getMovementSpeed();       cYDirection = -1;}
+  if (isMovingNorth()) {cMomentum.y += getMovementSpeed();       cYDirection =  1;}
+  if (cActiveLower)    {cMomentum.z -= getMovementSpeed() * 0.5; cZDirection = -1;}
+  if (cActiveHigher)   {cMomentum.z += getMovementSpeed() * 0.5; cZDirection =  1;}
   cMomentum.x *= 0.5f;
   cMomentum.y *= 0.5f;
-  cMomentum.z *= 0.25f;
+  cMomentum.z *= 0.5f;
   Vertex mNewLocation;
   mNewLocation.x = cLocation.x + cMomentum.x;
   mNewLocation.y = cLocation.y + cMomentum.y;
   mNewLocation.z = cLocation.z + cMomentum.z;
-  if (std::abs(cMomentum.x) < STOP_THRESHOLD && std::abs(cMomentum.y) < STOP_THRESHOLD && std::abs(cMomentum.z) < STOP_THRESHOLD * 0.5 && !cActiveLeft && !cActiveRight && !cActiveUp && !cActiveDown && !cActiveHigher && !cActiveLower) {
+  IEditorCursorAligner* mAligner = cElementType != nullptr ? cElementType->getCursorAligner() : nullptr;
+  if (std::abs(cMomentum.x) < STOP_THRESHOLD && !cActiveLeft && !cActiveRight) {
     cMomentum.x = 0.0f;
+    if (mAligner != nullptr) {
+      mNewLocation.x = mAligner->alignX(mNewLocation.x, cXDirection);
+    }
+  }
+  if (std::abs(cMomentum.y) < STOP_THRESHOLD && !cActiveUp && !cActiveDown) {
     cMomentum.y = 0.0f;
-    cMomentum.y = 0.0f;
-    if (cElementType != nullptr) {
-      Vertex* mLocation = cElementType->editorCursorStopped(&mNewLocation);
-      if (mLocation != nullptr) {
-        mNewLocation = *mLocation;
-      }
+    if (mAligner != nullptr) {
+      mNewLocation.y = mAligner->alignY(mNewLocation.y, cYDirection);
+    }
+  }
+  if (std::abs(cMomentum.z) < STOP_THRESHOLD * 0.5 && !cActiveHigher && !cActiveLower) {
+    cMomentum.z = 0.0f;
+    if (mAligner != nullptr) {
+      mNewLocation.z = mAligner->alignZ(mNewLocation.z, cZDirection);
     }
   }
   if (cCursorRestriction != nullptr) {
