@@ -18,8 +18,8 @@
  */
 #include "ResourceIntegerTimer.h"
 
-ResourceIntegerTimer::ResourceIntegerTimer(IDummyModule* module, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
-  cLock = false;
+ResourceIntegerTimer::ResourceIntegerTimer(IIsoRealmsModule* moduleInterface, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
+  cModuleInterface = moduleInterface;
   cInitialMilliseconds = 0;
   cCurrentMilliseconds = 0;
   resourceRegistry->add(new StringTimer(this), node->getAttribute("name"));
@@ -90,7 +90,7 @@ void ResourceIntegerTimer::saveCache(DOMNodeWriter* cache) {
 }
 
 void ResourceIntegerTimer::updateRuntime(unsigned int milliseconds) {
-  if (!cLock) {
+  if (!cModuleInterface->locked()) {
     if (cCurrentMilliseconds > 0) {
       cCurrentMilliseconds -= milliseconds;
       if (cCurrentMilliseconds <= 0) {

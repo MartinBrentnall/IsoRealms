@@ -63,6 +63,7 @@ bool IsoRealmsModule::cStaticInit = false;
 IsoRealmsModule::IsoRealmsModule(IResourceTypeRegistry* resourceTypeRegistry) : cResourceTypeElementHUDModel(this),
                                                                                 cResourceTypeElementHUDRoundedRectangle(this),
                                                                                 cResourceTypeElementHUDString(this),
+                                                                                cResourceTypeIntegerTimer(this),
                                                                                 cResourceTypeLayerHUD(this) {
   if (!cStaticInit) {
     int mAudioRate = 44100;
@@ -237,6 +238,10 @@ std::string IsoRealmsModule::getRelatableElementName(HUDComponentPosition* eleme
   }
   std::cout << "WARNING: Element name could not be determined because the element wasn't found" << std::endl;
   return "";
+}
+
+bool IsoRealmsModule::locked() {
+  return cLocks != nullptr ? cLocks->getValue() > 0 : false; // TODO: Figure out why this null check needs to be here
 }
 
 extern "C" IModule* create(IResourceTypeRegistry* resourceTypeRegistry) {

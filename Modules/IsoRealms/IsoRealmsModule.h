@@ -42,6 +42,7 @@
 #include "DialogStringFixed.h"
 #include "DialogTextureFile.h"
 #include "DialogVertexFixed.h"
+#include "IIsoRealmsModule.h"
 #include "ResourceBooleanFixed.h"
 #include "ResourceElementHUDModel.h"
 #include "ResourceElementHUDRoundedRectangle.h"
@@ -61,7 +62,8 @@
 
 class IsoRealmsModule:public IModule,
                       public IResource,
-                      public IElementRelationManager {
+                      public IElementRelationManager,
+                      public IIsoRealmsModule {
   private:
   static const std::string TAG_RESOURCE_TYPE_BOOLEAN_FIXED;
   static const std::string TAG_RESOURCE_TYPE_COLOUR_FIXED;
@@ -113,7 +115,7 @@ class IsoRealmsModule:public IModule,
   ResourceType<IFont,                ResourceFontFile,                   DialogFontFile>                                            cResourceTypeFontFile;
   ResourceType<IGlobalVariable,      LuaGlobalVariable,                  DialogGlobalVariable>                                      cResourceTypeGlobalVariable;
   ResourceType<IInteger,             ResourceIntegerFixed,               DialogIntegerFixed>                                        cResourceTypeIntegerFixed;
-  ResourceType<IInteger,             ResourceIntegerTimer,               DialogIntegerTimer>                                        cResourceTypeIntegerTimer;
+  ResourceType<IInteger,             ResourceIntegerTimer,               DialogIntegerTimer,               IIsoRealmsModule>        cResourceTypeIntegerTimer;
   ResourceType<ILayerType,           ResourceLayerHUD,                   DialogLayerHUD,                   IElementRelationManager> cResourceTypeLayerHUD;
   ResourceType<I3DModelType,         ResourceModelElement,               DialogModelElement>                                        cResourceTypeModelElement;
   ResourceType<I3DModelType,         ResourceModelScriptable,            DialogModelScriptable>                                     cResourceTypeModelScriptable;
@@ -150,4 +152,9 @@ class IsoRealmsModule:public IModule,
   IHUDComponentRelation* getRelation(IUniverse*, const std::string&, const std::string&);
   void addRelatableElement(IUniverse*, const std::string&, HUDComponentPosition*);
   std::string getRelatableElementName(HUDComponentPosition*);
+
+  /*******************************\
+   * Implements IIsoRealmsModule *
+  \*******************************/
+  bool locked();
 };
