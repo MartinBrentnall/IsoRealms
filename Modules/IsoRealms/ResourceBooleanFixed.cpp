@@ -19,12 +19,12 @@
 #include "ResourceBooleanFixed.h"
 
 ResourceBooleanFixed::ResourceBooleanFixed(IDummyModule* module, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
-  cInitialValue = false;
-  cCurrentValue = false;
+  setInitialValue(false);
 }
 
 void ResourceBooleanFixed::setInitialValue(bool value) {
   cInitialValue = value;
+  cCurrentValue = value;
 }
 
 bool ResourceBooleanFixed::getInitialValue() {

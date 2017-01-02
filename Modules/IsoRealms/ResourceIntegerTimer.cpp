@@ -20,14 +20,14 @@
 
 ResourceIntegerTimer::ResourceIntegerTimer(IIsoRealmsModule* moduleInterface, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
   cModuleInterface = moduleInterface;
-  cInitialMilliseconds = 0;
-  cCurrentMilliseconds = 0;
+  setInitialValue(0);
   resourceRegistry->add(new StringTimer(this), node->getAttribute("name"));
   resourceRegistry->addDynamicElement(this);
 }
 
 void ResourceIntegerTimer::setInitialValue(int value) {
   cInitialMilliseconds = value;
+  cCurrentMilliseconds = value;
 }
 
 int ResourceIntegerTimer::getInitialValue() {

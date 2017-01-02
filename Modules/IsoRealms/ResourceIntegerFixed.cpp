@@ -19,12 +19,12 @@
 #include "ResourceIntegerFixed.h"
 
 ResourceIntegerFixed::ResourceIntegerFixed(IDummyModule* module, DOMNodeWrapper* node, IResourceRegistry* resourceRegistry) {
-  cInitialValue = 0;
-  cCurrentValue = 0;
+  setInitialValue(0);
 }
 
 void ResourceIntegerFixed::setInitialValue(int value) {
   cInitialValue = value;
+  cCurrentValue = value;
 }
 
 int ResourceIntegerFixed::getInitialValue() {
