@@ -49,7 +49,7 @@ template <class T> class Icon:public ISizedComponent {
     updateIcon(milliseconds);
   }
 
-  bool input(SDL_Event& event) {
+  virtual bool input(SDL_Event& event) {
     switch (event.type) {
       case SDL_MOUSEBUTTONDOWN: {
         Configuration* mConfiguration = Configuration::getInstance();

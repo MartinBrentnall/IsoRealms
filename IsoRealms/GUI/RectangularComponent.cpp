@@ -400,7 +400,7 @@ void RectangularComponent::loadDialog(DOMNodeWrapper* node, IRectangle* parent, 
     } else if (mValueAsString == "CheckBox") {
       std::string mLabelText = mNode->getStringValue();
       std::string mName = mNode->getAttribute("name");
-      CheckBox* mCheckBox = new CheckBox(mLabelText);
+      CheckBoxWithLabel* mCheckBox = new CheckBoxWithLabel(mLabelText);
       IComponentBoundsCalculator* mLabelLayout = getBoundsCalculator(mNode, parent, padding, mCheckBox);
       mCheckBox->setBoundsCalculator(mLabelLayout);
       cSizedComponents[mName] = mCheckBox;

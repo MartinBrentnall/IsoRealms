@@ -16,8 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef CHECK_BOX_H
-#define CHECK_BOX_H
+#ifndef CHECK_BOX_WITH_LABEL_H
+#define CHECK_BOX_WITH_LABEL_H
 
 #include <GL/glew.h>
 #include <GL/gl.h>
@@ -29,17 +29,18 @@
 #include "ISizedComponent.h"
 #include "IValueComponent.h"
 
-class CheckBox:public ISizedComponent,
-               public IValueComponent<bool>{
+class CheckBoxWithLabel:public ISizedComponent,
+                        public IValueComponent<bool>{
   private:
   bool cValue;
+  std::string cLabel;
   std::vector<IValueListener<bool>*> cListeners;
   bool cHasFocus;
   
   void fireChange();
   
   public:
-  CheckBox();
+  CheckBoxWithLabel(const std::string&);
 
   /************************************\
    * Implements IValueComponent<bool> *
@@ -65,4 +66,3 @@ class CheckBox:public ISizedComponent,
 };
 
 #endif
-

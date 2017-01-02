@@ -16,43 +16,44 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "CheckBox.h"
+#include "CheckBoxWithLabel.h"
 
-CheckBox::CheckBox() {
+CheckBoxWithLabel::CheckBoxWithLabel(const std::string& label) {
   setValue(false);
+  cLabel = label;
 }
 
-void CheckBox::setValue(bool value) {
+void CheckBoxWithLabel::setValue(bool value) {
   cValue = value;
 }
 
-bool CheckBox::getValue() {
+bool CheckBoxWithLabel::getValue() {
   return cValue;
 }
 
-void CheckBox::addValueListener(IValueListener<bool>* listener) {
+void CheckBoxWithLabel::addValueListener(IValueListener<bool>* listener) {
   cListeners.push_back(listener);
 }
 
-float CheckBox::getWidth() {
-  Configuration* mConfiguration = Configuration::getInstance();
-  ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
-  float mAspectRatio = mScreen->getAspectRatio();
-  return 0.05f * mAspectRatio;
+float CheckBoxWithLabel::getWidth() {
+  return 0.4f;
 }
 
-float CheckBox::getHeight() {
+float CheckBoxWithLabel::getHeight() {
   return 0.05f;
 }
 
-void CheckBox::update(unsigned int milliseconds) {
+void CheckBoxWithLabel::update(unsigned int milliseconds) {
   // Nothing to do
 }
 
-void CheckBox::render() {
+void CheckBoxWithLabel::render() {
   float mLeft = getLeft();
   float mBottom = getBottom();
+  IFont* mFont = LookAndFeel::getDefaultFont();
+  float mFontSize = LookAndFeel::getDefaultFontSize();
   glColor3f(1.0f, 1.0f, 1.0f);
+  mFont->print(mLeft + 0.04f, mBottom + 0.01f, mFontSize, IFont::LEFT, cLabel.c_str());
 
   Configuration* mConfiguration = Configuration::getInstance();
   ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
@@ -85,7 +86,7 @@ void CheckBox::render() {
   }
 }
 
-bool CheckBox::input(SDL_Event& event) {
+bool CheckBoxWithLabel::input(SDL_Event& event) {
   switch (event.type) {
     case SDL_KEYDOWN: {
       // return keyDown(event.key.keysym.sym, event.key.keysym.mod);
@@ -99,17 +100,16 @@ bool CheckBox::input(SDL_Event& event) {
   return false;
 }
 
-void CheckBox::gainedFocus() {
+void CheckBoxWithLabel::gainedFocus() {
   cHasFocus = true;
 }
 
-void CheckBox::lostFocus() {
+void CheckBoxWithLabel::lostFocus() {
   cHasFocus = false;
 }
 
-void CheckBox::fireChange() {
+void CheckBoxWithLabel::fireChange() {
   for (unsigned int i = 0; i < cListeners.size(); i++) {
     cListeners[i]->valueChanged(nullptr, cValue);
   }
 }
-

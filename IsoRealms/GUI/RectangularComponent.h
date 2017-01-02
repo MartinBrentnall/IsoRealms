@@ -26,7 +26,7 @@
 
 #include "AbstractRectangularComponent.h"
 #include "Button.h"
-#include "CheckBox.h"
+#include "CheckBoxWithLabel.h"
 #include "ComponentEdgeLayout.h"
 #include "Container.h"
 #include "EdgeRelation.h"

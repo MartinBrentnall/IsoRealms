@@ -22,13 +22,14 @@
 #include <IsoRealms/GUI/Dialog.h>
 #include <IsoRealms/Resources/IResourceSelectionListener.h>
 
+#include "BooleanIcon.h"
 #include "ComponentResourceBrowser.h"
 #include "NamedResourceIcon.h"
 
 class DialogPrimitiveManager:public Dialog,
                              public IProjectManagerListener {
   private:
-  ComponentResourceBrowser<IBoolean, NamedResourceIcon<IBoolean>>* cComponentBrowserBooleans;
+  ComponentResourceBrowser<IBoolean, BooleanIcon>* cComponentBrowserBooleans;
   ComponentResourceBrowser<IInteger, NamedResourceIcon<IInteger>>* cComponentBrowserIntegers;
   ComponentResourceBrowser<IFloat,   NamedResourceIcon<IFloat>>*   cComponentBrowserFloats;
   ComponentResourceBrowser<IString,  NamedResourceIcon<IString>>*  cComponentBrowserStrings;

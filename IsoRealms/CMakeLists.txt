@@ -29,6 +29,7 @@ add_library(IsoRealms SHARED
   GUI/AbstractRectangularComponent.cpp
   GUI/Button.cpp
   GUI/CheckBox.cpp
+  GUI/CheckBoxWithLabel.cpp
   GUI/CloseDialogCommand.cpp
   GUI/ComponentDigitalInputMapping.cpp
   GUI/ComponentEdgeLayout.cpp
@@ -44,6 +45,7 @@ add_library(IsoRealms SHARED
   GUI/DropDownListComponent.cpp
   GUI/DynamicMenuItems.cpp
   GUI/EdgeRelation.cpp
+  GUI/FixedSizeLayout.cpp
   GUI/FlexibleGridLayoutComponent.cpp
   GUI/GridLayoutComponent.cpp
   GUI/GUIIcon.cpp

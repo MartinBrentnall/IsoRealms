@@ -21,7 +21,7 @@
 DialogPrimitiveManager::DialogPrimitiveManager(IComponentContainer* container, IResourceAccessor* resources, IResourceManager* resourceManager, IProjectManager* projectManager, IResourceLocator* resourceLocator, IEditingContext* editingContext) : Dialog(container, "Modules/Editor/ResourceManagerDialogs/DialogPrimitiveManager", resources) {
   projectManager->addProjectListener(this);
 //  cAbsoluteColour = new Colour();
-  cComponentBrowserBooleans = new ComponentResourceBrowser<IBoolean, NamedResourceIcon<IBoolean>>(resources, resourceManager, projectManager, resourceLocator, editingContext, 0.0f);
+  cComponentBrowserBooleans = new ComponentResourceBrowser<IBoolean, BooleanIcon>(resources, resourceManager, projectManager, resourceLocator, editingContext, 0.0f);
   cComponentBrowserIntegers = new ComponentResourceBrowser<IInteger, NamedResourceIcon<IInteger>>(resources, resourceManager, projectManager, resourceLocator, editingContext, 0.0f);
   cComponentBrowserFloats   = new ComponentResourceBrowser<IFloat,   NamedResourceIcon<IFloat>>(  resources, resourceManager, projectManager, resourceLocator, editingContext, 0.0f);
   cComponentBrowserStrings  = new ComponentResourceBrowser<IString,  NamedResourceIcon<IString>>( resources, resourceManager, projectManager, resourceLocator, editingContext, 0.0f);
