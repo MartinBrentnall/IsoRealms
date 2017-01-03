@@ -32,6 +32,7 @@ class Boolean:public IBoolean {
    * Implements IBoolean *
   \***********************/
   void setValue(bool);
+  void setInitialValue(bool);
   bool getValue();
   void reset();
 

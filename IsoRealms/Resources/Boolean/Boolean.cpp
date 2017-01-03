@@ -26,6 +26,10 @@ void Boolean::setValue(bool value) {
   cValue = value;
 }
 
+void Boolean::setInitialValue(bool value) {
+  // Not supported
+}
+
 bool Boolean::getValue() {
   return cValue;
 }

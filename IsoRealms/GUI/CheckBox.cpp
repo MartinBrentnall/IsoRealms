@@ -90,11 +90,18 @@ bool CheckBox::input(SDL_Event& event) {
     case SDL_KEYDOWN: {
       // return keyDown(event.key.keysym.sym, event.key.keysym.mod);
     }
-    
+
     case SDL_MOUSEBUTTONDOWN: {
-      cValue = !cValue;
-      fireChange();
-    }      
+      Configuration* mConfiguration = Configuration::getInstance();
+      ScreenConfiguration* mScreen = mConfiguration->getScreenConfiguration();
+      float mX = mScreen->getXLocation(event.button.x);
+      float mY = mScreen->getYLocation(event.button.y);
+      if (contains(mX, mY)) {
+        cValue = !cValue;
+        fireChange();
+        return true;
+      }
+    }
   }
   return false;
 }

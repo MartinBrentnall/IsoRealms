@@ -24,6 +24,7 @@
 class IBoolean:public IResourceManageable<IBoolean> {
   public:
   virtual void setValue(bool) = 0;
+  virtual void setInitialValue(bool) = 0;
   virtual bool getValue() = 0;
   
   virtual void reset() = 0; // TODO: move to IResource

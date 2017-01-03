@@ -21,6 +21,11 @@
 BooleanIcon::BooleanIcon(IResourceBrowser<IBoolean>* browser, IBoolean* boolean) : Icon<IBoolean>(browser, boolean) {
   FixedSizeLayout* mFixedSizeLayout = new FixedSizeLayout(true, true, this, &cCheckBox);
   cCheckBox.setBoundsCalculator(mFixedSizeLayout);
+  cCheckBox.addValueListener(this);
+}
+
+bool BooleanIcon::input(SDL_Event& event) {
+  return cCheckBox.input(event) || Icon<IBoolean>::input(event);
 }
 
 void BooleanIcon::renderIcon() {
@@ -53,3 +58,9 @@ float BooleanIcon::getX() {
 float BooleanIcon::getY() {
   return getTop();
 }
+
+void BooleanIcon::valueChanged(IValueComponent<bool>* component, bool value) {
+  IBoolean* mBoolean = getResource();
+  mBoolean->setInitialValue(value);
+}
+

@@ -25,17 +25,30 @@
 #include <IsoRealms/GUI/FixedSizeLayout.h>
 
 class BooleanIcon:public Icon<IBoolean>,
-                  public IComponentLocation {
+                  public IComponentLocation,
+                  public IValueListener<bool> {
   public:
   CheckBox cCheckBox;
   BooleanIcon(IResourceBrowser<IBoolean>*, IBoolean*);
-    
+
+  /*****************************\
+   * Implements Icon<IBoolean> *
+  \*****************************/
+  bool input(SDL_Event&);
   void renderIcon();
   float getWidth();
   float getHeight();
-  
+
+  /*********************************\
+   * Implements IComponentLocation *
+  \*********************************/
   float getX();
   float getY();
+  
+  /****************************\
+   * IValueListener<IBoolean> *
+  \****************************/
+  void valueChanged(IValueComponent<bool>*, bool);
 };
 
 #endif

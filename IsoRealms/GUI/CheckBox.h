@@ -30,7 +30,7 @@
 #include "IValueComponent.h"
 
 class CheckBox:public ISizedComponent,
-               public IValueComponent<bool>{
+               public IValueComponent<bool> {
   private:
   bool cValue;
   std::vector<IValueListener<bool>*> cListeners;
