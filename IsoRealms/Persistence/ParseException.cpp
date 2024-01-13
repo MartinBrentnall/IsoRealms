@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2023 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -18,13 +18,14 @@
  */
 #include "ParseException.h"
 
-ParseException::ParseException(std::string message) {
-  cMessage = message;
+namespace IsoRealms {
+  ParseException::ParseException(std::string message) {
+    cMessage = message;
+    std::cout << "Constructed ParseException:" << std::endl;
+    std::cout << message << std::endl;
+  }
+
+  std::string ParseException::getMessage() {
+    return cMessage;
+  }
 }
-
-std::string ParseException::getMessage() {
-  return cMessage;
-}
-
-
-

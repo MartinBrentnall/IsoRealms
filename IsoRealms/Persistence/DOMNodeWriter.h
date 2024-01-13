@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2023 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,8 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef DOM_NODE_WRITER_H
-#define DOM_NODE_WRITER_H
+#pragma once
 
 #include <cstdio>
 #include <iostream>
@@ -28,116 +27,119 @@
 #include <xercesc/framework/LocalFileFormatTarget.hpp>
 #include <xercesc/util/XMLString.hpp>
 
-using namespace xercesc;
+namespace IsoRealms {
+  class DOMNodeWriter {
+    private:
+    xercesc::DOMImplementation* cImplementation;
+    xercesc::DOMDocument* cDocument;
 
-class DOMNodeWriter {
-  private:
-  DOMImplementation* cImplementation;
-  DOMDocument* cDocument;
-  DOMElement* cElement;
+    public:
 
-  /**
-   * This is used by us to create branch nodes.
-   * 
-   * @param DOMDocument* The document to refer to.
-   * @param DOMElement* The element represented.
-   */
-  DOMNodeWriter(DOMDocument*, DOMElement*);
+    /**
+    * Construct the root node with the specified name.
+    *
+    * @param std::string  The name of the root node.
+    */
+    xercesc::DOMElement* cElement;
+    DOMNodeWriter(std::string);
 
-  public:
-
-  /**
-   * Construct the root node with the specified name.
-   * 
-   * @param std::string  The name of the root node.
-   */
-  DOMNodeWriter(std::string);
- 
-  /**
-   * Add a branch of the specified name.
-   * 
-   * @param std::string  The name of the branch.
-   * @returns  The branch.
-   */
-  DOMNodeWriter* addBranch(std::string);
-
-  /**
-   * Create a branch of the specified name, but do not add it.
-   * 
-   * @param std::string  The name of the branch.
-   * @returns  The branch.
-   */
-  DOMNodeWriter* createBranch(std::string);
-
-  /**
-   * Add specified DOMNodeWriter as a branch.
-   * 
-   * @param DOMNodeWriter  The branch.
-   */
-  void addBranch(DOMNodeWriter*);
+    /**
+    * This is used by us to create branch nodes.
+    * 
+    * @param DOMDocument* The document to refer to.
+    * @param DOMElement* The element represented.
+    */
+    DOMNodeWriter(xercesc::DOMDocument*, xercesc::DOMElement*);
   
-  /**
-   * Add the specified text to this node.
-   * 
-   * @param std::string  The text to add.
-   */
-  void addText(std::string);
+    /**
+    * Add a branch of the specified name.
+    * 
+    * @param std::string  The name of the branch.
+    * @returns  The branch.
+    */
+    DOMNodeWriter addBranch(std::string);
 
-  void addText(int);
-  
-  /**
-   * Add the specified attribute of the specified name.
-   * 
-   * @param std::string  Attribute name.
-   * @param std::string  Attribute content.
-   */
-  void addAttribute(std::string, std::string);
+    /**
+    * Add specified DOMNodeWriter as a branch.
+    * 
+    * @param DOMNodeWriter  The branch.
+    */
+    void addBranch(DOMNodeWriter*);
+    
+    /**
+    * Add the specified text to this node.
+    * 
+    * @param std::string  The text to add.
+    */
+    void addText(std::string);
 
-  /**
-   * Add the specified attribute of the specified name.
-   * 
-   * @param std::string  Attribute name.
-   * @param int          Attribute content.
-   */
-  void addAttribute(std::string, int);
-  
-  /**
-   * Add the specified attribute of the specified name.
-   * 
-   * @param std::string  Attribute name.
-   * @param int          Attribute content.
-   */
-  void addAttribute(std::string, unsigned int);
-  
-  /**
-   * Add the specified attribute of the specified name.
-   * 
-   * @param std::string&  Attribute name.
-   * @param float         Attribute content.
-   */
-  void addAttribute(const std::string&, float, float = std::numeric_limits<float>::quiet_NaN());
+    void addText(int);
+    
+    /**
+    * Add the specified attribute of the specified name.
+    * 
+    * @param std::string  Attribute name.
+    * @param std::string  Attribute content.
+    */
+    void addAttribute(const std::string& name, const std::string& value, const std::string& defaultValue = "");
 
-  /**
-   * Add the specified attribute of the specified name.
-   * 
-   * @param std::string&  Attribute name.
-   * @param double        Attribute content.
-   */
-  void addAttribute(const std::string&, double);
+    /**
+    * Add the specified attribute of the specified name.
+    * 
+    * @param std::string  Attribute name.
+    * @param int          Attribute content.
+    */
+    void addAttribute(const std::string& name, int value, int defaultValue = 0);
+    
+    /**
+    * Add the specified attribute of the specified name.
+    * 
+    * @param std::string  Attribute name.
+    * @param int          Attribute content.
+    */
+    void addAttribute(const std::string& name, unsigned int value, unsigned int defaultValue = 0U);
+    
+    /**
+    * Add the specified attribute of the specified name.
+    *
+    * @param std::string  Attribute name.
+    * @param bool         Attribute content.
+    */
+    void addAttribute(const std::string& name, bool value, bool defaultValue = false);
 
-  /**
-   * Save the structure to the specified filename.
-   * 
-   * @param std::string  The filename to save to.
-   */
-  void save(std::string);
-  
-  /**
-   * See if this node has anything in it.
-   * 
-   * @returns  True if it does, otherwise false.
-   */
-  bool empty();
-};
+    /**
+    * Add the specified attribute of the specified name.
+    * 
+    * @param std::string&  Attribute name.
+    * @param float         Attribute content.
+    */
+    void addAttribute(const std::string& name, float value, float defaultValue = 0.0f);
 
-#endif
+    /**
+    * Add the specified attribute of the specified name.
+    * 
+    * @param std::string&  Attribute name.
+    * @param double        Attribute content.
+    */
+    void addAttribute(const std::string& name, double value, double defaultValue = 0.0);
+
+    /**
+    * Save the structure to the specified filename.
+    * 
+    * @param std::string  The filename to save to.
+    */
+    void save(std::string);
+    
+    /**
+    * See if this node has anything in it.
+    * 
+    * @returns  True if it does, otherwise false.
+    */
+    bool empty();
+    
+    /***********************\
+    * Scripting interface *
+    \***********************/
+    void addAttributeString(std::string, std::string);
+  };
+}

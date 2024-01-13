@@ -1,0 +1,75 @@
+/*
+ * Copyright 2023 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#pragma once
+
+#include "IsoRealms/Types.h"
+
+#include "Function/Function.h"
+
+namespace IsoRealms::Basics {
+  
+  /**
+   * Fixed resource definition for scripts (in-line functions).
+   */
+  class Script : public IActionType {
+    public:
+    Script();
+    void unregisterAssets(IAssetRemover* remover, IAssets* releaser);
+
+    /**************************\
+     * Implements IActionType *
+    \**************************/
+    IAction* createAction(DOMNode& node, IProject* project, IBindingRegistry* localObjects) override;
+    IAction* createAction(IProject* project, IBindingRegistry* localArgs) override;
+    void destroyAction(IAction* action, IAssets* assets) override;
+    bool renderAssetIcon() const override;
+    
+    private:
+    class ScriptAction : public IAction {
+      public:
+      ScriptAction(Script* parent, IAction* action);
+
+      const IActionType* getInternalActionType();
+      void destroyInternalAction(Function* mType, IAssets* assets);
+
+      /**********************\
+       * Implements IAction *
+      \**********************/
+      void execute() override;
+      IActionType* getActionType() const override;
+      void save(DOMNodeWriter* node, IAssetIdentifier* identifier, const std::string& tag) const override;
+      bool hasConfiguration() const override;
+      
+      private:
+      
+      // External interfaces.
+      Script* cDefParent; /// Parent action type.
+      
+      // Definition data.
+      IAction* cDefAction; /// Script action call.
+    };
+      
+    // Functions and actions created by scripting.
+    std::map<IAction*, std::unique_ptr<ScriptAction>> cDefScriptActions;
+    std::map<unsigned int, std::unique_ptr<Function>> cDefScriptFunctions; /// Functions created by scripting, mapped by unique index value.
+    
+    // Private functions.
+    unsigned int getNextAvailableIndex();
+  };
+}

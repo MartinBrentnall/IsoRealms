@@ -16,13 +16,23 @@
 # along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
 include_directories(${PROJECT_SOURCE_DIR})
 
+find_package(Lua REQUIRED)
+if(LUA_FOUND)
+  include_directories(${LUA_INCLUDE_DIR})
+else(LUA_FOUND)
+  message(STATUS "Lua not found.")
+endif(LUA_FOUND)
+
 add_library(HighScore MODULE 
   HighScoreRecord.cpp
   HighScoreTable.cpp
-  LayerHighScore.cpp
-  ModuleHighScore.cpp
-  ModuleHighScoreScriptSupport.cpp
-  ResourceLayerHighScore.cpp
+  HighScore.cpp
+  HighScoreLuaSupport.cpp
+  ScoreTable/ScoreTable.cpp
+  ScoreTracker/ScoreTracker.cpp
 )
-set_target_properties(HighScore PROPERTIES OUTPUT_NAME "Module")
-set_target_properties(HighScore PROPERTIES PREFIX "lib")
+set_target_properties(HighScore PROPERTIES OUTPUT_NAME "IsoRealms-HighScore")
+set_target_properties(HighScore PROPERTIES LIBRARY_OUTPUT_DIRECTORY "../../Out")
+set_target_properties(HighScore PROPERTIES PREFIX "")
+
+target_link_libraries(HighScore IsoRealms ${LUA_LIBRARIES} sfml-window sfml-system sfml-audio sfml-graphics OpenGL::GL ${OPENGL_glu_LIBRARY} ${GLEW_LIBRARIES} ${XercesC_LIBRARIES})

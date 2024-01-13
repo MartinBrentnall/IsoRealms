@@ -1,0 +1,174 @@
+/*
+ * Copyright 2023 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#include "WorldView.h"
+
+#include "Modules/Spindizzy/Spindizzy.h"
+
+namespace IsoRealms::Spindizzy {
+  const std::string WorldView::TAG_CAMERA            = "Camera";
+  const std::string WorldView::TAG_START_PLAY_ACTION = "StartPlayAction";
+  const std::string WorldView::TAG_STOP_PLAY_ACTION  = "StopPlayAction";
+  const std::string WorldView::TAG_ZONE_VIEW_TYPE    = "ZoneViewType";
+  
+  const std::string WorldView::ATTRIBUTE_TYPE  = "type";
+  const std::string WorldView::ATTRIBUTE_WORLD = "world";
+
+  const std::string WorldView::TYPE_ZONE_VIEW = "ZoneView";
+
+  WorldView::WorldView(IProject* project, Spindizzy* spindizzy) :
+            cDefSpindizzy(*spindizzy),
+            cDefWorld(nullptr),
+            cDefCamera(spindizzy),
+            cDefZoneViewType(spindizzy),
+            cRuntimeZone(nullptr),
+            cLuaBinding(project, this) {
+    project->reset([this]() {
+      cRuntimeZone = nullptr;
+      for (std::unique_ptr<ZoneView>& mZoneView : cRuntimeZoneViews) {
+        mZoneView->cView->reset();
+      }
+    });
+  }
+    
+  WorldView::WorldView(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
+            WorldView(project, spindizzy) {
+    cDefCamera.set(node.getNode(TAG_CAMERA), this);
+    cDefZoneViewType.set(node.getNode(TAG_ZONE_VIEW_TYPE), this);
+    project->init([this, &node](IAssets* resources) {
+      cDefWorld = cDefSpindizzy.getWorld(node.getAttribute(ATTRIBUTE_WORLD));
+      cDefWorld->registerView(this);
+      std::vector<std::unique_ptr<Zone>>& mZones = cDefWorld->getZones();
+      for (std::unique_ptr<Zone>& mZone : mZones) {
+        addZoneView(mZone.get());
+      }
+    });
+  }
+
+  void WorldView::registerAssets(IAssetRegistry* assets) {
+    assets->add(static_cast<IScreen*>(this), "", "Spindizzy World Views");
+    assets->add(&cLuaBinding, "", "Spindizzy World Views");
+    LocalAssetRegistry mLocalRegistry(assets, "Camera");
+    cDefCamera->registerAssets(&mLocalRegistry);
+  }
+
+  void WorldView::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
+    assets->remove(static_cast<IScreen*>(this));
+    assets->remove(&cLuaBinding);
+    cDefCamera->unregisterAssets(assets);
+  }
+  
+  void WorldView::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
+    node->addAttribute(ATTRIBUTE_WORLD, cDefSpindizzy.getID(cDefWorld));
+    DOMNodeWriter mNode = node->addBranch(TAG_CAMERA);
+    cDefCamera->save(&mNode);
+    mNode = node->addBranch(TAG_ZONE_VIEW_TYPE);
+    cDefZoneViewType->save(&mNode);
+  }
+
+  void WorldView::hintInUse(bool inUse) {
+    // Nothing to do.
+  }
+  
+  bool WorldView::renderIcon() const {
+    return false;
+  }
+
+  std::vector<IProperty*> WorldView::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
+    return std::vector<IProperty*>({
+    });
+  }
+  
+  void WorldView::registerAssets(ISpindizzyRegistry* registry) {
+    LocalSpindizzyRegistry mLocalRegistry(registry, TYPE_ZONE_VIEW);
+    cDefZoneViewType->registerAssets(&mLocalRegistry);
+  }
+
+  void WorldView::addZoneView(Zone* zone) {
+    std::unique_ptr<IZoneView> mZoneView = cDefZoneViewType->createZoneView(zone);
+    cRuntimeZoneViews.emplace_back(std::make_unique<ZoneView>(zone, std::move(mZoneView)));
+  }
+  
+  void WorldView::removeZoneView(Zone* zone) {
+    for (std::unique_ptr<ZoneView>& mZoneView : cRuntimeZoneViews) {
+      if (zone == mZoneView->cZone) {
+        Utils::removeElementUnique(cRuntimeZoneViews, mZoneView.get());
+        break;
+      }
+    }
+  }
+  
+  World* WorldView::getWorld() const {
+    return cDefWorld;
+  }
+
+  Spindizzy* WorldView::getSpindizzy() {
+    return &cDefSpindizzy;
+  }
+
+  ICamera* WorldView::getCamera() {
+    return *cDefCamera;
+  }
+
+  void WorldView::setZone(Zone* zone) {
+    cRuntimeZone = zone;
+    cDefCamera->setZone(zone);
+  }
+  
+  void WorldView::renderScreen(float scale, float aspectRatio) const {
+    if (cDefWorld != nullptr) {
+      glEnable(GL_DEPTH_TEST);
+      glDisable(GL_BLEND);
+      glBindTexture(GL_TEXTURE_2D, 0);
+      glPushMatrix();
+      float mZoom = std::max(cDefCamera->getXZoom() / aspectRatio, cDefCamera->getYZoom());
+      glOrtho(-mZoom, mZoom, -mZoom, mZoom, -60.0f, 60.0f); // TODO: Magic numbers -60.0f and 60.0f
+      glRotatef(cDefCamera->getPitch()->getValue(), 1.0f, 0.0f, 0.0f);
+      glRotatef(cDefCamera->getYaw()->getValue(), 0.0f, 0.0f, 1.0f);
+      glTranslatef(-cDefCamera->getXLocation(), -cDefCamera->getYLocation(), -cDefCamera->getZLocation());
+      if (cRuntimeZone == nullptr) {
+        for (const std::unique_ptr<ZoneView>& mZoneView : cRuntimeZoneViews) {
+          mZoneView->cView->render(mZoneView->cZone, this);
+        }
+      } else {
+// TODO: Use the actual cRuntimeZoneViews
+        cRuntimeZone->renderRuntime(this);
+        cDefWorld->renderRuntime();
+      }
+      glPopMatrix();
+      glDisable(GL_DEPTH_TEST);
+    }
+  }
+
+  const IFloat* WorldView::getYaw() const {
+    return cDefCamera->getYaw();
+  }
+
+  const IFloat* WorldView::getPitch() const {
+    return cDefCamera->getPitch();
+  }
+
+  bool WorldView::renderAssetIcon() const {
+    return false;
+  }
+
+  WorldView::ZoneView::ZoneView(Zone* zone, std::unique_ptr<IZoneView> view) :
+            cZone(zone),
+            cView(std::move(view)) {
+  }
+}

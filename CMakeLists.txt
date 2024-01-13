@@ -14,17 +14,27 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 3.5)
 project(Iso-Realms)
 
-set(CMAKE_CXX_FLAGS "-fPIC -Wall -pedantic -g -std=c++11")
+set(OpenGL_GL_PREFERENCE "LEGACY")
 
-find_package(SDL REQUIRED)
-if(SDL_FOUND)
-  include_directories(${SDL_INCLUDE_DIR})
-else(SDL_FOUND)
-  message(STATUS "SDL not found.") 
-endif(SDL_FOUND)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+if(MSVC)
+  add_compile_options(/bigobj)
+else()
+  set(CMAKE_CXX_FLAGS "-fPIC -Wall -Werror=suggest-override -pedantic -g")
+endif()
+
+find_package(SFML 2.5 COMPONENTS system window graphics audio REQUIRED)
+if(SFML_FOUND)
+  include_directories(${SFML_INCLUDE_DIR})
+else(SFML_FOUND)
+  message(STATUS "SFML not found.")
+endif(SFML_FOUND)
 
 find_package(OpenGL REQUIRED)
 if(OPENGL_FOUND)
@@ -41,14 +51,6 @@ else(GLEW_FOUND)
   message(STATUS "GLEW not found.")
 endif(GLEW_FOUND)
 
-set(Luabind_DIR ${PROJECT_SOURCE_DIR})
-find_package(Luabind REQUIRED)
-if(LUABIND_FOUND)
-  include_directories(${LUABIND_INCLUDE_DIR})
-else(LUABIND_FOUND)
-  message(STATUS "Luabind not found.")
-endif(LUABIND_FOUND)
-
 set(XercesC_DIR ${PROJECT_SOURCE_DIR})
 find_package(XercesC REQUIRED)
 if(XercesC_FOUND)
@@ -57,18 +59,39 @@ else(XercesC_FOUND)
   message(STATUS "XercesC not found.")
 endif(XercesC_FOUND)
 
+find_package(Lua REQUIRED)
+if(LUA_FOUND)
+  include_directories(${LUA_INCLUDE_DIR})
+else(LUA_FOUND)
+  message(STATUS "Lua not found.")
+endif(LUA_FOUND)
+
+find_package(Freetype REQUIRED)
+if(FREETYPE_FOUND)
+  include_directories(${FREETYPE_INCLUDE_DIRS})
+else(FREETYPE_FOUND)
+  message(STATUS "FreeType not found.")
+endif(FREETYPE_FOUND)
+
+message("LUA: ${LUA_LIBRARIES}")
+message("GLEW: ${GLEW_LIBRARIES}")
+
 add_subdirectory(IsoRealms)
 add_subdirectory(Modules)
 
 include_directories(${PROJECT_SOURCE_DIR})
 
-message("LUABIND: ${LUABIND_LIBRARY}")
 message("XERCES: ${XercesC_LIBRARIES}")
 
-add_executable(IsoRealms.bin 
-  Engine.cpp
-  EngineArguments.cpp
-  Main.cpp
-  TerminateEngineCommand.cpp
-)
-target_link_libraries(IsoRealms.bin ${SDL_LIBRARY} ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY} ${GLEW_LIBRARY} ${LUABIND_LIBRARY} ${XercesC_LIBRARIES} IsoRealms)
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+
+add_executable(IsoRealms.bin IsoRealms.cpp)
+
+file(GLOB DATA_DIR "Data/*")
+file(COPY ${DATA_DIR} DESTINATION "Out")
+file(COPY "Spindizzy.cmd" DESTINATION "Out")
+
+set_target_properties(IsoRealms.bin PROPERTIES OUTPUT_NAME "IsoRealms")
+set_target_properties(IsoRealms.bin PROPERTIES RUNTIME_OUTPUT_DIRECTORY "Out")
+
+target_link_libraries(IsoRealms.bin IsoRealms sfml-window sfml-system sfml-audio sfml-graphics OpenGL::GL ${OPENGL_glu_LIBRARY} ${GLEW_LIBRARIES} ${XercesC_LIBRARIES} ${LUA_LIBRARIES} ${FREETYPE_LIBRARIES})

@@ -1,0 +1,1008 @@
+/*
+ * Copyright 2023 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#include "World.h"
+
+#include "Modules/Spindizzy/Spindizzy.h"
+
+namespace IsoRealms::Spindizzy {
+  const std::string World::ATTRIBUTE_BOUNCE_CONTROL     = "bounceControl";
+  const std::string World::ATTRIBUTE_SLOPE_ACCELERATION = "slopeAcceleration";
+  const std::string World::ATTRIBUTE_GRAVITY            = "gravity";
+  
+  const std::string World::TAG_DEBRIS_GENERATOR = "DebrisGenerator";
+  const std::string World::TAG_PLAYER           = "Player";
+  const std::string World::TAG_ZONE             = "Zone";
+
+  const unsigned int World::DEFAULT_BOUNCE_CONTROL = 10;
+
+  World::World(IProject* project, Spindizzy* spindizzy) :
+            cDefPhysicalSurfaceProcessor(true),
+            cDefVisualSurfaceProcessor(false),
+            cLuaBinding(project, this) {
+    cDefSpindizzy      = spindizzy;
+
+    project->updateRuntime([this](unsigned int milliseconds) {
+      for (std::unique_ptr<Player>&                   mPlayer           : cDefPlayers)               {mPlayer->updateRuntime(milliseconds);}
+      for (std::unique_ptr<DebrisGenerator>&          mDebrisGenerator  : cDefDebrisGenerators)      {mDebrisGenerator->updateRuntime(milliseconds);}
+      for (std::unique_ptr<Zone>&                     mZone             : cDefZones)                 {mZone->updateRuntime(milliseconds);}
+      for (std::unique_ptr<CollisionHandlerInstance>& mCollisionHandler : cRuntimeCollisionHandlers) {mCollisionHandler->processCollisions();}
+      for (std::unique_ptr<BoundaryHandlerInstance>&  mBoundaryHandler  : cRuntimeBoundaryHandlers)  {mBoundaryHandler->processCrossings();}
+    });
+
+    project->updateEditing([this](unsigned int milliseconds) {
+      for (const std::pair<IEditableScreen* const, std::unique_ptr<WorldEditor>>& mEditor : cEditors) {
+        mEditor.second->updateScreen(milliseconds);
+      }
+    });
+
+    // Physical object types.
+    std::vector<IPhysicalObjectType*> mPhysicalObjectTypes = cDefSpindizzy->getAllPhysicalObjectTypes();
+    for (IPhysicalObjectType* mPhysicalObjectType : mPhysicalObjectTypes) {
+      added(mPhysicalObjectType);
+    }
+    
+    // Boundary types.
+    std::vector<IBoundaryType*> mBoundaryTypes = cDefSpindizzy->getAllBoundaryTypes();
+    for (IBoundaryType* mBoundaryType : mBoundaryTypes) {
+      added(mBoundaryType);
+    }
+
+    project->reset([this]() {
+      reset();
+    });
+
+    project->mainThreadInit([this]() {
+      glColor3f(1.0f, 1.0f, 1.0f);
+      for (std::unique_ptr<Zone>& mZone : cDefZones) {
+        mZone->updateDisplayList();
+      }
+    });
+  }
+
+  World::World(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
+            World(project, spindizzy) {
+    cDefResourceData = data;
+
+    // Load non-resource based objects
+    for (DOMNode& mChild : node) {
+      std::string mChildName = mChild.getName();
+      if (mChildName == TAG_ZONE) {
+        cDefZones.emplace_back(std::make_unique<Zone>(*this, mChild));
+      } else if (mChildName == TAG_PLAYER) {
+        cDefPlayers.emplace_back(std::make_unique<Player>(project, *this, mChild));
+      } else if (mChildName == TAG_DEBRIS_GENERATOR) {
+        cDefDebrisGenerators.emplace_back(std::make_unique<DebrisGenerator>(mChild, project));
+      } else {
+        throw ParseException("Unknown tag for Spindizzy/World: " + mChildName);
+      }
+    }
+
+    cDefSurfaceAccelerationFactor = node.getFloatAttribute(ATTRIBUTE_SLOPE_ACCELERATION);
+    cDefGravity                = node.getFloatAttribute(ATTRIBUTE_GRAVITY);
+    cDefBounceTime             = node.getIntegerAttribute(ATTRIBUTE_BOUNCE_CONTROL, DEFAULT_BOUNCE_CONTROL);
+
+    project->init([this, project](IAssets* resources) {
+
+      // Try to open terrain cache
+      std::string mCachePath = cDefResourceData->getPath("Terrain.cache", project->isUserProject());
+//      std::cout << "Cache path: " << mCachePath << std::endl;
+      std::ifstream mCache(mCachePath, std::ios::binary);
+      bool mUsingCache = false;
+      if (mCache) {
+        std::filesystem::file_time_type mCacheTime = std::filesystem::last_write_time(mCachePath);
+        std::filesystem::file_time_type mProjectTime = project->getLastWriteTime();
+
+//        if (mCacheTime > mProjectTime) {
+          mUsingCache = true;
+//        } else {
+//          mCache.close();
+//        }
+      }
+      updateBounds();
+
+      if (mUsingCache) {
+        for (std::unique_ptr<Zone>& mZone : cDefZones) {
+          mZone->initialiseObjects();
+          mZone->initialiseTerrain(mCache);
+        }
+      } else {
+
+        // Multi-threaded world initialisation
+        std::vector<std::function<void()>> mTask;
+        for (Zone* mZone : cRuntimeZonesToInitialise) {
+//        mTask.push_back([&mZone, mUsingCache]() { TODO: Enable this for multi-threaded initialisation.
+          mZone->initialiseObjects();
+          mZone->initialiseTerrain();
+//        });
+        }
+//         IApplication* mApplication = project->getApplication();
+//         mApplication->executeAndWait(mTask);
+//         std::cout << "INFO: World::World: Updating cache..." << std::endl;
+        updateCache();
+      }
+      cRuntimeZonesToInitialise.clear();
+
+    });
+  }
+
+  void World::registerAssets(IAssetRegistry* assets) {
+    LocalSpindizzyRegistry mLocalSpindizzyRegistry(cDefSpindizzy, cDefSpindizzy->getID(this));
+    
+    assets->add(this, "", "Spindizzy Worlds");
+    assets->add(&cLuaBinding, "", "Spindizzy Worlds");
+    for (std::unique_ptr<DebrisGenerator>& mDebrisGenerator : cDefDebrisGenerators) {
+      LocalAssetRegistry mLocalRegistry(assets, "DebrisGenerator");
+      mDebrisGenerator->registerAssets(&mLocalRegistry);
+    }
+    for (std::unique_ptr<Player>& mPlayer : cDefPlayers) {
+      LocalAssetRegistry mLocalRegistry(assets, "Player");
+      mPlayer->registerAssets(&mLocalRegistry);
+    }
+    for (std::unique_ptr<Zone>& mZone : cDefZones) {
+      mZone->registerAssets();
+    }
+  }
+
+  void World::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
+    assets->remove(this);
+    assets->remove(&cLuaBinding);
+    for (std::unique_ptr<DebrisGenerator>& mDebrisGenerator : cDefDebrisGenerators) {
+      mDebrisGenerator->unregisterAssets(assets, releaser);
+    }
+    for (std::unique_ptr<Player>& mPlayer : cDefPlayers) {
+      mPlayer->unregisterAssets(assets);
+    }
+// TODO: Need to do this on editor destruction.    mEditor->unregisterAssets(assets);
+  }
+
+  void World::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
+    node->addAttribute(ATTRIBUTE_SLOPE_ACCELERATION, cDefSurfaceAccelerationFactor);
+    node->addAttribute(ATTRIBUTE_GRAVITY,            cDefGravity);
+    node->addAttribute(ATTRIBUTE_BOUNCE_CONTROL,     cDefBounceTime);
+
+    for (const std::unique_ptr<DebrisGenerator>& mDebrisGenerator : cDefDebrisGenerators) {
+      DOMNodeWriter mDebrisGeneratorNode = node->addBranch(TAG_DEBRIS_GENERATOR);
+      mDebrisGenerator->save(&mDebrisGeneratorNode, identifier);
+    }
+    for (const std::unique_ptr<Player>& mPlayer : cDefPlayers) {
+      DOMNodeWriter mPlayerNode = node->addBranch(TAG_PLAYER);
+      mPlayer->save(&mPlayerNode);
+    }
+    for (const std::unique_ptr<Zone>& mZone : cDefZones) {
+      DOMNodeWriter mZoneNode = node->addBranch(TAG_ZONE);
+      mZone->save(&mZoneNode);
+    }
+    updateCache();
+  }
+    
+  void World::hintInUse(bool inUse) {
+    // Nothing to do.
+  }
+
+  bool World::renderIcon() {
+    return false;
+  }
+
+  std::vector<IProperty*> World::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
+    return std::vector<IProperty*>({
+    });
+  }
+
+  void World::reset() {
+    for (std::unique_ptr<Player>& mPlayer : cDefPlayers) {
+      mPlayer->reset();
+    }
+    for (std::unique_ptr<Zone>& mZone : cDefZones) {
+      mZone->reset();
+    }
+  }
+
+  void World::renderRuntime() {
+    for (std::unique_ptr<Player>& mPlayer : cDefPlayers) {
+      mPlayer->renderRuntime();
+    }
+    for (std::unique_ptr<DebrisGenerator>& mDebrisGenerator : cDefDebrisGenerators) {
+      mDebrisGenerator->renderRuntime();
+    }
+  }
+
+  Spindizzy* World::getSpindizzy() const {
+    return cDefSpindizzy;
+  }
+
+  std::vector<std::unique_ptr<Zone>>& World::getZones() {
+    return cDefZones;
+  }
+  
+  Zone* World::getZone(IVertex* location) {
+    return getZone(WorldEditorCursorCell(std::round(location->getX()), std::round(location->getY()), std::round(location->getZ())));
+  }
+
+  int World::getStartX() {
+    return cRuntimeCacheStartX;
+  }
+
+  int World::getStartY() {
+    return cRuntimeCacheStartY;
+  }
+
+  int World::getStartZ() {
+    return cRuntimeCacheStartZ;
+  }
+
+  int World::getEndX() {
+    return cRuntimeCacheEndX;
+  }
+
+  int World::getEndY() {
+    return cRuntimeCacheEndY;
+  }
+
+  int World::getEndZ() {
+    return cRuntimeCacheEndZ;
+  }
+
+  void World::added(IBoundaryType* boundaryType) {
+    cRuntimeBoundaries.emplace(boundaryType, std::make_unique<SpatialContainerTest<IBoundary*>>());
+  }
+
+  void World::removed(IBoundaryType* boundaryType) {
+    cRuntimeBoundaries.erase(boundaryType);
+  }
+
+  void World::registerBoundary(IBoundaryType* boundaryType, IBoundary* boundary, int xStart, int xEnd, int yStart, int yEnd) {
+    std::map<IBoundaryType*, std::unique_ptr<SpatialContainerTest<IBoundary*>>>::iterator mBoundaries = cRuntimeBoundaries.find(boundaryType);
+    if (mBoundaries == cRuntimeBoundaries.end()) {
+      throw ArgumentException("ERROR: World::registerBoundary: Specified boundary type must be registered first (\"" + boundaryType->getBoundaryTypeID() + "\")");
+    }
+    mBoundaries->second->add(xStart, xEnd, yStart, yEnd, boundary);
+  }
+
+  void World::unregisterBoundary(IBoundaryType* boundaryType, IBoundary* boundary) {
+    std::map<IBoundaryType*, std::unique_ptr<SpatialContainerTest<IBoundary*>>>::iterator mBoundaries = cRuntimeBoundaries.find(boundaryType);
+    if (mBoundaries == cRuntimeBoundaries.end()) {
+      throw ArgumentException("ERROR: World::unregisterBoundary: Specified boundary type must be registered first (\"" + boundaryType->getBoundaryTypeID() + "\")");
+    }
+    mBoundaries->second->remove(boundary);
+  }
+
+  SpatialContainerTest<IBoundary*>* World::getBoundaries(IBoundaryType* type) {
+    return cRuntimeBoundaries.find(type)->second.get();
+  }
+
+  void World::addBoundaryHandler(std::unique_ptr<BoundaryHandlerInstance> handler) {
+    cRuntimeBoundaryHandlers.emplace_back(std::move(handler));
+  }
+
+  void World::removeBoundaryHandler(BoundaryHandlerInstance* handler) {
+    Utils::removeElementUnique(cRuntimeBoundaryHandlers, handler);
+  }
+
+  void World::addCollisionHandler(std::unique_ptr<CollisionHandlerInstance> handler) {
+    cRuntimeCollisionHandlers.emplace_back(std::move(handler));
+  }
+
+  void World::removeCollisionHandler(CollisionHandlerInstance* handler) {
+    Utils::removeElementUnique(cRuntimeCollisionHandlers, handler);
+  }
+
+  void World::added(IPhysicalObjectType* type) {
+    cRuntimeMovementHandlers.emplace(type, std::make_unique<MovementHandler>());
+  }
+  
+  void World::removed(IPhysicalObjectType* type) {
+    cRuntimeMovementHandlers.erase(type);
+  }
+
+  void World::addMovementListener(IPhysicalObjectType* type, IMovementListener* listener) {
+    std::map<IPhysicalObjectType*, std::unique_ptr<MovementHandler>>::iterator mIterator = cRuntimeMovementHandlers.find(type);
+    if (mIterator == cRuntimeMovementHandlers.end()) {
+      throw ArgumentException("ERROR: World::addMovementListener: Specified physical object type isn't known.");
+    }
+    mIterator->second->addListener(listener);
+  }
+  
+  void World::removeMovementListener(IPhysicalObjectType* type, IMovementListener* listener) {
+    std::map<IPhysicalObjectType*, std::unique_ptr<MovementHandler>>::iterator mIterator = cRuntimeMovementHandlers.find(type);
+    if (mIterator == cRuntimeMovementHandlers.end()) {
+      throw ArgumentException("ERROR: World::addMovementListener: Specified physical object type isn't known.");
+    }
+    mIterator->second->removeListener(listener);
+  }
+
+  MovementHandler* World::getMovementHandler(IPhysicalObjectType* type) {
+    std::map<IPhysicalObjectType*, std::unique_ptr<MovementHandler>>::iterator mIterator = cRuntimeMovementHandlers.find(type);
+    if (mIterator == cRuntimeMovementHandlers.end()) {
+      throw ArgumentException("ERROR: World::addMovementListener: Specified physical object type isn't known.");
+    }
+    return mIterator->second.get();
+  }
+
+  void World::move(PhysicsObject* object, unsigned int milliseconds) {
+
+    // Get next collision based on current and proposed state
+    PhysicalState mCurrentState  = PhysicalState(object->cLocation, object->cMomentum);
+//     std::cout << "Calculating new state... ===========================================================================================================" << std::endl;
+    PhysicalState mProposedState = calculateNewState(object, milliseconds);
+//     std::cout << "Calculated new state!" << std::endl;
+    std::unique_ptr<CollisionData> mNextEvent = getNextEvent(object, mCurrentState.cLocation, mProposedState.cLocation, 0.0, milliseconds);
+//     std::cout << "Got event!" << std::endl;
+
+    // Loop until all collision events have been processed
+    double mMillisecondsProcessed = 0.0;
+    unsigned int mRapidEventCount = 0;
+    bool mEventProcessed = false;
+//     std::cout << "Moving object..." << std::endl;
+    while (mNextEvent != nullptr) {
+//       std::cout << "Processing event..." << std::endl;
+      processEvent(object, *mNextEvent, mMillisecondsProcessed, milliseconds);
+//       std::cout << "Processed event!" << std::endl;
+      mEventProcessed = true;
+
+      // Consume time, and count events that occur in extremely rapid succession
+      float mOldMilliseconds = mMillisecondsProcessed;
+      mMillisecondsProcessed += (milliseconds - mMillisecondsProcessed) * mNextEvent->getGradient();
+      mRapidEventCount = (mMillisecondsProcessed - mOldMilliseconds < 0.1f) ? mRapidEventCount + 1 : 0;
+//       std::cout << "milliseconds processed: " << mMillisecondsProcessed << "   Rapid events: " << mRapidEventCount << "   Event gradient: " << mNextEvent->getGradient() << "   Event type: " << static_cast<int>(mNextEvent->getType()) << std::endl;
+
+      // If time remains, get next collision event
+      mNextEvent = nullptr;
+      if (mMillisecondsProcessed < milliseconds) {
+        mEventProcessed = false;
+        mCurrentState  = PhysicalState(object->cLocation, object->cMomentum);
+//         std::cout << "Calculating another new state..." << std::endl;
+        mProposedState = calculateNewState(object, milliseconds - mMillisecondsProcessed);
+//         std::cout << "Calculated another new state!" << std::endl;
+        mNextEvent     = getNextEvent(object, mCurrentState.cLocation, mProposedState.cLocation, mMillisecondsProcessed, milliseconds);
+//         std::cout << "Got another event!" << std::endl;
+
+        // Lots of events in rapid succession usually means the object is "resting" between two slopes
+        if (mRapidEventCount > 4 && mNextEvent != nullptr && mNextEvent->getType() == CollisionData::Type::SURFACE_LEAVE) {
+          ISurface* mEventSurface = mNextEvent->getSurface();
+          mEventSurface->getRestingLocation(mProposedState.cLocation);
+
+          // Process last event in case object has moved off the resting point
+          mNextEvent = getNextEvent(object, mCurrentState.cLocation, mProposedState.cLocation, mMillisecondsProcessed, milliseconds);
+          if (mNextEvent != nullptr) {
+//             std::cout << "Processing another event..." << std::endl;
+            processEvent(object, *mNextEvent, mMillisecondsProcessed, milliseconds);
+//             std::cout << "Processed another event!" << std::endl;
+            mNextEvent = nullptr;
+          }
+        }
+      } else {
+        mEventProcessed = true;
+      }
+    }
+
+    if (!mEventProcessed) {
+      object->setPhysicalState(mProposedState);
+    }
+//     std::cout << "Moved object!" << std::endl;
+  }
+
+  ISurface* World::getSurfaceAt(LiteralVertex& location, float stepReach, bool nonSolid) {
+    for (ISurface* mSurface : cRuntimeSurfaces.search(location.x, location.y)) {
+      if (nonSolid || mSurface->isSolid()) {
+        if (mSurface->contains(location, stepReach)) {
+          return mSurface;
+        }
+      }
+    }
+    return nullptr;
+  }
+  
+  void World::registerTerrain(Terrain* terrain, bool visual, bool physical) {
+    if (physical) {
+      cDefPhysicalSurfaceProcessor.registerTerrain(terrain);
+    }
+    if (visual) {
+      cDefVisualSurfaceProcessor.registerTerrain(terrain);
+    }
+  }
+
+  void World::updateTerrain(Terrain* terrain, bool visual, bool physical) {
+    cDefPhysicalSurfaceProcessor.updateTerrain(terrain, physical);
+    cDefVisualSurfaceProcessor.updateTerrain(terrain, visual);
+  }
+
+  void World::unregisterTerrain(Terrain* terrain) {
+    cDefPhysicalSurfaceProcessor.unregisterTerrain(terrain);
+    cDefVisualSurfaceProcessor.unregisterTerrain(terrain);
+  }
+
+  std::vector<std::unique_ptr<SurfaceTemplate>> World::createSurfaceTemplates(Terrain* terrain, ISurface::Direction facing, bool visual) {
+    TerrainProcessor* mProcessor = visual ? &cDefVisualSurfaceProcessor : &cDefPhysicalSurfaceProcessor;
+    return mProcessor->getSurfaces(terrain, facing);
+  }
+
+  std::vector<std::unique_ptr<WallTemplate>> World::createWallTemplates(Terrain* terrain, Wall::Direction facing, bool visual) {
+    TerrainProcessor* mProcessor = visual ? &cDefVisualSurfaceProcessor : &cDefPhysicalSurfaceProcessor;
+    return mProcessor->getWalls(terrain, facing);
+  }
+
+  void World::attachPhysicalSurface(ISurface* surface, bool priority) {
+    (priority ? cRuntimePrioritySurfaces : cRuntimeSurfaces).add(surface->getXStart(), surface->getXEnd(), surface->getYStart(), surface->getYEnd(), surface);
+  }
+
+  void World::attachPhysicalWall(Wall* wall) {
+    cRuntimeWalls.add(wall->getXStart(), wall->getXEnd(), wall->getYStart(), wall->getYEnd(), wall);
+  }
+
+  void World::detachPhysicalSurface(ISurface* surface) {
+    cRuntimePrioritySurfaces.remove(surface);
+    cRuntimeSurfaces.remove(surface);
+  }
+  
+  void World::detachPhysicalWall(Wall* wall) {
+    cRuntimeWalls.remove(wall);
+  }
+
+  void World::flagForInitialisation(Zone* zone) {
+    cRuntimeZonesToInitialise.insert(zone);
+  }
+  
+  void World::flagTerrainForInitialisation(int xStart, int xEnd, int yStart, int yEnd) {
+    cDefPhysicalSurfaceProcessor.flagForInitialisation(xStart, xEnd, yStart, yEnd);
+    cDefVisualSurfaceProcessor.flagForInitialisation(xStart, xEnd, yStart, yEnd);
+  }
+  
+  void World::registerView(IScreen* screen) {
+    for (std::unique_ptr<Zone>& mZone : cDefZones) {
+      mZone->registerView(screen);
+    }
+  }
+
+  int World::getMaxZoneHeight(int startX, int endX, int startY, int endY, int startZ, int endZ) const {
+    int mLowest = std::numeric_limits<int>::max();
+    for (const std::unique_ptr<Zone>& mZone : cDefZones) {
+      if (mZone->intersects(startX, startY, startZ, endX, endY, endZ)) {
+        mLowest = std::min(mZone->getStartZ(), mLowest);
+      }
+    }
+    return mLowest;
+  }  
+
+  Alien* World::draw(AlienType* type, const WorldEditorCursorCell& cell, IScreen* screen) {
+    Zone* mZone = getOrDrawZone(cell, screen);
+    if (mZone != nullptr) {
+      Alien* mAlien = mZone->draw(type, cell);
+      if (mZone->empty()) {
+        remove(mZone);
+      }
+      return mAlien;
+    }
+    return nullptr;
+  }
+  
+  Lift* World::draw(LiftType* type, const WorldEditorCursorCell& cell, int bottomRange, int topRange, IScreen* screen) {
+    Zone* mZone = getOrDrawZone(cell, screen);
+    if (mZone != nullptr) {
+      Lift* mLift = mZone->draw(type, cell, bottomRange, topRange);
+      if (mZone->empty()) {
+        remove(mZone);
+      }
+      return mLift;
+    }
+    return nullptr;
+  }
+  
+  PickUp* World::draw(PickUpType* type, const WorldEditorCursorCell& cell, IScreen* screen) {
+    Zone* mZone = getOrDrawZone(cell, screen);
+    if (mZone != nullptr) {
+      PickUp* mPickUp = mZone->draw(type, cell);
+      if (mZone->empty()) {
+        remove(mZone);
+      }
+      return mPickUp;
+    }
+    return nullptr;
+  }
+  
+  Player* World::draw(PlayerType* type, const LiteralVertex& location) {
+    if (cDefPlayers.empty()) {
+      cDefPlayers.emplace_back(std::make_unique<Player>(cDefSpindizzy->getProject(), *this, type, location.x, location.y, location.z));
+    }
+    cDefPlayers[0]->reposition(location.x, location.y, location.z);
+    return cDefPlayers[0].get();
+  }
+  
+  Terrain* World::draw(TerrainType* type, const WorldEditorCursorCell& start, const WorldEditorCursorCell& end, int southWestHeight, int southEastHeight, int northWestHeight, int northEastHeight, bool alternativeSplit, bool steppedBase, bool negation, IScreen* screen) {
+    Zone* mZone = getOrDrawZone(start, screen);
+    if (mZone != nullptr) {
+      Terrain* mTerrain = mZone->draw(type, start, end, southWestHeight, southEastHeight, northWestHeight, northEastHeight, alternativeSplit, steppedBase, negation);
+      if (mZone->empty()) {
+        remove(mZone);
+      }
+      return mTerrain;
+    }
+    return nullptr;
+  }
+  
+  Zone* World::draw(ZoneType* type, const WorldEditorCursorCell& start, const WorldEditorCursorCell& end, IScreen* screen) {
+    if (!intersectsZone(start.cDefX, start.cDefY, start.cDefZ, end.cDefX, end.cDefY, end.cDefZ)) {
+      Zone* mNewZone = cDefZones.emplace_back(std::make_unique<Zone>(*this, type, start.cDefX, start.cDefY, start.cDefZ, end.cDefX, end.cDefY, end.cDefZ)).get();
+      mNewZone->registerView(screen);
+      mNewZone->initialiseObjects();
+      mNewZone->initialiseTerrain();
+      cDefSpindizzy->added(mNewZone);
+      return mNewZone;
+    }
+    return nullptr;
+  }
+
+  ZoneObject* World::draw(ZoneObjectType* type) {
+    return nullptr; // TODO: Implement this.
+  }
+
+  void World::remove(Zone* zone) {
+    cDefSpindizzy->removed(zone);
+    Utils::removeElementUnique(cDefZones, zone);
+    updateBounds();
+  }
+
+  void World::removeAll(AlienType* type) {
+    for (std::unique_ptr<Zone>& mZone : cDefZones) {
+      mZone->removeAll(type);
+    }
+  }
+
+  void World::removeAll(LiftType* type) {
+    for (std::unique_ptr<Zone>& mZone : cDefZones) {
+      mZone->removeAll(type);
+    }
+  }
+
+  void World::removeAll(PickUpType* type) {
+    for (std::unique_ptr<Zone>& mZone : cDefZones) {
+      mZone->removeAll(type);
+    }
+  }
+
+  void World::removeAll(PlayerType* type) {
+    for (int i = cDefPlayers.size() - 1; i >= 0; i--) {
+      if (cDefPlayers[i]->isType(type)) {
+        cDefPlayers.erase(cDefPlayers.begin() + i);
+      }
+    }
+  }
+
+  void World::removeAll(TerrainType* type) {
+    for (std::unique_ptr<Zone>& mZone : cDefZones) {
+      mZone->removeAll(type);
+    }
+  }
+
+  void World::removeAll(ZoneType* type) {
+    for (int i = cDefZones.size() - 1; i >= 0; i--) {
+      if (cDefZones[i]->isType(type)) {
+        cDefSpindizzy->removed(cDefZones[i].get());
+        cDefZones.erase(cDefZones.begin() + i);
+      }
+    }
+  }
+
+  void World::removeAll(ZoneObjectType* type) {
+    for (std::unique_ptr<Zone>& mZone : cDefZones) {
+      mZone->removeAll(type);
+    }
+  }
+
+  Zone* World::getOrDrawZone(const WorldEditorCursorCell& cell, IScreen* screen) {
+    Zone* mZone = getZone(cell);
+    if (mZone == nullptr) {
+      ZoneType* mZoneType = cDefSpindizzy->getAutomaticZoneManagementType();
+      if (mZoneType != nullptr) {
+        int mAutomaticXSize = cDefSpindizzy->getAutomaticZoneXSize();
+        int mAutomaticYSize = cDefSpindizzy->getAutomaticZoneYSize();
+        int mAutomaticZSize = cDefSpindizzy->getAutomaticZoneZSize();
+        int mXStart = (cell.cDefX / mAutomaticXSize) * mAutomaticXSize;
+        int mXEnd   = mXStart + (mAutomaticXSize - 1);
+        int mYStart = (cell.cDefY / mAutomaticYSize) * mAutomaticYSize;
+        int mYEnd   = mYStart + (mAutomaticYSize - 1);
+        int mZStart = (cell.cDefZ / mAutomaticZSize) * mAutomaticZSize;
+        int mZEnd   = mYStart + (mAutomaticZSize - 1);
+        mZone = draw(mZoneType, WorldEditorCursorCell(mXStart, mYStart, mZStart), WorldEditorCursorCell(mXEnd, mYEnd, mZEnd), screen);
+      }
+    }
+    return mZone;
+  }
+
+  void World::updateEditing(unsigned int milliseconds) {
+    for (Zone* mZone : cRuntimeZonesToInitialise) {
+      mZone->initialiseTerrain();
+    }
+    cRuntimeZonesToInitialise.clear();
+    for (std::unique_ptr<Zone>& mZone : cDefZones) {
+      mZone->updateEditing(milliseconds);
+    }
+    for (std::unique_ptr<Player>& mPlayer : cDefPlayers) {
+      mPlayer->updateEditing(milliseconds);
+    }
+  }
+
+  void World::renderEditing(const IScreen* screen) const {
+    for (const std::unique_ptr<Zone>& mZone : cDefZones) {
+      mZone->renderEditing(screen);
+    }
+    for (const std::unique_ptr<Player>& mPlayer : cDefPlayers) {
+      mPlayer->renderEditing();
+    }
+  }
+
+  Zone* World::getZone(const WorldEditorCursorCell& cell) {
+    for (std::unique_ptr<Zone>& mZone : cDefZones) {
+      if (mZone->contains(cell.cDefX, cell.cDefY, cell.cDefZ)) {
+        return mZone.get();
+      }
+    }
+    return nullptr;
+  }
+
+  bool World::intersectsZone(int xStart, int yStart, int zStart, int xEnd, int yEnd, int zEnd) const {
+    for (const std::unique_ptr<Zone>& mZone : cDefZones) {
+      if (mZone->intersects(xStart, yStart, zStart, xEnd, yEnd, zEnd)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  void World::selectObjects(LiteralVertex* start, LiteralVertex& end, std::function<bool(IWorldObject*)> condition, std::function<void(IWorldObject*)> select) {
+    for (std::unique_ptr<Zone>& mZone : cDefZones) {
+      mZone->selectObjects(start, end, condition, select);
+    }
+  }
+
+  unsigned int World::getZoneCount() {
+    return cDefZones.size();
+  }
+
+  unsigned int World::getPickUpCount() {
+    unsigned int mCount = 0;
+    for (std::unique_ptr<Zone>& mZone : cDefZones) {
+      mCount += mZone->getPickUpCount();
+    }
+    return mCount;
+  }
+
+  IEditableScreen* World::createEditableScreen(Project* project) {
+    std::unique_ptr<WorldEditor> mScreen = std::make_unique<WorldEditor>(project, this);
+    for (std::unique_ptr<Zone>& mZone : cDefZones) {
+      mZone->registerView(mScreen.get());
+    }
+    std::cout << "Adding editable screen" << std::endl;
+    IEditableScreen* mReturnValue = mScreen.get();
+    cEditors[mReturnValue] = std::move(mScreen);
+    return mReturnValue;
+  }
+
+  float World::getAbyssDepth() const {
+    return -20.0f;
+  }
+
+  void World::updateBounds() {
+    cRuntimeCacheStartX = std::numeric_limits<int>::max();
+    cRuntimeCacheStartY = std::numeric_limits<int>::max();
+    cRuntimeCacheStartZ = std::numeric_limits<int>::max();
+    cRuntimeCacheEndX   = std::numeric_limits<int>::lowest();
+    cRuntimeCacheEndY   = std::numeric_limits<int>::lowest();
+    cRuntimeCacheEndZ   = std::numeric_limits<int>::lowest();
+    for (std::unique_ptr<Zone>& mZone : cDefZones) {
+      cRuntimeCacheStartX = std::min(cRuntimeCacheStartX, mZone->getStartX());
+      cRuntimeCacheStartY = std::min(cRuntimeCacheStartY, mZone->getStartY());
+      cRuntimeCacheStartZ = std::min(cRuntimeCacheStartZ, mZone->getStartZ());
+      cRuntimeCacheEndX   = std::max(cRuntimeCacheEndX,   mZone->getEndX());
+      cRuntimeCacheEndY   = std::max(cRuntimeCacheEndY,   mZone->getEndY());
+      cRuntimeCacheEndZ   = std::max(cRuntimeCacheEndZ,   mZone->getEndZ());
+      mZone->updateBounds();
+    }
+  }
+
+  void World::updateCache() const {
+    if (cDefSpindizzy->getProject()->isUserProject()) {
+      cDefResourceData->makeUserDataDirectory();
+      std::string mCachePath = cDefResourceData->getPath("Terrain.cache", true);
+//      std::cout << "CACHE PATH: " << mCachePath << std::endl;
+      std::ofstream mCacheOutput(mCachePath, std::ios::out | std::ios::binary);
+      if (!mCacheOutput) {
+        std::cout << "WARNING: World::updateCache: Couldn't open \"" << mCachePath << "\" to cache terrain." << std::endl;
+      } else {
+        for (const std::unique_ptr<Zone>& mZone : cDefZones) {
+          mZone->saveCache(mCacheOutput);
+        }
+        mCacheOutput.close();
+      }
+    }
+  }
+
+  PhysicalState World::calculateNewState(PhysicsObject* object, double milliseconds) {
+    PhysicalState mObjectState(object->cLocation, object->cMomentum);
+
+    // Manual thrust (e.g. player input, alien direction, etc.)
+    float mXThrust = object->cObject->getXThrust();
+    float mYThrust = object->cObject->getYThrust();
+
+    // Contact surfaces
+    Wall* mWestWall  = object->cWestWall;
+    Wall* mEastWall  = object->cEastWall;
+    Wall* mSouthWall = object->cSouthWall;
+    Wall* mNorthWall = object->cNorthWall;
+
+    if (object->cSurface != nullptr) {
+
+      // Rolling; get surface properties
+      float mSurfaceGrip     = object->cSurface->getSurfaceGrip();
+      float mSurfaceFriction = 1.0f - object->cSurface->getSurfaceFriction();
+
+      // Get surface acceleration (e.g. slope, force arrow, etc.)
+      float mSurfaceAccelerationX = object->cSurface->getXAcceleration(mObjectState.cLocation.x, mObjectState.cLocation.y) * cDefSurfaceAccelerationFactor;
+      float mSurfaceAccelerationY = object->cSurface->getYAcceleration(mObjectState.cLocation.x, mObjectState.cLocation.y) * cDefSurfaceAccelerationFactor;
+
+      // Adjust manual thrust for stability against surface acceleration
+      if      (mXThrust > 0.0f && mSurfaceAccelerationX < 0.0f) {mXThrust = std::max(mXThrust, -mSurfaceAccelerationX);}
+      else if (mXThrust < 0.0f && mSurfaceAccelerationX > 0.0f) {mXThrust = std::min(mXThrust, -mSurfaceAccelerationX);}
+
+      if      (mYThrust > 0.0f && mSurfaceAccelerationY < 0.0f) {mYThrust = std::max(mYThrust, -mSurfaceAccelerationY);}
+      else if (mYThrust < 0.0f && mSurfaceAccelerationY > 0.0f) {mYThrust = std::min(mYThrust, -mSurfaceAccelerationY);}
+
+      // Apply update consistently regardless of tick interval
+      for (unsigned int i = 0; i < milliseconds; i++) {
+
+        // Update momentum Disallow momentum above/below zero when craft is forced against wall by a slope.
+        mObjectState.cMomentum.x = mEastWall  != nullptr ? std::min(mObjectState.cMomentum.x + (mXThrust * mSurfaceGrip) + mSurfaceAccelerationX, 0.0)
+                                 : mWestWall  != nullptr ? std::max(mObjectState.cMomentum.x + (mXThrust * mSurfaceGrip) + mSurfaceAccelerationX, 0.0)
+                                 :                                  mObjectState.cMomentum.x + (mXThrust * mSurfaceGrip) + mSurfaceAccelerationX;
+        mObjectState.cMomentum.y = mNorthWall != nullptr ? std::min(mObjectState.cMomentum.y + (mYThrust * mSurfaceGrip) + mSurfaceAccelerationY, 0.0)
+                                 : mSouthWall != nullptr ? std::max(mObjectState.cMomentum.y + (mYThrust * mSurfaceGrip) + mSurfaceAccelerationY, 0.0)
+                                 :                                  mObjectState.cMomentum.y + (mYThrust * mSurfaceGrip) + mSurfaceAccelerationY;
+
+        // Friction slows momentum
+        mObjectState.cMomentum.x *= mSurfaceFriction;
+        mObjectState.cMomentum.y *= mSurfaceFriction;
+
+        // Momentum makes object move
+        mObjectState.cLocation.x += mObjectState.cMomentum.x;
+        mObjectState.cLocation.y += mObjectState.cMomentum.y;
+
+        // Moving away from touching a wall
+        if      (mObjectState.cMomentum.x > 0.0f) {mWestWall = nullptr;}
+        else if (mObjectState.cMomentum.x < 0.0f) {mEastWall = nullptr;}
+
+        if      (mObjectState.cMomentum.y > 0.0f) {mSouthWall = nullptr;}
+        else if (mObjectState.cMomentum.y < 0.0f) {mNorthWall = nullptr;}
+      }
+
+      // Height is determined by the surface on which the object currently lies
+      mObjectState.cLocation.z = object->cSurface->getHeightAt(mObjectState.cLocation.x, mObjectState.cLocation.y);
+
+      // Adjust position for upcoming surface movement
+      object->cSurface->adjustPosition(mObjectState.cLocation, milliseconds);
+    } else {
+
+      // Airborne: Momentum is not affected by thrust
+      for (unsigned int i = 0; i < milliseconds; i++) {
+        mObjectState.cMomentum.z += cDefGravity;
+        mObjectState.cLocation.x += mObjectState.cMomentum.x;
+        mObjectState.cLocation.y += mObjectState.cMomentum.y;
+        mObjectState.cLocation.z += mObjectState.cMomentum.z;
+      }
+    }
+    return mObjectState;
+  }
+
+  std::unique_ptr<CollisionData> World::getNextEvent(PhysicsObject* object, LiteralVertex& startLocation, LiteralVertex& endLocation, double startTime, double endTime) {
+    std::unique_ptr<CollisionData> mEvent = nullptr;
+
+    // If object is rolling on a surface, check if it leaves the surface
+    if (object->cSurface != nullptr) {
+      std::unique_ptr<CollisionData> mSurfaceLeftEvent = object->cSurface->getRollingEvent(startLocation, endLocation, startTime, endTime);
+      if (mSurfaceLeftEvent != nullptr) {
+        mEvent = std::move(mSurfaceLeftEvent);
+      }
+    }
+
+    // Check if the object moves away from any touching walls
+    Wall* mWallContacts[4] = {object->cNorthWall,
+                              object->cSouthWall,
+                              object->cEastWall,
+                              object->cWestWall};
+    for (unsigned int i = 0; i < 4; i++) {
+      if (mWallContacts[i] != nullptr) {
+        std::unique_ptr<CollisionData> mSurfaceLeftEvent = mWallContacts[i]->getSlidingEvent(startLocation, endLocation, object->cObject);
+        if (mSurfaceLeftEvent != nullptr) {
+          if (mEvent == nullptr || mSurfaceLeftEvent->getGradient() < mEvent->getGradient()) {
+            mEvent = std::move(mSurfaceLeftEvent);
+          }
+        }
+      }
+    }
+
+    int mSouth = std::floor(std::min(startLocation.getY(), endLocation.getY())) - 1;
+    int mNorth = std::ceil(std::max(startLocation.getY(), endLocation.getY())) + 1;
+    int mWest  = std::floor(std::min(startLocation.getX(), endLocation.getX())) - 1;
+    int mEast  = std::ceil(std::max(startLocation.getX(), endLocation.getX())) + 1;
+    Zone* mHomeZone = object->cObject->getHome();
+    float mStepReach = object->cObject->getStepReach();
+
+    float mEventGradient = -1.0f;
+    if (object->cSurface == nullptr) {
+      for (ISurface* mSurface : cRuntimeSurfaces.search(mWest, mEast, mSouth, mNorth)) {
+        if (object->cObject->allowTraversal(mSurface)) {
+          std::unique_ptr<CollisionData> mSurfaceEvent = mSurface->getCollision(startLocation, endLocation, mStepReach, startTime, endTime);
+          if (mSurfaceEvent != nullptr) {
+            float mGradient = mSurfaceEvent->getGradient();
+            if (mEventGradient == -1.0f || mGradient < mEventGradient) {
+              mEventGradient = mGradient;
+              mEvent = std::move(mSurfaceEvent);
+            }
+          }
+        }
+      }
+
+      // Aliens simulate an infinite surface outside of their zone... check if this surface has been mounted.
+      ISurface* mObjectSurface = object->cObject->getObjectSurface();
+      if (mObjectSurface != nullptr) {
+        std::unique_ptr<CollisionData> mSurfaceEvent = mObjectSurface->getCollision(startLocation, endLocation, mStepReach, startTime, endTime);
+        if (mSurfaceEvent != nullptr) {
+          float mGradient = mSurfaceEvent->getGradient();
+          if (mEventGradient == -1.0f || mGradient < mEventGradient) {
+            mEventGradient = mGradient;
+            mEvent = std::move(mSurfaceEvent);
+          }
+        }
+      }
+    }
+
+    for (Wall* mWall : cRuntimeWalls.search(mWest, mEast, mSouth, mNorth)) {
+      if (mHomeZone == nullptr || mWall->getZone() == mHomeZone) {
+        std::unique_ptr<CollisionData> mWallEvent = mWall->getCollision(startLocation, endLocation, object->cObject);
+        if (mWallEvent != nullptr) {
+          float mGradient = mWallEvent->getGradient();
+          if (mEventGradient == -1.0f || mGradient < mEventGradient) {
+            mEventGradient = mGradient;
+            mEvent = std::move(mWallEvent);
+          }
+        }
+      }
+    }
+
+    for (ISurface* mSurface : cRuntimePrioritySurfaces.search(mWest, mEast, mSouth, mNorth)) {
+      if (mSurface != object->cSurface) {
+        std::unique_ptr<CollisionData> mPrioritySurfaceEvent = mSurface->getCollision(startLocation, endLocation, mStepReach, startTime, endTime);
+        if (mPrioritySurfaceEvent != nullptr) {
+
+          // Check if there's a regular surface to mount first (for respawning and switch activation).
+          bool mOtherSurfaceEvent = false;
+          for (ISurface* mSurface : cRuntimeSurfaces.search(mWest, mEast, mSouth, mNorth)) {
+            if (object->cSurface != mSurface && object->cObject->allowTraversal(mSurface)) {
+              std::unique_ptr<CollisionData> mSurfaceEvent = mSurface->getCollision(startLocation, endLocation, mStepReach, startTime, endTime);
+              if (mSurfaceEvent != nullptr) {
+                float mGradient = mSurfaceEvent->getGradient();
+                if (mEventGradient == -1.0f || mGradient < mEventGradient) {
+                  mEventGradient = mGradient;
+                  mEvent = std::move(mSurfaceEvent);
+                  mOtherSurfaceEvent = true;
+                }
+              }
+            }
+          }
+
+          float mGradient = mPrioritySurfaceEvent->getGradient();
+          LiteralVertex mLocation = mPrioritySurfaceEvent->getEventLocation();
+          if (!mOtherSurfaceEvent && ((mEventGradient == -1.0f || mGradient < mEventGradient) || /*mEvent->getEventLocation()->getZ() > mLocation->getZ() ||*/ (mEvent->getEventLocation().getZ() == mLocation.getZ()))) {
+            mEvent = std::move(mPrioritySurfaceEvent);
+          }
+          mEventGradient = mGradient;
+        }
+      }
+    }
+    return mEvent;
+  }
+
+  void World::processEvent(PhysicsObject* object, CollisionData& event, double& startTime, double endTime) {
+    PhysicalState mState = PhysicalState(object->cLocation, object->cMomentum);
+    mState.cLocation     = event.getEventLocation();
+
+    // Add time passed to reach this event
+    startTime += (endTime - startTime) * event.getGradient();
+
+//     std::cout << "Event is type: " << static_cast<int>(event.getType()) << std::endl;
+    switch (event.getType()) {
+      case CollisionData::Type::SURFACE_LEAVE: {
+        mState.cMomentum.z = mState.cMomentum.getX() * -event.getXSlope() + mState.cMomentum.getY() * -event.getYSlope();
+        object->leaveSurface(event.getSurface(), mState);
+        break;
+      }
+
+      case CollisionData::Type::SURFACE_MOUNT: {
+        ISurface* mMountedSurface = event.getSurface();
+        double mRemainingHeight = object->cLocation.z - mState.cLocation.z;
+        float mFallHeight = ((mState.cMomentum.z * mState.cMomentum.z) / -cDefGravity) / 2.0 + mRemainingHeight + -(mState.cMomentum.z) / 2.0;
+        if (mMountedSurface->getSurfaceBounce() == 0.0f || mFallHeight == 0.0f) {
+          object->mountSurface(mMountedSurface, mState, mFallHeight);
+        } else {
+          // NO MOMENTUM CONTROL WHILE AIRBORNE!
+          object->bounceSurface(mMountedSurface, mState, mFallHeight);
+          mState.cMomentum.z      = std::sqrt(std::max(0.0f, (mFallHeight + object->cObject->getBounceFactor()) * -cDefGravity * 2.0f));
+          PhysicalState mNewState = calculateNewState(object, cDefBounceTime);
+          mState.cMomentum.x      = mNewState.cMomentum.x;
+          mState.cMomentum.y      = mNewState.cMomentum.y;
+          object->leaveSurface(event.getSurface(), mState);
+        }
+        break;
+      }
+
+      case CollisionData::Type::SURFACE_MOVEMENT: {
+        LiteralVertex mEventLocation = event.getEventLocation();
+        ISurface* mContactSurface = getSurfaceAt(mEventLocation, object->cObject->getStepReach(), false);
+        if (mContactSurface != nullptr) {
+          mContactSurface->notifyContact();
+        }
+        break;
+      }
+
+      case CollisionData::Type::WALL_IMPACT: {
+
+        // Rolling upwards when hitting a wall may cause object to become airborne
+        if (object->cSurface != nullptr) {
+          mState.cMomentum.z = mState.cMomentum.x * -object->cSurface->getXAcceleration(mState.cLocation.x, mState.cLocation.y)
+                             + mState.cMomentum.y * -object->cSurface->getYAcceleration(mState.cLocation.x, mState.cLocation.y);
+          if (mState.cMomentum.z > 0.0f) {
+            object->leaveSurface(object->cSurface, mState);
+          }
+        }
+
+        // Wall bounce
+        Wall* mWall = event.getWall();
+        Wall::Direction mFaceDirection = mWall->getFaceDirection();
+        float mSurfaceBounce = mWall->getBounce();
+        double* mAffectedMomentum = (mFaceDirection == Wall::Direction::NORTH || mFaceDirection == Wall::Direction::SOUTH) ? &(mState.cMomentum.y) : &(mState.cMomentum.x);
+        *mAffectedMomentum = -(*mAffectedMomentum) * mSurfaceBounce;
+        if (fabs(*mAffectedMomentum) < object->cObject->getHugMomentum()) {
+
+          // Wall hugging
+          (*mAffectedMomentum) = 0.0f;
+          if (mWall->isAtZoneEdge()) {
+            mWall->updateState(mState);
+            object->setPhysicalState(mState);
+          } else {
+            object->hugWall(mWall, mState);
+          }
+        } else {
+
+          // Wall bounce
+          object->cObject->bounceWall(mWall);
+          object->setPhysicalState(mState);
+        }
+        break;
+      }
+
+      case CollisionData::Type::WALL_CLIP: {
+        object->setPhysicalState(mState);
+        break;
+      }
+
+      case CollisionData::Type::WALL_LEAVE: {
+        object->unhugWall(event.getWall(), mState);
+        break;
+      }
+    }
+  }
+}

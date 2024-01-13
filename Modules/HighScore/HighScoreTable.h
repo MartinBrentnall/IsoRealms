@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Martin Brentnall
+ * Copyright 2023 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,42 +16,39 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef HIGH_SCORE_TABLE_H
-#define HIGH_SCORE_TABLE_H
+#pragma once
 
 #include <map>
+#include <memory>
 #include <string>
 #include <vector>
 
-#include <IsoRealms/Persistence/DOMNodeWrapper.h>
-#include <IsoRealms/Persistence/DOMNodeWriter.h>
+#include "IsoRealms/Exception/ArgumentException.h"
+#include "IsoRealms/Persistence/DOMNode.h"
+#include "IsoRealms/Persistence/DOMNodeWriter.h"
 
 #include "HighScoreRecord.h"
 
-class HighScoreTable:public IHighScoreTable {
-  private:
-  unsigned int cMaximumRecords;
-  std::string cComparisonField;
-  std::vector<std::string> cHighScoreFields;
-  std::vector<HighScoreRecord*> cHighScoreRecords;
-  
-  void insertRecord(HighScoreRecord*);
-  
-  public:
-  HighScoreTable(DOMNodeWrapper*);
-  HighScoreTable(std::vector<std::string>, const std::string&, unsigned int);
-  
-  bool qualifies(const std::string&);
-  void insertRecord(std::map<std::string, std::string>);
-  void save(DOMNodeWriter*);
+namespace IsoRealms::HighScore {
+  class HighScoreTable {
+    public:
+    HighScoreTable(DOMNode& node);
+    HighScoreTable(std::vector<std::string> fields, const std::string& comparisonField, unsigned int maximumRecords);
     
-  /******************************\
-   * Implements IHighScoreTable *
-  \******************************/
-  unsigned int getFieldCount();
-  std::string getFieldName(unsigned int);
-  unsigned int getFieldIndex(const std::string&);
-  unsigned int getComparisonFieldIndex();
-};
-
-#endif
+    bool qualifies(const std::string& value);
+    void insertRecord(std::map<std::string, std::string> record);
+    void save(DOMNodeWriter* node);
+    unsigned int getFieldCount();
+    std::string getFieldName(unsigned int index);
+    unsigned int getFieldIndex(const std::string& field);
+    unsigned int getComparisonFieldIndex();
+    
+    private:
+    unsigned int cMaximumRecords;
+    std::string cComparisonField;
+    std::vector<std::string> cHighScoreFields;
+    std::vector<std::unique_ptr<HighScoreRecord>> cHighScoreRecords;
+    
+    void insertRecord(std::unique_ptr<HighScoreRecord> record);
+  };
+}

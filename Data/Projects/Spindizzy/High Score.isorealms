@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<Project>
+  <Screen key="UI/Layout/HighScore"/>
+  <Input key="Basics/InputGroup/Score"/>
+  <QuitAction>
+    <Action key="Quit"/>
+  </QuitAction>
+  <Include/>
+  <Modules>
+    <Module name="Basics">
+      <Configuration/>
+      <Resources>
+        <ColourCycler name="SelectionHighlight">
+          <IO>
+            <InputColour key="Literal" value="1.0 0.5 0.5 1.0"/>
+            <InputColour key="Literal" value="1.0 1.0 0.0 1.0"/>
+            <InputColour key="Literal" value="0.0 1.0 0.0 1.0"/>
+            <InputColour key="Literal" value="0.0 1.0 1.0 1.0"/>
+            <InputColour key="Literal" value="0.5 0.5 1.0 1.0"/>
+            <InputColour key="Literal" value="1.0 0.5 1.0 1.0"/>
+            <OutputColour offset="0.0000"/>
+          </IO>
+          <CycleSpeed key="Literal" value="0.005"/>
+        </ColourCycler>
+        <Font detail="64" filename="Fonts/BubblegumSans-Regular.ttf" name="LayoutFont" scale="0.7" offsetY="0.2"/>
+        <InputGroup name="Score">
+          <InputHandler key="Basics/InputSwitch/NameEntry"/>
+          <InputHandler key="HighScore/ScoreTracker/Project"/>
+        </InputGroup>
+        <InputSwitch name="NameEntry">
+          <Init key="Literal"/>
+        </InputSwitch>
+        <InterruptHandler name="NoHighScore">
+          <Action>
+            <Action key="Basics/Function/Quit"/>
+          </Action>
+        </InterruptHandler>
+        <Function name="Quit">
+          <Bind variable="project">
+            <To key="Project"/>
+          </Bind>
+          <Code>project:finish(false)</Code>
+        </Function>
+        <Function name="WriteValues">
+          <Bind variable="project">
+            <To key="Project"/>
+          </Bind>
+          <Bind variable="highScore">
+            <To key="HighScore/ScoreTracker/Project"/>
+          </Bind>
+          <Code>highScore:writeValues()
+project:finish(false)</Code>
+        </Function>
+        <Boolean name="User"/>
+        <StringScreen name="AnyKey" alignment="Center">
+          <Font key="Basics/Font/LayoutFont"/>
+          <Value key="Literal" value="Press Any Key to Continue"/>
+		  <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
+        </StringScreen>
+        <StringScreen name="Congratulations" alignment="Center">
+          <Font key="Basics/Font/LayoutFont"/>
+          <Value key="Literal" value="You achieved a high score!  Please enter your name:"/>
+		  <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
+        </StringScreen>
+      </Resources>
+    </Module>
+    <Module name="UI">
+      <Configuration/>
+      <Resources>
+        <Layout name="HighScore">
+          <Component name="Background">
+            <Screen key="HighScore/ScoreTracker/Project"/>
+          </Component>
+          <Component name="Game"/>
+        </Layout>
+        <Layout name="AnyKey">
+          <Component name="AnyKey">
+            <Screen key="Basics/StringScreen/AnyKey"/>
+            <Left>
+              <Location type="Absolute" value="-0.5"/>
+            </Left>
+            <Right>
+              <Location type="Absolute" value="0.5"/>
+            </Right>
+            <Bottom>
+              <Location type="Absolute" value="-0.1"/>
+            </Bottom>
+            <Top>
+              <Location type="Absolute" value="0.0"/>
+            </Top>
+          </Component>
+        </Layout>
+        <Layout name="NameEntry">
+          <Component name="VirtualKeyboard">
+            <Screen key="UI/VirtualKeyboard/NameEntry"/>
+          </Component>
+          <Component name="Congratulations">
+            <Screen key="Basics/StringScreen/Congratulations"/>
+            <Left>
+              <Location type="Absolute" value="-0.5"/>
+            </Left>
+            <Right>
+              <Location type="Absolute" value="0.5"/>
+            </Right>
+            <Bottom>
+              <Location type="Absolute" value="-0.1"/>
+            </Bottom>
+            <Top>
+              <Location type="Absolute" value="0.0"/>
+            </Top>
+          </Component>
+        </Layout>
+        <VirtualKeyboard name="NameEntry">
+          <Font key="Basics/Font/LayoutFont"/>
+          <SelectionColour key="Basics/ColourCycler/SelectionHighlight/0"/>
+          <ConfirmAction>
+            <Action key="Basics/Function/WriteValues"/>
+          </ConfirmAction>
+        </VirtualKeyboard>
+      </Resources>
+    </Module>
+    <Module name="HighScore">
+      <Configuration/>
+      <Resources>
+        <ScoreTracker name="Project" maximumRecords="10">
+          <SavePath key=":Project">
+            <Project key="HighScore/ScoreTracker/Project/Project"/>
+            <Value key=":Project">
+              <Project key="Replay/Recorder/Recorder/Project"/>
+              <Value key="ProjectFilename"/>
+            </Value>
+          </SavePath>
+          <User key="Basics/Boolean/User"/>
+          <Quit key="Basics/Function/Quit"/>
+          <WriteField name="Name" type="String">
+            <Value key="UI/VirtualKeyboard/NameEntry"/>
+          </WriteField>
+          <WriteField name="Score" type="Integer" compare="true">
+            <Value key=":Project">
+              <Project key="HighScore/ScoreTracker/Project/Project"/>
+              <Value key=":Project">
+                <Project key="Replay/Recorder/Recorder/Project"/>
+                <Value key="Basics/Integer/Score"/>
+              </Value>
+            </Value>
+          </WriteField>
+          <WriteField name="Time" type="String">
+            <Value key=":Project">
+              <Project key="HighScore/ScoreTracker/Project/Project"/>
+              <Value key=":Project">
+                <Project key="Replay/Recorder/Recorder/Project"/>
+                <Value key="Basics/Timer/TimeLimit"/>
+              </Value>
+            </Value>
+          </WriteField>
+          <WriteField name="Jewels" type="Integer">
+            <Value key=":Project">
+              <Project key="HighScore/ScoreTracker/Project/Project"/>
+              <Value key=":Project">
+                <Project key="Replay/Recorder/Recorder/Project"/>
+                <Value key="Basics/Integer/JewelCount"/>
+              </Value>
+            </Value>
+          </WriteField>
+          <WriteField name="Zones" type="Integer">
+            <Value key=":Project">
+              <Project key="HighScore/ScoreTracker/Project/Project"/>
+              <Value key=":Project">
+                <Project key="Replay/Recorder/Recorder/Project"/>
+                <Value key="Basics/Integer/RemainingZones"/>
+              </Value>
+            </Value>
+          </WriteField>
+          <WriteField name="Recording" type="String">
+            <Value key=":Project">
+              <Project key="HighScore/ScoreTracker/Project/Project"/>
+              <Value key=":Project">
+                <Project key="Replay/Recorder/Recorder/Project"/>
+                <Value key="ProjectFilename"/>
+              </Value>
+            </Value>
+          </WriteField>
+          <OnHighScoreAchieved>
+            <Action key="Basics/Script">
+              <Bind variable="layerSwitch">
+                <To key="UI/Layout/HighScore/Game"/>
+              </Bind>
+              <Bind variable="layerNameEntry">
+                <To key=":Screen">
+                  <Asset key="UI/Layout/NameEntry"/>
+                </To>
+              </Bind>
+              <Bind variable="nameEntry">
+                <To key="UI/VirtualKeyboard/NameEntry"/>
+              </Bind>
+              <Bind variable="input">
+                <To key="Basics/InputSwitch/NameEntry"/>
+              </Bind>
+              <Bind variable="handler">
+                <To key=":InputHandler">
+                  <Asset key="UI/VirtualKeyboard/NameEntry"/>
+                </To>
+              </Bind>
+              <Code>layerSwitch:setScreen(layerNameEntry)
+nameEntry:reset()
+input:setInputHandler(handler)</Code>
+            </Action>
+          </OnHighScoreAchieved>
+          <Otherwise>
+            <Action key="Basics/Script">
+              <Bind variable="layerSwitch">
+                <To key="UI/Layout/HighScore/Game"/>
+              </Bind>
+              <Bind variable="layerAnyKey">
+                <To key=":Screen">
+                  <Asset key="UI/Layout/AnyKey"/>
+                </To>
+              </Bind>
+              <Bind variable="input">
+                <To key="Basics/InputSwitch/NameEntry"/>
+              </Bind>
+              <Bind variable="handler">
+                <To key=":InputHandler">
+                  <Asset key="Basics/InterruptHandler/NoHighScore"/>
+                </To>
+              </Bind>
+              <Code>layerSwitch:setScreen(layerAnyKey)
+input:setInputHandler(handler)</Code>
+            </Action>
+          </Otherwise>
+        </ScoreTracker>
+      </Resources>
+    </Module>
+  </Modules>
+</Project>

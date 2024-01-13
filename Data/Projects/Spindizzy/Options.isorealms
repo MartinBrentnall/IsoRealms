@@ -1,0 +1,886 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<Project>
+  <Include/>
+  <Modules>
+    <Module name="Basics">
+      <Configuration/>
+      <Resources>
+        <AnalogueInput name="MoveX">
+          <Axis axis="0" deadZone="0.15259"/>
+          <DigitalToAnalogue name="Left" toValue="-1.0">
+            <KeyDown value="ArrowLeft"/>
+            <KeyDown value="A"/>
+            <Hat hat="0" direction="Left"/>
+          </DigitalToAnalogue>
+          <DigitalToAnalogue name="Right" toValue="1.0">
+            <KeyDown value="ArrowRight"/>
+            <KeyDown value="D"/>
+            <Hat hat="0" direction="Right"/>
+          </DigitalToAnalogue>
+        </AnalogueInput>
+        <AnalogueInput name="MoveY">
+          <Axis axis="1" deadZone="0.15259"/>
+          <DigitalToAnalogue name="Up" toValue="-1.0">
+            <KeyDown value="ArrowUp"/>
+            <KeyDown value="W"/>
+            <Hat hat="0" direction="Up"/>
+          </DigitalToAnalogue>
+          <DigitalToAnalogue name="Down" toValue="1.0">
+            <KeyDown value="ArrowDown"/>
+            <KeyDown value="S"/>
+            <Hat hat="0" direction="Down"/>
+          </DigitalToAnalogue>
+        </AnalogueInput>
+        <ColourCycler name="Menu Selection Highlight">
+          <IO>
+            <InputColour key="Literal" value="1.0 0.5 0.5 1.0"/>
+            <InputColour key="Literal" value="1.0 1.0 0.0 1.0"/>
+            <InputColour key="Literal" value="0.0 1.0 0.0 1.0"/>
+            <InputColour key="Literal" value="0.0 1.0 1.0 1.0"/>
+            <InputColour key="Literal" value="0.5 0.5 1.0 1.0"/>
+            <InputColour key="Literal" value="1.0 0.5 1.0 1.0"/>
+            <OutputColour offset="0.0000"/>
+          </IO>
+          <CycleSpeed key="Literal" value="0.005"/>
+        </ColourCycler>
+        <DigitalInput name="Brake">
+          <KeyDown value="Space"/>
+          <ButtonDown button="0"/>
+        </DigitalInput>
+        <DigitalInput name="Transform">
+          <KeyDown value="I"/>
+          <ButtonDown button="2"/>
+        </DigitalInput>
+        <DigitalInput name="Destruct">
+          <KeyDown value="Delete"/>
+          <ButtonDown button="4"/>
+        </DigitalInput>
+        <DigitalInput name="Map">
+          <KeyDown value="M"/>
+          <ButtonDown button="3"/>
+        </DigitalInput>
+        <DigitalInput name="Pause">
+          <KeyDown value="Escape"/>
+          <ButtonDown button="9"/>
+        </DigitalInput>
+        <DigitalInput name="ResetCamera">
+          <KeyDown value="F1"/>
+        </DigitalInput>
+        <DigitalInput name="ReverseCamera">
+          <KeyDown value="F7"/>
+        </DigitalInput>
+        <DigitalInput name="RotateCameraRight">
+          <KeyDown value="F3"/>
+          <ButtonDown button="6"/>
+        </DigitalInput>
+        <DigitalInput name="RotateCameraLeft">
+          <KeyDown value="F5"/>
+          <ButtonDown button="7"/>
+        </DigitalInput>
+        <DigitalInput name="Thrust">
+          <KeyDown value="LeftControl"/>
+          <ButtonDown button="1"/>
+        </DigitalInput>
+        <Font name="Menu" filename="Fonts/BubblegumSans-Regular.ttf" detail="64" scale="0.7" offsetY="0.2"/>
+        <InputSwitch name="Options Screen"/>
+        <Function name="ConfigureInput">
+          <Bind variable="screen">
+            <To key="UI/Layout/Main/Menu"/>
+          </Bind>
+          <Bind variable="input">
+            <To key="Basics/InputSwitch/Options Screen"/>
+          </Bind>
+          <Bind variable="menu">
+            <To key="UI/Menu/ConfigureInput"/>
+          </Bind>
+          <Bind variable="menuScreen">
+            <To key=":Screen">
+              <Asset key="UI/Menu/ConfigureInput"/>
+            </To>
+          </Bind>
+          <Bind variable="menuInput">
+            <To key=":InputHandler">
+              <Asset key="UI/Menu/ConfigureInput"/>
+            </To>
+          </Bind>
+          <Bind variable="inputName">
+            <To key="Basics/String/InputName"/>
+          </Bind>
+          <Bind variable="inputList">
+            <To key="UI/Menu/ConfigureInput/DigitalInput/Spindizzy"/>
+          </Bind>
+          <Argument name="name"/>
+          <Argument name="digitalInput"/>
+          <Code>table.insert(menuStack, menuScreen)
+table.insert(inputStack, menuInput)
+menu:reset()
+input:setInputHandler(menuInput)
+screen:setScreen(menuScreen)
+inputName:setValue(name:getValue())
+currentInputList = inputList
+currentDigitalInput = digitalInput
+inputList:clear()
+for i = 0, digitalInput:getMappingCount() - 1 do
+  inputList:addMapping(digitalInput:getMapping(i))
+end</Code>
+        </Function>
+        <Function name="PopScreen">
+          <Bind variable="screen">
+            <To key="UI/Layout/Main/Menu"/>
+          </Bind>
+          <Bind variable="input">
+            <To key="Basics/InputSwitch/Options Screen"/>
+          </Bind>
+          <Bind variable="inputName">
+            <To key="Basics/String/InputName"/>
+          </Bind>
+          <Code>table.remove(menuStack)
+table.remove(inputStack)
+input:setInputHandler(inputStack[#inputStack])
+screen:setScreen(menuStack[#menuStack])
+inputName:setValue("")</Code>
+        </Function>
+        <Function name="PushScreen">
+          <Bind variable="screen">
+            <To key="UI/Layout/Main/Menu"/>
+          </Bind>
+          <Bind variable="input">
+            <To key="Basics/InputSwitch/Options Screen"/>
+          </Bind>
+          <Argument name="menuScreen"/>
+          <Argument name="menu"/>
+          <Argument name="menuInput"/>
+          <Code>table.insert(menuStack, menuScreen)
+table.insert(inputStack, menuInput)
+menu:reset()
+input:setInputHandler(menuInput)
+screen:setScreen(menuScreen)</Code>
+        </Function>
+        <Function name="ReloadConfiguration">
+          <Bind variable="isoRealms">
+            <To key="Basics"/>
+          </Bind>
+          <Bind variable="project">
+            <To key="Project"/>
+          </Bind>
+          <Bind variable="optionFullScreen">
+            <To key="UI/Menu/Visual/Boolean/FullScreen"/>
+          </Bind>
+          <Bind variable="soundVolumeSlider">
+            <To key="UI/Menu/Audio/Slider/SoundVolume"/>
+          </Bind>
+  <!--         <Bind variable="musicVolumeSlider">
+            <To key="UI/Menu/Audio/Slider/MusicVolume"/>
+          </Bind> -->
+          <Bind variable="optionLeft">
+            <To key="UI/Menu/Control/Action/Left"/>
+          </Bind>
+          <Bind variable="optionRight">
+            <To key="UI/Menu/Control/Action/Right"/>
+          </Bind>
+          <Bind variable="optionUp">
+            <To key="UI/Menu/Control/Action/Up"/>
+          </Bind>
+          <Bind variable="optionDown">
+            <To key="UI/Menu/Control/Action/Down"/>
+          </Bind>
+          <Bind variable="optionThrust">
+            <To key="UI/Menu/Control/Action/Thrust"/>
+          </Bind>
+          <Bind variable="optionBrake">
+            <To key="UI/Menu/Control/Action/Brake"/>
+          </Bind>
+          <Bind variable="optionRotateViewLeft">
+            <To key="UI/Menu/Control/Action/RotateViewLeft"/>
+          </Bind>
+          <Bind variable="optionRotateViewRight">
+            <To key="UI/Menu/Control/Action/RotateViewRight"/>
+          </Bind>
+          <Bind variable="optionReverseView">
+            <To key="UI/Menu/Control/Action/ReverseView"/>
+          </Bind>
+          <Bind variable="optionResetView">
+            <To key="UI/Menu/Control/Action/ResetView"/>
+          </Bind>
+          <Bind variable="optionToggleMap">
+            <To key="UI/Menu/Control/Action/ToggleMap"/>
+          </Bind>
+          <Bind variable="optionToggleCraft">
+            <To key="UI/Menu/Control/Action/ToggleCraft"/>
+          </Bind>
+          <Bind variable="optionTogglePause">
+            <To key="UI/Menu/Control/Action/TogglePause"/>
+          </Bind>
+          <Bind variable="optionDestruct">
+            <To key="UI/Menu/Control/Action/Destruct"/>
+          </Bind>
+          <Bind variable="inputLeft">
+            <To key="Basics/AnalogueInput/MoveX/Left"/>
+          </Bind>
+          <Bind variable="inputRight">
+            <To key="Basics/AnalogueInput/MoveX/Right"/>
+          </Bind>
+          <Bind variable="inputUp">
+            <To key="Basics/AnalogueInput/MoveY/Up"/>
+          </Bind>
+          <Bind variable="inputDown">
+            <To key="Basics/AnalogueInput/MoveY/Down"/>
+          </Bind>
+          <Bind variable="inputThrust">
+            <To key="Basics/DigitalInput/Thrust"/>
+          </Bind>
+          <Bind variable="inputBrake">
+            <To key="Basics/DigitalInput/Brake"/>
+          </Bind>
+          <Bind variable="inputRotateViewLeft">
+            <To key="Basics/DigitalInput/RotateCameraLeft"/>
+          </Bind>
+          <Bind variable="inputRotateViewRight">
+            <To key="Basics/DigitalInput/RotateCameraRight"/>
+          </Bind>
+          <Bind variable="inputReverseView">
+            <To key="Basics/DigitalInput/ReverseCamera"/>
+          </Bind>
+          <Bind variable="inputResetView">
+            <To key="Basics/DigitalInput/ResetCamera"/>
+          </Bind>
+          <Bind variable="inputToggleMap">
+            <To key="Basics/DigitalInput/Map"/>
+          </Bind>
+          <Bind variable="inputToggleCraft">
+            <To key="Basics/DigitalInput/Transform"/>
+          </Bind>
+          <Bind variable="inputTogglePause">
+            <To key="Basics/DigitalInput/Pause"/>
+          </Bind>
+          <Bind variable="inputDestruct">
+            <To key="Basics/DigitalInput/Destruct"/>
+          </Bind>
+          <Code>fullScreen = project:isFullScreen()
+isoRealms:reloadGlobalConfiguration()
+soundVolume = isoRealms:getSoundVolume()
+-- musicVolume = isoRealms:getMusicVolume()
+optionFullScreen:setValue(fullScreen)
+soundVolumeSlider:setValue(soundVolume)
+-- musicVolumeSlider:setValue(musicVolume)
+
+optionLeft:setValue(inputLeft:getInputsString())
+optionRight:setValue(inputRight:getInputsString())
+optionUp:setValue(inputUp:getInputsString())
+optionDown:setValue(inputDown:getInputsString())
+optionThrust:setValue(inputThrust:getInputsString())
+optionBrake:setValue(inputBrake:getInputsString())
+optionRotateViewLeft:setValue(inputRotateViewLeft:getInputsString())
+optionRotateViewRight:setValue(inputRotateViewRight:getInputsString())
+optionReverseView:setValue(inputReverseView:getInputsString())
+optionResetView:setValue(inputResetView:getInputsString())
+optionToggleMap:setValue(inputToggleMap:getInputsString())
+optionToggleCraft:setValue(inputToggleCraft:getInputsString())
+optionTogglePause:setValue(inputTogglePause:getInputsString())
+optionDestruct:setValue(inputDestruct:getInputsString())</Code>
+        </Function>      
+        <Function name="RestorePrevious">
+          <Bind variable="project">
+            <To key="Project"/>
+          </Bind>
+          <Bind variable="optionResolution">
+            <To key="UI/Menu/Visual/DisplayResolution/Resolution"/>
+          </Bind>
+          <Bind variable="optionFullScreen">
+            <To key="UI/Menu/Visual/Boolean/FullScreen"/>
+          </Bind>
+          <Bind variable="screenTestTimer">
+            <To key="Basics/Timer/VideoModeTestDelay"/>
+          </Bind>
+          <Bind variable="screen">
+            <To key="UI/Layout/Main/Menu"/>
+          </Bind>
+          <Bind variable="input">
+            <To key="Basics/InputSwitch/Options Screen"/>
+          </Bind>
+          <Code>project:setDisplayResolution(previousMode, previousFullScreen)
+optionResolution:setValue(previousMode)
+optionFullScreen:setValue(previousFullScreen)
+table.remove(menuStack)
+table.remove(inputStack)
+input:setInputHandler(inputStack[#inputStack])
+screen:setScreen(menuStack[#menuStack])
+screenTestTimer:pause()</Code>
+        </Function>
+        <String name="InputName" value=""/>
+        <StringScreen name="TextInput" alignment="Center">
+          <Font key="Basics/Font/Menu"/>
+          <Value key="Basics/String/InputName"/>
+		  <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
+        </StringScreen>
+        <Timer name="VideoModeTestDelay" value="0">
+          <ExpirationAction>
+            <Action key="Basics/Function/RestorePrevious"/>
+          </ExpirationAction>
+        </Timer>
+      </Resources>
+    </Module>
+    <Module name="UI">
+      <Configuration/>
+      <Resources>
+        <Layout name="ConfigureInput">
+          <Component name="TextInput">
+            <Screen key="Basics/StringScreen/TextInput"/>
+            <Bottom>
+              <Location type="Absolute" value="0.2"/>
+            </Bottom>
+            <Top>
+              <Location type="Absolute" value="0.3"/>
+            </Top>
+          </Component>
+        </Layout>
+        <Menu name="Options">
+          <Colour key="Basics/ColourCycler/Menu Selection Highlight/0"/>
+          <Font key="Basics/Font/Menu"/>
+          <Options>
+            <Action label="Visual">
+              <Action>
+                <Action key="Basics/Function/PushScreen">
+                  <Bind argument="menuScreen">
+                    <To key=":Screen">
+                      <Asset key="UI/Menu/Visual"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="menuInput">
+                    <To key=":InputHandler">
+                      <Asset key="UI/Menu/Visual"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="menu">
+                    <To key="UI/Menu/Visual"/>
+                  </Bind>
+                </Action>
+              </Action>
+            </Action>
+            <Action label="Audio">
+              <Action>
+                <Action key="Basics/Function/PushScreen">
+                  <Bind argument="menuScreen">
+                    <To key=":Screen">
+                      <Asset key="UI/Menu/Audio"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="menuInput">
+                    <To key=":InputHandler">
+                      <Asset key="UI/Menu/Audio"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="menu">
+                    <To key="UI/Menu/Audio"/>
+                  </Bind>
+                </Action>
+              </Action>
+            </Action>
+            <Action label="Control">
+              <Action>
+                <Action key="Basics/Function/PushScreen">
+                  <Bind argument="menuScreen">
+                    <To key=":Screen">
+                      <Asset key="UI/Menu/Control"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="menuInput">
+                    <To key=":InputHandler">
+                      <Asset key="UI/Menu/Control"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="menu">
+                    <To key="UI/Menu/Control"/>
+                  </Bind>
+                </Action>
+              </Action>
+            </Action>
+          </Options>
+          <Exit>
+            <Action key="Basics/Function/PopScreen"/>
+          </Exit>
+        </Menu>
+        <Menu name="Visual">
+          <Colour key="Basics/ColourCycler/Menu Selection Highlight/0"/>
+          <Font key="Basics/Font/Menu"/>
+          <Options>
+            <Boolean id="FullScreen" label="Full Screen" labelTrue="Yes" labelFalse="No"/>
+            <DisplayResolution id="Resolution" label="Resolution"/>
+            <Action label="Apply Settings">
+              <Action>
+                <Action key="Basics/Script">
+                  <Bind variable="screen">
+                    <To key="UI/Layout/Main/Menu"/>
+                  </Bind>
+                  <Bind variable="input">
+                    <To key="Basics/InputSwitch/Options Screen"/>
+                  </Bind>
+                  <Bind variable="optionResolution">
+                    <To key="UI/Menu/Visual/DisplayResolution/Resolution"/>
+                  </Bind>
+                  <Bind variable="optionFullScreen">
+                    <To key="UI/Menu/Visual/Boolean/FullScreen"/>
+                  </Bind>
+                  <Bind variable="project">
+                    <To key="Project"/>
+                  </Bind>
+                  <Bind variable="promptScreen">
+                    <To key=":Screen">
+                      <Asset key="UI/Prompt/VisualTest"/>
+                    </To>
+                  </Bind>
+                  <Bind variable="promptInput">
+                    <To key=":InputHandler">
+                      <Asset key="UI/Prompt/VisualTest"/>
+                    </To>
+                  </Bind>
+                  <Bind variable="prompt">
+                    <To key="UI/Prompt/VisualTest"/>
+                  </Bind>
+                  <Bind variable="screenTestTimer">
+                    <To key="Basics/Timer/VideoModeTestDelay"/>
+                  </Bind>
+                  <Code>previousMode = project:getDisplayResolution()
+previousFullScreen = project:isFullScreen()
+mode = optionResolution:getValue()
+fullScreen = optionFullScreen:getValue()
+project:setDisplayResolution(mode, fullScreen)
+screen:setScreen(promptScreen)
+input:setInputHandler(promptInput)
+screenTestTimer:start(10000)
+prompt:reset()</Code>
+                </Action>
+              </Action>
+            </Action>
+          </Options>
+          <Exit>
+            <Action key="Basics/Script">
+              <Bind variable="screen">
+                <To key="UI/Layout/Main/Menu"/>
+              </Bind>
+              <Bind variable="input">
+                <To key="Basics/InputSwitch/Options Screen"/>
+              </Bind>
+              <Bind variable="project">
+                <To key="Project"/>
+              </Bind>
+              <Bind variable="optionResolution">
+                <To key="UI/Menu/Visual/DisplayResolution/Resolution"/>
+              </Bind>
+              <Bind variable="optionFullScreen">
+                <To key="UI/Menu/Visual/Boolean/FullScreen"/>
+              </Bind>
+              <Code>displayResolution = project:getDisplayResolution()
+fullScreen = project:isFullScreen()
+optionResolution:setValue(displayResolution)
+optionFullScreen:setValue(fullScreen)
+table.remove(menuStack)
+table.remove(inputStack)
+input:setInputHandler(inputStack[#inputStack])
+screen:setScreen(menuStack[#menuStack])</Code>
+            </Action>
+          </Exit>
+        </Menu>
+        <Menu name="Audio">
+          <Colour key="Basics/ColourCycler/Menu Selection Highlight/0"/>
+          <Font key="Basics/Font/Menu"/>
+          <Options>
+    <!--        <Slider id="MusicVolume" label="Music Volume" minimum="0" maximum="1">
+              <ChangeAction key="Basics/Function/UpdateMusicVolume"/>
+            </Slider>-->
+            <Slider id="SoundVolume" label="Sound Volume" minimum="0" maximum="1">
+              <ChangeAction>
+                <Action key="Basics/Script">
+                  <Bind variable="isoRealms">
+                    <To key="Basics"/>
+                  </Bind>
+                  <Bind variable="soundVolumeSlider">
+                    <To key="UI/Menu/Audio/Slider/SoundVolume"/>
+                  </Bind>
+                  <Code>soundVolume = soundVolumeSlider:getValue()
+isoRealms:setSoundVolume(soundVolume)
+isoRealms:persistGlobalConfiguration()</Code>
+                </Action>
+              </ChangeAction>
+            </Slider>
+          </Options>
+          <Exit>
+            <Action key="Basics/Function/PopScreen"/>
+          </Exit>
+        </Menu>
+        <Menu name="Control">
+          <Colour key="Basics/ColourCycler/Menu Selection Highlight/0"/>
+          <Font key="Basics/Font/Menu"/>
+          <Options>
+            <Action id="Left" label="Left">
+              <Action>
+                <Action key="Basics/Function/ConfigureInput">
+                  <Bind argument="name">
+                    <To key=":String">
+                      <Asset key="Literal" value="Configure Input: Left"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="digitalInput">
+                    <To key="Basics/AnalogueInput/MoveX/Left"/>
+                  </Bind>
+                </Action>
+              </Action>
+            </Action>
+            <Action id="Right" label="Right">
+              <Action>
+                <Action key="Basics/Function/ConfigureInput">
+                  <Bind argument="name">
+                    <To key=":String">
+                      <Asset key="Literal" value="Configure Input: Right"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="digitalInput">
+                    <To key="Basics/AnalogueInput/MoveX/Right"/>
+                  </Bind>
+                </Action>
+              </Action>
+            </Action>
+            <Action id="Up" label="Up">
+              <Action>
+                <Action key="Basics/Function/ConfigureInput">
+                  <Bind argument="name">
+                    <To key=":String">
+                      <Asset key="Literal" value="Configure Input: Up"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="digitalInput">
+                    <To key="Basics/AnalogueInput/MoveY/Up"/>
+                  </Bind>
+                </Action>
+              </Action>
+            </Action>
+            <Action id="Down" label="Down">
+              <Action>
+                <Action key="Basics/Function/ConfigureInput">
+                  <Bind argument="name">
+                    <To key=":String">
+                      <Asset key="Literal" value="Configure Input: Down"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="digitalInput">
+                    <To key="Basics/AnalogueInput/MoveY/Down"/>
+                  </Bind>
+                </Action>
+              </Action>
+            </Action>
+            <Action id="Thrust" label="Thrust">
+              <Action>
+                <Action key="Basics/Function/ConfigureInput">
+                  <Bind argument="name">
+                    <To key=":String">
+                      <Asset key="Literal" value="Configure Input: Thrust"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="digitalInput">
+                    <To key="Basics/DigitalInput/Thrust"/>
+                  </Bind>
+                </Action>
+              </Action>
+            </Action>
+            <Action id="Brake" label="Brake">
+              <Action>
+                <Action key="Basics/Function/ConfigureInput">
+                  <Bind argument="name">
+                    <To key=":String">
+                      <Asset key="Literal" value="Configure Input: Brake"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="digitalInput">
+                    <To key="Basics/DigitalInput/Brake"/>
+                  </Bind>
+                </Action>
+              </Action>
+            </Action>
+            <Action id="RotateViewLeft" label="Rotate View Left">
+              <Action>
+                <Action key="Basics/Function/ConfigureInput">
+                  <Bind argument="name">
+                    <To key=":String">
+                      <Asset key="Literal" value="Configure Input: Rotate View Left"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="digitalInput">
+                    <To key="Basics/DigitalInput/RotateCameraLeft"/>
+                  </Bind>
+                </Action>
+              </Action>
+            </Action>
+            <Action id="RotateViewRight" label="Rotate View Right">
+              <Action>
+                <Action key="Basics/Function/ConfigureInput">
+                  <Bind argument="name">
+                    <To key=":String">
+                      <Asset key="Literal" value="Configure Input: Rotate View Right"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="digitalInput">
+                    <To key="Basics/DigitalInput/RotateCameraRight"/>
+                  </Bind>
+                </Action>
+              </Action>
+            </Action>
+            <Action id="ReverseView" label="Reverse View">
+              <Action>
+                <Action key="Basics/Function/ConfigureInput">
+                  <Bind argument="name">
+                    <To key=":String">
+                      <Asset key="Literal" value="Configure Input: Reverse View"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="digitalInput">
+                    <To key="Basics/DigitalInput/ReverseCamera"/>
+                  </Bind>
+                </Action>
+              </Action>
+            </Action>
+            <Action id="ResetView" label="Reset View">
+              <Action>
+                <Action key="Basics/Function/ConfigureInput">
+                  <Bind argument="name">
+                    <To key=":String">
+                      <Asset key="Literal" value="Configure Input: Reset View"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="digitalInput">
+                    <To key="Basics/DigitalInput/ResetCamera"/>
+                  </Bind>
+                </Action>
+              </Action>
+            </Action>
+            <Action id="ToggleMap" label="Toggle Map">
+              <Action>
+                <Action key="Basics/Function/ConfigureInput">
+                  <Bind argument="name">
+                    <To key=":String">
+                      <Asset key="Literal" value="Configure Input: Toggle Map"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="digitalInput">
+                    <To key="Basics/DigitalInput/Map"/>
+                  </Bind>
+                </Action>
+              </Action>
+            </Action>
+            <Action id="ToggleCraft" label="Toggle Craft">
+              <Action>
+                <Action key="Basics/Function/ConfigureInput">
+                  <Bind argument="name">
+                    <To key=":String">
+                      <Asset key="Literal" value="Configure Input: Toggle Craft"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="digitalInput">
+                    <To key="Basics/DigitalInput/Transform"/>
+                  </Bind>
+                </Action>
+              </Action>
+            </Action>
+            <Action id="TogglePause" label="Toggle Pause">
+              <Action>
+                <Action key="Basics/Function/ConfigureInput">
+                  <Bind argument="name">
+                    <To key=":String">
+                      <Asset key="Literal" value="Configure Input: Toggle Pause"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="digitalInput">
+                    <To key="Basics/DigitalInput/Pause"/>
+                  </Bind>
+                </Action>
+              </Action>
+            </Action>
+            <Action id="Destruct" label="Self Destruct">
+              <Action>
+                <Action key="Basics/Function/ConfigureInput">
+                  <Bind argument="name">
+                    <To key=":String">
+                      <Asset key="Literal" value="Configure Input: Self Destruct"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="digitalInput">
+                    <To key="Basics/DigitalInput/Destruct"/>
+                  </Bind>
+                </Action>
+              </Action>
+            </Action>
+            <Action label="Reset Controls">
+              <Action>
+                <Action key="Basics/Function/PushScreen">
+                  <Bind argument="menuScreen">
+                    <To key=":Screen">
+                      <Asset key="UI/Prompt/ResetConfirmation"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="menuInput">
+                    <To key=":InputHandler">
+                      <Asset key="UI/Prompt/ResetConfirmation"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="menu">
+                    <To key="UI/Prompt/ResetConfirmation"/>
+                  </Bind>
+                </Action>
+              </Action>
+            </Action>
+          </Options>
+          <Exit>
+            <Action key="Basics/Function/PopScreen"/>
+          </Exit>
+        </Menu>
+        <Menu name="ConfigureInput">
+          <Colour key="Basics/ColourCycler/Menu Selection Highlight/0"/>
+          <Font key="Basics/Font/Menu"/>
+          <Options>
+            <DigitalInput id="Spindizzy"/>
+          </Options>
+          <Exit>
+            <Action key="Basics/Script">
+              <Bind variable="screenPopper">
+                <To key=":Action">
+                  <Action>
+                    <Action key="Basics/Function/PopScreen"/>
+                  </Action>
+                </To>
+              </Bind>
+              <Bind variable="optionsLoader">
+                <To key=":Action">
+                  <Action>
+                    <Action key="Basics/Function/ReloadConfiguration"/>
+                  </Action>
+                </To>
+              </Bind>
+              <Bind variable="isoRealms">
+                <To key="Basics"/>
+              </Bind>
+              <Code>currentDigitalInput:clearCustomInputs()
+for i = 0, currentInputList:getMappingCount() - 1 do
+  currentDigitalInput:addCustomInput(currentInputList:getMapping(i))
+end
+isoRealms:persistGlobalConfiguration()
+optionsLoader:execute()
+screenPopper:execute()</Code>
+            </Action>
+          </Exit>
+        </Menu>
+        <Prompt name="VisualTest" text="Are the screen settings OK?" false="No" true="Yes">
+          <Highlight key="Basics/ColourCycler/Menu Selection Highlight/0"/>
+          <Font key="Basics/Font/Menu"/>
+          <False>
+            <Action key="Basics/Function/RestorePrevious"/>
+          </False>
+          <True>
+            <Action key="Basics/Script">
+              <Bind variable="screenTestTimer">
+                <To key="Basics/Timer/VideoModeTestDelay"/>
+              </Bind>
+              <Bind variable="screen">
+                <To key="UI/Layout/Main/Menu"/>
+              </Bind>
+              <Bind variable="input">
+                <To key="Basics/InputSwitch/Options Screen"/>
+              </Bind>
+              <Code>screenTestTimer:pause()
+table.remove(menuStack)
+table.remove(inputStack)
+input:setInputHandler(inputStack[#inputStack])
+screen:setScreen(menuStack[#menuStack])</Code>
+            </Action>
+          </True>
+        </Prompt>
+        <Prompt name="ResetConfirmation" text="Reset controls to defaults?" false="No" true="Yes">
+          <Highlight key="Basics/ColourCycler/Menu Selection Highlight/0"/>
+          <Font key="Basics/Font/Menu"/>
+          <False>
+            <Action key="Basics/Function/PopScreen"/>
+          </False>
+          <True>
+            <Action key="Basics/Script">
+              <Bind variable="inputLeft">
+                <To key="Basics/AnalogueInput/MoveX/Left"/>
+              </Bind>
+              <Bind variable="inputRight">
+                <To key="Basics/AnalogueInput/MoveX/Right"/>
+              </Bind>
+              <Bind variable="inputUp">
+                <To key="Basics/AnalogueInput/MoveY/Up"/>
+              </Bind>
+              <Bind variable="inputDown">
+                <To key="Basics/AnalogueInput/MoveY/Down"/>
+              </Bind>
+              <Bind variable="inputThrust">
+                <To key="Basics/DigitalInput/Thrust"/>
+              </Bind>
+              <Bind variable="inputBrake">
+                <To key="Basics/DigitalInput/Brake"/>
+              </Bind>
+              <Bind variable="inputRotateViewLeft">
+                <To key="Basics/DigitalInput/RotateCameraLeft"/>
+              </Bind>
+              <Bind variable="inputRotateViewRight">
+                <To key="Basics/DigitalInput/RotateCameraRight"/>
+              </Bind>
+              <Bind variable="inputReverseView">
+                <To key="Basics/DigitalInput/ReverseCamera"/>
+              </Bind>
+              <Bind variable="inputResetView">
+                <To key="Basics/DigitalInput/ResetCamera"/>
+              </Bind>
+              <Bind variable="inputToggleMap">
+                <To key="Basics/DigitalInput/Map"/>
+              </Bind>
+              <Bind variable="inputToggleCraft">
+                <To key="Basics/DigitalInput/Transform"/>
+              </Bind>
+              <Bind variable="inputTogglePause">
+                <To key="Basics/DigitalInput/Pause"/>
+              </Bind>
+              <Bind variable="inputDestruct">
+                <To key="Basics/DigitalInput/Destruct"/>
+              </Bind>
+              <Bind variable="optionsLoader">
+                <To key=":Action">
+                  <Action>
+                    <Action key="Basics/Function/ReloadConfiguration"/>
+                  </Action>
+                </To>
+              </Bind>
+              <Bind variable="screenPopper">
+                <To key=":Action">
+                  <Action>
+                    <Action key="Basics/Function/PopScreen"/>
+                  </Action>
+                </To>
+              </Bind>
+              <Bind variable="isoRealms">
+                <To key="Basics"/>
+              </Bind>
+              <Code>-- Reset controls to defaults
+inputLeft:clearCustomInputs()
+inputRight:clearCustomInputs()
+inputUp:clearCustomInputs()
+inputDown:clearCustomInputs()
+inputThrust:clearCustomInputs()
+inputBrake:clearCustomInputs()
+inputRotateViewLeft:clearCustomInputs()
+inputRotateViewRight:clearCustomInputs()
+inputReverseView:clearCustomInputs()
+inputResetView:clearCustomInputs()
+inputToggleMap:clearCustomInputs()
+inputToggleCraft:clearCustomInputs()
+inputTogglePause:clearCustomInputs()
+inputDestruct:clearCustomInputs()
+isoRealms:persistGlobalConfiguration()
+optionsLoader:execute()
+screenPopper:execute()</Code>
+            </Action>
+          </True>
+        </Prompt>
+      </Resources>
+    </Module>
+  </Modules>
+</Project>

@@ -1,0 +1,91 @@
+/*
+ * Copyright 2023 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#include "Spinner.h"
+
+#include "Modules/Spindizzy/Spindizzy.h"
+#include "Modules/Spindizzy/World/Object/Zone/Zone.h"
+#include "Modules/Spindizzy/World/Object/ZoneObject/ZoneObject.h"
+#include "Modules/Spindizzy/World/World.h"
+#include "Modules/Spindizzy/Assets/Fixed/ZoneObjectTypeTrait/ZoneObjectTypeTraitSpinner.h"
+
+namespace IsoRealms::Spindizzy {
+  Spinner::Spinner(ZoneObject& object, ZoneObjectTypeTraitSpinner& type) :
+            cDefType(type),
+            cLuaBinding(object.getZone()->getWorld()->getSpindizzy()->getProject(), this) {
+    object.getZone()->getWorld()->getSpindizzy()->getProject()->init([this, &object](IAssets* assets) {
+      std::string mLocationID = cDefType.getLocationID();
+      cDefLocation = object.getLocation(mLocationID);
+      cDefModel = cDefType.createModel();
+    });
+  }
+  
+  void Spinner::setEnabled(bool enabled) {
+    cRuntimeEnabled = enabled;
+  }
+  
+  bool Spinner::isEnabled() const {
+    return cRuntimeEnabled;
+  }
+  
+  void Spinner::registerAssets(ITraitRegistry& registry) {
+    registry.registerRenderer(this);
+    registry.registerProcessor(this);
+  }
+  
+  void Spinner::unregisterAssets(ZoneObject& object) {
+    object.unregisterRenderer(this);
+    object.unregisterProcessor(this);
+  }
+
+  void Spinner::load(DOMNode& node) {
+    // Nothing to do.    
+  }
+  
+  void Spinner::save(DOMNodeWriter* node) const {
+    // Nothing to do.
+  }
+  
+  bool Spinner::hasConfiguration() const {
+    return false;
+  }    
+  
+  void Spinner::reset() {
+    cRuntimeEnabled = true; // TODO cDefType.isEnabled();
+  }
+    
+  IBinding* Spinner::getTraitBinding(const std::string& id) {
+    return nullptr;
+  }
+  
+  void Spinner::render() const {
+    if (cRuntimeEnabled) {
+      glPushMatrix();
+      glTranslatef(cDefLocation->getX(), cDefLocation->getY(), cDefLocation->getZ() * 0.5f);
+      glRotatef((cDefLocation->getX() + cDefLocation->getY()) * cDefType.getSpinSpeed(), 0.0f, 0.0f, 1.0f);
+      cDefModel->render();
+      glPopMatrix();
+    }
+  }
+  
+  void Spinner::update(unsigned int milliseconds) {
+    if (cRuntimeEnabled) {
+      cDefModel->update(milliseconds);
+    }
+  }
+}

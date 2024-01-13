@@ -1,0 +1,116 @@
+/*
+ * Copyright 2023 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#include "MenuItemBoolean.h"
+
+#include "Modules/UI/Menu/Menu.h"
+
+namespace IsoRealms::UI {
+  const std::string MenuItemBoolean::TAG_TYPE = "Boolean";
+
+  const std::string MenuItemBoolean::ATTRIBUTE_ID          = "id";
+  const std::string MenuItemBoolean::ATTRIBUTE_LABEL       = "label";
+  const std::string MenuItemBoolean::ATTRIBUTE_LABEL_FALSE = "labelFalse";
+  const std::string MenuItemBoolean::ATTRIBUTE_LABEL_TRUE  = "labelTrue";
+
+  const std::string MenuItemBoolean::BINDING_TYPE = "Boolean";
+
+  MenuItemBoolean::MenuItemBoolean(DOMNode& node, IProject* project) :
+            cHatHandler(project->getApplication()->getHatHandler()),
+            cDefID(node.getAttribute(ATTRIBUTE_ID)),
+            cDefLabel(node.getAttribute(ATTRIBUTE_LABEL)),
+            cDefLabelFalse(node.getAttribute(ATTRIBUTE_LABEL_FALSE)),
+            cDefLabelTrue(node.getAttribute(ATTRIBUTE_LABEL_TRUE)),
+            cLuaBinding(project, this) {
+    project->reset([this]() {
+      cRuntimeValue = false;
+    });
+  }
+
+  void MenuItemBoolean::setValue(bool value) {
+    cRuntimeValue = value;
+  }
+
+  bool MenuItemBoolean::getValue() {
+    return cRuntimeValue;
+  }
+
+  void MenuItemBoolean::registerAssets(IAssetRegistry* assets) {
+    assets->add(&cLuaBinding, BINDING_TYPE + "/" + cDefID, "System");
+  }
+  
+  void MenuItemBoolean::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
+    assets->remove(&cLuaBinding);
+  }
+  
+  void MenuItemBoolean::save(DOMNodeWriter* node) const {
+    DOMNodeWriter mNode = node->addBranch(TAG_TYPE);
+    mNode.addAttribute(ATTRIBUTE_ID,          cDefID);
+    mNode.addAttribute(ATTRIBUTE_LABEL,       cDefLabel);
+    mNode.addAttribute(ATTRIBUTE_LABEL_TRUE,  cDefLabelTrue);
+    mNode.addAttribute(ATTRIBUTE_LABEL_FALSE, cDefLabelFalse);
+  }  
+
+  bool MenuItemBoolean::input(sf::Event& event) {
+    switch (event.type) {
+      case sf::Event::KeyPressed: {
+        switch (event.key.code) {
+          case sf::Keyboard::Left:
+          case sf::Keyboard::Right: cRuntimeValue = !cRuntimeValue; return true;
+          default:                                                  break;
+        }
+        break;
+      }
+
+      case sf::Event::JoystickMoved: {
+        if (cHatHandler.leftPressed() || cHatHandler.rightPressed()) {cRuntimeValue = !cRuntimeValue;}
+        break;
+      }
+
+      default: break;
+    }
+    return false;
+  }
+  
+  void MenuItemBoolean::selectTop() {
+    // Nothing to do.
+  }
+
+  void MenuItemBoolean::selectBottom() {
+    // Nothing to do.
+  }
+
+  void MenuItemBoolean::render(float aspectRatio, float y, bool selected, const Menu& menu) const {
+    const Font& mFont = menu.getFont();
+    float mFontSize = menu.getFontSize();
+    float mShadowOffset = menu.getShadowOffset();
+    LiteralColour mWhite(1.0f, 1.0f, 1.0f);
+    const IColour& mColour = selected ? static_cast<const IColour&>(menu.getSelectionColour())
+                                      : static_cast<const IColour&>(mWhite);
+    Utils::shadowPrint(-aspectRatio, y, **mFont, mFontSize, mColour, mShadowOffset, IFont::Alignment::LEFT,  cDefLabel);
+    Utils::shadowPrint( aspectRatio, y, **mFont, mFontSize, mColour, mShadowOffset, IFont::Alignment::RIGHT, cRuntimeValue ? cDefLabelTrue : cDefLabelFalse);
+  }
+
+  float MenuItemBoolean::getHeight(const Menu& menu) const {
+    return menu.getFontSize() * 2.0f;
+  }
+
+  float MenuItemBoolean::getSelectedY(const Menu& menu) const {
+    return 0.0f;
+  }
+}

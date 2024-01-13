@@ -1,0 +1,177 @@
+/*
+ * Copyright 2023 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#include "Module.h"
+
+#include "IsoRealms/Exception/ResourceInitException.h"
+
+#include "Project.h"
+
+namespace IsoRealms {
+  const std::string Module::TAG_CONFIGURATION = "Configuration";
+  const std::string Module::TAG_RESOURCES     = "Resources";
+  
+  const std::string Module::ATTRIBUTE_NAME = "name";
+
+  Module::Module(const std::string& name, Project* project, LuaState* luaState) :
+            cName(name),
+            cProject(project),
+            cModuleAssetRegistry(cProject, cName) {
+    std::string mModulePath = "IsoRealms-" + name;
+    if (!System::moduleExists(mModulePath, false)) {
+      throw InitException("ERROR: Module::Module: Specified module \"" + mModulePath + "\" not found");
+    }
+    std::string mModuleLocation = std::filesystem::current_path().string() + "/" + System::getModulePath(mModulePath, false);
+#ifdef __linux__
+    void* mModuleSO = dlopen(mModuleLocation.c_str(), RTLD_LAZY | RTLD_GLOBAL);
+    if (!mModuleSO) {
+      throw InitException("ERROR: Module::Module: Specified module \"" + mModuleLocation + "\" could not be loaded: Error code: " + std::string(dlerror()));
+    }
+    createModule* mCreateFunction = voidToFunction<createModule*>(dlsym(mModuleSO, "create"));
+    const char* mDlsymError = dlerror();
+    if (mDlsymError) {
+      throw InitException("ERROR: Module::Module: Specified module \"" + mModuleLocation + "\" does not have create function: Error code: " + std::string(mDlsymError));
+    }
+    initLuaInterfaces* mInitLuaInterfacesFunction = voidToFunction<initLuaInterfaces*>(dlsym(mModuleSO, "initLua"));
+    mDlsymError = dlerror();
+    if (!mDlsymError) {
+#elif _WIN32
+    HINSTANCE mModuleSO = LoadLibrary(mModuleLocation.c_str());
+    if (!mModuleSO) {
+      throw InitException("ERROR: Module::Module: Specified module \"" + mModuleLocation + "\" could not be loaded: Error code: " + Utils::toString(static_cast<int>(GetLastError())));
+    }
+
+    createModule mCreateFunction = (createModule) GetProcAddress(mModuleSO, "create");
+    if (!mCreateFunction) {
+      throw InitException("ERROR: Module::Module: Specified module \"" + mModuleLocation + "\" does not have create function: Error code: " + Utils::toString(static_cast<int>(GetLastError())));
+    }
+
+    initLuaInterfaces mInitLuaInterfacesFunction = (initLuaInterfaces) GetProcAddress(mModuleSO, "initLua");
+    if (mInitLuaInterfacesFunction) {
+#endif
+      mInitLuaInterfacesFunction(luaState);
+    }
+    cModule = mCreateFunction(project, this, cProject);
+  }
+
+  void Module::loadResources(DOMNode& node, IOptions* options, bool thisProject) {
+    cModule->load(cProject, node.getNode(TAG_CONFIGURATION));
+    for (DOMNode& mResourceNode : node.getNode(TAG_RESOURCES)) {
+      std::string mResourceTypeName = mResourceNode.getName();
+      ResourceType* mResourceType = getResourceType(mResourceTypeName);
+      if (mResourceType == nullptr) {
+        std::cout << "ERROR: Module::loadResources: Resource type \"" << mResourceTypeName << "\" not known in module \"" << cName << "\".  Available resources:" << std::endl;
+        for (std::pair<const std::string, std::unique_ptr<ResourceType>>& mDebugResource : cResourceTypes) {
+          std::cout << "  " << mDebugResource.first << std::endl;
+        }
+        throw ResourceInitException("ERROR: Module::loadResources: Resource type \"" + mResourceTypeName + "\" not known in module \"" + cName + "\".");
+      }
+      LocalOptions mModuleOptions(mResourceTypeName, options);
+      mResourceType->loadResource(mResourceNode, cProject, &mModuleOptions, thisProject);
+    }
+  }
+  
+  void Module::registerAssets() {
+    cModule->registerAssets(&cModuleAssetRegistry);
+  }
+
+  void Module::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
+    node->addAttribute(ATTRIBUTE_NAME, cName);
+    DOMNodeWriter mResources = node->addBranch(TAG_RESOURCES);
+    for (const std::pair<const std::string, std::unique_ptr<ResourceType>>& mResourceType : cResourceTypes) {
+      mResourceType.second->save(&mResources, identifier, mResourceType.first);
+    }
+    
+    // TODO: Configuration might not need to be saved if it comes from an included project file and hasn't been changed.
+    DOMNodeWriter mConfiguration = node->addBranch(TAG_CONFIGURATION);
+    cModule->save(&mConfiguration, identifier);
+  }
+
+  ResourceType* Module::getResourceType(const std::string& id) {
+    std::map<std::string, std::unique_ptr<ResourceType>>::iterator mResourceType = cResourceTypes.find(id);
+    if (mResourceType == cResourceTypes.end()) {
+      return nullptr;
+    }
+    return mResourceType->second.get();
+  }
+
+  void Module::add(IResourceTypeDefinition* resourceTypeDefinition, const std::string& id, const std::string& name, const std::string& category) {
+    ResourceType* mResourceType = getResourceType(id);
+    if (mResourceType != nullptr) {
+      throw ArgumentException("ERROR: Module::add: Cannot add resource type definition because there is already a resource type definition of ID \"" + id + "\".");
+    }
+    cResourceTypes[id] = std::make_unique<ResourceType>(resourceTypeDefinition, this, &cModuleAssetRegistry, id, name, category);
+  }
+
+  std::string Module::getName() {
+    return cName;
+  }
+
+  std::vector<IResourceType*> Module::getResourceTypes() {
+    std::vector<IResourceType*> mResourceTypes;
+    for (const std::pair<const std::string, std::unique_ptr<ResourceType>>& mResourceType : cResourceTypes) {
+      mResourceTypes.emplace_back(mResourceType.second.get());
+    }
+    return mResourceTypes;
+  }
+
+  IProject* Module::getProjectRuntime() {
+    return cProject;
+  }
+
+  std::string Module::getName(ResourceType* resourceType) {
+    for (const std::pair<const std::string, std::unique_ptr<ResourceType>>& mResourceType : cResourceTypes) {
+      if (mResourceType.second.get() == resourceType) {
+        return mResourceType.first;
+      }
+    }
+    throw ArgumentException("ERROR: Module::getName: Specified resource type not found in this module.");
+  }
+
+  IAssetLiterals* Module::getAssetLiterals() {
+    return cProject;
+  }
+  
+  IAssetRemover* Module::getAssetRemover() {
+    return cProject;
+  }
+
+  IAssetRegistry* Module::getAssetRegistry() {
+    return cProject;
+  }
+  
+  IAssets* Module::getAssets() {
+    return cProject;
+  }
+
+  std::string Module::getPath() {
+    return getName();
+  }
+  
+  std::string Module::getDataPath(bool user) {
+    return cProject->getDataPath(user) + "/" + getName();
+  }
+  
+  void Module::makeUserDataDirectory(const std::string& resourcePath) {
+    cProject->makeUserDataDirectory(getName() + "/" + resourcePath);
+  }
+
+  Module::~Module() {
+// TODO    cModule->unregisterAssets(cProject, cProject);
+  }
+}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2023 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -18,104 +18,116 @@
  */
 #include "DOMNodeWriter.h"
 
-DOMNodeWriter::DOMNodeWriter(DOMDocument* document, DOMElement* element) {
-  cImplementation = NULL;
-  cDocument = document;
-  cElement = element;
-}
+#include "IsoRealms/System.h"
+#include "IsoRealms/Utils.h"
 
-DOMNodeWriter::DOMNodeWriter(std::string nodeName) {
-  cImplementation = DOMImplementationRegistry::getDOMImplementation(XMLString::transcode("Range"));
-  cDocument = cImplementation->createDocument(NULL, XMLString::transcode(nodeName.c_str()), NULL);
-  cElement = cDocument->getDocumentElement();
-}
-
-DOMNodeWriter* DOMNodeWriter::createBranch(std::string branchName) {
-  DOMElement* mElement = cDocument->createElement(XMLString::transcode(branchName.c_str()));
-  return new DOMNodeWriter(cDocument, mElement);
-}
-
-DOMNodeWriter* DOMNodeWriter::addBranch(std::string branchName) {
-  DOMElement* mElement = cDocument->createElement(XMLString::transcode(branchName.c_str()));
-  cElement->appendChild(mElement);
-  return new DOMNodeWriter(cDocument, mElement);
-}
-
-void DOMNodeWriter::addBranch(DOMNodeWriter* node) {
-  cElement->appendChild(node->cElement);
-}
-
-void DOMNodeWriter::addText(std::string text) {
-  DOMText* mText = cDocument->createTextNode(XMLString::transcode(text.c_str()));
-  cElement->appendChild(mText);
-}
-
-void DOMNodeWriter::addText(int text) {
-  std::stringstream mIntText;
-  mIntText << text;
-  std::string mString = mIntText.str();  
-  DOMText* mText = cDocument->createTextNode(XMLString::transcode(mString.c_str()));
-  cElement->appendChild(mText);
-}
-
-void DOMNodeWriter::addAttribute(std::string name, std::string text) {
-  if (text != "") {
-    DOMAttr* mAttribute = cDocument->createAttribute(XMLString::transcode(name.c_str()));
-    mAttribute->setValue(XMLString::transcode(text.c_str()));
-    cElement->setAttributeNode(mAttribute);
+namespace IsoRealms {
+  DOMNodeWriter::DOMNodeWriter(xercesc::DOMDocument* document, xercesc::DOMElement* element) {
+    cImplementation = nullptr;
+    cDocument = document;
+    cElement = element;
   }
-}
 
-void DOMNodeWriter::addAttribute(std::string name, unsigned int val) {
-  DOMAttr* mAttribute = cDocument->createAttribute(XMLString::transcode(name.c_str()));
-  char mAttributeValue[16];
-  sprintf(mAttributeValue, "%u", val);
-  mAttribute->setValue(XMLString::transcode(mAttributeValue));
-  cElement->setAttributeNode(mAttribute);
-}
-
-void DOMNodeWriter::addAttribute(std::string name, int val) {
-  DOMAttr* mAttribute = cDocument->createAttribute(XMLString::transcode(name.c_str()));
-  char mAttributeValue[16];
-  sprintf(mAttributeValue, "%d", val);
-  mAttribute->setValue(XMLString::transcode(mAttributeValue));
-  cElement->setAttributeNode(mAttribute);
-}
-
-void DOMNodeWriter::addAttribute(const std::string& name, float val, float defaultValue) {
-  if (val != defaultValue) {
-    DOMAttr* mAttribute = cDocument->createAttribute(XMLString::transcode(name.c_str()));
-    char mAttributeValue[16];
-    sprintf(mAttributeValue, "%f", val);
-    mAttribute->setValue(XMLString::transcode(mAttributeValue));
-    cElement->setAttributeNode(mAttribute);
+  DOMNodeWriter::DOMNodeWriter(std::string nodeName) {
+    cImplementation = xercesc::DOMImplementationRegistry::getDOMImplementation(xercesc::XMLString::transcode("Range"));
+    cDocument = cImplementation->createDocument(nullptr, xercesc::XMLString::transcode(nodeName.c_str()), nullptr);
+    cElement = cDocument->getDocumentElement();
   }
-}
 
-void DOMNodeWriter::addAttribute(const std::string& name, double val) {
-  DOMAttr* mAttribute = cDocument->createAttribute(XMLString::transcode(name.c_str()));
-  char mAttributeValue[16];
-  sprintf(mAttributeValue, "%f", val);
-  mAttribute->setValue(XMLString::transcode(mAttributeValue));
-  cElement->setAttributeNode(mAttribute);
-}
+  DOMNodeWriter DOMNodeWriter::addBranch(std::string branchName) {
+    xercesc::DOMElement* mElement = cDocument->createElement(xercesc::XMLString::transcode(branchName.c_str()));
+    cElement->appendChild(mElement);
+    return DOMNodeWriter(cDocument, mElement);
+  }
 
-void DOMNodeWriter::save(std::string filename) {
-  DOMImplementationLS* mDOMImplementationLS = (DOMImplementationLS*) cImplementation;
-  DOMLSSerializer* mDOMLSSerializer = mDOMImplementationLS->createLSSerializer();
-  DOMConfiguration* mOutputConfig = mDOMLSSerializer->getDomConfig();
-  mOutputConfig->setParameter(XMLUni::fgDOMWRTFormatPrettyPrint, true); 
-  mOutputConfig->setParameter(XMLUni::fgDOMWRTXercesPrettyPrint, false);
-  DOMLSOutput* mDOMLSOutput = mDOMImplementationLS->createLSOutput();
-  LocalFileFormatTarget mTarget(filename.c_str());
-  mDOMLSOutput->setByteStream(&mTarget);
-  mDOMLSSerializer->write(cDocument, mDOMLSOutput);
-  mDOMLSOutput->release();
-  mDOMLSSerializer->release();
-  cDocument->release();// TODO: Probably should be somewhere else!
-  mTarget.flush();
-}
+  void DOMNodeWriter::addBranch(DOMNodeWriter* node) {
+    cElement->appendChild(node->cElement);
+  }
 
-bool DOMNodeWriter::empty() {
-  return !cElement->hasChildNodes();
+  void DOMNodeWriter::addText(std::string text) {
+    xercesc::DOMText* mText = cDocument->createTextNode(xercesc::XMLString::transcode(text.c_str()));
+    cElement->appendChild(mText);
+  }
+
+  void DOMNodeWriter::addText(int text) {
+    std::stringstream mIntText;
+    mIntText << text;
+    std::string mString = mIntText.str();  
+    xercesc::DOMText* mText = cDocument->createTextNode(xercesc::XMLString::transcode(mString.c_str()));
+    cElement->appendChild(mText);
+  }
+
+  void DOMNodeWriter::addAttribute(const std::string& name, const std::string& value, const std::string& defaultValue) {
+    if (value != defaultValue) {
+      xercesc::DOMAttr* mAttribute = cDocument->createAttribute(xercesc::XMLString::transcode(name.c_str()));
+      mAttribute->setValue(xercesc::XMLString::transcode(value.c_str()));
+      cElement->setAttributeNode(mAttribute);
+    }
+  }
+
+  void DOMNodeWriter::addAttribute(const std::string& name, unsigned int value, unsigned int defaultValue) {
+    if (value != defaultValue) {
+      xercesc::DOMAttr* mAttribute = cDocument->createAttribute(xercesc::XMLString::transcode(name.c_str()));
+      mAttribute->setValue(xercesc::XMLString::transcode(Utils::toString(value).c_str()));
+      cElement->setAttributeNode(mAttribute);
+    }
+  }
+
+  void DOMNodeWriter::addAttribute(const std::string& name, int value, int defaultValue) {
+    if (value != defaultValue) {
+      xercesc::DOMAttr* mAttribute = cDocument->createAttribute(xercesc::XMLString::transcode(name.c_str()));
+      mAttribute->setValue(xercesc::XMLString::transcode(Utils::toString(value).c_str()));
+      cElement->setAttributeNode(mAttribute);
+    }
+  }
+
+  void DOMNodeWriter::addAttribute(const std::string& name, bool value, bool defaultValue) {
+    if (value != defaultValue) {
+      addAttribute(name, std::string(value ? "true" : "false"));
+    }
+  }
+
+  void DOMNodeWriter::addAttribute(const std::string& name, float value, float defaultValue) {
+    if (value != defaultValue) {
+      xercesc::DOMAttr* mAttribute = cDocument->createAttribute(xercesc::XMLString::transcode(name.c_str()));
+      mAttribute->setValue(xercesc::XMLString::transcode(Utils::toString(value).c_str()));
+      cElement->setAttributeNode(mAttribute);
+    }
+  }
+
+  void DOMNodeWriter::addAttribute(const std::string& name, double value, double defaultValue) {
+    if (value != defaultValue) {
+      xercesc::DOMAttr* mAttribute = cDocument->createAttribute(xercesc::XMLString::transcode(name.c_str()));
+      mAttribute->setValue(xercesc::XMLString::transcode(Utils::toString(value).c_str()));
+      cElement->setAttributeNode(mAttribute);
+    }
+  }
+
+  void DOMNodeWriter::save(std::string filename) {
+    if (filename.find('/') != std::string::npos) {
+      System::makeUserDataDirectory(filename.substr(0, filename.find_last_of('/')));
+    }
+    std::string mFilename = System::getPath(filename, true);
+    xercesc::DOMImplementationLS* mDOMImplementationLS = (xercesc::DOMImplementationLS*) cImplementation;
+    xercesc::DOMLSSerializer* mDOMLSSerializer = mDOMImplementationLS->createLSSerializer();
+    xercesc::DOMConfiguration* mOutputConfig = mDOMLSSerializer->getDomConfig();
+    mOutputConfig->setParameter(xercesc::XMLUni::fgDOMWRTFormatPrettyPrint, true); 
+    mOutputConfig->setParameter(xercesc::XMLUni::fgDOMWRTXercesPrettyPrint, false);
+    xercesc::DOMLSOutput* mDOMLSOutput = mDOMImplementationLS->createLSOutput();
+    xercesc::LocalFileFormatTarget mTarget(mFilename.c_str());
+    mDOMLSOutput->setByteStream(&mTarget);
+    mDOMLSSerializer->write(cDocument, mDOMLSOutput);
+    mDOMLSOutput->release();
+    mDOMLSSerializer->release();
+    cDocument->release();// TODO: Probably should be somewhere else!
+    mTarget.flush();
+  }
+
+  bool DOMNodeWriter::empty() {
+    return !cElement->hasChildNodes();
+  }
+
+  void DOMNodeWriter::addAttributeString(std::string name, std::string text) {
+    addAttribute(name, text);
+  }
 }

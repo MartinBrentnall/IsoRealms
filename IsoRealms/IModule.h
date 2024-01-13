@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2023 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,34 +16,18 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_MODULE_H
-#define I_MODULE_H
+#pragma once
 
-#include "IModuleOptions.h"
-#include "IResourceSource.h"
-#include "Persistence/DOMNodeWriter.h"
-#include "Resources/IResourceTypeRegistry.h"
+#include <string>
+#include <vector>
 
-class IResourceLocator;
-class IResourceRegistry;
+namespace IsoRealms {
+  class IAssetRegistry;
+  class IResourceType;
 
-class IModule:public IResourceSource {
-  public:
-
-  virtual void load(DOMNodeWrapper*, DOMNodeWrapper*, IResourceRegistry*, IModuleOptions*) = 0;
-    
-  /**
-   * Save the configuration and resources of the module.
-   */
-  virtual void save(DOMNodeWriter*, IResourceLocator*) = 0;
-  virtual void saveCache(DOMNodeWriter*) = 0;
-
-  virtual void projectInitialised() = 0;
-
-  virtual ~IModule() {}
-};
-
-typedef IModule* createModule(IResourceTypeRegistry*);
-typedef void destroyModule(IModule*);
-
-#endif
+  class IModule {
+    public:
+    virtual std::string getName() = 0;
+    virtual std::vector<IResourceType*> getResourceTypes() = 0;
+  };
+}

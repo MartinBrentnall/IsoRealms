@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Martin Brentnall
+ * Copyright 2023 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,23 +16,20 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_ICON_ANIMATOR_H
-#define I_ICON_ANIMATOR_H
+#pragma once
 
-#include <IsoRealms/Resources/Colour/IColour.h>
-#include <IsoRealms/Resources/Texture/ITexture.h>
+#include "IsoRealms/Types.h"
 
-class SpindizzyZoneThemeColour;
-class SpindizzyZoneThemeTexture;
+namespace IsoRealms::Spindizzy {
+  class ThemeColour;
+  class ThemeTexture;
 
-class IIconAnimator {
-  public:
-  virtual float getAnimation() = 0;
-  virtual ITexture* getPreviousTexture(SpindizzyZoneThemeTexture*) = 0;
-  virtual ITexture* getCurrentTexture(SpindizzyZoneThemeTexture*) = 0;
-  virtual IColour* getPreviousColour(SpindizzyZoneThemeColour*) = 0;
-  virtual IColour* getCurrentColour(SpindizzyZoneThemeColour*) = 0;
-};
-
-#endif
-
+  class IIconAnimator {
+    public:
+    virtual float getAnimation() = 0;
+    virtual ITexture* getPreviousTexture(ThemeTexture*) = 0;
+    virtual ITexture* getCurrentTexture(ThemeTexture*) = 0;
+    virtual IColour* getPreviousColour(ThemeColour*) = 0;
+    virtual IColour* getCurrentColour(ThemeColour*) = 0;
+  };
+}

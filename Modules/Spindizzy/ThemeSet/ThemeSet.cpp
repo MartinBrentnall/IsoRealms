@@ -1,0 +1,275 @@
+/*
+ * Copyright 2023 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#include "ThemeSet.h"
+
+namespace IsoRealms::Spindizzy {
+  const unsigned int ThemeSet::ICON_TRANSITION_TIME = 500;
+  const unsigned int ThemeSet::ICON_PAUSE_TIME      = 1000;
+
+  ThemeSet::ThemeSet(IProject* project, Spindizzy* spindizzy) :
+            cLuaBinding(project, this) {
+    cAnimation = 0;
+    cPause     = 0;
+    cThemeIcon = 0;
+    cDefaultTheme = nullptr;
+    
+    // TODO: Only for editor!
+    project->updateEditing([this](unsigned int milliseconds) {
+      if (cPause > 0) {
+        cPause -= milliseconds;
+        if (cPause <= 0) {
+          cAnimation = ICON_TRANSITION_TIME;
+          cPause = 0;
+          cThemeIcon++;
+          if (cThemeIcon == cThemes.size()) {
+            cThemeIcon = 0;
+          }
+        }
+      } else {
+        cAnimation -= milliseconds;
+        if (cAnimation <= 0) {
+          cAnimation = 0;
+          cPause = ICON_PAUSE_TIME;
+        }
+      }
+    });
+  }
+  
+  ThemeSet::ThemeSet(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
+            ThemeSet(project, spindizzy) {
+    for (DOMNode& mNode : node) {
+      std::string mChildName = mNode.getName();
+      if (mChildName == "Theme") {
+        std::string mThemeName = mNode.getAttribute("name");
+        cThemes[mThemeName] = std::make_unique<Theme>(project, spindizzy, this, mNode);
+      } else {
+        throw ParseException("Unknown tag for Spindizzy/ThemeSet: " + mChildName);
+      }
+    }
+  }
+
+  std::vector<IProperty*> ThemeSet::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
+    return std::vector<IProperty*>({
+    });
+  }
+
+  bool ThemeSet::renderIcon() {
+    return false;
+  }
+  
+  void ThemeSet::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
+    for (const std::pair<const std::string, std::unique_ptr<Theme>>& mTheme : cThemes) {
+      DOMNodeWriter mThemeNode = node->addBranch("Theme");
+      mThemeNode.addAttribute("name", mTheme.first);
+      mTheme.second->save(&mThemeNode, identifier);
+    }
+  }
+
+  void ThemeSet::registerAssets(IAssetRegistry* assets) {
+    assets->add(&cLuaBinding, "", "Spindizzy Theme Sets");
+    for (const std::pair<const std::string, std::unique_ptr<ThemeTexture>>& mPair : cTextures) {
+      mPair.second->registerAssets(assets, mPair.first);
+    }
+    for (const std::pair<const std::string, std::unique_ptr<ThemeColour>>& mPair : cColours) {
+      mPair.second->registerAssets(assets, mPair.first);
+    }
+  }
+  
+  void ThemeSet::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
+    assets->remove(&cLuaBinding);
+    for (const std::pair<const std::string, std::unique_ptr<ThemeTexture>>& mPair : cTextures) {
+      mPair.second->unregisterAssets(assets, releaser);
+    }
+    for (const std::pair<const std::string, std::unique_ptr<ThemeColour>>& mPair : cColours) {
+      mPair.second->unregisterAssets(assets, releaser);
+    }
+    for (const std::pair<const std::string, std::unique_ptr<Theme>>& mPair : cThemes) {
+      mPair.second->releaseAssets(releaser);
+    }
+  }
+  
+  void ThemeSet::createTexture(const std::string& type) {
+    if (cTextures.find(type) == cTextures.end()) {
+      cTextures[type] = std::make_unique<ThemeTexture>(this);
+    }
+  }
+
+  void ThemeSet::createColour(IProject* project, const std::string& type) {
+    if (cColours.find(type) == cColours.end()) {
+      cColours[type] = std::make_unique<ThemeColour>(project, this);
+    }
+  }
+
+  std::string ThemeSet::getElement(ThemeTexture* themeTexture) {
+    for (std::map<std::string, std::unique_ptr<ThemeTexture>>::iterator i = cTextures.begin(); i != cTextures.end(); i++) {
+      if (i->second.get() == themeTexture) {
+        return i->first;
+      }
+    }
+    throw ArgumentException("ERROR: ThemeSet::getElement: Specified theme texture not found in this theme set.");
+  }
+
+  std::string ThemeSet::getElement(ThemeColour* themeColour) {
+    for (std::map<std::string, std::unique_ptr<ThemeColour>>::iterator i = cColours.begin(); i != cColours.end(); i++) {
+      if (i->second.get() == themeColour) {
+        return i->first;
+      }
+    }
+    throw ArgumentException("ERROR: ThemeSet::getElement: Specified theme colour not found in this theme set.");
+  }
+
+  std::string ThemeSet::getName(Theme* theme) {
+    for (const std::pair<const std::string, std::unique_ptr<Theme>>& mTheme : cThemes) {
+      if (mTheme.second.get() == theme) {
+        return mTheme.first;
+      }
+    }
+    return "";
+  }  
+  
+  ThemeTexture* ThemeSet::getTexture(const std::string& type) {
+    return cTextures[type].get();
+  }
+
+  ThemeColour* ThemeSet::getColour(const std::string& type) {
+    return cColours[type].get();
+  }
+  
+  Theme* ThemeSet::getTheme(const std::string& name) {
+    std::map<std::string, std::unique_ptr<Theme>>::iterator i = cThemes.find(name);
+    if (i == cThemes.end()) {
+      std::cout << "WARNING: Theme \"" << name << "\" doesn't exist.  Available themes:" << std::endl;
+      for (const std::pair<const std::string, std::unique_ptr<Theme>>& mTheme : cThemes) {
+        std::cout << "  " << mTheme.first << std::endl;
+      }
+      std::cout << "End of theme list" << std::endl;
+      throw ArgumentException("ERROR: ThemeSet::getTheme: Theme of specified name \"" + name + "\" not found in this theme set");
+    }
+    return i->second.get();
+  }
+
+  std::vector<Theme*> ThemeSet::getThemes() {
+    std::vector<Theme*> mThemes;
+    for (const std::pair<const std::string, std::unique_ptr<Theme>>& mTheme : cThemes) {
+      mThemes.push_back(mTheme.second.get());
+    }
+    return mThemes;
+  }
+  
+  void ThemeSet::hintInUse(bool inUse) {
+    for (const std::pair<const std::string, std::unique_ptr<Theme>>& mTheme : cThemes) {
+      mTheme.second->hintInUse(inUse);
+    }
+  }
+
+  float ThemeSet::getAnimation() {
+    return -(static_cast<float>(cAnimation) / static_cast<float>(ICON_TRANSITION_TIME)) + 1.0f;
+  }
+
+  ITexture* ThemeSet::getPreviousTexture(ThemeTexture* texture) {
+    unsigned int mCount = 0;
+    unsigned int mPreviousThemeIcon = cThemeIcon == 0 ? cThemes.size() - 1 : cThemeIcon - 1;
+    for (const std::pair<const std::string, std::unique_ptr<Theme>>& mTheme : cThemes) {
+      if (mCount == mPreviousThemeIcon) {
+        return mTheme.second->getTexture(texture);
+      }
+      mCount++;
+    }
+    return nullptr;
+  }
+
+  ITexture* ThemeSet::getCurrentTexture(ThemeTexture* texture) {
+    unsigned int mCount = 0;
+    for (const std::pair<const std::string, std::unique_ptr<Theme>>& mTheme : cThemes) {
+      if (mCount == cThemeIcon) {
+        return mTheme.second->getTexture(texture);
+      }
+      mCount++;
+    }
+    return nullptr;
+  }
+
+  IColour* ThemeSet::getPreviousColour(ThemeColour* colour) {
+    unsigned int mCount = 0;
+    unsigned int mPreviousThemeIcon = cThemeIcon == 0 ? cThemes.size() - 1 : cThemeIcon - 1;
+    for (const std::pair<const std::string, std::unique_ptr<Theme>>& mTheme : cThemes) {
+      if (mCount == mPreviousThemeIcon) {
+        return mTheme.second->getColour(colour);
+      }
+      mCount++;
+    }
+    return nullptr;
+  }
+
+  IColour* ThemeSet::getCurrentColour(ThemeColour* colour) {
+    unsigned int mCount = 0;
+    for (const std::pair<const std::string, std::unique_ptr<Theme>>& mTheme : cThemes) {
+      if (mCount == cThemeIcon) {
+        return mTheme.second->getColour(colour);
+      }
+      mCount++;
+    }
+    return nullptr;
+  }
+
+  void ThemeSet::setDefaultTheme(Theme* theme) {
+    if (cDefaultTheme != nullptr) {
+      cDefaultTheme->hintInUse(false);
+    }
+    cDefaultTheme = theme;
+    if (cDefaultTheme != nullptr) {
+      cDefaultTheme->hintInUse(true);
+    }
+  }
+
+  void ThemeSet::applyDefaultTheme() {
+    if (cDefaultTheme != nullptr) {
+//      std::cout << "APPLYING DEFAULT THEME: " << cDefaultTheme << std::endl;
+      cDefaultTheme->set();
+    }
+  }
+
+  Theme* ThemeSet::getDefaultTheme() {
+    return cDefaultTheme;
+  }
+
+  void ThemeSet::setNextTheme() {
+    std::vector<Theme*> mThemes = getThemes();
+    if (cDefaultTheme == nullptr && !mThemes.empty()) {
+      cDefaultTheme = mThemes[0];
+    } else for (unsigned int i = 0; i < mThemes.size(); i++) {
+      if (mThemes[i] == cDefaultTheme) {
+        cDefaultTheme = i == mThemes.size() - 1 ? mThemes[0] : mThemes[i + 1];
+        return;
+      }
+    }
+  }
+
+  void ThemeSet::setPreviousTheme() {
+    std::vector<Theme*> mThemes = getThemes();
+    if (cDefaultTheme == nullptr && !mThemes.empty()) {
+      cDefaultTheme = mThemes[0];
+    } else for (unsigned int i = 0; i < mThemes.size(); i++) {
+      if (mThemes[i] == cDefaultTheme) {
+        cDefaultTheme = i == 0 ? mThemes[mThemes.size() - 1] : mThemes[i - 1];
+        return;
+      }
+    }
+  }
+}

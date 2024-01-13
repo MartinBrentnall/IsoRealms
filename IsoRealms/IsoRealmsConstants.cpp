@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2023 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -18,8 +18,11 @@
  */
 #include "IsoRealmsConstants.h"
 
-const double IsoRealmsConstants::BLOCK_SIZE = 1.0;
-const double IsoRealmsConstants::BLOCK_RADIUS = 0.5;
-const double IsoRealmsConstants::BLOCK_HEIGHT = 0.5;
-const double IsoRealmsConstants::LINE_WIDTH = 0.06;  
-const double IsoRealmsConstants::STEP_HEIGHT = 0.75;  // 1 = One block high
+namespace IsoRealms {
+  const std::string IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES  = "Simple Variables";
+  const std::string IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_GRAPHICS   = "Simple Graphics";
+  const std::string IsoRealmsConstants::RESOURCE_CATEGORY_DYNAMIC_VARIABLES = "Dynamic Variables";
+  const std::string IsoRealmsConstants::RESOURCE_CATEGORY_LOGIC_AND_INPUT   = "Logic and Input";
+  const std::string IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION      = "Presentation";
+  const std::string IsoRealmsConstants::RESOURCE_CATEGORY_SYSTEM            = "System";
+}

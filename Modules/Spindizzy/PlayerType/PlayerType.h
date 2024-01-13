@@ -1,0 +1,194 @@
+/*
+ * Copyright 2023 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#pragma once
+
+#include <algorithm>
+#include <cmath>
+#include <functional>
+#include <iostream>
+#include <iomanip>
+#include <stack>
+
+#include "IsoRealms/Lua.h"
+#include "IsoRealms/ResourceDefinition.h"
+#include "IsoRealms/Types.h"
+
+#include "Modules/Spindizzy/Assets/Type/IPhysicalObjectType.h"
+#include "Modules/Spindizzy/Assets/Type/IWorldEditorTool.h"
+
+namespace IsoRealms::Spindizzy {
+  class ISpindizzyRegistry;
+  class Player;
+  class Spindizzy;
+  class World;
+  class Zone;
+
+  // TODO: This class leaks its assets! (i.e. doesn't create literals upon construction)
+  class PlayerType final : public IPhysicalObjectType,
+                           public IWorldEditorTool,
+                           public IBindingRegistry {
+    public:
+
+    /**********************\
+     * Resource Interface *
+    \**********************/
+    PlayerType(IProject* project, Spindizzy* spindizzy);
+    PlayerType(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data);
+    void registerAssets(IAssetRegistry* assets);
+    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
+    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void hintInUse(bool inUse);
+    bool renderIcon() const;
+    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+
+    ~PlayerType();
+
+    // Interface to be used by module.
+    void registerAssets(ISpindizzyRegistry* registry);
+
+    // Internal interface.
+    std::unique_ptr<ModelInstance> createModel();
+    void impactSurface(Player* player);
+    void bounceWall(Player* player, Zone* zone);
+    void bounceSurface();
+    void respawn(LiteralVertex& launchMomentum);
+    float getXThrust() const;
+    float getYThrust() const;
+    float getSpinSpeed() const;
+    float getStepReach() const;
+    float getHeight() const;
+    float getRadius() const;
+    float getHugMomentum() const;
+    float getBounceFactor() const;
+    float getRuntimeSpinSpeed() const;
+    int getRespawnDelay() const;
+
+    /***********************\
+     * Scripting Interface *
+    \***********************/
+    void setSpinSpeed(float spinSpeed);
+
+    /**********************************\
+     * Implements IPhysicalObjectType *
+    \**********************************/
+    std::string getPhysicalObjectTypeID() const override;
+    IBinding* getBinding(const std::string& id) const override;
+
+    /*******************************\
+     * Implements IWorldEditorTool *
+    \*******************************/
+    IWorldEditorToolInstance* createToolInstance(WorldEditor* editor) override;
+
+    /*******************************\
+     * Implements IBindingRegistry *
+    \*******************************/
+    IBinding* getBinding(const std::string& id) override;
+    void releaseBinding(const IBinding* asset) override;
+
+    private:
+    
+    // DOM strings.
+    static const std::string TAG_FALL_BOUNCE_ACTION;
+    static const std::string TAG_FALL_IMPACT_ACTION;
+    static const std::string TAG_INPUT_THRUST;
+    static const std::string TAG_INPUT_X;
+    static const std::string TAG_INPUT_Y;
+    static const std::string TAG_MODEL;
+    static const std::string TAG_ORIENTATION;
+    static const std::string TAG_RESPAWN_ACTION;
+    static const std::string TAG_WALL_BOUNCE_ACTION;
+
+    static const std::string ATTRIBUTE_ACCELERATION;
+    static const std::string ATTRIBUTE_BOUNCE_FACTOR;
+    static const std::string ATTRIBUTE_HEIGHT;
+    static const std::string ATTRIBUTE_HUG_MOMENTUM;
+    static const std::string ATTRIBUTE_RADIUS;
+    static const std::string ATTRIBUTE_RESPAWN_DELAY;
+    static const std::string ATTRIBUTE_SPIN_SPEED;
+    static const std::string ATTRIBUTE_STEP_REACH;
+
+    static const float DEFAULT_ACCELERATION;
+    static const float DEFAULT_BOUNCE_FACTOR;
+    static const float DEFAULT_HUG_MOMENTUM;
+    static const float DEFAULT_HEIGHT;
+    static const float DEFAULT_RADIUS;
+    static const int   DEFAULT_RESPAWN_DELAY;
+    static const float DEFAULT_SPIN_SPEED;
+    static const float DEFAULT_STEP_REACH;
+
+    static const std::string BIND_TO_PLAYER;
+    static const std::string BIND_TO_TERRAIN;
+
+    // Internal classes.
+    class Pen : public IWorldEditorToolInstance {
+      public:
+      Pen(PlayerType& parent, WorldEditor* editor);
+      
+      /***************************************\
+       * Implements IWorldEditorToolInstance *
+      \***************************************/
+      bool isTool(IWorldEditorTool* tool) const override;
+      bool renderIcon(float yaw) const override;
+      void renderEditingPreview() const override;
+      void renderUI() const override;
+      void updateUI(unsigned int milliseconds) override;
+      bool inputEdit(sf::Event& event) override;
+      void processCursorMovement(LiteralVertex* start, LiteralVertex* end) override;
+      double getSnapInterval() const override;
+      
+      private:
+      PlayerType& cParent;
+      WorldEditor* cEditor;
+    };
+
+    // External interfaces.
+    Spindizzy& cDefSpindizzy;     /// Spindizzy module reference.
+    
+    // Definition data.
+    float   cDefAcceleration;     /// Initial speed of movement.
+    float   cDefSpinSpeed;        /// Initial speed at which the player spins while moving.
+    float   cDefBounceFactor;     /// Initial factor by which the player bounces on a bouncy surface.
+    float   cDefStepReach;        /// Initial maximum height the player can "step" upwards.
+    float   cDefHeight;           /// Height of the player.
+    float   cDefRadius;           /// Radius of the player.
+    float   cDefHugMomentum;      /// Hug momentum of the player.
+    int     cDefRespawnDelay;     /// How long it takes the player to respawn in ms.
+    Model   cDefModel;            /// Visual representation of the player.
+    Boolean cDefInputThrust;      /// Input for thrust (double speed movement).
+    Float   cDefInputX;           /// Input for movement on the X-axis.
+    Float   cDefInputY;           /// Input for movement on the Y-axis.
+    Float   cDefOrientation;      /// Orientation of the view transforms movement input. // TODO: Should we maybe handle this somewhere else?
+    Action  cDefRespawnAction;    /// Action to perform upon respawning.
+    Action  cDefFallImpactAction; /// Action to perform upon impact with a surface.
+    Action  cDefFallBounceAction; /// Action to perform upon bouncing from a surface.
+    Action  cDefWallBounceAction; /// Action to perform upon bouncing from a wall.
+
+    // Runtime data.
+    float cRuntimeSpinSpeed;      /// Current speed at which the player spins while moving.
+
+    // Editing data.
+    std::vector<std::unique_ptr<Pen>> cEditingPens; /// Pens for drawing players of this type.
+
+    LuaBinding<PlayerType> cLuaBinding;
+
+    // Private functions.
+    float getMovingX() const;
+    float getMovingY() const;
+  };
+}

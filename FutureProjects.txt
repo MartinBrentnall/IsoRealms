@@ -1,0 +1,8 @@
+The following markers are used to show things to be done for future projects.
+
+Marker                  Description
+
+FIXME:LayoutEditor      Interactive Layout Editor
+FIXME:IsoRealmsEditor   Full Resource Editing Support
+FIXME:TripPlayer        Trip Player App
+FIXME:Other             Not yet decided

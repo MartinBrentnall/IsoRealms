@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2023 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,139 +16,113 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SYSTEM_H
-#define SYSTEM_H
+#pragma once
 
+#ifdef __linux__
 #include <dirent.h>
-#include <errno.h>
-#include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string>
 #include <sys/param.h>
+#include <unistd.h>
+#endif
+
+#include <errno.h>
+#include <fstream>
+#include <iostream>
+#include <string>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <unistd.h>
 #include <vector>
 
-#include "Utils.h"
-
-/**
- * This class defines Operating System dependent functionality.
- */
-class System {
-  public:
-
-  /**
-   * Return the entire path of the file storing the engine configuration.
-   *
-   * @returns  The entire path of the file storing the engine configuration.
-   */
-  static std::string getConfigurationFileLocation();
-
-  /**
-   * Return the entire path of the file storing the user settings.
-   *
-   * @returns  The entire path of the file storing the user settings.
-   */
-  static std::string getSettingsFileLocation();
-
-  /**
-   * Return the directory containing user data for the engine.
-   *
-   * @return  The entire path of the directory containing user data.
-   */
-  static std::string getUserDataDirectory();
-
-  static std::string getProgramDataDirectory();
+namespace IsoRealms {
   
   /**
-   * Convert the specified string to the format of the OS.
-   *
-   * @return  The string formatted for the OS.
+   * This class contains system-level and Operating System dependent
+   * functionality.  When using an IsoRealms project, the application must be
+   * set in this class.
    */
-  static std::string convertToSystemFormat(const std::string&);
+  class System {
+    private:
+    
+    /**
+     * Convert the specified path string to the format of the OS.
+     *
+     * @return  The path string formatted for the OS.
+     */
+    static std::string convertToSystemFormat(const std::string& path);
 
-  static void makeDirectory(const std::string&);
-  
-  static void makeUserDataDirectory(const std::string&);
-  
-  /**
-   * Ensure that the user data directory exists.  If it doesn't exist, this
-   * function will attempt to create it.
-   */
-  static void checkUserDataDirectory();
+    public:
+    static const std::string DIRECTORY_SEPARATOR;
+    static const std::string PROGRAM_DATA_DIRECTORY;
+    static const std::string USER_DATA_DIRECTORY;
+    static const std::string MODULE_EXTENSION;
 
-  /**
-   * Check whether the data file exists at the specified location.
-   *
-   * @param string  Location to check for the a file.
-   * @returns  true if the configuration file exists, otherwise false.
-   */
-  static bool configurationFileExists(const std::string&);
+    /**
+     * Return the path to the program or user data directory.
+     *
+     * @param path The path within the program or user data directory.
+     * @param user true to get a path in the user data directory, false to get
+     *             a path in the program data directory.
+     * @return A path in the program or user data directory.
+     */
+    static std::string getPath(const std::string& path, bool user);
 
-  static bool fileExists(const std::string&);
-  
-  /**
-   * Return the directory separator used on the current OS.
-   *
-   * @returns  The directory separator character for the current OS.
-   */
-  static std::string getDirectorySeparator();
+    /**
+     * Return the path to a module within the user or program data directory.
+     *
+     * @param path The path within the program or user data directory.
+     * @param user true to get a path in the user data directory, false to get
+     *             a path in the program data directory.
+     * @return A path in the program or user data directory.
+     */
+    static std::string getModulePath(const std::string& path, bool user);
+    
+    /**
+     * Check whether a file exists at the specified path, relative to either
+     * the program location or the user location.
+     * 
+     * @param path The path to check for existence of a file.
+     * @param user true to check the path relative to the user data directory,
+     *             false to check the path relative to the program data
+     *             directory.
+     * @return true if the file exists, otherwise false.
+     */
+    static bool fileExists(const std::string& path, bool user);
+    
+    /**
+     * Check whether a module exists at the specified path, relative to either
+     * the program location or the user location.
+     * 
+     * @param path The path to check for existence of a file.
+     * @param user true to check the path relative to the user data directory,
+     *             false to check the path relative to the program data
+     *             directory.
+     * @return true if the file exists, otherwise false.
+     */
+    static bool moduleExists(const std::string& path, bool user);
+    
+    /**
+     * Create a folder of the specified path, relative to the user data
+     * directory.
+     * 
+     * @param path The path relative to the user data directory to create.
+     */
+    static void makeUserDataDirectory(const std::string& path);
+    
+    /**
+     * Open an output stream to the specified path, relative to the user data
+     * directory.
+     * 
+     * @param path The path relative to the user data directory.
+     * @return Output stream to file at the specified path.
+     */ 
+    static std::ofstream openOutputStream(const std::string& path); 
 
-  /**
-   * Return the directory name storing user data for Iso Realms.
-   *
-   * @returns  The directory name storing user data for Iso Realms.
-   */
-  static std::string getUserDataDirectoryName();
-
-  /**
-   * Return the file name storing the engine configuration.
-   *
-   * @returns  The file name storing the engine configuration.
-   */
-  static std::string getConfigurationFileName();
-
-  /**
-   * Return the file name storing the user settings.
-   *
-   * @returns  The file name storing the user configuration.
-   */
-  static std::string getSettingsFileName();
-
-  /**
-   * Return the file name for the specified resource.
-   *
-   * @return  The file name for the specified resource.
-   */
-  static std::string getProgramResource(const std::string&);
-
-  /**
-   * Return the project-specific file name for the specified resource.
-   * 
-   * @return  The project-specific file name for the specified resource.
-   */
-  static std::string getUserProjectResource(const std::string&, const std::string&);
-  
-  static std::string getUserResource(const std::string&);
-  
-  /**
-   * Return the file name for the specified resource.
-   *
-   * @return  The file name for the specified resource.
-   */
-  static std::string getConfigurationResource(const std::string&);
-
-  /**
-   * Return a list of filenames from the specified resource.
-   *
-   * @param string  The resource to list files for.
-   * @return        The list of filenames.
-   */
-  static std::vector<std::string>* getFileList(const std::string&, bool = true);
-  
-  static unsigned int getCPUCores();
-};
-
-#endif
+    /**
+     * Return a list of filenames from the specified resource.
+     *
+     * @param path The path in which to get files.
+     * @param files True if the path is user path, otherwise system path.
+     * @return The list of filenames.
+     */
+    static std::vector<std::string> getFileList(const std::string& path, bool files = true);
+  };
+}

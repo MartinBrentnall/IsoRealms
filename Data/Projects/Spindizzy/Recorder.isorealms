@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<Project>
+  <Screen key="Replay/Recorder/Recorder"/>
+  <Input key="Replay/Recorder/Recorder"/>
+  <QuitAction>
+    <Action key="Quit"/>
+  </QuitAction>
+  <Include/>
+  <Modules>
+    <Module name="Basics">
+      <Configuration/>
+      <Resources>
+        <Function name="Quit">
+          <Bind variable="project">
+            <To key="Project"/>
+          </Bind>
+          <Code>project:finish(false)</Code>
+        </Function>
+      </Resources>
+    </Module>
+    <Module name="Replay">  
+      <Configuration/>
+      <Resources>
+        <Recorder name="Recorder" project="Basics/Project">
+          <QuitAction>
+            <Action key="Basics/Function/Quit"/>
+          </QuitAction>
+        </Recorder>
+      </Resources>
+    </Module>
+  </Modules>
+</Project>

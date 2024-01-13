@@ -1,0 +1,114 @@
+/*
+ * Copyright 2023 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#pragma once
+
+#include <cmath>
+#include <cstdlib>
+#include <GL/glew.h>
+
+#include "IsoRealms/Collision/CollisionUtils.h"
+#include "IsoRealms/Common/IVisualElement.h"
+#include "IsoRealms/IAssetBrowser.h"
+#include "IsoRealms/Literals.h"
+#include "IsoRealms/Lua.h"
+#include "IsoRealms/Types.h"
+
+#include "Modules/Spindizzy/BoundaryHandler/IBoundary.h"
+#include "Modules/Spindizzy/IWorldObject.h"
+
+namespace IsoRealms::Spindizzy {
+  class PickUpType;
+  class Zone;
+
+  /**
+   * World object for a pick up.  The object has a fixed location without
+   * physics, and provides a boundary to facilitate triggering in conjunction
+   * with a moving object, such as a player.  The boundary only supports entry
+   * detection.
+   */
+  class PickUp final : public IBoundary,
+                       public IWorldObject {
+    public:
+
+    // Constructors.
+    PickUp(Zone& zone, PickUpType* type, int x, int y, int z);
+    PickUp(Zone& zone, DOMNode& node);
+
+    // Interface for use by parent zone.
+    void initialise();
+    void reset();
+    void save(DOMNodeWriter* node, int x, int y, int z) const;
+    bool isType(const PickUpType* const type) const;
+    void updateRuntime(unsigned int milliseconds);
+    void updateEditing(unsigned int milliseconds);
+    void renderRuntime() const;
+    void renderEditing() const;
+    bool isCollected() const;
+
+    IBinding* getBinding(const std::string& id) const;
+
+    /***********************\
+     * Scripting Interface *
+    \***********************/
+    void pickUp();
+
+    /************************\
+     * Implements IBoundary *
+    \************************/
+    bool contains(LiteralVertex& location) const override;
+    bool isEntered(LiteralVertex& start, LiteralVertex& end) const override;
+    bool isExited(LiteralVertex& start, LiteralVertex& end) const override;
+    void bindValues() override;
+    void unbindValues() override;
+
+    /***************************\
+     * Implements IWorldObject *
+    \***************************/
+    bool contains(const LiteralVertex& location) const override;
+    void renderSelectionHighlight() const override;
+    void remove() override;
+    std::vector<std::unique_ptr<IProperty>> getProperties(IPropertyAppearance* appearance) override;
+    std::string getTypeName() const override;
+    Zone& getObjectZone() override;
+
+    private:
+
+    // DOM strings.
+    static const std::string ATTRIBUTE_TYPE;
+    static const std::string ATTRIBUTE_X;
+    static const std::string ATTRIBUTE_Y;
+    static const std::string ATTRIBUTE_Z;
+
+    static const std::string BIND_TO_ZONE;
+
+    // Definition data.
+    Zone& cDefZone;                           /// Zone to which this pick up belongs.
+    PickUpType* cDefType;                     /// Type of this pick up.
+    std::unique_ptr<ModelInstance> cDefModel; /// Visual representation of this pick up.
+    int cDefX;                                /// X axis location of this pick up.
+    int cDefY;                                /// Y axis location of this pick up.
+    int cDefZ;                                /// Z axis location of this pick up.
+
+    // Runtime data.
+    mutable bool cRuntimePresent; /// Flag is set when the pick up is present (not picked up).
+
+    LuaBinding<PickUp> cLuaBinding;
+  };
+}
+

@@ -1,0 +1,126 @@
+/*
+ * Copyright 2023 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#pragma once
+
+#include <cmath>
+#include <queue>
+
+#include "IsoRealms/Literals.h"
+#include "IsoRealms/Lua.h"
+#include "IsoRealms/ResourceDefinition.h"
+#include "IsoRealms/Types.h"
+
+#include "Modules/Spindizzy/Assets/Type/ICamera.h"
+
+namespace IsoRealms::Spindizzy {
+  class WorldView;
+  class Zone;
+
+  class CameraGameplay final : public ICamera,
+                               public IFloat {
+    public:
+    
+    // Constructors.
+    CameraGameplay(IProject* project, WorldView* view);
+    CameraGameplay(IProject* project, WorldView* view, DOMNode& node);
+    
+    /***********************\
+     * Scripting interface *
+    \***********************/
+    void faceNorthWest();
+    void faceNorthEast();
+    void faceSouthWest();
+    void faceSouthEast();
+    void rotateLeft();
+    void rotateRight();
+    void flip();
+    
+    /**********************\
+     * Implements ICamera *
+    \**********************/
+    void registerAssets(IAssetRegistry* assets) override; 
+    void unregisterAssets(IAssetRemover* assets) override;
+    void save(DOMNodeWriter* node) const override;
+    const IFloat* getYaw() const override;
+    const IFloat* getPitch() const override;
+    float getXLocation() const override;
+    float getYLocation() const override;
+    float getZLocation() const override;
+    float getXZoom() const override;
+    float getYZoom() const override;
+    void setZone(Zone* zone) override;
+    void addListener(ICameraListener* listener) override;
+    void removeListener(ICameraListener* listener) override;
+
+    /*********************\
+     * Implements IFloat *
+    \*********************/
+    float getValue() const override;
+    bool renderAssetIcon() const override;
+    
+    private:
+    
+    // DOM strings.
+    static const std::string ATTRIBUTE_DIRECTION;
+    static const std::string ATTRIBUTE_DURATION;
+    static const std::string ATTRIBUTE_TYPE;
+
+    static const std::string DIRECTION_NORTH_EAST;
+    static const std::string DIRECTION_NORTH_WEST;
+    static const std::string DIRECTION_SOUTH_EAST;
+    static const std::string DIRECTION_SOUTH_WEST;
+    static const std::string DIRECTION_INVALID;
+
+    // Constants.
+    static const int DEFAULT_DURATION;
+    static const int VALUE_MAX;
+    static const int VALUE_MIN;
+    static const int VALUE_NORTH_EAST;
+    static const int VALUE_NORTH_WEST;
+    static const int VALUE_SOUTH_EAST;
+    static const int VALUE_SOUTH_WEST;
+    static const int VALUE_INVALID;
+    
+    LiteralFloat cPitch;
+
+    // External interfaces.
+    WorldView* cParent; /// Parent view.
+    
+    // Definition data.
+    float cDefAngle;          /// Initial angle value.
+    int cDefRollDuration;     /// Millisecond duration of transition to a new angle.
+
+    // Runtime data.
+    float cRuntimePreviousValue;   /// Angle from which view is rotating.
+    float cRuntimeCurrentValue;    /// Angle to which view is rotating.
+    int cRuntimeRollTimeRemaining; /// Milliseconds remaining of transition to a new angle.
+    float cCachedXLocation;
+    float cCachedYLocation;
+    float cCachedZLocation;
+    float cCachedXZoom;
+    float cCachedYZoom;
+    ICameraListener* cListener;
+
+    LuaBinding<CameraGameplay> cLuaBinding;
+    IStateNotifier<IFloat>* cStateNotifier;
+    
+    // Private functions.
+    void rollTo(float value);
+  };
+}

@@ -1,0 +1,89 @@
+/*
+ * Copyright 2023 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#pragma once
+
+#include <algorithm>
+#include <GL/glew.h>
+
+#include "IsoRealms/AnimatedFloat.h"
+#include "IsoRealms/Condition/Condition.h"
+#include "IsoRealms/Condition/ConditionElement.h"
+#include "IsoRealms/Literals.h"
+#include "IsoRealms/Persistence/DOMNode.h"
+
+namespace IsoRealms::Spindizzy {
+  class TerrainType;
+
+  class TerrainBrush {
+    public:
+    TerrainBrush();
+
+    // Configuration functions
+    void toggleEditing();
+    bool isEditing() const;
+    void raiseCorner(unsigned int x, unsigned int y);
+    void lowerCorner(unsigned int x, unsigned int y);
+    void toggleSplit();
+    void toggleSteppedBottom();
+    void renderConfiguration();
+
+    // Automatic configuration functions
+    void reset();
+
+    // Block preparation functions
+    int getNorthWestHeight() const;
+    int getNorthEastHeight() const;
+    int getSouthWestHeight() const;
+    int getSouthEastHeight() const;
+    bool isSplitNorthWestSouthEast() const;
+    bool isAlternativeSplit() const;
+
+    void renderPreview(const TerrainType* type, float pinnedX, float pinnedY, float pinnedZ, float cursorX, float cursorY, float cursorZ, bool steppedBottom) const;
+
+    void updateEditing(unsigned int milliseconds);
+
+    float getHeight(float x, float y) const;
+
+    bool input(sf::Event& event);
+    void update(unsigned int milliseconds, double yaw);
+    bool isSplit() const;
+
+    private:
+    AnimatedFloat cCornerHeight[2][2];
+    bool cSplitNorthWestSouthEast;
+
+    // Editing
+    // TODO: Maybe we can make some kind of generic cursor class out of the following fields
+    bool cRuntimeEditing;
+    double cRuntimeCursorX;
+    double cRuntimeCursorY;
+    double cRuntimeCursorXSpeed;
+    double cRuntimeCursorYSpeed;
+    int cDefAnalogueSensitivity; // TODO: This should be global?
+
+    bool lowerSelected();
+    bool raiseSelected();
+
+    int getXSlope() const;
+    int getYSlope() const;
+    float getXSlopeAnimation() const;
+    float getYSlopeAnimation() const;
+    bool isSplitAnimation() const;
+  };
+}

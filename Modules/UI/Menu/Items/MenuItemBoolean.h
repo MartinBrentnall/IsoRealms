@@ -1,0 +1,88 @@
+/*
+ * Copyright 2023 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#pragma once
+
+#include <GL/glew.h>
+#include <GL/gl.h>
+
+#include "IsoRealms/Persistence/DOMNode.h"
+#include "IsoRealms/IAssetRegistry.h"
+#include "IsoRealms/IAssetRemover.h"
+#include "IsoRealms/Input/HatHandler.h"
+#include "IsoRealms/Lua.h"
+
+#include "Modules/UI/Menu/IMenuItem.h"
+
+namespace IsoRealms::UI {
+  
+  /**
+   * Menu item that represents a boolean option or setting.
+   */
+  class MenuItemBoolean final : public IMenuItem {
+    public:
+
+    // Public DOM strings.
+    static const std::string TAG_TYPE;
+
+    MenuItemBoolean(DOMNode& node, IProject* project);
+    
+    /***********************\
+     * Scripting interface *
+    \***********************/
+    void setValue(bool value);
+    bool getValue();
+    
+    /************************\
+     * Implements IMenuItem *
+    \************************/
+    void registerAssets(IAssetRegistry* assets) override;
+    void unregisterAssets(IAssetRemover* assets, IAssets* releaser) override;
+    void save(DOMNodeWriter* node) const override;
+    bool input(sf::Event& event) override;
+    void selectTop() override;
+    void selectBottom() override;
+    void render(float aspectRatio, float y, bool selected, const Menu& menu) const override;
+    float getHeight(const Menu& menu) const override;
+    float getSelectedY(const Menu& menu) const override;
+    
+    private:
+    
+    // DOM strings.
+    static const std::string ATTRIBUTE_ID;
+    static const std::string ATTRIBUTE_LABEL;
+    static const std::string ATTRIBUTE_LABEL_FALSE;
+    static const std::string ATTRIBUTE_LABEL_TRUE;
+
+    // Constants.    
+    static const std::string BINDING_TYPE;
+
+    // Definition data.
+    HatHandler& cHatHandler;
+    std::string cDefID;         /// ID of this menu item for binding.
+    std::string cDefLabel;      /// Label to show for this menu item.
+    std::string cDefLabelFalse; /// Label to show when the value of this menu item is false.
+    std::string cDefLabelTrue;  /// Label to show when the value of this menu item is true.
+    
+    // Runtime data.
+    bool cRuntimeValue; /// Current value of this item.
+
+    // Scripting support.
+    LuaBinding<MenuItemBoolean> cLuaBinding; /// Allows boolean settings to be bound to lua variables.
+  };
+}

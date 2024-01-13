@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Martin Brentnall
+ * Copyright 2023 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,30 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef HIGH_SCORE_RECORD_H
-#define HIGH_SCORE_RECORD_H
+#pragma once
 
 #include <map>
 #include <string>
 #include <vector>
 
-#include <IsoRealms/Persistence/DOMNodeWrapper.h>
-#include <IsoRealms/Persistence/DOMNodeWriter.h>
+#include "IsoRealms/Persistence/DOMNode.h"
+#include "IsoRealms/Persistence/DOMNodeWriter.h"
 
-#include "IHighScoreTable.h"
-
-class HighScoreRecord {
-  private:
-  IHighScoreTable* cParentTable;
-  std::vector<std::string> cValues;
+namespace IsoRealms::HighScore {
+  class HighScoreTable;
   
-  public:
-  HighScoreRecord(DOMNodeWrapper*, IHighScoreTable*);
-  HighScoreRecord(std::map<std::string, std::string>, IHighScoreTable*);
-  
-  void save(DOMNodeWriter*);
-  bool beats(const std::string&);
-  bool beats(HighScoreRecord*);
-};
-
-#endif
+  class HighScoreRecord {
+    public:
+    HighScoreRecord(DOMNode& node, HighScoreTable* parentTable);
+    HighScoreRecord(std::map<std::string, std::string> record, HighScoreTable* parentTable);
+    
+    void save(DOMNodeWriter* node);
+    bool beats(const std::string& value);
+    bool beats(HighScoreRecord* record);
+    
+    private:
+    HighScoreTable* cParentTable;
+    std::vector<std::string> cValues;
+  };
+}

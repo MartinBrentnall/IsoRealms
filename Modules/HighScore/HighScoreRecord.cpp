@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Martin Brentnall
+ * Copyright 2023 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -18,49 +18,54 @@
  */
 #include "HighScoreRecord.h"
 
-HighScoreRecord::HighScoreRecord(DOMNodeWrapper* node, IHighScoreTable* parentTable) : cValues(parentTable->getFieldCount()) {
-  cParentTable = parentTable;
+#include "HighScoreTable.h"
 
-  for (int i = 0; i < node->getChildCount(); i++) {
-    DOMNodeWrapper* mNode = node->getChild(i);
-    std::string mValue = mNode->getNodeName();
-    if (mValue == "Field") {
-      std::string mFieldName   = mNode->getAttribute("field");
-      std::string mFieldValue  = mNode->getAttribute("value");
-      unsigned int mFieldIndex = cParentTable->getFieldIndex(mFieldName);
-      cValues[mFieldIndex] = mFieldValue;
+namespace IsoRealms::HighScore {
+  HighScoreRecord::HighScoreRecord(DOMNode& node, HighScoreTable* parentTable) : cValues(parentTable->getFieldCount()) {
+    cParentTable = parentTable;
+
+    for (DOMNode& mNode : node) {
+      std::string mValue = mNode.getName();
+      if (mValue == "Field") {
+        std::string mFieldName   = mNode.getAttribute("field");
+        std::string mFieldValue  = mNode.getAttribute("value");
+        unsigned int mFieldIndex = cParentTable->getFieldIndex(mFieldName);
+        cValues[mFieldIndex] = mFieldValue;
+      } else {
+        throw ParseException("Unknown tag for HighScore/HighScoreRecord: " + mValue);
+      }
     }
   }
-}
 
-HighScoreRecord::HighScoreRecord(std::map<std::string, std::string> record, IHighScoreTable* parentTable) : cValues(parentTable->getFieldCount()) {
-  cParentTable = parentTable;
-  
-  for (std::pair<std::string, std::string> mField : record) {
-    unsigned int mFieldIndex = cParentTable->getFieldIndex(mField.first);
-    cValues[mFieldIndex] = mField.second;
+  HighScoreRecord::HighScoreRecord(std::map<std::string, std::string> record, HighScoreTable* parentTable) : cValues(parentTable->getFieldCount()) {
+    cParentTable = parentTable;
+    
+    for (std::pair<std::string, std::string> mField : record) {
+      unsigned int mFieldIndex = cParentTable->getFieldIndex(mField.first);
+      cValues[mFieldIndex] = mField.second;
+    }
   }
-}
 
-void HighScoreRecord::save(DOMNodeWriter* node) {
-  for (unsigned int i = 0; i < cValues.size(); i++) {
-    std::string mFieldName = cParentTable->getFieldName(i);
-    DOMNodeWriter* mFieldBranch = node->addBranch("Field");
-    mFieldBranch->addAttribute("field", mFieldName);
-    mFieldBranch->addAttribute("value", cValues[i]);
+  void HighScoreRecord::save(DOMNodeWriter* node) {
+    for (unsigned int i = 0; i < cValues.size(); i++) {
+      std::string mFieldName = cParentTable->getFieldName(i);
+      DOMNodeWriter mFieldBranch = node->addBranch("Field");
+      mFieldBranch.addAttribute("field", mFieldName);
+      mFieldBranch.addAttribute("value", cValues[i]);
+    }
   }
-}
 
-bool HighScoreRecord::beats(const std::string& value) {
-  unsigned int mComparisonFieldIndex = cParentTable->getComparisonFieldIndex();
-  int mMyValue = std::stoi(cValues[mComparisonFieldIndex]);
-  int mChallengerValue = std::stoi(value);
-  return mMyValue >= mChallengerValue;
-}
+  bool HighScoreRecord::beats(const std::string& value) {
+    unsigned int mComparisonFieldIndex = cParentTable->getComparisonFieldIndex();
+    int mMyValue = std::stoi(cValues[mComparisonFieldIndex]);
+    int mChallengerValue = std::stoi(value);
+    return mMyValue >= mChallengerValue;
+  }
 
-bool HighScoreRecord::beats(HighScoreRecord* record) {
-  unsigned int mComparisonFieldIndex = cParentTable->getComparisonFieldIndex();
-  int mMyValue = std::stoi(cValues[mComparisonFieldIndex]);
-  int mChallengerValue = std::stoi(record->cValues[mComparisonFieldIndex]);
-  return mMyValue >= mChallengerValue;
+  bool HighScoreRecord::beats(HighScoreRecord* record) {
+    unsigned int mComparisonFieldIndex = cParentTable->getComparisonFieldIndex();
+    int mMyValue = std::stoi(cValues[mComparisonFieldIndex]);
+    int mChallengerValue = std::stoi(record->cValues[mComparisonFieldIndex]);
+    return mMyValue >= mChallengerValue;
+  }
 }

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<Project>
+  <Screen key="UI/Panel/Test"/>
+  <Input key="Literal"/>
+  <Include/>
+  <Modules>
+    <Module name="Basics">
+      <Configuration/>
+      <Resources>
+        <BooleanTrigger name="Test">
+          <Value key="Literal" value="false"/>
+          <ActionOnTrue/>
+        </BooleanTrigger>
+        <ColourCycler name="Test">
+          <IO>
+            <InputColour key="Literal" value="1.0 0.5 0.5 1.0"/>
+            <InputColour key="Literal" value="1.0 1.0 0.0 1.0"/>
+            <InputColour key="Literal" value="0.0 1.0 0.0 1.0"/>
+            <InputColour key="Literal" value="0.0 1.0 1.0 1.0"/>
+            <InputColour key="Literal" value="0.5 0.5 1.0 1.0"/>
+            <InputColour key="Literal" value="1.0 0.5 1.0 1.0"/>
+            <OutputColour offset="0.0000"/>
+          </IO>
+          <CycleSpeed key="Literal" value="0.005"/>
+        </ColourCycler>
+        <Function name="Test">
+          <Bind variable="unique">
+            <To key=":Action"/>
+            <Action/>
+          </Bind>
+        </Function>
+      </Resources>
+    </Module>
+    <Module name="UI">
+      <Configuration/>
+      <Resources>
+        <Panel name="Test">
+          <Colour key="Basics/ColourCycler/Test/0"/>
+        </Panel>
+      </Resources>
+    </Module>
+  </Modules>
+</Project>
+

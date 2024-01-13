@@ -1,0 +1,114 @@
+/*
+ * Copyright 2023 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#pragma once
+
+#include <GL/glew.h>
+
+#include "IsoRealms/IAssets.h"
+#include "IsoRealms/Types.h"
+
+#include "Modules/Spindizzy/Assets/Type/IWallPattern.h"
+
+namespace IsoRealms::Spindizzy {
+  class Spindizzy;
+
+  class WallPatternCap : public IWallPattern {
+    public:
+    WallPatternCap(IProject* project, Spindizzy* spindizzy, DOMNode& node);
+
+    /***************************\
+     * Implements IWallPattern *
+    \***************************/
+    bool contains(ITexture*) override;
+    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const override;
+    std::vector<std::unique_ptr<IVisualElement>> getStaticVisuals(Wall* wall) const override;
+    void render(float x, float y, float z, float length, float height, float topSlope, float bottomSlope, Wall::Direction facing) const override;
+    void hintInUse(bool inUse) override;
+    
+    private:
+
+    // Internal classes.
+    class SectionTop : public IVisualElement {
+      public:
+      SectionTop(const WallPatternCap* parent, Wall* wall);
+
+      /*****************************\
+       * Implemetns IVisualElement * 
+      \*****************************/
+      void render() override;
+      ITexture* getTexture() override;
+      void prepareVisual() override;
+      
+      private:
+      const WallPatternCap* cDefParent;
+      Wall* cDefWall;
+    };
+
+    class SectionMiddle : public IVisualElement {
+      public:
+      SectionMiddle(const WallPatternCap* parent, Wall* wall);
+
+      /*****************************\
+       * Implemetns IVisualElement * 
+      \*****************************/
+      void render() override;
+      ITexture* getTexture() override;
+      void prepareVisual() override;
+      
+      private:
+      const WallPatternCap* cDefParent;
+      Wall* cDefWall;
+    };
+
+    class SectionBottom : public IVisualElement {
+      public:
+      SectionBottom(const WallPatternCap* parent, Wall* wall);
+
+      /*****************************\
+       * Implemetns IVisualElement * 
+      \*****************************/
+      void render() override;
+      ITexture* getTexture() override;
+      void prepareVisual() override;
+      
+      private:
+      const WallPatternCap* cDefParent;
+      Wall* cDefWall;
+    };
+
+    // DOM strings.
+    static const std::string TAG_BOTTOM;
+    static const std::string TAG_MIDDLE;
+    static const std::string TAG_TOP;
+
+    static const std::string ATTRIBUTE_TYPE;
+
+    static const std::string TYPE_CAP;
+  
+    // Definition data.
+    Texture cDefTextureBottom;
+    Texture cDefTextureMiddle;
+    Texture cDefTextureTop;
+    
+    // Private functions.
+    void renderBottom(float x, float y, float z, float length, float bottomSlope, Wall::Direction facing) const;
+    void renderMiddle(float x, float y, float z, float length, float height, float topSlope, float bottomSlope, Wall::Direction facing) const;
+    void renderTop(float x, float y, float z, float length, float height, float topSlope, Wall::Direction facing) const;
+  };
+}

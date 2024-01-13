@@ -1,4 +1,4 @@
-# Copyright 2009,2010 Martin Brentnall
+# Copyright 2018 Martin Brentnall
 #
 # This file is part of Iso-Realms.
 #
@@ -16,10 +16,10 @@
 # along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
 include_directories(${PROJECT_SOURCE_DIR})
 
-add_subdirectory(Editor)
+add_subdirectory(Basics)
 add_subdirectory(HighScore)
-add_subdirectory(InputRecorder)
-add_subdirectory(IsoRealms)
-add_subdirectory(Menu)
-add_subdirectory(Rollaround)
+#add_subdirectory(Hue)
+#add_subdirectory(Music)
+add_subdirectory(Replay)
 add_subdirectory(Spindizzy)
+add_subdirectory(UI)

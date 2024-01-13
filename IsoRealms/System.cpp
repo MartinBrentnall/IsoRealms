@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2023 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -18,146 +18,93 @@
  */
 #include "System.h"
 
-std::string System::getConfigurationFileLocation() {
-  return getProgramDataDirectory() + getConfigurationFileName();
-}
+#include "IApplication.h"
+#include "Utils.h"
 
-std::string System::getSettingsFileLocation() {
-  return getUserDataDirectory() + getSettingsFileName();
-}
+namespace IsoRealms {
+#if _WIN32
+  const std::string System::DIRECTORY_SEPARATOR    = "\\";
+  const std::string System::PROGRAM_DATA_DIRECTORY = "";
+  const std::string System::USER_DATA_DIRECTORY    = std::string(getenv("USERPROFILE")) + "/.isorealms/";
+  const std::string System::MODULE_EXTENSION       = ".dll";
+#elif __linux__
+  const std::string System::DIRECTORY_SEPARATOR    = "/";
+  const std::string System::PROGRAM_DATA_DIRECTORY = "";
+  const std::string System::USER_DATA_DIRECTORY    = std::string(getenv("HOME")) + "/.isorealms/";
+  const std::string System::MODULE_EXTENSION       = ".so";
+#endif
+  
+  std::string System::getPath(const std::string& filename, bool user) {
+    return (user ? USER_DATA_DIRECTORY : PROGRAM_DATA_DIRECTORY) + convertToSystemFormat(filename);
+  }
 
-std::string System::getUserDataDirectory() {
-  return getenv("HOME") + getDirectorySeparator() + getUserDataDirectoryName() + getDirectorySeparator();
-}
+  std::string System::getModulePath(const std::string& filename, bool user) {
+    return getPath(filename, user) + MODULE_EXTENSION;
+  }
 
-void System::makeDirectory(const std::string& path) {
-  struct stat mUserDataLocationInfo;
-  std::vector<std::string> mFolders = Utils::splitWords(path, '/');
-  std::string mUserDataLocation = "";
-  for (unsigned int i = 0; i < mFolders.size(); i++) {
-    mUserDataLocation += "/" + mFolders[i];
-    if (stat(mUserDataLocation.c_str(), &mUserDataLocationInfo) == 0) {
-      if (!S_ISDIR(mUserDataLocationInfo.st_mode)) {
-        std::cout << "Exists, but is not a directory!" << std::endl;
-        exit(1);
+  bool System::fileExists(const std::string& filename, bool user) {
+    struct stat mFileInfo;
+    std::string mFilename = getPath(filename, user);
+    return stat(mFilename.c_str(), &mFileInfo) == 0;
+  }
+  
+  bool System::moduleExists(const std::string& filename, bool user) {
+    std::string mFilename = getModulePath(filename, user);
+    return std::filesystem::exists(mFilename);
+  }
+  
+  void System::makeUserDataDirectory(const std::string& path) {
+    std::string mUserDataLocation = USER_DATA_DIRECTORY;
+    std::vector<std::string> mFolders = Utils::splitWords(path, '/');
+
+    // Create the data folder itself if it doesn't already exist.
+    if (!std::filesystem::exists(mUserDataLocation)) {
+      if (!std::filesystem::create_directory(mUserDataLocation)) {
+        throw ArgumentException("ERROR: System::makeUserDataDirectory: Failed to create data directory \"" + mUserDataLocation + "\", mkdir function failed.");
       }
-    } else if (mkdir(mUserDataLocation.c_str(), 0700)) {
-      std::cout << "Couldn't create user data directory" << std::endl;
-      exit(1);
     }
-  }
-}
 
-void System::makeUserDataDirectory(const std::string& path) {
-  struct stat mUserDataLocationInfo;
-  std::string mUserDataLocation = getenv("HOME") + getDirectorySeparator() + getUserDataDirectoryName();
-  std::vector<std::string> mFolders = Utils::splitWords(path, '/');
-  for (unsigned int i = 0; i < mFolders.size(); i++) {
-    mUserDataLocation += "/" + mFolders[i];
-    if (stat(mUserDataLocation.c_str(), &mUserDataLocationInfo) == 0) {
-      if (!S_ISDIR(mUserDataLocationInfo.st_mode)) {
-        std::cout << "Exists, but is not a directory!" << std::endl;
-        exit(1);
-      }
-    } else if (mkdir(mUserDataLocation.c_str(), 0700)) {
-      std::cout << "Couldn't create user data directory" << std::endl;
-      exit(1);
-    }
-  }
-}
-
-void System::checkUserDataDirectory() {
-  struct stat mUserDataLocationInfo;
-  std::string mUserDataLocation = getenv("HOME") + getDirectorySeparator() + getUserDataDirectoryName();
-  if (stat(mUserDataLocation.c_str(), &mUserDataLocationInfo) == 0) {
-    if (!S_ISDIR(mUserDataLocationInfo.st_mode)) {
-      std::cout << "It's not a directory!" << std::endl;
-      exit(1);
-    }
-  } else if (mkdir(mUserDataLocation.c_str(), 0700)) {
-    std::cout << "Couldn't create user data directory" << std::endl;
-    exit(1);
-  }
-}
-
-std::string System::convertToSystemFormat(const std::string& filename) {
-  return filename;
-}
-
-bool System::configurationFileExists(const std::string& filename) {
-  struct stat mFileInfo;
-  std::string mFileLocation = getUserDataDirectory() + convertToSystemFormat(filename);
-  return stat(mFileLocation.c_str(), &mFileInfo) == 0;
-}
-
-bool System::fileExists(const std::string& filename) {
-  struct stat mFileInfo;
-  return stat(filename.c_str(), &mFileInfo) == 0;
-}
-
-std::string System::getDirectorySeparator() {
-  return "/";
-}
-
-std::string System::getUserDataDirectoryName() {
-  return ".isorealms";
-}
-
-std::string System::getConfigurationFileName() {
-  return "configuration.xml";
-}
-
-std::string System::getSettingsFileName() {
-  return "settings.xml";
-}
-
-// TODO: Rename function "getDataResource"
-std::string System::getProgramDataDirectory() {
-  return "/usr/share/IsoRealms/";
-}
-
-std::string System::getProgramResource(const std::string& filename) {
-  return getProgramDataDirectory() + convertToSystemFormat(filename);
-}
-
-std::string System::getUserResource(const std::string& filename) {
-  return getUserDataDirectory() + convertToSystemFormat(filename);
-}
-
-std::string System::getUserProjectResource(const std::string& projectName, const std::string& filename) {
-  return getUserDataDirectory() + "projectConfig" + getDirectorySeparator() + projectName + getDirectorySeparator() + convertToSystemFormat(filename);
-}
-
-std::string System::getConfigurationResource(const std::string& filename) {
-  return getProgramDataDirectory() + convertToSystemFormat(filename) + ".so";
-}
-
-std::vector<std::string>* System::getFileList(const std::string& filename, bool files) {
-  std::vector<std::string>* mList = new std::vector<std::string>();
-  DIR *dp;
-  struct dirent *dirp;
-  if ((dp = opendir(filename.c_str())) == nullptr) {
-    std::cout << "WARNING(" << errno << "); Directory \"" << filename << "\" could not be opened to list files" << std::endl;
-    return mList;
-  }
-
-  struct stat mFileInfo;
-  while ((dirp = readdir(dp)) != nullptr) {
-    if (dirp->d_name[0] != '.' && dirp->d_type) {
-      std::string mFullPath = filename + dirp->d_name;
-      if (lstat(mFullPath.c_str(), &mFileInfo) < 0) {
-        perror(mFullPath.c_str());
+    for (unsigned int i = 0; i < mFolders.size(); i++) {
+      mUserDataLocation += (i == 0 ? "" : DIRECTORY_SEPARATOR) + mFolders[i];
+      if (std::filesystem::exists(mUserDataLocation)) {
+        if (!std::filesystem::is_directory(mUserDataLocation)) {
+          throw ArgumentException("ERROR: System::makeUserDataDirectory: Failed to create data directory, \"" + mUserDataLocation + "\" already exists as something other than a directory.");
+        }
       } else {
-        if (S_ISDIR(mFileInfo.st_mode) != files) {
-          mList->push_back(std::string(dirp->d_name));
+        if (!std::filesystem::create_directory(mUserDataLocation)) {
+          throw ArgumentException("ERROR: System::makeUserDataDirectory: Failed to create data directory \"" + mUserDataLocation + "\", mkdir function failed.");
         }
       }
     }
   }
-  closedir(dp);
-  return mList;
-}
 
-unsigned int System::getCPUCores() {
-  return sysconf(_SC_NPROCESSORS_ONLN);
+  std::ofstream System::openOutputStream(const std::string& path) {
+    std::ofstream mOutput;
+    std::string mFullPath = getPath(path, true); 
+    makeUserDataDirectory(path.substr(0, path.find_last_of('/')));
+    mOutput.open(mFullPath, std::ios::out | std::ios::binary);
+    return mOutput;
+  }
+  
+  std::vector<std::string> System::getFileList(const std::string& filename, bool files) {
+    std::vector<std::string> mList;
+    if (std::filesystem::exists(filename)) {
+      for (auto const& mDirEntry : std::filesystem::directory_iterator{filename}) {
+        std::string mFileName = mDirEntry.path().filename().string();
+        if (mFileName[0] != '.') {
+          if (mDirEntry.is_directory() != files) {
+            mList.push_back(mFileName);
+          }
+        }
+      }
+    }
+    return mList;
+  }
+  
+  /***********\
+   * Private *
+  \***********/
+  std::string System::convertToSystemFormat(const std::string& filename) {
+    return filename;
+  }
 }

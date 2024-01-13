@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Martin Brentnall
+ * Copyright 2023 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,22 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef ISO_REALMS_CONSTANTS_H
-#define ISO_REALMS_CONSTANTS_H
+#pragma once
 
-/**
- * This class contains constants that can be used throughout the Iso-Realms
- * library.
- */
-class IsoRealmsConstants {
-  public:
+#include <string>
 
-  // Dimensions
-  static const double BLOCK_SIZE;
-  static const double BLOCK_RADIUS;
-  static const double BLOCK_HEIGHT;
-  static const double LINE_WIDTH;  
-  static const double STEP_HEIGHT;  // 1 = One block high
-};
-
-#endif
+namespace IsoRealms {
+  
+  /**
+   * This class contains constants that can be used throughout the Iso-Realms
+   * library.
+   */
+  class IsoRealmsConstants {
+    public:
+    static const std::string RESOURCE_CATEGORY_SIMPLE_VARIABLES;
+    static const std::string RESOURCE_CATEGORY_SIMPLE_GRAPHICS;
+    static const std::string RESOURCE_CATEGORY_DYNAMIC_VARIABLES;
+    static const std::string RESOURCE_CATEGORY_LOGIC_AND_INPUT;
+    static const std::string RESOURCE_CATEGORY_PRESENTATION;
+    static const std::string RESOURCE_CATEGORY_SYSTEM;
+  };
+}

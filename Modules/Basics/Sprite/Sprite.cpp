@@ -1,0 +1,138 @@
+/*
+ * Copyright 2023 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#include "Sprite.h"
+
+namespace IsoRealms::Basics {
+  const std::string Sprite::TAG_TEXTURE = "Texture";
+
+  const std::string Sprite::ATTRIBUTE_BILLBOARD_YAW   = "billboardYaw";
+  const std::string Sprite::ATTRIBUTE_BILLBOARD_PITCH = "billboardPitch";
+
+  Sprite::Sprite(IProject* project, Basics* basics) :
+            cDefProject(project),
+            cDefTexture(project),
+            cDefBillboardYaw(false),
+            cDefBillboardPitch(false),
+            cRuntimeScreen(nullptr) {
+    cDefProject->addScreenListener(this);
+  }
+  
+  Sprite::Sprite(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
+            Sprite(project, basics) {
+    cDefTexture.init(node.getNode(TAG_TEXTURE));
+    cDefBillboardYaw   = node.getBooleanAttribute(ATTRIBUTE_BILLBOARD_YAW);
+    cDefBillboardPitch = node.getBooleanAttribute(ATTRIBUTE_BILLBOARD_PITCH);
+  }
+
+  void Sprite::registerAssets(IAssetRegistry* assets) {
+    assets->add(this, "", "Sprite Models");
+  }
+
+  void Sprite::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
+    assets->remove(this);
+  }
+
+  void Sprite::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
+    cDefTexture.save(node, TAG_TEXTURE);
+    node->addAttribute(ATTRIBUTE_BILLBOARD_YAW, cDefBillboardYaw);
+    node->addAttribute(ATTRIBUTE_BILLBOARD_PITCH, cDefBillboardPitch);
+  }
+
+  void Sprite::hintInUse(bool inUse) {
+    cDefTexture->hintTextureInUse(inUse);
+  }
+
+  bool Sprite::renderIcon() const {
+    cDefTexture->set();
+    glAlphaFunc(GL_GREATER, 0.1f);
+    glEnable(GL_ALPHA_TEST);
+    glEnable(GL_BLEND);
+    glDisable(GL_CULL_FACE);
+    glBegin(GL_QUADS);
+    cDefTexture.coord(1.0f, 1.0f); glVertex3f( 0.5f, -0.5f, 0.0f);
+    cDefTexture.coord(1.0f, 0.0f); glVertex3f( 0.5f,  0.5f, 0.0f);
+    cDefTexture.coord(0.0f, 0.0f); glVertex3f(-0.5f,  0.5f, 0.0f);
+    cDefTexture.coord(0.0f, 1.0f); glVertex3f(-0.5f, -0.5f, 0.0f);
+    glEnd();
+    glEnable(GL_CULL_FACE);
+    glDisable(GL_BLEND);
+    glDisable(GL_ALPHA_TEST);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    return true;
+  }
+
+  std::vector<IProperty*> Sprite::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
+    return std::vector<IProperty*>({
+    });
+  }
+
+  I3DModel* Sprite::createModel() {
+    return this;
+  }
+
+  bool Sprite::renderAssetIcon() const {
+    return renderIcon();
+  }
+
+  void Sprite::update(unsigned int milliseconds) {
+    // Nothing to do.
+  }
+
+  void Sprite::render() const {
+    glRotatef(-getAngle(), 0.0f, 0.0f, 1.0f);
+    glRotatef(-getTilt(), 1.0f, 0.0f, 0.0f);
+    renderIcon();
+  }
+
+  void Sprite::screenAdded(IProject* project, const IScreen* screen) {
+    // Nothing to do.
+  }
+
+  void Sprite::screenRemoved(const IScreen* screen) {
+    // Nothing to do.
+  }
+
+  void Sprite::screenPreRender(const IScreen* screen) {
+    cRuntimeScreen = screen;
+  }
+
+  void Sprite::screenPostRender(const IScreen* screen) {
+    cRuntimeScreen = nullptr;
+  }
+
+  float Sprite::getAngle() const {
+    if (cDefBillboardYaw) {
+      const IFloat* mYaw = cRuntimeScreen->getYaw();
+      return mYaw != nullptr ? mYaw->getValue() : 0.0f;
+    }
+    return 0.0f;
+  }
+
+  float Sprite::getTilt() const {
+    if (cDefBillboardPitch) {
+      const IFloat* mPitch = cRuntimeScreen->getPitch();
+      return mPitch != nullptr ? mPitch->getValue() : 0.0f;
+    }
+    return 0.0f;
+  }
+
+  Sprite::~Sprite() {
+    cDefProject->removeScreenListener(this);
+  }
+}

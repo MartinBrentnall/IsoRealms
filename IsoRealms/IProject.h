@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Martin Brentnall
+ * Copyright 2023 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -16,52 +16,130 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef I_PROJECT_H
-#define I_PROJECT_H
+#pragma once
 
-#include <IsoRealms/Resources/Camera/ICamera.h>
-#include <IsoRealms/Resources/ElementType/IElement.h>
+#include <filesystem>
+#include <functional>
+#include <string>
 
-#include "BlockLocation.h"
-#include "Persistence/DOMNodeWrapper.h"
-#include "IEditingContext.h"
-#include "IObjectSelectionListener.h"
+#include "Assets/IBindingRegistry.h"
+#include "Assets/Registry/IAssetUser.h"
+#include "IAssetBrowser.h"
+#include "IStateListener.h"
 
-class ILayer;
-class InputCommands;
-class IResourceManager;
-class ModuleRegistry;
+namespace IsoRealms {
+  class Application;
+  class IApplication;
+  class IAssets;
+  class ICallbackHandle;
+  class IEditable;
+  class IFloat;
+  class IScreen;
+  class IScreenListener;
+  class LuaState;
 
-class IProject {
-  public:
+  /**
+   * Project interface made available to modules and their resources.
+   */
+  class IProject : public IAssetBrowser {
+    public:
+      
+    /**
+     * Perform the specified allocation task function on the main thread.
+     * Allocation tasks will be performed before initialisation tasks.
+     * This function is useful when OpenGL textures must be allocated that
+     * may be needed for initialisation later.
+     * 
+     * @param task The allocation task to perform.
+     */
+    virtual void mainThreadAlloc(std::function<void()> task) = 0;
+    
+    /**
+     * Perform the specified initialisation function on the main thread.
+     * initialisation tasks will be performed after allocation tasks.
+     * This function is useful for performing OpenGL initialisation,
+     * since it is not allowed to call OpenGL functions outside the main
+     * thread.
+     * 
+     * @param task The initialisation task to perform.
+     */
+    virtual void mainThreadInit(std::function<void()> task) = 0;
+    
+    /**
+     * Create a callback for initialising asset references.  The callback will
+     * be called by the project after all resources and assets have been
+     * constructed.
+     * 
+     * @param initialiser The asset initialisation function.
+     */
+    virtual void init(std::function<void(IAssets*)> initialiser) = 0;
+    
+    /**
+     * Create a callback to be called on a Project reset.  This callback
+     * function should reset the object back to the state it was in when
+     * the object was loaded.
+     * 
+     * @param resetter The reset function.
+     */
+    virtual ICallbackHandle* reset(std::function<void()> resetter) = 0;
 
-  // TODO: Editor functions should probably not be here
-  virtual void removeElement(IElement*) = 0;
+    /**
+     * Create a callback to be called once at each update cycle during runtime.
+     * This allows objects to behave dynamically over time.
+     * 
+     * @param dynamic The runtime update function.
+     */
+    virtual ICallbackHandle* updateRuntime(std::function<void(unsigned int)> dynamic) = 0;
+    
+    /**
+     * Create a callback to be called once at each update cycle during editing.
+     * This allows objects to behave dynamically over time.
+     * 
+     * @param dynamic The editing update function.
+     */
+    virtual ICallbackHandle* updateEditing(std::function<void(unsigned int)> dynamic) = 0;
+    
+    /**
+     * Defer the specified function to be performed following completion of the
+     * current update cycle.  This may be useful in situations where a task
+     * is to be performed in response to an event, and it is not known if more
+     * events may trigger the same task, causing it to be performed multiple
+     * times redundantly.
+     * 
+     * @param task The task to perform at the end of the current update cycle.
+     */
+    virtual void updateLater(std::function<void()> task) = 0;    
 
-  virtual void updateRuntime(unsigned int) = 0;
-  virtual void updateEditing(unsigned int) = 0;
-  virtual void renderRuntime() = 0;
-  virtual void inputRuntime(SDL_Event&) = 0;
-  virtual void save() = 0;
-  virtual void save(const std::string&) = 0;
-  virtual bool hasFileName() = 0;
-  virtual ModuleRegistry* getModuleRegistry() = 0;
-  virtual IResourceManager* getResourceManager() = 0;
-  virtual ILayer* getDefaultLayer() = 0;
-  virtual std::vector<ILayer*> getAllLayers() = 0;
-  virtual std::string getName(ILayer*) = 0;
-  virtual void initEditor() = 0;
-  virtual void initRuntime() = 0;
-  virtual bool hasCompleted() = 0;
-  virtual void reset() = 0;
-  virtual void addObjectSelectionListener(IObjectSelectionListener*) = 0;
-  virtual InputCommands* getInputConfiguration() = 0;
-  
-  virtual void staticChanged() = 0;
-  
-  virtual std::string getReturnValue(const std::string&) = 0;
+    /**
+     * Remove the specified callback handle from the project.
+     * 
+     * @param callbackHandle Callback handle to remove.
+     */
+    virtual void remove(ICallbackHandle* callbackHandle) = 0;
+    
+    /**
+     * Retrieve the engine Lua state object.
+     * 
+     * @return The Lua state object.
+     */
+    virtual LuaState* const getLuaState() = 0;
+    virtual void finish(bool forceQuit) = 0;
+    
+    // TODO: Shouldn't be exposed to modules
+    virtual std::string getDataPath(bool user) = 0;
 
-  virtual ~IProject() {}
-};
+    virtual bool isUserProject() = 0;
+    virtual void addScreenListener(IScreenListener* listener) = 0;
+    virtual void removeScreenListener(IScreenListener* listener) = 0;
 
-#endif
+    // TODO: Probably shouldn't be here?
+    virtual void addStateChangeListener(const IFloat* asset, IStateListener<IFloat*>* listener) = 0;
+    virtual IEditable* getDefaultEditable() const = 0;
+
+    virtual std::filesystem::file_time_type getLastWriteTime() = 0;
+
+    virtual void initMainThread() = 0;
+
+    virtual IApplication* getApplication() = 0;
+  };
+}

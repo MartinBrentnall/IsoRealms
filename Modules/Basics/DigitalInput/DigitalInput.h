@@ -1,0 +1,177 @@
+/*
+ * Copyright 2023 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#pragma once
+
+#include <set>
+#include <queue>
+
+#include "IsoRealms/Exception/ActionException.h"
+#include "IsoRealms/IApplication.h"
+#include "IsoRealms/Lua.h"
+#include "IsoRealms/Input.h"
+#include "IsoRealms/ResourceDefinition.h"
+#include "IsoRealms/Types.h"
+#include "IsoRealms/Utils.h"
+
+namespace IsoRealms::Basics {
+  class Basics;
+
+  /**
+   * Resource definition for a digital input.  Each digital input may be bound
+   * to multiple physical inputs.  The digital input is implemented as an Input
+   * Handler and its state is exposed as a Boolean and via a state notifier.
+   *
+   * Digital input provides functions to facilitate overriding the defined
+   * inputs with user-defined physical input mappings, as well as persistence
+   * of the user-defined input mappings.
+   *
+   * All functions operate on the basis of user-defined physical input mappings
+   * when they exist, and default physical input mappings when user-defined
+   * physicalinput mappings do not exist.
+   */
+  class DigitalInput final : public IBoolean,
+                             public IInputHandler {
+    public:
+
+    /**********************\
+     * Resource Interface *
+    \**********************/
+    DigitalInput(IProject* project, Basics* basics);
+    DigitalInput(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data);
+    void registerAssets(IAssetRegistry* assets);
+    void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
+    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void hintInUse(bool inUse);
+    bool renderIcon() const;
+    std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
+
+    /***********************\
+     * Implements IBoolean *
+    \***********************/
+    bool getValue() const override;
+
+    /****************************\
+     * Implements IInputHandler *
+    \****************************/
+    bool input(sf::Event& event) override;
+
+    /***********************\
+     * Implements multiple *
+    \***********************/
+    bool renderAssetIcon() const override;
+
+    /***********************\
+     * Scripting Interface *
+    \***********************/
+    /**
+     * Obtain a string representation of the physical input mappings to be unsigned
+     * for displaying in menus (etc.).
+     *
+     * @return String representation of the current input mapping.
+     */
+    std::string getInputsString() const;
+
+    /**
+     * Return the number of physical inputs bound to this digital input.
+     *
+     * @return The number of physical inputs currently bound to this digital
+     *         input.
+     */
+    unsigned int getMappingCount() const;
+
+    /**
+     * Return the physical input at the specified index, which is expected to
+     * fall between 0 and getMappingCount() - 1.
+     *
+     * @param index Index of the desired input mapping.
+     * @return The physical input mapping at the specified index.
+     */
+    std::shared_ptr<IDigitalInputMapping> getMapping(unsigned int index) const;
+
+    /**
+     * Bind the specified digital input mapping as a user-mapping to this
+     * digital input.
+     *
+     * @param input The input to bind.
+     */
+    void addCustomInput(std::shared_ptr<IDigitalInputMapping> input);
+
+    /**
+     * Remove all user-bound physical input mappings.
+     */
+    void clearCustomInputs();
+
+    /********************\
+     * Module Interface *
+    \********************/
+    /**
+     * Read physical input mapping from the specified node and bind them as
+     * user-defined inputs to this digital input.
+     *
+     * @param node The node from which to read physical input mappings.
+     */
+    void loadCustomMapping(DOMNode& node);
+
+    /**
+     * Write user-defined physical input mappings to the specified node.  If
+     * there are no user-define physical input mappings, this function has
+     * no effect.
+     *
+     * @param node The node to which to write user-defined physical input
+     *         mappings.
+     */
+    void saveCustomMapping(DOMNodeWriter* node) const;
+      
+    private:
+
+    // DOM strings.
+    static const std::string TAG_BUTTON_DOWN;
+    static const std::string TAG_HAT;
+    static const std::string TAG_KEY_DOWN;
+
+    // Definition data.
+    class PhysicalInputMapping {
+      public:
+      PhysicalInputMapping(std::shared_ptr<IDigitalInputMapping> physicalInput);
+
+      bool matches(sf::Event& event) const;
+      bool input(sf::Event& event);
+      void reset();
+      std::string getShortName() const;
+      std::shared_ptr<IDigitalInputMapping> getInput() const;
+      void save(DOMNodeWriter* node) const;
+
+      private:
+      std::shared_ptr<IDigitalInputMapping> cPhysicalInput;
+      bool cState;
+    };
+    std::vector<std::unique_ptr<PhysicalInputMapping>> cDefMapping; /// Default input mapping.
+    IProject* cProject;
+
+    // Runtime data.
+    std::vector<std::unique_ptr<PhysicalInputMapping>> cRuntimeMapping; /// User input mapping.
+    bool cRuntimeState;                                                 /// Current state of this input.
+
+    // Scripting Interface.
+    LuaBinding<DigitalInput> cLuaBinding;
+
+    // Misc.
+    IStateNotifier<IBoolean>* cStateNotifier;
+  };
+}

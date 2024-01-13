@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Martin Brentnall
+ * Copyright 2023 Martin Brentnall
  *
  * This file is part of Iso-Realms.
  *
@@ -18,110 +18,114 @@
  */
 #include "HighScoreTable.h"
 
-HighScoreTable::HighScoreTable(DOMNodeWrapper* node) {
-  cMaximumRecords = node->getIntegerAttribute("maximumRecords");
-  
-  // Read fields
-  for (int i = 0; i < node->getChildCount(); i++) {
-    DOMNodeWrapper* mNode = node->getChild(i);
-    std::string mValue = mNode->getNodeName();
-    if (mValue == "Field") {
-      std::string mFieldName = mNode->getAttribute("name");
-      bool mCompare = mNode->getBooleanAttribute("compare");
-      cHighScoreFields.push_back(mFieldName);
-      if (mCompare) {
-        if (cComparisonField != "") {
-          std::cout << "WARNING: Comparison field already set to \"" << cComparisonField << "\".  Cannot set to \"" << mFieldName << "\"" << std::endl;
-        } else {
-          cComparisonField = mFieldName;
+namespace IsoRealms::HighScore {
+  HighScoreTable::HighScoreTable(DOMNode& node) {
+    cMaximumRecords = node.getIntegerAttribute("maximumRecords");
+    
+    // Read fields
+    for (DOMNode& mNode : node) {
+      std::string mValue = mNode.getName();
+      if (mValue == "Field") {
+        std::string mFieldName = mNode.getAttribute("name");
+        bool mCompare = mNode.getBooleanAttribute("compare");
+        cHighScoreFields.push_back(mFieldName);
+        if (mCompare) {
+          if (cComparisonField != "") {
+            std::cout << "WARNING: Comparison field already set to \"" << cComparisonField << "\".  Cannot set to \"" << mFieldName << "\"" << std::endl;
+          } else {
+            cComparisonField = mFieldName;
+          }
         }
+      } else if (mValue == "Record") {
+        // Nothing to do at this stage.
+      } else {
+        throw ParseException("Unknown tag for HighScore/HighScoreTable: " + mValue);
+      }
+    }
+    
+    // Read records
+    for (DOMNode& mNode : node) {
+      std::string mValue = mNode.getName();
+      if (mValue == "Record") {
+        insertRecord(std::make_unique<HighScoreRecord>(mNode, this));
+      } else if (mValue == "Field") {
+        // Nothing to do at this stage.
+      } else {
+        throw ParseException("Unknown tag for HighScore/HighScoreTable: " + mValue);
       }
     }
   }
-  
-  // Read records
-  for (int i = 0; i < node->getChildCount(); i++) {
-    DOMNodeWrapper* mNode = node->getChild(i);
-    std::string mValue = mNode->getNodeName();
-    if (mValue == "Record") {
-      HighScoreRecord* mRecord = new HighScoreRecord(mNode, this);
-      insertRecord(mRecord);
-    }
+
+  HighScoreTable::HighScoreTable(std::vector<std::string> fields, const std::string& comparisonField, unsigned int maximumRecords) {
+    cHighScoreFields = fields;
+    cComparisonField = comparisonField;
+    cMaximumRecords = maximumRecords;
   }
-}
 
-HighScoreTable::HighScoreTable(std::vector<std::string> fields, const std::string& comparisonField, unsigned int maximumRecords) {
-  cHighScoreFields = fields;
-  cComparisonField = comparisonField;
-  cMaximumRecords = maximumRecords;
-}
-
-void HighScoreTable::insertRecord(HighScoreRecord* record) {
-  for (unsigned int i = 0; i < cHighScoreRecords.size(); i++) {
-    if (!cHighScoreRecords[i]->beats(record)) {
-      cHighScoreRecords.insert(cHighScoreRecords.begin() + i, record);
-      while (cHighScoreRecords.size() > cMaximumRecords) {
-        cHighScoreRecords.pop_back();
+  void HighScoreTable::insertRecord(std::unique_ptr<HighScoreRecord> record) {
+    for (unsigned int i = 0; i < cHighScoreRecords.size(); i++) {
+      if (!cHighScoreRecords[i]->beats(record.get())) {
+        cHighScoreRecords.insert(cHighScoreRecords.begin() + i, std::move(record));
+        while (cHighScoreRecords.size() > cMaximumRecords) {
+          cHighScoreRecords.pop_back();
+        }
+        return;
       }
-      return;
+    }
+
+    if (cHighScoreRecords.size() < cMaximumRecords) {
+      cHighScoreRecords.emplace_back(std::move(record));
     }
   }
 
-  if (cHighScoreRecords.size() < cMaximumRecords) {
-    cHighScoreRecords.push_back(record);
+  void HighScoreTable::insertRecord(std::map<std::string, std::string> record) {
+    insertRecord(std::make_unique<HighScoreRecord>(record, this));
   }
-}
 
-void HighScoreTable::insertRecord(std::map<std::string, std::string> record) {
-  HighScoreRecord* mRecord = new HighScoreRecord(record, this);
-  insertRecord(mRecord);
-}
-
-bool HighScoreTable::qualifies(const std::string& value) {
-  if (cHighScoreRecords.size() < 20) {
+  bool HighScoreTable::qualifies(const std::string& value) {
+    if (cHighScoreRecords.size() < cMaximumRecords) {
+      return true;
+    }
+    if (cHighScoreRecords[cHighScoreRecords.size() - 1]->beats(value)) {
+      return false;
+    }
     return true;
   }
-  if (cHighScoreRecords[cHighScoreRecords.size() - 1]->beats(value)) {
-    return false;
-  }
-  return true;
-}
 
-void HighScoreTable::save(DOMNodeWriter* node) {
-  node->addAttribute("maximumRecords", cMaximumRecords);
-  for (std::string mField : cHighScoreFields) {
-    DOMNodeWriter* mFieldBranch = node->addBranch("Field");
-    mFieldBranch->addAttribute("name", mField);
-    if (mField == cComparisonField) {
-      mFieldBranch->addAttribute("compare", "true");
+  void HighScoreTable::save(DOMNodeWriter* node) {
+    node->addAttribute("maximumRecords", cMaximumRecords);
+    for (std::string mField : cHighScoreFields) {
+      DOMNodeWriter mFieldBranch = node->addBranch("Field");
+      mFieldBranch.addAttribute("name", mField);
+      if (mField == cComparisonField) {
+        mFieldBranch.addAttribute("compare", "true");
+      }
+    }
+    
+    for (std::unique_ptr<HighScoreRecord>& mRecord : cHighScoreRecords) {
+      DOMNodeWriter mRecordBranch = node->addBranch("Record");
+      mRecord->save(&mRecordBranch);
     }
   }
-  
-  for (HighScoreRecord* mRecord : cHighScoreRecords) {
-    DOMNodeWriter* mRecordBranch = node->addBranch("Record");
-    mRecord->save(mRecordBranch);
+
+  unsigned int HighScoreTable::getFieldCount() {
+    return static_cast<unsigned int>(cHighScoreFields.size());
   }
-}
 
-unsigned int HighScoreTable::getFieldCount() {
-  return cHighScoreFields.size();
-}
+  std::string HighScoreTable::getFieldName(unsigned int index) {
+    return cHighScoreFields[index];
+  }
 
-std::string HighScoreTable::getFieldName(unsigned int index) {
-  return cHighScoreFields[index];
-}
-
-unsigned int HighScoreTable::getFieldIndex(const std::string& field) {
-  for (unsigned int i = 0; i < cHighScoreFields.size(); i++) {
-    if (cHighScoreFields[i] == field) {
-      return i;
+  unsigned int HighScoreTable::getFieldIndex(const std::string& field) {
+    for (unsigned int i = 0; i < cHighScoreFields.size(); i++) {
+      if (cHighScoreFields[i] == field) {
+        return i;
+      }
     }
+    throw ArgumentException("ERROR: HighScoreTable::getFieldIndex: Field \"" + field + "\" not found.");
   }
-  std::cout << "WARNING: Field \"" << field << "\" not found in high score table" << std::endl;
-  exit(1);
-  return 0;
-}
 
-unsigned int HighScoreTable::getComparisonFieldIndex() {
-  return getFieldIndex(cComparisonField);
+  unsigned int HighScoreTable::getComparisonFieldIndex() {
+    return getFieldIndex(cComparisonField);
+  }
 }

@@ -1,0 +1,51 @@
+/*
+ * Copyright 2023 Martin Brentnall
+ *
+ * This file is part of Iso-Realms.
+ *
+ * Iso-Realms is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Iso-Realms is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#pragma once
+
+#include <string>
+
+#include "IsoRealms/Assets/Fixed/LiteralColour.h"
+
+#include "AssetLiteral.h"
+
+namespace IsoRealms {
+  class AssetLiteralColour : public AssetLiteral<Project, IColour> {
+    public:
+    
+    /************************************\
+     * Implements AssetLiteral<IColour> *
+    \************************************/
+    std::string normalizeLiteral(const std::string& expression) const override {
+      return expression; // TODO?
+    }
+
+    std::unique_ptr<IColour> createLiteralAsset(const std::string& expression) const override {
+      std::vector<std::string> mSections = Utils::splitWords(expression, ' ');
+      if (mSections.size() >= 3 && mSections.size() <= 4) {
+        // TODO: Check that the components are actually numerics
+        float mRed   = static_cast<float>(std::atof(mSections[0].c_str()));
+        float mGreen = static_cast<float>(std::atof(mSections[1].c_str()));
+        float mBlue  = static_cast<float>(std::atof(mSections[2].c_str()));
+        float mAlpha = mSections.size() == 4 ? static_cast<float>(atof(mSections[3].c_str())) : 0.0f;
+        return std::make_unique<LiteralColour>(mRed, mGreen, mBlue, mAlpha);
+      }
+      return nullptr;
+    }
+  };
+}
