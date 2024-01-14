@@ -26,9 +26,7 @@ int main(int argc, char** argv) {
     std::cout.setf(std::ios::fixed, std::ios::floatfield);
 
     // Construct and initialise application and project.
-    //IsoRealms::Options mOptions(argc, argv);
-    IsoRealms::Options mOptions;
-    mOptions.addOption("file", "Projects\\Spindizzy\\Main.isorealms");
+    IsoRealms::Options mOptions(argc, argv);
     IsoRealms::Application mApplication;
     bool mProjectFinished = false;
     IsoRealms::Project mProject(&mApplication, &mOptions, [&mProjectFinished](bool forceQuit) {

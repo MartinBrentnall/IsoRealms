@@ -83,7 +83,7 @@ include_directories(${PROJECT_SOURCE_DIR})
 
 message("XERCES: ${XercesC_LIBRARIES}")
 
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+#set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
 
 add_executable(IsoRealms.bin IsoRealms.cpp)
 
