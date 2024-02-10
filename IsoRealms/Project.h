@@ -390,7 +390,7 @@ namespace IsoRealms {
     Screen cDefScreen;                        /// Screen of this project.
     Editable cDefDefaultEditor;               /// Default editor of this project.
     
-    std::vector<std::unique_ptr<DOMNode>> loadResources(DOMNode& node, IOptions* options, bool thisProject);
+    std::vector<std::unique_ptr<DOMNode>> loadResources(DOMNode& node, IOptions* options, const std::string& resourceDataPath);
     Module* getModule(const std::string& name);
     
     public:
@@ -523,6 +523,7 @@ namespace IsoRealms {
     std::string getUserDataPath();
     std::string getDataPath(bool user) override;
     void makeUserDataDirectory(const std::string& path);
+    std::string getProjectPathPrefix(bool user);
     IEditable* getDefaultEditable() const override;
     
     std::string getProjectResourceDataPath(const std::string& file);

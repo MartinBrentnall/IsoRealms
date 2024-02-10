@@ -29,7 +29,7 @@ namespace IsoRealms {
             cResourceTypeAssetRegistry(assetRegistry, id) {
   }
 
-  void ResourceType::loadResource(DOMNode& node, IProject* project, IOptions* options, bool thisProject) {
+  void ResourceType::loadResource(DOMNode& node, IProject* project, IOptions* options, const std::string& resourceDataPath) {
     std::string mResourceName = node.getAttribute(TAG_NAME);
 //    std::cout << "INFO: ResourceType::loadResource: \"" << mResourceName << "\"" << std::endl;
     for (IResource* mResource : cResources) {
@@ -40,14 +40,14 @@ namespace IsoRealms {
     }
     LocalOptions mResourceOptions(mResourceName, options);
     IResource* mResource = cResourceType->loadResource(this, project, &cResourceTypeAssetRegistry, node, &mResourceOptions);
-    mResource->setThisProject(thisProject);
+    mResource->setResourceDataPath(resourceDataPath + "/" + mResourceName);
     cResources.insert(mResource);
 //    std::cout << "INFO: ResourceType::loadResource: \"" << mResourceName << "\" done!" << std::endl;
   }
 
   void ResourceType::save(DOMNodeWriter* node, IAssetIdentifier* identifier, const std::string& tag) {
     for (IResource* mResource : cResources) {
-      if (mResource->isThisProject()) {
+      if (mResource->getResourceDataPath() == cParent->getDataPath(false)) {
         DOMNodeWriter mResourceNode = node->addBranch(tag);
         mResource->save(&mResourceNode, identifier);
       }
@@ -91,6 +91,10 @@ namespace IsoRealms {
   
   void ResourceType::makeUserDataDirectory(const std::string& resourceName) {
     cParent->makeUserDataDirectory(cParent->getName(this) + "/" + resourceName);
+  }
+
+  std::string ResourceType::getProjectPathPrefix(bool user) {
+    return cParent->getProjectPathPrefix(user);
   }
 
   std::string ResourceType::getCategory() {

@@ -89,7 +89,11 @@ add_executable(IsoRealms.bin IsoRealms.cpp)
 
 file(GLOB DATA_DIR "Data/*")
 file(COPY ${DATA_DIR} DESTINATION "Out")
+if(MSVC)
 file(COPY "Spindizzy.cmd" DESTINATION "Out")
+else()
+file(COPY "Spindizzy" DESTINATION "Out")
+endif()
 
 set_target_properties(IsoRealms.bin PROPERTIES OUTPUT_NAME "IsoRealms")
 set_target_properties(IsoRealms.bin PROPERTIES RUNTIME_OUTPUT_DIRECTORY "Out")

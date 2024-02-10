@@ -53,7 +53,7 @@ namespace IsoRealms {
     public:
     Module(const std::string& name, Project* project, LuaState* luaState);
     
-    void loadResources(DOMNode& node, IOptions* options, bool thisProject);
+    void loadResources(DOMNode& node, IOptions* options, const std::string& resourceDataPath);
     void registerAssets();
     void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
     
@@ -80,6 +80,7 @@ namespace IsoRealms {
     std::string getPath() override;
     std::string getDataPath(bool user) override;
     void makeUserDataDirectory(const std::string& resourcePath) override;
+    std::string getProjectPathPrefix(bool user) override;
 
     virtual ~Module();
 

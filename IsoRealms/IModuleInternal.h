@@ -37,5 +37,6 @@ namespace IsoRealms {
     virtual std::string getPath() = 0;
     virtual std::string getDataPath(bool user) = 0;
     virtual void makeUserDataDirectory(const std::string& resourcePath) = 0;
+    virtual std::string getProjectPathPrefix(bool user) = 0;
   };
 }

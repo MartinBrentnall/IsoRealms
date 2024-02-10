@@ -133,7 +133,7 @@ namespace IsoRealms {
       DOMNode& mProjectNode = mConfigurationRootNode.getNode("Project");
 
       // Load modules and any resources declared within them
-      std::vector<std::unique_ptr<DOMNode>> mIncludeNodes = loadResources(mProjectNode, options, true);
+      std::vector<std::unique_ptr<DOMNode>> mIncludeNodes = loadResources(mProjectNode, options, cProjectDataPath);
       for (const std::unique_ptr<Module>& mModule : cModules) {
         mModule->registerAssets();
       }
@@ -183,7 +183,7 @@ namespace IsoRealms {
     return nullptr;
   }
 
-  std::vector<std::unique_ptr<DOMNode>> Project::loadResources(DOMNode& node, IOptions* options, bool thisProject) {
+  std::vector<std::unique_ptr<DOMNode>> Project::loadResources(DOMNode& node, IOptions* options, const std::string& resourceDataPath) {
     std::string mDefaultEditableID = node.getAttribute("defaultEditor");
     if (!mDefaultEditableID.empty()) {
       cDefDefaultEditor.init(node.getNode("TODO"));
@@ -199,7 +199,7 @@ namespace IsoRealms {
           mModule = getModule(mModuleName);
         }
         LocalOptions mModuleOptions(mModuleName, options);
-        mModule->loadResources(mModuleNode, &mModuleOptions, thisProject);
+        mModule->loadResources(mModuleNode, &mModuleOptions, resourceDataPath);
       } else {
         throw ParseException("Unknown tag for Project: " + mChildName);
       }
@@ -211,13 +211,17 @@ namespace IsoRealms {
       if (mChildName == TAG_PROJECT) {
         std::string mName = mNode.getAttribute(ATTRIBUTE_NAME);
         bool mUser = mNode.getBooleanAttribute(ATTRIBUTE_USER);
+
+        std::size_t mExtensionPosition = mName.find_last_of('.');
+        std::string mIncludeDataPath   = mName.substr(0, mExtensionPosition);
+
         std::unique_ptr<DOMNode> mConfigurationRootNode = std::make_unique<DOMNode>(mName, mUser ? DOMNode::Type::USER : DOMNode::Type::PROGRAM);
         DOMNode& mProjectNode = mConfigurationRootNode->getNode("Project");
-        std::vector<std::unique_ptr<DOMNode>> mSubIncludeNodes = loadResources(mProjectNode, options, false);
+        std::vector<std::unique_ptr<DOMNode>> mSubIncludeNodes = loadResources(mProjectNode, options, mIncludeDataPath);
         mIncludeNodes.insert(mIncludeNodes.end(), std::make_move_iterator(mSubIncludeNodes.begin()), std::make_move_iterator(mSubIncludeNodes.end()));
         mIncludeNodes.emplace_back(std::move(mConfigurationRootNode));
         
-        if (thisProject) {
+        if (resourceDataPath == cProjectDataPath) {
           cInclusions.emplace_back(std::make_unique<Include>());
           cInclusions.back()->cProject = mName;
           cInclusions.back()->cUser = mUser;
@@ -430,12 +434,16 @@ namespace IsoRealms {
   }
 
   std::string Project::getDataPath(bool user) {
-    return user ? (System::USER_DATA_DIRECTORY + (cCanSave ? "/User/" : "/Program/") + cProjectDataPath)
-                : (System::PROGRAM_DATA_DIRECTORY                                    + cProjectDataPath);
+    return getProjectPathPrefix(user) + cProjectDataPath;
   }
 
   void Project::makeUserDataDirectory(const std::string& path) {
     System::makeUserDataDirectory(getUserDataPath() + "/" + path);
+  }
+
+  std::string Project::getProjectPathPrefix(bool user) {
+    return user ? (System::USER_DATA_DIRECTORY + (cCanSave ? "/User/" : "/Program/"))
+                : (System::PROGRAM_DATA_DIRECTORY                                   );
   }
 
   IEditable* Project::getDefaultEditable() const {

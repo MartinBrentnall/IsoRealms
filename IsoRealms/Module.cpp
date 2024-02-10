@@ -69,7 +69,7 @@ namespace IsoRealms {
     cModule = mCreateFunction(project, this, cProject);
   }
 
-  void Module::loadResources(DOMNode& node, IOptions* options, bool thisProject) {
+  void Module::loadResources(DOMNode& node, IOptions* options, const std::string& resourceDataPath) {
     cModule->load(cProject, node.getNode(TAG_CONFIGURATION));
     for (DOMNode& mResourceNode : node.getNode(TAG_RESOURCES)) {
       std::string mResourceTypeName = mResourceNode.getName();
@@ -82,7 +82,7 @@ namespace IsoRealms {
         throw ResourceInitException("ERROR: Module::loadResources: Resource type \"" + mResourceTypeName + "\" not known in module \"" + cName + "\".");
       }
       LocalOptions mModuleOptions(mResourceTypeName, options);
-      mResourceType->loadResource(mResourceNode, cProject, &mModuleOptions, thisProject);
+      mResourceType->loadResource(mResourceNode, cProject, &mModuleOptions, resourceDataPath + "/" + cName + "/" + mResourceTypeName);
     }
   }
   
@@ -169,6 +169,10 @@ namespace IsoRealms {
   
   void Module::makeUserDataDirectory(const std::string& resourcePath) {
     cProject->makeUserDataDirectory(getName() + "/" + resourcePath);
+  }
+
+  std::string Module::getProjectPathPrefix(bool user) {
+    return cProject->getProjectPathPrefix(user);
   }
 
   Module::~Module() {

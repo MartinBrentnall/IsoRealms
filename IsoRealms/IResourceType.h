@@ -36,6 +36,7 @@ namespace IsoRealms {
     virtual std::string getPath() = 0;
     virtual std::string getDataPath(bool user) = 0;
     virtual void makeUserDataDirectory(const std::string& resourceName) = 0;
+    virtual std::string getProjectPathPrefix(bool user) = 0;
     virtual std::string getCategory() = 0;
     virtual IAssetRemover* getAssetRemover() = 0;
     virtual IAssetRegistry* getAssetRegistry() = 0;

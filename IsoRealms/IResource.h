@@ -34,7 +34,7 @@ namespace IsoRealms {
 
   class IResource {
     private:
-    bool cThisProject;
+    std::string cResourceDataPath;
     
     public:
     virtual std::vector<IProperty*> getProperties(IAssetBrowser* browser, IPropertyListener* listener) = 0;
@@ -46,12 +46,12 @@ namespace IsoRealms {
     virtual void registerAssets() = 0;
     virtual void unregisterAssets(IAssetRemover* assets, IAssets* releaser) = 0;
 
-    bool isThisProject() {
-      return cThisProject;
+    std::string getResourceDataPath() const {
+      return cResourceDataPath;
     }
     
-    void setThisProject(bool thisProject) {
-      cThisProject = thisProject;
+    void setResourceDataPath(const std::string& resourceDataPath) {
+      cResourceDataPath = resourceDataPath;
     }
     
     virtual ~IResource() {}

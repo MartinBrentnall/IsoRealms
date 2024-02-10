@@ -1502,7 +1502,7 @@ end</Code>
             </Action>
           </ExpirationAction>
         </Timer>
-        <Timer name="TimeLimit" value="150000">
+        <Timer name="TimeLimit" value="150000000">
           <ExpirationAction>
             <Action key="Basics/Script">
               <Bind variable="spindizzy">

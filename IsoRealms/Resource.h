@@ -151,20 +151,20 @@ namespace IsoRealms {
      * Implements IResourceData *
     \****************************/
     std::unique_ptr<DOMNode> openForRead(const std::string& file, bool user) override {
-      std::string mFullPath = cParent->getDataPath(user) + "/" + cName + "/" + file;
+      std::string mFullPath = cParent->getProjectPathPrefix(user) + getResourceDataPath() + "/" + file;
       return System::fileExists(mFullPath, true) ? std::make_unique<DOMNode>(mFullPath, DOMNode::Type::USER) : nullptr;
     }
     
     void write(DOMNodeWriter* node, const std::string& file) override {
-      node->save(cParent->getDataPath(true) + "/" + cName + "/" + file);
+      node->save(cParent->getProjectPathPrefix(true) + getResourceDataPath() + "/" + file);
     }
     
     std::string getPath(const std::string& file, bool user) const override {
-      return cParent->getDataPath(user) + "/" + cName + "/" + file;
+      return cParent->getProjectPathPrefix(user) + getResourceDataPath() + "/" + file;
     }
 
     void makeUserDataDirectory() override {
-      cParent->makeUserDataDirectory(cName);
+      System::makeUserDataDirectory(cParent->getProjectPathPrefix(true) + getResourceDataPath());
     }
 
     void propertyAdded(IProperty* property, unsigned int index) override {

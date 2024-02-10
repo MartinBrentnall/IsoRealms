@@ -46,7 +46,7 @@ namespace IsoRealms {
     
     public:
     ResourceType(IResourceTypeDefinition* resourceType, IModuleInternal* parent, IAssetRegistry* assetRegistry, const std::string& id, const std::string& name, const std::string& category);
-    void loadResource(DOMNode& node, IProject* project, IOptions* options, bool thisProject);
+    void loadResource(DOMNode& node, IProject* project, IOptions* options, const std::string& resourceDataPath);
     void save(DOMNodeWriter* node, IAssetIdentifier* identifier, const std::string& tag);
     
     /****************************\
@@ -59,6 +59,7 @@ namespace IsoRealms {
     std::string getPath() override;
     std::string getDataPath(bool user) override;
     void makeUserDataDirectory(const std::string& resourceName) override;
+    std::string getProjectPathPrefix(bool user) override;
     std::string getCategory() override;
     IAssetRemover* getAssetRemover() override;
     IAssetRegistry* getAssetRegistry() override;
