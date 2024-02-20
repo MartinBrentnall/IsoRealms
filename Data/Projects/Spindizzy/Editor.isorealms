@@ -80,6 +80,7 @@ end</Code>
   <Include>
     <Project name="Projects/Spindizzy/Options.isorealms" user="false"/>
   </Include>
+  <Properties/>
   <Modules>
     <Module name="Basics">
       <Configuration/>

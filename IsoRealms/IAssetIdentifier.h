@@ -28,6 +28,7 @@ namespace IsoRealms {
   class I3DModelType;
   class IAction;
   class IActionType;
+  class IAssets;
   class IBinding;
   class IBoolean;
   class IColour;
@@ -63,7 +64,15 @@ namespace IsoRealms {
      * @return ID of the action type.
      */
     virtual std::string getID(const IActionType* asset) const = 0;
-      
+
+    /**
+     * Retrieve the ID of the specified assets.
+     *
+     * @param asset Assets to retrieve ID of.
+     * @return ID of the binding.
+     */
+    virtual std::string getID(const IAssets* asset) const = 0;
+
     /**
      * Retrieve the ID of the specified binding.
      *

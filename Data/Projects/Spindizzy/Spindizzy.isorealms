@@ -4,6 +4,42 @@
   <Include>
     <Project name="Projects/Spindizzy/Options.isorealms" user="false"/>
   </Include>
+  <Properties>
+    <Property id="Mode">
+      <Action>
+        <Action key="Basics/Script">
+          <Bind variable="value">
+            <To key="~" local="value"/>
+          </Bind>
+          <Bind variable="timer">
+            <To key="Basics/Timer/TimeLimit"/>
+          </Bind>
+          <Bind variable="timeValue">
+            <To key="UI/Layout/Layout/ValueTime"/>
+          </Bind>
+          <Bind variable="scoreValue">
+            <To key="UI/Layout/Layout/ValueScore"/>
+          </Bind>
+          <Bind variable="notApplicableTime">
+            <To key=":Screen">
+              <Asset key="Basics/StringScreen/NotApplicableTime"/>
+            </To>
+          </Bind>
+          <Bind variable="notApplicableScore">
+            <To key=":Screen">
+              <Asset key="Basics/StringScreen/NotApplicableScore"/>
+            </To>
+          </Bind>
+          <Code>if value:getValue() == "Explorer" then
+  timer:pause()
+  GlobalExplorer = 1
+  timeValue:setScreen(notApplicableTime)
+  scoreValue:setScreen(notApplicableScore)
+end</Code>
+        </Action>
+      </Action>
+    </Property>
+  </Properties>
   <Modules>
     <Module name="Basics">
       <Configuration/>
@@ -20,11 +56,13 @@
               </Bind>
               <Code>if hasFocus then
   player:stop()
-  local newTime = time:getValue() - 500
-  if newTime &lt; 0 then
-    newTime = 0
+  if GlobalExplorer ~= 1 then
+    local newTime = time:getValue() - 500
+    if newTime &lt; 0 then
+      newTime = 0
+    end
+    time:setValue(newTime)
   end
-  time:setValue(newTime)
 end</Code>
             </Action>
           </ActionOnTrue>
@@ -357,7 +395,9 @@ endingSequence:play()</Code>
 locks = locks - 1
 if locks == 0 then
   spindizzy:setPause(false)
-  timeLimit:resume()
+  if GlobalExplorer ~= 1 then
+    timeLimit:resume()
+  end
   if alienContactCount > 0 then
     sound:play()
     damage:play()
@@ -1390,78 +1430,88 @@ end</Code>
         <StringScreen name="TimeValue" alignment="Left">
           <Font key="Basics/Font/Menu"/>
           <Value key="Basics/Timer/TimeLimit"/>
-		  <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
+          <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
         </StringScreen>
         <StringScreen name="ToMapValue" alignment="Left">
           <Font key="Basics/Font/Menu"/>
           <Value key=":Integer">
             <Asset key="Basics/Integer/RemainingZones"/>
           </Value>
-		  <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
+          <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
         </StringScreen>
         <StringScreen name="ScoreValue" alignment="Right">
           <Font key="Basics/Font/Menu"/>
           <Value key=":Integer">
             <Asset key="Basics/Integer/Score"/>
           </Value>
-		  <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
+          <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
         </StringScreen>
         <StringScreen name="JewelCountValue" alignment="Right">
           <Font key="Basics/Font/Menu"/>
           <Value key=":Integer">
             <Asset key="Basics/Integer/JewelCount"/>
           </Value>
-		  <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
+          <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
         </StringScreen>
         <StringScreen name="EndingMessage" alignment="Center">
           <Font key="Basics/Font/Menu"/>
           <Value key="Basics/String/EndingMessage"/>
-		  <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
+          <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
         </StringScreen>
         <StringScreen name="MappedMessage" alignment="Right">
           <Font key="Basics/Font/Menu"/>
           <Value key="Basics/String/MappedMessage"/>
-		  <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
+          <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
         </StringScreen>
         <StringScreen name="MappedLabel" alignment="Left">
           <Font key="Basics/Font/Menu"/>
           <Value key="Literal" value="Map Explored"/>
-		  <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
+          <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
         </StringScreen>
         <StringScreen name="JewelsMessage" alignment="Right">
           <Font key="Basics/Font/Menu"/>
           <Value key="Basics/String/JewelsMessage"/>
-		  <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
+          <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
         </StringScreen>
         <StringScreen name="JewelsLabel" alignment="Left">
           <Font key="Basics/Font/Menu"/>
           <Value key="Literal" value="Jewels Collected"/>
-		  <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
+          <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
         </StringScreen>
         <StringScreen name="CompleteMessage" alignment="Right">
           <Font key="Basics/Font/Menu"/>
           <Value key="Basics/String/CompleteMessage"/>
-		  <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
+          <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
         </StringScreen>
         <StringScreen name="CompleteLabel" alignment="Left">
           <Font key="Basics/Font/Menu"/>
           <Value key="Literal" value="Completed"/>
-		  <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
+          <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
         </StringScreen>
         <StringScreen name="ScoreMessage" alignment="Right">
           <Font key="Basics/Font/Menu"/>
           <Value key="Basics/String/ScoreMessage"/>
-		  <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
+          <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
         </StringScreen>
         <StringScreen name="ScoreLabel" alignment="Left">
           <Font key="Basics/Font/Menu"/>
           <Value key="Literal" value="Final Score"/>
-		  <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
+          <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
         </StringScreen>
         <StringScreen name="MartinBrentnall" alignment="Center">
           <Font key="Basics/Font/Menu"/>
           <Value key="Literal" value="Martin Brentnall"/>
-		  <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
+          <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
+        </StringScreen>
+        <StringScreen name="NotApplicableTime" alignment="Left">
+          <Font key="Basics/Font/Menu"/>
+          <Value key="Literal" value="N/A"/>
+          <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
+        </StringScreen>
+        <StringScreen name="NotApplicableScore" alignment="Right">
+          <Font key="Basics/Font/Menu"/>
+          <Value key="Literal" value="N/A"/>
+          <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
         </StringScreen>
         <Texture file="Images/Map.png" name="Map"/>
         <Texture file="Images/Score.png" name="Score"/>
@@ -1490,7 +1540,9 @@ end</Code>
               </Bind>
               <Code>if zoneToEnter ~= nil then
   spindizzy:setPause(false)
-  timeLimit:resume()
+  if GlobalExplorer ~= 1 then
+    timeLimit:resume()
+  end
   if alienContactCount > 0 then
     sound:play()
     damage:play()
@@ -1502,7 +1554,7 @@ end</Code>
             </Action>
           </ExpirationAction>
         </Timer>
-        <Timer name="TimeLimit" value="150000000">
+        <Timer name="TimeLimit" value="150000">
           <ExpirationAction>
             <Action key="Basics/Script">
               <Bind variable="spindizzy">
@@ -1533,9 +1585,7 @@ end</Code>
                 <To key="Basics/String/CompleteMessage"/>
               </Bind>
               <Bind variable="score">
-                <To key=":Integer">
-                  <Asset key="Basics/Integer/Score"/>
-                </To>
+                <To key="Basics/Integer/Score"/>
               </Bind>
               <Bind variable="jewelsCollected">
                 <To key=":Integer">
@@ -1587,7 +1637,14 @@ completePercentage = math.ceil(((mappedPercentage + jewelsPercentage) / 2) - 0.5
 mappedMessage:setValue("" .. mappedPercentage .. "%")
 jewelsMessage:setValue("" .. jewelsPercentage .. "%")
 completeMessage:setValue("" .. completePercentage .. "%")
-scoreMessage:setValue("" .. score:getValue())
+if GlobalExplorer ~= 1 then
+  scoreMessage:setValue("" .. score:getValue())
+else
+  -- Prevent high score from triggering
+  score:setValue(-1)
+  scoreMessage:setValue("N/A")
+  GlobalExplorer = nil
+end
 hasFocus = false
 gameOverSequence:play()</Code>
             </Action>
@@ -2108,7 +2165,9 @@ screen:setScreen(nil)
 locks = locks - 1
 if locks == 0 then
   spindizzy:setPause(false)
-  time:resume()
+  if GlobalExplorer ~= 1 then
+    time:resume()
+  end
 end
 
 -- Disable menu access
@@ -5000,7 +5059,9 @@ end</Code>
                 <Code>locks = locks - 1
 if locks == 0 then
   spindizzy:setPause(false)
-  timeLimit:resume()
+  if GlobalExplorer ~= 1 then
+    timeLimit:resume()
+  end
   background:setScreen(backgroundNormal)
   world:setScreen(worldNormal)
   if alienContactCount > 0 then

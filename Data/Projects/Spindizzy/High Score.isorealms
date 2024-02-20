@@ -5,6 +5,23 @@
   <QuitAction>
     <Action key="Quit"/>
   </QuitAction>
+  <Properties>
+    <Property id="Mode">
+      <Action>
+        <Action key="Basics/Script">
+          <Bind variable="value">
+            <To key="~" local="value"/>
+          </Bind>
+          <Bind variable="project">
+            <To key=":Project">
+              <Asset key="HighScore/ScoreTracker/Project/Project"/>
+            </To>
+          </Bind>
+          <Code>project:setProperty("Mode", value:getValue())</Code>
+        </Action>
+      </Action>
+    </Property>
+  </Properties>
   <Include/>
   <Modules>
     <Module name="Basics">

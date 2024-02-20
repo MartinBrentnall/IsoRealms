@@ -91,5 +91,7 @@ namespace IsoRealms {
     virtual void release(IAssetUser<IString>*         user, IString*         asset) = 0;
     virtual void release(IAssetUser<ITexture>*        user, ITexture*        asset) = 0;
     virtual void release(IAssetUser<IVertex>*         user, IVertex*         asset) = 0;
+
+    virtual void setProperty(const std::string& id, const std::string& value) = 0;
   };
 }

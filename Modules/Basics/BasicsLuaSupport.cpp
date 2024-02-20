@@ -61,7 +61,8 @@ namespace IsoRealms::Basics {
                                                          "saveAs",                     &Project::saveProjectAs,
                                                          "exists",                     &Project::exists,
                                                          "requestQuit",                &Project::requestQuit,
-                                                         "isQuitRequestGranted",       &Project::isQuitRequestGranted);
+                                                         "isQuitRequestGranted",       &Project::isQuitRequestGranted,
+                                                         "setProperty",                &Project::setProperty);
     mLua->new_usertype<Sequence>("Sequence",             "play",                       &Sequence::play,
                                                          "pause",                      &Sequence::pause,
                                                          "reset",                      &Sequence::reset,

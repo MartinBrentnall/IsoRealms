@@ -15,6 +15,7 @@
   <Include>
     <Project name="Projects/Spindizzy/Spindizzy.isorealms" user="false"/>
   </Include>
+  <Properties/>
   <Modules>
     <Module name="Spindizzy">
       <Configuration automaticZoneManagement="Zone" automaticZoneXSize="8" automaticZoneYSize="8" automaticZoneZSize="8" defaultThemeSet="C64" defaultWorldEditorTool="PropertiesTool">

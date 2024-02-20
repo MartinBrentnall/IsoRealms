@@ -190,6 +190,10 @@ namespace IsoRealms::Basics {
     return cRuntimeQuitRequestGranted;
   }
 
+  void Project::setProperty(const std::string& id, const std::string& value) {
+    cRuntimeProject->setProperty(id, value);
+  }
+
   bool Project::input(sf::Event& event) {
     if (cRuntimeProject != nullptr) {
       return cRuntimeProject->input(event);

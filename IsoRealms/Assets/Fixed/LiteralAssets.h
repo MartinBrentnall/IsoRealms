@@ -86,6 +86,8 @@ namespace IsoRealms {
     void release(IAssetUser<IVertex>*         user, IVertex*         asset) override;
 
     bool renderAssetIcon() const override;
+
+    void setProperty(const std::string& id, const std::string& value) override;
   };
 }
 

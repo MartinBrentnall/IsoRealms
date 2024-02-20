@@ -6,6 +6,23 @@
     <Action key="Quit"/>
   </QuitAction>
   <Include/>
+  <Properties>
+    <Property id="Mode">
+      <Action>
+        <Action key="Basics/Script">
+          <Bind variable="value">
+            <To key="~" local="value"/>
+          </Bind>
+          <Bind variable="project">
+            <To key=":Project">
+              <Asset key="Replay/Recorder/Recorder/Project"/>
+            </To>
+          </Bind>
+          <Code>project:setProperty("Mode", value:getValue())</Code>
+        </Action>
+      </Action>
+    </Property>
+  </Properties>
   <Modules>
     <Module name="Basics">
       <Configuration/>
@@ -18,7 +35,7 @@
         </Function>
       </Resources>
     </Module>
-    <Module name="Replay">  
+    <Module name="Replay">
       <Configuration/>
       <Resources>
         <Recorder name="Recorder" project="Basics/Project">

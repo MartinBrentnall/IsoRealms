@@ -41,6 +41,7 @@
 #include "Assets/Providers/AssetConvertedInputHandlerToBinding.h"
 #include "Assets/Providers/AssetConvertedIntegerToBinding.h"
 #include "Assets/Providers/AssetConvertedProjectOptionsToBinding.h"
+#include "Assets/Providers/AssetConvertedProjectToBinding.h"
 #include "Assets/Providers/AssetConvertedScreenToBinding.h"
 #include "Assets/Providers/AssetConvertedStringToBinding.h"
 #include "Assets/Providers/AssetConvertedVertexToBinding.h"
@@ -77,18 +78,23 @@ namespace IsoRealms {
    * provides control over execution of the application.
    */
   class Project : public IProject,
-                  public IAssetRegistry {
+                  public IAssetRegistry,
+                  public IBindingRegistry {
     private:
+    static const std::string TAG_ACTION;
     static const std::string TAG_INCLUDE;
     static const std::string TAG_INIT_ACTION;
     static const std::string TAG_INPUT;
     static const std::string TAG_MODULE;
     static const std::string TAG_MODULES;
     static const std::string TAG_PROJECT;
+    static const std::string TAG_PROPERTIES;
+    static const std::string TAG_PROPERTY;
     static const std::string TAG_QUIT_ACTION;
     static const std::string TAG_RESET_ACTION;
     static const std::string TAG_SCREEN;
 
+    static const std::string ATTRIBUTE_ID;
     static const std::string ATTRIBUTE_NAME;
     static const std::string ATTRIBUTE_USER;
 
@@ -362,6 +368,7 @@ namespace IsoRealms {
     AssetConvertedInputHandlerToBinding cConversionProviderInputHandlerToBinding;
     AssetConvertedIntegerToBinding cConversionProviderIntegerToBinding;
     AssetConvertedProjectOptionsToBinding cConversionProviderProjectOptionsToBinding;
+    AssetConvertedProjectToBinding cConversionProviderProjectToBinding;
     AssetConvertedScreenToBinding cConversionProviderScreenToBinding;
     AssetConvertedStringToBinding cConversionProviderStringToBinding;
     AssetConvertedVertexToBinding cConversionProviderVertexToBinding;
@@ -593,6 +600,7 @@ namespace IsoRealms {
      * Implements IAssetIdentifier *
     \*******************************/
     std::string getID(const IActionType*     asset) const override;
+    std::string getID(const IAssets*         asset) const override;
     std::string getID(const I3DModelType*    asset) const override;
     std::string getID(const IBinding*        asset) const override;
     std::string getID(const IBoolean*        asset) const override;
@@ -663,7 +671,29 @@ namespace IsoRealms {
   //  void editResource(IResource*, IAssets*, IEditingContext*);
 
   //  void removeResource(IResource*, IAssets*);
-  
+
+    class ProjectProperty {
+      public:
+      ProjectProperty(Project* parent, DOMNode& node);
+      void setValue(const std::string& value);
+
+      private:
+      Action cChangeAction;
+    };
+
+    std::map<std::string, std::unique_ptr<ProjectProperty>> cProperties;
+
+    void setProperty(const std::string& property, const std::string& value) override;
+
+    /*******************************\
+     * Implements IBindingRegistry *
+    \*******************************/
+    IBinding* getBinding(const std::string& id) override;
+    void releaseBinding(const IBinding* asset) override;
+
+    LiteralString cPropertyValue;
+    LuaBinding<IString> cPropertyValueBinding;
+
     virtual ~Project();
   };
 }

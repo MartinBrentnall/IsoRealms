@@ -98,7 +98,7 @@ messages1 = {"\"Peace will come when the Arabs will love their children more tha
              "\"The truth about Hamas and Islamic Jihad is that they don't prevent Israel",
              "\"If the Arabs put down their weapons today, there would be no more violence.",
              "\"Israel is the only country in the Middle East where Arabs can be"}
-             
+
 messages2 = {"- Golda Meir, 1957",
              "and thank God we are efficient.\"",
              "but it will be harder for us to forgive them for having forced us to kill their sons",
@@ -110,7 +110,7 @@ messages2 = {"- Golda Meir, 1957",
              "from existing or even flourishing, they prevent Palestine from coming into existence.\"",
              "If the Jews put down their weapons today, there would be no more Israel.\"",
              "elected to the parliament in a democratic election.\""}
-            
+
 messages3 = {"",
              "- Golda Meir, 1969",
              "- Golda Meir, 1969",
@@ -144,6 +144,7 @@ end</Code>
   <Include>
     <Project name="Projects/Spindizzy/Options.isorealms" user="false"/>
   </Include>
+  <Properties/>
   <Modules>
     <Module name="Basics">
       <Configuration/>
@@ -152,7 +153,7 @@ end</Code>
         <InputGroup name="Input">
           <InputHandler key="Basics/InputSwitch/MenuInterrupt"/>
           <InputHandler key="Basics/InputSwitch/Options Screen"/>
-        </InputGroup>        
+        </InputGroup>
         <InputSwitch name="MenuInterrupt">
           <Init key="Basics/InterruptHandler/MenuTimeOutHandler"/>
         </InputSwitch>
@@ -715,6 +716,7 @@ timer:pause()</Code>
           <Argument name="mission"/>
           <Argument name="missionInput"/>
           <Argument name="missionScreen"/>
+          <Argument name="mode"/>
           <Code>while #menuStack &gt; 0 do
   table.remove(menuStack)
   table.remove(inputStack)
@@ -725,6 +727,7 @@ if mission:isReady() then
   project:setScreen(missionScreen)
   decor:setScreen(nil)
   mission:setRunning(true)
+  mission:setProperty("Mode", mode:getValue())
   demo:setRunning(false)
 else
   gameLoading = true
@@ -985,26 +988,26 @@ howToPlay:reset()</Code>-->
           <Value key="Literal" value="Press any key to continue, and THANK YOU for your support!"/>
           <Colour key="Basics/ColourCycler/Menu Selection Highlight/0"/>
         </StringScreen>
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <StringScreen name="CreditsMessage1" alignment="Left">
           <Font key="Basics/Font/Menu"/>
           <Value key="Literal" value="IsoRealms Spindizzy is created by Martin Brentnall.  IsoRealms Spindizzy is based on the Commodore 64 game"/>
@@ -1085,24 +1088,24 @@ howToPlay:reset()</Code>-->
           <Value key="Literal" value="Press any key to continue, and THANK YOU for your support!"/>
           <Colour key="Basics/ColourCycler/Menu Selection Highlight/0"/>
         </StringScreen>
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <StringScreen name="TextSplash1" alignment="Center">
           <Font key="Basics/Font/Menu"/>
           <Value key="Literal" value="IsoRealms Spindizzy is released in support of peace in Israel,"/>
@@ -1531,8 +1534,8 @@ timer:start(10000)</Code>
               <Offset type="Absolute" value="-0.2"/>
             </Right>
           </Component>
-		  
-		  
+
+
           <Component name="AuthorsMessage4">
             <Screen key="Basics/StringScreen/AuthorsMessage4"/>
             <Top>
@@ -1609,8 +1612,8 @@ timer:start(10000)</Code>
               <Offset type="Absolute" value="-0.2"/>
             </Right>
           </Component>
-		  
-		  
+
+
           <Component name="AuthorsMessage8">
             <Screen key="Basics/StringScreen/AuthorsMessage8"/>
             <Top>
@@ -1706,8 +1709,8 @@ timer:start(10000)</Code>
               <Offset type="Absolute" value="-0.2"/>
             </Right>
           </Component>
-		  
-		  
+
+
           <Component name="AuthorsMessage13">
             <Screen key="Basics/StringScreen/AuthorsMessage13"/>
             <Top>
@@ -1765,8 +1768,8 @@ timer:start(10000)</Code>
               <Offset type="Absolute" value="-0.2"/>
             </Right>
           </Component>
-		  
-		  
+
+
           <Component name="AuthorsMessage16">
             <Screen key="Basics/StringScreen/AuthorsMessage16"/>
             <Top>
@@ -1933,8 +1936,8 @@ timer:start(10000)</Code>
             </Right>
           </Component>
           <Component name="CreditsMessage3">
-		  
-		  
+
+
             <Screen key="Basics/StringScreen/CreditsMessage3"/>
             <Top>
               <Location type="Absolute" value="1.0"/>
@@ -2012,8 +2015,8 @@ timer:start(10000)</Code>
               <Offset type="Absolute" value="-0.2"/>
             </Right>
           </Component>
-          
-          
+
+
           <Component name="CreditsMessage7">
             <Screen key="Basics/StringScreen/CreditsMessage7"/>
             <Top>
@@ -2128,8 +2131,8 @@ timer:start(10000)</Code>
               <Offset type="Absolute" value="-0.2"/>
             </Right>
           </Component>
-		  
-		  
+
+
           <Component name="CreditsMessage13">
             <Screen key="Basics/StringScreen/CreditsMessage13"/>
             <Top>
@@ -2855,19 +2858,19 @@ timer:start(10000)</Code>
           <Options>
             <Action label="Play">
               <Action>
-                <Action key="Basics/Function/StartProject">
-                  <Bind argument="mission">
-                    <To key="Basics/Project/Mission"/>
-                  </Bind>
-                  <Bind argument="missionInput">
-                    <To key=":InputHandler">
-                      <Asset key="Basics/Project/Mission"/>
-                    </To>
-                  </Bind>
-                  <Bind argument="missionScreen">
+                <Action key="Basics/Function/PushScreen">
+                  <Bind argument="menuScreen">
                     <To key=":Screen">
-                      <Asset key="Basics/Project/Mission"/>
+                      <Asset key="UI/Menu/PlayMode"/>
                     </To>
+                  </Bind>
+                  <Bind argument="menuInput">
+                    <To key=":InputHandler">
+                      <Asset key="UI/Menu/PlayMode"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="menu">
+                    <To key="UI/Menu/PlayMode"/>
                   </Bind>
                 </Action>
               </Action>
@@ -3000,11 +3003,68 @@ timer:start(10000)</Code>
             <Action key="Literal"/>
           </Exit>
         </Menu>
+        <Menu name="PlayMode">
+          <Colour key="Basics/ColourCycler/Menu Selection Highlight/0"/>
+          <Font key="Basics/Font/Menu"/>
+          <Options>
+            <Action label="Play Arcade Mode">
+              <Action>
+                <Action key="Basics/Function/StartProject">
+                  <Bind argument="mission">
+                    <To key="Basics/Project/Mission"/>
+                  </Bind>
+                  <Bind argument="missionInput">
+                    <To key=":InputHandler">
+                      <Asset key="Basics/Project/Mission"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="missionScreen">
+                    <To key=":Screen">
+                      <Asset key="Basics/Project/Mission"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="mode">
+                    <To key=":String">
+                      <Asset key="Literal" value="Arcade"/>
+                    </To>
+                  </Bind>
+                </Action>
+              </Action>
+            </Action>
+            <Action label="Play Explorer Mode">
+              <Action>
+                <Action key="Basics/Function/StartProject">
+                  <Bind argument="mission">
+                    <To key="Basics/Project/Mission"/>
+                  </Bind>
+                  <Bind argument="missionInput">
+                    <To key=":InputHandler">
+                      <Asset key="Basics/Project/Mission"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="missionScreen">
+                    <To key=":Screen">
+                      <Asset key="Basics/Project/Mission"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="mode">
+                    <To key=":String">
+                      <Asset key="Literal" value="Explorer"/>
+                    </To>
+                  </Bind>
+                </Action>
+              </Action>
+            </Action>
+          </Options>
+          <Exit>
+            <Action key="Basics/Function/PopScreen"/>
+          </Exit>
+        </Menu>
         <Menu name="Links">
           <Colour key="Basics/ColourCycler/Menu Selection Highlight/0"/>
           <Font key="Basics/Font/Menu"/>
           <Options>
-            <Action label="IDF YouTube Channel">
+            <Action label="Go to IDF YouTube Channel">
               <Action>
                 <Action key="Basics/Script">
                   <Bind variable="project">
@@ -3014,7 +3074,7 @@ timer:start(10000)</Code>
                 </Action>
               </Action>
             </Action>
-            <Action label="Travelling Israel">
+            <Action label="Go to Travelling Israel">
               <Action>
                 <Action key="Basics/Script">
                   <Bind variable="project">
@@ -3024,7 +3084,7 @@ timer:start(10000)</Code>
                 </Action>
               </Action>
             </Action>
-            <Action label="Jewish Breaking News">
+            <Action label="Go to Jewish Breaking News">
               <Action>
                 <Action key="Basics/Script">
                   <Bind variable="project">
@@ -3034,7 +3094,7 @@ timer:start(10000)</Code>
                 </Action>
               </Action>
             </Action>
-            <Action label="WorldNews Subreddit">
+            <Action label="Go to WorldNews Subreddit">
               <Action>
                 <Action key="Basics/Script">
                   <Bind variable="project">

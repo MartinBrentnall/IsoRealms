@@ -21,16 +21,20 @@
 #include "Application.h"
 
 namespace IsoRealms {
+  const std::string Project::TAG_ACTION       = "Action";
   const std::string Project::TAG_INCLUDE      = "Include";
   const std::string Project::TAG_INIT_ACTION  = "InitAction";
   const std::string Project::TAG_INPUT        = "Input";
   const std::string Project::TAG_MODULE       = "Module";
   const std::string Project::TAG_MODULES      = "Modules";
   const std::string Project::TAG_PROJECT      = "Project";
+  const std::string Project::TAG_PROPERTIES   = "Properties";
+  const std::string Project::TAG_PROPERTY     = "Property";
   const std::string Project::TAG_QUIT_ACTION  = "QuitAction";
   const std::string Project::TAG_RESET_ACTION = "ResetAction";
   const std::string Project::TAG_SCREEN       = "Screen";
 
+  const std::string Project::ATTRIBUTE_ID     = "id";
   const std::string Project::ATTRIBUTE_NAME   = "name";
   const std::string Project::ATTRIBUTE_USER   = "user";
   
@@ -69,6 +73,7 @@ namespace IsoRealms {
           cConversionProviderInputHandlerToBinding(this),
           cConversionProviderIntegerToBinding(this),
           cConversionProviderProjectOptionsToBinding(this),
+          cConversionProviderProjectToBinding(this),
           cConversionProviderScreenToBinding(this),
           cConversionProviderStringToBinding(this),
           cConversionProviderVertexToBinding(this),
@@ -84,7 +89,9 @@ namespace IsoRealms {
           cQuitAction(this),
           cDefInputHandler(this),
           cDefScreen(this),
-          cDefDefaultEditor(this) {
+          cDefDefaultEditor(this),
+          cPropertyValue(""),
+          cPropertyValueBinding(this, &cPropertyValue) {
 
     // Support conversions.
     cBindings.add(&cConversionProviderActionToBinding,         ":Action",         CATEGORY_CONVERSIONS);
@@ -95,6 +102,7 @@ namespace IsoRealms {
     cBindings.add(&cConversionProviderInputHandlerToBinding,   ":InputHandler",   CATEGORY_CONVERSIONS);
     cBindings.add(&cConversionProviderIntegerToBinding,        ":Integer",        CATEGORY_CONVERSIONS);
     cBindings.add(&cConversionProviderProjectOptionsToBinding, ":ProjectOptions", CATEGORY_CONVERSIONS);
+    cBindings.add(&cConversionProviderProjectToBinding,        ":Project",        CATEGORY_CONVERSIONS);
     cBindings.add(&cConversionProviderScreenToBinding,         ":Screen",         CATEGORY_CONVERSIONS);
     cBindings.add(&cConversionProviderStringToBinding,         ":String",         CATEGORY_CONVERSIONS);
     cBindings.add(&cConversionProviderVertexToBinding,         ":Vertex",         CATEGORY_CONVERSIONS);
@@ -187,6 +195,16 @@ namespace IsoRealms {
     std::string mDefaultEditableID = node.getAttribute("defaultEditor");
     if (!mDefaultEditableID.empty()) {
       cDefDefaultEditor.init(node.getNode("TODO"));
+    }
+
+    for (DOMNode& mPropertyNode : node.getNode(TAG_PROPERTIES)) {
+      std::string mChildName = mPropertyNode.getName();
+      if (mChildName == TAG_PROPERTY) {
+        std::string mPropertyID = mPropertyNode.getAttribute(ATTRIBUTE_ID);
+        cProperties.emplace(mPropertyID, std::make_unique<ProjectProperty>(this, mPropertyNode));
+      } else {
+        throw ParseException("Unknown tag for Project: " + mChildName);
+      }
     }
 
     for (DOMNode& mModuleNode : node.getNode(TAG_MODULES)) {
@@ -699,6 +717,7 @@ namespace IsoRealms {
   }
 
   std::string Project::getID(const I3DModelType* modelType) const         {return c3DModelTypes.getID(modelType);}
+  std::string Project::getID(const IAssets* assets) const                 {return cAssets.getID(assets);}
   std::string Project::getID(const IActionType* actionType) const         {return cActionTypes.getID(actionType);}
   std::string Project::getID(const IBinding* binding) const               {return cBindings.getID(binding);}
   std::string Project::getID(const IBoolean* boolean) const               {return cBooleans.getID(boolean);}
@@ -824,6 +843,31 @@ namespace IsoRealms {
 
   IApplication* Project::getApplication() {
     return cApplication;
+  }
+
+  Project::ProjectProperty::ProjectProperty(Project* parent, DOMNode& node) :
+            cChangeAction(parent) {
+    cChangeAction.init(node, TAG_ACTION, parent);
+  }
+
+  void Project::ProjectProperty::setValue(const std::string& value) {
+    cChangeAction.execute();
+  }
+
+  void Project::setProperty(const std::string& property, const std::string& value) {
+    std::map<std::string, std::unique_ptr<ProjectProperty>>::iterator mResult = cProperties.find(property);
+    if (mResult != cProperties.end()) {
+      cPropertyValue.setValue(value);
+      mResult->second->setValue(value);
+    }
+  }
+
+  IBinding* Project::getBinding(const std::string& id) {
+    return id == "value" ? &cPropertyValueBinding : nullptr;
+  }
+
+  void Project::releaseBinding(const IBinding* asset) {
+    // Nothing to do.
   }
 
   void Project::ScreenProxy::renderScreen(float scale, float aspectRatio) const {

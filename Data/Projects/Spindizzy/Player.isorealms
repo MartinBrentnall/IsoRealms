@@ -3,6 +3,7 @@
   <Screen key="Replay/Player/Player"/>
   <Input key="Literal"/>
   <Include/>
+  <Properties/>
   <Modules>
     <Module name="Basics">
       <Configuration/>

@@ -89,5 +89,6 @@ disableHud = 1</Code>
   <Include>
     <Project name="Projects/Spindizzy/Worlds/Hangworld.isorealms" user="false"/>
   </Include>
+  <Properties/>
   <Modules/>
 </Project>

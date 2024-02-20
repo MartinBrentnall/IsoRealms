@@ -73,6 +73,10 @@ namespace IsoRealms {
   void LiteralAssets::release(IAssetUser<ITexture>*        user, ITexture*        asset) {}
   void LiteralAssets::release(IAssetUser<IVertex>*         user, IVertex*         asset) {}
 
+  void LiteralAssets::setProperty(const std::string& id, const std::string& value) {
+    // TODO: Shouldn't be here.
+  }
+
   bool LiteralAssets::renderAssetIcon() const {
     return false;
   }

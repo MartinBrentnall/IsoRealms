@@ -268,8 +268,8 @@ namespace IsoRealms::Spindizzy {
 //       }
 
       case sf::Event::JoystickMoved: {
-        bool mDirectionPressed = false;
-// TODO        if (HatHandler::leftPressed())  {selectToolRelative(-1); mDirectionPressed = true;}
+// TODO        bool mDirectionPressed = false;
+//        if (HatHandler::leftPressed())  {selectToolRelative(-1); mDirectionPressed = true;}
 //        if (HatHandler::rightPressed()) {selectToolRelative(1);  mDirectionPressed = true;}
 //        if (HatHandler::upPressed())    {setPreviousTheme();     mDirectionPressed = true;}
 //        if (HatHandler::downPressed())  {setNextTheme();         mDirectionPressed = true;}

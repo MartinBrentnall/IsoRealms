@@ -63,6 +63,7 @@ namespace IsoRealms::Basics {
     bool exists(const std::string& file);
     void requestQuit();
     bool isQuitRequestGranted() const;
+    void setProperty(const std::string& id, const std::string& value);
     
     /****************************\
      * Implements IInputHandler *
