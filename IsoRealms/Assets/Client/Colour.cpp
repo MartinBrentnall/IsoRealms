@@ -61,6 +61,8 @@ namespace IsoRealms {
   }
 
   Colour::~Colour() {
-    cProject->release(this, cColour);
+    if (cColour != nullptr) {
+      cProject->release(this, cColour);
+    }
   }
 }

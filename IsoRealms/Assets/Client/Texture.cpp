@@ -73,6 +73,8 @@ namespace IsoRealms {
   }
 
   Texture::~Texture() {
-    cProject->release(this, cTexture);
+    if (cTexture != nullptr) {
+      cProject->release(this, cTexture);
+    }
   }
 }

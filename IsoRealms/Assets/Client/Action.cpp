@@ -54,6 +54,8 @@ namespace IsoRealms {
   }
 
   Action::~Action() {
-    cProject->release(this, cAction);
+    if (cAction != nullptr) {
+      cProject->release(this, cAction);
+    }
   }
 }

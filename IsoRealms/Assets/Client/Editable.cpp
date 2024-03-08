@@ -50,6 +50,8 @@ namespace IsoRealms {
   }
 
   Editable::~Editable() {
-    cProject->release(this, cEditable);
+    if (cEditable != nullptr) {
+      cProject->release(this, cEditable);
+    }
   }
 }

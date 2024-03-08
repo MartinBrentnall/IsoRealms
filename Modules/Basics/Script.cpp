@@ -72,6 +72,7 @@ namespace IsoRealms::Basics {
       if (mScriptAction->second->getInternalActionType() == mScript.second.get()) {
         mScriptAction->second->destroyInternalAction(mScript.second.get(), assets);
         mScriptsToRemove.push_back(mScript.first);
+        break;
       }
     }
 

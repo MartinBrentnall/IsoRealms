@@ -52,7 +52,9 @@ namespace IsoRealms::Spindizzy {
   }
 
   ZoneViewType::~ZoneViewType() {
-    cSpindizzy->release(this, cZoneViewType);
+    if (cZoneViewType != nullptr) {
+      cSpindizzy->release(this, cZoneViewType);
+    }
   }
 }
 

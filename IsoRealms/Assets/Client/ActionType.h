@@ -28,8 +28,8 @@
 namespace IsoRealms {
   class ActionType : public IAssetUser<IActionType> {
     public:
-    ActionType(IProject* project);
-    ActionType(IProject* project, DOMNode& node);
+    ActionType(IProject* project, std::function<void()> relinquishInstances);
+    ActionType(IProject* project, std::function<void()> relinquishInstances, DOMNode& node);
 
     void init(DOMNode& node);
     void save(DOMNodeWriter* node, const std::string& attribute);
@@ -54,6 +54,7 @@ namespace IsoRealms {
     private:
     IProject* cProject;
     IActionType* cActionType;
+    std::function<void()> cRelinquishInstances;
 
     ActionType(ActionType const& actionType) = delete;
     ActionType& operator=(ActionType const& actionType) = delete;

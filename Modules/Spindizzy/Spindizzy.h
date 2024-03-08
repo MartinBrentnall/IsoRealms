@@ -398,31 +398,18 @@ namespace IsoRealms::Spindizzy {
     
     static const std::string BIND_TO_ZONE;
 
-    // Resource type definitions.
-    ResourceTypeDefinition<Spindizzy, AlienType>          cResourceAlien;
-    ResourceTypeDefinition<Spindizzy, Ball>               cResourceBall;
-    ResourceTypeDefinition<Spindizzy, BoundaryHandler>    cResourceBoundaryHandler;
-    ResourceTypeDefinition<Spindizzy, C64LiftGraphics>    cResourceC64LiftGraphics;
-    ResourceTypeDefinition<Spindizzy, C64TerrainGraphics> cResourceC64TerrainGraphics;
-    ResourceTypeDefinition<Spindizzy, CollisionHandler>   cResourceCollisionHandler;
-    ResourceTypeDefinition<Spindizzy, DamageIndicator>    cResourceDamageIndicator;
-    ResourceTypeDefinition<Spindizzy, DebrisChunk>        cResourceDebrisChunk;
-    ResourceTypeDefinition<Spindizzy, Gyroscope>          cResourceGyroscope;
-    ResourceTypeDefinition<Spindizzy, Jewel>              cResourceJewel;
-    ResourceTypeDefinition<Spindizzy, LiftType>           cResourceLift;
-    ResourceTypeDefinition<Spindizzy, PickUpType>         cResourcePickUp;
-    ResourceTypeDefinition<Spindizzy, PlayerType>         cResourcePlayer;
-    ResourceTypeDefinition<Spindizzy, TerrainType>        cResourceTerrain;
-    ResourceTypeDefinition<Spindizzy, TerrainState>       cResourceTerrainState;
-    ResourceTypeDefinition<Spindizzy, ThemeSet>           cResourceThemeSet;
-    ResourceTypeDefinition<Spindizzy, Top>                cResourceTop;
-    ResourceTypeDefinition<Spindizzy, World>              cResourceWorld;
-    ResourceTypeDefinition<Spindizzy, WorldView>          cResourceWorldView;
-    ResourceTypeDefinition<Spindizzy, ZoneType>           cResourceZone;
-    ResourceTypeDefinition<Spindizzy, ZoneObjectType>     cResourceZoneObject;
-        
     // External interfaces.
     IProject* cProject;
+
+    // Spindizzy Assets.
+    AssetClientManager<Spindizzy,      IBoundaryType>        cBoundaryTypes;
+    AssetClientManager<WorldView,      ICamera>              cCameras;
+    AssetClientManager<Spindizzy,      IPhysicalObjectType>  cPhysicalObjectTypes;
+    AssetClientManager<Spindizzy,      ISurfacePattern>      cSurfacePatterns;
+    AssetClientManager<Spindizzy,      IWallPattern>         cWallPatterns;
+    AssetClientManager<Spindizzy,      IWorldEditorTool>     cWorldEditorTools;
+    AssetClientManager<ZoneObjectType, IZoneObjectTypeTrait> cZoneObjectTypeTraits;
+    AssetClientManager<WorldView,      IZoneViewType>        cZoneViewTypes;
 
     // Dummy asset providers.
     AssetLiteralDummy<Spindizzy,      IBoundaryType,        BoundaryTypeDummy>        cDummyProviderBoundaryType;
@@ -433,16 +420,6 @@ namespace IsoRealms::Spindizzy {
     AssetLiteralDummy<Spindizzy,      IWorldEditorTool,     WorldEditorToolDummy>     cDummyProviderWorldEditorTool;
     AssetLiteralDummy<ZoneObjectType, IZoneObjectTypeTrait, ZoneObjectTypeTraitDummy> cDummyProviderZoneObjectTypeTrait;
     AssetLiteralDummy<WorldView,      IZoneViewType,        ZoneViewTypeDummy>        cDummyProviderZoneViewType;
-
-    // Spindizzy Assets.    
-    AssetClientManager<Spindizzy,      IBoundaryType>        cBoundaryTypes;
-    AssetClientManager<WorldView,      ICamera>              cCameras;
-    AssetClientManager<Spindizzy,      IPhysicalObjectType>  cPhysicalObjectTypes;
-    AssetClientManager<Spindizzy,      ISurfacePattern>      cSurfacePatterns;
-    AssetClientManager<Spindizzy,      IWallPattern>         cWallPatterns;
-    AssetClientManager<Spindizzy,      IWorldEditorTool>     cWorldEditorTools;
-    AssetClientManager<ZoneObjectType, IZoneObjectTypeTrait> cZoneObjectTypeTraits;
-    AssetClientManager<WorldView,      IZoneViewType>        cZoneViewTypes;
 
     // Built-in providers for Spindizzy asset types.
     AssetInstanced<WorldView, ICamera, CameraGameplay>     cProviderCameraGameplay;
@@ -469,7 +446,30 @@ namespace IsoRealms::Spindizzy {
     AssetInstanced<ZoneObjectType, IZoneObjectTypeTrait, ZoneObjectTypeTraitMovable>      cProviderZoneObjectTypeTraitMovable;
     AssetInstanced<ZoneObjectType, IZoneObjectTypeTrait, ZoneObjectTypeTraitPhysics>      cProviderZoneObjectTypeTraitPhysics;
     AssetInstanced<ZoneObjectType, IZoneObjectTypeTrait, ZoneObjectTypeTraitSpinner>      cProviderZoneObjectTypeTraitSpinner;
-    
+
+    // Resource type definitions.
+    ResourceTypeDefinition<Spindizzy, AlienType>          cResourceAlien;
+    ResourceTypeDefinition<Spindizzy, Ball>               cResourceBall;
+    ResourceTypeDefinition<Spindizzy, BoundaryHandler>    cResourceBoundaryHandler;
+    ResourceTypeDefinition<Spindizzy, C64LiftGraphics>    cResourceC64LiftGraphics;
+    ResourceTypeDefinition<Spindizzy, C64TerrainGraphics> cResourceC64TerrainGraphics;
+    ResourceTypeDefinition<Spindizzy, CollisionHandler>   cResourceCollisionHandler;
+    ResourceTypeDefinition<Spindizzy, DamageIndicator>    cResourceDamageIndicator;
+    ResourceTypeDefinition<Spindizzy, DebrisChunk>        cResourceDebrisChunk;
+    ResourceTypeDefinition<Spindizzy, Gyroscope>          cResourceGyroscope;
+    ResourceTypeDefinition<Spindizzy, Jewel>              cResourceJewel;
+    ResourceTypeDefinition<Spindizzy, LiftType>           cResourceLift;
+    ResourceTypeDefinition<Spindizzy, PickUpType>         cResourcePickUp;
+    ResourceTypeDefinition<Spindizzy, PlayerType>         cResourcePlayer;
+    ResourceTypeDefinition<Spindizzy, TerrainType>        cResourceTerrain;
+    ResourceTypeDefinition<Spindizzy, TerrainState>       cResourceTerrainState;
+    ResourceTypeDefinition<Spindizzy, ThemeSet>           cResourceThemeSet;
+    ResourceTypeDefinition<Spindizzy, Top>                cResourceTop;
+    ResourceTypeDefinition<Spindizzy, World>              cResourceWorld;
+    ResourceTypeDefinition<Spindizzy, WorldView>          cResourceWorldView;
+    ResourceTypeDefinition<Spindizzy, ZoneType>           cResourceZone;
+    ResourceTypeDefinition<Spindizzy, ZoneObjectType>     cResourceZoneObject;
+
     // Runtime data.
     bool cRuntimePaused;
     

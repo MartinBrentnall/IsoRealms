@@ -56,7 +56,9 @@ namespace IsoRealms::Spindizzy {
   }
 
   BoundaryType::~BoundaryType() {
-    cSpindizzy.release(this, cBoundaryType);
+    if (cBoundaryType != nullptr) {
+      cSpindizzy.release(this, cBoundaryType);
+    }
   }
 }
 

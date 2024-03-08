@@ -56,7 +56,9 @@ namespace IsoRealms::Spindizzy {
   }
 
   PhysicalObjectType::~PhysicalObjectType() {
-    cSpindizzy.release(this, cPhysicalObjectType);
+    if (cPhysicalObjectType != nullptr) {
+      cSpindizzy.release(this, cPhysicalObjectType);
+    }
   }
 }
 

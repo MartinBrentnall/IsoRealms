@@ -4,7 +4,7 @@
 
 !define NAME "IsoRealms-Spindizzy"
 !define APPFILE "Spindizzy.cmd"
-!define VERSION "0.4"
+!define VERSION "0.6"
 !define SLUG "${NAME}-v${VERSION}"
 
 Name "${NAME}"

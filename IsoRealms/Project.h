@@ -203,7 +203,7 @@ namespace IsoRealms {
       ActionExecutor(Project* project, IAssetUser<IAction>* user);
       ActionExecutor(Project* project, DOMNode& node, const std::string& id, IAssetUser<IAction>* user, IBindingRegistry* localArgs);
 
-      void notifyActionRemoval();
+      void remove(Action* action);
 
       /**********************\
        * Implements IAction *
@@ -266,12 +266,20 @@ namespace IsoRealms {
       const IFloat* getPitch() const override;
     };
 
+    class ProjectProperty {
+      public:
+      ProjectProperty(Project* parent, DOMNode& node);
+      void setValue(const std::string& value);
+
+      private:
+      Action cChangeAction;
+    };
+
     IApplication* cApplication; /// Host application of this project.
     
     const IAssetOverride* const cAssetOverride; /// External asset override for this project.
     LuaState cLuaState;                         /// Lua State for this project.
     std::vector<std::unique_ptr<Include>> cInclusions;          /// List of other project files included within this project.
-    std::set<std::unique_ptr<Module>> cModules;                 /// Modules within this project.
     LuaBinding<Project> cLuaBinding;          /// Project interface for actions and scripting.
 
 
@@ -289,11 +297,6 @@ namespace IsoRealms {
     std::vector<IAction*> cPostponedActions; /// List of postponed actions to be executed at next update cycle.
     bool cRuntimeUpdatingRuntime;            /// Flag is set when update cycle is being performed.
     bool cRuntimeResetPostponed;             /// Falg is set when a reset is postponed to be performed upon completion of the update cycle.
-
-    // Unsorted
-    std::map<IAction*, std::unique_ptr<ActionExecutor>> cActionExecutors;
-
-    std::map<IScreen*, std::unique_ptr<ScreenProxy>> cScreenProxyMapping;
 
 
 
@@ -341,6 +344,10 @@ namespace IsoRealms {
     AssetClientManager<Project, ITexture>        cTextures;
     AssetClientManager<Project, IVertex>         cVertices;
 
+    // Unsorted
+    std::map<IAction*, std::unique_ptr<ActionExecutor>> cActionExecutors;
+    std::map<IScreen*, std::unique_ptr<ScreenProxy>> cScreenProxyMapping;
+
     // Literal and dummy asset providers.
     AssetLiteralDummy<Project, I3DModelType,    LiteralModel>          cLiteralProviderModel;
     AssetLiteralDummy<Project, IActionType,     LiteralActionType>     cLiteralProviderActionType;
@@ -379,9 +386,6 @@ namespace IsoRealms {
     // Local binding support.
     AssetLocalBinding cLocalProviderBinding;
 
-    Action cDefInitAction;
-    Action cDefResetAction;
-    Action cDefQuitAction;
     std::function<void(bool)> cFunctionNotifyComplete;
     bool cCanSave;
     std::string cFilename;
@@ -390,13 +394,20 @@ namespace IsoRealms {
     FileUser cFileUserBoolean;
     QuitActionType cQuitAction;
 
+    std::map<std::string, std::unique_ptr<ProjectProperty>> cProperties;
+
     int cTime;
 
     // Project definition
     InputHandler cDefInputHandler;            /// Input handler of this project.
     Screen cDefScreen;                        /// Screen of this project.
     Editable cDefDefaultEditor;               /// Default editor of this project.
-    
+    Action cDefInitAction;
+    Action cDefResetAction;
+    Action cDefQuitAction;
+
+    std::set<std::unique_ptr<Module>> cModules;                 /// Modules within this project.
+
     std::vector<std::unique_ptr<DOMNode>> loadResources(DOMNode& node, IOptions* options, const std::string& resourceDataPath);
     Module* getModule(const std::string& name);
     
@@ -582,12 +593,12 @@ namespace IsoRealms {
     void release(IAssetUser<IBoolean>*            user, IBoolean*        asset) override;
     void release(IAssetUser<IColour>*             user, IColour*         asset) override;
     void release(IAssetUser<IEditable>*           user, IEditable*       asset) override;
-    void release(IAssetUser<IFloat>*              user, const IFloat*          asset) override;
+    void release(IAssetUser<IFloat>*              user, IFloat*          asset) override;
     void release(IAssetUser<IFont>*               user, IFont*           asset) override;
     void release(IAssetUser<IInputHandler>*       user, IInputHandler*   asset) override;
     void release(IAssetUser<IInteger>*            user, IInteger*        asset) override;
     void release(IAssetUser<IProjectOptions>*     user, IProjectOptions* asset) override;
-    void release(IAssetUser<IScreen>*             user, const IScreen*         asset) override;
+    void release(IAssetUser<IScreen>*             user, IScreen*         asset) override;
     void release(IAssetUser<IString>*             user, IString*         asset) override;
     void release(IAssetUser<ITexture>*            user, ITexture*        asset) override;
     void release(IAssetUser<IVertex>*             user, IVertex*         asset) override;
@@ -671,17 +682,6 @@ namespace IsoRealms {
   //  void editResource(IResource*, IAssets*, IEditingContext*);
 
   //  void removeResource(IResource*, IAssets*);
-
-    class ProjectProperty {
-      public:
-      ProjectProperty(Project* parent, DOMNode& node);
-      void setValue(const std::string& value);
-
-      private:
-      Action cChangeAction;
-    };
-
-    std::map<std::string, std::unique_ptr<ProjectProperty>> cProperties;
 
     void setProperty(const std::string& property, const std::string& value) override;
 

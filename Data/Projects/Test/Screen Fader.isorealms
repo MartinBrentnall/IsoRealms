@@ -3,6 +3,10 @@
   <Screen key="UI/Panel/Test"/>
   <Input key="Literal"/>
   <Include/>
+  <Properties/>
+  <QuitAction>
+    <Action key="Quit"/>
+  </QuitAction>
   <Modules>
     <Module name="Basics">
       <Configuration/>

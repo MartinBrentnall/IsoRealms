@@ -91,11 +91,15 @@ namespace IsoRealms {
     static const std::string ATTRIBUTE_NAME;
     
     std::string cName;
-    std::unique_ptr<IModuleHandle> cModule;
+    IModuleHandle* cModule;
     std::map<std::string, std::unique_ptr<ResourceType>> cResourceTypes;
     Project* cProject;
     LocalAssetRegistry cModuleAssetRegistry;
-
+#ifdef __linux__
+    void* cModuleHandle;
+#elif _WIN32
+    HINSTANCE cModuleHandle;
+#endif
     ResourceType* getResourceType(const std::string& id);
 
     /**

@@ -82,12 +82,12 @@ namespace IsoRealms {
     virtual void release(IAssetUser<IBoolean>*        user, IBoolean*        asset) = 0;
     virtual void release(IAssetUser<IColour>*         user, IColour*         asset) = 0;
     virtual void release(IAssetUser<IEditable>*       user, IEditable*       asset) = 0;
-    virtual void release(IAssetUser<IFloat>*          user, const IFloat*          asset) = 0;
+    virtual void release(IAssetUser<IFloat>*          user, IFloat*          asset) = 0;
     virtual void release(IAssetUser<IFont>*           user, IFont*           asset) = 0;
     virtual void release(IAssetUser<IInputHandler>*   user, IInputHandler*   asset) = 0;
     virtual void release(IAssetUser<IInteger>*        user, IInteger*        asset) = 0;
     virtual void release(IAssetUser<IProjectOptions>* user, IProjectOptions* asset) = 0;
-    virtual void release(IAssetUser<IScreen>*         user, const IScreen*         asset) = 0;
+    virtual void release(IAssetUser<IScreen>*         user, IScreen*         asset) = 0;
     virtual void release(IAssetUser<IString>*         user, IString*         asset) = 0;
     virtual void release(IAssetUser<ITexture>*        user, ITexture*        asset) = 0;
     virtual void release(IAssetUser<IVertex>*         user, IVertex*         asset) = 0;

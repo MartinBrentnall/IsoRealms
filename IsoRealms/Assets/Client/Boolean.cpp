@@ -58,7 +58,9 @@ namespace IsoRealms {
   }
 
   Boolean::~Boolean() {
-    cProject->release(this, cBoolean);
+    if (cBoolean != nullptr) {
+      cProject->release(this, cBoolean);
+    }
   }
 }
 

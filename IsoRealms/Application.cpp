@@ -93,6 +93,7 @@ namespace IsoRealms {
   }
 
   Application::~Application() {
+    cWindow.close();
     cTaskMutex.lock();
     cReleaseThreads = true;
     cTaskMutex.unlock();

@@ -48,10 +48,12 @@ namespace IsoRealms {
   };
 
 #if __linux__
-  typedef std::unique_ptr<IModuleHandle> createModule(IProject* project, IResourceTypeRegistry* resourceTypeRegistry, IAssetLiterals* resources);
+  typedef IModuleHandle* createModule(IProject* project, IResourceTypeRegistry* resourceTypeRegistry, IAssetLiterals* resources);
+  typedef void destroyModule(IModuleHandle* module);
   typedef void initLuaInterfaces(LuaState* luaState);
 #elif _WIN32
-  typedef std::unique_ptr<IModuleHandle> (__stdcall* createModule)(IProject* project, IResourceTypeRegistry* resourceTypeRegistry, IAssetLiterals* resources);
+  typedef IModuleHandle* (__stdcall* createModule)(IProject* project, IResourceTypeRegistry* resourceTypeRegistry, IAssetLiterals* resources);
+  typedef void (__stdcall* destroyModule)(IModuleHandle* module);
   typedef void (__stdcall* initLuaInterfaces)(LuaState* luaState);
 #endif
 }

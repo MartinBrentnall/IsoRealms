@@ -58,7 +58,9 @@ namespace IsoRealms {
   }
 
   Float::~Float() {
-    cProject->release(this, cFloat);
+    if (cFloat != nullptr) {
+      cProject->release(this, cFloat);
+    }
   }
 }
 

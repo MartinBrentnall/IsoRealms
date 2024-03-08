@@ -38,30 +38,30 @@ namespace IsoRealms {
     }
     std::string mModuleLocation = std::filesystem::current_path().string() + "/" + System::getModulePath(mModulePath, false);
 #ifdef __linux__
-    void* mModuleSO = dlopen(mModuleLocation.c_str(), RTLD_LAZY | RTLD_GLOBAL);
-    if (!mModuleSO) {
+    cModuleHandle = dlopen(mModuleLocation.c_str(), RTLD_NOW);
+    if (!cModuleHandle) {
       throw InitException("ERROR: Module::Module: Specified module \"" + mModuleLocation + "\" could not be loaded: Error code: " + std::string(dlerror()));
     }
-    createModule* mCreateFunction = voidToFunction<createModule*>(dlsym(mModuleSO, "create"));
+    createModule* mCreateFunction = voidToFunction<createModule*>(dlsym(cModuleHandle, "create"));
     const char* mDlsymError = dlerror();
     if (mDlsymError) {
       throw InitException("ERROR: Module::Module: Specified module \"" + mModuleLocation + "\" does not have create function: Error code: " + std::string(mDlsymError));
     }
-    initLuaInterfaces* mInitLuaInterfacesFunction = voidToFunction<initLuaInterfaces*>(dlsym(mModuleSO, "initLua"));
+    initLuaInterfaces* mInitLuaInterfacesFunction = voidToFunction<initLuaInterfaces*>(dlsym(cModuleHandle, "initLua"));
     mDlsymError = dlerror();
     if (!mDlsymError) {
 #elif _WIN32
-    HINSTANCE mModuleSO = LoadLibrary(mModuleLocation.c_str());
-    if (!mModuleSO) {
+    HINSTANCE cModuleHandle = LoadLibrary(mModuleLocation.c_str());
+    if (!cModuleHandle) {
       throw InitException("ERROR: Module::Module: Specified module \"" + mModuleLocation + "\" could not be loaded: Error code: " + Utils::toString(static_cast<int>(GetLastError())));
     }
 
-    createModule mCreateFunction = (createModule) GetProcAddress(mModuleSO, "create");
+    createModule mCreateFunction = (createModule) GetProcAddress(cModuleHandle, "create");
     if (!mCreateFunction) {
       throw InitException("ERROR: Module::Module: Specified module \"" + mModuleLocation + "\" does not have create function: Error code: " + Utils::toString(static_cast<int>(GetLastError())));
     }
 
-    initLuaInterfaces mInitLuaInterfacesFunction = (initLuaInterfaces) GetProcAddress(mModuleSO, "initLua");
+    initLuaInterfaces mInitLuaInterfacesFunction = (initLuaInterfaces) GetProcAddress(cModuleHandle, "initLua");
     if (mInitLuaInterfacesFunction) {
 #endif
       mInitLuaInterfacesFunction(luaState);
@@ -176,6 +176,16 @@ namespace IsoRealms {
   }
 
   Module::~Module() {
-// TODO    cModule->unregisterAssets(cProject, cProject);
+    cModule->unregisterAssets(cProject, cProject);
+    cResourceTypes.clear();
+#ifdef __linux__
+    destroyModule* mDestroyFunction = voidToFunction<destroyModule*>(dlsym(cModuleHandle, "destroy"));
+    mDestroyFunction(cModule);
+    dlclose(cModuleHandle);
+#elif _WIN32
+    destroyModule mDestroyFunction = (destroyModule) GetProcAddress(cModuleHandle, "destroy");
+    mDestroyFunction(cModule);
+    FreeLibrary(cModuleHandle);
+#endif
   }
 }

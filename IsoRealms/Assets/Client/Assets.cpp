@@ -50,6 +50,8 @@ namespace IsoRealms {
   }
 
   Assets::~Assets() {
-    cProject->release(this, cAssets);
+    if (cAssets != nullptr) {
+      cProject->release(this, cAssets);
+    }
   }
 }

@@ -50,7 +50,9 @@ namespace IsoRealms {
   }
 
   String::~String() {
-    cProject->release(this, cString);
+    if (cString != nullptr) {
+      cProject->release(this, cString);
+    }
   }
 }
 

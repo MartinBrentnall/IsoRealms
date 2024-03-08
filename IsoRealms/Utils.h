@@ -96,7 +96,7 @@ namespace IsoRealms {
       return mRemoved;
     }
     
-    template <class TYPE> static int removeElementUnique(std::vector<std::unique_ptr<TYPE>>& vector, const TYPE* element) {
+    template <class TYPE, class TYPEB> static int removeElementUnique(std::vector<std::unique_ptr<TYPE>>& vector, const TYPEB* element) {
       int mRemoved = 0;
       for (std::size_t i = vector.size(); i > 0; i--) {
         if (vector[i - 1].get() == element) {

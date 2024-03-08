@@ -50,7 +50,9 @@ namespace IsoRealms {
   }
 
   InputHandler::~InputHandler() {
-    cProject->release(this, cInputHandler);
+    if (cInputHandler != nullptr) {
+      cProject->release(this, cInputHandler);
+    }
   }
 }
 

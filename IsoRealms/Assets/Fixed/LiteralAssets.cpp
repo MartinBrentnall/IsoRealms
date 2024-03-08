@@ -63,12 +63,12 @@ namespace IsoRealms {
   void LiteralAssets::release(IAssetUser<IBoolean>*        user, IBoolean*        asset) {}
   void LiteralAssets::release(IAssetUser<IColour>*         user, IColour*         asset) {}
   void LiteralAssets::release(IAssetUser<IEditable>*       user, IEditable*       asset) {}
-  void LiteralAssets::release(IAssetUser<IFloat>*          user, const IFloat*          asset) {}
+  void LiteralAssets::release(IAssetUser<IFloat>*          user, IFloat*          asset) {}
   void LiteralAssets::release(IAssetUser<IFont>*           user, IFont*           asset) {}
   void LiteralAssets::release(IAssetUser<IInputHandler>*   user, IInputHandler*   asset) {}
   void LiteralAssets::release(IAssetUser<IInteger>*        user, IInteger*        asset) {}
   void LiteralAssets::release(IAssetUser<IProjectOptions>* user, IProjectOptions* asset) {}
-  void LiteralAssets::release(IAssetUser<IScreen>*         user, const IScreen*         asset) {}
+  void LiteralAssets::release(IAssetUser<IScreen>*         user, IScreen*         asset) {}
   void LiteralAssets::release(IAssetUser<IString>*         user, IString*         asset) {}
   void LiteralAssets::release(IAssetUser<ITexture>*        user, ITexture*        asset) {}
   void LiteralAssets::release(IAssetUser<IVertex>*         user, IVertex*         asset) {}

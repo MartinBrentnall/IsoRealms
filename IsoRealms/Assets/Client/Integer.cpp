@@ -50,6 +50,8 @@ namespace IsoRealms {
   }
 
   Integer::~Integer() {
-    cProject->release(this, cInteger);
+    if (cInteger != nullptr) {
+      cProject->release(this, cInteger);
+    }
   }
 }

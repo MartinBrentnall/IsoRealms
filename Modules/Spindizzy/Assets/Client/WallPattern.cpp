@@ -52,7 +52,9 @@ namespace IsoRealms::Spindizzy {
   }
 
   WallPattern::~WallPattern() {
-    cSpindizzy->release(this, cWallPattern);
+    if (cWallPattern != nullptr) {
+      cSpindizzy->release(this, cWallPattern);
+    }
   }
 }
 

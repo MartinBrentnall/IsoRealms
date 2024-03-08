@@ -1143,7 +1143,7 @@ howToPlay:reset()</Code>-->
         </StringScreen>
         <StringScreen name="TextVersion" alignment="Left">
           <Font key="Basics/Font/Menu"/>
-          <Value key="Literal" value="Early Access Version 0.4"/>
+          <Value key="Literal" value="Early Access Version 0.6"/>
           <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
         </StringScreen>
         <StringScreen name="HighScoreTitle" alignment="Center">
@@ -2875,21 +2875,49 @@ timer:start(10000)</Code>
                 </Action>
               </Action>
             </Action>
-<!--            <Action label="Missions">
-              <Action key="Basics/Function/PushScreen">
-                <Argument name="menuScreen" value=":Screen/UI/Menu/MissionSelect"/>
-                <Argument name="menuInput" value=":InputHandler/UI/Menu/MissionSelect"/>
-                <Argument name="menu" value="UI/Menu/MissionSelect"/>
+            <Action label="Missions">
+              <Action>
+                <Action key="Basics/Function/PushScreen">
+                  <Bind argument="menuScreen">
+                    <To key=":Screen">
+                      <Asset key="UI/Menu/MissionSelect"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="menuInput">
+                    <To key=":InputHandler">
+                      <Asset key="UI/Menu/MissionSelect"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="menu">
+                    <To key="UI/Menu/MissionSelect"/>
+                  </Bind>
+                </Action>
               </Action>
             </Action>
             <Action label="Create">
-              <Action key="Basics/Function/StartProjectNew">
-                <Argument name="mission" value="Basics/Project/Editor"/>
-                <Argument name="missionInput" value=":InputHandler/Basics/Project/Editor"/>
-                <Argument name="missionScreen" value=":Screen/Basics/Project/Editor"/>
-                <Argument name="projectArgs" value=":ProjectOptions/Basics/ProjectOptions/Editor"/>
+              <Action>
+                <Action key="Basics/Function/StartProjectNew">
+                  <Bind argument="mission">
+                    <To key="Basics/Project/Editor"/>
+                  </Bind>
+                  <Bind argument="missionInput">
+                    <To key=":InputHandler">
+                      <Asset key="Basics/Project/Editor"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="missionScreen">
+                    <To key=":Screen">
+                      <Asset key="Basics/Project/Editor"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="projectArgs">
+                    <To key=":ProjectOptions">
+                      <Asset key="Basics/ProjectOptions/Editor"/>
+                    </To>
+                  </Bind>
+                </Action>
               </Action>
-            </Action>-->
+            </Action>
             <Action label="Options">
               <Action>
                 <Action key="Basics/Function/PushScreen">
@@ -3114,13 +3142,35 @@ timer:start(10000)</Code>
           <Font key="Basics/Font/Menu"/>
           <Options>
             <Action label="Hangworld" key="Basics/Function/SelectMission">
-              <Argument name="mission" value=":String/#Spindizzy/Worlds/Hangworld.isorealms"/>
-              <Argument name="missionUser" value=":String/#program"/>
+              <Action>
+                <Bind argument="mission">
+                  <To key=":String">
+                    <Asset key="Spindizzy/Worlds/Hangworld.isorealms"/>
+                  </To>
+                </Bind>
+                <Bind argument="missionUser">
+                  <To key=":String">
+                    <Asset key="program"/>
+                  </To>
+                </Bind>
+              </Action>
             </Action>
             <Action label="My Missions" key="Basics/Function/PushScreen">
-              <Argument name="menuScreen" value=":Screen/UI/Menu/MyMissions"/>
-              <Argument name="menuInput" value=":InputHandler/UI/Menu/MyMissions"/>
-              <Argument name="menu" value="UI/Menu/MyMissions"/>
+              <Action>
+                <Bind argument="menuScreen">
+                  <To key=":Screen">
+                    <Asset key="UI/Menu/MyMissions"/>
+                  </To>
+                </Bind>
+                <Bind argument="menuInput">
+                  <To key=":InputHandler">
+                    <Asset key="UI/Menu/MyMissions"/>
+                  </To>
+                </Bind>
+                <Bind argument="menu">
+                  <To key="UI/Menu/MyMissions"/>
+                </Bind>
+              </Action>
             </Action>
     <!--        <Action label="DLC Missions" key="Basics/Function/PushScreen">
               <Argument name="menuScreen" value=":Screen/UI/Menu/DLCMissions"/>

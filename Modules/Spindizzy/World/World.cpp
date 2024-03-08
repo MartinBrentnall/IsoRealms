@@ -105,9 +105,9 @@ namespace IsoRealms::Spindizzy {
       std::ifstream mCache(mCachePath, std::ios::binary);
       bool mUsingCache = false;
       if (mCache) {
-        std::filesystem::file_time_type mCacheTime = std::filesystem::last_write_time(mCachePath);
-        std::filesystem::file_time_type mProjectTime = project->getLastWriteTime();
-
+//        std::filesystem::file_time_type mCacheTime = std::filesystem::last_write_time(mCachePath);
+//        std::filesystem::file_time_type mProjectTime = project->getLastWriteTime();
+//
 //        if (mCacheTime > mProjectTime) {
           mUsingCache = true;
 //        } else {
@@ -321,7 +321,7 @@ namespace IsoRealms::Spindizzy {
   void World::removeMovementListener(IPhysicalObjectType* type, IMovementListener* listener) {
     std::map<IPhysicalObjectType*, std::unique_ptr<MovementHandler>>::iterator mIterator = cRuntimeMovementHandlers.find(type);
     if (mIterator == cRuntimeMovementHandlers.end()) {
-      throw ArgumentException("ERROR: World::addMovementListener: Specified physical object type isn't known.");
+      throw ArgumentException("ERROR: World::removeMovementListener: Specified physical object type isn't known.");
     }
     mIterator->second->removeListener(listener);
   }
@@ -329,7 +329,7 @@ namespace IsoRealms::Spindizzy {
   MovementHandler* World::getMovementHandler(IPhysicalObjectType* type) {
     std::map<IPhysicalObjectType*, std::unique_ptr<MovementHandler>>::iterator mIterator = cRuntimeMovementHandlers.find(type);
     if (mIterator == cRuntimeMovementHandlers.end()) {
-      throw ArgumentException("ERROR: World::addMovementListener: Specified physical object type isn't known.");
+      throw ArgumentException("ERROR: World::getMovementListener: Specified physical object type isn't known.");
     }
     return mIterator->second.get();
   }

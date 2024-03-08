@@ -120,5 +120,9 @@ namespace IsoRealms {
     void deleteResource(IAssetRemover* assets, IAssets* releaser, IResource* resource) override {
       resource->unregisterAssets(assets, releaser);
     }
+
+    ~ResourceTypeDefinition() {
+      cResources.clear();
+    }
   };
 }

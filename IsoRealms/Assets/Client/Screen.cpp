@@ -50,7 +50,9 @@ namespace IsoRealms {
   }
 
   Screen::~Screen() {
-    cProject->release(this, cScreen);
+    if (cScreen != nullptr) {
+      cProject->release(this, cScreen);
+    }
   }
 }
 

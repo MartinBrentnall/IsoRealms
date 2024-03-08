@@ -23,27 +23,6 @@ namespace IsoRealms::Spindizzy {
   const double Spindizzy::DEFAULT_VIEW_ANGLE_YAW = -45.0;
 
   Spindizzy::Spindizzy(IProject* project, IResourceTypeRegistry* registry, IAssetLiterals* literals) :
-                    cResourceAlien(this),
-                    cResourceBall(this),
-                    cResourceBoundaryHandler(this),
-                    cResourceC64LiftGraphics(this),
-                    cResourceC64TerrainGraphics(this),
-                    cResourceCollisionHandler(this),
-                    cResourceDamageIndicator(this),
-                    cResourceDebrisChunk(this),
-                    cResourceGyroscope(this),
-                    cResourceJewel(this),
-                    cResourceLift(this),
-                    cResourcePickUp(this),
-                    cResourcePlayer(this),
-                    cResourceTerrain(this),
-                    cResourceTerrainState(this),
-                    cResourceThemeSet(this),
-                    cResourceTop(this),
-                    cResourceWorld(this),
-                    cResourceWorldView(this),
-                    cResourceZone(this),
-                    cResourceZoneObject(this),
                     cProject(project),
                     cBoundaryTypes(&cDummyProviderBoundaryType),
                     cCameras(&cDummyProviderCamera),
@@ -73,6 +52,27 @@ namespace IsoRealms::Spindizzy {
                     cProviderZoneObjectTypeTraitMovable(project),
                     cProviderZoneObjectTypeTraitPhysics(project),
                     cProviderZoneObjectTypeTraitSpinner(project),
+                    cResourceAlien(this),
+                    cResourceBall(this),
+                    cResourceBoundaryHandler(this),
+                    cResourceC64LiftGraphics(this),
+                    cResourceC64TerrainGraphics(this),
+                    cResourceCollisionHandler(this),
+                    cResourceDamageIndicator(this),
+                    cResourceDebrisChunk(this),
+                    cResourceGyroscope(this),
+                    cResourceJewel(this),
+                    cResourceLift(this),
+                    cResourcePickUp(this),
+                    cResourcePlayer(this),
+                    cResourceTerrain(this),
+                    cResourceTerrainState(this),
+                    cResourceThemeSet(this),
+                    cResourceTop(this),
+                    cResourceWorld(this),
+                    cResourceWorldView(this),
+                    cResourceZone(this),
+                    cResourceZoneObject(this),
                     cRuntimePaused(false),
                     cRuntimeParameterAlien(project, nullptr),
                     cRuntimeParameterFallDistance(project, nullptr),
@@ -723,12 +723,22 @@ namespace IsoRealms::Spindizzy {
   const std::string Spindizzy::ZONE_OBJECT_TYPE_TRAIT_SPINNER       = "Spinner";
 
   const std::string Spindizzy::BIND_TO_ZONE = "Zone";
+
+  std::vector<std::unique_ptr<Spindizzy>> ModuleInstances;
 }
 
 #ifdef __linux__
-extern "C" std::unique_ptr<IsoRealms::IModuleHandle> create(IsoRealms::IProject* project, IsoRealms::IResourceTypeRegistry* registry, IsoRealms::IAssetLiterals* literals) {
+extern "C" IsoRealms::IModuleHandle* create(IsoRealms::IProject* project, IsoRealms::IResourceTypeRegistry* registry, IsoRealms::IAssetLiterals* literals) {
 #elif _WIN32
-extern "C" std::unique_ptr<IsoRealms::IModuleHandle> __declspec(dllexport) __stdcall create(IsoRealms::IProject * project, IsoRealms::IResourceTypeRegistry * registry, IsoRealms::IAssetLiterals * literals) {
+extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::IProject * project, IsoRealms::IResourceTypeRegistry * registry, IsoRealms::IAssetLiterals * literals) {
 #endif
-  return std::make_unique<IsoRealms::Spindizzy::Spindizzy>(project, registry, literals);
+  return IsoRealms::Spindizzy::ModuleInstances.emplace_back(std::make_unique<IsoRealms::Spindizzy::Spindizzy>(project, registry, literals)).get();
+}
+
+#ifdef __linux__
+extern "C" void destroy(IsoRealms::IModuleHandle* module) {
+#elif _WIN32
+extern "C" void __declspec(dllexport) __stdcall destroy(IsoRealms::IModuleHandle* module) {
+#endif
+  IsoRealms::Utils::removeElementUnique(IsoRealms::Spindizzy::ModuleInstances, module);
 }

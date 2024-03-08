@@ -19,14 +19,16 @@
 #include "ActionType.h"
 
 namespace IsoRealms {
-  ActionType::ActionType(IProject* project) :
+  ActionType::ActionType(IProject* project, std::function<void()> relinquishInstances) :
             cProject(project),
-            cActionType(cProject->createLiteralActionType(this)) {
+            cActionType(cProject->createLiteralActionType(this)),
+            cRelinquishInstances(relinquishInstances) {
   }
 
-  ActionType::ActionType(IProject* project, DOMNode& node) :
+  ActionType::ActionType(IProject* project, std::function<void()> relinquishInstances, DOMNode& node) :
             cProject(project),
-            cActionType(cProject->getActionType(this, node)) {
+            cActionType(cProject->getActionType(this, node)),
+            cRelinquishInstances(relinquishInstances) {
   }
 
   void ActionType::init(DOMNode& node) {
@@ -51,10 +53,13 @@ namespace IsoRealms {
   void ActionType::relinquish(IActionType* asset) {
     if (cActionType == asset) {
       cActionType = cProject->createLiteralActionType(this);
+      cRelinquishInstances();
     }
   }
 
   ActionType::~ActionType() {
-    cProject->release(this, cActionType);
+    if (cActionType != nullptr) {
+      cProject->release(this, cActionType);
+    }
   }
 }

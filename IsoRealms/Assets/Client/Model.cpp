@@ -103,7 +103,9 @@ namespace IsoRealms {
   }
 
   Model::~Model() {
-    cProject->release(this, cModel);
-    // TODO: Update instances with literal???  Actually... maybe the release will handle it already, and if it's being destructed then there should be no instances left?
+    if (cModel != nullptr) {
+      cProject->release(this, cModel);
+      // TODO: Update instances with literal???  Actually... maybe the release will handle it already, and if it's being destructed then there should be no instances left?
+    }
   }
 }

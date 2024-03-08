@@ -50,6 +50,8 @@ namespace IsoRealms {
   }
 
   ProjectOptions::~ProjectOptions() {
-    cProject->release(this, cProjectOptions);
+    if (cProjectOptions != nullptr) {
+      cProject->release(this, cProjectOptions);
+    }
   }
 }

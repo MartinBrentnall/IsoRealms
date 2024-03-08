@@ -69,9 +69,15 @@ namespace IsoRealms {
       // TODO cProviders.erase(provider);
     }
     
-/*    std::string getID(const TYPE* const asset) const {
-      TODO: I think this was used for saving/editing.
-    }*/
+    std::string getID(const IAssetProvider<OWNER, TYPE>* provider) const {
+      for (std::pair<std::string, std::pair<IAssetProvider<OWNER, TYPE>*, std::string>> mPair : cProviders) {
+        if (provider == mPair.second.first) {
+          return mPair.first;
+        }
+      }
+      std::cout << "WARNING: AssetRegistry::getID: Specified provider not found in this registry" << std::endl;
+      return "";
+    }
     
 /*    std::vector<std::pair<std::string, std::string>> getAll() {
       TODO: I think this was used for editing (browsing).
@@ -84,10 +90,6 @@ namespace IsoRealms {
 /*    bool renderIcon(const std::string& id) const {
       TODO: I think this was used for editing (browsing).
     }*/
-
-    void release(const TYPE* asset) {
-      // TODO: Find provider and release the specified asset.
-    }
 
     void checkClean(const std::string& name) {
       if (!cProviders.empty()) {

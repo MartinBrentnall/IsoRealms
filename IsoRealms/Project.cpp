@@ -80,9 +80,6 @@ namespace IsoRealms {
           cConversionProviderString(this),
           cConversionProviderProjectToInteger(this),
           cConversionProviderProjectToString(this),
-          cDefInitAction(this),
-          cDefResetAction(this),
-          cDefQuitAction(this),
           cFunctionNotifyComplete(onFinish),
           cFilenameString(this),
           cFileUserBoolean(this),
@@ -90,6 +87,9 @@ namespace IsoRealms {
           cDefInputHandler(this),
           cDefScreen(this),
           cDefDefaultEditor(this),
+          cDefInitAction(this),
+          cDefResetAction(this),
+          cDefQuitAction(this),
           cPropertyValue(""),
           cPropertyValueBinding(this, &cPropertyValue) {
 
@@ -549,12 +549,12 @@ namespace IsoRealms {
   void Project::release(IAssetUser<IBoolean>*        user, IBoolean*        asset) {cBooleans.release(      user, asset);}
   void Project::release(IAssetUser<IColour>*         user, IColour*         asset) {cColours.release(       user, asset);}
   void Project::release(IAssetUser<IEditable>*       user, IEditable*       asset) {cEditables.release(     user, asset);}
-  void Project::release(IAssetUser<IFloat>*          user, const IFloat*    asset) {cFloats.release(        user, asset);}
+  void Project::release(IAssetUser<IFloat>*          user, IFloat*          asset) {cFloats.release(        user, asset);}
   void Project::release(IAssetUser<IFont>*           user, IFont*           asset) {cFonts.release(         user, asset);}
   void Project::release(IAssetUser<IInputHandler>*   user, IInputHandler*   asset) {cInputHandlers.release( user, asset);}
   void Project::release(IAssetUser<IInteger>*        user, IInteger*        asset) {cIntegers.release(      user, asset);}
   void Project::release(IAssetUser<IProjectOptions>* user, IProjectOptions* asset) {cProjectOptions.release(user, asset);}
-  void Project::release(IAssetUser<IScreen>*         user, const IScreen*   asset) {cScreens.release(       user, asset);}
+  void Project::release(IAssetUser<IScreen>*         user, IScreen*         asset) {cScreens.release(       user, asset);}
   void Project::release(IAssetUser<IString>*         user, IString*         asset) {cStrings.release(       user, asset);}
   void Project::release(IAssetUser<ITexture>*        user, ITexture*        asset) {cTextures.release(      user, asset);}
   void Project::release(IAssetUser<IVertex>*         user, IVertex*         asset) {cVertices.release(      user, asset);}
@@ -735,7 +735,9 @@ namespace IsoRealms {
 
   Project::ActionExecutor::Action::Action(ActionExecutor* parent, DOMNode& node, const std::string& id, IBindingRegistry* localArgs) :
             cParent(parent),
-            cActionType(parent->cParent, node),
+            cActionType(parent->cParent, [this]() {
+              cParent->remove(this);
+            }, node),
             cAction(cActionType->createAction(node, parent->cParent, localArgs)) {
   }
 
@@ -770,9 +772,8 @@ namespace IsoRealms {
     }
   }
 
-
-  void Project::ActionExecutor::notifyActionRemoval() {
-    cUser->relinquish(this);
+  void Project::ActionExecutor::remove(Action* action) {
+    Utils::removeElementUnique(cActions, action);
   }
 
   void Project::ActionExecutor::execute() {
@@ -798,19 +799,6 @@ namespace IsoRealms {
     return false; // cAction->hasConfiguration();
   }
 
-//   void Project::relinquish(IActionType* asset) {
-//     std::set<IAction*> mToRemove;
-//     for (const std::pair<IAction* const, std::unique_ptr<ActionExecutor>>& mPair : cActionExecutors) {
-//       if (mPair.second->getActionType() == asset) {
-//         mToRemove.insert(mPair.first);
-//         mPair.second->notifyActionRemoval();
-//       }
-//     }
-//     for (IAction* mAction : mToRemove) {
-//       cActionExecutors.erase(mAction);
-//     }
-//   }
-  
   Project::ScreenProxy::ScreenProxy(Project* parent, IScreen* screen) :
             cParent(parent) {
     if (screen == nullptr) {
@@ -955,6 +943,28 @@ namespace IsoRealms {
     remove(&cLuaBinding);
     remove(&cFilenameString);
     remove(&cFileUserBoolean);
+    remove(&cQuitAction);
+
+    cBindings.remove(&cConversionProviderActionToBinding);
+    cBindings.remove(&cConversionProviderBooleanToBinding);
+    cBindings.remove(&cConversionProviderColourToBinding);
+    cBindings.remove(&cConversionProviderFloatToBinding);
+    cBindings.remove(&cConversionProviderFontToBinding);
+    cBindings.remove(&cConversionProviderInputHandlerToBinding);
+    cBindings.remove(&cConversionProviderIntegerToBinding);
+    cBindings.remove(&cConversionProviderProjectOptionsToBinding);
+    cBindings.remove(&cConversionProviderProjectToBinding);
+    cBindings.remove(&cConversionProviderScreenToBinding);
+    cBindings.remove(&cConversionProviderStringToBinding);
+    cBindings.remove(&cConversionProviderVertexToBinding);
+
+    cStrings.remove(&cConversionProviderString);
+
+    cIntegers.remove(&cConversionProviderProjectToInteger);
+    cStrings.remove(&cConversionProviderProjectToString);
+
+    cBindings.remove(&cLocalProviderBinding);
+
 
 //     c3DModelTypes.checkClean("Models");
 //     if (!cActionExecutors.empty()) {

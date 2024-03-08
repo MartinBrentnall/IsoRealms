@@ -50,6 +50,8 @@ namespace IsoRealms {
   }
 
   Vertex::~Vertex() {
-    cProject->release(this, cVertex);
+    if (cVertex != nullptr) {
+      cProject->release(this, cVertex);
+    }
   }
 }

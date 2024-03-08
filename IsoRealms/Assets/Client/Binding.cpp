@@ -51,6 +51,8 @@ namespace IsoRealms {
   }
 
   Binding::~Binding() {
-    cProject->release(this, cDefBinding);
+    if (cDefBinding != nullptr) {
+      cProject->release(this, cDefBinding);
+    }
   }
 }

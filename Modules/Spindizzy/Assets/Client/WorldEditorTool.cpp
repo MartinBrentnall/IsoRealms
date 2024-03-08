@@ -52,7 +52,9 @@ namespace IsoRealms::Spindizzy {
   }
 
   WorldEditorTool::~WorldEditorTool() {
-    cSpindizzy->release(this, cWorldEditorTool);
+    if (cWorldEditorTool != nullptr) {
+      cSpindizzy->release(this, cWorldEditorTool);
+    }
   }
 }
 

@@ -50,6 +50,8 @@ namespace IsoRealms {
   }
 
   Font::~Font() {
-    cProject->release(this, cFont);
+    if (cFont != nullptr) {
+      cProject->release(this, cFont);
+    }
   }
 }

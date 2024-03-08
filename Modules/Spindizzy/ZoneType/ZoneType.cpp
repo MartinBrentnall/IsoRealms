@@ -67,8 +67,8 @@ namespace IsoRealms::Spindizzy {
   }
 
   ZoneType::~ZoneType() {
-    cDefSpindizzy->removed(this);
     cDefSpindizzy->removeAll(this);
+    cDefSpindizzy->removed(this);
   }
 
   void ZoneType::registerAssets(ISpindizzyRegistry* registry) {

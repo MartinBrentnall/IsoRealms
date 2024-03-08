@@ -52,7 +52,9 @@ namespace IsoRealms::Spindizzy {
   }
 
   SurfacePattern::~SurfacePattern() {
-    cSpindizzy->release(this, cSurfacePattern);
+    if (cSurfacePattern != nullptr) {
+      cSpindizzy->release(this, cSurfacePattern);
+    }
   }
 }
 

@@ -43,12 +43,22 @@ namespace IsoRealms::Hue {
   void Hue::unregisterAssets(IAssetRemover* remover, IAssets* releaser) {
     // Nothing to do.
   }
+
+  std::vector<std::unique_ptr<Hue>> ModuleInstances;
 }
 
 #ifdef __linux__
-extern "C" std::unique_ptr<IsoRealms::IModuleHandle> create(IsoRealms::IProject* project, IsoRealms::IResourceTypeRegistry* registry, IsoRealms::IAssetLiterals* literals) {
+extern "C" IsoRealms::IModuleHandle* create(IsoRealms::IProject* project, IsoRealms::IResourceTypeRegistry* registry, IsoRealms::IAssetLiterals* literals) {
 #elif _WIN32
-extern "C" std::unique_ptr<IsoRealms::IModuleHandle> __declspec(dllexport) __stdcall create(IsoRealms::IProject * project, IsoRealms::IResourceTypeRegistry * registry, IsoRealms::IAssetLiterals * literals) {
+extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::IProject * project, IsoRealms::IResourceTypeRegistry * registry, IsoRealms::IAssetLiterals * literals) {
 #endif
-  return std::make_unique<IsoRealms::Hue::Hue>(project, registry, literals);
+  return IsoRealms::Hue::ModuleInstances.emplace_back(std::make_unique<IsoRealms::Hue::Hue>(project, registry, literals)).get();
+}
+
+#ifdef __linux__
+extern "C" void destroy(IsoRealms::IModuleHandle* module) {
+#elif _WIN32
+extern "C" void __declspec(dllexport) __stdcall destroy(IsoRealms::IModuleHandle* module) {
+#endif
+  IsoRealms::Utils::removeElementUnique(IsoRealms::Hue::ModuleInstances, module);
 }

@@ -94,7 +94,6 @@ int main(int argc, char** argv) {
 
     // Save settings on completion. TODO: Make save scriptable instead of program doing it.
     mApplication.saveDefaultSettings();
-    std::exit(0); // TODO: Shouldn't do this.
   } catch (IsoRealms::InitException& e) {
     std::cout << "Fatal: " << std::endl << e.getMessage() << std::endl;
     mReturnCode = 1;
@@ -129,3 +128,4 @@ int main(int argc, char** argv) {
   xercesc::XMLPlatformUtils::Terminate();
   return mReturnCode;
 }
+

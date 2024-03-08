@@ -52,7 +52,9 @@ namespace IsoRealms::Spindizzy {
   }
 
   Camera::~Camera() {
-    cSpindizzy->release(this, cCamera);
+    if (cCamera != nullptr) {
+      cSpindizzy->release(this, cCamera);
+    }
   }
 }
 
