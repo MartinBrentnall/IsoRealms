@@ -24,7 +24,11 @@
 #include "Modules/Spindizzy/TerrainType/TerrainType.h"
 
 namespace IsoRealms::Spindizzy {
-  TerrainBrush::TerrainBrush() {
+  TerrainBrush::TerrainBrush() :
+            cActiveLeft(false),
+            cActiveRight(false),
+            cActiveUp(false),
+            cActiveDown(false) {
     reset();
     cRuntimeEditing = false;
     cRuntimeCursorX = 0.0;
@@ -180,14 +184,7 @@ namespace IsoRealms::Spindizzy {
       float mEastSlope  = cCornerHeight[1][1].animation() - cCornerHeight[1][0].animation();
       float mSouthSlope = cCornerHeight[1][0].animation() - cCornerHeight[0][0].animation();
       float mNorthSlope = cCornerHeight[1][1].animation() - cCornerHeight[0][1].animation();
-
-//       if (cSplitNorthWestSouthEast) {
-//         (*type->getSplitNETexture())->set();
-//       } else {
-//         (*type->getSplitNWTexture())->set();
-//       }
-//       SplitSurface::render(pinnedX, pinnedY, mEndZ, cCornerHeight, cSplitNorthWestSouthEast);
-//      type->getSurfacePattern()->render(  pinnedX, pinnedY, mEndZ, cCornerHeight, cSplitNorthWestSouthEast);
+      type->getSurfacePattern()->render(  pinnedX, pinnedY, mEndZ, cCornerHeight[0][0].animation(), cCornerHeight[1][0].animation(), cCornerHeight[0][1].animation(), cCornerHeight[1][1].animation(), cSplitNorthWestSouthEast);
       type->getWestWallPattern()->render( mStartX - 0.001f, mStartY,          mStartZ - 1, 1.0f, ((mEndZ - mStartZ) + 1) + cCornerHeight[0][0].animation(), mWestSlope,  0, Wall::Direction::WEST);
       type->getEastWallPattern()->render( mEndX   + 0.001f, mStartY,          mStartZ - 1, 1.0f, ((mEndZ - mStartZ) + 1) + cCornerHeight[1][0].animation(), mEastSlope,  0, Wall::Direction::EAST);
       type->getSouthWallPattern()->render(mStartX,          mStartY - 0.001f, mStartZ - 1, 1.0f, ((mEndZ - mStartZ) + 1) + cCornerHeight[0][0].animation(), mSouthSlope, 0, Wall::Direction::SOUTH);
@@ -220,7 +217,10 @@ namespace IsoRealms::Spindizzy {
       }
     }
     glDisable(GL_BLEND);
+  }
 
+  void TerrainBrush::renderEditing(const TerrainType* type, float pinnedX, float pinnedY, float pinnedZ, float cursorX, float cursorY, float cursorZ, bool steppedBottom) const {
+    renderPreview(type, pinnedX, pinnedY, pinnedZ, cursorX, cursorY, cursorZ, steppedBottom);
     if (cRuntimeEditing) {
       glPushMatrix();
       glTranslatef(cursorX, cursorY, cursorZ * 0.5f);
@@ -285,15 +285,32 @@ namespace IsoRealms::Spindizzy {
       switch (event.type) {
         case sf::Event::KeyPressed: {
           switch (event.key.code) {
-            default: break;
+            case sf::Keyboard::Left:     cActiveLeft  = true; return true;
+            case sf::Keyboard::Right:    cActiveRight = true; return true;
+            case sf::Keyboard::Up:       cActiveUp    = true; return true;
+            case sf::Keyboard::Down:     cActiveDown  = true; return true;
+            case sf::Keyboard::PageUp:   raiseSelected();     return true;
+            case sf::Keyboard::PageDown: lowerSelected();     return true;
+            default:                                          break;
+          }
+          break;
+        }
+
+        case sf::Event::KeyReleased: {
+          switch (event.key.code) {
+            case sf::Keyboard::Left:     cActiveLeft  = false; return true;
+            case sf::Keyboard::Right:    cActiveRight = false; return true;
+            case sf::Keyboard::Up:       cActiveUp    = false; return true;
+            case sf::Keyboard::Down:     cActiveDown  = false; return true;
+            default:                                           break;
           }
           break;
         }
 
         case sf::Event::JoystickButtonPressed: {
           switch (event.joystickButton.button) {
-            case 4: return lowerSelected();
-            case 5: return raiseSelected();
+            case 4: return lowerSelected(); return true;
+            case 5: return raiseSelected(); return true;
           }
           break;
         }
@@ -307,15 +324,27 @@ namespace IsoRealms::Spindizzy {
 //           break;
 //         }
 
-        default: break;
+        default: {
+          break;
+        }
       }
     }
     return false;
   }
 
+  double TerrainBrush::getCursorXSpeed() const {
+    return std::max(-1.0, std::min(1.0, cRuntimeCursorXSpeed + (cActiveLeft ? -1.0 : 0.0) + (cActiveRight ? 1.0 : 0.0)));
+  }
+
+  double TerrainBrush::getCursorYSpeed() const {
+    return std::max(-1.0, std::min(1.0, cRuntimeCursorYSpeed + (cActiveDown ? -1.0 : 0.0) + (cActiveUp ? 1.0 : 0.0)));
+  }
+
   void TerrainBrush::update(unsigned int milliseconds, double yaw) {
-    double mMovementDirection = atan2(-cRuntimeCursorYSpeed, cRuntimeCursorXSpeed) + 90.0f * (M_PI / 180.f);
-    double mMovementSpeed = Utils::distance(0.0, 0.0, cRuntimeCursorXSpeed, cRuntimeCursorYSpeed);
+    double mCursorXSpeed = getCursorXSpeed() / 10.0;
+    double mCursorYSpeed = getCursorYSpeed() / 10.0;
+    double mMovementDirection = atan2(-mCursorYSpeed, mCursorXSpeed) + 90.0f * (M_PI / 180.f);
+    double mMovementSpeed = Utils::distance(0.0, 0.0, mCursorXSpeed, mCursorYSpeed);
     double mXSpeed = std::sin(yaw * (M_PI / 180.0f) + mMovementDirection) * mMovementSpeed;
     double mYSpeed = std::cos(yaw * (M_PI / 180.0f) + mMovementDirection) * mMovementSpeed;
     cRuntimeCursorX = std::clamp(cRuntimeCursorX + mXSpeed, -1.0, 1.0);

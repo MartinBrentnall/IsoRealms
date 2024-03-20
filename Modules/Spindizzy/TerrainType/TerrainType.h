@@ -136,7 +136,6 @@ namespace IsoRealms::Spindizzy {
       WorldEditorCursorCell cPinnedLocation;
       bool cDrawingNegation;
       bool cDrawingSteppedBase;
-      bool cEditingBrush;
 
       void draw();
       bool cancel();

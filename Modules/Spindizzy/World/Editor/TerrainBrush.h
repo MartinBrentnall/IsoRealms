@@ -41,7 +41,6 @@ namespace IsoRealms::Spindizzy {
     void lowerCorner(unsigned int x, unsigned int y);
     void toggleSplit();
     void toggleSteppedBottom();
-    void renderConfiguration();
 
     // Automatic configuration functions
     void reset();
@@ -55,6 +54,7 @@ namespace IsoRealms::Spindizzy {
     bool isAlternativeSplit() const;
 
     void renderPreview(const TerrainType* type, float pinnedX, float pinnedY, float pinnedZ, float cursorX, float cursorY, float cursorZ, bool steppedBottom) const;
+    void renderEditing(const TerrainType* type, float pinnedX, float pinnedY, float pinnedZ, float cursorX, float cursorY, float cursorZ, bool steppedBottom) const;
 
     void updateEditing(unsigned int milliseconds);
 
@@ -71,6 +71,10 @@ namespace IsoRealms::Spindizzy {
     // Editing
     // TODO: Maybe we can make some kind of generic cursor class out of the following fields
     bool cRuntimeEditing;
+    bool cActiveLeft;
+    bool cActiveRight;
+    bool cActiveUp;
+    bool cActiveDown;
     double cRuntimeCursorX;
     double cRuntimeCursorY;
     double cRuntimeCursorXSpeed;
@@ -85,5 +89,7 @@ namespace IsoRealms::Spindizzy {
     float getXSlopeAnimation() const;
     float getYSlopeAnimation() const;
     bool isSplitAnimation() const;
+    double getCursorXSpeed() const;
+    double getCursorYSpeed() const;
   };
 }

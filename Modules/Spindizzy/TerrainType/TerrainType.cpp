@@ -240,7 +240,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void TerrainType::Pen::draw() {
-    if (!cEditingBrush) {
+    if (!cEditor->getTerrainBrush().isEditing()) {
       if (cPinnedZone == nullptr) {
         cPinnedZone = cEditor->getWorld()->getOrDrawZone(cEditor->getCursorCell(), cEditor);
         cPinnedLocation = cEditor->getCursorCell();
@@ -252,13 +252,13 @@ namespace IsoRealms::Spindizzy {
         }
       }
     } else {
-      cEditingBrush = false;
+      cEditor->getTerrainBrush().toggleEditing();
     }
   }
 
   bool TerrainType::Pen::cancel() {
-    if (cEditingBrush) {
-      cEditingBrush = false;
+    if (cEditor->getTerrainBrush().isEditing()) {
+      cEditor->getTerrainBrush().toggleEditing();
       return true;
     } else if (cPinnedZone != nullptr) {
       if (cPinnedZone->empty()) {
@@ -284,7 +284,7 @@ namespace IsoRealms::Spindizzy {
       if (cPinnedZone != nullptr) {
         cDrawingSteppedBase = !cDrawingSteppedBase;
       } else {
-        cEditingBrush = !cEditingBrush;
+        cEditor->getTerrainBrush().toggleEditing();
       }
     }
   }
@@ -297,10 +297,11 @@ namespace IsoRealms::Spindizzy {
     switch (event.type) {
       case sf::Event::KeyPressed: {
         switch (event.key.code) {
-          case sf::Keyboard::Escape:                   return cancel();
-          case sf::Keyboard::Tab:    toggleNegation(); return true;
-          case sf::Keyboard::Space:  draw();           return true;
-          default:          break;
+          case sf::Keyboard::Escape:                      return cancel();
+          case sf::Keyboard::Tab:    toggleNegation();    return true;
+          case sf::Keyboard::Space:  draw();              return true;
+          case sf::Keyboard::F3:     toggleShapeEditor(); return true;
+          default:                                        break;
         }
         break;
       }
@@ -353,7 +354,7 @@ namespace IsoRealms::Spindizzy {
     float mPinnedX = cPinnedZone != nullptr ? cPinnedLocation.cDefX : cEditor->getCursorX();
     float mPinnedY = cPinnedZone != nullptr ? cPinnedLocation.cDefY : cEditor->getCursorY();
     float mPinnedZ = cPinnedZone != nullptr ? cPinnedLocation.cDefZ : cEditor->getCursorZ();
-    mTerrainBrush.renderPreview(&cParent, mPinnedX, mPinnedY, mPinnedZ, cEditor->getCursorX(), cEditor->getCursorY(), cEditor->getCursorZ(), cDrawingSteppedBase);
+    mTerrainBrush.renderEditing(&cParent, mPinnedX, mPinnedY, mPinnedZ, cEditor->getCursorX(), cEditor->getCursorY(), cEditor->getCursorZ(), cDrawingSteppedBase);
   }
 
   void TerrainType::Pen::renderUI() const {
