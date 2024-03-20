@@ -50,6 +50,7 @@ namespace IsoRealms::Basics {
      * Implements I3DModelType *
     \***************************/
     I3DModel* createModel() override;
+    bool renderPreview() const override;
     bool renderAssetIcon() const override;
 
     /***********************\
@@ -92,5 +93,6 @@ namespace IsoRealms::Basics {
     \**********************/
     float getAngle() const;
     float getTilt() const;
+    void render(float size) const;
   };
 }

@@ -82,6 +82,7 @@ namespace IsoRealms {
                   public IBindingRegistry {
     private:
     static const std::string TAG_ACTION;
+    static const std::string TAG_EDITOR;
     static const std::string TAG_INCLUDE;
     static const std::string TAG_INIT_ACTION;
     static const std::string TAG_INPUT;
@@ -508,7 +509,6 @@ namespace IsoRealms {
     void initMainThread() override;
     void requestQuit();
     bool input(sf::Event&);
-    void preRender();
     void render(float aspectRatio);
     void updateRuntime(unsigned int milliseconds);
     void updateRuntimeComplete();

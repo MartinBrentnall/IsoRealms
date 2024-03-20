@@ -41,6 +41,10 @@ namespace IsoRealms::Spindizzy {
   WorldEditor::WorldEditor(IAssetRegistry* assets, World* world) :
             cScreenYaw(&cRotation),
             cScreenPitch(&cTilt),
+            cRotatingView(false),
+            cZoomingView(false),
+            cPreviousX(0),
+            cPreviousY(0),
             cProxyScreen(nullptr) {
     cActiveFast           = false;
     cActiveSlow           = false;
@@ -236,7 +240,7 @@ namespace IsoRealms::Spindizzy {
         return true;
       }
     }
-    
+
     switch (event.type) {
 //       case SDL_JOYAXISMOTION: {
 //         int mValue = std::abs(event.jaxis.value) < cDefAnalogueSensitivity ? 0 : (event.jaxis.value - (event.jaxis.value < 0 ? -cDefAnalogueSensitivity : cDefAnalogueSensitivity)) * (32767 / static_cast<float>(32767 - cDefAnalogueSensitivity));
@@ -279,17 +283,19 @@ namespace IsoRealms::Spindizzy {
 
       case sf::Event::KeyPressed: {
         switch (event.key.code) {
-          case sf::Keyboard::LShift:   cActiveSlow   = true; return true;
-          case sf::Keyboard::LControl: cActiveFast   = true; return true;
-          case sf::Keyboard::Left:     cActiveLeft   = true; return true;
-          case sf::Keyboard::Right:    cActiveRight  = true; return true;
-          case sf::Keyboard::Up:       cActiveUp     = true; return true;
-          case sf::Keyboard::Down:     cActiveDown   = true; return true;
-          case sf::Keyboard::PageUp:   cActiveHigher = true; return true;
-          case sf::Keyboard::PageDown: cActiveLower  = true; return true;
-          case sf::Keyboard::Home:     setPreviousTheme();   return true;
-          case sf::Keyboard::End:      setNextTheme();       return true;
-          default:                                           break;
+          case sf::Keyboard::LShift:   cActiveSlow   = true;   return true;
+          case sf::Keyboard::LControl: cActiveFast   = true;   return true;
+          case sf::Keyboard::Left:     cActiveLeft   = true;   return true;
+          case sf::Keyboard::Right:    cActiveRight  = true;   return true;
+          case sf::Keyboard::Up:       cActiveUp     = true;   return true;
+          case sf::Keyboard::Down:     cActiveDown   = true;   return true;
+          case sf::Keyboard::PageUp:   cActiveHigher = true;   return true;
+          case sf::Keyboard::PageDown: cActiveLower  = true;   return true;
+          case sf::Keyboard::Home:     setPreviousTheme();     return true;
+          case sf::Keyboard::End:      setNextTheme();         return true;
+          case sf::Keyboard::F1:       selectToolRelative(-1); return true;
+          case sf::Keyboard::F2:       selectToolRelative(1);  return true;
+          default:                                             break;
         }
         break;
       }
@@ -309,51 +315,107 @@ namespace IsoRealms::Spindizzy {
         break;
       }
       
-      case sf::Event::MouseButtonPressed: {
-//         switch (event.button.button) {
-//           case SDL_BUTTON_LEFT: {
-//             IApplication* mApplication = cWorld->getSpindizzy()->getProject()->getApplication();
-//             ScreenLocation mLocation = mApplication->normalise(event.button.x, event.button.y);
-//             float mPaletteWidth = cTools.size() * (ICON_WIDTH + ICON_SPACING) - ICON_SPACING;
-//             if (mLocation.getY() >= BOTTOM_BORDER && mLocation.getY() <= BOTTOM_BORDER + ICON_HEIGHT) {
-//               for (unsigned int i = 0; i < cTools.size(); i++) {
-//                 float mIconLeft = mPaletteWidth < PALETTE_SPACE ? (-mPaletteWidth * 0.5f) + i * (ICON_WIDTH + ICON_SPACING)
-//                                                                 : (LEFT_BORDER + i * (ICON_WIDTH + ICON_SPACING)) - cPaletteScroll.animation();
-//                 float mIconRight = mIconLeft + ICON_WIDTH;
-//                 if (mLocation.getX() >= mIconLeft && mLocation.getX() <= mIconRight) {
-//                   if (cSelectedTool == nullptr) {
-//                     cPaletteSelectionX.init(LEFT_BORDER + i * (ICON_WIDTH + ICON_SPACING) + ICON_WIDTH * 0.5f);
-//                   } else {
-//                     cPaletteSelectionX = LEFT_BORDER + i * (ICON_WIDTH + ICON_SPACING) + ICON_WIDTH * 0.5f;
-//                   }
-//                   if (cSelectedTool != nullptr) {
-//                     cSelectedTool->processCursorMovement(&cLocation, nullptr);
-//                   }
-//                   cSelectedTool = cTools[i];
-//                   cSelectedTool->processCursorMovement(nullptr, &cLocation);
-//                   break;
-//                 }
-//               }
-//             }
-//             return true;
-//           }
-//
-//           case SDL_BUTTON_WHEELDOWN: {
-//             float mPaletteWidth = cTools.size() * (ICON_WIDTH + ICON_SPACING) - ICON_SPACING;
-//             float mPaletteScrollRange = std::max(0.0f, mPaletteWidth - PALETTE_SPACE);
-//             cPaletteScroll = std::min(mPaletteScrollRange, cPaletteScroll.value() + 0.15f);
-//             return true;
-//           }
-//
-//           case SDL_BUTTON_WHEELUP: {
-//             cPaletteScroll = std::max(0.0f, cPaletteScroll.value() - 0.15f);
-//             return true;
-//           }
-//         }
+      case sf::Event::MouseButtonReleased: {
+        switch (event.mouseButton.button) {
+          case sf::Mouse::Left: {
+            cRotatingView = false;
+            return true;
+          }
+
+          case sf::Mouse::Right: {
+            cZoomingView = false;
+            return true;
+          }
+
+          default: {
+            break;
+          }
+        }
       }
-      default: break;
+
+      case sf::Event::MouseButtonPressed: {
+        switch (event.mouseButton.button) {
+          case sf::Mouse::Left: {
+            IApplication* mApplication = cWorld->getSpindizzy()->getProject()->getApplication();
+            ScreenLocation mLocation = mApplication->normalise(event.mouseButton.x, event.mouseButton.y);
+            float mPaletteWidth = cTools.size() * (ICON_WIDTH + ICON_SPACING) - ICON_SPACING;
+            if (mLocation.getY() >= BOTTOM_BORDER && mLocation.getY() <= BOTTOM_BORDER + ICON_HEIGHT) {
+              for (unsigned int i = 0; i < cTools.size(); i++) {
+                float mIconLeft = mPaletteWidth < PALETTE_SPACE ? (-mPaletteWidth * 0.5f) + i * (ICON_WIDTH + ICON_SPACING)
+                                                                : (LEFT_BORDER + i * (ICON_WIDTH + ICON_SPACING)) - cPaletteScroll.animation();
+                float mIconRight = mIconLeft + ICON_WIDTH;
+                if (mLocation.getX() >= mIconLeft && mLocation.getX() <= mIconRight) {
+                  if (cSelectedTool == nullptr) {
+                    cPaletteSelectionX.init(LEFT_BORDER + i * (ICON_WIDTH + ICON_SPACING) + ICON_WIDTH * 0.5f);
+                  } else {
+                    cPaletteSelectionX = LEFT_BORDER + i * (ICON_WIDTH + ICON_SPACING) + ICON_WIDTH * 0.5f;
+                  }
+                  if (cSelectedTool != nullptr) {
+                    cSelectedTool->processCursorMovement(&cLocation, nullptr);
+                  }
+                  cSelectedTool = cTools[i];
+                  cSelectedTool->processCursorMovement(nullptr, &cLocation);
+                  break;
+                }
+              }
+            } else {
+              cRotatingView = true;
+              cPreviousX = event.mouseButton.x;
+              cPreviousY = event.mouseButton.y;
+            }
+            return true;
+          }
+
+          case sf::Mouse::Right: {
+            cZoomingView = true;
+            cPreviousX = event.mouseButton.x;
+            cPreviousY = event.mouseButton.y;
+            return true;
+          }
+
+          default: {
+            break;
+          }
+        }
+        break;
+      }
+
+      case sf::Event::MouseWheelScrolled: {
+        switch (event.mouseWheelScroll.wheel) {
+          case sf::Mouse::VerticalWheel: {
+            if (event.mouseWheelScroll.delta > 0) {
+              float mPaletteWidth = cTools.size() * (ICON_WIDTH + ICON_SPACING) - ICON_SPACING;
+              float mPaletteScrollRange = std::max(0.0f, mPaletteWidth - PALETTE_SPACE);
+              cPaletteScroll = std::min(mPaletteScrollRange, cPaletteScroll.value() + 0.15f);
+            } else {
+              cPaletteScroll = std::max(0.0f, cPaletteScroll.value() - 0.15f);
+            }
+            return true;
+          }
+
+          default: {
+            break;
+          }
+        }
+        break;
+      }
+
+      case sf::Event::MouseMoved: {
+        if (cRotatingView) {
+          rotate(event.mouseMove.x - cPreviousX, event.mouseMove.y - cPreviousY);
+        } else if (cZoomingView) {
+          move(cPreviousY - event.mouseMove.y);
+        }
+        cPreviousX = event.mouseMove.x;
+        cPreviousY = event.mouseMove.y;
+        return true;
+      }
+
+      default: {
+        break;
+      }
     }
-    return inputCamera(event);
+    return false;
   }
 
   void WorldEditor::updateScreen(unsigned int milliseconds) {
@@ -448,20 +510,6 @@ namespace IsoRealms::Spindizzy {
       }
     }
     glEnd();
-//     glBegin(GL_POINTS);
-//     for (int x = cLocation.getX() - 64; x <= cLocation.getX() + 64; x++) {
-//       for (int y = cLocation.getY() - 64; y <= cLocation.getY() + 64; y++) {
-//         if (x % 8 == 0 && y % 8 == 0) {
-//           glColor3f(1.0f, 1.0f, 1.0f);
-//         } else if (x % 8 == 0 || y % 8 == 0) {
-//           glColor3f(0.7f, 0.7f, 0.7f);
-//         } else {
-//           glColor3f(0.4f, 0.4f, 0.4f);
-//         }
-//         glVertex3f(x - 0.5f, y - 0.5f, std::round(cLocation.getZ() * 0.5f / 8.0f) * 8.0f - 0.5f);
-//       }
-//     }
-//     glEnd();
     glColor3f(1.0f, 1.0f, 1.0f);
     cWorld->renderEditing(this);
     
@@ -507,9 +555,9 @@ namespace IsoRealms::Spindizzy {
 
     glBindTexture(GL_TEXTURE_2D, 0);
     glLoadIdentity();
-    
+
     // Render world selection highlight.
-    glPushMatrix();
+    glScalef(1.0f / aspectRatio, 1.0f, 1.0f);
     glTranslatef(-cPaletteScroll.animation(), 0.0f, 0.0f);
     glColor3f(1.0f, 0.0f, 0.0f);
     Utils::renderCurve(cPaletteSelectionX.animation() - ICON_WIDTH * 0.5f, BOTTOM_BORDER + ICON_HEIGHT, 0.01f, 0.0f,  0.25f);
@@ -522,8 +570,7 @@ namespace IsoRealms::Spindizzy {
     Utils::renderRectangle(cPaletteSelectionX.animation() - (ICON_WIDTH * 0.5f + 0.01f), BOTTOM_BORDER,               cPaletteSelectionX.animation() + (ICON_WIDTH * 0.5f + 0.01f), BOTTOM_BORDER + ICON_HEIGHT);
     glEnd();
     glPopMatrix();
-    
-    
+
     for (unsigned int i = 0; i < cTools.size(); i++) {
       glPushMatrix();
       float mPalleteWidth = cTools.size() * (ICON_WIDTH + ICON_SPACING) - ICON_SPACING;
@@ -543,7 +590,7 @@ namespace IsoRealms::Spindizzy {
       cSelectedTool->renderUI();
     }
 
-    glLoadIdentity();  
+    glLoadIdentity();
     glPushAttrib(GL_TRANSFORM_BIT);
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
@@ -575,7 +622,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void WorldEditor::move(float amount) {
-    cDistance += amount;
+    cDistance += amount * 0.3f;
     if (cDistance > -5.0f) {
       cDistance = -5.0f;
     } else if (cDistance < -500.0f) {
@@ -584,8 +631,8 @@ namespace IsoRealms::Spindizzy {
   }
 
   void WorldEditor::rotate(float rotate, float tilt) {
-    cTilt += tilt;
-    cRotation += rotate;
+    cTilt += tilt * 0.3f;
+    cRotation += rotate * 0.3f;
     if (cRotation >= 360.0) {
       cRotation -= 360.0;
     } else if (cRotation < 0.0) {
@@ -624,25 +671,6 @@ namespace IsoRealms::Spindizzy {
 
   World* WorldEditor::getWorld() const {
     return cWorld;
-  }
-
-  bool WorldEditor::inputCamera(sf::Event& event) {
-//     switch (event.type) {
-//       case SDL_MOUSEMOTION: {
-//         switch (event.button.button) {
-//           case SDL_BUTTON_LEFT: {
-//             rotate(event.motion.xrel, event.motion.yrel);
-//             return true;
-//           }
-//
-//           case SDL_BUTTON_MIDDLE: {
-//             move(-event.motion.yrel);
-//             return true;
-//           }
-//         }
-//       }
-//     }
-    return false;
   }
 
   WorldEditor::ScreenFloat::ScreenFloat(double* value) :

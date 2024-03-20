@@ -152,7 +152,8 @@ namespace IsoRealms {
     // External interfaces.
     IPropertyAppearance* cIntAppearance; /// Stored because appearance is used outside of rendering functions.
 
-    PropertyAsset(IPropertyAppearance* appearance, const std::string& label, const std::string& item, std::vector<std::pair<std::string, std::string>> items, std::vector<IAssetMenuItem*> globalMenuItems, std::function<bool(const std::string& item)> confirmationCallback);
+    PropertyAsset(IPropertyAppearance* appearance, const std::string& label, std::vector<std::pair<std::string, std::string>> items, std::vector<IAssetMenuItem*> globalMenuItems, std::function<bool(const std::string& item)> confirmationCallback);
+    void setSelection(const std::string& item);
     
     void refreshItems(std::vector<std::pair<std::string, std::string>> items);
     

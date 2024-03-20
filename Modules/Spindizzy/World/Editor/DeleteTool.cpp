@@ -42,6 +42,7 @@ namespace IsoRealms::Spindizzy {
           case sf::Keyboard::Tab:   cSelectedObject++; if (cSelectedObject >= static_cast<int>(cHoverObjects.size())) {cSelectedObject = 0;} return true;
           default:                                                                                                                           break;
         }
+        break;
       }
 
       case sf::Event::JoystickButtonPressed: {

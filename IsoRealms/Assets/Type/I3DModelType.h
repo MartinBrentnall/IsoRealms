@@ -34,6 +34,8 @@ namespace IsoRealms {
      */
     virtual I3DModel* createModel() = 0;
     
+    virtual bool renderPreview() const = 0;
+
     /**
      * The destructor cleans up resources used by the model type.  It should
      * be assumed that destroyModel() has been called for all instances created

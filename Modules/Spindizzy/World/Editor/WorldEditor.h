@@ -136,6 +136,11 @@ namespace IsoRealms::Spindizzy {
     AnimatedFloat cPaletteSelectionX;
     TerrainBrush cTerrainBrush;
 
+    bool cRotatingView;
+    bool cZoomingView;
+    int cPreviousX;
+    int cPreviousY;
+
     std::vector<IWorldEditorToolInstance*> cTools;
     World* cWorld;
     std::set<IVisualElement*> cEditingVisuals;

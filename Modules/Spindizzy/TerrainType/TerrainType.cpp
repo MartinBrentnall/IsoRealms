@@ -241,7 +241,7 @@ namespace IsoRealms::Spindizzy {
 
   void TerrainType::Pen::draw() {
     if (!cEditingBrush) {
-      if (cPinnedZone != nullptr) {
+      if (cPinnedZone == nullptr) {
         cPinnedZone = cEditor->getWorld()->getOrDrawZone(cEditor->getCursorCell(), cEditor);
         cPinnedLocation = cEditor->getCursorCell();
       } else {
@@ -297,9 +297,9 @@ namespace IsoRealms::Spindizzy {
     switch (event.type) {
       case sf::Event::KeyPressed: {
         switch (event.key.code) {
-          case sf::Keyboard::Escape: return cancel();
+          case sf::Keyboard::Escape:                   return cancel();
           case sf::Keyboard::Tab:    toggleNegation(); return true;
-          case sf::Keyboard::Space:  draw(); return true;
+          case sf::Keyboard::Space:  draw();           return true;
           default:          break;
         }
         break;
@@ -307,14 +307,16 @@ namespace IsoRealms::Spindizzy {
 
       case sf::Event::JoystickButtonPressed: {
         switch (event.joystickButton.button) {
-          case 0: draw(); return true;
+          case 0: draw();                            return true;
           case 1: if (!cancel()) {toggleNegation();} return true;
-          case 2: toggleShapeEditor(); return true;
+          case 2: toggleShapeEditor();               return true;
         }
         break;
       }
 
-      default: break;
+      default: {
+        break;
+      }
     }
     return false;
   }
@@ -368,8 +370,7 @@ namespace IsoRealms::Spindizzy {
     glRotatef(Spindizzy::DEFAULT_VIEW_ANGLE_YAW, 0.0f, 0.0f, 1.0f);
     glScalef(1.4f, 1.4f, 1.4f);
     glColor3f(1.0f, 1.0f, 1.0f);
-//    LiteralVertex mIdentity;
-//    mTerrainBrush::renderPreview(this, 0.0f, 0.0f, 0.0f, &mIdentity, cDrawingSteppedBase);
+//    mTerrainBrush::renderPreview(this, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, cDrawingSteppedBase);
     return true;
   }
 
@@ -380,8 +381,8 @@ namespace IsoRealms::Spindizzy {
     glScalef(1.4f, 1.4f, 1.4f);
     glColor3f(1.0f, 1.0f, 1.0f);
     // TODO: Make a static version of "renderPreview" for this (and one above)
-//    LiteralVertex mIdentity;
-//    mTerrainBrush::renderPreview(this, 0.0f, 0.0f, 0.0f, &mIdentity, cDrawingSteppedBase);
+    const TerrainBrush& mTerrainBrush = cEditor->getTerrainBrush();
+    mTerrainBrush.renderPreview(&cParent, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, cDrawingSteppedBase);
     return true;
   }
 

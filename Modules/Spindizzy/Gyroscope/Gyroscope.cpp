@@ -84,8 +84,7 @@ namespace IsoRealms::Spindizzy {
     glRotatef(Spindizzy::DEFAULT_VIEW_ANGLE_PITCH, 1.0f, 0.0f, 0.0f);
     glRotatef(cEditingIconRotation,  0.0f, 0.0f, 1.0f);
     glScalef(3.0f, 3.0f, 3.0f);
-    render();
-    return true;
+    return renderPreview();
   }
 
   std::vector<IProperty*> Gyroscope::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
@@ -95,6 +94,11 @@ namespace IsoRealms::Spindizzy {
 
   I3DModel* Gyroscope::createModel() {
     return this;
+  }
+
+  bool Gyroscope::renderPreview() const {
+    render();
+    return true;
   }
 
   bool Gyroscope::renderAssetIcon() const {

@@ -23,7 +23,7 @@ namespace IsoRealms {
   bool PropertyNativeBoolean::cFalse = false;
   
   PropertyNativeBoolean::PropertyNativeBoolean(IPropertyAppearance* appearance, const std::string& name, std::function<bool()> getter, std::function<void(bool)> setter, const std::string& labelFalse, const std::string& labelTrue) :
-            PropertyAsset(appearance, name, getter() ? "#true" : "#false", std::vector<std::pair<std::string, std::string>>({}), std::vector<IAssetMenuItem*>({
+            PropertyAsset(appearance, name, std::vector<std::pair<std::string, std::string>>({}), std::vector<IAssetMenuItem*>({
               &cFalseOption,
               &cTrueOption
             }), [this](const std::string& id) {
@@ -34,6 +34,7 @@ namespace IsoRealms {
             cSetter(setter),
             cFalseOption(this, []() {Utils::renderIconNone();}, labelFalse, "#false"),
             cTrueOption(this, []() {Utils::renderIconTick();}, labelTrue, "#true") {
+    setSelection(getter() ? "#true" : "#false");
   }
 
   bool PropertyNativeBoolean::renderIcon(IPropertyAppearance* appearance, const std::string& id) const {

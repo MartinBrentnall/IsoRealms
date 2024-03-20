@@ -272,7 +272,7 @@ namespace IsoRealms::Spindizzy {
   void PlayerType::Pen::renderEditingPreview() const {
     glTranslatef(cEditor->getCursorX(), cEditor->getCursorY(), cEditor->getCursorZ() * 0.5f);
     glRotatef((cEditor->getCursorX() + cEditor->getCursorY() + 0.25) * cParent.cDefSpinSpeed, 0.0f, 0.0f, 1.0f);
-    cParent.cDefModel.renderIcon();
+    cParent.cDefModel.renderPreview();
   }
 
   void PlayerType::Pen::renderUI() const {
@@ -290,6 +290,7 @@ namespace IsoRealms::Spindizzy {
           case sf::Keyboard::Space: cEditor->getWorld()->draw(&cParent, cEditor->getCursorLocation()); return true;
           default:         break;
         }
+        break;
       }
 
       case sf::Event::JoystickButtonPressed: {

@@ -2,6 +2,7 @@
 <Project>
   <Screen key="UI/Layout/HighScore"/>
   <Input key="Basics/InputGroup/Score"/>
+  <Editor key="Literal"/>
   <QuitAction>
     <Action key="Quit"/>
   </QuitAction>

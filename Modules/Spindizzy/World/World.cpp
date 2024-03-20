@@ -612,12 +612,12 @@ namespace IsoRealms::Spindizzy {
         int mAutomaticXSize = cDefSpindizzy->getAutomaticZoneXSize();
         int mAutomaticYSize = cDefSpindizzy->getAutomaticZoneYSize();
         int mAutomaticZSize = cDefSpindizzy->getAutomaticZoneZSize();
-        int mXStart = (cell.cDefX / mAutomaticXSize) * mAutomaticXSize;
+        int mXStart = (std::floor(cell.cDefX / static_cast<float>(mAutomaticXSize))) * mAutomaticXSize;
         int mXEnd   = mXStart + (mAutomaticXSize - 1);
-        int mYStart = (cell.cDefY / mAutomaticYSize) * mAutomaticYSize;
+        int mYStart = (std::floor(cell.cDefY / static_cast<float>(mAutomaticYSize))) * mAutomaticYSize;
         int mYEnd   = mYStart + (mAutomaticYSize - 1);
-        int mZStart = (cell.cDefZ / mAutomaticZSize) * mAutomaticZSize;
-        int mZEnd   = mYStart + (mAutomaticZSize - 1);
+        int mZStart = (std::floor(cell.cDefZ / static_cast<float>(mAutomaticZSize))) * mAutomaticZSize;
+        int mZEnd   = mZStart + (mAutomaticZSize - 1);
         mZone = draw(mZoneType, WorldEditorCursorCell(mXStart, mYStart, mZStart), WorldEditorCursorCell(mXEnd, mYEnd, mZEnd), screen);
       }
     }
@@ -687,7 +687,6 @@ namespace IsoRealms::Spindizzy {
     for (std::unique_ptr<Zone>& mZone : cDefZones) {
       mZone->registerView(mScreen.get());
     }
-    std::cout << "Adding editable screen" << std::endl;
     IEditableScreen* mReturnValue = mScreen.get();
     cEditors[mReturnValue] = std::move(mScreen);
     return mReturnValue;

@@ -22,6 +22,7 @@
 
 namespace IsoRealms {
   const std::string Project::TAG_ACTION       = "Action";
+  const std::string Project::TAG_EDITOR       = "Editor";
   const std::string Project::TAG_INCLUDE      = "Include";
   const std::string Project::TAG_INIT_ACTION  = "InitAction";
   const std::string Project::TAG_INPUT        = "Input";
@@ -152,6 +153,7 @@ namespace IsoRealms {
       cDefInitAction.init(mProjectNode, TAG_INIT_ACTION);
       cDefResetAction.init(mProjectNode, TAG_RESET_ACTION);
       cDefQuitAction.init(mProjectNode, TAG_QUIT_ACTION);
+      cDefDefaultEditor.init(mProjectNode.getNode(TAG_EDITOR));
 
       // Initialise everything
       // Copy the vector because more initialisers might be added from calling the current ones!
@@ -192,11 +194,6 @@ namespace IsoRealms {
   }
 
   std::vector<std::unique_ptr<DOMNode>> Project::loadResources(DOMNode& node, IOptions* options, const std::string& resourceDataPath) {
-    std::string mDefaultEditableID = node.getAttribute("defaultEditor");
-    if (!mDefaultEditableID.empty()) {
-      cDefDefaultEditor.init(node.getNode("TODO"));
-    }
-
     for (DOMNode& mPropertyNode : node.getNode(TAG_PROPERTIES)) {
       std::string mChildName = mPropertyNode.getName();
       if (mChildName == TAG_PROPERTY) {
@@ -251,14 +248,6 @@ namespace IsoRealms {
     return mIncludeNodes;
   }
 
-  void Project::preRender() {
-    while (!cUpdateTasks.empty()) {
-      std::function<void()> mTask = cUpdateTasks.front();
-      mTask();
-      cUpdateTasks.pop();
-    }
-  }
-
   void Project::render(float aspectRatio) {
     cDefScreen->renderScreen(1.0f, aspectRatio);
   }
@@ -282,7 +271,6 @@ namespace IsoRealms {
       mRuntimeDynamic->call(milliseconds);
     }
 
-    // TODO: This should not be here... it's done in the "preRender".
     while (!cUpdateTasks.empty()) {
       std::function<void()> mTask = cUpdateTasks.front();
       mTask();
@@ -309,6 +297,12 @@ namespace IsoRealms {
 
     for (std::unique_ptr<UpdateCallbackHandle>& mEditingDynamic : cEditingDynamics) {
       mEditingDynamic->call(milliseconds);
+    }
+
+    while (!cUpdateTasks.empty()) {
+      std::function<void()> mTask = cUpdateTasks.front();
+      mTask();
+      cUpdateTasks.pop();
     }
   }
 
@@ -625,7 +619,7 @@ namespace IsoRealms {
           mListener->screenAdded(this, mNewProxy.get());
         }
       }
-      return cScreenProxyMapping.emplace(asset, std::move(mNewProxy)).first->first;
+      return cScreenProxyMapping.emplace(asset, std::move(mNewProxy)).first->second.get();
     }
     cScreens.add(mExistingProxy->second.get(), id, category);
     return mExistingProxy->second.get();

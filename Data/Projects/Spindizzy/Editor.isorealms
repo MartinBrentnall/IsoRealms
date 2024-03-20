@@ -1,21 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<Project screen="UI/Layout/Runtime" input="Basics/InputSwitch/Main">
-  <InitAction type="Basics/Script">
-    <Bind variable="optionsLoader"/>
-      <To key=":Action">
-        <Action>
-          <Action key="Basics/Function/ReloadConfiguration"/>
-        </Action>
-      </To>
-    </Bind>
-    <Code>menuStack = {}
+<Project>
+  <Screen key="UI/Layout/Runtime"/>
+  <Input key="Basics/InputSwitch/Main"/>
+  <Editor key="Literal"/>
+  <InitAction>
+    <Action key="Basics/Script">
+      <Bind variable="optionsLoader">
+        <To key=":Action">
+          <Action>
+            <Action key="Basics/Function/ReloadConfiguration"/>
+          </Action>
+        </To>
+      </Bind>
+      <Code>menuStack = {}
 inputStack = {}
 hasFocus = true
 optionsLoader:execute()</Code>
+    </Action>
   </InitAction>
   <ResetAction type="#"/>
   <QuitAction type="Basics/Script">
-    <Bind variable="confirm"/>
+    <Bind variable="confirm">
       <To key=":Action">
         <Action>
           <Action key="Basics/Function/PushScreen">
@@ -86,7 +91,7 @@ end</Code>
       <Configuration/>
       <Resources>
         <BooleanTrigger name="Pause">
-          <Value key="Basics/DigitalInput/Pause">
+          <Value key="Basics/DigitalInput/Pause"/>
           <ActionOnTrue>
             <Action key="Basics/Function/Pause"/>
           </ActionOnTrue>
@@ -129,63 +134,68 @@ playTesting = nil</Code>
           <ButtonDown button="10"/>
         </DigitalInput>
         <Font detail="64" filename="Fonts/BubblegumSans-Regular.ttf" name="Layout"/>
-        <Project name="Project" options="#" editing="true">
-          <Ready type="Basics/Script">
-            <Bind variable="project">
-              <To key="Basics/Project/Project"/>
-            </Bind>
-            <Bind variable="editor">
-              <To key="UI/Layout/Main/Editor"/>
-            </Bind>
-            <Bind variable="input">
-              <To key="Basics/InputSwitch/Options Screen"/>
-            </Bind>
-            <Bind variable="screen">
-              <To key="UI/Layout/Main/Menu"/>
-            </Bind>
-            <Bind variable="noScreen">
-              <To key=":Screen">
-                <Asset key="Literal"/>
-              </To>
-            </Bind>
-            <Bind variable="font">
-              <To key=":Font">
-                <Asset key="Basics/Font/PropertiesFont"/>
-              </To>
-            </Bind>
-            <Code>editable = project:getDefaultEditor()
-currentEditor = editable:createEditableScreen()
+        <Font detail="64" filename="Fonts/Cuprum-Regular.ttf" name="PropertiesFont"/>
+        <Project name="Project" editing="true">
+          <Options key="Literal"/>
+          <Ready>
+            <Action key="Basics/Script">
+              <Bind variable="project">
+                <To key="Basics/Project/Project"/>
+              </Bind>
+              <Bind variable="editor">
+                <To key="UI/Layout/Main/Editor"/>
+              </Bind>
+              <Bind variable="input">
+                <To key="Basics/InputSwitch/Options Screen"/>
+              </Bind>
+              <Bind variable="screen">
+                <To key="UI/Layout/Main/Menu"/>
+              </Bind>
+              <Bind variable="noScreen">
+                <To key=":Screen">
+                  <Asset key="Literal"/>
+                </To>
+              </Bind>
+              <Bind variable="font">
+                <To key=":Font">
+                  <Asset key="Basics/Font/PropertiesFont"/>
+                </To>
+              </Bind>
+              <Code>editable = project:getDefaultEditor()
+currentEditor = editable:createEditableScreen(project:getProject())
 currentEditor:setAppearance(font, 0.1)
 currentEditor:notifyVisible()
 editor:setScreen(currentEditor:screen())
 input:setInputHandler(currentEditor:inputHandler())
 screen:setScreen(noScreen)
 hasFocus = true</Code>
+            </Action>
           </Ready>
-          <End type="Basics/Script">
-            <Bind variable="screen">
-              <To key="UI/Layout/Runtime/Screen"/>
-            </Bind>
-            <Bind variable="input">
-              <To key="Basics/InputSwitch/Main"/>
-            </Bind>
-            <Bind variable="editorInput">
-              <To key=":InputHandler">
-                <Asset key="Basics/InputGroup/Editor Input"/>
-              </To>
-            </Bind>
-            <Bind variable="editorScreen">
-              <To key=":Screen">
-                <Asset key="UI/Layout/Main"/>
-              </To>
-            </Bind>
-            <Code>currentEditor:notifyVisible()
+          <End>
+            <Action key="Basics/Script">
+              <Bind variable="screen">
+                <To key="UI/Layout/Runtime/Screen"/>
+              </Bind>
+              <Bind variable="input">
+                <To key="Basics/InputSwitch/Main"/>
+              </Bind>
+              <Bind variable="editorInput">
+                <To key=":InputHandler">
+                  <Asset key="Basics/InputGroup/Editor Input"/>
+                </To>
+              </Bind>
+              <Bind variable="editorScreen">
+                <To key=":Screen">
+                  <Asset key="UI/Layout/Main"/>
+                </To>
+              </Bind>
+              <Code>currentEditor:notifyVisible()
 screen:setScreen(editorScreen)
 input:setInputHandler(editorInput)
 playTesting = nil</Code>
+            </Action>
           </End>
         </Project>
-        <Font name="PropertiesFont" file="Fonts/EditorFont.ttf" detail="64"/>
         <Function name="Unpause">
           <Bind variable="basics">
             <To key="Basics"/>
@@ -259,17 +269,26 @@ end</Code>
           <Init key="Basics/InputGroup/Editor Input"/>
         </InputSwitch>
         <ProjectOptions name="Template">
-          <Option id="file" value="#Projects/Spindizzy/Worlds/Template.isorealms"/>
-          <Option id="type" value="#program"/>
+          <Option id="file">
+            <Value key="Literal" value="Projects/Spindizzy/Worlds/Template.isorealms"/>
+          </Option>
+          <Option id="type">
+            <Value key="Literal" value="program"/>
+          </Option>
         </ProjectOptions>
         <ProjectOptions name="LoadMission">
-          <Option id="file" value="Basics/String/MissionToLoad"/>
-          <Option id="type" value="#user"/>
+          <Option id="file">
+            <Value key="Basics/String/MissionToLoad"/>
+          </Option>
+          <Option id="type">
+            <Value key="Literal" value="user"/>
+          </Option>
         </ProjectOptions>
         <String name="MissionToLoad"/>
         <StringScreen name="SaveAsLabel" alignment="Center">
           <Font key="Basics/Font/Menu"/>
           <Value key="Literal" value="Enter a name for this project"/>
+          <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
         </StringScreen>
       </Resources>
     </Module>
@@ -311,34 +330,36 @@ end</Code>
           <Colour key="Basics/ColourCycler/Menu Selection Highlight/0"/>
           <Font key="Basics/Font/Menu"/>
           <Options>
-            <Action label="Play" type="Basics/Script">
-              <Bind variable="project">
-                <To key="Basics/Project/Project"/>
-              </Bind>
-              <Bind variable="noScreen">
-                <To key=":Screen">
-                  <Asset key="Literal"/>
-                </To>
-              </Bind>
-              <Bind variable="projectInputHandler">
-                <To key=":InputHandler">
-                  <Asset key="Basics/InputGroup/Test"/>
-                </To>
-              </Bind>
-              <Bind variable="editor">
-                <To key="UI/Layout/Runtime/Screen"/>
-              </Bind>
-              <Bind variable="input">
-                <To key="Basics/InputSwitch/Main"/>
-              </Bind>
-              <Bind variable="unpause">
-                <To key=":Action">
-                  <Action>
-                    <Action key="Basics/Function/Unpause"/>
-                  </Action>
-                </To>
-              </Bind>
-              <Code>playTesting = true
+            <Action label="Play">
+              <Action>
+                <Action key="Basics/Script">
+                  <Bind variable="project">
+                    <To key="Basics/Project/Project"/>
+                  </Bind>
+                  <Bind variable="noScreen">
+                    <To key=":Screen">
+                      <Asset key="Literal"/>
+                    </To>
+                  </Bind>
+                  <Bind variable="projectInputHandler">
+                    <To key=":InputHandler">
+                      <Asset key="Basics/InputGroup/Test"/>
+                    </To>
+                  </Bind>
+                  <Bind variable="editor">
+                    <To key="UI/Layout/Runtime/Screen"/>
+                  </Bind>
+                  <Bind variable="input">
+                    <To key="Basics/InputSwitch/Main"/>
+                  </Bind>
+                  <Bind variable="unpause">
+                    <To key=":Action">
+                      <Action>
+                        <Action key="Basics/Function/Unpause"/>
+                      </Action>
+                    </To>
+                  </Bind>
+                  <Code>playTesting = true
 currentEditor:notifyHidden()
 editor:setScreen(noScreen)
 input:setInputHandler(projectInputHandler)
@@ -346,121 +367,151 @@ project:reset()
 project:setActive(true)
 project:setEditing(false)
 unpause:execute()</Code>
+                </Action>
+              </Action>
             </Action>
-            <Action label="Edit" key="Basics/Function/Unpause"/>
-            <Action label="Save" type="Basics/Script">
-              <Bind variable="project">
-                <To key="Basics/Project/Project"/>
-              </Bind>
-              <Bind variable="unpause">
-                <To key=":Action">
-                  <Action>
-                    <Action key="Basics/Function/Unpause"/>
-                  </Action>
-                </To>
-              </Bind>
-              <Bind variable="saveAs">
-                <To key=":Action">
-                  <Action>
-                    <Action key="Basics/Function/PushScreen">
-                      <Bind argument="menuScreen">
-                        <To key=":Screen">
-                          <Asset key="UI/Layout/SaveAs"/>
-                        </To>
-                      </Bind>
-                      <Bind argument="menuInput">
-                        <To key=":InputHandler">
-                          <Asset key="UI/VirtualKeyboard/SaveAsPrompt"/>
-                        </To>
-                      </Bind>
-                      <Bind argument="menu">
-                        <To key="UI/VirtualKeyboard/SaveAsPrompt"/>
-                      </Bind>
-                    </Action>
-                  </Action>
-                </To>
-              </Bind>
-              <Code>if project:canSave() then
+            <Action label="Edit">
+              <Action>
+                <Action key="Basics/Function/Unpause"/>
+              </Action>
+            </Action>
+            <Action label="Save">
+              <Action>
+                <Action key="Basics/Script">
+                  <Bind variable="project">
+                    <To key="Basics/Project/Project"/>
+                  </Bind>
+                  <Bind variable="unpause">
+                    <To key=":Action">
+                      <Action>
+                        <Action key="Basics/Function/Unpause"/>
+                      </Action>
+                    </To>
+                  </Bind>
+                  <Bind variable="saveAs">
+                    <To key=":Action">
+                      <Action>
+                        <Action key="Basics/Function/PushScreen">
+                          <Bind argument="menuScreen">
+                            <To key=":Screen">
+                              <Asset key="UI/Layout/SaveAs"/>
+                            </To>
+                          </Bind>
+                          <Bind argument="menuInput">
+                            <To key=":InputHandler">
+                              <Asset key="UI/VirtualKeyboard/SaveAsPrompt"/>
+                            </To>
+                          </Bind>
+                          <Bind argument="menu">
+                            <To key="UI/VirtualKeyboard/SaveAsPrompt"/>
+                          </Bind>
+                        </Action>
+                      </Action>
+                    </To>
+                  </Bind>
+                  <Code>if project:canSave() then
   project:save()
   unpause:execute()
 else
   saveAs:execute()
 end</Code>
+                </Action>
+              </Action>
             </Action>
-            <Action label="Save As..." key="Basics/Function/PushScreen">
-              <Bind argument="menuScreen">
-                <To key=":Screen">
-                  <Asset key="UI/Layout/SaveAs"/>
-                </To>
-              </Bind>
-              <Bind argument="menuInput">
-                <To key=":InputHandler">
-                  <Asset key="UI/VirtualKeyboard/SaveAsPrompt"/>
-                </To>
-              </Bind>
-              <Bind argument="menu">
-                <To key="UI/VirtualKeyboard/SaveAsPrompt"/>
-              </Bind>
-            </Action>/>
-            <Action label="Load..." key="Basics/Function/PushScreen">
-              <Bind argument="menuScreen">
-                <To key=":Screen">
-                  <Asset key="UI/Menu/UserMissions"/>
-                </To>
-              </Bind>
-              <Bind argument="menuInput">
-                <To key=":InputHandler">
-                  <Asset key="UI/Menu/UserMissions"/>
-                </To>
-              </Bind>
-              <Bind argument="menu">
-                <To key="UI/Menu/UserMissions"/>
-              </Bind>
+            <Action label="Save As...">
+              <Action>
+                <Action key="Basics/Function/PushScreen">
+                  <Bind argument="menuScreen">
+                    <To key=":Screen">
+                      <Asset key="UI/Layout/SaveAs"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="menuInput">
+                    <To key=":InputHandler">
+                      <Asset key="UI/VirtualKeyboard/SaveAsPrompt"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="menu">
+                    <To key="UI/VirtualKeyboard/SaveAsPrompt"/>
+                  </Bind>
+                </Action>
+              </Action>
             </Action>
-            <Action label="New" key="Basics/Function/PushScreen">
-              <Bind argument="menuScreen">
-                <To key=":Screen">
-                  <Asset key="UI/Prompt/New"/>
-                </To>
-              </Bind>
-              <Bind argument="menuInput">
-                <To key=":InputHandler">
-                  <Asset key="UI/Prompt/New"/>
-                </To>
-              </Bind>
-              <Bind argument="menu">
-                <To key="UI/Prompt/New"/>
-              </Bind>
+            <Action label="Load...">
+              <Action>
+                <Action key="Basics/Function/PushScreen">
+                  <Bind argument="menuScreen">
+                    <To key=":Screen">
+                      <Asset key="UI/Menu/UserMissions"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="menuInput">
+                    <To key=":InputHandler">
+                      <Asset key="UI/Menu/UserMissions"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="menu">
+                    <To key="UI/Menu/UserMissions"/>
+                  </Bind>
+                </Action>
+              </Action>
             </Action>
-            <Action label="Options" key="Basics/Function/PushScreen">
-              <Bind argument="menuScreen">
-                <To key=":Screen">
-                  <Asset key="UI/Menu/Options"/>
-                </To>
-              </Bind>
-              <Bind argument="menuInput">
-                <To key=":InputHandler">
-                  <Asset key="UI/Menu/Options"/>
-                </To>
-             </Bind>
-              <Bind argument="menu">
-                <To key="UI/Menu/Options"/>
-              </Bind>
+            <Action label="New">
+              <Action>
+                <Action key="Basics/Function/PushScreen">
+                  <Bind argument="menuScreen">
+                    <To key=":Screen">
+                      <Asset key="UI/Prompt/New"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="menuInput">
+                    <To key=":InputHandler">
+                      <Asset key="UI/Prompt/New"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="menu">
+                    <To key="UI/Prompt/New"/>
+                  </Bind>
+                </Action>
+              </Action>
             </Action>
-            <Action label="Quit Editor" key="Basics/Function/PushScreen">
-              <Bind argument="menuScreen">
-                <To key=":Screen">
-                  <Asset key="UI/Prompt/Quit"/>
-                </To>
-              </Bind>
-              <Bind argument="menuInput">
-                <To key=":InputHandler">
-                  <Asset key="UI/Prompt/Quit"/>
-                </To>
-              </Bind>
-              <Bind argument="menu">
-                <To key="UI/Prompt/Quit"/>
-              </Bind>
+            <Action label="Options">
+              <Action>
+                <Action key="Basics/Function/PushScreen">
+                  <Bind argument="menuScreen">
+                    <To key=":Screen">
+                      <Asset key="UI/Menu/Options"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="menuInput">
+                    <To key=":InputHandler">
+                      <Asset key="UI/Menu/Options"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="menu">
+                    <To key="UI/Menu/Options"/>
+                  </Bind>
+                </Action>
+              </Action>
+            </Action>
+            <Action label="Quit Editor">
+              <Action>
+                <Action key="Basics/Function/PushScreen">
+                  <Bind argument="menuScreen">
+                    <To key=":Screen">
+                      <Asset key="UI/Prompt/Quit"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="menuInput">
+                    <To key=":InputHandler">
+                      <Asset key="UI/Prompt/Quit"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="menu">
+                    <To key="UI/Prompt/Quit"/>
+                  </Bind>
+                </Action>
+              </Action>
             </Action>
           </Options>
           <Exit key="Basics/Function/Unpause"/>
@@ -514,99 +565,117 @@ screen:setScreen(loading)</Code>
         <Prompt name="Close" text="Close IsoRealms?  Changes won't be saved!" false="Cancel" true="Close">
           <Highlight key="Basics/ColourCycler/Menu Selection Highlight/0"/>
           <Font key="Basics/Font/Menu"/>
-          <False type="Basics/Script">
-            <Bind variable="cancel">
-              <To key=":Action">
-                <Action>
-                  <Action key="Basics/Function/Unpause"/>
-                </Action>
-              </To>
-            </Bind>
-            <Code>awaitingQuit = nil
+          <False>
+            <Action key="Basics/Script">
+              <Bind variable="cancel">
+                <To key=":Action">
+                  <Action>
+                    <Action key="Basics/Function/Unpause"/>
+                  </Action>
+                </To>
+              </Bind>
+              <Code>awaitingQuit = nil
 cancel:execute()</Code>
+            </Action>
           </False>
-          <True type="Basics/Script">
-            <Bind variable="quit">
-              <To key=":Action">
-                <Action>
-                  <Action key="Quit"/>
-                </Action>
-              </To>
-            </Bind>
-            <Code>quit:execute()</Code>
+          <True>
+            <Action key="Basics/Script">
+              <Bind variable="quit">
+                <To key=":Action">
+                  <Action>
+                    <Action key="Quit"/>
+                  </Action>
+                </To>
+              </Bind>
+              <Code>quit:execute()</Code>
+            </Action>
           </True>
         </Prompt>
         <Prompt name="Quit" text="Quit Editor?  Changes won't be saved!" false="Cancel" true="Quit">
           <Highlight key="Basics/ColourCycler/Menu Selection Highlight/0"/>
           <Font key="Basics/Font/Menu"/>
-          <False key="Basics/Function/PopScreen"/>
-          <True type="Basics/Script">
-            <Bind variable="project">
-              <To key="Project"/>
-            </Bind>
-            <Code>project:finish(false)</Code>
+          <False>
+            <Action key="Basics/Function/PopScreen"/>
+          </False>
+          <True>
+            <Action key="Basics/Script">
+              <Bind variable="project">
+                <To key="Project"/>
+              </Bind>
+              <Code>project:finish(false)</Code>
+            </Action>
           </True>
         </Prompt>
         <Prompt name="New" text="Create new map?  Changes won't be saved!" false="Cancel" true="New Map">
           <Highlight key="Basics/ColourCycler/Menu Selection Highlight/0"/>
           <Font key="Basics/Font/Menu"/>
-          <False key="Basics/Function/PopScreen"/>
-          <True type="Basics/Script">
-            <Bind variable="project">
-              <To key="Basics/Project/Project"/>
-            </Bind>
-            <Bind variable="template">
-              <To key=":ProjectOptions">
-                <Asset key="Basics/ProjectOptions/Template"/>
-              </To>
-            </Bind>
-            <Bind variable="popScreen">
-              <To key=":Action">
-                <Action>
-                  <Action key="Basics/Function/PopScreen"/>
-                </Action>
-              </To>
-            </Bind>
-            <Bind variable="screen">
-              <To key="UI/Layout/Main/Menu"/>
-            </Bind>
-            <Bind variable="loading">
-              <To key=":Screen">
-                <Asset key="UI/Throbber/LoadingScreen"/>
-              </To>
-            </Bind>
-            <Code>project:prepare(template, true)
+          <False>
+            <Action key="Basics/Function/PopScreen"/>
+          </False>
+          <True>
+            <Action key="Basics/Script">
+              <Bind variable="project">
+                <To key="Basics/Project/Project"/>
+              </Bind>
+              <Bind variable="template">
+                <To key=":ProjectOptions">
+                  <Asset key="Basics/ProjectOptions/Template"/>
+                </To>
+              </Bind>
+              <Bind variable="popScreen">
+                <To key=":Action">
+                  <Action>
+                    <Action key="Basics/Function/PopScreen"/>
+                  </Action>
+                </To>
+              </Bind>
+              <Bind variable="screen">
+                <To key="UI/Layout/Main/Menu"/>
+              </Bind>
+              <Bind variable="loading">
+                <To key=":Screen">
+                  <Asset key="UI/Throbber/LoadingScreen"/>
+                </To>
+              </Bind>
+              <Code>project:prepare(template, true)
 popScreen:execute()
 popScreen:execute()
 screen:setScreen(loading)</Code>
+            </Action>
           </True>
         </Prompt>
         <Prompt name="Overwrite" text="Overwrite existing project?" false="Cancel" true="Overwrite">
           <Highlight key="Basics/ColourCycler/Menu Selection Highlight/0"/>
           <Font key="Basics/Font/Menu"/>
-          <False key="Basics/Function/PopScreen"/>
-          <True type="Basics/Script">
-            <Bind variable="unpause">
-              <To key=":Action">
-                <Action>
-                  <Action key="Basics/Function/Unpause"/>
-                </Action>
-              </To>
-            </Bind>
-            <Bind variable="project">
-              <To key="Basics/Project/Project"/>
-            </Bind>
-            <Bind variable="filename">
-              <To key=":String">
-                <Asset key="UI/VirtualKeyboard/SaveAsPrompt"/>
-              </To>
-            </Bind>
-            <Code>print('SAVING')
+          <False>
+            <Action key="Basics/Function/PopScreen"/>
+          </False>
+          <True>
+            <Action key="Basics/Script">
+              <Bind variable="unpause">
+                <To key=":Action">
+                  <Action>
+                    <Action key="Basics/Function/Unpause"/>
+                  </Action>
+                </To>
+              </Bind>
+              <Bind variable="project">
+                <To key="Basics/Project/Project"/>
+              </Bind>
+              <Bind variable="filename">
+                <To key=":String">
+                  <Asset key="UI/VirtualKeyboard/SaveAsPrompt"/>
+                </To>
+              </Bind>
+              <Code>print('SAVING')
 project:saveAs("Projects/" .. filename:getValue())
 unpause:execute()</Code>
+            </Action>
           </True>
         </Prompt>
-        <Throbber name="LoadingScreen" duration="2000" repetitions="1" spots="8" spotSides="32" spotRadius="0.06" ringRadius="0.2" colour="Basics/ColourCycler/Menu Selection Highlight/0"/>
+        <Throbber name="LoadingScreen" duration="2000" repetitions="1" spots="8" spotSides="32" spotRadius="0.06" ringRadius="0.2">
+          <Colour key="Basics/ColourCycler/Menu Selection Highlight/0"/>
+        </Throbber>
         <VirtualKeyboard name="SaveAsPrompt">
           <Font key="Basics/Font/Layout"/>
           <SelectionColour key="Basics/ColourCycler/Menu Selection Highlight/0"/>

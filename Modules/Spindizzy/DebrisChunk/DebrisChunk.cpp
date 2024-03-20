@@ -100,6 +100,10 @@ namespace IsoRealms::Spindizzy {
     return this;
   }
 
+  bool DebrisChunk::renderPreview() const {
+    return renderIcon();
+  }
+
   bool DebrisChunk::renderAssetIcon() const {
     return renderIcon();
   }

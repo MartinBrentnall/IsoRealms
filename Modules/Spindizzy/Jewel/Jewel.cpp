@@ -74,6 +74,10 @@ namespace IsoRealms::Spindizzy {
     glRotatef(Spindizzy::DEFAULT_VIEW_ANGLE_PITCH, 1.0f, 0.0f, 0.0f);
     glRotatef(Spindizzy::DEFAULT_VIEW_ANGLE_YAW,   0.0f, 0.0f, 1.0f);
     glScalef(2.5f, 2.5f, 2.5f);
+    return renderPreview();
+  }
+
+  bool Jewel::renderPreview() const {
     cSampleModel->render();
     return true;
   }

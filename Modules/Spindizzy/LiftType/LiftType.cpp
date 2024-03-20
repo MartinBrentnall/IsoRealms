@@ -127,7 +127,7 @@ namespace IsoRealms::Spindizzy {
       glEnd();
       glColor3f(1.0f, 1.0f, 1.0f);
       glTranslatef(cPinnedLocation.cDefX, cPinnedLocation.cDefY, cPinnedLocation.cDefZ * 0.5f + (0.5f * 0.05));
-      cParent.cDefModel.renderIcon();
+      cParent.cDefModel.renderPreview();
       glPopMatrix();
       glPushMatrix();
       glTranslatef(cPinnedLocation.cDefX, cPinnedLocation.cDefY, 0);
@@ -149,7 +149,7 @@ namespace IsoRealms::Spindizzy {
       glPushMatrix();
       glTranslatef(cEditor->getCursorX(), cEditor->getCursorY(), cEditor->getCursorZ() * 0.5f + (0.5f * 0.05));
       glColor3f(1.0f, 1.0f, 1.0f);
-      cParent.cDefModel.renderIcon();
+      cParent.cDefModel.renderPreview();
       glPopMatrix();
     }
   }
@@ -222,23 +222,20 @@ namespace IsoRealms::Spindizzy {
 
   void LiftType::Pen::draw() {
     WorldEditorCursorCell mCursorCell = cEditor->getCursorCell();
-    Zone* mZone = cEditor->getWorld()->getZone(mCursorCell);
-    if (mZone != nullptr) {
-      if (cPinnedZone != nullptr) {
-        cPinnedZone = cEditor->getWorld()->getOrDrawZone(mCursorCell, cEditor);
-        cPinnedLocation = mCursorCell;
-      } else if (!cPinnedRange.has_value()) {
-        cPinnedRange = mCursorCell.cDefZ;
-      } else {
-        int mSecondRange = mCursorCell.cDefZ;
-        int mTopRange    = *cPinnedRange > mSecondRange ? *cPinnedRange : mSecondRange;
-        int mBottomRange = *cPinnedRange > mSecondRange ? mSecondRange : *cPinnedRange;
-        Lift* mLift = cEditor->getWorld()->draw(&cParent, mCursorCell, mBottomRange, mTopRange, cEditor);
-        if (mLift != nullptr) {
-          mLift->initialise();
-          cPinnedZone = nullptr;
-          cPinnedRange.reset();
-        }
+    if (cPinnedZone == nullptr) {
+      cPinnedZone = cEditor->getWorld()->getOrDrawZone(mCursorCell, cEditor);
+      cPinnedLocation = mCursorCell;
+    } else if (!cPinnedRange.has_value()) {
+      cPinnedRange = mCursorCell.cDefZ;
+    } else {
+      int mSecondRange = mCursorCell.cDefZ;
+      int mTopRange    = *cPinnedRange > mSecondRange ? *cPinnedRange : mSecondRange;
+      int mBottomRange = *cPinnedRange > mSecondRange ? mSecondRange : *cPinnedRange;
+      Lift* mLift = cEditor->getWorld()->draw(&cParent, cPinnedLocation, mBottomRange, mTopRange, cEditor);
+      if (mLift != nullptr) {
+        mLift->initialise();
+        cPinnedZone = nullptr;
+        cPinnedRange.reset();
       }
     }
   }

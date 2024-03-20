@@ -79,16 +79,21 @@ namespace IsoRealms::Spindizzy {
     glRotatef(Spindizzy::DEFAULT_VIEW_ANGLE_PITCH, 1.0f, 0.0f, 0.0f);
     glRotatef(cEditingIconAngle, 0.0f, 0.0f, 1.0f);
     glScalef(2.5f, 2.5f, 2.5f);
-    render();
-    return true;
+    return renderPreview();
   }
 
   std::vector<IProperty*> Top::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
     return std::vector<IProperty*>({
     });
   }
+
   I3DModel* Top::createModel() {
     return this;
+  }
+
+  bool Top::renderPreview() const {
+    render();
+    return true;
   }
 
   bool Top::renderAssetIcon() const {

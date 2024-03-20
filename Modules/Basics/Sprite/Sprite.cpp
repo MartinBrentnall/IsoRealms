@@ -59,22 +59,26 @@ namespace IsoRealms::Basics {
   }
 
   bool Sprite::renderIcon() const {
+    render(1.0f);
+    return true;
+  }
+
+  void Sprite::render(float size) const {
     cDefTexture->set();
     glAlphaFunc(GL_GREATER, 0.1f);
     glEnable(GL_ALPHA_TEST);
     glEnable(GL_BLEND);
     glDisable(GL_CULL_FACE);
     glBegin(GL_QUADS);
-    cDefTexture.coord(1.0f, 1.0f); glVertex3f( 0.5f, -0.5f, 0.0f);
-    cDefTexture.coord(1.0f, 0.0f); glVertex3f( 0.5f,  0.5f, 0.0f);
-    cDefTexture.coord(0.0f, 0.0f); glVertex3f(-0.5f,  0.5f, 0.0f);
-    cDefTexture.coord(0.0f, 1.0f); glVertex3f(-0.5f, -0.5f, 0.0f);
+    cDefTexture.coord(1.0f, 1.0f); glVertex3f( size, -size, 0.0f);
+    cDefTexture.coord(1.0f, 0.0f); glVertex3f( size,  size, 0.0f);
+    cDefTexture.coord(0.0f, 0.0f); glVertex3f(-size,  size, 0.0f);
+    cDefTexture.coord(0.0f, 1.0f); glVertex3f(-size, -size, 0.0f);
     glEnd();
     glEnable(GL_CULL_FACE);
     glDisable(GL_BLEND);
     glDisable(GL_ALPHA_TEST);
     glBindTexture(GL_TEXTURE_2D, 0);
-    return true;
   }
 
   std::vector<IProperty*> Sprite::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
@@ -86,8 +90,16 @@ namespace IsoRealms::Basics {
     return this;
   }
 
+  bool Sprite::renderPreview() const {
+    glRotatef(-getAngle(), 0.0f, 0.0f, 1.0f);
+    glRotatef(-getTilt(), 1.0f, 0.0f, 0.0f);
+    render(0.5f);
+    return true;
+  }
+
   bool Sprite::renderAssetIcon() const {
-    return renderIcon();
+    render(1.0f);
+    return true;
   }
 
   void Sprite::update(unsigned int milliseconds) {
@@ -97,7 +109,7 @@ namespace IsoRealms::Basics {
   void Sprite::render() const {
     glRotatef(-getAngle(), 0.0f, 0.0f, 1.0f);
     glRotatef(-getTilt(), 1.0f, 0.0f, 0.0f);
-    renderIcon();
+    render(0.5f);
   }
 
   void Sprite::screenAdded(IProject* project, const IScreen* screen) {

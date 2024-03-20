@@ -52,6 +52,7 @@ namespace IsoRealms::Spindizzy {
      * Implements I3DModelType *
     \***************************/
     I3DModel* createModel() override;
+    bool renderPreview() const override;
     bool renderAssetIcon() const override;
 
     /***********************\

@@ -2,7 +2,7 @@
 <Project>
   <Screen key="UI/Layout/Main"/>
   <Input key="Basics/InputGroup/Spindizzy Game Controls"/>
-  <DefaultEditor key="Spindizzy/World/Hangworld"/>
+  <Editor key="Spindizzy/World/Hangworld"/>
   <InitAction>
     <Action key="Basics/Function/SpindizzyInit"/>
   </InitAction>

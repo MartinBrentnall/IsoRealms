@@ -112,6 +112,10 @@ namespace IsoRealms::Basics {
     return cRuntimeInstances.emplace_back(std::make_unique<Instance>(this)).get();
   }
 
+  bool ModelCycler::Offset::renderPreview() const {
+    return cParent->cDefModelTypes[cDefOffset]->renderPreview();
+  }
+
   bool ModelCycler::Offset::renderAssetIcon() const {
     return cParent->cDefModelTypes[cDefOffset]->renderIcon();
   }

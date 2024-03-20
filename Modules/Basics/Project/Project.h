@@ -57,6 +57,7 @@ namespace IsoRealms::Basics {
     bool isReady();
     void reset();
     IEditable* getDefaultEditor() const;
+    IsoRealms::Project* getProject();
     bool canSave();
     void saveProject();
     void saveProjectAs(const std::string& file);

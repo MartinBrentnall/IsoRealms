@@ -65,6 +65,7 @@ namespace IsoRealms {
     void set(DOMNode& node);
     std::unique_ptr<ModelInstance> createInstance();
     bool renderIcon() const;
+    bool renderPreview() const;
     void applyTransformation() const;
 
     /***************************************\

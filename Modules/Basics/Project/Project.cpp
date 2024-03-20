@@ -162,6 +162,10 @@ namespace IsoRealms::Basics {
     return cRuntimeProject->getDefaultEditable();
   }
 
+  IsoRealms::Project* Project::getProject() {
+    return cRuntimeProject;
+  }
+
   bool Project::canSave() {
     return cRuntimeProject != nullptr && cRuntimeProject->canSave();
   }
@@ -203,7 +207,6 @@ namespace IsoRealms::Basics {
 
   void Project::renderScreen(float scale, float aspectRatio) const {
     if (cRuntimeProject != nullptr) {
-      cRuntimeProject->preRender();
       if (cRuntimeRunning) {
         glEnable(GL_DEPTH_TEST);
         cRuntimeProject->render(aspectRatio);
@@ -216,7 +219,6 @@ namespace IsoRealms::Basics {
   }
   
   void Project::prepareInternal(const Options* options, bool force) {
-    std::string mFile = options->getOption("file");
 
     // If it's the same as the current project, nothing to do.
     if (!force && cRuntimeProjectLoader != nullptr && cRuntimeProjectLoader->matches(*options)) {

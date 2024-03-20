@@ -2,6 +2,7 @@
 <Project>
   <Screen key="Replay/Recorder/Recorder"/>
   <Input key="Replay/Recorder/Recorder"/>
+  <Editor key="Literal"/>
   <QuitAction>
     <Action key="Quit"/>
   </QuitAction>

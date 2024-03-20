@@ -2,7 +2,7 @@
 <Project>
   <Screen key="UI/Layout/Main"/>
   <Input key="Basics/InputGroup/Input"/>
-  <DefaultEditor key="Literal"/>
+  <Editor key="Literal"/>
   <InitAction>
     <Action key="Basics/Script">
       <Bind variable="splash">

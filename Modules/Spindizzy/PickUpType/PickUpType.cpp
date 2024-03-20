@@ -101,7 +101,7 @@ namespace IsoRealms::Spindizzy {
 
   void PickUpType::Pen::renderEditingPreview() const {
     glTranslatef(cEditor->getCursorX(), cEditor->getCursorY(), cEditor->getCursorZ() * 0.5f);
-    cParent.cDefModel.renderIcon();
+    cParent.cDefModel.renderPreview();
   }
 
   void PickUpType::Pen::renderUI() const {
@@ -119,6 +119,7 @@ namespace IsoRealms::Spindizzy {
           case sf::Keyboard::Space: cEditor->getWorld()->draw(&cParent, cEditor->getCursorCell(), cEditor); return true;
           default: break;
         }
+        break;
       }
 
       case sf::Event::JoystickButtonPressed: {

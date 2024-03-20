@@ -19,14 +19,17 @@
 #include "PropertyAsset.h"
 
 namespace IsoRealms {
-  PropertyAsset::PropertyAsset(IPropertyAppearance* appearance, const std::string& name, const std::string& item, std::vector<std::pair<std::string, std::string>> items, std::vector<IAssetMenuItem*> globalMenuItems, std::function<bool(const std::string& item)> confirmationCallback) :
+  PropertyAsset::PropertyAsset(IPropertyAppearance* appearance, const std::string& name, std::vector<std::pair<std::string, std::string>> items, std::vector<IAssetMenuItem*> globalMenuItems, std::function<bool(const std::string& item)> confirmationCallback) :
             Property(name),
             cAvailable(this, items, ""),
             cGlobalMenuItems(globalMenuItems),
-            cSelection(getSelection(item)),
             cSpecialEditor(nullptr),
             cIntAppearance(appearance),
             cConfirmationCallback(confirmationCallback) {
+  }
+
+  void PropertyAsset::setSelection(const std::string& item) {
+    cSelection = getSelection(item);
   }
   
   void PropertyAsset::refreshItems(std::vector<std::pair<std::string, std::string>> items) {

@@ -2,6 +2,7 @@
 <Project>
   <Screen key="Replay/Player/Player"/>
   <Input key="Literal"/>
+  <Editor key="Literal"/>
   <Include/>
   <Properties/>
   <Modules>

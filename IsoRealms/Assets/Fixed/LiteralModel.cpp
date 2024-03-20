@@ -25,6 +25,10 @@ namespace IsoRealms {
     return &DUMMY;
   }
   
+  bool LiteralModel::renderPreview() const {
+    return false;
+  }
+
   bool LiteralModel::renderAssetIcon() const {
     return false;
   }

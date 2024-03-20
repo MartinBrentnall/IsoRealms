@@ -187,7 +187,7 @@ namespace IsoRealms::Spindizzy {
 //         (*type->getSplitNWTexture())->set();
 //       }
 //       SplitSurface::render(pinnedX, pinnedY, mEndZ, cCornerHeight, cSplitNorthWestSouthEast);
-// TODO      (*type->getSurfacePattern())->render(  pinnedX, pinnedY, mEndZ, cCornerHeight, cSplitNorthWestSouthEast);
+//      type->getSurfacePattern()->render(  pinnedX, pinnedY, mEndZ, cCornerHeight, cSplitNorthWestSouthEast);
       type->getWestWallPattern()->render( mStartX - 0.001f, mStartY,          mStartZ - 1, 1.0f, ((mEndZ - mStartZ) + 1) + cCornerHeight[0][0].animation(), mWestSlope,  0, Wall::Direction::WEST);
       type->getEastWallPattern()->render( mEndX   + 0.001f, mStartY,          mStartZ - 1, 1.0f, ((mEndZ - mStartZ) + 1) + cCornerHeight[1][0].animation(), mEastSlope,  0, Wall::Direction::EAST);
       type->getSouthWallPattern()->render(mStartX,          mStartY - 0.001f, mStartZ - 1, 1.0f, ((mEndZ - mStartZ) + 1) + cCornerHeight[0][0].animation(), mSouthSlope, 0, Wall::Direction::SOUTH);
@@ -195,9 +195,7 @@ namespace IsoRealms::Spindizzy {
     } else {
       float mXSlope = getXSlopeAnimation();
       float mYSlope = getYSlopeAnimation();
-//       (*type->getSurfaceTexture())->set();
-//       Surface::render(type, mStartX - 0.5f, mEndX + 0.5f, mStartY - 0.5f, mEndY + 0.5f, mEndZ, mXSlope, mYSlope, ISurface::Direction::UP);
-// TODO      (*type->getSurfacePattern())->render(mStartX - 0.5f, mEndX + 0.5f, mStartY - 0.5f, mEndY + 0.5f, mEndZ, mXSlope, mYSlope, ISurface::Direction::UP););
+      type->getSurfacePattern()->render(mStartX - 0.5f, mEndX + 0.5f, mStartY - 0.5f, mEndY + 0.5f, mEndZ, mXSlope, mYSlope, ISurface::Direction::UP);
       if (steppedBottom) {
         for (float x = mStartX; x < mEndX + 1.0f; x += 1.0f) {
           for (float y = mStartY; y < mEndY + 1.0f; y += 1.0f) {

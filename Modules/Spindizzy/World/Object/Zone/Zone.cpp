@@ -132,7 +132,7 @@ namespace IsoRealms::Spindizzy {
   
   Terrain* Zone::draw(TerrainType* type, const WorldEditorCursorCell& start, const WorldEditorCursorCell& end, int southWestHeight, int southEastHeight, int northWestHeight, int northEastHeight, bool alternativeSplit, bool steppedBase, bool negation) {
     if (isValidTerrainPlacement(start, end, southWestHeight, southEastHeight, northWestHeight, northEastHeight)) {
-      return addTerrain(std::make_unique<Terrain>(*this, type, start.cDefX, start.cDefY, start.cDefZ, end.cDefX, end.cDefY, end.cDefZ, southWestHeight, southEastHeight, northWestHeight, northEastHeight, alternativeSplit, steppedBase, negation));
+      return addTerrain(std::make_unique<Terrain>(*this, type, start.cDefX, start.cDefY, start.cDefZ, end.cDefX, end.cDefY, end.cDefZ, southWestHeight, southEastHeight, northWestHeight, northEastHeight, alternativeSplit, steppedBase, !negation));
     }
     return nullptr;
   }
