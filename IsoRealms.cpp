@@ -70,7 +70,6 @@ int main(int argc, char** argv) {
 
         // Render the project.
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        mProject.preRender();
         glPushAttrib(GL_TRANSFORM_BIT);
         glMatrixMode(GL_PROJECTION);
         glPushMatrix();
