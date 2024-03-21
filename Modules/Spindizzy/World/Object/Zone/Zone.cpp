@@ -666,8 +666,8 @@ namespace IsoRealms::Spindizzy {
   }
 
   bool Zone::isValidTerrainPlacement(const WorldEditorCursorCell& start, const WorldEditorCursorCell& end, int southWestHeight, int southEastHeight, int northWestHeight, int northEastHeight) const {
-    int mXSlope = Spindizzy::getTerrainSlope(southWestHeight, southEastHeight, northWestHeight, northEastHeight);
-    int mYSlope = Spindizzy::getTerrainSlope(southWestHeight, northWestHeight, southEastHeight, northEastHeight);
+    int mXSlope = Spindizzy::getTerrainSlope(southWestHeight, northWestHeight, southEastHeight, northEastHeight);
+    int mYSlope = Spindizzy::getTerrainSlope(southWestHeight, southEastHeight, northWestHeight, northEastHeight);
     return std::max(start.cDefZ, end.cDefZ) + std::abs(mXSlope * (end.cDefX - start.cDefX)) + std::abs(mYSlope * (end.cDefY - start.cDefY)) <= cDefEndZ;
   }
 
