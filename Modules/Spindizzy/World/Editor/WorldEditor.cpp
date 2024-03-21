@@ -601,11 +601,11 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  void WorldEditor::contextVisible() {
+  void WorldEditor::notifyVisible() {
     cWorld->getSpindizzy()->setAllThemesInUse(true);
   }
   
-  void WorldEditor::contextHidden() {
+  void WorldEditor::notifyHidden() {
     cWorld->getSpindizzy()->setAllThemesInUse(false);
   }
   

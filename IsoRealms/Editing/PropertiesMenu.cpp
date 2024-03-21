@@ -113,7 +113,7 @@ namespace IsoRealms {
 //                 cParent->cRuntimeEditorScreen = cParent->cRuntimeEditor->createEditableScreen();
 //                 if (cParent->cRuntimeEditorScreen != nullptr) {
 //                   cParent->cRuntimeProject->add(cParent->cRuntimeEditorScreen, "Editor", "External");
-//                   cParent->cRuntimeEditorScreen->contextVisible();
+//                   cParent->cRuntimeEditorScreen->notifyVisible();
 //                 }
       } else {
         cEditing = cProperties[item];

@@ -52,8 +52,8 @@ namespace IsoRealms {
     cLua.new_usertype<IEditable>("Editable",             "createEditableScreen", &IEditable::createEditableScreen);
     cLua.new_usertype<IEditableScreen>("EditableScreen", "screen",               &IEditableScreen::screen,
                                                          "inputHandler",         &IEditableScreen::inputHandler,
-                                                         "notifyVisible",        &IEditableScreen::contextVisible,
-                                                         "notifyHidden",         &IEditableScreen::contextHidden,
+                                                         "notifyVisible",        &IEditableScreen::notifyVisible,
+                                                         "notifyHidden",         &IEditableScreen::notifyHidden,
                                                          "setAppearance",        &IEditableScreen::setAppearance);
     cLua.new_usertype<IFloat>("Float",                   "getValue",             &IFloat::getValue);
     cLua.new_usertype<IInteger>("Integer",               "getValue",             &IInteger::getValue);

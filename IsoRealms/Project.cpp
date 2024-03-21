@@ -614,7 +614,6 @@ namespace IsoRealms {
       std::unique_ptr<ScreenProxy> mNewProxy = std::make_unique<ScreenProxy>(this, asset);
       cScreens.add(mNewProxy.get(), id, category);
       if (!cProcessingInput) {
-//        std::cout << "There are " << cListeners.size() << " screen listeners" << std::endl;
         for (IScreenListener* mListener : cListeners) {
           mListener->screenAdded(this, mNewProxy.get());
         }

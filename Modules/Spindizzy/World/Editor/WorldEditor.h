@@ -59,8 +59,8 @@ namespace IsoRealms::Spindizzy {
     bool input(sf::Event& event) override;
     void renderScreen(float scale, float aspectRatio) const override;
     bool renderAssetIcon() const override;
-    void contextVisible() override;
-    void contextHidden() override;
+    void notifyVisible() override;
+    void notifyHidden() override;
     void setAppearance(IFont* font, float scale) override;
     void unregisterAssets(IAssetRemover* assets) override;
     const IFloat* getYaw() const override;

@@ -50,7 +50,7 @@ namespace IsoRealms {
     }
 
     void remove(TYPE* asset) {
-      typename std::map<TYPE*, std::unique_ptr<AssetSingleton<OWNER, TYPE>>>::iterator mIterator = cAssetSingletons.find(asset);
+      typename std::map<const TYPE*, std::unique_ptr<AssetSingleton<OWNER, TYPE>>>::iterator mIterator = cAssetSingletons.find(asset);
       if (mIterator == cAssetSingletons.end()) {
         std::cout << "WARNING: AssetClientManager::remove: Specified asset has no singleton in this registry." << std::endl;
       } else {
@@ -179,7 +179,7 @@ namespace IsoRealms {
     
     ~AssetClientManager() {
       cLiteralProvider = nullptr;
-      for (std::pair<TYPE* const, std::unique_ptr<AssetSingleton<OWNER, TYPE>>>& mPair : cAssetSingletons) {
+      for (std::pair<const TYPE* const, std::unique_ptr<AssetSingleton<OWNER, TYPE>>>& mPair : cAssetSingletons) {
         remove(mPair.second.get());
       }
       for (std::pair<const IAssetProvider<OWNER, TYPE>*, std::map<TYPE*, std::vector<IAssetUser<TYPE>*>>> mPairA : cClients) {
@@ -221,9 +221,15 @@ namespace IsoRealms {
           }
         }
       }
+
+      // Special case where asset is a singleton that has no clients yet.
+      typename std::map<const TYPE*, std::unique_ptr<AssetSingleton<OWNER, TYPE>>>::iterator mIterator = cAssetSingletons.find(asset);
+      if (mIterator != cAssetSingletons.end()) {
+        return mIterator->second.get();
+      }
       return nullptr;
     }
-    
+
 //     class ProviderData {
 //       private:
 //       std::optional<StateNotifier> cStateNotifier;
@@ -232,7 +238,7 @@ namespace IsoRealms {
     
     std::map<const IAssetProvider<OWNER, TYPE>*, std::unique_ptr<StateNotifier>> cStateNotifiers;
     std::map<const IAssetProvider<OWNER, TYPE>*, std::map<TYPE*, std::vector<IAssetUser<TYPE>*>>> cClients;
-    std::map<TYPE*, std::unique_ptr<AssetSingleton<OWNER, TYPE>>> cAssetSingletons;
+    std::map<const TYPE*, std::unique_ptr<AssetSingleton<OWNER, TYPE>>> cAssetSingletons;
     ILiteralAssetProvider<OWNER, TYPE>* cLiteralProvider;
   };
 }

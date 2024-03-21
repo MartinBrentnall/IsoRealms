@@ -25,11 +25,11 @@ namespace IsoRealms {
     return &DUMMY;
   }
 
-  void LiteralEditable::EditableScreen::contextVisible() {
+  void LiteralEditable::EditableScreen::notifyVisible() {
     // Nothing to do.
   }
 
-  void LiteralEditable::EditableScreen::contextHidden() {
+  void LiteralEditable::EditableScreen::notifyHidden() {
     // Nothing to do.
   }
 

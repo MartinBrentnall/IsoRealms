@@ -36,8 +36,8 @@ namespace IsoRealms {
       /******************************\
        * Implements IEditableScreen *
       \******************************/
-      void contextVisible() override;
-      void contextHidden() override;
+      void notifyVisible() override;
+      void notifyHidden() override;
       void unregisterAssets(IAssetRemover* assets) override;
       void setAppearance(IFont* font, float scale) override;
       IScreen* screen() override;

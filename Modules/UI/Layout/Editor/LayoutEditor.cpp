@@ -151,11 +151,11 @@ namespace IsoRealms::UI {
     return false;
   }
 
-  void LayoutEditor::contextVisible() {
+  void LayoutEditor::notifyVisible() {
     // Nothing to do.
   }
   
-  void LayoutEditor::contextHidden() {
+  void LayoutEditor::notifyHidden() {
     // Nothing to do.
   }
   
