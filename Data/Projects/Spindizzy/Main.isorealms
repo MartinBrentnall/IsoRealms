@@ -786,8 +786,8 @@ if mission:isReady() then
   input:setInputHandler(missionInput)
   project:setScreen(missionScreen)
   decor:setScreen(nil)
-  mission:setActive(true)
-  demo:setActive(false)
+  mission:setRunning(true)
+  demo:setRunning(false)
 else
   gameLoading = true
   screen:setScreen(loading)

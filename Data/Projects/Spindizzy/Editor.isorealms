@@ -364,7 +364,7 @@ currentEditor:notifyHidden()
 editor:setScreen(noScreen)
 input:setInputHandler(projectInputHandler)
 project:reset()
-project:setActive(true)
+project:setRunning(true)
 project:setEditing(false)
 unpause:execute()</Code>
                 </Action>

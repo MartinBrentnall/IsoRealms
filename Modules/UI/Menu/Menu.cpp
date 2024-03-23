@@ -174,6 +174,7 @@ namespace IsoRealms::UI {
   }
 
   void Menu::renderScreen(float scale, float aspectRatio) const {
+    glDisable(GL_DEPTH_TEST);
     float mPositionY = 0.0f;
     glTranslatef(0.0f, -cRuntimeScroll, 0.0f);
     for (unsigned int i = 0; i < cDefItems.size(); i++) {

@@ -469,10 +469,12 @@ namespace IsoRealms::Spindizzy {
   void WorldEditor::renderScreen(float scale, float aspectRatio) const {
     glPushMatrix();
     glEnable(GL_DEPTH_TEST);
-    
+
     glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
     glLoadIdentity();
     gluPerspective(45.0, aspectRatio, 0.3, 800.0);
+
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
@@ -480,7 +482,7 @@ namespace IsoRealms::Spindizzy {
     glRotatef(cTilt,     1.0, 0.0, 0.0);
     glRotatef(cRotation, 0.0, 0.0, 1.0);
     glTranslatef(-cLocation.x, -cLocation.y, -cLocation.z * 0.5f);
-    
+
     glBegin(GL_QUADS);
     for (int x = cLocation.getX() - 64; x <= cLocation.getX() + 64; x++) {
       for (int y = cLocation.getY() - 64; y <= cLocation.getY() + 64; y++) {
@@ -512,7 +514,7 @@ namespace IsoRealms::Spindizzy {
     glEnd();
     glColor3f(1.0f, 1.0f, 1.0f);
     cWorld->renderEditing(this);
-    
+
     glLineWidth(1.0);
     glPushMatrix();
     if (cSelectedTool != nullptr) {
@@ -542,7 +544,6 @@ namespace IsoRealms::Spindizzy {
     for (IVisualElement* mEditingVisual : cEditingVisuals) {
       mEditingVisual->render();
     }
-    glPopMatrix();
 
     // Render UI
     glPushAttrib(GL_TRANSFORM_BIT);
@@ -593,6 +594,9 @@ namespace IsoRealms::Spindizzy {
     glLoadIdentity();
     glPushAttrib(GL_TRANSFORM_BIT);
     glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+
+    glMatrixMode(GL_MODELVIEW);
     glPopMatrix();
     glPopAttrib();
   }
