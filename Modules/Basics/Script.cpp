@@ -107,7 +107,7 @@ namespace IsoRealms::Basics {
     return cDefParent;
   }
   
-  void Script::ScriptAction::save(DOMNodeWriter* node, IAssetIdentifier* identifier, const std::string& tag) const {
+  void Script::ScriptAction::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
     // TODO: Implement this
   }
   

@@ -43,10 +43,10 @@ namespace IsoRealms {
 
   void Texture::save(DOMNodeWriter* node, const std::string& tag) const {
     DOMNodeWriter mTextureNode = node->addBranch(tag);
+    cProject->save(&mTextureNode, cTexture);
     mTextureNode.addAttribute(ATTRIBUTE_ANGLE,   cDefAngle);
     mTextureNode.addAttribute(ATTRIBUTE_SCALE_X, cDefScaleX);
     mTextureNode.addAttribute(ATTRIBUTE_SCALE_Y, cDefScaleY);
-    mTextureNode.addAttribute(ATTRIBUTE_TEXTURE, cProject->getID(cTexture));
   }
 
   std::string Texture::get() const {

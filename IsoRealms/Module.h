@@ -55,6 +55,7 @@ namespace IsoRealms {
     
     void loadResources(DOMNode& node, IOptions* options, const std::string& resourceDataPath);
     void registerAssets();
+    bool needsSaving() const;
     void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
     
     /************************************\

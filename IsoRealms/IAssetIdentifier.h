@@ -176,5 +176,22 @@ namespace IsoRealms {
      * @return ID of the vertex.
      */
     virtual std::string getID(const IVertex* asset) const = 0;
+
+    virtual void save(DOMNodeWriter* node, IActionType*     asset) const = 0;
+    virtual void save(DOMNodeWriter* node, IAssets*         asset) const = 0;
+    virtual void save(DOMNodeWriter* node, I3DModelType*    asset) const = 0;
+    virtual void save(DOMNodeWriter* node, IBinding*        asset) const = 0;
+    virtual void save(DOMNodeWriter* node, IBoolean*        asset) const = 0;
+    virtual void save(DOMNodeWriter* node, IColour*         asset) const = 0;
+    virtual void save(DOMNodeWriter* node, IEditable*       asset) const = 0;
+    virtual void save(DOMNodeWriter* node, IFloat*          asset) const = 0;
+    virtual void save(DOMNodeWriter* node, IFont*           asset) const = 0;
+    virtual void save(DOMNodeWriter* node, IInputHandler*   asset) const = 0;
+    virtual void save(DOMNodeWriter* node, IInteger*        asset) const = 0;
+    virtual void save(DOMNodeWriter* node, IScreen*         asset) const = 0;
+    virtual void save(DOMNodeWriter* node, IProjectOptions* asset) const = 0;
+    virtual void save(DOMNodeWriter* node, IString*         asset) const = 0;
+    virtual void save(DOMNodeWriter* node, ITexture*        asset) const = 0;
+    virtual void save(DOMNodeWriter* node, IVertex*         asset) const = 0;
   };
 }

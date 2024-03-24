@@ -122,12 +122,8 @@ namespace IsoRealms::Spindizzy {
   }
   
   void CameraTransitional::save(DOMNodeWriter* node) const {
-    Spindizzy* mSpindizzy = cParent->getWorld()->getSpindizzy();
-    node->addAttribute(ATTRIBUTE_TYPE, mSpindizzy->getID(this));
-    DOMNodeWriter mNode = node->addBranch(TAG_START);
-    cDefStart->save(&mNode);
-    mNode = node->addBranch(TAG_END);
-    cDefEnd->save(&mNode);
+    cDefStart.save(node, TAG_START);
+    cDefEnd.save(node, TAG_END);
     cDefStartDepartureAction.save(node, TAG_ON_START_DEPARTURE);
     cDefStartArrivalAction.save(node, TAG_ON_START_ARRIVAL);
     cDefEndDepartureAction.save(node, TAG_ON_END_DEPARTURE);

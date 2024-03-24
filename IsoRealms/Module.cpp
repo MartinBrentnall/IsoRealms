@@ -90,16 +90,26 @@ namespace IsoRealms {
     cModule->registerAssets(&cModuleAssetRegistry);
   }
 
+  bool Module::needsSaving() const {
+    for (const std::pair<const std::string, std::unique_ptr<ResourceType>>& mResourceType : cResourceTypes) {
+      if (mResourceType.second->needsSaving(mResourceType.first)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   void Module::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
     node->addAttribute(ATTRIBUTE_NAME, cName);
+
+    // TODO: Configuration might not need to be saved if it comes from an included project file and hasn't been changed.
+    DOMNodeWriter mConfiguration = node->addBranch(TAG_CONFIGURATION);
+    cModule->save(&mConfiguration, identifier);
+
     DOMNodeWriter mResources = node->addBranch(TAG_RESOURCES);
     for (const std::pair<const std::string, std::unique_ptr<ResourceType>>& mResourceType : cResourceTypes) {
       mResourceType.second->save(&mResources, identifier, mResourceType.first);
     }
-    
-    // TODO: Configuration might not need to be saved if it comes from an included project file and hasn't been changed.
-    DOMNodeWriter mConfiguration = node->addBranch(TAG_CONFIGURATION);
-    cModule->save(&mConfiguration, identifier);
   }
 
   ResourceType* Module::getResourceType(const std::string& id) {

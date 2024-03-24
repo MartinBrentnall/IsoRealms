@@ -55,8 +55,7 @@ namespace IsoRealms::Spindizzy {
   }
   
   void CameraOverview::save(DOMNodeWriter* node) const {
-    Spindizzy* mSpindizzy = cParent->getWorld()->getSpindizzy();
-    node->addAttribute(ATTRIBUTE_TYPE, mSpindizzy->getID(this));
+    // Nothing to do.
   }
   
   const IFloat* CameraOverview::getYaw() const {

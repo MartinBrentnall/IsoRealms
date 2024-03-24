@@ -93,9 +93,9 @@ namespace IsoRealms::Basics {
     }
   }
 
-  void FileSound::save(DOMNodeWriter* node, IAssetIdentifier* identifier, const std::string& tag) const {
-    std::cout << "WARNING: FileSound::save() not implemented!  Saved file will be incomplete." << std::endl;
-  }
+//   void FileSound::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
+//     std::cout << "WARNING: FileSound::save() not implemented!  Saved file will be incomplete." << std::endl;
+//   }
 
   const IActionType* FileSound::getActionType() const {
     return this;

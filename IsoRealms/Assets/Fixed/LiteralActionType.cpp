@@ -51,7 +51,7 @@ namespace IsoRealms {
     return cParent;
   }
   
-  void LiteralActionType::Action::save(DOMNodeWriter* node, IAssetIdentifier* identifier, const std::string& tag) const {
+  void LiteralActionType::Action::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
     node->addAttribute("type", "#");
   }
   

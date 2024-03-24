@@ -49,6 +49,7 @@ namespace IsoRealms {
 
   void Model::save(DOMNodeWriter* node, const std::string& tag) const {
     DOMNodeWriter mModelNode = node->addBranch(tag);
+    cProject->save(&mModelNode, cModel);
     mModelNode.addAttribute(ATTRIBUTE_OFFSET_X, cDefOffsetX);
     mModelNode.addAttribute(ATTRIBUTE_OFFSET_Y, cDefOffsetY);
     mModelNode.addAttribute(ATTRIBUTE_OFFSET_Z, cDefOffsetZ);

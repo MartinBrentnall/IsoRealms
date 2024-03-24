@@ -31,8 +31,9 @@ namespace IsoRealms {
     });
   }
 
-  void Binding::save(DOMNodeWriter* node, bool local, const std::string& attribute) const {
-    cDefBinding->save(node, local ? cDefRegistry : nullptr, cProject, attribute);
+  void Binding::save(DOMNodeWriter* node, bool local, const std::string& tag) const {
+    DOMNodeWriter mAssetNode = node->addBranch(tag);
+    cProject->save(&mAssetNode, cDefBinding);
   }
 
 //   std::string Binding::get() const {

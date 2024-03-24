@@ -49,7 +49,6 @@ namespace IsoRealms::Spindizzy {
   
   void CameraLinked::save(DOMNodeWriter* node) const {
     Spindizzy* mSpindizzy = cParent->getWorld()->getSpindizzy();
-    node->addAttribute(ATTRIBUTE_TYPE, mSpindizzy->getID(this));
     node->addAttribute(ATTRIBUTE_VIEW, mSpindizzy->getID(cDefLinkedView));
   }
   

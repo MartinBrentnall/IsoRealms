@@ -32,12 +32,9 @@ namespace IsoRealms::Spindizzy {
     });
   }
 
-  void WorldEditorTool::save(DOMNodeWriter* node, const std::string& attribute) const {
-    // TODO: Implement this.
-  }
-
-  std::string WorldEditorTool::get() const {
-    return cSpindizzy->getID(cWorldEditorTool);
+  void WorldEditorTool::save(DOMNodeWriter* node, const std::string& tag) const {
+    DOMNodeWriter mAssetNode = node->addBranch(tag);
+    cSpindizzy->save(&mAssetNode, cWorldEditorTool);
   }
 
   void WorldEditorTool::set(DOMNode& node) {

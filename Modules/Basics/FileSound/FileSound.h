@@ -45,7 +45,7 @@ namespace IsoRealms::Basics {
     FileSound(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const override;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -65,7 +65,6 @@ namespace IsoRealms::Basics {
       * Implements IAction *
     \**********************/
     void execute() override;
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier, const std::string& tag) const override;
     const IActionType* getActionType() const override;
     bool hasConfiguration() const override;
 

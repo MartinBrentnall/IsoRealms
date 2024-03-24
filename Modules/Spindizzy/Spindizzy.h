@@ -182,14 +182,14 @@ namespace IsoRealms::Spindizzy {
     void release(IAssetUser<IZoneObjectTypeTrait>* user, IZoneObjectTypeTrait* asset);
     void release(IAssetUser<IZoneViewType>*        user, IZoneViewType*        asset);
 
-    std::string getID(const IBoundaryType*        asset) const;
-    std::string getID(const ICamera*              asset) const;
-    std::string getID(const IPhysicalObjectType*  asset) const;
-    std::string getID(const ISurfacePattern*      asset) const;
-    std::string getID(const IWallPattern*         asset) const;
-    std::string getID(const IWorldEditorTool*     asset) const;
-    std::string getID(const IZoneObjectTypeTrait* asset) const;
-    std::string getID(const IZoneViewType*        asset) const;
+    void save(DOMNodeWriter* node, IBoundaryType*        asset) const;
+    void save(DOMNodeWriter* node, ICamera*              asset) const;
+    void save(DOMNodeWriter* node, IPhysicalObjectType*  asset) const;
+    void save(DOMNodeWriter* node, ISurfacePattern*      asset) const;
+    void save(DOMNodeWriter* node, IWallPattern*         asset) const;
+    void save(DOMNodeWriter* node, IWorldEditorTool*     asset) const;
+    void save(DOMNodeWriter* node, IZoneObjectTypeTrait* asset) const;
+    void save(DOMNodeWriter* node, IZoneViewType*        asset) const;
 
     // Event handling.
     void added(BoundaryHandler* handler);

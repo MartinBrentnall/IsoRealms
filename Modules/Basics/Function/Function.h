@@ -92,7 +92,7 @@ namespace IsoRealms::Basics {
       \**********************/
       void execute() override;
       IActionType* getActionType() const override;
-      void save(DOMNodeWriter* node, IAssetIdentifier* identifier, const std::string& tag) const override;
+      void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const override;
       bool hasConfiguration() const override;
 
       private:

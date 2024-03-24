@@ -32,12 +32,9 @@ namespace IsoRealms::Spindizzy {
     });
   }
 
-  void PhysicalObjectType::save(DOMNodeWriter* node, const std::string& attribute) const {
-    node->addAttribute(attribute, cSpindizzy.getID(cPhysicalObjectType));
-  }
-
-  std::string PhysicalObjectType::get() const {
-    return cSpindizzy.getID(cPhysicalObjectType);
+  void PhysicalObjectType::save(DOMNodeWriter* node, const std::string& tag) const {
+    DOMNodeWriter mAssetNode = node->addBranch(tag);
+    cSpindizzy.save(&mAssetNode, cPhysicalObjectType);
   }
 
   void PhysicalObjectType::set(DOMNode& node) {

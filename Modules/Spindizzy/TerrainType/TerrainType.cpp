@@ -371,7 +371,11 @@ namespace IsoRealms::Spindizzy {
     glRotatef(Spindizzy::DEFAULT_VIEW_ANGLE_YAW, 0.0f, 0.0f, 1.0f);
     glScalef(1.4f, 1.4f, 1.4f);
     glColor3f(1.0f, 1.0f, 1.0f);
-//    mTerrainBrush::renderPreview(this, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, cDrawingSteppedBase);
+    cDefSurfacePattern->render(  -0.5f, 0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f, ISurface::Direction::UP);
+    cDefWestWallPattern->render(  0.0f, 0.0f, -1.0f, 1.0f, 1.0f, 0.0f, 0.0f, Wall::Direction::WEST);
+    cDefEastWallPattern->render(  0.0f, 0.0f, -1.0f, 1.0f, 1.0f, 0.0f, 0.0f, Wall::Direction::EAST);
+    cDefNorthWallPattern->render( 0.0f, 0.0f, -1.0f, 1.0f, 1.0f, 0.0f, 0.0f, Wall::Direction::NORTH);
+    cDefSouthWallPattern->render( 0.0f, 0.0f, -1.0f, 1.0f, 1.0f, 0.0f, 0.0f, Wall::Direction::SOUTH);
     return true;
   }
 
@@ -381,9 +385,11 @@ namespace IsoRealms::Spindizzy {
     glRotatef(yaw, 0.0f, 0.0f, 1.0f);
     glScalef(1.4f, 1.4f, 1.4f);
     glColor3f(1.0f, 1.0f, 1.0f);
-    // TODO: Make a static version of "renderPreview" for this (and one above)
-    const TerrainBrush& mTerrainBrush = cEditor->getTerrainBrush();
-    mTerrainBrush.renderPreview(&cParent, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, cDrawingSteppedBase);
+    cParent.cDefSurfacePattern->render(  -0.5f, 0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f, ISurface::Direction::UP);
+    cParent.cDefWestWallPattern->render(  0.0f, 0.0f, -1.0f, 1.0f, 1.0f, 0.0f, 0.0f, Wall::Direction::WEST);
+    cParent.cDefEastWallPattern->render(  0.0f, 0.0f, -1.0f, 1.0f, 1.0f, 0.0f, 0.0f, Wall::Direction::EAST);
+    cParent.cDefNorthWallPattern->render( 0.0f, 0.0f, -1.0f, 1.0f, 1.0f, 0.0f, 0.0f, Wall::Direction::NORTH);
+    cParent.cDefSouthWallPattern->render( 0.0f, 0.0f, -1.0f, 1.0f, 1.0f, 0.0f, 0.0f, Wall::Direction::SOUTH);
     return true;
   }
 

@@ -65,16 +65,10 @@ namespace IsoRealms::Spindizzy {
   }
   
   void CameraVariant::save(DOMNodeWriter* node) const {
-    Spindizzy* mSpindizzy = cParent->getWorld()->getSpindizzy();
-    node->addAttribute(ATTRIBUTE_TYPE, mSpindizzy->getID(this));
-    DOMNodeWriter mNode = node->addBranch(TAG_YAW);
-    cDefYaw->save(&mNode);
-    mNode = node->addBranch(TAG_PITCH);
-    cDefPitch->save(&mNode);
-    mNode = node->addBranch(TAG_LOCATION);
-    cDefLocation->save(&mNode);
-    mNode = node->addBranch(TAG_ZOOM);
-    cDefZoom->save(&mNode);    
+    cDefYaw.save(node, TAG_YAW);
+    cDefPitch.save(node, TAG_PITCH);
+    cDefLocation.save(node, TAG_LOCATION);
+    cDefZoom.save(node, TAG_ZOOM);
   }
   
   const IFloat* CameraVariant::getYaw() const {

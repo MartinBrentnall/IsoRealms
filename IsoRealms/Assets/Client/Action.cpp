@@ -35,7 +35,8 @@ namespace IsoRealms {
   }
 
   void Action::save(DOMNodeWriter* node, const std::string& tag) const {
-    cAction->save(node, cProject, tag);
+    DOMNodeWriter mAssetNode = node->addBranch(tag);
+    cAction->save(&mAssetNode, cProject);
   }
 
 //   std::string Action::get() const {

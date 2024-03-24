@@ -68,7 +68,7 @@ namespace IsoRealms::Spindizzy {
     for (const std::pair<const std::string, IZoneObjectTypeTrait*>& mPair : cDefTypeTraits) {
       DOMNodeWriter mTraitNode = node->addBranch(TAG_TRAIT);
       mTraitNode.addAttribute(ATTRIBUTE_ID, mPair.first);
-      mTraitNode.addAttribute(ATTRIBUTE_TYPE, cDefSpindizzy.getID(mPair.second));
+//      mTraitNode.addAttribute(ATTRIBUTE_TYPE, cDefSpindizzy.getID(mPair.second));
       mPair.second->save(mTraitNode);
     }
   }

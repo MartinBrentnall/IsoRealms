@@ -33,9 +33,8 @@ namespace IsoRealms::Spindizzy {
     ZoneViewType(Spindizzy* spindizzy);
 
     void init(DOMNode& node, WorldView* owner);
-    void save(DOMNodeWriter* node, const std::string& attribute) const;
+    void save(DOMNodeWriter* node, const std::string& tag) const;
 
-    std::string get() const;
     void set(DOMNode& node, WorldView* owner);
     IZoneViewType* operator->() const {
       return cZoneViewType;

@@ -324,7 +324,9 @@ end</Code>
               <Location type="Absolute" value="0.7"/>
             </Top>
           </Component>
-          <Component name="Keyboard" screen="UI/VirtualKeyboard/SaveAsPrompt"/>
+          <Component name="Keyboard">
+            <Screen key="UI/VirtualKeyboard/SaveAsPrompt"/>
+          </Component>
         </Layout>
         <Menu name="Pause">
           <Colour key="Basics/ColourCycler/Menu Selection Highlight/0"/>
@@ -679,50 +681,51 @@ unpause:execute()</Code>
         <VirtualKeyboard name="SaveAsPrompt">
           <Font key="Basics/Font/Layout"/>
           <SelectionColour key="Basics/ColourCycler/Menu Selection Highlight/0"/>
-          <ConfirmAction type="Basics/Script">
-            <Bind variable="project">
-              <To key="Basics/Project/Project"/>
-            </Bind>
-            <Bind variable="unpause">
-              <To key=":Action">
-                <Action>
-                  <Action key="Basics/Function/Unpause"/>
-                </Action>
-              </To>
-            </Bind>
-            <Bind variable="filename">
-              <To key=":String">
-                <Asset key="UI/VirtualKeyboard/SaveAsPrompt"/>
-              </To>
-            </Bind>
-            <Bind variable="overwritePrompt">
-              <To key=":Action">
-                <Action>
-                  <Action key="Basics/Function/PushScreen">
-                    <Bind argument="menuScreen">
-                      <To key=":Screen">
-                        <Asset key="UI/Prompt/Overwrite"/>
-                      </To>
-                    </Bind>
-                    <Bind argument="menuInput">
-                      <To key=":InputHandler">
-                        <Asset key="UI/Prompt/Overwrite"/>
-                      </To>
-                    </Bind>
-                    <Bind argument="menu">
-                      <To key="UI/Prompt/Overwrite"/>
-                    </Bind>
+          <ConfirmAction>
+            <Action key="Basics/Script">
+              <Bind variable="project">
+                <To key="Basics/Project/Project"/>
+              </Bind>
+              <Bind variable="unpause">
+                <To key=":Action">
+                  <Action>
+                    <Action key="Basics/Function/Unpause"/>
                   </Action>
-                </Action>
-              </To>
-            </Bind>
-            <Code>if project:exists("Projects/" .. filename:getValue()) then
+                </To>
+              </Bind>
+              <Bind variable="filename">
+                <To key=":String">
+                  <Asset key="UI/VirtualKeyboard/SaveAsPrompt"/>
+                </To>
+              </Bind>
+              <Bind variable="overwritePrompt">
+                <To key=":Action">
+                  <Action>
+                    <Action key="Basics/Function/PushScreen">
+                      <Bind argument="menuScreen">
+                        <To key=":Screen">
+                          <Asset key="UI/Prompt/Overwrite"/>
+                        </To>
+                      </Bind>
+                      <Bind argument="menuInput">
+                        <To key=":InputHandler">
+                          <Asset key="UI/Prompt/Overwrite"/>
+                        </To>
+                      </Bind>
+                      <Bind argument="menu">
+                        <To key="UI/Prompt/Overwrite"/>
+                      </Bind>
+                    </Action>
+                  </Action>
+                </To>
+              </Bind>
+              <Code>if project:exists("Projects/" .. filename:getValue()) then
   overwritePrompt:execute()
 else
-  print('SAVING')
   project:saveAs("Projects/" .. filename:getValue())
   unpause:execute()
 end</Code>
+            </Action>
           </ConfirmAction>
         </VirtualKeyboard>
       </Resources>

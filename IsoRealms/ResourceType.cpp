@@ -45,9 +45,18 @@ namespace IsoRealms {
 //    std::cout << "INFO: ResourceType::loadResource: \"" << mResourceName << "\" done!" << std::endl;
   }
 
+  bool ResourceType::needsSaving(const std::string& id) const {
+    for (IResource* mResource : cResources) {
+      if (mResource->getResourceDataPath() == (cParent->getDataPath(false) + "/" + id + "/" + mResource->getName())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   void ResourceType::save(DOMNodeWriter* node, IAssetIdentifier* identifier, const std::string& tag) {
     for (IResource* mResource : cResources) {
-      if (mResource->getResourceDataPath() == cParent->getDataPath(false)) {
+      if (mResource->getResourceDataPath() == (cParent->getDataPath(false) + "/" + tag + "/" + mResource->getName())) {
         DOMNodeWriter mResourceNode = node->addBranch(tag);
         mResource->save(&mResourceNode, identifier);
       }

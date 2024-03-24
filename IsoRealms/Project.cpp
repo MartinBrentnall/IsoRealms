@@ -373,8 +373,6 @@ namespace IsoRealms {
   void Project::save() {
     if (!cFilename.empty() && cCanSave) {
       DOMNodeWriter mProjectNode(TAG_PROJECT);
-      cDefScreen.save(&mProjectNode, TAG_SCREEN);
-      cDefInputHandler.save(&mProjectNode, TAG_INPUT);
 
       // Save return values and projects
       DOMNodeWriter mInclusionNode = mProjectNode.addBranch(TAG_INCLUDE);
@@ -382,9 +380,12 @@ namespace IsoRealms {
         DOMNodeWriter mIncludedProjectNode = mInclusionNode.addBranch(TAG_PROJECT);
         mIncludedProjectNode.addAttribute(ATTRIBUTE_NAME,  mInclusion->cProject);
         mIncludedProjectNode.addAttribute(ATTRIBUTE_USER,  mInclusion->cUser);
-      }   
+      }
 
-      // Save project actions
+      // Save project used assets
+      cDefScreen.save(&mProjectNode, TAG_SCREEN);
+      cDefInputHandler.save(&mProjectNode, TAG_INPUT);
+      cDefDefaultEditor.save(&mProjectNode, TAG_EDITOR);
       cDefInitAction.save(&mProjectNode, TAG_INIT_ACTION);
       cDefResetAction.save(&mProjectNode, TAG_RESET_ACTION);
       cDefQuitAction.save(&mProjectNode, TAG_QUIT_ACTION);
@@ -392,8 +393,10 @@ namespace IsoRealms {
       // Save modules
       DOMNodeWriter mModulesNode = mProjectNode.addBranch(TAG_MODULES);
       for (const std::unique_ptr<Module>& mModule : cModules) {
-        DOMNodeWriter mModuleNode = mModulesNode.addBranch(TAG_MODULE);
-        mModule->save(&mModuleNode, this);
+        if (mModule->needsSaving()) {
+          DOMNodeWriter mModuleNode = mModulesNode.addBranch(TAG_MODULE);
+          mModule->save(&mModuleNode, this);
+        }
       }
       mProjectNode.save(cFilename);
     }
@@ -726,6 +729,23 @@ namespace IsoRealms {
   std::string Project::getID(const ITexture* texture) const               {return cTextures.getID(texture);}
   std::string Project::getID(const IVertex* vertex) const                 {return cVertices.getID(vertex);}
 
+  void Project::save(DOMNodeWriter* node, I3DModelType*    asset) const {c3DModelTypes.save(  node, asset);}
+  void Project::save(DOMNodeWriter* node, IAssets*         asset) const {cAssets.save(        node, asset);}
+  void Project::save(DOMNodeWriter* node, IActionType*     asset) const {cActionTypes.save(   node, asset);}
+  void Project::save(DOMNodeWriter* node, IBinding*        asset) const {cBindings.save(      node, asset);}
+  void Project::save(DOMNodeWriter* node, IBoolean*        asset) const {cBooleans.save(      node, asset);}
+  void Project::save(DOMNodeWriter* node, IColour*         asset) const {cColours.save(       node, asset);}
+  void Project::save(DOMNodeWriter* node, IEditable*       asset) const {cEditables.save(     node, asset);}
+  void Project::save(DOMNodeWriter* node, IFloat*          asset) const {cFloats.save(        node, asset);}
+  void Project::save(DOMNodeWriter* node, IFont*           asset) const {cFonts.save(         node, asset);}
+  void Project::save(DOMNodeWriter* node, IInputHandler*   asset) const {cInputHandlers.save( node, asset);}
+  void Project::save(DOMNodeWriter* node, IInteger*        asset) const {cIntegers.save(      node, asset);}
+  void Project::save(DOMNodeWriter* node, IScreen*         asset) const {cScreens.save(       node, asset);}
+  void Project::save(DOMNodeWriter* node, IProjectOptions* asset) const {cProjectOptions.save(node, asset);}
+  void Project::save(DOMNodeWriter* node, IString*         asset) const {cStrings.save(       node, asset);}
+  void Project::save(DOMNodeWriter* node, ITexture*        asset) const {cTextures.save(      node, asset);}
+  void Project::save(DOMNodeWriter* node, IVertex*         asset) const {cVertices.save(      node, asset);}
+
   Project::ActionExecutor::Action::Action(ActionExecutor* parent, DOMNode& node, const std::string& id, IBindingRegistry* localArgs) :
             cParent(parent),
             cActionType(parent->cParent, [this]() {
@@ -742,8 +762,8 @@ namespace IsoRealms {
     }
   }
 
-  void Project::ActionExecutor::Action::save(DOMNodeWriter* node, IAssetIdentifier* identifier, const std::string& tag) const {
-    cAction->save(node, identifier, tag);
+  void Project::ActionExecutor::Action::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
+    cAction->save(node, identifier);
   }
 
   Project::ActionExecutor::ActionExecutor::Action::~Action() {
@@ -780,10 +800,10 @@ namespace IsoRealms {
     return nullptr;
   }
 
-  void Project::ActionExecutor::save(DOMNodeWriter* node, IAssetIdentifier* identifier, const std::string& tag) const {
-    DOMNodeWriter mActionNode = node->addBranch(tag);
+  void Project::ActionExecutor::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
     for (const std::unique_ptr<Action>& mAction : cActions) {
-      mAction->save(&mActionNode, identifier, "");
+      DOMNodeWriter mActionNode = node->addBranch(TAG_ACTION);
+      mAction->save(&mActionNode, identifier);
     }
   }
 
@@ -920,8 +940,8 @@ namespace IsoRealms {
     return cParent;
   }
 
-  void Project::QuitActionType::QuitAction::save(DOMNodeWriter* node, IAssetIdentifier* identifier, const std::string& tag) const {
-// TODO    node->addAttribute("name", identifier->getID(cParent));
+  void Project::QuitActionType::QuitAction::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
+    identifier->save(node, cParent);
   }
 
   bool Project::QuitActionType::QuitAction::hasConfiguration() const {

@@ -30,8 +30,9 @@ namespace IsoRealms {
     });
   }
 
-  void ProjectOptions::save(DOMNodeWriter* node, const std::string& attribute) const {
-    node->addAttribute(attribute, cProject->getID(cProjectOptions));
+  void ProjectOptions::save(DOMNodeWriter* node, const std::string& tag) const {
+    DOMNodeWriter mAssetNode = node->addBranch(tag);
+    cProject->save(&mAssetNode, cProjectOptions);
   }
 
   std::string ProjectOptions::get() const {

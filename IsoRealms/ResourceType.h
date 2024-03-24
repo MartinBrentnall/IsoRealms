@@ -47,6 +47,7 @@ namespace IsoRealms {
     public:
     ResourceType(IResourceTypeDefinition* resourceType, IModuleInternal* parent, IAssetRegistry* assetRegistry, const std::string& id, const std::string& name, const std::string& category);
     void loadResource(DOMNode& node, IProject* project, IOptions* options, const std::string& resourceDataPath);
+    bool needsSaving(const std::string& id) const;
     void save(DOMNodeWriter* node, IAssetIdentifier* identifier, const std::string& tag);
     
     /****************************\

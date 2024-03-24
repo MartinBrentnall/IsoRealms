@@ -32,12 +32,9 @@ namespace IsoRealms::Spindizzy {
     });
   }
 
-  void BoundaryType::save(DOMNodeWriter* node, const std::string& attribute) const {
-    node->addAttribute(attribute, cSpindizzy.getID(cBoundaryType));
-  }
-
-  std::string BoundaryType::get() const {
-    return cSpindizzy.getID(cBoundaryType);
+  void BoundaryType::save(DOMNodeWriter* node, const std::string& tag) const {
+    DOMNodeWriter mAssetNode = node->addBranch(tag);
+    cSpindizzy.save(&mAssetNode, cBoundaryType);
   }
 
   void BoundaryType::set(DOMNode& node) {

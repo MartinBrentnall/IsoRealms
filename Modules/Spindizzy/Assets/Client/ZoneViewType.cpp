@@ -32,12 +32,9 @@ namespace IsoRealms::Spindizzy {
     });
   }
 
-  void ZoneViewType::save(DOMNodeWriter* node, const std::string& attribute) const {
-    // TODO: Implement this.
-  }
-
-  std::string ZoneViewType::get() const {
-    return cSpindizzy->getID(cZoneViewType);
+  void ZoneViewType::save(DOMNodeWriter* node, const std::string& tag) const {
+    DOMNodeWriter mAssetNode = node->addBranch(tag);
+    cSpindizzy->save(&mAssetNode, cZoneViewType);
   }
 
   void ZoneViewType::set(DOMNode& node, WorldView* owner) {

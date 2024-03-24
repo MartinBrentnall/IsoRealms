@@ -32,12 +32,9 @@ namespace IsoRealms::Spindizzy {
     });
   }
 
-  void SurfacePattern::save(DOMNodeWriter* node, const std::string& attribute) const {
-    // TODO: Implement this.
-  }
-
-  std::string SurfacePattern::get() const {
-    return cSpindizzy->getID(cSurfacePattern);
+  void SurfacePattern::save(DOMNodeWriter* node, const std::string& tag) const {
+    DOMNodeWriter mAssetNode = node->addBranch(tag);
+    cSpindizzy->save(&mAssetNode, cSurfacePattern);
   }
 
   void SurfacePattern::set(DOMNode& node) {

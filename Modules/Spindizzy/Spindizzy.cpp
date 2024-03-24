@@ -254,16 +254,15 @@ namespace IsoRealms::Spindizzy {
   void Spindizzy::release(IAssetUser<IZoneObjectTypeTrait>* user, IZoneObjectTypeTrait* asset) {cZoneObjectTypeTraits.release(user, asset);}
   void Spindizzy::release(IAssetUser<IZoneViewType>*        user, IZoneViewType*        asset) {cZoneViewTypes.release(       user, asset);}
 
-  // TODO: Replace these with save function.
-  std::string Spindizzy::getID(const IBoundaryType*        asset) const {return cBoundaryTypes.getID(       asset);}
-  std::string Spindizzy::getID(const ICamera*              asset) const {return cCameras.getID(             asset);}
-  std::string Spindizzy::getID(const IPhysicalObjectType*  asset) const {return cPhysicalObjectTypes.getID( asset);}
-  std::string Spindizzy::getID(const ISurfacePattern*      asset) const {return cSurfacePatterns.getID(     asset);}
-  std::string Spindizzy::getID(const IWallPattern*         asset) const {return cWallPatterns.getID(        asset);}
-  std::string Spindizzy::getID(const IWorldEditorTool*     asset) const {return cWorldEditorTools.getID(    asset);}
-  std::string Spindizzy::getID(const IZoneObjectTypeTrait* asset) const {return cZoneObjectTypeTraits.getID(asset);}
-  std::string Spindizzy::getID(const IZoneViewType*        asset) const {return cZoneViewTypes.getID(       asset);}
-  
+  void Spindizzy::save(DOMNodeWriter* node, IBoundaryType*        asset) const {cBoundaryTypes.save(       node, asset);}
+  void Spindizzy::save(DOMNodeWriter* node, ICamera*              asset) const {cCameras.save(             node, asset);}
+  void Spindizzy::save(DOMNodeWriter* node, IPhysicalObjectType*  asset) const {cPhysicalObjectTypes.save( node, asset);}
+  void Spindizzy::save(DOMNodeWriter* node, ISurfacePattern*      asset) const {cSurfacePatterns.save(     node, asset);}
+  void Spindizzy::save(DOMNodeWriter* node, IWallPattern*         asset) const {cWallPatterns.save(        node, asset);}
+  void Spindizzy::save(DOMNodeWriter* node, IWorldEditorTool*     asset) const {cWorldEditorTools.save(    node, asset);}
+  void Spindizzy::save(DOMNodeWriter* node, IZoneObjectTypeTrait* asset) const {cZoneObjectTypeTraits.save(node, asset);}
+  void Spindizzy::save(DOMNodeWriter* node, IZoneViewType*        asset) const {cZoneViewTypes.save(       node, asset);}
+
   std::vector<IBoundaryType*> Spindizzy::getAllBoundaryTypes() {
     std::vector<IBoundaryType*> mTypes;
     for (PickUpType* mType : cResourcePickUp) {mTypes.push_back(mType);}
@@ -476,6 +475,7 @@ namespace IsoRealms::Spindizzy {
     node->addAttribute(ATTRIBUTE_EDITOR_MAX_Z,              cEditorMaxZ,         DEFAULT_EDITOR_MAX_Z);
     node->addAttribute(ATTRIBUTE_AUTOMATIC_ZONE_MANAGEMENT, getID(cAutomaticZoneManagementType));
     node->addAttribute(ATTRIBUTE_DEFAULT_THEME_SET,         getID(cDefaultThemeSet));
+    cDefaultWorldEditorTool.save(node, TAG_DEFAULT_WORLD_EDITOR_TOOL);
     // TODO
 //     node->addAttribute(TAG_DEFAULT_WORLD_EDITOR_TOOL, getID(cDefaultWorldEditorTool));
 //     for (IWorldEditorTool* mTool : cAvailableWorldEditorTools) {

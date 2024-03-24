@@ -32,8 +32,9 @@ namespace IsoRealms {
     });
   }
 
-  void Float::save(DOMNodeWriter* node, const std::string& attribute) const {
-    node->addAttribute(attribute, cProject->getID(cFloat));
+  void Float::save(DOMNodeWriter* node, const std::string& tag) const {
+    DOMNodeWriter mAssetNode = node->addBranch(tag);
+    cProject->save(&mAssetNode, cFloat);
   }
 
   std::string Float::get() const {

@@ -30,8 +30,9 @@ namespace IsoRealms {
     });
   }
 
-  void Vertex::save(DOMNodeWriter* node, const std::string& attribute) const {
-    node->addAttribute(attribute, cProject->getID(cVertex));
+  void Vertex::save(DOMNodeWriter* node, const std::string& tag) const {
+    DOMNodeWriter mAssetNode = node->addBranch(tag);
+    cProject->save(&mAssetNode, cVertex);
   }
 
   std::string Vertex::get() const {

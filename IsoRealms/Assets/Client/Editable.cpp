@@ -30,8 +30,9 @@ namespace IsoRealms {
     });
   }
 
-  void Editable::save(DOMNodeWriter* node, const std::string& attribute) {
-    node->addAttribute(attribute, cProject->getID(cEditable));
+  void Editable::save(DOMNodeWriter* node, const std::string& tag) {
+    DOMNodeWriter mAssetNode = node->addBranch(tag);
+    cProject->save(&mAssetNode, cEditable);
   }
 
   std::string Editable::get() const {

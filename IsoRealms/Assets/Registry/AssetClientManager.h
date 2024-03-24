@@ -154,6 +154,12 @@ namespace IsoRealms {
     std::string getID(const TYPE* asset) const {
       return "TODO"; //cRegistry.getID(asset);
     }
+
+    void save(DOMNodeWriter* node, const TYPE* asset) const {
+      const IAssetProvider<OWNER, TYPE>* mProvider = getProvider(asset);
+      std::string mID = cRegistry.getID(mProvider);
+      node->addAttribute(ATTRIBUTE_KEY, mID);
+    }
     
     void addAssetListener(IAssetListener<OWNER, TYPE>* listener) {
       cRegistry.addAssetListener(listener);
@@ -213,7 +219,7 @@ namespace IsoRealms {
       }
     };
 
-    const IAssetProvider<OWNER, TYPE>* getProvider(const TYPE* asset) {
+    const IAssetProvider<OWNER, TYPE>* getProvider(const TYPE* asset) const {
       for (std::pair<const IAssetProvider<OWNER, TYPE>*, std::map<TYPE*, std::vector<IAssetUser<TYPE>*>>> mPairA : cClients) {
         for (std::pair<TYPE*, std::vector<IAssetUser<TYPE>*>> mPairB : mPairA.second) {
           if (mPairB.first == asset) {
@@ -223,7 +229,7 @@ namespace IsoRealms {
       }
 
       // Special case where asset is a singleton that has no clients yet.
-      typename std::map<const TYPE*, std::unique_ptr<AssetSingleton<OWNER, TYPE>>>::iterator mIterator = cAssetSingletons.find(asset);
+      typename std::map<const TYPE*, std::unique_ptr<AssetSingleton<OWNER, TYPE>>>::const_iterator mIterator = cAssetSingletons.find(asset);
       if (mIterator != cAssetSingletons.end()) {
         return mIterator->second.get();
       }

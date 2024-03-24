@@ -32,12 +32,10 @@ namespace IsoRealms::Spindizzy {
     });
   }
 
-  void Camera::save(DOMNodeWriter* node, const std::string& attribute) const {
-    // TODO: Implement this.
-  }
-
-  std::string Camera::get() const {
-    return cSpindizzy->getID(cCamera);
+  void Camera::save(DOMNodeWriter* node, const std::string& tag) const {
+    DOMNodeWriter mAssetNode = node->addBranch(tag);
+    cSpindizzy->save(&mAssetNode, cCamera);
+    cCamera->save(&mAssetNode);
   }
 
   void Camera::set(DOMNode& node, WorldView* owner) {

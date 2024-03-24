@@ -155,8 +155,6 @@ namespace IsoRealms::Spindizzy {
   }
   
   void CameraGameplay::save(DOMNodeWriter* node) const {
-    Spindizzy* mSpindizzy = cParent->getWorld()->getSpindizzy();
-    node->addAttribute(ATTRIBUTE_TYPE, mSpindizzy->getID(this));
     node->addAttribute(ATTRIBUTE_DIRECTION, cDefAngle == VALUE_NORTH_EAST ? DIRECTION_NORTH_EAST
                                           : cDefAngle == VALUE_NORTH_WEST ? DIRECTION_NORTH_WEST
                                           : cDefAngle == VALUE_SOUTH_EAST ? DIRECTION_SOUTH_EAST

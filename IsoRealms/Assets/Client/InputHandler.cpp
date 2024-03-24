@@ -30,8 +30,9 @@ namespace IsoRealms {
     });
   }
 
-  void InputHandler::save(DOMNodeWriter* node, const std::string& attribute) const {
-    node->addAttribute(attribute, cProject->getID(cInputHandler));
+  void InputHandler::save(DOMNodeWriter* node, const std::string& tag) const {
+    DOMNodeWriter mAssetNode = node->addBranch(tag);
+    cProject->save(&mAssetNode, cInputHandler);
   }
 
   std::string InputHandler::get() const {
