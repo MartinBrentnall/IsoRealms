@@ -35,10 +35,6 @@ namespace IsoRealms {
     cProject->save(&mAssetNode, cVertex);
   }
 
-  std::string Vertex::get() const {
-    return cProject->getID(cVertex);
-  }
-
   void Vertex::set(DOMNode& node) {
     cProject->release(this, cVertex);
     cVertex = cProject->getVertex(this, node);

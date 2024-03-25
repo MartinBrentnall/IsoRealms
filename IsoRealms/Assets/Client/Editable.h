@@ -38,9 +38,8 @@ namespace IsoRealms {
     Editable(IProject* project);
 
     void init(DOMNode& node);
-    void save(DOMNodeWriter* node, const std::string& attribute);
+    void save(DOMNodeWriter* node, const std::string& tag);
 
-    std::string get() const;
     void set(DOMNode& node);
     IEditable* operator->() const {
       return cEditable;

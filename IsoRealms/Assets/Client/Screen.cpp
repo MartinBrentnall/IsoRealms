@@ -35,10 +35,6 @@ namespace IsoRealms {
     cProject->save(&mAssetNode, cScreen);
   }
 
-  std::string Screen::get() const {
-    return cProject->getID(cScreen);
-  }
-
   void Screen::set(DOMNode& node) {
     cProject->release(this, cScreen);
     cScreen = cProject->getScreen(this, node);

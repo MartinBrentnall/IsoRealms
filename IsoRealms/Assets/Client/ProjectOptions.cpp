@@ -35,10 +35,6 @@ namespace IsoRealms {
     cProject->save(&mAssetNode, cProjectOptions);
   }
 
-  std::string ProjectOptions::get() const {
-    return cProject->getID(cProjectOptions);
-  }
-
   void ProjectOptions::set(DOMNode& node) {
     cProject->release(this, cProjectOptions);
     cProjectOptions = cProject->getProjectOptions(this, node);

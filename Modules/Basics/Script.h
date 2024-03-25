@@ -43,10 +43,13 @@ namespace IsoRealms::Basics {
     private:
     class ScriptAction : public IAction {
       public:
-      ScriptAction(Script* parent, IAction* action);
+      ScriptAction(Script* parent, DOMNode& node, IProject* project, unsigned int index, IBindingRegistry* localArgs);
+      ScriptAction(Script* parent, IProject* project, unsigned int index);
 
       const IActionType* getInternalActionType();
-      void destroyInternalAction(Function* mType, IAssets* assets);
+      void destroyInternalAction(IAssets* assets);
+      unsigned int getIndex() const;
+      void unregisterAssets(IAssets* releaser);
 
       /**********************\
        * Implements IAction *
@@ -62,12 +65,13 @@ namespace IsoRealms::Basics {
       Script* cDefParent; /// Parent action type.
       
       // Definition data.
-      IAction* cDefAction; /// Script action call.
+      Function cDefFunction;  /// Function of this action.
+      IAction* cDefAction;    /// Script action call.
+      unsigned int cDefIndex; /// Index number of the function call.
     };
       
     // Functions and actions created by scripting.
     std::map<IAction*, std::unique_ptr<ScriptAction>> cDefScriptActions;
-    std::map<unsigned int, std::unique_ptr<Function>> cDefScriptFunctions; /// Functions created by scripting, mapped by unique index value.
     
     // Private functions.
     unsigned int getNextAvailableIndex();

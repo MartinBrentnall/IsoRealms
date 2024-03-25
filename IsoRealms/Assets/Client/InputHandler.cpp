@@ -35,10 +35,6 @@ namespace IsoRealms {
     cProject->save(&mAssetNode, cInputHandler);
   }
 
-  std::string InputHandler::get() const {
-    return cProject->getID(cInputHandler);
-  }
-
   void InputHandler::set(DOMNode& node) {
     cProject->release(this, cInputHandler);
     cInputHandler = cProject->getInputHandler(this, node);

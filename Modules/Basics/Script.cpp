@@ -25,8 +25,8 @@ namespace IsoRealms::Basics {
 
   void Script::unregisterAssets(IAssetRemover* remover, IAssets* releaser) {
     remover->remove(this);
-    for (const std::pair<const unsigned int, std::unique_ptr<Function>>& mScript : cDefScriptFunctions) {
-      mScript.second->unregisterAssets(nullptr, releaser);
+    for (const std::pair<IAction* const, std::unique_ptr<ScriptAction>>& mScript : cDefScriptActions) {
+      mScript.second->unregisterAssets(releaser);
     }
   }
 
@@ -35,8 +35,8 @@ namespace IsoRealms::Basics {
     bool mAvailableIndexChanged = true;
     while (mAvailableIndexChanged) {
       mAvailableIndexChanged = false;
-      for (const std::pair<const unsigned int, std::unique_ptr<Function>>& mScript : cDefScriptFunctions) {
-        if (mScript.first == mAvailableIndex) {
+      for (const std::pair<IAction* const, std::unique_ptr<ScriptAction>>& mScript : cDefScriptActions) {
+        if (mScript.second->getIndex() == mAvailableIndex) {
           mAvailableIndex++;
           mAvailableIndexChanged = true;
         }
@@ -46,19 +46,17 @@ namespace IsoRealms::Basics {
   }
 
   IAction* Script::createAction(DOMNode& node, IProject* project, IBindingRegistry* localArgs) {
-    unsigned int mNextAvailableIndex = getNextAvailableIndex();
-    std::string mTempFunctionName = "_t" + Utils::toString(mNextAvailableIndex);
-    cDefScriptFunctions[mNextAvailableIndex] = std::make_unique<Function>(project, mTempFunctionName, node, localArgs);
-    std::unique_ptr<ScriptAction> mScriptAction = std::make_unique<ScriptAction>(this, cDefScriptFunctions[mNextAvailableIndex]->createAction(node, project, nullptr));
-    return cDefScriptActions.emplace(mScriptAction.get(), std::move(mScriptAction)).first->first;
+    std::unique_ptr<ScriptAction> mScriptAction = std::make_unique<ScriptAction>(this, node, project, getNextAvailableIndex(), localArgs);
+    IAction* mAction = mScriptAction.get();
+    cDefScriptActions.emplace(mAction, std::move(mScriptAction));
+    return mAction;
   }
   
   IAction* Script::createAction(IProject* project, IBindingRegistry* localArgs) {
-    unsigned int mNextAvailableIndex = getNextAvailableIndex();
-    std::string mTempFunctionName = "_t" + Utils::toString(mNextAvailableIndex);
-    cDefScriptFunctions[mNextAvailableIndex] = std::make_unique<Function>(project, mTempFunctionName);
-    std::unique_ptr<ScriptAction> mScriptAction = std::make_unique<ScriptAction>(this, cDefScriptFunctions[mNextAvailableIndex]->createAction(project, nullptr));
-    return cDefScriptActions.emplace(mScriptAction.get(), std::move(mScriptAction)).first->first;
+    std::unique_ptr<ScriptAction> mScriptAction = std::make_unique<ScriptAction>(this, project, getNextAvailableIndex());
+    IAction* mAction = mScriptAction.get();
+    cDefScriptActions.emplace(mAction, std::move(mScriptAction));
+    return mAction;
   }
   
   void Script::destroyAction(IAction* action, IAssets* assets) {
@@ -66,37 +64,42 @@ namespace IsoRealms::Basics {
     if (mScriptAction == cDefScriptActions.end()) {
       throw ArgumentException("ERROR: Script::destroyAction: Script of specified action not found.");
     }
-
-    std::vector<unsigned int> mScriptsToRemove;
-    for (const std::pair<const unsigned int, std::unique_ptr<Function>>& mScript : cDefScriptFunctions) {
-      if (mScriptAction->second->getInternalActionType() == mScript.second.get()) {
-        mScriptAction->second->destroyInternalAction(mScript.second.get(), assets);
-        mScriptsToRemove.push_back(mScript.first);
-        break;
-      }
-    }
-
-    cDefScriptActions.erase(mScriptAction);
-    for (unsigned int mIndexToRemove : mScriptsToRemove) {
-      cDefScriptFunctions.erase(mIndexToRemove);
-    }
+    mScriptAction->second->destroyInternalAction(assets);
+    cDefScriptActions.erase(action);
   }
 
   bool Script::renderAssetIcon() const {
     return false;
   }
 
-  Script::ScriptAction::ScriptAction(Script* parent, IAction* action) :
+  Script::ScriptAction::ScriptAction(Script* parent, DOMNode& node, IProject* project, unsigned int index, IBindingRegistry* localArgs) :
             cDefParent(parent),
-            cDefAction(action) {
+            cDefFunction(project, "_t" + Utils::toString(index), node, localArgs),
+            cDefAction(cDefFunction.createAction(node, project, nullptr)),
+            cDefIndex(index) {
+  }
+
+  Script::ScriptAction::ScriptAction(Script* parent, IProject* project, unsigned int index) :
+            cDefParent(parent),
+            cDefFunction(project, "_t" + Utils::toString(index)),
+            cDefAction(cDefFunction.createAction(project, nullptr)),
+            cDefIndex(index) {
   }
 
   const IActionType* Script::ScriptAction::getInternalActionType() {
     return cDefAction->getActionType();
   }
 
-  void Script::ScriptAction::destroyInternalAction(Function* mType, IAssets* assets) {
-    mType->destroyAction(cDefAction, assets);
+  void Script::ScriptAction::destroyInternalAction(IAssets* assets) {
+    cDefFunction.destroyAction(cDefAction, assets);
+  }
+
+  unsigned int Script::ScriptAction::getIndex() const {
+    return cDefIndex;
+  }
+
+  void Script::ScriptAction::unregisterAssets(IAssets* releaser) {
+    cDefFunction.unregisterAssets(nullptr, releaser);
   }
 
   void Script::ScriptAction::execute() {
@@ -108,7 +111,7 @@ namespace IsoRealms::Basics {
   }
   
   void Script::ScriptAction::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    // TODO: Implement this
+    cDefFunction.save(node, identifier);
   }
   
   bool Script::ScriptAction::hasConfiguration() const {

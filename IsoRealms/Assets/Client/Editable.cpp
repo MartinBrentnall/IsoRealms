@@ -35,10 +35,6 @@ namespace IsoRealms {
     cProject->save(&mAssetNode, cEditable);
   }
 
-  std::string Editable::get() const {
-    return cProject->getID(cEditable);
-  }
-
   void Editable::set(DOMNode& node) {
     cProject->release(this, cEditable);
     cEditable = cProject->getEditable(this, node);

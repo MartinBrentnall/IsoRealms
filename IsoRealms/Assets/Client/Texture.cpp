@@ -49,10 +49,6 @@ namespace IsoRealms {
     mTextureNode.addAttribute(ATTRIBUTE_SCALE_Y, cDefScaleY);
   }
 
-  std::string Texture::get() const {
-    return cProject->getID(cTexture);
-  }
-
   void Texture::set(DOMNode& node) {
     cProject->release(this, cTexture);
     cTexture = cProject->getTexture(this, node);

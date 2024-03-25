@@ -37,10 +37,6 @@ namespace IsoRealms {
     cProject->save(&mAssetNode, cFloat);
   }
 
-  std::string Float::get() const {
-    return cProject->getID(cFloat);
-  }
-
   void Float::set(DOMNode& node) {
     cProject->release(this, cFloat);
     cFloat = cProject->getFloat(this, node, cListener != nullptr ? this : nullptr);

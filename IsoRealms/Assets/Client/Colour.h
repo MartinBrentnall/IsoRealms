@@ -33,9 +33,8 @@ namespace IsoRealms {
     Colour(IProject* project, float defaultRed, float defaultGreen, float defaultBlue, float defaultAlpha = 0.0f, std::function<void()> listener = nullptr);
 
     void init(DOMNode& node);
-    void save(DOMNodeWriter* node, const std::string& attribute) const;
+    void save(DOMNodeWriter* node, const std::string& tag) const;
 
-    std::string get() const;
     void set(DOMNode& node);
 
     /**********************\

@@ -35,10 +35,6 @@ namespace IsoRealms {
     cProject->save(&mAssetNode, cInteger);
   }
 
-  std::string Integer::get() const {
-    return cProject->getID(cInteger);
-  }
-
   void Integer::set(DOMNode& node) {
     cProject->release(this, cInteger);
     cInteger = cProject->getInteger(this, node);

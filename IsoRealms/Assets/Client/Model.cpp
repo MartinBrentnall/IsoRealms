@@ -84,10 +84,6 @@ namespace IsoRealms {
     glScalef(cDefScaleX, cDefScaleY, cDefScaleZ);
   }
 
-  std::string Model::get() const {
-    return cProject->getID(cModel);
-  }
-
   void Model::set(DOMNode& node) {
     cProject->release(this, cModel);
     cModel = cProject->getModelType(this, node);

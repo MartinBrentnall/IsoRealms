@@ -42,10 +42,6 @@ namespace IsoRealms {
     cProject->save(&mAssetNode, cActionType);
   }
 
-  std::string ActionType::get() const {
-    return cProject->getID(cActionType);
-  }
-
   void ActionType::set(DOMNode& node) {
     cProject->release(this, cActionType);
     cActionType = cProject->getActionType(this, node);

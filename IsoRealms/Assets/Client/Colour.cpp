@@ -40,10 +40,6 @@ namespace IsoRealms {
     cProject->save(&mAssetNode, cColour);
   }
 
-  std::string Colour::get() const {
-    return cProject->getID(cColour);
-  }
-
   void Colour::set(DOMNode& node) {
     cProject->release(this, cColour);
     cColour = cProject->getColour(this, node, cListener != nullptr ? this : nullptr);

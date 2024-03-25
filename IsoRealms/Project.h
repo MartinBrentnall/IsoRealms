@@ -271,6 +271,7 @@ namespace IsoRealms {
       public:
       ProjectProperty(Project* parent, DOMNode& node);
       void setValue(const std::string& value);
+      void save(DOMNodeWriter& node) const;
 
       private:
       Action cChangeAction;
@@ -610,23 +611,6 @@ namespace IsoRealms {
     /*******************************\
      * Implements IAssetIdentifier *
     \*******************************/
-    std::string getID(const IActionType*     asset) const override;
-    std::string getID(const IAssets*         asset) const override;
-    std::string getID(const I3DModelType*    asset) const override;
-    std::string getID(const IBinding*        asset) const override;
-    std::string getID(const IBoolean*        asset) const override;
-    std::string getID(const IColour*         asset) const override;
-    std::string getID(const IEditable*       asset) const override;
-    std::string getID(const IFloat*          asset) const override;
-    std::string getID(const IFont*           asset) const override;
-    std::string getID(const IInputHandler*   asset) const override;
-    std::string getID(const IInteger*        asset) const override;
-    std::string getID(const IScreen*         asset) const override;
-    std::string getID(const IProjectOptions* asset) const override;
-    std::string getID(const IString*         asset) const override;
-    std::string getID(const ITexture*        asset) const override;
-    std::string getID(const IVertex*         asset) const override;
-
     void save(DOMNodeWriter* node, IActionType*     asset) const override;
     void save(DOMNodeWriter* node, IAssets*         asset) const override;
     void save(DOMNodeWriter* node, I3DModelType*    asset) const override;

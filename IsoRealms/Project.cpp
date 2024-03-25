@@ -389,6 +389,13 @@ namespace IsoRealms {
       cDefInitAction.save(&mProjectNode, TAG_INIT_ACTION);
       cDefResetAction.save(&mProjectNode, TAG_RESET_ACTION);
       cDefQuitAction.save(&mProjectNode, TAG_QUIT_ACTION);
+
+      // Save properties
+      for (std::pair<const std::string, std::unique_ptr<ProjectProperty>>& mPair : cProperties) {
+        DOMNodeWriter mPropertyNode = mProjectNode.addBranch(TAG_PROPERTY);
+        mPropertyNode.addAttribute(ATTRIBUTE_ID, mPair.first);
+        mPair.second->save(mPropertyNode);
+      }
       
       // Save modules
       DOMNodeWriter mModulesNode = mProjectNode.addBranch(TAG_MODULES);
@@ -712,23 +719,6 @@ namespace IsoRealms {
     cMainThreadInitTasks.push(task);
   }
 
-  std::string Project::getID(const I3DModelType* modelType) const         {return c3DModelTypes.getID(modelType);}
-  std::string Project::getID(const IAssets* assets) const                 {return cAssets.getID(assets);}
-  std::string Project::getID(const IActionType* actionType) const         {return cActionTypes.getID(actionType);}
-  std::string Project::getID(const IBinding* binding) const               {return cBindings.getID(binding);}
-  std::string Project::getID(const IBoolean* boolean) const               {return cBooleans.getID(boolean);}
-  std::string Project::getID(const IColour* colour) const                 {return cColours.getID(colour);}
-  std::string Project::getID(const IEditable* asset) const                {return cEditables.getID(asset);}
-  std::string Project::getID(const IFloat* afloat) const                  {return cFloats.getID(afloat);}
-  std::string Project::getID(const IFont* font) const                     {return cFonts.getID(font);}
-  std::string Project::getID(const IInputHandler* inputHandler) const     {return cInputHandlers.getID(inputHandler);}
-  std::string Project::getID(const IInteger* integer) const               {return cIntegers.getID(integer);}
-  std::string Project::getID(const IScreen* screen) const                 {return cScreens.getID(screen);}
-  std::string Project::getID(const IProjectOptions* projectOptions) const {return cProjectOptions.getID(projectOptions);}
-  std::string Project::getID(const IString* string) const                 {return cStrings.getID(string);}
-  std::string Project::getID(const ITexture* texture) const               {return cTextures.getID(texture);}
-  std::string Project::getID(const IVertex* vertex) const                 {return cVertices.getID(vertex);}
-
   void Project::save(DOMNodeWriter* node, I3DModelType*    asset) const {c3DModelTypes.save(  node, asset);}
   void Project::save(DOMNodeWriter* node, IAssets*         asset) const {cAssets.save(        node, asset);}
   void Project::save(DOMNodeWriter* node, IActionType*     asset) const {cActionTypes.save(   node, asset);}
@@ -763,6 +753,7 @@ namespace IsoRealms {
   }
 
   void Project::ActionExecutor::Action::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
+    identifier->save(node, *cActionType);
     cAction->save(node, identifier);
   }
 
@@ -853,6 +844,10 @@ namespace IsoRealms {
 
   void Project::ProjectProperty::setValue(const std::string& value) {
     cChangeAction.execute();
+  }
+
+  void Project::ProjectProperty::save(DOMNodeWriter& node) const {
+    cChangeAction.save(&node, TAG_ACTION);
   }
 
   void Project::setProperty(const std::string& property, const std::string& value) {

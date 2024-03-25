@@ -54,7 +54,7 @@ namespace IsoRealms {
     }
     
     void save(DOMNodeWriter* node, IBindingRegistry* localBindings, IAssetIdentifier* identifier, const std::string& attribute) const override {
-      node->addAttribute(attribute, identifier->getID(cDefValue));
+// TODO      node->addAttribute(attribute, identifier->getID(cDefValue));
     }
     
     /****************************\

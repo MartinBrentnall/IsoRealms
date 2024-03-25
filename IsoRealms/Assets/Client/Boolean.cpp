@@ -37,10 +37,6 @@ namespace IsoRealms {
     cProject->save(&mAssetNode, cBoolean);
   }
 
-  std::string Boolean::get() const {
-    return cProject->getID(cBoolean);
-  }
-
   void Boolean::set(DOMNode& node) {
     cProject->release(this, cBoolean);
     cBoolean = cProject->getBoolean(this, node, cListener != nullptr ? this : nullptr);

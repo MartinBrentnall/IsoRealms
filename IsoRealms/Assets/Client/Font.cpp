@@ -35,10 +35,6 @@ namespace IsoRealms {
     cProject->save(&mAssetNode, cFont);
   }
 
-  std::string Font::get() const {
-    return cProject->getID(cFont);
-  }
-
   void Font::set(DOMNode& node) {
     cProject->release(this, cFont);
     cFont = cProject->getFont(this, node);

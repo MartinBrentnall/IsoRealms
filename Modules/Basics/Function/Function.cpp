@@ -222,7 +222,6 @@ namespace IsoRealms::Basics {
   }
 
   void Function::Call::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    identifier->save(node, cDefParent);
     for (unsigned int i = 0; i < cDefBindings.size(); i++) {
       if (cDefBindings[i] != nullptr) {
         DOMNodeWriter mBindBranch = node->addBranch(TAG_BIND);
