@@ -20,6 +20,7 @@
 
 #include <memory>
 
+#include "IAsset.h"
 #include "IEditableScreen.h"
 
 namespace IsoRealms {
@@ -30,7 +31,7 @@ namespace IsoRealms {
   /**
    * Interface for Editable assets.
    */
-  class IEditable {
+  class IEditable : public IAsset {
     public:
       
     /**

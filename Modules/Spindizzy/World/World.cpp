@@ -692,6 +692,10 @@ namespace IsoRealms::Spindizzy {
     return mReturnValue;
   }
 
+  bool World::renderAssetIcon() const {
+    return false;
+  }
+
   float World::getAbyssDepth() const {
     return -20.0f;
   }

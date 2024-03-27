@@ -34,6 +34,10 @@ namespace IsoRealms::Spindizzy {
     return cEditingModifiers.emplace_back(std::make_unique<Modifier>(*this, editor)).get();
   }
 
+  bool PropertiesTool::renderAssetIcon() const {
+    return false;
+  }
+
   PropertiesTool::Modifier::Modifier(PropertiesTool& parent, WorldEditor* editor) :
             cParent(parent),
             cEditor(editor),

@@ -43,12 +43,13 @@ namespace IsoRealms::Spindizzy {
     void save(DOMNodeWriter& node) const override;
     std::unique_ptr<IZoneObjectTrait> createTrait(ZoneObject& object) override;
     void registerAssets(ISpindizzyRegistry* registry) override;
-    
+
     /****************************\
      * Implements IBoundaryType *
     \****************************/
     std::string getBoundaryTypeID() const override;
     IBinding* getBinding(const std::string& id) const override;
+    bool renderAssetIcon() const override;
     
     private:
     

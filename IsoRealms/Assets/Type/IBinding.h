@@ -20,6 +20,8 @@
 
 #include <string>
 
+#include "IAsset.h"
+
 namespace IsoRealms {
   class DOMNode;
   class DOMNodeWriter;
@@ -27,7 +29,7 @@ namespace IsoRealms {
   class IAssets;
   class IBindingRegistry;
 
-  class IBinding {
+  class IBinding : public IAsset {
     public:
     virtual void bind(const std::string& bindFunction) const = 0;
     virtual void save(DOMNodeWriter* node, IBindingRegistry* registry, IAssetIdentifier* identifier, const std::string& attribute) const = 0;

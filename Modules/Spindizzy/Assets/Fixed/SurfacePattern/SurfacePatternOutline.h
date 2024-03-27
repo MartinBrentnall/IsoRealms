@@ -44,6 +44,7 @@ namespace IsoRealms::Spindizzy {
     void render(float startX, float endX, float startY, float endY, float z, float xSlope, float ySlope, ISurface::Direction facing) const override;
     void render(float x, float y, float z, float heightSW, float heightSE, float heightNW, float heighNE, bool alternativeSplit) const override;
     void hintInUse(bool inUse) override;
+    bool renderAssetIcon() const override;
 
     private:
 

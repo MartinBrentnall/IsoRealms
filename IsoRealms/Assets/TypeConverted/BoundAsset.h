@@ -31,12 +31,14 @@ namespace IsoRealms {
   template <class T> class BoundAsset : public IBinding,
                                         public IAssetUser<T> {
     private:
+    IProject* cProject;
     sol::state* cDefLuaState;
     IAssetRemover* cAssets;
     T* cDefValue;
 
     public:
     BoundAsset(IProject* project, IAssetRemover* assets, std::function<T*(IAssetUser<T>*)> valueAccessorFunction) :
+              cProject(project),
               cDefLuaState(project->getLuaState()->getState()),
               cAssets(assets),
               cDefValue(valueAccessorFunction(this)) {
@@ -49,6 +51,15 @@ namespace IsoRealms {
     /***********************\
      * Implements IBinding *
     \***********************/
+    bool renderAssetIcon() const override {
+      return false;
+    }
+
+    void saveAsset(DOMNodeWriter* node) const override {
+      DOMNodeWriter mAssetNode = node->addBranch("Asset");
+      cProject->save(&mAssetNode, cDefValue);
+    }
+
     void bind(const std::string& bindFunction) const override {
       (*cDefLuaState)[bindFunction](cDefValue);
     }

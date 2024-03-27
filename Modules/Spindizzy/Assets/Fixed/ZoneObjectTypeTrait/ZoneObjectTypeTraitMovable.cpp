@@ -44,4 +44,8 @@ namespace IsoRealms::Spindizzy {
   void ZoneObjectTypeTraitMovable::registerAssets(ISpindizzyRegistry* registry) {
     // Nothing to do.
   }
+
+  bool ZoneObjectTypeTraitMovable::renderAssetIcon() const {
+    return false;
+  }
 }

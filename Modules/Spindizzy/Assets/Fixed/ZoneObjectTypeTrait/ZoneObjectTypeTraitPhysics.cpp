@@ -95,4 +95,8 @@ namespace IsoRealms::Spindizzy {
   void ZoneObjectTypeTraitPhysics::registerAssets(ISpindizzyRegistry* registry) {
     // Nothing to do.
   }
+
+  bool ZoneObjectTypeTraitPhysics::renderAssetIcon() const {
+    return false;
+  }
 }

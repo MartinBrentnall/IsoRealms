@@ -135,6 +135,10 @@ namespace IsoRealms::Spindizzy {
     cDefTexture->hintTextureInUse(inUse);
   }
 
+  bool SurfacePatternTile::renderAssetIcon() const {
+    return false;
+  }
+
   SurfacePatternTile::SurfacePatternSurface::SurfacePatternSurface(SurfacePatternTile& parent, Surface* surface) :
             cDefParent(parent),
             cDefSurface(surface) {

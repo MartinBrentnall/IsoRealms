@@ -29,5 +29,6 @@ namespace IsoRealms::Spindizzy {
     \**********************************/
     std::string getPhysicalObjectTypeID() const override;
     IBinding* getBinding(const std::string& id) const override;
+    bool renderAssetIcon() const override;
   };
 }

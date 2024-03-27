@@ -49,5 +49,9 @@ namespace IsoRealms::Spindizzy {
   void SurfacePatternDummy::hintInUse(bool inUse) {
     // Nothing to do.
   }
+
+  bool SurfacePatternDummy::renderAssetIcon() const {
+    return false;
+  }
 }
 

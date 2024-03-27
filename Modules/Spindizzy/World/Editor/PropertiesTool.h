@@ -38,6 +38,7 @@ namespace IsoRealms::Spindizzy {
      * Implements IWorldEditorTool *
     \*******************************/
     IWorldEditorToolInstance* createToolInstance(WorldEditor* editor) override;
+    bool renderAssetIcon() const override;
 
     private:
     static const LiteralColour SELECTION_COLOUR;
@@ -48,7 +49,7 @@ namespace IsoRealms::Spindizzy {
                      public IUIConfiguration {
       public:
       Modifier(PropertiesTool& parent, WorldEditor* editor);
-      
+
       /***************************************\
        * Implements IWorldEditorToolInstance *
       \***************************************/

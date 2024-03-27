@@ -57,4 +57,8 @@ namespace IsoRealms::Spindizzy {
   void ZoneViewTypeOverview::registerAssets(ISpindizzyRegistry* registry) {
     registry->addZoneBinding(&cRuntimeParameterView1, &cRuntimeParameterView2, "");
   }
+
+  bool ZoneViewTypeOverview::renderAssetIcon() const {
+    return false;
+  }
 }

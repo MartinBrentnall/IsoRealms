@@ -50,6 +50,10 @@ namespace IsoRealms {
     /***********************\
      * Implements IBinding *
     \***********************/    
+    bool renderAssetIcon() const override {
+      return false;
+    }
+
     void bind(const std::string& bindFunction) const override {
       (*cDefLuaState)[bindFunction](cDefValue);
     }

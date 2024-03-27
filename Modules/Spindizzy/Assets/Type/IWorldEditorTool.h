@@ -18,6 +18,8 @@
  */
 #pragma once
 
+#include "IsoRealms/Types.h"
+
 #include "IWorldEditorToolInstance.h"
 
 namespace IsoRealms::Spindizzy {
@@ -26,7 +28,7 @@ namespace IsoRealms::Spindizzy {
   /**
    * Interface to be implemented by tools for world editing.
    */
-  class IWorldEditorTool {
+  class IWorldEditorTool : public IAsset {
     public:
     virtual IWorldEditorToolInstance* createToolInstance(WorldEditor* editor) = 0;
     

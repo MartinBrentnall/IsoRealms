@@ -108,4 +108,8 @@ namespace IsoRealms::Spindizzy {
   void WallPatternTile::hintInUse(bool inUse) {
     cDefTexture->hintTextureInUse(inUse);
   }
+
+  bool WallPatternTile::renderAssetIcon() const {
+    return false;
+  }
 }

@@ -20,9 +20,13 @@
 
 namespace IsoRealms {
   LiteralEditable::EditableScreen LiteralEditable::DUMMY;
-  
+
   IEditableScreen* LiteralEditable::createEditableScreen(Project* project) {
     return &DUMMY;
+  }
+
+  bool LiteralEditable::renderAssetIcon() const {
+    return false;
   }
 
   void LiteralEditable::EditableScreen::notifyVisible() {

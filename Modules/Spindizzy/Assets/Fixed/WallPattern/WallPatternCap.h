@@ -40,7 +40,8 @@ namespace IsoRealms::Spindizzy {
     std::vector<std::unique_ptr<IVisualElement>> getStaticVisuals(Wall* wall) const override;
     void render(float x, float y, float z, float length, float height, float topSlope, float bottomSlope, Wall::Direction facing) const override;
     void hintInUse(bool inUse) override;
-    
+    bool renderAssetIcon() const override;
+
     private:
 
     // Internal classes.

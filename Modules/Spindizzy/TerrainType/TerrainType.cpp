@@ -232,6 +232,10 @@ namespace IsoRealms::Spindizzy {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }
 
+  bool TerrainType::renderAssetIcon() const {
+    return false;
+  }
+
   TerrainType::Pen::Pen(TerrainType& parent, WorldEditor* editor) :
             cParent(parent),
             cEditor(editor),

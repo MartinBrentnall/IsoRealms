@@ -101,4 +101,8 @@ namespace IsoRealms::Spindizzy {
   void WallPatternOutline::hintInUse(bool inUse) {
     // Nothing to do.
   }
+
+  bool WallPatternOutline::renderAssetIcon() const {
+    return false;
+  }
 }

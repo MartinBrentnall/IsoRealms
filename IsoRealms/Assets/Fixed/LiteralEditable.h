@@ -28,6 +28,7 @@ namespace IsoRealms {
      * Implements IEditable *
     \************************/
     IEditableScreen* createEditableScreen(Project* project) override;
+    bool renderAssetIcon() const override;
 
     private:
     class EditableScreen : public IEditableScreen {

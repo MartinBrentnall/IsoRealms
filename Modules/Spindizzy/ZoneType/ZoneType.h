@@ -74,6 +74,7 @@ namespace IsoRealms::Spindizzy {
      * Implements IWorldEditorTool *
     \*******************************/
     IWorldEditorToolInstance* createToolInstance(WorldEditor* editor) override;
+    bool renderAssetIcon() const override;
 
     private:
 

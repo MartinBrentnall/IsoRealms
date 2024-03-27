@@ -159,6 +159,7 @@ namespace IsoRealms {
       const IAssetProvider<OWNER, TYPE>* mProvider = getProvider(asset);
       std::string mID = cRegistry.getID(mProvider);
       node->addAttribute(ATTRIBUTE_KEY, mID);
+      asset->saveAsset(node);
     }
     
     void addAssetListener(IAssetListener<OWNER, TYPE>* listener) {

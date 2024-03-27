@@ -36,10 +36,6 @@ namespace IsoRealms {
     cProject->save(&mAssetNode, cDefBinding);
   }
 
-//   std::string Binding::get() const {
-//     return cDefRegistry->getBindingID(cDefBinding);
-//   }
-
   void Binding::set(DOMNode& node) {
     cProject->release(this, cDefBinding);
     cDefBinding = cProject->getBinding(this, node, cDefRegistry);

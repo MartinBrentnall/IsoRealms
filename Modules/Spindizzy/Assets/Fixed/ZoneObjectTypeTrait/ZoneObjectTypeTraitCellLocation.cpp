@@ -42,6 +42,10 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
   
+  bool ZoneObjectTypeTraitCellLocation::renderAssetIcon() const {
+    return false;
+  }
+
   IZoneObjectTraitEditor::InputEditResult ZoneObjectTypeTraitCellLocation::inputEdit(sf::Event& event, WorldEditor* editor) {
     switch (event.type) {
       case sf::Event::KeyPressed: {

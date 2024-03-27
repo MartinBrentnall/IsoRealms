@@ -160,6 +160,7 @@ namespace IsoRealms::Spindizzy {
      * Implements IEditable *
     \************************/
     IEditableScreen* createEditableScreen(Project* project) override;
+    bool renderAssetIcon() const override;
 
     // TODO: To be replaced with dynamic solution.
     float getAbyssDepth() const;

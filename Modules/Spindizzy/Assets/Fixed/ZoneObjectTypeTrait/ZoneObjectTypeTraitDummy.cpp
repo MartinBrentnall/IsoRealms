@@ -32,4 +32,8 @@ namespace IsoRealms::Spindizzy {
   void ZoneObjectTypeTraitDummy::registerAssets(ISpindizzyRegistry* registry) {
     // Nothing to do.
   }
+
+  bool ZoneObjectTypeTraitDummy::renderAssetIcon() const {
+    return false;
+  }
 }

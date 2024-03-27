@@ -30,4 +30,8 @@ namespace IsoRealms {
   void LiteralBinding::release(IAssets* releaser) {
     // Nothing to do.
   }
+
+  bool LiteralBinding::renderAssetIcon() const {
+    return false;
+  }
 }

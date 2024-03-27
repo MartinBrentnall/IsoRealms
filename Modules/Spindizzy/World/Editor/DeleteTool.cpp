@@ -28,6 +28,10 @@ namespace IsoRealms::Spindizzy {
     return cEditingErasers.emplace_back(std::make_unique<Eraser>(*this, editor)).get();
   }
 
+  bool DeleteTool::renderAssetIcon() const {
+    return false;
+  }
+
   DeleteTool::Eraser::Eraser(DeleteTool& parent, WorldEditor* editor) :
             cParent(parent),
             cEditor(editor),

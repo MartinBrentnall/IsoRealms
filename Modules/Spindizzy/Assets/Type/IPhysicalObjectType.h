@@ -23,7 +23,7 @@
 #include "IsoRealms/Types.h"
 
 namespace IsoRealms::Spindizzy {
-  class IPhysicalObjectType {
+  class IPhysicalObjectType : public IAsset {
     public:
     virtual std::string getPhysicalObjectTypeID() const = 0;
     virtual IBinding* getBinding(const std::string& id) const = 0;

@@ -176,6 +176,10 @@ namespace IsoRealms::Spindizzy {
     // TODO: Implement this.
   }
 
+  bool CameraTransitional::renderAssetIcon() const {
+    return false;
+  }
+
   void CameraTransitional::yawChanged(ICamera* camera) {
     cRuntimeYawStateNotifier->stateChanged(&cYaw);
   }

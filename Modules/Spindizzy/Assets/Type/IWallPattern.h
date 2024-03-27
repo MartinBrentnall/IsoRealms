@@ -28,7 +28,7 @@
 namespace IsoRealms::Spindizzy {
   class Wall;
 
-  class IWallPattern {
+  class IWallPattern : public IAsset {
     public:
     virtual bool contains(ITexture* texture) = 0;
     virtual void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const = 0;

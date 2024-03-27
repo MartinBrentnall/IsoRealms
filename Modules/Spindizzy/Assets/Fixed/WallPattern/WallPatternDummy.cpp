@@ -42,4 +42,8 @@ namespace IsoRealms::Spindizzy {
   void WallPatternDummy::hintInUse(bool inUse) {
     // Nothing to do.
   }
+
+  bool WallPatternDummy::renderAssetIcon() const {
+    return false;
+  }
 }

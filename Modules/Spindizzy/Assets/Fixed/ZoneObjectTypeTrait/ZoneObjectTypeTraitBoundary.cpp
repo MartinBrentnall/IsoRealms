@@ -70,4 +70,8 @@ namespace IsoRealms::Spindizzy {
   IBinding* ZoneObjectTypeTraitBoundary::getBinding(const std::string& id) const {
     return cDefType.getBinding(id);
   }
+
+  bool ZoneObjectTypeTraitBoundary::renderAssetIcon() const {
+    return false;
+  }
 }

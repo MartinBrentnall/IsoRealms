@@ -53,6 +53,7 @@ namespace IsoRealms::Spindizzy {
     void setZone(Zone* zone) override;
     void addListener(ICameraListener* listener) override;
     void removeListener(ICameraListener* listener) override;
+    bool renderAssetIcon() const override;
 
     private:
     

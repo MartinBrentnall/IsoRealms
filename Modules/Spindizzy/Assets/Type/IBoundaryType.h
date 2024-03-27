@@ -20,10 +20,10 @@
 
 #include <string>
 
-#include "IsoRealms/Assets/Type/IBinding.h"
+#include "IsoRealms/Types.h"
 
 namespace IsoRealms::Spindizzy {
-  class IBoundaryType {
+  class IBoundaryType : public IAsset {
     public:
     virtual std::string getBoundaryTypeID() const = 0;
     virtual IBinding* getBinding(const std::string& id) const = 0;

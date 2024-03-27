@@ -79,5 +79,9 @@ namespace IsoRealms::Spindizzy {
     cDefSplitAPattern->hintInUse(inUse);
     cDefSplitBPattern->hintInUse(inUse);
   }
+
+  bool SurfacePatternSplitVariant::renderAssetIcon() const {
+    return false;
+  }
 }
 

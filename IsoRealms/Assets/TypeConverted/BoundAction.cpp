@@ -29,6 +29,10 @@ namespace IsoRealms {
     cDefAction.init(node, TAG_ACTION, nullptr, "");
   }
 
+  bool BoundAction::renderAssetIcon() const {
+    return false;
+  }
+
   void BoundAction::bind(const std::string& bindFunction) const {
     (*cDefLuaState)[bindFunction](&cDefAction);
   }

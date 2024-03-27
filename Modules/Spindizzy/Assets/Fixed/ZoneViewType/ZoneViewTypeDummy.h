@@ -34,5 +34,6 @@ namespace IsoRealms::Spindizzy {
     std::unique_ptr<IZoneView> createZoneView(Zone* zone) override;
     void save(DOMNodeWriter* node) const override;
     void registerAssets(ISpindizzyRegistry* registry) override;
+    bool renderAssetIcon() const override;
   };
 }

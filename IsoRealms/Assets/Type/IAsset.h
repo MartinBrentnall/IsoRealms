@@ -19,6 +19,7 @@
 #pragma once
 
 namespace IsoRealms {
+  class DOMNodeWriter;
 
   /**
    * Base interface for assets.
@@ -27,6 +28,10 @@ namespace IsoRealms {
     public:
 
     virtual bool renderAssetIcon() const = 0;
+
+    virtual void saveAsset(DOMNodeWriter* node) const {
+      // Do nothing.
+    }
 
     virtual ~IAsset() {}
   };

@@ -21,13 +21,14 @@
 #include <memory>
 
 #include "IsoRealms/Persistence/DOMNodeWriter.h"
+#include "IsoRealms/Types.h"
 
 namespace IsoRealms::Spindizzy {
   class ISpindizzyRegistry;
   class IZoneView;
   class Zone;
 
-  class IZoneViewType {
+  class IZoneViewType : public IAsset {
     public:
     virtual std::unique_ptr<IZoneView> createZoneView(Zone* zone) = 0;
     virtual void save(DOMNodeWriter* node) const = 0;

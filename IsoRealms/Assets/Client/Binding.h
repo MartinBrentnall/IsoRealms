@@ -34,7 +34,6 @@ namespace IsoRealms {
     void init(DOMNode& node);
     void save(DOMNodeWriter* node, bool local, const std::string& attribute) const;
 
-//    std::string get() const;
     void set(DOMNode& node);
     IBinding* operator->() const {
       return cDefBinding;

@@ -153,6 +153,10 @@ namespace IsoRealms::Spindizzy {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }
 
+  bool ZoneObjectType::renderAssetIcon() const {
+    return false;
+  }
+
   ZoneObjectType::Pen::Pen(ZoneObjectType& parent, WorldEditor* editor) :
             cParent(parent),
             cEditor(editor) {

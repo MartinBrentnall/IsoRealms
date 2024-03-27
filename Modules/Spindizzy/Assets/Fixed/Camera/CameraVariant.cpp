@@ -113,4 +113,8 @@ namespace IsoRealms::Spindizzy {
   void CameraVariant::removeListener(ICameraListener* listener) {
     // TODO: Implement this.
   }
+
+  bool CameraVariant::renderAssetIcon() const {
+    return false;
+  }
 }

@@ -31,14 +31,15 @@ namespace IsoRealms::Spindizzy {
      * Implements IWorldEditorTool *
     \*******************************/
     IWorldEditorToolInstance* createToolInstance(WorldEditor* editor) override;
+    bool renderAssetIcon() const override;
 
     private:
-    
+
     // Internal classes.
     class Eraser : public IWorldEditorToolInstance {
       public:
       Eraser(DeleteTool& parent, WorldEditor* editor);
-      
+
       /***************************************\
        * Implements IWorldEditorToolInstance *
       \***************************************/
@@ -50,7 +51,7 @@ namespace IsoRealms::Spindizzy {
       bool inputEdit(sf::Event& event) override;
       void processCursorMovement(LiteralVertex* start, LiteralVertex* end) override;
       double getSnapInterval() const override;
-      
+
       private:
       DeleteTool& cParent;
       WorldEditor* cEditor;
@@ -58,7 +59,7 @@ namespace IsoRealms::Spindizzy {
       int cSelectedObject;
       void removeSelectedObject();
     };
-    
+
     // Editing data.
     std::vector<std::unique_ptr<Eraser>> cEditingErasers; /// Active erasers.
   };

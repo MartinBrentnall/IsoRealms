@@ -22,4 +22,8 @@ namespace IsoRealms::Spindizzy {
   IWorldEditorToolInstance* WorldEditorToolDummy::createToolInstance(WorldEditor* editor) {
     return nullptr;
   }
+
+  bool WorldEditorToolDummy::renderAssetIcon() const {
+    return false;
+  }
 }

@@ -86,6 +86,10 @@ namespace IsoRealms::Spindizzy {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }
 
+  bool PickUpType::renderAssetIcon() const {
+    return false;
+  }
+
   PickUpType::Pen::Pen(PickUpType& parent, WorldEditor* editor) :
             cParent(parent),
             cEditor(editor) {

@@ -29,7 +29,7 @@ namespace IsoRealms::Spindizzy {
   class SplitSurface;
   class Surface;
 
-  class ISurfacePattern {
+  class ISurfacePattern : public IAsset {
     public:
     virtual bool contains(ITexture* texture) = 0;
     virtual void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const = 0;

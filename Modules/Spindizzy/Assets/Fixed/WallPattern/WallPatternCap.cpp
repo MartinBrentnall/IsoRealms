@@ -160,6 +160,10 @@ namespace IsoRealms::Spindizzy {
     cDefTextureTop->hintTextureInUse(inUse);
   }
   
+  bool WallPatternCap::renderAssetIcon() const {
+    return false;
+  }
+
   WallPatternCap::SectionBottom::SectionBottom(const WallPatternCap* parent, Wall* wall) :
             cDefParent(parent),
             cDefWall(wall) {

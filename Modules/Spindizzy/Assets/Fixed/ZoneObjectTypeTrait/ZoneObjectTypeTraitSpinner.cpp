@@ -58,4 +58,8 @@ namespace IsoRealms::Spindizzy {
   void ZoneObjectTypeTraitSpinner::registerAssets(ISpindizzyRegistry* registry) {
     // Nothing to do.
   }
+
+  bool ZoneObjectTypeTraitSpinner::renderAssetIcon() const {
+    return false;
+  }
 }

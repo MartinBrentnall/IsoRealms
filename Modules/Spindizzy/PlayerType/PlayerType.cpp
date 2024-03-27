@@ -243,6 +243,10 @@ namespace IsoRealms::Spindizzy {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }
 
+  bool PlayerType::renderAssetIcon() const {
+    return false;
+  }
+
   IBinding* PlayerType::getBinding(const std::string& id) {
     std::size_t mSplit = id.find('/');
     std::string mBindTo = id.substr(0, mSplit);

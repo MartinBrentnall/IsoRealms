@@ -133,6 +133,10 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
+  bool SurfacePatternOutline::renderAssetIcon() const {
+    return false;
+  }
+
   SurfacePatternOutline::SurfacePatternSurface::SurfacePatternSurface(SurfacePatternOutline& parent, Surface* surface) :
             cDefParent(parent),
             cDefSurface(surface) {

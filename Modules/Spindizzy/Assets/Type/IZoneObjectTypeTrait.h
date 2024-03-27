@@ -20,12 +20,14 @@
 
 #include <memory>
 
+#include "IsoRealms/Types.h"
+
 namespace IsoRealms::Spindizzy {
   class ISpindizzyRegistry;
   class IZoneObjectTrait;
   class ZoneObject;
 
-  class IZoneObjectTypeTrait {
+  class IZoneObjectTypeTrait : public IAsset {
     public:
     virtual void save(DOMNodeWriter& node) const = 0;
     virtual std::unique_ptr<IZoneObjectTrait> createTrait(ZoneObject& object) = 0;

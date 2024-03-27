@@ -27,7 +27,7 @@ namespace IsoRealms::Spindizzy {
   class ICameraListener;
   class Zone;
 
-  class ICamera {
+  class ICamera : public IAsset {
     public:
     virtual void registerAssets(IAssetRegistry* assets) = 0; 
     virtual void unregisterAssets(IAssetRemover* assets) = 0;
