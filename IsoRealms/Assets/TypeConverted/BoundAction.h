@@ -39,6 +39,7 @@ namespace IsoRealms {
     \***********************/
     bool renderAssetIcon() const override;
     void bind(const std::string& bindFunction) const override;
+    void saveAsset(DOMNodeWriter* node) const override;
     void save(DOMNodeWriter* node, IBindingRegistry* localBindings, IAssetIdentifier* identifier, const std::string& attribute) const override;
     void release(IAssets* releaser) override;
 

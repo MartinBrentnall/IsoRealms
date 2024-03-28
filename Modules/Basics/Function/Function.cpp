@@ -57,9 +57,11 @@ namespace IsoRealms::Basics {
     }
   }
   
-  void Function::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    node->addAttribute(ATTRIBUTE_NAME, cDefName);
-    
+  void Function::save(DOMNodeWriter* node, IAssetIdentifier* identifier, bool script) const {
+    if (!script) {
+      node->addAttribute(ATTRIBUTE_NAME, cDefName);
+    }
+
     for (const std::unique_ptr<Binding>& mBinding : cDefFixedBindings) {
       DOMNodeWriter mBindingNode = node->addBranch(TAG_BIND);
       mBinding->save(&mBindingNode, ATTRIBUTE_VARIABLE, identifier, false, TAG_TO); // TODO: TAG_TO is handled elsewhere!

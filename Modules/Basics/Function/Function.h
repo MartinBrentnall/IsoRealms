@@ -50,7 +50,7 @@ namespace IsoRealms::Basics {
     Function(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);    
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(DOMNodeWriter* node, IAssetIdentifier* identifier, bool script = false) const;
     bool renderIcon() const;
     void hintInUse(bool inUse);
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);

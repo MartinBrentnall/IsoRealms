@@ -33,6 +33,10 @@ namespace IsoRealms {
     return false;
   }
 
+  void BoundAction::saveAsset(DOMNodeWriter* node) const {
+    cDefAction.save(node, "Action");
+  }
+
   void BoundAction::bind(const std::string& bindFunction) const {
     (*cDefLuaState)[bindFunction](&cDefAction);
   }

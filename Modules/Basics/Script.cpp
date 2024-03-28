@@ -111,7 +111,7 @@ namespace IsoRealms::Basics {
   }
   
   void Script::ScriptAction::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    cDefFunction.save(node, identifier);
+    cDefFunction.save(node, identifier, true);
   }
   
   bool Script::ScriptAction::hasConfiguration() const {
