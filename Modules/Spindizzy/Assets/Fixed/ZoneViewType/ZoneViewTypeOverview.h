@@ -60,7 +60,7 @@ namespace IsoRealms::Spindizzy {
     // Definition data.
     Colour cDefColour; /// Default colour to represent zones of this type.
 
-    LuaBinding<ZoneViewOverview> cRuntimeParameterView1;
-    LuaBinding<ZoneViewOverview> cRuntimeParameterView2;
+    LocalLuaBinding<ZoneViewOverview> cRuntimeParameterView1;
+    LocalLuaBinding<ZoneViewOverview> cRuntimeParameterView2;
   };
 }

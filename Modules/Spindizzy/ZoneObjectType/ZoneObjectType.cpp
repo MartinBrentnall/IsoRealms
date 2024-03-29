@@ -116,6 +116,10 @@ namespace IsoRealms::Spindizzy {
     return nullptr;
   }
   
+  std::string ZoneObjectType::getBindingID(const IBinding* binding) const {
+    return "";
+  }
+  
   std::map<std::string, std::unique_ptr<IZoneObjectTrait>> ZoneObjectType::createTraits(ZoneObject& object) const {
     std::map<std::string, std::unique_ptr<IZoneObjectTrait>> mObjectTraits;
     for (const std::pair<const std::string, IZoneObjectTypeTrait*>& mPair : cDefTypeTraits) {

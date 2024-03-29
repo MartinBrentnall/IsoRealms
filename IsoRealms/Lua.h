@@ -19,3 +19,4 @@
 #pragma once
 
 #include "Lua/LuaBinding.h"
+#include "Lua/LocalLuaBinding.h"

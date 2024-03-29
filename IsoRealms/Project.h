@@ -611,22 +611,22 @@ namespace IsoRealms {
     /*******************************\
      * Implements IAssetIdentifier *
     \*******************************/
-    void save(DOMNodeWriter* node, IActionType*     asset) const override;
-    void save(DOMNodeWriter* node, IAssets*         asset) const override;
-    void save(DOMNodeWriter* node, I3DModelType*    asset) const override;
-    void save(DOMNodeWriter* node, IBinding*        asset) const override;
-    void save(DOMNodeWriter* node, IBoolean*        asset) const override;
-    void save(DOMNodeWriter* node, IColour*         asset) const override;
-    void save(DOMNodeWriter* node, IEditable*       asset) const override;
-    void save(DOMNodeWriter* node, IFloat*          asset) const override;
-    void save(DOMNodeWriter* node, IFont*           asset) const override;
-    void save(DOMNodeWriter* node, IInputHandler*   asset) const override;
-    void save(DOMNodeWriter* node, IInteger*        asset) const override;
-    void save(DOMNodeWriter* node, IScreen*         asset) const override;
-    void save(DOMNodeWriter* node, IProjectOptions* asset) const override;
-    void save(DOMNodeWriter* node, IString*         asset) const override;
-    void save(DOMNodeWriter* node, ITexture*        asset) const override;
-    void save(DOMNodeWriter* node, IVertex*         asset) const override;
+    void save(DOMNodeWriter* node, const IActionType*     asset) const override;
+    void save(DOMNodeWriter* node, const IAssets*         asset) const override;
+    void save(DOMNodeWriter* node, const I3DModelType*    asset) const override;
+    void save(DOMNodeWriter* node, const IBinding*        asset) const override;
+    void save(DOMNodeWriter* node, const IBoolean*        asset) const override;
+    void save(DOMNodeWriter* node, const IColour*         asset) const override;
+    void save(DOMNodeWriter* node, const IEditable*       asset) const override;
+    void save(DOMNodeWriter* node, const IFloat*          asset) const override;
+    void save(DOMNodeWriter* node, const IFont*           asset) const override;
+    void save(DOMNodeWriter* node, const IInputHandler*   asset) const override;
+    void save(DOMNodeWriter* node, const IInteger*        asset) const override;
+    void save(DOMNodeWriter* node, const IScreen*         asset) const override;
+    void save(DOMNodeWriter* node, const IProjectOptions* asset) const override;
+    void save(DOMNodeWriter* node, const IString*         asset) const override;
+    void save(DOMNodeWriter* node, const ITexture*        asset) const override;
+    void save(DOMNodeWriter* node, const IVertex*         asset) const override;
 
     /****************************\
      * Implements IAssetBrowser *

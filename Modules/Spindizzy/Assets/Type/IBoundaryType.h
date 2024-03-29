@@ -27,5 +27,6 @@ namespace IsoRealms::Spindizzy {
     public:
     virtual std::string getBoundaryTypeID() const = 0;
     virtual IBinding* getBinding(const std::string& id) const = 0;
+    virtual std::string getBindingID(const IBinding* binding) const = 0;
   };
 }

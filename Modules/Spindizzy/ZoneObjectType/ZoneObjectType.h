@@ -57,6 +57,7 @@ namespace IsoRealms::Spindizzy {
     Spindizzy& getSpindizzy();
     void registerEditor(IZoneObjectTraitEditor* editor);
     IBinding* getBinding(const std::string& id) const;
+    std::string getBindingID(const IBinding* binding) const;
 
     // Interface to be used by objects.
     std::map<std::string, std::unique_ptr<IZoneObjectTrait>> createTraits(ZoneObject& object) const;

@@ -238,6 +238,14 @@ namespace IsoRealms::Spindizzy {
   IBinding* PlayerType::getBinding(const std::string& id) const {
     return nullptr; // TODO: Implement this.
   }
+  
+  void PlayerType::save(DOMNodeWriter* node, const IBinding* binding) const {
+    // TODO: Implement this.
+  }
+
+  std::string PlayerType::getBindingID(const IBinding* binding) const {
+    return ""; // TODO: Implement this.
+  }
 
   IWorldEditorToolInstance* PlayerType::createToolInstance(WorldEditor* editor) {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();

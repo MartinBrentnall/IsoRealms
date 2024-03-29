@@ -48,21 +48,21 @@ namespace IsoRealms {
    */
   class IAssetIdentifier {
     public:
-    virtual void save(DOMNodeWriter* node, IActionType*     asset) const = 0;
-    virtual void save(DOMNodeWriter* node, IAssets*         asset) const = 0;
-    virtual void save(DOMNodeWriter* node, I3DModelType*    asset) const = 0;
-    virtual void save(DOMNodeWriter* node, IBinding*        asset) const = 0;
-    virtual void save(DOMNodeWriter* node, IBoolean*        asset) const = 0;
-    virtual void save(DOMNodeWriter* node, IColour*         asset) const = 0;
-    virtual void save(DOMNodeWriter* node, IEditable*       asset) const = 0;
-    virtual void save(DOMNodeWriter* node, IFloat*          asset) const = 0;
-    virtual void save(DOMNodeWriter* node, IFont*           asset) const = 0;
-    virtual void save(DOMNodeWriter* node, IInputHandler*   asset) const = 0;
-    virtual void save(DOMNodeWriter* node, IInteger*        asset) const = 0;
-    virtual void save(DOMNodeWriter* node, IScreen*         asset) const = 0;
-    virtual void save(DOMNodeWriter* node, IProjectOptions* asset) const = 0;
-    virtual void save(DOMNodeWriter* node, IString*         asset) const = 0;
-    virtual void save(DOMNodeWriter* node, ITexture*        asset) const = 0;
-    virtual void save(DOMNodeWriter* node, IVertex*         asset) const = 0;
+    virtual void save(DOMNodeWriter* node, const IActionType*     asset) const = 0;
+    virtual void save(DOMNodeWriter* node, const IAssets*         asset) const = 0;
+    virtual void save(DOMNodeWriter* node, const I3DModelType*    asset) const = 0;
+    virtual void save(DOMNodeWriter* node, const IBinding*        asset) const = 0;
+    virtual void save(DOMNodeWriter* node, const IBoolean*        asset) const = 0;
+    virtual void save(DOMNodeWriter* node, const IColour*         asset) const = 0;
+    virtual void save(DOMNodeWriter* node, const IEditable*       asset) const = 0;
+    virtual void save(DOMNodeWriter* node, const IFloat*          asset) const = 0;
+    virtual void save(DOMNodeWriter* node, const IFont*           asset) const = 0;
+    virtual void save(DOMNodeWriter* node, const IInputHandler*   asset) const = 0;
+    virtual void save(DOMNodeWriter* node, const IInteger*        asset) const = 0;
+    virtual void save(DOMNodeWriter* node, const IScreen*         asset) const = 0;
+    virtual void save(DOMNodeWriter* node, const IProjectOptions* asset) const = 0;
+    virtual void save(DOMNodeWriter* node, const IString*         asset) const = 0;
+    virtual void save(DOMNodeWriter* node, const ITexture*        asset) const = 0;
+    virtual void save(DOMNodeWriter* node, const IVertex*         asset) const = 0;
   };
 }

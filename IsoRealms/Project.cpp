@@ -719,22 +719,22 @@ namespace IsoRealms {
     cMainThreadInitTasks.push(task);
   }
 
-  void Project::save(DOMNodeWriter* node, I3DModelType*    asset) const {c3DModelTypes.save(  node, asset);}
-  void Project::save(DOMNodeWriter* node, IAssets*         asset) const {cAssets.save(        node, asset);}
-  void Project::save(DOMNodeWriter* node, IActionType*     asset) const {cActionTypes.save(   node, asset);}
-  void Project::save(DOMNodeWriter* node, IBinding*        asset) const {cBindings.save(      node, asset);}
-  void Project::save(DOMNodeWriter* node, IBoolean*        asset) const {cBooleans.save(      node, asset);}
-  void Project::save(DOMNodeWriter* node, IColour*         asset) const {cColours.save(       node, asset);}
-  void Project::save(DOMNodeWriter* node, IEditable*       asset) const {cEditables.save(     node, asset);}
-  void Project::save(DOMNodeWriter* node, IFloat*          asset) const {cFloats.save(        node, asset);}
-  void Project::save(DOMNodeWriter* node, IFont*           asset) const {cFonts.save(         node, asset);}
-  void Project::save(DOMNodeWriter* node, IInputHandler*   asset) const {cInputHandlers.save( node, asset);}
-  void Project::save(DOMNodeWriter* node, IInteger*        asset) const {cIntegers.save(      node, asset);}
-  void Project::save(DOMNodeWriter* node, IScreen*         asset) const {cScreens.save(       node, asset);}
-  void Project::save(DOMNodeWriter* node, IProjectOptions* asset) const {cProjectOptions.save(node, asset);}
-  void Project::save(DOMNodeWriter* node, IString*         asset) const {cStrings.save(       node, asset);}
-  void Project::save(DOMNodeWriter* node, ITexture*        asset) const {cTextures.save(      node, asset);}
-  void Project::save(DOMNodeWriter* node, IVertex*         asset) const {cVertices.save(      node, asset);}
+  void Project::save(DOMNodeWriter* node, const I3DModelType*    asset) const {c3DModelTypes.save(  node, asset);}
+  void Project::save(DOMNodeWriter* node, const IAssets*         asset) const {cAssets.save(        node, asset);}
+  void Project::save(DOMNodeWriter* node, const IActionType*     asset) const {cActionTypes.save(   node, asset);}
+  void Project::save(DOMNodeWriter* node, const IBinding*        asset) const {cBindings.save(      node, asset);}
+  void Project::save(DOMNodeWriter* node, const IBoolean*        asset) const {cBooleans.save(      node, asset);}
+  void Project::save(DOMNodeWriter* node, const IColour*         asset) const {cColours.save(       node, asset);}
+  void Project::save(DOMNodeWriter* node, const IEditable*       asset) const {cEditables.save(     node, asset);}
+  void Project::save(DOMNodeWriter* node, const IFloat*          asset) const {cFloats.save(        node, asset);}
+  void Project::save(DOMNodeWriter* node, const IFont*           asset) const {cFonts.save(         node, asset);}
+  void Project::save(DOMNodeWriter* node, const IInputHandler*   asset) const {cInputHandlers.save( node, asset);}
+  void Project::save(DOMNodeWriter* node, const IInteger*        asset) const {cIntegers.save(      node, asset);}
+  void Project::save(DOMNodeWriter* node, const IScreen*         asset) const {cScreens.save(       node, asset);}
+  void Project::save(DOMNodeWriter* node, const IProjectOptions* asset) const {cProjectOptions.save(node, asset);}
+  void Project::save(DOMNodeWriter* node, const IString*         asset) const {cStrings.save(       node, asset);}
+  void Project::save(DOMNodeWriter* node, const ITexture*        asset) const {cTextures.save(      node, asset);}
+  void Project::save(DOMNodeWriter* node, const IVertex*         asset) const {cVertices.save(      node, asset);}
 
   Project::ActionExecutor::Action::Action(ActionExecutor* parent, DOMNode& node, const std::string& id, IBindingRegistry* localArgs) :
             cParent(parent),

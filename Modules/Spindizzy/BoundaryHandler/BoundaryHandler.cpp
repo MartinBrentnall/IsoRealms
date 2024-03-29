@@ -31,6 +31,7 @@ namespace IsoRealms::Spindizzy {
   const std::string BoundaryHandler::BIND_TO_OBJECT   = "Object";
 
   BoundaryHandler::BoundaryHandler(IProject* project, Spindizzy* spindizzy) :
+            cDefSpindizzy(*spindizzy),
             cDefBoundaryType(*spindizzy),
             cDefObjectType(*spindizzy),
             cDefEnteredAction(project),
@@ -59,8 +60,10 @@ namespace IsoRealms::Spindizzy {
   void BoundaryHandler::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
     cDefBoundaryType.save(node, TAG_BOUNDARY_TYPE);
     cDefObjectType.save(node, TAG_OBJECT_TYPE);
+    cDefSpindizzy.setBindingIdentifier(this);
     cDefEnteredAction.save(node, TAG_ENTERED_ACTION);
     cDefExitedAction.save(node, TAG_EXITED_ACTION);
+    cDefSpindizzy.setBindingIdentifier(nullptr);
   }
 
   void BoundaryHandler::hintInUse(bool inUse) {
@@ -99,6 +102,18 @@ namespace IsoRealms::Spindizzy {
     return mBindTo == BIND_TO_BOUNDARY ? cDefBoundaryType.getBoundaryBinding(mBindPath)
          : mBindTo == BIND_TO_OBJECT   ? cDefObjectType.getBinding(mBindPath)
          :                               nullptr;
+  }
+  
+  void BoundaryHandler::save(DOMNodeWriter* node, const IBinding* binding) const {
+    // TODO: Implement this.
+  }
+
+  std::string BoundaryHandler::getBindingID(const IBinding* binding) const {
+    std::string mBindingID = cDefBoundaryType.getBoundaryBindingID(binding);
+    if (mBindingID != "") {
+      return BIND_TO_BOUNDARY + "/" + mBindingID;
+    }
+    return BIND_TO_OBJECT + "/" + cDefObjectType.getBindingID(binding);
   }
   
   void BoundaryHandler::releaseBinding(const IBinding* asset) {

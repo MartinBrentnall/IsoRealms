@@ -97,7 +97,8 @@ namespace IsoRealms::Spindizzy {
                     cEditorMaxZ(DEFAULT_EDITOR_MAX_Z),
                     cLuaBinding(project, this),
                     cRuntimeParameterZone1(project, nullptr),
-                    cRuntimeParameterZone2(project, nullptr) {
+                    cRuntimeParameterZone2(project, nullptr),
+                    cRuntimeLocalBindingIdentifier(nullptr) {
     registry->add(&cResourceAlien,              TAG_RESOURCE_ALIEN,                NAME_RESOURCE_ALIEN,                RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS);
     registry->add(&cResourceBall,               TAG_RESOURCE_BALL,                 NAME_RESOURCE_BALL,                 RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS);
     registry->add(&cResourceBoundaryHandler,    TAG_RESOURCE_BOUNDARY_HANDLER,     NAME_RESOURCE_BOUNDARY_HANDLER,     IsoRealmsConstants::RESOURCE_CATEGORY_LOGIC_AND_INPUT);
@@ -594,6 +595,36 @@ namespace IsoRealms::Spindizzy {
     }
     return nullptr;
   }
+  
+  std::string Spindizzy::getZoneBindingID1(const IBinding* binding) const {
+    for (const std::pair<const std::string, IBinding*>& mZoneBinding : cRuntimeZoneBindings1) {
+      if (binding == mZoneBinding.second) {
+        return BIND_TO_ZONE + "/" + mZoneBinding.first;
+      }
+    }
+    
+    if (binding == &cRuntimeParameterZone1) {
+      return BIND_TO_ZONE;
+    }
+    return "";
+  }
+
+  std::string Spindizzy::getZoneBindingID2(const IBinding* binding) const {
+    for (const std::pair<const std::string, IBinding*>& mZoneBinding : cRuntimeZoneBindings2) {
+      if (binding == mZoneBinding.second) {
+        return BIND_TO_ZONE + "/" + mZoneBinding.first;
+      }
+    }
+    
+    if (binding == &cRuntimeParameterZone2) {
+      return BIND_TO_ZONE;
+    }
+    return "";
+  }
+
+  void Spindizzy::setBindingIdentifier(const IBindingIdentifier* bindingIdentifier) const {
+    cRuntimeLocalBindingIdentifier = bindingIdentifier;
+  }
 
   IBinding* Spindizzy::getBinding(const std::string& id) {
     return id == "alien"          ? static_cast<IBinding*>(&cRuntimeParameterAlien)
@@ -604,6 +635,12 @@ namespace IsoRealms::Spindizzy {
          : id == "wall"           ? static_cast<IBinding*>(&cRuntimeParameterWall)
          : id == "zone"           ? static_cast<IBinding*>(&cRuntimeParameterZone)
          :                          nullptr;
+  }
+
+  void Spindizzy::save(DOMNodeWriter* node, const IBinding* binding) const {
+    if (cRuntimeLocalBindingIdentifier != nullptr) {
+      node->addAttribute("local", cRuntimeLocalBindingIdentifier->getBindingID(binding));
+    }
   }
 
   void Spindizzy::releaseBinding(const IBinding* asset) {

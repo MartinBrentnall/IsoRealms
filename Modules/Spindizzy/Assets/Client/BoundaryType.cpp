@@ -52,6 +52,10 @@ namespace IsoRealms::Spindizzy {
     return cBoundaryType->getBinding(id);
   }
 
+  std::string BoundaryType::getBoundaryBindingID(const IBinding* binding) const {
+    return cBoundaryType->getBindingID(binding);
+  }
+
   BoundaryType::~BoundaryType() {
     if (cBoundaryType != nullptr) {
       cSpindizzy.release(this, cBoundaryType);

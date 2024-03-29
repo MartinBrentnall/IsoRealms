@@ -47,6 +47,7 @@ namespace IsoRealms::Spindizzy {
     }
 
     IBinding* getBoundaryBinding(const std::string& id) const;
+    std::string getBoundaryBindingID(const IBinding* binding) const;
 
     /****************************************\
      * Implements IAssetUser<IBoundaryType> *

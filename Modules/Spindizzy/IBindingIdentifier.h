@@ -18,18 +18,15 @@
  */
 #pragma once
 
-#include "Modules/Spindizzy/Assets/Type/IPhysicalObjectType.h"
+#include "IsoRealms/Types.h"
+
+namespace IsoRealms {
+  class IBinding;
+}
 
 namespace IsoRealms::Spindizzy {
-  class PhysicalObjectTypeDummy : public IPhysicalObjectType {
+  class IBindingIdentifier {
     public:
-    
-    /**********************************\
-     * Implements IPhysicalObjectType *
-    \**********************************/
-    std::string getPhysicalObjectTypeID() const override;
-    IBinding* getBinding(const std::string& id) const override;
-    std::string getBindingID(const IBinding* binding) const override;
-    bool renderAssetIcon() const override;
+    virtual std::string getBindingID(const IBinding* binding) const = 0;
   };
 }

@@ -82,6 +82,10 @@ namespace IsoRealms::Spindizzy {
     return nullptr;
   }
 
+  std::string PickUpType::getBindingID(const IBinding* binding) const {
+    return "";
+  }
+
   IWorldEditorToolInstance* PickUpType::createToolInstance(WorldEditor* editor) {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }

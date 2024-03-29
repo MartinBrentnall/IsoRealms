@@ -21,6 +21,8 @@
 #include "ZoneViewOverview.h"
 
 #include "Modules/Spindizzy/ISpindizzyRegistry.h"
+#include "Modules/Spindizzy/Spindizzy.h"
+#include "Modules/Spindizzy/WorldView/WorldView.h"
 
 namespace IsoRealms::Spindizzy {
   const std::string ZoneViewTypeOverview::TAG_COLOUR = "Colour";
@@ -29,8 +31,8 @@ namespace IsoRealms::Spindizzy {
             cProject(project),
             cWorldView(worldView),
             cDefColour(project, 1.0f, 0.0f, 0.0f, 0.0f),
-            cRuntimeParameterView1(project, nullptr),
-            cRuntimeParameterView2(project, nullptr) {
+            cRuntimeParameterView1(project, nullptr, worldView->getSpindizzy()),
+            cRuntimeParameterView2(project, nullptr, worldView->getSpindizzy()) {
     cDefColour.init(node.getNode(TAG_COLOUR));
   }
 

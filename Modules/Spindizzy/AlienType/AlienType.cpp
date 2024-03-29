@@ -159,6 +159,10 @@ namespace IsoRealms::Spindizzy {
   IBinding* AlienType::getBinding(const std::string& id) const {
     return nullptr;
   }
+  
+  std::string AlienType::getBindingID(const IBinding* binding) const {
+    return "";
+  }
 
   IWorldEditorToolInstance* AlienType::createToolInstance(WorldEditor* editor) {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();

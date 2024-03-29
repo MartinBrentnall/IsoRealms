@@ -92,6 +92,10 @@ namespace IsoRealms::Spindizzy {
     return cDefSpindizzy->getZoneBinding(id);
   }
   
+  std::string ZoneType::getBindingID(const IBinding* binding) const {
+    return cDefSpindizzy->getZoneBindingID1(binding);
+  }
+  
   IWorldEditorToolInstance* ZoneType::createToolInstance(WorldEditor* editor) {
     return cEditingPens.emplace_back(std::make_unique<Pen>(*this, editor)).get();
   }

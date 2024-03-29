@@ -27,6 +27,10 @@ namespace IsoRealms::Spindizzy {
     return nullptr;
   }
 
+  std::string BoundaryTypeDummy::getBindingID(const IBinding* binding) const {
+    return "";
+  }
+
   bool BoundaryTypeDummy::renderAssetIcon() const {
     return false;
   }

@@ -67,6 +67,7 @@
 #include "DamageIndicator/DamageIndicator.h"
 #include "DebrisChunk/DebrisChunk.h"
 #include "Gyroscope/Gyroscope.h"
+#include "IBindingIdentifier.h"
 #include "IIconAnimator.h"
 #include "ISpindizzyRegistry.h"
 #include "Jewel/Jewel.h"
@@ -269,11 +270,17 @@ namespace IsoRealms::Spindizzy {
 
     IBinding* getZoneBinding(const std::string& id);
     IBinding* getZoneBinding2(const std::string& id);
+    std::string getZoneBindingID1(const IBinding* binding) const;
+    std::string getZoneBindingID2(const IBinding* binding) const;
+    
+    void setBindingIdentifier(const IBindingIdentifier* bindingIdentifier) const;
+    
     // TODO: Replace with local bindings.
     /*******************************\
      * Implements IBindingRegistry *
     \*******************************/
     IBinding* getBinding(const std::string& id) override;
+    void save(DOMNodeWriter* node, const IBinding* binding) const override;
     void releaseBinding(const IBinding* asset) override;
 
     private:
@@ -503,9 +510,10 @@ namespace IsoRealms::Spindizzy {
     
     // Scripting support.
     LuaBinding<Spindizzy> cLuaBinding;
-    LuaBinding<Zone>    cRuntimeParameterZone1;
-    LuaBinding<Zone>    cRuntimeParameterZone2;
+    LuaBinding<Zone> cRuntimeParameterZone1;
+    LuaBinding<Zone> cRuntimeParameterZone2;
     std::map<std::string, IBinding*> cRuntimeZoneBindings1;
     std::map<std::string, IBinding*> cRuntimeZoneBindings2;
+    mutable const IBindingIdentifier* cRuntimeLocalBindingIdentifier;
   };
 }

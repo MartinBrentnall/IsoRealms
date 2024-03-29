@@ -46,6 +46,10 @@ namespace IsoRealms::Spindizzy {
     return cPhysicalObjectType->getBinding(id);
   }
 
+  std::string PhysicalObjectType::getBindingID(const IBinding* binding) const {
+    return cPhysicalObjectType->getBindingID(binding);
+  }
+
   void PhysicalObjectType::relinquish(IPhysicalObjectType* asset) {
     if (cPhysicalObjectType == asset) {
       cPhysicalObjectType = cSpindizzy.createLiteralPhysicalObjectType(this);
