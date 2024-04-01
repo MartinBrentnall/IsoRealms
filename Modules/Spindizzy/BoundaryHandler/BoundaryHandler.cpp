@@ -104,7 +104,7 @@ namespace IsoRealms::Spindizzy {
          :                               nullptr;
   }
   
-  void BoundaryHandler::save(DOMNodeWriter* node, const IBinding* binding) const {
+  void BoundaryHandler::saveBinding(DOMNodeWriter* node, const IBinding* binding) const {
     // TODO: Implement this.
   }
 

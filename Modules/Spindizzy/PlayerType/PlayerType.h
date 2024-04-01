@@ -89,7 +89,7 @@ namespace IsoRealms::Spindizzy {
     \**********************************/
     std::string getPhysicalObjectTypeID() const override;
     IBinding* getBinding(const std::string& id) const override;
-    void save(DOMNodeWriter* node, const IBinding* binding) const override;
+    void saveBinding(DOMNodeWriter* node, const IBinding* binding) const override;
     std::string getBindingID(const IBinding* binding) const override;
 
     /*******************************\

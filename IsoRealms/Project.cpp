@@ -92,7 +92,7 @@ namespace IsoRealms {
           cDefResetAction(this),
           cDefQuitAction(this),
           cPropertyValue(""),
-          cPropertyValueBinding(this, &cPropertyValue) {
+          cPropertyValueBinding(this, &cPropertyValue, this) {
 
     // Support conversions.
     cBindings.add(&cConversionProviderActionToBinding,         ":Action",         CATEGORY_CONVERSIONS);
@@ -860,6 +860,12 @@ namespace IsoRealms {
 
   IBinding* Project::getBinding(const std::string& id) {
     return id == "value" ? &cPropertyValueBinding : nullptr;
+  }
+
+  void Project::saveBinding(DOMNodeWriter* node, const IBinding* binding) const {
+    if (binding == &cPropertyValueBinding) {
+      node->addAttribute("local", std::string("value"));
+    }
   }
 
   void Project::releaseBinding(const IBinding* asset) {

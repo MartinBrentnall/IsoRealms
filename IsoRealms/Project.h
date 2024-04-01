@@ -690,10 +690,11 @@ namespace IsoRealms {
      * Implements IBindingRegistry *
     \*******************************/
     IBinding* getBinding(const std::string& id) override;
+    void saveBinding(DOMNodeWriter* node, const IBinding* binding) const override;
     void releaseBinding(const IBinding* asset) override;
 
     LiteralString cPropertyValue;
-    LuaBinding<IString> cPropertyValueBinding;
+    LocalLuaBinding<IString> cPropertyValueBinding;
 
     virtual ~Project();
   };

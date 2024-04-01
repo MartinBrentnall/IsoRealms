@@ -28,7 +28,7 @@ namespace IsoRealms {
   class IBindingRegistry {
     public:
     virtual IBinding* getBinding(const std::string& id) = 0;
-    virtual void save(DOMNodeWriter* node, const IBinding* binding) const = 0;
+    virtual void saveBinding(DOMNodeWriter* node, const IBinding* binding) const = 0;
     virtual void releaseBinding(const IBinding* asset) = 0;
   };
 }

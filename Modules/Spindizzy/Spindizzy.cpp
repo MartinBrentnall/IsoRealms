@@ -637,7 +637,7 @@ namespace IsoRealms::Spindizzy {
          :                          nullptr;
   }
 
-  void Spindizzy::save(DOMNodeWriter* node, const IBinding* binding) const {
+  void Spindizzy::saveBinding(DOMNodeWriter* node, const IBinding* binding) const {
     if (cRuntimeLocalBindingIdentifier != nullptr) {
       node->addAttribute("local", cRuntimeLocalBindingIdentifier->getBindingID(binding));
     }

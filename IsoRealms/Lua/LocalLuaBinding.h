@@ -56,7 +56,7 @@ namespace IsoRealms {
     }
 
     void saveAsset(DOMNodeWriter* node) const override {
-      cDefLocalBindingRegistry->save(node, this);
+      cDefLocalBindingRegistry->saveBinding(node, this);
     }
 
     void bind(const std::string& bindFunction) const override {

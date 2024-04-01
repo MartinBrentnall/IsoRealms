@@ -239,7 +239,7 @@ namespace IsoRealms::Spindizzy {
     return nullptr; // TODO: Implement this.
   }
   
-  void PlayerType::save(DOMNodeWriter* node, const IBinding* binding) const {
+  void PlayerType::saveBinding(DOMNodeWriter* node, const IBinding* binding) const {
     // TODO: Implement this.
   }
 
