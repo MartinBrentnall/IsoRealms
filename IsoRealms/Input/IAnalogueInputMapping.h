@@ -58,7 +58,7 @@ namespace IsoRealms {
      *
      * @param node The node to save this analogue input mapping to.
      */
-    virtual void save(DOMNodeWriter* node) const = 0;
+    virtual void save(DOMNodeWriter* node, const std::string& name) const = 0;
 
     /**
      * Return a short name of this analogue input mapping.  The short name is

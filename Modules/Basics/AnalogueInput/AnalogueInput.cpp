@@ -180,11 +180,7 @@ namespace IsoRealms::Basics {
   }
 
   void AnalogueInput::InputMapping::save(DOMNodeWriter* node) const {
-    if (cName != "") {
-      DOMNodeWriter mInputNode = node->addBranch(TAG_INPUT);
-      mInputNode.addAttribute("id", cName);
-      cPhysicalInput->save(&mInputNode);
-    }
+    cPhysicalInput->save(node, cName);
   }
 
   void AnalogueInput::InputMapping::loadCustomMapping(DOMNode& node) {

@@ -78,12 +78,13 @@ namespace IsoRealms::Basics {
   
   void ColourCycler::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
     cDefCycleSpeed.save(node, TAG_CYCLE_SPEED);
+    DOMNodeWriter mIONode = node->addBranch(TAG_IO);
     for (const std::unique_ptr<Colour>& mInputColour : cDefInputColours) {
-      DOMNodeWriter mInputColourNode = node->addBranch(TAG_INPUT_COLOUR);
+      DOMNodeWriter mInputColourNode = mIONode.addBranch(TAG_INPUT_COLOUR);
       mInputColour->save(&mInputColourNode, ATTRIBUTE_COLOUR);
     }
     for (const std::unique_ptr<ColourCycle>& mOutputColour : cDefOutputColours) {
-      mOutputColour->save(node);
+      mOutputColour->save(&mIONode);
     }
   }
 

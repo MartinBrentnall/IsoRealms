@@ -46,8 +46,11 @@ namespace IsoRealms::Basics {
     return false;
   }
   
-  void DigitalToAnalogueMapping::save(DOMNodeWriter* node) const {
-    cDefInput.saveCustomMapping(node);
+  void DigitalToAnalogueMapping::save(DOMNodeWriter* node, const std::string& name) const {
+    DOMNodeWriter mDigitalToAnalogueNode = node->addBranch("DigitalToAnalogue");
+    mDigitalToAnalogueNode.addAttribute("name", name);
+    mDigitalToAnalogueNode.addAttribute(ATTRIBUTE_TO_VALUE, cDefOutputValue);
+    cDefInput.save(&mDigitalToAnalogueNode, nullptr);
   }
   
   std::string DigitalToAnalogueMapping::getShortName() const {

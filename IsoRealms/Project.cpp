@@ -391,8 +391,9 @@ namespace IsoRealms {
       cDefQuitAction.save(&mProjectNode, TAG_QUIT_ACTION);
 
       // Save properties
+      DOMNodeWriter mPropertiesNode = mProjectNode.addBranch(TAG_PROPERTIES);
       for (std::pair<const std::string, std::unique_ptr<ProjectProperty>>& mPair : cProperties) {
-        DOMNodeWriter mPropertyNode = mProjectNode.addBranch(TAG_PROPERTY);
+        DOMNodeWriter mPropertyNode = mPropertiesNode.addBranch(TAG_PROPERTY);
         mPropertyNode.addAttribute(ATTRIBUTE_ID, mPair.first);
         mPair.second->save(mPropertyNode);
       }

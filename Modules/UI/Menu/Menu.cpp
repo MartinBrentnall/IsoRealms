@@ -102,8 +102,9 @@ namespace IsoRealms::UI {
     cDefExitAction.save(node, TAG_EXIT);
     node->addAttribute(ATTRIBUTE_FONT_SIZE, cDefFontSize, DEFAULT_FONT_SIZE);
     node->addAttribute(ATTRIBUTE_SHADOW_OFFSET, cDefShadowOffset, DEFAULT_SHADOW_OFFSET);
+    DOMNodeWriter mOptionsNode = node->addBranch(TAG_OPTIONS);
     for (const std::unique_ptr<IMenuItem>& mItem : cDefItems) {
-      mItem->save(node);
+      mItem->save(&mOptionsNode);
     }
   }
 

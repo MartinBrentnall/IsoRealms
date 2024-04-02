@@ -47,8 +47,9 @@ namespace IsoRealms::Basics {
     private:
 
     // DOM strings.
+    static const std::string TAG_TARGET;
+
     static const std::string ATTRIBUTE_DURATION;
-    static const std::string ATTRIBUTE_TARGET;
 
     // Definition data.
     unsigned int cDefDuration;

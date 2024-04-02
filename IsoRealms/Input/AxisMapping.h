@@ -64,7 +64,7 @@ namespace IsoRealms {
     \************************************/
     float getState(const sf::Event& event) const override;
     bool matches(const sf::Event& event) const override;
-    void save(DOMNodeWriter* node) const override;
+    void save(DOMNodeWriter* node, const std::string& name) const override;
     std::string getShortName() const override;
     std::string getLongName() const override;
     void loadCustomMapping(DOMNode& node) override;

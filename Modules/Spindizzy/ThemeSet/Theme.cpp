@@ -67,13 +67,13 @@ namespace IsoRealms::Spindizzy {
       std::string mThemeElement = cThemeSet->getElement(mTexture.first);
       DOMNodeWriter mTextureNode = node->addBranch("Texture");
       mTextureNode.addAttribute("type", mThemeElement);
-      mTexture.second.save(&mTextureNode, "Name");
+      mTexture.second.save(&mTextureNode, "Texture");
     }
     for (const std::pair<ThemeColour* const, Colour>& mColour : cColours) {
       std::string mThemeElement = cThemeSet->getElement(mColour.first);
       DOMNodeWriter mColourNode = node->addBranch("Colour");
       mColourNode.addAttribute("type", mThemeElement);
-      mColour.second.save(&mColourNode, "Texture");
+      mColour.second.save(&mColourNode, "Colour");
     }
   }
 

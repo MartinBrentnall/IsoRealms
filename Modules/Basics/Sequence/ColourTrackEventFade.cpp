@@ -21,8 +21,9 @@
 namespace IsoRealms::Basics {
   const std::string ColourTrackEventFade::EVENT_TYPE         = "Fade";
 
+  const std::string ColourTrackEventFade::TAG_TARGET         = "Target";
+
   const std::string ColourTrackEventFade::ATTRIBUTE_DURATION = "duration";
-  const std::string ColourTrackEventFade::ATTRIBUTE_TARGET   = "target";
 
   ColourTrackEventFade::ColourTrackEventFade(IProject* project, unsigned int duration, DOMNode& node) :
             cDefDuration(duration),
@@ -33,7 +34,7 @@ namespace IsoRealms::Basics {
   void ColourTrackEventFade::save(DOMNodeWriter* node) const {
     DOMNodeWriter mFadeNode = node->addBranch(EVENT_TYPE);
     mFadeNode.addAttribute(ATTRIBUTE_DURATION, cDefDuration);
-    cDefTarget.save(&mFadeNode, ATTRIBUTE_TARGET);
+    cDefTarget.save(&mFadeNode, TAG_TARGET);
   }
 
   unsigned int ColourTrackEventFade::getDuration() const {

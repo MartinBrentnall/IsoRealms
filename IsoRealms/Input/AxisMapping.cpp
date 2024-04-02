@@ -43,7 +43,7 @@ namespace IsoRealms {
     return std::abs(mValue) < cDefDeadZone ? 0 : (mValue - (mValue < 0 ? -cDefDeadZone : cDefDeadZone)) * (1.0f / (1.0f - cDefDeadZone));
   }
 
-  void AxisMapping::save(DOMNodeWriter* node) const {
+  void AxisMapping::save(DOMNodeWriter* node, const std::string& name) const {
     DOMNodeWriter mAxisNode = node->addBranch(TAG_AXIS);
     mAxisNode.addAttribute(ATTRIBUTE_AXIS,      cDefAxis);
     mAxisNode.addAttribute(ATTRIBUTE_DEAD_ZONE, cDefDeadZone);

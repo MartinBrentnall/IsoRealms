@@ -69,7 +69,7 @@ namespace IsoRealms::Spindizzy {
 
   void Gyroscope::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
     cDefQuadrant[0].save(node, TAG_COLOUR_1);
-    cDefQuadrant[1].save(node, TAG_COLOUR_1);
+    cDefQuadrant[1].save(node, TAG_COLOUR_2);
     cDefQuadrant[2].save(node, TAG_COLOUR_3);
     cDefQuadrant[3].save(node, TAG_COLOUR_4);
     cDefOutline.save(node, TAG_OUTLINE);
