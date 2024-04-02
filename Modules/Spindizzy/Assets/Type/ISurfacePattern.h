@@ -32,7 +32,6 @@ namespace IsoRealms::Spindizzy {
   class ISurfacePattern : public IAsset {
     public:
     virtual bool contains(ITexture* texture) = 0;
-    virtual void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const = 0;
     virtual std::vector<std::unique_ptr<IVisualElement>> getStaticVisuals(Surface* surface) = 0;
     virtual std::vector<std::unique_ptr<IVisualElement>> getStaticVisuals(SplitSurface* surface) = 0;
     virtual void render(float startX, float endX, float startY, float endY, float z, float xSlope, float ySlope, ISurface::Direction facing) const = 0;

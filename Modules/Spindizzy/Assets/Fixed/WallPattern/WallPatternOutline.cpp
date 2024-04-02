@@ -22,10 +22,6 @@
 #include "WallPatternOutline.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string WallPatternOutline::ATTRIBUTE_TYPE = "type";
-
-  const std::string WallPatternOutline::TYPE_OUTLINE = "outline";
-
   WallPatternOutline::WallPatternOutline(IProject* project, Spindizzy* spindizzy, DOMNode& node) {
     // Nothing to do.
   }
@@ -69,10 +65,6 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  void WallPatternOutline::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    node->addAttribute(ATTRIBUTE_TYPE, TYPE_OUTLINE);
-  }
-
   WallPatternOutline::WallPatternOutlineSurface::WallPatternOutlineSurface(const WallPatternOutline* parent, Wall* wall) :
             cDefParent(parent),
             cDefWall(wall) {
@@ -104,5 +96,9 @@ namespace IsoRealms::Spindizzy {
 
   bool WallPatternOutline::renderAssetIcon() const {
     return false;
+  }
+
+  void WallPatternOutline::saveAsset(DOMNodeWriter* node) const {
+    // TODO: Implement this.
   }
 }

@@ -50,7 +50,6 @@ namespace IsoRealms::Spindizzy {
     \**********************/
     void registerAssets(IAssetRegistry* assets) override; 
     void unregisterAssets(IAssetRemover* assets) override;
-    void save(DOMNodeWriter* node) const override;
     const IFloat* getYaw() const override;
     const IFloat* getPitch() const override;
     float getXLocation() const override;
@@ -61,7 +60,12 @@ namespace IsoRealms::Spindizzy {
     void setZone(Zone* zone) override;
     void addListener(ICameraListener* listener) override;
     void removeListener(ICameraListener* listener) override;
+    
+    /*********************************\
+     * Implements IAsset via ICamera *
+    \*********************************/
     bool renderAssetIcon() const override;
+    void saveAsset(DOMNodeWriter* node) const override;
 
     /******************************\
      * Implements ICameraListener *
@@ -81,7 +85,6 @@ namespace IsoRealms::Spindizzy {
     static const std::string TAG_START;
     
     static const std::string ATTRIBUTE_DURATION;
-    static const std::string ATTRIBUTE_TYPE;
 
     static const unsigned int DEFAULT_DURATION;
 

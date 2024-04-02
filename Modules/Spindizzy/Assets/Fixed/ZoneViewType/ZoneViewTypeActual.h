@@ -35,8 +35,12 @@ namespace IsoRealms::Spindizzy {
      * Implements IZoneViewType *
     \****************************/
     std::unique_ptr<IZoneView> createZoneView(Zone* zone) override;
-    void save(DOMNodeWriter* node) const override;
     void registerAssets(ISpindizzyRegistry* registry) override;
+    
+    /***************************************\
+     * Implements IAsset via IZoneViewType *
+    \***************************************/
     bool renderAssetIcon() const override;
+    void saveAsset(DOMNodeWriter* node) const override;
   };
 }

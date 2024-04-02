@@ -56,7 +56,6 @@ namespace IsoRealms::Spindizzy {
     \**********************/
     void registerAssets(IAssetRegistry* assets) override; 
     void unregisterAssets(IAssetRemover* assets) override;
-    void save(DOMNodeWriter* node) const override;
     const IFloat* getYaw() const override;
     const IFloat* getPitch() const override;
     float getXLocation() const override;
@@ -67,19 +66,23 @@ namespace IsoRealms::Spindizzy {
     void setZone(Zone* zone) override;
     void addListener(ICameraListener* listener) override;
     void removeListener(ICameraListener* listener) override;
-
+    
     /*********************\
      * Implements IFloat *
     \*********************/
     float getValue() const override;
+
+    /****************************************\
+     * Implements IAsset via ICamera/IFloat *
+    \****************************************/
     bool renderAssetIcon() const override;
+    void saveAsset(DOMNodeWriter* node) const override;
     
     private:
     
     // DOM strings.
     static const std::string ATTRIBUTE_DIRECTION;
     static const std::string ATTRIBUTE_DURATION;
-    static const std::string ATTRIBUTE_TYPE;
 
     static const std::string DIRECTION_NORTH_EAST;
     static const std::string DIRECTION_NORTH_WEST;

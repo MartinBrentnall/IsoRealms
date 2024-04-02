@@ -35,10 +35,6 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  void WallPatternDummy::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    // Nothing to do.
-  }
-
   void WallPatternDummy::hintInUse(bool inUse) {
     // Nothing to do.
   }
@@ -46,4 +42,8 @@ namespace IsoRealms::Spindizzy {
   bool WallPatternDummy::renderAssetIcon() const {
     return false;
   }
+  
+  void WallPatternDummy::saveAsset(DOMNodeWriter* node) const {
+    // Nothing to do.
+  }  
 }

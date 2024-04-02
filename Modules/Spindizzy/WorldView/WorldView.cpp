@@ -75,10 +75,8 @@ namespace IsoRealms::Spindizzy {
   
   void WorldView::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
     node->addAttribute(ATTRIBUTE_WORLD, cDefSpindizzy.getID(cDefWorld));
-    DOMNodeWriter mNode = node->addBranch(TAG_CAMERA);
-    cDefCamera->save(&mNode);
-    mNode = node->addBranch(TAG_ZONE_VIEW_TYPE);
-    cDefZoneViewType->save(&mNode);
+    cDefCamera.save(node, TAG_CAMERA);
+    cDefZoneViewType.save(node, TAG_ZONE_VIEW_TYPE);
   }
 
   void WorldView::hintInUse(bool inUse) {

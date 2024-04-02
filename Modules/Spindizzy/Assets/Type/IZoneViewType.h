@@ -31,7 +31,6 @@ namespace IsoRealms::Spindizzy {
   class IZoneViewType : public IAsset {
     public:
     virtual std::unique_ptr<IZoneView> createZoneView(Zone* zone) = 0;
-    virtual void save(DOMNodeWriter* node) const = 0;
     virtual void registerAssets(ISpindizzyRegistry* registry) = 0;
 
     virtual ~IZoneViewType() {

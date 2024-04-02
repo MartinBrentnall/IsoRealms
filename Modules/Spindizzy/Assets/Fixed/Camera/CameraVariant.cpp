@@ -28,8 +28,6 @@ namespace IsoRealms::Spindizzy {
   const std::string CameraVariant::TAG_YAW      = "Yaw";
   const std::string CameraVariant::TAG_ZOOM     = "Zoom";
 
-  const std::string CameraVariant::ATTRIBUTE_TYPE = "type";
-
   CameraVariant::CameraVariant(IProject* project, WorldView* view) :
             cParent(view),
             cDefYaw(cParent->getSpindizzy()),
@@ -62,13 +60,6 @@ namespace IsoRealms::Spindizzy {
     cDefPitch->unregisterAssets(assets);
     cDefLocation->unregisterAssets(assets);
     cDefZoom->unregisterAssets(assets);
-  }
-  
-  void CameraVariant::save(DOMNodeWriter* node) const {
-    cDefYaw.save(node, TAG_YAW);
-    cDefPitch.save(node, TAG_PITCH);
-    cDefLocation.save(node, TAG_LOCATION);
-    cDefZoom.save(node, TAG_ZOOM);
   }
   
   const IFloat* CameraVariant::getYaw() const {
@@ -116,5 +107,12 @@ namespace IsoRealms::Spindizzy {
 
   bool CameraVariant::renderAssetIcon() const {
     return false;
+  }
+  
+  void CameraVariant::saveAsset(DOMNodeWriter* node) const {
+    cDefYaw.save(node, TAG_YAW);
+    cDefPitch.save(node, TAG_PITCH);
+    cDefLocation.save(node, TAG_LOCATION);
+    cDefZoom.save(node, TAG_ZOOM);
   }
 }

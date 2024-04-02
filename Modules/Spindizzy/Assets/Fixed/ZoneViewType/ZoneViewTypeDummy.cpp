@@ -25,15 +25,15 @@ namespace IsoRealms::Spindizzy {
     return std::make_unique<ZoneViewDummy>();
   }
 
-  void ZoneViewTypeDummy::save(DOMNodeWriter* node) const {
-    // Nothing to do.
-  }
-
   void ZoneViewTypeDummy::registerAssets(ISpindizzyRegistry* registry) {
     // Nothing to do.
   }
 
   bool ZoneViewTypeDummy::renderAssetIcon() const {
     return false;
+  }
+
+  void ZoneViewTypeDummy::saveAsset(DOMNodeWriter* node) const {
+    // Nothing to do.
   }
 }

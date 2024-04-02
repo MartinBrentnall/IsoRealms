@@ -35,7 +35,6 @@ namespace IsoRealms::Spindizzy {
   void Camera::save(DOMNodeWriter* node, const std::string& tag) const {
     DOMNodeWriter mAssetNode = node->addBranch(tag);
     cSpindizzy->save(&mAssetNode, cCamera);
-    cCamera->save(&mAssetNode);
   }
 
   void Camera::set(DOMNode& node, WorldView* owner) {

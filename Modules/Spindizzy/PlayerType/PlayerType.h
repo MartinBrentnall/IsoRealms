@@ -31,6 +31,7 @@
 
 #include "Modules/Spindizzy/Assets/Type/IPhysicalObjectType.h"
 #include "Modules/Spindizzy/Assets/Type/IWorldEditorTool.h"
+#include "Modules/Spindizzy/IBindingIdentifier.h"
 
 namespace IsoRealms::Spindizzy {
   class ISpindizzyRegistry;
@@ -42,7 +43,8 @@ namespace IsoRealms::Spindizzy {
   // TODO: This class leaks its assets! (i.e. doesn't create literals upon construction)
   class PlayerType final : public IPhysicalObjectType,
                            public IWorldEditorTool,
-                           public IBindingRegistry {
+                           public IBindingRegistry,
+                           public IBindingIdentifier {
     public:
 
     /**********************\

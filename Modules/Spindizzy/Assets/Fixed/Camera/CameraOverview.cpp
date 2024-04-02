@@ -25,8 +25,6 @@
 #include "Modules/Spindizzy/WorldView/WorldView.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string CameraOverview::ATTRIBUTE_TYPE = "type";
-
   CameraOverview::CameraOverview(IProject* project, WorldView* view) :
             cParent(view) {
     project->reset([this, view]() {
@@ -51,10 +49,6 @@ namespace IsoRealms::Spindizzy {
   }
     
   void CameraOverview::unregisterAssets(IAssetRemover* assets) {
-    // Nothing to do.
-  }
-  
-  void CameraOverview::save(DOMNodeWriter* node) const {
     // Nothing to do.
   }
   
@@ -104,5 +98,9 @@ namespace IsoRealms::Spindizzy {
 
   bool CameraOverview::renderAssetIcon() const {
     return false;
+  }
+  
+  void CameraOverview::saveAsset(DOMNodeWriter* node) const {
+    // Nothing to do.
   }
 }

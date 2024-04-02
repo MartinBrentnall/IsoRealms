@@ -31,7 +31,6 @@ namespace IsoRealms::Spindizzy {
   class IWallPattern : public IAsset {
     public:
     virtual bool contains(ITexture* texture) = 0;
-    virtual void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const = 0;
     virtual std::vector<std::unique_ptr<IVisualElement>> getStaticVisuals(Wall* surface) const = 0;
     virtual void render(float x, float y, float z, float length, float height, float topSlope, float bottomSlope, Wall::Direction facing) const = 0;
     virtual void hintInUse(bool inUse) = 0;

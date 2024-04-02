@@ -36,11 +36,15 @@ namespace IsoRealms::Spindizzy {
      * Implements IWallPattern *
     \***************************/
     bool contains(ITexture*) override;
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const override;
     std::vector<std::unique_ptr<IVisualElement>> getStaticVisuals(Wall* wall) const override;
     void render(float x, float y, float z, float length, float height, float topSlope, float bottomSlope, Wall::Direction facing) const override;
     void hintInUse(bool inUse) override;
+    
+    /**************************************\
+     * Implements IAsset via IWallPattern *
+    \**************************************/
     bool renderAssetIcon() const override;
+    void saveAsset(DOMNodeWriter* node) const override;
 
     private:
 
@@ -97,11 +101,7 @@ namespace IsoRealms::Spindizzy {
     static const std::string TAG_BOTTOM;
     static const std::string TAG_MIDDLE;
     static const std::string TAG_TOP;
-
-    static const std::string ATTRIBUTE_TYPE;
-
-    static const std::string TYPE_CAP;
-  
+ 
     // Definition data.
     Texture cDefTextureBottom;
     Texture cDefTextureMiddle;

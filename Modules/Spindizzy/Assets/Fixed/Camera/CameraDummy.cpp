@@ -33,10 +33,6 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
   
-  void CameraDummy::save(DOMNodeWriter* node) const {
-    // Nothing to do.
-  }
-  
   const IFloat* CameraDummy::getYaw() const {
     return this;
   }  
@@ -83,5 +79,9 @@ namespace IsoRealms::Spindizzy {
 
   bool CameraDummy::renderAssetIcon() const {
     return false;
+  }
+
+  void CameraDummy::saveAsset(DOMNodeWriter* node) const {
+    // Nothing to do.
   }
 }

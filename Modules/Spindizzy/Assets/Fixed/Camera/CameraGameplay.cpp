@@ -25,7 +25,6 @@
 namespace IsoRealms::Spindizzy {
   const std::string CameraGameplay::ATTRIBUTE_DIRECTION = "direction";
   const std::string CameraGameplay::ATTRIBUTE_DURATION  = "duration";
-  const std::string CameraGameplay::ATTRIBUTE_TYPE      = "type";
 
   const std::string CameraGameplay::DIRECTION_NORTH_EAST = "NorthEast";
   const std::string CameraGameplay::DIRECTION_NORTH_WEST = "NorthWest";
@@ -154,15 +153,6 @@ namespace IsoRealms::Spindizzy {
     assets->remove(&cLuaBinding);
   }
   
-  void CameraGameplay::save(DOMNodeWriter* node) const {
-    node->addAttribute(ATTRIBUTE_DIRECTION, cDefAngle == VALUE_NORTH_EAST ? DIRECTION_NORTH_EAST
-                                          : cDefAngle == VALUE_NORTH_WEST ? DIRECTION_NORTH_WEST
-                                          : cDefAngle == VALUE_SOUTH_EAST ? DIRECTION_SOUTH_EAST
-                                          : cDefAngle == VALUE_SOUTH_WEST ? DIRECTION_SOUTH_WEST
-                                          :                                 DIRECTION_INVALID);
-    node->addAttribute(ATTRIBUTE_DURATION, cDefRollDuration);
-  }
-  
   const IFloat* CameraGameplay::getYaw() const {
     return this;
   }  
@@ -218,6 +208,15 @@ namespace IsoRealms::Spindizzy {
 
   bool CameraGameplay::renderAssetIcon() const {
     return false;
+  }
+  
+  void CameraGameplay::saveAsset(DOMNodeWriter* node) const {
+    node->addAttribute(ATTRIBUTE_DIRECTION, cDefAngle == VALUE_NORTH_EAST ? DIRECTION_NORTH_EAST
+                                          : cDefAngle == VALUE_NORTH_WEST ? DIRECTION_NORTH_WEST
+                                          : cDefAngle == VALUE_SOUTH_EAST ? DIRECTION_SOUTH_EAST
+                                          : cDefAngle == VALUE_SOUTH_WEST ? DIRECTION_SOUTH_WEST
+                                          :                                 DIRECTION_INVALID);
+    node->addAttribute(ATTRIBUTE_DURATION, cDefRollDuration);
   }
   
   void CameraGameplay::rollTo(float value) {

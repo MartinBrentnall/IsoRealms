@@ -24,10 +24,6 @@
 namespace IsoRealms::Spindizzy {
   const std::string WallPatternTile::TAG_TEXTURE = "Texture";
 
-  const std::string WallPatternTile::ATTRIBUTE_TYPE = "type";
-
-  const std::string WallPatternTile::TYPE_TILE = "tile";
-  
   WallPatternTile::WallPatternTile(IProject* project, Spindizzy* spindizzy, DOMNode& node) :
             cDefTexture(project) {
     cDefTexture.init(node.getNode(TAG_TEXTURE));
@@ -75,11 +71,6 @@ namespace IsoRealms::Spindizzy {
     return *cDefTexture == texture;
   }
 
-  void WallPatternTile::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    node->addAttribute(ATTRIBUTE_TYPE, TYPE_TILE);
-    cDefTexture.save(node, TAG_TEXTURE);
-  }
-
   WallPatternTile::WallPatternTileSurface::WallPatternTileSurface(const WallPatternTile* parent, Wall* wall) :
             cDefParent(parent),
             cDefWall(wall) {
@@ -111,5 +102,9 @@ namespace IsoRealms::Spindizzy {
 
   bool WallPatternTile::renderAssetIcon() const {
     return false;
+  }
+
+  void WallPatternTile::saveAsset(DOMNodeWriter* node) const {
+    cDefTexture.save(node, TAG_TEXTURE);
   }
 }

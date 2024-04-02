@@ -31,7 +31,6 @@ namespace IsoRealms::Spindizzy {
     public:
     virtual void registerAssets(IAssetRegistry* assets) = 0; 
     virtual void unregisterAssets(IAssetRemover* assets) = 0;
-    virtual void save(DOMNodeWriter* node) const = 0;
     virtual const IFloat* getYaw() const = 0;
     virtual const IFloat* getPitch() const = 0;
     virtual float getXLocation() const = 0;

@@ -33,10 +33,14 @@ namespace IsoRealms::Spindizzy {
      * Implements IWallPattern *
     \***************************/
     bool contains(ITexture* texture) override;
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const override;
     std::vector<std::unique_ptr<IVisualElement>> getStaticVisuals(Wall* wall) const override;
     void render(float x, float y, float z, float length, float height, float topSlope, float bottomSlope, Wall::Direction facing) const override;
     void hintInUse(bool inUse) override;
+    
+    /**************************************\
+     * Implements IAsset via IWallPattern *
+    \**************************************/
     bool renderAssetIcon() const override;
+    void saveAsset(DOMNodeWriter* node) const override;
   };
 }

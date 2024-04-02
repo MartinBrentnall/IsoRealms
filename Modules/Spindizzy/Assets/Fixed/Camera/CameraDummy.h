@@ -34,7 +34,6 @@ namespace IsoRealms::Spindizzy {
     \**********************/
     void registerAssets(IAssetRegistry* assets) override; 
     void unregisterAssets(IAssetRemover* assets) override;
-    void save(DOMNodeWriter* node) const override;
     const IFloat* getYaw() const override;
     const IFloat* getPitch() const override;
     float getXLocation() const override;
@@ -50,6 +49,11 @@ namespace IsoRealms::Spindizzy {
      * Implements IFloat *
     \*********************/
     float getValue() const override;
+    
+    /****************************************\
+     * Implements IAsset via ICamera/IFloat *
+    \****************************************/
     bool renderAssetIcon() const override;
+    void saveAsset(DOMNodeWriter* node) const override;
   };
 }

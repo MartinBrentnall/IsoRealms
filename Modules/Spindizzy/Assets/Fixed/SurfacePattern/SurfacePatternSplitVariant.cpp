@@ -29,10 +29,6 @@ namespace IsoRealms::Spindizzy {
   const std::string SurfacePatternSplitVariant::TAG_SPLIT_A = "SplitA";
   const std::string SurfacePatternSplitVariant::TAG_SPLIT_B = "SplitB";
 
-  const std::string SurfacePatternSplitVariant::ATTRIBUTE_TYPE = "type";
-  
-  const std::string SurfacePatternSplitVariant::TYPE_TILE = "splitVariant";
-  
   SurfacePatternSplitVariant::SurfacePatternSplitVariant(IProject* project, Spindizzy* spindizzy, DOMNode& node) :
             cDefRegularPattern(spindizzy),
             cDefSplitAPattern(spindizzy),
@@ -46,16 +42,6 @@ namespace IsoRealms::Spindizzy {
     return cDefRegularPattern->contains(texture)
         || cDefSplitAPattern->contains(texture)
         || cDefSplitBPattern->contains(texture);
-  }
-
-  void SurfacePatternSplitVariant::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    node->addAttribute(ATTRIBUTE_TYPE, TYPE_TILE);
-    DOMNodeWriter mNode = node->addBranch(TAG_REGULAR);
-    cDefRegularPattern->save(&mNode, identifier);
-    mNode = node->addBranch(TAG_SPLIT_A);
-    cDefSplitAPattern->save(&mNode, identifier);
-    mNode = node->addBranch(TAG_SPLIT_B);
-    cDefSplitBPattern->save(&mNode, identifier);
   }
 
   std::vector<std::unique_ptr<IVisualElement>> SurfacePatternSplitVariant::getStaticVisuals(Surface* surface) {
@@ -82,6 +68,12 @@ namespace IsoRealms::Spindizzy {
 
   bool SurfacePatternSplitVariant::renderAssetIcon() const {
     return false;
+  }
+
+  void SurfacePatternSplitVariant::saveAsset(DOMNodeWriter* node) const {
+    cDefRegularPattern.save(node, TAG_REGULAR);
+    cDefSplitAPattern.save(node, TAG_SPLIT_A);
+    cDefSplitBPattern.save(node, TAG_SPLIT_B);
   }
 }
 

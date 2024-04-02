@@ -38,13 +38,17 @@ namespace IsoRealms::Spindizzy {
      * Implements ISurfacePattern *
     \******************************/
     bool contains(ITexture*) override;
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const override;
     std::vector<std::unique_ptr<IVisualElement>> getStaticVisuals(Surface* surface) override;
     std::vector<std::unique_ptr<IVisualElement>> getStaticVisuals(SplitSurface* surface) override;
     void render(float startX, float endX, float startY, float endY, float z, float xSlope, float ySlope, ISurface::Direction facing) const override;
     void render(float x, float y, float z, float heightSW, float heightSE, float heightNW, float heighNE, bool alternativeSplit) const override;
     void hintInUse(bool inUse) override;
+    
+    /*****************************************\
+     * Implements IAsset via ISurfacePattern *
+    \*****************************************/
     bool renderAssetIcon() const override;
+    void saveAsset(DOMNodeWriter* node) const override;
 
     private:
 
@@ -53,11 +57,6 @@ namespace IsoRealms::Spindizzy {
     static const std::string TAG_SPLIT_A;
     static const std::string TAG_SPLIT_B;
 
-    static const std::string ATTRIBUTE_TEXTURE;
-    static const std::string ATTRIBUTE_TYPE;
-
-    static const std::string TYPE_TILE;
-    
     // Definition data.
     SurfacePattern cDefRegularPattern;
     SurfacePattern cDefSplitAPattern;

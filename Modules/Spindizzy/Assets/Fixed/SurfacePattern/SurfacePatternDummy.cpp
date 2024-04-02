@@ -24,10 +24,6 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  void SurfacePatternDummy::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    // Nothing to do.
-  }
-
   std::vector<std::unique_ptr<IVisualElement>> SurfacePatternDummy::getStaticVisuals(Surface* surface) {
     std::vector<std::unique_ptr<IVisualElement>> mVisuals;
     return mVisuals;
@@ -53,5 +49,8 @@ namespace IsoRealms::Spindizzy {
   bool SurfacePatternDummy::renderAssetIcon() const {
     return false;
   }
-}
 
+  void SurfacePatternDummy::saveAsset(DOMNodeWriter* node) const {
+    // Nothing to do.    
+  }
+}

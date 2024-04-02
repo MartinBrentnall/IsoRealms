@@ -116,7 +116,7 @@ namespace IsoRealms::Spindizzy {
     node->addAttribute(ATTRIBUTE_STEP_REACH, cDefStepReach, DEFAULT_STEP_REACH);
     node->addAttribute(ATTRIBUTE_HEIGHT, cDefHeight, DEFAULT_HEIGHT);
     node->addAttribute(ATTRIBUTE_RADIUS, cDefRadius, DEFAULT_RADIUS);
-    node->addAttribute(ATTRIBUTE_HUG_MOMENTUM, cDefHugMomentum, DEFAULT_ACCELERATION);
+    node->addAttribute(ATTRIBUTE_HUG_MOMENTUM, cDefHugMomentum, DEFAULT_HUG_MOMENTUM);
     node->addAttribute(ATTRIBUTE_RESPAWN_DELAY, cDefRespawnDelay, DEFAULT_RESPAWN_DELAY);
     cDefModel.save(node, TAG_MODEL);
     cDefRespawnAction.save(node, TAG_RESPAWN_ACTION);
@@ -125,7 +125,9 @@ namespace IsoRealms::Spindizzy {
     cDefInputY.save(node, TAG_INPUT_Y);
     cDefFallImpactAction.save(node, TAG_FALL_IMPACT_ACTION);
     cDefFallBounceAction.save(node, TAG_FALL_BOUNCE_ACTION);
+    cDefSpindizzy.setBindingIdentifier(this);
     cDefWallBounceAction.save(node, TAG_WALL_BOUNCE_ACTION);
+    cDefSpindizzy.setBindingIdentifier(nullptr);
     cDefOrientation.save(node, TAG_ORIENTATION);
   }
 
@@ -244,7 +246,11 @@ namespace IsoRealms::Spindizzy {
   }
 
   std::string PlayerType::getBindingID(const IBinding* binding) const {
-    return ""; // TODO: Implement this.
+    std::string mBindingID = cDefSpindizzy.getZoneBindingID2(binding);
+    if (mBindingID != "") {
+      return BIND_TO_TERRAIN + "/" + mBindingID;
+    }
+    return BIND_TO_PLAYER + "/" + cDefSpindizzy.getZoneBindingID1(binding);
   }
 
   IWorldEditorToolInstance* PlayerType::createToolInstance(WorldEditor* editor) {

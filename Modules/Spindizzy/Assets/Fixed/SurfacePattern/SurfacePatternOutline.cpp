@@ -23,20 +23,12 @@
 #include "Modules/Spindizzy/World/Object/Terrain/Surface.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string SurfacePatternOutline::ATTRIBUTE_TYPE = "type";
-
-  const std::string SurfacePatternOutline::TYPE_OUTLINE = "outline";
-
   SurfacePatternOutline::SurfacePatternOutline(IProject* project, Spindizzy* spindizzy, DOMNode& node) {
     // Nothing to do.
   }
 
   bool SurfacePatternOutline::contains(ITexture* texture) {
     return false;
-  }
-
-  void SurfacePatternOutline::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    node->addAttribute(ATTRIBUTE_TYPE, TYPE_OUTLINE);
   }
 
   std::vector<std::unique_ptr<IVisualElement>> SurfacePatternOutline::getStaticVisuals(Surface* surface) {
@@ -135,6 +127,10 @@ namespace IsoRealms::Spindizzy {
 
   bool SurfacePatternOutline::renderAssetIcon() const {
     return false;
+  }
+
+  void SurfacePatternOutline::saveAsset(DOMNodeWriter* node) const {
+    // TODO: Implement this.
   }
 
   SurfacePatternOutline::SurfacePatternSurface::SurfacePatternSurface(SurfacePatternOutline& parent, Surface* surface) :

@@ -25,10 +25,6 @@
 namespace IsoRealms::Spindizzy {
   const std::string SurfacePatternTile::TAG_TEXTURE = "Texture";
 
-  const std::string SurfacePatternTile::ATTRIBUTE_TYPE = "type";
-
-  const std::string SurfacePatternTile::TYPE_TILE = "tile";
-  
   SurfacePatternTile::SurfacePatternTile(IProject* project, Spindizzy* spindizzy, DOMNode& node) :
             cDefTexture(project) {
     cDefTexture.init(node.getNode(TAG_TEXTURE));
@@ -36,11 +32,6 @@ namespace IsoRealms::Spindizzy {
 
   bool SurfacePatternTile::contains(ITexture* texture) {
     return *cDefTexture == texture;
-  }
-
-  void SurfacePatternTile::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    node->addAttribute(ATTRIBUTE_TYPE, TYPE_TILE);
-    cDefTexture.save(node, TAG_TEXTURE);
   }
 
   std::vector<std::unique_ptr<IVisualElement>> SurfacePatternTile::getStaticVisuals(Surface* surface) {
@@ -137,6 +128,10 @@ namespace IsoRealms::Spindizzy {
 
   bool SurfacePatternTile::renderAssetIcon() const {
     return false;
+  }
+
+  void SurfacePatternTile::saveAsset(DOMNodeWriter* node) const {
+    cDefTexture.save(node, TAG_TEXTURE);
   }
 
   SurfacePatternTile::SurfacePatternSurface::SurfacePatternSurface(SurfacePatternTile& parent, Surface* surface) :

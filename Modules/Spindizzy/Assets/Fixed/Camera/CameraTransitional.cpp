@@ -31,7 +31,6 @@ namespace IsoRealms::Spindizzy {
   const std::string CameraTransitional::TAG_START              = "Start";
 
   const std::string CameraTransitional::ATTRIBUTE_DURATION = "duration";
-  const std::string CameraTransitional::ATTRIBUTE_TYPE     = "type";
 
   const unsigned int CameraTransitional::DEFAULT_DURATION = 500U;
 
@@ -121,15 +120,6 @@ namespace IsoRealms::Spindizzy {
     cDefEnd->unregisterAssets(assets);
   }
   
-  void CameraTransitional::save(DOMNodeWriter* node) const {
-    cDefStart.save(node, TAG_START);
-    cDefEnd.save(node, TAG_END);
-    cDefStartDepartureAction.save(node, TAG_ON_START_DEPARTURE);
-    cDefStartArrivalAction.save(node, TAG_ON_START_ARRIVAL);
-    cDefEndDepartureAction.save(node, TAG_ON_END_DEPARTURE);
-    cDefEndArrivalAction.save(node, TAG_ON_END_ARRIVAL);
-  }
-  
   const IFloat* CameraTransitional::getYaw() const {
     return &cYaw;
   }  
@@ -178,6 +168,15 @@ namespace IsoRealms::Spindizzy {
 
   bool CameraTransitional::renderAssetIcon() const {
     return false;
+  }
+  
+  void CameraTransitional::saveAsset(DOMNodeWriter* node) const {
+    cDefStart.save(node, TAG_START);
+    cDefEnd.save(node, TAG_END);
+    cDefStartDepartureAction.save(node, TAG_ON_START_DEPARTURE);
+    cDefStartArrivalAction.save(node, TAG_ON_START_ARRIVAL);
+    cDefEndDepartureAction.save(node, TAG_ON_END_DEPARTURE);
+    cDefEndArrivalAction.save(node, TAG_ON_END_ARRIVAL);
   }
 
   void CameraTransitional::yawChanged(ICamera* camera) {

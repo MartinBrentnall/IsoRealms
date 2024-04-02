@@ -52,15 +52,15 @@ namespace IsoRealms::Spindizzy {
     return std::make_unique<ZoneViewOverview>(cProject, cWorldView, *this, zone);
   }
 
-  void ZoneViewTypeOverview::save(DOMNodeWriter* node) const {
-    cDefColour.save(node, TAG_COLOUR);
-  }
-
   void ZoneViewTypeOverview::registerAssets(ISpindizzyRegistry* registry) {
     registry->addZoneBinding(&cRuntimeParameterView1, &cRuntimeParameterView2, "");
   }
 
   bool ZoneViewTypeOverview::renderAssetIcon() const {
     return false;
+  }
+
+  void ZoneViewTypeOverview::saveAsset(DOMNodeWriter* node) const {
+    cDefColour.save(node, TAG_COLOUR);
   }
 }

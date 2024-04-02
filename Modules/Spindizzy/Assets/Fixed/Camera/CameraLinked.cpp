@@ -24,7 +24,6 @@
 #include "Modules/Spindizzy/WorldView/WorldView.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string CameraLinked::ATTRIBUTE_TYPE = "type";
   const std::string CameraLinked::ATTRIBUTE_VIEW = "view";
 
   CameraLinked::CameraLinked(IProject* project, WorldView* view) :
@@ -45,11 +44,6 @@ namespace IsoRealms::Spindizzy {
     
   void CameraLinked::unregisterAssets(IAssetRemover* assets) {
     // Nothing to do.
-  }
-  
-  void CameraLinked::save(DOMNodeWriter* node) const {
-    Spindizzy* mSpindizzy = cParent->getWorld()->getSpindizzy();
-    node->addAttribute(ATTRIBUTE_VIEW, mSpindizzy->getID(cDefLinkedView));
   }
   
   const IFloat* CameraLinked::getYaw() const {
@@ -94,5 +88,10 @@ namespace IsoRealms::Spindizzy {
 
   bool CameraLinked::renderAssetIcon() const {
     return false;
+  }
+  
+  void CameraLinked::saveAsset(DOMNodeWriter* node) const {
+    Spindizzy* mSpindizzy = cParent->getWorld()->getSpindizzy();
+    node->addAttribute(ATTRIBUTE_VIEW, mSpindizzy->getID(cDefLinkedView));
   }
 }

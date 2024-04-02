@@ -25,10 +25,6 @@ namespace IsoRealms::Spindizzy {
   const std::string WallPatternCap::TAG_MIDDLE = "Middle";
   const std::string WallPatternCap::TAG_TOP    = "Top";
 
-  const std::string WallPatternCap::ATTRIBUTE_TYPE = "type";
-
-  const std::string WallPatternCap::TYPE_CAP = "cap";
-  
   WallPatternCap::WallPatternCap(IProject* project, Spindizzy* spindizzy, DOMNode& node) :
             cDefTextureBottom(project),
             cDefTextureMiddle(project),
@@ -147,13 +143,6 @@ namespace IsoRealms::Spindizzy {
         || *cDefTextureTop    == texture;
   }
 
-  void WallPatternCap::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    node->addAttribute(ATTRIBUTE_TYPE, TYPE_CAP);
-    cDefTextureBottom.save(node, TAG_BOTTOM);
-    cDefTextureMiddle.save(node, TAG_MIDDLE);
-    cDefTextureTop.save(node, TAG_TOP);
-  }
-
   void WallPatternCap::hintInUse(bool inUse) {
     cDefTextureBottom->hintTextureInUse(inUse);
     cDefTextureMiddle->hintTextureInUse(inUse);
@@ -162,6 +151,12 @@ namespace IsoRealms::Spindizzy {
   
   bool WallPatternCap::renderAssetIcon() const {
     return false;
+  }
+
+  void WallPatternCap::saveAsset(DOMNodeWriter* node) const {
+    cDefTextureBottom.save(node, TAG_BOTTOM);
+    cDefTextureMiddle.save(node, TAG_MIDDLE);
+    cDefTextureTop.save(node, TAG_TOP);
   }
 
   WallPatternCap::SectionBottom::SectionBottom(const WallPatternCap* parent, Wall* wall) :
