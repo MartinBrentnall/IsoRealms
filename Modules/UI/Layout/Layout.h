@@ -61,7 +61,7 @@ namespace IsoRealms::UI {
      * Editing Interface *
     \*********************/
     LayoutComponent* getComponent(const std::string& name);
-    std::string getName(LayoutComponent* component);
+    std::string getName(LayoutComponent* component) const;
     void setName(LayoutComponent* component, const std::string& name);
     std::vector<std::string> getAvailableRelativeNames(LayoutComponent* component);
     void renderEditing(float aspectRatio) const;

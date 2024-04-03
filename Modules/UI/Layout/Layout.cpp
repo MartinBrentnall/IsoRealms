@@ -64,12 +64,11 @@ namespace IsoRealms::UI {
   }
 
   void Layout::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    for (const std::pair<const std::string, LayoutComponent>& mComponent : cComponentsByName) {
-      if (mComponent.first != "[screen]") {
-        DOMNodeWriter mComponentNode = node->addBranch(TAG_COMPONENT);
-        mComponentNode.addAttribute(ATTRIBUTE_NAME, mComponent.first);
-        mComponent.second.save(&mComponentNode, identifier);
-      }
+    for (LayoutComponent* mComponent : cComponentsByOrder) {
+      DOMNodeWriter mComponentNode = node->addBranch(TAG_COMPONENT);
+      std::string mComponentName = getName(mComponent);
+      mComponentNode.addAttribute(ATTRIBUTE_NAME, mComponentName);
+      mComponent->save(&mComponentNode, identifier);
     }
   }
 
@@ -125,7 +124,7 @@ namespace IsoRealms::UI {
     return &mNamedComponent->second;
   }
 
-  std::string Layout::getName(LayoutComponent* component) {
+  std::string Layout::getName(LayoutComponent* component) const {
     for (const std::pair<const std::string, LayoutComponent>& mComponent : cComponentsByName) {
       if (&mComponent.second == component) {
         return mComponent.first;
