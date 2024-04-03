@@ -44,6 +44,7 @@ namespace IsoRealms::UI {
   }
   
   void LinkedOffset::save(DOMNodeWriter* node, Layout* layout) const {
+    node->addAttribute("type", std::string("Linked"));
     node->addAttribute(ATTRIBUTE_VALUE, cDefHorizontal ? VALUE_WIDTH : VALUE_HEIGHT);
     node->addAttribute(ATTRIBUTE_LINKED, layout->getName(cDefLinked));
   }  

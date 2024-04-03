@@ -113,10 +113,10 @@ namespace IsoRealms::UI {
 
   void LayoutComponent::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
     cDefScreen.save(node, TAG_SCREEN);
-    cDefTopEdge.save(node, TAG_TOP, &cDefLayout);
-    cDefBottomEdge.save(node, TAG_BOTTOM, &cDefLayout);
-    cDefLeftEdge.save(node, TAG_LEFT, &cDefLayout);
-    cDefRightEdge.save(node, TAG_RIGHT, &cDefLayout);
+    cDefTopEdge.save(node, TAG_TOP, &cDefLayout, 1.0f);
+    cDefBottomEdge.save(node, TAG_BOTTOM, &cDefLayout, -1.0f);
+    cDefLeftEdge.save(node, TAG_LEFT, &cDefLayout, -1.0f);
+    cDefRightEdge.save(node, TAG_RIGHT, &cDefLayout, 1.0f);
   }
 
   bool LayoutComponent::inputEditor(sf::Event& event, IScreen* screen, float x, float y, float aspectRatio, float scale) {
@@ -336,10 +336,10 @@ namespace IsoRealms::UI {
     return cDefLocation->getLocation(aspectRatio) + cDefOffset->getOffset(aspectRatio);
   }
   
-  void LayoutComponent::Edge::save(DOMNodeWriter* node, const std::string& tag, Layout* layout) const {
+  void LayoutComponent::Edge::save(DOMNodeWriter* node, const std::string& tag, Layout* layout, float defaultValue) const {
     DOMNodeWriter mEdgeNode = node->addBranch(tag);
     DOMNodeWriter mNode = mEdgeNode.addBranch(TAG_LOCATION);
-    cDefLocation->save(&mNode, layout);
+    cDefLocation->save(&mNode, layout, defaultValue);
     mNode = mEdgeNode.addBranch(TAG_OFFSET);
     cDefOffset->save(&mNode, layout);
   }

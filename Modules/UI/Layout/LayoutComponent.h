@@ -87,7 +87,7 @@ namespace IsoRealms::UI {
       Edge(IProject* project, LayoutComponent& parent, DOMNode& node, const std::string& tag, bool horizontal, float defaultValue);
       
       float getLocation(float aspectRatio) const;
-      void save(DOMNodeWriter* node, const std::string& tag, Layout* layout) const;
+      void save(DOMNodeWriter* node, const std::string& tag, Layout* layout, float defaultValue) const;
     };
     
     enum class Handle {

@@ -39,9 +39,10 @@ namespace IsoRealms::UI {
     return mComponentStart + ((mComponentEnd - mComponentStart) / 2.0f) * (cDefValue + 1.0f);
   }
   
-  void RelativeLocation::save(DOMNodeWriter* node, Layout* layout) const {
+  void RelativeLocation::save(DOMNodeWriter* node, Layout* layout, float defaultValue) const {
     // TODO: Only save if not default value
-    node->addAttribute(ATTRIBUTE_VALUE, cDefValue);
+    node->addAttribute("type", std::string("Relative"));
+    node->addAttribute(ATTRIBUTE_VALUE, cDefValue, defaultValue);
     node->addAttribute(ATTRIBUTE_RELATIVE, layout->getName(cDefRelative));
   }  
 }

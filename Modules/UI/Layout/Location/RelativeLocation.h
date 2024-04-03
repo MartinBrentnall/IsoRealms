@@ -37,7 +37,7 @@ namespace IsoRealms::UI {
      * Implements ILayoutLocation *
     \******************************/
     float getLocation(float aspectRatio) const override;
-    void save(DOMNodeWriter* node, Layout* layout) const override;
+    void save(DOMNodeWriter* node, Layout* layout, float defaultValue) const override;
     
     private:
 

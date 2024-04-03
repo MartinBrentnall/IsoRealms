@@ -33,7 +33,8 @@ namespace IsoRealms::UI {
     return cDefValue * aspectRatio;
   }
   
-  void AbsoluteLocation::save(DOMNodeWriter* node, Layout* layout) const {
-    node->addAttribute(ATTRIBUTE_VALUE, cDefValue);
+  void AbsoluteLocation::save(DOMNodeWriter* node, Layout* layout, float defaultValue) const {
+    node->addAttribute("type", std::string("Absolute"));
+    node->addAttribute(ATTRIBUTE_VALUE, cDefValue, defaultValue);
   }  
 }

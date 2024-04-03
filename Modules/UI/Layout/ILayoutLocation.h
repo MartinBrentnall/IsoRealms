@@ -28,7 +28,7 @@ namespace IsoRealms::UI {
   class ILayoutLocation {
     public:
     virtual float getLocation(float aspectRatio) const = 0;
-    virtual void save(DOMNodeWriter* node, Layout* layout) const = 0;
+    virtual void save(DOMNodeWriter* node, Layout* layout, float defaultValue) const = 0;
 
     virtual ~ILayoutLocation() {}
   };

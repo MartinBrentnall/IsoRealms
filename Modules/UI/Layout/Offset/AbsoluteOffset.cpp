@@ -34,6 +34,7 @@ namespace IsoRealms::UI {
   }
 
   void AbsoluteOffset::save(DOMNodeWriter* node, Layout* layout) const {
+    node->addAttribute("type", std::string("Absolute"));
     node->addAttribute(ATTRIBUTE_VALUE, cDefValue);
   }
 }
