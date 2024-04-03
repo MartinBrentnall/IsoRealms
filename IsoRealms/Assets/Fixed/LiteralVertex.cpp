@@ -18,6 +18,9 @@
  */
 #include "LiteralVertex.h"
 
+#include "IsoRealms/Persistence/DOMNodeWriter.h"
+#include "IsoRealms/Utils.h"
+
 namespace IsoRealms {
   LiteralVertex::LiteralVertex() {
     set(0.0, 0.0, 0.0);
@@ -73,5 +76,9 @@ namespace IsoRealms {
     return x == vertex->getX()
         && y == vertex->getY()
         && z == vertex->getZ();
+  }
+
+  void LiteralVertex::saveAsset(DOMNodeWriter* node) const {
+    node->addAttribute("value", Utils::toString(x) + " " + Utils::toString(y) + " " + Utils::toString(z));
   }
 }

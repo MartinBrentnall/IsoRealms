@@ -48,7 +48,12 @@ namespace IsoRealms {
     double getX() const override;
     double getY() const override;
     double getZ() const override;
+
+    /**********************************\
+     * Implements IAsset from IVertex *
+    \**********************************/
     bool renderAssetIcon() const override;
+    void saveAsset(DOMNodeWriter* node) const override;
 
     virtual ~LiteralVertex() {}
   };

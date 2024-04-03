@@ -18,6 +18,9 @@
  */
 #include "LiteralColour.h"
 
+#include "IsoRealms/Persistence/DOMNodeWriter.h"
+#include "IsoRealms/Utils.h"
+
 namespace IsoRealms {
   LiteralColour::LiteralColour() :
             cRed(  0.0f),
@@ -47,13 +50,6 @@ namespace IsoRealms {
             cAlpha(a.getAlpha() + (b.getAlpha() - a.getAlpha()) * weight) {
   }
 
-  void LiteralColour::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    node->addAttribute("red",   cRed,   0.0f);
-    node->addAttribute("green", cGreen, 0.0f);
-    node->addAttribute("blue",  cBlue,  0.0f);
-    node->addAttribute("alpha", cAlpha, 0.0f);
-  }
-  
   bool LiteralColour::operator==(const LiteralColour& colour) const {
     return cRed == colour.cRed && cGreen == colour.cGreen && cBlue == colour.cBlue && cAlpha == colour.cAlpha;
   }
@@ -80,5 +76,9 @@ namespace IsoRealms {
 
   float LiteralColour::getAlpha() const {
     return cAlpha;
+  }
+
+  void LiteralColour::saveAsset(DOMNodeWriter* node) const {
+    node->addAttribute("value", Utils::toString(cRed) + " " + Utils::toString(cGreen) + " " + Utils::toString(cBlue) + " " + Utils::toString(cAlpha));
   }
 }

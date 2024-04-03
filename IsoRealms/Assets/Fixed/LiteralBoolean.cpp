@@ -18,6 +18,8 @@
  */
 #include "LiteralBoolean.h"
 
+#include "IsoRealms/Persistence/DOMNodeWriter.h"
+
 namespace IsoRealms {
   LiteralBoolean::LiteralBoolean(const bool value) :
             cValue(value) {
@@ -29,5 +31,9 @@ namespace IsoRealms {
 
   bool LiteralBoolean::renderAssetIcon() const {
     return false;
+  }
+
+  void LiteralBoolean::saveAsset(DOMNodeWriter* node) const {
+    node->addAttribute("value", cValue);
   }
 }

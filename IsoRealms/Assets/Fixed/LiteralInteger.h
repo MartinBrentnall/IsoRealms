@@ -42,6 +42,11 @@ namespace IsoRealms {
      * Implements IInteger *
     \***********************/
     int getValue() const override;
+
+    /***********************************\
+     * Implements IAsset from IInteger *
+    \***********************************/
     bool renderAssetIcon() const override;
+    void saveAsset(DOMNodeWriter* node) const override;
   };
 }

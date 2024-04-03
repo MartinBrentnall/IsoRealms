@@ -74,7 +74,6 @@ namespace IsoRealms {
     */
     LiteralColour(const IColour& a, const IColour& b, const float weight = 0.5f);
 
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const; // TODO: How is this used?
 
     bool operator==(const LiteralColour& colour) const;
     bool operator!=(const LiteralColour& colour) const;
@@ -87,5 +86,10 @@ namespace IsoRealms {
     float getGreen() const override;
     float getBlue() const override;
     float getAlpha() const override;
+
+    /**********************************\
+     * Implements IAsset from IColour *
+    \**********************************/
+    void saveAsset(DOMNodeWriter* node) const override;
   };
 }

@@ -18,6 +18,8 @@
  */
 #include "LiteralInteger.h"
 
+#include "IsoRealms/Persistence/DOMNodeWriter.h"
+
 namespace IsoRealms {
   LiteralInteger::LiteralInteger(const int value):
           cValue(value) {
@@ -30,5 +32,9 @@ namespace IsoRealms {
   
   bool LiteralInteger::renderAssetIcon() const {
     return false;
-  }  
+  }
+
+  void LiteralInteger::saveAsset(DOMNodeWriter* node) const {
+    node->addAttribute("value", cValue);
+  }
 }

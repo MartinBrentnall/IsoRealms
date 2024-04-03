@@ -18,6 +18,8 @@
  */
 #include "LiteralFloat.h"
 
+#include "IsoRealms/Persistence/DOMNodeWriter.h"
+
 namespace IsoRealms {
   LiteralFloat::LiteralFloat(const float value) :
             cValue(value) {
@@ -29,5 +31,9 @@ namespace IsoRealms {
   
   bool LiteralFloat::renderAssetIcon() const {
     return false;
+  }
+
+  void LiteralFloat::saveAsset(DOMNodeWriter* node) const {
+    node->addAttribute("value", cValue);
   }
 }

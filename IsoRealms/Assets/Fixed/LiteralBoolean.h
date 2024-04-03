@@ -42,6 +42,11 @@ namespace IsoRealms {
      * Implements IBoolean *
     \***********************/
     bool getValue() const override;
+
+    /***********************************\
+     * Implements IAsset from IBoolean *
+    \***********************************/
     bool renderAssetIcon() const override;
+    void saveAsset(DOMNodeWriter* node) const override;
   };
 }

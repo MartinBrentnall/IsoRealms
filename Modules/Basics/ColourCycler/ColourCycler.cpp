@@ -24,7 +24,6 @@ namespace IsoRealms::Basics {
   const std::string ColourCycler::TAG_IO            = "IO";
   const std::string ColourCycler::TAG_OUTPUT_COLOUR = "OutputColour";
 
-  const std::string ColourCycler::ATTRIBUTE_COLOUR           = "colour";
   const std::string ColourCycler::ATTRIBUTE_OFFSET           = "offset";
   const std::string ColourCycler::ATTRIBUTE_SPEED_MULTIPLIER = "speedMultiplier";
 
@@ -80,8 +79,7 @@ namespace IsoRealms::Basics {
     cDefCycleSpeed.save(node, TAG_CYCLE_SPEED);
     DOMNodeWriter mIONode = node->addBranch(TAG_IO);
     for (const std::unique_ptr<Colour>& mInputColour : cDefInputColours) {
-      DOMNodeWriter mInputColourNode = mIONode.addBranch(TAG_INPUT_COLOUR);
-      mInputColour->save(&mInputColourNode, ATTRIBUTE_COLOUR);
+      mInputColour->save(&mIONode, TAG_INPUT_COLOUR);
     }
     for (const std::unique_ptr<ColourCycle>& mOutputColour : cDefOutputColours) {
       mOutputColour->save(&mIONode);

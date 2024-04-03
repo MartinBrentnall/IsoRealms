@@ -35,8 +35,8 @@ namespace IsoRealms {
     
     IString* getAsset(Project& project, DOMNode& node) const override {
       std::string mKey = node.getAttribute(ATTRIBUTE_KEY);
-      if      (mKey == ":Float")   {return cConvertedAssets.emplace(std::make_unique<PrimitiveToString<IFloat>>(  cProject, [this, &node](IAssetUser<IFloat>*   user) -> IFloat*   {return cProject->getFloat(  user, node.getNode(TAG_ASSET), nullptr);})).first->get();}
-      else if (mKey == ":Integer") {return cConvertedAssets.emplace(std::make_unique<PrimitiveToString<IInteger>>(cProject, [this, &node](IAssetUser<IInteger>* user) -> IInteger* {return cProject->getInteger(user, node.getNode(TAG_ASSET), nullptr);})).first->get();}
+      if      (mKey == ":Float")   {return cConvertedAssets.emplace(std::make_unique<PrimitiveToString<IFloat>>(  cProject, cProject, [this, &node](IAssetUser<IFloat>*   user) -> IFloat*   {return cProject->getFloat(  user, node.getNode(TAG_ASSET), nullptr);})).first->get();}
+      else if (mKey == ":Integer") {return cConvertedAssets.emplace(std::make_unique<PrimitiveToString<IInteger>>(cProject, cProject, [this, &node](IAssetUser<IInteger>* user) -> IInteger* {return cProject->getInteger(user, node.getNode(TAG_ASSET), nullptr);})).first->get();}
       return nullptr;
     }
 

@@ -18,6 +18,8 @@
  */
 #include "LiteralString.h"
 
+#include "IsoRealms/Persistence/DOMNodeWriter.h"
+
 namespace IsoRealms {
   LiteralString::LiteralString(const std::string& value) {
     setValue(value);
@@ -33,5 +35,9 @@ namespace IsoRealms {
 
   bool LiteralString::renderAssetIcon() const {
     return false;
+  }
+
+  void LiteralString::saveAsset(DOMNodeWriter* node) const {
+    node->addAttribute("value", cValue);
   }
 }

@@ -42,6 +42,11 @@ namespace IsoRealms {
      * Implements IFloat *
     \*********************/
     float getValue() const override;
+
+    /*********************************\
+     * Implements IAsset from IFloat *
+    \*********************************/
     bool renderAssetIcon() const override;
+    void saveAsset(DOMNodeWriter* node) const override;
   };
 }

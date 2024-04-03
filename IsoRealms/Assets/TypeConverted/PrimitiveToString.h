@@ -38,31 +38,33 @@ namespace IsoRealms {
   template <class TYPE> class PrimitiveToString : public IString,
                                                   public IAssetUser<TYPE>, // TODO: Should be managed via Client asset classes
                                                   public ITypeConvertedAsset {
-    private:
-    IAssetRemover* cAssets; /// To manage removal of ourself in case the wrapped primitive is removed.
-    TYPE* cValue;           /// Wrapped primitive.
-
     public:
-      
+
     /**
      * Construct a String asset wrapper around the specified primitive.
-     * 
+     *
      * @param asset The primitive asset to wrap.
      */
-    PrimitiveToString(IAssetRemover* assets, std::function<TYPE*(IAssetUser<TYPE>*)> assetAccessorFunction) :
+    PrimitiveToString(IProject* project, IAssetRemover* assets, std::function<TYPE*(IAssetUser<TYPE>*)> assetAccessorFunction) :
+              cProject(project),
               cAssets(assets),
               cValue(assetAccessorFunction(this)) {
     }
-    
+
     /**********************\
      * Implements IString *
     \**********************/
     std::string getValue() const override {
       return Utils::toString(cValue->getValue());
     }
-    
+
     bool renderAssetIcon() const override {
       return false;
+    }
+
+    void saveAsset(DOMNodeWriter* node) const override {
+      DOMNodeWriter mAssetNode = node->addBranch("Asset");
+      cProject->save(&mAssetNode, cValue);
     }
 
     /*******************************\
@@ -78,5 +80,11 @@ namespace IsoRealms {
     void release(IAssets* releaser) override {
       releaser->release(this, cValue);
     }
+
+    private:
+    IProject* cProject;
+    IAssetRemover* cAssets; /// To manage removal of ourself in case the wrapped primitive is removed.
+    TYPE* cValue;           /// Wrapped primitive.
   };
 }
+

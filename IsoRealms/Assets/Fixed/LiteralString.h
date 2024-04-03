@@ -44,6 +44,11 @@ namespace IsoRealms {
      * Implements IString *
     \**********************/
     std::string getValue() const override;
+
+    /**********************************\
+     * Implements IAsset from IString *
+    \**********************************/
     bool renderAssetIcon() const override;
+    void saveAsset(DOMNodeWriter* node) const override;
   };
 }

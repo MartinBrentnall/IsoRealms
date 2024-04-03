@@ -58,7 +58,6 @@ namespace IsoRealms::Basics {
     static const std::string TAG_IO;
     static const std::string TAG_OUTPUT_COLOUR;
 
-    static const std::string ATTRIBUTE_COLOUR;
     static const std::string ATTRIBUTE_OFFSET;
     static const std::string ATTRIBUTE_SPEED_MULTIPLIER;
 
