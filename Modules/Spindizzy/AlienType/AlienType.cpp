@@ -59,12 +59,12 @@ namespace IsoRealms::Spindizzy {
   
   AlienType::AlienType(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
             AlienType(project, spindizzy) {
-    cDefAcceleration = node.getFloatAttribute(ATTRIBUTE_ACCELERATION);
-    cDefFriction = node.getFloatAttribute(ATTRIBUTE_FRICTION);
-    cDefSpinSpeed = node.getFloatAttribute(ATTRIBUTE_SPIN_SPEED);
+    cDefAcceleration = node.getFloatAttribute(ATTRIBUTE_ACCELERATION, DEFAULT_ACCELERATION);
+    cDefFriction = node.getFloatAttribute(ATTRIBUTE_FRICTION, DEFAULT_FRICTION);
+    cDefSpinSpeed = node.getFloatAttribute(ATTRIBUTE_SPIN_SPEED, DEFAULT_SPIN_SPEED);
     cDefHeight = node.getFloatAttribute(ATTRIBUTE_HEIGHT, DEFAULT_HEIGHT);
     cDefRadius = node.getFloatAttribute(ATTRIBUTE_RADIUS, DEFAULT_RADIUS);
-    cDefHugMomentum = node.getFloatAttribute(ATTRIBUTE_ACCELERATION, DEFAULT_HUG_MOMENTUM);
+    cDefHugMomentum = node.getFloatAttribute(ATTRIBUTE_HUG_MOMENTUM, DEFAULT_HUG_MOMENTUM);
     cDefTarget.init(node.getNode(TAG_TARGET));
     cDefModel.init(node.getNode(TAG_MODEL));
   }

@@ -69,6 +69,8 @@ namespace IsoRealms::Basics {
   }
   
   void Sequence::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
+    node->addAttribute(ATTRIBUTE_PLAYING, cDefPlaying);
+    node->addAttribute(ATTRIBUTE_LOOP, cDefLoop);
     for (const std::unique_ptr<ISequenceTrack>& mTrack : cDefTracks) {
       mTrack->save(node);
     }
