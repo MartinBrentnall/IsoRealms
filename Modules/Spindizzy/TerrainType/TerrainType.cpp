@@ -203,11 +203,12 @@ namespace IsoRealms::Spindizzy {
   }
 
   void TerrainType::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
+    node->addAttribute(ATTRIBUTE_SOLID, cDefSolid);
     node->addAttribute(ATTRIBUTE_FRICTION, cDefSurfaceFriction);
     node->addAttribute(ATTRIBUTE_GRIP, cDefSurfaceGrip);
     node->addAttribute(ATTRIBUTE_BOUNCE, cDefSurfaceBounce);
     node->addAttribute(ATTRIBUTE_WALL_BOUNCE, cDefWallBounce, DEFAULT_WALL_BOUNCE);
-    node->addAttribute(ATTRIBUTE_RESPAWN_ALLOWED, cDefRespawnAllowed ? "true" : "false");
+    node->addAttribute(ATTRIBUTE_RESPAWN_ALLOWED, cDefRespawnAllowed);
     cDefImpactAction.save(node, TAG_IMPACT_ACTION);
     cDefContactAction.save(node, TAG_CONTACT_ACTION);
     cDefSurfacePattern.save(node, TAG_SURFACE);

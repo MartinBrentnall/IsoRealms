@@ -66,7 +66,7 @@ namespace IsoRealms::Spindizzy {
   void Top::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
     cDefColourTop.save(node, TAG_TOP);
     cDefColourSide.save(node, TAG_SIDE);
-    cDefColourSide.save(node, TAG_OUTLINE);
+    cDefColourOutline.save(node, TAG_OUTLINE);
   }
 
   void Top::hintInUse(bool inUse) {
