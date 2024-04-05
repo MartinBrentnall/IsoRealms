@@ -185,35 +185,39 @@ namespace IsoRealms::Spindizzy {
       float mSouthSlope = cCornerHeight[1][0].animation() - cCornerHeight[0][0].animation();
       float mNorthSlope = cCornerHeight[1][1].animation() - cCornerHeight[0][1].animation();
       type->getSurfacePattern()->render(  pinnedX, pinnedY, mEndZ, cCornerHeight[0][0].animation(), cCornerHeight[1][0].animation(), cCornerHeight[0][1].animation(), cCornerHeight[1][1].animation(), cSplitNorthWestSouthEast);
-      type->getWestWallPattern()->render( mStartX - 0.001f, mStartY,          mStartZ - 1, 1.0f, ((mEndZ - mStartZ) + 1) + cCornerHeight[0][0].animation(), mWestSlope,  0, Wall::Direction::WEST);
-      type->getEastWallPattern()->render( mEndX   + 0.001f, mStartY,          mStartZ - 1, 1.0f, ((mEndZ - mStartZ) + 1) + cCornerHeight[1][0].animation(), mEastSlope,  0, Wall::Direction::EAST);
-      type->getSouthWallPattern()->render(mStartX,          mStartY - 0.001f, mStartZ - 1, 1.0f, ((mEndZ - mStartZ) + 1) + cCornerHeight[0][0].animation(), mSouthSlope, 0, Wall::Direction::SOUTH);
-      type->getNorthWallPattern()->render(mStartX,          mEndY   + 0.001f, mStartZ - 1, 1.0f, ((mEndZ - mStartZ) + 1) + cCornerHeight[0][1].animation(), mNorthSlope, 0, Wall::Direction::NORTH);
+      if (type->isSolid()) {
+        type->getWestWallPattern()->render( mStartX - 0.001f, mStartY,          mStartZ - 1, 1.0f, ((mEndZ - mStartZ) + 1) + cCornerHeight[0][0].animation(), mWestSlope,  0, Wall::Direction::WEST);
+        type->getEastWallPattern()->render( mEndX   + 0.001f, mStartY,          mStartZ - 1, 1.0f, ((mEndZ - mStartZ) + 1) + cCornerHeight[1][0].animation(), mEastSlope,  0, Wall::Direction::EAST);
+        type->getSouthWallPattern()->render(mStartX,          mStartY - 0.001f, mStartZ - 1, 1.0f, ((mEndZ - mStartZ) + 1) + cCornerHeight[0][0].animation(), mSouthSlope, 0, Wall::Direction::SOUTH);
+        type->getNorthWallPattern()->render(mStartX,          mEndY   + 0.001f, mStartZ - 1, 1.0f, ((mEndZ - mStartZ) + 1) + cCornerHeight[0][1].animation(), mNorthSlope, 0, Wall::Direction::NORTH);
+      }
     } else {
       float mXSlope = getXSlopeAnimation();
       float mYSlope = getYSlopeAnimation();
       type->getSurfacePattern()->render(mStartX - 0.5f, mEndX + 0.5f, mStartY - 0.5f, mEndY + 0.5f, mEndZ, mXSlope, mYSlope, ISurface::Direction::UP);
-      if (steppedBottom) {
-        for (float x = mStartX; x < mEndX + 1.0f; x += 1.0f) {
-          for (float y = mStartY; y < mEndY + 1.0f; y += 1.0f) {
-            float mCellHeight = mStartZ + ((mXSlope < 0 ? ((mEndX -  x)  * -mXSlope) - 1.0f
-                                                        : ((x - mStartX) *  mXSlope) - 1.0f) +
-                                           (mYSlope < 0 ? ((mEndY -  y)  * -mYSlope) - 1.0f
-                                                        : ((y - mStartY) *  mYSlope) - 1.0f) + 1.0f);
+      if (type->isSolid()) {
+        if (steppedBottom) {
+          for (float x = mStartX; x < mEndX + 1.0f; x += 1.0f) {
+            for (float y = mStartY; y < mEndY + 1.0f; y += 1.0f) {
+              float mCellHeight = mStartZ + ((mXSlope < 0 ? ((mEndX -  x)  * -mXSlope) - 1.0f
+                                                          : ((x - mStartX) *  mXSlope) - 1.0f) +
+                                            (mYSlope < 0 ? ((mEndY -  y)  * -mYSlope) - 1.0f
+                                                          : ((y - mStartY) *  mYSlope) - 1.0f) + 1.0f);
 
-            float mWallLengthX = std::min(1.0f, (mEndX - x) + 1);
-            float mWallLengthY = std::min(1.0f, (mEndY - y) + 1);
-            type->getWestWallPattern()->render( std::min(x, mEndX) - 0.001f, std::min(y, mEndY),          mCellHeight, mWallLengthY, ((mEndZ - mStartZ) + 1) + (mYSlope < 0 ? -mYSlope : 0) + (mXSlope < 0 ? -mXSlope : 0), mYSlope, 0, Wall::Direction::WEST);
-            type->getEastWallPattern()->render( std::min(x, mEndX) + 0.001f, std::min(y, mEndY),          mCellHeight, mWallLengthY, ((mEndZ - mStartZ) + 1) + (mYSlope < 0 ? -mYSlope : 0) + (mXSlope > 0 ?  mXSlope : 0), mYSlope, 0, Wall::Direction::EAST);
-            type->getNorthWallPattern()->render(std::min(x, mEndX),          std::min(y, mEndY) + 0.001f, mCellHeight, mWallLengthX, ((mEndZ - mStartZ) + 1) + (mXSlope < 0 ? -mXSlope : 0) + (mYSlope > 0 ?  mYSlope : 0), mXSlope, 0, Wall::Direction::NORTH);
-            type->getSouthWallPattern()->render(std::min(x, mEndX),          std::min(y, mEndY) - 0.001f, mCellHeight, mWallLengthX, ((mEndZ - mStartZ) + 1) + (mXSlope < 0 ? -mXSlope : 0) + (mYSlope < 0 ? -mYSlope : 0), mXSlope, 0, Wall::Direction::SOUTH);
+              float mWallLengthX = std::min(1.0f, (mEndX - x) + 1);
+              float mWallLengthY = std::min(1.0f, (mEndY - y) + 1);
+              type->getWestWallPattern()->render( std::min(x, mEndX) - 0.001f, std::min(y, mEndY),          mCellHeight, mWallLengthY, ((mEndZ - mStartZ) + 1) + (mYSlope < 0 ? -mYSlope : 0) + (mXSlope < 0 ? -mXSlope : 0), mYSlope, 0, Wall::Direction::WEST);
+              type->getEastWallPattern()->render( std::min(x, mEndX) + 0.001f, std::min(y, mEndY),          mCellHeight, mWallLengthY, ((mEndZ - mStartZ) + 1) + (mYSlope < 0 ? -mYSlope : 0) + (mXSlope > 0 ?  mXSlope : 0), mYSlope, 0, Wall::Direction::EAST);
+              type->getNorthWallPattern()->render(std::min(x, mEndX),          std::min(y, mEndY) + 0.001f, mCellHeight, mWallLengthX, ((mEndZ - mStartZ) + 1) + (mXSlope < 0 ? -mXSlope : 0) + (mYSlope > 0 ?  mYSlope : 0), mXSlope, 0, Wall::Direction::NORTH);
+              type->getSouthWallPattern()->render(std::min(x, mEndX),          std::min(y, mEndY) - 0.001f, mCellHeight, mWallLengthX, ((mEndZ - mStartZ) + 1) + (mXSlope < 0 ? -mXSlope : 0) + (mYSlope < 0 ? -mYSlope : 0), mXSlope, 0, Wall::Direction::SOUTH);
+            }
           }
+        } else {
+          type->getWestWallPattern()->render( mStartX - 0.001f, mStartY,          mStartZ - 1, (mEndY - mStartY) + 1, ((mEndZ - mStartZ) + 1) + (mYSlope < 0 ? (mEndY - mStartY) * -mYSlope + -mYSlope : 0) + (mXSlope < 0 ? ((mEndX - mStartX) + 1) * -mXSlope : 0), mYSlope, 0, Wall::Direction::WEST);
+          type->getEastWallPattern()->render( mEndX   + 0.001f, mStartY,          mStartZ - 1, (mEndY - mStartY) + 1, ((mEndZ - mStartZ) + 1) + (mYSlope < 0 ? (mEndY - mStartY) * -mYSlope + -mYSlope : 0) + (mXSlope > 0 ? ((mEndX - mStartX) + 1) *  mXSlope : 0), mYSlope, 0, Wall::Direction::EAST);
+          type->getNorthWallPattern()->render(mStartX,          mEndY   + 0.001f, mStartZ - 1, (mEndX - mStartX) + 1, ((mEndZ - mStartZ) + 1) + (mXSlope < 0 ? (mEndX - mStartX) * -mXSlope + -mXSlope : 0) + (mYSlope > 0 ? ((mEndY - mStartY) + 1) *  mYSlope : 0), mXSlope, 0, Wall::Direction::NORTH);
+          type->getSouthWallPattern()->render(mStartX,          mStartY - 0.001f, mStartZ - 1, (mEndX - mStartX) + 1, ((mEndZ - mStartZ) + 1) + (mXSlope < 0 ? (mEndX - mStartX) * -mXSlope + -mXSlope : 0) + (mYSlope < 0 ? ((mEndY - mStartY) + 1) * -mYSlope : 0), mXSlope, 0, Wall::Direction::SOUTH);
         }
-      } else {
-        type->getWestWallPattern()->render( mStartX - 0.001f, mStartY,          mStartZ - 1, (mEndY - mStartY) + 1, ((mEndZ - mStartZ) + 1) + (mYSlope < 0 ? (mEndY - mStartY) * -mYSlope + -mYSlope : 0) + (mXSlope < 0 ? ((mEndX - mStartX) + 1) * -mXSlope : 0), mYSlope, 0, Wall::Direction::WEST);
-        type->getEastWallPattern()->render( mEndX   + 0.001f, mStartY,          mStartZ - 1, (mEndY - mStartY) + 1, ((mEndZ - mStartZ) + 1) + (mYSlope < 0 ? (mEndY - mStartY) * -mYSlope + -mYSlope : 0) + (mXSlope > 0 ? ((mEndX - mStartX) + 1) *  mXSlope : 0), mYSlope, 0, Wall::Direction::EAST);
-        type->getNorthWallPattern()->render(mStartX,          mEndY   + 0.001f, mStartZ - 1, (mEndX - mStartX) + 1, ((mEndZ - mStartZ) + 1) + (mXSlope < 0 ? (mEndX - mStartX) * -mXSlope + -mXSlope : 0) + (mYSlope > 0 ? ((mEndY - mStartY) + 1) *  mYSlope : 0), mXSlope, 0, Wall::Direction::NORTH);
-        type->getSouthWallPattern()->render(mStartX,          mStartY - 0.001f, mStartZ - 1, (mEndX - mStartX) + 1, ((mEndZ - mStartZ) + 1) + (mXSlope < 0 ? (mEndX - mStartX) * -mXSlope + -mXSlope : 0) + (mYSlope < 0 ? ((mEndY - mStartY) + 1) * -mYSlope : 0), mXSlope, 0, Wall::Direction::SOUTH);
       }
     }
     glDisable(GL_BLEND);
