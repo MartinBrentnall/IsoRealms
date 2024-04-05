@@ -215,7 +215,6 @@ namespace IsoRealms::Spindizzy {
     Terrain* mTerrain = cDefTerrain.emplace_back(std::move(terrain)).get();
     flagForInitialisation(mTerrain);
     addTerrainState(mTerrain);
-    updateDisplayList();
     return mTerrain;
   }
 
@@ -241,7 +240,6 @@ namespace IsoRealms::Spindizzy {
   
   void Zone::remove(Terrain* terrain) {
     Utils::removeElementUnique(cDefTerrain, terrain);
-    updateDisplayList();
 
     // Refresh terrain states.
     cDefTerrainStates.clear();
@@ -377,6 +375,7 @@ namespace IsoRealms::Spindizzy {
       mTerrain->generateSurfaces();
     }
     cRuntimeTerrainToInitialise.clear();
+    updateDisplayList();
   }
   
   void Zone::updateDisplayList() {

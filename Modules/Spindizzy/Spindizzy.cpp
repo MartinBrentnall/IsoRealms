@@ -305,6 +305,7 @@ namespace IsoRealms::Spindizzy {
   void Spindizzy::added(Zone* zone) {
     for (WorldView* mWorldView : cResourceWorldView) {
       if (mWorldView->getWorld() == zone->getWorld()) {
+        zone->registerView(mWorldView);
         mWorldView->addZoneView(zone);
       }
     }

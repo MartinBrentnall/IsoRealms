@@ -510,6 +510,10 @@ namespace IsoRealms::Spindizzy {
       if (mZone->empty()) {
         remove(mZone);
       }
+
+      if (mPickUp != nullptr) {
+        mPickUp->initialise();
+      }
       return mPickUp;
     }
     return nullptr;
