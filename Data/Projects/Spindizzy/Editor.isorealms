@@ -74,7 +74,7 @@ optionsLoader:execute()</Code>
     input:setInputHandler(editorInput)
     project:reset()
     project:setEditing(true)
-    project:setActive(false)
+    project:setRunning(false)
     playTesting = nil
   end
   unpause:execute()
@@ -124,7 +124,7 @@ screen:setScreen(editorScreen)
 input:setInputHandler(editorInput)
 project:reset()
 project:setEditing(true)
-project:setActive(false)
+project:setRunning(false)
 playTesting = nil</Code>
             </Action>
           </ActionOnTrue>
