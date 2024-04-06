@@ -265,8 +265,13 @@ namespace IsoRealms {
       }
 
       void clear() {
+        std::vector<TYPE*> mElementsToRemove;
         for (TYPE& mElement : *this) {
-          cDefParent->remove(mElement);
+          mElementsToRemove.emplace_back(&mElement);
+        }
+
+        for (TYPE* mElement : mElementsToRemove) {
+          cDefParent->remove(*mElement);
         }
       }
     };
