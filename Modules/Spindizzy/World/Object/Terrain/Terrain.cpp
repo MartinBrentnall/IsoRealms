@@ -621,9 +621,13 @@ namespace IsoRealms::Spindizzy {
   }
 
   Terrain::~Terrain() {
-    std::cout << "Terrain::~Terrain: TODO: Detach surfaces of this terrain element from the world" << std::endl;
-//    World* mWorld = cDefZone.getWorld();
-//    mWorld->unregisterSurfaces(this);
+    World* mWorld = cDefZone.getWorld();
+    for (std::unique_ptr<ISurface>& mSurface : cRuntimeSurfacesPhysical) {
+      mWorld->detachPhysicalSurface(mSurface.get());
+    }
+    for (std::unique_ptr<Wall>& mWall : cRuntimeWallsPhysical) {
+      mWorld->detachPhysicalWall(mWall.get());
+    }
   }
   
   bool Terrain::isType(const TerrainType* const type) const {
@@ -679,10 +683,10 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Terrain::remove() {
-    cDefZone.remove(this);
     World* mWorld = cDefZone.getWorld();
     mWorld->unregisterTerrain(this);
     mWorld->flagTerrainForInitialisation(cDefStartX - 1, cDefEndX + 1, cDefStartY - 1, cDefEndY + 1);
+    cDefZone.remove(this);
   }
 
   std::vector<std::unique_ptr<IProperty>> Terrain::getProperties(IPropertyAppearance* appearance) {
