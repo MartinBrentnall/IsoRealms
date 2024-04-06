@@ -223,6 +223,7 @@ namespace IsoRealms::Spindizzy {
     // World editing (TODO: Move to World).
     IWorldEditorTool* getDefaultWorldEditorTool();
     ThemeSet* getDefaultThemeSet();
+    void applyDefaultThemes();
     ZoneType* getAutomaticZoneManagementType() const;
     int getAutomaticZoneXSize() const;
     int getAutomaticZoneYSize() const;

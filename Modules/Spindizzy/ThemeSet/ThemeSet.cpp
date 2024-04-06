@@ -50,7 +50,7 @@ namespace IsoRealms::Spindizzy {
       }
     });
   }
-  
+
   ThemeSet::ThemeSet(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
             ThemeSet(project, spindizzy) {
     for (DOMNode& mNode : node) {
@@ -62,6 +62,7 @@ namespace IsoRealms::Spindizzy {
         throw ParseException("Unknown tag for Spindizzy/ThemeSet: " + mChildName);
       }
     }
+    setNextTheme();
   }
 
   std::vector<IProperty*> ThemeSet::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {

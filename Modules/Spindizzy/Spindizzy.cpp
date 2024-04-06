@@ -382,6 +382,12 @@ namespace IsoRealms::Spindizzy {
     return cDefaultThemeSet;
   }
   
+  void Spindizzy::applyDefaultThemes() {
+    for (ThemeSet* mThemeSet : cResourceThemeSet) {
+      mThemeSet->applyDefaultTheme();
+    }
+  }
+
   ZoneType* Spindizzy::getAutomaticZoneManagementType() const {
     return cAutomaticZoneManagementType;
   }

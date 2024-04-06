@@ -291,8 +291,8 @@ namespace IsoRealms::Spindizzy {
           case sf::Keyboard::Down:     cActiveDown   = true;   return true;
           case sf::Keyboard::PageUp:   cActiveHigher = true;   return true;
           case sf::Keyboard::PageDown: cActiveLower  = true;   return true;
-          case sf::Keyboard::Home:     setPreviousTheme();     return true;
-          case sf::Keyboard::End:      setNextTheme();         return true;
+          case sf::Keyboard::Home:     setNextTheme();         return true;
+          case sf::Keyboard::End:      setPreviousTheme();     return true;
           case sf::Keyboard::F1:       selectToolRelative(-1); return true;
           case sf::Keyboard::F2:       selectToolRelative(1);  return true;
           default:                                             break;
@@ -467,6 +467,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void WorldEditor::renderScreen(float scale, float aspectRatio) const {
+    cWorld->getSpindizzy()->applyDefaultThemes();
     glPushMatrix();
     glEnable(GL_DEPTH_TEST);
 
