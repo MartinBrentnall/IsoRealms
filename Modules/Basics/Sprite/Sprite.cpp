@@ -35,7 +35,7 @@ namespace IsoRealms::Basics {
   
   Sprite::Sprite(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
             Sprite(project, basics) {
-    cDefTexture.init(node.getNode(TAG_TEXTURE));
+    cDefTexture.init(node, TAG_TEXTURE);
     cDefBillboardYaw   = node.getBooleanAttribute(ATTRIBUTE_BILLBOARD_YAW);
     cDefBillboardPitch = node.getBooleanAttribute(ATTRIBUTE_BILLBOARD_PITCH);
   }

@@ -33,7 +33,7 @@ namespace IsoRealms::Basics {
   InputSwitch::InputSwitch(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
             InputSwitch(project, basics) {
     if (node.containsNode(TAG_INIT)) {
-      cDefInputHandler.init(node.getNode(TAG_INIT));
+      cDefInputHandler.init(node, TAG_INIT);
     }
     project->init([this](IAssets* assets) {
       cRuntimeInputHandler = *cDefInputHandler;

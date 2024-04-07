@@ -70,7 +70,10 @@ namespace IsoRealms {
   }
 
   void Module::loadResources(DOMNode& node, IOptions* options, const std::string& resourceDataPath) {
-    cModule->load(cProject, node.getNode(TAG_CONFIGURATION));
+    if (node.containsNode(TAG_CONFIGURATION) && cResourceDataPath.empty()) {
+      cResourceDataPath = resourceDataPath;
+      cModule->load(cProject, node.getNode(TAG_CONFIGURATION));
+    }
     for (DOMNode& mResourceNode : node.getNode(TAG_RESOURCES)) {
       std::string mResourceTypeName = mResourceNode.getName();
       ResourceType* mResourceType = getResourceType(mResourceTypeName);
@@ -99,12 +102,14 @@ namespace IsoRealms {
     return false;
   }
 
-  void Module::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
+  void Module::save(DOMNodeWriter* node, IAssetIdentifier* identifier, const std::string& resourcePath) const {
     node->addAttribute(ATTRIBUTE_NAME, cName);
 
     // TODO: Configuration might not need to be saved if it comes from an included project file and hasn't been changed.
-    DOMNodeWriter mConfiguration = node->addBranch(TAG_CONFIGURATION);
-    cModule->save(&mConfiguration, identifier);
+    if (cResourceDataPath == resourcePath) {
+      DOMNodeWriter mConfiguration = node->addBranch(TAG_CONFIGURATION);
+      cModule->save(&mConfiguration, identifier);
+    }
 
     DOMNodeWriter mResources = node->addBranch(TAG_RESOURCES);
     for (const std::pair<const std::string, std::unique_ptr<ResourceType>>& mResourceType : cResourceTypes) {

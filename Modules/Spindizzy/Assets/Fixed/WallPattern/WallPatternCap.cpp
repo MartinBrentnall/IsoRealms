@@ -29,9 +29,9 @@ namespace IsoRealms::Spindizzy {
             cDefTextureBottom(project),
             cDefTextureMiddle(project),
             cDefTextureTop(project) {
-    cDefTextureBottom.init(node.getNode(TAG_BOTTOM));
-    cDefTextureMiddle.init(node.getNode(TAG_MIDDLE));
-    cDefTextureTop.init(node.getNode(TAG_TOP));
+    cDefTextureBottom.init(node, TAG_BOTTOM);
+    cDefTextureMiddle.init(node, TAG_MIDDLE);
+    cDefTextureTop.init(node, TAG_TOP);
   }
 
   std::vector<std::unique_ptr<IVisualElement>> WallPatternCap::getStaticVisuals(Wall* wall) const {

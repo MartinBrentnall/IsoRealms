@@ -31,7 +31,7 @@ namespace IsoRealms {
     ActionType(IProject* project, std::function<void()> relinquishInstances);
     ActionType(IProject* project, std::function<void()> relinquishInstances, DOMNode& node);
 
-    void init(DOMNode& node);
+    void init(DOMNode& node, const std::string& tag);
     void save(DOMNodeWriter* node, const std::string& tag);
 
     std::string get() const;

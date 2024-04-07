@@ -158,7 +158,7 @@ namespace IsoRealms::Basics {
             cDefLocal[mBindingIndex] = true;
           }
           cDefBindings[mBindingIndex] = std::make_unique<IsoRealms::Binding>(project, cDefLocalBindingRegistry);
-          cDefBindings[mBindingIndex]->init(mNode.getNode(TAG_TO));
+          cDefBindings[mBindingIndex]->init(mNode, TAG_TO);
         } else if (mChildName == TAG_CODE) {
           // Script support.
         } else {

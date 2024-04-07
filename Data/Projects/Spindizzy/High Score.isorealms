@@ -30,20 +30,36 @@
       <Resources>
         <ColourCycler name="SelectionHighlight">
           <IO>
-            <InputColour key="Literal" value="1.0 0.5 0.5 1.0"/>
-            <InputColour key="Literal" value="1.0 1.0 0.0 1.0"/>
-            <InputColour key="Literal" value="0.0 1.0 0.0 1.0"/>
-            <InputColour key="Literal" value="0.0 1.0 1.0 1.0"/>
-            <InputColour key="Literal" value="0.5 0.5 1.0 1.0"/>
-            <InputColour key="Literal" value="1.0 0.5 1.0 1.0"/>
+            <InputColour>
+              <Colour key="Literal" value="1.0 0.5 0.5 1.0"/>
+            </InputColour>
+            <InputColour>
+              <Colour key="Literal" value="1.0 1.0 0.0 1.0"/>
+            </InputColour>
+            <InputColour>
+              <Colour key="Literal" value="0.0 1.0 0.0 1.0"/>
+            </InputColour>
+            <InputColour>
+              <Colour key="Literal" value="0.0 1.0 1.0 1.0"/>
+            </InputColour>
+            <InputColour>
+              <Colour key="Literal" value="0.5 0.5 1.0 1.0"/>
+            </InputColour>
+            <InputColour>
+              <Colour key="Literal" value="1.0 0.5 1.0 1.0"/>
+            </InputColour>
             <OutputColour offset="0.0000"/>
           </IO>
           <CycleSpeed key="Literal" value="0.005"/>
         </ColourCycler>
         <Font detail="64" filename="Fonts/BubblegumSans-Regular.ttf" name="LayoutFont" scale="0.7" offsetY="0.2"/>
         <InputGroup name="Score">
-          <InputHandler key="Basics/InputSwitch/NameEntry"/>
-          <InputHandler key="HighScore/ScoreTracker/Project"/>
+          <Element>
+            <InputHandler key="Basics/InputSwitch/NameEntry"/>
+          </Element>
+          <Element>
+            <InputHandler key="HighScore/ScoreTracker/Project"/>
+          </Element>
         </InputGroup>
         <InputSwitch name="NameEntry">
           <Init key="Literal"/>

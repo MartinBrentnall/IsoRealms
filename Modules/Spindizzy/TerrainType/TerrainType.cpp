@@ -362,7 +362,7 @@ namespace IsoRealms::Spindizzy {
     mTerrainBrush.renderEditing(&cParent, mPinnedX, mPinnedY, mPinnedZ, cEditor->getCursorX(), cEditor->getCursorY(), cEditor->getCursorZ(), cDrawingSteppedBase);
   }
 
-  void TerrainType::Pen::renderUI() const {
+  void TerrainType::Pen::renderUI(float aspectRatio) const {
     // Nothing to do.
   }
 

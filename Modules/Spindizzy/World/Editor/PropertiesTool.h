@@ -56,7 +56,7 @@ namespace IsoRealms::Spindizzy {
       bool isTool(IWorldEditorTool* tool) const override;
       bool renderIcon(float yaw) const override;
       void renderEditingPreview() const override;
-      void renderUI() const override;
+      void renderUI(float aspectRatio) const override;
       void updateUI(unsigned int milliseconds) override;
       bool inputEdit(sf::Event& event) override;
       void processCursorMovement(LiteralVertex* start, LiteralVertex* end) override;

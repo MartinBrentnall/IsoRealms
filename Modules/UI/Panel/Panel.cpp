@@ -40,7 +40,7 @@ namespace IsoRealms::UI {
 
   Panel::Panel(IProject* project, UI* ui, DOMNode& node, IOptions* options, IResourceData* data) :
             Panel(project, ui) {
-    cDefColour.init(node.getNode(TAG_COLOUR));
+    cDefColour.init(node, TAG_COLOUR);
     cDefCornerSize = node.getFloatAttribute(ATTRIBUTE_CORNER_SIZE, 0.0f);
   }
 

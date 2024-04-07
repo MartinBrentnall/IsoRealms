@@ -65,7 +65,6 @@ namespace IsoRealms::Basics {
 
     // DOM strings.
     static const std::string TAG_INIT;
-    static const std::string TAG_TARGET;
 
     static const std::string ATTRIBUTE_DURATION;
     static const std::string ATTRIBUTE_OUTPUT;

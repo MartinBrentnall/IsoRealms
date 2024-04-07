@@ -54,8 +54,8 @@ namespace IsoRealms::UI {
   
   VirtualKeyboard::VirtualKeyboard(IProject* project, UI* ui, DOMNode& node, IOptions* options, IResourceData* data) :
                    VirtualKeyboard(project, ui) {
-    cDefSelectionColour.init(node.getNode(TAG_SELECTION_COLOUR));
-    cDefFont.init(node.getNode(TAG_FONT));
+    cDefSelectionColour.init(node, TAG_SELECTION_COLOUR);
+    cDefFont.init(node, TAG_FONT);
     cDefConfirmAction.init(node, TAG_CONFIRM_ACTION);
   }
 

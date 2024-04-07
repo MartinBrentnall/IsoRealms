@@ -29,7 +29,7 @@ namespace IsoRealms::Basics {
 
   ColourSwitch::ColourSwitch(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
             ColourSwitch(project, basics) {
-    cDefColour.init(node.getNode("TODO"));
+    cDefColour.init(node, "TODO");
   }
 
   void ColourSwitch::registerAssets(IAssetRegistry* assets) {

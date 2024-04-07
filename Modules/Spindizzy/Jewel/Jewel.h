@@ -103,6 +103,7 @@ namespace IsoRealms::Spindizzy {
     };
 
     // DOM strings.
+    static const std::string TAG_COLOUR;
     static const std::string TAG_COLOUR_CYCLE;
     static const std::string TAG_FRAME_COLOUR;
 

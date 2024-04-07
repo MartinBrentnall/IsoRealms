@@ -181,7 +181,7 @@ namespace IsoRealms {
       for (int i = 0; i < static_cast<int>(cAvailableElements.size()); i++) {
         glTranslatef(mXScale * 2.0f + mSpacing, 0.0f, 0.0f);
         glPushMatrix();
-        glScalef(mYScale, mYScale, 1.0f);
+        glScalef(mYScale * 2.0f, mYScale * 2.0f, 1.0f);
         cAvailableElements[i]->renderIcon();
         glDisable(GL_DEPTH_TEST);
         glPopMatrix();
@@ -654,7 +654,7 @@ namespace IsoRealms {
           Utils::renderIconNone();
         }
       } else {
-        glScalef(mYScale, mYScale, 1.0f);
+        glScalef(mYScale * 2.0f, mYScale * 2.0f, 1.0f);
         cInput->getElement()->renderIcon();
         glDisable(GL_DEPTH_TEST);
       }

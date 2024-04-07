@@ -32,7 +32,7 @@ namespace IsoRealms::Spindizzy {
   
   PickUpType::PickUpType(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
             PickUpType(project, spindizzy) {
-    cDefModel.init(node.getNode(TAG_MODEL));
+    cDefModel.init(node, TAG_MODEL);
   }
 
   void PickUpType::registerAssets(IAssetRegistry* assets) {
@@ -112,7 +112,7 @@ namespace IsoRealms::Spindizzy {
     cParent.cDefModel.renderPreview();
   }
 
-  void PickUpType::Pen::renderUI() const {
+  void PickUpType::Pen::renderUI(float aspectRatio) const {
     // Nothing to do.
   }
 

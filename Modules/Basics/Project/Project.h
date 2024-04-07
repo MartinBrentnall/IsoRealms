@@ -56,7 +56,7 @@ namespace IsoRealms::Basics {
     void prepare(IProjectOptions* options, bool force);
     bool isReady();
     void reset();
-    IEditable* getDefaultEditor() const;
+    IEditable* getDefaultEditor();
     IsoRealms::Project* getProject();
     bool canSave();
     void saveProject();

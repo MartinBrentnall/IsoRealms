@@ -147,14 +147,6 @@ namespace IsoRealms {
         mModule->registerAssets();
       }
 
-      // Set screen and input handler
-      cDefScreen.init(mProjectNode.getNode(TAG_SCREEN));
-      cDefInputHandler.init(mProjectNode.getNode(TAG_INPUT));
-      cDefInitAction.init(mProjectNode, TAG_INIT_ACTION);
-      cDefResetAction.init(mProjectNode, TAG_RESET_ACTION);
-      cDefQuitAction.init(mProjectNode, TAG_QUIT_ACTION);
-      cDefDefaultEditor.init(mProjectNode.getNode(TAG_EDITOR));
-
       // Initialise everything
       // Copy the vector because more initialisers might be added from calling the current ones!
       while (!cInitialisers.empty()) {
@@ -179,7 +171,7 @@ namespace IsoRealms {
       cProcessingInput = false;
 
       mainThreadInit([this]() {
-        cDefInitAction.execute();
+        (*cDefInitAction)->execute();
       });
     }
   }
@@ -194,13 +186,28 @@ namespace IsoRealms {
   }
 
   std::vector<std::unique_ptr<DOMNode>> Project::loadResources(DOMNode& node, IOptions* options, const std::string& resourceDataPath) {
-    for (DOMNode& mPropertyNode : node.getNode(TAG_PROPERTIES)) {
-      std::string mChildName = mPropertyNode.getName();
-      if (mChildName == TAG_PROPERTY) {
-        std::string mPropertyID = mPropertyNode.getAttribute(ATTRIBUTE_ID);
-        cProperties.emplace(mPropertyID, std::make_unique<ProjectProperty>(this, mPropertyNode));
-      } else {
-        throw ParseException("Unknown tag for Project: " + mChildName);
+
+    // Set screen and input handler
+    std::cout << "Loading things with resource path: " << resourceDataPath << std::endl;
+    cDefScreen.init(node, TAG_SCREEN, resourceDataPath);
+    cDefInputHandler.init(node, TAG_INPUT, resourceDataPath);
+    cDefInitAction.init(node, TAG_INIT_ACTION, resourceDataPath);
+    cDefResetAction.init(node, TAG_RESET_ACTION, resourceDataPath);
+    cDefQuitAction.init(node, TAG_QUIT_ACTION, resourceDataPath);
+    cDefDefaultEditor.init(node, TAG_EDITOR, resourceDataPath);
+    std::cout << "Finished loading things with resource path: " << resourceDataPath << std::endl;
+
+    if (node.containsNode(TAG_PROPERTIES)) {
+      for (DOMNode& mPropertyNode : node.getNode(TAG_PROPERTIES)) {
+        std::string mChildName = mPropertyNode.getName();
+        if (mChildName == TAG_PROPERTY) {
+          std::string mPropertyID = mPropertyNode.getAttribute(ATTRIBUTE_ID);
+          if (cProperties.find(mPropertyID) == cProperties.end()) {
+            cProperties.emplace(mPropertyID, std::make_unique<ProjectProperty>(this, mPropertyNode, resourceDataPath));
+          }
+        } else {
+          throw ParseException("Unknown tag for Project: " + mChildName);
+        }
       }
     }
 
@@ -221,35 +228,37 @@ namespace IsoRealms {
     }
     
     std::vector<std::unique_ptr<DOMNode>> mIncludeNodes;
-    for (DOMNode& mNode : node.getNode(TAG_INCLUDE)) {
-      std::string mChildName = mNode.getName();
-      if (mChildName == TAG_PROJECT) {
-        std::string mName = mNode.getAttribute(ATTRIBUTE_NAME);
-        bool mUser = mNode.getBooleanAttribute(ATTRIBUTE_USER);
+    if (node.containsNode(TAG_INCLUDE)) {
+      for (DOMNode& mNode : node.getNode(TAG_INCLUDE)) {
+        std::string mChildName = mNode.getName();
+        if (mChildName == TAG_PROJECT) {
+          std::string mName = mNode.getAttribute(ATTRIBUTE_NAME);
+          bool mUser = mNode.getBooleanAttribute(ATTRIBUTE_USER);
 
-        std::size_t mExtensionPosition = mName.find_last_of('.');
-        std::string mIncludeDataPath   = mName.substr(0, mExtensionPosition);
+          std::size_t mExtensionPosition = mName.find_last_of('.');
+          std::string mIncludeDataPath   = mName.substr(0, mExtensionPosition);
 
-        std::unique_ptr<DOMNode> mConfigurationRootNode = std::make_unique<DOMNode>(mName, mUser ? DOMNode::Type::USER : DOMNode::Type::PROGRAM);
-        DOMNode& mProjectNode = mConfigurationRootNode->getNode("Project");
-        std::vector<std::unique_ptr<DOMNode>> mSubIncludeNodes = loadResources(mProjectNode, options, mIncludeDataPath);
-        mIncludeNodes.insert(mIncludeNodes.end(), std::make_move_iterator(mSubIncludeNodes.begin()), std::make_move_iterator(mSubIncludeNodes.end()));
-        mIncludeNodes.emplace_back(std::move(mConfigurationRootNode));
-        
-        if (resourceDataPath == cProjectDataPath) {
-          cInclusions.emplace_back(std::make_unique<Include>());
-          cInclusions.back()->cProject = mName;
-          cInclusions.back()->cUser = mUser;
+          std::unique_ptr<DOMNode> mConfigurationRootNode = std::make_unique<DOMNode>(mName, mUser ? DOMNode::Type::USER : DOMNode::Type::PROGRAM);
+          DOMNode& mProjectNode = mConfigurationRootNode->getNode("Project");
+          std::vector<std::unique_ptr<DOMNode>> mSubIncludeNodes = loadResources(mProjectNode, options, mIncludeDataPath);
+          mIncludeNodes.insert(mIncludeNodes.end(), std::make_move_iterator(mSubIncludeNodes.begin()), std::make_move_iterator(mSubIncludeNodes.end()));
+          mIncludeNodes.emplace_back(std::move(mConfigurationRootNode));
+
+          if (resourceDataPath == cProjectDataPath) {
+            cInclusions.emplace_back(std::make_unique<Include>());
+            cInclusions.back()->cProject = mName;
+            cInclusions.back()->cUser = mUser;
+          }
+        } else {
+          throw ParseException("Unknown tag for Project: " + mChildName);
         }
-      } else {
-        throw ParseException("Unknown tag for Project: " + mChildName);
       }
     }
     return mIncludeNodes;
   }
 
   void Project::render(float aspectRatio) {
-    cDefScreen->renderScreen(1.0f, aspectRatio);
+    (**cDefScreen)->renderScreen(1.0f, aspectRatio);
   }
 
   void Project::setTime(int time) {
@@ -333,17 +342,17 @@ namespace IsoRealms {
       for (std::unique_ptr<ResetCallbackHandle>& mResetter : cResetters) {
         mResetter->call();
       }
-      cDefResetAction.execute();
+      (*cDefResetAction)->execute();
     }
   }
 
   void Project::requestQuit() {
-    cDefQuitAction.execute();
+    (*cDefQuitAction)->execute();
   }
 
   bool Project::input(sf::Event& event) {
     cProcessingInput = true;
-    bool mProcessed = cDefInputHandler->input(event);
+    bool mProcessed = (**cDefInputHandler)->input(event);
     cProcessingInput = false;
     return mProcessed;
   }
@@ -375,27 +384,39 @@ namespace IsoRealms {
       DOMNodeWriter mProjectNode(TAG_PROJECT);
 
       // Save return values and projects
-      DOMNodeWriter mInclusionNode = mProjectNode.addBranch(TAG_INCLUDE);
-      for (std::unique_ptr<Include>& mInclusion : cInclusions) {
-        DOMNodeWriter mIncludedProjectNode = mInclusionNode.addBranch(TAG_PROJECT);
-        mIncludedProjectNode.addAttribute(ATTRIBUTE_NAME,  mInclusion->cProject);
-        mIncludedProjectNode.addAttribute(ATTRIBUTE_USER,  mInclusion->cUser);
+      if (!cInclusions.empty()) {
+        DOMNodeWriter mInclusionNode = mProjectNode.addBranch(TAG_INCLUDE);
+        for (std::unique_ptr<Include>& mInclusion : cInclusions) {
+          DOMNodeWriter mIncludedProjectNode = mInclusionNode.addBranch(TAG_PROJECT);
+          mIncludedProjectNode.addAttribute(ATTRIBUTE_NAME,  mInclusion->cProject);
+          mIncludedProjectNode.addAttribute(ATTRIBUTE_USER,  mInclusion->cUser);
+        }
       }
 
       // Save project used assets
-      cDefScreen.save(&mProjectNode, TAG_SCREEN);
-      cDefInputHandler.save(&mProjectNode, TAG_INPUT);
-      cDefDefaultEditor.save(&mProjectNode, TAG_EDITOR);
-      cDefInitAction.save(&mProjectNode, TAG_INIT_ACTION);
-      cDefResetAction.save(&mProjectNode, TAG_RESET_ACTION);
-      cDefQuitAction.save(&mProjectNode, TAG_QUIT_ACTION);
+      cDefScreen.save(&mProjectNode, TAG_SCREEN, cProjectDataPath);
+      cDefInputHandler.save(&mProjectNode, TAG_INPUT, cProjectDataPath);
+      cDefDefaultEditor.save(&mProjectNode, TAG_EDITOR, cProjectDataPath);
+      cDefInitAction.save(&mProjectNode, TAG_INIT_ACTION, cProjectDataPath);
+      cDefResetAction.save(&mProjectNode, TAG_RESET_ACTION, cProjectDataPath);
+      cDefQuitAction.save(&mProjectNode, TAG_QUIT_ACTION, cProjectDataPath);
 
       // Save properties
-      DOMNodeWriter mPropertiesNode = mProjectNode.addBranch(TAG_PROPERTIES);
-      for (std::pair<const std::string, std::unique_ptr<ProjectProperty>>& mPair : cProperties) {
-        DOMNodeWriter mPropertyNode = mPropertiesNode.addBranch(TAG_PROPERTY);
-        mPropertyNode.addAttribute(ATTRIBUTE_ID, mPair.first);
-        mPair.second->save(mPropertyNode);
+      if (!cProperties.empty()) {
+        bool mNeedsSaving = false;
+        for (std::pair<const std::string, std::unique_ptr<ProjectProperty>>& mPair : cProperties) {
+          if (mPair.second->isThisProject(cProjectDataPath)) {
+            mNeedsSaving = true;
+            break;
+          }
+        }
+
+        if (mNeedsSaving) {
+          DOMNodeWriter mPropertiesNode = mProjectNode.addBranch(TAG_PROPERTIES);
+          for (std::pair<const std::string, std::unique_ptr<ProjectProperty>>& mPair : cProperties) {
+            mPair.second->save(mPropertiesNode, cProjectDataPath, mPair.first);
+          }
+        }
       }
       
       // Save modules
@@ -403,7 +424,7 @@ namespace IsoRealms {
       for (const std::unique_ptr<Module>& mModule : cModules) {
         if (mModule->needsSaving()) {
           DOMNodeWriter mModuleNode = mModulesNode.addBranch(TAG_MODULE);
-          mModule->save(&mModuleNode, this);
+          mModule->save(&mModuleNode, this, cProjectDataPath);
         }
       }
       mProjectNode.save(cFilename);
@@ -469,8 +490,8 @@ namespace IsoRealms {
                 : (System::PROGRAM_DATA_DIRECTORY                                   );
   }
 
-  IEditable* Project::getDefaultEditable() const {
-    return *cDefDefaultEditor;
+  IEditable* Project::getDefaultEditable() {
+    return ***cDefDefaultEditor;
   }
 
   IAction* Project::getAction(IAssetUser<IAction>* user, DOMNode& node, const std::string& tag, IBindingRegistry* localArgs, const std::string& id) {
@@ -838,8 +859,9 @@ namespace IsoRealms {
     return cApplication;
   }
 
-  Project::ProjectProperty::ProjectProperty(Project* parent, DOMNode& node) :
-            cChangeAction(parent) {
+  Project::ProjectProperty::ProjectProperty(Project* parent, DOMNode& node, const std::string& resourcePath) :
+            cChangeAction(parent),
+            cResourcePath(resourcePath) {
     cChangeAction.init(node, TAG_ACTION, parent);
   }
 
@@ -847,8 +869,16 @@ namespace IsoRealms {
     cChangeAction.execute();
   }
 
-  void Project::ProjectProperty::save(DOMNodeWriter& node) const {
-    cChangeAction.save(&node, TAG_ACTION);
+  void Project::ProjectProperty::save(DOMNodeWriter& node, const std::string& resourcePath, const std::string& id) const {
+    if (resourcePath == cResourcePath) {
+      DOMNodeWriter mPropertyNode = node.addBranch(TAG_PROPERTY);
+      mPropertyNode.addAttribute(ATTRIBUTE_ID, id);
+      cChangeAction.save(&mPropertyNode, TAG_ACTION);
+    }
+  }
+
+  bool Project::ProjectProperty::isThisProject(const std::string& resourcePath) {
+    return resourcePath == cResourcePath;
   }
 
   void Project::setProperty(const std::string& property, const std::string& value) {

@@ -52,11 +52,11 @@ namespace IsoRealms::Spindizzy {
 
   Gyroscope::Gyroscope(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
             Gyroscope(project, spindizzy) {
-    cDefQuadrant[0].init(node.getNode(TAG_COLOUR_1));
-    cDefQuadrant[1].init(node.getNode(TAG_COLOUR_2));
-    cDefQuadrant[2].init(node.getNode(TAG_COLOUR_3));
-    cDefQuadrant[3].init(node.getNode(TAG_COLOUR_4));
-    cDefOutline.init(node.getNode(TAG_OUTLINE));
+    cDefQuadrant[0].init(node, TAG_COLOUR_1);
+    cDefQuadrant[1].init(node, TAG_COLOUR_2);
+    cDefQuadrant[2].init(node, TAG_COLOUR_3);
+    cDefQuadrant[3].init(node, TAG_COLOUR_4);
+    cDefOutline.init(node, TAG_OUTLINE);
   }
 
   void Gyroscope::registerAssets(IAssetRegistry* assets) {

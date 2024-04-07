@@ -231,9 +231,9 @@ namespace IsoRealms {
     public:
     PropertyCondition(const std::string& label, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(Condition&)> setter);
 
-    /*******************************\
+    /***********************\
      * Implements Property *
-    \*******************************/
+    \***********************/
     bool updateEditing(unsigned int milliseconds) override;
     void render(IPropertyAppearance* appearance) const override;
     void renderEditing(IPropertyAppearance* appearance) const override;

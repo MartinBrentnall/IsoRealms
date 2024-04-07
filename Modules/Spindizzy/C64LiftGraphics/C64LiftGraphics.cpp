@@ -76,9 +76,9 @@ namespace IsoRealms::Spindizzy {
   
   C64LiftGraphics::C64LiftGraphics(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
             C64LiftGraphics(project, spindizzy) {
-    cDefOutline.init(node.getNode(TAG_OUTLINE));
-    cDefPrimary.init(node.getNode(TAG_PRIMARY));
-    cDefSecondary.init(node.getNode(TAG_SECONDARY));
+    cDefOutline.init(node, TAG_OUTLINE);
+    cDefPrimary.init(node, TAG_PRIMARY);
+    cDefSecondary.init(node, TAG_SECONDARY);
   }
 
   void C64LiftGraphics::registerAssets(IAssetRegistry* assets) {

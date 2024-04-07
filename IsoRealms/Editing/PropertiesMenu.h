@@ -39,13 +39,13 @@ namespace IsoRealms {
     /***************************\
      * Implements AbstractMenu *
     \***************************/
-    float getLeftSelectionBoundary(unsigned int item) override;
-    float getRightSelectionBoundary(unsigned int item) override;
-    float getLeftSelectionHighlight(unsigned int item) override;
-    float getRightSelectionHighlight(unsigned int item) override;
+    float getLeftSelectionBoundary(float aspectRatio, unsigned int item) override;
+    float getRightSelectionBoundary(float aspectRatio, unsigned int item) override;
+    float getLeftSelectionHighlight(float aspectRatio, unsigned int item) override;
+    float getRightSelectionHighlight(float aspectRatio, unsigned int item) override;
     unsigned int getItemCount() override;
     void renderOverlay() override;
-    void renderItem(unsigned int item) override;
+    void renderItem(float aspectRatio, unsigned int item, float x) override;
     void updateItems(unsigned int milliseconds) override;
     bool isMenuInputLocked() override;
     bool input(unsigned int item, sf::Event& event) override;

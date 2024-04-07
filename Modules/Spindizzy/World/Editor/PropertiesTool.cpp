@@ -135,8 +135,8 @@ namespace IsoRealms::Spindizzy {
     glEnd();
   }
 
-  void PropertiesTool::Modifier::renderUI() const {
-    cConfigurator.render();
+  void PropertiesTool::Modifier::renderUI(float aspectRatio) const {
+    cConfigurator.render(aspectRatio);
   }
 
   bool PropertiesTool::Modifier::renderIcon(float yaw) const {

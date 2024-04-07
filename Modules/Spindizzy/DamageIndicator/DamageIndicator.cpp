@@ -31,8 +31,8 @@ namespace IsoRealms::Spindizzy {
 
   DamageIndicator::DamageIndicator(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
             DamageIndicator(project, spindizzy) {
-    cDefColour.init(node.getNode(TAG_COLOUR));
-    cDefSize.init(node.getNode(TAG_SIZE));
+    cDefColour.init(node, TAG_COLOUR);
+    cDefSize.init(node, TAG_SIZE);
   }
 
   void DamageIndicator::registerAssets(IAssetRegistry* assets) {

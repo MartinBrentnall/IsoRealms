@@ -33,7 +33,7 @@ namespace IsoRealms::Spindizzy {
             cDefColour(project, 1.0f, 0.0f, 0.0f, 0.0f),
             cRuntimeParameterView1(project, nullptr, worldView->getSpindizzy()),
             cRuntimeParameterView2(project, nullptr, worldView->getSpindizzy()) {
-    cDefColour.init(node.getNode(TAG_COLOUR));
+    cDefColour.init(node, TAG_COLOUR);
   }
 
   void ZoneViewTypeOverview::bind1(ZoneViewOverview* zoneViewOverview) {

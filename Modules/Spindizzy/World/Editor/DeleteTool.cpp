@@ -117,7 +117,7 @@ namespace IsoRealms::Spindizzy {
     glEnd();
   }
 
-  void DeleteTool::Eraser::renderUI() const {
+  void DeleteTool::Eraser::renderUI(float aspectRatio) const {
     // Nothing to do.
   }
 

@@ -21,7 +21,7 @@
 namespace IsoRealms {
   class IConfiguratorScreen {
     public:
-    virtual void render() = 0;
+    virtual void render(float aspectRatio) = 0;
     virtual void update(unsigned int milliseconds, bool active) = 0;
     virtual bool updateForClosure(unsigned int milliseconds) = 0;
     virtual bool input(sf::Event& event) = 0;

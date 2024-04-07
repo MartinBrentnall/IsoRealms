@@ -37,7 +37,7 @@ namespace IsoRealms {
     public:
     Integer(IProject* project);
 
-    void init(DOMNode& node);
+    void init(DOMNode& node, const std::string& tag);
     void save(DOMNodeWriter* node, const std::string& tag);
 
     void set(DOMNode& node);

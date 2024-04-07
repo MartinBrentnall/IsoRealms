@@ -33,20 +33,20 @@ namespace IsoRealms {
     cProperties.clear();
   }
 
-  float PropertiesMenu::getLeftSelectionBoundary(unsigned int item) {
-    return getLeftSelectionHighlight(item);
+  float PropertiesMenu::getLeftSelectionBoundary(float aspectRatio, unsigned int item) {
+    return getLeftSelectionHighlight(aspectRatio, item);
   }
 
-  float PropertiesMenu::getRightSelectionBoundary(unsigned int item) {
-    return getRightSelectionHighlight(item);
+  float PropertiesMenu::getRightSelectionBoundary(float aspectRatio, unsigned int item) {
+    return getRightSelectionHighlight(aspectRatio, item);
   }
 
-  float PropertiesMenu::getLeftSelectionHighlight(unsigned int item) {
-    return cParent->getScreenLeftBorder() + getMaxLabelWidth() + cIntAppearance->getLabelPropertySpacing();
+  float PropertiesMenu::getLeftSelectionHighlight(float aspectRatio, unsigned int item) {
+    return cParent->getScreenLeftBorder(aspectRatio) + getMaxLabelWidth() + cIntAppearance->getLabelPropertySpacing();
   }
 
-  float PropertiesMenu::getRightSelectionHighlight(unsigned int item) {
-    return cParent->getScreenLeftBorder() + getMaxLabelWidth() + cIntAppearance->getLabelPropertySpacing() + cProperties[item]->getWidth(cIntAppearance);
+  float PropertiesMenu::getRightSelectionHighlight(float aspectRatio, unsigned int item) {
+    return cParent->getScreenLeftBorder(aspectRatio) + getMaxLabelWidth() + cIntAppearance->getLabelPropertySpacing() + cProperties[item]->getWidth(cIntAppearance);
   }
 
   unsigned int PropertiesMenu::getItemCount() {
@@ -64,11 +64,15 @@ namespace IsoRealms {
     }
   }
 
-  void PropertiesMenu::renderItem(unsigned int item) {
+  void PropertiesMenu::renderItem(float aspectRatio, unsigned int item, float x) {
     glColor3f(1.0f, 1.0f, 1.0f);
     std::string mPropertyName = cProperties[item]->getPropertyName() + ":";
-    cIntAppearance->print(cParent->getScreenLeftBorder(), (cParent->getTopIconPosition() - (item * cIntAppearance->getLineHeight() + 1.5f) * cIntAppearance->getLineHeight()), cIntAppearance->getScale(), IFont::Alignment::LEFT, mPropertyName.c_str());
+    glPushMatrix();
+    glTranslatef(cParent->getScreenLeftBorder(aspectRatio), cParent->getTopIconPosition(), 0.0f);
+    cIntAppearance->print(mPropertyName.c_str(), item, 0.0f);
+    glPopMatrix();
     if (cEditing != cProperties[item]) {
+      glTranslatef(x, cParent->getTopIconPosition(), 0.0f);
       cProperties[item]->render(cIntAppearance);
     }
   }

@@ -41,7 +41,7 @@ namespace IsoRealms {
     public:
     Float(IProject* project, float defaultValue, std::function<void(float)> listener = nullptr);
 
-    void init(DOMNode& node);
+    void init(DOMNode& node, const std::string& tag);
     void save(DOMNodeWriter* node, const std::string& tag) const;
 
     void set(DOMNode& node);

@@ -37,7 +37,7 @@ namespace IsoRealms::Basics {
 
   ModelScreen::ModelScreen(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
             ModelScreen(project, basics) {
-    cDefModel.init(node.getNode(TAG_MODEL));
+    cDefModel.init(node, TAG_MODEL);
   }
 
   void ModelScreen::registerAssets(IAssetRegistry* assets) {

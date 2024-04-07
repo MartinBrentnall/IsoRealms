@@ -134,7 +134,7 @@ namespace IsoRealms {
 
     // TODO: Probably shouldn't be here?
     virtual void addStateChangeListener(const IFloat* asset, IStateListener<IFloat*>* listener) = 0;
-    virtual IEditable* getDefaultEditable() const = 0;
+    virtual IEditable* getDefaultEditable() = 0;
 
     virtual std::filesystem::file_time_type getLastWriteTime() = 0;
 

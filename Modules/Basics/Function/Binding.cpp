@@ -26,7 +26,7 @@ namespace IsoRealms::Basics {
             cDefValue(project, localArgs) {
     cDefName = node.getAttribute(nameAttribute);
     if (node.containsNode(valueTag)) {
-      cDefValue.init(node.getNode(valueTag));
+      cDefValue.init(node, valueTag);
     }
   }
 

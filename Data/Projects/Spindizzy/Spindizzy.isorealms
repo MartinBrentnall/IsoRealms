@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <Project>
+  <Screen key="UI/Layout/Main"/>
+  <Input key="Basics/InputGroup/Spindizzy Game Controls"/>
   <Editor key="Spindizzy/World/Hangworld"/>
+  <InitAction>
+    <Action key="Basics/Function/SpindizzyInit"/>
+  </InitAction>
+  <ResetAction>
+    <Action key="Basics/Function/SpindizzyReset"/>
+  </ResetAction>
+  <QuitAction>
+    <Action key="Quit"/>
+  </QuitAction>
   <Include>
     <Project name="Projects/Spindizzy/Options.isorealms" user="false"/>
   </Include>
@@ -264,12 +275,24 @@ end</Code>
         <Colour alpha="1" blue="0.477361" green="0.477361" name="DesaturatedLightBlue" red="0.477361"/>
         <ColourCycler name="Ending Effect">
           <IO>
-            <InputColour key="Basics/Colour/Red"/>
-            <InputColour key="Basics/Colour/Yellow"/>
-            <InputColour key="Basics/Colour/Green"/>
-            <InputColour key="Basics/Colour/Cyan"/>
-            <InputColour key="Basics/Colour/Blue"/>
-            <InputColour key="Basics/Colour/Purple"/>
+            <InputColour>
+              <Colour key="Basics/Colour/Red"/>
+            </InputColour>
+            <InputColour>
+              <Colour key="Basics/Colour/Yellow"/>
+            </InputColour>
+            <InputColour>
+              <Colour key="Basics/Colour/Green"/>
+            </InputColour>
+            <InputColour>
+              <Colour key="Basics/Colour/Cyan"/>
+            </InputColour>
+            <InputColour>
+              <Colour key="Basics/Colour/Blue"/>
+            </InputColour>
+            <InputColour>
+              <Colour key="Basics/Colour/Purple"/>
+            </InputColour>
             <OutputColour offset="0.0000"/>
             <OutputColour offset="0.0625"/>
             <OutputColour offset="0.1250"/>
@@ -291,22 +314,42 @@ end</Code>
         </ColourCycler>
         <ColourCycler name="DamageColours">
           <IO>
-            <InputColour key="Basics/Colour/Red"/>
-            <InputColour key="Basics/Colour/Yellow"/>
-            <InputColour key="Basics/Colour/Green"/>
-            <InputColour key="Basics/Colour/Cyan"/>
-            <InputColour key="Basics/Colour/Blue"/>
-            <InputColour key="Basics/Colour/Purple"/>
+            <InputColour>
+              <Colour key="Basics/Colour/Red"/>
+            </InputColour>
+            <InputColour>
+              <Colour key="Basics/Colour/Yellow"/>
+            </InputColour>
+            <InputColour>
+              <Colour key="Basics/Colour/Green"/>
+            </InputColour>
+            <InputColour>
+              <Colour key="Basics/Colour/Cyan"/>
+            </InputColour>
+            <InputColour>
+              <Colour key="Basics/Colour/Blue"/>
+            </InputColour>
+            <InputColour>
+              <Colour key="Basics/Colour/Purple"/>
+            </InputColour>
             <OutputColour offset="0.0"/>
           </IO>
           <CycleSpeed key="Literal" value="10000"/>
         </ColourCycler>
         <ColourCycler name="CurrentRoom">
           <IO>
-            <InputColour key="Basics/Colour/Yellow"/>
-            <InputColour key="Basics/Colour/Yellow"/>
-            <InputColour key="Basics/Colour/Purple"/>
-            <InputColour key="Basics/Colour/Purple"/>
+            <InputColour>
+              <Colour key="Basics/Colour/Yellow"/>
+            </InputColour>
+            <InputColour>
+              <Colour key="Basics/Colour/Yellow"/>
+            </InputColour>
+            <InputColour>
+              <Colour key="Basics/Colour/Purple"/>
+            </InputColour>
+            <InputColour>
+              <Colour key="Basics/Colour/Purple"/>
+            </InputColour>
             <OutputColour offset="0.0"/>
           </IO>
           <CycleSpeed key="Literal" value="0.025"/>
@@ -882,19 +925,45 @@ if exited ~= nil then
 end</Code>
         </Function>
         <InputGroup name="Spindizzy Game Controls">
-          <InputHandler key="Basics/InputSwitch/Options Screen"/>
-          <InputHandler key="Basics/DigitalInput/Brake"/>
-          <InputHandler key="Basics/DigitalInput/Transform"/>
-          <InputHandler key="Basics/DigitalInput/Destruct"/>
-          <InputHandler key="Basics/DigitalInput/Pause"/>
-          <InputHandler key="Basics/DigitalInput/Map"/>
-          <InputHandler key="Basics/AnalogueInput/MoveX"/>
-          <InputHandler key="Basics/AnalogueInput/MoveY"/>
-          <InputHandler key="Basics/DigitalInput/ResetCamera"/>
-          <InputHandler key="Basics/DigitalInput/ReverseCamera"/>
-          <InputHandler key="Basics/DigitalInput/RotateCameraLeft"/>
-          <InputHandler key="Basics/DigitalInput/RotateCameraRight"/>
-          <InputHandler key="Basics/DigitalInput/Thrust"/>
+          <Element>
+            <InputHandler key="Basics/InputSwitch/Options Screen"/>
+          </Element>
+          <Element>
+            <InputHandler key="Basics/DigitalInput/Brake"/>
+          </Element>
+          <Element>
+            <InputHandler key="Basics/DigitalInput/Transform"/>
+          </Element>
+          <Element>
+            <InputHandler key="Basics/DigitalInput/Destruct"/>
+          </Element>
+          <Element>
+            <InputHandler key="Basics/DigitalInput/Pause"/>
+          </Element>
+          <Element>
+            <InputHandler key="Basics/DigitalInput/Map"/>
+          </Element>
+          <Element>
+            <InputHandler key="Basics/AnalogueInput/MoveX"/>
+          </Element>
+          <Element>
+            <InputHandler key="Basics/AnalogueInput/MoveY"/>
+          </Element>
+          <Element>
+            <InputHandler key="Basics/DigitalInput/ResetCamera"/>
+          </Element>
+          <Element>
+            <InputHandler key="Basics/DigitalInput/ReverseCamera"/>
+          </Element>
+          <Element>
+            <InputHandler key="Basics/DigitalInput/RotateCameraLeft"/>
+          </Element>
+          <Element>
+            <InputHandler key="Basics/DigitalInput/RotateCameraRight"/>
+          </Element>
+          <Element>
+            <InputHandler key="Basics/DigitalInput/Thrust"/>
+          </Element>
         </InputGroup>
         <Integer name="Score"/>
         <Integer name="RemainingZones"/>
@@ -2712,12 +2781,24 @@ timeLimit:setSpeed(1.0 + alienContactCount * 20.0)</Code>
         </Gyroscope>
         <Jewel cycleSpeed="0.006000" name="Jewel">
           <FrameColour key="Basics/Sequence/GameOver/Yellow"/>
-          <ColourCycle key="Basics/Sequence/GameOver/Red"/>
-          <ColourCycle key="Basics/Sequence/GameOver/Yellow"/>
-          <ColourCycle key="Basics/Sequence/GameOver/Green"/>
-          <ColourCycle key="Basics/Sequence/GameOver/Cyan"/>
-          <ColourCycle key="Basics/Sequence/GameOver/Blue"/>
-          <ColourCycle key="Basics/Sequence/GameOver/Purple"/>
+          <ColourCycle>
+            <Colour key="Basics/Sequence/GameOver/Red"/>
+          </ColourCycle>
+          <ColourCycle>
+            <Colour key="Basics/Sequence/GameOver/Yellow"/>
+          </ColourCycle>
+          <ColourCycle>
+            <Colour key="Basics/Sequence/GameOver/Green"/>
+          </ColourCycle>
+          <ColourCycle>
+            <Colour key="Basics/Sequence/GameOver/Cyan"/>
+          </ColourCycle>
+          <ColourCycle>
+            <Colour key="Basics/Sequence/GameOver/Blue"/>
+          </ColourCycle>
+          <ColourCycle>
+            <Colour key="Basics/Sequence/GameOver/Purple"/>
+          </ColourCycle>
         </Jewel>
         <Lift name="DiamondEmpty">
           <Active key="Literal" value="true"/>

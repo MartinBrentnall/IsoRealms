@@ -21,6 +21,7 @@
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
+  const std::string Jewel::TAG_COLOUR       = "Colour";
   const std::string Jewel::TAG_COLOUR_CYCLE = "ColourCycle";
   const std::string Jewel::TAG_FRAME_COLOUR = "FrameColour";
 
@@ -39,7 +40,7 @@ namespace IsoRealms::Spindizzy {
   Jewel::Jewel(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
             Jewel(project, spindizzy) {
     cCycleSpeed = node.getFloatAttribute(ATTRIBUTE_CYCLE_SPEED);
-    cColourFrame.init(node.getNode(TAG_FRAME_COLOUR));
+    cColourFrame.init(node, TAG_FRAME_COLOUR);
     for (DOMNode& mNode : node) {
       std::string mChildName = mNode.getName();
       if (mChildName == TAG_COLOUR_CYCLE) {
@@ -121,11 +122,11 @@ namespace IsoRealms::Spindizzy {
   Jewel::CycleColour::CycleColour(Jewel* parent, IProject* project, DOMNode& node) :
             cParent(parent),
             cDefColour(project, 1.0f, 0.0f, 1.0f) {
-    cDefColour.init(node);
+    cDefColour.init(node, TAG_COLOUR);
   }
   
   void Jewel::CycleColour::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    cDefColour.save(node, TAG_COLOUR_CYCLE);
+    cDefColour.save(node, TAG_COLOUR);
   }
   
   const IColour* Jewel::CycleColour::getColour() const {

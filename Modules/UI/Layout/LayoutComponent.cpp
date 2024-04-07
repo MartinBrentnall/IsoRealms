@@ -67,7 +67,7 @@ namespace IsoRealms::UI {
             cEditingDragging(false),
             cLuaBinding(project, this) {
     if (node.containsNode(TAG_SCREEN)) {
-      cDefScreen.init(node.getNode(TAG_SCREEN));
+      cDefScreen.init(node, TAG_SCREEN);
     }
 
     project->reset([this]() {

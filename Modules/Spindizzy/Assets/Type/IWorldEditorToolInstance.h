@@ -62,7 +62,7 @@ namespace IsoRealms::Spindizzy {
      * configuration that should appear independent of the world, rather than
      * within it.
      */
-    virtual void renderUI() const = 0;
+    virtual void renderUI(float aspectRatio) const = 0;
     
     /**
      * Update animated UI elements of the tool.

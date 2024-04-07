@@ -173,9 +173,9 @@ namespace IsoRealms {
       private:
       class Action {
         private:
-        ActionExecutor* cParent;      /// Parent Action Executor.
-        ActionType cActionType; /// Type from which the action is derived.
-        IAction* cAction;             /// Action to be executed.
+        ActionExecutor* cParent; /// Parent Action Executor.
+        ActionType cActionType;  /// Type from which the action is derived.
+        IAction* cAction;        /// Action to be executed.
 
         public:
         Action(ActionExecutor* parent, DOMNode& node, const std::string& id, IBindingRegistry* localArgs);
@@ -269,12 +269,45 @@ namespace IsoRealms {
 
     class ProjectProperty {
       public:
-      ProjectProperty(Project* parent, DOMNode& node);
+      ProjectProperty(Project* parent, DOMNode& node, const std::string& resourcePath);
       void setValue(const std::string& value);
-      void save(DOMNodeWriter& node) const;
+      void save(DOMNodeWriter& node, const std::string& resourcePath, const std::string& id) const;
+      bool isThisProject(const std::string& resourcePath);
 
       private:
       Action cChangeAction;
+      std::string cResourcePath;
+    };
+
+    template <class TYPE> class ProjectAsset {
+      public:
+      ProjectAsset(IProject* project) :
+                cAsset(project) {
+      }
+
+      void init(DOMNode& node, const std::string& tag, const std::string& path) {
+        if (node.containsNode(tag) && cResourcePath.empty()) {
+          cAsset.init(node, tag);
+          cResourcePath = path;
+          std::cout << "  Loaded asset with path: " << path << std::endl;
+        }
+      }
+
+      TYPE* operator*() {
+        return &cAsset;
+      }
+
+      void save(DOMNodeWriter* node, const std::string& tag, const std::string& path) {
+        if (cResourcePath == path) {
+          std::cout << "Saving project asset: " << cResourcePath << std::endl;
+          cAsset.save(node, tag);
+        }
+      }
+
+      private:
+      TYPE cAsset;
+      bool cIncluded;
+      std::string cResourcePath;
     };
 
     IApplication* cApplication; /// Host application of this project.
@@ -401,12 +434,12 @@ namespace IsoRealms {
     int cTime;
 
     // Project definition
-    InputHandler cDefInputHandler;            /// Input handler of this project.
-    Screen cDefScreen;                        /// Screen of this project.
-    Editable cDefDefaultEditor;               /// Default editor of this project.
-    Action cDefInitAction;
-    Action cDefResetAction;
-    Action cDefQuitAction;
+    ProjectAsset<InputHandler> cDefInputHandler;            /// Input handler of this project.
+    ProjectAsset<Screen> cDefScreen;                        /// Screen of this project.
+    ProjectAsset<Editable> cDefDefaultEditor;               /// Default editor of this project.
+    ProjectAsset<Action> cDefInitAction;
+    ProjectAsset<Action> cDefResetAction;
+    ProjectAsset<Action> cDefQuitAction;
 
     std::set<std::unique_ptr<Module>> cModules;                 /// Modules within this project.
 
@@ -543,7 +576,7 @@ namespace IsoRealms {
     std::string getDataPath(bool user) override;
     void makeUserDataDirectory(const std::string& path);
     std::string getProjectPathPrefix(bool user);
-    IEditable* getDefaultEditable() const override;
+    IEditable* getDefaultEditable() override;
     
     std::string getProjectResourceDataPath(const std::string& file);
 

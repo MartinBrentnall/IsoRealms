@@ -30,7 +30,7 @@ namespace IsoRealms::Spindizzy {
   ZoneObjectTypeTraitModel::ZoneObjectTypeTraitModel(IProject* project, ZoneObjectType* type, DOMNode& node) :
             cDefModel(project) {
     cDefLocationID = node.getAttribute(ATTRIBUTE_LOCATION);
-    cDefModel.init(node.getNode(TAG_MODEL));
+    cDefModel.init(node, TAG_MODEL);
   }
 
   bool ZoneObjectTypeTraitModel::isInitiallyEnabled() const {

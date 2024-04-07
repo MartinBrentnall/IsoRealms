@@ -137,7 +137,7 @@ namespace IsoRealms::Spindizzy {
     glColor3f(1.0f, 1.0f, 1.0f);
   }
 
-  void ZoneType::Pen::renderUI() const {
+  void ZoneType::Pen::renderUI(float aspectRatio) const {
     // Nothing to do.
   }
 

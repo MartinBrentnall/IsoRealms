@@ -60,8 +60,8 @@ namespace IsoRealms::HighScore {
       }
     });
 
-    cProjectUser.init(node.getNode(TAG_USER));
-    cProjectDataPath.init(node.getNode(TAG_SAVE_PATH));
+    cProjectUser.init(node, TAG_USER);
+    cProjectDataPath.init(node, TAG_SAVE_PATH);
     cMaximumRecords = node.getIntegerAttribute("maximumRecords");
     cScriptOnHighScoreAchieved.init(node, "OnHighScoreAchieved");
     cScriptOnHighScoreFailed.init(node, "Otherwise");
@@ -78,13 +78,13 @@ namespace IsoRealms::HighScore {
         bool mCompare = mNode.getBooleanAttribute("compare");
         if (mFieldType == "Integer") {
           cWriteIntegers.emplace(mFieldName, project);
-          cWriteIntegers.find(mFieldName)->second.init(mNode.getNode(TAG_VALUE));
+          cWriteIntegers.find(mFieldName)->second.init(mNode, TAG_VALUE);
           if (mCompare) {
             cComparisonField = mFieldName;
           }
         } else if (mFieldType == "String") {
           cWriteStrings.emplace(std::piecewise_construct, std::forward_as_tuple(mFieldName), std::forward_as_tuple(project));
-          cWriteStrings.find(mFieldName)->second.init(mNode.getNode(TAG_VALUE));
+          cWriteStrings.find(mFieldName)->second.init(mNode, TAG_VALUE);
         } else {
           throw ResourceInitException("ERROR: ScoreTracker::ScoreTracker: Unsupported field type \"" + mFieldType + "\".");
         }

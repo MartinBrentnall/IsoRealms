@@ -42,18 +42,18 @@ namespace IsoRealms {
     const IColour* getSelectionHighlight() const;
     const IColour* getSelectionLocked() const;
     IFont* getFont() const;
-    float getScreenLeftBorder() const;
+    float getScreenLeftBorder(float aspectRatio) const;
     float getScreenTopBorder() const;
     float getTopIconPosition() const;
 //    float getIconHeight() const;
-    float getLeftIconPosition() const;
+    float getLeftIconPosition(float aspectRatio) const;
     float getMenuBoundaryBottom() const;
     float getMenuBoundaryTop() const;
 //    float getExtraActionSpacing() const;
     
     void closeProjectMenu();
 
-    void render() const;
+    void render(float aspectRatio) const;
 
     private:
     static const LiteralColour COLOUR_TRANSPARENT;       /// Transparency

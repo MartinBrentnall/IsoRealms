@@ -151,8 +151,12 @@ end</Code>
       <Resources>
         <Boolean name="UserMission" value="false"/>
         <InputGroup name="Input">
-          <InputHandler key="Basics/InputSwitch/MenuInterrupt"/>
-          <InputHandler key="Basics/InputSwitch/Options Screen"/>
+          <Element>
+            <InputHandler key="Basics/InputSwitch/MenuInterrupt"/>
+          </Element>
+          <Element>
+            <InputHandler key="Basics/InputSwitch/Options Screen"/>
+          </Element>
         </InputGroup>
         <InputSwitch name="MenuInterrupt">
           <Init key="Basics/InterruptHandler/MenuTimeOutHandler"/>

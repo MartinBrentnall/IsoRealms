@@ -589,7 +589,7 @@ namespace IsoRealms::Spindizzy {
     glEnable(GL_DEPTH_TEST);
 
     if (cSelectedTool != nullptr) {
-      cSelectedTool->renderUI();
+      cSelectedTool->renderUI(aspectRatio);
     }
 
     glLoadIdentity();

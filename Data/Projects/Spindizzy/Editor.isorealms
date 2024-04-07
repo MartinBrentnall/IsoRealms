@@ -257,13 +257,23 @@ end</Code>
           <Code>screenSwitch:setScreen(screen)</Code>
         </Function>
         <InputGroup name="Test">
-          <InputHandler key="Basics/DigitalInput/EndTest"/>
-          <InputHandler key="Basics/Project/Project"/>
+          <Element>
+            <InputHandler key="Basics/DigitalInput/EndTest"/>
+          </Element>
+          <Element>
+            <InputHandler key="Basics/Project/Project"/>
+          </Element>
         </InputGroup>
         <InputGroup name="Editor Input">
-          <InputHandler key="Basics/InputSwitch/Options Screen"/>
-          <InputHandler key="Basics/DigitalInput/EndTest"/>
-          <InputHandler key="Basics/DigitalInput/Pause"/>
+          <Element>
+            <InputHandler key="Basics/InputSwitch/Options Screen"/>
+          </Element>
+          <Element>
+            <InputHandler key="Basics/DigitalInput/EndTest"/>
+          </Element>
+          <Element>
+            <InputHandler key="Basics/DigitalInput/Pause"/>
+          </Element>
         </InputGroup>
         <InputSwitch name="Main">
           <Init key="Basics/InputGroup/Editor Input"/>

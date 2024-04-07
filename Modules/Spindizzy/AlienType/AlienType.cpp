@@ -65,8 +65,8 @@ namespace IsoRealms::Spindizzy {
     cDefHeight = node.getFloatAttribute(ATTRIBUTE_HEIGHT, DEFAULT_HEIGHT);
     cDefRadius = node.getFloatAttribute(ATTRIBUTE_RADIUS, DEFAULT_RADIUS);
     cDefHugMomentum = node.getFloatAttribute(ATTRIBUTE_HUG_MOMENTUM, DEFAULT_HUG_MOMENTUM);
-    cDefTarget.init(node.getNode(TAG_TARGET));
-    cDefModel.init(node.getNode(TAG_MODEL));
+    cDefTarget.init(node, TAG_TARGET);
+    cDefModel.init(node, TAG_MODEL);
   }
 
   void AlienType::registerAssets(IAssetRegistry* assets) {
@@ -191,7 +191,7 @@ namespace IsoRealms::Spindizzy {
     cParent.cDefModel.renderPreview();
   }
 
-  void AlienType::Pen::renderUI() const {
+  void AlienType::Pen::renderUI(float aspectRatio) const {
     // Nothing to do.
   }
 

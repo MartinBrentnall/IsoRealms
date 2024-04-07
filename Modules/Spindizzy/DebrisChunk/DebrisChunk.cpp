@@ -52,12 +52,12 @@ namespace IsoRealms::Spindizzy {
 
   DebrisChunk::DebrisChunk(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
             DebrisChunk(project, spindizzy) {
-    cDefOutline.init(node.getNode(TAG_OUTLINE));
+    cDefOutline.init(node, TAG_OUTLINE);
     cDefOutlineWidth = node.getFloatAttribute(ATTRIBUTE_OUTLINE_WIDTH, DEFAULT_OUTLINE_WIDTH);
-    cDefSide[0].init(node.getNode(TAG_SIDE_1));
-    cDefSide[1].init(node.getNode(TAG_SIDE_2));
-    cDefSide[2].init(node.getNode(TAG_SIDE_3));
-    cDefSide[3].init(node.getNode(TAG_SIDE_4));
+    cDefSide[0].init(node, TAG_SIDE_1);
+    cDefSide[1].init(node, TAG_SIDE_2);
+    cDefSide[2].init(node, TAG_SIDE_3);
+    cDefSide[3].init(node, TAG_SIDE_4);
   }
 
   void DebrisChunk::registerAssets(IAssetRegistry* assets) {

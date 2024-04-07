@@ -42,18 +42,18 @@ namespace IsoRealms {
     /**********************************\
      * Implements IConfiguratorScreen *
     \**********************************/
-    void render() override;
+    void render(float aspectRatio) override;
     void update(unsigned int milliseconds, bool active) override;
     bool updateForClosure(unsigned int milliseconds) override;
     bool input(sf::Event& event) override;
 
-    virtual float getLeftSelectionBoundary(unsigned int item) = 0;
-    virtual float getRightSelectionBoundary(unsigned int item) = 0;
-    virtual float getLeftSelectionHighlight(unsigned int item) = 0;
-    virtual float getRightSelectionHighlight(unsigned int item) = 0;
+    virtual float getLeftSelectionBoundary(float aspectRatio, unsigned int item) = 0;
+    virtual float getRightSelectionBoundary(float aspectRatio, unsigned int item) = 0;
+    virtual float getLeftSelectionHighlight(float aspectRatio, unsigned int item) = 0;
+    virtual float getRightSelectionHighlight(float aspectRatio, unsigned int item) = 0;
     virtual unsigned int getItemCount() = 0;
     virtual void renderOverlay() = 0;
-    virtual void renderItem(unsigned int item) = 0;
+    virtual void renderItem(float aspectRatio, unsigned int item, float x) = 0;
     virtual void updateItems(unsigned int milliseconds) = 0;
     virtual bool isMenuInputLocked() = 0;
     virtual bool input(unsigned int item, sf::Event& event) = 0;

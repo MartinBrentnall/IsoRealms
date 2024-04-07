@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <Project>
-  <Screen key="UI/Layout/Main"/>
-  <Input key="Basics/InputGroup/Spindizzy Game Controls"/>
-  <Editor key="Spindizzy/World/Hangworld"/>
-  <InitAction>
-    <Action key="Basics/Function/SpindizzyInit"/>
-  </InitAction>
   <ResetAction>
     <Action key="Basics/Script">
       <Bind variable="resetFunction">
@@ -83,12 +77,8 @@ switchB:setScreen(nil)
 disableHud = 1</Code>
     </Action>
   </ResetAction>
-  <QuitAction>
-    <Action key="Quit"/>
-  </QuitAction>
   <Include>
     <Project name="Projects/Spindizzy/Worlds/Hangworld.isorealms" user="false"/>
   </Include>
-  <Properties/>
   <Modules/>
 </Project>

@@ -56,6 +56,7 @@ namespace IsoRealms::Basics {
     private:
 
     // DOM strings.
+    static const std::string TAG_ELEMENT;
     static const std::string TAG_INPUT_HANDLER;
 
     // Property names.

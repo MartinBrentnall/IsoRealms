@@ -35,7 +35,7 @@ namespace IsoRealms::Basics {
   
   BooleanTrigger::BooleanTrigger(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
             BooleanTrigger(project, basics) {
-    cDefValue.init(node.getNode(TAG_VALUE));
+    cDefValue.init(node, TAG_VALUE);
     cDefTrueAction.init(node, TAG_ACTION_ON_TRUE);
     cDefFalseAction.init(node, TAG_ACTION_ON_FALSE);
   }

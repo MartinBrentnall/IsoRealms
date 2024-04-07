@@ -40,7 +40,7 @@ namespace IsoRealms {
     cTitle = title;
   }
 
-  void AbstractMenu::render() {
+  void AbstractMenu::render(float aspectRatio) {
     if (getItemCount() > 0) {
       float mYLocation = (cParent->getTopIconPosition() - cSelectionAnimation * cIntAppearance->getLineHeight()) - cIntAppearance->getLineHeight() * 1.5f;
 
@@ -58,21 +58,20 @@ namespace IsoRealms {
       }
 
       // Render selection shadow
-
       float mRightBoundary = -1.0f;
       for (unsigned int i = 0; i < getItemCount(); i++) {
-        mRightBoundary = std::max(mRightBoundary, getRightSelectionBoundary(i));
+        mRightBoundary = std::max(mRightBoundary, getRightSelectionBoundary(aspectRatio, i));
       }
 
       glEnable(GL_BLEND);
       glColor4f(0.0f, 0.0f, 0.0f, 0.85f);
-      Utils::renderRoundedRectangle(cParent->getScreenLeftBorder() - cIntAppearance->getSelectionHighlightHeight() * 0.5f,
+      Utils::renderRoundedRectangle(cParent->getScreenLeftBorder(aspectRatio) - cIntAppearance->getSelectionHighlightHeight() * 0.5f,
                                    (cParent->getTopIconPosition() - (getItemCount() + 0.5f) * cIntAppearance->getLineHeight()) - cIntAppearance->getSelectionHighlightHeight(),
                                     mRightBoundary + cIntAppearance->getSelectionHighlightHeight(),
                                     cParent->getTopIconPosition() + cIntAppearance->getSelectionHighlightHeight(),
                                     cIntAppearance->getSelectionHighlightHeight() * 0.5f);
-      // left bottom right top
 
+      // left bottom right top
       glColor4f(1.0f, 1.0f, 1.0f, 0.15f);
       Utils::renderBar(cLeftBoundaryAnimation, mYLocation - cIntAppearance->getSelectionHighlightHeight() * 0.5f, cRightBoundaryAnimation, mYLocation + cIntAppearance->getSelectionHighlightHeight() * 0.5f);
       LiteralColour(*cParent->getSelectionHighlight(), *cParent->getSelectionLocked(), cLockAnimation).set();
@@ -80,9 +79,12 @@ namespace IsoRealms {
 
       // Render menu items
       glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-      cIntAppearance->print(cParent->getScreenLeftBorder(), cParent->getTopIconPosition(), cIntAppearance->getScale(), IFont::Alignment::LEFT, cTitle.c_str());
+      glPushMatrix();
+      glTranslatef(cParent->getScreenLeftBorder(aspectRatio), cParent->getTopIconPosition(), 0.0f);
+      cIntAppearance->print(cTitle.c_str(), -1.5f, 0.0f);
+      glPopMatrix();
       for (unsigned int i = 0; i < getItemCount(); ++i) {
-        renderItem(i);
+        renderItem(aspectRatio, i, cLeftHighlightAnimation);
       }
 
       renderOverlay();
@@ -117,10 +119,10 @@ namespace IsoRealms {
 
     // Update left-right selection animation.
     if (getItemCount() > 0) {
-      float mLeftBoundaryTarget   = getLeftSelectionBoundary(cSelectedItem);
-      float mRightBoundaryTarget  = getRightSelectionBoundary(cSelectedItem);
-      float mLeftHighlightTarget  = getLeftSelectionHighlight(cSelectedItem);
-      float mRightHighlightTarget = getRightSelectionHighlight(cSelectedItem);
+      float mLeftBoundaryTarget   = getLeftSelectionBoundary(1.0f, cSelectedItem);
+      float mRightBoundaryTarget  = getRightSelectionBoundary(1.0f, cSelectedItem);
+      float mLeftHighlightTarget  = getLeftSelectionHighlight(1.0f, cSelectedItem);
+      float mRightHighlightTarget = getRightSelectionHighlight(1.0f, cSelectedItem);
       if (cLeftBoundaryAnimation != mLeftBoundaryTarget) {
         float mPotentialMovement = (mLeftBoundaryTarget - cLeftBoundaryAnimation) * 0.15f;
         cLeftBoundaryAnimation += mPotentialMovement;

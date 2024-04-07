@@ -28,7 +28,7 @@ namespace IsoRealms::Spindizzy {
 
   TerrainState::TerrainState(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
             TerrainState(project, node.getAttribute("name"), node.getBooleanAttribute("state")) {
-    cDefIcon.init(node.getNode(TAG_SCREEN));
+    cDefIcon.init(node, TAG_SCREEN);
     cDefHintAction.init(node, TAG_HINT_ACTION);
   }
 

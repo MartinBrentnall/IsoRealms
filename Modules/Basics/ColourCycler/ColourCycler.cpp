@@ -19,6 +19,7 @@
 #include "ColourCycler.h"
 
 namespace IsoRealms::Basics {
+  const std::string ColourCycler::TAG_COLOUR        = "Colour";
   const std::string ColourCycler::TAG_CYCLE_SPEED   = "CycleSpeed";
   const std::string ColourCycler::TAG_INPUT_COLOUR  = "InputColour";
   const std::string ColourCycler::TAG_IO            = "IO";
@@ -51,7 +52,7 @@ namespace IsoRealms::Basics {
       std::string mChildName = mChild.getName();
       if (mChildName == TAG_INPUT_COLOUR) {
         cDefInputColours.emplace_back(std::make_unique<Colour>(project, 0.0f, 0.0f, 0.0f));
-        cDefInputColours.back()->init(mChild);
+        cDefInputColours.back()->init(mChild, TAG_COLOUR);
       } else if (mChildName == TAG_OUTPUT_COLOUR) {
         cDefOutputColours.push_back(std::make_unique<ColourCycle>(this, mChild.getFloatAttribute(ATTRIBUTE_OFFSET), mChild.getFloatAttribute(ATTRIBUTE_SPEED_MULTIPLIER)));
         mOutputColourCount++;
@@ -59,7 +60,7 @@ namespace IsoRealms::Basics {
         throw ResourceInitException("ERROR: ColourCycler::ColourCycler: Unknown tag in IO: " + mChildName);
       }
     }
-    cDefCycleSpeed.init(node.getNode(TAG_CYCLE_SPEED));
+    cDefCycleSpeed.init(node, TAG_CYCLE_SPEED);
   }
 
   void ColourCycler::registerAssets(IAssetRegistry* assets) {
@@ -79,7 +80,8 @@ namespace IsoRealms::Basics {
     cDefCycleSpeed.save(node, TAG_CYCLE_SPEED);
     DOMNodeWriter mIONode = node->addBranch(TAG_IO);
     for (const std::unique_ptr<Colour>& mInputColour : cDefInputColours) {
-      mInputColour->save(&mIONode, TAG_INPUT_COLOUR);
+      DOMNodeWriter mInputColourNode = mIONode.addBranch(TAG_INPUT_COLOUR);
+      mInputColour->save(&mInputColourNode, TAG_COLOUR);
     }
     for (const std::unique_ptr<ColourCycle>& mOutputColour : cDefOutputColours) {
       mOutputColour->save(&mIONode);

@@ -50,9 +50,9 @@ namespace IsoRealms::Spindizzy {
             
   Top::Top(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
             Top(project, spindizzy) {
-    cDefColourTop.init(node.getNode(TAG_TOP));
-    cDefColourSide.init(node.getNode(TAG_SIDE));
-    cDefColourOutline.init(node.getNode(TAG_OUTLINE));
+    cDefColourTop.init(node, TAG_TOP);
+    cDefColourSide.init(node, TAG_SIDE);
+    cDefColourOutline.init(node, TAG_OUTLINE);
   }
 
   void Top::registerAssets(IAssetRegistry* assets) {

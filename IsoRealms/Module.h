@@ -56,7 +56,7 @@ namespace IsoRealms {
     void loadResources(DOMNode& node, IOptions* options, const std::string& resourceDataPath);
     void registerAssets();
     bool needsSaving() const;
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(DOMNodeWriter* node, IAssetIdentifier* identifier, const std::string& resourcePath) const;
     
     /************************************\
      * Implements IResourceTypeRegistry *
@@ -96,6 +96,7 @@ namespace IsoRealms {
     std::map<std::string, std::unique_ptr<ResourceType>> cResourceTypes;
     Project* cProject;
     LocalAssetRegistry cModuleAssetRegistry;
+    std::string cResourceDataPath;
 #ifdef __linux__
     void* cModuleHandle;
 #elif _WIN32

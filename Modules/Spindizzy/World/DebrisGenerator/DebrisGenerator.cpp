@@ -40,7 +40,7 @@ namespace IsoRealms::Spindizzy {
             cDefRadius(node.getFloatAttribute(ATTRIBUTE_RADIUS, DEFAULT_RADIUS)),
             cDefStepReach(node.getFloatAttribute(ATTRIBUTE_STEP_REACH, DEFAULT_STEP_REACH)),
             cLuaBinding(project, this) {
-    cDefModel.init(node.getNode(TAG_MODEL));
+    cDefModel.init(node, TAG_MODEL);
   }
 
   void DebrisGenerator::registerAssets(IAssetRegistry* assets) {

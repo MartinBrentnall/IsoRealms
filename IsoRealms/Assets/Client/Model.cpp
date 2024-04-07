@@ -33,17 +33,18 @@ namespace IsoRealms {
             cModel(cProject->createLiteral3DModel(this)) {
   }
 
-  void Model::init(DOMNode& node) {
-    cDefOffsetX = node.getFloatAttribute(ATTRIBUTE_OFFSET_X, 0.0f);
-    cDefOffsetY = node.getFloatAttribute(ATTRIBUTE_OFFSET_Y, 0.0f);
-    cDefOffsetZ = node.getFloatAttribute(ATTRIBUTE_OFFSET_Z, 0.0f);
-    cDefPitch   = node.getFloatAttribute(ATTRIBUTE_PITCH,    0.0f);
-    cDefScaleX  = node.getFloatAttribute(ATTRIBUTE_SCALE_X,  1.0f);
-    cDefScaleY  = node.getFloatAttribute(ATTRIBUTE_SCALE_Y,  1.0f);
-    cDefScaleZ  = node.getFloatAttribute(ATTRIBUTE_SCALE_Z,  1.0f);
-    cDefYaw     = node.getFloatAttribute(ATTRIBUTE_YAW,      0.0f);
-    cProject->init([this, &node](IAssets* assets) {
-      set(node);
+  void Model::init(DOMNode& node, const std::string& tag) {
+    DOMNode& mAssetNode = node.getNode(tag);
+    cDefOffsetX = mAssetNode.getFloatAttribute(ATTRIBUTE_OFFSET_X, 0.0f);
+    cDefOffsetY = mAssetNode.getFloatAttribute(ATTRIBUTE_OFFSET_Y, 0.0f);
+    cDefOffsetZ = mAssetNode.getFloatAttribute(ATTRIBUTE_OFFSET_Z, 0.0f);
+    cDefPitch   = mAssetNode.getFloatAttribute(ATTRIBUTE_PITCH,    0.0f);
+    cDefScaleX  = mAssetNode.getFloatAttribute(ATTRIBUTE_SCALE_X,  1.0f);
+    cDefScaleY  = mAssetNode.getFloatAttribute(ATTRIBUTE_SCALE_Y,  1.0f);
+    cDefScaleZ  = mAssetNode.getFloatAttribute(ATTRIBUTE_SCALE_Z,  1.0f);
+    cDefYaw     = mAssetNode.getFloatAttribute(ATTRIBUTE_YAW,      0.0f);
+    cProject->init([this, &mAssetNode](IAssets* assets) {
+      set(mAssetNode);
     });
   }
 

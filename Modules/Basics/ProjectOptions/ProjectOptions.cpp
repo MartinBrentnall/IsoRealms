@@ -34,7 +34,7 @@ namespace IsoRealms::Basics {
       if (mChildName == TAG_OPTION) {
         std::string mName = mNode.getAttribute(ATTRIBUTE_ID);
         cDefOptions.emplace(std::piecewise_construct, std::forward_as_tuple(mName), std::forward_as_tuple(project));
-        cDefOptions.find(mName)->second.init(mNode.getNode(TAG_VALUE));
+        cDefOptions.find(mName)->second.init(mNode, TAG_VALUE);
       } else {
         throw ParseException("Unknown tag for Basics/ProjectOptions: " + mChildName);
       }

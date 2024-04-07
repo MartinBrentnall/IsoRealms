@@ -40,9 +40,9 @@ namespace IsoRealms::Spindizzy {
   
   Ball::Ball(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
             Ball(project, spindizzy) {
-    cDefFill.init(node.getNode(TAG_FILL));
-    cDefOutline.init(node.getNode(TAG_OUTLINE));
-    cDefShine.init(node.getNode(TAG_SHINE));
+    cDefFill.init(node, TAG_FILL);
+    cDefOutline.init(node, TAG_OUTLINE);
+    cDefShine.init(node, TAG_SHINE);
   }
 
   void Ball::registerAssets(IAssetRegistry* assets) {

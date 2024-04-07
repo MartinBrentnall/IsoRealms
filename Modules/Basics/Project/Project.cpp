@@ -91,7 +91,7 @@ namespace IsoRealms::Basics {
     cDefEditing = node.getBooleanAttribute(ATTRIBUTE_EDITING);
     cDefEndAction.init(node, TAG_END);
     cDefReadyAction.init(node, TAG_READY);
-    cDefProjectOptions.init(node.getNode(TAG_OPTIONS));
+    cDefProjectOptions.init(node, TAG_OPTIONS);
 
     Options mProjectOptions = options->getFixedOptions();
     project->init([this, &node, mProjectOptions](IAssets* resources) {
@@ -158,7 +158,7 @@ namespace IsoRealms::Basics {
     cRuntimeProject->reset();
   }
   
-  IEditable* Project::getDefaultEditor() const {
+  IEditable* Project::getDefaultEditor() {
     return cRuntimeProject->getDefaultEditable();
   }
 

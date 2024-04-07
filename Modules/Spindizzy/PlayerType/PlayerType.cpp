@@ -90,11 +90,11 @@ namespace IsoRealms::Spindizzy {
     cDefRadius = node.getFloatAttribute(ATTRIBUTE_RADIUS, DEFAULT_RADIUS);
     cDefHugMomentum = node.getFloatAttribute(ATTRIBUTE_HUG_MOMENTUM, DEFAULT_HUG_MOMENTUM);
     cDefRespawnDelay = node.getIntegerAttribute(ATTRIBUTE_RESPAWN_DELAY, DEFAULT_RESPAWN_DELAY);
-    cDefModel.init(node.getNode(TAG_MODEL));
-    cDefInputThrust.init(node.getNode(TAG_INPUT_THRUST));
-    cDefInputX.init(node.getNode(TAG_INPUT_X));
-    cDefInputY.init(node.getNode(TAG_INPUT_Y));
-    cDefOrientation.init(node.getNode(TAG_ORIENTATION));
+    cDefModel.init(node, TAG_MODEL);
+    cDefInputThrust.init(node, TAG_INPUT_THRUST);
+    cDefInputX.init(node, TAG_INPUT_X);
+    cDefInputY.init(node, TAG_INPUT_Y);
+    cDefOrientation.init(node, TAG_ORIENTATION);
     cDefFallImpactAction.init(node, TAG_FALL_IMPACT_ACTION, &cDefSpindizzy);
     cDefFallBounceAction.init(node, TAG_FALL_BOUNCE_ACTION, &cDefSpindizzy);
     cDefWallBounceAction.init(node, TAG_WALL_BOUNCE_ACTION, this);
@@ -293,7 +293,7 @@ namespace IsoRealms::Spindizzy {
     cParent.cDefModel.renderPreview();
   }
 
-  void PlayerType::Pen::renderUI() const {
+  void PlayerType::Pen::renderUI(float aspectRatio) const {
     // Nothing to do.
   }
 

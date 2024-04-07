@@ -58,7 +58,7 @@ namespace IsoRealms::UI {
     cDefSpotRadius   = node.getFloatAttribute(ATTRIBUTE_SPOT_RADIUS,   DEFAULT_SPOT_RADIUS);
     cDefRingRadius   = node.getFloatAttribute(ATTRIBUTE_RING_RADIUS,   DEFAULT_RING_RADIUS);
     cDefShadowOffset = node.getFloatAttribute(ATTRIBUTE_SHADOW_OFFSET, DEFAULT_SHADOW_OFFSET);
-    cDefColour.init(node.getNode(TAG_COLOUR));
+    cDefColour.init(node, TAG_COLOUR);
   }
 
   void Throbber::registerAssets(IAssetRegistry* assets) {

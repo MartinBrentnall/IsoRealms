@@ -32,12 +32,13 @@ namespace IsoRealms {
             cDefAngle(0.0f) {
   }
 
-  void Texture::init(DOMNode& node) {
-    cDefScaleX = node.getFloatAttribute(ATTRIBUTE_SCALE_X, 1.0f);
-    cDefScaleY = node.getFloatAttribute(ATTRIBUTE_SCALE_Y, 1.0f);
-    cDefAngle  = node.getFloatAttribute(ATTRIBUTE_ANGLE);
-    cProject->init([this, &node](IAssets* assets) {
-      set(node);
+  void Texture::init(DOMNode& node, const std::string& tag) {
+    DOMNode& mAssetNode = node.getNode(tag);
+    cDefScaleX = mAssetNode.getFloatAttribute(ATTRIBUTE_SCALE_X, 1.0f);
+    cDefScaleY = mAssetNode.getFloatAttribute(ATTRIBUTE_SCALE_Y, 1.0f);
+    cDefAngle  = mAssetNode.getFloatAttribute(ATTRIBUTE_ANGLE);
+    cProject->init([this, &mAssetNode](IAssets* assets) {
+      set(mAssetNode);
     });
   }
 

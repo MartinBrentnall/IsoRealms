@@ -55,8 +55,8 @@ namespace IsoRealms::UI {
     cDefMessage      = node.getAttribute(ATTRIBUTE_TEXT);
     cDefNegativeText = node.getAttribute(ATTRIBUTE_FALSE);
     cDefPositiveText = node.getAttribute(ATTRIBUTE_TRUE);
-    cDefSelectionColour.init(node.getNode(TAG_HIGHLIGHT));
-    cDefFont.init(node.getNode(TAG_FONT));
+    cDefSelectionColour.init(node, TAG_HIGHLIGHT);
+    cDefFont.init(node, TAG_FONT);
     cDefNegativeAction.init(node, TAG_FALSE);
     cDefPositiveAction.init(node, TAG_TRUE);
   }

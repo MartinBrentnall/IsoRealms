@@ -29,7 +29,7 @@ namespace IsoRealms::Basics {
 
   FloatSwitch::FloatSwitch(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
             FloatSwitch(project, basics) {
-    cDefFloat.init(node.getNode("TODO"));
+    cDefFloat.init(node, "TODO");
   }
 
   void FloatSwitch::registerAssets(IAssetRegistry* assets) {

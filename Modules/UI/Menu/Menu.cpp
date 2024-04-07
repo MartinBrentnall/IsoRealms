@@ -71,8 +71,8 @@ namespace IsoRealms::UI {
       else if (mChildName == MenuItemSlider::TAG_TYPE)            {cDefItems.emplace_back(std::make_unique<MenuItemSlider>(mNode, project));}
       else                                                        {throw ResourceInitException("Unknown child for menu item: " + mChildName);}
     }
-    cDefColour.init(node.getNode(TAG_COLOUR));
-    cDefFont.init(node.getNode(TAG_FONT));
+    cDefColour.init(node, TAG_COLOUR);
+    cDefFont.init(node, TAG_FONT);
     cDefExitAction.init(node, TAG_EXIT);
     cDefFontSize = node.getFloatAttribute(ATTRIBUTE_FONT_SIZE, DEFAULT_FONT_SIZE);
     cDefShadowOffset = node.getFloatAttribute(ATTRIBUTE_SHADOW_OFFSET, DEFAULT_SHADOW_OFFSET);

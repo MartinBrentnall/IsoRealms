@@ -32,7 +32,7 @@ namespace IsoRealms::Spindizzy {
             cDefModel(project) {
     cDefSpinSpeed = node.getFloatAttribute(ATTRIBUTE_SPIN_SPEED);
     cDefLocationID = node.getAttribute(ATTRIBUTE_LOCATION);
-    cDefModel.init(node.getNode(TAG_MODEL));
+    cDefModel.init(node, TAG_MODEL);
   }
 
   std::unique_ptr<ModelInstance> ZoneObjectTypeTraitSpinner::createModel() {

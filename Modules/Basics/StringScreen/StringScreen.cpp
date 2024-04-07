@@ -46,9 +46,9 @@ namespace IsoRealms::Basics {
     cDefAlignment = mAlignment == ALIGNMENT_LEFT  ? IFont::Alignment::LEFT
                   : mAlignment == ALIGNMENT_RIGHT ? IFont::Alignment::RIGHT
                   :                                 IFont::Alignment::CENTER;
-    cDefString.init(node.getNode(TAG_VALUE));
-    cDefFont.init(node.getNode(TAG_FONT));
-    cDefColour.init(node.getNode(TAG_COLOUR));
+    cDefString.init(node, TAG_VALUE);
+    cDefFont.init(node, TAG_FONT);
+    cDefColour.init(node, TAG_COLOUR);
     cDefShadowOffset = node.getFloatAttribute(ATTRIBUTE_SHADOW_OFFSET, DEFAULT_SHADOW_OFFSET);
   }
 

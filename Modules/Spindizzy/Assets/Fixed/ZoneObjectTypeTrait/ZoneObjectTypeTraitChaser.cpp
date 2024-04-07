@@ -26,7 +26,7 @@ namespace IsoRealms::Spindizzy {
   
   ZoneObjectTypeTraitChaser::ZoneObjectTypeTraitChaser(IProject* project, ZoneObjectType* type, DOMNode& node) :
             cDefTarget(project) {
-    cDefTarget.init(node.getNode("TODO"));
+    cDefTarget.init(node, "TODO");
     cDefObjectID = node.getAttribute(ATTRIBUTE_OBJECT);
   }
   

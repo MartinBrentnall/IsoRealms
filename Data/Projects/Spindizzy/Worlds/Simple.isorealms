@@ -1,26 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <Project>
-  <Screen key="UI/Layout/Main"/>
-  <Input key="Basics/InputGroup/Spindizzy Game Controls"/>
-  <Editor key="Spindizzy/World/Hangworld"/>
-  <InitAction>
-    <Action key="Basics/Function/SpindizzyInit"/>
-  </InitAction>
-  <ResetAction>
-    <Action key="Basics/Function/SpindizzyReset"/>
-  </ResetAction>
-  <QuitAction>
-    <Action key="Quit"/>
-  </QuitAction>
   <Include>
     <Project name="Projects/Spindizzy/Spindizzy.isorealms" user="false"/>
   </Include>
-  <Properties/>
   <Modules>
     <Module name="Spindizzy">
-      <Configuration automaticZoneManagement="Zone" automaticZoneXSize="8" automaticZoneYSize="8" automaticZoneZSize="8" defaultThemeSet="C64" defaultWorldEditorTool="PropertiesTool">
-        <DefaultWorldEditorTool key="PropertiesTool"/>
-      </Configuration>
       <Resources>
         <World name="Hangworld" slopeAcceleration="0.0000265" gravity="-0.0002">
           <Player type="Player" name="Player" x="-4.5" y="3.5" z="0"/>

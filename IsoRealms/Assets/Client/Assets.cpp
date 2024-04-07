@@ -24,9 +24,10 @@ namespace IsoRealms {
             cAssets(cProject->createLiteralAssets(this)) {
   }
 
-  void Assets::init(DOMNode& node) {
-    cProject->init([this, &node](IAssets* assets) {
-      set(node);
+  void Assets::init(DOMNode& node, const std::string& tag) {
+    DOMNode& mAssetNode = node.getNode(tag);
+    cProject->init([this, &mAssetNode](IAssets* assets) {
+      set(mAssetNode);
     });
   }
 

@@ -67,8 +67,8 @@ namespace IsoRealms {
     return cEditor->getFont();
   }
 
-  float Configurator::getScreenLeftBorder() const {
-    return -1.0f + SCREEN_BORDER_SIZE;
+  float Configurator::getScreenLeftBorder(float aspectRatio) const {
+    return -1.0f * aspectRatio + SCREEN_BORDER_SIZE;
   }
 
   float Configurator::getScreenTopBorder() const {
@@ -83,8 +83,8 @@ namespace IsoRealms {
 //     return getMenuScale() * 2.0f;
 //   }
 
-  float Configurator::getLeftIconPosition() const {
-    return getScreenLeftBorder();// + getIconWidth() * 0.5f;
+  float Configurator::getLeftIconPosition(float aspectRatio) const {
+    return getScreenLeftBorder(aspectRatio);// + getIconWidth() * 0.5f;
   }
 
   float Configurator::getMenuBoundaryBottom() const {
@@ -99,13 +99,13 @@ namespace IsoRealms {
 //     return getMenuScale() * 6.0f;
 //   }
 
-  void Configurator::render() const {
+  void Configurator::render(float aspectRatio) const {
     glEnable(GL_BLEND);
     for (IConfiguratorScreen* mProjectMenu : cRuntimeMenus) {
-      mProjectMenu->render();
+      mProjectMenu->render(aspectRatio);
     }
     for (IConfiguratorScreen* mProjectMenu : cRuntimeClosedMenus) {
-      mProjectMenu->render();
+      mProjectMenu->render(aspectRatio);
     }
     glDisable(GL_BLEND);
   }

@@ -47,11 +47,11 @@ namespace IsoRealms::Spindizzy {
       if (mChildName == "Colour") {
         ThemeColour* mThemeColour = cThemeSet->getColour(mNode.getAttribute("type"));
         cColours.emplace(std::piecewise_construct, std::forward_as_tuple(mThemeColour), std::forward_as_tuple(project, 1.0f, 0.0f, 1.0f));
-        cColours.find(mThemeColour)->second.init(mNode.getNode("Colour"));
+        cColours.find(mThemeColour)->second.init(mNode, "Colour");
       } else if (mChildName == "Texture") {
         ThemeTexture* mThemeTexture = cThemeSet->getTexture(mNode.getAttribute("type"));
         cTextures.emplace(std::piecewise_construct, std::forward_as_tuple(mThemeTexture), std::forward_as_tuple(project));
-        cTextures.find(mThemeTexture)->second.init(mNode.getNode("Texture"));
+        cTextures.find(mThemeTexture)->second.init(mNode, "Texture");
       } else {
         throw ParseException("Unknown tag for Spindizzy/Theme: " + mChildName);
       }

@@ -57,8 +57,8 @@ namespace IsoRealms::HighScore {
     }
     readRecords(node);
     
-    cProjectUser.init(node.getNode(TAG_USER));
-    cProjectDataPath.init(node.getNode(TAG_PROJECT));
+    cProjectUser.init(node, TAG_USER);
+    cProjectDataPath.init(node, TAG_PROJECT);
     project->init([this](IAssets* assets) {
       writeDefaultTable();
     });

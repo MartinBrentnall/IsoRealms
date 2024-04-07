@@ -28,7 +28,7 @@ namespace IsoRealms::Basics {
   ColourTrackEventFade::ColourTrackEventFade(IProject* project, unsigned int duration, DOMNode& node) :
             cDefDuration(duration),
             cDefTarget(project, 1.0f, 0.0f, 0.0f) {
-    cDefTarget.init(node);
+    cDefTarget.init(node, TAG_TARGET);
   }
   
   void ColourTrackEventFade::save(DOMNodeWriter* node) const {

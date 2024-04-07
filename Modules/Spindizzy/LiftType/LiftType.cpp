@@ -34,8 +34,8 @@ namespace IsoRealms::Spindizzy {
   
   LiftType::LiftType(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
             LiftType(project, spindizzy) {
-    cDefModel.init(node.getNode(TAG_MODEL));
-    cDefActive.init(node.getNode(TAG_ACTIVE));
+    cDefModel.init(node, TAG_MODEL);
+    cDefActive.init(node, TAG_ACTIVE);
     cDefTickAction.init(node, TAG_TICK_ACTION);
   }
 
@@ -158,7 +158,7 @@ namespace IsoRealms::Spindizzy {
     }
   }
 
-  void LiftType::Pen::renderUI() const {
+  void LiftType::Pen::renderUI(float aspectRatio) const {
     // Nothing to do.
   }
 

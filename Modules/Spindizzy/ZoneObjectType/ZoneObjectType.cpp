@@ -178,7 +178,7 @@ namespace IsoRealms::Spindizzy {
     // TODO
   }
 
-  void ZoneObjectType::Pen::renderUI() const {
+  void ZoneObjectType::Pen::renderUI(float aspectRatio) const {
     // Nothing to do.
   }
 

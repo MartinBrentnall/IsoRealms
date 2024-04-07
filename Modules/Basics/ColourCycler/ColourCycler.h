@@ -53,6 +53,7 @@ namespace IsoRealms::Basics {
     private:
 
     // DOM strings.
+    static const std::string TAG_COLOUR;
     static const std::string TAG_CYCLE_SPEED;
     static const std::string TAG_INPUT_COLOUR;
     static const std::string TAG_IO;

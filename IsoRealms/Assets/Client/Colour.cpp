@@ -29,9 +29,10 @@ namespace IsoRealms {
             cListener(listener) {
   }
 
-  void Colour::init(DOMNode& node) {
-    cProject->init([this, &node](IAssets* assets) {
-      set(node);
+  void Colour::init(DOMNode& node, const std::string& tag) {
+    DOMNode& mAssetNode = node.getNode(tag);
+    cProject->init([this, &mAssetNode](IAssets* assets) {
+      set(mAssetNode);
     });
   }
 

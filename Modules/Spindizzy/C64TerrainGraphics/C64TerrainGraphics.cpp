@@ -111,10 +111,10 @@ namespace IsoRealms::Spindizzy {
   
   C64TerrainGraphics::C64TerrainGraphics(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
             C64TerrainGraphics(project, spindizzy) {
-    cDefFloor.init(node.getNode(TAG_FLOOR));
-    cDefWall.init(node.getNode(TAG_WALL));
-    cDefGrid.init(node.getNode(TAG_GRID));
-    cDefHighlight.init(node.getNode(TAG_EXTRA));
+    cDefFloor.init(node, TAG_FLOOR);
+    cDefWall.init(node, TAG_WALL);
+    cDefGrid.init(node, TAG_GRID);
+    cDefHighlight.init(node, TAG_EXTRA);
     setNeedsFullRedraw();
   }
 

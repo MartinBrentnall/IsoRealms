@@ -20,7 +20,6 @@
 
 namespace IsoRealms::Basics {
   const std::string ColourTrack::TAG_INIT   = "Init";
-  const std::string ColourTrack::TAG_TARGET = "Target";
 
   const std::string ColourTrack::ATTRIBUTE_DURATION = "duration";
   const std::string ColourTrack::ATTRIBUTE_OUTPUT   = "output";
@@ -33,11 +32,11 @@ namespace IsoRealms::Basics {
             cRuntimeEvent(0),
             cRuntimeEventPosition(0),
             cStateNotifier(nullptr) {
-    cDefInitColour.init(node.getNode(TAG_INIT));
+    cDefInitColour.init(node, TAG_INIT);
     for (DOMNode& mChild : node) {
       std::string mEventType = mChild.getName();
       if (mEventType == ColourTrackEventFade::EVENT_TYPE) {
-        cDefEvents.push_back(std::make_unique<ColourTrackEventFade>(project, mChild.getIntegerAttribute(ATTRIBUTE_DURATION), mChild.getNode(TAG_TARGET)));
+        cDefEvents.push_back(std::make_unique<ColourTrackEventFade>(project, mChild.getIntegerAttribute(ATTRIBUTE_DURATION), mChild));
       } else if (mEventType == ColourTrackEventPause::EVENT_TYPE) {
         cDefEvents.push_back(std::make_unique<ColourTrackEventPause>(mChild.getIntegerAttribute(ATTRIBUTE_DURATION)));
       } else if (mEventType == TAG_INIT) {

@@ -44,7 +44,7 @@ namespace IsoRealms::Basics {
     for (DOMNode& mNode : node) {
       std::string mTag = mNode.getName();
       if (mTag == TAG_MODEL) {
-        cDefModelTypes.emplace_back(std::make_unique<Model>(project))->init(mNode.getNode(TAG_NAME));
+        cDefModelTypes.emplace_back(std::make_unique<Model>(project))->init(mNode, TAG_NAME);
         cOffsetModels.emplace_back(std::make_unique<Offset>(this, mIndex++));
       } else {
         throw ParseException("Unknown tag for Basics/ModelCycler: " + mTag);

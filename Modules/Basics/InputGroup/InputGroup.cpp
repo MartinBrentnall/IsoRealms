@@ -19,6 +19,7 @@
 #include "InputGroup.h"
 
 namespace IsoRealms::Basics {
+  const std::string InputGroup::TAG_ELEMENT       = "Element";
   const std::string InputGroup::TAG_INPUT_HANDLER = "InputHandler";
 
   const std::string InputGroup::PROPERTY_INPUT_HANDLER = "Input";
@@ -30,9 +31,9 @@ namespace IsoRealms::Basics {
             InputGroup(project, basics) {
     for (DOMNode& mChild : node) {
       std::string mName = mChild.getName();
-      if (mName == TAG_INPUT_HANDLER) {
+      if (mName == TAG_ELEMENT) {
         cDefInputHandlers.emplace_back(std::make_unique<InputHandler>(project));
-        cDefInputHandlers.back()->init(mChild);
+        cDefInputHandlers.back()->init(mChild, TAG_INPUT_HANDLER);
       } else {
         throw ParseException("Unknown tag for Basics/InputGroup: " + mName);
       }
@@ -49,7 +50,8 @@ namespace IsoRealms::Basics {
 
   void InputGroup::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
     for (const std::unique_ptr<InputHandler>& mInputHandler : cDefInputHandlers) {
-      mInputHandler->save(node, TAG_INPUT_HANDLER);
+      DOMNodeWriter mElementNode = node->addBranch(TAG_ELEMENT);
+      mInputHandler->save(&mElementNode, TAG_INPUT_HANDLER);
     }
   }
 
