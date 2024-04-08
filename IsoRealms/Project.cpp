@@ -188,14 +188,12 @@ namespace IsoRealms {
   std::vector<std::unique_ptr<DOMNode>> Project::loadResources(DOMNode& node, IOptions* options, const std::string& resourceDataPath) {
 
     // Set screen and input handler
-    std::cout << "Loading things with resource path: " << resourceDataPath << std::endl;
     cDefScreen.init(node, TAG_SCREEN, resourceDataPath);
     cDefInputHandler.init(node, TAG_INPUT, resourceDataPath);
     cDefInitAction.init(node, TAG_INIT_ACTION, resourceDataPath);
     cDefResetAction.init(node, TAG_RESET_ACTION, resourceDataPath);
     cDefQuitAction.init(node, TAG_QUIT_ACTION, resourceDataPath);
     cDefDefaultEditor.init(node, TAG_EDITOR, resourceDataPath);
-    std::cout << "Finished loading things with resource path: " << resourceDataPath << std::endl;
 
     if (node.containsNode(TAG_PROPERTIES)) {
       for (DOMNode& mPropertyNode : node.getNode(TAG_PROPERTIES)) {

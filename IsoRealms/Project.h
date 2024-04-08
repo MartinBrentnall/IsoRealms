@@ -289,7 +289,6 @@ namespace IsoRealms {
         if (node.containsNode(tag) && cResourcePath.empty()) {
           cAsset.init(node, tag);
           cResourcePath = path;
-          std::cout << "  Loaded asset with path: " << path << std::endl;
         }
       }
 
@@ -299,7 +298,6 @@ namespace IsoRealms {
 
       void save(DOMNodeWriter* node, const std::string& tag, const std::string& path) {
         if (cResourcePath == path) {
-          std::cout << "Saving project asset: " << cResourcePath << std::endl;
           cAsset.save(node, tag);
         }
       }
