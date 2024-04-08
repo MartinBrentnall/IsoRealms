@@ -163,7 +163,7 @@ playTesting = nil</Code>
               </Bind>
               <Code>editable = project:getDefaultEditor()
 currentEditor = editable:createEditableScreen(project:getProject())
-currentEditor:setAppearance(font, 0.1)
+currentEditor:setAppearance(font, 0.02)
 currentEditor:notifyVisible()
 editor:setScreen(currentEditor:screen())
 input:setInputHandler(currentEditor:inputHandler())
@@ -256,6 +256,46 @@ end</Code>
           <Argument name="screen"/>
           <Code>screenSwitch:setScreen(screen)</Code>
         </Function>
+        <Function name="LoadWorld">
+          <Bind variable="showPrompt">
+            <To key=":Action">
+              <Action>
+                <Action key="Basics/Function/PushScreen">
+                  <Bind argument="menuScreen">
+                    <To key=":Screen">
+                      <Asset key="UI/Prompt/Load"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="menuInput">
+                    <To key=":InputHandler">
+                      <Asset key="UI/Prompt/Load"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="menu">
+                    <To key="UI/Prompt/Load"/>
+                  </Bind>
+                </Action>
+              </Action>
+            </To>
+          </Bind>
+          <Bind variable="missionToLoad">
+            <To key="Basics/String/MissionToLoad"/>
+          </Bind>
+          <Bind variable="missionType">
+            <To key="Basics/String/MissionType"/>
+          </Bind>
+          <Argument name="mission"/>
+          <Argument name="user"/>
+          <Code>missionFileName = mission:getValue()
+missionToLoad:setValue(missionFileName);
+missionUser = user:getValue()
+if missionUser then
+  missionType:setValue("user")
+else
+  missionType:setValue("program")
+end
+showPrompt:execute()</Code>
+        </Function>
         <InputGroup name="Test">
           <Element>
             <InputHandler key="Basics/DigitalInput/EndTest"/>
@@ -291,10 +331,11 @@ end</Code>
             <Value key="Basics/String/MissionToLoad"/>
           </Option>
           <Option id="type">
-            <Value key="Literal" value="user"/>
+            <Value key="Basics/String/MissionType"/>
           </Option>
         </ProjectOptions>
         <String name="MissionToLoad"/>
+        <String name="MissionType"/>
         <StringScreen name="SaveAsLabel" alignment="Center">
           <Font key="Basics/Font/Menu"/>
           <Value key="Literal" value="Enter a name for this project"/>
@@ -532,47 +573,42 @@ end</Code>
           <Colour key="Basics/ColourCycler/Menu Selection Highlight/0"/>
           <Font key="Basics/Font/Menu"/>
           <Options>
-            <FileList id="List" source="Projects/" user="true" type="Basics/Script">
-              <Bind variable="mission">
-                <To key=":String">
-                  <Asset key="UI/Menu/UserMissions/List"/>
-                </To>
-              </Bind>
-              <Bind variable="project">
-                <To key="Basics/Project/Project"/>
-              </Bind>
-              <Bind variable="loadMissionOptions">
-                <To key=":ProjectOptions">
-                  <Asset key="Basics/ProjectOptions/LoadMission"/>
-                </To>
-              </Bind>
-              <Bind variable="popScreen">
-                <To key=":Action">
-                  <Action>
-                    <Action key="Basics/Function/PopScreen"/>
-                  </Action>
-                </To>
-              </Bind>
-              <Bind variable="screen">
-                <To key="UI/Layout/Main/Menu"/>
-              </Bind>
-              <Bind variable="loading">
-                <To key=":Screen">
-                  <Asset key="UI/Throbber/LoadingScreen"/>
-                </To>
-              </Bind>
-              <Bind variable="missionToLoad">
-                <To key="Basics/String/MissionToLoad"/>
-              </Bind>
-              <Code>print("Mission to load: " .. mission:getValue())
-missionToLoad:setValue(mission:getValue());
-project:prepare(loadMissionOptions, true)
-popScreen:execute()
-popScreen:execute()
-screen:setScreen(loading)</Code>
+            <Action label="Hangworld">
+              <Action>
+                <Action key="Basics/Function/LoadWorld">
+                  <Bind argument="mission">
+                    <To key=":String">
+                      <Asset key="Literal" value="Projects/Spindizzy/Worlds/Hangworld.isorealms"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="user">
+                    <To key=":Boolean">
+                      <Asset key="Literal" value="false"/>
+                    </To>
+                  </Bind>
+                </Action>
+              </Action>
+            </Action>
+            <FileList id="List" folder="Projects/" user="true">
+              <Action>
+                <Action key="Basics/Function/LoadWorld">
+                  <Bind argument="mission">
+                    <To key=":String">
+                      <Asset key="UI/Menu/UserMissions/List"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="user">
+                    <To key=":Boolean">
+                      <Asset key="Literal" value="true"/>
+                    </To>
+                  </Bind>
+                </Action>
+              </Action>
             </FileList>
           </Options>
-          <Exit key="Basics/Function/PopScreen"/>
+          <Exit>
+            <Action key="Basics/Function/PopScreen"/>
+          </Exit>
         </Menu>
         <Prompt name="Close" text="Close IsoRealms?  Changes won't be saved!" false="Cancel" true="Close">
           <Highlight key="Basics/ColourCycler/Menu Selection Highlight/0"/>
@@ -650,6 +686,45 @@ cancel:execute()</Code>
                 </To>
               </Bind>
               <Code>project:prepare(template, true)
+popScreen:execute()
+popScreen:execute()
+screen:setScreen(loading)</Code>
+            </Action>
+          </True>
+        </Prompt>
+        <Prompt name="Load" text="Load world?  Changes to the current world won't be saved!" false="Cancel" true="Load world">
+          <Highlight key="Basics/ColourCycler/Menu Selection Highlight/0"/>
+          <Font key="Basics/Font/Menu"/>
+          <False>
+            <Action key="Basics/Function/PopScreen"/>
+          </False>
+          <True>
+            <Action key="Basics/Script">
+              <Bind variable="project">
+                <To key="Basics/Project/Project"/>
+              </Bind>
+              <Bind variable="loadMissionOptions">
+                <To key=":ProjectOptions">
+                  <Asset key="Basics/ProjectOptions/LoadMission"/>
+                </To>
+              </Bind>
+              <Bind variable="popScreen">
+                <To key=":Action">
+                  <Action>
+                    <Action key="Basics/Function/PopScreen"/>
+                  </Action>
+                </To>
+              </Bind>
+              <Bind variable="screen">
+                <To key="UI/Layout/Main/Menu"/>
+              </Bind>
+              <Bind variable="loading">
+                <To key=":Screen">
+                  <Asset key="UI/Throbber/LoadingScreen"/>
+                </To>
+              </Bind>
+              <Code>print("Mission to load: " .. missionFileName)
+project:prepare(loadMissionOptions, true)
 popScreen:execute()
 popScreen:execute()
 screen:setScreen(loading)</Code>

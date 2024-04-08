@@ -149,7 +149,7 @@ namespace IsoRealms::UI {
     LiteralColour mWhite(1.0f, 1.0f, 1.0f);
     const IColour& mColour = selected ? static_cast<const IColour&>(menu.getSelectionColour())
                                       : static_cast<const IColour&>(mWhite);
-    Utils::shadowPrint(0.0, y, **menu.getFont(), mFontSize, mColour, mShadowOffset, IFont::Alignment::LEFT,  cDefLabel);
+    Utils::shadowPrint(0.0, y, **menu.getFont(), mFontSize, mColour, mShadowOffset, IFont::Alignment::CENTER,  cDefLabel);
   }
 
   std::string MenuItemFileList::File::getPath() const {

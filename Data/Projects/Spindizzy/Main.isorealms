@@ -3145,35 +3145,39 @@ timer:start(10000)</Code>
           <Colour key="Basics/ColourCycler/Menu Selection Highlight/0"/>
           <Font key="Basics/Font/Menu"/>
           <Options>
-            <Action label="Hangworld" key="Basics/Function/SelectMission">
+            <Action label="Hangworld">
               <Action>
-                <Bind argument="mission">
-                  <To key=":String">
-                    <Asset key="Spindizzy/Worlds/Hangworld.isorealms"/>
-                  </To>
-                </Bind>
-                <Bind argument="missionUser">
-                  <To key=":String">
-                    <Asset key="program"/>
-                  </To>
-                </Bind>
+                <Action key="Basics/Function/SelectMission">
+                  <Bind argument="mission">
+                    <To key=":String">
+                      <Asset key="Literal" value="Spindizzy/Worlds/Hangworld.isorealms"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="missionUser">
+                    <To key=":String">
+                      <Asset key="Literal" value="program"/>
+                    </To>
+                  </Bind>
+                </Action>
               </Action>
             </Action>
-            <Action label="My Missions" key="Basics/Function/PushScreen">
+            <Action label="My Missions">
               <Action>
-                <Bind argument="menuScreen">
-                  <To key=":Screen">
-                    <Asset key="UI/Menu/MyMissions"/>
-                  </To>
-                </Bind>
-                <Bind argument="menuInput">
-                  <To key=":InputHandler">
-                    <Asset key="UI/Menu/MyMissions"/>
-                  </To>
-                </Bind>
-                <Bind argument="menu">
-                  <To key="UI/Menu/MyMissions"/>
-                </Bind>
+                <Action key="Basics/Function/PushScreen">
+                  <Bind argument="menuScreen">
+                    <To key=":Screen">
+                      <Asset key="UI/Menu/MyMissions"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="menuInput">
+                    <To key=":InputHandler">
+                      <Asset key="UI/Menu/MyMissions"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="menu">
+                    <To key="UI/Menu/MyMissions"/>
+                  </Bind>
+                </Action>
               </Action>
             </Action>
     <!--        <Action label="DLC Missions" key="Basics/Function/PushScreen">
@@ -3188,9 +3192,21 @@ timer:start(10000)</Code>
           <Colour key="Basics/ColourCycler/Menu Selection Highlight/0"/>
           <Font key="Basics/Font/Menu"/>
           <Options>
-            <FileList id="List" folder="Projects/" user="true" key="Basics/Function/SelectMission">
-              <Argument name="mission" value=":String/UI/Menu/MyMissions/List"/>
-              <Argument name="missionUser" value=":String/#user"/>
+            <FileList id="List" folder="Projects/" user="true">
+              <Action>
+                <Action key="Basics/Function/SelectMission">
+                  <Bind argument="mission">
+                    <To key=":String">
+                      <Asset key="UI/Menu/MyMissions/List"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="missionUser">
+                    <To key=":String">
+                      <Asset key="Literal" value="user"/>
+                    </To>
+                  </Bind>
+                </Action>
+              </Action>
             </FileList>
           </Options>
           <Exit key="Basics/Function/PopScreen"/>
@@ -3216,11 +3232,29 @@ timer:start(10000)</Code>
           <Colour key="Basics/ColourCycler/Menu Selection Highlight/0"/>
           <Font key="Basics/Font/Menu"/>
           <Options>
-            <FileList id="List" folder="Recordings/" user="true" key="Basics/Function/StartProjectNew">
-              <Argument name="mission" value="Basics/Project/Replay"/>
-              <Argument name="missionInput" value=":InputHandler/Basics/Project/Replay"/>
-              <Argument name="missionScreen" value=":Screen/Basics/Project/Replay"/>
-              <Argument name="projectArgs" value=":ProjectOptions/Basics/ProjectOptions/Replay"/>
+            <FileList id="List" folder="Recordings/" user="true">
+              <Action>
+                <Action key="Basics/Function/StartProjectNew">
+                  <Bind argument="mission">
+                    <To key="Basics/Project/Replay"/>
+                  </Bind>
+                  <Bind argument="missionInput">
+                    <To key=":InputHandler">
+                      <Asset key="Basics/Project/Replay"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="missionScreen">
+                    <To key=":Screen">
+                      <Asset key="Basics/Project/Replay"/>
+                    </To>
+                  </Bind>
+                  <Bind argument="projectArgs">
+                    <To key=":ProjectOptions">
+                      <Asset key="Basics/ProjectOptions/Replay"/>
+                    </To>
+                  </Bind>
+                </Action>
+              </Action>
             </FileList>
           </Options>
           <Exit key="Basics/Function/PopScreen"/>
