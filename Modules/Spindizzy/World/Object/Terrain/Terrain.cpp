@@ -55,7 +55,6 @@ namespace IsoRealms::Spindizzy {
   const std::string Terrain::ATTRIBUTE_SOUTH_WEST_CORNER = "southWestCorner";
   const std::string Terrain::ATTRIBUTE_SOUTH_EAST_CORNER = "southEastCorner";
   const std::string Terrain::ATTRIBUTE_BEHAVIOUR         = "behaviour";
-  const std::string Terrain::ATTRIBUTE_SPLIT_TYPE        = "split";
   const std::string Terrain::ATTRIBUTE_TYPE              = "type";
 
   const std::string Terrain::BEHAVIOUR_NORMAL        = "normal";
@@ -143,7 +142,7 @@ namespace IsoRealms::Spindizzy {
     node->addAttribute(ATTRIBUTE_SOUTH_EAST_CORNER, cDefCornerHeight[1][0]);
     node->addAttribute(ATTRIBUTE_SOUTH_WEST_CORNER, cDefCornerHeight[0][0]);
     if (isSplit()) {
-      node->addAttribute(ATTRIBUTE_SPLIT_TYPE, cDefFlags & FLAG_ALTERNATIVE_SPLIT);
+      node->addAttribute(ATTRIBUTE_ALTERNATIVE_SPLIT, (cDefFlags & FLAG_ALTERNATIVE_SPLIT) != 0);
     }
     if (cDefFlags & FLAG_STEPPED_BOTTOM && ((cDefEndX != cDefStartX && getXSlope() != 0) || (cDefEndY != cDefStartY && getYSlope() != 0))) {
       node->addAttribute(ATTRIBUTE_STEPPED_BOTTOM, true);

@@ -242,7 +242,6 @@ namespace IsoRealms::Spindizzy {
     static const std::string ATTRIBUTE_SOUTH_WEST_CORNER;
     static const std::string ATTRIBUTE_SOUTH_EAST_CORNER;
     static const std::string ATTRIBUTE_BEHAVIOUR;
-    static const std::string ATTRIBUTE_SPLIT_TYPE;
     static const std::string ATTRIBUTE_TYPE;
 
     static const std::string BEHAVIOUR_NORMAL;

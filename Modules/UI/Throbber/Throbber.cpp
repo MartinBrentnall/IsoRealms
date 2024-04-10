@@ -94,6 +94,7 @@ namespace IsoRealms::UI {
   }
 
   void Throbber::renderScreen(float scale, float aspectRatio) const {
+    glDisable(GL_DEPTH_TEST);
     if (cDefShadowOffset > 0.0f) {
       glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
       render(cDefShadowOffset, -cDefShadowOffset);
