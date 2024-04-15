@@ -264,5 +264,6 @@ namespace IsoRealms::Basics {
       cRuntimeProjectLoader->loadProject(mApplication);
     });
     cRuntimeLoading = true;
+    cRuntimeProject = nullptr;
   }
 }
