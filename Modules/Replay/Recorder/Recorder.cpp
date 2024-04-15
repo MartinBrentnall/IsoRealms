@@ -19,6 +19,7 @@
 #include "Recorder.h"
 
 namespace IsoRealms::Replay {
+  const std::string Recorder::TAG_INPUT       = "Input";
   const std::string Recorder::TAG_QUIT_ACTION = "QuitAction";
 
   Recorder::Recorder(IProject* project, Replay* replay) :
@@ -53,9 +54,9 @@ namespace IsoRealms::Replay {
     for (DOMNode& mNode : mRecorderConfigurationNode) {
       std::string mInputType = mNode.getName();
       if (mInputType == "Digital") {
-        cDefDigitalInputs.emplace_back(std::make_unique<Boolean>(cProject.get(), false, [this, mInputID](bool value) {writeInput(mInputID, value);})).get()->set(mNode);
+        cDefDigitalInputs.emplace_back(std::make_unique<Boolean>(cProject.get(), false, [this, mInputID](bool value) {writeInput(mInputID, value);})).get()->init(mNode, TAG_INPUT);
       } else if (mInputType == "Analogue") {
-        cDefAnalogueInputs.emplace_back(std::make_unique<Float>(cProject.get(), 0.0f, [this, mInputID](float value) {writeInput(mInputID, value);})).get()->set(mNode);
+        cDefAnalogueInputs.emplace_back(std::make_unique<Float>(cProject.get(), 0.0f, [this, mInputID](float value) {writeInput(mInputID, value);})).get()->init(mNode, TAG_INPUT);
       } else {
         // TODO: Throw.
       }

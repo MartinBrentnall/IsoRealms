@@ -27,18 +27,14 @@ namespace IsoRealms {
   void InputHandler::init(DOMNode& node, const std::string& tag) {
     DOMNode& mAssetNode = node.getNode(tag);
     cProject->init([this, &mAssetNode](IAssets* assets) {
-      set(mAssetNode);
+      cProject->release(this, cInputHandler);
+      cInputHandler = cProject->getInputHandler(this, mAssetNode);
     });
   }
 
   void InputHandler::save(DOMNodeWriter* node, const std::string& tag) const {
     DOMNodeWriter mAssetNode = node->addBranch(tag);
     cProject->save(&mAssetNode, cInputHandler);
-  }
-
-  void InputHandler::set(DOMNode& node) {
-    cProject->release(this, cInputHandler);
-    cInputHandler = cProject->getInputHandler(this, node);
   }
 
   void InputHandler::relinquish(IInputHandler* asset) {

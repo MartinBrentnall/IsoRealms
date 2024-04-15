@@ -3,51 +3,43 @@
   <Screen key="UI/Layout/Main"/>
   <Input key="Basics/InputGroup/Spindizzy Game Controls"/>
   <Editor key="Spindizzy/World/Hangworld"/>
-  <InitAction>
-    <Action key="Basics/Function/SpindizzyInit"/>
-  </InitAction>
-  <ResetAction>
-    <Action key="Basics/Function/SpindizzyReset"/>
-  </ResetAction>
-  <QuitAction>
-    <Action key="Quit"/>
-  </QuitAction>
+  <InitAction key="Basics/Function/SpindizzyInit"/>
+  <ResetAction key="Basics/Function/SpindizzyReset"/>
+  <QuitAction key="Quit"/>
   <Include>
     <Project name="Projects/Spindizzy/Options.isorealms" user="false"/>
   </Include>
   <Properties>
     <Property id="Mode">
-      <Action>
-        <Action key="Basics/Script">
-          <Bind variable="value">
-            <To key="~" local="value"/>
-          </Bind>
-          <Bind variable="timer">
-            <To key="Basics/Timer/TimeLimit"/>
-          </Bind>
-          <Bind variable="timeValue">
-            <To key="UI/Layout/Layout/ValueTime"/>
-          </Bind>
-          <Bind variable="scoreValue">
-            <To key="UI/Layout/Layout/ValueScore"/>
-          </Bind>
-          <Bind variable="notApplicableTime">
-            <To key=":Screen">
-              <Asset key="Basics/StringScreen/NotApplicableTime"/>
-            </To>
-          </Bind>
-          <Bind variable="notApplicableScore">
-            <To key=":Screen">
-              <Asset key="Basics/StringScreen/NotApplicableScore"/>
-            </To>
-          </Bind>
-          <Code>if value:getValue() == "Explorer" then
+      <Action key="Basics/Script">
+        <Bind variable="value">
+          <To key="~" local="value"/>
+        </Bind>
+        <Bind variable="timer">
+          <To key="Basics/Timer/TimeLimit"/>
+        </Bind>
+        <Bind variable="timeValue">
+          <To key="UI/Layout/Layout/ValueTime"/>
+        </Bind>
+        <Bind variable="scoreValue">
+          <To key="UI/Layout/Layout/ValueScore"/>
+        </Bind>
+        <Bind variable="notApplicableTime">
+          <To key=":Screen">
+            <Asset key="Basics/StringScreen/NotApplicableTime"/>
+          </To>
+        </Bind>
+        <Bind variable="notApplicableScore">
+          <To key=":Screen">
+            <Asset key="Basics/StringScreen/NotApplicableScore"/>
+          </To>
+        </Bind>
+        <Code>if value:getValue() == "Explorer" then
   timer:pause()
   GlobalExplorer = 1
   timeValue:setScreen(notApplicableTime)
   scoreValue:setScreen(notApplicableScore)
 end</Code>
-        </Action>
       </Action>
     </Property>
   </Properties>
@@ -57,15 +49,14 @@ end</Code>
       <Resources>
         <BooleanTrigger name="Brake">
           <Value key="Basics/DigitalInput/Brake"/>
-          <ActionOnTrue>
-            <Action key="Basics/Script">
-              <Bind variable="player">
-                <To key="Spindizzy/World/Hangworld/Player"/>
-              </Bind>
-              <Bind variable="time">
-                <To key="Basics/Timer/TimeLimit"/>
-              </Bind>
-              <Code>if hasFocus then
+          <ActionOnTrue key="Basics/Script">
+            <Bind variable="player">
+              <To key="Spindizzy/World/Hangworld/Player"/>
+            </Bind>
+            <Bind variable="time">
+              <To key="Basics/Timer/TimeLimit"/>
+            </Bind>
+            <Code>if hasFocus then
   player:stop()
   if GlobalExplorer ~= 1 then
     local newTime = time:getValue() - 500
@@ -75,29 +66,27 @@ end</Code>
     time:setValue(newTime)
   end
 end</Code>
-            </Action>
           </ActionOnTrue>
         </BooleanTrigger>
         <BooleanTrigger name="Transform">
           <Value key="Basics/DigitalInput/Transform"/>
-          <ActionOnTrue>
-            <Action key="Basics/Script">
-              <Bind variable="playerCraftModels">
-                <To key="Basics/ModelCycler/Player Craft"/>
-              </Bind>
-              <Bind variable="alienCraftModels">
-                <To key="Basics/ModelCycler/Alien Craft"/>
-              </Bind>
-              <Bind variable="player">
-                <To key="Spindizzy/Player/Player"/>
-              </Bind>
-              <Bind variable="alienTypeA">
-                <To key="Spindizzy/Alien/Ball"/>
-              </Bind>
-              <Bind variable="alienTypeB">
-                <To key="Spindizzy/Alien/Gyroscope"/>
-              </Bind>
-              <Code>if hasFocus then
+          <ActionOnTrue key="Basics/Script">
+            <Bind variable="playerCraftModels">
+              <To key="Basics/ModelCycler/Player Craft"/>
+            </Bind>
+            <Bind variable="alienCraftModels">
+              <To key="Basics/ModelCycler/Alien Craft"/>
+            </Bind>
+            <Bind variable="player">
+              <To key="Spindizzy/Player/Player"/>
+            </Bind>
+            <Bind variable="alienTypeA">
+              <To key="Spindizzy/Alien/Ball"/>
+            </Bind>
+            <Bind variable="alienTypeB">
+              <To key="Spindizzy/Alien/Gyroscope"/>
+            </Bind>
+            <Code>if hasFocus then
   playerCraftModels:next()
   alienCraftModels:next()
   if spinType == 0 then
@@ -117,33 +106,29 @@ end</Code>
     spinType = 0
   end
 end</Code>
-            </Action>
           </ActionOnTrue>
         </BooleanTrigger>
         <BooleanTrigger name="Destruct">
           <Value key="Basics/DigitalInput/Destruct"/>
-          <ActionOnTrue>
-            <Action key="Basics/Script">
-              <Bind variable="player">
-                <To key="Spindizzy/World/Hangworld/Player"/>
-              </Bind>
-              <Bind variable="soundImpactHard">
-                <To key=":Action">
-                  <Action>
-                    <Action key="Basics/Sound/ImpactHard"/>
-                  </Action>
-                </To>
-              </Bind>
-              <Bind variable="topDebris">
-                <To key="Spindizzy/World/Hangworld/DebrisGenerator/Top"/>
-              </Bind>
-              <Bind variable="ballDebris">
-                <To key="Spindizzy/World/Hangworld/DebrisGenerator/Ball"/>
-              </Bind>
-              <Bind variable="gyroscopeDebris">
-                <To key="Spindizzy/World/Hangworld/DebrisGenerator/Gyroscope"/>
-              </Bind>
-              <Code>if hasFocus and player:isAlive() then
+          <ActionOnTrue key="Basics/Script">
+            <Bind variable="player">
+              <To key="Spindizzy/World/Hangworld/Player"/>
+            </Bind>
+            <Bind variable="soundImpactHard">
+              <To key=":Action">
+                <Action key="Basics/Sound/ImpactHard"/>
+              </To>
+            </Bind>
+            <Bind variable="topDebris">
+              <To key="Spindizzy/World/Hangworld/DebrisGenerator/Top"/>
+            </Bind>
+            <Bind variable="ballDebris">
+              <To key="Spindizzy/World/Hangworld/DebrisGenerator/Ball"/>
+            </Bind>
+            <Bind variable="gyroscopeDebris">
+              <To key="Spindizzy/World/Hangworld/DebrisGenerator/Gyroscope"/>
+            </Bind>
+            <Code>if hasFocus and player:isAlive() then
   location = player:getLocation()
   momentum = player:getMomentum()
   xMomentum = momentum:getX()
@@ -174,17 +159,15 @@ end</Code>
     end
   end
 end</Code>
-            </Action>
           </ActionOnTrue>
         </BooleanTrigger>
         <BooleanTrigger name="Map">
           <Value key="Basics/DigitalInput/Map"/>
-          <ActionOnTrue>
-            <Action key="Basics/Script">
-              <Bind variable="view">
-                <To key="Spindizzy/WorldView/Hangworld/Camera"/>
-              </Bind>
-              <Code>if hasFocus then
+          <ActionOnTrue key="Basics/Script">
+            <Bind variable="view">
+              <To key="Spindizzy/WorldView/Hangworld/Camera"/>
+            </Bind>
+            <Code>if hasFocus then
   if mapOverviewMode == 1 then
     view:transitionToStart()
     mapOverviewMode = 0
@@ -193,57 +176,46 @@ end</Code>
     mapOverviewMode = 1
   end
 end</Code>
-            </Action>
           </ActionOnTrue>
         </BooleanTrigger>
         <BooleanTrigger name="Pause">
           <Value key="Basics/DigitalInput/Pause"/>
-          <ActionOnTrue>
-            <Action key="Basics/Function/Pause"/>
-          </ActionOnTrue>
+          <ActionOnTrue key="Basics/Function/Pause"/>
         </BooleanTrigger>
         <BooleanTrigger name="ResetCamera">
           <Value key="Basics/DigitalInput/ResetCamera"/>
-          <ActionOnTrue>
-            <Action key="Basics/Script">
-              <Bind variable="viewAngle">
-                <To key="Spindizzy/WorldView/Hangworld/Camera/Start"/>
-              </Bind>
-              <Code>viewAngle:faceNorthWest();</Code>
-            </Action>
+          <ActionOnTrue key="Basics/Script">
+            <Bind variable="viewAngle">
+              <To key="Spindizzy/WorldView/Hangworld/Camera/Start"/>
+            </Bind>
+            <Code>viewAngle:faceNorthWest();</Code>
           </ActionOnTrue>
         </BooleanTrigger>
         <BooleanTrigger name="ReverseCamera">
           <Value key="Basics/DigitalInput/ReverseCamera"/>
-          <ActionOnTrue>
-            <Action key="Basics/Script">
-              <Bind variable="viewAngle">
-                <To key="Spindizzy/WorldView/Hangworld/Camera/Start"/>
-              </Bind>
-              <Code>viewAngle:flip();</Code>
-            </Action>
+          <ActionOnTrue key="Basics/Script">
+            <Bind variable="viewAngle">
+              <To key="Spindizzy/WorldView/Hangworld/Camera/Start"/>
+            </Bind>
+            <Code>viewAngle:flip();</Code>
           </ActionOnTrue>
         </BooleanTrigger>
         <BooleanTrigger name="RotateCameraRight">
           <Value key="Basics/DigitalInput/RotateCameraRight"/>
-          <ActionOnTrue>
-            <Action key="Basics/Script">
-              <Bind variable="viewAngle">
-                <To key="Spindizzy/WorldView/Hangworld/Camera/Start"/>
-              </Bind>
-              <Code>viewAngle:rotateRight();</Code>
-            </Action>
+          <ActionOnTrue key="Basics/Script">
+            <Bind variable="viewAngle">
+              <To key="Spindizzy/WorldView/Hangworld/Camera/Start"/>
+            </Bind>
+            <Code>viewAngle:rotateRight();</Code>
           </ActionOnTrue>
         </BooleanTrigger>
         <BooleanTrigger name="RotateCameraLeft">
           <Value key="Basics/DigitalInput/RotateCameraLeft"/>
-          <ActionOnTrue>
-            <Action key="Basics/Script">
-              <Bind variable="viewAngle">
-                <To key="Spindizzy/WorldView/Hangworld/Camera/Start"/>
-              </Bind>
-              <Code>viewAngle:rotateLeft();</Code>
-            </Action>
+          <ActionOnTrue key="Basics/Script">
+            <Bind variable="viewAngle">
+              <To key="Spindizzy/WorldView/Hangworld/Camera/Start"/>
+            </Bind>
+            <Code>viewAngle:rotateLeft();</Code>
           </ActionOnTrue>
         </BooleanTrigger>
         <Colour alpha="1" blue="0" green="0" name="Black" red="0"/>
@@ -520,23 +492,17 @@ end</Code>
         <Function name="RandomClick">
           <Bind variable="click1">
             <To key=":Action">
-              <Action>
-                <Action key="Basics/Sound/LiftClick1"/>
-              </Action>
+              <Action key="Basics/Sound/LiftClick1"/>
             </To>
           </Bind>
           <Bind variable="click2">
             <To key=":Action">
-              <Action>
-                <Action key="Basics/Sound/LiftClick2"/>
-              </Action>
+              <Action key="Basics/Sound/LiftClick2"/>
             </To>
           </Bind>
           <Bind variable="click3">
             <To key=":Action">
-              <Action>
-                <Action key="Basics/Sound/LiftClick3"/>
-              </Action>
+              <Action key="Basics/Sound/LiftClick3"/>
             </To>
           </Bind>
           <Code>local val = math.random(0, 2)
@@ -693,9 +659,7 @@ end</Code>
           </Bind>
           <Bind variable="optionsLoader">
             <To key=":Action">
-              <Action>
-                <Action key="Basics/Function/ReloadConfiguration"/>
-              </Action>
+              <Action key="Basics/Function/ReloadConfiguration"/>
             </To>
           </Bind>
           <Code>menuStack = {}
@@ -800,9 +764,7 @@ end</Code>
           </Bind>
           <Bind variable="ending">
             <To key=":Action">
-              <Action>
-                <Action key="Basics/Function/Ending"/>
-              </Action>
+              <Action key="Basics/Function/Ending"/>
             </To>
           </Bind>
           <Bind variable="mandatoryZoneTime">
@@ -1005,9 +967,7 @@ end</Code>
         <Sequence name="DamageSound" loop="true">
           <Action>
             <Action delay="30">
-              <Action>
-                <Action key="Basics/Sound/AlienContact"/>
-              </Action>
+              <Action key="Basics/Sound/AlienContact"/>
             </Action>
           </Action>
         </Sequence>
@@ -1185,79 +1145,67 @@ end</Code>
           </Colour>
           <Action>
             <Action delay="13500">
-              <Action>
-                <Action key="Basics/Function/ShowScreen">
-                  <Bind argument="screenSwitch">
-                    <To key="UI/Layout/Main/EndingMessage"/>
-                  </Bind>
-                  <Bind argument="screen">
-                    <To key=":Screen">
-                      <Asset key="UI/Layout/EndingMessage"/>
-                    </To>
-                  </Bind>
-                </Action>
+              <Action key="Basics/Function/ShowScreen">
+                <Bind argument="screenSwitch">
+                  <To key="UI/Layout/Main/EndingMessage"/>
+                </Bind>
+                <Bind argument="screen">
+                  <To key=":Screen">
+                    <Asset key="UI/Layout/EndingMessage"/>
+                  </To>
+                </Bind>
               </Action>
             </Action>
             <Action delay="1000">
-              <Action>
-                <Action key="Basics/Function/ShowScreen">
-                  <Bind argument="screenSwitch">
-                    <To key="UI/Layout/Main/MappedMessage"/>
-                  </Bind>
-                  <Bind argument="screen">
-                    <To key=":Screen">
-                      <Asset key="UI/Layout/MappedMessage"/>
-                    </To>
-                  </Bind>
-                </Action>
+              <Action key="Basics/Function/ShowScreen">
+                <Bind argument="screenSwitch">
+                  <To key="UI/Layout/Main/MappedMessage"/>
+                </Bind>
+                <Bind argument="screen">
+                  <To key=":Screen">
+                    <Asset key="UI/Layout/MappedMessage"/>
+                  </To>
+                </Bind>
               </Action>
             </Action>
             <Action delay="1000">
-              <Action>
-                <Action key="Basics/Function/ShowScreen">
-                  <Bind argument="screenSwitch">
-                    <To key="UI/Layout/Main/JewelsMessage"/>
-                  </Bind>
-                  <Bind argument="screen">
-                    <To key=":Screen">
-                      <Asset key="UI/Layout/JewelsMessage"/>
-                    </To>
-                  </Bind>
-                </Action>
+              <Action key="Basics/Function/ShowScreen">
+                <Bind argument="screenSwitch">
+                  <To key="UI/Layout/Main/JewelsMessage"/>
+                </Bind>
+                <Bind argument="screen">
+                  <To key=":Screen">
+                    <Asset key="UI/Layout/JewelsMessage"/>
+                  </To>
+                </Bind>
               </Action>
             </Action>
             <Action delay="1000">
-              <Action>
-                <Action key="Basics/Function/ShowScreen">
-                  <Bind argument="screenSwitch">
-                    <To key="UI/Layout/Main/CompleteMessage"/>
-                  </Bind>
-                  <Bind argument="screen">
-                    <To key=":Screen">
-                      <Asset key="UI/Layout/CompleteMessage"/>
-                    </To>
-                  </Bind>
-                </Action>
+              <Action key="Basics/Function/ShowScreen">
+                <Bind argument="screenSwitch">
+                  <To key="UI/Layout/Main/CompleteMessage"/>
+                </Bind>
+                <Bind argument="screen">
+                  <To key=":Screen">
+                    <Asset key="UI/Layout/CompleteMessage"/>
+                  </To>
+                </Bind>
               </Action>
             </Action>
             <Action delay="1000">
-              <Action>
-                <Action key="Basics/Function/ShowScreen">
-                  <Bind argument="screenSwitch">
-                    <To key="UI/Layout/Main/ScoreMessage"/>
-                  </Bind>
-                  <Bind argument="screen">
-                    <To key=":Screen">
-                      <Asset key="UI/Layout/ScoreMessage"/>
-                    </To>
-                  </Bind>
-                </Action>
+              <Action key="Basics/Function/ShowScreen">
+                <Bind argument="screenSwitch">
+                  <To key="UI/Layout/Main/ScoreMessage"/>
+                </Bind>
+                <Bind argument="screen">
+                  <To key=":Screen">
+                    <Asset key="UI/Layout/ScoreMessage"/>
+                  </To>
+                </Bind>
               </Action>
             </Action>
             <Action delay="1000">
-              <Action>
-                <Action key="Basics/Function/Quit"/>
-              </Action>
+              <Action key="Basics/Function/Quit"/>
             </Action>
           </Action>
         </Sequence>
@@ -1330,79 +1278,67 @@ end</Code>
           </Colour>
           <Action>
             <Action delay="1500">
-              <Action>
-                <Action key="Basics/Function/ShowScreen">
-                  <Bind argument="screenSwitch">
-                    <To key="UI/Layout/Main/EndingMessage"/>
-                  </Bind>
-                  <Bind argument="screen">
-                    <To key=":Screen">
-                      <Asset key="UI/Layout/EndingMessage"/>
-                    </To>
-                  </Bind>
-                </Action>
+              <Action key="Basics/Function/ShowScreen">
+                <Bind argument="screenSwitch">
+                  <To key="UI/Layout/Main/EndingMessage"/>
+                </Bind>
+                <Bind argument="screen">
+                  <To key=":Screen">
+                    <Asset key="UI/Layout/EndingMessage"/>
+                  </To>
+                </Bind>
               </Action>
             </Action>
             <Action delay="1000">
-              <Action>
-                <Action key="Basics/Function/ShowScreen">
-                  <Bind argument="screenSwitch">
-                    <To key="UI/Layout/Main/MappedMessage"/>
-                  </Bind>
-                  <Bind argument="screen">
-                    <To key=":Screen">
-                      <Asset key="UI/Layout/MappedMessage"/>
-                    </To>
-                  </Bind>
-                </Action>
+              <Action key="Basics/Function/ShowScreen">
+                <Bind argument="screenSwitch">
+                  <To key="UI/Layout/Main/MappedMessage"/>
+                </Bind>
+                <Bind argument="screen">
+                  <To key=":Screen">
+                    <Asset key="UI/Layout/MappedMessage"/>
+                  </To>
+                </Bind>
               </Action>
             </Action>
             <Action delay="1000">
-              <Action>
-                <Action key="Basics/Function/ShowScreen">
-                  <Bind argument="screenSwitch">
-                    <To key="UI/Layout/Main/JewelsMessage"/>
-                  </Bind>
-                  <Bind argument="screen">
-                    <To key=":Screen">
-                      <Asset key="UI/Layout/JewelsMessage"/>
-                    </To>
-                  </Bind>
-                </Action>
+              <Action key="Basics/Function/ShowScreen">
+                <Bind argument="screenSwitch">
+                  <To key="UI/Layout/Main/JewelsMessage"/>
+                </Bind>
+                <Bind argument="screen">
+                  <To key=":Screen">
+                    <Asset key="UI/Layout/JewelsMessage"/>
+                  </To>
+                </Bind>
               </Action>
             </Action>
             <Action delay="1000">
-              <Action>
-                <Action key="Basics/Function/ShowScreen">
-                  <Bind argument="screenSwitch">
-                    <To key="UI/Layout/Main/CompleteMessage"/>
-                  </Bind>
-                  <Bind argument="screen">
-                    <To key=":Screen">
-                      <Asset key="UI/Layout/CompleteMessage"/>
-                    </To>
-                  </Bind>
-                </Action>
+              <Action key="Basics/Function/ShowScreen">
+                <Bind argument="screenSwitch">
+                  <To key="UI/Layout/Main/CompleteMessage"/>
+                </Bind>
+                <Bind argument="screen">
+                  <To key=":Screen">
+                    <Asset key="UI/Layout/CompleteMessage"/>
+                  </To>
+                </Bind>
               </Action>
             </Action>
             <Action delay="1000">
-              <Action>
-                <Action key="Basics/Function/ShowScreen">
-                  <Bind argument="screenSwitch">
-                    <To key="UI/Layout/Main/ScoreMessage"/>
-                  </Bind>
-                  <Bind argument="screen">
-                    <To key=":Screen">
-                      <Asset key="UI/Layout/ScoreMessage"/>
-                    </To>
-                  </Bind>
-                </Action>
+              <Action key="Basics/Function/ShowScreen">
+                <Bind argument="screenSwitch">
+                  <To key="UI/Layout/Main/ScoreMessage"/>
+                </Bind>
+                <Bind argument="screen">
+                  <To key=":Screen">
+                    <Asset key="UI/Layout/ScoreMessage"/>
+                  </To>
+                </Bind>
               </Action>
             </Action>
             <Action delay="1000">
-              <Action>
-                <Action key="Basics/Function/Quit"/>
-              </Action>
+              <Action key="Basics/Function/Quit"/>
             </Action>
           </Action>
         </Sequence>
@@ -1586,28 +1522,25 @@ end</Code>
         <Texture file="Images/Score.png" name="Score"/>
         <Texture file="Images/Time.png" name="Time"/>
         <Timer name="MandatoryZoneTime" value="0">
-          <ExpirationAction>
-            <Action key="Basics/Script">
-              <Bind variable="spindizzy">
-                <To key="Spindizzy"/>
-              </Bind>
-              <Bind variable="timeLimit">
-                <To key="Basics/Timer/TimeLimit"/>
-              </Bind>
-              <Bind variable="zoneEnterFunction">
-                <To key=":Action">
-                  <Action>
-                    <Action key="Basics/Function/ZoneEntered"/>
-                  </Action>
-                </To>
-              </Bind>
-              <Bind variable="sound">
-                <To key="Basics/Sequence/DamageSound"/>
-              </Bind>
-              <Bind variable="damage">
-                <To key="Basics/Sequence/DamageVisual"/>
-              </Bind>
-              <Code>if zoneToEnter ~= nil then
+          <ExpirationAction key="Basics/Script">
+            <Bind variable="spindizzy">
+              <To key="Spindizzy"/>
+            </Bind>
+            <Bind variable="timeLimit">
+              <To key="Basics/Timer/TimeLimit"/>
+            </Bind>
+            <Bind variable="zoneEnterFunction">
+              <To key=":Action">
+                <Action key="Basics/Function/ZoneEntered"/>
+              </To>
+            </Bind>
+            <Bind variable="sound">
+              <To key="Basics/Sequence/DamageSound"/>
+            </Bind>
+            <Bind variable="damage">
+              <To key="Basics/Sequence/DamageVisual"/>
+            </Bind>
+            <Code>if zoneToEnter ~= nil then
   spindizzy:setPause(false)
   if GlobalExplorer ~= 1 then
     timeLimit:resume()
@@ -1620,65 +1553,63 @@ end</Code>
   zoneEnterFunction:execute()
   zoneToEnter = nil
 end</Code>
-            </Action>
           </ExpirationAction>
         </Timer>
         <Timer name="TimeLimit" value="150000">
-          <ExpirationAction>
-            <Action key="Basics/Script">
-              <Bind variable="spindizzy">
-                <To key="Spindizzy"/>
-              </Bind>
-              <Bind variable="timeLimit">
-                <To key="Basics/Timer/TimeLimit"/>
-              </Bind>
-              <Bind variable="gameOverSequence">
-                <To key="Basics/Sequence/GameOver"/>
-              </Bind>
-              <Bind variable="project">
-                <To key="Project"/>
-              </Bind>
-              <Bind variable="endMessage">
-                <To key="Basics/String/EndingMessage"/>
-              </Bind>
-              <Bind variable="scoreMessage">
-                <To key="Basics/String/ScoreMessage"/>
-              </Bind>
-              <Bind variable="mappedMessage">
-                <To key="Basics/String/MappedMessage"/>
-              </Bind>
-              <Bind variable="jewelsMessage">
-                <To key="Basics/String/JewelsMessage"/>
-              </Bind>
-              <Bind variable="completeMessage">
-                <To key="Basics/String/CompleteMessage"/>
-              </Bind>
-              <Bind variable="score">
-                <To key="Basics/Integer/Score"/>
-              </Bind>
-              <Bind variable="jewelsCollected">
-                <To key=":Integer">
-                  <Asset key="Basics/Integer/JewelCount"/>
-                </To>
-              </Bind>
-              <Bind variable="zoneCount">
-                <To key=":Integer">
-                  <Asset key="Basics/Integer/RemainingZones"/>
-                </To>
-              </Bind>
-              <Bind variable="hangworld">
-                <To key="Spindizzy/World/Hangworld"/>
-              </Bind>
-              <Bind variable="sound">
-                <To key="Basics/Sequence/DamageSound"/>
-              </Bind>
-              <Bind variable="damage">
-                <To key="Basics/Sequence/DamageVisual"/>
-              </Bind>
-              <Bind variable="screen">
-                <To key="UI/Layout/Main/Damage"/>
-              </Bind>
-              <Code>-- Stop alien damage; we've probably had enough of that...
+          <ExpirationAction key="Basics/Script">
+            <Bind variable="spindizzy">
+              <To key="Spindizzy"/>
+            </Bind>
+            <Bind variable="timeLimit">
+              <To key="Basics/Timer/TimeLimit"/>
+            </Bind>
+            <Bind variable="gameOverSequence">
+              <To key="Basics/Sequence/GameOver"/>
+            </Bind>
+            <Bind variable="project">
+              <To key="Project"/>
+            </Bind>
+            <Bind variable="endMessage">
+              <To key="Basics/String/EndingMessage"/>
+            </Bind>
+            <Bind variable="scoreMessage">
+              <To key="Basics/String/ScoreMessage"/>
+            </Bind>
+            <Bind variable="mappedMessage">
+              <To key="Basics/String/MappedMessage"/>
+            </Bind>
+            <Bind variable="jewelsMessage">
+              <To key="Basics/String/JewelsMessage"/>
+            </Bind>
+            <Bind variable="completeMessage">
+              <To key="Basics/String/CompleteMessage"/>
+            </Bind>
+            <Bind variable="score">
+              <To key="Basics/Integer/Score"/>
+            </Bind>
+            <Bind variable="jewelsCollected">
+              <To key=":Integer">
+                <Asset key="Basics/Integer/JewelCount"/>
+              </To>
+            </Bind>
+            <Bind variable="zoneCount">
+              <To key=":Integer">
+                <Asset key="Basics/Integer/RemainingZones"/>
+              </To>
+            </Bind>
+            <Bind variable="hangworld">
+              <To key="Spindizzy/World/Hangworld"/>
+            </Bind>
+            <Bind variable="sound">
+              <To key="Basics/Sequence/DamageSound"/>
+            </Bind>
+            <Bind variable="damage">
+              <To key="Basics/Sequence/DamageVisual"/>
+            </Bind>
+            <Bind variable="screen">
+              <To key="UI/Layout/Main/Damage"/>
+            </Bind>
+            <Code>-- Stop alien damage; we've probably had enough of that...
 sound:pause()
 damage:pause()
 screen:setScreen(nil)
@@ -1716,7 +1647,6 @@ else
 end
 hasFocus = false
 gameOverSequence:play()</Code>
-            </Action>
           </ExpirationAction>
         </Timer>
         <Vertex name="ZoneLocation"/>
@@ -2148,74 +2078,63 @@ gameOverSequence:play()</Code>
           <Font key="Basics/Font/Menu"/>
           <Options>
             <Action label="Resume">
-              <Action>
-                <Action key="Basics/Function/Unpause"/>
-              </Action>
+              <Action key="Basics/Function/Unpause"/>
             </Action>
             <Action label="Options">
-              <Action>
-                <Action key="Basics/Function/PushScreen">
-                  <Bind argument="menuScreen">
-                    <To key=":Screen">
-                      <Asset key="UI/Menu/Options"/>
-                    </To>
-                  </Bind>
-                  <Bind argument="menuInput">
-                    <To key=":InputHandler">
-                      <Asset key="UI/Menu/Options"/>
-                    </To>
-                  </Bind>
-                  <Bind argument="menu">
-                    <To key="UI/Menu/Options"/>
-                  </Bind>
-                </Action>
+              <Action key="Basics/Function/PushScreen">
+                <Bind argument="menuScreen">
+                  <To key=":Screen">
+                    <Asset key="UI/Menu/Options"/>
+                  </To>
+                </Bind>
+                <Bind argument="menuInput">
+                  <To key=":InputHandler">
+                    <Asset key="UI/Menu/Options"/>
+                  </To>
+                </Bind>
+                <Bind argument="menu">
+                  <To key="UI/Menu/Options"/>
+                </Bind>
               </Action>
             </Action>
             <Action label="Abort Mission">
-              <Action>
-                <Action key="Basics/Function/PushScreen">
-                  <Bind argument="menuScreen">
-                    <To key=":Screen">
-                      <Asset key="UI/Prompt/AbortMission"/>
-                    </To>
-                  </Bind>
-                  <Bind argument="menuInput">
-                    <To key=":InputHandler">
-                      <Asset key="UI/Prompt/AbortMission"/>
-                    </To>
-                  </Bind>
-                  <Bind argument="menu">
-                    <To key="UI/Prompt/AbortMission"/>
-                  </Bind>
-                </Action>
+              <Action key="Basics/Function/PushScreen">
+                <Bind argument="menuScreen">
+                  <To key=":Screen">
+                    <Asset key="UI/Prompt/AbortMission"/>
+                  </To>
+                </Bind>
+                <Bind argument="menuInput">
+                  <To key=":InputHandler">
+                    <Asset key="UI/Prompt/AbortMission"/>
+                  </To>
+                </Bind>
+                <Bind argument="menu">
+                  <To key="UI/Prompt/AbortMission"/>
+                </Bind>
               </Action>
             </Action>
           </Options>
-          <Exit>
-            <Action key="Basics/Function/Unpause"/>
-          </Exit>
+          <Exit key="Basics/Function/Unpause"/>
         </Menu>
         <Prompt name="AbortMission" text="Abort Mission?" false="No" true="Yes">
           <Highlight key="Basics/ColourCycler/Menu Selection Highlight/0"/>
           <Font key="Basics/Font/Menu"/>
-          <False>
-            <Action key="Basics/Function/PopScreen"/>
-          </False>
-          <True>
-            <Action key="Basics/Script">
-              <Bind variable="time">
-                <To key="Basics/Timer/TimeLimit"/>
-              </Bind>
-              <Bind variable="screen">
-                <To key="UI/Layout/Main/Menu"/>
-              </Bind>
-              <Bind variable="spindizzy">
-                <To key="Spindizzy"/>
-              </Bind>
-              <Bind variable="endingMessage">
-                <To key="Basics/String/EndingMessage"/>
-              </Bind>
-              <Code>-- Setting time to zero causes mission to end
+          <False key="Basics/Function/PopScreen"/>
+          <True key="Basics/Script">
+            <Bind variable="time">
+              <To key="Basics/Timer/TimeLimit"/>
+            </Bind>
+            <Bind variable="screen">
+              <To key="UI/Layout/Main/Menu"/>
+            </Bind>
+            <Bind variable="spindizzy">
+              <To key="Spindizzy"/>
+            </Bind>
+            <Bind variable="endingMessage">
+              <To key="Basics/String/EndingMessage"/>
+            </Bind>
+            <Code>-- Setting time to zero causes mission to end
 time:setValue(0)
 
 -- Pop all menu screens
@@ -2241,7 +2160,6 @@ end
 
 -- Disable menu access
 hasFocus = false</Code>
-            </Action>
           </True>
         </Prompt>
       </Resources>
@@ -2295,118 +2213,41 @@ hasFocus = false</Code>
           <Outline key="Basics/Colour/Black"/>
           <Shine key="Basics/Sequence/GameOver/Yellow"/>
         </Ball>
-
-
-
-        <!-- TODO:WorldObject -->
-        <!--        <BoundaryHandler name="PlayerJewelHandler">
-          <Type key="ZoneObject/Jewel/Boundary"/>
-          <Object key="Player/Player"/>
-          <EnteredAction>
-            <Action key="Basics/Script">
-              <Bind variable="boundary">
-                <To key="~Boundary/Trait/Boundary"/>
-              </Bind>
-              <Bind variable="appearance">
-                <To key="~Boundary/Trait/Appearance"/>
-              </Bind>
-              <Bind variable="sound">
-                <To key=":Action">
-                  <Action>
-                    <Action key="Basics/Sound/Jewel"/>
-                  </Action>
-                </To>
-              </Bind>
-              <Bind variable="score">
-                <To key="Basics/Integer/Score"/>
-              </Bind>
-              <Bind variable="time">
-                <To key="Basics/Timer/TimeLimit"/>
-              </Bind>
-              <Bind variable="jewelsCollected">
-                <To key="Basics/Integer/JewelCount"/>
-              </Bind>
-              <Bind variable="ending">
-                <To key=":Action">
-                  <Action>
-                    <Action key="Basics/Function/Ending"/>
-                  </Action>
-                </To>
-              </Bind>
-              <Code>- Boundary enabled state is used as the collected status.
-if boundary:isEnabled() == true then
-
-  - Update jewel object state.
-  boundary:setEnabled(false)
-  appearance:setEnabled(false)
-
-  - Play a sound.
-  sound:execute()
-
-  - Update time and score (any time added beyond the 3-minute cap is converted to additional score bonus).
-  local earned = 600
-  local newTime = time:getValue() + 12000
-  if newTime &gt; 180000 then
-    local excess = newTime - 180000
-    local extraScore = excess / 10
-    earned = earned + extraScore
-    newTime = 180000
-  end
-  time:setValue(newTime)
-  score:setValue(score:getValue() + earned)
-
-  // Update jewel counter in the HUD.
-  jewelsCollected:setValue(jewelsCollected:getValue() + 1)
-
-  - TODO: Map overview colour should be updated on leaving the zone (yellow or purple depending on jewels still being there)
-
-  - TODO: Trigger the ending if the game is complete.
-end</Code>
-            </Action>
-          </EnteredAction>
-        </BoundaryHandler>-->
-
-
         <BoundaryHandler name="JewelCollector">
           <Type key="PickUp/Jewel"/>
           <Object key="Player/Player"/>
-          <EnteredAction>
-            <Action key="Basics/Script">
-              <Bind variable="sound">
-                <To key=":Action">
-                  <Action>
-                    <Action key="Basics/Sound/Jewel"/>
-                  </Action>
-                </To>
-              </Bind>
-              <Bind variable="score">
-                <To key="Basics/Integer/Score"/>
-              </Bind>
-              <Bind variable="time">
-                <To key="Basics/Timer/TimeLimit"/>
-              </Bind>
-              <Bind variable="jewelsCollected">
-                <To key="Basics/Integer/JewelCount"/>
-              </Bind>
-              <Bind variable="zone">
-                <To key="Spindizzy/Zone"/>
-              </Bind>
-              <Bind variable="zoneCount">
-                <To key=":Integer">
-                  <Asset key="Basics/Integer/RemainingZones"/>
-                </To>
-              </Bind>
-              <Bind variable="hangworld">
-                <To key="Spindizzy/World/Hangworld"/>
-              </Bind>
-              <Bind variable="ending">
-                <To key=":Action">
-                  <Action>
-                    <Action key="Basics/Function/Ending"/>
-                  </Action>
-                </To>
-              </Bind>
-              <Code>sound:execute()
+          <EnteredAction key="Basics/Script">
+            <Bind variable="sound">
+              <To key=":Action">
+                <Action key="Basics/Sound/Jewel"/>
+              </To>
+            </Bind>
+            <Bind variable="score">
+              <To key="Basics/Integer/Score"/>
+            </Bind>
+            <Bind variable="time">
+              <To key="Basics/Timer/TimeLimit"/>
+            </Bind>
+            <Bind variable="jewelsCollected">
+              <To key="Basics/Integer/JewelCount"/>
+            </Bind>
+            <Bind variable="zone">
+              <To key="Spindizzy/Zone"/>
+            </Bind>
+            <Bind variable="zoneCount">
+              <To key=":Integer">
+                <Asset key="Basics/Integer/RemainingZones"/>
+              </To>
+            </Bind>
+            <Bind variable="hangworld">
+              <To key="Spindizzy/World/Hangworld"/>
+            </Bind>
+            <Bind variable="ending">
+              <To key=":Action">
+                <Action key="Basics/Function/Ending"/>
+              </To>
+            </Bind>
+            <Code>sound:execute()
 jewelsCollected:setValue(jewelsCollected:getValue() + 1)
 local earned = 600
 local newTime = time:getValue() + 12000
@@ -2423,35 +2264,29 @@ score:setValue(math.floor(score:getValue() + earned))
 if zoneCount:getValue() == 0 and hangworld:getPickUpCount() == jewelsCollected:getValue() then
   ending:execute()
 end</Code>
-            </Action>
           </EnteredAction>
         </BoundaryHandler>
         <BoundaryHandler name="PlayerZoneHandler">
           <Type key="Zone/Zone"/>
           <Object key="Player/Player"/>
-          <EnteredAction>
-            <Action key="Basics/Script">
-              <Bind variable="zone">
-                <To key="Spindizzy/Zone"/>
-              </Bind>
-              <Bind variable="zoneColour">
-                <To key="~" local="Boundary/Zone/WorldView/Overview/ZoneView"/>
-              </Bind>
-              <Bind variable="zoneEnterFunction">
-                <To key=":Action">
-                  <Action>
-                    <Action key="Basics/Function/ZoneEntered"/>
-                  </Action>
-                </To>
-              </Bind>
-              <Bind variable="optionsLoader">
-                <To key=":Action">
-                  <Action>
-                    <Action key="Basics/Function/ReloadConfiguration"/>
-                  </Action>
-                </To>
-              </Bind>
-              <Code>-- Hack to reload the controls when starting the game.
+          <EnteredAction key="Basics/Script">
+            <Bind variable="zone">
+              <To key="Spindizzy/Zone"/>
+            </Bind>
+            <Bind variable="zoneColour">
+              <To key="~" local="Boundary/Zone/WorldView/Overview/ZoneView"/>
+            </Bind>
+            <Bind variable="zoneEnterFunction">
+              <To key=":Action">
+                <Action key="Basics/Function/ZoneEntered"/>
+              </To>
+            </Bind>
+            <Bind variable="optionsLoader">
+              <To key=":Action">
+                <Action key="Basics/Function/ReloadConfiguration"/>
+              </To>
+            </Bind>
+            <Code>-- Hack to reload the controls when starting the game.
 if firstZoneEntered == 0 then
   optionsLoader:execute()
   firstZoneEntered = 1
@@ -2459,69 +2294,24 @@ end
 entered = zone
 enteredColour = zoneColour
 zoneEnterFunction:execute()</Code>
-            </Action>
           </EnteredAction>
-          <ExitedAction>
-            <Action key="Basics/Script">
-              <Bind variable="zone">
-                <To key="Spindizzy/Zone"/>
-              </Bind>
-              <Bind variable="zoneColour">
-                <To key="~" local="Boundary/Zone/WorldView/Overview/ZoneView"/>
-              </Bind>
-              <Bind variable="zoneExitFunction">
-                <To key=":Action">
-                  <Action>
-                    <Action key="Basics/Function/ZoneExited"/>
-                  </Action>
-                </To>
-              </Bind>
-              <Code>exited = zone
+          <ExitedAction key="Basics/Script">
+            <Bind variable="zone">
+              <To key="Spindizzy/Zone"/>
+            </Bind>
+            <Bind variable="zoneColour">
+              <To key="~" local="Boundary/Zone/WorldView/Overview/ZoneView"/>
+            </Bind>
+            <Bind variable="zoneExitFunction">
+              <To key=":Action">
+                <Action key="Basics/Function/ZoneExited"/>
+              </To>
+            </Bind>
+            <Code>exited = zone
 exitedColour = zoneColour
 zoneExitFunction:execute()</Code>
-            </Action>
           </ExitedAction>
         </BoundaryHandler>
-        <!--        <BoundaryHandler name="AlienZoneHandler">
-          <Type key="Zone/Zone"/>
-          <Object key="Alien/Ball"/>
-          <EnteredAction key="Basics/Function/AlienEnteredZone">
-            <Bind argument="entered">
-              <To key="Spindizzy/Zone"/>
-            </Bind>
-            <Bind argument="alien">
-              <To key="Spindizzy/Alien"/>
-            </Bind>
-          </EnteredAction>
-          <ExitedAction key="Basics/Function/AlienExitedZone">
-            <Bind argument="exited">
-              <To key="Spindizzy/Zone"/>
-            </Bind>
-            <Bind argument="alien">
-              <To key="Spindizzy/Alien"/>
-            </Bind>
-          </ExitedAction>
-        </BoundaryHandler>
-        <BoundaryHandler name="AlienZoneHandler">
-          <Type key="Zone/Zone"/>
-          <Object key="Alien/Gyroscope"/>
-          <EnteredAction key="Basics/Function/AlienEnteredZone">
-            <Bind argument="entered">
-              <To key="Spindizzy/Zone"/>
-            </Bind>
-            <Bind argument="alien">
-              <To key="Spindizzy/Alien"/>
-            </Bind>
-          </EnteredAction>
-          <ExitedAction key="Basics/Function/AlienExitedZone">
-            <Bind argument="exited">
-              <To key="Spindizzy/Zone"/>
-            </Bind>
-            <Bind argument="alien">
-              <To key="Spindizzy/Alien"/>
-            </Bind>
-          </ExitedAction>
-        </BoundaryHandler>-->
         <C64LiftGraphics name="Game Graphics">
           <Primary key="Basics/Sequence/Ending/Purple"/>
           <Secondary key="Basics/Sequence/Ending/Yellow"/>
@@ -2625,111 +2415,103 @@ zoneExitFunction:execute()</Code>
         <CollisionHandler name="PlayerToAlienA">
           <TypeA key="Player/Player"/>
           <TypeB key="Alien/Ball"/>
-          <EnteredAction>
-            <Action key="Basics/Script">
-              <Bind variable="sound">
-                <To key="Basics/Sequence/DamageSound"/>
-              </Bind>
-              <Bind variable="damage">
-                <To key="Basics/Sequence/DamageVisual"/>
-              </Bind>
-              <Bind variable="screen">
-                <To key="UI/Layout/Main/Damage"/>
-              </Bind>
-              <Bind variable="indicator">
-                <To key=":Screen">
-                  <Asset key="Spindizzy/DamageIndicator/DamageIndicator"/>
-                </To>
-              </Bind>
-              <Bind variable="timeLimit">
-                <To key="Basics/Timer/TimeLimit"/>
-              </Bind>
-              <Code>if alienContactCount == 0 then
+          <EnteredAction key="Basics/Script">
+            <Bind variable="sound">
+              <To key="Basics/Sequence/DamageSound"/>
+            </Bind>
+            <Bind variable="damage">
+              <To key="Basics/Sequence/DamageVisual"/>
+            </Bind>
+            <Bind variable="screen">
+              <To key="UI/Layout/Main/Damage"/>
+            </Bind>
+            <Bind variable="indicator">
+              <To key=":Screen">
+                <Asset key="Spindizzy/DamageIndicator/DamageIndicator"/>
+              </To>
+            </Bind>
+            <Bind variable="timeLimit">
+              <To key="Basics/Timer/TimeLimit"/>
+            </Bind>
+            <Code>if alienContactCount == 0 then
   sound:play()
   damage:play()
   screen:setScreen(indicator)
 end
 alienContactCount = alienContactCount + 1
 timeLimit:setSpeed(1.0 + alienContactCount * 20.0)</Code>
-            </Action>
           </EnteredAction>
-          <ExitedAction>
-            <Action key="Basics/Script">
-              <Bind variable="sound">
-                <To key="Basics/Sequence/DamageSound"/>
-              </Bind>
-              <Bind variable="damage">
-                <To key="Basics/Sequence/DamageVisual"/>
-              </Bind>
-              <Bind variable="screen">
-                <To key="UI/Layout/Main/Damage"/>
-              </Bind>
-              <Bind variable="timeLimit">
-                <To key="Basics/Timer/TimeLimit"/>
-              </Bind>
-              <Code>alienContactCount = alienContactCount - 1
+          <ExitedAction key="Basics/Script">
+            <Bind variable="sound">
+              <To key="Basics/Sequence/DamageSound"/>
+            </Bind>
+            <Bind variable="damage">
+              <To key="Basics/Sequence/DamageVisual"/>
+            </Bind>
+            <Bind variable="screen">
+              <To key="UI/Layout/Main/Damage"/>
+            </Bind>
+            <Bind variable="timeLimit">
+              <To key="Basics/Timer/TimeLimit"/>
+            </Bind>
+            <Code>alienContactCount = alienContactCount - 1
 if alienContactCount == 0 then
   sound:pause()
   damage:pause()
   screen:setScreen(nil)
 end
 timeLimit:setSpeed(1.0 + alienContactCount * 20.0)</Code>
-            </Action>
           </ExitedAction>
         </CollisionHandler>
         <CollisionHandler name="PlayerToAlienB">
           <TypeA key="Player/Player"/>
           <TypeB key="Alien/Gyroscope"/>
-          <EnteredAction>
-            <Action key="Basics/Script">
-              <Bind variable="sound">
-                <To key="Basics/Sequence/DamageSound"/>
-              </Bind>
-              <Bind variable="damage">
-                <To key="Basics/Sequence/DamageVisual"/>
-              </Bind>
-              <Bind variable="screen">
-                <To key="UI/Layout/Main/Damage"/>
-              </Bind>
-              <Bind variable="indicator">
-                <To key=":Screen">
-                  <Asset key="Spindizzy/DamageIndicator/DamageIndicator"/>
-                </To>
-              </Bind>
-              <Bind variable="timeLimit">
-                <To key="Basics/Timer/TimeLimit"/>
-              </Bind>
-              <Code>if alienContactCount == 0 then
+          <EnteredAction key="Basics/Script">
+            <Bind variable="sound">
+              <To key="Basics/Sequence/DamageSound"/>
+            </Bind>
+            <Bind variable="damage">
+              <To key="Basics/Sequence/DamageVisual"/>
+            </Bind>
+            <Bind variable="screen">
+              <To key="UI/Layout/Main/Damage"/>
+            </Bind>
+            <Bind variable="indicator">
+              <To key=":Screen">
+                <Asset key="Spindizzy/DamageIndicator/DamageIndicator"/>
+              </To>
+            </Bind>
+            <Bind variable="timeLimit">
+              <To key="Basics/Timer/TimeLimit"/>
+            </Bind>
+            <Code>if alienContactCount == 0 then
   sound:play()
   damage:play()
   screen:setScreen(indicator)
 end
 alienContactCount = alienContactCount + 1
 timeLimit:setSpeed(1.0 + alienContactCount * 20.0)</Code>
-            </Action>
           </EnteredAction>
-          <ExitedAction>
-            <Action key="Basics/Script">
-              <Bind variable="sound">
-                <To key="Basics/Sequence/DamageSound"/>
-              </Bind>
-              <Bind variable="damage">
-                <To key="Basics/Sequence/DamageVisual"/>
-              </Bind>
-              <Bind variable="screen">
-                <To key="UI/Layout/Main/Damage"/>
-              </Bind>
-              <Bind variable="timeLimit">
-                <To key="Basics/Timer/TimeLimit"/>
-              </Bind>
-              <Code>alienContactCount = alienContactCount - 1
+          <ExitedAction key="Basics/Script">
+            <Bind variable="sound">
+              <To key="Basics/Sequence/DamageSound"/>
+            </Bind>
+            <Bind variable="damage">
+              <To key="Basics/Sequence/DamageVisual"/>
+            </Bind>
+            <Bind variable="screen">
+              <To key="UI/Layout/Main/Damage"/>
+            </Bind>
+            <Bind variable="timeLimit">
+              <To key="Basics/Timer/TimeLimit"/>
+            </Bind>
+            <Code>alienContactCount = alienContactCount - 1
 if alienContactCount == 0 then
   sound:pause()
   damage:pause()
   screen:setScreen(nil)
 end
 timeLimit:setSpeed(1.0 + alienContactCount * 20.0)</Code>
-            </Action>
           </ExitedAction>
         </CollisionHandler>
         <DamageIndicator name="DamageIndicator">
@@ -2803,96 +2585,63 @@ timeLimit:setSpeed(1.0 + alienContactCount * 20.0)</Code>
         <Lift name="DiamondEmpty">
           <Active key="Literal" value="true"/>
           <Model key="Basics/Sprite/LiftDiamondEmpty" scaleX="1.45" scaleY="1.45" scaleZ="1.45" offsetZ="0.01"/>
-          <TickAction>
-            <Action key="Basics/Function/RandomClick"/>
-          </TickAction>
+          <TickAction key="Basics/Function/RandomClick"/>
         </Lift>
         <Lift name="DiamondLeft">
           <Active key="Spindizzy/TerrainState/Exclusive State A"/>
           <Model key="Basics/Sprite/LiftDiamondHalf" yaw="135.0" scaleX="1.45" scaleY="1.45" scaleZ="1.45" offsetZ="0.01"/>
-          <TickAction>
-            <Action key="Basics/Function/RandomClick"/>
-          </TickAction>
+          <TickAction key="Basics/Function/RandomClick"/>
         </Lift>
         <Lift name="DiamondRight">
           <Active key="Spindizzy/TerrainState/Exclusive State B"/>
           <Model key="Basics/Sprite/LiftDiamondHalf" scaleX="1.45" scaleY="1.45" scaleZ="1.45" yaw="315.0" offsetZ="0.01"/>
-          <TickAction>
-            <Action key="Basics/Function/RandomClick"/>
-          </TickAction>
+          <TickAction key="Basics/Function/RandomClick"/>
         </Lift>
         <Lift name="DiamondFilled">
           <Active key="Spindizzy/TerrainState/Exclusive State C"/>
           <Model key="Basics/Sprite/LiftDiamondFilled" scaleX="1.45" scaleY="1.45" scaleZ="1.45" offsetZ="0.01"/>
-          <TickAction>
-            <Action key="Basics/Function/RandomClick"/>
-          </TickAction>
+          <TickAction key="Basics/Function/RandomClick"/>
         </Lift>
         <Lift name="SquareEmpty">
           <Active key="Spindizzy/TerrainState/Exclusive State D"/>
           <Model key="Basics/Sprite/LiftSquareEmpty" offsetZ="0.01"/>
-          <TickAction>
-            <Action key="Basics/Function/RandomClick"/>
-          </TickAction>
+          <TickAction key="Basics/Function/RandomClick"/>
         </Lift>
         <Lift name="SquareLeft">
           <Active key="Spindizzy/TerrainState/Exclusive State E"/>
           <Model key="Basics/Sprite/LiftSquareHalf" yaw="315.0" offsetZ="0.01"/>
-          <TickAction>
-            <Action key="Basics/Function/RandomClick"/>
-          </TickAction>
+          <TickAction key="Basics/Function/RandomClick"/>
         </Lift>
         <Lift name="SquareRight">
           <Active key="Spindizzy/TerrainState/Exclusive State F"/>
           <Model key="Basics/Sprite/LiftSquareHalf" yaw="135.0" offsetZ="0.01"/>
-          <TickAction>
-            <Action key="Basics/Function/RandomClick"/>
-          </TickAction>
+          <TickAction key="Basics/Function/RandomClick"/>
         </Lift>
         <Lift name="SquareFilled">
           <Active key="Spindizzy/TerrainState/Exclusive State G"/>
           <Model key="Basics/Sprite/LiftSquareFilled" yaw="135.0" offsetZ="0.01"/>
-          <TickAction>
-            <Action key="Basics/Function/RandomClick"/>
-          </TickAction>
+          <TickAction key="Basics/Function/RandomClick"/>
         </Lift>
         <Lift name="CircleEmpty">
           <Active key="Spindizzy/TerrainState/Additional State A"/>
           <Model key="Basics/Sprite/LiftCircleEmpty" scaleX="1.3" scaleY="1.3" scaleZ="1.3" offsetZ="0.01"/>
-          <TickAction>
-            <Action key="Basics/Function/RandomClick"/>
-          </TickAction>
+          <TickAction key="Basics/Function/RandomClick"/>
         </Lift>
         <Lift name="CircleLeft">
           <Active key="Spindizzy/TerrainState/Additional State B"/>
           <Model key="Basics/Sprite/LiftCircleHalf" yaw="135.0" scaleX="1.3" scaleY="1.3" scaleZ="1.3" offsetZ="0.01"/>
-          <TickAction>
-            <Action key="Basics/Function/RandomClick"/>
-          </TickAction>
+          <TickAction key="Basics/Function/RandomClick"/>
         </Lift>
         <Lift name="CircleRight">
           <Active key="Spindizzy/TerrainState/Additional State C"/>
           <Model key="Basics/Sprite/LiftCircleHalf" scaleX="1.3" scaleY="1.3" scaleZ="1.3" yaw="315.0" offsetZ="0.01"/>
-          <TickAction>
-            <Action key="Basics/Function/RandomClick"/>
-          </TickAction>
+          <TickAction key="Basics/Function/RandomClick"/>
         </Lift>
         <Lift name="CircleFilled">
           <Active key="Spindizzy/TerrainState/Additional State D"/>
           <Model key="Basics/Sprite/LiftCircleFilled" scaleX="1.3" scaleY="1.3" scaleZ="1.3" offsetZ="0.01"/>
-          <TickAction>
-            <Action key="Basics/Function/RandomClick"/>
-          </TickAction>
+          <TickAction key="Basics/Function/RandomClick"/>
         </Lift>
-<!--        <ZoneObject name="Jewel" runtimeRenderer="Appearance" editingRenderer="Appearance" runtimeProcessor="Appearance" editingProcessor="Appearance">
-          <Trait id="Location" type="CellLocation"/>
-          <Trait id="Appearance" type="Model" location="Location">
-            <Model key="Spindizzy/Jewel/Jewel"/>
-          </Trait>
-          <Trait id="Boundary" type="Boundary" start="Location"/>
-        </ZoneObject>-->
-
-
         <PickUp name="Jewel">
           <Model key="Spindizzy/Jewel/Jewel"/>
         </PickUp>
@@ -2935,22 +2684,19 @@ timeLimit:setSpeed(1.0 + alienContactCount * 20.0)</Code>
           <InputY key="Basics/AnalogueInput/MoveY"/>
           <Model key="Basics/ModelCycler/Player Craft/0"/>
           <Orientation key="Spindizzy/WorldView/Hangworld/Camera/Yaw"/>
-          <RespawnAction>
-            <Action key="Basics/Script">
-              <Bind variable="time">
-                <To key="Basics/Timer/TimeLimit"/>
-              </Bind>
-              <Bind variable="soundRespawnHard">
-                <To key=":Action">
-                  <Action>
-                    <Action key="Basics/Sound/RespawnHard"/>
-                  </Action>
-                </To>
-              </Bind>
-              <Bind variable="launchMomentum">
-                <To key="Spindizzy/LaunchMomentum"/>
-              </Bind>
-              <Code>local newTime = time:getValue() - 10000
+          <RespawnAction key="Basics/Script">
+            <Bind variable="time">
+              <To key="Basics/Timer/TimeLimit"/>
+            </Bind>
+            <Bind variable="soundRespawnHard">
+              <To key=":Action">
+                <Action key="Basics/Sound/RespawnHard"/>
+              </To>
+            </Bind>
+            <Bind variable="launchMomentum">
+              <To key="Spindizzy/LaunchMomentum"/>
+            </Bind>
+            <Code>local newTime = time:getValue() - 10000
   if newTime &lt; 0 then
   newTime = 0
 end
@@ -2958,53 +2704,45 @@ time:setValue(newTime)
 if launchMomentum:getZ() > 0.0 then
   soundRespawnHard:execute()
 end</Code>
-            </Action>
           </RespawnAction>
-          <FallImpactAction>
-            <Action key="Basics/Script">
-              <Bind variable="topDebris">
-                <To key="Spindizzy/World/Hangworld/DebrisGenerator/Top"/>
-              </Bind>
-              <Bind variable="ballDebris">
-                <To key="Spindizzy/World/Hangworld/DebrisGenerator/Ball"/>
-              </Bind>
-              <Bind variable="gyroscopeDebris">
-                <To key="Spindizzy/World/Hangworld/DebrisGenerator/Gyroscope"/>
-              </Bind>
-              <Bind variable="player">
-                <To key="Spindizzy/Player"/>
-              </Bind>
-              <Bind variable="fallDistance">
-                <To key="Spindizzy/FallDistance"/>
-              </Bind>
-              <Bind variable="launchLocation">
-                <To key="Spindizzy/LaunchLocation"/>
-              </Bind>
-              <Bind variable="launchMomentum">
-                <To key="Spindizzy/LaunchMomentum"/>
-              </Bind>
-              <Bind variable="soundImpactHard">
-                <To key=":Action">
-                  <Action>
-                    <Action key="Basics/Sound/ImpactHard"/>
-                  </Action>
-                </To>
-              </Bind>
-              <Bind variable="soundImpactMedium">
-                <To key=":Action">
-                  <Action>
-                    <Action key="Basics/Sound/ImpactMedium"/>
-                  </Action>
-                </To>
-              </Bind>
-              <Bind variable="soundImpactSoft">
-                <To key=":Action">
-                  <Action>
-                    <Action key="Basics/Sound/ImpactSoft"/>
-                  </Action>
-                </To>
-              </Bind>
-              <Code>player:setStepReach(0.5)
+          <FallImpactAction key="Basics/Script">
+            <Bind variable="topDebris">
+              <To key="Spindizzy/World/Hangworld/DebrisGenerator/Top"/>
+            </Bind>
+            <Bind variable="ballDebris">
+              <To key="Spindizzy/World/Hangworld/DebrisGenerator/Ball"/>
+            </Bind>
+            <Bind variable="gyroscopeDebris">
+              <To key="Spindizzy/World/Hangworld/DebrisGenerator/Gyroscope"/>
+            </Bind>
+            <Bind variable="player">
+              <To key="Spindizzy/Player"/>
+            </Bind>
+            <Bind variable="fallDistance">
+              <To key="Spindizzy/FallDistance"/>
+            </Bind>
+            <Bind variable="launchLocation">
+              <To key="Spindizzy/LaunchLocation"/>
+            </Bind>
+            <Bind variable="launchMomentum">
+              <To key="Spindizzy/LaunchMomentum"/>
+            </Bind>
+            <Bind variable="soundImpactHard">
+              <To key=":Action">
+                <Action key="Basics/Sound/ImpactHard"/>
+              </To>
+            </Bind>
+            <Bind variable="soundImpactMedium">
+              <To key=":Action">
+                <Action key="Basics/Sound/ImpactMedium"/>
+              </To>
+            </Bind>
+            <Bind variable="soundImpactSoft">
+              <To key=":Action">
+                <Action key="Basics/Sound/ImpactSoft"/>
+              </To>
+            </Bind>
+            <Code>player:setStepReach(0.5)
 location = player:getLocation()
 if fallDistance:getValue() &gt; 2.75 then
   momentum = player:getMomentum()
@@ -3051,23 +2789,21 @@ elseif launchLocation:getX() ~= nil then
     end
   end
 end</Code>
-            </Action>
           </FallImpactAction>
-          <FallBounceAction>
-            <Action key="Basics/Script">
-              <Bind variable="player">
-                <To key="Spindizzy/Player"/>
-              </Bind>
-              <Bind variable="fallDistance">
-                <To key="Spindizzy/FallDistance"/>
-              </Bind>
-              <Bind variable="launchLocation">
-                <To key="Spindizzy/LaunchLocation"/>
-              </Bind>
-              <Bind variable="launchMomentum">
-                <To key="Spindizzy/LaunchMomentum"/>
-              </Bind>
-              <Code>-- This is kinda hacky for a difficult part of the game.
+          <FallBounceAction key="Basics/Script">
+            <Bind variable="player">
+              <To key="Spindizzy/Player"/>
+            </Bind>
+            <Bind variable="fallDistance">
+              <To key="Spindizzy/FallDistance"/>
+            </Bind>
+            <Bind variable="launchLocation">
+              <To key="Spindizzy/LaunchLocation"/>
+            </Bind>
+            <Bind variable="launchMomentum">
+              <To key="Spindizzy/LaunchMomentum"/>
+            </Bind>
+            <Code>-- This is kinda hacky for a difficult part of the game.
 if fallDistance:getValue() &gt; 2.75 then
   player:setStepReach(0.93)
 else
@@ -3078,40 +2814,34 @@ if fallDistance:getValue() &gt; 2.75 or launchMomentum:getZ() ~= 0.0 then
 else
   player:setBounceFactor(0.0)
 end</Code>
-            </Action>
           </FallBounceAction>
-          <WallBounceAction>
-            <Action key="Basics/Script">
-              <Bind variable="player">
-                <To key="Spindizzy/Player"/>
-              </Bind>
-              <Bind variable="wallZone">
-                <To key="Spindizzy/Zone"/>
-              </Bind>
-              <Bind variable="wallZoneColour">
-                <To key="~" local="Terrain/Zone/WorldView/Overview/ZoneView"/>
-              </Bind>
-              <Bind variable="playerZoneColour">
-                <To key="~" local="Player/Zone/WorldView/Overview/ZoneView"/>
-              </Bind>
-              <Bind variable="wall">
-                <To key="Spindizzy/Wall"/>
-              </Bind>
-              <Bind variable="zoneEnterFunction">
-                <To key=":Action">
-                  <Action>
-                    <Action key="Basics/Function/ZoneEntered"/>
-                  </Action>
-                </To>
-              </Bind>
-              <Bind variable="zoneExitFunction">
-                <To key=":Action">
-                  <Action>
-                    <Action key="Basics/Function/ZoneExited"/>
-                  </Action>
-                </To>
-              </Bind>
-              <Code>-- This action is only applicable when the wall is in a different zone than the player.
+          <WallBounceAction key="Basics/Script">
+            <Bind variable="player">
+              <To key="Spindizzy/Player"/>
+            </Bind>
+            <Bind variable="wallZone">
+              <To key="Spindizzy/Zone"/>
+            </Bind>
+            <Bind variable="wallZoneColour">
+              <To key="~" local="Terrain/Zone/WorldView/Overview/ZoneView"/>
+            </Bind>
+            <Bind variable="playerZoneColour">
+              <To key="~" local="Player/Zone/WorldView/Overview/ZoneView"/>
+            </Bind>
+            <Bind variable="wall">
+              <To key="Spindizzy/Wall"/>
+            </Bind>
+            <Bind variable="zoneEnterFunction">
+              <To key=":Action">
+                <Action key="Basics/Function/ZoneEntered"/>
+              </To>
+            </Bind>
+            <Bind variable="zoneExitFunction">
+              <To key=":Action">
+                <Action key="Basics/Function/ZoneExited"/>
+              </To>
+            </Bind>
+            <Code>-- This action is only applicable when the wall is in a different zone than the player.
 if player:getZone() ~= wallZone and player:getZone() ~= nil and wall:isAtZoneEdge() then
 
   -- Leave the current zone and enter the zone where the wall is.
@@ -3147,7 +2877,6 @@ if player:getZone() ~= wallZone and player:getZone() ~= nil and wall:isAtZoneEdg
     entered = nil
   end
 end</Code>
-            </Action>
           </WallBounceAction>
         </Player>
         <Terrain bounce="0.000000" friction="0.001500" grip="1.000000" name="Plain" respawnAllowed="true" solid="true" defaultZoneType="Zone" defaultThemeSet="C64" defaultTool="true">
@@ -3201,9 +2930,7 @@ end</Code>
           </NorthWall>
         </Terrain>
         <Terrain bounce="1.000000" friction="0.000000" grip="1.000000" name="Trampoline" respawnAllowed="false" solid="true" defaultZoneType="Zone" defaultThemeSet="C64">
-          <ImpactAction>
-            <Action key="Basics/Sound/Trampoline"/>
-          </ImpactAction>
+          <ImpactAction key="Basics/Sound/Trampoline"/>
           <Surface key="Tile">
             <Texture key="Spindizzy/ThemeSet/C64/Trampoline"/>
           </Surface>
@@ -3329,16 +3056,12 @@ end</Code>
           </NorthWall>
         </Terrain>
         <Terrain bounce="0.000000" friction="0.001500" grip="1.000000" name="Switch Reset" respawnAllowed="true" solid="true" defaultZoneType="Zone" defaultThemeSet="C64">
-          <ContactAction>
-            <Action key="Basics/Function/ResetSwitch">
-              <Bind argument="sound">
-                <To key=":Action">
-                  <Action>
-                    <Action key="Basics/Sound/DiamondNone"/>
-                  </Action>
-                </To>
-              </Bind>
-            </Action>
+          <ContactAction key="Basics/Function/ResetSwitch">
+            <Bind argument="sound">
+              <To key=":Action">
+                <Action key="Basics/Sound/DiamondNone"/>
+              </To>
+            </Bind>
           </ContactAction>
           <Surface key="Tile">
             <Texture key="Spindizzy/ThemeSet/C64/SwitchDiamondFilled"/>
@@ -3365,24 +3088,20 @@ end</Code>
           </NorthWall>
         </Terrain>
         <Terrain bounce="0.000000" friction="0.001500" grip="1.000000" name="Switch Exclusive State A" respawnAllowed="true" solid="true" defaultZoneType="Zone" defaultThemeSet="C64">
-          <ContactAction>
-            <Action key="Basics/Function/SetPrimarySwitch">
-              <Bind argument="switchState">
-                <To key="Spindizzy/TerrainState/Exclusive State A"/>
-              </Bind>
-              <Bind argument="switchIcon">
-                <To key=":Screen">
-                  <Asset key="Spindizzy/WorldView/SwitchDiamondLeft"/>
-                </To>
-              </Bind>
-              <Bind argument="sound">
-                <To key=":Action">
-                  <Action>
-                    <Action key="Basics/Sound/DiamondLeft"/>
-                  </Action>
-                </To>
-              </Bind>
-            </Action>
+          <ContactAction key="Basics/Function/SetPrimarySwitch">
+            <Bind argument="switchState">
+              <To key="Spindizzy/TerrainState/Exclusive State A"/>
+            </Bind>
+            <Bind argument="switchIcon">
+              <To key=":Screen">
+                <Asset key="Spindizzy/WorldView/SwitchDiamondLeft"/>
+              </To>
+            </Bind>
+            <Bind argument="sound">
+              <To key=":Action">
+                <Action key="Basics/Sound/DiamondLeft"/>
+              </To>
+            </Bind>
           </ContactAction>
           <Surface key="Tile">
             <Texture key="Spindizzy/ThemeSet/C64/SwitchDiamondOne"/>
@@ -3409,24 +3128,20 @@ end</Code>
           </NorthWall>
         </Terrain>
         <Terrain bounce="0.000000" friction="0.001500" grip="1.000000" name="Switch Exclusive State B" respawnAllowed="true" solid="true" defaultZoneType="Zone" defaultThemeSet="C64">
-          <ContactAction>
-            <Action  key="Basics/Function/SetPrimarySwitch">
-              <Bind argument="switchState">
-                <To key="Spindizzy/TerrainState/Exclusive State B"/>
-              </Bind>
-              <Bind argument="switchIcon">
-                <To key=":Screen">
-                  <Asset key="Spindizzy/WorldView/SwitchDiamondRight"/>
-                </To>
-              </Bind>
-              <Bind argument="sound">
-                <To key=":Action">
-                  <Action>
-                    <Action key="Basics/Sound/DiamondRight"/>
-                  </Action>
-                </To>
-              </Bind>
-            </Action>
+          <ContactAction key="Basics/Function/SetPrimarySwitch">
+            <Bind argument="switchState">
+              <To key="Spindizzy/TerrainState/Exclusive State B"/>
+            </Bind>
+            <Bind argument="switchIcon">
+              <To key=":Screen">
+                <Asset key="Spindizzy/WorldView/SwitchDiamondRight"/>
+              </To>
+            </Bind>
+            <Bind argument="sound">
+              <To key=":Action">
+                <Action key="Basics/Sound/DiamondRight"/>
+              </To>
+            </Bind>
           </ContactAction>
           <Surface key="Tile">
             <Texture key="Spindizzy/ThemeSet/C64/SwitchDiamondOne" scaleX="-1.0" scaleY="-1.0"/>
@@ -3453,24 +3168,20 @@ end</Code>
           </NorthWall>
         </Terrain>
         <Terrain bounce="0.000000" friction="0.001500" grip="1.000000" name="Switch Exclusive State C" respawnAllowed="true" solid="true" defaultZoneType="Zone" defaultThemeSet="C64">
-          <ContactAction>
-            <Action key="Basics/Function/SetPrimarySwitch">
-              <Bind argument="switchState">
-                <To key="Spindizzy/TerrainState/Exclusive State C"/>
-              </Bind>
-              <Bind argument="switchIcon">
-                <To key=":Screen">
-                  <Asset key="Spindizzy/WorldView/SwitchDiamondBoth"/>
-                </To>
-              </Bind>
-              <Bind argument="sound">
-                <To key=":Action">
-                  <Action>
-                    <Action key="Basics/Sound/DiamondBoth"/>
-                  </Action>
-                </To>
-              </Bind>
-            </Action>
+          <ContactAction key="Basics/Function/SetPrimarySwitch">
+            <Bind argument="switchState">
+              <To key="Spindizzy/TerrainState/Exclusive State C"/>
+            </Bind>
+            <Bind argument="switchIcon">
+              <To key=":Screen">
+                <Asset key="Spindizzy/WorldView/SwitchDiamondBoth"/>
+              </To>
+            </Bind>
+            <Bind argument="sound">
+              <To key=":Action">
+                <Action key="Basics/Sound/DiamondBoth"/>
+              </To>
+            </Bind>
           </ContactAction>
           <Surface key="Tile">
             <Texture key="Spindizzy/ThemeSet/C64/SwitchDiamondEmpty"/>
@@ -3497,24 +3208,20 @@ end</Code>
           </NorthWall>
         </Terrain>
         <Terrain bounce="0.000000" friction="0.001500" grip="1.000000" name="Switch Exclusive State D" respawnAllowed="true" solid="true" defaultZoneType="Zone" defaultThemeSet="C64">
-          <ContactAction>
-            <Action key="Basics/Function/SetPrimarySwitch">
-              <Bind argument="switchState">
-                <To key="Spindizzy/TerrainState/Exclusive State D"/>
-              </Bind>
-              <Bind argument="switchIcon">
-                <To key=":Screen">
-                  <Asset key="Spindizzy/WorldView/SwitchSquareNone"/>
-                </To>
-              </Bind>
-              <Bind argument="sound">
-                <To key=":Action">
-                  <Action>
-                    <Action key="Basics/Sound/SquareNone"/>
-                  </Action>
-                </To>
-              </Bind>
-            </Action>
+          <ContactAction key="Basics/Function/SetPrimarySwitch">
+            <Bind argument="switchState">
+              <To key="Spindizzy/TerrainState/Exclusive State D"/>
+            </Bind>
+            <Bind argument="switchIcon">
+              <To key=":Screen">
+                <Asset key="Spindizzy/WorldView/SwitchSquareNone"/>
+              </To>
+            </Bind>
+            <Bind argument="sound">
+              <To key=":Action">
+                <Action key="Basics/Sound/SquareNone"/>
+              </To>
+            </Bind>
           </ContactAction>
           <Surface key="Tile">
             <Texture key="Spindizzy/ThemeSet/C64/SwitchSquareEmpty"/>
@@ -3541,24 +3248,20 @@ end</Code>
           </NorthWall>
         </Terrain>
         <Terrain bounce="0.000000" friction="0.001500" grip="1.000000" name="Switch Exclusive State E" respawnAllowed="true" solid="true" defaultZoneType="Zone" defaultThemeSet="C64">
-          <ContactAction>
-            <Action key="Basics/Function/SetPrimarySwitch">
-              <Bind argument="switchState">
-                <To key="Spindizzy/TerrainState/Exclusive State E"/>
-              </Bind>
-              <Bind argument="switchIcon">
-                <To key=":Screen">
-                  <Asset key="Spindizzy/WorldView/SwitchSquareLeft"/>
-                </To>
-              </Bind>
-              <Bind argument="sound">
-                <To key=":Action">
-                  <Action>
-                    <Action key="Basics/Sound/SquareLeft"/>
-                  </Action>
-                </To>
-              </Bind>
-            </Action>
+          <ContactAction key="Basics/Function/SetPrimarySwitch">
+            <Bind argument="switchState">
+              <To key="Spindizzy/TerrainState/Exclusive State E"/>
+            </Bind>
+            <Bind argument="switchIcon">
+              <To key=":Screen">
+                <Asset key="Spindizzy/WorldView/SwitchSquareLeft"/>
+              </To>
+            </Bind>
+            <Bind argument="sound">
+              <To key=":Action">
+                <Action key="Basics/Sound/SquareLeft"/>
+              </To>
+            </Bind>
           </ContactAction>
           <Surface key="Tile">
             <Texture key="Spindizzy/ThemeSet/C64/SwitchSquareOne" scaleX="-1.0" scaleY="-1.0"/>
@@ -3585,24 +3288,20 @@ end</Code>
           </NorthWall>
         </Terrain>
         <Terrain bounce="0.000000" friction="0.001500" grip="1.000000" name="Switch Exclusive State F" respawnAllowed="true" solid="true" defaultZoneType="Zone" defaultThemeSet="C64">
-          <ContactAction>
-            <Action key="Basics/Function/SetPrimarySwitch">
-              <Bind argument="switchState">
-                <To key="Spindizzy/TerrainState/Exclusive State F"/>
-              </Bind>
-              <Bind argument="switchIcon">
-                <To key=":Screen">
-                  <Asset key="Spindizzy/WorldView/SwitchSquareRight"/>
-                </To>
-              </Bind>
-              <Bind argument="sound">
-                <To key=":Action">
-                  <Action>
-                    <Action key="Basics/Sound/SquareRight"/>
-                  </Action>
-                </To>
-              </Bind>
-            </Action>
+          <ContactAction key="Basics/Function/SetPrimarySwitch">
+            <Bind argument="switchState">
+              <To key="Spindizzy/TerrainState/Exclusive State F"/>
+            </Bind>
+            <Bind argument="switchIcon">
+              <To key=":Screen">
+                <Asset key="Spindizzy/WorldView/SwitchSquareRight"/>
+              </To>
+            </Bind>
+            <Bind argument="sound">
+              <To key=":Action">
+                <Action key="Basics/Sound/SquareRight"/>
+              </To>
+            </Bind>
           </ContactAction>
           <Surface key="Tile">
             <Texture key="Spindizzy/ThemeSet/C64/SwitchSquareOne"/>
@@ -3629,24 +3328,20 @@ end</Code>
           </NorthWall>
         </Terrain>
         <Terrain bounce="0.000000" friction="0.001500" grip="1.000000" name="Switch Exclusive State G" respawnAllowed="true" solid="true" defaultZoneType="Zone" defaultThemeSet="C64">
-          <ContactAction>
-            <Action key="Basics/Function/SetPrimarySwitch">
-              <Bind argument="switchState">
-                <To key="Spindizzy/TerrainState/Exclusive State G"/>
-              </Bind>
-              <Bind argument="switchIcon">
-                <To key=":Screen">
-                  <Asset key="Spindizzy/WorldView/SwitchSquareBoth"/>
-                </To>
-              </Bind>
-              <Bind argument="sound">
-                <To key=":Action">
-                  <Action>
-                    <Action key="Basics/Sound/SquareBoth"/>
-                  </Action>
-                </To>
-              </Bind>
-            </Action>
+          <ContactAction key="Basics/Function/SetPrimarySwitch">
+            <Bind argument="switchState">
+              <To key="Spindizzy/TerrainState/Exclusive State G"/>
+            </Bind>
+            <Bind argument="switchIcon">
+              <To key=":Screen">
+                <Asset key="Spindizzy/WorldView/SwitchSquareBoth"/>
+              </To>
+            </Bind>
+            <Bind argument="sound">
+              <To key=":Action">
+                <Action key="Basics/Sound/SquareBoth"/>
+              </To>
+            </Bind>
           </ContactAction>
           <Surface key="Tile">
             <Texture key="Spindizzy/ThemeSet/C64/SwitchSquareFilled"/>
@@ -3673,24 +3368,20 @@ end</Code>
           </NorthWall>
         </Terrain>
         <Terrain bounce="0.000000" friction="0.001500" grip="1.000000" name="Switch Additional State A" respawnAllowed="true" solid="true" defaultZoneType="Zone" defaultThemeSet="C64">
-          <ContactAction>
-            <Action key="Basics/Function/SetSecondarySwitch">
-              <Bind argument="switchState">
-                <To key="Spindizzy/TerrainState/Additional State A"/>
-              </Bind>
-              <Bind argument="switchIcon">
-                <To key=":Screen">
-                  <Asset key="Spindizzy/WorldView/SwitchCircleNone"/>
-                </To>
-              </Bind>
-              <Bind argument="sound">
-                <To key=":Action">
-                  <Action>
-                    <Action key="Basics/Sound/CircleNone"/>
-                  </Action>
-                </To>
-              </Bind>
-            </Action>
+          <ContactAction key="Basics/Function/SetSecondarySwitch">
+            <Bind argument="switchState">
+              <To key="Spindizzy/TerrainState/Additional State A"/>
+            </Bind>
+            <Bind argument="switchIcon">
+              <To key=":Screen">
+                <Asset key="Spindizzy/WorldView/SwitchCircleNone"/>
+              </To>
+            </Bind>
+            <Bind argument="sound">
+              <To key=":Action">
+                <Action key="Basics/Sound/CircleNone"/>
+              </To>
+            </Bind>
           </ContactAction>
           <Surface key="Tile">
             <Texture key="Spindizzy/ThemeSet/C64/SwitchCircleEmpty"/>
@@ -3717,24 +3408,20 @@ end</Code>
           </NorthWall>
         </Terrain>
         <Terrain bounce="0.000000" friction="0.001500" grip="1.000000" name="Switch Additional State B" respawnAllowed="true" solid="true" defaultZoneType="Zone" defaultThemeSet="C64">
-          <ContactAction>
-            <Action key="Basics/Function/SetSecondarySwitch">
-              <Bind argument="switchState">
-                <To key="Spindizzy/TerrainState/Additional State B"/>
-              </Bind>
-              <Bind argument="switchIcon">
-                <To key=":Screen">
-                  <Asset key="Spindizzy/WorldView/SwitchCircleLeft"/>
-                </To>
-              </Bind>
-              <Bind argument="sound">
-                <To key=":Action">
-                  <Action>
-                    <Action key="Basics/Sound/CircleLeft"/>
-                  </Action>
-                </To>
-              </Bind>
-            </Action>
+          <ContactAction key="Basics/Function/SetSecondarySwitch">
+            <Bind argument="switchState">
+              <To key="Spindizzy/TerrainState/Additional State B"/>
+            </Bind>
+            <Bind argument="switchIcon">
+              <To key=":Screen">
+                <Asset key="Spindizzy/WorldView/SwitchCircleLeft"/>
+              </To>
+            </Bind>
+            <Bind argument="sound">
+              <To key=":Action">
+                <Action key="Basics/Sound/CircleLeft"/>
+              </To>
+            </Bind>
           </ContactAction>
           <Surface key="Tile">
             <Texture key="Spindizzy/ThemeSet/C64/SwitchCircleOne" scaleX="-1.0" scaleY="-1.0"/>
@@ -3761,24 +3448,20 @@ end</Code>
           </NorthWall>
         </Terrain>
         <Terrain bounce="0.000000" friction="0.001500" grip="1.000000" name="Switch Additional State C" respawnAllowed="true" solid="true" defaultZoneType="Zone" defaultThemeSet="C64">
-          <ContactAction>
-            <Action key="Basics/Function/SetSecondarySwitch">
-              <Bind argument="switchState">
-                <To key="Spindizzy/TerrainState/Additional State C"/>
-              </Bind>
-              <Bind argument="switchIcon">
-                <To key=":Screen">
-                  <Asset key="Spindizzy/WorldView/SwitchCircleRight"/>
-                </To>
-              </Bind>
-              <Bind argument="sound">
-                <To key=":Action">
-                  <Action>
-                    <Action key="Basics/Sound/CircleRight"/>
-                  </Action>
-                </To>
-              </Bind>
-            </Action>
+          <ContactAction key="Basics/Function/SetSecondarySwitch">
+            <Bind argument="switchState">
+              <To key="Spindizzy/TerrainState/Additional State C"/>
+            </Bind>
+            <Bind argument="switchIcon">
+              <To key=":Screen">
+                <Asset key="Spindizzy/WorldView/SwitchCircleRight"/>
+              </To>
+            </Bind>
+            <Bind argument="sound">
+              <To key=":Action">
+                <Action key="Basics/Sound/CircleRight"/>
+              </To>
+            </Bind>
           </ContactAction>
           <Surface key="Tile">
             <Texture key="Spindizzy/ThemeSet/C64/SwitchCircleOne"/>
@@ -3805,24 +3488,20 @@ end</Code>
           </NorthWall>
         </Terrain>
         <Terrain bounce="0.000000" friction="0.001500" grip="1.000000" name="Switch Additional State D" respawnAllowed="true" solid="true" defaultZoneType="Zone" defaultThemeSet="C64">
-          <ContactAction>
-            <Action key="Basics/Function/SetSecondarySwitch">
-              <Bind argument="switchState">
-                <To key="Spindizzy/TerrainState/Additional State D"/>
-              </Bind>
-              <Bind argument="switchIcon">
-                <To key=":Screen">
-                  <Asset key="Spindizzy/WorldView/SwitchCircleBoth"/>
-                </To>
-              </Bind>
-              <Bind argument="sound">
-                <To key=":Action">
-                  <Action>
-                    <Action key="Basics/Sound/CircleBoth"/>
-                  </Action>
-                </To>
-              </Bind>
-            </Action>
+          <ContactAction key="Basics/Function/SetSecondarySwitch">
+            <Bind argument="switchState">
+              <To key="Spindizzy/TerrainState/Additional State D"/>
+            </Bind>
+            <Bind argument="switchIcon">
+              <To key=":Screen">
+                <Asset key="Spindizzy/WorldView/SwitchCircleBoth"/>
+              </To>
+            </Bind>
+            <Bind argument="sound">
+              <To key=":Action">
+                <Action key="Basics/Sound/CircleBoth"/>
+              </To>
+            </Bind>
           </ContactAction>
           <Surface key="Tile">
             <Texture key="Spindizzy/ThemeSet/C64/SwitchCircleFilled"/>
@@ -3867,134 +3546,112 @@ end</Code>
         </Terrain>
         <TerrainState name="Exclusive State A">
           <Screen key="Spindizzy/WorldView/HintDiamondLeft"/>
-          <HintAction>
-            <Action key="Basics/Function/SetHint">
-              <Bind argument="hintIcon">
-                <To key=":Screen">
-                  <Asset key="Spindizzy/WorldView/HintDiamondLeft"/>
-                </To>
-              </Bind>
-            </Action>
+          <HintAction key="Basics/Function/SetHint">
+            <Bind argument="hintIcon">
+              <To key=":Screen">
+                <Asset key="Spindizzy/WorldView/HintDiamondLeft"/>
+              </To>
+            </Bind>
           </HintAction>
         </TerrainState>
         <TerrainState name="Exclusive State B">
           <Screen key="Spindizzy/WorldView/HintDiamondRight"/>
-          <HintAction>
-            <Action key="Basics/Function/SetHint">
-              <Bind argument="hintIcon">
-                <To key=":Screen">
-                  <Asset key="Spindizzy/WorldView/HintDiamondRight"/>
-                </To>
-              </Bind>
-            </Action>
+          <HintAction key="Basics/Function/SetHint">
+            <Bind argument="hintIcon">
+              <To key=":Screen">
+                <Asset key="Spindizzy/WorldView/HintDiamondRight"/>
+              </To>
+            </Bind>
           </HintAction>
         </TerrainState>
         <TerrainState name="Exclusive State C">
           <Screen key="Spindizzy/WorldView/HintDiamondBoth"/>
-          <HintAction>
-            <Action key="Basics/Function/SetHint">
-              <Bind argument="hintIcon">
-                <To key=":Screen">
-                  <Asset key="Spindizzy/WorldView/HintDiamondBoth"/>
-                </To>
-              </Bind>
-            </Action>
+          <HintAction key="Basics/Function/SetHint">
+            <Bind argument="hintIcon">
+              <To key=":Screen">
+                <Asset key="Spindizzy/WorldView/HintDiamondBoth"/>
+              </To>
+            </Bind>
           </HintAction>
         </TerrainState>
         <TerrainState name="Exclusive State D">
           <Screen key="Spindizzy/WorldView/HintSquareNone"/>
-          <HintAction>
-            <Action key="Basics/Function/SetHint">
-              <Bind argument="hintIcon">
-                <To key=":Screen">
-                  <Asset key="Spindizzy/WorldView/HintSquareNone"/>
-                </To>
-              </Bind>
-            </Action>
+          <HintAction key="Basics/Function/SetHint">
+            <Bind argument="hintIcon">
+              <To key=":Screen">
+                <Asset key="Spindizzy/WorldView/HintSquareNone"/>
+              </To>
+            </Bind>
           </HintAction>
         </TerrainState>
         <TerrainState name="Exclusive State E">
           <Screen key="Spindizzy/WorldView/HintSquareLeft"/>
-          <HintAction>
-            <Action key="Basics/Function/SetHint">
-              <Bind argument="hintIcon">
-                <To key=":Screen">
-                  <Asset key="Spindizzy/WorldView/HintSquareLeft"/>
-                </To>
-              </Bind>
-            </Action>
+          <HintAction key="Basics/Function/SetHint">
+            <Bind argument="hintIcon">
+              <To key=":Screen">
+                <Asset key="Spindizzy/WorldView/HintSquareLeft"/>
+              </To>
+            </Bind>
           </HintAction>
         </TerrainState>
         <TerrainState name="Exclusive State F">
           <Screen key="Spindizzy/WorldView/HintSquareRight"/>
-          <HintAction>
-            <Action key="Basics/Function/SetHint">
-              <Bind argument="hintIcon">
-                <To key=":Screen">
-                  <Asset key="Spindizzy/WorldView/HintSquareRight"/>
-                </To>
-              </Bind>
-            </Action>
+          <HintAction key="Basics/Function/SetHint">
+            <Bind argument="hintIcon">
+              <To key=":Screen">
+                <Asset key="Spindizzy/WorldView/HintSquareRight"/>
+              </To>
+            </Bind>
           </HintAction>
         </TerrainState>
         <TerrainState name="Exclusive State G">
           <Screen key="Spindizzy/WorldView/HintSquareBoth"/>
-          <HintAction>
-            <Action key="Basics/Function/SetHint">
-              <Bind argument="hintIcon">
-                <To key=":Screen">
-                  <Asset key="Spindizzy/WorldView/HintSquareBoth"/>
-                </To>
-              </Bind>
-            </Action>
+          <HintAction key="Basics/Function/SetHint">
+            <Bind argument="hintIcon">
+              <To key=":Screen">
+                <Asset key="Spindizzy/WorldView/HintSquareBoth"/>
+              </To>
+            </Bind>
           </HintAction>
         </TerrainState>
         <TerrainState name="Additional State A">
           <Screen key="Spindizzy/WorldView/HintCircleNone"/>
-          <HintAction>
-            <Action key="Basics/Function/SetHint">
-              <Bind argument="hintIcon">
-                <To key=":Screen">
-                  <Asset key="Spindizzy/WorldView/HintCircleNone"/>
-                </To>
-              </Bind>
-            </Action>
+          <HintAction key="Basics/Function/SetHint">
+            <Bind argument="hintIcon">
+              <To key=":Screen">
+                <Asset key="Spindizzy/WorldView/HintCircleNone"/>
+              </To>
+            </Bind>
           </HintAction>
         </TerrainState>
         <TerrainState name="Additional State B">
           <Screen key="Spindizzy/WorldView/HintCircleLeft"/>
-          <HintAction>
-            <Action key="Basics/Function/SetHint">
-              <Bind argument="hintIcon">
-                <To key=":Screen">
-                  <Asset key="Spindizzy/WorldView/HintCircleLeft"/>
-                </To>
-              </Bind>
-            </Action>
+          <HintAction key="Basics/Function/SetHint">
+            <Bind argument="hintIcon">
+              <To key=":Screen">
+                <Asset key="Spindizzy/WorldView/HintCircleLeft"/>
+              </To>
+            </Bind>
           </HintAction>
         </TerrainState>
         <TerrainState name="Additional State C">
           <Screen key="Spindizzy/WorldView/HintCircleRight"/>
-          <HintAction>
-            <Action key="Basics/Function/SetHint">
-              <Bind argument="hintIcon">
-                <To key=":Screen">
-                  <Asset key="Spindizzy/WorldView/HintCircleRight"/>
-                </To>
-              </Bind>
-            </Action>
+          <HintAction key="Basics/Function/SetHint">
+            <Bind argument="hintIcon">
+              <To key=":Screen">
+                <Asset key="Spindizzy/WorldView/HintCircleRight"/>
+              </To>
+            </Bind>
           </HintAction>
         </TerrainState>
         <TerrainState name="Additional State D">
           <Screen key="Spindizzy/WorldView/HintCircleBoth"/>
-          <HintAction>
-            <Action key="Basics/Function/SetHint">
-              <Bind argument="hintIcon">
-                <To key=":Screen">
-                  <Asset key="Spindizzy/WorldView/HintCircleBoth"/>
-                </To>
-              </Bind>
-            </Action>
+          <HintAction key="Basics/Function/SetHint">
+            <Bind argument="hintIcon">
+              <To key=":Screen">
+                <Asset key="Spindizzy/WorldView/HintCircleBoth"/>
+              </To>
+            </Bind>
           </HintAction>
         </TerrainState>
         <ThemeSet name="C64">
@@ -5058,40 +4715,39 @@ end</Code>
           <Camera key="Transitional" duration="500">
             <Start key="Gameplay" direction="NorthWest" duration="500"/>
             <End key="Overview"/>
-            <OnStartDeparture>
-              <Action key="Basics/Script">
-                <Bind variable="map">
-                  <To key="Spindizzy/World/Hangworld"/>
-                </Bind>
-                <Bind variable="timeLimit">
-                  <To key="Basics/Timer/TimeLimit"/>
-                </Bind>
-                <Bind variable="spindizzy">
-                  <To key="Spindizzy"/>
-                </Bind>
-                <Bind variable="background">
-                  <To key="UI/Layout/Main/Background"/>
-                </Bind>
-                <Bind variable="backgroundBlack">
-                  <To key=":Screen">
-                    <Asset key="UI/Panel/BackgroundOverview"/>
-                  </To>
-                </Bind>
-                <Bind variable="world">
-                  <To key="UI/Layout/Layout/Game"/>
-                </Bind>
-                <Bind variable="worldOverview">
-                  <To key=":Screen">
-                    <Asset key="Spindizzy/WorldView/Overview"/>
-                  </To>
-                </Bind>
-                <Bind variable="sound">
-                  <To key="Basics/Sequence/DamageSound"/>
-                </Bind>
-                <Bind variable="damage">
-                  <To key="Basics/Sequence/DamageVisual"/>
-                </Bind>
-                <Code>locks = locks + 1
+            <OnStartDeparture key="Basics/Script">
+              <Bind variable="map">
+                <To key="Spindizzy/World/Hangworld"/>
+              </Bind>
+              <Bind variable="timeLimit">
+                <To key="Basics/Timer/TimeLimit"/>
+              </Bind>
+              <Bind variable="spindizzy">
+                <To key="Spindizzy"/>
+              </Bind>
+              <Bind variable="background">
+                <To key="UI/Layout/Main/Background"/>
+              </Bind>
+              <Bind variable="backgroundBlack">
+                <To key=":Screen">
+                  <Asset key="UI/Panel/BackgroundOverview"/>
+                </To>
+              </Bind>
+              <Bind variable="world">
+                <To key="UI/Layout/Layout/Game"/>
+              </Bind>
+              <Bind variable="worldOverview">
+                <To key=":Screen">
+                  <Asset key="Spindizzy/WorldView/Overview"/>
+                </To>
+              </Bind>
+              <Bind variable="sound">
+                <To key="Basics/Sequence/DamageSound"/>
+              </Bind>
+              <Bind variable="damage">
+                <To key="Basics/Sequence/DamageVisual"/>
+              </Bind>
+              <Code>locks = locks + 1
 if locks == 1 then
   spindizzy:setPause(true)
   timeLimit:pause()
@@ -5102,42 +4758,40 @@ if locks == 1 then
     damage:pause()
   end
 end</Code>
-              </Action>
             </OnStartDeparture>
-            <OnStartArrival>
-              <Action key="Basics/Script">
-                <Bind variable="map">
-                  <To key="Spindizzy/World/Hangworld"/>
-                </Bind>
-                <Bind variable="timeLimit">
-                  <To key="Basics/Timer/TimeLimit"/>
-                </Bind>
-                <Bind variable="spindizzy">
-                  <To key="Spindizzy"/>
-                </Bind>
-                <Bind variable="background">
-                  <To key="UI/Layout/Main/Background"/>
-                </Bind>
-                <Bind variable="backgroundNormal">
-                  <To key=":Screen">
-                    <Asset key="UI/Panel/Background"/>
-                  </To>
-                </Bind>
-                <Bind variable="world">
-                  <To key="UI/Layout/Layout/Game"/>
-                </Bind>
-                <Bind variable="worldNormal">
-                  <To key=":Screen">
-                    <Asset key="Spindizzy/WorldView/Hangworld"/>
-                  </To>
-                </Bind>
-                <Bind variable="sound">
-                  <To key="Basics/Sequence/DamageSound"/>
-                </Bind>
-                <Bind variable="damage">
-                  <To key="Basics/Sequence/DamageVisual"/>
-                </Bind>
-                <Code>locks = locks - 1
+            <OnStartArrival key="Basics/Script">
+              <Bind variable="map">
+                <To key="Spindizzy/World/Hangworld"/>
+              </Bind>
+              <Bind variable="timeLimit">
+                <To key="Basics/Timer/TimeLimit"/>
+              </Bind>
+              <Bind variable="spindizzy">
+                <To key="Spindizzy"/>
+              </Bind>
+              <Bind variable="background">
+                <To key="UI/Layout/Main/Background"/>
+              </Bind>
+              <Bind variable="backgroundNormal">
+                <To key=":Screen">
+                  <Asset key="UI/Panel/Background"/>
+                </To>
+              </Bind>
+              <Bind variable="world">
+                <To key="UI/Layout/Layout/Game"/>
+              </Bind>
+              <Bind variable="worldNormal">
+                <To key=":Screen">
+                  <Asset key="Spindizzy/WorldView/Hangworld"/>
+                </To>
+              </Bind>
+              <Bind variable="sound">
+                <To key="Basics/Sequence/DamageSound"/>
+              </Bind>
+              <Bind variable="damage">
+                <To key="Basics/Sequence/DamageVisual"/>
+              </Bind>
+              <Code>locks = locks - 1
 if locks == 0 then
   spindizzy:setPause(false)
   if GlobalExplorer ~= 1 then
@@ -5150,7 +4804,6 @@ if locks == 0 then
     damage:play()
   end
 end</Code>
-              </Action>
             </OnStartArrival>
           </Camera>
           <ZoneViewType key="Actual"/>

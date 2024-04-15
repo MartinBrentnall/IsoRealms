@@ -57,9 +57,6 @@ namespace IsoRealms::UI {
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
 
-    virtual ~Menu() {
-    }
-    
     // Interface to be used by menu items.
     const Font& getFont() const;
     float getFontSize() const;

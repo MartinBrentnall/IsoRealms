@@ -1,60 +1,57 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <Project>
-  <ResetAction>
-    <Action key="Basics/Script">
-      <Bind variable="resetFunction">
-        <To key=":Action">
-          <Action>
-            <Action key="Basics/Function/SpindizzyReset"/>
-          </Action>
-        </To>
-      </Bind>
-      <Bind variable="leftPanel">
-        <To key="UI/Layout/Layout/PanelLeft"/>
-      </Bind>
-      <Bind variable="rightPanel">
-        <To key="UI/Layout/Layout/PanelRight"/>
-      </Bind>
-      <Bind variable="middlePanel">
-        <To key="UI/Layout/Layout/PanelMiddle"/>
-      </Bind>
-      <Bind variable="scoreIcon">
-        <To key="UI/Layout/Layout/IconScore"/>
-      </Bind>
-      <Bind variable="timeIcon">
-        <To key="UI/Layout/Layout/IconTime"/>
-      </Bind>
-      <Bind variable="jewelIcon">
-        <To key="UI/Layout/Layout/IconJewel"/>
-      </Bind>
-      <Bind variable="mapIcon">
-        <To key="UI/Layout/Layout/IconMap"/>
-      </Bind>
-      <Bind variable="scoreValue">
-        <To key="UI/Layout/Layout/ValueScore"/>
-      </Bind>
-      <Bind variable="timeValue">
-        <To key="UI/Layout/Layout/ValueTime"/>
-      </Bind>
-      <Bind variable="jewelValue">
-        <To key="UI/Layout/Layout/ValueJewel"/>
-      </Bind>
-      <Bind variable="mapValue">
-        <To key="UI/Layout/Layout/ValueMap"/>
-      </Bind>
-      <Bind variable="compass">
-        <To key="UI/Layout/Layout/Compass"/>
-      </Bind>
-      <Bind variable="hint">
-        <To key="UI/Layout/Layout/Hint"/>
-      </Bind>
-      <Bind variable="switchA">
-        <To key="UI/Layout/Layout/SwitchStatePrimary"/>
-      </Bind>
-      <Bind variable="switchB">
-        <To key="UI/Layout/Layout/SwitchStateSecondary"/>
-      </Bind>
-      <Code>resetFunction:execute()
+  <ResetAction key="Basics/Script">
+    <Bind variable="resetFunction">
+      <To key=":Action">
+        <Action key="Basics/Function/SpindizzyReset"/>
+      </To>
+    </Bind>
+    <Bind variable="leftPanel">
+      <To key="UI/Layout/Layout/PanelLeft"/>
+    </Bind>
+    <Bind variable="rightPanel">
+      <To key="UI/Layout/Layout/PanelRight"/>
+    </Bind>
+    <Bind variable="middlePanel">
+      <To key="UI/Layout/Layout/PanelMiddle"/>
+    </Bind>
+    <Bind variable="scoreIcon">
+      <To key="UI/Layout/Layout/IconScore"/>
+    </Bind>
+    <Bind variable="timeIcon">
+      <To key="UI/Layout/Layout/IconTime"/>
+    </Bind>
+    <Bind variable="jewelIcon">
+      <To key="UI/Layout/Layout/IconJewel"/>
+    </Bind>
+    <Bind variable="mapIcon">
+      <To key="UI/Layout/Layout/IconMap"/>
+    </Bind>
+    <Bind variable="scoreValue">
+      <To key="UI/Layout/Layout/ValueScore"/>
+    </Bind>
+    <Bind variable="timeValue">
+      <To key="UI/Layout/Layout/ValueTime"/>
+    </Bind>
+    <Bind variable="jewelValue">
+      <To key="UI/Layout/Layout/ValueJewel"/>
+    </Bind>
+    <Bind variable="mapValue">
+      <To key="UI/Layout/Layout/ValueMap"/>
+    </Bind>
+    <Bind variable="compass">
+      <To key="UI/Layout/Layout/Compass"/>
+    </Bind>
+    <Bind variable="hint">
+      <To key="UI/Layout/Layout/Hint"/>
+    </Bind>
+    <Bind variable="switchA">
+      <To key="UI/Layout/Layout/SwitchStatePrimary"/>
+    </Bind>
+    <Bind variable="switchB">
+      <To key="UI/Layout/Layout/SwitchStateSecondary"/>
+    </Bind>
+    <Code>resetFunction:execute()
 
 -- Remove all the HUD components for the demo.
 leftPanel:setScreen(nil)
@@ -75,7 +72,6 @@ switchB:setScreen(nil)
 
 -- Prevent switches and clues from (re-)appearing.
 disableHud = 1</Code>
-    </Action>
   </ResetAction>
   <Include>
     <Project name="Projects/Spindizzy/Worlds/Hangworld.isorealms" user="false"/>

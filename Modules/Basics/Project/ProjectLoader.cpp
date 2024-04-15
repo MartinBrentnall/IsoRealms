@@ -28,6 +28,8 @@ namespace IsoRealms::Basics {
     cProject     = nullptr;
     cFirstUse    = true;
     cError       = "";
+    cDestructing = false;
+    cDestructed  = false;
   }
 
   void ProjectLoader::loadProject(IApplication* application) {
@@ -43,12 +45,35 @@ namespace IsoRealms::Basics {
   }
 
   bool ProjectLoader::isDestructReady() {
+    if (cDestructing) {
+      return false;
+    }
     cMutex.lock();
     bool mDestructReady = cProject != nullptr;
     cMutex.unlock();
     return mDestructReady;
   }
   
+  void ProjectLoader::setDestructing() {
+    cDestructing = true;
+  }
+
+  void ProjectLoader::destruct() {
+    cMutex.lock();
+    cProject.reset();
+    cMutex.unlock();
+    cDestructMutex.lock();
+    cDestructed = true;
+    cDestructMutex.unlock();
+  }
+
+  bool ProjectLoader::isDestructed() {
+    cDestructMutex.lock();
+    bool mDestructed = cDestructed;
+    cDestructMutex.unlock();
+    return mDestructed;
+  }
+
   Project* ProjectLoader::getLoadedProject() {
     cMutex.lock();
     Project* mProject = cProject.get();

@@ -27,18 +27,14 @@ namespace IsoRealms {
   void Vertex::init(DOMNode& node, const std::string& tag) {
     DOMNode& mAssetNode = node.getNode(tag);
     cProject->init([this, &mAssetNode](IAssets* assets) {
-      set(mAssetNode);
+      cProject->release(this, cVertex);
+      cVertex = cProject->getVertex(this, mAssetNode);
     });
   }
 
   void Vertex::save(DOMNodeWriter* node, const std::string& tag) const {
     DOMNodeWriter mAssetNode = node->addBranch(tag);
     cProject->save(&mAssetNode, cVertex);
-  }
-
-  void Vertex::set(DOMNode& node) {
-    cProject->release(this, cVertex);
-    cVertex = cProject->getVertex(this, node);
   }
 
   void Vertex::relinquish(IVertex* asset) {

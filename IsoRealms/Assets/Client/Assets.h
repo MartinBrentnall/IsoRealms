@@ -40,8 +40,6 @@ namespace IsoRealms {
     void init(DOMNode& node, const std::string& tag);
     void save(DOMNodeWriter* node, const std::string& attribute) const;
 
-    std::string get() const;
-    void set(DOMNode& node);
     IAssets* operator->() const {
       return cAssets;
     }

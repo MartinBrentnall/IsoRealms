@@ -27,18 +27,14 @@ namespace IsoRealms {
   void Editable::init(DOMNode& node, const std::string& tag) {
     DOMNode& mAssetNode = node.getNode(tag);
     cProject->init([this, &mAssetNode](IAssets* assets) {
-      set(mAssetNode);
+      cProject->release(this, cEditable);
+      cEditable = cProject->getEditable(this, mAssetNode);
     });
   }
 
   void Editable::save(DOMNodeWriter* node, const std::string& tag) {
     DOMNodeWriter mAssetNode = node->addBranch(tag);
     cProject->save(&mAssetNode, cEditable);
-  }
-
-  void Editable::set(DOMNode& node) {
-    cProject->release(this, cEditable);
-    cEditable = cProject->getEditable(this, node);
   }
 
   void Editable::relinquish(IEditable* asset) {

@@ -34,8 +34,6 @@ namespace IsoRealms {
     void init(DOMNode& node, const std::string& tag);
     void save(DOMNodeWriter* node, const std::string& tag);
 
-    std::string get() const;
-    void set(DOMNode& node);
     IActionType* operator->() const {
       return cActionType;
     }

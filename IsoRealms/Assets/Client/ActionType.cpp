@@ -34,18 +34,14 @@ namespace IsoRealms {
   void ActionType::init(DOMNode& node, const std::string& tag) {
     DOMNode& mAssetNode = node.getNode(tag);
     cProject->init([this, &mAssetNode](IAssets* assets) {
-      set(mAssetNode);
+      cProject->release(this, cActionType);
+      cActionType = cProject->getActionType(this, mAssetNode);
     });
   }
 
   void ActionType::save(DOMNodeWriter* node, const std::string& tag) {
     DOMNodeWriter mAssetNode = node->addBranch(tag);
     cProject->save(&mAssetNode, cActionType);
-  }
-
-  void ActionType::set(DOMNode& node) {
-    cProject->release(this, cActionType);
-    cActionType = cProject->getActionType(this, node);
   }
 
   void ActionType::relinquish(IActionType* asset) {

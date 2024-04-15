@@ -78,6 +78,14 @@ namespace IsoRealms::Basics {
       if (!cRuntimeLoading) {
         for (int i = static_cast<int>(cRuntimeOldProjects.size()) - 1; i >= 0; i--) {
           if (cRuntimeOldProjects[i]->isDestructReady()) {
+            cRuntimeOldProjects[i]->setDestructing();
+            IApplication* mApplication = cProject->getApplication();
+            mApplication->executeAndReturn([this, i, mApplication]() {
+              cRuntimeOldProjects[i]->destruct();
+            });
+          }
+
+          if (cRuntimeOldProjects[i]->isDestructed()) {
             cRuntimeOldProjects.erase(cRuntimeOldProjects.begin() + i);
           }
         }

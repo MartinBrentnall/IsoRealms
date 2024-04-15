@@ -63,9 +63,6 @@ namespace IsoRealms::Spindizzy {
   const std::string Terrain::BEHAVIOUR_DYNAMIC       = "dynamic";
   const std::string Terrain::BEHAVIOUR_DYNAMIC_GHOST = "dynamicGhost";
 
-  const std::string Terrain::SPLIT_TYPE_EAST = "East";
-  const std::string Terrain::SPLIT_TYPE_WEST = "West";
-
 //   IDropDownListValues<char>* Terrain::DROP_DOWN_LIST_BEHAVIOURS = new DropDownListValuesVector<char>(std::vector<std::pair<std::string, char>>({
 //     {"Normal",        FLAGS_NORMAL},
 //     {"Invisible",     FLAG_INVISIBLE},

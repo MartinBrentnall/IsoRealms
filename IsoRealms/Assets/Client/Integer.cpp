@@ -27,18 +27,14 @@ namespace IsoRealms {
   void Integer::init(DOMNode& node, const std::string& tag) {
     DOMNode& mAssetNode = node.getNode(tag);
     cProject->init([this, &mAssetNode](IAssets* assets) {
-      set(mAssetNode);
+      cProject->release(this, cInteger);
+      cInteger = cProject->getInteger(this, mAssetNode);
     });
   }
 
   void Integer::save(DOMNodeWriter* node, const std::string& tag) {
     DOMNodeWriter mAssetNode = node->addBranch(tag);
     cProject->save(&mAssetNode, cInteger);
-  }
-
-  void Integer::set(DOMNode& node) {
-    cProject->release(this, cInteger);
-    cInteger = cProject->getInteger(this, node);
   }
 
   void Integer::relinquish(IInteger* asset) {

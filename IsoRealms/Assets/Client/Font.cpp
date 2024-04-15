@@ -27,18 +27,14 @@ namespace IsoRealms {
   void Font::init(DOMNode& node, const std::string& tag) {
     DOMNode& mAssetNode = node.getNode(tag);
     cProject->init([this, &mAssetNode](IAssets* assets) {
-      set(mAssetNode);
+      cProject->release(this, cFont);
+      cFont = cProject->getFont(this, mAssetNode);
     });
   }
 
   void Font::save(DOMNodeWriter* node, const std::string& tag) const {
     DOMNodeWriter mAssetNode = node->addBranch(tag);
     cProject->save(&mAssetNode, cFont);
-  }
-
-  void Font::set(DOMNode& node) {
-    cProject->release(this, cFont);
-    cFont = cProject->getFont(this, node);
   }
 
   void Font::relinquish(IFont* asset) {

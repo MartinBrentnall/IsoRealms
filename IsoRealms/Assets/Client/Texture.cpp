@@ -38,7 +38,8 @@ namespace IsoRealms {
     cDefScaleY = mAssetNode.getFloatAttribute(ATTRIBUTE_SCALE_Y, 1.0f);
     cDefAngle  = mAssetNode.getFloatAttribute(ATTRIBUTE_ANGLE);
     cProject->init([this, &mAssetNode](IAssets* assets) {
-      set(mAssetNode);
+      cProject->release(this, cTexture);
+      cTexture = cProject->getTexture(this, mAssetNode);
     });
   }
 
@@ -48,11 +49,6 @@ namespace IsoRealms {
     mTextureNode.addAttribute(ATTRIBUTE_ANGLE,   cDefAngle);
     mTextureNode.addAttribute(ATTRIBUTE_SCALE_X, cDefScaleX);
     mTextureNode.addAttribute(ATTRIBUTE_SCALE_Y, cDefScaleY);
-  }
-
-  void Texture::set(DOMNode& node) {
-    cProject->release(this, cTexture);
-    cTexture = cProject->getTexture(this, node);
   }
 
   void Texture::coord(float x, float y) const {

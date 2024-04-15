@@ -21,9 +21,7 @@
       <Configuration/>
       <Resources>
         <Player name="Player">
-          <QuitAction>
-            <Action key="Basics/Function/Quit"/>
-          </QuitAction>
+          <QuitAction key="Basics/Function/Quit"/>
         </Player>
       </Resources>
     </Module>

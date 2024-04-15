@@ -27,18 +27,14 @@ namespace IsoRealms {
   void Screen::init(DOMNode& node, const std::string& tag) {
     DOMNode& mAssetNode = node.getNode(tag);
     cProject->init([this, &mAssetNode](IAssets* assets) {
-      set(mAssetNode);
+      cProject->release(this, cScreen);
+      cScreen = cProject->getScreen(this, mAssetNode);
     });
   }
 
   void Screen::save(DOMNodeWriter* node, const std::string& tag) const {
     DOMNodeWriter mAssetNode = node->addBranch(tag);
     cProject->save(&mAssetNode, cScreen);
-  }
-
-  void Screen::set(DOMNode& node) {
-    cProject->release(this, cScreen);
-    cScreen = cProject->getScreen(this, node);
   }
 
   void Screen::relinquish(IScreen* asset) {

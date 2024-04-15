@@ -35,8 +35,6 @@ namespace IsoRealms {
     void init(DOMNode& node, const std::string& tag);
     void save(DOMNodeWriter* node, const std::string& tag) const;
 
-    void set(DOMNode& node);
-
     /**********************\
      * Implements IColour *
     \**********************/

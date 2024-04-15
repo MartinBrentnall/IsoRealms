@@ -45,7 +45,7 @@ namespace IsoRealms::Spindizzy {
     public:
     
     // Constructors.
-    Lift(Zone& zone, LiftType* type, int x, int y, int z, int top, int bottom);
+    Lift(Zone& zone, LiftType* type, int x, int y, int z, int bottom, int top);
     Lift(Zone& zone, DOMNode& node);
 
     // Interface for use by parent zone.

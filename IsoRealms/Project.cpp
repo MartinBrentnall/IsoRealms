@@ -756,66 +756,44 @@ namespace IsoRealms {
   void Project::save(DOMNodeWriter* node, const ITexture*        asset) const {cTextures.save(      node, asset);}
   void Project::save(DOMNodeWriter* node, const IVertex*         asset) const {cVertices.save(      node, asset);}
 
-  Project::ActionExecutor::Action::Action(ActionExecutor* parent, DOMNode& node, const std::string& id, IBindingRegistry* localArgs) :
+  Project::ActionExecutor::ActionExecutor(Project* parent, IAssetUser<IAction>* user) :
             cParent(parent),
-            cActionType(parent->cParent, [this]() {
-              cParent->remove(this);
-            }, node),
-            cAction(cActionType->createAction(node, parent->cParent, localArgs)) {
+            cActionType(cParent, [this]() {
+              cAction = cActionType->createAction(cParent, nullptr);
+            }),
+            cAction(cActionType->createAction(cParent, nullptr)),
+            cUser(user) {
   }
 
-  void Project::ActionExecutor::Action::execute() {
-    if (cParent->cParent->cProcessingInput) {
-      cParent->cParent->cPostponedActions.push_back(cAction);
+  Project::ActionExecutor::ActionExecutor(Project* parent, DOMNode& node, const std::string& id, IAssetUser<IAction>* user, IBindingRegistry* localArgs) :
+            cParent(parent),
+            cActionType(cParent, [this]() {
+              cAction = cActionType->createAction(cParent, nullptr);
+            }, node),
+            cAction(cActionType->createAction(node, cParent, localArgs)),
+            cUser(user) {
+  }
+
+  Project::ActionExecutor::~ActionExecutor() {
+    cActionType->destroyAction(cAction, cParent);
+  }
+
+  void Project::ActionExecutor::execute() {
+    if (cParent->cProcessingInput) {
+      cParent->cPostponedActions.push_back(cAction);
     } else {
       cAction->execute();
     }
   }
 
-  void Project::ActionExecutor::Action::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    identifier->save(node, *cActionType);
-    cAction->save(node, identifier);
-  }
-
-  Project::ActionExecutor::ActionExecutor::Action::~Action() {
-    cActionType->destroyAction(cAction, cParent->cParent);
-  }
-
-  Project::ActionExecutor::ActionExecutor(Project* parent, IAssetUser<IAction>* user) :
-            cParent(parent),
-            cUser(user) {
-  }
-
-  Project::ActionExecutor::ActionExecutor(Project* parent, DOMNode& node, const std::string& id, IAssetUser<IAction>* user, IBindingRegistry* localArgs) :
-            ActionExecutor(parent, user) {
-    for (DOMNode& mNode : node) {
-      std::string mChildName = mNode.getName();
-      if (mChildName == "Action") {
-        cActions.emplace_back(std::make_unique<Action>(this, mNode, id, localArgs));
-      }
-    }
-  }
-
-  void Project::ActionExecutor::remove(Action* action) {
-    Utils::removeElementUnique(cActions, action);
-  }
-
-  void Project::ActionExecutor::execute() {
-    for (std::unique_ptr<Action>& mAction : cActions) {
-      mAction->execute();
-    }
-  }
-
   IActionType* Project::ActionExecutor::getActionType() const {
-    std::cout << "WARNING: getActionType() called, but not implemented!" << std::endl;
+    std::cout << "WARNING: Project::ActionExecutor::getActionType(): Function is currently not supported." << std::endl;
     return nullptr;
   }
 
   void Project::ActionExecutor::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    for (const std::unique_ptr<Action>& mAction : cActions) {
-      DOMNodeWriter mActionNode = node->addBranch(TAG_ACTION);
-      mAction->save(&mActionNode, identifier);
-    }
+    identifier->save(node, *cActionType);
+    cAction->save(node, identifier);
   }
 
   bool Project::ActionExecutor::hasConfiguration() const {

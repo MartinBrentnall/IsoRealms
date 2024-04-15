@@ -36,6 +36,7 @@ namespace IsoRealms::Replay {
   class Recorder : public IScreen,
                    public IInputHandler {
     private:
+    static const std::string TAG_INPUT;
     static const std::string TAG_QUIT_ACTION;
       
     IProject* cParentProject;

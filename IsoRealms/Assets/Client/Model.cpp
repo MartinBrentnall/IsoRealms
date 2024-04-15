@@ -44,7 +44,11 @@ namespace IsoRealms {
     cDefScaleZ  = mAssetNode.getFloatAttribute(ATTRIBUTE_SCALE_Z,  1.0f);
     cDefYaw     = mAssetNode.getFloatAttribute(ATTRIBUTE_YAW,      0.0f);
     cProject->init([this, &mAssetNode](IAssets* assets) {
-      set(mAssetNode);
+      cProject->release(this, cModel);
+      cModel = cProject->getModelType(this, mAssetNode);
+      for (ModelInstance* mInstance : cInstances) {
+        mInstance->set(cModel->createModel());
+      }
     });
   }
 
@@ -83,14 +87,6 @@ namespace IsoRealms {
     glRotatef(cDefYaw, 0.0f, 0.0f, 1.0f);
     glTranslatef(cDefOffsetX, cDefOffsetY, cDefOffsetZ);
     glScalef(cDefScaleX, cDefScaleY, cDefScaleZ);
-  }
-
-  void Model::set(DOMNode& node) {
-    cProject->release(this, cModel);
-    cModel = cProject->getModelType(this, node);
-    for (ModelInstance* mInstance : cInstances) {
-      mInstance->set(cModel->createModel());
-    }
   }
 
   void Model::relinquish(I3DModelType* asset) {

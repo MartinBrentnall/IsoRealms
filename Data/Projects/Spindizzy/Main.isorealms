@@ -3,58 +3,55 @@
   <Screen key="UI/Layout/Main"/>
   <Input key="Basics/InputGroup/Input"/>
   <Editor key="Literal"/>
-  <InitAction>
-    <Action key="Basics/Script">
-      <Bind variable="splash">
-        <To key="Basics/Sequence/Splash"/>
-      </Bind>
-      <Bind variable="mission">
-        <To key="Basics/Project/Mission"/>
-      </Bind>
-      <Bind variable="projectArgs">
-        <To key=":ProjectOptions">
-          <Asset key="Basics/ProjectOptions/Game"/>
-        </To>
-      </Bind>
-      <Bind variable="project">
-        <To key="Project"/>
-      </Bind>
-      <Bind variable="currentMission">
-        <To key="Basics/String/Mission"/>
-      </Bind>
-      <Bind variable="currentMissionUser">
-        <To key="Basics/String/UserMission"/>
-      </Bind>
-      <Bind variable="currentMissionUserBool">
-        <To key=":Boolean">
-          <Asset key="Basics/Boolean/UserMission"/>
-        </To>
-      </Bind>
-      <Bind variable="currentMissionText">
-        <To key="Basics/String/MissionText"/>
-      </Bind>
-      <Bind variable="currentHighScoreText">
-        <To key="Basics/String/HighScoreText"/>
-      </Bind>
-      <Bind variable="input">
-        <To key="Basics/InputSwitch/Options Screen"/>
-      </Bind>
-      <Bind variable="interruptHandler">
-        <To key=":InputHandler">
-          <Asset key="Basics/InterruptHandler/AttractInterrupt"/>
-        </To>
-      </Bind>
-      <Bind variable="optionsLoader">
-        <To key=":Action">
-          <Action>
-            <Action key="Basics/Function/ReloadConfiguration"/>
-          </Action>
-        </To>
-      </Bind>
-      <Bind variable="scoreTable">
-        <To key="HighScore/ScoreTable/HighScores"/>
-      </Bind>
-      <Code>menuStack = {}
+  <InitAction key="Basics/Script">
+    <Bind variable="splash">
+      <To key="Basics/Sequence/Splash"/>
+    </Bind>
+    <Bind variable="mission">
+      <To key="Basics/Project/Mission"/>
+    </Bind>
+    <Bind variable="projectArgs">
+      <To key=":ProjectOptions">
+        <Asset key="Basics/ProjectOptions/Game"/>
+      </To>
+    </Bind>
+    <Bind variable="project">
+      <To key="Project"/>
+    </Bind>
+    <Bind variable="currentMission">
+      <To key="Basics/String/Mission"/>
+    </Bind>
+    <Bind variable="currentMissionUser">
+      <To key="Basics/String/UserMission"/>
+    </Bind>
+    <Bind variable="currentMissionUserBool">
+      <To key=":Boolean">
+        <Asset key="Basics/Boolean/UserMission"/>
+      </To>
+    </Bind>
+    <Bind variable="currentMissionText">
+      <To key="Basics/String/MissionText"/>
+    </Bind>
+    <Bind variable="currentHighScoreText">
+      <To key="Basics/String/HighScoreText"/>
+    </Bind>
+    <Bind variable="input">
+      <To key="Basics/InputSwitch/Options Screen"/>
+    </Bind>
+    <Bind variable="interruptHandler">
+      <To key=":InputHandler">
+        <Asset key="Basics/InterruptHandler/AttractInterrupt"/>
+      </To>
+    </Bind>
+    <Bind variable="optionsLoader">
+      <To key=":Action">
+        <Action key="Basics/Function/ReloadConfiguration"/>
+      </To>
+    </Bind>
+    <Bind variable="scoreTable">
+      <To key="HighScore/ScoreTable/HighScores"/>
+    </Bind>
+    <Code>menuStack = {}
 inputStack = {}
 gameLoading = false
 scoreTable:reload()
@@ -123,28 +120,22 @@ messages3 = {"",
              "- Benjamin Netanyahu",
              "- Adam Michnik"}
 </Code>
-    </Action>
   </InitAction>
-  <QuitAction>
-    <Action key="Basics/Script">
-      <Bind variable="quit">
-        <To key=":Action">
-          <Action>
-            <Action key="Quit"/>
-          </Action>
-        </To>
-      </Bind>
-      <Code>if currentMission ~= nil then
+  <QuitAction key="Basics/Script">
+    <Bind variable="quit">
+      <To key=":Action">
+        <Action key="Quit"/>
+      </To>
+    </Bind>
+    <Code>if currentMission ~= nil then
   currentMission:requestQuit()
 else
   quit:execute()
 end</Code>
-    </Action>
   </QuitAction>
   <Include>
     <Project name="Projects/Spindizzy/Options.isorealms" user="false"/>
   </Include>
-  <Properties/>
   <Modules>
     <Module name="Basics">
       <Configuration/>
@@ -162,64 +153,66 @@ end</Code>
           <Init key="Basics/InterruptHandler/MenuTimeOutHandler"/>
         </InputSwitch>
         <InterruptHandler name="AuthorsMessageInterrupt">
-          <Action>
-            <Action key="Basics/Function/PopScreen"/>
-            <Action key="Basics/Script">
-              <Bind variable="decor">
-                <To key="UI/Layout/Main/Decor"/>
-              </Bind>
-              <Bind variable="title">
-                <To key=":Screen">
-                  <Asset key="UI/Layout/Title"/>
-                </To>
-              </Bind>
-              <Code>decor:setScreen(title)</Code>
-            </Action>
+          <Action key="Basics/Script">
+            <Bind variable="popScreenFunc">
+              <To key=":Action">
+                <Action key="Basics/Function/PopScreen"/>
+              </To>
+            </Bind>
+            <Bind variable="decor">
+              <To key="UI/Layout/Main/Decor"/>
+            </Bind>
+            <Bind variable="title">
+              <To key=":Screen">
+                <Asset key="UI/Layout/Title"/>
+              </To>
+            </Bind>
+            <Code>popScreenFunc:execute()
+decor:setScreen(title)</Code>
           </Action>
         </InterruptHandler>
         <InterruptHandler name="AttractInterrupt">
-          <Action>
-            <Action key="Basics/Script">
-              <Bind variable="decor">
-                <To key="UI/Layout/Main/Decor"/>
-              </Bind>
-              <Bind variable="title">
-                <To key=":Screen">
-                  <Asset key="UI/Layout/Title"/>
-                </To>
-              </Bind>
-              <Bind variable="screen">
-                <To key="UI/Layout/Main/Menu"/>
-              </Bind>
-              <Bind variable="menu">
-                <To key="UI/Menu/Main"/>
-              </Bind>
-              <Bind variable="menuScreen">
-                <To key=":Screen">
-                  <Asset key="UI/Menu/Main"/>
-                </To>
-              </Bind>
-              <Bind variable="input">
-                <To key="Basics/InputSwitch/Options Screen"/>
-              </Bind>
-              <Bind variable="menuInput">
-                <To key=":InputHandler">
-                  <Asset key="UI/Menu/Main"/>
-                </To>
-              </Bind>
-              <Bind variable="splash">
-                <To key="Basics/Sequence/Splash"/>
-              </Bind>
-              <Bind variable="titleTimer">
-                <To key="Basics/Timer/TitleTimer"/>
-              </Bind>
-              <Bind variable="highScoreTimer">
-                <To key="Basics/Timer/HighScoreTimer"/>
-              </Bind>
-              <Bind variable="messageTimer">
-                <To key="Basics/Timer/MessageTimer"/>
-              </Bind>
-              <Code>table.insert(menuStack, menuScreen)
+          <Action key="Basics/Script">
+            <Bind variable="decor">
+              <To key="UI/Layout/Main/Decor"/>
+            </Bind>
+            <Bind variable="title">
+              <To key=":Screen">
+                <Asset key="UI/Layout/Title"/>
+              </To>
+            </Bind>
+            <Bind variable="screen">
+              <To key="UI/Layout/Main/Menu"/>
+            </Bind>
+            <Bind variable="menu">
+              <To key="UI/Menu/Main"/>
+            </Bind>
+            <Bind variable="menuScreen">
+              <To key=":Screen">
+                <Asset key="UI/Menu/Main"/>
+              </To>
+            </Bind>
+            <Bind variable="input">
+              <To key="Basics/InputSwitch/Options Screen"/>
+            </Bind>
+            <Bind variable="menuInput">
+              <To key=":InputHandler">
+                <Asset key="UI/Menu/Main"/>
+              </To>
+            </Bind>
+            <Bind variable="splash">
+              <To key="Basics/Sequence/Splash"/>
+            </Bind>
+            <Bind variable="titleTimer">
+              <To key="Basics/Timer/TitleTimer"/>
+            </Bind>
+            <Bind variable="highScoreTimer">
+              <To key="Basics/Timer/HighScoreTimer"/>
+            </Bind>
+            <Bind variable="messageTimer">
+              <To key="Basics/Timer/MessageTimer"/>
+            </Bind>
+            <Code>table.insert(menuStack, menuScreen)
 table.insert(inputStack, menuInput)
 input:setInputHandler(menuInput)
 screen:setScreen(menuScreen)
@@ -229,17 +222,14 @@ splash:skip(7500)
 titleTimer:pause()
 highScoreTimer:pause()
 messageTimer:pause()</Code>
-            </Action>
           </Action>
         </InterruptHandler>
         <InterruptHandler name="MenuTimeOutHandler" consume="false">
-          <Action>
-            <Action key="Basics/Script">
-              <Bind variable="timer">
-                <To key="Basics/Timer/MenuIdleTimer"/>
-              </Bind>
-              <Code>timer:start(15000)</Code>
-            </Action>
+          <Action key="Basics/Script">
+            <Bind variable="timer">
+              <To key="Basics/Timer/MenuIdleTimer"/>
+            </Bind>
+            <Code>timer:start(15000)</Code>
           </Action>
         </InterruptHandler>
         <ProjectOptions name="Demo">
@@ -369,16 +359,12 @@ project:finish(false)</Code>
           </Bind>
           <Bind variable="optionsLoader">
             <To key=":Action">
-              <Action>
-                <Action key="Basics/Function/ReloadConfiguration"/>
-              </Action>
+              <Action key="Basics/Function/ReloadConfiguration"/>
             </To>
           </Bind>
           <Bind variable="quit">
             <To key=":Action">
-              <Action>
-                <Action key="Quit"/>
-              </Action>
+              <Action key="Quit"/>
             </To>
           </Bind>
           <Bind variable="scoreTable">
@@ -774,6 +760,9 @@ interrupt:setInputHandler(nil)</Code>
           <Bind variable="timer">
             <To key="Basics/Timer/MenuIdleTimer"/>
           </Bind>
+          <Bind variable="interrupt">
+            <To key="Basics/InputSwitch/MenuInterrupt"/>
+          </Bind>
           <Argument name="projectArgs"/>
           <Argument name="mission"/>
           <Argument name="missionInput"/>
@@ -804,17 +793,18 @@ currentMissionInput = missionInput
 currentMissionScreen = missionScreen
 
 -- Stop menu idle timer
-timer:pause()</Code>
+timer:pause()
+
+-- Prevent menu interrupt from triggering.
+interrupt:setInputHandler(nil)</Code>
         </Function>
         <Project name="Demo">
           <Options key="Basics/ProjectOptions/Demo"/>
-          <Ready/>
-          <End>
-            <Action key="Basics/Script">
-              <Bind variable="demo">
-                <To key="Basics/Project/Demo"/>
-              </Bind>
-              <Code>demo:setRunning(true)
+          <End key="Basics/Script">
+            <Bind variable="demo">
+              <To key="Basics/Project/Demo"/>
+            </Bind>
+            <Code>demo:setRunning(true)
 demo:reset()</Code>
     <!--          <Bind variable="ui">
                 <To key="UI/UI/MainMenu/UI/UI"/>
@@ -825,47 +815,34 @@ demo:reset()</Code>
               <Code>ui:clearBackgrounds()
 ui:pushBackground(howToPlay)
 howToPlay:reset()</Code>-->
-            </Action>
           </End>
         </Project>
         <Project name="Mission">
           <Options key="Literal"/>
-          <Ready>
-            <Action key="Basics/Function/MissionReady">
-              <Bind argument="mission">
-                <To key="Basics/Project/Mission"/>
-              </Bind>
-            </Action>
+          <Ready key="Basics/Function/MissionReady">
+            <Bind argument="mission">
+              <To key="Basics/Project/Mission"/>
+            </Bind>
           </Ready>
-          <End>
-            <Action key="Basics/Function/GameEnd"/>
-          </End>
+          <End key="Basics/Function/GameEnd"/>
         </Project>
         <Project name="Replay">
           <Options key="Literal"/>
-          <Ready>
-            <Action key="Basics/Function/MissionReady">
-              <Bind argument="mission">
-                <To key="Basics/Project/Replay"/>
-              </Bind>
-            </Action>
+          <Ready key="Basics/Function/MissionReady">
+            <Bind argument="mission">
+              <To key="Basics/Project/Replay"/>
+            </Bind>
           </Ready>
-          <End>
-            <Action key="Basics/Function/GameEnd"/>
-          </End>
+          <End key="Basics/Function/GameEnd"/>
         </Project>
         <Project name="Editor">
           <Options key="Literal"/>
-          <Ready>
-            <Action key="Basics/Function/MissionReady">
-              <Bind argument="mission">
-                <To key="Basics/Project/Editor"/>
-              </Bind>
-            </Action>
+          <Ready key="Basics/Function/MissionReady">
+            <Bind argument="mission">
+              <To key="Basics/Project/Editor"/>
+            </Bind>
           </Ready>
-          <End>
-            <Action key="Basics/Function/GameEnd"/>
-          </End>
+          <End key="Basics/Function/GameEnd"/>
         </Project>
         <Sequence name="Splash">
           <Colour output="Colour">
@@ -883,9 +860,7 @@ howToPlay:reset()</Code>-->
           </Colour>
           <Action>
             <Action delay="5000">
-              <Action>
-                <Action key="Basics/Function/StartAttract"/>
-              </Action>
+              <Action key="Basics/Function/StartAttract"/>
             </Action>
           </Action>
         </Sequence>
@@ -1331,46 +1306,38 @@ howToPlay:reset()</Code>-->
           <Colour key="Literal" value="1.0 1.0 1.0 1.0"/>
         </StringScreen>
         <Timer name="MenuIdleTimer" value="0">
-          <ExpirationAction>
-            <Action key="Basics/Script">
-              <Bind variable="screen">
-                <To key="UI/Layout/Main/Menu"/>
-              </Bind>
-              <Bind variable="input">
-                <To key="Basics/InputSwitch/Options Screen"/>
-              </Bind>
-              <Bind variable="interruptHandler">
-                <To key=":InputHandler">
-                  <Asset key="Basics/InterruptHandler/AttractInterrupt"/>
-                </To>
-              </Bind>
-              <Bind variable="timer">
-                <To key="Basics/Timer/TitleTimer"/>
-              </Bind>
-              <Code>while #menuStack &gt; 0 do
+          <ExpirationAction key="Basics/Script">
+            <Bind variable="screen">
+              <To key="UI/Layout/Main/Menu"/>
+            </Bind>
+            <Bind variable="input">
+              <To key="Basics/InputSwitch/Options Screen"/>
+            </Bind>
+            <Bind variable="interruptHandler">
+              <To key=":InputHandler">
+                <Asset key="Basics/InterruptHandler/AttractInterrupt"/>
+              </To>
+            </Bind>
+            <Bind variable="timer">
+              <To key="Basics/Timer/TitleTimer"/>
+            </Bind>
+            <Code>while #menuStack &gt; 0 do
   table.remove(menuStack)
   table.remove(inputStack)
 end
 screen:setScreen(nil)
 input:setInputHandler(interruptHandler)
 timer:start(10000)</Code>
-            </Action>
           </ExpirationAction>
         </Timer>
         <Timer name="TitleTimer" value="0">
-          <ExpirationAction>
-            <Action key="Basics/Function/StartHighScore"/>
-          </ExpirationAction>
+          <ExpirationAction key="Basics/Function/StartHighScore"/>
         </Timer>
         <Timer name="HighScoreTimer" value="0">
-          <ExpirationAction>
-            <Action key="Basics/Function/StartMessage"/>
-          </ExpirationAction>
+          <ExpirationAction key="Basics/Function/StartMessage"/>
         </Timer>
         <Timer name="MessageTimer" value="0">
-          <ExpirationAction>
-            <Action key="Basics/Function/StartAttract"/>
-          </ExpirationAction>
+          <ExpirationAction key="Basics/Function/StartAttract"/>
         </Timer>
       </Resources>
     </Module>
@@ -2861,330 +2828,287 @@ timer:start(10000)</Code>
           <Font key="Basics/Font/Menu"/>
           <Options>
             <Action label="Play">
-              <Action>
-                <Action key="Basics/Function/PushScreen">
-                  <Bind argument="menuScreen">
-                    <To key=":Screen">
-                      <Asset key="UI/Menu/PlayMode"/>
-                    </To>
-                  </Bind>
-                  <Bind argument="menuInput">
-                    <To key=":InputHandler">
-                      <Asset key="UI/Menu/PlayMode"/>
-                    </To>
-                  </Bind>
-                  <Bind argument="menu">
-                    <To key="UI/Menu/PlayMode"/>
-                  </Bind>
-                </Action>
+              <Action key="Basics/Function/PushScreen">
+                <Bind argument="menuScreen">
+                  <To key=":Screen">
+                    <Asset key="UI/Menu/PlayMode"/>
+                  </To>
+                </Bind>
+                <Bind argument="menuInput">
+                  <To key=":InputHandler">
+                    <Asset key="UI/Menu/PlayMode"/>
+                  </To>
+                </Bind>
+                <Bind argument="menu">
+                  <To key="UI/Menu/PlayMode"/>
+                </Bind>
               </Action>
             </Action>
             <Action label="Missions">
-              <Action>
-                <Action key="Basics/Function/PushScreen">
-                  <Bind argument="menuScreen">
-                    <To key=":Screen">
-                      <Asset key="UI/Menu/MissionSelect"/>
-                    </To>
-                  </Bind>
-                  <Bind argument="menuInput">
-                    <To key=":InputHandler">
-                      <Asset key="UI/Menu/MissionSelect"/>
-                    </To>
-                  </Bind>
-                  <Bind argument="menu">
-                    <To key="UI/Menu/MissionSelect"/>
-                  </Bind>
-                </Action>
+              <Action key="Basics/Function/PushScreen">
+                <Bind argument="menuScreen">
+                  <To key=":Screen">
+                    <Asset key="UI/Menu/MissionSelect"/>
+                  </To>
+                </Bind>
+                <Bind argument="menuInput">
+                  <To key=":InputHandler">
+                    <Asset key="UI/Menu/MissionSelect"/>
+                  </To>
+                </Bind>
+                <Bind argument="menu">
+                  <To key="UI/Menu/MissionSelect"/>
+                </Bind>
               </Action>
             </Action>
             <Action label="Create">
-              <Action>
-                <Action key="Basics/Function/StartProjectNew">
-                  <Bind argument="mission">
-                    <To key="Basics/Project/Editor"/>
-                  </Bind>
-                  <Bind argument="missionInput">
-                    <To key=":InputHandler">
-                      <Asset key="Basics/Project/Editor"/>
-                    </To>
-                  </Bind>
-                  <Bind argument="missionScreen">
-                    <To key=":Screen">
-                      <Asset key="Basics/Project/Editor"/>
-                    </To>
-                  </Bind>
-                  <Bind argument="projectArgs">
-                    <To key=":ProjectOptions">
-                      <Asset key="Basics/ProjectOptions/Editor"/>
-                    </To>
-                  </Bind>
-                </Action>
+              <Action key="Basics/Function/StartProjectNew">
+                <Bind argument="mission">
+                  <To key="Basics/Project/Editor"/>
+                </Bind>
+                <Bind argument="missionInput">
+                  <To key=":InputHandler">
+                    <Asset key="Basics/Project/Editor"/>
+                  </To>
+                </Bind>
+                <Bind argument="missionScreen">
+                  <To key=":Screen">
+                    <Asset key="Basics/Project/Editor"/>
+                  </To>
+                </Bind>
+                <Bind argument="projectArgs">
+                  <To key=":ProjectOptions">
+                    <Asset key="Basics/ProjectOptions/Editor"/>
+                  </To>
+                </Bind>
               </Action>
             </Action>
             <Action label="Options">
-              <Action>
-                <Action key="Basics/Function/PushScreen">
-                  <Bind argument="menuScreen">
-                    <To key=":Screen">
-                      <Asset key="UI/Menu/Options"/>
-                    </To>
-                  </Bind>
-                  <Bind argument="menuInput">
-                    <To key=":InputHandler">
-                      <Asset key="UI/Menu/Options"/>
-                    </To>
-                  </Bind>
-                  <Bind argument="menu">
-                    <To key="UI/Menu/Options"/>
-                  </Bind>
-                </Action>
+              <Action key="Basics/Function/PushScreen">
+                <Bind argument="menuScreen">
+                  <To key=":Screen">
+                    <Asset key="UI/Menu/Options"/>
+                  </To>
+                </Bind>
+                <Bind argument="menuInput">
+                  <To key=":InputHandler">
+                    <Asset key="UI/Menu/Options"/>
+                  </To>
+                </Bind>
+                <Bind argument="menu">
+                  <To key="UI/Menu/Options"/>
+                </Bind>
               </Action>
             </Action>
             <Action label="High Scores">
-              <Action>
-                <Action key="Basics/Function/StartHighScore"/>
-              </Action>
+              <Action key="Basics/Function/StartHighScore"/>
             </Action>
-<!--            <Action label="Extras">
-              <Action>
-                <Action key="Basics/Function/PushScreen">
-                  <Argument name="menuScreen" value=":Screen/UI/Menu/Extras"/>
-                  <Argument name="menuInput" value=":InputHandler/UI/Menu/Extras"/>
-                  <Argument name="menu" value="UI/Menu/Extras"/>
-                </Action>
-              </Action>
-            </Action>-->
             <Action label="A Word From The Author">
-              <Action>
-                <Action key="Basics/Function/PushScreen">
-                  <Bind argument="menuScreen">
-                    <To key=":Screen">
-                      <Asset key="UI/Menu/Links"/>
-                    </To>
-                  </Bind>
-                  <Bind argument="menuInput">
-                    <To key=":InputHandler">
-                      <Asset key="UI/Menu/Links"/>
-                    </To>
-                  </Bind>
-                  <Bind argument="menu">
-                    <To key="UI/Menu/Links"/>
-                  </Bind>
-                </Action>
-                <Action key="Basics/Function/PushScreen">
-                  <Bind argument="menuScreen">
-                    <To key=":Screen">
-                      <Asset key="UI/Menu/Links"/>
-                    </To>
-                  </Bind>
-                  <Bind argument="menuInput">
-                    <To key=":InputHandler">
-                      <Asset key="UI/Menu/Links"/>
-                    </To>
-                  </Bind>
-                  <Bind argument="menu">
-                    <To key="UI/Menu/Links"/>
-                  </Bind>
-                </Action>
-                <Action key="Basics/Function/StartAuthorsMessage"/>
+              <Action key="Basics/Script">
+                <Bind variable="pushLinksMenuFunc">
+                  <To key=":Action">
+                    <Action key="Basics/Function/PushScreen">
+                      <Bind argument="menuScreen">
+                        <To key=":Screen">
+                          <Asset key="UI/Menu/Links"/>
+                        </To>
+                      </Bind>
+                      <Bind argument="menuInput">
+                        <To key=":InputHandler">
+                          <Asset key="UI/Menu/Links"/>
+                        </To>
+                      </Bind>
+                      <Bind argument="menu">
+                        <To key="UI/Menu/Links"/>
+                      </Bind>
+                    </Action>
+                  </To>
+                </Bind>
+                <Bind variable="startAuthorMessageFunc"> 
+                  <To key=":Action">
+                    <Action key="Basics/Function/StartAuthorsMessage"/>
+                  </To>
+                </Bind>
+                <Code>pushLinksMenuFunc:execute()
+pushLinksMenuFunc:execute()
+startAuthorMessageFunc:execute()</Code>
               </Action>
             </Action>
             <Action label="About">
-              <!-- TODO: This is weird... it's just pushed on to be popped off to make the main menu appear when leaving the credits -->
-              <Action>
-                <Action key="Basics/Function/PushScreen">
-                  <Bind argument="menuScreen">
-                    <To key=":Screen">
-                      <Asset key="UI/Menu/Links"/>
-                    </To>
-                  </Bind>
-                  <Bind argument="menuInput">
-                    <To key=":InputHandler">
-                      <Asset key="UI/Menu/Links"/>
-                    </To>
-                  </Bind>
-                  <Bind argument="menu">
-                    <To key="UI/Menu/Links"/>
-                  </Bind>
-                </Action>
-                <Action key="Basics/Function/StartCreditsMessage"/>
+              <Action key="Basics/Script">
+                <Bind variable="pushLinksMenuFunc">
+                  <To key=":Action">
+                    <Action key="Basics/Function/PushScreen">
+                      <Bind argument="menuScreen">
+                        <To key=":Screen">
+                          <Asset key="UI/Menu/Links"/>
+                        </To>
+                      </Bind>
+                      <Bind argument="menuInput">
+                        <To key=":InputHandler">
+                          <Asset key="UI/Menu/Links"/>
+                        </To>
+                      </Bind>
+                      <Bind argument="menu">
+                        <To key="UI/Menu/Links"/>
+                      </Bind>
+                    </Action>
+                  </To>
+                </Bind>
+                <Bind variable="startCreditsFunc">
+                  <To key=":Action">
+                    <Action key="Basics/Function/StartCreditsMessage"/>
+                  </To>
+                </Bind>
+                <Code>-- TODO: This is weird... it's just pushed on to be popped off to make the main menu appear when leaving the credits
+pushLinksMenuFunc:execute()
+startCreditsFunc:execute()</Code>
               </Action>
             </Action>
             <Action label="Quit">
-              <Action>
-                <Action key="Basics/Function/PushScreen">
-                  <Bind argument="menuScreen">
-                    <To key=":Screen">
-                      <Asset key="UI/Prompt/ConfirmQuit"/>
-                    </To>
-                  </Bind>
-                  <Bind argument="menuInput">
-                    <To key=":InputHandler">
-                      <Asset key="UI/Prompt/ConfirmQuit"/>
-                    </To>
-                  </Bind>
-                  <Bind argument="menu">
-                    <To key="UI/Prompt/ConfirmQuit"/>
-                  </Bind>
-                </Action>
+              <Action key="Basics/Function/PushScreen">
+                <Bind argument="menuScreen">
+                  <To key=":Screen">
+                    <Asset key="UI/Prompt/ConfirmQuit"/>
+                  </To>
+                </Bind>
+                <Bind argument="menuInput">
+                  <To key=":InputHandler">
+                    <Asset key="UI/Prompt/ConfirmQuit"/>
+                  </To>
+                </Bind>
+                <Bind argument="menu">
+                  <To key="UI/Prompt/ConfirmQuit"/>
+                </Bind>
               </Action>
             </Action>
           </Options>
-          <Exit>
-            <Action key="Literal"/>
-          </Exit>
         </Menu>
         <Menu name="PlayMode">
           <Colour key="Basics/ColourCycler/Menu Selection Highlight/0"/>
           <Font key="Basics/Font/Menu"/>
           <Options>
             <Action label="Play Arcade Mode">
-              <Action>
-                <Action key="Basics/Function/StartProject">
-                  <Bind argument="mission">
-                    <To key="Basics/Project/Mission"/>
-                  </Bind>
-                  <Bind argument="missionInput">
-                    <To key=":InputHandler">
-                      <Asset key="Basics/Project/Mission"/>
-                    </To>
-                  </Bind>
-                  <Bind argument="missionScreen">
-                    <To key=":Screen">
-                      <Asset key="Basics/Project/Mission"/>
-                    </To>
-                  </Bind>
-                  <Bind argument="mode">
-                    <To key=":String">
-                      <Asset key="Literal" value="Arcade"/>
-                    </To>
-                  </Bind>
-                </Action>
+              <Action key="Basics/Function/StartProject">
+                <Bind argument="mission">
+                  <To key="Basics/Project/Mission"/>
+                </Bind>
+                <Bind argument="missionInput">
+                  <To key=":InputHandler">
+                    <Asset key="Basics/Project/Mission"/>
+                  </To>
+                </Bind>
+                <Bind argument="missionScreen">
+                  <To key=":Screen">
+                    <Asset key="Basics/Project/Mission"/>
+                  </To>
+                </Bind>
+                <Bind argument="mode">
+                  <To key=":String">
+                    <Asset key="Literal" value="Arcade"/>
+                  </To>
+                </Bind>
               </Action>
             </Action>
             <Action label="Play Explorer Mode">
-              <Action>
-                <Action key="Basics/Function/StartProject">
-                  <Bind argument="mission">
-                    <To key="Basics/Project/Mission"/>
-                  </Bind>
-                  <Bind argument="missionInput">
-                    <To key=":InputHandler">
-                      <Asset key="Basics/Project/Mission"/>
-                    </To>
-                  </Bind>
-                  <Bind argument="missionScreen">
-                    <To key=":Screen">
-                      <Asset key="Basics/Project/Mission"/>
-                    </To>
-                  </Bind>
-                  <Bind argument="mode">
-                    <To key=":String">
-                      <Asset key="Literal" value="Explorer"/>
-                    </To>
-                  </Bind>
-                </Action>
+              <Action key="Basics/Function/StartProject">
+                <Bind argument="mission">
+                  <To key="Basics/Project/Mission"/>
+                </Bind>
+                <Bind argument="missionInput">
+                  <To key=":InputHandler">
+                    <Asset key="Basics/Project/Mission"/>
+                  </To>
+                </Bind>
+                <Bind argument="missionScreen">
+                  <To key=":Screen">
+                    <Asset key="Basics/Project/Mission"/>
+                  </To>
+                </Bind>
+                <Bind argument="mode">
+                  <To key=":String">
+                    <Asset key="Literal" value="Explorer"/>
+                  </To>
+                </Bind>
               </Action>
             </Action>
           </Options>
-          <Exit>
-            <Action key="Basics/Function/PopScreen"/>
-          </Exit>
+          <Exit key="Basics/Function/PopScreen"/>
         </Menu>
         <Menu name="Links">
           <Colour key="Basics/ColourCycler/Menu Selection Highlight/0"/>
           <Font key="Basics/Font/Menu"/>
           <Options>
             <Action label="Go to IDF YouTube Channel">
-              <Action>
-                <Action key="Basics/Script">
-                  <Bind variable="project">
-                    <To key="Project"/>
-                  </Bind>
-                  <Code>project:executeCommand("start https://www.youtube.com/@IsraelDefenseForces")</Code>
-                </Action>
+              <Action key="Basics/Script">
+                <Bind variable="project">
+                  <To key="Project"/>
+                </Bind>
+                <Code>project:executeCommand("start https://www.youtube.com/@IsraelDefenseForces")</Code>
               </Action>
             </Action>
             <Action label="Go to Travelling Israel">
-              <Action>
-                <Action key="Basics/Script">
-                  <Bind variable="project">
-                    <To key="Project"/>
-                  </Bind>
-                  <Code>project:executeCommand("start https://www.travelingisrael.com/")</Code>
-                </Action>
+              <Action key="Basics/Script">
+                <Bind variable="project">
+                  <To key="Project"/>
+                </Bind>
+                <Code>project:executeCommand("start https://www.travelingisrael.com/")</Code>
               </Action>
             </Action>
             <Action label="Go to Jewish Breaking News">
-              <Action>
-                <Action key="Basics/Script">
-                  <Bind variable="project">
-                    <To key="Project"/>
-                  </Bind>
-                  <Code>project:executeCommand("start https://chat.whatsapp.com/IYpx98S6Q5GD05vAeW3OgG")</Code>
-                </Action>
+              <Action key="Basics/Script">
+                <Bind variable="project">
+                  <To key="Project"/>
+                </Bind>
+                <Code>project:executeCommand("start https://chat.whatsapp.com/IYpx98S6Q5GD05vAeW3OgG")</Code>
               </Action>
             </Action>
             <Action label="Go to WorldNews Subreddit">
-              <Action>
-                <Action key="Basics/Script">
-                  <Bind variable="project">
-                    <To key="Project"/>
-                  </Bind>
-                  <Code>project:executeCommand("start https://www.reddit.com/r/worldnews/")</Code>
-                </Action>
+              <Action key="Basics/Script">
+                <Bind variable="project">
+                  <To key="Project"/>
+                </Bind>
+                <Code>project:executeCommand("start https://www.reddit.com/r/worldnews/")</Code>
               </Action>
             </Action>
           </Options>
-          <Exit>
-            <Action key="Basics/Function/PopScreen"/>
-          </Exit>
+          <Exit key="Basics/Function/PopScreen"/>
         </Menu>
         <Menu name="MissionSelect">
           <Colour key="Basics/ColourCycler/Menu Selection Highlight/0"/>
           <Font key="Basics/Font/Menu"/>
           <Options>
             <Action label="Hangworld">
-              <Action>
-                <Action key="Basics/Function/SelectMission">
-                  <Bind argument="mission">
-                    <To key=":String">
-                      <Asset key="Literal" value="Spindizzy/Worlds/Hangworld.isorealms"/>
-                    </To>
-                  </Bind>
-                  <Bind argument="missionUser">
-                    <To key=":String">
-                      <Asset key="Literal" value="program"/>
-                    </To>
-                  </Bind>
-                </Action>
+              <Action key="Basics/Function/SelectMission">
+                <Bind argument="mission">
+                  <To key=":String">
+                    <Asset key="Literal" value="Spindizzy/Worlds/Hangworld.isorealms"/>
+                  </To>
+                </Bind>
+                <Bind argument="missionUser">
+                  <To key=":String">
+                    <Asset key="Literal" value="program"/>
+                  </To>
+                </Bind>
               </Action>
             </Action>
             <Action label="My Missions">
-              <Action>
-                <Action key="Basics/Function/PushScreen">
-                  <Bind argument="menuScreen">
-                    <To key=":Screen">
-                      <Asset key="UI/Menu/MyMissions"/>
-                    </To>
-                  </Bind>
-                  <Bind argument="menuInput">
-                    <To key=":InputHandler">
-                      <Asset key="UI/Menu/MyMissions"/>
-                    </To>
-                  </Bind>
-                  <Bind argument="menu">
-                    <To key="UI/Menu/MyMissions"/>
-                  </Bind>
-                </Action>
+              <Action key="Basics/Function/PushScreen">
+                <Bind argument="menuScreen">
+                  <To key=":Screen">
+                    <Asset key="UI/Menu/MyMissions"/>
+                  </To>
+                </Bind>
+                <Bind argument="menuInput">
+                  <To key=":InputHandler">
+                    <Asset key="UI/Menu/MyMissions"/>
+                  </To>
+                </Bind>
+                <Bind argument="menu">
+                  <To key="UI/Menu/MyMissions"/>
+                </Bind>
               </Action>
             </Action>
-    <!--        <Action label="DLC Missions" key="Basics/Function/PushScreen">
-              <Argument name="menuScreen" value=":Screen/UI/Menu/DLCMissions"/>
-              <Argument name="menuInput" value=":InputHandler/UI/Menu/DLCMissions"/>
-              <Argument name="menu" value="UI/Menu/DLCMissions"/>
-            </Action>-->
           </Options>
           <Exit key="Basics/Function/PopScreen"/>
         </Menu>
@@ -3193,67 +3117,46 @@ timer:start(10000)</Code>
           <Font key="Basics/Font/Menu"/>
           <Options>
             <FileList id="List" folder="Projects/" user="true">
-              <Action>
-                <Action key="Basics/Function/SelectMission">
-                  <Bind argument="mission">
-                    <To key=":String">
-                      <Asset key="UI/Menu/MyMissions/List"/>
-                    </To>
-                  </Bind>
-                  <Bind argument="missionUser">
-                    <To key=":String">
-                      <Asset key="Literal" value="user"/>
-                    </To>
-                  </Bind>
-                </Action>
+              <Action key="Basics/Function/SelectMission">
+                <Bind argument="mission">
+                  <To key=":String">
+                    <Asset key="UI/Menu/MyMissions/List"/>
+                  </To>
+                </Bind>
+                <Bind argument="missionUser">
+                  <To key=":String">
+                    <Asset key="Literal" value="user"/>
+                  </To>
+                </Bind>
               </Action>
             </FileList>
           </Options>
           <Exit key="Basics/Function/PopScreen"/>
-        </Menu>
-        <Menu name="Extras">
-          <Colour key="Basics/ColourCycler/Menu Selection Highlight/0"/>
-          <Font key="Basics/Font/Menu"/>
-          <Options>
-    <!--             <Action label="How To Play" type="#"/> -->
-            <Action label="High Scores" key="Basics/Function/StartHighScore"/>
-            <Action label="Watch Replay" key="Basics/Function/PushScreen">
-              <Argument name="menuScreen" value=":Screen/UI/Menu/Replay"/>
-              <Argument name="menuInput" value=":InputHandler/UI/Menu/Replay"/>
-              <Argument name="menu" value="UI/Menu/Replay"/>
-            </Action>
-    <!--             <Action label="Credits" type="#"/> -->
-          </Options>
-          <Exit>
-            <Action key="Basics/Function/PopScreen"/>
-          </Exit>
         </Menu>
         <Menu name="Replay">
           <Colour key="Basics/ColourCycler/Menu Selection Highlight/0"/>
           <Font key="Basics/Font/Menu"/>
           <Options>
             <FileList id="List" folder="Recordings/" user="true">
-              <Action>
-                <Action key="Basics/Function/StartProjectNew">
-                  <Bind argument="mission">
-                    <To key="Basics/Project/Replay"/>
-                  </Bind>
-                  <Bind argument="missionInput">
-                    <To key=":InputHandler">
-                      <Asset key="Basics/Project/Replay"/>
-                    </To>
-                  </Bind>
-                  <Bind argument="missionScreen">
-                    <To key=":Screen">
-                      <Asset key="Basics/Project/Replay"/>
-                    </To>
-                  </Bind>
-                  <Bind argument="projectArgs">
-                    <To key=":ProjectOptions">
-                      <Asset key="Basics/ProjectOptions/Replay"/>
-                    </To>
-                  </Bind>
-                </Action>
+              <Action key="Basics/Function/StartProjectNew">
+                <Bind argument="mission">
+                  <To key="Basics/Project/Replay"/>
+                </Bind>
+                <Bind argument="missionInput">
+                  <To key=":InputHandler">
+                    <Asset key="Basics/Project/Replay"/>
+                  </To>
+                </Bind>
+                <Bind argument="missionScreen">
+                  <To key=":Screen">
+                    <Asset key="Basics/Project/Replay"/>
+                  </To>
+                </Bind>
+                <Bind argument="projectArgs">
+                  <To key=":ProjectOptions">
+                    <Asset key="Basics/ProjectOptions/Replay"/>
+                  </To>
+                </Bind>
               </Action>
             </FileList>
           </Options>
@@ -3262,12 +3165,8 @@ timer:start(10000)</Code>
         <Prompt name="ConfirmQuit" text="Quit Spindizzy?" false="No" true="Yes">
           <Highlight key="Basics/ColourCycler/Menu Selection Highlight/0"/>
           <Font key="Basics/Font/Menu"/>
-          <False>
-            <Action key="Basics/Function/PopScreen"/>
-          </False>
-          <True>
-            <Action key="Basics/Function/UIQuit"/>
-          </True>
+          <False key="Basics/Function/PopScreen"/>
+          <True key="Basics/Function/UIQuit"/>
         </Prompt>
         <Throbber name="LoadingScreen" duration="2000" repetitions="1" spots="8" spotSides="32" spotRadius="0.06" ringRadius="0.2">
           <Colour key="Basics/ColourCycler/Menu Selection Highlight/0"/>

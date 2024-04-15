@@ -250,9 +250,6 @@ namespace IsoRealms::Spindizzy {
     static const std::string BEHAVIOUR_DYNAMIC;
     static const std::string BEHAVIOUR_DYNAMIC_GHOST;
 
-    static const std::string SPLIT_TYPE_EAST;
-    static const std::string SPLIT_TYPE_WEST;
-
     // Definition data.
     Zone& cDefZone;
     TerrainType* cDefType;

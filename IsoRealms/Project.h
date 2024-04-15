@@ -170,29 +170,6 @@ namespace IsoRealms {
      * execution of the action until the beginning of the next update cycle.
      */
     class ActionExecutor : public IAction {
-      private:
-      class Action {
-        private:
-        ActionExecutor* cParent; /// Parent Action Executor.
-        ActionType cActionType;  /// Type from which the action is derived.
-        IAction* cAction;        /// Action to be executed.
-
-        public:
-        Action(ActionExecutor* parent, DOMNode& node, const std::string& id, IBindingRegistry* localArgs);
-
-        /**********************\
-         * Implements IAction *
-        \**********************/
-        void execute();
-        void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
-
-        ~Action();
-      };
-
-      std::vector<std::unique_ptr<Action>> cActions; /// Actions
-      Project* cParent;                              /// Parent Project.
-      IAssetUser<IAction>* cUser;                    /// Client of this action.
-      
       public:
         
       /**
@@ -204,7 +181,7 @@ namespace IsoRealms {
       ActionExecutor(Project* project, IAssetUser<IAction>* user);
       ActionExecutor(Project* project, DOMNode& node, const std::string& id, IAssetUser<IAction>* user, IBindingRegistry* localArgs);
 
-      void remove(Action* action);
+      ~ActionExecutor();
 
       /**********************\
        * Implements IAction *
@@ -213,6 +190,12 @@ namespace IsoRealms {
       IActionType* getActionType() const override;
       void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const override;
       bool hasConfiguration() const override;
+      
+      private:
+      Project* cParent;           /// Parent Project.
+      ActionType cActionType;     /// Type from which the action is derived.
+      IAction* cAction;           /// Action to be executed.
+      IAssetUser<IAction>* cUser; /// Client of this action.
     };
 
     class QuitActionType : public IActionType {

@@ -32,13 +32,19 @@ namespace IsoRealms::Basics {
     Options cOptions;
     std::function<void(bool)> cEndFunction;
     bool cFirstUse;
+    bool cDestructing;
+    bool cDestructed;
     std::mutex cMutex;
+    std::mutex cDestructMutex;
     
     public:
     ProjectLoader(Options options, std::function<void(bool)> endFunction);
     
     void loadProject(IApplication* application);
     bool isDestructReady();
+    void setDestructing();
+    void destruct();
+    bool isDestructed();
     Project* getLoadedProject();
     std::string getError();
     bool matches(const Options& options);

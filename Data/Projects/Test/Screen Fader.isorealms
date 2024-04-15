@@ -2,9 +2,7 @@
 <Project>
   <Screen key="UI/Panel/Test"/>
   <Input key="Literal"/>
-  <QuitAction>
-    <Action key="Quit"/>
-  </QuitAction>
+  <QuitAction key="Quit"/>
   <Modules>
     <Module name="Basics">
       <Configuration/>

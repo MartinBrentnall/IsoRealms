@@ -3,24 +3,20 @@
   <Screen key="Replay/Recorder/Recorder"/>
   <Input key="Replay/Recorder/Recorder"/>
   <Editor key="Literal"/>
-  <QuitAction>
-    <Action key="Quit"/>
-  </QuitAction>
+  <QuitAction key="Quit"/>
   <Include/>
   <Properties>
     <Property id="Mode">
-      <Action>
-        <Action key="Basics/Script">
-          <Bind variable="value">
-            <To key="~" local="value"/>
-          </Bind>
-          <Bind variable="project">
-            <To key=":Project">
-              <Asset key="Replay/Recorder/Recorder/Project"/>
-            </To>
-          </Bind>
-          <Code>project:setProperty("Mode", value:getValue())</Code>
-        </Action>
+      <Action key="Basics/Script">
+        <Bind variable="value">
+          <To key="~" local="value"/>
+        </Bind>
+        <Bind variable="project">
+          <To key=":Project">
+            <Asset key="Replay/Recorder/Recorder/Project"/>
+          </To>
+        </Bind>
+        <Code>project:setProperty("Mode", value:getValue())</Code>
       </Action>
     </Property>
   </Properties>
@@ -40,9 +36,7 @@
       <Configuration/>
       <Resources>
         <Recorder name="Recorder" project="Basics/Project">
-          <QuitAction>
-            <Action key="Basics/Function/Quit"/>
-          </QuitAction>
+          <QuitAction key="Basics/Function/Quit"/>
         </Recorder>
       </Resources>
     </Module>

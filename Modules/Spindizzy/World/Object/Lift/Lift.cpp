@@ -34,7 +34,7 @@ namespace IsoRealms::Spindizzy {
   const std::string Lift::ATTRIBUTE_Y            = "y";
   const std::string Lift::ATTRIBUTE_Z            = "z";
 
-  Lift::Lift(Zone& zone, LiftType* type, int x, int y, int z, int top, int bottom) :
+  Lift::Lift(Zone& zone, LiftType* type, int x, int y, int z, int bottom, int top) :
             cDefZone(zone),
             cDefType(type),
             cDefModel(cDefType->createModel()),

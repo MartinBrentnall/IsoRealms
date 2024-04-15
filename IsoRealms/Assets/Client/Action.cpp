@@ -25,9 +25,12 @@ namespace IsoRealms {
   }
 
   void Action::init(DOMNode& node, const std::string& tag, IBindingRegistry* localArgs, const std::string& id) {
-    cProject->init([this, &node, tag, localArgs, id](IAssets* assets) {
-      set(node, tag, localArgs, id);
-    });
+    if (node.containsNode(tag)) {
+      cProject->init([this, &node, tag, localArgs, id](IAssets* assets) {
+        cProject->release(this, cAction);
+        cAction = cProject->getAction(this, node, tag, localArgs, id);
+      });
+    }
   }
 
   void Action::execute() {
@@ -37,15 +40,6 @@ namespace IsoRealms {
   void Action::save(DOMNodeWriter* node, const std::string& tag) const {
     DOMNodeWriter mAssetNode = node->addBranch(tag);
     cAction->save(&mAssetNode, cProject);
-  }
-
-//   std::string Action::get() const {
-//     return cProject->getID(cAction);
-//   }
-
-  void Action::set(DOMNode& node, const std::string& tag, IBindingRegistry* localArgs, const std::string& id) {
-    cProject->release(this, cAction);
-    cAction = cProject->getAction(this, node, tag, localArgs, id);
   }
 
   void Action::relinquish(IAction* asset) {
