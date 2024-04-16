@@ -522,7 +522,7 @@ table.remove(inputStack)
 if currentMissionUser:getValue() == "user" then
   currentMissionUserBool = true
   missionPath = mission:getValue()
-  missionName = string.sub(mission:getValue(), string.find(mission:getValue(), "/[^/]*$"), string.len(mission:getValue()) - 10)
+  missionName = string.sub(missionPath, string.find(missionPath, "/[^/]*$") + 1, string.len(missionPath) - 10)
   currentMissionText:setValue("Spindizzy: " .. missionName)
   currentHighScoreText:setValue("Master Cartographers of " .. missionName)
   table.remove(menuStack)
@@ -3116,7 +3116,7 @@ startCreditsFunc:execute()</Code>
           <Colour key="Basics/ColourCycler/Menu Selection Highlight/0"/>
           <Font key="Basics/Font/Menu"/>
           <Options>
-            <FileList id="List" folder="Projects/" user="true">
+            <FileList id="List" folder="Projects" user="true">
               <Action key="Basics/Function/SelectMission">
                 <Bind argument="mission">
                   <To key=":String">
@@ -3137,7 +3137,7 @@ startCreditsFunc:execute()</Code>
           <Colour key="Basics/ColourCycler/Menu Selection Highlight/0"/>
           <Font key="Basics/Font/Menu"/>
           <Options>
-            <FileList id="List" folder="Recordings/" user="true">
+            <FileList id="List" folder="Recordings" user="true">
               <Action key="Basics/Function/StartProjectNew">
                 <Bind argument="mission">
                   <To key="Basics/Project/Replay"/>

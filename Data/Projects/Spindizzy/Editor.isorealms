@@ -546,7 +546,7 @@ end</Code>
                 </Bind>
               </Action>
             </Action>
-            <FileList id="List" folder="Projects/" user="true">
+            <FileList id="List" folder="Projects" user="true">
               <Action key="Basics/Function/LoadWorld">
                 <Bind argument="mission">
                   <To key=":String">
