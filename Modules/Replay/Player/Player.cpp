@@ -60,7 +60,8 @@ namespace IsoRealms::Replay {
     DOMNode mRecorderConfigurationNode = mInputConfigurationNode.getNode("RecorderConfiguration");
     for (DOMNode& mNode : mRecorderConfigurationNode) {
       std::string mInputType = mNode.getName();
-      std::string mInputID = mNode.getAttribute("key");
+      DOMNode mInputNode = mNode.getNode("Input");
+      std::string mInputID = mInputNode.getAttribute("key");
       if (mInputType == "Digital") {
         cOverriddenDigitalInputs[mInputID] = cDigitalInputs.emplace_back(std::make_unique<DigitalInput>()).get();
       } else if (mInputType == "Analogue") {
