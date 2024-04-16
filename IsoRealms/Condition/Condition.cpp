@@ -119,7 +119,7 @@ namespace IsoRealms {
   void Condition::save(DOMNodeWriter* node) {
     DOMNodeWriter mConditionNode = node->addBranch("Condition");
     if (cCriteria.size() + cConditions.size() > 1) {
-      mConditionNode.addAttribute("type", cAnd ? "and" : "or");
+      mConditionNode.addAttribute("type", std::string(cAnd ? "and" : "or"));
     }
     if (cNegated) {
       mConditionNode.addAttribute("negated", "true");
