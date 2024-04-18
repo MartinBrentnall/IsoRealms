@@ -62,7 +62,10 @@ namespace IsoRealms::Spindizzy {
         throw ParseException("Unknown tag for Spindizzy/ThemeSet: " + mChildName);
       }
     }
-    setNextTheme();
+
+    project->init([this](IAssets* assets) {
+      setNextTheme();
+    });
   }
 
   std::vector<IProperty*> ThemeSet::getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener) {
@@ -253,10 +256,10 @@ namespace IsoRealms::Spindizzy {
   void ThemeSet::setNextTheme() {
     std::vector<Theme*> mThemes = getThemes();
     if (cDefaultTheme == nullptr && !mThemes.empty()) {
-      cDefaultTheme = mThemes[0];
+      setDefaultTheme(mThemes[0]);
     } else for (unsigned int i = 0; i < mThemes.size(); i++) {
       if (mThemes[i] == cDefaultTheme) {
-        cDefaultTheme = i == mThemes.size() - 1 ? mThemes[0] : mThemes[i + 1];
+        setDefaultTheme(i == mThemes.size() - 1 ? mThemes[0] : mThemes[i + 1]);
         return;
       }
     }
@@ -265,10 +268,10 @@ namespace IsoRealms::Spindizzy {
   void ThemeSet::setPreviousTheme() {
     std::vector<Theme*> mThemes = getThemes();
     if (cDefaultTheme == nullptr && !mThemes.empty()) {
-      cDefaultTheme = mThemes[0];
+      setDefaultTheme(mThemes[0]);
     } else for (unsigned int i = 0; i < mThemes.size(); i++) {
       if (mThemes[i] == cDefaultTheme) {
-        cDefaultTheme = i == 0 ? mThemes[mThemes.size() - 1] : mThemes[i - 1];
+        setDefaultTheme(i == 0 ? mThemes[mThemes.size() - 1] : mThemes[i - 1]);
         return;
       }
     }
