@@ -30,9 +30,10 @@ namespace IsoRealms {
   class Boolean : public IAssetUser<IBoolean>,
                   public IStateListener<IBoolean*> {
     public:
-    Boolean(IProject* project, bool defaultValue, std::function<void(bool)> listener = nullptr);
+    Boolean(IProject* project, bool defaultValue = false, std::function<void(bool)> listener = nullptr);
 
     void init(DOMNode& node, const std::string& tag);
+    void set(DOMNode& node, const std::string& tag);
     void save(DOMNodeWriter* node, const std::string& tag) const;
 
     IBoolean* operator->() const {

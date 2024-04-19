@@ -54,9 +54,9 @@ namespace IsoRealms::Replay {
     for (DOMNode& mNode : mRecorderConfigurationNode) {
       std::string mInputType = mNode.getName();
       if (mInputType == "Digital") {
-        cDefDigitalInputs.emplace_back(std::make_unique<Boolean>(cProject.get(), false, [this, mInputID](bool value) {writeInput(mInputID, value);})).get()->init(mNode, TAG_INPUT);
+        cDefDigitalInputs.emplace_back(std::make_unique<Boolean>(cProject.get(), false, [this, mInputID](bool value) {writeInput(mInputID, value);})).get()->set(mNode, TAG_INPUT);
       } else if (mInputType == "Analogue") {
-        cDefAnalogueInputs.emplace_back(std::make_unique<Float>(cProject.get(), 0.0f, [this, mInputID](float value) {writeInput(mInputID, value);})).get()->init(mNode, TAG_INPUT);
+        cDefAnalogueInputs.emplace_back(std::make_unique<Float>(cProject.get(), 0.0f, [this, mInputID](float value) {writeInput(mInputID, value);})).get()->set(mNode, TAG_INPUT);
       } else {
         // TODO: Throw.
       }

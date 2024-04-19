@@ -59,6 +59,7 @@ namespace IsoRealms {
     Model(IProject* project);
 
     void init(DOMNode& node, const std::string& tag);
+    void set(DOMNode& node, const std::string& tag);
     void save(DOMNodeWriter* node, const std::string& tag) const;
 
     std::unique_ptr<ModelInstance> createInstance();

@@ -6,7 +6,7 @@
   <InitAction key="Basics/Script">
     <Bind variable="optionsLoader">
       <To key=":Action">
-        <Action key="Basics/Function/ReloadConfiguration"/>
+        <Asset key="Basics/Function/ReloadConfiguration"/>
       </To>
     </Bind>
     <Code>menuStack = {}
@@ -17,7 +17,7 @@ optionsLoader:execute()</Code>
   <QuitAction key="Basics/Script">
     <Bind variable="confirm">
       <To key=":Action">
-        <Action key="Basics/Function/PushScreen">
+        <Asset key="Basics/Function/PushScreen">
           <Bind argument="menuScreen">
             <To key=":Screen">
               <Asset key="UI/Prompt/Close"/>
@@ -31,12 +31,12 @@ optionsLoader:execute()</Code>
           <Bind argument="menu">
             <To key="UI/Prompt/Close"/>
           </Bind>
-        </Action>
+        </Asset>
       </To>
     </Bind>
     <Bind variable="unpause">
       <To key=":Action">
-        <Action key="Basics/Function/Unpause"/>
+        <Asset key="Basics/Function/Unpause"/>
       </To>
     </Bind>
     <Bind variable="project">
@@ -242,7 +242,7 @@ end</Code>
         <Function name="LoadWorld">
           <Bind variable="showPrompt">
             <To key=":Action">
-              <Action key="Basics/Function/PushScreen">
+              <Asset key="Basics/Function/PushScreen">
                 <Bind argument="menuScreen">
                   <To key=":Screen">
                     <Asset key="UI/Prompt/Load"/>
@@ -256,7 +256,7 @@ end</Code>
                 <Bind argument="menu">
                   <To key="UI/Prompt/Load"/>
                 </Bind>
-              </Action>
+              </Asset>
             </To>
           </Bind>
           <Bind variable="missionToLoad">
@@ -387,7 +387,7 @@ showPrompt:execute()</Code>
                 </Bind>
                 <Bind variable="unpause">
                   <To key=":Action">
-                    <Action key="Basics/Function/Unpause"/>
+                    <Asset key="Basics/Function/Unpause"/>
                   </To>
                 </Bind>
                 <Code>playTesting = true
@@ -410,12 +410,12 @@ unpause:execute()</Code>
                 </Bind>
                 <Bind variable="unpause">
                   <To key=":Action">
-                    <Action key="Basics/Function/Unpause"/>
+                    <Asset key="Basics/Function/Unpause"/>
                   </To>
                 </Bind>
                 <Bind variable="saveAs">
                   <To key=":Action">
-                    <Action key="Basics/Function/PushScreen">
+                    <Asset key="Basics/Function/PushScreen">
                       <Bind argument="menuScreen">
                         <To key=":Screen">
                           <Asset key="UI/Layout/SaveAs"/>
@@ -429,7 +429,7 @@ unpause:execute()</Code>
                       <Bind argument="menu">
                         <To key="UI/VirtualKeyboard/SaveAsPrompt"/>
                       </Bind>
-                    </Action>
+                    </Asset>
                   </To>
                 </Bind>
                 <Code>if project:canSave() then
@@ -569,7 +569,7 @@ end</Code>
           <False key="Basics/Script">
             <Bind variable="cancel">
               <To key=":Action">
-                <Action key="Basics/Function/Unpause"/>
+                <Asset key="Basics/Function/Unpause"/>
               </To>
             </Bind>
             <Code>awaitingQuit = nil
@@ -578,7 +578,7 @@ cancel:execute()</Code>
           <True key="Basics/Script">
             <Bind variable="quit">
               <To key=":Action">
-                <Action key="Quit"/>
+                <Asset key="Quit"/>
               </To>
             </Bind>
             <Code>quit:execute()</Code>
@@ -610,7 +610,7 @@ cancel:execute()</Code>
             </Bind>
             <Bind variable="popScreen">
               <To key=":Action">
-                <Action key="Basics/Function/PopScreen"/>
+                <Asset key="Basics/Function/PopScreen"/>
               </To>
             </Bind>
             <Bind variable="screen">
@@ -642,7 +642,7 @@ screen:setScreen(loading)</Code>
             </Bind>
             <Bind variable="popScreen">
               <To key=":Action">
-                <Action key="Basics/Function/PopScreen"/>
+                <Asset key="Basics/Function/PopScreen"/>
               </To>
             </Bind>
             <Bind variable="screen">
@@ -667,7 +667,7 @@ screen:setScreen(loading)</Code>
           <True key="Basics/Script">
             <Bind variable="unpause">
               <To key=":Action">
-                <Action key="Basics/Function/Unpause"/>
+                <Asset key="Basics/Function/Unpause"/>
               </To>
             </Bind>
             <Bind variable="project">
@@ -695,7 +695,7 @@ unpause:execute()</Code>
             </Bind>
             <Bind variable="unpause">
               <To key=":Action">
-                <Action key="Basics/Function/Unpause"/>
+                <Asset key="Basics/Function/Unpause"/>
               </To>
             </Bind>
             <Bind variable="filename">
@@ -705,7 +705,7 @@ unpause:execute()</Code>
             </Bind>
             <Bind variable="overwritePrompt">
               <To key=":Action">
-                <Action key="Basics/Function/PushScreen">
+                <Asset key="Basics/Function/PushScreen">
                   <Bind argument="menuScreen">
                     <To key=":Screen">
                       <Asset key="UI/Prompt/Overwrite"/>
@@ -719,7 +719,7 @@ unpause:execute()</Code>
                   <Bind argument="menu">
                     <To key="UI/Prompt/Overwrite"/>
                   </Bind>
-                </Action>
+                </Asset>
               </To>
             </Bind>
             <Code>if project:exists("Projects/" .. filename:getValue()) then

@@ -27,7 +27,7 @@ namespace IsoRealms::Spindizzy {
 
   SurfacePatternTile::SurfacePatternTile(IProject* project, Spindizzy* spindizzy, DOMNode& node) :
             cDefTexture(project) {
-    cDefTexture.init(node, TAG_TEXTURE);
+    cDefTexture.set(node, TAG_TEXTURE);
   }
 
   bool SurfacePatternTile::contains(ITexture* texture) {

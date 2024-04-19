@@ -116,7 +116,7 @@ end</Code>
             </Bind>
             <Bind variable="soundImpactHard">
               <To key=":Action">
-                <Action key="Basics/Sound/ImpactHard"/>
+                <Asset key="Basics/Sound/ImpactHard"/>
               </To>
             </Bind>
             <Bind variable="topDebris">
@@ -492,17 +492,17 @@ end</Code>
         <Function name="RandomClick">
           <Bind variable="click1">
             <To key=":Action">
-              <Action key="Basics/Sound/LiftClick1"/>
+              <Asset key="Basics/Sound/LiftClick1"/>
             </To>
           </Bind>
           <Bind variable="click2">
             <To key=":Action">
-              <Action key="Basics/Sound/LiftClick2"/>
+              <Asset key="Basics/Sound/LiftClick2"/>
             </To>
           </Bind>
           <Bind variable="click3">
             <To key=":Action">
-              <Action key="Basics/Sound/LiftClick3"/>
+              <Asset key="Basics/Sound/LiftClick3"/>
             </To>
           </Bind>
           <Code>local val = math.random(0, 2)
@@ -659,7 +659,7 @@ end</Code>
           </Bind>
           <Bind variable="optionsLoader">
             <To key=":Action">
-              <Action key="Basics/Function/ReloadConfiguration"/>
+              <Asset key="Basics/Function/ReloadConfiguration"/>
             </To>
           </Bind>
           <Code>menuStack = {}
@@ -764,7 +764,7 @@ end</Code>
           </Bind>
           <Bind variable="ending">
             <To key=":Action">
-              <Action key="Basics/Function/Ending"/>
+              <Asset key="Basics/Function/Ending"/>
             </To>
           </Bind>
           <Bind variable="mandatoryZoneTime">
@@ -1531,7 +1531,7 @@ end</Code>
             </Bind>
             <Bind variable="zoneEnterFunction">
               <To key=":Action">
-                <Action key="Basics/Function/ZoneEntered"/>
+                <Asset key="Basics/Function/ZoneEntered"/>
               </To>
             </Bind>
             <Bind variable="sound">
@@ -2219,7 +2219,7 @@ hasFocus = false</Code>
           <EnteredAction key="Basics/Script">
             <Bind variable="sound">
               <To key=":Action">
-                <Action key="Basics/Sound/Jewel"/>
+                <Asset key="Basics/Sound/Jewel"/>
               </To>
             </Bind>
             <Bind variable="score">
@@ -2244,7 +2244,7 @@ hasFocus = false</Code>
             </Bind>
             <Bind variable="ending">
               <To key=":Action">
-                <Action key="Basics/Function/Ending"/>
+                <Asset key="Basics/Function/Ending"/>
               </To>
             </Bind>
             <Code>sound:execute()
@@ -2278,12 +2278,12 @@ end</Code>
             </Bind>
             <Bind variable="zoneEnterFunction">
               <To key=":Action">
-                <Action key="Basics/Function/ZoneEntered"/>
+                <Asset key="Basics/Function/ZoneEntered"/>
               </To>
             </Bind>
             <Bind variable="optionsLoader">
               <To key=":Action">
-                <Action key="Basics/Function/ReloadConfiguration"/>
+                <Asset key="Basics/Function/ReloadConfiguration"/>
               </To>
             </Bind>
             <Code>-- Hack to reload the controls when starting the game.
@@ -2304,7 +2304,7 @@ zoneEnterFunction:execute()</Code>
             </Bind>
             <Bind variable="zoneExitFunction">
               <To key=":Action">
-                <Action key="Basics/Function/ZoneExited"/>
+                <Asset key="Basics/Function/ZoneExited"/>
               </To>
             </Bind>
             <Code>exited = zone
@@ -2690,7 +2690,7 @@ timeLimit:setSpeed(1.0 + alienContactCount * 20.0)</Code>
             </Bind>
             <Bind variable="soundRespawnHard">
               <To key=":Action">
-                <Action key="Basics/Sound/RespawnHard"/>
+                <Asset key="Basics/Sound/RespawnHard"/>
               </To>
             </Bind>
             <Bind variable="launchMomentum">
@@ -2729,17 +2729,17 @@ end</Code>
             </Bind>
             <Bind variable="soundImpactHard">
               <To key=":Action">
-                <Action key="Basics/Sound/ImpactHard"/>
+                <Asset key="Basics/Sound/ImpactHard"/>
               </To>
             </Bind>
             <Bind variable="soundImpactMedium">
               <To key=":Action">
-                <Action key="Basics/Sound/ImpactMedium"/>
+                <Asset key="Basics/Sound/ImpactMedium"/>
               </To>
             </Bind>
             <Bind variable="soundImpactSoft">
               <To key=":Action">
-                <Action key="Basics/Sound/ImpactSoft"/>
+                <Asset key="Basics/Sound/ImpactSoft"/>
               </To>
             </Bind>
             <Code>player:setStepReach(0.5)
@@ -2833,12 +2833,12 @@ end</Code>
             </Bind>
             <Bind variable="zoneEnterFunction">
               <To key=":Action">
-                <Action key="Basics/Function/ZoneEntered"/>
+                <Asset key="Basics/Function/ZoneEntered"/>
               </To>
             </Bind>
             <Bind variable="zoneExitFunction">
               <To key=":Action">
-                <Action key="Basics/Function/ZoneExited"/>
+                <Asset key="Basics/Function/ZoneExited"/>
               </To>
             </Bind>
             <Code>-- This action is only applicable when the wall is in a different zone than the player.
@@ -3059,7 +3059,7 @@ end</Code>
           <ContactAction key="Basics/Function/ResetSwitch">
             <Bind argument="sound">
               <To key=":Action">
-                <Action key="Basics/Sound/DiamondNone"/>
+                <Asset key="Basics/Sound/DiamondNone"/>
               </To>
             </Bind>
           </ContactAction>
@@ -3099,7 +3099,7 @@ end</Code>
             </Bind>
             <Bind argument="sound">
               <To key=":Action">
-                <Action key="Basics/Sound/DiamondLeft"/>
+                <Asset key="Basics/Sound/DiamondLeft"/>
               </To>
             </Bind>
           </ContactAction>
@@ -3139,7 +3139,7 @@ end</Code>
             </Bind>
             <Bind argument="sound">
               <To key=":Action">
-                <Action key="Basics/Sound/DiamondRight"/>
+                <Asset key="Basics/Sound/DiamondRight"/>
               </To>
             </Bind>
           </ContactAction>
@@ -3179,7 +3179,7 @@ end</Code>
             </Bind>
             <Bind argument="sound">
               <To key=":Action">
-                <Action key="Basics/Sound/DiamondBoth"/>
+                <Asset key="Basics/Sound/DiamondBoth"/>
               </To>
             </Bind>
           </ContactAction>
@@ -3219,7 +3219,7 @@ end</Code>
             </Bind>
             <Bind argument="sound">
               <To key=":Action">
-                <Action key="Basics/Sound/SquareNone"/>
+                <Asset key="Basics/Sound/SquareNone"/>
               </To>
             </Bind>
           </ContactAction>
@@ -3259,7 +3259,7 @@ end</Code>
             </Bind>
             <Bind argument="sound">
               <To key=":Action">
-                <Action key="Basics/Sound/SquareLeft"/>
+                <Asset key="Basics/Sound/SquareLeft"/>
               </To>
             </Bind>
           </ContactAction>
@@ -3299,7 +3299,7 @@ end</Code>
             </Bind>
             <Bind argument="sound">
               <To key=":Action">
-                <Action key="Basics/Sound/SquareRight"/>
+                <Asset key="Basics/Sound/SquareRight"/>
               </To>
             </Bind>
           </ContactAction>
@@ -3339,7 +3339,7 @@ end</Code>
             </Bind>
             <Bind argument="sound">
               <To key=":Action">
-                <Action key="Basics/Sound/SquareBoth"/>
+                <Asset key="Basics/Sound/SquareBoth"/>
               </To>
             </Bind>
           </ContactAction>
@@ -3379,7 +3379,7 @@ end</Code>
             </Bind>
             <Bind argument="sound">
               <To key=":Action">
-                <Action key="Basics/Sound/CircleNone"/>
+                <Asset key="Basics/Sound/CircleNone"/>
               </To>
             </Bind>
           </ContactAction>
@@ -3419,7 +3419,7 @@ end</Code>
             </Bind>
             <Bind argument="sound">
               <To key=":Action">
-                <Action key="Basics/Sound/CircleLeft"/>
+                <Asset key="Basics/Sound/CircleLeft"/>
               </To>
             </Bind>
           </ContactAction>
@@ -3459,7 +3459,7 @@ end</Code>
             </Bind>
             <Bind argument="sound">
               <To key=":Action">
-                <Action key="Basics/Sound/CircleRight"/>
+                <Asset key="Basics/Sound/CircleRight"/>
               </To>
             </Bind>
           </ContactAction>
@@ -3499,7 +3499,7 @@ end</Code>
             </Bind>
             <Bind argument="sound">
               <To key=":Action">
-                <Action key="Basics/Sound/CircleBoth"/>
+                <Asset key="Basics/Sound/CircleBoth"/>
               </To>
             </Bind>
           </ContactAction>

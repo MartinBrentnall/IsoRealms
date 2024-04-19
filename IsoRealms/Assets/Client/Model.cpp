@@ -34,6 +34,13 @@ namespace IsoRealms {
   }
 
   void Model::init(DOMNode& node, const std::string& tag) {
+    cProject->init([this, &node, tag](IAssets* assets) {
+      set(node, tag);
+    });
+  }
+
+  void Model::set(DOMNode& node, const std::string& tag) {
+    cProject->release(this, cModel);
     DOMNode& mAssetNode = node.getNode(tag);
     cDefOffsetX = mAssetNode.getFloatAttribute(ATTRIBUTE_OFFSET_X, 0.0f);
     cDefOffsetY = mAssetNode.getFloatAttribute(ATTRIBUTE_OFFSET_Y, 0.0f);
@@ -43,13 +50,10 @@ namespace IsoRealms {
     cDefScaleY  = mAssetNode.getFloatAttribute(ATTRIBUTE_SCALE_Y,  1.0f);
     cDefScaleZ  = mAssetNode.getFloatAttribute(ATTRIBUTE_SCALE_Z,  1.0f);
     cDefYaw     = mAssetNode.getFloatAttribute(ATTRIBUTE_YAW,      0.0f);
-    cProject->init([this, &mAssetNode](IAssets* assets) {
-      cProject->release(this, cModel);
-      cModel = cProject->getModelType(this, mAssetNode);
-      for (ModelInstance* mInstance : cInstances) {
-        mInstance->set(cModel->createModel());
-      }
-    });
+    cModel = cProject->getModelType(this, mAssetNode);
+    for (ModelInstance* mInstance : cInstances) {
+      mInstance->set(cModel->createModel());
+    }
   }
 
   void Model::save(DOMNodeWriter* node, const std::string& tag) const {
@@ -81,7 +85,7 @@ namespace IsoRealms {
     applyTransformation();
     return cModel->renderPreview();
   }
-  
+
   void Model::applyTransformation() const {
     glRotatef(cDefPitch, 1.0f, 0.0f, 0.0f);
     glRotatef(cDefYaw, 0.0f, 0.0f, 1.0f);

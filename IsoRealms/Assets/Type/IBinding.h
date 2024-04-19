@@ -32,8 +32,6 @@ namespace IsoRealms {
   class IBinding : public IAsset {
     public:
     virtual void bind(const std::string& bindFunction) const = 0;
-    virtual void save(DOMNodeWriter* node, IBindingRegistry* registry, IAssetIdentifier* identifier, const std::string& attribute) const = 0;
-    virtual void release(IAssets* releaser) = 0; // TODO: Should this be here?  Is it used by anything other that the LuaBindingRegistry?
 
     virtual ~IBinding() {}
   };

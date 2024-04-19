@@ -701,12 +701,12 @@ isoRealms:persistGlobalConfiguration()</Code>
           <Exit key="Basics/Script">
             <Bind variable="screenPopper">
               <To key=":Action">
-                <Action key="Basics/Function/PopScreen"/>
+                <Asset key="Basics/Function/PopScreen"/>
               </To>
             </Bind>
             <Bind variable="optionsLoader">
               <To key=":Action">
-                <Action key="Basics/Function/ReloadConfiguration"/>
+                <Asset key="Basics/Function/ReloadConfiguration"/>
               </To>
             </Bind>
             <Bind variable="isoRealms">
@@ -791,12 +791,12 @@ screen:setScreen(menuStack[#menuStack])</Code>
             </Bind>
             <Bind variable="optionsLoader">
               <To key=":Action">
-                <Action key="Basics/Function/ReloadConfiguration"/>
+                <Asset key="Basics/Function/ReloadConfiguration"/>
               </To>
             </Bind>
             <Bind variable="screenPopper">
               <To key=":Action">
-                <Action key="Basics/Function/PopScreen"/>
+                <Asset key="Basics/Function/PopScreen"/>
               </To>
             </Bind>
             <Bind variable="isoRealms">

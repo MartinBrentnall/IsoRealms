@@ -40,19 +40,27 @@ namespace IsoRealms::Basics {
     project->reset([this]() {
 
       // Wait to prevent a crash if a project is still under construction..
-//       while (cRuntimeLoading) {
-//         IsoRealms::Project* mProject = cRuntimeProjectLoader->getLoadedProject();
-//         if (mProject != nullptr) {
-//           cRuntimeLoading = false;
-//         }
-//       }
-//       cRuntimeOldProjects.clear();
-//       cRuntimeLoading            = false;
+      if (cRuntimeProjectLoader != nullptr) {
+        while (cRuntimeLoading) {
+          IsoRealms::Project* mProject = cRuntimeProjectLoader->getLoadedProject();
+          if (mProject != nullptr) {
+            cRuntimeLoading = false;
+          }
+        }
+      }
+      cRuntimeOldProjects.clear();
+      cRuntimeLoading            = false;
       cRuntimeRunning            = cDefRunning;
       cRuntimeEditing            = cDefEditing;
       cRuntimeQuitRequestGranted = false;
-//       cRuntimeProjectLoader      = nullptr;
-//       cRuntimeProject            = nullptr;
+      
+      // Start loading the project, ready action will be executed when it's done.
+      std::string mFile = cDefProjectOptionsArg.getOption("file");
+      if (mFile != "") {
+        prepareInternal(&cDefProjectOptionsArg, false);
+      } else {
+        prepare(*cDefProjectOptions, false);
+      }
     });
 
     project->updateRuntime([this](unsigned int milliseconds) {
@@ -100,16 +108,7 @@ namespace IsoRealms::Basics {
     cDefEndAction.init(node, TAG_END);
     cDefReadyAction.init(node, TAG_READY);
     cDefProjectOptions.init(node, TAG_OPTIONS);
-
-    Options mProjectOptions = options->getFixedOptions();
-    project->init([this, &node, mProjectOptions](IAssets* resources) {
-      std::string mFile = mProjectOptions.getOption("file");
-      if (mFile != "") {
-        prepareInternal(&mProjectOptions, false);
-      } else {
-        prepare(*cDefProjectOptions, false);
-      }
-    });
+    cDefProjectOptionsArg = options->getFixedOptions();
   }
 
   void Project::registerAssets(IAssetRegistry* assets) {
@@ -230,6 +229,7 @@ namespace IsoRealms::Basics {
 
     // If it's the same as the current project, nothing to do.
     if (!force && cRuntimeProjectLoader != nullptr && cRuntimeProjectLoader->matches(*options)) {
+      cRuntimeLoading = true;
       cRuntimeProject = nullptr;
       return;
     }
@@ -246,6 +246,8 @@ namespace IsoRealms::Basics {
         if (cRuntimeOldProjects[i]->matches(*options)) {
           cRuntimeProjectLoader = std::move(cRuntimeOldProjects[i]);
           cRuntimeOldProjects.erase(cRuntimeOldProjects.begin() + i);
+          cRuntimeLoading = true;
+          cRuntimeProject = nullptr;
           return;
         }
       }

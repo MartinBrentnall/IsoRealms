@@ -45,7 +45,7 @@
     </Bind>
     <Bind variable="optionsLoader">
       <To key=":Action">
-        <Action key="Basics/Function/ReloadConfiguration"/>
+        <Asset key="Basics/Function/ReloadConfiguration"/>
       </To>
     </Bind>
     <Bind variable="scoreTable">
@@ -124,7 +124,7 @@ messages3 = {"",
   <QuitAction key="Basics/Script">
     <Bind variable="quit">
       <To key=":Action">
-        <Action key="Quit"/>
+        <Asset key="Quit"/>
       </To>
     </Bind>
     <Code>if currentMission ~= nil then
@@ -156,7 +156,7 @@ end</Code>
           <Action key="Basics/Script">
             <Bind variable="popScreenFunc">
               <To key=":Action">
-                <Action key="Basics/Function/PopScreen"/>
+                <Asset key="Basics/Function/PopScreen"/>
               </To>
             </Bind>
             <Bind variable="decor">
@@ -359,12 +359,12 @@ project:finish(false)</Code>
           </Bind>
           <Bind variable="optionsLoader">
             <To key=":Action">
-              <Action key="Basics/Function/ReloadConfiguration"/>
+              <Asset key="Basics/Function/ReloadConfiguration"/>
             </To>
           </Bind>
           <Bind variable="quit">
             <To key=":Action">
-              <Action key="Quit"/>
+              <Asset key="Quit"/>
             </To>
           </Bind>
           <Bind variable="scoreTable">
@@ -2907,7 +2907,7 @@ timer:start(10000)</Code>
               <Action key="Basics/Script">
                 <Bind variable="pushLinksMenuFunc">
                   <To key=":Action">
-                    <Action key="Basics/Function/PushScreen">
+                    <Asset key="Basics/Function/PushScreen">
                       <Bind argument="menuScreen">
                         <To key=":Screen">
                           <Asset key="UI/Menu/Links"/>
@@ -2921,12 +2921,12 @@ timer:start(10000)</Code>
                       <Bind argument="menu">
                         <To key="UI/Menu/Links"/>
                       </Bind>
-                    </Action>
+                    </Asset>
                   </To>
                 </Bind>
                 <Bind variable="startAuthorMessageFunc"> 
                   <To key=":Action">
-                    <Action key="Basics/Function/StartAuthorsMessage"/>
+                    <Asset key="Basics/Function/StartAuthorsMessage"/>
                   </To>
                 </Bind>
                 <Code>pushLinksMenuFunc:execute()
@@ -2938,7 +2938,7 @@ startAuthorMessageFunc:execute()</Code>
               <Action key="Basics/Script">
                 <Bind variable="pushLinksMenuFunc">
                   <To key=":Action">
-                    <Action key="Basics/Function/PushScreen">
+                    <Asset key="Basics/Function/PushScreen">
                       <Bind argument="menuScreen">
                         <To key=":Screen">
                           <Asset key="UI/Menu/Links"/>
@@ -2952,12 +2952,12 @@ startAuthorMessageFunc:execute()</Code>
                       <Bind argument="menu">
                         <To key="UI/Menu/Links"/>
                       </Bind>
-                    </Action>
+                    </Asset>
                   </To>
                 </Bind>
                 <Bind variable="startCreditsFunc">
                   <To key=":Action">
-                    <Action key="Basics/Function/StartCreditsMessage"/>
+                    <Asset key="Basics/Function/StartCreditsMessage"/>
                   </To>
                 </Bind>
                 <Code>-- TODO: This is weird... it's just pushed on to be popped off to make the main menu appear when leaving the credits

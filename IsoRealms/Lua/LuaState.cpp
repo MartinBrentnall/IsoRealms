@@ -41,7 +41,7 @@ namespace IsoRealms {
     // TODO: Sandbox the lua state!  See http://lua-users.org/wiki/SandBoxes
     
     // Bind IsoRealms library API's.
-    cLua.new_usertype<Action>("Action",                  "execute",              &Action::execute);
+    cLua.new_usertype<IAction>("Action",                 "execute",              &IAction::execute);
     cLua.new_usertype<IAssets>("Assets",                 "setProperty",          &IAssets::setProperty);
     cLua.new_usertype<IBoolean>("Boolean",               "getValue",             &IBoolean::getValue);
     cLua.new_usertype<IColour>("Colour");

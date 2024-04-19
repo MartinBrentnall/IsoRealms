@@ -47,6 +47,7 @@ namespace IsoRealms {
           cApplication(application),
           cAssetOverride(override),
           cLuaBinding(this, this),
+          cResourcesLoaded(false),
           cProcessingInput(false),
           cRuntimeUpdatingRuntime(false),
           cRuntimeResetPostponed(false),
@@ -146,20 +147,17 @@ namespace IsoRealms {
       for (const std::unique_ptr<Module>& mModule : cModules) {
         mModule->registerAssets();
       }
+      cResourcesLoaded = true;
 
       // Initialise everything
-      // Copy the vector because more initialisers might be added from calling the current ones!
-      while (!cInitialisers.empty()) {
-        std::vector<std::function<void(IAssets*)>> mCurrentInitialisers = cInitialisers;
-        cInitialisers.clear();
-        for (unsigned int j = 0; j < mCurrentInitialisers.size(); j++) {
-//           std::cout << "INIT " << j << " OF " << mCurrentInitialisers.size() << std::endl;
-//           if (j == 360) {
-//             std::cout << "DEBUG!" << std::endl;
-//           }
-          mCurrentInitialisers[j](this);
-        }
+      for (unsigned int j = 0; j < cInitialisers.size(); j++) {
+//         std::cout << "INIT " << j << " OF " << cInitialisers.size() << std::endl;
+//         if (j == 360) {
+//           std::cout << "DEBUG!" << std::endl;
+//         }
+        cInitialisers[j](this);
       }
+      cInitialisers.clear();
 
       // Screen listeners cannot notified of screens before initialisation, so we need to do it now.
       for (std::pair<IScreen* const, std::unique_ptr<ScreenProxy>>& mPair : cScreenProxyMapping) {
@@ -173,6 +171,8 @@ namespace IsoRealms {
       mainThreadInit([this]() {
         (*cDefInitAction)->execute();
       });
+    } else {
+      cResourcesLoaded = true;
     }
   }
 
@@ -687,6 +687,10 @@ namespace IsoRealms {
 //     if (cInitialisers.size() == 360) {
 //       std::cout << "DEBUG!" << std::endl;
 //     }
+
+    if (cResourcesLoaded) {
+      throw ArgumentException("ERROR: Project::init: Resource initialisation is not allowed at this stage");
+    }
     cInitialisers.push_back(initialiser);
   }
 

@@ -3,7 +3,7 @@
   <ResetAction key="Basics/Script">
     <Bind variable="resetFunction">
       <To key=":Action">
-        <Action key="Basics/Function/SpindizzyReset"/>
+        <Asset key="Basics/Function/SpindizzyReset"/>
       </To>
     </Bind>
     <Bind variable="leftPanel">

@@ -26,11 +26,15 @@ namespace IsoRealms {
   }
 
   void Binding::init(DOMNode& node, const std::string& tag) {
-    DOMNode& mAssetNode = node.getNode(tag);
-    cProject->init([this, &mAssetNode](IAssets* assets) {
-      cProject->release(this, cDefBinding);
-      cDefBinding = cProject->getBinding(this, mAssetNode, cDefRegistry);
+    cProject->init([this, &node, tag](IAssets* assets) {
+      set(node, tag);
     });
+  }
+
+  void Binding::set(DOMNode& node, const std::string& tag) {
+    DOMNode& mAssetNode = node.getNode(tag);
+    cProject->release(this, cDefBinding);
+    cDefBinding = cProject->getBinding(this, mAssetNode, cDefRegistry);
   }
 
   void Binding::save(DOMNodeWriter* node, bool local, const std::string& tag) const {

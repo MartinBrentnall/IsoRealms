@@ -94,6 +94,8 @@ namespace IsoRealms::Basics {
     IProject* cProject;
       
     // Definition data
+    std::string cDefProjectPath;
+    Options cDefProjectOptionsArg;
     Action cDefReadyAction;
     Action cDefEndAction;
     ProjectOptions cDefProjectOptions;

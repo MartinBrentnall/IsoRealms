@@ -33,18 +33,7 @@
 #include "Assets/Fixed/LiteralProjectOptions.h"
 #include "Assets/Fixed/LiteralScreen.h"
 #include "Assets/Fixed/LiteralTexture.h"
-#include "Assets/Providers/AssetConvertedActionToBinding.h"
-#include "Assets/Providers/AssetConvertedBooleanToBinding.h"
-#include "Assets/Providers/AssetConvertedColourToBinding.h"
-#include "Assets/Providers/AssetConvertedFloatToBinding.h"
-#include "Assets/Providers/AssetConvertedFontToBinding.h"
-#include "Assets/Providers/AssetConvertedInputHandlerToBinding.h"
-#include "Assets/Providers/AssetConvertedIntegerToBinding.h"
-#include "Assets/Providers/AssetConvertedProjectOptionsToBinding.h"
-#include "Assets/Providers/AssetConvertedProjectToBinding.h"
-#include "Assets/Providers/AssetConvertedScreenToBinding.h"
-#include "Assets/Providers/AssetConvertedStringToBinding.h"
-#include "Assets/Providers/AssetConvertedVertexToBinding.h"
+#include "Assets/Providers/AssetConvertedBinding.h"
 #include "Assets/Providers/AssetConvertedString.h"
 #include "Assets/Providers/AssetConvertedProjectToInteger.h"
 #include "Assets/Providers/AssetConvertedProjectToString.h"
@@ -297,7 +286,7 @@ namespace IsoRealms {
     LuaState cLuaState;                         /// Lua State for this project.
     std::vector<std::unique_ptr<Include>> cInclusions;          /// List of other project files included within this project.
     LuaBinding<Project> cLuaBinding;          /// Project interface for actions and scripting.
-
+    bool cResourcesLoaded;                    /// Indicates that resource loading from modules has completed.
 
     // Callbacks
     std::queue<std::function<void()>> cMainThreadAllocTasks;         /// Allocation tasks to be perfomed on the main thread during initialisation.
@@ -383,21 +372,21 @@ namespace IsoRealms {
     AssetLiteralVertex                                                 cLiteralProviderVertex;
 
     // Conversion asset providers.
-    AssetConvertedActionToBinding cConversionProviderActionToBinding;
-    AssetConvertedBooleanToBinding cConversionProviderBooleanToBinding;
-    AssetConvertedColourToBinding cConversionProviderColourToBinding;
-    AssetConvertedFloatToBinding cConversionProviderFloatToBinding;
-    AssetConvertedFontToBinding cConversionProviderFontToBinding;
-    AssetConvertedInputHandlerToBinding cConversionProviderInputHandlerToBinding;
-    AssetConvertedIntegerToBinding cConversionProviderIntegerToBinding;
-    AssetConvertedProjectOptionsToBinding cConversionProviderProjectOptionsToBinding;
-    AssetConvertedProjectToBinding cConversionProviderProjectToBinding;
-    AssetConvertedScreenToBinding cConversionProviderScreenToBinding;
-    AssetConvertedStringToBinding cConversionProviderStringToBinding;
-    AssetConvertedVertexToBinding cConversionProviderVertexToBinding;
-    AssetConvertedString cConversionProviderString;
-    AssetConvertedProjectToInteger cConversionProviderProjectToInteger;
-    AssetConvertedProjectToString cConversionProviderProjectToString;
+    AssetConvertedBinding<Action>         cConversionProviderActionToBinding;
+    AssetConvertedBinding<Boolean>        cConversionProviderBooleanToBinding;
+    AssetConvertedBinding<Colour>         cConversionProviderColourToBinding;
+    AssetConvertedBinding<Float>          cConversionProviderFloatToBinding;
+    AssetConvertedBinding<Font>           cConversionProviderFontToBinding;
+    AssetConvertedBinding<InputHandler>   cConversionProviderInputHandlerToBinding;
+    AssetConvertedBinding<Integer>        cConversionProviderIntegerToBinding;
+    AssetConvertedBinding<ProjectOptions> cConversionProviderProjectOptionsToBinding;
+    AssetConvertedBinding<Assets>         cConversionProviderProjectToBinding;
+    AssetConvertedBinding<Screen>         cConversionProviderScreenToBinding;
+    AssetConvertedBinding<String>         cConversionProviderStringToBinding;
+    AssetConvertedBinding<Vertex>         cConversionProviderVertexToBinding;
+    AssetConvertedString                  cConversionProviderString;
+    AssetConvertedProjectToInteger        cConversionProviderProjectToInteger;
+    AssetConvertedProjectToString         cConversionProviderProjectToString;
 
     // Local binding support.
     AssetLocalBinding cLocalProviderBinding;

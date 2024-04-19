@@ -32,6 +32,7 @@ namespace IsoRealms {
     Binding(IProject* project, IBindingRegistry* registry);
 
     void init(DOMNode& node, const std::string& tag);
+    void set(DOMNode& node, const std::string& tag);
     void save(DOMNodeWriter* node, bool local, const std::string& attribute) const;
 
     IBinding* operator->() const {

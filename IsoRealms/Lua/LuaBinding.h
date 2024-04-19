@@ -58,15 +58,6 @@ namespace IsoRealms {
       (*cDefLuaState)[bindFunction](cDefValue);
     }
     
-    void save(DOMNodeWriter* node, IBindingRegistry* localBindings, IAssetIdentifier* identifier, const std::string& attribute) const override {
-      std::cout << "WARNING: LuaBinding::save: TODO: Implement this" << std::endl;
-//       node->addAttribute(attribute, localBindings != nullptr ? "~" + localBindings->getBindingID(this) : identifier->getID(this));
-    }
-    
-    void release(IAssets* releaser) override {
-      // Nothing to do.
-    }
-
     private:
     sol::state* cDefLuaState;
     T* cDefValue;

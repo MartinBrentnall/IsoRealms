@@ -74,7 +74,7 @@ namespace IsoRealms::Basics {
 
   Script::ScriptAction::ScriptAction(Script* parent, DOMNode& node, IProject* project, unsigned int index, IBindingRegistry* localArgs) :
             cDefParent(parent),
-            cDefFunction(project, "_t" + Utils::toString(index), node, localArgs),
+            cDefFunction(project, "_t" + Utils::toString(index), node, localArgs, false),
             cDefAction(cDefFunction.createAction(node, project, nullptr)),
             cDefIndex(index) {
   }

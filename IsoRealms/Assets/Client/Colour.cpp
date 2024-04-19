@@ -30,11 +30,15 @@ namespace IsoRealms {
   }
 
   void Colour::init(DOMNode& node, const std::string& tag) {
-    DOMNode& mAssetNode = node.getNode(tag);
-    cProject->init([this, &mAssetNode](IAssets* assets) {
-      cProject->release(this, cColour);
-      cColour = cProject->getColour(this, mAssetNode, cListener != nullptr ? this : nullptr);
+    cProject->init([this, &node, tag](IAssets* assets) {
+      set(node, tag);
     });
+  }
+
+  void Colour::set(DOMNode& node, const std::string& tag) {
+    DOMNode& mAssetNode = node.getNode(tag);
+    cProject->release(this, cColour);
+    cColour = cProject->getColour(this, mAssetNode, cListener != nullptr ? this : nullptr);
   }
 
   void Colour::save(DOMNodeWriter* node, const std::string& tag) const {

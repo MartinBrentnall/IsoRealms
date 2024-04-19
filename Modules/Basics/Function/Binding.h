@@ -27,7 +27,7 @@
 namespace IsoRealms::Basics {
   class Binding {
     public:
-    Binding(DOMNode& node, const std::string& nameAttribute, const std::string& valueTag, IProject* project, IBindingRegistry* localArgs);
+    Binding(DOMNode& node, const std::string& nameAttribute, const std::string& valueTag, IProject* project, IBindingRegistry* localArgs, bool init);
     std::string getName() const;
     std::string getInitCode() const;
     std::string getCode(const std::string& function, unsigned int arg) const;

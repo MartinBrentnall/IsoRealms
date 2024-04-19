@@ -30,10 +30,15 @@ namespace IsoRealms {
                  public IStateListener<IColour*>,
                  public IColour {
     public:
-    Colour(IProject* project, float defaultRed, float defaultGreen, float defaultBlue, float defaultAlpha = 0.0f, std::function<void()> listener = nullptr);
+    Colour(IProject* project, float defaultRed = 0.0f, float defaultGreen = 0.0f, float defaultBlue = 0.0f, float defaultAlpha = 0.0f, std::function<void()> listener = nullptr);
 
     void init(DOMNode& node, const std::string& tag);
+    void set(DOMNode& node, const std::string& tag);
     void save(DOMNodeWriter* node, const std::string& tag) const;
+
+    IColour* operator*() const {
+      return cColour;
+    }
 
     /**********************\
      * Implements IColour *

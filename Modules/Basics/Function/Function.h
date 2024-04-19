@@ -57,7 +57,7 @@ namespace IsoRealms::Basics {
 
     // Constructors for use by scripts (in-line functions).
     Function(IProject* project, const std::string& name);
-    Function(IProject* project, const std::string& name, DOMNode& node, IBindingRegistry* localArgs);
+    Function(IProject* project, const std::string& name, DOMNode& node, IBindingRegistry* localArgs, bool init);
     
     /**************************\
      * Implements IActionType *

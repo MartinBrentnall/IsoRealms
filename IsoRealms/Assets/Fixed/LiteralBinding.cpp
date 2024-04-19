@@ -23,14 +23,6 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  void LiteralBinding::save(DOMNodeWriter* node, IBindingRegistry* registry, IAssetIdentifier* identifier, const std::string& attribute) const {
-    // Nothing to do.
-  }
-
-  void LiteralBinding::release(IAssets* releaser) {
-    // Nothing to do.
-  }
-
   bool LiteralBinding::renderAssetIcon() const {
     return false;
   }

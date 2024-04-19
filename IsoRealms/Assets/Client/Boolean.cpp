@@ -27,11 +27,15 @@ namespace IsoRealms {
   }
 
   void Boolean::init(DOMNode& node, const std::string& tag) {
-    DOMNode& mAssetNode = node.getNode(tag);
-    cProject->init([this, &mAssetNode](IAssets* assets) {
-      cProject->release(this, cBoolean);
-      cBoolean = cProject->getBoolean(this, mAssetNode, cListener != nullptr ? this : nullptr);
+    cProject->init([this, &node, tag](IAssets* assets) {
+      set(node, tag);
     });
+  }
+
+  void Boolean::set(DOMNode& node, const std::string& tag) {
+    DOMNode& mAssetNode = node.getNode(tag);
+    cProject->release(this, cBoolean);
+    cBoolean = cProject->getBoolean(this, mAssetNode, cListener != nullptr ? this : nullptr);
   }
 
   void Boolean::save(DOMNodeWriter* node, const std::string& tag) const {

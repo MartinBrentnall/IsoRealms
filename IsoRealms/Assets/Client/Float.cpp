@@ -27,11 +27,15 @@ namespace IsoRealms {
   }
 
   void Float::init(DOMNode& node, const std::string& tag) {
-    DOMNode& mAssetNode = node.getNode(tag);
-    cProject->init([this, &mAssetNode](IAssets* assets) {
-      cProject->release(this, cFloat);
-      cFloat = cProject->getFloat(this, mAssetNode, cListener != nullptr ? this : nullptr);
+    cProject->init([this, &node, tag](IAssets* assets) {
+      set(node, tag);
     });
+  }
+
+  void Float::set(DOMNode& node, const std::string& tag) {
+    DOMNode& mAssetNode = node.getNode(tag);
+    cProject->release(this, cFloat);
+    cFloat = cProject->getFloat(this, mAssetNode, cListener != nullptr ? this : nullptr);
   }
 
   void Float::save(DOMNodeWriter* node, const std::string& tag) const {

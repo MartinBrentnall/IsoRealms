@@ -35,7 +35,7 @@ namespace IsoRealms::Basics {
   }
     
   Function::Function(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
-            Function(project, node.getAttribute(ATTRIBUTE_NAME), node, nullptr) {
+            Function(project, node.getAttribute(ATTRIBUTE_NAME), node, nullptr, true) {
   }
 
   void Function::registerAssets(IAssetRegistry* assets) {
@@ -92,14 +92,14 @@ namespace IsoRealms::Basics {
             cDefName(name) {
   }
 
-  Function::Function(IProject* project, const std::string& name, DOMNode& node, IBindingRegistry* localArgs) :
+  Function::Function(IProject* project, const std::string& name, DOMNode& node, IBindingRegistry* localArgs, bool init) :
             Function(project, name) {
     for (DOMNode& mNode : node) {
       std::string mChildName = mNode.getName();
       if (mChildName == TAG_ARGUMENT) { // TODO: Shouldn't be allowed for scripts
-        cDefDynamicBindings.emplace_back(std::make_unique<Binding>(mNode, ATTRIBUTE_NAME, TAG_DEFAULT_VALUE, project, localArgs));
+        cDefDynamicBindings.emplace_back(std::make_unique<Binding>(mNode, ATTRIBUTE_NAME, TAG_DEFAULT_VALUE, project, localArgs, init));
       } else if (mChildName == TAG_BIND) {
-        cDefFixedBindings.emplace_back(std::make_unique<Binding>(mNode, ATTRIBUTE_VARIABLE, TAG_TO, project, localArgs));
+        cDefFixedBindings.emplace_back(std::make_unique<Binding>(mNode, ATTRIBUTE_VARIABLE, TAG_TO, project, localArgs, init));
       } else if (mChildName == TAG_CODE) {
         cDefCode = mNode.getStringValue();
       } else {
@@ -158,7 +158,7 @@ namespace IsoRealms::Basics {
             cDefLocal[mBindingIndex] = true;
           }
           cDefBindings[mBindingIndex] = std::make_unique<IsoRealms::Binding>(project, cDefLocalBindingRegistry);
-          cDefBindings[mBindingIndex]->init(mNode, TAG_TO);
+          cDefBindings[mBindingIndex]->set(mNode, TAG_TO);
         } else if (mChildName == TAG_CODE) {
           // Script support.
         } else {

@@ -28,8 +28,6 @@ namespace IsoRealms {
      * Implements IBinding *
     \***********************/
     void bind(const std::string& function) const override;
-    void save(DOMNodeWriter* node, IBindingRegistry* registry, IAssetIdentifier* identifier, const std::string& attribute) const override;
-    void release(IAssets* releaser) override;
     bool renderAssetIcon() const override;
   };
 }

@@ -22,11 +22,15 @@
 #include "IsoRealms/Types.h"
 
 namespace IsoRealms::Basics {
-  Binding::Binding(DOMNode& node, const std::string& nameAttribute, const std::string& valueTag, IProject* project, IBindingRegistry* localArgs) :
+  Binding::Binding(DOMNode& node, const std::string& nameAttribute, const std::string& valueTag, IProject* project, IBindingRegistry* localArgs, bool init) :
             cDefValue(project, localArgs) {
     cDefName = node.getAttribute(nameAttribute);
     if (node.containsNode(valueTag)) {
-      cDefValue.init(node, valueTag);
+      if (init) {
+        cDefValue.init(node, valueTag);
+      } else {
+        cDefValue.set(node, valueTag);
+      }
     }
   }
 

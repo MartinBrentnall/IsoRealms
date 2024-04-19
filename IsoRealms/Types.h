@@ -20,6 +20,7 @@
 
 #include "Assets/Client/Action.h"
 #include "Assets/Client/ActionType.h"
+#include "Assets/Client/Assets.h"
 #include "Assets/Client/Binding.h"
 #include "Assets/Client/Boolean.h"
 #include "Assets/Client/Colour.h"

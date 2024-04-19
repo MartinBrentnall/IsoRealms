@@ -33,9 +33,7 @@ namespace IsoRealms {
     }
 
     IBinding* getAsset(Project& project, DOMNode& node) const override {
-      return cBoundAssets.emplace(std::make_unique<BoundAsset<FROM>>(cProject, cProject, [this, &node](IAssetUser<FROM>* user) -> FROM* {
-        return getAsset(user, node);
-      })).first->get();
+      return cBoundAssets.emplace(std::make_unique<BoundAsset<FROM>>(cProject, node)).first->get();
     }
 
     void releaseAsset(const IBinding* asset) override {
@@ -46,13 +44,10 @@ namespace IsoRealms {
       std::cout << "Assets converted to Bindings" << std::endl;
     }
 
-    protected:
+    private:
     IProject* cProject;
 
     inline static const std::string TAG_ASSET = "Asset";
-    
-    private:
-    virtual FROM* getAsset(IAssetUser<FROM>* user, DOMNode& node) const = 0;
     
     mutable std::set<std::unique_ptr<IBinding>> cBoundAssets;
   };

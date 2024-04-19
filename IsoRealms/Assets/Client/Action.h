@@ -32,9 +32,13 @@ namespace IsoRealms {
     Action(IProject* project);
 
     void init(DOMNode& node, const std::string& tag, IBindingRegistry* localArgs = nullptr, const std::string& id = "");
+    void set(DOMNode& node, const std::string& tag, IBindingRegistry* localArgs = nullptr, const std::string& id = "");
     void execute();
     void save(DOMNodeWriter* node, const std::string& tag) const;
 
+    IAction* operator*() const {
+      return cAction;
+    }
 
     /**********************************\
      * Implements IAssetUser<IAction> *

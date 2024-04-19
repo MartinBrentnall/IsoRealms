@@ -39,9 +39,10 @@ namespace IsoRealms {
     Float& operator=(Float const& other) = delete;
 
     public:
-    Float(IProject* project, float defaultValue, std::function<void(float)> listener = nullptr);
+    Float(IProject* project, float defaultValue = 0.0f, std::function<void(float)> listener = nullptr);
 
     void init(DOMNode& node, const std::string& tag);
+    void set(DOMNode& node, const std::string& tag);
     void save(DOMNodeWriter* node, const std::string& tag) const;
 
     IFloat* operator->() const {

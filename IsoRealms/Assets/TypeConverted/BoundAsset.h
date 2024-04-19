@@ -28,57 +28,35 @@
 #include "IsoRealms/IAssets.h"
 
 namespace IsoRealms {
-  template <class T> class BoundAsset : public IBinding,
-                                        public IAssetUser<T> {
-    private:
-    IProject* cProject;
-    sol::state* cDefLuaState;
-    IAssetRemover* cAssets;
-    T* cDefValue;
-
+  template <class T> class BoundAsset : public IBinding {
     public:
-    BoundAsset(IProject* project, IAssetRemover* assets, std::function<T*(IAssetUser<T>*)> valueAccessorFunction) :
-              cProject(project),
+    BoundAsset(IProject* project, DOMNode& node) :
               cDefLuaState(project->getLuaState()->getState()),
-              cAssets(assets),
-              cDefValue(valueAccessorFunction(this)) {
+              cDefValue(project) {
+      cDefValue.set(node, TAG_ASSET);
     }
     
-    T* getValue() {
-      return cDefValue;
-    }
-
     /***********************\
      * Implements IBinding *
     \***********************/
+    void bind(const std::string& bindFunction) const override {
+      (*cDefLuaState)[bindFunction](*cDefValue);
+    }
+    
     bool renderAssetIcon() const override {
       return false;
     }
 
     void saveAsset(DOMNodeWriter* node) const override {
-      DOMNodeWriter mAssetNode = node->addBranch("Asset");
-      cProject->save(&mAssetNode, cDefValue);
+      cDefValue.save(node, TAG_ASSET);
     }
 
-    void bind(const std::string& bindFunction) const override {
-      (*cDefLuaState)[bindFunction](cDefValue);
-    }
+    private:
+    static const std::string TAG_ASSET;
     
-    void save(DOMNodeWriter* node, IBindingRegistry* localBindings, IAssetIdentifier* identifier, const std::string& attribute) const override {
-// TODO      node->addAttribute(attribute, identifier->getID(cDefValue));
-    }
-    
-    /****************************\
-     * Implements IAssetUser<T> *
-    \****************************/
-    void relinquish(T* asset) override {
-      cAssets->remove(this);
-    }
-
-    void release(IAssets* releaser) override {
-      if (cDefValue != nullptr) { // TODO: Do we really need to do this null check?  Is it even wise?
-        releaser->release(this, cDefValue);
-      }
-    }
+    sol::state* cDefLuaState;
+    T cDefValue;
   };
+
+  template <class T> const std::string BoundAsset<T>::TAG_ASSET = "Asset";
 }

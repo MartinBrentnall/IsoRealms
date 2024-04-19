@@ -27,10 +27,14 @@ namespace IsoRealms {
   void Action::init(DOMNode& node, const std::string& tag, IBindingRegistry* localArgs, const std::string& id) {
     if (node.containsNode(tag)) {
       cProject->init([this, &node, tag, localArgs, id](IAssets* assets) {
-        cProject->release(this, cAction);
-        cAction = cProject->getAction(this, node, tag, localArgs, id);
+        set(node, tag, localArgs, id);
       });
     }
+  }
+
+  void Action::set(DOMNode& node, const std::string& tag, IBindingRegistry* localArgs, const std::string& id) {
+    cProject->release(this, cAction);
+    cAction = cProject->getAction(this, node, tag, localArgs, id);
   }
 
   void Action::execute() {
