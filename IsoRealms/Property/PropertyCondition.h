@@ -199,7 +199,7 @@ namespace IsoRealms {
     };
 
     std::function<std::optional<Condition>&()> cGetter;
-    std::function<void(Condition&)> cSetter;
+    std::function<void(std::optional<Condition>&)> cSetter;
     std::vector<ConditionElement*> cAvailableElements;
     AnimatedFloat cSelectedElement; // TODO: AnimatedInteger
     std::vector<std::unique_ptr<IConditionChar>> cConditionString;
@@ -229,7 +229,7 @@ namespace IsoRealms {
     void moveCursorRight();
 
     public:
-    PropertyCondition(const std::string& label, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(Condition&)> setter);
+    PropertyCondition(const std::string& label, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter);
 
     /***********************\
      * Implements Property *

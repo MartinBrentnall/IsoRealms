@@ -688,7 +688,7 @@ namespace IsoRealms::Spindizzy {
   std::vector<std::unique_ptr<IProperty>> Terrain::getProperties(IPropertyAppearance* appearance) {
     std::vector<ConditionElement*> mElements = cDefType->getTerrainStateConditionElements();
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyCondition>(TAG_CONDITION, mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this](Condition& condition) {
+    mProperties.emplace_back(std::make_unique<PropertyCondition>(TAG_CONDITION, mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this](std::optional<Condition>& condition) {
       cDefCondition = condition;
       cDefZone.getWorld()->flagTerrainForInitialisation(cDefStartX - 1, cDefEndX + 1, cDefStartY - 1, cDefEndY + 1);
       cDefZone.updateDisplayList();

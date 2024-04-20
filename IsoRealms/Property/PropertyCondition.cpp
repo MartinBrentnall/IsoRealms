@@ -19,7 +19,7 @@
 #include "PropertyCondition.h"
 
 namespace IsoRealms {
-  PropertyCondition::PropertyCondition(const std::string& label, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(Condition&)> setter) :
+  PropertyCondition::PropertyCondition(const std::string& label, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter) :
             Property(label),
             cGetter(getter),
             cSetter(setter),
@@ -293,8 +293,10 @@ namespace IsoRealms {
 
   void PropertyCondition::confirmCondition() {
     std::optional<Condition> mCondition = cConditionDiagram->createCondition();
-    mCondition->simplify();
-    cSetter(mCondition.value());
+    if (mCondition.has_value()) {
+      mCondition->simplify();
+    }
+    cSetter(mCondition);
     cConditionString = getConditionString(this, mCondition);
     cConditionDiagram = std::make_unique<ResultOutput>(this);
     cConditionDiagram->setInput(getConditionDiagram(this, mCondition, cConditionDiagram.get()));
