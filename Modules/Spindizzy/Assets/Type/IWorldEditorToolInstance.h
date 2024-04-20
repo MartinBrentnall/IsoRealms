@@ -78,7 +78,7 @@ namespace IsoRealms::Spindizzy {
      * @return true if the tool processed the input, otherwise false to
      *         indicate that the editor itself should process the input.
      */     
-    virtual bool inputEdit(sf::Event& event) = 0;
+    virtual bool inputEdit(sf::Event& event, double yaw) = 0;
     
     /**
      * Process editor cursor movement.  This is useful for tools that perform

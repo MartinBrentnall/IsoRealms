@@ -46,7 +46,7 @@ namespace IsoRealms::Spindizzy {
             cPropertiesMenu(&cConfigurator, editor->getPropertyAppearance()) {
   }
 
-  bool PropertiesTool::Modifier::inputEdit(sf::Event& event) {
+  bool PropertiesTool::Modifier::inputEdit(sf::Event& event, double yaw) {
     if (cEditingProperties) {
       cConfigurator.input(event);
       return true;

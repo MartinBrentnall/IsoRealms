@@ -236,7 +236,7 @@ namespace IsoRealms::Spindizzy {
 
   bool WorldEditor::input(sf::Event& event) {
     if (cSelectedTool != nullptr) {
-      if (cSelectedTool->inputEdit(event)) {
+      if (cSelectedTool->inputEdit(event, getAngle())) {
         return true;
       }
     }

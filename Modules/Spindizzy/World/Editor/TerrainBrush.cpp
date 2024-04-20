@@ -25,18 +25,13 @@
 
 namespace IsoRealms::Spindizzy {
   TerrainBrush::TerrainBrush() :
-            cActiveLeft(false),
-            cActiveRight(false),
-            cActiveUp(false),
-            cActiveDown(false) {
+            cRuntimeEditing(false),
+            cRuntimeCursorX(0.0),
+            cRuntimeCursorY(0.0),
+            cRuntimeCursorXSpeed(0.0),
+            cRuntimeCursorYSpeed(0.0),
+            cDefAnalogueSensitivity(5000) {
     reset();
-    cRuntimeEditing = false;
-    cRuntimeCursorX = 0.0;
-    cRuntimeCursorY = 0.0;
-    cRuntimeCursorXSpeed = 0.0;
-    cRuntimeCursorYSpeed = 0.0;
-    cDefAnalogueSensitivity = 5000;
-    cSplitNorthWestSouthEast = true;
   }
 
   bool TerrainBrush::isEditing() const {
@@ -115,7 +110,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void TerrainBrush::toggleSplit() {
-    cSplitNorthWestSouthEast = !cSplitNorthWestSouthEast;
+    cAlternativeSplit = !cAlternativeSplit;
   }
 
   void TerrainBrush::reset() {
@@ -123,7 +118,7 @@ namespace IsoRealms::Spindizzy {
     cCornerHeight[0][1].init(0);
     cCornerHeight[1][0].init(0);
     cCornerHeight[1][1].init(0);
-    cSplitNorthWestSouthEast = false;
+    cAlternativeSplit = false;
   }
 
   int TerrainBrush::getNorthWestHeight() const {
@@ -143,7 +138,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   bool TerrainBrush::isAlternativeSplit() const {
-    return cSplitNorthWestSouthEast;
+    return cAlternativeSplit;
   }
 
   int TerrainBrush::getXSlope() const {
@@ -184,7 +179,7 @@ namespace IsoRealms::Spindizzy {
       float mEastSlope  = cCornerHeight[1][1].animation() - cCornerHeight[1][0].animation();
       float mSouthSlope = cCornerHeight[1][0].animation() - cCornerHeight[0][0].animation();
       float mNorthSlope = cCornerHeight[1][1].animation() - cCornerHeight[0][1].animation();
-      type->getSurfacePattern()->render(  pinnedX, pinnedY, mEndZ, cCornerHeight[0][0].animation(), cCornerHeight[1][0].animation(), cCornerHeight[0][1].animation(), cCornerHeight[1][1].animation(), cSplitNorthWestSouthEast);
+      type->getSurfacePattern()->render(  pinnedX, pinnedY, mEndZ, cCornerHeight[0][0].animation(), cCornerHeight[1][0].animation(), cCornerHeight[0][1].animation(), cCornerHeight[1][1].animation(), cAlternativeSplit);
       if (type->isSolid()) {
         type->getWestWallPattern()->render( mStartX - 0.001f, mStartY,          mStartZ - 1, 1.0f, ((mEndZ - mStartZ) + 1) + cCornerHeight[0][0].animation(), mWestSlope,  0, Wall::Direction::WEST);
         type->getEastWallPattern()->render( mEndX   + 0.001f, mStartY,          mStartZ - 1, 1.0f, ((mEndZ - mStartZ) + 1) + cCornerHeight[1][0].animation(), mEastSlope,  0, Wall::Direction::EAST);
@@ -261,7 +256,7 @@ namespace IsoRealms::Spindizzy {
       y *= 0.5f;
       x += 0.5f;
       y += 0.5f;
-      if (cSplitNorthWestSouthEast) {
+      if (cAlternativeSplit) {
         if (y > x) {
           mHeight = (cCornerHeight[0][0].animation() + (cCornerHeight[1][1].animation() - cCornerHeight[0][1].animation()) * x + (cCornerHeight[0][1].animation() - cCornerHeight[0][0].animation()) * y);
         } else {
@@ -284,29 +279,62 @@ namespace IsoRealms::Spindizzy {
     return 0.0f;
   }
 
-  bool TerrainBrush::input(sf::Event& event) {
+  void TerrainBrush::stepWest() {
+    cRuntimeCursorX = std::max(-1.0, cRuntimeCursorX - 1.0);
+  }
+
+  void TerrainBrush::stepEast() {
+    cRuntimeCursorX = std::min(1.0, cRuntimeCursorX + 1.0);
+  }
+
+  void TerrainBrush::stepSouth() {
+    cRuntimeCursorY = std::max(-1.0, cRuntimeCursorY - 1.0);
+  }
+
+  void TerrainBrush::stepNorth() {
+    cRuntimeCursorY = std::min(1.0, cRuntimeCursorY + 1.0);
+  }
+
+  void TerrainBrush::stepLeft(double yaw) {
+    yaw >=   40.0f && yaw <= 130.0f ? stepNorth():
+    yaw >=  -50.0f && yaw <=  40.0f ? stepWest():
+    yaw >= -140.0f && yaw <= -50.0f ? stepSouth():
+                                      stepEast();
+  }
+
+  void TerrainBrush::stepRight(double yaw) {
+    yaw >=   40.0f && yaw <= 130.0f ? stepSouth():
+    yaw >=  -50.0f && yaw <=  40.0f ? stepEast():
+    yaw >= -140.0f && yaw <= -50.0f ? stepNorth():
+                                      stepWest();
+  }
+
+  void TerrainBrush::stepDown(double yaw) {
+    yaw >=   40.0f && yaw <= 130.0f ? stepWest():
+    yaw >=  -50.0f && yaw <=  40.0f ? stepSouth():
+    yaw >= -140.0f && yaw <= -50.0f ? stepEast():
+                                      stepNorth();
+  }
+
+  void TerrainBrush::stepUp(double yaw) {
+    yaw >=   40.0f && yaw <= 130.0f ? stepEast():
+    yaw >=  -50.0f && yaw <=  40.0f ? stepNorth():
+    yaw >= -140.0f && yaw <= -50.0f ? stepWest():
+                                      stepSouth();
+  }
+
+  bool TerrainBrush::input(sf::Event& event, double yaw) {
     if (cRuntimeEditing) {
       switch (event.type) {
         case sf::Event::KeyPressed: {
           switch (event.key.code) {
-            case sf::Keyboard::Left:     cActiveLeft  = true; return true;
-            case sf::Keyboard::Right:    cActiveRight = true; return true;
-            case sf::Keyboard::Up:       cActiveUp    = true; return true;
-            case sf::Keyboard::Down:     cActiveDown  = true; return true;
-            case sf::Keyboard::PageUp:   raiseSelected();     return true;
-            case sf::Keyboard::PageDown: lowerSelected();     return true;
-            default:                                          break;
-          }
-          break;
-        }
-
-        case sf::Event::KeyReleased: {
-          switch (event.key.code) {
-            case sf::Keyboard::Left:     cActiveLeft  = false; return true;
-            case sf::Keyboard::Right:    cActiveRight = false; return true;
-            case sf::Keyboard::Up:       cActiveUp    = false; return true;
-            case sf::Keyboard::Down:     cActiveDown  = false; return true;
-            default:                                           break;
+            case sf::Keyboard::Left:     stepLeft(yaw);   return true;
+            case sf::Keyboard::Right:    stepRight(yaw);  return true;
+            case sf::Keyboard::Up:       stepUp(yaw);     return true;
+            case sf::Keyboard::Down:     stepDown(yaw);   return true;
+            case sf::Keyboard::PageUp:   raiseSelected(); return true;
+            case sf::Keyboard::PageDown: lowerSelected(); return true;
+            default:                                      break;
           }
           break;
         }
@@ -337,11 +365,11 @@ namespace IsoRealms::Spindizzy {
   }
 
   double TerrainBrush::getCursorXSpeed() const {
-    return std::max(-1.0, std::min(1.0, cRuntimeCursorXSpeed + (cActiveLeft ? -1.0 : 0.0) + (cActiveRight ? 1.0 : 0.0)));
+    return std::max(-1.0, std::min(1.0, cRuntimeCursorXSpeed));
   }
 
   double TerrainBrush::getCursorYSpeed() const {
-    return std::max(-1.0, std::min(1.0, cRuntimeCursorYSpeed + (cActiveDown ? -1.0 : 0.0) + (cActiveUp ? 1.0 : 0.0)));
+    return std::max(-1.0, std::min(1.0, cRuntimeCursorYSpeed));
   }
 
   void TerrainBrush::update(unsigned int milliseconds, double yaw) {

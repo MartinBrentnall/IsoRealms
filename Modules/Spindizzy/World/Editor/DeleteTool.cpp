@@ -38,7 +38,7 @@ namespace IsoRealms::Spindizzy {
             cSelectedObject(0) {
   }
 
-  bool DeleteTool::Eraser::inputEdit(sf::Event& event) {
+  bool DeleteTool::Eraser::inputEdit(sf::Event& event, double yaw) {
     switch (event.type) {
       case sf::Event::KeyPressed: {
         switch (event.key.code) {

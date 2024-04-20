@@ -301,7 +301,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  bool PlayerType::Pen::inputEdit(sf::Event& event) {
+  bool PlayerType::Pen::inputEdit(sf::Event& event, double yaw) {
     switch (event.type) {
       case sf::Event::KeyPressed: {
         switch (event.key.code) {

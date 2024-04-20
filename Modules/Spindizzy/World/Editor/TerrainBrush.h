@@ -60,21 +60,26 @@ namespace IsoRealms::Spindizzy {
 
     float getHeight(float x, float y) const;
 
-    bool input(sf::Event& event);
+    bool input(sf::Event& event, double yaw);
     void update(unsigned int milliseconds, double yaw);
     bool isSplit() const;
 
+    void stepWest();
+    void stepEast();
+    void stepSouth();
+    void stepNorth();
+    void stepLeft(double yaw);
+    void stepRight(double yaw);
+    void stepDown(double yaw);
+    void stepUp(double yaw);
+
     private:
     AnimatedFloat cCornerHeight[2][2];
-    bool cSplitNorthWestSouthEast;
+    bool cAlternativeSplit;
 
     // Editing
     // TODO: Maybe we can make some kind of generic cursor class out of the following fields
     bool cRuntimeEditing;
-    bool cActiveLeft;
-    bool cActiveRight;
-    bool cActiveUp;
-    bool cActiveDown;
     double cRuntimeCursorX;
     double cRuntimeCursorY;
     double cRuntimeCursorXSpeed;

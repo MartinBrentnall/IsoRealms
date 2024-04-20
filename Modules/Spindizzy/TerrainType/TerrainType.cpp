@@ -294,8 +294,8 @@ namespace IsoRealms::Spindizzy {
     }
   }
 
-  bool TerrainType::Pen::inputEdit(sf::Event& event) {
-    if (cEditor->getTerrainBrush().input(event)) {
+  bool TerrainType::Pen::inputEdit(sf::Event& event, double yaw) {
+    if (cEditor->getTerrainBrush().input(event, yaw)) {
       return true;
     }
 

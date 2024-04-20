@@ -186,7 +186,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  bool ZoneObjectType::Pen::inputEdit(sf::Event& event) {
+  bool ZoneObjectType::Pen::inputEdit(sf::Event& event, double yaw) {
 //     switch (cRuntimeEditors[cEditingTrait]->inputEdit(event)) {
 //       case IZoneObjectTraitEditor::InputEditResult::COMPLETED: {
 //         if (cEditingTrait == 0) {
