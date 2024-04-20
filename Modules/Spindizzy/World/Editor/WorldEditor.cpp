@@ -30,13 +30,11 @@ namespace IsoRealms::Spindizzy {
   const float WorldEditor::STOP_THRESHOLD = 0.01f;
   const float WorldEditor::SELECTION_BOUNDARY_RENDERING_OFFSET = 0.001f;
 
+  const float WorldEditor::BORDER_SPACING = 0.02f;
   const float WorldEditor::ICON_WIDTH = 0.12f;
   const float WorldEditor::ICON_HEIGHT = 0.12f;
-  const float WorldEditor::LEFT_BORDER = -1.0f + 0.05f;
-  const float WorldEditor::RIGHT_BORDER = 1.0f - 0.05f;
-  const float WorldEditor::BOTTOM_BORDER = -1.0f + 0.05f;
+  const float WorldEditor::BOTTOM_BORDER = -1.0f + BORDER_SPACING;
   const float WorldEditor::ICON_SPACING = 0.02f;
-  const float WorldEditor::PALETTE_SPACE = RIGHT_BORDER - LEFT_BORDER;
   
   WorldEditor::WorldEditor(IAssetRegistry* assets, World* world) :
             cScreenYaw(&cRotation),
@@ -63,7 +61,6 @@ namespace IsoRealms::Spindizzy {
     cDistanceInSpeed      = 0.0f;
     cDistanceOutSpeed     = 0.0f;
     cDefAnalogueSensitivity = 5000;
-    cPaletteScroll.init(0.0f);
     cPaletteSelectionX.init(0.0f);
     resetEditingView();
     cLocation.x = -1.0f;
@@ -156,7 +153,7 @@ namespace IsoRealms::Spindizzy {
     int mSelectedToolIndex = -1;
     if (cSelectedTool == nullptr) {
       mSelectedToolIndex = amount > 0 ? 0 : cTools.size() - 1;
-      cPaletteSelectionX.init(LEFT_BORDER + mSelectedToolIndex * (ICON_WIDTH + ICON_SPACING) + ICON_WIDTH * 0.5f);
+      cPaletteSelectionX.init(mSelectedToolIndex);
     } else {
       for (unsigned int i = 0; i < cTools.size(); i++) {
         if (cTools[i] == cSelectedTool) {
@@ -171,7 +168,7 @@ namespace IsoRealms::Spindizzy {
         }
       }
     }
-    cPaletteSelectionX = LEFT_BORDER + mSelectedToolIndex * (ICON_WIDTH + ICON_SPACING) + ICON_WIDTH * 0.5f;
+    cPaletteSelectionX = mSelectedToolIndex;
 
     if (cSelectedTool != nullptr) {
       cSelectedTool->processCursorMovement(&cLocation, nullptr);
@@ -179,9 +176,9 @@ namespace IsoRealms::Spindizzy {
     cSelectedTool = cTools[mSelectedToolIndex];
     cSelectedTool->processCursorMovement(nullptr, &cLocation);
 
-    float mPaletteWidth = cTools.size() * (ICON_WIDTH + ICON_SPACING) - ICON_SPACING;
-    float mPaletteScrollRange = std::max(0.0f, mPaletteWidth - PALETTE_SPACE);
-    cPaletteScroll = std::clamp(LEFT_BORDER + mSelectedToolIndex * (ICON_WIDTH + ICON_SPACING) + ICON_WIDTH * 0.5f, 0.0f, mPaletteScrollRange);
+//    float mPaletteWidth = cTools.size() * (ICON_WIDTH + ICON_SPACING) - ICON_SPACING;
+//    float mPaletteScrollRange = std::max(0.0f, mPaletteWidth - PALETTE_SPACE);
+//    cPaletteScroll = std::clamp(LEFT_BORDER + mSelectedToolIndex * (ICON_WIDTH + ICON_SPACING) + ICON_WIDTH * 0.5f, 0.0f, mPaletteScrollRange);
   }
 
   void WorldEditor::setNextTheme() {
@@ -336,33 +333,33 @@ namespace IsoRealms::Spindizzy {
       case sf::Event::MouseButtonPressed: {
         switch (event.mouseButton.button) {
           case sf::Mouse::Left: {
-            IApplication* mApplication = cWorld->getSpindizzy()->getProject()->getApplication();
-            ScreenLocation mLocation = mApplication->normalise(event.mouseButton.x, event.mouseButton.y);
-            float mPaletteWidth = cTools.size() * (ICON_WIDTH + ICON_SPACING) - ICON_SPACING;
-            if (mLocation.getY() >= BOTTOM_BORDER && mLocation.getY() <= BOTTOM_BORDER + ICON_HEIGHT) {
-              for (unsigned int i = 0; i < cTools.size(); i++) {
-                float mIconLeft = mPaletteWidth < PALETTE_SPACE ? (-mPaletteWidth * 0.5f) + i * (ICON_WIDTH + ICON_SPACING)
-                                                                : (LEFT_BORDER + i * (ICON_WIDTH + ICON_SPACING)) - cPaletteScroll.animation();
-                float mIconRight = mIconLeft + ICON_WIDTH;
-                if (mLocation.getX() >= mIconLeft && mLocation.getX() <= mIconRight) {
-                  if (cSelectedTool == nullptr) {
-                    cPaletteSelectionX.init(LEFT_BORDER + i * (ICON_WIDTH + ICON_SPACING) + ICON_WIDTH * 0.5f);
-                  } else {
-                    cPaletteSelectionX = LEFT_BORDER + i * (ICON_WIDTH + ICON_SPACING) + ICON_WIDTH * 0.5f;
-                  }
-                  if (cSelectedTool != nullptr) {
-                    cSelectedTool->processCursorMovement(&cLocation, nullptr);
-                  }
-                  cSelectedTool = cTools[i];
-                  cSelectedTool->processCursorMovement(nullptr, &cLocation);
-                  break;
-                }
-              }
-            } else {
+//             IApplication* mApplication = cWorld->getSpindizzy()->getProject()->getApplication();
+//             ScreenLocation mLocation = mApplication->normalise(event.mouseButton.x, event.mouseButton.y);
+//             float mPaletteWidth = cTools.size() * (ICON_WIDTH + ICON_SPACING) - ICON_SPACING;
+//             if (mLocation.getY() >= BOTTOM_BORDER && mLocation.getY() <= BOTTOM_BORDER + ICON_HEIGHT) {
+//               for (unsigned int i = 0; i < cTools.size(); i++) {
+//                 float mIconLeft = mPaletteWidth < PALETTE_SPACE ? (-mPaletteWidth * 0.5f) + i * (ICON_WIDTH + ICON_SPACING)
+//                                                                 : (LEFT_BORDER + i * (ICON_WIDTH + ICON_SPACING));
+//                 float mIconRight = mIconLeft + ICON_WIDTH;
+//                 if (mLocation.getX() >= mIconLeft && mLocation.getX() <= mIconRight) {
+//                   if (cSelectedTool == nullptr) {
+//                     cPaletteSelectionX.init(i);
+//                   } else {
+//                     cPaletteSelectionX = i;
+//                   }
+//                   if (cSelectedTool != nullptr) {
+//                     cSelectedTool->processCursorMovement(&cLocation, nullptr);
+//                   }
+//                   cSelectedTool = cTools[i];
+//                   cSelectedTool->processCursorMovement(nullptr, &cLocation);
+//                   break;
+//                 }
+//               }
+//             } else {
               cRotatingView = true;
               cPreviousX = event.mouseButton.x;
               cPreviousY = event.mouseButton.y;
-            }
+//             }
             return true;
           }
 
@@ -384,11 +381,9 @@ namespace IsoRealms::Spindizzy {
         switch (event.mouseWheelScroll.wheel) {
           case sf::Mouse::VerticalWheel: {
             if (event.mouseWheelScroll.delta > 0) {
-              float mPaletteWidth = cTools.size() * (ICON_WIDTH + ICON_SPACING) - ICON_SPACING;
-              float mPaletteScrollRange = std::max(0.0f, mPaletteWidth - PALETTE_SPACE);
-              cPaletteScroll = std::min(mPaletteScrollRange, cPaletteScroll.value() + 0.15f);
+              selectToolRelative(-1);
             } else {
-              cPaletteScroll = std::max(0.0f, cPaletteScroll.value() - 0.15f);
+              selectToolRelative(1);
             }
             return true;
           }
@@ -460,7 +455,6 @@ namespace IsoRealms::Spindizzy {
       mZone->setDefaultTheme();
     }
 
-    cPaletteScroll.update(milliseconds);
     cPaletteSelectionX.update(milliseconds);
     cWorld->updateEditing(milliseconds);
     cTerrainBrush.update(milliseconds, cScreenYaw.getValue());
@@ -559,28 +553,35 @@ namespace IsoRealms::Spindizzy {
     glLoadIdentity();
 
     // Render world selection highlight.
-    glScalef(1.0f / aspectRatio, 1.0f, 1.0f);
-    glTranslatef(-cPaletteScroll.animation(), 0.0f, 0.0f);
-    glColor3f(1.0f, 0.0f, 0.0f);
-    Utils::renderCurve(cPaletteSelectionX.animation() - ICON_WIDTH * 0.5f, BOTTOM_BORDER + ICON_HEIGHT, 0.01f, 0.0f,  0.25f);
-    Utils::renderCurve(cPaletteSelectionX.animation() - ICON_WIDTH * 0.5f, BOTTOM_BORDER,               0.01f, 0.25f, 0.5f);
-    Utils::renderCurve(cPaletteSelectionX.animation() + ICON_WIDTH * 0.5f, BOTTOM_BORDER + ICON_HEIGHT, 0.01f, 0.75f, 1.0f);
-    Utils::renderCurve(cPaletteSelectionX.animation() + ICON_WIDTH * 0.5f, BOTTOM_BORDER,               0.01f, 0.5f,  0.75f);
+    float mCursorXPosition = cPaletteSelectionX.animation() * (ICON_WIDTH + ICON_SPACING);
+    float mPaletteWidth = cTools.size() * (ICON_WIDTH + ICON_SPACING) - ICON_SPACING;
+    float mDifference = aspectRatio;
+    float mScrollAmount = std::min((mPaletteWidth - mDifference) - (ICON_WIDTH / 2.0f - BORDER_SPACING),  std::max(mDifference - (ICON_WIDTH / 2.0f + BORDER_SPACING), mCursorXPosition));
+    glColor4f(0.0f, 0.0f, 0.0f, 0.75f);
     glBegin(GL_QUADS);
-    Utils::renderRectangle(cPaletteSelectionX.animation() -  ICON_WIDTH * 0.5f,          BOTTOM_BORDER - 0.01f,       cPaletteSelectionX.animation() +  ICON_WIDTH * 0.5f,                         BOTTOM_BORDER);
-    Utils::renderRectangle(cPaletteSelectionX.animation() -  ICON_WIDTH * 0.5f,          BOTTOM_BORDER + ICON_HEIGHT, cPaletteSelectionX.animation() +  ICON_WIDTH * 0.5f,                         BOTTOM_BORDER + ICON_HEIGHT + 0.01f);
-    Utils::renderRectangle(cPaletteSelectionX.animation() - (ICON_WIDTH * 0.5f + 0.01f), BOTTOM_BORDER,               cPaletteSelectionX.animation() + (ICON_WIDTH * 0.5f + 0.01f), BOTTOM_BORDER + ICON_HEIGHT);
+    Utils::renderRectangle(-1.0f, -1.0f, 1.0f, -1.0f + ICON_HEIGHT + BORDER_SPACING * 2.0f);
+    glEnd();
+    glScalef(1.0f / aspectRatio, 1.0f, 1.0f);
+    glTranslatef(-mScrollAmount, 0.0f, 0.0f);
+    glColor3f(1.0f, 0.0f, 0.0f);
+    Utils::renderCurve(mCursorXPosition - ICON_WIDTH * 0.5f, BOTTOM_BORDER + ICON_HEIGHT, 0.01f, 0.0f,  0.25f);
+    Utils::renderCurve(mCursorXPosition - ICON_WIDTH * 0.5f, BOTTOM_BORDER,               0.01f, 0.25f, 0.5f);
+    Utils::renderCurve(mCursorXPosition + ICON_WIDTH * 0.5f, BOTTOM_BORDER + ICON_HEIGHT, 0.01f, 0.75f, 1.0f);
+    Utils::renderCurve(mCursorXPosition + ICON_WIDTH * 0.5f, BOTTOM_BORDER,               0.01f, 0.5f,  0.75f);
+    glBegin(GL_QUADS);
+    Utils::renderRectangle(mCursorXPosition -  ICON_WIDTH * 0.5f,          BOTTOM_BORDER - 0.01f,       mCursorXPosition +  ICON_WIDTH * 0.5f,                         BOTTOM_BORDER);
+    Utils::renderRectangle(mCursorXPosition -  ICON_WIDTH * 0.5f,          BOTTOM_BORDER + ICON_HEIGHT, mCursorXPosition +  ICON_WIDTH * 0.5f,                         BOTTOM_BORDER + ICON_HEIGHT + 0.01f);
+    Utils::renderRectangle(mCursorXPosition - (ICON_WIDTH * 0.5f + 0.01f), BOTTOM_BORDER,               mCursorXPosition + (ICON_WIDTH * 0.5f + 0.01f), BOTTOM_BORDER + ICON_HEIGHT);
     glEnd();
     glPopMatrix();
 
     for (unsigned int i = 0; i < cTools.size(); i++) {
       glPushMatrix();
-      float mPalleteWidth = cTools.size() * (ICON_WIDTH + ICON_SPACING) - ICON_SPACING;
-      if (mPalleteWidth < PALETTE_SPACE) {
-        glTranslatef(((-mPalleteWidth * 0.5f + ICON_WIDTH * 0.5f) + i * ICON_WIDTH) + i * ICON_SPACING, BOTTOM_BORDER + ICON_HEIGHT * 0.5f, 0.0f);
-      } else {
-        glTranslatef(((LEFT_BORDER + ICON_WIDTH * 0.5f) + i * ICON_WIDTH) + i * ICON_SPACING - cPaletteScroll.animation(), BOTTOM_BORDER + ICON_HEIGHT * 0.5f, 0.0f);
-      }
+//       if (mPaletteWidth < PALETTE_SPACE) {
+//         glTranslatef(((-mPaletteWidth * 0.5f + ICON_WIDTH * 0.5f) + i * ICON_WIDTH) + i * ICON_SPACING, BOTTOM_BORDER + ICON_HEIGHT * 0.5f, 0.0f);
+//       } else {
+        glTranslatef(i * (ICON_WIDTH + ICON_SPACING) - mScrollAmount, BOTTOM_BORDER + ICON_HEIGHT * 0.5f, 0.0f);
+//       }
       glScalef(ICON_WIDTH * 0.5f, ICON_HEIGHT * 0.5f, 0.0f);
       cTools[i]->renderIcon(cScreenYaw.getValue());
       glPopMatrix();

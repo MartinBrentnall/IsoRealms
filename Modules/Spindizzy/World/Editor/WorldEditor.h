@@ -89,14 +89,11 @@ namespace IsoRealms::Spindizzy {
     static const float STOP_THRESHOLD;
     static const float SELECTION_BOUNDARY_RENDERING_OFFSET;
 
-    static const float ASPECT_RATIO;
+    static const float BORDER_SPACING;
     static const float ICON_WIDTH;
     static const float ICON_HEIGHT;
-    static const float LEFT_BORDER;
-    static const float RIGHT_BORDER;
     static const float BOTTOM_BORDER;
     static const float ICON_SPACING;
-    static const float PALETTE_SPACE;
 
     int cDefAnalogueSensitivity;
 
@@ -132,7 +129,6 @@ namespace IsoRealms::Spindizzy {
     LiteralVertex cLocation;
     LiteralVertex cMomentum;
     IWorldEditorToolInstance* cSelectedTool;
-    AnimatedFloat cPaletteScroll;
     AnimatedFloat cPaletteSelectionX;
     TerrainBrush cTerrainBrush;
 
