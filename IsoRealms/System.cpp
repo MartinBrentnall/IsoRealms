@@ -23,19 +23,15 @@
 
 namespace IsoRealms {
 #if _WIN32
-  const std::string System::DIRECTORY_SEPARATOR    = "\\";
-  const std::string System::PROGRAM_DATA_DIRECTORY = "";
   const std::string System::USER_DATA_DIRECTORY    = std::string(getenv("USERPROFILE")) + "/.isorealms/";
   const std::string System::MODULE_EXTENSION       = ".dll";
 #elif __linux__
-  const std::string System::DIRECTORY_SEPARATOR    = "/";
-  const std::string System::PROGRAM_DATA_DIRECTORY = "";
   const std::string System::USER_DATA_DIRECTORY    = std::string(getenv("HOME")) + "/.isorealms/";
   const std::string System::MODULE_EXTENSION       = ".so";
 #endif
   
   std::string System::getPath(const std::string& filename, bool user) {
-    return (user ? USER_DATA_DIRECTORY : PROGRAM_DATA_DIRECTORY) + convertToSystemFormat(filename);
+    return (user ? USER_DATA_DIRECTORY : "") + convertToSystemFormat(filename);
   }
 
   std::string System::getModulePath(const std::string& filename, bool user) {
@@ -65,7 +61,7 @@ namespace IsoRealms {
     }
 
     for (unsigned int i = 0; i < mFolders.size(); i++) {
-      mUserDataLocation += (i == 0 ? "" : DIRECTORY_SEPARATOR) + mFolders[i];
+      mUserDataLocation += (i == 0 ? "" : "/") + mFolders[i];
       if (std::filesystem::exists(mUserDataLocation)) {
         if (!std::filesystem::is_directory(mUserDataLocation)) {
           throw ArgumentException("ERROR: System::makeUserDataDirectory: Failed to create data directory, \"" + mUserDataLocation + "\" already exists as something other than a directory.");

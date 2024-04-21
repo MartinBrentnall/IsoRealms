@@ -164,7 +164,11 @@ namespace IsoRealms {
     }
 
     void makeUserDataDirectory() override {
-      System::makeUserDataDirectory(cParent->getProjectPathPrefix(true) + getResourceDataPath());
+      cParent->makeUserDataDirectory(cName);
+    }
+
+    bool isIncluded() const override {
+      return std::string(cParent->getDataPath(false) + "/" + cName) != getResourceDataPath();
     }
 
     void propertyAdded(IProperty* property, unsigned int index) override {

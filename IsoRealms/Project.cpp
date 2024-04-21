@@ -472,7 +472,7 @@ namespace IsoRealms {
   }
 
   std::string Project::getUserDataPath() {
-    return (cCanSave ? "User/" : "Program/") + cProjectDataPath;
+    return (cCanSave ? "" : "Program/") + cProjectDataPath;
   }
 
   std::string Project::getDataPath(bool user) {
@@ -484,8 +484,8 @@ namespace IsoRealms {
   }
 
   std::string Project::getProjectPathPrefix(bool user) {
-    return user ? (System::USER_DATA_DIRECTORY + (cCanSave ? "/User/" : "/Program/"))
-                : (System::PROGRAM_DATA_DIRECTORY                                   );
+    return user ? (System::USER_DATA_DIRECTORY + (cCanSave ? "" : "/Program/"))
+                : (""                                                         );
   }
 
   IEditable* Project::getDefaultEditable() {

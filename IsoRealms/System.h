@@ -50,8 +50,6 @@ namespace IsoRealms {
     static std::string convertToSystemFormat(const std::string& path);
 
     public:
-    static const std::string DIRECTORY_SEPARATOR;
-    static const std::string PROGRAM_DATA_DIRECTORY;
     static const std::string USER_DATA_DIRECTORY;
     static const std::string MODULE_EXTENSION;
 

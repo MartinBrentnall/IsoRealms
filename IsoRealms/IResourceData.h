@@ -29,5 +29,6 @@ namespace IsoRealms {
     virtual void write(DOMNodeWriter* node, const std::string& file) = 0;
     virtual std::string getPath(const std::string& file, bool user) const = 0;
     virtual void makeUserDataDirectory() = 0;
+    virtual bool isIncluded() const = 0;
   };
 }

@@ -723,7 +723,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void World::updateCache() const {
-    if (cDefSpindizzy->getProject()->isUserProject()) {
+    if (!cDefResourceData->isIncluded() && cDefSpindizzy->getProject()->isUserProject()) {
       cDefResourceData->makeUserDataDirectory();
       std::string mCachePath = cDefResourceData->getPath("Terrain.cache", true);
 //      std::cout << "CACHE PATH: " << mCachePath << std::endl;
