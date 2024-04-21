@@ -253,6 +253,10 @@ namespace IsoRealms::Spindizzy {
     return surface->isSolid();
   }
 
+  bool Player::isHuggable(Wall* wall) const {
+    return !wall->isAtZoneEdge();
+  }
+
   bool Player::triggersContacts() const {
     return true;
   }

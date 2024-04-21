@@ -166,6 +166,10 @@ namespace IsoRealms::Spindizzy {
     return surface == &cDefSurfaceOutsideHomeZone || (surface->getSurfaceCellElevation(0, 0) == 0 && surface->getZone() == &cDefZone);
   }
 
+  bool Alien::isHuggable(Wall* wall) const {
+    return true;
+  }
+
   bool Alien::triggersContacts() const {
     return false;
   }

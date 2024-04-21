@@ -986,11 +986,11 @@ namespace IsoRealms::Spindizzy {
 
           // Wall hugging
           (*mAffectedMomentum) = 0.0f;
-          if (mWall->isAtZoneEdge()) {
+          if (object->isHuggable(mWall)) {
+            object->hugWall(mWall, mState);
+          } else {
             mWall->updateState(mState);
             object->setPhysicalState(mState);
-          } else {
-            object->hugWall(mWall, mState);
           }
         } else {
 

@@ -92,7 +92,11 @@ namespace IsoRealms::Spindizzy {
     cObject->bounceSurface();
     setPhysicalState(state);
   }
-  
+
+  bool PhysicsObject::isHuggable(Wall* wall) const {
+    return cObject->isHuggable(wall);
+  }
+
   void PhysicsObject::hugWall(Wall* wall, PhysicalState& state) {
     Wall::Direction mFaceDirection = wall->getFaceDirection();
     switch (mFaceDirection) {

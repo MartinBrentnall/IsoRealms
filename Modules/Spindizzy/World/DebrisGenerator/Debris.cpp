@@ -105,6 +105,10 @@ namespace IsoRealms::Spindizzy {
     return cDefZone;
   }
 
+  bool Debris::isHuggable(Wall* wall) const {
+    return true;
+  }
+
   bool Debris::allowTraversal(ISurface* surface) const {
     return surface->isSolid() && surface->getZone() == cDefZone;
   }

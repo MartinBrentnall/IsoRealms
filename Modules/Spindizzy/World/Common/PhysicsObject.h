@@ -51,6 +51,7 @@ namespace IsoRealms::Spindizzy {
     void leaveSurface(ISurface* surface, PhysicalState& state);
     void mountSurface(ISurface* surface, PhysicalState& state, float fallHeight);
     void bounceSurface(ISurface* surface, PhysicalState& state, float fallHeight);
+    bool isHuggable(Wall* wall) const;
     void hugWall(Wall* wall, PhysicalState& state);
     void unhugWall(Wall* wall, PhysicalState& state);
   };

@@ -94,6 +94,7 @@ namespace IsoRealms::Spindizzy {
     float getRadius() const override;
     float getHugMomentum() const override;
     bool allowTraversal(ISurface* surface) const override;
+    bool isHuggable(Wall* wall) const override;
     bool triggersContacts() const override;
     Zone* getHome() const override;
     void physicalStateChanged() override;

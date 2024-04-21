@@ -96,6 +96,7 @@ namespace IsoRealms::Spindizzy {
     virtual Zone* getHome() const = 0;
     
     virtual bool allowTraversal(ISurface* surface) const = 0;
+    virtual bool isHuggable(Wall* wall) const = 0;
     
     /**
      * Determine whether this object triggers actions via contact with surfaces

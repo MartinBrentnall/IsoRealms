@@ -114,6 +114,10 @@ namespace IsoRealms::Spindizzy {
     return cDefType.allowTraversal(surface);
   }
   
+  bool Physics::isHuggable(Wall* wall) const {
+    return true;
+  }
+
   bool Physics::triggersContacts() const {
     return cDefType.triggersContacts();
   }
