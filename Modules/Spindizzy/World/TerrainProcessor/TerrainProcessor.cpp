@@ -320,7 +320,6 @@ namespace IsoRealms::Spindizzy {
       if (mComparisonIndex <= mCurrentIndex) {
         continue;
       }
-  /*    std::cout << "Applying surface provide " << i << std::endl;*/
       if (x >= nearbyTerrain[i]->getXStart() && x <= nearbyTerrain[i]->getXEnd() && y >= nearbyTerrain[i]->getYStart() && y <= nearbyTerrain[i]->getYEnd()) {
         std::unique_ptr<WallColumn> mWallColumn = getRawWallColumn(nearbyTerrain[i], x, y, facing);
         if (!mWallColumn->empty()) {
@@ -393,11 +392,6 @@ namespace IsoRealms::Spindizzy {
         }
       }
     }
-    for (int i = mOpposingMask.size() - 1; i >= 0; i--) {
-      if (mOpposingMask.empty()) {
-        mOpposingMask.erase(mOpposingMask.begin() + i);
-      }
-    }
     return mOpposingMask;
   }
 
@@ -430,7 +424,7 @@ namespace IsoRealms::Spindizzy {
       for (unsigned int j = 0; j < mSplitColumns.size(); j++) {
         mWallColumns.emplace_back(std::move(mSplitColumns[j]));
       }
-      
+
       for (int j = mWallColumns.size() - 1; j >= 0; j--) {
         if (mWallColumns[j]->isCompatibleWith(mMaskCondition)) {
           mWallColumns[j]->removeHiddenSections(mWallMasks[i].get());

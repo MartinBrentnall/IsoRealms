@@ -221,24 +221,51 @@ namespace IsoRealms {
     Condition mCondition(true);
     mCondition.cConditions.emplace_back(Condition(*this));
     mCondition.cConditions.emplace_back(Condition(condition.value()));
-    mCondition.simplify();
 
     // Create a condition based on this condition AND the negation of the split condition
     Condition mOpposingCondition(true);
     mOpposingCondition.cConditions.emplace_back(Condition(*this));
-
-//    std::unique_ptr<Condition> mConditionC = condition->negate();
-
     mOpposingCondition.cConditions.emplace_back(Condition(condition->negate()));
-    mOpposingCondition.simplify();
 
-    if (mCondition.isAbsolute() || mOpposingCondition.isAbsolute()) {
+    if (!mCondition.canBe(true) || !mOpposingCondition.canBe(true)) {
       return mSplitConditions;
     }
 
+    mCondition.simplify();
+    mOpposingCondition.simplify();
     mSplitConditions.emplace_back(Condition(mCondition));
     mSplitConditions.emplace_back(Condition(mOpposingCondition));
     return mSplitConditions;
+  }
+
+  std::set<ConditionElement*> Condition::getAllConditionElements() const {
+    std::set<ConditionElement*> mElements;
+    for (ConditionElement::Clause* mCriteria : cCriteria) {
+      mElements.insert(mCriteria->getElement());
+    }
+    for (const Condition& mSubCondition : cConditions) {
+      std::set<ConditionElement*> mSubElements = mSubCondition.getAllConditionElements();
+      mElements.insert(mSubElements.begin(), mSubElements.end());
+    }
+    return mElements;
+  }
+
+  bool Condition::testInputs(std::vector<ConditionElement*> inputs, unsigned int index, bool value) const {
+    if (index == inputs.size()) {
+      return isTestTrue() == value;
+    }
+    inputs[index]->setTestInput(false);
+    if (testInputs(inputs, index + 1, value)) {
+      return true;
+    }
+    inputs[index]->setTestInput(true);
+    return testInputs(inputs, index + 1, value);
+  }
+
+  bool Condition::canBe(bool value) const {
+    std::set<ConditionElement*> mInputs = getAllConditionElements();
+    std::vector<ConditionElement*> mVectorInputs(mInputs.begin(), mInputs.end());
+    return testInputs(mVectorInputs, 0, value);
   }
 
   void Condition::checkForAbsoluteConditions() {
@@ -400,6 +427,20 @@ namespace IsoRealms {
     return cAnd != cNegated;
   }
 
+  bool Condition::isTestTrue() const {
+    for (ConditionElement::Clause* mCriteria : cCriteria) {
+      if (cAnd != mCriteria->isTestTrue()) {
+        return cAnd == cNegated;
+      }
+    }
+    for (unsigned int i = 0; i < cConditions.size(); i++) {
+      if (cAnd != cConditions[i].isTestTrue()) {
+        return cAnd == cNegated;
+      }
+    }
+    return cAnd != cNegated;
+  }
+
   Condition Condition::compose(std::optional<Condition>& condition) {
     if (!condition.has_value()) {
       return cAnd ? Condition(*this) : Condition(true);
@@ -427,15 +468,14 @@ namespace IsoRealms {
 
   bool Condition::isCompatibleWith(std::optional<Condition>& condition) {
     if (!condition.has_value()) {
-      return !isAbsolute() || isTrue();
+      return canBe(true);
     }
 
     Condition mBothConditions(true);
     mBothConditions.cConditions.emplace_back(Condition(*this));
     mBothConditions.cConditions.emplace_back(Condition(condition.value()));
-    mBothConditions.simplify();
 
-    return !mBothConditions.isAbsolute() || mBothConditions.isTrue();
+    return mBothConditions.canBe(true);
   }
 
   Condition Condition::negate() {

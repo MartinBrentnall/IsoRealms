@@ -36,6 +36,7 @@ namespace IsoRealms {
       Clause(ConditionElement* parent, bool negated);
 
       bool isTrue() const;
+      bool isTestTrue() const;
       bool isNegated() const;
       bool operator==(const Clause&) const;
       bool operator!=(const Clause&) const;
@@ -53,10 +54,13 @@ namespace IsoRealms {
     void renderIcon() const;
     Clause* getPositiveClause();
     Clause* getNegativeClause();
+    void setTestInput(bool value);
+    bool getTestInput() const;
 
     private:
     std::string cInputName;
     IBoolean* cInput;
+    bool cTestInput;
     IScreen* cIcon;
     Clause cPositiveClause;
     Clause cNegativeClause;

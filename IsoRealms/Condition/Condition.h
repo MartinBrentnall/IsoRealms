@@ -109,6 +109,7 @@ namespace IsoRealms {
     std::set<IBoolean*> getInputs();
     bool isAbsolute() const;
     bool isTrue() const;
+    bool isTestTrue() const;
     bool isCompatibleWith(std::optional<Condition>& condition);
     bool operator==(const Condition&) const;
     bool operator!=(const Condition&) const;
@@ -122,6 +123,10 @@ namespace IsoRealms {
     std::set<ConditionElement::Clause*> getConditionElements();
     bool isNegated();
     bool isAnd();
+
+    std::set<ConditionElement*> getAllConditionElements() const;
+    bool canBe(bool value) const;
+    bool testInputs(std::vector<ConditionElement*> inputs, unsigned int index, bool value) const;
 
     void debug(const std::string&) const;
     void debug(int = 0) const;

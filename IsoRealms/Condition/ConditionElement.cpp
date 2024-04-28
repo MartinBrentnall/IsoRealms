@@ -22,6 +22,7 @@ namespace IsoRealms {
   ConditionElement::ConditionElement(const std::string& name, IScreen* icon, IBoolean* input) :
             cInputName(name),
             cInput(input),
+            cTestInput(false),
             cIcon(icon),
             cPositiveClause(this, false),
             cNegativeClause(this, true) {
@@ -47,6 +48,14 @@ namespace IsoRealms {
     return &cNegativeClause;
   }
 
+  void ConditionElement::setTestInput(bool value) {
+    cTestInput = value;
+  }
+
+  bool ConditionElement::getTestInput() const {
+    return cTestInput;
+  }
+
   ConditionElement::Clause::Clause(ConditionElement* parent, bool negated) :
             cParent(parent),
             cNegated(negated) {
@@ -54,6 +63,10 @@ namespace IsoRealms {
 
   bool ConditionElement::Clause::isTrue() const {
     return cParent->cInput->getValue() != cNegated;
+  }
+
+  bool ConditionElement::Clause::isTestTrue() const {
+    return cParent->cTestInput != cNegated;
   }
 
   bool ConditionElement::Clause::isNegated() const {
