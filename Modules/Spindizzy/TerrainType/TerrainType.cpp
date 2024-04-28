@@ -328,7 +328,9 @@ namespace IsoRealms::Spindizzy {
   }
 
   void TerrainType::Pen::processCursorMovement(LiteralVertex* start, LiteralVertex* end) {
-    if (cPinnedZone != nullptr) {
+    if (end == nullptr) {
+      cancel();
+    } else if (cPinnedZone != nullptr) {
       cPinnedZone->processCursorMovement(*end);
       if (cEditor->getTerrainBrush().isSplit()) {
         end->x = cPinnedLocation.cDefX;

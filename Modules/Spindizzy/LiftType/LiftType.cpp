@@ -191,7 +191,9 @@ namespace IsoRealms::Spindizzy {
   }
 
   void LiftType::Pen::processCursorMovement(LiteralVertex* start, LiteralVertex* end) {
-    if (cPinnedZone != nullptr) {
+    if (end == nullptr) {
+      cancel();
+    } else if (cPinnedZone != nullptr) {
       end->x = cPinnedLocation.cDefX;
       end->y = cPinnedLocation.cDefY;
     }
