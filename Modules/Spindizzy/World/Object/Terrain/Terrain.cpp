@@ -384,7 +384,9 @@ namespace IsoRealms::Spindizzy {
         int mX = mFacesPole ? i : location;
         int mY = mFacesPole ? location : i;
         int mBaseHeight = getBottomHeight(mX, mY);
-        int mHeight = cDefEndZ - cDefStartZ;
+        int mOtherAxisSlope = mFacesPole ? getYSlope() : getXSlope();
+        int mHeight = cDefEndZ - cDefStartZ + std::max(0, (facing == Wall::Direction::SOUTH || facing == Wall::Direction::WEST) ? -mOtherAxisSlope : mOtherAxisSlope);
+
         mWalls.emplace_back(std::make_unique<Wall>(mX, mY, mBaseHeight, 1, mHeight, mSlope, 0, facing, cDefCondition, cDefType, *this));
       }
     } else {
