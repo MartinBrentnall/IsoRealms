@@ -141,7 +141,7 @@ namespace IsoRealms {
 
   void PropertyCondition::renderConditionPalette(IPropertyAppearance* appearance, bool tick) const {
     if (cShowingConditionPalette) {
-      glDepthMask(false);
+      glDepthMask(GL_FALSE);
       glDisable(GL_DEPTH_TEST);
       glBindTexture(GL_TEXTURE_2D, 0);
       float mYScale = 0.05f;
@@ -164,12 +164,12 @@ namespace IsoRealms {
 
       glPushMatrix();
       glScalef(mXScale, mYScale, 1.0f);
+      glDisable(GL_DEPTH_TEST);
       if (tick) {
         Utils::renderIconTick();
       } else {
         Utils::renderIconNone();
       }
-      glDisable(GL_DEPTH_TEST);
       glPopMatrix();
 
       glTranslatef(mXScale * 2.0f + mSpacing, 0.0f, 0.0f);
@@ -177,7 +177,6 @@ namespace IsoRealms {
       glTranslatef(mXScale * 2.0f + mSpacing, 0.0f, 0.0f);
       appearance->print(0.0f, -mYScale * 0.8f, mYScale, IFont::Alignment::CENTER, "|");
 
-      glDepthMask(true);
       for (int i = 0; i < static_cast<int>(cAvailableElements.size()); i++) {
         glTranslatef(mXScale * 2.0f + mSpacing, 0.0f, 0.0f);
         glPushMatrix();
@@ -186,6 +185,7 @@ namespace IsoRealms {
         glDisable(GL_DEPTH_TEST);
         glPopMatrix();
       }
+      glDepthMask(GL_TRUE);
       glPopMatrix();
     }
   }
@@ -210,7 +210,7 @@ namespace IsoRealms {
   }
 
   void PropertyCondition::renderEditing(IPropertyAppearance* appearance) const {
-    glDepthMask(false);
+    glDepthMask(GL_FALSE);
     glBindTexture(GL_TEXTURE_2D, 0);
     float mYScale = 0.05f;
     float mXScale = mYScale;
@@ -228,7 +228,7 @@ namespace IsoRealms {
     glPopMatrix();
     glColor4f(1.0f, 0.0f, 0.2f, 1.0f);
     Utils::renderBar(0.0f, -mYScale * 1.2f, 0.0f, mYScale * 1.2f);
-    glDepthMask(true);
+    glDepthMask(GL_TRUE);
     cConditionDiagram->render(appearance);
 
 
@@ -440,6 +440,7 @@ namespace IsoRealms {
     glColor3f(1.0f, 1.0f, 1.0f);
     glTranslatef(xOffset + mScale * 0.5f, mY, 0.0f);
     glScalef(mScale, mScale, 1.0f);
+    glDisable(GL_DEPTH_TEST);
     if (cCharacter != nullptr) {
       cCharacter->getElement()->renderIcon();
     } else {
@@ -650,6 +651,7 @@ namespace IsoRealms {
       glPushMatrix();
       if (cInput == nullptr) {
         glScalef(mXScale, mYScale, 1.0f);
+        glDisable(GL_DEPTH_TEST);
         if (tick) {
           Utils::renderIconTick();
         } else {
@@ -695,7 +697,7 @@ namespace IsoRealms {
         cInput = cInput->getNegatedClause();
       }
     } else {
-      cParent->showConditionPalette(cInput);
+      cParent->showConditionPalette(cInput != nullptr ? cInput->getElement() : nullptr);
     }
   }
 
@@ -781,8 +783,10 @@ namespace IsoRealms {
     glEnd();
 
     glPushMatrix();
+    glDepthMask(GL_FALSE);
     glScalef(mXScale, mYScale, 1.0f);
-    Utils::renderIconCustom ();
+    Utils::renderIconCustom();
+    glDepthMask(GL_TRUE);
     glPopMatrix();
 
     glTranslatef(-mXSpacing - mXScale * 2.0f, 0.0f, 0.0f);
