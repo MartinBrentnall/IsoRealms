@@ -59,7 +59,6 @@ namespace IsoRealms::Spindizzy {
   
   bool LiftType::renderIcon() const {
     glRotatef(Spindizzy::DEFAULT_VIEW_ANGLE_PITCH, 1.0f, 0.0f, 0.0f);
-    glRotatef(Spindizzy::DEFAULT_VIEW_ANGLE_YAW,   0.0f, 0.0f, 1.0f);
     glScalef(0.8f, 0.8f, 0.8f);
     glBindTexture(GL_TEXTURE_2D, 0);
     glColor3f(1.0f, 1.0f, 1.0f);

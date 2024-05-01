@@ -77,7 +77,7 @@ namespace IsoRealms {
   }
 
   bool Model::renderIcon() const {
-    glScalef(cDefScaleX, cDefScaleY, cDefScaleZ);
+    applyTransformation();
     return cModel->renderAssetIcon();
   }
 
