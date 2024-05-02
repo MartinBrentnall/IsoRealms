@@ -39,6 +39,7 @@ namespace IsoRealms::Spindizzy {
   WorldEditor::WorldEditor(IAssetRegistry* assets, World* world) :
             cScreenYaw(&cRotation),
             cScreenPitch(&cTilt),
+            cHatHandler(world->getSpindizzy()->getProject()->getApplication()->getHatHandler()),
             cRotatingView(false),
             cZoomingView(false),
             cPreviousX(0),
@@ -60,7 +61,7 @@ namespace IsoRealms::Spindizzy {
     cZSpeed               = 0.0f;
     cDistanceInSpeed      = 0.0f;
     cDistanceOutSpeed     = 0.0f;
-    cDefAnalogueSensitivity = 5000;
+    cDefAnalogueSensitivity = 10;
     cPaletteSelectionX.init(0.0f);
     resetEditingView();
     cLocation.x = -1.0f;
@@ -239,19 +240,6 @@ namespace IsoRealms::Spindizzy {
     }
 
     switch (event.type) {
-//       case SDL_JOYAXISMOTION: {
-//         int mValue = std::abs(event.jaxis.value) < cDefAnalogueSensitivity ? 0 : (event.jaxis.value - (event.jaxis.value < 0 ? -cDefAnalogueSensitivity : cDefAnalogueSensitivity)) * (32767 / static_cast<float>(32767 - cDefAnalogueSensitivity));
-//         switch (event.jaxis.axis) {
-//           case 0: cXSpeed           =  mValue / 200000.0f;         return true;
-//           case 1: cYSpeed           = -mValue / 200000.0f;         return true;
-//           case 2: cDistanceOutSpeed = (mValue + 32767) / 50000.0f; return true;
-//           case 3: cYawSpeed         =  mValue / 9000.0f;           return true;
-//           case 4: cPitchSpeed       = -mValue / 9000.0f;           return true;
-//           case 5: cDistanceInSpeed  = (mValue + 32767) / 50000.0f; return true;
-//         }
-//         break;
-//       }
-
       case sf::Event::JoystickButtonPressed: {
         switch (event.joystickButton.button) {
           case 4: cZSpeed = -32767 / 200000.0f; return true;
@@ -260,21 +248,31 @@ namespace IsoRealms::Spindizzy {
         break;
       }
 
-//       case SDL_JOYBUTTONUP: {
-//         switch (event.joystickButton.button) {
-//           case 4: cZSpeed = 0.0f; return true;
-//           case 5: cZSpeed = 0.0f; return true;
-//         }
-//         break;
-//       }
+      case sf::Event::JoystickButtonReleased: {
+        switch (event.joystickButton.button) {
+          case 4: cZSpeed = 0.0f; return true;
+          case 5: cZSpeed = 0.0f; return true;
+        }
+        break;
+      }
 
       case sf::Event::JoystickMoved: {
-// TODO        bool mDirectionPressed = false;
-//        if (HatHandler::leftPressed())  {selectToolRelative(-1); mDirectionPressed = true;}
-//        if (HatHandler::rightPressed()) {selectToolRelative(1);  mDirectionPressed = true;}
-//        if (HatHandler::upPressed())    {setPreviousTheme();     mDirectionPressed = true;}
-//        if (HatHandler::downPressed())  {setNextTheme();         mDirectionPressed = true;}
-//        if (mDirectionPressed)          {return true;}
+        bool mDirectionPressed = false;
+        if (cHatHandler.leftPressed())  {selectToolRelative(-1); mDirectionPressed = true;}
+        if (cHatHandler.rightPressed()) {selectToolRelative(1);  mDirectionPressed = true;}
+        if (cHatHandler.upPressed())    {setPreviousTheme();     mDirectionPressed = true;}
+        if (cHatHandler.downPressed())  {setNextTheme();         mDirectionPressed = true;}
+        if (mDirectionPressed)          {return true;}
+        int mValue = std::abs(event.joystickMove.position) < cDefAnalogueSensitivity ? 0 : (event.joystickMove.position - (event.joystickMove.position < 0 ? -cDefAnalogueSensitivity : cDefAnalogueSensitivity)) * (32767 / static_cast<float>(32767 - cDefAnalogueSensitivity));
+        switch (event.joystickMove.axis) {
+          case sf::Joystick::Axis::X: cXSpeed           =  mValue / 500.0f; return true;
+          case sf::Joystick::Axis::Y: cYSpeed           = -mValue / 500.0f; return true;
+          case sf::Joystick::Axis::Z: cDistanceOutSpeed =  mValue / 50.0f;  return true;
+          case sf::Joystick::Axis::U: cYawSpeed         =  mValue / 9.0f;   return true;
+          case sf::Joystick::Axis::V: cPitchSpeed       = -mValue / 9.0f;   return true;
+          case sf::Joystick::Axis::R: cDistanceInSpeed  =  mValue / 50.0f;  return true;
+          default:                                                          break;
+        }
         break;
       }
 
@@ -282,15 +280,21 @@ namespace IsoRealms::Spindizzy {
         switch (event.key.code) {
           case sf::Keyboard::LShift:   cActiveSlow   = true;   return true;
           case sf::Keyboard::LControl: cActiveFast   = true;   return true;
+          case sf::Keyboard::A:        // Fallthrough
           case sf::Keyboard::Left:     cActiveLeft   = true;   return true;
-          case sf::Keyboard::Right:    cActiveRight  = true;   return true;
+          case sf::Keyboard::W:        // Fallthrough
           case sf::Keyboard::Up:       cActiveUp     = true;   return true;
+          case sf::Keyboard::S:        // Fallthrough
           case sf::Keyboard::Down:     cActiveDown   = true;   return true;
+          case sf::Keyboard::D:        // Fallthrough
+          case sf::Keyboard::Right:    cActiveRight  = true;   return true;
           case sf::Keyboard::PageUp:   cActiveHigher = true;   return true;
           case sf::Keyboard::PageDown: cActiveLower  = true;   return true;
           case sf::Keyboard::Home:     setNextTheme();         return true;
           case sf::Keyboard::End:      setPreviousTheme();     return true;
+          case sf::Keyboard::Q:        // Fallthrough
           case sf::Keyboard::F1:       selectToolRelative(-1); return true;
+          case sf::Keyboard::E:        // Fallthrough
           case sf::Keyboard::F2:       selectToolRelative(1);  return true;
           default:                                             break;
         }
@@ -301,9 +305,13 @@ namespace IsoRealms::Spindizzy {
         switch (event.key.code) {
           case sf::Keyboard::LShift:   cActiveSlow   = false; return true;
           case sf::Keyboard::LControl: cActiveFast   = false; return true;
+          case sf::Keyboard::A:        // Fallthrough
           case sf::Keyboard::Left:     cActiveLeft   = false; return true;
+          case sf::Keyboard::D:        // Fallthrough
           case sf::Keyboard::Right:    cActiveRight  = false; return true;
+          case sf::Keyboard::W:        // Fallthrough
           case sf::Keyboard::Up:       cActiveUp     = false; return true;
+          case sf::Keyboard::S:        // Fallthrough
           case sf::Keyboard::Down:     cActiveDown   = false; return true;
           case sf::Keyboard::PageUp:   cActiveHigher = false; return true;
           case sf::Keyboard::PageDown: cActiveLower  = false; return true;

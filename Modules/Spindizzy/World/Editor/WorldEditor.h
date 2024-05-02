@@ -126,6 +126,7 @@ namespace IsoRealms::Spindizzy {
     bool cActiveLower;
     bool cActiveSlow;
     bool cActiveFast;
+    HatHandler& cHatHandler;
     LiteralVertex cLocation;
     LiteralVertex cMomentum;
     IWorldEditorToolInstance* cSelectedTool;

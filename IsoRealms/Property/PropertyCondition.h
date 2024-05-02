@@ -198,6 +198,7 @@ namespace IsoRealms {
       bool isAnd() const override;
     };
 
+    HatHandler& cHatHandler;
     std::function<std::optional<Condition>&()> cGetter;
     std::function<void(std::optional<Condition>&)> cSetter;
     std::vector<ConditionElement*> cAvailableElements;
@@ -229,7 +230,7 @@ namespace IsoRealms {
     void moveCursorRight();
 
     public:
-    PropertyCondition(const std::string& label, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter);
+    PropertyCondition(HatHandler& hatHandler, const std::string& label, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter);
 
     /***********************\
      * Implements Property *

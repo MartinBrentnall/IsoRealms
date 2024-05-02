@@ -30,7 +30,7 @@ namespace IsoRealms::Spindizzy {
             cRuntimeCursorY(0.0),
             cRuntimeCursorXSpeed(0.0),
             cRuntimeCursorYSpeed(0.0),
-            cDefAnalogueSensitivity(5000) {
+            cDefAnalogueSensitivity(10) {
     reset();
   }
 
@@ -347,14 +347,15 @@ namespace IsoRealms::Spindizzy {
           break;
         }
 
-//         case SDL_JOYAXISMOTION: {
-//           int mValue = std::abs(event.jaxis.value) < cDefAnalogueSensitivity ? 0 : (event.jaxis.value - (event.jaxis.value < 0 ? -cDefAnalogueSensitivity : cDefAnalogueSensitivity)) * (32767 / static_cast<float>(32767 - cDefAnalogueSensitivity));
-//           switch (event.jaxis.axis) {
-//             case 0: cRuntimeCursorXSpeed =  mValue / 400000.0f; return true;
-//             case 1: cRuntimeCursorYSpeed = -mValue / 400000.0f; return true;
-//           }
-//           break;
-//         }
+        case sf::Event::JoystickMoved: {
+          int mValue = std::abs(event.joystickMove.position) < cDefAnalogueSensitivity ? 0 : (event.joystickMove.position - (event.joystickMove.position < 0 ? -cDefAnalogueSensitivity : cDefAnalogueSensitivity)) * (32767 / static_cast<float>(32767 - cDefAnalogueSensitivity));
+          switch (event.joystickMove.axis) {
+            case sf::Joystick::Axis::X: cRuntimeCursorXSpeed =  mValue / 50.0f; return true;
+            case sf::Joystick::Axis::Y: cRuntimeCursorYSpeed = -mValue / 50.0f; return true;
+            default:                                                            break;
+          }
+          break;
+        }
 
         default: {
           break;

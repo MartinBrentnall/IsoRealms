@@ -19,8 +19,9 @@
 #include "PropertyCondition.h"
 
 namespace IsoRealms {
-  PropertyCondition::PropertyCondition(const std::string& label, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter) :
+  PropertyCondition::PropertyCondition(HatHandler& hatHandler, const std::string& label, std::vector<ConditionElement*> availableElements, std::function<std::optional<Condition>&()> getter, std::function<void(std::optional<Condition>&)> setter) :
             Property(label),
+            cHatHandler(hatHandler),
             cGetter(getter),
             cSetter(setter),
             cAvailableElements(availableElements),
@@ -358,8 +359,8 @@ namespace IsoRealms {
         }
 
         case sf::Event::JoystickMoved: {
-// TODO          if (HatHandler::leftPressed())  {selectPreviousElement();}
-//           if (HatHandler::rightPressed()) {selectNextElement();}
+          if (cHatHandler.leftPressed())  {selectPreviousElement();}
+          if (cHatHandler.rightPressed()) {selectNextElement();}
           break;
         }
 
@@ -387,10 +388,10 @@ namespace IsoRealms {
       }
 
       case sf::Event::JoystickMoved: {
-// TODO        if (HatHandler::leftPressed())  {moveCursorLeft();}
-//         if (HatHandler::rightPressed()) {moveCursorRight();}
-//         if (HatHandler::upPressed())    {moveCursorUp();}
-//         if (HatHandler::downPressed())  {moveCursorDown();}
+        if (cHatHandler.leftPressed())  {moveCursorLeft();}
+        if (cHatHandler.rightPressed()) {moveCursorRight();}
+        if (cHatHandler.upPressed())    {moveCursorUp();}
+        if (cHatHandler.downPressed())  {moveCursorDown();}
         break;
       }
 

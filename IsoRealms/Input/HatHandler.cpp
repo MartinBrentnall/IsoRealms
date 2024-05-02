@@ -109,7 +109,17 @@ namespace IsoRealms {
             break;
           }
 
-          default: break;
+          default: {
+            cUpReleased    = false;
+            cUpPressed     = false;
+            cDownPressed   = false;
+            cDownReleased  = false;
+            cLeftPressed   = false;
+            cLeftReleased  = false;
+            cRightPressed  = false;
+            cRightReleased = false;
+            break;
+          }
         }
         break;
       }
