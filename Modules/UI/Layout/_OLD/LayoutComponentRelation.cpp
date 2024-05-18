@@ -58,12 +58,6 @@ namespace IsoRealms::UI {
     cOffset += offset;
   }
 
-  void LayoutComponentRelation::save(DOMNodeWriter* node, const std::string& name, Layout* layout) {
-    node->addAttribute(name + "Anchor",   layout->getName(cRelative));
-    node->addAttribute(name + "Position", cPosition);
-    node->addAttribute(name + "Offset",   cOffset);
-  }
-
   std::string LayoutComponentRelation::getName(Layout* layout) {
     return layout->getName(cRelative);
   }

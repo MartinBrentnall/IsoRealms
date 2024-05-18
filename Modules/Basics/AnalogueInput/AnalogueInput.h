@@ -56,10 +56,10 @@ namespace IsoRealms::Basics {
      * Resource Interface *
     \**********************/
     AnalogueInput(IProject* project, Basics* basics);
-    AnalogueInput(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data);
+    AnalogueInput(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -78,6 +78,7 @@ namespace IsoRealms::Basics {
      * Implements IAsset *
     \*********************/
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
     /***********************\
      * Scripting Interface *
@@ -129,7 +130,7 @@ namespace IsoRealms::Basics {
      *
      * @param node The node from which to read physical input mappings.
      */
-    void loadCustomMapping(DOMNode& node);
+    void loadCustomMapping(JSONObject object);
 
     /**
      * Write user-defined physical input mappings to the specified node.  If
@@ -139,17 +140,16 @@ namespace IsoRealms::Basics {
      * @param node The node to which to write user-defined physical input
      *         mappings.
      */
-    void saveCustomMapping(DOMNodeWriter* node) const;
+    void saveCustomMapping(JSONObject object) const;
 
     private:
 
-    // DOM strings.
-    static const std::string TAG_AXIS;
-    static const std::string TAG_DIGITAL_TO_ANALOGUE;
-    static const std::string TAG_INPUT;
-
-    static const std::string ATTRIBUTE_NAME;
-    static const std::string ATTRIBUTE_ID;
+    // JSON members.
+    static const std::string JSON_ID;
+    static const std::string JSON_INPUT;
+    static const std::string JSON_MAPPINGS;
+    static const std::string JSON_NAME;
+    static const std::string JSON_TYPE;
 
     // Definition data.
     class InputMapping {
@@ -160,8 +160,8 @@ namespace IsoRealms::Basics {
       float input(sf::Event& event);
       std::string getShortName() const;
       std::shared_ptr<IAnalogueInputMapping> getInput() const;
-      void save(DOMNodeWriter* node) const;
-      void loadCustomMapping(DOMNode& node);
+      void save(JSONObject object) const;
+      void loadCustomMapping(JSONObject object);
       void registerAssets(IAssetRegistry* assets);
       void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
       std::string getName();

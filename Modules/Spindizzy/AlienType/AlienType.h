@@ -45,10 +45,10 @@ namespace IsoRealms::Spindizzy {
      * Resource Interface *
     \**********************/
     AlienType(IProject* project, Spindizzy* spindizzy);
-    AlienType(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data);
+    AlienType(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -86,19 +86,19 @@ namespace IsoRealms::Spindizzy {
     \*******************************/
     IWorldEditorToolInstance* createToolInstance(WorldEditor* editor) override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
     private:
 
-    // DOM strings.
-    static const std::string TAG_MODEL;
-    static const std::string TAG_TARGET;
-
-    static const std::string ATTRIBUTE_ACCELERATION;
-    static const std::string ATTRIBUTE_FRICTION;
-    static const std::string ATTRIBUTE_HEIGHT;
-    static const std::string ATTRIBUTE_HUG_MOMENTUM;
-    static const std::string ATTRIBUTE_RADIUS;
-    static const std::string ATTRIBUTE_SPIN_SPEED;
+    // JSON members.
+    static const std::string JSON_ACCELERATION;
+    static const std::string JSON_APPEARANCE;
+    static const std::string JSON_FRICTION;
+    static const std::string JSON_HEIGHT;
+    static const std::string JSON_HUG_MOMENTUM;
+    static const std::string JSON_RADIUS;
+    static const std::string JSON_SPIN_SPEED;
+    static const std::string JSON_TARGET;
 
     static const float DEFAULT_ACCELERATION;
     static const float DEFAULT_HEIGHT;

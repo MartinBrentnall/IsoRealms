@@ -38,11 +38,11 @@ namespace IsoRealms::UI {
   class LayoutComponent final {
     public:
     LayoutComponent(IProject* project, Layout& layout);
-    LayoutComponent(IProject* project, Layout& layout, DOMNode& node);
-    void registerAssets(IAssetRegistry* assets, const std::string& name);  
+    LayoutComponent(IProject* project, Layout& layout, JSONObject object);
+    void registerAssets(IAssetRegistry* assets, const std::string& name);
     void unregisterAssets(IAssetRemover* assets);
     void render(float scale, float aspectRatio);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     bool inputEditor(sf::Event& event, IScreen* screen, float x, float y, float aspectRatio, float scale);
     bool renderSelectionHighlight(float aspectRatio, float scale);
     bool contains(float x, float y, float aspectRatio);
@@ -59,16 +59,15 @@ namespace IsoRealms::UI {
     
     private:
     
-    // DOM strings.
-    static const std::string TAG_BOTTOM;
-    static const std::string TAG_LEFT;
-    static const std::string TAG_LOCATION;
-    static const std::string TAG_OFFSET;
-    static const std::string TAG_RIGHT;
-    static const std::string TAG_SCREEN;
-    static const std::string TAG_TOP;
-
-    static const std::string ATTRIBUTE_TYPE;
+    // JSON members.
+    static const std::string JSON_BOTTOM;
+    static const std::string JSON_LEFT;
+    static const std::string JSON_LOCATION;
+    static const std::string JSON_OFFSET;
+    static const std::string JSON_RIGHT;
+    static const std::string JSON_SCREEN;
+    static const std::string JSON_TOP;
+    static const std::string JSON_TYPE;
 
     static const std::string LOCATION_TYPE_ABSOLUTE;
     static const std::string LOCATION_TYPE_RELATIVE;
@@ -84,10 +83,10 @@ namespace IsoRealms::UI {
       std::unique_ptr<ILayoutOffset> cDefOffset;
       
       Edge(LayoutComponent& parent, float location);
-      Edge(IProject* project, LayoutComponent& parent, DOMNode& node, const std::string& tag, bool horizontal, float defaultValue);
-      
+      Edge(IProject* project, LayoutComponent& parent, JSONObject object, const std::string& tag, bool horizontal, float defaultValue);
+
       float getLocation(float aspectRatio) const;
-      void save(DOMNodeWriter* node, const std::string& tag, Layout* layout, float defaultValue) const;
+      void save(JSONObject object, const std::string& tag, Layout* layout, float defaultValue) const;
     };
     
     enum class Handle {

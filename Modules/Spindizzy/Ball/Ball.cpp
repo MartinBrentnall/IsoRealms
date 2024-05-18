@@ -21,28 +21,27 @@
 #include "IsoRealms/IApplication.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string Ball::TAG_FILL    = "Fill";
-  const std::string Ball::TAG_OUTLINE = "Outline";
-  const std::string Ball::TAG_SHINE   = "Shine";
+  const std::string Ball::JSON_FILL    = "fill";
+  const std::string Ball::JSON_OUTLINE = "outline";
+  const std::string Ball::JSON_SHINE   = "shine";
 
   const float Ball::CIRCLE_RESOLUTION = 5.0f * (M_PI / 180.0);
 
   Ball::Ball(IProject* project, Spindizzy* spindizzy) :
             cProject(project),
             cDefTexture(project),
-            cDefFill(project, 1.0f, 0.0f, 1.0f, 0.0f, [this]() {updateTexture();}),
-            cDefOutline(project, 0.0f, 0.0f, 0.0f, 0.0f, [this]() {updateTexture();}),
-            cDefShine(project, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {updateTexture();}) {
-    project->mainThreadInit([this]() {
-      updateTexture();
-    });
+            cDefFill(project, 1.0f, 0.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();}),
+            cDefOutline(project, 0.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
+            cDefShine(project, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
+            cNeedsRedrawing(false) {
+    setNeedsRedrawing();
   }
   
-  Ball::Ball(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
+  Ball::Ball(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
             Ball(project, spindizzy) {
-    cDefFill.init(node, TAG_FILL);
-    cDefOutline.init(node, TAG_OUTLINE);
-    cDefShine.init(node, TAG_SHINE);
+    cDefFill.init(object, JSON_FILL);
+    cDefOutline.init(object, JSON_OUTLINE);
+    cDefShine.init(object, JSON_SHINE);
   }
 
   void Ball::registerAssets(IAssetRegistry* assets) {
@@ -53,10 +52,10 @@ namespace IsoRealms::Spindizzy {
     assets->remove(this);
   }
   
-  void Ball::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    cDefFill.save(node, TAG_FILL);
-    cDefOutline.save(node, TAG_OUTLINE);
-    cDefShine.save(node, TAG_SHINE);
+  void Ball::save(JSONObject object, IAssetIdentifier* identifier) const {
+    cDefFill.save(object, JSON_FILL);
+    cDefOutline.save(object, JSON_OUTLINE);
+    cDefShine.save(object, JSON_SHINE);
   }
 
   void Ball::hintInUse(bool inUse) {
@@ -87,7 +86,11 @@ namespace IsoRealms::Spindizzy {
   void Ball::coord(float x, float y) const {
     glTexCoord2f(x, y);
   }
-  
+
+  void Ball::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
+
   void Ball::updateTexture() {
     glPushAttrib(GL_TRANSFORM_BIT);
     glMatrixMode(GL_PROJECTION);
@@ -125,5 +128,14 @@ namespace IsoRealms::Spindizzy {
       glVertex2f(std::sin(angle) * radius, std::cos(angle) * radius);
     }
     glEnd();
+  }
+
+  void Ball::setNeedsRedrawing() {
+    if (!cNeedsRedrawing) {
+      cProject->updateLater([this]() {
+        updateTexture();
+        cNeedsRedrawing = false;
+      });
+    }
   }
 }

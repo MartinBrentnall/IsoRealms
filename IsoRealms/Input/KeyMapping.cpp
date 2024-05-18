@@ -21,10 +21,10 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  const std::string KeyMapping::TAG_KEY_DOWN = "KeyDown";
-  const std::string KeyMapping::TAG_KEY_UP   = "KeyUp";
-  
-  const std::string KeyMapping::ATTRIBUTE_KEY_VALUE = "value";
+  const std::string KeyMapping::JSON_KEY  = "key";
+  const std::string KeyMapping::JSON_TYPE = "type";
+
+  const std::string KeyMapping::TYPE_KEY_DOWN = "KeyDown";
 
   const std::string KeyMapping::UNMAPPED_KEY_PREFIX = "Code ";
 
@@ -186,10 +186,10 @@ namespace IsoRealms {
           cKey(key) {
   }
       
-  KeyMapping::KeyMapping(DOMNode& node) :
-          cKey(getKey(node.getAttribute(ATTRIBUTE_KEY_VALUE))) {
+  KeyMapping::KeyMapping(JSONObject object) :
+          cKey(getKey(object.getString(JSON_KEY))) {
   }
-      
+
   bool KeyMapping::matches(const sf::Event& event) const {
     return (event.type == sf::Event::KeyPressed || event.type == sf::Event::KeyReleased) && event.key.code == cKey;
   }
@@ -198,9 +198,9 @@ namespace IsoRealms {
     return event.type == sf::Event::KeyPressed;
   }
 
-  void KeyMapping::save(DOMNodeWriter* node) const {
-    DOMNodeWriter mMappingNode = node->addBranch(TAG_KEY_DOWN);
-    mMappingNode.addAttribute(ATTRIBUTE_KEY_VALUE, getShortName());
+  void KeyMapping::save(JSONObject object) const {
+    object.addString(JSON_TYPE, TYPE_KEY_DOWN);
+    object.addString(JSON_KEY, getShortName());
   }
 
   std::string KeyMapping::getShortName() const {

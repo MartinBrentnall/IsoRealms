@@ -23,7 +23,7 @@
 #include "IsoRealms/Assets/Type/IInputHandler.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/IAssets.h"
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
+#include "IsoRealms/Persistence/JSONDocument.h"
 
 namespace IsoRealms {
   class InputHandler : public IAssetUser<IInputHandler> {
@@ -37,9 +37,9 @@ namespace IsoRealms {
     public:
     InputHandler(IProject* project);
 
-    void init(DOMNode& node, const std::string& tag);
-    void set(DOMNode& node, const std::string& tag);
-    void save(DOMNodeWriter* node, const std::string& tag) const;
+    void init(JSONObject object, const std::string& member);
+    void set(JSONObject object, const std::string& member);
+    void save(JSONObject object, const std::string& name) const;
 
     IInputHandler* operator->() const {
       return cInputHandler;

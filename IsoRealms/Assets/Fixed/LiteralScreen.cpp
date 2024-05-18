@@ -26,4 +26,8 @@ namespace IsoRealms {
   bool LiteralScreen::renderAssetIcon() const {
     return false;
   }
+
+  void LiteralScreen::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
 }

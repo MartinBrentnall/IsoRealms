@@ -19,22 +19,25 @@
 #include "AbsoluteLocation.h"
 
 namespace IsoRealms::UI {
-  const std::string AbsoluteLocation::ATTRIBUTE_VALUE = "value";
-  
+  const std::string AbsoluteLocation::JSON_TYPE     = "type";
+  const std::string AbsoluteLocation::JSON_VALUE    = "value";
+
+  const std::string AbsoluteLocation::TYPE_ABSOLUTE = "Absolute";
+
   AbsoluteLocation::AbsoluteLocation(float value) :
             cDefValue(value) {
   }
     
-  AbsoluteLocation::AbsoluteLocation(DOMNode& node, float defaultValue) :
-            AbsoluteLocation(node.getFloatAttribute(ATTRIBUTE_VALUE, defaultValue)) {
+  AbsoluteLocation::AbsoluteLocation(JSONObject object, float defaultValue) :
+            AbsoluteLocation(object.getFloat(JSON_VALUE, defaultValue)) {
   }
-    
+
   float AbsoluteLocation::getLocation(float aspectRatio) const {
     return cDefValue * aspectRatio;
   }
   
-  void AbsoluteLocation::save(DOMNodeWriter* node, Layout* layout, float defaultValue) const {
-    node->addAttribute("type", std::string("Absolute"));
-    node->addAttribute(ATTRIBUTE_VALUE, cDefValue, defaultValue);
-  }  
+  void AbsoluteLocation::save(JSONObject object, Layout* layout, float defaultValue) const {
+    object.addString(JSON_TYPE, TYPE_ABSOLUTE);
+    object.addFloat(JSON_VALUE, cDefValue, defaultValue);
+  }
 }

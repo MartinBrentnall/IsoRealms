@@ -21,17 +21,13 @@
 #include "WallPatternCap.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string WallPatternCap::TAG_BOTTOM = "Bottom";
-  const std::string WallPatternCap::TAG_MIDDLE = "Middle";
-  const std::string WallPatternCap::TAG_TOP    = "Top";
-
-  WallPatternCap::WallPatternCap(IProject* project, Spindizzy* spindizzy, DOMNode& node) :
+  WallPatternCap::WallPatternCap(IProject* project, Spindizzy* spindizzy, JSONObject object) :
             cDefTextureBottom(project),
             cDefTextureMiddle(project),
             cDefTextureTop(project) {
-    cDefTextureBottom.set(node, TAG_BOTTOM);
-    cDefTextureMiddle.set(node, TAG_MIDDLE);
-    cDefTextureTop.set(node, TAG_TOP);
+    cDefTextureBottom.set(object, JSON_BOTTOM);
+    cDefTextureMiddle.set(object, JSON_MIDDLE);
+    cDefTextureTop.set(object, JSON_TOP);
   }
 
   std::vector<std::unique_ptr<IVisualElement>> WallPatternCap::getStaticVisuals(Wall* wall) const {
@@ -153,10 +149,10 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  void WallPatternCap::saveAsset(DOMNodeWriter* node) const {
-    cDefTextureBottom.save(node, TAG_BOTTOM);
-    cDefTextureMiddle.save(node, TAG_MIDDLE);
-    cDefTextureTop.save(node, TAG_TOP);
+  void WallPatternCap::saveAsset(JSONObject object) const {
+    cDefTextureBottom.save(object, JSON_BOTTOM);
+    cDefTextureMiddle.save(object, JSON_MIDDLE);
+    cDefTextureTop.save(object, JSON_TOP);
   }
 
   WallPatternCap::SectionBottom::SectionBottom(const WallPatternCap* parent, Wall* wall) :
@@ -230,4 +226,8 @@ namespace IsoRealms::Spindizzy {
   void WallPatternCap::SectionTop::prepareVisual() {
     // Nothing to do
   }
+
+  const std::string WallPatternCap::JSON_BOTTOM = "bottom";
+  const std::string WallPatternCap::JSON_MIDDLE = "middle";
+  const std::string WallPatternCap::JSON_TOP    = "top";
 }

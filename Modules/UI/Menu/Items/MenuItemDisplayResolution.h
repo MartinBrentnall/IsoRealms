@@ -29,7 +29,6 @@
 #include "IsoRealms/IAssetRemover.h"
 #include "IsoRealms/Input/HatHandler.h"
 #include "IsoRealms/Lua.h"
-#include "IsoRealms/Persistence/DOMNode.h"
 #include "IsoRealms/System.h"
 
 #include "Modules/UI/Menu/IMenuItem.h"
@@ -44,9 +43,9 @@ namespace IsoRealms::UI {
     public:
 
     // Public DOM strings.
-    static const std::string TAG_TYPE;
+    static const std::string MENU_ITEM_TYPE;
 
-    MenuItemDisplayResolution(DOMNode& node, IProject* project);
+    MenuItemDisplayResolution(JSONObject object, IProject* project);
 
     /***********************\
      * Scripting Interface *
@@ -59,7 +58,7 @@ namespace IsoRealms::UI {
     \************************/
     void registerAssets(IAssetRegistry* assets) override;
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser) override;
-    void save(DOMNodeWriter* node) const override;
+    void save(JSONObject object) const override;
     bool input(sf::Event& event) override;
     void selectTop() override;
     void selectBottom() override;
@@ -69,9 +68,10 @@ namespace IsoRealms::UI {
 
     private:
     
-    // DOM strings.
-    static const std::string ATTRIBUTE_ID;
-    static const std::string ATTRIBUTE_LABEL;
+    // JSON members.
+    static const std::string JSON_ID;
+    static const std::string JSON_LABEL;
+    static const std::string JSON_TYPE;
 
     // Constants.
     static const std::string BINDING_TYPE;

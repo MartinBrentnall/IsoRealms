@@ -40,9 +40,16 @@ namespace IsoRealms {
            : expression == VALUE_FALSE ? std::make_unique<LiteralBoolean>(false)
            :                             nullptr;
     }
-    
+
     private:
-    
+
+    std::unique_ptr<IBoolean> createLiteralAsset(JSONObject object) const override {
+      return object.getBoolean(JSON_VALUE) ? std::make_unique<LiteralBoolean>(true) : std::make_unique<LiteralBoolean>(false);
+    }
+
+    private:
+    inline static const std::string JSON_VALUE = "value";
+
     // Recognized values.
     inline static const std::string VALUE_FALSE = "false"; /// String value for literal false
     inline static const std::string VALUE_TRUE  = "true";  /// String value for literal true

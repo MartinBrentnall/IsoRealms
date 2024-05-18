@@ -20,6 +20,40 @@
 
 #include <iostream>
 
-#include <sol.hpp>
+#define RAPIDJSON_HAS_STDSTRING 1
 
-#include "MusicPlayer/MusicPlayer.h"
+#include "rapidjson/document.h"
+#include "rapidjson/stringbuffer.h"
+#include "rapidjson/prettywriter.h"
+
+namespace IsoRealms {
+  class JSONDocument;
+  class JSONObject;
+
+  class JSONArray {
+    public:
+        class Iterator {
+      private:
+      JSONArray& cParent;
+      unsigned int cIndex;
+
+      public:
+      Iterator(JSONArray& object, unsigned int index);
+
+      Iterator& operator++();
+      bool operator!=(const Iterator&);
+      JSONObject operator*();
+    };
+
+    JSONArray(JSONDocument& parent, rapidjson::Value& object);
+    JSONObject addObject();
+    Iterator begin();
+    Iterator end();
+
+    private:
+    JSONDocument& cParent;
+    rapidjson::Value& cArray;
+  };
+}
+
+

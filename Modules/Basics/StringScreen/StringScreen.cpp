@@ -18,15 +18,12 @@
  */
 #include "StringScreen.h"
 
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
-
 namespace IsoRealms::Basics {
-  const std::string StringScreen::TAG_COLOUR = "Colour";
-  const std::string StringScreen::TAG_FONT   = "Font";
-  const std::string StringScreen::TAG_VALUE  = "Value";
-
-  const std::string StringScreen::ATTRIBUTE_ALIGNMENT     = "alignment";
-  const std::string StringScreen::ATTRIBUTE_SHADOW_OFFSET = "shadowOffset";
+  const std::string StringScreen::JSON_ALIGNMENT     = "alignment";
+  const std::string StringScreen::JSON_COLOUR        = "colour";
+  const std::string StringScreen::JSON_FONT          = "font";
+  const std::string StringScreen::JSON_SHADOW_OFFSET = "shadowOffset";
+  const std::string StringScreen::JSON_VALUE         = "value";
   
   const std::string StringScreen::ALIGNMENT_CENTER = "Center";
   const std::string StringScreen::ALIGNMENT_LEFT   = "Left";
@@ -40,16 +37,16 @@ namespace IsoRealms::Basics {
             cDefColour(project, 1.0f, 1.0f, 1.0f) {
   }
 
-  StringScreen::StringScreen(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
+  StringScreen::StringScreen(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
             StringScreen(project, basics) {
-    std::string mAlignment = node.getAttribute(ATTRIBUTE_ALIGNMENT);
+    std::string mAlignment = object.getString(JSON_ALIGNMENT);
     cDefAlignment = mAlignment == ALIGNMENT_LEFT  ? IFont::Alignment::LEFT
                   : mAlignment == ALIGNMENT_RIGHT ? IFont::Alignment::RIGHT
                   :                                 IFont::Alignment::CENTER;
-    cDefString.init(node, TAG_VALUE);
-    cDefFont.init(node, TAG_FONT);
-    cDefColour.init(node, TAG_COLOUR);
-    cDefShadowOffset = node.getFloatAttribute(ATTRIBUTE_SHADOW_OFFSET, DEFAULT_SHADOW_OFFSET);
+    cDefString.init(object, JSON_VALUE);
+    cDefFont.init(object, JSON_FONT);
+    cDefColour.init(object, JSON_COLOUR);
+    cDefShadowOffset = object.getFloat(JSON_SHADOW_OFFSET, DEFAULT_SHADOW_OFFSET);
   }
 
   void StringScreen::registerAssets(IAssetRegistry* assets) {
@@ -60,16 +57,14 @@ namespace IsoRealms::Basics {
     assets->remove(this);
   }
   
-  void StringScreen::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    node->addAttribute(ATTRIBUTE_ALIGNMENT, cDefAlignment == IFont::Alignment::LEFT  ? ALIGNMENT_LEFT
-                                          : cDefAlignment == IFont::Alignment::RIGHT ? ALIGNMENT_RIGHT
-                                          :                                            ALIGNMENT_CENTER);
-    cDefString.save(node, TAG_VALUE);
-    cDefFont.save(node, TAG_FONT);
-    cDefColour.save(node, TAG_COLOUR);
-    if (cDefShadowOffset != DEFAULT_SHADOW_OFFSET) {
-      node->addAttribute(ATTRIBUTE_SHADOW_OFFSET, DEFAULT_SHADOW_OFFSET);
-    }
+  void StringScreen::save(JSONObject object, IAssetIdentifier* identifier) const {
+    object.addString(JSON_ALIGNMENT, cDefAlignment == IFont::Alignment::LEFT  ? ALIGNMENT_LEFT
+                                   : cDefAlignment == IFont::Alignment::RIGHT ? ALIGNMENT_RIGHT
+                                   :                                            ALIGNMENT_CENTER);
+    cDefString.save(object, JSON_VALUE);
+    cDefFont.save(object, JSON_FONT);
+    cDefColour.save(object, JSON_COLOUR);
+    object.addFloat(JSON_SHADOW_OFFSET, cDefShadowOffset, DEFAULT_SHADOW_OFFSET);
   }
 
   void StringScreen::hintInUse(bool inUse) {
@@ -94,5 +89,9 @@ namespace IsoRealms::Basics {
 
   bool StringScreen::renderAssetIcon() const {
     return renderIcon();
+  }
+
+  void StringScreen::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 }

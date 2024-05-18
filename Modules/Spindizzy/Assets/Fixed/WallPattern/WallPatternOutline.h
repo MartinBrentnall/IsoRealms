@@ -30,7 +30,7 @@ namespace IsoRealms::Spindizzy {
 
   class WallPatternOutline : public IWallPattern {
     public:
-    WallPatternOutline(IProject* project, Spindizzy* spindizzy, DOMNode& node);
+    WallPatternOutline(IProject* project, Spindizzy* spindizzy, JSONObject object);
 
     /***************************\
      * Implements IWallPattern *
@@ -44,7 +44,7 @@ namespace IsoRealms::Spindizzy {
      * Implements IAsset via IWallPattern *
     \**************************************/
     bool renderAssetIcon() const override;
-    void saveAsset(DOMNodeWriter* node) const override;
+    void saveAsset(JSONObject object) const override;
 
     private:
 

@@ -26,9 +26,6 @@
 #include <set>
 #include <vector>
 
-#include "IsoRealms/Persistence/DOMNode.h"
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
-
 #include "ConditionElement.h"
 
 namespace IsoRealms {
@@ -37,7 +34,15 @@ namespace IsoRealms {
     static const char ATTRIB_AND;
     static const char ATTRIB_NEGATE;
 
-    static int cInstanceCount;
+    static const std::string JSON_INPUT;
+    static const std::string JSON_INPUTS;
+    static const std::string JSON_OPERATOR;
+    static const std::string JSON_NEGATED;
+    static const std::string JSON_SUB_CONDITIONS;
+
+    static const std::string OPERATOR_AND;
+    static const std::string OPERATOR_OR;
+
     bool cAnd;
     bool cNegated;
     std::vector<Condition> cConditions;
@@ -94,7 +99,7 @@ namespace IsoRealms {
     // Constructors
     Condition(bool andGate, bool negated = false);
     Condition(const Condition& condition);
-    Condition(DOMNode& node, std::vector<ConditionElement*> elements);
+    Condition(JSONObject object, std::vector<ConditionElement*> elements);
     Condition(std::ifstream& cache, std::vector<ConditionElement*> elements, unsigned char conditionType, unsigned char elementType, unsigned char endType);
 
     // Modifications
@@ -115,7 +120,7 @@ namespace IsoRealms {
     bool operator!=(const Condition&) const;
 
     // Persistence
-    void save(DOMNodeWriter*);
+    void save(JSONObject object);
     void saveCache(std::ostream& cache, unsigned char conditionType, unsigned char elementType, unsigned char endType) const;
 
     // Analysis

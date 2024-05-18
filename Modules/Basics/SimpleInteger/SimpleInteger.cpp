@@ -19,7 +19,7 @@
 #include "SimpleInteger.h"
 
 namespace IsoRealms::Basics {
-  const std::string SimpleInteger::ATTRIBUTE_VALUE = "value";
+  const std::string SimpleInteger::JSON_VALUE = "value";
 
   const std::string SimpleInteger::PROPERTY_VALUE = "Initial Value";
 
@@ -33,11 +33,11 @@ namespace IsoRealms::Basics {
     });
   }
   
-  SimpleInteger::SimpleInteger(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
+  SimpleInteger::SimpleInteger(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
             SimpleInteger(project, basics) {
-    cRuntimeValue = cDefValue = node.getIntegerAttribute(ATTRIBUTE_VALUE);
+    cRuntimeValue = cDefValue = object.getInteger(JSON_VALUE);
 
-    project->init([this, &node](IAssets* resources) {
+    project->init([this](IAssets* resources) {
       cStateNotifier->stateChanged(this);
     });
   }
@@ -53,10 +53,8 @@ namespace IsoRealms::Basics {
     cStateNotifier = nullptr;
   }
   
-  void SimpleInteger::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    if (cDefValue != 0) {
-      node->addAttribute(ATTRIBUTE_VALUE, cDefValue);
-    }
+  void SimpleInteger::save(JSONObject object, IAssetIdentifier* identifier) const {
+    object.addInteger(JSON_VALUE, cDefValue);
   }
 
   void SimpleInteger::hintInUse(bool inUse) {
@@ -78,6 +76,10 @@ namespace IsoRealms::Basics {
 
   bool SimpleInteger::renderAssetIcon() const {
     return renderIcon();
+  }
+
+  void SimpleInteger::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   void SimpleInteger::setValue(int value) {

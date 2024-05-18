@@ -26,20 +26,20 @@ namespace IsoRealms::Spindizzy {
             cPhysicalObjectType(cSpindizzy.createLiteralPhysicalObjectType(this)) {
   }
 
-  void PhysicalObjectType::init(DOMNode& node) {
-    cSpindizzy.getProject()->init([this, &node](IAssets* assets) {
-      set(node);
+  void PhysicalObjectType::init(JSONObject object) {
+    cSpindizzy.getProject()->init([this, object](IAssets* assets) {
+      set(object);
     });
   }
 
-  void PhysicalObjectType::save(DOMNodeWriter* node, const std::string& tag) const {
-    DOMNodeWriter mAssetNode = node->addBranch(tag);
-    cSpindizzy.save(&mAssetNode, cPhysicalObjectType);
+  void PhysicalObjectType::set(JSONObject object) {
+    cSpindizzy.release(this, cPhysicalObjectType);
+    cPhysicalObjectType = cSpindizzy.getPhysicalObjectType(this, object);
   }
 
-  void PhysicalObjectType::set(DOMNode& node) {
-    cSpindizzy.release(this, cPhysicalObjectType);
-    cPhysicalObjectType = cSpindizzy.getPhysicalObjectType(this, node);
+  void PhysicalObjectType::save(JSONObject object, const std::string& name) const {
+    JSONObject mAssetObject = object.addObject(name);
+    cSpindizzy.save(mAssetObject, cPhysicalObjectType);
   }
 
   IBinding* PhysicalObjectType::getBinding(const std::string& id) const {

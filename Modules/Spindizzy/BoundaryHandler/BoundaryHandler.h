@@ -45,10 +45,10 @@ namespace IsoRealms::Spindizzy {
      * Resource Interface *
     \**********************/
     BoundaryHandler(IProject* project, Spindizzy* spindizzy);
-    BoundaryHandler(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data);
+    BoundaryHandler(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon();
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -63,7 +63,7 @@ namespace IsoRealms::Spindizzy {
      * Implements IBindingRegistry *
     \*******************************/
     IBinding* getBinding(const std::string& id) override;
-    void saveBinding(DOMNodeWriter* node, const IBinding* binding) const override;
+    void saveBinding(JSONObject object, const IBinding* binding) const override;
     void releaseBinding(const IBinding* asset) override;
     
     /*********************************\
@@ -73,12 +73,12 @@ namespace IsoRealms::Spindizzy {
     
     private:
 
-    // DOM strings.
-    static const std::string TAG_BOUNDARY_TYPE;
-    static const std::string TAG_ENTERED_ACTION;
-    static const std::string TAG_EXITED_ACTION;
-    static const std::string TAG_OBJECT_TYPE;
-    
+    // JSON members.
+    static const std::string JSON_BOUNDARY;
+    static const std::string JSON_OBJECT;
+    static const std::string JSON_ON_ENTRY;
+    static const std::string JSON_ON_EXIT;
+
     static const std::string BIND_TO_BOUNDARY;
     static const std::string BIND_TO_OBJECT;
 

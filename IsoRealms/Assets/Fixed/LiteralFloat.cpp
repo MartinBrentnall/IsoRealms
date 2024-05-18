@@ -18,8 +18,6 @@
  */
 #include "LiteralFloat.h"
 
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
-
 namespace IsoRealms {
   LiteralFloat::LiteralFloat(const float value) :
             cValue(value) {
@@ -33,7 +31,9 @@ namespace IsoRealms {
     return false;
   }
 
-  void LiteralFloat::saveAsset(DOMNodeWriter* node) const {
-    node->addAttribute("value", cValue);
+  void LiteralFloat::saveAsset(JSONObject object) const {
+    object.addFloat(JSON_VALUE, cValue);
   }
+
+  const std::string LiteralFloat::JSON_VALUE = "value";
 }

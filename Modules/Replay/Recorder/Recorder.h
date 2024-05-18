@@ -36,9 +36,16 @@ namespace IsoRealms::Replay {
   class Recorder : public IScreen,
                    public IInputHandler {
     private:
-    static const std::string TAG_INPUT;
-    static const std::string TAG_QUIT_ACTION;
-      
+    static const std::string JSON_INPUT;
+    static const std::string JSON_INPUT_CONFIGURATION;
+    static const std::string JSON_INPUTS;
+    static const std::string JSON_KEY;
+    static const std::string JSON_ON_FINISH;
+    static const std::string JSON_TYPE;
+
+    static const std::string TYPE_ANALOGUE;
+    static const std::string TYPE_DIGITAL;
+
     IProject* cParentProject;
     std::vector<std::unique_ptr<Boolean>> cDefDigitalInputs;
     std::vector<std::unique_ptr<Float>> cDefAnalogueInputs;
@@ -54,10 +61,10 @@ namespace IsoRealms::Replay {
     
     public:
     Recorder(IProject* project, Replay* replay);
-    Recorder(IProject* project, Replay* replay, DOMNode& node, IOptions* options, IResourceData* data);
+    Recorder(IProject* project, Replay* replay, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -79,5 +86,6 @@ namespace IsoRealms::Replay {
      * Implements IAsset *
     \*********************/
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
   };
 }

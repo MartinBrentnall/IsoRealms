@@ -45,14 +45,10 @@ namespace IsoRealms::Spindizzy {
     object.unregisterProcessor(this);
   }
 
-  void Physics::load(DOMNode& node) {
+  void Physics::save(JSONObject object) const {
     // Nothing to do.
   }
-  
-  void Physics::save(DOMNodeWriter* node) const {
-    // Nothing to do.
-  }
-  
+
   bool Physics::hasConfiguration() const {
     return false;
   }    

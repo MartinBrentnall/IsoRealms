@@ -19,9 +19,11 @@
 #include "DigitalInput.h"
 
 namespace IsoRealms::Basics {
-  const std::string DigitalInput::TAG_BUTTON_DOWN   = "ButtonDown";
-  const std::string DigitalInput::TAG_HAT           = "Hat";
-  const std::string DigitalInput::TAG_KEY_DOWN      = "KeyDown";
+  const std::string DigitalInput::JSON_BUTTON_DOWN = "ButtonDown";
+  const std::string DigitalInput::JSON_HAT         = "Hat";
+  const std::string DigitalInput::JSON_KEY_DOWN    = "KeyDown";
+  const std::string DigitalInput::JSON_MAPPINGS    = "mappings";
+  const std::string DigitalInput::JSON_TYPE        = "type";
 
   DigitalInput::DigitalInput(IProject* project, Basics* basics) :
              cProject(project),
@@ -39,19 +41,19 @@ namespace IsoRealms::Basics {
     });
   }
   
-  DigitalInput::DigitalInput(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
+  DigitalInput::DigitalInput(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
             DigitalInput(project, basics) {
     IApplication* mApplication = project->getApplication();
     HatHandler& mHatHandler = mApplication->getHatHandler();
-    for (DOMNode& mNode : node) {
-      std::string mChildName = mNode.getName();
-      if      (mChildName == TAG_KEY_DOWN)    {cDefMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<KeyMapping>(mNode)));}
-      else if (mChildName == TAG_BUTTON_DOWN) {cDefMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<ButtonMapping>(mNode)));}
-      else if (mChildName == TAG_HAT)         {cDefMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<HatMapping>(mHatHandler, mNode)));}
-      else                                    {throw ParseException("Unknown tag for Basics/DigitalInput: " + mChildName);}
+    for (JSONObject mMappingObject : object.getArray(JSON_MAPPINGS)) {
+      std::string mType = mMappingObject.getString(JSON_TYPE);
+      if      (mType == KeyMapping::TYPE_KEY_DOWN)       {cDefMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<KeyMapping>(mMappingObject)));}
+      else if (mType == ButtonMapping::TYPE_BUTTON_DOWN) {cDefMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<ButtonMapping>(mMappingObject)));}
+      else if (mType == HatMapping::TYPE_HAT   )         {cDefMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<HatMapping>(mHatHandler, mMappingObject)));}
+      else                                               {throw ParseException("Unknown tag for Basics/DigitalInput: " + mType);}
     }
   }
-  
+
   void DigitalInput::registerAssets(IAssetRegistry* assets) {
     cStateNotifier = assets->add(static_cast<IBoolean*>(this), "", "Digital Inputs");
     assets->add(static_cast<IInputHandler*>(this), "", "Digital Inputs");
@@ -65,9 +67,11 @@ namespace IsoRealms::Basics {
     cStateNotifier = nullptr;
   }
   
-  void DigitalInput::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
+  void DigitalInput::save(JSONObject object, IAssetIdentifier* identifier) const {
+    JSONArray mMappingsArray = object.addArray(JSON_MAPPINGS);
     for (const std::unique_ptr<PhysicalInputMapping>& mMapping : cDefMapping) {
-      mMapping->save(node);
+      JSONObject mMappingObject = mMappingsArray.addObject();
+      mMapping->save(mMappingObject);
     }
   }
 
@@ -107,6 +111,10 @@ namespace IsoRealms::Basics {
 
   bool DigitalInput::renderAssetIcon() const {
     return renderIcon();
+  }
+
+  void DigitalInput::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   std::string DigitalInput::getInputsString() const {
@@ -169,26 +177,28 @@ namespace IsoRealms::Basics {
     return cPhysicalInput;
   }
 
-  void DigitalInput::PhysicalInputMapping::save(DOMNodeWriter* node) const {
-    cPhysicalInput->save(node);
+  void DigitalInput::PhysicalInputMapping::save(JSONObject object) const {
+    cPhysicalInput->save(object);
   }
 
-  void DigitalInput::loadCustomMapping(DOMNode& node) {
+  void DigitalInput::loadCustomMapping(JSONObject object) {
     IApplication* mApplication = cProject->getApplication();
     HatHandler& mHatHandler = mApplication->getHatHandler();
     cRuntimeMapping.clear();
-    for (DOMNode& mNode : node) {
-      std::string mChildName = mNode.getName();
-      if      (mChildName == TAG_KEY_DOWN)    {cRuntimeMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<KeyMapping>(mNode)));}
-      else if (mChildName == TAG_BUTTON_DOWN) {cRuntimeMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<ButtonMapping>(mNode)));}
-      else if (mChildName == TAG_HAT)         {cRuntimeMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<HatMapping>(mHatHandler, mNode)));}
-      else                                    {throw ParseException("Unknown tag for Basics/DigitalInput: " + mChildName);}
+    for (JSONObject mMappingsObject : object.getArray(JSON_MAPPINGS)) {
+      std::string mMappingType = mMappingsObject.getString(JSON_TYPE);
+      if      (mMappingType == JSON_KEY_DOWN)    {cRuntimeMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<KeyMapping>(mMappingsObject)));}
+      else if (mMappingType == JSON_BUTTON_DOWN) {cRuntimeMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<ButtonMapping>(mMappingsObject)));}
+      else if (mMappingType == JSON_HAT)         {cRuntimeMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<HatMapping>(mHatHandler, mMappingsObject)));}
+      else                                       {throw ParseException("Unknown tag for Basics/DigitalInput: " + mMappingType);}
     }
   }
 
-  void DigitalInput::saveCustomMapping(DOMNodeWriter* node) const {
+  void DigitalInput::saveCustomMapping(JSONObject object) const {
+    JSONArray mMappingsArray = object.addArray(JSON_MAPPINGS);
     for (const std::unique_ptr<PhysicalInputMapping>& mMapping : cRuntimeMapping) {
-      mMapping->save(node);
+      JSONObject mMappingsObject = mMappingsArray.addObject();
+      mMapping->save(mMappingsObject);
     }
   }
 }

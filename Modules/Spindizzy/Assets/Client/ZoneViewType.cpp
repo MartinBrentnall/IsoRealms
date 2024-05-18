@@ -26,20 +26,20 @@ namespace IsoRealms::Spindizzy {
             cZoneViewType(cSpindizzy->createLiteralZoneViewType(this)) {
   }
 
-  void ZoneViewType::init(DOMNode& node, WorldView* owner) {
-    cSpindizzy->getProject()->init([this, &node, owner](IAssets* assets) {
-      set(node, owner);
+  void ZoneViewType::init(JSONObject object, WorldView* owner) {
+    cSpindizzy->getProject()->init([this, &object, owner](IAssets* assets) {
+      set(object, owner);
     });
   }
 
-  void ZoneViewType::save(DOMNodeWriter* node, const std::string& tag) const {
-    DOMNodeWriter mAssetNode = node->addBranch(tag);
-    cSpindizzy->save(&mAssetNode, cZoneViewType);
+  void ZoneViewType::set(JSONObject object, WorldView* owner) {
+    cSpindizzy->release(this, cZoneViewType);
+    cZoneViewType = cSpindizzy->getZoneViewType(this, object, owner);
   }
 
-  void ZoneViewType::set(DOMNode& node, WorldView* owner) {
-    cSpindizzy->release(this, cZoneViewType);
-    cZoneViewType = cSpindizzy->getZoneViewType(this, node, owner);
+  void ZoneViewType::save(JSONObject object, const std::string& name) const {
+    JSONObject mAssetObject = object.addObject(name);
+    cSpindizzy->save(mAssetObject, cZoneViewType);
   }
 
   void ZoneViewType::relinquish(IZoneViewType* asset) {

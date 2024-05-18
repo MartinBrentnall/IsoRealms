@@ -19,9 +19,16 @@
 #include "DigitalToAnalogueMapping.h"
 
 namespace IsoRealms::Basics {
-  DigitalToAnalogueMapping::DigitalToAnalogueMapping(IProject* project, DOMNode& node) :
-            cDefInput(project, nullptr, node, nullptr, nullptr),
-            cDefOutputValue(node.getFloatAttribute(ATTRIBUTE_TO_VALUE)) {
+  const std::string DigitalToAnalogueMapping::JSON_DIGITAL_TO_ANALOGUE = "digitalToAnalogue";
+  const std::string DigitalToAnalogueMapping::JSON_NAME                = "name";
+  const std::string DigitalToAnalogueMapping::JSON_TO_VALUE            = "toValue";
+  const std::string DigitalToAnalogueMapping::JSON_TYPE                = "type";
+
+  const std::string DigitalToAnalogueMapping::TYPE_DIGITAL_TO_ANALOGUE = "DigitalToAnalogue";
+
+  DigitalToAnalogueMapping::DigitalToAnalogueMapping(IProject* project, JSONObject object) :
+            cDefInput(project, nullptr, object, nullptr, nullptr),
+            cDefOutputValue(object.getFloat(JSON_TO_VALUE)) {
   }
 
   float DigitalToAnalogueMapping::getState(const sf::Event& event) const {
@@ -46,13 +53,13 @@ namespace IsoRealms::Basics {
     return false;
   }
   
-  void DigitalToAnalogueMapping::save(DOMNodeWriter* node, const std::string& name) const {
-    DOMNodeWriter mDigitalToAnalogueNode = node->addBranch("DigitalToAnalogue");
-    mDigitalToAnalogueNode.addAttribute("name", name);
-    mDigitalToAnalogueNode.addAttribute(ATTRIBUTE_TO_VALUE, cDefOutputValue);
-    cDefInput.save(&mDigitalToAnalogueNode, nullptr);
+  void DigitalToAnalogueMapping::save(JSONObject object, const std::string& name) const {
+    object.addString(JSON_TYPE, TYPE_DIGITAL_TO_ANALOGUE);
+    object.addString(JSON_NAME, name);
+    object.addFloat(JSON_TO_VALUE, cDefOutputValue);
+    cDefInput.save(object, nullptr);
   }
-  
+
   std::string DigitalToAnalogueMapping::getShortName() const {
     return "TODO";
   }
@@ -61,8 +68,8 @@ namespace IsoRealms::Basics {
     return "TODO";
   }
   
-  void DigitalToAnalogueMapping::loadCustomMapping(DOMNode& node) {
-    cDefInput.loadCustomMapping(node);
+  void DigitalToAnalogueMapping::loadCustomMapping(JSONObject object) {
+    cDefInput.loadCustomMapping(object);
   }
 
   void DigitalToAnalogueMapping::registerAssets(IAssetRegistry* assets) {
@@ -72,6 +79,4 @@ namespace IsoRealms::Basics {
   void DigitalToAnalogueMapping::unregisterAssets(IAssetRemover* assets, IAssets* releaser) {
     cDefInput.unregisterAssets(assets, releaser);
   }
-
-  const std::string DigitalToAnalogueMapping::ATTRIBUTE_TO_VALUE = "toValue";
 }

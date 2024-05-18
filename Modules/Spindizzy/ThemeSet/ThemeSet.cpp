@@ -22,6 +22,9 @@ namespace IsoRealms::Spindizzy {
   const unsigned int ThemeSet::ICON_TRANSITION_TIME = 500;
   const unsigned int ThemeSet::ICON_PAUSE_TIME      = 1000;
 
+  const std::string ThemeSet::JSON_ID     = "id";
+  const std::string ThemeSet::JSON_THEMES = "themes";
+
   ThemeSet::ThemeSet(IProject* project, Spindizzy* spindizzy) :
             cLuaBinding(project, this) {
     cAnimation = 0;
@@ -51,16 +54,10 @@ namespace IsoRealms::Spindizzy {
     });
   }
 
-  ThemeSet::ThemeSet(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
+  ThemeSet::ThemeSet(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
             ThemeSet(project, spindizzy) {
-    for (DOMNode& mNode : node) {
-      std::string mChildName = mNode.getName();
-      if (mChildName == "Theme") {
-        std::string mThemeName = mNode.getAttribute("name");
-        cThemes[mThemeName] = std::make_unique<Theme>(project, spindizzy, this, mNode);
-      } else {
-        throw ParseException("Unknown tag for Spindizzy/ThemeSet: " + mChildName);
-      }
+    for (JSONObject mThemeObject : object.getArray(JSON_THEMES)) {
+      cThemes[mThemeObject.getString(JSON_ID)] = std::make_unique<Theme>(project, spindizzy, this, mThemeObject);
     }
 
     project->init([this](IAssets* assets) {
@@ -77,11 +74,12 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
   
-  void ThemeSet::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
+  void ThemeSet::save(JSONObject object, IAssetIdentifier* identifier) const {
+    JSONArray mThemesArray = object.addArray(JSON_THEMES);
     for (const std::pair<const std::string, std::unique_ptr<Theme>>& mTheme : cThemes) {
-      DOMNodeWriter mThemeNode = node->addBranch("Theme");
-      mThemeNode.addAttribute("name", mTheme.first);
-      mTheme.second->save(&mThemeNode, identifier);
+      JSONObject mThemeObject = mThemesArray.addObject();
+      mThemeObject.addString(JSON_ID, mTheme.first);
+      mTheme.second->save(mThemeObject, identifier);
     }
   }
 
@@ -108,16 +106,20 @@ namespace IsoRealms::Spindizzy {
     }
   }
   
-  void ThemeSet::createTexture(const std::string& type) {
-    if (cTextures.find(type) == cTextures.end()) {
-      cTextures[type] = std::make_unique<ThemeTexture>(this);
+  ThemeTexture* ThemeSet::createTexture(const std::string& type) {
+    std::map<std::string, std::unique_ptr<ThemeTexture>>::iterator i = cTextures.find(type);
+    if (i == cTextures.end()) {
+      return cTextures.emplace(type, std::make_unique<ThemeTexture>(this)).first->second.get();
     }
+    return i->second.get();
   }
 
-  void ThemeSet::createColour(IProject* project, const std::string& type) {
-    if (cColours.find(type) == cColours.end()) {
-      cColours[type] = std::make_unique<ThemeColour>(project, this);
+  ThemeColour* ThemeSet::createColour(IProject* project, const std::string& type) {
+    std::map<std::string, std::unique_ptr<ThemeColour>>::iterator i = cColours.find(type);
+    if (i == cColours.end()) {
+      return cColours.emplace(type, std::make_unique<ThemeColour>(project, this)).first->second.get();
     }
+    return i->second.get();
   }
 
   std::string ThemeSet::getElement(ThemeTexture* themeTexture) {

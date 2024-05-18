@@ -39,14 +39,14 @@ namespace IsoRealms::Basics {
     public:
     static const std::string TYPE_NAME;
 
-    ColourTrack(DOMNode& node, IProject* project);
+    ColourTrack(JSONObject object, IProject* project);
 
     /*****************************\
      * Implements ISequenceTrack *
     \*****************************/
     void registerAssets(IAssetRegistry* assets) override;
     void unregisterAssets(IAssetRemover* assets) override;
-    void save(DOMNodeWriter* node) const override;
+    void save(JSONObject object) const override;
     bool play(unsigned int milliseconds) override;
     void reset() override;
     unsigned int getDuration() const override;
@@ -60,14 +60,16 @@ namespace IsoRealms::Basics {
     float getGreen() const override;
     float getBlue() const override;
     float getAlpha() const override;
+    void saveAsset(JSONObject object) const override;
 
     private:
 
-    // DOM strings.
-    static const std::string TAG_INIT;
-
-    static const std::string ATTRIBUTE_DURATION;
-    static const std::string ATTRIBUTE_OUTPUT;
+    // JSON members.
+    static const std::string JSON_DURATION;
+    static const std::string JSON_EVENTS;
+    static const std::string JSON_OUTPUT;
+    static const std::string JSON_START;
+    static const std::string JSON_TYPE;
 
     // Definition data.
     std::string cDefName;

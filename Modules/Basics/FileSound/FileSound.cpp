@@ -21,7 +21,7 @@
 #include "Modules/Basics/Basics.h"
 
 namespace IsoRealms::Basics {
-  const std::string FileSound::ATTRIBUTE_FILE = "file";
+  const std::string FileSound::JSON_FILENAME = "filename";
 
   std::mutex FileSound::cRuntimeLoadMutex;
 
@@ -29,9 +29,9 @@ namespace IsoRealms::Basics {
             cDefBasics(basics) {
   }
   
-  FileSound::FileSound(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
+  FileSound::FileSound(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
             FileSound(project, basics) {
-    cDefFile = node.getAttribute(ATTRIBUTE_FILE);
+    cDefFile = object.getString(JSON_FILENAME);
     reloadData();
   }
 
@@ -43,10 +43,10 @@ namespace IsoRealms::Basics {
     assets->remove(this);
   }
   
-  void FileSound::save(DOMNodeWriter* node, IAssetIdentifier* resources) const {
-    node->addAttribute(ATTRIBUTE_FILE, cDefFile);
+  void FileSound::save(JSONObject object, IAssetIdentifier* identifier) const {
+    object.addString(JSON_FILENAME, cDefFile);
   }
-  
+
   void FileSound::hintInUse(bool inUse) {
     // Nothing to do.
   }
@@ -66,10 +66,10 @@ namespace IsoRealms::Basics {
     }
   }
 
-  IAction* FileSound::createAction(DOMNode& node, IProject* project, IBindingRegistry* localObjects) {
+  IAction* FileSound::createAction(JSONObject object, IProject* project, IBindingRegistry* localObjects) {
     return this;
   }
-  
+
   IAction* FileSound::createAction(IProject* project, IBindingRegistry* localObjects) {
     return this;
   }
@@ -82,6 +82,10 @@ namespace IsoRealms::Basics {
     return renderIcon();
   }
 
+  void FileSound::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
+
   void FileSound::execute() {
     sf::Sound& mNewSound = cRuntimeSounds.emplace_back(cRuntimeSoundData);
     mNewSound.setVolume(cDefBasics->getSoundVolume() * 100.0f);
@@ -92,10 +96,6 @@ namespace IsoRealms::Basics {
       cRuntimeSounds.pop_front();
     }
   }
-
-//   void FileSound::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-//     std::cout << "WARNING: FileSound::save() not implemented!  Saved file will be incomplete." << std::endl;
-//   }
 
   const IActionType* FileSound::getActionType() const {
     return this;

@@ -40,10 +40,10 @@ namespace IsoRealms::Spindizzy {
      * Resource Interface *
     \**********************/
     ZoneObjectType(IProject* project, Spindizzy* spindizzy);
-    ZoneObjectType(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data);
+    ZoneObjectType(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -72,18 +72,18 @@ namespace IsoRealms::Spindizzy {
     \*******************************/
     IWorldEditorToolInstance* createToolInstance(WorldEditor* editor) override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
     private:
 
-    // DOM strings.
-    static const std::string TAG_TRAIT;
-    
-    static const std::string ATTRIBUTE_EDITING_PROCESSOR;
-    static const std::string ATTRIBUTE_EDITING_RENDERER;
-    static const std::string ATTRIBUTE_ID;
-    static const std::string ATTRIBUTE_RUNTIME_PROCESSOR;
-    static const std::string ATTRIBUTE_RUNTIME_RENDERER;
-    static const std::string ATTRIBUTE_TYPE;
+    // JSON members.
+    static const std::string JSON_EDITING_PROCESSOR;
+    static const std::string JSON_EDITING_RENDERER;
+    static const std::string JSON_ID;
+    static const std::string JSON_RUNTIME_PROCESSOR;
+    static const std::string JSON_RUNTIME_RENDERER;
+    static const std::string JSON_TRAITS;
+    static const std::string JSON_TYPE;
 
     static const std::string BIND_TO_TRAIT;
     static const std::string BIND_TO_ZONE;

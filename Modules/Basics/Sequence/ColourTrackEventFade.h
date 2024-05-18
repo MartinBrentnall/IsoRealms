@@ -18,7 +18,6 @@
  */
 #pragma once
 
-#include "IsoRealms/Persistence/DOMNode.h"
 #include "IsoRealms/Types.h"
 
 #include "IColourTrackEvent.h"
@@ -34,22 +33,22 @@ namespace IsoRealms::Basics {
     static const std::string EVENT_TYPE;
 
     // Constructor.
-    ColourTrackEventFade(IProject* project, unsigned int duration, DOMNode& node);
+    ColourTrackEventFade(IProject* project, unsigned int duration, JSONObject object);
 
     /********************************\
      * Implements IColourTrackEvent *
     \********************************/
-    void save(DOMNodeWriter* node) const override;
+    void save(JSONObject object) const override;
     unsigned int getDuration() const override;
     const IColour* getColour() const override;
     LiteralColour getColour(unsigned int duration, const IColour* previousColour) const override;
     
     private:
 
-    // DOM strings.
-    static const std::string TAG_TARGET;
-
-    static const std::string ATTRIBUTE_DURATION;
+    // JSON members.
+    static const std::string JSON_DURATION;
+    static const std::string JSON_TARGET;
+    static const std::string JSON_TYPE;
 
     // Definition data.
     unsigned int cDefDuration;

@@ -25,27 +25,27 @@ namespace IsoRealms {
             cRelinquishInstances(relinquishInstances) {
   }
 
-  ActionType::ActionType(IProject* project, std::function<void()> relinquishInstances, DOMNode& node) :
+  ActionType::ActionType(IProject* project, std::function<void()> relinquishInstances, JSONObject object) :
             cProject(project),
-            cActionType(cProject->getActionType(this, node)),
+            cActionType(cProject->getActionType(this, object)),
             cRelinquishInstances(relinquishInstances) {
   }
 
-  void ActionType::init(DOMNode& node, const std::string& tag) {
-    cProject->init([this, &node, tag](IAssets* assets) {
-      set(node, tag);
+  void ActionType::init(JSONObject object, const std::string& member) {
+    cProject->init([this, object, member](IAssets* assets) {
+      set(object, member);
     });
   }
 
-  void ActionType::set(DOMNode& node, const std::string& tag) {
-    DOMNode& mAssetNode = node.getNode(tag);
+  void ActionType::set(JSONObject object, const std::string& member) {
+    JSONObject mAssetObject = object.getObject(member);
     cProject->release(this, cActionType);
-    cActionType = cProject->getActionType(this, mAssetNode);
+    cActionType= cProject->getActionType(this, mAssetObject);
   }
 
-  void ActionType::save(DOMNodeWriter* node, const std::string& tag) {
-    DOMNodeWriter mAssetNode = node->addBranch(tag);
-    cProject->save(&mAssetNode, cActionType);
+  void ActionType::save(JSONObject object, const std::string& name) const {
+    JSONObject mAssetObject = object.addObject(name);
+    cProject->save(mAssetObject, cActionType);
   }
 
   void ActionType::relinquish(IActionType* asset) {

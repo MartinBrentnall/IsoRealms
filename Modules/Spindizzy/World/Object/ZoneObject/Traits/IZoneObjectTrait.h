@@ -19,8 +19,7 @@
 #pragma once
 
 #include "IsoRealms/Assets/Type/IBinding.h"
-#include "IsoRealms/Persistence/DOMNode.h"
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
+#include "IsoRealms/Persistence/JSONDocument.h"
 
 namespace IsoRealms::Spindizzy {
   class ITraitRegistry;
@@ -30,8 +29,7 @@ namespace IsoRealms::Spindizzy {
     public:
     virtual void registerAssets(ITraitRegistry& registry) = 0;
     virtual void unregisterAssets(ZoneObject& object) = 0;
-    virtual void load(DOMNode& node) = 0;
-    virtual void save(DOMNodeWriter* node) const = 0;
+    virtual void save(JSONObject object) const = 0;
     virtual bool hasConfiguration() const = 0;
     virtual void reset() = 0;
     virtual IBinding* getTraitBinding(const std::string& id) = 0;

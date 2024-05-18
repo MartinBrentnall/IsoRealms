@@ -19,19 +19,20 @@
 #include "AxisMapping.h"
 
 namespace IsoRealms {
-  const std::string AxisMapping::TAG_AXIS = "Axis";
-  
-  const std::string AxisMapping::ATTRIBUTE_AXIS      = "axis";
-  const std::string AxisMapping::ATTRIBUTE_DEAD_ZONE = "deadZone";
+  const std::string AxisMapping::JSON_AXIS      = "axis";
+  const std::string AxisMapping::JSON_DEAD_ZONE = "deadZone";
+  const std::string AxisMapping::JSON_TYPE      = "type";
+
+  const std::string AxisMapping::TYPE_AXIS = "Axis";
 
   AxisMapping::AxisMapping(unsigned int axis, bool positive, int threshold) :
           cDefAxis(axis),
           cDefDeadZone(0.16f) {
   }
 
-  AxisMapping::AxisMapping(DOMNode& node) :
-          cDefAxis(node.getIntegerAttribute(ATTRIBUTE_AXIS)),
-          cDefDeadZone(node.getFloatAttribute(ATTRIBUTE_DEAD_ZONE)) {
+  AxisMapping::AxisMapping(JSONObject object) :
+          cDefAxis(object.getInteger(JSON_AXIS)),
+          cDefDeadZone(object.getFloat(JSON_DEAD_ZONE)) {
   }
 
   bool AxisMapping::matches(const sf::Event& event) const {
@@ -43,10 +44,10 @@ namespace IsoRealms {
     return std::abs(mValue) < cDefDeadZone ? 0 : (mValue - (mValue < 0 ? -cDefDeadZone : cDefDeadZone)) * (1.0f / (1.0f - cDefDeadZone));
   }
 
-  void AxisMapping::save(DOMNodeWriter* node, const std::string& name) const {
-    DOMNodeWriter mAxisNode = node->addBranch(TAG_AXIS);
-    mAxisNode.addAttribute(ATTRIBUTE_AXIS,      cDefAxis);
-    mAxisNode.addAttribute(ATTRIBUTE_DEAD_ZONE, cDefDeadZone);
+  void AxisMapping::save(JSONObject object, const std::string& name) const {
+    object.addString(JSON_TYPE, TYPE_AXIS);
+    object.addInteger(JSON_AXIS, cDefAxis);
+    object.addFloat(JSON_DEAD_ZONE, cDefDeadZone);
   }
 
   std::string AxisMapping::getShortName() const {
@@ -57,7 +58,7 @@ namespace IsoRealms {
     return "Axis " + Utils::toString(cDefAxis);
   }
   
-  void AxisMapping::loadCustomMapping(DOMNode& node) {
+  void AxisMapping::loadCustomMapping(JSONObject object) {
     // Nothing to do.
   }
 

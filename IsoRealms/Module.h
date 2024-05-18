@@ -38,7 +38,6 @@
 #include "IResourceTypeRegistry.h"
 #include "LocalAssetRegistry.h"
 #include "Options/LocalOptions.h"
-#include "Persistence/DOMNode.h"
 #include "ResourceType.h"
 #include "IAssetLiterals.h"
 #include "System.h"
@@ -53,11 +52,11 @@ namespace IsoRealms {
     public:
     Module(const std::string& name, Project* project, LuaState* luaState);
     
-    void loadResources(DOMNode& node, IOptions* options, const std::string& resourceDataPath);
+    void loadResources(JSONObject object, IOptions* options, const std::string& resourceDataPath);
     void registerAssets();
     bool needsSaving() const;
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier, const std::string& resourcePath) const;
-    
+    void save(JSONObject object, IAssetIdentifier* identifier, const std::string& resourcePath) const;
+
     /************************************\
      * Implements IResourceTypeRegistry *
     \************************************/
@@ -86,11 +85,12 @@ namespace IsoRealms {
     virtual ~Module();
 
     private:
-    static const std::string TAG_CONFIGURATION;
-    static const std::string TAG_RESOURCES;
-    
-    static const std::string ATTRIBUTE_NAME;
-    
+    static const std::string JSON_CONFIGURATION;
+    static const std::string JSON_INSTANCES;
+    static const std::string JSON_NAME;
+    static const std::string JSON_RESOURCES;
+    static const std::string JSON_TYPE;
+
     std::string cName;
     IModuleHandle* cModule;
     std::map<std::string, std::unique_ptr<ResourceType>> cResourceTypes;

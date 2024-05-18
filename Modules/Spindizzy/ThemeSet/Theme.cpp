@@ -23,57 +23,45 @@
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
-  Theme::Theme(IProject* project, Spindizzy* spindizzy, ThemeSet* themeSet, DOMNode& node) {
+  const std::string Theme::JSON_COLOUR   = "colour";
+  const std::string Theme::JSON_COLOURS  = "colours";
+  const std::string Theme::JSON_ELEMENT  = "element";
+  const std::string Theme::JSON_TEXTURE  = "texture";
+  const std::string Theme::JSON_TEXTURES = "textures";
+
+  Theme::Theme(IProject* project, Spindizzy* spindizzy, ThemeSet* themeSet, JSONObject object) {
     cSpindizzy = spindizzy;
     cThemeSet  = themeSet;
   //       cThemes[mThemeName] = mTheme;
   //       createThemeResources(mNode, resources);
-    
-    for (DOMNode& mNode : node) {
-      std::string mChildName = mNode.getName();
-      if (mChildName == "Texture") {
-        std::string mTextureName = mNode.getAttribute("type");
-        cThemeSet->createTexture(mTextureName);
-      } else if (mChildName == "Colour") {
-        std::string mColourName = mNode.getAttribute("type");
-        cThemeSet->createColour(project, mColourName);
-      } else {
-        throw ParseException("Unknown tag for Spindizzy/Theme: " + mChildName);
-      }
-    }
-    
-    for (DOMNode& mNode : node) {
-      std::string mChildName = mNode.getName();
-      if (mChildName == "Colour") {
-        ThemeColour* mThemeColour = cThemeSet->getColour(mNode.getAttribute("type"));
-        cColours.emplace(std::piecewise_construct, std::forward_as_tuple(mThemeColour), std::forward_as_tuple(project, 1.0f, 0.0f, 1.0f));
-        cColours.find(mThemeColour)->second.init(mNode, "Colour");
-      } else if (mChildName == "Texture") {
-        ThemeTexture* mThemeTexture = cThemeSet->getTexture(mNode.getAttribute("type"));
-        cTextures.emplace(std::piecewise_construct, std::forward_as_tuple(mThemeTexture), std::forward_as_tuple(project));
-        cTextures.find(mThemeTexture)->second.init(mNode, "Texture");
-      } else {
-        throw ParseException("Unknown tag for Spindizzy/Theme: " + mChildName);
-      }
+
+    for (JSONObject mTextureObject : object.getArray(JSON_TEXTURES)) {
+      ThemeTexture* mThemeTexture = cThemeSet->createTexture(mTextureObject.getString(JSON_ELEMENT));
+      cTextures.emplace(std::piecewise_construct, std::forward_as_tuple(mThemeTexture), std::forward_as_tuple(project)).first->second.init(mTextureObject, JSON_TEXTURE);
     }
 
-    project->init([this, &node](IAssets* assets) {
+    for (JSONObject mColourObject : object.getArray(JSON_COLOURS)) {
+      ThemeColour* mThemeColour = cThemeSet->createColour(project, mColourObject.getString(JSON_ELEMENT));
+      cColours.emplace(std::piecewise_construct, std::forward_as_tuple(mThemeColour), std::forward_as_tuple(project, 1.0f, 0.0f, 1.0f)).first->second.init(mColourObject, JSON_COLOUR);
+    }
+
+    project->init([this](IAssets* assets) {
       set();
     });
   }
 
-  void Theme::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
+  void Theme::save(JSONObject object, IAssetIdentifier* identifier) const {
+    JSONArray mTexturesArray = object.addArray(JSON_TEXTURES);
     for (const std::pair<ThemeTexture* const, Texture>& mTexture : cTextures) {
-      std::string mThemeElement = cThemeSet->getElement(mTexture.first);
-      DOMNodeWriter mTextureNode = node->addBranch("Texture");
-      mTextureNode.addAttribute("type", mThemeElement);
-      mTexture.second.save(&mTextureNode, "Texture");
+      JSONObject mTextureObject = mTexturesArray.addObject();
+      mTextureObject.addString(JSON_ELEMENT, cThemeSet->getElement(mTexture.first));
+      mTexture.second.save(mTextureObject, JSON_TEXTURE);
     }
+    JSONArray mColoursArray = object.addArray(JSON_COLOURS);
     for (const std::pair<ThemeColour* const, Colour>& mColour : cColours) {
-      std::string mThemeElement = cThemeSet->getElement(mColour.first);
-      DOMNodeWriter mColourNode = node->addBranch("Colour");
-      mColourNode.addAttribute("type", mThemeElement);
-      mColour.second.save(&mColourNode, "Colour");
+      JSONObject mColourObject = mColoursArray.addObject();
+      mColourObject.addString(JSON_ELEMENT, cThemeSet->getElement(mColour.first));
+      mColour.second.save(mColourObject, JSON_COLOUR);
     }
   }
 

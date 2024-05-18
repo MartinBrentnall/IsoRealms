@@ -24,21 +24,21 @@ namespace IsoRealms {
             cEditable(cProject->createLiteralEditable(this)) {
   }
 
-  void Editable::init(DOMNode& node, const std::string& tag) {
-    cProject->init([this, &node, tag](IAssets* assets) {
-      set(node, tag);
+  void Editable::init(JSONObject object, const std::string& member) {
+    cProject->init([this, object, member](IAssets* assets) {
+      set(object, member);
     });
   }
 
-  void Editable::set(DOMNode& node, const std::string& tag) {
-    DOMNode& mAssetNode = node.getNode(tag);
+  void Editable::set(JSONObject object, const std::string& member) {
+    JSONObject mAssetObject = object.getObject(member);
     cProject->release(this, cEditable);
-    cEditable = cProject->getEditable(this, mAssetNode);
+    cEditable = cProject->getEditable(this, mAssetObject);
   }
 
-  void Editable::save(DOMNodeWriter* node, const std::string& tag) {
-    DOMNodeWriter mAssetNode = node->addBranch(tag);
-    cProject->save(&mAssetNode, cEditable);
+  void Editable::save(JSONObject object, const std::string& name) const {
+    JSONObject mAssetObject = object.addObject(name);
+    cProject->save(mAssetObject, cEditable);
   }
 
   void Editable::relinquish(IEditable* asset) {

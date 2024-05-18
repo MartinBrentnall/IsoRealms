@@ -19,18 +19,19 @@
 #include "InterruptHandler.h"
 
 namespace IsoRealms::Basics {
-  const std::string InterruptHandler::TAG_ACTION = "Action";
-  
+  const std::string InterruptHandler::JSON_CONSUME  = "consume";
+  const std::string InterruptHandler::JSON_ON_INPUT = "onInput";
+
   InterruptHandler::InterruptHandler(IProject* project, Basics* basics) :
             cDefAction(project) {
   }
   
-  InterruptHandler::InterruptHandler(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
+  InterruptHandler::InterruptHandler(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
             InterruptHandler(project, basics) {
-    cDefAction.init(node, TAG_ACTION);
-    cDefConsume = node.getBooleanAttribute("consume", true);
+    cDefAction.init(object, JSON_ON_INPUT);
+    cDefConsume = object.getBoolean(JSON_CONSUME, true);
   }
-  
+
   void InterruptHandler::registerAssets(IAssetRegistry* assets) {
     assets->add(this, "", "Interrupt Handlers");
   }
@@ -39,8 +40,9 @@ namespace IsoRealms::Basics {
     assets->remove(this);
   }
   
-  void InterruptHandler::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    cDefAction.save(node, TAG_ACTION);
+  void InterruptHandler::save(JSONObject object, IAssetIdentifier* identifier) const {
+    cDefAction.save(object, JSON_ON_INPUT);
+    object.addBoolean(JSON_CONSUME, cDefConsume, true);
   }
 
   void InterruptHandler::hintInUse(bool inUse) {
@@ -75,5 +77,9 @@ namespace IsoRealms::Basics {
 
   bool InterruptHandler::renderAssetIcon() const {
     return renderIcon();
+  }
+
+  void InterruptHandler::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 }

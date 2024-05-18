@@ -19,8 +19,8 @@
 #include "ModelCycler.h"
 
 namespace IsoRealms::Basics {
-  const std::string ModelCycler::TAG_MODEL = "Model";
-  const std::string ModelCycler::TAG_NAME = "Name";
+  const std::string ModelCycler::JSON_MODEL  = "model";
+  const std::string ModelCycler::JSON_MODELS = "models";
 
   ModelCycler::ModelCycler(IProject* project, Basics* basics) :
             cRuntimeCycleIndex(0),
@@ -38,17 +38,12 @@ namespace IsoRealms::Basics {
     });
   }
   
-  ModelCycler::ModelCycler(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
+  ModelCycler::ModelCycler(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
             ModelCycler(project, basics) {
     unsigned int mIndex = 0;
-    for (DOMNode& mNode : node) {
-      std::string mTag = mNode.getName();
-      if (mTag == TAG_MODEL) {
-        cDefModelTypes.emplace_back(std::make_unique<Model>(project))->init(mNode, TAG_NAME);
-        cOffsetModels.emplace_back(std::make_unique<Offset>(this, mIndex++));
-      } else {
-        throw ParseException("Unknown tag for Basics/ModelCycler: " + mTag);
-      }
+    for (JSONObject mModelObject : object.getArray(JSON_MODELS)) {
+      cDefModelTypes.emplace_back(std::make_unique<Model>(project))->init(mModelObject, JSON_MODEL);
+      cOffsetModels.emplace_back(std::make_unique<Offset>(this, mIndex++));
     }
   }
 
@@ -66,10 +61,11 @@ namespace IsoRealms::Basics {
     assets->remove(&cLuaBinding);
   }
 
-  void ModelCycler::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
+  void ModelCycler::save(JSONObject object, IAssetIdentifier* identifier) const {
+    JSONArray mModelArray = object.addArray(JSON_MODELS);
     for (const std::unique_ptr<Model>& mModelType : cDefModelTypes) {
-      DOMNodeWriter mModelBranch = node->addBranch(TAG_MODEL);
-      mModelType->save(&mModelBranch, TAG_NAME);
+      JSONObject mModelObject = mModelArray.addObject();
+      mModelType->save(mModelObject, JSON_MODEL);
     }
   }
 
@@ -118,6 +114,10 @@ namespace IsoRealms::Basics {
 
   bool ModelCycler::Offset::renderAssetIcon() const {
     return cParent->cDefModelTypes[cDefOffset]->renderIcon();
+  }
+
+  void ModelCycler::Offset::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   ModelCycler::Offset::Instance::Instance(Offset* parent) :

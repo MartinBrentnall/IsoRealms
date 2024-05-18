@@ -30,8 +30,8 @@ namespace IsoRealms::Spindizzy {
 
   class WallPatternTile : public IWallPattern {
     public:
-    WallPatternTile(IProject* project, Spindizzy* spindizzy, DOMNode& node);
-    
+    WallPatternTile(IProject* project, Spindizzy* spindizzy, JSONObject object);
+
     /***************************\
      * Implements IWallPattern *
     \***************************/
@@ -44,7 +44,7 @@ namespace IsoRealms::Spindizzy {
      * Implements IAsset via IWallPattern *
     \**************************************/
     bool renderAssetIcon() const override;
-    void saveAsset(DOMNodeWriter* node) const override;
+    void saveAsset(JSONObject object) const override;
 
     private:
     
@@ -65,8 +65,8 @@ namespace IsoRealms::Spindizzy {
       Wall* cDefWall;
     };
     
-    // DOM strings.
-    static const std::string TAG_TEXTURE;
+    // JSON members.
+    static const std::string JSON_TEXTURE;
 
     // Definition data.  
     Texture cDefTexture;

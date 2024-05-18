@@ -19,17 +19,19 @@
 #include "TerrainState.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string TerrainState::TAG_HINT_ACTION = "HintAction";
-  const std::string TerrainState::TAG_SCREEN      = "Screen";
+  const std::string TerrainState::JSON_HINT  = "hint";
+  const std::string TerrainState::JSON_ICON  = "icon";
+  const std::string TerrainState::JSON_ID    = "id";
+  const std::string TerrainState::JSON_STATE = "state";
 
   TerrainState::TerrainState(IProject* project, Spindizzy* spindizzy) :
             TerrainState(project, "TODO", true) {
   }
 
-  TerrainState::TerrainState(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
-            TerrainState(project, node.getAttribute("name"), node.getBooleanAttribute("state")) {
-    cDefIcon.init(node, TAG_SCREEN);
-    cDefHintAction.init(node, TAG_HINT_ACTION);
+  TerrainState::TerrainState(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
+            TerrainState(project, object.getString(JSON_ID), object.getBoolean(JSON_STATE)) {
+    cDefIcon.init(object, JSON_ICON);
+    cDefHintAction.init(object, JSON_HINT);
   }
 
   void TerrainState::registerAssets(IAssetRegistry* assets) {
@@ -42,11 +44,10 @@ namespace IsoRealms::Spindizzy {
     assets->remove(&cLuaBinding);
   }
 
-  void TerrainState::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    node->addAttribute("name", cDefConditionElement.getName());
-    node->addAttribute("state", cDefValue);
-    cDefIcon.save(node, TAG_SCREEN);
-    cDefHintAction.save(node, TAG_HINT_ACTION);
+  void TerrainState::save(JSONObject object, IAssetIdentifier* identifier) const {
+    object.addBoolean(JSON_STATE, cDefValue);
+    cDefIcon.save(object, JSON_ICON);
+    cDefHintAction.save(object, JSON_HINT);
   }
 
   void TerrainState::hintInUse(bool inUse) {
@@ -80,6 +81,10 @@ namespace IsoRealms::Spindizzy {
 
   bool TerrainState::renderAssetIcon() const {
     return renderIcon();
+  }
+
+  void TerrainState::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   void TerrainState::setValue(bool value) {

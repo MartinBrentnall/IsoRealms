@@ -29,6 +29,7 @@ namespace IsoRealms {
     \************************/
     IEditableScreen* createEditableScreen(Project* project) override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
     private:
     class EditableScreen : public IEditableScreen {
@@ -47,6 +48,7 @@ namespace IsoRealms {
       const IFloat* getPitch() const override;
       bool input(sf::Event& event) override;
       bool renderAssetIcon() const override;
+      void saveAsset(JSONObject object) const override;
     };
     static EditableScreen DUMMY; /// Dummy editable screen.
   };

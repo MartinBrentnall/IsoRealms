@@ -22,10 +22,10 @@
 #include "Modules/Spindizzy/BoundaryHandler/BoundaryHandlerInstance.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string BoundaryHandler::TAG_BOUNDARY_TYPE  = "Type";
-  const std::string BoundaryHandler::TAG_ENTERED_ACTION = "EnteredAction";
-  const std::string BoundaryHandler::TAG_EXITED_ACTION  = "ExitedAction";
-  const std::string BoundaryHandler::TAG_OBJECT_TYPE    = "Object";
+  const std::string BoundaryHandler::JSON_BOUNDARY = "boundary";
+  const std::string BoundaryHandler::JSON_OBJECT   = "object";
+  const std::string BoundaryHandler::JSON_ON_ENTRY = "onEntry";
+  const std::string BoundaryHandler::JSON_ON_EXIT  = "onExit";
 
   const std::string BoundaryHandler::BIND_TO_BOUNDARY = "Boundary";
   const std::string BoundaryHandler::BIND_TO_OBJECT   = "Object";
@@ -38,12 +38,12 @@ namespace IsoRealms::Spindizzy {
             cDefExitedAction(project) {
   }
 
-  BoundaryHandler::BoundaryHandler(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
+  BoundaryHandler::BoundaryHandler(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
             BoundaryHandler(project, spindizzy) {
-    cDefBoundaryType.init(node.getNode(TAG_BOUNDARY_TYPE));
-    cDefObjectType.init(node.getNode(TAG_OBJECT_TYPE));
-    cDefEnteredAction.init(node, TAG_ENTERED_ACTION, this);
-    cDefExitedAction.init(node, TAG_EXITED_ACTION, this);
+    cDefBoundaryType.init(object.getObject(JSON_BOUNDARY));
+    cDefObjectType.init(object.getObject(JSON_OBJECT));
+    cDefEnteredAction.init(object, JSON_ON_ENTRY, this);
+    cDefExitedAction.init(object, JSON_ON_EXIT, this);
     spindizzy->getProject()->init([this, spindizzy](IAssets* assets) {
       spindizzy->added(this);
     });
@@ -57,12 +57,12 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void BoundaryHandler::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    cDefBoundaryType.save(node, TAG_BOUNDARY_TYPE);
-    cDefObjectType.save(node, TAG_OBJECT_TYPE);
+  void BoundaryHandler::save(JSONObject object, IAssetIdentifier* identifier) const {
+    cDefBoundaryType.save(object, JSON_BOUNDARY);
+    cDefObjectType.save(object, JSON_OBJECT);
     cDefSpindizzy.setBindingIdentifier(this);
-    cDefEnteredAction.save(node, TAG_ENTERED_ACTION);
-    cDefExitedAction.save(node, TAG_EXITED_ACTION);
+    cDefEnteredAction.save(object, JSON_ON_ENTRY);
+    cDefExitedAction.save(object, JSON_ON_EXIT);
     cDefSpindizzy.setBindingIdentifier(nullptr);
   }
 
@@ -104,7 +104,7 @@ namespace IsoRealms::Spindizzy {
          :                               nullptr;
   }
   
-  void BoundaryHandler::saveBinding(DOMNodeWriter* node, const IBinding* binding) const {
+  void BoundaryHandler::saveBinding(JSONObject object, const IBinding* binding) const {
     // TODO: Implement this.
   }
 

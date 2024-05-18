@@ -28,7 +28,6 @@
 #include "IsoRealms/Input/HatHandler.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/Lua.h"
-#include "IsoRealms/Persistence/DOMNode.h"
 #include "IsoRealms/System.h"
 #include "IsoRealms/Types.h"
 
@@ -44,10 +43,10 @@ namespace IsoRealms::UI {
     public:
 
     // Public DOM strings.
-    static const std::string TAG_TYPE;
+    static const std::string MENU_ITEM_TYPE;
 
-    MenuItemFileList(DOMNode& node, IProject* project);
-    
+    MenuItemFileList(JSONObject object, IProject* project);
+
     /***********************\
      * Scripting Interface *
     \***********************/
@@ -59,7 +58,7 @@ namespace IsoRealms::UI {
     \************************/
     void registerAssets(IAssetRegistry* assets) override;
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser) override;
-    void save(DOMNodeWriter* node) const override;
+    void save(JSONObject object) const override;
     bool input(sf::Event& event) override;
     void selectTop() override;
     void selectBottom() override;
@@ -72,15 +71,16 @@ namespace IsoRealms::UI {
     \**********************/
     std::string getValue() const override;
     bool renderAssetIcon() const override;
-    
+    void saveAsset(JSONObject object) const override;
+
     private:
     
-    // DOM strings.
-    static const std::string TAG_ACTION;
-  
-    static const std::string ATTRIBUTE_FOLDER;
-    static const std::string ATTRIBUTE_ID;
-    static const std::string ATTRIBUTE_USER;
+    // JSON members.
+    static const std::string JSON_FOLDER;
+    static const std::string JSON_ID;
+    static const std::string JSON_ON_SELECTION;
+    static const std::string JSON_TYPE;
+    static const std::string JSON_USER;
 
     // Constants.
     static const std::string BINDING_TYPE;

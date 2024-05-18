@@ -23,18 +23,17 @@
 #include "IsoRealms/Assets/Type/IAction.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/IAssets.h"
-#include "IsoRealms/Persistence/DOMNode.h"
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
+#include "IsoRealms/Persistence/JSONDocument.h"
 
 namespace IsoRealms {
   class Action final : public IAssetUser<IAction> {
     public:
     Action(IProject* project);
 
-    void init(DOMNode& node, const std::string& tag, IBindingRegistry* localArgs = nullptr, const std::string& id = "");
-    void set(DOMNode& node, const std::string& tag, IBindingRegistry* localArgs = nullptr, const std::string& id = "");
+    void init(JSONObject object, const std::string& member, IBindingRegistry* localArgs = nullptr, const std::string& id = "");
+    void set(JSONObject object, const std::string& member, IBindingRegistry* localArgs = nullptr, const std::string& id = "");
     void execute();
-    void save(DOMNodeWriter* node, const std::string& tag) const;
+    void save(JSONObject object, const std::string& name) const;
 
     IAction* operator*() const {
       return cAction;

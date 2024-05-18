@@ -25,15 +25,15 @@
 #include "ZoneObjectTypeTraitCellLocation.h"
 
 namespace IsoRealms::Spindizzy {
-  ZoneObjectTypeTraitCellLocation::ZoneObjectTypeTraitCellLocation(IProject* project, ZoneObjectType* type, DOMNode& node) :
+  ZoneObjectTypeTraitCellLocation::ZoneObjectTypeTraitCellLocation(IProject* project, ZoneObjectType* type, JSONObject object) :
             cDefType(*type) {
     cDefType.registerEditor(this);
   }
-  
-  void ZoneObjectTypeTraitCellLocation::save(DOMNodeWriter& node) const {
+
+  void ZoneObjectTypeTraitCellLocation::save(JSONObject object) const {
     // Nothing to do.
   }
-  
+
   std::unique_ptr<IZoneObjectTrait> ZoneObjectTypeTraitCellLocation::createTrait(ZoneObject& object) {
     return std::make_unique<CellLocation>(object, cEditingPinnedX, cEditingPinnedY, cEditingPinnedZ);
   }  
@@ -44,6 +44,10 @@ namespace IsoRealms::Spindizzy {
   
   bool ZoneObjectTypeTraitCellLocation::renderAssetIcon() const {
     return false;
+  }
+
+  void ZoneObjectTypeTraitCellLocation::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   IZoneObjectTraitEditor::InputEditResult ZoneObjectTypeTraitCellLocation::inputEdit(sf::Event& event, WorldEditor* editor) {

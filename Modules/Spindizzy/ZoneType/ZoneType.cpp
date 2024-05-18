@@ -27,7 +27,7 @@ namespace IsoRealms::Spindizzy {
     cDefSpindizzy->added(this);
   }
   
-  ZoneType::ZoneType(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
+  ZoneType::ZoneType(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
             ZoneType(project, spindizzy) {
   }
 
@@ -39,7 +39,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
   
-  void ZoneType::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
+  void ZoneType::save(JSONObject object, IAssetIdentifier* identifier) const {
     // Nothing to do.
   }
 
@@ -102,6 +102,10 @@ namespace IsoRealms::Spindizzy {
 
   bool ZoneType::renderAssetIcon() const {
     return false;
+  }
+
+  void ZoneType::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   ZoneType::Pen::Pen(ZoneType& parent, WorldEditor* editor) :

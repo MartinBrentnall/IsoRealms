@@ -20,8 +20,6 @@
 
 #include <string>
 
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
-
 namespace IsoRealms::UI {
   class LayoutComponent;
   class Layout;
@@ -38,7 +36,6 @@ namespace IsoRealms::UI {
     
     virtual float getLocation(float aspectRatio) = 0;
     virtual void editOffset(float offset) = 0;
-    virtual void save(DOMNodeWriter* node, const std::string& attribute, Layout* layout) = 0;
     virtual void renderRelation(float aspectRatio) = 0;
     virtual bool isRelatedTo(LayoutComponent* component) = 0;
 

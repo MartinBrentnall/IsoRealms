@@ -19,14 +19,14 @@
 #include "FileTexture.h"
 
 namespace IsoRealms::Basics {
-  const std::string FileTexture::ATTRIBUTE_FILE = "file";
+  const std::string FileTexture::JSON_FILENAME = "filename";
 
   FileTexture::FileTexture(IProject* project, Basics* basics) {
   }
 
-  FileTexture::FileTexture(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
+  FileTexture::FileTexture(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
             FileTexture(project, basics) {
-    cDefFile = node.getAttribute(ATTRIBUTE_FILE);
+    cDefFile = object.getString(JSON_FILENAME);
     reloadData(project);
   }
 
@@ -38,8 +38,8 @@ namespace IsoRealms::Basics {
     assets->remove(this);
   }
 
-  void FileTexture::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    node->addAttribute(ATTRIBUTE_FILE, cDefFile);
+  void FileTexture::save(JSONObject object, IAssetIdentifier* identifier) const {
+    object.addString(JSON_FILENAME, cDefFile);
   }
 
   void FileTexture::hintInUse(bool inUse) {
@@ -71,7 +71,11 @@ namespace IsoRealms::Basics {
   void FileTexture::coord(float x, float y) const {
     glTexCoord2f(x, y);
   }
-  
+
+  void FileTexture::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
+
   void FileTexture::reloadData(IProject* project) {
     project->mainThreadInit([this]() {
       std::string mFullPath = System::getPath(cDefFile, false);

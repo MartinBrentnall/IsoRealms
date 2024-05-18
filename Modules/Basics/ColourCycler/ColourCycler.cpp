@@ -19,14 +19,12 @@
 #include "ColourCycler.h"
 
 namespace IsoRealms::Basics {
-  const std::string ColourCycler::TAG_COLOUR        = "Colour";
-  const std::string ColourCycler::TAG_CYCLE_SPEED   = "CycleSpeed";
-  const std::string ColourCycler::TAG_INPUT_COLOUR  = "InputColour";
-  const std::string ColourCycler::TAG_IO            = "IO";
-  const std::string ColourCycler::TAG_OUTPUT_COLOUR = "OutputColour";
-
-  const std::string ColourCycler::ATTRIBUTE_OFFSET           = "offset";
-  const std::string ColourCycler::ATTRIBUTE_SPEED_MULTIPLIER = "speedMultiplier";
+  const std::string ColourCycler::JSON_COLOUR           = "colour";
+  const std::string ColourCycler::JSON_INPUTS           = "inputs";
+  const std::string ColourCycler::JSON_OFFSET           = "offset";
+  const std::string ColourCycler::JSON_OUTPUTS          = "outputs";
+  const std::string ColourCycler::JSON_SPEED            = "speed";
+  const std::string ColourCycler::JSON_SPEED_MULTIPLIER = "speedMultiplier";
 
   ColourCycler::ColourCycler(IProject* project, Basics* basics) :
             cDefCycleSpeed(project, 0.0f) {
@@ -45,22 +43,16 @@ namespace IsoRealms::Basics {
     });
   }
 
-  ColourCycler::ColourCycler(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
+  ColourCycler::ColourCycler(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
             ColourCycler(project, basics) {
-    unsigned int mOutputColourCount = 0;
-    for (DOMNode& mChild : node.getNode(TAG_IO)) {
-      std::string mChildName = mChild.getName();
-      if (mChildName == TAG_INPUT_COLOUR) {
-        cDefInputColours.emplace_back(std::make_unique<Colour>(project, 0.0f, 0.0f, 0.0f));
-        cDefInputColours.back()->init(mChild, TAG_COLOUR);
-      } else if (mChildName == TAG_OUTPUT_COLOUR) {
-        cDefOutputColours.push_back(std::make_unique<ColourCycle>(this, mChild.getFloatAttribute(ATTRIBUTE_OFFSET), mChild.getFloatAttribute(ATTRIBUTE_SPEED_MULTIPLIER)));
-        mOutputColourCount++;
-      } else {
-        throw ResourceInitException("ERROR: ColourCycler::ColourCycler: Unknown tag in IO: " + mChildName);
-      }
+    for (JSONObject mInputObject : object.getArray(JSON_INPUTS)) {
+      cDefInputColours.emplace_back(std::make_unique<Colour>(project, 0.0f, 0.0f, 0.0f));
+      cDefInputColours.back()->init(mInputObject, JSON_COLOUR);
     }
-    cDefCycleSpeed.init(node, TAG_CYCLE_SPEED);
+    for (JSONObject mOutputObject : object.getArray(JSON_OUTPUTS)) {
+      cDefOutputColours.push_back(std::make_unique<ColourCycle>(this, mOutputObject.getFloat(JSON_OFFSET), mOutputObject.getFloat(JSON_SPEED_MULTIPLIER)));
+    }
+    cDefCycleSpeed.init(object, JSON_SPEED);
   }
 
   void ColourCycler::registerAssets(IAssetRegistry* assets) {
@@ -76,15 +68,17 @@ namespace IsoRealms::Basics {
     }
   }
   
-  void ColourCycler::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    cDefCycleSpeed.save(node, TAG_CYCLE_SPEED);
-    DOMNodeWriter mIONode = node->addBranch(TAG_IO);
+  void ColourCycler::save(JSONObject object, IAssetIdentifier* identifier) const {
+    cDefCycleSpeed.save(object, JSON_SPEED);
+    JSONArray mInputsArray = object.addArray(JSON_INPUTS);
     for (const std::unique_ptr<Colour>& mInputColour : cDefInputColours) {
-      DOMNodeWriter mInputColourNode = mIONode.addBranch(TAG_INPUT_COLOUR);
-      mInputColour->save(&mInputColourNode, TAG_COLOUR);
+      JSONObject mInputObject = mInputsArray.addObject();
+      mInputColour->save(mInputObject, JSON_COLOUR);
     }
+    JSONArray mOutputsArray = object.addArray(JSON_OUTPUTS);
     for (const std::unique_ptr<ColourCycle>& mOutputColour : cDefOutputColours) {
-      mOutputColour->save(&mIONode);
+      JSONObject mOutputObject = mOutputsArray.addObject();
+      mOutputColour->save(mOutputObject);
     }
   }
 
@@ -139,10 +133,9 @@ namespace IsoRealms::Basics {
     assets->remove(this);
   }
   
-  void ColourCycler::ColourCycle::save(DOMNodeWriter* node) {
-    DOMNodeWriter mOutputColourNode = node->addBranch(TAG_OUTPUT_COLOUR);
-    mOutputColourNode.addAttribute(ATTRIBUTE_OFFSET, cDeffStartPosition);
-    mOutputColourNode.addAttribute(ATTRIBUTE_SPEED_MULTIPLIER, cDefSpeedMultiplier);
+  void ColourCycler::ColourCycle::save(JSONObject object) const {
+    object.addFloat(JSON_OFFSET, cDeffStartPosition);
+    object.addFloat(JSON_SPEED_MULTIPLIER, cDefSpeedMultiplier);
   }
 
   void ColourCycler::ColourCycle::update(unsigned int milliseconds) {
@@ -173,7 +166,11 @@ namespace IsoRealms::Basics {
   float ColourCycler::ColourCycle::getAlpha() const {
     return cRuntimeAlpha;
   }
-  
+
+  void ColourCycler::ColourCycle::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
+
   void ColourCycler::ColourCycle::set() const {
     glColor4f(cRuntimeRed, cRuntimeGreen, cRuntimeBlue, cRuntimeAlpha);
   }

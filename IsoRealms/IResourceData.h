@@ -20,13 +20,9 @@
 
 #include <string>
 
-#include "Persistence/DOMNodeWriter.h"
-
 namespace IsoRealms {
   class IResourceData {
     public:
-    virtual std::unique_ptr<DOMNode> openForRead(const std::string& file, bool user) = 0;
-    virtual void write(DOMNodeWriter* node, const std::string& file) = 0;
     virtual std::string getPath(const std::string& file, bool user) const = 0;
     virtual void makeUserDataDirectory() = 0;
     virtual bool isIncluded() const = 0;

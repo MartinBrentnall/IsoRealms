@@ -18,20 +18,17 @@
  */
 #pragma once
 
+#include "IsoRealms/Persistence/JSONDocument.h"
+
 namespace IsoRealms {
-  class DOMNodeWriter;
 
   /**
    * Base interface for assets.
    */
   class IAsset {
     public:
-
     virtual bool renderAssetIcon() const = 0;
-
-    virtual void saveAsset(DOMNodeWriter* node) const {
-      // Do nothing.
-    }
+    virtual void saveAsset(JSONObject object) const = 0;
 
     virtual ~IAsset() {}
   };

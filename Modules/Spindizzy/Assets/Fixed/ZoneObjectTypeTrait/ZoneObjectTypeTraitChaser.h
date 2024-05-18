@@ -19,8 +19,6 @@
 #pragma once
 
 #include "IsoRealms/IProject.h"
-#include "IsoRealms/Persistence/DOMNode.h"
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
 #include "IsoRealms/Types.h"
 
 #include "Modules/Spindizzy/Assets/Type/IZoneObjectTypeTrait.h"
@@ -30,7 +28,7 @@ namespace IsoRealms::Spindizzy {
 
   class ZoneObjectTypeTraitChaser : public IZoneObjectTypeTrait {
     public:
-    ZoneObjectTypeTraitChaser(IProject* project, ZoneObjectType* type, DOMNode& node);
+    ZoneObjectTypeTraitChaser(IProject* project, ZoneObjectType* type, JSONObject object);
     
     // Interface to be used by instances.
     const Vertex& getTarget() const;
@@ -39,17 +37,18 @@ namespace IsoRealms::Spindizzy {
     /************************************\
      * Implements  IZoneObjectTypeTrait *
     \************************************/
-    void save(DOMNodeWriter& node) const override;
+    void save(JSONObject object) const override;
     std::unique_ptr<IZoneObjectTrait> createTrait(ZoneObject& object) override;
     void registerAssets(ISpindizzyRegistry* registry) override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
     private:
     
-    // DOM strings.
-    static const std::string ATTRIBUTE_OBJECT;
-    static const std::string ATTRIBUTE_TARGET;
-    
+    // JSON members.
+    static const std::string JSON_OBJECT;
+    static const std::string JSON_TARGET;
+
     // Definition data.
     Vertex cDefTarget;        /// Target of chasers.
     std::string cDefObjectID; /// ID of the physical object to be driven by chaser instances.

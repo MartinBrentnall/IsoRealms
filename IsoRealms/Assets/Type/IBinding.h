@@ -23,8 +23,6 @@
 #include "IAsset.h"
 
 namespace IsoRealms {
-  class DOMNode;
-  class DOMNodeWriter;
   class IAssetIdentifier;
   class IAssets;
   class IBindingRegistry;

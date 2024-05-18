@@ -44,10 +44,10 @@ namespace IsoRealms::UI {
      * Resource Interface *
     \**********************/    
     Prompt(IProject* project, UI* ui);
-    Prompt(IProject* project, UI* ui, DOMNode& node, IOptions* options, IResourceData* data);
+    Prompt(IProject* project, UI* ui, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);  
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -71,20 +71,20 @@ namespace IsoRealms::UI {
      * Implements IAsset *
     \*********************/
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
     private:
     
-    // DOM strings.
-    static const std::string TAG_FALSE;
-    static const std::string TAG_FONT;
-    static const std::string TAG_HIGHLIGHT;
-    static const std::string TAG_TRUE;
-
-    static const std::string ATTRIBUTE_FALSE;
-    static const std::string ATTRIBUTE_SHADOW_OFFSET;
-    static const std::string ATTRIBUTE_TEXT;
-    static const std::string ATTRIBUTE_TEXT_SIZE;
-    static const std::string ATTRIBUTE_TRUE;
+    // JSON members.
+    static const std::string JSON_CANCEL_LABEL;
+    static const std::string JSON_CONFIRM_LABEL;
+    static const std::string JSON_FONT;
+    static const std::string JSON_MESSAGE;
+    static const std::string JSON_ON_CANCEL;
+    static const std::string JSON_ON_CONFIRM;
+    static const std::string JSON_SELECTION_COLOUR;
+    static const std::string JSON_SHADOW_OFFSET;
+    static const std::string JSON_TEXT_SIZE;
 
     static const float DEFAULT_SHADOW_OFFSET;
     static const float DEFAULT_TEXT_SIZE;

@@ -19,28 +19,27 @@
 #include "ColourTrack.h"
 
 namespace IsoRealms::Basics {
-  const std::string ColourTrack::TAG_INIT   = "Init";
-
-  const std::string ColourTrack::ATTRIBUTE_DURATION = "duration";
-  const std::string ColourTrack::ATTRIBUTE_OUTPUT   = "output";
+  const std::string ColourTrack::JSON_DURATION = "duration";
+  const std::string ColourTrack::JSON_EVENTS   = "events";
+  const std::string ColourTrack::JSON_OUTPUT   = "outputs";
+  const std::string ColourTrack::JSON_START    = "start";
+  const std::string ColourTrack::JSON_TYPE     = "type";
 
   const std::string ColourTrack::TYPE_NAME          = "Colour";
 
-  ColourTrack::ColourTrack(DOMNode& node, IProject* project) :
-            cDefName(node.getAttribute(ATTRIBUTE_OUTPUT)),
+  ColourTrack::ColourTrack(JSONObject object, IProject* project) :
+            cDefName(object.getString(JSON_OUTPUT)),
             cDefInitColour(project, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {stateChanged(&cDefInitColour);}),
             cRuntimeEvent(0),
             cRuntimeEventPosition(0),
             cStateNotifier(nullptr) {
-    cDefInitColour.init(node, TAG_INIT);
-    for (DOMNode& mChild : node) {
-      std::string mEventType = mChild.getName();
+    cDefInitColour.init(object, JSON_START);
+    for (JSONObject mEventObject : object.getArray(JSON_EVENTS)) {
+      std::string mEventType = mEventObject.getString(JSON_TYPE);
       if (mEventType == ColourTrackEventFade::EVENT_TYPE) {
-        cDefEvents.push_back(std::make_unique<ColourTrackEventFade>(project, mChild.getIntegerAttribute(ATTRIBUTE_DURATION), mChild));
+        cDefEvents.push_back(std::make_unique<ColourTrackEventFade>(project, mEventObject.getInteger(JSON_DURATION), mEventObject));
       } else if (mEventType == ColourTrackEventPause::EVENT_TYPE) {
-        cDefEvents.push_back(std::make_unique<ColourTrackEventPause>(mChild.getIntegerAttribute(ATTRIBUTE_DURATION)));
-      } else if (mEventType == TAG_INIT) {
-        // Nothing to do.
+        cDefEvents.push_back(std::make_unique<ColourTrackEventPause>(mEventObject.getInteger(JSON_DURATION)));
       } else {
         throw ParseException("Unknown event type for Basics/Sequence/ColourTrack: " + mEventType);
       }
@@ -56,12 +55,14 @@ namespace IsoRealms::Basics {
     cStateNotifier = nullptr;
   }
 
-  void ColourTrack::save(DOMNodeWriter* node) const {
-    DOMNodeWriter mTrackNode = node->addBranch(TYPE_NAME);
-    cDefInitColour.save(&mTrackNode, TAG_INIT);
-    mTrackNode.addAttribute(ATTRIBUTE_OUTPUT, cDefName);
+  void ColourTrack::save(JSONObject object) const {
+    object.addString(JSON_TYPE, TYPE_NAME);
+    object.addString(JSON_OUTPUT, cDefName);
+    cDefInitColour.save(object, JSON_START);
+    JSONArray mEventsArray = object.addArray(JSON_EVENTS);
     for (const std::unique_ptr<IColourTrackEvent>& mEvent : cDefEvents) {
-      mEvent->save(&mTrackNode);
+      JSONObject mEventObject = mEventsArray.addObject();
+      mEvent->save(mEventObject);
     }
   }
 
@@ -173,6 +174,10 @@ namespace IsoRealms::Basics {
 
   float ColourTrack::getAlpha() const {
     return cRuntimeColour.getAlpha();
+  }
+
+  void ColourTrack::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   void ColourTrack::updateColour() {

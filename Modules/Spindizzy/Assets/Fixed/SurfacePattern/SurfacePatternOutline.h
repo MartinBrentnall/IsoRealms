@@ -32,7 +32,7 @@ namespace IsoRealms::Spindizzy {
 
   class SurfacePatternOutline : public ISurfacePattern {
     public:
-    SurfacePatternOutline(IProject* project, Spindizzy* spindizzy, DOMNode& node);
+    SurfacePatternOutline(IProject* project, Spindizzy* spindizzy, JSONObject object);
 
     /******************************\
      * Implements ISurfacePattern *
@@ -48,7 +48,7 @@ namespace IsoRealms::Spindizzy {
      * Implements IAsset via ISurfacePattern *
     \*****************************************/
     bool renderAssetIcon() const override;
-    void saveAsset(DOMNodeWriter* node) const override;
+    void saveAsset(JSONObject object) const override;
 
     private:
 

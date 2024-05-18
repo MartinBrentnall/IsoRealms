@@ -43,14 +43,10 @@ namespace IsoRealms::Spindizzy {
     object.unregisterMovable(this);
   }
 
-  void Movable::load(DOMNode& node) {
+  void Movable::save(JSONObject object) const {
     // Nothing to do.
   }
-  
-  void Movable::save(DOMNodeWriter* node) const {
-    // Nothing to do.
-  }
-  
+
   bool Movable::hasConfiguration() const {
     return false;
   }    

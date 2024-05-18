@@ -38,8 +38,8 @@ namespace IsoRealms::Spindizzy {
     
     // Constructors.
     CameraGameplay(IProject* project, WorldView* view);
-    CameraGameplay(IProject* project, WorldView* view, DOMNode& node);
-    
+    CameraGameplay(IProject* project, WorldView* view, JSONObject object);
+
     /***********************\
      * Scripting interface *
     \***********************/
@@ -76,13 +76,13 @@ namespace IsoRealms::Spindizzy {
      * Implements IAsset via ICamera/IFloat *
     \****************************************/
     bool renderAssetIcon() const override;
-    void saveAsset(DOMNodeWriter* node) const override;
-    
+    void saveAsset(JSONObject object) const override;
+
     private:
     
-    // DOM strings.
-    static const std::string ATTRIBUTE_DIRECTION;
-    static const std::string ATTRIBUTE_DURATION;
+    // JSON members.
+    static const std::string JSON_DIRECTION;
+    static const std::string JSON_ROTATE_DURATION;
 
     static const std::string DIRECTION_NORTH_EAST;
     static const std::string DIRECTION_NORTH_WEST;

@@ -24,21 +24,21 @@ namespace IsoRealms {
             cAssets(cProject->createLiteralAssets(this)) {
   }
 
-  void Assets::init(DOMNode& node, const std::string& tag) {
-    cProject->init([this, &node, tag](IAssets* assets) {
-      set(node, tag);
+  void Assets::init(JSONObject object, const std::string& member) {
+    cProject->init([this, object, member](IAssets* assets) {
+      set(object, member);
     });
   }
 
-  void Assets::set(DOMNode& node, const std::string& tag) {
-    DOMNode& mAssetNode = node.getNode(tag);
+  void Assets::set(JSONObject object, const std::string& member) {
+    JSONObject mAssetObject = object.getObject(member);
     cProject->release(this, cAssets);
-    cAssets = cProject->getAssets(this, mAssetNode);
+    cAssets = cProject->getAssets(this, mAssetObject);
   }
 
-  void Assets::save(DOMNodeWriter* node, const std::string& tag) const {
-    DOMNodeWriter mAssetNode = node->addBranch(tag);
-    cProject->save(&mAssetNode, cAssets);
+  void Assets::save(JSONObject object, const std::string& name) const {
+    JSONObject mAssetObject = object.addObject(name);
+    cProject->save(mAssetObject, cAssets);
   }
 
   void Assets::relinquish(IAssets* asset) {

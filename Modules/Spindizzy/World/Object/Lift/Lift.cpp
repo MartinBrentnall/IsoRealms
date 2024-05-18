@@ -23,16 +23,16 @@
 #include "Modules/Spindizzy/World/World.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string Lift::ATTRIBUTE_BOTTOM       = "bottom";
-  const std::string Lift::ATTRIBUTE_BOTTOM_PAUSE = "bottomPause";
-  const std::string Lift::ATTRIBUTE_DOWN_SPEED   = "downSpeed";
-  const std::string Lift::ATTRIBUTE_TOP          = "top";
-  const std::string Lift::ATTRIBUTE_TOP_PAUSE    = "topPause";
-  const std::string Lift::ATTRIBUTE_TYPE         = "type";
-  const std::string Lift::ATTRIBUTE_UP_SPEED     = "upSpeed";
-  const std::string Lift::ATTRIBUTE_X            = "x";
-  const std::string Lift::ATTRIBUTE_Y            = "y";
-  const std::string Lift::ATTRIBUTE_Z            = "z";
+  const std::string Lift::JSON_BOTTOM       = "bottom";
+  const std::string Lift::JSON_BOTTOM_PAUSE = "bottomPause";
+  const std::string Lift::JSON_DOWN_SPEED   = "downSpeed";
+  const std::string Lift::JSON_TOP          = "top";
+  const std::string Lift::JSON_TOP_PAUSE    = "topPause";
+  const std::string Lift::JSON_TYPE         = "type";
+  const std::string Lift::JSON_UP_SPEED     = "upSpeed";
+  const std::string Lift::JSON_X            = "x";
+  const std::string Lift::JSON_Y            = "y";
+  const std::string Lift::JSON_Z            = "z";
 
   Lift::Lift(Zone& zone, LiftType* type, int x, int y, int z, int bottom, int top) :
             cDefZone(zone),
@@ -51,22 +51,22 @@ namespace IsoRealms::Spindizzy {
     reset();
   }
 
-  Lift::Lift(Zone& zone, DOMNode& node) :
+  Lift::Lift(Zone& zone, JSONObject object) :
             cDefZone(zone),
             cDefType(nullptr),
             cDefModel(nullptr),
-            cDefX(node.getIntegerAttribute(ATTRIBUTE_X) + cDefZone.getStartX()),
-            cDefY(node.getIntegerAttribute(ATTRIBUTE_Y) + cDefZone.getStartY()),
-            cDefZ(node.getIntegerAttribute(ATTRIBUTE_Z) + cDefZone.getStartZ()),
-            cDefTop(node.getIntegerAttribute(ATTRIBUTE_TOP) + cDefZone.getStartZ()),
-            cDefBottom(node.getIntegerAttribute(ATTRIBUTE_BOTTOM) + cDefZone.getStartZ()),
-            cDefTopPause(node.getIntegerAttribute(ATTRIBUTE_TOP_PAUSE)),
-            cDefBottomPause(node.getIntegerAttribute(ATTRIBUTE_BOTTOM_PAUSE)),
-            cDefSpeedUp(node.getIntegerAttribute(ATTRIBUTE_UP_SPEED)),
-            cDefSpeedDown(node.getIntegerAttribute(ATTRIBUTE_DOWN_SPEED)),
+            cDefX(object.getInteger(JSON_X) + cDefZone.getStartX()),
+            cDefY(object.getInteger(JSON_Y) + cDefZone.getStartY()),
+            cDefZ(object.getInteger(JSON_Z) + cDefZone.getStartZ()),
+            cDefTop(object.getInteger(JSON_TOP) + cDefZone.getStartZ()),
+            cDefBottom(object.getInteger(JSON_BOTTOM) + cDefZone.getStartZ()),
+            cDefTopPause(object.getInteger(JSON_TOP_PAUSE)),
+            cDefBottomPause(object.getInteger(JSON_BOTTOM_PAUSE)),
+            cDefSpeedUp(object.getInteger(JSON_UP_SPEED)),
+            cDefSpeedDown(object.getInteger(JSON_DOWN_SPEED)),
             cSurface(*this) {
-    cDefZone.getWorld()->getSpindizzy()->getProject()->init([this, node](IAssets* assets) {
-      cDefType = cDefZone.getWorld()->getSpindizzy()->getLiftType(node.getAttribute(ATTRIBUTE_TYPE));
+    cDefZone.getWorld()->getSpindizzy()->getProject()->init([this, object](IAssets* assets) {
+      cDefType = cDefZone.getWorld()->getSpindizzy()->getLiftType(object.getString(JSON_TYPE));
       cDefModel = cDefType->createModel();
       reset();
     });
@@ -81,17 +81,17 @@ namespace IsoRealms::Spindizzy {
     cRuntimeState.cDelay = cDefTop < cDefZ ? cDefTopPause : cDefBottomPause;
   }
 
-  void Lift::save(DOMNodeWriter* node, int x, int y, int z) {
-    node->addAttribute(ATTRIBUTE_X,            cDefX - x);
-    node->addAttribute(ATTRIBUTE_Y,            cDefY - y);
-    node->addAttribute(ATTRIBUTE_Z,            cDefZ - z);
-    node->addAttribute(ATTRIBUTE_TYPE,         cDefZone.getWorld()->getSpindizzy()->getID(cDefType));
-    node->addAttribute(ATTRIBUTE_TOP,          cDefTop    - z);
-    node->addAttribute(ATTRIBUTE_BOTTOM,       cDefBottom - z);
-    node->addAttribute(ATTRIBUTE_UP_SPEED,     cDefSpeedUp);
-    node->addAttribute(ATTRIBUTE_DOWN_SPEED,   cDefSpeedDown);
-    node->addAttribute(ATTRIBUTE_TOP_PAUSE,    cDefTopPause);
-    node->addAttribute(ATTRIBUTE_BOTTOM_PAUSE, cDefBottomPause);
+  void Lift::save(JSONObject object, int x, int y, int z) {
+    object.addString(JSON_TYPE,          cDefZone.getWorld()->getSpindizzy()->getID(cDefType));
+    object.addInteger(JSON_X,            cDefX - x);
+    object.addInteger(JSON_Y,            cDefY - y);
+    object.addInteger(JSON_Z,            cDefZ - z);
+    object.addInteger(JSON_TOP,          cDefTop    - z);
+    object.addInteger(JSON_BOTTOM,       cDefBottom - z);
+    object.addInteger(JSON_UP_SPEED,     cDefSpeedUp);
+    object.addInteger(JSON_DOWN_SPEED,   cDefSpeedDown);
+    object.addInteger(JSON_TOP_PAUSE,    cDefTopPause);
+    object.addInteger(JSON_BOTTOM_PAUSE, cDefBottomPause);
   }
 
   bool Lift::isType(const LiftType* const type) const {

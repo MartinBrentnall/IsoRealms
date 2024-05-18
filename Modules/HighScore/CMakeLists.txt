@@ -35,4 +35,4 @@ set_target_properties(HighScore PROPERTIES OUTPUT_NAME "IsoRealms-HighScore")
 set_target_properties(HighScore PROPERTIES LIBRARY_OUTPUT_DIRECTORY "../../Out")
 set_target_properties(HighScore PROPERTIES PREFIX "")
 
-target_link_libraries(HighScore IsoRealms ${LUA_LIBRARIES} sfml-window sfml-system sfml-audio sfml-graphics OpenGL::GL ${OPENGL_glu_LIBRARY} ${GLEW_LIBRARIES} ${XercesC_LIBRARIES})
+target_link_libraries(HighScore IsoRealms ${LUA_LIBRARIES} sfml-window sfml-system sfml-audio sfml-graphics OpenGL::GL ${OPENGL_glu_LIBRARY} ${GLEW_LIBRARIES})

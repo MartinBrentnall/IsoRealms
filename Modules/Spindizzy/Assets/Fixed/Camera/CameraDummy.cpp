@@ -81,7 +81,7 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  void CameraDummy::saveAsset(DOMNodeWriter* node) const {
+  void CameraDummy::saveAsset(JSONObject object) const {
     // Nothing to do.
   }
 }

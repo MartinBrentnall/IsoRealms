@@ -21,20 +21,20 @@
 namespace IsoRealms::Basics {
   const std::string ColourTrackEventFade::EVENT_TYPE         = "Fade";
 
-  const std::string ColourTrackEventFade::TAG_TARGET         = "Target";
+  const std::string ColourTrackEventFade::JSON_DURATION = "duration";
+  const std::string ColourTrackEventFade::JSON_TARGET   = "target";
+  const std::string ColourTrackEventFade::JSON_TYPE     = "type";
 
-  const std::string ColourTrackEventFade::ATTRIBUTE_DURATION = "duration";
-
-  ColourTrackEventFade::ColourTrackEventFade(IProject* project, unsigned int duration, DOMNode& node) :
+  ColourTrackEventFade::ColourTrackEventFade(IProject* project, unsigned int duration, JSONObject object) :
             cDefDuration(duration),
             cDefTarget(project, 1.0f, 0.0f, 0.0f) {
-    cDefTarget.init(node, TAG_TARGET);
+    cDefTarget.init(object, JSON_TARGET);
   }
-  
-  void ColourTrackEventFade::save(DOMNodeWriter* node) const {
-    DOMNodeWriter mFadeNode = node->addBranch(EVENT_TYPE);
-    mFadeNode.addAttribute(ATTRIBUTE_DURATION, cDefDuration);
-    cDefTarget.save(&mFadeNode, TAG_TARGET);
+
+  void ColourTrackEventFade::save(JSONObject object) const {
+    object.addString(JSON_TYPE, EVENT_TYPE);
+    object.addInteger(JSON_DURATION, cDefDuration);
+    cDefTarget.save(object, JSON_TARGET);
   }
 
   unsigned int ColourTrackEventFade::getDuration() const {

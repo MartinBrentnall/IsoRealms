@@ -45,10 +45,10 @@ namespace IsoRealms::Spindizzy {
      * Resource Interface *
     \**********************/
     LiftType(IProject* project, Spindizzy* spindizzy);
-    LiftType(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data);
+    LiftType(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);  
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -69,13 +69,14 @@ namespace IsoRealms::Spindizzy {
     \*******************************/
     IWorldEditorToolInstance* createToolInstance(WorldEditor* editor) override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
     private:  
 
-    // DOM strings.
-    static const std::string TAG_ACTIVE;
-    static const std::string TAG_MODEL;
-    static const std::string TAG_TICK_ACTION;
+    // JSON members.
+    static const std::string JSON_APPEARANCE;
+    static const std::string JSON_ON_TICK;
+    static const std::string JSON_STATE;
 
     // Internal classes.
     class Pen : public IWorldEditorToolInstance {

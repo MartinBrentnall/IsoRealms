@@ -23,7 +23,6 @@
 #include "IsoRealms/IAssetIdentifier.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/Lua/LuaState.h"
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
 #include "IsoRealms/Assets/Type/IBinding.h"
 
 namespace IsoRealms {
@@ -52,6 +51,10 @@ namespace IsoRealms {
     \***********************/    
     bool renderAssetIcon() const override {
       return false;
+    }
+
+    void saveAsset(JSONObject object) const override {
+      // Nothing to do.
     }
 
     void bind(const std::string& bindFunction) const override {

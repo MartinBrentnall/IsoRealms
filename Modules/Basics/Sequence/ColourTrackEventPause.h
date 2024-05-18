@@ -35,15 +35,16 @@ namespace IsoRealms::Basics {
     /********************************\
      * Implements IColourTrackEvent *
     \********************************/
-    void save(DOMNodeWriter* node) const override;
+    void save(JSONObject object) const override;
     unsigned int getDuration() const override;
     const IColour* getColour() const override;
     LiteralColour getColour(unsigned int duration, const IColour* previousColour) const override;
 
     private:
 
-    // DOM strings.
-    static const std::string ATTRIBUTE_DURATION;
+    // JSON members.
+    static const std::string JSON_DURATION;
+    static const std::string JSON_TYPE;
 
     // Definition data.
     unsigned int cDefDuration;

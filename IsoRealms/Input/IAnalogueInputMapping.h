@@ -20,8 +20,6 @@
 
 #include <string>
 
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
-
 namespace IsoRealms {
 
   /**
@@ -58,7 +56,7 @@ namespace IsoRealms {
      *
      * @param node The node to save this analogue input mapping to.
      */
-    virtual void save(DOMNodeWriter* node, const std::string& name) const = 0;
+    virtual void save(JSONObject object, const std::string& name) const = 0;
 
     /**
      * Return a short name of this analogue input mapping.  The short name is
@@ -67,6 +65,7 @@ namespace IsoRealms {
      * @return Short name of this analogue input mapping.
      */
     virtual std::string getShortName() const = 0;
+    virtual void loadCustomMapping(JSONObject object) = 0;
 
     /**
      * Return a long name of this analogue input mapping.  The long name is
@@ -76,7 +75,6 @@ namespace IsoRealms {
      */
     virtual std::string getLongName() const = 0;
 
-    virtual void loadCustomMapping(DOMNode& node) = 0;
     virtual void registerAssets(IAssetRegistry* assets) = 0;
     virtual void unregisterAssets(IAssetRemover* assets, IAssets* releaser) = 0;
 

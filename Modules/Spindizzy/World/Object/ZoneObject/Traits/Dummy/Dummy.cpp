@@ -27,11 +27,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void Dummy::load(DOMNode& node) {
-    // Nothing to do.
-  }
-
-  void Dummy::save(DOMNodeWriter* node) const {
+  void Dummy::save(JSONObject object) const {
     // Nothing to do.
   }
 

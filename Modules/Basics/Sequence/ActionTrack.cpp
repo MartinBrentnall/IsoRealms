@@ -19,18 +19,16 @@
 #include "ActionTrack.h"
 
 namespace IsoRealms::Basics {
-  const std::string ActionTrack::TAG_ACTION      = "Action";
-
-  const std::string ActionTrack::ATTRIBUTE_DELAY = "delay";
+  const std::string ActionTrack::JSON_DELAY   = "delay";
+  const std::string ActionTrack::JSON_EVENTS  = "events";
+  const std::string ActionTrack::JSON_EXECUTE = "execute";
+  const std::string ActionTrack::JSON_TYPE    = "type";
 
   const std::string ActionTrack::TYPE_NAME       = "Action";
 
-  ActionTrack::ActionTrack(DOMNode& node, IProject* project) {
-    for (DOMNode& mChild : node) {
-      std::string mChildName = mChild.getName();
-      if (mChildName == TAG_ACTION) {
-        cDefEvents.emplace_back(std::make_unique<ActionEvent>(mChild, project));
-      }
+  ActionTrack::ActionTrack(JSONObject object, IProject* project) {
+    for (JSONObject mEventObject : object.getArray(JSON_EVENTS)) {
+      cDefEvents.emplace_back(std::make_unique<ActionEvent>(mEventObject, project));
     }
     reset();
   }
@@ -43,11 +41,12 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
 
-  void ActionTrack::save(DOMNodeWriter* node) const {
-    DOMNodeWriter mTrackNode = node->addBranch(TYPE_NAME);
+  void ActionTrack::save(JSONObject object) const {
+    object.addString(JSON_TYPE, TYPE_NAME);
+    JSONArray mEventsArray = object.addArray(JSON_EVENTS);
     for (const std::unique_ptr<ActionEvent>& mEvent : cDefEvents) {
-      DOMNodeWriter mEventNode = mTrackNode.addBranch(TAG_ACTION);
-      mEvent->save(&mEventNode);
+      JSONObject mEventObject = mEventsArray.addObject();
+      mEvent->save(mEventObject);
     }
   }
 
@@ -121,15 +120,15 @@ namespace IsoRealms::Basics {
     glEnd();
   }
 
-  ActionTrack::ActionEvent::ActionEvent(DOMNode& node, IProject* project) :
+  ActionTrack::ActionEvent::ActionEvent(JSONObject object, IProject* project) :
             cDefAction(project),
-            cDefDuration(node.getIntegerAttribute(ATTRIBUTE_DELAY)) {
-    cDefAction.init(node, TAG_ACTION);
+            cDefDuration(object.getInteger(JSON_DELAY)) {
+    cDefAction.init(object, JSON_EXECUTE);
   }
-  
-  void ActionTrack::ActionEvent::save(DOMNodeWriter* node) const {
-    node->addAttribute(ATTRIBUTE_DELAY, cDefDuration);
-    cDefAction.save(node, TAG_ACTION);
+
+  void ActionTrack::ActionEvent::save(JSONObject object) const {
+    object.addInteger(JSON_DELAY, cDefDuration);
+    cDefAction.save(object, JSON_EXECUTE);
   }
 
   unsigned int ActionTrack::ActionEvent::getDuration() const {

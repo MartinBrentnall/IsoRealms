@@ -40,10 +40,10 @@ namespace IsoRealms::Spindizzy {
     });
   }
   
-  CameraOverview::CameraOverview(IProject* project, WorldView* view, DOMNode& node) :
+  CameraOverview::CameraOverview(IProject* project, WorldView* view, JSONObject object) :
             CameraOverview(project, view) {
   }
-  
+
   void CameraOverview::registerAssets(IAssetRegistry* assets) {
     // Nothing to do.
   }
@@ -100,7 +100,7 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
   
-  void CameraOverview::saveAsset(DOMNodeWriter* node) const {
+  void CameraOverview::saveAsset(JSONObject object) const {
     // Nothing to do.
   }
 }

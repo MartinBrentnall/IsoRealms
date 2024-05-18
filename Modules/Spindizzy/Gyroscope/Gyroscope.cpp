@@ -21,11 +21,11 @@
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string Gyroscope::TAG_COLOUR_1 = "Colour1";
-  const std::string Gyroscope::TAG_COLOUR_2 = "Colour2";
-  const std::string Gyroscope::TAG_COLOUR_3 = "Colour3";
-  const std::string Gyroscope::TAG_COLOUR_4 = "Colour4";
-  const std::string Gyroscope::TAG_OUTLINE  = "Outline";
+  const std::string Gyroscope::JSON_COLOUR_1 = "colour1";
+  const std::string Gyroscope::JSON_COLOUR_2 = "colour2";
+  const std::string Gyroscope::JSON_COLOUR_3 = "colour3";
+  const std::string Gyroscope::JSON_COLOUR_4 = "colour4";
+  const std::string Gyroscope::JSON_OUTLINE  = "outline";
 
   const float Gyroscope::CIRCLE_RESOLUTION = 5.0f * (M_PI / 180.0);
   const float Gyroscope::SPINDLE_WIDTH     = 0.03f;
@@ -34,29 +34,27 @@ namespace IsoRealms::Spindizzy {
 
   Gyroscope::Gyroscope(IProject* project, Spindizzy* spindizzy) :
             cProject(project),
-            cDefQuadrant{Colour(project, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {updateTexture();}),
-                         Colour(project, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {updateTexture();}),
-                         Colour(project, 0.0f, 1.0f, 0.0f, 0.0f, [this]() {updateTexture();}),
-                         Colour(project, 0.0f, 0.0f, 1.0f, 0.0f, [this]() {updateTexture();})},
+            cDefQuadrant{Colour(project, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
+                         Colour(project, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
+                         Colour(project, 0.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
+                         Colour(project, 0.0f, 0.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();})},
             cDefOutline(project, 1.0f, 0.0f, 1.0f),
             cDefTexture(project),
+            cNeedsRedrawing(false),
             cEditingIconRotation(0.0f) {
     project->updateEditing([this](unsigned int milliseconds) {
       cEditingIconRotation -= 0.5f * milliseconds;
     });
-
-    project->mainThreadInit([this]() {
-      updateTexture();
-    });
+    setNeedsRedrawing();
   }
 
-  Gyroscope::Gyroscope(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
+  Gyroscope::Gyroscope(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
             Gyroscope(project, spindizzy) {
-    cDefQuadrant[0].init(node, TAG_COLOUR_1);
-    cDefQuadrant[1].init(node, TAG_COLOUR_2);
-    cDefQuadrant[2].init(node, TAG_COLOUR_3);
-    cDefQuadrant[3].init(node, TAG_COLOUR_4);
-    cDefOutline.init(node, TAG_OUTLINE);
+    cDefQuadrant[0].init(object, JSON_COLOUR_1);
+    cDefQuadrant[1].init(object, JSON_COLOUR_2);
+    cDefQuadrant[2].init(object, JSON_COLOUR_3);
+    cDefQuadrant[3].init(object, JSON_COLOUR_4);
+    cDefOutline.init(object, JSON_OUTLINE);
   }
 
   void Gyroscope::registerAssets(IAssetRegistry* assets) {
@@ -67,12 +65,12 @@ namespace IsoRealms::Spindizzy {
     assets->remove(this);
   }
 
-  void Gyroscope::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    cDefQuadrant[0].save(node, TAG_COLOUR_1);
-    cDefQuadrant[1].save(node, TAG_COLOUR_2);
-    cDefQuadrant[2].save(node, TAG_COLOUR_3);
-    cDefQuadrant[3].save(node, TAG_COLOUR_4);
-    cDefOutline.save(node, TAG_OUTLINE);
+  void Gyroscope::save(JSONObject object, IAssetIdentifier* identifier) const {
+    cDefQuadrant[0].save(object, JSON_COLOUR_1);
+    cDefQuadrant[1].save(object, JSON_COLOUR_2);
+    cDefQuadrant[2].save(object, JSON_COLOUR_3);
+    cDefQuadrant[3].save(object, JSON_COLOUR_4);
+    cDefOutline.save(object, JSON_OUTLINE);
   }
 
   void Gyroscope::hintInUse(bool inUse) {
@@ -103,6 +101,10 @@ namespace IsoRealms::Spindizzy {
 
   bool Gyroscope::renderAssetIcon() const {
     return renderIcon();
+  }
+
+  void Gyroscope::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   void Gyroscope::update(unsigned int milliseconds) {
@@ -192,5 +194,14 @@ namespace IsoRealms::Spindizzy {
       glVertex2f(std::sin(angle) * outerRadius, std::cos(angle) * outerRadius);
     }
     glEnd();
+  }
+
+  void Gyroscope::setNeedsRedrawing() {
+    if (!cNeedsRedrawing) {
+      cProject->updateLater([this]() {
+        updateTexture();
+        cNeedsRedrawing = false;
+      });
+    }
   }
 }

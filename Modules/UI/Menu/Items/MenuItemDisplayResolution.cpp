@@ -21,17 +21,18 @@
 #include "Modules/UI/Menu/Menu.h"
 
 namespace IsoRealms::UI {
-  const std::string MenuItemDisplayResolution::TAG_TYPE = "DisplayResolution";
+  const std::string MenuItemDisplayResolution::MENU_ITEM_TYPE = "DisplayResolution";
 
-  const std::string MenuItemDisplayResolution::ATTRIBUTE_ID    = "id";
-  const std::string MenuItemDisplayResolution::ATTRIBUTE_LABEL = "label";
+  const std::string MenuItemDisplayResolution::JSON_ID    = "id";
+  const std::string MenuItemDisplayResolution::JSON_LABEL = "label";
+  const std::string MenuItemDisplayResolution::JSON_TYPE  = "type";
 
   const std::string MenuItemDisplayResolution::BINDING_TYPE = "DisplayResolution";
 
-  MenuItemDisplayResolution::MenuItemDisplayResolution(DOMNode& node, IProject* project) :
+  MenuItemDisplayResolution::MenuItemDisplayResolution(JSONObject object, IProject* project) :
             cHatHandler(project->getApplication()->getHatHandler()),
-            cDefID(node.getAttribute(ATTRIBUTE_ID)),
-            cDefLabel(node.getAttribute(ATTRIBUTE_LABEL)),
+            cDefID(object.getString(JSON_ID)),
+            cDefLabel(object.getString(JSON_LABEL)),
             cLuaBinding(project, this) {
     project->reset([this, project]() {
       IApplication* mApplication = project->getApplication();
@@ -57,11 +58,11 @@ namespace IsoRealms::UI {
     assets->remove(&cLuaBinding);
   }
   
-  void MenuItemDisplayResolution::save(DOMNodeWriter* node) const {
-    DOMNodeWriter mNode = node->addBranch(TAG_TYPE);
-    mNode.addAttribute(ATTRIBUTE_ID,    cDefID);
-    mNode.addAttribute(ATTRIBUTE_LABEL, cDefLabel);
-  }  
+  void MenuItemDisplayResolution::save(JSONObject object) const {
+    object.addString(JSON_TYPE,  MENU_ITEM_TYPE);
+    object.addString(JSON_ID,    cDefID);
+    object.addString(JSON_LABEL, cDefLabel);
+  }
 
   bool MenuItemDisplayResolution::input(sf::Event& event) {
     switch (event.type) {

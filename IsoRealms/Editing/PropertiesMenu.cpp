@@ -71,10 +71,10 @@ namespace IsoRealms {
     glTranslatef(cParent->getScreenLeftBorder(aspectRatio), cParent->getTopIconPosition(), 0.0f);
     cIntAppearance->print(mPropertyName.c_str(), item, 0.0f);
     glPopMatrix();
-    if (cEditing != cProperties[item]) {
-      glTranslatef(x, cParent->getTopIconPosition(), 0.0f);
-      cProperties[item]->render(cIntAppearance);
-    }
+//     if (cEditing != cProperties[item]) {
+//       glTranslatef(x, cParent->getTopIconPosition(), 0.0f);
+//       cProperties[item]->render(cIntAppearance);
+//     }
   }
 
   void PropertiesMenu::updateItems(unsigned int milliseconds) {

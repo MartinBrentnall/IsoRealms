@@ -19,22 +19,25 @@
 #include "AbsoluteOffset.h"
 
 namespace IsoRealms::UI {
-  const std::string AbsoluteOffset::ATTRIBUTE_VALUE = "value";
+  const std::string AbsoluteOffset::JSON_TYPE  = "type";
+  const std::string AbsoluteOffset::JSON_VALUE = "value";
+
+  const std::string AbsoluteOffset::TYPE_ABSOLUTE = "Absolute";
   
   AbsoluteOffset::AbsoluteOffset(float value) :
             cDefValue(value) {
   }
   
-  AbsoluteOffset::AbsoluteOffset(DOMNode& node) :
-            AbsoluteOffset(node.getFloatAttribute(ATTRIBUTE_VALUE)) {
+  AbsoluteOffset::AbsoluteOffset(JSONObject object) :
+            AbsoluteOffset(object.getFloat(JSON_VALUE)) {
   }
-    
+
   float AbsoluteOffset::getOffset(float aspectRatio) const {
     return cDefValue;
   }
 
-  void AbsoluteOffset::save(DOMNodeWriter* node, Layout* layout) const {
-    node->addAttribute("type", std::string("Absolute"));
-    node->addAttribute(ATTRIBUTE_VALUE, cDefValue);
+  void AbsoluteOffset::save(JSONObject object, Layout* layout) const {
+    object.addString(JSON_TYPE, TYPE_ABSOLUTE);
+    object.addFloat(JSON_VALUE, cDefValue);
   }
 }

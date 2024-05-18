@@ -21,7 +21,6 @@
 #include <string>
 
 #include "IsoRealms/Assets/Registry/IAssetProvider.h"
-#include "IsoRealms/Persistence/DOMNode.h"
 
 namespace IsoRealms {
   template<class TYPE> class AssetCache {
@@ -36,6 +35,16 @@ namespace IsoRealms {
       std::unique_ptr<TYPE> mAsset = this->getUncachedAsset(value);
       return cCache.emplace(mExpression, std::make_pair(std::move(mAsset), 1)).first->second.first.get();
     }
+
+    TYPE* getCachedAsset(JSONObject object) const {
+//       typename std::map<const JSONObject, std::pair<std::unique_ptr<TYPE>, unsigned int>>::iterator mIterator = cJSONCache.find(object);
+//       if (mIterator != cJSONCache.end()) {
+//         mIterator->second.second++;
+//         return mIterator->second.first.get();
+//       }
+      std::unique_ptr<TYPE> mAsset = this->getUncachedAsset(object);
+      return cJSONCache.emplace(object, std::make_pair(std::move(mAsset), 1)).first->second.first.get();
+    }
     
     void releaseCachedAsset(const TYPE* asset) {
       for (std::pair<const std::string, std::pair<std::unique_ptr<TYPE>, unsigned int>>& mPair : cCache) {
@@ -43,6 +52,16 @@ namespace IsoRealms {
           mPair.second.second--;
           if (mPair.second.second == 0) {
             cCache.erase(mPair.first);
+          }
+          break;
+        }
+      }
+
+      for (std::pair<const JSONObject, std::pair<std::unique_ptr<TYPE>, unsigned int>>& mPair : cJSONCache) {
+        if (mPair.second.first.get() == asset) {
+          mPair.second.second--;
+          if (mPair.second.second == 0) {
+            cJSONCache.erase(mPair.first);
           }
           break;
         }
@@ -57,11 +76,12 @@ namespace IsoRealms {
     }
 
     private:
-    inline static const std::string ATTRIBUTE_VALUE = "value";
-
     mutable std::map<std::string, std::pair<std::unique_ptr<TYPE>, unsigned int>> cCache;
-    
-    virtual std::string normalize(const std::string& expression) const = 0;
+    mutable std::map<JSONObject, std::pair<std::unique_ptr<TYPE>, unsigned int>> cJSONCache;
+
     virtual std::unique_ptr<TYPE> getUncachedAsset(const std::string& value) const = 0;
+    virtual std::unique_ptr<TYPE> getUncachedAsset(JSONObject object) const = 0;
+
+    virtual std::string normalize(const std::string& expression) const = 0;
   };
 }

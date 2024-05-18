@@ -19,6 +19,9 @@
 #include "ConditionElement.h"
 
 namespace IsoRealms {
+  const std::string ConditionElement::JSON_INPUT   = "input";
+  const std::string ConditionElement::JSON_NEGATED = "negated";
+
   ConditionElement::ConditionElement(const std::string& name, IScreen* icon, IBoolean* input) :
             cInputName(name),
             cInput(input),
@@ -89,12 +92,9 @@ namespace IsoRealms {
     return cParent;
   }
 
-  void ConditionElement::Clause::save(DOMNodeWriter* node) const {
-    DOMNodeWriter mElementBranch = node->addBranch("Element");
-    mElementBranch.addAttribute("name", cParent->cInputName);
-    if (cNegated) {
-      mElementBranch.addAttribute("negated", "true");
-    }
+  void ConditionElement::Clause::save(JSONObject object) const {
+    object.addString(JSON_INPUT, cParent->cInputName);
+    object.addBoolean(JSON_NEGATED, cNegated);
   }
 
   void ConditionElement::Clause::saveCache(std::ostream& cache, unsigned char elementType) const {

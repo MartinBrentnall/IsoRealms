@@ -19,10 +19,9 @@
 #include "Texture.h"
 
 namespace IsoRealms {
-  const std::string Texture::ATTRIBUTE_ANGLE   = "angle";
-  const std::string Texture::ATTRIBUTE_SCALE_X = "scaleX";
-  const std::string Texture::ATTRIBUTE_SCALE_Y = "scaleY";
-  const std::string Texture::ATTRIBUTE_TEXTURE = "texture";
+  const std::string Texture::JSON_ANGLE   = "angle";
+  const std::string Texture::JSON_SCALE_X = "scaleX";
+  const std::string Texture::JSON_SCALE_Y = "scaleY";
 
   Texture::Texture(IProject* project) :
             cProject(project),
@@ -32,27 +31,27 @@ namespace IsoRealms {
             cDefAngle(0.0f) {
   }
 
-  void Texture::init(DOMNode& node, const std::string& tag) {
-    cProject->init([this, &node, tag](IAssets* assets) {
-      set(node, tag);
+  void Texture::init(JSONObject object, const std::string& member) {
+    cProject->init([this, object, member](IAssets* assets) {
+      set(object, member);
     });
   }
 
-  void Texture::set(DOMNode& node, const std::string& tag) {
+  void Texture::set(JSONObject object, const std::string& member) {
+    JSONObject mAssetObject = object.getObject(member);
     cProject->release(this, cTexture);
-    DOMNode& mAssetNode = node.getNode(tag);
-    cDefScaleX = mAssetNode.getFloatAttribute(ATTRIBUTE_SCALE_X, 1.0f);
-    cDefScaleY = mAssetNode.getFloatAttribute(ATTRIBUTE_SCALE_Y, 1.0f);
-    cDefAngle  = mAssetNode.getFloatAttribute(ATTRIBUTE_ANGLE);
-    cTexture = cProject->getTexture(this, mAssetNode);
+    cDefScaleX = mAssetObject.getFloat(JSON_SCALE_X, 1.0f);
+    cDefScaleY = mAssetObject.getFloat(JSON_SCALE_Y, 1.0f);
+    cDefAngle = mAssetObject.getFloat(JSON_ANGLE);
+    cTexture = cProject->getTexture(this, mAssetObject);
   }
 
-  void Texture::save(DOMNodeWriter* node, const std::string& tag) const {
-    DOMNodeWriter mTextureNode = node->addBranch(tag);
-    cProject->save(&mTextureNode, cTexture);
-    mTextureNode.addAttribute(ATTRIBUTE_ANGLE,   cDefAngle);
-    mTextureNode.addAttribute(ATTRIBUTE_SCALE_X, cDefScaleX);
-    mTextureNode.addAttribute(ATTRIBUTE_SCALE_Y, cDefScaleY);
+  void Texture::save(JSONObject object, const std::string& name) const {
+    JSONObject mAssetObject = object.addObject(name);
+    mAssetObject.addFloat(JSON_ANGLE,   cDefAngle);
+    mAssetObject.addFloat(JSON_SCALE_X, cDefScaleX, 1.0f);
+    mAssetObject.addFloat(JSON_SCALE_Y, cDefScaleY, 1.0f);
+    cProject->save(mAssetObject, cTexture);
   }
 
   void Texture::coord(float x, float y) const {

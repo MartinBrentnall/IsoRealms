@@ -45,6 +45,7 @@ namespace IsoRealms::Spindizzy {
     float getGreen() const override;
     float getBlue() const override;
     float getAlpha() const override;
+    void saveAsset(JSONObject object) const override;
 
     private:
     IColour* cColour;

@@ -29,5 +29,6 @@ namespace IsoRealms {
     \**********************/
     void renderScreen(float scale, float aspectRatio) const override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
   };
 }

@@ -21,10 +21,10 @@
 #include "Modules/Spindizzy/World/Object/ZoneObject/ZoneObject.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string CellLocation::ATTRIBUTE_X = "x";
-  const std::string CellLocation::ATTRIBUTE_Y = "y";
-  const std::string CellLocation::ATTRIBUTE_Z = "z";
-  
+  const std::string CellLocation::JSON_X = "x";
+  const std::string CellLocation::JSON_Y = "y";
+  const std::string CellLocation::JSON_Z = "z";
+
   CellLocation::CellLocation(ZoneObject& object, int x, int y, int z) :
             cDefObject(object),
             cDefX(x),
@@ -40,20 +40,13 @@ namespace IsoRealms::Spindizzy {
     object.unregisterLocation(this);
   }
 
-  void CellLocation::load(DOMNode& node) {
+  void CellLocation::save(JSONObject object) const {
     Zone* mZone = cDefObject.getZone();
-    cDefX = node.getIntegerAttribute(ATTRIBUTE_X) + mZone->getStartX();
-    cDefY = node.getIntegerAttribute(ATTRIBUTE_Y) + mZone->getStartY();
-    cDefZ = node.getIntegerAttribute(ATTRIBUTE_Z) + mZone->getStartZ();
+    object.addInteger(JSON_X, cDefX - mZone->getStartX());
+    object.addInteger(JSON_Y, cDefY - mZone->getStartY());
+    object.addInteger(JSON_Z, cDefZ - mZone->getStartZ());
   }
-  
-  void CellLocation::save(DOMNodeWriter* node) const {
-    Zone* mZone = cDefObject.getZone();
-    node->addAttribute(ATTRIBUTE_X, cDefX - mZone->getStartX());
-    node->addAttribute(ATTRIBUTE_Y, cDefY - mZone->getStartY());
-    node->addAttribute(ATTRIBUTE_Z, cDefZ - mZone->getStartZ());
-  }
-  
+
   bool CellLocation::hasConfiguration() const {
     return true;
   }    

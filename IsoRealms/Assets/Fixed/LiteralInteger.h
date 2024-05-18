@@ -27,6 +27,8 @@ namespace IsoRealms {
    */
   class LiteralInteger : public IInteger {
     private:
+    static const std::string JSON_VALUE;
+
     int const cValue; /// Integer value.
     
     public:
@@ -47,6 +49,6 @@ namespace IsoRealms {
      * Implements IAsset from IInteger *
     \***********************************/
     bool renderAssetIcon() const override;
-    void saveAsset(DOMNodeWriter* node) const override;
+    void saveAsset(JSONObject object) const override;
   };
 }

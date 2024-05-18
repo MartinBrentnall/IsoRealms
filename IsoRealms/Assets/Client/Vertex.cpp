@@ -24,21 +24,21 @@ namespace IsoRealms {
             cVertex(cProject->createLiteralVertex(this, 0.0f, 0.0f, 0.0f)) {
   }
 
-  void Vertex::init(DOMNode& node, const std::string& tag) {
-    cProject->init([this, &node, tag](IAssets* assets) {
-      set(node, tag);
+  void Vertex::init(JSONObject object, const std::string& member) {
+    cProject->init([this, object, member](IAssets* assets) {
+      set(object, member);
     });
   }
 
-  void Vertex::set(DOMNode& node, const std::string& tag) {
-    DOMNode& mAssetNode = node.getNode(tag);
+  void Vertex::set(JSONObject object, const std::string& member) {
+    JSONObject mAssetObject = object.getObject(member);
     cProject->release(this, cVertex);
-    cVertex = cProject->getVertex(this, mAssetNode);
+    cVertex = cProject->getVertex(this, mAssetObject);
   }
 
-  void Vertex::save(DOMNodeWriter* node, const std::string& tag) const {
-    DOMNodeWriter mAssetNode = node->addBranch(tag);
-    cProject->save(&mAssetNode, cVertex);
+  void Vertex::save(JSONObject object, const std::string& name) const {
+    JSONObject mAssetObject = object.addObject(name);
+    cProject->save(mAssetObject, cVertex);
   }
 
   void Vertex::relinquish(IVertex* asset) {

@@ -21,12 +21,11 @@
 #include "IsoRealms/IApplication.h"
 
 namespace IsoRealms::Basics {
-  const std::string Project::TAG_END     = "End";
-  const std::string Project::TAG_OPTIONS = "Options";
-  const std::string Project::TAG_READY   = "Ready";
-
-  const std::string Project::ATTRIBUTE_EDITING = "editing";
-  const std::string Project::ATTRIBUTE_RUNNING = "running";
+  const std::string Project::JSON_EDITING   = "editing";
+  const std::string Project::JSON_ON_FINISH = "onFinish";
+  const std::string Project::JSON_ON_READY  = "onReady";
+  const std::string Project::JSON_OPTIONS   = "options";
+  const std::string Project::JSON_RUNNING   = "running";
 
   Project::Project(IProject* project, Basics* basics) :
             cProject(project),
@@ -101,13 +100,13 @@ namespace IsoRealms::Basics {
     });
   }
   
-  Project::Project(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
+  Project::Project(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
             Project(project, basics) {
-    cDefRunning = node.getBooleanAttribute(ATTRIBUTE_RUNNING);
-    cDefEditing = node.getBooleanAttribute(ATTRIBUTE_EDITING);
-    cDefEndAction.init(node, TAG_END);
-    cDefReadyAction.init(node, TAG_READY);
-    cDefProjectOptions.init(node, TAG_OPTIONS);
+    cDefRunning = object.getBoolean(JSON_RUNNING);
+    cDefEditing = object.getBoolean(JSON_EDITING);
+    cDefEndAction.init(object, JSON_ON_FINISH);
+    cDefReadyAction.init(object, JSON_ON_READY);
+    cDefProjectOptions.init(object, JSON_OPTIONS);
     cDefProjectOptionsArg = options->getFixedOptions();
   }
 
@@ -123,12 +122,13 @@ namespace IsoRealms::Basics {
     assets->remove(&cLuaBinding);
   }
   
-  void Project::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    node->addAttribute(ATTRIBUTE_RUNNING, cDefRunning);
-    node->addAttribute(ATTRIBUTE_EDITING, cDefEditing);
-    cDefEndAction.save(node, TAG_END);
-    cDefReadyAction.save(node, TAG_READY);
-    cDefProjectOptions.save(node, TAG_OPTIONS);
+  void Project::save(JSONObject object, IAssetIdentifier* identifier) const {
+    object.addBoolean(JSON_RUNNING, cDefRunning);
+    object.addBoolean(JSON_EDITING, cDefEditing);
+    cDefEndAction.save(object, JSON_ON_FINISH);
+    cDefReadyAction.save(object, JSON_ON_READY);
+    cDefProjectOptions.save(object, JSON_OPTIONS);
+
   }
 
   void Project::hintInUse(bool inUse) {
@@ -224,7 +224,11 @@ namespace IsoRealms::Basics {
   bool Project::renderAssetIcon() const {
     return false;
   }
-  
+
+  void Project::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
+
   void Project::prepareInternal(const Options* options, bool force) {
 
     // If it's the same as the current project, nothing to do.

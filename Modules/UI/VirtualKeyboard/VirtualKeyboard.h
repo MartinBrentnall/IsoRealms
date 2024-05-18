@@ -41,10 +41,10 @@ namespace IsoRealms::UI {
      * Resource interface *
     \**********************/
     VirtualKeyboard(IProject* project, UI* ui);
-    VirtualKeyboard(IProject* project, UI* ui, DOMNode& node, IOptions* options, IResourceData* data);
+    VirtualKeyboard(IProject* project, UI* ui, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);  
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -71,6 +71,7 @@ namespace IsoRealms::UI {
      * Implements IAsset *
     \*********************/
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
     private:
     
@@ -79,13 +80,11 @@ namespace IsoRealms::UI {
     static const unsigned int COLUMNS;
     static const unsigned int CARET_BLINK_DELAY;
     
-    // DOM strings.
-    static const std::string TAG_CONFIRM_ACTION;
-    static const std::string TAG_FONT;
-    static const std::string TAG_SELECTION_COLOUR;
+    // JSON members.
+    static const std::string JSON_FONT;
+    static const std::string JSON_ON_CONFIRM;
+    static const std::string JSON_SELECTION_COLOUR;
 
-    static const std::string ATTRIBUTE_NAME;
-    
     // Definition data.
     HatHandler& cHatHandler;
     Action cDefConfirmAction;   /// Action to be performed upon confirmation of the input.

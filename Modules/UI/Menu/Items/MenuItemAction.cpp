@@ -21,20 +21,21 @@
 #include "Modules/UI/Menu/Menu.h"
 
 namespace IsoRealms::UI {
-  const std::string MenuItemAction::TAG_ACTION = "Action";
-  const std::string MenuItemAction::TAG_TYPE   = "Action";
+  const std::string MenuItemAction::MENU_ITEM_TYPE   = "Action";
 
-  const std::string MenuItemAction::ATTRIBUTE_ID    = "id";
-  const std::string MenuItemAction::ATTRIBUTE_LABEL = "label";
+  const std::string MenuItemAction::JSON_ID           = "id";
+  const std::string MenuItemAction::JSON_LABEL        = "label";
+  const std::string MenuItemAction::JSON_ON_SELECTION = "onSelection";
+  const std::string MenuItemAction::JSON_TYPE         = "type";
   
   const std::string MenuItemAction::BINDING_TYPE = "Action";
     
-  MenuItemAction::MenuItemAction(DOMNode& node, IProject* project) :
-            cDefID(node.getAttribute(ATTRIBUTE_ID)),
-            cDefLabel(node.getAttribute(ATTRIBUTE_LABEL)),
+  MenuItemAction::MenuItemAction(JSONObject object, IProject* project) :
+            cDefID(object.getString(JSON_ID)),
+            cDefLabel(object.getString(JSON_LABEL)),
             cDefAction(project),
             cLuaBinding(project, this) {
-    cDefAction.init(node, TAG_ACTION);
+    cDefAction.init(object, JSON_ON_SELECTION);
     project->reset([this]() {
 // TODO      cRuntimeValue = "";
     });
@@ -56,12 +57,12 @@ namespace IsoRealms::UI {
     }
   }
   
-  void MenuItemAction::save(DOMNodeWriter* node) const {
-    DOMNodeWriter mNode = node->addBranch(TAG_TYPE);
-    cDefAction.save(&mNode, TAG_ACTION);
-    mNode.addAttribute(ATTRIBUTE_LABEL, cDefLabel);
-    mNode.addAttribute(ATTRIBUTE_ID,   cDefID);
-  }  
+  void MenuItemAction::save(JSONObject object) const {
+    object.addString(JSON_TYPE, MENU_ITEM_TYPE);
+    object.addString(JSON_ID, cDefID);
+    object.addString(JSON_LABEL, cDefLabel);
+    cDefAction.save(object, JSON_ON_SELECTION);
+  }
 
   bool MenuItemAction::input(sf::Event& event) {
     switch (event.type) {

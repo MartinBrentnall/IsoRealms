@@ -36,10 +36,10 @@ namespace IsoRealms::Spindizzy {
                     public I3DModel {
     public:
     Top(IProject* project, Spindizzy* spindizzy);
-    Top(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data);
+    Top(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -50,6 +50,7 @@ namespace IsoRealms::Spindizzy {
     I3DModel* createModel() override;
     bool renderPreview() const override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
     /***********************\
      * Implements I3DModel *
@@ -59,10 +60,10 @@ namespace IsoRealms::Spindizzy {
     
     private:
 
-    // DOM strings.
-    static const std::string TAG_OUTLINE;
-    static const std::string TAG_SIDE;
-    static const std::string TAG_TOP;
+    // JSON members.
+    static const std::string JSON_OUTLINE;
+    static const std::string JSON_SIDES;
+    static const std::string JSON_TOP;
 
     // Resource definition constants.
     static const float OUTLINE;
@@ -81,6 +82,7 @@ namespace IsoRealms::Spindizzy {
     // Runtime data.
     LiteralTexture cRuntimeTextureTop;  /// Texture used on the top.
     LiteralTexture cRuntimeTextureSide; /// Texture used on the sides.
+    bool cNeedsRedrawing;
 
     // Editing data.
     float cEditingIconAngle; /// Angle used to animate the icon in the editor.
@@ -89,5 +91,6 @@ namespace IsoRealms::Spindizzy {
     void updateTextures();
     void generateTextureTop();
     void generateTextureSide();
+    void setNeedsRedrawing();
   };
 }

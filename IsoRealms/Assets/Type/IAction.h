@@ -18,7 +18,6 @@
  */
 #pragma once
 
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
 #include "IsoRealms/IAssetIdentifier.h"
 
 namespace IsoRealms {
@@ -28,7 +27,7 @@ namespace IsoRealms {
     public:
     virtual void execute() = 0;
     virtual const IActionType* getActionType() const = 0; // TODO: I don't thin this needs to be here.  Can be tracked by the Project::ActionExecutor instead.
-    virtual void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const = 0;
+    virtual void save(JSONObject object, IAssetIdentifier* identifier) const = 0;
     virtual bool hasConfiguration() const = 0;
     
     virtual ~IAction() {}

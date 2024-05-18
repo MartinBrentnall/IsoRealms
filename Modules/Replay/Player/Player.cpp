@@ -21,9 +21,15 @@
 #include "Modules/Replay/Recorder/Recorder.h"
 
 namespace IsoRealms::Replay {
-  const std::string Player::TAG_QUIT_ACTION = "QuitAction";
+  const std::string Player::JSON_INPUT               = "input";
+  const std::string Player::JSON_INPUT_CONFIGURATION = "inputConfiguration";
+  const std::string Player::JSON_INPUTS              = "inputs";
+  const std::string Player::JSON_KEY                 = "key";
+  const std::string Player::JSON_ON_FINISH           = "onFinish";
+  const std::string Player::JSON_TYPE                = "type";
 
-  const std::string Player::ATTRIBUTE_KEY = "key";
+  const std::string Player::TYPE_ANALOGUE = "Analogue";
+  const std::string Player::TYPE_DIGITAL  = "Digital";
 
   Player::Player(IProject* project, Replay* replay) :
             cParentProject(project),
@@ -33,15 +39,15 @@ namespace IsoRealms::Replay {
     cFinished    = false;
   }
   
-  Player::Player(IProject* project, Replay* replay, DOMNode& node, IOptions* options, IResourceData* data) :
+  Player::Player(IProject* project, Replay* replay, JSONObject object, IOptions* options, IResourceData* data) :
             Player(project, replay) {
-    
+
     // Read the recording file
     bool mUserRecording = options->getOption("User") == "true";
     cFilename  = options->getOption("Recording");
     cFilename  = System::getPath(cFilename, mUserRecording);
     cRecording = std::ifstream(cFilename, std::ios::binary);
-    
+
     // Obtain project file.
     std::string mProjectFile;
     size_t mLength;
@@ -56,16 +62,15 @@ namespace IsoRealms::Replay {
     cRecording.read(&mConfigurationFile[0], mLength);
 
     // Read the inputs to listen to and add digital listeners to those inputs.
-    DOMNode mInputConfigurationNode(mConfigurationFile, DOMNode::Type::PROGRAM);
-    DOMNode mRecorderConfigurationNode = mInputConfigurationNode.getNode("RecorderConfiguration");
-    for (DOMNode& mNode : mRecorderConfigurationNode) {
-      std::string mInputType = mNode.getName();
-      DOMNode mInputNode = mNode.getNode("Input");
-      std::string mInputID = mInputNode.getAttribute("key");
-      if (mInputType == "Digital") {
-        cOverriddenDigitalInputs[mInputID] = cDigitalInputs.emplace_back(std::make_unique<DigitalInput>()).get();
-      } else if (mInputType == "Analogue") {
-        cOverriddenAnalogueInputs[mInputID] = cAnalogueInputs.emplace_back(std::make_unique<AnalogueInput>()).get();
+    JSONDocument mInputConfigurationDocument(mConfigurationFile, false);
+    JSONObject mInputConfigurationObject = mInputConfigurationDocument.getObject(JSON_INPUT_CONFIGURATION);
+    for (JSONObject mInputObject : mInputConfigurationObject.getArray(JSON_INPUTS)) {
+      std::string mInputType = mInputObject.getString(JSON_TYPE);
+      std::string mInputKey = mInputObject.getObject(JSON_INPUT).getString(JSON_KEY);
+      if (mInputType == TYPE_DIGITAL) {
+        cOverriddenDigitalInputs[mInputKey] = cDigitalInputs.emplace_back(std::make_unique<DigitalInput>()).get();
+      } else if (mInputType == TYPE_ANALOGUE) {
+        cOverriddenAnalogueInputs[mInputKey] = cAnalogueInputs.emplace_back(std::make_unique<AnalogueInput>()).get();
       } else {
         // TODO: Throw.
       }
@@ -77,11 +82,10 @@ namespace IsoRealms::Replay {
     mWrappedOptions.addOption("file", mProjectFile);
     mWrappedOptions.addOption("type", "program");
     cProject = std::make_unique<Project>(cParentProject->getApplication(), &mWrappedOptions, [this](bool quitRequestGranted) {
-      std::cout << "Recording close got called!" << std::endl;
       cRecording.close();
       cQuitAction.execute();
     }, this); // TODO: 'user' flag shouldn't always be false
-    
+
     project->updateRuntime([this](unsigned int milliseconds) {
       while (!cFinished && cNextEvent.cTime == cElapsedTime) {
         if (cNextEvent.cID < cDigitalInputs.size()) {
@@ -95,7 +99,7 @@ namespace IsoRealms::Replay {
       cProject->updateRuntime(milliseconds);
       cProject->updateRuntimeComplete();
     });
-    
+
     project->reset([this]() {
       cProject->reset();
       cElapsedTime = 0;
@@ -126,16 +130,20 @@ namespace IsoRealms::Replay {
       // Read first event.
       readNextEvent();
     });
-    
+
     project->mainThreadInit([this]() {
       cProject->initMainThread();
     });
-    
-    cQuitAction.init(node, TAG_QUIT_ACTION);
+
+    cQuitAction.init(object, JSON_ON_FINISH);
   }
 
   bool Player::renderAssetIcon() const {
     return false;
+  }
+
+  void Player::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   bool Player::renderIcon() const {
@@ -203,24 +211,24 @@ namespace IsoRealms::Replay {
     return false;
   }
 
-  I3DModelType* Player::getModelType(DOMNode& node, IStateListener<I3DModelType*>* listener) const {
-    return nullptr;
-  }
-    
-  IActionType* Player::getActionType(DOMNode& node, IStateListener<IActionType*>* listener) const {
+  I3DModelType* Player::getModelType(JSONObject object, IStateListener<I3DModelType*>* listener) const {
     return nullptr;
   }
 
-  IAssets* Player::getAssets(DOMNode& node, IStateListener<IAssets*>* listener) const {
+  IActionType* Player::getActionType(JSONObject object, IStateListener<IActionType*>* listener) const {
     return nullptr;
   }
 
-  IBinding* Player::getBinding(DOMNode& node, IStateListener<IBinding*>* listener) const {
+  IAssets* Player::getAssets(JSONObject object, IStateListener<IAssets*>* listener) const {
     return nullptr;
   }
-    
-  IBoolean* Player::getBoolean(DOMNode& node, IStateListener<IBoolean*>* listener) const {
-    std::string mValue = node.getAttribute(ATTRIBUTE_KEY);
+
+  IBinding* Player::getBinding(JSONObject object, IStateListener<IBinding*>* listener) const {
+    return nullptr;
+  }
+
+  IBoolean* Player::getBoolean(JSONObject object, IStateListener<IBoolean*>* listener) const {
+    std::string mValue = object.getString(JSON_KEY);
     std::map<std::string, DigitalInput*>::const_iterator mInput = cOverriddenDigitalInputs.find(mValue);
     if (mInput != cOverriddenDigitalInputs.end()) {
       if (listener != nullptr) {
@@ -229,54 +237,54 @@ namespace IsoRealms::Replay {
       return mInput->second;
     }
     return nullptr;
-  }  
-  
-  IColour* Player::getColour(DOMNode& node, IStateListener<IColour*>* listener) const {
+  }
+
+  IColour* Player::getColour(JSONObject object, IStateListener<IColour*>* listener) const {
     return nullptr;
   }
-  
-  IEditable* Player::getEditable(DOMNode& node, IStateListener<IEditable*>* listener) const {
+
+  IEditable* Player::getEditable(JSONObject object, IStateListener<IEditable*>* listener) const {
     return nullptr;
   }
-  
-  IFloat* Player::getFloat(DOMNode& node, IStateListener<IFloat*>* listener) const {
-    std::string mValue = node.getAttribute(ATTRIBUTE_KEY);
+
+  IFloat* Player::getFloat(JSONObject object, IStateListener<IFloat*>* listener) const {
+    std::string mValue = object.getString(JSON_KEY);
     std::map<std::string, IFloat*>::const_iterator mInput = cOverriddenAnalogueInputs.find(mValue);
     return mInput != cOverriddenAnalogueInputs.end() ? mInput->second : nullptr;
   }
-  
-  IFont* Player::getFont(DOMNode& node, IStateListener<IFont*>* listener) const {
+
+  IFont* Player::getFont(JSONObject object, IStateListener<IFont*>* listener) const {
     return nullptr;
   }
-  
-  IInputHandler* Player::getInputHandler(DOMNode& node, IStateListener<IInputHandler*>* listener) const {
+
+  IInputHandler* Player::getInputHandler(JSONObject object, IStateListener<IInputHandler*>* listener) const {
     return nullptr;
   }
-  
-  IInteger* Player::getInteger(DOMNode& node, IStateListener<IInteger*>* listener) const {
+
+  IInteger* Player::getInteger(JSONObject object, IStateListener<IInteger*>* listener) const {
     return nullptr;
   }
-  
-  IProjectOptions* Player::getProjectOptions(DOMNode& node, IStateListener<IProjectOptions*>* listener) const {
+
+  IProjectOptions* Player::getProjectOptions(JSONObject object, IStateListener<IProjectOptions*>* listener) const {
     return nullptr;
   }
-  
-  IScreen* Player::getScreen(DOMNode& node, IStateListener<IScreen*>* listener) const {
+
+  IScreen* Player::getScreen(JSONObject object, IStateListener<IScreen*>* listener) const {
     return nullptr;
   }
-  
-  IString* Player::getString(DOMNode& node, IStateListener<IString*>* listener) const {
+
+  IString* Player::getString(JSONObject object, IStateListener<IString*>* listener) const {
     return nullptr;
   }
-  
-  ITexture* Player::getTexture(DOMNode& node, IStateListener<ITexture*>* listener) const {
+
+  ITexture* Player::getTexture(JSONObject object, IStateListener<ITexture*>* listener) const {
     return nullptr;
   }
-  
-  IVertex* Player::getVertex(DOMNode& node, IStateListener<IVertex*>* listener) const {
+
+  IVertex* Player::getVertex(JSONObject object, IStateListener<IVertex*>* listener) const {
     return nullptr;
   }
-  
+
   Player::DigitalInput::DigitalInput() {
     cState = false;
   }
@@ -301,7 +309,11 @@ namespace IsoRealms::Replay {
   bool Player::DigitalInput::renderAssetIcon() const {
     return false;
   }
-  
+
+  void Player::DigitalInput::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
+
   Player::AnalogueInput::AnalogueInput() {
     cState = false;
   }
@@ -318,7 +330,11 @@ namespace IsoRealms::Replay {
     return false;
   }
 
-  void Player::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    // Not supported
+  void Player::AnalogueInput::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
+
+  void Player::save(JSONObject object, IAssetIdentifier* identifier) const {
+    cQuitAction.save(object, JSON_ON_FINISH);
   }
 }

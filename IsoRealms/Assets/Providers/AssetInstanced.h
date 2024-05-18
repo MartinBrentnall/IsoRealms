@@ -30,12 +30,12 @@ namespace IsoRealms {
               cProject(project) {
     }
     
-    BASE* getAsset(OWNER& owner, DOMNode& node) const override {
-      std::unique_ptr<BASE> mObject = std::make_unique<TYPE>(cProject, &owner, node);
+    BASE* getAsset(OWNER& owner, JSONObject object) const override {
+      std::unique_ptr<BASE> mObject = std::make_unique<TYPE>(cProject, &owner, object);
       cInstances.emplace_back(std::move(mObject));
       return cInstances.back().get();
     }
-    
+
     void releaseAsset(const BASE* asset) override {
       Utils::removeElementUnique(cInstances, asset);
     }

@@ -61,8 +61,8 @@ namespace IsoRealms::Basics {
     /****************************\
      * Implements IModuleHandle *
     \****************************/
-    void load(IProject* project, DOMNode& node) override;
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) override;
+    void load(IProject* project, JSONObject object) override;
+    void save(JSONObject object, IAssetIdentifier* identifier) override;
     void registerAssets(IAssetRegistry* assets) override;
     void unregisterAssets(IAssetRemover* remover, IAssets* releaser) override;
 
@@ -77,33 +77,33 @@ namespace IsoRealms::Basics {
     void setMusicVolume(float volume);
 
     private:
-    static const std::string TAG_RESOURCE_ANALOGUE_INPUT;
-    static const std::string TAG_RESOURCE_BOOLEAN_TRIGGER;
-    static const std::string TAG_RESOURCE_COLOUR_CYCLER;
-    static const std::string TAG_RESOURCE_COLOUR_SWITCH;
-    static const std::string TAG_RESOURCE_DIGITAL_INPUT;
-    static const std::string TAG_RESOURCE_FILE_FONT;
-    static const std::string TAG_RESOURCE_FILE_SOUND;
-    static const std::string TAG_RESOURCE_FILE_TEXTURE;
-    static const std::string TAG_RESOURCE_FLOAT_SWITCH;
-    static const std::string TAG_RESOURCE_FUNCTION;
-    static const std::string TAG_RESOURCE_INPUT_GROUP;
-    static const std::string TAG_RESOURCE_INPUT_SWITCH;
-    static const std::string TAG_RESOURCE_INTERRUPT_HANDLER;
-    static const std::string TAG_RESOURCE_MODEL_CYCLER;
-    static const std::string TAG_RESOURCE_MODEL_SCREEN;
-    static const std::string TAG_RESOURCE_PROJECT;
-    static const std::string TAG_RESOURCE_PROJECT_OPTIONS;
-    static const std::string TAG_RESOURCE_SEQUENCE;
-    static const std::string TAG_RESOURCE_SIMPLE_BOOLEAN;
-    static const std::string TAG_RESOURCE_SIMPLE_COLOUR;
-    static const std::string TAG_RESOURCE_SIMPLE_FLOAT;
-    static const std::string TAG_RESOURCE_SIMPLE_INTEGER;
-    static const std::string TAG_RESOURCE_SIMPLE_STRING;
-    static const std::string TAG_RESOURCE_SIMPLE_VERTEX;
-    static const std::string TAG_RESOURCE_SPRITE;
-    static const std::string TAG_RESOURCE_STRING_SCREEN;
-    static const std::string TAG_RESOURCE_TIMER;
+    static const std::string ID_RESOURCE_ANALOGUE_INPUT;
+    static const std::string ID_RESOURCE_BOOLEAN_TRIGGER;
+    static const std::string ID_RESOURCE_COLOUR_CYCLER;
+    static const std::string ID_RESOURCE_COLOUR_SWITCH;
+    static const std::string ID_RESOURCE_DIGITAL_INPUT;
+    static const std::string ID_RESOURCE_FILE_FONT;
+    static const std::string ID_RESOURCE_FILE_SOUND;
+    static const std::string ID_RESOURCE_FILE_TEXTURE;
+    static const std::string ID_RESOURCE_FLOAT_SWITCH;
+    static const std::string ID_RESOURCE_FUNCTION;
+    static const std::string ID_RESOURCE_INPUT_GROUP;
+    static const std::string ID_RESOURCE_INPUT_SWITCH;
+    static const std::string ID_RESOURCE_INTERRUPT_HANDLER;
+    static const std::string ID_RESOURCE_MODEL_CYCLER;
+    static const std::string ID_RESOURCE_MODEL_SCREEN;
+    static const std::string ID_RESOURCE_PROJECT;
+    static const std::string ID_RESOURCE_PROJECT_OPTIONS;
+    static const std::string ID_RESOURCE_SEQUENCE;
+    static const std::string ID_RESOURCE_SIMPLE_BOOLEAN;
+    static const std::string ID_RESOURCE_SIMPLE_COLOUR;
+    static const std::string ID_RESOURCE_SIMPLE_FLOAT;
+    static const std::string ID_RESOURCE_SIMPLE_INTEGER;
+    static const std::string ID_RESOURCE_SIMPLE_STRING;
+    static const std::string ID_RESOURCE_SIMPLE_VERTEX;
+    static const std::string ID_RESOURCE_SPRITE;
+    static const std::string ID_RESOURCE_STRING_SCREEN;
+    static const std::string ID_RESOURCE_TIMER;
 
     static const std::string NAME_RESOURCE_ANALOGUE_INPUT;
     static const std::string NAME_RESOURCE_BOOLEAN_TRIGGER;
@@ -137,10 +137,12 @@ namespace IsoRealms::Basics {
     static const std::string SEQUENCE_TRACK_TYPE_ACTION;
     static const std::string SEQUENCE_TRACK_TYPE_COLOUR;
 
-    static const std::string TAG_MODULE_SETTINGS;
-    static const std::string ATTRIBUTE_SOUND_VOLUME;
-    static const std::string ATTRIBUTE_MUSIC_VOLUME;
-    static const std::string ATTRIBUTE_INPUT_ID;
+    static const std::string JSON_ANALOGUE_INPUT_MAPPINGS;
+    static const std::string JSON_DIGITAL_INPUT_MAPPINGS;
+    static const std::string JSON_ID;
+    static const std::string JSON_MODULE_SETTINGS;
+    static const std::string JSON_MUSIC_VOLUME;
+    static const std::string JSON_SOUND_VOLUME;
 
     static const std::string GLOBAL_CONFIGURATION_FILE;
 

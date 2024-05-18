@@ -35,12 +35,12 @@
 namespace IsoRealms::Spindizzy {
   class DebrisGenerator final {
     public:
-    DebrisGenerator(DOMNode& node, IProject* project);
-    void registerAssets(IAssetRegistry* assets);  
+    DebrisGenerator(JSONObject object, IProject* project);
+    void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
     void updateRuntime(unsigned int milliseconds);
     void renderRuntime();
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void reset();
     
     float getStepReach() const;
@@ -55,15 +55,14 @@ namespace IsoRealms::Spindizzy {
     
     private:
     
-    // DOM strings.
-    static const std::string TAG_MODEL;
-  
-    static const std::string ATTRIBUTE_HEIGHT;
-    static const std::string ATTRIBUTE_ID;
-    static const std::string ATTRIBUTE_LIFE;
-    static const std::string ATTRIBUTE_RADIUS;
-    static const std::string ATTRIBUTE_STEP_REACH;
-  
+    // JSON members.
+    static const std::string JSON_APPEARANCE;
+    static const std::string JSON_HEIGHT;
+    static const std::string JSON_ID;
+    static const std::string JSON_LIFE;
+    static const std::string JSON_RADIUS;
+    static const std::string JSON_STEP_REACH;
+
     static const float        DEFAULT_HEIGHT;
     static const unsigned int DEFAULT_LIFE;
     static const float        DEFAULT_RADIUS;

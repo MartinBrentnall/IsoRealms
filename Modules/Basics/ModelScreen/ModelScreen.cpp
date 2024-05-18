@@ -18,10 +18,8 @@
  */
 #include "ModelScreen.h"
 
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
-
 namespace IsoRealms::Basics {
-  const std::string ModelScreen::TAG_MODEL = "Model";
+  const std::string ModelScreen::JSON_MODEL = "model";
 
   ModelScreen::ModelScreen(IProject* project, Basics* basics) :
             cDefModel(project),
@@ -35,9 +33,9 @@ namespace IsoRealms::Basics {
     });
   }
 
-  ModelScreen::ModelScreen(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
+  ModelScreen::ModelScreen(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
             ModelScreen(project, basics) {
-    cDefModel.init(node, TAG_MODEL);
+    cDefModel.init(object, JSON_MODEL);
   }
 
   void ModelScreen::registerAssets(IAssetRegistry* assets) {
@@ -48,8 +46,8 @@ namespace IsoRealms::Basics {
     assets->remove(this);
   }
   
-  void ModelScreen::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    cDefModel.save(node, TAG_MODEL);
+  void ModelScreen::save(JSONObject object, IAssetIdentifier* identifier) const {
+    cDefModel.save(object, JSON_MODEL);
   }
 
   void ModelScreen::hintInUse(bool inUse) {
@@ -71,5 +69,9 @@ namespace IsoRealms::Basics {
 
   bool ModelScreen::renderAssetIcon() const {
     return renderIcon();
+  }
+
+  void ModelScreen::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 }

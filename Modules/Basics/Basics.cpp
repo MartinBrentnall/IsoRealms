@@ -19,33 +19,33 @@
 #include "Basics.h"
 
 namespace IsoRealms::Basics {
-  const std::string Basics::TAG_RESOURCE_ANALOGUE_INPUT    = "AnalogueInput";
-  const std::string Basics::TAG_RESOURCE_BOOLEAN_TRIGGER   = "BooleanTrigger";
-  const std::string Basics::TAG_RESOURCE_COLOUR_CYCLER     = "ColourCycler";
-  const std::string Basics::TAG_RESOURCE_COLOUR_SWITCH     = "ColourSwitch";
-  const std::string Basics::TAG_RESOURCE_DIGITAL_INPUT     = "DigitalInput";
-  const std::string Basics::TAG_RESOURCE_FILE_FONT         = "Font";
-  const std::string Basics::TAG_RESOURCE_FILE_SOUND        = "Sound";
-  const std::string Basics::TAG_RESOURCE_FILE_TEXTURE      = "Texture";
-  const std::string Basics::TAG_RESOURCE_FLOAT_SWITCH      = "FloatSwitch";
-  const std::string Basics::TAG_RESOURCE_FUNCTION          = "Function";
-  const std::string Basics::TAG_RESOURCE_INPUT_GROUP       = "InputGroup";
-  const std::string Basics::TAG_RESOURCE_INPUT_SWITCH      = "InputSwitch";
-  const std::string Basics::TAG_RESOURCE_INTERRUPT_HANDLER = "InterruptHandler";
-  const std::string Basics::TAG_RESOURCE_MODEL_CYCLER      = "ModelCycler";
-  const std::string Basics::TAG_RESOURCE_MODEL_SCREEN      = "ModelScreen";
-  const std::string Basics::TAG_RESOURCE_PROJECT           = "Project";
-  const std::string Basics::TAG_RESOURCE_PROJECT_OPTIONS   = "ProjectOptions";
-  const std::string Basics::TAG_RESOURCE_SEQUENCE          = "Sequence";
-  const std::string Basics::TAG_RESOURCE_SIMPLE_BOOLEAN    = "Boolean";
-  const std::string Basics::TAG_RESOURCE_SIMPLE_COLOUR     = "Colour";
-  const std::string Basics::TAG_RESOURCE_SIMPLE_FLOAT      = "Float";
-  const std::string Basics::TAG_RESOURCE_SIMPLE_INTEGER    = "Integer";
-  const std::string Basics::TAG_RESOURCE_SIMPLE_STRING     = "String";
-  const std::string Basics::TAG_RESOURCE_SIMPLE_VERTEX     = "Vertex";
-  const std::string Basics::TAG_RESOURCE_SPRITE            = "Sprite";
-  const std::string Basics::TAG_RESOURCE_STRING_SCREEN     = "StringScreen";
-  const std::string Basics::TAG_RESOURCE_TIMER             = "Timer";
+  const std::string Basics::ID_RESOURCE_ANALOGUE_INPUT    = "AnalogueInput";
+  const std::string Basics::ID_RESOURCE_BOOLEAN_TRIGGER   = "BooleanTrigger";
+  const std::string Basics::ID_RESOURCE_COLOUR_CYCLER     = "ColourCycler";
+  const std::string Basics::ID_RESOURCE_COLOUR_SWITCH     = "ColourSwitch";
+  const std::string Basics::ID_RESOURCE_DIGITAL_INPUT     = "DigitalInput";
+  const std::string Basics::ID_RESOURCE_FILE_FONT         = "Font";
+  const std::string Basics::ID_RESOURCE_FILE_SOUND        = "Sound";
+  const std::string Basics::ID_RESOURCE_FILE_TEXTURE      = "Texture";
+  const std::string Basics::ID_RESOURCE_FLOAT_SWITCH      = "FloatSwitch";
+  const std::string Basics::ID_RESOURCE_FUNCTION          = "Function";
+  const std::string Basics::ID_RESOURCE_INPUT_GROUP       = "InputGroup";
+  const std::string Basics::ID_RESOURCE_INPUT_SWITCH      = "InputSwitch";
+  const std::string Basics::ID_RESOURCE_INTERRUPT_HANDLER = "InterruptHandler";
+  const std::string Basics::ID_RESOURCE_MODEL_CYCLER      = "ModelCycler";
+  const std::string Basics::ID_RESOURCE_MODEL_SCREEN      = "ModelScreen";
+  const std::string Basics::ID_RESOURCE_PROJECT           = "Project";
+  const std::string Basics::ID_RESOURCE_PROJECT_OPTIONS   = "ProjectOptions";
+  const std::string Basics::ID_RESOURCE_SEQUENCE          = "Sequence";
+  const std::string Basics::ID_RESOURCE_SIMPLE_BOOLEAN    = "Boolean";
+  const std::string Basics::ID_RESOURCE_SIMPLE_COLOUR     = "Colour";
+  const std::string Basics::ID_RESOURCE_SIMPLE_FLOAT      = "Float";
+  const std::string Basics::ID_RESOURCE_SIMPLE_INTEGER    = "Integer";
+  const std::string Basics::ID_RESOURCE_SIMPLE_STRING     = "String";
+  const std::string Basics::ID_RESOURCE_SIMPLE_VERTEX     = "Vertex";
+  const std::string Basics::ID_RESOURCE_SPRITE            = "Sprite";
+  const std::string Basics::ID_RESOURCE_STRING_SCREEN     = "StringScreen";
+  const std::string Basics::ID_RESOURCE_TIMER             = "Timer";
 
   const std::string Basics::NAME_RESOURCE_ANALOGUE_INPUT    = "Analogue Inputs";
   const std::string Basics::NAME_RESOURCE_BOOLEAN_TRIGGER   = "Boolean Triggers";
@@ -79,10 +79,12 @@ namespace IsoRealms::Basics {
   const std::string Basics::SEQUENCE_TRACK_TYPE_ACTION        = "Action";
   const std::string Basics::SEQUENCE_TRACK_TYPE_COLOUR        = "Colour";
 
-  const std::string Basics::TAG_MODULE_SETTINGS               = "IsoRealmsSettings";
-  const std::string Basics::ATTRIBUTE_SOUND_VOLUME            = "soundVolume";
-  const std::string Basics::ATTRIBUTE_MUSIC_VOLUME            = "musicVolume";
-  const std::string Basics::ATTRIBUTE_INPUT_ID                = "id";
+  const std::string Basics::JSON_ANALOGUE_INPUT_MAPPINGS = "analogueInputMappings";
+  const std::string Basics::JSON_DIGITAL_INPUT_MAPPINGS  = "digitalInputMappings";
+  const std::string Basics::JSON_ID                      = "id";
+  const std::string Basics::JSON_MODULE_SETTINGS         = "moduleSettings";
+  const std::string Basics::JSON_MUSIC_VOLUME            = "musicVolume";
+  const std::string Basics::JSON_SOUND_VOLUME            = "soundVolume";
 
   const std::string Basics::GLOBAL_CONFIGURATION_FILE         = "Module_IsoRealms.xml";
 
@@ -119,43 +121,43 @@ namespace IsoRealms::Basics {
                     cResourceTypeTimer(this),
                     cActionTypeScript(),
                     cLuaBinding(project, this) {
-    registry->add(&cResourceTypeAnalogueInput,    TAG_RESOURCE_ANALOGUE_INPUT,    NAME_RESOURCE_ANALOGUE_INPUT,    IsoRealmsConstants::RESOURCE_CATEGORY_LOGIC_AND_INPUT);
-    registry->add(&cResourceTypeBooleanTrigger,   TAG_RESOURCE_BOOLEAN_TRIGGER,   NAME_RESOURCE_BOOLEAN_TRIGGER,   IsoRealmsConstants::RESOURCE_CATEGORY_LOGIC_AND_INPUT);
-    registry->add(&cResourceTypeColourCycler,     TAG_RESOURCE_COLOUR_CYCLER,     NAME_RESOURCE_COLOUR_CYCLER,     IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_GRAPHICS);
-    registry->add(&cResourceTypeColourSwitch,     TAG_RESOURCE_COLOUR_SWITCH,     NAME_RESOURCE_COLOUR_SWITCH,     IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
-    registry->add(&cResourceTypeDigitalInput,     TAG_RESOURCE_DIGITAL_INPUT,     NAME_RESOURCE_DIGITAL_INPUT,     IsoRealmsConstants::RESOURCE_CATEGORY_LOGIC_AND_INPUT);
-    registry->add(&cResourceTypeFileFont,         TAG_RESOURCE_FILE_FONT,         NAME_RESOURCE_FILE_FONT,         IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
-    registry->add(&cResourceTypeFileSound,        TAG_RESOURCE_FILE_SOUND,        NAME_RESOURCE_FILE_SOUND,        IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES);
-    registry->add(&cResourceTypeFileTexture,      TAG_RESOURCE_FILE_TEXTURE,      NAME_RESOURCE_FILE_TEXTURE,      IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_GRAPHICS);
-    registry->add(&cResourceTypeFloatSwitch,      TAG_RESOURCE_FLOAT_SWITCH,      NAME_RESOURCE_FLOAT_SWITCH,      IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES);
-    registry->add(&cResourceTypeFunction,         TAG_RESOURCE_FUNCTION,          NAME_RESOURCE_FUNCTION,          IsoRealmsConstants::RESOURCE_CATEGORY_LOGIC_AND_INPUT);
-    registry->add(&cResourceTypeInputGroup,       TAG_RESOURCE_INPUT_GROUP,       NAME_RESOURCE_INPUT_GROUP,       IsoRealmsConstants::RESOURCE_CATEGORY_LOGIC_AND_INPUT);
-    registry->add(&cResourceTypeInputSwitch,      TAG_RESOURCE_INPUT_SWITCH,      NAME_RESOURCE_INPUT_SWITCH,      IsoRealmsConstants::RESOURCE_CATEGORY_LOGIC_AND_INPUT);
-    registry->add(&cResourceTypeInterruptHandler, TAG_RESOURCE_INTERRUPT_HANDLER, NAME_RESOURCE_INTERRUPT_HANDLER, IsoRealmsConstants::RESOURCE_CATEGORY_LOGIC_AND_INPUT);
-    registry->add(&cResourceTypeModelCycler,      TAG_RESOURCE_MODEL_CYCLER,      NAME_RESOURCE_MODEL_CYCLER,      IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_GRAPHICS);
-    registry->add(&cResourceTypeModelScreen,      TAG_RESOURCE_MODEL_SCREEN,      NAME_RESOURCE_MODEL_SCREEN,      IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
-    registry->add(&cResourceTypeProject,          TAG_RESOURCE_PROJECT,           NAME_RESOURCE_PROJECT,           IsoRealmsConstants::RESOURCE_CATEGORY_SYSTEM);
-    registry->add(&cResourceTypeProjectOptions,   TAG_RESOURCE_PROJECT_OPTIONS,   NAME_RESOURCE_PROJECT_OPTIONS,   IsoRealmsConstants::RESOURCE_CATEGORY_SYSTEM);
-    registry->add(&cResourceTypeSequence,         TAG_RESOURCE_SEQUENCE,          NAME_RESOURCE_SEQUENCE,          IsoRealmsConstants::RESOURCE_CATEGORY_LOGIC_AND_INPUT);
-    registry->add(&cResourceTypeSimpleBoolean,    TAG_RESOURCE_SIMPLE_BOOLEAN,    NAME_RESOURCE_SIMPLE_BOOLEAN,    IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES);
-    registry->add(&cResourceTypeSimpleColour,     TAG_RESOURCE_SIMPLE_COLOUR,     NAME_RESOURCE_SIMPLE_COLOUR,     IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_GRAPHICS);
-    registry->add(&cResourceTypeSimpleFloat,      TAG_RESOURCE_SIMPLE_FLOAT,      NAME_RESOURCE_SIMPLE_FLOAT,      IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES);
-    registry->add(&cResourceTypeSimpleInteger,    TAG_RESOURCE_SIMPLE_INTEGER,    NAME_RESOURCE_SIMPLE_INTEGER,    IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES);
-    registry->add(&cResourceTypeSimpleString,     TAG_RESOURCE_SIMPLE_STRING,     NAME_RESOURCE_SIMPLE_STRING,     IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES);
-    registry->add(&cResourceTypeSimpleVertex,     TAG_RESOURCE_SIMPLE_VERTEX,     NAME_RESOURCE_SIMPLE_VERTEX,     IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES);
-    registry->add(&cResourceTypeSprite,           TAG_RESOURCE_SPRITE,            NAME_RESOURCE_SPRITE,            IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_GRAPHICS);
-    registry->add(&cResourceTypeStringScreen,     TAG_RESOURCE_STRING_SCREEN,     NAME_RESOURCE_STRING_SCREEN,     IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
-    registry->add(&cResourceTypeTimer,            TAG_RESOURCE_TIMER,             NAME_RESOURCE_TIMER,             IsoRealmsConstants::RESOURCE_CATEGORY_DYNAMIC_VARIABLES);
+    registry->add(&cResourceTypeAnalogueInput,    ID_RESOURCE_ANALOGUE_INPUT,    NAME_RESOURCE_ANALOGUE_INPUT,    IsoRealmsConstants::RESOURCE_CATEGORY_LOGIC_AND_INPUT);
+    registry->add(&cResourceTypeBooleanTrigger,   ID_RESOURCE_BOOLEAN_TRIGGER,   NAME_RESOURCE_BOOLEAN_TRIGGER,   IsoRealmsConstants::RESOURCE_CATEGORY_LOGIC_AND_INPUT);
+    registry->add(&cResourceTypeColourCycler,     ID_RESOURCE_COLOUR_CYCLER,     NAME_RESOURCE_COLOUR_CYCLER,     IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_GRAPHICS);
+    registry->add(&cResourceTypeColourSwitch,     ID_RESOURCE_COLOUR_SWITCH,     NAME_RESOURCE_COLOUR_SWITCH,     IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
+    registry->add(&cResourceTypeDigitalInput,     ID_RESOURCE_DIGITAL_INPUT,     NAME_RESOURCE_DIGITAL_INPUT,     IsoRealmsConstants::RESOURCE_CATEGORY_LOGIC_AND_INPUT);
+    registry->add(&cResourceTypeFileFont,         ID_RESOURCE_FILE_FONT,         NAME_RESOURCE_FILE_FONT,         IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
+    registry->add(&cResourceTypeFileSound,        ID_RESOURCE_FILE_SOUND,        NAME_RESOURCE_FILE_SOUND,        IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES);
+    registry->add(&cResourceTypeFileTexture,      ID_RESOURCE_FILE_TEXTURE,      NAME_RESOURCE_FILE_TEXTURE,      IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_GRAPHICS);
+    registry->add(&cResourceTypeFloatSwitch,      ID_RESOURCE_FLOAT_SWITCH,      NAME_RESOURCE_FLOAT_SWITCH,      IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES);
+    registry->add(&cResourceTypeFunction,         ID_RESOURCE_FUNCTION,          NAME_RESOURCE_FUNCTION,          IsoRealmsConstants::RESOURCE_CATEGORY_LOGIC_AND_INPUT);
+    registry->add(&cResourceTypeInputGroup,       ID_RESOURCE_INPUT_GROUP,       NAME_RESOURCE_INPUT_GROUP,       IsoRealmsConstants::RESOURCE_CATEGORY_LOGIC_AND_INPUT);
+    registry->add(&cResourceTypeInputSwitch,      ID_RESOURCE_INPUT_SWITCH,      NAME_RESOURCE_INPUT_SWITCH,      IsoRealmsConstants::RESOURCE_CATEGORY_LOGIC_AND_INPUT);
+    registry->add(&cResourceTypeInterruptHandler, ID_RESOURCE_INTERRUPT_HANDLER, NAME_RESOURCE_INTERRUPT_HANDLER, IsoRealmsConstants::RESOURCE_CATEGORY_LOGIC_AND_INPUT);
+    registry->add(&cResourceTypeModelCycler,      ID_RESOURCE_MODEL_CYCLER,      NAME_RESOURCE_MODEL_CYCLER,      IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_GRAPHICS);
+    registry->add(&cResourceTypeModelScreen,      ID_RESOURCE_MODEL_SCREEN,      NAME_RESOURCE_MODEL_SCREEN,      IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
+    registry->add(&cResourceTypeProject,          ID_RESOURCE_PROJECT,           NAME_RESOURCE_PROJECT,           IsoRealmsConstants::RESOURCE_CATEGORY_SYSTEM);
+    registry->add(&cResourceTypeProjectOptions,   ID_RESOURCE_PROJECT_OPTIONS,   NAME_RESOURCE_PROJECT_OPTIONS,   IsoRealmsConstants::RESOURCE_CATEGORY_SYSTEM);
+    registry->add(&cResourceTypeSequence,         ID_RESOURCE_SEQUENCE,          NAME_RESOURCE_SEQUENCE,          IsoRealmsConstants::RESOURCE_CATEGORY_LOGIC_AND_INPUT);
+    registry->add(&cResourceTypeSimpleBoolean,    ID_RESOURCE_SIMPLE_BOOLEAN,    NAME_RESOURCE_SIMPLE_BOOLEAN,    IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES);
+    registry->add(&cResourceTypeSimpleColour,     ID_RESOURCE_SIMPLE_COLOUR,     NAME_RESOURCE_SIMPLE_COLOUR,     IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_GRAPHICS);
+    registry->add(&cResourceTypeSimpleFloat,      ID_RESOURCE_SIMPLE_FLOAT,      NAME_RESOURCE_SIMPLE_FLOAT,      IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES);
+    registry->add(&cResourceTypeSimpleInteger,    ID_RESOURCE_SIMPLE_INTEGER,    NAME_RESOURCE_SIMPLE_INTEGER,    IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES);
+    registry->add(&cResourceTypeSimpleString,     ID_RESOURCE_SIMPLE_STRING,     NAME_RESOURCE_SIMPLE_STRING,     IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES);
+    registry->add(&cResourceTypeSimpleVertex,     ID_RESOURCE_SIMPLE_VERTEX,     NAME_RESOURCE_SIMPLE_VERTEX,     IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_VARIABLES);
+    registry->add(&cResourceTypeSprite,           ID_RESOURCE_SPRITE,            NAME_RESOURCE_SPRITE,            IsoRealmsConstants::RESOURCE_CATEGORY_SIMPLE_GRAPHICS);
+    registry->add(&cResourceTypeStringScreen,     ID_RESOURCE_STRING_SCREEN,     NAME_RESOURCE_STRING_SCREEN,     IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
+    registry->add(&cResourceTypeTimer,            ID_RESOURCE_TIMER,             NAME_RESOURCE_TIMER,             IsoRealmsConstants::RESOURCE_CATEGORY_DYNAMIC_VARIABLES);
   }
 
-  void Basics::load(IProject* project, DOMNode& node) {
+  void Basics::load(IProject* project, JSONObject object) {
     // Nothing to do.
   }
 
-  void Basics::save(DOMNodeWriter* node, IAssetIdentifier* identifier) {
+  void Basics::save(JSONObject object, IAssetIdentifier* identifier) {
     // Nothing to do.
   }
-  
+
   void Basics::registerAssets(IAssetRegistry* assets) {
     assets->add(&cActionTypeScript, ACTION_TYPE_SCRIPT, "");
     assets->add(&cLuaBinding,       "",                 "Basics");
@@ -168,50 +170,47 @@ namespace IsoRealms::Basics {
 
   void Basics::reloadGlobalConfiguration() {
     if (System::fileExists(GLOBAL_CONFIGURATION_FILE, true)) {
-      DOMNode mNode(GLOBAL_CONFIGURATION_FILE, DOMNode::Type::USER);
-      DOMNode& mSettingsNode = mNode.getNode(TAG_MODULE_SETTINGS);
-      setSoundVolume(mSettingsNode.getFloatAttribute(ATTRIBUTE_SOUND_VOLUME));
-      setMusicVolume(mSettingsNode.getFloatAttribute(ATTRIBUTE_MUSIC_VOLUME));
-      for (DOMNode& mChild : mSettingsNode) {
-        std::string mChildName = mChild.getName();
-        if (mChildName == TAG_RESOURCE_DIGITAL_INPUT) {
-          std::string mInputID = mChild.getAttribute(ATTRIBUTE_INPUT_ID);
-          DigitalInput* mDigitalInput = cResourceTypeDigitalInput.getResource(mInputID);
-          if (mDigitalInput == nullptr) {
-            throw ActionException("ERROR: Basics::reloadGlobalConfiguration: Digital input \"" + mInputID + "\" not found.");
-          }
-          mDigitalInput->loadCustomMapping(mChild);
-        } else if (mChildName == TAG_RESOURCE_ANALOGUE_INPUT) {
-          std::string mInputID = mChild.getAttribute(ATTRIBUTE_INPUT_ID);
-          AnalogueInput* mAnalogueInput = cResourceTypeAnalogueInput.getResource(mInputID);
-          if (mAnalogueInput == nullptr) {
-            throw ActionException("ERROR: Basics::reloadGlobalConfiguration: Analogue input \"" + mInputID + "\" not found.");
-          }
-          mAnalogueInput->loadCustomMapping(mChild);
-        } else {
-          throw ParseException("Unknown tag for Basics/Basics: " + mChildName);
+      JSONDocument mModuleSettingsDocument(GLOBAL_CONFIGURATION_FILE, true);
+      JSONObject mModuleSettingsObject = mModuleSettingsDocument.getObject(JSON_MODULE_SETTINGS);
+      setSoundVolume(mModuleSettingsObject.getFloat(JSON_SOUND_VOLUME));
+      setMusicVolume(mModuleSettingsObject.getFloat(JSON_MUSIC_VOLUME));
+      for (JSONObject mDigitalInputMappingObject : mModuleSettingsObject.getArray(JSON_DIGITAL_INPUT_MAPPINGS)) {
+        std::string mInputID = mDigitalInputMappingObject.getString(JSON_ID);
+        DigitalInput* mDigitalInput = cResourceTypeDigitalInput.getResource(mInputID);
+        if (mDigitalInput == nullptr) {
+          throw ActionException("ERROR: Basics::reloadGlobalConfiguration: Digital input \"" + mInputID + "\" not found.");
         }
+        mDigitalInput->loadCustomMapping(mDigitalInputMappingObject);
+      }
+      for (JSONObject mAnalogueInputMappingObject : mModuleSettingsObject.getArray(JSON_ANALOGUE_INPUT_MAPPINGS)) {
+        std::string mInputID = mAnalogueInputMappingObject.getString(JSON_ID);
+        AnalogueInput* mAnalogueInput = cResourceTypeAnalogueInput.getResource(mInputID);
+        if (mAnalogueInput == nullptr) {
+          throw ActionException("ERROR: Basics::reloadGlobalConfiguration: Analogue input \"" + mInputID + "\" not found.");
+        }
+        mAnalogueInput->loadCustomMapping(mAnalogueInputMappingObject);
       }
     }
   }
   
   void Basics::persistGlobalConfiguration() {
-    DOMNodeWriter mConfigurationNode(TAG_MODULE_SETTINGS);
-    mConfigurationNode.addAttribute(ATTRIBUTE_SOUND_VOLUME, getSoundVolume());
-    mConfigurationNode.addAttribute(ATTRIBUTE_MUSIC_VOLUME, getMusicVolume());
+    JSONDocument mModuleSettingsDocument;
+    JSONObject mModuleSettingsObject =  mModuleSettingsDocument.addObject(JSON_MODULE_SETTINGS);
+    mModuleSettingsObject.addFloat(JSON_SOUND_VOLUME, getSoundVolume());
+    mModuleSettingsObject.addFloat(JSON_MUSIC_VOLUME, getMusicVolume());
+    JSONArray mDigitalInputMappingArray = mModuleSettingsObject.addArray(JSON_DIGITAL_INPUT_MAPPINGS);
     for (DigitalInput* mDigitalInput : cResourceTypeDigitalInput) {
-      DOMNodeWriter mInputNode = mConfigurationNode.addBranch(TAG_RESOURCE_DIGITAL_INPUT);
-      std::string mDigitalInputID = cResourceTypeDigitalInput.getID(mDigitalInput);
-      mInputNode.addAttribute(ATTRIBUTE_INPUT_ID, mDigitalInputID);
-      mDigitalInput->saveCustomMapping(&mInputNode);
+      JSONObject mDigitalInputMappingObject = mDigitalInputMappingArray.addObject();
+      mDigitalInputMappingObject.addString(JSON_ID, cResourceTypeDigitalInput.getID(mDigitalInput));
+      mDigitalInput->saveCustomMapping(mDigitalInputMappingObject);
     }
+    JSONArray mAnalogueInputMappingArray = mModuleSettingsObject.addArray(JSON_ANALOGUE_INPUT_MAPPINGS);
     for (AnalogueInput* mAnalogueInput : cResourceTypeAnalogueInput) {
-      DOMNodeWriter mInputNode = mConfigurationNode.addBranch(TAG_RESOURCE_ANALOGUE_INPUT);
-      std::string mAnalogueInputID = cResourceTypeAnalogueInput.getID(mAnalogueInput);
-      mInputNode.addAttribute(ATTRIBUTE_INPUT_ID, mAnalogueInputID);
-      mAnalogueInput->saveCustomMapping(&mInputNode);
+      JSONObject mAnalogueInputMappingObject = mAnalogueInputMappingArray.addObject();
+      mAnalogueInputMappingObject.addString(JSON_ID, cResourceTypeAnalogueInput.getID(mAnalogueInput));
+      mAnalogueInput->saveCustomMapping(mAnalogueInputMappingObject);
     }
-    mConfigurationNode.save(GLOBAL_CONFIGURATION_FILE);
+    mModuleSettingsDocument.save(GLOBAL_CONFIGURATION_FILE);
   }
 
   float Basics::getSoundVolume() {

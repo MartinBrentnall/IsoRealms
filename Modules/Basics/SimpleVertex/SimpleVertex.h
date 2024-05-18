@@ -35,10 +35,10 @@ namespace IsoRealms::Basics {
      * Resource Interface *
     \**********************/
     SimpleVertex(IProject* project, Basics* basics);
-    SimpleVertex(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data);
+    SimpleVertex(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -50,6 +50,7 @@ namespace IsoRealms::Basics {
     double getY() const override;
     double getZ() const override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
     /***********************\
      * Scripting Interface *
@@ -60,10 +61,10 @@ namespace IsoRealms::Basics {
 
     private:
 
-    // DOM strings.
-    static const std::string ATTRIBUTE_X;
-    static const std::string ATTRIBUTE_Y;
-    static const std::string ATTRIBUTE_Z;
+    // JSON members.
+    static const std::string JSON_X;
+    static const std::string JSON_Y;
+    static const std::string JSON_Z;
 
     // Property names.
     static const std::string PROPERTY_X;

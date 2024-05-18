@@ -54,6 +54,6 @@ namespace IsoRealms::Spindizzy {
      * Implements IAsset via ICamera/IFloat *
     \****************************************/
     bool renderAssetIcon() const override;
-    void saveAsset(DOMNodeWriter* node) const override;
+    void saveAsset(JSONObject object) const override;
   };
 }

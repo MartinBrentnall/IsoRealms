@@ -25,15 +25,13 @@
 #include "Modules/Spindizzy/WorldView/WorldView.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string ZoneViewTypeOverview::TAG_COLOUR = "Colour";
-  
-  ZoneViewTypeOverview::ZoneViewTypeOverview(IProject* project, WorldView* worldView, DOMNode& node) :
+  ZoneViewTypeOverview::ZoneViewTypeOverview(IProject* project, WorldView* worldView, JSONObject object) :
             cProject(project),
             cWorldView(worldView),
             cDefColour(project, 1.0f, 0.0f, 0.0f, 0.0f),
             cRuntimeParameterView1(project, nullptr, worldView->getSpindizzy()),
             cRuntimeParameterView2(project, nullptr, worldView->getSpindizzy()) {
-    cDefColour.init(node, TAG_COLOUR);
+    cDefColour.init(object, JSON_COLOUR);
   }
 
   void ZoneViewTypeOverview::bind1(ZoneViewOverview* zoneViewOverview) {
@@ -60,7 +58,9 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  void ZoneViewTypeOverview::saveAsset(DOMNodeWriter* node) const {
-    cDefColour.save(node, TAG_COLOUR);
+  void ZoneViewTypeOverview::saveAsset(JSONObject object) const {
+    cDefColour.save(object, JSON_COLOUR);
   }
+
+  const std::string ZoneViewTypeOverview::JSON_COLOUR = "colour";
 }

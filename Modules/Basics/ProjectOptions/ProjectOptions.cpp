@@ -19,25 +19,17 @@
 #include "ProjectOptions.h"
 
 namespace IsoRealms::Basics {
-  const std::string ProjectOptions::TAG_OPTION = "Option";
-  const std::string ProjectOptions::TAG_VALUE  = "Value";
-
-  const std::string ProjectOptions::ATTRIBUTE_ID = "id";
+  const std::string ProjectOptions::JSON_ID      = "id";
+  const std::string ProjectOptions::JSON_OPTIONS = "options";
+  const std::string ProjectOptions::JSON_VALUE   = "value";
 
   ProjectOptions::ProjectOptions(IProject* project, Basics* basics) {
   }
   
-  ProjectOptions::ProjectOptions(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
+  ProjectOptions::ProjectOptions(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
             ProjectOptions(project, basics) {
-    for (DOMNode& mNode : node) {
-      std::string mChildName = mNode.getName();
-      if (mChildName == TAG_OPTION) {
-        std::string mName = mNode.getAttribute(ATTRIBUTE_ID);
-        cDefOptions.emplace(std::piecewise_construct, std::forward_as_tuple(mName), std::forward_as_tuple(project));
-        cDefOptions.find(mName)->second.init(mNode, TAG_VALUE);
-      } else {
-        throw ParseException("Unknown tag for Basics/ProjectOptions: " + mChildName);
-      }
+    for (JSONObject mOptionsObject : object.getArray(JSON_OPTIONS)) {
+      cDefOptions.emplace(std::piecewise_construct, std::forward_as_tuple(mOptionsObject.getString(JSON_ID)), std::forward_as_tuple(project)).first->second.init(mOptionsObject, JSON_VALUE);
     }
   }
 
@@ -49,11 +41,12 @@ namespace IsoRealms::Basics {
     assets->remove(this);
   }
   
-  void ProjectOptions::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
+  void ProjectOptions::save(JSONObject object, IAssetIdentifier* identifier) const {
+    JSONArray mOptionsArray = object.addArray(JSON_OPTIONS);
     for (const std::pair<const std::string, String>& mOption : cDefOptions) {
-      DOMNodeWriter mOptionNode = node->addBranch(TAG_OPTION);
-      mOptionNode.addAttribute(mOption.first, ATTRIBUTE_ID);
-      mOption.second.save(&mOptionNode, TAG_VALUE);
+      JSONObject mOptionObject = mOptionsArray.addObject();
+      mOptionObject.addString(JSON_ID, mOption.first);
+      mOption.second.save(mOptionObject, JSON_VALUE);
     }
   }
 
@@ -80,5 +73,9 @@ namespace IsoRealms::Basics {
 
   bool ProjectOptions::renderAssetIcon() const {
     return false;
+  }
+
+  void ProjectOptions::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 }

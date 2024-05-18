@@ -23,7 +23,7 @@
 #include "IsoRealms/Assets/Type/I3DModelType.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/IAssets.h"
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
+#include "IsoRealms/Persistence/JSONDocument.h"
 #include "IsoRealms/Utils.h"
 
 #include "ModelInstance.h"
@@ -31,15 +31,15 @@
 namespace IsoRealms {
   class Model : public IAssetUser<I3DModelType> {
     private:
-    static const std::string ATTRIBUTE_OFFSET_X;
-    static const std::string ATTRIBUTE_OFFSET_Y;
-    static const std::string ATTRIBUTE_OFFSET_Z;
-    static const std::string ATTRIBUTE_PITCH;
-    static const std::string ATTRIBUTE_SCALE_X;
-    static const std::string ATTRIBUTE_SCALE_Y;
-    static const std::string ATTRIBUTE_SCALE_Z;
-    static const std::string ATTRIBUTE_YAW;
-    
+    static const std::string JSON_OFFSET_X;
+    static const std::string JSON_OFFSET_Y;
+    static const std::string JSON_OFFSET_Z;
+    static const std::string JSON_PITCH;
+    static const std::string JSON_SCALE_X;
+    static const std::string JSON_SCALE_Y;
+    static const std::string JSON_SCALE_Z;
+    static const std::string JSON_YAW;
+
     IProject* cProject;
     I3DModelType* cModel;
     float cDefOffsetX;
@@ -58,9 +58,9 @@ namespace IsoRealms {
     public:
     Model(IProject* project);
 
-    void init(DOMNode& node, const std::string& tag);
-    void set(DOMNode& node, const std::string& tag);
-    void save(DOMNodeWriter* node, const std::string& tag) const;
+    void init(JSONObject object, const std::string& member);
+    void set(JSONObject object, const std::string& member);
+    void save(JSONObject object, const std::string& name) const;
 
     std::unique_ptr<ModelInstance> createInstance();
     bool renderIcon() const;

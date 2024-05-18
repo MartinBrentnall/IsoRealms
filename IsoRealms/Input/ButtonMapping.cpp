@@ -21,10 +21,10 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  const std::string ButtonMapping::TAG_BUTTON_DOWN = "ButtonDown";
-  const std::string ButtonMapping::TAG_BUTTON_UP   = "ButtonUp";
-  
-  const std::string ButtonMapping::ATTRIBUTE_BUTTON_VALUE = "button";
+  const std::string ButtonMapping::JSON_BUTTON = "button";
+  const std::string ButtonMapping::JSON_TYPE   = "type";
+
+  const std::string ButtonMapping::TYPE_BUTTON_DOWN = "ButtonDown";
 
 #if _WIN32
   const unsigned int ButtonMapping::CROSS    = 1;
@@ -43,10 +43,10 @@ namespace IsoRealms {
           cButton(button) {
   }
 
-  ButtonMapping::ButtonMapping(DOMNode& node) :
-          cButton(node.getIntegerAttribute(ATTRIBUTE_BUTTON_VALUE)) {
+  ButtonMapping::ButtonMapping(JSONObject object) :
+          cButton(object.getInteger(JSON_BUTTON)) {
   }
-      
+
   bool ButtonMapping::matches(const sf::Event& event) const {
     return (event.type == sf::Event::JoystickButtonPressed || event.type == sf::Event::JoystickButtonReleased) && event.joystickButton.button == cButton;
   }
@@ -55,9 +55,9 @@ namespace IsoRealms {
     return event.type == sf::Event::JoystickButtonPressed;
   }
 
-  void ButtonMapping::save(DOMNodeWriter* node) const {
-    DOMNodeWriter mMappingNode = node->addBranch(TAG_BUTTON_DOWN);
-    mMappingNode.addAttribute(ATTRIBUTE_BUTTON_VALUE, cButton);
+  void ButtonMapping::save(JSONObject object) const {
+    object.addString(JSON_TYPE, TYPE_BUTTON_DOWN);
+    object.addInteger(JSON_BUTTON, cButton);
   }
 
   std::string ButtonMapping::getShortName() const {

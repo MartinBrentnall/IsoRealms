@@ -40,11 +40,7 @@ namespace IsoRealms::Spindizzy {
     object.unregisterProcessor(this);
   }
 
-  void Chaser::load(DOMNode& node) {
-    // Nothing to do.
-  }
-
-  void Chaser::save(DOMNodeWriter* node) const {
+  void Chaser::save(JSONObject object) const {
     // Nothing to do.
   }
 

@@ -22,9 +22,6 @@
 
 #include <SFML/Window/Keyboard.hpp>
 
-#include "IsoRealms/Persistence/DOMNode.h"
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
-
 #include "IDigitalInputMapping.h"
 
 namespace IsoRealms {
@@ -34,19 +31,18 @@ namespace IsoRealms {
    */
   class KeyMapping : public IDigitalInputMapping {
     private:
-    static const std::string TAG_KEY_DOWN;
-    static const std::string TAG_KEY_UP;
-    
-    static const std::string ATTRIBUTE_KEY_VALUE;
+    static const std::string JSON_KEY;
+    static const std::string JSON_TYPE;
 
     static const std::string UNMAPPED_KEY_PREFIX;
-      
+
     static const std::map<std::string, sf::Keyboard::Key> cKeysByName; /// Mapping of keys by name.
 
     const sf::Keyboard::Key cKey; /// The key associated with this mapping.
     // TODO: Support inversion.
-    
+
     public:
+    static const std::string TYPE_KEY_DOWN;
       
     /**
      * Retrieve the key of the specified name.  The key is always such that it
@@ -82,14 +78,14 @@ namespace IsoRealms {
      * 
      * @param node The node from which to read the associated key.
      */
-    KeyMapping(DOMNode& node);
+    KeyMapping(JSONObject object);
 
     /***********************************\
      * Implements IDigitalInputMapping *
     \***********************************/
     bool matches(const sf::Event& event) const override;
     bool getState(const sf::Event& event) const override;
-    void save(DOMNodeWriter* node) const override;
+    void save(JSONObject object) const override;
     std::string getShortName() const override;
     std::string getLongName() const override;
   };

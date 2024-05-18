@@ -25,17 +25,13 @@
 #include "Modules/Spindizzy/World/Object/Terrain/Surface.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string SurfacePatternSplitVariant::TAG_REGULAR = "Regular";
-  const std::string SurfacePatternSplitVariant::TAG_SPLIT_A = "SplitA";
-  const std::string SurfacePatternSplitVariant::TAG_SPLIT_B = "SplitB";
-
-  SurfacePatternSplitVariant::SurfacePatternSplitVariant(IProject* project, Spindizzy* spindizzy, DOMNode& node) :
+  SurfacePatternSplitVariant::SurfacePatternSplitVariant(IProject* project, Spindizzy* spindizzy, JSONObject object) :
             cDefRegularPattern(spindizzy),
             cDefSplitAPattern(spindizzy),
             cDefSplitBPattern(spindizzy) {
-    cDefRegularPattern.set(node.getNode(TAG_REGULAR));
-    cDefSplitAPattern.set(node.getNode(TAG_SPLIT_A));
-    cDefSplitBPattern.set(node.getNode(TAG_SPLIT_B));
+    cDefRegularPattern.set(object.getObject(JSON_REGULAR));
+    cDefSplitAPattern.set(object.getObject(JSON_SPLIT_A));
+    cDefSplitBPattern.set(object.getObject(JSON_SPLIT_B));
   }
 
   bool SurfacePatternSplitVariant::contains(ITexture* texture) {
@@ -70,10 +66,14 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  void SurfacePatternSplitVariant::saveAsset(DOMNodeWriter* node) const {
-    cDefRegularPattern.save(node, TAG_REGULAR);
-    cDefSplitAPattern.save(node, TAG_SPLIT_A);
-    cDefSplitBPattern.save(node, TAG_SPLIT_B);
+  void SurfacePatternSplitVariant::saveAsset(JSONObject object) const {
+    cDefRegularPattern.save(object, JSON_REGULAR);
+    cDefSplitAPattern.save(object, JSON_SPLIT_A);
+    cDefSplitBPattern.save(object, JSON_SPLIT_B);
   }
+
+  const std::string SurfacePatternSplitVariant::JSON_REGULAR = "regular";
+  const std::string SurfacePatternSplitVariant::JSON_SPLIT_A = "splitA";
+  const std::string SurfacePatternSplitVariant::JSON_SPLIT_B = "splitB";
 }
 

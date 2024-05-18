@@ -38,6 +38,10 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
+  void PropertiesTool::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
+
   PropertiesTool::Modifier::Modifier(PropertiesTool& parent, WorldEditor* editor) :
             cParent(parent),
             cEditor(editor),

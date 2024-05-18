@@ -23,16 +23,15 @@
 #include "IsoRealms/Assets/Type/ITexture.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/IAssets.h"
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
+#include "IsoRealms/Persistence/JSONDocument.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
   class Texture : public IAssetUser<ITexture> {
     private:
-    static const std::string ATTRIBUTE_ANGLE;
-    static const std::string ATTRIBUTE_SCALE_X;
-    static const std::string ATTRIBUTE_SCALE_Y;
-    static const std::string ATTRIBUTE_TEXTURE;
+    static const std::string JSON_ANGLE;
+    static const std::string JSON_SCALE_X;
+    static const std::string JSON_SCALE_Y;
 
     IProject* cProject;
     ITexture* cTexture;
@@ -46,9 +45,9 @@ namespace IsoRealms {
     public:
     Texture(IProject* project);
 
-    void init(DOMNode& node, const std::string& tag);
-    void set(DOMNode& node, const std::string& tag);
-    void save(DOMNodeWriter* node, const std::string& tag) const;
+    void init(JSONObject object, const std::string& member);
+    void set(JSONObject object, const std::string& member);
+    void save(JSONObject object, const std::string& name) const;
 
     void coord(float x, float y) const;
 

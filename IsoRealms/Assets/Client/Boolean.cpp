@@ -26,21 +26,21 @@ namespace IsoRealms {
             cListener(listener) {
   }
 
-  void Boolean::init(DOMNode& node, const std::string& tag) {
-    cProject->init([this, &node, tag](IAssets* assets) {
-      set(node, tag);
+  void Boolean::init(JSONObject object, const std::string& member) {
+    cProject->init([this, object, member](IAssets* assets) {
+      set(object, member);
     });
   }
 
-  void Boolean::set(DOMNode& node, const std::string& tag) {
-    DOMNode& mAssetNode = node.getNode(tag);
+  void Boolean::set(JSONObject object, const std::string& member) {
+    JSONObject mAssetObject = object.getObject(member);
     cProject->release(this, cBoolean);
-    cBoolean = cProject->getBoolean(this, mAssetNode, cListener != nullptr ? this : nullptr);
+    cBoolean = cProject->getBoolean(this, mAssetObject, cListener != nullptr ? this : nullptr);
   }
 
-  void Boolean::save(DOMNodeWriter* node, const std::string& tag) const {
-    DOMNodeWriter mAssetNode = node->addBranch(tag);
-    cProject->save(&mAssetNode, cBoolean);
+  void Boolean::save(JSONObject object, const std::string& name) const {
+    JSONObject mAssetObject = object.addObject(name);
+    cProject->save(mAssetObject, cBoolean);
   }
 
   void Boolean::relinquish(IBoolean* asset) {

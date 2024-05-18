@@ -20,7 +20,6 @@
 
 #include <memory>
 
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
 #include "IsoRealms/Types.h"
 
 namespace IsoRealms::Spindizzy {

@@ -18,7 +18,6 @@
  */
 #include "LiteralVertex.h"
 
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
@@ -78,7 +77,13 @@ namespace IsoRealms {
         && z == vertex->getZ();
   }
 
-  void LiteralVertex::saveAsset(DOMNodeWriter* node) const {
-    node->addAttribute("value", Utils::toString(x) + " " + Utils::toString(y) + " " + Utils::toString(z));
+  void LiteralVertex::saveAsset(JSONObject object) const {
+    object.addFloat(JSON_X, x);
+    object.addFloat(JSON_Y, y);
+    object.addFloat(JSON_Z, z);
   }
+
+  const std::string LiteralVertex::JSON_X = "x";
+  const std::string LiteralVertex::JSON_Y = "y";
+  const std::string LiteralVertex::JSON_Z = "z";
 }

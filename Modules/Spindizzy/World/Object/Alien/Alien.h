@@ -50,11 +50,11 @@ namespace IsoRealms::Spindizzy {
     
     // Constructors.
     Alien(Zone& zone, AlienType* type, int x, int y, int z);
-    Alien(Zone& zone, DOMNode& node);
+    Alien(Zone& zone, JSONObject object);
 
     // Interface for use by parent zone.
     void reset();
-    void save(DOMNodeWriter* node, int x, int y, int z) const;
+    void save(JSONObject object, int x, int y, int z) const;
     bool isType(const AlienType* const type) const;
     void updateRuntime(unsigned int milliseconds);
     void updateVanish();
@@ -101,11 +101,11 @@ namespace IsoRealms::Spindizzy {
 
     private:
     
-    // DOM strings.
-    static const std::string ATTRIBUTE_TYPE;
-    static const std::string ATTRIBUTE_X;
-    static const std::string ATTRIBUTE_Y;
-    static const std::string ATTRIBUTE_Z;
+    // JSON members.
+    static const std::string JSON_TYPE;
+    static const std::string JSON_X;
+    static const std::string JSON_Y;
+    static const std::string JSON_Z;
 
     // Definition data
     Zone& cDefZone;                             /// Zone to which this alien belongs.

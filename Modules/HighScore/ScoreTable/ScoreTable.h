@@ -38,10 +38,10 @@ namespace IsoRealms::HighScore {
      * Resource interface *
     \**********************/
     ScoreTable(IProject* project, HighScore* highScore);
-    ScoreTable(IProject* project, HighScore* highScore, DOMNode& node, IOptions* options, IResourceData* data);
+    ScoreTable(IProject* project, HighScore* highScore, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);  
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon();
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -52,16 +52,17 @@ namespace IsoRealms::HighScore {
     void reload();
     
     private:
-    static const std::string TAG_FIELD;
-    static const std::string TAG_HIGH_SCORE_TABLE;
-    static const std::string TAG_PROJECT;
-    static const std::string TAG_RECORD;
-    static const std::string TAG_USER;
-
-    static const std::string ATTRIBUTE_RECORDS;
-    static const std::string ATTRIBUTE_NAME;
-    static const std::string ATTRIBUTE_FIELD;
-    static const std::string ATTRIBUTE_VALUE;
+    static const std::string JSON_COMPARE;
+    static const std::string JSON_FIELD;
+    static const std::string JSON_FIELDS;
+    static const std::string JSON_HIGH_SCORE_TABLE;
+    static const std::string JSON_NAME;
+    static const std::string JSON_PROJECT;
+    static const std::string JSON_RECORD_LIMIT;
+    static const std::string JSON_RECORDS;
+    static const std::string JSON_USER;
+    static const std::string JSON_VALUE;
+    static const std::string JSON_VALUES;
 
     String cProjectDataPath;
     Boolean cProjectUser;
@@ -71,6 +72,6 @@ namespace IsoRealms::HighScore {
     LuaBinding<ScoreTable> cLuaBinding;
 
     void writeDefaultTable();
-    void readRecords(DOMNode& node);
+    void readRecords(JSONObject object);
   };
 }

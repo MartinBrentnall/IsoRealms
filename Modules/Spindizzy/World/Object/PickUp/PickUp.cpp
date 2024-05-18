@@ -23,10 +23,10 @@
 #include "Modules/Spindizzy/World/World.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string PickUp::ATTRIBUTE_TYPE = "type";
-  const std::string PickUp::ATTRIBUTE_X    = "x";
-  const std::string PickUp::ATTRIBUTE_Y    = "y";
-  const std::string PickUp::ATTRIBUTE_Z    = "z";
+  const std::string PickUp::JSON_TYPE = "type";
+  const std::string PickUp::JSON_X    = "x";
+  const std::string PickUp::JSON_Y    = "y";
+  const std::string PickUp::JSON_Z    = "z";
 
   const std::string PickUp::BIND_TO_ZONE = "Zone";
 
@@ -41,16 +41,16 @@ namespace IsoRealms::Spindizzy {
     reset();
   }
 
-  PickUp::PickUp(Zone& zone, DOMNode& node) :
+  PickUp::PickUp(Zone& zone, JSONObject object) :
             cDefZone(zone),
             cDefType(nullptr),
             cDefModel(nullptr),
-            cDefX(node.getIntegerAttribute(ATTRIBUTE_X) + cDefZone.getStartX()),
-            cDefY(node.getIntegerAttribute(ATTRIBUTE_Y) + cDefZone.getStartY()),
-            cDefZ(node.getIntegerAttribute(ATTRIBUTE_Z) + cDefZone.getStartZ()),
+            cDefX(object.getInteger(JSON_X) + cDefZone.getStartX()),
+            cDefY(object.getInteger(JSON_Y) + cDefZone.getStartY()),
+            cDefZ(object.getInteger(JSON_Z) + cDefZone.getStartZ()),
             cLuaBinding(zone.getWorld()->getSpindizzy()->getProject(), this) {
-    cDefZone.getWorld()->getSpindizzy()->getProject()->init([this, node](IAssets* assets) {
-      cDefType = cDefZone.getWorld()->getSpindizzy()->getPickUpType(node.getAttribute(ATTRIBUTE_TYPE));
+    cDefZone.getWorld()->getSpindizzy()->getProject()->init([this, object](IAssets* assets) {
+      cDefType = cDefZone.getWorld()->getSpindizzy()->getPickUpType(object.getString(JSON_TYPE));
       cDefModel = cDefType->createModel();
       reset();
     });
@@ -64,11 +64,11 @@ namespace IsoRealms::Spindizzy {
     cRuntimePresent = true;
   }
 
-  void PickUp::save(DOMNodeWriter* node, int x, int y, int z) const {
-    node->addAttribute(ATTRIBUTE_TYPE, cDefZone.getWorld()->getSpindizzy()->getID(cDefType));
-    node->addAttribute(ATTRIBUTE_X,    cDefX - x);
-    node->addAttribute(ATTRIBUTE_Y,    cDefY - y);
-    node->addAttribute(ATTRIBUTE_Z,    cDefZ - z);
+  void PickUp::save(JSONObject object, int x, int y, int z) const {
+    object.addString(JSON_TYPE, cDefZone.getWorld()->getSpindizzy()->getID(cDefType));
+    object.addInteger(JSON_X,    cDefX - x);
+    object.addInteger(JSON_Y,    cDefY - y);
+    object.addInteger(JSON_Z,    cDefZ - z);
   }
 
   bool PickUp::isType(const PickUpType* const type) const {

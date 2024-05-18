@@ -28,15 +28,16 @@ namespace IsoRealms::Spindizzy {
   class ZoneObjectTypeTraitCellLocation : public IZoneObjectTypeTrait,
                                           public IZoneObjectTraitEditor {
     public:
-    ZoneObjectTypeTraitCellLocation(IProject* project, ZoneObjectType* type, DOMNode& node);
+    ZoneObjectTypeTraitCellLocation(IProject* project, ZoneObjectType* type, JSONObject object);
     
     /************************************\
      * Implements  IZoneObjectTypeTrait *
     \************************************/
-    void save(DOMNodeWriter& node) const override;
+    void save(JSONObject object) const override;
     std::unique_ptr<IZoneObjectTrait> createTrait(ZoneObject& object) override;
     void registerAssets(ISpindizzyRegistry* registry) override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
     /*************************************\
      * Implements IZoneObjectTraitEditor *

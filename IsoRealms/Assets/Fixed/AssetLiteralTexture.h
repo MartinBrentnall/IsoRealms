@@ -37,7 +37,8 @@ namespace IsoRealms {
      * Implements AssetRegistry<ITexture> *
     \**************************************/
     std::unique_ptr<ITexture> createLiteralAsset(const std::string& value) override;
-    
+    std::unique_ptr<ITexture> createLiteralAsset(JSONObject object) override;
+
     public:
 
     /**

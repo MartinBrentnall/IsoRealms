@@ -34,4 +34,8 @@ namespace IsoRealms::Spindizzy {
   bool BoundaryTypeDummy::renderAssetIcon() const {
     return false;
   }
+
+  void BoundaryTypeDummy::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
 }

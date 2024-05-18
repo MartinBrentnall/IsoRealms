@@ -21,13 +21,12 @@
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string World::ATTRIBUTE_BOUNCE_CONTROL     = "bounceControl";
-  const std::string World::ATTRIBUTE_SLOPE_ACCELERATION = "slopeAcceleration";
-  const std::string World::ATTRIBUTE_GRAVITY            = "gravity";
-  
-  const std::string World::TAG_DEBRIS_GENERATOR = "DebrisGenerator";
-  const std::string World::TAG_PLAYER           = "Player";
-  const std::string World::TAG_ZONE             = "Zone";
+  const std::string World::JSON_BOUNCE_CONTROL    = "bounceControl";
+  const std::string World::JSON_DEBRIS_GENERATORS = "debrisGenerators";
+  const std::string World::JSON_GRAVITY           = "gravity";
+  const std::string World::JSON_PLAYERS           = "players";
+  const std::string World::JSON_SLOPE_FORCE       = "slopeForce";
+  const std::string World::JSON_ZONES             = "zones";
 
   const unsigned int World::DEFAULT_BOUNCE_CONTROL = 10;
 
@@ -75,27 +74,25 @@ namespace IsoRealms::Spindizzy {
     });
   }
 
-  World::World(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
+  World::World(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
             World(project, spindizzy) {
     cDefResourceData = data;
 
-    // Load non-resource based objects
-    for (DOMNode& mChild : node) {
-      std::string mChildName = mChild.getName();
-      if (mChildName == TAG_ZONE) {
-        cDefZones.emplace_back(std::make_unique<Zone>(*this, mChild));
-      } else if (mChildName == TAG_PLAYER) {
-        cDefPlayers.emplace_back(std::make_unique<Player>(project, *this, mChild));
-      } else if (mChildName == TAG_DEBRIS_GENERATOR) {
-        cDefDebrisGenerators.emplace_back(std::make_unique<DebrisGenerator>(mChild, project));
-      } else {
-        throw ParseException("Unknown tag for Spindizzy/World: " + mChildName);
-      }
+    for (JSONObject mDebrisGeneratorObject : object.getArray(JSON_DEBRIS_GENERATORS)) {
+      cDefDebrisGenerators.emplace_back(std::make_unique<DebrisGenerator>(mDebrisGeneratorObject, project));
     }
 
-    cDefSurfaceAccelerationFactor = node.getFloatAttribute(ATTRIBUTE_SLOPE_ACCELERATION);
-    cDefGravity                = node.getFloatAttribute(ATTRIBUTE_GRAVITY);
-    cDefBounceTime             = node.getIntegerAttribute(ATTRIBUTE_BOUNCE_CONTROL, DEFAULT_BOUNCE_CONTROL);
+    for (JSONObject mPlayerObject : object.getArray(JSON_PLAYERS)) {
+      cDefPlayers.emplace_back(std::make_unique<Player>(project, *this, mPlayerObject));
+    }
+
+    for (JSONObject mZoneObject : object.getArray(JSON_ZONES)) {
+      cDefZones.emplace_back(std::make_unique<Zone>(*this, mZoneObject));
+    }
+
+    cDefSurfaceAccelerationFactor = object.getFloat(JSON_SLOPE_FORCE);
+    cDefGravity                   = object.getFloat(JSON_GRAVITY);
+    cDefBounceTime                = object.getInteger(JSON_BOUNCE_CONTROL, DEFAULT_BOUNCE_CONTROL);
 
     project->init([this, project](IAssets* resources) {
 
@@ -137,7 +134,6 @@ namespace IsoRealms::Spindizzy {
         updateCache();
       }
       cRuntimeZonesToInitialise.clear();
-
     });
   }
 
@@ -171,26 +167,30 @@ namespace IsoRealms::Spindizzy {
 // TODO: Need to do this on editor destruction.    mEditor->unregisterAssets(assets);
   }
 
-  void World::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    node->addAttribute(ATTRIBUTE_SLOPE_ACCELERATION, cDefSurfaceAccelerationFactor);
-    node->addAttribute(ATTRIBUTE_GRAVITY,            cDefGravity);
-    node->addAttribute(ATTRIBUTE_BOUNCE_CONTROL,     cDefBounceTime);
+  void World::save(JSONObject object, IAssetIdentifier* identifier) const {
+    object.addFloat(JSON_SLOPE_FORCE, cDefSurfaceAccelerationFactor);
+    object.addFloat(JSON_GRAVITY, cDefGravity);
+    object.addInteger(JSON_BOUNCE_CONTROL, cDefBounceTime);
+
+    JSONArray mDebrisGeneratorsArray = object.addArray(JSON_DEBRIS_GENERATORS);
+    JSONArray mPlayersArray = object.addArray(JSON_PLAYERS);
+    JSONArray mZonesArray = object.addArray(JSON_ZONES);
 
     for (const std::unique_ptr<DebrisGenerator>& mDebrisGenerator : cDefDebrisGenerators) {
-      DOMNodeWriter mDebrisGeneratorNode = node->addBranch(TAG_DEBRIS_GENERATOR);
-      mDebrisGenerator->save(&mDebrisGeneratorNode, identifier);
+      JSONObject mDebrisGeneratorObject = mDebrisGeneratorsArray.addObject();
+      mDebrisGenerator->save(mDebrisGeneratorObject, identifier);
     }
     for (const std::unique_ptr<Player>& mPlayer : cDefPlayers) {
-      DOMNodeWriter mPlayerNode = node->addBranch(TAG_PLAYER);
-      mPlayer->save(&mPlayerNode);
+      JSONObject mPlayerObject = mPlayersArray.addObject();
+      mPlayer->save(mPlayerObject);
     }
     for (const std::unique_ptr<Zone>& mZone : cDefZones) {
-      DOMNodeWriter mZoneNode = node->addBranch(TAG_ZONE);
-      mZone->save(&mZoneNode);
+      JSONObject mZoneObject = mZonesArray.addObject();
+      mZone->save(mZoneObject);
     }
     updateCache();
   }
-    
+
   void World::hintInUse(bool inUse) {
     // Nothing to do.
   }
@@ -698,6 +698,10 @@ namespace IsoRealms::Spindizzy {
 
   bool World::renderAssetIcon() const {
     return false;
+  }
+
+  void World::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   float World::getAbyssDepth() const {

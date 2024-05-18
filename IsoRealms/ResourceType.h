@@ -29,13 +29,12 @@
 #include "IResourceTypeDefinition.h"
 #include "LocalAssetRegistry.h"
 #include "Options/LocalOptions.h"
-#include "Persistence/DOMNode.h"
 #include "Resource.h"
 
 namespace IsoRealms {
   class ResourceType : public IResourceType {
     private:
-    static const std::string TAG_NAME;
+    static const std::string JSON_ID;
 
     IResourceTypeDefinition* cResourceType;
     std::set<IResource*> cResources;
@@ -46,10 +45,10 @@ namespace IsoRealms {
     
     public:
     ResourceType(IResourceTypeDefinition* resourceType, IModuleInternal* parent, IAssetRegistry* assetRegistry, const std::string& id, const std::string& name, const std::string& category);
-    void loadResource(DOMNode& node, IProject* project, IOptions* options, const std::string& resourceDataPath);
+    void loadResource(JSONObject object, IProject* project, IOptions* options, const std::string& resourceDataPath);
     bool needsSaving(const std::string& id) const;
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier, const std::string& tag);
-    
+    void save(JSONArray& array, IAssetIdentifier* identifier, const std::string& tag);
+
     /****************************\
      * Implements IResourceType *
     \****************************/

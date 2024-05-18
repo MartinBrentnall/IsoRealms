@@ -19,7 +19,6 @@
 #pragma once
 
 namespace IsoRealms {
-  class DOMNode;
   class IAssetRegistry;
   class IAssets;
   class IAssetLiterals;
@@ -33,7 +32,7 @@ namespace IsoRealms {
   class IResourceTypeDefinition {
     public:
     virtual IResource* createResource(IResourceType* parent, IProject* project, IAssetRegistry* registry, const std::string& name) = 0;
-    virtual IResource* loadResource(IResourceType* parent, IProject* project, IAssetRegistry* registry, DOMNode& node, IOptions* options) = 0;
+    virtual IResource* loadResource(IResourceType* parent, IProject* project, IAssetRegistry* registry, JSONObject object, IOptions* options) = 0;
     virtual void deleteResource(IAssetRemover* assets, IAssets* releaser, IResource* resource) = 0;
   };
 }

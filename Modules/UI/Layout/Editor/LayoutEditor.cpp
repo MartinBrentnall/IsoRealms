@@ -81,6 +81,10 @@ namespace IsoRealms::UI {
     return false; // TODO: What's this used for?
   }
 
+  void LayoutEditor::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
+
 //   void LayoutEditor::updateScreen(unsigned int milliseconds) {
 //     cZoomFactor.update(milliseconds);
 //     cPanX.update(milliseconds);

@@ -18,8 +18,6 @@
  */
 #pragma once
 
-#include "IsoRealms/Persistence/DOMNode.h"
-
 #include "Modules/UI/Layout/ILayoutLocation.h"
 
 namespace IsoRealms::UI {
@@ -30,19 +28,22 @@ namespace IsoRealms::UI {
   class AbsoluteLocation : public ILayoutLocation {
     public:
     AbsoluteLocation(float value);
-    AbsoluteLocation(DOMNode& node, float defaultValue);
-    
+    AbsoluteLocation(JSONObject object, float defaultValue);
+
     /******************************\
      * Implements ILayoutLocation *
     \******************************/
     float getLocation(float aspectRatio) const override;
-    void save(DOMNodeWriter* node, Layout* layout, float defaultValue) const override;
-    
+    void save(JSONObject object, Layout* layout, float defaultValue) const override;
+
     private:
 
-    // DOM strings.
-    static const std::string ATTRIBUTE_VALUE;
-    
+    // JSON members.
+    static const std::string JSON_TYPE;
+    static const std::string JSON_VALUE;
+
+    static const std::string TYPE_ABSOLUTE;
+
     // Definition data.
     float cDefValue; // The location value.
   };

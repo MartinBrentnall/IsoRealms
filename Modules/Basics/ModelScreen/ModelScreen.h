@@ -34,10 +34,10 @@ namespace IsoRealms::Basics {
      * Resource Interface *
     \**********************/
     ModelScreen(IProject* project, Basics* basics);
-    ModelScreen(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data);
+    ModelScreen(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -47,11 +47,12 @@ namespace IsoRealms::Basics {
     \**********************/
     void renderScreen(float scale, float aspectRatio) const override;
     bool renderAssetIcon() const override;
-    
+    void saveAsset(JSONObject object) const override;
+
     private:
 
-    // DOM strings.
-    static const std::string TAG_MODEL;
+    // JSON members.
+    static const std::string JSON_MODEL;
 
     // Definition data.
     Model cDefModel;

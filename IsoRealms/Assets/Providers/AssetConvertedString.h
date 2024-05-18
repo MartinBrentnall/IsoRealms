@@ -33,10 +33,10 @@ namespace IsoRealms {
 
     protected:
     
-    IString* getAsset(Project& project, DOMNode& node) const override {
-      std::string mKey = node.getAttribute(ATTRIBUTE_KEY);
-      if      (mKey == ":Float")   {return cConvertedAssets.emplace(std::make_unique<PrimitiveToString<IFloat>>(  cProject, cProject, [this, &node](IAssetUser<IFloat>*   user) -> IFloat*   {return cProject->getFloat(  user, node.getNode(TAG_ASSET), nullptr);})).first->get();}
-      else if (mKey == ":Integer") {return cConvertedAssets.emplace(std::make_unique<PrimitiveToString<IInteger>>(cProject, cProject, [this, &node](IAssetUser<IInteger>* user) -> IInteger* {return cProject->getInteger(user, node.getNode(TAG_ASSET), nullptr);})).first->get();}
+    IString* getAsset(Project& project, JSONObject object) const override {
+      std::string mKey = object.getString(JSON_KEY);
+      if      (mKey == ":Float")   {return cConvertedAssets.emplace(std::make_unique<PrimitiveToString<IFloat>>(  cProject, cProject, [this, &object](IAssetUser<IFloat>*   user) -> IFloat*   {return cProject->getFloat(  user, object.getObject(JSON_ASSET), nullptr);})).first->get();}
+      else if (mKey == ":Integer") {return cConvertedAssets.emplace(std::make_unique<PrimitiveToString<IInteger>>(cProject, cProject, [this, &object](IAssetUser<IInteger>* user) -> IInteger* {return cProject->getInteger(user, object.getObject(JSON_ASSET), nullptr);})).first->get();}
       return nullptr;
     }
 
@@ -49,9 +49,8 @@ namespace IsoRealms {
     }
 
     private:
-    inline static const std::string TAG_ASSET = "Asset";
-
-    inline static const std::string ATTRIBUTE_KEY = "key";
+    inline static const std::string JSON_ASSET = "asset";
+    inline static const std::string JSON_KEY   = "key";
 
     IProject* cProject;
     mutable std::set<std::unique_ptr<IString>> cConvertedAssets;

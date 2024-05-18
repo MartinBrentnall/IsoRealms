@@ -32,6 +32,7 @@ namespace IsoRealms::Spindizzy {
     \*******************************/
     IWorldEditorToolInstance* createToolInstance(WorldEditor* editor) override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
     private:
 

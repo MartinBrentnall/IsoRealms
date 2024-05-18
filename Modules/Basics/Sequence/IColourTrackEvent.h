@@ -34,7 +34,7 @@ namespace IsoRealms::Basics {
      *
      * @param node Node to save the event to.
      */
-    virtual void save(DOMNodeWriter* node) const = 0;
+    virtual void save(JSONObject object) const = 0;
 
     /**
      * Get the duration of this event.

@@ -19,7 +19,7 @@
 #include "SimpleString.h"
 
 namespace IsoRealms::Basics {
-  const std::string SimpleString::ATTRIBUTE_VALUE = "value";
+  const std::string SimpleString::JSON_VALUE = "value";
 
   const std::string SimpleString::PROPERTY_VALUE = "Initial Value";
 
@@ -33,11 +33,11 @@ namespace IsoRealms::Basics {
     });
   }
   
-  SimpleString::SimpleString(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
+  SimpleString::SimpleString(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
             SimpleString(project, basics) {
-    cRuntimeValue = cDefValue = node.getAttribute(ATTRIBUTE_VALUE);
+    cRuntimeValue = cDefValue = object.getString(JSON_VALUE);
 
-    project->init([this, &node](IAssets* resources) {
+    project->init([this](IAssets* resources) {
       cStateNotifier->stateChanged(this);
     });
   }
@@ -53,8 +53,8 @@ namespace IsoRealms::Basics {
     cStateNotifier = nullptr;
   }
   
-  void SimpleString::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    node->addAttribute(ATTRIBUTE_VALUE, cDefValue);
+  void SimpleString::save(JSONObject object, IAssetIdentifier* identifier) const {
+    object.addString(JSON_VALUE, cDefValue);
   }
 
   void SimpleString::hintInUse(bool inUse) {
@@ -76,6 +76,10 @@ namespace IsoRealms::Basics {
 
   bool SimpleString::renderAssetIcon() const {
     return renderIcon();
+  }
+
+  void SimpleString::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   void SimpleString::setValue(const std::string& value) {

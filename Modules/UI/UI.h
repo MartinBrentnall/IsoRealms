@@ -25,7 +25,6 @@
 
 #include "IsoRealms/IModuleHandle.h"
 #include "IsoRealms/IsoRealmsConstants.h"
-#include "IsoRealms/Persistence/DOMNode.h"
 #include "IsoRealms/Project.h"
 #include "IsoRealms/ResourceTypeDefinition.h"
 #include "IsoRealms/System.h"
@@ -45,18 +44,18 @@ namespace IsoRealms::UI {
     /****************************\
      * Implements IModuleHandle *
     \****************************/
-    void load(IProject* project, DOMNode& node) override;
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) override;
+    void load(IProject* project, JSONObject object) override;
+    void save(JSONObject object, IAssetIdentifier* identifier) override;
     void registerAssets(IAssetRegistry* assets) override;
     void unregisterAssets(IAssetRemover* remover, IAssets* releaser) override;
     
     private:
-    static const std::string TAG_RESOURCE_LAYOUT;
-    static const std::string TAG_RESOURCE_MENU;
-    static const std::string TAG_RESOURCE_PANEL;
-    static const std::string TAG_RESOURCE_PROMPT;
-    static const std::string TAG_RESOURCE_THROBBER;
-    static const std::string TAG_RESOURCE_VIRTUAL_KEYBOARD;
+    static const std::string ID_RESOURCE_LAYOUT;
+    static const std::string ID_RESOURCE_MENU;
+    static const std::string ID_RESOURCE_PANEL;
+    static const std::string ID_RESOURCE_PROMPT;
+    static const std::string ID_RESOURCE_THROBBER;
+    static const std::string ID_RESOURCE_VIRTUAL_KEYBOARD;
 
     static const std::string NAME_RESOURCE_LAYOUT;
     static const std::string NAME_RESOURCE_MENU;

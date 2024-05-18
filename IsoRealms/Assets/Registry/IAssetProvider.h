@@ -18,12 +18,12 @@
  */
 #pragma once
 
-#include "IsoRealms/Persistence/DOMNode.h"
+#include "IsoRealms/Persistence/JSONObject.h"
 
 namespace IsoRealms {
   template <class OWNER, class TYPE> class IAssetProvider {
     public:
-    virtual TYPE* getAsset(OWNER& owner, DOMNode& node) const = 0;
+    virtual TYPE* getAsset(OWNER& owner, JSONObject object) const = 0;
     virtual void releaseAsset(const TYPE* asset) = 0;
     virtual void info() const = 0;
   };

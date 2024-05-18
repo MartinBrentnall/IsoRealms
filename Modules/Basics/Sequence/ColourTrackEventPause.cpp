@@ -21,15 +21,16 @@
 namespace IsoRealms::Basics {
   const std::string ColourTrackEventPause::EVENT_TYPE         = "Pause";
 
-  const std::string ColourTrackEventPause::ATTRIBUTE_DURATION = "duration";
+  const std::string ColourTrackEventPause::JSON_DURATION = "duration";
+  const std::string ColourTrackEventPause::JSON_TYPE     = "type";
 
   ColourTrackEventPause::ColourTrackEventPause(unsigned int duration) :
             cDefDuration(duration) {
   }
 
-  void ColourTrackEventPause::save(DOMNodeWriter* node) const {
-    DOMNodeWriter mPauseNode = node->addBranch(EVENT_TYPE);
-    mPauseNode.addAttribute(ATTRIBUTE_DURATION, cDefDuration);
+  void ColourTrackEventPause::save(JSONObject object) const {
+    object.addString(JSON_TYPE, EVENT_TYPE);
+    object.addInteger(JSON_DURATION, cDefDuration);
   }
 
   unsigned int ColourTrackEventPause::getDuration() const {

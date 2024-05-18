@@ -24,20 +24,18 @@
 #include "Modules/Spindizzy/WorldView/WorldView.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string CameraLinked::ATTRIBUTE_VIEW = "view";
-
   CameraLinked::CameraLinked(IProject* project, WorldView* view) :
             cParent(view),
             cDefLinkedView(nullptr) {
   }
   
-  CameraLinked::CameraLinked(IProject* project, WorldView* view, DOMNode& node) :
+  CameraLinked::CameraLinked(IProject* project, WorldView* view, JSONObject object) :
             CameraLinked(project, view) {
-    project->init([this, &node](IAssets* assets) {
-      cDefLinkedView = cParent->getSpindizzy()->getWorldView(node.getAttribute(ATTRIBUTE_VIEW));
+    project->init([this, object](IAssets* assets) {
+      cDefLinkedView = cParent->getSpindizzy()->getWorldView(object.getString(JSON_VIEW));
     });
   }
-  
+
   void CameraLinked::registerAssets(IAssetRegistry* assets) {
     // Nothing to do.
   }
@@ -90,8 +88,9 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
   
-  void CameraLinked::saveAsset(DOMNodeWriter* node) const {
-    Spindizzy* mSpindizzy = cParent->getWorld()->getSpindizzy();
-    node->addAttribute(ATTRIBUTE_VIEW, mSpindizzy->getID(cDefLinkedView));
+  void CameraLinked::saveAsset(JSONObject object) const {
+    object.addString(JSON_VIEW, cParent->getWorld()->getSpindizzy()->getID(cDefLinkedView));
   }
+
+  const std::string CameraLinked::JSON_VIEW = "view";
 }

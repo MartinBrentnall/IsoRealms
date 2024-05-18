@@ -20,8 +20,6 @@
 
 #include <vector>
 
-#include "IsoRealms/Persistence/DOMNode.h"
-
 #include "IAsset.h"
 
 namespace IsoRealms {
@@ -33,7 +31,7 @@ namespace IsoRealms {
 
   class IActionType : public IAsset {
     public:
-    virtual IAction* createAction(DOMNode& node, IProject* project, IBindingRegistry* localArgs) = 0;
+    virtual IAction* createAction(JSONObject object, IProject* project, IBindingRegistry* localArgs) = 0;
     virtual IAction* createAction(IProject* project, IBindingRegistry* localArgs) = 0;
     virtual void destroyAction(IAction* action, IAssets* assets) = 0;
       

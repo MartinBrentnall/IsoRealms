@@ -38,10 +38,10 @@ namespace IsoRealms::Basics {
   class InterruptHandler final : public IInputHandler {
     public:
     InterruptHandler(IProject* project, Basics* basics);
-    InterruptHandler(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data);
+    InterruptHandler(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -51,11 +51,13 @@ namespace IsoRealms::Basics {
     \****************************/
     bool input(sf::Event& event) override;
     bool renderAssetIcon() const override;
-    
+    void saveAsset(JSONObject object) const override;
+
     private:
 
-    // DOM strings.
-    static const std::string TAG_ACTION;
+    // JSON members.
+    static const std::string JSON_CONSUME;
+    static const std::string JSON_ON_INPUT;
 
     // Definition data.
     Action cDefAction;

@@ -21,10 +21,10 @@
 #include "ZoneViewActual.h"
 
 namespace IsoRealms::Spindizzy {
-  ZoneViewTypeActual::ZoneViewTypeActual(IProject* project, WorldView* worldView, DOMNode& node) {
+  ZoneViewTypeActual::ZoneViewTypeActual(IProject* project, WorldView* worldView, JSONObject object) {
     // Nothing to do.
   }
-  
+
   std::unique_ptr<IZoneView> ZoneViewTypeActual::createZoneView(Zone* zone) {
     return std::make_unique<ZoneViewActual>();
   }
@@ -37,7 +37,7 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  void ZoneViewTypeActual::saveAsset(DOMNodeWriter* node) const {
+  void ZoneViewTypeActual::saveAsset(JSONObject object) const {
     // Nothing to do.
   }
 }

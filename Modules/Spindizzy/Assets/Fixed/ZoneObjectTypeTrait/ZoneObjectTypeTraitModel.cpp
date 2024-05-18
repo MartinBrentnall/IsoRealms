@@ -23,14 +23,13 @@
 #include "ZoneObjectTypeTraitModel.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string ZoneObjectTypeTraitModel::TAG_MODEL = "Model";
-  
-  const std::string ZoneObjectTypeTraitModel::ATTRIBUTE_LOCATION = "location";
-  
-  ZoneObjectTypeTraitModel::ZoneObjectTypeTraitModel(IProject* project, ZoneObjectType* type, DOMNode& node) :
+  const std::string ZoneObjectTypeTraitModel::JSON_LOCATION = "location";
+  const std::string ZoneObjectTypeTraitModel::JSON_MODEL    = "model";
+
+  ZoneObjectTypeTraitModel::ZoneObjectTypeTraitModel(IProject* project, ZoneObjectType* type, JSONObject object) :
             cDefModel(project) {
-    cDefLocationID = node.getAttribute(ATTRIBUTE_LOCATION);
-    cDefModel.init(node, TAG_MODEL);
+    cDefLocationID = object.getString(JSON_LOCATION);
+    cDefModel.init(object, JSON_MODEL);
   }
 
   bool ZoneObjectTypeTraitModel::isInitiallyEnabled() const {
@@ -45,11 +44,11 @@ namespace IsoRealms::Spindizzy {
     return cDefLocationID;
   }
   
-  void ZoneObjectTypeTraitModel::save(DOMNodeWriter& node) const {
-    cDefModel.save(&node, TAG_MODEL);
-    node.addAttribute(ATTRIBUTE_LOCATION, cDefLocationID);
+  void ZoneObjectTypeTraitModel::save(JSONObject object) const {
+    cDefModel.save(object, JSON_MODEL);
+    object.addString(JSON_LOCATION, cDefLocationID);
   }
-  
+
   std::unique_ptr<IZoneObjectTrait> ZoneObjectTypeTraitModel::createTrait(ZoneObject& object) {
     return std::make_unique<Model>(object, *this);
   }
@@ -60,5 +59,9 @@ namespace IsoRealms::Spindizzy {
 
   bool ZoneObjectTypeTraitModel::renderAssetIcon() const {
     return false;
+  }
+
+  void ZoneObjectTypeTraitModel::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 }

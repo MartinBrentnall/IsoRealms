@@ -59,4 +59,8 @@ namespace IsoRealms::Spindizzy {
   void ThemeTexture::coord(float x, float y) const {
     cTexture->coord(x, y);
   }
+
+  void ThemeTexture::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
 }

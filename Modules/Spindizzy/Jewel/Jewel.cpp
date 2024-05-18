@@ -21,11 +21,10 @@
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string Jewel::TAG_COLOUR       = "Colour";
-  const std::string Jewel::TAG_COLOUR_CYCLE = "ColourCycle";
-  const std::string Jewel::TAG_FRAME_COLOUR = "FrameColour";
-
-  const std::string Jewel::ATTRIBUTE_CYCLE_SPEED = "cycleSpeed";
+  const std::string Jewel::JSON_COLOUR        = "colour";
+  const std::string Jewel::JSON_CYCLE_COLOURS = "cycleColours";
+  const std::string Jewel::JSON_CYCLE_SPEED   = "cycleSpeed";
+  const std::string Jewel::JSON_FRAME         = "frame";
 
   Jewel::Jewel(IProject* project, Spindizzy* spindizzy) :
             cColourFrame(project, 1.0f, 1.0f, 0.0f) {
@@ -37,19 +36,12 @@ namespace IsoRealms::Spindizzy {
     });
   }
   
-  Jewel::Jewel(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
+  Jewel::Jewel(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
             Jewel(project, spindizzy) {
-    cCycleSpeed = node.getFloatAttribute(ATTRIBUTE_CYCLE_SPEED);
-    cColourFrame.init(node, TAG_FRAME_COLOUR);
-    for (DOMNode& mNode : node) {
-      std::string mChildName = mNode.getName();
-      if (mChildName == TAG_COLOUR_CYCLE) {
-        cColoursCycle.emplace_back(std::make_unique<CycleColour>(this, project, mNode));
-      } else if (mChildName == TAG_FRAME_COLOUR) {
-        // Nothing to do.
-      } else {
-        throw ResourceInitException("Unknown child: " + mChildName);
-      }
+    cCycleSpeed = object.getFloat(JSON_CYCLE_SPEED);
+    cColourFrame.init(object, JSON_FRAME);
+    for (JSONObject mCycleColourObject : object.getArray(JSON_CYCLE_COLOURS)) {
+      cColoursCycle.emplace_back(std::make_unique<CycleColour>(this, project, mCycleColourObject));
     }
   }
 
@@ -58,11 +50,13 @@ namespace IsoRealms::Spindizzy {
     });
   }
   
-  void Jewel::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    cColourFrame.save(node, TAG_FRAME_COLOUR);
-    node->addAttribute(ATTRIBUTE_CYCLE_SPEED, cCycleSpeed);
+  void Jewel::save(JSONObject object, IAssetIdentifier* identifier) const {
+    cColourFrame.save(object, JSON_FRAME);
+    object.addFloat(JSON_CYCLE_SPEED, cCycleSpeed);
+    JSONArray mCycleColoursArray = object.addArray(JSON_CYCLE_COLOURS);
     for (const std::unique_ptr<CycleColour>& mCycleColour : cColoursCycle) {
-      mCycleColour->save(node, identifier);
+      JSONObject mCycleColourObject =  mCycleColoursArray.addObject();
+      mCycleColour->save(mCycleColourObject, identifier);
     }
   }
 
@@ -85,6 +79,10 @@ namespace IsoRealms::Spindizzy {
 
   bool Jewel::renderAssetIcon() const {
     return renderIcon();
+  }
+
+  void Jewel::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   void Jewel::hintInUse(bool inUse) {
@@ -119,16 +117,16 @@ namespace IsoRealms::Spindizzy {
 //     }
 //   }
   
-  Jewel::CycleColour::CycleColour(Jewel* parent, IProject* project, DOMNode& node) :
+  Jewel::CycleColour::CycleColour(Jewel* parent, IProject* project, JSONObject object) :
             cParent(parent),
             cDefColour(project, 1.0f, 0.0f, 1.0f) {
-    cDefColour.init(node, TAG_COLOUR);
+    cDefColour.init(object, JSON_COLOUR);
   }
-  
-  void Jewel::CycleColour::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    cDefColour.save(node, TAG_COLOUR);
+
+  void Jewel::CycleColour::save(JSONObject object, IAssetIdentifier* identifier) const {
+    cDefColour.save(object, JSON_COLOUR);
   }
-  
+
   const IColour* Jewel::CycleColour::getColour() const {
     return &cDefColour;
   }

@@ -21,9 +21,8 @@
 #include "Modules/Basics/Basics.h"
 
 namespace IsoRealms::Basics {
-  const std::string Timer::TAG_EXPIRATION_ACTION = "ExpirationAction";
-
-  const std::string Timer::ATTRIBUTE_TIME = "time";
+  const std::string Timer::JSON_ON_EXPIRATION = "onExpiration";
+  const std::string Timer::JSON_VALUE         = "value";
 
   Timer::Timer(IProject* project, Basics* basics) :
             cDefMilliseconds(0),
@@ -54,10 +53,10 @@ namespace IsoRealms::Basics {
     });
   }
   
-  Timer::Timer(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
+  Timer::Timer(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
             Timer(project, basics) {
-    cRuntimeMilliseconds = cDefMilliseconds = node.getIntegerAttribute("value");
-    cDefExpirationAction.init(node, TAG_EXPIRATION_ACTION);
+    cRuntimeMilliseconds = cDefMilliseconds = object.getInteger(JSON_VALUE);
+    cDefExpirationAction.init(object, JSON_ON_EXPIRATION);
   }
 
   void Timer::registerAssets(IAssetRegistry* assets) {
@@ -72,9 +71,9 @@ namespace IsoRealms::Basics {
     assets->remove(this);
   }
 
-  void Timer::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    node->addAttribute("value", cDefMilliseconds);
-    cDefExpirationAction.save(node, TAG_EXPIRATION_ACTION);
+  void Timer::save(JSONObject object, IAssetIdentifier* identifier) const {
+    object.addInteger(JSON_VALUE, cDefMilliseconds);
+    cDefExpirationAction.save(object, JSON_ON_EXPIRATION);
   }
 
   void Timer::hintInUse(bool inUse) {
@@ -96,6 +95,10 @@ namespace IsoRealms::Basics {
 
   bool Timer::renderAssetIcon() const {
     return false;
+  }
+
+  void Timer::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   void Timer::start(unsigned int milliseconds) {
@@ -138,5 +141,9 @@ namespace IsoRealms::Basics {
 
   bool Timer::StringTimer::renderAssetIcon() const {
     return cParent->renderIcon();
+  }
+
+  void Timer::StringTimer::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 }

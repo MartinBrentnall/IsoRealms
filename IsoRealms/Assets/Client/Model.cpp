@@ -19,55 +19,54 @@
 #include "Model.h"
 
 namespace IsoRealms {
-  const std::string Model::ATTRIBUTE_OFFSET_X = "offsetX";
-  const std::string Model::ATTRIBUTE_OFFSET_Y = "offsetY";
-  const std::string Model::ATTRIBUTE_OFFSET_Z = "offsetZ";
-  const std::string Model::ATTRIBUTE_PITCH    = "pitch";
-  const std::string Model::ATTRIBUTE_SCALE_X  = "scaleX";
-  const std::string Model::ATTRIBUTE_SCALE_Y  = "scaleY";
-  const std::string Model::ATTRIBUTE_SCALE_Z  = "scaleZ";
-  const std::string Model::ATTRIBUTE_YAW      = "yaw";
-    
+  const std::string Model::JSON_OFFSET_X = "offsetX";
+  const std::string Model::JSON_OFFSET_Y = "offsetY";
+  const std::string Model::JSON_OFFSET_Z = "offsetZ";
+  const std::string Model::JSON_PITCH    = "pitch";
+  const std::string Model::JSON_SCALE_X  = "scaleX";
+  const std::string Model::JSON_SCALE_Y  = "scaleY";
+  const std::string Model::JSON_SCALE_Z  = "scaleZ";
+  const std::string Model::JSON_YAW      = "yaw";
+
   Model::Model(IProject* project) :
             cProject(project),
             cModel(cProject->createLiteral3DModel(this)) {
   }
 
-  void Model::init(DOMNode& node, const std::string& tag) {
-    cProject->init([this, &node, tag](IAssets* assets) {
-      set(node, tag);
+  void Model::init(JSONObject object, const std::string& member) {
+    cProject->init([this, object, member](IAssets* assets) {
+      set(object, member);
     });
   }
 
-  void Model::set(DOMNode& node, const std::string& tag) {
+  void Model::set(JSONObject object, const std::string& member) {
+    JSONObject mAssetObject = object.getObject(member);
     cProject->release(this, cModel);
-    DOMNode& mAssetNode = node.getNode(tag);
-    cDefOffsetX = mAssetNode.getFloatAttribute(ATTRIBUTE_OFFSET_X, 0.0f);
-    cDefOffsetY = mAssetNode.getFloatAttribute(ATTRIBUTE_OFFSET_Y, 0.0f);
-    cDefOffsetZ = mAssetNode.getFloatAttribute(ATTRIBUTE_OFFSET_Z, 0.0f);
-    cDefPitch   = mAssetNode.getFloatAttribute(ATTRIBUTE_PITCH,    0.0f);
-    cDefScaleX  = mAssetNode.getFloatAttribute(ATTRIBUTE_SCALE_X,  1.0f);
-    cDefScaleY  = mAssetNode.getFloatAttribute(ATTRIBUTE_SCALE_Y,  1.0f);
-    cDefScaleZ  = mAssetNode.getFloatAttribute(ATTRIBUTE_SCALE_Z,  1.0f);
-    cDefYaw     = mAssetNode.getFloatAttribute(ATTRIBUTE_YAW,      0.0f);
-    cModel = cProject->getModelType(this, mAssetNode);
+    cDefOffsetX = mAssetObject.getFloat(JSON_OFFSET_X, 0.0f);
+    cDefOffsetY = mAssetObject.getFloat(JSON_OFFSET_Y, 0.0f);
+    cDefOffsetZ = mAssetObject.getFloat(JSON_OFFSET_Z, 0.0f);
+    cDefPitch   = mAssetObject.getFloat(JSON_PITCH,    0.0f);
+    cDefScaleX  = mAssetObject.getFloat(JSON_SCALE_X,  1.0f);
+    cDefScaleY  = mAssetObject.getFloat(JSON_SCALE_Y,  1.0f);
+    cDefScaleZ  = mAssetObject.getFloat(JSON_SCALE_Z,  1.0f);
+    cDefYaw     = mAssetObject.getFloat(JSON_YAW,      0.0f);
+    cModel = cProject->getModelType(this, mAssetObject);
     for (ModelInstance* mInstance : cInstances) {
       mInstance->set(cModel->createModel());
     }
   }
 
-  void Model::save(DOMNodeWriter* node, const std::string& tag) const {
-    DOMNodeWriter mModelNode = node->addBranch(tag);
-    cProject->save(&mModelNode, cModel);
-    mModelNode.addAttribute(ATTRIBUTE_OFFSET_X, cDefOffsetX);
-    mModelNode.addAttribute(ATTRIBUTE_OFFSET_Y, cDefOffsetY);
-    mModelNode.addAttribute(ATTRIBUTE_OFFSET_Z, cDefOffsetZ);
-//    mModelNode.addAttribute(ATTRIBUTE_MODEL,    cProject->getID(cModel));
-    mModelNode.addAttribute(ATTRIBUTE_PITCH,    cDefPitch);
-    mModelNode.addAttribute(ATTRIBUTE_SCALE_X,  cDefScaleX);
-    mModelNode.addAttribute(ATTRIBUTE_SCALE_Y,  cDefScaleY);
-    mModelNode.addAttribute(ATTRIBUTE_SCALE_Z,  cDefScaleZ);
-    mModelNode.addAttribute(ATTRIBUTE_YAW,      cDefYaw);
+  void Model::save(JSONObject object, const std::string& name) const {
+    JSONObject mAssetObject = object.addObject(name);
+    mAssetObject.addFloat(JSON_OFFSET_X, cDefOffsetX);
+    mAssetObject.addFloat(JSON_OFFSET_Y, cDefOffsetY);
+    mAssetObject.addFloat(JSON_OFFSET_Z, cDefOffsetZ);
+    mAssetObject.addFloat(JSON_PITCH,    cDefPitch);
+    mAssetObject.addFloat(JSON_SCALE_X,  cDefScaleX, 1.0f);
+    mAssetObject.addFloat(JSON_SCALE_Y,  cDefScaleY, 1.0f);
+    mAssetObject.addFloat(JSON_SCALE_Z,  cDefScaleZ, 1.0f);
+    mAssetObject.addFloat(JSON_YAW,      cDefYaw);
+    cProject->save(mAssetObject, cModel);
   }
 
   std::unique_ptr<ModelInstance> Model::createInstance() {

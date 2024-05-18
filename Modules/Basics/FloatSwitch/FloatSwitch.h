@@ -37,21 +37,22 @@ namespace IsoRealms::Basics {
   class FloatSwitch final : public AssetSwitchWithTransition<IFloat> {
     public:
     FloatSwitch(IProject* project, Basics* basics);
-    FloatSwitch(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data);
+    FloatSwitch(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
 
     /*********************\
      * Implements IFloat *
     \*********************/
     float getValue() const override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
     private:
 
-    // DOM strings.
-    static const std::string ATTRIBUTE_VALUE;
+    // JSON members.
+    static const std::string JSON_VALUE;
 
     // definition data.
     Float cDefFloat; /// Initial value.

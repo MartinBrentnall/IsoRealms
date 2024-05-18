@@ -18,8 +18,6 @@
  */
 #pragma once
 
-#include "IsoRealms/Persistence/DOMNode.h"
-
 #include "Modules/UI/Layout/ILayoutOffset.h"
 
 namespace IsoRealms::UI {
@@ -30,19 +28,22 @@ namespace IsoRealms::UI {
   class AbsoluteOffset : public ILayoutOffset {
     public:
     AbsoluteOffset(float value);
-    AbsoluteOffset(DOMNode& node);
-    
+    AbsoluteOffset(JSONObject object);
+
     /****************************\
      * Implements ILayoutOffset *
     \****************************/
     float getOffset(float aspectRatio) const override;
-    void save(DOMNodeWriter* node, Layout* layout) const override;
-    
+    void save(JSONObject object, Layout* layout) const override;
+
     private:
 
-    // DOM strings.
-    static const std::string ATTRIBUTE_VALUE;
-    
+    // JSON members.
+    static const std::string JSON_TYPE;
+    static const std::string JSON_VALUE;
+
+    static const std::string TYPE_ABSOLUTE;
+
     // Definition data.
     float cDefValue; // The offset value.
   };

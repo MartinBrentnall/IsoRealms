@@ -51,14 +51,6 @@ else(GLEW_FOUND)
   message(STATUS "GLEW not found.")
 endif(GLEW_FOUND)
 
-set(XercesC_DIR ${PROJECT_SOURCE_DIR})
-find_package(XercesC REQUIRED)
-if(XercesC_FOUND)
-  include_directories(${XercesC_INCLUDE_DIRS})
-else(XercesC_FOUND)
-  message(STATUS "XercesC not found.")
-endif(XercesC_FOUND)
-
 find_package(Lua REQUIRED)
 if(LUA_FOUND)
   include_directories(${LUA_INCLUDE_DIR})
@@ -81,8 +73,6 @@ add_subdirectory(Modules)
 
 include_directories(${PROJECT_SOURCE_DIR})
 
-message("XERCES: ${XercesC_LIBRARIES}")
-
 #set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
 
 add_executable(IsoRealms.bin IsoRealms.cpp)
@@ -98,4 +88,4 @@ endif()
 set_target_properties(IsoRealms.bin PROPERTIES OUTPUT_NAME "IsoRealms")
 set_target_properties(IsoRealms.bin PROPERTIES RUNTIME_OUTPUT_DIRECTORY "Out")
 
-target_link_libraries(IsoRealms.bin IsoRealms sfml-window sfml-system sfml-audio sfml-graphics OpenGL::GL ${OPENGL_glu_LIBRARY} ${GLEW_LIBRARIES} ${XercesC_LIBRARIES} ${LUA_LIBRARIES} ${FREETYPE_LIBRARIES})
+target_link_libraries(IsoRealms.bin IsoRealms sfml-window sfml-system sfml-audio sfml-graphics OpenGL::GL ${OPENGL_glu_LIBRARY} ${GLEW_LIBRARIES} ${LUA_LIBRARIES} ${FREETYPE_LIBRARIES})

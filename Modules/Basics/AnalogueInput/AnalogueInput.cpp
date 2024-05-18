@@ -19,25 +19,24 @@
 #include "AnalogueInput.h"
 
 namespace IsoRealms::Basics {
-  const std::string AnalogueInput::TAG_AXIS                = "Axis";
-  const std::string AnalogueInput::TAG_DIGITAL_TO_ANALOGUE = "DigitalToAnalogue";
-  const std::string AnalogueInput::TAG_INPUT               = "Input";
-
-  const std::string AnalogueInput::ATTRIBUTE_ID   = "id";
-  const std::string AnalogueInput::ATTRIBUTE_NAME = "name";
+  const std::string AnalogueInput::JSON_ID       = "id";
+  const std::string AnalogueInput::JSON_INPUT    = "Input";
+  const std::string AnalogueInput::JSON_MAPPINGS = "mappings";
+  const std::string AnalogueInput::JSON_NAME     = "name";
+  const std::string AnalogueInput::JSON_TYPE     = "type";
 
   AnalogueInput::AnalogueInput(IProject* project, Basics* basics) :
              cRuntimeState(false),
              cLuaBinding(project, this) {
   }
 
-  AnalogueInput::AnalogueInput(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
+  AnalogueInput::AnalogueInput(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
             AnalogueInput(project, basics) {
-    for (DOMNode& mNode : node) {
-      std::string mChildName = mNode.getName();
-      if      (mChildName == TAG_AXIS)                {cDefMapping.emplace_back(std::make_unique<InputMapping>(std::make_shared<AxisMapping>(mNode), mNode.getAttribute((ATTRIBUTE_NAME))));}
-      else if (mChildName == TAG_DIGITAL_TO_ANALOGUE) {cDefMapping.emplace_back(std::make_unique<InputMapping>(std::make_shared<DigitalToAnalogueMapping>(project, mNode), mNode.getAttribute(ATTRIBUTE_NAME)));}
-      else                                            {throw ParseException("Unknown tag for Basics/AnalogueInput: " + mChildName);}
+    for (JSONObject mMappingObject : object.getArray(JSON_MAPPINGS)) {
+      std::string mType = mMappingObject.getString(JSON_TYPE);
+      if      (mType == AxisMapping::TYPE_AXIS)                             {cDefMapping.emplace_back(std::make_unique<InputMapping>(std::make_shared<AxisMapping>(mMappingObject), "TODO: Remove This"));}
+      else if (mType == DigitalToAnalogueMapping::TYPE_DIGITAL_TO_ANALOGUE) {cDefMapping.emplace_back(std::make_unique<InputMapping>(std::make_shared<DigitalToAnalogueMapping>(project, mMappingObject), mMappingObject.getString(JSON_NAME)));}
+      else                                                                  {throw ParseException("Unknown tag for Basics/AnalogueInput: " + mType);}
     }
   }
 
@@ -59,9 +58,11 @@ namespace IsoRealms::Basics {
     }
   }
 
-  void AnalogueInput::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
+  void AnalogueInput::save(JSONObject object, IAssetIdentifier* identifier) const {
+    JSONArray mMappingsArray = object.addArray(JSON_MAPPINGS);
     for (const std::unique_ptr<InputMapping>& mMapping : cDefMapping) {
-      mMapping->save(node);
+      JSONObject mMappingObject = mMappingsArray.addObject();
+      mMapping->save(mMappingObject);
     }
   }
 
@@ -102,6 +103,10 @@ namespace IsoRealms::Basics {
     return renderIcon();
   }
 
+  void AnalogueInput::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
+
   std::string AnalogueInput::getInputsString() const {
     const std::vector<std::unique_ptr<InputMapping>>& mMapping = cRuntimeMapping.empty() ? cDefMapping : cRuntimeMapping;
     std::string mInputsString;
@@ -134,27 +139,29 @@ namespace IsoRealms::Basics {
     cRuntimeMapping.clear();
   }
 
-  void AnalogueInput::loadCustomMapping(DOMNode& node) {
+  void AnalogueInput::loadCustomMapping(JSONObject object) {
     cRuntimeMapping.clear();
-    for (DOMNode& mNode : node) {
-      std::string mChildName = mNode.getName();
-      if (mChildName == TAG_INPUT) {
-        std::string mInputID = mNode.getAttribute(ATTRIBUTE_ID);
+    for (JSONObject mMappingsObject : object.getArray(JSON_MAPPINGS)) {
+      std::string mMappingType = mMappingsObject.getString(JSON_TYPE);
+      if (mMappingType == JSON_INPUT) {
+        std::string mInputID = mMappingsObject.getString(JSON_ID);
         for (const std::unique_ptr<InputMapping>& mMapping : cDefMapping) {
           if (mMapping->getName() == mInputID) {
-            mMapping->loadCustomMapping(mNode);
+            mMapping->loadCustomMapping(mMappingsObject);
             break;
           }
         }
       } else {
-        throw ParseException("Unknown tag for Basics/AnalogueInput: " + mChildName);
+        throw ParseException("Unknown tag for Basics/AnalogueInput: " + mMappingType);
       }
     }
   }
 
-  void AnalogueInput::saveCustomMapping(DOMNodeWriter* node) const {
+  void AnalogueInput::saveCustomMapping(JSONObject object) const {
+    JSONArray mMappingsArray = object.addArray(JSON_MAPPINGS);
     for (const std::unique_ptr<InputMapping>& mMapping : cDefMapping) {
-      mMapping->save(node);
+      JSONObject mMappingsObject = mMappingsArray.addObject();
+      mMapping->save(mMappingsObject);
     }
     // TODO
 //     for (const std::unique_ptr<InputMapping>& mMapping : cRuntimeMapping) {
@@ -179,12 +186,12 @@ namespace IsoRealms::Basics {
     return cState;
   }
 
-  void AnalogueInput::InputMapping::save(DOMNodeWriter* node) const {
-    cPhysicalInput->save(node, cName);
+  void AnalogueInput::InputMapping::save(JSONObject object) const {
+    cPhysicalInput->save(object, cName);
   }
 
-  void AnalogueInput::InputMapping::loadCustomMapping(DOMNode& node) {
-    cPhysicalInput->loadCustomMapping(node);
+  void AnalogueInput::InputMapping::loadCustomMapping(JSONObject object) {
+    cPhysicalInput->loadCustomMapping(object);
   }
 
   void AnalogueInput::InputMapping::registerAssets(IAssetRegistry* assets) {

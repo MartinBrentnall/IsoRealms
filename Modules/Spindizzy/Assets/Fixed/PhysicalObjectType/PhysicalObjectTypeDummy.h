@@ -31,5 +31,6 @@ namespace IsoRealms::Spindizzy {
     IBinding* getBinding(const std::string& id) const override;
     std::string getBindingID(const IBinding* binding) const override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
   };
 }

@@ -22,14 +22,13 @@
 #include "Modules/Spindizzy/World/World.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string ZoneObjectType::TAG_TRAIT = "Trait";
-  
-  const std::string ZoneObjectType::ATTRIBUTE_EDITING_PROCESSOR = "editingProcessor";
-  const std::string ZoneObjectType::ATTRIBUTE_EDITING_RENDERER  = "editingRenderer";
-  const std::string ZoneObjectType::ATTRIBUTE_ID                = "id";
-  const std::string ZoneObjectType::ATTRIBUTE_RUNTIME_PROCESSOR = "runtimeProcessor";
-  const std::string ZoneObjectType::ATTRIBUTE_RUNTIME_RENDERER  = "runtimeRenderer";
-  const std::string ZoneObjectType::ATTRIBUTE_TYPE              = "type";
+  const std::string ZoneObjectType::JSON_EDITING_PROCESSOR = "editingProcessor";
+  const std::string ZoneObjectType::JSON_EDITING_RENDERER  = "editingRenderer";
+  const std::string ZoneObjectType::JSON_ID                = "id";
+  const std::string ZoneObjectType::JSON_RUNTIME_PROCESSOR = "runtimeProcessor";
+  const std::string ZoneObjectType::JSON_RUNTIME_RENDERER  = "runtimeRenderer";
+  const std::string ZoneObjectType::JSON_TRAITS            = "traits";
+  const std::string ZoneObjectType::JSON_TYPE              = "type";
 
   const std::string ZoneObjectType::BIND_TO_TRAIT = "Trait";
   const std::string ZoneObjectType::BIND_TO_ZONE  = "Zone";
@@ -38,22 +37,22 @@ namespace IsoRealms::Spindizzy {
             cDefSpindizzy(*spindizzy) {
   }
   
-  ZoneObjectType::ZoneObjectType(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
+  ZoneObjectType::ZoneObjectType(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
             ZoneObjectType(project, spindizzy) {
-    for (DOMNode& mNode : node) {
-      std::string mTag = mNode.getName();
-      if (mTag == TAG_TRAIT) {
-//         std::string mTraitID = mNode.getAttribute(ATTRIBUTE_ID);
+//     for (OMNode& mNode : node) {
+//       std::string mTag = mNode.getName();
+//       if (mTag == AG_TRAIT) {
+//         std::string mTraitID = mNode.getAttribute(JSON_ID);
 //         IZoneObjectTypeTrait* mTrait = cDefSpindizzy.createZoneObjectTypeTrait(mNode, this);
 //         cDefTypeTraits.emplace(mTraitID, mTrait);
-      } else {
-        throw ResourceInitException("ERROR: ZoneObjectType::ZoneObjectType: Unknown tag \"" + mTag + "\"");
-      }
-    }
-    cDefRuntimeRendererID = node.getAttribute(ATTRIBUTE_RUNTIME_RENDERER);
-    cDefEditingRendererID = node.getAttribute(ATTRIBUTE_EDITING_RENDERER);
-    cDefRuntimeProcessorID = node.getAttribute(ATTRIBUTE_RUNTIME_PROCESSOR);
-    cDefEditingProcessorID = node.getAttribute(ATTRIBUTE_EDITING_PROCESSOR);
+//       } else {
+//         throw ResourceInitException("ERROR: ZoneObjectType::ZoneObjectType: Unknown tag \"" + mTag + "\"");
+//       }
+//     }
+    cDefRuntimeRendererID = object.getString(JSON_RUNTIME_RENDERER);
+    cDefEditingRendererID = object.getString(JSON_EDITING_RENDERER);
+    cDefRuntimeProcessorID = object.getString(JSON_RUNTIME_PROCESSOR);
+    cDefEditingProcessorID = object.getString(JSON_EDITING_PROCESSOR);
   }
 
   void ZoneObjectType::registerAssets(IAssetRegistry* assets) {
@@ -64,12 +63,13 @@ namespace IsoRealms::Spindizzy {
     // TODO
   }
   
-  void ZoneObjectType::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
+  void ZoneObjectType::save(JSONObject object, IAssetIdentifier* identifier) const {
+    JSONArray mTraitsArray = object.addArray(JSON_TRAITS);
     for (const std::pair<const std::string, IZoneObjectTypeTrait*>& mPair : cDefTypeTraits) {
-      DOMNodeWriter mTraitNode = node->addBranch(TAG_TRAIT);
-      mTraitNode.addAttribute(ATTRIBUTE_ID, mPair.first);
-//      mTraitNode.addAttribute(ATTRIBUTE_TYPE, cDefSpindizzy.getID(mPair.second));
-      mPair.second->save(mTraitNode);
+      JSONObject mTraitObject = mTraitsArray.addObject();
+      mTraitObject.addString(JSON_ID, mPair.first);
+//      mTraitObject.addString(JSON_TYPE, cDefSpindizzy.getID(mPair.second));
+      mPair.second->save(mTraitObject);
     }
   }
 
@@ -159,6 +159,10 @@ namespace IsoRealms::Spindizzy {
 
   bool ZoneObjectType::renderAssetIcon() const {
     return false;
+  }
+
+  void ZoneObjectType::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   ZoneObjectType::Pen::Pen(ZoneObjectType& parent, WorldEditor* editor) :

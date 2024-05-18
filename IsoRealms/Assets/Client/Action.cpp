@@ -24,26 +24,26 @@ namespace IsoRealms {
             cAction(cProject->createLiteralAction(this)) {
   }
 
-  void Action::init(DOMNode& node, const std::string& tag, IBindingRegistry* localArgs, const std::string& id) {
-    if (node.containsNode(tag)) {
-      cProject->init([this, &node, tag, localArgs, id](IAssets* assets) {
-        set(node, tag, localArgs, id);
+  void Action::init(JSONObject object, const std::string& tag, IBindingRegistry* localArgs, const std::string& id) {
+    if (object.hasMember(tag)) {
+      cProject->init([this, object, tag, localArgs, id](IAssets* assets) {
+        set(object, tag, localArgs, id);
       });
     }
   }
 
-  void Action::set(DOMNode& node, const std::string& tag, IBindingRegistry* localArgs, const std::string& id) {
+  void Action::set(JSONObject object, const std::string& tag, IBindingRegistry* localArgs, const std::string& id) {
     cProject->release(this, cAction);
-    cAction = cProject->getAction(this, node, tag, localArgs, id);
+    cAction = cProject->getAction(this, object, tag, localArgs, id);
   }
 
   void Action::execute() {
     cAction->execute();
   }
 
-  void Action::save(DOMNodeWriter* node, const std::string& tag) const {
-    DOMNodeWriter mAssetNode = node->addBranch(tag);
-    cAction->save(&mAssetNode, cProject);
+  void Action::save(JSONObject object, const std::string& name) const {
+    JSONObject mAssetObject = object.addObject(name);
+    cAction->save(mAssetObject, cProject);
   }
 
   void Action::relinquish(IAction* asset) {

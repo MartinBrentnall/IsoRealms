@@ -22,8 +22,6 @@
 #include <iostream>
 
 #include "IsoRealms/Assets/Type/IColour.h"
-#include "IsoRealms/Persistence/DOMNode.h"
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
 #include "IsoRealms/IAssets.h"
 #include "IsoRealms/IAssetIdentifier.h"
 #include "IsoRealms/IAssetRegistry.h"
@@ -32,6 +30,11 @@
 namespace IsoRealms {
   class LiteralColour : public IColour {
     private:
+    static const std::string JSON_ALPHA;
+    static const std::string JSON_BLUE;
+    static const std::string JSON_GREEN;
+    static const std::string JSON_RED;
+
     float cRed;   /// Red intensity
     float cGreen; /// Green intensity
     float cBlue;  /// Blue intensity
@@ -90,6 +93,6 @@ namespace IsoRealms {
     /**********************************\
      * Implements IAsset from IColour *
     \**********************************/
-    void saveAsset(DOMNodeWriter* node) const override;
+    void saveAsset(JSONObject object) const override;
   };
 }

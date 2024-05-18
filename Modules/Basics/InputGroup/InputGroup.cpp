@@ -19,24 +19,18 @@
 #include "InputGroup.h"
 
 namespace IsoRealms::Basics {
-  const std::string InputGroup::TAG_ELEMENT       = "Element";
-  const std::string InputGroup::TAG_INPUT_HANDLER = "InputHandler";
+  const std::string InputGroup::JSON_INPUT  = "input";
+  const std::string InputGroup::JSON_INPUTS = "inputs";
 
   const std::string InputGroup::PROPERTY_INPUT_HANDLER = "Input";
   
   InputGroup::InputGroup(IProject* project, Basics* basics) {
   }
   
-  InputGroup::InputGroup(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
+  InputGroup::InputGroup(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
             InputGroup(project, basics) {
-    for (DOMNode& mChild : node) {
-      std::string mName = mChild.getName();
-      if (mName == TAG_ELEMENT) {
-        cDefInputHandlers.emplace_back(std::make_unique<InputHandler>(project));
-        cDefInputHandlers.back()->init(mChild, TAG_INPUT_HANDLER);
-      } else {
-        throw ParseException("Unknown tag for Basics/InputGroup: " + mName);
-      }
+    for (JSONObject mInputObject : object.getArray(JSON_INPUTS)) {
+      cDefInputHandlers.emplace_back(std::make_unique<InputHandler>(project)).get()->init(mInputObject, JSON_INPUT);
     }
   }
 
@@ -48,10 +42,11 @@ namespace IsoRealms::Basics {
     assets->remove(this);
   }
 
-  void InputGroup::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
+  void InputGroup::save(JSONObject object, IAssetIdentifier* identifier) const {
+    JSONArray mInputsArray = object.addArray(JSON_INPUTS);
     for (const std::unique_ptr<InputHandler>& mInputHandler : cDefInputHandlers) {
-      DOMNodeWriter mElementNode = node->addBranch(TAG_ELEMENT);
-      mInputHandler->save(&mElementNode, TAG_INPUT_HANDLER);
+      JSONObject mInputObject = mInputsArray.addObject();
+      mInputHandler->save(mInputObject, JSON_INPUT);
     }
   }
 
@@ -79,5 +74,9 @@ namespace IsoRealms::Basics {
 
   bool InputGroup::renderAssetIcon() const {
     return renderIcon();
+  }
+
+  void InputGroup::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 }

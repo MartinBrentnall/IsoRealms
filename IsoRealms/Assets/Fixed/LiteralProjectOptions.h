@@ -29,5 +29,6 @@ namespace IsoRealms {
     \******************************/
     Options getFixedOptions() override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
   };
 }

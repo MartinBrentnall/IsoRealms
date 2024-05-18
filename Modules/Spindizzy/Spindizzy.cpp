@@ -99,27 +99,27 @@ namespace IsoRealms::Spindizzy {
                     cRuntimeParameterZone1(project, nullptr),
                     cRuntimeParameterZone2(project, nullptr),
                     cRuntimeLocalBindingIdentifier(nullptr) {
-    registry->add(&cResourceAlien,              TAG_RESOURCE_ALIEN,                NAME_RESOURCE_ALIEN,                RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS);
-    registry->add(&cResourceBall,               TAG_RESOURCE_BALL,                 NAME_RESOURCE_BALL,                 RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS);
-    registry->add(&cResourceBoundaryHandler,    TAG_RESOURCE_BOUNDARY_HANDLER,     NAME_RESOURCE_BOUNDARY_HANDLER,     IsoRealmsConstants::RESOURCE_CATEGORY_LOGIC_AND_INPUT);
-    registry->add(&cResourceC64LiftGraphics,    TAG_RESOURCE_C64_LIFT_GRAPHICS,    NAME_RESOURCE_C64_LIFT_GRAPHICS,    RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS);
-    registry->add(&cResourceC64TerrainGraphics, TAG_RESOURCE_C64_TERRAIN_GRAPHICS, NAME_RESOURCE_C64_TERRAIN_GRAPHICS, RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS);
-    registry->add(&cResourceCollisionHandler,   TAG_RESOURCE_COLLISION_HANDLER,    NAME_RESOURCE_COLLISION_HANDLER,    IsoRealmsConstants::RESOURCE_CATEGORY_LOGIC_AND_INPUT);
-    registry->add(&cResourceDamageIndicator,    TAG_RESOURCE_DAMAGE_INDICATOR,     NAME_RESOURCE_DAMAGE_INDICATOR,     RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS);
-    registry->add(&cResourceDebrisChunk,        TAG_RESOURCE_DEBRIS_CHUNK,         NAME_RESOURCE_DEBRIS_CHUNK,         RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS);
-    registry->add(&cResourceGyroscope,          TAG_RESOURCE_GYROSCOPE,            NAME_RESOURCE_GYROSCOPE,            RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS);
-    registry->add(&cResourcePickUp,             TAG_RESOURCE_PICK_UP,              NAME_RESOURCE_PICK_UP,              RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS);
-    registry->add(&cResourcePlayer,             TAG_RESOURCE_PLAYER,               NAME_RESOURCE_PLAYER,               RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS);
-    registry->add(&cResourceTop,                TAG_RESOURCE_TOP,                  NAME_RESOURCE_TOP,                  RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS);
-    registry->add(&cResourceJewel,              TAG_RESOURCE_JEWEL,                NAME_RESOURCE_JEWEL,                RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS);
-    registry->add(&cResourceLift,               TAG_RESOURCE_LIFT,                 NAME_RESOURCE_LIFT,                 RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS);
-    registry->add(&cResourceTerrain,            TAG_RESOURCE_TERRAIN,              NAME_RESOURCE_TERRAIN,              RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS);
-    registry->add(&cResourceTerrainState,       TAG_RESOURCE_TERRAIN_STATE,        NAME_RESOURCE_TERRAIN_STATE,        IsoRealmsConstants::RESOURCE_CATEGORY_LOGIC_AND_INPUT);
-    registry->add(&cResourceThemeSet,           TAG_RESOURCE_THEME_SET,            NAME_RESOURCE_THEME_SET,            RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS);
-    registry->add(&cResourceWorld,              TAG_RESOURCE_WORLD,                NAME_RESOURCE_WORLD,                RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS);
-    registry->add(&cResourceWorldView,          TAG_RESOURCE_WORLD_VIEW,           NAME_RESOURCE_WORLD_VIEW,           IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
-    registry->add(&cResourceZone,               TAG_RESOURCE_ZONE,                 NAME_RESOURCE_ZONE,                 RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS);
-    registry->add(&cResourceZoneObject,         TAG_RESOURCE_ZONE_OBJECT,          NAME_RESOURCE_ZONE_OBJECT,          RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS);
+    registry->add(&cResourceAlien,              ID_RESOURCE_ALIEN,                NAME_RESOURCE_ALIEN,                RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS);
+    registry->add(&cResourceBall,               ID_RESOURCE_BALL,                 NAME_RESOURCE_BALL,                 RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS);
+    registry->add(&cResourceBoundaryHandler,    ID_RESOURCE_BOUNDARY_HANDLER,     NAME_RESOURCE_BOUNDARY_HANDLER,     IsoRealmsConstants::RESOURCE_CATEGORY_LOGIC_AND_INPUT);
+    registry->add(&cResourceC64LiftGraphics,    ID_RESOURCE_C64_LIFT_GRAPHICS,    NAME_RESOURCE_C64_LIFT_GRAPHICS,    RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS);
+    registry->add(&cResourceC64TerrainGraphics, ID_RESOURCE_C64_TERRAIN_GRAPHICS, NAME_RESOURCE_C64_TERRAIN_GRAPHICS, RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS);
+    registry->add(&cResourceCollisionHandler,   ID_RESOURCE_COLLISION_HANDLER,    NAME_RESOURCE_COLLISION_HANDLER,    IsoRealmsConstants::RESOURCE_CATEGORY_LOGIC_AND_INPUT);
+    registry->add(&cResourceDamageIndicator,    ID_RESOURCE_DAMAGE_INDICATOR,     NAME_RESOURCE_DAMAGE_INDICATOR,     RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS);
+    registry->add(&cResourceDebrisChunk,        ID_RESOURCE_DEBRIS_CHUNK,         NAME_RESOURCE_DEBRIS_CHUNK,         RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS);
+    registry->add(&cResourceGyroscope,          ID_RESOURCE_GYROSCOPE,            NAME_RESOURCE_GYROSCOPE,            RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS);
+    registry->add(&cResourcePickUp,             ID_RESOURCE_PICK_UP,              NAME_RESOURCE_PICK_UP,              RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS);
+    registry->add(&cResourcePlayer,             ID_RESOURCE_PLAYER,               NAME_RESOURCE_PLAYER,               RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS);
+    registry->add(&cResourceTop,                ID_RESOURCE_TOP,                  NAME_RESOURCE_TOP,                  RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS);
+    registry->add(&cResourceJewel,              ID_RESOURCE_JEWEL,                NAME_RESOURCE_JEWEL,                RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS);
+    registry->add(&cResourceLift,               ID_RESOURCE_LIFT,                 NAME_RESOURCE_LIFT,                 RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS);
+    registry->add(&cResourceTerrain,            ID_RESOURCE_TERRAIN,              NAME_RESOURCE_TERRAIN,              RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS);
+    registry->add(&cResourceTerrainState,       ID_RESOURCE_TERRAIN_STATE,        NAME_RESOURCE_TERRAIN_STATE,        IsoRealmsConstants::RESOURCE_CATEGORY_LOGIC_AND_INPUT);
+    registry->add(&cResourceThemeSet,           ID_RESOURCE_THEME_SET,            NAME_RESOURCE_THEME_SET,            RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS);
+    registry->add(&cResourceWorld,              ID_RESOURCE_WORLD,                NAME_RESOURCE_WORLD,                RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS);
+    registry->add(&cResourceWorldView,          ID_RESOURCE_WORLD_VIEW,           NAME_RESOURCE_WORLD_VIEW,           IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
+    registry->add(&cResourceZone,               ID_RESOURCE_ZONE,                 NAME_RESOURCE_ZONE,                 RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS);
+    registry->add(&cResourceZoneObject,         ID_RESOURCE_ZONE_OBJECT,          NAME_RESOURCE_ZONE_OBJECT,          RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS);
         
     // Register Spindizzy built-in asset providers.
     cCameras.add(&cProviderCameraGameplay,     CAMERA_GAMEPLAY,     "Spindizzy");
@@ -237,14 +237,14 @@ namespace IsoRealms::Spindizzy {
   IZoneObjectTypeTrait* Spindizzy::createLiteralZoneObjectTypeTrait(IAssetUser<IZoneObjectTypeTrait>* user) {return cZoneObjectTypeTraits.literal(user, "");}
   IZoneViewType*        Spindizzy::createLiteralZoneViewType(       IAssetUser<IZoneViewType>*        user) {return cZoneViewTypes.literal(       user, "");}
 
-  IBoundaryType*        Spindizzy::getBoundaryType(       IAssetUser<IBoundaryType>*        user, DOMNode& node)                        {return cBoundaryTypes.get(       user, *this,  node, nullptr, true, [this](DOMNode& node, IStateListener<IBoundaryType*>*        listener) -> IBoundaryType*        {return nullptr;});}
-  ICamera*              Spindizzy::getCamera(             IAssetUser<ICamera>*              user, DOMNode& node, WorldView*      owner) {return cCameras.get(             user, *owner, node, nullptr, true, [this](DOMNode& node, IStateListener<ICamera*>*              listener) -> ICamera*              {return nullptr;});}
-  IPhysicalObjectType*  Spindizzy::getPhysicalObjectType( IAssetUser<IPhysicalObjectType>*  user, DOMNode& node)                        {return cPhysicalObjectTypes.get( user, *this,  node, nullptr, true, [this](DOMNode& node, IStateListener<IPhysicalObjectType*>*  listener) -> IPhysicalObjectType*  {return nullptr;});}
-  ISurfacePattern*      Spindizzy::getSurfacePattern(     IAssetUser<ISurfacePattern>*      user, DOMNode& node)                        {return cSurfacePatterns.get(     user, *this,  node, nullptr, true, [this](DOMNode& node, IStateListener<ISurfacePattern*>*      listener) -> ISurfacePattern*      {return nullptr;});}
-  IWallPattern*         Spindizzy::getWallPattern(        IAssetUser<IWallPattern>*         user, DOMNode& node)                        {return cWallPatterns.get(        user, *this,  node, nullptr, true, [this](DOMNode& node, IStateListener<IWallPattern*>*         listener) -> IWallPattern*         {return nullptr;});}
-  IWorldEditorTool*     Spindizzy::getWorldEditorTool(    IAssetUser<IWorldEditorTool>*     user, DOMNode& node)                        {return cWorldEditorTools.get(    user, *this,  node, nullptr, true, [this](DOMNode& node, IStateListener<IWorldEditorTool*>*     listener) -> IWorldEditorTool*     {return nullptr;});}
-  IZoneObjectTypeTrait* Spindizzy::getZoneObjectTypeTrait(IAssetUser<IZoneObjectTypeTrait>* user, DOMNode& node, ZoneObjectType* owner) {return cZoneObjectTypeTraits.get(user, *owner, node, nullptr, true, [this](DOMNode& node, IStateListener<IZoneObjectTypeTrait*>* listener) -> IZoneObjectTypeTrait* {return nullptr;});}
-  IZoneViewType*        Spindizzy::getZoneViewType(       IAssetUser<IZoneViewType>*        user, DOMNode& node, WorldView*      owner) {return cZoneViewTypes.get(       user, *owner, node, nullptr, true, [this](DOMNode& node, IStateListener<IZoneViewType*>*        listener) -> IZoneViewType*        {return nullptr;});}
+  IBoundaryType*        Spindizzy::getBoundaryType(       IAssetUser<IBoundaryType>*        user, JSONObject object)                        {return cBoundaryTypes.get(       user, *this,  object, nullptr, true, [this](JSONObject object, IStateListener<IBoundaryType*>*        listener) -> IBoundaryType*        {return nullptr;});}
+  ICamera*              Spindizzy::getCamera(             IAssetUser<ICamera>*              user, JSONObject object, WorldView*      owner) {return cCameras.get(             user, *owner, object, nullptr, true, [this](JSONObject object, IStateListener<ICamera*>*              listener) -> ICamera*              {return nullptr;});}
+  IPhysicalObjectType*  Spindizzy::getPhysicalObjectType( IAssetUser<IPhysicalObjectType>*  user, JSONObject object)                        {return cPhysicalObjectTypes.get( user, *this,  object, nullptr, true, [this](JSONObject object, IStateListener<IPhysicalObjectType*>*  listener) -> IPhysicalObjectType*  {return nullptr;});}
+  ISurfacePattern*      Spindizzy::getSurfacePattern(     IAssetUser<ISurfacePattern>*      user, JSONObject object)                        {return cSurfacePatterns.get(     user, *this,  object, nullptr, true, [this](JSONObject object, IStateListener<ISurfacePattern*>*      listener) -> ISurfacePattern*      {return nullptr;});}
+  IWallPattern*         Spindizzy::getWallPattern(        IAssetUser<IWallPattern>*         user, JSONObject object)                        {return cWallPatterns.get(        user, *this,  object, nullptr, true, [this](JSONObject object, IStateListener<IWallPattern*>*         listener) -> IWallPattern*         {return nullptr;});}
+  IWorldEditorTool*     Spindizzy::getWorldEditorTool(    IAssetUser<IWorldEditorTool>*     user, JSONObject object)                        {return cWorldEditorTools.get(    user, *this,  object, nullptr, true, [this](JSONObject object, IStateListener<IWorldEditorTool*>*     listener) -> IWorldEditorTool*     {return nullptr;});}
+  IZoneObjectTypeTrait* Spindizzy::getZoneObjectTypeTrait(IAssetUser<IZoneObjectTypeTrait>* user, JSONObject object, ZoneObjectType* owner) {return cZoneObjectTypeTraits.get(user, *owner, object, nullptr, true, [this](JSONObject object, IStateListener<IZoneObjectTypeTrait*>* listener) -> IZoneObjectTypeTrait* {return nullptr;});}
+  IZoneViewType*        Spindizzy::getZoneViewType(       IAssetUser<IZoneViewType>*        user, JSONObject object, WorldView*      owner) {return cZoneViewTypes.get(       user, *owner, object, nullptr, true, [this](JSONObject object, IStateListener<IZoneViewType*>*        listener) -> IZoneViewType*        {return nullptr;});}
 
   void Spindizzy::release(IAssetUser<IBoundaryType>*        user, IBoundaryType*        asset) {cBoundaryTypes.release(       user, asset);}
   void Spindizzy::release(IAssetUser<ICamera>*              user, ICamera*              asset) {cCameras.release(             user, asset);}
@@ -255,14 +255,14 @@ namespace IsoRealms::Spindizzy {
   void Spindizzy::release(IAssetUser<IZoneObjectTypeTrait>* user, IZoneObjectTypeTrait* asset) {cZoneObjectTypeTraits.release(user, asset);}
   void Spindizzy::release(IAssetUser<IZoneViewType>*        user, IZoneViewType*        asset) {cZoneViewTypes.release(       user, asset);}
 
-  void Spindizzy::save(DOMNodeWriter* node, IBoundaryType*        asset) const {cBoundaryTypes.save(       node, asset);}
-  void Spindizzy::save(DOMNodeWriter* node, ICamera*              asset) const {cCameras.save(             node, asset);}
-  void Spindizzy::save(DOMNodeWriter* node, IPhysicalObjectType*  asset) const {cPhysicalObjectTypes.save( node, asset);}
-  void Spindizzy::save(DOMNodeWriter* node, ISurfacePattern*      asset) const {cSurfacePatterns.save(     node, asset);}
-  void Spindizzy::save(DOMNodeWriter* node, IWallPattern*         asset) const {cWallPatterns.save(        node, asset);}
-  void Spindizzy::save(DOMNodeWriter* node, IWorldEditorTool*     asset) const {cWorldEditorTools.save(    node, asset);}
-  void Spindizzy::save(DOMNodeWriter* node, IZoneObjectTypeTrait* asset) const {cZoneObjectTypeTraits.save(node, asset);}
-  void Spindizzy::save(DOMNodeWriter* node, IZoneViewType*        asset) const {cZoneViewTypes.save(       node, asset);}
+  void Spindizzy::save(JSONObject object, IBoundaryType*        asset) const {cBoundaryTypes.save(       object, asset);}
+  void Spindizzy::save(JSONObject object, ICamera*              asset) const {cCameras.save(             object, asset);}
+  void Spindizzy::save(JSONObject object, IPhysicalObjectType*  asset) const {cPhysicalObjectTypes.save( object, asset);}
+  void Spindizzy::save(JSONObject object, ISurfacePattern*      asset) const {cSurfacePatterns.save(     object, asset);}
+  void Spindizzy::save(JSONObject object, IWallPattern*         asset) const {cWallPatterns.save(        object, asset);}
+  void Spindizzy::save(JSONObject object, IWorldEditorTool*     asset) const {cWorldEditorTools.save(    object, asset);}
+  void Spindizzy::save(JSONObject object, IZoneObjectTypeTrait* asset) const {cZoneObjectTypeTraits.save(object, asset);}
+  void Spindizzy::save(JSONObject object, IZoneViewType*        asset) const {cZoneViewTypes.save(       object, asset);}
 
   std::vector<IBoundaryType*> Spindizzy::getAllBoundaryTypes() {
     std::vector<IBoundaryType*> mTypes;
@@ -444,54 +444,45 @@ namespace IsoRealms::Spindizzy {
     return cRuntimePaused;
   }
 
-  void Spindizzy::load(IProject* project, DOMNode& node) {
-    cAutomaticZoneXSize = node.getIntegerAttribute(ATTRIBUTE_AUTOMATIC_ZONE_X_SIZE, DEFAULT_AUTOMATIC_ZONE_X_SIZE);
-    cAutomaticZoneYSize = node.getIntegerAttribute(ATTRIBUTE_AUTOMATIC_ZONE_Y_SIZE, DEFAULT_AUTOMATIC_ZONE_Y_SIZE);
-    cAutomaticZoneZSize = node.getIntegerAttribute(ATTRIBUTE_AUTOMATIC_ZONE_Z_SIZE, DEFAULT_AUTOMATIC_ZONE_Z_SIZE);
-    cEditorMinX = node.getIntegerAttribute(ATTRIBUTE_EDITOR_MIN_X, DEFAULT_EDITOR_MIN_X);
-    cEditorMaxX = node.getIntegerAttribute(ATTRIBUTE_EDITOR_MAX_X, DEFAULT_EDITOR_MAX_X);
-    cEditorMinY = node.getIntegerAttribute(ATTRIBUTE_EDITOR_MIN_Y, DEFAULT_EDITOR_MIN_Y);
-    cEditorMaxY = node.getIntegerAttribute(ATTRIBUTE_EDITOR_MAX_Y, DEFAULT_EDITOR_MAX_Y);
-    cEditorMinZ = node.getIntegerAttribute(ATTRIBUTE_EDITOR_MIN_Z, DEFAULT_EDITOR_MIN_Z);
-    cEditorMaxZ = node.getIntegerAttribute(ATTRIBUTE_EDITOR_MAX_Z, DEFAULT_EDITOR_MAX_Z);
-    cDefaultWorldEditorTool.init(node.getNode(TAG_DEFAULT_WORLD_EDITOR_TOOL));
-    project->init([this, &node](IAssets* assets) {
-      cAutomaticZoneManagementType = cResourceZone.getResource(node.getAttribute(ATTRIBUTE_AUTOMATIC_ZONE_MANAGEMENT), false);
-      cDefaultThemeSet             = getThemeSet(node.getAttribute(ATTRIBUTE_DEFAULT_THEME_SET));
-      for (DOMNode& mNode : node) {
-        std::string mName = mNode.getName();
-        if (mName == TAG_EDITING_TOOL) {
-          cAvailableWorldEditorTools.emplace_back(std::make_unique<WorldEditorTool>(this)).get()->set(mNode);
-        } else if (mName == TAG_DEFAULT_WORLD_EDITOR_TOOL) {
-          // Nothing to do.
-        } else {
-          throw ResourceInitException("ERROR: Spindizzy::load: Unknown tag \"" + mName + "\".");
-        }
+  void Spindizzy::load(IProject* project, JSONObject object) {
+    cAutomaticZoneXSize = object.getInteger(JSON_AUTOMATIC_ZONE_X_SIZE, DEFAULT_AUTOMATIC_ZONE_X_SIZE);
+    cAutomaticZoneYSize = object.getInteger(JSON_AUTOMATIC_ZONE_Y_SIZE, DEFAULT_AUTOMATIC_ZONE_Y_SIZE);
+    cAutomaticZoneZSize = object.getInteger(JSON_AUTOMATIC_ZONE_Z_SIZE, DEFAULT_AUTOMATIC_ZONE_Z_SIZE);
+    cEditorMinX = object.getInteger(JSON_EDITOR_MIN_X, DEFAULT_EDITOR_MIN_X);
+    cEditorMaxX = object.getInteger(JSON_EDITOR_MAX_X, DEFAULT_EDITOR_MAX_X);
+    cEditorMinY = object.getInteger(JSON_EDITOR_MIN_Y, DEFAULT_EDITOR_MIN_Y);
+    cEditorMaxY = object.getInteger(JSON_EDITOR_MAX_Y, DEFAULT_EDITOR_MAX_Y);
+    cEditorMinZ = object.getInteger(JSON_EDITOR_MIN_Z, DEFAULT_EDITOR_MIN_Z);
+    cEditorMaxZ = object.getInteger(JSON_EDITOR_MAX_Z, DEFAULT_EDITOR_MAX_Z);
+    cDefaultWorldEditorTool.init(object.getObject(JSON_DEFAULT_WORLD_EDITOR_TOOL));
+    project->init([this, object](IAssets* assets) {
+      cAutomaticZoneManagementType = cResourceZone.getResource(object.getString(JSON_AUTOMATIC_ZONE_MANAGEMENT), false);
+      cDefaultThemeSet             = getThemeSet(object.getString(JSON_DEFAULT_THEME_SET));
+      for (JSONObject mEditingToolObject : object.getArray(JSON_EDITOR_TOOLS)) {
+        cAvailableWorldEditorTools.emplace_back(std::make_unique<WorldEditorTool>(this)).get()->set(mEditingToolObject.getObject(JSON_EDITOR_TOOL));
       }
     });
   }
-  
-  void Spindizzy::save(DOMNodeWriter* node, IAssetIdentifier* identifier) {
-    node->addAttribute(ATTRIBUTE_AUTOMATIC_ZONE_X_SIZE,     cAutomaticZoneXSize, DEFAULT_AUTOMATIC_ZONE_X_SIZE);
-    node->addAttribute(ATTRIBUTE_AUTOMATIC_ZONE_Y_SIZE,     cAutomaticZoneYSize, DEFAULT_AUTOMATIC_ZONE_Y_SIZE);
-    node->addAttribute(ATTRIBUTE_AUTOMATIC_ZONE_Z_SIZE,     cAutomaticZoneZSize, DEFAULT_AUTOMATIC_ZONE_Z_SIZE);
-    node->addAttribute(ATTRIBUTE_EDITOR_MIN_X,              cEditorMinX,         DEFAULT_EDITOR_MIN_X);
-    node->addAttribute(ATTRIBUTE_EDITOR_MAX_X,              cEditorMaxX,         DEFAULT_EDITOR_MAX_X);
-    node->addAttribute(ATTRIBUTE_EDITOR_MIN_Y,              cEditorMinY,         DEFAULT_EDITOR_MIN_Y);
-    node->addAttribute(ATTRIBUTE_EDITOR_MAX_Y,              cEditorMaxY,         DEFAULT_EDITOR_MAX_Y);
-    node->addAttribute(ATTRIBUTE_EDITOR_MIN_Z,              cEditorMinZ,         DEFAULT_EDITOR_MIN_Z);
-    node->addAttribute(ATTRIBUTE_EDITOR_MAX_Z,              cEditorMaxZ,         DEFAULT_EDITOR_MAX_Z);
-    node->addAttribute(ATTRIBUTE_AUTOMATIC_ZONE_MANAGEMENT, getID(cAutomaticZoneManagementType));
-    node->addAttribute(ATTRIBUTE_DEFAULT_THEME_SET,         getID(cDefaultThemeSet));
-    cDefaultWorldEditorTool.save(node, TAG_DEFAULT_WORLD_EDITOR_TOOL);
-    // TODO
-//     node->addAttribute(TAG_DEFAULT_WORLD_EDITOR_TOOL, getID(cDefaultWorldEditorTool));
-//     for (IWorldEditorTool* mTool : cAvailableWorldEditorTools) {
-//       DOMNodeWriter mToolNode = node->addBranch(TAG_EDITING_TOOL);
-//       mToolNode.addAttribute(ATTRIBUTE_ID, getID(mTool));
-//     }
+
+  void Spindizzy::save(JSONObject object, IAssetIdentifier* identifier) {
+    object.addInteger(JSON_AUTOMATIC_ZONE_X_SIZE,     cAutomaticZoneXSize, DEFAULT_AUTOMATIC_ZONE_X_SIZE);
+    object.addInteger(JSON_AUTOMATIC_ZONE_Y_SIZE,     cAutomaticZoneYSize, DEFAULT_AUTOMATIC_ZONE_Y_SIZE);
+    object.addInteger(JSON_AUTOMATIC_ZONE_Z_SIZE,     cAutomaticZoneZSize, DEFAULT_AUTOMATIC_ZONE_Z_SIZE);
+    object.addInteger(JSON_EDITOR_MIN_X,              cEditorMinX,         DEFAULT_EDITOR_MIN_X);
+    object.addInteger(JSON_EDITOR_MAX_X,              cEditorMaxX,         DEFAULT_EDITOR_MAX_X);
+    object.addInteger(JSON_EDITOR_MIN_Y,              cEditorMinY,         DEFAULT_EDITOR_MIN_Y);
+    object.addInteger(JSON_EDITOR_MAX_Y,              cEditorMaxY,         DEFAULT_EDITOR_MAX_Y);
+    object.addInteger(JSON_EDITOR_MIN_Z,              cEditorMinZ,         DEFAULT_EDITOR_MIN_Z);
+    object.addInteger(JSON_EDITOR_MAX_Z,              cEditorMaxZ,         DEFAULT_EDITOR_MAX_Z);
+    object.addString(JSON_AUTOMATIC_ZONE_MANAGEMENT, getID(cAutomaticZoneManagementType));
+    object.addString(JSON_DEFAULT_THEME_SET,         getID(cDefaultThemeSet));
+    cDefaultWorldEditorTool.save(object, JSON_DEFAULT_WORLD_EDITOR_TOOL);
+    JSONArray mEditorToolsArray = object.addArray(JSON_EDITOR_TOOLS);
+    for (std::unique_ptr<WorldEditorTool>& mTool : cAvailableWorldEditorTools) {
+      mTool->save(mEditorToolsArray.addObject(), JSON_EDITOR_TOOL);
+    }
   }
-  
+
   void Spindizzy::registerAssets(IAssetRegistry* assets) {
     assets->add(&cRuntimeParameterAlien,          "Alien",          "Spindizzy");
     assets->add(&cRuntimeParameterFallDistance,   "FallDistance",   "Spindizzy");
@@ -549,7 +540,10 @@ namespace IsoRealms::Spindizzy {
     remover->remove(&cLuaBinding);
   }
 
-  void Spindizzy::add(IBoundaryType*       asset, const std::string& id) {cBoundaryTypes.add(      asset, id);}
+  void Spindizzy::add(IBoundaryType*       asset, const std::string& id) {
+    std::cout << "Adding boundary type in Spindizzy module " << this << ": " << &cBoundaryTypes << std::dec << std::endl;
+    cBoundaryTypes.add(      asset, id);
+  }
   void Spindizzy::add(IPhysicalObjectType* asset, const std::string& id) {cPhysicalObjectTypes.add(asset, id);}
   void Spindizzy::add(IWorldEditorTool*    asset, const std::string& id) {cWorldEditorTools.add(   asset, id);}
   
@@ -644,9 +638,9 @@ namespace IsoRealms::Spindizzy {
          :                          nullptr;
   }
 
-  void Spindizzy::saveBinding(DOMNodeWriter* node, const IBinding* binding) const {
+  void Spindizzy::saveBinding(JSONObject object, const IBinding* binding) const {
     if (cRuntimeLocalBindingIdentifier != nullptr) {
-      node->addAttribute("local", cRuntimeLocalBindingIdentifier->getBindingID(binding));
+      object.addString(JSON_LOCAL, cRuntimeLocalBindingIdentifier->getBindingID(binding));
     }
   }
 
@@ -654,27 +648,27 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  const std::string Spindizzy::TAG_RESOURCE_ALIEN                = "Alien";
-  const std::string Spindizzy::TAG_RESOURCE_BALL                 = "Ball";
-  const std::string Spindizzy::TAG_RESOURCE_BOUNDARY_HANDLER     = "BoundaryHandler";
-  const std::string Spindizzy::TAG_RESOURCE_C64_LIFT_GRAPHICS    = "C64LiftGraphics";
-  const std::string Spindizzy::TAG_RESOURCE_C64_TERRAIN_GRAPHICS = "C64TerrainGraphics";
-  const std::string Spindizzy::TAG_RESOURCE_COLLISION_HANDLER    = "CollisionHandler";
-  const std::string Spindizzy::TAG_RESOURCE_DAMAGE_INDICATOR     = "DamageIndicator";
-  const std::string Spindizzy::TAG_RESOURCE_DEBRIS_CHUNK         = "DebrisChunk";
-  const std::string Spindizzy::TAG_RESOURCE_GYROSCOPE            = "Gyroscope";
-  const std::string Spindizzy::TAG_RESOURCE_JEWEL                = "Jewel";
-  const std::string Spindizzy::TAG_RESOURCE_LIFT                 = "Lift";
-  const std::string Spindizzy::TAG_RESOURCE_PICK_UP              = "PickUp";
-  const std::string Spindizzy::TAG_RESOURCE_PLAYER               = "Player";
-  const std::string Spindizzy::TAG_RESOURCE_TERRAIN              = "Terrain";
-  const std::string Spindizzy::TAG_RESOURCE_TERRAIN_STATE        = "TerrainState";
-  const std::string Spindizzy::TAG_RESOURCE_THEME_SET            = "ThemeSet";
-  const std::string Spindizzy::TAG_RESOURCE_TOP                  = "Top";
-  const std::string Spindizzy::TAG_RESOURCE_WORLD                = "World";
-  const std::string Spindizzy::TAG_RESOURCE_WORLD_VIEW           = "WorldView";
-  const std::string Spindizzy::TAG_RESOURCE_ZONE                 = "Zone";
-  const std::string Spindizzy::TAG_RESOURCE_ZONE_OBJECT          = "ZoneObject";
+  const std::string Spindizzy::ID_RESOURCE_ALIEN                = "Alien";
+  const std::string Spindizzy::ID_RESOURCE_BALL                 = "Ball";
+  const std::string Spindizzy::ID_RESOURCE_BOUNDARY_HANDLER     = "BoundaryHandler";
+  const std::string Spindizzy::ID_RESOURCE_C64_LIFT_GRAPHICS    = "C64LiftGraphics";
+  const std::string Spindizzy::ID_RESOURCE_C64_TERRAIN_GRAPHICS = "C64TerrainGraphics";
+  const std::string Spindizzy::ID_RESOURCE_COLLISION_HANDLER    = "CollisionHandler";
+  const std::string Spindizzy::ID_RESOURCE_DAMAGE_INDICATOR     = "DamageIndicator";
+  const std::string Spindizzy::ID_RESOURCE_DEBRIS_CHUNK         = "DebrisChunk";
+  const std::string Spindizzy::ID_RESOURCE_GYROSCOPE            = "Gyroscope";
+  const std::string Spindizzy::ID_RESOURCE_JEWEL                = "Jewel";
+  const std::string Spindizzy::ID_RESOURCE_LIFT                 = "Lift";
+  const std::string Spindizzy::ID_RESOURCE_PICK_UP              = "PickUp";
+  const std::string Spindizzy::ID_RESOURCE_PLAYER               = "Player";
+  const std::string Spindizzy::ID_RESOURCE_TERRAIN              = "Terrain";
+  const std::string Spindizzy::ID_RESOURCE_TERRAIN_STATE        = "TerrainState";
+  const std::string Spindizzy::ID_RESOURCE_THEME_SET            = "ThemeSet";
+  const std::string Spindizzy::ID_RESOURCE_TOP                  = "Top";
+  const std::string Spindizzy::ID_RESOURCE_WORLD                = "World";
+  const std::string Spindizzy::ID_RESOURCE_WORLD_VIEW           = "WorldView";
+  const std::string Spindizzy::ID_RESOURCE_ZONE                 = "Zone";
+  const std::string Spindizzy::ID_RESOURCE_ZONE_OBJECT          = "ZoneObject";
     
   const std::string Spindizzy::NAME_RESOURCE_ALIEN                = "Spindizzy Aliens";
   const std::string Spindizzy::NAME_RESOURCE_BALL                 = "Spindizzy Ball Textures";
@@ -701,23 +695,21 @@ namespace IsoRealms::Spindizzy {
   const std::string Spindizzy::RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS = "Spindizzy Graphics";
   const std::string Spindizzy::RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS = "Spindizzy Elements";
 
-  const std::string Spindizzy::TAG_DEFAULT_WORLD_EDITOR_TOOL = "DefaultWorldEditorTool";
-  const std::string Spindizzy::TAG_EDITING_TOOL              = "EditingTool";
-
-  const std::string Spindizzy::ATTRIBUTE_AUTOMATIC_ZONE_MANAGEMENT = "automaticZoneManagement";
-  const std::string Spindizzy::ATTRIBUTE_AUTOMATIC_ZONE_X_SIZE     = "automaticZoneXSize";
-  const std::string Spindizzy::ATTRIBUTE_AUTOMATIC_ZONE_Y_SIZE     = "automaticZoneYSize";
-  const std::string Spindizzy::ATTRIBUTE_AUTOMATIC_ZONE_Z_SIZE     = "automaticZoneZSize";
-  const std::string Spindizzy::ATTRIBUTE_EDITOR_MAX_X              = "editorMaxX";
-  const std::string Spindizzy::ATTRIBUTE_EDITOR_MIN_X              = "editorMinX";
-  const std::string Spindizzy::ATTRIBUTE_EDITOR_MAX_Y              = "editorMaxY";
-  const std::string Spindizzy::ATTRIBUTE_EDITOR_MIN_Y              = "editorMinY";
-  const std::string Spindizzy::ATTRIBUTE_EDITOR_MAX_Z              = "editorMaxZ";
-  const std::string Spindizzy::ATTRIBUTE_EDITOR_MIN_Z              = "editorMinZ";
-  const std::string Spindizzy::ATTRIBUTE_DEFAULT_THEME_SET         = "defaultThemeSet";
-  const std::string Spindizzy::ATTRIBUTE_ID                        = "id";
-  const std::string Spindizzy::ATTRIBUTE_PATTERN                   = "pattern";
-  const std::string Spindizzy::ATTRIBUTE_TYPE                      = "type";
+  const std::string Spindizzy::JSON_AUTOMATIC_ZONE_MANAGEMENT = "automaticZoneManagement";
+  const std::string Spindizzy::JSON_AUTOMATIC_ZONE_X_SIZE     = "automaticZoneXSize";
+  const std::string Spindizzy::JSON_AUTOMATIC_ZONE_Y_SIZE     = "automaticZoneYSize";
+  const std::string Spindizzy::JSON_AUTOMATIC_ZONE_Z_SIZE     = "automaticZoneZSize";
+  const std::string Spindizzy::JSON_DEFAULT_THEME_SET         = "defaultThemeSet";
+  const std::string Spindizzy::JSON_DEFAULT_WORLD_EDITOR_TOOL = "defaultWorldEditorTool";
+  const std::string Spindizzy::JSON_EDITOR_MAX_X              = "editorMaxX";
+  const std::string Spindizzy::JSON_EDITOR_MAX_Y              = "editorMaxY";
+  const std::string Spindizzy::JSON_EDITOR_MAX_Z              = "editorMaxZ";
+  const std::string Spindizzy::JSON_EDITOR_MIN_X              = "editorMinX";
+  const std::string Spindizzy::JSON_EDITOR_MIN_Y              = "editorMinY";
+  const std::string Spindizzy::JSON_EDITOR_MIN_Z              = "editorMinZ";
+  const std::string Spindizzy::JSON_EDITOR_TOOL               = "editorTool";
+  const std::string Spindizzy::JSON_EDITOR_TOOLS              = "editorTools";
+  const std::string Spindizzy::JSON_LOCAL                     = "local";
 
   const int Spindizzy::DEFAULT_AUTOMATIC_ZONE_X_SIZE =  8;
   const int Spindizzy::DEFAULT_AUTOMATIC_ZONE_Y_SIZE =  8;

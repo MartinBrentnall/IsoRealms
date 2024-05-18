@@ -21,9 +21,6 @@
 #include <iostream>
 #include <vector>
 
-#include <xercesc/util/PlatformUtils.hpp>
-#include <xercesc/util/IOException.hpp>
-
 #include "IsoRealms/Application.h"
 #include "IsoRealms/Exception/InitException.h"
 #include "IsoRealms/Input/HatHandler.h"

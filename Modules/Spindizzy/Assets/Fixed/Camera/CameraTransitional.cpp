@@ -23,15 +23,6 @@
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string CameraTransitional::TAG_END                = "End";
-  const std::string CameraTransitional::TAG_ON_END_ARRIVAL     = "OnEndArrival";
-  const std::string CameraTransitional::TAG_ON_END_DEPARTURE   = "OnEndDeparture";
-  const std::string CameraTransitional::TAG_ON_START_ARRIVAL   = "OnStartArrival";
-  const std::string CameraTransitional::TAG_ON_START_DEPARTURE = "OnStartDeparture";
-  const std::string CameraTransitional::TAG_START              = "Start";
-
-  const std::string CameraTransitional::ATTRIBUTE_DURATION = "duration";
-
   const unsigned int CameraTransitional::DEFAULT_DURATION = 500U;
 
   CameraTransitional::CameraTransitional(IProject* project, WorldView* view) :
@@ -79,17 +70,17 @@ namespace IsoRealms::Spindizzy {
     });
   }
   
-  CameraTransitional::CameraTransitional(IProject* project, WorldView* view, DOMNode& node) :
+  CameraTransitional::CameraTransitional(IProject* project, WorldView* view, JSONObject object) :
             CameraTransitional(project, view) {
-    cDefStart.set(node.getNode(TAG_START), cParent);
-    cDefEnd.set(node.getNode(TAG_END), cParent);
-    cDefStartDepartureAction.init(node, TAG_ON_START_DEPARTURE);
-    cDefStartArrivalAction.init(node, TAG_ON_START_ARRIVAL);
-    cDefEndDepartureAction.init(node, TAG_ON_END_DEPARTURE);
-    cDefEndArrivalAction.init(node, TAG_ON_END_ARRIVAL);
-    cDefDuration = node.getIntegerAttribute(ATTRIBUTE_DURATION, DEFAULT_DURATION);
+    cDefStart.set(object.getObject(JSON_START), cParent);
+    cDefEnd.set(object.getObject(JSON_END), cParent);
+    cDefStartDepartureAction.init(object, JSON_ON_START_DEPARTURE);
+    cDefStartArrivalAction.init(object, JSON_ON_START_ARRIVAL);
+    cDefEndDepartureAction.init(object, JSON_ON_END_DEPARTURE);
+    cDefEndArrivalAction.init(object, JSON_ON_END_ARRIVAL);
+    cDefDuration = object.getInteger(JSON_DURATION, DEFAULT_DURATION);
   }
-  
+
   void CameraTransitional::transitionToStart() {
     cRuntimeEnd = false;
   }
@@ -169,14 +160,14 @@ namespace IsoRealms::Spindizzy {
   bool CameraTransitional::renderAssetIcon() const {
     return false;
   }
-  
-  void CameraTransitional::saveAsset(DOMNodeWriter* node) const {
-    cDefStart.save(node, TAG_START);
-    cDefEnd.save(node, TAG_END);
-    cDefStartDepartureAction.save(node, TAG_ON_START_DEPARTURE);
-    cDefStartArrivalAction.save(node, TAG_ON_START_ARRIVAL);
-    cDefEndDepartureAction.save(node, TAG_ON_END_DEPARTURE);
-    cDefEndArrivalAction.save(node, TAG_ON_END_ARRIVAL);
+
+  void CameraTransitional::saveAsset(JSONObject object) const {
+    cDefStart.save(object, JSON_START);
+    cDefEnd.save(object, JSON_END);
+    cDefStartDepartureAction.save(object, JSON_ON_START_DEPARTURE);
+    cDefStartArrivalAction.save(object, JSON_ON_START_ARRIVAL);
+    cDefEndDepartureAction.save(object, JSON_ON_END_DEPARTURE);
+    cDefEndArrivalAction.save(object, JSON_ON_END_ARRIVAL);
   }
 
   void CameraTransitional::yawChanged(ICamera* camera) {
@@ -199,7 +190,11 @@ namespace IsoRealms::Spindizzy {
   bool CameraTransitional::Yaw::renderAssetIcon() const {
     return false;
   }
-  
+
+  void CameraTransitional::Yaw::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
+
   CameraTransitional::Pitch::Pitch(CameraTransitional& parent) :
             cParent(parent) {
   }
@@ -212,4 +207,16 @@ namespace IsoRealms::Spindizzy {
   bool CameraTransitional::Pitch::renderAssetIcon() const {
     return false;
   }
+
+  void CameraTransitional::Pitch::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
+
+  const std::string CameraTransitional::JSON_DURATION           = "duration";
+  const std::string CameraTransitional::JSON_END                = "end";
+  const std::string CameraTransitional::JSON_ON_END_ARRIVAL     = "onEndArrival";
+  const std::string CameraTransitional::JSON_ON_END_DEPARTURE   = "onEndDeparture";
+  const std::string CameraTransitional::JSON_ON_START_ARRIVAL   = "onStartArrival";
+  const std::string CameraTransitional::JSON_ON_START_DEPARTURE = "onStartDeparture";
+  const std::string CameraTransitional::JSON_START              = "start";
 }

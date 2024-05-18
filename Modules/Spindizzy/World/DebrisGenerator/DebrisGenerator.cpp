@@ -19,28 +19,27 @@
 #include "DebrisGenerator.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string DebrisGenerator::TAG_MODEL = "Model";
-  
-  const std::string DebrisGenerator::ATTRIBUTE_HEIGHT     = "height";
-  const std::string DebrisGenerator::ATTRIBUTE_ID         = "id";
-  const std::string DebrisGenerator::ATTRIBUTE_LIFE       = "life";
-  const std::string DebrisGenerator::ATTRIBUTE_RADIUS     = "radius";
-  const std::string DebrisGenerator::ATTRIBUTE_STEP_REACH = "stepReach";
+  const std::string DebrisGenerator::JSON_APPEARANCE = "appearance";
+  const std::string DebrisGenerator::JSON_HEIGHT     = "height";
+  const std::string DebrisGenerator::JSON_ID         = "id";
+  const std::string DebrisGenerator::JSON_LIFE       = "life";
+  const std::string DebrisGenerator::JSON_RADIUS     = "radius";
+  const std::string DebrisGenerator::JSON_STEP_REACH = "stepReach";
 
   const float        DebrisGenerator::DEFAULT_HEIGHT     = 0.7f;
   const unsigned int DebrisGenerator::DEFAULT_LIFE       = 2000U;
   const float        DebrisGenerator::DEFAULT_RADIUS     = 0.3f;
   const float        DebrisGenerator::DEFAULT_STEP_REACH = 0.2f;
 
-  DebrisGenerator::DebrisGenerator(DOMNode& node, IProject* project) :
-            cDefID(node.getAttribute(ATTRIBUTE_ID)),
+  DebrisGenerator::DebrisGenerator(JSONObject object, IProject* project) :
+            cDefID(object.getString(JSON_ID)),
             cDefModel(project),
-            cDefLifeTime(node.getIntegerAttribute(ATTRIBUTE_LIFE, DEFAULT_LIFE)),
-            cDefHeight(node.getFloatAttribute(ATTRIBUTE_HEIGHT, DEFAULT_HEIGHT)),
-            cDefRadius(node.getFloatAttribute(ATTRIBUTE_RADIUS, DEFAULT_RADIUS)),
-            cDefStepReach(node.getFloatAttribute(ATTRIBUTE_STEP_REACH, DEFAULT_STEP_REACH)),
+            cDefLifeTime(object.getInteger(JSON_LIFE, DEFAULT_LIFE)),
+            cDefHeight(object.getFloat(JSON_HEIGHT, DEFAULT_HEIGHT)),
+            cDefRadius(object.getFloat(JSON_RADIUS, DEFAULT_RADIUS)),
+            cDefStepReach(object.getFloat(JSON_STEP_REACH, DEFAULT_STEP_REACH)),
             cLuaBinding(project, this) {
-    cDefModel.init(node, TAG_MODEL);
+    cDefModel.init(object, JSON_APPEARANCE);
   }
 
   void DebrisGenerator::registerAssets(IAssetRegistry* assets) {
@@ -66,13 +65,13 @@ namespace IsoRealms::Spindizzy {
     }
   }
 
-  void DebrisGenerator::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    node->addAttribute(ATTRIBUTE_ID, cDefID);
-    node->addAttribute(ATTRIBUTE_LIFE, cDefLifeTime, DEFAULT_LIFE);
-    node->addAttribute(ATTRIBUTE_HEIGHT, cDefHeight, DEFAULT_HEIGHT);
-    node->addAttribute(ATTRIBUTE_RADIUS, cDefRadius, DEFAULT_RADIUS);
-    node->addAttribute(ATTRIBUTE_STEP_REACH, cDefStepReach, DEFAULT_STEP_REACH);
-    cDefModel.save(node, TAG_MODEL);
+  void DebrisGenerator::save(JSONObject object, IAssetIdentifier* identifier) const {
+    object.addString(JSON_ID, cDefID);
+    object.addInteger(JSON_LIFE, cDefLifeTime, DEFAULT_LIFE);
+    object.addFloat(JSON_HEIGHT, cDefHeight, DEFAULT_HEIGHT);
+    object.addFloat(JSON_RADIUS, cDefRadius, DEFAULT_RADIUS);
+    object.addFloat(JSON_STEP_REACH, cDefStepReach, DEFAULT_STEP_REACH);
+    cDefModel.save(object, JSON_APPEARANCE);
   }
 
   void DebrisGenerator::reset() {

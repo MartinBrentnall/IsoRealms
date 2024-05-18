@@ -30,7 +30,7 @@ namespace IsoRealms::Spindizzy {
 
   class WallPatternCap : public IWallPattern {
     public:
-    WallPatternCap(IProject* project, Spindizzy* spindizzy, DOMNode& node);
+    WallPatternCap(IProject* project, Spindizzy* spindizzy, JSONObject object);
 
     /***************************\
      * Implements IWallPattern *
@@ -44,7 +44,7 @@ namespace IsoRealms::Spindizzy {
      * Implements IAsset via IWallPattern *
     \**************************************/
     bool renderAssetIcon() const override;
-    void saveAsset(DOMNodeWriter* node) const override;
+    void saveAsset(JSONObject object) const override;
 
     private:
 
@@ -97,10 +97,10 @@ namespace IsoRealms::Spindizzy {
       Wall* cDefWall;
     };
 
-    // DOM strings.
-    static const std::string TAG_BOTTOM;
-    static const std::string TAG_MIDDLE;
-    static const std::string TAG_TOP;
+    // JSON members.
+    static const std::string JSON_BOTTOM;
+    static const std::string JSON_MIDDLE;
+    static const std::string JSON_TOP;
  
     // Definition data.
     Texture cDefTextureBottom;

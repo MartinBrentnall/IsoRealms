@@ -26,4 +26,8 @@ namespace IsoRealms {
   bool LiteralProjectOptions::renderAssetIcon() const {
     return false;
   }
+
+  void LiteralProjectOptions::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
 }

@@ -32,8 +32,8 @@
 namespace IsoRealms::HighScore {
   class HighScore : public IModuleHandle {
     private:
-    static const std::string TAG_RESOURCE_SCORE_TABLE;
-    static const std::string TAG_RESOURCE_SCORE_TRACKER;
+    static const std::string ID_RESOURCE_SCORE_TABLE;
+    static const std::string ID_RESOURCE_SCORE_TRACKER;
       
     static const std::string NAME_RESOURCE_SCORE_TABLE;
     static const std::string NAME_RESOURCE_SCORE_TRACKER;
@@ -47,8 +47,8 @@ namespace IsoRealms::HighScore {
     /****************************\
      * Implements IModuleHandle *
     \****************************/
-    void load(IProject* project, DOMNode& node) override;
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) override;
+    void load(IProject* project, JSONObject object) override;
+    void save(JSONObject object, IAssetIdentifier* identifier) override;
     void registerAssets(IAssetRegistry* assets) override;
     void unregisterAssets(IAssetRemover* remover, IAssets* releaser) override;
   };

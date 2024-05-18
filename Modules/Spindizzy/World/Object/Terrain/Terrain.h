@@ -22,10 +22,8 @@
 
 #include "IsoRealms/Common/IVisualElement.h"
 #include "IsoRealms/Condition/Condition.h"
-#include "IsoRealms/Persistence/DOMNode.h"
 #include "IsoRealms/Exception/ArgumentException.h"
 #include "IsoRealms/IAssetBrowser.h"
-#include "IsoRealms/Persistence/DOMNode.h"
 #include "IsoRealms/Properties.h"
 #include "IsoRealms/Types.h"
 
@@ -92,13 +90,13 @@ namespace IsoRealms::Spindizzy {
     Terrain(Zone& zone, TerrainType* type, int startX, int startY, int startZ, int endX, int endY, int endZ, int southWestHeight, int southEastHeight, int northWestHeight, int northEastHeight, bool alternativeSplit, bool steppedBottom, bool addition);
 
     /**
-     * Construct terrain by reading data from the specified DOMNode.
+     * Construct terrain by reading data from the specified JSONObject.
      *
      * @param type The type of this terrain element.
      * @param zone The zone in which this terrain element is placed.
      * @param node Node containing configuration data of this terrain element.
      */
-    Terrain(Zone& zone, DOMNode& node);
+    Terrain(Zone& zone, JSONObject object);
 
     /**
      * Save the configuration of this terrain element.
@@ -106,7 +104,7 @@ namespace IsoRealms::Spindizzy {
      * @param node The node into which to save the configuration.
      * @param
      */
-    void save(DOMNodeWriter* node, int originX, int originY, int originZ);
+    void save(JSONObject object, int originX, int originY, int originZ);
 
     /**
      * Load preprocessed surfaces from the specified input stream.
@@ -226,23 +224,22 @@ namespace IsoRealms::Spindizzy {
     static const char FLAG_ALTERNATIVE_SPLIT;
     static const char FLAG_BEHAVIOUR_MASK;
 
-    // DOM strings.
-    static const std::string TAG_CONDITION;
-
-    static const std::string ATTRIBUTE_ALTERNATIVE_SPLIT;
-    static const std::string ATTRIBUTE_X;
-    static const std::string ATTRIBUTE_Y;
-    static const std::string ATTRIBUTE_Z;
-    static const std::string ATTRIBUTE_WIDTH;
-    static const std::string ATTRIBUTE_LENGTH;
-    static const std::string ATTRIBUTE_HEIGHT;
-    static const std::string ATTRIBUTE_STEPPED_BOTTOM;
-    static const std::string ATTRIBUTE_NORTH_WEST_CORNER;
-    static const std::string ATTRIBUTE_NORTH_EAST_CORNER;
-    static const std::string ATTRIBUTE_SOUTH_WEST_CORNER;
-    static const std::string ATTRIBUTE_SOUTH_EAST_CORNER;
-    static const std::string ATTRIBUTE_BEHAVIOUR;
-    static const std::string ATTRIBUTE_TYPE;
+    // JSON members.
+    static const std::string JSON_ALTERNATIVE_SPLIT;
+    static const std::string JSON_BEHAVIOUR;
+    static const std::string JSON_CONDITION;
+    static const std::string JSON_HEIGHT;
+    static const std::string JSON_LENGTH;
+    static const std::string JSON_NORTH_EAST_CORNER;
+    static const std::string JSON_NORTH_WEST_CORNER;
+    static const std::string JSON_SOUTH_WEST_CORNER;
+    static const std::string JSON_SOUTH_EAST_CORNER;
+    static const std::string JSON_STEPPED_BOTTOM;
+    static const std::string JSON_TYPE;
+    static const std::string JSON_WIDTH;
+    static const std::string JSON_X;
+    static const std::string JSON_Y;
+    static const std::string JSON_Z;
 
     static const std::string BEHAVIOUR_NORMAL;
     static const std::string BEHAVIOUR_INVISIBLE;

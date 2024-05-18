@@ -36,8 +36,8 @@ namespace IsoRealms::Spindizzy {
     
     // Constructors.
     CameraOverview(IProject* project, WorldView* view);
-    CameraOverview(IProject* project, WorldView* view, DOMNode& node);
-    
+    CameraOverview(IProject* project, WorldView* view, JSONObject object);
+
     /**********************\
      * Implements ICamera *
     \**********************/
@@ -63,8 +63,8 @@ namespace IsoRealms::Spindizzy {
      * Implements IAsset via ICamera/IFloat *
     \****************************************/
     bool renderAssetIcon() const override;
-    void saveAsset(DOMNodeWriter* node) const override;
-    
+    void saveAsset(JSONObject object) const override;
+
     private:
     
     // Runtime data.

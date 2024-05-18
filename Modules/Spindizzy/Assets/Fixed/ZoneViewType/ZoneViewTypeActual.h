@@ -29,7 +29,7 @@ namespace IsoRealms::Spindizzy {
     public:
     
     // Constructors.
-    ZoneViewTypeActual(IProject* project, WorldView* worldView, DOMNode& node);
+    ZoneViewTypeActual(IProject* project, WorldView* worldView, JSONObject object);
     
     /****************************\
      * Implements IZoneViewType *
@@ -41,6 +41,6 @@ namespace IsoRealms::Spindizzy {
      * Implements IAsset via IZoneViewType *
     \***************************************/
     bool renderAssetIcon() const override;
-    void saveAsset(DOMNodeWriter* node) const override;
+    void saveAsset(JSONObject object) const override;
   };
 }

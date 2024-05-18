@@ -135,7 +135,7 @@ namespace IsoRealms {
      * be used when constructing an application.
      */
     virtual void saveDefaultSettings() const = 0;
-    
+
     /**
      * Add the specified task to the task queue, then immediately trigger the
      * thread pool to begin working, in case it is not already working.  Does not

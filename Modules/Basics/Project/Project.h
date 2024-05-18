@@ -40,10 +40,10 @@ namespace IsoRealms::Basics {
      * Resource Interface *
     \**********************/
     Project(IProject* project, Basics* basics);
-    Project(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data);
+    Project(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);  
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -80,17 +80,17 @@ namespace IsoRealms::Basics {
      * Implements IAsset *
     \*********************/
     bool renderAssetIcon() const override;
-    
+    void saveAsset(JSONObject object) const override;
+
     private:
 
-    // DOM strings.
-    static const std::string TAG_END;
-    static const std::string TAG_OPTIONS;
-    static const std::string TAG_READY;
+    // JSON members.
+    static const std::string JSON_EDITING;
+    static const std::string JSON_ON_FINISH;
+    static const std::string JSON_ON_READY;
+    static const std::string JSON_OPTIONS;
+    static const std::string JSON_RUNNING;
 
-    static const std::string ATTRIBUTE_EDITING;
-    static const std::string ATTRIBUTE_RUNNING;
-      
     IProject* cProject;
       
     // Definition data

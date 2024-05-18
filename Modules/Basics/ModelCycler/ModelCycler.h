@@ -37,10 +37,10 @@ namespace IsoRealms::Basics {
      * Resource Interface *
     \**********************/
     ModelCycler(IProject* project, Basics* basics);
-    ModelCycler(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data);
+    ModelCycler(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon();
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -52,9 +52,9 @@ namespace IsoRealms::Basics {
     void previous();
     private:
 
-    // DOM strings.
-    static const std::string TAG_MODEL;
-    static const std::string TAG_NAME;
+    // JSON members.
+    static const std::string JSON_MODEL;
+    static const std::string JSON_MODELS;
 
     /**
      * An output "Offset" model is created for each input model configured
@@ -83,7 +83,8 @@ namespace IsoRealms::Basics {
       I3DModel* createModel() override;
       bool renderPreview() const override;
       bool renderAssetIcon() const override;
-    
+      void saveAsset(JSONObject object) const override;
+
       private:
       ModelCycler* cParent; /// Parent model cycler.
 

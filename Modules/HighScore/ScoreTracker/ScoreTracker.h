@@ -39,11 +39,11 @@ namespace IsoRealms::HighScore {
      * Resource interface *
     \**********************/
     ScoreTracker(IProject* project, HighScore* highScore);
-    ScoreTracker(IProject* project, HighScore* highScore, DOMNode& node, IOptions* options, IResourceData* data);
+    ScoreTracker(IProject* project, HighScore* highScore, JSONObject object, IOptions* options, IResourceData* data);
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
     void registerAssets(IAssetRegistry* assets);  
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
       
@@ -67,13 +67,26 @@ namespace IsoRealms::HighScore {
      * Implements IAsset *
     \*********************/
     bool renderAssetIcon() const override;
-      
+    void saveAsset(JSONObject object) const override;
+
     private:
 
-    // DOM strings.
-    static const std::string TAG_SAVE_PATH;
-    static const std::string TAG_USER;
-    static const std::string TAG_VALUE;
+    // JSON members.
+    static const std::string JSON_COMPARE;
+    static const std::string JSON_HIGH_SCORE_TABLE;
+    static const std::string JSON_MAPPINGS;
+    static const std::string JSON_NAME;
+    static const std::string JSON_ON_FINISH;
+    static const std::string JSON_ON_HIGH_SCORE_ACHIEVED;
+    static const std::string JSON_ON_HIGH_SCORE_FAILED;
+    static const std::string JSON_RECORD_LIMIT;
+    static const std::string JSON_SAVE_PATH;
+    static const std::string JSON_TYPE;
+    static const std::string JSON_USER;
+    static const std::string JSON_VALUE;
+
+    static const std::string TYPE_INTEGER;
+    static const std::string TYPE_STRING;
 
     IProject* cParentProject;
     std::unique_ptr<Project> cProject;

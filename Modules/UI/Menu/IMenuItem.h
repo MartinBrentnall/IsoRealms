@@ -30,7 +30,7 @@ namespace IsoRealms {
       public:
       virtual void registerAssets(IAssetRegistry* assets) = 0;
       virtual void unregisterAssets(IAssetRemover* assets, IAssets* releaser) = 0;
-      virtual void save(DOMNodeWriter* node) const = 0;
+      virtual void save(JSONObject object) const = 0;
       virtual bool input(sf::Event& event) = 0;
       virtual void selectTop() = 0;
       virtual void selectBottom() = 0;

@@ -51,10 +51,10 @@ namespace IsoRealms::Spindizzy {
      * Resource Interface *
     \**********************/
     PlayerType(IProject* project, Spindizzy* spindizzy);
-    PlayerType(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data);
+    PlayerType(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -91,7 +91,7 @@ namespace IsoRealms::Spindizzy {
     \**********************************/
     std::string getPhysicalObjectTypeID() const override;
     IBinding* getBinding(const std::string& id) const override;
-    void saveBinding(DOMNodeWriter* node, const IBinding* binding) const override;
+    void saveBinding(JSONObject object, const IBinding* binding) const override;
     std::string getBindingID(const IBinding* binding) const override;
 
     /*******************************\
@@ -99,6 +99,7 @@ namespace IsoRealms::Spindizzy {
     \*******************************/
     IWorldEditorToolInstance* createToolInstance(WorldEditor* editor) override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
     /*******************************\
      * Implements IBindingRegistry *
@@ -108,25 +109,24 @@ namespace IsoRealms::Spindizzy {
 
     private:
     
-    // DOM strings.
-    static const std::string TAG_FALL_BOUNCE_ACTION;
-    static const std::string TAG_FALL_IMPACT_ACTION;
-    static const std::string TAG_INPUT_THRUST;
-    static const std::string TAG_INPUT_X;
-    static const std::string TAG_INPUT_Y;
-    static const std::string TAG_MODEL;
-    static const std::string TAG_ORIENTATION;
-    static const std::string TAG_RESPAWN_ACTION;
-    static const std::string TAG_WALL_BOUNCE_ACTION;
-
-    static const std::string ATTRIBUTE_ACCELERATION;
-    static const std::string ATTRIBUTE_BOUNCE_FACTOR;
-    static const std::string ATTRIBUTE_HEIGHT;
-    static const std::string ATTRIBUTE_HUG_MOMENTUM;
-    static const std::string ATTRIBUTE_RADIUS;
-    static const std::string ATTRIBUTE_RESPAWN_DELAY;
-    static const std::string ATTRIBUTE_SPIN_SPEED;
-    static const std::string ATTRIBUTE_STEP_REACH;
+    // JSON members.
+    static const std::string JSON_ACCELERATION;
+    static const std::string JSON_APPEARANCE;
+    static const std::string JSON_BOUNCE_FACTOR;
+    static const std::string JSON_HEIGHT;
+    static const std::string JSON_HUG_MOMENTUM;
+    static const std::string JSON_ON_FALL_BOUNCE;
+    static const std::string JSON_ON_FALL_IMPACT;
+    static const std::string JSON_ON_WALL_BOUNCE;
+    static const std::string JSON_ON_RESPAWN;
+    static const std::string JSON_ORIENTATION;
+    static const std::string JSON_RADIUS;
+    static const std::string JSON_RESPAWN_DELAY;
+    static const std::string JSON_SPIN_SPEED;
+    static const std::string JSON_STEP_REACH;
+    static const std::string JSON_THRUST_INPUT;
+    static const std::string JSON_X_INPUT;
+    static const std::string JSON_Y_INPUT;
 
     static const float DEFAULT_ACCELERATION;
     static const float DEFAULT_BOUNCE_FACTOR;

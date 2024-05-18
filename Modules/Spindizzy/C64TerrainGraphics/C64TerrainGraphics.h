@@ -35,9 +35,9 @@ namespace IsoRealms::Spindizzy {
                              public IStateListener<IFloat*> {
     public:
     C64TerrainGraphics(IProject* project, Spindizzy* spindizzy);
-    C64TerrainGraphics(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data);
+    C64TerrainGraphics(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     bool renderIcon();
     void hintInUse(bool inUse);
     void registerAssets(IAssetRegistry* assets);
@@ -96,15 +96,11 @@ namespace IsoRealms::Spindizzy {
     static const std::string WALL_PLAIN_CAP;
     static const std::string WALL_PLAIN_MIDDLE;
 
-    static const std::string TAG_EXTRA;
-    static const std::string TAG_FLOOR;
-    static const std::string TAG_GRID;
-    static const std::string TAG_WALL;
+    static const std::string JSON_FLOOR;
+    static const std::string JSON_GRID;
+    static const std::string JSON_HIGHLIGHT;
+    static const std::string JSON_WALL;
 
-    static const std::string ATTRIBUTE_ANGLE;
-    static const std::string ATTRIBUTE_ORIENTATION;
-    static const std::string ATTRIBUTE_SCREEN;
-    
     class OrientedTexture : public ITexture {
       private:
       std::map<const IFloat*, std::unique_ptr<LiteralTexture>> cTextures;
@@ -129,6 +125,7 @@ namespace IsoRealms::Spindizzy {
       void set() const override;
       void hintTextureInUse(bool inUse) override;
       void coord(float x, float y) const override;
+      void saveAsset(JSONObject object) const override;
     };
 
     IProject* cProject;

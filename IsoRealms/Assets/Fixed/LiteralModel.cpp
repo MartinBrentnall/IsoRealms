@@ -32,7 +32,11 @@ namespace IsoRealms {
   bool LiteralModel::renderAssetIcon() const {
     return false;
   }
-  
+
+  void LiteralModel::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
+
   void LiteralModel::ModelInstance::update(unsigned int milliseconds) {
     // Nothing to do
   }

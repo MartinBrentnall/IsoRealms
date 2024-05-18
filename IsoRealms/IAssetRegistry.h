@@ -24,7 +24,6 @@
 #include "IsoRealms/Assets/Type/IStateNotifier.h"
 
 namespace IsoRealms {
-  class DOMNode;
   class I3DModel;
   class I3DModelType;
   class IActionType;

@@ -44,5 +44,6 @@ namespace IsoRealms {
     I3DModel* createModel() override;
     bool renderPreview() const override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
   };
 }

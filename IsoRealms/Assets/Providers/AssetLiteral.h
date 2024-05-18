@@ -36,8 +36,8 @@ namespace IsoRealms {
       return this->getCachedAsset(value);
     }
 
-    TYPE* getAsset(OWNER& owner, DOMNode& node) const override {
-      return this->getCachedAsset(node.getAttribute("value"));
+    TYPE* getAsset(OWNER& owner, JSONObject object) const override {
+      return this->getCachedAsset(object);
     }
 
     void releaseAsset(const TYPE* asset) override {
@@ -58,9 +58,14 @@ namespace IsoRealms {
     std::unique_ptr<TYPE> getUncachedAsset(const std::string& value) const override {
       return createLiteralAsset(value);
     }
-    
+
+    std::unique_ptr<TYPE> getUncachedAsset(JSONObject object) const override {
+      return createLiteralAsset(object);
+    }
+
     private:
     virtual std::string normalizeLiteral(const std::string& expression) const = 0;
     virtual std::unique_ptr<TYPE> createLiteralAsset(const std::string& expression) const = 0;
+    virtual std::unique_ptr<TYPE> createLiteralAsset(JSONObject object) const = 0;
   };
 }

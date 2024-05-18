@@ -50,7 +50,7 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  void SurfacePatternDummy::saveAsset(DOMNodeWriter* node) const {
-    // Nothing to do.    
+  void SurfacePatternDummy::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 }

@@ -21,31 +21,34 @@
 #include "Modules/UI/Layout/Layout.h"
 
 namespace IsoRealms::UI {
-  const std::string LinkedOffset::ATTRIBUTE_LINKED = "linked";
-  const std::string LinkedOffset::ATTRIBUTE_RATIO  = "ratio";
-  const std::string LinkedOffset::ATTRIBUTE_VALUE  = "value";
+  const std::string LinkedOffset::JSON_LINKED = "linked";
+  const std::string LinkedOffset::JSON_RATIO  = "ratio";
+  const std::string LinkedOffset::JSON_TYPE   = "type";
+  const std::string LinkedOffset::JSON_VALUE  = "value";
+
+  const std::string LinkedOffset::TYPE_ABSOLUTE = "Linked";
 
   const std::string LinkedOffset::VALUE_HEIGHT = "Height";
   const std::string LinkedOffset::VALUE_WIDTH  = "Width";
   
-  LinkedOffset::LinkedOffset(IProject* project, DOMNode& node, Layout* layout, LayoutComponent* defaultLink, float defaultRatio) {
-    cDefHorizontal = node.getAttribute(ATTRIBUTE_VALUE) == VALUE_WIDTH;
-    cDefRatio      = node.getFloatAttribute(ATTRIBUTE_RATIO, defaultRatio);
-    project->init([this, node, layout, defaultLink](IAssets* assets) {
-      std::string mLinkedName = node.getAttribute(ATTRIBUTE_LINKED);
+  LinkedOffset::LinkedOffset(IProject* project, JSONObject object, Layout* layout, LayoutComponent* defaultLink, float defaultRatio) {
+    cDefHorizontal = object.getString(JSON_VALUE) == VALUE_WIDTH;
+    cDefRatio      = object.getFloat(JSON_RATIO, defaultRatio);
+    project->init([this, object, layout, defaultLink](IAssets* assets) {
+      std::string mLinkedName = object.getString(JSON_LINKED);
       cDefLinked = mLinkedName == "" ? defaultLink : layout->getComponent(mLinkedName);
     });
   }
-  
+
   float LinkedOffset::getOffset(float aspectRatio) const {
     float mComponentStart = cDefHorizontal ? cDefLinked->getLeft(aspectRatio)  : cDefLinked->getBottom();
     float mComponentEnd   = cDefHorizontal ? cDefLinked->getRight(aspectRatio) : cDefLinked->getTop();
     return (mComponentEnd - mComponentStart) * cDefRatio;
   }
   
-  void LinkedOffset::save(DOMNodeWriter* node, Layout* layout) const {
-    node->addAttribute("type", std::string("Linked"));
-    node->addAttribute(ATTRIBUTE_VALUE, cDefHorizontal ? VALUE_WIDTH : VALUE_HEIGHT);
-    node->addAttribute(ATTRIBUTE_LINKED, layout->getName(cDefLinked));
-  }  
+  void LinkedOffset::save(JSONObject object, Layout* layout) const {
+    object.addString(JSON_TYPE, TYPE_ABSOLUTE);
+    object.addString(JSON_VALUE, cDefHorizontal ? VALUE_WIDTH : VALUE_HEIGHT);
+    object.addString(JSON_LINKED, layout->getName(cDefLinked));
+  }
 }

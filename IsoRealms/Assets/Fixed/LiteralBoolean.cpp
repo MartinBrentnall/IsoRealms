@@ -18,8 +18,6 @@
  */
 #include "LiteralBoolean.h"
 
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
-
 namespace IsoRealms {
   LiteralBoolean::LiteralBoolean(const bool value) :
             cValue(value) {
@@ -33,7 +31,9 @@ namespace IsoRealms {
     return false;
   }
 
-  void LiteralBoolean::saveAsset(DOMNodeWriter* node) const {
-    node->addAttribute("value", cValue);
+  void LiteralBoolean::saveAsset(JSONObject object) const {
+    object.addBoolean(JSON_VALUE, cValue);
   }
+
+  const std::string LiteralBoolean::JSON_VALUE = "value";
 }

@@ -23,13 +23,14 @@
 
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/IResourceTypeDefinition.h"
-#include "IsoRealms/Persistence/DOMNode.h"
 #include "IsoRealms/Resource.h"
 #include "IsoRealms/IAssetLiterals.h"
 
 namespace IsoRealms {
   template <class MODULE, class TYPE> class ResourceTypeDefinition : public IResourceTypeDefinition {
     private:
+    inline static const std::string JSON_ID = "id";
+
     MODULE* cModule;
     std::map<std::string, std::unique_ptr<Resource<MODULE, TYPE>>> cResources;
     
@@ -72,13 +73,13 @@ namespace IsoRealms {
       return cResources.emplace(name, std::make_unique<Resource<MODULE, TYPE>>(parent, project, cModule, registry, name)).first->second.get();
     }
     
-    IResource* loadResource(IResourceType* parent, IProject* project, IAssetRegistry* registry, DOMNode& node, IOptions* options) override {
-      std::string mResourceName = node.getAttribute("name");
-      IResource* mResource = cResources.emplace(mResourceName, std::make_unique<Resource<MODULE, TYPE>>(parent, project, cModule, registry, node, options)).first->second.get();
+    IResource* loadResource(IResourceType* parent, IProject* project, IAssetRegistry* registry, JSONObject object, IOptions* options) override {
+      std::string mResourceName = object.getString(JSON_ID);
+      IResource* mResource = cResources.emplace(mResourceName, std::make_unique<Resource<MODULE, TYPE>>(parent, project, cModule, registry, object, options)).first->second.get();
       mResource->registerAssets();
       return mResource;
     }
-    
+
     TYPE* getResource(const std::string& name, bool required = true) const {
       typename std::map<std::string, std::unique_ptr<Resource<MODULE, TYPE>>>::const_iterator mResource = cResources.find(name);
       if (mResource == cResources.end() && required) {

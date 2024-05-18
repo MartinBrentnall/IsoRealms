@@ -19,8 +19,6 @@
 #pragma once
 
 #include "IsoRealms/IProject.h"
-#include "IsoRealms/Persistence/DOMNode.h"
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
 #include "IsoRealms/Types.h"
 
 #include "Modules/Spindizzy/Assets/Type/IZoneObjectTypeTrait.h"
@@ -34,9 +32,10 @@ namespace IsoRealms::Spindizzy {
     /************************************\
      * Implements  IZoneObjectTypeTrait *
     \************************************/
-    void save(DOMNodeWriter& node) const override;
+    void save(JSONObject object) const override;
     std::unique_ptr<IZoneObjectTrait> createTrait(ZoneObject& object) override;
     void registerAssets(ISpindizzyRegistry* registry) override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
   };
 }

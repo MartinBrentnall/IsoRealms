@@ -18,7 +18,7 @@
  */
 #pragma once
 
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
+#include "IsoRealms/Persistence/JSONDocument.h"
 
 #include "Modules/Spindizzy/Assets/Type/IWallPattern.h"
 
@@ -29,10 +29,10 @@ namespace IsoRealms::Spindizzy {
     public:
     WallPattern(Spindizzy* spindizzy);
 
-    void init(DOMNode& node);
-    void save(DOMNodeWriter* node, const std::string& tag) const;
+    void init(JSONObject object);
+    void set(JSONObject object);
+    void save(JSONObject object, const std::string& name) const;
 
-    void set(DOMNode& node);
     IWallPattern* operator->() const {
       return cWallPattern;
     }

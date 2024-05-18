@@ -32,11 +32,11 @@ namespace IsoRealms {
 
     protected:
 
-    IInteger* getAsset(Project& project, DOMNode& node) const override {
-      IAssets* mAssets = cProject->getAssets(&cDummyUser, node.getNode(TAG_PROJECT));
-      return mAssets->getInteger(&cDummyUser, node.getNode(TAG_VALUE));
+    IInteger* getAsset(Project& project, JSONObject object) const override {
+      IAssets* mAssets = cProject->getAssets(&cDummyUser, object.getObject(JSON_PROJECT));
+      return mAssets->getInteger(&cDummyUser, object.getObject(JSON_VALUE));
 
-//      return cConvertedAssets.emplace(std::make_unique<PrimitiveToString<IFloat>>(  cProject, [this, &node](IAssetUser<IFloat>*   user) -> IFloat*   {return cProject->getFloat(  user, node.getNode(TAG_ASSET), nullptr);})).first->get();
+//      return cConvertedAssets.emplace(std::make_unique<PrimitiveToString<IFloat>>(  cProject, [this, &node](IAssetUser<IFloat>*   user) -> IFloat*   {return cProject->getFloat(  user, node.getNode(JSON_VALUE), nullptr);})).first->get();
     }
 
     void releaseAsset(const IInteger* asset) override {
@@ -48,8 +48,8 @@ namespace IsoRealms {
     }
 
     private:
-    inline static const std::string TAG_PROJECT = "Project";
-    inline static const std::string TAG_VALUE   = "Value";
+    inline static const std::string JSON_PROJECT = "project";
+    inline static const std::string JSON_VALUE   = "value";
 
     class DummyUser : public IAssetUser<IAssets>,
                       public IAssetUser<IInteger> {

@@ -18,7 +18,7 @@
  */
 #pragma once
 
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
+#include "IsoRealms/Persistence/JSONDocument.h"
 
 #include "Modules/Spindizzy/Assets/Type/ICamera.h"
 
@@ -30,10 +30,10 @@ namespace IsoRealms::Spindizzy {
     public:
     Camera(Spindizzy* spindizzy);
 
-    void init(DOMNode& node, WorldView* owner);
-    void save(DOMNodeWriter* node, const std::string& tag) const;
+    void init(JSONObject object, WorldView* owner);
+    void set(JSONObject object, WorldView* owner);
+    void save(JSONObject object, const std::string& name) const;
 
-    void set(DOMNode& node, WorldView* owner);
     ICamera* operator->() const {
       return cCamera;
     }

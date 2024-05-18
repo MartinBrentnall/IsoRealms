@@ -610,9 +610,13 @@ namespace IsoRealms::Spindizzy {
     glPopMatrix();
     glPopAttrib();
   }
-  
+
   bool WorldEditor::renderAssetIcon() const {
     return false;
+  }
+
+  void WorldEditor::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   void WorldEditor::notifyVisible() {
@@ -697,6 +701,10 @@ namespace IsoRealms::Spindizzy {
 
   bool WorldEditor::ScreenFloat::renderAssetIcon() const {
     return false;
+  }
+
+  void WorldEditor::ScreenFloat::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   IScreen* WorldEditor::screen() {

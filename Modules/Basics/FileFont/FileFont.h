@@ -53,10 +53,10 @@ namespace IsoRealms::Basics {
      * Resource Interface *
     \**********************/
     FileFont(IProject* project, Basics* basics);
-    FileFont(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data);
+    FileFont(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);  
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -71,16 +71,17 @@ namespace IsoRealms::Basics {
     float getHeight(float, const std::string& text) override;
     unsigned int getChar(float, float, const std::string& text) override;
     bool renderAssetIcon() const override;
-    
+    void saveAsset(JSONObject object) const override;
+
     private:
     
-    // DOM strings.
-    static const std::string ATTRIBUTE_DETAIL;
-    static const std::string ATTRIBUTE_FILENAME;
-    static const std::string ATTRIBUTE_LINE_SPACING;
-    static const std::string ATTRIBUTE_SCALE;
-    static const std::string ATTRIBUTE_OFFSET_X;
-    static const std::string ATTRIBUTE_OFFSET_Y;
+    // JSON members.
+    static const std::string JSON_DETAIL;
+    static const std::string JSON_FILENAME;
+    static const std::string JSON_LINE_SPACING;
+    static const std::string JSON_SCALE;
+    static const std::string JSON_OFFSET_X;
+    static const std::string JSON_OFFSET_Y;
 
     static const int   DEFAULT_DETAIL;
     static const float DEFAULT_LINE_SPACING;

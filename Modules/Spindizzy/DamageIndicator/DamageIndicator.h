@@ -36,10 +36,10 @@ namespace IsoRealms::Spindizzy {
      * Resource Interface *
     \**********************/
     DamageIndicator(IProject* project, Spindizzy* spindizzy);
-    DamageIndicator(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data);
+    DamageIndicator(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
     void registerAssets(IAssetRegistry* assets);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -49,12 +49,13 @@ namespace IsoRealms::Spindizzy {
     \**********************/
     void renderScreen(float scale, float aspectRatio) const override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
     private:
 
-    // DOM strings.
-    static const std::string TAG_COLOUR;
-    static const std::string TAG_SIZE;
+    // JSON members.
+    static const std::string JSON_COLOUR;
+    static const std::string JSON_SIZE;
 
     // Definition data.
     Colour cDefColour;

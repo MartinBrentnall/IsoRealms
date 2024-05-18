@@ -84,5 +84,63 @@ namespace IsoRealms {
     }
     return nullptr;
   }
+
+  std::unique_ptr<ITexture> TextureRegistry::createLiteralAsset(JSONObject object) {
+    std::unique_ptr<LiteralTexture> mTexture = std::make_unique<LiteralTexture>(cProject);
+
+//       cProject->mainThreadInit([this, mTexture]() { // TODO: Do I need to make sure this is only executed once?
+//         glPushAttrib(GL_TRANSFORM_BIT);
+//         glMatrixMode(GL_PROJECTION);
+//         glPushMatrix();
+//         glLoadIdentity();
+//         glPopAttrib();
+//
+//         // Render an arrow indicating the dummy texture orientation
+//         mTexture->setRenderTarget();
+//         glBegin(GL_QUADS);
+//         glColor3f(0.95f, 0.95f, 1.0f);
+//         glVertex2f( 1.0f,  1.0f);
+//         glVertex2f(-1.0f,  1.0f);
+//         glColor3f(0.70f, 0.70f, 0.75f);
+//         glVertex2f(-1.0f, -1.0f);
+//         glVertex2f( 1.0f, -1.0f);
+//
+//         glColor3f(0.45f, 0.0f, 0.9f);
+//         Utils::renderRectangle(-1.0f, -1.0f, -0.80f, -0.3f);
+//         Utils::renderRectangle(-1.0f,  0.3f, -0.80f,  1.0f);
+//         Utils::renderRectangle( 0.80f, -1.0f,  1.0f, -0.3f);
+//         Utils::renderRectangle( 0.80f,  0.3f,  1.0f,  1.0f);
+//
+//         Utils::renderRectangle(-1.0f, -1.0f, -0.3f, -0.80f);
+//         Utils::renderRectangle( 0.3f, -1.0f,  1.0f, -0.80f);
+//         Utils::renderRectangle(-1.0f,  0.80f, -0.3f,  1.0f);
+//         Utils::renderRectangle( 0.3f,  0.80f,  1.0f,  1.0f);
+//
+//         glColor3f(1.0f, 0.0f, 0.2f);
+//         Utils::renderRectangle(-0.2f,  0.0f,  0.2f,  0.5f);
+//
+//         glEnd();
+//         glBegin(GL_TRIANGLES);
+//         glVertex2f( 0.5f,  0.0f);
+//         glVertex2f(-0.5f,  0.0f);
+//         glVertex2f( 0.0f, -0.5f);
+//         glEnd();
+//
+//         glPushAttrib(GL_TRANSFORM_BIT);
+//         glMatrixMode(GL_PROJECTION);
+//         glPopMatrix();
+//         glPopAttrib();
+//
+//         glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+//         glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0);
+//         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+//
+//         IApplication* mApplication = project->getApplication();
+//         mApplication->setViewPort();
+//       });
+      return mTexture;
+    }
+    return nullptr;
+  }
 }
 

@@ -34,4 +34,8 @@ namespace IsoRealms::Spindizzy {
   bool PhysicalObjectTypeDummy::renderAssetIcon() const {
     return false;
   }
+
+  void PhysicalObjectTypeDummy::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
 }

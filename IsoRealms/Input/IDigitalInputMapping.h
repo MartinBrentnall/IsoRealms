@@ -22,7 +22,7 @@
 
 #include <SFML/Window/Event.hpp>
 
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
+#include "IsoRealms/Persistence/JSONDocument.h"
 
 namespace IsoRealms {
   
@@ -60,8 +60,8 @@ namespace IsoRealms {
      * 
      * @param node The node to save this digital input mapping to.
      */
-    virtual void save(DOMNodeWriter* node) const = 0;
-    
+    virtual void save(JSONObject object) const = 0;
+
     /**
      * Return a short name of this digital input mapping.  The short name is
      * intended only for presentation purposes to the user.

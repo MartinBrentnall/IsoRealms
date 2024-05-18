@@ -42,10 +42,10 @@ namespace IsoRealms::Spindizzy {
      * Resource Interface *
     \**********************/
     DebrisChunk(IProject* project, Spindizzy* spindizzy);
-    DebrisChunk(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data);
+    DebrisChunk(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -56,6 +56,7 @@ namespace IsoRealms::Spindizzy {
     I3DModel* createModel() override;
     bool renderPreview() const override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
     /***********************\
      * Implements I3DModel *
@@ -65,14 +66,13 @@ namespace IsoRealms::Spindizzy {
 
     private:
 
-    // DOM strings.
-    static const std::string TAG_OUTLINE;
-    static const std::string TAG_SIDE_1;
-    static const std::string TAG_SIDE_2;
-    static const std::string TAG_SIDE_3;
-    static const std::string TAG_SIDE_4;
-
-    static const std::string ATTRIBUTE_OUTLINE_WIDTH;
+    // JSON members.
+    static const std::string JSON_OUTLINE;
+    static const std::string JSON_OUTLINE_WIDTH;
+    static const std::string JSON_SIDE_1;
+    static const std::string JSON_SIDE_2;
+    static const std::string JSON_SIDE_3;
+    static const std::string JSON_SIDE_4;
 
     // Default constants.
     static const float DEFAULT_OUTLINE_WIDTH;
@@ -85,11 +85,15 @@ namespace IsoRealms::Spindizzy {
     float cDefOutlineWidth;           /// Width of the outline drawn on each side of this debris chunk.
     LiteralTexture cDefTextures[4];   /// Textures applied to each side of this debris chunk.
 
+    // Runtime data.
+    bool cNeedsRedrawing;
+
     // Editing data.
     float cEditingIconRotation; /// Animation value for rotation of the model icon.
 
     // Internal functions.
     void regenerateTextures();
     void generateTexture(Colour& colour);
+    void setNeedsRedrawing();
   };
 }

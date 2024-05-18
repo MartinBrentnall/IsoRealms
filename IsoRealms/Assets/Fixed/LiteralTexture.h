@@ -47,7 +47,8 @@ namespace IsoRealms {
     void set() const override;
     void hintTextureInUse(bool) override;
     void coord(float x, float y) const override;
-    
+    void saveAsset(JSONObject object) const override;
+
     ~LiteralTexture();
   };
 }

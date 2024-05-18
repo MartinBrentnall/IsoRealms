@@ -23,6 +23,7 @@
 #include <functional>
 #include <mutex>
 #include <queue>
+#include <sstream>
 #include <thread>
 #include <vector>
 
@@ -35,8 +36,7 @@
 #include "Exception/ApplicationException.h"
 #include "IApplication.h"
 #include "Input/HatHandler.h"
-#include "Persistence/DOMNode.h"
-#include "Persistence/DOMNodeWriter.h"
+#include "Persistence/JSONDocument.h"
 #include "System.h"
  
 namespace IsoRealms {
@@ -49,12 +49,11 @@ namespace IsoRealms {
    */ 
   class Application : public IApplication {
     private:
-    static const std::string TAG_SETTINGS;
-      
-    static const std::string ATTRIBUTE_FULL_SCREEN;
-    static const std::string ATTRIBUTE_HEIGHT;
-    static const std::string ATTRIBUTE_WIDTH;
-    
+    static const std::string JSON_FULL_SCREEN;
+    static const std::string JSON_HEIGHT;
+    static const std::string JSON_SETTINGS;
+    static const std::string JSON_WIDTH;
+
     static const std::string FILENAME_SETTINGS;
     
     /**

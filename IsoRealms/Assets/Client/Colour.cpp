@@ -29,21 +29,25 @@ namespace IsoRealms {
             cListener(listener) {
   }
 
-  void Colour::init(DOMNode& node, const std::string& tag) {
-    cProject->init([this, &node, tag](IAssets* assets) {
-      set(node, tag);
+  void Colour::init(JSONObject object, const std::string& member) {
+    cProject->init([this, object, member](IAssets* assets) {
+      set(object, member);
     });
   }
 
-  void Colour::set(DOMNode& node, const std::string& tag) {
-    DOMNode& mAssetNode = node.getNode(tag);
+  void Colour::set(JSONObject object, const std::string& member) {
+    JSONObject mAssetObject = object.getObject(member);
     cProject->release(this, cColour);
-    cColour = cProject->getColour(this, mAssetNode, cListener != nullptr ? this : nullptr);
+    cColour = cProject->getColour(this, mAssetObject, cListener != nullptr ? this : nullptr);
   }
 
-  void Colour::save(DOMNodeWriter* node, const std::string& tag) const {
-    DOMNodeWriter mAssetNode = node->addBranch(tag);
-    cProject->save(&mAssetNode, cColour);
+  void Colour::save(JSONObject object, const std::string& name) const {
+    JSONObject mAssetObject = object.addObject(name);
+    cProject->save(mAssetObject, cColour);
+  }
+
+  void Colour::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   void Colour::relinquish(IColour* asset) {

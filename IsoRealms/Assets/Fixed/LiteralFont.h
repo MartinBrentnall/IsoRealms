@@ -32,5 +32,6 @@ namespace IsoRealms {
     float getHeight(float size, const std::string& text) override;
     unsigned int getChar(float position, float size, const std::string& text) override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
   };
 }

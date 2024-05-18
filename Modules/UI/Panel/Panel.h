@@ -36,10 +36,10 @@ namespace IsoRealms::UI {
      * Resource Interface *
     \**********************/
     Panel(IProject* project, UI* ui);
-    Panel(IProject* project, UI* ui, DOMNode& node, IOptions* options, IResourceData* data);
+    Panel(IProject* project, UI* ui, JSONObject object, IOptions* options, IResourceData* data);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
     void registerAssets(IAssetRegistry* assets);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -49,16 +49,16 @@ namespace IsoRealms::UI {
     \**********************/
     void renderScreen(float scale, float aspectRatio) const override;
     bool renderAssetIcon() const override;
-    
+    void saveAsset(JSONObject object) const override;
+
     private:
 
     // Constants.
     static const float CIRCLE_RESOLUTION;
     
-    // DOM strings.
-    static const std::string TAG_COLOUR;
-
-    static const std::string ATTRIBUTE_CORNER_SIZE;
+    // JSON members.
+    static const std::string JSON_COLOUR;
+    static const std::string JSON_CORNER_SIZE;
 
     // Global data.
     static std::unique_ptr<LiteralTexture> cGlobalCornerTexture; // Texture applied to the corners of panels.

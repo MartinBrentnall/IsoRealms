@@ -23,7 +23,6 @@
 #include "IsoRealms/Assets/Registry/IAssetUser.h"
 #include "IsoRealms/IAssets.h"
 #include "IsoRealms/IProject.h"
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
 #include "IsoRealms/Types.h"
 
 #include "ThemeColour.h"
@@ -35,16 +34,22 @@ namespace IsoRealms::Spindizzy {
   
   class Theme : public IStateListener<ITexture*> {
     private:
+    static const std::string JSON_COLOUR;
+    static const std::string JSON_COLOURS;
+    static const std::string JSON_ELEMENT;
+    static const std::string JSON_TEXTURE;
+    static const std::string JSON_TEXTURES;
+
     ThemeSet* cThemeSet;
     std::map<ThemeTexture*, Texture> cTextures;
     std::map<ThemeColour*, Colour> cColours;
     Spindizzy* cSpindizzy;
 
     public:
-    Theme(IProject* project, Spindizzy* spindizzy, ThemeSet* themeSet, DOMNode& node);
-      
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
-      
+    Theme(IProject* project, Spindizzy* spindizzy, ThemeSet* themeSet, JSONObject object);
+
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
+
     ITexture* getTexture(ThemeTexture*);
     void removeTexture(ThemeTexture*);
     void removeColour(ThemeColour*);

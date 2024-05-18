@@ -99,18 +99,8 @@ int main(int argc, char** argv) {
   } catch (std::exception& e) {
     std::cout << "Fatal: " << std::endl << "Unhandled exception thrown: " << e.what() << std::endl;
     mReturnCode = 1;
-  } catch (xercesc::DOMException& e) {
-    char* mMessage = xercesc::XMLString::transcode(e.getMessage());
-    std::cout << "Fatal: " << std::endl << e.code << ": " << mMessage << std::endl;
-    xercesc::XMLString::release(&mMessage);
-    mReturnCode = 1;
   } catch (IsoRealms::ParseException& e) {
     std::cout << "Fatal: " << std::endl << e.getMessage() << std::endl;
-    mReturnCode = 1;
-  } catch (xercesc::IOException& e) {
-    char* mMessage = xercesc::XMLString::transcode(e.getMessage());
-    std::cout << "Fatal: " << std::endl << e.getCode() << ": " << mMessage << std::endl;
-    xercesc::XMLString::release(&mMessage);
     mReturnCode = 1;
   } catch (...) {
     std::exception_ptr eptr = std::current_exception();
@@ -124,7 +114,6 @@ int main(int argc, char** argv) {
   }
 
   // Clean up.
-  xercesc::XMLPlatformUtils::Terminate();
   return mReturnCode;
 }
 

@@ -19,10 +19,9 @@
 #include "Sprite.h"
 
 namespace IsoRealms::Basics {
-  const std::string Sprite::TAG_TEXTURE = "Texture";
-
-  const std::string Sprite::ATTRIBUTE_BILLBOARD_YAW   = "billboardYaw";
-  const std::string Sprite::ATTRIBUTE_BILLBOARD_PITCH = "billboardPitch";
+  const std::string Sprite::JSON_BILLBOARD_PITCH = "billboardPitch";
+  const std::string Sprite::JSON_BILLBOARD_YAW   = "billboardYaw";
+  const std::string Sprite::JSON_TEXTURE         = "texture";
 
   Sprite::Sprite(IProject* project, Basics* basics) :
             cDefProject(project),
@@ -33,11 +32,11 @@ namespace IsoRealms::Basics {
     cDefProject->addScreenListener(this);
   }
   
-  Sprite::Sprite(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
+  Sprite::Sprite(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
             Sprite(project, basics) {
-    cDefTexture.init(node, TAG_TEXTURE);
-    cDefBillboardYaw   = node.getBooleanAttribute(ATTRIBUTE_BILLBOARD_YAW);
-    cDefBillboardPitch = node.getBooleanAttribute(ATTRIBUTE_BILLBOARD_PITCH);
+    cDefTexture.init(object, JSON_TEXTURE);
+    cDefBillboardYaw   = object.getBoolean(JSON_BILLBOARD_YAW);
+    cDefBillboardPitch = object.getBoolean(JSON_BILLBOARD_PITCH);
   }
 
   void Sprite::registerAssets(IAssetRegistry* assets) {
@@ -48,10 +47,10 @@ namespace IsoRealms::Basics {
     assets->remove(this);
   }
 
-  void Sprite::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    cDefTexture.save(node, TAG_TEXTURE);
-    node->addAttribute(ATTRIBUTE_BILLBOARD_YAW, cDefBillboardYaw);
-    node->addAttribute(ATTRIBUTE_BILLBOARD_PITCH, cDefBillboardPitch);
+  void Sprite::save(JSONObject object, IAssetIdentifier* identifier) const {
+    cDefTexture.save(object, JSON_TEXTURE);
+    object.addBoolean(JSON_BILLBOARD_YAW, cDefBillboardYaw);
+    object.addBoolean(JSON_BILLBOARD_PITCH, cDefBillboardPitch);
   }
 
   void Sprite::hintInUse(bool inUse) {
@@ -100,6 +99,10 @@ namespace IsoRealms::Basics {
   bool Sprite::renderAssetIcon() const {
     render(1.0f);
     return true;
+  }
+
+  void Sprite::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   void Sprite::update(unsigned int milliseconds) {

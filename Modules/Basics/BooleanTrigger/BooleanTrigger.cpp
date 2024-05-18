@@ -19,9 +19,9 @@
 #include "BooleanTrigger.h"
 
 namespace IsoRealms::Basics {
-  const std::string BooleanTrigger::TAG_ACTION_ON_TRUE  = "ActionOnTrue";
-  const std::string BooleanTrigger::TAG_ACTION_ON_FALSE = "ActionOnFalse";
-  const std::string BooleanTrigger::TAG_VALUE           = "Value";
+  const std::string BooleanTrigger::JSON_ON_BECOMING_FALSE = "onBecomingFalse";
+  const std::string BooleanTrigger::JSON_ON_BECOMING_TRUE  = "onBecomingTrue";
+  const std::string BooleanTrigger::JSON_VALUE             = "value";
 
   const std::string BooleanTrigger::PROPERTY_VALUE        = "Monitored Value";
   const std::string BooleanTrigger::PROPERTY_TRUE_ACTION  = "Action on True";
@@ -33,11 +33,11 @@ namespace IsoRealms::Basics {
             cDefFalseAction(project) {
   }
   
-  BooleanTrigger::BooleanTrigger(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
+  BooleanTrigger::BooleanTrigger(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
             BooleanTrigger(project, basics) {
-    cDefValue.init(node, TAG_VALUE);
-    cDefTrueAction.init(node, TAG_ACTION_ON_TRUE);
-    cDefFalseAction.init(node, TAG_ACTION_ON_FALSE);
+    cDefValue.init(object, JSON_VALUE);
+    cDefTrueAction.init(object, JSON_ON_BECOMING_TRUE);
+    cDefFalseAction.init(object, JSON_ON_BECOMING_FALSE);
   }
 
   void BooleanTrigger::registerAssets(IAssetRegistry* assets) {
@@ -48,10 +48,10 @@ namespace IsoRealms::Basics {
     // Nothing to do.
   }
   
-  void BooleanTrigger::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    cDefValue.save(node, TAG_VALUE);
-    cDefTrueAction.save(node, TAG_ACTION_ON_TRUE);
-    cDefFalseAction.save(node, TAG_ACTION_ON_FALSE);
+  void BooleanTrigger::save(JSONObject object, IAssetIdentifier* identifier) const {
+    cDefValue.save(object, JSON_VALUE);
+    cDefTrueAction.save(object, JSON_ON_BECOMING_TRUE);
+    cDefFalseAction.save(object, JSON_ON_BECOMING_FALSE);
   }
 
   void BooleanTrigger::hintInUse(bool inUse) {

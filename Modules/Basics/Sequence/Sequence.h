@@ -39,10 +39,10 @@ namespace IsoRealms::Basics {
   class Sequence final {
     public:
     Sequence(IProject* project, Basics* basics);
-    Sequence(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data);
+    Sequence(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon();
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -64,14 +64,11 @@ namespace IsoRealms::Basics {
     
     private:
 
-    // DOM strings.
-    static const std::string TAG_TRACK;
-
-    static const std::string ATTRIBUTE_LOOP;
-    static const std::string ATTRIBUTE_PLAYING;
-    static const std::string ATTRIBUTE_TYPE;
-
-    static const std::string TYPE_ACTION;
+    // JSON members.
+    static const std::string JSON_LOOP;
+    static const std::string JSON_PLAYING;
+    static const std::string JSON_TRACKS;
+    static const std::string JSON_TYPE;
 
     // Definition data.
     std::vector<std::unique_ptr<ISequenceTrack>> cDefTracks; /// Tracks in this sequence.

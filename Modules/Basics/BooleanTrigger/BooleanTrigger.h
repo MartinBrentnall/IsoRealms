@@ -35,20 +35,20 @@ namespace IsoRealms::Basics {
      * Resource Interface *
     \**********************/
     BooleanTrigger(IProject* project, Basics* basics);
-    BooleanTrigger(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data);
+    BooleanTrigger(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
     
     private:
 
-    // DOM strings.
-    static const std::string TAG_ACTION_ON_TRUE;
-    static const std::string TAG_ACTION_ON_FALSE;
-    static const std::string TAG_VALUE;
+    // JSON members.
+    static const std::string JSON_ON_BECOMING_FALSE;
+    static const std::string JSON_ON_BECOMING_TRUE;
+    static const std::string JSON_VALUE;
 
     // Property names.
     static const std::string PROPERTY_VALUE;

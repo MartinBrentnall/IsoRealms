@@ -23,10 +23,10 @@ namespace IsoRealms {
     DUMMY(this) {
   }
   
-  IAction* LiteralActionType::createAction(DOMNode& node, IProject* project, IBindingRegistry* localObjects) {
+  IAction* LiteralActionType::createAction(JSONObject object, IProject* project, IBindingRegistry* localObjects) {
     return &DUMMY;
   }
-  
+
   IAction* LiteralActionType::createAction(IProject* project, IBindingRegistry* localArgs) {
     return &DUMMY;
   }
@@ -39,6 +39,10 @@ namespace IsoRealms {
     return false;
   }
   
+  void LiteralActionType::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
+
   LiteralActionType::Action::Action(LiteralActionType* parent) :
             cParent(parent) {
   }
@@ -51,10 +55,10 @@ namespace IsoRealms {
     return cParent;
   }
   
-  void LiteralActionType::Action::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    node->addAttribute("type", "#");
+  void LiteralActionType::Action::save(JSONObject object, IAssetIdentifier* identifier) const {
+    // Nothing to do.
   }
-  
+
   bool LiteralActionType::Action::hasConfiguration() const {
     return false;
   }  

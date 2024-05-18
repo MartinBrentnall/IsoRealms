@@ -59,6 +59,7 @@ namespace IsoRealms::Spindizzy {
     bool input(sf::Event& event) override;
     void renderScreen(float scale, float aspectRatio) const override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
     void notifyVisible() override;
     void notifyHidden() override;
     void setAppearance(IFont* font, float scale) override;
@@ -81,6 +82,7 @@ namespace IsoRealms::Spindizzy {
       \*********************/
       float getValue() const override;
       bool renderAssetIcon() const override;
+      void saveAsset(JSONObject object) const override;
     };
 
     static const float SPEED_FAST;

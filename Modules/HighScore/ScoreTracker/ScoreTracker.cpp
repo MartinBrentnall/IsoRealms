@@ -41,16 +41,8 @@ namespace IsoRealms::HighScore {
     });
   }
   
-  ScoreTracker::ScoreTracker(IProject* project, HighScore* highScore, DOMNode& node, IOptions* options, IResourceData* data) :
+  ScoreTracker::ScoreTracker(IProject* project, HighScore* highScore, JSONObject object, IOptions* options, IResourceData* data) :
             ScoreTracker(project, highScore) {
-//     for (DOMNode& mNode : node) {
-//       std::string mValue = mNode.getName();
-//       if (mValue == "ExposeTable") {
-//         cScoreTables.push_back(new ScoreTable(mNode, registry));
-//       } else {
-//         // TODO: Throw
-//       }
-//     }
     LocalOptions mLocalOptions("Project", options);
     cProject = std::make_unique<Project>(cParentProject->getApplication(), &mLocalOptions, [this](bool forceQuit) {
       if (forceQuit) {
@@ -60,52 +52,31 @@ namespace IsoRealms::HighScore {
       }
     });
 
-    cProjectUser.init(node, TAG_USER);
-    cProjectDataPath.init(node, TAG_SAVE_PATH);
-    cMaximumRecords = node.getIntegerAttribute("maximumRecords");
-    cScriptOnHighScoreAchieved.init(node, "OnHighScoreAchieved");
-    cScriptOnHighScoreFailed.init(node, "Otherwise");
-    cScriptQuit.init(node, "Quit");
+    cProjectUser.init(object, JSON_USER);
+    cProjectDataPath.init(object, JSON_SAVE_PATH);
+    cMaximumRecords = object.getInteger(JSON_RECORD_LIMIT);
+    cScriptOnHighScoreAchieved.init(object, JSON_ON_HIGH_SCORE_ACHIEVED);
+    cScriptOnHighScoreFailed.init(object, JSON_ON_HIGH_SCORE_FAILED);
+    cScriptQuit.init(object, JSON_ON_FINISH);
 
-    for (DOMNode& mNode : node) {
-      std::string mValue = mNode.getName();
-      if (mValue == "Quit" || mValue == "OnHighScoreAchieved" || mValue == TAG_SAVE_PATH || mValue == TAG_USER || mValue == "Otherwise") {
-        // TODO: Shouldn't be necessary.
-      } else if (mValue == "WriteField") {
-        std::string mFieldName  = mNode.getAttribute("name");
-        std::string mFieldType  = mNode.getAttribute("type");
-        cFields.push_back(mFieldName);
-        bool mCompare = mNode.getBooleanAttribute("compare");
-        if (mFieldType == "Integer") {
-          cWriteIntegers.emplace(mFieldName, project);
-          cWriteIntegers.find(mFieldName)->second.init(mNode, TAG_VALUE);
-          if (mCompare) {
-            cComparisonField = mFieldName;
-          }
-        } else if (mFieldType == "String") {
-          cWriteStrings.emplace(std::piecewise_construct, std::forward_as_tuple(mFieldName), std::forward_as_tuple(project));
-          cWriteStrings.find(mFieldName)->second.init(mNode, TAG_VALUE);
-        } else {
-          throw ResourceInitException("ERROR: ScoreTracker::ScoreTracker: Unsupported field type \"" + mFieldType + "\".");
+    for (JSONObject mFieldMappingsObject : object.getArray(JSON_MAPPINGS)) {
+      std::string mFieldName  = mFieldMappingsObject.getString(JSON_NAME);
+      std::string mFieldType  = mFieldMappingsObject.getString(JSON_TYPE);
+      cFields.push_back(mFieldName);
+      if (mFieldType == TYPE_INTEGER) {
+        cWriteIntegers.emplace(mFieldName, project);
+        cWriteIntegers.find(mFieldName)->second.init(mFieldMappingsObject, JSON_VALUE);
+        bool mCompare = mFieldMappingsObject.getBoolean(JSON_COMPARE);
+        if (mCompare) {
+          cComparisonField = mFieldName;
         }
-      } else if (mValue == "ExposeTable") {
-        // TODO: Shouldn't be here
+      } else if (mFieldType == TYPE_STRING) {
+        cWriteStrings.emplace(std::piecewise_construct, std::forward_as_tuple(mFieldName), std::forward_as_tuple(project));
+        cWriteStrings.find(mFieldName)->second.init(mFieldMappingsObject, JSON_VALUE);
       } else {
-        throw ParseException("Unknown tag for HighScore/ScoreTracker: " + mValue);
+        throw ResourceInitException("ERROR: ScoreTracker::ScoreTracker: Unsupported field type \"" + mFieldType + "\".");
       }
     }
-      
-// TODO       if (cScriptQuit == nullptr) {
-//         std::cout << "Warning: No 'Quit' script set.  Project won't terminate autamotically" << std::endl;
-//       }
-//       if (cScriptOnHighScoreAchieved == nullptr) {
-//         std::cout << "Warning: No 'OnHighScoreAchieved' script set.  No action will be taken when the project completes" << std::endl;
-//       }
-      
-      // Expose any data
-  //     for (ScoreTable* mScoreTable : cScoreTables) {
-  //       mScoreTable->reload();
-  //     }
   }
 
   bool ScoreTracker::renderIcon() const {
@@ -121,6 +92,10 @@ namespace IsoRealms::HighScore {
     return false;
   }
 
+  void ScoreTracker::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
+
   void ScoreTracker::hintInUse(bool inUse) {
     // Nothing to do.
   }
@@ -133,8 +108,26 @@ namespace IsoRealms::HighScore {
     return cProject->input(event);
   }
 
-  void ScoreTracker::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    // Not supported
+  void ScoreTracker::save(JSONObject object, IAssetIdentifier* identifier) const {
+    object.addInteger(JSON_RECORD_LIMIT, cMaximumRecords);
+    cProjectUser.save(object, JSON_USER);
+    cProjectDataPath.save(object, JSON_SAVE_PATH);
+    cScriptOnHighScoreAchieved.save(object, JSON_ON_HIGH_SCORE_ACHIEVED);
+    cScriptOnHighScoreFailed.save(object, JSON_ON_HIGH_SCORE_FAILED);
+    cScriptQuit.save(object, JSON_ON_FINISH);
+    JSONArray mMappingsArray = object.addArray(JSON_MAPPINGS);
+    for (const std::pair<const std::string, Integer>& mWriteInteger : cWriteIntegers) {
+      JSONObject mMappingObject = mMappingsArray.addObject();
+      mMappingObject.addString(JSON_TYPE, TYPE_INTEGER);
+      mMappingObject.addString(JSON_NAME, mWriteInteger.first);
+      mWriteInteger.second.save(mMappingObject, JSON_VALUE);
+    }
+    for (const std::pair<const std::string, String>& mWriteString : cWriteStrings) {
+      JSONObject mMappingObject = mMappingsArray.addObject();
+      mMappingObject.addString(JSON_TYPE, TYPE_STRING);
+      mMappingObject.addString(JSON_NAME, mWriteString.first);
+      mWriteString.second.save(mMappingObject, JSON_VALUE);
+    }
   }
 
   void ScoreTracker::registerAssets(IAssetRegistry* assets) {
@@ -174,16 +167,9 @@ namespace IsoRealms::HighScore {
     std::size_t mExtensionPosition = mProjectName.find_last_of('.');
     std::string mHighScoreTablePath = (mUser ? "User/" : "Program/") + mProjectName.substr(0, mExtensionPosition) + "/HighScores.table";
     if (System::fileExists(mHighScoreTablePath, true)) {
-      DOMNode mHighScoreNode(mHighScoreTablePath, DOMNode::Type::USER);
-      for (DOMNode& mNode : mHighScoreNode) {
-        std::string mValue = mNode.getName();
-        if (mValue == "HighScoreTable") {
-          return std::make_unique<HighScoreTable>(mNode);
-        } else {
-          throw ParseException("Unknown tag for HighScore/ScoreTracker: " + mValue);
-        }
-      }
-      throw ParseException("ERROR: ScoreTracker::readHighScoreTable: High score table not found in existing file.");
+      JSONDocument mHighScoreTableDocument(mHighScoreTablePath, true);
+      JSONObject mHighScoreTableObject = mHighScoreTableDocument.getObject(JSON_HIGH_SCORE_TABLE);
+      return std::make_unique<HighScoreTable>(mHighScoreTableObject);
     }
     return std::make_unique<HighScoreTable>(cFields, cComparisonField, cMaximumRecords);
   }
@@ -213,16 +199,29 @@ namespace IsoRealms::HighScore {
     bool mUser = cProjectUser->getValue();
     std::size_t mExtensionPosition = mProjectName.find_last_of('.');
     std::string mHighScoreTablePath = (mUser ? "User/" : "Program/") + mProjectName.substr(0, mExtensionPosition) + "/HighScores.table";
-    DOMNodeWriter mNode("HighScoreTable");
-    cHighScoreTable->save(&mNode);
-    mNode.save(mHighScoreTablePath);
+    JSONDocument mHighScoreTableDocument;
+    JSONObject mHighScoreTableObject = mHighScoreTableDocument.addObject(JSON_HIGH_SCORE_TABLE);
+    cHighScoreTable->save(mHighScoreTableObject);
+    mHighScoreTableDocument.save(mHighScoreTablePath);
   }
 
   void ScoreTracker::quit() {
     cScriptQuit.execute();
   }
 
-  const std::string ScoreTracker::TAG_SAVE_PATH = "SavePath";
-  const std::string ScoreTracker::TAG_USER      = "User";
-  const std::string ScoreTracker::TAG_VALUE     = "Value";
+  const std::string ScoreTracker::JSON_COMPARE                = "compare";
+  const std::string ScoreTracker::JSON_HIGH_SCORE_TABLE       = "highScoreTable";
+  const std::string ScoreTracker::JSON_MAPPINGS               = "mappings";
+  const std::string ScoreTracker::JSON_NAME                   = "name";
+  const std::string ScoreTracker::JSON_ON_FINISH              = "onFinish";
+  const std::string ScoreTracker::JSON_ON_HIGH_SCORE_ACHIEVED = "onHighScoreAchieved";
+  const std::string ScoreTracker::JSON_ON_HIGH_SCORE_FAILED   = "onHighScoreFailed";
+  const std::string ScoreTracker::JSON_RECORD_LIMIT           = "recordLimit";
+  const std::string ScoreTracker::JSON_SAVE_PATH              = "savePath";
+  const std::string ScoreTracker::JSON_TYPE                   = "type";
+  const std::string ScoreTracker::JSON_USER                   = "user";
+  const std::string ScoreTracker::JSON_VALUE                  = "value";
+
+  const std::string ScoreTracker::TYPE_INTEGER = "Integer";
+  const std::string ScoreTracker::TYPE_STRING  = "String";
 }

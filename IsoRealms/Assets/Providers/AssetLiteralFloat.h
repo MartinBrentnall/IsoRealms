@@ -38,5 +38,12 @@ namespace IsoRealms {
     std::unique_ptr<IFloat> createLiteralAsset(const std::string& expression) const override {
       return std::make_unique<LiteralFloat>(static_cast<float>(atof(expression.c_str())));
     }
+
+    std::unique_ptr<IFloat> createLiteralAsset(JSONObject object) const override {
+      return std::make_unique<LiteralFloat>(object.getFloat(JSON_VALUE));
+    }
+
+    private:
+    inline static const std::string JSON_VALUE = "value";
   };
 }

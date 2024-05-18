@@ -38,10 +38,10 @@ namespace IsoRealms::Basics {
      * Resource Interface *
     \**********************/
     FileTexture(IProject* project, Basics* basics);
-    FileTexture(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data);
+    FileTexture(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -53,13 +53,14 @@ namespace IsoRealms::Basics {
     void hintTextureInUse(bool inUse) override;
     ITexture* getTexture() override;
     void coord(float x, float y) const override;
+    void saveAsset(JSONObject object) const override;
 
     ~FileTexture();
 
     private:
 
-    // DOM strings.
-    static const std::string ATTRIBUTE_FILE;
+    // JSON members.
+    static const std::string JSON_FILENAME;
 
     // Definition data.
     std::string cDefFile; /// Filename containing the image create a texture from.

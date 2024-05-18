@@ -18,21 +18,19 @@
  */
 #include "DamageIndicator.h"
 
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
-
 namespace IsoRealms::Spindizzy {
-  const std::string DamageIndicator::TAG_COLOUR = "Colour";
-  const std::string DamageIndicator::TAG_SIZE   = "Size";
+  const std::string DamageIndicator::JSON_COLOUR = "colour";
+  const std::string DamageIndicator::JSON_SIZE   = "size";
 
   DamageIndicator::DamageIndicator(IProject* project, Spindizzy* spindizzy) :
             cDefColour(project, 0.0f, 0.0f, 1.0f),
             cDefSize(project, 0.5f) {
   }
 
-  DamageIndicator::DamageIndicator(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
+  DamageIndicator::DamageIndicator(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
             DamageIndicator(project, spindizzy) {
-    cDefColour.init(node, TAG_COLOUR);
-    cDefSize.init(node, TAG_SIZE);
+    cDefColour.init(object, JSON_COLOUR);
+    cDefSize.init(object, JSON_SIZE);
   }
 
   void DamageIndicator::registerAssets(IAssetRegistry* assets) {
@@ -43,9 +41,9 @@ namespace IsoRealms::Spindizzy {
     assets->remove(this);
   }
 
-  void DamageIndicator::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    cDefColour.save(node, TAG_COLOUR);
-    cDefSize.save(node, TAG_SIZE);
+  void DamageIndicator::save(JSONObject object, IAssetIdentifier* identifier) const {
+    cDefColour.save(object, JSON_COLOUR);
+    cDefSize.save(object, JSON_SIZE);
   }
 
   void DamageIndicator::hintInUse(bool inUse) {
@@ -93,6 +91,10 @@ namespace IsoRealms::Spindizzy {
 
   bool DamageIndicator::renderAssetIcon() const {
     return renderIcon();
+  }
+
+  void DamageIndicator::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 }
 

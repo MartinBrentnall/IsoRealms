@@ -20,9 +20,6 @@
 
 #include <map>
 
-#include "IsoRealms/Persistence/DOMNode.h"
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
-
 #include "IDigitalInputMapping.h"
 #include "HatHandler.h"
 
@@ -33,6 +30,7 @@ namespace IsoRealms {
    */
   class HatMapping : public IDigitalInputMapping {
     public:
+    static const std::string TYPE_HAT;
 
     /**
      * Construct a digital input mapping with the specified properties..
@@ -52,7 +50,7 @@ namespace IsoRealms {
      * @param node The node from which to read the properties.
      * @throws ArgumentException If the specified direction is not known.
      */
-    HatMapping(HatHandler& hatHandler, DOMNode& node);
+    HatMapping(HatHandler& hatHandler, JSONObject object);
 
     /**
      * Retrieve the direction of the specified name.  The key is always such that it
@@ -81,19 +79,13 @@ namespace IsoRealms {
     \***********************************/
     bool getState(const sf::Event& event) const override;
     bool matches(const sf::Event& event) const override;
-    void save(DOMNodeWriter* node) const override;
+    void save(JSONObject object) const override;
     std::string getShortName() const override;
     std::string getLongName() const override;
 
     private:
-    static const std::string TAG_HAT;
-
-    static const std::string ATTRIBUTE_HAT;
-    static const std::string ATTRIBUTE_DIRECTION;
-    static const std::string ATTRIBUTE_THRESHOLD;
-
-    static const std::string HAT_VALUE_POSITIVE;
-    static const std::string HAT_VALUE_NEGATIVE;
+    static const std::string JSON_DIRECTION;
+    static const std::string JSON_TYPE;
 
     static const std::map<std::string, HatHandler::Direction> cDirectionsByName;
 

@@ -23,7 +23,7 @@
 #include "IsoRealms/Assets/Type/IColour.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/IAssets.h"
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
+#include "IsoRealms/Persistence/JSONDocument.h"
 
 namespace IsoRealms {
   class Colour : public IAssetUser<IColour>,
@@ -32,9 +32,9 @@ namespace IsoRealms {
     public:
     Colour(IProject* project, float defaultRed = 0.0f, float defaultGreen = 0.0f, float defaultBlue = 0.0f, float defaultAlpha = 0.0f, std::function<void()> listener = nullptr);
 
-    void init(DOMNode& node, const std::string& tag);
-    void set(DOMNode& node, const std::string& tag);
-    void save(DOMNodeWriter* node, const std::string& tag) const;
+    void init(JSONObject object, const std::string& member);
+    void set(JSONObject object, const std::string& member);
+    void save(JSONObject object, const std::string& name) const;
 
     IColour* operator*() const {
       return cColour;
@@ -62,6 +62,8 @@ namespace IsoRealms {
     void set() const override {
       cColour->set();
     }
+
+    void saveAsset(JSONObject object) const override;
 
     /**********************************\
      * Implements IAssetUser<IColour> *

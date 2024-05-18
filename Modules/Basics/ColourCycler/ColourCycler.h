@@ -42,25 +42,23 @@ namespace IsoRealms::Basics {
      * Resource Interface *
     \**********************/
     ColourCycler(IProject* project, Basics* basics);
-    ColourCycler(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data);
+    ColourCycler(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon();
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
 
     private:
 
-    // DOM strings.
-    static const std::string TAG_COLOUR;
-    static const std::string TAG_CYCLE_SPEED;
-    static const std::string TAG_INPUT_COLOUR;
-    static const std::string TAG_IO;
-    static const std::string TAG_OUTPUT_COLOUR;
-
-    static const std::string ATTRIBUTE_OFFSET;
-    static const std::string ATTRIBUTE_SPEED_MULTIPLIER;
+    // JSON members.
+    static const std::string JSON_COLOUR;
+    static const std::string JSON_INPUTS;
+    static const std::string JSON_OFFSET;
+    static const std::string JSON_OUTPUTS;
+    static const std::string JSON_SPEED;
+    static const std::string JSON_SPEED_MULTIPLIER;
 
     // Definition data.
     class ColourCycle : public IColour {
@@ -68,7 +66,7 @@ namespace IsoRealms::Basics {
       ColourCycle(ColourCycler* parent, float startPosition, float speedMultiplier);
       void registerAssets(IAssetRegistry* assets, const std::string& name);
       void unregisterAssets(IAssetRemover* assets);
-      void save(DOMNodeWriter* node);
+      void save(JSONObject object) const;
       void update(unsigned int milliseconds);
       void reset();
 
@@ -80,6 +78,7 @@ namespace IsoRealms::Basics {
       float getGreen() const override;
       float getBlue() const override;
       float getAlpha() const override;
+      void saveAsset(JSONObject object) const override;
 
       private:
       ColourCycler* cParent;     /// Parent.

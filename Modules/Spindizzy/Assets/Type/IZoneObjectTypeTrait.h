@@ -29,7 +29,7 @@ namespace IsoRealms::Spindizzy {
 
   class IZoneObjectTypeTrait : public IAsset {
     public:
-    virtual void save(DOMNodeWriter& node) const = 0;
+    virtual void save(JSONObject object) const = 0;
     virtual std::unique_ptr<IZoneObjectTrait> createTrait(ZoneObject& object) = 0;
     virtual void registerAssets(ISpindizzyRegistry* registry) = 0;
     

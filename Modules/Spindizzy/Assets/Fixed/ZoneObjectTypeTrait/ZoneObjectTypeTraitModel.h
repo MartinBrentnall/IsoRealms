@@ -30,7 +30,7 @@ namespace IsoRealms::Spindizzy {
 
   class ZoneObjectTypeTraitModel : public IZoneObjectTypeTrait {
     public:
-    ZoneObjectTypeTraitModel(IProject* project, ZoneObjectType* type, DOMNode& node);
+    ZoneObjectTypeTraitModel(IProject* project, ZoneObjectType* type, JSONObject object);
 
     // Interface to be used by instances.    
     bool isInitiallyEnabled() const;
@@ -40,18 +40,18 @@ namespace IsoRealms::Spindizzy {
     /***********************************\
      * Implements IZoneObjectTypeTrait *
     \***********************************/
-    void save(DOMNodeWriter& node) const override;
+    void save(JSONObject object) const override;
     std::unique_ptr<IZoneObjectTrait> createTrait(ZoneObject& object) override;
     void registerAssets(ISpindizzyRegistry* registry) override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
     private:
     
-    // DOM strings.
-    static const std::string TAG_MODEL;
-    
-    static const std::string ATTRIBUTE_LOCATION;
-    
+    // JSON members.
+    static const std::string JSON_MODEL;
+    static const std::string JSON_LOCATION;
+
     // Definition data.
     IsoRealms::Model cDefModel;            /// The model to be rendered by instances.
     std::string cDefLocationID; /// ID of the location to which instances will be attached.

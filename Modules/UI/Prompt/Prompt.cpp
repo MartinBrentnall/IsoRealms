@@ -18,20 +18,18 @@
  */
 #include "Prompt.h"
 
-#include "IsoRealms/Persistence/DOMNode.h"
 #include "IsoRealms/Types.h"
 
 namespace IsoRealms::UI {
-  const std::string Prompt::TAG_FALSE     = "False";
-  const std::string Prompt::TAG_FONT      = "Font";
-  const std::string Prompt::TAG_HIGHLIGHT = "Highlight";
-  const std::string Prompt::TAG_TRUE      = "True";
-
-  const std::string Prompt::ATTRIBUTE_FALSE         = "false";
-  const std::string Prompt::ATTRIBUTE_SHADOW_OFFSET = "shadowOffset";
-  const std::string Prompt::ATTRIBUTE_TEXT          = "text";
-  const std::string Prompt::ATTRIBUTE_TEXT_SIZE     = "textSize";
-  const std::string Prompt::ATTRIBUTE_TRUE          = "true";
+  const std::string Prompt::JSON_CANCEL_LABEL     = "cancelLabel";
+  const std::string Prompt::JSON_CONFIRM_LABEL    = "confirmLabel";
+  const std::string Prompt::JSON_FONT             = "font";
+  const std::string Prompt::JSON_MESSAGE          = "message";
+  const std::string Prompt::JSON_ON_CANCEL        = "onCancel";
+  const std::string Prompt::JSON_ON_CONFIRM       = "onConfirm";
+  const std::string Prompt::JSON_SELECTION_COLOUR = "selectionColour";
+  const std::string Prompt::JSON_SHADOW_OFFSET    = "shadowOffset";
+  const std::string Prompt::JSON_TEXT_SIZE        = "textSize";
 
   const float Prompt::DEFAULT_SHADOW_OFFSET = 0.008f;
   const float Prompt::DEFAULT_TEXT_SIZE     = 0.05f;
@@ -48,17 +46,17 @@ namespace IsoRealms::UI {
     });
   }
   
-  Prompt::Prompt(IProject* project, UI* ui, DOMNode& node, IOptions* options, IResourceData* data) :
+  Prompt::Prompt(IProject* project, UI* ui, JSONObject object, IOptions* options, IResourceData* data) :
             Prompt(project, ui) {
-    cDefTextSize     = node.getFloatAttribute(ATTRIBUTE_TEXT_SIZE,     DEFAULT_TEXT_SIZE);
-    cDefShadowOffset = node.getFloatAttribute(ATTRIBUTE_SHADOW_OFFSET, DEFAULT_SHADOW_OFFSET);
-    cDefMessage      = node.getAttribute(ATTRIBUTE_TEXT);
-    cDefNegativeText = node.getAttribute(ATTRIBUTE_FALSE);
-    cDefPositiveText = node.getAttribute(ATTRIBUTE_TRUE);
-    cDefSelectionColour.init(node, TAG_HIGHLIGHT);
-    cDefFont.init(node, TAG_FONT);
-    cDefNegativeAction.init(node, TAG_FALSE);
-    cDefPositiveAction.init(node, TAG_TRUE);
+    cDefTextSize     = object.getFloat(JSON_TEXT_SIZE,     DEFAULT_TEXT_SIZE);
+    cDefShadowOffset = object.getFloat(JSON_SHADOW_OFFSET, DEFAULT_SHADOW_OFFSET);
+    cDefMessage      = object.getString(JSON_MESSAGE);
+    cDefNegativeText = object.getString(JSON_CANCEL_LABEL);
+    cDefPositiveText = object.getString(JSON_CONFIRM_LABEL);
+    cDefSelectionColour.init(object, JSON_SELECTION_COLOUR);
+    cDefFont.init(object, JSON_FONT);
+    cDefNegativeAction.init(object, JSON_ON_CANCEL);
+    cDefPositiveAction.init(object, JSON_ON_CONFIRM);
   }
 
   void Prompt::registerAssets(IAssetRegistry* assets) {
@@ -73,18 +71,18 @@ namespace IsoRealms::UI {
     assets->remove(&cLuaBinding);
   }
   
-  void Prompt::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    node->addAttribute(ATTRIBUTE_TEXT_SIZE,     cDefTextSize,     DEFAULT_TEXT_SIZE);
-    node->addAttribute(ATTRIBUTE_SHADOW_OFFSET, cDefShadowOffset, DEFAULT_SHADOW_OFFSET);
-    node->addAttribute(ATTRIBUTE_TEXT,          cDefMessage);
-    node->addAttribute(ATTRIBUTE_FALSE,         cDefNegativeText);
-    node->addAttribute(ATTRIBUTE_TRUE,          cDefPositiveText);
-    cDefSelectionColour.save(node, TAG_HIGHLIGHT);
-    cDefFont.save(node, TAG_FONT);
-    cDefPositiveAction.save(node, TAG_TRUE);
-    cDefNegativeAction.save(node, TAG_FALSE);
+  void Prompt::save(JSONObject object, IAssetIdentifier* identifier) const {
+    object.addFloat(JSON_TEXT_SIZE,      cDefTextSize,     DEFAULT_TEXT_SIZE);
+    object.addFloat(JSON_SHADOW_OFFSET,  cDefShadowOffset, DEFAULT_SHADOW_OFFSET);
+    object.addString(JSON_MESSAGE,       cDefMessage);
+    object.addString(JSON_CANCEL_LABEL,  cDefNegativeText);
+    object.addString(JSON_CONFIRM_LABEL, cDefPositiveText);
+    cDefSelectionColour.save(object, JSON_SELECTION_COLOUR);
+    cDefFont.save(object, JSON_FONT);
+    cDefPositiveAction.save(object, JSON_ON_CONFIRM);
+    cDefNegativeAction.save(object, JSON_ON_CANCEL);
   }
-  
+
   void Prompt::hintInUse(bool inUse) {
     // Nothing to do.
   }
@@ -141,5 +139,9 @@ namespace IsoRealms::UI {
 
   bool Prompt::renderAssetIcon() const {
     return false;
+  }
+
+  void Prompt::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 }

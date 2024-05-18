@@ -19,7 +19,7 @@
 #include "FloatSwitch.h"
 
 namespace IsoRealms::Basics {
-  const std::string FloatSwitch::ATTRIBUTE_VALUE = "init";
+  const std::string FloatSwitch::JSON_VALUE = "value";
 
   FloatSwitch::FloatSwitch(IProject* project, Basics* basics) :
             AssetSwitchWithTransition(project, [this]() {return *cDefFloat;}),
@@ -27,9 +27,9 @@ namespace IsoRealms::Basics {
             cLuaBinding(project, this) {
   }
 
-  FloatSwitch::FloatSwitch(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
+  FloatSwitch::FloatSwitch(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
             FloatSwitch(project, basics) {
-    cDefFloat.init(node, "TODO");
+    cDefFloat.init(object, JSON_VALUE);
   }
 
   void FloatSwitch::registerAssets(IAssetRegistry* assets) {
@@ -42,8 +42,8 @@ namespace IsoRealms::Basics {
     assets->remove(this);
   }
 
-  void FloatSwitch::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    cDefFloat.save(node, ATTRIBUTE_VALUE);
+  void FloatSwitch::save(JSONObject object, IAssetIdentifier* identifier) const {
+    cDefFloat.save(object, JSON_VALUE);
   }
 
   float FloatSwitch::getValue() const {
@@ -58,6 +58,10 @@ namespace IsoRealms::Basics {
 
   bool FloatSwitch::renderAssetIcon() const {
     return false;
+  }
+
+  void FloatSwitch::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 }
 

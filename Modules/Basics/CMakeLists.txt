@@ -60,4 +60,4 @@ set_target_properties(Basics PROPERTIES OUTPUT_NAME "IsoRealms-Basics")
 set_target_properties(Basics PROPERTIES LIBRARY_OUTPUT_DIRECTORY "../../Out")
 set_target_properties(Basics PROPERTIES PREFIX "")
 
-target_link_libraries(Basics IsoRealms sfml-window sfml-system sfml-audio sfml-graphics OpenGL::GL ${OPENGL_glu_LIBRARY} ${GLEW_LIBRARIES} ${XercesC_LIBRARIES} ${FREETYPE_LIBRARIES} ${LUA_LIBRARIES})
+target_link_libraries(Basics IsoRealms sfml-window sfml-system sfml-audio sfml-graphics OpenGL::GL ${OPENGL_glu_LIBRARY} ${GLEW_LIBRARIES} ${FREETYPE_LIBRARIES} ${LUA_LIBRARIES})

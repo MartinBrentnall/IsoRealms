@@ -19,7 +19,7 @@
 #include "SimpleBoolean.h"
 
 namespace IsoRealms::Basics {
-  const std::string SimpleBoolean::ATTRIBUTE_VALUE = "value";
+  const std::string SimpleBoolean::JSON_VALUE = "value";
 
   const std::string SimpleBoolean::PROPERTY_VALUE = "Initial Value";
   
@@ -33,11 +33,11 @@ namespace IsoRealms::Basics {
     });
   }
   
-  SimpleBoolean::SimpleBoolean(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
+  SimpleBoolean::SimpleBoolean(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
             SimpleBoolean(project, basics) {
-    cRuntimeValue = cDefValue = node.getBooleanAttribute(ATTRIBUTE_VALUE);
+    cRuntimeValue = cDefValue = object.getBoolean(JSON_VALUE);
 
-    project->init([this, &node](IAssets* resources) {
+    project->init([this](IAssets* resources) {
       cStateNotifier->stateChanged(this);
     });
   }
@@ -53,8 +53,8 @@ namespace IsoRealms::Basics {
     cStateNotifier = nullptr;
   }
   
-  void SimpleBoolean::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    node->addAttribute(ATTRIBUTE_VALUE, cDefValue);
+  void SimpleBoolean::save(JSONObject object, IAssetIdentifier* identifier) const {
+    object.addBoolean(JSON_VALUE, cDefValue);
   }
 
   void SimpleBoolean::hintInUse(bool inUse) {
@@ -76,6 +76,10 @@ namespace IsoRealms::Basics {
 
   bool SimpleBoolean::renderAssetIcon() const {
     return renderIcon();
+  }
+
+  void SimpleBoolean::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   void SimpleBoolean::setValue(bool value) {

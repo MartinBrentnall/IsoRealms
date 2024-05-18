@@ -49,8 +49,7 @@ namespace IsoRealms::Spindizzy {
     \*******************************/
     void registerAssets(ITraitRegistry& registry) override;
     void unregisterAssets(ZoneObject& object) override;
-    void load(DOMNode& node) override;
-    void save(DOMNodeWriter* node) const override;
+    void save(JSONObject object) const override;
     bool hasConfiguration() const override;
     void reset() override;
     IBinding* getTraitBinding(const std::string& id) override;

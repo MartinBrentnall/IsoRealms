@@ -21,8 +21,7 @@
 #include <memory>
 
 namespace IsoRealms {
-  class DOMNode;
-  class DOMNodeWriter;
+  class JSONObject;
   class IAssetLiterals;
   class IAssetRegistry;
   class IAssetRemover;
@@ -39,8 +38,8 @@ namespace IsoRealms {
     /**
     * Save the configuration and resources of the module.
     */
-    virtual void load(IProject* project, DOMNode& node) = 0;
-    virtual void save(DOMNodeWriter* node, IAssetIdentifier* identifier) = 0;
+    virtual void load(IProject* project, JSONObject object) = 0;
+    virtual void save(JSONObject object, IAssetIdentifier* identifier) = 0;
     virtual void registerAssets(IAssetRegistry* assets) = 0;
     virtual void unregisterAssets(IAssetRemover* assets, IAssets* releaser) = 0;
 

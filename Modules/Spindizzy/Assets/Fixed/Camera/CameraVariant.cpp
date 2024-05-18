@@ -23,11 +23,6 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string CameraVariant::TAG_LOCATION = "Location";
-  const std::string CameraVariant::TAG_PITCH    = "Pitch";
-  const std::string CameraVariant::TAG_YAW      = "Yaw";
-  const std::string CameraVariant::TAG_ZOOM     = "Zoom";
-
   CameraVariant::CameraVariant(IProject* project, WorldView* view) :
             cParent(view),
             cDefYaw(cParent->getSpindizzy()),
@@ -36,14 +31,14 @@ namespace IsoRealms::Spindizzy {
             cDefZoom(cParent->getSpindizzy()) {
   }
   
-  CameraVariant::CameraVariant(IProject* project, WorldView* view, DOMNode& node) :
+  CameraVariant::CameraVariant(IProject* project, WorldView* view, JSONObject object) :
             CameraVariant(project, view) {
-    cDefYaw.set(node.getNode(TAG_YAW), cParent);
-    cDefPitch.set(node.getNode(TAG_PITCH), cParent);
-    cDefLocation.set(node.getNode(TAG_LOCATION), cParent);
-    cDefZoom.set(node.getNode(TAG_ZOOM), cParent);
+    cDefYaw.set(object.getObject(JSON_YAW), cParent);
+    cDefPitch.set(object.getObject(JSON_PITCH), cParent);
+    cDefLocation.set(object.getObject(JSON_LOCATION), cParent);
+    cDefZoom.set(object.getObject(JSON_ZOOM), cParent);
   }
-  
+
   void CameraVariant::registerAssets(IAssetRegistry* assets) {
     LocalAssetRegistry mYawRegistry(     assets, "Yaw");
     LocalAssetRegistry mPitchRegistry(   assets, "Pitch");
@@ -109,10 +104,15 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
   
-  void CameraVariant::saveAsset(DOMNodeWriter* node) const {
-    cDefYaw.save(node, TAG_YAW);
-    cDefPitch.save(node, TAG_PITCH);
-    cDefLocation.save(node, TAG_LOCATION);
-    cDefZoom.save(node, TAG_ZOOM);
+  void CameraVariant::saveAsset(JSONObject object) const {
+    cDefYaw.save(object, JSON_YAW);
+    cDefPitch.save(object, JSON_PITCH);
+    cDefLocation.save(object, JSON_LOCATION);
+    cDefZoom.save(object, JSON_ZOOM);
   }
+
+  const std::string CameraVariant::JSON_LOCATION = "location";
+  const std::string CameraVariant::JSON_PITCH    = "pitch";
+  const std::string CameraVariant::JSON_YAW      = "yaw";
+  const std::string CameraVariant::JSON_ZOOM     = "zoom";
 }

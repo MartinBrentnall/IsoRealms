@@ -19,12 +19,12 @@
 #include "FileFont.h"
 
 namespace IsoRealms::Basics {
-  const std::string FileFont::ATTRIBUTE_DETAIL       = "detail";
-  const std::string FileFont::ATTRIBUTE_FILENAME     = "filename";
-  const std::string FileFont::ATTRIBUTE_LINE_SPACING = "lineSpacing";
-  const std::string FileFont::ATTRIBUTE_SCALE        = "scale";
-  const std::string FileFont::ATTRIBUTE_OFFSET_X     = "offsetX";
-  const std::string FileFont::ATTRIBUTE_OFFSET_Y     = "offsetY";
+  const std::string FileFont::JSON_DETAIL       = "detail";
+  const std::string FileFont::JSON_FILENAME     = "filename";
+  const std::string FileFont::JSON_LINE_SPACING = "lineSpacing";
+  const std::string FileFont::JSON_SCALE        = "scale";
+  const std::string FileFont::JSON_OFFSET_X     = "offsetX";
+  const std::string FileFont::JSON_OFFSET_Y     = "offsetY";
 
   const int   FileFont::DEFAULT_DETAIL       = 64;
   const float FileFont::DEFAULT_LINE_SPACING = 2.5f;
@@ -40,21 +40,21 @@ namespace IsoRealms::Basics {
             cProcessedGLListBase(0) {
   }
   
-  FileFont::FileFont(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
+  FileFont::FileFont(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
             FileFont(project, basics) {
-    cDefFilename = node.getAttribute(ATTRIBUTE_FILENAME);
-    cDefDetail = node.getIntegerAttribute(ATTRIBUTE_DETAIL, DEFAULT_DETAIL);
-    cDefLineSpacing = node.getFloatAttribute(ATTRIBUTE_LINE_SPACING, DEFAULT_LINE_SPACING);
-    cDefScale = node.getFloatAttribute(ATTRIBUTE_SCALE, DEFAULT_SCALE);
-    cDefOffsetX = node.getFloatAttribute(ATTRIBUTE_OFFSET_X);
-    cDefOffsetY = node.getFloatAttribute(ATTRIBUTE_OFFSET_Y);
-        
+    cDefFilename = object.getString(JSON_FILENAME);
+    cDefDetail = object.getInteger(JSON_DETAIL, DEFAULT_DETAIL);
+    cDefLineSpacing = object.getFloat(JSON_LINE_SPACING, DEFAULT_LINE_SPACING);
+    cDefScale = object.getFloat(JSON_SCALE, DEFAULT_SCALE);
+    cDefOffsetX = object.getFloat(JSON_OFFSET_X);
+    cDefOffsetY = object.getFloat(JSON_OFFSET_Y);
+
     project->mainThreadInit([this]() {
       FT_Library mFTLibrary;
       if (FT_Init_FreeType(&mFTLibrary)) {
         throw std::runtime_error("FT_Init_FreeType failed");
       }
-      
+
       FT_Face mFTFace;
       std::string mFontLocation = System::getPath(cDefFilename, false);
       if (FT_New_Face(mFTLibrary, mFontLocation.c_str(), 0, &mFTFace)) {
@@ -73,7 +73,7 @@ namespace IsoRealms::Basics {
         if (FT_Load_Glyph(mFTFace, FT_Get_Char_Index(mFTFace, i), FT_LOAD_DEFAULT)) {
           throw std::runtime_error("FT_Load_Glyph failed");
         }
-        
+
         // Move the face's glyph into a Glyph object.
         FT_Glyph mFTGlyph;
         if (FT_Get_Glyph(mFTFace->glyph, &mFTGlyph)) {
@@ -148,13 +148,13 @@ namespace IsoRealms::Basics {
     assets->remove(this);
   }
   
-  void FileFont::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    node->addAttribute(ATTRIBUTE_FILENAME, cDefFilename);
-    node->addAttribute(ATTRIBUTE_DETAIL, cDefDetail, DEFAULT_DETAIL);
-    node->addAttribute(ATTRIBUTE_LINE_SPACING, cDefLineSpacing, DEFAULT_LINE_SPACING);
-    node->addAttribute(ATTRIBUTE_SCALE, cDefScale, DEFAULT_SCALE);
-    node->addAttribute(ATTRIBUTE_OFFSET_X, cDefOffsetX);
-    node->addAttribute(ATTRIBUTE_OFFSET_Y, cDefOffsetY);
+  void FileFont::save(JSONObject object, IAssetIdentifier* identifier) const {
+    object.addString(JSON_FILENAME, cDefFilename);
+    object.addInteger(JSON_DETAIL, cDefDetail, DEFAULT_DETAIL);
+    object.addFloat(JSON_LINE_SPACING, cDefLineSpacing, DEFAULT_LINE_SPACING);
+    object.addFloat(JSON_SCALE, cDefScale, DEFAULT_SCALE);
+    object.addFloat(JSON_OFFSET_X, cDefOffsetX);
+    object.addFloat(JSON_OFFSET_Y, cDefOffsetY);
   }
 
   void FileFont::hintInUse(bool inUse) {
@@ -260,5 +260,9 @@ namespace IsoRealms::Basics {
 
   bool FileFont::renderAssetIcon() const {
     return renderIcon();
+  }
+
+  void FileFont::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 }

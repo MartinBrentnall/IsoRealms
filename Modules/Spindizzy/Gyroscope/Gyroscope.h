@@ -40,10 +40,10 @@ namespace IsoRealms::Spindizzy {
      * Resource Interface *
     \**********************/
     Gyroscope(IProject* project, Spindizzy* spindizzy);
-    Gyroscope(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data);
+    Gyroscope(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -54,6 +54,7 @@ namespace IsoRealms::Spindizzy {
     I3DModel* createModel() override;
     bool renderPreview() const override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
     /***********************\
      * Implements I3DModel *
@@ -63,12 +64,12 @@ namespace IsoRealms::Spindizzy {
 
     private:
 
-    // DOM strings.
-    static const std::string TAG_COLOUR_1;
-    static const std::string TAG_COLOUR_2;
-    static const std::string TAG_COLOUR_3;
-    static const std::string TAG_COLOUR_4;
-    static const std::string TAG_OUTLINE;
+    // JSON members.
+    static const std::string JSON_COLOUR_1;
+    static const std::string JSON_COLOUR_2;
+    static const std::string JSON_COLOUR_3;
+    static const std::string JSON_COLOUR_4;
+    static const std::string JSON_OUTLINE;
 
     // Resource definition constants.
     static const float CIRCLE_RESOLUTION; /// Degrees for each segment of a rendered circle.
@@ -82,6 +83,9 @@ namespace IsoRealms::Spindizzy {
     Colour cDefQuadrant[4];     /// Colours of the four quadrants.
     Colour cDefOutline;         /// Colour of the outline and the spindle.
     LiteralTexture cDefTexture; /// Actual texture for the circle section.
+
+    // Runtime data.
+    bool cNeedsRedrawing;
 
     // Editing data.
     float cEditingIconRotation;
@@ -112,5 +116,7 @@ namespace IsoRealms::Spindizzy {
      * @param colour Colour to render.
      */
     void renderCircle(float outerRadius, float innerRadius, Colour& colour);
+
+    void setNeedsRedrawing();
   };
 }

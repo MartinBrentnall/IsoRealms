@@ -37,8 +37,8 @@ namespace IsoRealms::Spindizzy {
     
     // Constructors.
     CameraTransitional(IProject* project, WorldView* view);
-    CameraTransitional(IProject* project, WorldView* view, DOMNode& node);
-    
+    CameraTransitional(IProject* project, WorldView* view, JSONObject object);
+
     /***********************\
      * Scripting interface *
     \***********************/
@@ -65,7 +65,7 @@ namespace IsoRealms::Spindizzy {
      * Implements IAsset via ICamera *
     \*********************************/
     bool renderAssetIcon() const override;
-    void saveAsset(DOMNodeWriter* node) const override;
+    void saveAsset(JSONObject object) const override;
 
     /******************************\
      * Implements ICameraListener *
@@ -76,16 +76,15 @@ namespace IsoRealms::Spindizzy {
 
     private:
     
-    // DOM strings.
-    static const std::string TAG_END;
-    static const std::string TAG_ON_END_ARRIVAL;
-    static const std::string TAG_ON_END_DEPARTURE;
-    static const std::string TAG_ON_START_ARRIVAL;
-    static const std::string TAG_ON_START_DEPARTURE;
-    static const std::string TAG_START;
+    // JSON members.
+    static const std::string JSON_DURATION;
+    static const std::string JSON_END;
+    static const std::string JSON_ON_END_ARRIVAL;
+    static const std::string JSON_ON_END_DEPARTURE;
+    static const std::string JSON_ON_START_ARRIVAL;
+    static const std::string JSON_ON_START_DEPARTURE;
+    static const std::string JSON_START;
     
-    static const std::string ATTRIBUTE_DURATION;
-
     static const unsigned int DEFAULT_DURATION;
 
     class Yaw : public IFloat {
@@ -97,7 +96,8 @@ namespace IsoRealms::Spindizzy {
       \*********************/
       float getValue() const override;
       bool renderAssetIcon() const override;
-      
+      void saveAsset(JSONObject object) const override;
+
       private:
       CameraTransitional& cParent;
     } cYaw;
@@ -111,7 +111,8 @@ namespace IsoRealms::Spindizzy {
       \*********************/
       float getValue() const override;
       bool renderAssetIcon() const override;
-      
+      void saveAsset(JSONObject object) const override;
+
       private:
       CameraTransitional& cParent;
     } cPitch;

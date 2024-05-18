@@ -42,10 +42,10 @@ namespace IsoRealms::Basics {
      * Resource Interface *
     \**********************/
     FileSound(IProject* project, Basics* basics);
-    FileSound(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data);
+    FileSound(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const override;
+    void save(JSONObject object, IAssetIdentifier* identifier) const override;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -56,10 +56,11 @@ namespace IsoRealms::Basics {
     /**************************\
      * Implements IActionType *
     \**************************/
-    IAction* createAction(DOMNode& node, IProject* project, IBindingRegistry* localObjects) override;
+    IAction* createAction(JSONObject object, IProject* project, IBindingRegistry* localArgs) override;
     IAction* createAction(IProject* project, IBindingRegistry* localArgs) override;
     void destroyAction(IAction* action, IAssets* assets) override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
     /**********************\
       * Implements IAction *
@@ -70,8 +71,8 @@ namespace IsoRealms::Basics {
 
     private:
 
-    // DOM strings.
-    static const std::string ATTRIBUTE_FILE;
+    // JSON members.
+    static const std::string JSON_FILENAME;
 
     // Definition data.
     Basics* cDefBasics;   /// Module holding the global sound volume.

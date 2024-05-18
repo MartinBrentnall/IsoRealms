@@ -19,8 +19,15 @@
 #include "Recorder.h"
 
 namespace IsoRealms::Replay {
-  const std::string Recorder::TAG_INPUT       = "Input";
-  const std::string Recorder::TAG_QUIT_ACTION = "QuitAction";
+  const std::string Recorder::JSON_INPUT               = "input";
+  const std::string Recorder::JSON_INPUT_CONFIGURATION = "inputConfiguration";
+  const std::string Recorder::JSON_INPUTS              = "inputs";
+  const std::string Recorder::JSON_KEY                 = "key";
+  const std::string Recorder::JSON_ON_FINISH           = "onFinish";
+  const std::string Recorder::JSON_TYPE                = "type";
+
+  const std::string Recorder::TYPE_ANALOGUE = "Analogue";
+  const std::string Recorder::TYPE_DIGITAL  = "Digital";
 
   Recorder::Recorder(IProject* project, Replay* replay) :
             cParentProject(project),
@@ -30,12 +37,12 @@ namespace IsoRealms::Replay {
     cElapsedTime = 0;
   }
 
-  Recorder::Recorder(IProject* project, Replay* replay, DOMNode& node, IOptions* options, IResourceData* data) :
+  Recorder::Recorder(IProject* project, Replay* replay, JSONObject object, IOptions* options, IResourceData* data) :
             Recorder(project, replay) {
     if (options == nullptr) {
       throw ArgumentException("ERROR: Recorder::Recorder: Options are required for this resource.");
     }
-    
+
     LocalOptions mLocalOptions("Project", options);
     cProject = std::make_unique<Project>(cParentProject->getApplication(), &mLocalOptions, [this](bool forceQuit) {
       cOutput.close();
@@ -44,19 +51,19 @@ namespace IsoRealms::Replay {
         cParentProject->finish(true);
       }
     }); // TODO: 'user' flag shouldn't always be false
-    
+
     cInputConfiguration = options->getOption("InputConfiguration");
 
     // Read the inputs to listen to and add digital listeners to those inputs.
-    DOMNode mInputConfigurationNode(cInputConfiguration, DOMNode::Type::PROGRAM);
-    DOMNode mRecorderConfigurationNode = mInputConfigurationNode.getNode("RecorderConfiguration");
+    JSONDocument mInputConfigurationDocument(cInputConfiguration, false);
+    JSONObject mInputConfigurationObject = mInputConfigurationDocument.getObject(JSON_INPUT_CONFIGURATION);
     unsigned int mInputID = 0;
-    for (DOMNode& mNode : mRecorderConfigurationNode) {
-      std::string mInputType = mNode.getName();
-      if (mInputType == "Digital") {
-        cDefDigitalInputs.emplace_back(std::make_unique<Boolean>(cProject.get(), false, [this, mInputID](bool value) {writeInput(mInputID, value);})).get()->set(mNode, TAG_INPUT);
-      } else if (mInputType == "Analogue") {
-        cDefAnalogueInputs.emplace_back(std::make_unique<Float>(cProject.get(), 0.0f, [this, mInputID](float value) {writeInput(mInputID, value);})).get()->set(mNode, TAG_INPUT);
+    for (JSONObject mInputObject : mInputConfigurationObject.getArray(JSON_INPUTS)) {
+      std::string mInputType = mInputObject.getString(JSON_TYPE);
+      if (mInputType == TYPE_DIGITAL) {
+        cDefDigitalInputs.emplace_back(std::make_unique<Boolean>(cProject.get(), false, [this, mInputID](bool value) {writeInput(mInputID, value);})).get()->set(mInputObject, JSON_INPUT);
+      } else if (mInputType == TYPE_ANALOGUE) {
+        cDefAnalogueInputs.emplace_back(std::make_unique<Float>(cProject.get(), 0.0f, [this, mInputID](float value) {writeInput(mInputID, value);})).get()->set(mInputObject, JSON_INPUT);
       } else {
         // TODO: Throw.
       }
@@ -94,7 +101,7 @@ namespace IsoRealms::Replay {
       cProject->updateRuntime(milliseconds);
       cProject->updateRuntimeComplete();
     });
-    
+
     project->reset([this]() {
       cProject->reset();
       cElapsedTime = 0;
@@ -103,12 +110,12 @@ namespace IsoRealms::Replay {
         cOutput.close();
       }
     });
-    
+
     // Do main thread init stuff
     project->mainThreadInit([this]() {
       cProject->initMainThread();
     });
-    cQuitAction.init(node, TAG_QUIT_ACTION);
+    cQuitAction.init(object, JSON_ON_FINISH);
   }
 
   bool Recorder::renderIcon() const {
@@ -117,6 +124,10 @@ namespace IsoRealms::Replay {
 
   bool Recorder::renderAssetIcon() const {
     return false;
+  }
+
+  void Recorder::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   void Recorder::hintInUse(bool inUse) {
@@ -166,7 +177,7 @@ namespace IsoRealms::Replay {
     return cProject->input(event);
   }
 
-  void Recorder::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    // Not supported
+  void Recorder::save(JSONObject object, IAssetIdentifier* identifier) const {
+    cQuitAction.save(object, JSON_ON_FINISH);
   }
 }

@@ -20,6 +20,7 @@
 
 #include "IsoRealms/Assets/Type/IAction.h"
 #include "IsoRealms/Assets/Type/IActionType.h"
+#include "IsoRealms/Persistence/JSONDocument.h"
 
 namespace IsoRealms {
   class LiteralActionType : public IActionType {
@@ -29,10 +30,11 @@ namespace IsoRealms {
     /**************************\
      * Implements IActionType *
     \**************************/
-    IAction* createAction(DOMNode& node, IProject* project, IBindingRegistry* localObjects) override;
+    IAction* createAction(JSONObject object, IProject* project, IBindingRegistry* localArgs) override;
     IAction* createAction(IProject* project, IBindingRegistry* localArgs) override;
     void destroyAction(IAction* action, IAssets* assets) override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
     private:
     class Action : public IAction {
@@ -47,7 +49,7 @@ namespace IsoRealms {
       \**********************/
       void execute() override;
       IActionType* getActionType() const override;
-      void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const override;
+      void save(JSONObject object, IAssetIdentifier* identifier) const override;
       bool hasConfiguration() const override;
     };
     Action DUMMY;

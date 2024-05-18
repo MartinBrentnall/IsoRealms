@@ -19,7 +19,7 @@
 #include "SimpleFloat.h"
 
 namespace IsoRealms::Basics {
-  const std::string SimpleFloat::ATTRIBUTE_VALUE = "value";
+  const std::string SimpleFloat::JSON_VALUE = "value";
 
   const std::string SimpleFloat::PROPERTY_VALUE  = "Initial Value";
   
@@ -33,11 +33,11 @@ namespace IsoRealms::Basics {
     });
   }
   
-  SimpleFloat::SimpleFloat(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
+  SimpleFloat::SimpleFloat(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
             SimpleFloat(project, basics) {
-    cRuntimeValue = cDefValue = node.getFloatAttribute(ATTRIBUTE_VALUE);
+    cRuntimeValue = cDefValue = object.getFloat(JSON_VALUE);
 
-    project->init([this, &node](IAssets* resources) {
+    project->init([this](IAssets* resources) {
       cStateNotifier->stateChanged(this);
     });
   }
@@ -53,8 +53,8 @@ namespace IsoRealms::Basics {
     cStateNotifier = nullptr;
   }
   
-  void SimpleFloat::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    node->addAttribute(ATTRIBUTE_VALUE, cDefValue);
+  void SimpleFloat::save(JSONObject object, IAssetIdentifier* identifier) const {
+    object.addFloat(JSON_VALUE, cDefValue);
   }
 
   void SimpleFloat::hintInUse(bool inUse) {
@@ -76,6 +76,10 @@ namespace IsoRealms::Basics {
 
   bool SimpleFloat::renderAssetIcon() const {
     return renderIcon();
+  }
+
+  void SimpleFloat::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   void SimpleFloat::setValue(float value) {

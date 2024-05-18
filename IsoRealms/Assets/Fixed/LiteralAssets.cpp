@@ -37,23 +37,23 @@ namespace IsoRealms {
   ITexture* LiteralAssets::createLiteralTexture(              IAssetUser<ITexture>*        user) {return nullptr;}
   IVertex* LiteralAssets::createLiteralVertex(                IAssetUser<IVertex>*         user, const float x, const float y, const float z) {return nullptr;}
 
-  I3DModelType*    LiteralAssets::getModelType(     IAssetUser<I3DModelType>*    user, DOMNode& node,                                      bool required) {return nullptr;}
-  IAction*         LiteralAssets::getAction(        IAssetUser<IAction>*         user, DOMNode& node, const std::string& tag, IBindingRegistry* registry, const std::string& id) {return nullptr;}
-  IActionType*     LiteralAssets::getActionType(    IAssetUser<IActionType>*     user, DOMNode& node,                                      bool required) {return nullptr;}
-  IAssets*         LiteralAssets::getAssets(        IAssetUser<IAssets>*         user, DOMNode& node,                                      bool required) {return nullptr;}
-  IBinding*        LiteralAssets::getBinding(       IAssetUser<IBinding>*        user, DOMNode& node, IBindingRegistry* locals,            bool required) {return nullptr;}
-  IBoolean*        LiteralAssets::getBoolean(       IAssetUser<IBoolean>*        user, DOMNode& node, IStateListener<IBoolean*>* listener, bool required) {return nullptr;}
-  IColour*         LiteralAssets::getColour(        IAssetUser<IColour>*         user, DOMNode& node, IStateListener<IColour*>*  listener, bool required) {return nullptr;}
-  IEditable*       LiteralAssets::getEditable(      IAssetUser<IEditable>*       user, DOMNode& node,                                      bool required) {return nullptr;}
-  IFloat*          LiteralAssets::getFloat(         IAssetUser<IFloat>*          user, DOMNode& node, IStateListener<IFloat*>*   listener, bool required) {return nullptr;}
-  IFont*           LiteralAssets::getFont(          IAssetUser<IFont>*           user, DOMNode& node,                                      bool required) {return nullptr;}
-  IInputHandler*   LiteralAssets::getInputHandler(  IAssetUser<IInputHandler>*   user, DOMNode& node,                                      bool required) {return nullptr;}
-  IInteger*        LiteralAssets::getInteger(       IAssetUser<IInteger>*        user, DOMNode& node, IStateListener<IInteger*>* listener, bool required) {return nullptr;}
-  IProjectOptions* LiteralAssets::getProjectOptions(IAssetUser<IProjectOptions>* user, DOMNode& node,                                      bool required) {return nullptr;}
-  IScreen*         LiteralAssets::getScreen(        IAssetUser<IScreen>*         user, DOMNode& node,                                      bool required) {return nullptr;}
-  IString*         LiteralAssets::getString(        IAssetUser<IString>*         user, DOMNode& node, IStateListener<IString*>*  listener, bool required) {return nullptr;}
-  ITexture*        LiteralAssets::getTexture(       IAssetUser<ITexture>*        user, DOMNode& node, IStateListener<ITexture*>* listener, bool required) {return nullptr;}
-  IVertex*         LiteralAssets::getVertex(        IAssetUser<IVertex>*         user, DOMNode& node,                                      bool required) {return nullptr;}
+  I3DModelType*    LiteralAssets::getModelType(     IAssetUser<I3DModelType>*    user, JSONObject object,                                      bool required) {return nullptr;}
+  IAction*         LiteralAssets::getAction(        IAssetUser<IAction>*         user, JSONObject object, const std::string& tag, IBindingRegistry* registry, const std::string& id) {return nullptr;}
+  IActionType*     LiteralAssets::getActionType(    IAssetUser<IActionType>*     user, JSONObject object,                                      bool required) {return nullptr;}
+  IAssets*         LiteralAssets::getAssets(        IAssetUser<IAssets>*         user, JSONObject object,                                      bool required) {return nullptr;}
+  IBinding*        LiteralAssets::getBinding(       IAssetUser<IBinding>*        user, JSONObject object, IBindingRegistry* locals,            bool required) {return nullptr;}
+  IBoolean*        LiteralAssets::getBoolean(       IAssetUser<IBoolean>*        user, JSONObject object, IStateListener<IBoolean*>* listener, bool required) {return nullptr;}
+  IColour*         LiteralAssets::getColour(        IAssetUser<IColour>*         user, JSONObject object, IStateListener<IColour*>*  listener, bool required) {return nullptr;}
+  IEditable*       LiteralAssets::getEditable(      IAssetUser<IEditable>*       user, JSONObject object,                                      bool required) {return nullptr;}
+  IFloat*          LiteralAssets::getFloat(         IAssetUser<IFloat>*          user, JSONObject object, IStateListener<IFloat*>*   listener, bool required) {return nullptr;}
+  IFont*           LiteralAssets::getFont(          IAssetUser<IFont>*           user, JSONObject object,                                      bool required) {return nullptr;}
+  IInputHandler*   LiteralAssets::getInputHandler(  IAssetUser<IInputHandler>*   user, JSONObject object,                                      bool required) {return nullptr;}
+  IInteger*        LiteralAssets::getInteger(       IAssetUser<IInteger>*        user, JSONObject object, IStateListener<IInteger*>* listener, bool required) {return nullptr;}
+  IProjectOptions* LiteralAssets::getProjectOptions(IAssetUser<IProjectOptions>* user, JSONObject object,                                      bool required) {return nullptr;}
+  IScreen*         LiteralAssets::getScreen(        IAssetUser<IScreen>*         user, JSONObject object,                                      bool required) {return nullptr;}
+  IString*         LiteralAssets::getString(        IAssetUser<IString>*         user, JSONObject object, IStateListener<IString*>*  listener, bool required) {return nullptr;}
+  ITexture*        LiteralAssets::getTexture(       IAssetUser<ITexture>*        user, JSONObject object, IStateListener<ITexture*>* listener, bool required) {return nullptr;}
+  IVertex*         LiteralAssets::getVertex(        IAssetUser<IVertex>*         user, JSONObject object,                                      bool required) {return nullptr;}
 
   void LiteralAssets::release(IAssetUser<I3DModelType>*    user, I3DModelType*    asset) {}
   void LiteralAssets::release(IAssetUser<IAction>*         user, IAction*         asset) {}
@@ -79,5 +79,9 @@ namespace IsoRealms {
 
   bool LiteralAssets::renderAssetIcon() const {
     return false;
+  }
+
+  void LiteralAssets::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 }

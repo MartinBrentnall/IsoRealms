@@ -21,7 +21,6 @@
 #include <iostream>
 #include <string>
 
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
 #include "IsoRealms/Types.h"
 
 namespace IsoRealms {
@@ -42,7 +41,7 @@ namespace IsoRealms {
       bool operator!=(const Clause&) const;
       Clause* getNegatedClause() const;
       ConditionElement* getElement() const;
-      void save(DOMNodeWriter* node) const;
+      void save(JSONObject object) const;
       void saveCache(std::ostream& cache, unsigned char elementType) const;
       void debug() const;
     };
@@ -58,6 +57,9 @@ namespace IsoRealms {
     bool getTestInput() const;
 
     private:
+    static const std::string JSON_INPUT;
+    static const std::string JSON_NEGATED;
+
     std::string cInputName;
     IBoolean* cInput;
     bool cTestInput;

@@ -19,7 +19,7 @@
 #pragma once
 
 #include "IsoRealms/IStateListener.h"
-#include "IsoRealms/Persistence/DOMNode.h"
+#include "IsoRealms/Persistence/JSONDocument.h"
 
 #include <string>
 
@@ -47,21 +47,21 @@ namespace IsoRealms {
    */
   class IAssetOverride {
     public:
-    virtual I3DModelType*    getModelType(     DOMNode& node, IStateListener<I3DModelType*>*    listener) const = 0;
-    virtual IActionType*     getActionType(    DOMNode& node, IStateListener<IActionType*>*     listener) const = 0;
-    virtual IAssets*         getAssets(        DOMNode& node, IStateListener<IAssets*>*         listener) const = 0;
-    virtual IBinding*        getBinding(       DOMNode& node, IStateListener<IBinding*>*        listener) const = 0;
-    virtual IBoolean*        getBoolean(       DOMNode& node, IStateListener<IBoolean*>*        listener) const = 0;
-    virtual IColour*         getColour(        DOMNode& node, IStateListener<IColour*>*         listener) const = 0;
-    virtual IEditable*       getEditable(      DOMNode& node, IStateListener<IEditable*>*       listener) const = 0;
-    virtual IFloat*          getFloat(         DOMNode& node, IStateListener<IFloat*>*          listener) const = 0;
-    virtual IFont*           getFont(          DOMNode& node, IStateListener<IFont*>*           listener) const = 0;
-    virtual IInputHandler*   getInputHandler(  DOMNode& node, IStateListener<IInputHandler*>*   listener) const = 0;
-    virtual IInteger*        getInteger(       DOMNode& node, IStateListener<IInteger*>*        listener) const = 0;
-    virtual IProjectOptions* getProjectOptions(DOMNode& node, IStateListener<IProjectOptions*>* listener) const = 0;
-    virtual IScreen*         getScreen(        DOMNode& node, IStateListener<IScreen*>*         listener) const = 0;
-    virtual IString*         getString(        DOMNode& node, IStateListener<IString*>*         listener) const = 0;
-    virtual ITexture*        getTexture(       DOMNode& node, IStateListener<ITexture*>*        listener) const = 0;
-    virtual IVertex*         getVertex(        DOMNode& node, IStateListener<IVertex*>*         listener) const = 0;
+    virtual I3DModelType*    getModelType(     JSONObject object, IStateListener<I3DModelType*>*    listener) const = 0;
+    virtual IActionType*     getActionType(    JSONObject object, IStateListener<IActionType*>*     listener) const = 0;
+    virtual IAssets*         getAssets(        JSONObject object, IStateListener<IAssets*>*         listener) const = 0;
+    virtual IBinding*        getBinding(       JSONObject object, IStateListener<IBinding*>*        listener) const = 0;
+    virtual IBoolean*        getBoolean(       JSONObject object, IStateListener<IBoolean*>*        listener) const = 0;
+    virtual IColour*         getColour(        JSONObject object, IStateListener<IColour*>*         listener) const = 0;
+    virtual IEditable*       getEditable(      JSONObject object, IStateListener<IEditable*>*       listener) const = 0;
+    virtual IFloat*          getFloat(         JSONObject object, IStateListener<IFloat*>*          listener) const = 0;
+    virtual IFont*           getFont(          JSONObject object, IStateListener<IFont*>*           listener) const = 0;
+    virtual IInputHandler*   getInputHandler(  JSONObject object, IStateListener<IInputHandler*>*   listener) const = 0;
+    virtual IInteger*        getInteger(       JSONObject object, IStateListener<IInteger*>*        listener) const = 0;
+    virtual IProjectOptions* getProjectOptions(JSONObject object, IStateListener<IProjectOptions*>* listener) const = 0;
+    virtual IScreen*         getScreen(        JSONObject object, IStateListener<IScreen*>*         listener) const = 0;
+    virtual IString*         getString(        JSONObject object, IStateListener<IString*>*         listener) const = 0;
+    virtual ITexture*        getTexture(       JSONObject object, IStateListener<ITexture*>*        listener) const = 0;
+    virtual IVertex*         getVertex(        JSONObject object, IStateListener<IVertex*>*         listener) const = 0;
   };
 }

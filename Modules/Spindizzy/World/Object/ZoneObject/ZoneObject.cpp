@@ -24,11 +24,10 @@
 #include "Modules/Spindizzy/ZoneObjectType/ZoneObjectType.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string ZoneObject::TAG_PROPERTY = "Property";
-  
-  const std::string ZoneObject::ATTRIBUTE_ID   = "id";
-  const std::string ZoneObject::ATTRIBUTE_TYPE = "type";
-  
+  const std::string ZoneObject::JSON_ID     = "id";
+  const std::string ZoneObject::JSON_TRAITS = "traits";
+  const std::string ZoneObject::JSON_TYPE   = "type";
+
   ZoneObject::ZoneObject(Zone& zone, ZoneObjectType* type) :
             cDefZone(zone),
             cDefType(type),
@@ -36,35 +35,36 @@ namespace IsoRealms::Spindizzy {
     reset();
   }
 
-  ZoneObject::ZoneObject(Zone& zone, DOMNode& node) :
+  ZoneObject::ZoneObject(Zone& zone, JSONObject object) :
             cDefZone(zone),
             cDefType(nullptr) {
-    cDefZone.getWorld()->getSpindizzy()->getProject()->init([this, &node](IAssets* assets) {
-      cDefType = cDefZone.getWorld()->getSpindizzy()->getZoneObjectType(node.getAttribute(ATTRIBUTE_TYPE));
-      cDefTraits = cDefType->createTraits(*this);
-      registerAssets();
-      
-      for (DOMNode& mNode : node) {
-        std::string mTag = mNode.getName();
-        if (mTag == TAG_PROPERTY) {
-          std::string mTraitID = mNode.getAttribute(ATTRIBUTE_ID);
-          std::map<std::string, std::unique_ptr<IZoneObjectTrait>>::iterator mIterator = cDefTraits.find(mTraitID);
-          if (mIterator == cDefTraits.end()) {
-            throw ResourceInitException("ERROR: ZoneObject::ZoneObject: No trait found for trait ID \"" + mTraitID + "\"");
-          }
-          mIterator->second->load(mNode);
-        } else {
-          throw ResourceInitException("ERROR: ZoneObject::ZoneObject: Unknown tag \"" + mTag + "\"");
-        }
-      }
-      cDefRuntimeRenderer = getRenderer(cDefType->getRuntimeRendererID());
-      cDefEditingRenderer = getRenderer(cDefType->getEditingRendererID());
-      cDefRuntimeProcessor = getProcessor(cDefType->getRuntimeProcessorID());
-      cDefEditingProcessor = getProcessor(cDefType->getEditingProcessorID());
-      reset();
-    });
+    std::cout << "TODO: ZoneObject::ZoneObject" << std::endl;
+//     cDefZone.getWorld()->getSpindizzy()->getProject()->init([this, &node](IAssets* assets) {
+//       cDefType = cDefZone.getWorld()->getSpindizzy()->getZoneObjectType(node.getAttribute(JSON_TYPE));
+//       cDefTraits = cDefType->createTraits(*this);
+//       registerAssets();
+//
+//       for (OMNode& mNode : node) {
+//         std::string mTag = mNode.getName();
+//         if (mTag == AG_PROPERTY) {
+//           std::string mTraitID = mNode.getAttribute(JSON_ID);
+//           std::map<std::string, std::unique_ptr<IZoneObjectTrait>>::iterator mIterator = cDefTraits.find(mTraitID);
+//           if (mIterator == cDefTraits.end()) {
+//             throw ResourceInitException("ERROR: ZoneObject::ZoneObject: No trait found for trait ID \"" + mTraitID + "\"");
+//           }
+//           mIterator->second->load(mNode);
+//         } else {
+//           throw ResourceInitException("ERROR: ZoneObject::ZoneObject: Unknown tag \"" + mTag + "\"");
+//         }
+//       }
+//       cDefRuntimeRenderer = getRenderer(cDefType->getRuntimeRendererID());
+//       cDefEditingRenderer = getRenderer(cDefType->getEditingRendererID());
+//       cDefRuntimeProcessor = getProcessor(cDefType->getRuntimeProcessorID());
+//       cDefEditingProcessor = getProcessor(cDefType->getEditingProcessorID());
+//       reset();
+//     });
   }
-  
+
   void ZoneObject::registerAssets() {
     for (const std::pair<const std::string, std::unique_ptr<IZoneObjectTrait>>& mPair : cDefTraits) {
       TraitRegistry mLocalRegistry(*this, mPair.first);
@@ -84,13 +84,14 @@ namespace IsoRealms::Spindizzy {
     }
   }
 
-  void ZoneObject::save(DOMNodeWriter* node) const {
-    node->addAttribute(ATTRIBUTE_TYPE, cDefZone.getWorld()->getSpindizzy()->getID(cDefType));
+  void ZoneObject::save(JSONObject object) const {
+    object.addString(JSON_TYPE, cDefZone.getWorld()->getSpindizzy()->getID(cDefType));
+    JSONArray mTraitsArray = object.addArray(JSON_TRAITS);
     for (const std::pair<const std::string, std::unique_ptr<IZoneObjectTrait>>& mPair : cDefTraits) {
       if (mPair.second->hasConfiguration()) {
-        DOMNodeWriter mTraitNode = node->addBranch(TAG_PROPERTY);
-        mTraitNode.addAttribute(ATTRIBUTE_ID, mPair.first);
-        mPair.second->save(&mTraitNode);
+        JSONObject mTraitObject = mTraitsArray.addObject();
+        mTraitObject.addString(JSON_ID, mPair.first);
+        mPair.second->save(mTraitObject);
       }
     }
   }

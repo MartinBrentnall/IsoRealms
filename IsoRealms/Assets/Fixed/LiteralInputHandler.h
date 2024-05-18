@@ -29,5 +29,6 @@ namespace IsoRealms {
     \****************************/
     bool input(sf::Event& event) override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
   };
 }

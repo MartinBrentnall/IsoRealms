@@ -165,15 +165,15 @@ namespace IsoRealms::Spindizzy {
     IZoneObjectTypeTrait* createLiteralZoneObjectTypeTrait(IAssetUser<IZoneObjectTypeTrait>* user);
     IZoneViewType*        createLiteralZoneViewType(       IAssetUser<IZoneViewType>*        user);
 
-    IBoundaryType*        getBoundaryType(       IAssetUser<IBoundaryType>*        user, DOMNode& node);
-    ICamera*              getCamera(             IAssetUser<ICamera>*              user, DOMNode& node, WorldView*      owner);
-    IPhysicalObjectType*  getPhysicalObjectType( IAssetUser<IPhysicalObjectType>*  user, DOMNode& node);
-    ISurfacePattern*      getSurfacePattern(     IAssetUser<ISurfacePattern>*      user, DOMNode& node);
-    IWallPattern*         getWallPattern(        IAssetUser<IWallPattern>*         user, DOMNode& node);
-    IWorldEditorTool*     getWorldEditorTool(    IAssetUser<IWorldEditorTool>*     user, DOMNode& node);
-    IZoneObjectTypeTrait* getZoneObjectTypeTrait(IAssetUser<IZoneObjectTypeTrait>* user, DOMNode& node, ZoneObjectType* owner);
-    IZoneViewType*        getZoneViewType(       IAssetUser<IZoneViewType>*        user, DOMNode& node, WorldView*      owner);
-    
+    IBoundaryType*        getBoundaryType(       IAssetUser<IBoundaryType>*        user, JSONObject object);
+    ICamera*              getCamera(             IAssetUser<ICamera>*              user, JSONObject object, WorldView*      owner);
+    IPhysicalObjectType*  getPhysicalObjectType( IAssetUser<IPhysicalObjectType>*  user, JSONObject object);
+    ISurfacePattern*      getSurfacePattern(     IAssetUser<ISurfacePattern>*      user, JSONObject object);
+    IWallPattern*         getWallPattern(        IAssetUser<IWallPattern>*         user, JSONObject object);
+    IWorldEditorTool*     getWorldEditorTool(    IAssetUser<IWorldEditorTool>*     user, JSONObject object);
+    IZoneObjectTypeTrait* getZoneObjectTypeTrait(IAssetUser<IZoneObjectTypeTrait>* user, JSONObject object, ZoneObjectType* owner);
+    IZoneViewType*        getZoneViewType(       IAssetUser<IZoneViewType>*        user, JSONObject object, WorldView*      owner);
+
     void release(IAssetUser<IBoundaryType>*        user, IBoundaryType*        asset);
     void release(IAssetUser<ICamera>*              user, ICamera*              asset);
     void release(IAssetUser<IPhysicalObjectType>*  user, IPhysicalObjectType*  asset);
@@ -183,14 +183,14 @@ namespace IsoRealms::Spindizzy {
     void release(IAssetUser<IZoneObjectTypeTrait>* user, IZoneObjectTypeTrait* asset);
     void release(IAssetUser<IZoneViewType>*        user, IZoneViewType*        asset);
 
-    void save(DOMNodeWriter* node, IBoundaryType*        asset) const;
-    void save(DOMNodeWriter* node, ICamera*              asset) const;
-    void save(DOMNodeWriter* node, IPhysicalObjectType*  asset) const;
-    void save(DOMNodeWriter* node, ISurfacePattern*      asset) const;
-    void save(DOMNodeWriter* node, IWallPattern*         asset) const;
-    void save(DOMNodeWriter* node, IWorldEditorTool*     asset) const;
-    void save(DOMNodeWriter* node, IZoneObjectTypeTrait* asset) const;
-    void save(DOMNodeWriter* node, IZoneViewType*        asset) const;
+    void save(JSONObject object, IBoundaryType*        asset) const;
+    void save(JSONObject object, ICamera*              asset) const;
+    void save(JSONObject object, IPhysicalObjectType*  asset) const;
+    void save(JSONObject object, ISurfacePattern*      asset) const;
+    void save(JSONObject object, IWallPattern*         asset) const;
+    void save(JSONObject object, IWorldEditorTool*     asset) const;
+    void save(JSONObject object, IZoneObjectTypeTrait* asset) const;
+    void save(JSONObject object, IZoneViewType*        asset) const;
 
     // Event handling.
     void added(BoundaryHandler* handler);
@@ -247,8 +247,8 @@ namespace IsoRealms::Spindizzy {
     /****************************\
      * Implements IModuleHandle *
     \****************************/
-    void load(IProject* project, DOMNode& node) override;
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) override;
+    void load(IProject* project, JSONObject object) override;
+    void save(JSONObject object, IAssetIdentifier* identifier) override;
     void registerAssets(IAssetRegistry* assets) override;
     void unregisterAssets(IAssetRemover* remover, IAssets* releaser) override;
 
@@ -281,33 +281,33 @@ namespace IsoRealms::Spindizzy {
      * Implements IBindingRegistry *
     \*******************************/
     IBinding* getBinding(const std::string& id) override;
-    void saveBinding(DOMNodeWriter* node, const IBinding* binding) const override;
+    void saveBinding(JSONObject object, const IBinding* binding) const override;
     void releaseBinding(const IBinding* asset) override;
 
     private:
     
     // Resource strings.
-    static const std::string TAG_RESOURCE_ALIEN;
-    static const std::string TAG_RESOURCE_BALL;
-    static const std::string TAG_RESOURCE_BOUNDARY_HANDLER;
-    static const std::string TAG_RESOURCE_C64_LIFT_GRAPHICS;
-    static const std::string TAG_RESOURCE_C64_TERRAIN_GRAPHICS;
-    static const std::string TAG_RESOURCE_COLLISION_HANDLER;
-    static const std::string TAG_RESOURCE_DAMAGE_INDICATOR;
-    static const std::string TAG_RESOURCE_DEBRIS_CHUNK;
-    static const std::string TAG_RESOURCE_GYROSCOPE;
-    static const std::string TAG_RESOURCE_JEWEL;
-    static const std::string TAG_RESOURCE_LIFT;
-    static const std::string TAG_RESOURCE_PICK_UP;
-    static const std::string TAG_RESOURCE_PLAYER;
-    static const std::string TAG_RESOURCE_TERRAIN;
-    static const std::string TAG_RESOURCE_TERRAIN_STATE;
-    static const std::string TAG_RESOURCE_THEME_SET;
-    static const std::string TAG_RESOURCE_TOP;
-    static const std::string TAG_RESOURCE_WORLD;
-    static const std::string TAG_RESOURCE_WORLD_VIEW;
-    static const std::string TAG_RESOURCE_ZONE;
-    static const std::string TAG_RESOURCE_ZONE_OBJECT;
+    static const std::string ID_RESOURCE_ALIEN;
+    static const std::string ID_RESOURCE_BALL;
+    static const std::string ID_RESOURCE_BOUNDARY_HANDLER;
+    static const std::string ID_RESOURCE_C64_LIFT_GRAPHICS;
+    static const std::string ID_RESOURCE_C64_TERRAIN_GRAPHICS;
+    static const std::string ID_RESOURCE_COLLISION_HANDLER;
+    static const std::string ID_RESOURCE_DAMAGE_INDICATOR;
+    static const std::string ID_RESOURCE_DEBRIS_CHUNK;
+    static const std::string ID_RESOURCE_GYROSCOPE;
+    static const std::string ID_RESOURCE_JEWEL;
+    static const std::string ID_RESOURCE_LIFT;
+    static const std::string ID_RESOURCE_PICK_UP;
+    static const std::string ID_RESOURCE_PLAYER;
+    static const std::string ID_RESOURCE_TERRAIN;
+    static const std::string ID_RESOURCE_TERRAIN_STATE;
+    static const std::string ID_RESOURCE_THEME_SET;
+    static const std::string ID_RESOURCE_TOP;
+    static const std::string ID_RESOURCE_WORLD;
+    static const std::string ID_RESOURCE_WORLD_VIEW;
+    static const std::string ID_RESOURCE_ZONE;
+    static const std::string ID_RESOURCE_ZONE_OBJECT;
     
     static const std::string NAME_RESOURCE_ALIEN;
     static const std::string NAME_RESOURCE_BALL;
@@ -334,24 +334,22 @@ namespace IsoRealms::Spindizzy {
     static const std::string RESOURCE_CATEGORY_SPINDIZZY_GRAPHICS;
     static const std::string RESOURCE_CATEGORY_SPINDIZZY_ELEMENTS;
     
-    // DOM strings.
-    static const std::string TAG_DEFAULT_WORLD_EDITOR_TOOL;
-    static const std::string TAG_EDITING_TOOL;
-
-    static const std::string ATTRIBUTE_AUTOMATIC_ZONE_MANAGEMENT;
-    static const std::string ATTRIBUTE_AUTOMATIC_ZONE_X_SIZE;
-    static const std::string ATTRIBUTE_AUTOMATIC_ZONE_Y_SIZE;
-    static const std::string ATTRIBUTE_AUTOMATIC_ZONE_Z_SIZE;
-    static const std::string ATTRIBUTE_EDITOR_MAX_X;
-    static const std::string ATTRIBUTE_EDITOR_MIN_X;
-    static const std::string ATTRIBUTE_EDITOR_MAX_Y;
-    static const std::string ATTRIBUTE_EDITOR_MIN_Y;
-    static const std::string ATTRIBUTE_EDITOR_MAX_Z;
-    static const std::string ATTRIBUTE_EDITOR_MIN_Z;
-    static const std::string ATTRIBUTE_DEFAULT_THEME_SET;
-    static const std::string ATTRIBUTE_ID;
-    static const std::string ATTRIBUTE_PATTERN;
-    static const std::string ATTRIBUTE_TYPE;
+    // JSON members.
+    static const std::string JSON_AUTOMATIC_ZONE_MANAGEMENT;
+    static const std::string JSON_AUTOMATIC_ZONE_X_SIZE;
+    static const std::string JSON_AUTOMATIC_ZONE_Y_SIZE;
+    static const std::string JSON_AUTOMATIC_ZONE_Z_SIZE;
+    static const std::string JSON_DEFAULT_THEME_SET;
+    static const std::string JSON_DEFAULT_WORLD_EDITOR_TOOL;
+    static const std::string JSON_EDITOR_MAX_X;
+    static const std::string JSON_EDITOR_MAX_Y;
+    static const std::string JSON_EDITOR_MAX_Z;
+    static const std::string JSON_EDITOR_MIN_X;
+    static const std::string JSON_EDITOR_MIN_Y;
+    static const std::string JSON_EDITOR_MIN_Z;
+    static const std::string JSON_EDITOR_TOOL;
+    static const std::string JSON_EDITOR_TOOLS;
+    static const std::string JSON_LOCAL;
 
     // Default constants.
     static const int DEFAULT_AUTOMATIC_ZONE_X_SIZE;

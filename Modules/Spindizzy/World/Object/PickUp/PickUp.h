@@ -48,12 +48,12 @@ namespace IsoRealms::Spindizzy {
 
     // Constructors.
     PickUp(Zone& zone, PickUpType* type, int x, int y, int z);
-    PickUp(Zone& zone, DOMNode& node);
+    PickUp(Zone& zone, JSONObject object);
 
     // Interface for use by parent zone.
     void initialise();
     void reset();
-    void save(DOMNodeWriter* node, int x, int y, int z) const;
+    void save(JSONObject object, int x, int y, int z) const;
     bool isType(const PickUpType* const type) const;
     void updateRuntime(unsigned int milliseconds);
     void updateEditing(unsigned int milliseconds);
@@ -89,11 +89,11 @@ namespace IsoRealms::Spindizzy {
 
     private:
 
-    // DOM strings.
-    static const std::string ATTRIBUTE_TYPE;
-    static const std::string ATTRIBUTE_X;
-    static const std::string ATTRIBUTE_Y;
-    static const std::string ATTRIBUTE_Z;
+    // JSON members.
+    static const std::string JSON_TYPE;
+    static const std::string JSON_X;
+    static const std::string JSON_Y;
+    static const std::string JSON_Z;
 
     static const std::string BIND_TO_ZONE;
 

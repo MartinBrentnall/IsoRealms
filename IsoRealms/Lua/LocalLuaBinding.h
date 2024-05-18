@@ -23,7 +23,6 @@
 #include "IsoRealms/IAssetIdentifier.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/Lua/LuaState.h"
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
 #include "IsoRealms/Assets/Type/IBinding.h"
 
 namespace IsoRealms {
@@ -55,8 +54,8 @@ namespace IsoRealms {
       return false;
     }
 
-    void saveAsset(DOMNodeWriter* node) const override {
-      cDefLocalBindingRegistry->saveBinding(node, this);
+    void saveAsset(JSONObject object) const override {
+      cDefLocalBindingRegistry->saveBinding(object, this);
     }
 
     void bind(const std::string& bindFunction) const override {

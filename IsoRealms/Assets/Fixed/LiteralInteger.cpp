@@ -18,8 +18,6 @@
  */
 #include "LiteralInteger.h"
 
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
-
 namespace IsoRealms {
   LiteralInteger::LiteralInteger(const int value):
           cValue(value) {
@@ -34,7 +32,9 @@ namespace IsoRealms {
     return false;
   }
 
-  void LiteralInteger::saveAsset(DOMNodeWriter* node) const {
-    node->addAttribute("value", cValue);
+  void LiteralInteger::saveAsset(JSONObject object) const {
+    object.addInteger(JSON_VALUE, cValue);
   }
+
+  const std::string LiteralInteger::JSON_VALUE = "value";
 }

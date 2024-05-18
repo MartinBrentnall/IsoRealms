@@ -80,7 +80,11 @@ namespace IsoRealms {
   void LiteralTexture::coord(float x, float y) const {
     glTexCoord2f(x, y);
   }
-  
+
+  void LiteralTexture::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
+
   LiteralTexture::~LiteralTexture() {
     if (cTexture != 0) {
       glDeleteTextures(1, &cTexture);

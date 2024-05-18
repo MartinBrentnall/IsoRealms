@@ -27,6 +27,8 @@ namespace IsoRealms {
    */
   class LiteralFloat : public IFloat {
     private:
+    static const std::string JSON_VALUE;
+
     const float cValue; /// The value of this Float.
     
     public:
@@ -47,6 +49,6 @@ namespace IsoRealms {
      * Implements IAsset from IFloat *
     \*********************************/
     bool renderAssetIcon() const override;
-    void saveAsset(DOMNodeWriter* node) const override;
+    void saveAsset(JSONObject object) const override;
   };
 }

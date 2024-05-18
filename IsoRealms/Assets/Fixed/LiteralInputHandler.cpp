@@ -26,4 +26,8 @@ namespace IsoRealms {
   bool LiteralInputHandler::renderAssetIcon() const {
     return false;
   }
+
+  void LiteralInputHandler::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
 }

@@ -24,21 +24,21 @@ namespace IsoRealms {
             cScreen(cProject->createLiteralScreen(this)) {
   }
 
-  void Screen::init(DOMNode& node, const std::string& tag) {
-    cProject->init([this, &node, tag](IAssets* assets) {
-      set(node, tag);
+  void Screen::init(JSONObject object, const std::string& member) {
+    cProject->init([this, object, member](IAssets* assets) {
+      set(object, member);
     });
   }
 
-  void Screen::set(DOMNode& node, const std::string& tag) {
-    DOMNode& mAssetNode = node.getNode(tag);
+  void Screen::set(JSONObject object, const std::string& member) {
+    JSONObject mAssetObject = object.getObject(member);
     cProject->release(this, cScreen);
-    cScreen = cProject->getScreen(this, mAssetNode);
+    cScreen = cProject->getScreen(this, mAssetObject);
   }
 
-  void Screen::save(DOMNodeWriter* node, const std::string& tag) const {
-    DOMNodeWriter mAssetNode = node->addBranch(tag);
-    cProject->save(&mAssetNode, cScreen);
+  void Screen::save(JSONObject object, const std::string& name) const {
+    JSONObject mAssetObject = object.addObject(name);
+    cProject->save(mAssetObject, cScreen);
   }
 
   void Screen::relinquish(IScreen* asset) {

@@ -22,7 +22,6 @@
 
 #include "IsoRealms/Assets/Type/IBinding.h"
 #include "IsoRealms/Lua/LuaState.h"
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
 #include "IsoRealms/IAssetIdentifier.h"
 #include "IsoRealms/IAssetRemover.h"
 #include "IsoRealms/IAssets.h"
@@ -30,12 +29,12 @@
 namespace IsoRealms {
   template <class T> class BoundAsset : public IBinding {
     public:
-    BoundAsset(IProject* project, DOMNode& node) :
+    BoundAsset(IProject* project, JSONObject object) :
               cDefLuaState(project->getLuaState()->getState()),
               cDefValue(project) {
-      cDefValue.set(node, TAG_ASSET);
+      cDefValue.set(object, JSON_ASSET);
     }
-    
+
     /***********************\
      * Implements IBinding *
     \***********************/
@@ -47,16 +46,14 @@ namespace IsoRealms {
       return false;
     }
 
-    void saveAsset(DOMNodeWriter* node) const override {
-      cDefValue.save(node, TAG_ASSET);
+    void saveAsset(JSONObject object) const override {
+      cDefValue.save(object, JSON_ASSET);
     }
 
     private:
-    static const std::string TAG_ASSET;
+    inline static const std::string JSON_ASSET = "asset";
     
     sol::state* cDefLuaState;
     T cDefValue;
   };
-
-  template <class T> const std::string BoundAsset<T>::TAG_ASSET = "Asset";
 }

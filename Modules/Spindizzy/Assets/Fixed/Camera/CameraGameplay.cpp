@@ -23,9 +23,6 @@
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string CameraGameplay::ATTRIBUTE_DIRECTION = "direction";
-  const std::string CameraGameplay::ATTRIBUTE_DURATION  = "duration";
-
   const std::string CameraGameplay::DIRECTION_NORTH_EAST = "NorthEast";
   const std::string CameraGameplay::DIRECTION_NORTH_WEST = "NorthWest";
   const std::string CameraGameplay::DIRECTION_SOUTH_EAST = "SouthEast";
@@ -80,21 +77,21 @@ namespace IsoRealms::Spindizzy {
     });
   }
   
-  CameraGameplay::CameraGameplay(IProject* project, WorldView* view, DOMNode& node) :
+  CameraGameplay::CameraGameplay(IProject* project, WorldView* view, JSONObject object) :
             CameraGameplay(project, view) {
-    std::string mDirectionName = node.getAttribute(ATTRIBUTE_DIRECTION);
+    std::string mDirectionName = object.getString(JSON_DIRECTION);
     cDefAngle = mDirectionName == DIRECTION_NORTH_EAST ? VALUE_NORTH_EAST
               : mDirectionName == DIRECTION_NORTH_WEST ? VALUE_NORTH_WEST
               : mDirectionName == DIRECTION_SOUTH_EAST ? VALUE_SOUTH_EAST
               : mDirectionName == DIRECTION_SOUTH_WEST ? VALUE_SOUTH_WEST
               :                                          VALUE_INVALID;
-    cDefRollDuration = node.getIntegerAttribute(ATTRIBUTE_DURATION, DEFAULT_DURATION);
+    cDefRollDuration = object.getInteger(JSON_ROTATE_DURATION, DEFAULT_DURATION);
     if (cDefAngle == VALUE_INVALID) {
 // TODO      std::cout << "WARNING: CameraGameplay::CameraGameplay(): Unexpected direction name: \"" << mDirectionName << "\" (using default value VALUE_NORTH_WEST)" << std::endl;
       cDefAngle = VALUE_NORTH_WEST;
     }
   }
-  
+
   void CameraGameplay::faceNorthWest() {
     rollTo(VALUE_NORTH_WEST);
   }
@@ -210,15 +207,15 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
   
-  void CameraGameplay::saveAsset(DOMNodeWriter* node) const {
-    node->addAttribute(ATTRIBUTE_DIRECTION, cDefAngle == VALUE_NORTH_EAST ? DIRECTION_NORTH_EAST
-                                          : cDefAngle == VALUE_NORTH_WEST ? DIRECTION_NORTH_WEST
-                                          : cDefAngle == VALUE_SOUTH_EAST ? DIRECTION_SOUTH_EAST
-                                          : cDefAngle == VALUE_SOUTH_WEST ? DIRECTION_SOUTH_WEST
-                                          :                                 DIRECTION_INVALID);
-    node->addAttribute(ATTRIBUTE_DURATION, cDefRollDuration);
+  void CameraGameplay::saveAsset(JSONObject object) const {
+    object.addString(JSON_DIRECTION, cDefAngle == VALUE_NORTH_EAST ? DIRECTION_NORTH_EAST
+                                   : cDefAngle == VALUE_NORTH_WEST ? DIRECTION_NORTH_WEST
+                                   : cDefAngle == VALUE_SOUTH_EAST ? DIRECTION_SOUTH_EAST
+                                   : cDefAngle == VALUE_SOUTH_WEST ? DIRECTION_SOUTH_WEST
+                                   :                                 DIRECTION_INVALID);
+    object.addInteger(JSON_ROTATE_DURATION, cDefRollDuration);
   }
-  
+
   void CameraGameplay::rollTo(float value) {
     cRuntimePreviousValue     = getValue();
     cRuntimeCurrentValue      = value;
@@ -231,4 +228,7 @@ namespace IsoRealms::Spindizzy {
       cRuntimePreviousValue -= VALUE_MAX - VALUE_MIN;
     }
   }
+
+  const std::string CameraGameplay::JSON_DIRECTION       = "direction";
+  const std::string CameraGameplay::JSON_ROTATE_DURATION = "rotateDuration";
 }

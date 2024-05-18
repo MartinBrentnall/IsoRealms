@@ -18,9 +18,6 @@
  */
 #pragma once
 
-#include "IsoRealms/Persistence/DOMNode.h"
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
-
 #include "IDigitalInputMapping.h"
 
 namespace IsoRealms {
@@ -30,16 +27,16 @@ namespace IsoRealms {
    */
   class ButtonMapping : public IDigitalInputMapping {
     private:
-    static const std::string TAG_BUTTON_DOWN;
-    static const std::string TAG_BUTTON_UP;
-  
-    static const std::string ATTRIBUTE_BUTTON_VALUE;
+    static const std::string JSON_BUTTON;
+    static const std::string JSON_TYPE;
 
     const unsigned int cButton; /// The key associated with this mapping.
     // TODO: Support inversion.
     // TODO: Support multiple controllers.
-    
+
     public:
+    static const std::string TYPE_BUTTON_DOWN;
+
     static const unsigned int CROSS;
     static const unsigned int CIRCLE;
     static const unsigned int SQUARE;
@@ -59,14 +56,14 @@ namespace IsoRealms {
      * 
      * @param node The node from which to read the associated button.
      */
-    ButtonMapping(DOMNode& node);
-      
+    ButtonMapping(JSONObject object);
+
     /***********************************\
      * Implements IDigitalInputMapping *
     \***********************************/
     bool getState(const sf::Event& event) const override;
     bool matches(const sf::Event& event) const override;
-    void save(DOMNodeWriter* node) const override;
+    void save(JSONObject object) const override;
     std::string getShortName() const override;
     std::string getLongName() const override;
   };

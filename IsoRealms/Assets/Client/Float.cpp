@@ -26,21 +26,21 @@ namespace IsoRealms {
             cListener(listener) {
   }
 
-  void Float::init(DOMNode& node, const std::string& tag) {
-    cProject->init([this, &node, tag](IAssets* assets) {
-      set(node, tag);
+  void Float::init(JSONObject object, const std::string& member) {
+    cProject->init([this, object, member](IAssets* assets) {
+      set(object, member);
     });
   }
 
-  void Float::set(DOMNode& node, const std::string& tag) {
-    DOMNode& mAssetNode = node.getNode(tag);
+  void Float::set(JSONObject object, const std::string& member) {
+    JSONObject mAssetObject = object.getObject(member);
     cProject->release(this, cFloat);
-    cFloat = cProject->getFloat(this, mAssetNode, cListener != nullptr ? this : nullptr);
+    cFloat = cProject->getFloat(this, mAssetObject, cListener != nullptr ? this : nullptr);
   }
 
-  void Float::save(DOMNodeWriter* node, const std::string& tag) const {
-    DOMNodeWriter mAssetNode = node->addBranch(tag);
-    cProject->save(&mAssetNode, cFloat);
+  void Float::save(JSONObject object, const std::string& name) const {
+    JSONObject mAssetObject = object.addObject(name);
+    cProject->save(mAssetObject, cFloat);
   }
 
   void Float::relinquish(IFloat* asset) {

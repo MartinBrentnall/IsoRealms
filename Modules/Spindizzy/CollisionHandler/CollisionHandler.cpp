@@ -22,10 +22,10 @@
 #include "Modules/Spindizzy/CollisionHandler/CollisionHandlerInstance.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string CollisionHandler::TAG_ENTERED_ACTION = "EnteredAction";
-  const std::string CollisionHandler::TAG_EXITED_ACTION  = "ExitedAction";
-  const std::string CollisionHandler::TAG_TYPE_A         = "TypeA";
-  const std::string CollisionHandler::TAG_TYPE_B         = "TypeB";
+  const std::string CollisionHandler::JSON_OBJECT_A     = "objectA";
+  const std::string CollisionHandler::JSON_OBJECT_B     = "objectB";
+  const std::string CollisionHandler::JSON_ON_COLLISION = "onCollision";
+  const std::string CollisionHandler::JSON_ON_PARTING   = "onParting";
 
   CollisionHandler::CollisionHandler(IProject* project, Spindizzy* spindizzy) :
             cDefPhysicalObjectTypeA(*spindizzy),
@@ -34,12 +34,12 @@ namespace IsoRealms::Spindizzy {
             cDefExitedAction(project) {
   }
 
-  CollisionHandler::CollisionHandler(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
+  CollisionHandler::CollisionHandler(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
             CollisionHandler(project, spindizzy) {
-    cDefPhysicalObjectTypeA.init(node.getNode(TAG_TYPE_A));
-    cDefPhysicalObjectTypeB.init(node.getNode(TAG_TYPE_B));
-    cDefEnteredAction.init(node, TAG_ENTERED_ACTION);
-    cDefExitedAction.init(node, TAG_EXITED_ACTION);
+    cDefPhysicalObjectTypeA.init(object.getObject(JSON_OBJECT_A));
+    cDefPhysicalObjectTypeB.init(object.getObject(JSON_OBJECT_B));
+    cDefEnteredAction.init(object, JSON_ON_COLLISION);
+    cDefExitedAction.init(object, JSON_ON_PARTING);
     spindizzy->getProject()->init([this, spindizzy](IAssets* assets) {
       spindizzy->added(this);
     });
@@ -53,11 +53,11 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void CollisionHandler::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    cDefPhysicalObjectTypeA.save(node, TAG_TYPE_A);
-    cDefPhysicalObjectTypeB.save(node, TAG_TYPE_B);
-    cDefEnteredAction.save(node, TAG_ENTERED_ACTION);
-    cDefExitedAction.save(node, TAG_EXITED_ACTION);
+  void CollisionHandler::save(JSONObject object, IAssetIdentifier* identifier) const {
+    cDefPhysicalObjectTypeA.save(object, JSON_OBJECT_A);
+    cDefPhysicalObjectTypeB.save(object, JSON_OBJECT_B);
+    cDefEnteredAction.save(object, JSON_ON_COLLISION);
+    cDefExitedAction.save(object, JSON_ON_PARTING);
   }
 
   void CollisionHandler::hintInUse(bool inUse) {

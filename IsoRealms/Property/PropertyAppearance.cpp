@@ -25,6 +25,7 @@ namespace IsoRealms {
   }
 
   void PropertyAppearance::print(const std::string& value, const float lineOffset, float xOffset) const {
+    std::cout << "PRINTING " << value << " AT " << ((-(lineOffset + 1.5f) * getLineHeight()) + -cDefScale * 0.6f) << std::endl;
     cDefFont->print(xOffset, (-(lineOffset + 1.5f) * getLineHeight()) + -cDefScale * 0.6f, cDefScale, IFont::Alignment::LEFT, value);
   }
 
@@ -53,7 +54,7 @@ namespace IsoRealms {
   }
 
   float PropertyAppearance::getLabelPropertySpacing() const {
-    return cDefScale * 4.0f;
+    return cDefScale * 0.0f;
   }
 
   void PropertyAppearance::transformForIcon(const float lineOffset) const {

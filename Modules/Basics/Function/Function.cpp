@@ -19,23 +19,21 @@
 #include "Function.h"
 
 namespace IsoRealms::Basics {
-  const std::string Function::TAG_ARGUMENT      = "Argument";
-  const std::string Function::TAG_BIND          = "Bind";
-  const std::string Function::TAG_CODE          = "Code";
-  const std::string Function::TAG_DEFAULT_VALUE = "DefaultValue";
-  const std::string Function::TAG_TO            = "To";
-
-  const std::string Function::ATTRIBUTE_ARGUMENT = "argument";
-  const std::string Function::ATTRIBUTE_NAME     = "name";
-  const std::string Function::ATTRIBUTE_TYPE     = "type";
-  const std::string Function::ATTRIBUTE_VARIABLE = "variable";
+  const std::string Function::JSON_ARGUMENT      = "argument";
+  const std::string Function::JSON_ARGUMENTS     = "arguments";
+  const std::string Function::JSON_BINDINGS      = "bindings";
+  const std::string Function::JSON_CODE          = "code";
+  const std::string Function::JSON_DEFAULT_VALUE = "defaultValue";
+  const std::string Function::JSON_NAME          = "name";
+  const std::string Function::JSON_TO            = "to";
+  const std::string Function::JSON_VARIABLE      = "variable";
 
   Function::Function(IProject* project, Basics* basics) :
             Function(project, "") {
   }
     
-  Function::Function(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
-            Function(project, node.getAttribute(ATTRIBUTE_NAME), node, nullptr, true) {
+  Function::Function(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
+            Function(project, object.getString(JSON_NAME), object, nullptr, true) {
   }
 
   void Function::registerAssets(IAssetRegistry* assets) {
@@ -57,21 +55,25 @@ namespace IsoRealms::Basics {
     }
   }
   
-  void Function::save(DOMNodeWriter* node, IAssetIdentifier* identifier, bool script) const {
+  void Function::save(JSONObject object, IAssetIdentifier* identifier, bool script) const {
     if (!script) {
-      node->addAttribute(ATTRIBUTE_NAME, cDefName);
+      object.addString(JSON_NAME, cDefName);
     }
 
+    JSONArray mBindingsArray = object.addArray(JSON_BINDINGS);
     for (const std::unique_ptr<Binding>& mBinding : cDefFixedBindings) {
-      DOMNodeWriter mBindingNode = node->addBranch(TAG_BIND);
-      mBinding->save(&mBindingNode, ATTRIBUTE_VARIABLE, identifier, false, TAG_TO); // TODO: TAG_TO is handled elsewhere!
+      JSONObject mBindingObject = mBindingsArray.addObject();
+      mBinding->save(mBindingObject, JSON_VARIABLE, identifier, JSON_TO); // TODO: JSON_TO is handled elsewhere!
     }
-    for (const std::unique_ptr<Binding>& mBinding : cDefDynamicBindings) {
-      DOMNodeWriter mBindingNode = node->addBranch(TAG_ARGUMENT);
-      mBinding->save(&mBindingNode, ATTRIBUTE_NAME, identifier, false, TAG_DEFAULT_VALUE);
+
+    if (!script) {
+      JSONArray mArgumentsArray = object.addArray(JSON_ARGUMENTS);
+      for (const std::unique_ptr<Binding>& mBinding : cDefDynamicBindings) {
+        JSONObject mArgumentObject = mArgumentsArray.addObject();
+        mBinding->save(mArgumentObject, JSON_NAME, identifier, JSON_DEFAULT_VALUE);
+      }
     }
-    DOMNodeWriter mCodeBranch = node->addBranch(TAG_CODE);
-    mCodeBranch.addText(cDefCode);
+    object.addString(JSON_CODE, cDefCode);
   }
 
   void Function::hintInUse(bool inUse) {
@@ -92,25 +94,22 @@ namespace IsoRealms::Basics {
             cDefName(name) {
   }
 
-  Function::Function(IProject* project, const std::string& name, DOMNode& node, IBindingRegistry* localArgs, bool init) :
+  Function::Function(IProject* project, const std::string& name, JSONObject object, IBindingRegistry* localArgs, bool init) :
             Function(project, name) {
-    for (DOMNode& mNode : node) {
-      std::string mChildName = mNode.getName();
-      if (mChildName == TAG_ARGUMENT) { // TODO: Shouldn't be allowed for scripts
-        cDefDynamicBindings.emplace_back(std::make_unique<Binding>(mNode, ATTRIBUTE_NAME, TAG_DEFAULT_VALUE, project, localArgs, init));
-      } else if (mChildName == TAG_BIND) {
-        cDefFixedBindings.emplace_back(std::make_unique<Binding>(mNode, ATTRIBUTE_VARIABLE, TAG_TO, project, localArgs, init));
-      } else if (mChildName == TAG_CODE) {
-        cDefCode = mNode.getStringValue();
-      } else {
-        throw ParseException("Unknown tag for Basics/Function: " + mChildName);
+    if (init) {
+      for (JSONObject mArgumentObject : object.getArray(JSON_ARGUMENTS)) {
+        cDefDynamicBindings.emplace_back(std::make_unique<Binding>(mArgumentObject, JSON_NAME, JSON_DEFAULT_VALUE, project, localArgs, init));
       }
     }
+    for (JSONObject mBindingObject : object.getArray(JSON_BINDINGS)) {
+      cDefFixedBindings.emplace_back(std::make_unique<Binding>(mBindingObject, JSON_VARIABLE, JSON_TO, project, localArgs, init));
+    }
+    cDefCode = object.getString(JSON_CODE);
     declare();
   }
 
-  IAction* Function::createAction(DOMNode& node, IProject* project, IBindingRegistry* localObjects) {
-    std::unique_ptr<Call> mInstance = std::make_unique<Call>(this, node, project, localObjects);
+  IAction* Function::createAction(JSONObject object, IProject* project, IBindingRegistry* localObjects) {
+    std::unique_ptr<Call> mInstance = std::make_unique<Call>(this, object, project, localObjects);
     IAction* mKey = mInstance.get();
     cInstances.emplace(mKey, std::move(mInstance));
     return mKey;
@@ -139,31 +138,23 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  Function::Call::Call(Function* parent, DOMNode& node, IProject* project, IBindingRegistry* localObjects) :
+  void Function::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
+
+  Function::Call::Call(Function* parent, JSONObject object, IProject* project, IBindingRegistry* localObjects) :
             cDefParent(parent),
             cDefLocalBindingRegistry(localObjects) {
     if (!cDefParent->cDefDynamicBindings.empty()) {
       for (unsigned int i = 0; i < cDefParent->cDefDynamicBindings.size(); i++) {
         cDefBindings.emplace_back(nullptr);
-        cDefLocal.push_back(false);
       }
 
-      for (DOMNode& mNode : node) {
-        std::string mChildName = mNode.getName();
-        if (mChildName == TAG_BIND) {
-          std::string mValue = mNode.getAttribute(TAG_TO);
-          std::string mArgumentName = mNode.getAttribute(ATTRIBUTE_ARGUMENT);
-          unsigned int mBindingIndex = cDefParent->getDynamicBindingIndex(mArgumentName);
-          if (mValue[0] == '~') {
-            cDefLocal[mBindingIndex] = true;
-          }
-          cDefBindings[mBindingIndex] = std::make_unique<IsoRealms::Binding>(project, cDefLocalBindingRegistry);
-          cDefBindings[mBindingIndex]->set(mNode, TAG_TO);
-        } else if (mChildName == TAG_CODE) {
-          // Script support.
-        } else {
-          throw ParseException("Unknown tag for Basics/Function: " + mChildName);
-        }
+      for (JSONObject mBindingObject : object.getArray(JSON_BINDINGS)) {
+        std::string mArgumentName = mBindingObject.getString(JSON_ARGUMENT);
+        unsigned int mBindingIndex = cDefParent->getDynamicBindingIndex(mArgumentName);
+        cDefBindings[mBindingIndex] = std::make_unique<IsoRealms::Binding>(project, cDefLocalBindingRegistry);
+        cDefBindings[mBindingIndex]->set(mBindingObject, JSON_TO);
       }
     }
   }
@@ -223,16 +214,17 @@ namespace IsoRealms::Basics {
     return cDefParent;
   }
 
-  void Function::Call::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
+  void Function::Call::save(JSONObject object, IAssetIdentifier* identifier) const {
+    JSONArray mBindingsArray = object.addArray(JSON_BINDINGS);
     for (unsigned int i = 0; i < cDefBindings.size(); i++) {
       if (cDefBindings[i] != nullptr) {
-        DOMNodeWriter mBindBranch = node->addBranch(TAG_BIND);
-        cDefParent->cDefDynamicBindings[i]->saveCall(&mBindBranch, ATTRIBUTE_ARGUMENT);
-        cDefBindings[i]->save(&mBindBranch, cDefLocal[i], TAG_TO);
+        JSONObject mBindingObject =  mBindingsArray.addObject();
+        cDefParent->cDefDynamicBindings[i]->saveCall(mBindingObject, JSON_ARGUMENT);
+        cDefBindings[i]->save(mBindingObject, JSON_TO);
       }
     }
   }
-  
+
   bool Function::Call::hasConfiguration() const {
     return !cDefBindings.empty();
   }

@@ -25,16 +25,16 @@
 #include "ZoneObjectTypeTraitBoundary.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string ZoneObjectTypeTraitBoundary::ATTRIBUTE_ENABLED = "enabled";
-  const std::string ZoneObjectTypeTraitBoundary::ATTRIBUTE_END     = "end";
-  const std::string ZoneObjectTypeTraitBoundary::ATTRIBUTE_START   = "start";
-  
-  ZoneObjectTypeTraitBoundary::ZoneObjectTypeTraitBoundary(IProject* project, ZoneObjectType* type, DOMNode& node) :
+  const std::string ZoneObjectTypeTraitBoundary::JSON_ENABLED = "enabled";
+  const std::string ZoneObjectTypeTraitBoundary::JSON_END     = "end";
+  const std::string ZoneObjectTypeTraitBoundary::JSON_START   = "start";
+
+  ZoneObjectTypeTraitBoundary::ZoneObjectTypeTraitBoundary(IProject* project, ZoneObjectType* type, JSONObject object) :
             cDefType(*type) {
     cDefType.getSpindizzy().added(this);
-    cDefInitiallyEnabled = node.getBooleanAttribute(ATTRIBUTE_ENABLED, true);
-    cDefStartID = node.getAttribute(ATTRIBUTE_START);
-    cDefEndID = node.getAttribute(ATTRIBUTE_END, cDefStartID);
+    cDefInitiallyEnabled = object.getBoolean(JSON_ENABLED, true);
+    cDefStartID = object.getString(JSON_START);
+    cDefEndID = object.getString(JSON_END, cDefStartID);
   }
 
   std::string ZoneObjectTypeTraitBoundary::getStartID() const {
@@ -49,12 +49,12 @@ namespace IsoRealms::Spindizzy {
     return cDefInitiallyEnabled;
   }    
   
-  void ZoneObjectTypeTraitBoundary::save(DOMNodeWriter& node) const {
-    node.addAttribute(ATTRIBUTE_ENABLED, cDefInitiallyEnabled, true);
-    node.addAttribute(ATTRIBUTE_START, cDefStartID);
-    node.addAttribute(ATTRIBUTE_END, cDefEndID, cDefStartID);
+  void ZoneObjectTypeTraitBoundary::save(JSONObject object) const {
+    object.addBoolean(JSON_ENABLED, cDefInitiallyEnabled, true);
+    object.addString(JSON_START, cDefStartID);
+    object.addString(JSON_END, cDefEndID, cDefStartID);
   }
-  
+
   std::unique_ptr<IZoneObjectTrait> ZoneObjectTypeTraitBoundary::createTrait(ZoneObject& object) {
     return std::make_unique<Boundary>(*this, object);
   }
@@ -77,5 +77,9 @@ namespace IsoRealms::Spindizzy {
 
   bool ZoneObjectTypeTraitBoundary::renderAssetIcon() const {
     return false;
+  }
+
+  void ZoneObjectTypeTraitBoundary::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 }

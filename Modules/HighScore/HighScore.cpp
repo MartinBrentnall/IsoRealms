@@ -19,8 +19,8 @@
 #include "HighScore.h"
 
 namespace IsoRealms::HighScore {
-  const std::string HighScore::TAG_RESOURCE_SCORE_TRACKER  = "ScoreTracker";
-  const std::string HighScore::TAG_RESOURCE_SCORE_TABLE    = "ScoreTable";
+  const std::string HighScore::ID_RESOURCE_SCORE_TRACKER  = "ScoreTracker";
+  const std::string HighScore::ID_RESOURCE_SCORE_TABLE    = "ScoreTable";
       
   const std::string HighScore::NAME_RESOURCE_SCORE_TRACKER = "Score Trackers";
   const std::string HighScore::NAME_RESOURCE_SCORE_TABLE   = "Score Tables";
@@ -28,18 +28,18 @@ namespace IsoRealms::HighScore {
   HighScore::HighScore(IProject* project, IResourceTypeRegistry* registry, IAssetLiterals* literals):
                     cResourceTypeScoreTable(this),
                     cResourceTypeScoreTracker(this) {
-    registry->add(&cResourceTypeScoreTable,   TAG_RESOURCE_SCORE_TABLE,   NAME_RESOURCE_SCORE_TABLE,   IsoRealmsConstants::RESOURCE_CATEGORY_SYSTEM);
-    registry->add(&cResourceTypeScoreTracker, TAG_RESOURCE_SCORE_TRACKER, NAME_RESOURCE_SCORE_TRACKER, IsoRealmsConstants::RESOURCE_CATEGORY_SYSTEM);
+    registry->add(&cResourceTypeScoreTable,   ID_RESOURCE_SCORE_TABLE,   NAME_RESOURCE_SCORE_TABLE,   IsoRealmsConstants::RESOURCE_CATEGORY_SYSTEM);
+    registry->add(&cResourceTypeScoreTracker, ID_RESOURCE_SCORE_TRACKER, NAME_RESOURCE_SCORE_TRACKER, IsoRealmsConstants::RESOURCE_CATEGORY_SYSTEM);
   }
 
-  void HighScore::load(IProject* project, DOMNode& node) {
+  void HighScore::load(IProject* project, JSONObject object) {
     // Nothing to do.
   }
 
-  void HighScore::save(DOMNodeWriter* node, IAssetIdentifier* identifier) {
+  void HighScore::save(JSONObject object, IAssetIdentifier* identifier) {
     // Nothing to do.
   }
-  
+
   void HighScore::registerAssets(IAssetRegistry* assets) {
     // Nothing to do.
   }

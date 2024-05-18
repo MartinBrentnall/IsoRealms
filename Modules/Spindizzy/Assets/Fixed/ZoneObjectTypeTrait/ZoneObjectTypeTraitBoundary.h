@@ -30,7 +30,7 @@ namespace IsoRealms::Spindizzy {
   class ZoneObjectTypeTraitBoundary : public IZoneObjectTypeTrait,
                                       public IBoundaryType {
     public:
-    ZoneObjectTypeTraitBoundary(IProject* project, ZoneObjectType* type, DOMNode& node);
+    ZoneObjectTypeTraitBoundary(IProject* project, ZoneObjectType* type, JSONObject object);
     
     // Interface to be used by instances.
     std::string getStartID() const;
@@ -40,7 +40,7 @@ namespace IsoRealms::Spindizzy {
     /***********************************\
      * Implements IZoneObjectTypeTrait *
     \***********************************/
-    void save(DOMNodeWriter& node) const override;
+    void save(JSONObject object) const override;
     std::unique_ptr<IZoneObjectTrait> createTrait(ZoneObject& object) override;
     void registerAssets(ISpindizzyRegistry* registry) override;
 
@@ -51,14 +51,15 @@ namespace IsoRealms::Spindizzy {
     IBinding* getBinding(const std::string& id) const override;
     std::string getBindingID(const IBinding* binding) const override;
     bool renderAssetIcon() const override;
-    
+    void saveAsset(JSONObject object) const override;
+
     private:
     
-    // DOM strings.
-    static const std::string ATTRIBUTE_ENABLED;
-    static const std::string ATTRIBUTE_END;
-    static const std::string ATTRIBUTE_START;
-    
+    // JSON members.
+    static const std::string JSON_ENABLED;
+    static const std::string JSON_END;
+    static const std::string JSON_START;
+
     // Definition data.
     ZoneObjectType& cDefType;  /// Object type to which this boundary type belongs.
     std::string cDefStartID;   /// ID of the boundary starting location.

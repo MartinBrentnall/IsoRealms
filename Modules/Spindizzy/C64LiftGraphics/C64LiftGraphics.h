@@ -42,10 +42,10 @@ namespace IsoRealms::Spindizzy {
      * Resource interface *
     \**********************/
     C64LiftGraphics(IProject* project, Spindizzy* spindizzy);
-    C64LiftGraphics(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data);
+    C64LiftGraphics(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);  
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     bool renderIcon();
     void hintInUse(bool inUse);
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -84,10 +84,10 @@ namespace IsoRealms::Spindizzy {
     static const std::string DIAMOND_HALF;
     static const std::string DIAMOND_BOTH;
     
-    // DOM strings.
-    static const std::string TAG_OUTLINE;
-    static const std::string TAG_PRIMARY;
-    static const std::string TAG_SECONDARY;
+    // JSON members.
+    static const std::string JSON_OUTLINE;
+    static const std::string JSON_PRIMARY;
+    static const std::string JSON_SECONDARY;
 
     IProject* cProject;
 
@@ -96,6 +96,9 @@ namespace IsoRealms::Spindizzy {
     Colour cDefSecondary;                                                /// Secondary colour.
     Colour cDefOutline;                                                  /// Outline colour.
     std::map<std::string, std::unique_ptr<LiteralTexture>> cDefTextures; /// The actual texture assets.
+
+    // Runtime data.
+    bool cNeedsRedrawing;
     
     // Private functions.
     void generateTextures();
@@ -116,5 +119,6 @@ namespace IsoRealms::Spindizzy {
     void renderLiftDiamond();
     void renderLiftDiamondHalf();
     void renderLiftDiamondBoth();
+    void setNeedsRedrawing();
   };
 }

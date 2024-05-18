@@ -57,11 +57,10 @@ namespace IsoRealms {
       }
 
       // Debug.
-      std::cout << "ERROR: AssetRegistry::get: No matching provider for key \"" << id << "\"." << std::endl;
-//    TODO
-//      for (const std::pair<std::string, std::pair<IAssetProvider<OWNER, TYPE>*, std::string>>& mPair : cProviders) {
-//        std::cout << "Registered Provider: " << mPair.first << std::endl;
-//      }
+      std::cout << this << ": ERROR: AssetRegistry::get: No matching provider for key \"" << id << "\"." << std::dec << std::endl;
+      for (const std::pair<const std::string, std::pair<IAssetProvider<OWNER, TYPE>*, std::string>>& mPair : cProviders) {
+        std::cout << "Registered Provider: " << mPair.first << std::endl;
+      }
       throw AssetIDException("ERROR: AssetRegistry::get: No matching provider for key \"" + id + "\".");
     }
 
@@ -102,8 +101,6 @@ namespace IsoRealms {
     }
     
     private:
-    inline static const std::string ATTRIBUTE_KEY = "key";
-
     std::map<std::string, std::pair<IAssetProvider<OWNER, TYPE>*, std::string>> cProviders;
     std::vector<IAssetListener<OWNER, TYPE>*> cListeners;
   };

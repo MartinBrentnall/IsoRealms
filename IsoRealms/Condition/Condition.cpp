@@ -22,7 +22,14 @@ namespace IsoRealms {
   const char Condition::ATTRIB_AND    = 0x1;
   const char Condition::ATTRIB_NEGATE = 0x2;
 
-  int Condition::cInstanceCount = 0;
+  const std::string Condition::JSON_INPUT          = "input";
+  const std::string Condition::JSON_INPUTS         = "inputs";
+  const std::string Condition::JSON_OPERATOR       = "operator";
+  const std::string Condition::JSON_NEGATED        = "negated";
+  const std::string Condition::JSON_SUB_CONDITIONS = "subConditions";
+
+  const std::string Condition::OPERATOR_AND = "And";
+  const std::string Condition::OPERATOR_OR  = "Or";
 
   Condition::Condition(bool andGate, bool negated) :
             cAnd(andGate),
@@ -38,20 +45,24 @@ namespace IsoRealms {
     }
   }
 
-  Condition::Condition(DOMNode& node, std::vector<ConditionElement*> elements) {
+  Condition::Condition(JSONObject object, std::vector<ConditionElement*> elements) {
     std::map<std::string, ConditionElement*> mElements;
     for (unsigned int i = 0; i < elements.size(); i++) {
       mElements[elements[i]->getName()] = elements[i];
     }
-    std::string mNegated = node.getAttribute("negated");
-    std::string mType = node.getAttribute("type");
-    cNegated = mNegated == "true";
-    cAnd = mType != "or";
-    for (DOMNode& mNode : node) {
-      std::string mChildName = mNode.getName();
-      if (mChildName == "Element") {
-        std::string mName = mNode.getAttribute("name");
-        std::string mNegated = mNode.getAttribute("negated");
+    cNegated = object.getBoolean(JSON_NEGATED);
+    cAnd = object.getString(JSON_OPERATOR) == OPERATOR_AND;
+
+    if (object.hasMember(JSON_SUB_CONDITIONS)) {
+      for (JSONObject mSubConditionObject : object.getArray(JSON_SUB_CONDITIONS)) {
+        cConditions.emplace_back(Condition(mSubConditionObject, elements)); // TODO: Make constructor pass map instead
+      }
+    }
+
+    if (object.hasMember(JSON_INPUTS)) {
+      for (JSONObject mCriteriaObject : object.getArray(JSON_INPUTS)) {
+        std::string mName = mCriteriaObject.getString(JSON_INPUT);
+        bool mNegated = mCriteriaObject.getBoolean(JSON_NEGATED);
         std::map<std::string, ConditionElement*>::iterator i = mElements.find(mName);
         if (i == mElements.end()) {
           std::cout << "Element \"" << mName << "\" not in list of conditions.  Available conditions:" << std::endl;
@@ -60,15 +71,7 @@ namespace IsoRealms {
           }
           throw ArgumentException("ERROR: Condition::Condition: Condition element \"" + mName + "\" is not in the specified list of elements.");
         }
-        if (mNegated == "true") {
-          cCriteria.insert(i->second->getNegativeClause());
-        } else {
-          cCriteria.insert(i->second->getPositiveClause());
-        }
-      } else if (mChildName == "Condition") {
-        cConditions.emplace_back(Condition(mNode, elements)); // TODO: Make constructor pass map instead
-      } else {
-        throw ParseException("Unknown tag for Condition: " + mChildName);
+        cCriteria.insert(mNegated ? i->second->getNegativeClause() : i->second->getPositiveClause());
       }
     }
   }
@@ -116,19 +119,26 @@ namespace IsoRealms {
     }
   }
 
-  void Condition::save(DOMNodeWriter* node) {
-    DOMNodeWriter mConditionNode = node->addBranch("Condition");
+  void Condition::save(JSONObject object) {
     if (cCriteria.size() + cConditions.size() > 1) {
-      mConditionNode.addAttribute("type", std::string(cAnd ? "and" : "or"));
+      object.addString(JSON_OPERATOR, cAnd ? OPERATOR_AND : OPERATOR_OR);
     }
-    if (cNegated) {
-      mConditionNode.addAttribute("negated", "true");
+    object.addBoolean(JSON_NEGATED, cNegated);
+
+    if (!cCriteria.empty()) {
+      JSONArray mCriteriaArray = object.addArray(JSON_INPUTS);
+      for (ConditionElement::Clause* mCriteria : cCriteria) {
+        JSONObject mCriteriaObject = mCriteriaArray.addObject();
+        mCriteria->save(mCriteriaObject);
+      }
     }
-    for (ConditionElement::Clause* mCriteria : cCriteria) {
-      mCriteria->save(&mConditionNode);
-    }
-    for (unsigned int i = 0; i < cConditions.size(); i++) {
-      cConditions[i].save(&mConditionNode);
+
+    if (!cConditions.empty()) {
+      JSONArray mSubConditionsArray = object.addArray(JSON_SUB_CONDITIONS);
+      for (unsigned int i = 0; i < cConditions.size(); i++) {
+        JSONObject mSubConditionObject = mSubConditionsArray.addObject();
+        cConditions[i].save(mSubConditionObject);
+      }
     }
   }
 

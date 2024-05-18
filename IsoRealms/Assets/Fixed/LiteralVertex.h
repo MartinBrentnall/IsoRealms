@@ -26,6 +26,11 @@
 
 namespace IsoRealms {
   class LiteralVertex : public IVertex {
+    private:
+    static const std::string JSON_X;
+    static const std::string JSON_Y;
+    static const std::string JSON_Z;
+
     public:
     double x;
     double y;
@@ -53,7 +58,7 @@ namespace IsoRealms {
      * Implements IAsset from IVertex *
     \**********************************/
     bool renderAssetIcon() const override;
-    void saveAsset(DOMNodeWriter* node) const override;
+    void saveAsset(JSONObject object) const override;
 
     virtual ~LiteralVertex() {}
   };

@@ -26,20 +26,20 @@ namespace IsoRealms::Spindizzy {
             cCamera(cSpindizzy->createLiteralCamera(this)) {
   }
 
-  void Camera::init(DOMNode& node, WorldView* owner) {
-    cSpindizzy->getProject()->init([this, &node, owner](IAssets* assets) {
-      set(node, owner);
+  void Camera::init(JSONObject object, WorldView* owner) {
+    cSpindizzy->getProject()->init([this, object, owner](IAssets* assets) {
+      set(object, owner);
     });
   }
 
-  void Camera::save(DOMNodeWriter* node, const std::string& tag) const {
-    DOMNodeWriter mAssetNode = node->addBranch(tag);
-    cSpindizzy->save(&mAssetNode, cCamera);
+  void Camera::set(JSONObject object, WorldView* owner) {
+    cSpindizzy->release(this, cCamera);
+    cCamera = cSpindizzy->getCamera(this, object, owner);
   }
 
-  void Camera::set(DOMNode& node, WorldView* owner) {
-    cSpindizzy->release(this, cCamera);
-    cCamera = cSpindizzy->getCamera(this, node, owner);
+  void Camera::save(JSONObject object, const std::string& name) const {
+    JSONObject mAssetObject = object.addObject(name);
+    cSpindizzy->save(mAssetObject, cCamera);
   }
 
   void Camera::relinquish(ICamera* asset) {

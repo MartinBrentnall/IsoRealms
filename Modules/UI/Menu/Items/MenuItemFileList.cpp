@@ -21,29 +21,30 @@
 #include "Modules/UI/Menu/Menu.h"
 
 namespace IsoRealms::UI {
-  const std::string MenuItemFileList::TAG_ACTION = "Action";
-  const std::string MenuItemFileList::TAG_TYPE   = "FileList";
+  const std::string MenuItemFileList::MENU_ITEM_TYPE   = "FileList";
   
-  const std::string MenuItemFileList::ATTRIBUTE_FOLDER = "folder";
-  const std::string MenuItemFileList::ATTRIBUTE_ID     = "id";
-  const std::string MenuItemFileList::ATTRIBUTE_USER   = "user";
+  const std::string MenuItemFileList::JSON_FOLDER       = "folder";
+  const std::string MenuItemFileList::JSON_ID           = "id";
+  const std::string MenuItemFileList::JSON_ON_SELECTION = "onSelection";
+  const std::string MenuItemFileList::JSON_TYPE         = "type";
+  const std::string MenuItemFileList::JSON_USER         = "user";
 
   const std::string MenuItemFileList::BINDING_TYPE = "FileList";
   
-  MenuItemFileList::MenuItemFileList(DOMNode& node, IProject* project) :
+  MenuItemFileList::MenuItemFileList(JSONObject object, IProject* project) :
             cHatHandler(project->getApplication()->getHatHandler()),
-            cDefID(node.getAttribute(ATTRIBUTE_ID)),
-            cDefFolder(node.getAttribute(ATTRIBUTE_FOLDER)),
-            cDefUser(node.getBooleanAttribute(ATTRIBUTE_USER)),
+            cDefID(object.getString(JSON_ID)),
+            cDefFolder(object.getString(JSON_FOLDER)),
+            cDefUser(object.getBoolean(JSON_USER)),
             cDefAction(project),
             cLuaBinding(project, this) {
-    cDefAction.init(node, TAG_ACTION);
+    cDefAction.init(object, JSON_ON_SELECTION);
     project->reset([this]() {
       refresh();
       cRuntimeSelectedFile = 0;
     });
   }
-  
+
   void MenuItemFileList::refresh() {
     cRuntimeFiles.clear();
     std::string mFullPath = System::getPath(cDefFolder, cDefUser);
@@ -71,14 +72,14 @@ namespace IsoRealms::UI {
     assets->remove(&cLuaBinding);
   }
   
-  void MenuItemFileList::save(DOMNodeWriter* node) const {
-    DOMNodeWriter mNode = node->addBranch(TAG_TYPE);
-    mNode.addAttribute(ATTRIBUTE_ID,     cDefID);
-    mNode.addAttribute(ATTRIBUTE_FOLDER, cDefFolder);
-    mNode.addAttribute(ATTRIBUTE_USER,   cDefUser);
-    cDefAction.save(&mNode, TAG_ACTION);
-  }  
-  
+  void MenuItemFileList::save(JSONObject object) const {
+    object.addString(JSON_TYPE,   MENU_ITEM_TYPE);
+    object.addString(JSON_ID,     cDefID);
+    object.addString(JSON_FOLDER, cDefFolder);
+    object.addBoolean(JSON_USER,   cDefUser);
+    cDefAction.save(object, JSON_ON_SELECTION);
+  }
+
   bool MenuItemFileList::input(sf::Event& event) {
     switch (event.type) {
       case sf::Event::KeyPressed: {
@@ -136,6 +137,10 @@ namespace IsoRealms::UI {
 
   bool MenuItemFileList::renderAssetIcon() const {
     return false;
+  }
+
+  void MenuItemFileList::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   MenuItemFileList::File::File(const std::string& label, const std::string& path) :

@@ -19,21 +19,19 @@
 #pragma once
 
 #include "IsoRealms/IProject.h"
-#include "IsoRealms/Persistence/DOMNode.h"
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
 #include "IsoRealms/Types.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms::Basics {
   class Binding {
     public:
-    Binding(DOMNode& node, const std::string& nameAttribute, const std::string& valueTag, IProject* project, IBindingRegistry* localArgs, bool init);
+    Binding(JSONObject object, const std::string& nameAttribute, const std::string& valueTag, IProject* project, IBindingRegistry* localArgs, bool init);
     std::string getName() const;
     std::string getInitCode() const;
     std::string getCode(const std::string& function, unsigned int arg) const;
     std::string getCleanup() const;
-    void save(DOMNodeWriter* node, const std::string& attributeName, IAssetIdentifier* identifier, bool local, const std::string& attributeValueName) const;
-    void saveCall(DOMNodeWriter* node, const std::string& attributeName) const;
+    void save(JSONObject object, const std::string& attributeName, IAssetIdentifier* identifier, const std::string& attributeValueName) const;
+    void saveCall(JSONObject object, const std::string& attributeName) const;
     IBinding* getValue() const;
     void release(IAssets* releaser);
 

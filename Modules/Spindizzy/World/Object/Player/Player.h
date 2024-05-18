@@ -55,13 +55,13 @@ namespace IsoRealms::Spindizzy {
     
     // Constructors.
     Player(IProject* project, World& world, PlayerType* type, float x, float y, float z);
-    Player(IProject* project, World& world, DOMNode& node);
-    
+    Player(IProject* project, World& world, JSONObject object);
+
     // Interface to be used by parent world.
     void registerAssets(IAssetRegistry* assets);  
     void unregisterAssets(IAssetRemover* assets);
     void reset();
-    void save(DOMNodeWriter* node) const;
+    void save(JSONObject object) const;
     bool isType(const PlayerType* const type) const;
     void updateRuntime(unsigned int milliseconds);
     void updateEditing(unsigned int milliseconds);
@@ -116,12 +116,12 @@ namespace IsoRealms::Spindizzy {
       }
     };
     
-    // DOM strings.
-    static const std::string ATTRIBUTE_ID;
-    static const std::string ATTRIBUTE_TYPE;
-    static const std::string ATTRIBUTE_X;
-    static const std::string ATTRIBUTE_Y;
-    static const std::string ATTRIBUTE_Z;
+    // JSON members.
+    static const std::string JSON_ID;
+    static const std::string JSON_TYPE;
+    static const std::string JSON_X;
+    static const std::string JSON_Y;
+    static const std::string JSON_Z;
 
     // Definition data.
     World&                         cDefWorld;           /// World to which is player belongs.

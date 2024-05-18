@@ -21,19 +21,13 @@
 #include "HighScoreTable.h"
 
 namespace IsoRealms::HighScore {
-  HighScoreRecord::HighScoreRecord(DOMNode& node, HighScoreTable* parentTable) : cValues(parentTable->getFieldCount()) {
+  HighScoreRecord::HighScoreRecord(JSONObject object, HighScoreTable* parentTable) : cValues(parentTable->getFieldCount()) {
     cParentTable = parentTable;
-
-    for (DOMNode& mNode : node) {
-      std::string mValue = mNode.getName();
-      if (mValue == "Field") {
-        std::string mFieldName   = mNode.getAttribute("field");
-        std::string mFieldValue  = mNode.getAttribute("value");
-        unsigned int mFieldIndex = cParentTable->getFieldIndex(mFieldName);
-        cValues[mFieldIndex] = mFieldValue;
-      } else {
-        throw ParseException("Unknown tag for HighScore/HighScoreRecord: " + mValue);
-      }
+    for (JSONObject mFieldObject : object.getArray(JSON_FIELDS)) {
+      std::string mFieldName   = mFieldObject.getString(JSON_NAME);
+      std::string mFieldValue  = mFieldObject.getString(JSON_VALUE);
+      unsigned int mFieldIndex = cParentTable->getFieldIndex(mFieldName);
+      cValues[mFieldIndex] = mFieldValue;
     }
   }
 
@@ -46,12 +40,12 @@ namespace IsoRealms::HighScore {
     }
   }
 
-  void HighScoreRecord::save(DOMNodeWriter* node) {
+  void HighScoreRecord::save(JSONObject object) {
+    JSONArray mFieldArray = object.addArray(JSON_FIELDS);
     for (unsigned int i = 0; i < cValues.size(); i++) {
-      std::string mFieldName = cParentTable->getFieldName(i);
-      DOMNodeWriter mFieldBranch = node->addBranch("Field");
-      mFieldBranch.addAttribute("field", mFieldName);
-      mFieldBranch.addAttribute("value", cValues[i]);
+      JSONObject mFieldObject = mFieldArray.addObject();
+      mFieldObject.addString(JSON_NAME, cParentTable->getFieldName(i));
+      mFieldObject.addString(JSON_VALUE, cValues[i]);
     }
   }
 
@@ -68,4 +62,8 @@ namespace IsoRealms::HighScore {
     int mChallengerValue = std::stoi(record->cValues[mComparisonFieldIndex]);
     return mMyValue >= mChallengerValue;
   }
+
+  const std::string HighScoreRecord::JSON_FIELDS = "fields";
+  const std::string HighScoreRecord::JSON_NAME   = "name";
+  const std::string HighScoreRecord::JSON_VALUE  = "value";
 }

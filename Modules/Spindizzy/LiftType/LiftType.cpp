@@ -21,9 +21,9 @@
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string LiftType::TAG_ACTIVE      = "Active";
-  const std::string LiftType::TAG_MODEL       = "Model";
-  const std::string LiftType::TAG_TICK_ACTION = "TickAction";
+  const std::string LiftType::JSON_APPEARANCE = "appearance";
+  const std::string LiftType::JSON_ON_TICK    = "onTick";
+  const std::string LiftType::JSON_STATE      = "state";
 
   LiftType::LiftType(IProject* project, Spindizzy* spindizzy) :
             cDefSpindizzy(*spindizzy),
@@ -32,11 +32,11 @@ namespace IsoRealms::Spindizzy {
             cDefTickAction(project) {
   }
   
-  LiftType::LiftType(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
+  LiftType::LiftType(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
             LiftType(project, spindizzy) {
-    cDefModel.init(node, TAG_MODEL);
-    cDefActive.init(node, TAG_ACTIVE);
-    cDefTickAction.init(node, TAG_TICK_ACTION);
+    cDefModel.init(object, JSON_APPEARANCE);
+    cDefActive.init(object, JSON_STATE);
+    cDefTickAction.init(object, JSON_ON_TICK);
   }
 
   void LiftType::registerAssets(IAssetRegistry* assets) {
@@ -47,10 +47,10 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
   
-  void LiftType::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    cDefModel.save(node, TAG_MODEL);
-    cDefActive.save(node, TAG_ACTIVE);
-    cDefTickAction.save(node, TAG_TICK_ACTION);
+  void LiftType::save(JSONObject object, IAssetIdentifier* identifier) const {
+    cDefModel.save(object, JSON_APPEARANCE);
+    cDefActive.save(object, JSON_STATE);
+    cDefTickAction.save(object, JSON_ON_TICK);
   }
 
   void LiftType::hintInUse(bool inUse) {
@@ -97,6 +97,10 @@ namespace IsoRealms::Spindizzy {
 
   bool LiftType::renderAssetIcon() const {
     return false;
+  }
+
+  void LiftType::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   LiftType::Pen::Pen(LiftType& parent, WorldEditor* editor) :

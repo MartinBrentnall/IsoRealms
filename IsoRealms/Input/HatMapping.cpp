@@ -21,9 +21,10 @@
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
-  const std::string HatMapping::TAG_HAT = "Hat";
+  const std::string HatMapping::JSON_DIRECTION = "direction";
+  const std::string HatMapping::JSON_TYPE      = "type";
 
-  const std::string HatMapping::ATTRIBUTE_DIRECTION = "direction";
+  const std::string HatMapping::TYPE_HAT = "Hat";
 
   const std::map<std::string, HatHandler::Direction> HatMapping::cDirectionsByName = {
     {"LeftUp",    HatHandler::Direction::HAT_LEFTUP},
@@ -42,9 +43,9 @@ namespace IsoRealms {
           cDirection(direction) {
   }
 
-  HatMapping::HatMapping(HatHandler& hatHandler, DOMNode& node) :
+  HatMapping::HatMapping(HatHandler& hatHandler, JSONObject object) :
           cHatHandler(hatHandler),
-          cDirection(getDirection(node.getAttribute(ATTRIBUTE_DIRECTION))) {
+          cDirection(getDirection(object.getString(JSON_DIRECTION))) {
   }
 
   bool HatMapping::matches(const sf::Event& event) const {
@@ -81,9 +82,9 @@ namespace IsoRealms {
     return false;
   }
 
-  void HatMapping::save(DOMNodeWriter* node) const {
-    DOMNodeWriter mHatNode = node->addBranch(TAG_HAT);
-    mHatNode.addAttribute(ATTRIBUTE_DIRECTION, getName(cDirection));
+  void HatMapping::save(JSONObject object) const {
+    object.addString(JSON_TYPE, TYPE_HAT);
+    object.addString(JSON_DIRECTION, getName(cDirection));
   }
 
   std::string HatMapping::getShortName() const {

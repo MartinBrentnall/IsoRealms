@@ -22,7 +22,7 @@
 #include "Modules/Spindizzy/World/World.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string PickUpType::TAG_MODEL = "Model";
+  const std::string PickUpType::JSON_APPEARANCE = "appearance";
 
   PickUpType::PickUpType(IProject* project, Spindizzy* spindizzy) :
             cDefSpindizzy(*spindizzy),
@@ -30,9 +30,9 @@ namespace IsoRealms::Spindizzy {
     cDefSpindizzy.added(this);
   }
   
-  PickUpType::PickUpType(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
+  PickUpType::PickUpType(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
             PickUpType(project, spindizzy) {
-    cDefModel.init(node, TAG_MODEL);
+    cDefModel.init(object, JSON_APPEARANCE);
   }
 
   void PickUpType::registerAssets(IAssetRegistry* assets) {
@@ -43,8 +43,8 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void PickUpType::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    cDefModel.save(node, TAG_MODEL);
+  void PickUpType::save(JSONObject object, IAssetIdentifier* identifier) const {
+    cDefModel.save(object, JSON_APPEARANCE);
   }
 
   void PickUpType::hintInUse(bool inUse) {
@@ -92,6 +92,10 @@ namespace IsoRealms::Spindizzy {
 
   bool PickUpType::renderAssetIcon() const {
     return false;
+  }
+
+  void PickUpType::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   PickUpType::Pen::Pen(PickUpType& parent, WorldEditor* editor) :

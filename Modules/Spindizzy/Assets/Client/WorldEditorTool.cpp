@@ -26,20 +26,20 @@ namespace IsoRealms::Spindizzy {
             cWorldEditorTool(cSpindizzy->createLiteralWorldEditorTool(this)) {
   }
 
-  void WorldEditorTool::init(DOMNode& node) {
-    cSpindizzy->getProject()->init([this, &node](IAssets* assets) {
-      set(node);
+  void WorldEditorTool::init(JSONObject object) {
+    cSpindizzy->getProject()->init([this, object](IAssets* assets) {
+      set(object);
     });
   }
 
-  void WorldEditorTool::save(DOMNodeWriter* node, const std::string& tag) const {
-    DOMNodeWriter mAssetNode = node->addBranch(tag);
-    cSpindizzy->save(&mAssetNode, cWorldEditorTool);
+  void WorldEditorTool::set(JSONObject object) {
+    cSpindizzy->release(this, cWorldEditorTool);
+    cWorldEditorTool = cSpindizzy->getWorldEditorTool(this, object);
   }
 
-  void WorldEditorTool::set(DOMNode& node) {
-    cSpindizzy->release(this, cWorldEditorTool);
-    cWorldEditorTool = cSpindizzy->getWorldEditorTool(this, node);
+  void WorldEditorTool::save(JSONObject object, const std::string& name) const {
+    JSONObject mAssetObject = object.addObject(name);
+    cSpindizzy->save(mAssetObject, cWorldEditorTool);
   }
 
   void WorldEditorTool::relinquish(IWorldEditorTool* asset) {

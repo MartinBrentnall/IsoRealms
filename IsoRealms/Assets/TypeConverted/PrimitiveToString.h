@@ -62,9 +62,9 @@ namespace IsoRealms {
       return false;
     }
 
-    void saveAsset(DOMNodeWriter* node) const override {
-      DOMNodeWriter mAssetNode = node->addBranch("Asset");
-      cProject->save(&mAssetNode, cValue);
+    void saveAsset(JSONObject object) const override {
+      JSONObject mAssetObject = object.addObject(JSON_ASSET);
+      cProject->save(mAssetObject, cValue);
     }
 
     /*******************************\
@@ -82,9 +82,10 @@ namespace IsoRealms {
     }
 
     private:
+    inline static const std::string JSON_ASSET = "asset";
+
     IProject* cProject;
     IAssetRemover* cAssets; /// To manage removal of ourself in case the wrapped primitive is removed.
     TYPE* cValue;           /// Wrapped primitive.
   };
 }
-

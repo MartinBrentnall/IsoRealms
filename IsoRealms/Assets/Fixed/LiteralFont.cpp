@@ -38,5 +38,9 @@ namespace IsoRealms {
   bool LiteralFont::renderAssetIcon() const {
     return false;
   }
+
+  void LiteralFont::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
 }
 

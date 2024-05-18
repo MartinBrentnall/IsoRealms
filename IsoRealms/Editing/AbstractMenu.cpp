@@ -46,10 +46,10 @@ namespace IsoRealms {
 
       glPushMatrix();
       if (cAnimation > 0.0f) {
-        float mMenuPositionX = Utils::sine(0.0f, 2.0f, cAnimation);
+        float mMenuPositionX = Utils::sine(0.0f, 2.0f * aspectRatio, cAnimation);
         glTranslatef(mMenuPositionX, 0.0f, 0.0f);
       } else if (cAnimation < 0.0f) {
-        float mMenuPositionX = Utils::sine(-2.0f, 0.0f, cAnimation + 1.0f);
+        float mMenuPositionX = Utils::sine(-2.0f * aspectRatio, 0.0f, cAnimation + 1.0f);
         glTranslatef(mMenuPositionX, 0.0f, 0.0f);
       }
 
@@ -58,30 +58,45 @@ namespace IsoRealms {
       }
 
       // Render selection shadow
-      float mRightBoundary = -1.0f;
+      float mRightBoundary = cParent->getScreenLeftBorder(aspectRatio) + cIntAppearance->getWidth(cTitle);
       for (unsigned int i = 0; i < getItemCount(); i++) {
         mRightBoundary = std::max(mRightBoundary, getRightSelectionBoundary(aspectRatio, i));
       }
 
       glEnable(GL_BLEND);
-      glColor4f(0.0f, 0.0f, 0.0f, 0.85f);
-      Utils::renderRoundedRectangle(cParent->getScreenLeftBorder(aspectRatio) - cIntAppearance->getSelectionHighlightHeight() * 0.5f,
-                                   (cParent->getTopIconPosition() - (getItemCount() + 0.5f) * cIntAppearance->getLineHeight()) - cIntAppearance->getSelectionHighlightHeight(),
-                                    mRightBoundary + cIntAppearance->getSelectionHighlightHeight(),
-                                    cParent->getTopIconPosition() + cIntAppearance->getSelectionHighlightHeight(),
-                                    cIntAppearance->getSelectionHighlightHeight() * 0.5f);
+//       glColor4f(0.0f, 0.0f, 0.0f, 0.85f);
+//       Utils::renderRoundedRectangle(cParent->getScreenLeftBorder(aspectRatio) - cIntAppearance->getSelectionHighlightHeight() * 0.5f,
+//                                    (cParent->getTopIconPosition() - (getItemCount() + 0.5f) * cIntAppearance->getLineHeight()) - cIntAppearance->getSelectionHighlightHeight(),
+//                                     mRightBoundary + cIntAppearance->getSelectionHighlightHeight(),
+//                                     cParent->getTopIconPosition() + cIntAppearance->getSelectionHighlightHeight(),
+//                                     cIntAppearance->getSelectionHighlightHeight() * 0.5f);
+
+      glColor4f(1.0f, 0.0f, 1.0f, 1.0f);
+      std::cout << "LEFT BORDER: " << cParent->getScreenLeftBorder(aspectRatio) << std::endl;
+      Utils::renderRoundedRectangle(cParent->getScreenLeftBorder(aspectRatio),
+                                    cParent->getScreenTopBorder() - (getItemCount() + 1) * cIntAppearance->getLineHeight(),
+                                    mRightBoundary,
+                                    cParent->getScreenTopBorder(),
+                                    0.0f);
 
       // left bottom right top
-      glColor4f(1.0f, 1.0f, 1.0f, 0.15f);
-      Utils::renderBar(cLeftBoundaryAnimation, mYLocation - cIntAppearance->getSelectionHighlightHeight() * 0.5f, cRightBoundaryAnimation, mYLocation + cIntAppearance->getSelectionHighlightHeight() * 0.5f);
-      LiteralColour(*cParent->getSelectionHighlight(), *cParent->getSelectionLocked(), cLockAnimation).set();
-      Utils::renderBar(cLeftHighlightAnimation, mYLocation - cIntAppearance->getSelectionHighlightHeight() * 0.5f, cRightHighlightAnimation, mYLocation + cIntAppearance->getSelectionHighlightHeight() * 0.5f);
+//       glColor4f(1.0f, 1.0f, 1.0f, 0.15f);
+//       Utils::renderBar(cLeftBoundaryAnimation, mYLocation - cIntAppearance->getSelectionHighlightHeight() * 0.5f, cRightBoundaryAnimation, mYLocation + cIntAppearance->getSelectionHighlightHeight() * 0.5f);
+//       LiteralColour(*cParent->getSelectionHighlight(), *cParent->getSelectionLocked(), cLockAnimation).set();
+//       Utils::renderBar(cLeftHighlightAnimation, mYLocation - cIntAppearance->getSelectionHighlightHeight() * 0.5f, cRightHighlightAnimation, mYLocation + cIntAppearance->getSelectionHighlightHeight() * 0.5f);
+      glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
+      glDisable(GL_DEPTH_TEST);
+      Utils::renderRoundedRectangle(getLeftSelectionBoundary(aspectRatio, cSelectedItem),
+                                    mYLocation - cIntAppearance->getSelectionHighlightHeight() * 0.5f,
+                                    getRightSelectionBoundary(aspectRatio, cSelectedItem),
+                                    mYLocation + cIntAppearance->getSelectionHighlightHeight() * 0.5f,
+                                    0.0f);
 
       // Render menu items
       glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
       glPushMatrix();
       glTranslatef(cParent->getScreenLeftBorder(aspectRatio), cParent->getTopIconPosition(), 0.0f);
-      cIntAppearance->print(cTitle.c_str(), -1.5f, 0.0f);
+      cIntAppearance->print(cTitle.c_str(), -1.0f, 0.0f);
       glPopMatrix();
       for (unsigned int i = 0; i < getItemCount(); ++i) {
         renderItem(aspectRatio, i, cLeftHighlightAnimation);

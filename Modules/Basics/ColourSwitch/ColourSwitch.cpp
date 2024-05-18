@@ -19,7 +19,7 @@
 #include "ColourSwitch.h"
 
 namespace IsoRealms::Basics {
-  const std::string ColourSwitch::ATTRIBUTE_VALUE = "init";
+  const std::string ColourSwitch::JSON_COLOUR = "colour";
 
   ColourSwitch::ColourSwitch(IProject* project, Basics* basics) :
             AssetSwitchWithTransition(project, [this]() {return nullptr; /* *cDefColour*/;}),
@@ -27,9 +27,9 @@ namespace IsoRealms::Basics {
             cLuaBinding(project, this) {
   }
 
-  ColourSwitch::ColourSwitch(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
+  ColourSwitch::ColourSwitch(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
             ColourSwitch(project, basics) {
-    cDefColour.init(node, "TODO");
+    cDefColour.init(object, JSON_COLOUR);
   }
 
   void ColourSwitch::registerAssets(IAssetRegistry* assets) {
@@ -42,8 +42,8 @@ namespace IsoRealms::Basics {
     assets->remove(this);
   }
 
-  void ColourSwitch::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    cDefColour.save(node, ATTRIBUTE_VALUE);
+  void ColourSwitch::save(JSONObject object, IAssetIdentifier* identifier) const {
+    cDefColour.save(object, JSON_COLOUR);
   }
 
   void ColourSwitch::set() const {
@@ -92,5 +92,9 @@ namespace IsoRealms::Basics {
 
   bool ColourSwitch::renderAssetIcon() const {
     return false;
+  }
+
+  void ColourSwitch::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 }

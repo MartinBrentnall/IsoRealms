@@ -32,7 +32,7 @@ namespace IsoRealms::Spindizzy {
 
   class SurfacePatternSplitVariant : public ISurfacePattern {
     public:
-    SurfacePatternSplitVariant(IProject* project, Spindizzy* spindizzy, DOMNode& node);
+    SurfacePatternSplitVariant(IProject* project, Spindizzy* spindizzy, JSONObject object);
 
     /******************************\
      * Implements ISurfacePattern *
@@ -48,14 +48,14 @@ namespace IsoRealms::Spindizzy {
      * Implements IAsset via ISurfacePattern *
     \*****************************************/
     bool renderAssetIcon() const override;
-    void saveAsset(DOMNodeWriter* node) const override;
+    void saveAsset(JSONObject object) const override;
 
     private:
 
-    // DOM strings.
-    static const std::string TAG_REGULAR;
-    static const std::string TAG_SPLIT_A;
-    static const std::string TAG_SPLIT_B;
+    // JSON members.
+    static const std::string JSON_REGULAR;
+    static const std::string JSON_SPLIT_A;
+    static const std::string JSON_SPLIT_B;
 
     // Definition data.
     SurfacePattern cDefRegularPattern;

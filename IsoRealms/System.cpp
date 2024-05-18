@@ -76,12 +76,21 @@ namespace IsoRealms {
 
   std::ofstream System::openOutputStream(const std::string& path) {
     std::ofstream mOutput;
-    std::string mFullPath = getPath(path, true); 
-    makeUserDataDirectory(path.substr(0, path.find_last_of('/')));
+    std::string mFullPath = getPath(path, true);
+    if (path.find('/') != std::string::npos) {
+      makeUserDataDirectory(path.substr(0, path.find_last_of('/')));
+    }
     mOutput.open(mFullPath, std::ios::out | std::ios::binary);
     return mOutput;
   }
   
+  std::ifstream System::openInputStream(const std::string& path, bool user) {
+    std::ifstream mInput;
+    std::string mFullPath = getPath(path, user);
+    mInput.open(mFullPath, std::ios::in);
+    return mInput;
+  }
+
   std::vector<std::string> System::getFileList(const std::string& filename, bool files) {
     std::vector<std::string> mList;
     if (std::filesystem::exists(filename)) {

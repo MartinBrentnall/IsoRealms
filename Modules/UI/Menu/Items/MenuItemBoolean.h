@@ -21,7 +21,6 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 
-#include "IsoRealms/Persistence/DOMNode.h"
 #include "IsoRealms/IAssetRegistry.h"
 #include "IsoRealms/IAssetRemover.h"
 #include "IsoRealms/Input/HatHandler.h"
@@ -38,10 +37,10 @@ namespace IsoRealms::UI {
     public:
 
     // Public DOM strings.
-    static const std::string TAG_TYPE;
+    static const std::string MENU_ITEM_TYPE;
 
-    MenuItemBoolean(DOMNode& node, IProject* project);
-    
+    MenuItemBoolean(JSONObject object, IProject* project);
+
     /***********************\
      * Scripting interface *
     \***********************/
@@ -53,7 +52,7 @@ namespace IsoRealms::UI {
     \************************/
     void registerAssets(IAssetRegistry* assets) override;
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser) override;
-    void save(DOMNodeWriter* node) const override;
+    void save(JSONObject object) const override;
     bool input(sf::Event& event) override;
     void selectTop() override;
     void selectBottom() override;
@@ -63,13 +62,14 @@ namespace IsoRealms::UI {
     
     private:
     
-    // DOM strings.
-    static const std::string ATTRIBUTE_ID;
-    static const std::string ATTRIBUTE_LABEL;
-    static const std::string ATTRIBUTE_LABEL_FALSE;
-    static const std::string ATTRIBUTE_LABEL_TRUE;
+    // JSON members.
+    static const std::string JSON_FALSE_LABEL;
+    static const std::string JSON_ID;
+    static const std::string JSON_LABEL;
+    static const std::string JSON_TRUE_LABEL ;
+    static const std::string JSON_TYPE;
 
-    // Constants.    
+    // Constants.
     static const std::string BINDING_TYPE;
 
     // Definition data.

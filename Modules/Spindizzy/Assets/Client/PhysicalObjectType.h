@@ -21,7 +21,7 @@
 #include <functional>
 
 #include "IsoRealms/IAssets.h"
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
+#include "IsoRealms/Persistence/JSONDocument.h"
 
 #include "Modules/Spindizzy/Assets/Type/IPhysicalObjectType.h"
 
@@ -33,11 +33,10 @@ namespace IsoRealms::Spindizzy {
     
     PhysicalObjectType(Spindizzy& spindizzy);
 
-    void init(DOMNode& node);
-    void save(DOMNodeWriter* node, const std::string& tag) const;
+    void init(JSONObject object);
+    void set(JSONObject object);
+    void save(JSONObject object, const std::string& name) const;
 
-    void set(DOMNode& node);
-    
     IPhysicalObjectType* operator->() const {
       return cPhysicalObjectType;
     }

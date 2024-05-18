@@ -19,40 +19,26 @@
 #include "HighScoreTable.h"
 
 namespace IsoRealms::HighScore {
-  HighScoreTable::HighScoreTable(DOMNode& node) {
-    cMaximumRecords = node.getIntegerAttribute("maximumRecords");
+  HighScoreTable::HighScoreTable(JSONObject object) {
+    cMaximumRecords = object.getInteger(JSON_RECORD_LIMIT);
     
     // Read fields
-    for (DOMNode& mNode : node) {
-      std::string mValue = mNode.getName();
-      if (mValue == "Field") {
-        std::string mFieldName = mNode.getAttribute("name");
-        bool mCompare = mNode.getBooleanAttribute("compare");
-        cHighScoreFields.push_back(mFieldName);
-        if (mCompare) {
-          if (cComparisonField != "") {
-            std::cout << "WARNING: Comparison field already set to \"" << cComparisonField << "\".  Cannot set to \"" << mFieldName << "\"" << std::endl;
-          } else {
-            cComparisonField = mFieldName;
-          }
+    for (JSONObject mFieldObject : object.getArray(JSON_FIELDS)) {
+      std::string mFieldName = mFieldObject.getString(JSON_NAME);
+      bool mCompare = mFieldObject.getBoolean(JSON_COMPARE);
+      cHighScoreFields.push_back(mFieldName);
+      if (mCompare) {
+        if (cComparisonField != "") {
+          std::cout << "WARNING: Comparison field already set to \"" << cComparisonField << "\".  Cannot set to \"" << mFieldName << "\"" << std::endl;
+        } else {
+          cComparisonField = mFieldName;
         }
-      } else if (mValue == "Record") {
-        // Nothing to do at this stage.
-      } else {
-        throw ParseException("Unknown tag for HighScore/HighScoreTable: " + mValue);
       }
     }
     
     // Read records
-    for (DOMNode& mNode : node) {
-      std::string mValue = mNode.getName();
-      if (mValue == "Record") {
-        insertRecord(std::make_unique<HighScoreRecord>(mNode, this));
-      } else if (mValue == "Field") {
-        // Nothing to do at this stage.
-      } else {
-        throw ParseException("Unknown tag for HighScore/HighScoreTable: " + mValue);
-      }
+    for (JSONObject mRecordObject : object.getArray(JSON_RECORDS)) {
+      insertRecord(std::make_unique<HighScoreRecord>(mRecordObject, this));
     }
   }
 
@@ -92,19 +78,18 @@ namespace IsoRealms::HighScore {
     return true;
   }
 
-  void HighScoreTable::save(DOMNodeWriter* node) {
-    node->addAttribute("maximumRecords", cMaximumRecords);
+  void HighScoreTable::save(JSONObject object) {
+    object.addInteger(JSON_RECORD_LIMIT, cMaximumRecords);
+    JSONArray mFieldArray = object.addArray(JSON_FIELDS);
     for (std::string mField : cHighScoreFields) {
-      DOMNodeWriter mFieldBranch = node->addBranch("Field");
-      mFieldBranch.addAttribute("name", mField);
-      if (mField == cComparisonField) {
-        mFieldBranch.addAttribute("compare", "true");
-      }
+      JSONObject mFieldObject = mFieldArray.addObject();
+      mFieldObject.addString(JSON_NAME, mField);
+      mFieldObject.addBoolean(JSON_COMPARE, mField == cComparisonField);
     }
-    
+    JSONArray mRecordArray = object.addArray(JSON_RECORDS);
     for (std::unique_ptr<HighScoreRecord>& mRecord : cHighScoreRecords) {
-      DOMNodeWriter mRecordBranch = node->addBranch("Record");
-      mRecord->save(&mRecordBranch);
+      JSONObject mRecordObject = mRecordArray.addObject();
+      mRecord->save(mRecordObject);
     }
   }
 
@@ -128,4 +113,10 @@ namespace IsoRealms::HighScore {
   unsigned int HighScoreTable::getComparisonFieldIndex() {
     return getFieldIndex(cComparisonField);
   }
+
+  const std::string HighScoreTable::JSON_COMPARE      = "compare";
+  const std::string HighScoreTable::JSON_FIELDS       = "fields";
+  const std::string HighScoreTable::JSON_NAME         = "name";
+  const std::string HighScoreTable::JSON_RECORD_LIMIT = "recordLimit";
+  const std::string HighScoreTable::JSON_RECORDS      = "records";
 }

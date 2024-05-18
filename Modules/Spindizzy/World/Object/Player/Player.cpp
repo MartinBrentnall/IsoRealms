@@ -24,11 +24,11 @@
 #include "Modules/Spindizzy/World/World.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string Player::ATTRIBUTE_ID   = "id";
-  const std::string Player::ATTRIBUTE_TYPE = "type";
-  const std::string Player::ATTRIBUTE_X    = "x";
-  const std::string Player::ATTRIBUTE_Y    = "y";
-  const std::string Player::ATTRIBUTE_Z    = "z";
+  const std::string Player::JSON_ID   = "id";
+  const std::string Player::JSON_TYPE = "type";
+  const std::string Player::JSON_X    = "x";
+  const std::string Player::JSON_Y    = "y";
+  const std::string Player::JSON_Z    = "z";
 
   Player::Player(IProject* project, World& world, PlayerType* type, float x, float y, float z) :
             cDefWorld(world),
@@ -44,19 +44,19 @@ namespace IsoRealms::Spindizzy {
     reset();
   }
 
-  Player::Player(IProject* project, World& world, DOMNode& node) :
+  Player::Player(IProject* project, World& world, JSONObject object) :
             cDefWorld(world),
             cDefType(nullptr),
             cDefMovementHandler(nullptr),
             cDefModel(nullptr),
-            cDefID(node.getAttribute(ATTRIBUTE_ID)),
-            cDefX(node.getFloatAttribute(ATTRIBUTE_X)),
-            cDefY(node.getFloatAttribute(ATTRIBUTE_Y)),
-            cDefZ(node.getFloatAttribute(ATTRIBUTE_Z)),
+            cDefID(object.getString(JSON_ID)),
+            cDefX(object.getFloat(JSON_X)),
+            cDefY(object.getFloat(JSON_Y)),
+            cDefZ(object.getFloat(JSON_Z)),
             cRuntimePhysicsObject(*cDefWorld.getSpindizzy(), this),
             cLuaBinding(project, this) {
-    cDefWorld.getSpindizzy()->getProject()->init([this, node](IAssets* assets) {
-      cDefType = cDefWorld.getSpindizzy()->getPlayerType(node.getAttribute(ATTRIBUTE_TYPE));
+    cDefWorld.getSpindizzy()->getProject()->init([this, object](IAssets* assets) {
+      cDefType = cDefWorld.getSpindizzy()->getPlayerType(object.getString(JSON_TYPE));
       cDefMovementHandler = cDefWorld.getMovementHandler(cDefType);
       cDefModel = cDefType->createModel();
       reset();
@@ -91,12 +91,12 @@ namespace IsoRealms::Spindizzy {
     }
   }
 
-  void Player::save(DOMNodeWriter* node) const {
-    node->addAttribute(ATTRIBUTE_ID, cDefID);
-    node->addAttribute(ATTRIBUTE_X, cDefX);
-    node->addAttribute(ATTRIBUTE_Y, cDefY);
-    node->addAttribute(ATTRIBUTE_Z, cDefZ);
-    node->addAttribute(ATTRIBUTE_TYPE, cDefWorld.getSpindizzy()->getID(cDefType));
+  void Player::save(JSONObject object) const {
+    object.addString(JSON_ID, cDefID);
+    object.addString(JSON_TYPE, cDefWorld.getSpindizzy()->getID(cDefType));
+    object.addFloat(JSON_X, cDefX);
+    object.addFloat(JSON_Y, cDefY);
+    object.addFloat(JSON_Z, cDefZ);
   }
 
   bool Player::isType(const PlayerType* const type) const {

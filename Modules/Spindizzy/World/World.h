@@ -55,10 +55,10 @@ namespace IsoRealms::Spindizzy {
      * Resource interface *
     \**********************/
     World(IProject* project, Spindizzy* spindizzy);
-    World(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data);
+    World(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon();
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -161,20 +161,20 @@ namespace IsoRealms::Spindizzy {
     \************************/
     IEditableScreen* createEditableScreen(Project* project) override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
     // TODO: To be replaced with dynamic solution.
     float getAbyssDepth() const;
     
     private:
     
-    // DOM strings.
-    static const std::string ATTRIBUTE_BOUNCE_CONTROL;
-    static const std::string ATTRIBUTE_SLOPE_ACCELERATION;
-    static const std::string ATTRIBUTE_GRAVITY;
-
-    static const std::string TAG_DEBRIS_GENERATOR;
-    static const std::string TAG_PLAYER;
-    static const std::string TAG_ZONE;
+    // JSON members.
+    static const std::string JSON_BOUNCE_CONTROL;
+    static const std::string JSON_DEBRIS_GENERATORS;
+    static const std::string JSON_GRAVITY;
+    static const std::string JSON_PLAYERS;
+    static const std::string JSON_SLOPE_FORCE;
+    static const std::string JSON_ZONES;
 
     static const unsigned int DEFAULT_BOUNCE_CONTROL;
     

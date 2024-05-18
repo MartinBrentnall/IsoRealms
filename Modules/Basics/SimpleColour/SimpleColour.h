@@ -40,10 +40,10 @@ namespace IsoRealms::Basics {
      * Resource Interface *
     \**********************/
     SimpleColour(IProject* project, Basics* basics);
-    SimpleColour(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data);
+    SimpleColour(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -56,6 +56,7 @@ namespace IsoRealms::Basics {
     float getGreen() const override;
     float getBlue() const override;
     float getAlpha() const override;
+    void saveAsset(JSONObject object) const override;
 
     /***********************\
      * Scripting Interface *
@@ -67,11 +68,11 @@ namespace IsoRealms::Basics {
 
     private:
 
-    // DOM strings.
-    static const std::string ATTRIBUTE_RED;
-    static const std::string ATTRIBUTE_GREEN;
-    static const std::string ATTRIBUTE_BLUE;
-    static const std::string ATTRIBUTE_ALPHA;
+    // JSON members.
+    static const std::string JSON_RED;
+    static const std::string JSON_GREEN;
+    static const std::string JSON_BLUE;
+    static const std::string JSON_ALPHA;
 
     // Property names.
     static const std::string PROPERTY_RED;

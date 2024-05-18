@@ -20,7 +20,6 @@
 
 #include "IsoRealms/Common/IVisualElement.h"
 #include "IsoRealms/IAssetBrowser.h"
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
 #include "IsoRealms/Types.h"
 
 #include "Modules/Spindizzy/World/Object/Terrain/Wall.h"

@@ -22,15 +22,14 @@
 #include "Modules/Spindizzy/World/World.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string AlienType::TAG_MODEL  = "Model";
-  const std::string AlienType::TAG_TARGET = "Target";
-
-  const std::string AlienType::ATTRIBUTE_ACCELERATION = "acceleration";
-  const std::string AlienType::ATTRIBUTE_FRICTION     = "friction";
-  const std::string AlienType::ATTRIBUTE_HEIGHT       = "height";
-  const std::string AlienType::ATTRIBUTE_HUG_MOMENTUM = "hugMomentum";
-  const std::string AlienType::ATTRIBUTE_RADIUS       = "radius";
-  const std::string AlienType::ATTRIBUTE_SPIN_SPEED   = "spinSpeed";
+  const std::string AlienType::JSON_ACCELERATION = "acceleration";
+  const std::string AlienType::JSON_APPEARANCE   = "appearance";
+  const std::string AlienType::JSON_FRICTION     = "friction";
+  const std::string AlienType::JSON_HEIGHT       = "height";
+  const std::string AlienType::JSON_HUG_MOMENTUM = "hugMomentum";
+  const std::string AlienType::JSON_RADIUS       = "radius";
+  const std::string AlienType::JSON_SPIN_SPEED   = "spinSpeed";
+  const std::string AlienType::JSON_TARGET       = "target";
 
   const float AlienType::DEFAULT_ACCELERATION = 0.0000215f;
   const float AlienType::DEFAULT_FRICTION     = 0.001f;
@@ -57,16 +56,16 @@ namespace IsoRealms::Spindizzy {
     });
   }
   
-  AlienType::AlienType(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
+  AlienType::AlienType(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
             AlienType(project, spindizzy) {
-    cDefAcceleration = node.getFloatAttribute(ATTRIBUTE_ACCELERATION, DEFAULT_ACCELERATION);
-    cDefFriction = node.getFloatAttribute(ATTRIBUTE_FRICTION, DEFAULT_FRICTION);
-    cDefSpinSpeed = node.getFloatAttribute(ATTRIBUTE_SPIN_SPEED, DEFAULT_SPIN_SPEED);
-    cDefHeight = node.getFloatAttribute(ATTRIBUTE_HEIGHT, DEFAULT_HEIGHT);
-    cDefRadius = node.getFloatAttribute(ATTRIBUTE_RADIUS, DEFAULT_RADIUS);
-    cDefHugMomentum = node.getFloatAttribute(ATTRIBUTE_HUG_MOMENTUM, DEFAULT_HUG_MOMENTUM);
-    cDefTarget.init(node, TAG_TARGET);
-    cDefModel.init(node, TAG_MODEL);
+    cDefAcceleration = object.getFloat(JSON_ACCELERATION, DEFAULT_ACCELERATION);
+    cDefFriction = object.getFloat(JSON_FRICTION, DEFAULT_FRICTION);
+    cDefSpinSpeed = object.getFloat(JSON_SPIN_SPEED, DEFAULT_SPIN_SPEED);
+    cDefHeight = object.getFloat(JSON_HEIGHT, DEFAULT_HEIGHT);
+    cDefRadius = object.getFloat(JSON_RADIUS, DEFAULT_RADIUS);
+    cDefHugMomentum = object.getFloat(JSON_HUG_MOMENTUM, DEFAULT_HUG_MOMENTUM);
+    cDefTarget.init(object, JSON_TARGET);
+    cDefModel.init(object, JSON_APPEARANCE);
   }
 
   void AlienType::registerAssets(IAssetRegistry* assets) {
@@ -77,15 +76,15 @@ namespace IsoRealms::Spindizzy {
     assets->remove(&cLuaBinding);
   }
   
-  void AlienType::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    cDefModel.save(node, TAG_MODEL);
-    cDefTarget.save(node, TAG_TARGET);
-    node->addAttribute(ATTRIBUTE_ACCELERATION, cDefAcceleration, DEFAULT_ACCELERATION);
-    node->addAttribute(ATTRIBUTE_FRICTION, cDefFriction, DEFAULT_FRICTION);
-    node->addAttribute(ATTRIBUTE_SPIN_SPEED, cDefSpinSpeed, DEFAULT_SPIN_SPEED);
-    node->addAttribute(ATTRIBUTE_HEIGHT, cDefHeight, DEFAULT_HEIGHT);
-    node->addAttribute(ATTRIBUTE_RADIUS, cDefRadius, DEFAULT_RADIUS);
-    node->addAttribute(ATTRIBUTE_HUG_MOMENTUM, cDefHugMomentum, DEFAULT_HUG_MOMENTUM);
+  void AlienType::save(JSONObject object, IAssetIdentifier* identifier) const {
+    cDefModel.save(object, JSON_APPEARANCE);
+    cDefTarget.save(object, JSON_TARGET);
+    object.addFloat(JSON_ACCELERATION, cDefAcceleration, DEFAULT_ACCELERATION);
+    object.addFloat(JSON_FRICTION, cDefFriction, DEFAULT_ACCELERATION);
+    object.addFloat(JSON_SPIN_SPEED, cDefSpinSpeed, DEFAULT_SPIN_SPEED);
+    object.addFloat(JSON_HEIGHT, cDefHeight, DEFAULT_HEIGHT);
+    object.addFloat(JSON_RADIUS, cDefRadius, DEFAULT_RADIUS);
+    object.addFloat(JSON_HUG_MOMENTUM, cDefHugMomentum, DEFAULT_HUG_MOMENTUM);
   }
 
   void AlienType::hintInUse(bool inUse) {
@@ -170,6 +169,10 @@ namespace IsoRealms::Spindizzy {
 
   bool AlienType::renderAssetIcon() const {
     return false;
+  }
+
+  void AlienType::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   AlienType::Pen::Pen(AlienType& parent, WorldEditor* editor) :

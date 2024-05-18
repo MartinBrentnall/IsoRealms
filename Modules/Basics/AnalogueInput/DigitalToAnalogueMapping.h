@@ -40,24 +40,29 @@ namespace IsoRealms::Basics {
    */
   class DigitalToAnalogueMapping final : public IAnalogueInputMapping {
     public:
-    DigitalToAnalogueMapping(IProject* project, DOMNode& node);
-    
+    static const std::string TYPE_DIGITAL_TO_ANALOGUE;
+
+    DigitalToAnalogueMapping(IProject* project, JSONObject object);
+
     /************************************\
      * Implements IAnalogueInputMapping *
     \************************************/
     float getState(const sf::Event& event) const override;
     bool matches(const sf::Event& event) const override;
-    void save(DOMNodeWriter* node, const std::string& name) const override;
+    void save(JSONObject object, const std::string& name) const override;
     std::string getShortName() const override;
     std::string getLongName() const override;
-    void loadCustomMapping(DOMNode& node) override;
+    void loadCustomMapping(JSONObject object) override;
     void registerAssets(IAssetRegistry* assets) override;
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser) override;
-    
+
     private:
 
-    // DOM strings.
-    static const std::string ATTRIBUTE_TO_VALUE;
+    // JSON members.
+    static const std::string JSON_DIGITAL_TO_ANALOGUE;
+    static const std::string JSON_NAME;
+    static const std::string JSON_TO_VALUE;
+    static const std::string JSON_TYPE;
 
     // Definition data.
     DigitalInput cDefInput; /// Digital input to be converted.

@@ -47,5 +47,15 @@ namespace IsoRealms {
       }
       return nullptr;
     }
+
+    std::unique_ptr<IColour> createLiteralAsset(JSONObject object) const override {
+      return std::make_unique<LiteralColour>(object.getFloat(JSON_RED), object.getFloat(JSON_GREEN), object.getFloat(JSON_BLUE), object.getFloat(JSON_ALPHA));
+    }
+
+    private:
+    inline static const std::string JSON_ALPHA = "alpha";
+    inline static const std::string JSON_BLUE  = "blue";
+    inline static const std::string JSON_GREEN = "green";
+    inline static const std::string JSON_RED   = "red";
   };
 }

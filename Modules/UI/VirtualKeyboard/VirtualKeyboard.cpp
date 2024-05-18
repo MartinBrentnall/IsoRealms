@@ -19,11 +19,9 @@
 #include "VirtualKeyboard.h"
 
 namespace IsoRealms::UI {
-  const std::string VirtualKeyboard::TAG_CONFIRM_ACTION   = "ConfirmAction";
-  const std::string VirtualKeyboard::TAG_FONT             = "Font";
-  const std::string VirtualKeyboard::TAG_SELECTION_COLOUR = "SelectionColour";
-
-  const std::string VirtualKeyboard::ATTRIBUTE_NAME = "name";
+  const std::string VirtualKeyboard::JSON_FONT             = "font";
+  const std::string VirtualKeyboard::JSON_ON_CONFIRM       = "onConfirm";
+  const std::string VirtualKeyboard::JSON_SELECTION_COLOUR = "selectionColour";
 
   const unsigned int VirtualKeyboard::ROWS              = 3;
   const unsigned int VirtualKeyboard::COLUMNS           = 10;
@@ -52,11 +50,11 @@ namespace IsoRealms::UI {
     });
   }
   
-  VirtualKeyboard::VirtualKeyboard(IProject* project, UI* ui, DOMNode& node, IOptions* options, IResourceData* data) :
+  VirtualKeyboard::VirtualKeyboard(IProject* project, UI* ui, JSONObject object, IOptions* options, IResourceData* data) :
                    VirtualKeyboard(project, ui) {
-    cDefSelectionColour.init(node, TAG_SELECTION_COLOUR);
-    cDefFont.init(node, TAG_FONT);
-    cDefConfirmAction.init(node, TAG_CONFIRM_ACTION);
+    cDefSelectionColour.init(object, JSON_SELECTION_COLOUR);
+    cDefFont.init(object, JSON_FONT);
+    cDefConfirmAction.init(object, JSON_ON_CONFIRM);
   }
 
   void VirtualKeyboard::registerAssets(IAssetRegistry* assets) {
@@ -73,10 +71,10 @@ namespace IsoRealms::UI {
     assets->remove(&cLuaBinding);
   }
   
-  void VirtualKeyboard::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    cDefSelectionColour.save(node, TAG_SELECTION_COLOUR);
-    cDefFont.save(node, TAG_FONT);
-    cDefConfirmAction.save(node, TAG_CONFIRM_ACTION);
+  void VirtualKeyboard::save(JSONObject object, IAssetIdentifier* identifier) const {
+    cDefSelectionColour.save(object, JSON_SELECTION_COLOUR);
+    cDefFont.save(object, JSON_FONT);
+    cDefConfirmAction.save(object, JSON_ON_CONFIRM);
   }
 
   void VirtualKeyboard::hintInUse(bool inUse) {
@@ -191,6 +189,10 @@ namespace IsoRealms::UI {
 
   bool VirtualKeyboard::renderAssetIcon() const {
     return false;
+  }
+
+  void VirtualKeyboard::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   void VirtualKeyboard::left() {

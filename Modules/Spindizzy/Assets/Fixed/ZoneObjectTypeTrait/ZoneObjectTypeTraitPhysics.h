@@ -25,7 +25,7 @@ namespace IsoRealms::Spindizzy {
 
   class ZoneObjectTypeTraitPhysics : public IZoneObjectTypeTrait {
     public:
-    ZoneObjectTypeTraitPhysics(IProject* project, ZoneObjectType* type, DOMNode& node);
+    ZoneObjectTypeTraitPhysics(IProject* project, ZoneObjectType* type, JSONObject object);
     
     // Interface to be used by instances.
     std::string getMovableID() const;
@@ -40,22 +40,22 @@ namespace IsoRealms::Spindizzy {
     /************************************\
      * Implements  IZoneObjectTypeTrait *
     \************************************/
-    void save(DOMNodeWriter& node) const override;
+    void save(JSONObject object) const override;
     std::unique_ptr<IZoneObjectTrait> createTrait(ZoneObject& object) override;
     void registerAssets(ISpindizzyRegistry* registry) override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
     private:
     
-    // DOM strings.
-    static const std::string ATTRIBUTE_CONTROLS;
-    
-    static const std::string ATTRIBUTE_BOUNCE_FACTOR;
-    static const std::string ATTRIBUTE_HEIGHT;
-    static const std::string ATTRIBUTE_HUG_MOMENTUM;
-    static const std::string ATTRIBUTE_RADIUS;
-    static const std::string ATTRIBUTE_STEP_REACH;
-    static const std::string ATTRIBUTE_USE_NON_SOLID;
+    // JSON members.
+    static const std::string JSON_BOUNCE_FACTOR;
+    static const std::string JSON_CONTROLS;
+    static const std::string JSON_HEIGHT;
+    static const std::string JSON_HUG_MOMENTUM;
+    static const std::string JSON_RADIUS;
+    static const std::string JSON_STEP_REACH;
+    static const std::string JSON_USE_NON_SOLID;
 
     static const float DEFAULT_BOUNCE_FACTOR;
     static const float DEFAULT_HEIGHT;

@@ -41,10 +41,10 @@ namespace IsoRealms::Basics {
      * Resource Interface *
     \**********************/
     ColourSwitch(IProject* project, Basics* basics);
-    ColourSwitch(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data);
+    ColourSwitch(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
 
     /**********************\
      * Implements IColour *
@@ -55,11 +55,12 @@ namespace IsoRealms::Basics {
     float getBlue() const override;
     float getAlpha() const override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
     private:
 
-    // DOM strings.
-    static const std::string ATTRIBUTE_VALUE;
+    // JSON members.
+    static const std::string JSON_COLOUR;
 
     // definition data.
     Colour cDefColour; /// Initial value.

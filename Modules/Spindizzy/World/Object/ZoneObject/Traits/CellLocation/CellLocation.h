@@ -38,8 +38,7 @@ namespace IsoRealms::Spindizzy {
     \*******************************/
     void registerAssets(ITraitRegistry& registry) override;
     void unregisterAssets(ZoneObject& object) override;
-    void load(DOMNode& node) override;
-    void save(DOMNodeWriter* node) const override;
+    void save(JSONObject object) const override;
     bool hasConfiguration() const override;
     void reset() override;
     IBinding* getTraitBinding(const std::string& id) override;
@@ -53,11 +52,11 @@ namespace IsoRealms::Spindizzy {
     
     private:
     
-    // DOM strings.
-    static const std::string ATTRIBUTE_X;
-    static const std::string ATTRIBUTE_Y;
-    static const std::string ATTRIBUTE_Z;
-   
+    // JSON members.
+    static const std::string JSON_X;
+    static const std::string JSON_Y;
+    static const std::string JSON_Z;
+
     // Definition data.
     ZoneObject& cDefObject; /// Object to which this location belongs.
     int cDefX;              /// Cell location on the X axis.

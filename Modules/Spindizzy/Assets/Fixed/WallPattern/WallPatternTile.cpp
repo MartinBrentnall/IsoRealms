@@ -22,11 +22,9 @@
 #include "WallPatternTile.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string WallPatternTile::TAG_TEXTURE = "Texture";
-
-  WallPatternTile::WallPatternTile(IProject* project, Spindizzy* spindizzy, DOMNode& node) :
+  WallPatternTile::WallPatternTile(IProject* project, Spindizzy* spindizzy, JSONObject object) :
             cDefTexture(project) {
-    cDefTexture.set(node, TAG_TEXTURE);
+    cDefTexture.set(object, JSON_TEXTURE);
   }
 
   std::vector<std::unique_ptr<IVisualElement>> WallPatternTile::getStaticVisuals(Wall* wall) const {
@@ -104,7 +102,9 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  void WallPatternTile::saveAsset(DOMNodeWriter* node) const {
-    cDefTexture.save(node, TAG_TEXTURE);
+  void WallPatternTile::saveAsset(JSONObject object) const {
+    cDefTexture.save(object, JSON_TEXTURE);
   }
+
+  const std::string WallPatternTile::JSON_TEXTURE = "texture";
 }

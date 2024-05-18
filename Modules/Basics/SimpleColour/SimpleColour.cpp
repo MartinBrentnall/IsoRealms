@@ -19,11 +19,11 @@
 #include "SimpleColour.h"
 
 namespace IsoRealms::Basics {
-  const std::string SimpleColour::ATTRIBUTE_RED   = "red";
-  const std::string SimpleColour::ATTRIBUTE_GREEN = "green";
-  const std::string SimpleColour::ATTRIBUTE_BLUE  = "blue";
-  const std::string SimpleColour::ATTRIBUTE_ALPHA = "alpha";
-  
+  const std::string SimpleColour::JSON_RED   = "red";
+  const std::string SimpleColour::JSON_GREEN = "green";
+  const std::string SimpleColour::JSON_BLUE  = "blue";
+  const std::string SimpleColour::JSON_ALPHA = "alpha";
+
   const std::string SimpleColour::PROPERTY_RED        = "Red";
   const std::string SimpleColour::PROPERTY_GREEN      = "Green";
   const std::string SimpleColour::PROPERTY_BLUE       = "Blue";
@@ -54,18 +54,18 @@ namespace IsoRealms::Basics {
     });
   }
   
-  SimpleColour::SimpleColour(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
+  SimpleColour::SimpleColour(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
             SimpleColour(project, basics) {
-    cRuntimeRed   = cDefRed   = node.getFloatAttribute(ATTRIBUTE_RED);
-    cRuntimeGreen = cDefGreen = node.getFloatAttribute(ATTRIBUTE_GREEN);
-    cRuntimeBlue  = cDefBlue  = node.getFloatAttribute(ATTRIBUTE_BLUE);
-    cRuntimeAlpha = cDefAlpha = node.getFloatAttribute(ATTRIBUTE_ALPHA);
+    cRuntimeRed   = cDefRed   = object.getFloat(JSON_RED);
+    cRuntimeGreen = cDefGreen = object.getFloat(JSON_GREEN);
+    cRuntimeBlue  = cDefBlue  = object.getFloat(JSON_BLUE);
+    cRuntimeAlpha = cDefAlpha = object.getFloat(JSON_ALPHA);
 
     cEditingLastKnownHue = Utils::getHue(cDefRed, cDefGreen, cDefBlue);
     cEditingLastKnownSaturation = Utils::getSaturation(cDefRed, cDefGreen, cDefBlue);
     cEditingLastKnownLightness = Utils::getLightness(cDefRed, cDefGreen, cDefBlue);
 
-    project->init([this, &node](IAssets* resources) {
+    project->init([this](IAssets* resources) {
       cStateNotifier->stateChanged(this);
     });
   }
@@ -81,11 +81,11 @@ namespace IsoRealms::Basics {
     cStateNotifier = nullptr;
   }
 
-  void SimpleColour::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    node->addAttribute(ATTRIBUTE_RED,   cDefRed);
-    node->addAttribute(ATTRIBUTE_GREEN, cDefGreen);
-    node->addAttribute(ATTRIBUTE_BLUE,  cDefBlue);
-    node->addAttribute(ATTRIBUTE_ALPHA, cDefAlpha);
+  void SimpleColour::save(JSONObject object, IAssetIdentifier* identifier) const {
+    object.addFloat(JSON_RED,   cDefRed);
+    object.addFloat(JSON_GREEN, cDefGreen);
+    object.addFloat(JSON_BLUE,  cDefBlue);
+    object.addFloat(JSON_ALPHA, cDefAlpha);
   }
 
   void SimpleColour::hintInUse(bool inUse) {
@@ -152,6 +152,10 @@ namespace IsoRealms::Basics {
 
   float SimpleColour::getAlpha() const {
     return cRuntimeAlpha;
+  }
+
+  void SimpleColour::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   void SimpleColour::setRed(float value) {

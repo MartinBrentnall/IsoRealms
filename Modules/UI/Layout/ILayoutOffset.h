@@ -20,7 +20,7 @@
 
 #include <string>
 
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
+#include "IsoRealms/Persistence/JSONDocument.h"
 
 namespace IsoRealms::UI {
   class Layout;
@@ -28,7 +28,7 @@ namespace IsoRealms::UI {
   class ILayoutOffset {
     public:
     virtual float getOffset(float aspectRatio) const = 0;
-    virtual void save(DOMNodeWriter* node, Layout* layout) const = 0;
+    virtual void save(JSONObject object, Layout* layout) const = 0;
 
     virtual ~ILayoutOffset() {}
   };

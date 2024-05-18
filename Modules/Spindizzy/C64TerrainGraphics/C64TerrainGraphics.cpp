@@ -58,15 +58,11 @@ namespace IsoRealms::Spindizzy {
   const std::string C64TerrainGraphics::WALL_PLAIN_CAP       = "WallPlainCap";
   const std::string C64TerrainGraphics::WALL_PLAIN_MIDDLE    = "WallPlainMiddle";
 
-  const std::string C64TerrainGraphics::TAG_EXTRA = "Extra";
-  const std::string C64TerrainGraphics::TAG_FLOOR = "Floor";
-  const std::string C64TerrainGraphics::TAG_GRID  = "Grid";
-  const std::string C64TerrainGraphics::TAG_WALL  = "Wall";
+  const std::string C64TerrainGraphics::JSON_FLOOR     = "floor";
+  const std::string C64TerrainGraphics::JSON_GRID      = "grid";
+  const std::string C64TerrainGraphics::JSON_HIGHLIGHT = "highlight";
+  const std::string C64TerrainGraphics::JSON_WALL      = "wall";
 
-  const std::string C64TerrainGraphics::ATTRIBUTE_ANGLE       = "angle";
-  const std::string C64TerrainGraphics::ATTRIBUTE_ORIENTATION = "orientation";
-  const std::string C64TerrainGraphics::ATTRIBUTE_SCREEN      = "screen";
-  
   C64TerrainGraphics::C64TerrainGraphics(IProject* project, Spindizzy* spindizzy) :
             cProject(project),
             cDefaultYaw(project, Spindizzy::DEFAULT_VIEW_ANGLE_YAW),
@@ -109,12 +105,12 @@ namespace IsoRealms::Spindizzy {
     project->addScreenListener(this);
   }
   
-  C64TerrainGraphics::C64TerrainGraphics(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
+  C64TerrainGraphics::C64TerrainGraphics(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
             C64TerrainGraphics(project, spindizzy) {
-    cDefFloor.init(node, TAG_FLOOR);
-    cDefWall.init(node, TAG_WALL);
-    cDefGrid.init(node, TAG_GRID);
-    cDefHighlight.init(node, TAG_EXTRA);
+    cDefFloor.init(object, JSON_FLOOR);
+    cDefWall.init(object, JSON_WALL);
+    cDefGrid.init(object, JSON_GRID);
+    cDefHighlight.init(object, JSON_HIGHLIGHT);
     setNeedsFullRedraw();
   }
 
@@ -457,11 +453,11 @@ namespace IsoRealms::Spindizzy {
 
   // TODO: Redraw on Float relinquish
 
-  void C64TerrainGraphics::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    cDefFloor.save(node, TAG_FLOOR);
-    cDefWall.save(node, TAG_WALL);
-    cDefGrid.save(node, TAG_GRID);
-    cDefHighlight.save(node, TAG_EXTRA);
+  void C64TerrainGraphics::save(JSONObject object, IAssetIdentifier* identifier) const {
+    cDefFloor.save(object, JSON_FLOOR);
+    cDefWall.save(object, JSON_WALL);
+    cDefGrid.save(object, JSON_GRID);
+    cDefHighlight.save(object, JSON_HIGHLIGHT);
   }
 
   void C64TerrainGraphics::performAngleRedraw(IFloat* angle) {
@@ -582,5 +578,9 @@ namespace IsoRealms::Spindizzy {
   
   void C64TerrainGraphics::OrientedTexture::coord(float x, float y) const {
     glTexCoord2f(x, y);
+  }
+
+  void C64TerrainGraphics::OrientedTexture::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 }

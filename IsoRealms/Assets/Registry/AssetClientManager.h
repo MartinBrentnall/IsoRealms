@@ -22,7 +22,7 @@
 #include "IsoRealms/Assets/Registry/ILiteralAssetProvider.h"
 #include "IsoRealms/Assets/Type/IStateNotifier.h"
 #include "IsoRealms/IProject.h"
-#include "IsoRealms/Persistence/DOMNode.h"
+#include "IsoRealms/Persistence/JSONDocument.h"
 
 #include "AssetRegistry.h"
 
@@ -81,16 +81,16 @@ namespace IsoRealms {
       return mAsset;
     }
 
-    TYPE* get(IAssetUser<TYPE>* client, OWNER& owner, DOMNode& node, IStateListener<TYPE*>* listener, bool required, std::function<TYPE*(DOMNode& node, IStateListener<TYPE*>* listener)> override) {
+    TYPE* get(IAssetUser<TYPE>* client, OWNER& owner, JSONObject object, IStateListener<TYPE*>* listener, bool required, std::function<TYPE*(JSONObject object, IStateListener<TYPE*>* listener)> override) {
       if (client == nullptr) {
         throw std::invalid_argument("Client cannot be null");
       }
 
-      TYPE* mAsset = override(node, listener);
+      TYPE* mAsset = override(object, listener);
       if (mAsset == nullptr) {
-        IAssetProvider<OWNER, TYPE>* mProvider = cRegistry.getProvider(node.getAttribute(ATTRIBUTE_KEY), required);
+        IAssetProvider<OWNER, TYPE>* mProvider = cRegistry.getProvider(object.getString(JSON_KEY), required);
         if (mProvider != nullptr) {
-          mAsset = mProvider->getAsset(owner, node);
+          mAsset = mProvider->getAsset(owner, object);
         }
 
         if (mAsset != nullptr) {
@@ -155,13 +155,13 @@ namespace IsoRealms {
       return "TODO"; //cRegistry.getID(asset);
     }
 
-    void save(DOMNodeWriter* node, const TYPE* asset) const {
+    void save(JSONObject object, const TYPE* asset) const {
       const IAssetProvider<OWNER, TYPE>* mProvider = getProvider(asset);
       std::string mID = cRegistry.getID(mProvider);
-      node->addAttribute(ATTRIBUTE_KEY, mID);
-      asset->saveAsset(node);
+      object.addString(JSON_KEY, mID);
+      asset->saveAsset(object);
     }
-    
+
     void addAssetListener(IAssetListener<OWNER, TYPE>* listener) {
       cRegistry.addAssetListener(listener);
     }
@@ -199,7 +199,7 @@ namespace IsoRealms {
     }
 
     private:
-    inline static const std::string ATTRIBUTE_KEY = "key";
+    inline static const std::string JSON_KEY = "key";
 
     class StateNotifier final : public IStateNotifier<TYPE> {
       private:

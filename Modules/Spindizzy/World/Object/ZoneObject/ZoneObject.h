@@ -40,13 +40,13 @@ namespace IsoRealms::Spindizzy {
     
     // Constructors.
     ZoneObject(Zone& zone, ZoneObjectType* type);
-    ZoneObject(Zone& zone, DOMNode& node);
+    ZoneObject(Zone& zone, JSONObject object);
 
     // Interface for use by parent zone.
     void registerAssets();
     void unregisterAssets();
     void reset();
-    void save(DOMNodeWriter* node) const;
+    void save(JSONObject object) const;
     bool isType(const ZoneObjectType* const type) const;
     void updateRuntime(unsigned int milliseconds);
     void updateVanish();
@@ -86,11 +86,10 @@ namespace IsoRealms::Spindizzy {
 
     private:
     
-    // DOM strings.
-    static const std::string TAG_PROPERTY;
-    
-    static const std::string ATTRIBUTE_ID;
-    static const std::string ATTRIBUTE_TYPE;
+    // JSON members.
+    static const std::string JSON_ID;
+    static const std::string JSON_TRAITS;
+    static const std::string JSON_TYPE;
 
     // Internal classes.
     class TraitRegistry : public ITraitRegistry {

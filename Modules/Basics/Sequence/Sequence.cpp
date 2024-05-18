@@ -19,11 +19,10 @@
 #include "Sequence.h"
 
 namespace IsoRealms::Basics {
-  const std::string Sequence::TAG_TRACK         = "Track";
-
-  const std::string Sequence::ATTRIBUTE_LOOP    = "loop";
-  const std::string Sequence::ATTRIBUTE_PLAYING = "playing";
-  const std::string Sequence::ATTRIBUTE_TYPE    = "type";
+  const std::string Sequence::JSON_LOOP    = "loop";
+  const std::string Sequence::JSON_PLAYING = "playing";
+  const std::string Sequence::JSON_TRACKS  = "tracks";
+  const std::string Sequence::JSON_TYPE    = "type";
 
   Sequence::Sequence(IProject* project, Basics* basics) :
             cDefPlaying(false),
@@ -38,16 +37,18 @@ namespace IsoRealms::Basics {
     });
   }
   
-  Sequence::Sequence(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
+  Sequence::Sequence(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
             Sequence(project, basics) {
-    cDefPlaying = node.getBooleanAttribute(ATTRIBUTE_PLAYING);
-    cDefLoop = node.getBooleanAttribute(ATTRIBUTE_LOOP);
-    for (DOMNode& mChild : node) {
-      std::string mSequenceTrackType = mChild.getName();
+    cDefPlaying = object.getBoolean(JSON_PLAYING);
+    cDefLoop = object.getBoolean(JSON_LOOP);
+    for (JSONObject mTrackObject : object.getArray(JSON_TRACKS)) {
+
+      // TODO: Use AssetClientManager for this
+      std::string mSequenceTrackType = mTrackObject.getString(JSON_TYPE);
       if (mSequenceTrackType == ActionTrack::TYPE_NAME) {
-        cDefTracks.emplace_back(std::make_unique<ActionTrack>(mChild, project));
+        cDefTracks.emplace_back(std::make_unique<ActionTrack>(mTrackObject, project));
       } else if (mSequenceTrackType == ColourTrack::TYPE_NAME) {
-        cDefTracks.emplace_back(std::make_unique<ColourTrack>(mChild, project));
+        cDefTracks.emplace_back(std::make_unique<ColourTrack>(mTrackObject, project));
       } else {
         throw ParseException("Unknown type for Basics/Sequence: " + mSequenceTrackType);
       }
@@ -68,11 +69,13 @@ namespace IsoRealms::Basics {
     }
   }
   
-  void Sequence::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    node->addAttribute(ATTRIBUTE_PLAYING, cDefPlaying);
-    node->addAttribute(ATTRIBUTE_LOOP, cDefLoop);
+  void Sequence::save(JSONObject object, IAssetIdentifier* identifier) const {
+    object.addBoolean(JSON_PLAYING, cDefPlaying);
+    object.addBoolean(JSON_LOOP, cDefLoop);
+    JSONArray mTrackArray = object.addArray(JSON_TRACKS);
     for (const std::unique_ptr<ISequenceTrack>& mTrack : cDefTracks) {
-      mTrack->save(node);
+      JSONObject mTrackObject = mTrackArray.addObject();
+      mTrack->save(mTrackObject);
     }
   }
 

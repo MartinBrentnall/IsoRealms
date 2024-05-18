@@ -38,6 +38,8 @@ namespace IsoRealms {
                                                            public IResourceData,
                                                            public IPropertyListener {
     private:
+    static const std::string JSON_ID;
+
     IResourceType* cParent;
     std::string cName;
     unsigned int cPropertiesEditCount;
@@ -65,14 +67,14 @@ namespace IsoRealms {
       } while (!mSuccess);
     }
     
-    Resource(IResourceType* parent, IProject* project, MODULE* module, IAssetRegistry* registry, DOMNode& node, IOptions* options) :
+    Resource(IResourceType* parent, IProject* project, MODULE* module, IAssetRegistry* registry, JSONObject object, IOptions* options) :
               cParent(parent),
-              cName(node.getAttribute("name")),
+              cName(object.getString(JSON_ID)),
               cPropertiesEditCount(0),
-              cResourceHandle(project, module, node, options, this),
+              cResourceHandle(project, module, object, options, this),
               cAssetRegistry(registry, cName) {
     }
-    
+
     RESOURCE* getResource() {
       return &cResourceHandle;
     }
@@ -130,11 +132,10 @@ namespace IsoRealms {
       cResourceHandle.hintInUse(inUse);
     }
 
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) override {
-      node->addAttribute("name", cName);
-      cResourceHandle.save(node, identifier);
+    void save(JSONObject object, IAssetIdentifier* identifier) override {
+      cResourceHandle.save(object, identifier);
     }
-    
+
     bool isResource(const RESOURCE* resource) const {
       return resource == &cResourceHandle;
     }
@@ -150,15 +151,6 @@ namespace IsoRealms {
     /****************************\
      * Implements IResourceData *
     \****************************/
-    std::unique_ptr<DOMNode> openForRead(const std::string& file, bool user) override {
-      std::string mFullPath = cParent->getProjectPathPrefix(user) + getResourceDataPath() + "/" + file;
-      return System::fileExists(mFullPath, true) ? std::make_unique<DOMNode>(mFullPath, DOMNode::Type::USER) : nullptr;
-    }
-    
-    void write(DOMNodeWriter* node, const std::string& file) override {
-      node->save(cParent->getProjectPathPrefix(true) + getResourceDataPath() + "/" + file);
-    }
-    
     std::string getPath(const std::string& file, bool user) const override {
       return cParent->getProjectPathPrefix(user) + getResourceDataPath() + "/" + file;
     }
@@ -183,4 +175,6 @@ namespace IsoRealms {
       }
     }
   };
+
+  template <class MODULE, class RESOURCE> const std::string Resource<MODULE, RESOURCE>::JSON_ID = "id";
 }

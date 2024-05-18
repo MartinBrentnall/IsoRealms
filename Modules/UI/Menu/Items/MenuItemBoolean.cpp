@@ -21,21 +21,22 @@
 #include "Modules/UI/Menu/Menu.h"
 
 namespace IsoRealms::UI {
-  const std::string MenuItemBoolean::TAG_TYPE = "Boolean";
+  const std::string MenuItemBoolean::MENU_ITEM_TYPE = "Boolean";
 
-  const std::string MenuItemBoolean::ATTRIBUTE_ID          = "id";
-  const std::string MenuItemBoolean::ATTRIBUTE_LABEL       = "label";
-  const std::string MenuItemBoolean::ATTRIBUTE_LABEL_FALSE = "labelFalse";
-  const std::string MenuItemBoolean::ATTRIBUTE_LABEL_TRUE  = "labelTrue";
+  const std::string MenuItemBoolean::JSON_FALSE_LABEL = "falseLabel";
+  const std::string MenuItemBoolean::JSON_ID          = "id";
+  const std::string MenuItemBoolean::JSON_LABEL       = "label";
+  const std::string MenuItemBoolean::JSON_TRUE_LABEL  = "trueLabel";
+  const std::string MenuItemBoolean::JSON_TYPE        = "type";
 
   const std::string MenuItemBoolean::BINDING_TYPE = "Boolean";
 
-  MenuItemBoolean::MenuItemBoolean(DOMNode& node, IProject* project) :
+  MenuItemBoolean::MenuItemBoolean(JSONObject object, IProject* project) :
             cHatHandler(project->getApplication()->getHatHandler()),
-            cDefID(node.getAttribute(ATTRIBUTE_ID)),
-            cDefLabel(node.getAttribute(ATTRIBUTE_LABEL)),
-            cDefLabelFalse(node.getAttribute(ATTRIBUTE_LABEL_FALSE)),
-            cDefLabelTrue(node.getAttribute(ATTRIBUTE_LABEL_TRUE)),
+            cDefID(object.getString(JSON_ID)),
+            cDefLabel(object.getString(JSON_LABEL)),
+            cDefLabelFalse(object.getString(JSON_FALSE_LABEL)),
+            cDefLabelTrue(object.getString(JSON_TRUE_LABEL)),
             cLuaBinding(project, this) {
     project->reset([this]() {
       cRuntimeValue = false;
@@ -58,13 +59,13 @@ namespace IsoRealms::UI {
     assets->remove(&cLuaBinding);
   }
   
-  void MenuItemBoolean::save(DOMNodeWriter* node) const {
-    DOMNodeWriter mNode = node->addBranch(TAG_TYPE);
-    mNode.addAttribute(ATTRIBUTE_ID,          cDefID);
-    mNode.addAttribute(ATTRIBUTE_LABEL,       cDefLabel);
-    mNode.addAttribute(ATTRIBUTE_LABEL_TRUE,  cDefLabelTrue);
-    mNode.addAttribute(ATTRIBUTE_LABEL_FALSE, cDefLabelFalse);
-  }  
+  void MenuItemBoolean::save(JSONObject object) const {
+    object.addString(JSON_TYPE,        MENU_ITEM_TYPE);
+    object.addString(JSON_ID,          cDefID);
+    object.addString(JSON_LABEL,       cDefLabel);
+    object.addString(JSON_TRUE_LABEL,  cDefLabelTrue);
+    object.addString(JSON_FALSE_LABEL, cDefLabelFalse);
+  }
 
   bool MenuItemBoolean::input(sf::Event& event) {
     switch (event.type) {

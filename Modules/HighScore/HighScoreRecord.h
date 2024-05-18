@@ -22,22 +22,25 @@
 #include <string>
 #include <vector>
 
-#include "IsoRealms/Persistence/DOMNode.h"
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
+#include "IsoRealms/Persistence/JSONObject.h"
 
 namespace IsoRealms::HighScore {
   class HighScoreTable;
   
   class HighScoreRecord {
     public:
-    HighScoreRecord(DOMNode& node, HighScoreTable* parentTable);
+    HighScoreRecord(JSONObject object, HighScoreTable* parentTable);
     HighScoreRecord(std::map<std::string, std::string> record, HighScoreTable* parentTable);
     
-    void save(DOMNodeWriter* node);
+    void save(JSONObject node);
     bool beats(const std::string& value);
     bool beats(HighScoreRecord* record);
     
     private:
+    static const std::string JSON_FIELDS;
+    static const std::string JSON_NAME;
+    static const std::string JSON_VALUE;
+
     HighScoreTable* cParentTable;
     std::vector<std::string> cValues;
   };

@@ -25,7 +25,6 @@
 #include "IsoRealms/Condition/Condition.h"
 #include "IsoRealms/Condition/ConditionElement.h"
 #include "IsoRealms/Literals.h"
-#include "IsoRealms/Persistence/DOMNode.h"
 
 namespace IsoRealms::Spindizzy {
   class TerrainType;

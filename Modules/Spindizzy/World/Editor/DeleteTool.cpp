@@ -32,6 +32,10 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
+  void DeleteTool::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
+
   DeleteTool::Eraser::Eraser(DeleteTool& parent, WorldEditor* editor) :
             cParent(parent),
             cEditor(editor),

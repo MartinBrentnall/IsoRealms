@@ -23,11 +23,9 @@
 #include "Modules/Spindizzy/World/Object/Terrain/Surface.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string SurfacePatternTile::TAG_TEXTURE = "Texture";
-
-  SurfacePatternTile::SurfacePatternTile(IProject* project, Spindizzy* spindizzy, DOMNode& node) :
+  SurfacePatternTile::SurfacePatternTile(IProject* project, Spindizzy* spindizzy, JSONObject object) :
             cDefTexture(project) {
-    cDefTexture.set(node, TAG_TEXTURE);
+    cDefTexture.set(object, JSON_TEXTURE);
   }
 
   bool SurfacePatternTile::contains(ITexture* texture) {
@@ -130,8 +128,8 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  void SurfacePatternTile::saveAsset(DOMNodeWriter* node) const {
-    cDefTexture.save(node, TAG_TEXTURE);
+  void SurfacePatternTile::saveAsset(JSONObject object) const {
+    cDefTexture.save(object, JSON_TEXTURE);
   }
 
   SurfacePatternTile::SurfacePatternSurface::SurfacePatternSurface(SurfacePatternTile& parent, Surface* surface) :
@@ -167,5 +165,7 @@ namespace IsoRealms::Spindizzy {
   void SurfacePatternTile::SurfacePatternSplitSurface::prepareVisual() {
     // Nothing to do.
   }
+
+  const std::string SurfacePatternTile::JSON_TEXTURE = "texture";
 }
 

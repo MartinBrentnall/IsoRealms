@@ -44,10 +44,10 @@ namespace IsoRealms::UI {
      * Resource Interface *
     \**********************/
     Throbber(IProject* project, UI* ui);
-    Throbber(IProject* project, UI* ui, DOMNode& node, IOptions* options, IResourceData* data);
+    Throbber(IProject* project, UI* ui, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -57,19 +57,19 @@ namespace IsoRealms::UI {
     \**********************/
     void renderScreen(float scale, float aspectRatio) const override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
     private:
 
-    // DOM strings.
-    static const std::string TAG_COLOUR;
-
-    static const std::string ATTRIBUTE_DURATION;
-    static const std::string ATTRIBUTE_REPETITIONS;
-    static const std::string ATTRIBUTE_RING_RADIUS;
-    static const std::string ATTRIBUTE_SHADOW_OFFSET;
-    static const std::string ATTRIBUTE_SPOT_RADIUS;
-    static const std::string ATTRIBUTE_SPOT_SIDES;
-    static const std::string ATTRIBUTE_SPOTS;
+    // JSON members.
+    static const std::string JSON_COLOUR;
+    static const std::string JSON_DURATION;
+    static const std::string JSON_REPETITIONS;
+    static const std::string JSON_RING_RADIUS;
+    static const std::string JSON_SHADOW_OFFSET;
+    static const std::string JSON_SPOT_RADIUS;
+    static const std::string JSON_SPOT_SIDES;
+    static const std::string JSON_SPOTS;
 
     // Default values.
     static const unsigned int DEFAULT_DURATION;

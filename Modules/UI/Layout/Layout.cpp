@@ -21,29 +21,23 @@
 #include "Editor/LayoutEditor.h"
 
 namespace IsoRealms::UI {
-  const std::string Layout::TAG_COMPONENT = "Component";
-
-  const std::string Layout::ATTRIBUTE_NAME = "name";
+  const std::string Layout::JSON_COMPONENTS = "components";
+  const std::string Layout::JSON_ID         = "id";
 
   Layout::Layout(IProject* project, UI* ui) {
     // Nothing to do.
   }
   
-  Layout::Layout(IProject* project, UI* ui, DOMNode& node, IOptions* options, IResourceData* data) :
+  Layout::Layout(IProject* project, UI* ui, JSONObject object, IOptions* options, IResourceData* data) :
             Layout(project, ui) {
-    for (DOMNode& mNode : node) {
-      std::string mChildName = mNode.getName();
-      if (mChildName == TAG_COMPONENT) {
-        std::string mComponentName = mNode.getAttribute(ATTRIBUTE_NAME);
-        if (cComponentsByName.find(mComponentName) != cComponentsByName.end()) {
-          throw ParseException("Duplicate component name in screen layout: " + mComponentName);
-        }
-        // TODO: Is this an implicit "new"!!?
-        cComponentsByName.emplace(std::piecewise_construct, std::forward_as_tuple(mComponentName), std::forward_as_tuple(project, *this, mNode));
-        cComponentsByOrder.emplace_back(&(cComponentsByName.find(mComponentName)->second));
-      } else {
-        throw ParseException("Unknown tag for UI/Layout: " + mChildName);
+    for (JSONObject mComponentObject : object.getArray(JSON_COMPONENTS)) {
+      std::string mComponentName = mComponentObject.getString(JSON_ID);
+      if (cComponentsByName.find(mComponentName) != cComponentsByName.end()) {
+        throw ParseException("Duplicate component name in screen layout: " + mComponentName);
       }
+      // TODO: Is this an implicit "new"!!?
+      cComponentsByName.emplace(std::piecewise_construct, std::forward_as_tuple(mComponentName), std::forward_as_tuple(project, *this, mComponentObject));
+      cComponentsByOrder.emplace_back(&(cComponentsByName.find(mComponentName)->second));
     }
   }
 
@@ -63,12 +57,13 @@ namespace IsoRealms::UI {
     }
   }
 
-  void Layout::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
+  void Layout::save(JSONObject object, IAssetIdentifier* identifier) const {
+    JSONArray mComponentsArray = object.addArray(JSON_COMPONENTS);
     for (LayoutComponent* mComponent : cComponentsByOrder) {
-      DOMNodeWriter mComponentNode = node->addBranch(TAG_COMPONENT);
+      JSONObject mComponentObject = mComponentsArray.addObject();
       std::string mComponentName = getName(mComponent);
-      mComponentNode.addAttribute(ATTRIBUTE_NAME, mComponentName);
-      mComponent->save(&mComponentNode, identifier);
+      mComponentObject.addString(JSON_ID, mComponentName);
+      mComponent->save(mComponentObject, identifier);
     }
   }
 
@@ -93,6 +88,10 @@ namespace IsoRealms::UI {
 
   bool Layout::renderAssetIcon() const {
     return renderIcon();
+  }
+
+  void Layout::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   IEditableScreen* Layout::createEditableScreen(IsoRealms::Project* project) {

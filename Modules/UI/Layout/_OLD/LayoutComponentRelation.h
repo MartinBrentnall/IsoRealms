@@ -36,7 +36,6 @@ namespace IsoRealms::UI {
     void setOffset(float) override;
     float getLocation(float aspectRatio) override;
     void editOffset(float) override;
-    void save(DOMNodeWriter* node, const std::string& attribute, Layout* layout) override;
     std::string getName(Layout*) override;
     void renderRelation(float aspectRatio) override;
     bool isRelatedTo(LayoutComponent* component) override;

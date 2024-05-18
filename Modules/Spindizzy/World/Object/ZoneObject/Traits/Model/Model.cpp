@@ -53,14 +53,10 @@ namespace IsoRealms::Spindizzy {
     object.unregisterProcessor(this);
   }
 
-  void Model::load(DOMNode& node) {
+  void Model::save(JSONObject object) const {
     // Nothing to do.
   }
-  
-  void Model::save(DOMNodeWriter* node) const {
-    // Nothing to do.
-  }
-  
+
   bool Model::hasConfiguration() const {
     return false;
   }    

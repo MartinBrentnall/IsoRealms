@@ -37,8 +37,8 @@ namespace IsoRealms {
     /************************************************\
      * Implements IAssetProvider<Project, IBinding> *
     \************************************************/
-    IBinding* getAsset(Project& project, DOMNode& node) const override {
-      std::string mLocalBindingID = node.getAttribute(ATTRIBUTE_LOCAL);
+    IBinding* getAsset(Project& project, JSONObject object) const override {
+      std::string mLocalBindingID = object.getString(JSON_LOCAL);
       if (cRuntimeLocals == nullptr) {
         std::cout << "WARNING: AssetLocalBinding::getAsset: No action-specific bindings provided for this action (looking for \"" << mLocalBindingID << "\")." << std::endl;
         return nullptr;
@@ -59,7 +59,7 @@ namespace IsoRealms {
     }
 
     private:
-    inline static const std::string ATTRIBUTE_LOCAL = "local";
+    inline static const std::string JSON_LOCAL = "local";
 
     IBindingRegistry* cRuntimeLocals;
   };

@@ -30,16 +30,16 @@ namespace IsoRealms::Spindizzy {
   class ThemeSet : public IIconAnimator {
     public:
     ThemeSet(IProject* project, Spindizzy* spindizzy);
-    ThemeSet(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data);
+    ThemeSet(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
     bool renderIcon();
     void hintInUse(bool inUse);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
-    void registerAssets(IAssetRegistry* assets);  
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
+    void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
     
-    void createTexture(const std::string& type);
-    void createColour(IProject* project, const std::string& type);
+    ThemeTexture* createTexture(const std::string& type);
+    ThemeColour* createColour(IProject* project, const std::string& type);
     std::string getElement(ThemeTexture* themeTexture);
     std::string getElement(ThemeColour* themeColour);
     std::string getName(Theme* theme);
@@ -66,6 +66,10 @@ namespace IsoRealms::Spindizzy {
     private:
     static const unsigned int ICON_TRANSITION_TIME;
     static const unsigned int ICON_PAUSE_TIME;
+
+    // JSON strings
+    static const std::string JSON_ID;
+    static const std::string JSON_THEMES;
 
     std::map<std::string, std::unique_ptr<Theme>> cThemes;
     std::map<std::string, std::unique_ptr<ThemeTexture>> cTextures;

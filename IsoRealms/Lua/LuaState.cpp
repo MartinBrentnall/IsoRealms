@@ -20,8 +20,6 @@
 
 #include "LuaState.h"
 
-#include "IsoRealms/Persistence/DOMNode.h"
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
 #include "IsoRealms/Project.h"
 #include "IsoRealms/Types.h"
 
@@ -45,10 +43,6 @@ namespace IsoRealms {
     cLua.new_usertype<IAssets>("Assets",                 "setProperty",          &IAssets::setProperty);
     cLua.new_usertype<IBoolean>("Boolean",               "getValue",             &IBoolean::getValue);
     cLua.new_usertype<IColour>("Colour");
-    cLua.new_usertype<DOMNode>("DOMNodeReader",          "getAttribute",         &DOMNode::getAttribute,
-                                                         "getNode",              &DOMNode::getNode);
-    cLua.new_usertype<DOMNodeWriter>("DOMNodeWriter",    "addAttributeString",   &DOMNodeWriter::addAttributeString,
-                                                         "save",                 &DOMNodeWriter::save);
     cLua.new_usertype<IEditable>("Editable",             "createEditableScreen", &IEditable::createEditableScreen);
     cLua.new_usertype<IEditableScreen>("EditableScreen", "screen",               &IEditableScreen::screen,
                                                          "inputHandler",         &IEditableScreen::inputHandler,
@@ -57,13 +51,31 @@ namespace IsoRealms {
                                                          "setAppearance",        &IEditableScreen::setAppearance);
     cLua.new_usertype<IFloat>("Float",                   "getValue",             &IFloat::getValue);
     cLua.new_usertype<IInteger>("Integer",               "getValue",             &IInteger::getValue);
+    cLua.new_usertype<JSONArray>("JSONArray",            "addObject",            &JSONArray::addObject,
+                                                         "begin",                &JSONArray::begin,
+                                                         "end",                  &JSONArray::end);
+    cLua.new_usertype<JSONDocument>("JSONDocument",      "addObject",            &JSONDocument::addObject,
+                                                         "getObject",            &JSONDocument::getObject,
+                                                         "save",                 &JSONDocument::save);
+    cLua.new_usertype<JSONObject>("JSONObject",          "addObject",            &JSONObject::addObject,
+                                                         "addArray",             &JSONObject::addArray,
+                                                         "addString",            &JSONObject::addString,
+                                                         "addInteger",           &JSONObject::addInteger,
+                                                         "addFloat",             &JSONObject::addFloat,
+                                                         "addBoolean",           &JSONObject::addBoolean,
+                                                         "getObject",            &JSONObject::getObject,
+                                                         "getArray",             &JSONObject::getArray,
+                                                         "getString",            &JSONObject::getString,
+                                                         "getInteger",           &JSONObject::getInteger,
+                                                         "getFloat",             &JSONObject::getFloat,
+                                                         "getBoolean",           &JSONObject::getBoolean);
     cLua.new_usertype<Project>("Project",                "executeCommand",       &Project::executeCommand,
                                                          "finish",               &Project::finish,
                                                          "getDisplayResolution", &Project::getDisplayResolution,
                                                          "setDisplayResolution", &Project::setDisplayResolution,
                                                          "isFullScreen",         &Project::isFullScreen,
-                                                         "createNode",           &Project::createNode,
-                                                         "readNode",             &Project::readNode,
+                                                         "createDocument",       &Project::createDocument,
+                                                         "openDocument",         &Project::openDocument,
                                                          "getUserDataPath",      &Project::getUserDataPath,
                                                          "getTime",              &Project::getTime); // TODO: Should be a system function? (also the other non-project-specific functions too)
     cLua.new_usertype<IString>("String",                 "getValue",             &IString::getValue);

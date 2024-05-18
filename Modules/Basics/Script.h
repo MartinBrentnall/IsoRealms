@@ -35,15 +35,16 @@ namespace IsoRealms::Basics {
     /**************************\
      * Implements IActionType *
     \**************************/
-    IAction* createAction(DOMNode& node, IProject* project, IBindingRegistry* localObjects) override;
+    IAction* createAction(JSONObject object, IProject* project, IBindingRegistry* localArgs) override;
     IAction* createAction(IProject* project, IBindingRegistry* localArgs) override;
     void destroyAction(IAction* action, IAssets* assets) override;
     bool renderAssetIcon() const override;
-    
+    void saveAsset(JSONObject object) const override;
+
     private:
     class ScriptAction : public IAction {
       public:
-      ScriptAction(Script* parent, DOMNode& node, IProject* project, unsigned int index, IBindingRegistry* localArgs);
+      ScriptAction(Script* parent, JSONObject object, IProject* project, unsigned int index, IBindingRegistry* localArgs);
       ScriptAction(Script* parent, IProject* project, unsigned int index);
 
       const IActionType* getInternalActionType();
@@ -56,7 +57,7 @@ namespace IsoRealms::Basics {
       \**********************/
       void execute() override;
       IActionType* getActionType() const override;
-      void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const override;
+      void save(JSONObject object, IAssetIdentifier* identifier) const override;
       bool hasConfiguration() const override;
       
       private:

@@ -21,14 +21,15 @@
 #include "Modules/UI/Menu/Menu.h"
 
 namespace IsoRealms::UI {
-  const std::string MenuItemSlider::TAG_CHANGE_ACTION = "ChangeAction";
-  const std::string MenuItemSlider::TAG_TYPE          = "Slider";
+  const std::string MenuItemSlider::MENU_ITEM_TYPE          = "Slider";
 
-  const std::string MenuItemSlider::ATTRIBUTE_ID      = "id";
-  const std::string MenuItemSlider::ATTRIBUTE_LABEL   = "label";
-  const std::string MenuItemSlider::ATTRIBUTE_MAXIMUM = "maximum";
-  const std::string MenuItemSlider::ATTRIBUTE_MINIMUM = "minimum";
-  const std::string MenuItemSlider::ATTRIBUTE_STEPS   = "steps";
+  const std::string MenuItemSlider::JSON_ID        = "id";
+  const std::string MenuItemSlider::JSON_LABEL     = "label";
+  const std::string MenuItemSlider::JSON_MAXIMUM   = "maximum";
+  const std::string MenuItemSlider::JSON_MINIMUM   = "minimum";
+  const std::string MenuItemSlider::JSON_ON_CHANGE = "onChange";
+  const std::string MenuItemSlider::JSON_STEPS     = "steps";
+  const std::string MenuItemSlider::JSON_TYPE      = "type";
 
   const std::string MenuItemSlider::BINDING_TYPE = "Slider";
 
@@ -36,16 +37,16 @@ namespace IsoRealms::UI {
   const float MenuItemSlider::DEFAULT_MINIMUM = 0.0f;
   const int   MenuItemSlider::DEFAULT_STEPS   = 20;
 
-  MenuItemSlider::MenuItemSlider(DOMNode& node, IProject* project) :
+  MenuItemSlider::MenuItemSlider(JSONObject object, IProject* project) :
             cHatHandler(project->getApplication()->getHatHandler()),
-            cDefID(node.getAttribute(ATTRIBUTE_ID)),
-            cDefLabel(node.getAttribute(ATTRIBUTE_LABEL)),
-            cDefMinimum(node.getFloatAttribute(ATTRIBUTE_MINIMUM, DEFAULT_MINIMUM)),
-            cDefMaximum(node.getFloatAttribute(ATTRIBUTE_MAXIMUM, DEFAULT_MAXIMUM)),
-            cDefSteps(node.getIntegerAttribute(ATTRIBUTE_STEPS, DEFAULT_STEPS)),
+            cDefID(object.getString(JSON_ID)),
+            cDefLabel(object.getString(JSON_LABEL)),
+            cDefMinimum(object.getFloat(JSON_MINIMUM, DEFAULT_MINIMUM)),
+            cDefMaximum(object.getFloat(JSON_MAXIMUM, DEFAULT_MAXIMUM)),
+            cDefSteps(object.getInteger(JSON_STEPS, DEFAULT_STEPS)),
             cDefValueChangedAction(project),
             cLuaBinding(project, this) {
-    cDefValueChangedAction.init(node, TAG_CHANGE_ACTION);
+    cDefValueChangedAction.init(object, JSON_ON_CHANGE);
     project->reset([this]() {
       cRuntimeValue = cDefMinimum;
     });
@@ -67,15 +68,15 @@ namespace IsoRealms::UI {
     assets->remove(&cLuaBinding);
   }
   
-  void MenuItemSlider::save(DOMNodeWriter* node) const {
-    DOMNodeWriter mNode = node->addBranch(TAG_TYPE);
-    mNode.addAttribute(ATTRIBUTE_ID, cDefID);
-    mNode.addAttribute(ATTRIBUTE_LABEL, cDefLabel);
-    mNode.addAttribute(ATTRIBUTE_MINIMUM, cDefMinimum, DEFAULT_MINIMUM);
-    mNode.addAttribute(ATTRIBUTE_MAXIMUM, cDefMaximum, DEFAULT_MAXIMUM);
-    mNode.addAttribute(ATTRIBUTE_STEPS, cDefSteps, DEFAULT_STEPS);
-    cDefValueChangedAction.save(&mNode, TAG_CHANGE_ACTION);
-  }  
+  void MenuItemSlider::save(JSONObject object) const {
+    object.addString(JSON_TYPE, MENU_ITEM_TYPE);
+    object.addString(JSON_ID, cDefID);
+    object.addString(JSON_LABEL, cDefLabel);
+    object.addFloat(JSON_MINIMUM, cDefMinimum, DEFAULT_MINIMUM);
+    object.addFloat(JSON_MAXIMUM, cDefMaximum, DEFAULT_MAXIMUM);
+    object.addInteger(JSON_STEPS, cDefSteps, DEFAULT_STEPS);
+    cDefValueChangedAction.save(object, JSON_ON_CHANGE);
+  }
 
   bool MenuItemSlider::input(sf::Event& event) {
     switch (event.type) {

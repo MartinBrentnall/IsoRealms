@@ -60,14 +60,10 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  void Boundary::load(DOMNode& node) {
+  void Boundary::save(JSONObject object) const {
     // Nothing to do.
   }
-  
-  void Boundary::save(DOMNodeWriter* node) const {
-    // Nothing to do.
-  }
-  
+
   bool Boundary::hasConfiguration() const {
     return false;
   }    

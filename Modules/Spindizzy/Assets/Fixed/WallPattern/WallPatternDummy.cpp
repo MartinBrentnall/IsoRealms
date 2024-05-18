@@ -43,7 +43,7 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
   
-  void WallPatternDummy::saveAsset(DOMNodeWriter* node) const {
+  void WallPatternDummy::saveAsset(JSONObject object) const {
     // Nothing to do.
-  }  
+  }
 }

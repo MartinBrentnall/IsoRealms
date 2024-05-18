@@ -19,9 +19,9 @@
 #include "SimpleVertex.h"
 
 namespace IsoRealms::Basics {
-  const std::string SimpleVertex::ATTRIBUTE_X = "x";
-  const std::string SimpleVertex::ATTRIBUTE_Y = "y";
-  const std::string SimpleVertex::ATTRIBUTE_Z = "z";
+  const std::string SimpleVertex::JSON_X = "x";
+  const std::string SimpleVertex::JSON_Y = "y";
+  const std::string SimpleVertex::JSON_Z = "z";
 
   const std::string SimpleVertex::PROPERTY_X = "X";
   const std::string SimpleVertex::PROPERTY_Y = "Y";
@@ -43,13 +43,13 @@ namespace IsoRealms::Basics {
     });
   }
 
-  SimpleVertex::SimpleVertex(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
+  SimpleVertex::SimpleVertex(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
             SimpleVertex(project, basics) {
-    cRuntimeX = cDefX = node.getFloatAttribute(ATTRIBUTE_X);
-    cRuntimeY = cDefY = node.getFloatAttribute(ATTRIBUTE_Y);
-    cRuntimeZ = cDefZ = node.getFloatAttribute(ATTRIBUTE_Z);
+    cRuntimeX = cDefX = object.getFloat(JSON_X);
+    cRuntimeY = cDefY = object.getFloat(JSON_Y);
+    cRuntimeZ = cDefZ = object.getFloat(JSON_Z);
 
-    project->init([this, &node](IAssets* resources) {
+    project->init([this](IAssets* resources) {
       cStateNotifier->stateChanged(this);
     });
   }
@@ -65,10 +65,10 @@ namespace IsoRealms::Basics {
     cStateNotifier = nullptr;
   }
 
-  void SimpleVertex::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    node->addAttribute(ATTRIBUTE_X, cDefX);
-    node->addAttribute(ATTRIBUTE_Y, cDefY);
-    node->addAttribute(ATTRIBUTE_Z, cDefZ);
+  void SimpleVertex::save(JSONObject object, IAssetIdentifier* identifier) const {
+    object.addFloat(JSON_X, cDefX);
+    object.addFloat(JSON_Y, cDefY);
+    object.addFloat(JSON_Z, cDefZ);
   }
 
   void SimpleVertex::hintInUse(bool inUse) {
@@ -98,6 +98,10 @@ namespace IsoRealms::Basics {
 
   bool SimpleVertex::renderAssetIcon() const {
     return renderIcon();
+  }
+
+  void SimpleVertex::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   void SimpleVertex::setX(double x) {

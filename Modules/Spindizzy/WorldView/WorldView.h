@@ -44,10 +44,10 @@ namespace IsoRealms::Spindizzy {
      * Resource Interface *
     \**********************/
     WorldView(IProject* project, Spindizzy* spindizzy);
-    WorldView(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data);
+    WorldView(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -76,6 +76,7 @@ namespace IsoRealms::Spindizzy {
      * Implements IAsset *
     \*********************/
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
     private:
 
@@ -88,6 +89,7 @@ namespace IsoRealms::Spindizzy {
       \*********************/
       float getValue() const override;
       bool renderAssetIcon() const override;
+      void saveAsset(JSONObject object) const override;
 
       private:
       WorldView& cDefParent;
@@ -101,14 +103,10 @@ namespace IsoRealms::Spindizzy {
       std::unique_ptr<IZoneView> cView;      
     };
 
-    // DOM strings.
-    static const std::string TAG_CAMERA;
-    static const std::string TAG_START_PLAY_ACTION;
-    static const std::string TAG_STOP_PLAY_ACTION;
-    static const std::string TAG_ZONE_VIEW_TYPE;
-
-    static const std::string ATTRIBUTE_TYPE;
-    static const std::string ATTRIBUTE_WORLD;
+    // JSON members.
+    static const std::string JSON_CAMERA;
+    static const std::string JSON_TYPE;
+    static const std::string JSON_WORLD;
 
     static const std::string TYPE_ZONE_VIEW;
 

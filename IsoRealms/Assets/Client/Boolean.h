@@ -23,8 +23,7 @@
 #include "IsoRealms/Assets/Type/IBoolean.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/IAssets.h"
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
-
+#include "IsoRealms/Persistence/JSONDocument.h"
 
 namespace IsoRealms {
   class Boolean : public IAssetUser<IBoolean>,
@@ -32,9 +31,9 @@ namespace IsoRealms {
     public:
     Boolean(IProject* project, bool defaultValue = false, std::function<void(bool)> listener = nullptr);
 
-    void init(DOMNode& node, const std::string& tag);
-    void set(DOMNode& node, const std::string& tag);
-    void save(DOMNodeWriter* node, const std::string& tag) const;
+    void init(JSONObject object, const std::string& member);
+    void set(JSONObject object, const std::string& member);
+    void save(JSONObject object, const std::string& name) const;
 
     IBoolean* operator->() const {
       return cBoolean;

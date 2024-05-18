@@ -25,21 +25,21 @@ namespace IsoRealms {
             cDefBinding(cProject->createLiteralBinding(this)) {
   }
 
-  void Binding::init(DOMNode& node, const std::string& tag) {
-    cProject->init([this, &node, tag](IAssets* assets) {
-      set(node, tag);
+  void Binding::init(JSONObject object, const std::string& member) {
+    cProject->init([this, object, member](IAssets* assets) {
+      set(object, member);
     });
   }
 
-  void Binding::set(DOMNode& node, const std::string& tag) {
-    DOMNode& mAssetNode = node.getNode(tag);
+  void Binding::set(JSONObject object, const std::string& member) {
+    JSONObject mAssetObject = object.getObject(member);
     cProject->release(this, cDefBinding);
-    cDefBinding = cProject->getBinding(this, mAssetNode, cDefRegistry);
+    cDefBinding = cProject->getBinding(this, mAssetObject, cDefRegistry);
   }
 
-  void Binding::save(DOMNodeWriter* node, bool local, const std::string& tag) const {
-    DOMNodeWriter mAssetNode = node->addBranch(tag);
-    cProject->save(&mAssetNode, cDefBinding);
+  void Binding::save(JSONObject object, const std::string& name) const {
+    JSONObject mAssetObject = object.addObject(name);
+    cProject->save(mAssetObject, cDefBinding);
   }
 
   void Binding::relinquish(IBinding* asset) {

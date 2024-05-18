@@ -31,21 +31,24 @@ namespace IsoRealms::UI {
    */
   class LinkedOffset : public ILayoutOffset {
     public:
-    LinkedOffset(IProject* project, DOMNode& node, Layout* layout, LayoutComponent* defaultLink, float defaultRatio);
-    
+    LinkedOffset(IProject* project, JSONObject object, Layout* layout, LayoutComponent* defaultLink, float defaultRatio);
+
     /****************************\
      * Implements ILayoutOffset *
     \****************************/
     float getOffset(float aspectRatio) const override;
-    void save(DOMNodeWriter* node, Layout* layout) const override;
+    void save(JSONObject object, Layout* layout) const override;
     
     private:
     
-    // DOM strings.    
-    static const std::string ATTRIBUTE_LINKED;
-    static const std::string ATTRIBUTE_RATIO;
-    static const std::string ATTRIBUTE_VALUE;
-    
+    // JSON members.    
+    static const std::string JSON_LINKED;
+    static const std::string JSON_RATIO;
+    static const std::string JSON_TYPE;
+    static const std::string JSON_VALUE;
+
+    static const std::string TYPE_ABSOLUTE;
+
     static const std::string VALUE_HEIGHT;
     static const std::string VALUE_WIDTH;
 

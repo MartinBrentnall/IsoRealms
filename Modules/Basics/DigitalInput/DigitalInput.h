@@ -53,10 +53,10 @@ namespace IsoRealms::Basics {
      * Resource Interface *
     \**********************/
     DigitalInput(IProject* project, Basics* basics);
-    DigitalInput(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data);
+    DigitalInput(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -75,6 +75,7 @@ namespace IsoRealms::Basics {
      * Implements multiple *
     \***********************/
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
     /***********************\
      * Scripting Interface *
@@ -126,7 +127,7 @@ namespace IsoRealms::Basics {
      *
      * @param node The node from which to read physical input mappings.
      */
-    void loadCustomMapping(DOMNode& node);
+    void loadCustomMapping(JSONObject object);
 
     /**
      * Write user-defined physical input mappings to the specified node.  If
@@ -136,14 +137,16 @@ namespace IsoRealms::Basics {
      * @param node The node to which to write user-defined physical input
      *         mappings.
      */
-    void saveCustomMapping(DOMNodeWriter* node) const;
+    void saveCustomMapping(JSONObject object) const;
       
     private:
 
-    // DOM strings.
-    static const std::string TAG_BUTTON_DOWN;
-    static const std::string TAG_HAT;
-    static const std::string TAG_KEY_DOWN;
+    // JSON members.
+    static const std::string JSON_BUTTON_DOWN;
+    static const std::string JSON_HAT;
+    static const std::string JSON_KEY_DOWN;
+    static const std::string JSON_MAPPINGS;
+    static const std::string JSON_TYPE;
 
     // Definition data.
     class PhysicalInputMapping {
@@ -155,7 +158,7 @@ namespace IsoRealms::Basics {
       void reset();
       std::string getShortName() const;
       std::shared_ptr<IDigitalInputMapping> getInput() const;
-      void save(DOMNodeWriter* node) const;
+      void save(JSONObject object) const;
 
       private:
       std::shared_ptr<IDigitalInputMapping> cPhysicalInput;

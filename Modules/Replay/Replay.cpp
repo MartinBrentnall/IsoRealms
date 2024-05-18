@@ -19,8 +19,8 @@
 #include "Replay.h"
 
 namespace IsoRealms::Replay {
-  const std::string Replay::TAG_RESOURCE_PLAYBACK  = "Player";
-  const std::string Replay::TAG_RESOURCE_RECORDER  = "Recorder";
+  const std::string Replay::ID_RESOURCE_PLAYBACK  = "Player";
+  const std::string Replay::ID_RESOURCE_RECORDER  = "Recorder";
       
   const std::string Replay::NAME_RESOURCE_PLAYBACK = "Players";
   const std::string Replay::NAME_RESOURCE_RECORDER = "Recorders";
@@ -28,18 +28,18 @@ namespace IsoRealms::Replay {
   Replay::Replay(IProject* project, IResourceTypeRegistry* registry, IAssetLiterals* literals):
                     cResourceTypePlayer(this),
                     cResourceTypeRecorder(this) {
-    registry->add(&cResourceTypePlayer,   TAG_RESOURCE_PLAYBACK, NAME_RESOURCE_PLAYBACK, IsoRealmsConstants::RESOURCE_CATEGORY_SYSTEM);
-    registry->add(&cResourceTypeRecorder, TAG_RESOURCE_RECORDER, NAME_RESOURCE_RECORDER, IsoRealmsConstants::RESOURCE_CATEGORY_SYSTEM);
+    registry->add(&cResourceTypePlayer,   ID_RESOURCE_PLAYBACK, NAME_RESOURCE_PLAYBACK, IsoRealmsConstants::RESOURCE_CATEGORY_SYSTEM);
+    registry->add(&cResourceTypeRecorder, ID_RESOURCE_RECORDER, NAME_RESOURCE_RECORDER, IsoRealmsConstants::RESOURCE_CATEGORY_SYSTEM);
   }
 
-  void Replay::load(IProject* project, DOMNode& node) {
+  void Replay::load(IProject* project, JSONObject object) {
     // Nothing to do.
   }
 
-  void Replay::save(DOMNodeWriter* node, IAssetIdentifier* identifier) {
+  void Replay::save(JSONObject object, IAssetIdentifier* identifier) {
     // Nothing to do.
   }
-  
+
   void Replay::registerAssets(IAssetRegistry* assets) {
     // Nothing to do.
   }

@@ -44,10 +44,10 @@ namespace IsoRealms::Spindizzy {
      * Resource interface *
     \**********************/
     TerrainType(IProject* project, Spindizzy* spindizzy);
-    TerrainType(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data);
+    TerrainType(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -88,30 +88,24 @@ namespace IsoRealms::Spindizzy {
     \*******************************/
     IWorldEditorToolInstance* createToolInstance(WorldEditor* editor) override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
     private:
 
-    // DOM strings.
-    static const std::string TAG_IMPACT_ACTION;
-    static const std::string TAG_CONTACT_ACTION;
-    static const std::string TAG_SURFACE;
-    static const std::string TAG_SPLIT_SURFACE_A;
-    static const std::string TAG_SPLIT_SURFACE_B;
-    static const std::string TAG_WEST_WALL;
-    static const std::string TAG_EAST_WALL;
-    static const std::string TAG_SOUTH_WALL;
-    static const std::string TAG_NORTH_WALL;
-    static const std::string TAG_TEXTURE;
-
-    static const std::string ATTRIBUTE_FRICTION;
-    static const std::string ATTRIBUTE_GRIP;
-    static const std::string ATTRIBUTE_BOUNCE;
-    static const std::string ATTRIBUTE_PATTERN;
-    static const std::string ATTRIBUTE_RESPAWN_ALLOWED;
-    static const std::string ATTRIBUTE_SOLID;
-    static const std::string ATTRIBUTE_DEFAULT_ZONE_TYPE;
-    static const std::string ATTRIBUTE_DEFAULT_THEME_SET;
-    static const std::string ATTRIBUTE_WALL_BOUNCE;
+    // JSON members.
+    static const std::string JSON_ALLOW_RESPAWN;
+    static const std::string JSON_EAST_WALL;
+    static const std::string JSON_FLOOR_BOUNCE;
+    static const std::string JSON_FRICTION;
+    static const std::string JSON_GRIP;
+    static const std::string JSON_NORTH_WALL;
+    static const std::string JSON_ON_IMPACT;
+    static const std::string JSON_ON_TOUCH;
+    static const std::string JSON_SOLID;
+    static const std::string JSON_SOUTH_WALL;
+    static const std::string JSON_SURFACE;
+    static const std::string JSON_WALL_BOUNCE;
+    static const std::string JSON_WEST_WALL;
 
     // Internal classes.
     class Pen : public IWorldEditorToolInstance {

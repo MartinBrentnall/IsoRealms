@@ -38,10 +38,10 @@ namespace IsoRealms::UI {
      * Resource Interface *
     \**********************/
     Layout(IProject* project, UI* ui);
-    Layout(IProject* project, UI* ui, DOMNode& node, IOptions* options, IResourceData* data);
+    Layout(IProject* project, UI* ui, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);  
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -51,6 +51,7 @@ namespace IsoRealms::UI {
     \**********************/
     void renderScreen(float scale, float aspectRatio) const override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
     /************************\
      * Implements IEditable *
@@ -69,11 +70,10 @@ namespace IsoRealms::UI {
 
     private:
 
-    // DOM strings.
-    static const std::string TAG_COMPONENT;
+    // JSON members.
+    static const std::string JSON_COMPONENTS;
+    static const std::string JSON_ID;
 
-    static const std::string ATTRIBUTE_NAME;
-    
     // Definition data.
     std::vector<LayoutComponent*> cComponentsByOrder;         /// Components in order of rendering.
     std::map<std::string, LayoutComponent> cComponentsByName; /// Components mapped by name.

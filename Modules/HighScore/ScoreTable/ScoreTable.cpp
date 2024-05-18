@@ -19,16 +19,17 @@
 #include "ScoreTable.h"
 
 namespace IsoRealms::HighScore {
-  const std::string ScoreTable::TAG_FIELD            = "Field";
-  const std::string ScoreTable::TAG_HIGH_SCORE_TABLE = "HighScoreTable";
-  const std::string ScoreTable::TAG_PROJECT          = "Project";
-  const std::string ScoreTable::TAG_RECORD           = "Record";
-  const std::string ScoreTable::TAG_USER             = "User";
-
-  const std::string ScoreTable::ATTRIBUTE_RECORDS    = "records";
-  const std::string ScoreTable::ATTRIBUTE_NAME       = "name";
-  const std::string ScoreTable::ATTRIBUTE_FIELD      = "field";
-  const std::string ScoreTable::ATTRIBUTE_VALUE      = "value";
+  const std::string ScoreTable::JSON_COMPARE          = "compare";
+  const std::string ScoreTable::JSON_FIELD            = "field";
+  const std::string ScoreTable::JSON_FIELDS           = "fields";
+  const std::string ScoreTable::JSON_HIGH_SCORE_TABLE = "highScoreTable";
+  const std::string ScoreTable::JSON_NAME             = "name";
+  const std::string ScoreTable::JSON_PROJECT          = "project";
+  const std::string ScoreTable::JSON_RECORD_LIMIT     = "recordLimit";
+  const std::string ScoreTable::JSON_RECORDS          = "records";
+  const std::string ScoreTable::JSON_USER             = "user";
+  const std::string ScoreTable::JSON_VALUE            = "value";
+  const std::string ScoreTable::JSON_VALUES           = "values";
 
   ScoreTable::ScoreTable(IProject* project, HighScore* highScore) :
             cProjectDataPath(project),
@@ -36,29 +37,22 @@ namespace IsoRealms::HighScore {
             cLuaBinding(project, this) {
   }
 
-  ScoreTable::ScoreTable(IProject* project, HighScore* highScore, DOMNode& node, IOptions* options, IResourceData* data) :
+  ScoreTable::ScoreTable(IProject* project, HighScore* highScore, JSONObject object, IOptions* options, IResourceData* data) :
             ScoreTable(project, highScore) {
-    int mRecordCount = node.getIntegerAttribute(ATTRIBUTE_RECORDS);
+    cProjectUser.init(object, JSON_USER);
+    cProjectDataPath.init(object, JSON_PROJECT);
+    int mRecordCount = object.getInteger(JSON_RECORD_LIMIT);
     std::vector<std::string> mFieldNames;
-    for (DOMNode& mFieldNode : node) {
-      std::string mValue = mFieldNode.getName();
-      if (mValue == TAG_FIELD) {
-        std::string mFieldName = mFieldNode.getAttribute(ATTRIBUTE_NAME);
-        std::vector<LiteralString> mValues;
-        for (int i = 0; i < mRecordCount; i++) {
-          mValues.emplace_back(LiteralString(""));
-        }
-        cValues.emplace(mFieldName, std::move(mValues));
-      } else if (mValue == TAG_USER || mValue == TAG_PROJECT || mValue == TAG_RECORD) {
-        // Handled separately, nothing to do.
-      } else {
-        throw ParseException("Unknown tag for HighScore/ScoreTable: " + mValue);
+    for (JSONObject mRecordObject : object.getArray(JSON_FIELDS)) {
+      std::string mFieldName = mRecordObject.getString(JSON_NAME);
+      std::vector<LiteralString> mValues;
+      for (int i = 0; i < mRecordCount; i++) {
+        mValues.emplace_back(LiteralString(""));
       }
+      cValues.emplace(mFieldName, std::move(mValues));
     }
-    readRecords(node);
-    
-    cProjectUser.init(node, TAG_USER);
-    cProjectDataPath.init(node, TAG_PROJECT);
+    readRecords(object);
+
     project->init([this](IAssets* assets) {
       writeDefaultTable();
     });
@@ -77,8 +71,29 @@ namespace IsoRealms::HighScore {
     // Nothing to do.
   }
   
-  void ScoreTable::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    // TODO
+  void ScoreTable::save(JSONObject object, IAssetIdentifier* identifier) const {
+    cProjectDataPath.save(object, JSON_PROJECT);
+    cProjectUser.save(object, JSON_USER);
+    object.addInteger(JSON_RECORD_LIMIT, 10);
+    JSONArray mFieldsArray = object.addArray(JSON_FIELDS);
+    for (std::pair<std::string, std::vector<LiteralString>> mValue : cValues) {
+      JSONObject mFieldObject = mFieldsArray.addObject();
+      mFieldObject.addString(JSON_NAME, mValue.first);
+    }
+
+    // TODO: This is real dogshit, need to rethink the data structure here.
+    JSONArray mRecordsArray = object.addArray(JSON_RECORDS);
+    for (unsigned int i = 0; i < 10; i++) {
+      JSONObject mRecordObject = mRecordsArray.addObject();
+      JSONArray mFieldsArray = mRecordObject.addArray(JSON_VALUES);
+      for (std::pair<std::string, std::vector<LiteralString>> mValue : cValues) {
+        if (!mValue.second[i].getValue().empty()) {
+          JSONObject mFieldObject = mFieldsArray.addObject();
+          mFieldObject.addString(JSON_FIELD, mValue.first);
+          mFieldObject.addString(JSON_VALUE, mValue.second[i].getValue());
+        }
+      }
+    }
   }
 
   void ScoreTable::registerAssets(IAssetRegistry* assets) {
@@ -100,22 +115,16 @@ namespace IsoRealms::HighScore {
     assets->remove(&cLuaBinding);
   }
   
-  void ScoreTable::readRecords(DOMNode& node) {
+  void ScoreTable::readRecords(JSONObject object) {
+    // TODO: Keep definition and values separate.
     int mRecordIndex = 0;
-    for (DOMNode& mNode : node) {
-      std::string mValue = mNode.getName();
-      if (mValue == TAG_FIELD || mValue == TAG_PROJECT || mValue == TAG_USER) { // TODO: Shouldn't be here
-        // Nothing to do
-      } else if (mValue == TAG_RECORD) {
-        for (DOMNode& mFieldNode : mNode) {
-          std::string mFieldName = mFieldNode.getAttribute(ATTRIBUTE_FIELD);
-          std::string mFieldValue = mFieldNode.getAttribute(ATTRIBUTE_VALUE);
-          cValues[mFieldName][mRecordIndex].setValue(mFieldValue);
-        }
-        mRecordIndex++;
-      } else {
-        throw ParseException("Unknown tag for HighScore/ScoreTable: " + mValue);
+    for (JSONObject mRecordObject : object.getArray(JSON_RECORDS)) {
+      for (JSONObject mFieldValueObject : mRecordObject.getArray(JSON_VALUES)) {
+        std::string mFieldName = mFieldValueObject.getString(JSON_FIELD);
+        std::string mFieldValue = mFieldValueObject.getString(JSON_VALUE);
+        cValues[mFieldName][mRecordIndex].setValue(mFieldValue);
       }
+      mRecordIndex++;
     }
   }
 
@@ -125,9 +134,9 @@ namespace IsoRealms::HighScore {
     std::size_t mExtensionPosition = mProjectName.find_last_of('.');
     std::string mHighScoreTablePath = (mUser ? "User/" : "Program/") + mProjectName.substr(0, mExtensionPosition) + "/HighScores.table";
     if (System::fileExists(mHighScoreTablePath, true)) {
-      DOMNode mHighScoreNode(mHighScoreTablePath, DOMNode::Type::USER);
-      DOMNode& mTableNode = mHighScoreNode.getNode(TAG_HIGH_SCORE_TABLE);
-      readRecords(mTableNode);
+      JSONDocument mHighScoreTableDocument(mHighScoreTablePath, true);
+      JSONObject mHighScoreTableObject = mHighScoreTableDocument.getObject(JSON_HIGH_SCORE_TABLE);
+      readRecords(mHighScoreTableObject);
     }
   }
 
@@ -137,25 +146,33 @@ namespace IsoRealms::HighScore {
     std::size_t mExtensionPosition = mProjectName.find_last_of('.');
     std::string mHighScoreTablePath = (mUser ? "User/" : "Program/") + mProjectName.substr(0, mExtensionPosition) + "/HighScores.table";
     if (!System::fileExists(mHighScoreTablePath, true)) {
-      DOMNodeWriter mHighScoreNode(TAG_HIGH_SCORE_TABLE);
-      mHighScoreNode.addAttribute("maximumRecords", 10);
+      JSONDocument mHighScoreTableDocument;
+      JSONObject mHighScoreTableObject = mHighScoreTableDocument.addObject(JSON_HIGH_SCORE_TABLE);
+      mHighScoreTableObject.addInteger(JSON_RECORD_LIMIT, 10);
+      JSONArray mFieldArray = mHighScoreTableObject.addArray(JSON_FIELDS);
+
       for (std::pair<std::string, std::vector<LiteralString>> mPair : cValues) {
-        DOMNodeWriter mFieldNode = mHighScoreNode.addBranch(TAG_FIELD);
-        mFieldNode.addAttribute(ATTRIBUTE_NAME, mPair.first);
+        JSONObject mFieldObject = mFieldArray.addObject();
+        mFieldObject.addString(JSON_NAME, mPair.first);
+
         // TODO: This is a hack... this whole thing is a hack really.
         if (mPair.first == "Score") {
-          mFieldNode.addAttribute("compare", true);
+          mFieldObject.addBoolean(JSON_COMPARE, true);
         }
       }
+      JSONArray mRecordArray = mHighScoreTableObject.addArray(JSON_RECORDS);
       for (int i = 0; i < 10; i++) {
-        DOMNodeWriter mRecordNode = mHighScoreNode.addBranch(TAG_RECORD);
+        JSONObject mRecordObject = mRecordArray.addObject();
+        JSONArray mValuesArray = mRecordObject.addArray(JSON_VALUES);
         for (std::pair<std::string, std::vector<LiteralString>> mPair : cValues) {
-          DOMNodeWriter mFieldNode = mRecordNode.addBranch(TAG_FIELD);
-          mFieldNode.addAttribute(ATTRIBUTE_FIELD, mPair.first);
-          mFieldNode.addAttribute(ATTRIBUTE_VALUE, mPair.second[i].getValue());
+          if (!mPair.second[i].getValue().empty()) {
+            JSONObject mValueObject = mValuesArray.addObject();
+            mValueObject.addString(JSON_FIELD, mPair.first);
+            mValueObject.addString(JSON_VALUE, mPair.second[i].getValue());
+          }
         }
       }
-      mHighScoreNode.save(mHighScoreTablePath);
+      mHighScoreTableDocument.save(mHighScoreTablePath);
     }
   }
 }

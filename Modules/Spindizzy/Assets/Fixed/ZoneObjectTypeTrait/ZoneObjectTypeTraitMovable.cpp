@@ -23,19 +23,19 @@
 #include "ZoneObjectTypeTraitMovable.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string ZoneObjectTypeTraitMovable::ATTRIBUTE_INIT = "init";
-  
-  ZoneObjectTypeTraitMovable::ZoneObjectTypeTraitMovable(IProject* project, ZoneObjectType* type, DOMNode& node) {
-    cDefInitialLocationID = node.getAttribute(ATTRIBUTE_INIT);
+  const std::string ZoneObjectTypeTraitMovable::JSON_LOCATION = "location";
+
+  ZoneObjectTypeTraitMovable::ZoneObjectTypeTraitMovable(IProject* project, ZoneObjectType* type, JSONObject object) {
+    cDefInitialLocationID = object.getString(JSON_LOCATION);
   }
-  
+
   std::string ZoneObjectTypeTraitMovable::getInitialLocationID() const {
     return cDefInitialLocationID;
   }  
   
-  void ZoneObjectTypeTraitMovable::save(DOMNodeWriter& node) const {
-    node.addAttribute(ATTRIBUTE_INIT, cDefInitialLocationID);
-  }  
+  void ZoneObjectTypeTraitMovable::save(JSONObject object) const {
+    object.addString(JSON_LOCATION, cDefInitialLocationID);
+  }
 
   std::unique_ptr<IZoneObjectTrait> ZoneObjectTypeTraitMovable::createTrait(ZoneObject& object) {
     return std::make_unique<Movable>(object, *this);
@@ -47,5 +47,9 @@ namespace IsoRealms::Spindizzy {
 
   bool ZoneObjectTypeTraitMovable::renderAssetIcon() const {
     return false;
+  }
+
+  void ZoneObjectTypeTraitMovable::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 }

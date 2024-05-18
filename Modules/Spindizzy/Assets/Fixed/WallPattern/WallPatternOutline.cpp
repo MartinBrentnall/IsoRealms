@@ -22,7 +22,7 @@
 #include "WallPatternOutline.h"
 
 namespace IsoRealms::Spindizzy {
-  WallPatternOutline::WallPatternOutline(IProject* project, Spindizzy* spindizzy, DOMNode& node) {
+  WallPatternOutline::WallPatternOutline(IProject* project, Spindizzy* spindizzy, JSONObject object) {
     // Nothing to do.
   }
 
@@ -98,7 +98,7 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  void WallPatternOutline::saveAsset(DOMNodeWriter* node) const {
+  void WallPatternOutline::saveAsset(JSONObject object) const {
     // TODO: Implement this.
   }
 }

@@ -19,15 +19,14 @@
 #include "Throbber.h"
 
 namespace IsoRealms::UI {
-  const std::string Throbber::TAG_COLOUR = "Colour";
-
-  const std::string Throbber::ATTRIBUTE_DURATION      = "duration";
-  const std::string Throbber::ATTRIBUTE_REPETITIONS   = "repetitions";
-  const std::string Throbber::ATTRIBUTE_RING_RADIUS   = "ringRadius";
-  const std::string Throbber::ATTRIBUTE_SHADOW_OFFSET = "shadowOffset";
-  const std::string Throbber::ATTRIBUTE_SPOT_RADIUS   = "spotRadius";
-  const std::string Throbber::ATTRIBUTE_SPOT_SIDES    = "spotSides";
-  const std::string Throbber::ATTRIBUTE_SPOTS         = "spots";
+  const std::string Throbber::JSON_COLOUR        = "colour";
+  const std::string Throbber::JSON_DURATION      = "duration";
+  const std::string Throbber::JSON_REPETITIONS   = "repetitions";
+  const std::string Throbber::JSON_RING_RADIUS   = "ringRadius";
+  const std::string Throbber::JSON_SHADOW_OFFSET = "shadowOffset";
+  const std::string Throbber::JSON_SPOT_RADIUS   = "spotRadius";
+  const std::string Throbber::JSON_SPOT_SIDES    = "spotSides";
+  const std::string Throbber::JSON_SPOTS         = "spots";
 
   const unsigned int Throbber::DEFAULT_DURATION      = 2000U;
   const unsigned int Throbber::DEFAULT_REPETITIONS   = 1U;
@@ -49,16 +48,16 @@ namespace IsoRealms::UI {
     });
   }
 
-  Throbber::Throbber(IProject* project, UI* ui, DOMNode& node, IOptions* options, IResourceData* data) :
+  Throbber::Throbber(IProject* project, UI* ui, JSONObject object, IOptions* options, IResourceData* data) :
             Throbber(project, ui) {
-    cDefDuration     = node.getIntegerAttribute(ATTRIBUTE_DURATION,    DEFAULT_DURATION);
-    cDefRepetitions  = node.getIntegerAttribute(ATTRIBUTE_REPETITIONS, DEFAULT_REPETITIONS);
-    cDefSpots        = node.getIntegerAttribute(ATTRIBUTE_SPOTS,       DEFAULT_SPOTS);
-    cDefSpotSides    = node.getIntegerAttribute(ATTRIBUTE_SPOT_SIDES,  DEFAULT_SPOT_SIDES);
-    cDefSpotRadius   = node.getFloatAttribute(ATTRIBUTE_SPOT_RADIUS,   DEFAULT_SPOT_RADIUS);
-    cDefRingRadius   = node.getFloatAttribute(ATTRIBUTE_RING_RADIUS,   DEFAULT_RING_RADIUS);
-    cDefShadowOffset = node.getFloatAttribute(ATTRIBUTE_SHADOW_OFFSET, DEFAULT_SHADOW_OFFSET);
-    cDefColour.init(node, TAG_COLOUR);
+    cDefDuration     = object.getInteger(JSON_DURATION,    DEFAULT_DURATION);
+    cDefRepetitions  = object.getInteger(JSON_REPETITIONS, DEFAULT_REPETITIONS);
+    cDefSpots        = object.getInteger(JSON_SPOTS,       DEFAULT_SPOTS);
+    cDefSpotSides    = object.getInteger(JSON_SPOT_SIDES,  DEFAULT_SPOT_SIDES);
+    cDefSpotRadius   = object.getFloat(JSON_SPOT_RADIUS,   DEFAULT_SPOT_RADIUS);
+    cDefRingRadius   = object.getFloat(JSON_RING_RADIUS,   DEFAULT_RING_RADIUS);
+    cDefShadowOffset = object.getFloat(JSON_SHADOW_OFFSET, DEFAULT_SHADOW_OFFSET);
+    cDefColour.init(object, JSON_COLOUR);
   }
 
   void Throbber::registerAssets(IAssetRegistry* assets) {
@@ -69,15 +68,15 @@ namespace IsoRealms::UI {
     assets->remove(this);
   }
 
-  void Throbber::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    node->addAttribute(ATTRIBUTE_DURATION,      cDefDuration,     DEFAULT_DURATION);
-    node->addAttribute(ATTRIBUTE_REPETITIONS,   cDefRepetitions,  DEFAULT_REPETITIONS);
-    node->addAttribute(ATTRIBUTE_SPOTS,         cDefSpots,        DEFAULT_SPOTS);
-    node->addAttribute(ATTRIBUTE_SPOT_SIDES,    cDefSpotSides,    DEFAULT_SPOT_SIDES);
-    node->addAttribute(ATTRIBUTE_SPOT_RADIUS,   cDefSpotRadius,   DEFAULT_SPOT_RADIUS);
-    node->addAttribute(ATTRIBUTE_RING_RADIUS,   cDefRingRadius,   DEFAULT_RING_RADIUS);
-    node->addAttribute(ATTRIBUTE_SHADOW_OFFSET, cDefShadowOffset, DEFAULT_SHADOW_OFFSET);
-    cDefColour.save(node, TAG_COLOUR);
+  void Throbber::save(JSONObject object, IAssetIdentifier* identifier) const {
+    object.addInteger(JSON_DURATION,      cDefDuration,     DEFAULT_DURATION);
+    object.addInteger(JSON_REPETITIONS,   cDefRepetitions,  DEFAULT_REPETITIONS);
+    object.addInteger(JSON_SPOTS,         cDefSpots,        DEFAULT_SPOTS);
+    object.addInteger(JSON_SPOT_SIDES,    cDefSpotSides,    DEFAULT_SPOT_SIDES);
+    object.addFloat(JSON_SPOT_RADIUS,   cDefSpotRadius,   DEFAULT_SPOT_RADIUS);
+    object.addFloat(JSON_RING_RADIUS,   cDefRingRadius,   DEFAULT_RING_RADIUS);
+    object.addFloat(JSON_SHADOW_OFFSET, cDefShadowOffset, DEFAULT_SHADOW_OFFSET);
+    cDefColour.save(object, JSON_COLOUR);
   }
 
   void Throbber::hintInUse(bool inUse) {
@@ -105,6 +104,10 @@ namespace IsoRealms::UI {
 
   bool Throbber::renderAssetIcon() const {
     return false;
+  }
+
+  void Throbber::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   void Throbber::render(float xOffset, float yOffset) const {

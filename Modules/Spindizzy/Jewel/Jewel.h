@@ -38,10 +38,10 @@ namespace IsoRealms::Spindizzy {
      * Resource interface *
     \**********************/
     Jewel(IProject* project, Spindizzy* spindizzy);
-    Jewel(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data);
+    Jewel(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);  
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -52,13 +52,14 @@ namespace IsoRealms::Spindizzy {
     I3DModel* createModel() override;
     bool renderPreview() const override;
     bool renderAssetIcon() const override;
-    
+    void saveAsset(JSONObject object) const override;
+
     private:
     class CycleColour {
       public:
-      CycleColour(Jewel* parent, IProject* project, DOMNode& node);
-      
-      void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+      CycleColour(Jewel* parent, IProject* project, JSONObject object);
+
+      void save(JSONObject object, IAssetIdentifier* identifier) const;
       const IColour* getColour() const;
       bool operator==(const CycleColour& cycleColour) const;
       
@@ -102,13 +103,12 @@ namespace IsoRealms::Spindizzy {
       float cProgress; /// Value from 0.0 to < cColoursCycle.size() to determine the actual current panel colour of this model instance.
     };
 
-    // DOM strings.
-    static const std::string TAG_COLOUR;
-    static const std::string TAG_COLOUR_CYCLE;
-    static const std::string TAG_FRAME_COLOUR;
+    // JSON members.
+    static const std::string JSON_COLOUR;
+    static const std::string JSON_CYCLE_COLOURS;
+    static const std::string JSON_CYCLE_SPEED;
+    static const std::string JSON_FRAME;
 
-    static const std::string ATTRIBUTE_CYCLE_SPEED;
-    
     // External interfaces.
     IProject* cEngine; // Required for pre-rendering.
       

@@ -46,12 +46,12 @@ namespace IsoRealms::Spindizzy {
     
     // Constructors.
     Lift(Zone& zone, LiftType* type, int x, int y, int z, int bottom, int top);
-    Lift(Zone& zone, DOMNode& node);
+    Lift(Zone& zone, JSONObject object);
 
     // Interface for use by parent zone.
     void initialise();
     void reset();
-    void save(DOMNodeWriter* node, int x, int y, int z);
+    void save(JSONObject object, int x, int y, int z);
     bool isType(const LiftType* const type) const;
     void updateRuntime(unsigned int milliseconds);
     void updateEditing(unsigned int milliseconds);
@@ -81,18 +81,18 @@ namespace IsoRealms::Spindizzy {
       PAUSED_BOTTOM
     };
 
-    // DOM strings.
-    static const std::string ATTRIBUTE_BOTTOM;
-    static const std::string ATTRIBUTE_BOTTOM_PAUSE;
-    static const std::string ATTRIBUTE_DOWN_SPEED;
-    static const std::string ATTRIBUTE_TOP;
-    static const std::string ATTRIBUTE_TOP_PAUSE;
-    static const std::string ATTRIBUTE_TYPE;
-    static const std::string ATTRIBUTE_UP_SPEED;
-    static const std::string ATTRIBUTE_X;
-    static const std::string ATTRIBUTE_Y;
-    static const std::string ATTRIBUTE_Z;
-      
+    // JSON members.
+    static const std::string JSON_BOTTOM;
+    static const std::string JSON_BOTTOM_PAUSE;
+    static const std::string JSON_DOWN_SPEED;
+    static const std::string JSON_TOP;
+    static const std::string JSON_TOP_PAUSE;
+    static const std::string JSON_TYPE;
+    static const std::string JSON_UP_SPEED;
+    static const std::string JSON_X;
+    static const std::string JSON_Y;
+    static const std::string JSON_Z;
+
     // Definition values
     Zone& cDefZone;                           /// Zone to which this lift belongs.
     LiftType* cDefType;                       /// Type of this lift.

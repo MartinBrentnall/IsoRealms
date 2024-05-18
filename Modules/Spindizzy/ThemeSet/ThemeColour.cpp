@@ -55,6 +55,10 @@ namespace IsoRealms::Spindizzy {
     return cColour != nullptr ? cColour->getAlpha() : 0.0f;
   }
 
+  void ThemeColour::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
+
   void ThemeColour::set() const {
     if (cColour != nullptr) {
       cColour->set();

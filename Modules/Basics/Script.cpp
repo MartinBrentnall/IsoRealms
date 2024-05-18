@@ -45,13 +45,13 @@ namespace IsoRealms::Basics {
     return mAvailableIndex;
   }
 
-  IAction* Script::createAction(DOMNode& node, IProject* project, IBindingRegistry* localArgs) {
-    std::unique_ptr<ScriptAction> mScriptAction = std::make_unique<ScriptAction>(this, node, project, getNextAvailableIndex(), localArgs);
+  IAction* Script::createAction(JSONObject object, IProject* project, IBindingRegistry* localArgs) {
+    std::unique_ptr<ScriptAction> mScriptAction = std::make_unique<ScriptAction>(this, object, project, getNextAvailableIndex(), localArgs);
     IAction* mAction = mScriptAction.get();
     cDefScriptActions.emplace(mAction, std::move(mScriptAction));
     return mAction;
   }
-  
+
   IAction* Script::createAction(IProject* project, IBindingRegistry* localArgs) {
     std::unique_ptr<ScriptAction> mScriptAction = std::make_unique<ScriptAction>(this, project, getNextAvailableIndex());
     IAction* mAction = mScriptAction.get();
@@ -72,10 +72,14 @@ namespace IsoRealms::Basics {
     return false;
   }
 
-  Script::ScriptAction::ScriptAction(Script* parent, DOMNode& node, IProject* project, unsigned int index, IBindingRegistry* localArgs) :
+  void Script::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
+
+  Script::ScriptAction::ScriptAction(Script* parent, JSONObject object, IProject* project, unsigned int index, IBindingRegistry* localArgs) :
             cDefParent(parent),
-            cDefFunction(project, "_t" + Utils::toString(index), node, localArgs, false),
-            cDefAction(cDefFunction.createAction(node, project, nullptr)),
+            cDefFunction(project, "_t" + Utils::toString(index), object, localArgs, false),
+            cDefAction(cDefFunction.createAction(object, project, nullptr)),
             cDefIndex(index) {
   }
 
@@ -110,10 +114,10 @@ namespace IsoRealms::Basics {
     return cDefParent;
   }
   
-  void Script::ScriptAction::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    cDefFunction.save(node, identifier, true);
+  void Script::ScriptAction::save(JSONObject object, IAssetIdentifier* identifier) const {
+    cDefFunction.save(object, identifier, true);
   }
-  
+
   bool Script::ScriptAction::hasConfiguration() const {
     return true;
   }

@@ -20,12 +20,12 @@
 #include "UI.h"
 
 namespace IsoRealms::UI {
-  const std::string UI::TAG_RESOURCE_LAYOUT           = "Layout";
-  const std::string UI::TAG_RESOURCE_MENU             = "Menu";
-  const std::string UI::TAG_RESOURCE_PANEL            = "Panel";
-  const std::string UI::TAG_RESOURCE_PROMPT           = "Prompt";
-  const std::string UI::TAG_RESOURCE_THROBBER         = "Throbber";
-  const std::string UI::TAG_RESOURCE_VIRTUAL_KEYBOARD = "VirtualKeyboard";
+  const std::string UI::ID_RESOURCE_LAYOUT           = "Layout";
+  const std::string UI::ID_RESOURCE_MENU             = "Menu";
+  const std::string UI::ID_RESOURCE_PANEL            = "Panel";
+  const std::string UI::ID_RESOURCE_PROMPT           = "Prompt";
+  const std::string UI::ID_RESOURCE_THROBBER         = "Throbber";
+  const std::string UI::ID_RESOURCE_VIRTUAL_KEYBOARD = "VirtualKeyboard";
 
   const std::string UI::NAME_RESOURCE_LAYOUT           = "Layouts";
   const std::string UI::NAME_RESOURCE_MENU             = "Menus";
@@ -41,22 +41,22 @@ namespace IsoRealms::UI {
                     cResourceTypePrompt(this),
                     cResourceTypeThrobber(this),
                     cResourceTypeVirtualKeyboard(this) {
-    registry->add(&cResourceTypeLayout,          TAG_RESOURCE_LAYOUT,           NAME_RESOURCE_LAYOUT,           IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
-    registry->add(&cResourceTypeMenu,            TAG_RESOURCE_MENU,             NAME_RESOURCE_MENU,             IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
-    registry->add(&cResourceTypePanel,           TAG_RESOURCE_PANEL,            NAME_RESOURCE_PANEL,            IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
-    registry->add(&cResourceTypePrompt,          TAG_RESOURCE_PROMPT,           NAME_RESOURCE_PROMPT,           IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
-    registry->add(&cResourceTypeThrobber,        TAG_RESOURCE_THROBBER,         NAME_RESOURCE_THROBBER,         IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
-    registry->add(&cResourceTypeVirtualKeyboard, TAG_RESOURCE_VIRTUAL_KEYBOARD, NAME_RESOURCE_VIRTUAL_KEYBOARD, IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
+    registry->add(&cResourceTypeLayout,          ID_RESOURCE_LAYOUT,           NAME_RESOURCE_LAYOUT,           IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
+    registry->add(&cResourceTypeMenu,            ID_RESOURCE_MENU,             NAME_RESOURCE_MENU,             IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
+    registry->add(&cResourceTypePanel,           ID_RESOURCE_PANEL,            NAME_RESOURCE_PANEL,            IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
+    registry->add(&cResourceTypePrompt,          ID_RESOURCE_PROMPT,           NAME_RESOURCE_PROMPT,           IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
+    registry->add(&cResourceTypeThrobber,        ID_RESOURCE_THROBBER,         NAME_RESOURCE_THROBBER,         IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
+    registry->add(&cResourceTypeVirtualKeyboard, ID_RESOURCE_VIRTUAL_KEYBOARD, NAME_RESOURCE_VIRTUAL_KEYBOARD, IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
   }
 
-  void UI::load(IProject* project, DOMNode& node) {
+  void UI::load(IProject* project, JSONObject object) {
     // Nothing to do.
   }
 
-  void UI::save(DOMNodeWriter* node, IAssetIdentifier* identifier) {
+  void UI::save(JSONObject object, IAssetIdentifier* identifier) {
     // Nothing to do.
   }
-  
+
   void UI::registerAssets(IAssetRegistry* assets) {
     // Nothing to do.
   }

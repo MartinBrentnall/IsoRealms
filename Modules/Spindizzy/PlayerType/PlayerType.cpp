@@ -23,24 +23,24 @@
 #include "Modules/Spindizzy/World/World.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string PlayerType::TAG_FALL_BOUNCE_ACTION = "FallBounceAction";
-  const std::string PlayerType::TAG_FALL_IMPACT_ACTION = "FallImpactAction";
-  const std::string PlayerType::TAG_INPUT_THRUST       = "InputThrust";
-  const std::string PlayerType::TAG_INPUT_X            = "InputX";
-  const std::string PlayerType::TAG_INPUT_Y            = "InputY";
-  const std::string PlayerType::TAG_MODEL              = "Model";
-  const std::string PlayerType::TAG_ORIENTATION        = "Orientation";
-  const std::string PlayerType::TAG_RESPAWN_ACTION     = "RespawnAction";
-  const std::string PlayerType::TAG_WALL_BOUNCE_ACTION = "WallBounceAction";
+  const std::string PlayerType::JSON_ACCELERATION   = "acceleration";
+  const std::string PlayerType::JSON_APPEARANCE     = "appearance";
+  const std::string PlayerType::JSON_BOUNCE_FACTOR  = "bounceFactor";
+  const std::string PlayerType::JSON_HEIGHT         = "height";
+  const std::string PlayerType::JSON_HUG_MOMENTUM   = "hugMomentum";
+  const std::string PlayerType::JSON_ON_FALL_BOUNCE = "onFallBounce";
+  const std::string PlayerType::JSON_ON_FALL_IMPACT = "onFallImpact";
+  const std::string PlayerType::JSON_ON_WALL_BOUNCE = "onWallBounce";
+  const std::string PlayerType::JSON_ON_RESPAWN     = "onRespawn";
+  const std::string PlayerType::JSON_ORIENTATION    = "orientation";
+  const std::string PlayerType::JSON_RADIUS         = "radius";
+  const std::string PlayerType::JSON_RESPAWN_DELAY  = "respawnDelay";
+  const std::string PlayerType::JSON_SPIN_SPEED     = "spinSpeed";
+  const std::string PlayerType::JSON_STEP_REACH     = "stepReach";
+  const std::string PlayerType::JSON_THRUST_INPUT   = "thrustInput";
+  const std::string PlayerType::JSON_X_INPUT        = "xInput";
+  const std::string PlayerType::JSON_Y_INPUT        = "yInput";
 
-  const std::string PlayerType::ATTRIBUTE_ACCELERATION  = "acceleration";
-  const std::string PlayerType::ATTRIBUTE_BOUNCE_FACTOR = "bounceFactor";
-  const std::string PlayerType::ATTRIBUTE_HEIGHT        = "height";
-  const std::string PlayerType::ATTRIBUTE_HUG_MOMENTUM  = "hugMomentum";
-  const std::string PlayerType::ATTRIBUTE_RADIUS        = "radius";
-  const std::string PlayerType::ATTRIBUTE_RESPAWN_DELAY = "respawnDelay";
-  const std::string PlayerType::ATTRIBUTE_SPIN_SPEED    = "spinSpeed";
-  const std::string PlayerType::ATTRIBUTE_STEP_REACH    = "stepReach";
 
   const float PlayerType::DEFAULT_ACCELERATION  = 0.0000265f;
   const float PlayerType::DEFAULT_BOUNCE_FACTOR = 1.0f;
@@ -80,25 +80,25 @@ namespace IsoRealms::Spindizzy {
     });
   }
 
-  PlayerType::PlayerType(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
+  PlayerType::PlayerType(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
             PlayerType(project, spindizzy) {
-    cDefSpinSpeed = node.getFloatAttribute(ATTRIBUTE_SPIN_SPEED, DEFAULT_SPIN_SPEED);
-    cDefBounceFactor = node.getFloatAttribute(ATTRIBUTE_BOUNCE_FACTOR, DEFAULT_ACCELERATION);
-    cDefAcceleration = node.getFloatAttribute(ATTRIBUTE_ACCELERATION, DEFAULT_ACCELERATION);
-    cDefStepReach = node.getFloatAttribute(ATTRIBUTE_STEP_REACH, DEFAULT_STEP_REACH);
-    cDefHeight = node.getFloatAttribute(ATTRIBUTE_HEIGHT, DEFAULT_HEIGHT);
-    cDefRadius = node.getFloatAttribute(ATTRIBUTE_RADIUS, DEFAULT_RADIUS);
-    cDefHugMomentum = node.getFloatAttribute(ATTRIBUTE_HUG_MOMENTUM, DEFAULT_HUG_MOMENTUM);
-    cDefRespawnDelay = node.getIntegerAttribute(ATTRIBUTE_RESPAWN_DELAY, DEFAULT_RESPAWN_DELAY);
-    cDefModel.init(node, TAG_MODEL);
-    cDefInputThrust.init(node, TAG_INPUT_THRUST);
-    cDefInputX.init(node, TAG_INPUT_X);
-    cDefInputY.init(node, TAG_INPUT_Y);
-    cDefOrientation.init(node, TAG_ORIENTATION);
-    cDefFallImpactAction.init(node, TAG_FALL_IMPACT_ACTION, &cDefSpindizzy);
-    cDefFallBounceAction.init(node, TAG_FALL_BOUNCE_ACTION, &cDefSpindizzy);
-    cDefWallBounceAction.init(node, TAG_WALL_BOUNCE_ACTION, this);
-    cDefRespawnAction.init(node, TAG_RESPAWN_ACTION, &cDefSpindizzy);
+    cDefSpinSpeed = object.getFloat(JSON_SPIN_SPEED, DEFAULT_SPIN_SPEED);
+    cDefBounceFactor = object.getFloat(JSON_BOUNCE_FACTOR, DEFAULT_ACCELERATION);
+    cDefAcceleration = object.getFloat(JSON_ACCELERATION, DEFAULT_ACCELERATION);
+    cDefStepReach = object.getFloat(JSON_STEP_REACH, DEFAULT_STEP_REACH);
+    cDefHeight = object.getFloat(JSON_HEIGHT, DEFAULT_HEIGHT);
+    cDefRadius = object.getFloat(JSON_RADIUS, DEFAULT_RADIUS);
+    cDefHugMomentum = object.getFloat(JSON_HUG_MOMENTUM, DEFAULT_HUG_MOMENTUM);
+    cDefRespawnDelay = object.getInteger(JSON_RESPAWN_DELAY, DEFAULT_RESPAWN_DELAY);
+    cDefModel.init(object, JSON_APPEARANCE);
+    cDefInputThrust.init(object, JSON_THRUST_INPUT);
+    cDefInputX.init(object, JSON_X_INPUT);
+    cDefInputY.init(object, JSON_Y_INPUT);
+    cDefOrientation.init(object, JSON_ORIENTATION);
+    cDefFallImpactAction.init(object, JSON_ON_FALL_IMPACT, &cDefSpindizzy);
+    cDefFallBounceAction.init(object, JSON_ON_FALL_BOUNCE, &cDefSpindizzy);
+    cDefWallBounceAction.init(object, JSON_ON_WALL_BOUNCE, this);
+    cDefRespawnAction.init(object, JSON_ON_RESPAWN, &cDefSpindizzy);
   }
 
   void PlayerType::registerAssets(IAssetRegistry* assets) {
@@ -109,26 +109,26 @@ namespace IsoRealms::Spindizzy {
     assets->remove(&cLuaBinding);
   }
 
-  void PlayerType::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    node->addAttribute(ATTRIBUTE_SPIN_SPEED, cDefSpinSpeed, DEFAULT_SPIN_SPEED);
-    node->addAttribute(ATTRIBUTE_ACCELERATION, cDefAcceleration, DEFAULT_ACCELERATION);
-    node->addAttribute(ATTRIBUTE_BOUNCE_FACTOR, cDefBounceFactor, DEFAULT_BOUNCE_FACTOR);
-    node->addAttribute(ATTRIBUTE_STEP_REACH, cDefStepReach, DEFAULT_STEP_REACH);
-    node->addAttribute(ATTRIBUTE_HEIGHT, cDefHeight, DEFAULT_HEIGHT);
-    node->addAttribute(ATTRIBUTE_RADIUS, cDefRadius, DEFAULT_RADIUS);
-    node->addAttribute(ATTRIBUTE_HUG_MOMENTUM, cDefHugMomentum, DEFAULT_HUG_MOMENTUM);
-    node->addAttribute(ATTRIBUTE_RESPAWN_DELAY, cDefRespawnDelay, DEFAULT_RESPAWN_DELAY);
-    cDefModel.save(node, TAG_MODEL);
-    cDefRespawnAction.save(node, TAG_RESPAWN_ACTION);
-    cDefInputThrust.save(node, TAG_INPUT_THRUST);
-    cDefInputX.save(node, TAG_INPUT_X);
-    cDefInputY.save(node, TAG_INPUT_Y);
-    cDefFallImpactAction.save(node, TAG_FALL_IMPACT_ACTION);
-    cDefFallBounceAction.save(node, TAG_FALL_BOUNCE_ACTION);
+  void PlayerType::save(JSONObject object, IAssetIdentifier* identifier) const {
+    object.addFloat(JSON_SPIN_SPEED, cDefSpinSpeed, DEFAULT_SPIN_SPEED);
+    object.addFloat(JSON_ACCELERATION, cDefAcceleration, DEFAULT_ACCELERATION);
+    object.addFloat(JSON_BOUNCE_FACTOR, cDefBounceFactor, DEFAULT_BOUNCE_FACTOR);
+    object.addFloat(JSON_STEP_REACH, cDefStepReach, DEFAULT_STEP_REACH);
+    object.addFloat(JSON_HEIGHT, cDefHeight, DEFAULT_HEIGHT);
+    object.addFloat(JSON_RADIUS, cDefRadius, DEFAULT_RADIUS);
+    object.addFloat(JSON_HUG_MOMENTUM, cDefHugMomentum, DEFAULT_HUG_MOMENTUM);
+    object.addInteger(JSON_RESPAWN_DELAY, cDefRespawnDelay, DEFAULT_RESPAWN_DELAY);
+    cDefModel.save(object, JSON_APPEARANCE);
+    cDefRespawnAction.save(object, JSON_ON_RESPAWN);
+    cDefInputThrust.save(object, JSON_THRUST_INPUT);
+    cDefInputX.save(object, JSON_X_INPUT);
+    cDefInputY.save(object, JSON_Y_INPUT);
+    cDefFallImpactAction.save(object, JSON_ON_FALL_IMPACT);
+    cDefFallBounceAction.save(object, JSON_ON_FALL_BOUNCE);
     cDefSpindizzy.setBindingIdentifier(this);
-    cDefWallBounceAction.save(node, TAG_WALL_BOUNCE_ACTION);
+    cDefWallBounceAction.save(object, JSON_ON_WALL_BOUNCE);
     cDefSpindizzy.setBindingIdentifier(nullptr);
-    cDefOrientation.save(node, TAG_ORIENTATION);
+    cDefOrientation.save(object, JSON_ORIENTATION);
   }
 
   void PlayerType::hintInUse(bool inUse) {
@@ -241,7 +241,7 @@ namespace IsoRealms::Spindizzy {
     return nullptr; // TODO: Implement this.
   }
   
-  void PlayerType::saveBinding(DOMNodeWriter* node, const IBinding* binding) const {
+  void PlayerType::saveBinding(JSONObject object, const IBinding* binding) const {
     // TODO: Implement this.
   }
 
@@ -259,6 +259,10 @@ namespace IsoRealms::Spindizzy {
 
   bool PlayerType::renderAssetIcon() const {
     return false;
+  }
+
+  void PlayerType::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   IBinding* PlayerType::getBinding(const std::string& id) {

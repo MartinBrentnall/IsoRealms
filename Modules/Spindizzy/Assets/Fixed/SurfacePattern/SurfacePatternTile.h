@@ -32,7 +32,7 @@ namespace IsoRealms::Spindizzy {
 
   class SurfacePatternTile : public ISurfacePattern {
     public:
-    SurfacePatternTile(IProject* project, Spindizzy* spindizzy, DOMNode& node);
+    SurfacePatternTile(IProject* project, Spindizzy* spindizzy, JSONObject object);
 
     /******************************\
      * Implements ISurfacePattern *
@@ -48,7 +48,7 @@ namespace IsoRealms::Spindizzy {
      * Implements IAsset via ISurfacePattern *
     \*****************************************/
     bool renderAssetIcon() const override;
-    void saveAsset(DOMNodeWriter* node) const override;
+    void saveAsset(JSONObject object) const override;
 
     private:
 
@@ -85,8 +85,8 @@ namespace IsoRealms::Spindizzy {
       const SplitSurface* cDefSurface;
     };
     
-    // DOM strings.
-    static const std::string TAG_TEXTURE;
+    // JSON members.
+    static const std::string JSON_TEXTURE;
 
     // Definition data.
     Texture cDefTexture;

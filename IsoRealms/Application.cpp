@@ -17,14 +17,13 @@
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "Application.h"
- 
+
 namespace IsoRealms {
-  const std::string Application::TAG_SETTINGS          = "IsoRealmsSettings";
-  
-  const std::string Application::ATTRIBUTE_FULL_SCREEN = "fullScreen";
-  const std::string Application::ATTRIBUTE_HEIGHT      = "height";
-  const std::string Application::ATTRIBUTE_WIDTH       = "width";
-  
+  const std::string Application::JSON_FULL_SCREEN = "fullScreen";
+  const std::string Application::JSON_HEIGHT      = "height";
+  const std::string Application::JSON_SETTINGS    = "settings";
+  const std::string Application::JSON_WIDTH       = "width";
+
   const std::string Application::FILENAME_SETTINGS     = "settings.xml";
 
   Application::Application() :
@@ -36,13 +35,6 @@ namespace IsoRealms {
 //       SDL_JoystickOpen(i);
 //     }
     
-    // Initialise Apache Xerces-C
-    try {
-      xercesc::XMLPlatformUtils::Initialize();
-    } catch (const xercesc::XMLException &mXMLException) {
-      throw ApplicationException("Failed to initialise Xerces-C: " + std::string(xercesc::XMLString::transcode(mXMLException.getMessage())));
-    }
-
     // Construct the application thread pool.
     cWorkingThreads = 0;
 //    for (unsigned int i = 0; i < 1; i++) {
@@ -63,11 +55,11 @@ namespace IsoRealms {
 
     // Read application settings file.
     if (System::fileExists(FILENAME_SETTINGS, true)) {
-      DOMNode mConfigurationRootNode(FILENAME_SETTINGS, DOMNode::Type::USER);
-      DOMNode& mSettingsNode = mConfigurationRootNode.getNode(TAG_SETTINGS);
-      cFullScreen          = mSettingsNode.getBooleanAttribute(ATTRIBUTE_FULL_SCREEN);
-      unsigned int mWidth  = mSettingsNode.getIntegerAttribute(ATTRIBUTE_WIDTH);
-      unsigned int mHeight = mSettingsNode.getIntegerAttribute(ATTRIBUTE_HEIGHT);
+      JSONDocument mSettingsDocument(FILENAME_SETTINGS, true);
+      JSONObject mSettingsObject = mSettingsDocument.getObject(JSON_SETTINGS);
+      cFullScreen = mSettingsObject.getBoolean(JSON_FULL_SCREEN);
+      unsigned int mWidth = mSettingsObject.getInteger(JSON_WIDTH);
+      unsigned int mHeight = mSettingsObject.getInteger(JSON_HEIGHT);
       
       // Find the matching resolution
       bool mResolutionFound = false;
@@ -257,13 +249,14 @@ namespace IsoRealms {
   }
   
   void Application::saveDefaultSettings() const {
-    DOMNodeWriter mConfigurationNode(TAG_SETTINGS);
-    mConfigurationNode.addAttribute(ATTRIBUTE_FULL_SCREEN, cFullScreen);
-    mConfigurationNode.addAttribute(ATTRIBUTE_WIDTH,       cAvailableResolutions[cSelectedResolution].getWidth());
-    mConfigurationNode.addAttribute(ATTRIBUTE_HEIGHT,      cAvailableResolutions[cSelectedResolution].getHeight());
-    mConfigurationNode.save(FILENAME_SETTINGS);
+    JSONDocument mJSONDocument;
+    JSONObject mSettingsObject = mJSONDocument.addObject(JSON_SETTINGS);
+    mSettingsObject.addBoolean(JSON_FULL_SCREEN, cFullScreen);
+    mSettingsObject.addInteger(JSON_WIDTH, cAvailableResolutions[cSelectedResolution].getWidth());
+    mSettingsObject.addInteger(JSON_HEIGHT, cAvailableResolutions[cSelectedResolution].getHeight());
+    mJSONDocument.save(FILENAME_SETTINGS);
   }
-  
+
   void Application::executeAndWait(const std::vector<std::function<void()>> task) {
     startTask(task)->wait();
   }

@@ -23,6 +23,12 @@
 #include <set>
 #include <string>
 
+#define RAPIDJSON_HAS_STDSTRING 1
+
+#include "rapidjson/document.h"
+#include "rapidjson/stringbuffer.h"
+#include "rapidjson/prettywriter.h"
+
 #include "Assets/Fixed/LiteralActionType.h"
 #include "Assets/Fixed/LiteralAssets.h"
 #include "Assets/Fixed/LiteralBinding.h"
@@ -55,7 +61,7 @@
 #include "Lua.h"
 #include "Options/LocalOptions.h"
 #include "Options/Options.h"
-#include "Persistence/DOMNode.h"
+#include "Persistence/JSONDocument.h"
 #include "Module.h"
 #include "Types.h"
 
@@ -70,29 +76,29 @@ namespace IsoRealms {
                   public IAssetRegistry,
                   public IBindingRegistry {
     private:
-    static const std::string TAG_ACTION;
-    static const std::string TAG_EDITOR;
-    static const std::string TAG_INCLUDE;
-    static const std::string TAG_INIT_ACTION;
-    static const std::string TAG_INPUT;
-    static const std::string TAG_MODULE;
-    static const std::string TAG_MODULES;
-    static const std::string TAG_PROJECT;
-    static const std::string TAG_PROPERTIES;
-    static const std::string TAG_PROPERTY;
-    static const std::string TAG_QUIT_ACTION;
-    static const std::string TAG_RESET_ACTION;
-    static const std::string TAG_SCREEN;
-
-    static const std::string ATTRIBUTE_ID;
-    static const std::string ATTRIBUTE_NAME;
-    static const std::string ATTRIBUTE_USER;
+    static const std::string JSON_ACTION;
+    static const std::string JSON_EDITOR;
+    static const std::string JSON_FILENAME;
+    static const std::string JSON_ID;
+    static const std::string JSON_INCLUDE;
+    static const std::string JSON_INITIALISATION;
+    static const std::string JSON_INPUT;
+    static const std::string JSON_LOCAL;
+    static const std::string JSON_MODULES;
+    static const std::string JSON_NAME;
+    static const std::string JSON_PROJECT;
+    static const std::string JSON_PROPERTIES;
+    static const std::string JSON_QUIT;
+    static const std::string JSON_RESET;
+    static const std::string JSON_SCREEN;
+    static const std::string JSON_USER;
 
     static const std::string CATEGORY_CONVERSIONS;
     static const std::string CATEGORY_FIXED;
     static const std::string CATEGORY_LOCAL;
 
     struct Include {
+      std::string cResourcePath;
       std::string cProject; /// File name of included project.
       bool cUser;           /// User or program project.
     };
@@ -109,6 +115,7 @@ namespace IsoRealms {
       \**********************/
       std::string getValue() const override;
       bool renderAssetIcon() const override;
+      void saveAsset(JSONObject object) const override;
     };
 
     class FileUser : public IBoolean {
@@ -123,6 +130,7 @@ namespace IsoRealms {
       \***********************/
       bool getValue() const override;
       bool renderAssetIcon() const override;
+      void saveAsset(JSONObject object) const override;
     };
 
     class ResetCallbackHandle : public ICallbackHandle {
@@ -168,7 +176,7 @@ namespace IsoRealms {
        * @param action The action to execute/postpone.
        */
       ActionExecutor(Project* project, IAssetUser<IAction>* user);
-      ActionExecutor(Project* project, DOMNode& node, const std::string& id, IAssetUser<IAction>* user, IBindingRegistry* localArgs);
+      ActionExecutor(Project* project, JSONObject object, const std::string& id, IAssetUser<IAction>* user, IBindingRegistry* localArgs);
 
       ~ActionExecutor();
 
@@ -177,7 +185,7 @@ namespace IsoRealms {
       \**********************/
       void execute() override;
       IActionType* getActionType() const override;
-      void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const override;
+      void save(JSONObject object, IAssetIdentifier* identifier) const override;
       bool hasConfiguration() const override;
       
       private:
@@ -201,7 +209,7 @@ namespace IsoRealms {
          * Implements IAction *
         \**********************/
         IActionType* getActionType() const override;
-        void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const override;
+        void save(JSONObject object, IAssetIdentifier* identifier) const override;
         void execute() override;
         bool hasConfiguration() const override;
       };
@@ -214,10 +222,11 @@ namespace IsoRealms {
       /**************************\
        * Implements IActionType *
       \**************************/
-      IAction* createAction(DOMNode& node, IProject* project, IBindingRegistry* localObjects) override;
+      IAction* createAction(JSONObject object, IProject* project, IBindingRegistry* localArgs) override;
       IAction* createAction(IProject* project, IBindingRegistry* localArgs) override;
       void destroyAction(IAction* action, IAssets* assets) override;
       bool renderAssetIcon() const override;
+      void saveAsset(JSONObject object) const override;
     };
 
     std::vector<IScreenListener*> cListeners;
@@ -235,15 +244,16 @@ namespace IsoRealms {
       \**********************/
       void renderScreen(float scale, float aspectRatio) const override;
       bool renderAssetIcon() const override;
+      void saveAsset(JSONObject object) const override;
       const IFloat* getYaw() const override;
       const IFloat* getPitch() const override;
     };
 
     class ProjectProperty {
       public:
-      ProjectProperty(Project* parent, DOMNode& node, const std::string& resourcePath);
+      ProjectProperty(Project* parent, JSONObject object, const std::string& resourcePath);
       void setValue(const std::string& value);
-      void save(DOMNodeWriter& node, const std::string& resourcePath, const std::string& id) const;
+      void save(JSONArray& object, const std::string& resourcePath, const std::string& id) const;
       bool isThisProject(const std::string& resourcePath);
 
       private:
@@ -257,9 +267,9 @@ namespace IsoRealms {
                 cAsset(project) {
       }
 
-      void init(DOMNode& node, const std::string& tag, const std::string& path) {
-        if (node.containsNode(tag) && cResourcePath.empty()) {
-          cAsset.init(node, tag);
+      void init(JSONObject object, const std::string& tag, const std::string& path) {
+        if (object.hasMember(tag) && cResourcePath.empty()) {
+          cAsset.init(object, tag);
           cResourcePath = path;
         }
       }
@@ -268,15 +278,14 @@ namespace IsoRealms {
         return &cAsset;
       }
 
-      void save(DOMNodeWriter* node, const std::string& tag, const std::string& path) {
+      void save(JSONObject object, const std::string& tag, const std::string& path) {
         if (cResourcePath == path) {
-          cAsset.save(node, tag);
+          cAsset.save(object, tag);
         }
       }
 
       private:
       TYPE cAsset;
-      bool cIncluded;
       std::string cResourcePath;
     };
 
@@ -394,7 +403,7 @@ namespace IsoRealms {
     std::function<void(bool)> cFunctionNotifyComplete;
     bool cCanSave;
     std::string cFilename;
-    std::string cProjectDataPath;
+    std::string cProjectDataPath; // TODO: We can probably remove this as it seems to be the same as cFilename, just without the file extension
     Filename cFilenameString;
     FileUser cFileUserBoolean;
     QuitActionType cQuitAction;
@@ -413,8 +422,9 @@ namespace IsoRealms {
 
     std::set<std::unique_ptr<Module>> cModules;                 /// Modules within this project.
 
-    std::vector<std::unique_ptr<DOMNode>> loadResources(DOMNode& node, IOptions* options, const std::string& resourceDataPath);
+    std::vector<std::unique_ptr<JSONDocument>> loadResources(JSONObject object, IOptions* options, const std::string& resourceDataPath);
     Module* getModule(const std::string& name);
+    void saveFile(const std::string& file);
     
     public:
 
@@ -535,13 +545,13 @@ namespace IsoRealms {
 
     std::string getFilename();
     
-    void loadModule(const std::string&);
+    Module* loadModule(const std::string&);
     void unloadModule(const std::string&);
     std::set<IModule*> getModules();
 
     // Persistence scripting.  TODO: Maybe shouldn't be in the project
-    DOMNodeWriter createNode(const std::string& name);
-    DOMNode readNode(const std::string& name);
+    JSONDocument createDocument();
+    JSONDocument openDocument(const std::string& name);
     std::string getUserDataPath();
     std::string getDataPath(bool user) override;
     void makeUserDataDirectory(const std::string& path);
@@ -554,22 +564,22 @@ namespace IsoRealms {
     /**********************\
      * Implements IAssets *
     \**********************/
-    I3DModelType*    getModelType(     IAssetUser<I3DModelType>*    user, DOMNode& node,                                      bool required = true) override;
-    IActionType*     getActionType(    IAssetUser<IActionType>*     user, DOMNode& node,                                      bool required = true) override;
-    IAssets*         getAssets(        IAssetUser<IAssets>*         user, DOMNode& node,                                      bool required = true) override;
-    IBinding*        getBinding(       IAssetUser<IBinding>*        user, DOMNode& node, IBindingRegistry* locals,            bool required = true) override;
-    IBoolean*        getBoolean(       IAssetUser<IBoolean>*        user, DOMNode& node, IStateListener<IBoolean*>* listener, bool required = true) override;
-    IColour*         getColour(        IAssetUser<IColour>*         user, DOMNode& node, IStateListener<IColour*>*  listener, bool required = true) override;
-    IEditable*       getEditable(      IAssetUser<IEditable>*       user, DOMNode& node,                                      bool required = true) override;
-    IFloat*          getFloat(         IAssetUser<IFloat>*          user, DOMNode& node, IStateListener<IFloat*>*   listener, bool required = true) override;
-    IFont*           getFont(          IAssetUser<IFont>*           user, DOMNode& node,                                      bool required = true) override;
-    IInputHandler*   getInputHandler(  IAssetUser<IInputHandler>*   user, DOMNode& node,                                      bool required = true) override;
-    IInteger*        getInteger(       IAssetUser<IInteger>*        user, DOMNode& node, IStateListener<IInteger*>* listener, bool required = true) override;
-    IScreen*         getScreen(        IAssetUser<IScreen>*         user, DOMNode& node,                                      bool required = true) override;
-    IProjectOptions* getProjectOptions(IAssetUser<IProjectOptions>* user, DOMNode& node,                                      bool required = true) override;
-    IString*         getString(        IAssetUser<IString>*         user, DOMNode& node, IStateListener<IString*>*  listener, bool required = true) override;
-    ITexture*        getTexture(       IAssetUser<ITexture>*        user, DOMNode& node, IStateListener<ITexture*>* listener, bool required = true) override;
-    IVertex*         getVertex(        IAssetUser<IVertex>*         user, DOMNode& node,                                      bool required = true) override;
+    I3DModelType*    getModelType(     IAssetUser<I3DModelType>*    user, JSONObject object,                                      bool required = true) override;
+    IActionType*     getActionType(    IAssetUser<IActionType>*     user, JSONObject object,                                      bool required = true) override;
+    IAssets*         getAssets(        IAssetUser<IAssets>*         user, JSONObject object,                                      bool required = true) override;
+    IBinding*        getBinding(       IAssetUser<IBinding>*        user, JSONObject object, IBindingRegistry* locals,            bool required = true) override;
+    IBoolean*        getBoolean(       IAssetUser<IBoolean>*        user, JSONObject object, IStateListener<IBoolean*>* listener, bool required = true) override;
+    IColour*         getColour(        IAssetUser<IColour>*         user, JSONObject object, IStateListener<IColour*>*  listener, bool required = true) override;
+    IEditable*       getEditable(      IAssetUser<IEditable>*       user, JSONObject object,                                      bool required = true) override;
+    IFloat*          getFloat(         IAssetUser<IFloat>*          user, JSONObject object, IStateListener<IFloat*>*   listener, bool required = true) override;
+    IFont*           getFont(          IAssetUser<IFont>*           user, JSONObject object,                                      bool required = true) override;
+    IInputHandler*   getInputHandler(  IAssetUser<IInputHandler>*   user, JSONObject object,                                      bool required = true) override;
+    IInteger*        getInteger(       IAssetUser<IInteger>*        user, JSONObject object, IStateListener<IInteger*>* listener, bool required = true) override;
+    IScreen*         getScreen(        IAssetUser<IScreen>*         user, JSONObject object,                                      bool required = true) override;
+    IProjectOptions* getProjectOptions(IAssetUser<IProjectOptions>* user, JSONObject object,                                      bool required = true) override;
+    IString*         getString(        IAssetUser<IString>*         user, JSONObject object, IStateListener<IString*>*  listener, bool required = true) override;
+    ITexture*        getTexture(       IAssetUser<ITexture>*        user, JSONObject object, IStateListener<ITexture*>* listener, bool required = true) override;
+    IVertex*         getVertex(        IAssetUser<IVertex>*         user, JSONObject object,                                      bool required = true) override;
 
     I3DModelType*    createLiteral3DModel(       IAssetUser<I3DModelType>*    user) override;
     IAction*         createLiteralAction(        IAssetUser<IAction>*         user) override;
@@ -608,28 +618,29 @@ namespace IsoRealms {
     void release(IAssetUser<IVertex>*             user, IVertex*         asset) override;
 
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
-    IAction* getAction(IAssetUser<IAction>* user, DOMNode& node, const std::string& tag, IBindingRegistry* localAssetRegistry, const std::string& id) override;
+    IAction* getAction(IAssetUser<IAction>* user, JSONObject object, const std::string& tag, IBindingRegistry* localAssetRegistry, const std::string& id) override;
 
     /*******************************\
      * Implements IAssetIdentifier *
     \*******************************/
-    void save(DOMNodeWriter* node, const IActionType*     asset) const override;
-    void save(DOMNodeWriter* node, const IAssets*         asset) const override;
-    void save(DOMNodeWriter* node, const I3DModelType*    asset) const override;
-    void save(DOMNodeWriter* node, const IBinding*        asset) const override;
-    void save(DOMNodeWriter* node, const IBoolean*        asset) const override;
-    void save(DOMNodeWriter* node, const IColour*         asset) const override;
-    void save(DOMNodeWriter* node, const IEditable*       asset) const override;
-    void save(DOMNodeWriter* node, const IFloat*          asset) const override;
-    void save(DOMNodeWriter* node, const IFont*           asset) const override;
-    void save(DOMNodeWriter* node, const IInputHandler*   asset) const override;
-    void save(DOMNodeWriter* node, const IInteger*        asset) const override;
-    void save(DOMNodeWriter* node, const IScreen*         asset) const override;
-    void save(DOMNodeWriter* node, const IProjectOptions* asset) const override;
-    void save(DOMNodeWriter* node, const IString*         asset) const override;
-    void save(DOMNodeWriter* node, const ITexture*        asset) const override;
-    void save(DOMNodeWriter* node, const IVertex*         asset) const override;
+    void save(JSONObject object, const IActionType*     asset) const override;
+    void save(JSONObject object, const IAssets*         asset) const override;
+    void save(JSONObject object, const I3DModelType*    asset) const override;
+    void save(JSONObject object, const IBinding*        asset) const override;
+    void save(JSONObject object, const IBoolean*        asset) const override;
+    void save(JSONObject object, const IColour*         asset) const override;
+    void save(JSONObject object, const IEditable*       asset) const override;
+    void save(JSONObject object, const IFloat*          asset) const override;
+    void save(JSONObject object, const IFont*           asset) const override;
+    void save(JSONObject object, const IInputHandler*   asset) const override;
+    void save(JSONObject object, const IInteger*        asset) const override;
+    void save(JSONObject object, const IScreen*         asset) const override;
+    void save(JSONObject object, const IProjectOptions* asset) const override;
+    void save(JSONObject object, const IString*         asset) const override;
+    void save(JSONObject object, const ITexture*        asset) const override;
+    void save(JSONObject object, const IVertex*         asset) const override;
 
     /****************************\
      * Implements IAssetBrowser *
@@ -693,7 +704,7 @@ namespace IsoRealms {
      * Implements IBindingRegistry *
     \*******************************/
     IBinding* getBinding(const std::string& id) override;
-    void saveBinding(DOMNodeWriter* node, const IBinding* binding) const override;
+    void saveBinding(JSONObject object, const IBinding* binding) const override;
     void releaseBinding(const IBinding* asset) override;
 
     LiteralString cPropertyValue;

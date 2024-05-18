@@ -21,13 +21,13 @@
 #include "ZoneObjectTypeTraitPhysics.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string ZoneObjectTypeTraitPhysics::ATTRIBUTE_BOUNCE_FACTOR = "bounceFactor";
-  const std::string ZoneObjectTypeTraitPhysics::ATTRIBUTE_CONTROLS      = "controls";
-  const std::string ZoneObjectTypeTraitPhysics::ATTRIBUTE_HEIGHT        = "height";
-  const std::string ZoneObjectTypeTraitPhysics::ATTRIBUTE_HUG_MOMENTUM  = "hugMomentum";
-  const std::string ZoneObjectTypeTraitPhysics::ATTRIBUTE_RADIUS        = "radius";
-  const std::string ZoneObjectTypeTraitPhysics::ATTRIBUTE_STEP_REACH    = "stepReach";
-  const std::string ZoneObjectTypeTraitPhysics::ATTRIBUTE_USE_NON_SOLID = "useNonSolid";
+  const std::string ZoneObjectTypeTraitPhysics::JSON_BOUNCE_FACTOR = "bounceFactor";
+  const std::string ZoneObjectTypeTraitPhysics::JSON_CONTROLS      = "controls";
+  const std::string ZoneObjectTypeTraitPhysics::JSON_HEIGHT        = "height";
+  const std::string ZoneObjectTypeTraitPhysics::JSON_HUG_MOMENTUM  = "hugMomentum";
+  const std::string ZoneObjectTypeTraitPhysics::JSON_RADIUS        = "radius";
+  const std::string ZoneObjectTypeTraitPhysics::JSON_STEP_REACH    = "stepReach";
+  const std::string ZoneObjectTypeTraitPhysics::JSON_USE_NON_SOLID = "useNonSolid";
 
   const float ZoneObjectTypeTraitPhysics::DEFAULT_BOUNCE_FACTOR = 1.0f;
   const float ZoneObjectTypeTraitPhysics::DEFAULT_HEIGHT        = 1.7f;
@@ -36,16 +36,16 @@ namespace IsoRealms::Spindizzy {
   const float ZoneObjectTypeTraitPhysics::DEFAULT_STEP_REACH    = 0.5f;
   const bool  ZoneObjectTypeTraitPhysics::DEFAULT_USE_NON_SOLID = false;
   
-  ZoneObjectTypeTraitPhysics::ZoneObjectTypeTraitPhysics(IProject* project, ZoneObjectType* type, DOMNode& node) {
-    cDefMovableID = node.getAttribute(ATTRIBUTE_CONTROLS);
-    cDefStepReach = node.getFloatAttribute(ATTRIBUTE_STEP_REACH, DEFAULT_STEP_REACH);
-    cDefHeight = node.getFloatAttribute(ATTRIBUTE_HEIGHT, DEFAULT_HEIGHT);
-    cDefRadius = node.getFloatAttribute(ATTRIBUTE_RADIUS, DEFAULT_RADIUS);
-    cDefHugMomentum = node.getFloatAttribute(ATTRIBUTE_HUG_MOMENTUM, DEFAULT_HUG_MOMENTUM);
-    cDefBounceFactor = node.getFloatAttribute(ATTRIBUTE_BOUNCE_FACTOR, DEFAULT_BOUNCE_FACTOR);
-    cDefUseNonSolid = node.getBooleanAttribute(ATTRIBUTE_USE_NON_SOLID, DEFAULT_USE_NON_SOLID);
+  ZoneObjectTypeTraitPhysics::ZoneObjectTypeTraitPhysics(IProject* project, ZoneObjectType* type, JSONObject object) {
+    cDefMovableID = object.getString(JSON_CONTROLS);
+    cDefStepReach = object.getFloat(JSON_STEP_REACH, DEFAULT_STEP_REACH);
+    cDefHeight = object.getFloat(JSON_HEIGHT, DEFAULT_HEIGHT);
+    cDefRadius = object.getFloat(JSON_RADIUS, DEFAULT_RADIUS);
+    cDefHugMomentum = object.getFloat(JSON_HUG_MOMENTUM, DEFAULT_HUG_MOMENTUM);
+    cDefBounceFactor = object.getFloat(JSON_BOUNCE_FACTOR, DEFAULT_BOUNCE_FACTOR);
+    cDefUseNonSolid = object.getBoolean(JSON_USE_NON_SOLID, DEFAULT_USE_NON_SOLID);
   }
-  
+
   std::string ZoneObjectTypeTraitPhysics::getMovableID() const {
     return cDefMovableID;
   }  
@@ -78,16 +78,16 @@ namespace IsoRealms::Spindizzy {
     return false; // TODO: Configurable!
   }
 
-  void ZoneObjectTypeTraitPhysics::save(DOMNodeWriter& node) const {
-    node.addAttribute(ATTRIBUTE_CONTROLS, cDefMovableID);
-    node.addAttribute(ATTRIBUTE_STEP_REACH, cDefStepReach, DEFAULT_STEP_REACH);
-    node.addAttribute(ATTRIBUTE_HEIGHT, cDefHeight, DEFAULT_HEIGHT);
-    node.addAttribute(ATTRIBUTE_RADIUS, cDefRadius, DEFAULT_RADIUS);
-    node.addAttribute(ATTRIBUTE_HUG_MOMENTUM, cDefHugMomentum, DEFAULT_HUG_MOMENTUM);
-    node.addAttribute(ATTRIBUTE_BOUNCE_FACTOR, cDefBounceFactor, DEFAULT_BOUNCE_FACTOR);
-    node.addAttribute(ATTRIBUTE_USE_NON_SOLID, cDefUseNonSolid, DEFAULT_USE_NON_SOLID);
+  void ZoneObjectTypeTraitPhysics::save(JSONObject object) const {
+    object.addString(JSON_CONTROLS, cDefMovableID);
+    object.addFloat(JSON_STEP_REACH, cDefStepReach, DEFAULT_STEP_REACH);
+    object.addFloat(JSON_HEIGHT, cDefHeight, DEFAULT_HEIGHT);
+    object.addFloat(JSON_RADIUS, cDefRadius, DEFAULT_RADIUS);
+    object.addFloat(JSON_HUG_MOMENTUM, cDefHugMomentum, DEFAULT_HUG_MOMENTUM);
+    object.addFloat(JSON_BOUNCE_FACTOR, cDefBounceFactor, DEFAULT_BOUNCE_FACTOR);
+    object.addBoolean(JSON_USE_NON_SOLID, cDefUseNonSolid, DEFAULT_USE_NON_SOLID);
   }
-  
+
   std::unique_ptr<IZoneObjectTrait> ZoneObjectTypeTraitPhysics::createTrait(ZoneObject& object) {
     return std::make_unique<Physics>(object, *this);
   }
@@ -98,5 +98,9 @@ namespace IsoRealms::Spindizzy {
 
   bool ZoneObjectTypeTraitPhysics::renderAssetIcon() const {
     return false;
+  }
+
+  void ZoneObjectTypeTraitPhysics::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 }

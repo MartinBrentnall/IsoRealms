@@ -38,10 +38,10 @@ namespace IsoRealms::Basics {
      * Resource Interface *
     \**********************/
     Sprite(IProject* project, Basics* basics);
-    Sprite(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data);
+    Sprite(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -52,6 +52,7 @@ namespace IsoRealms::Basics {
     I3DModel* createModel() override;
     bool renderPreview() const override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
     /***********************\
      * Implements I3DModel *
@@ -71,11 +72,10 @@ namespace IsoRealms::Basics {
 
     private:
 
-    // DOM strings.
-    static const std::string TAG_TEXTURE;
-
-    static const std::string ATTRIBUTE_BILLBOARD_YAW;
-    static const std::string ATTRIBUTE_BILLBOARD_PITCH;
+    // JSON members.
+    static const std::string JSON_BILLBOARD_PITCH;
+    static const std::string JSON_BILLBOARD_YAW;
+    static const std::string JSON_TEXTURE;
 
     // System.
     IProject* cDefProject;   /// Hosting project.

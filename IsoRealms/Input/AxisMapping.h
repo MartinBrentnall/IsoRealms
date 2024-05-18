@@ -18,8 +18,6 @@
  */
 #pragma once
 
-#include "IsoRealms/Persistence/DOMNode.h"
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
 #include "IsoRealms/Utils.h"
 
 #include "IAnalogueInputMapping.h"
@@ -31,16 +29,16 @@ namespace IsoRealms {
    */
   class AxisMapping : public IAnalogueInputMapping {
     private:
-    static const std::string TAG_AXIS;
-    
-    static const std::string ATTRIBUTE_AXIS;
-    static const std::string ATTRIBUTE_DEAD_ZONE;
-  
+    static const std::string JSON_AXIS;
+    static const std::string JSON_DEAD_ZONE;
+    static const std::string JSON_TYPE;
+
     const unsigned int cDefAxis; /// Axis of this mapping.
     const float cDefDeadZone;    /// Dead zone of this mapping
-    
+
     public:
-    
+    static const std::string TYPE_AXIS;
+
     /**
      * Construct a analogue input mapping with the specified properties..
      * 
@@ -57,17 +55,17 @@ namespace IsoRealms {
      * 
      * @param node The node from which to read the properties.
      */
-    AxisMapping(DOMNode& node);
-      
+    AxisMapping(JSONObject object);
+
     /************************************\
      * Implements IAnalogueInputMapping *
     \************************************/
     float getState(const sf::Event& event) const override;
     bool matches(const sf::Event& event) const override;
-    void save(DOMNodeWriter* node, const std::string& name) const override;
+    void save(JSONObject object, const std::string& name) const override;
     std::string getShortName() const override;
     std::string getLongName() const override;
-    void loadCustomMapping(DOMNode& node) override;
+    void loadCustomMapping(JSONObject object) override;
     void registerAssets(IAssetRegistry* assets) override;
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser) override;
   };

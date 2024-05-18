@@ -49,10 +49,10 @@ namespace IsoRealms::UI {
      * Resource Interface *
     \**********************/
     Menu(IProject* project, UI* ui);
-    Menu(IProject* project, UI* ui, DOMNode& node, IOptions* options, IResourceData* data);
+    Menu(IProject* project, UI* ui, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);  
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -82,19 +82,19 @@ namespace IsoRealms::UI {
      * Implements IAsset *
     \*********************/
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
     private:
     
-    // DOM strings.
-    static const std::string TAG_EXIT;
-        
-    static const std::string TAG_COLOUR;
-    static const std::string TAG_FONT;
-    static const std::string TAG_OPTIONS;
+    // JSON members.
+    static const std::string JSON_COLOUR;
+    static const std::string JSON_FONT;
+    static const std::string JSON_FONT_SIZE;
+    static const std::string JSON_ON_EXIT;
+    static const std::string JSON_OPTIONS;
+    static const std::string JSON_SHADOW_OFFSET;
+    static const std::string JSON_TYPE;
 
-    static const std::string ATTRIBUTE_FONT_SIZE;
-    static const std::string ATTRIBUTE_SHADOW_OFFSET;
-    
     static const float DEFAULT_FONT_SIZE;
     static const float DEFAULT_SHADOW_OFFSET;
       

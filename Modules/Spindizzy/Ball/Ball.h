@@ -38,10 +38,10 @@ namespace IsoRealms::Spindizzy {
      * Resource Interface *
     \**********************/
     Ball(IProject* project, Spindizzy* spindizzy);
-    Ball(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data);
+    Ball(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool);
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -53,13 +53,14 @@ namespace IsoRealms::Spindizzy {
     void hintTextureInUse(bool) override;
     ITexture* getTexture() override;
     void coord(float x, float y) const override;
+    void saveAsset(JSONObject object) const override;
 
     private:
 
-    // DOM strings.
-    static const std::string TAG_FILL;
-    static const std::string TAG_OUTLINE;
-    static const std::string TAG_SHINE;
+    // JSON members.
+    static const std::string JSON_FILL;
+    static const std::string JSON_OUTLINE;
+    static const std::string JSON_SHINE;
 
     // Resource definition constants.
     static const float CIRCLE_RESOLUTION;
@@ -72,8 +73,12 @@ namespace IsoRealms::Spindizzy {
     Colour cDefOutline;         /// Colour used for the outline of the ball.
     Colour cDefShine;           /// Colour used for the shine of the ball.
 
+    // Runtime data.
+    bool cNeedsRedrawing;
+
     // Internal Functions.
     void updateTexture();
     void renderCircle(float, Colour& colour);
+    void setNeedsRedrawing();
   };
 }

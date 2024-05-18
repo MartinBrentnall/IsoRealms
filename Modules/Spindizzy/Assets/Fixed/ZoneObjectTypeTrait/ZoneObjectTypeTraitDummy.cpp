@@ -21,10 +21,10 @@
 #include "Modules/Spindizzy/World/Object/ZoneObject/Traits/Dummy/Dummy.h"
 
 namespace IsoRealms::Spindizzy {
-  void ZoneObjectTypeTraitDummy::save(DOMNodeWriter& node) const {
+  void ZoneObjectTypeTraitDummy::save(JSONObject object) const {
     // Dummy, do nothing.
   }
-  
+
   std::unique_ptr<IZoneObjectTrait> ZoneObjectTypeTraitDummy::createTrait(ZoneObject& object) {
     return std::make_unique<Dummy>();
   }
@@ -35,5 +35,9 @@ namespace IsoRealms::Spindizzy {
 
   bool ZoneObjectTypeTraitDummy::renderAssetIcon() const {
     return false;
+  }
+
+  void ZoneObjectTypeTraitDummy::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 }

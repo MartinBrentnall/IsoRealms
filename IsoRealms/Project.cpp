@@ -21,24 +21,23 @@
 #include "Application.h"
 
 namespace IsoRealms {
-  const std::string Project::TAG_ACTION       = "Action";
-  const std::string Project::TAG_EDITOR       = "Editor";
-  const std::string Project::TAG_INCLUDE      = "Include";
-  const std::string Project::TAG_INIT_ACTION  = "InitAction";
-  const std::string Project::TAG_INPUT        = "Input";
-  const std::string Project::TAG_MODULE       = "Module";
-  const std::string Project::TAG_MODULES      = "Modules";
-  const std::string Project::TAG_PROJECT      = "Project";
-  const std::string Project::TAG_PROPERTIES   = "Properties";
-  const std::string Project::TAG_PROPERTY     = "Property";
-  const std::string Project::TAG_QUIT_ACTION  = "QuitAction";
-  const std::string Project::TAG_RESET_ACTION = "ResetAction";
-  const std::string Project::TAG_SCREEN       = "Screen";
+  const std::string Project::JSON_ACTION         = "action";
+  const std::string Project::JSON_EDITOR         = "editor";
+  const std::string Project::JSON_FILENAME       = "filename";
+  const std::string Project::JSON_ID             = "id";
+  const std::string Project::JSON_INCLUDE        = "include";
+  const std::string Project::JSON_INITIALISATION = "initialisation";
+  const std::string Project::JSON_INPUT          = "input";
+  const std::string Project::JSON_LOCAL          = "local";
+  const std::string Project::JSON_MODULES        = "modules";
+  const std::string Project::JSON_NAME           = "name";
+  const std::string Project::JSON_PROJECT        = "project";
+  const std::string Project::JSON_PROPERTIES     = "properties";
+  const std::string Project::JSON_QUIT           = "quit";
+  const std::string Project::JSON_RESET          = "reset";
+  const std::string Project::JSON_SCREEN         = "screen";
+  const std::string Project::JSON_USER           = "user";
 
-  const std::string Project::ATTRIBUTE_ID     = "id";
-  const std::string Project::ATTRIBUTE_NAME   = "name";
-  const std::string Project::ATTRIBUTE_USER   = "user";
-  
   const std::string Project::CATEGORY_CONVERSIONS = "Conversions";
   const std::string Project::CATEGORY_FIXED       = "Fixed";
   const std::string Project::CATEGORY_LOCAL       = "Local";
@@ -117,7 +116,7 @@ namespace IsoRealms {
     // Support locals
     cBindings.add(&cLocalProviderBinding, "~", CATEGORY_LOCAL);
 
-    // Project singletons.    
+    // Project singletons.
     add(&cLuaBinding,      "Project",         "System");
     add(&cFilenameString,  "ProjectFilename", "System");
     add(&cFileUserBoolean, "ProjectUser",     "System");
@@ -139,11 +138,11 @@ namespace IsoRealms {
       cCanSave                       = mUser;
 
       // Open Project File and Node
-      DOMNode mConfigurationRootNode(mFile, mUser ? DOMNode::Type::USER : DOMNode::Type::PROGRAM);
-      DOMNode& mProjectNode = mConfigurationRootNode.getNode("Project");
+      JSONDocument mProjectDocument(mFile, mUser);
+      JSONObject mProjectObject = mProjectDocument.getObject(JSON_PROJECT);
 
       // Load modules and any resources declared within them
-      std::vector<std::unique_ptr<DOMNode>> mIncludeNodes = loadResources(mProjectNode, options, cProjectDataPath);
+      std::vector<std::unique_ptr<JSONDocument>> mOpenedDocuments = loadResources(mProjectObject, options, cProjectDataPath);
       for (const std::unique_ptr<Module>& mModule : cModules) {
         mModule->registerAssets();
       }
@@ -152,7 +151,7 @@ namespace IsoRealms {
       // Initialise everything
       for (unsigned int j = 0; j < cInitialisers.size(); j++) {
 //         std::cout << "INIT " << j << " OF " << cInitialisers.size() << std::endl;
-//         if (j == 360) {
+//         if (j == 833) {
 //           std::cout << "DEBUG!" << std::endl;
 //         }
         cInitialisers[j](this);
@@ -182,77 +181,48 @@ namespace IsoRealms {
         return mModule.get();
       }
     }
-    return nullptr;
+    return loadModule(name);
   }
 
-  std::vector<std::unique_ptr<DOMNode>> Project::loadResources(DOMNode& node, IOptions* options, const std::string& resourceDataPath) {
+  std::vector<std::unique_ptr<JSONDocument>> Project::loadResources(JSONObject object, IOptions* options, const std::string& resourceDataPath) {
+    cDefScreen.init(object, JSON_SCREEN, resourceDataPath);
+    cDefInputHandler.init(object, JSON_INPUT, resourceDataPath);
+    cDefInitAction.init(object, JSON_INITIALISATION, resourceDataPath);
+    cDefResetAction.init(object, JSON_RESET, resourceDataPath);
+    cDefQuitAction.init(object, JSON_QUIT, resourceDataPath);
+    cDefDefaultEditor.init(object, JSON_EDITOR, resourceDataPath);
 
-    // Set screen and input handler
-    cDefScreen.init(node, TAG_SCREEN, resourceDataPath);
-    cDefInputHandler.init(node, TAG_INPUT, resourceDataPath);
-    cDefInitAction.init(node, TAG_INIT_ACTION, resourceDataPath);
-    cDefResetAction.init(node, TAG_RESET_ACTION, resourceDataPath);
-    cDefQuitAction.init(node, TAG_QUIT_ACTION, resourceDataPath);
-    cDefDefaultEditor.init(node, TAG_EDITOR, resourceDataPath);
-
-    if (node.containsNode(TAG_PROPERTIES)) {
-      for (DOMNode& mPropertyNode : node.getNode(TAG_PROPERTIES)) {
-        std::string mChildName = mPropertyNode.getName();
-        if (mChildName == TAG_PROPERTY) {
-          std::string mPropertyID = mPropertyNode.getAttribute(ATTRIBUTE_ID);
-          if (cProperties.find(mPropertyID) == cProperties.end()) {
-            cProperties.emplace(mPropertyID, std::make_unique<ProjectProperty>(this, mPropertyNode, resourceDataPath));
-          }
-        } else {
-          throw ParseException("Unknown tag for Project: " + mChildName);
+    if (object.hasMember(JSON_PROPERTIES)) {
+      for (JSONObject mPropertyObject : object.getArray(JSON_PROPERTIES)) {
+        std::string mPropertyID = mPropertyObject.getString(JSON_ID);
+        if (cProperties.find(mPropertyID) == cProperties.end()) {
+          cProperties.emplace(mPropertyID, std::make_unique<ProjectProperty>(this, mPropertyObject, resourceDataPath));
         }
       }
     }
 
-    for (DOMNode& mModuleNode : node.getNode(TAG_MODULES)) {
-      std::string mChildName = mModuleNode.getName();
-      if (mChildName == TAG_MODULE) {
-        std::string mModuleName = mModuleNode.getAttribute(ATTRIBUTE_NAME);
-        Module* mModule = getModule(mModuleName);
-        if (mModule == nullptr) {
-          loadModule(mModuleName);
-          mModule = getModule(mModuleName);
-        }
-        LocalOptions mModuleOptions(mModuleName, options);
-        mModule->loadResources(mModuleNode, &mModuleOptions, resourceDataPath);
-      } else {
-        throw ParseException("Unknown tag for Project: " + mChildName);
-      }
+    for (JSONObject mModuleObject : object.getArray(JSON_MODULES)) {
+      std::string mModuleName = mModuleObject.getString(JSON_NAME);
+      Module* mModule = getModule(mModuleName);
+      LocalOptions mModuleOptions(mModuleName, options);
+      mModule->loadResources(mModuleObject, &mModuleOptions, resourceDataPath);
     }
-    
-    std::vector<std::unique_ptr<DOMNode>> mIncludeNodes;
-    if (node.containsNode(TAG_INCLUDE)) {
-      for (DOMNode& mNode : node.getNode(TAG_INCLUDE)) {
-        std::string mChildName = mNode.getName();
-        if (mChildName == TAG_PROJECT) {
-          std::string mName = mNode.getAttribute(ATTRIBUTE_NAME);
-          bool mUser = mNode.getBooleanAttribute(ATTRIBUTE_USER);
 
-          std::size_t mExtensionPosition = mName.find_last_of('.');
-          std::string mIncludeDataPath   = mName.substr(0, mExtensionPosition);
-
-          std::unique_ptr<DOMNode> mConfigurationRootNode = std::make_unique<DOMNode>(mName, mUser ? DOMNode::Type::USER : DOMNode::Type::PROGRAM);
-          DOMNode& mProjectNode = mConfigurationRootNode->getNode("Project");
-          std::vector<std::unique_ptr<DOMNode>> mSubIncludeNodes = loadResources(mProjectNode, options, mIncludeDataPath);
-          mIncludeNodes.insert(mIncludeNodes.end(), std::make_move_iterator(mSubIncludeNodes.begin()), std::make_move_iterator(mSubIncludeNodes.end()));
-          mIncludeNodes.emplace_back(std::move(mConfigurationRootNode));
-
-          if (resourceDataPath == cProjectDataPath) {
-            cInclusions.emplace_back(std::make_unique<Include>());
-            cInclusions.back()->cProject = mName;
-            cInclusions.back()->cUser = mUser;
-          }
-        } else {
-          throw ParseException("Unknown tag for Project: " + mChildName);
-        }
-      }
+    std::vector<std::unique_ptr<JSONDocument>> mOpenedDocuments;
+    for (JSONObject mIncludeObject : object.getArray(JSON_INCLUDE)) {
+      std::string mName = mIncludeObject.getString(JSON_FILENAME);
+      bool mUser = mIncludeObject.getBoolean(JSON_USER);
+      std::unique_ptr<JSONDocument> mProjectDocument = std::make_unique<JSONDocument>(mName, mUser);
+      JSONObject mProjectObject = mProjectDocument->getObject(JSON_PROJECT);
+      std::vector<std::unique_ptr<JSONDocument>> mMoreOpenedDocuments = loadResources(mProjectObject, options, mName.substr(0, mName.find_last_of('.')));
+      mOpenedDocuments.insert(mOpenedDocuments.end(), std::make_move_iterator(mMoreOpenedDocuments.begin()), std::make_move_iterator(mMoreOpenedDocuments.end()));
+      mOpenedDocuments.emplace_back(std::move(mProjectDocument));
+      cInclusions.emplace_back(std::make_unique<Include>());
+      cInclusions.back()->cResourcePath = resourceDataPath;
+      cInclusions.back()->cProject = mName;
+      cInclusions.back()->cUser = mUser;
     }
-    return mIncludeNodes;
+    return mOpenedDocuments;
   }
 
   void Project::render(float aspectRatio) {
@@ -377,55 +347,65 @@ namespace IsoRealms {
     return cCanSave;
   }
 
-  void Project::save() {
-    if (!cFilename.empty() && cCanSave) {
-      DOMNodeWriter mProjectNode(TAG_PROJECT);
+  void Project::saveFile(const std::string& include) {
+    std::string mOriginalFileName = cFilename;
+    cFilename = include;
+    cProjectDataPath = cFilename.substr(0, cFilename.find_last_of('.'));
 
-      // Save return values and projects
-      if (!cInclusions.empty()) {
-        DOMNodeWriter mInclusionNode = mProjectNode.addBranch(TAG_INCLUDE);
-        for (std::unique_ptr<Include>& mInclusion : cInclusions) {
-          DOMNodeWriter mIncludedProjectNode = mInclusionNode.addBranch(TAG_PROJECT);
-          mIncludedProjectNode.addAttribute(ATTRIBUTE_NAME,  mInclusion->cProject);
-          mIncludedProjectNode.addAttribute(ATTRIBUTE_USER,  mInclusion->cUser);
+    if (!cFilename.empty() && cCanSave) {
+      JSONDocument mJSONDocument;
+      JSONObject mProjectObject = mJSONDocument.addObject(JSON_PROJECT);
+      JSONArray mIncludeArray = mProjectObject.addArray(JSON_INCLUDE);
+      for (std::unique_ptr<Include>& mInclusion : cInclusions) {
+        if (cProjectDataPath == mInclusion->cResourcePath) {
+          JSONObject mIncludeObject = mIncludeArray.addObject();
+          mIncludeObject.addString(JSON_FILENAME, mInclusion->cProject);
+          mIncludeObject.addBoolean(JSON_USER, mInclusion->cUser);
         }
       }
 
       // Save project used assets
-      cDefScreen.save(&mProjectNode, TAG_SCREEN, cProjectDataPath);
-      cDefInputHandler.save(&mProjectNode, TAG_INPUT, cProjectDataPath);
-      cDefDefaultEditor.save(&mProjectNode, TAG_EDITOR, cProjectDataPath);
-      cDefInitAction.save(&mProjectNode, TAG_INIT_ACTION, cProjectDataPath);
-      cDefResetAction.save(&mProjectNode, TAG_RESET_ACTION, cProjectDataPath);
-      cDefQuitAction.save(&mProjectNode, TAG_QUIT_ACTION, cProjectDataPath);
+      cDefScreen.save(mProjectObject, JSON_SCREEN, cProjectDataPath);
+      cDefInputHandler.save(mProjectObject, JSON_INPUT, cProjectDataPath);
+      cDefDefaultEditor.save(mProjectObject, JSON_EDITOR, cProjectDataPath);
+      cDefInitAction.save(mProjectObject, JSON_INITIALISATION, cProjectDataPath);
+      cDefResetAction.save(mProjectObject, JSON_RESET, cProjectDataPath);
+      cDefQuitAction.save(mProjectObject, JSON_QUIT, cProjectDataPath);
 
       // Save properties
-      if (!cProperties.empty()) {
-        bool mNeedsSaving = false;
-        for (std::pair<const std::string, std::unique_ptr<ProjectProperty>>& mPair : cProperties) {
-          if (mPair.second->isThisProject(cProjectDataPath)) {
-            mNeedsSaving = true;
-            break;
-          }
-        }
-
-        if (mNeedsSaving) {
-          DOMNodeWriter mPropertiesNode = mProjectNode.addBranch(TAG_PROPERTIES);
-          for (std::pair<const std::string, std::unique_ptr<ProjectProperty>>& mPair : cProperties) {
-            mPair.second->save(mPropertiesNode, cProjectDataPath, mPair.first);
-          }
+      bool mPropertiesNeedSaving = false;
+      for (std::pair<const std::string, std::unique_ptr<ProjectProperty>>& mPair : cProperties) {
+        if (mPair.second->isThisProject(cProjectDataPath)) {
+          mPropertiesNeedSaving = true;
+          break;
         }
       }
-      
+      if (mPropertiesNeedSaving) {
+        JSONArray mPropertiesArray = mProjectObject.addArray(JSON_PROPERTIES);
+        for (std::pair<const std::string, std::unique_ptr<ProjectProperty>>& mPair : cProperties) {
+          mPair.second->save(mPropertiesArray, cProjectDataPath, mPair.first);
+        }
+      }
+
       // Save modules
-      DOMNodeWriter mModulesNode = mProjectNode.addBranch(TAG_MODULES);
+      JSONArray mModulesArray = mProjectObject.addArray(JSON_MODULES);
       for (const std::unique_ptr<Module>& mModule : cModules) {
         if (mModule->needsSaving()) {
-          DOMNodeWriter mModuleNode = mModulesNode.addBranch(TAG_MODULE);
-          mModule->save(&mModuleNode, this, cProjectDataPath);
+          JSONObject mModuleObject = mModulesArray.addObject();
+          mModule->save(mModuleObject, this, cProjectDataPath);
         }
       }
-      mProjectNode.save(cFilename);
+
+      mJSONDocument.save(cFilename);
+    }
+    cFilename = mOriginalFileName;
+    cProjectDataPath = cFilename.substr(0, cFilename.find_last_of('.'));
+  }
+
+  void Project::save() {
+    saveFile(cFilename);
+    for (std::unique_ptr<Include>& mInclusion : cInclusions) {
+      saveFile(mInclusion->cProject);
     }
   }
 
@@ -447,8 +427,8 @@ namespace IsoRealms {
     return cFilename;
   }
 
-  void Project::loadModule(const std::string& moduleName) {
-    cModules.insert(std::make_unique<Module>(moduleName, this, &cLuaState));
+  Module* Project::loadModule(const std::string& moduleName) {
+    return cModules.insert(std::make_unique<Module>(moduleName, this, &cLuaState)).first->get();
   }
 
   void Project::unloadModule(const std::string& moduleName) {
@@ -463,12 +443,12 @@ namespace IsoRealms {
     return mModules;
   }
 
-  DOMNodeWriter Project::createNode(const std::string& name) {
-    return DOMNodeWriter(name);
+  JSONDocument Project::createDocument() {
+    return JSONDocument();
   }
 
-  DOMNode Project::readNode(const std::string& name) {
-    return DOMNode(name, DOMNode::Type::USER);
+  JSONDocument Project::openDocument(const std::string& name) {
+    return JSONDocument(name, true);
   }
 
   std::string Project::getUserDataPath() {
@@ -492,17 +472,15 @@ namespace IsoRealms {
     return ***cDefDefaultEditor;
   }
 
-  IAction* Project::getAction(IAssetUser<IAction>* user, DOMNode& node, const std::string& tag, IBindingRegistry* localArgs, const std::string& id) {
-    for (DOMNode& mNode : node) {
-      std::string mChildName = mNode.getName();
-      if (mChildName == tag) {
-        std::unique_ptr<ActionExecutor> mActionExecutor = std::make_unique<ActionExecutor>(this, mNode, id, user, localArgs);
-        IAction* mAction = mActionExecutor.get();
-        cActionExecutors[mAction] = std::move(mActionExecutor);
-        return mAction;
-      }
+  IAction* Project::getAction(IAssetUser<IAction>* user, JSONObject object, const std::string& tag, IBindingRegistry* localArgs, const std::string& id) {
+    if (object.hasMember(tag)) {
+      JSONObject mActionObject = object.getObject(tag);
+      std::unique_ptr<ActionExecutor> mActionExecutor = std::make_unique<ActionExecutor>(this, mActionObject, id, user, localArgs);
+      IAction* mAction = mActionExecutor.get();
+      cActionExecutors[mAction] = std::move(mActionExecutor);
+      return mAction;
     }
-    return createLiteralAction(user);
+    return nullptr;
   }
 
   LuaState* const Project::getLuaState() {
@@ -513,27 +491,27 @@ namespace IsoRealms {
     return cProjectDataPath + "/" + file;
   }
 
-  I3DModelType*    Project::getModelType(       IAssetUser<I3DModelType>*    user, DOMNode& node,                                      bool required) {return c3DModelTypes.get(     user, *this, node, nullptr,  required, [this](DOMNode& node, IStateListener<I3DModelType*>*    listener) -> I3DModelType*    {return cAssetOverride != nullptr ? cAssetOverride->getModelType(       node, listener) : nullptr;});}
-  IActionType*     Project::getActionType(      IAssetUser<IActionType>*     user, DOMNode& node,                                      bool required) {return cActionTypes.get(      user, *this, node, nullptr,  required, [this](DOMNode& node, IStateListener<IActionType*>*     listener) -> IActionType*     {return cAssetOverride != nullptr ? cAssetOverride->getActionType(      node, listener) : nullptr;});}
-  IAssets*         Project::getAssets(          IAssetUser<IAssets>*         user, DOMNode& node,                                      bool required) {return cAssets.get(           user, *this, node, nullptr,  required, [this](DOMNode& node, IStateListener<IAssets*>*         listener) -> IAssets*         {return cAssetOverride != nullptr ? cAssetOverride->getAssets(          node, listener) : nullptr;});}
-  IBinding*        Project::getBinding(         IAssetUser<IBinding>*        user, DOMNode& node, IBindingRegistry* locals,            bool required) {
+  I3DModelType*    Project::getModelType(       IAssetUser<I3DModelType>*    user, JSONObject object,                                      bool required) {return c3DModelTypes.get(     user, *this, object, nullptr,  required, [this](JSONObject object, IStateListener<I3DModelType*>*    listener) -> I3DModelType*    {return cAssetOverride != nullptr ? cAssetOverride->getModelType(       object, listener) : nullptr;});}
+  IActionType*     Project::getActionType(      IAssetUser<IActionType>*     user, JSONObject object,                                      bool required) {return cActionTypes.get(      user, *this, object, nullptr,  required, [this](JSONObject object, IStateListener<IActionType*>*     listener) -> IActionType*     {return cAssetOverride != nullptr ? cAssetOverride->getActionType(      object, listener) : nullptr;});}
+  IAssets*         Project::getAssets(          IAssetUser<IAssets>*         user, JSONObject object,                                      bool required) {return cAssets.get(           user, *this, object, nullptr,  required, [this](JSONObject object, IStateListener<IAssets*>*         listener) -> IAssets*         {return cAssetOverride != nullptr ? cAssetOverride->getAssets(          object, listener) : nullptr;});}
+  IBinding*        Project::getBinding(         IAssetUser<IBinding>*        user, JSONObject object, IBindingRegistry* locals,            bool required) {
     cLocalProviderBinding.setLocalBindings(locals);
-    IBinding* mBinding = cBindings.get(user, *this, node, nullptr, required, [this](DOMNode& node, IStateListener<IBinding*>* listener) -> IBinding*    {return cAssetOverride != nullptr ? cAssetOverride->getBinding(       node, listener) : nullptr;});
+    IBinding* mBinding = cBindings.get(user, *this, object, nullptr, required, [this](JSONObject object, IStateListener<IBinding*>* listener) -> IBinding*    {return cAssetOverride != nullptr ? cAssetOverride->getBinding(       object, listener) : nullptr;});
     cLocalProviderBinding.setLocalBindings(nullptr);
     return mBinding;
   }
-  IBoolean*        Project::getBoolean(         IAssetUser<IBoolean>*        user, DOMNode& node, IStateListener<IBoolean*>* listener, bool required) {return cBooleans.get(         user, *this, node, listener, required, [this](DOMNode& node, IStateListener<IBoolean*>*        listener) -> IBoolean*        {return cAssetOverride != nullptr ? cAssetOverride->getBoolean(         node, listener) : nullptr;});}
-  IColour*         Project::getColour(          IAssetUser<IColour>*         user, DOMNode& node, IStateListener<IColour*>*  listener, bool required) {return cColours.get(          user, *this, node, listener, required, [this](DOMNode& node, IStateListener<IColour*>*         listener) -> IColour*         {return cAssetOverride != nullptr ? cAssetOverride->getColour(          node, listener) : nullptr;});}
-  IEditable*       Project::getEditable(        IAssetUser<IEditable>*       user, DOMNode& node,                                      bool required) {return cEditables.get(        user, *this, node, nullptr,  required, [this](DOMNode& node, IStateListener<IEditable*>*       listener) -> IEditable*       {return cAssetOverride != nullptr ? cAssetOverride->getEditable(        node, listener) : nullptr;});}
-  IFloat*          Project::getFloat(           IAssetUser<IFloat>*          user, DOMNode& node, IStateListener<IFloat*>*   listener, bool required) {return cFloats.get(           user, *this, node, listener, required, [this](DOMNode& node, IStateListener<IFloat*>*          listener) -> IFloat*          {return cAssetOverride != nullptr ? cAssetOverride->getFloat(           node, listener) : nullptr;});}
-  IFont*           Project::getFont(            IAssetUser<IFont>*           user, DOMNode& node,                                      bool required) {return cFonts.get(            user, *this, node, nullptr,  required, [this](DOMNode& node, IStateListener<IFont*>*           listener) -> IFont*           {return cAssetOverride != nullptr ? cAssetOverride->getFont(            node, listener) : nullptr;});}
-  IInputHandler*   Project::getInputHandler(    IAssetUser<IInputHandler>*   user, DOMNode& node,                                      bool required) {return cInputHandlers.get(    user, *this, node, nullptr,  required, [this](DOMNode& node, IStateListener<IInputHandler*>*   listener) -> IInputHandler*   {return cAssetOverride != nullptr ? cAssetOverride->getInputHandler(    node, listener) : nullptr;});}
-  IInteger*        Project::getInteger(         IAssetUser<IInteger>*        user, DOMNode& node, IStateListener<IInteger*>* listener, bool required) {return cIntegers.get(         user, *this, node, listener, required, [this](DOMNode& node, IStateListener<IInteger*>*        listener) -> IInteger*        {return cAssetOverride != nullptr ? cAssetOverride->getInteger(         node, listener) : nullptr;});}
-  IProjectOptions* Project::getProjectOptions(  IAssetUser<IProjectOptions>* user, DOMNode& node,                                      bool required) {return cProjectOptions.get(   user, *this, node, nullptr,  required, [this](DOMNode& node, IStateListener<IProjectOptions*>* listener) -> IProjectOptions* {return cAssetOverride != nullptr ? cAssetOverride->getProjectOptions(  node, listener) : nullptr;});}
-  IScreen*         Project::getScreen(          IAssetUser<IScreen>*         user, DOMNode& node,                                      bool required) {return cScreens.get(          user, *this, node, nullptr,  required, [this](DOMNode& node, IStateListener<IScreen*>*         listener) -> IScreen*         {return cAssetOverride != nullptr ? cAssetOverride->getScreen(          node, listener) : nullptr;});}
-  IString*         Project::getString(          IAssetUser<IString>*         user, DOMNode& node, IStateListener<IString*>*  listener, bool required) {return cStrings.get(          user, *this, node, listener, required, [this](DOMNode& node, IStateListener<IString*>*         listener) -> IString*         {return cAssetOverride != nullptr ? cAssetOverride->getString(          node, listener) : nullptr;});}
-  ITexture*        Project::getTexture(         IAssetUser<ITexture>*        user, DOMNode& node, IStateListener<ITexture*>* listener, bool required) {return cTextures.get(         user, *this, node, listener, required, [this](DOMNode& node, IStateListener<ITexture*>*        listener) -> ITexture*        {return cAssetOverride != nullptr ? cAssetOverride->getTexture(         node, listener) : nullptr;});}
-  IVertex*         Project::getVertex(          IAssetUser<IVertex>*         user, DOMNode& node,                                      bool required) {return cVertices.get(         user, *this, node, nullptr,  required, [this](DOMNode& node, IStateListener<IVertex*>*         listener) -> IVertex*         {return cAssetOverride != nullptr ? cAssetOverride->getVertex(          node, listener) : nullptr;});}
+  IBoolean*        Project::getBoolean(         IAssetUser<IBoolean>*        user, JSONObject object, IStateListener<IBoolean*>* listener, bool required) {return cBooleans.get(         user, *this, object, listener, required, [this](JSONObject object, IStateListener<IBoolean*>*        listener) -> IBoolean*        {return cAssetOverride != nullptr ? cAssetOverride->getBoolean(         object, listener) : nullptr;});}
+  IColour*         Project::getColour(          IAssetUser<IColour>*         user, JSONObject object, IStateListener<IColour*>*  listener, bool required) {return cColours.get(          user, *this, object, listener, required, [this](JSONObject object, IStateListener<IColour*>*         listener) -> IColour*         {return cAssetOverride != nullptr ? cAssetOverride->getColour(          object, listener) : nullptr;});}
+  IEditable*       Project::getEditable(        IAssetUser<IEditable>*       user, JSONObject object,                                      bool required) {return cEditables.get(        user, *this, object, nullptr,  required, [this](JSONObject object, IStateListener<IEditable*>*       listener) -> IEditable*       {return cAssetOverride != nullptr ? cAssetOverride->getEditable(        object, listener) : nullptr;});}
+  IFloat*          Project::getFloat(           IAssetUser<IFloat>*          user, JSONObject object, IStateListener<IFloat*>*   listener, bool required) {return cFloats.get(           user, *this, object, listener, required, [this](JSONObject object, IStateListener<IFloat*>*          listener) -> IFloat*          {return cAssetOverride != nullptr ? cAssetOverride->getFloat(           object, listener) : nullptr;});}
+  IFont*           Project::getFont(            IAssetUser<IFont>*           user, JSONObject object,                                      bool required) {return cFonts.get(            user, *this, object, nullptr,  required, [this](JSONObject object, IStateListener<IFont*>*           listener) -> IFont*           {return cAssetOverride != nullptr ? cAssetOverride->getFont(            object, listener) : nullptr;});}
+  IInputHandler*   Project::getInputHandler(    IAssetUser<IInputHandler>*   user, JSONObject object,                                      bool required) {return cInputHandlers.get(    user, *this, object, nullptr,  required, [this](JSONObject object, IStateListener<IInputHandler*>*   listener) -> IInputHandler*   {return cAssetOverride != nullptr ? cAssetOverride->getInputHandler(    object, listener) : nullptr;});}
+  IInteger*        Project::getInteger(         IAssetUser<IInteger>*        user, JSONObject object, IStateListener<IInteger*>* listener, bool required) {return cIntegers.get(         user, *this, object, listener, required, [this](JSONObject object, IStateListener<IInteger*>*        listener) -> IInteger*        {return cAssetOverride != nullptr ? cAssetOverride->getInteger(         object, listener) : nullptr;});}
+  IProjectOptions* Project::getProjectOptions(  IAssetUser<IProjectOptions>* user, JSONObject object,                                      bool required) {return cProjectOptions.get(   user, *this, object, nullptr,  required, [this](JSONObject object, IStateListener<IProjectOptions*>* listener) -> IProjectOptions* {return cAssetOverride != nullptr ? cAssetOverride->getProjectOptions(  object, listener) : nullptr;});}
+  IScreen*         Project::getScreen(          IAssetUser<IScreen>*         user, JSONObject object,                                      bool required) {return cScreens.get(          user, *this, object, nullptr,  required, [this](JSONObject object, IStateListener<IScreen*>*         listener) -> IScreen*         {return cAssetOverride != nullptr ? cAssetOverride->getScreen(          object, listener) : nullptr;});}
+  IString*         Project::getString(          IAssetUser<IString>*         user, JSONObject object, IStateListener<IString*>*  listener, bool required) {return cStrings.get(          user, *this, object, listener, required, [this](JSONObject object, IStateListener<IString*>*         listener) -> IString*         {return cAssetOverride != nullptr ? cAssetOverride->getString(          object, listener) : nullptr;});}
+  ITexture*        Project::getTexture(         IAssetUser<ITexture>*        user, JSONObject object, IStateListener<ITexture*>* listener, bool required) {return cTextures.get(         user, *this, object, listener, required, [this](JSONObject object, IStateListener<ITexture*>*        listener) -> ITexture*        {return cAssetOverride != nullptr ? cAssetOverride->getTexture(         object, listener) : nullptr;});}
+  IVertex*         Project::getVertex(          IAssetUser<IVertex>*         user, JSONObject object,                                      bool required) {return cVertices.get(         user, *this, object, nullptr,  required, [this](JSONObject object, IStateListener<IVertex*>*         listener) -> IVertex*         {return cAssetOverride != nullptr ? cAssetOverride->getVertex(          object, listener) : nullptr;});}
 
   I3DModelType*   Project::createLiteral3DModel(      IAssetUser<I3DModelType>*   user)                                                                          {return c3DModelTypes.literal(user, "");}
   IAction*        Project::createLiteralAction(       IAssetUser<IAction>*        user) {
@@ -585,6 +563,10 @@ namespace IsoRealms {
     
   bool Project::renderAssetIcon() const {
     return false;
+  }
+
+  void Project::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   std::vector<std::pair<std::string, std::string>> Project::getAllModelTypes()    {return c3DModelTypes.getAll();}
@@ -684,7 +666,7 @@ namespace IsoRealms {
   
   void Project::init(std::function<void(IAssets*)> initialiser) {
 //     std::cout << "ADDING INIT " << cInitialisers.size() << std::endl;
-//     if (cInitialisers.size() == 360) {
+//     if (cInitialisers.size() == 833) {
 //       std::cout << "DEBUG!" << std::endl;
 //     }
 
@@ -743,22 +725,22 @@ namespace IsoRealms {
     cMainThreadInitTasks.push(task);
   }
 
-  void Project::save(DOMNodeWriter* node, const I3DModelType*    asset) const {c3DModelTypes.save(  node, asset);}
-  void Project::save(DOMNodeWriter* node, const IAssets*         asset) const {cAssets.save(        node, asset);}
-  void Project::save(DOMNodeWriter* node, const IActionType*     asset) const {cActionTypes.save(   node, asset);}
-  void Project::save(DOMNodeWriter* node, const IBinding*        asset) const {cBindings.save(      node, asset);}
-  void Project::save(DOMNodeWriter* node, const IBoolean*        asset) const {cBooleans.save(      node, asset);}
-  void Project::save(DOMNodeWriter* node, const IColour*         asset) const {cColours.save(       node, asset);}
-  void Project::save(DOMNodeWriter* node, const IEditable*       asset) const {cEditables.save(     node, asset);}
-  void Project::save(DOMNodeWriter* node, const IFloat*          asset) const {cFloats.save(        node, asset);}
-  void Project::save(DOMNodeWriter* node, const IFont*           asset) const {cFonts.save(         node, asset);}
-  void Project::save(DOMNodeWriter* node, const IInputHandler*   asset) const {cInputHandlers.save( node, asset);}
-  void Project::save(DOMNodeWriter* node, const IInteger*        asset) const {cIntegers.save(      node, asset);}
-  void Project::save(DOMNodeWriter* node, const IScreen*         asset) const {cScreens.save(       node, asset);}
-  void Project::save(DOMNodeWriter* node, const IProjectOptions* asset) const {cProjectOptions.save(node, asset);}
-  void Project::save(DOMNodeWriter* node, const IString*         asset) const {cStrings.save(       node, asset);}
-  void Project::save(DOMNodeWriter* node, const ITexture*        asset) const {cTextures.save(      node, asset);}
-  void Project::save(DOMNodeWriter* node, const IVertex*         asset) const {cVertices.save(      node, asset);}
+  void Project::save(JSONObject object, const I3DModelType*    asset) const {c3DModelTypes.save(  object, asset);}
+  void Project::save(JSONObject object, const IAssets*         asset) const {cAssets.save(        object, asset);}
+  void Project::save(JSONObject object, const IActionType*     asset) const {cActionTypes.save(   object, asset);}
+  void Project::save(JSONObject object, const IBinding*        asset) const {cBindings.save(      object, asset);}
+  void Project::save(JSONObject object, const IBoolean*        asset) const {cBooleans.save(      object, asset);}
+  void Project::save(JSONObject object, const IColour*         asset) const {cColours.save(       object, asset);}
+  void Project::save(JSONObject object, const IEditable*       asset) const {cEditables.save(     object, asset);}
+  void Project::save(JSONObject object, const IFloat*          asset) const {cFloats.save(        object, asset);}
+  void Project::save(JSONObject object, const IFont*           asset) const {cFonts.save(         object, asset);}
+  void Project::save(JSONObject object, const IInputHandler*   asset) const {cInputHandlers.save( object, asset);}
+  void Project::save(JSONObject object, const IInteger*        asset) const {cIntegers.save(      object, asset);}
+  void Project::save(JSONObject object, const IScreen*         asset) const {cScreens.save(       object, asset);}
+  void Project::save(JSONObject object, const IProjectOptions* asset) const {cProjectOptions.save(object, asset);}
+  void Project::save(JSONObject object, const IString*         asset) const {cStrings.save(       object, asset);}
+  void Project::save(JSONObject object, const ITexture*        asset) const {cTextures.save(      object, asset);}
+  void Project::save(JSONObject object, const IVertex*         asset) const {cVertices.save(      object, asset);}
 
   Project::ActionExecutor::ActionExecutor(Project* parent, IAssetUser<IAction>* user) :
             cParent(parent),
@@ -769,12 +751,12 @@ namespace IsoRealms {
             cUser(user) {
   }
 
-  Project::ActionExecutor::ActionExecutor(Project* parent, DOMNode& node, const std::string& id, IAssetUser<IAction>* user, IBindingRegistry* localArgs) :
+  Project::ActionExecutor::ActionExecutor(Project* parent, JSONObject object, const std::string& id, IAssetUser<IAction>* user, IBindingRegistry* localArgs) :
             cParent(parent),
             cActionType(cParent, [this]() {
               cAction = cActionType->createAction(cParent, nullptr);
-            }, node),
-            cAction(cActionType->createAction(node, cParent, localArgs)),
+            }, object),
+            cAction(cActionType->createAction(object, cParent, localArgs)),
             cUser(user) {
   }
 
@@ -795,9 +777,9 @@ namespace IsoRealms {
     return nullptr;
   }
 
-  void Project::ActionExecutor::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    identifier->save(node, *cActionType);
-    cAction->save(node, identifier);
+  void Project::ActionExecutor::save(JSONObject object, IAssetIdentifier* identifier) const {
+    identifier->save(object, *cActionType);
+    cAction->save(object, identifier);
   }
 
   bool Project::ActionExecutor::hasConfiguration() const {
@@ -839,21 +821,21 @@ namespace IsoRealms {
     return cApplication;
   }
 
-  Project::ProjectProperty::ProjectProperty(Project* parent, DOMNode& node, const std::string& resourcePath) :
+  Project::ProjectProperty::ProjectProperty(Project* parent, JSONObject object, const std::string& resourcePath) :
             cChangeAction(parent),
             cResourcePath(resourcePath) {
-    cChangeAction.init(node, TAG_ACTION, parent);
+    cChangeAction.init(object, JSON_ACTION, parent);
   }
 
   void Project::ProjectProperty::setValue(const std::string& value) {
     cChangeAction.execute();
   }
 
-  void Project::ProjectProperty::save(DOMNodeWriter& node, const std::string& resourcePath, const std::string& id) const {
+  void Project::ProjectProperty::save(JSONArray& array, const std::string& resourcePath, const std::string& id) const {
     if (resourcePath == cResourcePath) {
-      DOMNodeWriter mPropertyNode = node.addBranch(TAG_PROPERTY);
-      mPropertyNode.addAttribute(ATTRIBUTE_ID, id);
-      cChangeAction.save(&mPropertyNode, TAG_ACTION);
+      JSONObject mPropertyObject = array.addObject();
+      mPropertyObject.addString(JSON_ID, id);
+      cChangeAction.save(mPropertyObject, JSON_ACTION);
     }
   }
 
@@ -873,9 +855,9 @@ namespace IsoRealms {
     return id == "value" ? &cPropertyValueBinding : nullptr;
   }
 
-  void Project::saveBinding(DOMNodeWriter* node, const IBinding* binding) const {
+  void Project::saveBinding(JSONObject object, const IBinding* binding) const {
     if (binding == &cPropertyValueBinding) {
-      node->addAttribute("local", std::string("value"));
+      object.addString(JSON_LOCAL, "value");
     }
   }
 
@@ -886,7 +868,11 @@ namespace IsoRealms {
   void Project::ScreenProxy::renderScreen(float scale, float aspectRatio) const {
     cParent->renderScreen(cScreen, scale, aspectRatio);
   }
-  
+
+  void Project::ScreenProxy::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
+
   bool Project::ScreenProxy::renderAssetIcon() const {
     return cScreen->renderAssetIcon();
   }
@@ -911,6 +897,10 @@ namespace IsoRealms {
     return false;
   }
 
+  void Project::Filename::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
+
   Project::FileUser::FileUser(Project* parent) :
             cParent(parent) {
   }
@@ -923,12 +913,16 @@ namespace IsoRealms {
     return false;
   }
 
+  void Project::FileUser::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
+
   Project::QuitActionType::QuitActionType(Project* parent) :
             cParent(parent),
             cQuitAction(this) {
   }
 
-  IAction* Project::QuitActionType::createAction(DOMNode& node, IProject* project, IBindingRegistry* localObjects) {
+  IAction* Project::QuitActionType::createAction(JSONObject object, IProject* project, IBindingRegistry* localObjects) {
     return &cQuitAction;
   }
 
@@ -944,6 +938,10 @@ namespace IsoRealms {
     return false;
   }
 
+  void Project::QuitActionType::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
+
   Project::QuitActionType::QuitAction::QuitAction(QuitActionType* parent) :
             cParent(parent) {
   }
@@ -952,8 +950,8 @@ namespace IsoRealms {
     return cParent;
   }
 
-  void Project::QuitActionType::QuitAction::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    identifier->save(node, cParent);
+  void Project::QuitActionType::QuitAction::save(JSONObject object, IAssetIdentifier* identifier) const {
+    // Nothing to do.
   }
 
   bool Project::QuitActionType::QuitAction::hasConfiguration() const {

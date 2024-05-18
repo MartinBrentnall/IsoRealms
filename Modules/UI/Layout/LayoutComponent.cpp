@@ -23,15 +23,14 @@
 namespace IsoRealms::UI {
   const float LayoutComponent::EDIT_HANDLE_RADIUS = 0.01f;
 
-  const std::string LayoutComponent::TAG_BOTTOM   = "Bottom";
-  const std::string LayoutComponent::TAG_LEFT     = "Left";
-  const std::string LayoutComponent::TAG_LOCATION = "Location";
-  const std::string LayoutComponent::TAG_OFFSET   = "Offset";
-  const std::string LayoutComponent::TAG_RIGHT    = "Right";
-  const std::string LayoutComponent::TAG_SCREEN   = "Screen";
-  const std::string LayoutComponent::TAG_TOP      = "Top";
-
-  const std::string LayoutComponent::ATTRIBUTE_TYPE   = "type";
+  const std::string LayoutComponent::JSON_BOTTOM = "bottom";
+  const std::string LayoutComponent::JSON_LEFT   = "left";
+  const std::string LayoutComponent::JSON_LOCATION = "location";
+  const std::string LayoutComponent::JSON_OFFSET   = "offset";
+  const std::string LayoutComponent::JSON_RIGHT  = "right";
+  const std::string LayoutComponent::JSON_SCREEN = "screen";
+  const std::string LayoutComponent::JSON_TOP    = "top";
+  const std::string LayoutComponent::JSON_TYPE   = "type";
 
   const std::string LayoutComponent::LOCATION_TYPE_ABSOLUTE = "Absolute";
   const std::string LayoutComponent::LOCATION_TYPE_RELATIVE = "Relative";
@@ -55,21 +54,18 @@ namespace IsoRealms::UI {
     });
   }
 
-  LayoutComponent::LayoutComponent(IProject* project, Layout& layout, DOMNode& node) :
+  LayoutComponent::LayoutComponent(IProject* project, Layout& layout, JSONObject object) :
             cDefLayout(layout),
             cDefScreen(project),
-            cDefLeftEdge(project, *this, node, TAG_LEFT, true, -1.0f),
-            cDefRightEdge(project, *this, node, TAG_RIGHT, true, 1.0f),
-            cDefBottomEdge(project, *this, node, TAG_BOTTOM, false, -1.0f),
-            cDefTopEdge(project, *this, node, TAG_TOP, false, 1.0f),
+            cDefLeftEdge(project, *this, object, JSON_LEFT, true, -1.0f),
+            cDefRightEdge(project, *this, object, JSON_RIGHT, true, 1.0f),
+            cDefBottomEdge(project, *this, object, JSON_BOTTOM, false, -1.0f),
+            cDefTopEdge(project, *this, object, JSON_TOP, false, 1.0f),
             cRuntimeScreen(nullptr),
             cEditingSelectedHandle(Handle::NONE),
             cEditingDragging(false),
             cLuaBinding(project, this) {
-    if (node.containsNode(TAG_SCREEN)) {
-      cDefScreen.init(node, TAG_SCREEN);
-    }
-
+    cDefScreen.init(object, JSON_SCREEN);
     project->reset([this]() {
       cRuntimeScreen = *cDefScreen;
     });
@@ -111,12 +107,12 @@ namespace IsoRealms::UI {
     }
   }
 
-  void LayoutComponent::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    cDefScreen.save(node, TAG_SCREEN);
-    cDefTopEdge.save(node, TAG_TOP, &cDefLayout, 1.0f);
-    cDefBottomEdge.save(node, TAG_BOTTOM, &cDefLayout, -1.0f);
-    cDefLeftEdge.save(node, TAG_LEFT, &cDefLayout, -1.0f);
-    cDefRightEdge.save(node, TAG_RIGHT, &cDefLayout, 1.0f);
+  void LayoutComponent::save(JSONObject object, IAssetIdentifier* identifier) const {
+    cDefScreen.save(object, JSON_SCREEN);
+    cDefTopEdge.save(object, JSON_TOP, &cDefLayout, 1.0f);
+    cDefBottomEdge.save(object, JSON_BOTTOM, &cDefLayout, -1.0f);
+    cDefLeftEdge.save(object, JSON_LEFT, &cDefLayout, -1.0f);
+    cDefRightEdge.save(object, JSON_RIGHT, &cDefLayout, 1.0f);
   }
 
   bool LayoutComponent::inputEditor(sf::Event& event, IScreen* screen, float x, float y, float aspectRatio, float scale) {
@@ -310,37 +306,35 @@ namespace IsoRealms::UI {
             cDefOffset(std::make_unique<AbsoluteOffset>(0.0f)) {
   }
   
-  LayoutComponent::Edge::Edge(IProject* project, LayoutComponent& parent, DOMNode& node, const std::string& tag, bool horizontal, float defaultValue) :
+  LayoutComponent::Edge::Edge(IProject* project, LayoutComponent& parent, JSONObject object, const std::string& tag, bool horizontal, float defaultValue) :
             Edge(parent, defaultValue) {
-    if (node.containsNode(tag)) {
-      DOMNode& mEdgeNode = node.getNode(tag);
-      if (mEdgeNode.containsNode(TAG_LOCATION)) {
-        DOMNode& mLocationNode = mEdgeNode.getNode(TAG_LOCATION);
-        std::string mLocationType = mLocationNode.getAttribute(ATTRIBUTE_TYPE, LOCATION_TYPE_ABSOLUTE);
-        cDefLocation = mLocationType == LOCATION_TYPE_ABSOLUTE ? static_cast<std::unique_ptr<ILayoutLocation>>(std::make_unique<AbsoluteLocation>(mLocationNode, defaultValue))
-                     : mLocationType == LOCATION_TYPE_RELATIVE ? static_cast<std::unique_ptr<ILayoutLocation>>(std::make_unique<RelativeLocation>(project, mLocationNode, &cDefParent.cDefLayout, horizontal, defaultValue))
-                     :                                           nullptr;
-      }
+    JSONObject mEdgeObject = object.getObject(tag);
+    if (mEdgeObject.hasMember(JSON_LOCATION)) {
+      JSONObject mLocationObject = mEdgeObject.getObject(JSON_LOCATION);
+      std::string mLocationType = mLocationObject.getString(JSON_TYPE, LOCATION_TYPE_ABSOLUTE);
+      cDefLocation = mLocationType == LOCATION_TYPE_ABSOLUTE ? static_cast<std::unique_ptr<ILayoutLocation>>(std::make_unique<AbsoluteLocation>(mLocationObject, defaultValue))
+                   : mLocationType == LOCATION_TYPE_RELATIVE ? static_cast<std::unique_ptr<ILayoutLocation>>(std::make_unique<RelativeLocation>(project, mLocationObject, &cDefParent.cDefLayout, horizontal, defaultValue))
+                   :                                           nullptr;
+    }
 
-      if (mEdgeNode.containsNode(TAG_OFFSET)) {
-        DOMNode& mOffsetNode = mEdgeNode.getNode(TAG_OFFSET);
-        std::string mOffsetType = mOffsetNode.getAttribute(ATTRIBUTE_TYPE, OFFSET_TYPE_ABSOLUTE);
-        cDefOffset = mOffsetType == OFFSET_TYPE_ABSOLUTE ? static_cast<std::unique_ptr<ILayoutOffset>>(std::make_unique<AbsoluteOffset>(mOffsetNode))
-                   : mOffsetType == OFFSET_TYPE_LINKED   ? static_cast<std::unique_ptr<ILayoutOffset>>(std::make_unique<LinkedOffset>(project, mOffsetNode, &cDefParent.cDefLayout, &cDefParent, (tag == TAG_LEFT || tag == TAG_BOTTOM) ? -1.0f : 1.0f))
-                   :                                       nullptr;
-      }
+    if (mEdgeObject.hasMember(JSON_OFFSET)) {
+      JSONObject mOffsetObject = mEdgeObject.getObject(JSON_OFFSET);
+      std::string mOffsetType = mOffsetObject.getString(JSON_TYPE, OFFSET_TYPE_ABSOLUTE);
+      cDefOffset = mOffsetType == OFFSET_TYPE_ABSOLUTE ? static_cast<std::unique_ptr<ILayoutOffset>>(std::make_unique<AbsoluteOffset>(mOffsetObject))
+                 : mOffsetType == OFFSET_TYPE_LINKED   ? static_cast<std::unique_ptr<ILayoutOffset>>(std::make_unique<LinkedOffset>(project, mOffsetObject, &cDefParent.cDefLayout, &cDefParent, (tag == JSON_LEFT || tag == JSON_BOTTOM) ? -1.0f : 1.0f))
+                 :                                       nullptr;
     }
   }
-  
+
   float LayoutComponent::Edge::getLocation(float aspectRatio) const {
     return cDefLocation->getLocation(aspectRatio) + cDefOffset->getOffset(aspectRatio);
   }
   
-  void LayoutComponent::Edge::save(DOMNodeWriter* node, const std::string& tag, Layout* layout, float defaultValue) const {
-    DOMNodeWriter mEdgeNode = node->addBranch(tag);
-    DOMNodeWriter mNode = mEdgeNode.addBranch(TAG_LOCATION);
-    cDefLocation->save(&mNode, layout, defaultValue);
-    mNode = mEdgeNode.addBranch(TAG_OFFSET);
-    cDefOffset->save(&mNode, layout);
+  void LayoutComponent::Edge::save(JSONObject object, const std::string& tag, Layout* layout, float defaultValue) const {
+    JSONObject mEdgeObject = object.addObject(tag);
+    JSONObject mLocationObject = mEdgeObject.addObject(JSON_LOCATION);
+    cDefLocation->save(mLocationObject, layout, defaultValue);
+    JSONObject mOffsetObject = mEdgeObject.addObject(JSON_OFFSET);
+    cDefOffset->save(mOffsetObject, layout);
   }
 }

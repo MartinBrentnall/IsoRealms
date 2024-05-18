@@ -26,20 +26,20 @@ namespace IsoRealms::Spindizzy {
             cBoundaryType(cSpindizzy.createLiteralBoundaryType(this)) {
   }
 
-  void BoundaryType::init(DOMNode& node) {
-    cSpindizzy.getProject()->init([this, &node](IAssets* assets) {
-      set(node);
+  void BoundaryType::init(JSONObject object) {
+    cSpindizzy.getProject()->init([this, object](IAssets* assets) {
+      set(object);
     });
   }
 
-  void BoundaryType::save(DOMNodeWriter* node, const std::string& tag) const {
-    DOMNodeWriter mAssetNode = node->addBranch(tag);
-    cSpindizzy.save(&mAssetNode, cBoundaryType);
+  void BoundaryType::set(JSONObject object) {
+    cSpindizzy.release(this, cBoundaryType);
+    cBoundaryType = cSpindizzy.getBoundaryType(this, object);
   }
 
-  void BoundaryType::set(DOMNode& node) {
-    cSpindizzy.release(this, cBoundaryType);
-    cBoundaryType = cSpindizzy.getBoundaryType(this, node);
+  void BoundaryType::save(JSONObject object, const std::string& name) const {
+    JSONObject mAssetObject = object.addObject(name);
+    cSpindizzy.save(mAssetObject, cBoundaryType);
   }
 
   void BoundaryType::relinquish(IBoundaryType* asset) {

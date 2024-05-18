@@ -18,8 +18,6 @@
  */
 #include "LiteralString.h"
 
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
-
 namespace IsoRealms {
   LiteralString::LiteralString(const std::string& value) {
     setValue(value);
@@ -37,7 +35,9 @@ namespace IsoRealms {
     return false;
   }
 
-  void LiteralString::saveAsset(DOMNodeWriter* node) const {
-    node->addAttribute("value", cValue);
+  void LiteralString::saveAsset(JSONObject object) const {
+    object.addString(JSON_VALUE, cValue);
   }
+
+  const std::string LiteralString::JSON_VALUE = "value";
 }

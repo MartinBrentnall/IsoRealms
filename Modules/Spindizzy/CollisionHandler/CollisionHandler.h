@@ -41,10 +41,10 @@ namespace IsoRealms::Spindizzy {
      * Resource Interface *
     \**********************/
     CollisionHandler(IProject* project, Spindizzy* spindizzy);
-    CollisionHandler(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data);
+    CollisionHandler(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon();
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -57,11 +57,11 @@ namespace IsoRealms::Spindizzy {
 
     private:
 
-    // DOM strings.
-    static const std::string TAG_ENTERED_ACTION;
-    static const std::string TAG_EXITED_ACTION;
-    static const std::string TAG_TYPE_A;
-    static const std::string TAG_TYPE_B;
+    // JSON members.
+    static const std::string JSON_OBJECT_A;
+    static const std::string JSON_OBJECT_B;
+    static const std::string JSON_ON_COLLISION;
+    static const std::string JSON_ON_PARTING;
 
     // Definition data.
     PhysicalObjectType cDefPhysicalObjectTypeA; /// First object type to handle.

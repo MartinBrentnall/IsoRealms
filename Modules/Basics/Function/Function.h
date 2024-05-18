@@ -47,44 +47,43 @@ namespace IsoRealms::Basics {
      * Resource Interface *
     \**********************/
     Function(IProject* project, Basics* basics);
-    Function(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data);
+    Function(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);    
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier, bool script = false) const;
+    void save(JSONObject object, IAssetIdentifier* identifier, bool script = false) const;
     bool renderIcon() const;
     void hintInUse(bool inUse);
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
 
     // Constructors for use by scripts (in-line functions).
     Function(IProject* project, const std::string& name);
-    Function(IProject* project, const std::string& name, DOMNode& node, IBindingRegistry* localArgs, bool init);
-    
+    Function(IProject* project, const std::string& name, JSONObject object, IBindingRegistry* localArgs, bool init);
+
     /**************************\
      * Implements IActionType *
     \**************************/
-    IAction* createAction(DOMNode& node, IProject* project, IBindingRegistry* localObjects) override;
+    IAction* createAction(JSONObject object, IProject* project, IBindingRegistry* localArgs) override;
     IAction* createAction(IProject* project, IBindingRegistry* localArgs) override;
     void destroyAction(IAction* action, IAssets* assets) override;
     bool renderAssetIcon() const override;
-    
+    void saveAsset(JSONObject object) const override;
+
     private:
     
-    // DOM strings.
-    static const std::string TAG_ARGUMENT;
-    static const std::string TAG_BIND;
-    static const std::string TAG_CODE;
-    static const std::string TAG_DEFAULT_VALUE;
-    static const std::string TAG_TO;
+    // JSON members.
+    static const std::string JSON_ARGUMENT;
+    static const std::string JSON_ARGUMENTS;
+    static const std::string JSON_BINDINGS;
+    static const std::string JSON_CODE;
+    static const std::string JSON_DEFAULT_VALUE;
+    static const std::string JSON_NAME;
+    static const std::string JSON_TO;
+    static const std::string JSON_VARIABLE;
 
-    static const std::string ATTRIBUTE_ARGUMENT;
-    static const std::string ATTRIBUTE_NAME;
-    static const std::string ATTRIBUTE_TYPE;
-    static const std::string ATTRIBUTE_VARIABLE;
-  
     // Private types.
     class Call : public IAction {
       public:
-      Call(Function* parent, DOMNode& node, IProject* project, IBindingRegistry* localObjects);
+      Call(Function* parent, JSONObject object, IProject* project, IBindingRegistry* localObjects);
       void release(IAssets* releaser);
 
       /**********************\
@@ -92,7 +91,7 @@ namespace IsoRealms::Basics {
       \**********************/
       void execute() override;
       IActionType* getActionType() const override;
-      void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const override;
+      void save(JSONObject object, IAssetIdentifier* identifier) const override;
       bool hasConfiguration() const override;
 
       private:
@@ -103,7 +102,6 @@ namespace IsoRealms::Basics {
       // Definition data.
       IBindingRegistry* cDefLocalBindingRegistry;                    /// Registry from which local bindings can be retrieved.
       std::vector<std::unique_ptr<IsoRealms::Binding>> cDefBindings; /// Overrides default values of dynamic bindings in the function.
-      std::vector<bool> cDefLocal;                                   /// Specifies whether an overridden value is local or global.
     };
 
     // External interfaces.

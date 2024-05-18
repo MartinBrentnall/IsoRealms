@@ -47,7 +47,7 @@ namespace IsoRealms::Basics {
       *
       * @param node The node to write this track to.
       */
-    virtual void save(DOMNodeWriter* node) const = 0;
+    virtual void save(JSONObject object) const = 0;
 
     /**
       * Forward this track and perform processing according to events within

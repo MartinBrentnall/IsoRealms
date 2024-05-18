@@ -29,5 +29,6 @@ namespace IsoRealms {
     \***********************/
     void bind(const std::string& function) const override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
   };
 }

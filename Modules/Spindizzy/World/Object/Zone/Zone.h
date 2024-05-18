@@ -51,8 +51,8 @@ namespace IsoRealms::Spindizzy {
                public IVisualElement {
     public:
     Zone(World& world, ZoneType* type, int xStart, int yStart, int zStart, int xEnd, int yEnd, int zEnd);
-    Zone(World& world, DOMNode& node);
-    
+    Zone(World& world, JSONObject object);
+
     void registerAssets();
     void unregisterAssets();
     
@@ -119,7 +119,7 @@ namespace IsoRealms::Spindizzy {
     void renderRuntime(const IScreen* screen) const;
     void updateEditing(unsigned int);
     void updateRuntime(unsigned int);
-    void save(DOMNodeWriter* node);
+    void save(JSONObject object);
     void saveCache(std::ostream& cache);
     void flagForInitialisation(Terrain* terrain);
     void resetDynamics();
@@ -168,23 +168,22 @@ namespace IsoRealms::Spindizzy {
 
     private:
     
-    // DOM strings.
-    static const std::string TAG_ALIEN;
-    static const std::string TAG_LIFT;
-    static const std::string TAG_OBJECT;
-    static const std::string TAG_PICK_UP;
-    static const std::string TAG_TERRAIN;
-
-    static const std::string ATTRIBUTE_HEIGHT;
-    static const std::string ATTRIBUTE_LENGTH;
-    static const std::string ATTRIBUTE_THEME;
-    static const std::string ATTRIBUTE_THEME_SET;
-    static const std::string ATTRIBUTE_TYPE;
-    static const std::string ATTRIBUTE_VISITED;
-    static const std::string ATTRIBUTE_WIDTH;
-    static const std::string ATTRIBUTE_X;
-    static const std::string ATTRIBUTE_Y;
-    static const std::string ATTRIBUTE_Z;
+    // JSON members.
+    static const std::string JSON_ALIENS;
+    static const std::string JSON_HEIGHT;
+    static const std::string JSON_LIFTS;
+    static const std::string JSON_LENGTH;
+    static const std::string JSON_OBJECTS;
+    static const std::string JSON_PICK_UPS;
+    static const std::string JSON_TERRAIN;
+    static const std::string JSON_THEME;
+    static const std::string JSON_THEME_SET;
+    static const std::string JSON_TYPE;
+    static const std::string JSON_VISITED;
+    static const std::string JSON_WIDTH;
+    static const std::string JSON_X;
+    static const std::string JSON_Y;
+    static const std::string JSON_Z;
 
     // Definition data
     World& cDefWorld;                                  /// World to which this zone belongs.

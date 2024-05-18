@@ -49,23 +49,23 @@ namespace IsoRealms {
     ITexture* createLiteralTexture(              IAssetUser<ITexture>*        user) override;
     IVertex* createLiteralVertex(                IAssetUser<IVertex>*         user, const float x, const float y, const float z) override;
 
-    I3DModelType*    getModelType(     IAssetUser<I3DModelType>*    user, DOMNode& node,                                                bool required = true) override;
-    IAction*         getAction(        IAssetUser<IAction>*         user, DOMNode& node, const std::string& tag, IBindingRegistry* = nullptr, const std::string& id = "") override;
-    IActionType*     getActionType(    IAssetUser<IActionType>*     user, DOMNode& node,                                                bool required = true) override;
-    IAssets*         getAssets(        IAssetUser<IAssets>*         user, DOMNode& node,                                                bool required = true) override;
-    IBinding*        getBinding(       IAssetUser<IBinding>*        user, DOMNode& node, IBindingRegistry* locals = nullptr,            bool required = true) override;
-    IBoolean*        getBoolean(       IAssetUser<IBoolean>*        user, DOMNode& node, IStateListener<IBoolean*>* listener = nullptr, bool required = true) override;
-    IColour*         getColour(        IAssetUser<IColour>*         user, DOMNode& node, IStateListener<IColour*>*  listener = nullptr, bool required = true) override;
-    IEditable*       getEditable(      IAssetUser<IEditable>*       user, DOMNode& node,                                                bool required = true) override;
-    IFloat*          getFloat(         IAssetUser<IFloat>*          user, DOMNode& node, IStateListener<IFloat*>*   listener = nullptr, bool required = true) override;
-    IFont*           getFont(          IAssetUser<IFont>*           user, DOMNode& node,                                                bool required = true) override;
-    IInputHandler*   getInputHandler(  IAssetUser<IInputHandler>*   user, DOMNode& node,                                                bool required = true) override;
-    IInteger*        getInteger(       IAssetUser<IInteger>*        user, DOMNode& node, IStateListener<IInteger*>* listener = nullptr, bool required = true) override;
-    IProjectOptions* getProjectOptions(IAssetUser<IProjectOptions>* user, DOMNode& node,                                                bool required = true) override;
-    IScreen*         getScreen(        IAssetUser<IScreen>*         user, DOMNode& node,                                                bool required = true) override;
-    IString*         getString(        IAssetUser<IString>*         user, DOMNode& node, IStateListener<IString*>*  listener = nullptr, bool required = true) override;
-    ITexture*        getTexture(       IAssetUser<ITexture>*        user, DOMNode& node, IStateListener<ITexture*>* listener = nullptr, bool required = true) override;
-    IVertex*         getVertex(        IAssetUser<IVertex>*         user, DOMNode& node,                                                bool required = true) override;
+    I3DModelType*    getModelType(     IAssetUser<I3DModelType>*    user, JSONObject object,                                                bool required = true) override;
+    IAction*         getAction(        IAssetUser<IAction>*         user, JSONObject object, const std::string& tag, IBindingRegistry* = nullptr, const std::string& id = "") override;
+    IActionType*     getActionType(    IAssetUser<IActionType>*     user, JSONObject object,                                                bool required = true) override;
+    IAssets*         getAssets(        IAssetUser<IAssets>*         user, JSONObject object,                                                bool required = true) override;
+    IBinding*        getBinding(       IAssetUser<IBinding>*        user, JSONObject object, IBindingRegistry* locals = nullptr,            bool required = true) override;
+    IBoolean*        getBoolean(       IAssetUser<IBoolean>*        user, JSONObject object, IStateListener<IBoolean*>* listener = nullptr, bool required = true) override;
+    IColour*         getColour(        IAssetUser<IColour>*         user, JSONObject object, IStateListener<IColour*>*  listener = nullptr, bool required = true) override;
+    IEditable*       getEditable(      IAssetUser<IEditable>*       user, JSONObject object,                                                bool required = true) override;
+    IFloat*          getFloat(         IAssetUser<IFloat>*          user, JSONObject object, IStateListener<IFloat*>*   listener = nullptr, bool required = true) override;
+    IFont*           getFont(          IAssetUser<IFont>*           user, JSONObject object,                                                bool required = true) override;
+    IInputHandler*   getInputHandler(  IAssetUser<IInputHandler>*   user, JSONObject object,                                                bool required = true) override;
+    IInteger*        getInteger(       IAssetUser<IInteger>*        user, JSONObject object, IStateListener<IInteger*>* listener = nullptr, bool required = true) override;
+    IProjectOptions* getProjectOptions(IAssetUser<IProjectOptions>* user, JSONObject object,                                                bool required = true) override;
+    IScreen*         getScreen(        IAssetUser<IScreen>*         user, JSONObject object,                                                bool required = true) override;
+    IString*         getString(        IAssetUser<IString>*         user, JSONObject object, IStateListener<IString*>*  listener = nullptr, bool required = true) override;
+    ITexture*        getTexture(       IAssetUser<ITexture>*        user, JSONObject object, IStateListener<ITexture*>* listener = nullptr, bool required = true) override;
+    IVertex*         getVertex(        IAssetUser<IVertex>*         user, JSONObject object,                                                bool required = true) override;
 
     void release(IAssetUser<I3DModelType>*    user, I3DModelType*    asset) override;
     void release(IAssetUser<IAction>*         user, IAction*         asset) override;
@@ -86,6 +86,7 @@ namespace IsoRealms {
     void release(IAssetUser<IVertex>*         user, IVertex*         asset) override;
 
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
     void setProperty(const std::string& id, const std::string& value) override;
   };

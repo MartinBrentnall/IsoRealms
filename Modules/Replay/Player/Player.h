@@ -36,9 +36,15 @@ namespace IsoRealms::Replay {
                  public IScreen,
                  public IInputHandler {
     private:
-    static const std::string TAG_QUIT_ACTION;
+    static const std::string JSON_INPUT;
+    static const std::string JSON_INPUT_CONFIGURATION;
+    static const std::string JSON_INPUTS;
+    static const std::string JSON_KEY;
+    static const std::string JSON_ON_FINISH;
+    static const std::string JSON_TYPE;
 
-    static const std::string ATTRIBUTE_KEY;
+    static const std::string TYPE_ANALOGUE;
+    static const std::string TYPE_DIGITAL;
 
     union InputType {
       bool cDigital;
@@ -67,6 +73,7 @@ namespace IsoRealms::Replay {
       \***********************/
       bool getValue() const override;
       bool renderAssetIcon() const override;
+      void saveAsset(JSONObject object) const override;
     };
 
     class AnalogueInput : public IFloat {
@@ -83,6 +90,7 @@ namespace IsoRealms::Replay {
       \*********************/
       float getValue() const override;
       bool renderAssetIcon() const override;
+      void saveAsset(JSONObject object) const override;
     };
 
     IProject* cParentProject;
@@ -103,10 +111,10 @@ namespace IsoRealms::Replay {
     
     public:
     Player(IProject* project, Replay* replay);
-    Player(IProject* project, Replay* replay, DOMNode& node, IOptions* options, IResourceData* data);
+    Player(IProject* project, Replay* replay, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     bool renderIcon() const;
     void hintInUse(bool inUse);
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -125,25 +133,26 @@ namespace IsoRealms::Replay {
      * Implements IAsset *
     \*********************/
     bool renderAssetIcon() const override;
-    
+    void saveAsset(JSONObject object) const override;
+
     /*****************************\
      * Implements IAssetOverride *
     \*****************************/
-    I3DModelType*    getModelType(     DOMNode& node, IStateListener<I3DModelType*>* listener) const override;
-    IActionType*     getActionType(    DOMNode& node, IStateListener<IActionType*>* listener) const override;
-    IAssets*         getAssets(        DOMNode& node, IStateListener<IAssets*>* listener) const override;
-    IBinding*        getBinding(       DOMNode& node, IStateListener<IBinding*>* listener) const override;
-    IBoolean*        getBoolean(       DOMNode& node, IStateListener<IBoolean*>* listener) const override;
-    IColour*         getColour(        DOMNode& node, IStateListener<IColour*>* listener) const override;
-    IEditable*       getEditable(      DOMNode& node, IStateListener<IEditable*>* listener) const override;
-    IFloat*          getFloat(         DOMNode& node, IStateListener<IFloat*>* listener) const override;
-    IFont*           getFont(          DOMNode& node, IStateListener<IFont*>* listener) const override;
-    IInputHandler*   getInputHandler(  DOMNode& node, IStateListener<IInputHandler*>* listener) const override;
-    IInteger*        getInteger(       DOMNode& node, IStateListener<IInteger*>* listener) const override;
-    IProjectOptions* getProjectOptions(DOMNode& node, IStateListener<IProjectOptions*>* listener) const override;
-    IScreen*         getScreen(        DOMNode& node, IStateListener<IScreen*>* listener) const override;
-    IString*         getString(        DOMNode& node, IStateListener<IString*>* listener) const override;
-    ITexture*        getTexture(       DOMNode& node, IStateListener<ITexture*>* listener) const override;
-    IVertex*         getVertex(        DOMNode& node, IStateListener<IVertex*>* listener) const override;
+    I3DModelType*    getModelType(     JSONObject object, IStateListener<I3DModelType*>* listener) const override;
+    IActionType*     getActionType(    JSONObject object, IStateListener<IActionType*>* listener) const override;
+    IAssets*         getAssets(        JSONObject object, IStateListener<IAssets*>* listener) const override;
+    IBinding*        getBinding(       JSONObject object, IStateListener<IBinding*>* listener) const override;
+    IBoolean*        getBoolean(       JSONObject object, IStateListener<IBoolean*>* listener) const override;
+    IColour*         getColour(        JSONObject object, IStateListener<IColour*>* listener) const override;
+    IEditable*       getEditable(      JSONObject object, IStateListener<IEditable*>* listener) const override;
+    IFloat*          getFloat(         JSONObject object, IStateListener<IFloat*>* listener) const override;
+    IFont*           getFont(          JSONObject object, IStateListener<IFont*>* listener) const override;
+    IInputHandler*   getInputHandler(  JSONObject object, IStateListener<IInputHandler*>* listener) const override;
+    IInteger*        getInteger(       JSONObject object, IStateListener<IInteger*>* listener) const override;
+    IProjectOptions* getProjectOptions(JSONObject object, IStateListener<IProjectOptions*>* listener) const override;
+    IScreen*         getScreen(        JSONObject object, IStateListener<IScreen*>* listener) const override;
+    IString*         getString(        JSONObject object, IStateListener<IString*>* listener) const override;
+    ITexture*        getTexture(       JSONObject object, IStateListener<ITexture*>* listener) const override;
+    IVertex*         getVertex(        JSONObject object, IStateListener<IVertex*>* listener) const override;
   };
 }

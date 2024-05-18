@@ -51,15 +51,16 @@ namespace IsoRealms::Spindizzy {
   const std::string C64LiftGraphics::DIAMOND_HALF = "DiamondHalf";
   const std::string C64LiftGraphics::DIAMOND_BOTH = "DiamondFilled";
 
-  const std::string C64LiftGraphics::TAG_OUTLINE   = "Outline";
-  const std::string C64LiftGraphics::TAG_PRIMARY   = "Primary";
-  const std::string C64LiftGraphics::TAG_SECONDARY = "Secondary";
+  const std::string C64LiftGraphics::JSON_OUTLINE   = "outline";
+  const std::string C64LiftGraphics::JSON_PRIMARY   = "primary";
+  const std::string C64LiftGraphics::JSON_SECONDARY = "secondary";
 
   C64LiftGraphics::C64LiftGraphics(IProject* project, Spindizzy* spindizzy) :
             cProject(project),
-            cDefPrimary(project, 1.0f, 1.0f, 1.0f, 0.0f, [this]() {generateTextures();}),
-            cDefSecondary(project, 0.7f, 0.7f, 0.7f, 0.0f, [this]() {generateTextures();}),
-            cDefOutline(project, 0.0f, 0.0f, 0.0f, 0.0f, [this]() {generateTextures();}) {
+            cDefPrimary(project, 1.0f, 1.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();}),
+            cDefSecondary(project, 0.7f, 0.7f, 0.7f, 0.0f, [this]() {setNeedsRedrawing();}),
+            cDefOutline(project, 0.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
+            cNeedsRedrawing(false) {
     cDefTextures[CIRCLE_NONE]  = std::make_unique<LiteralTexture>(project);
     cDefTextures[CIRCLE_HALF]  = std::make_unique<LiteralTexture>(project);
     cDefTextures[CIRCLE_BOTH]  = std::make_unique<LiteralTexture>(project);
@@ -69,16 +70,14 @@ namespace IsoRealms::Spindizzy {
     cDefTextures[DIAMOND_NONE] = std::make_unique<LiteralTexture>(project);
     cDefTextures[DIAMOND_HALF] = std::make_unique<LiteralTexture>(project);
     cDefTextures[DIAMOND_BOTH] = std::make_unique<LiteralTexture>(project);
-    project->updateLater([this]() {
-      generateTextures();
-    });
+    setNeedsRedrawing();
   }
   
-  C64LiftGraphics::C64LiftGraphics(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
+  C64LiftGraphics::C64LiftGraphics(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
             C64LiftGraphics(project, spindizzy) {
-    cDefOutline.init(node, TAG_OUTLINE);
-    cDefPrimary.init(node, TAG_PRIMARY);
-    cDefSecondary.init(node, TAG_SECONDARY);
+    cDefOutline.init(object, JSON_OUTLINE);
+    cDefPrimary.init(object, JSON_PRIMARY);
+    cDefSecondary.init(object, JSON_SECONDARY);
   }
 
   void C64LiftGraphics::registerAssets(IAssetRegistry* assets) {
@@ -93,10 +92,10 @@ namespace IsoRealms::Spindizzy {
     }
   }
   
-  void C64LiftGraphics::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    cDefOutline.save(node, TAG_OUTLINE);
-    cDefPrimary.save(node, TAG_PRIMARY);
-    cDefSecondary.save(node, TAG_SECONDARY);
+  void C64LiftGraphics::save(JSONObject object, IAssetIdentifier* identifier) const {
+    cDefOutline.save(object, JSON_OUTLINE);
+    cDefPrimary.save(object, JSON_PRIMARY);
+    cDefSecondary.save(object, JSON_SECONDARY);
   }
 
   void C64LiftGraphics::hintInUse(bool inUse) {
@@ -337,5 +336,14 @@ namespace IsoRealms::Spindizzy {
     renderDiamondRingEdges(DIAMOND_COLOUR_OUTER,   DIAMOND_SQUARE_COLOUR_OUTER,  cDefSecondary);
     renderSquareRing(DIAMOND_SQUARE_OUTLINE_OUTER, DIAMOND_SQUARE_OUTLINE_INNER, cDefOutline);
     renderSquareRing(DIAMOND_SQUARE_COLOUR_OUTER,  DIAMOND_SQUARE_COLOUR_INNER,  cDefPrimary);
+  }
+
+  void C64LiftGraphics::setNeedsRedrawing() {
+    if (!cNeedsRedrawing) {
+      cProject->updateLater([this]() {
+        generateTextures();
+        cNeedsRedrawing = false;
+      });
+    }
   }
 }

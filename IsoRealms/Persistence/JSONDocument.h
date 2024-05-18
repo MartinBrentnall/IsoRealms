@@ -16,19 +16,36 @@
  * You should have received a copy of the GNU General Public License
  * along with Iso-Realms.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "MusicLuaSupport.h"
+#pragma once
 
-namespace IsoRealms::Music {
-#ifdef __linux__
-  extern "C" void initLua(LuaState* luaState) {
-#elif _WIN32
-  extern "C" void __declspec(dllexport) __stdcall initLua(LuaState* luaState) {
-#endif
-    sol::state* mLua = luaState->getState();
-    mLua->new_usertype<MusicPlayer>("MusicPlayer", "play",        &MusicPlayer::play,
-                                                   "jump",        &MusicPlayer::jump,
-                                                   "next",        &MusicPlayer::next,
-                                                   "previous",    &MusicPlayer::previous,
-                                                   "togglePause", &MusicPlayer::togglePause);
-  }
+#include <iostream>
+
+#define RAPIDJSON_HAS_STDSTRING 1
+
+#include "rapidjson/document.h"
+#include "rapidjson/istreamwrapper.h"
+#include "rapidjson/stringbuffer.h"
+#include "rapidjson/prettywriter.h"
+
+#include "IsoRealms/System.h"
+
+#include "JSONArray.h"
+#include "JSONObject.h"
+#include "ParseException.h"
+
+namespace IsoRealms {
+  class JSONDocument {
+    public:
+    JSONDocument();
+    JSONDocument(const std::string& filename, bool user);
+
+    JSONObject addObject(const std::string& name);
+    JSONObject getObject(const std::string& name);
+    void save(const std::string& filename);
+    rapidjson::Document& getDocument();
+
+    private:
+    rapidjson::Document cDocument;
+  };
 }
+

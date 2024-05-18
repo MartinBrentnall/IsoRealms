@@ -27,6 +27,8 @@ namespace IsoRealms {
    */
   class LiteralBoolean : public IBoolean {
     private:
+    static const std::string JSON_VALUE;
+
     const bool cValue; /// The value of this Boolean.
     
     public:
@@ -47,6 +49,6 @@ namespace IsoRealms {
      * Implements IAsset from IBoolean *
     \***********************************/
     bool renderAssetIcon() const override;
-    void saveAsset(DOMNodeWriter* node) const override;
+    void saveAsset(JSONObject object) const override;
   };
 }

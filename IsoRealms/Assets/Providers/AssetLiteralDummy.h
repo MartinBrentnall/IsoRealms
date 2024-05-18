@@ -36,5 +36,9 @@ namespace IsoRealms {
     std::unique_ptr<BASE> createLiteralAsset(const std::string& expression) const override {
       return expression == "" ? std::make_unique<TYPE>() : nullptr;
     }
+
+    std::unique_ptr<BASE> createLiteralAsset(JSONObject object) const override {
+      return std::make_unique<TYPE>();
+    }
   };
 }

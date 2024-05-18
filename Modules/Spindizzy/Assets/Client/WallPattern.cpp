@@ -26,20 +26,20 @@ namespace IsoRealms::Spindizzy {
             cWallPattern(cSpindizzy->createLiteralWallPattern(this)) {
   }
 
-  void WallPattern::init(DOMNode& node) {
-    cSpindizzy->getProject()->init([this, &node](IAssets* assets) {
-      set(node);
+  void WallPattern::init(JSONObject object) {
+    cSpindizzy->getProject()->init([this, object](IAssets* assets) {
+      set(object);
     });
   }
 
-  void WallPattern::save(DOMNodeWriter* node, const std::string& tag) const {
-    DOMNodeWriter mAssetNode = node->addBranch(tag);
-    cSpindizzy->save(&mAssetNode, cWallPattern);
+  void WallPattern::set(JSONObject object) {
+    cSpindizzy->release(this, cWallPattern);
+    cWallPattern = cSpindizzy->getWallPattern(this, object);
   }
 
-  void WallPattern::set(DOMNode& node) {
-    cSpindizzy->release(this, cWallPattern);
-    cWallPattern = cSpindizzy->getWallPattern(this, node);
+  void WallPattern::save(JSONObject object, const std::string& name) const {
+    JSONObject mAssetObject = object.addObject(name);
+    cSpindizzy->save(mAssetObject, cWallPattern);
   }
 
   void WallPattern::relinquish(IWallPattern* asset) {

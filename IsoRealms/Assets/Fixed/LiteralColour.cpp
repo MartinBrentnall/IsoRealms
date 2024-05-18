@@ -18,7 +18,6 @@
  */
 #include "LiteralColour.h"
 
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
 #include "IsoRealms/Utils.h"
 
 namespace IsoRealms {
@@ -78,7 +77,15 @@ namespace IsoRealms {
     return cAlpha;
   }
 
-  void LiteralColour::saveAsset(DOMNodeWriter* node) const {
-    node->addAttribute("value", Utils::toString(cRed) + " " + Utils::toString(cGreen) + " " + Utils::toString(cBlue) + " " + Utils::toString(cAlpha));
+  void LiteralColour::saveAsset(JSONObject object) const {
+    object.addFloat(JSON_RED, cRed);
+    object.addFloat(JSON_GREEN, cGreen);
+    object.addFloat(JSON_BLUE, cBlue);
+    object.addFloat(JSON_ALPHA, cAlpha);
   }
+
+  const std::string LiteralColour::JSON_ALPHA = "alpha";
+  const std::string LiteralColour::JSON_BLUE  = "blue";
+  const std::string LiteralColour::JSON_GREEN = "green";
+  const std::string LiteralColour::JSON_RED   = "red";
 }

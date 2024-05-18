@@ -21,15 +21,15 @@
 #include "ZoneObjectTypeTraitChaser.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string ZoneObjectTypeTraitChaser::ATTRIBUTE_OBJECT = "object";
-  const std::string ZoneObjectTypeTraitChaser::ATTRIBUTE_TARGET = "target";
-  
-  ZoneObjectTypeTraitChaser::ZoneObjectTypeTraitChaser(IProject* project, ZoneObjectType* type, DOMNode& node) :
+  const std::string ZoneObjectTypeTraitChaser::JSON_OBJECT = "object";
+  const std::string ZoneObjectTypeTraitChaser::JSON_TARGET = "target";
+
+  ZoneObjectTypeTraitChaser::ZoneObjectTypeTraitChaser(IProject* project, ZoneObjectType* type, JSONObject object) :
             cDefTarget(project) {
-    cDefTarget.init(node, "TODO");
-    cDefObjectID = node.getAttribute(ATTRIBUTE_OBJECT);
+    cDefTarget.init(object, JSON_TARGET);
+    cDefObjectID = object.getString(JSON_OBJECT);
   }
-  
+
   const Vertex& ZoneObjectTypeTraitChaser::getTarget() const {
     return cDefTarget;
   }
@@ -38,10 +38,10 @@ namespace IsoRealms::Spindizzy {
     return cDefObjectID;
   }
 
-  void ZoneObjectTypeTraitChaser::save(DOMNodeWriter& node) const {
-    cDefTarget.save(&node, ATTRIBUTE_TARGET);
+  void ZoneObjectTypeTraitChaser::save(JSONObject object) const {
+    cDefTarget.save(object, JSON_TARGET);
   }
-  
+
   std::unique_ptr<IZoneObjectTrait> ZoneObjectTypeTraitChaser::createTrait(ZoneObject& object) {
     return std::make_unique<Chaser>(object, *this);
   }
@@ -52,5 +52,9 @@ namespace IsoRealms::Spindizzy {
 
   bool ZoneObjectTypeTraitChaser::renderAssetIcon() const {
     return false;
+  }
+
+  void ZoneObjectTypeTraitChaser::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 }

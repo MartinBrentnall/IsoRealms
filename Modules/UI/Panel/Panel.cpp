@@ -19,15 +19,13 @@
 #include "Panel.h"
 
 #include "IsoRealms/IApplication.h"
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
 #include "IsoRealms/System.h"
 
 namespace IsoRealms::UI {
   const float Panel::CIRCLE_RESOLUTION = 5.0f * (M_PI / 180.0);
 
-  const std::string Panel::TAG_COLOUR = "Colour";
-
-  const std::string Panel::ATTRIBUTE_CORNER_SIZE = "cornerSize";
+  const std::string Panel::JSON_COLOUR      = "colour";
+  const std::string Panel::JSON_CORNER_SIZE = "cornerSize";
 
   std::unique_ptr<LiteralTexture> Panel::cGlobalCornerTexture = nullptr;
   unsigned int Panel::cGlobalInstanceCount = 0;
@@ -38,10 +36,10 @@ namespace IsoRealms::UI {
     initTextures(project);
   }
 
-  Panel::Panel(IProject* project, UI* ui, DOMNode& node, IOptions* options, IResourceData* data) :
+  Panel::Panel(IProject* project, UI* ui, JSONObject object, IOptions* options, IResourceData* data) :
             Panel(project, ui) {
-    cDefColour.init(node, TAG_COLOUR);
-    cDefCornerSize = node.getFloatAttribute(ATTRIBUTE_CORNER_SIZE, 0.0f);
+    cDefColour.init(object, JSON_COLOUR);
+    cDefCornerSize = object.getFloat(JSON_CORNER_SIZE);
   }
 
   void Panel::registerAssets(IAssetRegistry* assets) {
@@ -52,9 +50,9 @@ namespace IsoRealms::UI {
     assets->remove(this);
   }
   
-  void Panel::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    cDefColour.save(node, TAG_COLOUR);
-    node->addAttribute(ATTRIBUTE_CORNER_SIZE, cDefCornerSize);
+  void Panel::save(JSONObject object, IAssetIdentifier* identifier) const {
+    cDefColour.save(object, JSON_COLOUR);
+    object.addFloat(JSON_CORNER_SIZE, cDefCornerSize);
   }
 
   void Panel::hintInUse(bool inUse) {
@@ -105,7 +103,11 @@ namespace IsoRealms::UI {
   bool Panel::renderAssetIcon() const {
     return renderIcon();
   }
- 
+
+  void Panel::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
+
   void Panel::initTextures(IProject* project) {
     if (cGlobalInstanceCount ++ == 0) {
       cGlobalCornerTexture = std::make_unique<LiteralTexture>(project, true, true);

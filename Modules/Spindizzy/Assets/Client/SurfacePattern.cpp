@@ -26,20 +26,20 @@ namespace IsoRealms::Spindizzy {
             cSurfacePattern(cSpindizzy->createLiteralSurfacePattern(this)) {
   }
 
-  void SurfacePattern::init(DOMNode& node) {
-    cSpindizzy->getProject()->init([this, &node](IAssets* assets) {
-      set(node);
+  void SurfacePattern::init(JSONObject object) {
+    cSpindizzy->getProject()->init([this, object](IAssets* assets) {
+      set(object);
     });
   }
 
-  void SurfacePattern::save(DOMNodeWriter* node, const std::string& tag) const {
-    DOMNodeWriter mAssetNode = node->addBranch(tag);
-    cSpindizzy->save(&mAssetNode, cSurfacePattern);
+  void SurfacePattern::set(JSONObject object) {
+    cSpindizzy->release(this, cSurfacePattern);
+    cSurfacePattern = cSpindizzy->getSurfacePattern(this, object);
   }
 
-  void SurfacePattern::set(DOMNode& node) {
-    cSpindizzy->release(this, cSurfacePattern);
-    cSurfacePattern = cSpindizzy->getSurfacePattern(this, node);
+  void SurfacePattern::save(JSONObject object, const std::string& name) const {
+    JSONObject mAssetObject = object.addObject(name);
+    cSpindizzy->save(mAssetObject, cSurfacePattern);
   }
 
   void SurfacePattern::relinquish(ISurfacePattern* asset) {

@@ -84,8 +84,9 @@ add_library(IsoRealms
   Options/LocalOptions.cpp
   Options/Options.cpp
   Options/WrappedOptions.cpp
-  Persistence/DOMNode.cpp
-  Persistence/DOMNodeWriter.cpp
+  Persistence/JSONArray.cpp
+  Persistence/JSONDocument.cpp
+  Persistence/JSONObject.cpp
   Persistence/ParseException.cpp
   Project.cpp
   Property/Property.cpp
@@ -102,4 +103,4 @@ set_target_properties(IsoRealms PROPERTIES OUTPUT_NAME "IsoRealms")
 set_target_properties(IsoRealms PROPERTIES LIBRARY_OUTPUT_DIRECTORY "../Out")
 set_target_properties(IsoRealms PROPERTIES PREFIX "lib")
 
-target_link_libraries(IsoRealms sfml-window sfml-system sfml-audio sfml-graphics OpenGL::GL ${OPENGL_glu_LIBRARY} ${GLEW_LIBRARIES} ${FREETYPE_LIBRARIES} ${XercesC_LIBRARIES})
+target_link_libraries(IsoRealms sfml-window sfml-system sfml-audio sfml-graphics OpenGL::GL ${OPENGL_glu_LIBRARY} ${GLEW_LIBRARIES} ${FREETYPE_LIBRARIES})

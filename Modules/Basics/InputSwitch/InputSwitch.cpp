@@ -19,8 +19,8 @@
 #include "InputSwitch.h"
 
 namespace IsoRealms::Basics {
-  const std::string InputSwitch::TAG_INIT = "Init";
-  
+  const std::string InputSwitch::JSON_VALUE = "value";
+
   InputSwitch::InputSwitch(IProject* project, Basics* basics) :
             cDefInputHandler(project),
             cRuntimeInputHandler(*cDefInputHandler),
@@ -30,11 +30,9 @@ namespace IsoRealms::Basics {
     });
   }
   
-  InputSwitch::InputSwitch(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data) :
+  InputSwitch::InputSwitch(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data) :
             InputSwitch(project, basics) {
-    if (node.containsNode(TAG_INIT)) {
-      cDefInputHandler.init(node, TAG_INIT);
-    }
+    cDefInputHandler.init(object, JSON_VALUE);
     project->init([this](IAssets* assets) {
       cRuntimeInputHandler = *cDefInputHandler;
     });
@@ -50,8 +48,8 @@ namespace IsoRealms::Basics {
     assets->remove(&cLuaBinding);
   }
   
-  void InputSwitch::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    cDefInputHandler.save(node, TAG_INIT);
+  void InputSwitch::save(JSONObject object, IAssetIdentifier* identifier) const {
+    cDefInputHandler.save(object, JSON_VALUE);
   }
 
   void InputSwitch::hintInUse(bool inUse) {
@@ -76,6 +74,10 @@ namespace IsoRealms::Basics {
 
   bool InputSwitch::renderAssetIcon() const {
     return renderIcon();
+  }
+
+  void InputSwitch::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   void InputSwitch::setInputHandler(IInputHandler* inputHandler) {

@@ -24,26 +24,31 @@
 #include <vector>
 
 #include "IsoRealms/Exception/ArgumentException.h"
-#include "IsoRealms/Persistence/DOMNode.h"
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
+#include "IsoRealms/Persistence/JSONDocument.h"
 
 #include "HighScoreRecord.h"
 
 namespace IsoRealms::HighScore {
   class HighScoreTable {
     public:
-    HighScoreTable(DOMNode& node);
+    HighScoreTable(JSONObject object);
     HighScoreTable(std::vector<std::string> fields, const std::string& comparisonField, unsigned int maximumRecords);
     
     bool qualifies(const std::string& value);
     void insertRecord(std::map<std::string, std::string> record);
-    void save(DOMNodeWriter* node);
+    void save(JSONObject object);
     unsigned int getFieldCount();
     std::string getFieldName(unsigned int index);
     unsigned int getFieldIndex(const std::string& field);
     unsigned int getComparisonFieldIndex();
     
     private:
+    static const std::string JSON_COMPARE;
+    static const std::string JSON_FIELDS;
+    static const std::string JSON_NAME;
+    static const std::string JSON_RECORD_LIMIT;
+    static const std::string JSON_RECORDS;
+
     unsigned int cMaximumRecords;
     std::string cComparisonField;
     std::vector<std::string> cHighScoreFields;

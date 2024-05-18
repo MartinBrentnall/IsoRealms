@@ -22,14 +22,14 @@
 #include "IsoRealms/Types.h"
 
 namespace IsoRealms::Basics {
-  Binding::Binding(DOMNode& node, const std::string& nameAttribute, const std::string& valueTag, IProject* project, IBindingRegistry* localArgs, bool init) :
+  Binding::Binding(JSONObject object, const std::string& nameAttribute, const std::string& valueTag, IProject* project, IBindingRegistry* localArgs, bool init) :
             cDefValue(project, localArgs) {
-    cDefName = node.getAttribute(nameAttribute);
-    if (node.containsNode(valueTag)) {
+    cDefName = object.getString(nameAttribute);
+    if (object.hasMember(valueTag)) {
       if (init) {
-        cDefValue.init(node, valueTag);
+        cDefValue.init(object, valueTag);
       } else {
-        cDefValue.set(node, valueTag);
+        cDefValue.set(object, valueTag);
       }
     }
   }
@@ -57,13 +57,13 @@ namespace IsoRealms::Basics {
     return mFunction;
   }
 
-  void Binding::save(DOMNodeWriter* node, const std::string& attributeName, IAssetIdentifier* identifier, bool local, const std::string& attributeValueName) const {
-    node->addAttribute(attributeName, cDefName);
-    cDefValue.save(node, local, attributeValueName);
+  void Binding::save(JSONObject object, const std::string& attributeName, IAssetIdentifier* identifier, const std::string& attributeValueName) const {
+    object.addString(attributeName, cDefName);
+    cDefValue.save(object, attributeValueName);
   }
 
-  void Binding::saveCall(DOMNodeWriter* node, const std::string& attributeName) const {
-    node->addAttribute(attributeName, cDefName);
+  void Binding::saveCall(JSONObject object, const std::string& attributeName) const {
+    object.addString(attributeName, cDefName);
   }
 
   IBinding* Binding::getValue() const {

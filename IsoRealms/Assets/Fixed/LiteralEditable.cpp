@@ -29,6 +29,10 @@ namespace IsoRealms {
     return false;
   }
 
+  void LiteralEditable::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
+
   void LiteralEditable::EditableScreen::notifyVisible() {
     // Nothing to do.
   }
@@ -67,5 +71,9 @@ namespace IsoRealms {
 
   bool LiteralEditable::EditableScreen::renderAssetIcon() const {
     return false;
+  }
+
+  void LiteralEditable::EditableScreen::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 }

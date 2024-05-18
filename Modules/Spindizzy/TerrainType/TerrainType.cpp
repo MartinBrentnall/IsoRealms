@@ -23,26 +23,19 @@
 #include "Modules/Spindizzy/ZoneType/ZoneType.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string TerrainType::TAG_IMPACT_ACTION   = "ImpactAction";
-  const std::string TerrainType::TAG_CONTACT_ACTION  = "ContactAction";
-  const std::string TerrainType::TAG_SURFACE         = "Surface";
-  const std::string TerrainType::TAG_SPLIT_SURFACE_A = "SplitSurfaceA";
-  const std::string TerrainType::TAG_SPLIT_SURFACE_B = "SplitSurfaceB";
-  const std::string TerrainType::TAG_WEST_WALL       = "WestWall";
-  const std::string TerrainType::TAG_EAST_WALL       = "EastWall";
-  const std::string TerrainType::TAG_SOUTH_WALL      = "SouthWall";
-  const std::string TerrainType::TAG_NORTH_WALL      = "NorthWall";
-  const std::string TerrainType::TAG_TEXTURE         = "Texture";
-
-  const std::string TerrainType::ATTRIBUTE_FRICTION          = "friction";
-  const std::string TerrainType::ATTRIBUTE_GRIP              = "grip";
-  const std::string TerrainType::ATTRIBUTE_BOUNCE            = "bounce";
-  const std::string TerrainType::ATTRIBUTE_PATTERN           = "pattern";
-  const std::string TerrainType::ATTRIBUTE_RESPAWN_ALLOWED   = "respawnAllowed";
-  const std::string TerrainType::ATTRIBUTE_SOLID             = "solid";
-  const std::string TerrainType::ATTRIBUTE_DEFAULT_ZONE_TYPE = "defaultZoneType";
-  const std::string TerrainType::ATTRIBUTE_DEFAULT_THEME_SET = "defaultThemeSet";
-  const std::string TerrainType::ATTRIBUTE_WALL_BOUNCE       = "wallBounce";
+  const std::string TerrainType::JSON_ALLOW_RESPAWN = "allowRespawn";
+  const std::string TerrainType::JSON_EAST_WALL     = "eastWall";
+  const std::string TerrainType::JSON_FLOOR_BOUNCE  = "floorBounce";
+  const std::string TerrainType::JSON_FRICTION      = "friction";
+  const std::string TerrainType::JSON_GRIP          = "grip";
+  const std::string TerrainType::JSON_NORTH_WALL    = "northWall";
+  const std::string TerrainType::JSON_ON_IMPACT     = "onImpact";
+  const std::string TerrainType::JSON_ON_TOUCH      = "onTouch";
+  const std::string TerrainType::JSON_SOLID         = "solid";
+  const std::string TerrainType::JSON_SOUTH_WALL    = "southWall";
+  const std::string TerrainType::JSON_SURFACE       = "surface";
+  const std::string TerrainType::JSON_WALL_BOUNCE   = "wallBounce";
+  const std::string TerrainType::JSON_WEST_WALL     = "westWall";
 
   const float TerrainType::DEFAULT_WALL_BOUNCE = 0.6f;
 
@@ -63,23 +56,23 @@ namespace IsoRealms::Spindizzy {
             cDefImpactAction(project) {
   }
   
-  TerrainType::TerrainType(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
+  TerrainType::TerrainType(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
             TerrainType(project, spindizzy) {
-    cDefSolid = node.getBooleanAttribute(ATTRIBUTE_SOLID);
-    cDefSurfaceBounce = node.getFloatAttribute(ATTRIBUTE_BOUNCE);
-    cDefWallBounce = node.getFloatAttribute(ATTRIBUTE_WALL_BOUNCE, DEFAULT_WALL_BOUNCE);
-    cDefRespawnAllowed = node.getBooleanAttribute(ATTRIBUTE_RESPAWN_ALLOWED);
-    cDefSurfaceGrip = node.getFloatAttribute(ATTRIBUTE_GRIP);
-    cDefSurfaceFriction = node.getFloatAttribute(ATTRIBUTE_FRICTION);
-    cDefContactAction.init(node, TAG_CONTACT_ACTION);
-    cDefImpactAction.init(node, TAG_IMPACT_ACTION);
-    cDefWestWallPattern.init(node.getNode(TAG_WEST_WALL));
-    cDefEastWallPattern.init(node.getNode(TAG_EAST_WALL));
-    cDefSouthWallPattern.init(node.getNode(TAG_SOUTH_WALL));
-    cDefNorthWallPattern.init(node.getNode(TAG_NORTH_WALL));
-    cDefSurfacePattern.init(node.getNode(TAG_SURFACE));
+    cDefSolid = object.getBoolean(JSON_SOLID);
+    cDefSurfaceBounce = object.getFloat(JSON_FLOOR_BOUNCE);
+    cDefWallBounce = object.getFloat(JSON_WALL_BOUNCE, DEFAULT_WALL_BOUNCE);
+    cDefRespawnAllowed = object.getBoolean(JSON_ALLOW_RESPAWN);
+    cDefSurfaceGrip = object.getFloat(JSON_GRIP);
+    cDefSurfaceFriction = object.getFloat(JSON_FRICTION);
+    cDefContactAction.init(object, JSON_ON_TOUCH);
+    cDefImpactAction.init(object, JSON_ON_IMPACT);
+    cDefWestWallPattern.init(object.getObject(JSON_WEST_WALL));
+    cDefEastWallPattern.init(object.getObject(JSON_EAST_WALL));
+    cDefSouthWallPattern.init(object.getObject(JSON_SOUTH_WALL));
+    cDefNorthWallPattern.init(object.getObject(JSON_NORTH_WALL));
+    cDefSurfacePattern.init(object.getObject(JSON_SURFACE));
   }
-  
+
   void TerrainType::registerAssets(IAssetRegistry* assets) {
     // Nothing to do.
   }
@@ -202,20 +195,20 @@ namespace IsoRealms::Spindizzy {
     return cDefSolid;
   }
 
-  void TerrainType::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    node->addAttribute(ATTRIBUTE_SOLID, cDefSolid);
-    node->addAttribute(ATTRIBUTE_FRICTION, cDefSurfaceFriction);
-    node->addAttribute(ATTRIBUTE_GRIP, cDefSurfaceGrip);
-    node->addAttribute(ATTRIBUTE_BOUNCE, cDefSurfaceBounce);
-    node->addAttribute(ATTRIBUTE_WALL_BOUNCE, cDefWallBounce, DEFAULT_WALL_BOUNCE);
-    node->addAttribute(ATTRIBUTE_RESPAWN_ALLOWED, cDefRespawnAllowed);
-    cDefImpactAction.save(node, TAG_IMPACT_ACTION);
-    cDefContactAction.save(node, TAG_CONTACT_ACTION);
-    cDefSurfacePattern.save(node, TAG_SURFACE);
-    cDefWestWallPattern.save(node, TAG_WEST_WALL);
-    cDefEastWallPattern.save(node, TAG_EAST_WALL);
-    cDefSouthWallPattern.save(node, TAG_SOUTH_WALL);
-    cDefNorthWallPattern.save(node, TAG_NORTH_WALL);
+  void TerrainType::save(JSONObject object, IAssetIdentifier* identifier) const {
+    object.addBoolean(JSON_SOLID, cDefSolid);
+    object.addFloat(JSON_FRICTION, cDefSurfaceFriction);
+    object.addFloat(JSON_GRIP, cDefSurfaceGrip);
+    object.addFloat(JSON_FLOOR_BOUNCE, cDefSurfaceBounce);
+    object.addFloat(JSON_WALL_BOUNCE, cDefWallBounce, DEFAULT_WALL_BOUNCE);
+    object.addBoolean(JSON_ALLOW_RESPAWN, cDefRespawnAllowed);
+    cDefImpactAction.save(object, JSON_ON_IMPACT);
+    cDefContactAction.save(object, JSON_ON_TOUCH);
+    cDefSurfacePattern.save(object, JSON_SURFACE);
+    cDefWestWallPattern.save(object, JSON_EAST_WALL);
+    cDefEastWallPattern.save(object, JSON_WEST_WALL);
+    cDefSouthWallPattern.save(object, JSON_SOUTH_WALL);
+    cDefNorthWallPattern.save(object, JSON_NORTH_WALL);
   }
 
   std::vector<ConditionElement*> TerrainType::getTerrainStateConditionElements() {
@@ -235,6 +228,10 @@ namespace IsoRealms::Spindizzy {
 
   bool TerrainType::renderAssetIcon() const {
     return false;
+  }
+
+  void TerrainType::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   TerrainType::Pen::Pen(TerrainType& parent, WorldEditor* editor) :

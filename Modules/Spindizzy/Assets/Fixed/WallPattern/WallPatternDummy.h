@@ -41,6 +41,6 @@ namespace IsoRealms::Spindizzy {
      * Implements IAsset via IWallPattern *
     \**************************************/
     bool renderAssetIcon() const override;
-    void saveAsset(DOMNodeWriter* node) const override;
+    void saveAsset(JSONObject object) const override;
   };
 }

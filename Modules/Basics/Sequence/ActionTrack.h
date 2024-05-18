@@ -32,14 +32,14 @@ namespace IsoRealms::Basics {
     public:
     static const std::string TYPE_NAME;
 
-    ActionTrack(DOMNode& node, IProject* project);
+    ActionTrack(JSONObject object, IProject* project);
 
     /*****************************\
      * Implements ISequenceTrack *
     \*****************************/
     void registerAssets(IAssetRegistry* assets) override;
     void unregisterAssets(IAssetRemover* assets) override;
-    void save(DOMNodeWriter* node) const override;
+    void save(JSONObject object) const override;
     bool play(unsigned int milliseconds) override;
     void reset() override;
     unsigned int getDuration() const override;
@@ -47,17 +47,18 @@ namespace IsoRealms::Basics {
 
     private:
 
-    // DOM strings.
-    static const std::string TAG_ACTION;
-    
-    static const std::string ATTRIBUTE_DELAY;
-      
+    // JSON members.
+    static const std::string JSON_DELAY;
+    static const std::string JSON_EVENTS;
+    static const std::string JSON_EXECUTE;
+    static const std::string JSON_TYPE;
+
     // Definition data.
     class ActionEvent final {
       public:
-      ActionEvent(DOMNode& node, IProject* project);
+      ActionEvent(JSONObject object, IProject* project);
 
-      void save(DOMNodeWriter* node) const;
+      void save(JSONObject object) const;
       unsigned int getDuration() const;
       void execute();
       

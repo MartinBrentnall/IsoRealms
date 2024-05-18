@@ -24,10 +24,10 @@
 #include "Assets/Registry/IAssetUser.h"
 #include "Assets/Type/IAsset.h"
 #include "IAssetLiterals.h"
+#include "IsoRealms/Persistence/JSONDocument.h"
 #include "IStateListener.h"
 
 namespace IsoRealms {
-  class DOMNode;
   class I3DModel;
   class I3DModelType;
   class IAction;
@@ -56,24 +56,24 @@ namespace IsoRealms {
   class IAssets : public IAssetLiterals,
                   public IAsset {
     public:
-    virtual I3DModelType*    getModelType(     IAssetUser<I3DModelType>*    user, DOMNode& node,                                                bool required = true) = 0;
-    virtual IAction*         getAction(        IAssetUser<IAction>*         user, DOMNode& node, const std::string& tag, IBindingRegistry* = nullptr, const std::string& id = "") = 0;
-    virtual IActionType*     getActionType(    IAssetUser<IActionType>*     user, DOMNode& node,                                                bool required = true) = 0;
-    virtual IAssets*         getAssets(        IAssetUser<IAssets>*         user, DOMNode& node,                                                bool required = true) = 0;
-    virtual IBinding*        getBinding(       IAssetUser<IBinding>*        user, DOMNode& node, IBindingRegistry* locals = nullptr,            bool required = true) = 0;
-    virtual IBoolean*        getBoolean(       IAssetUser<IBoolean>*        user, DOMNode& node, IStateListener<IBoolean*>* listener = nullptr, bool required = true) = 0;
-    virtual IColour*         getColour(        IAssetUser<IColour>*         user, DOMNode& node, IStateListener<IColour*>*  listener = nullptr, bool required = true) = 0;
-    virtual IEditable*       getEditable(      IAssetUser<IEditable>*       user, DOMNode& node,                                                bool required = true) = 0;
-    virtual IFloat*          getFloat(         IAssetUser<IFloat>*          user, DOMNode& node, IStateListener<IFloat*>*   listener = nullptr, bool required = true) = 0;
-    virtual IFont*           getFont(          IAssetUser<IFont>*           user, DOMNode& node,                                                bool required = true) = 0;
-    virtual IInputHandler*   getInputHandler(  IAssetUser<IInputHandler>*   user, DOMNode& node,                                                bool required = true) = 0;
-    virtual IInteger*        getInteger(       IAssetUser<IInteger>*        user, DOMNode& node, IStateListener<IInteger*>* listener = nullptr, bool required = true) = 0;
-    virtual IProjectOptions* getProjectOptions(IAssetUser<IProjectOptions>* user, DOMNode& node,                                                bool required = true) = 0;
-    virtual IScreen*         getScreen(        IAssetUser<IScreen>*         user, DOMNode& node,                                                bool required = true) = 0;
-    virtual IString*         getString(        IAssetUser<IString>*         user, DOMNode& node, IStateListener<IString*>*  listener = nullptr, bool required = true) = 0;
-    virtual ITexture*        getTexture(       IAssetUser<ITexture>*        user, DOMNode& node, IStateListener<ITexture*>* listener = nullptr, bool required = true) = 0;
-    virtual IVertex*         getVertex(        IAssetUser<IVertex>*         user, DOMNode& node,                                                bool required = true) = 0;
-    
+    virtual I3DModelType*    getModelType(     IAssetUser<I3DModelType>*    user, JSONObject object,                                                bool required = true) = 0;
+    virtual IAction*         getAction(        IAssetUser<IAction>*         user, JSONObject object, const std::string& tag, IBindingRegistry* = nullptr, const std::string& id = "") = 0;
+    virtual IActionType*     getActionType(    IAssetUser<IActionType>*     user, JSONObject object,                                                bool required = true) = 0;
+    virtual IAssets*         getAssets(        IAssetUser<IAssets>*         user, JSONObject object,                                                bool required = true) = 0;
+    virtual IBinding*        getBinding(       IAssetUser<IBinding>*        user, JSONObject object, IBindingRegistry* locals = nullptr,            bool required = true) = 0;
+    virtual IBoolean*        getBoolean(       IAssetUser<IBoolean>*        user, JSONObject object, IStateListener<IBoolean*>* listener = nullptr, bool required = true) = 0;
+    virtual IColour*         getColour(        IAssetUser<IColour>*         user, JSONObject object, IStateListener<IColour*>*  listener = nullptr, bool required = true) = 0;
+    virtual IEditable*       getEditable(      IAssetUser<IEditable>*       user, JSONObject object,                                                bool required = true) = 0;
+    virtual IFloat*          getFloat(         IAssetUser<IFloat>*          user, JSONObject object, IStateListener<IFloat*>*   listener = nullptr, bool required = true) = 0;
+    virtual IFont*           getFont(          IAssetUser<IFont>*           user, JSONObject object,                                                bool required = true) = 0;
+    virtual IInputHandler*   getInputHandler(  IAssetUser<IInputHandler>*   user, JSONObject object,                                                bool required = true) = 0;
+    virtual IInteger*        getInteger(       IAssetUser<IInteger>*        user, JSONObject object, IStateListener<IInteger*>* listener = nullptr, bool required = true) = 0;
+    virtual IProjectOptions* getProjectOptions(IAssetUser<IProjectOptions>* user, JSONObject object,                                                bool required = true) = 0;
+    virtual IScreen*         getScreen(        IAssetUser<IScreen>*         user, JSONObject object,                                                bool required = true) = 0;
+    virtual IString*         getString(        IAssetUser<IString>*         user, JSONObject object, IStateListener<IString*>*  listener = nullptr, bool required = true) = 0;
+    virtual ITexture*        getTexture(       IAssetUser<ITexture>*        user, JSONObject object, IStateListener<ITexture*>* listener = nullptr, bool required = true) = 0;
+    virtual IVertex*         getVertex(        IAssetUser<IVertex>*         user, JSONObject object,                                                bool required = true) = 0;
+
     virtual void release(IAssetUser<I3DModelType>*    user, I3DModelType*    asset) = 0;
     virtual void release(IAssetUser<IAction>*         user, IAction*         asset) = 0;
     virtual void release(IAssetUser<IActionType>*     user, IActionType*     asset) = 0;

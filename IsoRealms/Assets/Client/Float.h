@@ -23,8 +23,7 @@
 #include "IsoRealms/Assets/Type/IFloat.h"
 #include "IsoRealms/IProject.h"
 #include "IsoRealms/IAssets.h"
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
-
+#include "IsoRealms/Persistence/JSONDocument.h"
 
 namespace IsoRealms {
   class Float : public IAssetUser<IFloat>,
@@ -41,9 +40,9 @@ namespace IsoRealms {
     public:
     Float(IProject* project, float defaultValue = 0.0f, std::function<void(float)> listener = nullptr);
 
-    void init(DOMNode& node, const std::string& tag);
-    void set(DOMNode& node, const std::string& tag);
-    void save(DOMNodeWriter* node, const std::string& tag) const;
+    void init(JSONObject object, const std::string& member);
+    void set(JSONObject object, const std::string& member);
+    void save(JSONObject object, const std::string& name) const;
 
     IFloat* operator->() const {
       return cFloat;

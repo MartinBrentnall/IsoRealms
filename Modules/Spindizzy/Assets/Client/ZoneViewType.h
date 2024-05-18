@@ -19,8 +19,7 @@
 #pragma once
 
 #include "IsoRealms/Assets/Registry/IAssetUser.h"
-#include "IsoRealms/Persistence/DOMNode.h"
-#include "IsoRealms/Persistence/DOMNodeWriter.h"
+#include "IsoRealms/Persistence/JSONDocument.h"
 
 #include "Modules/Spindizzy/Assets/Type/IZoneViewType.h"
 
@@ -32,10 +31,10 @@ namespace IsoRealms::Spindizzy {
     public:
     ZoneViewType(Spindizzy* spindizzy);
 
-    void init(DOMNode& node, WorldView* owner);
-    void save(DOMNodeWriter* node, const std::string& tag) const;
+    void init(JSONObject object, WorldView* owner);
+    void set(JSONObject object, WorldView* owner);
+    void save(JSONObject object, const std::string& name) const;
 
-    void set(DOMNode& node, WorldView* owner);
     IZoneViewType* operator->() const {
       return cZoneViewType;
     }

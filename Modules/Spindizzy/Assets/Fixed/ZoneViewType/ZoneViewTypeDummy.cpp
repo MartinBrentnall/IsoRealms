@@ -33,7 +33,7 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  void ZoneViewTypeDummy::saveAsset(DOMNodeWriter* node) const {
+  void ZoneViewTypeDummy::saveAsset(JSONObject object) const {
     // Nothing to do.
   }
 }

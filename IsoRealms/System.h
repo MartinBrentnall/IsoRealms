@@ -113,6 +113,7 @@ namespace IsoRealms {
      * @return Output stream to file at the specified path.
      */ 
     static std::ofstream openOutputStream(const std::string& path); 
+    static std::ifstream openInputStream(const std::string& path, bool user);
 
     /**
      * Return a list of filenames from the specified resource.

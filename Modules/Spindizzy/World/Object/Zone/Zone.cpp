@@ -25,23 +25,22 @@
 #include "Modules/Spindizzy/ZoneType/ZoneType.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string Zone::TAG_ALIEN   = "Alien";
-  const std::string Zone::TAG_LIFT    = "Lift";
-  const std::string Zone::TAG_OBJECT  = "Object";
-  const std::string Zone::TAG_PICK_UP = "PickUp";
-  const std::string Zone::TAG_TERRAIN = "Terrain";
+  const std::string Zone::JSON_ALIENS    = "aliens";
+  const std::string Zone::JSON_HEIGHT    = "height";
+  const std::string Zone::JSON_LIFTS     = "lifts";
+  const std::string Zone::JSON_LENGTH    = "length";
+  const std::string Zone::JSON_OBJECTS   = "objects";
+  const std::string Zone::JSON_PICK_UPS  = "pickUps";
+  const std::string Zone::JSON_TERRAIN   = "terrain";
+  const std::string Zone::JSON_THEME     = "theme";
+  const std::string Zone::JSON_THEME_SET = "themeSet";
+  const std::string Zone::JSON_TYPE      = "type";
+  const std::string Zone::JSON_VISITED   = "visited";
+  const std::string Zone::JSON_WIDTH     = "width";
+  const std::string Zone::JSON_X         = "x";
+  const std::string Zone::JSON_Y         = "y";
+  const std::string Zone::JSON_Z         = "z";
 
-  const std::string Zone::ATTRIBUTE_HEIGHT    = "height";
-  const std::string Zone::ATTRIBUTE_LENGTH    = "length";
-  const std::string Zone::ATTRIBUTE_THEME     = "theme";
-  const std::string Zone::ATTRIBUTE_THEME_SET = "themeSet";
-  const std::string Zone::ATTRIBUTE_TYPE      = "type";
-  const std::string Zone::ATTRIBUTE_VISITED   = "visited";
-  const std::string Zone::ATTRIBUTE_WIDTH     = "width";
-  const std::string Zone::ATTRIBUTE_X         = "x";
-  const std::string Zone::ATTRIBUTE_Y         = "y";
-  const std::string Zone::ATTRIBUTE_Z         = "z";
-  
   Zone::Zone(World& world, ZoneType* type, int xStart, int yStart, int zStart, int xEnd, int yEnd, int zEnd) :
             cDefWorld(world),
             cDefType(type),
@@ -57,34 +56,47 @@ namespace IsoRealms::Spindizzy {
     reset();
   }
 
-  Zone::Zone(World& world, DOMNode& node) :
+  Zone::Zone(World& world, JSONObject object) :
             cDefWorld(world),
             cDefType(nullptr),
-            cDefStartX(node.getIntegerAttribute(ATTRIBUTE_X)),
-            cDefEndX(node.getIntegerAttribute(ATTRIBUTE_WIDTH)  + cDefStartX - 1),
-            cDefStartY(node.getIntegerAttribute(ATTRIBUTE_Y)),
-            cDefEndY(node.getIntegerAttribute(ATTRIBUTE_LENGTH) + cDefStartY - 1),
-            cDefStartZ(node.getIntegerAttribute(ATTRIBUTE_Z)),
-            cDefEndZ(node.getIntegerAttribute(ATTRIBUTE_HEIGHT) + cDefStartZ - 1),
+            cDefStartX(object.getInteger(JSON_X)),
+            cDefEndX(object.getInteger(JSON_WIDTH)  + cDefStartX - 1),
+            cDefStartY(object.getInteger(JSON_Y)),
+            cDefEndY(object.getInteger(JSON_LENGTH) + cDefStartY - 1),
+            cDefStartZ(object.getInteger(JSON_Z)),
+            cDefEndZ(object.getInteger(JSON_HEIGHT) + cDefStartZ - 1),
             cDefThemeSet(nullptr),
             cDefTheme(nullptr),
-            cDefVisited(node.getBooleanAttribute(ATTRIBUTE_VISITED)) {
-    for (DOMNode& mNode : node) {
-      std::string mChildName = mNode.getName();
-      if      (mChildName == TAG_ALIEN)   {cDefAliens.emplace_back(std::make_unique<Alien>(*this, mNode));}
-      else if (mChildName == TAG_LIFT)    {cDefLifts.emplace_back(std::make_unique<Lift>(*this, mNode));}
-      else if (mChildName == TAG_OBJECT)  {cDefObjects.emplace_back(std::make_unique<ZoneObject>(*this, mNode));}
-      else if (mChildName == TAG_PICK_UP) {cDefPickUps.emplace_back(std::make_unique<PickUp>(*this, mNode));}
-      else if (mChildName == TAG_TERRAIN) {addTerrain(std::make_unique<Terrain>(*this, mNode));}
-      else {
-        throw ParseException("Unknown tag for Spindizzy/Zone: " + mChildName);
+            cDefVisited(object.getBoolean(JSON_VISITED)) {
+    if (object.hasMember(JSON_ALIENS)) {
+      for (JSONObject mAlienObject : object.getArray(JSON_ALIENS)) {
+        cDefAliens.emplace_back(std::make_unique<Alien>(*this, mAlienObject));
       }
     }
-
-    cDefWorld.getSpindizzy()->getProject()->init([this, node](IAssets* assets) {
-      cDefType = cDefWorld.getSpindizzy()->getZoneType(node.getAttribute(ATTRIBUTE_TYPE));
-      std::string mThemeSet = node.getAttribute(ATTRIBUTE_THEME_SET);
-      std::string mThemeName = node.getAttribute(ATTRIBUTE_THEME);
+    if (object.hasMember(JSON_LIFTS)) {
+      for (JSONObject mLiftObject : object.getArray(JSON_LIFTS)) {
+        cDefLifts.emplace_back(std::make_unique<Lift>(*this, mLiftObject));
+      }
+    }
+    if (object.hasMember(JSON_OBJECTS)) {
+      for (JSONObject mObjectObject : object.getArray(JSON_OBJECTS)) {
+        cDefObjects.emplace_back(std::make_unique<ZoneObject>(*this, mObjectObject));
+      }
+    }
+    if (object.hasMember(JSON_PICK_UPS)) {
+      for (JSONObject mPickUpObject : object.getArray(JSON_PICK_UPS)) {
+        cDefPickUps.emplace_back(std::make_unique<PickUp>(*this, mPickUpObject));
+      }
+    }
+    if (object.hasMember(JSON_TERRAIN)) {
+      for (JSONObject mTerrainObject : object.getArray(JSON_TERRAIN)) {
+        addTerrain(std::make_unique<Terrain>(*this, mTerrainObject));
+      }
+    }
+    cDefWorld.getSpindizzy()->getProject()->init([this, object](IAssets* assets) {
+      cDefType = cDefWorld.getSpindizzy()->getZoneType(object.getString(JSON_TYPE));
+      std::string mThemeSet = object.getString(JSON_THEME_SET);
+      std::string mThemeName = object.getString(JSON_THEME);
       cDefThemeSet = mThemeSet != "" ? cDefWorld.getSpindizzy()->getThemeSet(mThemeSet) : nullptr;
       cDefTheme = mThemeName != "" ? cDefThemeSet->getTheme(mThemeName) : nullptr;
       reset();
@@ -96,7 +108,7 @@ namespace IsoRealms::Spindizzy {
       }
     });
   }
-  
+
   void Zone::registerAssets() {
     for (std::unique_ptr<ZoneObject>& mObject : cDefObjects) {
       mObject->registerAssets();
@@ -568,42 +580,58 @@ namespace IsoRealms::Spindizzy {
     for (std::unique_ptr<ZoneObject>& mObject : cDefObjects) {mObject->updateRuntime(milliseconds);}
   }
 
-  void Zone::save(DOMNodeWriter* node) {
+  void Zone::save(JSONObject object) {
     Spindizzy* mSpindizzy = cDefWorld.getSpindizzy();
-    node->addAttribute("type",     mSpindizzy->getID(cDefType));
-    if (cDefThemeSet != nullptr) {
-      node->addAttribute("themeSet", mSpindizzy->getID(cDefThemeSet));
-      node->addAttribute("theme",    cDefThemeSet->getName(cDefTheme));
-    }
-    if (cDefVisited) {
-      node->addAttribute("visited", "true");
-    }
-    node->addAttribute(ATTRIBUTE_X,      cDefStartX);
-    node->addAttribute(ATTRIBUTE_Y,      cDefStartY);
-    node->addAttribute(ATTRIBUTE_Z,      cDefStartZ);
-    node->addAttribute(ATTRIBUTE_WIDTH,  (cDefEndX - cDefStartX) + 1);
-    node->addAttribute(ATTRIBUTE_LENGTH, (cDefEndY - cDefStartY) + 1);
-    node->addAttribute(ATTRIBUTE_HEIGHT, (cDefEndZ - cDefStartZ) + 1);
 
+    object.addString(JSON_TYPE, mSpindizzy->getID(cDefType));
+    if (cDefThemeSet != nullptr) {
+      object.addString(JSON_THEME_SET, mSpindizzy->getID(cDefThemeSet));
+      object.addString(JSON_THEME,     cDefThemeSet->getName(cDefTheme));
+    }
+    object.addBoolean(JSON_VISITED, cDefVisited);
+    object.addInteger(JSON_X,      cDefStartX);
+    object.addInteger(JSON_Y,      cDefStartY);
+    object.addInteger(JSON_Z,      cDefStartZ);
+    object.addInteger(JSON_WIDTH,  (cDefEndX - cDefStartX) + 1);
+    object.addInteger(JSON_LENGTH, (cDefEndY - cDefStartY) + 1);
+    object.addInteger(JSON_HEIGHT, (cDefEndZ - cDefStartZ) + 1);
+
+    JSONArray mTerrainArray = object.addArray(JSON_TERRAIN);
     for (std::unique_ptr<Terrain>& mTerrain : cDefTerrain) {
-      DOMNodeWriter mTerrainNode = node->addBranch(TAG_TERRAIN);
-      mTerrain->save(&mTerrainNode, cDefStartX, cDefStartY, cDefStartZ);
+      JSONObject mTerrainObject = mTerrainArray.addObject();
+      mTerrain->save(mTerrainObject, cDefStartX, cDefStartY, cDefStartZ);
     }
-    for (std::unique_ptr<Lift>& mLift : cDefLifts) {
-      DOMNodeWriter mLiftNode = node->addBranch(TAG_LIFT);
-      mLift->save(&mLiftNode, cDefStartX, cDefStartY, cDefStartZ);
+
+    if (!cDefLifts.empty()) {
+      JSONArray mLiftsArray = object.addArray(JSON_LIFTS);
+      for (std::unique_ptr<Lift>& mLift : cDefLifts) {
+        JSONObject mLiftObject = mLiftsArray.addObject();
+        mLift->save(mLiftObject, cDefStartX, cDefStartY, cDefStartZ);
+      }
     }
-    for (std::unique_ptr<Alien>& mAlien : cDefAliens) {
-      DOMNodeWriter mAlienNode = node->addBranch(TAG_ALIEN);
-      mAlien->save(&mAlienNode, cDefStartX, cDefStartY, cDefStartZ);
+
+    if (!cDefAliens.empty()) {
+      JSONArray mAliensArray = object.addArray(JSON_ALIENS);
+      for (std::unique_ptr<Alien>& mAlien : cDefAliens) {
+        JSONObject mAlienObject = mAliensArray.addObject();
+        mAlien->save(mAlienObject, cDefStartX, cDefStartY, cDefStartZ);
+      }
     }
-    for (std::unique_ptr<PickUp>& mPickUp  : cDefPickUps) {
-      DOMNodeWriter mPickUpNode = node->addBranch(TAG_PICK_UP);
-      mPickUp->save(&mPickUpNode, cDefStartX, cDefStartY, cDefStartZ);
+
+    if (!cDefPickUps.empty()) {
+      JSONArray mPickupsArray = object.addArray(JSON_PICK_UPS);
+      for (std::unique_ptr<PickUp>& mPickUp  : cDefPickUps) {
+        JSONObject mPickUpObject = mPickupsArray.addObject();
+        mPickUp->save(mPickUpObject, cDefStartX, cDefStartY, cDefStartZ);
+      }
     }
-    for (std::unique_ptr<ZoneObject>& mObject : cDefObjects) {
-      DOMNodeWriter mObjectNode = node->addBranch(TAG_OBJECT);
-      mObject->save(&mObjectNode);
+
+    if (!cDefObjects.empty()) {
+      JSONArray mObjectsArray = object.addArray(JSON_OBJECTS);
+      for (std::unique_ptr<ZoneObject>& mObject : cDefObjects) {
+        JSONObject mObjectObject = mObjectsArray.addObject();
+        mObject->save(mObjectObject);
+      }
     }
   }
 

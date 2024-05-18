@@ -32,8 +32,8 @@ namespace IsoRealms {
               cProject(project) {
     }
 
-    IBinding* getAsset(Project& project, DOMNode& node) const override {
-      return cBoundAssets.emplace(std::make_unique<BoundAsset<FROM>>(cProject, node)).first->get();
+    IBinding* getAsset(Project& project, JSONObject object) const override {
+      return cBoundAssets.emplace(std::make_unique<BoundAsset<FROM>>(cProject, object)).first->get();
     }
 
     void releaseAsset(const IBinding* asset) override {
@@ -47,8 +47,6 @@ namespace IsoRealms {
     private:
     IProject* cProject;
 
-    inline static const std::string TAG_ASSET = "Asset";
-    
     mutable std::set<std::unique_ptr<IBinding>> cBoundAssets;
   };
 }

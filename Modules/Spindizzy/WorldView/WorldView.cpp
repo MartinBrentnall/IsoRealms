@@ -21,13 +21,9 @@
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string WorldView::TAG_CAMERA            = "Camera";
-  const std::string WorldView::TAG_START_PLAY_ACTION = "StartPlayAction";
-  const std::string WorldView::TAG_STOP_PLAY_ACTION  = "StopPlayAction";
-  const std::string WorldView::TAG_ZONE_VIEW_TYPE    = "ZoneViewType";
-  
-  const std::string WorldView::ATTRIBUTE_TYPE  = "type";
-  const std::string WorldView::ATTRIBUTE_WORLD = "world";
+  const std::string WorldView::JSON_CAMERA = "camera";
+  const std::string WorldView::JSON_TYPE   = "type";
+  const std::string WorldView::JSON_WORLD  = "world";
 
   const std::string WorldView::TYPE_ZONE_VIEW = "ZoneView";
 
@@ -46,12 +42,12 @@ namespace IsoRealms::Spindizzy {
     });
   }
     
-  WorldView::WorldView(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
+  WorldView::WorldView(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
             WorldView(project, spindizzy) {
-    cDefCamera.set(node.getNode(TAG_CAMERA), this);
-    cDefZoneViewType.set(node.getNode(TAG_ZONE_VIEW_TYPE), this);
-    project->init([this, &node](IAssets* resources) {
-      cDefWorld = cDefSpindizzy.getWorld(node.getAttribute(ATTRIBUTE_WORLD));
+    cDefCamera.set(object.getObject(JSON_CAMERA), this);
+    cDefZoneViewType.set(object.getObject(JSON_TYPE), this);
+    project->init([this, object](IAssets* resources) {
+      cDefWorld = cDefSpindizzy.getWorld(object.getString(JSON_WORLD));
       cDefWorld->registerView(this);
       std::vector<std::unique_ptr<Zone>>& mZones = cDefWorld->getZones();
       for (std::unique_ptr<Zone>& mZone : mZones) {
@@ -73,10 +69,10 @@ namespace IsoRealms::Spindizzy {
     cDefCamera->unregisterAssets(assets);
   }
   
-  void WorldView::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    node->addAttribute(ATTRIBUTE_WORLD, cDefSpindizzy.getID(cDefWorld));
-    cDefCamera.save(node, TAG_CAMERA);
-    cDefZoneViewType.save(node, TAG_ZONE_VIEW_TYPE);
+  void WorldView::save(JSONObject object, IAssetIdentifier* identifier) const {
+    object.addString(JSON_WORLD, cDefSpindizzy.getID(cDefWorld));
+    cDefCamera.save(object, JSON_CAMERA);
+    cDefZoneViewType.save(object, JSON_TYPE);
   }
 
   void WorldView::hintInUse(bool inUse) {
@@ -163,6 +159,10 @@ namespace IsoRealms::Spindizzy {
 
   bool WorldView::renderAssetIcon() const {
     return false;
+  }
+
+  void WorldView::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   WorldView::ZoneView::ZoneView(Zone* zone, std::unique_ptr<IZoneView> view) :

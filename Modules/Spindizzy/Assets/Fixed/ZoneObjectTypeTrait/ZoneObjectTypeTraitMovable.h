@@ -27,7 +27,7 @@ namespace IsoRealms::Spindizzy {
 
   class ZoneObjectTypeTraitMovable : public IZoneObjectTypeTrait {
     public:
-    ZoneObjectTypeTraitMovable(IProject* project, ZoneObjectType* type, DOMNode& node);
+    ZoneObjectTypeTraitMovable(IProject* project, ZoneObjectType* type, JSONObject object);
     
     // Interface to be used by instances.
     std::string getInitialLocationID() const;
@@ -35,16 +35,17 @@ namespace IsoRealms::Spindizzy {
     /************************************\
      * Implements  IZoneObjectTypeTrait *
     \************************************/
-    void save(DOMNodeWriter& node) const override;
+    void save(JSONObject object) const override;
     std::unique_ptr<IZoneObjectTrait> createTrait(ZoneObject& object) override;
     void registerAssets(ISpindizzyRegistry* registry) override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
     private:
     
-    // DOM strings.
-    static const std::string ATTRIBUTE_INIT;
-    
+    // JSON members.
+    static const std::string JSON_LOCATION;
+
     // Definition data.
     std::string cDefInitialLocationID; /// ID of the initial location of movable instances.
   };

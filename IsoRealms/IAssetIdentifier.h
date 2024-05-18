@@ -23,7 +23,7 @@
 namespace IsoRealms {
   
   // Forward declaration of asset type classes.
-  class DOMNodeWriter;
+  class JSONObject;
   class I3DModel;
   class I3DModelType;
   class IAction;
@@ -48,21 +48,21 @@ namespace IsoRealms {
    */
   class IAssetIdentifier {
     public:
-    virtual void save(DOMNodeWriter* node, const IActionType*     asset) const = 0;
-    virtual void save(DOMNodeWriter* node, const IAssets*         asset) const = 0;
-    virtual void save(DOMNodeWriter* node, const I3DModelType*    asset) const = 0;
-    virtual void save(DOMNodeWriter* node, const IBinding*        asset) const = 0;
-    virtual void save(DOMNodeWriter* node, const IBoolean*        asset) const = 0;
-    virtual void save(DOMNodeWriter* node, const IColour*         asset) const = 0;
-    virtual void save(DOMNodeWriter* node, const IEditable*       asset) const = 0;
-    virtual void save(DOMNodeWriter* node, const IFloat*          asset) const = 0;
-    virtual void save(DOMNodeWriter* node, const IFont*           asset) const = 0;
-    virtual void save(DOMNodeWriter* node, const IInputHandler*   asset) const = 0;
-    virtual void save(DOMNodeWriter* node, const IInteger*        asset) const = 0;
-    virtual void save(DOMNodeWriter* node, const IScreen*         asset) const = 0;
-    virtual void save(DOMNodeWriter* node, const IProjectOptions* asset) const = 0;
-    virtual void save(DOMNodeWriter* node, const IString*         asset) const = 0;
-    virtual void save(DOMNodeWriter* node, const ITexture*        asset) const = 0;
-    virtual void save(DOMNodeWriter* node, const IVertex*         asset) const = 0;
+    virtual void save(JSONObject object, const IActionType*     asset) const = 0;
+    virtual void save(JSONObject object, const IAssets*         asset) const = 0;
+    virtual void save(JSONObject object, const I3DModelType*    asset) const = 0;
+    virtual void save(JSONObject object, const IBinding*        asset) const = 0;
+    virtual void save(JSONObject object, const IBoolean*        asset) const = 0;
+    virtual void save(JSONObject object, const IColour*         asset) const = 0;
+    virtual void save(JSONObject object, const IEditable*       asset) const = 0;
+    virtual void save(JSONObject object, const IFloat*          asset) const = 0;
+    virtual void save(JSONObject object, const IFont*           asset) const = 0;
+    virtual void save(JSONObject object, const IInputHandler*   asset) const = 0;
+    virtual void save(JSONObject object, const IInteger*        asset) const = 0;
+    virtual void save(JSONObject object, const IScreen*         asset) const = 0;
+    virtual void save(JSONObject object, const IProjectOptions* asset) const = 0;
+    virtual void save(JSONObject object, const IString*         asset) const = 0;
+    virtual void save(JSONObject object, const ITexture*        asset) const = 0;
+    virtual void save(JSONObject object, const IVertex*         asset) const = 0;
   };
 }

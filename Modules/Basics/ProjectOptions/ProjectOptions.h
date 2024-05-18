@@ -35,10 +35,10 @@ namespace IsoRealms::Basics {
      * Resource Interface *
     \**********************/
     ProjectOptions(IProject* project, Basics* basics);
-    ProjectOptions(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data);
+    ProjectOptions(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon();
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -48,14 +48,14 @@ namespace IsoRealms::Basics {
     \******************************/
     Options getFixedOptions() override;
     bool renderAssetIcon() const override;
-      
+    void saveAsset(JSONObject object) const override;
+
     private:
 
-    // DOM strings.
-    static const std::string TAG_OPTION;
-    static const std::string TAG_VALUE;
-
-    static const std::string ATTRIBUTE_ID;
+    // JSON members.
+    static const std::string JSON_ID;
+    static const std::string JSON_OPTIONS;
+    static const std::string JSON_VALUE;
 
     // Definition data.
     std::map<std::string, String> cDefOptions;

@@ -21,9 +21,9 @@
 #include "Modules/Spindizzy/Spindizzy.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string Top::TAG_OUTLINE = "Outline";
-  const std::string Top::TAG_SIDE    = "Side";
-  const std::string Top::TAG_TOP     = "Top";
+  const std::string Top::JSON_OUTLINE = "outline";
+  const std::string Top::JSON_SIDES   = "sides";
+  const std::string Top::JSON_TOP     = "top";
 
   const float Top::OUTLINE        = 0.82f;
   const float Top::SPINDLE_WIDTH  = 0.03f;
@@ -33,26 +33,24 @@ namespace IsoRealms::Spindizzy {
 
   Top::Top(IProject* project, Spindizzy* spindizzy) :
             cProject(project),
-            cDefColourTop(    project, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {updateTextures();}),
-            cDefColourSide(   project, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {updateTextures();}),
-            cDefColourOutline(project, 0.0f, 0.0f, 0.0f, 0.0f, [this]() {updateTextures();}),
+            cDefColourTop(    project, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
+            cDefColourSide(   project, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
+            cDefColourOutline(project, 0.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
             cRuntimeTextureTop(project),
             cRuntimeTextureSide(project),
+            cNeedsRedrawing(false),
             cEditingIconAngle(0.0f) {
     project->updateEditing([this](unsigned int milliseconds) {
       cEditingIconAngle -= 0.25f * milliseconds;
     });
-    
-    project->mainThreadInit([this]() {
-      updateTextures();
-    });
+    setNeedsRedrawing();
   }
             
-  Top::Top(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
+  Top::Top(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
             Top(project, spindizzy) {
-    cDefColourTop.init(node, TAG_TOP);
-    cDefColourSide.init(node, TAG_SIDE);
-    cDefColourOutline.init(node, TAG_OUTLINE);
+    cDefColourTop.init(object, JSON_TOP);
+    cDefColourSide.init(object, JSON_SIDES);
+    cDefColourOutline.init(object, JSON_OUTLINE);
   }
 
   void Top::registerAssets(IAssetRegistry* assets) {
@@ -63,10 +61,10 @@ namespace IsoRealms::Spindizzy {
     assets->remove(this);
   }
   
-  void Top::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    cDefColourTop.save(node, TAG_TOP);
-    cDefColourSide.save(node, TAG_SIDE);
-    cDefColourOutline.save(node, TAG_OUTLINE);
+  void Top::save(JSONObject object, IAssetIdentifier* identifier) const {
+    cDefColourTop.save(object, JSON_TOP);
+    cDefColourSide.save(object, JSON_SIDES);
+    cDefColourOutline.save(object, JSON_OUTLINE);
   }
 
   void Top::hintInUse(bool inUse) {
@@ -98,6 +96,10 @@ namespace IsoRealms::Spindizzy {
 
   bool Top::renderAssetIcon() const {
     return renderIcon();
+  }
+
+  void Top::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   void Top::update(unsigned int milliseconds) {
@@ -185,5 +187,14 @@ namespace IsoRealms::Spindizzy {
     glVertex2f( 0.74, -OUTLINE);
     glVertex2f( 0.0f,  0.62f);
     glEnd();
+  }
+
+  void Top::setNeedsRedrawing() {
+    if (!cNeedsRedrawing) {
+      cProject->updateLater([this]() {
+        updateTextures();
+        cNeedsRedrawing = false;
+      });
+    }
   }
 }

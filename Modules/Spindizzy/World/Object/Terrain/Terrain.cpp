@@ -40,22 +40,21 @@ namespace IsoRealms::Spindizzy {
   const unsigned char Terrain::CACHE_CONDITION_ELEMENT = 6;
   const unsigned char Terrain::CACHE_CONDITION_END     = 7;
 
-  const std::string Terrain::TAG_CONDITION = "Condition";
-
-  const std::string Terrain::ATTRIBUTE_ALTERNATIVE_SPLIT = "alternativeSplit";
-  const std::string Terrain::ATTRIBUTE_X                 = "x";
-  const std::string Terrain::ATTRIBUTE_Y                 = "y";
-  const std::string Terrain::ATTRIBUTE_Z                 = "z";
-  const std::string Terrain::ATTRIBUTE_WIDTH             = "width";
-  const std::string Terrain::ATTRIBUTE_LENGTH            = "length";
-  const std::string Terrain::ATTRIBUTE_HEIGHT            = "height";
-  const std::string Terrain::ATTRIBUTE_STEPPED_BOTTOM    = "steppedBottom";
-  const std::string Terrain::ATTRIBUTE_NORTH_WEST_CORNER = "northWestCorner";
-  const std::string Terrain::ATTRIBUTE_NORTH_EAST_CORNER = "northEastCorner";
-  const std::string Terrain::ATTRIBUTE_SOUTH_WEST_CORNER = "southWestCorner";
-  const std::string Terrain::ATTRIBUTE_SOUTH_EAST_CORNER = "southEastCorner";
-  const std::string Terrain::ATTRIBUTE_BEHAVIOUR         = "behaviour";
-  const std::string Terrain::ATTRIBUTE_TYPE              = "type";
+  const std::string Terrain::JSON_ALTERNATIVE_SPLIT = "alternativeSplit";
+  const std::string Terrain::JSON_BEHAVIOUR         = "behaviour";
+  const std::string Terrain::JSON_CONDITION         = "condition";
+  const std::string Terrain::JSON_HEIGHT            = "height";
+  const std::string Terrain::JSON_LENGTH            = "length";
+  const std::string Terrain::JSON_NORTH_EAST_CORNER = "northEastCorner";
+  const std::string Terrain::JSON_NORTH_WEST_CORNER = "northWestCorner";
+  const std::string Terrain::JSON_SOUTH_WEST_CORNER = "southWestCorner";
+  const std::string Terrain::JSON_SOUTH_EAST_CORNER = "southEastCorner";
+  const std::string Terrain::JSON_STEPPED_BOTTOM    = "steppedBottom";
+  const std::string Terrain::JSON_TYPE              = "type";
+  const std::string Terrain::JSON_WIDTH             = "width";
+  const std::string Terrain::JSON_X                 = "x";
+  const std::string Terrain::JSON_Y                 = "y";
+  const std::string Terrain::JSON_Z                 = "z";
 
   const std::string Terrain::BEHAVIOUR_NORMAL        = "normal";
   const std::string Terrain::BEHAVIOUR_INVISIBLE     = "invisible";
@@ -71,33 +70,28 @@ namespace IsoRealms::Spindizzy {
 //     {"Dynamic Ghost", FLAG_GHOST | FLAG_FORCE_DYNAMIC}
 //   }));
 
-  Terrain::Terrain(Zone& zone, DOMNode& node) :
+  Terrain::Terrain(Zone& zone, JSONObject object) :
             cDefZone(zone),
             cDefType(nullptr),
-            cDefStartX(node.getIntegerAttribute(ATTRIBUTE_X) + cDefZone.getStartX()),
-            cDefStartY(node.getIntegerAttribute(ATTRIBUTE_Y) + cDefZone.getStartY()),
-            cDefStartZ(node.getIntegerAttribute(ATTRIBUTE_Z) + cDefZone.getStartZ() - 1), //(node.getIntegerAttribute(ATTRIBUTE_HEIGHT) < 0 ? 0 : 1)),
-            cDefEndX(cDefStartX + node.getIntegerAttribute(ATTRIBUTE_WIDTH) - 1),
-            cDefEndY(cDefStartY + node.getIntegerAttribute(ATTRIBUTE_LENGTH) - 1),
-            cDefEndZ(cDefStartZ + node.getIntegerAttribute(ATTRIBUTE_HEIGHT)),
-            cDefCornerHeight{{node.getIntegerAttribute(ATTRIBUTE_SOUTH_WEST_CORNER), node.getIntegerAttribute(ATTRIBUTE_NORTH_WEST_CORNER)},
-                             {node.getIntegerAttribute(ATTRIBUTE_SOUTH_EAST_CORNER), node.getIntegerAttribute(ATTRIBUTE_NORTH_EAST_CORNER)}},
-            cDefFlags((node.getAttribute(ATTRIBUTE_BEHAVIOUR) == BEHAVIOUR_INVISIBLE     ? FLAG_INVISIBLE
-                     : node.getAttribute(ATTRIBUTE_BEHAVIOUR) == BEHAVIOUR_GHOST         ? FLAG_GHOST
-                     : node.getAttribute(ATTRIBUTE_BEHAVIOUR) == BEHAVIOUR_DYNAMIC       ? FLAG_FORCE_DYNAMIC
-                     : node.getAttribute(ATTRIBUTE_BEHAVIOUR) == BEHAVIOUR_DYNAMIC_GHOST ? FLAG_FORCE_DYNAMIC | FLAG_FORCE_DYNAMIC
+            cDefStartX(object.getInteger(JSON_X) + cDefZone.getStartX()),
+            cDefStartY(object.getInteger(JSON_Y) + cDefZone.getStartY()),
+            cDefStartZ(object.getInteger(JSON_Z) + cDefZone.getStartZ() - 1), //(object.getInteger(JSON_HEIGHT) < 0 ? 0 : 1)),
+            cDefEndX(cDefStartX + object.getInteger(JSON_WIDTH) - 1),
+            cDefEndY(cDefStartY + object.getInteger(JSON_LENGTH) - 1),
+            cDefEndZ(cDefStartZ + object.getInteger(JSON_HEIGHT)),
+            cDefCornerHeight{{object.getInteger(JSON_SOUTH_WEST_CORNER), object.getInteger(JSON_NORTH_WEST_CORNER)},
+                             {object.getInteger(JSON_SOUTH_EAST_CORNER), object.getInteger(JSON_NORTH_EAST_CORNER)}},
+            cDefFlags((object.getString(JSON_BEHAVIOUR) == BEHAVIOUR_INVISIBLE     ? FLAG_INVISIBLE
+                     : object.getString(JSON_BEHAVIOUR) == BEHAVIOUR_GHOST         ? FLAG_GHOST
+                     : object.getString(JSON_BEHAVIOUR) == BEHAVIOUR_DYNAMIC       ? FLAG_FORCE_DYNAMIC
+                     : object.getString(JSON_BEHAVIOUR) == BEHAVIOUR_DYNAMIC_GHOST ? FLAG_FORCE_DYNAMIC | FLAG_FORCE_DYNAMIC
                      :                                                                     FLAGS_NORMAL)
-                    | (node.getBooleanAttribute(ATTRIBUTE_STEPPED_BOTTOM)                ? FLAG_STEPPED_BOTTOM    : FLAGS_NORMAL)
-                    | (node.getBooleanAttribute(ATTRIBUTE_ALTERNATIVE_SPLIT)             ? FLAG_ALTERNATIVE_SPLIT : FLAGS_NORMAL)) {
-    cDefZone.getWorld()->getSpindizzy()->getProject()->init([this, &node](IAssets* assets) {
-      cDefType = cDefZone.getWorld()->getSpindizzy()->getTerrainType(node.getAttribute(ATTRIBUTE_TYPE));
-      for (DOMNode& mNode : node) {
-        std::string mChildName = mNode.getName();
-        if (mChildName == TAG_CONDITION) {
-          cDefCondition = std::make_optional<Condition>(mNode, cDefZone.getWorld()->getSpindizzy()->getTerrainStateConditionElements());
-        } else {
-          throw ParseException("Unknown tag for Spindizzy/Terrain: " + mChildName);
-        }
+                    | (object.getBoolean(JSON_STEPPED_BOTTOM)                ? FLAG_STEPPED_BOTTOM    : FLAGS_NORMAL)
+                    | (object.getBoolean(JSON_ALTERNATIVE_SPLIT)             ? FLAG_ALTERNATIVE_SPLIT : FLAGS_NORMAL)) {
+    cDefZone.getWorld()->getSpindizzy()->getProject()->init([this, object](IAssets* assets) {
+      cDefType = cDefZone.getWorld()->getSpindizzy()->getTerrainType(object.getString(JSON_TYPE));
+      if (object.hasMember(JSON_CONDITION)) {
+        cDefCondition = std::make_optional<Condition>(object.getObject(JSON_CONDITION), cDefZone.getWorld()->getSpindizzy()->getTerrainStateConditionElements());
       }
     });
     cDefZone.getWorld()->registerTerrain(this, !(cDefFlags & FLAG_INVISIBLE), !(cDefFlags & FLAG_GHOST));
@@ -121,31 +115,32 @@ namespace IsoRealms::Spindizzy {
     cDefZone.getWorld()->flagTerrainForInitialisation(cDefStartX - 1, cDefEndX + 1, cDefStartY - 1, cDefEndY + 1);
   }
 
-  void Terrain::save(DOMNodeWriter* node, int originX, int originY, int originZ) {
-    node->addAttribute("type", cDefZone.getWorld()->getSpindizzy()->getID(cDefType));
-    node->addAttribute(ATTRIBUTE_BEHAVIOUR,         (cDefFlags & FLAG_BEHAVIOUR_MASK) ==  FLAG_INVISIBLE                   ? BEHAVIOUR_INVISIBLE
-                                                  : (cDefFlags & FLAG_BEHAVIOUR_MASK) ==  FLAG_GHOST                       ? BEHAVIOUR_GHOST
-                                                  : (cDefFlags & FLAG_BEHAVIOUR_MASK) ==  FLAG_FORCE_DYNAMIC               ? BEHAVIOUR_DYNAMIC
-                                                  : (cDefFlags & FLAG_BEHAVIOUR_MASK) == (FLAG_GHOST | FLAG_FORCE_DYNAMIC) ? BEHAVIOUR_DYNAMIC_GHOST
-                                                  :                                                                          BEHAVIOUR_NORMAL);
-    node->addAttribute(ATTRIBUTE_X,                 cDefStartX      - originX);
-    node->addAttribute(ATTRIBUTE_Y,                 cDefStartY      - originY);
-    node->addAttribute(ATTRIBUTE_Z,                (cDefStartZ + 1) - originZ);
-    node->addAttribute(ATTRIBUTE_WIDTH,            (cDefEndX + 1)   - cDefStartX);
-    node->addAttribute(ATTRIBUTE_LENGTH,           (cDefEndY + 1)   - cDefStartY);
-    node->addAttribute(ATTRIBUTE_HEIGHT,            cDefEndZ        - cDefStartZ);
-    node->addAttribute(ATTRIBUTE_NORTH_WEST_CORNER, cDefCornerHeight[0][1]);
-    node->addAttribute(ATTRIBUTE_NORTH_EAST_CORNER, cDefCornerHeight[1][1]);
-    node->addAttribute(ATTRIBUTE_SOUTH_EAST_CORNER, cDefCornerHeight[1][0]);
-    node->addAttribute(ATTRIBUTE_SOUTH_WEST_CORNER, cDefCornerHeight[0][0]);
+  void Terrain::save(JSONObject object, int originX, int originY, int originZ) {
+    object.addString(JSON_TYPE, cDefZone.getWorld()->getSpindizzy()->getID(cDefType));
+    object.addString(JSON_BEHAVIOUR,         (cDefFlags & FLAG_BEHAVIOUR_MASK) ==  FLAG_INVISIBLE                   ? BEHAVIOUR_INVISIBLE
+                                           : (cDefFlags & FLAG_BEHAVIOUR_MASK) ==  FLAG_GHOST                       ? BEHAVIOUR_GHOST
+                                           : (cDefFlags & FLAG_BEHAVIOUR_MASK) ==  FLAG_FORCE_DYNAMIC               ? BEHAVIOUR_DYNAMIC
+                                           : (cDefFlags & FLAG_BEHAVIOUR_MASK) == (FLAG_GHOST | FLAG_FORCE_DYNAMIC) ? BEHAVIOUR_DYNAMIC_GHOST
+                                           :                                                                          BEHAVIOUR_NORMAL);
+    object.addInteger(JSON_X,                 cDefStartX      - originX);
+    object.addInteger(JSON_Y,                 cDefStartY      - originY);
+    object.addInteger(JSON_Z,                (cDefStartZ + 1) - originZ);
+    object.addInteger(JSON_WIDTH,            (cDefEndX + 1)   - cDefStartX);
+    object.addInteger(JSON_LENGTH,           (cDefEndY + 1)   - cDefStartY);
+    object.addInteger(JSON_HEIGHT,            cDefEndZ        - cDefStartZ);
+    object.addInteger(JSON_NORTH_WEST_CORNER, cDefCornerHeight[0][1]);
+    object.addInteger(JSON_NORTH_EAST_CORNER, cDefCornerHeight[1][1]);
+    object.addInteger(JSON_SOUTH_EAST_CORNER, cDefCornerHeight[1][0]);
+    object.addInteger(JSON_SOUTH_WEST_CORNER, cDefCornerHeight[0][0]);
     if (isSplit()) {
-      node->addAttribute(ATTRIBUTE_ALTERNATIVE_SPLIT, (cDefFlags & FLAG_ALTERNATIVE_SPLIT) != 0);
+      object.addBoolean(JSON_ALTERNATIVE_SPLIT, (cDefFlags & FLAG_ALTERNATIVE_SPLIT) != 0);
     }
     if (cDefFlags & FLAG_STEPPED_BOTTOM && ((cDefEndX != cDefStartX && getXSlope() != 0) || (cDefEndY != cDefStartY && getYSlope() != 0))) {
-      node->addAttribute(ATTRIBUTE_STEPPED_BOTTOM, true);
+      object.addBoolean(JSON_STEPPED_BOTTOM, true);
     }
     if (cDefCondition.has_value()) {
-      cDefCondition->save(node);
+      JSONObject mConditionObject = object.addObject(JSON_CONDITION);
+      cDefCondition->save(mConditionObject);
     }
   }
 
@@ -690,7 +685,22 @@ namespace IsoRealms::Spindizzy {
   std::vector<std::unique_ptr<IProperty>> Terrain::getProperties(IPropertyAppearance* appearance) {
     std::vector<ConditionElement*> mElements = cDefType->getTerrainStateConditionElements();
     std::vector<std::unique_ptr<IProperty>> mProperties;
-    mProperties.emplace_back(std::make_unique<PropertyCondition>(cDefZone.getWorld()->getSpindizzy()->getProject()->getApplication()->getHatHandler(), TAG_CONDITION, mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this](std::optional<Condition>& condition) {
+    mProperties.emplace_back(std::make_unique<PropertyCondition>(cDefZone.getWorld()->getSpindizzy()->getProject()->getApplication()->getHatHandler(), "Condition", mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this](std::optional<Condition>& condition) {
+      cDefCondition = condition;
+      cDefZone.getWorld()->flagTerrainForInitialisation(cDefStartX - 1, cDefEndX + 1, cDefStartY - 1, cDefEndY + 1);
+      cDefZone.updateDisplayList();
+    }));
+    mProperties.emplace_back(std::make_unique<PropertyCondition>(cDefZone.getWorld()->getSpindizzy()->getProject()->getApplication()->getHatHandler(), "Blah", mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this](std::optional<Condition>& condition) {
+      cDefCondition = condition;
+      cDefZone.getWorld()->flagTerrainForInitialisation(cDefStartX - 1, cDefEndX + 1, cDefStartY - 1, cDefEndY + 1);
+      cDefZone.updateDisplayList();
+    }));
+    mProperties.emplace_back(std::make_unique<PropertyCondition>(cDefZone.getWorld()->getSpindizzy()->getProject()->getApplication()->getHatHandler(), "Really Really Really Really Really Really Really Loooooooooooooooooooooooooooooooooong", mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this](std::optional<Condition>& condition) {
+      cDefCondition = condition;
+      cDefZone.getWorld()->flagTerrainForInitialisation(cDefStartX - 1, cDefEndX + 1, cDefStartY - 1, cDefEndY + 1);
+      cDefZone.updateDisplayList();
+    }));
+    mProperties.emplace_back(std::make_unique<PropertyCondition>(cDefZone.getWorld()->getSpindizzy()->getProject()->getApplication()->getHatHandler(), "Another", mElements, [this]()->std::optional<Condition>& {return cDefCondition;}, [this](std::optional<Condition>& condition) {
       cDefCondition = condition;
       cDefZone.getWorld()->flagTerrainForInitialisation(cDefStartX - 1, cDefEndX + 1, cDefStartY - 1, cDefEndY + 1);
       cDefZone.updateDisplayList();

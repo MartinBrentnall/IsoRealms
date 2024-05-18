@@ -26,4 +26,8 @@ namespace IsoRealms::Spindizzy {
   bool WorldEditorToolDummy::renderAssetIcon() const {
     return false;
   }
+
+  void WorldEditorToolDummy::saveAsset(JSONObject object) const {
+    // Nothing to do.
+  }
 }

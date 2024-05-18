@@ -23,7 +23,7 @@
 #include "Modules/Spindizzy/World/Object/Terrain/Surface.h"
 
 namespace IsoRealms::Spindizzy {
-  SurfacePatternOutline::SurfacePatternOutline(IProject* project, Spindizzy* spindizzy, DOMNode& node) {
+  SurfacePatternOutline::SurfacePatternOutline(IProject* project, Spindizzy* spindizzy, JSONObject object) {
     // Nothing to do.
   }
 
@@ -129,7 +129,7 @@ namespace IsoRealms::Spindizzy {
     return false;
   }
 
-  void SurfacePatternOutline::saveAsset(DOMNodeWriter* node) const {
+  void SurfacePatternOutline::saveAsset(JSONObject object) const {
     // TODO: Implement this.
   }
 

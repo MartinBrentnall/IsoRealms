@@ -23,10 +23,11 @@
 #include "Project.h"
 
 namespace IsoRealms {
-  const std::string Module::TAG_CONFIGURATION = "Configuration";
-  const std::string Module::TAG_RESOURCES     = "Resources";
-  
-  const std::string Module::ATTRIBUTE_NAME = "name";
+  const std::string Module::JSON_CONFIGURATION = "configuration";
+  const std::string Module::JSON_INSTANCES     = "instances";
+  const std::string Module::JSON_NAME          = "name";
+  const std::string Module::JSON_RESOURCES     = "resources";
+  const std::string Module::JSON_TYPE          = "type";
 
   Module::Module(const std::string& name, Project* project, LuaState* luaState) :
             cName(name),
@@ -69,13 +70,14 @@ namespace IsoRealms {
     cModule = mCreateFunction(project, this, cProject);
   }
 
-  void Module::loadResources(DOMNode& node, IOptions* options, const std::string& resourceDataPath) {
-    if (node.containsNode(TAG_CONFIGURATION) && cResourceDataPath.empty()) {
+  void Module::loadResources(JSONObject object, IOptions* options, const std::string& resourceDataPath) {
+    if (object.hasMember(JSON_CONFIGURATION) && cResourceDataPath.empty()) {
       cResourceDataPath = resourceDataPath;
-      cModule->load(cProject, node.getNode(TAG_CONFIGURATION));
+      cModule->load(cProject, object.getObject(JSON_CONFIGURATION));
     }
-    for (DOMNode& mResourceNode : node.getNode(TAG_RESOURCES)) {
-      std::string mResourceTypeName = mResourceNode.getName();
+
+    for (JSONObject mResourceObject : object.getArray(JSON_RESOURCES)) {
+      std::string mResourceTypeName = mResourceObject.getString(JSON_TYPE);
       ResourceType* mResourceType = getResourceType(mResourceTypeName);
       if (mResourceType == nullptr) {
         std::cout << "ERROR: Module::loadResources: Resource type \"" << mResourceTypeName << "\" not known in module \"" << cName << "\".  Available resources:" << std::endl;
@@ -84,11 +86,15 @@ namespace IsoRealms {
         }
         throw ResourceInitException("ERROR: Module::loadResources: Resource type \"" + mResourceTypeName + "\" not known in module \"" + cName + "\".");
       }
-      LocalOptions mModuleOptions(mResourceTypeName, options);
-      mResourceType->loadResource(mResourceNode, cProject, &mModuleOptions, resourceDataPath + "/" + cName + "/" + mResourceTypeName);
+
+      for (JSONObject mInstanceObject : mResourceObject.getArray(JSON_INSTANCES)) {
+        LocalOptions mModuleOptions(mResourceTypeName, options);
+        mInstanceObject.getString(JSON_NAME);
+        mResourceType->loadResource(mInstanceObject, cProject, &mModuleOptions, resourceDataPath + "/" + cName + "/" + mResourceTypeName);
+      }
     }
   }
-  
+
   void Module::registerAssets() {
     cModule->registerAssets(&cModuleAssetRegistry);
   }
@@ -102,18 +108,23 @@ namespace IsoRealms {
     return false;
   }
 
-  void Module::save(DOMNodeWriter* node, IAssetIdentifier* identifier, const std::string& resourcePath) const {
-    node->addAttribute(ATTRIBUTE_NAME, cName);
+  void Module::save(JSONObject object, IAssetIdentifier* identifier, const std::string& resourcePath) const {
+    object.addString(JSON_NAME, cName);
 
     // TODO: Configuration might not need to be saved if it comes from an included project file and hasn't been changed.
     if (cResourceDataPath == resourcePath) {
-      DOMNodeWriter mConfiguration = node->addBranch(TAG_CONFIGURATION);
-      cModule->save(&mConfiguration, identifier);
+      JSONObject mConfigurationObject = object.addObject(JSON_CONFIGURATION);
+      cModule->save(mConfigurationObject, identifier);
     }
 
-    DOMNodeWriter mResources = node->addBranch(TAG_RESOURCES);
+    JSONArray mResourceTypesArray = object.addArray(JSON_RESOURCES);
     for (const std::pair<const std::string, std::unique_ptr<ResourceType>>& mResourceType : cResourceTypes) {
-      mResourceType.second->save(&mResources, identifier, mResourceType.first);
+      if (mResourceType.second->needsSaving(mResourceType.first)) {
+        JSONObject mResourceTypeObject = mResourceTypesArray.addObject();
+        mResourceTypeObject.addString(JSON_TYPE, mResourceType.first);
+        JSONArray mResourceArray = mResourceTypeObject.addArray(JSON_INSTANCES);
+        mResourceType.second->save(mResourceArray, identifier, mResourceType.first);
+      }
     }
   }
 

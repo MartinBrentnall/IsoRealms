@@ -31,19 +31,22 @@ namespace IsoRealms::UI {
    */
   class RelativeLocation : public ILayoutLocation {
     public:
-    RelativeLocation(IProject* project, DOMNode& node, Layout* layout, bool horizontal, float defaultValue);
-    
+    RelativeLocation(IProject* project, JSONObject object, Layout* layout, bool horizontal, float defaultValue);
+
     /******************************\
      * Implements ILayoutLocation *
     \******************************/
     float getLocation(float aspectRatio) const override;
-    void save(DOMNodeWriter* node, Layout* layout, float defaultValue) const override;
-    
+    void save(JSONObject object, Layout* layout, float defaultValue) const override;
+
     private:
 
-    // DOM strings.    
-    static const std::string ATTRIBUTE_RELATIVE;
-    static const std::string ATTRIBUTE_VALUE;
+    // JSON members.    
+    static const std::string JSON_RELATIVE;
+    static const std::string JSON_TYPE;
+    static const std::string JSON_VALUE;
+
+    static const std::string TYPE_RELATIVE;
 
     // Definition data.
     LayoutComponent* cDefRelative; /// Component to which this location is related.

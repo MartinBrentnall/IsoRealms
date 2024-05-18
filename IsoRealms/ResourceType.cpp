@@ -19,7 +19,7 @@
 #include "ResourceType.h"
 
 namespace IsoRealms {
-  const std::string ResourceType::TAG_NAME = "name";
+  const std::string ResourceType::JSON_ID = "id";
 
   ResourceType::ResourceType(IResourceTypeDefinition* resourceType, IModuleInternal* parent, IAssetRegistry* assetRegistry, const std::string& id, const std::string& name, const std::string& category) :
             cResourceType(resourceType),
@@ -29,8 +29,8 @@ namespace IsoRealms {
             cResourceTypeAssetRegistry(assetRegistry, id) {
   }
 
-  void ResourceType::loadResource(DOMNode& node, IProject* project, IOptions* options, const std::string& resourceDataPath) {
-    std::string mResourceName = node.getAttribute(TAG_NAME);
+  void ResourceType::loadResource(JSONObject object, IProject* project, IOptions* options, const std::string& resourceDataPath) {
+    std::string mResourceName = object.getString(JSON_ID);
 //    std::cout << "INFO: ResourceType::loadResource: \"" << mResourceName << "\"" << std::endl;
     for (IResource* mResource : cResources) {
       if (mResource->getName() == mResourceName) {
@@ -39,7 +39,7 @@ namespace IsoRealms {
       }
     }
     LocalOptions mResourceOptions(mResourceName, options);
-    IResource* mResource = cResourceType->loadResource(this, project, &cResourceTypeAssetRegistry, node, &mResourceOptions);
+    IResource* mResource = cResourceType->loadResource(this, project, &cResourceTypeAssetRegistry, object, &mResourceOptions);
     mResource->setResourceDataPath(resourceDataPath + "/" + mResourceName);
     cResources.insert(mResource);
 //    std::cout << "INFO: ResourceType::loadResource: \"" << mResourceName << "\" done!" << std::endl;
@@ -54,11 +54,12 @@ namespace IsoRealms {
     return false;
   }
 
-  void ResourceType::save(DOMNodeWriter* node, IAssetIdentifier* identifier, const std::string& tag) {
+  void ResourceType::save(JSONArray& array, IAssetIdentifier* identifier, const std::string& tag) {
     for (IResource* mResource : cResources) {
       if (mResource->getResourceDataPath() == (cParent->getDataPath(false) + "/" + tag + "/" + mResource->getName())) {
-        DOMNodeWriter mResourceNode = node->addBranch(tag);
-        mResource->save(&mResourceNode, identifier);
+        JSONObject mResourceObject = array.addObject();
+        mResourceObject.addString(JSON_ID, mResource->getName());
+        mResource->save(mResourceObject, identifier);
       }
     }
   }

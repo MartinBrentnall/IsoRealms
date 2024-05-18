@@ -33,7 +33,7 @@ namespace IsoRealms::Spindizzy {
     public:
     
     // Constructors.
-    ZoneViewTypeOverview(IProject* project, WorldView* worldView, DOMNode& node);
+    ZoneViewTypeOverview(IProject* project, WorldView* worldView, JSONObject object);
 
     void bind1(ZoneViewOverview* zoneViewOverview);
     void bind2(ZoneViewOverview* zoneViewOverview);
@@ -51,12 +51,12 @@ namespace IsoRealms::Spindizzy {
      * Implements IAsset via IZoneViewType * 
     \***************************************/     
     bool renderAssetIcon() const override;
-    void saveAsset(DOMNodeWriter* node) const override;
+    void saveAsset(JSONObject object) const override;
 
     private:
     
-    // DOM strings.
-    static const std::string TAG_COLOUR;
+    // JSON members.
+    static const std::string JSON_COLOUR;
     
     IProject* cProject;
     WorldView* cWorldView;

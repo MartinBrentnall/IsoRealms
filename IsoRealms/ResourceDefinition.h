@@ -33,8 +33,6 @@
 #include "IProject.h"
 #include "IResourceData.h"
 #include "Options/IOptions.h"
-#include "Persistence/DOMNode.h"
-#include "Persistence/DOMNodeWriter.h"
 #include "Property/IProperty.h"
 #include "Property/IPropertyAppearance.h"
 #include "Property/IPropertyListener.h"

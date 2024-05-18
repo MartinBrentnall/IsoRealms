@@ -23,16 +23,15 @@
 #include "ZoneObjectTypeTraitSpinner.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string ZoneObjectTypeTraitSpinner::TAG_MODEL = "Model";
+  const std::string ZoneObjectTypeTraitSpinner::JSON_LOCATION   = "location";
+  const std::string ZoneObjectTypeTraitSpinner::JSON_MODEL      = "model";
+  const std::string ZoneObjectTypeTraitSpinner::JSON_SPIN_SPEED = "spinSpeed";
   
-  const std::string ZoneObjectTypeTraitSpinner::ATTRIBUTE_LOCATION   = "location";
-  const std::string ZoneObjectTypeTraitSpinner::ATTRIBUTE_SPIN_SPEED = "spinSpeed";
-  
-  ZoneObjectTypeTraitSpinner::ZoneObjectTypeTraitSpinner(IProject* project, ZoneObjectType* type, DOMNode& node) :
+  ZoneObjectTypeTraitSpinner::ZoneObjectTypeTraitSpinner(IProject* project, ZoneObjectType* type, JSONObject object) :
             cDefModel(project) {
-    cDefSpinSpeed = node.getFloatAttribute(ATTRIBUTE_SPIN_SPEED);
-    cDefLocationID = node.getAttribute(ATTRIBUTE_LOCATION);
-    cDefModel.init(node, TAG_MODEL);
+    cDefSpinSpeed = object.getFloat(JSON_SPIN_SPEED);
+    cDefLocationID = object.getString(JSON_LOCATION);
+    cDefModel.init(object, JSON_MODEL);
   }
 
   std::unique_ptr<ModelInstance> ZoneObjectTypeTraitSpinner::createModel() {
@@ -47,10 +46,10 @@ namespace IsoRealms::Spindizzy {
     return cDefLocationID;
   }
   
-  void ZoneObjectTypeTraitSpinner::save(DOMNodeWriter& node) const {
-    cDefModel.save(&node, TAG_MODEL);
+  void ZoneObjectTypeTraitSpinner::save(JSONObject object) const {
+    cDefModel.save(object, JSON_MODEL);
   }
-  
+
   std::unique_ptr<IZoneObjectTrait> ZoneObjectTypeTraitSpinner::createTrait(ZoneObject& object) {
     return std::make_unique<Spinner>(object, *this);
   }
@@ -61,5 +60,9 @@ namespace IsoRealms::Spindizzy {
 
   bool ZoneObjectTypeTraitSpinner::renderAssetIcon() const {
     return false;
+  }
+
+  void ZoneObjectTypeTraitSpinner::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 }

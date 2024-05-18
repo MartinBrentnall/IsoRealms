@@ -24,21 +24,21 @@ namespace IsoRealms {
             cInputHandler(cProject->createLiteralInputHandler(this)) {
   }
 
-  void InputHandler::init(DOMNode& node, const std::string& tag) {
-    cProject->init([this, &node, tag](IAssets* assets) {
-      set(node, tag);
+  void InputHandler::init(JSONObject object, const std::string& member) {
+    cProject->init([this, object, member](IAssets* assets) {
+      set(object, member);
     });
   }
 
-  void InputHandler::set(DOMNode& node, const std::string& tag) {
-    DOMNode& mAssetNode = node.getNode(tag);
+  void InputHandler::set(JSONObject object, const std::string& member) {
+    JSONObject mAssetObject = object.getObject(member);
     cProject->release(this, cInputHandler);
-    cInputHandler = cProject->getInputHandler(this, mAssetNode);
+    cInputHandler = cProject->getInputHandler(this, mAssetObject);
   }
 
-  void InputHandler::save(DOMNodeWriter* node, const std::string& tag) const {
-    DOMNodeWriter mAssetNode = node->addBranch(tag);
-    cProject->save(&mAssetNode, cInputHandler);
+  void InputHandler::save(JSONObject object, const std::string& name) const {
+    JSONObject mAssetObject = object.addObject(name);
+    cProject->save(mAssetObject, cInputHandler);
   }
 
   void InputHandler::relinquish(IInputHandler* asset) {

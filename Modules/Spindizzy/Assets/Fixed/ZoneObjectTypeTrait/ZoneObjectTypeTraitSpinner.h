@@ -25,7 +25,7 @@ namespace IsoRealms::Spindizzy {
 
   class ZoneObjectTypeTraitSpinner : public IZoneObjectTypeTrait {
     public:
-    ZoneObjectTypeTraitSpinner(IProject* project, ZoneObjectType* type, DOMNode& node);
+    ZoneObjectTypeTraitSpinner(IProject* project, ZoneObjectType* type, JSONObject object);
 
     // Interface to be used by instances.    
     std::unique_ptr<ModelInstance> createModel();
@@ -35,19 +35,19 @@ namespace IsoRealms::Spindizzy {
     /***********************************\
      * Implements IZoneObjectTypeTrait *
     \***********************************/   
-    void save(DOMNodeWriter& node) const override;
+    void save(JSONObject object) const override;
     std::unique_ptr<IZoneObjectTrait> createTrait(ZoneObject& object) override;
     void registerAssets(ISpindizzyRegistry* registry) override;
     bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
 
     private:
     
-    // DOM strings.
-    static const std::string TAG_MODEL;
-    
-    static const std::string ATTRIBUTE_LOCATION;
-    static const std::string ATTRIBUTE_SPIN_SPEED;
-    
+    // JSON members.
+    static const std::string JSON_LOCATION;
+    static const std::string JSON_MODEL;
+    static const std::string JSON_SPIN_SPEED;
+
     // Definition data.
     Model cDefModel;            /// The model to be rendered by instances.
     float cDefSpinSpeed;        /// Speed at which the model spins while moving.

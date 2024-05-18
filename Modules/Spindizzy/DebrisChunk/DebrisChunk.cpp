@@ -21,43 +21,40 @@
 #include "IsoRealms/IApplication.h"
 
 namespace IsoRealms::Spindizzy {
-  const std::string DebrisChunk::TAG_OUTLINE       = "Outline";
-  const std::string DebrisChunk::TAG_SIDE_1        = "Side1";
-  const std::string DebrisChunk::TAG_SIDE_2        = "Side2";
-  const std::string DebrisChunk::TAG_SIDE_3        = "Side3";
-  const std::string DebrisChunk::TAG_SIDE_4        = "Side4";
+  const std::string DebrisChunk::JSON_OUTLINE       = "outline";
+  const std::string DebrisChunk::JSON_OUTLINE_WIDTH = "outlineWidth";
+  const std::string DebrisChunk::JSON_SIDE_1        = "side1";
+  const std::string DebrisChunk::JSON_SIDE_2        = "side2";
+  const std::string DebrisChunk::JSON_SIDE_3        = "side3";
+  const std::string DebrisChunk::JSON_SIDE_4        = "side4";
 
-  const std::string DebrisChunk::ATTRIBUTE_OUTLINE_WIDTH = "outlineWidth";
-  
   const float DebrisChunk::DEFAULT_OUTLINE_WIDTH = 0.18f;
 
   DebrisChunk::DebrisChunk(IProject* project, Spindizzy* spindizzy) :
             cProject(project),
-            cDefSide{Colour(project, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {regenerateTextures();}),
-                     Colour(project, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {regenerateTextures();}),
-                     Colour(project, 0.0f, 1.0f, 0.0f, 0.0f, [this]() {regenerateTextures();}),
-                     Colour(project, 0.0f, 0.0f, 1.0f, 0.0f, [this]() {regenerateTextures();})},
-            cDefOutline(project, 1.0f, 0.0f, 1.0f, 0.0f, [this]() {regenerateTextures();}),
+            cDefSide{Colour(project, 1.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
+                     Colour(project, 1.0f, 0.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
+                     Colour(project, 0.0f, 1.0f, 0.0f, 0.0f, [this]() {setNeedsRedrawing();}),
+                     Colour(project, 0.0f, 0.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();})},
+            cDefOutline(project, 1.0f, 0.0f, 1.0f, 0.0f, [this]() {setNeedsRedrawing();}),
             cDefOutlineWidth(DEFAULT_OUTLINE_WIDTH),
             cDefTextures{project, project, project, project},
+            cNeedsRedrawing(false),
             cEditingIconRotation(0.0f) {
     project->updateEditing([this](unsigned int milliseconds) {
       cEditingIconRotation += 0.1f * milliseconds;
     });
-
-    project->mainThreadInit([this]() {
-      regenerateTextures();
-    });
+    setNeedsRedrawing();
   }
 
-  DebrisChunk::DebrisChunk(IProject* project, Spindizzy* spindizzy, DOMNode& node, IOptions* options, IResourceData* data) :
+  DebrisChunk::DebrisChunk(IProject* project, Spindizzy* spindizzy, JSONObject object, IOptions* options, IResourceData* data) :
             DebrisChunk(project, spindizzy) {
-    cDefOutline.init(node, TAG_OUTLINE);
-    cDefOutlineWidth = node.getFloatAttribute(ATTRIBUTE_OUTLINE_WIDTH, DEFAULT_OUTLINE_WIDTH);
-    cDefSide[0].init(node, TAG_SIDE_1);
-    cDefSide[1].init(node, TAG_SIDE_2);
-    cDefSide[2].init(node, TAG_SIDE_3);
-    cDefSide[3].init(node, TAG_SIDE_4);
+    cDefOutline.init(object, JSON_OUTLINE);
+    cDefOutlineWidth = object.getFloat(JSON_OUTLINE_WIDTH, DEFAULT_OUTLINE_WIDTH);
+    cDefSide[0].init(object, JSON_SIDE_1);
+    cDefSide[1].init(object, JSON_SIDE_2);
+    cDefSide[2].init(object, JSON_SIDE_3);
+    cDefSide[3].init(object, JSON_SIDE_4);
   }
 
   void DebrisChunk::registerAssets(IAssetRegistry* assets) {
@@ -68,13 +65,13 @@ namespace IsoRealms::Spindizzy {
     assets->remove(this);
   }
 
-  void DebrisChunk::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    cDefOutline.save(node, TAG_OUTLINE);
-    node->addAttribute(ATTRIBUTE_OUTLINE_WIDTH, cDefOutlineWidth, DEFAULT_OUTLINE_WIDTH);
-    cDefSide[0].save(node, TAG_SIDE_1);
-    cDefSide[1].save(node, TAG_SIDE_2);
-    cDefSide[2].save(node, TAG_SIDE_3);
-    cDefSide[3].save(node, TAG_SIDE_4);
+  void DebrisChunk::save(JSONObject object, IAssetIdentifier* identifier) const {
+    cDefOutline.save(object, JSON_OUTLINE);
+    object.addFloat(JSON_OUTLINE_WIDTH, cDefOutlineWidth, DEFAULT_OUTLINE_WIDTH);
+    cDefSide[0].save(object, JSON_SIDE_1);
+    cDefSide[1].save(object, JSON_SIDE_2);
+    cDefSide[2].save(object, JSON_SIDE_3);
+    cDefSide[3].save(object, JSON_SIDE_4);
   }
 
   void DebrisChunk::hintInUse(bool inUse) {
@@ -106,6 +103,10 @@ namespace IsoRealms::Spindizzy {
 
   bool DebrisChunk::renderAssetIcon() const {
     return renderIcon();
+  }
+
+  void DebrisChunk::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   void DebrisChunk::update(unsigned int milliseconds) {
@@ -190,5 +191,14 @@ namespace IsoRealms::Spindizzy {
     glVertex2f(mOutputB.getX(), mOutputB.getY());
     glVertex2f(mOutputC.getX(), mOutputC.getY());
     glEnd();
+  }
+
+  void DebrisChunk::setNeedsRedrawing() {
+    if (!cNeedsRedrawing) {
+      cProject->updateLater([this]() {
+        regenerateTextures();
+        cNeedsRedrawing = false;
+      });
+    }
   }
 }

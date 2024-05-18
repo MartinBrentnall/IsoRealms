@@ -19,15 +19,14 @@
 #include "Menu.h"
 
 namespace IsoRealms::UI {
-  const std::string Menu::TAG_EXIT = "Exit";
+  const std::string Menu::JSON_COLOUR        = "colour";
+  const std::string Menu::JSON_FONT          = "font";
+  const std::string Menu::JSON_FONT_SIZE     = "fontSize";
+  const std::string Menu::JSON_ON_EXIT       = "onExit";
+  const std::string Menu::JSON_OPTIONS       = "options";
+  const std::string Menu::JSON_SHADOW_OFFSET = "shadowOffset";
+  const std::string Menu::JSON_TYPE          = "type";
 
-  const std::string Menu::TAG_COLOUR =  "Colour";
-  const std::string Menu::TAG_FONT   =  "Font";
-  const std::string Menu::TAG_OPTIONS = "Options";
-
-  const std::string Menu::ATTRIBUTE_FONT_SIZE     = "fontSize";
-  const std::string Menu::ATTRIBUTE_SHADOW_OFFSET = "shadowOffset";
-  
   const float Menu::DEFAULT_FONT_SIZE     = 0.05f;
   const float Menu::DEFAULT_SHADOW_OFFSET = 0.008f;
 
@@ -59,23 +58,25 @@ namespace IsoRealms::UI {
     });
   }
   
-  Menu::Menu(IProject* project, UI* ui, DOMNode& node, IOptions* options, IResourceData* data) :
+  Menu::Menu(IProject* project, UI* ui, JSONObject object, IOptions* options, IResourceData* data) :
             Menu(project, ui) {
-    for (DOMNode& mNode : node.getNode(TAG_OPTIONS)) {
-      std::string mChildName = mNode.getName();
-      if      (mChildName == MenuItemAction::TAG_TYPE)            {cDefItems.emplace_back(std::make_unique<MenuItemAction>(mNode, project));}
-      else if (mChildName == MenuItemBoolean::TAG_TYPE)           {cDefItems.emplace_back(std::make_unique<MenuItemBoolean>(mNode, project));}
-      else if (mChildName == MenuItemDigitalInput::TAG_TYPE)      {cDefItems.emplace_back(std::make_unique<MenuItemDigitalInput>(mNode, project));}
-      else if (mChildName == MenuItemDisplayResolution::TAG_TYPE) {cDefItems.emplace_back(std::make_unique<MenuItemDisplayResolution>(mNode, project));}
-      else if (mChildName == MenuItemFileList::TAG_TYPE)          {cDefItems.emplace_back(std::make_unique<MenuItemFileList>(mNode, project));}
-      else if (mChildName == MenuItemSlider::TAG_TYPE)            {cDefItems.emplace_back(std::make_unique<MenuItemSlider>(mNode, project));}
+    for (JSONObject mOptionObject : object.getArray(JSON_OPTIONS)) {
+
+      // TODO: This should use AssetClientManager
+      std::string mChildName = mOptionObject.getString(JSON_TYPE);
+      if      (mChildName == MenuItemAction::MENU_ITEM_TYPE)            {cDefItems.emplace_back(std::make_unique<MenuItemAction>(mOptionObject, project));}
+      else if (mChildName == MenuItemBoolean::MENU_ITEM_TYPE)           {cDefItems.emplace_back(std::make_unique<MenuItemBoolean>(mOptionObject, project));}
+      else if (mChildName == MenuItemDigitalInput::MENU_ITEM_TYPE)      {cDefItems.emplace_back(std::make_unique<MenuItemDigitalInput>(mOptionObject, project));}
+      else if (mChildName == MenuItemDisplayResolution::MENU_ITEM_TYPE) {cDefItems.emplace_back(std::make_unique<MenuItemDisplayResolution>(mOptionObject, project));}
+      else if (mChildName == MenuItemFileList::MENU_ITEM_TYPE)          {cDefItems.emplace_back(std::make_unique<MenuItemFileList>(mOptionObject, project));}
+      else if (mChildName == MenuItemSlider::MENU_ITEM_TYPE)            {cDefItems.emplace_back(std::make_unique<MenuItemSlider>(mOptionObject, project));}
       else                                                        {throw ResourceInitException("Unknown child for menu item: " + mChildName);}
     }
-    cDefColour.init(node, TAG_COLOUR);
-    cDefFont.init(node, TAG_FONT);
-    cDefExitAction.init(node, TAG_EXIT);
-    cDefFontSize = node.getFloatAttribute(ATTRIBUTE_FONT_SIZE, DEFAULT_FONT_SIZE);
-    cDefShadowOffset = node.getFloatAttribute(ATTRIBUTE_SHADOW_OFFSET, DEFAULT_SHADOW_OFFSET);
+    cDefColour.init(object, JSON_COLOUR);
+    cDefFont.init(object, JSON_FONT);
+    cDefExitAction.init(object, JSON_ON_EXIT);
+    cDefFontSize = object.getFloat(JSON_FONT_SIZE, DEFAULT_FONT_SIZE);
+    cDefShadowOffset = object.getFloat(JSON_SHADOW_OFFSET, DEFAULT_SHADOW_OFFSET);
   }
 
   void Menu::registerAssets(IAssetRegistry* assets) {
@@ -96,15 +97,16 @@ namespace IsoRealms::UI {
     }
   }
   
-  void Menu::save(DOMNodeWriter* node, IAssetIdentifier* identifier) const {
-    cDefColour.save(node, TAG_COLOUR);
-    cDefFont.save(node, TAG_FONT);
-    cDefExitAction.save(node, TAG_EXIT);
-    node->addAttribute(ATTRIBUTE_FONT_SIZE, cDefFontSize, DEFAULT_FONT_SIZE);
-    node->addAttribute(ATTRIBUTE_SHADOW_OFFSET, cDefShadowOffset, DEFAULT_SHADOW_OFFSET);
-    DOMNodeWriter mOptionsNode = node->addBranch(TAG_OPTIONS);
+  void Menu::save(JSONObject object, IAssetIdentifier* identifier) const {
+    cDefColour.save(object, JSON_COLOUR);
+    cDefFont.save(object, JSON_FONT);
+    cDefExitAction.save(object, JSON_ON_EXIT);
+    object.addFloat(JSON_FONT_SIZE, cDefFontSize, DEFAULT_FONT_SIZE);
+    object.addFloat(JSON_SHADOW_OFFSET, cDefShadowOffset, DEFAULT_SHADOW_OFFSET);
+    JSONArray mOptionsArray = object.addArray(JSON_OPTIONS);
     for (const std::unique_ptr<IMenuItem>& mItem : cDefItems) {
-      mItem->save(&mOptionsNode);
+      JSONObject mOptionObject = mOptionsArray.addObject();
+      mItem->save(mOptionObject);
     }
   }
 
@@ -186,6 +188,10 @@ namespace IsoRealms::UI {
 
   bool Menu::renderAssetIcon() const {
     return false;
+  }
+
+  void Menu::saveAsset(JSONObject object) const {
+    // Nothing to do.
   }
 
   void Menu::up() {

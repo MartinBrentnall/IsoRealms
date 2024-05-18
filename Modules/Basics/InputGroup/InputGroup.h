@@ -39,10 +39,10 @@ namespace IsoRealms::Basics {
      * Resource Interface *
     \**********************/
     InputGroup(IProject* project, Basics* basics);
-    InputGroup(IProject* project, Basics* basics, DOMNode& node, IOptions* options, IResourceData* data);
+    InputGroup(IProject* project, Basics* basics, JSONObject object, IOptions* options, IResourceData* data);
     void registerAssets(IAssetRegistry* assets);
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
-    void save(DOMNodeWriter* node, IAssetIdentifier* identifier) const;
+    void save(JSONObject object, IAssetIdentifier* identifier) const;
     void hintInUse(bool inUse);
     bool renderIcon() const;
     std::vector<IProperty*> getProperties(IAssetBrowser* browser, IAssetRegistry* assets, IPropertyListener* listener);
@@ -52,12 +52,13 @@ namespace IsoRealms::Basics {
     \****************************/
     bool input(sf::Event& event) override;
     bool renderAssetIcon() const override;
-    
+    void saveAsset(JSONObject object) const override;
+
     private:
 
-    // DOM strings.
-    static const std::string TAG_ELEMENT;
-    static const std::string TAG_INPUT_HANDLER;
+    // JSON members.
+    static const std::string JSON_INPUT;
+    static const std::string JSON_INPUTS;
 
     // Property names.
     static const std::string PROPERTY_INPUT_HANDLER;
