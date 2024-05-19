@@ -65,6 +65,7 @@ namespace IsoRealms::UI {
     // Nothing to do.
   }
 
+  std::mutex cModuleInstantiationMutex;
   std::vector<std::unique_ptr<UI>> ModuleInstances;
 }
  
@@ -73,6 +74,7 @@ extern "C" IsoRealms::IModuleHandle* create(IsoRealms::IProject* project, IsoRea
 #elif _WIN32
 extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::IProject * project, IsoRealms::IResourceTypeRegistry * registry, IsoRealms::IAssetLiterals * literals) {
 #endif
+  std::lock_guard<std::mutex> mLockGuard(IsoRealms::UI::cModuleInstantiationMutex);
   return IsoRealms::UI::ModuleInstances.emplace_back(std::make_unique<IsoRealms::UI::UI>(project, registry, literals)).get();
 }
 
@@ -81,5 +83,6 @@ extern "C" void destroy(IsoRealms::IModuleHandle* module) {
 #elif _WIN32
 extern "C" void __declspec(dllexport) __stdcall destroy(IsoRealms::IModuleHandle* module) {
 #endif
+  std::lock_guard<std::mutex> mLockGuard(IsoRealms::UI::cModuleInstantiationMutex);
   IsoRealms::Utils::removeElementUnique(IsoRealms::UI::ModuleInstances, module);
 }

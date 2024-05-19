@@ -19,6 +19,7 @@
 #pragma once
 
 #include <iostream>
+#include <mutex>
 
 #include "IsoRealms/IModuleHandle.h"
 #include "IsoRealms/IsoRealmsConstants.h"

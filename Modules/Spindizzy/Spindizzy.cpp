@@ -540,10 +540,7 @@ namespace IsoRealms::Spindizzy {
     remover->remove(&cLuaBinding);
   }
 
-  void Spindizzy::add(IBoundaryType*       asset, const std::string& id) {
-    std::cout << "Adding boundary type in Spindizzy module " << this << ": " << &cBoundaryTypes << std::dec << std::endl;
-    cBoundaryTypes.add(      asset, id);
-  }
+  void Spindizzy::add(IBoundaryType*       asset, const std::string& id) {cBoundaryTypes.add(      asset, id);}
   void Spindizzy::add(IPhysicalObjectType* asset, const std::string& id) {cPhysicalObjectTypes.add(asset, id);}
   void Spindizzy::add(IWorldEditorTool*    asset, const std::string& id) {cWorldEditorTools.add(   asset, id);}
   
@@ -760,6 +757,7 @@ namespace IsoRealms::Spindizzy {
 
   const std::string Spindizzy::BIND_TO_ZONE = "Zone";
 
+  std::mutex cModuleInstantiationMutex;
   std::vector<std::unique_ptr<Spindizzy>> ModuleInstances;
 }
 
@@ -768,6 +766,7 @@ extern "C" IsoRealms::IModuleHandle* create(IsoRealms::IProject* project, IsoRea
 #elif _WIN32
 extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::IProject * project, IsoRealms::IResourceTypeRegistry * registry, IsoRealms::IAssetLiterals * literals) {
 #endif
+  std::lock_guard<std::mutex> mLockGuard(IsoRealms::Spindizzy::cModuleInstantiationMutex);
   return IsoRealms::Spindizzy::ModuleInstances.emplace_back(std::make_unique<IsoRealms::Spindizzy::Spindizzy>(project, registry, literals)).get();
 }
 
@@ -776,5 +775,6 @@ extern "C" void destroy(IsoRealms::IModuleHandle* module) {
 #elif _WIN32
 extern "C" void __declspec(dllexport) __stdcall destroy(IsoRealms::IModuleHandle* module) {
 #endif
+  std::lock_guard<std::mutex> mLockGuard(IsoRealms::Spindizzy::cModuleInstantiationMutex);
   IsoRealms::Utils::removeElementUnique(IsoRealms::Spindizzy::ModuleInstances, module);
 }
