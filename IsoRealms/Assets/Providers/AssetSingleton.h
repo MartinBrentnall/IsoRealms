@@ -49,6 +49,9 @@ namespace IsoRealms {
       std::cout << "Asset singleton \"" << cID << "\"" << std::endl;
     }
 
+    virtual ~AssetSingleton() {
+    }
+
     private:
     std::string cID;
     TYPE* cAsset;

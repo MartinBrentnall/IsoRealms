@@ -96,15 +96,15 @@ namespace IsoRealms {
       return mRemoved;
     }
     
-    template <class TYPE, class TYPEB> static int removeElementUnique(std::vector<std::unique_ptr<TYPE>>& vector, const TYPEB* element) {
-      int mRemoved = 0;
+    template <class TYPE, class TYPEB> static std::unique_ptr<TYPE> removeElementUnique(std::vector<std::unique_ptr<TYPE>>& vector, const TYPEB* element) {
       for (std::size_t i = vector.size(); i > 0; i--) {
         if (vector[i - 1].get() == element) {
+          std::unique_ptr<TYPE> mElement = std::move(vector[i - 1]);
           vector.erase(vector.begin() + (i - 1));
-          mRemoved++;
+          return mElement;
         }
       }
-      return mRemoved;
+      return nullptr;
     }
 
     template <class KEY, class VALUE> static int removeByValue(std::map<KEY, VALUE>& map, VALUE& value) {

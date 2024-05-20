@@ -57,8 +57,11 @@ extern "C" IsoRealms::IModuleHandle* create(IsoRealms::IProject* project, IsoRea
 #elif _WIN32
 extern "C" IsoRealms::IModuleHandle* __declspec(dllexport) __stdcall create(IsoRealms::IProject * project, IsoRealms::IResourceTypeRegistry * registry, IsoRealms::IAssetLiterals * literals) {
 #endif
-  std::lock_guard<std::mutex> mLockGuard(IsoRealms::Replay::cModuleInstantiationMutex);
-  return IsoRealms::Replay::ModuleInstances.emplace_back(std::make_unique<IsoRealms::Replay::Replay>(project, registry, literals)).get();
+  std::unique_ptr<IsoRealms::Replay::Replay> mModule = std::make_unique<IsoRealms::Replay::Replay>(project, registry, literals);
+  {
+    std::lock_guard<std::mutex> mLockGuard(IsoRealms::Replay::cModuleInstantiationMutex);
+    return IsoRealms::Replay::ModuleInstances.emplace_back(std::move(mModule)).get();
+  }
 }
 
 #ifdef __linux__
@@ -66,6 +69,9 @@ extern "C" void destroy(IsoRealms::IModuleHandle* module) {
 #elif _WIN32
 extern "C" void __declspec(dllexport) __stdcall destroy(IsoRealms::IModuleHandle* module) {
 #endif
-  std::lock_guard<std::mutex> mLockGuard(IsoRealms::Replay::cModuleInstantiationMutex);
-  IsoRealms::Utils::removeElementUnique(IsoRealms::Replay::ModuleInstances, module);
+  std::unique_ptr<IsoRealms::Replay::Replay> mModule;
+  {
+    std::lock_guard<std::mutex> mLockGuard(IsoRealms::Replay::cModuleInstantiationMutex);
+    mModule = IsoRealms::Utils::removeElementUnique(IsoRealms::Replay::ModuleInstances, module);
+  }
 }
