@@ -163,6 +163,10 @@ namespace IsoRealms::UI {
     // Nothing to do.
   }
   
+  void LayoutEditor::notifyLostFocus() {
+    // Nothing to do.
+  }
+
   void LayoutEditor::setAppearance(IFont* font, float scale) {
     // Nothing to do.
   }

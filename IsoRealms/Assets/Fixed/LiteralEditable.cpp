@@ -41,6 +41,10 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
+  void LiteralEditable::EditableScreen::notifyLostFocus() {
+    // Nothing to do.
+  }
+
   void LiteralEditable::EditableScreen::unregisterAssets(IAssetRemover* assets) {
     // Nothing to do.
   }

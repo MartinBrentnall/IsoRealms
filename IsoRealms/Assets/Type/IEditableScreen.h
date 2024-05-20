@@ -30,6 +30,8 @@ namespace IsoRealms {
     public:
     virtual void notifyVisible() = 0;
     virtual void notifyHidden() = 0;
+    virtual void notifyLostFocus() = 0;
+
     virtual void unregisterAssets(IAssetRemover* assets) = 0;
     virtual void setAppearance(IFont* font, float scale) = 0;
     virtual IScreen* screen() = 0;

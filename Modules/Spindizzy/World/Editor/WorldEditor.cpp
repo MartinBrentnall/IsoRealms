@@ -626,6 +626,24 @@ namespace IsoRealms::Spindizzy {
   void WorldEditor::notifyHidden() {
     cWorld->getSpindizzy()->setAllThemesInUse(false);
   }
+
+  void WorldEditor::notifyLostFocus() {
+    cActiveLeft = false;
+    cActiveRight = false;
+    cActiveDown = false;
+    cActiveUp = false;
+    cActiveLower = false;
+    cActiveHigher = false;
+    cActiveSlow = false;
+    cActiveFast = false;
+    cXSpeed = 0.0f;
+    cYSpeed = 0.0f;
+    cZSpeed = 0.0f;
+    cYawSpeed = 0.0f;
+    cPitchSpeed = 0.0f;
+    cDistanceInSpeed = 0.0f;
+    cDistanceOutSpeed = 0.0f;
+  }
   
   void WorldEditor::setAppearance(IFont* font, float scale) {
     cPropertyAppearance.set(font, scale);

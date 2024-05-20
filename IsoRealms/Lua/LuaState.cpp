@@ -48,6 +48,7 @@ namespace IsoRealms {
                                                          "inputHandler",         &IEditableScreen::inputHandler,
                                                          "notifyVisible",        &IEditableScreen::notifyVisible,
                                                          "notifyHidden",         &IEditableScreen::notifyHidden,
+                                                         "notifyLostFocus",      &IEditableScreen::notifyLostFocus,
                                                          "setAppearance",        &IEditableScreen::setAppearance);
     cLua.new_usertype<IFloat>("Float",                   "getValue",             &IFloat::getValue);
     cLua.new_usertype<IInteger>("Integer",               "getValue",             &IInteger::getValue);

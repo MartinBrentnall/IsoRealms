@@ -62,6 +62,7 @@ namespace IsoRealms::Spindizzy {
     void saveAsset(JSONObject object) const override;
     void notifyVisible() override;
     void notifyHidden() override;
+    void notifyLostFocus() override;
     void setAppearance(IFont* font, float scale) override;
     void unregisterAssets(IAssetRemover* assets) override;
     const IFloat* getYaw() const override;
