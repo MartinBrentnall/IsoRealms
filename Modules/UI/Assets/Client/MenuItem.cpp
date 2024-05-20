@@ -28,7 +28,6 @@ namespace IsoRealms::UI {
 
   void MenuItem::init(JSONObject object, const std::string& member, Menu* owner) {
     cUI->getProject()->init([this, member, object, owner](IAssets* assets) {
-      std::cout << "==============================================================+!!!!!!!!!" << std::endl;
       set(object, member, owner);
     });
   }
