@@ -27,18 +27,22 @@ namespace IsoRealms::UI {
     return &a == &b;
   }
   
-  bool operator==(const MenuItemDigitalInput& a, const MenuItemDigitalInput& b) {
-    return &a == &b;
-  }
-  
-  bool operator==(const MenuItemDisplayResolution& a, const MenuItemDisplayResolution& b) {
-    return &a == &b;
-  }
-  
   bool operator==(const MenuItemBoolean& a, const MenuItemBoolean& b) {
     return &a == &b;
   }
   
+  bool operator==(const MenuItemDigitalInput& a, const MenuItemDigitalInput& b) {
+    return &a == &b;
+  }
+
+  bool operator==(const MenuItemDisplayResolution& a, const MenuItemDisplayResolution& b) {
+    return &a == &b;
+  }
+
+  bool operator==(const MenuItemFileList& a, const MenuItemFileList& b) {
+    return &a == &b;
+  }
+
   bool operator==(const MenuItemSlider& a, const MenuItemSlider& b) {
     return &a == &b;
   }

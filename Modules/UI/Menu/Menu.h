@@ -21,18 +21,14 @@
 #include <string>
 #include <vector>
 
+#include "IsoRealms/IApplication.h"
 #include "IsoRealms/Input/HatHandler.h"
 #include "IsoRealms/ResourceDefinition.h"
+#include "IsoRealms/Lua.h"
 #include "IsoRealms/System.h"
 #include "IsoRealms/Types.h"
 
-#include "Items/MenuItemAction.h"
-#include "Items/MenuItemBoolean.h"
-#include "Items/MenuItemDigitalInput.h"
-#include "Items/MenuItemDisplayResolution.h"
-#include "Items/MenuItemFileList.h"
-#include "Items/MenuItemSlider.h"
-#include "IMenuItem.h"
+#include "Modules/UI/Assets/Client/MenuItem.h"
 
 namespace IsoRealms::UI {
   class UI;
@@ -90,6 +86,7 @@ namespace IsoRealms::UI {
     static const std::string JSON_COLOUR;
     static const std::string JSON_FONT;
     static const std::string JSON_FONT_SIZE;
+    static const std::string JSON_ITEM;
     static const std::string JSON_ON_EXIT;
     static const std::string JSON_OPTIONS;
     static const std::string JSON_SHADOW_OFFSET;
@@ -100,12 +97,12 @@ namespace IsoRealms::UI {
       
     // Definition data.
     HatHandler& cHatHandler;
-    std::vector<std::unique_ptr<IMenuItem>> cDefItems; /// Items defined in this menu.
-    Action cDefExitAction;                             /// Action to perform when leaving this menu.
-    Font cDefFont;                                     /// Font used for rendering items in this menu.
-    Colour cDefColour;                                 /// Colour used for highlighting selections in this menu.
-    float cDefFontSize;                                /// Size of fonts in this menu.
-    float cDefShadowOffset;                            /// Shadow offset for rendering items in this menu.
+    std::vector<std::unique_ptr<MenuItem>> cDefItems; /// Items defined in this menu.
+    Action cDefExitAction;                            /// Action to perform when leaving this menu.
+    Font cDefFont;                                    /// Font used for rendering items in this menu.
+    Colour cDefColour;                                /// Colour used for highlighting selections in this menu.
+    float cDefFontSize;                               /// Size of fonts in this menu.
+    float cDefShadowOffset;                           /// Shadow offset for rendering items in this menu.
     
     // Runtime data.
     unsigned int cRuntimeSelectedItem; /// Current selected menu item index.

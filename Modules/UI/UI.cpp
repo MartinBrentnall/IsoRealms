@@ -34,7 +34,22 @@ namespace IsoRealms::UI {
   const std::string UI::NAME_RESOURCE_THROBBER         = "Throbbers";
   const std::string UI::NAME_RESOURCE_VIRTUAL_KEYBOARD = "Virtual Keyboards";
 
+  const std::string UI::MENU_ITEM_ACTION             = "Action";
+  const std::string UI::MENU_ITEM_BOOLEAN            = "Boolean";
+  const std::string UI::MENU_ITEM_DIGITAL_INPUT      = "DigitalInput";
+  const std::string UI::MENU_ITEM_DISPLAY_RESOLUTION = "DisplayResolution";
+  const std::string UI::MENU_ITEM_FILE_LIST          = "FileList";
+  const std::string UI::MENU_ITEM_SLIDER             = "Slider";
+
   UI::UI(IProject* project, IResourceTypeRegistry* registry, IAssetLiterals* literals):
+                    cProject(project),
+                    cMenuItems(&cDummyProviderMenuItem),
+                    cProviderMenuItemAction(project),
+                    cProviderMenuItemBoolean(project),
+                    cProviderMenuItemDigitalInput(project),
+                    cProviderMenuItemDisplayResolution(project),
+                    cProviderMenuItemFileList(project),
+                    cProviderMenuItemSlider(project),
                     cResourceTypeLayout(this),
                     cResourceTypeMenu(this),
                     cResourceTypePanel(this),
@@ -47,6 +62,18 @@ namespace IsoRealms::UI {
     registry->add(&cResourceTypePrompt,          ID_RESOURCE_PROMPT,           NAME_RESOURCE_PROMPT,           IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
     registry->add(&cResourceTypeThrobber,        ID_RESOURCE_THROBBER,         NAME_RESOURCE_THROBBER,         IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
     registry->add(&cResourceTypeVirtualKeyboard, ID_RESOURCE_VIRTUAL_KEYBOARD, NAME_RESOURCE_VIRTUAL_KEYBOARD, IsoRealmsConstants::RESOURCE_CATEGORY_PRESENTATION);
+
+    // Register Spindizzy built-in asset providers.
+    cMenuItems.add(&cProviderMenuItemAction,            MENU_ITEM_ACTION,             "UI");
+    cMenuItems.add(&cProviderMenuItemBoolean,           MENU_ITEM_BOOLEAN,            "UI");
+    cMenuItems.add(&cProviderMenuItemDigitalInput,      MENU_ITEM_DIGITAL_INPUT,      "UI");
+    cMenuItems.add(&cProviderMenuItemDisplayResolution, MENU_ITEM_DISPLAY_RESOLUTION, "UI");
+    cMenuItems.add(&cProviderMenuItemFileList,          MENU_ITEM_FILE_LIST,          "UI");
+    cMenuItems.add(&cProviderMenuItemSlider,            MENU_ITEM_SLIDER,             "UI");
+  }
+
+  IProject* UI::getProject() const {
+    return cProject;
   }
 
   void UI::load(IProject* project, JSONObject object) {
@@ -64,6 +91,14 @@ namespace IsoRealms::UI {
   void UI::unregisterAssets(IAssetRemover* remover, IAssets* releaser) {
     // Nothing to do.
   }
+
+  IMenuItem* UI::createLiteralMenuItem(IAssetUser<IMenuItem>* user) {return cMenuItems.literal(user, "");}
+
+  IMenuItem* UI::getMenuItem(IAssetUser<IMenuItem>* user, JSONObject object, Menu* owner) {return cMenuItems.get(user, *owner, object, nullptr, true, [this](JSONObject object, IStateListener<IMenuItem*>* listener) -> IMenuItem* {return nullptr;});}
+
+  void UI::release(IAssetUser<IMenuItem>* user, IMenuItem* asset) {cMenuItems.release(user, asset);}
+
+  void UI::save(JSONObject object, IMenuItem* asset) const {cMenuItems.save(object, asset);}
 
   std::mutex cModuleInstantiationMutex;
   std::vector<std::unique_ptr<UI>> ModuleInstances;

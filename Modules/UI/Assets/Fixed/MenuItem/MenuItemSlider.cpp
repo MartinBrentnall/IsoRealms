@@ -21,8 +21,6 @@
 #include "Modules/UI/Menu/Menu.h"
 
 namespace IsoRealms::UI {
-  const std::string MenuItemSlider::MENU_ITEM_TYPE          = "Slider";
-
   const std::string MenuItemSlider::JSON_ID        = "id";
   const std::string MenuItemSlider::JSON_LABEL     = "label";
   const std::string MenuItemSlider::JSON_MAXIMUM   = "maximum";
@@ -37,7 +35,7 @@ namespace IsoRealms::UI {
   const float MenuItemSlider::DEFAULT_MINIMUM = 0.0f;
   const int   MenuItemSlider::DEFAULT_STEPS   = 20;
 
-  MenuItemSlider::MenuItemSlider(JSONObject object, IProject* project) :
+  MenuItemSlider::MenuItemSlider(IProject* project, Menu* menu, JSONObject object) :
             cHatHandler(project->getApplication()->getHatHandler()),
             cDefID(object.getString(JSON_ID)),
             cDefLabel(object.getString(JSON_LABEL)),
@@ -68,16 +66,6 @@ namespace IsoRealms::UI {
     assets->remove(&cLuaBinding);
   }
   
-  void MenuItemSlider::save(JSONObject object) const {
-    object.addString(JSON_TYPE, MENU_ITEM_TYPE);
-    object.addString(JSON_ID, cDefID);
-    object.addString(JSON_LABEL, cDefLabel);
-    object.addFloat(JSON_MINIMUM, cDefMinimum, DEFAULT_MINIMUM);
-    object.addFloat(JSON_MAXIMUM, cDefMaximum, DEFAULT_MAXIMUM);
-    object.addInteger(JSON_STEPS, cDefSteps, DEFAULT_STEPS);
-    cDefValueChangedAction.save(object, JSON_ON_CHANGE);
-  }
-
   bool MenuItemSlider::input(sf::Event& event) {
     switch (event.type) {
       case sf::Event::KeyPressed: {
@@ -149,6 +137,19 @@ namespace IsoRealms::UI {
 
   float MenuItemSlider::getSelectedY(const Menu& menu) const {
     return 0.0f;
+  }
+
+  bool MenuItemSlider::renderAssetIcon() const {
+    return false;
+  }
+
+  void MenuItemSlider::saveAsset(JSONObject object) const {
+    object.addString(JSON_ID, cDefID);
+    object.addString(JSON_LABEL, cDefLabel);
+    object.addFloat(JSON_MINIMUM, cDefMinimum, DEFAULT_MINIMUM);
+    object.addFloat(JSON_MAXIMUM, cDefMaximum, DEFAULT_MAXIMUM);
+    object.addInteger(JSON_STEPS, cDefSteps, DEFAULT_STEPS);
+    cDefValueChangedAction.save(object, JSON_ON_CHANGE);
   }
 
   void MenuItemSlider::adjustValue(float amount) {

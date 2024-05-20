@@ -24,45 +24,32 @@
 #include "IsoRealms/IAssetRegistry.h"
 #include "IsoRealms/IAssetRemover.h"
 #include "IsoRealms/IAssets.h"
-#include "IsoRealms/Input/AxisMapping.h"
-#include "IsoRealms/Input/ButtonMapping.h"
-#include "IsoRealms/Input/HatHandler.h"
-#include "IsoRealms/Input/HatMapping.h"
-#include "IsoRealms/Input/IDigitalInputMapping.h"
-#include "IsoRealms/Input/KeyMapping.h"
+#include "IsoRealms/IProject.h"
+#include "IsoRealms/Literals.h"
 #include "IsoRealms/Lua.h"
-#include "IsoRealms/System.h"
 #include "IsoRealms/Types.h"
 
-#include "Modules/UI/Menu/IMenuItem.h"
+#include "Modules/UI/Assets/Type/IMenuItem.h"
 
 namespace IsoRealms::UI {
-  
+
   /**
-   * Menu item that represents a digital input with configurable mappings.
+   * Menu item that triggers an action upon confirmation.
    */
-  class MenuItemDigitalInput final : public IMenuItem {
+  class MenuItemAction final : public IMenuItem {
     public:
-
-    // Public DOM strings.
-    static const std::string MENU_ITEM_TYPE;
-
-    MenuItemDigitalInput(JSONObject object, IProject* project);
+    MenuItemAction(IProject* project, Menu* menu, JSONObject object);
 
     /***********************\
      * Scripting Interface *
     \***********************/
-    void addMapping(std::shared_ptr<IDigitalInputMapping> input);
-    void clear();
-    unsigned int getMappingCount();
-    std::shared_ptr<IDigitalInputMapping> getMapping(unsigned int index);
-    
+    void setValue(const std::string& value);
+
     /************************\
      * Implements IMenuItem *
     \************************/
     void registerAssets(IAssetRegistry* assets) override;
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser) override;
-    void save(JSONObject object) const override;
     bool input(sf::Event& event) override;
     void selectTop() override;
     void selectBottom() override;
@@ -70,31 +57,31 @@ namespace IsoRealms::UI {
     float getHeight(const Menu& menu) const override;
     float getSelectedY(const Menu& menu) const override;
 
+    /***********************************\
+     * Implements IAsset via IMenuItem *
+    \***********************************/
+    bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
+
     private:
-    
+
     // JSON members.
     static const std::string JSON_ID;
-    static const std::string JSON_TYPE;
+    static const std::string JSON_LABEL;
+    static const std::string JSON_ON_SELECTION;
 
     // Constants.
     static const std::string BINDING_TYPE;
-
+    
     // Definition data.
-    HatHandler& cHatHandler;
-    std::string cDefID; /// ID of this menu item for binding.
+    std::string cDefID;    /// ID of this menu item for binding.
+    std::string cDefLabel; /// Label to show for this menu item.
+    Action cDefAction;     /// Action that confirming this menu item will trigger.
     
     // Runtime data.
-    std::vector<std::shared_ptr<IDigitalInputMapping>> cRuntimeMappings; /// Mappings applied to this digital input.
-    unsigned int cRuntimeSelectedMapping;                                /// Index of the selected mapping.
-    bool cRuntimeAddingMapping;                                          /// True when awaiting user input from which to apply a new mapping.
-
-    // Scripting support.
-    LuaBinding<MenuItemDigitalInput> cLuaBinding; /// Allows digital input settings to be bound to lua variables.
+    std::string cRuntimeValue; /// TODO: What's this used for?
     
-    // Private functions.
-    bool up();
-    bool down();
-    bool remove();
-    bool confirm();
+    // Scripting support.
+    LuaBinding<MenuItemAction> cLuaBinding; /// Allows menu item actions to be bound to lua variables.
   };
 }

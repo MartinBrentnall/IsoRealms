@@ -27,11 +27,12 @@
 #include "IsoRealms/IAssets.h"
 #include "IsoRealms/Input/HatHandler.h"
 #include "IsoRealms/IProject.h"
+#include "IsoRealms/Literals.h"
 #include "IsoRealms/Lua.h"
 #include "IsoRealms/System.h"
 #include "IsoRealms/Types.h"
 
-#include "Modules/UI/Menu/IMenuItem.h"
+#include "Modules/UI/Assets/Type/IMenuItem.h"
 
 namespace IsoRealms::UI {
   
@@ -41,11 +42,7 @@ namespace IsoRealms::UI {
   class MenuItemFileList final : public IMenuItem,
                                  public IString {
     public:
-
-    // Public DOM strings.
-    static const std::string MENU_ITEM_TYPE;
-
-    MenuItemFileList(JSONObject object, IProject* project);
+    MenuItemFileList(IProject* project, Menu* menu, JSONObject object);
 
     /***********************\
      * Scripting Interface *
@@ -58,7 +55,6 @@ namespace IsoRealms::UI {
     \************************/
     void registerAssets(IAssetRegistry* assets) override;
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser) override;
-    void save(JSONObject object) const override;
     bool input(sf::Event& event) override;
     void selectTop() override;
     void selectBottom() override;
@@ -70,6 +66,10 @@ namespace IsoRealms::UI {
      * Implements IString *
     \**********************/
     std::string getValue() const override;
+
+    /*******************************************\
+     * Implements IAsset via IMenuItem/IString *
+    \*******************************************/
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
 

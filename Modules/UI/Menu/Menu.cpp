@@ -22,6 +22,7 @@ namespace IsoRealms::UI {
   const std::string Menu::JSON_COLOUR        = "colour";
   const std::string Menu::JSON_FONT          = "font";
   const std::string Menu::JSON_FONT_SIZE     = "fontSize";
+  const std::string Menu::JSON_ITEM          = "item";
   const std::string Menu::JSON_ON_EXIT       = "onExit";
   const std::string Menu::JSON_OPTIONS       = "options";
   const std::string Menu::JSON_SHADOW_OFFSET = "shadowOffset";
@@ -42,9 +43,9 @@ namespace IsoRealms::UI {
     project->updateRuntime([this](unsigned int milliseconds) {
       float mPositionY = 0.0f;
       for (unsigned int i = 0; i < cRuntimeSelectedItem; i++) {
-        mPositionY -= cDefItems[i]->getHeight(*this);
+        mPositionY -= (*cDefItems[i].get())->getHeight(*this);
       }
-      mPositionY -= cDefItems[cRuntimeSelectedItem]->getSelectedY(*this);
+      mPositionY -= (*cDefItems[cRuntimeSelectedItem].get())->getSelectedY(*this);
       if (mPositionY < cRuntimeScroll - 0.6f) {
         cRuntimeScroll += (mPositionY - (cRuntimeScroll - 0.6f)) * 0.1f;    
       } else if (mPositionY > cRuntimeScroll) {
@@ -61,16 +62,7 @@ namespace IsoRealms::UI {
   Menu::Menu(IProject* project, UI* ui, JSONObject object, IOptions* options, IResourceData* data) :
             Menu(project, ui) {
     for (JSONObject mOptionObject : object.getArray(JSON_OPTIONS)) {
-
-      // TODO: This should use AssetClientManager
-      std::string mChildName = mOptionObject.getString(JSON_TYPE);
-      if      (mChildName == MenuItemAction::MENU_ITEM_TYPE)            {cDefItems.emplace_back(std::make_unique<MenuItemAction>(mOptionObject, project));}
-      else if (mChildName == MenuItemBoolean::MENU_ITEM_TYPE)           {cDefItems.emplace_back(std::make_unique<MenuItemBoolean>(mOptionObject, project));}
-      else if (mChildName == MenuItemDigitalInput::MENU_ITEM_TYPE)      {cDefItems.emplace_back(std::make_unique<MenuItemDigitalInput>(mOptionObject, project));}
-      else if (mChildName == MenuItemDisplayResolution::MENU_ITEM_TYPE) {cDefItems.emplace_back(std::make_unique<MenuItemDisplayResolution>(mOptionObject, project));}
-      else if (mChildName == MenuItemFileList::MENU_ITEM_TYPE)          {cDefItems.emplace_back(std::make_unique<MenuItemFileList>(mOptionObject, project));}
-      else if (mChildName == MenuItemSlider::MENU_ITEM_TYPE)            {cDefItems.emplace_back(std::make_unique<MenuItemSlider>(mOptionObject, project));}
-      else                                                        {throw ResourceInitException("Unknown child for menu item: " + mChildName);}
+      cDefItems.emplace_back(std::make_unique<MenuItem>(ui)).get()->set(mOptionObject, JSON_ITEM, this);
     }
     cDefColour.init(object, JSON_COLOUR);
     cDefFont.init(object, JSON_FONT);
@@ -83,8 +75,8 @@ namespace IsoRealms::UI {
     assets->add(static_cast<IScreen*>(this), "", "Menus");
     assets->add(static_cast<IInputHandler*>(this), "", "Menus");
     assets->add(&cLuaBinding, "", "System");
-    for (std::unique_ptr<IMenuItem>& mMenuItem : cDefItems) {
-      mMenuItem->registerAssets(assets);
+    for (std::unique_ptr<MenuItem>& mMenuItem : cDefItems) {
+      (*mMenuItem)->registerAssets(assets);
     }
   }
   
@@ -92,8 +84,8 @@ namespace IsoRealms::UI {
     assets->remove(static_cast<IInputHandler*>(this));
     assets->remove(static_cast<IScreen*>(this));
     assets->remove(&cLuaBinding);
-    for (std::unique_ptr<IMenuItem>& mMenuItem : cDefItems) {
-      mMenuItem->unregisterAssets(assets, releaser);
+    for (std::unique_ptr<MenuItem>& mMenuItem : cDefItems) {
+      (*mMenuItem)->unregisterAssets(assets, releaser);
     }
   }
   
@@ -104,9 +96,9 @@ namespace IsoRealms::UI {
     object.addFloat(JSON_FONT_SIZE, cDefFontSize, DEFAULT_FONT_SIZE);
     object.addFloat(JSON_SHADOW_OFFSET, cDefShadowOffset, DEFAULT_SHADOW_OFFSET);
     JSONArray mOptionsArray = object.addArray(JSON_OPTIONS);
-    for (const std::unique_ptr<IMenuItem>& mItem : cDefItems) {
+    for (const std::unique_ptr<MenuItem>& mItem : cDefItems) {
       JSONObject mOptionObject = mOptionsArray.addObject();
-      mItem->save(mOptionObject);
+      mItem->save(mOptionObject, JSON_ITEM);
     }
   }
 
@@ -145,7 +137,7 @@ namespace IsoRealms::UI {
   }
 
   bool Menu::input(sf::Event& event) {
-    if (cDefItems[cRuntimeSelectedItem]->input(event)) {
+    if ((*cDefItems[cRuntimeSelectedItem])->input(event)) {
       return true;
     }
     
@@ -181,8 +173,8 @@ namespace IsoRealms::UI {
     float mPositionY = 0.0f;
     glTranslatef(0.0f, -cRuntimeScroll, 0.0f);
     for (unsigned int i = 0; i < cDefItems.size(); i++) {
-      cDefItems[i]->render(aspectRatio, mPositionY, cRuntimeSelectedItem == i, *this);
-      mPositionY -= cDefItems[i]->getHeight(*this);
+      (*cDefItems[i])->render(aspectRatio, mPositionY, cRuntimeSelectedItem == i, *this);
+      mPositionY -= (*cDefItems[i])->getHeight(*this);
     }
   }
 
@@ -197,14 +189,14 @@ namespace IsoRealms::UI {
   void Menu::up() {
     if (cRuntimeSelectedItem > 0) {
       cRuntimeSelectedItem--;
-      cDefItems[cRuntimeSelectedItem]->selectBottom();
+      (*cDefItems[cRuntimeSelectedItem])->selectBottom();
     }
   }
 
   void Menu::down() {
     if (cRuntimeSelectedItem < cDefItems.size() - 1) {
       cRuntimeSelectedItem++;
-      cDefItems[cRuntimeSelectedItem]->selectTop();
+      (*cDefItems[cRuntimeSelectedItem])->selectTop();
     }
   }
 }

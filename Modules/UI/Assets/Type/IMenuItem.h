@@ -18,6 +18,8 @@
  */
 #pragma once
 
+#include "IsoRealms/Types.h"
+
 namespace IsoRealms {
   class IAssetRegistry;
   class IAssetRemover;
@@ -26,11 +28,10 @@ namespace IsoRealms {
   namespace UI {
     class Menu;
 
-    class IMenuItem {
+    class IMenuItem : public IAsset {
       public:
       virtual void registerAssets(IAssetRegistry* assets) = 0;
       virtual void unregisterAssets(IAssetRemover* assets, IAssets* releaser) = 0;
-      virtual void save(JSONObject object) const = 0;
       virtual bool input(sf::Event& event) = 0;
       virtual void selectTop() = 0;
       virtual void selectBottom() = 0;

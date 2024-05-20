@@ -24,12 +24,20 @@
 #include <string>
 #include <vector>
 
+#include "IsoRealms/Assets/Providers/AssetInstanced.h"
 #include "IsoRealms/IModuleHandle.h"
 #include "IsoRealms/IsoRealmsConstants.h"
 #include "IsoRealms/Project.h"
 #include "IsoRealms/ResourceTypeDefinition.h"
 #include "IsoRealms/System.h"
 
+#include "Assets/Fixed/MenuItem/MenuItemAction.h"
+#include "Assets/Fixed/MenuItem/MenuItemBoolean.h"
+#include "Assets/Fixed/MenuItem/MenuItemDigitalInput.h"
+#include "Assets/Fixed/MenuItem/MenuItemDisplayResolution.h"
+#include "Assets/Fixed/MenuItem/MenuItemDummy.h"
+#include "Assets/Fixed/MenuItem/MenuItemFileList.h"
+#include "Assets/Fixed/MenuItem/MenuItemSlider.h"
 #include "Layout/Layout.h"
 #include "Menu/Menu.h"
 #include "Panel/Panel.h"
@@ -42,6 +50,9 @@ namespace IsoRealms::UI {
     public:
     UI(IProject* project, IResourceTypeRegistry* registry, IAssetLiterals* literals);
 
+    // Interface access (used by all).
+    IProject* getProject() const;
+
     /****************************\
      * Implements IModuleHandle *
     \****************************/
@@ -50,6 +61,14 @@ namespace IsoRealms::UI {
     void registerAssets(IAssetRegistry* assets) override;
     void unregisterAssets(IAssetRemover* remover, IAssets* releaser) override;
     
+    IMenuItem* createLiteralMenuItem(IAssetUser<IMenuItem>* user);
+
+    IMenuItem* getMenuItem(IAssetUser<IMenuItem>* user, JSONObject object, Menu* owner);
+
+    void release(IAssetUser<IMenuItem>* user, IMenuItem* asset);
+
+    void save(JSONObject object, IMenuItem* asset) const;
+
     private:
     static const std::string ID_RESOURCE_LAYOUT;
     static const std::string ID_RESOURCE_MENU;
@@ -64,6 +83,28 @@ namespace IsoRealms::UI {
     static const std::string NAME_RESOURCE_PROMPT;
     static const std::string NAME_RESOURCE_THROBBER;
     static const std::string NAME_RESOURCE_VIRTUAL_KEYBOARD;
+
+    static const std::string MENU_ITEM_ACTION;
+    static const std::string MENU_ITEM_BOOLEAN;
+    static const std::string MENU_ITEM_DIGITAL_INPUT;
+    static const std::string MENU_ITEM_DISPLAY_RESOLUTION;
+    static const std::string MENU_ITEM_FILE_LIST;
+    static const std::string MENU_ITEM_SLIDER;
+
+    IProject* cProject;
+
+    AssetClientManager<Menu, IMenuItem> cMenuItems;
+
+    // Dummy asset providers.
+    AssetLiteralDummy<Menu, IMenuItem, MenuItemDummy> cDummyProviderMenuItem;
+
+    // Built-in providers for Spindizzy asset types.
+    AssetInstanced<Menu, IMenuItem, MenuItemAction>            cProviderMenuItemAction;
+    AssetInstanced<Menu, IMenuItem, MenuItemBoolean>           cProviderMenuItemBoolean;
+    AssetInstanced<Menu, IMenuItem, MenuItemDigitalInput>      cProviderMenuItemDigitalInput;
+    AssetInstanced<Menu, IMenuItem, MenuItemDisplayResolution> cProviderMenuItemDisplayResolution;
+    AssetInstanced<Menu, IMenuItem, MenuItemFileList>          cProviderMenuItemFileList;
+    AssetInstanced<Menu, IMenuItem, MenuItemSlider>            cProviderMenuItemSlider;
 
     ResourceTypeDefinition<UI, Layout>          cResourceTypeLayout;
     ResourceTypeDefinition<UI, Menu>            cResourceTypeMenu;

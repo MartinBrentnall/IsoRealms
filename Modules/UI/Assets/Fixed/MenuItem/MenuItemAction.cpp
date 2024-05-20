@@ -21,16 +21,12 @@
 #include "Modules/UI/Menu/Menu.h"
 
 namespace IsoRealms::UI {
-  const std::string MenuItemAction::MENU_ITEM_TYPE   = "Action";
-
   const std::string MenuItemAction::JSON_ID           = "id";
   const std::string MenuItemAction::JSON_LABEL        = "label";
   const std::string MenuItemAction::JSON_ON_SELECTION = "onSelection";
-  const std::string MenuItemAction::JSON_TYPE         = "type";
-  
   const std::string MenuItemAction::BINDING_TYPE = "Action";
     
-  MenuItemAction::MenuItemAction(JSONObject object, IProject* project) :
+  MenuItemAction::MenuItemAction(IProject* project, Menu* menu, JSONObject object) :
             cDefID(object.getString(JSON_ID)),
             cDefLabel(object.getString(JSON_LABEL)),
             cDefAction(project),
@@ -57,13 +53,6 @@ namespace IsoRealms::UI {
     }
   }
   
-  void MenuItemAction::save(JSONObject object) const {
-    object.addString(JSON_TYPE, MENU_ITEM_TYPE);
-    object.addString(JSON_ID, cDefID);
-    object.addString(JSON_LABEL, cDefLabel);
-    cDefAction.save(object, JSON_ON_SELECTION);
-  }
-
   bool MenuItemAction::input(sf::Event& event) {
     switch (event.type) {
       case sf::Event::KeyPressed: {
@@ -113,5 +102,15 @@ namespace IsoRealms::UI {
 
   float MenuItemAction::getSelectedY(const Menu& menu) const {
     return 0.0f;
+  }
+
+  bool MenuItemAction::renderAssetIcon() const {
+    return false;
+  }
+
+  void MenuItemAction::saveAsset(JSONObject object) const {
+    object.addString(JSON_ID, cDefID);
+    object.addString(JSON_LABEL, cDefLabel);
+    cDefAction.save(object, JSON_ON_SELECTION);
   }
 }

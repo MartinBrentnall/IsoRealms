@@ -21,15 +21,13 @@
 #include "Modules/UI/Menu/Menu.h"
 
 namespace IsoRealms::UI {
-  const std::string MenuItemDisplayResolution::MENU_ITEM_TYPE = "DisplayResolution";
-
   const std::string MenuItemDisplayResolution::JSON_ID    = "id";
   const std::string MenuItemDisplayResolution::JSON_LABEL = "label";
   const std::string MenuItemDisplayResolution::JSON_TYPE  = "type";
 
   const std::string MenuItemDisplayResolution::BINDING_TYPE = "DisplayResolution";
 
-  MenuItemDisplayResolution::MenuItemDisplayResolution(JSONObject object, IProject* project) :
+  MenuItemDisplayResolution::MenuItemDisplayResolution(IProject* project, Menu* menu, JSONObject object) :
             cHatHandler(project->getApplication()->getHatHandler()),
             cDefID(object.getString(JSON_ID)),
             cDefLabel(object.getString(JSON_LABEL)),
@@ -58,12 +56,6 @@ namespace IsoRealms::UI {
     assets->remove(&cLuaBinding);
   }
   
-  void MenuItemDisplayResolution::save(JSONObject object) const {
-    object.addString(JSON_TYPE,  MENU_ITEM_TYPE);
-    object.addString(JSON_ID,    cDefID);
-    object.addString(JSON_LABEL, cDefLabel);
-  }
-
   bool MenuItemDisplayResolution::input(sf::Event& event) {
     switch (event.type) {
       case sf::Event::KeyPressed: {
@@ -109,6 +101,15 @@ namespace IsoRealms::UI {
 
   float MenuItemDisplayResolution::getSelectedY(const Menu& menu) const {
     return 0.0f;
+  }
+
+  bool MenuItemDisplayResolution::renderAssetIcon() const {
+    return false;
+  }
+
+  void MenuItemDisplayResolution::saveAsset(JSONObject object) const {
+    object.addString(JSON_ID,    cDefID);
+    object.addString(JSON_LABEL, cDefLabel);
   }
 
   unsigned int MenuItemDisplayResolution::getIndex(const DisplayResolution& resolution) const {

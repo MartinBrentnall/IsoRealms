@@ -18,47 +18,47 @@
  */
 #pragma once
 
-#include <algorithm>
-
 #include <GL/glew.h>
-#include <GL/gl.h>
+#include <string>
 
-#include "IsoRealms/DisplayResolution.h"
-#include "IsoRealms/IApplication.h"
 #include "IsoRealms/IAssetRegistry.h"
 #include "IsoRealms/IAssetRemover.h"
+#include "IsoRealms/IAssets.h"
+#include "IsoRealms/Input/AxisMapping.h"
+#include "IsoRealms/Input/ButtonMapping.h"
 #include "IsoRealms/Input/HatHandler.h"
+#include "IsoRealms/Input/HatMapping.h"
+#include "IsoRealms/Input/IDigitalInputMapping.h"
+#include "IsoRealms/Input/KeyMapping.h"
+#include "IsoRealms/Literals.h"
 #include "IsoRealms/Lua.h"
 #include "IsoRealms/System.h"
+#include "IsoRealms/Types.h"
 
-#include "Modules/UI/Menu/IMenuItem.h"
+#include "Modules/UI/Assets/Type/IMenuItem.h"
 
 namespace IsoRealms::UI {
   
   /**
-   * Menu item that represents a list of display resolutions that are supported
-   * in full screen mode.
+   * Menu item that represents a digital input with configurable mappings.
    */
-  class MenuItemDisplayResolution final : public IMenuItem {
+  class MenuItemDigitalInput final : public IMenuItem {
     public:
-
-    // Public DOM strings.
-    static const std::string MENU_ITEM_TYPE;
-
-    MenuItemDisplayResolution(JSONObject object, IProject* project);
+    MenuItemDigitalInput(IProject* project, Menu* menu, JSONObject object);
 
     /***********************\
      * Scripting Interface *
     \***********************/
-    void setValue(DisplayResolution resolution);
-    DisplayResolution getValue();
+    void addMapping(std::shared_ptr<IDigitalInputMapping> input);
+    void clear();
+    unsigned int getMappingCount();
+    std::shared_ptr<IDigitalInputMapping> getMapping(unsigned int index);
     
     /************************\
      * Implements IMenuItem *
     \************************/
     void registerAssets(IAssetRegistry* assets) override;
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser) override;
-    void save(JSONObject object) const override;
     bool input(sf::Event& event) override;
     void selectTop() override;
     void selectBottom() override;
@@ -66,11 +66,16 @@ namespace IsoRealms::UI {
     float getHeight(const Menu& menu) const override;
     float getSelectedY(const Menu& menu) const override;
 
+    /***********************************\
+     * Implements IAsset via IMenuItem *
+    \***********************************/
+    bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
+
     private:
     
     // JSON members.
     static const std::string JSON_ID;
-    static const std::string JSON_LABEL;
     static const std::string JSON_TYPE;
 
     // Constants.
@@ -78,19 +83,20 @@ namespace IsoRealms::UI {
 
     // Definition data.
     HatHandler& cHatHandler;
-    std::string cDefID;    /// ID of this menu item for binding.
-    std::string cDefLabel; /// Label to show for this menu item. 
+    std::string cDefID; /// ID of this menu item for binding.
     
     // Runtime data.
-    std::vector<DisplayResolution> cRuntimeResolutions; /// List of resolutions that can be selected.
-    unsigned int cRuntimeSelectedResolution;            /// Index of the selected resolution.
+    std::vector<std::shared_ptr<IDigitalInputMapping>> cRuntimeMappings; /// Mappings applied to this digital input.
+    unsigned int cRuntimeSelectedMapping;                                /// Index of the selected mapping.
+    bool cRuntimeAddingMapping;                                          /// True when awaiting user input from which to apply a new mapping.
 
     // Scripting support.
-    LuaBinding<MenuItemDisplayResolution> cLuaBinding; /// Allows resolution menu items to be bound to lua variables.
+    LuaBinding<MenuItemDigitalInput> cLuaBinding; /// Allows digital input settings to be bound to lua variables.
     
     // Private functions.
-    unsigned int getIndex(const DisplayResolution& resolution) const;
-    bool left();
-    bool right();
+    bool up();
+    bool down();
+    bool remove();
+    bool confirm();
   };
 }

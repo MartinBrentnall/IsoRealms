@@ -21,8 +21,6 @@
 #include "Modules/UI/Menu/Menu.h"
 
 namespace IsoRealms::UI {
-  const std::string MenuItemFileList::MENU_ITEM_TYPE   = "FileList";
-  
   const std::string MenuItemFileList::JSON_FOLDER       = "folder";
   const std::string MenuItemFileList::JSON_ID           = "id";
   const std::string MenuItemFileList::JSON_ON_SELECTION = "onSelection";
@@ -31,7 +29,7 @@ namespace IsoRealms::UI {
 
   const std::string MenuItemFileList::BINDING_TYPE = "FileList";
   
-  MenuItemFileList::MenuItemFileList(JSONObject object, IProject* project) :
+  MenuItemFileList::MenuItemFileList(IProject* project, Menu* menu, JSONObject object) :
             cHatHandler(project->getApplication()->getHatHandler()),
             cDefID(object.getString(JSON_ID)),
             cDefFolder(object.getString(JSON_FOLDER)),
@@ -72,14 +70,6 @@ namespace IsoRealms::UI {
     assets->remove(&cLuaBinding);
   }
   
-  void MenuItemFileList::save(JSONObject object) const {
-    object.addString(JSON_TYPE,   MENU_ITEM_TYPE);
-    object.addString(JSON_ID,     cDefID);
-    object.addString(JSON_FOLDER, cDefFolder);
-    object.addBoolean(JSON_USER,   cDefUser);
-    cDefAction.save(object, JSON_ON_SELECTION);
-  }
-
   bool MenuItemFileList::input(sf::Event& event) {
     switch (event.type) {
       case sf::Event::KeyPressed: {
@@ -131,16 +121,19 @@ namespace IsoRealms::UI {
     return menu.getFontSize() * 2.0f * cRuntimeSelectedFile;
   }
 
-  std::string MenuItemFileList::getValue() const {
-    return cRuntimeFiles[cRuntimeSelectedFile]->getPath();
-  }
-
   bool MenuItemFileList::renderAssetIcon() const {
     return false;
   }
 
   void MenuItemFileList::saveAsset(JSONObject object) const {
-    // Nothing to do.
+    object.addString(JSON_ID,     cDefID);
+    object.addString(JSON_FOLDER, cDefFolder);
+    object.addBoolean(JSON_USER,  cDefUser);
+    cDefAction.save(object, JSON_ON_SELECTION);
+  }
+
+  std::string MenuItemFileList::getValue() const {
+    return cRuntimeFiles[cRuntimeSelectedFile]->getPath();
   }
 
   MenuItemFileList::File::File(const std::string& label, const std::string& path) :

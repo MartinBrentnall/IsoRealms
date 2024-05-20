@@ -21,14 +21,12 @@
 #include "Modules/UI/Menu/Menu.h"
 
 namespace IsoRealms::UI {
-  const std::string MenuItemDigitalInput::MENU_ITEM_TYPE = "DigitalInput";
-
   const std::string MenuItemDigitalInput::JSON_ID   = "id";
   const std::string MenuItemDigitalInput::JSON_TYPE = "type";
   
   const std::string MenuItemDigitalInput::BINDING_TYPE = "DigitalInput";
   
-  MenuItemDigitalInput::MenuItemDigitalInput(JSONObject object, IProject* project) :
+  MenuItemDigitalInput::MenuItemDigitalInput(IProject* project, Menu* menu, JSONObject object) :
             cHatHandler(project->getApplication()->getHatHandler()),
             cDefID(object.getString(JSON_ID)),
             cLuaBinding(project, this) {
@@ -63,11 +61,6 @@ namespace IsoRealms::UI {
     assets->remove(&cLuaBinding);
   }
   
-  void MenuItemDigitalInput::save(JSONObject object) const {
-    object.addString(JSON_TYPE, MENU_ITEM_TYPE);
-    object.addString(JSON_ID, cDefID);
-  }
-
   bool MenuItemDigitalInput::input(sf::Event& event) {
     if (cRuntimeAddingMapping) {
       std::unique_ptr<IDigitalInputMapping> mMapping = Utils::toDigitalInputMapping(cHatHandler, event);
@@ -148,6 +141,14 @@ namespace IsoRealms::UI {
 
   float MenuItemDigitalInput::getSelectedY(const Menu& menu) const {
     return menu.getFontSize() * 2.0f * cRuntimeSelectedMapping;
+  }
+
+  bool MenuItemDigitalInput::renderAssetIcon() const {
+    return false;
+  }
+
+  void MenuItemDigitalInput::saveAsset(JSONObject object) const {
+    object.addString(JSON_ID, cDefID);
   }
 
   bool MenuItemDigitalInput::up() {

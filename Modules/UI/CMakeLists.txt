@@ -24,6 +24,14 @@ else(LUA_FOUND)
 endif(LUA_FOUND)
 
 add_library(UI MODULE
+  Assets/Client/MenuItem.cpp
+  Assets/Fixed/MenuItem/MenuItemAction.cpp
+  Assets/Fixed/MenuItem/MenuItemBoolean.cpp
+  Assets/Fixed/MenuItem/MenuItemDigitalInput.cpp
+  Assets/Fixed/MenuItem/MenuItemDisplayResolution.cpp
+  Assets/Fixed/MenuItem/MenuItemDummy.cpp
+  Assets/Fixed/MenuItem/MenuItemFileList.cpp
+  Assets/Fixed/MenuItem/MenuItemSlider.cpp
   Layout/Editor/LayoutEditor.cpp
   Layout/Layout.cpp
   Layout/LayoutComponent.cpp
@@ -31,12 +39,6 @@ add_library(UI MODULE
   Layout/Offset/LinkedOffset.cpp
   Layout/Location/AbsoluteLocation.cpp
   Layout/Location/RelativeLocation.cpp
-  Menu/Items/MenuItemAction.cpp
-  Menu/Items/MenuItemBoolean.cpp
-  Menu/Items/MenuItemDigitalInput.cpp
-  Menu/Items/MenuItemDisplayResolution.cpp
-  Menu/Items/MenuItemFileList.cpp
-  Menu/Items/MenuItemSlider.cpp
   Menu/Menu.cpp
   Panel/Panel.cpp
   Prompt/Prompt.cpp

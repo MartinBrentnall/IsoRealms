@@ -23,66 +23,82 @@
 
 #include "IsoRealms/IAssetRegistry.h"
 #include "IsoRealms/IAssetRemover.h"
+#include "IsoRealms/IAssets.h"
 #include "IsoRealms/Input/HatHandler.h"
+#include "IsoRealms/IProject.h"
+#include "IsoRealms/Literals.h"
 #include "IsoRealms/Lua.h"
+#include "IsoRealms/Types.h"
 
-#include "Modules/UI/Menu/IMenuItem.h"
+#include "Modules/UI/Assets/Type/IMenuItem.h"
 
 namespace IsoRealms::UI {
   
   /**
-   * Menu item that represents a boolean option or setting.
+   * Menu item that represents a slider setting.
    */
-  class MenuItemBoolean final : public IMenuItem {
+  class MenuItemSlider final : public IMenuItem {
     public:
-
-    // Public DOM strings.
-    static const std::string MENU_ITEM_TYPE;
-
-    MenuItemBoolean(JSONObject object, IProject* project);
+    MenuItemSlider(IProject* project, Menu* menu, JSONObject object);
 
     /***********************\
-     * Scripting interface *
+     * Scripting Interface *
     \***********************/
-    void setValue(bool value);
-    bool getValue();
-    
+    void setValue(float value);
+    float getValue();
+
     /************************\
      * Implements IMenuItem *
     \************************/
     void registerAssets(IAssetRegistry* assets) override;
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser) override;
-    void save(JSONObject object) const override;
     bool input(sf::Event& event) override;
     void selectTop() override;
     void selectBottom() override;
     void render(float aspectRatio, float y, bool selected, const Menu& menu) const override;
     float getHeight(const Menu& menu) const override;
     float getSelectedY(const Menu& menu) const override;
-    
+
+    /***********************************\
+     * Implements IAsset via IMenuItem *
+    \***********************************/
+    bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
+
     private:
     
     // JSON members.
-    static const std::string JSON_FALSE_LABEL;
     static const std::string JSON_ID;
     static const std::string JSON_LABEL;
-    static const std::string JSON_TRUE_LABEL ;
+    static const std::string JSON_MAXIMUM;
+    static const std::string JSON_MINIMUM;
+    static const std::string JSON_ON_CHANGE;
+    static const std::string JSON_STEPS;
     static const std::string JSON_TYPE;
 
     // Constants.
     static const std::string BINDING_TYPE;
+    
+    static const float DEFAULT_MAXIMUM;
+    static const float DEFAULT_MINIMUM;
+    static const int DEFAULT_STEPS;
 
     // Definition data.
     HatHandler& cHatHandler;
-    std::string cDefID;         /// ID of this menu item for binding.
-    std::string cDefLabel;      /// Label to show for this menu item.
-    std::string cDefLabelFalse; /// Label to show when the value of this menu item is false.
-    std::string cDefLabelTrue;  /// Label to show when the value of this menu item is true.
+    std::string cDefID;            /// ID of this menu item for binding.
+    std::string cDefLabel;         /// Label to show for this menu item.
+    float cDefMinimum;             /// Minimum allowed value of this slider.
+    float cDefMaximum;             /// Maximum allowed value of this slider.
+    int cDefSteps;                 /// Number of steps within this slider.
+    Action cDefValueChangedAction; /// Action that changing the value of the slider will trigger.
     
     // Runtime data.
-    bool cRuntimeValue; /// Current value of this item.
+    float cRuntimeValue; /// Current value of this slider.
 
     // Scripting support.
-    LuaBinding<MenuItemBoolean> cLuaBinding; /// Allows boolean settings to be bound to lua variables.
+    LuaBinding<MenuItemSlider> cLuaBinding; /// Allows sliders to be bound to lua variables.
+
+    // Private functions.
+    void adjustValue(float amount);
   };
 }

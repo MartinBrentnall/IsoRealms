@@ -29,32 +29,17 @@
 #include "IsoRealms/Lua.h"
 #include "IsoRealms/Types.h"
 
-#include "Modules/UI/Menu/IMenuItem.h"
+#include "Modules/UI/Assets/Type/IMenuItem.h"
 
 namespace IsoRealms::UI {
-
-  /**
-   * Menu item that triggers an action upon confirmation.
-   */
-  class MenuItemAction final : public IMenuItem {
+  class MenuItemDummy final : public IMenuItem {
     public:
-
-    // Public DOM strings.
-    static const std::string MENU_ITEM_TYPE;
-
-    MenuItemAction(JSONObject object, IProject* project);
-
-    /***********************\
-     * Scripting Interface *
-    \***********************/
-    void setValue(const std::string& value);
 
     /************************\
      * Implements IMenuItem *
     \************************/
     void registerAssets(IAssetRegistry* assets) override;
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser) override;
-    void save(JSONObject object) const override;
     bool input(sf::Event& event) override;
     void selectTop() override;
     void selectBottom() override;
@@ -62,26 +47,10 @@ namespace IsoRealms::UI {
     float getHeight(const Menu& menu) const override;
     float getSelectedY(const Menu& menu) const override;
 
-    private:
-
-    // JSON members.
-    static const std::string JSON_ID;
-    static const std::string JSON_LABEL;
-    static const std::string JSON_ON_SELECTION;
-    static const std::string JSON_TYPE;
-
-    // Constants.
-    static const std::string BINDING_TYPE;
-    
-    // Definition data.
-    std::string cDefID;    /// ID of this menu item for binding.
-    std::string cDefLabel; /// Label to show for this menu item.
-    Action cDefAction;     /// Action that confirming this menu item will trigger.
-    
-    // Runtime data.
-    std::string cRuntimeValue; /// TODO: What's this used for?
-    
-    // Scripting support.
-    LuaBinding<MenuItemAction> cLuaBinding; /// Allows menu item actions to be bound to lua variables.
+    /***********************************\
+     * Implements IAsset via IMenuItem *
+    \***********************************/
+    bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
   };
 }

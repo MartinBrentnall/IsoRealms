@@ -18,44 +18,43 @@
  */
 #pragma once
 
+#include <algorithm>
+
 #include <GL/glew.h>
 #include <GL/gl.h>
 
+#include "IsoRealms/DisplayResolution.h"
+#include "IsoRealms/IApplication.h"
 #include "IsoRealms/IAssetRegistry.h"
 #include "IsoRealms/IAssetRemover.h"
-#include "IsoRealms/IAssets.h"
 #include "IsoRealms/Input/HatHandler.h"
-#include "IsoRealms/IProject.h"
+#include "IsoRealms/Literals.h"
 #include "IsoRealms/Lua.h"
-#include "IsoRealms/Types.h"
+#include "IsoRealms/System.h"
 
-#include "Modules/UI/Menu/IMenuItem.h"
+#include "Modules/UI/Assets/Type/IMenuItem.h"
 
 namespace IsoRealms::UI {
   
   /**
-   * Menu item that represents a slider setting.
+   * Menu item that represents a list of display resolutions that are supported
+   * in full screen mode.
    */
-  class MenuItemSlider final : public IMenuItem {
+  class MenuItemDisplayResolution final : public IMenuItem {
     public:
-
-    // Public DOM strings.
-    static const std::string MENU_ITEM_TYPE;
-
-    MenuItemSlider(JSONObject object, IProject* project);
+    MenuItemDisplayResolution(IProject* project, Menu* menu, JSONObject object);
 
     /***********************\
      * Scripting Interface *
     \***********************/
-    void setValue(float value);
-    float getValue();
-
+    void setValue(DisplayResolution resolution);
+    DisplayResolution getValue();
+    
     /************************\
      * Implements IMenuItem *
     \************************/
     void registerAssets(IAssetRegistry* assets) override;
     void unregisterAssets(IAssetRemover* assets, IAssets* releaser) override;
-    void save(JSONObject object) const override;
     bool input(sf::Event& event) override;
     void selectTop() override;
     void selectBottom() override;
@@ -63,40 +62,37 @@ namespace IsoRealms::UI {
     float getHeight(const Menu& menu) const override;
     float getSelectedY(const Menu& menu) const override;
 
+    /***********************************\
+     * Implements IAsset via IMenuItem *
+    \***********************************/
+    bool renderAssetIcon() const override;
+    void saveAsset(JSONObject object) const override;
+
     private:
     
     // JSON members.
     static const std::string JSON_ID;
     static const std::string JSON_LABEL;
-    static const std::string JSON_MAXIMUM;
-    static const std::string JSON_MINIMUM;
-    static const std::string JSON_ON_CHANGE;
-    static const std::string JSON_STEPS;
     static const std::string JSON_TYPE;
 
     // Constants.
     static const std::string BINDING_TYPE;
-    
-    static const float DEFAULT_MAXIMUM;
-    static const float DEFAULT_MINIMUM;
-    static const int DEFAULT_STEPS;
 
     // Definition data.
     HatHandler& cHatHandler;
-    std::string cDefID;            /// ID of this menu item for binding.
-    std::string cDefLabel;         /// Label to show for this menu item.
-    float cDefMinimum;             /// Minimum allowed value of this slider.
-    float cDefMaximum;             /// Maximum allowed value of this slider.
-    int cDefSteps;                 /// Number of steps within this slider.
-    Action cDefValueChangedAction; /// Action that changing the value of the slider will trigger.
+    std::string cDefID;    /// ID of this menu item for binding.
+    std::string cDefLabel; /// Label to show for this menu item. 
     
     // Runtime data.
-    float cRuntimeValue; /// Current value of this slider.
+    std::vector<DisplayResolution> cRuntimeResolutions; /// List of resolutions that can be selected.
+    unsigned int cRuntimeSelectedResolution;            /// Index of the selected resolution.
 
     // Scripting support.
-    LuaBinding<MenuItemSlider> cLuaBinding; /// Allows sliders to be bound to lua variables.
-
+    LuaBinding<MenuItemDisplayResolution> cLuaBinding; /// Allows resolution menu items to be bound to lua variables.
+    
     // Private functions.
-    void adjustValue(float amount);
+    unsigned int getIndex(const DisplayResolution& resolution) const;
+    bool left();
+    bool right();
   };
 }

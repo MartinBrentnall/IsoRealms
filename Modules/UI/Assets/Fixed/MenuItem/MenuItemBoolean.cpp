@@ -21,8 +21,6 @@
 #include "Modules/UI/Menu/Menu.h"
 
 namespace IsoRealms::UI {
-  const std::string MenuItemBoolean::MENU_ITEM_TYPE = "Boolean";
-
   const std::string MenuItemBoolean::JSON_FALSE_LABEL = "falseLabel";
   const std::string MenuItemBoolean::JSON_ID          = "id";
   const std::string MenuItemBoolean::JSON_LABEL       = "label";
@@ -31,7 +29,7 @@ namespace IsoRealms::UI {
 
   const std::string MenuItemBoolean::BINDING_TYPE = "Boolean";
 
-  MenuItemBoolean::MenuItemBoolean(JSONObject object, IProject* project) :
+  MenuItemBoolean::MenuItemBoolean(IProject* project, Menu* menu, JSONObject object) :
             cHatHandler(project->getApplication()->getHatHandler()),
             cDefID(object.getString(JSON_ID)),
             cDefLabel(object.getString(JSON_LABEL)),
@@ -59,14 +57,6 @@ namespace IsoRealms::UI {
     assets->remove(&cLuaBinding);
   }
   
-  void MenuItemBoolean::save(JSONObject object) const {
-    object.addString(JSON_TYPE,        MENU_ITEM_TYPE);
-    object.addString(JSON_ID,          cDefID);
-    object.addString(JSON_LABEL,       cDefLabel);
-    object.addString(JSON_TRUE_LABEL,  cDefLabelTrue);
-    object.addString(JSON_FALSE_LABEL, cDefLabelFalse);
-  }
-
   bool MenuItemBoolean::input(sf::Event& event) {
     switch (event.type) {
       case sf::Event::KeyPressed: {
@@ -113,5 +103,16 @@ namespace IsoRealms::UI {
 
   float MenuItemBoolean::getSelectedY(const Menu& menu) const {
     return 0.0f;
+  }
+
+  bool MenuItemBoolean::renderAssetIcon() const {
+    return false;
+  }
+
+  void MenuItemBoolean::saveAsset(JSONObject object) const {
+    object.addString(JSON_ID,          cDefID);
+    object.addString(JSON_LABEL,       cDefLabel);
+    object.addString(JSON_TRUE_LABEL,  cDefLabelTrue);
+    object.addString(JSON_FALSE_LABEL, cDefLabelFalse);
   }
 }
