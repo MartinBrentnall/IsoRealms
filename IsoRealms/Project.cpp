@@ -350,7 +350,8 @@ namespace IsoRealms {
   void Project::saveFile(const std::string& include) {
     std::string mOriginalFileName = cFilename;
     cFilename = include;
-    cProjectDataPath = cFilename.substr(0, cFilename.find_last_of('.'));
+    // TODO: Allow saving of include files.
+//    cProjectDataPath = cFilename.substr(0, cFilename.find_last_of('.'));
 
     if (!cFilename.empty() && cCanSave) {
       JSONDocument mJSONDocument;
@@ -399,14 +400,16 @@ namespace IsoRealms {
       mJSONDocument.save(cFilename);
     }
     cFilename = mOriginalFileName;
-    cProjectDataPath = cFilename.substr(0, cFilename.find_last_of('.'));
+    // TODO: Allow saving of include files.
+//    cProjectDataPath = cFilename.substr(0, cFilename.find_last_of('.'));
   }
 
   void Project::save() {
     saveFile(cFilename);
-    for (std::unique_ptr<Include>& mInclusion : cInclusions) {
-      saveFile(mInclusion->cProject);
-    }
+    // TODO: Allow saving of include files.
+//     for (std::unique_ptr<Include>& mInclusion : cInclusions) {
+//       saveFile(mInclusion->cProject);
+//     }
   }
 
   void Project::save(const std::string& filename) {
