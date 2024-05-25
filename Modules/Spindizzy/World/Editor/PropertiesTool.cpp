@@ -50,30 +50,19 @@ namespace IsoRealms::Spindizzy {
             cPropertiesMenu(&cConfigurator, editor->getPropertyAppearance()) {
   }
 
-  bool PropertiesTool::Modifier::inputEdit(sf::Event& event, double yaw) {
-    if (cEditingProperties) {
-      cConfigurator.input(event);
-      return true;
-    }
+  bool PropertiesTool::Modifier::inputTool(int id, bool value, double yaw) {
+    // TODO: Implement this.
+//     if (cEditingProperties) {
+//       cConfigurator.input(event);
+//       return true;
+//     }
 
-    switch (event.type) {
-      case sf::Event::KeyPressed: {
-        switch (event.key.code) {
-          case sf::Keyboard::Space: showProperties();                                                                                        return true;
-          case sf::Keyboard::Tab:   cSelectedObject++; if (cSelectedObject >= static_cast<int>(cHoverObjects.size())) {cSelectedObject = 0;} return true;
-          default:                                                                                                                           break;
-        }
-        break;
+    if (value) {
+      switch (static_cast<WorldEditor::DigitalInputID>(id)) {
+        case WorldEditor::DigitalInputID::USE_TOOL: showProperties();                                                                                        return true;
+        case WorldEditor::DigitalInputID::CANCEL:   cSelectedObject++; if (cSelectedObject >= static_cast<int>(cHoverObjects.size())) {cSelectedObject = 0;} return true;
+        default:                                                                                                                                             break;
       }
-
-      case sf::Event::JoystickButtonPressed: {
-        switch (event.joystickButton.button) {
-          case 0: showProperties(); return true;
-        }
-        break;
-      }
-
-      default: break;
     }
     return false;
   }

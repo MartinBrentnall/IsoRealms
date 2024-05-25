@@ -169,26 +169,13 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  bool LiftType::Pen::inputEdit(sf::Event& event, double yaw) {
-    switch (event.type) {
-      case sf::Event::KeyPressed: {
-        switch (event.key.code) {
-          case sf::Keyboard::Space:  draw(); return true;
-          case sf::Keyboard::Escape: return cancel();
-          default:                   break;
-        }
-        break;
+  bool LiftType::Pen::inputTool(int id, bool value, double yaw) {
+    if (value) {
+      switch (static_cast<WorldEditor::DigitalInputID>(id)) {
+        case WorldEditor::DigitalInputID::USE_TOOL: draw();   return true;
+        case WorldEditor::DigitalInputID::CANCEL:   cancel(); return true;
+        default:                                              break;
       }
-
-      case sf::Event::JoystickButtonPressed: {
-        switch (event.joystickButton.button) {
-          case 0: draw(); return true;
-          case 1: return cancel();
-        }
-        break;
-      }
-
-      default: break;
     }
     return false;
   }

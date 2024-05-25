@@ -291,34 +291,18 @@ namespace IsoRealms::Spindizzy {
     }
   }
 
-  bool TerrainType::Pen::inputEdit(sf::Event& event, double yaw) {
-    if (cEditor->getTerrainBrush().input(event, yaw)) {
+  bool TerrainType::Pen::inputTool(int id, bool value, double yaw) {
+    if (cEditor->getTerrainBrush().input(id, value, yaw)) {
       return true;
     }
 
-    switch (event.type) {
-      case sf::Event::KeyPressed: {
-        switch (event.key.code) {
-          case sf::Keyboard::Escape:                      return cancel();
-          case sf::Keyboard::Tab:    toggleNegation();    return true;
-          case sf::Keyboard::Space:  draw();              return true;
-          case sf::Keyboard::F3:     toggleShapeEditor(); return true;
-          default:                                        break;
-        }
-        break;
-      }
-
-      case sf::Event::JoystickButtonPressed: {
-        switch (event.joystickButton.button) {
-          case 0: draw();                            return true;
-          case 1: if (!cancel()) {toggleNegation();} return true;
-          case 2: toggleShapeEditor();               return true;
-        }
-        break;
-      }
-
-      default: {
-        break;
+    if (value) {
+      switch (static_cast<WorldEditor::DigitalInputID>(id)) {
+        case WorldEditor::DigitalInputID::USE_TOOL:       draw();              return true;
+        case WorldEditor::DigitalInputID::CANCEL:         cancel();            return true;
+        case WorldEditor::DigitalInputID::TOOL_MODE:      toggleNegation();    return true;
+        case WorldEditor::DigitalInputID::CONFIGURE_TOOL: toggleShapeEditor(); return true;
+        default:                                                               break;
       }
     }
     return false;

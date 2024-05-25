@@ -45,6 +45,18 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
+  std::vector<std::string> LiteralEditable::EditableScreen::getDigitalInputs() const {
+    return std::vector<std::string>();
+  }
+
+  int LiteralEditable::EditableScreen::getDigitalInputID(const std::string& name) const {
+    return 0;
+  }
+
+  void LiteralEditable::EditableScreen::inputEditable(int id, bool value) {
+    // Nothing to do.
+  }
+
   void LiteralEditable::EditableScreen::unregisterAssets(IAssetRemover* assets) {
     // Nothing to do.
   }

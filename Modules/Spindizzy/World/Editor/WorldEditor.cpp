@@ -233,191 +233,191 @@ namespace IsoRealms::Spindizzy {
   }
 
   bool WorldEditor::input(sf::Event& event) {
-    if (cSelectedTool != nullptr) {
-      if (cSelectedTool->inputEdit(event, getAngle())) {
-        return true;
-      }
-    }
-
-    switch (event.type) {
-      case sf::Event::JoystickButtonPressed: {
-        switch (event.joystickButton.button) {
-          case 4: cZSpeed = -32767 / 200000.0f; return true;
-          case 5: cZSpeed =  32767 / 200000.0f; return true;
-        }
-        break;
-      }
-
-      case sf::Event::JoystickButtonReleased: {
-        switch (event.joystickButton.button) {
-          case 4: cZSpeed = 0.0f; return true;
-          case 5: cZSpeed = 0.0f; return true;
-        }
-        break;
-      }
-
-      case sf::Event::JoystickMoved: {
-        bool mDirectionPressed = false;
-        if (cHatHandler.leftPressed())  {selectToolRelative(-1); mDirectionPressed = true;}
-        if (cHatHandler.rightPressed()) {selectToolRelative(1);  mDirectionPressed = true;}
-        if (cHatHandler.upPressed())    {setPreviousTheme();     mDirectionPressed = true;}
-        if (cHatHandler.downPressed())  {setNextTheme();         mDirectionPressed = true;}
-        if (mDirectionPressed)          {return true;}
-        int mValue = std::abs(event.joystickMove.position) < cDefAnalogueSensitivity ? 0 : (event.joystickMove.position - (event.joystickMove.position < 0 ? -cDefAnalogueSensitivity : cDefAnalogueSensitivity)) * (32767 / static_cast<float>(32767 - cDefAnalogueSensitivity));
-        switch (event.joystickMove.axis) {
-          case sf::Joystick::Axis::X: cXSpeed           =  mValue / 500.0f; return true;
-          case sf::Joystick::Axis::Y: cYSpeed           = -mValue / 500.0f; return true;
-          case sf::Joystick::Axis::Z: cDistanceOutSpeed =  mValue / 50.0f;  return true;
-          case sf::Joystick::Axis::U: cYawSpeed         =  mValue / 9.0f;   return true;
-          case sf::Joystick::Axis::V: cPitchSpeed       = -mValue / 9.0f;   return true;
-          case sf::Joystick::Axis::R: cDistanceInSpeed  =  mValue / 50.0f;  return true;
-          default:                                                          break;
-        }
-        break;
-      }
-
-      case sf::Event::KeyPressed: {
-        switch (event.key.code) {
-          case sf::Keyboard::LShift:   cActiveSlow   = true;   return true;
-          case sf::Keyboard::LControl: cActiveFast   = true;   return true;
-          case sf::Keyboard::A:        // Fallthrough
-          case sf::Keyboard::Left:     cActiveLeft   = true;   return true;
-          case sf::Keyboard::W:        // Fallthrough
-          case sf::Keyboard::Up:       cActiveUp     = true;   return true;
-          case sf::Keyboard::S:        // Fallthrough
-          case sf::Keyboard::Down:     cActiveDown   = true;   return true;
-          case sf::Keyboard::D:        // Fallthrough
-          case sf::Keyboard::Right:    cActiveRight  = true;   return true;
-          case sf::Keyboard::PageUp:   cActiveHigher = true;   return true;
-          case sf::Keyboard::PageDown: cActiveLower  = true;   return true;
-          case sf::Keyboard::Home:     setNextTheme();         return true;
-          case sf::Keyboard::End:      setPreviousTheme();     return true;
-          case sf::Keyboard::Q:        // Fallthrough
-          case sf::Keyboard::F1:       selectToolRelative(-1); return true;
-          case sf::Keyboard::E:        // Fallthrough
-          case sf::Keyboard::F2:       selectToolRelative(1);  return true;
-          default:                                             break;
-        }
-        break;
-      }
-      
-      case sf::Event::KeyReleased: {
-        switch (event.key.code) {
-          case sf::Keyboard::LShift:   cActiveSlow   = false; return true;
-          case sf::Keyboard::LControl: cActiveFast   = false; return true;
-          case sf::Keyboard::A:        // Fallthrough
-          case sf::Keyboard::Left:     cActiveLeft   = false; return true;
-          case sf::Keyboard::D:        // Fallthrough
-          case sf::Keyboard::Right:    cActiveRight  = false; return true;
-          case sf::Keyboard::W:        // Fallthrough
-          case sf::Keyboard::Up:       cActiveUp     = false; return true;
-          case sf::Keyboard::S:        // Fallthrough
-          case sf::Keyboard::Down:     cActiveDown   = false; return true;
-          case sf::Keyboard::PageUp:   cActiveHigher = false; return true;
-          case sf::Keyboard::PageDown: cActiveLower  = false; return true;
-          default:                                            break;
-        }
-        break;
-      }
-      
-      case sf::Event::MouseButtonReleased: {
-        switch (event.mouseButton.button) {
-          case sf::Mouse::Left: {
-            cRotatingView = false;
-            return true;
-          }
-
-          case sf::Mouse::Right: {
-            cZoomingView = false;
-            return true;
-          }
-
-          default: {
-            break;
-          }
-        }
-      }
-
-      case sf::Event::MouseButtonPressed: {
-        switch (event.mouseButton.button) {
-          case sf::Mouse::Left: {
-//             IApplication* mApplication = cWorld->getSpindizzy()->getProject()->getApplication();
-//             ScreenLocation mLocation = mApplication->normalise(event.mouseButton.x, event.mouseButton.y);
-//             float mPaletteWidth = cTools.size() * (ICON_WIDTH + ICON_SPACING) - ICON_SPACING;
-//             if (mLocation.getY() >= BOTTOM_BORDER && mLocation.getY() <= BOTTOM_BORDER + ICON_HEIGHT) {
-//               for (unsigned int i = 0; i < cTools.size(); i++) {
-//                 float mIconLeft = mPaletteWidth < PALETTE_SPACE ? (-mPaletteWidth * 0.5f) + i * (ICON_WIDTH + ICON_SPACING)
-//                                                                 : (LEFT_BORDER + i * (ICON_WIDTH + ICON_SPACING));
-//                 float mIconRight = mIconLeft + ICON_WIDTH;
-//                 if (mLocation.getX() >= mIconLeft && mLocation.getX() <= mIconRight) {
-//                   if (cSelectedTool == nullptr) {
-//                     cPaletteSelectionX.init(i);
-//                   } else {
-//                     cPaletteSelectionX = i;
-//                   }
-//                   if (cSelectedTool != nullptr) {
-//                     cSelectedTool->processCursorMovement(&cLocation, nullptr);
-//                   }
-//                   cSelectedTool = cTools[i];
-//                   cSelectedTool->processCursorMovement(nullptr, &cLocation);
-//                   break;
-//                 }
-//               }
+//     if (cSelectedTool != nullptr) {
+//       if (cSelectedTool->inputEdit(event, getAngle())) {
+//         return true;
+//       }
+//     }
+//
+//     switch (event.type) {
+//       case sf::Event::JoystickButtonPressed: {
+//         switch (event.joystickButton.button) {
+//           case 4: cZSpeed = -32767 / 200000.0f; return true;
+//           case 5: cZSpeed =  32767 / 200000.0f; return true;
+//         }
+//         break;
+//       }
+//
+//       case sf::Event::JoystickButtonReleased: {
+//         switch (event.joystickButton.button) {
+//           case 4: cZSpeed = 0.0f; return true;
+//           case 5: cZSpeed = 0.0f; return true;
+//         }
+//         break;
+//       }
+//
+//       case sf::Event::JoystickMoved: {
+//         bool mDirectionPressed = false;
+//         if (cHatHandler.leftPressed())  {selectToolRelative(-1); mDirectionPressed = true;}
+//         if (cHatHandler.rightPressed()) {selectToolRelative(1);  mDirectionPressed = true;}
+//         if (cHatHandler.upPressed())    {setPreviousTheme();     mDirectionPressed = true;}
+//         if (cHatHandler.downPressed())  {setNextTheme();         mDirectionPressed = true;}
+//         if (mDirectionPressed)          {return true;}
+//         int mValue = std::abs(event.joystickMove.position) < cDefAnalogueSensitivity ? 0 : (event.joystickMove.position - (event.joystickMove.position < 0 ? -cDefAnalogueSensitivity : cDefAnalogueSensitivity)) * (32767 / static_cast<float>(32767 - cDefAnalogueSensitivity));
+//         switch (event.joystickMove.axis) {
+//           case sf::Joystick::Axis::X: cXSpeed           =  mValue / 500.0f; return true;
+//           case sf::Joystick::Axis::Y: cYSpeed           = -mValue / 500.0f; return true;
+//           case sf::Joystick::Axis::Z: cDistanceOutSpeed =  mValue / 50.0f;  return true;
+//           case sf::Joystick::Axis::U: cYawSpeed         =  mValue / 9.0f;   return true;
+//           case sf::Joystick::Axis::V: cPitchSpeed       = -mValue / 9.0f;   return true;
+//           case sf::Joystick::Axis::R: cDistanceInSpeed  =  mValue / 50.0f;  return true;
+//           default:                                                          break;
+//         }
+//         break;
+//       }
+//
+//       case sf::Event::KeyPressed: {
+//         switch (event.key.code) {
+//           case sf::Keyboard::LShift:   cActiveSlow   = true;   return true;
+//           case sf::Keyboard::LControl: cActiveFast   = true;   return true;
+//           case sf::Keyboard::A:        // Fallthrough
+//           case sf::Keyboard::Left:     cActiveLeft   = true;   return true;
+//           case sf::Keyboard::W:        // Fallthrough
+//           case sf::Keyboard::Up:       cActiveUp     = true;   return true;
+//           case sf::Keyboard::S:        // Fallthrough
+//           case sf::Keyboard::Down:     cActiveDown   = true;   return true;
+//           case sf::Keyboard::D:        // Fallthrough
+//           case sf::Keyboard::Right:    cActiveRight  = true;   return true;
+//           case sf::Keyboard::PageUp:   cActiveHigher = true;   return true;
+//           case sf::Keyboard::PageDown: cActiveLower  = true;   return true;
+//           case sf::Keyboard::Home:     setNextTheme();         return true;
+//           case sf::Keyboard::End:      setPreviousTheme();     return true;
+//           case sf::Keyboard::Q:        // Fallthrough
+//           case sf::Keyboard::F1:       selectToolRelative(-1); return true;
+//           case sf::Keyboard::E:        // Fallthrough
+//           case sf::Keyboard::F2:       selectToolRelative(1);  return true;
+//           default:                                             break;
+//         }
+//         break;
+//       }
+//
+//       case sf::Event::KeyReleased: {
+//         switch (event.key.code) {
+//           case sf::Keyboard::LShift:   cActiveSlow   = false; return true;
+//           case sf::Keyboard::LControl: cActiveFast   = false; return true;
+//           case sf::Keyboard::A:        // Fallthrough
+//           case sf::Keyboard::Left:     cActiveLeft   = false; return true;
+//           case sf::Keyboard::D:        // Fallthrough
+//           case sf::Keyboard::Right:    cActiveRight  = false; return true;
+//           case sf::Keyboard::W:        // Fallthrough
+//           case sf::Keyboard::Up:       cActiveUp     = false; return true;
+//           case sf::Keyboard::S:        // Fallthrough
+//           case sf::Keyboard::Down:     cActiveDown   = false; return true;
+//           case sf::Keyboard::PageUp:   cActiveHigher = false; return true;
+//           case sf::Keyboard::PageDown: cActiveLower  = false; return true;
+//           default:                                            break;
+//         }
+//         break;
+//       }
+//
+//       case sf::Event::MouseButtonReleased: {
+//         switch (event.mouseButton.button) {
+//           case sf::Mouse::Left: {
+//             cRotatingView = false;
+//             return true;
+//           }
+//
+//           case sf::Mouse::Right: {
+//             cZoomingView = false;
+//             return true;
+//           }
+//
+//           default: {
+//             break;
+//           }
+//         }
+//       }
+//
+//       case sf::Event::MouseButtonPressed: {
+//         switch (event.mouseButton.button) {
+//           case sf::Mouse::Left: {
+// //             IApplication* mApplication = cWorld->getSpindizzy()->getProject()->getApplication();
+// //             ScreenLocation mLocation = mApplication->normalise(event.mouseButton.x, event.mouseButton.y);
+// //             float mPaletteWidth = cTools.size() * (ICON_WIDTH + ICON_SPACING) - ICON_SPACING;
+// //             if (mLocation.getY() >= BOTTOM_BORDER && mLocation.getY() <= BOTTOM_BORDER + ICON_HEIGHT) {
+// //               for (unsigned int i = 0; i < cTools.size(); i++) {
+// //                 float mIconLeft = mPaletteWidth < PALETTE_SPACE ? (-mPaletteWidth * 0.5f) + i * (ICON_WIDTH + ICON_SPACING)
+// //                                                                 : (LEFT_BORDER + i * (ICON_WIDTH + ICON_SPACING));
+// //                 float mIconRight = mIconLeft + ICON_WIDTH;
+// //                 if (mLocation.getX() >= mIconLeft && mLocation.getX() <= mIconRight) {
+// //                   if (cSelectedTool == nullptr) {
+// //                     cPaletteSelectionX.init(i);
+// //                   } else {
+// //                     cPaletteSelectionX = i;
+// //                   }
+// //                   if (cSelectedTool != nullptr) {
+// //                     cSelectedTool->processCursorMovement(&cLocation, nullptr);
+// //                   }
+// //                   cSelectedTool = cTools[i];
+// //                   cSelectedTool->processCursorMovement(nullptr, &cLocation);
+// //                   break;
+// //                 }
+// //               }
+// //             } else {
+//               cRotatingView = true;
+//               cPreviousX = event.mouseButton.x;
+//               cPreviousY = event.mouseButton.y;
+// //             }
+//             return true;
+//           }
+//
+//           case sf::Mouse::Right: {
+//             cZoomingView = true;
+//             cPreviousX = event.mouseButton.x;
+//             cPreviousY = event.mouseButton.y;
+//             return true;
+//           }
+//
+//           default: {
+//             break;
+//           }
+//         }
+//         break;
+//       }
+//
+//       case sf::Event::MouseWheelScrolled: {
+//         switch (event.mouseWheelScroll.wheel) {
+//           case sf::Mouse::VerticalWheel: {
+//             if (event.mouseWheelScroll.delta > 0) {
+//               selectToolRelative(-1);
 //             } else {
-              cRotatingView = true;
-              cPreviousX = event.mouseButton.x;
-              cPreviousY = event.mouseButton.y;
+//               selectToolRelative(1);
 //             }
-            return true;
-          }
-
-          case sf::Mouse::Right: {
-            cZoomingView = true;
-            cPreviousX = event.mouseButton.x;
-            cPreviousY = event.mouseButton.y;
-            return true;
-          }
-
-          default: {
-            break;
-          }
-        }
-        break;
-      }
-
-      case sf::Event::MouseWheelScrolled: {
-        switch (event.mouseWheelScroll.wheel) {
-          case sf::Mouse::VerticalWheel: {
-            if (event.mouseWheelScroll.delta > 0) {
-              selectToolRelative(-1);
-            } else {
-              selectToolRelative(1);
-            }
-            return true;
-          }
-
-          default: {
-            break;
-          }
-        }
-        break;
-      }
-
-      case sf::Event::MouseMoved: {
-        if (cRotatingView) {
-          rotate(event.mouseMove.x - cPreviousX, event.mouseMove.y - cPreviousY);
-        } else if (cZoomingView) {
-          move(cPreviousY - event.mouseMove.y);
-        }
-        cPreviousX = event.mouseMove.x;
-        cPreviousY = event.mouseMove.y;
-        return true;
-      }
-
-      default: {
-        break;
-      }
-    }
+//             return true;
+//           }
+//
+//           default: {
+//             break;
+//           }
+//         }
+//         break;
+//       }
+//
+//       case sf::Event::MouseMoved: {
+//         if (cRotatingView) {
+//           rotate(event.mouseMove.x - cPreviousX, event.mouseMove.y - cPreviousY);
+//         } else if (cZoomingView) {
+//           move(cPreviousY - event.mouseMove.y);
+//         }
+//         cPreviousX = event.mouseMove.x;
+//         cPreviousY = event.mouseMove.y;
+//         return true;
+//       }
+//
+//       default: {
+//         break;
+//       }
+//     }
     return false;
   }
 
@@ -645,6 +645,56 @@ namespace IsoRealms::Spindizzy {
     cDistanceOutSpeed = 0.0f;
   }
   
+  std::vector<std::string> WorldEditor::getDigitalInputs() const {
+    std::vector<std::string> mDigitalInputNames;
+    for (std::pair<std::string, DigitalInputID> mPair : cDigitalInputsByName) {
+      mDigitalInputNames.emplace_back(mPair.first);
+    }
+    return mDigitalInputNames;
+  }
+
+  int WorldEditor::getDigitalInputID(const std::string& name) const {
+    return static_cast<std::underlying_type_t<DigitalInputID>>(cDigitalInputsByName.find(name)->second);
+  }
+
+  void WorldEditor::inputEditable(int id, bool value) {
+    if (cSelectedTool != nullptr) {
+      if (cSelectedTool->inputTool(id, value, getAngle())) {
+        return;
+      }
+    }
+
+    if (value) {
+      switch (static_cast<DigitalInputID>(id)) {
+        case DigitalInputID::MOVE_CURSOR_BACKWARD: cActiveDown   = true;   break;
+        case DigitalInputID::MOVE_CURSOR_DOWN:     cActiveLower  = true;   break;
+        case DigitalInputID::MOVE_CURSOR_FASTER:   cActiveFast   = true;   break;
+        case DigitalInputID::MOVE_CURSOR_FORWARD:  cActiveUp     = true;   break;
+        case DigitalInputID::MOVE_CURSOR_LEFT:     cActiveLeft   = true;   break;
+        case DigitalInputID::MOVE_CURSOR_RIGHT:    cActiveRight  = true;   break;
+        case DigitalInputID::MOVE_CURSOR_SLOWER:   cActiveSlow   = true;   break;
+        case DigitalInputID::MOVE_CURSOR_UP:       cActiveHigher = true;   break;
+        case DigitalInputID::NEXT_THEME:           setNextTheme();         break;
+        case DigitalInputID::NEXT_TOOL:            selectToolRelative(1);  break;
+        case DigitalInputID::PREVIOUS_THEME:       setPreviousTheme();     break;
+        case DigitalInputID::PREVIOUS_TOOL:        selectToolRelative(-1); break;
+        default:                                                           break;
+      }
+    } else {
+      switch (static_cast<DigitalInputID>(id)) {
+        case DigitalInputID::MOVE_CURSOR_BACKWARD: cActiveDown   = false; break;
+        case DigitalInputID::MOVE_CURSOR_DOWN:     cActiveLower  = false; break;
+        case DigitalInputID::MOVE_CURSOR_FASTER:   cActiveFast   = false; break;
+        case DigitalInputID::MOVE_CURSOR_FORWARD:  cActiveUp     = false; break;
+        case DigitalInputID::MOVE_CURSOR_LEFT:     cActiveLeft   = false; break;
+        case DigitalInputID::MOVE_CURSOR_RIGHT:    cActiveRight  = false; break;
+        case DigitalInputID::MOVE_CURSOR_SLOWER:   cActiveSlow   = false; break;
+        case DigitalInputID::MOVE_CURSOR_UP:       cActiveHigher = false; break;
+        default:                                   /* Nothing to do. */   break;
+      }
+    }
+  }
+
   void WorldEditor::setAppearance(IFont* font, float scale) {
     cPropertyAppearance.set(font, scale);
   }
@@ -728,4 +778,23 @@ namespace IsoRealms::Spindizzy {
   IScreen* WorldEditor::screen() {
     return cProxyScreen;
   }
+
+  const std::map<std::string, WorldEditor::DigitalInputID> WorldEditor::cDigitalInputsByName = {
+    {"Cancel",             WorldEditor::DigitalInputID::CANCEL},
+    {"ConfigureTool",      WorldEditor::DigitalInputID::CONFIGURE_TOOL},
+    {"MoveCursorBackward", WorldEditor::DigitalInputID::MOVE_CURSOR_BACKWARD},
+    {"MoveCursorDown",     WorldEditor::DigitalInputID::MOVE_CURSOR_DOWN},
+    {"MoveCursorFaster",   WorldEditor::DigitalInputID::MOVE_CURSOR_FASTER},
+    {"MoveCursorForward",  WorldEditor::DigitalInputID::MOVE_CURSOR_FORWARD},
+    {"MoveCursorLeft",     WorldEditor::DigitalInputID::MOVE_CURSOR_LEFT},
+    {"MoveCursorRight",    WorldEditor::DigitalInputID::MOVE_CURSOR_RIGHT},
+    {"MoveCursorSlower",   WorldEditor::DigitalInputID::MOVE_CURSOR_SLOWER},
+    {"MoveCursorUp",       WorldEditor::DigitalInputID::MOVE_CURSOR_UP},
+    {"NextTheme",          WorldEditor::DigitalInputID::NEXT_THEME},
+    {"NextTool",           WorldEditor::DigitalInputID::NEXT_TOOL},
+    {"PreviousTheme",      WorldEditor::DigitalInputID::PREVIOUS_THEME},
+    {"PreviousTool",       WorldEditor::DigitalInputID::PREVIOUS_TOOL},
+    {"ToolMode",           WorldEditor::DigitalInputID::TOOL_MODE},
+    {"UseTool",            WorldEditor::DigitalInputID::USE_TOOL},
+  };
 }

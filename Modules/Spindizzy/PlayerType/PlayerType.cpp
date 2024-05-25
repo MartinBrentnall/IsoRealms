@@ -305,24 +305,10 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  bool PlayerType::Pen::inputEdit(sf::Event& event, double yaw) {
-    switch (event.type) {
-      case sf::Event::KeyPressed: {
-        switch (event.key.code) {
-          case sf::Keyboard::Space: cEditor->getWorld()->draw(&cParent, cEditor->getCursorLocation()); return true;
-          default:         break;
-        }
-        break;
-      }
-
-      case sf::Event::JoystickButtonPressed: {
-        switch (event.joystickButton.button) {
-          case 0: cEditor->getWorld()->draw(&cParent, cEditor->getCursorLocation()); return true;
-        }
-        break;
-      }
-
-      default: break;
+  bool PlayerType::Pen::inputTool(int id, bool value, double yaw) {
+    if (value && static_cast<WorldEditor::DigitalInputID>(id) == WorldEditor::DigitalInputID::USE_TOOL) {
+      cEditor->getWorld()->draw(&cParent, cEditor->getCursorLocation());
+      return true;
     }
     return false;
   }

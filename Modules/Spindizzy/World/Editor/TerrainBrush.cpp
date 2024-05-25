@@ -323,43 +323,35 @@ namespace IsoRealms::Spindizzy {
                                       stepSouth();
   }
 
-  bool TerrainBrush::input(sf::Event& event, double yaw) {
-    if (cRuntimeEditing) {
-      switch (event.type) {
-        case sf::Event::KeyPressed: {
-          switch (event.key.code) {
-            case sf::Keyboard::Left:     stepLeft(yaw);   return true;
-            case sf::Keyboard::Right:    stepRight(yaw);  return true;
-            case sf::Keyboard::Up:       stepUp(yaw);     return true;
-            case sf::Keyboard::Down:     stepDown(yaw);   return true;
-            case sf::Keyboard::PageUp:   raiseSelected(); return true;
-            case sf::Keyboard::PageDown: lowerSelected(); return true;
-            default:                                      break;
-          }
-          break;
-        }
+  bool TerrainBrush::input(int id, bool value, double yaw) {
+    // TODO: Implement this.
+//     if (cRuntimeEditing) {
+//       switch (event.type) {
+//         case sf::Event::JoystickMoved: {
+//           int mValue = std::abs(event.joystickMove.position) < cDefAnalogueSensitivity ? 0 : (event.joystickMove.position - (event.joystickMove.position < 0 ? -cDefAnalogueSensitivity : cDefAnalogueSensitivity)) * (32767 / static_cast<float>(32767 - cDefAnalogueSensitivity));
+//           switch (event.joystickMove.axis) {
+//             case sf::Joystick::Axis::X: cRuntimeCursorXSpeed =  mValue / 50.0f; return true;
+//             case sf::Joystick::Axis::Y: cRuntimeCursorYSpeed = -mValue / 50.0f; return true;
+//             default:                                                            break;
+//           }
+//           break;
+//         }
+//
+//         default: {
+//           break;
+//         }
+//       }
+//     }
 
-        case sf::Event::JoystickButtonPressed: {
-          switch (event.joystickButton.button) {
-            case 4: return lowerSelected(); return true;
-            case 5: return raiseSelected(); return true;
-          }
-          break;
-        }
-
-        case sf::Event::JoystickMoved: {
-          int mValue = std::abs(event.joystickMove.position) < cDefAnalogueSensitivity ? 0 : (event.joystickMove.position - (event.joystickMove.position < 0 ? -cDefAnalogueSensitivity : cDefAnalogueSensitivity)) * (32767 / static_cast<float>(32767 - cDefAnalogueSensitivity));
-          switch (event.joystickMove.axis) {
-            case sf::Joystick::Axis::X: cRuntimeCursorXSpeed =  mValue / 50.0f; return true;
-            case sf::Joystick::Axis::Y: cRuntimeCursorYSpeed = -mValue / 50.0f; return true;
-            default:                                                            break;
-          }
-          break;
-        }
-
-        default: {
-          break;
-        }
+    if (value && cRuntimeEditing) {
+      switch (static_cast<WorldEditor::DigitalInputID>(id)) {
+        case WorldEditor::DigitalInputID::MOVE_CURSOR_BACKWARD:  stepDown(yaw);   return true;
+        case WorldEditor::DigitalInputID::MOVE_CURSOR_FORWARD:   stepUp(yaw);     return true;
+        case WorldEditor::DigitalInputID::MOVE_CURSOR_LEFT:      stepLeft(yaw);   return true;
+        case WorldEditor::DigitalInputID::MOVE_CURSOR_RIGHT:     stepRight(yaw);  return true;
+        case WorldEditor::DigitalInputID::MOVE_CURSOR_UP:        raiseSelected(); return true;
+        case WorldEditor::DigitalInputID::MOVE_CURSOR_DOWN:      lowerSelected(); return true;
+        default:                                                                  break;
       }
     }
     return false;

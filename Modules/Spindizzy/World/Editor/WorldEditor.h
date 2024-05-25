@@ -41,6 +41,25 @@
 namespace IsoRealms::Spindizzy {
   class WorldEditor : public IEditableScreen {
     public:
+    enum class DigitalInputID {
+      CANCEL,
+      CONFIGURE_TOOL,
+      MOVE_CURSOR_BACKWARD,
+      MOVE_CURSOR_DOWN,
+      MOVE_CURSOR_FASTER,
+      MOVE_CURSOR_FORWARD,
+      MOVE_CURSOR_LEFT,
+      MOVE_CURSOR_RIGHT,
+      MOVE_CURSOR_SLOWER,
+      MOVE_CURSOR_UP,
+      NEXT_THEME,
+      NEXT_TOOL,
+      PREVIOUS_THEME,
+      PREVIOUS_TOOL,
+      TOOL_MODE,
+      USE_TOOL,
+    };
+
     WorldEditor(IAssetRegistry* assets, World* world);
     void updateScreen(unsigned int milliseconds);
     World* getWorld() const;
@@ -63,6 +82,9 @@ namespace IsoRealms::Spindizzy {
     void notifyVisible() override;
     void notifyHidden() override;
     void notifyLostFocus() override;
+    std::vector<std::string> getDigitalInputs() const override;
+    int getDigitalInputID(const std::string& name) const override;
+    void inputEditable(int id, bool value) override;
     void setAppearance(IFont* font, float scale) override;
     void unregisterAssets(IAssetRemover* assets) override;
     const IFloat* getYaw() const override;
@@ -70,7 +92,8 @@ namespace IsoRealms::Spindizzy {
     IScreen* screen() override;
 
     private:
-    
+    static const std::map<std::string, DigitalInputID> cDigitalInputsByName; /// Mapping of digital inputs by name.
+
     class ScreenFloat : public IFloat {
       private:
       double* cValue;

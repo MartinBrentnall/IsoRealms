@@ -42,26 +42,13 @@ namespace IsoRealms::Spindizzy {
             cSelectedObject(0) {
   }
 
-  bool DeleteTool::Eraser::inputEdit(sf::Event& event, double yaw) {
-    switch (event.type) {
-      case sf::Event::KeyPressed: {
-        switch (event.key.code) {
-          case sf::Keyboard::Space: removeSelectedObject();                                                                                  return true;
-          case sf::Keyboard::Tab:   cSelectedObject++; if (cSelectedObject >= static_cast<int>(cHoverObjects.size())) {cSelectedObject = 0;} return true;
-          default:                                                                                                                           break;
-        }
-        break;
+  bool DeleteTool::Eraser::inputTool(int id, bool value, double yaw) {
+    if (value) {
+      switch (static_cast<WorldEditor::DigitalInputID>(id)) {
+        case WorldEditor::DigitalInputID::USE_TOOL: removeSelectedObject();                                                                                  return true;
+        case WorldEditor::DigitalInputID::CANCEL:   cSelectedObject++; if (cSelectedObject >= static_cast<int>(cHoverObjects.size())) {cSelectedObject = 0;} return true;
+        default:                                                                                                                                             break;
       }
-
-      case sf::Event::JoystickButtonPressed: {
-        switch (event.joystickButton.button) {
-          case 0: removeSelectedObject();                                                                                  return true;
-          case 2: cSelectedObject++; if (cSelectedObject >= static_cast<int>(cHoverObjects.size())) {cSelectedObject = 0;} return true;
-        }
-        break;
-      }
-
-      default: break;
     }
     return false;
   }

@@ -31,6 +31,9 @@ namespace IsoRealms {
     virtual void notifyVisible() = 0;
     virtual void notifyHidden() = 0;
     virtual void notifyLostFocus() = 0;
+    virtual std::vector<std::string> getDigitalInputs() const = 0;
+    virtual int getDigitalInputID(const std::string& name) const = 0;
+    virtual void inputEditable(int id, bool value) = 0;
 
     virtual void unregisterAssets(IAssetRemover* assets) = 0;
     virtual void setAppearance(IFont* font, float scale) = 0;

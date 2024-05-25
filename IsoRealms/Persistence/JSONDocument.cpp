@@ -41,7 +41,7 @@ namespace IsoRealms {
 
   void JSONDocument::save(const std::string& filename) {
     rapidjson::StringBuffer mBuffer;
-    rapidjson::PrettyWriter<rapidjson::StringBuffer> mWriter(mBuffer);
+    rapidjson::Writer<rapidjson::StringBuffer> mWriter(mBuffer);
     cDocument.Accept(mWriter);
     std::ofstream cOutputStream = System::openOutputStream(filename);
     cOutputStream << mBuffer.GetString();

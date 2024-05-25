@@ -71,14 +71,7 @@ namespace IsoRealms::Spindizzy {
      */
     virtual void updateUI(unsigned int milliseconds) = 0;
     
-    /**
-     * Interface for user interaction with this tool.
-     *
-     * @param event Input event to process.
-     * @return true if the tool processed the input, otherwise false to
-     *         indicate that the editor itself should process the input.
-     */     
-    virtual bool inputEdit(sf::Event& event, double yaw) = 0;
+    virtual bool inputTool(int id, bool value, double yaw) = 0;
     
     /**
      * Process editor cursor movement.  This is useful for tools that perform

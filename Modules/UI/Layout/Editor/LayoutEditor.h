@@ -42,6 +42,9 @@ namespace IsoRealms::UI {
     void notifyVisible() override;
     void notifyHidden() override;
     void notifyLostFocus() override;
+    std::vector<std::string> getDigitalInputs() const override;
+    int getDigitalInputID(const std::string& name) const override;
+    void inputEditable(int id, bool value) override;
     void setAppearance(IFont* font, float scale) override;
     void unregisterAssets(IAssetRemover* assets) override;
     IScreen* screen() override;
