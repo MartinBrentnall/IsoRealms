@@ -638,7 +638,7 @@
                     }
                   }
                 ],
-                "code": "print(\"Step A\")\ncurrentEditor:input(id:getValue(), value:getValue())\nprint(\"Step B\")"
+                "code": "currentEditor:input(id:getValue(), value:getValue())"
               },
               {
                 "id": "ReloadEditorControls",
