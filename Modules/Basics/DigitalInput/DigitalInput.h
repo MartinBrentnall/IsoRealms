@@ -146,6 +146,7 @@ namespace IsoRealms::Basics {
     static const std::string JSON_HAT;
     static const std::string JSON_KEY_DOWN;
     static const std::string JSON_MAPPINGS;
+    static const std::string JSON_MOUSE_BUTTON_DOWN;
     static const std::string JSON_TYPE;
 
     // Definition data.

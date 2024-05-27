@@ -23,3 +23,4 @@
 #include "Input/HatHandler.h"
 #include "Input/HatMapping.h"
 #include "Input/KeyMapping.h"
+#include "Input/MouseButtonMapping.h"

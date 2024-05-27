@@ -52,12 +52,14 @@ namespace IsoRealms::Spindizzy {
       MOVE_CURSOR_RIGHT,
       MOVE_CURSOR_SLOWER,
       MOVE_CURSOR_UP,
+      MOVE_VIEW,
       NEXT_THEME,
       NEXT_TOOL,
       PREVIOUS_THEME,
       PREVIOUS_TOOL,
+      ROTATE_VIEW,
       TOOL_MODE,
-      USE_TOOL,
+      USE_TOOL
     };
 
     WorldEditor(IAssetRegistry* assets, World* world);

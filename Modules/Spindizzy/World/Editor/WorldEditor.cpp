@@ -233,13 +233,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   bool WorldEditor::input(sf::Event& event) {
-//     if (cSelectedTool != nullptr) {
-//       if (cSelectedTool->inputEdit(event, getAngle())) {
-//         return true;
-//       }
-//     }
-//
-//     switch (event.type) {
+    switch (event.type) {
 //       case sf::Event::JoystickButtonPressed: {
 //         switch (event.joystickButton.button) {
 //           case 4: cZSpeed = -32767 / 200000.0f; return true;
@@ -276,122 +270,31 @@ namespace IsoRealms::Spindizzy {
 //         break;
 //       }
 //
-//       case sf::Event::KeyPressed: {
-//         switch (event.key.code) {
-//           case sf::Keyboard::LShift:   cActiveSlow   = true;   return true;
-//           case sf::Keyboard::LControl: cActiveFast   = true;   return true;
-//           case sf::Keyboard::A:        // Fallthrough
-//           case sf::Keyboard::Left:     cActiveLeft   = true;   return true;
-//           case sf::Keyboard::W:        // Fallthrough
-//           case sf::Keyboard::Up:       cActiveUp     = true;   return true;
-//           case sf::Keyboard::S:        // Fallthrough
-//           case sf::Keyboard::Down:     cActiveDown   = true;   return true;
-//           case sf::Keyboard::D:        // Fallthrough
-//           case sf::Keyboard::Right:    cActiveRight  = true;   return true;
-//           case sf::Keyboard::PageUp:   cActiveHigher = true;   return true;
-//           case sf::Keyboard::PageDown: cActiveLower  = true;   return true;
-//           case sf::Keyboard::Home:     setNextTheme();         return true;
-//           case sf::Keyboard::End:      setPreviousTheme();     return true;
-//           case sf::Keyboard::Q:        // Fallthrough
-//           case sf::Keyboard::F1:       selectToolRelative(-1); return true;
-//           case sf::Keyboard::E:        // Fallthrough
-//           case sf::Keyboard::F2:       selectToolRelative(1);  return true;
-//           default:                                             break;
-//         }
-//         break;
-//       }
-//
-//       case sf::Event::KeyReleased: {
-//         switch (event.key.code) {
-//           case sf::Keyboard::LShift:   cActiveSlow   = false; return true;
-//           case sf::Keyboard::LControl: cActiveFast   = false; return true;
-//           case sf::Keyboard::A:        // Fallthrough
-//           case sf::Keyboard::Left:     cActiveLeft   = false; return true;
-//           case sf::Keyboard::D:        // Fallthrough
-//           case sf::Keyboard::Right:    cActiveRight  = false; return true;
-//           case sf::Keyboard::W:        // Fallthrough
-//           case sf::Keyboard::Up:       cActiveUp     = false; return true;
-//           case sf::Keyboard::S:        // Fallthrough
-//           case sf::Keyboard::Down:     cActiveDown   = false; return true;
-//           case sf::Keyboard::PageUp:   cActiveHigher = false; return true;
-//           case sf::Keyboard::PageDown: cActiveLower  = false; return true;
-//           default:                                            break;
-//         }
-//         break;
-//       }
-//
-//       case sf::Event::MouseButtonReleased: {
-//         switch (event.mouseButton.button) {
-//           case sf::Mouse::Left: {
-//             cRotatingView = false;
-//             return true;
-//           }
-//
-//           case sf::Mouse::Right: {
-//             cZoomingView = false;
-//             return true;
-//           }
-//
-//           default: {
-//             break;
-//           }
-//         }
-//       }
-//
 //       case sf::Event::MouseButtonPressed: {
 //         switch (event.mouseButton.button) {
 //           case sf::Mouse::Left: {
-// //             IApplication* mApplication = cWorld->getSpindizzy()->getProject()->getApplication();
-// //             ScreenLocation mLocation = mApplication->normalise(event.mouseButton.x, event.mouseButton.y);
-// //             float mPaletteWidth = cTools.size() * (ICON_WIDTH + ICON_SPACING) - ICON_SPACING;
-// //             if (mLocation.getY() >= BOTTOM_BORDER && mLocation.getY() <= BOTTOM_BORDER + ICON_HEIGHT) {
-// //               for (unsigned int i = 0; i < cTools.size(); i++) {
-// //                 float mIconLeft = mPaletteWidth < PALETTE_SPACE ? (-mPaletteWidth * 0.5f) + i * (ICON_WIDTH + ICON_SPACING)
-// //                                                                 : (LEFT_BORDER + i * (ICON_WIDTH + ICON_SPACING));
-// //                 float mIconRight = mIconLeft + ICON_WIDTH;
-// //                 if (mLocation.getX() >= mIconLeft && mLocation.getX() <= mIconRight) {
-// //                   if (cSelectedTool == nullptr) {
-// //                     cPaletteSelectionX.init(i);
-// //                   } else {
-// //                     cPaletteSelectionX = i;
-// //                   }
-// //                   if (cSelectedTool != nullptr) {
-// //                     cSelectedTool->processCursorMovement(&cLocation, nullptr);
-// //                   }
-// //                   cSelectedTool = cTools[i];
-// //                   cSelectedTool->processCursorMovement(nullptr, &cLocation);
-// //                   break;
-// //                 }
-// //               }
-// //             } else {
-//               cRotatingView = true;
-//               cPreviousX = event.mouseButton.x;
-//               cPreviousY = event.mouseButton.y;
-// //             }
-//             return true;
-//           }
-//
-//           case sf::Mouse::Right: {
-//             cZoomingView = true;
-//             cPreviousX = event.mouseButton.x;
-//             cPreviousY = event.mouseButton.y;
-//             return true;
-//           }
-//
-//           default: {
-//             break;
-//           }
-//         }
-//         break;
-//       }
-//
-//       case sf::Event::MouseWheelScrolled: {
-//         switch (event.mouseWheelScroll.wheel) {
-//           case sf::Mouse::VerticalWheel: {
-//             if (event.mouseWheelScroll.delta > 0) {
-//               selectToolRelative(-1);
-//             } else {
-//               selectToolRelative(1);
+//             IApplication* mApplication = cWorld->getSpindizzy()->getProject()->getApplication();
+//             ScreenLocation mLocation = mApplication->normalise(event.mouseButton.x, event.mouseButton.y);
+//             float mPaletteWidth = cTools.size() * (ICON_WIDTH + ICON_SPACING) - ICON_SPACING;
+//             if (mLocation.getY() >= BOTTOM_BORDER && mLocation.getY() <= BOTTOM_BORDER + ICON_HEIGHT) {
+//               for (unsigned int i = 0; i < cTools.size(); i++) {
+//                 float mIconLeft = mPaletteWidth < PALETTE_SPACE ? (-mPaletteWidth * 0.5f) + i * (ICON_WIDTH + ICON_SPACING)
+//                                                                 : (LEFT_BORDER + i * (ICON_WIDTH + ICON_SPACING));
+//                 float mIconRight = mIconLeft + ICON_WIDTH;
+//                 if (mLocation.getX() >= mIconLeft && mLocation.getX() <= mIconRight) {
+//                   if (cSelectedTool == nullptr) {
+//                     cPaletteSelectionX.init(i);
+//                   } else {
+//                     cPaletteSelectionX = i;
+//                   }
+//                   if (cSelectedTool != nullptr) {
+//                     cSelectedTool->processCursorMovement(&cLocation, nullptr);
+//                   }
+//                   cSelectedTool = cTools[i];
+//                   cSelectedTool->processCursorMovement(nullptr, &cLocation);
+//                   break;
+//                 }
+//               }
 //             }
 //             return true;
 //           }
@@ -402,22 +305,40 @@ namespace IsoRealms::Spindizzy {
 //         }
 //         break;
 //       }
-//
-//       case sf::Event::MouseMoved: {
-//         if (cRotatingView) {
-//           rotate(event.mouseMove.x - cPreviousX, event.mouseMove.y - cPreviousY);
-//         } else if (cZoomingView) {
-//           move(cPreviousY - event.mouseMove.y);
-//         }
-//         cPreviousX = event.mouseMove.x;
-//         cPreviousY = event.mouseMove.y;
-//         return true;
-//       }
-//
-//       default: {
-//         break;
-//       }
-//     }
+
+      case sf::Event::MouseWheelScrolled: {
+        switch (event.mouseWheelScroll.wheel) {
+          case sf::Mouse::VerticalWheel: {
+            if (event.mouseWheelScroll.delta > 0) {
+              selectToolRelative(-1);
+            } else {
+              selectToolRelative(1);
+            }
+            return true;
+          }
+
+          default: {
+            break;
+          }
+        }
+        break;
+      }
+
+      case sf::Event::MouseMoved: {
+        if (cRotatingView) {
+          rotate(event.mouseMove.x - cPreviousX, event.mouseMove.y - cPreviousY);
+        } else if (cZoomingView) {
+          move(cPreviousY - event.mouseMove.y);
+        }
+        cPreviousX = event.mouseMove.x;
+        cPreviousY = event.mouseMove.y;
+        return true;
+      }
+
+      default: {
+        break;
+      }
+    }
     return false;
   }
 
@@ -643,6 +564,8 @@ namespace IsoRealms::Spindizzy {
     cPitchSpeed = 0.0f;
     cDistanceInSpeed = 0.0f;
     cDistanceOutSpeed = 0.0f;
+    cZoomingView = false;
+    cRotatingView = false;
   }
   
   std::vector<std::string> WorldEditor::getDigitalInputs() const {
@@ -678,6 +601,8 @@ namespace IsoRealms::Spindizzy {
         case DigitalInputID::NEXT_TOOL:            selectToolRelative(1);  break;
         case DigitalInputID::PREVIOUS_THEME:       setPreviousTheme();     break;
         case DigitalInputID::PREVIOUS_TOOL:        selectToolRelative(-1); break;
+        case DigitalInputID::MOVE_VIEW:            cZoomingView = true;    break;
+        case DigitalInputID::ROTATE_VIEW:          cRotatingView = true;   break;
         default:                                                           break;
       }
     } else {
@@ -690,6 +615,8 @@ namespace IsoRealms::Spindizzy {
         case DigitalInputID::MOVE_CURSOR_RIGHT:    cActiveRight  = false; break;
         case DigitalInputID::MOVE_CURSOR_SLOWER:   cActiveSlow   = false; break;
         case DigitalInputID::MOVE_CURSOR_UP:       cActiveHigher = false; break;
+        case DigitalInputID::MOVE_VIEW:            cZoomingView  = false; break;
+        case DigitalInputID::ROTATE_VIEW:          cRotatingView = false; break;
         default:                                   /* Nothing to do. */   break;
       }
     }
@@ -790,10 +717,12 @@ namespace IsoRealms::Spindizzy {
     {"MoveCursorRight",    WorldEditor::DigitalInputID::MOVE_CURSOR_RIGHT},
     {"MoveCursorSlower",   WorldEditor::DigitalInputID::MOVE_CURSOR_SLOWER},
     {"MoveCursorUp",       WorldEditor::DigitalInputID::MOVE_CURSOR_UP},
+    {"MoveView",           WorldEditor::DigitalInputID::MOVE_VIEW},
     {"NextTheme",          WorldEditor::DigitalInputID::NEXT_THEME},
     {"NextTool",           WorldEditor::DigitalInputID::NEXT_TOOL},
     {"PreviousTheme",      WorldEditor::DigitalInputID::PREVIOUS_THEME},
     {"PreviousTool",       WorldEditor::DigitalInputID::PREVIOUS_TOOL},
+    {"RotateView",         WorldEditor::DigitalInputID::ROTATE_VIEW},
     {"ToolMode",           WorldEditor::DigitalInputID::TOOL_MODE},
     {"UseTool",            WorldEditor::DigitalInputID::USE_TOOL},
   };

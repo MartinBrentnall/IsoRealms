@@ -77,6 +77,7 @@ add_library(IsoRealms
   Input/HatHandler.cpp
   Input/HatMapping.cpp
   Input/KeyMapping.cpp
+  Input/MouseButtonMapping.cpp
   IsoRealmsConstants.cpp
   LocalAssetRegistry.cpp
   Lua/LuaState.cpp

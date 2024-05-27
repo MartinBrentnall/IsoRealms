@@ -19,11 +19,12 @@
 #include "DigitalInput.h"
 
 namespace IsoRealms::Basics {
-  const std::string DigitalInput::JSON_BUTTON_DOWN = "ButtonDown";
-  const std::string DigitalInput::JSON_HAT         = "Hat";
-  const std::string DigitalInput::JSON_KEY_DOWN    = "KeyDown";
-  const std::string DigitalInput::JSON_MAPPINGS    = "mappings";
-  const std::string DigitalInput::JSON_TYPE        = "type";
+  const std::string DigitalInput::JSON_BUTTON_DOWN       = "ButtonDown";
+  const std::string DigitalInput::JSON_HAT               = "Hat";
+  const std::string DigitalInput::JSON_KEY_DOWN          = "KeyDown";
+  const std::string DigitalInput::JSON_MAPPINGS          = "mappings";
+  const std::string DigitalInput::JSON_MOUSE_BUTTON_DOWN = "MouseButtonDown";
+  const std::string DigitalInput::JSON_TYPE              = "type";
 
   DigitalInput::DigitalInput(IProject* project, Basics* basics) :
              cProject(project),
@@ -47,10 +48,11 @@ namespace IsoRealms::Basics {
     HatHandler& mHatHandler = mApplication->getHatHandler();
     for (JSONObject mMappingObject : object.getArray(JSON_MAPPINGS)) {
       std::string mType = mMappingObject.getString(JSON_TYPE);
-      if      (mType == KeyMapping::TYPE_KEY_DOWN)       {cDefMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<KeyMapping>(mMappingObject)));}
-      else if (mType == ButtonMapping::TYPE_BUTTON_DOWN) {cDefMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<ButtonMapping>(mMappingObject)));}
-      else if (mType == HatMapping::TYPE_HAT   )         {cDefMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<HatMapping>(mHatHandler, mMappingObject)));}
-      else                                               {throw ParseException("Unknown tag for Basics/DigitalInput: " + mType);}
+      if      (mType == KeyMapping::TYPE_KEY_DOWN)                  {cDefMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<KeyMapping>(mMappingObject)));}
+      else if (mType == ButtonMapping::TYPE_BUTTON_DOWN)            {cDefMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<ButtonMapping>(mMappingObject)));}
+      else if (mType == HatMapping::TYPE_HAT)                       {cDefMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<HatMapping>(mHatHandler, mMappingObject)));}
+      else if (mType == MouseButtonMapping::TYPE_MOUSE_BUTTON_DOWN) {cDefMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<MouseButtonMapping>(mMappingObject)));}
+      else                                                          {throw ParseException("Unknown tag for Basics/DigitalInput: " + mType);}
     }
   }
 
@@ -186,11 +188,12 @@ namespace IsoRealms::Basics {
     HatHandler& mHatHandler = mApplication->getHatHandler();
     cRuntimeMapping.clear();
     for (JSONObject mMappingsObject : object.getArray(JSON_MAPPINGS)) {
-      std::string mMappingType = mMappingsObject.getString(JSON_TYPE);
-      if      (mMappingType == JSON_KEY_DOWN)    {cRuntimeMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<KeyMapping>(mMappingsObject)));}
-      else if (mMappingType == JSON_BUTTON_DOWN) {cRuntimeMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<ButtonMapping>(mMappingsObject)));}
-      else if (mMappingType == JSON_HAT)         {cRuntimeMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<HatMapping>(mHatHandler, mMappingsObject)));}
-      else                                       {throw ParseException("Unknown tag for Basics/DigitalInput: " + mMappingType);}
+      std::string mType = mMappingsObject.getString(JSON_TYPE);
+      if      (mType == KeyMapping::TYPE_KEY_DOWN)                  {cRuntimeMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<KeyMapping>(mMappingsObject)));}
+      else if (mType == ButtonMapping::TYPE_BUTTON_DOWN)            {cRuntimeMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<ButtonMapping>(mMappingsObject)));}
+      else if (mType == HatMapping::TYPE_HAT)                       {cRuntimeMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<HatMapping>(mHatHandler, mMappingsObject)));}
+      else if (mType == MouseButtonMapping::TYPE_MOUSE_BUTTON_DOWN) {cRuntimeMapping.emplace_back(std::make_unique<PhysicalInputMapping>(std::make_shared<MouseButtonMapping>(mMappingsObject)));}
+      else                                                          {throw ParseException("Unknown tag for Basics/DigitalInput: " + mType);}
     }
   }
 
