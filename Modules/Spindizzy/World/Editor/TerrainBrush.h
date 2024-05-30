@@ -59,7 +59,7 @@ namespace IsoRealms::Spindizzy {
 
     float getHeight(float x, float y) const;
 
-    bool input(int id, bool value, double yaw);
+    bool input(int id, double yaw);
     void update(unsigned int milliseconds, double yaw);
     bool isSplit() const;
 

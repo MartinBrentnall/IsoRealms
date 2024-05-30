@@ -179,6 +179,21 @@
         "configuration": {},
         "resources": [
           {
+            "type": "AnalogueInput",
+            "instances": [
+
+
+              {"id": "MoveCursorX", "mappings": [{"type": "Axis", "axis": 0, "deadZone": 0.15259000658988953}]},
+              {"id": "MoveCursorY", "mappings": [{"type": "Axis", "axis": 1, "deadZone": 0.15259000658988953}]},
+              {"id": "RotateViewYaw", "mappings": [{"type": "Axis", "axis": 2, "deadZone": 0.15259000658988953}]},
+              {"id": "RotateViewPitch", "mappings": [{"type": "Axis", "axis": 3, "deadZone": 0.15259000658988953}]},
+              {"id": "MoveViewIn", "mappings": [{"type": "Axis", "axis": 4, "deadZone": 0.15259000658988953}]},
+              {"id": "MoveViewOut", "mappings": [{"type": "Axis", "axis": 4, "deadZone": 0.15259000658988953}]}
+
+
+            ]
+          },
+          {
             "type": "BooleanTrigger",
             "instances": [
               {
@@ -251,18 +266,13 @@
                   "key": "Basics/DigitalInput/Cancel"
                 },
                 "onBecomingTrue": {
-                  "key": "Basics/Function/DispatchDigitalInput",
+                  "key": "Basics/Function/SignalEditor",
                   "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDCancel"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": true}}}
+                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/SignalIDCancel"}}}
                   ]
                 },
                 "onBecomingFalse": {
-                  "key": "Basics/Function/DispatchDigitalInput",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDCancel"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": false}}}
-                  ]
+                  "key": "Literal"
                 }
               },
               {
@@ -271,178 +281,13 @@
                   "key": "Basics/DigitalInput/ConfigureTool"
                 },
                 "onBecomingTrue": {
-                  "key": "Basics/Function/DispatchDigitalInput",
+                  "key": "Basics/Function/SignalEditor",
                   "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDConfigureTool"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": true}}}
+                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/SignalIDConfigureTool"}}}
                   ]
                 },
                 "onBecomingFalse": {
-                  "key": "Basics/Function/DispatchDigitalInput",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDConfigureTool"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": false}}}
-                  ]
-                }
-              },
-              {
-                "id": "MoveCursorBackward",
-                "value": {
-                  "key": "Basics/DigitalInput/MoveCursorBackward"
-                },
-                "onBecomingTrue": {
-                  "key": "Basics/Function/DispatchDigitalInput",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDMoveCursorBackward"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": true}}}
-                  ]
-                },
-                "onBecomingFalse": {
-                  "key": "Basics/Function/DispatchDigitalInput",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDMoveCursorBackward"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": false}}}
-                  ]
-                }
-              },
-              {
-                "id": "MoveCursorDown",
-                "value": {
-                  "key": "Basics/DigitalInput/MoveCursorDown"
-                },
-                "onBecomingTrue": {
-                  "key": "Basics/Function/DispatchDigitalInput",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDMoveCursorDown"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": true}}}
-                  ]
-                },
-                "onBecomingFalse": {
-                  "key": "Basics/Function/DispatchDigitalInput",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDMoveCursorDown"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": false}}}
-                  ]
-                }
-              },
-              {
-                "id": "MoveCursorFaster",
-                "value": {
-                  "key": "Basics/DigitalInput/MoveCursorFaster"
-                },
-                "onBecomingTrue": {
-                  "key": "Basics/Function/DispatchDigitalInput",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDMoveCursorFaster"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": true}}}
-                  ]
-                },
-                "onBecomingFalse": {
-                  "key": "Basics/Function/DispatchDigitalInput",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDMoveCursorFaster"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": false}}}
-                  ]
-                }
-              },
-              {
-                "id": "MoveCursorForward",
-                "value": {
-                  "key": "Basics/DigitalInput/MoveCursorForward"
-                },
-                "onBecomingTrue": {
-                  "key": "Basics/Function/DispatchDigitalInput",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDMoveCursorForward"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": true}}}
-                  ]
-                },
-                "onBecomingFalse": {
-                  "key": "Basics/Function/DispatchDigitalInput",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDMoveCursorForward"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": false}}}
-                  ]
-                }
-              },
-              {
-                "id": "MoveCursorLeft",
-                "value": {
-                  "key": "Basics/DigitalInput/MoveCursorLeft"
-                },
-                "onBecomingTrue": {
-                  "key": "Basics/Function/DispatchDigitalInput",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDMoveCursorLeft"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": true}}}
-                  ]
-                },
-                "onBecomingFalse": {
-                  "key": "Basics/Function/DispatchDigitalInput",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDMoveCursorLeft"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": false}}}
-                  ]
-                }
-              },
-              {
-                "id": "MoveCursorRight",
-                "value": {
-                  "key": "Basics/DigitalInput/MoveCursorRight"
-                },
-                "onBecomingTrue": {
-                  "key": "Basics/Function/DispatchDigitalInput",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDMoveCursorRight"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": true}}}
-                  ]
-                },
-                "onBecomingFalse": {
-                  "key": "Basics/Function/DispatchDigitalInput",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDMoveCursorRight"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": false}}}
-                  ]
-                }
-              },
-              {
-                "id": "MoveCursorSlower",
-                "value": {
-                  "key": "Basics/DigitalInput/MoveCursorSlower"
-                },
-                "onBecomingTrue": {
-                  "key": "Basics/Function/DispatchDigitalInput",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDMoveCursorSlower"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": true}}}
-                  ]
-                },
-                "onBecomingFalse": {
-                  "key": "Basics/Function/DispatchDigitalInput",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDMoveCursorSlower"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": false}}}
-                  ]
-                }
-              },
-              {
-                "id": "MoveCursorUp",
-                "value": {
-                  "key": "Basics/DigitalInput/MoveCursorUp"
-                },
-                "onBecomingTrue": {
-                  "key": "Basics/Function/DispatchDigitalInput",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDMoveCursorUp"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": true}}}
-                  ]
-                },
-                "onBecomingFalse": {
-                  "key": "Basics/Function/DispatchDigitalInput",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDMoveCursorUp"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": false}}}
-                  ]
+                  "key": "Literal"
                 }
               },
               {
@@ -451,18 +296,13 @@
                   "key": "Basics/DigitalInput/NextTheme"
                 },
                 "onBecomingTrue": {
-                  "key": "Basics/Function/DispatchDigitalInput",
+                  "key": "Basics/Function/SignalEditor",
                   "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDNextTheme"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": true}}}
+                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/SignalIDNextTheme"}}}
                   ]
                 },
                 "onBecomingFalse": {
-                  "key": "Basics/Function/DispatchDigitalInput",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDNextTheme"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": false}}}
-                  ]
+                  "key": "Literal"
                 }
               },
               {
@@ -471,18 +311,13 @@
                   "key": "Basics/DigitalInput/NextTool"
                 },
                 "onBecomingTrue": {
-                  "key": "Basics/Function/DispatchDigitalInput",
+                  "key": "Basics/Function/SignalEditor",
                   "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDNextTool"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": true}}}
+                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/SignalIDNextTool"}}}
                   ]
                 },
                 "onBecomingFalse": {
-                  "key": "Basics/Function/DispatchDigitalInput",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDNextTool"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": false}}}
-                  ]
+                  "key": "Literal"
                 }
               },
               {
@@ -491,18 +326,13 @@
                   "key": "Basics/DigitalInput/PreviousTheme"
                 },
                 "onBecomingTrue": {
-                  "key": "Basics/Function/DispatchDigitalInput",
+                  "key": "Basics/Function/SignalEditor",
                   "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDPreviousTheme"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": true}}}
+                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/SignalIDPreviousTheme"}}}
                   ]
                 },
                 "onBecomingFalse": {
-                  "key": "Basics/Function/DispatchDigitalInput",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDPreviousTheme"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": false}}}
-                  ]
+                  "key": "Literal"
                 }
               },
               {
@@ -511,18 +341,13 @@
                   "key": "Basics/DigitalInput/PreviousTool"
                 },
                 "onBecomingTrue": {
-                  "key": "Basics/Function/DispatchDigitalInput",
+                  "key": "Basics/Function/SignalEditor",
                   "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDPreviousTool"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": true}}}
+                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/SignalIDPreviousTool"}}}
                   ]
                 },
                 "onBecomingFalse": {
-                  "key": "Basics/Function/DispatchDigitalInput",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDPreviousTool"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": false}}}
-                  ]
+                  "key": "Literal"
                 }
               },
               {
@@ -531,18 +356,13 @@
                   "key": "Basics/DigitalInput/ToolMode"
                 },
                 "onBecomingTrue": {
-                  "key": "Basics/Function/DispatchDigitalInput",
+                  "key": "Basics/Function/SignalEditor",
                   "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDToolMode"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": true}}}
+                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/SignalIDToolMode"}}}
                   ]
                 },
                 "onBecomingFalse": {
-                  "key": "Basics/Function/DispatchDigitalInput",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDToolMode"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": false}}}
-                  ]
+                  "key": "Literal"
                 }
               },
               {
@@ -551,61 +371,13 @@
                   "key": "Basics/DigitalInput/UseTool"
                 },
                 "onBecomingTrue": {
-                  "key": "Basics/Function/DispatchDigitalInput",
+                  "key": "Basics/Function/SignalEditor",
                   "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDUseTool"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": true}}}
+                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/SignalIDUseTool"}}}
                   ]
                 },
                 "onBecomingFalse": {
-                  "key": "Basics/Function/DispatchDigitalInput",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDUseTool"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": false}}}
-                  ]
-                }
-              },
-
-
-
-              {
-                "id": "MoveView",
-                "value": {
-                  "key": "Basics/DigitalInput/MoveView"
-                },
-                "onBecomingTrue": {
-                  "key": "Basics/Function/DispatchDigitalInput",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDMoveView"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": true}}}
-                  ]
-                },
-                "onBecomingFalse": {
-                  "key": "Basics/Function/DispatchDigitalInput",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDMoveView"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": false}}}
-                  ]
-                }
-              },
-              {
-                "id": "RotateView",
-                "value": {
-                  "key": "Basics/DigitalInput/RotateView"
-                },
-                "onBecomingTrue": {
-                  "key": "Basics/Function/DispatchDigitalInput",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDRotateView"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": true}}}
-                  ]
-                },
-                "onBecomingFalse": {
-                  "key": "Basics/Function/DispatchDigitalInput",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/DigitalInputIDRotateView"}}},
-                    {"argument": "value", "to": {"key": ":Boolean", "asset": {"key": "Literal", "value": false}}}
-                  ]
+                  "key": "Literal"
                 }
               }
             ]
@@ -663,8 +435,8 @@
             "type": "Function",
             "instances": [
               {
-                "id": "DispatchDigitalInput",
-                "name": "DispatchDigitalInput",
+                "id": "SignalEditor",
+                "name": "SignalEditor",
                 "bindings": [],
                 "arguments": [
                   {
@@ -672,15 +444,9 @@
                     "defaultValue": {
                       "key": "Literal"
                     }
-                  },
-                  {
-                    "name": "value",
-                    "defaultValue": {
-                      "key": "Literal"
-                    }
                   }
                 ],
-                "code": "currentEditor:input(id:getValue(), value:getValue())"
+                "code": "currentEditor:signal(id:getValue())"
               },
               {
                 "id": "ReloadEditorControls",
@@ -1216,26 +982,34 @@
                         }
                       }
                     },
-                    {"variable": "digitalInputIDCancel", "to": {"key": "Basics/Integer/DigitalInputIDCancel"}},
-                    {"variable": "digitalInputIDConfigureTool", "to": {"key": "Basics/Integer/DigitalInputIDConfigureTool"}},
-                    {"variable": "digitalInputIDMoveCursorBackward", "to": {"key": "Basics/Integer/DigitalInputIDMoveCursorBackward"}},
-                    {"variable": "digitalInputIDMoveCursorDown", "to": {"key": "Basics/Integer/DigitalInputIDMoveCursorDown"}},
-                    {"variable": "digitalInputIDMoveCursorFaster", "to": {"key": "Basics/Integer/DigitalInputIDMoveCursorFaster"}},
-                    {"variable": "digitalInputIDMoveCursorForward", "to": {"key": "Basics/Integer/DigitalInputIDMoveCursorForward"}},
-                    {"variable": "digitalInputIDMoveCursorLeft", "to": {"key": "Basics/Integer/DigitalInputIDMoveCursorLeft"}},
-                    {"variable": "digitalInputIDMoveCursorRight", "to": {"key": "Basics/Integer/DigitalInputIDMoveCursorRight"}},
-                    {"variable": "digitalInputIDMoveCursorSlower", "to": {"key": "Basics/Integer/DigitalInputIDMoveCursorSlower"}},
-                    {"variable": "digitalInputIDMoveCursorUp", "to": {"key": "Basics/Integer/DigitalInputIDMoveCursorUp"}},
-                    {"variable": "digitalInputIDNextTheme", "to": {"key": "Basics/Integer/DigitalInputIDNextTheme"}},
-                    {"variable": "digitalInputIDNextTool", "to": {"key": "Basics/Integer/DigitalInputIDNextTool"}},
-                    {"variable": "digitalInputIDPreviousTheme", "to": {"key": "Basics/Integer/DigitalInputIDPreviousTheme"}},
-                    {"variable": "digitalInputIDPreviousTool", "to": {"key": "Basics/Integer/DigitalInputIDPreviousTool"}},
-                    {"variable": "digitalInputIDToolMode", "to": {"key": "Basics/Integer/DigitalInputIDToolMode"}},
-                    {"variable": "digitalInputIDUseTool", "to": {"key": "Basics/Integer/DigitalInputIDUseTool"}},
-                    {"variable": "digitalInputIDMoveView", "to": {"key": "Basics/Integer/DigitalInputIDMoveView"}},
-                    {"variable": "digitalInputIDRotateView", "to": {"key": "Basics/Integer/DigitalInputIDRotateView"}}
+                    {"variable": "signalIDCancel", "to": {"key": "Basics/Integer/SignalIDCancel"}},
+                    {"variable": "signalIDConfigureTool", "to": {"key": "Basics/Integer/SignalIDConfigureTool"}},
+                    {"variable": "signalIDNextTheme", "to": {"key": "Basics/Integer/SignalIDNextTheme"}},
+                    {"variable": "signalIDNextTool", "to": {"key": "Basics/Integer/SignalIDNextTool"}},
+                    {"variable": "signalIDPreviousTheme", "to": {"key": "Basics/Integer/SignalIDPreviousTheme"}},
+                    {"variable": "signalIDPreviousTool", "to": {"key": "Basics/Integer/SignalIDPreviousTool"}},
+                    {"variable": "signalIDToolMode", "to": {"key": "Basics/Integer/SignalIDToolMode"}},
+                    {"variable": "signalIDUseTool", "to": {"key": "Basics/Integer/SignalIDUseTool"}},
+
+                    {"variable": "digitalInputMoveCursorBackward", "to": {"key": ":Boolean", "Asset": {"key": "Basics/DigitalInput/MoveCursorBackward"}}},
+                    {"variable": "digitalInputMoveCursorDown", "to": {"key": ":Boolean", "Asset": {"key": "Basics/DigitalInput/MoveCursorDown"}}},
+                    {"variable": "digitalInputMoveCursorFaster", "to": {"key": ":Boolean", "Asset": {"key": "Basics/DigitalInput/MoveCursorFaster"}}},
+                    {"variable": "digitalInputMoveCursorForward", "to": {"key": ":Boolean", "Asset": {"key": "Basics/DigitalInput/MoveCursorForward"}}},
+                    {"variable": "digitalInputMoveCursorLeft", "to": {"key": ":Boolean", "Asset": {"key": "Basics/DigitalInput/MoveCursorLeft"}}},
+                    {"variable": "digitalInputMoveCursorRight", "to": {"key": ":Boolean", "Asset": {"key": "Basics/DigitalInput/MoveCursorRight"}}},
+                    {"variable": "digitalInputMoveCursorSlower", "to": {"key": ":Boolean", "Asset": {"key": "Basics/DigitalInput/MoveCursorSlower"}}},
+                    {"variable": "digitalInputMoveCursorUp", "to": {"key": ":Boolean", "Asset": {"key": "Basics/DigitalInput/MoveCursorUp"}}},
+                    {"variable": "digitalInputMoveView", "to": {"key": ":Boolean", "Asset": {"key": "Basics/DigitalInput/MoveView"}}},
+                    {"variable": "digitalInputRotateView", "to": {"key": ":Boolean", "Asset": {"key": "Basics/DigitalInput/RotateView"}}},
+
+                    {"variable": "analogueInputMoveCursorX", "to": {"key": ":Float", "Asset": {"key": "Basics/AnalogueInput/MoveCursorX"}}},
+                    {"variable": "analogueInputMoveCursorY", "to": {"key": ":Float", "Asset": {"key": "Basics/AnalogueInput/MoveCursorY"}}},
+                    {"variable": "analogueInputMoveViewIn", "to": {"key": ":Float", "Asset": {"key": "Basics/AnalogueInput/MoveViewIn"}}},
+                    {"variable": "analogueInputMoveViewOut", "to": {"key": ":Float", "Asset": {"key": "Basics/AnalogueInput/MoveViewOut"}}},
+                    {"variable": "analogueInputRotateViewYaw", "to": {"key": ":Float", "Asset": {"key": "Basics/AnalogueInput/RotateViewYaw"}}},
+                    {"variable": "analogueInputRotateViewPitch", "to": {"key": ":Float", "Asset": {"key": "Basics/AnalogueInput/RotateViewPitch"}}}
                   ],
-                  "code": "editable = project:getDefaultEditor()\ncurrentEditor = editable:createEditableScreen(project:getProject())\ncurrentEditor:setAppearance(font, 0.02)\ncurrentEditor:notifyVisible()\neditor:setScreen(currentEditor:screen())\ninput:setInputHandler(currentEditor:inputHandler())\nscreen:setScreen(noScreen)\nhasFocus = true\n\ndigitalInputIDCancel:setValue(currentEditor:getDigitalInputID(\"Cancel\"))\ndigitalInputIDConfigureTool:setValue(currentEditor:getDigitalInputID(\"ConfigureTool\"))\ndigitalInputIDMoveCursorBackward:setValue(currentEditor:getDigitalInputID(\"MoveCursorBackward\"))\ndigitalInputIDMoveCursorDown:setValue(currentEditor:getDigitalInputID(\"MoveCursorDown\"))\ndigitalInputIDMoveCursorFaster:setValue(currentEditor:getDigitalInputID(\"MoveCursorFaster\"))\ndigitalInputIDMoveCursorForward:setValue(currentEditor:getDigitalInputID(\"MoveCursorForward\"))\ndigitalInputIDMoveCursorLeft:setValue(currentEditor:getDigitalInputID(\"MoveCursorLeft\"))\ndigitalInputIDMoveCursorRight:setValue(currentEditor:getDigitalInputID(\"MoveCursorRight\"))\ndigitalInputIDMoveCursorSlower:setValue(currentEditor:getDigitalInputID(\"MoveCursorSlower\"))\ndigitalInputIDMoveCursorUp:setValue(currentEditor:getDigitalInputID(\"MoveCursorUp\"))\ndigitalInputIDNextTheme:setValue(currentEditor:getDigitalInputID(\"NextTheme\"))\ndigitalInputIDNextTool:setValue(currentEditor:getDigitalInputID(\"NextTool\"))\ndigitalInputIDPreviousTheme:setValue(currentEditor:getDigitalInputID(\"PreviousTheme\"))\ndigitalInputIDPreviousTool:setValue(currentEditor:getDigitalInputID(\"PreviousTool\"))\ndigitalInputIDToolMode:setValue(currentEditor:getDigitalInputID(\"ToolMode\"))\ndigitalInputIDUseTool:setValue(currentEditor:getDigitalInputID(\"UseTool\"))\ndigitalInputIDMoveView:setValue(currentEditor:getDigitalInputID(\"MoveView\"))\ndigitalInputIDRotateView:setValue(currentEditor:getDigitalInputID(\"RotateView\"))"
+                  "code": "print(\"Get Editor...\")\neditable = project:getDefaultEditor()\ncurrentEditor = editable:createEditableScreen(project:getProject())\ncurrentEditor:setAppearance(font, 0.02)\ncurrentEditor:notifyVisible()\neditor:setScreen(currentEditor:screen())\ninput:setInputHandler(currentEditor:inputHandler())\nscreen:setScreen(noScreen)\nhasFocus = true\n\nprint(\"Set Signals...\")\nsignalIDCancel:setValue(       currentEditor:getSignalID(\"Cancel\"))\nsignalIDConfigureTool:setValue(currentEditor:getSignalID(\"ConfigureTool\"))\nsignalIDNextTheme:setValue(    currentEditor:getSignalID(\"NextTheme\"))\nsignalIDNextTool:setValue(     currentEditor:getSignalID(\"NextTool\"))\nsignalIDPreviousTheme:setValue(currentEditor:getSignalID(\"PreviousTheme\"))\nsignalIDPreviousTool:setValue( currentEditor:getSignalID(\"PreviousTool\"))\nsignalIDToolMode:setValue(     currentEditor:getSignalID(\"ToolMode\"))\nsignalIDUseTool:setValue(      currentEditor:getSignalID(\"UseTool\"))\n\nprint(\"Set Digital Inputs...\")\ncurrentEditor:setDigitalInput(\"MoveCursorBackward\", digitalInputMoveCursorBackward)\ncurrentEditor:setDigitalInput(\"MoveCursorDown\",     digitalInputMoveCursorDown)\ncurrentEditor:setDigitalInput(\"MoveCursorFaster\",   digitalInputMoveCursorFaster)\ncurrentEditor:setDigitalInput(\"MoveCursorForward\",  digitalInputMoveCursorForward)\ncurrentEditor:setDigitalInput(\"MoveCursorLeft\",     digitalInputMoveCursorLeft)\ncurrentEditor:setDigitalInput(\"MoveCursorRight\",    digitalInputMoveCursorRight)\ncurrentEditor:setDigitalInput(\"MoveCursorSlower\",   digitalInputMoveCursorSlower)\ncurrentEditor:setDigitalInput(\"MoveCursorUp\",       digitalInputMoveCursorUp)\ncurrentEditor:setDigitalInput(\"MoveView\",           digitalInputMoveView)\ncurrentEditor:setDigitalInput(\"RotateView\",         digitalInputRotateView)\n\nprint(\"Set Analogue Inputs...\")\ncurrentEditor:setAnalogueInput(\"MoveCursorX\",     analogueInputMoveCursorX)\ncurrentEditor:setAnalogueInput(\"MoveCursorY\",     analogueInputMoveCursorY)\ncurrentEditor:setAnalogueInput(\"MoveViewIn\",      analogueInputMoveViewIn)\ncurrentEditor:setAnalogueInput(\"MoveViewOut\",     analogueInputMoveViewOut)\ncurrentEditor:setAnalogueInput(\"RotateViewPitch\", analogueInputRotateViewPitch)\ncurrentEditor:setAnalogueInput(\"RotateViewYaw\",   analogueInputRotateViewYaw)\nprint(\"Done!!!\")"
                 },
                 "options": {
                   "key": "Literal"
@@ -1287,25 +1061,14 @@
           {
             "type": "Integer",
             "instances": [
-              {"id": "DigitalInputIDCancel"},
-              {"id": "DigitalInputIDConfigureTool"},
-              {"id": "DigitalInputIDMoveCursorBackward"},
-              {"id": "DigitalInputIDMoveCursorDown"},
-              {"id": "DigitalInputIDMoveCursorFaster"},
-              {"id": "DigitalInputIDMoveCursorForward"},
-              {"id": "DigitalInputIDMoveCursorLeft"},
-              {"id": "DigitalInputIDMoveCursorRight"},
-              {"id": "DigitalInputIDMoveCursorSlower"},
-              {"id": "DigitalInputIDMoveCursorUp"},
-              {"id": "DigitalInputIDMoveCursorForward"},
-              {"id": "DigitalInputIDNextTheme"},
-              {"id": "DigitalInputIDNextTool"},
-              {"id": "DigitalInputIDPreviousTheme"},
-              {"id": "DigitalInputIDPreviousTool"},
-              {"id": "DigitalInputIDToolMode"},
-              {"id": "DigitalInputIDUseTool"},
-              {"id": "DigitalInputIDMoveView"},
-              {"id": "DigitalInputIDRotateView"}
+              {"id": "SignalIDCancel"},
+              {"id": "SignalIDConfigureTool"},
+              {"id": "SignalIDNextTheme"},
+              {"id": "SignalIDNextTool"},
+              {"id": "SignalIDPreviousTheme"},
+              {"id": "SignalIDPreviousTool"},
+              {"id": "SignalIDToolMode"},
+              {"id": "SignalIDUseTool"}
             ]
           },
           {

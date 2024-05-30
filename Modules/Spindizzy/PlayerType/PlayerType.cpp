@@ -305,8 +305,8 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  bool PlayerType::Pen::inputTool(int id, bool value, double yaw) {
-    if (value && static_cast<WorldEditor::DigitalInputID>(id) == WorldEditor::DigitalInputID::USE_TOOL) {
+  bool PlayerType::Pen::inputTool(int id, double yaw) {
+    if (static_cast<WorldEditor::SignalInputID>(id) == WorldEditor::SignalInputID::USE_TOOL) {
       cEditor->getWorld()->draw(&cParent, cEditor->getCursorLocation());
       return true;
     }

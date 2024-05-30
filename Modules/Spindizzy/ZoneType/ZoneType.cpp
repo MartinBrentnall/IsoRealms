@@ -149,26 +149,24 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  bool ZoneType::Pen::inputTool(int id, bool value, double yaw) {
-    if (value) {
-      switch (static_cast<WorldEditor::DigitalInputID>(id)) {
-        case WorldEditor::DigitalInputID::USE_TOOL: {
-          if (!cDrawing) {
-            if (cEditor->getWorld()->getZone(cEditor->getCursorCell()) == nullptr) {
-              cDrawing = true;
-              cPinnedLocation = cEditor->getCursorCell();
-            }
-          } else {
-            Zone* mZone = cEditor->getWorld()->draw(&cParent, cPinnedLocation, cEditor->getCursorCell(), cEditor);
-            if (mZone != nullptr) {
-              mZone->registerView(cEditor);
-              cDrawing = false;
-            }
+  bool ZoneType::Pen::inputTool(int id, double yaw) {
+    switch (static_cast<WorldEditor::SignalInputID>(id)) {
+      case WorldEditor::SignalInputID::USE_TOOL: {
+        if (!cDrawing) {
+          if (cEditor->getWorld()->getZone(cEditor->getCursorCell()) == nullptr) {
+            cDrawing = true;
+            cPinnedLocation = cEditor->getCursorCell();
           }
-          return true;
+        } else {
+          Zone* mZone = cEditor->getWorld()->draw(&cParent, cPinnedLocation, cEditor->getCursorCell(), cEditor);
+          if (mZone != nullptr) {
+            mZone->registerView(cEditor);
+            cDrawing = false;
+          }
         }
-        default: break;
+        return true;
       }
+      default: break;
     }
     return false;
   }

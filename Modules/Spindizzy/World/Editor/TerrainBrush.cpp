@@ -323,7 +323,7 @@ namespace IsoRealms::Spindizzy {
                                       stepSouth();
   }
 
-  bool TerrainBrush::input(int id, bool value, double yaw) {
+  bool TerrainBrush::input(int id, double yaw) {
     // TODO: Implement this.
 //     if (cRuntimeEditing) {
 //       switch (event.type) {
@@ -342,18 +342,18 @@ namespace IsoRealms::Spindizzy {
 //         }
 //       }
 //     }
-
-    if (value && cRuntimeEditing) {
-      switch (static_cast<WorldEditor::DigitalInputID>(id)) {
-        case WorldEditor::DigitalInputID::MOVE_CURSOR_BACKWARD:  stepDown(yaw);   return true;
-        case WorldEditor::DigitalInputID::MOVE_CURSOR_FORWARD:   stepUp(yaw);     return true;
-        case WorldEditor::DigitalInputID::MOVE_CURSOR_LEFT:      stepLeft(yaw);   return true;
-        case WorldEditor::DigitalInputID::MOVE_CURSOR_RIGHT:     stepRight(yaw);  return true;
-        case WorldEditor::DigitalInputID::MOVE_CURSOR_UP:        raiseSelected(); return true;
-        case WorldEditor::DigitalInputID::MOVE_CURSOR_DOWN:      lowerSelected(); return true;
-        default:                                                                  break;
-      }
-    }
+//
+//     if (cRuntimeEditing) {
+//       switch (static_cast<WorldEditor::DigitalInputID>(id)) {
+//         case WorldEditor::DigitalInputID::MOVE_CURSOR_BACKWARD:  stepDown(yaw);   return true;
+//         case WorldEditor::DigitalInputID::MOVE_CURSOR_FORWARD:   stepUp(yaw);     return true;
+//         case WorldEditor::DigitalInputID::MOVE_CURSOR_LEFT:      stepLeft(yaw);   return true;
+//         case WorldEditor::DigitalInputID::MOVE_CURSOR_RIGHT:     stepRight(yaw);  return true;
+//         case WorldEditor::DigitalInputID::MOVE_CURSOR_UP:        raiseSelected(); return true;
+//         case WorldEditor::DigitalInputID::MOVE_CURSOR_DOWN:      lowerSelected(); return true;
+//         default:                                                                  break;
+//       }
+//     }
     return false;
   }
 

@@ -71,7 +71,7 @@ namespace IsoRealms::Spindizzy {
      */
     virtual void updateUI(unsigned int milliseconds) = 0;
     
-    virtual bool inputTool(int id, bool value, double yaw) = 0;
+    virtual bool inputTool(int id, double yaw) = 0;
     
     /**
      * Process editor cursor movement.  This is useful for tools that perform

@@ -169,13 +169,11 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  bool LiftType::Pen::inputTool(int id, bool value, double yaw) {
-    if (value) {
-      switch (static_cast<WorldEditor::DigitalInputID>(id)) {
-        case WorldEditor::DigitalInputID::USE_TOOL: draw();   return true;
-        case WorldEditor::DigitalInputID::CANCEL:   cancel(); return true;
-        default:                                              break;
-      }
+  bool LiftType::Pen::inputTool(int id, double yaw) {
+    switch (static_cast<WorldEditor::SignalInputID>(id)) {
+      case WorldEditor::SignalInputID::USE_TOOL: draw();   return true;
+      case WorldEditor::SignalInputID::CANCEL:   cancel(); return true;
+      default:                                             break;
     }
     return false;
   }

@@ -37,30 +37,34 @@ namespace IsoRealms::Spindizzy {
   const float WorldEditor::ICON_SPACING = 0.02f;
   
   WorldEditor::WorldEditor(IAssetRegistry* assets, World* world) :
+            cAnalogueInputsByName({
+              {"MoveViewIn",    &cDistanceInSpeed},
+              {"MoveViewOut",   &cDistanceOutSpeed},
+              {"MoveX",         &cXSpeed},
+              {"MoveY",         &cYSpeed},
+              {"MoveZ",         &cZSpeed},
+              {"MoveViewPitch", &cPitchSpeed},
+              {"MoveViewPaw",   &cYawSpeed}
+            }),
+            cDigitalInputsByName({
+              {"MoveCursorBackward", &cActiveDown},
+              {"MoveCursorDown",     &cActiveLower},
+              {"MoveCursorFaster",   &cActiveFast},
+              {"MoveCursorForward",  &cActiveUp},
+              {"MoveCursorLeft",     &cActiveLeft},
+              {"MoveCursorRight",    &cActiveRight},
+              {"MoveCursorSlower",   &cActiveSlow},
+              {"MoveCursorUp",       &cActiveHigher},
+              {"MoveView",           &cZoomingView},
+              {"RotateView",         &cRotatingView}
+            }),
             cScreenYaw(&cRotation),
             cScreenPitch(&cTilt),
             cHatHandler(world->getSpindizzy()->getProject()->getApplication()->getHatHandler()),
-            cRotatingView(false),
-            cZoomingView(false),
             cPreviousX(0),
             cPreviousY(0),
             cProxyScreen(nullptr) {
-    cActiveFast           = false;
-    cActiveSlow           = false;
-    cActiveLeft           = false;
-    cActiveRight          = false;
-    cActiveUp             = false;
-    cActiveDown           = false;
-    cActiveHigher         = false;
-    cActiveLower          = false;
-    cWorld                = world;
-    cYawSpeed             = 0.0f;
-    cPitchSpeed           = 0.0f;
-    cXSpeed               = 0.0f;
-    cYSpeed               = 0.0f;
-    cZSpeed               = 0.0f;
-    cDistanceInSpeed      = 0.0f;
-    cDistanceOutSpeed     = 0.0f;
+    cWorld = world;
     cDefAnalogueSensitivity = 10;
     cPaletteSelectionX.init(0.0f);
     resetEditingView();
@@ -89,41 +93,41 @@ namespace IsoRealms::Spindizzy {
 
   bool WorldEditor::isMovingNorth() {
     float mCameraAngle = getAngle();
-    return mCameraAngle >=   40.0f && mCameraAngle <= 130.0f ? cActiveLeft
-         : mCameraAngle >=  -50.0f && mCameraAngle <=  40.0f ? cActiveUp
-         : mCameraAngle >= -140.0f && mCameraAngle <= -50.0f ? cActiveRight
-         :                                                     cActiveDown;
+    return mCameraAngle >=   40.0f && mCameraAngle <= 130.0f ? cActiveLeft.get()
+         : mCameraAngle >=  -50.0f && mCameraAngle <=  40.0f ? cActiveUp.get()
+         : mCameraAngle >= -140.0f && mCameraAngle <= -50.0f ? cActiveRight.get()
+         :                                                     cActiveDown.get();
   }
 
   bool WorldEditor::isMovingEast() {
     float mCameraAngle = getAngle();
-    return mCameraAngle >=   40.0f && mCameraAngle <= 130.0f ? cActiveUp
-         : mCameraAngle >=  -50.0f && mCameraAngle <=  40.0f ? cActiveRight
-         : mCameraAngle >= -140.0f && mCameraAngle <= -50.0f ? cActiveDown
-         :                                                     cActiveLeft;
+    return mCameraAngle >=   40.0f && mCameraAngle <= 130.0f ? cActiveUp.get()
+         : mCameraAngle >=  -50.0f && mCameraAngle <=  40.0f ? cActiveRight.get()
+         : mCameraAngle >= -140.0f && mCameraAngle <= -50.0f ? cActiveDown.get()
+         :                                                     cActiveLeft.get();
   }
 
   bool WorldEditor::isMovingSouth() {
     float mCameraAngle = getAngle();
-    return mCameraAngle >=   40.0f && mCameraAngle <= 130.0f ? cActiveRight
-         : mCameraAngle >=  -50.0f && mCameraAngle <=  40.0f ? cActiveDown
-         : mCameraAngle >= -140.0f && mCameraAngle <= -50.0f ? cActiveLeft
-         :                                                     cActiveUp;
+    return mCameraAngle >=   40.0f && mCameraAngle <= 130.0f ? cActiveRight.get()
+         : mCameraAngle >=  -50.0f && mCameraAngle <=  40.0f ? cActiveDown.get()
+         : mCameraAngle >= -140.0f && mCameraAngle <= -50.0f ? cActiveLeft.get()
+         :                                                     cActiveUp.get();
   }
 
   bool WorldEditor::isMovingWest() {
     float mCameraAngle = getAngle();
-    return mCameraAngle >=   40.0f && mCameraAngle <= 130.0f ? cActiveDown
-         : mCameraAngle >=  -50.0f && mCameraAngle <=  40.0f ? cActiveLeft
-         : mCameraAngle >= -140.0f && mCameraAngle <= -50.0f ? cActiveUp
-         :                                                     cActiveRight;
+    return mCameraAngle >=   40.0f && mCameraAngle <= 130.0f ? cActiveDown.get()
+         : mCameraAngle >=  -50.0f && mCameraAngle <=  40.0f ? cActiveLeft.get()
+         : mCameraAngle >= -140.0f && mCameraAngle <= -50.0f ? cActiveUp.get()
+         :                                                     cActiveRight.get();
   }
 
   float WorldEditor::getMovementSpeed() {
-    return cActiveSlow && cActiveFast ? SPEED_NORMAL
-         : cActiveFast                ? SPEED_FAST
-         : cActiveSlow                ? SPEED_SLOW
-         :                              SPEED_NORMAL;
+    return cActiveSlow.get() && cActiveFast.get() ? SPEED_NORMAL
+         : cActiveFast.get()                      ? SPEED_FAST
+         : cActiveSlow.get()                      ? SPEED_SLOW
+                     :                              SPEED_NORMAL;
   }
 
   void WorldEditor::resetEditingView() {
@@ -325,9 +329,9 @@ namespace IsoRealms::Spindizzy {
       }
 
       case sf::Event::MouseMoved: {
-        if (cRotatingView) {
+        if (cRotatingView.get()) {
           rotate(event.mouseMove.x - cPreviousX, event.mouseMove.y - cPreviousY);
-        } else if (cZoomingView) {
+        } else if (cZoomingView.get()) {
           move(cPreviousY - event.mouseMove.y);
         }
         cPreviousX = event.mouseMove.x;
@@ -343,33 +347,33 @@ namespace IsoRealms::Spindizzy {
   }
 
   void WorldEditor::updateScreen(unsigned int milliseconds) {
-    rotate(cYawSpeed, cPitchSpeed);
-    if (isMovingWest())  {cMomentum.x -= getMovementSpeed(); cXDirection = -1;}
-    if (isMovingEast())  {cMomentum.x += getMovementSpeed(); cXDirection =  1;}
-    if (isMovingSouth()) {cMomentum.y -= getMovementSpeed(); cYDirection = -1;}
-    if (isMovingNorth()) {cMomentum.y += getMovementSpeed(); cYDirection =  1;}
-    if (cActiveLower)    {cMomentum.z -= getMovementSpeed(); cZDirection = -1;}
-    if (cActiveHigher)   {cMomentum.z += getMovementSpeed(); cZDirection =  1;}
+    rotate(cYawSpeed.get(), cPitchSpeed.get());
+    if (isMovingWest())      {cMomentum.x -= getMovementSpeed(); cXDirection = -1;}
+    if (isMovingEast())      {cMomentum.x += getMovementSpeed(); cXDirection =  1;}
+    if (isMovingSouth())     {cMomentum.y -= getMovementSpeed(); cYDirection = -1;}
+    if (isMovingNorth())     {cMomentum.y += getMovementSpeed(); cYDirection =  1;}
+    if (cActiveLower.get())  {cMomentum.z -= getMovementSpeed(); cZDirection = -1;}
+    if (cActiveHigher.get()) {cMomentum.z += getMovementSpeed(); cZDirection =  1;}
     cMomentum.x *= 0.5f;
     cMomentum.y *= 0.5f;
     cMomentum.z *= 0.5f;
-    double mMovementDirection = atan2(-cYSpeed, cXSpeed) + 90.0f * (M_PI / 180.f);
-    double mMovementSpeed = Utils::distance(0.0, 0.0, cXSpeed, cYSpeed);
+    double mMovementDirection = atan2(-cYSpeed.get(), cXSpeed.get()) + 90.0f * (M_PI / 180.f);
+    double mMovementSpeed = Utils::distance(0.0, 0.0, cXSpeed.get(), cYSpeed.get());
     double mXSpeed = std::sin(cRotation * (M_PI / 180.0f) + mMovementDirection) * mMovementSpeed;
     double mYSpeed = std::cos(cRotation * (M_PI / 180.0f) + mMovementDirection) * mMovementSpeed;
     LiteralVertex mPreviousLocation = cLocation;
-    move(cMomentum.x + mXSpeed, cMomentum.y + mYSpeed, cMomentum.z + cZSpeed);
-    move(cDistanceInSpeed - cDistanceOutSpeed);
+    move(cMomentum.x + mXSpeed, cMomentum.y + mYSpeed, cMomentum.z + cZSpeed.get());
+    move(cDistanceInSpeed.get() - cDistanceOutSpeed.get());
 
-    if (std::abs(cMomentum.x) < STOP_THRESHOLD && !cActiveLeft && !cActiveRight) {
+    if (std::abs(cMomentum.x) < STOP_THRESHOLD && !cActiveLeft.get() && !cActiveRight.get()) {
       cMomentum.x = 0.0;
       cXDirection = 0;
     }
-    if (std::abs(cMomentum.y) < STOP_THRESHOLD && !cActiveUp && !cActiveDown) {
+    if (std::abs(cMomentum.y) < STOP_THRESHOLD && !cActiveUp.get() && !cActiveDown.get()) {
       cMomentum.y = 0.0;
       cYDirection = 0;
     }
-    if (std::abs(cMomentum.z) < STOP_THRESHOLD && !cActiveHigher && !cActiveLower) {
+    if (std::abs(cMomentum.z) < STOP_THRESHOLD && !cActiveHigher.get() && !cActiveLower.get()) {
       cMomentum.z = 0.0;
       cZDirection = 0;
     }
@@ -549,76 +553,58 @@ namespace IsoRealms::Spindizzy {
   }
 
   void WorldEditor::notifyLostFocus() {
-    cActiveLeft = false;
-    cActiveRight = false;
-    cActiveDown = false;
-    cActiveUp = false;
-    cActiveLower = false;
-    cActiveHigher = false;
-    cActiveSlow = false;
-    cActiveFast = false;
-    cXSpeed = 0.0f;
-    cYSpeed = 0.0f;
-    cZSpeed = 0.0f;
-    cYawSpeed = 0.0f;
-    cPitchSpeed = 0.0f;
-    cDistanceInSpeed = 0.0f;
-    cDistanceOutSpeed = 0.0f;
-    cZoomingView = false;
-    cRotatingView = false;
+    // TODO: Implement this!
   }
-  
+
   std::vector<std::string> WorldEditor::getDigitalInputs() const {
     std::vector<std::string> mDigitalInputNames;
-    for (std::pair<std::string, DigitalInputID> mPair : cDigitalInputsByName) {
+    for (std::pair<std::string, DigitalInput*> mPair : cDigitalInputsByName) {
       mDigitalInputNames.emplace_back(mPair.first);
     }
     return mDigitalInputNames;
   }
 
-  int WorldEditor::getDigitalInputID(const std::string& name) const {
-    return static_cast<std::underlying_type_t<DigitalInputID>>(cDigitalInputsByName.find(name)->second);
+  std::vector<std::string> WorldEditor::getAnalogueInputs() const {
+    std::vector<std::string> mAnalogueInputNames;
+    for (std::pair<std::string, AnalogueInput*> mPair : cAnalogueInputsByName) {
+      mAnalogueInputNames.emplace_back(mPair.first);
+    }
+    return mAnalogueInputNames;
   }
 
-  void WorldEditor::inputEditable(int id, bool value) {
+  std::vector<std::string> WorldEditor::getSignalInputs() const {
+    std::vector<std::string> mSignalInputNames;
+    for (std::pair<std::string, SignalInputID> mPair : cSignalInputsByName) {
+      mSignalInputNames.emplace_back(mPair.first);
+    }
+    return mSignalInputNames;
+  }
+
+  void WorldEditor::setDigitalInput(const std::string& name, IBoolean* input) {
+    cDigitalInputsByName.find(name)->second->set(input);
+  }
+
+  void WorldEditor::setAnalogueInput(const std::string& name, IFloat* input) {
+    cAnalogueInputsByName.find(name)->second->set(input);
+  }
+
+  int WorldEditor::getSignalID(const std::string& name) const {
+    return static_cast<int>(cSignalInputsByName.find(name)->second);
+  }
+
+  void WorldEditor::signal(int id) {
     if (cSelectedTool != nullptr) {
-      if (cSelectedTool->inputTool(id, value, getAngle())) {
+      if (cSelectedTool->inputTool(id, getAngle())) {
         return;
       }
     }
 
-    if (value) {
-      switch (static_cast<DigitalInputID>(id)) {
-        case DigitalInputID::MOVE_CURSOR_BACKWARD: cActiveDown   = true;   break;
-        case DigitalInputID::MOVE_CURSOR_DOWN:     cActiveLower  = true;   break;
-        case DigitalInputID::MOVE_CURSOR_FASTER:   cActiveFast   = true;   break;
-        case DigitalInputID::MOVE_CURSOR_FORWARD:  cActiveUp     = true;   break;
-        case DigitalInputID::MOVE_CURSOR_LEFT:     cActiveLeft   = true;   break;
-        case DigitalInputID::MOVE_CURSOR_RIGHT:    cActiveRight  = true;   break;
-        case DigitalInputID::MOVE_CURSOR_SLOWER:   cActiveSlow   = true;   break;
-        case DigitalInputID::MOVE_CURSOR_UP:       cActiveHigher = true;   break;
-        case DigitalInputID::NEXT_THEME:           setNextTheme();         break;
-        case DigitalInputID::NEXT_TOOL:            selectToolRelative(1);  break;
-        case DigitalInputID::PREVIOUS_THEME:       setPreviousTheme();     break;
-        case DigitalInputID::PREVIOUS_TOOL:        selectToolRelative(-1); break;
-        case DigitalInputID::MOVE_VIEW:            cZoomingView = true;    break;
-        case DigitalInputID::ROTATE_VIEW:          cRotatingView = true;   break;
-        default:                                                           break;
-      }
-    } else {
-      switch (static_cast<DigitalInputID>(id)) {
-        case DigitalInputID::MOVE_CURSOR_BACKWARD: cActiveDown   = false; break;
-        case DigitalInputID::MOVE_CURSOR_DOWN:     cActiveLower  = false; break;
-        case DigitalInputID::MOVE_CURSOR_FASTER:   cActiveFast   = false; break;
-        case DigitalInputID::MOVE_CURSOR_FORWARD:  cActiveUp     = false; break;
-        case DigitalInputID::MOVE_CURSOR_LEFT:     cActiveLeft   = false; break;
-        case DigitalInputID::MOVE_CURSOR_RIGHT:    cActiveRight  = false; break;
-        case DigitalInputID::MOVE_CURSOR_SLOWER:   cActiveSlow   = false; break;
-        case DigitalInputID::MOVE_CURSOR_UP:       cActiveHigher = false; break;
-        case DigitalInputID::MOVE_VIEW:            cZoomingView  = false; break;
-        case DigitalInputID::ROTATE_VIEW:          cRotatingView = false; break;
-        default:                                   /* Nothing to do. */   break;
-      }
+    switch (static_cast<SignalInputID>(id)) {
+      case SignalInputID::NEXT_THEME:     setNextTheme();         break;
+      case SignalInputID::NEXT_TOOL:      selectToolRelative(1);  break;
+      case SignalInputID::PREVIOUS_THEME: setPreviousTheme();     break;
+      case SignalInputID::PREVIOUS_TOOL:  selectToolRelative(-1); break;
+      default:                                                    break;
     }
   }
 
@@ -670,13 +656,13 @@ namespace IsoRealms::Spindizzy {
     mNewLocation.y = std::clamp(cLocation.y + y, static_cast<double>(cWorld->getSpindizzy()->getEditorMinY()), static_cast<double>(cWorld->getSpindizzy()->getEditorMaxY()));
     mNewLocation.z = std::clamp(cLocation.z + z, static_cast<double>(cWorld->getSpindizzy()->getEditorMinZ()), static_cast<double>(cWorld->getSpindizzy()->getEditorMaxZ()));
     double mSnapInterval = cSelectedTool != nullptr ? cSelectedTool->getSnapInterval() : 1.0;
-    if (std::abs(x) < STOP_THRESHOLD && !cActiveLeft && !cActiveRight) {
+    if (std::abs(x) < STOP_THRESHOLD && !cActiveLeft.get() && !cActiveRight.get()) {
       mNewLocation.x = Utils::round(mNewLocation.x, mSnapInterval, cXDirection);
     }
-    if (std::abs(y) < STOP_THRESHOLD && !cActiveUp && !cActiveDown) {
+    if (std::abs(y) < STOP_THRESHOLD && !cActiveUp.get() && !cActiveDown.get()) {
       mNewLocation.y = Utils::round(mNewLocation.y, mSnapInterval, cYDirection);
     }
-    if (std::abs(z) < STOP_THRESHOLD && !cActiveHigher && !cActiveLower) {
+    if (std::abs(z) < STOP_THRESHOLD && !cActiveHigher.get() && !cActiveLower.get()) {
       mNewLocation.z = Utils::round(mNewLocation.z, mSnapInterval, cZDirection);
     }
     cLocation = mNewLocation;
@@ -706,24 +692,14 @@ namespace IsoRealms::Spindizzy {
     return cProxyScreen;
   }
 
-  const std::map<std::string, WorldEditor::DigitalInputID> WorldEditor::cDigitalInputsByName = {
-    {"Cancel",             WorldEditor::DigitalInputID::CANCEL},
-    {"ConfigureTool",      WorldEditor::DigitalInputID::CONFIGURE_TOOL},
-    {"MoveCursorBackward", WorldEditor::DigitalInputID::MOVE_CURSOR_BACKWARD},
-    {"MoveCursorDown",     WorldEditor::DigitalInputID::MOVE_CURSOR_DOWN},
-    {"MoveCursorFaster",   WorldEditor::DigitalInputID::MOVE_CURSOR_FASTER},
-    {"MoveCursorForward",  WorldEditor::DigitalInputID::MOVE_CURSOR_FORWARD},
-    {"MoveCursorLeft",     WorldEditor::DigitalInputID::MOVE_CURSOR_LEFT},
-    {"MoveCursorRight",    WorldEditor::DigitalInputID::MOVE_CURSOR_RIGHT},
-    {"MoveCursorSlower",   WorldEditor::DigitalInputID::MOVE_CURSOR_SLOWER},
-    {"MoveCursorUp",       WorldEditor::DigitalInputID::MOVE_CURSOR_UP},
-    {"MoveView",           WorldEditor::DigitalInputID::MOVE_VIEW},
-    {"NextTheme",          WorldEditor::DigitalInputID::NEXT_THEME},
-    {"NextTool",           WorldEditor::DigitalInputID::NEXT_TOOL},
-    {"PreviousTheme",      WorldEditor::DigitalInputID::PREVIOUS_THEME},
-    {"PreviousTool",       WorldEditor::DigitalInputID::PREVIOUS_TOOL},
-    {"RotateView",         WorldEditor::DigitalInputID::ROTATE_VIEW},
-    {"ToolMode",           WorldEditor::DigitalInputID::TOOL_MODE},
-    {"UseTool",            WorldEditor::DigitalInputID::USE_TOOL},
+  const std::map<std::string, WorldEditor::SignalInputID> WorldEditor::cSignalInputsByName = {
+    {"Cancel",        WorldEditor::SignalInputID::CANCEL},
+    {"ConfigureTool", WorldEditor::SignalInputID::CONFIGURE_TOOL},
+    {"NextTheme",     WorldEditor::SignalInputID::NEXT_THEME},
+    {"NextTool",      WorldEditor::SignalInputID::NEXT_TOOL},
+    {"PreviousTheme", WorldEditor::SignalInputID::PREVIOUS_THEME},
+    {"PreviousTool",  WorldEditor::SignalInputID::PREVIOUS_TOOL},
+    {"ToolMode",      WorldEditor::SignalInputID::TOOL_MODE},
+    {"UseTool",       WorldEditor::SignalInputID::USE_TOOL},
   };
 }

@@ -168,15 +168,31 @@ namespace IsoRealms::UI {
   }
 
   std::vector<std::string> LayoutEditor::getDigitalInputs() const {
-    return std::vector<std::string>(); // TODO: Implement this.
+    return std::vector<std::string>();
   }
 
-  int LayoutEditor::getDigitalInputID(const std::string& name) const {
-    return 0; // TODO: Implement this.
+  std::vector<std::string> LayoutEditor::getAnalogueInputs() const {
+    return std::vector<std::string>();
   }
 
-  void LayoutEditor::inputEditable(int id, bool value) {
-    // TODO: Implement this.
+  std::vector<std::string> LayoutEditor::getSignalInputs() const {
+    return std::vector<std::string>();
+  }
+
+  void LayoutEditor::setDigitalInput(const std::string& name, IBoolean* input) {
+    // Nothing to do.
+  }
+
+  void LayoutEditor::setAnalogueInput(const std::string& name, IFloat* input) {
+    // Nothing to do.
+  }
+
+  int LayoutEditor::getSignalID(const std::string& name) const {
+    return 0;
+  }
+
+  void LayoutEditor::signal(int id) {
+    // Nothing to do.
   }
 
   void LayoutEditor::setAppearance(IFont* font, float scale) {

@@ -41,23 +41,13 @@
 namespace IsoRealms::Spindizzy {
   class WorldEditor : public IEditableScreen {
     public:
-    enum class DigitalInputID {
+    enum class SignalInputID {
       CANCEL,
       CONFIGURE_TOOL,
-      MOVE_CURSOR_BACKWARD,
-      MOVE_CURSOR_DOWN,
-      MOVE_CURSOR_FASTER,
-      MOVE_CURSOR_FORWARD,
-      MOVE_CURSOR_LEFT,
-      MOVE_CURSOR_RIGHT,
-      MOVE_CURSOR_SLOWER,
-      MOVE_CURSOR_UP,
-      MOVE_VIEW,
       NEXT_THEME,
       NEXT_TOOL,
       PREVIOUS_THEME,
       PREVIOUS_TOOL,
-      ROTATE_VIEW,
       TOOL_MODE,
       USE_TOOL
     };
@@ -85,8 +75,13 @@ namespace IsoRealms::Spindizzy {
     void notifyHidden() override;
     void notifyLostFocus() override;
     std::vector<std::string> getDigitalInputs() const override;
-    int getDigitalInputID(const std::string& name) const override;
-    void inputEditable(int id, bool value) override;
+    std::vector<std::string> getAnalogueInputs() const override;
+    std::vector<std::string> getSignalInputs() const override;
+    void setDigitalInput(const std::string& name, IBoolean* input) override;
+    void setAnalogueInput(const std::string& name, IFloat* input) override;
+    int getSignalID(const std::string& name) const override;
+    void signal(int id) override;
+
     void setAppearance(IFont* font, float scale) override;
     void unregisterAssets(IAssetRemover* assets) override;
     const IFloat* getYaw() const override;
@@ -94,8 +89,6 @@ namespace IsoRealms::Spindizzy {
     IScreen* screen() override;
 
     private:
-    static const std::map<std::string, DigitalInputID> cDigitalInputsByName; /// Mapping of digital inputs by name.
-
     class ScreenFloat : public IFloat {
       private:
       double* cValue;
@@ -110,6 +103,47 @@ namespace IsoRealms::Spindizzy {
       bool renderAssetIcon() const override;
       void saveAsset(JSONObject object) const override;
     };
+
+    class AnalogueInput {
+      public:
+      AnalogueInput() :
+                cInput(nullptr) {
+      }
+
+      void set(IFloat* input) {
+        cInput = input;
+      }
+
+      float get() {
+        return cInput != nullptr ? cInput->getValue() : 0.0f;
+      }
+
+      private:
+      IFloat* cInput;
+    };
+
+    class DigitalInput {
+      public:
+      DigitalInput() :
+                cInput(nullptr) {
+      }
+
+      void set(IBoolean* input) {
+        cInput = input;
+      }
+
+      bool get() {
+        return cInput != nullptr ? cInput->getValue() : false;
+      }
+
+      private:
+      IBoolean* cInput;
+    };
+
+    static const std::map<std::string, SignalInputID> cSignalInputsByName; /// Mapping of digital inputs by name.
+
+    const std::map<std::string, AnalogueInput*> cAnalogueInputsByName; /// Mapping of digital inputs by name.
+    const std::map<std::string, DigitalInput*> cDigitalInputsByName; /// Mapping of digital inputs by name.
 
     static const float SPEED_FAST;
     static const float SPEED_NORMAL;
@@ -129,31 +163,34 @@ namespace IsoRealms::Spindizzy {
     int cYDirection;
     int cZDirection;
 
-    double cPitchSpeed;
-    double cYawSpeed;
-    double cXSpeed;
-    double cYSpeed;
-    double cZSpeed;
-    double cDistanceInSpeed;
-    double cDistanceOutSpeed;
+    AnalogueInput cPitchSpeed;
+    AnalogueInput cYawSpeed;
+    AnalogueInput cXSpeed;
+    AnalogueInput cYSpeed;
+    AnalogueInput cZSpeed;
+    AnalogueInput cDistanceInSpeed;
+    AnalogueInput cDistanceOutSpeed;
+
+    DigitalInput cActiveLeft;
+    DigitalInput cActiveRight;
+    DigitalInput cActiveUp;
+    DigitalInput cActiveDown;
+    DigitalInput cActiveHigher;
+    DigitalInput cActiveLower;
+    DigitalInput cActiveSlow;
+    DigitalInput cActiveFast;
+    DigitalInput cRotatingView;
+    DigitalInput cZoomingView;
 
     double cDistance;
-    double cRotation;                       
+    double cRotation;
     double cTilt;
     double cRoll;
     ScreenFloat cScreenYaw;
     ScreenFloat cScreenPitch;
     IStateNotifier<IFloat>* cScreenYawNotifier;
     IStateNotifier<IFloat>* cScreenPitchNotifier;
-    
-    bool cActiveLeft;
-    bool cActiveRight;
-    bool cActiveUp;
-    bool cActiveDown;
-    bool cActiveHigher;
-    bool cActiveLower;
-    bool cActiveSlow;
-    bool cActiveFast;
+
     HatHandler& cHatHandler;
     LiteralVertex cLocation;
     LiteralVertex cMomentum;
@@ -161,8 +198,6 @@ namespace IsoRealms::Spindizzy {
     AnimatedFloat cPaletteSelectionX;
     TerrainBrush cTerrainBrush;
 
-    bool cRotatingView;
-    bool cZoomingView;
     int cPreviousX;
     int cPreviousY;
 

@@ -43,8 +43,12 @@ namespace IsoRealms::UI {
     void notifyHidden() override;
     void notifyLostFocus() override;
     std::vector<std::string> getDigitalInputs() const override;
-    int getDigitalInputID(const std::string& name) const override;
-    void inputEditable(int id, bool value) override;
+    std::vector<std::string> getAnalogueInputs() const override;
+    std::vector<std::string> getSignalInputs() const override;
+    void setDigitalInput(const std::string& name, IBoolean* input) override;
+    void setAnalogueInput(const std::string& name, IFloat* input) override;
+    int getSignalID(const std::string& name) const override;
+    void signal(int id) override;
     void setAppearance(IFont* font, float scale) override;
     void unregisterAssets(IAssetRemover* assets) override;
     IScreen* screen() override;

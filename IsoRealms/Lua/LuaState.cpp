@@ -49,8 +49,10 @@ namespace IsoRealms {
                                                          "notifyVisible",        &IEditableScreen::notifyVisible,
                                                          "notifyHidden",         &IEditableScreen::notifyHidden,
                                                          "notifyLostFocus",      &IEditableScreen::notifyLostFocus,
-                                                         "input",                &IEditableScreen::inputEditable,
-                                                         "getDigitalInputID",    &IEditableScreen::getDigitalInputID,
+                                                         "setDigitalInput",      &IEditableScreen::setDigitalInput,
+                                                         "setAnalogueInput",     &IEditableScreen::setAnalogueInput,
+                                                         "getSignalID",          &IEditableScreen::getSignalID,
+                                                         "signal",               &IEditableScreen::signal,
                                                          "setAppearance",        &IEditableScreen::setAppearance);
     cLua.new_usertype<IFloat>("Float",                   "getValue",             &IFloat::getValue);
     cLua.new_usertype<IInteger>("Integer",               "getValue",             &IInteger::getValue);
