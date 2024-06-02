@@ -291,19 +291,23 @@ namespace IsoRealms::Spindizzy {
     }
   }
 
-  bool TerrainType::Pen::inputTool(int id, double yaw) {
+  bool TerrainType::Pen::inputTool(SignalInputID id, double yaw) {
     if (cEditor->getTerrainBrush().input(id, yaw)) {
       return true;
     }
 
-    switch (static_cast<WorldEditor::SignalInputID>(id)) {
-      case WorldEditor::SignalInputID::USE_TOOL:       draw();              return true;
-      case WorldEditor::SignalInputID::CANCEL:         cancel();            return true;
-      case WorldEditor::SignalInputID::TOOL_MODE:      toggleNegation();    return true;
-      case WorldEditor::SignalInputID::CONFIGURE_TOOL: toggleShapeEditor(); return true;
-      default:                                                              break;
+    switch (id) {
+      case SignalInputID::USE_TOOL:       draw();              return true;
+      case SignalInputID::CANCEL:         cancel();            return true;
+      case SignalInputID::TOOL_MODE:      toggleNegation();    return true;
+      case SignalInputID::CONFIGURE_TOOL: toggleShapeEditor(); return true;
+      default:                                                 break;
     }
     return false;
+  }
+
+  bool TerrainType::Pen::isCursorLocked() const {
+    return cEditor->getTerrainBrush().isCursorLocked();
   }
 
   void TerrainType::Pen::processCursorMovement(LiteralVertex* start, LiteralVertex* end) {

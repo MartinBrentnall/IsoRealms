@@ -175,10 +175,6 @@ namespace IsoRealms::UI {
     return std::vector<std::string>();
   }
 
-  std::vector<std::string> LayoutEditor::getSignalInputs() const {
-    return std::vector<std::string>();
-  }
-
   void LayoutEditor::setDigitalInput(const std::string& name, IBoolean* input) {
     // Nothing to do.
   }
@@ -187,11 +183,7 @@ namespace IsoRealms::UI {
     // Nothing to do.
   }
 
-  int LayoutEditor::getSignalID(const std::string& name) const {
-    return 0;
-  }
-
-  void LayoutEditor::signal(int id) {
+  void LayoutEditor::setExitAction(IAction* action) {
     // Nothing to do.
   }
 

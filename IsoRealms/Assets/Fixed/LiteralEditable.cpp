@@ -53,10 +53,6 @@ namespace IsoRealms {
     return std::vector<std::string>();
   }
 
-  std::vector<std::string> LiteralEditable::EditableScreen::getSignalInputs() const {
-    return std::vector<std::string>();
-  }
-
   void LiteralEditable::EditableScreen::setDigitalInput(const std::string& name, IBoolean* input) {
     // Nothing to do.
   }
@@ -65,11 +61,7 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
-  int LiteralEditable::EditableScreen::getSignalID(const std::string& name) const {
-    return 0;
-  }
-
-  void LiteralEditable::EditableScreen::signal(int id) {
+  void LiteralEditable::EditableScreen::setExitAction(IAction* action) {
     // Nothing to do.
   }
 

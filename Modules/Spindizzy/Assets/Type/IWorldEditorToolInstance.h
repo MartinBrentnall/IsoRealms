@@ -21,6 +21,8 @@
 #include "IsoRealms/Literals.h"
 #include "IsoRealms/Types.h"
 
+#include "Modules/Spindizzy/World/Editor/SignalInputID.h"
+
 namespace IsoRealms::Spindizzy {
   class IAppearance;
   class IWorldEditorTool;
@@ -71,8 +73,10 @@ namespace IsoRealms::Spindizzy {
      */
     virtual void updateUI(unsigned int milliseconds) = 0;
     
-    virtual bool inputTool(int id, double yaw) = 0;
+    virtual bool inputTool(SignalInputID id, double yaw) = 0;
     
+    virtual bool isCursorLocked() const = 0;
+
     /**
      * Process editor cursor movement.  This is useful for tools that perform
      * object selection based on cursor movement.  The end position may be

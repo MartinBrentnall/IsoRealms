@@ -42,12 +42,16 @@ namespace IsoRealms::Spindizzy {
             cSelectedObject(0) {
   }
 
-  bool DeleteTool::Eraser::inputTool(int id, double yaw) {
-    switch (static_cast<WorldEditor::SignalInputID>(id)) {
-      case WorldEditor::SignalInputID::USE_TOOL: removeSelectedObject();                                                                                  return true;
-      case WorldEditor::SignalInputID::CANCEL:   cSelectedObject++; if (cSelectedObject >= static_cast<int>(cHoverObjects.size())) {cSelectedObject = 0;} return true;
-      default:                                                                                                                                            break;
+  bool DeleteTool::Eraser::inputTool(SignalInputID id, double yaw) {
+    switch (id) {
+      case SignalInputID::USE_TOOL:  removeSelectedObject();                                                                                  return true;
+      case SignalInputID::TOOL_MODE: cSelectedObject++; if (cSelectedObject >= static_cast<int>(cHoverObjects.size())) {cSelectedObject = 0;} return true;
+      default:                                                                                                                                break;
     }
+    return false;
+  }
+
+  bool DeleteTool::Eraser::isCursorLocked() const {
     return false;
   }
 

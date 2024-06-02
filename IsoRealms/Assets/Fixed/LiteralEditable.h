@@ -43,11 +43,9 @@ namespace IsoRealms {
       void notifyLostFocus() override;
       std::vector<std::string> getDigitalInputs() const override;
       std::vector<std::string> getAnalogueInputs() const override;
-      std::vector<std::string> getSignalInputs() const override;
       void setDigitalInput(const std::string& name, IBoolean* input) override;
       void setAnalogueInput(const std::string& name, IFloat* input) override;
-      int getSignalID(const std::string& name) const override;
-      void signal(int id) override;
+      void setExitAction(IAction* action) override;
       void unregisterAssets(IAssetRemover* assets) override;
       void setAppearance(IFont* font, float scale) override;
       IScreen* screen() override;

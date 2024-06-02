@@ -51,9 +51,8 @@ namespace IsoRealms {
                                                          "notifyLostFocus",      &IEditableScreen::notifyLostFocus,
                                                          "setDigitalInput",      &IEditableScreen::setDigitalInput,
                                                          "setAnalogueInput",     &IEditableScreen::setAnalogueInput,
-                                                         "getSignalID",          &IEditableScreen::getSignalID,
-                                                         "signal",               &IEditableScreen::signal,
-                                                         "setAppearance",        &IEditableScreen::setAppearance);
+                                                         "setAppearance",        &IEditableScreen::setAppearance,
+                                                         "setExitAction",        &IEditableScreen::setExitAction);
     cLua.new_usertype<IFloat>("Float",                   "getValue",             &IFloat::getValue);
     cLua.new_usertype<IInteger>("Integer",               "getValue",             &IInteger::getValue);
     cLua.new_usertype<JSONArray>("JSONArray",            "addObject",            &JSONArray::addObject,

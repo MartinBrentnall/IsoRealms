@@ -36,22 +36,12 @@
 #include "Modules/Spindizzy/World/World.h"
 #include "Modules/Spindizzy/WorldEditorCursorCell.h"
 
+#include "SignalInputID.h"
 #include "TerrainBrush.h"
 
 namespace IsoRealms::Spindizzy {
   class WorldEditor : public IEditableScreen {
     public:
-    enum class SignalInputID {
-      CANCEL,
-      CONFIGURE_TOOL,
-      NEXT_THEME,
-      NEXT_TOOL,
-      PREVIOUS_THEME,
-      PREVIOUS_TOOL,
-      TOOL_MODE,
-      USE_TOOL
-    };
-
     WorldEditor(IAssetRegistry* assets, World* world);
     void updateScreen(unsigned int milliseconds);
     World* getWorld() const;
@@ -76,11 +66,10 @@ namespace IsoRealms::Spindizzy {
     void notifyLostFocus() override;
     std::vector<std::string> getDigitalInputs() const override;
     std::vector<std::string> getAnalogueInputs() const override;
-    std::vector<std::string> getSignalInputs() const override;
     void setDigitalInput(const std::string& name, IBoolean* input) override;
     void setAnalogueInput(const std::string& name, IFloat* input) override;
-    int getSignalID(const std::string& name) const override;
-    void signal(int id) override;
+    void setExitAction(IAction* action) override;
+    bool signal(SignalInputID id);
 
     void setAppearance(IFont* font, float scale) override;
     void unregisterAssets(IAssetRemover* assets) override;
@@ -124,8 +113,11 @@ namespace IsoRealms::Spindizzy {
 
     class DigitalInput {
       public:
-      DigitalInput() :
-                cInput(nullptr) {
+      DigitalInput(WorldEditor& parent, SignalInputID signal) :
+                cParent(parent),
+                cInput(nullptr),
+                cPreviousValue(false),
+                cSignal(signal) {
       }
 
       void set(IBoolean* input) {
@@ -136,11 +128,24 @@ namespace IsoRealms::Spindizzy {
         return cInput != nullptr ? cInput->getValue() : false;
       }
 
-      private:
-      IBoolean* cInput;
-    };
+      bool triggerOnChange() {
+        bool mCurrentValue = get();
+        bool mSignalled = false;
+        if (mCurrentValue && !cPreviousValue) {
+          if (cParent.signal(cSignal)) {
+            mSignalled = true;
+          }
+        }
+        cPreviousValue = mCurrentValue;
+        return mSignalled;
+      }
 
-    static const std::map<std::string, SignalInputID> cSignalInputsByName; /// Mapping of digital inputs by name.
+      private:
+      WorldEditor& cParent;
+      IBoolean* cInput;
+      bool cPreviousValue;
+      SignalInputID cSignal;
+    };
 
     const std::map<std::string, AnalogueInput*> cAnalogueInputsByName; /// Mapping of digital inputs by name.
     const std::map<std::string, DigitalInput*> cDigitalInputsByName; /// Mapping of digital inputs by name.
@@ -181,6 +186,17 @@ namespace IsoRealms::Spindizzy {
     DigitalInput cActiveFast;
     DigitalInput cRotatingView;
     DigitalInput cZoomingView;
+    DigitalInput cCancel;
+    DigitalInput cConfigureTool;
+    DigitalInput cNextTheme;
+    DigitalInput cNextTool;
+    DigitalInput cPreviousTheme;
+    DigitalInput cPreviousTool;
+    DigitalInput cToolMode;
+    DigitalInput cUseTool;
+    DigitalInput cExit;
+
+    IAction* cExitAction;
 
     double cDistance;
     double cRotation;

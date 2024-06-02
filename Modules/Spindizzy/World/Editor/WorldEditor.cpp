@@ -38,13 +38,13 @@ namespace IsoRealms::Spindizzy {
   
   WorldEditor::WorldEditor(IAssetRegistry* assets, World* world) :
             cAnalogueInputsByName({
-              {"MoveViewIn",    &cDistanceInSpeed},
-              {"MoveViewOut",   &cDistanceOutSpeed},
-              {"MoveX",         &cXSpeed},
-              {"MoveY",         &cYSpeed},
-              {"MoveZ",         &cZSpeed},
-              {"MoveViewPitch", &cPitchSpeed},
-              {"MoveViewPaw",   &cYawSpeed}
+              {"MoveViewIn",      &cDistanceInSpeed},
+              {"MoveViewOut",     &cDistanceOutSpeed},
+              {"MoveCursorX",     &cXSpeed},
+              {"MoveCursorY",     &cYSpeed},
+              {"MoveCursorZ",     &cZSpeed},
+              {"RotateViewPitch", &cPitchSpeed},
+              {"RotateViewYaw",   &cYawSpeed}
             }),
             cDigitalInputsByName({
               {"MoveCursorBackward", &cActiveDown},
@@ -56,8 +56,37 @@ namespace IsoRealms::Spindizzy {
               {"MoveCursorSlower",   &cActiveSlow},
               {"MoveCursorUp",       &cActiveHigher},
               {"MoveView",           &cZoomingView},
-              {"RotateView",         &cRotatingView}
+              {"RotateView",         &cRotatingView},
+              {"Cancel",             &cCancel},
+              {"ConfigureTool",      &cConfigureTool},
+              {"NextTheme",          &cNextTheme},
+              {"NextTool",           &cNextTool},
+              {"PreviousTheme",      &cPreviousTheme},
+              {"PreviousTool",       &cPreviousTool},
+              {"ToolMode",           &cToolMode},
+              {"UseTool",            &cUseTool},
+              {"Exit",               &cExit},
             }),
+            cActiveLeft(*this, SignalInputID::MOVE_CURSOR_LEFT),
+            cActiveRight(*this, SignalInputID::MOVE_CURSOR_RIGHT),
+            cActiveUp(*this, SignalInputID::MOVE_CURSOR_FORWARD),
+            cActiveDown(*this, SignalInputID::MOVE_CURSOR_BACKWARD),
+            cActiveHigher(*this, SignalInputID::MOVE_CURSOR_UP),
+            cActiveLower(*this, SignalInputID::MOVE_CURSOR_DOWN),
+            cActiveSlow(*this, SignalInputID::MOVE_CURSOR_SLOWER),
+            cActiveFast(*this, SignalInputID::MOVE_CURSOR_FASTER),
+            cRotatingView(*this, SignalInputID::ROTATE_VIEW),
+            cZoomingView(*this, SignalInputID::MOVE_VIEW),
+            cCancel(*this, SignalInputID::CANCEL),
+            cConfigureTool(*this, SignalInputID::CONFIGURE_TOOL),
+            cNextTheme(*this, SignalInputID::NEXT_THEME),
+            cNextTool(*this, SignalInputID::NEXT_TOOL),
+            cPreviousTheme(*this, SignalInputID::PREVIOUS_THEME),
+            cPreviousTool(*this, SignalInputID::PREVIOUS_TOOL),
+            cToolMode(*this, SignalInputID::TOOL_MODE),
+            cUseTool(*this, SignalInputID::USE_TOOL),
+            cExit(*this, SignalInputID::EXIT),
+            cExitAction(nullptr),
             cScreenYaw(&cRotation),
             cScreenPitch(&cTilt),
             cHatHandler(world->getSpindizzy()->getProject()->getApplication()->getHatHandler()),
@@ -92,6 +121,9 @@ namespace IsoRealms::Spindizzy {
   }
 
   bool WorldEditor::isMovingNorth() {
+    if (cSelectedTool->isCursorLocked()) {
+      return false;
+    }
     float mCameraAngle = getAngle();
     return mCameraAngle >=   40.0f && mCameraAngle <= 130.0f ? cActiveLeft.get()
          : mCameraAngle >=  -50.0f && mCameraAngle <=  40.0f ? cActiveUp.get()
@@ -100,6 +132,9 @@ namespace IsoRealms::Spindizzy {
   }
 
   bool WorldEditor::isMovingEast() {
+    if (cSelectedTool->isCursorLocked()) {
+      return false;
+    }
     float mCameraAngle = getAngle();
     return mCameraAngle >=   40.0f && mCameraAngle <= 130.0f ? cActiveUp.get()
          : mCameraAngle >=  -50.0f && mCameraAngle <=  40.0f ? cActiveRight.get()
@@ -108,6 +143,9 @@ namespace IsoRealms::Spindizzy {
   }
 
   bool WorldEditor::isMovingSouth() {
+    if (cSelectedTool->isCursorLocked()) {
+      return false;
+    }
     float mCameraAngle = getAngle();
     return mCameraAngle >=   40.0f && mCameraAngle <= 130.0f ? cActiveRight.get()
          : mCameraAngle >=  -50.0f && mCameraAngle <=  40.0f ? cActiveDown.get()
@@ -116,6 +154,9 @@ namespace IsoRealms::Spindizzy {
   }
 
   bool WorldEditor::isMovingWest() {
+    if (cSelectedTool->isCursorLocked()) {
+      return false;
+    }
     float mCameraAngle = getAngle();
     return mCameraAngle >=   40.0f && mCameraAngle <= 130.0f ? cActiveDown.get()
          : mCameraAngle >=  -50.0f && mCameraAngle <=  40.0f ? cActiveLeft.get()
@@ -124,7 +165,8 @@ namespace IsoRealms::Spindizzy {
   }
 
   float WorldEditor::getMovementSpeed() {
-    return cActiveSlow.get() && cActiveFast.get() ? SPEED_NORMAL
+    return cSelectedTool->isCursorLocked()        ? 0.0f
+         : cActiveSlow.get() && cActiveFast.get() ? SPEED_NORMAL
          : cActiveFast.get()                      ? SPEED_FAST
          : cActiveSlow.get()                      ? SPEED_SLOW
                      :                              SPEED_NORMAL;
@@ -347,7 +389,12 @@ namespace IsoRealms::Spindizzy {
   }
 
   void WorldEditor::updateScreen(unsigned int milliseconds) {
-    rotate(cYawSpeed.get(), cPitchSpeed.get());
+    for (std::pair<std::string, DigitalInput*> mPair : cDigitalInputsByName) {
+      if (mPair.second->triggerOnChange()) {
+        break;
+      }
+    }
+    rotate(cYawSpeed.get() * 5.0f, -cPitchSpeed.get() * 5.0f);
     if (isMovingWest())      {cMomentum.x -= getMovementSpeed(); cXDirection = -1;}
     if (isMovingEast())      {cMomentum.x += getMovementSpeed(); cXDirection =  1;}
     if (isMovingSouth())     {cMomentum.y -= getMovementSpeed(); cYDirection = -1;}
@@ -357,23 +404,23 @@ namespace IsoRealms::Spindizzy {
     cMomentum.x *= 0.5f;
     cMomentum.y *= 0.5f;
     cMomentum.z *= 0.5f;
-    double mMovementDirection = atan2(-cYSpeed.get(), cXSpeed.get()) + 90.0f * (M_PI / 180.f);
-    double mMovementSpeed = Utils::distance(0.0, 0.0, cXSpeed.get(), cYSpeed.get());
+    double mMovementDirection = atan2(cYSpeed.get(), cXSpeed.get()) + 90.0f * (M_PI / 180.f);
+    double mMovementSpeed = cSelectedTool->isCursorLocked() ? 0.0f : Utils::distance(0.0, 0.0, cXSpeed.get() * 0.15, cYSpeed.get() * 0.15);
     double mXSpeed = std::sin(cRotation * (M_PI / 180.0f) + mMovementDirection) * mMovementSpeed;
     double mYSpeed = std::cos(cRotation * (M_PI / 180.0f) + mMovementDirection) * mMovementSpeed;
     LiteralVertex mPreviousLocation = cLocation;
     move(cMomentum.x + mXSpeed, cMomentum.y + mYSpeed, cMomentum.z + cZSpeed.get());
     move(cDistanceInSpeed.get() - cDistanceOutSpeed.get());
 
-    if (std::abs(cMomentum.x) < STOP_THRESHOLD && !cActiveLeft.get() && !cActiveRight.get()) {
+    if (cSelectedTool->isCursorLocked() || (std::abs(cMomentum.x) < STOP_THRESHOLD && !cActiveLeft.get() && !cActiveRight.get())) {
       cMomentum.x = 0.0;
       cXDirection = 0;
     }
-    if (std::abs(cMomentum.y) < STOP_THRESHOLD && !cActiveUp.get() && !cActiveDown.get()) {
+    if (cSelectedTool->isCursorLocked() || (std::abs(cMomentum.y) < STOP_THRESHOLD && !cActiveUp.get() && !cActiveDown.get())) {
       cMomentum.y = 0.0;
       cYDirection = 0;
     }
-    if (std::abs(cMomentum.z) < STOP_THRESHOLD && !cActiveHigher.get() && !cActiveLower.get()) {
+    if (cSelectedTool->isCursorLocked() || (std::abs(cMomentum.z) < STOP_THRESHOLD && !cActiveHigher.get() && !cActiveLower.get())) {
       cMomentum.z = 0.0;
       cZDirection = 0;
     }
@@ -390,7 +437,7 @@ namespace IsoRealms::Spindizzy {
 
     cPaletteSelectionX.update(milliseconds);
     cWorld->updateEditing(milliseconds);
-    cTerrainBrush.update(milliseconds, cScreenYaw.getValue());
+    cTerrainBrush.update(milliseconds, cScreenYaw.getValue(), cXSpeed.get(), cYSpeed.get());
   }
 
   void WorldEditor::renderScreen(float scale, float aspectRatio) const {
@@ -572,14 +619,6 @@ namespace IsoRealms::Spindizzy {
     return mAnalogueInputNames;
   }
 
-  std::vector<std::string> WorldEditor::getSignalInputs() const {
-    std::vector<std::string> mSignalInputNames;
-    for (std::pair<std::string, SignalInputID> mPair : cSignalInputsByName) {
-      mSignalInputNames.emplace_back(mPair.first);
-    }
-    return mSignalInputNames;
-  }
-
   void WorldEditor::setDigitalInput(const std::string& name, IBoolean* input) {
     cDigitalInputsByName.find(name)->second->set(input);
   }
@@ -588,24 +627,26 @@ namespace IsoRealms::Spindizzy {
     cAnalogueInputsByName.find(name)->second->set(input);
   }
 
-  int WorldEditor::getSignalID(const std::string& name) const {
-    return static_cast<int>(cSignalInputsByName.find(name)->second);
+  void WorldEditor::setExitAction(IAction* action) {
+    cExitAction = action;
   }
 
-  void WorldEditor::signal(int id) {
+  bool WorldEditor::signal(SignalInputID id) {
     if (cSelectedTool != nullptr) {
       if (cSelectedTool->inputTool(id, getAngle())) {
-        return;
+        return true;
       }
     }
 
-    switch (static_cast<SignalInputID>(id)) {
-      case SignalInputID::NEXT_THEME:     setNextTheme();         break;
-      case SignalInputID::NEXT_TOOL:      selectToolRelative(1);  break;
-      case SignalInputID::PREVIOUS_THEME: setPreviousTheme();     break;
-      case SignalInputID::PREVIOUS_TOOL:  selectToolRelative(-1); break;
+    switch (id) {
+      case SignalInputID::NEXT_THEME:     setNextTheme();         return true;
+      case SignalInputID::NEXT_TOOL:      selectToolRelative(1);  return true;
+      case SignalInputID::PREVIOUS_THEME: setPreviousTheme();     return true;
+      case SignalInputID::PREVIOUS_TOOL:  selectToolRelative(-1); return true;
+      case SignalInputID::EXIT:           if (cExitAction != nullptr) {cExitAction->execute();} return true;
       default:                                                    break;
     }
+    return false;
   }
 
   void WorldEditor::setAppearance(IFont* font, float scale) {
@@ -656,13 +697,13 @@ namespace IsoRealms::Spindizzy {
     mNewLocation.y = std::clamp(cLocation.y + y, static_cast<double>(cWorld->getSpindizzy()->getEditorMinY()), static_cast<double>(cWorld->getSpindizzy()->getEditorMaxY()));
     mNewLocation.z = std::clamp(cLocation.z + z, static_cast<double>(cWorld->getSpindizzy()->getEditorMinZ()), static_cast<double>(cWorld->getSpindizzy()->getEditorMaxZ()));
     double mSnapInterval = cSelectedTool != nullptr ? cSelectedTool->getSnapInterval() : 1.0;
-    if (std::abs(x) < STOP_THRESHOLD && !cActiveLeft.get() && !cActiveRight.get()) {
+    if (cSelectedTool->isCursorLocked() || (std::abs(x) < STOP_THRESHOLD && !cActiveLeft.get() && !cActiveRight.get())) {
       mNewLocation.x = Utils::round(mNewLocation.x, mSnapInterval, cXDirection);
     }
-    if (std::abs(y) < STOP_THRESHOLD && !cActiveUp.get() && !cActiveDown.get()) {
+    if (cSelectedTool->isCursorLocked() || (std::abs(y) < STOP_THRESHOLD && !cActiveUp.get() && !cActiveDown.get())) {
       mNewLocation.y = Utils::round(mNewLocation.y, mSnapInterval, cYDirection);
     }
-    if (std::abs(z) < STOP_THRESHOLD && !cActiveHigher.get() && !cActiveLower.get()) {
+    if (cSelectedTool->isCursorLocked() || (std::abs(z) < STOP_THRESHOLD && !cActiveHigher.get() && !cActiveLower.get())) {
       mNewLocation.z = Utils::round(mNewLocation.z, mSnapInterval, cZDirection);
     }
     cLocation = mNewLocation;
@@ -691,15 +732,4 @@ namespace IsoRealms::Spindizzy {
   IScreen* WorldEditor::screen() {
     return cProxyScreen;
   }
-
-  const std::map<std::string, WorldEditor::SignalInputID> WorldEditor::cSignalInputsByName = {
-    {"Cancel",        WorldEditor::SignalInputID::CANCEL},
-    {"ConfigureTool", WorldEditor::SignalInputID::CONFIGURE_TOOL},
-    {"NextTheme",     WorldEditor::SignalInputID::NEXT_THEME},
-    {"NextTool",      WorldEditor::SignalInputID::NEXT_TOOL},
-    {"PreviousTheme", WorldEditor::SignalInputID::PREVIOUS_THEME},
-    {"PreviousTool",  WorldEditor::SignalInputID::PREVIOUS_TOOL},
-    {"ToolMode",      WorldEditor::SignalInputID::TOOL_MODE},
-    {"UseTool",       WorldEditor::SignalInputID::USE_TOOL},
-  };
 }

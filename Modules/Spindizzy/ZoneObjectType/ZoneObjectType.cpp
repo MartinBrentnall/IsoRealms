@@ -190,7 +190,7 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  bool ZoneObjectType::Pen::inputTool(int id, double yaw) {
+  bool ZoneObjectType::Pen::inputTool(SignalInputID id, double yaw) {
     // TODO: Implement this.
 //     switch (cRuntimeEditors[cEditingTrait]->inputEdit(event)) {
 //       case IZoneObjectTraitEditor::InputEditResult::COMPLETED: {
@@ -226,6 +226,10 @@ namespace IsoRealms::Spindizzy {
 //         return false;
 //       }
 //     }
+    return false;
+  }
+
+  bool ZoneObjectType::Pen::isCursorLocked() const {
     return false;
   }
 

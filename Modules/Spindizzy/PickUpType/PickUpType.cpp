@@ -124,11 +124,15 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  bool PickUpType::Pen::inputTool(int id, double yaw) {
-    if (static_cast<WorldEditor::SignalInputID>(id) == WorldEditor::SignalInputID::USE_TOOL) {
+  bool PickUpType::Pen::inputTool(SignalInputID id, double yaw) {
+    if (id == SignalInputID::USE_TOOL) {
       cEditor->getWorld()->draw(&cParent, cEditor->getCursorCell(), cEditor);
       return true;
     }
+    return false;
+  }
+
+  bool PickUpType::Pen::isCursorLocked() const {
     return false;
   }
 

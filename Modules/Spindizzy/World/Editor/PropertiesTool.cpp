@@ -50,18 +50,22 @@ namespace IsoRealms::Spindizzy {
             cPropertiesMenu(&cConfigurator, editor->getPropertyAppearance()) {
   }
 
-  bool PropertiesTool::Modifier::inputTool(int id, double yaw) {
+  bool PropertiesTool::Modifier::inputTool(SignalInputID id, double yaw) {
     // TODO: Implement this.
 //     if (cEditingProperties) {
 //       cConfigurator.input(event);
 //       return true;
 //     }
 
-    switch (static_cast<WorldEditor::SignalInputID>(id)) {
-      case WorldEditor::SignalInputID::USE_TOOL: showProperties();                                                                                        return true;
-      case WorldEditor::SignalInputID::CANCEL:   cSelectedObject++; if (cSelectedObject >= static_cast<int>(cHoverObjects.size())) {cSelectedObject = 0;} return true;
-      default:                                                                                                                                            break;
+    switch (id) {
+      case SignalInputID::USE_TOOL:  showProperties();                                                                                        return true;
+      case SignalInputID::TOOL_MODE: cSelectedObject++; if (cSelectedObject >= static_cast<int>(cHoverObjects.size())) {cSelectedObject = 0;} return true;
+      default:                                                                                                                                break;
     }
+    return false;
+  }
+
+  bool PropertiesTool::Modifier::isCursorLocked() const {
     return false;
   }
 

@@ -149,9 +149,9 @@ namespace IsoRealms::Spindizzy {
     // Nothing to do.
   }
 
-  bool ZoneType::Pen::inputTool(int id, double yaw) {
-    switch (static_cast<WorldEditor::SignalInputID>(id)) {
-      case WorldEditor::SignalInputID::USE_TOOL: {
+  bool ZoneType::Pen::inputTool(SignalInputID id, double yaw) {
+    switch (id) {
+      case SignalInputID::USE_TOOL: {
         if (!cDrawing) {
           if (cEditor->getWorld()->getZone(cEditor->getCursorCell()) == nullptr) {
             cDrawing = true;
@@ -168,6 +168,10 @@ namespace IsoRealms::Spindizzy {
       }
       default: break;
     }
+    return false;
+  }
+
+  bool ZoneType::Pen::isCursorLocked() const {
     return false;
   }
 

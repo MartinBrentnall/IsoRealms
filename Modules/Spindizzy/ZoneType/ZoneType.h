@@ -93,7 +93,8 @@ namespace IsoRealms::Spindizzy {
       void renderEditingPreview() const override;
       void renderUI(float aspectRatio) const override;
       void updateUI(unsigned int milliseconds) override;
-      bool inputTool(int id, double yaw) override;
+      bool inputTool(SignalInputID id, double yaw) override;
+      bool isCursorLocked() const override;
       void processCursorMovement(LiteralVertex* start, LiteralVertex* end) override;
       double getSnapInterval() const override;
       

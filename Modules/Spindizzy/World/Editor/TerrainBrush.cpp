@@ -28,8 +28,6 @@ namespace IsoRealms::Spindizzy {
             cRuntimeEditing(false),
             cRuntimeCursorX(0.0),
             cRuntimeCursorY(0.0),
-            cRuntimeCursorXSpeed(0.0),
-            cRuntimeCursorYSpeed(0.0),
             cDefAnalogueSensitivity(10) {
     reset();
   }
@@ -323,53 +321,28 @@ namespace IsoRealms::Spindizzy {
                                       stepSouth();
   }
 
-  bool TerrainBrush::input(int id, double yaw) {
-    // TODO: Implement this.
-//     if (cRuntimeEditing) {
-//       switch (event.type) {
-//         case sf::Event::JoystickMoved: {
-//           int mValue = std::abs(event.joystickMove.position) < cDefAnalogueSensitivity ? 0 : (event.joystickMove.position - (event.joystickMove.position < 0 ? -cDefAnalogueSensitivity : cDefAnalogueSensitivity)) * (32767 / static_cast<float>(32767 - cDefAnalogueSensitivity));
-//           switch (event.joystickMove.axis) {
-//             case sf::Joystick::Axis::X: cRuntimeCursorXSpeed =  mValue / 50.0f; return true;
-//             case sf::Joystick::Axis::Y: cRuntimeCursorYSpeed = -mValue / 50.0f; return true;
-//             default:                                                            break;
-//           }
-//           break;
-//         }
-//
-//         default: {
-//           break;
-//         }
-//       }
-//     }
-//
-//     if (cRuntimeEditing) {
-//       switch (static_cast<WorldEditor::DigitalInputID>(id)) {
-//         case WorldEditor::DigitalInputID::MOVE_CURSOR_BACKWARD:  stepDown(yaw);   return true;
-//         case WorldEditor::DigitalInputID::MOVE_CURSOR_FORWARD:   stepUp(yaw);     return true;
-//         case WorldEditor::DigitalInputID::MOVE_CURSOR_LEFT:      stepLeft(yaw);   return true;
-//         case WorldEditor::DigitalInputID::MOVE_CURSOR_RIGHT:     stepRight(yaw);  return true;
-//         case WorldEditor::DigitalInputID::MOVE_CURSOR_UP:        raiseSelected(); return true;
-//         case WorldEditor::DigitalInputID::MOVE_CURSOR_DOWN:      lowerSelected(); return true;
-//         default:                                                                  break;
-//       }
-//     }
+  bool TerrainBrush::input(SignalInputID id, double yaw) {
+     if (cRuntimeEditing) {
+      switch (id) {
+        case SignalInputID::MOVE_CURSOR_BACKWARD: stepDown(yaw);   return true;
+        case SignalInputID::MOVE_CURSOR_FORWARD:  stepUp(yaw);     return true;
+        case SignalInputID::MOVE_CURSOR_LEFT:     stepLeft(yaw);   return true;
+        case SignalInputID::MOVE_CURSOR_RIGHT:    stepRight(yaw);  return true;
+        case SignalInputID::MOVE_CURSOR_UP:       raiseSelected(); return true;
+        case SignalInputID::MOVE_CURSOR_DOWN:     lowerSelected(); return true;
+        default:                                                   break;
+      }
+    }
     return false;
   }
 
-  double TerrainBrush::getCursorXSpeed() const {
-    return std::max(-1.0, std::min(1.0, cRuntimeCursorXSpeed));
+  bool TerrainBrush::isCursorLocked() const {
+    return cRuntimeEditing;
   }
 
-  double TerrainBrush::getCursorYSpeed() const {
-    return std::max(-1.0, std::min(1.0, cRuntimeCursorYSpeed));
-  }
-
-  void TerrainBrush::update(unsigned int milliseconds, double yaw) {
-    double mCursorXSpeed = getCursorXSpeed() / 10.0;
-    double mCursorYSpeed = getCursorYSpeed() / 10.0;
-    double mMovementDirection = atan2(-mCursorYSpeed, mCursorXSpeed) + 90.0f * (M_PI / 180.f);
-    double mMovementSpeed = Utils::distance(0.0, 0.0, mCursorXSpeed, mCursorYSpeed);
+  void TerrainBrush::update(unsigned int milliseconds, double yaw, double xSpeed, double ySpeed) {
+    double mMovementDirection = atan2(ySpeed, xSpeed) + 90.0f * (M_PI / 180.f);
+    double mMovementSpeed = Utils::distance(0.0, 0.0, xSpeed * 0.1, ySpeed * 0.1);
     double mXSpeed = std::sin(yaw * (M_PI / 180.0f) + mMovementDirection) * mMovementSpeed;
     double mYSpeed = std::cos(yaw * (M_PI / 180.0f) + mMovementDirection) * mMovementSpeed;
     cRuntimeCursorX = std::clamp(cRuntimeCursorX + mXSpeed, -1.0, 1.0);

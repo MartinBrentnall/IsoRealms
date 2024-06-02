@@ -185,10 +185,10 @@
 
               {"id": "MoveCursorX", "mappings": [{"type": "Axis", "axis": 0, "deadZone": 0.15259000658988953}]},
               {"id": "MoveCursorY", "mappings": [{"type": "Axis", "axis": 1, "deadZone": 0.15259000658988953}]},
-              {"id": "RotateViewYaw", "mappings": [{"type": "Axis", "axis": 2, "deadZone": 0.15259000658988953}]},
-              {"id": "RotateViewPitch", "mappings": [{"type": "Axis", "axis": 3, "deadZone": 0.15259000658988953}]},
-              {"id": "MoveViewIn", "mappings": [{"type": "Axis", "axis": 4, "deadZone": 0.15259000658988953}]},
-              {"id": "MoveViewOut", "mappings": [{"type": "Axis", "axis": 4, "deadZone": 0.15259000658988953}]}
+              {"id": "RotateViewYaw", "mappings": [{"type": "Axis", "axis": 4, "deadZone": 0.15259000658988953}]},
+              {"id": "RotateViewPitch", "mappings": [{"type": "Axis", "axis": 5, "deadZone": 0.15259000658988953}]},
+              {"id": "MoveViewIn", "mappings": [{"type": "Axis", "axis": 3, "deadZone": 0.15259000658988953}]},
+              {"id": "MoveViewOut", "mappings": [{"type": "Axis", "axis": 2, "deadZone": 0.15259000658988953}]}
 
 
             ]
@@ -259,126 +259,6 @@
                 "onBecomingFalse": {
                   "key": "Literal"
                 }
-              },
-              {
-                "id": "Cancel",
-                "value": {
-                  "key": "Basics/DigitalInput/Cancel"
-                },
-                "onBecomingTrue": {
-                  "key": "Basics/Function/SignalEditor",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/SignalIDCancel"}}}
-                  ]
-                },
-                "onBecomingFalse": {
-                  "key": "Literal"
-                }
-              },
-              {
-                "id": "ConfigureTool",
-                "value": {
-                  "key": "Basics/DigitalInput/ConfigureTool"
-                },
-                "onBecomingTrue": {
-                  "key": "Basics/Function/SignalEditor",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/SignalIDConfigureTool"}}}
-                  ]
-                },
-                "onBecomingFalse": {
-                  "key": "Literal"
-                }
-              },
-              {
-                "id": "NextTheme",
-                "value": {
-                  "key": "Basics/DigitalInput/NextTheme"
-                },
-                "onBecomingTrue": {
-                  "key": "Basics/Function/SignalEditor",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/SignalIDNextTheme"}}}
-                  ]
-                },
-                "onBecomingFalse": {
-                  "key": "Literal"
-                }
-              },
-              {
-                "id": "NextTool",
-                "value": {
-                  "key": "Basics/DigitalInput/NextTool"
-                },
-                "onBecomingTrue": {
-                  "key": "Basics/Function/SignalEditor",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/SignalIDNextTool"}}}
-                  ]
-                },
-                "onBecomingFalse": {
-                  "key": "Literal"
-                }
-              },
-              {
-                "id": "PreviousTheme",
-                "value": {
-                  "key": "Basics/DigitalInput/PreviousTheme"
-                },
-                "onBecomingTrue": {
-                  "key": "Basics/Function/SignalEditor",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/SignalIDPreviousTheme"}}}
-                  ]
-                },
-                "onBecomingFalse": {
-                  "key": "Literal"
-                }
-              },
-              {
-                "id": "PreviousTool",
-                "value": {
-                  "key": "Basics/DigitalInput/PreviousTool"
-                },
-                "onBecomingTrue": {
-                  "key": "Basics/Function/SignalEditor",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/SignalIDPreviousTool"}}}
-                  ]
-                },
-                "onBecomingFalse": {
-                  "key": "Literal"
-                }
-              },
-              {
-                "id": "ToolMode",
-                "value": {
-                  "key": "Basics/DigitalInput/ToolMode"
-                },
-                "onBecomingTrue": {
-                  "key": "Basics/Function/SignalEditor",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/SignalIDToolMode"}}}
-                  ]
-                },
-                "onBecomingFalse": {
-                  "key": "Literal"
-                }
-              },
-              {
-                "id": "UseTool",
-                "value": {
-                  "key": "Basics/DigitalInput/UseTool"
-                },
-                "onBecomingTrue": {
-                  "key": "Basics/Function/SignalEditor",
-                  "bindings": [
-                    {"argument": "id", "to": {"key": ":Integer", "asset": {"key": "Basics/Integer/SignalIDUseTool"}}}
-                  ]
-                },
-                "onBecomingFalse": {
-                  "key": "Literal"
-                }
               }
             ]
           },
@@ -398,22 +278,23 @@
                   }
                 ]
               },
-              {"id": "MoveCursorBackward", "mappings": [{"type": "KeyDown", "key": "ArrowDown"},   {"type": "ButtonDown","button": 10}]},
-              {"id": "MoveCursorForward",  "mappings": [{"type": "KeyDown", "key": "ArrowUp"},     {"type": "ButtonDown","button": 10}]},
-              {"id": "MoveCursorLeft",     "mappings": [{"type": "KeyDown", "key": "ArrowLeft"},   {"type": "ButtonDown","button": 10}]},
-              {"id": "MoveCursorRight",    "mappings": [{"type": "KeyDown", "key": "ArrowRight"},  {"type": "ButtonDown","button": 10}]},
-              {"id": "MoveCursorDown",     "mappings": [{"type": "KeyDown", "key": "PageDown"},    {"type": "ButtonDown","button": 10}]},
-              {"id": "MoveCursorUp",       "mappings": [{"type": "KeyDown", "key": "PageUp"},      {"type": "ButtonDown","button": 10}]},
-              {"id": "MoveCursorFaster",   "mappings": [{"type": "KeyDown", "key": "LeftControl"}, {"type": "ButtonDown","button": 10}]},
-              {"id": "MoveCursorSlower",   "mappings": [{"type": "KeyDown", "key": "LeftShift"},   {"type": "ButtonDown","button": 10}]},
-              {"id": "PreviousTool",       "mappings": [{"type": "KeyDown", "key": "F1"},          {"type": "ButtonDown","button": 10}]},
-              {"id": "NextTool",           "mappings": [{"type": "KeyDown", "key": "F2"},          {"type": "ButtonDown","button": 10}]},
-              {"id": "UseTool",            "mappings": [{"type": "KeyDown", "key": "Space"},       {"type": "ButtonDown","button": 10}]},
-              {"id": "Cancel",             "mappings": [{"type": "KeyDown", "key": "Backspace"},   {"type": "ButtonDown","button": 10}]},
-              {"id": "ConfigureTool",      "mappings": [{"type": "KeyDown", "key": "F3"},          {"type": "ButtonDown","button": 10}]},
-              {"id": "ToolMode",           "mappings": [{"type": "KeyDown", "key": "Tab"},         {"type": "ButtonDown","button": 10}]},
-              {"id": "PreviousTheme",      "mappings": [{"type": "KeyDown", "key": "Home"},        {"type": "ButtonDown","button": 10}]},
-              {"id": "NextTheme",          "mappings": [{"type": "KeyDown", "key": "End"},         {"type": "ButtonDown","button": 10}]},
+              {"id": "MoveCursorBackward", "mappings": [{"type": "KeyDown", "key": "ArrowDown"}]},
+              {"id": "MoveCursorForward",  "mappings": [{"type": "KeyDown", "key": "ArrowUp"}]},
+              {"id": "MoveCursorLeft",     "mappings": [{"type": "KeyDown", "key": "ArrowLeft"}]},
+              {"id": "MoveCursorRight",    "mappings": [{"type": "KeyDown", "key": "ArrowRight"}]},
+              {"id": "MoveCursorDown",     "mappings": [{"type": "KeyDown", "key": "PageDown"},    {"type": "ButtonDown","button": 4}]},
+              {"id": "MoveCursorUp",       "mappings": [{"type": "KeyDown", "key": "PageUp"},      {"type": "ButtonDown","button": 5}]},
+              {"id": "MoveCursorFaster",   "mappings": [{"type": "KeyDown", "key": "LeftControl"}]},
+              {"id": "MoveCursorSlower",   "mappings": [{"type": "KeyDown", "key": "LeftShift"}]},
+              {"id": "PreviousTool",       "mappings": [{"type": "KeyDown", "key": "F1"},          {"type": "Hat","direction": "Left"}]},
+              {"id": "NextTool",           "mappings": [{"type": "KeyDown", "key": "F2"},          {"type": "Hat","direction": "Right"}]},
+              {"id": "UseTool",            "mappings": [{"type": "KeyDown", "key": "Space"},       {"type": "ButtonDown","button": 0}]},
+              {"id": "Cancel",             "mappings": [{"type": "KeyDown", "key": "Backspace"},   {"type": "ButtonDown","button": 1}]},
+              {"id": "ConfigureTool",      "mappings": [{"type": "KeyDown", "key": "F3"},          {"type": "ButtonDown","button": 2}]},
+              {"id": "ToolMode",           "mappings": [{"type": "KeyDown", "key": "Tab"},         {"type": "ButtonDown","button": 3}]},
+              {"id": "PreviousTheme",      "mappings": [{"type": "KeyDown", "key": "Home"},        {"type": "Hat","direction": "Down"}]},
+              {"id": "NextTheme",          "mappings": [{"type": "KeyDown", "key": "End"},         {"type": "Hat","direction": "Up"}]},
+              {"id": "EditorMenu",         "mappings": [{"type": "KeyDown", "key": "Escape"},      {"type": "ButtonDown","button": 9}]},
               {"id": "RotateView",         "mappings": [{"type": "MouseButtonDown", "button": "Left"}]},
               {"id": "MoveView",           "mappings": [{"type": "MouseButtonDown", "button": "Right"}]}
             ]
@@ -434,20 +315,6 @@
           {
             "type": "Function",
             "instances": [
-              {
-                "id": "SignalEditor",
-                "name": "SignalEditor",
-                "bindings": [],
-                "arguments": [
-                  {
-                    "name": "id",
-                    "defaultValue": {
-                      "key": "Literal"
-                    }
-                  }
-                ],
-                "code": "currentEditor:signal(id:getValue())"
-              },
               {
                 "id": "ReloadEditorControls",
                 "name": "ReloadEditorControls",
@@ -561,6 +428,12 @@
                     }
                   },
                   {
+                    "variable": "optionEditorMenu",
+                    "to": {
+                      "key": "UI/Menu/EditorControls/Action/EditorMenu"
+                    }
+                  },
+                  {
                     "variable": "inputMoveCursorForward",
                     "to": {
                       "key": "Basics/DigitalInput/MoveCursorForward"
@@ -667,10 +540,16 @@
                     "to": {
                       "key": "Basics/DigitalInput/RotateView"
                     }
+                  },
+                  {
+                    "variable": "inputEditorMenu",
+                    "to": {
+                      "key": "Basics/DigitalInput/EditorMenu"
+                    }
                   }
                 ],
                 "arguments": [],
-                "code": "optionMoveCursorForward:setValue(inputMoveCursorForward:getInputsString())\noptionMoveCursorBackward:setValue(inputMoveCursorBackward:getInputsString())\noptionMoveCursorLeft:setValue(inputMoveCursorLeft:getInputsString())\noptionMoveCursorRight:setValue(inputMoveCursorRight:getInputsString())\noptionMoveCursorUp:setValue(inputMoveCursorUp:getInputsString())\noptionMoveCursorDown:setValue(inputMoveCursorDown:getInputsString())\noptionMoveCursorFaster:setValue(inputMoveCursorFaster:getInputsString())\noptionMoveCursorSlower:setValue(inputMoveCursorSlower:getInputsString())\noptionPreviousTool:setValue(inputPreviousTool:getInputsString())\noptionNextTool:setValue(inputNextTool:getInputsString())\noptionUseTool:setValue(inputUseTool:getInputsString())\noptionCancel:setValue(inputCancel:getInputsString())\noptionConfigureTool:setValue(inputConfigureTool:getInputsString())\noptionToolMode:setValue(inputToolMode:getInputsString())\noptionPreviousTheme:setValue(inputPreviousTheme:getInputsString())\noptionNextTheme:setValue(inputNextTheme:getInputsString())\noptionMoveView:setValue(inputMoveView:getInputsString())\noptionRotateView:setValue(inputRotateView:getInputsString())"
+                "code": "optionMoveCursorForward:setValue(inputMoveCursorForward:getInputsString())\noptionMoveCursorBackward:setValue(inputMoveCursorBackward:getInputsString())\noptionMoveCursorLeft:setValue(inputMoveCursorLeft:getInputsString())\noptionMoveCursorRight:setValue(inputMoveCursorRight:getInputsString())\noptionMoveCursorUp:setValue(inputMoveCursorUp:getInputsString())\noptionMoveCursorDown:setValue(inputMoveCursorDown:getInputsString())\noptionMoveCursorFaster:setValue(inputMoveCursorFaster:getInputsString())\noptionMoveCursorSlower:setValue(inputMoveCursorSlower:getInputsString())\noptionPreviousTool:setValue(inputPreviousTool:getInputsString())\noptionNextTool:setValue(inputNextTool:getInputsString())\noptionUseTool:setValue(inputUseTool:getInputsString())\noptionCancel:setValue(inputCancel:getInputsString())\noptionConfigureTool:setValue(inputConfigureTool:getInputsString())\noptionToolMode:setValue(inputToolMode:getInputsString())\noptionPreviousTheme:setValue(inputPreviousTheme:getInputsString())\noptionNextTheme:setValue(inputNextTheme:getInputsString())\noptionMoveView:setValue(inputMoveView:getInputsString())\noptionRotateView:setValue(inputRotateView:getInputsString())\noptionEditorMenu:setValue(inputEditorMenu:getInputsString())"
               },
               {
                 "id": "Pause",
@@ -864,7 +743,15 @@
                   {"input": {"key": "Basics/DigitalInput/MoveView"}},
                   {"input": {"key": "Basics/DigitalInput/RotateView"}},
                   {"input": {"key": "Basics/DigitalInput/EndTest"}},
-                  {"input": {"key": "Basics/DigitalInput/Pause"}}
+                  {"input": {"key": "Basics/DigitalInput/Pause"}},
+                  {"input": {"key": "Basics/DigitalInput/EditorMenu"}},
+
+                  {"input": {"key": "Basics/AnalogueInput/MoveCursorX"}},
+                  {"input": {"key": "Basics/AnalogueInput/MoveCursorY"}},
+                  {"input": {"key": "Basics/AnalogueInput/RotateViewYaw"}},
+                  {"input": {"key": "Basics/AnalogueInput/RotateViewPitch"}},
+                  {"input": {"key": "Basics/AnalogueInput/MoveViewIn"}},
+                  {"input": {"key": "Basics/AnalogueInput/MoveViewOut"}}
                 ]
               },
               {
@@ -982,14 +869,14 @@
                         }
                       }
                     },
-                    {"variable": "signalIDCancel", "to": {"key": "Basics/Integer/SignalIDCancel"}},
-                    {"variable": "signalIDConfigureTool", "to": {"key": "Basics/Integer/SignalIDConfigureTool"}},
-                    {"variable": "signalIDNextTheme", "to": {"key": "Basics/Integer/SignalIDNextTheme"}},
-                    {"variable": "signalIDNextTool", "to": {"key": "Basics/Integer/SignalIDNextTool"}},
-                    {"variable": "signalIDPreviousTheme", "to": {"key": "Basics/Integer/SignalIDPreviousTheme"}},
-                    {"variable": "signalIDPreviousTool", "to": {"key": "Basics/Integer/SignalIDPreviousTool"}},
-                    {"variable": "signalIDToolMode", "to": {"key": "Basics/Integer/SignalIDToolMode"}},
-                    {"variable": "signalIDUseTool", "to": {"key": "Basics/Integer/SignalIDUseTool"}},
+                    {"variable": "digitalInputCancel", "to": {"key": ":Boolean", "asset": {"key": "Basics/DigitalInput/Cancel"}}},
+                    {"variable": "digitalInputConfigureTool", "to": {"key": ":Boolean", "asset": {"key": "Basics/DigitalInput/ConfigureTool"}}},
+                    {"variable": "digitalInputNextTheme", "to": {"key": ":Boolean", "asset": {"key": "Basics/DigitalInput/NextTheme"}}},
+                    {"variable": "digitalInputNextTool", "to": {"key": ":Boolean", "asset": {"key": "Basics/DigitalInput/NextTool"}}},
+                    {"variable": "digitalInputPreviousTheme", "to": {"key": ":Boolean", "asset": {"key": "Basics/DigitalInput/PreviousTheme"}}},
+                    {"variable": "digitalInputPreviousTool", "to": {"key": ":Boolean", "asset": {"key": "Basics/DigitalInput/PreviousTool"}}},
+                    {"variable": "digitalInputToolMode", "to": {"key": ":Boolean", "asset": {"key": "Basics/DigitalInput/ToolMode"}}},
+                    {"variable": "digitalInputUseTool", "to": {"key": ":Boolean", "asset": {"key": "Basics/DigitalInput/UseTool"}}},
 
                     {"variable": "digitalInputMoveCursorBackward", "to": {"key": ":Boolean", "asset": {"key": "Basics/DigitalInput/MoveCursorBackward"}}},
                     {"variable": "digitalInputMoveCursorDown", "to": {"key": ":Boolean", "asset": {"key": "Basics/DigitalInput/MoveCursorDown"}}},
@@ -1002,14 +889,26 @@
                     {"variable": "digitalInputMoveView", "to": {"key": ":Boolean", "asset": {"key": "Basics/DigitalInput/MoveView"}}},
                     {"variable": "digitalInputRotateView", "to": {"key": ":Boolean", "asset": {"key": "Basics/DigitalInput/RotateView"}}},
 
+                    {"variable": "digitalInputEditorMenu", "to": {"key": ":Boolean", "asset": {"key": "Basics/DigitalInput/EditorMenu"}}},
+
                     {"variable": "analogueInputMoveCursorX", "to": {"key": ":Float", "asset": {"key": "Basics/AnalogueInput/MoveCursorX"}}},
                     {"variable": "analogueInputMoveCursorY", "to": {"key": ":Float", "asset": {"key": "Basics/AnalogueInput/MoveCursorY"}}},
                     {"variable": "analogueInputMoveViewIn", "to": {"key": ":Float", "asset": {"key": "Basics/AnalogueInput/MoveViewIn"}}},
                     {"variable": "analogueInputMoveViewOut", "to": {"key": ":Float", "asset": {"key": "Basics/AnalogueInput/MoveViewOut"}}},
                     {"variable": "analogueInputRotateViewYaw", "to": {"key": ":Float", "asset": {"key": "Basics/AnalogueInput/RotateViewYaw"}}},
-                    {"variable": "analogueInputRotateViewPitch", "to": {"key": ":Float", "asset": {"key": "Basics/AnalogueInput/RotateViewPitch"}}}
+                    {"variable": "analogueInputRotateViewPitch", "to": {"key": ":Float", "asset": {"key": "Basics/AnalogueInput/RotateViewPitch"}}},
+
+                    { "variable": "exitAction",
+                      "to": {
+                        "key": ":Action",
+                        "asset": {
+                          "key": "Basics/Function/Pause",
+                          "bindings": []
+                        }
+                      }
+                    }
                   ],
-                  "code": "print(\"Get Editor...\")\neditable = project:getDefaultEditor()\ncurrentEditor = editable:createEditableScreen(project:getProject())\ncurrentEditor:setAppearance(font, 0.02)\ncurrentEditor:notifyVisible()\neditor:setScreen(currentEditor:screen())\ninput:setInputHandler(currentEditor:inputHandler())\nscreen:setScreen(noScreen)\nhasFocus = true\n\nprint(\"Set Signals...\")\nsignalIDCancel:setValue(       currentEditor:getSignalID(\"Cancel\"))\nsignalIDConfigureTool:setValue(currentEditor:getSignalID(\"ConfigureTool\"))\nsignalIDNextTheme:setValue(    currentEditor:getSignalID(\"NextTheme\"))\nsignalIDNextTool:setValue(     currentEditor:getSignalID(\"NextTool\"))\nsignalIDPreviousTheme:setValue(currentEditor:getSignalID(\"PreviousTheme\"))\nsignalIDPreviousTool:setValue( currentEditor:getSignalID(\"PreviousTool\"))\nsignalIDToolMode:setValue(     currentEditor:getSignalID(\"ToolMode\"))\nsignalIDUseTool:setValue(      currentEditor:getSignalID(\"UseTool\"))\n\nprint(\"Set Digital Inputs...\")\ncurrentEditor:setDigitalInput(\"MoveCursorBackward\", digitalInputMoveCursorBackward)\ncurrentEditor:setDigitalInput(\"MoveCursorDown\",     digitalInputMoveCursorDown)\ncurrentEditor:setDigitalInput(\"MoveCursorFaster\",   digitalInputMoveCursorFaster)\ncurrentEditor:setDigitalInput(\"MoveCursorForward\",  digitalInputMoveCursorForward)\ncurrentEditor:setDigitalInput(\"MoveCursorLeft\",     digitalInputMoveCursorLeft)\ncurrentEditor:setDigitalInput(\"MoveCursorRight\",    digitalInputMoveCursorRight)\ncurrentEditor:setDigitalInput(\"MoveCursorSlower\",   digitalInputMoveCursorSlower)\ncurrentEditor:setDigitalInput(\"MoveCursorUp\",       digitalInputMoveCursorUp)\ncurrentEditor:setDigitalInput(\"MoveView\",           digitalInputMoveView)\ncurrentEditor:setDigitalInput(\"RotateView\",         digitalInputRotateView)\n\nprint(\"Set Analogue Inputs...\")\ncurrentEditor:setAnalogueInput(\"MoveCursorX\",     analogueInputMoveCursorX)\ncurrentEditor:setAnalogueInput(\"MoveCursorY\",     analogueInputMoveCursorY)\ncurrentEditor:setAnalogueInput(\"MoveViewIn\",      analogueInputMoveViewIn)\ncurrentEditor:setAnalogueInput(\"MoveViewOut\",     analogueInputMoveViewOut)\ncurrentEditor:setAnalogueInput(\"RotateViewPitch\", analogueInputRotateViewPitch)\ncurrentEditor:setAnalogueInput(\"RotateViewYaw\",   analogueInputRotateViewYaw)\nprint(\"Done!!!\")"
+                  "code": "print(\"Get Editor...\")\neditable = project:getDefaultEditor()\ncurrentEditor = editable:createEditableScreen(project:getProject())\ncurrentEditor:setAppearance(font, 0.02)\ncurrentEditor:notifyVisible()\neditor:setScreen(currentEditor:screen())\ninput:setInputHandler(currentEditor:inputHandler())\nscreen:setScreen(noScreen)\nhasFocus = true\n\nprint(\"Set Digital Inputs...\")\ncurrentEditor:setDigitalInput(\"Cancel\",             digitalInputCancel)\ncurrentEditor:setDigitalInput(\"ConfigureTool\",      digitalInputConfigureTool)\ncurrentEditor:setDigitalInput(\"MoveCursorBackward\", digitalInputMoveCursorBackward)\ncurrentEditor:setDigitalInput(\"MoveCursorDown\",     digitalInputMoveCursorDown)\ncurrentEditor:setDigitalInput(\"MoveCursorFaster\",   digitalInputMoveCursorFaster)\ncurrentEditor:setDigitalInput(\"MoveCursorForward\",  digitalInputMoveCursorForward)\ncurrentEditor:setDigitalInput(\"MoveCursorLeft\",     digitalInputMoveCursorLeft)\ncurrentEditor:setDigitalInput(\"MoveCursorRight\",    digitalInputMoveCursorRight)\ncurrentEditor:setDigitalInput(\"MoveCursorSlower\",   digitalInputMoveCursorSlower)\ncurrentEditor:setDigitalInput(\"MoveCursorUp\",       digitalInputMoveCursorUp)\ncurrentEditor:setDigitalInput(\"MoveView\",           digitalInputMoveView)\ncurrentEditor:setDigitalInput(\"NextTheme\",          digitalInputNextTheme)\ncurrentEditor:setDigitalInput(\"NextTool\",           digitalInputNextTool)\ncurrentEditor:setDigitalInput(\"PreviousTheme\",      digitalInputPreviousTheme)\ncurrentEditor:setDigitalInput(\"PreviousTool\",       digitalInputPreviousTool)\ncurrentEditor:setDigitalInput(\"RotateView\",         digitalInputRotateView)\ncurrentEditor:setDigitalInput(\"ToolMode\",           digitalInputToolMode)\ncurrentEditor:setDigitalInput(\"UseTool\",            digitalInputUseTool)\ncurrentEditor:setDigitalInput(\"Exit\",               digitalInputEditorMenu)\n\nprint(\"Set Analogue Inputs...\")\ncurrentEditor:setAnalogueInput(\"MoveCursorX\",     analogueInputMoveCursorX)\ncurrentEditor:setAnalogueInput(\"MoveCursorY\",     analogueInputMoveCursorY)\ncurrentEditor:setAnalogueInput(\"MoveViewIn\",      analogueInputMoveViewIn)\ncurrentEditor:setAnalogueInput(\"MoveViewOut\",     analogueInputMoveViewOut)\ncurrentEditor:setAnalogueInput(\"RotateViewPitch\", analogueInputRotateViewPitch)\ncurrentEditor:setAnalogueInput(\"RotateViewYaw\",   analogueInputRotateViewYaw)\n\nprint(\"Set Exit Action...\")\ncurrentEditor:setExitAction(exitAction)\nprint(\"Done!!!\")"
                 },
                 "options": {
                   "key": "Literal"
@@ -1056,19 +955,6 @@
                   }
                 ]
               }
-            ]
-          },
-          {
-            "type": "Integer",
-            "instances": [
-              {"id": "SignalIDCancel"},
-              {"id": "SignalIDConfigureTool"},
-              {"id": "SignalIDNextTheme"},
-              {"id": "SignalIDNextTool"},
-              {"id": "SignalIDPreviousTheme"},
-              {"id": "SignalIDPreviousTool"},
-              {"id": "SignalIDToolMode"},
-              {"id": "SignalIDUseTool"}
             ]
           },
           {
@@ -2233,6 +2119,34 @@
                             "argument": "digitalInput",
                             "to": {
                               "key": "Basics/DigitalInput/RotateView"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "item": {
+                      "key": "Action",
+                      "id": "EditorMenu",
+                      "label": "Editor Menu",
+                      "onSelection": {
+                        "key": "Basics/Function/ConfigureInput",
+                        "bindings": [
+                          {
+                            "argument": "name",
+                            "to": {
+                              "key": ":String",
+                              "asset": {
+                                "key": "Literal",
+                                "value": "Configure Input: Editor Menu"
+                              }
+                            }
+                          },
+                          {
+                            "argument": "digitalInput",
+                            "to": {
+                              "key": "Basics/DigitalInput/EditorMenu"
                             }
                           }
                         ]

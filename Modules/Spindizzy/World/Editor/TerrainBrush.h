@@ -26,6 +26,8 @@
 #include "IsoRealms/Condition/ConditionElement.h"
 #include "IsoRealms/Literals.h"
 
+#include "Modules/Spindizzy/World/Editor/SignalInputID.h"
+
 namespace IsoRealms::Spindizzy {
   class TerrainType;
 
@@ -59,8 +61,9 @@ namespace IsoRealms::Spindizzy {
 
     float getHeight(float x, float y) const;
 
-    bool input(int id, double yaw);
-    void update(unsigned int milliseconds, double yaw);
+    bool input(SignalInputID id, double yaw);
+    bool isCursorLocked() const;
+    void update(unsigned int milliseconds, double yaw, double xSpeed, double ySpeed);
     bool isSplit() const;
 
     void stepWest();
@@ -81,8 +84,6 @@ namespace IsoRealms::Spindizzy {
     bool cRuntimeEditing;
     double cRuntimeCursorX;
     double cRuntimeCursorY;
-    double cRuntimeCursorXSpeed;
-    double cRuntimeCursorYSpeed;
     int cDefAnalogueSensitivity; // TODO: This should be global?
 
     bool lowerSelected();
