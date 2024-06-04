@@ -134,9 +134,13 @@ namespace IsoRealms::HighScore {
     std::size_t mExtensionPosition = mProjectName.find_last_of('.');
     std::string mHighScoreTablePath = (mUser ? "User/" : "Program/") + mProjectName.substr(0, mExtensionPosition) + "/HighScores.table";
     if (System::fileExists(mHighScoreTablePath, true)) {
-      JSONDocument mHighScoreTableDocument(mHighScoreTablePath, true);
-      JSONObject mHighScoreTableObject = mHighScoreTableDocument.getObject(JSON_HIGH_SCORE_TABLE);
-      readRecords(mHighScoreTableObject);
+      try {
+        JSONDocument mHighScoreTableDocument(mHighScoreTablePath, true);
+        JSONObject mHighScoreTableObject = mHighScoreTableDocument.getObject(JSON_HIGH_SCORE_TABLE);
+        readRecords(mHighScoreTableObject);
+      } catch (ParseException& e) {
+        std::cout << "WARNING: ScoreTable::reload: Failed to parse score table: " << std::endl << e.getMessage() << std::endl;
+      }
     }
   }
 

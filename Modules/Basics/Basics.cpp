@@ -86,7 +86,7 @@ namespace IsoRealms::Basics {
   const std::string Basics::JSON_MUSIC_VOLUME            = "musicVolume";
   const std::string Basics::JSON_SOUND_VOLUME            = "soundVolume";
 
-  const std::string Basics::GLOBAL_CONFIGURATION_FILE         = "Module_IsoRealms.xml";
+  const std::string Basics::GLOBAL_CONFIGURATION_FILE         = "Module_IsoRealms.json";
 
   float Basics::cSoundVolume = 1.0f;
   float Basics::cMusicVolume = 1.0f;

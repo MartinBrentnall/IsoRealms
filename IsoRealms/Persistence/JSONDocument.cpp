@@ -18,6 +18,8 @@
  */
 #include "JSONDocument.h"
 
+#include "IsoRealms/Utils.h"
+
 namespace IsoRealms {
   JSONDocument::JSONDocument() :
             cDocument(rapidjson::kObjectType) {
@@ -27,6 +29,9 @@ namespace IsoRealms {
     std::ifstream mInputStream = System::openInputStream(filename, user);
     rapidjson::BasicIStreamWrapper mInputStreamWrapper(mInputStream);
     cDocument.ParseStream(mInputStreamWrapper);
+    if (cDocument.HasParseError()) {
+      throw ParseException("JSONDocument::JSONDocument: Error parsing document \"" + filename + "\" (" + (user ? "User File" : "Program File") + "), error code " + Utils::toString(static_cast<int>(cDocument.GetParseError())));
+    }
   }
 
   JSONObject JSONDocument::addObject(const std::string& name) {

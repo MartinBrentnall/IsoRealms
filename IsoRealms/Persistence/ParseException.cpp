@@ -19,7 +19,7 @@
 #include "ParseException.h"
 
 namespace IsoRealms {
-  ParseException::ParseException(std::string message) {
+  ParseException::ParseException(const std::string& message) {
     cMessage = message;
     std::cout << "Constructed ParseException:" << std::endl;
     std::cout << message << std::endl;

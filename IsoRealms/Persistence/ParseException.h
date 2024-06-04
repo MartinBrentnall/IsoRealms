@@ -27,7 +27,7 @@ namespace IsoRealms {
     std::string cMessage;
 
     public:
-    ParseException(std::string);
+    ParseException(const std::string& message);
     std::string getMessage();
   };
 }
