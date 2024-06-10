@@ -125,8 +125,10 @@ namespace IsoRealms::Spindizzy {
     PickUp*     draw(PickUpType*     type, const WorldEditorCursorCell& cell, IScreen* screen);
     Player*     draw(PlayerType*     type, const LiteralVertex& location);
     Terrain*    draw(TerrainType*    type, const WorldEditorCursorCell& start, const WorldEditorCursorCell& end, int southWestHeight, int southEastHeight, int northWestHeight, int northEastHeight, bool alternativeSplit, bool steppedBase, bool negation, IScreen* screen);
-    Zone*       draw(ZoneType*       type, const WorldEditorCursorCell& start, const WorldEditorCursorCell& end, IScreen* screen);
+    Zone*       draw(ZoneType*       type, const WorldEditorCursorCell& start, const WorldEditorCursorCell& end, IScreen* screen, Zone* clone);
     ZoneObject* draw(ZoneObjectType* type);
+
+    Zone* copy(Zone* zone, const WorldEditorCursorCell& cell, IScreen* screen);
     
     // Object erasure functions (used for editing).
     void remove(Zone* zone);
@@ -141,7 +143,7 @@ namespace IsoRealms::Spindizzy {
     void removeAll(ZoneObjectType* type);
 
     // Simple drawing interface.
-    Zone* getOrDrawZone(const WorldEditorCursorCell& cell, IScreen* screen);
+    Zone* getOrDrawZone(const WorldEditorCursorCell& cell, IScreen* screen, Zone* clone);
 
     // General editing functions.
     void updateEditing(unsigned int milliseconds);

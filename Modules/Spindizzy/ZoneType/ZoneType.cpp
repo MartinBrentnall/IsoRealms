@@ -158,7 +158,7 @@ namespace IsoRealms::Spindizzy {
             cPinnedLocation = cEditor->getCursorCell();
           }
         } else {
-          Zone* mZone = cEditor->getWorld()->draw(&cParent, cPinnedLocation, cEditor->getCursorCell(), cEditor);
+          Zone* mZone = cEditor->getWorld()->draw(&cParent, cPinnedLocation, cEditor->getCursorCell(), cEditor, nullptr);
           if (mZone != nullptr) {
             mZone->registerView(cEditor);
             cDrawing = false;

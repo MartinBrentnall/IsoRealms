@@ -46,6 +46,7 @@ namespace IsoRealms::Spindizzy {
     
     // Constructors.
     Lift(Zone& zone, LiftType* type, int x, int y, int z, int bottom, int top);
+    Lift(Zone& zone, Lift& lift, int x, int y, int z);
     Lift(Zone& zone, JSONObject object);
 
     // Interface for use by parent zone.

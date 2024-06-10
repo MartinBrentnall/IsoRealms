@@ -244,7 +244,7 @@ namespace IsoRealms::Spindizzy {
   void TerrainType::Pen::draw() {
     if (!cEditor->getTerrainBrush().isEditing()) {
       if (cPinnedZone == nullptr) {
-        cPinnedZone = cEditor->getWorld()->getOrDrawZone(cEditor->getCursorCell(), cEditor);
+        cPinnedZone = cEditor->getWorld()->getOrDrawZone(cEditor->getCursorCell(), cEditor, nullptr);
         cPinnedLocation = cEditor->getCursorCell();
       } else {
         TerrainBrush& mTerrainBrush = cEditor->getTerrainBrush();

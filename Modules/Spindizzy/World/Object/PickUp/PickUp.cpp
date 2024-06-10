@@ -41,6 +41,17 @@ namespace IsoRealms::Spindizzy {
     reset();
   }
 
+  PickUp::PickUp(Zone& zone, PickUp& pickUp, int x, int y, int z) :
+            cDefZone(zone),
+            cDefType(pickUp.cDefType),
+            cDefModel(cDefType->createModel()),
+            cDefX(pickUp.cDefX + x),
+            cDefY(pickUp.cDefY + y),
+            cDefZ(pickUp.cDefZ + z),
+            cLuaBinding(zone.getWorld()->getSpindizzy()->getProject(), this) {
+    reset();
+  }
+
   PickUp::PickUp(Zone& zone, JSONObject object) :
             cDefZone(zone),
             cDefType(nullptr),

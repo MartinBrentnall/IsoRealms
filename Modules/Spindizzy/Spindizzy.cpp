@@ -527,6 +527,7 @@ namespace IsoRealms::Spindizzy {
     }
     add(&cToolDelete,     TOOL_DELETE);
     add(&cToolProperties, TOOL_PROPERTIES);
+    add(&cToolZone,       TOOL_ZONE);
   }
   
   void Spindizzy::unregisterAssets(IAssetRemover* remover, IAssets* releaser) {
@@ -729,6 +730,7 @@ namespace IsoRealms::Spindizzy {
   
   const std::string Spindizzy::TOOL_DELETE     = "DeleteTool";
   const std::string Spindizzy::TOOL_PROPERTIES = "PropertiesTool";
+  const std::string Spindizzy::TOOL_ZONE       = "ZoneTool";
     
   const std::string Spindizzy::CAMERA_GAMEPLAY     = "Gameplay";
   const std::string Spindizzy::CAMERA_LINKED       = "Linked";

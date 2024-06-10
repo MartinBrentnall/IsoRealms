@@ -51,6 +51,23 @@ namespace IsoRealms::Spindizzy {
     reset();
   }
 
+  Lift::Lift(Zone& zone, Lift& lift, int x, int y, int z) :
+            cDefZone(zone),
+            cDefType(lift.cDefType),
+            cDefModel(cDefType->createModel()),
+            cDefX(lift.cDefX + x),
+            cDefY(lift.cDefY + y),
+            cDefZ(lift.cDefZ + z),
+            cDefTop(lift.cDefTop + z),
+            cDefBottom(lift.cDefBottom + z),
+            cDefTopPause(lift.cDefTopPause),
+            cDefBottomPause(lift.cDefBottomPause),
+            cDefSpeedUp(lift.cDefSpeedUp),
+            cDefSpeedDown(lift.cDefSpeedDown),
+            cSurface(*this) {
+    reset();
+  }
+
   Lift::Lift(Zone& zone, JSONObject object) :
             cDefZone(zone),
             cDefType(nullptr),

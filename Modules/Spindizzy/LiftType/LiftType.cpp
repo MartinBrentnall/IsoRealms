@@ -221,7 +221,7 @@ namespace IsoRealms::Spindizzy {
   void LiftType::Pen::draw() {
     WorldEditorCursorCell mCursorCell = cEditor->getCursorCell();
     if (cPinnedZone == nullptr) {
-      cPinnedZone = cEditor->getWorld()->getOrDrawZone(mCursorCell, cEditor);
+      cPinnedZone = cEditor->getWorld()->getOrDrawZone(mCursorCell, cEditor, nullptr);
       cPinnedLocation = mCursorCell;
     } else if (!cPinnedRange.has_value()) {
       cPinnedRange = mCursorCell.cDefZ;

@@ -80,6 +80,7 @@
 #include "Top/Top.h"
 #include "World/Editor/DeleteTool.h"
 #include "World/Editor/PropertiesTool.h"
+#include "World/Editor/ZoneTool.h"
 #include "World/World.h"
 #include "WorldView/WorldView.h"
 #include "ZoneObjectType/ZoneObjectType.h"
@@ -375,6 +376,7 @@ namespace IsoRealms::Spindizzy {
     // Fixed tool names.
     static const std::string TOOL_DELETE;
     static const std::string TOOL_PROPERTIES;
+    static const std::string TOOL_ZONE;
 
     // Type constants.
     static const std::string CAMERA_GAMEPLAY;
@@ -491,6 +493,7 @@ namespace IsoRealms::Spindizzy {
     // Editing data.
     DeleteTool     cToolDelete;
     PropertiesTool cToolProperties;
+    ZoneTool       cToolZone;
 
     // World editor configuration.
     ThemeSet* cDefaultThemeSet; // TODO: Set to nullptr when the ThemeSet is removed.

@@ -41,7 +41,7 @@ namespace IsoRealms::Spindizzy {
   const std::string Zone::JSON_Y         = "y";
   const std::string Zone::JSON_Z         = "z";
 
-  Zone::Zone(World& world, ZoneType* type, int xStart, int yStart, int zStart, int xEnd, int yEnd, int zEnd) :
+  Zone::Zone(World& world, ZoneType* type, int xStart, int yStart, int zStart, int xEnd, int yEnd, int zEnd, Zone* clone) :
             cDefWorld(world),
             cDefType(type),
             cDefStartX(std::min(xStart, xEnd)),
@@ -50,9 +50,29 @@ namespace IsoRealms::Spindizzy {
             cDefEndY(  std::max(yStart, yEnd)),
             cDefStartZ(std::min(zStart, zEnd)),
             cDefEndZ(  std::max(zStart, zEnd)),
-            cDefThemeSet(cDefWorld.getSpindizzy()->getDefaultThemeSet()),
-            cDefTheme(cDefThemeSet->getDefaultTheme()),
-            cDefVisited(false) {
+            cDefThemeSet(clone != nullptr ? clone->cDefThemeSet : cDefWorld.getSpindizzy()->getDefaultThemeSet()),
+            cDefTheme(clone != nullptr ? clone->cDefTheme : cDefThemeSet->getDefaultTheme()),
+            cDefVisited(clone != nullptr ? clone->cDefVisited : false) {
+    if (clone != nullptr) {
+      int mXDifference = cDefStartX - clone->cDefStartX;
+      int mYDifference = cDefStartY - clone->cDefStartY;
+      int mZDifference = cDefStartZ - clone->cDefStartZ;
+
+      for (std::unique_ptr<Alien>& mAlien : clone->cDefAliens) {
+        cDefAliens.emplace_back(std::make_unique<Alien>(*this, *mAlien.get(), mXDifference, mYDifference, mZDifference));
+      }
+      for (std::unique_ptr<Lift>& mLift : clone->cDefLifts) {
+        cDefLifts.emplace_back(std::make_unique<Lift>(*this, *mLift.get(), mXDifference, mYDifference, mZDifference));
+      }
+      for (std::unique_ptr<PickUp>& mPickUp : clone->cDefPickUps) {
+        cDefPickUps.emplace_back(std::make_unique<PickUp>(*this, *mPickUp.get(), mXDifference, mYDifference, mZDifference));
+      }
+      for (std::unique_ptr<Terrain>& mTerrain : clone->cDefTerrain) {
+        cDefTerrain.emplace_back(std::make_unique<Terrain>(*this, *mTerrain.get(), mXDifference, mYDifference, mZDifference));
+      }
+      // TODO: Zone Objects
+    }
+
     reset();
   }
 
@@ -442,6 +462,11 @@ namespace IsoRealms::Spindizzy {
     cDefThemeSet->applyDefaultTheme();
   }
 
+  void Zone::renderSelectionHighlight() const {
+    glColor4f(0.5f, 0.0f, 1.0f, 0.5f);
+    Utils::renderVolumeCuboid(cDefStartX - 0.5f, cDefEndX + 0.5f, cDefStartY - 0.5f, cDefEndY + 0.5f, cDefStartZ * 0.5f, (cDefEndZ + 2.0f) * 0.5f);
+  }
+
   std::vector<std::unique_ptr<IVisualElement>> Zone::getStaticVisuals() const {
     std::vector<std::unique_ptr<IVisualElement>> mZoneVisuals;
 //    mZoneVisuals.push_back(this);
@@ -829,7 +854,7 @@ namespace IsoRealms::Spindizzy {
         select(mAlien.get());
       }
     }
-    for (std::unique_ptr<PickUp>& mPickUp  : cDefPickUps) {
+    for (std::unique_ptr<PickUp>& mPickUp : cDefPickUps) {
       if ((start == nullptr || !mPickUp->contains(static_cast<const LiteralVertex&>(*start))) && mPickUp->contains(static_cast<const LiteralVertex&>(end))) {
         select(mPickUp.get());
       }

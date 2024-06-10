@@ -480,7 +480,7 @@ namespace IsoRealms::Spindizzy {
   }  
 
   Alien* World::draw(AlienType* type, const WorldEditorCursorCell& cell, IScreen* screen) {
-    Zone* mZone = getOrDrawZone(cell, screen);
+    Zone* mZone = getOrDrawZone(cell, screen, nullptr);
     if (mZone != nullptr) {
       Alien* mAlien = mZone->draw(type, cell);
       if (mZone->empty()) {
@@ -492,7 +492,7 @@ namespace IsoRealms::Spindizzy {
   }
   
   Lift* World::draw(LiftType* type, const WorldEditorCursorCell& cell, int bottomRange, int topRange, IScreen* screen) {
-    Zone* mZone = getOrDrawZone(cell, screen);
+    Zone* mZone = getOrDrawZone(cell, screen, nullptr);
     if (mZone != nullptr) {
       Lift* mLift = mZone->draw(type, cell, bottomRange, topRange);
       if (mZone->empty()) {
@@ -504,7 +504,7 @@ namespace IsoRealms::Spindizzy {
   }
   
   PickUp* World::draw(PickUpType* type, const WorldEditorCursorCell& cell, IScreen* screen) {
-    Zone* mZone = getOrDrawZone(cell, screen);
+    Zone* mZone = getOrDrawZone(cell, screen, nullptr);
     if (mZone != nullptr) {
       PickUp* mPickUp = mZone->draw(type, cell);
       if (mZone->empty()) {
@@ -528,7 +528,7 @@ namespace IsoRealms::Spindizzy {
   }
   
   Terrain* World::draw(TerrainType* type, const WorldEditorCursorCell& start, const WorldEditorCursorCell& end, int southWestHeight, int southEastHeight, int northWestHeight, int northEastHeight, bool alternativeSplit, bool steppedBase, bool negation, IScreen* screen) {
-    Zone* mZone = getOrDrawZone(start, screen);
+    Zone* mZone = getOrDrawZone(start, screen, nullptr);
     if (mZone != nullptr) {
       Terrain* mTerrain = mZone->draw(type, start, end, southWestHeight, southEastHeight, northWestHeight, northEastHeight, alternativeSplit, steppedBase, negation);
       if (mZone->empty()) {
@@ -539,9 +539,9 @@ namespace IsoRealms::Spindizzy {
     return nullptr;
   }
   
-  Zone* World::draw(ZoneType* type, const WorldEditorCursorCell& start, const WorldEditorCursorCell& end, IScreen* screen) {
+  Zone* World::draw(ZoneType* type, const WorldEditorCursorCell& start, const WorldEditorCursorCell& end, IScreen* screen, Zone* clone) {
     if (!intersectsZone(start.cDefX, start.cDefY, start.cDefZ, end.cDefX, end.cDefY, end.cDefZ)) {
-      Zone* mNewZone = cDefZones.emplace_back(std::make_unique<Zone>(*this, type, start.cDefX, start.cDefY, start.cDefZ, end.cDefX, end.cDefY, end.cDefZ)).get();
+      Zone* mNewZone = cDefZones.emplace_back(std::make_unique<Zone>(*this, type, start.cDefX, start.cDefY, start.cDefZ, end.cDefX, end.cDefY, end.cDefZ, clone)).get();
       mNewZone->registerView(screen);
       mNewZone->initialiseObjects();
       mNewZone->initialiseTerrain();
@@ -553,6 +553,10 @@ namespace IsoRealms::Spindizzy {
 
   ZoneObject* World::draw(ZoneObjectType* type) {
     return nullptr; // TODO: Implement this.
+  }
+
+  Zone* World::copy(Zone* zone, const WorldEditorCursorCell& cell, IScreen* screen) {
+    return getOrDrawZone(cell, screen, zone);
   }
 
   void World::remove(Zone* zone) {
@@ -608,7 +612,7 @@ namespace IsoRealms::Spindizzy {
     }
   }
 
-  Zone* World::getOrDrawZone(const WorldEditorCursorCell& cell, IScreen* screen) {
+  Zone* World::getOrDrawZone(const WorldEditorCursorCell& cell, IScreen* screen, Zone* clone) {
     Zone* mZone = getZone(cell);
     if (mZone == nullptr) {
       ZoneType* mZoneType = cDefSpindizzy->getAutomaticZoneManagementType();
@@ -622,7 +626,7 @@ namespace IsoRealms::Spindizzy {
         int mYEnd   = mYStart + (mAutomaticYSize - 1);
         int mZStart = (std::floor(cell.cDefZ / static_cast<float>(mAutomaticZSize))) * mAutomaticZSize;
         int mZEnd   = mZStart + (mAutomaticZSize - 1);
-        mZone = draw(mZoneType, WorldEditorCursorCell(mXStart, mYStart, mZStart), WorldEditorCursorCell(mXEnd, mYEnd, mZEnd), screen);
+        mZone = draw(mZoneType, WorldEditorCursorCell(mXStart, mYStart, mZStart), WorldEditorCursorCell(mXEnd, mYEnd, mZEnd), screen, clone);
       }
     }
     return mZone;

@@ -89,6 +89,8 @@ namespace IsoRealms::Spindizzy {
      */
     Terrain(Zone& zone, TerrainType* type, int startX, int startY, int startZ, int endX, int endY, int endZ, int southWestHeight, int southEastHeight, int northWestHeight, int northEastHeight, bool alternativeSplit, bool steppedBottom, bool addition);
 
+    Terrain(Zone& zone, Terrain& terrain, int x, int y, int z);
+
     /**
      * Construct terrain by reading data from the specified JSONObject.
      *

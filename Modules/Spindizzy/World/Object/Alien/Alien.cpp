@@ -42,6 +42,19 @@ namespace IsoRealms::Spindizzy {
     reset();
   }
 
+  Alien::Alien(Zone& zone, Alien& alien, int x, int y, int z) :
+            cDefZone(zone),
+            cDefType(alien.cDefType),
+            cDefMovementHandler(cDefZone.getWorld()->getMovementHandler(cDefType)),
+            cDefModel(cDefType->createModel()),
+            cDefX(alien.cDefX + x),
+            cDefY(alien.cDefY + y),
+            cDefZ(alien.cDefZ + z),
+            cDefSurfaceOutsideHomeZone(&cDefZone, cDefZ),
+            cRuntimePhysicsObject(*zone.getWorld()->getSpindizzy(), this) {
+    reset();
+  }
+
   Alien::Alien(Zone& zone, JSONObject object) :
             cDefZone(zone),
             cDefType(nullptr),

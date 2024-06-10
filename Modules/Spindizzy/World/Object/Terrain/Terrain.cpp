@@ -115,6 +115,22 @@ namespace IsoRealms::Spindizzy {
     cDefZone.getWorld()->flagTerrainForInitialisation(cDefStartX - 1, cDefEndX + 1, cDefStartY - 1, cDefEndY + 1);
   }
 
+  Terrain::Terrain(Zone& zone, Terrain& terrain, int x, int y, int z) :
+            cDefZone(zone),
+            cDefType(terrain.cDefType),
+            cDefStartX(terrain.cDefStartX + x),
+            cDefStartY(terrain.cDefStartY + y),
+            cDefStartZ(terrain.cDefStartZ + z),
+            cDefEndX(terrain.cDefEndX + x),
+            cDefEndY(terrain.cDefEndY + y),
+            cDefEndZ(terrain.cDefEndZ + z),
+            cDefCornerHeight{{terrain.cDefCornerHeight[0][0], terrain.cDefCornerHeight[0][1]},
+                             {terrain.cDefCornerHeight[1][0], terrain.cDefCornerHeight[1][1]}},
+            cDefFlags(terrain.cDefFlags) {
+    cDefZone.getWorld()->registerTerrain(this, true, true);
+    cDefZone.getWorld()->flagTerrainForInitialisation(cDefStartX - 1, cDefEndX + 1, cDefStartY - 1, cDefEndY + 1);
+  }
+
   void Terrain::save(JSONObject object, int originX, int originY, int originZ) {
     object.addString(JSON_TYPE, cDefZone.getWorld()->getSpindizzy()->getID(cDefType));
     object.addString(JSON_BEHAVIOUR,         (cDefFlags & FLAG_BEHAVIOUR_MASK) ==  FLAG_INVISIBLE                   ? BEHAVIOUR_INVISIBLE

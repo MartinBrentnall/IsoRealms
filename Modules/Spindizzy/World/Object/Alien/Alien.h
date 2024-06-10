@@ -50,6 +50,7 @@ namespace IsoRealms::Spindizzy {
     
     // Constructors.
     Alien(Zone& zone, AlienType* type, int x, int y, int z);
+    Alien(Zone& zone, Alien& alien, int x, int y, int z);
     Alien(Zone& zone, JSONObject object);
 
     // Interface for use by parent zone.

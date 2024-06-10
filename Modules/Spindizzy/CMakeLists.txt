@@ -105,6 +105,7 @@ add_library(Spindizzy MODULE
   World/Editor/PropertiesTool.cpp
   World/Editor/TerrainBrush.cpp
   World/Editor/WorldEditor.cpp
+  World/Editor/ZoneTool.cpp
   World/Object/Alien/Alien.cpp
   World/Object/Lift/Lift.cpp
   World/Object/PickUp/PickUp.cpp

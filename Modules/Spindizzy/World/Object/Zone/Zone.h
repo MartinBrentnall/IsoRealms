@@ -50,8 +50,10 @@ namespace IsoRealms::Spindizzy {
   class Zone : public IBoundary,
                public IVisualElement {
     public:
-    Zone(World& world, ZoneType* type, int xStart, int yStart, int zStart, int xEnd, int yEnd, int zEnd);
+    Zone(World& world, ZoneType* type, int xStart, int yStart, int zStart, int xEnd, int yEnd, int zEnd, Zone* clone);
     Zone(World& world, JSONObject object);
+
+    void copy(Zone* zone);
 
     void registerAssets();
     void unregisterAssets();
@@ -115,6 +117,7 @@ namespace IsoRealms::Spindizzy {
     void initialiseTerrain();
     void updateDisplayList();
     void renderEditing(const IScreen* screen) const;
+    void renderSelectionHighlight() const;
     std::vector<std::unique_ptr<IVisualElement>> getStaticVisuals() const;
     void renderRuntime(const IScreen* screen) const;
     void updateEditing(unsigned int);
