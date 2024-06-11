@@ -875,5 +875,8 @@ namespace IsoRealms::Spindizzy {
 
   Zone::~Zone() {
     cDefWorld.unregisterBoundary(cDefType, this);
+    while (!cDefTerrain.empty()) {
+      cDefTerrain[0]->remove();
+    }
   }
 }

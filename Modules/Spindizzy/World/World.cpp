@@ -561,6 +561,7 @@ namespace IsoRealms::Spindizzy {
 
   void World::remove(Zone* zone) {
     cDefSpindizzy->removed(zone);
+    cRuntimeZonesToInitialise.erase(zone);
     Utils::removeElementUnique(cDefZones, zone);
     updateBounds();
   }
