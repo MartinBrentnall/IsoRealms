@@ -26,6 +26,13 @@
 namespace IsoRealms::Spindizzy {
   class ZoneTool : public IWorldEditorTool {
     public:
+    enum class Type {
+      COPY,
+      MOVE,
+      DELETE
+    };
+
+    ZoneTool(Type type);
 
     /*******************************\
      * Implements IWorldEditorTool *
@@ -60,6 +67,9 @@ namespace IsoRealms::Spindizzy {
       Zone* cHoverZone;
       Zone* cSelectedZone;
     };
+
+    // Definition data.
+    Type cDefType;
 
     // Editing data.
     std::vector<std::unique_ptr<Instance>> cInstances; /// Active instances.

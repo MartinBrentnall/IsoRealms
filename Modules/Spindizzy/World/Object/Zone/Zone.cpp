@@ -463,8 +463,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   void Zone::renderSelectionHighlight() const {
-    glColor4f(0.5f, 0.0f, 1.0f, 0.5f);
-    Utils::renderVolumeCuboid(cDefStartX - 0.5f, cDefEndX + 0.5f, cDefStartY - 0.5f, cDefEndY + 0.5f, cDefStartZ * 0.5f, (cDefEndZ + 2.0f) * 0.5f);
+    Utils::renderVolumeCuboid(cDefStartX - 0.501f, cDefEndX + 0.501f, cDefStartY - 0.501f, cDefEndY + 0.501f, (cDefStartZ - 1.0f) * 0.5f, (cDefEndZ + 2.0f) * 0.5f);
   }
 
   std::vector<std::unique_ptr<IVisualElement>> Zone::getStaticVisuals() const {

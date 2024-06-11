@@ -3233,7 +3233,17 @@
             },
             {
               "editorTool": {
-                "key": "ZoneTool"
+                "key": "ZoneCopyTool"
+              }
+            },
+            {
+              "editorTool": {
+                "key": "ZoneMoveTool"
+              }
+            },
+            {
+              "editorTool": {
+                "key": "ZoneDeleteTool"
               }
             },
             {

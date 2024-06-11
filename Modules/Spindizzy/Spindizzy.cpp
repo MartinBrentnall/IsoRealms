@@ -83,6 +83,9 @@ namespace IsoRealms::Spindizzy {
                     cRuntimeParameterZone(project, nullptr),
                     cToolDelete(),
                     cToolProperties(),
+                    cToolCopyZone(ZoneTool::Type::COPY),
+                    cToolMoveZone(ZoneTool::Type::MOVE),
+                    cToolDeleteZone(ZoneTool::Type::DELETE),
                     cDefaultThemeSet(nullptr),
                     cDefaultWorldEditorTool(this),
                     cAutomaticZoneManagementType(nullptr),
@@ -527,7 +530,9 @@ namespace IsoRealms::Spindizzy {
     }
     add(&cToolDelete,     TOOL_DELETE);
     add(&cToolProperties, TOOL_PROPERTIES);
-    add(&cToolZone,       TOOL_ZONE);
+    add(&cToolCopyZone,   TOOL_COPY_ZONE);
+    add(&cToolMoveZone,   TOOL_MOVE_ZONE);
+    add(&cToolDeleteZone, TOOL_DELETE_ZONE);
   }
   
   void Spindizzy::unregisterAssets(IAssetRemover* remover, IAssets* releaser) {
@@ -728,10 +733,12 @@ namespace IsoRealms::Spindizzy {
   const std::string Spindizzy::RESOURCE_TYPE_ZONE        = "Zone";
   const std::string Spindizzy::RESOURCE_TYPE_ZONE_OBJECT = "ZoneObject";
   
-  const std::string Spindizzy::TOOL_DELETE     = "DeleteTool";
-  const std::string Spindizzy::TOOL_PROPERTIES = "PropertiesTool";
-  const std::string Spindizzy::TOOL_ZONE       = "ZoneTool";
-    
+  const std::string Spindizzy::TOOL_DELETE      = "DeleteTool";
+  const std::string Spindizzy::TOOL_PROPERTIES  = "PropertiesTool";
+  const std::string Spindizzy::TOOL_COPY_ZONE   = "ZoneCopyTool";
+  const std::string Spindizzy::TOOL_MOVE_ZONE   = "ZoneMoveTool";
+  const std::string Spindizzy::TOOL_DELETE_ZONE = "ZoneDeleteTool";
+
   const std::string Spindizzy::CAMERA_GAMEPLAY     = "Gameplay";
   const std::string Spindizzy::CAMERA_LINKED       = "Linked";
   const std::string Spindizzy::CAMERA_OVERVIEW     = "Overview";

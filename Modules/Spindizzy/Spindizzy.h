@@ -376,7 +376,9 @@ namespace IsoRealms::Spindizzy {
     // Fixed tool names.
     static const std::string TOOL_DELETE;
     static const std::string TOOL_PROPERTIES;
-    static const std::string TOOL_ZONE;
+    static const std::string TOOL_COPY_ZONE;
+    static const std::string TOOL_MOVE_ZONE;
+    static const std::string TOOL_DELETE_ZONE;
 
     // Type constants.
     static const std::string CAMERA_GAMEPLAY;
@@ -493,7 +495,9 @@ namespace IsoRealms::Spindizzy {
     // Editing data.
     DeleteTool     cToolDelete;
     PropertiesTool cToolProperties;
-    ZoneTool       cToolZone;
+    ZoneTool       cToolCopyZone;
+    ZoneTool       cToolMoveZone;
+    ZoneTool       cToolDeleteZone;
 
     // World editor configuration.
     ThemeSet* cDefaultThemeSet; // TODO: Set to nullptr when the ThemeSet is removed.

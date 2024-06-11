@@ -24,6 +24,10 @@
 #include "Modules/Spindizzy/World/World.h"
 
 namespace IsoRealms::Spindizzy {
+  ZoneTool::ZoneTool(Type type) :
+          cDefType(type) {
+  }
+
   IWorldEditorToolInstance* ZoneTool::createToolInstance(WorldEditor* editor) {
     return cInstances.emplace_back(std::make_unique<Instance>(*this, editor)).get();
   }
@@ -47,9 +51,20 @@ namespace IsoRealms::Spindizzy {
     switch (id) {
       case SignalInputID::USE_TOOL: {
         if (cHoverZone != nullptr) {
-          cSelectedZone = cHoverZone;
+          if (cParent.cDefType == Type::DELETE) {
+            cEditor->getWorld()->remove(cHoverZone);
+            cHoverZone = nullptr;
+          } else {
+            cSelectedZone = cHoverZone;
+          }
         } else if (cSelectedZone != nullptr) {
-          cEditor->getWorld()->copy(cSelectedZone, cEditor->getCursorCell(), cEditor);
+          if (cParent.cDefType != Type::DELETE) {
+            cEditor->getWorld()->copy(cSelectedZone, cEditor->getCursorCell(), cEditor);
+            if (cParent.cDefType == Type::MOVE) {
+              cEditor->getWorld()->remove(cSelectedZone);
+              cSelectedZone = nullptr;
+            }
+          }
         }
         return true;
       }
@@ -87,11 +102,20 @@ namespace IsoRealms::Spindizzy {
   }
 
   void ZoneTool::Instance::renderEditingPreview() const {
+    glEnable(GL_BLEND);
+    glAlphaFunc(GL_GREATER, 0.1f);
+    glEnable(GL_ALPHA_TEST);
     if (cSelectedZone != nullptr) {
-      glEnable(GL_BLEND);
-      glAlphaFunc(GL_GREATER, 0.1f);
-      glEnable(GL_ALPHA_TEST);
+      glColor4f(0.0f, 1.0f, 1.0f, 0.5f);
       cSelectedZone->renderSelectionHighlight();
+    }
+    if (cHoverZone != nullptr && cHoverZone != cSelectedZone) {
+      if (cParent.cDefType == Type::DELETE) {
+        glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
+      } else {
+        glColor4f(1.0f, 1.0f, 0.0f, 0.5f);
+      }
+      cHoverZone->renderSelectionHighlight();
     }
 
     glTranslatef(cEditor->getCursorX(), cEditor->getCursorY(), cEditor->getCursorZ() * 0.5f);
@@ -106,16 +130,48 @@ namespace IsoRealms::Spindizzy {
   }
 
   bool ZoneTool::Instance::renderIcon(float yaw) const {
+    glPushMatrix();
     glTranslatef(0.0f, 0.3f, 0.0f);
     glRotatef(Spindizzy::DEFAULT_VIEW_ANGLE_PITCH, 1.0f, 0.0f, 0.0f);
     glRotatef(Spindizzy::DEFAULT_VIEW_ANGLE_YAW, 0.0f, 0.0f, 1.0f);
     // TODO: Scale the icon
-    glScalef(1.3f, 1.3f, 1.3f);
     glColor3f(0.0f, 1.0f, 0.0f);
-    glBegin(GL_LINES);
-    Utils::renderVolumeLines(-0.5f, 0.5f, -0.5f, 0.5f, -0.5f, 0.0f);
-    glEnd();
+    if (cParent.cDefType == Type::DELETE) {
+      glScalef(1.3f, 1.3f, 1.3f);
+      glBegin(GL_LINES);
+      Utils::renderVolumeLines(-0.5f, 0.5f, -0.5f, 0.5f, -0.5f, 0.0f);
+      glEnd();
+    } else {
+      glScalef(0.7f, 0.7f, 0.7f);
+      glBegin(GL_LINES);
+      Utils::renderVolumeLines(-1.5f, -0.5f, -0.5f, 0.5f, -0.5f,  0.0f);
+      Utils::renderVolumeLines( 0.5f,  1.5f, -0.5f, 0.5f, -1.0f, -0.5f);
+      glEnd();
+    }
     glColor3f(1.0f, 1.0f, 1.0f);
+    glPopMatrix();
+
+    if (cParent.cDefType != Type::DELETE) {
+      glBegin(GL_LINES);
+      glVertex2f(-0.1f,  0.1f);
+      glVertex2f( 0.1f, -0.1f);
+      glEnd();
+
+      glBegin(GL_TRIANGLES);
+      glVertex2f( 0.1f, -0.1f);
+      glVertex2f( 0.1f,  0.1f);
+      glVertex2f(-0.1f, -0.1f);
+      glEnd();
+    }
+
+    if (cParent.cDefType == Type::DELETE) {
+      glScalef(0.8f, 0.8f, 0.8f);
+      Utils::renderIconNone();
+    } else if (cParent.cDefType == Type::MOVE) {
+      glScalef(0.4f, 0.4f, 0.4f);
+      glTranslatef(-1.2f, 1.0f, 0.0f);
+      Utils::renderIconNone();
+    }
     return true;
   }
 
