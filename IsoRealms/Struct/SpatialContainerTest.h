@@ -157,7 +157,7 @@ namespace IsoRealms {
       }
     };
 
-    int cDefCellSize;
+    const int cDefCellSize;
     int cDefRowsOffset;
     std::vector<Row> cDefRows;
     std::set<std::unique_ptr<Entry>> cDefEntries;

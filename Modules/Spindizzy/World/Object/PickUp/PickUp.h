@@ -50,6 +50,7 @@ namespace IsoRealms::Spindizzy {
     PickUp(Zone& zone, PickUpType* type, int x, int y, int z);
     PickUp(Zone& zone, PickUp& pickUp, int x, int y, int z);
     PickUp(Zone& zone, JSONObject object);
+    ~PickUp();
 
     // Interface for use by parent zone.
     void initialise();

@@ -67,6 +67,10 @@ namespace IsoRealms::Spindizzy {
     });
   }
 
+  PickUp::~PickUp() {
+    cDefZone.getWorld()->unregisterBoundary(cDefType, this);
+  }
+
   void PickUp::initialise() {
     cDefZone.getWorld()->registerBoundary(cDefType, this, cDefX, cDefX, cDefY, cDefY);
   }
