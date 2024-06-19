@@ -20,12 +20,14 @@
 
 namespace IsoRealms {
   LiteralTexture::LiteralTexture() :
+            cProject(nullptr),
             cTexture(0),
             cFrameBuffer(0) {
 //    std::cout << "LiteralTexture::LiteralTexture: TODO: This constructor should not be here!" << std::endl;
   }
 
   LiteralTexture::LiteralTexture(IProject* project, bool clampX, bool clampY) :
+            cProject(project),
             cTexture(0),
             cFrameBuffer(0) {
     project->mainThreadAlloc([this]() {
@@ -87,8 +89,10 @@ namespace IsoRealms {
 
   LiteralTexture::~LiteralTexture() {
     if (cTexture != 0) {
-      glDeleteTextures(1, &cTexture);
-      glDeleteFramebuffers(1, &cFrameBuffer);
+      cProject->mainThreadCleanUp([mTexture = cTexture, mFrameBuffer = cFrameBuffer]() {
+        glDeleteTextures(1, &mTexture);
+        glDeleteFramebuffers(1, &mFrameBuffer);
+      });
     }
   }
 }

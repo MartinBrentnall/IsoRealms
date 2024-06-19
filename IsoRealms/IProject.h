@@ -64,7 +64,8 @@ namespace IsoRealms {
      * @param task The initialisation task to perform.
      */
     virtual void mainThreadInit(std::function<void()> task) = 0;
-    
+    virtual void mainThreadCleanUp(std::function<void()> task) = 0;
+
     /**
      * Create a callback for initialising asset references.  The callback will
      * be called by the project after all resources and assets have been

@@ -728,6 +728,10 @@ namespace IsoRealms {
     cMainThreadInitTasks.push(task);
   }
 
+  void Project::mainThreadCleanUp(std::function<void()> function) {
+    cApplication->mainThreadCleanUp(function);
+  }
+
   void Project::save(JSONObject object, const I3DModelType*    asset) const {c3DModelTypes.save(  object, asset);}
   void Project::save(JSONObject object, const IAssets*         asset) const {cAssets.save(        object, asset);}
   void Project::save(JSONObject object, const IActionType*     asset) const {cActionTypes.save(   object, asset);}

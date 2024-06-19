@@ -164,5 +164,7 @@ namespace IsoRealms {
     virtual void executeAndReturn(const std::function<void()> task) = 0;
 
     virtual HatHandler& getHatHandler() = 0;
+
+    virtual void mainThreadCleanUp(std::function<void()> function) = 0;
   };
 }

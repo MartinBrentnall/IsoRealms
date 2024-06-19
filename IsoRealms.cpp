@@ -89,6 +89,7 @@ int main(int argc, char** argv) {
         mApplication.display();
       }
       mPreviousTime = mCurrentTime;
+      mApplication.cleanUp();
     };
 
     // Save settings on completion. TODO: Make save scriptable instead of program doing it.

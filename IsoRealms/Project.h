@@ -447,6 +447,7 @@ namespace IsoRealms {
     \***********************/
     void mainThreadAlloc(std::function<void()> function) override;
     void mainThreadInit(std::function<void()> function) override;
+    void mainThreadCleanUp(std::function<void()> function) override;
     void init(std::function<void(IAssets*)> initialiser) override;
     ICallbackHandle* reset(std::function<void()> resetter) override;
     ICallbackHandle* updateRuntime(std::function<void(unsigned int)> dynamic) override;

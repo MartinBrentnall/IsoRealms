@@ -363,4 +363,18 @@ namespace IsoRealms {
   HatHandler& Application::getHatHandler() {
     return cHatHandler;
   }
+
+  void Application::cleanUp() {
+    std::lock_guard<std::mutex> mLockGuard(cCleanUpTaskMutex);
+    while (!cMainThreadCleanUpTasks.empty()) {
+      std::function<void()> mTask = cMainThreadCleanUpTasks.front();
+      mTask();
+      cMainThreadCleanUpTasks.pop();
+    }
+  }
+
+  void Application::mainThreadCleanUp(std::function<void()> function) {
+    std::lock_guard<std::mutex> mLockGuard(cCleanUpTaskMutex);
+    cMainThreadCleanUpTasks.push(function);
+  }
 }

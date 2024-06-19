@@ -156,6 +156,9 @@ namespace IsoRealms {
     // Input.
     HatHandler cHatHandler;
 
+    std::mutex cCleanUpTaskMutex;
+    std::queue<std::function<void()>> cMainThreadCleanUpTasks; /// Clean-up tasks to be performed on the main thread.
+
     /**
      * Set the application window and OpenGL view port dimensions according to
      * the current screen mode.
@@ -190,6 +193,7 @@ namespace IsoRealms {
      * by the main thread.
      */
     void loop(int threadID);
+    void cleanUp();
 
     /***************************\
      * Implements IApplication * 
@@ -209,5 +213,6 @@ namespace IsoRealms {
     void executeAndReturn(const std::vector<std::function<void()>> task) override;
     void executeAndReturn(const std::function<void()> task) override;
     HatHandler& getHatHandler() override;
+    void mainThreadCleanUp(std::function<void()> function) override;
   };
 }

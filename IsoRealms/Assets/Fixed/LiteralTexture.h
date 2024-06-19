@@ -29,6 +29,7 @@
 namespace IsoRealms {
   class LiteralTexture : public ITexture {
     private:
+    IProject* cProject;
     GLuint cTexture;
     GLuint cFrameBuffer;
     std::vector<ITextureUseListener*> cUseListeners;
