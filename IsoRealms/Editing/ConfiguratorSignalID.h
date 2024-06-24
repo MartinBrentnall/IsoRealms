@@ -18,18 +18,15 @@
  */
 #pragma once
 
-#include "ConfiguratorSignalID.h"
-
 namespace IsoRealms {
-  class IConfiguratorScreen {
-    public:
-    virtual void render(float aspectRatio) = 0;
-    virtual void update(unsigned int milliseconds, bool active) = 0;
-    virtual bool updateForClosure(unsigned int milliseconds) = 0;
-    virtual bool input(ConfiguratorSignalID id) = 0;
-    virtual void refresh() = 0;
-
-    virtual ~IConfiguratorScreen() {
-    }
+  enum class ConfiguratorSignalID {
+    CANCEL,
+    CONFIRM,
+    MOVE_DOWN,
+    MOVE_LEFT,
+    MOVE_RIGHT,
+    MOVE_UP,
   };
 }
+
+

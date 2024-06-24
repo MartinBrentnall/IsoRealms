@@ -27,6 +27,7 @@
 #include "IsoRealms/Project.h"
 #include "IsoRealms/ResourceDefinition.h"
 
+#include "ConfiguratorSignalID.h"
 #include "IConfiguratorScreen.h"
 #include "IUIConfiguration.h"
 
@@ -37,7 +38,7 @@ namespace IsoRealms {
 
     void update(unsigned int milliseconds);
     void open(IConfiguratorScreen* screen);
-    void input(sf::Event& event);
+    void input(ConfiguratorSignalID id);
 
     const IColour* getSelectionHighlight() const;
     const IColour* getSelectionLocked() const;

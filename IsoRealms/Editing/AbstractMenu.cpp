@@ -42,7 +42,8 @@ namespace IsoRealms {
 
   void AbstractMenu::render(float aspectRatio) {
     if (getItemCount() > 0) {
-      float mYLocation = (cParent->getTopIconPosition() - cSelectionAnimation * cIntAppearance->getLineHeight()) - cIntAppearance->getLineHeight() * 1.5f;
+      float mBorderPadding = cIntAppearance->getSelectionHighlightHeight() * 0.5f;
+      float mYLocation = (cParent->getTopIconPosition() - cSelectionAnimation * cIntAppearance->getLineHeight()) - (cIntAppearance->getLineHeight() * 1.5f) - mBorderPadding * 2.0f;
 
       glPushMatrix();
       if (cAnimation > 0.0f) {
@@ -64,20 +65,19 @@ namespace IsoRealms {
       }
 
       glEnable(GL_BLEND);
-//       glColor4f(0.0f, 0.0f, 0.0f, 0.85f);
+      glColor4f(0.0f, 0.0f, 0.0f, 0.85f);
 //       Utils::renderRoundedRectangle(cParent->getScreenLeftBorder(aspectRatio) - cIntAppearance->getSelectionHighlightHeight() * 0.5f,
 //                                    (cParent->getTopIconPosition() - (getItemCount() + 0.5f) * cIntAppearance->getLineHeight()) - cIntAppearance->getSelectionHighlightHeight(),
 //                                     mRightBoundary + cIntAppearance->getSelectionHighlightHeight(),
 //                                     cParent->getTopIconPosition() + cIntAppearance->getSelectionHighlightHeight(),
 //                                     cIntAppearance->getSelectionHighlightHeight() * 0.5f);
 
-      glColor4f(1.0f, 0.0f, 1.0f, 1.0f);
       std::cout << "LEFT BORDER: " << cParent->getScreenLeftBorder(aspectRatio) << std::endl;
       Utils::renderRoundedRectangle(cParent->getScreenLeftBorder(aspectRatio),
-                                    cParent->getScreenTopBorder() - (getItemCount() + 1) * cIntAppearance->getLineHeight(),
-                                    mRightBoundary,
+                                    (cParent->getScreenTopBorder() - (getItemCount() + 1) * cIntAppearance->getLineHeight()) - mBorderPadding * 3.0f,
+                                    mRightBoundary + mBorderPadding * 3.0f,
                                     cParent->getScreenTopBorder(),
-                                    0.0f);
+                                    mBorderPadding);
 
       // left bottom right top
 //       glColor4f(1.0f, 1.0f, 1.0f, 0.15f);
@@ -86,16 +86,16 @@ namespace IsoRealms {
 //       Utils::renderBar(cLeftHighlightAnimation, mYLocation - cIntAppearance->getSelectionHighlightHeight() * 0.5f, cRightHighlightAnimation, mYLocation + cIntAppearance->getSelectionHighlightHeight() * 0.5f);
       glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
       glDisable(GL_DEPTH_TEST);
-      Utils::renderRoundedRectangle(getLeftSelectionBoundary(aspectRatio, cSelectedItem),
+      Utils::renderRoundedRectangle(getLeftSelectionBoundary(aspectRatio, cSelectedItem) + mBorderPadding * 2.0f,
                                     mYLocation - cIntAppearance->getSelectionHighlightHeight() * 0.5f,
-                                    getRightSelectionBoundary(aspectRatio, cSelectedItem),
+                                    getRightSelectionBoundary(aspectRatio, cSelectedItem) + mBorderPadding * 2.0f,
                                     mYLocation + cIntAppearance->getSelectionHighlightHeight() * 0.5f,
                                     0.0f);
 
       // Render menu items
       glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
       glPushMatrix();
-      glTranslatef(cParent->getScreenLeftBorder(aspectRatio), cParent->getTopIconPosition(), 0.0f);
+      glTranslatef(cParent->getScreenLeftBorder(aspectRatio) + mBorderPadding, cParent->getTopIconPosition() - mBorderPadding, 0.0f);
       cIntAppearance->print(cTitle.c_str(), -1.0f, 0.0f);
       glPopMatrix();
       for (unsigned int i = 0; i < getItemCount(); ++i) {
@@ -207,34 +207,14 @@ namespace IsoRealms {
     }
   }
 
-  bool AbstractMenu::input(sf::Event& event) {
-    if (input(cSelectedItem, event)) {
+  bool AbstractMenu::input(ConfiguratorSignalID id) {
+    if (input(cSelectedItem, id)) {
       return true;
-    } else switch (event.type) {
-      case sf::Event::KeyPressed: {
-        switch (event.key.code) {
-          case sf::Keyboard::Down:   selectNextMenuItem();        break;
-          case sf::Keyboard::Up:     selectPreviousMenuItem();    break;
-          case sf::Keyboard::Escape: cParent->closeProjectMenu(); break;
-          default:                                                break;
-        }
-        break;
-      }
-
-      case sf::Event::JoystickButtonPressed: {
-        switch (event.joystickButton.button) {
-          case 1: cParent->closeProjectMenu(); break;
-        }
-        break;
-      }
-
-      case sf::Event::JoystickMoved: {
-// TODO        if (HatHandler::downPressed()) {selectNextMenuItem();}
-//         if (HatHandler::upPressed())   {selectPreviousMenuItem();}
-        break;
-      }
-
-      default: break;
+    } else switch (id) {
+      case ConfiguratorSignalID::MOVE_DOWN: selectNextMenuItem();        break;
+      case ConfiguratorSignalID::MOVE_UP:   selectPreviousMenuItem();    break;
+      case ConfiguratorSignalID::CANCEL:    cParent->closeProjectMenu(); break;
+      default:                                                           break;
     }
     return true;
   }

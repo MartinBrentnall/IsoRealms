@@ -27,6 +27,7 @@
 
 #include "IsoRealms/AnimatedFloat.h"
 #include "IsoRealms/Condition/Condition.h"
+#include "IsoRealms/Editing/ConfiguratorSignalID.h"
 #include "IsoRealms/IApplication.h"
 #include "IsoRealms/Input/HatHandler.h"
 #include "IsoRealms/System.h"
@@ -80,7 +81,7 @@ namespace IsoRealms {
       public:
       virtual void render(IPropertyAppearance* appearance, bool tick) const = 0;
       virtual int getElementCount() const = 0;
-      virtual bool input(sf::Event& event) = 0;
+      virtual bool input(ConfiguratorSignalID id) = 0;
       virtual IFunctionOutput* getOutput() const = 0;
       virtual IFunctionInput* getInput(int index) const = 0;
       virtual bool setAnd(bool isAnd) = 0;
@@ -124,7 +125,7 @@ namespace IsoRealms {
       \*****************************/
       void render(IPropertyAppearance* appearance, bool tick) const override;
       int getElementCount() const override;
-      bool input(sf::Event& event) override;
+      bool input(ConfiguratorSignalID id) override;
       IFunctionOutput* getOutput() const override;
       IFunctionInput* getInput(int index) const override;
       bool setAnd(bool isAnd) override;
@@ -160,7 +161,7 @@ namespace IsoRealms {
       \*****************************/
       void render(IPropertyAppearance* appearance, bool tick) const override;
       int getElementCount() const override;
-      bool input(sf::Event& event) override;
+      bool input(ConfiguratorSignalID id) override;
       IFunctionOutput* getOutput() const override;
       IFunctionInput* getInput(int index) const override;
       bool setAnd(bool isAnd) override;
@@ -241,6 +242,6 @@ namespace IsoRealms {
     IEditable* edit(IAssetRegistry* assets) override;
     void close() override;
     float getWidth(IPropertyAppearance* appearance) const override;
-    bool input(sf::Event& event) override;
+    bool input(ConfiguratorSignalID id) override;
   };
 }

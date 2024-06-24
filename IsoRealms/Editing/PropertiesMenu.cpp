@@ -65,10 +65,11 @@ namespace IsoRealms {
   }
 
   void PropertiesMenu::renderItem(float aspectRatio, unsigned int item, float x) {
+    float mBorderPadding = cIntAppearance->getSelectionHighlightHeight() * 0.5f;
     glColor3f(1.0f, 1.0f, 1.0f);
     std::string mPropertyName = cProperties[item]->getPropertyName() + ":";
     glPushMatrix();
-    glTranslatef(cParent->getScreenLeftBorder(aspectRatio), cParent->getTopIconPosition(), 0.0f);
+    glTranslatef(cParent->getScreenLeftBorder(aspectRatio) + mBorderPadding, cParent->getTopIconPosition() - mBorderPadding * 2.0f, 0.0f);
     cIntAppearance->print(mPropertyName.c_str(), item, 0.0f);
     glPopMatrix();
 //     if (cEditing != cProperties[item]) {
@@ -125,35 +126,19 @@ namespace IsoRealms {
     }
   }
 
-  bool PropertiesMenu::input(unsigned int item, sf::Event& event) {
+  bool PropertiesMenu::input(unsigned int item, ConfiguratorSignalID id) {
     if (cEditing != nullptr) {
-      if (cEditing->input(event)) {
+      if (cEditing->input(id)) {
         cEditing->close();
         cClosingProperties.push_back(cEditing);
         cEditing = nullptr;
       }
       return true;
-    } else switch (event.type) {
-      case sf::Event::JoystickButtonPressed: {
-        switch (event.joystickButton.button) {
-          case 0: edit(item); return true;
-        }
-        break;
-      }
-
-      case sf::Event::KeyPressed: {
-        switch (event.key.code) {
-          case sf::Keyboard::Return: edit(item); return true;
-          default:                               break;
-        }
-      }
-
-      default: break;
+    } else switch (id) {
+      case ConfiguratorSignalID::CONFIRM: edit(item); return true;
+      default:                                        break;
     }
     return false;
-  }
-
-  void PropertiesMenu::inputKeyDownLock(sf::Event& event) {
   }
 
   float PropertiesMenu::getMaxLabelWidth() const {

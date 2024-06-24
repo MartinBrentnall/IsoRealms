@@ -23,6 +23,7 @@
 #include "IsoRealms/Property/IPropertyAppearance.h"
 #include "IsoRealms/Types.h"
 
+#include "ConfiguratorSignalID.h"
 #include "IConfiguratorScreen.h"
 
 namespace IsoRealms {
@@ -45,7 +46,7 @@ namespace IsoRealms {
     void render(float aspectRatio) override;
     void update(unsigned int milliseconds, bool active) override;
     bool updateForClosure(unsigned int milliseconds) override;
-    bool input(sf::Event& event) override;
+    bool input(ConfiguratorSignalID id) override;
 
     virtual float getLeftSelectionBoundary(float aspectRatio, unsigned int item) = 0;
     virtual float getRightSelectionBoundary(float aspectRatio, unsigned int item) = 0;
@@ -56,8 +57,7 @@ namespace IsoRealms {
     virtual void renderItem(float aspectRatio, unsigned int item, float x) = 0;
     virtual void updateItems(unsigned int milliseconds) = 0;
     virtual bool isMenuInputLocked() = 0;
-    virtual bool input(unsigned int item, sf::Event& event) = 0;
-    virtual void inputKeyDownLock(sf::Event& event) = 0;
+    virtual bool input(unsigned int item, ConfiguratorSignalID id) = 0;
 
     virtual ~AbstractMenu() {
     };

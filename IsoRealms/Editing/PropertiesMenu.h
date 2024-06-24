@@ -48,8 +48,7 @@ namespace IsoRealms {
     void renderItem(float aspectRatio, unsigned int item, float x) override;
     void updateItems(unsigned int milliseconds) override;
     bool isMenuInputLocked() override;
-    bool input(unsigned int item, sf::Event& event) override;
-    void inputKeyDownLock(sf::Event& event) override;
+    bool input(unsigned int item, ConfiguratorSignalID id) override;
     void refresh() override;
 
     private:

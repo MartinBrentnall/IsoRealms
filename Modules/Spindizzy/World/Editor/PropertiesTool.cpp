@@ -52,10 +52,18 @@ namespace IsoRealms::Spindizzy {
 
   bool PropertiesTool::Modifier::inputTool(SignalInputID id, double yaw) {
     // TODO: Implement this.
-//     if (cEditingProperties) {
-//       cConfigurator.input(event);
-//       return true;
-//     }
+    if (cEditingProperties) {
+      switch (id) {
+        case SignalInputID::MOVE_CURSOR_FORWARD:  cConfigurator.input(ConfiguratorSignalID::MOVE_UP);    break;
+        case SignalInputID::MOVE_CURSOR_BACKWARD: cConfigurator.input(ConfiguratorSignalID::MOVE_DOWN);  break;
+        case SignalInputID::MOVE_CURSOR_LEFT:     cConfigurator.input(ConfiguratorSignalID::MOVE_LEFT);  break;
+        case SignalInputID::MOVE_CURSOR_RIGHT:    cConfigurator.input(ConfiguratorSignalID::MOVE_RIGHT); break;
+        case SignalInputID::USE_TOOL:             cConfigurator.input(ConfiguratorSignalID::CONFIRM);    break;
+        case SignalInputID::CANCEL:               cConfigurator.input(ConfiguratorSignalID::CANCEL);     break;
+        default:                                                                                         break;
+      }
+      return true;
+    }
 
     switch (id) {
       case SignalInputID::USE_TOOL:  showProperties();                                                                                        return true;

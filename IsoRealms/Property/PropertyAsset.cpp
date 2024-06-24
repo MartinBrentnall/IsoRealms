@@ -187,37 +187,18 @@ namespace IsoRealms {
     }
   }
 
-  bool PropertyAsset::input(sf::Event& event) {
+  bool PropertyAsset::input(ConfiguratorSignalID id) {
     if (cSpecialEditor != nullptr) {
-      if (cSpecialEditor->input(event)) {
+      if (cSpecialEditor->input(id)) {
         cConfirmationCallback(cSpecialEditor->getValue());
         return true;
       }
-    } else switch (event.type) {
-      case sf::Event::KeyPressed: {
-        switch (event.key.code) {
-          case sf::Keyboard::Escape:                   return true; // TODO: Restore original selection
-          case sf::Keyboard::Left:   moveCursorLeft(); break;
-          default:                                     break;
-        }
-        break;
-      }
-
-      case sf::Event::JoystickButtonPressed: {
-        switch (event.joystickButton.button) {
-          case 1: return true; // TODO: Restore original selection
-        }
-        break;
-      }
-
-      case sf::Event::JoystickMoved: {
-// TODO        if (HatHandler::leftPressed()) {moveCursorLeft();}
-        break;
-      }
-
-      default: break;
+    } else switch (id) {
+      case ConfiguratorSignalID::CANCEL:                      return true; // TODO: Restore original selection
+      case ConfiguratorSignalID::MOVE_LEFT: moveCursorLeft(); break;
+      default:                                                break;
     }
-    return cSelection.back()->input(event);
+    return cSelection.back()->input(id);
   }
   
   PropertyAsset::AssetMenu::Selection::Selection(const AssetMenu* const parent, int item, float transitionStart) :
@@ -253,32 +234,12 @@ namespace IsoRealms {
     }
   }
 
-  bool PropertyAsset::AssetMenu::Selection::input(sf::Event& event) {
-    switch (event.type) {
-      case sf::Event::KeyPressed: {
-        switch (event.key.code) {
-          case sf::Keyboard::Up:     moveCursorUp();                                    break;
-          case sf::Keyboard::Down:   moveCursorDown();                                  break;
-          case sf::Keyboard::Return: if (getMenuItem()->executeAction()) {return true;} break;
-          default:                                                                      break;
-        }
-        break;
-      }
-
-      case sf::Event::JoystickButtonPressed: {
-        switch (event.joystickButton.button) {
-          case 0: if (getMenuItem()->executeAction()) {return true;} break;
-        }
-        break;
-      }
-
-      case sf::Event::JoystickMoved: {
-// TODO        if (HatHandler::downPressed()) {moveCursorDown();}
-//         if (HatHandler::upPressed())   {moveCursorUp();}
-        break;
-      }
-
-      default: break;
+  bool PropertyAsset::AssetMenu::Selection::input(ConfiguratorSignalID id) {
+    switch (id) {
+      case ConfiguratorSignalID::MOVE_UP:   moveCursorUp();                                    break;
+      case ConfiguratorSignalID::MOVE_DOWN: moveCursorDown();                                  break;
+      case ConfiguratorSignalID::CONFIRM:   if (getMenuItem()->executeAction()) {return true;} break;
+      default:                                                                                 break;
     }
     return false;
   }

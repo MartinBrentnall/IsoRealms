@@ -51,7 +51,7 @@ namespace IsoRealms {
       virtual unsigned int getItemCount() const = 0;
       virtual unsigned int getIndex() const = 0;
       virtual float getScroll() const = 0; 
-      virtual bool input(sf::Event& event) = 0;
+      virtual bool input(ConfiguratorSignalID id) = 0;
       virtual void updateEditing(unsigned int milliseconds, bool active) = 0;
       virtual bool updateForClosure(unsigned int milliseconds) = 0; 
       virtual void renderEditing(IPropertyAppearance* appearance) const = 0;
@@ -100,7 +100,7 @@ namespace IsoRealms {
         unsigned int getItemCount() const override;
         unsigned int getIndex() const override;
         float getScroll() const override;
-        bool input(sf::Event& event) override;
+        bool input(ConfiguratorSignalID id) override;
         void updateEditing(unsigned int milliseconds, bool active) override;
         bool updateForClosure(unsigned int milliseconds) override;
         void renderEditing(IPropertyAppearance* appearance) const override;
@@ -126,7 +126,7 @@ namespace IsoRealms {
       virtual float getHeight(IPropertyAppearance* appearance) = 0;
       virtual void render(IPropertyAppearance* appearance) = 0;
       virtual void update(unsigned int milliseconds) = 0;
-      virtual bool input(sf::Event& event) = 0;
+      virtual bool input(ConfiguratorSignalID id) = 0;
       virtual std::string getValue() = 0;
 
       virtual ~ISpecialItemEditor() {
@@ -166,7 +166,7 @@ namespace IsoRealms {
     IEditable* edit(IAssetRegistry* assets) override;
     void close() override;
     float getWidth(IPropertyAppearance* appearance) const override;
-    bool input(sf::Event& event) override;
+    bool input(ConfiguratorSignalID id) override;
     
     /*****************************************\
      * Implements ISpecialItemEditorListener *

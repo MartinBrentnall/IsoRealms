@@ -20,6 +20,7 @@
 
 #include <string>
 
+#include "IsoRealms/Editing/ConfiguratorSignalID.h"
 #include "IsoRealms/IAssetBrowser.h"
 #include "IsoRealms/IAssetIdentifier.h"
 #include "IsoRealms/Types.h"
@@ -37,7 +38,7 @@ namespace IsoRealms {
     virtual IEditable* edit(IAssetRegistry* assets) = 0;
     virtual void close() = 0;
     virtual float getWidth(IPropertyAppearance* appearance) const = 0;
-    virtual bool input(sf::Event& event) = 0;
+    virtual bool input(ConfiguratorSignalID id) = 0;
     
     virtual ~IProperty() {}
   };

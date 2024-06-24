@@ -114,9 +114,9 @@ namespace IsoRealms {
     cRuntimeMenus.push_back(screen);
   }
 
-  void Configurator::input(sf::Event& event) {
+  void Configurator::input(ConfiguratorSignalID id) {
     if (!cRuntimeMenus.empty()) {
-      cRuntimeMenus.back()->input(event);
+      cRuntimeMenus.back()->input(id);
     }
   }
 

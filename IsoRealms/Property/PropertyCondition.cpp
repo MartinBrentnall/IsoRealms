@@ -347,67 +347,24 @@ namespace IsoRealms {
     }
   }
 
-  bool PropertyCondition::input(sf::Event& event) {
+  bool PropertyCondition::input(ConfiguratorSignalID id) {
     if (cShowingConditionPalette) {
-      switch (event.type) {
-        case sf::Event::JoystickButtonPressed: {
-          switch (event.joystickButton.button) {
-            case 0: selectFromPalette();              break;
-            case 1: cShowingConditionPalette = false; break;
-          }
-          break;
-        }
-
-        case sf::Event::JoystickMoved: {
-          if (cHatHandler.leftPressed())  {selectPreviousElement();}
-          if (cHatHandler.rightPressed()) {selectNextElement();}
-          break;
-        }
-
-        case sf::Event::KeyPressed: {
-          switch (event.key.code) {
-            case sf::Keyboard::Left:   selectPreviousElement();          break;
-            case sf::Keyboard::Right:  selectNextElement();              break;
-            case sf::Keyboard::Escape: cShowingConditionPalette = false; break;
-            case sf::Keyboard::Return: selectFromPalette();              break;
-            default:                                                     break;
-          }
-          break;
-        }
-
-        default: break;
+      switch (id) {
+        case ConfiguratorSignalID::MOVE_LEFT:  selectPreviousElement();          break;
+        case ConfiguratorSignalID::MOVE_RIGHT: selectNextElement();              break;
+        case ConfiguratorSignalID::CANCEL:     cShowingConditionPalette = false; break;
+        case ConfiguratorSignalID::CONFIRM:    selectFromPalette();              break;
+        default:                                                                 break;
       }
-    } else if (cSelectedInput->input(event)) {
+    } else if (cSelectedInput->input(id)) {
       return false;
-    } else switch (event.type) {
-      case sf::Event::JoystickButtonPressed: {
-        switch (event.joystickButton.button) {
-          case 1: confirmCondition(); return true;
-        }
-        break;
-      }
-
-      case sf::Event::JoystickMoved: {
-        if (cHatHandler.leftPressed())  {moveCursorLeft();}
-        if (cHatHandler.rightPressed()) {moveCursorRight();}
-        if (cHatHandler.upPressed())    {moveCursorUp();}
-        if (cHatHandler.downPressed())  {moveCursorDown();}
-        break;
-      }
-
-      case sf::Event::KeyPressed: {
-        switch (event.key.code) {
-          case sf::Keyboard::Up:     moveCursorUp();     break;
-          case sf::Keyboard::Down:   moveCursorDown();   break;
-          case sf::Keyboard::Left:   moveCursorLeft();   break;
-          case sf::Keyboard::Right:  moveCursorRight();  break;
-          case sf::Keyboard::Escape: confirmCondition(); return true;
-          default:                                       break;
-        }
-        break;
-      }
-
-      default: break;
+    } else switch (id) {
+      case ConfiguratorSignalID::MOVE_UP:     moveCursorUp();     break;
+      case ConfiguratorSignalID::MOVE_DOWN:   moveCursorDown();   break;
+      case ConfiguratorSignalID::MOVE_LEFT:   moveCursorLeft();   break;
+      case ConfiguratorSignalID::MOVE_RIGHT:  moveCursorRight();  break;
+      case ConfiguratorSignalID::CANCEL:      confirmCondition(); return true;
+      default:                                                    break;
     }
     return false;
   }
@@ -536,25 +493,10 @@ namespace IsoRealms {
     }
   }
 
-  bool PropertyCondition::FunctionBlock::input(sf::Event& event) {
-    switch (event.type) {
-      case sf::Event::JoystickButtonPressed: {
-        switch (event.joystickButton.button) {
-          case 0: confirm(); return true;
-        }
-        break;
-      }
-
-      case sf::Event::KeyPressed: {
-        switch (event.key.code) {
-          case sf::Keyboard::Return: // Fall through
-          case sf::Keyboard::Space:  confirm(); return true;
-          default:                              break;
-        }
-        break;
-      }
-
-      default: break;
+  bool PropertyCondition::FunctionBlock::input(ConfiguratorSignalID id) {
+    switch (id) {
+      case ConfiguratorSignalID::CONFIRM: confirm(); return true;
+      default:                                       break;
     }
     return false;
   }
@@ -702,25 +644,10 @@ namespace IsoRealms {
     }
   }
 
-  bool PropertyCondition::ElementInput::input(sf::Event& event) {
-    switch (event.type) {
-      case sf::Event::JoystickButtonPressed: {
-        switch (event.joystickButton.button) {
-          case 0: confirm(); return true;
-        }
-        break;
-      }
-
-      case sf::Event::KeyPressed: {
-        switch (event.key.code) {
-          case sf::Keyboard::Return: // Fall through
-          case sf::Keyboard::Space:  confirm(); return true;
-          default:                              break;
-        }
-        break;
-      }
-
-      default: break;
+  bool PropertyCondition::ElementInput::input(ConfiguratorSignalID id) {
+    switch (id) {
+      case ConfiguratorSignalID::CONFIRM: confirm(); return true;
+      default:                                       break;
     }
     return false;
   }
