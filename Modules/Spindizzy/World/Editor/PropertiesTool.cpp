@@ -74,7 +74,7 @@ namespace IsoRealms::Spindizzy {
   }
 
   bool PropertiesTool::Modifier::isCursorLocked() const {
-    return false;
+    return cEditingProperties;
   }
 
   void PropertiesTool::Modifier::showProperties() {
