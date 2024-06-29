@@ -556,34 +556,7 @@
                 "name": "Pause",
                 "bindings": [
                   {
-                    "variable": "basics",
-                    "to": {
-                      "key": "Basics"
-                    }
-                  },
-                  {
-                    "variable": "screenSwitch",
-                    "to": {
-                      "key": "UI/Layout/Main/Menu"
-                    }
-                  },
-                  {
-                    "variable": "screenMenu",
-                    "to": {
-                      "key": ":Screen",
-                      "asset": {
-                        "key": "UI/Menu/Pause"
-                      }
-                    }
-                  },
-                  {
-                    "variable": "menu",
-                    "to": {
-                      "key": "UI/Menu/Pause"
-                    }
-                  },
-                  {
-                    "variable": "editorInput",
+                    "variable": "mainInput",
                     "to": {
                       "key": "Basics/InputSwitch/Main"
                     }
@@ -593,13 +566,48 @@
                     "to": {
                       "key": ":InputHandler",
                       "asset": {
-                        "key": "UI/Menu/Pause"
+                        "key": "Basics/InputSwitch/Options Screen"
+                      }
+                    }
+                  },
+                  {
+                    "variable": "showMenu",
+                    "to": {
+                      "key": ":Action",
+                      "asset": {
+                        "key": "Basics/Function/PushScreen",
+                        "bindings": [
+                          {
+                            "argument": "menuScreen",
+                            "to": {
+                              "key": ":Screen",
+                              "asset": {
+                                "key": "UI/Menu/Pause"
+                              }
+                            }
+                          },
+                          {
+                            "argument": "menu",
+                            "to": {
+                              "key": "UI/Menu/Pause"
+                            }
+                          },
+                          {
+                            "argument": "menuInput",
+                            "to": {
+                              "key": ":InputHandler",
+                              "asset": {
+                                "key": "UI/Menu/Pause"
+                              }
+                            }
+                          }
+                        ]
                       }
                     }
                   }
                 ],
                 "arguments": [],
-                "code": "if hasFocus then\n  hasFocus = false\n  table.insert(menuStack, screenMenu)\n  table.insert(inputStack, inputHandlerMenu)\n  screenSwitch:setScreen(screenMenu)\n  menu:reset()\n  editorInput:setInputHandler(inputHandlerMenu)\n  currentEditor:notifyLostFocus()\nend"
+                "code": "if hasFocus then\n  hasFocus = false\n  mainInput:setInputHandler(inputHandlerMenu)\n  currentEditor:notifyLostFocus()\n  showMenu:execute()\nend"
               },
               {
                 "id": "Unpause",
