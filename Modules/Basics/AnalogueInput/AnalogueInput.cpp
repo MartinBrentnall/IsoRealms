@@ -99,6 +99,18 @@ namespace IsoRealms::Basics {
     return false;
   }
 
+  void AnalogueInput::resetInput() {
+    if (cRuntimeState != 0.0f) {
+      cRuntimeState = 0.0f;
+      cStateNotifier->stateChanged(this);
+    }
+
+    std::vector<std::unique_ptr<InputMapping>>& mMapping = cRuntimeMapping.empty() ? cDefMapping : cRuntimeMapping;
+    for (std::unique_ptr<InputMapping>& mInput : mMapping) {
+      mInput->reset();
+    }
+  }
+
   bool AnalogueInput::renderAssetIcon() const {
     return renderIcon();
   }
@@ -213,6 +225,10 @@ namespace IsoRealms::Basics {
 
   std::string AnalogueInput::InputMapping::getName() {
     return cName;
+  }
+
+  void AnalogueInput::InputMapping::reset() {
+    cState = 0.0f;
   }
 }
 

@@ -150,6 +150,10 @@ namespace IsoRealms::UI {
     return false;
   }
 
+  void VirtualKeyboard::resetInput() {
+    // Nothing to do.
+  }
+
   void VirtualKeyboard::renderScreen(float scale, float aspectRatio) const {
     float mSpacingHorizontal = 0.15f;
     float mSpacingVertical   = 0.1f;

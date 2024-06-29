@@ -168,6 +168,10 @@ namespace IsoRealms::UI {
     return false;
   }
 
+  void Menu::resetInput() {
+    // Nothing to do.
+  }
+
   void Menu::renderScreen(float scale, float aspectRatio) const {
     glDisable(GL_DEPTH_TEST);
     float mPositionY = 0.0f;

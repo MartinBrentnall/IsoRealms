@@ -108,6 +108,10 @@ namespace IsoRealms::HighScore {
     return cProject->input(event);
   }
 
+  void ScoreTracker::resetInput() {
+    // Nothing to do.
+  }
+
   void ScoreTracker::save(JSONObject object, IAssetIdentifier* identifier) const {
     object.addInteger(JSON_RECORD_LIMIT, cMaximumRecords);
     cProjectUser.save(object, JSON_USER);

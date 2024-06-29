@@ -68,6 +68,7 @@ namespace IsoRealms::UI {
      * Implements IInputHandler *
     \****************************/
     bool input(sf::Event& event) override;
+    void resetInput() override;
     
     /**********************\
      * Implements IScreen *

@@ -177,6 +177,10 @@ namespace IsoRealms::Replay {
     return cProject->input(event);
   }
 
+  void Recorder::resetInput() {
+    // Nothing to do.
+  }
+
   void Recorder::save(JSONObject object, IAssetIdentifier* identifier) const {
     cQuitAction.save(object, JSON_ON_FINISH);
   }

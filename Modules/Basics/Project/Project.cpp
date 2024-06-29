@@ -212,6 +212,10 @@ namespace IsoRealms::Basics {
     return false;
   }
 
+  void Project::resetInput() {
+    // Nothing to do.
+  }
+
   void Project::renderScreen(float scale, float aspectRatio) const {
     if (cRuntimeProject != nullptr) {
       if (cRuntimeRunning) {

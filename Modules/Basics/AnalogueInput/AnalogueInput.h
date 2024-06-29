@@ -73,6 +73,7 @@ namespace IsoRealms::Basics {
      * Implements IInputHandler *
     \****************************/
     bool input(sf::Event& event) override;
+    void resetInput() override;
 
     /*********************\
      * Implements IAsset *
@@ -165,6 +166,7 @@ namespace IsoRealms::Basics {
       void registerAssets(IAssetRegistry* assets);
       void unregisterAssets(IAssetRemover* assets, IAssets* releaser);
       std::string getName();
+      void reset();
 
       private:
       std::string cName;

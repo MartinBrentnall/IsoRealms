@@ -298,7 +298,7 @@ namespace IsoRealms::Spindizzy {
 
     switch (id) {
       case SignalInputID::USE_TOOL:       draw();              return true;
-      case SignalInputID::CANCEL:         cancel();            return true;
+      case SignalInputID::CANCEL:         return cancel();
       case SignalInputID::TOOL_MODE:      toggleNegation();    return true;
       case SignalInputID::CONFIGURE_TOOL: toggleShapeEditor(); return true;
       default:                                                 break;

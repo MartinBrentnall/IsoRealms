@@ -33,6 +33,7 @@ namespace IsoRealms {
     virtual void notifyVisible() = 0;
     virtual void notifyHidden() = 0;
     virtual void notifyLostFocus() = 0;
+    virtual void notifyGainedFocus() = 0;
 
     virtual std::vector<std::string> getDigitalInputs() const = 0;
     virtual std::vector<std::string> getAnalogueInputs() const = 0;

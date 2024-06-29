@@ -66,10 +66,16 @@ namespace IsoRealms::Basics {
   bool InputGroup::input(sf::Event& event) {
     for (std::unique_ptr<InputHandler>& mInputHandler : cDefInputHandlers) {
       if ((*mInputHandler)->input(event)) {
-        return true;
+//        return true;
       }
     }
     return false;
+  }
+
+  void InputGroup::resetInput() {
+    for (std::unique_ptr<InputHandler>& mInputHandler : cDefInputHandlers) {
+      (*mInputHandler)->resetInput();
+    }
   }
 
   bool InputGroup::renderAssetIcon() const {

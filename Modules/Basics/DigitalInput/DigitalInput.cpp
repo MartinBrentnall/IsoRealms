@@ -111,6 +111,18 @@ namespace IsoRealms::Basics {
     return false;
   }
 
+  void DigitalInput::resetInput() {
+    if (cRuntimeState) {
+      cRuntimeState = false;
+      cStateNotifier->stateChanged(this);
+    }
+
+    std::vector<std::unique_ptr<PhysicalInputMapping>>& mMapping = cRuntimeMapping.empty() ? cDefMapping : cRuntimeMapping;
+    for (std::unique_ptr<PhysicalInputMapping>& mInput : mMapping) {
+      mInput->reset();
+    }
+  }
+
   bool DigitalInput::renderAssetIcon() const {
     return renderIcon();
   }

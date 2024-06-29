@@ -45,6 +45,10 @@ namespace IsoRealms {
     // Nothing to do.
   }
 
+  void LiteralEditable::EditableScreen::notifyGainedFocus() {
+    // Nothing to do.
+  }
+
   std::vector<std::string> LiteralEditable::EditableScreen::getDigitalInputs() const {
     return std::vector<std::string>();
   }
@@ -91,6 +95,10 @@ namespace IsoRealms {
 
   bool LiteralEditable::EditableScreen::input(sf::Event& event) {
     return false;
+  }
+
+  void LiteralEditable::EditableScreen::resetInput() {
+    // Nothing to do.
   }
 
   bool LiteralEditable::EditableScreen::renderAssetIcon() const {

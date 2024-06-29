@@ -70,6 +70,7 @@ namespace IsoRealms::Basics {
      * Implements IInputHandler *
     \****************************/
     bool input(sf::Event& event) override;
+    void resetInput() override;
     
     /*********************\
      * Implements IScreen *

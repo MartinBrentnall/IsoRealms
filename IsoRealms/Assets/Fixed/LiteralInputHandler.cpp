@@ -22,7 +22,11 @@ namespace IsoRealms {
   bool LiteralInputHandler::input(sf::Event& event) {
     return false;
   }
-  
+
+  void LiteralInputHandler::resetInput() {
+    // Nothing to do.
+  }
+
   bool LiteralInputHandler::renderAssetIcon() const {
     return false;
   }

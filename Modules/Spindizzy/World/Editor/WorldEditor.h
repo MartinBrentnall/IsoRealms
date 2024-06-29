@@ -58,12 +58,14 @@ namespace IsoRealms::Spindizzy {
      * Implements IEditableScreen *
     \******************************/
     bool input(sf::Event& event) override;
+    void resetInput() override;
     void renderScreen(float scale, float aspectRatio) const override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
     void notifyVisible() override;
     void notifyHidden() override;
     void notifyLostFocus() override;
+    void notifyGainedFocus() override;
     std::vector<std::string> getDigitalInputs() const override;
     std::vector<std::string> getAnalogueInputs() const override;
     void setDigitalInput(const std::string& name, IBoolean* input) override;
@@ -196,6 +198,9 @@ namespace IsoRealms::Spindizzy {
     DigitalInput cUseTool;
     DigitalInput cExit;
 
+    bool cSignalConsumed;
+    bool cHasFocus;
+
     IAction* cExitAction;
 
     double cDistance;
@@ -240,5 +245,6 @@ namespace IsoRealms::Spindizzy {
     void selectToolRelative(int amount);
     void setPreviousTheme();
     void setNextTheme();
+    bool isCursorLocked() const;
   };
 }

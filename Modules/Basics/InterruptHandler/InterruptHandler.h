@@ -50,6 +50,7 @@ namespace IsoRealms::Basics {
      * Implements IInputHandler *
     \****************************/
     bool input(sf::Event& event) override;
+    void resetInput() override;
     bool renderAssetIcon() const override;
     void saveAsset(JSONObject object) const override;
 

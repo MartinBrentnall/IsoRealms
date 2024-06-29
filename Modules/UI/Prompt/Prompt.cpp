@@ -130,6 +130,10 @@ namespace IsoRealms::UI {
     return false;
   }
 
+  void Prompt::resetInput() {
+    // Nothing to do.
+  }
+
   void Prompt::renderScreen(float scale, float aspectRatio) const {
     LiteralColour mWhite(1.0f, 1.0f, 1.0f);
     Utils::shadowPrint( 0.0f,                 0.0f, **cDefFont, cDefTextSize,                                                      mWhite, cDefShadowOffset, IFont::Alignment::CENTER, cDefMessage);

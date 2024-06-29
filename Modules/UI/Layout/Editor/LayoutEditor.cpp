@@ -167,6 +167,10 @@ namespace IsoRealms::UI {
     // Nothing to do.
   }
 
+  void LayoutEditor::notifyGainedFocus() {
+    // Nothing to do.
+  }
+
   std::vector<std::string> LayoutEditor::getDigitalInputs() const {
     return std::vector<std::string>();
   }

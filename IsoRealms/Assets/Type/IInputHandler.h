@@ -26,6 +26,7 @@ namespace IsoRealms {
   class IInputHandler : public IAsset {
     public:
     virtual bool input(sf::Event& event) = 0;
+    virtual void resetInput() = 0;
 
     virtual ~IInputHandler() {}
   };

@@ -157,7 +157,7 @@
           "to": {
             "key": ":InputHandler",
             "asset": {
-              "key": "Basics/InputGroup/Editor Input"
+              "key": "Basics/InputGroup/EditorInput"
             }
           }
         },
@@ -240,7 +240,7 @@
                       "to": {
                         "key": ":InputHandler",
                         "asset": {
-                          "key": "Basics/InputGroup/Editor Input"
+                          "key": "Basics/InputGroup/EditorInput"
                         }
                       }
                     },
@@ -289,7 +289,7 @@
               {"id": "PreviousTool",       "mappings": [{"type": "KeyDown", "key": "F1"},          {"type": "Hat","direction": "Left"}]},
               {"id": "NextTool",           "mappings": [{"type": "KeyDown", "key": "F2"},          {"type": "Hat","direction": "Right"}]},
               {"id": "UseTool",            "mappings": [{"type": "KeyDown", "key": "Space"},       {"type": "ButtonDown","button": 0}]},
-              {"id": "Cancel",             "mappings": [{"type": "KeyDown", "key": "Backspace"},   {"type": "ButtonDown","button": 1}]},
+              {"id": "Cancel",             "mappings": [{"type": "KeyDown", "key": "Escape"},      {"type": "ButtonDown","button": 1}]},
               {"id": "ConfigureTool",      "mappings": [{"type": "KeyDown", "key": "F3"},          {"type": "ButtonDown","button": 2}]},
               {"id": "ToolMode",           "mappings": [{"type": "KeyDown", "key": "Tab"},         {"type": "ButtonDown","button": 3}]},
               {"id": "PreviousTheme",      "mappings": [{"type": "KeyDown", "key": "Home"},        {"type": "Hat","direction": "Down"}]},
@@ -585,7 +585,7 @@
                   {
                     "variable": "editorInput",
                     "to": {
-                      "key": "Basics/InputSwitch/Options Screen"
+                      "key": "Basics/InputSwitch/Main"
                     }
                   },
                   {
@@ -620,12 +620,21 @@
                   {
                     "variable": "editorInput",
                     "to": {
-                      "key": "Basics/InputSwitch/Options Screen"
+                      "key": "Basics/InputSwitch/Main"
+                    }
+                  },
+                  {
+                    "variable": "inputHandlerEditor",
+                    "to": {
+                      "key": ":InputHandler",
+                      "asset": {
+                        "key": "Basics/InputGroup/EditorInput"
+                      }
                     }
                   }
                 ],
                 "arguments": [],
-                "code": "hasFocus = true\nwhile #menuStack > 0 do\n  table.remove(menuStack)\n  table.remove(inputStack)\nend\nscreen:setScreen(nil)\n\n-- TODO: What if currentEditor is nil?\neditorInput:setInputHandler(currentEditor:inputHandler())"
+                "code": "hasFocus = true\nwhile #menuStack > 0 do\n  table.remove(menuStack)\n  table.remove(inputStack)\nend\nscreen:setScreen(nil)\n\n-- TODO: What if currentEditor is nil?\neditorInput:setInputHandler(inputHandlerEditor)\ncurrentEditor:notifyGainedFocus()"
               },
               {
                 "id": "ShowScreen",
@@ -721,9 +730,8 @@
             "type": "InputGroup",
             "instances": [
               {
-                "id": "Editor Input",
+                "id": "EditorInput",
                 "inputs": [
-                  {"input": {"key": "Basics/InputSwitch/Options Screen"}},
                   {"input": {"key": "Basics/DigitalInput/Cancel"}},
                   {"input": {"key": "Basics/DigitalInput/ConfigureTool"}},
                   {"input": {"key": "Basics/DigitalInput/MoveCursorBackward"}},
@@ -743,7 +751,6 @@
                   {"input": {"key": "Basics/DigitalInput/MoveView"}},
                   {"input": {"key": "Basics/DigitalInput/RotateView"}},
                   {"input": {"key": "Basics/DigitalInput/EndTest"}},
-                  {"input": {"key": "Basics/DigitalInput/Pause"}},
                   {"input": {"key": "Basics/DigitalInput/EditorMenu"}},
 
                   {"input": {"key": "Basics/AnalogueInput/MoveCursorX"}},
@@ -777,7 +784,7 @@
               {
                 "id": "Main",
                 "value": {
-                  "key": "Basics/InputGroup/Editor Input"
+                  "key": "Basics/InputGroup/EditorInput"
                 }
               }
             ]
@@ -808,7 +815,7 @@
                       "to": {
                         "key": ":InputHandler",
                         "asset": {
-                          "key": "Basics/InputGroup/Editor Input"
+                          "key": "Basics/InputGroup/EditorInput"
                         }
                       }
                     },

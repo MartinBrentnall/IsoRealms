@@ -62,6 +62,7 @@ namespace IsoRealms::HighScore {
      * Implements IInputHandler *
     \****************************/
     bool input(sf::Event&) override;
+    void resetInput() override;
 
     /*********************\
      * Implements IAsset *

@@ -49,6 +49,7 @@ namespace IsoRealms {
                                                          "notifyVisible",        &IEditableScreen::notifyVisible,
                                                          "notifyHidden",         &IEditableScreen::notifyHidden,
                                                          "notifyLostFocus",      &IEditableScreen::notifyLostFocus,
+                                                         "notifyGainedFocus",    &IEditableScreen::notifyGainedFocus,
                                                          "setDigitalInput",      &IEditableScreen::setDigitalInput,
                                                          "setAnalogueInput",     &IEditableScreen::setAnalogueInput,
                                                          "setAppearance",        &IEditableScreen::setAppearance,

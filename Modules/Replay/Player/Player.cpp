@@ -211,6 +211,10 @@ namespace IsoRealms::Replay {
     return false;
   }
 
+  void Player::resetInput() {
+    // Nothing to do.
+  }
+
   I3DModelType* Player::getModelType(JSONObject object, IStateListener<I3DModelType*>* listener) const {
     return nullptr;
   }

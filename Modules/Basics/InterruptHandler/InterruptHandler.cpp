@@ -75,6 +75,10 @@ namespace IsoRealms::Basics {
     return false;
   }
 
+  void InterruptHandler::resetInput() {
+    // Nothing to do.
+  }
+
   bool InterruptHandler::renderAssetIcon() const {
     return renderIcon();
   }

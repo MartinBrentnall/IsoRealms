@@ -72,6 +72,10 @@ namespace IsoRealms::Basics {
     return false;
   }
 
+  void InputSwitch::resetInput() {
+    cRuntimeInputHandler->resetInput();
+  }
+
   bool InputSwitch::renderAssetIcon() const {
     return renderIcon();
   }
@@ -81,6 +85,9 @@ namespace IsoRealms::Basics {
   }
 
   void InputSwitch::setInputHandler(IInputHandler* inputHandler) {
+    if (cRuntimeInputHandler != nullptr) {
+      cRuntimeInputHandler->resetInput();
+    }
     cRuntimeInputHandler = inputHandler;
   }
 }
