@@ -73,7 +73,9 @@ namespace IsoRealms::Basics {
   }
 
   void InputSwitch::resetInput() {
-    cRuntimeInputHandler->resetInput();
+    if (cRuntimeInputHandler != nullptr) {
+      cRuntimeInputHandler->resetInput();
+    }
   }
 
   bool InputSwitch::renderAssetIcon() const {
