@@ -835,9 +835,19 @@
                           "key": "UI/Layout/Main"
                         }
                       }
+                    },
+                    {
+                      "variable": "unpause",
+                      "to": {
+                        "key": ":Action",
+                        "asset": {
+                          "key": "Basics/Function/Unpause",
+                          "bindings": []
+                        }
+                      }
                     }
                   ],
-                  "code": "currentEditor:notifyVisible()\nscreen:setScreen(editorScreen)\ninput:setInputHandler(editorInput)\nplayTesting = nil"
+                  "code": "currentEditor:notifyVisible()\nscreen:setScreen(editorScreen)\ninput:setInputHandler(editorInput)\nplayTesting = nil\nunpause:execute()"
                 },
                 "onReady": {
                   "key": "Basics/Script",
@@ -1312,7 +1322,7 @@
                             }
                           },
                           {
-                            "variable": "projectInputHandler",
+                            "variable": "testInputHandler",
                             "to": {
                               "key": ":InputHandler",
                               "asset": {
@@ -1327,23 +1337,13 @@
                             }
                           },
                           {
-                            "variable": "input",
+                            "variable": "mainInput",
                             "to": {
                               "key": "Basics/InputSwitch/Main"
                             }
-                          },
-                          {
-                            "variable": "unpause",
-                            "to": {
-                              "key": ":Action",
-                              "asset": {
-                                "key": "Basics/Function/Unpause",
-                                "bindings": []
-                              }
-                            }
                           }
                         ],
-                        "code": "playTesting = true\ncurrentEditor:notifyHidden()\neditor:setScreen(noScreen)\ninput:setInputHandler(projectInputHandler)\nproject:reset()\nproject:setRunning(true)\nproject:setEditing(false)\nunpause:execute()"
+                        "code": "playTesting = true\ncurrentEditor:notifyHidden()\neditor:setScreen(noScreen)\nmainInput:setInputHandler(testInputHandler)\nproject:reset()\nproject:setRunning(true)\nproject:setEditing(false)"
                       }
                     }
                   },
