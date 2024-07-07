@@ -9,7 +9,7 @@
       "key": "UI/Layout/Main"
     },
     "input": {
-      "key": "Basics/InputGroup/Spindizzy Game Controls"
+      "key": "Basics/InputSwitch/Main"
     },
     "editor": {
       "key": "Spindizzy/World/Hangworld"
@@ -824,9 +824,24 @@
                     }
                   },
                   {
-                    "variable": "input",
+                    "variable": "menuInput",
                     "to": {
                       "key": "Basics/InputSwitch/Options Screen"
+                    }
+                  },
+                  {
+                    "variable": "mainInput",
+                    "to": {
+                      "key": "Basics/InputSwitch/Main"
+                    }
+                  },
+                  {
+                    "variable": "gameControls",
+                    "to": {
+                      "key": ":InputHandler",
+                      "asset": {
+                        "key": "Basics/InputGroup/SpindizzyGameControls"
+                      }
                     }
                   },
                   {
@@ -843,7 +858,7 @@
                   }
                 ],
                 "arguments": [],
-                "code": "-- Unpause the game\nlocks = locks - 1\nif locks == 0 then\n  spindizzy:setPause(false)\n  if GlobalExplorer ~= 1 then\n    timeLimit:resume()\n  end\n  if alienContactCount > 0 then\n    sound:play()\n    damage:play()\n  end\nend\nhasFocus = true\n\n-- Remove the menu\nwhile #menuStack > 0 do\n  table.remove(menuStack)\n  table.remove(inputStack)\nend\nscreen:setScreen(nil)\ninput:setInputHandler(nil)\n"
+                "code": "-- Unpause the game\nlocks = locks - 1\nif locks == 0 then\n  spindizzy:setPause(false)\n  if GlobalExplorer ~= 1 then\n    timeLimit:resume()\n  end\n  if alienContactCount > 0 then\n    sound:play()\n    damage:play()\n  end\nend\nhasFocus = true\n\n-- Remove the menu\nwhile #menuStack > 0 do\n  table.remove(menuStack)\n  table.remove(inputStack)\nend\nscreen:setScreen(nil)\nmenuInput:setInputHandler(nil)\nmainInput:setInputHandler(gameControls)"
               },
               {
                 "id": "Ending",
@@ -991,10 +1006,25 @@
                     "to": {
                       "key": "Basics/Sequence/DamageVisual"
                     }
+                  },
+                  {
+                    "variable": "mainInput",
+                    "to": {
+                      "key": "Basics/InputSwitch/Main"
+                    }
+                  },
+                  {
+                    "variable": "optionsInput",
+                    "to": {
+                      "key": ":InputHandler",
+                      "asset": {
+                        "key": "Basics/InputSwitch/Options Screen"
+                      }
+                    }
                   }
                 ],
                 "arguments": [],
-                "code": "if hasFocus then\n\n  -- Pause the game\n  locks = locks + 1\n  if locks == 1 then\n    spindizzy:setPause(true)\n    timeLimit:pause()\n    if alienContactCount > 0 then\n      sound:pause()\n      damage:pause()\n    end\n  end\n  hasFocus = false\n\n  -- Show the menu\n  table.insert(menuStack, screenMenu)\n  table.insert(inputStack, inputHandlerMenu)\n  screenSwitch:setScreen(screenMenu)\n  menu:reset()\n  inputSwitchFE:setInputHandler(inputHandlerMenu)\nend"
+                "code": "if hasFocus then\n\n  -- Pause the game\n  locks = locks + 1\n  if locks == 1 then\n    spindizzy:setPause(true)\n    timeLimit:pause()\n    if alienContactCount > 0 then\n      sound:pause()\n      damage:pause()\n    end\n  end\n  hasFocus = false\n\n  -- Show the menu\n  table.insert(menuStack, screenMenu)\n  table.insert(inputStack, inputHandlerMenu)\n  screenSwitch:setScreen(screenMenu)\n  menu:reset()\n  inputSwitchFE:setInputHandler(inputHandlerMenu)\n  mainInput:setInputHandler(optionsInput)\nend"
               },
               {
                 "id": "SetHint",
@@ -1371,13 +1401,8 @@
             "type": "InputGroup",
             "instances": [
               {
-                "id": "Spindizzy Game Controls",
+                "id": "SpindizzyGameControls",
                 "inputs": [
-                  {
-                    "input": {
-                      "key": "Basics/InputSwitch/Options Screen"
-                    }
-                  },
                   {
                     "input": {
                       "key": "Basics/DigitalInput/Brake"
@@ -1439,6 +1464,17 @@
                     }
                   }
                 ]
+              }
+            ]
+          },
+          {
+            "type": "InputSwitch",
+            "instances": [
+              {
+                "id": "Main",
+                "value": {
+                  "key": "Basics/InputGroup/SpindizzyGameControls"
+                }
               }
             ]
           },
