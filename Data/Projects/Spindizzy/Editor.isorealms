@@ -242,9 +242,19 @@
                           "key": "UI/Layout/Main"
                         }
                       }
+                    },
+                    {
+                      "variable": "unpause",
+                      "to": {
+                        "key": ":Action",
+                        "asset": {
+                          "key": "Basics/Function/Unpause",
+                          "bindings": []
+                        }
+                      }
                     }
                   ],
-                  "code": "currentEditor:notifyVisible()\nscreen:setScreen(editorScreen)\ninput:setInputHandler(editorInput)\nproject:reset()\nproject:setEditing(true)\nproject:setRunning(false)\nplayTesting = nil"
+                  "code": "currentEditor:notifyVisible()\nscreen:setScreen(editorScreen)\ninput:setInputHandler(editorInput)\nproject:reset()\nproject:setEditing(true)\nproject:setRunning(false)\nplayTesting = nil\nunpause:execute()"
                 },
                 "onBecomingFalse": {
                   "key": "Literal"
