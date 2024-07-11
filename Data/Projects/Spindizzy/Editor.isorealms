@@ -125,16 +125,6 @@
           }
         },
         {
-          "variable": "unpause",
-          "to": {
-            "key": ":Action",
-            "asset": {
-              "key": "Basics/Function/Unpause",
-              "bindings": []
-            }
-          }
-        },
-        {
           "variable": "project",
           "to": {
             "key": "Basics/Project/Project"
@@ -147,17 +137,17 @@
           }
         },
         {
-          "variable": "input",
+          "variable": "mainInput",
           "to": {
             "key": "Basics/InputSwitch/Main"
           }
         },
         {
-          "variable": "editorInput",
+          "variable": "inputHandlerMenu",
           "to": {
             "key": ":InputHandler",
             "asset": {
-              "key": "Basics/InputGroup/EditorInput"
+              "key": "Basics/InputSwitch/Options Screen"
             }
           }
         },
@@ -171,7 +161,7 @@
           }
         }
       ],
-      "code": "if awaitingQuit == nil then\n  if playTesting ~= nil then\n    currentEditor:notifyVisible()\n    screen:setScreen(editorScreen)\n    input:setInputHandler(editorInput)\n    project:reset()\n    project:setEditing(true)\n    project:setRunning(false)\n    playTesting = nil\n  end\n  unpause:execute()\n  confirm:execute()\n  awaitingQuit = true\nend"
+      "code": "if awaitingQuit == nil then\n  if playTesting ~= nil then\n    currentEditor:notifyVisible()\n    screen:setScreen(editorScreen)\n    project:reset()\n    project:setEditing(true)\n    project:setRunning(false)       playTesting = nil\n  end\n  mainInput:setInputHandler(inputHandlerMenu)\n  confirm:execute()\n  awaitingQuit = true\nend"
     },
     "modules": [
       {
