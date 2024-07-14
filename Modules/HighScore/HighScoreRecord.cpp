@@ -23,8 +23,8 @@
 namespace IsoRealms::HighScore {
   HighScoreRecord::HighScoreRecord(JSONObject object, HighScoreTable* parentTable) : cValues(parentTable->getFieldCount()) {
     cParentTable = parentTable;
-    for (JSONObject mFieldObject : object.getArray(JSON_FIELDS)) {
-      std::string mFieldName   = mFieldObject.getString(JSON_NAME);
+    for (JSONObject mFieldObject : object.getArray(JSON_VALUES)) {
+      std::string mFieldName   = mFieldObject.getString(JSON_FIELD);
       std::string mFieldValue  = mFieldObject.getString(JSON_VALUE);
       unsigned int mFieldIndex = cParentTable->getFieldIndex(mFieldName);
       cValues[mFieldIndex] = mFieldValue;
@@ -41,10 +41,10 @@ namespace IsoRealms::HighScore {
   }
 
   void HighScoreRecord::save(JSONObject object) {
-    JSONArray mFieldArray = object.addArray(JSON_FIELDS);
+    JSONArray mFieldArray = object.addArray(JSON_VALUES);
     for (unsigned int i = 0; i < cValues.size(); i++) {
       JSONObject mFieldObject = mFieldArray.addObject();
-      mFieldObject.addString(JSON_NAME, cParentTable->getFieldName(i));
+      mFieldObject.addString(JSON_FIELD, cParentTable->getFieldName(i));
       mFieldObject.addString(JSON_VALUE, cValues[i]);
     }
   }
@@ -63,7 +63,7 @@ namespace IsoRealms::HighScore {
     return mMyValue >= mChallengerValue;
   }
 
-  const std::string HighScoreRecord::JSON_FIELDS = "fields";
-  const std::string HighScoreRecord::JSON_NAME   = "name";
+  const std::string HighScoreRecord::JSON_FIELD  = "field";
   const std::string HighScoreRecord::JSON_VALUE  = "value";
+  const std::string HighScoreRecord::JSON_VALUES = "values";
 }

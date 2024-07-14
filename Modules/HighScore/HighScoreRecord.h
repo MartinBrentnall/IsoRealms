@@ -37,9 +37,9 @@ namespace IsoRealms::HighScore {
     bool beats(HighScoreRecord* record);
     
     private:
-    static const std::string JSON_FIELDS;
-    static const std::string JSON_NAME;
+    static const std::string JSON_FIELD;
     static const std::string JSON_VALUE;
+    static const std::string JSON_VALUES;
 
     HighScoreTable* cParentTable;
     std::vector<std::string> cValues;
