@@ -366,6 +366,10 @@ namespace IsoRealms {
       return mRemoved;
     }
 
+    int size() {
+      return cDefEntries.size();
+    }
+
     Iterator begin() {
       return Iterator(cDefEntries.begin());
     }

@@ -545,6 +545,7 @@ namespace IsoRealms::Spindizzy {
       mNewZone->registerView(screen);
       mNewZone->initialiseObjects();
       mNewZone->initialiseTerrain();
+      updateBounds();
       cDefSpindizzy->added(mNewZone);
       return mNewZone;
     }
