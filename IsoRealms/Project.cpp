@@ -696,7 +696,7 @@ namespace IsoRealms {
     cUpdateTasks.push(task);
   }
   
-  void Project::remove(ICallbackHandle* callbackHandle) {
+  void Project::removeCallback(ICallbackHandle* callbackHandle) {
     for (unsigned int i = 0; i < cResetters.size(); i++) {
       if (cResetters[i].get() == callbackHandle) {
         cResetters.erase(cResetters.begin() + i);

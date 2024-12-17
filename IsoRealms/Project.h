@@ -453,7 +453,7 @@ namespace IsoRealms {
     ICallbackHandle* updateRuntime(std::function<void(unsigned int)> dynamic) override;
     ICallbackHandle* updateEditing(std::function<void(unsigned int)> dynamic) override;
     void updateLater(std::function<void()> task) override;
-    void remove(ICallbackHandle* callbackHandle) override;
+    void removeCallback(ICallbackHandle* callbackHandle) override;
     LuaState* const getLuaState() override;
 
     void setTime(int time);

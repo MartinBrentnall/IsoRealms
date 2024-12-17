@@ -32,7 +32,7 @@ namespace IsoRealms {
     /******************************************\
      * Implements ILiteralAssetProvider<TYPE> *
     \******************************************/
-    TYPE* getAsset(const std::string& value) const override {
+    TYPE* getLiteralAsset(const std::string& value) const override {
       return this->getCachedAsset(value);
     }
 

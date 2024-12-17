@@ -116,7 +116,7 @@ namespace IsoRealms {
      * 
      * @param callbackHandle Callback handle to remove.
      */
-    virtual void remove(ICallbackHandle* callbackHandle) = 0;
+    virtual void removeCallback(ICallbackHandle* callbackHandle) = 0;
     
     /**
      * Retrieve the engine Lua state object.

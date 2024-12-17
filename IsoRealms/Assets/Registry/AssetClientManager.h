@@ -74,7 +74,7 @@ namespace IsoRealms {
     }
     
     TYPE* literal(IAssetUser<TYPE>* client, const std::string& value) {
-      TYPE* mAsset = cLiteralProvider != nullptr ? cLiteralProvider->getAsset(value) : nullptr;
+      TYPE* mAsset = cLiteralProvider != nullptr ? cLiteralProvider->getLiteralAsset(value) : nullptr;
       if (mAsset != nullptr) {
         cClients[cLiteralProvider][mAsset].emplace_back(client);
       }

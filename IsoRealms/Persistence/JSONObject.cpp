@@ -100,6 +100,9 @@ namespace IsoRealms {
   }
 
   bool JSONObject::operator<(const JSONObject object) const {
+    if (cObject.IsObject() != object.cObject.IsObject()) {
+      return !cObject.IsObject();
+    }
     if (cObject.MemberCount() != object.cObject.MemberCount()) {
       return cObject.MemberCount() < object.cObject.MemberCount();
     }
